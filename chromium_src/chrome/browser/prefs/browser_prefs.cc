@@ -297,6 +297,7 @@ void MigrateObsoleteBraveProfilePrefsAfterChromium(
   // Added 2026-11
 #if BUILDFLAG(ENABLE_PSST)
   profile_prefs->ClearPref(psst::prefs::kPsstInfobarShownCounter);
+  profile_prefs->ClearPref(psst::prefs::kPsstInfobarDeclineCounter);
 #endif
 
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS

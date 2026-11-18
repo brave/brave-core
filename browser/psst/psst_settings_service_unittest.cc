@@ -188,25 +188,35 @@ TEST_F(PsstSettingsServiceUnitTest, CreateOrUpdateMetadata) {
             modified_metadata->uids_to_perform);
 }
 
-TEST_F(PsstSettingsServiceUnitTest, InfobarShownCountIsPerOrigin) {
+TEST_F(PsstSettingsServiceUnitTest, InfobarCounterIsPerOrigin) {
   const url::Origin origin_a = url::Origin::Create(GURL("https://a.test"));
   const url::Origin origin_b = url::Origin::Create(GURL("https://b.test"));
 
   EXPECT_EQ(settings_service()->GetInfobarShownCount(origin_a), 0);
   EXPECT_EQ(settings_service()->GetInfobarShownCount(origin_b), 0);
+  EXPECT_EQ(settings_service()->GetInfobarDeclinedCount(origin_a), 0);
+  EXPECT_EQ(settings_service()->GetInfobarDeclinedCount(origin_b), 0);
 
   settings_service()->IncrementInfobarShownCount(origin_a);
+  settings_service()->IncrementInfobarDeclineCount(origin_a);
   EXPECT_EQ(settings_service()->GetInfobarShownCount(origin_a), 1);
   EXPECT_EQ(settings_service()->GetInfobarShownCount(origin_b), 0);
+  EXPECT_EQ(settings_service()->GetInfobarDeclinedCount(origin_a), 1);
+  EXPECT_EQ(settings_service()->GetInfobarDeclinedCount(origin_b), 0);
 
   settings_service()->IncrementInfobarShownCount(origin_a);
   settings_service()->IncrementInfobarShownCount(origin_b);
   EXPECT_EQ(settings_service()->GetInfobarShownCount(origin_a), 2);
   EXPECT_EQ(settings_service()->GetInfobarShownCount(origin_b), 1);
+
+  settings_service()->IncrementInfobarDeclineCount(origin_a);
+  settings_service()->IncrementInfobarDeclineCount(origin_b);
+  EXPECT_EQ(settings_service()->GetInfobarDeclinedCount(origin_a), 2);
+  EXPECT_EQ(settings_service()->GetInfobarDeclinedCount(origin_b), 1);
 }
 
 TEST_F(PsstSettingsServiceUnitTest,
-       InfobarShownCountDoesNotAffectWebsiteSettings) {
+       InfobarCounterDoesNotAffectWebsiteSettings) {
   const url::Origin origin = url::Origin::Create(GURL("https://a.test"));
   const std::string user_id = "user123";
   const auto metadata = PsstWebsiteSettings::FromValue(CreatePsstSettingsDict(
@@ -218,8 +228,10 @@ TEST_F(PsstSettingsServiceUnitTest,
       metadata->user_id, base::ListValue());
   settings_service()->IncrementInfobarShownCount(origin);
   settings_service()->IncrementInfobarShownCount(origin);
+  settings_service()->IncrementInfobarDeclineCount(origin);
 
   EXPECT_EQ(settings_service()->GetInfobarShownCount(origin), 2);
+  EXPECT_EQ(settings_service()->GetInfobarDeclinedCount(origin), 1);
   const auto website_settings =
       settings_service()->GetPsstWebsiteSettings(origin, user_id);
   ASSERT_TRUE(website_settings.has_value());
@@ -227,10 +239,58 @@ TEST_F(PsstSettingsServiceUnitTest,
   EXPECT_EQ(website_settings->script_version, metadata->script_version);
 }
 
-TEST_F(PsstSettingsServiceUnitTest, IncrementInfobarShownCountIgnoresNonHttps) {
+TEST_F(PsstSettingsServiceUnitTest, IncrementInfobarCounterIgnoresNonHttps) {
   const url::Origin origin = url::Origin::Create(GURL("http://a.test"));
   settings_service()->IncrementInfobarShownCount(origin);
+  settings_service()->IncrementInfobarDeclineCount(origin);
   EXPECT_EQ(settings_service()->GetInfobarShownCount(origin), 0);
+  EXPECT_EQ(settings_service()->GetInfobarDeclinedCount(origin), 0);
+}
+
+TEST_F(PsstSettingsServiceUnitTest,
+       GetAllPsstWebsitesSettingsReturnsPerHostData) {
+  const url::Origin origin_a = url::Origin::Create(GURL("https://a.test"));
+  const url::Origin origin_b = url::Origin::Create(GURL("https://b.test"));
+  const std::string user_id1 = "user-id1";
+  const std::string user_id2 = "user-id2";
+  const std::vector<std::string> uids_to_perform = {"1", "2", "3", "4"};
+
+  const auto metadata1 = PsstWebsiteSettings::FromValue(CreatePsstSettingsDict(
+      ConsentStatus::kAllow, 8, user_id1, uids_to_perform));
+  const auto metadata2 = PsstWebsiteSettings::FromValue(CreatePsstSettingsDict(
+      ConsentStatus::kAllow, 8, user_id2, uids_to_perform));
+  ASSERT_TRUE(metadata1);
+  ASSERT_TRUE(metadata2);
+
+  settings_service()->SetPsstWebsiteSettings(
+      origin_a, metadata1->consent_status, metadata1->script_version,
+      metadata1->user_id, VectorToList(metadata1->uids_to_perform));
+  settings_service()->SetPsstWebsiteSettings(
+      origin_a, metadata2->consent_status, metadata2->script_version,
+      metadata2->user_id, VectorToList(metadata2->uids_to_perform));
+
+  settings_service()->IncrementInfobarShownCount(origin_a);
+  settings_service()->IncrementInfobarShownCount(origin_a);
+  settings_service()->IncrementInfobarDeclineCount(origin_a);
+  settings_service()->IncrementInfobarShownCount(origin_b);
+
+  const auto all_settings = settings_service()->GetAllPsstWebsitesSettings();
+  ASSERT_EQ(all_settings.size(), 2u);
+
+  const auto it_a = all_settings.find("a.test");
+  ASSERT_NE(it_a, all_settings.end());
+  EXPECT_EQ(it_a->second.infobar_shown_counter, 2);
+  EXPECT_EQ(it_a->second.infobar_decline_counter, 1);
+  ASSERT_EQ(it_a->second.website_settings.size(), 2u);
+  EXPECT_EQ(it_a->second.website_settings[0].user_id, user_id1);
+  EXPECT_EQ(it_a->second.website_settings[0].uids_to_perform, uids_to_perform);
+  EXPECT_EQ(it_a->second.website_settings[1].user_id, user_id2);
+
+  const auto it_b = all_settings.find("b.test");
+  ASSERT_NE(it_b, all_settings.end());
+  EXPECT_EQ(it_b->second.infobar_shown_counter, 1);
+  EXPECT_EQ(it_b->second.infobar_decline_counter, 0);
+  EXPECT_TRUE(it_b->second.website_settings.empty());
 }
 
 }  // namespace psst

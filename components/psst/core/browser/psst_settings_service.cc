@@ -20,6 +20,7 @@ constexpr char kConsentStatusSettingsKey[] = "consent_status";
 constexpr char kScriptVersionSettingsKey[] = "script_version";
 constexpr char kUidsToPerformSettingsKey[] = "uids_to_perform";
 constexpr char kInfobarShownCounterSettingsKey[] = "infobar_shown_counter";
+constexpr char kInfobarDeclineCounterSettingsKey[] = "infobar_decline_counter";
 
 base::ListValue VectorToList(std::vector<std::string> values) {
   base::ListValue list;
@@ -40,18 +41,38 @@ base::DictValue CreatePsstSettingsObject(PsstWebsiteSettings psst_metadata) {
   return object;
 }
 
-void NotifyPsstPrefsChange(
-    PrefService* prefs,
-    base::ObserverList<PsstSettingsService::PrefObserver>& observers,
-    PsstSettingsService* service) {
-  const int infobar_decline_count =
-      prefs->GetInteger(prefs::kPsstInfobarDeclineCounter);
-  const int infobar_shown_count =
-      prefs->GetInteger(prefs::kPsstInfobarShownCounter);
-  const auto websites_settings = service->GetAllPsstWebsitesSettings();
-  observers.Notify(&PsstSettingsService::PrefObserver::OnPsstPrefsChange,
-                   infobar_shown_count, infobar_decline_count,
-                   websites_settings);
+int GetInfobarCounterValue(const url::Origin& origin,
+                           std::string_view setting_key,
+                           HostContentSettingsMap& host_content_settings_map) {
+  auto metadata_objects = host_content_settings_map.GetWebsiteSetting(
+      origin.GetURL(), origin.GetURL(), ContentSettingsType::BRAVE_PSST);
+  const auto* metadata_objects_dict = metadata_objects.GetIfDict();
+  if (!metadata_objects_dict) {
+    return 0;
+  }
+
+  return metadata_objects_dict->FindInt(setting_key).value_or(0);
+}
+
+void IncrementInfobarCounter(
+    const url::Origin& origin,
+    std::string_view setting_key,
+    HostContentSettingsMap& host_content_settings_map) {
+  if (origin.scheme() != url::kHttpsScheme) {
+    return;
+  }
+
+  auto metadata_objects = host_content_settings_map.GetWebsiteSetting(
+      origin.GetURL(), origin.GetURL(), ContentSettingsType::BRAVE_PSST);
+  auto* metadata_objects_dict = metadata_objects.GetIfDict();
+  base::DictValue updated_dict = metadata_objects_dict
+                                     ? std::move(*metadata_objects_dict)
+                                     : base::DictValue();
+  const int count = updated_dict.FindInt(setting_key).value_or(0);
+  updated_dict.Set(setting_key, count + 1);
+  host_content_settings_map.SetWebsiteSettingDefaultScope(
+      origin.GetURL(), origin.GetURL(), ContentSettingsType::BRAVE_PSST,
+      base::Value(std::move(updated_dict)));
 }
 
 }  // namespace
@@ -65,14 +86,6 @@ PsstSettingsService::PsstSettingsService(
   pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(
       prefs::kPsstEnabled,
-      base::BindRepeating(&PsstSettingsService::OnPreferenceChanged,
-                          weak_ptr_factory_.GetWeakPtr()));
-  pref_change_registrar_.Add(
-      prefs::kPsstInfobarShownCounter,
-      base::BindRepeating(&PsstSettingsService::OnPreferenceChanged,
-                          weak_ptr_factory_.GetWeakPtr()));
-  pref_change_registrar_.Add(
-      prefs::kPsstInfobarDeclineCounter,
       base::BindRepeating(&PsstSettingsService::OnPreferenceChanged,
                           weak_ptr_factory_.GetWeakPtr()));
 }
@@ -105,25 +118,38 @@ std::optional<PsstWebsiteSettings> PsstSettingsService::GetPsstWebsiteSettings(
   return PsstWebsiteSettings::FromValue(*user_id_metadata_dict);
 }
 
-base::flat_map<std::string, PsstWebsiteSettings>
+base::flat_map<std::string, PsstWebsiteSettingsExtended>
 PsstSettingsService::GetAllPsstWebsitesSettings() {
   ContentSettingsForOneType settings =
       host_content_settings_map_->GetSettingsForOneType(
           ContentSettingsType::BRAVE_PSST);
 
-  base::flat_map<std::string, PsstWebsiteSettings> result;
+  base::flat_map<std::string, PsstWebsiteSettingsExtended> result;
   for (const auto& setting : settings) {
     const auto url = GURL(setting.primary_pattern.ToString());
     if (!url.is_valid()) {
       continue;
     }
 
-    const auto* user_id_dicts = setting.setting_value.GetIfDict();
-    if (!user_id_dicts) {
+    const auto* website_settings_dict = setting.setting_value.GetIfDict();
+    if (!website_settings_dict) {
       continue;
     }
 
-    for (const auto [key, value] : *user_id_dicts) {
+    PsstWebsiteSettingsExtended extended;
+    extended.infobar_shown_counter =
+        website_settings_dict->FindInt(kInfobarShownCounterSettingsKey)
+            .value_or(0);
+    extended.infobar_decline_counter =
+        website_settings_dict->FindInt(kInfobarDeclineCounterSettingsKey)
+            .value_or(0);
+
+    for (const auto [key, value] : *website_settings_dict) {
+      if (key == kInfobarShownCounterSettingsKey ||
+          key == kInfobarDeclineCounterSettingsKey) {
+        continue;
+      }
+
       const auto* user_id_metadata_dict = value.GetIfDict();
       if (!user_id_metadata_dict) {
         continue;
@@ -131,9 +157,11 @@ PsstSettingsService::GetAllPsstWebsitesSettings() {
 
       if (auto psst_metadata =
               PsstWebsiteSettings::FromValue(*user_id_metadata_dict)) {
-        result.emplace(url.host(), std::move(*psst_metadata));
+        extended.website_settings.push_back(std::move(*psst_metadata));
       }
     }
+
+    result.emplace(url.host(), std::move(extended));
   }
   return result;
 }
@@ -181,39 +209,34 @@ void PsstSettingsService::SetPsstWebsiteSettings(
         base::Value(base::DictValue().Set(
             user_id, CreatePsstSettingsObject(std::move(psst_metadata)))));
   }
-  NotifyPsstPrefsChange(prefs_, observers_, this);
+  observers_.Notify(&PsstSettingsService::PrefObserver::OnPsstPrefsChange,
+                    GetAllPsstWebsitesSettings());
 }
 
 int PsstSettingsService::GetInfobarShownCount(const url::Origin& origin) {
-  auto metadata_objects = host_content_settings_map_->GetWebsiteSetting(
-      origin.GetURL(), origin.GetURL(), ContentSettingsType::BRAVE_PSST);
-  auto* metadata_objects_dict = metadata_objects.GetIfDict();
-  if (!metadata_objects_dict) {
-    return 0;
-  }
+  return GetInfobarCounterValue(origin, kInfobarShownCounterSettingsKey,
+                                *host_content_settings_map_);
+}
 
-  return metadata_objects_dict->FindInt(kInfobarShownCounterSettingsKey)
-      .value_or(0);
+int PsstSettingsService::GetInfobarDeclinedCount(const url::Origin& origin) {
+  return GetInfobarCounterValue(origin, kInfobarDeclineCounterSettingsKey,
+                                *host_content_settings_map_);
 }
 
 void PsstSettingsService::IncrementInfobarShownCount(
     const url::Origin& origin) {
-  if (origin.scheme() != url::kHttpsScheme) {
-    return;
-  }
+  IncrementInfobarCounter(origin, kInfobarShownCounterSettingsKey,
+                          *host_content_settings_map_);
+  observers_.Notify(&PsstSettingsService::PrefObserver::OnPsstPrefsChange,
+                    GetAllPsstWebsitesSettings());
+}
 
-  auto metadata_objects = host_content_settings_map_->GetWebsiteSetting(
-      origin.GetURL(), origin.GetURL(), ContentSettingsType::BRAVE_PSST);
-  auto* metadata_objects_dict = metadata_objects.GetIfDict();
-  base::DictValue updated_dict = metadata_objects_dict
-                                     ? std::move(*metadata_objects_dict)
-                                     : base::DictValue();
-  const int count =
-      updated_dict.FindInt(kInfobarShownCounterSettingsKey).value_or(0);
-  updated_dict.Set(kInfobarShownCounterSettingsKey, count + 1);
-  host_content_settings_map_->SetWebsiteSettingDefaultScope(
-      origin.GetURL(), origin.GetURL(), ContentSettingsType::BRAVE_PSST,
-      base::Value(std::move(updated_dict)));
+void PsstSettingsService::IncrementInfobarDeclineCount(
+    const url::Origin& origin) {
+  IncrementInfobarCounter(origin, kInfobarDeclineCounterSettingsKey,
+                          *host_content_settings_map_);
+  observers_.Notify(&PsstSettingsService::PrefObserver::OnPsstPrefsChange,
+                    GetAllPsstWebsitesSettings());
 }
 
 bool PsstSettingsService::IsPsstEnabled() const {
@@ -227,10 +250,6 @@ void PsstSettingsService::SetPsstEnabled(bool enabled) {
 void PsstSettingsService::OnPreferenceChanged(const std::string& pref_name) {
   if (pref_name == prefs::kPsstEnabled) {
     observers_.Notify(&PrefObserver::OnPsstEnableChange, IsPsstEnabled());
-    return;
-  } else if (pref_name == prefs::kPsstInfobarShownCounter ||
-             pref_name == prefs::kPsstInfobarDeclineCounter) {
-    NotifyPsstPrefsChange(prefs_, observers_, this);
     return;
   }
 }
