@@ -62,6 +62,7 @@ export const style = scoped.css`
     background: ${color.container.background};
     box-shadow: ${effect.elevation['03']};
     color: ${color.text.primary};
+    overflow: clip;
 
     &:hover, &:focus-within {
       box-shadow: ${effect.elevation['04']};
