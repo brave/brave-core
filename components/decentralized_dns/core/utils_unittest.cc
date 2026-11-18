@@ -1,14 +1,13 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/components/decentralized_dns/core/utils.h"
 
 #include "base/test/task_environment.h"
 #include "brave/components/decentralized_dns/core/constants.h"
 #include "brave/components/decentralized_dns/core/pref_names.h"
-#include "chrome/test/base/testing_browser_process.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -19,12 +18,13 @@ class UtilsUnitTest : public testing::Test {
   UtilsUnitTest() = default;
   ~UtilsUnitTest() override = default;
 
-  PrefService* local_state() {
-    return TestingBrowserProcess::GetGlobal()->GetTestingLocalState();
-  }
+  void SetUp() override { RegisterLocalStatePrefs(local_state_.registry()); }
+
+  PrefService* local_state() { return &local_state_; }
 
  private:
   base::test::TaskEnvironment task_environment_;
+  TestingPrefServiceSimple local_state_;
 };
 
 TEST_F(UtilsUnitTest, IsUnstoppableDomainsTLD) {
