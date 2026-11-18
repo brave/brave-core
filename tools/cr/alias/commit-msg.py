@@ -100,6 +100,17 @@
 #    subject is a directive (`fixup!`, `amend!`, `squash!`, `reassign!<hash>!`,
 #    `drop!<hash>!`, ...) get none, as they fold into another commit.
 #
+# 10. `format_message` environment variable
+#
+#    With `format_message=1` (what `git cr commit --format` sets), the body is
+#    wrapped at 72 columns by Chromium's CL description wrapper
+#    (`agents/shared/skills/cl-description/scripts/wrap_lines.py`), as Gerrit's
+#    "Format" button does. The subject, indented paragraphs and the "Chromium
+#    changes:" block are left as they are, and the commit is refused if its
+#    subject, tags included, is longer than 72 columns. An `amend!` message
+#    gets the same, from its new subject on, and so do `fixup!` and `amend!`
+#    commits, which the hook otherwise leaves alone.
+#
 # This script can be set up either as a commit-msg hook, or as a
 # prepare-commit-msg hook. The difference is that the commit-msg hook will run
 # after the commit message is created, while the prepare-commit-msg hook will
@@ -110,6 +121,7 @@
 # which links the hook to this file rather than copying it.
 #
 
+import importlib.util
 import json
 import os
 import sys
@@ -137,6 +149,13 @@ _SQUASH_MARKERS = ('fixup!', 'amend!', 'squash!')
 # hook recognises them, plus brockit's `reassign!<hash>!` and `drop!<hash>!`.
 _DIRECTIVE = re.compile(r'[a-z]+!')
 _SCISSORS = '------------------------ >8 ------------------------'
+
+# In the Chromium checkout around `src/brave`. It keeps to the standard library.
+_WRAP_LINES = (
+    Path(__file__).resolve().parents[4]
+    / 'agents/shared/skills/cl-description/scripts/wrap_lines.py'
+)
+_MAX_SUBJECT = 72
 
 
 def pinned_squash_problem(first_line: str) -> str | None:
@@ -323,6 +342,72 @@ def split_editor_tail(message: str) -> tuple[str, str]:
     return ''.join(lines[:end]), ''.join(lines[end:])
 
 
+def load_wrap_text():
+    """Chromium's `wrap_text()`, or None if the checkout lacks it."""
+    if not _WRAP_LINES.is_file():
+        return None
+    spec = importlib.util.spec_from_file_location('wrap_lines', _WRAP_LINES)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.wrap_text
+
+
+def _wrap_body(body: str, wrap_text) -> str:
+    """Wraps each paragraph, leaving indented ones (quoted code or output) as
+    they are."""
+    paragraphs = []
+    for paragraph in re.split(r'\n[ \t]*\n', body.strip('\n')):
+        if not paragraph.strip():
+            continue
+        if paragraph[0] in ' \t':
+            paragraphs.append(paragraph.rstrip())
+        else:
+            # `wrap_text()` takes a whole message, and would reword a subject.
+            paragraphs.append(
+                wrap_text(f'-\n\n{paragraph}').split('\n\n', 1)[1]
+            )
+    return '\n\n'.join(paragraphs)
+
+
+def _subject_index(lines: list[str]) -> int:
+    """The line of the subject, which for an `amend!` is the new one."""
+    if not lines[0].startswith('amend!'):
+        return 0
+    return next((i for i, line in enumerate(lines[1:], 1) if line.strip()), 0)
+
+
+def formatted(message: str, wrap_text) -> str:
+    """The message with its body wrapped as a CL description's.
+
+    The subject is kept as it is: pinned subjects must match exactly.
+    """
+    lines = message.rstrip('\n').split('\n')
+    head_end = _subject_index(lines) + 1
+    rest = lines[head_end:]
+    cut = next(
+        (i for i, line in enumerate(rest) if line == chromium_changes.HEADING),
+        len(rest),
+    )
+    parts = (
+        '\n'.join(lines[:head_end]),
+        _wrap_body('\n'.join(rest[:cut]), wrap_text),
+        '\n'.join(rest[cut:]).rstrip('\n'),
+    )
+    return '\n\n'.join(part for part in parts if part.strip()) + '\n'
+
+
+def subject_problem(message: str) -> str | None:
+    """Says why the subject is too long for a CL description, if it is."""
+    lines = message.split('\n')
+    subject = lines[_subject_index(lines)]
+    if subject.startswith(_SQUASH_MARKERS) or len(subject) <= _MAX_SUBJECT:
+        return None
+    return (
+        f'The subject is {len(subject)} columns long, tags included, over '
+        f'the {_MAX_SUBJECT} of a CL description:\n    {subject}'
+    )
+
+
 def _git_filter(args: list[str], text: str) -> str:
     """Runs git over `text` on stdin, in bytes so newlines stay as they are
     on Windows, and returns its output."""
@@ -471,9 +556,31 @@ def main():
         print(problem, file=sys.stderr)
         return 1
 
+    format_message = os.getenv('format_message') == '1'
+    if format_message:
+        wrap_text = load_wrap_text()
+        if wrap_text is None:
+            print(
+                "--format needs Chromium's CL description wrapper, which is "
+                f'missing from {_WRAP_LINES}.',
+                file=sys.stderr,
+            )
+            return 1
+        own, tail = split_editor_tail(commit_message)
+        if own.strip():
+            commit_message = formatted(own, wrap_text) + (
+                f'\n{tail}' if tail else ''
+            )
+
     # Skip fixup! changes.
     squash_marker = commit_message.startswith(('fixup!', 'amend!'))
     if squash_marker and not forced:
+        if not format_message:
+            return 0
+        if problem := subject_problem(commit_message):
+            print(problem, file=sys.stderr)
+            return 1
+        commit_msg_file.write_text(commit_message, encoding='utf-8', newline='')
         return 0
 
     first_line = commit_message.split('\n', 1)[0]
@@ -628,6 +735,10 @@ def main():
         commit_message = gerrit_trailer.add_to(commit_message)
     if editor_tail:
         commit_message += f'\n{editor_tail}'
+
+    if format_message and (problem := subject_problem(commit_message)):
+        print(problem, file=sys.stderr)
+        return 1
 
     with commit_msg_file.open('w', encoding='utf-8', newline='') as f:
         f.write(commit_message)

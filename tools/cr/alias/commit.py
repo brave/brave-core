@@ -27,6 +27,8 @@ Usage
                                                 → $culprit_in_range
     --force-commit-hook
                 Runs the hook where it would bail out → $force_commit_hook
+    --format    Wraps the body at 72 columns, and refuses a longer subject
+                                                → $format_message
 
   The hook leaves the message alone during a rebase or cherry-pick, and for
   `fixup!`/`amend!` commits. Where that would drop what was asked for, the
@@ -144,6 +146,7 @@ def _run_commit(
     git_args: list[str],
     force_hook: bool = False,
     culprit_in_range: bool = False,
+    format_message: bool = False,
 ) -> int:
     """Execute git commit with hook environment variables injected."""
     _check_hook_ready()
@@ -166,6 +169,8 @@ def _run_commit(
         env['culprit'] = culprit
     if culprit_in_range:
         env['culprit_in_range'] = '1'
+    if format_message:
+        env['format_message'] = '1'
     return subprocess.run(
         ['git', 'commit'] + git_args, check=False, env=env
     ).returncode
@@ -314,6 +319,13 @@ def cmd_commit(args: list[str]) -> int:
         help='Run the commit-msg hook where it would leave the message alone: '
         'during a rebase or cherry-pick, and for fixup!/amend! commits',
     )
+    parser.add_argument(
+        '--format',
+        action='store_true',
+        help='Wrap the body at 72 columns as a CL description, leaving the '
+        'subject and the "Chromium changes:" block alone, and refuse a '
+        'subject longer than 72 columns, tags included',
+    )
     parsed, extra = parser.parse_known_args(args)
     return _run_commit(
         parsed.tagged,
@@ -322,4 +334,5 @@ def cmd_commit(args: list[str]) -> int:
         extra,
         force_hook=parsed.force_commit_hook,
         culprit_in_range=parsed.culprit_in_range,
+        format_message=parsed.format,
     )

@@ -915,6 +915,94 @@ class TestForceCommitHook(unittest.TestCase):
         self.assertIn(f'chromium/src/+/{self._culprit}', msg)
 
 
+class TestFormat(unittest.TestCase):
+    """--format wraps the body as a CL description, and nothing else."""
+
+    _LONG = (
+        'Upstream removed `TabChangeType::kAttentionOnly` and '
+        '`TabStripModel::SetTabNeedsAttention()`, so JS dialogs now notify '
+        'only the `TabUIHelper` callbacks.'
+    )
+    _WRAPPED = (
+        'Upstream removed `TabChangeType::kAttentionOnly` and\n'
+        '`TabStripModel::SetTabNeedsAttention()`, so JS dialogs now notify only\n'
+        'the `TabUIHelper` callbacks.'
+    )
+
+    def setUp(self) -> None:
+        self._sandbox = self.enterContext(_Sandbox())
+        self._sandbox.install_hook()
+        repo = self._sandbox.repo
+        repo._run_git_command(
+            [
+                'remote',
+                'add',
+                'origin',
+                'https://chromium.googlesource.com/chromium/src.git',
+            ],
+            repo.chromium,
+        )
+
+    def _commit(self, *args: str) -> subprocess.CompletedProcess:
+        self._sandbox.stage_change(f'{args}\n')
+        return self._sandbox.run_gc(['commit', *args])
+
+    def _body(self) -> str:
+        msg = self._sandbox.last_commit_message()
+        return msg.split('\n\n', 1)[1].rsplit('\n\nChange-Id: ', 1)[0]
+
+    def test_body_is_wrapped_and_subject_kept(self) -> None:
+        result = self._commit('--format', '-m', 'Fix it.', '-m', self._LONG)
+        self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
+        msg = self._sandbox.last_commit_message()
+        self.assertTrue(msg.startswith('Fix it.\n\n'), msg=msg)
+        self.assertEqual(self._body(), self._WRAPPED)
+
+    def test_body_is_left_alone_without_the_flag(self) -> None:
+        result = self._commit('-m', 'Fix', '-m', self._LONG)
+        self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
+        self.assertEqual(self._body(), self._LONG)
+
+    def test_indented_paragraph_is_kept(self) -> None:
+        quote = '    ' + 'x' * 80 + '\n    y'
+        result = self._commit('--format', '-m', 'Fix', '-m', quote)
+        self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
+        self.assertEqual(self._body(), quote)
+
+    def test_culprit_block_is_not_wrapped(self) -> None:
+        repo = self._sandbox.repo
+        culprit = repo.commit_empty(
+            f'Upstream change\n\n{self._LONG}', repo.chromium
+        )
+        result = self._commit(
+            '--format', '--culprit', culprit, '-m', 'Fix', '-m', self._LONG
+        )
+        self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
+        msg = self._sandbox.last_commit_message()
+        self.assertIn(f'Fix\n\n{self._WRAPPED}\n\nChromium changes:\n', msg)
+        self.assertIn(f'    {self._LONG}', msg)
+
+    def test_amend_marker_formats_the_new_message(self) -> None:
+        self.assertEqual(self._commit('-m', 'Fix').returncode, 0)
+        message = f'amend! Fix\n\nFix better\n\n{self._LONG}'
+        result = self._commit('--format', '--allow-empty', '-m', message)
+        self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
+        self.assertEqual(
+            self._sandbox.last_commit_message(),
+            f'amend! Fix\n\nFix better\n\n{self._WRAPPED}',
+        )
+
+    def test_long_subject_with_tags_is_refused(self) -> None:
+        subject = 'x' * 66
+        result = self._commit('--format', '--tagged', 'WIP', '-m', subject)
+        self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
+        result = self._commit(
+            '--format', '--tagged', 'Android,WIP', '-m', subject
+        )
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('81 columns', result.stderr)
+
+
 # ---------------------------------------------------------------------------
 # Tests: cmd_commit hook sanity check
 # ---------------------------------------------------------------------------

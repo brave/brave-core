@@ -13,6 +13,9 @@ scripts accept `--verbose` to switch logging to `DEBUG`.
 > Before adding or editing Python in this directory, read
 > [Python dos and donts](python_dos_and_donts.md).
 
+Commit messages follow [`commit_messages.md`](commit_messages.md), committed
+with `git cr commit --format`.
+
 ## Entry points
 
 These are the user-facing scripts in this directory:
