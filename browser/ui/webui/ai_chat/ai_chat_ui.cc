@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 
-#include <algorithm>
 #include <memory>
 #include <utility>
 
@@ -63,14 +62,19 @@
 #if BUILDFLAG(IS_ANDROID)
 namespace {
 content::WebContents* GetActiveWebContents(content::BrowserContext* context) {
-  auto tab_models = TabModelList::models();
-  auto iter = std::ranges::find_if(
-      tab_models, [](const auto& model) { return model->IsActiveModel(); });
-  if (iter == tab_models.end()) {
+  TabModel* active_model = nullptr;
+  TabModelList::ForEachAll([&](TabModel* model) {
+    if (!model->IsActiveModel()) {
+      return true;
+    }
+    active_model = model;
+    return false;
+  });
+  if (!active_model) {
     return nullptr;
   }
 
-  auto* active_contents = (*iter)->GetActiveWebContents();
+  auto* active_contents = active_model->GetActiveWebContents();
   if (!active_contents) {
     return nullptr;
   }
