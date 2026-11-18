@@ -22,6 +22,10 @@
 //     - kUAModel will be always set to an empty string;
 //     - kUAPlatformVersion will be clamped to the same value we report in the
 //     User-Agent string.
+//   - kViewportHeight and kViewportWidth are also allowed since stripping them
+//   breaks sites that rely on them (e.g. play.xbox.com) and they expose no
+//   more fingerprinting surface than values already derivable from the
+//   viewport/window size.
 
 namespace blink {
 
@@ -38,6 +42,8 @@ void EnabledClientHints::SetIsEnabled(const WebClientHintsType type,
     case WebClientHintsType::kUAPlatform:
     case WebClientHintsType::kUAPlatformVersion:
     case WebClientHintsType::kUAWoW64:
+    case WebClientHintsType::kViewportHeight:
+    case WebClientHintsType::kViewportWidth:
       type_is_enabled = true;
       break;
     default:
