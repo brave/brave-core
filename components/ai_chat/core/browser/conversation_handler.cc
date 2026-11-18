@@ -492,6 +492,10 @@ bool ConversationHandler::IsRequestInProgress() {
   return is_request_in_progress_;
 }
 
+bool ConversationHandler::IsToolUseInProgress() const {
+  return is_tool_use_in_progress_;
+}
+
 void ConversationHandler::OnConversationDeleted() {
   for (auto& client : conversation_ui_handlers_) {
     client->OnConversationDeleted();
@@ -2548,10 +2552,9 @@ void ConversationHandler::GetContentTools(const std::string& content_uuid,
 
 void ConversationHandler::SetContentToolPermission(
     const std::string& content_uuid,
-    const std::string& tool_name,
-    mojom::ToolPermission permission) {
-  associated_content_manager_->SetToolPermission(content_uuid, tool_name,
-                                                 permission);
+    mojom::ToolInfoPtr tool) {
+  associated_content_manager_->SetToolPermission(
+      content_uuid, tool->name, tool->description, tool->permission);
 }
 
 void ConversationHandler::OnTaskStateChanged(ToolProvider* tool_provider) {

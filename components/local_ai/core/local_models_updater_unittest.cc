@@ -6,8 +6,10 @@
 #include "brave/components/local_ai/core/local_models_updater.h"
 
 #include <memory>
+#include <string>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -21,11 +23,11 @@
 #include "base/values.h"
 #include "base/version.h"
 #include "brave/components/brave_component_updater/browser/mock_on_demand_updater.h"
+#include "brave/components/history_embeddings/core/history_embeddings_features.h"
 #include "brave/components/local_ai/core/pref_names.h"
 #include "components/component_updater/component_updater_paths.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/component_updater/mock_component_updater_service.h"
-#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/update_client/update_client.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -55,8 +57,8 @@ class LocalModelsUpdaterUnitTest : public testing::Test {
  public:
   LocalModelsUpdaterUnitTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {
-    feature_list_.InitWithFeatures({history_embeddings::kHistoryEmbeddings},
-                                   {});
+    feature_list_.InitWithFeatures(
+        {brave_history_embeddings::kHistoryEmbeddings}, {});
   }
 
   ~LocalModelsUpdaterUnitTest() override = default;
@@ -66,6 +68,7 @@ class LocalModelsUpdaterUnitTest : public testing::Test {
     local_state_ = std::make_unique<TestingPrefServiceSimple>();
     prefs::RegisterLocalStatePrefs(local_state_->registry());
     local_state_->SetBoolean(prefs::kBraveLocalAIEnabled, true);
+    SetHistoryEmbeddingsEnabledForProfile(*local_state_, "Default", true);
     auto component_dir =
         base::PathService::CheckedGet(component_updater::DIR_COMPONENT_USER);
     install_dir_ = component_dir.Append(kComponentInstallDir);
@@ -88,7 +91,15 @@ class LocalModelsUpdaterUnitTest : public testing::Test {
     return base::CreateDirectory(dir_path);
   }
 
+  // Starts the registrar the way component registration does, with the
+  // profiles in `profile_names_` as the ones that still exist.
+  void Manage(component_updater::ComponentUpdateService* cus) {
+    ManageLocalModelsComponentRegistration(cus, local_state_.get(),
+                                           profile_names_);
+  }
+
  protected:
+  base::flat_set<std::string> profile_names_{"Default", "Profile 1"};
   brave_component_updater::MockOnDemandUpdater on_demand_updater_;
   std::unique_ptr<component_updater::MockComponentUpdateService> cus_;
   std::unique_ptr<TestingPrefServiceSimple> local_state_;
@@ -110,7 +121,7 @@ TEST_F(LocalModelsUpdaterUnitTest, Register) {
   EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
       .Times(1)
       .WillOnce([quit = run_loop.QuitClosure()]() { quit.Run(); });
-  ManageLocalModelsComponentRegistration(cus_.get(), local_state_.get());
+  Manage(cus_.get());
   run_loop.Run();
 }
 
@@ -135,7 +146,8 @@ TEST_F(LocalModelsUpdaterUnitTest, DeleteComponent) {
   EXPECT_TRUE(PathExists(install_dir_));
 
   base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndDisableFeature(history_embeddings::kHistoryEmbeddings);
+  feature_list.InitAndDisableFeature(
+      brave_history_embeddings::kHistoryEmbeddings);
   EXPECT_CALL(*cus_, RegisterComponent(testing::_)).Times(0);
   // Nothing was registered, so the directory is ours to remove.
   EXPECT_CALL(*cus_, UnregisterComponent(kComponentId))
@@ -143,7 +155,7 @@ TEST_F(LocalModelsUpdaterUnitTest, DeleteComponent) {
       .WillOnce(testing::Return(false));
   EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
       .Times(0);
-  ManageLocalModelsComponentRegistration(cus_.get(), local_state_.get());
+  Manage(cus_.get());
   ASSERT_TRUE(
       base::test::RunUntil([&]() { return !PathExists(install_dir_); }));
   EXPECT_FALSE(PathExists(install_dir_));
@@ -152,7 +164,8 @@ TEST_F(LocalModelsUpdaterUnitTest, DeleteComponent) {
 // Tests that the component is not registered when the feature is disabled.
 TEST_F(LocalModelsUpdaterUnitTest, NoRegisterWhenFeatureDisabled) {
   base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndDisableFeature(history_embeddings::kHistoryEmbeddings);
+  feature_list.InitAndDisableFeature(
+      brave_history_embeddings::kHistoryEmbeddings);
 
   EXPECT_CALL(*cus_, RegisterComponent(testing::_)).Times(0);
   EXPECT_CALL(*cus_, UnregisterComponent(kComponentId))
@@ -160,7 +173,7 @@ TEST_F(LocalModelsUpdaterUnitTest, NoRegisterWhenFeatureDisabled) {
       .WillOnce(testing::Return(false));
   EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
       .Times(0);
-  ManageLocalModelsComponentRegistration(cus_.get(), local_state_.get());
+  Manage(cus_.get());
 }
 
 // Tests that the component is not registered when ComponentUpdateService is
@@ -168,7 +181,7 @@ TEST_F(LocalModelsUpdaterUnitTest, NoRegisterWhenFeatureDisabled) {
 TEST_F(LocalModelsUpdaterUnitTest, NoRegisterWhenCUSIsNull) {
   EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
       .Times(0);
-  ManageLocalModelsComponentRegistration(nullptr, local_state_.get());
+  Manage(nullptr);
 }
 
 // Tests that the component is not registered when the local AI master switch
@@ -184,7 +197,7 @@ TEST_F(LocalModelsUpdaterUnitTest, NoRegisterWhenMasterSwitchOff) {
       .WillOnce(testing::Return(false));
   EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
       .Times(0);
-  ManageLocalModelsComponentRegistration(cus_.get(), local_state_.get());
+  Manage(cus_.get());
   ASSERT_TRUE(
       base::test::RunUntil([&]() { return !PathExists(install_dir_); }));
 }
@@ -228,7 +241,7 @@ TEST_F(LocalModelsUpdaterUnitTest, UnregisterWhenMasterSwitchTurnsOff) {
   EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
       .Times(1)
       .WillOnce([quit = run_loop.QuitClosure()]() { quit.Run(); });
-  ManageLocalModelsComponentRegistration(cus_.get(), local_state_.get());
+  Manage(cus_.get());
   run_loop.Run();
 
   LocalModelsUpdaterState::GetInstance()->SetInstallDir(install_dir_);
@@ -257,7 +270,7 @@ TEST_F(LocalModelsUpdaterUnitTest, AbandonedRegistrationCleansUpDirectory) {
       .WillRepeatedly(testing::Return(false));
   EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
       .Times(0);
-  ManageLocalModelsComponentRegistration(cus_.get(), local_state_.get());
+  Manage(cus_.get());
   local_state_->SetBoolean(prefs::kBraveLocalAIEnabled, false);
 
   ASSERT_TRUE(
@@ -282,7 +295,7 @@ TEST_F(LocalModelsUpdaterUnitTest,
   });
   EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
       .Times(0);
-  ManageLocalModelsComponentRegistration(cus_.get(), local_state_.get());
+  Manage(cus_.get());
 
   // One from the pref change, one from the registration landing afterwards.
   ASSERT_TRUE(base::test::RunUntil([&]() { return unregister_count == 2; }));
@@ -304,7 +317,7 @@ TEST_F(LocalModelsUpdaterUnitTest, SwitchTogglesWhileRegistrationPending) {
       .Times(1)
       .WillOnce([quit = run_loop.QuitClosure()]() { quit.Run(); });
 
-  ManageLocalModelsComponentRegistration(cus_.get(), local_state_.get());
+  Manage(cus_.get());
   local_state_->SetBoolean(prefs::kBraveLocalAIEnabled, false);
   local_state_->SetBoolean(prefs::kBraveLocalAIEnabled, true);
   run_loop.Run();
@@ -329,7 +342,7 @@ TEST_F(LocalModelsUpdaterUnitTest, ReusesInstallerAcrossReregistration) {
   EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
       .Times(testing::AnyNumber());
 
-  ManageLocalModelsComponentRegistration(cus_.get(), local_state_.get());
+  Manage(cus_.get());
   ASSERT_TRUE(base::test::RunUntil([&]() { return installers.size() == 1u; }));
 
   local_state_->SetBoolean(prefs::kBraveLocalAIEnabled, false);
@@ -346,7 +359,7 @@ TEST_F(LocalModelsUpdaterUnitTest, RegisterWhenMasterSwitchTurnsOn) {
   EXPECT_CALL(*cus_, UnregisterComponent(kComponentId))
       .Times(1)
       .WillOnce(testing::Return(false));
-  ManageLocalModelsComponentRegistration(cus_.get(), local_state_.get());
+  Manage(cus_.get());
 
   base::RunLoop run_loop;
   EXPECT_CALL(*cus_, RegisterComponent(testing::_))
@@ -357,6 +370,121 @@ TEST_F(LocalModelsUpdaterUnitTest, RegisterWhenMasterSwitchTurnsOn) {
       .WillOnce([quit = run_loop.QuitClosure()]() { quit.Run(); });
   local_state_->SetBoolean(prefs::kBraveLocalAIEnabled, true);
   run_loop.Run();
+}
+
+// The model is shared by every profile, so a profile that never turned
+// Semantic history search on gets no download, and any leftover is removed.
+TEST_F(LocalModelsUpdaterUnitTest, NoRegisterWithoutEnabledProfile) {
+  CreateDirectory(install_dir_);
+  SetHistoryEmbeddingsEnabledForProfile(*local_state_, "Default", false);
+
+  EXPECT_CALL(*cus_, RegisterComponent(testing::_)).Times(0);
+  EXPECT_CALL(*cus_, UnregisterComponent(kComponentId))
+      .WillOnce(testing::Return(false));
+  EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
+      .Times(0);
+  Manage(cus_.get());
+
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return !PathExists(install_dir_); }));
+}
+
+TEST_F(LocalModelsUpdaterUnitTest, RegisterWhenAProfileEnables) {
+  SetHistoryEmbeddingsEnabledForProfile(*local_state_, "Default", false);
+  EXPECT_CALL(*cus_, UnregisterComponent(kComponentId))
+      .WillOnce(testing::Return(false));
+  Manage(cus_.get());
+
+  base::RunLoop run_loop;
+  EXPECT_CALL(*cus_, RegisterComponent(testing::_))
+      .WillOnce(testing::Return(true));
+  EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
+      .WillOnce([quit = run_loop.QuitClosure()]() { quit.Run(); });
+  SetHistoryEmbeddingsEnabledForProfile(*local_state_, "Profile 1", true);
+  run_loop.Run();
+}
+
+// The model stays while any profile still uses it, and goes with the last one.
+TEST_F(LocalModelsUpdaterUnitTest, UnregisterWhenTheLastProfileDisables) {
+  SetHistoryEmbeddingsEnabledForProfile(*local_state_, "Profile 1", true);
+  base::RunLoop run_loop;
+  EXPECT_CALL(*cus_, RegisterComponent(testing::_))
+      .WillOnce(testing::Return(true));
+  EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
+      .WillOnce([quit = run_loop.QuitClosure()]() { quit.Run(); });
+  Manage(cus_.get());
+  run_loop.Run();
+  LocalModelsUpdaterState::GetInstance()->SetInstallDir(install_dir_);
+
+  EXPECT_CALL(*cus_, UnregisterComponent(kComponentId)).Times(0);
+  SetHistoryEmbeddingsEnabledForProfile(*local_state_, "Default", false);
+  EXPECT_EQ(LocalModelsUpdaterState::GetInstance()->GetInstallDir(),
+            install_dir_);
+  testing::Mock::VerifyAndClearExpectations(cus_.get());
+
+  EXPECT_CALL(*cus_, UnregisterComponent(kComponentId))
+      .WillOnce(testing::Return(true));
+  SetHistoryEmbeddingsEnabledForProfile(*local_state_, "Profile 1", false);
+  EXPECT_TRUE(LocalModelsUpdaterState::GetInstance()->GetInstallDir().empty());
+}
+
+// A download that started before the last profile turned the setting off still
+// lands, and must not publish a model nothing uses.
+TEST_F(LocalModelsUpdaterUnitTest, ComponentReadyIgnoredWithoutEnabledProfile) {
+  SetHistoryEmbeddingsEnabledForProfile(*local_state_, "Default", false);
+
+  LocalModelsComponentInstallerPolicy policy(local_state_.get());
+  policy.ComponentReady(base::Version("1.0.0"), install_dir_,
+                        base::DictValue());
+  EXPECT_TRUE(LocalModelsUpdaterState::GetInstance()->GetInstallDir().empty());
+}
+
+TEST_F(LocalModelsUpdaterUnitTest, RecordsEachProfileOnce) {
+  SetHistoryEmbeddingsEnabledForProfile(*local_state_, "Default", true);
+  SetHistoryEmbeddingsEnabledForProfile(*local_state_, "Profile 1", true);
+  SetHistoryEmbeddingsEnabledForProfile(*local_state_, "Profile 1", true);
+  EXPECT_EQ(local_state_->GetList(prefs::kHistoryEmbeddingsEnabledProfiles),
+            base::ListValue().Append("Default").Append("Profile 1"));
+
+  SetHistoryEmbeddingsEnabledForProfile(*local_state_, "Default", false);
+  EXPECT_EQ(local_state_->GetList(prefs::kHistoryEmbeddingsEnabledProfiles),
+            base::ListValue().Append("Profile 1"));
+}
+
+// A profile deleted in an earlier session can no longer turn the setting off,
+// so registration drops it rather than keep the model for it.
+TEST_F(LocalModelsUpdaterUnitTest, DropsDeletedProfilesAtRegistration) {
+  SetHistoryEmbeddingsEnabledForProfile(*local_state_, "Deleted", true);
+  profile_names_ = {"Default"};
+  base::RunLoop run_loop;
+  EXPECT_CALL(*cus_, RegisterComponent(testing::_))
+      .WillOnce(testing::Return(true));
+  EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
+      .WillOnce([quit = run_loop.QuitClosure()]() { quit.Run(); });
+  Manage(cus_.get());
+  run_loop.Run();
+
+  EXPECT_EQ(local_state_->GetList(prefs::kHistoryEmbeddingsEnabledProfiles),
+            base::ListValue().Append("Default"));
+}
+
+TEST_F(LocalModelsUpdaterUnitTest,
+       NoRegisterWhenOnlyDeletedProfilesWereEnabled) {
+  CreateDirectory(install_dir_);
+  SetHistoryEmbeddingsEnabledForProfile(*local_state_, "Default", false);
+  SetHistoryEmbeddingsEnabledForProfile(*local_state_, "Deleted", true);
+
+  EXPECT_CALL(*cus_, RegisterComponent(testing::_)).Times(0);
+  EXPECT_CALL(*cus_, UnregisterComponent(kComponentId))
+      .WillOnce(testing::Return(false));
+  EXPECT_CALL(on_demand_updater_, EnsureInstalled(kComponentId, testing::_))
+      .Times(0);
+  Manage(cus_.get());
+
+  EXPECT_TRUE(
+      local_state_->GetList(prefs::kHistoryEmbeddingsEnabledProfiles).empty());
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return !PathExists(install_dir_); }));
 }
 
 }  // namespace local_ai

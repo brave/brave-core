@@ -5,9 +5,9 @@
 
 copy("copy_nala_files") {
   sources = [
-    "//brave/node_modules/@brave/leo/tokens/skia/nala_color_id.h",
-    "//brave/node_modules/@brave/leo/tokens/skia/nala_color_mixer.cc",
-    "//brave/node_modules/@brave/leo/tokens/skia/nala_color_mixer.h",
+    "//brave/node_modules/@brave/nala/tokens/skia/nala_color_id.h",
+    "//brave/node_modules/@brave/nala/tokens/skia/nala_color_mixer.cc",
+    "//brave/node_modules/@brave/nala/tokens/skia/nala_color_mixer.h",
   ]
 
   outputs = [ "$target_gen_dir/nala/{{source_file_part}}" ]

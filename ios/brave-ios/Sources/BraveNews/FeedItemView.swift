@@ -158,6 +158,7 @@ extension FeedItemView {
     public override init(frame: CGRect) {
       super.init(frame: frame)
       var configuration = UIButton.Configuration.plain()
+      configuration.baseBackgroundColor = .clear
       configuration.baseForegroundColor = .white
       configuration.contentInsets = NSDirectionalEdgeInsets(
         top: 8,

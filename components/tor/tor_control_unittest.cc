@@ -127,8 +127,10 @@ TEST(TorControlTest, ReadDone) {
   std::unique_ptr<TorControl> control =
       std::make_unique<TorControl>(delegate.AsWeakPtr(), io_task_runner);
   base::RunLoop run_loop;
-  io_task_runner->PostTask(
-      FROM_HERE, base::BindLambdaForTesting([&run_loop, &control, &delegate] {
+  // The reply runs on the owner sequence after the IO task, so the delegate
+  // notifications the task posted to the owner sequence have already run.
+  io_task_runner->PostTaskAndReply(
+      FROM_HERE, base::BindLambdaForTesting([&control, &delegate] {
         constexpr char test_str[] =
             "250-SOCKSPORT=9050\r\n250 ORPORT=0\r\n250 OK";
         control->reading_ = true;
@@ -174,11 +176,9 @@ TEST(TorControlTest, ReadDone) {
         EXPECT_EQ(
             base::as_string_view(control->readiobuf_->everything().first<6>()),
             "250 OK");
-        run_loop.Quit();
-      }));
+      }),
+      run_loop.QuitClosure());
   run_loop.Run();
-  // Wait for owner sequence
-  base::RunLoop().RunUntilIdle();
 }
 
 TEST(TorControlTest, ReadLine) {
@@ -230,7 +230,10 @@ TEST(TorControlTest, ReadLine) {
   EXPECT_CALL(delegate,
               OnTorEvent(TorControlEvent::CIRC, "1000 EXTENDED", circ_extra))
       .Times(1);
-  io_task_runner->PostTask(
+  base::RunLoop run_loop;
+  // The IO sequence runs tasks in order, and the reply runs on the owner
+  // sequence after the delegate notifications posted by all of them.
+  io_task_runner->PostTaskAndReply(
       FROM_HERE,
       base::BindOnce(
           [](std::unique_ptr<TorControl> control) {
@@ -241,7 +244,7 @@ TEST(TorControlTest, ReadLine) {
             EXPECT_TRUE(control->ReadLine("650 NETWORK_LIVENESS DOWN"));
             // Async skip
             EXPECT_TRUE(control->ReadLine("650-FAKEVENT BEGIN"));
-            EXPECT_TRUE(control->async_);
+            ASSERT_TRUE(control->async_);
             EXPECT_TRUE(control->async_->skip);
             EXPECT_TRUE(control->ReadLine("650-CONTINUE=FAKEVENT"));
             EXPECT_TRUE(control->ReadLine("650 END=FAKEVENT"));
@@ -249,15 +252,15 @@ TEST(TorControlTest, ReadLine) {
             // Normal multi async
             control->async_events_[TorControlEvent::CIRC] = 1;
             EXPECT_TRUE(control->ReadLine("650-CIRC 1000 EXTENDED"));
-            EXPECT_TRUE(control->async_);
+            ASSERT_TRUE(control->async_);
             EXPECT_FALSE(control->async_->skip);
             EXPECT_TRUE(control->ReadLine("650-EXTRAMAGIC=99"));
             EXPECT_TRUE(control->ReadLine("650 ANONYMITY=high"));
             EXPECT_FALSE(control->async_);
           },
-          std::move(control)));
-
-  base::RunLoop().RunUntilIdle();
+          std::move(control)),
+      run_loop.QuitClosure());
+  run_loop.Run();
 }
 
 TEST(TorControlTest, GetCircuitEstablishedDone) {
@@ -269,111 +272,114 @@ TEST(TorControlTest, GetCircuitEstablishedDone) {
   std::unique_ptr<TorControl> control =
       std::make_unique<TorControl>(delegate.AsWeakPtr(), io_task_runner);
 
-  io_task_runner->PostTask(
-      FROM_HERE, base::BindOnce(
-                     [](std::unique_ptr<TorControl> control) {
-                       std::unique_ptr<std::string> established =
-                           std::make_unique<std::string>("0");
-                       bool is_called = false;
-                       control->GetCircuitEstablishedDone(
-                           std::move(established),
-                           base::BindOnce(
-                               [](bool* is_called, bool error, bool result) {
-                                 *is_called = true;
-                                 EXPECT_FALSE(error);
-                                 EXPECT_FALSE(result);
-                               },
-                               &is_called),
-                           false, "250", "OK");
-                       EXPECT_TRUE(is_called);
+  base::RunLoop run_loop;
+  io_task_runner->PostTaskAndReply(
+      FROM_HERE,
+      base::BindOnce(
+          [](std::unique_ptr<TorControl> control) {
+            std::unique_ptr<std::string> established =
+                std::make_unique<std::string>("0");
+            bool is_called = false;
+            control->GetCircuitEstablishedDone(
+                std::move(established),
+                base::BindOnce(
+                    [](bool* is_called, bool error, bool result) {
+                      *is_called = true;
+                      EXPECT_FALSE(error);
+                      EXPECT_FALSE(result);
+                    },
+                    &is_called),
+                false, "250", "OK");
+            EXPECT_TRUE(is_called);
 
-                       is_called = false;
-                       established = std::make_unique<std::string>("1");
-                       control->GetCircuitEstablishedDone(
-                           std::move(established),
-                           base::BindOnce(
-                               [](bool* is_called, bool error, bool result) {
-                                 *is_called = true;
-                                 EXPECT_FALSE(error);
-                                 EXPECT_TRUE(result);
-                               },
-                               &is_called),
-                           false, "250", "OK");
-                       EXPECT_TRUE(is_called);
+            is_called = false;
+            established = std::make_unique<std::string>("1");
+            control->GetCircuitEstablishedDone(
+                std::move(established),
+                base::BindOnce(
+                    [](bool* is_called, bool error, bool result) {
+                      *is_called = true;
+                      EXPECT_FALSE(error);
+                      EXPECT_TRUE(result);
+                    },
+                    &is_called),
+                false, "250", "OK");
+            EXPECT_TRUE(is_called);
 
-                       // --- Error cases ---
-                       is_called = false;
-                       established = std::make_unique<std::string>("iambrave");
-                       control->GetCircuitEstablishedDone(
-                           std::move(established),
-                           base::BindOnce(
-                               [](bool* is_called, bool error, bool result) {
-                                 *is_called = true;
-                                 EXPECT_TRUE(error);
-                                 EXPECT_FALSE(result);
-                               },
-                               &is_called),
-                           false, "250", "OK");
-                       EXPECT_TRUE(is_called);
+            // --- Error cases ---
+            is_called = false;
+            established = std::make_unique<std::string>("iambrave");
+            control->GetCircuitEstablishedDone(
+                std::move(established),
+                base::BindOnce(
+                    [](bool* is_called, bool error, bool result) {
+                      *is_called = true;
+                      EXPECT_TRUE(error);
+                      EXPECT_FALSE(result);
+                    },
+                    &is_called),
+                false, "250", "OK");
+            EXPECT_TRUE(is_called);
 
-                       is_called = false;
-                       established = std::make_unique<std::string>("");
-                       control->GetCircuitEstablishedDone(
-                           std::move(established),
-                           base::BindOnce(
-                               [](bool* is_called, bool error, bool result) {
-                                 *is_called = true;
-                                 EXPECT_TRUE(error);
-                                 EXPECT_FALSE(result);
-                               },
-                               &is_called),
-                           false, "250", "OK");
-                       EXPECT_TRUE(is_called);
+            is_called = false;
+            established = std::make_unique<std::string>("");
+            control->GetCircuitEstablishedDone(
+                std::move(established),
+                base::BindOnce(
+                    [](bool* is_called, bool error, bool result) {
+                      *is_called = true;
+                      EXPECT_TRUE(error);
+                      EXPECT_FALSE(result);
+                    },
+                    &is_called),
+                false, "250", "OK");
+            EXPECT_TRUE(is_called);
 
-                       is_called = false;
-                       established = std::make_unique<std::string>("1");
-                       control->GetCircuitEstablishedDone(
-                           std::move(established),
-                           base::BindOnce(
-                               [](bool* is_called, bool error, bool result) {
-                                 *is_called = true;
-                                 EXPECT_TRUE(error);
-                                 EXPECT_FALSE(result);
-                               },
-                               &is_called),
-                           true, "250", "OK");
-                       EXPECT_TRUE(is_called);
+            is_called = false;
+            established = std::make_unique<std::string>("1");
+            control->GetCircuitEstablishedDone(
+                std::move(established),
+                base::BindOnce(
+                    [](bool* is_called, bool error, bool result) {
+                      *is_called = true;
+                      EXPECT_TRUE(error);
+                      EXPECT_FALSE(result);
+                    },
+                    &is_called),
+                true, "250", "OK");
+            EXPECT_TRUE(is_called);
 
-                       is_called = false;
-                       established = std::make_unique<std::string>("1");
-                       control->GetCircuitEstablishedDone(
-                           std::move(established),
-                           base::BindOnce(
-                               [](bool* is_called, bool error, bool result) {
-                                 *is_called = true;
-                                 EXPECT_TRUE(error);
-                                 EXPECT_FALSE(result);
-                               },
-                               &is_called),
-                           false, "500", "OK");
-                       EXPECT_TRUE(is_called);
+            is_called = false;
+            established = std::make_unique<std::string>("1");
+            control->GetCircuitEstablishedDone(
+                std::move(established),
+                base::BindOnce(
+                    [](bool* is_called, bool error, bool result) {
+                      *is_called = true;
+                      EXPECT_TRUE(error);
+                      EXPECT_FALSE(result);
+                    },
+                    &is_called),
+                false, "500", "OK");
+            EXPECT_TRUE(is_called);
 
-                       is_called = false;
-                       established = std::make_unique<std::string>("1");
-                       control->GetCircuitEstablishedDone(
-                           std::move(established),
-                           base::BindOnce(
-                               [](bool* is_called, bool error, bool result) {
-                                 *is_called = true;
-                                 EXPECT_TRUE(error);
-                                 EXPECT_FALSE(result);
-                               },
-                               &is_called),
-                           false, "500", "NOT_OK");
-                       EXPECT_TRUE(is_called);
-                     },
-                     std::move(control)));
-  base::RunLoop().RunUntilIdle();
+            is_called = false;
+            established = std::make_unique<std::string>("1");
+            control->GetCircuitEstablishedDone(
+                std::move(established),
+                base::BindOnce(
+                    [](bool* is_called, bool error, bool result) {
+                      *is_called = true;
+                      EXPECT_TRUE(error);
+                      EXPECT_FALSE(result);
+                    },
+                    &is_called),
+                false, "500", "NOT_OK");
+            EXPECT_TRUE(is_called);
+          },
+          std::move(control)),
+      run_loop.QuitClosure());
+  run_loop.Run();
 }
 
 }  // namespace tor

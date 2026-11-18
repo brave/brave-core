@@ -5,6 +5,8 @@
 
 #include "brave/browser/traffic_control/traffic_control_navigation_throttle.h"
 
+#include <vector>
+
 #include "base/functional/bind.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/types/optional_ref.h"
@@ -16,6 +18,8 @@
 #include "content/public/browser/navigation_throttle_registry.h"
 #include "content/public/browser/site_instance.h"
 #include "content/public/browser/web_contents.h"
+#include "net/http/http_request_headers.h"
+#include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -88,10 +92,44 @@ TrafficControlNavigationThrottle::MaybeReroute() {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
       base::BindOnce(&TrafficControlApplier::Apply, web_contents->GetWeakPtr(),
-                     url, rule->target->Clone(), handle->GetInitiatorOrigin(),
+                     GetRerouteUrl(*rule->target), rule->target->Clone(),
+                     handle->GetInitiatorOrigin(),
                      handle->GetPageTransition()));
 
   return CANCEL;
+}
+
+GURL TrafficControlNavigationThrottle::GetRerouteUrl(
+    const mojom::Target& target) {
+  content::NavigationHandle* handle = navigation_handle();
+  if (!handle->WasServerRedirect()) {
+    return handle->GetURL();
+  }
+
+  // Reopening the start of a form submission would submit it again.
+  if (handle->GetRequestMethod() != net::HttpRequestHeaders::kGetMethod) {
+    return handle->GetURL();
+  }
+
+  // A client-side redirect puts the redirecting page ahead of the requested
+  // URL in the chain.
+  const std::vector<GURL>& chain = handle->GetRedirectChain();
+  const size_t start_index =
+      handle->GetPageTransition() & ui::PAGE_TRANSITION_CLIENT_REDIRECT ? 1 : 0;
+  if (start_index >= chain.size()) {
+    return handle->GetURL();
+  }
+  const GURL& start_url = chain[start_index];
+
+  // Once reopened at |target|, the start URL must stay there; a rule sending
+  // it elsewhere would bounce the navigation between tabs.
+  base::optional_ref<const mojom::TrafficRule> start_rule =
+      service_->FindMatchingRule(start_url);
+  if (start_rule && start_rule->target && !start_rule->target->Equals(target)) {
+    return handle->GetURL();
+  }
+
+  return start_url;
 }
 
 const char* TrafficControlNavigationThrottle::GetNameForLogging() {

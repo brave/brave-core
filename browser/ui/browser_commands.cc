@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/check_deref.h"
 #include "base/check_op.h"
 #include "base/feature_list.h"
 #include "base/functional/callback_helpers.h"
@@ -29,11 +30,12 @@
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
+#include "brave/browser/ui/omnibox/clean_link_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/browser/ui/tabs/public/closing_last_tab_controller.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
@@ -58,8 +60,12 @@
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
+#include "chrome/browser/ui/location_bar/location_bar.h"
 #include "chrome/browser/ui/navigator/browser_navigator.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
+#include "chrome/browser/ui/omnibox/omnibox_controller.h"
+#include "chrome/browser/ui/omnibox/omnibox_edit_model.h"
+#include "chrome/browser/ui/omnibox/omnibox_view.h"
 #include "chrome/browser/ui/profiles/profile_picker.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
@@ -91,6 +97,7 @@
 #include "url/origin.h"
 
 #if defined(TOOLKIT_VIEWS)
+#include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
@@ -133,6 +140,12 @@
 #include "brave/browser/ui/commander/commander_service_factory.h"
 #endif
 
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+#include "brave/browser/ui/tabs/public/brave_tab_features.h"
+#include "brave/browser/ui/views/page_action/playlist_page_action_controller.h"
+#include "brave/browser/ui/views/playlist/playlist_bubbles_controller.h"
+#endif
+
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/containers/containers_service_factory.h"
 #include "brave/browser/ui/tabs/public/brave_tab_features.h"
@@ -143,6 +156,12 @@
 #if defined(TOOLKIT_VIEWS)
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #endif
+#endif
+
+#if BUILDFLAG(ENABLE_PSST)
+#include "brave/browser/ui/tabs/public/brave_tab_features.h"
+#include "brave/browser/ui/views/page_action/psst_action_controller.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #endif
 
 using content::WebContents;
@@ -491,31 +510,47 @@ void ToggleSidebarPosition(BrowserWindowInterface* browser) {
 }
 
 void ToggleSidebar(BrowserWindowInterface* browser) {
-  if (!browser) {
+#if defined(TOOLKIT_VIEWS)
+  // WebUI browser windows have no sidebar UI to toggle.
+  if (!CHECK_DEREF(sidebar::SidebarController::From(browser)).sidebar()) {
     return;
   }
 
-  if (auto* brave_browser_window = BraveBrowserWindow::FromBrowser(browser)) {
-    brave_browser_window->ToggleSidebar();
-  }
+  SidePanelUI::From(browser)->Toggle();
+#endif
 }
 
 bool HasSelectedURL(BrowserWindowInterface* browser) {
-  if (!browser) {
+  LocationBar& location_bar =
+      *BrowserWindow::FromBrowser(browser)->GetLocationBar();
+  // WebUI browser windows have no omnibox, and a WebUI location bar has none
+  // until its toolbar has loaded.
+  OmniboxView* omnibox_view = location_bar.GetOmniboxView();
+  if (!omnibox_view) {
     return false;
   }
-  auto* brave_browser_window = BraveBrowserWindow::FromBrowser(browser);
-  return brave_browser_window && brave_browser_window->HasSelectedURL();
+  OmniboxEditModel& edit_model =
+      *location_bar.GetOmniboxController()->edit_model();
+  return edit_model.has_focus() &&
+         GetSelectedURLForCleanLink(*omnibox_view, edit_model).has_value();
 }
 
 void CleanAndCopySelectedURL(BrowserWindowInterface* browser) {
-  if (!browser) {
+  LocationBar& location_bar =
+      *BrowserWindow::FromBrowser(browser)->GetLocationBar();
+  // See HasSelectedURL().
+  OmniboxView* omnibox_view = location_bar.GetOmniboxView();
+  if (!omnibox_view) {
     return;
   }
-  auto* brave_browser_window = BraveBrowserWindow::FromBrowser(browser);
-  if (brave_browser_window) {
-    brave_browser_window->CleanAndCopySelectedURL();
+  const auto url = GetSelectedURLForCleanLink(
+      *omnibox_view, *location_bar.GetOmniboxController()->edit_model());
+  if (!url) {
+    return;
   }
+  omnibox_view->OnBeforePossibleChange();
+  CopySanitizedURL(browser, *url);
+  omnibox_view->OnAfterPossibleChange(true);
 }
 
 void ToggleFocusMode(BrowserWindowInterface* browser) {
@@ -572,8 +607,16 @@ void ToggleCommander(BrowserWindowInterface* browser) {
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 void ShowPlaylistBubble(BrowserWindowInterface* browser) {
-  if (auto* brave_browser_window = BraveBrowserWindow::FromBrowser(browser)) {
-    brave_browser_window->ShowPlaylistBubble();
+  tabs::TabInterface* const tab = browser->GetActiveTabInterface();
+  if (!tab) {
+    return;
+  }
+
+  if (auto* controller =
+          tabs::BraveTabFeatures::FromTabFeatures(tab->GetTabFeatures())
+              ->playlist_page_action_controller()) {
+    controller->ShowBubble(
+        playlist::PlaylistBubblesController::BubbleType::kInfer);
   }
 }
 #endif
@@ -859,8 +902,8 @@ void BringAllTabs(BrowserWindowInterface* browser) {
   std::ranges::for_each(browsers, [&detached_pinned_tabs,
                                    &detached_unpinned_tabs, &browsers_to_close,
                                    shared_pinned_tab_enabled](auto* other) {
-    static_cast<BraveBrowser*>(other)
-        ->set_ignore_enable_closing_last_tab_pref();
+    CHECK_DEREF(ClosingLastTabController::From(other))
+        .set_ignore_enable_closing_last_tab_pref();
 
     auto* tab_strip_model = other->tab_strip_model();
     const int pinned_tab_count = tab_strip_model->IndexOfFirstNonPinnedTab();

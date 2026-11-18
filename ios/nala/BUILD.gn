@@ -261,15 +261,14 @@ action("make_symbols_asset_catalog") {
   args = [
     "--output",
     rebase_path("$target_gen_dir/NalaSymbols.xcassets"),
-    "--leo_sf_symbols_directory",
-    rebase_path("//brave/node_modules/@brave/leo-sf-symbols"),
+    "--nala_sf_symbols_directory",
+    rebase_path("//brave/node_modules/@brave/nala/icons-sf"),
     "--icons",
     string_join(",", nala_icons),
   ]
   outputs = [ "$target_gen_dir/NalaSymbols.xcassets" ]
-  inputs = rebase_path(nala_icons,
-                       ".",
-                       "//brave/node_modules/@brave/leo-sf-symbols/symbols")
+  inputs =
+      rebase_path(nala_icons, ".", "//brave/node_modules/@brave/nala/icons-sf")
 }
 
 # Swift Package Manager cannot import a `.bundle` unfortunately so we have to
@@ -280,8 +279,8 @@ ios_swift_framework_bundle("nala_assets_framework") {
   info_plist = "Info.plist"
   deps = [ ":nala_assets" ]
   sources = [
-    "//brave/node_modules/@brave/leo/tokens/ios-swift/ColorSetAccessors.swift",
-    "//brave/node_modules/@brave/leo/tokens/ios-swift/Gradients.swift",
+    "//brave/node_modules/@brave/nala/tokens/ios-swift/ColorSetAccessors.swift",
+    "//brave/node_modules/@brave/nala/tokens/ios-swift/Gradients.swift",
     "nala_bundle.swift",
   ]
   frameworks = [ "Foundation.framework" ]
@@ -290,7 +289,7 @@ ios_swift_framework_bundle("nala_assets_framework") {
 bundle_data("nala_assets") {
   sources = get_target_outputs(":make_symbols_asset_catalog")
   sources += [ rebase_path(
-          "//brave/node_modules/@brave/leo/tokens/ios-swift/Colors.xcassets") ]
+          "//brave/node_modules/@brave/nala/tokens/ios-swift/Colors.xcassets") ]
   outputs = [ "{{bundle_contents_dir}}/{{source_file_part}}" ]
   public_deps = [ ":make_symbols_asset_catalog" ]
 }

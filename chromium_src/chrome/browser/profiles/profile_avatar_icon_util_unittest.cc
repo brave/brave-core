@@ -86,11 +86,12 @@ TEST_F(ProfileAvatarSelectorTest, ProfileAvatarSelectorPlaceholder) {
   // customiztion UI is Brave's.
   base::ListValue avatars =
       profiles::GetIconsAndLabelsForProfileAvatarSelector(profile()->GetPath());
+  ASSERT_FALSE(avatars.empty());
   const base::DictValue* default_avatar = avatars[0].GetIfDict();
-  EXPECT_NE(nullptr, default_avatar);
+  ASSERT_NE(nullptr, default_avatar);
 
   const std::string* label = default_avatar->FindString("label");
-  EXPECT_NE(nullptr, label);
+  ASSERT_NE(nullptr, label);
 
   const std::string expected_label =
       ui::ResourceBundle::GetSharedInstance().LoadLocalizedResourceString(

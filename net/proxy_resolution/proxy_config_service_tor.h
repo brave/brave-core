@@ -43,6 +43,9 @@ class NET_EXPORT ProxyConfigServiceTor : public net::ProxyConfigService {
                                     const NetworkAnonymizationKey& key,
                                     ProxyResolutionService* service,
                                     ProxyInfo* result);
+  // Drops the Tor circuit credentials cached for `service`, so a later
+  // service never reuses them.
+  static void ClearProxyAuthorization(ProxyResolutionService* service);
 
   // ProxyConfigService methods:
   void AddObserver(Observer* observer) override;

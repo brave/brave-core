@@ -40,20 +40,20 @@ class TEST_DEPS(RecipeTestApi):
 def RunSteps(api: DEPS):
     mode = api.env.get('MODE')
     if mode == 'dotenv':
-        api.brave_core_checkout.set_config('brave')
-        api.brave_core_checkout.apply_config('asan')
+        api.brave_core_checkout.set_config('deprecated_brave')
+        api.brave_core_checkout.apply_config('deprecated_asan')
         api.brave_core_checkout.ensure_checkout()
         return
     if mode == 'rbe':
         # Without the `use_remoteexec` property, RBE is opted into by item.
-        api.brave_core_checkout.set_config('brave')
+        api.brave_core_checkout.set_config('deprecated_brave')
         api.brave_core_checkout.apply_config('rbe')
         api.brave_core_checkout.ensure_checkout()
         return
     if mode == 'target_os':
-        api.brave_core_checkout.set_config('brave')
-        api.brave_core_checkout.apply_config('linux')
-        api.brave_core_checkout.apply_config('android')
+        api.brave_core_checkout.set_config('deprecated_brave')
+        api.brave_core_checkout.apply_config('deprecated_linux')
+        api.brave_core_checkout.apply_config('deprecated_android')
         api.brave_core_checkout.ensure_checkout()
         return
     if mode == 'ensure_checkout':
@@ -236,17 +236,17 @@ def GenTests(api: TEST_DEPS):
     )
     # Chromium missing: deployed through `chromium_checkout`, then
     # `pnpm run sync` runs. The mirror lookups are seeded per call, as
-    # brave-core and Chromium each run `git cache exists`.
+    # brave-core and Chromium each populate a mirror.
     yield api.test(
         'ensure_checkout deploys chromium',
         api.env.set('MODE', 'ensure_checkout'),
         api.brave_core_checkout.with_git_cache(),
         api.step_data(
-            'git cache exists',
+            'git cache populate exists (after)',
             stdout=api.raw_io.output_text('/b/cache/brave-core'),
         ),
         api.step_data(
-            'git cache exists (2)',
+            'git cache populate exists (after) (2)',
             stdout=api.raw_io.output_text('/b/cache/chromium'),
         ),
         api.brave_core_checkout.chromium_tag('155.0.8059.16'),

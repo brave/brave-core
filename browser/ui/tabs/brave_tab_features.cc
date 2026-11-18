@@ -26,6 +26,7 @@
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/misc_metrics/features.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -93,6 +94,10 @@
 #include "brave/components/containers/core/common/features.h"
 #endif
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/browser/history_embeddings/history_embeddings_tab_helper.h"
+#endif
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_tab_helper_factory.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"
@@ -102,6 +107,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
+#include "brave/browser/psst/psst_log_service_factory.h"
 #include "brave/browser/psst/psst_reporter_service_factory.h"
 #include "brave/browser/psst/psst_settings_service_factory.h"
 #include "brave/browser/psst/psst_tab_web_contents_observer.h"
@@ -228,7 +234,8 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
             std::make_unique<psst::PsstUiDesktopPresenter>(
                 tab, psst_action_controller_->AsWeakPtr())),
         psst_settings_service, variations_service,
-        ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+        PsstLogServiceFactory::GetForBrowserContext(profile),
+        ISOLATED_WORLD_ID_BRAVE_PSST);
   }
 #endif
 
@@ -323,6 +330,11 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
   onboarding_tab_helper_ = OnboardingTabHelper::MaybeCreate(tab);
   serp_metrics_tab_helper_ =
       serp_metrics::SerpMetricsTabHelper::MaybeCreate(tab);
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  history_embeddings_tab_helper_ =
+      brave_history_embeddings::HistoryEmbeddingsTabHelper::MaybeCreate(tab);
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   ads_tab_helper_ = std::make_unique<brave_ads::AdsTabHelper>(tab);

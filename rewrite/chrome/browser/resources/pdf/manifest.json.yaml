@@ -1,0 +1,13 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Allow the PDF viewer to load chrome://theme/ so the colors.css injected by
+      Brave's colors_css_updater override can provide the theme colors, and so
+      the theme source gets registered for the extension.
+    regex:
+      re_pattern: '(\n(\s*)"chrome://resources/",)'
+      replace: '\1\n\2"chrome://theme/",'

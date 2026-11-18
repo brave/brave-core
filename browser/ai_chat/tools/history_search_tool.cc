@@ -17,16 +17,16 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/browser/history_embeddings/history_embeddings_service_factory.h"
+#include "brave/browser/history_embeddings/history_embeddings_utils.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
-#include "chrome/browser/history_embeddings/history_embeddings_service_factory.h"
-#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
+#include "brave/components/history_embeddings/content/history_embeddings_service.h"
+#include "brave/components/history_embeddings/core/history_embeddings_features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/history/core/browser/url_row.h"
-#include "components/history_embeddings/content/history_embeddings_service.h"
-#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/url_constants.h"
 
@@ -50,8 +50,9 @@ constexpr char kOutputKeySnippet[] = "snippet";
 constexpr size_t kDefaultResultCount = 5;
 constexpr size_t kMaxResultCount = 10;
 
-base::DictValue ScoredUrlRowToDict(const history_embeddings::ScoredUrlRow& row,
-                                   bool include_all_passages) {
+base::DictValue ScoredUrlRowToDict(
+    const brave_history_embeddings::ScoredUrlRow& row,
+    bool include_all_passages) {
   base::DictValue entry;
   entry.Set(kOutputKeyTitle, base::UTF16ToUTF8(row.row.title()));
   entry.Set(kOutputKeyUrl, row.row.url().spec());
@@ -86,7 +87,7 @@ namespace internal {
 
 std::string BuildHistorySearchResultJson(
     const std::string& query,
-    const history_embeddings::SearchResult& result,
+    const brave_history_embeddings::SearchResult& result,
     bool include_all_passages) {
   base::ListValue results;
   for (const auto& row : result.scored_url_rows) {
@@ -204,9 +205,10 @@ void HistorySearchTool::UseTool(const std::string& input_json,
   // than `search_query_minimum_word_count` words (default 2). The service
   // API itself does not enforce this, but very short queries produce noisy
   // semantic results.
-  const int min_words = history_embeddings::GetFeatureParameters()
+  const int min_words = brave_history_embeddings::GetFeatureParameters()
                             .search_query_minimum_word_count;
-  if (static_cast<int>(history_embeddings::CountWords(*query)) < min_words) {
+  if (static_cast<int>(brave_history_embeddings::CountWords(*query)) <
+      min_words) {
     std::move(callback).Run(
         CreateContentBlocksForText(base::StrCat(
             {"Error: 'query' must contain at least ",
@@ -235,7 +237,8 @@ void HistorySearchTool::UseTool(const std::string& input_json,
   // re-check here in case the flag flipped between advertisement and use.
   // Tests that inject a fake search interface bypass this gate.
   if (!search_for_testing_ &&
-      !history_embeddings::IsHistoryEmbeddingsEnabledForProfile(profile_)) {
+      !brave_history_embeddings::IsHistoryEmbeddingsEnabledForProfile(
+          profile_)) {
     std::move(callback).Run(
         CreateContentBlocksForText(
             "Error: history embeddings is not enabled for this profile"),
@@ -243,10 +246,11 @@ void HistorySearchTool::UseTool(const std::string& input_json,
     return;
   }
 
-  history_embeddings::HistoryEmbeddingsSearch* service =
+  brave_history_embeddings::HistoryEmbeddingsSearch* service =
       search_for_testing_
           ? search_for_testing_.get()
-          : HistoryEmbeddingsServiceFactory::GetForProfile(profile_);
+          : brave_history_embeddings::HistoryEmbeddingsServiceFactory::
+                GetForProfile(profile_);
   if (!service) {
     std::move(callback).Run(
         CreateContentBlocksForText(
@@ -255,13 +259,13 @@ void HistorySearchTool::UseTool(const std::string& input_json,
     return;
   }
 
-  // history_embeddings::SearchResultCallback is a RepeatingCallback. Adapt
-  // the OnceCallback by heap-allocating it and letting base::Owned() tie its
-  // lifetime to the bound closure; OnSearchResult guards against the
+  // brave_history_embeddings::SearchResultCallback is a RepeatingCallback.
+  // Adapt the OnceCallback by heap-allocating it and letting base::Owned() tie
+  // its lifetime to the bound closure; OnSearchResult guards against the
   // theoretical case of more than one fire.
   service->Search(
       /*previous_search_result=*/nullptr, *query, time_range_start, count,
-      /*skip_answering=*/true, /*url_id_filter=*/{},
+      /*url_id_filter=*/{},
       base::BindRepeating(
           &HistorySearchTool::OnSearchResult, weak_ptr_factory_.GetWeakPtr(),
           base::Owned(std::make_unique<UseToolCallback>(std::move(callback))),
@@ -269,14 +273,14 @@ void HistorySearchTool::UseTool(const std::string& input_json,
 }
 
 void HistorySearchTool::SetSearchForTesting(
-    history_embeddings::HistoryEmbeddingsSearch* search) {
+    brave_history_embeddings::HistoryEmbeddingsSearch* search) {
   search_for_testing_ = search;
 }
 
 void HistorySearchTool::OnSearchResult(
     UseToolCallback* callback,
     bool include_all_passages,
-    history_embeddings::SearchResult result) {
+    brave_history_embeddings::SearchResult result) {
   if (callback->is_null()) {
     return;
   }

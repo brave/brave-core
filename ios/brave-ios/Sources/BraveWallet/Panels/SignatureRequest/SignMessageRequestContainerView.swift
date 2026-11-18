@@ -47,7 +47,6 @@ struct SignMessageRequestContainerView: View {
           ),
           cowSwapOrder: cowSwapOrder,
           ethSwapDetails: store.ethSwapDetails[store.currentRequest.id],
-          needPilcrowFormatted: $store.needPilcrowFormatted,
           showOrignalMessage: $store.showOrignalMessage,
           nextTapped: store.next,
           action: handleAction(approved:)
@@ -59,7 +58,6 @@ struct SignMessageRequestContainerView: View {
           network: currentRequestNetwork,
           requestIndex: store.requestIndex,
           requestCount: store.requests.count,
-          needPilcrowFormatted: $store.needPilcrowFormatted,
           showOrignalMessage: $store.showOrignalMessage,
           nextTapped: store.next,
           action: handleAction(approved:)

@@ -7,7 +7,7 @@ import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { initLocale } from 'brave-ui'
-import { setIconBasePath } from '@brave/leo/react/icon'
+import { setIconBasePath } from '@brave/nala/react/icon'
 import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 
 import './strings'

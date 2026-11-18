@@ -49,6 +49,7 @@
 <translation id="2200626478572277092">לניגון מדיה בדף אינטרנט לפעמים יש צורך ב-Widevine. זהו תוסף של Google שנטען משרתי Google, ש-Brave לא יכול לבדוק. עליך להסכים לתנאי השימוש של גוגל.</translation>
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>או שנו מאוחר יותר ב-<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6229752134959014186">מידע נוסף אודות Widevine</translation>
+<translation id="3318169548229684688">להוריד מודל לזיהוי דיבור (<ph name="DOWNLOAD_SIZE"/>) כדי לעבד דיבור במכשיר הזה</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/>מבקש מכם</translation>
 <translation id="3218385319396786393">ההפעלה האוטומטית נחסמה בדף זה</translation>
 <translation id="4988333904713528597">הרשו תמיד הפעלה אוטומטית ל-<ph name="HOST"/></translation>
@@ -609,6 +610,8 @@
 <translation id="3540231253392253941">השתמש בשירותי Google לצורך שליחת הודעות פוש</translation>
 <translation id="2224032129673914306">חיפוש היסטוריה סמנטי</translation>
 <translation id="6045998903985162478">אינדוקס של דפים שאתה מבקר בהם כדי שתוכל למצוא אותם בקלות בהיסטוריה, בכרטיסיות פתוחות וב-Leo.</translation>
+<translation id="3962946446120925966">זיהוי דיבור במכשיר</translation>
+<translation id="6408242130028978631">הורד מודל לזיהוי דיבור (<ph name="DOWNLOAD_SIZE"/>) כדי שאתרים יוכלו לעבד דיבור במכשיר זה. כבה אפשרות זו כדי להסיר את המודל.</translation>
 <translation id="5813105074916486721">שמירת היסטוריה מקומית</translation>
 <translation id="5671611745062206644">למשך כמה זמן Brave שומר את היסטוריית הגלישה שלך באופן מקומי</translation>
 <translation id="7184510058087008090">יום 1</translation>

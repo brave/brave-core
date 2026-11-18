@@ -102,7 +102,7 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
       browser()->tab_strip_model()->GetActiveWebContents();
 
   EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetPrimaryMainFrame()));
-  EXPECT_EQ(DecentralizedDnsOptInPage::kTypeForTesting,
+  ASSERT_EQ(DecentralizedDnsOptInPage::kTypeForTesting,
             GetInterstitialType(web_contents));
 
   EXPECT_EQ(static_cast<int>(ResolveMethodTypes::ASK),
@@ -123,7 +123,7 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
       browser()->tab_strip_model()->GetActiveWebContents();
 
   EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetPrimaryMainFrame()));
-  EXPECT_EQ(DecentralizedDnsOptInPage::kTypeForTesting,
+  ASSERT_EQ(DecentralizedDnsOptInPage::kTypeForTesting,
             GetInterstitialType(web_contents));
 
   EXPECT_EQ(static_cast<int>(ResolveMethodTypes::ASK),
@@ -143,7 +143,7 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
       browser()->tab_strip_model()->GetActiveWebContents();
 
   EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetPrimaryMainFrame()));
-  EXPECT_EQ(DecentralizedDnsOptInPage::kTypeForTesting,
+  ASSERT_EQ(DecentralizedDnsOptInPage::kTypeForTesting,
             GetInterstitialType(web_contents));
 
   EXPECT_EQ(static_cast<int>(ResolveMethodTypes::ASK),
@@ -163,7 +163,7 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
       browser()->tab_strip_model()->GetActiveWebContents();
 
   EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetPrimaryMainFrame()));
-  EXPECT_EQ(DecentralizedDnsOptInPage::kTypeForTesting,
+  ASSERT_EQ(DecentralizedDnsOptInPage::kTypeForTesting,
             GetInterstitialType(web_contents));
 
   EXPECT_EQ(static_cast<int>(ResolveMethodTypes::ASK),
@@ -213,7 +213,7 @@ IN_PROC_BROWSER_TEST_F(EnsL2OffchanLookupNavigationThrottleBrowserTest,
       browser()->tab_strip_model()->GetActiveWebContents();
 
   EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetPrimaryMainFrame()));
-  EXPECT_EQ(EnsOffchainLookupOptInPage::kTypeForTesting,
+  ASSERT_EQ(EnsOffchainLookupOptInPage::kTypeForTesting,
             GetInterstitialType(web_contents));
 
   EnsResolverTask::GetWorkOnTaskForTesting() = base::BindLambdaForTesting(
@@ -246,7 +246,7 @@ IN_PROC_BROWSER_TEST_F(EnsL2OffchanLookupNavigationThrottleBrowserTest,
       browser()->tab_strip_model()->GetActiveWebContents();
 
   EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetPrimaryMainFrame()));
-  EXPECT_EQ(EnsOffchainLookupOptInPage::kTypeForTesting,
+  ASSERT_EQ(EnsOffchainLookupOptInPage::kTypeForTesting,
             GetInterstitialType(web_contents));
 
   EnsResolverTask::GetWorkOnTaskForTesting() = base::BindLambdaForTesting(
@@ -268,7 +268,7 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
       browser()->tab_strip_model()->GetActiveWebContents();
 
   EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetPrimaryMainFrame()));
-  EXPECT_EQ(DecentralizedDnsOptInPage::kTypeForTesting,
+  ASSERT_EQ(DecentralizedDnsOptInPage::kTypeForTesting,
             GetInterstitialType(web_contents));
 
   EXPECT_EQ(static_cast<int>(ResolveMethodTypes::ASK),
@@ -288,7 +288,7 @@ IN_PROC_BROWSER_TEST_F(DecentralizedDnsNavigationThrottleBrowserTest,
       browser()->tab_strip_model()->GetActiveWebContents();
 
   EXPECT_TRUE(WaitForRenderFrameReady(web_contents->GetPrimaryMainFrame()));
-  EXPECT_EQ(DecentralizedDnsOptInPage::kTypeForTesting,
+  ASSERT_EQ(DecentralizedDnsOptInPage::kTypeForTesting,
             GetInterstitialType(web_contents));
 
   EXPECT_EQ(static_cast<int>(ResolveMethodTypes::ASK),

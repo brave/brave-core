@@ -1,0 +1,20 @@
+diff --git a/chrome/android/expectations/expectations.gni b/chrome/android/expectations/expectations.gni
+index 7f7fdb9d103162a321914a5c495326cdabdd3b49..7740aab0f2fb028c473b7b08c63c02cf9746636c 100644
+--- a/chrome/android/expectations/expectations.gni
++++ b/chrome/android/expectations/expectations.gni
+@@ -6,10 +6,14 @@ import("//build/config/android/config.gni")
+ import("//build/config/coverage/coverage.gni")
+ 
+ # Chosen to match android-binary-size trybot.
++# Brave: x64 is excluded because upstream has never checked in a
++# chrome_public_bundle.x64.libs_and_assets.expected baseline
++# (crbug.com/532501271), so an official, stable-channel x64 build has
++# no baseline to validate against.
+ enable_libs_and_assets_verification =
+     !enable_chrome_android_internal && !is_component_build &&
+     !use_jacoco_coverage && is_official_build &&
+-    ((target_cpu == "arm64" || target_cpu == "x64") &&
++    (target_cpu == "arm64" &&
+      android_channel == "stable")
+ 
+ # enable_chrome_android_internal: Manifest merging of play services deps vary.

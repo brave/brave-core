@@ -6,7 +6,7 @@
 import * as React from 'react'
 import * as crypto from 'crypto'
 import { assert, assertNotReached } from 'chrome://resources/js/assert.js'
-import { showAlert } from '@brave/leo/react/alertCenter'
+import { showAlert } from '@brave/nala/react/alertCenter'
 import { PluralStringProxyImpl } from 'chrome://resources/js/plural_string_proxy.js'
 
 // utils

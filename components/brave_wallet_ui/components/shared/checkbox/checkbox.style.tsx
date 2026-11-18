@@ -4,13 +4,16 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled, { css, CSSProperties } from 'styled-components'
+import * as leo from '@brave/nala/tokens/css/variables'
 
 import { walletFontFamily } from '../../../utils/font.utils'
+import { CheckIcon } from '../style'
 
 interface StyleProps {
   selected?: boolean
   size: 'big' | 'small'
   disabled?: boolean
+  color?: 'default' | 'brand'
 }
 
 const getLabelProps = (p: StyleProps) => {
@@ -35,6 +38,14 @@ const getLabelProps = (p: StyleProps) => {
         : p.selected
           ? '#696FDC'
           : '#D1D1DB'};
+
+      ${p.color === 'brand'
+      && p.selected
+      && css`
+        --checkbox-fill: ${leo.color.primitive.brands.rorange2};
+        --checkbox-border-color: ${leo.color.primitive.brands.rorange2};
+        --checkbox-icon-color: ${leo.color.white};
+      `}
     }
 
     &:focus,
@@ -43,6 +54,21 @@ const getLabelProps = (p: StyleProps) => {
       --checkbox-border-color: #a0a5eb;
       --checkbox-border-size: 3px;
     }
+
+    ${p.color === 'brand'
+    && css`
+      --checkbox-icon-color: ${leo.color.white};
+      ${p.selected
+      && css`
+        --checkbox-fill: ${leo.color.primitive.brands.rorange2};
+        --checkbox-border-color: ${leo.color.primitive.brands.rorange2};
+      `}
+
+      &:focus,
+        &:hover:not([disabled]) {
+        --checkbox-border-color: ${leo.color.primitive.brands.rorange2};
+      }
+    `}
   `
 }
 
@@ -79,7 +105,12 @@ export const StyledBox = styled('span')`
   width: var(--checkbox-box-size);
   height: var(--checkbox-box-size);
   color: var(--checkbox-box-color);
+  background: var(--checkbox-fill, transparent);
   margin: 8px;
+
+  ${CheckIcon} {
+    background-color: var(--checkbox-icon-color, ${leo.color.text.primary});
+  }
   &::after {
     /* Border provided by ::after element so that transition of size is smooth
     without svg-resizing 'jumping' effect from resizing padding + border space

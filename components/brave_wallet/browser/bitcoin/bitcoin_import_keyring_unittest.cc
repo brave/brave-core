@@ -5,6 +5,10 @@
 
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_import_keyring.h"
 
+#include <optional>
+#include <string>
+#include <vector>
+
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -15,20 +19,34 @@ using mojom::BitcoinKeyId;
 using mojom::KeyringId::kBitcoinImport;
 using mojom::KeyringId::kBitcoinImportTestnet;
 
+namespace {
+
+std::optional<std::string> GetPubkeyHex(BitcoinImportKeyring& keyring,
+                                        uint32_t account,
+                                        const BitcoinKeyId& key_id) {
+  auto pubkey = keyring.GetPubkey(account, key_id);
+  if (!pubkey) {
+    return std::nullopt;
+  }
+  return base::HexEncode(*pubkey);
+}
+
+}  // namespace
+
 // https://github.com/bitcoin/bips/blob/master/bip-0084.mediawiki#test-vectors
 TEST(BitcoinImportKeyringUnitTest, TestVectors) {
   BitcoinImportKeyring keyring(kBitcoinImport);
-  EXPECT_TRUE(keyring.AddAccount(0, kBtcMainnetImportAccount0));
-  EXPECT_TRUE(keyring.AddAccount(1, kBtcMainnetImportAccount1));
+  ASSERT_TRUE(keyring.AddAccount(0, kBtcMainnetImportAccount0));
+  ASSERT_TRUE(keyring.AddAccount(1, kBtcMainnetImportAccount1));
 
   EXPECT_EQ(
-      base::HexEncode(*keyring.GetPubkey(0, BitcoinKeyId(0, 0))),
+      GetPubkeyHex(keyring, 0, BitcoinKeyId(0, 0)),
       "0330D54FD0DD420A6E5F8D3624F5F3482CAE350F79D5F0753BF5BEEF9C2D91AF3C");
   EXPECT_EQ(
-      base::HexEncode(*keyring.GetPubkey(0, BitcoinKeyId(0, 1))),
+      GetPubkeyHex(keyring, 0, BitcoinKeyId(0, 1)),
       "03E775FD51F0DFB8CD865D9FF1CCA2A158CF651FE997FDC9FEE9C1D3B5E995EA77");
   EXPECT_EQ(
-      base::HexEncode(*keyring.GetPubkey(0, BitcoinKeyId(1, 0))),
+      GetPubkeyHex(keyring, 0, BitcoinKeyId(1, 0)),
       "03025324888E429AB8E3DBAF1F7802648B9CD01E9B418485C5FA4C1B9B5700E1A6");
 
   EXPECT_EQ(keyring.GetAddress(0, BitcoinKeyId(0, 0))->address_string,
@@ -108,28 +126,28 @@ TEST(BitcoinImportKeyringUnitTest, GetPubkey) {
   EXPECT_FALSE(keyring.GetPubkey(1, BitcoinKeyId(0, 0)));
   EXPECT_FALSE(keyring.GetPubkey(2, BitcoinKeyId(0, 0)));
 
-  EXPECT_TRUE(keyring.AddAccount(0, kBtcMainnetImportAccount0));
-  EXPECT_TRUE(keyring.AddAccount(1, kBtcMainnetImportAccount1));
+  ASSERT_TRUE(keyring.AddAccount(0, kBtcMainnetImportAccount0));
+  ASSERT_TRUE(keyring.AddAccount(1, kBtcMainnetImportAccount1));
   EXPECT_FALSE(keyring.GetPubkey(2, BitcoinKeyId(0, 0)));
 
   EXPECT_EQ(
-      base::HexEncode(*keyring.GetPubkey(0, BitcoinKeyId(0, 0))),
+      GetPubkeyHex(keyring, 0, BitcoinKeyId(0, 0)),
       "0330D54FD0DD420A6E5F8D3624F5F3482CAE350F79D5F0753BF5BEEF9C2D91AF3C");
   EXPECT_EQ(
-      base::HexEncode(*keyring.GetPubkey(0, BitcoinKeyId(0, 1))),
+      GetPubkeyHex(keyring, 0, BitcoinKeyId(0, 1)),
       "03E775FD51F0DFB8CD865D9FF1CCA2A158CF651FE997FDC9FEE9C1D3B5E995EA77");
   EXPECT_EQ(
-      base::HexEncode(*keyring.GetPubkey(0, BitcoinKeyId(1, 0))),
+      GetPubkeyHex(keyring, 0, BitcoinKeyId(1, 0)),
       "03025324888E429AB8E3DBAF1F7802648B9CD01E9B418485C5FA4C1B9B5700E1A6");
 
   EXPECT_EQ(
-      base::HexEncode(*keyring.GetPubkey(1, BitcoinKeyId(0, 0))),
+      GetPubkeyHex(keyring, 1, BitcoinKeyId(0, 0)),
       "035CE17D6438A499E0C7FEF59B43FD7B2CB6E4A31B598F6A4C20CA94854EAC9D36");
   EXPECT_EQ(
-      base::HexEncode(*keyring.GetPubkey(1, BitcoinKeyId(0, 1))),
+      GetPubkeyHex(keyring, 1, BitcoinKeyId(0, 1)),
       "0366DC739A33F2C600B99927735BD2FEEA5C1D78142D2D0D3917623C4AF09E8BBC");
   EXPECT_EQ(
-      base::HexEncode(*keyring.GetPubkey(1, BitcoinKeyId(1, 0))),
+      GetPubkeyHex(keyring, 1, BitcoinKeyId(1, 0)),
       "025695996D13031C54896990E6E38DB5849F5A64FA81142B452D6E23C36FD83880");
 
   BitcoinImportKeyring testnet_keyring(kBitcoinImportTestnet);
@@ -137,38 +155,40 @@ TEST(BitcoinImportKeyringUnitTest, GetPubkey) {
   EXPECT_FALSE(testnet_keyring.GetPubkey(1, BitcoinKeyId(0, 0)));
   EXPECT_FALSE(testnet_keyring.GetPubkey(2, BitcoinKeyId(0, 0)));
 
-  EXPECT_TRUE(testnet_keyring.AddAccount(0, kBtcTestnetImportAccount0));
-  EXPECT_TRUE(testnet_keyring.AddAccount(1, kBtcTestnetImportAccount1));
+  ASSERT_TRUE(testnet_keyring.AddAccount(0, kBtcTestnetImportAccount0));
+  ASSERT_TRUE(testnet_keyring.AddAccount(1, kBtcTestnetImportAccount1));
   EXPECT_FALSE(testnet_keyring.GetPubkey(2, BitcoinKeyId(0, 0)));
 
   EXPECT_EQ(
-      base::HexEncode(*testnet_keyring.GetPubkey(0, BitcoinKeyId(0, 0))),
+      GetPubkeyHex(testnet_keyring, 0, BitcoinKeyId(0, 0)),
       "02E7AB2537B5D49E970309AAE06E9E49F36CE1C9FEBBD44EC8E0D1CCA0B4F9C319");
   EXPECT_EQ(
-      base::HexEncode(*testnet_keyring.GetPubkey(0, BitcoinKeyId(0, 1))),
+      GetPubkeyHex(testnet_keyring, 0, BitcoinKeyId(0, 1)),
       "03EEED205A69022FED4A62A02457F3699B19C06BF74BF801ACC6D9AE84BC16A9E1");
   EXPECT_EQ(
-      base::HexEncode(*testnet_keyring.GetPubkey(0, BitcoinKeyId(1, 0))),
+      GetPubkeyHex(testnet_keyring, 0, BitcoinKeyId(1, 0)),
       "035D49ECCD54D0099E43676277C7A6D4625D611DA88A5DF49BF9517A7791A777A5");
 
   EXPECT_EQ(
-      base::HexEncode(*testnet_keyring.GetPubkey(1, BitcoinKeyId(0, 0))),
+      GetPubkeyHex(testnet_keyring, 1, BitcoinKeyId(0, 0)),
       "024AC8DA6430EC1C3D7DB1C01EBCB26F037303A28565587B76A275CD5D286DADE0");
   EXPECT_EQ(
-      base::HexEncode(*testnet_keyring.GetPubkey(1, BitcoinKeyId(0, 1))),
+      GetPubkeyHex(testnet_keyring, 1, BitcoinKeyId(0, 1)),
       "03392B97B3B3900E27431BDF516E0A5A8B6706D1827B85567FC0E45FA3109A0BC7");
   EXPECT_EQ(
-      base::HexEncode(*testnet_keyring.GetPubkey(1, BitcoinKeyId(1, 0))),
+      GetPubkeyHex(testnet_keyring, 1, BitcoinKeyId(1, 0)),
       "03780B696D530DEF424B80368C5F401D12FBF7B59A56CA559AB083DFD2AF405568");
 }
 
 TEST(BitcoinImportKeyringUnitTest, SignMessage) {
   BitcoinImportKeyring keyring(kBitcoinImport);
-  EXPECT_TRUE(keyring.AddAccount(0, kBtcMainnetImportAccount0));
+  ASSERT_TRUE(keyring.AddAccount(0, kBtcMainnetImportAccount0));
   std::vector<uint8_t> message(32, 0);
+  auto signature = keyring.SignMessage(
+      0, BitcoinKeyId(0, 0), *base::span(message).to_fixed_extent<32>());
+  ASSERT_TRUE(signature.has_value());
   EXPECT_EQ(
-      base::HexEncode(*keyring.SignMessage(
-          0, BitcoinKeyId(0, 0), *base::span(message).to_fixed_extent<32>())),
+      base::HexEncode(*signature),
       "3044022009271D760CD433185513A7702C8D3BDB70B0FA1832AECFE19E43AB698C801966"
       "0220113A39099493C8DEE6E4735E89F3AD6D3C3382E3E61DBAA961390B0253DE6FAF");
 

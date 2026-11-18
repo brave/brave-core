@@ -12,15 +12,25 @@ import XCTest
 
 @MainActor class DecentralizedDNSHelperTests: XCTestCase {
 
-  /// Test `.init(rpcService:ipfsApi:isPrivateMode:)` will return nil when `isPrivateMode` is true.
+  /// ENS content hash which resolves to
+  /// `ipfs://bafybeihqoo7bq7uoaybzpfwegks33vw2h5adyl4t7joz3pofkr6h7yhdxq`
+  private static let mockIPFSContentHash: [NSNumber] = {
+    let hex = "e30101701220f073be187e8e06039796c432a5bdd6da3f403c2f93fa5d9dbdc5547c7fe0e3bc"
+    var bytes: [NSNumber] = []
+    var index = hex.startIndex
+    while index < hex.endIndex {
+      let next = hex.index(index, offsetBy: 2)
+      bytes.append(NSNumber(value: UInt8(hex[index..<next], radix: 16)!))
+      index = next
+    }
+    return bytes
+  }()
+
+  /// Test `.init(rpcService:isPrivateMode:)` will return nil when `isPrivateMode` is true.
   func testInitFailsInPrivateMode() {
-    XCTAssertNil(
-      DecentralizedDNSHelper(rpcService: MockJsonRpcService(), ipfsApi: nil, isPrivateMode: true)
-    )
     XCTAssertNil(
       DecentralizedDNSHelper(
         rpcService: MockJsonRpcService(),
-        ipfsApi: TestIpfsAPI(),
         isPrivateMode: true
       )
     )
@@ -39,7 +49,6 @@ import XCTest
     guard
       let sut = DecentralizedDNSHelper(
         rpcService: rpcService,
-        ipfsApi: TestIpfsAPI(),
         isPrivateMode: false
       )
     else {
@@ -58,24 +67,20 @@ import XCTest
   /// Test `lookup(domain:)` provided an `.eth` domain will return `.load(URL)` when ENS Resolve Method is `.enabled`.
   func testLookupWithENSDomainEnabled() async {
     let domain = "braveexample.eth"
-    let resolvedURL = URL(string: "ipfs://braveexampleeth")!
+    let resolvedURL = URL(
+      string: "ipfs://bafybeihqoo7bq7uoaybzpfwegks33vw2h5adyl4t7joz3pofkr6h7yhdxq"
+    )!
 
     let rpcService = MockJsonRpcService()
     rpcService._ensResolveMethod = { $0(.enabled) }
     rpcService._ensGetContentHash = { _, completion in
-      let contentHash = (0..<10).map { NSNumber(value: $0) }
+      let contentHash = Self.mockIPFSContentHash
       completion(contentHash, false, .success, "")
-    }
-
-    let ipfsApi = TestIpfsAPI()
-    ipfsApi._contentHashToCIDv1URL = { _ in
-      resolvedURL
     }
 
     guard
       let sut = DecentralizedDNSHelper(
         rpcService: rpcService,
-        ipfsApi: ipfsApi,
         isPrivateMode: false
       )
     else {
@@ -104,7 +109,6 @@ import XCTest
     guard
       let sut = DecentralizedDNSHelper(
         rpcService: rpcService,
-        ipfsApi: TestIpfsAPI(),
         isPrivateMode: false
       )
     else {
@@ -130,7 +134,6 @@ import XCTest
     guard
       let sut = DecentralizedDNSHelper(
         rpcService: rpcService,
-        ipfsApi: TestIpfsAPI(),
         isPrivateMode: false
       )
     else {
@@ -150,25 +153,21 @@ import XCTest
   /// Test `lookup(domain:)` provided an `.eth` domain will return `.load(URL)` when ENS Resolve Method is `.enabled` & ENS Offchain Resolve Method is `.enabled`.
   func testLookupWithENSOffchainDomainEnabled() async {
     let domain = "braveoffchainexample.eth"
-    let resolvedURL = URL(string: "ipfs://braveoffchainexampleeth")!
+    let resolvedURL = URL(
+      string: "ipfs://bafybeihqoo7bq7uoaybzpfwegks33vw2h5adyl4t7joz3pofkr6h7yhdxq"
+    )!
 
     let rpcService = MockJsonRpcService()
     rpcService._ensResolveMethod = { $0(.enabled) }
     rpcService._ensOffchainLookupResolveMethod = { $0(.enabled) }
     rpcService._ensGetContentHash = { _, completion in
-      let contentHash = (0..<10).map { NSNumber(value: $0) }
+      let contentHash = Self.mockIPFSContentHash
       completion(contentHash, false, .success, "")
-    }
-
-    let ipfsApi = TestIpfsAPI()
-    ipfsApi._contentHashToCIDv1URL = { _ in
-      resolvedURL
     }
 
     guard
       let sut = DecentralizedDNSHelper(
         rpcService: rpcService,
-        ipfsApi: ipfsApi,
         isPrivateMode: false
       )
     else {
@@ -198,7 +197,6 @@ import XCTest
     guard
       let sut = DecentralizedDNSHelper(
         rpcService: rpcService,
-        ipfsApi: TestIpfsAPI(),
         isPrivateMode: false
       )
     else {
@@ -223,7 +221,6 @@ import XCTest
     guard
       let sut = DecentralizedDNSHelper(
         rpcService: rpcService,
-        ipfsApi: TestIpfsAPI(),
         isPrivateMode: false
       )
     else {
@@ -253,7 +250,6 @@ import XCTest
     guard
       let sut = DecentralizedDNSHelper(
         rpcService: rpcService,
-        ipfsApi: TestIpfsAPI(),
         isPrivateMode: false
       )
     else {
@@ -282,7 +278,6 @@ import XCTest
     guard
       let sut = DecentralizedDNSHelper(
         rpcService: rpcService,
-        ipfsApi: TestIpfsAPI(),
         isPrivateMode: false
       )
     else {
@@ -307,7 +302,6 @@ import XCTest
     guard
       let sut = DecentralizedDNSHelper(
         rpcService: rpcService,
-        ipfsApi: TestIpfsAPI(),
         isPrivateMode: false
       )
     else {
@@ -337,7 +331,6 @@ import XCTest
     guard
       let sut = DecentralizedDNSHelper(
         rpcService: rpcService,
-        ipfsApi: TestIpfsAPI(),
         isPrivateMode: false
       )
     else {
@@ -366,7 +359,6 @@ import XCTest
     guard
       let sut = DecentralizedDNSHelper(
         rpcService: rpcService,
-        ipfsApi: TestIpfsAPI(),
         isPrivateMode: false
       )
     else {

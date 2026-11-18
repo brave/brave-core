@@ -16,6 +16,8 @@ import android.provider.Settings;
 
 import androidx.annotation.VisibleForTesting;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceGroupAdapter;
+import androidx.preference.PreferenceScreen;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Callback;
@@ -153,6 +155,16 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {}
+
+    @Override
+    protected PreferenceGroupAdapter onCreateAdapter(PreferenceScreen preferenceScreen) {
+        return new BraveSettingsPreferenceGroupAdapter(preferenceScreen) {
+            @Override
+            protected boolean shouldClearIconTint(Preference preference) {
+                return BraveAccountSectionController.PREF_BRAVE_ACCOUNT.equals(preference.getKey());
+            }
+        };
+    }
 
     @Override
     public void onResume() {

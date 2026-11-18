@@ -16,14 +16,4 @@ namespace brave_tabs {
 bool IsScrollableHorizontalTabStripEnabled(const PrefService* prefs);
 }  // namespace brave_tabs
 
-// Disable scroll-event-changes-tab when the scrollable horizontal tab strip is
-// active (feature and user pref).
-#define kScrollEventChangesTab                             \
-  kScrollEventChangesTab &&                                \
-      (!brave_tabs::IsScrollableHorizontalTabStripEnabled( \
-           browser_view_->GetProfile()->GetPrefs()) ||     \
-       event.IsControlDown())
-
 #include <chrome/browser/ui/views/frame/browser_root_view.cc>
-
-#undef kScrollEventChangesTab

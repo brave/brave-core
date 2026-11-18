@@ -1,0 +1,16 @@
+diff --git a/content/browser/background_fetch/background_fetch_delegate_proxy.cc b/content/browser/background_fetch/background_fetch_delegate_proxy.cc
+index 2495a91429fa25089d0c1ffb3c1bbea2db51760a..6214a39203f8c011b04050533404e1eddb5b1546 100644
+--- a/content/browser/background_fetch/background_fetch_delegate_proxy.cc
++++ b/content/browser/background_fetch/background_fetch_delegate_proxy.cc
+@@ -61,6 +61,11 @@ void BackgroundFetchDelegateProxy::GetPermissionForOrigin(
+     RenderProcessHost* rph,
+     RenderFrameHostImpl* rfh,
+     GetPermissionForOriginCallback callback) {
++  if (auto* browser_context = GetBrowserContext();
++      browser_context && browser_context->IsOffTheRecord()) {
++    std::move(callback).Run(BackgroundFetchPermission::BLOCKED);
++    return;
++  }
+   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+ 
+   // Permissions need to go through the DownloadRequestLimiter for top level

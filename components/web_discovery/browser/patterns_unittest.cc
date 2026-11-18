@@ -32,9 +32,11 @@ class WebDiscoveryPatternsTest : public testing::Test {
     EXPECT_TRUE(read_result);
 
     auto parsed_patterns = ParsePatterns(patterns_json);
-    EXPECT_TRUE(parsed_patterns);
-    EXPECT_EQ(parsed_patterns->normal_patterns.size(), 3u);
-    EXPECT_EQ(parsed_patterns->strict_patterns.size(), 3u);
+    if (!parsed_patterns || parsed_patterns->normal_patterns.size() != 3u ||
+        parsed_patterns->strict_patterns.size() != 3u) {
+      ADD_FAILURE() << "Unexpected parsed patterns";
+      return nullptr;
+    }
 
     return parsed_patterns;
   }
@@ -146,8 +148,8 @@ TEST_F(WebDiscoveryPatternsTest, NormalScrapeRules) {
   EXPECT_FALSE(rule->sub_selector);
   EXPECT_EQ(rule->rule_type, ScrapeRuleType::kOther);
   EXPECT_EQ(rule->attribute, "href");
-  EXPECT_EQ(rule->functions_applied.size(), 1u);
-  EXPECT_EQ(rule->functions_applied[0].size(), 3u);
+  ASSERT_EQ(rule->functions_applied.size(), 1u);
+  ASSERT_EQ(rule->functions_applied[0].size(), 3u);
   EXPECT_EQ(rule->functions_applied[0][0], "parseU");
   EXPECT_EQ(rule->functions_applied[0][1], "qs");
   EXPECT_EQ(rule->functions_applied[0][2], "t");
@@ -211,8 +213,8 @@ TEST_F(WebDiscoveryPatternsTest, StrictScrapeRules) {
   EXPECT_FALSE(rule->sub_selector);
   EXPECT_EQ(rule->rule_type, ScrapeRuleType::kStandard);
   EXPECT_EQ(rule->attribute, "url");
-  EXPECT_EQ(rule->functions_applied.size(), 1u);
-  EXPECT_EQ(rule->functions_applied[0].size(), 3u);
+  ASSERT_EQ(rule->functions_applied.size(), 1u);
+  ASSERT_EQ(rule->functions_applied[0].size(), 3u);
   EXPECT_EQ(rule->functions_applied[0][0], "maskU");
   EXPECT_EQ(rule->functions_applied[0][1], false);
   EXPECT_EQ(rule->functions_applied[0][2], false);
@@ -276,7 +278,7 @@ TEST_F(WebDiscoveryPatternsTest, NormalPayloadRules) {
   EXPECT_TRUE(normal_pattern->payload_rule_groups.empty());
 
   normal_pattern = &parsed_patterns->normal_patterns[1];
-  EXPECT_EQ(normal_pattern->payload_rule_groups.size(), 1u);
+  ASSERT_EQ(normal_pattern->payload_rule_groups.size(), 1u);
 
   const auto& payload_group_it = normal_pattern->payload_rule_groups.front();
   EXPECT_EQ(payload_group_it.key, "key1");
@@ -291,7 +293,7 @@ TEST_F(WebDiscoveryPatternsTest, StrictPayloadRules) {
   ASSERT_TRUE(parsed_patterns);
 
   const auto* strict_pattern = &parsed_patterns->strict_patterns[0];
-  EXPECT_EQ(strict_pattern->payload_rule_groups.size(), 1u);
+  ASSERT_EQ(strict_pattern->payload_rule_groups.size(), 1u);
 
   const auto* payload_group = &strict_pattern->payload_rule_groups[0];
   EXPECT_EQ(payload_group->key, "key1");
@@ -301,14 +303,14 @@ TEST_F(WebDiscoveryPatternsTest, StrictPayloadRules) {
   EXPECT_TRUE(payload_group->rules.empty());
 
   strict_pattern = &parsed_patterns->strict_patterns[1];
-  EXPECT_EQ(strict_pattern->payload_rule_groups.size(), 1u);
+  ASSERT_EQ(strict_pattern->payload_rule_groups.size(), 1u);
 
   payload_group = &strict_pattern->payload_rule_groups[0];
   EXPECT_EQ(payload_group->key, "key1");
   EXPECT_EQ(payload_group->rule_type, PayloadRuleType::kQuery);
   EXPECT_EQ(payload_group->result_type, PayloadResultType::kClustered);
   EXPECT_EQ(payload_group->action, "age-info");
-  EXPECT_EQ(payload_group->rules.size(), 2u);
+  ASSERT_EQ(payload_group->rules.size(), 2u);
 
   const auto* payload_rule = &payload_group->rules[0];
   EXPECT_EQ(payload_rule->selector, "#content .a1");
@@ -321,14 +323,14 @@ TEST_F(WebDiscoveryPatternsTest, StrictPayloadRules) {
   EXPECT_FALSE(payload_rule->is_join);
 
   strict_pattern = &parsed_patterns->strict_patterns[2];
-  EXPECT_EQ(strict_pattern->payload_rule_groups.size(), 1u);
+  ASSERT_EQ(strict_pattern->payload_rule_groups.size(), 1u);
 
   payload_group = &strict_pattern->payload_rule_groups[0];
   EXPECT_EQ(payload_group->key, "key2");
   EXPECT_EQ(payload_group->rule_type, PayloadRuleType::kQuery);
   EXPECT_EQ(payload_group->result_type, PayloadResultType::kClustered);
   EXPECT_EQ(payload_group->action, "age-info");
-  EXPECT_EQ(payload_group->rules.size(), 1u);
+  ASSERT_EQ(payload_group->rules.size(), 1u);
 
   payload_rule = &payload_group->rules[0];
   EXPECT_EQ(payload_rule->selector, "form .search-box");

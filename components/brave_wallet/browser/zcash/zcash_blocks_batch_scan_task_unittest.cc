@@ -124,26 +124,6 @@ class ZCashBlocksBatchScanTest : public testing::Test {
 
   testing::NiceMock<MockZCashRPC>& zcash_rpc() { return zcash_rpc_; }
 
-  base::test::TaskEnvironment& task_environment() { return task_environment_; }
-
-  base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
-                 OrchardStorage::Error>
-  GetSpendableNotes() {
-    std::optional<
-        base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
-                       OrchardStorage::Error>>
-        result;
-    sync_state_.AsyncCall(&OrchardSyncState::GetSpendableNotes)
-        .WithArgs(OrchardPool::kOrchard, account_id_.Clone(),
-                  OrchardAddrRawPart({}))
-        .Then(base::BindLambdaForTesting(
-            [&](base::expected<
-                std::optional<OrchardSyncState::SpendableNotesBundle>,
-                OrchardStorage::Error> r) { result = std::move(r); }));
-    task_environment().RunUntilIdle();
-    return std::move(result.value());
-  }
-
   std::unique_ptr<MockOrchardBlockScannerProxy>
   CreateMockOrchardBlockScannerProxy() {
     return std::make_unique<MockOrchardBlockScannerProxy>(base::BindRepeating(
@@ -293,7 +273,7 @@ TEST_F(ZCashBlocksBatchScanTest, SingleBlockDecoded) {
   task.Start();
 
   EXPECT_TRUE(result_future.Get().has_value());
-  EXPECT_EQ(decoded_blocks.size(), 1u);
+  ASSERT_EQ(decoded_blocks.size(), 1u);
   EXPECT_EQ(decoded_blocks[0], kNu5BlockUpdate + 1);
 }
 
@@ -328,7 +308,7 @@ TEST_F(ZCashBlocksBatchScanTest, AllBlocksDecoded) {
 
   EXPECT_TRUE(result_future.Get().has_value());
   // We shouldn't have any notes added since one block is corrupted
-  EXPECT_EQ(decoded_blocks.size(), 400u);
+  ASSERT_EQ(decoded_blocks.size(), 400u);
   for (int i = 0; i < 400; i++) {
     EXPECT_EQ(decoded_blocks[i], i + 1 + kNu5BlockUpdate);
   }
@@ -432,7 +412,7 @@ TEST_F(ZCashBlocksBatchScanTest, EmptyFrontierBlock) {
   task.Start();
 
   auto result = result_future.Get();
-  EXPECT_FALSE(result.has_value());
+  ASSERT_FALSE(result.has_value());
   EXPECT_EQ(result.error().code,
             ZCashShieldSyncService::ErrorCode::kFailedToDownloadBlocks);
 }
@@ -500,7 +480,7 @@ TEST_F(ZCashBlocksBatchScanTest, EmptyTreeState) {
   task.Start();
 
   auto result = result_future.Get();
-  EXPECT_FALSE(result.has_value());
+  ASSERT_FALSE(result.has_value());
   EXPECT_EQ(result.error().code,
             ZCashShieldSyncService::ErrorCode::kFailedToReceiveTreeState);
 }
@@ -829,7 +809,7 @@ TEST_F(ZCashBlocksBatchScanTest, IronwoodFrontierInvalidHexError) {
   task.Start();
 
   auto result = result_future.Get();
-  EXPECT_FALSE(result.has_value());
+  ASSERT_FALSE(result.has_value());
   EXPECT_EQ(result.error().code,
             ZCashShieldSyncService::ErrorCode::kScannerError);
 }

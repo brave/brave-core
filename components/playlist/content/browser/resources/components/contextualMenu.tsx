@@ -6,10 +6,10 @@
 import * as React from 'react'
 import styled, { css } from 'styled-components'
 
-import Icon from '@brave/leo/react/icon'
-import Button from '@brave/leo/react/button'
-import ButtonMenu from '@brave/leo/react/buttonMenu'
-import { color, spacing } from '@brave/leo/tokens/css/variables'
+import Icon from '@brave/nala/react/icon'
+import Button from '@brave/nala/react/button'
+import ButtonMenu from '@brave/nala/react/buttonMenu'
+import { color, spacing } from '@brave/nala/tokens/css/variables'
 
 interface MenuItemProps {
   name: string

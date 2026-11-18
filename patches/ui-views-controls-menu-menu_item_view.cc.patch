@@ -1,8 +1,8 @@
 diff --git a/ui/views/controls/menu/menu_item_view.cc b/ui/views/controls/menu/menu_item_view.cc
-index bd1502167012081b83f0fd11e3727317e8fcd48d..233892d91b84549a861aa29afce38cd961ac1149 100644
+index 27daaff05f109caf54a1c371b4c8f5c4ca8f838d..75a3bc8e10594ae7691c23eb2af5bd0e17027612 100644
 --- a/ui/views/controls/menu/menu_item_view.cc
 +++ b/ui/views/controls/menu/menu_item_view.cc
-@@ -1901,7 +1901,7 @@ void MenuItemView::UpdateSelectionBasedState(bool paint_as_selected) {
+@@ -1895,7 +1895,7 @@ void MenuItemView::UpdateSelectionBasedState(bool paint_as_selected) {
          features::IsRoundedIconsEnabled()
              ? vector_icons::kKeyboardArrowRightFlippableIcon
              : vector_icons::kSubmenuArrowChromeRefreshOldIcon,

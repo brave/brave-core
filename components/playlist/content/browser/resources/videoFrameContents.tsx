@@ -13,7 +13,7 @@ import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 
 import Player from './components/player'
 import startReceivingAPIRequest from './playerApiSink'
-import { setIconBasePath } from '@brave/leo/react/icon'
+import { setIconBasePath } from '@brave/nala/react/icon'
 
 function initialize () {
   createRoot(document.getElementById('root')!).render(

@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { getLocale } from '$web-common/locale'
-import { radius, spacing } from '@brave/leo/tokens/css/variables'
+import { radius, spacing } from '@brave/nala/tokens/css/variables'
 import * as React from 'react'
 import Card from './styles/Card'
 import SecureLink from '$web-common/SecureLink'

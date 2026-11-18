@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Some updater_tests run against previously released updater builds. Brave
+      has none yet, which makes the test binary crash. This substitution fixes
+      the problem by reporting to upstream that we have no previous builds.
+    preempt_function_impl:
+      function_name: GetRealUpdaterLowerVersions
+      return_if: '(true)'
+      return_value: '{}'
+
+  - description: |-
+      Some updater_tests suites run once per previously released updater
+      build. Brave has none yet, so these suites are empty, and the test
+      launcher then refuses to run any tests. This substitution fixes the
+      problem by declaring that the suites may be empty.
+    add_at_end_of_the_file:
+      code: |-
+
+        namespace updater::test {
+        GTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST(IntegrationLowerVersionTest);
+        GTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST(IntegrationSansInstallIdTest);
+        }  // namespace updater::test

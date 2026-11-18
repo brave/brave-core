@@ -6,9 +6,9 @@
 import * as React from 'react'
 import styles from './style.module.scss'
 import classnames from '$web-common/classnames'
-import Icon from '@brave/leo/react/icon'
-import ButtonMenu from '@brave/leo/react/buttonMenu'
-import Input from '@brave/leo/react/input'
+import Icon from '@brave/nala/react/icon'
+import ButtonMenu from '@brave/nala/react/buttonMenu'
+import Input from '@brave/nala/react/input'
 import * as Mojom from '../../../common/mojom'
 import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import { isWorkspaceContent } from '../../../common/conversation_history_utils'
@@ -16,9 +16,10 @@ import { useAIChat } from '../../state/ai_chat_context'
 import { useActiveChat } from '../../state/active_chat_context'
 import { getLocale } from '$web-common/locale'
 import { useConversation } from '../../state/conversation_context'
-import Alert from '@brave/leo/react/alert'
-import Button from '@brave/leo/react/button'
+import Alert from '@brave/nala/react/alert'
+import Button from '@brave/nala/react/button'
 import { Link } from '$web-common/useRoute'
+import ProgressRing from '@brave/nala/react/progressRing'
 
 // The maximum number of workspaces shown in the recent workspaces section.
 const MAX_RECENT_WORKSPACES = 5
@@ -79,6 +80,10 @@ interface ItemState {
   // was started from outside the list), the main list item is used.
   editingItemKey: string | undefined
   setEditingItemKey: (key: string | undefined) => void
+  activeUuid: string | undefined
+  generationStates:
+    | { [uuid: string]: Mojom.ConversationGenerationState }
+    | undefined
 }
 
 interface ConversationsListProps {
@@ -95,7 +100,6 @@ interface ConversationItemProps extends ConversationsListProps {
 
 function ConversationItem(props: ConversationItemProps) {
   const aiChatContext = useAIChat()
-  const conversationContext = useConversation()
   const { itemState } = props
 
   const { uuid } = props.conversation
@@ -137,7 +141,18 @@ function ConversationItem(props: ConversationItemProps) {
   const isEditing =
     aiChatContext.editingConversationId === uuid
     && (itemState.editingItemKey ?? uuid) === itemKey
-  const isActive = uuid === conversationContext.conversationUuid
+
+  const generationState = itemState.generationStates?.[uuid]
+
+  const isGenerating =
+    generationState === Mojom.ConversationGenerationState.kGenerating
+  const isCompletedNotViewed =
+    generationState === Mojom.ConversationGenerationState.kCompletedNotViewed
+
+  const isActive = uuid === itemState.activeUuid
+
+  const showGenerating = isGenerating && !isActive
+  const showCompleted = isCompletedNotViewed && !isActive
 
   return (
     <li>
@@ -156,6 +171,7 @@ function ConversationItem(props: ConversationItemProps) {
         }}
         onDoubleClick={startEditing}
         href={`/${uuid}`}
+        data-testid={`conversation-item-${uuid}`}
       >
         <div className={styles.displayTitle}>
           <div className={styles.displayTitleContent}>
@@ -167,6 +183,28 @@ function ConversationItem(props: ConversationItemProps) {
               {title}
             </div>
           </div>
+
+          {showGenerating && (
+            <span
+              className={styles.generatingIndicator}
+              data-testid='generating-indicator'
+              aria-label={getLocale(S.AI_CHAT_CONVERSATION_LIST_GENERATING)}
+              title={getLocale(S.AI_CHAT_CONVERSATION_LIST_GENERATING)}
+              role='img'
+            >
+              <ProgressRing mode='indeterminate' />
+            </span>
+          )}
+          {showCompleted && (
+            <span
+              className={styles.completedIndicator}
+              data-testid='completed-indicator'
+              aria-label={getLocale(S.AI_CHAT_CONVERSATION_LIST_RESPONSE_READY)}
+              title={getLocale(S.AI_CHAT_CONVERSATION_LIST_RESPONSE_READY)}
+              role='img'
+            />
+          )}
+
           {/* Stop propagation so clicks don't bubble to the Link and close the sidebar */}
           <div onClick={(e) => e.stopPropagation()}>
             <ButtonMenu
@@ -394,11 +432,20 @@ export default function ConversationsList(props: ConversationsListProps) {
   const [openOptionsMenuKey, setOpenOptionsMenuKey] = React.useState<string>()
   const [editingItemKey, setEditingItemKey] = React.useState<string>()
 
+  const generationStates =
+    aiChatContext.api.useCurrentOnConversationGenerationStateChanged().data?.[0]
+  // The route id can be the tab-associated placeholder, so use the conversation
+  // that is actually bound.
+  const { conversationUuid: activeUuid } =
+    useConversation().api.useGetStateData()
+
   const itemState: ItemState = {
     openOptionsMenuKey,
     setOpenOptionsMenuKey,
     editingItemKey,
     setEditingItemKey,
+    activeUuid,
+    generationStates,
   }
 
   const startedNonTemporaryConversations = aiChatContext.conversations.filter(

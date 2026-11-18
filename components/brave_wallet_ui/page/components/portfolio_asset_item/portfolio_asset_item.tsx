@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import LeoButton from '@brave/leo/react/button'
+import LeoButton from '@brave/nala/react/button'
 
 // Options
 import { BraveWallet } from '$wallet/constants/types'

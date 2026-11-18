@@ -17,3 +17,9 @@ substitutions:
         (\n[ \t]*)kMaxValue = (\w+),
       replace: |-
         \1kIPFSCache = \2 + 1,\1kMaxValue = kIPFSCache,
+
+  - description: |-
+      Forward declare the types the substitutions above use
+    add_after_includes:
+      code: |-
+        class BraveBrowsingDataRemoverDelegate;

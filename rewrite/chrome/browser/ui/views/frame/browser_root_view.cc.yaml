@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Disable scroll-event-changes-tab with the scrollable horizontal tab strip
+
+      The scrollable horizontal tab strip handles scroll events itself, so
+      the tab-changing behavior is only kept while the control key is held.
+      brave_tabs::IsScrollableHorizontalTabStripEnabled() is declared by the
+      chromium_src override. rename_class is not applicable because this
+      extends a condition expression instead of renaming a class.
+    regex:
+      pattern: 'browser_defaults::kScrollEventChangesTab &&'
+      replace: |-
+        browser_defaults::kScrollEventChangesTab &&
+            (!brave_tabs::IsScrollableHorizontalTabStripEnabled(
+                 browser_view_->GetProfile()->GetPrefs()) ||
+             event.IsControlDown()) &&

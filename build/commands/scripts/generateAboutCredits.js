@@ -5,9 +5,15 @@
 
 import { build } from '../lib/build.ts'
 import config from '../lib/config.ts'
+import { program } from '../lib/program.ts'
 
-build(config.defaultBuildConfig, {
-  C: 'generate_about_credits',
-  target: 'components/resources:about_credits',
-  gn: ['generate_about_credits:true'],
-})
+program
+  .description('Generate the about:credits page')
+  .action(async () => {
+    await build(config.defaultBuildConfig, {
+      C: 'generate_about_credits',
+      target: 'components/resources:about_credits',
+      gn: ['generate_about_credits:true'],
+    })
+  })
+  .parseAsync()

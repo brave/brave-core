@@ -7,8 +7,4 @@
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout_impl.h"
 #include "chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.h"
 
-#define BrowserViewTabbedLayoutImpl BraveBrowserViewTabbedLayoutImpl
-
 #include <chrome/browser/ui/views/frame/layout/browser_view_layout.cc>
-
-#undef BrowserViewTabbedLayoutImpl

@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
@@ -53,6 +54,9 @@ static_library("misc_metrics_impl") {
     "//brave/browser/misc_metrics/page_metrics_tab_helper.cc",
     "//brave/browser/misc_metrics/page_metrics_tab_helper.h",
     "//brave/browser/misc_metrics/process_misc_metrics.cc",
+    "//brave/browser/misc_metrics/profile_misc_metrics_service.cc",
+    "//brave/browser/misc_metrics/profile_misc_metrics_service_factory.cc",
+    "//brave/browser/misc_metrics/uptime_monitor_impl.cc",
     "//brave/browser/misc_metrics/uptime_monitor_impl.h",
   ]
 
@@ -63,10 +67,14 @@ static_library("misc_metrics_impl") {
     "//brave/browser/brave_stats",
     "//brave/browser/misc_metrics",
     "//brave/browser/profiles:util",
+    "//brave/browser/search_engines",
     "//brave/browser/serp_metrics",
+    "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_shields/core/common",
     "//brave/components/constants",
     "//brave/components/misc_metrics",
+    "//brave/components/ntp_background_images/browser",
+    "//brave/components/ntp_background_images/common",
     "//brave/components/p3a_utils",
     "//brave/components/resources:static_resources_grit",
     "//brave/components/script_injector/common/mojom",
@@ -74,9 +82,14 @@ static_library("misc_metrics_impl") {
     "//chrome/browser:browser_process",
     "//chrome/browser:shell_integration",
     "//chrome/browser/autofill",
+    "//chrome/browser/bookmarks",
+    "//chrome/browser/content_settings:content_settings_factory",
+    "//chrome/browser/history",
     "//chrome/browser/page_load_metrics",
     "//chrome/browser/profiles",
+    "//chrome/browser/profiles:profile_util",
     "//chrome/browser/search_engines",
+    "//chrome/browser/themes",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/tabs:tabs_public",
     "//chrome/common",
@@ -102,6 +115,10 @@ static_library("misc_metrics_impl") {
     deps += [ "//brave/components/ai_chat/core/browser" ]
   }
 
+  if (enable_brave_ads) {
+    deps += [ "//brave/components/brave_ads/core/public:headers" ]
+  }
+
   if (enable_extensions) {
     sources += [
       "//brave/browser/misc_metrics/extension_metrics.cc",
@@ -115,13 +132,17 @@ static_library("misc_metrics_impl") {
     sources += [
       "//brave/browser/misc_metrics/default_browser_monitor_delegate_impl.cc",
       "//brave/browser/misc_metrics/default_browser_monitor_delegate_impl.h",
+      "//brave/browser/misc_metrics/profile_new_tab_metrics.cc",
+      "//brave/browser/misc_metrics/profile_new_tab_metrics.h",
       "//brave/browser/misc_metrics/theme_metrics.cc",
       "//brave/browser/misc_metrics/theme_metrics.h",
       "//brave/browser/misc_metrics/vertical_tab_metrics.cc",
       "//brave/browser/misc_metrics/vertical_tab_metrics.h",
     ]
     deps += [
+      ":usage_clock",
       "//brave/browser/extensions/manifest_v2",
+      "//brave/browser/new_tab",
       "//brave/browser/themes",
       "//brave/browser/ui:brave_tab_prefs",
       "//chrome/browser/themes",
@@ -129,8 +150,13 @@ static_library("misc_metrics_impl") {
       "//extensions/browser",
     ]
   } else {
-    sources += [ "//brave/browser/misc_metrics/misc_android_metrics.h" ]
+    sources += [
+      "//brave/browser/misc_metrics/misc_android_metrics.cc",
+      "//brave/browser/misc_metrics/misc_android_metrics.h",
+      "//brave/browser/misc_metrics/misc_android_metrics_factory_android.cc",
+    ]
     deps += [
+      "//chrome/android:chrome_jni_headers",
       "//chrome/browser/flags:flags_android",
       "//chrome/browser/ui/android/tab_model",
     ]

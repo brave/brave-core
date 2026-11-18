@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
-import Alert from '@brave/leo/react/alert'
+import Alert from '@brave/nala/react/alert'
 
 // Shared Styles
 import { Column, Row } from '../../../components/shared/style'

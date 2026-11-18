@@ -4,7 +4,14 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 brave_net_dns_sources = [
+  "//brave/net/dns/onion_hostname_resolution.cc",
+  "//brave/net/dns/onion_hostname_resolution.h",
   "//brave/net/dns/secure_dns_counter.cc",
   "//brave/net/dns/secure_dns_counter.h",
   "//brave/net/dns/secure_dns_endpoints.h",
 ]
+
+brave_net_dns_deps = [ "//brave/components/tor/buildflags" ]
+
+brave_net_dns_unit_test_sources =
+    [ "//brave/net/dns/onion_hostname_resolution_unittest.cc" ]

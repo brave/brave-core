@@ -171,7 +171,7 @@ generate_grd("fonts_grdp") {
   deps = [ ":fonts_copy" ]
 }
 
-leo_icons_base_path = "../../../node_modules/@brave/leo/icons"
+leo_icons_base_path = "../../../node_modules/@brave/nala/icons"
 
 # These are icons included in Leo. Add them on an as-needed basis, because there
 # are a **LOT** of icons in Leo. You can check if there's an icon  which suits
@@ -236,6 +236,7 @@ leo_icons_sources = [
   "carat-up.svg",
   "cardano-off.svg",
   "cardano-on.svg",
+  "characters.svg",
   "check-circle-filled.svg",
   "check-circle-outline.svg",
   "check-normal.svg",
@@ -341,6 +342,7 @@ leo_icons_sources = [
   "hand-raised.svg",
   "hearts.svg",
   "help-outline.svg",
+  "highlight.svg",
   "history.svg",
   "idea.svg",
   "image-off.svg",
@@ -359,6 +361,14 @@ leo_icons_sources = [
   "leo-cursor-filled.svg",
   "leo-cursor.svg",
   "leo-local.svg",
+  "letter-spacing-standard.svg",
+  "letter-spacing-very-wide.svg",
+  "letter-spacing-wide.svg",
+  "letter-spacing.svg",
+  "line-height-loose.svg",
+  "line-height-standard.svg",
+  "line-height-very-loose.svg",
+  "line-height.svg",
   "link-broken.svg",
   "link-normal.svg",
   "list-bullet-default.svg",
@@ -432,6 +442,7 @@ leo_icons_sources = [
   "phantom-color.svg",
   "picture-in-picture.svg",
   "pie-chart-2.svg",
+  "pin.svg",
   "play-circle.svg",
   "play-filled.svg",
   "plus-add-circle.svg",
@@ -550,6 +561,7 @@ leo_icons_sources = [
   "virtual-reality-off.svg",
   "virtual-reality.svg",
   "vivaldi-color.svg",
+  "voice-mode.svg",
   "volume-off.svg",
   "volume-on.svg",
   "wallet-ledger.svg",
@@ -643,7 +655,6 @@ if (enable_brave_vpn_panel) {
 
 if (enable_speedreader) {
   leo_icons_sources += [
-    "characters.svg",
     "forward-outline.svg",
     "headphones.svg",
     "pause-outline.svg",
@@ -698,7 +709,7 @@ copy("static_copy") {
 copy("leo_static_copy") {
   sources = rebase_path(leo_static_files,
                         ".",
-                        "../../../node_modules/@brave/leo/tokens")
+                        "../../../node_modules/@brave/nala/tokens")
   outputs = [ "$brave_resources_extra_grdps_path/leo/css/{{source_file_part}}" ]
 }
 

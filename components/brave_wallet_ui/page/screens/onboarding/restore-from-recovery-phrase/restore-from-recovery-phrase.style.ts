@@ -4,8 +4,8 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled, { css } from 'styled-components'
-import * as leo from '@brave/leo/tokens/css/variables'
-import Alert, { AlertProps } from '@brave/leo/react/alert'
+import * as leo from '@brave/nala/tokens/css/variables'
+import Alert, { AlertProps } from '@brave/nala/react/alert'
 
 import { layoutPanelWidth } from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 import { Text } from '../../../../components/shared/style'

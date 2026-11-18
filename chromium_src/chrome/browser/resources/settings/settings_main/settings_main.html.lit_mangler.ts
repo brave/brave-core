@@ -21,13 +21,13 @@ const view = (
   route: string,
   element: string,
 ) =>
-  `\${cache(this.showPage_(this.pageVisibility_?.${visibilityKey}) ? html\`
+  `\${this.showPage_(this.pageVisibility_?.${visibilityKey}) ? html\`
     <div slot="view" id="${id}">
-      \${cache(this.renderPlugin_(this.routes_.${route}) ? html\`
+      \${this.renderPlugin_(this.routes_.${route}) ? html\`
         <${element} ?in-search-mode="\${this.inSearchMode_}"></${element}>
-      \` : '')}
+      \` : ''}
     </div>
-  \` : '')}`
+  \` : ''}`
 
 // Performance lives under System instead.
 mangle(
@@ -54,13 +54,13 @@ mangle((root) => {
 
   // Extensions has no route of its own to wait for, so it always renders.
   switcher.insertAdjacentHTML('beforeend',
-    `\${cache(this.showPage_(this.pageVisibility_?.extensions) ? html\`
+    `\${this.showPage_(this.pageVisibility_?.extensions) ? html\`
       <div slot="view" id="extensions">
         <settings-brave-extensions-page-index
             ?in-search-mode="\${this.inSearchMode_}">
         </settings-brave-extensions-page-index>
       </div>
-    \` : '')}`)
+    \` : ''}`)
 }, (t) => t.text.includes('id="switcher"'))
 
 // Upstream doesn't have sub pages for System.

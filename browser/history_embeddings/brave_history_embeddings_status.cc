@@ -8,10 +8,11 @@
 #include <memory>
 
 #include "base/functional/bind.h"
+#include "brave/browser/history_embeddings/history_embeddings_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/local_ai/core/local_models_updater.h"
 #include "brave/components/local_ai/core/pref_names.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 
@@ -20,7 +21,7 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
-namespace history_embeddings {
+namespace brave_history_embeddings {
 
 namespace {
 
@@ -37,17 +38,21 @@ BraveHistoryEmbeddingsStatus::BraveHistoryEmbeddingsStatus(
   pref_change_registrar_.Init(profile_->GetPrefs());
   pref_change_registrar_.Add(
       local_ai::prefs::kBraveHistoryEmbeddingsEnabled,
-      base::BindRepeating(&BraveHistoryEmbeddingsStatus::OnEnabledPrefChanged,
-                          base::Unretained(this)));
+      base::BindRepeating(
+          &BraveHistoryEmbeddingsStatus::OnHistoryEmbeddingsEnabledChanged,
+          base::Unretained(this)));
   // The Local AI master switch is local state, so it needs its own registrar.
   local_state_pref_change_registrar_.Init(local_state);
   local_state_pref_change_registrar_.Add(
       local_ai::prefs::kBraveLocalAIEnabled,
-      base::BindRepeating(&BraveHistoryEmbeddingsStatus::OnEnabledPrefChanged,
-                          base::Unretained(this)));
+      base::BindRepeating(
+          &BraveHistoryEmbeddingsStatus::WithdrawTabFocusOptInIfUnavailable,
+          base::Unretained(this)));
   // The Local AI master switch only takes effect on relaunch, so the profile
-  // can start with the index unavailable and no change to observe.
-  OnEnabledPrefChanged();
+  // can start with the index unavailable and no change to observe. A profile
+  // that turned the setting on before kHistoryEmbeddingsEnabledProfiles existed
+  // has no entry in it yet, so the entry is recorded here as well.
+  OnHistoryEmbeddingsEnabledChanged();
 }
 
 // static
@@ -79,7 +84,12 @@ bool BraveHistoryEmbeddingsStatus::NeedsRestart() const {
   return IsHistoryEmbeddingsEnabledForProfile(profile_) != enabled_;
 }
 
-void BraveHistoryEmbeddingsStatus::OnEnabledPrefChanged() {
+void BraveHistoryEmbeddingsStatus::OnHistoryEmbeddingsEnabledChanged() {
+  WithdrawTabFocusOptInIfUnavailable();
+  UpdateLocalModelsUsage();
+}
+
+void BraveHistoryEmbeddingsStatus::WithdrawTabFocusOptInIfUnavailable() {
 #if BUILDFLAG(ENABLE_AI_CHAT)
   // The pref is only registered when the AI Chat feature is on at runtime,
   // and clearing an unregistered pref is fatal.
@@ -94,14 +104,26 @@ void BraveHistoryEmbeddingsStatus::OnEnabledPrefChanged() {
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 }
 
-}  // namespace history_embeddings
+void BraveHistoryEmbeddingsStatus::UpdateLocalModelsUsage() {
+  // Only a regular profile can turn the setting on.
+  if (!profile_->IsRegularProfile()) {
+    return;
+  }
+  local_ai::SetHistoryEmbeddingsEnabledForProfile(
+      *local_state_pref_change_registrar_.prefs(),
+      profile_->GetBaseName().AsUTF8Unsafe(),
+      profile_->GetPrefs()->GetBoolean(
+          local_ai::prefs::kBraveHistoryEmbeddingsEnabled));
+}
+
+}  // namespace brave_history_embeddings
 
 // Forward declared by the chromium_src overrides that need the captured
 // setting, so neither carries a Brave header: the passage embedder gate in
 // //chrome/browser/passage_embeddings and brave://history's data source in
 // //chrome/browser/ui/webui/history.
 bool BraveHistoryEmbeddingsEnabledAtStartup(Profile* profile) {
-  return history_embeddings::BraveHistoryEmbeddingsStatus::GetForProfile(
+  return brave_history_embeddings::BraveHistoryEmbeddingsStatus::GetForProfile(
              profile)
       ->IsEnabled();
 }

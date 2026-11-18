@@ -16,9 +16,10 @@ namespace ai_chat {
 
 namespace {
 
-// Serializes a single tool call with the given `arguments_json` and returns the
-// resulting "arguments" string written to the message dict.
-std::string SerializeToolCallArguments(const std::string& arguments_json) {
+// Serializes a single tool call with the given `arguments_json` and writes the
+// resulting "arguments" string from the message dict to `out_arguments`.
+void SerializeToolCallArguments(const std::string& arguments_json,
+                                std::string* out_arguments) {
   OAIMessage message;
   message.tool_calls.push_back(
       mojom::ToolUseEvent::New("tool", "call_1", arguments_json, std::nullopt,
@@ -28,12 +29,14 @@ std::string SerializeToolCallArguments(const std::string& arguments_json) {
   SerializeToolCallsOnMessageDict(message, dict);
 
   const base::ListValue* tool_calls = dict.FindList("tool_calls");
-  EXPECT_TRUE(tool_calls);
-  EXPECT_EQ(tool_calls->size(), 1u);
+  ASSERT_TRUE(tool_calls);
+  ASSERT_EQ(tool_calls->size(), 1u);
   const base::DictValue* function =
       (*tool_calls)[0].GetDict().FindDict("function");
-  EXPECT_TRUE(function);
-  return *function->FindString("arguments");
+  ASSERT_TRUE(function);
+  const std::string* arguments = function->FindString("arguments");
+  ASSERT_TRUE(arguments);
+  *out_arguments = *arguments;
 }
 
 }  // namespace
@@ -184,14 +187,18 @@ TEST(OAISerializationUtilsTest,
   // Some models emit an empty string for the arguments of a tool that takes no
   // parameters. An empty string is not valid JSON, so it must be normalized to
   // an empty object before being echoed back to the server.
-  EXPECT_EQ(SerializeToolCallArguments(""), "{}");
+  std::string arguments;
+  ASSERT_NO_FATAL_FAILURE(SerializeToolCallArguments("", &arguments));
+  EXPECT_EQ(arguments, "{}");
 }
 
 TEST(OAISerializationUtilsTest,
      SerializeToolCallsOnMessageDict_NonEmptyArgumentsUnchanged) {
   // Non-empty arguments must be passed through verbatim.
-  EXPECT_EQ(SerializeToolCallArguments(R"({"query":"weather"})"),
-            R"({"query":"weather"})");
+  std::string arguments;
+  ASSERT_NO_FATAL_FAILURE(
+      SerializeToolCallArguments(R"({"query":"weather"})", &arguments));
+  EXPECT_EQ(arguments, R"({"query":"weather"})");
 }
 
 TEST(OAISerializationUtilsTest,
@@ -200,7 +207,10 @@ TEST(OAISerializationUtilsTest,
   // "empty" (null, an empty JSON string, an empty array, an empty object) are
   // non-empty strings and must be passed through verbatim.
   for (const char* args : {"null", R"("")", "[]", "{}"}) {
-    EXPECT_EQ(SerializeToolCallArguments(args), args) << "args=" << args;
+    std::string arguments;
+    ASSERT_NO_FATAL_FAILURE(SerializeToolCallArguments(args, &arguments))
+        << "args=" << args;
+    EXPECT_EQ(arguments, args) << "args=" << args;
   }
 }
 

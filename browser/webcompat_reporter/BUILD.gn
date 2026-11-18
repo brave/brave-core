@@ -1,0 +1,48 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("webcompat_reporter") {
+  sources = [
+    "webcompat_reporter_service_delegate.cc",
+    "webcompat_reporter_service_delegate.h",
+    "webcompat_reporter_service_factory.cc",
+    "webcompat_reporter_service_factory.h",
+  ]
+
+  public_deps = [
+    "//brave/components/webcompat_reporter/browser",
+    "//brave/components/webcompat_reporter/common:mojom",
+    "//chrome/browser/profiles:profile",
+    "//components/content_settings/core/browser",
+    "//components/content_settings/core/browser:cookie_settings",
+    "//components/keyed_service/core",
+    "//content/public/browser",
+    "//mojo/public/cpp/bindings",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser:browser_process",
+    "//brave/common",
+    "//brave/components/brave_shields/content/browser",
+    "//brave/components/brave_shields/core/browser",
+    "//brave/components/brave_shields/core/common",
+    "//brave/components/webcompat_reporter/common",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/content_settings:content_settings_factory",
+    "//chrome/browser/profiles",
+    "//components/component_updater",
+    "//components/keyed_service/content",
+    "//components/prefs",
+  ]
+
+  if (is_android) {
+    sources += [ "android/webcompat_report_service_factory_android.cc" ]
+    deps += [
+      "//brave/browser/android:android_browser_process",
+      "//brave/build/android:jni_headers",
+    ]
+  }
+}

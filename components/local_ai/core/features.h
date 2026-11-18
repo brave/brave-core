@@ -14,6 +14,9 @@ namespace local_ai {
 COMPONENT_EXPORT(LOCAL_AI_FEATURES)
 BASE_DECLARE_FEATURE(kBraveOnDeviceSpeechRecognition);
 
+COMPONENT_EXPORT(LOCAL_AI_FEATURES)
+BASE_DECLARE_FEATURE(kBraveOnDeviceSpeechMultilingual);
+
 }  // namespace local_ai
 
 #endif  // BRAVE_COMPONENTS_LOCAL_AI_CORE_FEATURES_H_

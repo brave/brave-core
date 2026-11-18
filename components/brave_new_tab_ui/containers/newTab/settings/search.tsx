@@ -7,11 +7,11 @@ import * as React from 'react'
 
 // Components
 import Flex from '$web-common/Flex'
-import Button from '@brave/leo/react/button'
-import Checkbox from '@brave/leo/react/checkbox'
-import Icon from '@brave/leo/react/icon'
-import Toggle from '@brave/leo/react/toggle'
-import { color, font, radius, spacing } from '@brave/leo/tokens/css/variables'
+import Button from '@brave/nala/react/button'
+import Checkbox from '@brave/nala/react/checkbox'
+import Icon from '@brave/nala/react/icon'
+import Toggle from '@brave/nala/react/toggle'
+import { color, font, radius, spacing } from '@brave/nala/tokens/css/variables'
 import styled from 'styled-components'
 import usePromise from '../../../../common/usePromise'
 import {

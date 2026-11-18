@@ -57,16 +57,22 @@ def GenTests(api: TEST_DEPS):
         api.claude_cli.prompt_matches('claude', r'Fix the build\..*`src`\.'),
         api.post_process(post_process.StatusSuccess),
     )
-    # Neither extra dirs nor pre-approved tools.
+    # Neither extra dirs nor pre-approved tools: Claude still gets the job's
+    # temp dir, and only that.
     yield api.test(
         'minimal',
         api.env.set('MODE', 'minimal'),
         api.claude_cli.prompt_matches('claude', 'Say hello.'),
         api.post_process(
-            post_process.StepCommandDoesNotContain, 'claude', ['--add-dir']
-        ),
-        api.post_process(
-            post_process.StepCommandDoesNotContain, 'claude', ['--allowedTools']
+            post_process.StepCommandContains,
+            'claude',
+            [
+                '--add-dir',
+                '[WORKSPACE]/rc/tmp',
+                '--allowedTools',
+                'Edit(/[WORKSPACE]/rc/tmp/**)',
+                'Write(/[WORKSPACE]/rc/tmp/**)',
+            ],
         ),
         api.post_process(post_process.StatusSuccess),
     )

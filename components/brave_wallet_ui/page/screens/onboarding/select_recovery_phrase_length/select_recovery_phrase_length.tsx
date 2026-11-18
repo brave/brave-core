@@ -5,8 +5,8 @@
 
 import * as React from 'react'
 import { useHistory } from 'react-router'
-import Button from '@brave/leo/react/button'
-import Label from '@brave/leo/react/label'
+import Button from '@brave/nala/react/button'
+import Label from '@brave/nala/react/label'
 
 // Types
 import {

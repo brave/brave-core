@@ -12,3 +12,10 @@ substitutions:
         \1#if BUILDFLAG(ENABLE_CONTAINERS)
           std::optional<content::StoragePartitionConfig> storage_partition_config;
         #endif\n
+
+  - description: |-
+      Include what the substitutions above use
+    add_include:
+      header:
+        - brave/components/containers/buildflags/buildflags.h
+        - content/public/browser/storage_partition_config.h

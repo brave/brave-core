@@ -9,7 +9,7 @@
 #include <algorithm>
 #include <cstddef>
 
-namespace endpoint_client::detail {
+namespace endpoint_client::internal {
 
 template <std::size_t N>
 struct StaticString {
@@ -23,6 +23,6 @@ struct StaticString {
   char value[N]{};
 };
 
-}  // namespace endpoint_client::detail
+}  // namespace endpoint_client::internal
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_STATIC_STRING_H_

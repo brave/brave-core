@@ -51,6 +51,36 @@ std::optional<uint256_t> IncreaseBy10Percent(uint256_t val) {
   return std::nullopt;
 }
 
+// Some transactions authorize either a spender or an operator on the caller's
+// behalf. These operators still require restricted address scanning.
+bool TransactionNeedsOperatorScreen(mojom::TransactionType tx_type) {
+  switch (tx_type) {
+    case mojom::TransactionType::ERC20Approve:
+    case mojom::TransactionType::ERC721SetApprovalForAll:
+      return true;
+    case mojom::TransactionType::ERC20Transfer:
+    case mojom::TransactionType::ERC721TransferFrom:
+    case mojom::TransactionType::ERC721SafeTransferFrom:
+    case mojom::TransactionType::ERC1155SafeTransferFrom:
+    case mojom::TransactionType::ETHSend:
+    case mojom::TransactionType::ETHSwap:
+    case mojom::TransactionType::ETHFilForwarderTransfer:
+    case mojom::TransactionType::Other:
+    case mojom::TransactionType::SolanaSystemTransfer:
+    case mojom::TransactionType::SolanaSPLTokenTransfer:
+    case mojom::TransactionType::
+        SolanaSPLTokenTransferWithAssociatedTokenAccountCreation:
+    case mojom::TransactionType::SolanaDappSignAndSendTransaction:
+    case mojom::TransactionType::SolanaDappSignTransaction:
+    case mojom::TransactionType::SolanaSwap:
+    case mojom::TransactionType::SolanaCompressedNftTransfer:
+    case mojom::TransactionType::CardanoSendLovelace:
+    case mojom::TransactionType::CardanoSendToken:
+      return false;
+  }
+  NOTREACHED();
+}
+
 // Check if the transaction is being sent to a restricted address or if its
 // calldata has a restricted recipient. Also includes a check for ERC20
 // approvals, as an authorized spender can also be on the restricted list.
@@ -69,9 +99,7 @@ bool HasRestrictedAddress(const std::string& chain_id,
     return true;
   }
 
-  // Because ERC20 approvals authorize a spender, we need to check them against
-  // the restricted list as well.
-  if (tx_type == mojom::TransactionType::ERC20Approve && !tx_args.empty() &&
+  if (TransactionNeedsOperatorScreen(tx_type) && !tx_args.empty() &&
       registry->IsRestrictedAddress(tx_args.front())) {
     return true;
   }

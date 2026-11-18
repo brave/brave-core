@@ -9,7 +9,7 @@ import os from 'node:os'
 import path from 'node:path'
 import { spawnSync } from 'node:child_process'
 import config from './config.ts'
-import { snapshotConfig } from './configSnapshot.ts'
+import { mockConfig } from './configMock.ts'
 import { isCI } from './ciDetect.ts'
 import * as Log from './log.ts'
 import util, { prefixPatchPaths } from './util.ts'
@@ -117,7 +117,6 @@ function withPlatform<T>(platform: string, callback: () => T): T {
 
 describe('util', () => {
   let tmpDir: string
-  let restoreConfig: () => void
   let savedEnv: Record<string, string | undefined>
   let exit: jest.SpiedFunction<typeof process.exit>
   let consoleLog: jest.SpiedFunction<typeof console.log>
@@ -139,7 +138,7 @@ describe('util', () => {
   }
 
   beforeEach(() => {
-    restoreConfig = snapshotConfig()
+    mockConfig()
     tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'brave-util-'))
     config.srcDir = path.join(tmpDir, 'src')
     config.rootDir = tmpDir
@@ -167,7 +166,6 @@ describe('util', () => {
 
   afterEach(() => {
     jest.restoreAllMocks()
-    restoreConfig()
     for (const [key, value] of Object.entries(savedEnv)) {
       if (value === undefined) {
         delete process.env[key]

@@ -109,24 +109,4 @@ extension BraveWalletBraveWalletService {
         .map { SignMessageRequestItem(request: request, account: $0) }
     }
   }
-
-  @MainActor func pendingGetEncryptionPublicKeyRequests(
-    allAccounts: [BraveWallet.AccountInfo]
-  ) async -> GetEncryptionPublicKeyRequestItem? {
-    guard let request = await pendingGetEncryptionPublicKeyRequests().first else { return nil }
-    guard let account = allAccounts.first(where: { $0.accountId == request.accountId }) else {
-      return nil
-    }
-    return GetEncryptionPublicKeyRequestItem(request: request, account: account)
-  }
-
-  @MainActor func pendingDecryptRequests(
-    allAccounts: [BraveWallet.AccountInfo]
-  ) async -> DecryptRequestItem? {
-    guard let request = await pendingDecryptRequests().first else { return nil }
-    guard let account = allAccounts.first(where: { $0.accountId == request.accountId }) else {
-      return nil
-    }
-    return DecryptRequestItem(request: request, account: account)
-  }
 }

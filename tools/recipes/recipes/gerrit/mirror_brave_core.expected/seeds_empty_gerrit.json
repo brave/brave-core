@@ -1,0 +1,174 @@
+[
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://github.com/brave/brave-core.git"
+    ],
+    "name": "populate brave-core exists (before)"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "populate",
+      "--cache-dir",
+      "/b/cache",
+      "https://github.com/brave/brave-core.git",
+      "--reset-fetch-config",
+      "--ref",
+      "refs/tags/*"
+    ],
+    "name": "populate brave-core"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://github.com/brave/brave-core.git"
+    ],
+    "name": "populate brave-core exists (after)"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.auto",
+      "0"
+    ],
+    "cwd": "/b/cache/github.com-brave-brave-core",
+    "name": "populate brave-core disable (after): gc.auto=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.autodetach",
+      "0"
+    ],
+    "cwd": "/b/cache/github.com-brave-brave-core",
+    "name": "populate brave-core disable (after): gc.autodetach=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.autopacklimit",
+      "0"
+    ],
+    "cwd": "/b/cache/github.com-brave-brave-core",
+    "name": "populate brave-core disable (after): gc.autopacklimit=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "maintenance.gc.enabled",
+      "false"
+    ],
+    "cwd": "/b/cache/github.com-brave-brave-core",
+    "name": "populate brave-core disable (after): maintenance.gc.enabled=false"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "maintenance.auto",
+      "false"
+    ],
+    "cwd": "/b/cache/github.com-brave-brave-core",
+    "name": "populate brave-core disable (after): maintenance.auto=false"
+  },
+  {
+    "cmd": [
+      "git",
+      "for-each-ref",
+      "--format=%(objectname)%09%(refname)",
+      "refs/heads/"
+    ],
+    "cwd": "/b/cache/github.com-brave-brave-core",
+    "name": "list mirror branches"
+  },
+  {
+    "cmd": [
+      "git",
+      "for-each-ref",
+      "--format=%(objectname)%09%(refname)",
+      "--merged=refs/heads/1.85.x",
+      "--merged=refs/heads/master",
+      "refs/tags/"
+    ],
+    "cwd": "/b/cache/github.com-brave-brave-core",
+    "name": "list mirror tags"
+  },
+  {
+    "cmd": [
+      "git",
+      "ls-remote",
+      "ssh://refresh-repos-bot@gerrit-ssh.brave.com:29418/brave-browser/brave-core",
+      "refs/heads/*",
+      "refs/tags/*"
+    ],
+    "cwd": "/b/cache/github.com-brave-brave-core",
+    "name": "list gerrit refs"
+  },
+  {
+    "cmd": [
+      "git",
+      "rev-list",
+      "--reverse",
+      "--first-parent",
+      "refs/heads/master"
+    ],
+    "cwd": "/b/cache/github.com-brave-brave-core",
+    "name": "list master history"
+  },
+  {
+    "cmd": [
+      "git",
+      "push",
+      "-o",
+      "skip-validation",
+      "ssh://refresh-repos-bot@gerrit-ssh.brave.com:29418/brave-browser/brave-core",
+      "+0000000000000000000000000000000000001388:refs/heads/master"
+    ],
+    "cwd": "/b/cache/github.com-brave-brave-core",
+    "name": "seed master 1/2"
+  },
+  {
+    "cmd": [
+      "git",
+      "push",
+      "-o",
+      "skip-validation",
+      "ssh://refresh-repos-bot@gerrit-ssh.brave.com:29418/brave-browser/brave-core",
+      "+000000000000000000000000000000000000138a:refs/heads/master"
+    ],
+    "cwd": "/b/cache/github.com-brave-brave-core",
+    "name": "seed master 2/2"
+  },
+  {
+    "cmd": [
+      "git",
+      "push",
+      "-o",
+      "skip-validation",
+      "ssh://refresh-repos-bot@gerrit-ssh.brave.com:29418/brave-browser/brave-core",
+      "+refs/heads/1.85.x:refs/heads/1.85.x",
+      "+refs/tags/v1.85.1:refs/tags/v1.85.1"
+    ],
+    "cwd": "/b/cache/github.com-brave-brave-core",
+    "name": "push refs 1-2 of 2"
+  },
+  {
+    "name": "$result"
+  }
+]

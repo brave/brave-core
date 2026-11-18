@@ -205,7 +205,6 @@ class TransactionConfirmationStoreTests: XCTestCase {
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
       cardanoWalletService: cardanoWalletService,
-      ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
     )
   }

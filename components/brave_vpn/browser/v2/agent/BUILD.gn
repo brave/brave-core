@@ -16,8 +16,6 @@ static_library("agent") {
     "agent_launcher.cc",
     "agent_launcher.h",
     "agent_launcher_internal.h",
-    "browser_endpoint_impl.cc",
-    "browser_endpoint_impl.h",
   ]
 
   if (is_mac) {

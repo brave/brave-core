@@ -13,6 +13,9 @@ section links to a detailed document.
 
 - **[Architecture and Code Organization](./best-practices/architecture.md)** -
   Layering violations, dependency injection, factory patterns, pref management
+- **[Network Interception](./best-practices/network-interception.md)** -
+  Choosing Chromium hooks, throttles, and rulesets instead of Brave proxying
+  classes
 - **[C++ Coding Standards](./best-practices/coding-standards.md)** - IWYU,
   naming conventions, CHECK vs DCHECK, style, comments, logging
 - **[C++ Memory, Lifetime & Threading](./best-practices/coding-standards-memory.md)** -
@@ -42,6 +45,9 @@ section links to a detailed document.
 - **[C++ Buildflag Guards](./best-practices/coding-standards-buildflags.md)** -
   `#if BUILDFLAG(...)` in C++ sources and headers: guarding includes, `#endif`
   comments, forward declarations, `static_assert`
+- **[Modularization and Circular Dependencies](./best-practices/modularization.md)** -
+  Per-directory BUILD.gn, header/impl split, removing
+  `allow_circular_includes_from`, TabHelpers → TabFeatures prerequisites
 - **[UI/Views](./best-practices/ui-views.md)** - Desktop C++ views, view
   hierarchy, layout, styling
 - **[Patches](./best-practices/patches.md)** - Patch style, minimality,

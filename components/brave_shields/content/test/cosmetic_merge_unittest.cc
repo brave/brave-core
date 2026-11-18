@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "base/test/values_test_util.h"
-#include "brave/components/brave_shields/content/browser/ad_block_engine_wrapper.h"
+#include "brave/components/brave_shields/core/browser/ad_block_engine_wrapper.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

@@ -4,8 +4,8 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Alert from '@brave/leo/react/alert'
-import Button from '@brave/leo/react/button'
+import Alert from '@brave/nala/react/alert'
+import Button from '@brave/nala/react/button'
 import { getLocale, formatLocale } from '$web-common/locale'
 import { mojoTimeToJSDate } from '$web-common/mojomUtils'
 import * as Mojom from '../../../common/mojom'

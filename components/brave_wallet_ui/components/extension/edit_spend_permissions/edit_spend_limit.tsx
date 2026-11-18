@@ -4,8 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
-import RadioButton from '@brave/leo/react/radioButton'
+import Button from '@brave/nala/react/button'
+import RadioButton from '@brave/nala/react/radioButton'
 
 // Utils
 import { getLocale } from '../../../../common/locale'

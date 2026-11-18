@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
-import SegmentedControlItem from '@brave/leo/react/segmentedControlItem'
+import SegmentedControlItem from '@brave/nala/react/segmentedControlItem'
 
 // Types
 import { NavOption } from '../../../constants/types'

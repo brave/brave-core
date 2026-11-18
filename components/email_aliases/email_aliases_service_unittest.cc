@@ -512,11 +512,11 @@ TEST_F(EmailAliasesAPITest, Notes) {
 
   auto ignore = CallUpdateAliasWith("alias1", R"({"message":"updated"})",
                                     MakeRefreshBody({"alias1"}), "note1");
-  EXPECT_EQ("note1", *notes.GetNote("alias1"));
+  EXPECT_EQ("note1", notes.GetNote("alias1"));
 
   ignore = CallUpdateAliasWith("alias1", R"({"message":"updated"})",
                                MakeRefreshBody({"alias1"}), "note1_update");
-  EXPECT_EQ("note1_update", *notes.GetNote("alias1"));
+  EXPECT_EQ("note1_update", notes.GetNote("alias1"));
 
   // alias1 no longer active - remove note
   ignore = CallUpdateAliasWith("alias1", R"({"message":"updated"})",
@@ -525,7 +525,7 @@ TEST_F(EmailAliasesAPITest, Notes) {
 
   ignore = CallUpdateAliasWith("alias1", R"({"message":"updated"})",
                                MakeRefreshBody({"alias1"}), "note1");
-  EXPECT_EQ("note1", *notes.GetNote("alias1"));
+  EXPECT_EQ("note1", notes.GetNote("alias1"));
 
   ignore = CallDeleteAliasWith("alias1", R"({"message":"deleted"})");
   EXPECT_EQ(std::nullopt, notes.GetNote("alias1"));

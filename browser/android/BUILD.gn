@@ -80,8 +80,13 @@ source_set("tabs_public") {
   public_deps = [ "//chrome/browser/android:tabs_public" ]
 
   deps = [
+    "//brave/components/brave_ads/buildflags",
+    "//brave/components/brave_news/common/buildflags",
+    "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/playlist/core/common/buildflags",
+    "//brave/components/web_discovery/buildflags",
+    "//third_party/widevine/cdm:buildflags",
   ]
 }
 

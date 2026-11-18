@@ -6,11 +6,16 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_SPLIT_VIEW_BRAVE_MULTI_CONTENTS_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_SPLIT_VIEW_BRAVE_MULTI_CONTENTS_VIEW_H_
 
+#include <optional>
 #include <vector>
 
+#include "base/callback_list.h"
+#include "base/functional/callback.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
+#include "chrome/browser/ui/animation/browser_animation_types.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
+#include "components/split_tabs/split_tab_visual_data.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
 
@@ -19,8 +24,10 @@ FORWARD_DECLARE_TEST(SidebarBrowserWithWebPanelTest, WebPanelTest);
 }  // namespace sidebar
 
 class BraveContentsContainerView;
+class BrowserAnimationController;
 
 namespace views {
+class ResizeArea;
 class WebView;
 }  // namespace views
 
@@ -30,26 +37,60 @@ class BraveMultiContentsView : public MultiContentsView {
  public:
   static BraveMultiContentsView* From(MultiContentsView* view);
 
-  using MultiContentsView::MultiContentsView;
+  BraveMultiContentsView(BrowserView* browser_view,
+                         std::unique_ptr<MultiContentsViewDelegate> delegate);
   ~BraveMultiContentsView() override;
 
-  void SetWebPanelContents(content::WebContents* web_contents);
+  // |animate| asks for the open animation. Only a panel arriving from nothing
+  // should animate: when one panel replaces another the strip keeps its width,
+  // so a collapse and re-expand would just read as a flicker.
+  void SetWebPanelContents(content::WebContents* web_contents,
+                           bool animate = false);
   bool IsWebPanelVisible() const;
 
   void SetWebPanelWidth(int width);
   void SetWebPanelOnLeft(bool left);
 
+  // The panel's visual side, straight from the alignment pref. The layout needs
+  // it to decide which of the panel's edges faces the contents.
+  bool web_panel_on_left() const { return web_panel_on_left_; }
+  void OnWebPanelResize(int resize_amount, bool done_resizing);
+
+  // Starts the close animation and runs |on_finished| when it ends. Returns
+  // false without animating when animations are off, in which case the caller
+  // must close immediately itself.
+  bool StartWebPanelCloseAnimation(base::OnceClosure on_finished);
+
+  // Reverses an in-flight close back to open, keeping the width it reached.
+  void CancelWebPanelCloseAnimation();
+
+  // Drops any animation state so the panel snaps to whatever its visibility
+  // implies. Must be called by every path that changes the panel without
+  // animating, or a persisted mid-motion value would pin the panel at a
+  // fraction of its width.
+  void ResetWebPanelAnimation();
+
   void set_web_panel_active(bool active) { is_web_panel_active_ = active; }
   bool is_web_panel_active_for_testing() const { return is_web_panel_active_; }
   views::View* GetWebPanelContentsViewForTesting() const;
+  // The panel strip as the layout actually sized it, which during an animation
+  // is a fraction of |web_panel_width_|.
+  views::View* GetWebPanelContainerForTesting() const;
+  int web_panel_width_for_testing() const { return web_panel_width_; }
+  views::ResizeArea* web_panel_resize_area_for_testing() const {
+    return web_panel_resize_area_;
+  }
 
   // Notifies the multi-contents view that the browser's active content domain
   // display state has changed.
   void OnShowActiveContentsDomainChanged();
 
-  // Updates the contents area corner radii for the hosted contents areas, based
-  // on the specified corner radii for the multi-contents view as a whole.
-  void UpdateContentsCornerRadii(const gfx::RoundedCornersF& corner_radii);
+  // Applies the corner radii the layout computed: |corner_radii| for the
+  // contents area as a whole, distributed across the panes, and
+  // |web_panel_corner_radii| for the hosted web panel.
+  void UpdateContentsCornerRadii(
+      const gfx::RoundedCornersF& corner_radii,
+      const gfx::RoundedCornersF& web_panel_corner_radii);
 
   // MultiContentsView:
   // Give web panel's ContentsContainerView/ContentsWebView if
@@ -60,11 +101,22 @@ class BraveMultiContentsView : public MultiContentsView {
       content::WebContents* web_contents) const override;
 
  private:
+  friend class BraveMultiContentsViewTest;
   friend class SplitViewBrowserTest;
   friend class SpeedReaderWithSplitViewBrowserTest;
   FRIEND_TEST_ALL_PREFIXES(SplitViewBrowserTest, BraveMultiContentsViewTest);
   FRIEND_TEST_ALL_PREFIXES(sidebar::SidebarBrowserWithWebPanelTest,
                            WebPanelTest);
+
+  // Returns |corner_radii| with the corners that meet the split divider
+  // replaced by the smaller border radius. Which corners those are depends on
+  // |layout|: the divider is vertical for kSideBySide and horizontal for
+  // kStacked.
+  static gfx::RoundedCornersF GetSplitContentsCornerRadii(
+      const gfx::RoundedCornersF& corner_radii,
+      split_tabs::SplitTabLayout layout,
+      bool is_first,
+      bool is_last);
 
   // MultiContentsView:
   views::ProposedLayout CalculateProposedLayout(
@@ -77,7 +129,33 @@ class BraveMultiContentsView : public MultiContentsView {
 
   // Creates the web panel's container on first use.
   void UseContentsContainerViewForWebPanel();
+
+  // Lets the browser view re-evaluate the UI that depends on whether a web
+  // panel is open. Wired as the panel container's visibility-changed callback.
+  void OnWebPanelVisibilityChanged();
+
   int GetWebPanelWidth() const;
+  int GetWebPanelResizeAreaWidth() const;
+
+  BrowserAnimationController* GetAnimationController() const;
+
+  // Fraction of the panel's target width that is currently on screen.
+  double GetWebPanelAnimationValue() const;
+
+  bool ShouldAnimateWebPanel() const;
+
+  void OnWebPanelAnimationProgressed(
+      const BrowserAnimationController* controller,
+      BrowserAnimationUpdate status);
+
+  // True when the web panel occupies the leading (lowest-X) edge in stored
+  // coordinates. Views mirrors stored bounds on paint, so the leading edge
+  // renders on the visual right in RTL; flipping the pref here keeps the panel
+  // on the visual side the user chose. Matches
+  // BraveBrowserViewTabbedLayoutImpl::IsSidebarLeading().
+  bool IsWebPanelLeading() const;
+
+  int ClampWebPanelWidth(int requested_width, int host_width) const;
 
   std::vector<ContentsContainerView*> contents_container_views_for_testing()
       const {
@@ -86,12 +164,24 @@ class BraveMultiContentsView : public MultiContentsView {
   }
 
   int web_panel_width_ = 0;
+
+  // The visual side, straight from the alignment pref. See IsWebPanelLeading().
   bool web_panel_on_left_ = false;
+  std::optional<int> web_panel_width_on_resize_start_;
 
   // true when web panel is activated.
   bool is_web_panel_active_ = false;
   raw_ptr<BraveContentsContainerView> contents_container_view_for_web_panel_ =
       nullptr;
+  raw_ptr<views::ResizeArea> web_panel_resize_area_ = nullptr;
+  base::CallbackListSubscription web_panel_visible_subscription_;
+
+  // Set while the animation controller is notifying us that a motion ended, so
+  // the work that notification triggers does not call back into the
+  // controller. See ResetWebPanelAnimation().
+  bool in_web_panel_animation_notification_ = false;
+  base::OnceClosure web_panel_close_animation_finished_;
+  base::CallbackListSubscription web_panel_animation_subscription_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_SPLIT_VIEW_BRAVE_MULTI_CONTENTS_VIEW_H_

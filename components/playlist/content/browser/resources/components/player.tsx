@@ -12,7 +12,7 @@ import {
   PlaylistItem
 } from 'gen/brave/components/playlist/core/common/mojom/playlist.mojom.m.js'
 
-import { color, font, radius, spacing } from '@brave/leo/tokens/css/variables'
+import { color, font, radius, spacing } from '@brave/nala/tokens/css/variables'
 
 import {
   ApplicationState,

@@ -129,7 +129,6 @@ public class SettingsStore: ObservableObject, WalletObserverStore {
   private let walletService: BraveWalletBraveWalletService
   private let rpcService: BraveWalletJsonRpcService
   private let txService: BraveWalletTxService
-  let ipfsApi: IpfsAPI
   private let keychain: KeychainType
   private var keyringServiceObserver: KeyringServiceObserver?
   private var walletServiceObserver: WalletServiceObserver?
@@ -143,14 +142,12 @@ public class SettingsStore: ObservableObject, WalletObserverStore {
     walletService: BraveWalletBraveWalletService,
     rpcService: BraveWalletJsonRpcService,
     txService: BraveWalletTxService,
-    ipfsApi: IpfsAPI,
     keychain: KeychainType = Keychain()
   ) {
     self.keyringService = keyringService
     self.walletService = walletService
     self.rpcService = rpcService
     self.txService = txService
-    self.ipfsApi = ipfsApi
     self.keychain = keychain
     self.setupObservers()
   }

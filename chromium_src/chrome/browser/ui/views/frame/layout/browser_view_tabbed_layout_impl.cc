@@ -21,45 +21,26 @@ BraveBrowserViewTabbedLayoutImpl::CalculateSeparatorInfo() const {
     return SeparatorInfo();
   }
 
-  // Upstream considers the side panel's visibility when calculating the
-  // separator. When the panel is shown, a shadow is drawn around the contents
-  // (including the infobar), which acts as a separator and hides the actual top
-  // separator. However, our UI still requires the top separator when the panel
-  // is open. To bypass the upstream logic, we temporarily simulate an invisible
-  // panel by setting `side_panel_width` to 0 during the calculation, and
-  // restore the original width immediately afterward.
-  const int cached_side_panel_width =
-      layout_data_->horizontal_layout.side_panel_width;
-  layout_data_->horizontal_layout.side_panel_width = 0;
-
   SeparatorInfo info = BrowserViewTabbedLayoutImpl::CalculateSeparatorInfo();
-
-  layout_data_->horizontal_layout.side_panel_width = cached_side_panel_width;
 
   // Brave manages its own rounded-corners shadow around the contents and side
   // panel via BraveContentsViewUtil. Suppress the upstream shadow overlay (and
   // its accompanying main-area padding) so it doesn't double up.
   info.shadow_box = false;
 
-  const bool rounded =
-      delegate().ShouldUseBraveWebViewRoundedCornersForContents();
-
-  // When the upstream choice is "no top-container separator" (either nothing
-  // at all, or only a multi-contents separator), Brave promotes that to a
-  // full-width top-container separator unless the rounded-corners contents
-  // view is in use - in which case the rounded shape provides the visual
-  // divider and no separator is wanted.
-  if (!info.top_container_separator) {
-    info.top_container_separator = !rounded;
+  if (delegate().ShouldUseBraveWebViewRoundedCornersForContents()) {
+    // Whatever sits below the top container - the infobar card or the contents
+    // view - is rounded and outlined itself, so it already reads as divided
+    // from the top chrome and a separator would just double up.
+    info.top_container_separator = false;
+    info.multi_contents_separator = false;
+  } else if (!info.top_container_separator) {
+    // Brave wants the divider at the top container's edge rather than inside
+    // the multi-contents view, so promote upstream's choice to a full-width
+    // top-container separator.
+    info.top_container_separator = true;
     info.multi_contents_separator = false;
   }
-
-#if BUILDFLAG(IS_MAC)
-  if (layout_data_->window_state == WindowState::kFullscreenWithToolbar &&
-      rounded && !delegate().IsInfobarVisible()) {
-    info.top_container_separator = false;
-  }
-#endif
 
   return info;
 }

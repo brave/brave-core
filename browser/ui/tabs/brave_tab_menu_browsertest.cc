@@ -275,7 +275,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest,
     auto* menu_model = CreateMenuModelAt(menu.get(), 0);
     auto index =
         menu_model->GetIndexOfCommandId(TabStripModel::CommandAddToSplit);
-    EXPECT_TRUE(index.has_value());
+    ASSERT_TRUE(index.has_value());
     EXPECT_FALSE(menu_model->IsNewFeatureAt(*index));
   }
 
@@ -300,7 +300,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest,
     auto* menu_model = CreateMenuModelAt(menu.get(), 2);
     auto index =
         menu_model->GetIndexOfCommandId(TabStripModel::CommandArrangeSplit);
-    EXPECT_TRUE(index.has_value());
+    ASSERT_TRUE(index.has_value());
     EXPECT_FALSE(menu_model->IsNewFeatureAt(*index));
 
     // Execute close tab menu on tab at 2 and check only that active tab is
@@ -420,7 +420,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest,
     auto* menu_model = CreateMenuModelAt(menu.get(), 0);
     auto index = menu_model->GetIndexOfCommandId(
         TabStripModel::CommandSwapWithActiveSplit);
-    EXPECT_TRUE(index.has_value());
+    ASSERT_TRUE(index.has_value());
     EXPECT_FALSE(menu_model->IsNewFeatureAt(*index));
   }
 }

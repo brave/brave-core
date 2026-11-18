@@ -75,6 +75,9 @@ class TestBraveWalletServiceObserverForAssetDiscoveryManager
   GetReceiver() {
     return observer_receiver_.BindNewPipeAndPassRemote();
   }
+  // Waits until every message already sent to this observer was dispatched.
+  void FlushForTesting() { observer_receiver_.FlushForTesting(); }
+
   void Reset() {
     expected_contract_addresses_.clear();
     on_discover_assets_started_fired_ = false;
@@ -163,7 +166,9 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
       EXPECT_TRUE(wallet_service_observer_->OnDiscoverAssetsStartedFired());
       EXPECT_TRUE(wallet_service_observer_->OnDiscoverAssetsCompletedFired());
     } else {
-      task_environment_.RunUntilIdle();
+      // Throttled requests return synchronously; flush the observer pipe so
+      // that any (unexpected) observer notification would be delivered.
+      wallet_service_observer_->FlushForTesting();
       EXPECT_FALSE(wallet_service_observer_->OnDiscoverAssetsStartedFired());
       EXPECT_FALSE(wallet_service_observer_->OnDiscoverAssetsCompletedFired());
     }

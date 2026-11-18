@@ -19,6 +19,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from engine_types import StepPresentation
 from recipe_api import Placeholder
 
 # Distinguishes "no result staged" from a placeholder whose result is None.
@@ -67,6 +68,8 @@ class StepData:
       * `retcode`: the command's exit code.
       * `stdout` / `stderr`: the result of the step's `stdout`/`stderr`
         placeholder, or `None` when the step didn't redirect that handle.
+      * `presentation`: the step's `StepPresentation`, through which it
+        exports output properties.
 
     On top of those, each output placeholder in the step's command contributes
     one attribute, addressed by the placeholder's namespaces (its module and
@@ -93,6 +96,7 @@ class StepData:
         # the `step` module once the step is done.
         self.stdout: Any = None
         self.stderr: Any = None
+        self.presentation = StepPresentation(name)
         # namespaces -> {placeholder name or None: result}, filled in by
         # `assign_placeholder` and turned into real attributes by `finalize`.
         self._staged: dict[tuple[str, str], dict[str | None, Any]] = {}

@@ -5,28 +5,14 @@
 
 #include "brave/ios/browser/api/ipfs/ipfs_api.h"
 
-#include "base/memory/raw_ptr.h"
 #import "brave/base/apple/foundation_util.h"
 #include "brave/components/ipfs/ipfs_utils.h"
-#include "brave/ios/browser/api/ipfs/ipfs_api+private.h"
-#include "components/user_prefs/user_prefs.h"
-#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
-#include "ios/chrome/browser/shared/model/profile/profile_manager_ios.h"
 #import "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
 
-@implementation IpfsAPIImpl {
-  raw_ptr<ProfileIOS> _profile;  // NOT OWNED
-}
+@implementation IpfsAPI
 
-- (instancetype)initWithBrowserState:(ProfileIOS*)profile {
-  if ((self = [super init])) {
-    _profile = profile;
-  }
-  return self;
-}
-
-- (NSURL*)resolveGatewayUrlFor:(NSURL*)input {
++ (NSURL*)resolveGatewayUrlFor:(NSURL*)input {
   GURL input_gurl = net::GURLWithNSURL(input);
   if (!input_gurl.is_valid() && !input_gurl.SchemeIs(ipfs::kIPFSScheme)) {
     return nullptr;
@@ -38,7 +24,7 @@
   return nullptr;
 }
 
-- (NSURL*)resolveGatewayUrlForNft:(NSURL*)input {
++ (NSURL*)resolveGatewayUrlForNft:(NSURL*)input {
   GURL input_gurl = net::GURLWithNSURL(input);
   if (!input_gurl.is_valid() && !input_gurl.SchemeIs(ipfs::kIPFSScheme)) {
     return nullptr;
@@ -50,7 +36,7 @@
   return nullptr;
 }
 
-- (nullable NSURL*)contentHashToCIDv1URLFor:(NSArray<NSNumber*>*)contentHash {
++ (nullable NSURL*)contentHashToCIDv1URLFor:(NSArray<NSNumber*>*)contentHash {
   auto content_hash = brave::ns_to_vector<std::uint8_t>(contentHash);
   GURL gurl = ipfs::ContentHashToCIDv1URL(content_hash);
   return net::NSURLWithGURL(gurl);

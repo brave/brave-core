@@ -8,12 +8,12 @@
 #include <string_view>
 
 #include "base/memory/raw_ptr.h"
-#include "base/run_loop.h"
 #include "base/stl_util.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/permissions/permission_lifetime_pref_names.h"
@@ -259,7 +259,6 @@ TEST_F(PermissionLifetimeManagerTest, SetAndResetAfterExpiration) {
     manager()->PermissionDecided(*request, kOrigin, kOrigin, decision);
     EXPECT_TRUE(timer().IsRunning());
 
-    browser_task_environment_.RunUntilIdle();
     // Setting should be intact.
     ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
                          content_setting);
@@ -306,7 +305,6 @@ TEST_F(PermissionLifetimeManagerTest, DifferentTypePermissions) {
       base::Time::Now() + *request2->GetLifetime();
   manager()->PermissionDecided(*request2, kOrigin2, kOrigin2,
                                PermissionDecision::kAllow);
-  browser_task_environment_.RunUntilIdle();
 
   // Check data stored in prefs.
   CheckExpirationsPref(
@@ -449,7 +447,6 @@ TEST_F(PermissionLifetimeManagerTest, RestoreAfterRestart) {
   // Timer should be running.
   EXPECT_TRUE(timer().IsRunning());
 
-  browser_task_environment_.RunUntilIdle();
   // Setting should be intact.
   ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
                        ContentSetting::CONTENT_SETTING_ALLOW);
@@ -766,7 +763,10 @@ TEST_F(PermissionLifetimeManagerWithOriginMonitorTest,
   // Permission should be reset on the next loop.
   ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
                        ContentSetting::CONTENT_SETTING_ALLOW);
-  browser_task_environment_.RunUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return GetContentSetting(kOrigin, ContentSettingsType::NOTIFICATIONS) ==
+           GetDefaultContentSetting(ContentSettingsType::NOTIFICATIONS);
+  }));
   ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
                        ContentSetting::CONTENT_SETTING_DEFAULT);
 }

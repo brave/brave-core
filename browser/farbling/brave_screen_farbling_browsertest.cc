@@ -108,7 +108,10 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
     extensions::ChromeTestExtensionLoader loader(browser()->GetProfile());
     scoped_refptr<const extensions::Extension> extension =
         loader.LoadExtension(path);
-    EXPECT_TRUE(extension);
+    if (!extension) {
+      ADD_FAILURE() << "Failed to load extension";
+      return std::string();
+    }
     return extension->id();
   }
 
@@ -161,17 +164,22 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
   }
 
   void FarbleScreenSize(const GURL& url, bool content_scheme) {
+    if (!content_scheme) {
+      // Nothing is checked on these pages beyond the navigation, so repeating
+      // it per window size and fingerprinting setting only adds time. Loading
+      // devtools:// is slow enough to hit the test launcher timeout under x64
+      // emulation.
+      ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+      return;
+    }
     for (const auto& test_bounds : kTestWindowBounds) {
       SetBounds(test_bounds);
       for (bool allow_fingerprinting : {false, true}) {
         SetFingerprintingSetting(allow_fingerprinting);
         ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
         for (bool test_iframe : {false, true}) {
-          if (!content_scheme) {
-            continue;
-          }
           content::RenderFrameHost* host = test_iframe ? Parent() : IFrame();
-          if (!allow_fingerprinting && !IsFlagDisabled() && content_scheme) {
+          if (!allow_fingerprinting && !IsFlagDisabled()) {
             EXPECT_GE(8, EvalJs(host, "window.outerWidth - parent.innerWidth"));
             EXPECT_GE(8,
                       EvalJs(host, "window.outerHeight - parent.innerHeight"));
@@ -456,7 +464,7 @@ IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_EnableFlag,
   test_extension_dir.WriteFile(FILE_PATH_LITERAL("popup.html"),
                                "<!doctype html><html>This is a popup</html>");
   std::string extension_id = LoadExtension(test_extension_dir.UnpackedPath());
-  base::RunLoop().RunUntilIdle();  // Ensure the extension is fully loaded.
+  ASSERT_FALSE(extension_id.empty());
   const GURL extension_url("chrome-extension://" + extension_id +
                            "/popup.html");
   FarbleScreenSize(extension_url, false);

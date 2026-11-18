@@ -6,29 +6,31 @@
 #ifndef BRAVE_COMPONENTS_ENDPOINT_CLIENT_BRAVE_ENDPOINT_H_
 #define BRAVE_COMPONENTS_ENDPOINT_CLIENT_BRAVE_ENDPOINT_H_
 
-#include "base/strings/strcat.h"
-#include "brave/brave_domains/service_domains.h"
+#include <string_view>
+
 #include "brave/components/endpoint_client/is_request.h"
 #include "brave/components/endpoint_client/is_response.h"
 #include "brave/components/endpoint_client/static_string.h"
 #include "url/gurl.h"
-#include "url/url_constants.h"
 
 namespace endpoint_client {
 
-template <detail::StaticString Prefix,
-          detail::StaticString Path,
-          detail::IsRequest RequestT,
-          detail::IsResponse ResponseT>
+namespace internal {
+
+GURL MakeBraveServiceURL(std::string_view prefix, std::string_view path);
+
+}  // namespace internal
+
+template <internal::StaticString Prefix,
+          internal::StaticString Path,
+          internal::IsRequest RequestT,
+          internal::IsResponse ResponseT>
 struct BraveEndpoint {
   using Request = RequestT;
   using Response = ResponseT;
 
   static GURL URL() {
-    return GURL(base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,
-                              brave_domains::GetServicesDomain(
-                                  Prefix.value, brave_domains::STAGING)}))
-        .Resolve(Path.value);
+    return internal::MakeBraveServiceURL(Prefix.value, Path.value);
   }
 };
 

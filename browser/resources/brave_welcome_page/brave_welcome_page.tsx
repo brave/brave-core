@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
-import { setIconBasePath } from '@brave/leo/react/icon'
+import { setIconBasePath } from '@brave/nala/react/icon'
 import { ColorChangeUpdater } from 'chrome://resources/cr_components/color_change_listener/colors_css_updater.js'
 
 import { App } from './components/app'

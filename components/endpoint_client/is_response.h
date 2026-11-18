@@ -9,34 +9,35 @@
 #include "brave/components/endpoint_client/is_response_body.h"
 #include "brave/components/endpoint_client/response.h"
 
-namespace endpoint_client::detail {
+namespace endpoint_client::internal {
 
 template <typename>
-inline constexpr bool kIsJSONResponse = false;
+inline constexpr bool kIsResponseWithoutBodies = false;
 
-template <IsJSONResponseBody SuccessBody, IsJSONResponseBody ErrorBody>
-inline constexpr bool kIsJSONResponse<Response<SuccessBody, ErrorBody>> = true;
+// A response without bodies is a Response<> with no body types.
+template <>
+inline constexpr bool kIsResponseWithoutBodies<Response<>> = true;
 
-// A JSON response is a Response<> whose bodies are JSON response bodies.
 template <typename Response>
-concept IsJSONResponse = kIsJSONResponse<Response>;
+concept IsResponseWithoutBodies = kIsResponseWithoutBodies<Response>;
 
 template <typename>
-inline constexpr bool kIsProtobufResponse = false;
+inline constexpr bool kIsResponseWithBodies = false;
 
-template <IsProtobufResponseBody SuccessBody, IsProtobufResponseBody ErrorBody>
-inline constexpr bool kIsProtobufResponse<Response<SuccessBody, ErrorBody>> =
+// A response with bodies is a Response<> with a success and an error response
+// body.
+template <IsResponseBody SuccessBody, IsResponseBody ErrorBody>
+inline constexpr bool kIsResponseWithBodies<Response<SuccessBody, ErrorBody>> =
     true;
 
-// A Protobuf response is a Response<> whose bodies are Protobuf response
-// bodies.
 template <typename Response>
-concept IsProtobufResponse = kIsProtobufResponse<Response>;
+concept IsResponseWithBodies = kIsResponseWithBodies<Response>;
 
-// A response is either a JSON response or a Protobuf response.
+// A response is either a response without bodies or a response with bodies.
 template <typename Response>
-concept IsResponse = IsJSONResponse<Response> || IsProtobufResponse<Response>;
+concept IsResponse =
+    IsResponseWithoutBodies<Response> || IsResponseWithBodies<Response>;
 
-}  // namespace endpoint_client::detail
+}  // namespace endpoint_client::internal
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_IS_RESPONSE_H_

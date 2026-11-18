@@ -157,7 +157,7 @@ IN_PROC_BROWSER_TEST_P(BraveWalletPolicyTest, AppMenuItemDisabled) {
 IN_PROC_BROWSER_TEST_P(BraveWalletPolicyTest, WalletPageAccess) {
   const GURL url("chrome://wallet");
   auto* rfh = ui_test_utils::NavigateToURL(browser(), url);
-  EXPECT_TRUE(rfh);
+  ASSERT_TRUE(rfh);
   EXPECT_EQ(IsBraveWalletDisabledTest(), rfh->IsErrorDocument());
 }
 
@@ -199,7 +199,7 @@ IN_PROC_BROWSER_TEST_P(BraveWalletPolicyTest, Web3SettingsPagesAccess) {
 
   for (const auto& url : web3_urls) {
     auto* rfh = ui_test_utils::NavigateToURL(browser(), url);
-    EXPECT_TRUE(rfh);
+    ASSERT_TRUE(rfh);
 
     if (IsBraveWalletDisabledTest()) {
       // When wallet is disabled, these pages should redirect
@@ -218,7 +218,7 @@ IN_PROC_BROWSER_TEST_P(BraveWalletPolicyTest, Web3MenuVisibility) {
   // Navigate to the main settings page
   const GURL settings_url("chrome://settings");
   auto* rfh = ui_test_utils::NavigateToURL(browser(), settings_url);
-  EXPECT_TRUE(rfh);
+  ASSERT_TRUE(rfh);
   EXPECT_FALSE(rfh->IsErrorDocument());
 
   // Wait for the page to load completely

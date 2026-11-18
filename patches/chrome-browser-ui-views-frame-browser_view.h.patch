@@ -1,16 +1,7 @@
 diff --git a/chrome/browser/ui/views/frame/browser_view.h b/chrome/browser/ui/views/frame/browser_view.h
-index 750e46c97b64dccccf4268e912df5dbdb6516b3c..7d081135836c06af3223e2d90736c82daa2acd12 100644
+index 750e46c97b64dccccf4268e912df5dbdb6516b3c..bd54286200e52ced7c383dd59bf8428efd7cc914 100644
 --- a/chrome/browser/ui/views/frame/browser_view.h
 +++ b/chrome/browser/ui/views/frame/browser_view.h
-@@ -132,7 +132,7 @@ class WebView;
- //  A ClientView subclass that provides the contents of a browser window,
- //  including the TabStrip, toolbars, download shelves, the content area etc.
- //
--class BrowserView : public BrowserWindow,
-+class BrowserView : public BraveBrowserWindow,
-                     public TabStripModelObserver,
-                     public ui::AcceleratorProvider,
-                     public views::WidgetDelegate,
 @@ -203,7 +203,7 @@ class BrowserView : public BrowserWindow,
  
    // Returns information about elements that want to render in the top window

@@ -43,17 +43,16 @@ TEST_F(KeyringServicePrefsUnitTest, GenerateNextAccountIndex) {
     EXPECT_EQ(2u, GenerateNextAccountIndex(GetPrefs(), keyring_id));
   }
 
-  EXPECT_EQ(
-      3, *GetPrefs()
-              ->GetDict(kBraveWalletKeyrings)
-              .FindIntByDottedPath("bitcoin_import_test.next_account_index"));
+  EXPECT_EQ(3,
+            GetPrefs()
+                ->GetDict(kBraveWalletKeyrings)
+                .FindIntByDottedPath("bitcoin_import_test.next_account_index"));
 
   EXPECT_EQ(3u, GenerateNextAccountIndex(GetPrefs(),
                                          mojom::KeyringId::kBitcoinHardware));
-  EXPECT_EQ(4,
-            *GetPrefs()
-                 ->GetDict(kBraveWalletKeyrings)
-                 .FindIntByDottedPath("bitcoin_hardware.next_account_index"));
+  EXPECT_EQ(4, GetPrefs()
+                   ->GetDict(kBraveWalletKeyrings)
+                   .FindIntByDottedPath("bitcoin_hardware.next_account_index"));
 }
 
 TEST_F(KeyringServicePrefsUnitTest, HardwareAccountsForKeyring) {

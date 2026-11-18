@@ -466,6 +466,7 @@ class BuildersRegistryTest(unittest.TestCase):
     def test_defaults_are_applied_and_overridable(self):
         self.builders.defaults.set(
             builder_group='brave.sanitizers',
+            recipe='brave_builder',
             execution_timeout_mins=270,
             channel='nightly',
             notifies=['browser-sanitizers-bot'],
@@ -482,6 +483,7 @@ class BuildersRegistryTest(unittest.TestCase):
             targets=self._targets(),
         )
         self.assertEqual(inherited.builder_group, 'brave.sanitizers')
+        self.assertEqual(inherited.recipe, 'brave_builder')
         self.assertEqual(inherited.execution_timeout_mins, 270)
         self.assertEqual(inherited.channel, 'nightly')
         self.assertEqual(inherited.notifies, ('browser-sanitizers-bot',))
@@ -588,6 +590,38 @@ class BuilderConfigTest(unittest.TestCase):
         gclient_config = builder_config.gclient_config()
         self.assertEqual(gclient_config.target_os, ())
         self.assertEqual(gclient_config.target_cpu, ())
+        self.assertEqual(gclient_config.custom_deps, {})
+        self.assertEqual(gclient_config.custom_vars, {})
+
+    def test_gclient_config_custom_deps_and_vars_are_sorted_and_frozen(self):
+        gclient_config = builder_config.gclient_config(
+            custom_deps={'src/b': None, 'src/a': 'https://a.example/a.git'},
+            custom_vars={'checkout_y': 'value', 'checkout_x': True},
+        )
+        self.assertEqual(list(gclient_config.custom_deps), ['src/a', 'src/b'])
+        self.assertEqual(
+            list(gclient_config.custom_vars.items()),
+            [('checkout_x', True), ('checkout_y', 'value')],
+        )
+        with self.assertRaises(TypeError):
+            gclient_config.custom_vars['checkout_x'] = False
+
+    def test_gclient_config_rejects_invalid_custom_deps_and_vars(self):
+        for kwargs, message in (
+            ({'custom_deps': ['src/a']}, 'custom_deps must be a mapping'),
+            (
+                {'custom_deps': {'src/a': True}},
+                "invalid custom_deps entry: 'src/a'",
+            ),
+            (
+                {'custom_vars': {'checkout_x': None}},
+                'invalid custom_vars entry',
+            ),
+            ({'custom_vars': {1: True}}, 'invalid custom_vars entry: 1'),
+        ):
+            with self.subTest(kwargs=kwargs):
+                with self.assertRaisesRegex(ConfigError, message):
+                    builder_config.gclient_config(**kwargs)
 
     def test_gclient_config_rejects_a_bare_string(self):
         with self.assertRaisesRegex(ConfigError, 'target_os must be a list'):
@@ -663,14 +697,14 @@ class BuilderConfigTest(unittest.TestCase):
 
 
 class CheckBuilderSpecTest(unittest.TestCase):
-    def _builder(self, *, target_os=(), **chromium_config):
+    def _builder(self, *, target_os=(), custom_vars=None, **chromium_config):
         gn_args = GnArgsRegistry()
         builders = BuildersRegistry(gn_args)
         return builders.builder(
             name='b',
             builder_spec=builder_config.builder_spec(
                 gclient_config=builder_config.gclient_config(
-                    target_os=target_os
+                    target_os=target_os, custom_vars=custom_vars
                 ),
                 chromium_config=builder_config.chromium_config(
                     **chromium_config
@@ -728,6 +762,22 @@ class CheckBuilderSpecTest(unittest.TestCase):
                 host_platform='linux',
             ),
             {'target_os': 'android', 'target_cpu': 'arm64'},
+        )
+
+    def test_msan_must_check_out_the_instrumented_libraries(self):
+        gn_args = {'target_os': 'linux', 'target_cpu': 'x64', 'is_msan': True}
+        with self.assertRaisesRegex(
+            ConfigError,
+            'builds with is_msan, but gclient_config custom_vars does not set '
+            'checkout_instrumented_libraries',
+        ):
+            check_builder_spec(self._builder(target_platform='linux'), gn_args)
+        check_builder_spec(
+            self._builder(
+                target_platform='linux',
+                custom_vars={'checkout_instrumented_libraries': True},
+            ),
+            gn_args,
         )
 
 

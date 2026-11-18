@@ -6,6 +6,7 @@
 import("//brave/browser/updater/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/ui/webui/custom_profile_image/buildflags/buildflags.gni")
 import("//ui/webui/webui_features.gni")
 
@@ -15,6 +16,85 @@ source_set("favicon_source_chromium_impl") {
     "//base",
     "//brave/components/constants",
   ]
+}
+
+source_set("brave_webui_source") {
+  sources = [
+    "brave_webui_source.cc",
+    "brave_webui_source.h",
+  ]
+
+  public_deps = [ "//base" ]
+
+  deps = [
+    "//brave/components/tor/buildflags",
+    "//brave/components/webui",
+    "//chrome/browser/profiles:profile",
+    "//content/public/browser",
+    "//services/network/public/mojom",
+    "//ui/base:webui_resource_path",
+  ]
+
+  if (!is_android) {
+    sources += [ "brave_webui_source_desktop.cc" ]
+    deps += [
+      "//chrome/browser/ui:browser_window_header",
+      "//chrome/browser/ui/browser_window",
+      "//chrome/browser/ui/color:color_headers",
+      "//skia",
+      "//ui/color",
+    ]
+  }
+}
+
+source_set("brave_sanitized_image_source") {
+  sources = [
+    "brave_sanitized_image_source.cc",
+    "brave_sanitized_image_source.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//content/public/browser",
+    "//services/data_decoder/public/cpp",
+    "//url",
+  ]
+
+  deps = [
+    "//brave/brave_domains",
+    "//brave/components/brave_private_cdn",
+    "//brave/components/constants",
+    "//chrome/browser/profiles:profile",
+    "//net",
+    "//services/network/public/cpp",
+    "//skia",
+    "//third_party/blink/public/common",
+    "//ui/gfx",
+  ]
+}
+
+source_set("untrusted_sanitized_image_source") {
+  sources = [
+    "untrusted_sanitized_image_source.cc",
+    "untrusted_sanitized_image_source.h",
+  ]
+
+  public_deps = [
+    "//chrome/browser/ui/webui/sanitized_image:sanitized_image_source",
+    "//content/public/browser",
+    "//url",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_wallet/common/buildflags",
+    "//brave/components/constants",
+    "//chrome/common",
+  ]
+
+  if (enable_brave_wallet) {
+    deps += [ "//brave/components/brave_wallet/common:common_constants" ]
+  }
 }
 
 source_set("browser_tests") {
@@ -84,6 +164,8 @@ source_set("unit_tests") {
     "untrusted_sanitized_image_source_unittest.cc",
   ]
   deps = [
+    ":brave_sanitized_image_source",
+    ":untrusted_sanitized_image_source",
     "//base",
     "//base/test:test_support",
     "//brave/browser/ui",

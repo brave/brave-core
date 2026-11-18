@@ -53,17 +53,16 @@ class SearchSuggestionDataSource {
     searchEngines?.defaultEngine(forType: isPrivate ? .privateMode : .standard)
   }
 
+  /// The default engine is pinned first — it is in the row regardless of the disabled list —
+  /// followed by the remaining enabled engines. Leo is prepended separately by the view.
   var quickSearchItems: [QuickSearchItem] {
-    guard let searchEngines else { return [] }
-    var items = searchEngines.quickSearchEngines.map {
-      QuickSearchItem(source: .engine($0))
-    }
-    if let defaultEngine {
-      let defaultID = QuickSearchItemID(engine: defaultEngine)
-      guard !items.contains(where: { $0.id == defaultID }) else { return items }
-      items.insert(QuickSearchItem(source: .engine(defaultEngine)), at: 0)
-    }
-    return items
+    guard let searchEngines, let defaultEngine else { return [] }
+    let others = QuickSearchItem.quickSearchCatalog(
+      from: searchEngines.orderedEngines,
+      excludingDefault: defaultEngine
+    )
+    .filteringQuickSearchDisabled()
+    return [QuickSearchItem(source: .engine(defaultEngine))] + others
   }
 
   // If the user only has a single quick search engine, it is also their default one.

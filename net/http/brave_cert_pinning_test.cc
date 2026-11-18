@@ -5,16 +5,23 @@
 
 #include <algorithm>
 #include <array>
+#include <cmath>
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
+#include <variant>
 #include <vector>
 
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/run_loop.h"
+#include "base/strings/strcat.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_timeouts.h"
 #include "base/threading/platform_thread.h"
 #include "base/time/time.h"
+#include "base/timer/timer.h"
 #include "build/build_config.h"
 #include "net/base/net_errors.h"
 #include "net/base/request_priority.h"
@@ -57,10 +64,25 @@ namespace {
 
 namespace brave {
 
+struct Inconclusive {
+  std::string reason;
+};
+using CheckResult = std::variant<testing::AssertionResult, Inconclusive>;
+
+// Maximum fraction of hosts in this process (excluding kSkippedHosts) that
+// may be skipped as inconclusive. Further inconclusive hosts fail instead.
+//
+// By default, each test runner gets 10 hosts to process. Some of those will be
+// kSkippedHosts. A value of .4 allows 4 inconclusive results if none are
+// kSkippedHosts, and 2 inconconclusive results if half are kSkippedHosts.
+constexpr double kMaxInconclusiveFraction = 0.4;
+
 class BraveCertPinningTest : public testing::TestWithParam<std::string_view> {
  protected:
   BraveCertPinningTest()
       : task_environment_(base::test::TaskEnvironment::MainThreadType::IO) {}
+
+  static void SetUpTestSuite();
 
   void SetUp() override {
     // Build a minimal context for the fetcher's own requests (AIA, OCSP, CRL).
@@ -101,16 +123,25 @@ class BraveCertPinningTest : public testing::TestWithParam<std::string_view> {
 
   // Performs a single GET request to the host and checks if the pinning
   // result (success or failure) matches the expectation.
-  testing::AssertionResult CheckHostOnce(const std::string& host,
-                                         bool expect_pin_failure) {
+  CheckResult CheckHostOnce(const std::string& host, bool expect_pin_failure) {
+    // Set up a TestDelegate and RunLoop to make the attempt, but impose a
+    // timeout *half* the duration of the Test Suite's `action_timeout`. This is
+    // to make sure our timeout hits, instead of the Test Suite's timout. If the
+    // Test Suite timeout hits, it records a failure, which prevents us from
+    // opting to record as skipped for hung hosts.
     net::TestDelegate delegate;
     GURL url(base::StrCat(
         {url::kHttpsScheme, url::kStandardSchemeSeparator, host, "/"}));
     auto request = context_->CreateRequest(
         url, net::DEFAULT_PRIORITY, &delegate, TRAFFIC_ANNOTATION_FOR_TESTS,
         net::handles::kInvalidNetworkHandle);
+    base::RunLoop run_loop;
+    delegate.set_on_complete(run_loop.QuitClosure());
+    base::OneShotTimer timeout;
+    timeout.Start(FROM_HERE, TestTimeouts::action_timeout() / 2,
+                  run_loop.QuitClosure());
     request->Start();
-    delegate.RunUntilComplete();
+    run_loop.Run();
 
     // Certificate errors surface via OnSSLCertificateError() during the TLS
     // handshake. TestDelegate records the net error there and then cancels the
@@ -129,55 +160,86 @@ class BraveCertPinningTest : public testing::TestWithParam<std::string_view> {
             << (is_pin_failure ? " [pin violated]" : "")
             << (expect_pin_failure ? " (expected pin failure)" : "");
 
+    testing::AssertionResult result = testing::AssertionSuccess();
     if (expect_pin_failure) {
       if (is_pin_failure) {
-        return testing::AssertionSuccess();
+        return result;
       }
-      return testing::AssertionFailure()
-             << "Expected pinning failure, got status="
-             << net::ErrorToShortString(status)
-             << ", code=" << delegate.response_code().value_or(0)
-             << ", cert_net_error=" << net::ErrorToShortString(cert_net_error);
+      result =
+          testing::AssertionFailure()
+          << "Expected pinning failure, got status="
+          << net::ErrorToShortString(status)
+          << ", code=" << delegate.response_code().value_or(0)
+          << ", cert_net_error=" << net::ErrorToShortString(cert_net_error);
+    } else {
+      // Only conclusively healthy if the request completes cleanly.
+      if (status == net::OK) {
+        return result;
+      }
+      result =
+          testing::AssertionFailure()
+          << "Expected success, got status=" << net::ErrorToShortString(status)
+          << ", cert_net_error=" << net::ErrorToShortString(cert_net_error);
     }
 
-    // A pinned host is only healthy if the request completed cleanly. Merely
-    // not tripping the pin check is not enough -- a DNS failure or an unrelated
-    // certificate error would otherwise be reported as a pass.
-    if (status == net::OK) {
-      return testing::AssertionSuccess();
+    // We have a failure, but we treat certain categories of failure as
+    // inconclusive. Specifically, ERR_IO_PENDING is a result we see frequently
+    // due to hosts being periodically very slow to respond, therefore hitting
+    // the timeout we use above. It isn't a definitive failure, nor is it a
+    // success.
+    //
+    // See CheckHostWithRetry for how inconclusive results are handled.
+    if (status == net::ERR_IO_PENDING) {
+      return Inconclusive{result.message()};
     }
-    return testing::AssertionFailure()
-           << "Expected success, got status=" << net::ErrorToShortString(status)
-           << ", cert_net_error=" << net::ErrorToShortString(cert_net_error);
+    return result;
   }
 
   // Retries the pinning check per the backoff schedule: 0s, 0s, 2s.
   // Returns the last attempt's result if any attempt matched the
-  // expectation, otherwise returns the final failure.
-  testing::AssertionResult CheckHostWithRetry(const std::string& host,
-                                              bool expect_pin_failure) {
+  // expectation, otherwise returns the last failure if any, or the last
+  // Inconclusive result if all results were Inconclusive.
+  CheckResult CheckHostWithRetry(const std::string& host,
+                                 bool expect_pin_failure) {
     const int max_attempts = 3;
     // Delays (in seconds) before each attempt: no delay for attempts 1&2, then
     // 2s.
     const std::array<int, 3> delay_seconds_cfg = {0, 0, 2};
     static_assert(delay_seconds_cfg.size() == max_attempts);
 
-    testing::AssertionResult result = testing::AssertionFailure();
+    std::optional<testing::AssertionResult> last_failure;
+    Inconclusive last_inconclusive;
     for (int attempt = 0; attempt < max_attempts; ++attempt) {
       auto delay_seconds = delay_seconds_cfg[attempt];
       if (delay_seconds > 0) {
         base::PlatformThread::Sleep(base::Seconds(delay_seconds));
       }
 
-      result = CheckHostOnce(host, expect_pin_failure);
-      if (result) {
-        return result;  // Success on this attempt.
+      CheckResult result = CheckHostOnce(host, expect_pin_failure);
+      if (auto* inconclusive = std::get_if<Inconclusive>(&result)) {
+        LOG(WARNING) << "Attempt " << (attempt + 1) << " for " << host
+                     << " inconclusive: " << inconclusive->reason;
+        last_inconclusive = std::move(*inconclusive);
+        continue;
+      }
+
+      auto& assertion = std::get<testing::AssertionResult>(result);
+      if (assertion) {
+        return assertion;  // Success on this attempt.
       }
 
       LOG(WARNING) << "Attempt " << (attempt + 1) << " for " << host
-                   << " failed: " << result.message();
+                   << " failed: " << assertion.message();
+      last_failure = std::move(assertion);
     }
-    return result;  // All attempts failed; return the last failure.
+
+    // Retries are exhausted and we have 3 failures and/or inconclusive results.
+    // If there are *any* failures, report failure. If all results are
+    // inconclusive, report inconclusive.
+    if (last_failure) {
+      return *std::move(last_failure);
+    }
+    return last_inconclusive;
   }
 
   void TearDown() override {
@@ -186,6 +248,11 @@ class BraveCertPinningTest : public testing::TestWithParam<std::string_view> {
     // that Shutdown() already ran.
     cert_net_fetcher_->Shutdown();
   }
+
+  // The test launcher runs batches of tests in separate processes, so these
+  // are per-batch, not per-suite.
+  static inline int inconclusive_count_ = 0;
+  static inline int inconclusive_limit_ = 0;
 
   base::test::TaskEnvironment task_environment_;
   scoped_refptr<net::CertNetFetcherURLRequest> cert_net_fetcher_;
@@ -227,9 +294,8 @@ std::vector<std::string_view> GetPinnedHosts() {
 
 // gtest test names may only contain [A-Za-z0-9_], and hostnames are full of
 // dots and dashes.
-std::string HostToTestName(
-    const testing::TestParamInfo<std::string_view>& info) {
-  std::string name(info.param);
+std::string SanitizeTestName(std::string_view host) {
+  std::string name(host);
   std::ranges::replace_if(
       name,
       [](char c) {
@@ -240,6 +306,36 @@ std::string HostToTestName(
   return name;
 }
 
+std::string HostToTestName(
+    const testing::TestParamInfo<std::string_view>& info) {
+  return SanitizeTestName(info.param);
+}
+
+bool IsSkippedHostTest(const testing::TestInfo& info) {
+  // Parameterized test names have the form "PinValidates/<SanitizeTestName>".
+  std::string_view name = info.name();
+  name.remove_prefix(name.find('/') + 1);
+  return std::ranges::any_of(kSkippedHosts, [name](std::string_view host) {
+    return SanitizeTestName(host) == name;
+  });
+}
+
+// static
+void BraveCertPinningTest::SetUpTestSuite() {
+  const testing::TestSuite* suite =
+      testing::UnitTest::GetInstance()->current_test_suite();
+  int host_count = 0;
+  for (int i = 0; i < suite->total_test_count(); ++i) {
+    const testing::TestInfo* info = suite->GetTestInfo(i);
+    if (info->should_run() && !IsSkippedHostTest(*info)) {
+      ++host_count;
+    }
+  }
+  inconclusive_count_ = 0;
+  inconclusive_limit_ =
+      static_cast<int>(std::ceil(kMaxInconclusiveFraction * host_count));
+}
+
 TEST_P(BraveCertPinningTest, PinValidates) {
   const std::string host(GetParam());
 
@@ -247,8 +343,19 @@ TEST_P(BraveCertPinningTest, PinValidates) {
     GTEST_SKIP() << "Host is in kSkippedHosts";
   }
 
-  EXPECT_TRUE(CheckHostWithRetry(host, GetParam() == kUnpinnedTestHost))
-      << host;
+  CheckResult result =
+      CheckHostWithRetry(host, GetParam() == kUnpinnedTestHost);
+  if (auto* inconclusive = std::get_if<Inconclusive>(&result)) {
+    if (++inconclusive_count_ > inconclusive_limit_) {
+      ADD_FAILURE() << host << ": " << inconclusive->reason
+                    << " (would be skipped, but this test runner exceeded its "
+                       "limit of "
+                    << inconclusive_limit_ << " inconclusive hosts)";
+      return;
+    }
+    GTEST_SKIP() << host << ": " << inconclusive->reason;
+  }
+  EXPECT_TRUE(std::get<testing::AssertionResult>(result)) << host;
 }
 
 INSTANTIATE_TEST_SUITE_P(All,

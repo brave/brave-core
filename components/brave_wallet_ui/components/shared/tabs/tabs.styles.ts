@@ -6,7 +6,7 @@
 import styled from 'styled-components'
 // Shared Styles
 import { Text, WalletButton } from '../style'
-import * as leo from '@brave/leo/tokens/css/variables'
+import * as leo from '@brave/nala/tokens/css/variables'
 
 export const StyledWrapper = styled.div`
   display: flex;

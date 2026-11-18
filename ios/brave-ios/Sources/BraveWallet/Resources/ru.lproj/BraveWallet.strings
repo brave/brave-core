@@ -364,21 +364,6 @@
 /* The singular word that will be used in `manageSiteConnectionsAccount`. */
 "wallet.dappsSettingsWebsiteSingular" = "сайт";
 
-/* The message displayed when the user takes a screenshot of their dapp decrypt request. */
-"wallet.decryptMessageScreenshotDetectedMessage" = "Внимание! Копия скриншота может сохраниться в облачном сервисе. В таком случае у любого приложения для просмотра фото будет к ней доступ. Мы рекомендуем удалить скриншот как можно скорее.";
-
-/* The title of the button to approve a decrypt request from a dapps website. */
-"wallet.decryptRequestApprove" = "Разрешить";
-
-/* The title of the button to show the message of a decrypt request from a dapps website. */
-"wallet.decryptRequestReveal" = "Показать";
-
-/* A subtitle of the view shown over a dapps website that requests the user decrypt a message. */
-"wallet.decryptRequestSubtitle" = "Для выполнения запроса приложению DApp нужен доступ к этому сообщению";
-
-/* A title of the view shown over a dapps website that requests the user decrypt a message. */
-"wallet.decryptRequestTitle" = "Запрос на расшифровку";
-
 /* The default account name when adding an account and not entering a custom name. '%@' refers to a coin type and '%lld' refers to a number (for example "Ethereum Account 2") */
 "wallet.defaultAccountName" = "Аккаунт %1$@ № %2lld";
 
@@ -549,18 +534,6 @@
 
 /* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
 "wallet.gasFeePredefinedLimitOptimal" = "Оптимальный";
-
-/* The title of the button to approve a encryption public key request from a dapps website. */
-"wallet.getEncryptionPublicKeyRequestApprove" = "Предоставить";
-
-/* The text shown beside the URL origin of a get public encryption key request from a dapp site. Ex 'https://brave.com is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.' */
-"wallet.getEncryptionPublicKeyRequestMessage" = "запрашивает открытый ключ шифрования вашего кошелька. Если вы дадите согласие, этот сайт сможет отправлять вам зашифрованные сообщения.";
-
-/* A subtitle of the view shown over a dapps website that requests the users public encryption key. */
-"wallet.getEncryptionPublicKeyRequestSubtitle" = "DApp запрашивает открытый ключ шифрования";
-
-/* A title of the view shown over a dapps website that requests the users public encryption key. */
-"wallet.getEncryptionPublicKeyRequestTitle" = "Запрос на открытый ключ шифрования";
 
 /* The title of the Help Center option inside the menu when user clicks the three dots button beside assets search button or on wallet panel. */
 "wallet.helpCenter" = "Справочный центр";

@@ -36,6 +36,7 @@
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -73,6 +74,10 @@
 #else
 #include "brave/browser/brave_shields/filter_list_service_factory.h"
 #include "brave/browser/ntp_background/android/ntp_background_images_bridge.h"
+#endif
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/browser/history_embeddings/history_embeddings_service_factory.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -117,6 +122,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
+#include "brave/browser/psst/psst_log_service_factory.h"
 #include "brave/browser/psst/psst_reporter_service_factory.h"
 #include "brave/browser/psst/psst_settings_service_factory.h"
 #endif
@@ -240,6 +246,10 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 
   brave_search::BackupResultsServiceFactory::GetInstance();
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  brave_history_embeddings::HistoryEmbeddingsServiceFactory::GetInstance();
+#endif
+
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   web_discovery::WebDiscoveryServiceFactory::GetInstance();
 #endif
@@ -266,6 +276,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #if BUILDFLAG(ENABLE_PSST)
   PsstSettingsServiceFactory::GetInstance();
   PsstReporterServiceFactory::GetInstance();
+  PsstLogServiceFactory::GetInstance();
 #endif  // BUILDFLAG(ENABLE_PSST)
 
   serp_metrics::SerpMetricsServiceFactory::GetInstance();

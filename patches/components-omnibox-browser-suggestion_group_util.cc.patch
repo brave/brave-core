@@ -1,8 +1,17 @@
 diff --git a/components/omnibox/browser/suggestion_group_util.cc b/components/omnibox/browser/suggestion_group_util.cc
-index 9f099ea1319a768f313dc12937e88e6c953edd1a..8fbaf39b327ab36c29233b8c74366bdf8de369f5 100644
+index 9f099ea1319a768f313dc12937e88e6c953edd1a..86bde3d51eb69e09aa8da6afe4ecae0f2b2e3b52 100644
 --- a/components/omnibox/browser/suggestion_group_util.cc
 +++ b/components/omnibox/browser/suggestion_group_util.cc
-@@ -69,7 +69,14 @@ const GroupConfigMap& BuildDefaultGroups() {
+@@ -8,6 +8,8 @@
+ 
+ #include "base/feature_list.h"
+ #include "base/lazy_instance.h"
++#include "brave/components/commander/common/buildflags/buildflags.h"
++#include "components/grit/brave_components_strings.h"
+ #include "components/omnibox/browser/autocomplete_input.h"
+ #include "components/omnibox/browser/match_compare.h"
+ #include "components/omnibox/browser/omnibox_field_trial.h"
+@@ -69,7 +71,14 @@ const GroupConfigMap& BuildDefaultGroups() {
          {GROUP_MOBILE_RICH_ANSWER,
           CreateGroup(SECTION_SEARCH)},
          {GROUP_SEARCH, CreateGroup(SECTION_SEARCH)},

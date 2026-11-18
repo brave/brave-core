@@ -8,9 +8,7 @@
 
 #include <string_view>
 
-#include "base/check.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/strings/strcat.h"
 #include "brave/components/endpoint_client/is_request.h"
 #include "brave/components/endpoint_client/is_response.h"
 #include "net/http/http_request_headers.h"
@@ -18,33 +16,38 @@
 
 namespace endpoint_client {
 
+namespace internal {
+
+void SetBearerToken(net::HttpRequestHeaders& headers,
+                    std::string_view bearer_token);
+
+}  // namespace internal
+
 template <typename T>
 struct WithHeaders {
   static_assert(false,
-                "T must satisfy detail::IsRequest or detail::IsResponse!");
+                "T must satisfy internal::IsRequest or internal::IsResponse!");
 };
 
 // Wrapper that extends an IsRequest type T
 // with an additional net::HttpRequestHeaders member.
-template <detail::IsRequest T>
+template <internal::IsRequest T>
 struct WithHeaders<T> : T {
   net::HttpRequestHeaders headers;
 };
 
 // Wrapper that extends an IsResponse type T
 // with an additional scoped_refptr<net::HttpResponseHeaders> member.
-template <detail::IsResponse T>
+template <internal::IsResponse T>
 struct WithHeaders<T> : T {
   scoped_refptr<net::HttpResponseHeaders> headers;
 };
 
 // Helper function to set the Authorization header with a Bearer token.
 // The bearer_token must be non-empty.
-template <detail::IsRequest T>
+template <internal::IsRequest T>
 void SetBearerToken(WithHeaders<T>& request, std::string_view bearer_token) {
-  CHECK(!bearer_token.empty());
-  request.headers.SetHeader(net::HttpRequestHeaders::kAuthorization,
-                            base::StrCat({"Bearer ", bearer_token}));
+  internal::SetBearerToken(request.headers, bearer_token);
 }
 
 }  // namespace endpoint_client

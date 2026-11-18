@@ -560,7 +560,6 @@ TEST_F(ConversationHandlerUnitTest, State) {
   for (bool should_send_content : {false, true}) {
     SCOPED_TRACE(testing::Message()
                  << "should_send_content: " << should_send_content);
-    base::RunLoop run_loop;
     if (!should_send_content) {
       conversation_handler_->associated_content_manager()->ClearContent();
     } else {
@@ -571,19 +570,14 @@ TEST_F(ConversationHandlerUnitTest, State) {
                   ->HasAssociatedContent(),
               should_send_content);
     EXPECT_FALSE(conversation_handler_->HasAnyHistory());
-    conversation_handler_->GetState(
-        base::BindLambdaForTesting([&](mojom::ConversationStatePtr state) {
-          EXPECT_EQ(state->conversation_uuid, "uuid");
-          EXPECT_FALSE(state->is_request_in_progress);
-          EXPECT_EQ(state->all_models.size(),
-                    model_service_->GetModels().size());
-          EXPECT_EQ(state->current_model_key,
-                    model_service_->GetDefaultModelKey());
-          EXPECT_NE(state->associated_content.empty(), should_send_content);
-          EXPECT_EQ(state->error, mojom::APIError::None);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    mojom::ConversationStatePtr state = GetState();
+    ASSERT_TRUE(state);
+    EXPECT_EQ(state->conversation_uuid, "uuid");
+    EXPECT_FALSE(state->is_request_in_progress);
+    EXPECT_EQ(state->all_models.size(), model_service_->GetModels().size());
+    EXPECT_EQ(state->current_model_key, model_service_->GetDefaultModelKey());
+    EXPECT_NE(state->associated_content.empty(), should_send_content);
+    EXPECT_EQ(state->error, mojom::APIError::None);
 
     auto entries_state =
         conversation_handler_->GetStateForConversationEntriesForTesting();
@@ -662,6 +656,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
       std::nullopt /* model_key */, nullptr /* near_verification_status */,
       std::vector<std::string>{} /* child_thread_uuids */));
 
+  base::RunLoop request_complete_loop;
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
   // Human, AI entries and content event for AI response.
@@ -671,8 +666,11 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
   EXPECT_CALL(client,
               OnConversationHistoryUpdate(TurnEq(expected_history[1].get())))
       .Times(2);
-  // Fired from OnEngineCompletionComplete.
-  EXPECT_CALL(client, OnAPIRequestInProgress(false)).Times(testing::AtLeast(1));
+  // Fired from OnEngineCompletionComplete, after all history updates.
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .Times(testing::AtLeast(1))
+      .WillRepeatedly(testing::InvokeWithoutArgs(&request_complete_loop,
+                                                 &base::RunLoop::Quit));
   // Ensure everything is sanitized
   EXPECT_CALL(*engine, SanitizeInput(StrEq(selected_text)));
   EXPECT_CALL(*engine, SanitizeInput(StrEq(expected_turn_text)));
@@ -683,7 +681,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
   conversation_handler_->SubmitSelectedText(
       selected_text, mojom::ActionType::SUMMARIZE_SELECTED_TEXT);
 
-  task_environment_.RunUntilIdle();
+  request_complete_loop.Run();
   testing::Mock::VerifyAndClearExpectations(&client);
   testing::Mock::VerifyAndClearExpectations(associated_content_.get());
   // article_text_ and suggestions_ should be cleared when page content is
@@ -746,6 +744,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithNEARVerification) {
       std::nullopt /* model_key */, mojom::NEARVerificationStatus::New(true),
       std::vector<std::string>{} /* child_thread_uuids */));
 
+  base::RunLoop request_complete_loop;
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
   EXPECT_CALL(client, OnConversationHistoryUpdate(
@@ -754,14 +753,17 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithNEARVerification) {
   EXPECT_CALL(client,
               OnConversationHistoryUpdate(TurnEq(expected_history[1].get())))
       .Times(3);
-  EXPECT_CALL(client, OnAPIRequestInProgress(false)).Times(testing::AtLeast(1));
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .Times(testing::AtLeast(1))
+      .WillRepeatedly(testing::InvokeWithoutArgs(&request_complete_loop,
+                                                 &base::RunLoop::Quit));
   EXPECT_CALL(*engine, SanitizeInput(StrEq(selected_text)));
   EXPECT_CALL(*engine, SanitizeInput(StrEq(expected_turn_text)));
 
   conversation_handler_->SubmitSelectedText(
       selected_text, mojom::ActionType::SUMMARIZE_SELECTED_TEXT);
 
-  task_environment_.RunUntilIdle();
+  request_complete_loop.Run();
   testing::Mock::VerifyAndClearExpectations(&client);
 
   EXPECT_TRUE(conversation_handler_->HasAnyHistory());
@@ -824,6 +826,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
       std::nullopt /* model_key */, nullptr /* near_verification_status */,
       std::vector<std::string>{} /* child_thread_uuids */));
 
+  base::RunLoop request_complete_loop;
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
   // Human and AI entries, and content event for AI response.
@@ -833,8 +836,11 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
   EXPECT_CALL(client,
               OnConversationHistoryUpdate(TurnEq(expected_history[1].get())))
       .Times(2);
-  // Fired from OnEngineCompletionComplete.
-  EXPECT_CALL(client, OnAPIRequestInProgress(false)).Times(testing::AtLeast(1));
+  // Fired from OnEngineCompletionComplete, after all history updates.
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .Times(testing::AtLeast(1))
+      .WillRepeatedly(testing::InvokeWithoutArgs(&request_complete_loop,
+                                                 &base::RunLoop::Quit));
   // Ensure everything is sanitized.
   EXPECT_CALL(*engine, SanitizeInput(StrEq(selected_text)));
   EXPECT_CALL(*engine, SanitizeInput(StrEq(expected_turn_text)));
@@ -844,7 +850,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
   conversation_handler_->SubmitSelectedText(
       selected_text, mojom::ActionType::SUMMARIZE_SELECTED_TEXT);
 
-  task_environment_.RunUntilIdle();
+  request_complete_loop.Run();
   testing::Mock::VerifyAndClearExpectations(&client);
 
   // associated info should be unchanged
@@ -857,7 +863,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
   // Should not be any LLM-generated suggested questions yet because they
   // weren't asked for
   const auto& questions = conversation_handler_->GetSuggestedQuestionsForTest();
-  EXPECT_EQ(1u, questions.size());
+  ASSERT_EQ(1u, questions.size());
   EXPECT_EQ(questions[0].title, "Summarize this page");
 
   const auto& history = conversation_handler_->GetConversationHistory();
@@ -894,7 +900,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   WaitForAssociatedContentFetch(conversation->associated_content_manager());
   auto cached_content =
       conversation->associated_content_manager()->GetCachedContents();
-  EXPECT_EQ(cached_content.size(), 2u);
+  ASSERT_EQ(cached_content.size(), 2u);
   EXPECT_EQ(cached_content[0].get().content, "Content 1");
   EXPECT_EQ(cached_content[1].get().content, "Content 2");
 }
@@ -925,7 +931,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   WaitForAssociatedContentFetch(conversation->associated_content_manager());
   auto cached_content =
       conversation->associated_content_manager()->GetCachedContents();
-  EXPECT_EQ(cached_content.size(), 1u);
+  ASSERT_EQ(cached_content.size(), 1u);
   EXPECT_EQ(cached_content[0].get().content, "Content 1");
 }
 
@@ -965,7 +971,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
       conversation_handler_->associated_content_manager());
   auto cached_content =
       conversation_handler_->associated_content_manager()->GetCachedContents();
-  EXPECT_EQ(cached_content.size(), 2u);
+  ASSERT_EQ(cached_content.size(), 2u);
   EXPECT_EQ(cached_content[0].get().content, "Content 1");
   EXPECT_EQ(cached_content[1].get().content, "Content 2");
 
@@ -983,7 +989,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
       conversation_handler_->associated_content_manager());
   cached_content =
       conversation_handler_->associated_content_manager()->GetCachedContents();
-  EXPECT_EQ(cached_content.size(), 1u);
+  ASSERT_EQ(cached_content.size(), 1u);
   EXPECT_EQ(cached_content[0].get().content, "Content 2");
 }
 
@@ -1099,7 +1105,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
       conversation_handler_->associated_content_manager());
   auto cached_content =
       conversation_handler_->associated_content_manager()->GetCachedContents();
-  EXPECT_EQ(cached_content.size(), 2u);
+  ASSERT_EQ(cached_content.size(), 2u);
   EXPECT_EQ(cached_content[0].get().content, "Content 1");
   EXPECT_EQ(cached_content[1].get().content, "Content 2");
 
@@ -1111,7 +1117,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
       conversation_handler_->associated_content_manager());
   cached_content =
       conversation_handler_->associated_content_manager()->GetCachedContents();
-  EXPECT_EQ(cached_content.size(), 2u);
+  ASSERT_EQ(cached_content.size(), 2u);
   EXPECT_EQ(cached_content[0].get().content, "Content 1");
   EXPECT_EQ(cached_content[1].get().content, "Content 2");
 
@@ -1124,7 +1130,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
       conversation_handler_->associated_content_manager());
   cached_content =
       conversation_handler_->associated_content_manager()->GetCachedContents();
-  EXPECT_EQ(cached_content.size(), 2u);
+  ASSERT_EQ(cached_content.size(), 2u);
   EXPECT_EQ(cached_content[0].get().content, "Content 1");
   EXPECT_EQ(cached_content[1].get().content, "Content 2");
 }
@@ -1154,7 +1160,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
             2u);
   auto cached_content =
       conversation_handler_->associated_content_manager()->GetCachedContents();
-  EXPECT_EQ(cached_content.size(), 2u);
+  ASSERT_EQ(cached_content.size(), 2u);
   EXPECT_EQ(cached_content[0].get().content, "The content of one");
   EXPECT_EQ(cached_content[1].get().content, "The content of two");
 }
@@ -2433,13 +2439,15 @@ TEST_F(ConversationHandlerUnitTest, RegenerateAnswer) {
 
   // Verify the conversation has only 2 entries now (original question + new
   // answer)
-  EXPECT_EQ(conversation_history.size(), 2u);
+  ASSERT_EQ(conversation_history.size(), 2u);
 
   // Verify the human entry model_key was set correctly
-  EXPECT_EQ(conversation_history[0]->model_key.value_or(""), new_model_key);
+  ASSERT_TRUE(conversation_history[0]->model_key.has_value());
+  EXPECT_EQ(*conversation_history[0]->model_key, new_model_key);
 
   // Verify the assistant entry has the new model_key
-  EXPECT_EQ(conversation_history[1]->model_key.value(), new_model_key);
+  ASSERT_TRUE(conversation_history[1]->model_key.has_value());
+  EXPECT_EQ(*conversation_history[1]->model_key, new_model_key);
 
   // Verify the answer content
   EXPECT_EQ(conversation_history[1]->text, "regenerated answer");
@@ -2523,7 +2531,7 @@ TEST_F(ConversationHandlerUnitTest,
         EXPECT_FALSE(site_info.empty());
       }));
 
-  task_environment_.RunUntilIdle();
+  client.FlushForTesting();
   testing::Mock::VerifyAndClearExpectations(associated_content_.get());
   testing::Mock::VerifyAndClearExpectations(&observer);
   testing::Mock::VerifyAndClearExpectations(&client);
@@ -2567,7 +2575,7 @@ TEST_F(ConversationHandlerUnitTest,
 
   conversation_handler_->associated_content_manager()->ClearContent();
 
-  task_environment_.RunUntilIdle();
+  client.FlushForTesting();
   testing::Mock::VerifyAndClearExpectations(&client);
   testing::Mock::VerifyAndClearExpectations(associated_content_.get());
 
@@ -2594,7 +2602,7 @@ TEST_F(ConversationHandlerUnitTest,
         EXPECT_FALSE(site_info.empty());
       }));
 
-  task_environment_.RunUntilIdle();
+  client.FlushForTesting();
   testing::Mock::VerifyAndClearExpectations(associated_content_.get());
   testing::Mock::VerifyAndClearExpectations(&observer);
   testing::Mock::VerifyAndClearExpectations(&client);
@@ -2666,6 +2674,12 @@ TEST_F(ConversationHandlerUnitTest,
                   std::nullopt /* model_key */)))));
 
   EXPECT_CALL(observer, OnConversationEntryAdded).Times(6);
+  base::RunLoop request_complete_loop;
+  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(testing::AnyNumber());
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .WillOnce(testing::InvokeWithoutArgs(&request_complete_loop,
+                                           &base::RunLoop::Quit))
+      .WillRepeatedly(testing::Return());
   EXPECT_CALL(client, OnConversationHistoryUpdate(
                           TurnEq(mojom::ConversationTurnPtr().get())))
       .Times(testing::AtLeast(1));
@@ -2684,7 +2698,7 @@ TEST_F(ConversationHandlerUnitTest,
 
   conversation_handler_->SubmitHumanConversationEntry("query3", std::nullopt);
 
-  task_environment_.RunUntilIdle();
+  request_complete_loop.Run();
   testing::Mock::VerifyAndClearExpectations(&client);
   testing::Mock::VerifyAndClearExpectations(&observer);
   testing::Mock::VerifyAndClearExpectations(associated_content_.get());
@@ -2703,7 +2717,7 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_CALL(client, OnConversationHistoryUpdate(_)).Times(0);
   EXPECT_TRUE(conversation_handler_->IsAnyClientConnected());
 
-  task_environment_.RunUntilIdle();
+  client.FlushForTesting();
   testing::Mock::VerifyAndClearExpectations(conversation_handler_.get());
   testing::Mock::VerifyAndClearExpectations(&client);
 
@@ -2743,7 +2757,7 @@ TEST_F(
   SetAssociatedContentStagedEntries(/*empty=*/false, /*multi=*/true);
 
   conversation_handler_->MaybeFetchOrClearContentStagedConversation();
-  task_environment_.RunUntilIdle();
+  client.FlushForTesting();
 
   testing::Mock::VerifyAndClearExpectations(associated_content_.get());
   testing::Mock::VerifyAndClearExpectations(&client);
@@ -2771,14 +2785,12 @@ TEST_F(ConversationHandlerUnitTest,
   std::vector<SearchQuerySummary> entries = {{"query", "summary"},
                                              {"query2", "summary2"}};
   conversation_handler_->OnGetStagedEntriesFromContent(entries);
-  task_environment_.RunUntilIdle();
   EXPECT_EQ(conversation_handler_->GetConversationHistory().size(), 0u);
 
   // No staged entries if should_send_page_contents_ is false.
   conversation_handler_->SetRequestInProgressForTesting(false);
   conversation_handler_->MaybeUnlinkAssociatedContent();
   conversation_handler_->OnGetStagedEntriesFromContent(entries);
-  task_environment_.RunUntilIdle();
   EXPECT_EQ(conversation_handler_->GetConversationHistory().size(), 0u);
 }
 
@@ -2805,7 +2817,7 @@ TEST_F(ConversationHandlerUnitTest, OnGetStagedEntriesFromContent) {
   std::vector<SearchQuerySummary> entries = {{"query", "summary"},
                                              {"query2", "summary2"}};
   conversation_handler_->OnGetStagedEntriesFromContent(entries);
-  task_environment_.RunUntilIdle();
+  client.FlushForTesting();
   testing::Mock::VerifyAndClearExpectations(&client);
 
   auto& history = conversation_handler_->GetConversationHistory();
@@ -2838,7 +2850,7 @@ TEST_F(ConversationHandlerUnitTest,
         EXPECT_FALSE(site_info.empty());
       }));
 
-  task_environment_.RunUntilIdle();
+  client.FlushForTesting();
   testing::Mock::VerifyAndClearExpectations(conversation_handler_.get());
 
   EXPECT_FALSE(conversation_handler_->GetConversationHistory().empty());
@@ -2861,7 +2873,7 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_CALL(client, OnConversationHistoryUpdate(_)).Times(0);
   EXPECT_TRUE(conversation_handler_->IsAnyClientConnected());
 
-  task_environment_.RunUntilIdle();
+  client.FlushForTesting();
   testing::Mock::VerifyAndClearExpectations(conversation_handler_.get());
   testing::Mock::VerifyAndClearExpectations(&client);
 
@@ -2982,7 +2994,7 @@ TEST_F(ConversationHandlerUnitTest, UploadFile) {
   testing::Mock::VerifyAndClearExpectations(&client);
   // verify image in history
   auto& last_entry = conversation_handler_->GetConversationHistory().back();
-  EXPECT_TRUE(last_entry->uploaded_files);
+  ASSERT_TRUE(last_entry->uploaded_files);
   const auto& files = last_entry->uploaded_files.value();
   for (size_t i = 0; i < files.size(); ++i) {
     EXPECT_EQ(files[i]->filename, uploaded_files[i]->filename);
@@ -3004,7 +3016,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   EXPECT_CALL(client, OnConversationHistoryUpdate(_)).Times(0);
   EXPECT_TRUE(conversation_handler_->IsAnyClientConnected());
 
-  task_environment_.RunUntilIdle();
+  client.FlushForTesting();
   testing::Mock::VerifyAndClearExpectations(conversation_handler_.get());
   testing::Mock::VerifyAndClearExpectations(&client);
 
@@ -3022,24 +3034,19 @@ TEST_F(ConversationHandlerUnitTest,
   conversation_handler_->associated_content_manager()->AddContent(
       associated_content_.get());
 
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(associated_content_.get());
-
   EXPECT_TRUE(conversation_handler_->GetConversationHistory().empty());
 
   // Verify that fetch happens when first client connects
   EXPECT_CALL(*associated_content_, GetStagedEntriesFromContent).Times(1);
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
-  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(associated_content_.get());
 
   // Verify that fetch happens when another client connects.
   client.Disconnect();
-  task_environment_.RunUntilIdle();
-  EXPECT_FALSE(conversation_handler_->IsAnyClientConnected());
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return !conversation_handler_->IsAnyClientConnected(); }));
   EXPECT_CALL(*associated_content_, GetStagedEntriesFromContent).Times(1);
   NiceMock<MockConversationHandlerClient> client2(conversation_handler_.get());
-  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(associated_content_.get());
 }
 
@@ -3091,6 +3098,7 @@ TEST_F(ConversationHandlerUnitTest, GenerateQuestions) {
                          mojom::SuggestionGenerationStatus::IsGenerating)))))
       .Times(testing::AtLeast(1))
       .InSequence(entries_status_sequence);
+  base::RunLoop questions_generated_loop;
   EXPECT_CALL(
       entries_observer,
       OnEntriesUIStateChanged(testing::Pointee(testing::AllOf(
@@ -3099,10 +3107,15 @@ TEST_F(ConversationHandlerUnitTest, GenerateQuestions) {
           testing::Field(&mojom::ConversationEntriesState::suggestion_status,
                          mojom::SuggestionGenerationStatus::HasGenerated)))))
       .Times(testing::AtLeast(1))
-      .InSequence(entries_status_sequence);
+      .InSequence(entries_status_sequence)
+      .WillRepeatedly(testing::InvokeWithoutArgs(&questions_generated_loop,
+                                                 &base::RunLoop::Quit));
 
   conversation_handler_->GenerateQuestions();
-  task_environment_.RunUntilIdle();
+  questions_generated_loop.Run();
+  // The loop quits on the untrusted pipe; flush the trusted one so its
+  // expectations (iOS) have been dispatched before verifying.
+  client.FlushForTesting();
   testing::Mock::VerifyAndClearExpectations(&client);
   testing::Mock::VerifyAndClearExpectations(associated_content_.get());
   testing::Mock::VerifyAndClearExpectations(engine);
@@ -3114,10 +3127,10 @@ TEST_F(ConversationHandlerUnitTest,
   associated_content_->SetTextContent("Content");
   associated_content_->SetIsVideo(true);
 
-  base::RunLoop loop1;
+  base::test::TestFuture<void> content_future1;
   conversation_handler_->associated_content_manager()->GetContent(
-      loop1.QuitClosure());
-  loop1.Run();
+      content_future1.GetCallback());
+  ASSERT_TRUE(content_future1.Wait());
 
   conversation_handler_->OnAssociatedContentUpdated();
 
@@ -3132,10 +3145,10 @@ TEST_F(ConversationHandlerUnitTest,
 
   associated_content_->SetIsVideo(false);
 
-  base::RunLoop loop2;
+  base::test::TestFuture<void> content_future2;
   conversation_handler_->associated_content_manager()->GetContent(
-      loop2.QuitClosure());
-  loop2.Run();
+      content_future2.GetCallback());
+  ASSERT_TRUE(content_future2.Wait());
   conversation_handler_->OnAssociatedContentUpdated();
 
   const auto& suggestions2 =
@@ -3217,7 +3230,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSuggestion) {
 
   const auto& suggestions1 =
       conversation_handler_->GetSuggestedQuestionsForTest();
-  EXPECT_EQ(5u, suggestions1.size());
+  ASSERT_EQ(5u, suggestions1.size());
 
   conversation_handler_->SubmitSuggestion("Question 2?");
 
@@ -3233,7 +3246,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSuggestion) {
 
   // Generated conversation entry should have suggestion action type
   auto& history = conversation_handler_->GetConversationHistory();
-  EXPECT_EQ(1u, history.size());
+  ASSERT_EQ(1u, history.size());
   EXPECT_EQ(mojom::ActionType::SUGGESTION, history[0]->action_type);
 }
 
@@ -3253,10 +3266,9 @@ TEST_F(ConversationHandlerUnitTest, GenerateQuestions_DisableSendPageContent) {
 
   NiceMock<MockUntrustedConversationHandlerClient> client(
       conversation_handler_.get());
-  testing::Sequence s;
   EXPECT_CALL(client, OnEntriesUIStateChanged).Times(0);
   conversation_handler_->GenerateQuestions();
-  task_environment_.RunUntilIdle();
+  client.FlushForTesting();
   testing::Mock::VerifyAndClearExpectations(&client);
   testing::Mock::VerifyAndClearExpectations(associated_content_.get());
   testing::Mock::VerifyAndClearExpectations(engine);
@@ -3270,10 +3282,9 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, GenerateQuestions) {
 
   NiceMock<MockUntrustedConversationHandlerClient> client(
       conversation_handler_.get());
-  testing::Sequence s;
   EXPECT_CALL(client, OnEntriesUIStateChanged).Times(0);
   conversation_handler_->GenerateQuestions();
-  task_environment_.RunUntilIdle();
+  client.FlushForTesting();
   testing::Mock::VerifyAndClearExpectations(&client);
   testing::Mock::VerifyAndClearExpectations(engine);
 }
@@ -3284,7 +3295,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   // starter suggestions.
   const auto& suggestions1 =
       conversation_handler_->GetSuggestedQuestionsForTest();
-  EXPECT_EQ(4u, suggestions1.size());
+  ASSERT_EQ(4u, suggestions1.size());
 
   auto submitted_suggestion = suggestions1[1].title;
 
@@ -3296,7 +3307,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   EXPECT_EQ(0u, suggestions2.size());
 
   auto& history = conversation_handler_->GetConversationHistory();
-  EXPECT_EQ(1u, history.size());
+  ASSERT_EQ(1u, history.size());
   auto& history_entry = history[0];
 
   // Generated conversation entry should have conversation starter action type
@@ -5429,7 +5440,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_OnContentTaskStarted) {
   conversation_handler_->SubmitHumanConversationEntry(".", std::nullopt);
   run_loop.Run();
 
-  EXPECT_EQ(1u, conversation_handler_->get_task_tab_ids().size());
+  ASSERT_EQ(1u, conversation_handler_->get_task_tab_ids().size());
   EXPECT_EQ(test_tab_id, *conversation_handler_->get_task_tab_ids().begin());
 }
 
@@ -5502,7 +5513,7 @@ TEST_P(ConversationHandlerUnitTest_AutoScreenshot,
   const auto& history = conversation_handler_->GetConversationHistory();
   ASSERT_EQ(history.size(), 2u);        // Human turn + assistant turn
   const auto& human_turn = history[0];  // Human turn (index 0)
-  EXPECT_TRUE(human_turn->uploaded_files.has_value());
+  ASSERT_TRUE(human_turn->uploaded_files.has_value());
   EXPECT_EQ(human_turn->uploaded_files->size(), 2u);
 
   // Verify that the files are screenshots
@@ -5911,7 +5922,7 @@ TEST_F(ConversationHandlerUnitTest, ScreenshotsAppendToExistingFiles) {
   const auto& new_history = conversation_handler_->GetConversationHistory();
   ASSERT_EQ(new_history.size(), 2u);        // Human turn + assistant turn
   const auto& human_turn = new_history[0];  // Human turn (index 0)
-  EXPECT_TRUE(human_turn->uploaded_files.has_value());
+  ASSERT_TRUE(human_turn->uploaded_files.has_value());
   EXPECT_EQ(human_turn->uploaded_files->size(), 3u);  // 2 images + 1 screenshot
 
   // Verify that the first two files are images and the last is a screenshot
@@ -5978,7 +5989,7 @@ TEST_F(ConversationHandlerUnitTest, VisionModelSwitchOnScreenshots) {
   ASSERT_EQ(history.size(), 1u);        // Only human turn (assistant turn won't
                                         // complete due to model switch)
   const auto& human_turn = history[0];  // Human turn (index 0)
-  EXPECT_TRUE(human_turn->uploaded_files.has_value());
+  ASSERT_TRUE(human_turn->uploaded_files.has_value());
   EXPECT_EQ(human_turn->uploaded_files->size(), 1u);
   EXPECT_EQ((*human_turn->uploaded_files)[0]->type,
             mojom::UploadedFileType::kScreenshot);
@@ -6340,7 +6351,7 @@ TEST_F(ConversationHandlerUnitTest,
   const auto& history = conversation_handler_->GetConversationHistory();
   ASSERT_EQ(history.size(), 2u);        // Human turn + assistant turn
   const auto& human_turn = history[0];  // Human turn (index 0)
-  EXPECT_TRUE(human_turn->uploaded_files.has_value());
+  ASSERT_TRUE(human_turn->uploaded_files.has_value());
   EXPECT_EQ(human_turn->uploaded_files->size(), mojom::MAX_IMAGES);
 
   // Verify all uploaded files are screenshots and in correct order
@@ -6419,7 +6430,7 @@ TEST_F(ConversationHandlerUnitTest,
   const auto& history = conversation_handler_->GetConversationHistory();
   ASSERT_EQ(history.size(), 2u);        // Human turn + assistant turn
   const auto& human_turn = history[0];  // Human turn (index 0)
-  EXPECT_TRUE(human_turn->uploaded_files.has_value());
+  ASSERT_TRUE(human_turn->uploaded_files.has_value());
   EXPECT_EQ(human_turn->uploaded_files->size(), total_screenshots);
 
   // Verify all uploaded files are screenshots and in correct order
@@ -8771,7 +8782,6 @@ TEST_F(ConversationHandlerUnitTest, StopTask) {
   mock_tool_provider_->SetIsPausedByUser(false);
   conversation_handler_->PauseTask();
   conversation_handler_->ResumeTask();
-  task_environment_.RunUntilIdle();
   EXPECT_EQ(GetState()->tool_use_task_state, mojom::TaskState::kStopped);
 
   // Verify tool still has no output and was never executed

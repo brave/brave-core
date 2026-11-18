@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 나중에 <ph name="SETTINGS_EXTENIONS_LINK"/>에서 변경해도 됩니다.</translation>
 <translation id="6229752134959014186">Widevine에 대해 자세히 알아보세요</translation>
+<translation id="3318169548229684688">이 기기에서 음성을 처리하기 위해 음성 인식 모델(<ph name="DOWNLOAD_SIZE"/>)을 다운로드</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/>에서 요청하는 권한:</translation>
 <translation id="3218385319396786393">이 페이지에서는 자동 재생이 차단되었습니다</translation>
 <translation id="4988333904713528597"><ph name="HOST"/>에서 자동 재생 항상 허용하기</translation>
@@ -610,6 +611,8 @@
 <translation id="3540231253392253941">푸시 메시지에 Google 서비스 사용</translation>
 <translation id="2224032129673914306">의미 기반 기록 검색</translation>
 <translation id="6045998903985162478">방문한 페이지를 색인화하여 기록, 열린 탭, 레오에서 쉽게 찾을 수 있습니다.</translation>
+<translation id="3962946446120925966">온디바이스 음성 인식</translation>
+<translation id="6408242130028978631">음성 인식 모델(<ph name="DOWNLOAD_SIZE"/>)을 다운로드하여 사이트에서 이 기기의 음성을 처리할 수 있도록 합니다. 모델을 삭제하려면 이 설정을 끄세요.</translation>
 <translation id="5813105074916486721">로컬 기록 보관</translation>
 <translation id="5671611745062206644">Brave가 브라우징 기록을 로컬에 저장하는 기간</translation>
 <translation id="7184510058087008090">1일</translation>

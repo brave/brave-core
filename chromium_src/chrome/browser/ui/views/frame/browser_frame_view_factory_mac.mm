@@ -5,8 +5,4 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_frame_view_mac.h"
 
-#define BrowserFrameViewMac BraveBrowserFrameViewMac
-
 #include <chrome/browser/ui/views/frame/browser_frame_view_factory_mac.mm>
-
-#undef BrowserFrameViewMac

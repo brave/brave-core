@@ -5,9 +5,9 @@
 
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import Label from '@brave/leo/react/label'
-import Tooltip from '@brave/leo/react/tooltip'
-import Icon from '@brave/leo/react/icon'
+import Label from '@brave/nala/react/label'
+import Tooltip from '@brave/nala/react/tooltip'
+import Icon from '@brave/nala/react/icon'
 
 // Queries
 import {

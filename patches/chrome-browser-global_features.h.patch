@@ -1,8 +1,17 @@
 diff --git a/chrome/browser/global_features.h b/chrome/browser/global_features.h
-index 6fdfa2869523cdf2218bcdb6f7fd0365878b15f7..e6de3611cb2d07e7debc214b2b14c5bd0b14c9ef 100644
+index 6fdfa2869523cdf2218bcdb6f7fd0365878b15f7..61d75f9ea63b0e0d8dca44ccf280cb68fd4d79de 100644
 --- a/chrome/browser/global_features.h
 +++ b/chrome/browser/global_features.h
-@@ -270,7 +270,12 @@ class GlobalFeatures {
+@@ -15,6 +15,8 @@
+ #include "net/net_buildflags.h"
+ #include "ui/base/unowned_user_data/user_data_factory.h"
+ 
++class BraveGlobalFeatures;
++
+ #if !BUILDFLAG(IS_ANDROID)
+ namespace infobars {
+ class BrowserInfoBarManager;
+@@ -270,7 +272,12 @@ class GlobalFeatures {
  #endif
  #endif
  

@@ -5,8 +5,8 @@
 
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import Tooltip from '@brave/leo/react/tooltip'
-import Icon from '@brave/leo/react/icon'
+import Tooltip from '@brave/nala/react/tooltip'
+import Icon from '@brave/nala/react/icon'
 
 // Queries
 import { useGetNetworkQuery } from '../../../common/slices/api.slice'

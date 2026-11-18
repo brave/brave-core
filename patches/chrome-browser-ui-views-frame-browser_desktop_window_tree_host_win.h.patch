@@ -1,0 +1,44 @@
+diff --git a/chrome/browser/ui/views/frame/browser_desktop_window_tree_host_win.h b/chrome/browser/ui/views/frame/browser_desktop_window_tree_host_win.h
+index 2f5e7d43e3c42ea3fea86305d316850a99b6f275..38ebc25bb0188eb0c2baf8c8aae8332f850fe295 100644
+--- a/chrome/browser/ui/views/frame/browser_desktop_window_tree_host_win.h
++++ b/chrome/browser/ui/views/frame/browser_desktop_window_tree_host_win.h
+@@ -32,23 +32,24 @@ class DesktopNativeWidgetAura;
+ class NativeMenuWin;
+ }  // namespace views
+ 
+-class BrowserDesktopWindowTreeHostWin
++class BrowserDesktopWindowTreeHostWin_ChromiumImpl
+     : public BrowserDesktopWindowTreeHost,
+       public views::DesktopWindowTreeHostWin,
+       public ProfileAttributesStorage::Observer {
+  public:
+-  BrowserDesktopWindowTreeHostWin(
++  BrowserDesktopWindowTreeHostWin_ChromiumImpl(
+       views::internal::NativeWidgetDelegate* native_widget_delegate,
+       views::DesktopNativeWidgetAura* desktop_native_widget_aura,
+       BrowserView* browser_view,
+       BrowserWidget* browser_widget);
+-  BrowserDesktopWindowTreeHostWin(const BrowserDesktopWindowTreeHostWin&) =
++  BrowserDesktopWindowTreeHostWin_ChromiumImpl(const BrowserDesktopWindowTreeHostWin_ChromiumImpl&) =
+       delete;
+-  BrowserDesktopWindowTreeHostWin& operator=(
+-      const BrowserDesktopWindowTreeHostWin&) = delete;
+-  ~BrowserDesktopWindowTreeHostWin() override;
++  BrowserDesktopWindowTreeHostWin_ChromiumImpl& operator=(
++      const BrowserDesktopWindowTreeHostWin_ChromiumImpl&) = delete;
++  ~BrowserDesktopWindowTreeHostWin_ChromiumImpl() override;
+ 
+  private:
++  friend class BrowserDesktopWindowTreeHostWin;
+   views::NativeMenuWin* GetSystemMenu();
+ 
+   // Overridden from BrowserDesktopWindowTreeHost:
+@@ -115,7 +116,7 @@ class BrowserDesktopWindowTreeHostWin
+   // This will be null pre Win10.
+   scoped_refptr<VirtualDesktopHelper> virtual_desktop_helper_;
+ 
+-  base::WeakPtrFactory<BrowserDesktopWindowTreeHostWin> weak_factory_{this};
++  base::WeakPtrFactory<BrowserDesktopWindowTreeHostWin_ChromiumImpl> weak_factory_{this};
+ };
+ 
+ #endif  // CHROME_BROWSER_UI_VIEWS_FRAME_BROWSER_DESKTOP_WINDOW_TREE_HOST_WIN_H_

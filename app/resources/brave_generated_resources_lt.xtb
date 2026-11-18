@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6229752134959014186">Daugiau sužinokite apie „Widevine“</translation>
+<translation id="3318169548229684688">atsisiųsti kalbos atpažinimo modelį (<ph name="DOWNLOAD_SIZE"/>), kad kalba būtų apdorojama šiame įrenginyje</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> prašo jūsų</translation>
 <translation id="3218385319396786393">Šiame puslapyje automatinio leidimo funkcija buvo užblokuota</translation>
 <translation id="4988333904713528597">Visada leisti automatinį leidimą svetainėje <ph name="HOST"/></translation>
@@ -610,6 +611,8 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="3540231253392253941">Naudoti „Google“ paslaugas su „Push“ pranešimais</translation>
 <translation id="2224032129673914306">Semantinė istorijos paieška</translation>
 <translation id="6045998903985162478">Indeksuokite lankomus puslapius, kad galėtumėte juos lengvai rasti istorijoje, atidarytose kortelėse ir Leo.</translation>
+<translation id="3962946446120925966">Kalbos atpažinimas įrenginyje</translation>
+<translation id="6408242130028978631">Atsisiųskite kalbos atpažinimo modelį (<ph name="DOWNLOAD_SIZE"/>), kad svetainės galėtų apdoroti kalbą šiame įrenginyje. Išjunkite, kad pašalintumėte modelį.</translation>
 <translation id="5813105074916486721">Vietinės istorijos saugojimas</translation>
 <translation id="5671611745062206644">Kiek ilgai „Brave“ saugo jūsų naršymo istoriją vietoje</translation>
 <translation id="7184510058087008090">1 diena</translation>

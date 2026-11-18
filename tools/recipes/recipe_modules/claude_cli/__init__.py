@@ -10,6 +10,7 @@ from recipe_api import RecipeScriptApi
 from recipe_modules import (
     context,
     depot_tools,
+    path,
     step,
 )
 
@@ -21,4 +22,5 @@ from .test_api import ClaudeCliTestApi as TEST_API
 class DEPS(RecipeScriptApi):
     context: context.API
     depot_tools: depot_tools.API
+    path: path.API
     step: step.API

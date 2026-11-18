@@ -4,9 +4,9 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import Icon from '@brave/leo/react/icon'
-import * as leo from '@brave/leo/tokens/css/variables'
-import Button from '@brave/leo/react/button'
+import Icon from '@brave/nala/react/icon'
+import * as leo from '@brave/nala/tokens/css/variables'
+import Button from '@brave/nala/react/button'
 
 // Assets
 import {

@@ -15,6 +15,13 @@ namespace local_ai::prefs {
 inline constexpr char kBraveHistoryEmbeddingsEnabled[] =
     "brave.history_embeddings_enabled";
 
+// Local-state-scoped: base names of the profiles whose
+// `kBraveHistoryEmbeddingsEnabled` is on, kept so a profile that is not loaded
+// still counts. The EmbeddingGemma model is shared by every profile, and is
+// only registered for download and update while this is not empty.
+inline constexpr char kHistoryEmbeddingsEnabledProfiles[] =
+    "brave.local_ai.history_embeddings_enabled_profiles";
+
 // Local-state-scoped: umbrella master switch for all local AI features.
 // Surfaced as the Brave Origin Settings "Local AI" toggle. When false,
 // every local AI surface (history embeddings UI, the brave-history-embeddings
@@ -29,13 +36,22 @@ inline constexpr char kBraveLocalAIEnabled[] = "brave.local_ai_enabled";
 inline constexpr char kAskEnableOnDeviceSpeechModel[] =
     "brave.local_ai.ask_enable_on_device_speech_model";
 
-// Local-state-scoped: whether the on-device speech recognition model is
-// enabled, which allowing its download does. The model is only registered for
-// download and update while this is true. Cleared when on-device speech
-// recognition is no longer allowed, so turning it back on asks again rather
-// than downloading.
-inline constexpr char kOnDeviceSpeechModelEnabled[] =
+// Local-state-scoped: whether the user enabled the English on-device speech
+// recognition model, which allowing its download does. The consent covers only
+// the English model. The model is only registered for download and update while
+// this is true. Cleared when on-device speech recognition is no longer allowed,
+// so turning it back on asks again rather than downloading.
+inline constexpr char kOnDeviceSpeechEnglishModelEnabled[] =
     "brave.local_ai.on_device_speech_model_enabled";
+
+// Local-state-scoped: whether the user enabled the multilingual on-device
+// speech recognition model, which allowing its download does. The consent
+// covers only the multilingual model. The model is only registered for download
+// and update while this is true. Cleared when on-device speech recognition is
+// no longer allowed or `kBraveOnDeviceSpeechMultilingual` is disabled, so
+// turning them back on asks again rather than downloading.
+inline constexpr char kOnDeviceSpeechMultilingualModelEnabled[] =
+    "brave.local_ai.on_device_speech_multilingual_model_enabled";
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);

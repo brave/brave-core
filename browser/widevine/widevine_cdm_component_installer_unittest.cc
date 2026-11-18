@@ -7,8 +7,8 @@
 
 #include <optional>
 
-#include "base/run_loop.h"
 #include "base/test/scoped_path_override.h"
+#include "base/test/test_future.h"
 #include "base/version.h"
 #include "brave/browser/widevine/widevine_utils.h"
 #include "brave/components/widevine/constants.h"
@@ -69,9 +69,9 @@ class WidevineCdmComponentInstallerTest : public testing::Test {
           return true;
         });
 
-    base::RunLoop run_loop;
-    RegisterWidevineCdmComponent(&cus, run_loop.QuitClosure());
-    run_loop.Run();
+    base::test::TestFuture<void> registered;
+    RegisterWidevineCdmComponent(&cus, registered.GetCallback());
+    EXPECT_TRUE(registered.Wait());
     return registration;
   }
 

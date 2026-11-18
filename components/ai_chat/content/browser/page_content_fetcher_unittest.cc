@@ -6,10 +6,13 @@
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
 
+#include "base/functional/callback.h"
+#include "base/functional/function_ref.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
@@ -157,6 +160,35 @@ class PageContentFetcherTest : public content::RenderViewHostTestHarness {
                             base::Unretained(extractor_ptr)));
 
     return extractor_ptr;
+  }
+
+  using SearchHelperCallback =
+      base::OnceCallback<void(const std::optional<std::string>&)>;
+
+  // The Brave Search helpers must answer "no result" (nullopt) when the
+  // extractor closes its pipe before replying, as the renderer's receiver reset
+  // does. `expect_request` sets the expectation for the helper under test and
+  // saves its reply callback in `pending_reply`; `call_fetcher` calls the
+  // helper.
+  template <typename ReplyCallback>
+  void ExpectNoResultWhenExtractorDisconnects(
+      base::FunctionRef<void(MockPageContentExtractor&, ReplyCallback*)>
+          expect_request,
+      base::FunctionRef<void(SearchHelperCallback)> call_fetcher) {
+    MockPageContentExtractor* mock_extractor = SetUpMockExtractor();
+
+    ReplyCallback pending_reply;
+    expect_request(*mock_extractor, &pending_reply);
+
+    base::test::TestFuture<const std::optional<std::string>&> future;
+    call_fetcher(future.GetCallback());
+    ASSERT_TRUE(
+        base::test::RunUntil([&]() { return !pending_reply.is_null(); }));
+
+    mock_extractor->ResetReceiver();
+    pending_reply.Reset();
+
+    EXPECT_EQ(future.Get(), std::nullopt);
   }
 
   // Helper method to simulate a network response
@@ -753,6 +785,43 @@ TEST_F(PageContentFetcherTest, CallbackRunWhenExtractorDisconnects) {
   EXPECT_TRUE(content.empty());
   EXPECT_FALSE(is_video);
   EXPECT_TRUE(invalidation_token.empty());
+}
+
+// The Brave Search helpers must also answer when the extractor disconnects
+// before replying. Callers read "no result" as nullopt.
+TEST_F(PageContentFetcherTest, SearchSummarizerKeyRunWhenExtractorDisconnects) {
+  NavigateAndCommit(GURL("https://search.brave.com/search?q=query"));
+
+  using ReplyCallback =
+      mojom::PageContentExtractor::GetSearchSummarizerKeyCallback;
+  ExpectNoResultWhenExtractorDisconnects<ReplyCallback>(
+      [](MockPageContentExtractor& extractor, ReplyCallback* pending_reply) {
+        EXPECT_CALL(extractor, GetSearchSummarizerKey(_))
+            .WillOnce([pending_reply](ReplyCallback callback) {
+              *pending_reply = std::move(callback);
+            });
+      },
+      [this](SearchHelperCallback callback) {
+        fetcher_->GetSearchSummarizerKey(std::move(callback));
+      });
+}
+
+TEST_F(PageContentFetcherTest,
+       OpenAIChatButtonNonceRunWhenExtractorDisconnects) {
+  NavigateAndCommit(GURL("https://search.brave.com/search?q=query"));
+
+  using ReplyCallback =
+      mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback;
+  ExpectNoResultWhenExtractorDisconnects<ReplyCallback>(
+      [](MockPageContentExtractor& extractor, ReplyCallback* pending_reply) {
+        EXPECT_CALL(extractor, GetOpenAIChatButtonNonce(_))
+            .WillOnce([pending_reply](ReplyCallback callback) {
+              *pending_reply = std::move(callback);
+            });
+      },
+      [this](SearchHelperCallback callback) {
+        fetcher_->GetOpenAIChatButtonNonce(std::move(callback));
+      });
 }
 
 }  // namespace ai_chat

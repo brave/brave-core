@@ -8,3 +8,11 @@ substitutions:
     add_friend:
       class_name: PageActionPassKey
       friend_type: class page_actions::PageActionControllerImpl_ChromiumImpl
+
+  - description: |-
+      Forward declare the types the substitutions above use
+    add_after_includes:
+      code: |-
+        namespace page_actions {
+        class PageActionControllerImpl_ChromiumImpl;
+        }  // namespace page_actions

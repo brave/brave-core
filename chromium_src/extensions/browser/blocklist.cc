@@ -8,12 +8,22 @@
 #include <set>
 #include <utility>
 
+#include "components/prefs/pref_service.h"
+#include "components/safe_browsing/core/common/safe_browsing_prefs.h"
+#include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browser_context.h"
 #include "extensions/browser/blocklist_state.h"
 #include "extensions/browser/extensions_browser_client.h"
 #include "extensions/common/extension_id.h"
 
 namespace extensions {
 namespace {
+
+bool ShouldAddEmbedderMalwareStates(content::BrowserContext* context) {
+  return user_prefs::UserPrefs::IsInitialized(context) &&
+         safe_browsing::IsSafeBrowsingEnabled(
+             *user_prefs::UserPrefs::Get(context));
+}
 
 // Bound over Blocklist::GetBlocklistedIDs()'s callback by
 // //brave/rewrite/extensions/browser/blocklist.cc.yaml.

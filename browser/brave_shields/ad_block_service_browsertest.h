@@ -13,6 +13,7 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/test/metrics/histogram_tester.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "content/public/test/content_mock_cert_verifier.h"
@@ -87,6 +88,11 @@ class AdBlockServiceTest : public PlatformBrowserTest {
   net::EmbeddedTestServer https_server_;
 
   const base::HistogramTester histogram_tester_;
+
+ private:
+  // Pins the default-on features exercised by these tests so they do not
+  // depend on the compiled-in defaults.
+  base::test::ScopedFeatureList default_feature_list_;
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_SHIELDS_AD_BLOCK_SERVICE_BROWSERTEST_H_

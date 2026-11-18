@@ -7,7 +7,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import FeedNavigation from './FeedNavigation';
 import SettingsButton from './SettingsButton';
-import Icon from '@brave/leo/react/icon';
+import Icon from '@brave/nala/react/icon';
 
 const Container = styled.dialog`
   top: var(--bn-top-bar-height);

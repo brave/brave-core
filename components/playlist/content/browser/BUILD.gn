@@ -74,3 +74,16 @@ static_library("browser") {
     "//url",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "mime_util_unittest.cc" ]
+
+  deps = [
+    ":browser",
+    "//base",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}

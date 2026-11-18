@@ -24,13 +24,12 @@ import org.chromium.chrome.browser.brave_leo.BraveLeoMojomHelper;
 import org.chromium.chrome.browser.browsing_data.TimePeriod;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.components.browser_ui.widget.containment.ContainmentItem;
 import org.chromium.components.user_prefs.UserPrefs;
 
-/**
- * The preference used to reset Brave Leo.
- */
-public class BraveLeoResetPreference
-        extends Preference implements Preference.OnPreferenceClickListener {
+/** The preference used to reset Brave Leo. */
+public class BraveLeoResetPreference extends Preference
+        implements Preference.OnPreferenceClickListener, ContainmentItem {
     private static final String TAG = "BraveLeoResetPref";
 
     /**
@@ -48,6 +47,11 @@ public class BraveLeoResetPreference
         TextView titleView = (TextView) holder.findViewById(android.R.id.title);
         assert titleView != null;
         titleView.setTextAppearance(R.style.TextAppearance_Brave_PreferenceTitle_DestructiveAction);
+    }
+
+    @Override
+    public @BackgroundStyle int getCustomBackgroundStyle() {
+        return BackgroundStyle.CARD;
     }
 
     @Override

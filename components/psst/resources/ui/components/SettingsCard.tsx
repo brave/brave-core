@@ -6,10 +6,10 @@
 import * as React from 'react'
 import styled from 'styled-components'
 
-import Checkbox from '@brave/leo/react/checkbox'
-import Icon from '@brave/leo/react/icon'
-import Ring from '@brave/leo/react/progressRing'
-import { color, font, spacing, radius } from '@brave/leo/tokens/css/variables'
+import Checkbox from '@brave/nala/react/checkbox'
+import Icon from '@brave/nala/react/icon'
+import Ring from '@brave/nala/react/progressRing'
+import { color, font, spacing, radius } from '@brave/nala/tokens/css/variables'
 
 import Flex from '$web-common/Flex'
 

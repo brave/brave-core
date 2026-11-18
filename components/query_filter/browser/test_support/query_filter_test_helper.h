@@ -14,8 +14,7 @@ namespace test {
 
 // Populates the query filter component with default set of rules
 // and clears all rules from the query filter component upon
-// destruction. Must only be called with kQueryFilterComponent enabled;
-// otherwise will crash the test.
+// destruction.
 class ScopedTestingQueryFilterRules {
  public:
   ScopedTestingQueryFilterRules();

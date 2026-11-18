@@ -1,0 +1,36 @@
+diff --git a/chrome/browser/autofill/android/java/src/org/chromium/chrome/browser/autofill/AutofillImageFetcherFactory.java b/chrome/browser/autofill/android/java/src/org/chromium/chrome/browser/autofill/AutofillImageFetcherFactory.java
+index b8cae3d8959038d9053f0345abaf733a7953d056..3a6fc49612d5dbafbd94c0751801a9a35f8e28a7 100644
+--- a/chrome/browser/autofill/android/java/src/org/chromium/chrome/browser/autofill/AutofillImageFetcherFactory.java
++++ b/chrome/browser/autofill/android/java/src/org/chromium/chrome/browser/autofill/AutofillImageFetcherFactory.java
+@@ -13,12 +13,15 @@ import org.chromium.base.ThreadUtils;
+ import org.chromium.build.annotations.NullMarked;
+ import org.chromium.build.annotations.Nullable;
+ import org.chromium.chrome.browser.profiles.Profile;
++import org.chromium.components.image_fetcher.ImageFetcherConfig;
++import org.chromium.components.image_fetcher.ImageFetcherFactory;
+ 
+ /** Provides access to {@link AutofillImageFetcher} singleton associated with a {@link Profile}. */
+ @NullMarked
+ @JNINamespace("autofill")
+ public class AutofillImageFetcherFactory {
+     private @Nullable static AutofillImageFetcher sAutofillImageFetcherForTesting;
++    private @Nullable static AutofillImageFetcher sBraveFetcher;
+ 
+     private AutofillImageFetcherFactory() {}
+ 
+@@ -41,7 +44,14 @@ public class AutofillImageFetcherFactory {
+         }
+         // Throw an exception if the native pointer isn't initialized yet.
+         profile.ensureNativeInitialized();
+-        return AutofillImageFetcherFactoryJni.get().getForProfile(profile);
++        if (sBraveFetcher == null) {
++            sBraveFetcher =
++                    new AutofillImageFetcher(
++                            ImageFetcherFactory.createImageFetcher(
++                                    ImageFetcherConfig.DISK_CACHE_ONLY,
++                                    profile.getOriginalProfile().getProfileKey()));
++        }
++        return sBraveFetcher;
+     }
+ 
+     /** Overrides the initialization for tests. */

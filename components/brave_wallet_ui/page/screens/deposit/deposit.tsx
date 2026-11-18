@@ -6,8 +6,8 @@
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import { Redirect, Route, Switch, useHistory, useParams } from 'react-router'
-import SegmentedControlItem from '@brave/leo/react/segmentedControlItem'
-import Button from '@brave/leo/react/button'
+import SegmentedControlItem from '@brave/nala/react/segmentedControlItem'
+import Button from '@brave/nala/react/button'
 
 // Selectors
 import {

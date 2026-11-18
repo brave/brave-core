@@ -28,7 +28,6 @@ import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteCoordinator;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxLoadUrlParams;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.theme.ThemeUtils;
-import org.chromium.chrome.browser.ui.theme.BrandedColorScheme;
 import org.chromium.components.browser_ui.accessibility.PageZoomIndicatorCoordinator;
 import org.chromium.components.omnibox.AutocompleteInput;
 import org.chromium.components.omnibox.AutocompleteInput.AutocompleteState;
@@ -57,9 +56,6 @@ public class BraveLocationBarMediator extends LocationBarMediator {
     private OneshotSupplier<TemplateUrlService> mTemplateUrlServiceSupplier;
     private AutocompleteCoordinator mAutocompleteCoordinator;
     private UrlBarCoordinator mUrlCoordinator;
-
-    private static final @BrandedColorScheme int BRANDED_COLOR_SCHEME =
-            BrandedColorScheme.APP_DEFAULT;
 
     // The fields mWindowAndroid, mLocationBarLayout, mContext, mTemplateUrlServiceSupplier are
     // initialized at LocationBarMediator.ctor and are declared here only to be removed later
@@ -158,7 +154,7 @@ public class BraveLocationBarMediator extends LocationBarMediator {
         if (mLocationBarLayout instanceof BraveLocationBarLayout) {
             ((BraveLocationBarLayout) mLocationBarLayout)
                     .setQRButtonTint(
-                            ThemeUtils.getThemedToolbarIconTint(mContext, BRANDED_COLOR_SCHEME));
+                            ThemeUtils.getThemedToolbarIconTint(mContext, getBrandedColorScheme()));
         }
     }
 

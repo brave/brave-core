@@ -4,8 +4,8 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
-import Toggle from '@brave/leo/react/toggle'
+import Button from '@brave/nala/react/button'
+import Toggle from '@brave/nala/react/toggle'
 
 import { useAppState, useAppActions } from '../lib/app_context'
 import { ClearAdsDataButton } from './clear_ads_data_button'

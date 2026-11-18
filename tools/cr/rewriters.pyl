@@ -47,6 +47,10 @@
 #                 since captures are spliced into generated code as a single
 #                 expression -- so a capture suits a declaration or a type, not
 #                 text whose own spacing matters (a string literal, a comment).
+#       utils:    optional { name: rule body } of ast-grep utility rules the
+#                 template refers to with `matches: name`, for a sub-rule it
+#                 needs in several places (ast-grep reads no YAML anchors).
+#                 They take no inputs, so they are passed through as they are.
 #
 #   "ast.rewriter" — edits each node a matcher finds:
 #       matcher:  id of the "ast.matcher" op locating the node(s).
@@ -72,6 +76,8 @@
 #                 when the matcher can legitimately find several nodes but the
 #                 rewrite belongs to only the first (e.g. a class that reopens
 #                 `private:` more than once).
+#       last_match: optional bool; the same, for the last match. An op sets at
+#                 most one of the two.
 #       result:   { node: <kind> } being replaced.
 #
 # An op yields every match in source order; the caller (plaster) decides how
@@ -401,6 +407,128 @@ regex: ^{class_name}$
 """,
             "result": {
                 "node": "identifier",
+            },
+        },
+
+        # The directives a C++ source opens with, ahead of its first
+        # declaration, whose text `selector` (a regex) matches: includes,
+        # `#import`s, `#define`s, `#pragma`s and conditional blocks holding no
+        # declarations, at file scope or directly inside the include guard.
+        # A conditional block holding a declaration ends the run, as the
+        # declaration itself would. The guard is not one of the directives, but
+        # the `#define` opening it is.
+        #
+        # An include binds `$HEADER` to the header as included (quotes or
+        # angle brackets and all; an `#import`'s also carries any comment
+        # after it), and one inside the guard binds `$GUARD` too.
+        #
+        # tree-sitter stumbles over some macros (e.g. `BEGIN_METADATA`), but
+        # only into a local ERROR node, and those sit below the directives this
+        # reads, so the source is parsed as is. A file whose own directives are
+        # unparsable shows as having none.
+        "cxx.find_preamble_directive": {
+            "template": """\
+any:
+  - kind: preproc_include
+    has:
+      field: path
+      pattern: $HEADER
+  - kind: preproc_call
+    all:
+      - has:
+          field: directive
+          regex: '^#[ \\t]*import$'
+      - has:
+          field: argument
+          pattern: $HEADER
+  - kind: preproc_def
+  - kind: preproc_function_def
+  - kind: preproc_call
+  - all:
+      - any:
+          - kind: preproc_if
+          - kind: preproc_ifdef
+      - not:
+          any:
+            - matches: holds_declarations
+            - matches: include_guard
+regex: '{selector}'
+inside:
+  any:
+    - kind: translation_unit
+    - all:
+        - matches: include_guard
+        - pattern: $GUARD
+not:
+  follows:
+    stopBy: end
+    any:
+      - matches: declaration
+      - matches: holds_declarations
+""",
+            "utils": {
+                # What may follow the directives at file scope, ERROR nodes
+                # included, since they only show up where code is.
+                "declaration": """\
+any:
+  - kind: declaration
+  - kind: function_definition
+  - kind: linkage_specification
+  - kind: type_definition
+  - kind: class_specifier
+  - kind: struct_specifier
+  - kind: union_specifier
+  - kind: enum_specifier
+  - kind: namespace_definition
+  - kind: namespace_alias_definition
+  - kind: concept_definition
+  - kind: using_declaration
+  - kind: alias_declaration
+  - kind: static_assert_declaration
+  - kind: template_declaration
+  - kind: template_instantiation
+  - kind: expression_statement
+  - kind: compound_statement
+  - kind: attributed_statement
+  - kind: ERROR
+""",
+                "holds_declarations": """\
+any:
+  - kind: preproc_if
+  - kind: preproc_ifdef
+has:
+  stopBy: end
+  matches: declaration
+""",
+                # An `#ifndef` with a bare `#define` that nothing but comments
+                # follows, which tells it apart from a macro given a default
+                # (`#ifndef FOO` / `#define FOO 1` / `#endif`) in a `.cc`.
+                "include_guard": """\
+kind: preproc_ifdef
+regex: '^#[ \\t]*ifndef'
+inside:
+  kind: translation_unit
+has:
+  kind: preproc_def
+  not:
+    has:
+      field: value
+      kind: preproc_arg
+not:
+  precedes:
+    stopBy: end
+    any:
+      - matches: declaration
+      - kind: preproc_include
+      - kind: preproc_def
+      - kind: preproc_function_def
+      - kind: preproc_call
+      - kind: preproc_if
+      - kind: preproc_ifdef
+""",
+            },
+            "result": {
+                "node": "preproc_include",
             },
         },
 
@@ -1014,6 +1142,56 @@ nthChild:
             },
             "result": {
                 "node": "enumerator",
+            },
+        },
+
+        # `text` inserted above the preamble directive `selector` picks, as
+        # the line(s) it opens with. The caller lays `text` out in full,
+        # blank lines included, since only it knows the include groups around
+        # the directive.
+        "cxx.insert_before_preamble_directive": {
+            "matcher": "cxx.find_preamble_directive",
+            "inputs": ["selector", "text"],
+            "replace": {
+                "re_pattern": "^",
+                "replace": "{text}",
+            },
+            "result": {
+                "node": "preproc_include",
+            },
+        },
+
+        # `text` inserted below the preamble directive `selector` picks. A
+        # directive's node spans its line's newline, except for a conditional
+        # block's, which stops at `#endif` and leaves that line's remainder
+        # (e.g. `  // BUILDFLAG(IS_WIN)\n`) as `rest`, folded in and re-emitted
+        # so `text` starts on a line of its own.
+        "cxx.insert_after_preamble_directive": {
+            "matcher": "cxx.find_preamble_directive",
+            "inputs": ["selector", "rest", "text"],
+            "replace": {
+                "consume_after": "{rest}",
+                "re_pattern": "\\Z",
+                "replace": "{rest}{text}",
+            },
+            "result": {
+                "node": "preproc_include",
+            },
+        },
+
+        # The same, below the last directive, where a source's preamble ends
+        # and its declarations start.
+        "cxx.insert_after_preamble": {
+            "matcher": "cxx.find_preamble_directive",
+            "inputs": ["selector", "rest", "text"],
+            "last_match": True,
+            "replace": {
+                "consume_after": "{rest}",
+                "re_pattern": "\\Z",
+                "replace": "{rest}{text}",
+            },
+            "result": {
+                "node": "preproc_include",
             },
         },
 

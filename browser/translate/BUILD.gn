@@ -1,0 +1,30 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//extensions/buildflags/buildflags.gni")
+
+source_set("translate") {
+  sources = [
+    "brave_translate_prefs_migration.cc",
+    "brave_translate_prefs_migration.h",
+    "brave_translate_utils.cc",
+    "brave_translate_utils.h",
+  ]
+
+  deps = [
+    "//chrome/browser/profiles:profile",
+    "//components/prefs",
+    "//components/translate/core/browser",
+    "//components/translate/core/common",
+    "//extensions/buildflags",
+  ]
+
+  if (enable_extensions) {
+    deps += [
+      "//extensions/browser",
+      "//extensions/common",
+    ]
+  }
+}

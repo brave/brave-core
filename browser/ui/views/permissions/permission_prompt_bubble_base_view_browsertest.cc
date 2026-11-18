@@ -140,10 +140,11 @@ IN_PROC_BROWSER_TEST_F(PermissionPromptBubbleBaseViewBrowserTest,
   // This test checks that the permission prompt bubble is created with the
   // correct z-order level, which should be kSecuritySurface.
   MockPermissionPromptDelegate mock_delegate;
-  auto create_permission_prompt = [&]() {
+  auto create_permission_prompt = [&](auto** out_prompt) {
     auto* permission_prompt = new MockPermissionPromptBubbleBaseView(
         browser()->tab_strip_model()->GetActiveWebContents(),
         mock_delegate.GetWeakPtr());
+    *out_prompt = permission_prompt;
     // Wait until the prompt widget's native widget is created. Before that,
     // IsActive() will return false.
     EXPECT_TRUE(base::test::RunUntil(
@@ -155,18 +156,19 @@ IN_PROC_BROWSER_TEST_F(PermissionPromptBubbleBaseViewBrowserTest,
 
     // Also parent widget should have the same z-order level.
     auto* parent_widget = permission_prompt->GetWidget()->parent();
-    EXPECT_TRUE(parent_widget);
+    ASSERT_TRUE(parent_widget);
     EXPECT_EQ(parent_widget->GetZOrderLevel(),
               ui::ZOrderLevel::kSecuritySurface);
-    return permission_prompt;
   };
 
   // After closing the prompt widget, the parent widget should have the original
   // z-order level.
-  auto* permission_prompt = create_permission_prompt();
+  MockPermissionPromptBubbleBaseView* permission_prompt = nullptr;
+  ASSERT_NO_FATAL_FAILURE(create_permission_prompt(&permission_prompt));
   auto widget_weak_ptr = permission_prompt->GetWidget()->GetWeakPtr();
   ASSERT_TRUE(widget_weak_ptr);
   auto* parent_widget = widget_weak_ptr->parent();
+  ASSERT_TRUE(parent_widget);
 
   permission_prompt->GetWidget()->Close();
 
@@ -175,10 +177,11 @@ IN_PROC_BROWSER_TEST_F(PermissionPromptBubbleBaseViewBrowserTest,
 
   // After Accepting the prompt, the parent widget should have the original
   // z-order level.
-  permission_prompt = create_permission_prompt();
+  ASSERT_NO_FATAL_FAILURE(create_permission_prompt(&permission_prompt));
   widget_weak_ptr = permission_prompt->GetWidget()->GetWeakPtr();
   ASSERT_TRUE(widget_weak_ptr);
   parent_widget = widget_weak_ptr->parent();
+  ASSERT_TRUE(parent_widget);
 
   permission_prompt->AcceptDialog();
 
@@ -187,10 +190,11 @@ IN_PROC_BROWSER_TEST_F(PermissionPromptBubbleBaseViewBrowserTest,
 
   // After Canceling the prompt, the parent widget should have the original
   // z-order level.
-  permission_prompt = create_permission_prompt();
+  ASSERT_NO_FATAL_FAILURE(create_permission_prompt(&permission_prompt));
   widget_weak_ptr = permission_prompt->GetWidget()->GetWeakPtr();
   ASSERT_TRUE(widget_weak_ptr);
   parent_widget = widget_weak_ptr->parent();
+  ASSERT_TRUE(parent_widget);
 
   permission_prompt->CancelDialog();
 
@@ -199,9 +203,11 @@ IN_PROC_BROWSER_TEST_F(PermissionPromptBubbleBaseViewBrowserTest,
 
   // After the prompt is deactivated, the parent widget should have the original
   // z-order level.
-  permission_prompt = create_permission_prompt();
+  ASSERT_NO_FATAL_FAILURE(create_permission_prompt(&permission_prompt));
   widget_weak_ptr = permission_prompt->GetWidget()->GetWeakPtr();
+  ASSERT_TRUE(widget_weak_ptr);
   parent_widget = widget_weak_ptr->parent();
+  ASSERT_TRUE(parent_widget);
 
   widget_weak_ptr->Deactivate();
   parent_widget->Activate();  // To make it sure the deactivation

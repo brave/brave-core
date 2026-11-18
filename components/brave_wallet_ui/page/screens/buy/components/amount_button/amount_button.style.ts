@@ -5,8 +5,8 @@
 
 import * as React from 'react'
 import styled from 'styled-components'
-import Icon from '@brave/leo/react/icon'
-import { color, font } from '@brave/leo/tokens/css/variables'
+import Icon from '@brave/nala/react/icon'
+import { color, font } from '@brave/nala/tokens/css/variables'
 
 // Shared Styles
 import { Column, Text } from '../../../../../components/shared/style'

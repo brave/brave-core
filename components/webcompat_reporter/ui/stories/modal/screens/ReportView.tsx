@@ -18,7 +18,7 @@ import {
 
 // Fake data
 import { getLocale } from '../fakeLocale'
-import Button from '@brave/leo/react/button'
+import Button from '@brave/nala/react/button'
 
 interface Props {
   siteUrl: string

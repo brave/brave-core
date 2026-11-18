@@ -5,10 +5,7 @@
 
 #include "brave/components/brave_account/endpoints/auth_logout.h"
 
-#include <optional>
-
 #include "base/no_destructor.h"
-#include "base/types/expected.h"
 #include "brave/components/brave_account/endpoints/endpoint_test.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_status_code.h"
@@ -26,8 +23,7 @@ const AuthLogoutTestCase* Success() {
        .http_status_code = net::HTTP_NO_CONTENT,
        .raw_response_body = "",
        .expected_response = {.net_error = net::OK,
-                             .status_code = net::HTTP_NO_CONTENT,
-                             .body = std::nullopt}});
+                             .status_code = net::HTTP_NO_CONTENT}});
   return kSuccess.get();
 }
 
@@ -37,34 +33,21 @@ const AuthLogoutTestCase* Success() {
 //   - { "code": null, "error": "Unauthorized", "status": 401 }
 // - HTTP 5XX:
 //   - { "code": null, "error": "Internal Server Error", "status": <5xx> }
+// non-application/json errors:
+// - HTTP 5XX:
+//   - plain text errors returned by AWS/load balancer
 // clang-format on
-const AuthLogoutTestCase* ApplicationJsonError() {
-  static const base::NoDestructor<AuthLogoutTestCase> kApplicationJsonError(
-      {.test_name = "application_json_error",
+const AuthLogoutTestCase* Error() {
+  static const base::NoDestructor<AuthLogoutTestCase> kError(
+      {.test_name = "error",
        .http_status_code = net::HTTP_UNAUTHORIZED,
        .raw_response_body =
            R"({ "code": null,
                 "error": "Unauthorized",
                 "status": 401 })",
-       .expected_response = {
-           .net_error = net::OK,
-           .status_code = net::HTTP_UNAUTHORIZED,
-           .body = base::unexpected(AuthLogout::Response::ErrorBody())}});
-  return kApplicationJsonError.get();
-}
-
-// non-application/json errors:
-// - HTTP 5XX:
-//   - plain text errors returned by AWS/load balancer
-const AuthLogoutTestCase* NonApplicationJsonError() {
-  static const base::NoDestructor<AuthLogoutTestCase> kNonApplicationJsonError(
-      {.test_name = "non_application_json_error",
-       .http_status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-       .raw_response_body = "non-application/json error",
        .expected_response = {.net_error = net::OK,
-                             .status_code = net::HTTP_INTERNAL_SERVER_ERROR,
-                             .body = std::nullopt}});
-  return kNonApplicationJsonError.get();
+                             .status_code = net::HTTP_UNAUTHORIZED}});
+  return kError.get();
 }
 
 using AuthLogoutTest = EndpointTest<AuthLogout>;
@@ -77,9 +60,7 @@ TEST_P(AuthLogoutTest, HandlesReplies) {
 
 INSTANTIATE_TEST_SUITE_P(AuthLogoutTestCases,
                          AuthLogoutTest,
-                         testing::Values(Success(),
-                                         ApplicationJsonError(),
-                                         NonApplicationJsonError()),
+                         testing::Values(Success(), Error()),
                          AuthLogoutTest::kNameGenerator);
 
 }  // namespace brave_account::endpoints

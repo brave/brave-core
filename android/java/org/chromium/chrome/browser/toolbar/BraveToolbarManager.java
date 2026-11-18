@@ -58,6 +58,7 @@ import org.chromium.chrome.browser.layouts.LayoutType;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.merchant_viewer.MerchantTrustSignalsCoordinator;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
+import org.chromium.chrome.browser.ntp.BraveNewTabPage;
 import org.chromium.chrome.browser.omnibox.LocationBar;
 import org.chromium.chrome.browser.omnibox.OmniboxChipManager;
 import org.chromium.chrome.browser.omnibox.suggestions.action.OmniboxActionDelegateImpl;
@@ -662,6 +663,20 @@ public class BraveToolbarManager extends ToolbarManager
         if (isToolbarPhone()) {
             updateBraveBottomControlsVisibility(hasFocus);
         }
+        if (hasFocus) {
+            dismissNtpTopSitesTooltip();
+        }
+    }
+
+    // The NTP's top-sites tooltip is a floating popup, not part of the NTP's own view
+    // hierarchy, so it does not participate in the omnibox-focus animation that fades/hides the
+    // rest of the NTP content - it must be dismissed explicitly here instead.
+    private void dismissNtpTopSitesTooltip() {
+        Tab tab = mActivityTabProvider.get();
+        if (tab == null || !(tab.getNativePage() instanceof BraveNewTabPage)) {
+            return;
+        }
+        ((BraveNewTabPage) tab.getNativePage()).dismissTopSitesTooltip();
     }
 
     private void registerHubLayoutObserver() {

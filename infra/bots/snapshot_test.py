@@ -25,7 +25,9 @@ sys.path.insert(
     ),
 )
 
+import generated_output
 import snapshot
+import testing_support
 from lib.config import (
     BuildersRegistry,
     ConfigError,
@@ -41,9 +43,13 @@ def _make_registries():
     builders_registry = BuildersRegistry(gn_args_registry)
     builders_registry.builder(
         name='test-builder',
+        builder_group='brave.test',
+        recipe='brave_builder',
         builder_spec=builder_config.builder_spec(
             gclient_config=builder_config.gclient_config(
-                target_os=['linux', 'android']
+                target_os=['linux', 'android'],
+                custom_deps={'src/b': None, 'src/a': 'https://a.example/a.git'},
+                custom_vars={'checkout_x': True},
             ),
             chromium_config=builder_config.chromium_config(
                 target_platform=builder_config.target_platform.LINUX,
@@ -62,7 +68,7 @@ def _make_registries():
 
 
 class ComputeFreshOutputTest(unittest.TestCase):
-    def test_produces_three_files_per_builder(self):
+    def test_produces_four_files_per_builder(self):
         builders_registry, gn_args_registry = _make_registries()
         fresh = snapshot.compute_fresh_output(
             builders_registry, gn_args_registry
@@ -71,6 +77,7 @@ class ComputeFreshOutputTest(unittest.TestCase):
             set(fresh),
             {
                 'test-builder/gn-args.json',
+                'test-builder/properties.json',
                 'test-builder/sync.json',
                 'test-builder/targets.json',
             },
@@ -91,6 +98,7 @@ class ComputeFreshOutputTest(unittest.TestCase):
         builders_registry = BuildersRegistry(gn_args_registry)
         builders_registry.builder(
             name='mismatched',
+            builder_group='brave.test',
             builder_spec=builder_config.builder_spec(
                 gclient_config=builder_config.gclient_config(),
                 chromium_config=builder_config.chromium_config(
@@ -104,6 +112,90 @@ class ComputeFreshOutputTest(unittest.TestCase):
         )
         with self.assertRaisesRegex(ConfigError, 'does not match'):
             snapshot.compute_fresh_output(builders_registry, gn_args_registry)
+
+    def test_output_reads_back(self):
+        builders_registry, gn_args_registry = _make_registries()
+        output_dir = testing_support.use_output_dir(self)
+        snapshot.write_snapshot(builders_registry, gn_args_registry, output_dir)
+        output = generated_output.GeneratedBuilder('test-builder').read()
+        self.assertEqual(
+            output.builder_spec,
+            {
+                'builder_group': 'brave.test',
+                # Unset fields (build_config, host_platform) are left out.
+                'chromium_config': {
+                    'target_arch': 'intel',
+                    'target_bits': 64,
+                    'target_platform': 'linux',
+                },
+                'gclient_config': {
+                    'target_os': ['android', 'linux'],
+                    'target_cpu': [],
+                    # Sorted by path.
+                    'custom_deps': {
+                        'src/a': 'https://a.example/a.git',
+                        'src/b': None,
+                    },
+                    'custom_vars': {'checkout_x': True},
+                },
+            },
+        )
+        self.assertEqual(
+            output.gn_args, gn_args_registry.resolve('test-builder')
+        )
+
+    def test_properties_json_is_the_builds_input_properties(self):
+        builders_registry, gn_args_registry = _make_registries()
+        properties = json.loads(
+            snapshot.compute_fresh_output(builders_registry, gn_args_registry)[
+                'test-builder/properties.json'
+            ]
+        )
+        self.assertEqual(properties['builder_group'], 'brave.test')
+        self.assertEqual(properties['recipe'], 'brave_builder')
+        self.assertIn(
+            'builder_config', properties['$brave_tests_builder_config']
+        )
+
+    def test_properties_json_needs_a_builder_group(self):
+        gn_args_registry = GnArgsRegistry()
+        builders_registry = BuildersRegistry(gn_args_registry)
+        builders_registry.builder(
+            name='ungrouped',
+            builder_spec=builder_config.builder_spec(
+                gclient_config=builder_config.gclient_config(),
+                chromium_config=builder_config.chromium_config(
+                    target_platform=builder_config.target_platform.LINUX
+                ),
+            ),
+            gn_args=gn_args_registry.config(
+                args={'target_os': 'linux', 'target_cpu': 'x64'}
+            ),
+            targets=builders_registry.targets(compile=[], tests=[]),
+        )
+        with self.assertRaisesRegex(ConfigError, 'builder_group must be set'):
+            snapshot.compute_fresh_output(builders_registry, gn_args_registry)
+
+    def test_properties_json_leaves_out_an_unset_recipe(self):
+        builders_registry, gn_args_registry = _make_registries()
+        builders_registry.builder(
+            name='no-recipe',
+            builder_group='brave.test',
+            builder_spec=builder_config.builder_spec(
+                gclient_config=builder_config.gclient_config(),
+                chromium_config=builder_config.chromium_config(
+                    target_platform=builder_config.target_platform.LINUX
+                ),
+            ),
+            gn_args=gn_args_registry.config(configs=['linux', 'x64']),
+            targets=builders_registry.targets(compile=[], tests=[]),
+        )
+        fresh = snapshot.compute_fresh_output(
+            builders_registry, gn_args_registry
+        )
+        self.assertNotIn(
+            'recipe', json.loads(fresh['no-recipe/properties.json'])
+        )
 
     def test_sync_and_targets_json(self):
         builders_registry, gn_args_registry = _make_registries()
@@ -150,6 +242,7 @@ class WriteSnapshotTest(unittest.TestCase):
                 sorted(result.changed),
                 [
                     'test-builder/gn-args.json',
+                    'test-builder/properties.json',
                     'test-builder/sync.json',
                     'test-builder/targets.json',
                 ],
@@ -177,6 +270,7 @@ class WriteSnapshotTest(unittest.TestCase):
                 sorted(result.unchanged),
                 [
                     'test-builder/gn-args.json',
+                    'test-builder/properties.json',
                     'test-builder/sync.json',
                     'test-builder/targets.json',
                 ],
@@ -231,7 +325,7 @@ class WriteOutputTest(unittest.TestCase):
     def test_stale_builder_directory_loses_all_its_files(self):
         # A whole builder disappearing should drop all three of its files.
         # The now-empty `old-builder/` directory itself is left behind,
-        # faithful to lucicfg's own `generate`: it only ever removes files,
+        # faithful to upstream's `generate`: it only ever removes files,
         # never prunes directories, so we don't either.
         snapshot.write_output(
             self.output_dir,

@@ -5,6 +5,54 @@
 
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 
+source_set("permissions") {
+  sources = [
+    "permission_lifetime_manager_factory.cc",
+    "permission_lifetime_manager_factory.h",
+    "permission_origin_lifetime_monitor_impl.cc",
+    "permission_origin_lifetime_monitor_impl.h",
+  ]
+
+  public_deps = [
+    "//brave/components/ephemeral_storage",
+    "//components/keyed_service/content",
+    "//components/permissions",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser/ephemeral_storage",
+    "//brave/components/brave_wallet/common/buildflags",
+    "//chrome/browser/content_settings:content_settings_factory",
+    "//chrome/browser/profiles",
+    "//chrome/browser/profiles:profile",
+    "//net",
+  ]
+
+  if (enable_brave_wallet) {
+    deps += [ "//brave/components/brave_wallet/browser:permission_utils" ]
+  }
+
+  if (is_android && enable_brave_wallet) {
+    sources += [
+      "brave_dapp_permission_prompt_dialog_controller_android.cc",
+      "brave_dapp_permission_prompt_dialog_controller_android.h",
+      "brave_wallet_permission_prompt_android.cc",
+      "brave_wallet_permission_prompt_android.h",
+      "connect_account_android.cc",
+    ]
+    public_deps += [ "//brave/components/brave_wallet/common:mojom" ]
+    deps += [
+      "//brave/components/brave_wallet/browser:utils",
+      "//chrome/android:chrome_jni_headers",
+      "//content/public/browser",
+      "//content/public/common",
+      "//ui/android",
+      "//url",
+    ]
+  }
+}
+
 if (!is_android) {
   source_set("browser_tests") {
     testonly = true
@@ -25,6 +73,8 @@ if (!is_android) {
       "//brave/browser",
       "//brave/browser:browser_process",
       "//brave/browser/brave_shields:test_support",
+      "//brave/browser/ephemeral_storage",
+      "//brave/browser/permissions",
       "//brave/components/brave_component_updater/browser",
       "//brave/components/brave_shields/content/browser",
       "//brave/components/brave_shields/core/browser",
@@ -63,6 +113,7 @@ source_set("unit_tests") {
   sources = [ "permission_lifetime_manager_unittest.cc" ]
 
   deps = [
+    "//base/test:test_support",
     "//chrome/browser",
     "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/permissions",

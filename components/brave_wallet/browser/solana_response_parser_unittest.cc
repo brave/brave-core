@@ -362,6 +362,7 @@ TEST(SolanaResponseParserUnitTest, ParseGetAccountInfo) {
 
   std::optional<SolanaAccountInfo> info;
   ASSERT_TRUE(ParseGetAccountInfo(ParseJson(json), &info));
+  ASSERT_TRUE(info.has_value());
   EXPECT_EQ(*info, expected_info);
 
   json = R"(
@@ -441,7 +442,10 @@ TEST(SolanaResponseParserUnitTest, ParseGetAccountInfo) {
 
   json = R"({"jsonrpc":"2.0","id":1,"result":{"value":{}}})";
   EXPECT_FALSE(ParseGetAccountInfo(ParseJson(json), &info));
+}
 
+TEST(SolanaResponseParserDeathTest, ParseGetAccountInfo) {
+  std::string json = R"({"jsonrpc":"2.0","id":1,"result":{"value":{}}})";
   EXPECT_DCHECK_DEATH(ParseGetAccountInfo(ParseJson(json), nullptr));
 }
 
@@ -465,7 +469,11 @@ TEST(SolanaResponseParserUnitTest, ParseGetFeeForMessage) {
     EXPECT_FALSE(ParseGetFeeForMessage(ParseJson(invalid_json), &fee))
         << invalid_json;
   }
+}
 
+TEST(SolanaResponseParserDeathTest, ParseGetFeeForMessage) {
+  std::string json =
+      R"({"jsonrpc":"2.0", "id":1, "result":{"value":"18446744073709551615"}})";
   EXPECT_DCHECK_DEATH(ParseGetFeeForMessage(ParseJson(json), nullptr));
 }
 
@@ -488,7 +496,11 @@ TEST(SolanaResponseParserUnitTest, ParseGetBlockHeight) {
     EXPECT_FALSE(ParseGetBlockHeight(ParseJson(invalid_json), &block_height))
         << invalid_json;
   }
+}
 
+TEST(SolanaResponseParserDeathTest, ParseGetBlockHeight) {
+  std::string json =
+      R"({"jsonrpc":"2.0","id":1,"result":"18446744073709551615"})";
   EXPECT_DCHECK_DEATH(ParseGetBlockHeight(ParseJson(json), nullptr));
 }
 
@@ -955,7 +967,7 @@ TEST(SolanaResponseParserUnitTest, ParseGetSolanaPrioritizationFees) {
   })";
 
   fees = ParseGetSolanaPrioritizationFees(ParseJson(empty_result_json));
-  EXPECT_TRUE(fees.has_value());
+  ASSERT_TRUE(fees.has_value());
   EXPECT_TRUE(fees->empty());
 
   // Testing JSON with wrong data types for 'slot' and 'prioritizationFee'

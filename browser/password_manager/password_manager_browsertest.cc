@@ -5,6 +5,7 @@
 
 #include "base/memory/scoped_refptr.h"
 #include "base/test/bind.h"
+#include "base/test/test_future.h"
 #include "chrome/browser/password_manager/factories/profile_password_store_factory.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/common/webui_url_constants.h"
@@ -42,10 +43,10 @@ IN_PROC_BROWSER_TEST_F(PasswordManagerTest,
   form.username_value = u"test_user";
   form.password_value = password_manager::PasswordString(u"test_password");
   form.scheme = password_manager::PasswordForm::Scheme::kHtml;
-  base::RunLoop run_loop;
+  base::test::TestFuture<void> added;
   store_->AddLogin(password_manager::FromPasswordForm(form),
-                   run_loop.QuitClosure());
-  run_loop.Run();
+                   added.GetCallback());
+  ASSERT_TRUE(added.Wait());
 
   // Open password settings and expect no errors.
   content::WebContents* contents =

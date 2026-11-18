@@ -11,9 +11,11 @@
 #include "base/check_is_test.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/feature_list.h"
+#include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/metrics/user_metrics.h"
 #include "base/notreached.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/types/to_address.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/profiles/profile_util.h"
@@ -21,6 +23,7 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
@@ -54,6 +57,8 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/tabs/tab_strip_user_gesture_details.h"
+#include "chrome/browser/ui/toasts/api/toast_id.h"
+#include "chrome/browser/ui/toasts/toast_controller.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -120,6 +125,8 @@
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/containers/containers_service_factory.h"
+#include "brave/components/containers/core/browser/containers_service.h"
+#include "brave/components/containers/core/mojom/containers.mojom.h"
 #endif
 
 namespace {
@@ -440,9 +447,23 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-  UpdateCommandEnabled(
-      IDC_NEW_TEMPORARY_CONTAINER,
-      ContainersServiceFactory::GetForProfile(browser_->GetProfile()));
+  auto* containers_service =
+      ContainersServiceFactory::GetForProfile(browser_->GetProfile());
+
+  const bool enable_containers_commands =
+      containers_service && containers_service->ShouldShowContainerControls();
+
+  UpdateCommandEnabled(IDC_NEW_TEMPORARY_CONTAINER, enable_containers_commands);
+
+  const size_t container_count =
+      enable_containers_commands ? containers_service->GetContainers().size()
+                                 : 0;
+
+  for (int id = IDC_NEW_TAB_IN_CONTAINER_1; id <= IDC_NEW_TAB_IN_CONTAINER_9;
+       ++id) {
+    const int index = id - IDC_NEW_TAB_IN_CONTAINER_1;
+    UpdateCommandEnabled(id, index < static_cast<int>(container_count));
+  }
 #endif
 
   if (browser_->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL) {
@@ -459,15 +480,64 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 void BraveBrowserCommandController::UpdateCommandsForFullscreenMode() {
   BrowserCommandController::UpdateCommandsForFullscreenMode();
 
-// On macOS, we block vertical tab mode toggling in fullscreen.
-// Immersive fullscreen feeature is enabled by default but
-// it's not compatible with vertical tab. See the comments in
-// WindowFeatureController::UsesImmersiveFullscreenMode() for more detail.
-// Otherwise, crash happens when turn on vertical tab while fullscreen.
 #if BUILDFLAG(IS_MAC)
-  UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS,
-                       window() && !window()->IsFullscreen());
+  // A vertical tab toggle requested while fullscreen is applied once the
+  // window leaves fullscreen. Post it so that the tab strip switch doesn't
+  // run in the middle of the fullscreen state change notifications.
+  if (pending_vertical_tabs_enabled_ && window() && !window()->IsFullscreen()) {
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE,
+        base::BindOnce(
+            &BraveBrowserCommandController::ApplyPendingVerticalTabsToggle,
+            weak_factory_.GetWeakPtr()));
+  }
 #endif
+}
+
+#if BUILDFLAG(IS_MAC)
+void BraveBrowserCommandController::ToggleVerticalTabsWhileFullscreen() {
+  // On macOS, vertical tabs can't be switched while the window is fullscreen:
+  // immersive fullscreen (enabled by default) isn't compatible with switching
+  // the tab strip mode in place, and the switch crashes. See the comments in
+  // WindowFeatureController::UsesImmersiveFullscreenMode() for more detail.
+  // Like upstream Chrome does for its own vertical tabs, remember the request,
+  // apply it when the window leaves fullscreen, and tell the user so with a
+  // toast that also offers to exit fullscreen.
+  // Nothing shows the pending switch once the toast is gone (the tab strip and
+  // the settings toggle keep showing the current mode), so toggling again
+  // repeats the request instead of cancelling it.
+  const bool target =
+      !browser_->GetProfile()->GetOriginalProfile()->GetPrefs()->GetBoolean(
+          brave_tabs::kVerticalTabsEnabled);
+  pending_vertical_tabs_enabled_ = target;
+  if (auto* toast_controller = ToastController::From(&*browser_)) {
+    toast_controller->MaybeShowToast(
+        ToastParams(target ? ToastId::kTabStripSwitchDelayedVertical
+                           : ToastId::kTabStripSwitchDelayedHorizontal));
+  }
+}
+
+void BraveBrowserCommandController::ApplyPendingVerticalTabsToggle() {
+  if (!pending_vertical_tabs_enabled_ || !window() ||
+      window()->IsFullscreen()) {
+    return;
+  }
+
+  const bool target = *pending_vertical_tabs_enabled_;
+  pending_vertical_tabs_enabled_.reset();
+  if (browser_->GetProfile()->GetOriginalProfile()->GetPrefs()->GetBoolean(
+          brave_tabs::kVerticalTabsEnabled) != target) {
+    ToggleVerticalTabStrip();
+  }
+}
+#endif  // BUILDFLAG(IS_MAC)
+
+void BraveBrowserCommandController::ToggleVerticalTabStrip() {
+  brave::ToggleVerticalTabStrip(&*browser_);
+  if (auto* browser_view =
+          BraveBrowserView::GetBrowserViewForBrowser(&*browser_)) {
+    browser_view->InvalidateLayout();
+  }
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
@@ -781,7 +851,13 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_TOGGLE_VERTICAL_TABS:
       CHECK(!tabs::IsUpstreamVerticalTabsForceEnabled());
-      brave::ToggleVerticalTabStrip(&*browser_);
+#if BUILDFLAG(IS_MAC)
+      if (window() && window()->IsFullscreen()) {
+        ToggleVerticalTabsWhileFullscreen();
+        break;
+      }
+#endif
+      ToggleVerticalTabStrip();
       break;
     case IDC_SHARING_HUB_SCREENSHOT: {
       auto* browser_view =
@@ -898,6 +974,38 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
 #endif
 #if BUILDFLAG(ENABLE_CONTAINERS)
+    case IDC_NEW_TAB_IN_CONTAINER_1:
+    case IDC_NEW_TAB_IN_CONTAINER_2:
+    case IDC_NEW_TAB_IN_CONTAINER_3:
+    case IDC_NEW_TAB_IN_CONTAINER_4:
+    case IDC_NEW_TAB_IN_CONTAINER_5:
+    case IDC_NEW_TAB_IN_CONTAINER_6:
+    case IDC_NEW_TAB_IN_CONTAINER_7:
+    case IDC_NEW_TAB_IN_CONTAINER_8:
+    case IDC_NEW_TAB_IN_CONTAINER_9: {
+      auto* containers_service =
+          ContainersServiceFactory::GetForProfile(browser_->GetProfile());
+
+      if (!containers_service ||
+          !containers_service->ShouldShowContainerControls()) {
+        break;
+      }
+
+      const size_t index = static_cast<size_t>(id - IDC_NEW_TAB_IN_CONTAINER_1);
+      auto containers = containers_service->GetContainers();
+
+      if (index >= containers.size()) {
+        break;
+      }
+
+      brave::OpenUrlInContainer(base::to_address(browser_),
+                                chrome::GetNewTabURL(&*browser_),
+                                containers[index],
+                                /*is_link=*/false);
+
+      break;
+    }
+
     case IDC_NEW_TEMPORARY_CONTAINER:
       brave::CreateTemporaryContainerAndOpenUrl(
           base::to_address(browser_), chrome::GetNewTabURL(&*browser_),

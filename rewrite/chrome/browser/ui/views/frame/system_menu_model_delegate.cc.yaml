@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Handle Brave-specific commands such as vertical tabs and focus mode
+
+      The shadow includes the implementation needed by this code.
+    preempt_function_impl:
+      function_name: SystemMenuModelDelegate::IsCommandIdChecked
+      code: |-
+        if (auto result = MaybeHandleBraveCommand(command_id, browser_); result.has_value()) {
+          return *result;
+        }
+
+  - description: |-
+      Handle the label for Brave-specific commands
+
+      The shadow includes the implementation needed by this code.
+    preempt_function_impl:
+      function_name: SystemMenuModelDelegate::GetLabelForCommandId
+      code: |-
+        if (auto label = MaybeGetLabelForBraveCommand(command_id, browser_)) {
+          return *label;
+        }

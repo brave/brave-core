@@ -16,8 +16,8 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/ad_block_browser_test_helper.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
-#include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
+#include "brave/components/brave_shields/core/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
@@ -27,7 +27,6 @@
 #include "chrome/browser/resource_coordinator/lifecycle_unit_state.mojom.h"
 #include "chrome/browser/resource_coordinator/tab_lifecycle_unit_external.h"
 #include "chrome/browser/resource_coordinator/tab_lifecycle_unit_source.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -144,9 +143,13 @@ IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, NoBlockNoSavings) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
+  // The page counts the image's load event too, so wait for it before the XHR
+  // instead of racing the two.
   EXPECT_EQ(true, EvalJs(contents,
-                         "addImage('logo.png');"
-                         "setExpectations(0, 0, 1, 0);"
+                         "setExpectations(1, 0, 0, 0);"
+                         "addImage('logo.png')"));
+  EXPECT_EQ(true, EvalJs(contents,
+                         "setExpectations(1, 0, 1, 0);"
                          "xhr('analytics.js')"));
   // Prediction triggered when web contents are closed
   contents->Close();

@@ -114,6 +114,15 @@ void SetNoScriptControlType(HostContentSettingsMap* map,
 ControlType GetNoScriptControlType(HostContentSettingsMap* map,
                                    const GURL& url);
 
+// Clears every per-site Shields exception for |url| (shields toggle, ads,
+// trackers, cosmetic filtering, cookies, fingerprinting, HTTPS upgrade,
+// scripts) so the site follows the global defaults again, including any
+// changed later, rather than freezing in whatever the defaults were when
+// this was called.
+void ResetShieldsSettingsForSite(HostContentSettingsMap* map,
+                                 const GURL& url,
+                                 PrefService* local_state = nullptr);
+
 // Enables a webcompat exception for a specific URL.
 void SetWebcompatEnabled(HostContentSettingsMap* map,
                          ContentSettingsType webcompat_settings_type,

@@ -88,7 +88,7 @@ TEST_F(PageContentExtractorRenderViewTest, ExtractPageContentYouTubeWithYtcfg) {
 
   ASSERT_TRUE(result);
   EXPECT_EQ(result->type, mojom::PageContentType::VideoTranscriptYouTube);
-  EXPECT_TRUE(result->content->is_youtube_inner_tube_config());
+  ASSERT_TRUE(result->content->is_youtube_inner_tube_config());
 
   const auto& config = result->content->get_youtube_inner_tube_config();
   EXPECT_EQ(config->api_key, "test_api_key_123");
@@ -111,7 +111,7 @@ TEST_F(PageContentExtractorRenderViewTest,
 
   ASSERT_TRUE(result);
   EXPECT_EQ(result->type, mojom::PageContentType::VideoTranscriptYouTube);
-  EXPECT_TRUE(result->content->is_youtube_inner_tube_config());
+  ASSERT_TRUE(result->content->is_youtube_inner_tube_config());
 
   const auto& config = result->content->get_youtube_inner_tube_config();
   EXPECT_EQ(config->api_key, "fallback_api_key_456");
@@ -264,7 +264,7 @@ TEST_F(PageContentExtractorRenderViewTest,
 
   ASSERT_TRUE(result);
   EXPECT_EQ(result->type, mojom::PageContentType::VideoTranscriptYouTube);
-  EXPECT_TRUE(result->content->is_youtube_inner_tube_config());
+  ASSERT_TRUE(result->content->is_youtube_inner_tube_config());
 
   const auto& config = result->content->get_youtube_inner_tube_config();
   EXPECT_EQ(config->api_key, "valid_api_key_with_special_chars_!@#$%^&*()_+-=");

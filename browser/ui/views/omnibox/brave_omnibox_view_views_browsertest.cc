@@ -10,6 +10,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/test_future.h"
 #include "brave/browser/brave_browser_features.h"
+#include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/url_sanitizer/core/browser/url_sanitizer_service.h"
 #include "brave/ui/base/clipboard/test/privacy_capturing_test_clipboard.h"
@@ -17,6 +18,7 @@
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
@@ -80,13 +82,13 @@ class BraveOmniboxViewViewsTest : public InProcessBrowserTest {
   }
 
   void SetSanitizerRules(const std::string& matchers) {
-    base::RunLoop loop;
+    base::test::TestFuture<void> initialized;
 
     auto* url_sanitizer_service =
         brave::URLSanitizerServiceFactory::GetForBrowserContext(
             browser()->GetProfile());
     url_sanitizer_service->SetInitializationCallbackForTesting(
-        loop.QuitClosure());
+        initialized.GetCallback());
     brave::URLSanitizerComponentInstaller::RawConfig config;
     config.matchers = matchers;
     auto* component_intaller =
@@ -94,7 +96,7 @@ class BraveOmniboxViewViewsTest : public InProcessBrowserTest {
             url_sanitizer_service);
     component_intaller->OnConfigReady(config);
 
-    loop.Run();
+    ASSERT_TRUE(initialized.Wait());
   }
 
  private:
@@ -251,6 +253,36 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, CopyCleanURLToClipboardTest) {
             "e=&f=g&=end");
 }
 
+IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, CleanLinkCommands) {
+  SetSanitizerRules(R"([
+    { "include": [ "*://*/*"], "params": ["utm_content"] }
+  ])");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), GURL("https://dev-pages.bravesoftware.com/clean-urls/"
+                      "?brave_testing1=foo&utm_content=removethis")));
+
+  browser()->GetTabStripModel()->GetActiveWebContents()->Focus();
+  EXPECT_FALSE(brave::HasSelectedURL(browser()));
+
+  omnibox_view()->SetFocus(true);
+  omnibox_view()->SelectAll(false);
+  ASSERT_TRUE(omnibox_view()->IsSelectAll());
+  EXPECT_TRUE(brave::HasSelectedURL(browser()));
+
+  SetClipboardText(ui::ClipboardBuffer::kCopyPaste, u"");
+  brave::CleanAndCopySelectedURL(browser());
+  EXPECT_EQ(
+      "https://dev-pages.bravesoftware.com/clean-urls/"
+      "?brave_testing1=foo",
+      ui::clipboard_test_util::ReadAsciiText(
+          ui::Clipboard::GetForCurrentThread(), ui::ClipboardBuffer::kCopyPaste,
+          /*data_dst=*/nullptr));
+
+  omnibox_view()->SetUserText(u"not a url");
+  omnibox_view()->SelectAll(false);
+  EXPECT_FALSE(brave::HasSelectedURL(browser()));
+}
+
 // A clean link copied from a private window must not leak into the OS clipboard
 // history or cloud clipboard sync.
 IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest,
@@ -342,7 +374,6 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, DoNotSanitizeInternalURLS) {
   SetSanitizerRules(R"([
     { "include": [ "*://*/*"], "params": ["utm_ad"] }
   ])");
-  base::RunLoop().RunUntilIdle();
 
   omnibox_view()->SelectAll(true);
   omnibox_view()->ExecuteCommand(

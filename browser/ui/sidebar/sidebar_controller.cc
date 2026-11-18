@@ -152,13 +152,15 @@ void SidebarController::OnItemPressed(size_t index,
 
     // Try to close side panel as we could open web panel.
     // Otherwise, it's no-op. The side panel shouldn't animate out while the
-    // web panel takes over its space - the two should swap in one frame.
+    // web panel takes over its space - the two should swap in one frame, which
+    // means the web panel must not animate in either.
     // Unlike the open direction (ShouldSuppressSidePanelOpenAnimation()), the
     // coordinator can't decide this: Close() runs for every close reason and
     // the web panel isn't open yet, so only this call site knows it's a swap.
+    const bool replacing_side_panel = GetSidePanelUI()->IsSidePanelShowing();
     GetSidePanelUI()->Close(SidePanelEntryHideReason::kSidePanelClosed,
                             /*suppress_animations=*/true);
-    web_panel_controller->ToggleWebPanel(item);
+    web_panel_controller->ToggleWebPanel(item, replacing_side_panel);
     return;
   }
 
@@ -276,7 +278,10 @@ void SidebarController::LoadAtTab(const GURL& url) {
 
 void SidebarController::OnShowSidebarOptionChanged(
     SidebarService::ShowSidebarOption option) {
-  CHECK(sidebar_);
+  // WebUI browser windows have no sidebar UI.
+  if (!sidebar_) {
+    return;
+  }
   sidebar_pinned_ = false;
   sidebar_->SetSidebarShowOption(option);
 }
@@ -312,9 +317,12 @@ void SidebarController::AddItemWithCurrentTab() {
 }
 
 void SidebarController::HandleSidePanelOpened(SidePanelEntryId id) {
-  // We open side panel so close web panel if existed.
+  // We open side panel so close web panel if existed. The side panel is taking
+  // the web panel's space, so the two swap in one frame - the matching
+  // suppression for the side panel's own open is
+  // ShouldSuppressSidePanelOpenAnimation().
   if (web_panel_controller_) {
-    web_panel_controller_->CloseWebPanel();
+    web_panel_controller_->CloseWebPanel(/*suppress_animations=*/true);
   }
 
   const auto item_type = BuiltInItemTypeFromSidePanelId(id);
@@ -343,8 +351,9 @@ void SidebarController::HandleSidePanelClosed() {
 
 bool SidebarController::ShouldSuppressSidePanelOpenAnimation() const {
   // The side panel shouldn't animate in over a web panel already occupying its
-  // space.
-  return web_panel_controller_ && web_panel_controller_->HasOpenPanel();
+  // space. HasPanelTab(), not HasOpenPanel(): a panel part-way through its own
+  // close animation is still on screen.
+  return web_panel_controller_ && web_panel_controller_->HasPanelTab();
 }
 
 void SidebarController::OnWebPanelStateChanged() {

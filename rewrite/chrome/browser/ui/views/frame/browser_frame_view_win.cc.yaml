@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Create window_title_ when vertical tabs are supported
+
+      Override the invocation of WindowFeatureController::SupportsWindowFeature()
+      in the constructor in order to create the `window_title_` label when the
+      browser supports the vertical tab strip. Even though
+      BraveBrowser::SupportsWindowFeature() is overridden, we still need to
+      inline the check because the BrowserWindow is created inside Browser's
+      constructor, so BraveBrowser is not created yet. Also, `window_title_`
+      must be created even when SupportsWindowFeature(kFeatureTitleBar) returns
+      false at the time of creation, as users can switch tab orientation or
+      title bar visibility by changing preferences.
+    regex:
+      re_pattern: '(WindowFeatureController::From\(browser\)->SupportsWindowFeature\(\s*WindowFeatureController::WindowFeature::kFeatureTitleBar\))'
+      replace: |-
+        \1 ||
+                (VerticalTabController::From(browser) &&
+                 VerticalTabController::From(browser)->SupportsBraveVerticalTabs())

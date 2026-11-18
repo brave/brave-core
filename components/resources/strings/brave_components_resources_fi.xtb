@@ -947,6 +947,11 @@
 <translation id="4362717653795263052">Palauta ensisijaiset kryptotilit</translation>
 <translation id="3038077262567136741">Anna palautuslause palauttaaksesi Brave Wallet -lompakon kryptotilin.</translation>
 <translation id="955918646509748368">Annettu palautuslause on virheellinen.</translation>
+<translation id="7496330898672236908">Tämä palautuslause ei vastaa lompakkoasi. Tarkista lause ja yritä uudelleen.</translation>
+<translation id="3798792138617904098">Poistetaanko tuodut tilit?</translation>
+<translation id="2960631345291747230">Tuotuja tilejä ei varmuuskopioida palautuslauseesi avulla. Ne poistetaan Brave-lompakosta, ja saatat menettää pysyvästi pääsyn niiden varoihin, ellet ole varmuuskopioinut niiden yksityisiä avaimia.</translation>
+<translation id="8898583604592472741">Poista tilit</translation>
+<translation id="1577629163207045190">Vahvista kirjoittamalla "<ph name="CONFIRMATION_PHRASE"/>".</translation>
 <translation id="8107437138787377150">Liitä palautuslause leikepöydältä</translation>
 <translation id="4811736040444856406">Näytä palautuslause</translation>
 <translation id="4359319875297001084">Tuo vanhasta Brave-kryptolomlakoista?</translation>
@@ -2241,13 +2246,12 @@
 <translation id="3934503473603661122">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Grok 4.7:een, xAI:n huippuluokan päättelymalliin Amazon Bedrockissa. Grok 4.7 tarjotaan Braven suojatun AWS-infrastruktuurin kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu GPT Lunaan, OpenAI:n nopeaan, matalan latenssin malliin Amazon Bedrockissa. GPT Luna tarjotaan Braven suojatun AWS-infrastruktuurin kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu GPT 5.6 Terraan, OpenAI:n tasapainoiseen tuotantomalliin Amazon Bedrock Mantlessa. GPT 5.6 Terra tarjotaan Braven suojatun AWS-infrastruktuurin kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Mistral Large -malliin, jonka on luonut Mistral ja joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. Mistral Large on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Claude Haiku -malliin, jonka on luonut Anthropic keskustelu- ja tekstinkäsittelytehtäviin. Claude Haiku on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Qwen 3.8 Flash Nextiin, Alibaba Cloudin luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. Qwen 3.8 Flash Next on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Deepseek V3.2:een, Deepseekin luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. Deepseek V3.2 on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu GLM 5.3:een, Z.ai:n luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. GLM 5.3 on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Claude Opus -malliin, jonka on luonut Anthropic keskustelu- ja tekstinkäsittelytehtäviin. Claude Opus on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu GLM-4-7-Flash:iin, Zhipu AI:n luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. GLM-4-7-Flash on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Kimi K2.5:een, Moonshot AI:n luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. Kimi K2.5 on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Nemotron Nano 3 30B:hen, NVIDIA:n luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. Nemotron Nano 3 30B on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Brave Ocelotiin, Braven luomaan malliin, joka on suunniteltu verkkosivujen tiivistämiseen. Brave Ocelot on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Paikallinen</translation>
@@ -2387,8 +2391,8 @@
 <translation id="7465032796278724624">Todistetusti yksityinen NEAR AI TEE:n avulla</translation>
 <translation id="8782867266498869301">Malli vaihtuu dynaamisesti sellaiseksi, joka on paras kyseistä tehtävää varten</translation>
 <translation id="7348809809749151120">Nopea • Haku</translation>
+<translation id="7711013627639951065">Nopea • Haku • Näkö • Työkalut</translation>
 <translation id="3213834013136637671">Haku • Näkö</translation>
-<translation id="2793458212460902934">Nopea • Haku • Työkalut</translation>
 <translation id="5276681919620506371">Haku • Työkalut</translation>
 <translation id="7434375176361995333">Tiivistelmät • Nopea</translation>
 <translation id="3965507912994218570">Leo-asetukset</translation>
@@ -2461,6 +2465,8 @@
 <translation id="6287023598025162715">Uusi keskustelu</translation>
 <translation id="7230502562132448519">Suodata keskusteluja</translation>
 <translation id="821070843380699990">Kokeile toista kyselyä</translation>
+<translation id="241415280196701326">Viimeisimmät työtilat</translation>
+<translation id="5388053981690151266">Uusi keskustelu tässä työtilassa</translation>
 <translation id="7097822247923237815">Väliaikainen keskustelu</translation>
 <translation id="7481750859362986254">Tätä keskustelua ei tallenneta historiaasi eikä siinä käytetä Leon mukautuksia tai muistoja.</translation>
 <translation id="4238305333951712482">Muisti päivitetty: <ph name="MEMORY_CONTENT"/></translation>
@@ -2486,6 +2492,7 @@
 <translation id="5103625298494362646">AI-selaustila toimii mallien kanssa, jotka tukevat työkaluja. Yhteensopimattomat mallit eivät näy tässä luettelossa.</translation>
 <translation id="3397808797783614750">AI:n automaattinen verkkoselaus voi aiheuttaa haitallisia, ei-toivottuja seurauksia yksityisyydellesi, taloudellesi ja verkkoviestinnällesi. <ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Tietoturvavaroitus</translation>
+<translation id="717245811623757038">Työkalun käyttöoikeuspyyntö</translation>
 <translation id="6077070599873946984">Brave AI tarvitsee luvan kohteelle: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI haluaisi suorittaa työkalun **<ph name="TOOL_NAME"/>** sivustolla **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Toiminto havaittiin mahdollisesti poikkeavan pyynnöstäsi:</translation>

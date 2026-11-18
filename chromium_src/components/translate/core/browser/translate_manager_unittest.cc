@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/memory/raw_ptr.h"
-#include "base/run_loop.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "build/build_config.h"
@@ -53,16 +52,6 @@ class TestNetworkChangeNotifier {
   TestNetworkChangeNotifier(const TestNetworkChangeNotifier&) = delete;
   TestNetworkChangeNotifier& operator=(const TestNetworkChangeNotifier&) =
       delete;
-
-  // Simulates a change of the connection type to |type|. This will notify any
-  // objects that are NetworkChangeNotifiers.
-  void SimulateNetworkConnectionChange(
-      net::NetworkChangeNotifier::ConnectionType type) {
-    mock_notifier_->SetConnectionType(type);
-    net::NetworkChangeNotifier::NotifyObserversOfConnectionTypeChangeForTests(
-        type);
-    base::RunLoop().RunUntilIdle();
-  }
 
   void SimulateOffline() {
     mock_notifier_->SetConnectionType(

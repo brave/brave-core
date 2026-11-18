@@ -3,39 +3,54 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "components/permissions/permission_request_manager.h"
+
 #include <algorithm>
+#include <memory>
 #include <optional>
 #include <string>
+#include <vector>
 
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
-
-#define BRAVE_PERMISSION_REQUEST_MANAGER_GET_REQUESTING_ORIGIN \
-  if (!ShouldBeGrouppedInRequests(request.get()))
-
-// |tab_is_hidden_| should be updated after upstream sets.
-#define BRAVE_PERMISSION_REQUEST_MANAGER_ON_VISIBILITY_CHANGED \
-  UpdateTabIsHiddenWithTabActivationState();
-
-// Wallet requests are flagged as embedded permission element initiated only to
-// keep the request queue FIFO, they have their own prompt and must not enter
-// the <permission> element prompt flow. That flow re-shows the prompt on grant
-// instead of finalizing the requests, which leaves permission callbacks unrun.
-#define BRAVE_PERMISSION_REQUEST_MANAGER_RECREATE_VIEW \
-  !IsCurrentRequestBraveWalletInitiated()
-
-#include <components/permissions/permission_request_manager.cc>
-
-#undef BRAVE_PERMISSION_REQUEST_MANAGER_RECREATE_VIEW
-#undef BRAVE_PERMISSION_REQUEST_MANAGER_ON_VISIBILITY_CHANGED
-#undef BRAVE_PERMISSION_REQUEST_MANAGER_GET_REQUESTING_ORIGIN
-
+#include "components/permissions/permission_request.h"
+#include "components/permissions/permission_request_queue.h"
+#include "components/permissions/request_type.h"
+#include "content/public/browser/web_contents.h"
 #include "url/origin.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #endif
+
+namespace permissions {
+namespace {
+
+// Like WebContents::HasUncommittedNavigationInPrimaryMainFrame(), except that
+// the Google sign-in prompt is never blocked: it is raised for the very
+// navigation it defers.
+bool HasUncommittedNavigationBlockingPrompt(
+    content::WebContents* web_contents,
+    const std::vector<std::unique_ptr<PermissionRequest>>& requests,
+    const PermissionRequestQueue& pending_requests) {
+  if (!web_contents->HasUncommittedNavigationInPrimaryMainFrame()) {
+    return false;
+  }
+  const PermissionRequest* next = nullptr;
+  if (!requests.empty()) {
+    next = requests.front().get();
+  } else if (!pending_requests.IsEmpty()) {
+    next = pending_requests.Peek();
+  }
+  return !next ||
+         next->request_type() != RequestType::kBraveGoogleSignInPermission;
+}
+
+}  // namespace
+}  // namespace permissions
+
+#include <components/permissions/permission_request_manager.cc>
 
 namespace permissions {
 

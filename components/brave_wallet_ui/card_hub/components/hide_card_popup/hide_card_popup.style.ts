@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as leo from '@brave/leo/tokens/css/variables'
-import LeoDialog from '@brave/leo/react/dialog'
+import * as leo from '@brave/nala/tokens/css/variables'
+import LeoDialog from '@brave/nala/react/dialog'
 import styled from 'styled-components'
 
 export const Dialog = styled(LeoDialog)`

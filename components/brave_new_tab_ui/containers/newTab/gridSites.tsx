@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // DnD Kit
-import Navdots from '@brave/leo/react/navdots'
+import Navdots from '@brave/nala/react/navdots'
 import { AutoScrollOptions, DndContext, DragEndEvent, KeyboardSensor, MouseSensor, PointerActivationConstraint, TouchSensor, useDndContext, useSensor, useSensors } from '@dnd-kit/core'
 import { SortableContext } from '@dnd-kit/sortable'
 import * as React from 'react'

@@ -50,6 +50,7 @@ TEST(FilTransactionUnitTest, Initialization) {
   first.set_to(to);
   first.set_value("6");
 
+  ASSERT_TRUE(first.nonce());
   EXPECT_EQ(first.nonce().value(), 1u);
   EXPECT_EQ(first.gas_premium(), "2");
   EXPECT_EQ(first.gas_fee_cap(), "3");
@@ -62,7 +63,8 @@ TEST(FilTransactionUnitTest, Initialization) {
   auto third = FilTransaction::FromTxData(
       false,
       mojom::FilTxData::New("1", "2", "3", "4", "5", to.EncodeAsString(), "6"));
-  EXPECT_TRUE(third);
+  ASSERT_TRUE(third);
+  ASSERT_TRUE(third->nonce());
   EXPECT_EQ(third->nonce().value(), 1u);
   EXPECT_EQ(third->gas_premium(), "2");
   EXPECT_EQ(third->gas_fee_cap(), "3");
@@ -78,7 +80,7 @@ TEST(FilTransactionUnitTest, FromTxDataEVMAddress) {
       false,
       mojom::FilTxData::New("1", "2", "3", "4", "5",
                             "0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961", "6"));
-  EXPECT_TRUE(first);
+  ASSERT_TRUE(first);
   EXPECT_EQ(first->to().EncodeAsString(),
             "t410fwsziaijja4nsxhv3rs5qd2q6juklgslb5opkb5q");
 
@@ -86,7 +88,7 @@ TEST(FilTransactionUnitTest, FromTxDataEVMAddress) {
       true,
       mojom::FilTxData::New("1", "2", "3", "4", "5",
                             "0xB4B2802129071b2B9eBb8cBB01EA1E4D14B34961", "6"));
-  EXPECT_TRUE(second);
+  ASSERT_TRUE(second);
   EXPECT_EQ(second->to().EncodeAsString(),
             "f410fwsziaijja4nsxhv3rs5qd2q6juklgslb5opkb5q");
 
@@ -180,12 +182,14 @@ TEST(FilTransactionUnitTest, Serialization) {
       false,
       mojom::FilTxData::New("1", "2", "3", "4", "5",
                             "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6"));
+  ASSERT_TRUE(transaction);
   EXPECT_EQ(transaction, FilTransaction::FromValue(transaction->ToValue()));
 
   auto empty_nonce = FilTransaction::FromTxData(
       false,
       mojom::FilTxData::New("", "2", "3", "1", "5",
                             "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6"));
+  ASSERT_TRUE(empty_nonce);
   EXPECT_EQ(empty_nonce, FilTransaction::FromValue(empty_nonce->ToValue()));
 }
 
@@ -196,6 +200,7 @@ TEST(FilTransactionUnitTest, GetMessageToSignSecp) {
       false,
       mojom::FilTxData::New("", "2", "3", "1", "5",
                             "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6"));
+  ASSERT_TRUE(transaction);
   auto message_to_sign = transaction->GetMessageToSignJson(from);
   ASSERT_TRUE(message_to_sign);
   EXPECT_EQ(base::test::ParseJson(*message_to_sign), base::test::ParseJson(R"({
@@ -231,17 +236,20 @@ TEST(FilTransactionUnitTest, GetMessageToSignSecp) {
   auto private_key = *base::as_byte_span(private_key_decoded)
                           .to_fixed_extent<kSecp256k1PrivateKeySize>();
   auto hd_key = HDKey::GenerateFromPrivateKey(private_key);
-  auto signed_transaction = transaction->GetSignedTransaction(
-      from,
-      hd_key->SignCompact(Blake2bHash<32>({*transaction->TransactionCid(from)}))
-          ->bytes());
+  ASSERT_TRUE(hd_key);
+  auto cid = transaction->TransactionCid(from);
+  ASSERT_TRUE(cid);
+  auto signature = hd_key->SignCompact(Blake2bHash<32>({*cid}));
+  ASSERT_TRUE(signature);
+  auto signed_transaction =
+      transaction->GetSignedTransaction(from, signature->bytes());
   ASSERT_TRUE(signed_transaction);
   auto signature_value = base::test::ParseJsonDict(*signed_transaction);
   auto* message = signature_value.Find("Message");
   auto* signature_data =
       signature_value.FindStringByDottedPath("Signature.Data");
-  EXPECT_TRUE(message);
-  EXPECT_TRUE(signature_data);
+  ASSERT_TRUE(message);
+  ASSERT_TRUE(signature_data);
   auto message_as_value = base::test::ParseJson(*message_to_sign);
   EXPECT_EQ(*signature_data,
             "SozNIZGNAvALCWtc38OUhO9wdFl82qESGhjnVVhI6CYNN0gP5qa+hZtyFh+"
@@ -259,6 +267,7 @@ TEST(FilTransactionUnitTest, GetMessageToSignSecpF1ToV4) {
       false, mojom::FilTxData::New(
                  "1", "2", "3", "1", "5",
                  "t410frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y", "6"));
+  ASSERT_TRUE(transaction);
   auto message_to_sign = transaction->GetMessageToSignJson(from);
   ASSERT_TRUE(message_to_sign);
   EXPECT_EQ(base::test::ParseJson(*message_to_sign), base::test::ParseJson(R"({
@@ -279,17 +288,20 @@ TEST(FilTransactionUnitTest, GetMessageToSignSecpF1ToV4) {
   auto private_key = *base::as_byte_span(private_key_decoded)
                           .to_fixed_extent<kSecp256k1PrivateKeySize>();
   auto hd_key = HDKey::GenerateFromPrivateKey(private_key);
-  auto signed_transaction = transaction->GetSignedTransaction(
-      from,
-      hd_key->SignCompact(Blake2bHash<32>({*transaction->TransactionCid(from)}))
-          ->bytes());
+  ASSERT_TRUE(hd_key);
+  auto cid = transaction->TransactionCid(from);
+  ASSERT_TRUE(cid);
+  auto signature = hd_key->SignCompact(Blake2bHash<32>({*cid}));
+  ASSERT_TRUE(signature);
+  auto signed_transaction =
+      transaction->GetSignedTransaction(from, signature->bytes());
   ASSERT_TRUE(signed_transaction);
   auto signature_value = base::test::ParseJsonDict(*signed_transaction);
   auto* message = signature_value.Find("Message");
   auto* signature_data =
       signature_value.FindStringByDottedPath("Signature.Data");
-  EXPECT_TRUE(message);
-  EXPECT_TRUE(signature_data);
+  ASSERT_TRUE(message);
+  ASSERT_TRUE(signature_data);
   auto message_as_value = base::test::ParseJson(*message_to_sign);
   EXPECT_EQ(*signature_data,
             "cJny5ecvdcWNblL8NcFrsrDy8b47UZ5uz7+Djvb4Nx5sRkb/"
@@ -310,6 +322,7 @@ TEST(FilTransactionUnitTest, GetMessageToSignBLS) {
       "ocyug4ftz64xza";
   auto transaction = FilTransaction::FromTxData(
       false, mojom::FilTxData::New("1", "2", "3", "1", "5", to_account, "6"));
+  ASSERT_TRUE(transaction);
   auto message_to_sign =
       transaction->GetMessageToSignJson(FilAddress::FromAddress(from_account));
   ASSERT_TRUE(message_to_sign);
@@ -336,17 +349,18 @@ TEST(FilTransactionUnitTest, GetMessageToSignBLS) {
       DecodePrivateKey("7ug8i7Q6xddnBpvjbHe8zm+UekV+EVtOUxpNXr+PpCc=");
   auto private_key =
       *base::as_byte_span(private_key_decoded).to_fixed_extent<32>();
+  auto cid = transaction->TransactionCid(from);
+  ASSERT_TRUE(cid);
   auto signed_transaction = transaction->GetSignedTransaction(
-      from, base::ToVector(bls_sign_message(
-                base::SpanToRustSlice(private_key),
-                base::SpanToRustSlice(*transaction->TransactionCid(from)))));
+      from, base::ToVector(bls_sign_message(base::SpanToRustSlice(private_key),
+                                            base::SpanToRustSlice(*cid))));
   ASSERT_TRUE(signed_transaction);
   auto signature_value = base::test::ParseJsonDict(*signed_transaction);
   auto* message = signature_value.Find("Message");
   auto* signature_data =
       signature_value.FindStringByDottedPath("Signature.Data");
-  EXPECT_TRUE(message);
-  EXPECT_TRUE(signature_data);
+  ASSERT_TRUE(message);
+  ASSERT_TRUE(signature_data);
   auto message_as_value = base::test::ParseJson(*message_to_sign);
   EXPECT_EQ(
       *signature_data,
@@ -364,6 +378,7 @@ TEST(FilTransactionUnitTest, ToFilTxData) {
       mojom::FilTxData::New("1", "2", "3", "1", "5",
                             "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6");
   auto transaction = FilTransaction::FromTxData(false, tx_data);
+  ASSERT_TRUE(transaction);
   EXPECT_EQ(transaction->ToFilTxData(), tx_data);
 }
 

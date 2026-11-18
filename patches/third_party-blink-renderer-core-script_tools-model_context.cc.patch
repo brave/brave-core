@@ -1,8 +1,16 @@
 diff --git a/third_party/blink/renderer/core/script_tools/model_context.cc b/third_party/blink/renderer/core/script_tools/model_context.cc
-index ed8d801832f345cee091d06ad523db0cbe849568..62903682ff72a4f17b9eb7a537c0bd9f30b81a00 100644
+index ed8d801832f345cee091d06ad523db0cbe849568..9bdc7628c9540ea57e0bd4d3968d91e2a54a0128 100644
 --- a/third_party/blink/renderer/core/script_tools/model_context.cc
 +++ b/third_party/blink/renderer/core/script_tools/model_context.cc
-@@ -948,6 +948,9 @@ void ModelContext::PauseExecution() {
+@@ -35,6 +35,7 @@
+ #include "third_party/blink/renderer/core/execution_context/agent.h"
+ #include "third_party/blink/renderer/core/execution_context/execution_context.h"
+ #include "third_party/blink/renderer/core/frame/local_dom_window.h"
++#include "third_party/blink/renderer/core/frame/web_local_frame_impl.h"
+ #include "third_party/blink/renderer/core/html/html_script_element.h"
+ #include "third_party/blink/renderer/core/inspector/console_message.h"
+ #include "third_party/blink/renderer/core/probe/core_probes.h"
+@@ -948,6 +949,9 @@ void ModelContext::PauseExecution() {
  }
  
  void ModelContext::NotifyToolChange() {

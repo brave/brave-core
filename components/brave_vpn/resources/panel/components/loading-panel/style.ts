@@ -4,8 +4,8 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import ProgressRing from '@brave/leo/react/progressRing'
-import { color, font, spacing } from '@brave/leo/tokens/css/variables'
+import ProgressRing from '@brave/nala/react/progressRing'
+import { color, font, spacing } from '@brave/nala/tokens/css/variables'
 
 export const LoadingIcon = styled(ProgressRing)`
   --leo-progressring-size: 40px;

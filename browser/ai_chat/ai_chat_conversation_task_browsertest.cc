@@ -571,7 +571,7 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskUI) {
     EXPECT_CALL(*mock_tool, UseTool).Times(0).InSequence(tool_call_seq);
 
     // Pause the task directly via C++ to avoid a timing race with the UI
-    // click handler. The SvelteToReact wrapper in @brave/leo attaches click
+    // click handler. The SvelteToReact wrapper in @brave/nala attaches click
     // listeners asynchronously via useEffect, so the listener may not be
     // attached when ClickElement fires. The UI click path is tested by
     // TaskPauseResumeActions.

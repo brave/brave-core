@@ -8,7 +8,6 @@
 #include <memory>
 #include <string>
 
-#include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "brave/components/ai_chat/core/common/mojom/ollama.mojom.h"
@@ -192,17 +191,13 @@ TEST_F(OllamaServiceTest, ShowModelSuccess) {
   test_url_loader_factory()->AddResponse(
       ai_chat::mojom::kOllamaShowModelInfoAPIEndpoint, kModelDetailsResponse);
 
-  base::RunLoop run_loop;
-  ollama_client()->ShowModel(
-      "llama2:7b", base::BindLambdaForTesting(
-                       [&](std::optional<OllamaService::ModelDetails> details) {
-                         ASSERT_TRUE(details.has_value());
-                         EXPECT_EQ(4096u, details->context_length);
-                         EXPECT_TRUE(details->has_vision);
-                         run_loop.Quit();
-                       }));
+  base::test::TestFuture<std::optional<OllamaService::ModelDetails>> future;
+  ollama_client()->ShowModel("llama2:7b", future.GetCallback());
 
-  run_loop.Run();
+  const auto& details = future.Get();
+  ASSERT_TRUE(details.has_value());
+  EXPECT_EQ(4096u, details->context_length);
+  EXPECT_TRUE(details->has_vision);
 }
 
 TEST_F(OllamaServiceTest, ShowModelNoResponse) {
@@ -211,30 +206,18 @@ TEST_F(OllamaServiceTest, ShowModelNoResponse) {
       network::mojom::URLResponseHead::New(), "",
       network::URLLoaderCompletionStatus(net::ERR_CONNECTION_REFUSED));
 
-  base::RunLoop run_loop;
-  ollama_client()->ShowModel(
-      "llama2:7b", base::BindLambdaForTesting(
-                       [&](std::optional<OllamaService::ModelDetails> details) {
-                         EXPECT_FALSE(details.has_value());
-                         run_loop.Quit();
-                       }));
-
-  run_loop.Run();
+  base::test::TestFuture<std::optional<OllamaService::ModelDetails>> future;
+  ollama_client()->ShowModel("llama2:7b", future.GetCallback());
+  EXPECT_FALSE(future.Get().has_value());
 }
 
 TEST_F(OllamaServiceTest, ShowModelInvalidJSON) {
   test_url_loader_factory()->AddResponse(
       ai_chat::mojom::kOllamaShowModelInfoAPIEndpoint, "{invalid json}");
 
-  base::RunLoop run_loop;
-  ollama_client()->ShowModel(
-      "llama2:7b", base::BindLambdaForTesting(
-                       [&](std::optional<OllamaService::ModelDetails> details) {
-                         EXPECT_FALSE(details.has_value());
-                         run_loop.Quit();
-                       }));
-
-  run_loop.Run();
+  base::test::TestFuture<std::optional<OllamaService::ModelDetails>> future;
+  ollama_client()->ShowModel("llama2:7b", future.GetCallback());
+  EXPECT_FALSE(future.Get().has_value());
 }
 
 TEST_F(OllamaServiceTest, ShowModelNoModelInfo) {
@@ -245,17 +228,13 @@ TEST_F(OllamaServiceTest, ShowModelNoModelInfo) {
   test_url_loader_factory()->AddResponse(
       ai_chat::mojom::kOllamaShowModelInfoAPIEndpoint, kNoModelInfoResponse);
 
-  base::RunLoop run_loop;
-  ollama_client()->ShowModel(
-      "llama2:7b", base::BindLambdaForTesting(
-                       [&](std::optional<OllamaService::ModelDetails> details) {
-                         ASSERT_TRUE(details.has_value());
-                         EXPECT_EQ(0u, details->context_length);
-                         EXPECT_TRUE(details->has_vision);
-                         run_loop.Quit();
-                       }));
+  base::test::TestFuture<std::optional<OllamaService::ModelDetails>> future;
+  ollama_client()->ShowModel("llama2:7b", future.GetCallback());
 
-  run_loop.Run();
+  const auto& details = future.Get();
+  ASSERT_TRUE(details.has_value());
+  EXPECT_EQ(0u, details->context_length);
+  EXPECT_TRUE(details->has_vision);
 }
 
 TEST_F(OllamaServiceTest, ShowModelNoVisionCapability) {
@@ -269,34 +248,26 @@ TEST_F(OllamaServiceTest, ShowModelNoVisionCapability) {
   test_url_loader_factory()->AddResponse(
       ai_chat::mojom::kOllamaShowModelInfoAPIEndpoint, kNoVisionResponse);
 
-  base::RunLoop run_loop;
-  ollama_client()->ShowModel(
-      "llama2:7b", base::BindLambdaForTesting(
-                       [&](std::optional<OllamaService::ModelDetails> details) {
-                         ASSERT_TRUE(details.has_value());
-                         EXPECT_EQ(8192u, details->context_length);
-                         EXPECT_FALSE(details->has_vision);
-                         run_loop.Quit();
-                       }));
+  base::test::TestFuture<std::optional<OllamaService::ModelDetails>> future;
+  ollama_client()->ShowModel("llama2:7b", future.GetCallback());
 
-  run_loop.Run();
+  const auto& details = future.Get();
+  ASSERT_TRUE(details.has_value());
+  EXPECT_EQ(8192u, details->context_length);
+  EXPECT_FALSE(details->has_vision);
 }
 
 TEST_F(OllamaServiceTest, ShowModelEmptyResponse) {
   test_url_loader_factory()->AddResponse(
       ai_chat::mojom::kOllamaShowModelInfoAPIEndpoint, R"({})");
 
-  base::RunLoop run_loop;
-  ollama_client()->ShowModel(
-      "llama2:7b", base::BindLambdaForTesting(
-                       [&](std::optional<OllamaService::ModelDetails> details) {
-                         ASSERT_TRUE(details.has_value());
-                         EXPECT_EQ(0u, details->context_length);
-                         EXPECT_FALSE(details->has_vision);
-                         run_loop.Quit();
-                       }));
+  base::test::TestFuture<std::optional<OllamaService::ModelDetails>> future;
+  ollama_client()->ShowModel("llama2:7b", future.GetCallback());
 
-  run_loop.Run();
+  const auto& details = future.Get();
+  ASSERT_TRUE(details.has_value());
+  EXPECT_EQ(0u, details->context_length);
+  EXPECT_FALSE(details->has_vision);
 }
 
 // Direct tests for ParseModelsResponse private method

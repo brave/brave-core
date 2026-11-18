@@ -11,6 +11,8 @@
 
 inline constexpr char kBraveAutofillPrivateWindows[] =
     "brave.autofill_private_windows";
+inline constexpr char kBravePasswordManagerFillEnabled[] =
+    "brave.password_manager.fill_enabled";
 inline constexpr char kManagedBraveShieldsDisabledForUrls[] =
     "brave.managed_shields_disabled";
 inline constexpr char kManagedBraveShieldsEnabledForUrls[] =
@@ -118,7 +120,6 @@ inline constexpr char kReferralAndroidGbraid[] =
 #if !BUILDFLAG(IS_ANDROID)
 inline constexpr char kEnableWindowClosingConfirm[] =
     "brave.enable_window_closing_confirm";
-inline constexpr char kEnableClosingLastTab[] = "brave.enable_closing_last_tab";
 inline constexpr char kShowFullscreenReminder[] =
     "brave.show_fullscreen_reminder";
 #endif

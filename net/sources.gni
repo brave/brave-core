@@ -12,4 +12,7 @@ brave_net_sources = [
   "//brave/net/proxy_resolution/proxy_config_service_tor.h",
 ]
 
-brave_net_deps = [ "//brave/components/brave_wallet/common/buildflags" ]
+brave_net_deps = [
+  "//brave/components/brave_wallet/common/buildflags",
+  "//brave/net/cert:root_cert_list",
+]

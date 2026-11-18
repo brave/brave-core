@@ -12,6 +12,7 @@
 
 #include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
+#include "base/test/run_until.h"
 #include "base/test/test_future.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -159,7 +160,8 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
         web_contents()->GetPrimaryMainFrame(),
         request_permissions_future.GetCallback());
 
-    content::RunAllTasksUntilIdle();
+    ASSERT_TRUE(
+        base::test::RunUntil([&] { return observer->IsShowingBubble(); }));
 
     EXPECT_TRUE(permission_request_manager->IsRequestInProgress());
     EXPECT_TRUE(observer->IsShowingBubble());
@@ -199,7 +201,8 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest, RequestPermissions) {
         web_contents()->GetPrimaryMainFrame(),
         request_permissions_future.GetCallback());
 
-    content::RunAllTasksUntilIdle();
+    ASSERT_TRUE(
+        base::test::RunUntil([&] { return observer->IsShowingBubble(); }));
     EXPECT_TRUE(permission_request_manager->IsRequestInProgress());
     EXPECT_TRUE(observer->IsShowingBubble());
     // update anchor should not dismiss the bubble
@@ -290,7 +293,8 @@ IN_PROC_BROWSER_TEST_F(PermissionManagerBrowserTest,
     BraveWalletPermissionContext::RequestWalletPermissions(
         addresses, test_case.permission, url::Origin::Create(url),
         web_contents()->GetPrimaryMainFrame(), base::DoNothing());
-    content::RunAllTasksUntilIdle();
+    ASSERT_TRUE(
+        base::test::RunUntil([&] { return observer->IsShowingBubble(); }));
 
     EXPECT_TRUE(permission_request_manager->IsRequestInProgress());
     EXPECT_TRUE(observer->IsShowingBubble());
@@ -402,7 +406,8 @@ class PermissionManagerIncognitoBrowserTest : public InProcessBrowserTest {
         web_contents->GetPrimaryMainFrame(),
         request_permissions_future.GetCallback());
 
-    content::RunAllTasksUntilIdle();
+    ASSERT_TRUE(
+        base::test::RunUntil([&] { return observer->IsShowingBubble(); }));
     permissions::BraveWalletPermissionContext::AcceptOrCancel(
         {address}, brave_wallet::mojom::PermissionLifetimeOption::kForever,
         web_contents);

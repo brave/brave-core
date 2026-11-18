@@ -58,10 +58,10 @@ TEST_P(RewardsGetParametersTest, Paths) {
   });
 
   if (result.has_value()) {
-    EXPECT_TRUE(expected_result.has_value());
+    ASSERT_TRUE(expected_result.has_value());
     EXPECT_EQ(*result.value(), *expected_result.value());
   } else {
-    EXPECT_FALSE(expected_result.has_value());
+    ASSERT_FALSE(expected_result.has_value());
     EXPECT_EQ(result.error(), expected_result.error());
   }
 }

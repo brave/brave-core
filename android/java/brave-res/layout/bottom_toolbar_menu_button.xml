@@ -9,16 +9,14 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:clickable="true"
-    android:focusable="true"
-    android:contentDescription="@string/accessibility_toolbar_btn_menu"
     android:id="@+id/menu_button_wrapper">
 
     <org.chromium.ui.widget.ChromeImageButton
         android:id="@+id/menu_button"
         style="@style/SplitToolbarButton"
         android:src="@drawable/ic_more_vert_24dp"
-        android:importantForAccessibility="no"
+        android:contentDescription="@string/accessibility_toolbar_btn_menu"
+        android:tooltipText="@string/accessibility_toolbar_btn_menu"
         android:layout_gravity="center"
         android:background="?attr/selectableItemBackgroundBorderless"
         app:tint="@color/default_icon_color_tint_list" />

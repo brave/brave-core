@@ -1,0 +1,34 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Replace BrowserFrameViewWin with BraveBrowserFrameViewWin
+
+      This will create BraveBrowserFrameViewWin instead of
+      BrowserFrameViewWin in a factory function.
+    rename_class:
+      class_name: BrowserFrameViewWin
+      rename: BraveBrowserFrameViewWin
+
+  - description: |-
+      Use BraveOpaqueBrowserFrameView for the opaque frame views
+
+      Brave customizes the opaque frame view. This also changes the return type
+      of CreateOpaqueBrowserFrameViewLinux, which must match because
+      BrowserFrameViewLinux derives from BraveOpaqueBrowserFrameView (checked by
+      a static_assert in the shadow).
+    rename_class:
+      class_name: OpaqueBrowserFrameView
+      rename: BraveOpaqueBrowserFrameView
+
+  - description: |-
+      Replace BrowserFrameViewLinuxNative with BraveBrowserFrameViewLinuxNative
+
+      This will create BraveBrowserFrameViewLinuxNative instead of
+      BrowserFrameViewLinuxNative in a factory function.
+    rename_class:
+      class_name: BrowserFrameViewLinuxNative
+      rename: BraveBrowserFrameViewLinuxNative

@@ -23,7 +23,7 @@ class BraveChromeImporterUtilsTest : public testing::Test {
   BraveChromeImporterUtilsTest() {}
 
   void SetUp() override {
-    EXPECT_TRUE(brave_profile_dir_.CreateUniqueTempDir());
+    ASSERT_TRUE(brave_profile_dir_.CreateUniqueTempDir());
     base::CreateDirectory(GetTestProfilePath());
   }
   base::FilePath GetTestProfilePath() {
@@ -49,7 +49,7 @@ TEST_F(BraveChromeImporterUtilsTest, GetChromeExtensionsListPreferences) {
   CopyTestFileToProfile(kChromePreferencesFile, kChromePreferencesFile);
   auto extensions_list =
       GetImportableChromeExtensionsList(GetTestProfilePath());
-  EXPECT_TRUE(extensions_list);
+  ASSERT_TRUE(extensions_list.has_value());
   EXPECT_EQ(extensions_list->size(), 2u);
   EXPECT_EQ(extensions_list.value(),
             std::vector<std::string>({"jldhpllghnbhlbpcmnajkpdmadaolakh",
@@ -61,7 +61,7 @@ TEST_F(BraveChromeImporterUtilsTest, GetChromeExtensionsListSecurePreferences) {
                         kChromeSecurePreferencesFile);
   auto extensions_list =
       GetImportableChromeExtensionsList(GetTestProfilePath());
-  EXPECT_TRUE(extensions_list);
+  ASSERT_TRUE(extensions_list.has_value());
   EXPECT_EQ(extensions_list->size(), 1u);
   EXPECT_EQ(extensions_list.value(),
             std::vector<std::string>({"aeblfdkhhhdcdjpifhhbdiojplfjncoa"}));
@@ -73,7 +73,7 @@ TEST_F(BraveChromeImporterUtilsTest, ExtensionImportTest) {
   CopyTestFileToProfile("Preferences", "Preferences");
   auto extensions_list =
       GetImportableChromeExtensionsList(GetTestProfilePath());
-  EXPECT_TRUE(extensions_list);
+  ASSERT_TRUE(extensions_list.has_value());
   // Only 3 extension installed from webstore is importing target extension.
   // We don't import theme, pre-installed extensions, disabled extensions and
   // installed by default (1 from Secure Preferences, 1 from Preferences)

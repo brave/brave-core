@@ -1,0 +1,33 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Explain why x64 is excluded below
+
+      Upstream has never checked in a
+      chrome_public_bundle.x64.libs_and_assets.expected baseline
+      (crbug.com/532501271), so an official, stable-channel x64 build has no
+      baseline to validate against.
+    add_before_line:
+      line: enable_libs_and_assets_verification =
+      code: |-
+        # Brave: x64 is excluded because upstream has never checked in a
+        # chrome_public_bundle.x64.libs_and_assets.expected baseline
+        # (crbug.com/532501271), so an official, stable-channel x64 build has
+        # no baseline to validate against.
+
+  - description: |-
+      Drop x64 from libs/assets verification
+
+      No upstream baseline exists for x64, so an official, stable-channel x64
+      build fails outright with a missing-file error. arm64 keeps its real
+      baseline and is untouched.
+    regex:
+      re_pattern:
+        '(enable_libs_and_assets_verification =.*?)\(target_cpu == "arm64" \|\|
+        target_cpu == "x64"\)'
+      re_flags: [DOTALL]
+      replace: '\1target_cpu == "arm64"'

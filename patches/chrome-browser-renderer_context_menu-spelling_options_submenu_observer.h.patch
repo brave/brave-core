@@ -1,8 +1,17 @@
 diff --git a/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h b/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h
-index d868c39fa0d094ed9a38501d3d30eb00e8aaec95..9cf5f3cc5c36dded61bbf8047865bfc783358c8c 100644
+index d868c39fa0d094ed9a38501d3d30eb00e8aaec95..282e718e5ea31d9333ea89d168cb8aa27dfa7159 100644
 --- a/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h
 +++ b/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h
-@@ -42,6 +42,7 @@ class SpellingOptionsSubMenuObserver : public RenderViewContextMenuObserver {
+@@ -15,6 +15,8 @@
+ #include "components/renderer_context_menu/render_view_context_menu_observer.h"
+ #include "ui/menus/simple_menu_model.h"
+ 
++class BraveSpellingOptionsSubMenuObserver;
++
+ class RenderViewContextMenuProxy;
+ 
+ // A class that implements the 'spell-checker options' submenu. This class
+@@ -42,6 +44,7 @@ class SpellingOptionsSubMenuObserver : public RenderViewContextMenuObserver {
    void ExecuteCommand(int command_id) override;
  
   private:

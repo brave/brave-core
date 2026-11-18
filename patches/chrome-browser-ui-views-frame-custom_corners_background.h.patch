@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/frame/custom_corners_background.h b/chrome/browser/ui/views/frame/custom_corners_background.h
+index b809d9a1506513f105a9bccf719b7a42d65234aa..8bb9f21e83e871f6939cda367dad09c865dc31b2 100644
+--- a/chrome/browser/ui/views/frame/custom_corners_background.h
++++ b/chrome/browser/ui/views/frame/custom_corners_background.h
+@@ -156,6 +156,8 @@ class CustomCornersBackground : public views::Background, public CustomCorners {
+ 
+   int default_radius() const { return default_radius_; }
+ 
++  Corners GetCorners() const { return corners_; }
++
+  private:
+   using VisualCorners = CornerMapT<VisualCorner, Corner>;
+ 

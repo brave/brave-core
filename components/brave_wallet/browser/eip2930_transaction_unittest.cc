@@ -76,9 +76,11 @@ TEST(Eip2930TransactionUnitTest, AccessListAndValue) {
 TEST(Eip2930TransactionUnitTest, GetHashedMessageToSign) {
   std::vector<uint8_t> data;
   EXPECT_TRUE(base::HexStringToBytes("010200", &data));
-  Eip2930Transaction tx = *Eip2930Transaction::FromTxData(mojom::TxData::New(
+  auto tx_opt = Eip2930Transaction::FromTxData(mojom::TxData::New(
       mojom::kMainnetChainId, "0x00", "0x00", "0x00",
       "0x0101010101010101010101010101010101010101", "0x00", data));
+  ASSERT_TRUE(tx_opt);
+  Eip2930Transaction& tx = *tx_opt;
   ASSERT_EQ(tx.type(), EthTransactionType::kEip2930);
   auto* access_list = tx.access_list();
   Eip2930Transaction::AccessListItem item;
@@ -95,10 +97,12 @@ TEST(Eip2930TransactionUnitTest, GetHashedMessageToSign) {
 }
 
 TEST(Eip2930TransactionUnitTest, GetSignedTransactionAndHash) {
-  Eip2930Transaction tx = *Eip2930Transaction::FromTxData(
+  auto tx_opt = Eip2930Transaction::FromTxData(
       mojom::TxData::New("0x796f6c6f763378", "0x00", "0x3b9aca00", "0x62d4",
                          "0xdf0a88b2b68c673713a8ec826003676f272e3573", "0x01",
                          std::vector<uint8_t>()));
+  ASSERT_TRUE(tx_opt);
+  Eip2930Transaction& tx = *tx_opt;
   ASSERT_EQ(tx.type(), EthTransactionType::kEip2930);
   auto* access_list = tx.access_list();
   Eip2930Transaction::AccessListItem item;
@@ -114,16 +118,17 @@ TEST(Eip2930TransactionUnitTest, GetSignedTransactionAndHash) {
   access_list->push_back(item);
 
   std::array<uint8_t, 32> private_key;
-  EXPECT_TRUE(base::HexStringToSpan(
+  ASSERT_TRUE(base::HexStringToSpan(
       "fad9c8855b740a0b7ed4c221dbad0f33a83a49cad6b3fe8d5817ac83d38b6a19",
       private_key));
 
   std::unique_ptr<HDKey> key = HDKey::GenerateFromPrivateKey(private_key);
   ASSERT_TRUE(key);
-  auto signature = *key->SignCompact(tx.GetHashedMessageToSign());
+  auto signature = key->SignCompact(tx.GetHashedMessageToSign());
+  ASSERT_TRUE(signature);
 
   ASSERT_FALSE(tx.IsSigned());
-  tx.ProcessSignature(signature);
+  tx.ProcessSignature(*signature);
   ASSERT_TRUE(tx.IsSigned());
   EXPECT_EQ(
       tx.GetSignedTransaction(),
@@ -136,18 +141,20 @@ TEST(Eip2930TransactionUnitTest, GetSignedTransactionAndHash) {
       tx.GetTransactionHash(),
       "0xbbd570a3c6acc9bb7da0d5c0322fe4ea2a300db80226f7df4fef39b2d6649eec");
 
-  EXPECT_EQ(tx.v_, (uint256_t)0);
-  EXPECT_EQ(base::HexEncodeLower(tx.r_),
+  EXPECT_EQ(tx.v(), uint256_t{0});
+  EXPECT_EQ(base::HexEncodeLower(tx.r()),
             "294ac94077b35057971e6b4b06dfdf55a6fbed819133a6c1d31e187f1bca938d");
-  EXPECT_EQ(base::HexEncodeLower(tx.s_),
+  EXPECT_EQ(base::HexEncodeLower(tx.s()),
             "0be950468ba1c25a5cb50e9f6d8aa13c8cd21f24ba909402775b262ac76d374d");
 }
 
 TEST(Eip2930TransactionUnitTest, Serialization) {
-  Eip2930Transaction tx = *Eip2930Transaction::FromTxData(
+  auto tx_opt = Eip2930Transaction::FromTxData(
       mojom::TxData::New("0x15BE", "0x09", "0x4a817c800", "0x5208",
                          "0x3535353535353535353535353535353535353535",
                          "0x0de0b6b3a7640000", std::vector<uint8_t>()));
+  ASSERT_TRUE(tx_opt);
+  Eip2930Transaction& tx = *tx_opt;
   auto* access_list = tx.access_list();
   Eip2930Transaction::AccessListItem item_a;
   item_a.address.fill(0x0a);
@@ -165,9 +172,11 @@ TEST(Eip2930TransactionUnitTest, Serialization) {
 TEST(Eip2930TransactionUnitTest, GetBaseFee) {
   std::vector<uint8_t> data;
   ASSERT_TRUE(base::HexStringToBytes("010200", &data));
-  Eip2930Transaction tx = *Eip2930Transaction::FromTxData(mojom::TxData::New(
+  auto tx_opt = Eip2930Transaction::FromTxData(mojom::TxData::New(
       "0x15BE", "0x0", "0x0", "0x0",
       "0x3535353535353535353535353535353535353535", "0x0", data));
+  ASSERT_TRUE(tx_opt);
+  Eip2930Transaction& tx = *tx_opt;
 
   auto* access_list = tx.access_list();
   Eip2930Transaction::AccessListItem item_a;
@@ -182,8 +191,10 @@ TEST(Eip2930TransactionUnitTest, GetBaseFee) {
   const uint256_t fee = 21000 + 2 * 16 + 4 + 2400 + 1900;
   EXPECT_EQ(tx.GetBaseFee(), fee);
 
-  Eip2930Transaction tx2 = *Eip2930Transaction::FromTxData(
+  auto tx2_opt = Eip2930Transaction::FromTxData(
       mojom::TxData::New("0x15BE", "0x0", "0x0", "0x0", "0x", "0x0", data));
+  ASSERT_TRUE(tx2_opt);
+  Eip2930Transaction& tx2 = *tx2_opt;
 
   *tx2.access_list() = *tx.access_list();
   // Plus contract creation
@@ -191,10 +202,12 @@ TEST(Eip2930TransactionUnitTest, GetBaseFee) {
   EXPECT_EQ(tx2.GetBaseFee(), fee2);
 
   // Duplicate items in Access list
-  Eip2930Transaction tx3 = *Eip2930Transaction::FromTxData(
+  auto tx3_opt = Eip2930Transaction::FromTxData(
       mojom::TxData::New("0x15BE", "0x0", "0x0", "0x0",
                          "0x3535353535353535353535353535353535353535", "0x0",
                          std::vector<uint8_t>()));
+  ASSERT_TRUE(tx3_opt);
+  Eip2930Transaction& tx3 = *tx3_opt;
 
   auto* access_list3 = tx3.access_list();
   access_list3->push_back(item_a);

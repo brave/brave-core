@@ -17,6 +17,7 @@
 #include "base/barrier_callback.h"
 #include "base/barrier_closure.h"
 #include "base/check.h"
+#include "base/containers/map_util.h"
 #include "base/containers/to_vector.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
@@ -29,6 +30,7 @@
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
+#include "brave/components/ai_chat/core/browser/tools/tool.h"
 
 namespace ai_chat {
 
@@ -285,7 +287,7 @@ void AssociatedContentManager::OnToolInfosFetched(
     infos.push_back(
         mojom::ToolInfo::New(std::string(tool->DisplayName()),
                              std::string(tool->DisplayDescription()),
-                             GetToolPermission(origin, tool->DisplayName())));
+                             GetToolPermission(origin, *tool)));
   }
   std::move(callback).Run(std::move(infos));
 }
@@ -293,6 +295,7 @@ void AssociatedContentManager::OnToolInfosFetched(
 void AssociatedContentManager::SetToolPermission(
     std::string_view content_uuid,
     std::string_view tool_name,
+    std::string_view tool_description,
     mojom::ToolPermission permission) {
   auto it = std::ranges::find_if(content_delegates_,
                                  [&content_uuid](const auto& delegate) {
@@ -311,16 +314,18 @@ void AssociatedContentManager::SetToolPermission(
 
   // kAsk is the default, so drop the entry rather than storing it.
   if (permission == mojom::ToolPermission::kAsk) {
-    auto origin_it = content_tool_permissions_.find(origin);
-    if (origin_it == content_tool_permissions_.end()) {
+    auto* tool_permissions =
+        base::FindOrNull(content_tool_permissions_, origin);
+    if (!tool_permissions) {
       return;
     }
-    origin_it->second.erase(tool_name);
-    if (origin_it->second.empty()) {
-      content_tool_permissions_.erase(origin_it);
+    tool_permissions->erase(tool_name);
+    if (tool_permissions->empty()) {
+      content_tool_permissions_.erase(origin);
     }
   } else {
-    content_tool_permissions_[origin][std::string(tool_name)] = permission;
+    content_tool_permissions_[origin][std::string(tool_name)] = {
+        .permission = permission, .description = std::string(tool_description)};
   }
 
   // The choice is conversation-wide, so tell every UI bound to the
@@ -343,7 +348,8 @@ void AssociatedContentManager::SetToolPermissionForModelToolName(
   }
 
   // Routed through the content which exposed the tool, so the choice is keyed
-  // and announced exactly like one made in the dialog.
+  // and announced exactly like one made in the dialog. The description is the
+  // one the model was given for the tool the user was asked about.
   auto delegate_it =
       std::ranges::find_if(content_delegates_, [&](const auto& delegate) {
         return delegate->GetOrigin() == tool_it->origin;
@@ -352,7 +358,7 @@ void AssociatedContentManager::SetToolPermissionForModelToolName(
     return;
   }
   SetToolPermission((*delegate_it)->uuid(), tool_it->tool->DisplayName(),
-                    permission);
+                    tool_it->tool->DisplayDescription(), permission);
 }
 
 void AssociatedContentManager::NotifyContentToolsChanged(
@@ -363,14 +369,24 @@ void AssociatedContentManager::NotifyContentToolsChanged(
 
 mojom::ToolPermission AssociatedContentManager::GetToolPermission(
     const url::Origin& origin,
-    std::string_view tool_name) const {
-  auto origin_it = content_tool_permissions_.find(origin);
-  if (origin_it == content_tool_permissions_.end()) {
+    const Tool& tool) const {
+  auto* tool_permissions = base::FindOrNull(content_tool_permissions_, origin);
+  if (!tool_permissions) {
     return mojom::ToolPermission::kAsk;
   }
-  auto tool_it = origin_it->second.find(tool_name);
-  return tool_it == origin_it->second.end() ? mojom::ToolPermission::kAsk
-                                            : tool_it->second;
+  const ContentToolPermission* choice =
+      base::FindOrNull(*tool_permissions, tool.DisplayName());
+  if (!choice) {
+    return mojom::ToolPermission::kAsk;
+  }
+  // The user allowed the tool as it was described to them, so a tool since
+  // re-registered under the same name with another description has to be
+  // asked about again.
+  if (choice->permission == mojom::ToolPermission::kAllowSession &&
+      choice->description != tool.DisplayDescription()) {
+    return mojom::ToolPermission::kAsk;
+  }
+  return choice->permission;
 }
 
 void AssociatedContentManager::DetectContentTools(
@@ -887,8 +903,7 @@ void AssociatedContentManager::AddToolsForGenerationLoop(
   // website tools dialog shows, which caps the same way.
   tools.resize(std::min(tools.size(), kMaxToolsPerContent));
   for (auto& tool : tools) {
-    const mojom::ToolPermission permission =
-        GetToolPermission(origin, tool->DisplayName());
+    const mojom::ToolPermission permission = GetToolPermission(origin, *tool);
     // Withheld rather than failed when called, so the model can't waste a turn
     // asking for something it will never be given.
     if (permission == mojom::ToolPermission::kNeverAllow) {

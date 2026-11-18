@@ -31,12 +31,16 @@ TEST(ScryptUtilsTest, EncryptDecrypt_BasicRoundtrip) {
   crypto::RandBytes(nonce);
 
   auto derived_key = ScryptDeriveKey(password, salt, scrypt_params);
+  ASSERT_TRUE(derived_key.has_value());
   auto encrypted = XSalsaPolyEncrypt(
       plaintext, base::span(*derived_key).first<kScryptKeyBytes>(), nonce);
+  ASSERT_TRUE(encrypted.has_value());
 
   auto decrypt_key = ScryptDeriveKey(password, salt, scrypt_params);
+  ASSERT_TRUE(decrypt_key.has_value());
   auto decrypted = XSalsaPolyDecrypt(
       *encrypted, nonce, base::span(*decrypt_key).first<kScryptKeyBytes>());
+  ASSERT_TRUE(decrypted.has_value());
   EXPECT_EQ(std::vector(decrypted->begin(), decrypted->end()), plaintext);
 }
 
@@ -56,12 +60,16 @@ TEST(ScryptUtilsTest, EncryptDecrypt_EmptyPlaintext) {
   crypto::RandBytes(nonce);
 
   auto derived_key = ScryptDeriveKey(password, salt, scrypt_params);
+  ASSERT_TRUE(derived_key.has_value());
   auto encrypted = XSalsaPolyEncrypt(
       plaintext, base::span(*derived_key).first<kScryptKeyBytes>(), nonce);
+  ASSERT_TRUE(encrypted.has_value());
 
   auto decrypt_key = ScryptDeriveKey(password, salt, scrypt_params);
+  ASSERT_TRUE(decrypt_key.has_value());
   auto decrypted = XSalsaPolyDecrypt(
       *encrypted, nonce, base::span(*decrypt_key).first<kScryptKeyBytes>());
+  ASSERT_TRUE(decrypted.has_value());
   EXPECT_EQ(std::vector(decrypted->begin(), decrypted->end()), plaintext);
 }
 
@@ -82,11 +90,14 @@ TEST(ScryptUtilsTest, EncryptDecrypt_WithProvidedSaltAndNonce) {
   nonce.fill(0x99);
 
   auto derived_key = ScryptDeriveKey(password, salt, scrypt_params);
+  ASSERT_TRUE(derived_key.has_value());
   auto encrypted = XSalsaPolyEncrypt(
       plaintext, base::span(*derived_key).first<kScryptKeyBytes>(), nonce);
+  ASSERT_TRUE(encrypted.has_value());
 
   auto decrypted = XSalsaPolyDecrypt(
       *encrypted, nonce, base::span(*derived_key).first<kScryptKeyBytes>());
+  ASSERT_TRUE(decrypted.has_value());
   EXPECT_EQ(std::vector(decrypted->begin(), decrypted->end()), plaintext);
 }
 
@@ -106,11 +117,14 @@ TEST(ScryptUtilsTest, EncryptDecrypt_WrongPassword) {
   crypto::RandBytes(nonce);
 
   auto derived_key = ScryptDeriveKey(password, salt, scrypt_params);
+  ASSERT_TRUE(derived_key.has_value());
   auto encrypted = XSalsaPolyEncrypt(
       plaintext, base::span(*derived_key).first<kScryptKeyBytes>(), nonce);
+  ASSERT_TRUE(encrypted.has_value());
 
   const std::string wrong_password = "wrong_password";
   auto wrong_key = ScryptDeriveKey(wrong_password, salt, scrypt_params);
+  ASSERT_TRUE(wrong_key.has_value());
   auto decrypted = XSalsaPolyDecrypt(
       *encrypted, nonce, base::span(*wrong_key).first<kScryptKeyBytes>());
   EXPECT_FALSE(decrypted.has_value());
@@ -135,8 +149,10 @@ TEST(ScryptUtilsTest, EncryptDecrypt_WrongScryptParams) {
   crypto::RandBytes(nonce);
 
   auto derived_key = ScryptDeriveKey(password, salt, scrypt_params1);
+  ASSERT_TRUE(derived_key.has_value());
   auto encrypted = XSalsaPolyEncrypt(
       plaintext, base::span(*derived_key).first<kScryptKeyBytes>(), nonce);
+  ASSERT_TRUE(encrypted.has_value());
 
   // Try to decrypt with different scrypt params (should fail - different key).
   crypto::kdf::ScryptParams scrypt_params2 = {
@@ -147,6 +163,7 @@ TEST(ScryptUtilsTest, EncryptDecrypt_WrongScryptParams) {
   };
 
   auto wrong_key = ScryptDeriveKey(password, salt, scrypt_params2);
+  ASSERT_TRUE(wrong_key.has_value());
   auto decrypted = XSalsaPolyDecrypt(
       *encrypted, nonce, base::span(*wrong_key).first<kScryptKeyBytes>());
   EXPECT_FALSE(decrypted.has_value());
@@ -187,10 +204,13 @@ TEST(ScryptUtilsTest, EncryptDecrypt_DeterministicWithSameSaltAndNonce) {
   nonce.fill(0x22);
 
   auto derived_key = ScryptDeriveKey(password, salt, scrypt_params);
+  ASSERT_TRUE(derived_key.has_value());
   auto key_span = base::span(*derived_key).first<kScryptKeyBytes>();
 
   auto encrypted1 = XSalsaPolyEncrypt(plaintext, key_span, nonce);
   auto encrypted2 = XSalsaPolyEncrypt(plaintext, key_span, nonce);
+  ASSERT_TRUE(encrypted1.has_value());
+  ASSERT_TRUE(encrypted2.has_value());
   EXPECT_EQ(encrypted1->size(), plaintext.size() + 16u /* mac bytes */);
   EXPECT_EQ(encrypted2->size(), plaintext.size() + 16u /* mac bytes */);
 
@@ -200,6 +220,8 @@ TEST(ScryptUtilsTest, EncryptDecrypt_DeterministicWithSameSaltAndNonce) {
   // Both should decrypt to the same plaintext.
   auto decrypted1 = XSalsaPolyDecrypt(*encrypted1, nonce, key_span);
   auto decrypted2 = XSalsaPolyDecrypt(*encrypted2, nonce, key_span);
+  ASSERT_TRUE(decrypted1.has_value());
+  ASSERT_TRUE(decrypted2.has_value());
   EXPECT_EQ(std::vector(decrypted1->begin(), decrypted1->end()), plaintext);
   EXPECT_EQ(std::vector(decrypted2->begin(), decrypted2->end()), plaintext);
 }
@@ -220,9 +242,11 @@ TEST(ScryptUtilsTest, EncryptDecrypt_TagModified) {
   nonce.fill(0x22);
 
   auto derived_key = ScryptDeriveKey(password, salt, scrypt_params);
+  ASSERT_TRUE(derived_key.has_value());
   auto key_span = base::span(*derived_key).first<kScryptKeyBytes>();
 
   auto encrypted1 = XSalsaPolyEncrypt(plaintext, key_span, nonce);
+  ASSERT_TRUE(encrypted1.has_value());
   EXPECT_EQ(encrypted1->size(), plaintext.size() + 16u /* mac bytes */);
 
   // Modify tag so encrypted text is corrupted.

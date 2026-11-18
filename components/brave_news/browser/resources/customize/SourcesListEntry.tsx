@@ -5,8 +5,8 @@
 
 import Flex from '$web-common/Flex'
 import { getLocale } from '$web-common/locale'
-import Icon from '@brave/leo/react/icon'
-import { color, effect, font, icon, radius, spacing } from '@brave/leo/tokens/css/variables'
+import Icon from '@brave/nala/react/icon'
+import { color, effect, font, icon, radius, spacing } from '@brave/nala/tokens/css/variables'
 import * as React from 'react'
 import styled from 'styled-components'
 import { useChannelSubscribed, usePublisher, usePublisherFollowed } from '../shared/Context'

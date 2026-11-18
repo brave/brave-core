@@ -10,15 +10,12 @@
 
 #include "base/callback_list.h"
 #include "base/memory/raw_ptr.h"
-#include "chrome/browser/command_observer.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 #include "components/prefs/pref_change_registrar.h"
 
-class CommandUpdater;
 class Profile;
 
-class BraveAppearanceHandler : public settings::SettingsPageUIHandler,
-                               public CommandObserver {
+class BraveAppearanceHandler : public settings::SettingsPageUIHandler {
  public:
   BraveAppearanceHandler();
   ~BraveAppearanceHandler() override;
@@ -32,13 +29,16 @@ class BraveAppearanceHandler : public settings::SettingsPageUIHandler,
   void OnJavascriptAllowed() override {}
   void OnJavascriptDisallowed() override {}
 
-  // CommandObserver override:
-  void EnabledStateChangedForCommand(int id, bool enabled) override;
-
   void OnPreferenceChanged(const std::string& pref_name);
   void GetNewTabShowsOptionsList(const base::ListValue& args);
   void ShouldShowNewTabDashboardSettings(const base::ListValue& args);
+  // Vertical tabs can't be switched while the browser window is fullscreen on
+  // macOS (see tabs::utils::IsVerticalTabToggleEnabled()). The settings toggle
+  // then calls ToggleVerticalTabs() instead of setting the pref, which defers
+  // the switch and shows a toast.
   void GetIsVerticalTabsToggleEnabled(const base::ListValue& args);
+  bool IsVerticalTabsToggleEnabled();
+  void ToggleVerticalTabs(const base::ListValue& args);
 
   // Compact mode is incompatible with immersive fullscreen (see
   // WindowFeatureController::UsesImmersiveFullscreenMode()), so the compact
@@ -48,7 +48,6 @@ class BraveAppearanceHandler : public settings::SettingsPageUIHandler,
   bool IsCompactModeToggleEnabled();
 
   raw_ptr<Profile> profile_ = nullptr;
-  raw_ptr<CommandUpdater> command_updater_ = nullptr;
   PrefChangeRegistrar profile_state_change_registrar_;
 
   base::CallbackListSubscription fullscreen_subscription_;

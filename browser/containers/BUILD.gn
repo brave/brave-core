@@ -47,8 +47,13 @@ source_set("navigator") {
     "//brave/components/containers/content/browser",
     "//brave/components/containers/core/browser",
     "//brave/components/containers/core/common",
+    "//brave/components/containers/core/mojom",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui:browser_tabstrip",
+    "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/navigator",
     "//content/public/browser",
+    "//ui/base",
   ]
 }
 
@@ -60,6 +65,7 @@ source_set("browser_tests") {
   deps = [
     ":containers",
     "//brave/app:brave_generated_resources_grit_grit",
+    "//brave/browser/browsing_data:clear_browsing_data",
     "//brave/browser/ui",
     "//brave/browser/ui:brave_tab_prefs",
     "//brave/components/containers/content/browser",

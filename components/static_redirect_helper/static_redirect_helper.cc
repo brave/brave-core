@@ -109,7 +109,7 @@ void StaticRedirectHelper(const GURL& request_url, GURL* new_url) {
   }
 
   if (favicon_pattern->MatchesURL(request_url)) {
-    replacements.SetHostStr("favicons.proxy.brave.com");
+    replacements.SetHostStr(kBraveFaviconsProxy);
     *new_url = request_url.ReplaceComponents(replacements);
     return;
   }

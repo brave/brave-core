@@ -111,7 +111,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsOFACTest, RewardsPagesAccess) {
   {
     const brave_l10n::test::ScopedDefaultLocale locale("es_CU");  // "Cuba"
     auto* rfh = ui_test_utils::NavigateToURL(browser(), url);
-    EXPECT_TRUE(rfh);
+    ASSERT_TRUE(rfh);
     EXPECT_FALSE(rfh->IsErrorDocument());
   }
 }

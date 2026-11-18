@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.101.34",
+  "version": "1.102.17",
   "description": "Brave browser for Android, iOS, Linux, macOS, and Windows",
   "main": "index.js",
   "type": "module",
@@ -65,7 +65,7 @@
   "devEngines": {
     "runtime": {
       "name": "node",
-      "version": ">=24.16.0 <25.0.0",
+      "version": ">=24.16.0 <27.0.0",
       "onFail": "error"
     },
     "packageManager": {
@@ -79,7 +79,7 @@
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "158.0.8127.22",
+        "tag": "158.0.8127.42",
         "repository": {
           "url": "https://chromium.googlesource.com/chromium/src.git"
         },
@@ -112,6 +112,7 @@
     "@storybook/types": "8.6.14",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.2",
+    "@testing-library/user-event": "14.6.8",
     "@types/async": "3.2.20",
     "@types/bs58": "4.0.4",
     "@types/chrome": "0.0.241",
@@ -207,8 +208,7 @@
   },
   "dependencies": {
     "@brave/brave-ui": "0.40.6",
-    "@brave/leo": "github:brave/leo#c5f9c8f78f3df5b767a83ad67babd8b29323266a",
-    "@brave/leo-sf-symbols": "github:brave/leo-sf-symbols#b5a6139df7ebd3f7d55aa8d6af60a524edab87b0",
+    "@brave/nala": "4.0.0",
     "@brave/wallet-standard-brave": "0.0.16",
     "@dnd-kit/core": "6.3.1",
     "@dnd-kit/sortable": "7.0.1",

@@ -187,7 +187,8 @@ TEST(FilecoinKeyring, SignTransaction) {
       false,
       mojom::FilTxData::New("1", "2", "3", "4", "5",
                             "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "6"));
-  EXPECT_FALSE(keyring.SignTransaction(address, transaction.value()));
+  ASSERT_TRUE(transaction);
+  EXPECT_FALSE(keyring.SignTransaction(address, *transaction));
 
   std::string private_key_base64 =
       "rQG5jnbc+y64fckG+T0EHVwpLBmW9IgAT7U990HXcGk=";
@@ -199,7 +200,7 @@ TEST(FilecoinKeyring, SignTransaction) {
   auto imported_address = keyring.ImportFilecoinAccount(
       private_key, mojom::FilecoinAddressProtocol::SECP256K1);
   EXPECT_EQ(address, imported_address);
-  EXPECT_TRUE(keyring.SignTransaction(address, transaction.value()));
+  EXPECT_TRUE(keyring.SignTransaction(address, *transaction));
 }
 
 TEST(FilecoinKeyring, AddNewHDAccount_RestrictedAddress) {

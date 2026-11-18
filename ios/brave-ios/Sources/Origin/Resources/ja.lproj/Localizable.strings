@@ -32,7 +32,7 @@
 "linkPurchase" = "購入情報をBraveアカウントにリンク";
 
 /* A toggle label for Brave News feature */
-"newsLabel" = "News";
+"newsLabel" = "ニュース";
 
 /* A label indicating this is a one-time purchase product */
 "oneTimePurchaseLabel" = "一度きりの購入";

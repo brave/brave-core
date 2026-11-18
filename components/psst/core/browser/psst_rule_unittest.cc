@@ -90,6 +90,7 @@ class PsstRuleUnitTest : public testing::Test {};
 
 TEST_F(PsstRuleUnitTest, ParseRulesWithExclude) {
   const auto psst_rules_with_exclude = PsstRule::ParseRules(kRules);
+  ASSERT_TRUE(psst_rules_with_exclude.has_value());
   ASSERT_EQ(psst_rules_with_exclude->size(), 1u);
 
   auto rule = psst_rules_with_exclude->front();
@@ -113,6 +114,7 @@ TEST_F(PsstRuleUnitTest, ParseRulesWithExclude) {
 
 TEST_F(PsstRuleUnitTest, ParseRulesNoExclude) {
   const auto psst_rules_with_exclude = PsstRule::ParseRules(kRulesNoExclude);
+  ASSERT_TRUE(psst_rules_with_exclude.has_value());
   ASSERT_EQ(psst_rules_with_exclude->size(), 1u);
 
   auto rule = psst_rules_with_exclude->front();
@@ -130,6 +132,7 @@ TEST_F(PsstRuleUnitTest, ParseRulesNoExclude) {
 TEST_F(PsstRuleUnitTest, ParseRulesWithSubdomain) {
   const auto psst_rules_with_exclude =
       PsstRule::ParseRules(kRulesWithSubdomain);
+  ASSERT_TRUE(psst_rules_with_exclude.has_value());
   ASSERT_EQ(psst_rules_with_exclude->size(), 1u);
 
   auto rule = psst_rules_with_exclude->front();
@@ -154,6 +157,7 @@ TEST_F(PsstRuleUnitTest, ParseRulesWithSubdomain) {
 
 TEST_F(PsstRuleUnitTest, ParseRulesMultipleWithExclude) {
   const auto psst_rules_with_exclude = PsstRule::ParseRules(kRulesMultiple);
+  ASSERT_TRUE(psst_rules_with_exclude.has_value());
   ASSERT_EQ(psst_rules_with_exclude->size(), 2u);
 
   auto rule1 = (*psst_rules_with_exclude)[0];

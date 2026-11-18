@@ -16,3 +16,61 @@ source_set("playlist") {
     "//mojo/public/cpp/bindings",
   ]
 }
+
+source_set("impl") {
+  visibility = [
+    "//brave/browser:core",
+    "//brave/browser/playlist/test:unit_tests",
+  ]
+
+  sources = [ "playlist_service_factory.cc" ]
+
+  deps = [
+    ":playlist",
+    "//base",
+    "//brave/browser/brave_stats:first_run_util",
+    "//brave/components/constants",
+    "//brave/components/playlist/content/browser",
+    "//brave/components/playlist/core/browser",
+    "//brave/components/playlist/core/common",
+    "//brave/components/playlist/core/common/buildflags",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/side_panel",
+    "//chrome/browser/ui/side_panel:side_panel_views_dependent",
+    "//chrome/common",
+    "//components/keyed_service/content",
+    "//components/pref_registry",
+    "//components/sessions",
+    "//ipc",
+    "//services/data_decoder/public/cpp",
+    "//skia",
+    "//ui/gfx",
+  ]
+
+  if (is_android) {
+    sources += [ "android/playlist_service_factory_android.cc" ]
+    deps += [
+      "//brave/build/android:jni_headers",
+      "//chrome/android:chrome_jni_headers",
+      "//chrome/browser/ui/android/tab_model",
+      "//mojo/public/cpp/bindings",
+    ]
+  } else {
+    sources += [
+      "playlist_data_source.cc",
+      "playlist_data_source.h",
+    ]
+    deps += [
+      "//brave/browser/ui/sidebar",
+      "//brave/components/sidebar/browser",
+      "//chrome/browser/ui/tabs:tab_strip",
+      "//chrome/browser/ui/webui:favicon_source",
+      "//components/favicon_base",
+      "//content/public/browser",
+      "//net",
+      "//url",
+    ]
+  }
+}

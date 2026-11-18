@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/run_loop.h"
+#include "build/build_config.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -14,6 +15,10 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/test/browser_test.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/tabs/public/tab_cycling_controller.h"
+#endif
 
 namespace {
 
@@ -131,3 +136,19 @@ IN_PROC_BROWSER_TEST_F(BraveTabStripModelTest, TabClosingWhileMRUCycling) {
   EXPECT_EQ(tab_strip_model->active_index(), 2);
   // MRU should be: 2 > 0 > 1
 }
+
+#if !BUILDFLAG(IS_ANDROID)
+IN_PROC_BROWSER_TEST_F(BraveTabStripModelTest, MRUCyclingEndsWhenTabsChange) {
+  browser()->GetProfile()->GetPrefs()->SetBoolean(prefs::kCtrlTabMru, true);
+  chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
+  auto* controller = TabCyclingController::From(browser());
+  ASSERT_TRUE(controller);
+
+  chrome::ExecuteCommand(browser(), IDC_CYCLE_TO_NEXT_TAB);
+  EXPECT_TRUE(controller->is_cycling());
+
+  chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
+  EXPECT_FALSE(controller->is_cycling());
+}
+
+#endif  // !BUILDFLAG(IS_ANDROID)

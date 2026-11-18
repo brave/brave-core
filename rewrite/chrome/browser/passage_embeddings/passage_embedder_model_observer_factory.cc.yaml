@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Build the passage embedder model observer when semantic history search
+      is enabled for the profile.
+
+      Both embedding services refuse to build without this observer, and
+      upstream's own gates (kPassageEmbedder, kPermissionsAIv4) are off in
+      Brave. BraveShouldBuildPassageEmbedderModelObserver is defined in the
+      chromium_src override.
+    regex:
+      pattern: 'if (!base::FeatureList::IsEnabled(kPassageEmbedder) &&'
+      replace: |-
+        if (!BraveShouldBuildPassageEmbedderModelObserver(context) &&
+              !base::FeatureList::IsEnabled(kPassageEmbedder) &&

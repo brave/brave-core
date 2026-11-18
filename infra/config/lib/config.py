@@ -438,6 +438,9 @@ class GclientConfig:
     the one the builder builds for (its `chromium_config`). As in gclient
     itself, the host's are always synced, so a builder that only builds for
     its host can leave both lists empty.
+
+    And what the builder adds to the chromium solution's `custom_deps` and
+    `custom_vars`, on top of `package.json`'s, which every checkout has.
     """
 
     def __init__(
@@ -445,6 +448,8 @@ class GclientConfig:
         *,
         target_os: Sequence[str],
         target_cpu: Sequence[str],
+        custom_deps: Mapping[str, str | None],
+        custom_vars: Mapping[str, bool | str],
     ) -> None:
         # gclient's `target_os`: `target_platform` values.
         self.target_os = _sorted_values(
@@ -455,6 +460,29 @@ class GclientConfig:
         self.target_cpu = _sorted_values(
             'target_cpu', target_cpu, _GCLIENT_CPUS
         )
+
+        # The DEPS entries to override, by path, e.g.
+        # {"src/third_party/chromium-variations": None} to skip one.
+        self.custom_deps = _sorted_mapping(
+            'custom_deps', custom_deps, (str, type(None))
+        )
+
+        # The DEPS vars to override, e.g.
+        # {"checkout_instrumented_libraries": True}.
+        self.custom_vars = _sorted_mapping(
+            'custom_vars', custom_vars, (bool, str)
+        )
+
+
+def _sorted_mapping(
+    field: str, mapping: Mapping[str, Any], value_types: tuple[type, ...]
+) -> FrozenDict[str, Any]:
+    if not isinstance(mapping, Mapping):
+        raise ConfigError('%s must be a mapping, got %r' % (field, mapping))
+    for key, value in mapping.items():
+        if not isinstance(key, str) or not isinstance(value, value_types):
+            raise ConfigError('invalid %s entry: %r: %r' % (field, key, value))
+    return FrozenDict(sorted(mapping.items()))
 
 
 def _sorted_values(
@@ -562,14 +590,23 @@ class _BuilderConfig:
         *,
         target_os: Sequence[str] = (),
         target_cpu: Sequence[str] = (),
+        custom_deps: Mapping[str, str | None] | None = None,
+        custom_vars: Mapping[str, bool | str] | None = None,
     ) -> GclientConfig:
-        """The platforms `init`/`sync` sync for, besides the host's.
+        """The platforms `init`/`sync` sync for, besides the host's, and what
+        the builder adds to the chromium solution's `custom_deps` and
+        `custom_vars`.
 
         Unlike upstream's, which names gclient recipe config items, this
-        takes the `.gclient` lists directly: `target_os` takes
-        `target_platform` values.
+        takes what they set directly: `target_os` takes `target_platform`
+        values.
         """
-        return GclientConfig(target_os=target_os, target_cpu=target_cpu)
+        return GclientConfig(
+            target_os=target_os,
+            target_cpu=target_cpu,
+            custom_deps=custom_deps or {},
+            custom_vars=custom_vars or {},
+        )
 
     @staticmethod
     def chromium_config(
@@ -608,7 +645,8 @@ def check_builder_spec(
 
     The build target is stated by both `chromium_config` and the GN args, so
     they must agree. A builder declaring its `host_platform` must also sync
-    the platform it builds for.
+    the platform it builds for, and one built with `is_msan` must check out
+    the instrumented libraries.
 
     Raises:
         ConfigError: they disagree.
@@ -641,6 +679,13 @@ def check_builder_spec(
             )
         )
     gclient_config = builder.builder_spec.gclient_config
+    if resolved_gn_args.get('is_msan') and not gclient_config.custom_vars.get(
+        'checkout_instrumented_libraries'
+    ):
+        raise ConfigError(
+            'builder %r: builds with is_msan, but gclient_config custom_vars '
+            'does not set checkout_instrumented_libraries' % builder.name
+        )
     if (
         chromium_config.host_platform is not None
         and chromium_config.target_platform != chromium_config.host_platform
@@ -686,6 +731,7 @@ class Builder:
         *,
         name: str,
         builder_group: str | None,
+        recipe: str | None,
         execution_timeout_mins: int | None,
         channel: str | None,
         notifies: Sequence[str],
@@ -697,6 +743,9 @@ class Builder:
 
         # The builder group it belongs to, e.g. "brave.sanitisers".
         self.builder_group = builder_group
+
+        # The recipe its builds run, e.g. "brave_builder".
+        self.recipe = recipe
 
         # How long the pipeline may run before it's killed.
         self.execution_timeout_mins = execution_timeout_mins
@@ -732,6 +781,7 @@ class BuildersRegistry:
         # Module-level fallbacks for builder(), settable via `defaults.set()`.
         self.defaults = Defaults(
             builder_group=None,
+            recipe=None,
             execution_timeout_mins=None,
             channel=None,
             notifies=(),
@@ -780,6 +830,7 @@ class BuildersRegistry:
         gn_args: Any,  # pylint: disable=redefined-outer-name
         targets: Targets,
         builder_group: str | None = _UNSET,
+        recipe: str | None = _UNSET,
         execution_timeout_mins: int | None = _UNSET,
         channel: str | None = _UNSET,
         notifies: Sequence[str] = _UNSET,
@@ -793,8 +844,8 @@ class BuildersRegistry:
             gn_args: The config name, or `gn_args.config()` called without
                 `name`, describing this builder's GN args.
             targets: This builder's `targets()`.
-            builder_group, execution_timeout_mins, channel, notifies: Fall
-                back to `defaults` when omitted.
+            builder_group, recipe, execution_timeout_mins, channel, notifies:
+                Fall back to `defaults` when omitted.
 
         Returns:
             The registered `Builder`.
@@ -812,6 +863,7 @@ class BuildersRegistry:
         builder = Builder(
             name=name,
             builder_group=self.defaults.get('builder_group', builder_group),
+            recipe=self.defaults.get('recipe', recipe),
             execution_timeout_mins=self.defaults.get(
                 'execution_timeout_mins', execution_timeout_mins
             ),

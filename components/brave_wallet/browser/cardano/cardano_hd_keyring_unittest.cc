@@ -27,17 +27,19 @@ TEST(CardanoHDKeyringUnitTest, TestVectors1) {
                               0x33, 0x6a, 0x5d, 0x7c, 0xf7, 0x39, 0x59, 0x94});
 
   CardanoHDKeyring mainnet_keyring(base::span(entropy), kCardanoMainnet);
-  EXPECT_EQ(
-      mainnet_keyring.GetAddress(0, CardanoKeyId(CardanoKeyRole::kExternal, 0))
-          ->address_string,
-      "addr"
-      "1qx"
-      "2fxv2umyhttkxyxp8x0dlpdt3k6cwng5pxj3jhsydzer3"
-      "jcu5d8ps7zex2k2xt3uqxgjqnnj83ws8lhrn648jjxtwq"
-      "fjkjv7");
+  auto address =
+      mainnet_keyring.GetAddress(0, CardanoKeyId(CardanoKeyRole::kExternal, 0));
+  ASSERT_TRUE(address);
+  EXPECT_EQ(address->address_string,
+            "addr"
+            "1qx"
+            "2fxv2umyhttkxyxp8x0dlpdt3k6cwng5pxj3jhsydzer3"
+            "jcu5d8ps7zex2k2xt3uqxgjqnnj83ws8lhrn648jjxtwq"
+            "fjkjv7");
   auto signature_pair =
       mainnet_keyring.SignMessage(0, CardanoKeyId(CardanoKeyRole::kExternal, 0),
                                   base::byte_span_from_cstring("brave"));
+  ASSERT_TRUE(signature_pair);
   EXPECT_EQ(base::HexEncodeLower(signature_pair->pubkey),
             "73fea80d424276ad0978d4fe5310e8bc2d485f5f6bb3bf87612989f112ad5a7d");
   EXPECT_EQ(base::HexEncodeLower(signature_pair->signature),
@@ -45,17 +47,19 @@ TEST(CardanoHDKeyringUnitTest, TestVectors1) {
             "3de2e51df9d84fd270ff568a8e4ad3a19f4c7801c1eb2e1a44395b0b96f21b07");
 
   CardanoHDKeyring testnet_keyring(base::span(entropy), kCardanoTestnet);
-  EXPECT_EQ(
-      testnet_keyring.GetAddress(0, CardanoKeyId(CardanoKeyRole::kExternal, 0))
-          ->address_string,
-      "addr_test"
-      "1qz"
-      "2fxv2umyhttkxyxp8x0dlpdt3k6cwng5pxj3jhsydzer3"
-      "jcu5d8ps7zex2k2xt3uqxgjqnnj83ws8lhrn648jjxtwq"
-      "2ytjqp");
+  address =
+      testnet_keyring.GetAddress(0, CardanoKeyId(CardanoKeyRole::kExternal, 0));
+  ASSERT_TRUE(address);
+  EXPECT_EQ(address->address_string,
+            "addr_test"
+            "1qz"
+            "2fxv2umyhttkxyxp8x0dlpdt3k6cwng5pxj3jhsydzer3"
+            "jcu5d8ps7zex2k2xt3uqxgjqnnj83ws8lhrn648jjxtwq"
+            "2ytjqp");
   signature_pair =
       testnet_keyring.SignMessage(0, CardanoKeyId(CardanoKeyRole::kExternal, 0),
                                   base::byte_span_from_cstring("brave"));
+  ASSERT_TRUE(signature_pair);
   EXPECT_EQ(base::HexEncodeLower(signature_pair->pubkey),
             "73fea80d424276ad0978d4fe5310e8bc2d485f5f6bb3bf87612989f112ad5a7d");
   EXPECT_EQ(base::HexEncodeLower(signature_pair->signature),
@@ -72,17 +76,19 @@ TEST(CardanoHDKeyringUnitTest, TestVectors2) {
   });
 
   CardanoHDKeyring mainnet_keyring(base::span(entropy), kCardanoMainnet);
-  EXPECT_EQ(
-      mainnet_keyring.GetAddress(0, CardanoKeyId(CardanoKeyRole::kExternal, 0))
-          ->address_string,
-      "addr"
-      "1qy"
-      "y6nhfyks7wdu3dudslys37v252w2nwhv0fw2nfawemmn8"
-      "k8ttq8f3gag0h89aepvx3xf69g0l9pf80tqv7cve0l33s"
-      "dn8p3d");
+  auto address =
+      mainnet_keyring.GetAddress(0, CardanoKeyId(CardanoKeyRole::kExternal, 0));
+  ASSERT_TRUE(address);
+  EXPECT_EQ(address->address_string,
+            "addr"
+            "1qy"
+            "y6nhfyks7wdu3dudslys37v252w2nwhv0fw2nfawemmn8"
+            "k8ttq8f3gag0h89aepvx3xf69g0l9pf80tqv7cve0l33s"
+            "dn8p3d");
   auto signature_pair =
       mainnet_keyring.SignMessage(0, CardanoKeyId(CardanoKeyRole::kExternal, 0),
                                   base::byte_span_from_cstring("brave"));
+  ASSERT_TRUE(signature_pair);
   EXPECT_EQ(base::HexEncodeLower(signature_pair->pubkey),
             "f9162b91126212b71500e89dc7da31111dfc1466a9f24f48a34e7ea529d2d338");
   EXPECT_EQ(base::HexEncodeLower(signature_pair->signature),
@@ -90,17 +96,19 @@ TEST(CardanoHDKeyringUnitTest, TestVectors2) {
             "86814627ce627f201cfd7bafbf1ad66dc64e00534f9c0e20ed40231c836af109");
 
   CardanoHDKeyring testnet_keyring(base::span(entropy), kCardanoTestnet);
-  EXPECT_EQ(
-      testnet_keyring.GetAddress(0, CardanoKeyId(CardanoKeyRole::kExternal, 0))
-          ->address_string,
-      "addr_test"
-      "1qq"
-      "y6nhfyks7wdu3dudslys37v252w2nwhv0fw2nfawemmn8"
-      "k8ttq8f3gag0h89aepvx3xf69g0l9pf80tqv7cve0l33s"
-      "w96paj");
+  address =
+      testnet_keyring.GetAddress(0, CardanoKeyId(CardanoKeyRole::kExternal, 0));
+  ASSERT_TRUE(address);
+  EXPECT_EQ(address->address_string,
+            "addr_test"
+            "1qq"
+            "y6nhfyks7wdu3dudslys37v252w2nwhv0fw2nfawemmn8"
+            "k8ttq8f3gag0h89aepvx3xf69g0l9pf80tqv7cve0l33s"
+            "w96paj");
   signature_pair =
       testnet_keyring.SignMessage(0, CardanoKeyId(CardanoKeyRole::kExternal, 0),
                                   base::byte_span_from_cstring("brave"));
+  ASSERT_TRUE(signature_pair);
   EXPECT_EQ(base::HexEncodeLower(signature_pair->pubkey),
             "f9162b91126212b71500e89dc7da31111dfc1466a9f24f48a34e7ea529d2d338");
   EXPECT_EQ(base::HexEncodeLower(signature_pair->signature),
@@ -113,17 +121,19 @@ TEST(CardanoHDKeyringUnitTest, TestVectorsAbandon24) {
   std::array<uint8_t, 32> entropy = {};
 
   CardanoHDKeyring mainnet_keyring(base::span(entropy), kCardanoMainnet);
-  EXPECT_EQ(
-      mainnet_keyring.GetAddress(0, CardanoKeyId(CardanoKeyRole::kExternal, 0))
-          ->address_string,
-      "addr"
-      "1qy"
-      "qt0pru382hy9vjlsxv3ye02z50sfvt8xunscg5pgden77"
-      "z73dpdfng2ctw2ekqplqgrljelz7h4dneac27nn3qx3rq"
-      "rhqvwd");
+  auto address =
+      mainnet_keyring.GetAddress(0, CardanoKeyId(CardanoKeyRole::kExternal, 0));
+  ASSERT_TRUE(address);
+  EXPECT_EQ(address->address_string,
+            "addr"
+            "1qy"
+            "qt0pru382hy9vjlsxv3ye02z50sfvt8xunscg5pgden77"
+            "z73dpdfng2ctw2ekqplqgrljelz7h4dneac27nn3qx3rq"
+            "rhqvwd");
   auto signature_pair =
       mainnet_keyring.SignMessage(0, CardanoKeyId(CardanoKeyRole::kExternal, 0),
                                   base::byte_span_from_cstring("brave"));
+  ASSERT_TRUE(signature_pair);
   EXPECT_EQ(base::HexEncodeLower(signature_pair->pubkey),
             "63c5d69570349e4233a0575811464f0e8a3fd329abe76e9bdc3d3f1b95982179");
   EXPECT_EQ(base::HexEncodeLower(signature_pair->signature),
@@ -131,17 +141,19 @@ TEST(CardanoHDKeyringUnitTest, TestVectorsAbandon24) {
             "85eca08f33a2aba606eb1fd3d1fc9fb2b49338a657cf75661e7022b718a9d303");
 
   CardanoHDKeyring testnet_keyring(base::span(entropy), kCardanoTestnet);
-  EXPECT_EQ(
-      testnet_keyring.GetAddress(0, CardanoKeyId(CardanoKeyRole::kExternal, 0))
-          ->address_string,
-      "addr_test"
-      "1qq"
-      "qt0pru382hy9vjlsxv3ye02z50sfvt8xunscg5pgden77"
-      "z73dpdfng2ctw2ekqplqgrljelz7h4dneac27nn3qx3rq"
-      "qpavzj");
+  address =
+      testnet_keyring.GetAddress(0, CardanoKeyId(CardanoKeyRole::kExternal, 0));
+  ASSERT_TRUE(address);
+  EXPECT_EQ(address->address_string,
+            "addr_test"
+            "1qq"
+            "qt0pru382hy9vjlsxv3ye02z50sfvt8xunscg5pgden77"
+            "z73dpdfng2ctw2ekqplqgrljelz7h4dneac27nn3qx3rq"
+            "qpavzj");
   signature_pair =
       testnet_keyring.SignMessage(0, CardanoKeyId(CardanoKeyRole::kExternal, 0),
                                   base::byte_span_from_cstring("brave"));
+  ASSERT_TRUE(signature_pair);
   EXPECT_EQ(base::HexEncodeLower(signature_pair->pubkey),
             "63c5d69570349e4233a0575811464f0e8a3fd329abe76e9bdc3d3f1b95982179");
   EXPECT_EQ(base::HexEncodeLower(signature_pair->signature),

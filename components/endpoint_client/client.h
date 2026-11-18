@@ -10,27 +10,28 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 
-#include "base/check.h"
 #include "base/check_deref.h"
-#include "base/check_is_test.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/types/is_instantiation.h"
 #include "brave/components/endpoint_client/is_endpoint.h"
+#include "brave/components/endpoint_client/is_request.h"
+#include "brave/components/endpoint_client/is_response.h"
 #include "brave/components/endpoint_client/maybe_strip_with_headers.h"
 #include "brave/components/endpoint_client/request_handle.h"
+#include "brave/components/endpoint_client/request_options.h"
 #include "brave/components/endpoint_client/with_headers.h"
-#include "net/base/load_flags.h"
-#include "net/traffic_annotation/network_traffic_annotation.h"
-#include "services/network/public/cpp/resource_request.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "net/base/net_errors.h"
+#include "net/http/http_request_headers.h"
+#include "net/http/http_response_headers.h"
 #include "services/network/public/cpp/simple_url_loader.h"
-#include "services/network/public/mojom/fetch_api.mojom.h"
-#include "services/network/public/mojom/url_response_head.mojom.h"
+#include "services/network/public/mojom/url_loader_factory.mojom-forward.h"
+#include "url/gurl.h"
 
 // See //brave/components/endpoint_client/README.md
 // for design, motivation, usage, and examples.
@@ -38,6 +39,31 @@
 namespace endpoint_client {
 
 enum class RequestCancelability { kNonCancelable, kCancelable };
+
+namespace internal {
+
+using OnResponseCallback =
+    base::OnceCallback<void(int net_error,
+                            scoped_refptr<net::HttpResponseHeaders> headers,
+                            std::optional<std::string> response_body)>;
+
+// Creates and starts a `SimpleURLLoader` for the request. For
+// `RequestCancelability::kCancelable`, returns the loader, and destroying it
+// cancels the request. Otherwise, the loader is owned by its own completion
+// callback, which destroys it once the response has been handled, and this
+// returns `nullptr`.
+std::unique_ptr<network::SimpleURLLoader> StartSimpleURLLoader(
+    network::mojom::URLLoaderFactory& url_loader_factory,
+    std::string_view method,
+    const GURL& url,
+    net::HttpRequestHeaders headers,
+    std::optional<std::string> upload_data,
+    std::string_view content_type,
+    RequestOptions options,
+    RequestCancelability cancelability,
+    OnResponseCallback on_response_callback);
+
+}  // namespace internal
 
 // Client<> performs a full network roundtrip for a given endpoint using
 // network::SimpleURLLoader. It serializes the endpoint's Request type,
@@ -55,74 +81,46 @@ class Client {
   template <RequestCancelability C = RequestCancelability::kNonCancelable,
             typename Request,
             typename Response>
-    requires(std::same_as<detail::MaybeStripWithHeaders<Request>,
+    requires(std::same_as<internal::MaybeStripWithHeaders<Request>,
                           typename Endpoint::Request> &&
-             std::same_as<detail::MaybeStripWithHeaders<Response>,
+             std::same_as<internal::MaybeStripWithHeaders<Response>,
                           typename Endpoint::Response>)
   [[nodiscard]] static auto Send(
-      const scoped_refptr<network::SharedURLLoaderFactory>& url_loader_factory,
+      network::mojom::URLLoaderFactory& url_loader_factory,
       Request request,
       base::OnceCallback<void(Response)> callback) {
-    CHECK(url_loader_factory);
-    if (!request.network_traffic_annotation_tag.is_valid()) {
-      CHECK_IS_TEST()
-          << "Client<> requires a valid network traffic annotation and "
-             "only permits a missing annotation in tests.";
-      request.network_traffic_annotation_tag =
-          net::MutableNetworkTrafficAnnotationTag(MISSING_TRAFFIC_ANNOTATION);
-    }
-
-    auto resource_request = std::make_unique<network::ResourceRequest>();
-    resource_request->url = request.url_replacements.Apply(Endpoint::URL());
-    resource_request->method = Request::Method();
-    resource_request->load_flags =
-        net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE;
-    // kOmit implies net::LOAD_DO_NOT_SAVE_COOKIES (deprecated) via
-    // URLRequest::set_disallow_credentials(); weaker modes save cookies again.
-    resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
-    resource_request->redirect_mode = request.redirect_mode;
-    if constexpr (base::is_instantiation<Request, WithHeaders>) {
-      resource_request->headers = std::move(request.headers);
-    }
-
-    auto simple_url_loader = network::SimpleURLLoader::Create(
-        std::move(resource_request),
-        static_cast<net::NetworkTrafficAnnotationTag>(
-            request.network_traffic_annotation_tag));
-    simple_url_loader->SetAllowHttpErrorResults(true);
-    if (auto upload_data = request.Serialize()) {
-      simple_url_loader->AttachStringForUpload(std::move(*upload_data),
-                                               Request::ContentType());
-    }
-    simple_url_loader->SetRetryOptions(request.retry_options.max_retries,
-                                       request.retry_options.retry_mode);
-    simple_url_loader->SetTimeoutDuration(request.timeout_duration);
-
-    auto* simple_url_loader_ptr = simple_url_loader.get();
-    // How the response callback holds the loader.
-    // Cancelable: `RequestHandle` owns the loader, so `base::Unretained<>()`
-    // binds a non-owning pointer to it, which can't dangle when the callback
-    // runs, since only the loader runs the callback.
-    // Non-cancelable: `base::Owned<>()` transfers ownership to the callback;
-    // the loader is deleted when the callback is.
-    auto bound_simple_url_loader = [&] {
-      if constexpr (C == RequestCancelability::kCancelable) {
-        return base::Unretained(simple_url_loader_ptr);
+    auto headers = [&] {
+      if constexpr (base::is_instantiation<Request, WithHeaders>) {
+        return std::move(request.headers);
       } else {
-        return base::Owned(std::move(simple_url_loader));
+        return net::HttpRequestHeaders();
       }
     }();
 
-    auto on_response = base::BindOnce(OnResponse<Response>, std::move(callback),
-                                      std::move(bound_simple_url_loader));
-    if (request.max_body_size) {
-      simple_url_loader_ptr->DownloadToString(url_loader_factory.get(),
-                                              std::move(on_response),
-                                              *request.max_body_size);
-    } else {
-      simple_url_loader_ptr->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-          url_loader_factory.get(), std::move(on_response));
-    }
+    constexpr bool kIsRequestWithoutBody =
+        internal::IsRequestWithoutBody<typename Endpoint::Request>;
+
+    auto upload_data = [&]() -> std::optional<std::string> {
+      if constexpr (kIsRequestWithoutBody) {
+        return std::nullopt;
+      } else {
+        return request.Serialize();
+      }
+    }();
+
+    constexpr auto kContentType = [] {
+      if constexpr (kIsRequestWithoutBody) {
+        return std::string_view();
+      } else {
+        return Request::ContentType();
+      }
+    }();
+
+    auto simple_url_loader = internal::StartSimpleURLLoader(
+        url_loader_factory, Request::Method(), Endpoint::URL(),
+        std::move(headers), std::move(upload_data), kContentType,
+        std::move(static_cast<internal::RequestOptions&>(request)), C,
+        base::BindOnce(MakeResponse<Response>).Then(std::move(callback)));
 
     if constexpr (C == RequestCancelability::kCancelable) {
       return RequestHandle(std::move(simple_url_loader),
@@ -132,24 +130,28 @@ class Client {
 
  private:
   template <typename Response>
-  static void OnResponse(base::OnceCallback<void(Response)> callback,
-                         const network::SimpleURLLoader* simple_url_loader_ptr,
-                         std::optional<std::string> response_body) {
-    const network::SimpleURLLoader& simple_url_loader =
-        CHECK_DEREF(simple_url_loader_ptr);
-
-    auto* response_info = simple_url_loader.ResponseInfo();
-    auto headers = response_info ? response_info->headers : nullptr;
-
-    Response response(Response::Deserialize(simple_url_loader.NetError(),
-                                            headers, std::move(response_body)));
-    if constexpr (base::is_instantiation<Response, WithHeaders>) {
-      if (response.status_code) {
-        response.headers = std::move(headers);
-      }
+  static Response MakeResponse(int net_error,
+                               scoped_refptr<net::HttpResponseHeaders> headers,
+                               std::optional<std::string> response_body) {
+    Response response;
+    response.net_error = net_error;
+    if (net_error != net::OK || !headers) {
+      return response;
     }
 
-    std::move(callback).Run(std::move(response));
+    response.status_code = headers->response_code();
+
+    if constexpr (internal::IsResponseWithBodies<typename Endpoint::Response>) {
+      // SimpleURLLoader returns std::nullopt only on failure.
+      response.body = Response::Deserialize(*response.status_code,
+                                            CHECK_DEREF(response_body));
+    }
+
+    if constexpr (base::is_instantiation<Response, WithHeaders>) {
+      response.headers = std::move(headers);
+    }
+
+    return response;
   }
 };
 

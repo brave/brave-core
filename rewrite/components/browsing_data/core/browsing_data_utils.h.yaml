@@ -20,3 +20,9 @@ substitutions:
         #else
           MAX_VALUE = \2,
         #endif
+
+  - description: |-
+      Include what the substitutions above use
+    add_include:
+      header:
+        - brave/components/ai_chat/core/common/buildflags/buildflags.h

@@ -5,9 +5,9 @@
 
 import * as React from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
-import NavigationMenu from '@brave/leo/react/navigationMenu'
-import NavigationItem from '@brave/leo/react/navigationItem'
-import Icon from '@brave/leo/react/icon'
+import NavigationMenu from '@brave/nala/react/navigationMenu'
+import NavigationItem from '@brave/nala/react/navigationItem'
+import Icon from '@brave/nala/react/icon'
 
 // Local Storage
 import {

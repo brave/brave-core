@@ -1,7 +1,16 @@
 diff --git a/chrome/browser/ui/views/frame/system_menu_model_builder.h b/chrome/browser/ui/views/frame/system_menu_model_builder.h
-index ee3e4c24425626006772267288b9d9191ddc7622..a12f2f9c07ea2bef225d0182bf3ba9b06395495e 100644
+index ee3e4c24425626006772267288b9d9191ddc7622..00dd568444ed00afeed6ae8a1d005f924d0100de 100644
 --- a/chrome/browser/ui/views/frame/system_menu_model_builder.h
 +++ b/chrome/browser/ui/views/frame/system_menu_model_builder.h
+@@ -37,7 +37,7 @@ class SystemMenuModelBuilder {
+   SystemMenuModelBuilder(const SystemMenuModelBuilder&) = delete;
+   SystemMenuModelBuilder& operator=(const SystemMenuModelBuilder&) = delete;
+ 
+-  ~SystemMenuModelBuilder();
++  virtual ~SystemMenuModelBuilder();
+ 
+   // Populates the menu.
+   void Init();
 @@ -46,11 +46,12 @@ class SystemMenuModelBuilder {
    ui::MenuModel* menu_model() { return menu_model_.get(); }
  

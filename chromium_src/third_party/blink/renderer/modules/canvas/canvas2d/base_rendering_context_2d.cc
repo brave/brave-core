@@ -21,7 +21,7 @@
   }
 
 #define BRAVE_BASE_RENDERING_CONTEXT_2D_MEASURE_TEXT      \
-  if (!brave::AllowFingerprinting(                        \
+  if (brave::IsStrictFingerprintingEnabled(               \
           GetTopExecutionContext(),                       \
           ContentSettingsType::BRAVE_WEBCOMPAT_LANGUAGE)) \
     return MakeGarbageCollected<TextMetrics>();

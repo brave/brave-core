@@ -72,20 +72,24 @@ source_set("unit_tests") {
   sources = [
     "focus_mode_title_bar_view_unittest.cc",
     "layout/brave_browser_view_tabbed_layout_impl_unittest.cc",
+    "split_view/brave_multi_contents_view_unittest.cc",
   ]
 
   deps = [
     ":frame",
     ":frame_impl",
     "//base",
+    "//base/i18n:test_support",
     "//base/test:test_support",
     "//brave/browser/ui/views:layout_provider",
+    "//brave/browser/ui/views/frame/split_view",
     "//chrome/browser/ui:tab_ui_helper",
     "//chrome/browser/ui/views:layout_provider",
     "//chrome/browser/ui/views/frame:browser_view_layout_delegate",
     "//chrome/browser/ui/views/frame:opaque_browser_frame_view_layout_delegate",
     "//chrome/browser/ui/views/tabs/organizer:organizer_panel_host",
     "//chrome/test:test_support",
+    "//components/split_tabs",
     "//components/tabs:test_support",
     "//content/test:test_support",
     "//testing/gmock",

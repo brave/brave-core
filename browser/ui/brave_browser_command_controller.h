@@ -12,11 +12,13 @@
 #include <vector>
 
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "build/build_config.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -119,10 +121,25 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
                                           WindowOpenDisposition disposition,
                                           base::TimeTicks time_stamp);
 
+  // Switches the tab strip mode and updates the layout for it.
+  void ToggleVerticalTabStrip();
+#if BUILDFLAG(IS_MAC)
+  void ToggleVerticalTabsWhileFullscreen();
+  void ApplyPendingVerticalTabsToggle();
+#endif
+
   PrefChangeRegistrar pref_change_registrar_;
   const raw_ref<BrowserWindowInterface> browser_;
 
   CommandUpdaterImpl brave_command_updater_;
+
+#if BUILDFLAG(IS_MAC)
+  // The vertical tabs mode requested while the window was fullscreen, applied
+  // when it leaves fullscreen. Unset when there's nothing to apply.
+  std::optional<bool> pending_vertical_tabs_enabled_;
+
+  base::WeakPtrFactory<BraveBrowserCommandController> weak_factory_{this};
+#endif
 };
 
 }  // namespace chrome

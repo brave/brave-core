@@ -51,20 +51,23 @@ TEST(HDKeyEd25519Slip23UnitTest, TestVector1) {
 
   auto master_key =
       HDKeyEd25519Slip23::GenerateMasterKeyFromBip39Entropy(entropy);
+  ASSERT_TRUE(master_key);
   EXPECT_EQ(base::HexEncodeLower(master_key->GetPublicKeyAsSpan()),
             "311f8914b8934efbe7cbb8cc4745853d"
             "e12e8ea402df6f9f69b18d2792c6bed8");
-  auto signature = *master_key->Sign(message);
-  EXPECT_EQ(base::HexEncodeLower(signature),
+  auto signature = master_key->Sign(message);
+  ASSERT_TRUE(signature);
+  EXPECT_EQ(base::HexEncodeLower(*signature),
             "843aa4353184193bdf01aab7f636ac53"
             "f86746dd97a2a2e01fe7923c37bfec40"
             "b68a73881a26ba57dc974abc1123d086"
             "6b542a5447e03677134a8f4e1db2bc0c");
-  EXPECT_TRUE(VerifySignature(*master_key, message, signature));
+  EXPECT_TRUE(VerifySignature(*master_key, message, *signature));
 
   auto derived = master_key->DeriveChild(DerivationIndex::Hardened(1852))
                      ->DeriveChild(DerivationIndex::Hardened(1815))
                      ->DeriveChild(DerivationIndex::Hardened(0));
+  ASSERT_TRUE(derived);
 
   EXPECT_EQ(base::HexEncodeLower(derived->GetPublicKeyAsSpan()),
             "a79619cd18f11202741213ab003dd40b"
@@ -87,20 +90,23 @@ TEST(HDKeyEd25519Slip23UnitTest, TestVector2) {
 
   auto master_key =
       HDKeyEd25519Slip23::GenerateMasterKeyFromBip39Entropy(entropy);
+  ASSERT_TRUE(master_key);
   EXPECT_EQ(base::HexEncodeLower(master_key->GetPublicKeyAsSpan()),
             "6fd8d9c696b01525cc45f15583fc9447"
             "c66e1c71fd1a11c8885368404cd0a4ab");
-  auto signature = *master_key->Sign(message);
-  EXPECT_EQ(base::HexEncodeLower(signature),
+  auto signature = master_key->Sign(message);
+  ASSERT_TRUE(signature);
+  EXPECT_EQ(base::HexEncodeLower(*signature),
             "f363d78e0a315ae1fc0ceb6b8efdd163"
             "1a3a2ce16f6cf43f596ff92c4a7b2926"
             "39c6e352cc24efcf80ccea39cbdb7ec9"
             "a02f4a5b332afc2de7f7a2e65e67780e");
-  EXPECT_TRUE(VerifySignature(*master_key, message, signature));
+  EXPECT_TRUE(VerifySignature(*master_key, message, *signature));
 
   auto derived = master_key->DeriveChild(DerivationIndex::Normal(1852))
                      ->DeriveChild(DerivationIndex::Normal(1815))
                      ->DeriveChild(DerivationIndex::Normal(0));
+  ASSERT_TRUE(derived);
 
   EXPECT_EQ(base::HexEncodeLower(derived->GetPublicKeyAsSpan()),
             "b857a8cd1dbbfed1824359d9d9e58bc8"
@@ -140,6 +146,7 @@ TEST(HDKeyEd25519Slip23UnitTest, Errors) {
       base::HexStringToBytes("000102030405060708090a0b0c0d0e0f", &entropy));
   auto master_key =
       HDKeyEd25519Slip23::GenerateMasterKeyFromBip39Entropy(entropy);
+  ASSERT_TRUE(master_key);
 
   // index is too big for hardened index
   auto child = master_key->DeriveChild(DerivationIndex::Hardened(0x80000000));
@@ -151,10 +158,13 @@ TEST(HDKeyEd25519Slip23UnitTest, SignAndVerify) {
   EXPECT_TRUE(
       base::HexStringToBytes("000102030405060708090a0b0c0d0e0f", &entropy));
   auto key = HDKeyEd25519Slip23::GenerateMasterKeyFromBip39Entropy(entropy);
+  ASSERT_TRUE(key);
   const std::vector<uint8_t> msg_a(32, 0x00);
   const std::vector<uint8_t> msg_b(32, 0x08);
   const auto sig_a = key->Sign(msg_a);
   const auto sig_b = key->Sign(msg_b);
+  ASSERT_TRUE(sig_a);
+  ASSERT_TRUE(sig_b);
 
   EXPECT_EQ(sig_a->size(), 64u);
   EXPECT_EQ(sig_b->size(), 64u);
@@ -221,6 +231,7 @@ TEST(HDKeyEd25519Slip23UnitTest, CardanoSdkCryptoSlip23) {
     base::HexStringToBytes(*test_dict.FindString("entropy"), &entropy);
 
     auto key = HDKeyEd25519Slip23::GenerateMasterKeyFromBip39Entropy(entropy);
+    ASSERT_TRUE(key);
 
     for (auto& index : *test_dict.FindList("path")) {
       key = key->DeriveChild(DerivationIndex::FromRawValueForTesting(
@@ -240,9 +251,10 @@ TEST(HDKeyEd25519Slip23UnitTest, CardanoSdkCryptoSlip23) {
                   base::HexEncodeLower(key->GetPrefixAsSpanForTesting()) +
                   base::HexEncodeLower(key->GetChainCodeAsSpanForTesting()));
 
+    auto signature = key->Sign(base::byte_span_from_cstring("message"));
+    ASSERT_TRUE(signature);
     ASSERT_EQ(*test_dict.FindString("signature"),
-              base::HexEncodeLower(
-                  *key->Sign(base::byte_span_from_cstring("message"))));
+              base::HexEncodeLower(*signature));
   }
 }
 

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/frame/browser_view.cc b/chrome/browser/ui/views/frame/browser_view.cc
-index 7b568f6de760af21d6e9d2aa44415a7cef617c51..472654947d61d55ef713934ee7a143dfef9505cf 100644
+index 764e2952938b4755319b7c30ac1ed3be0905dd75..dbd08affd77260c6589e68aba622779266862b1c 100644
 --- a/chrome/browser/ui/views/frame/browser_view.cc
 +++ b/chrome/browser/ui/views/frame/browser_view.cc
 @@ -776,6 +776,9 @@ class BrowserView::ExclusiveAccessContextImpl
@@ -57,7 +57,7 @@ index 7b568f6de760af21d6e9d2aa44415a7cef617c51..472654947d61d55ef713934ee7a143df
    // Update various elements that are interested in knowing the current
    // WebContents.
  
-@@ -5378,7 +5391,7 @@ bool BrowserView::MaybeShowBookmarkBar(WebContents* contents) {
+@@ -5399,7 +5412,7 @@ bool BrowserView::MaybeShowBookmarkBar(WebContents* contents) {
    if (!bookmark_bar_view_) {
      auto* factory = UIControllerFactory::From(browser_.get());
      auto controller = factory->CreateBookmarkBarController();

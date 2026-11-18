@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css/variables'
+import * as leo from '@brave/nala/tokens/css/variables'
 import { WalletButton } from '../../../../../shared/style'
 
 export const AccountButton = styled(WalletButton)`

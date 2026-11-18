@@ -36,6 +36,7 @@
 #import "brave/ios/browser/api/brave_rewards/rewards_notification.h"
 #import "brave/ios/browser/api/brave_rewards/rewards_observer.h"
 #import "brave/ios/browser/api/common/common_operations.h"
+#include "brave/ios/components/prefs/pref_service_bridge.h"
 #include "brave/ios/components/prefs/pref_service_bridge_impl.h"
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/os_crypt/async/common/encryptor.h"
@@ -154,15 +155,18 @@ NSString* const BraveRewardsDisabledByPolicyPrefName =
   return brave_rewards::IsSupported(holder.prefService);
 }
 
-- (instancetype)initWithStateStoragePath:(NSString*)path {
+- (instancetype)initWithStateStoragePath:(NSString*)path
+                             prefService:(id<PrefServiceBridge>)prefService {
   if ((self = [super init])) {
     _taskRunner = base::SequencedTaskRunner::GetCurrentDefault();
+    _profilePrefService =
+        base::apple::ObjCCastStrict<PrefServiceBridgeImpl>(prefService)
+            .prefService;
 
     self.storagePath = path;
     self.commonOps =
         [[BraveCommonOperations alloc] initWithStoragePath:path
                                                 taskRunner:_taskRunner];
-    [self initProfilePrefService];
     [self maybeMigrateProfilePrefs];
 
     self.state = [[NSMutableDictionary alloc]
@@ -648,14 +652,6 @@ NSString* const BraveRewardsDisabledByPolicyPrefName =
                             callback {
   self.profilePrefService->ClearPref(path);
   std::move(callback).Run();
-}
-
-- (void)initProfilePrefService {
-  std::vector<ProfileIOS*> profiles =
-      GetApplicationContext()->GetProfileManager()->GetLoadedProfiles();
-  CHECK(!profiles.empty());
-  _profilePrefService = profiles.front()->GetPrefs();
-  CHECK(_profilePrefService);
 }
 
 - (void)maybeMigrateProfilePrefs {

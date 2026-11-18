@@ -179,7 +179,7 @@ class BraveVpnApiClient {
                                const std::string& api_auth_token,
                                const std::string& multihop_exit_region);
 
-  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  const scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   base::WeakPtrFactory<BraveVpnApiClient> weak_factory_{this};
 };
 

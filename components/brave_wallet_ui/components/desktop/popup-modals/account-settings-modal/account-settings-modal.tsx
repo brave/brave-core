@@ -5,10 +5,10 @@
 
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query'
-import ProgressRingReact from '@brave/leo/react/progressRing'
-import Input, { InputEventDetail } from '@brave/leo/react/input'
-import SegmentedControlItem from '@brave/leo/react/segmentedControlItem'
-import Button from '@brave/leo/react/button'
+import ProgressRingReact from '@brave/nala/react/progressRing'
+import Input, { InputEventDetail } from '@brave/nala/react/input'
+import SegmentedControlItem from '@brave/nala/react/segmentedControlItem'
+import Button from '@brave/nala/react/button'
 
 // redux
 import { useDispatch, useSelector } from 'react-redux'

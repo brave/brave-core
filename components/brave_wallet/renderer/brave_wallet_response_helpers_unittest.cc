@@ -21,15 +21,9 @@ TEST(BraveWalletResponseHelpersTest, GetProviderErrorDictionary) {
   mojom::ProviderError code = mojom::ProviderError::kUnsupportedMethod;
   std::string message = "HTTP Status code: " + base::NumberToString(400);
   base::Value result = GetProviderErrorDictionary(code, message);
-  ASSERT_TRUE(result.is_dict());
-  auto& dict = result.GetDict();
-  const auto result_code = dict.FindInt("code");
-  const auto* result_message = dict.FindString("message");
-  EXPECT_TRUE(result_code);
-  EXPECT_TRUE(result_message);
-
-  EXPECT_EQ(*result_code, static_cast<int>(code));
-  EXPECT_EQ(*result_message, message);
+  EXPECT_EQ(result, base::Value(base::DictValue()
+                                    .Set("code", static_cast<int>(code))
+                                    .Set("message", message)));
 }
 
 TEST(BraveWalletResponseHelpersTest,
@@ -42,16 +36,10 @@ TEST(BraveWalletResponseHelpersTest,
   base::Value result = GetProviderRequestReturnFromEthJsonResponse(
       200, ParseJson(response), &reject);
   EXPECT_TRUE(reject);
-  ASSERT_TRUE(result.is_dict());
-  auto& dict = result.GetDict();
-  const auto result_code = dict.FindInt("code");
-  const auto* result_message = dict.FindString("message");
-  EXPECT_TRUE(result_code);
-  EXPECT_TRUE(result_message);
-
-  EXPECT_EQ(*result_code, -32601);
-  EXPECT_EQ(*result_message,
-            "The method eth_accountsq does not exist/is not available");
+  EXPECT_EQ(result, ParseJson(R"({
+    "code": -32601,
+    "message": "The method eth_accountsq does not exist/is not available"
+  })"));
 }
 
 TEST(BraveWalletResponseHelpersTest,
@@ -59,14 +47,11 @@ TEST(BraveWalletResponseHelpersTest,
   bool reject = false;
   base::Value result =
       GetProviderRequestReturnFromEthJsonResponse(400, base::Value(), &reject);
-  ASSERT_TRUE(result.is_dict());
-  auto& dict = result.GetDict();
-  const auto result_code = dict.FindInt("code");
-  const auto* result_message = dict.FindString("message");
-  EXPECT_TRUE(result_code);
-  EXPECT_TRUE(result_message);
-  EXPECT_EQ(*result_code, (int)mojom::ProviderError::kUnsupportedMethod);
-  EXPECT_EQ(*result_message, "HTTP Status code: 400");
+  constexpr int kExpectedCode =
+      static_cast<int>(mojom::ProviderError::kUnsupportedMethod);
+  EXPECT_EQ(result, base::Value(base::DictValue()
+                                    .Set("code", kExpectedCode)
+                                    .Set("message", "HTTP Status code: 400")));
 }
 
 TEST(BraveWalletResponseHelpersTest,
@@ -119,24 +104,15 @@ TEST(BraveWalletResponseHelpersTest,
 TEST(BraveWalletResponseHelpersTest, ToProviderResponseEmpty) {
   auto result = ToProviderResponse(base::Value(), nullptr, nullptr);
 
-  ASSERT_TRUE(result.is_dict());
-  auto& dict = result.GetDict();
-  EXPECT_EQ(*dict.Find("id"), base::Value());
-  EXPECT_EQ(*dict.FindString("jsonrpc"), "2.0");
-  EXPECT_FALSE(dict.Find("result"));
-  EXPECT_FALSE(dict.Find("error"));
+  EXPECT_EQ(result, ParseJson(R"({"id": null, "jsonrpc": "2.0"})"));
 }
 
 TEST(BraveWalletResponseHelpersTest, ToProviderResponseSuccess) {
   base::Value value("test");
   base::Value result = ToProviderResponse(base::Value(2), &value, nullptr);
 
-  ASSERT_TRUE(result.is_dict());
-  auto& dict = result.GetDict();
-  EXPECT_EQ(*dict.Find("id"), base::Value(2));
-  EXPECT_EQ(*dict.FindString("jsonrpc"), "2.0");
-  EXPECT_EQ(*dict.FindString("result"), value.GetString());
-  EXPECT_FALSE(dict.Find("error"));
+  EXPECT_EQ(result,
+            ParseJson(R"({"id": 2, "jsonrpc": "2.0", "result": "test"})"));
 }
 
 TEST(BraveWalletResponseHelpersTest, ToProviderResponseError) {
@@ -144,12 +120,12 @@ TEST(BraveWalletResponseHelpersTest, ToProviderResponseError) {
   base::Value error("error");
   base::Value result = ToProviderResponse(base::Value("hi"), &value, &error);
 
-  ASSERT_TRUE(result.is_dict());
-  auto& dict = result.GetDict();
-  EXPECT_EQ(*dict.Find("id"), base::Value("hi"));
-  EXPECT_EQ(*dict.FindString("jsonrpc"), "2.0");
-  EXPECT_EQ(*dict.FindString("result"), value.GetString());
-  EXPECT_EQ(*dict.Find("error"), error);
+  EXPECT_EQ(result, ParseJson(R"({
+    "id": "hi",
+    "jsonrpc": "2.0",
+    "result": "test",
+    "error": "error"
+  })"));
 }
 
 }  // namespace brave_wallet

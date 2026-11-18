@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { showAlert } from '@brave/leo/react/alertCenter'
+import { showAlert } from '@brave/nala/react/alertCenter'
 import generateReactContext from '$web-common/api/react_api'
 import { getLocale } from '$web-common/locale'
 import {
@@ -607,11 +607,6 @@ export function useProvideConversationContext(props: ConversationContextProps) {
       setSelectedActionType(undefined)
     }
   }, [inputText, selectedSkill, selectedActionType])
-
-  // TODO(https://github.com/brave/brave-browser/issues/52542): Handle this conversation's deletion:
-  // Disable everything and show undismissable dialog when
-  // the conversation is deleted on the backend.
-  // const isDeleted = api.useCurrentOnConversationDeleted().hasEmitted
 
   const [previewUploadedFile, setPreviewUploadedFile] =
     React.useState<Mojom.UploadedFile | null>(null)

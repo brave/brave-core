@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Add non-const version of ProposedLayout::GetLayoutFor()
+
+      Brave layouts need to modify the layout found for a descendant.
+    regex:
+      re_pattern: |-
+        const (ProposedLayout\* GetLayoutFor\(const views::View\* descendant\)) const;
+      replace: |-
+        const \1 const;
+          \1;

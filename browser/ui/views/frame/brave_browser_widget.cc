@@ -11,7 +11,6 @@
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #include "brave/browser/ui/views/frame/brave_browser_root_view.h"
-#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -30,13 +29,7 @@ BraveBrowserWidget::BraveBrowserWidget(BrowserView* browser_view)
   }
 }
 
-BraveBrowserWidget::~BraveBrowserWidget() {
-  // Some modules need to get fullscreen state change but they can't
-  // know the observing stop timing by themselves.
-  // As the ExclusiveAccessManager is destroyed from BrowserWindowFeatures
-  // at the start of BrowserWidget dtor, this method is should be called here.
-  BraveBrowserView::From(view_)->StopListeningFullscreenChanges();
-}
+BraveBrowserWidget::~BraveBrowserWidget() = default;
 
 ui::ColorProviderKey::ThemeInitializerSupplier*
 BraveBrowserWidget::GetCustomTheme() const {

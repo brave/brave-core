@@ -5,11 +5,11 @@
 
 import * as React from 'react'
 import styled from 'styled-components'
-import Input from '@brave/leo/react/input'
-import Alert from '@brave/leo/react/alert'
-import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
-import * as leo from '@brave/leo/tokens/css/variables'
+import Input from '@brave/nala/react/input'
+import Alert from '@brave/nala/react/alert'
+import Button from '@brave/nala/react/button'
+import Icon from '@brave/nala/react/icon'
+import * as leo from '@brave/nala/tokens/css/variables'
 
 export const ErrorTextRow = styled.div<{
   hasError: boolean

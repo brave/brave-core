@@ -2,13 +2,52 @@
 
 <script>
   var permissionGranted = false
+  var enableSettledCount = 0
 
   function ethereumEnable() {
     window.ethereum.enable().then(accounts => {
       permissionGranted = true
+      enableSettledCount++
     }).catch(error => {
       permissionGranted = false
+      enableSettledCount++
     })
+  }
+
+  function getEnableSettledCount() {
+    return enableSettledCount;
+  }
+
+  // Resolves with `read()` once it equals `expected`, or with its last value
+  // after a deadline so that a failed wait shows up as a failed EXPECT.
+  function waitForValue(read, expected, timeoutMs = 20000) {
+    return new Promise(resolve => {
+      const deadline = Date.now() + timeoutMs
+      const poll = () => {
+        const value = read()
+        if (value === expected || Date.now() > deadline) {
+          resolve(value)
+        } else {
+          setTimeout(poll, 10)
+        }
+      }
+      poll()
+    })
+  }
+
+  // Waits for window.ethereum.enable() to have settled and for the result to
+  // equal `expected`.
+  function waitForPermissionGranted(expected) {
+    return waitForValue(
+        () => enableSettledCount > 0 ? permissionGranted : undefined, expected)
+  }
+
+  function waitForSelectedAddress(expected) {
+    return waitForValue(() => String(window.ethereum.selectedAddress), expected)
+  }
+
+  function waitForChainId(expected) {
+    return waitForValue(() => window.ethereum.chainId, expected)
   }
 
   function getPermissionGranted() {
@@ -16,7 +55,22 @@
   }
 
   var sendOrSignTransactionResult, sendOrSignTransactionError
+  var sendOrSignTransactionResultReady = false
+
+  function resultReady() {
+    sendOrSignTransactionResultReady = true
+  }
+
+  // Resolves true once the last sendOrSignTransaction() has settled, or false
+  // after a deadline so that a failed wait shows up as a failed EXPECT.
+  function waitForSendOrSignTransactionResultReady() {
+    return waitForValue(() => sendOrSignTransactionResultReady, true)
+  }
+
   function sendOrSignTransaction(signOnly, is1559, method, from, to, value, data) {
+    sendOrSignTransactionResultReady = false
+    sendOrSignTransactionResult = undefined
+    sendOrSignTransactionError = undefined
     const params = [{
       from,
       to,
@@ -42,10 +96,10 @@
         params
       }).then(result => {
         sendOrSignTransactionResult = result
-        window.domAutomationController.send('result ready')
+        resultReady()
       }).catch(error => {
         sendOrSignTransactionError = error.message
-        window.domAutomationController.send('result ready')
+        resultReady()
       })
     } else if (method == 'send1') {
       window.ethereum.send({
@@ -55,16 +109,16 @@
       }, (err, result) => {
         sendOrSignTransactionError = err && err.error ? err.error.message : undefined
         sendOrSignTransactionResult = result ? result.result : undefined
-        window.domAutomationController.send('result ready')
+        resultReady()
       })
     } else if (method == 'send2') {
       window.ethereum.send(signOnly ? 'eth_signTransaction' : 'eth_sendTransaction', params)
         .then(result => {
           sendOrSignTransactionResult = result.result
-          window.domAutomationController.send('result ready')
+          resultReady()
         }).catch(error => {
           sendOrSignTransactionError = error.error.message
-          window.domAutomationController.send('result ready')
+          resultReady()
         })
     } else if (method == 'sendAsync') {
       window.ethereum.sendAsync({
@@ -74,7 +128,7 @@
       }, (err, result) => {
         sendOrSignTransactionError = err && err.error ? err.error.message : undefined
         sendOrSignTransactionResult = result ? result.result : undefined
-        window.domAutomationController.send('result ready')
+        resultReady()
       })
     }
   }

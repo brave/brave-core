@@ -140,9 +140,36 @@ bool BrowserViewLayoutDelegateImpl::IsFullscreen() const {
   return browser_view().IsFullscreen();
 }
 
+bool BrowserViewLayoutDelegateImpl::IsWebPanelVisible() const {
+  auto* brave_browser_view = BraveBrowserView::From(&browser_view());
+  return brave_browser_view && brave_browser_view->IsWebPanelVisible();
+}
+
+bool BrowserViewLayoutDelegateImpl::IsWebPanelOnLeft() const {
+  auto* brave_browser_view = BraveBrowserView::From(&browser_view());
+  return brave_browser_view && brave_browser_view->IsWebPanelOnLeft();
+}
+
+bool BrowserViewLayoutDelegateImpl::IsSidebarControlVisible() const {
+  auto* brave_browser_view = BraveBrowserView::From(&browser_view());
+  return brave_browser_view && brave_browser_view->IsSidebarVisible();
+}
+
+bool BrowserViewLayoutDelegateImpl::IsSidePanelVisible() const {
+  auto* brave_browser_view = BraveBrowserView::From(&browser_view());
+  return brave_browser_view && brave_browser_view->IsSidePanelVisible();
+}
+
+bool BrowserViewLayoutDelegateImpl::IsSidebarOnLeft() const {
+  auto* brave_browser_view = BraveBrowserView::From(&browser_view());
+  return brave_browser_view && brave_browser_view->IsSidebarOnLeft();
+}
+
 void BrowserViewLayoutDelegateImpl::UpdateContentsCornerRadii(
-    const gfx::RoundedCornersF& corner_radii) {
+    const gfx::RoundedCornersF& corner_radii,
+    const gfx::RoundedCornersF& web_panel_corner_radii) {
   if (auto* brave_browser_view = BraveBrowserView::From(&browser_view())) {
-    brave_browser_view->UpdateContentsCornerRadii(corner_radii);
+    brave_browser_view->UpdateContentsCornerRadii(corner_radii,
+                                                  web_panel_corner_radii);
   }
 }

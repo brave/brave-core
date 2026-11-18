@@ -7,9 +7,8 @@ substitutions:
   - description: |-
       Update the sidebar UI when the active tab's URL changes.
 
-      This used to live in BraveBrowser::ScheduleUIUpdate, but
-      Browser::ScheduleUIUpdate moved into BrowserUiController and is no
-      longer virtual, so hook into it here instead.
+      `BrowserUiController::ScheduleUIUpdate` is where the window learns that
+      a tab's URL changed.
     preempt_function_impl:
       function_name: BrowserUiController::ScheduleUIUpdate
       code: |-

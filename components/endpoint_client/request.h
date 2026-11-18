@@ -6,25 +6,15 @@
 #ifndef BRAVE_COMPONENTS_ENDPOINT_CLIENT_REQUEST_H_
 #define BRAVE_COMPONENTS_ENDPOINT_CLIENT_REQUEST_H_
 
-#include <cstddef>
-#include <optional>
 #include <string>
 #include <string_view>
 
-#include "base/check.h"
-#include "base/check_deref.h"
-#include "base/json/json_writer.h"
-#include "base/time/time.h"
-#include "base/values.h"
 #include "brave/components/endpoint_client/is_request_body.h"
-#include "brave/components/endpoint_client/retry_options.h"
-#include "brave/components/endpoint_client/url_replacements.h"
+#include "brave/components/endpoint_client/request_options.h"
+#include "brave/components/endpoint_client/serialize_body.h"
 #include "net/http/http_request_headers.h"
-#include "net/traffic_annotation/network_traffic_annotation.h"
-#include "services/network/public/cpp/simple_url_loader.h"
-#include "services/network/public/mojom/fetch_api.mojom.h"
 
-namespace endpoint_client::detail {
+namespace endpoint_client::internal {
 
 // HTTP methods
 enum class Method {
@@ -40,12 +30,18 @@ enum class Method {
   kTrack
 };
 
-// A request binds a request body type to a specific HTTP method and
-// provides access to the method, Content-Type, and serialized body.
-template <IsRequestBody RequestBody, Method M>
-struct Request {
-  using Body = RequestBody;
+constexpr bool MethodAllowsBody(Method method) {
+  return method != Method::kGet && method != Method::kHead;
+}
 
+template <Method M, typename...>
+struct Request {
+  static_assert(false, "Request<> takes at most one body type!");
+};
+
+// A request without a body has a fixed HTTP method and provides access to it.
+template <Method M>
+struct Request<M> : RequestOptions {
   static constexpr std::string_view Method() {
     if constexpr (M == Method::kConnect) {
       return net::HttpRequestHeaders::kConnectMethod;
@@ -71,22 +67,29 @@ struct Request {
       static_assert(false, "Unhandled Method enumerator!");
     }
   }
+};
+
+template <Method M, typename T>
+struct Request<M, T> {
+  static_assert(false,
+                "MethodAllowsBody(M) must be true, and T must satisfy "
+                "IsRequestBody!");
+};
+
+// A request with a body extends the request without a body with a request body
+// type, and provides access to the Content-Type and serialized body.
+template <Method M, IsRequestBody RequestBody>
+  requires(MethodAllowsBody(M))
+struct Request<M, RequestBody> : Request<M> {
+  using Body = RequestBody;
 
   static constexpr std::string_view ContentType() {
     return ContentType<Body>();
   }
 
-  std::optional<std::string> Serialize() const { return Serialize(body); }
+  std::string Serialize() const { return SerializeBody(body); }
 
   Body body;
-  std::optional<std::size_t> max_body_size =
-      network::SimpleURLLoader::kMaxBoundedStringDownloadSize;
-  net::MutableNetworkTrafficAnnotationTag network_traffic_annotation_tag;
-  network::mojom::RedirectMode redirect_mode =
-      network::mojom::RedirectMode::kError;
-  RetryOptions retry_options;
-  base::TimeDelta timeout_duration;
-  UrlReplacements url_replacements;
 
  private:
   // Returns the Content-Type value for a JSON request body.
@@ -100,33 +103,8 @@ struct Request {
   static constexpr std::string_view ContentType() {
     return "application/protobuf";
   }
-
-  // Serializes a JSON request body to a JSON string.
-  // Returns std::nullopt if the request body produces an empty dictionary.
-  static std::optional<std::string> Serialize(
-      const IsJSONRequestBody auto& request_body) {
-    const base::DictValue dict = request_body.ToValue();
-    if (dict.empty()) {
-      return std::nullopt;
-    }
-
-    return CHECK_DEREF(base::WriteJson(dict));
-  }
-
-  // Serializes a Protobuf request body to a binary string.
-  // Returns std::nullopt if the request body is empty (ByteSizeLong() == 0).
-  static std::optional<std::string> Serialize(
-      const IsProtobufRequestBody auto& request_body) {
-    if (!request_body.ByteSizeLong()) {
-      return std::nullopt;
-    }
-
-    std::string serialized;
-    CHECK(request_body.SerializeToString(&serialized));
-    return serialized;
-  }
 };
 
-}  // namespace endpoint_client::detail
+}  // namespace endpoint_client::internal
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_REQUEST_H_

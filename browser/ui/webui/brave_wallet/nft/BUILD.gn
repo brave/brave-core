@@ -13,6 +13,7 @@ source_set("nft") {
     "nft_ui.h",
   ]
   deps = [
+    "//brave/browser/ui/webui:untrusted_sanitized_image_source",
     "//brave/components/brave_wallet/browser:constants",
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet_ui:resources",

@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { createPortal } from 'react-dom'
-import Alert from '@brave/leo/react/alert'
+import Alert from '@brave/nala/react/alert'
 
 import { style } from './copy_toast.style'
 

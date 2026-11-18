@@ -8,7 +8,7 @@ import * as React from 'react'
 import { Time } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
 import { mojoTimeToJSDate } from '$web-common/mojomUtils'
 import { getLocale } from '$web-common/locale'
-import Icon from '@brave/leo/react/icon'
+import Icon from '@brave/nala/react/icon'
 
 import styles from './style.module.scss'
 

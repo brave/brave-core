@@ -34,6 +34,7 @@
 #include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -42,6 +43,7 @@
 #if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
 #include "brave/components/brave_vpn/browser/v2/agent/test/fake_agent.h"
 #include "brave/components/brave_vpn/browser/v2/agent/test/fake_agent_launcher.h"
+#include "brave/components/brave_vpn/common/mojom/browser_agent.mojom.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
 
 namespace brave_vpn::v2 {
@@ -82,6 +84,10 @@ class ConnectionStateRecorder : public mojom::ServiceObserver {
   const std::vector<mojom::ConnectionState>& states() const { return states_; }
 
   size_t agent_failures() const { return agent_failures_; }
+
+  // Returns once everything the service has sent so far has arrived here, so
+  // a test can assert on what was not sent as well as on what was.
+  void FlushForTesting() { receiver_.FlushForTesting(); }
 
   // mojom::ServiceObserver:
   void OnConnectionStateChanged(mojom::ConnectionState state) override {
@@ -164,6 +170,7 @@ class BraveVpnServiceImplTest : public testing::Test {
   void ReplaceAgentClientWithFake() {
     service_->agent_client_->RemoveObserver(service_.get());
     service_->agent_client_ = AgentClient::CreateForTesting(
+        /*browser_endpoint=*/service_.get(),
         fake_agent_.GetServerNameProvider(), fake_agent_.GetConnector(),
         /*tick_clock=*/nullptr);
     service_->agent_client_->AddObserver(service_.get());
@@ -187,6 +194,17 @@ class BraveVpnServiceImplTest : public testing::Test {
   void NotifyAgentLaunchFailed(AgentLauncher::LaunchError error) {
     service_->OnAgentLaunchFailed(error);
   }
+
+  // Calls the service the way the agent does through BrowserEndpoint. As with
+  // the real thing, only valid between NotifyAgentConnected() and
+  // NotifyAgentDisconnected().
+  void ReportAgentConnectionState(
+      mojom::VpnConnectionState state,
+      std::optional<std::string> error_message = std::nullopt) {
+    service_->OnConnectionStateChanged(state, error_message);
+  }
+
+  bool has_agent_state() const { return service_->agent_state_.has_value(); }
 
   AgentClient* agent_client() { return service_->agent_client_.get(); }
 
@@ -268,12 +286,14 @@ TEST_F(BraveVpnServiceImplTest, SafeDefaultsAfterShutdown) {
 
   service_->ReconnectToAgent();
 
-  NotifyAgentConnected();
+  // In the order the client produces them: the service counts on a session
+  // having been announced by the time it is called stable.
   NotifyAgentNotRunning();
-  NotifyAgentDisconnected();
   NotifyAgentConnectionFailed(AgentClient::Error::kAgentNotResponding);
   NotifyAgentLaunchFailed(AgentLauncher::LaunchError::kLaunchFailed);
+  NotifyAgentConnected();
   NotifyAgentSessionStable();
+  NotifyAgentDisconnected();
   EXPECT_EQ(launch_record_.launch_count(), 0u);
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
 
@@ -489,6 +509,9 @@ TEST_F(BraveVpnServiceImplTest, StableSessionClearsConnectFailure) {
 
   NotifyAgentConnectionFailed(AgentClient::Error::kAgentUnreachable);
   ASSERT_EQ(connection_state(), mojom::ConnectionState::CONNECT_NO_AGENT);
+  // A session is stable only after it was announced. The agent reported nothing
+  // on this one, so what replaces the failure is the default.
+  NotifyAgentConnected();
   NotifyAgentSessionStable();
   EXPECT_EQ(connection_state(), mojom::ConnectionState::DISCONNECTED);
 }
@@ -517,24 +540,179 @@ TEST_F(BraveVpnServiceImplTest, StableSessionLeavesNonErrorStateAlone) {
   EXPECT_EQ(connection_state(), mojom::ConnectionState::CONNECTED);
 }
 
-// The "connected" state should be reset if the agent connection gets dropped.
-TEST_F(BraveVpnServiceImplTest, AgentDisconnectionResetsOnlyConnectedState) {
+// Nothing the agent reported can be shown once its session is gone: nobody is
+// left to say the tunnel is up, to finish a connect, or to stand behind an
+// error.
+TEST_F(BraveVpnServiceImplTest, AgentDisconnectionResetsAgentReportedState) {
   CreateService();
-  NotifyAgentConnectionFailed(AgentClient::Error::kAgentUnreachable);
-  SetConnectionState(mojom::ConnectionState::CONNECTING);
-  ASSERT_EQ(connection_state(), mojom::ConnectionState::CONNECTING);
-  ASSERT_FALSE(service_->GetLastConnectionError().empty());
 
-  NotifyAgentDisconnected();
-  EXPECT_EQ(connection_state(), mojom::ConnectionState::CONNECTING);
-  EXPECT_FALSE(service_->GetLastConnectionError().empty());
+  for (const mojom::VpnConnectionState state :
+       {mojom::VpnConnectionState::kConnected,
+        mojom::VpnConnectionState::kConnecting,
+        mojom::VpnConnectionState::kDisconnecting,
+        mojom::VpnConnectionState::kWaitingRetry,
+        mojom::VpnConnectionState::kConnectFailed,
+        mojom::VpnConnectionState::kInternalError}) {
+    NotifyAgentConnected();
+    ReportAgentConnectionState(state, "reported by the agent");
+    ASSERT_NE(connection_state(), mojom::ConnectionState::DISCONNECTED)
+        << "reported " << state;
+    ASSERT_FALSE(service_->GetLastConnectionError().empty());
 
-  SetConnectionState(mojom::ConnectionState::CONNECTED);
-  ASSERT_EQ(connection_state(), mojom::ConnectionState::CONNECTED);
+    NotifyAgentDisconnected();
+    EXPECT_EQ(connection_state(), mojom::ConnectionState::DISCONNECTED)
+        << "reported " << state;
+    EXPECT_TRUE(service_->GetLastConnectionError().empty())
+        << "reported " << state;
+  }
+}
 
-  NotifyAgentDisconnected();
+// What the agent reports about the tunnel is what the service shows, in the
+// states the UI knows.
+TEST_F(BraveVpnServiceImplTest, AgentReportedConnectionStateIsPublished) {
+  CreateService();
+  NotifyAgentConnected();
+
+  // Ordered so that every report changes the state shown.
+  const struct {
+    mojom::VpnConnectionState reported;
+    mojom::ConnectionState expected;
+  } kCases[] = {
+      {mojom::VpnConnectionState::kConnecting,
+       mojom::ConnectionState::CONNECTING},
+      {mojom::VpnConnectionState::kConnected,
+       mojom::ConnectionState::CONNECTED},
+      {mojom::VpnConnectionState::kDisconnecting,
+       mojom::ConnectionState::DISCONNECTING},
+      {mojom::VpnConnectionState::kDisconnected,
+       mojom::ConnectionState::DISCONNECTED},
+      {mojom::VpnConnectionState::kWaitingRetry,
+       mojom::ConnectionState::CONNECTING},
+      {mojom::VpnConnectionState::kConnectFailed,
+       mojom::ConnectionState::CONNECT_FAILED},
+      {mojom::VpnConnectionState::kInternalError,
+       mojom::ConnectionState::CONNECT_NOT_ALLOWED},
+  };
+  for (const auto& test_case : kCases) {
+    ReportAgentConnectionState(test_case.reported);
+    EXPECT_EQ(connection_state(), test_case.expected)
+        << "reported " << test_case.reported;
+  }
+}
+
+TEST_F(BraveVpnServiceImplTest, AgentReportedErrorIsTheLastConnectionError) {
+  CreateService();
+  NotifyAgentConnected();
+
+  ReportAgentConnectionState(mojom::VpnConnectionState::kConnectFailed,
+                             "no route to host");
+  EXPECT_EQ(connection_state(), mojom::ConnectionState::CONNECT_FAILED);
+  EXPECT_EQ(service_->GetLastConnectionError(), "no route to host");
+
+  // A report without an error replaces the old one rather than keeping it.
+  ReportAgentConnectionState(mojom::VpnConnectionState::kDisconnected);
   EXPECT_EQ(connection_state(), mojom::ConnectionState::DISCONNECTED);
   EXPECT_TRUE(service_->GetLastConnectionError().empty());
+}
+
+// The agent reporting on a brand-new session is no more proof that the agent is
+// healthy than the session itself. The failure stays until the session is
+// stable, and what the agent said in the meantime is what replaces it.
+TEST_F(BraveVpnServiceImplTest, AgentReportWaitsBehindFailureUntilStable) {
+  CreateService();
+  NotifyAgentConnectionFailed(AgentClient::Error::kAgentUnreachable);
+  ASSERT_EQ(connection_state(), mojom::ConnectionState::CONNECT_NO_AGENT);
+
+  NotifyAgentConnected();
+  ReportAgentConnectionState(mojom::VpnConnectionState::kConnected);
+  EXPECT_EQ(connection_state(), mojom::ConnectionState::CONNECT_NO_AGENT);
+  EXPECT_FALSE(service_->GetLastConnectionError().empty());
+
+  NotifyAgentSessionStable();
+  EXPECT_EQ(connection_state(), mojom::ConnectionState::CONNECTED);
+  EXPECT_TRUE(service_->GetLastConnectionError().empty());
+}
+
+// A report held back behind a failure belongs to its session. If that session
+// dies before it is stable, the failure stays, and the next session starts from
+// what its own agent says rather than from what the last one did.
+TEST_F(BraveVpnServiceImplTest, HeldAgentReportIsDroppedWithItsSession) {
+  CreateService();
+  NotifyAgentConnectionFailed(AgentClient::Error::kAgentUnreachable);
+
+  NotifyAgentConnected();
+  ReportAgentConnectionState(mojom::VpnConnectionState::kConnected);
+  NotifyAgentDisconnected();
+  EXPECT_EQ(connection_state(), mojom::ConnectionState::CONNECT_NO_AGENT);
+  EXPECT_FALSE(service_->GetLastConnectionError().empty());
+
+  NotifyAgentConnected();
+  NotifyAgentSessionStable();
+  EXPECT_EQ(connection_state(), mojom::ConnectionState::DISCONNECTED);
+}
+
+// The record of what the agent reported exists exactly while a session does,
+// which is what lets the handlers assume one.
+TEST_F(BraveVpnServiceImplTest, AgentStateLivesExactlyAsLongAsTheSession) {
+  CreateService();
+  EXPECT_FALSE(has_agent_state());
+
+  NotifyAgentConnected();
+  EXPECT_TRUE(has_agent_state());
+
+  NotifyAgentDisconnected();
+  EXPECT_FALSE(has_agent_state());
+
+  NotifyAgentConnected();
+  ShutdownService();
+  EXPECT_FALSE(has_agent_state());
+}
+
+// Each change the agent reports reaches the UI once; repeating a report is not
+// news.
+TEST_F(BraveVpnServiceImplTest, AgentReportsNotifyObserversOncePerChange) {
+  CreateService();
+  ConnectionStateRecorder recorder;
+  recorder.Observe(service_.get());
+  NotifyAgentConnected();
+
+  ReportAgentConnectionState(mojom::VpnConnectionState::kConnecting);
+  ReportAgentConnectionState(mojom::VpnConnectionState::kConnecting);
+  ReportAgentConnectionState(mojom::VpnConnectionState::kConnected);
+  recorder.FlushForTesting();
+
+  EXPECT_THAT(recorder.states(),
+              testing::ElementsAre(mojom::ConnectionState::CONNECTING,
+                                   mojom::ConnectionState::CONNECTED));
+}
+
+// End to end, through the real client. The agent sends its state before it
+// answers BindBrowserHost(), as the real one does, and the service has to get
+// it once the session is announced: not before, and not never.
+TEST_F(BraveVpnServiceImplTest, AgentReportSentBeforeBindReplyIsPublished) {
+  CreateService();
+  fake_agent_.set_bind_browser_host_result(std::nullopt);
+  UpdateAgentConnection(mojom::PurchasedState::PURCHASED);
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return fake_agent_.has_held_bind_browser_host_request();
+  })) << "the fake agent was never asked for a host";
+
+  fake_agent_.browser_endpoint()->OnConnectionStateChanged(
+      mojom::VpnConnectionState::kConnected, std::nullopt);
+  fake_agent_.AnswerHeldBindBrowserHostRequest(
+      mojom::BindBrowserHostResult::kSuccess);
+
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return connection_state() == mojom::ConnectionState::CONNECTED;
+  })) << "the agent's report never reached the service";
+
+  // The agent exits, and takes what it reported with it.
+  fake_agent_.set_transport_fails(true);
+  fake_agent_.CloseAllConnections();
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return connection_state() == mojom::ConnectionState::DISCONNECTED;
+  })) << "losing the agent left its report showing";
+  EXPECT_FALSE(has_agent_state());
 }
 
 // A launch that never happened is terminal in effect: the handler also resets

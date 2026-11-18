@@ -6,6 +6,7 @@
 #include "brave/browser/misc_metrics/captcha_metrics.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 
@@ -188,12 +189,15 @@ class CaptchaMetricsBrowserTest : public CaptchaMetricsBrowserTestBase {
         base::test::RunUntil([&] { return load_counter.count() == 1; }));
   }
 
-  int GetRecordedCloudflareCount() {
+  std::optional<int> GetRecordedCloudflareCount() {
     const base::DictValue* cloudflare =
         g_browser_process->local_state()
             ->GetDict(kMiscMetricsCaptchaDictionaryPref)
             .FindDict("cloudflare");
-    return cloudflare ? cloudflare->FindInt("total").value_or(0) : 0;
+    if (!cloudflare) {
+      return std::nullopt;
+    }
+    return cloudflare->FindInt("total");
   }
 
  protected:

@@ -58,28 +58,6 @@ struct PersonalEcRecoverParams {
 std::optional<PersonalEcRecoverParams> ParsePersonalEcRecoverParams(
     const base::ListValue& params);
 
-std::optional<std::string> ParseEthGetEncryptionPublicKeyParams(
-    const base::ListValue& params);
-
-struct EthDecryptParams {
-  std::string untrusted_encrypted_data_json;
-  std::string address;
-};
-
-std::optional<EthDecryptParams> ParseEthDecryptParams(
-    const base::ListValue& params);
-
-struct EthDecryptData {
-  EthDecryptData();
-  ~EthDecryptData();
-  EthDecryptData(EthDecryptData&&);
-  std::string version;
-  std::vector<uint8_t> nonce;
-  std::vector<uint8_t> ephemeral_public_key;
-  std::vector<uint8_t> ciphertext;
-};
-std::optional<EthDecryptData> ParseEthDecryptData(const base::DictValue& dict);
-
 mojom::EthSignTypedDataPtr ParseEthSignTypedDataParams(
     const base::ListValue& params,
     EthSignTypedDataHelper::Version version);

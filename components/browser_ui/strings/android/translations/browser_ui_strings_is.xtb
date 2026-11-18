@@ -181,9 +181,7 @@
 <translation id="2710883118091822664">Skráðu þig inn til að halda áfram á einfaldan hátt í öllum tækjunum þínum</translation>
 <translation id="2713106313042589954">Slökkva á myndavél</translation>
 <translation id="2717722538473713889">Netföng</translation>
-<translation id="8181634240306014548">Ræstu Brave með veffangastikuna í fókus og dragðu þannig úr ræsingartíma í ódýrari tækjum.</translation>
 <translation id="2750481671343847896">Vefsvæði geta nú birt innskráningartilkynningar frá auðkenningarþjónustum.</translation>
-<translation id="2787357173144933081">Forræsing veffangastiku</translation>
 <translation id="2789132527330338807">Vefsvæði geta beðið um að búa til þrívíddarkort af umhverfi þínu eða rekja stöðu myndavélar</translation>
 <translation id="2790501146643349491">Þegar kveikt er á þessu geta vefsvæði sem nýlega var lokað lokið við að senda og taka á móti gögnum. Þegar slökkt er á þessu geta vefsvæði sem nýlega var lokað ekki lokið við að senda og taka á móti gögnum.</translation>
 <translation id="2795716239552913152">Vefsvæði nota yfirleitt staðsetningu þína fyrir viðeigandi eiginleika eða upplýsingar eins og staðbundnar fréttir eða verslanir í nágrenninu</translation>
@@ -293,7 +291,6 @@
 <translation id="9046306654872718870">Gerðu Brave að þínu eigin með sérsniðnum litum og myndum fyrir heimasíðuna þína</translation>
 <translation id="389521680295183045">Vefsvæði geta beðið um að fá að vita hvenær þú notar tækið þitt</translation>
 <translation id="3895926599014793903">Þvinga fram aðdrátt</translation>
-<translation id="3905475044299942653">Stöðva mikið magn tilkynninga</translation>
 <translation id="3922092564198021702">Opnaðu Stillingar í símanum</translation>
 <translation id="3924858949939391676">Sýna tengla þegar kveikt er á lesstillingu</translation>
 <translation id="3933121352599513978">Minnka óumbeðnar beiðnir (ráðlagt)</translation>
@@ -387,7 +384,6 @@
 <translation id="4936863036653376783">Þú finnur hópana þína í flipahópahlutanum í öllum þínum tækjum</translation>
 <translation id="4945443401464700059"><ph name="SITE"/> hefur ekki leyfi til að nota upplýsingarnar þínar á</translation>
 <translation id="4953688446973710931">Þegar kveikt er á þessu geta vefsvæði beðið um að fá að hlaða niður mörgum skrám. Þegar slökkt er á þessu geta vefsvæði ekki hlaðið niður mörgum skrám.</translation>
-<translation id="4962975101802056554">Afturkalla allar heimildir fyrir þetta tæki</translation>
 <translation id="4972737347717125191">Vefsvæði geta beðið um leyfi til að nota sýndarveruleikatæki og -gögn</translation>
 <translation id="1275242979020712923">Blað neðst í Brave-litum</translation>
 <translation id="497421865427891073">Áfram</translation>
@@ -529,6 +525,7 @@
 <translation id="6439114592976064011">Loka á að vefsvæði fái að nota sýndarveruleikatækið og -gögnin þín</translation>
 <translation id="6447842834002726250">Fótspor</translation>
 <translation id="6452138246455930388">Verðlækkun í opnum flipa, úr <ph name="OLD_PRICE"/> í <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/> <ph name="DOMAIN_NAME"/></translation>
+<translation id="6495608040096939405">Afturkalla tækjaheimild fyrir <ph name="NAME"/></translation>
 <translation id="6500423977866688905">Þegar glugginn er mjór skaltu biðja um símaútgáfu</translation>
 <translation id="6527303717912515753">Deila</translation>
 <translation id="6530703012083415527">Þegar kveikt er á þessu geta vefsvæði notað sprettiglugga og framsendingar. Þegar slökkt er á þessu geta vefsvæði ekki notað sprettiglugga og framsendingar.</translation>
@@ -594,6 +591,7 @@
 <translation id="7188508872042490670">Vefsvæðagögn í tækinu</translation>
 <translation id="7201549776650881587">Þessi aðgerð eyðir öllum gögnum og fótsporum sem eru vistuð á öllum vefsvæðum undir <ph name="ORIGIN"/> eða í forriti þess á heimaskjánum hjá þér</translation>
 <translation id="7219254577985949841">Eyða vefsvæðagögnum?</translation>
+<translation id="7225256190577194089">Afturkalla allar heimildir fyrir tækið <ph name="DEVICE_NAME"/></translation>
 <translation id="723171743924126238">Veldu myndir</translation>
 <translation id="7243246278722455312">Sérsníða blað neðst á síðu nýrra flipa</translation>
 <translation id="7243308994586599757">Valkostir eru neðst á skjánum</translation>
@@ -706,7 +704,6 @@
 <translation id="8428213095426709021">Stillingar</translation>
 <translation id="8441146129660941386">Spóla til baka</translation>
 <translation id="8444433999583714703">Til að veita <ph name="APP_NAME"/> aðgang að staðsetningu þinni þarftu einnig að kveikja á henni í <ph name="BEGIN_LINK"/>stillingum Android<ph name="END_LINK"/>.</translation>
-<translation id="8447861592752582886">Afturkalla tækjaheimild</translation>
 <translation id="8463843545738141778">Slökkt er á þessari stillingu vegna þess að þú kveiktir á ítarlegri vernd í stillingum Android.</translation>
 <translation id="8467359479529706065">Neðsta blað nýrrar flipasíðu er opnað í hálfri hæð</translation>
 <translation id="8471525937465764768">Vefsvæði tengjast yfirleitt USB-tækjum til að nota eiginleika eins og að prenta skjal eða vista í geymslutæki</translation>

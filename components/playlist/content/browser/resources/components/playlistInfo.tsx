@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import { font } from '@brave/leo/tokens/css/variables'
+import { font } from '@brave/nala/tokens/css/variables'
 import styled, { css } from 'styled-components'
 import { formatTimeInSeconds } from '../utils/timeFormatter'
 

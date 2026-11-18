@@ -6,7 +6,7 @@
 import styled from 'styled-components'
 import LeoSegmentedControl, {
   SegmentedControlProps,
-} from '@brave/leo/react/segmentedControl'
+} from '@brave/nala/react/segmentedControl'
 
 // Shared Styles
 import {

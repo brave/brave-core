@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { setIconBasePath } from '@brave/leo/react/icon'
+import { setIconBasePath } from '@brave/nala/react/icon'
 
 // Set the nala icon path to be relative to this script, which should be
 // the root of the output bundle.

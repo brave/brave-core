@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/unload_controller.cc b/chrome/browser/ui/unload_controller.cc
-index 9cefffb0e2bf7c7e1f8a9b3d539b18e1a0114b34..0219e2f49c0fb53ea0073c745b554e51b4cb2363 100644
+index 9cefffb0e2bf7c7e1f8a9b3d539b18e1a0114b34..e21252b582b921b16112398a1b4dc0e38ce00023 100644
 --- a/chrome/browser/ui/unload_controller.cc
 +++ b/chrome/browser/ui/unload_controller.cc
 @@ -181,6 +181,7 @@ void UnloadController::OnWindowClosing() {
@@ -40,7 +40,7 @@ index 9cefffb0e2bf7c7e1f8a9b3d539b18e1a0114b34..0219e2f49c0fb53ea0073c745b554e51
  }
  
  void UnloadController::TabStripEmpty() {
-+  if (!browser_->GetProfile()->GetPrefs()->GetBoolean(kEnableClosingLastTab)) {
++  if (!browser_->GetProfile()->GetPrefs()->GetBoolean(brave_tabs::kEnableClosingLastTab)) {
 +    return;
 +  }
    // Set state_ here, so that extensions, etc, do not attempt to add tabs to the

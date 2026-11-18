@@ -8,6 +8,7 @@
 #include "brave/browser/brave_local_state_prefs.h"
 #include "brave/browser/brave_profile_prefs.h"
 #include "brave/browser/brave_stats/buildflags.h"
+#include "brave/browser/misc_metrics/fingerprint_frequency_metrics.h"
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
 #include "brave/browser/translate/brave_translate_prefs_migration.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -18,7 +19,7 @@
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_search/browser/backup_results_metrics.h"
 #include "brave/components/brave_search_conversion/p3a.h"
-#include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/core/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -314,6 +315,7 @@ void MigrateObsoleteBraveLocalStatePrefsAfterChromium(
 #endif
 
   misc_metrics::UptimeMonitorImpl::MigrateObsoletePrefs(local_state);
+  misc_metrics::FingerprintFrequencyMetrics::MigrateObsoletePrefs(local_state);
   brave_search::BackupResultsMetrics::MigrateObsoleteLocalStatePrefs(
       local_state);
   brave_search_conversion::p3a::MigrateObsoleteLocalStatePrefs(local_state);

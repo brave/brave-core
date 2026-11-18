@@ -4,10 +4,10 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css/variables'
-import Icon from '@brave/leo/react/icon'
-import Alert from '@brave/leo/react/alert'
-import LeoButton from '@brave/leo/react/button'
+import * as leo from '@brave/nala/tokens/css/variables'
+import Icon from '@brave/nala/react/icon'
+import Alert from '@brave/nala/react/alert'
+import LeoButton from '@brave/nala/react/button'
 
 // Shared Styles
 import {

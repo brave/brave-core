@@ -119,6 +119,7 @@ EmailAliasesService::EmailAliasesService(
       metrics_(pref_service) {
   CHECK(base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases));
   CHECK(brave_account_auth);
+  CHECK(url_loader_factory_);
 
   auth_.emplace(std::move(brave_account_auth),
                 base::BindRepeating(&EmailAliasesService::OnAuthChanged,
@@ -281,7 +282,7 @@ void EmailAliasesService::RefreshAliasesWithToken(TokenResult token) {
         endpoint_client::WithHeaders<endpoints::AliasList::Request>>(
         token.value()->serviceToken);
     endpoint_client::Client<endpoints::AliasList>::Send(
-        url_loader_factory_, std::move(request),
+        *url_loader_factory_, std::move(request),
         base::BindOnce(&EmailAliasesService::OnRefreshAliasesResponse,
                        weak_factory_.GetWeakPtr()));
   } else {
@@ -298,7 +299,7 @@ void EmailAliasesService::GenerateAliasWithToken(GenerateAliasCallback callback,
         endpoint_client::WithHeaders<endpoints::GenerateAlias::Request>>(
         token.value()->serviceToken);
     endpoint_client::Client<endpoints::GenerateAlias>::Send(
-        url_loader_factory_, std::move(request),
+        *url_loader_factory_, std::move(request),
         base::BindOnce(&EmailAliasesService::OnGenerateAliasResponse,
                        weak_factory_.GetWeakPtr(), std::move(callback)));
   } else {
@@ -324,7 +325,7 @@ void EmailAliasesService::UpdateAliasWithToken(
 
       refresh_aliases = false;  // will be updated in response.
       endpoint_client::Client<endpoints::UpdateAlias>::Send(
-          url_loader_factory_, std::move(request),
+          *url_loader_factory_, std::move(request),
           base::BindOnce(&EmailAliasesService::OnEditAliasResponse,
                          weak_factory_.GetWeakPtr(), std::move(callback),
                          /*update_expected=*/true));
@@ -356,7 +357,7 @@ void EmailAliasesService::DeleteAliasWithToken(const std::string& alias_email,
         token.value()->serviceToken);
     request.body.alias = alias_email;
     endpoint_client::Client<endpoints::DeleteAlias>::Send(
-        url_loader_factory_, std::move(request),
+        *url_loader_factory_, std::move(request),
         base::BindOnce(&EmailAliasesService::OnEditAliasResponse,
                        weak_factory_.GetWeakPtr(), std::move(callback),
                        /*update_expected=*/false));

@@ -12,9 +12,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/path_service.h"
-#include "base/run_loop.h"
 #include "base/strings/strcat.h"
-#include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
@@ -181,24 +179,13 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
   }
 
   void FetchPageContent(const base::Location& location,
-                        std::string_view expected_text,
-                        bool wait_for_callback = true) {
+                        std::string_view expected_text) {
     SCOPED_TRACE(testing::Message() << location.ToString());
-    base::RunLoop run_loop;
-    chat_tab_helper_->web_contents_content().GetContent(
-        base::BindLambdaForTesting(
-            [&run_loop, expected_text,
-             wait_for_callback](ai_chat::PageContent content) {
-              EXPECT_EQ(content.content_type,
-                        ai_chat::mojom::ContentType::PageContent);
-              EXPECT_EQ(content.content, expected_text);
-              if (wait_for_callback) {
-                run_loop.Quit();
-              }
-            }));
-    if (wait_for_callback) {
-      run_loop.Run();
-    }
+    base::test::TestFuture<ai_chat::PageContent> future;
+    chat_tab_helper_->web_contents_content().GetContent(future.GetCallback());
+    const ai_chat::PageContent content = future.Take();
+    EXPECT_EQ(content.content_type, ai_chat::mojom::ContentType::PageContent);
+    EXPECT_EQ(content.content, expected_text);
   }
 
   void FetchSearchQuerySummary(
@@ -207,15 +194,13 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
           expected_search_query_summary) {
     SCOPED_TRACE(testing::Message() << location.ToString());
 
-    base::RunLoop run_loop;
+    base::test::TestFuture<
+        std::optional<std::vector<ai_chat::SearchQuerySummary>>>
+        future;
     chat_tab_helper_->web_contents_content().GetStagedEntriesFromContent(
-        base::BindLambdaForTesting(
-            [&](const std::optional<std::vector<ai_chat::SearchQuerySummary>>&
-                    search_query_summary) {
-              EXPECT_EQ(search_query_summary, expected_search_query_summary);
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+        future.GetCallback<
+            const std::optional<std::vector<ai_chat::SearchQuerySummary>>&>());
+    EXPECT_EQ(future.Take(), expected_search_query_summary);
   }
 
   bool HasPendingGetContentRequest() {

@@ -364,21 +364,6 @@
 /* The singular word that will be used in `manageSiteConnectionsAccount`. */
 "wallet.dappsSettingsWebsiteSingular" = "webová stránka";
 
-/* The message displayed when the user takes a screenshot of their dapp decrypt request. */
-"wallet.decryptMessageScreenshotDetectedMessage" = "Upozornenie: Snímka obrazovky vašej správy sa môže zálohovať do cloudovej služby a môže byť čitateľná v akejkoľvek aplikácii s prístupom k fotografiám. Brave odporúča, aby ste si túto snímku obrazovky neukladali a čo najskôr ju vymazali.";
-
-/* The title of the button to approve a decrypt request from a dapps website. */
-"wallet.decryptRequestApprove" = "Povoliť";
-
-/* The title of the button to show the message of a decrypt request from a dapps website. */
-"wallet.decryptRequestReveal" = "Odkryť";
-
-/* A subtitle of the view shown over a dapps website that requests the user decrypt a message. */
-"wallet.decryptRequestSubtitle" = "Táto DApp by si rada prečítala túto správu a dokončila vašu požiadavku";
-
-/* A title of the view shown over a dapps website that requests the user decrypt a message. */
-"wallet.decryptRequestTitle" = "Dešifrovať požiadavku";
-
 /* The default account name when adding an account and not entering a custom name. '%@' refers to a coin type and '%lld' refers to a number (for example "Ethereum Account 2") */
 "wallet.defaultAccountName" = "%1$@ Účet %2$lld";
 
@@ -549,18 +534,6 @@
 
 /* An option for the user to pick when selecting some predefined gas fee limits. The options are Low, Optimal, High and Custom */
 "wallet.gasFeePredefinedLimitOptimal" = "Optimálne";
-
-/* The title of the button to approve a encryption public key request from a dapps website. */
-"wallet.getEncryptionPublicKeyRequestApprove" = "Poskytnúť";
-
-/* The text shown beside the URL origin of a get public encryption key request from a dapp site. Ex 'https://brave.com is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.' */
-"wallet.getEncryptionPublicKeyRequestMessage" = "požaduje verejný šifrovací kľúč vašej peňaženky. Ak súhlasíte s poskytnutím tohto kľúča, stránka vám bude môcť vytvárať šifrované správy.";
-
-/* A subtitle of the view shown over a dapps website that requests the users public encryption key. */
-"wallet.getEncryptionPublicKeyRequestSubtitle" = "Aplikácia DApp požaduje váš verejný šifrovací kľúč";
-
-/* A title of the view shown over a dapps website that requests the users public encryption key. */
-"wallet.getEncryptionPublicKeyRequestTitle" = "Žiadosť o verejný šifrovací kľúč";
 
 /* The title of the Help Center option inside the menu when user clicks the three dots button beside assets search button or on wallet panel. */
 "wallet.helpCenter" = "Centrum pomoci";

@@ -61,7 +61,7 @@ ScriptValue FarbleGLInt64Parameter(WebGL2RenderingContextBase* owner,
 }  // namespace
 
 #define BRAVE_WEBGL2_RENDERING_CONTEXT_BASE             \
-  if (!brave::AllowFingerprinting(                      \
+  if (brave::IsStrictFingerprintingEnabled(             \
           ExecutionContext::From(script_state),         \
           ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2)) \
     return ScriptValue::CreateNull(v8::Isolate::GetCurrent());

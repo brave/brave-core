@@ -25,6 +25,11 @@ struct TransactionConfirmationView: View {
     if confirmationStore.activeParsedTransaction.transaction.txType == .erc20Approve {
       return Strings.Wallet.transactionTypeApprove
     }
+    if confirmationStore.activeParsedTransaction.transaction
+      .isGrantingERC721SetApprovalForAll
+    {
+      return Strings.Wallet.transactionTypeApprove
+    }
     switch confirmationStore.activeParsedTransaction.transaction.txType {
     case .erc20Approve:
       return Strings.Wallet.transactionTypeApprove
@@ -37,6 +42,9 @@ struct TransactionConfirmationView: View {
   }
 
   private var navigationTitle: String {
+    if confirmationStore.isShowingSetApprovalForAllConfirmation {
+      return Strings.Wallet.erc721SetApprovalForAllNavTitle
+    }
     if confirmationStore.isTxSubmitting || confirmationStore.activeTxStatus == .signed
       || confirmationStore.activeTxStatus == .submitted
       || confirmationStore.activeTxStatus == .confirmed
@@ -95,7 +103,13 @@ struct TransactionConfirmationView: View {
 
   var body: some View {
     ZStack {
-      containerView
+      if confirmationStore.isShowingSetApprovalForAllConfirmation {
+        SetApprovalForAllConfirmationView(
+          confirmationStore: confirmationStore
+        )
+      } else {
+        containerView
+      }
     }
     .navigationBarTitle(navigationTitle)
     .navigationBarTitleDisplayMode(.inline)

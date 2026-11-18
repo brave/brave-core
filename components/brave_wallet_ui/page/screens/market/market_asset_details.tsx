@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { Redirect, useHistory, useParams } from 'react-router'
 import { skipToken } from '@reduxjs/toolkit/query/react'
-import Button from '@brave/leo/react/button'
+import Button from '@brave/nala/react/button'
 
 // redux
 import { useAppDispatch } from '../../../common/hooks/use-redux'

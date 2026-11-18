@@ -1,0 +1,26 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Replaces the fixed ActionIconSize with a customizable size
+
+      As BraveIconWithBadgeImageSource allows custom icon size, this replacement
+      enables the use of GetCustomGraphicSize() to determine the icon size
+      dynamically.
+
+    count: 3
+    regex:
+      re_pattern: '(extensions::ExtensionAction::ActionIconSize\(\))'
+      replace: 'GetCustomGraphicSize().value_or(\1)'
+
+  - description: |-
+      Call ApplyCustomGraphicOffsets() before draw image in Draw()
+
+      ApplyCustomGraphicOffsets() will override |x_offset| and |y_offset| if
+      there's any custom offsets returned by derived classes.
+    add_before_line:
+      line: 'canvas->DrawImageInt(skia, x_offset, y_offset);'
+      code: '  ApplyCustomGraphicOffsets(x_offset, y_offset);'

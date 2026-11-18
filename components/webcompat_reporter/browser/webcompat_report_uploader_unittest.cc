@@ -47,8 +47,10 @@ class WebcompatReportUploaderUnitTest : public testing::Test {
 
     GetWebcompatUploader()->SubmitReport(std::move(report));
 
-    EXPECT_TRUE(
-        base::test::RunUntil([&]() { return request_payload.has_value(); }));
+    if (!base::test::RunUntil([&]() { return request_payload.has_value(); })) {
+      ADD_FAILURE() << "No upload request was made";
+      return {};
+    }
 
     return base::test::ParseJsonDict(*request_payload);
   }

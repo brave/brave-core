@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/toolbar/pinned_action_toolbar_button.h b/chrome/browser/ui/views/toolbar/pinned_action_toolbar_button.h
-index 1e36dc7c9834a123abb5131a95f4a5491eb809dd..be9429582e4e05967621621468804283c692dc50 100644
+index 8e58f0704c1f93401b2be2caa847f4d60910e9c7..b82d8f26d0702659c3b89d40751f9dc0f4b4cc06 100644
 --- a/chrome/browser/ui/views/toolbar/pinned_action_toolbar_button.h
 +++ b/chrome/browser/ui/views/toolbar/pinned_action_toolbar_button.h
-@@ -94,6 +94,8 @@ class PinnedActionToolbarButton : public ToolbarButton {
+@@ -95,6 +95,8 @@ class PinnedActionToolbarButton : public ToolbarButton {
      return status_indicator_;
    }
  

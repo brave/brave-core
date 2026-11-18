@@ -181,9 +181,7 @@
 <translation id="2710883118091822664">Melde dich an, um auf allen deinen Geräten da weitermachen zu können, wo du aufgehört hast</translation>
 <translation id="2713106313042589954">Kamera ausschalten</translation>
 <translation id="2717722538473713889">E-Mail-Adressen</translation>
-<translation id="8181634240306014548">Brave wird mit der Omnibox im Fokus gestartet, was die Startzeit auf leistungsschwachen Geräten verkürzt.</translation>
 <translation id="2750481671343847896">Websites dürfen Anmeldungsaufforderungen von Identitätsdiensten anzeigen.</translation>
-<translation id="2787357173144933081">Direkt mit Omnibox starten</translation>
 <translation id="2789132527330338807">Websites dürfen nachfragen, ob sie eine 3D-Karte meiner Umgebung erstellen oder die Kameraposition erfassen können</translation>
 <translation id="2790501146643349491">Wenn dieser Schalter aktiviert ist, können vor Kurzem geschlossene Websites das Senden und Empfangen von Daten abschließen. Wenn er deaktiviert ist, können vor Kurzem geschlossene Websites das Senden oder Empfangen von Daten nicht abschließen.</translation>
 <translation id="2795716239552913152">Websites verwenden deinen Standort normalerweise für relevante Funktionen oder Informationen, wie etwa Lokalnachrichten oder Geschäfte in deiner Nähe</translation>
@@ -291,7 +289,6 @@
 <translation id="9046306654872718870">Du kannst Brave mit benutzerdefinierten Farben und Bildern für deine Startseite personalisieren</translation>
 <translation id="389521680295183045">Websites dürfen nachfragen, ob sie Informationen zu meiner aktiven Nutzung dieses Geräts abrufen dürfen</translation>
 <translation id="3895926599014793903">Zoom zwingend aktivieren</translation>
-<translation id="3905475044299942653">Erhalt von zu vielen Benachrichtigungen verhindern</translation>
 <translation id="3922092564198021702">Öffne die Einstellungen auf deinem Smartphone</translation>
 <translation id="3924858949939391676">Links anzeigen, sobald der Lesemodus aktiviert ist</translation>
 <translation id="3933121352599513978">Unerwünschte Anfragen minimieren (empfohlen)</translation>
@@ -385,7 +382,6 @@
 <translation id="4936863036653376783">Du findest deine Gruppen auf allen deinen Geräten im Bereich „Tabgruppen“</translation>
 <translation id="4945443401464700059"><ph name="SITE"/> wird daran gehindert, deine Informationen zu nutzen auf</translation>
 <translation id="4953688446973710931">Wenn dieser Schalter aktiviert ist, können Websites anfragen, ob sie automatisch mehrere Dateien herunterladen dürfen. Wenn er deaktiviert ist, können Websites nicht automatisch mehrere Dateien herunterladen.</translation>
-<translation id="4962975101802056554">Alle Berechtigungen für Gerät entziehen</translation>
 <translation id="4972737347717125191">Websites dürfen nachfragen, wenn sie Virtual-Reality-Geräte und -Daten verwenden möchten</translation>
 <translation id="1275242979020712923">Ansicht zu Brave-Farben am unteren Rand</translation>
 <translation id="497421865427891073">Weiter</translation>
@@ -525,6 +521,7 @@
 <translation id="6439114592976064011">Websites daran hindern, mein Virtual-Reality-Gerät und meine Virtual-Reality-Daten zu verwenden</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="6452138246455930388">Preissenkung auf dem geöffneten Tab von <ph name="OLD_PRICE"/> auf <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
+<translation id="6495608040096939405">Geräteberechtigung für „<ph name="NAME"/>“ entziehen</translation>
 <translation id="6500423977866688905">Mobile Ansicht anfordern, wenn das Fenster schmal ist</translation>
 <translation id="6527303717912515753">Teilen</translation>
 <translation id="6530703012083415527">Wenn dieser Schalter aktiviert ist, können Websites Pop-ups und Weiterleitungen verwenden. Wenn er deaktiviert ist, können Websites keine Pop-ups und Weiterleitungen verwenden.</translation>
@@ -590,6 +587,7 @@
 <translation id="7188508872042490670">Websitedaten auf dem Gerät</translation>
 <translation id="7201549776650881587">Durch diese Aktion werden alle Daten und Cookies gelöscht, die von allen Websites unter <ph name="ORIGIN"/> oder von der zugehörigen App auf dem Startbildschirm gespeichert wurden</translation>
 <translation id="7219254577985949841">Websitedaten löschen?</translation>
+<translation id="7225256190577194089">Alle Berechtigungen für das Gerät „<ph name="DEVICE_NAME"/>“ entziehen</translation>
 <translation id="723171743924126238">Bilder auswählen</translation>
 <translation id="7243246278722455312">Ansicht am unteren Rand für „Seite ‚Neuer Tab‘ anpassen“</translation>
 <translation id="7243308994586599757">Optionen unten auf dem Bildschirm verfügbar</translation>
@@ -702,7 +700,6 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="8428213095426709021">Einstellungen</translation>
 <translation id="8441146129660941386">Zurück navigieren</translation>
 <translation id="8444433999583714703">Um <ph name="APP_NAME"/> Zugriff auf deinen Standort zu gewähren, musst du die Standortberechtigung auch in den <ph name="BEGIN_LINK"/>Android-Einstellungen<ph name="END_LINK"/> aktivieren.</translation>
-<translation id="8447861592752582886">Zugriffsberechtigung auf Gerät widerrufen</translation>
 <translation id="8463843545738141778">Diese Einstellung ist deaktiviert, weil du das erweiterte Sicherheitsprogramm in den Android-Einstellungen aktiviert hast.</translation>
 <translation id="8467359479529706065">Die Ansicht am unteren Rand zur Darstellung der Seite „Neuer Tab“ ist halb geöffnet</translation>
 <translation id="8471525937465764768">Websites verwenden normalerweise USB-Geräte für Funktionen wie das Drucken eines Dokuments oder das Speichern auf einem Speichergerät</translation>

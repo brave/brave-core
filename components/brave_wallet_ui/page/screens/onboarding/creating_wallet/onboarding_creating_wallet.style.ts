@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
-import ProgressRing from '@brave/leo/react/progressRing'
-import * as leo from '@brave/leo/tokens/css/variables'
+import ProgressRing from '@brave/nala/react/progressRing'
+import * as leo from '@brave/nala/tokens/css/variables'
 
 // Shared Styles
 import { Text } from '../../../../components/shared/style'

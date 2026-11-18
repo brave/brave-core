@@ -4,8 +4,8 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Icon from '@brave/leo/react/icon'
-import Checkbox from '@brave/leo/react/checkbox'
+import Icon from '@brave/nala/react/icon'
+import Checkbox from '@brave/nala/react/checkbox'
 
 import { useAppActions } from '../../lib/app_context'
 import { formatString } from '$web-common/formatString'

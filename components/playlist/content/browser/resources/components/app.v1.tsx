@@ -7,7 +7,7 @@ import * as React from 'react'
 import { Route, Switch } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 
-import AlertCenter from '@brave/leo/react/alertCenter'
+import AlertCenter from '@brave/nala/react/alertCenter'
 
 // Components
 import Header from './header'
@@ -22,7 +22,7 @@ import {
 } from '../reducers/states'
 import { HistoryContext } from './historyContext'
 import { AddMediaFromPageButton } from './addMediaFromPageButton'
-import { color, spacing } from '@brave/leo/tokens/css/variables'
+import { color, spacing } from '@brave/nala/tokens/css/variables'
 
 const AppContainer = styled.div<{ isPlaylistPlayerPage: boolean }>`
   --header-height: ${({ isPlaylistPlayerPage }) =>
@@ -64,7 +64,7 @@ export default function App () {
         path={'/playlist/:playlistId'}
         children={({ match }) => {
           const playlistId = match?.params.playlistId
-          const isPlayerVisible = 
+          const isPlayerVisible =
                     !!lastPlayerState?.currentItem &&
                     editMode !== PlaylistEditMode.BULK_EDIT
           const isMiniPlayer = lastPlayerState?.currentList?.id !== playlistId

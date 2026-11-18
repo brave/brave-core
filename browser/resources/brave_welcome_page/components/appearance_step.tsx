@@ -4,10 +4,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
-import SegmentedControl from '@brave/leo/react/segmentedControl'
-import SegmentedControlItem from '@brave/leo/react/segmentedControlItem'
+import Button from '@brave/nala/react/button'
+import Icon from '@brave/nala/react/icon'
+import SegmentedControl from '@brave/nala/react/segmentedControl'
+import SegmentedControlItem from '@brave/nala/react/segmentedControlItem'
 
 import { ColorScheme } from '../api/welcome_api'
 import { useWelcomeApi } from '../api/welcome_api_context'

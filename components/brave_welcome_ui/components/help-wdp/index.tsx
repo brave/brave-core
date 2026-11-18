@@ -9,7 +9,7 @@ import { getLocale } from '$web-common/locale'
 
 import * as S from './style'
 
-import Button from '@brave/leo/react/button'
+import Button from '@brave/nala/react/button'
 
 import { WelcomeBrowserProxyImpl } from '../../api/welcome_browser_proxy'
 

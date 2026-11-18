@@ -62,6 +62,8 @@ include_rules += [
   "+brave/components/endpoint_client",
   "+brave/components/global_privacy_control",
   "+brave/components/google_sign_in_permission",
+  "+brave/components/history_embeddings/content",
+  "+brave/components/history_embeddings/core",
   "+brave/components/local_ai/buildflags",
   "+brave/components/local_ai/content",
   "+brave/components/local_ai/core",

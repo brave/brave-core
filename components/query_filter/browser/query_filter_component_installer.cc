@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "base/check_is_test.h"
-#include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
@@ -20,7 +19,6 @@
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/query_filter/browser/query_filter_data.h"
 #include "brave/components/query_filter/common/constants.h"
-#include "brave/components/query_filter/common/features.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
 
@@ -157,9 +155,7 @@ void QueryFilterComponentInstallerPolicy::
 
 void RegisterQueryFilterComponent(
     component_updater::ComponentUpdateService* cus) {
-  if (!base::FeatureList::IsEnabled(
-          query_filter::features::kQueryFilterComponent) ||
-      !cus) {
+  if (!cus) {
     return;
   }
 

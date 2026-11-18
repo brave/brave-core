@@ -1,0 +1,31 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/psst/buildflags/buildflags.gni")
+
+assert(enable_psst)
+
+source_set("renderer") {
+  public = [ "psst_render_frame_observer.h" ]
+
+  sources = [
+    "psst_js_handler.cc",
+    "psst_js_handler.h",
+    "psst_render_frame_observer.cc",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/psst/core/common",
+    "//brave/components/psst/core/common:mojom",
+    "//brave/gin:converter_specializations",
+    "//content/public/renderer",
+    "//gin",
+    "//mojo/public/cpp/bindings",
+    "//third_party/blink/public:blink",
+    "//third_party/blink/public/common",
+    "//v8",
+  ]
+}

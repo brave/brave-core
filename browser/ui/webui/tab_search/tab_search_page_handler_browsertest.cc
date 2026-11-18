@@ -32,8 +32,7 @@
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/history_embeddings/test/fake_history_embeddings_search.h"
-#include "brave/components/local_ai/core/pref_names.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -49,7 +48,6 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
-#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "components/keyed_service/core/service_access_type.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_controller.h"
@@ -67,6 +65,12 @@
 #include "url/gurl.h"
 #include "url/origin.h"
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/components/history_embeddings/core/history_embeddings_features.h"
+#include "brave/components/history_embeddings/test/fake_history_embeddings_search.h"
+#include "brave/components/local_ai/core/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
+
 namespace {
 
 constexpr char kFooDotComUrl1[] = "https://foo.com/1";
@@ -82,7 +86,9 @@ constexpr char kBarDotComTitle2[] = "bar.com 2";
 constexpr char kTopic[] = "topic";
 constexpr char kTopic2[] = "topic2";
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
 constexpr char kPassage[] = "an excerpt of the page's text";
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 }  // namespace
 
@@ -200,15 +206,13 @@ class TabSearchPageHandlerBrowserTest : public InProcessBrowserTest {
                               tab_search::mojom::ErrorPtr expected_error,
                               const base::Location& location = FROM_HERE) {
     SCOPED_TRACE(location.ToString());
-    base::RunLoop run_loop;
-    handler()->GetSuggestedTopics(
-        base::BindLambdaForTesting([&](const std::vector<std::string>& topics,
-                                       tab_search::mojom::ErrorPtr error) {
-          EXPECT_EQ(topics, expected_topics);
-          EXPECT_EQ(error, expected_error);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    base::test::TestFuture<const std::vector<std::string>&,
+                           tab_search::mojom::ErrorPtr>
+        future;
+    handler()->GetSuggestedTopics(future.GetCallback());
+    auto [topics, error] = future.Take();
+    EXPECT_EQ(topics, expected_topics);
+    EXPECT_EQ(error, expected_error);
   }
 
   ai_chat::AIChatService* service() {
@@ -394,15 +398,11 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerBrowserTest, GetFocusTabs) {
                            "topic", _))
       .WillOnce(base::test::RunOnceCallback<2>(mock_ret_tabs));
 
-  base::RunLoop run_loop1;
-  handler()->GetFocusTabs("topic", base::BindLambdaForTesting(
-                                       [&](bool new_window_created,
-                                           tab_search::mojom::ErrorPtr error) {
-                                         EXPECT_TRUE(new_window_created);
-                                         EXPECT_FALSE(error);
-                                         run_loop1.Quit();
-                                       }));
-  run_loop1.Run();
+  base::test::TestFuture<bool, tab_search::mojom::ErrorPtr> focus_future;
+  handler()->GetFocusTabs("topic", focus_future.GetCallback());
+  auto [new_window_created, error] = focus_future.Take();
+  EXPECT_TRUE(new_window_created);
+  EXPECT_FALSE(error);
   ASSERT_EQ(GlobalBrowserCollection::GetInstance()->GetSize(), 3u)
       << "A new window should be created.";
   BrowserWindowInterface* focus_tabs_browser =
@@ -425,27 +425,26 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerBrowserTest, GetFocusTabs) {
             tab_id4);
 
   // Test undo.
-  base::RunLoop run_loop2;
-  handler()->UndoFocusTabs(base::BindLambdaForTesting([&]() {
-    // Focused tabs window should already be closed.
-    ASSERT_EQ(GlobalBrowserCollection::GetInstance()->GetSize(), 2u);
+  base::test::TestFuture<void> undo_future;
+  handler()->UndoFocusTabs(undo_future.GetCallback());
+  ASSERT_TRUE(undo_future.Wait());
 
-    EXPECT_EQ(browser()->tab_strip_model()->count(), 3)
-        << "The tabs should be moved back to the previous active window.";
-    EXPECT_EQ(
-        browser()->tab_strip_model()->GetTabAtIndex(1)->GetHandle().raw_value(),
-        tab_id1);
-    EXPECT_EQ(browser2->GetTabStripModel()->count(), 3)
-        << "The tabs should be moved back to the previous active window.";
-    EXPECT_EQ(
-        browser2->GetTabStripModel()->GetTabAtIndex(2)->GetHandle().raw_value(),
-        tab_id4);
-    run_loop2.Quit();
-  }));
+  // Focused tabs window should already be closed.
+  ASSERT_EQ(GlobalBrowserCollection::GetInstance()->GetSize(), 2u);
 
-  run_loop2.Run();
+  EXPECT_EQ(browser()->tab_strip_model()->count(), 3)
+      << "The tabs should be moved back to the previous active window.";
+  EXPECT_EQ(
+      browser()->tab_strip_model()->GetTabAtIndex(1)->GetHandle().raw_value(),
+      tab_id1);
+  EXPECT_EQ(browser2->GetTabStripModel()->count(), 3)
+      << "The tabs should be moved back to the previous active window.";
+  EXPECT_EQ(
+      browser2->GetTabStripModel()->GetTabAtIndex(2)->GetHandle().raw_value(),
+      tab_id4);
 }
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
 // Turns on everything `IsHistoryEmbeddingsEnabledForProfile` needs except the
 // profile pref, which tests set themselves.
 class TabSearchPageHandlerHistoryEmbeddingsBrowserTest
@@ -453,7 +452,7 @@ class TabSearchPageHandlerHistoryEmbeddingsBrowserTest
  public:
   TabSearchPageHandlerHistoryEmbeddingsBrowserTest() {
     scoped_features_.InitAndEnableFeature(
-        history_embeddings::kHistoryEmbeddings);
+        brave_history_embeddings::kHistoryEmbeddings);
   }
 
  private:
@@ -582,7 +581,7 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerTabPassagesBrowserTest,
   // hold anything.
   handler()->SetTabPassagesFetcherForTesting(base::BindLambdaForTesting(
       [](const std::vector<GURL>& urls,
-         history_embeddings::TabPassagesCallback callback) {
+         brave_history_embeddings::TabPassagesCallback callback) {
         std::move(callback).Run(
             std::vector<std::vector<std::string>>(urls.size(), {kPassage}));
       }));
@@ -618,7 +617,7 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerTabPassagesBrowserTest,
   bool fetched = false;
   handler()->SetTabPassagesFetcherForTesting(base::BindLambdaForTesting(
       [&fetched](const std::vector<GURL>& urls,
-                 history_embeddings::TabPassagesCallback callback) {
+                 brave_history_embeddings::TabPassagesCallback callback) {
         fetched = true;
         std::move(callback).Run(
             std::vector<std::vector<std::string>>(urls.size(), {kPassage}));
@@ -654,7 +653,7 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerTabPassagesBrowserTest,
   bool fetched = false;
   handler()->SetTabPassagesFetcherForTesting(base::BindLambdaForTesting(
       [this, &fetched](const std::vector<GURL>& urls,
-                       history_embeddings::TabPassagesCallback callback) {
+                       brave_history_embeddings::TabPassagesCallback callback) {
         fetched = true;
         // The user turns the opt-in off while the read is outstanding.
         profile1()->GetPrefs()->SetBoolean(
@@ -694,7 +693,7 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerTabPassagesBrowserTest,
   bool fetched = false;
   handler()->SetTabPassagesFetcherForTesting(base::BindLambdaForTesting(
       [&fetched](const std::vector<GURL>& urls,
-                 history_embeddings::TabPassagesCallback callback) {
+                 brave_history_embeddings::TabPassagesCallback callback) {
         fetched = true;
         std::move(callback).Run(
             std::vector<std::vector<std::string>>(urls.size(), {kPassage}));
@@ -713,3 +712,4 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerTabPassagesBrowserTest,
   EXPECT_TRUE(sent_tabs[0].passages.empty());
   EXPECT_FALSE(fetched);
 }
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)

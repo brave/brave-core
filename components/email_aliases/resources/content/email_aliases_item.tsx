@@ -4,17 +4,17 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { Alias } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
-import { color, font, spacing } from '@brave/leo/tokens/css/variables'
+import { color, font, spacing } from '@brave/nala/tokens/css/variables'
 import { formatLocale, getLocale } from '$web-common/locale'
 import { onEnterKeyForDiv } from './on_enter_key'
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
-import ButtonMenu from '@brave/leo/react/buttonMenu'
+import Button from '@brave/nala/react/button'
+import ButtonMenu from '@brave/nala/react/buttonMenu'
 import Col from './styles/Col'
-import Icon from '@brave/leo/react/icon'
+import Icon from '@brave/nala/react/icon'
 import Row from './styles/Row'
 import styled from 'styled-components'
-import Tooltip from '@brave/leo/react/tooltip'
+import Tooltip from '@brave/nala/react/tooltip'
 
 const AliasItemRow = styled(Row)`
   font: ${font.default.regular};

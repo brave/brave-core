@@ -249,3 +249,16 @@ interface DialogOpener {
   // Opens the Brave Account dialog over the page that hosts the account rows.
   OpenDialog(DialogMode dialog_mode);
 };
+
+// A settings page a link row can point to.
+enum SettingsPage {
+  kBraveAccount,
+  [EnableIf=is_desktop]
+  kGetStarted,
+};
+
+// Interface for opening settings pages from a page that only links to them.
+interface SettingsOpener {
+  // Opens `page` in place of the page that hosts the link.
+  OpenSettings(SettingsPage page);
+};

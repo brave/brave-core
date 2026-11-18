@@ -4,9 +4,9 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css/variables'
-import Navigation from '@brave/leo/react/navigation'
-import Button from '@brave/leo/react/button'
+import * as leo from '@brave/nala/tokens/css/variables'
+import Navigation from '@brave/nala/react/navigation'
+import Button from '@brave/nala/react/button'
 
 // Assets
 import WalletLogoLight from '$wallet/assets/svg-icons/wallet_logo_light.svg'

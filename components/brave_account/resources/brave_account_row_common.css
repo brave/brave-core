@@ -12,8 +12,10 @@
   flex-direction: column;
 
   /* <if expr="is_android or is_ios"> */
+  box-sizing: border-box;
   margin: 0 auto;
   max-width: 500px;
+  padding: 0 var(--leo-spacing-2xl);
   /* </if> */
 }
 
@@ -27,7 +29,10 @@
   }
 
   .description {
-    color: var(--leo-color-text-secondary);
+    color: var(
+      --brave-account-row-description-color,
+      var(--leo-color-text-secondary)
+    );
   }
 }
 
@@ -84,7 +89,7 @@ leo-button {
   display: flex;
   flex-direction: column;
   gap: var(--leo-spacing-3xl);
-  padding: var(--leo-spacing-2xl);
+  padding-block: var(--leo-spacing-2xl);
 
   .title-and-description {
     gap: var(--leo-spacing-m);
@@ -103,6 +108,12 @@ leo-button {
   display: flex;
   flex-direction: column;
   gap: var(--leo-spacing-m);
-  padding: 0 var(--leo-spacing-2xl) var(--leo-spacing-2xl);
+  padding-bottom: var(--leo-spacing-2xl);
+}
+
+.card {
+  border: 1px solid var(--leo-color-divider-subtle);
+  border-radius: var(--leo-radius-xl);
+  padding: var(--leo-spacing-xl);
 }
 /* </if> */

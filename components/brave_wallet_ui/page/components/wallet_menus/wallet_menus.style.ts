@@ -4,8 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import LeoButtonMenu from '@brave/leo/react/buttonMenu'
-import * as leo from '@brave/leo/tokens/css/variables'
+import LeoButtonMenu from '@brave/nala/react/buttonMenu'
+import * as leo from '@brave/nala/tokens/css/variables'
 
 export const ButtonMenu = styled(LeoButtonMenu)<{
   minWidth?: number

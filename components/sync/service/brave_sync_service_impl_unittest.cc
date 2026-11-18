@@ -327,7 +327,7 @@ TEST_F(BraveSyncServiceImplTest, ForcedSetDecryptionPassphrase) {
   EXPECT_FALSE(engine());
   brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
 
-  task_environment_.RunUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil([&] { return engine() != nullptr; }));
 
   brave_sync_service_impl()
       ->GetUserSettings()
@@ -386,7 +386,7 @@ TEST_F(BraveSyncServiceImplTest, OnSelfDeviceInfoDeleted) {
   EXPECT_FALSE(engine());
 
   brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
-  task_environment_.RunUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil([&] { return engine() != nullptr; }));
 
   std::unique_ptr<DataTypeManager> bak_data_type_manager =
       std::move(brave_sync_service_impl()->data_type_manager_);
@@ -546,7 +546,7 @@ TEST_F(BraveSyncServiceImplTest, PermanentlyDeleteAccount) {
   CreateSyncService();
   EXPECT_FALSE(engine());
   brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
-  task_environment_.RunUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil([&] { return engine() != nullptr; }));
 
   brave_sync_service_impl()
       ->GetUserSettings()
@@ -612,8 +612,6 @@ TEST_F(BraveSyncServiceImplTest, JoinActiveOrNewChain) {
   CreateSyncService();
   EXPECT_FALSE(engine());
 
-  EXPECT_FALSE(brave_sync_service_impl()->join_chain_result_callback_);
-
   bool join_chain_callback_invoked = false;
 
   brave_sync_service_impl()->SetJoinChainResultCallback(base::BindOnce(
@@ -623,7 +621,6 @@ TEST_F(BraveSyncServiceImplTest, JoinActiveOrNewChain) {
       },
       &join_chain_callback_invoked));
 
-  EXPECT_TRUE(brave_sync_service_impl()->join_chain_result_callback_);
   EXPECT_FALSE(join_chain_callback_invoked);
   brave_sync_service_impl()->LocalDeviceAppeared();
   EXPECT_TRUE(join_chain_callback_invoked);
@@ -632,8 +629,6 @@ TEST_F(BraveSyncServiceImplTest, JoinActiveOrNewChain) {
 TEST_F(BraveSyncServiceImplTest, JoinDeletedChain) {
   CreateSyncService();
   EXPECT_FALSE(engine());
-
-  EXPECT_FALSE(brave_sync_service_impl()->join_chain_result_callback_);
 
   bool join_chain_callback_invoked = false;
 
@@ -644,13 +639,9 @@ TEST_F(BraveSyncServiceImplTest, JoinDeletedChain) {
       },
       &join_chain_callback_invoked));
 
-  EXPECT_TRUE(brave_sync_service_impl()->join_chain_result_callback_);
   EXPECT_FALSE(join_chain_callback_invoked);
-  EXPECT_FALSE(brave_sync_service_impl()->initiated_self_device_info_deleted_);
 
-  EXPECT_FALSE(brave_sync_service_impl()->initiated_join_chain_);
   brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
-  EXPECT_TRUE(brave_sync_service_impl()->initiated_join_chain_);
 
   // Normally sync_disabled_by_admin_ is set at
   // SyncServiceImpl::OnActionableError, but we can't invoke it, so set it
@@ -675,7 +666,7 @@ TEST_F(BraveSyncServiceImplTest, HistoryPreconditions) {
   CreateSyncService();
   EXPECT_FALSE(engine());
   brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
-  task_environment_.RunUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil([&] { return engine() != nullptr; }));
 
   brave_sync_service_impl()
       ->GetUserSettings()
@@ -717,11 +708,24 @@ TEST_F(BraveSyncServiceImplTest, HistoryPreconditions) {
             DataTypeController::PreconditionState::kPreconditionsMet);
 }
 
-TEST_F(BraveSyncServiceImplTest, BookmarksAndPasswordsAfterSetup) {
+class BraveSyncServiceImplTest_EnableSyncDefaultPasswordsTest
+    : public BraveSyncServiceImplTest {
+ public:
+  BraveSyncServiceImplTest_EnableSyncDefaultPasswordsTest() {
+    scoped_feature_list_.InitAndEnableFeature(
+        brave_sync::features::kBraveSyncDefaultPasswords);
+  }
+
+ protected:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+TEST_F(BraveSyncServiceImplTest_EnableSyncDefaultPasswordsTest,
+       BookmarksAndPasswordsAfterSetup) {
   CreateSyncService();
   EXPECT_FALSE(engine());
   brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
-  task_environment_.RunUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil([&] { return engine() != nullptr; }));
 
   brave_sync_service_impl()
       ->GetUserSettings()
@@ -790,7 +794,7 @@ TEST_F(BraveSyncServiceImplTest, P3aForHistoryThroughDelegate) {
   CreateSyncService(DataTypeSet({BOOKMARKS, HISTORY, PASSWORDS}));
   EXPECT_FALSE(engine());
   brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
-  task_environment_.RunUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil([&] { return engine() != nullptr; }));
 
   base::HistogramTester histogram_tester;
 

@@ -1,13 +1,15 @@
 diff --git a/chrome/browser/ui/views/frame/browser_frame_view_win.cc b/chrome/browser/ui/views/frame/browser_frame_view_win.cc
-index 8bcc77c6b9a6e0926fa220831cd32773f010d0ae..62eb02f13d4acdb11a3d683425d808ad105eae13 100644
+index 8bcc77c6b9a6e0926fa220831cd32773f010d0ae..adbf3c35630b5b9e24514314af53ddaa05251db8 100644
 --- a/chrome/browser/ui/views/frame/browser_frame_view_win.cc
 +++ b/chrome/browser/ui/views/frame/browser_frame_view_win.cc
-@@ -116,7 +116,7 @@ BrowserFrameViewWin::BrowserFrameViewWin(BrowserWidget* widget,
+@@ -96,7 +96,9 @@ BrowserFrameViewWin::BrowserFrameViewWin(BrowserWidget* widget,
+   BrowserWindowInterface* browser = browser_view->browser();
+   bool supports_title_bar =
+       WindowFeatureController::From(browser)->SupportsWindowFeature(
+-          WindowFeatureController::WindowFeature::kFeatureTitleBar);
++          WindowFeatureController::WindowFeature::kFeatureTitleBar) ||
++        (VerticalTabController::From(browser) &&
++         VerticalTabController::From(browser)->SupportsBraveVerticalTabs());
  
-   // If this is a web app window, the window title will be part of the
-   // BrowserView and thus we don't need to create another one here.
--  if (!browser_view->GetIsWebAppType() && supports_title_bar) {
-+  if (!browser_view->GetIsWebAppType() && (supports_title_bar || (VerticalTabController::From(browser) && VerticalTabController::From(browser)->SupportsBraveVerticalTabs()))) {
-     window_title_ = new views::Label(browser_view->GetWindowTitle());
-     window_title_->SetSubpixelRenderingEnabled(false);
-     window_title_->SetHorizontalAlignment(gfx::ALIGN_LEFT);
+   // Only show icons if the browser supports title bars.
+   if (supports_title_bar) {

@@ -12,7 +12,7 @@
 #include "base/values.h"
 #include "brave/components/endpoint_client/is_protobuf_message.h"
 
-namespace endpoint_client::detail {
+namespace endpoint_client::internal {
 
 // A JSON response body provides a static FromValue() taking
 // const base::Value& and returning std::optional<ResponseBody>.
@@ -23,7 +23,7 @@ concept IsJSONResponseBody = requires(const base::Value& value) {
   } -> std::same_as<std::optional<ResponseBody>>;
 };
 
-// A Protobuf response body is a type that IsProtobufMessage.
+// A Protobuf response body is a Protobuf message.
 template <typename ResponseBody>
 concept IsProtobufResponseBody = IsProtobufMessage<ResponseBody>;
 
@@ -32,6 +32,6 @@ template <typename ResponseBody>
 concept IsResponseBody =
     IsJSONResponseBody<ResponseBody> || IsProtobufResponseBody<ResponseBody>;
 
-}  // namespace endpoint_client::detail
+}  // namespace endpoint_client::internal
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_IS_RESPONSE_BODY_H_

@@ -1,0 +1,11 @@
+diff --git a/chrome/browser/ui/views/frame/browser_frame_view_layout_linux.cc b/chrome/browser/ui/views/frame/browser_frame_view_layout_linux.cc
+index 62208395da94afad83c1d47c4df590bfc11b5840..f189ed6608bfa597a2691ec8434c7be86cc487a4 100644
+--- a/chrome/browser/ui/views/frame/browser_frame_view_layout_linux.cc
++++ b/chrome/browser/ui/views/frame/browser_frame_view_layout_linux.cc
+@@ -72,5 +72,6 @@ gfx::Insets BrowserFrameViewLayoutLinux::RestoredFrameEdgeInsets() const {
+ }
+ 
+ int BrowserFrameViewLayoutLinux::NonClientExtraTopThickness() const {
++  if (delegate_->IsToolbarVisible()) return 0;
+   return delegate_->IsTabStripVisible() ? 0 : kExtraTopBorder;
+ }

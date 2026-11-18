@@ -34,6 +34,9 @@ jest.mock('../api/bind_conversation', () => ({
 
 const mockedBind = BindConversation as jest.Mocked<typeof BindConversation>
 
+// What the browser sends each bound conversation's events to, by uuid.
+const uiObservers = new Map<string, Mojom.ConversationUIInterface>()
+
 const makeBindings = (uuid: string): BindConversation.ConversationBindings => {
   const handler = createMockConversationHandler({
     getState: () =>
@@ -45,6 +48,7 @@ const makeBindings = (uuid: string): BindConversation.ConversationBindings => {
       }),
   })
   const conversation = createConversationAPI(handler)
+  uiObservers.set(uuid, conversation.conversationUIObserver)
   return {
     api: conversation.api,
     close: jest.fn(),
@@ -124,6 +128,7 @@ const renderProvider = async (opts: RenderOptions) => {
 
 beforeEach(() => {
   clearAllDataForTesting()
+  uiObservers.clear()
   let nextNew = 0
   let nextRelated = 0
   mockedBind.newConversation.mockReset()
@@ -355,6 +360,95 @@ describe('ActiveChatProvider routing — sidebar (non-global panel) mode', () =>
     expect(() => detailsRef.current!.openMainConversation()).toThrow(
       'No main conversation!',
     )
+  })
+})
+
+describe('ActiveChatProvider when the bound conversation is deleted', () => {
+  it('binds a new tab-related conversation and stays on /tab', async () => {
+    await renderProvider({
+      isGlobalPanel: false,
+      selectedConversationId: tabAssociatedChatId,
+    })
+    window.history.replaceState(null, '', '/tab')
+
+    act(() => {
+      uiObservers.get('related-0')!.onConversationDeleted()
+    })
+
+    await waitFor(() =>
+      expect(mockedBind.newConversation).toHaveBeenCalledTimes(1),
+    )
+    expect(window.location.pathname).toBe('/tab')
+  })
+
+  it('binds a new main conversation in the global panel', async () => {
+    await renderProvider({
+      isGlobalPanel: true,
+      selectedConversationId: undefined,
+    })
+    expect(mockedBind.newConversation).toHaveBeenCalledTimes(1)
+
+    act(() => {
+      uiObservers.get('new-0')!.onConversationDeleted()
+    })
+
+    await waitFor(() =>
+      expect(mockedBind.newConversation).toHaveBeenCalledTimes(2),
+    )
+  })
+
+  it('navigates from a standalone conversation to "/"', async () => {
+    await renderProvider({
+      isGlobalPanel: false,
+      selectedConversationId: 'standalone-uuid',
+    })
+    window.history.replaceState(null, '', '/standalone-uuid')
+
+    act(() => {
+      uiObservers.get('standalone-uuid')!.onConversationDeleted()
+    })
+
+    await waitFor(() => expect(window.location.pathname).toBe('/'))
+  })
+
+  // The list of conversations no longer has the deleted one, so at "/" it
+  // would pass for a new conversation that hasn't started, which is kept.
+  it('replaces a conversation that was new when bound and is now selected by id', async () => {
+    const { setSelectedConversationId } = await renderProvider({
+      isGlobalPanel: false,
+      selectedConversationId: undefined,
+    })
+    await setSelectedConversationId('new-0')
+    window.history.replaceState(null, '', '/new-0')
+    expect(mockedBind.newConversation).toHaveBeenCalledTimes(1)
+
+    act(() => {
+      uiObservers.get('new-0')!.onConversationDeleted()
+    })
+    expect(window.location.pathname).toBe('/')
+    await setSelectedConversationId(undefined)
+
+    expect(mockedBind.newConversation).toHaveBeenCalledTimes(2)
+  })
+
+  it('ignores the deletion of a conversation it has moved on from', async () => {
+    const { setSelectedConversationId } = await renderProvider({
+      isGlobalPanel: false,
+      selectedConversationId: 'standalone-uuid',
+    })
+    await setSelectedConversationId('other-uuid')
+    window.history.replaceState(null, '', '/other-uuid')
+
+    act(() => {
+      uiObservers.get('standalone-uuid')!.onConversationDeleted()
+    })
+    // Give a handler that was wrongly still subscribed the chance to run.
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve))
+    })
+
+    expect(window.location.pathname).toBe('/other-uuid')
+    expect(mockedBind.newConversation).not.toHaveBeenCalled()
   })
 })
 

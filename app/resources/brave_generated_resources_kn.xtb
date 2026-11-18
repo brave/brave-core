@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 ಅಥವಾ <ph name="SETTINGS_EXTENIONS_LINK"/> ನಲ್ಲಿ ನಂತರದಲ್ಲಿ ಬದಲಾಯಿಸಿ.</translation>
 <translation id="6229752134959014186">Widevine ಕುರಿತು ಹೆಚ್ಚು ತಿಳಿಯಿರಿ</translation>
+<translation id="3318169548229684688">ಈ ಸಾಧನದಲ್ಲಿ ಮಾತನ್ನು ಸಂಸ್ಕರಿಸಲು ಭಾಷಣ ಗುರುತಿಸುವಿಕೆ ಮಾದರಿಯನ್ನು (<ph name="DOWNLOAD_SIZE"/>) ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> ನಿಮಗೆ ಹೀಗೆ ಮಾಡಲು ಕೇಳುತ್ತಿದೆ</translation>
 <translation id="3218385319396786393">ಈ ಪುಟದಲ್ಲಿ ಸ್ವಯಂಪ್ಲೇ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ</translation>
 <translation id="4988333904713528597"><ph name="HOST"/> ನಲ್ಲಿ ಯಾವಾಗಲೂ ಸ್ವಯಂಪ್ಲೇ ಅನುಮತಿಸಿ</translation>
@@ -610,6 +611,8 @@
 <translation id="3540231253392253941">ಪುಶ್ ಸಂದೇಶ ಕಳುಹಿಸುವಿಕೆಗಾಗಿ Google ಸೇವೆಗಳನ್ನು ಬಳಸಿ</translation>
 <translation id="2224032129673914306">ಸೆಮ್ಯಾಂಟಿಕ್ ಇತಿಹಾಸ ಹುಡುಕಾಟ</translation>
 <translation id="6045998903985162478">ನೀವು ಭೇಟಿ ನೀಡುವ ಪುಟಗಳನ್ನು ಇಂಡೆಕ್ಸ್ ಮಾಡಿ, ಇದರಿಂದ ನೀವು ಅವುಗಳನ್ನು ಇತಿಹಾಸ, ತೆರೆದ ಟ್ಯಾಬ್‌ಗಳು ಮತ್ತು Leo ನಲ್ಲಿ ಸುಲಭವಾಗಿ ಕಂಡುಹಿಡಿಯಬಹುದು.</translation>
+<translation id="3962946446120925966">ಸಾಧನದಲ್ಲಿ ಧ್ವನಿ ಗುರುತಿಸುವಿಕೆ</translation>
+<translation id="6408242130028978631">ಧ್ವನಿ ಗುರುತಿಸುವಿಕೆ ಮಾದರಿಯನ್ನು (<ph name="DOWNLOAD_SIZE"/>) ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ, ಇದರಿಂದ ಸೈಟ್‌ಗಳು ಈ ಸಾಧನದಲ್ಲಿ ಧ್ವನಿಯನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸಬಹುದು. ಮಾದರಿಯನ್ನು ತೆಗೆದುಹಾಕಲು ಇದನ್ನು ಆಫ್ ಮಾಡಿ.</translation>
 <translation id="5813105074916486721">ಸ್ಥಳೀಯ ಇತಿಹಾಸ ಧಾರಣೆ</translation>
 <translation id="5671611745062206644">Brave ನಿಮ್ಮ ಬ್ರೌಸಿಂಗ್ ಇತಿಹಾಸವನ್ನು ಸ್ಥಳೀಯವಾಗಿ ಎಷ್ಟು ಕಾಲ ಸಂಗ್ರಹಿಸುತ್ತದೆ</translation>
 <translation id="7184510058087008090">1 ದಿನ</translation>

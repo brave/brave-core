@@ -7,7 +7,7 @@ import { createRoot } from 'react-dom/client'
 import * as React from 'react'
 import { StyleSheetManager } from 'styled-components'
 import { shouldForwardProp } from '$web-common/StyledComponentsProvider'
-import { setIconBasePath } from '@brave/leo/react/icon'
+import { setIconBasePath } from '@brave/nala/react/icon'
 import {
   EmailAliasModal,
   EmailAliasModalResultType,

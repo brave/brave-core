@@ -23,6 +23,7 @@ namespace {
 
 constexpr char kLanguagesKey[] = "navigator_languages";
 constexpr char kScreenSizeKey[] = "screenSize";
+constexpr char kCombinedKey[] = "combined";
 
 }  // namespace
 
@@ -56,11 +57,13 @@ IN_PROC_BROWSER_TEST_F(FingerprintFrequencyMetricsBrowserTest,
   base::DictValue first = ExecuteRenderer();
   ASSERT_TRUE(first.FindInt(kLanguagesKey));
   ASSERT_TRUE(first.FindInt(kScreenSizeKey));
+  ASSERT_TRUE(first.FindInt(kCombinedKey));
 
   // The hashes are stable while nothing changes.
   base::DictValue second = ExecuteRenderer();
   EXPECT_EQ(first.FindInt(kLanguagesKey), second.FindInt(kLanguagesKey));
   EXPECT_EQ(first.FindInt(kScreenSizeKey), second.FindInt(kScreenSizeKey));
+  EXPECT_EQ(first.FindInt(kCombinedKey), second.FindInt(kCombinedKey));
 
   chrome_test_utils::GetProfile(this)->GetPrefs()->SetString(
       language::prefs::kAcceptLanguages, "fr-FR,fr");
@@ -68,6 +71,7 @@ IN_PROC_BROWSER_TEST_F(FingerprintFrequencyMetricsBrowserTest,
   base::DictValue third = ExecuteRenderer();
   EXPECT_NE(second.FindInt(kLanguagesKey), third.FindInt(kLanguagesKey));
   EXPECT_EQ(second.FindInt(kScreenSizeKey), third.FindInt(kScreenSizeKey));
+  EXPECT_NE(second.FindInt(kCombinedKey), third.FindInt(kCombinedKey));
 }
 
 }  // namespace misc_metrics

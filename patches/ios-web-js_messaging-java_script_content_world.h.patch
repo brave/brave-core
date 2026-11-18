@@ -1,8 +1,16 @@
 diff --git a/ios/web/js_messaging/java_script_content_world.h b/ios/web/js_messaging/java_script_content_world.h
-index 06bad8e89372c1ce885ce849f32ed558f751cbe0..ac7e3badebc03e495599dfa4b6488d5faf5252dd 100644
+index 06bad8e89372c1ce885ce849f32ed558f751cbe0..568895b814790adb825b749a909b1cb3f35e4863 100644
 --- a/ios/web/js_messaging/java_script_content_world.h
 +++ b/ios/web/js_messaging/java_script_content_world.h
-@@ -49,6 +49,15 @@ class JavaScriptContentWorld {
+@@ -11,6 +11,7 @@
+ #include <memory>
+ #include <set>
+ 
++#include "base/containers/flat_map.h"
+ #import "base/memory/raw_ptr.h"
+ #include "base/memory/weak_ptr.h"
+ #import "ios/web/js_messaging/scoped_wk_script_message_handler.h"
+@@ -49,6 +50,15 @@ class JavaScriptContentWorld {
    // Returns true if and only if `feature` has been added to this content world.
    bool HasFeature(const JavaScriptFeature* feature);
  

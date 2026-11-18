@@ -58,6 +58,7 @@ AccountDiscoveryManager::AccountDiscoveryManager(
       bitcoin_wallet_service_(bitcoin_wallet_service) {}
 
 void AccountDiscoveryManager::StartDiscovery() {
+  completed_discoveries_for_testing_.clear();
   auto derived_count = GetDerivedAccountsCount();
 
   AddDiscoveryAccount(std::make_unique<DiscoveryContext>(
@@ -104,12 +105,14 @@ AccountDiscoveryManager::GetDerivedAccountsCount() {
 void AccountDiscoveryManager::AddDiscoveryAccount(
     std::unique_ptr<DiscoveryContext> context) {
   if (context->attempts_left <= 0) {
+    completed_discoveries_for_testing_.insert(context->keyring_id);
     return;
   }
 
   auto addr = keyring_service_->GetDiscoveryAddress(
       context->keyring_id, context->discovery_account_index);
   if (!addr) {
+    completed_discoveries_for_testing_.insert(context->keyring_id);
     return;
   }
 
@@ -147,6 +150,7 @@ void AccountDiscoveryManager::OnResolveAccountBalance(
     mojom::ProviderError error,
     const std::string& error_message) {
   if (error != mojom::ProviderError::kSuccess) {
+    completed_discoveries_for_testing_.insert(context->keyring_id);
     return;
   }
   ProcessDiscoveryResult(std::move(context), value != "0");
@@ -158,6 +162,7 @@ void AccountDiscoveryManager::OnResolveSolanaAccountBalance(
     mojom::SolanaProviderError error,
     const std::string& error_message) {
   if (error != mojom::SolanaProviderError::kSuccess) {
+    completed_discoveries_for_testing_.insert(context->keyring_id);
     return;
   }
   ProcessDiscoveryResult(std::move(context), value > 0);
@@ -169,6 +174,7 @@ void AccountDiscoveryManager::OnEthGetTransactionCount(
     mojom::ProviderError error,
     const std::string& error_message) {
   if (error != mojom::ProviderError::kSuccess) {
+    completed_discoveries_for_testing_.insert(context->keyring_id);
     return;
   }
   ProcessDiscoveryResult(std::move(context), result > 0);
@@ -212,6 +218,7 @@ void AccountDiscoveryManager::OnBitcoinDiscoverAccountsDone(
     uint32_t account_index,
     base::expected<DiscoveredBitcoinAccount, std::string> discovered_account) {
   if (!discovered_account.has_value()) {
+    completed_discoveries_for_testing_.insert(keyring_id);
     return;
   }
 
@@ -219,6 +226,7 @@ void AccountDiscoveryManager::OnBitcoinDiscoverAccountsDone(
   if (acc.next_unused_receive_index == 0 && acc.next_unused_change_index == 0) {
     // This account has no transacted addresses in blockchain. Don't add it and
     // stop discovery.
+    completed_discoveries_for_testing_.insert(keyring_id);
     return;
   }
 
@@ -246,6 +254,7 @@ void AccountDiscoveryManager::OnBitcoinDiscoverAccountsDone(
         last_bitcoin_account->account_index + 1 != account_index) {
       // We don't allow gaps in account indexes, so just return if discovered
       // account would not be the next account.
+      completed_discoveries_for_testing_.insert(keyring_id);
       return;
     }
 
@@ -253,6 +262,7 @@ void AccountDiscoveryManager::OnBitcoinDiscoverAccountsDone(
         mojom::CoinType::BTC, keyring_id,
         DiscoveredBitcoinAccountName(keyring_id, account_index));
     if (!created_account) {
+      completed_discoveries_for_testing_.insert(keyring_id);
       return;
     }
     bitcoin_account_to_update = created_account->account_id.Clone();
@@ -268,6 +278,11 @@ void AccountDiscoveryManager::OnBitcoinDiscoverAccountsDone(
 base::WeakPtr<AccountDiscoveryManager>
 AccountDiscoveryManager::GetWeakPtrForTesting() {
   return weak_ptr_factory_.GetWeakPtr();
+}
+
+bool AccountDiscoveryManager::IsDiscoveryCompleteForTesting(
+    mojom::KeyringId keyring_id) const {
+  return completed_discoveries_for_testing_.contains(keyring_id);
 }
 
 }  // namespace brave_wallet

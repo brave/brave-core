@@ -4,11 +4,11 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import AlertReact from '@brave/leo/react/alert'
-import * as leo from '@brave/leo/tokens/css/variables'
+import AlertReact from '@brave/nala/react/alert'
+import * as leo from '@brave/nala/tokens/css/variables'
 import LeoSegmentedControl, {
   SegmentedControlProps,
-} from '@brave/leo/react/segmentedControl'
+} from '@brave/nala/react/segmentedControl'
 
 // Assets
 import ClipboardIcon from '../../../../assets/svg-icons/copy-to-clipboard-icon.svg'

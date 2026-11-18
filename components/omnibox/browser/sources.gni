@@ -5,6 +5,7 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
+import("//brave/components/local_ai/buildflags/buildflags.gni")
 import("//brave/components/omnibox/buildflags/buildflags.gni")
 
 brave_components_omnibox_browser_sources = [
@@ -47,6 +48,7 @@ brave_components_omnibox_browser_deps = [
 brave_components_omnibox_browser_public_deps = [
   "//brave/components/ai_chat/core/common/buildflags",
   "//brave/components/commander/common/buildflags",
+  "//brave/components/local_ai/buildflags",
 ]
 
 if (enable_ai_chat) {
@@ -61,6 +63,16 @@ if (enable_ai_chat) {
     "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common",
   ]
+}
+
+if (enable_local_ai) {
+  brave_components_omnibox_browser_sources += [
+    "//brave/components/omnibox/browser/brave_history_embeddings_provider.cc",
+    "//brave/components/omnibox/browser/brave_history_embeddings_provider.h",
+  ]
+
+  brave_components_omnibox_browser_deps +=
+      [ "//brave/components/history_embeddings/core" ]
 }
 
 if (enable_commander) {

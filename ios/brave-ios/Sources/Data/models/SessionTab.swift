@@ -19,7 +19,7 @@ public final class SessionTab: NSManagedObject, CRUD {
   @NSManaged public var url: URL?
   @NSManaged private(set) public var tabId: UUID
 
-  @NSManaged private(set) public var sessionTabGroup: SessionTabGroup?
+  @NSManaged internal(set) public var sessionTabGroup: SessionTabGroup?
   @NSManaged private(set) public var sessionWindow: SessionWindow?
 
   @available(*, unavailable)
@@ -316,6 +316,11 @@ extension SessionTab {
       }
 
       tab.sessionWindow = window
+      // A group belongs to a single window, so a tab that moves to another one leaves its group.
+      // A group left without tabs is removed by `SessionTabGroup.deleteAllEmpty()`.
+      if let group = tab.sessionTabGroup, group.sessionWindow?.windowId != windowId {
+        tab.sessionTabGroup = nil
+      }
 
       do {
         try context.save()
@@ -341,7 +346,7 @@ extension SessionTab {
     )
   }
 
-  private static func from(tabId: UUID, in context: NSManagedObjectContext) -> SessionTab? {
+  static func from(tabId: UUID, in context: NSManagedObjectContext) -> SessionTab? {
     let predicate = NSPredicate(
       format: "\(#keyPath(SessionTab.tabId)) == %@",
       argumentArray: [tabId]

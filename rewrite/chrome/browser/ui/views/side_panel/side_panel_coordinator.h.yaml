@@ -7,3 +7,8 @@ substitutions:
   - description: 'Remove final from SidePanelCoordinator to allow subclassing'
     drop_final:
       class_name: SidePanelCoordinator
+
+  - description: 'Let BraveSidePanelCoordinator reach private members.'
+    add_friend:
+      class_name: SidePanelCoordinator
+      friend_type: class BraveSidePanelCoordinator

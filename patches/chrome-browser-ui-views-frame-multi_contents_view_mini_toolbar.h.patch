@@ -1,0 +1,30 @@
+diff --git a/chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h b/chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h
+index de2fb5ff5f7f6fc249f729731fe9e2dd7038c2ae..c64f6e584813d1a4557610660734bf31449e2620 100644
+--- a/chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h
++++ b/chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h
+@@ -41,15 +41,23 @@ class MultiContentsViewMiniToolbar : public views::View {
+                                ContentsWebView* web_view);
+   ~MultiContentsViewMiniToolbar() override;
+ 
+-  void UpdateState(bool is_active, bool is_highlighted);
++  virtual void UpdateState(bool is_active, bool is_highlighted);
+ 
+   // Trigger an update of the tab data used to populate the mini toolbar.
+-  void UpdateContents();
++  virtual void UpdateContents();
+ 
+   views::Label* domain_label_for_testing() { return domain_label_; }
+   views::ImageButton* close_button_for_testing() { return close_button_; }
+ 
++  static const gfx::VectorIcon& GetMoreVerticalIcon();
++  static std::unique_ptr<SplitTabMenuModel> CreateBraveSplitTabMenuModel(
++      TabStripModel* tab_strip_model,
++      SplitTabMenuModel::MenuSource source,
++      int split_tab_index);
++
+  private:
++  friend class BraveMultiContentsViewMiniToolbar;
++  FRIEND_TEST_ALL_PREFIXES(SplitViewBrowserTest, SelectTabTest);
+   // View:
+   void OnPaint(gfx::Canvas* canvas) override;
+   void OnThemeChanged() override;

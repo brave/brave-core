@@ -12,7 +12,7 @@
 #include "base/check.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
-#include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/core/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
@@ -326,6 +326,21 @@ jboolean JNI_BraveShieldsContentSettings_GetForgetFirstPartyStorageEnabled(
           Profile::FromJavaObject(j_profile));
   return brave_shields_settings->GetForgetFirstPartyStorageEnabled(
       GURL(base::android::ConvertJavaStringToUTF8(env, url)));
+}
+
+void JNI_BraveShieldsContentSettings_ResetSiteToDefaults(
+    JNIEnv* env,
+    const base::android::JavaRef<jstring>& url,
+    const base::android::JavaRef<jobject>& j_profile) {
+  Profile* profile = Profile::FromJavaObject(j_profile);
+  GURL site_url(base::android::ConvertJavaStringToUTF8(env, url));
+
+  brave_shields::ResetShieldsSettingsForSite(
+      HostContentSettingsMapFactory::GetForProfile(profile), site_url,
+      g_browser_process->local_state());
+
+  BraveShieldsSettingsServiceFactory::GetForProfile(profile)
+      ->ResetForgetFirstPartyStorageEnabled(site_url);
 }
 
 jboolean

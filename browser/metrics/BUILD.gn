@@ -6,6 +6,29 @@
 import("//brave/build/config.gni")
 import("//testing/test.gni")
 
+source_set("metrics") {
+  sources = [
+    "brave_metrics_service_accessor.cc",
+    "brave_metrics_service_accessor.h",
+    "metrics_reporting_util.cc",
+    "metrics_reporting_util.h",
+  ]
+
+  public_deps = [ "//components/metrics" ]
+
+  deps = [
+    "//base",
+    "//brave/browser/metrics/buildflags",
+    "//brave/components/brave_origin/buildflags",
+    "//brave/components/constants",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/metrics",
+    "//chrome/common:channel_info",
+    "//components/prefs",
+    "//components/version_info",
+  ]
+}
+
 source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
@@ -32,6 +55,7 @@ source_set("brave_metrics_unit_tests") {
     "metrics_reporting_util_unittest.cc",
   ]
   deps = [
+    ":metrics",
     "//base/test:test_support",
     "//brave/browser",
     "//brave/browser/metrics/buildflags",

@@ -69,6 +69,10 @@ class TypeToolTest : public ContentAgentToolBaseTest {
     // Target verification should be handled by the target_test_util methods
     EXPECT_TRUE(type_action.has_target());
 
+    if (!tool_request) {
+      ADD_FAILURE() << "Missing tool request";
+      return action;
+    }
     auto* type_request =
         static_cast<actor::TypeToolRequest*>(tool_request.get());
     EXPECT_EQ(type_request->text, expected_text);

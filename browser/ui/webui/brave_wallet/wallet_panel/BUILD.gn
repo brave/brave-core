@@ -55,6 +55,7 @@ source_set("wallet_panel") {
     deps += [
       "//brave/browser/brave_rewards",
       "//brave/browser/brave_rewards:util",
+      "//brave/browser/ui/webui/brave_rewards:rewards_page_handler",
       "//brave/components/brave_rewards/core/mojom:webui",
     ]
   }
@@ -78,6 +79,7 @@ source_set("browser_tests") {
     "//brave/browser/brave_wallet",
     "//brave/browser/brave_wallet:tab_helper",
     "//brave/browser/ui",
+    "//brave/browser/ui/webui/brave_wallet/polkadot",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:test_support",
     "//brave/components/brave_wallet/browser:utils",

@@ -2,7 +2,7 @@ Name: zcash_encoding
 URL: https://crates.io/crates/zcash_encoding
 Version: 0.4.0
 License: Apache-2.0
-License File:
+License File: //brave/components/brave_wallet/browser/zcash/rust/librustzcash/src/components/zcash_encoding/LICENSE-APACHE
 Shipped: yes
 Security Critical: yes
 

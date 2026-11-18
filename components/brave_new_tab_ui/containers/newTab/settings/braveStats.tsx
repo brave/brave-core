@@ -9,7 +9,7 @@ import {
   SettingsRow,
   SettingsText
 } from '../../../components/default'
-import Toggle from '@brave/leo/react/toggle'
+import Toggle from '@brave/nala/react/toggle'
 
 import { getLocale } from '../../../../common/locale'
 import { useNewTabPref } from '../../../hooks/usePref'

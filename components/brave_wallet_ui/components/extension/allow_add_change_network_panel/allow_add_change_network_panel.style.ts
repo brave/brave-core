@@ -4,8 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css/variables'
-import Icon from '@brave/leo/react/icon'
+import * as leo from '@brave/nala/tokens/css/variables'
+import Icon from '@brave/nala/react/icon'
 
 // Shared Styles
 import { WalletButton, Column, Text, Row } from '../../shared/style'
@@ -95,4 +95,13 @@ export const Card = styled(Column)`
   border-radius: ${leo.radius.xl};
   box-shadow: ${leo.effect.elevation['01']};
   overflow: hidden;
+`
+
+export const ButtonRow = styled(Row)`
+  padding: ${leo.spacing.xl};
+  gap: ${leo.spacing.l};
+
+  & > leo-button {
+    flex: 1 1 0;
+  }
 `

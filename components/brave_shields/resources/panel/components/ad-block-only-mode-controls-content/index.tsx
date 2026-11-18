@@ -4,9 +4,9 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Alert from '@brave/leo/react/alert'
-import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
+import Alert from '@brave/nala/react/alert'
+import Button from '@brave/nala/react/button'
+import Icon from '@brave/nala/react/icon'
 import getPanelBrowserAPI from '../../api/panel_browser_api'
 import { getLocale } from '$web-common/locale'
 import { GlobalSettings } from "../advanced-controls-content"

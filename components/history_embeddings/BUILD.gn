@@ -7,15 +7,6 @@ import("//brave/components/local_ai/buildflags/buildflags.gni")
 
 assert(enable_local_ai)
 
-source_set("history_embeddings") {
-  sources = [ "content/brave_history_embeddings_helpers.h" ]
-
-  deps = [
-    "//components/history_embeddings/content",
-    "//components/page_content_annotations/core",
-  ]
-}
-
 static_library("open_tab_passages") {
   public = [ "content/open_tab_passages.h" ]
   sources = [ "content/open_tab_passages.cc" ]
@@ -23,9 +14,9 @@ static_library("open_tab_passages") {
   public_deps = [ "//base" ]
 
   deps = [
+    "//brave/components/history_embeddings/content",
+    "//brave/components/history_embeddings/core",
     "//components/history/core/browser",
-    "//components/history_embeddings/content",
-    "//components/history_embeddings/core",
     "//url",
   ]
 }
@@ -38,16 +29,13 @@ source_set("unit_tests") {
     ":open_tab_passages",
     "//base",
     "//base/test:test_support",
-    "//components/feature_engagement/test:test_support",
+    "//brave/components/history_embeddings/content",
+    "//brave/components/history_embeddings/core",
     "//components/history/core/browser",
     "//components/history/core/test",
-    "//components/history_embeddings/content",
-    "//components/history_embeddings/core",
-    "//components/optimization_guide/core:test_support",
     "//components/os_crypt/async/browser:test_support",
     "//components/page_content_annotations/content",
     "//components/page_content_annotations/content:page_embeddings",
-    "//components/page_content_annotations/core:test_support",
     "//components/passage_embeddings/core",
     "//components/passage_embeddings/core:test_support",
     "//testing/gtest",
@@ -62,8 +50,8 @@ source_set("test_support") {
     "test/fake_history_embeddings_search.h",
   ]
   public_deps = [
+    "//brave/components/history_embeddings/core",
     "//components/history/core/browser",
-    "//components/history_embeddings/core",
   ]
   deps = [
     "//base",

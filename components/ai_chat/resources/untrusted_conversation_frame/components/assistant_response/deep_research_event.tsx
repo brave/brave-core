@@ -4,9 +4,9 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Icon from '@brave/leo/react/icon'
+import Icon from '@brave/nala/react/icon'
 import { getLocale, formatLocale } from '$web-common/locale'
-import { IconName } from '@brave/leo/icons/meta'
+import { IconName } from '@brave/nala/icons/meta'
 import * as mojom from '../../../common/mojom'
 import { ExtractedDeepResearchEvents } from './deep_research_utils'
 import styles from './deep_research_event.module.scss'

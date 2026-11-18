@@ -5,8 +5,8 @@
 
 import * as React from 'react'
 import styled from 'styled-components'
-import Icon from '@brave/leo/react/icon'
-import * as leo from '@brave/leo/tokens/css/variables'
+import Icon from '@brave/nala/react/icon'
+import * as leo from '@brave/nala/tokens/css/variables'
 import { getLocale } from '$web-common/locale'
 import getPageHandlerInstance from './api/brave_page_handler'
 import { loadTimeData } from '../../../common/loadTimeData'

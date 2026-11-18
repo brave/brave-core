@@ -50,12 +50,14 @@ TEST_F(BraveOnDeviceSpeechAvailabilityUnitTest, DownloadableUntilInstalled) {
                                                Quality::kCommand));
 
   state->SetInstallDir(
+      local_ai::OnDeviceSpeechModel::kEnglish,
       base::FilePath(FILE_PATH_LITERAL("/brave/speech/models")));
   EXPECT_EQ(AvailabilityStatus::kAvailable,
             GetBraveOnDeviceSpeechAvailability(&profile_, "en-US",
                                                Quality::kCommand));
 
-  state->SetInstallDir(base::FilePath());
+  state->SetInstallDir(local_ai::OnDeviceSpeechModel::kEnglish,
+                       base::FilePath());
 }
 
 // Private, Tor and Guest profiles get none, also with the model on disk.
@@ -63,6 +65,7 @@ TEST_F(BraveOnDeviceSpeechAvailabilityUnitTest,
        UnavailableOutsideRegularProfiles) {
   auto* state = local_ai::OnDeviceSpeechModelsState::GetInstance();
   state->SetInstallDir(
+      local_ai::OnDeviceSpeechModel::kEnglish,
       base::FilePath(FILE_PATH_LITERAL("/brave/speech/models")));
   ASSERT_EQ(AvailabilityStatus::kAvailable,
             GetBraveOnDeviceSpeechAvailability(&profile_, "en-US",
@@ -83,7 +86,8 @@ TEST_F(BraveOnDeviceSpeechAvailabilityUnitTest,
                                                  Quality::kCommand));
   }
 
-  state->SetInstallDir(base::FilePath());
+  state->SetInstallDir(local_ai::OnDeviceSpeechModel::kEnglish,
+                       base::FilePath());
 }
 
 TEST_F(BraveOnDeviceSpeechAvailabilityUnitTest, UnavailableWhenLocalAIOff) {

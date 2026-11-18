@@ -9,10 +9,10 @@ import SearchBox from './SearchBox';
 import { SearchContext, useSearchContext } from './SearchContext';
 import SearchDialog from './SearchDialog';
 import { searchBoxRadius } from './config';
-import Button from '@brave/leo/react/button';
-import Icon from '@brave/leo/react/icon';
-import ButtonMenu from '@brave/leo/react/buttonMenu';
-import { color, spacing } from '@brave/leo/tokens/css/variables';
+import Button from '@brave/nala/react/button';
+import Icon from '@brave/nala/react/icon';
+import ButtonMenu from '@brave/nala/react/buttonMenu';
+import { color, spacing } from '@brave/nala/tokens/css/variables';
 import { getLocale } from '$web-common/locale';
 import getNTPBrowserAPI from '../../api/background';
 
@@ -44,13 +44,13 @@ const MenuButton = styled(Button)`
 const PlaceholderContainer = styled.div`
   align-self: center;
   position: relative;
-  
+
   border-radius: ${searchBoxRadius};
-  
+
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.05);
 
   max-width: calc(100vw - 24px);
-  
+
   &:hover ${MenuContainer} {
     transition-delay: 0s;
     opacity: 1;

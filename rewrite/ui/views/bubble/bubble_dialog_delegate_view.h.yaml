@@ -26,3 +26,21 @@ substitutions:
         - class ::SidebarEditItemBubbleDelegateView
         - class ::SidebarAddItemBubbleDelegateView
         - class ::views::BraveBubbleDialogDelegateView
+
+  - description: |-
+      Forward declare the types the substitutions above use
+    add_after_includes:
+      code: |-
+        class BraveNewsBubbleView;
+        class BraveHelpBubbleDelegateView;
+        class SplitViewMenuBubble;
+        class WaybackMachineBubbleView;
+        class SidebarItemAddedFeedbackBubble;
+        class SidebarEditItemBubbleDelegateView;
+        class SidebarAddItemBubbleDelegateView;
+        namespace playlist {
+        class PlaylistBubbleView;
+        }  // namespace playlist
+        namespace views {
+        class BraveBubbleDialogDelegateView;
+        }

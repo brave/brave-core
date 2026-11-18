@@ -9,12 +9,10 @@ import Strings
 
 /// Houses a CWVWebView to handle loading WebUI pages in a limited scope
 class ChromeWebUIController: UIViewController, BraveWebViewUIDelegate {
-  private let configuration: CWVWebViewConfiguration
+  private let configuration: BraveWebViewConfiguration
 
-  init(braveCore: BraveProfileController, isPrivateBrowsing: Bool) {
-    configuration =
-      isPrivateBrowsing
-      ? braveCore.nonPersistentWebViewConfiguration : braveCore.defaultWebViewConfiguration
+  init(profile: any Profile) {
+    configuration = BraveWebViewConfiguration(profile: profile)
     super.init(nibName: nil, bundle: nil)
   }
 

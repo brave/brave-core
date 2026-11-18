@@ -5,6 +5,7 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
+import("//build/config/ui.gni")
 
 source_set("browser_tests") {
   testonly = true
@@ -42,6 +43,7 @@ source_set("browser_tests") {
     deps += [
       "//brave/browser/ui",
       "//brave/browser/ui/tabs:tab_strip",
+      "//brave/browser/ui/tabs:tabs_public",
       "//brave/components/resources:scaled_resources",
       "//chrome/browser/ui:browser_tabstrip",
       "//chrome/browser/ui:browser_window_header",
@@ -116,6 +118,33 @@ source_set("unit_tests") {
       "//content/test:test_support",
       "//testing/gmock",
       "//testing/gtest",
+    ]
+  }
+}
+
+if (use_aura) {
+  source_set("interactive_ui_tests") {
+    testonly = true
+    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+    sources = [ "tab_cycling_controller_interactive_ui_test.cc" ]
+
+    deps = [
+      "//brave/browser/ui/tabs:tabs_public",
+      "//chrome/app:command_ids",
+      "//chrome/browser",
+      "//chrome/browser/profiles:profile",
+      "//chrome/browser/ui:browser_commands",
+      "//chrome/browser/ui/browser_window",
+      "//chrome/common",
+      "//chrome/test:test_support_ui",
+      "//components/prefs",
+      "//content/test:test_support",
+      "//testing/gtest",
+      "//ui/aura",
+      "//ui/base",
+      "//ui/events",
+      "//ui/events:test_support",
     ]
   }
 }

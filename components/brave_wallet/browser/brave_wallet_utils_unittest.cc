@@ -1008,6 +1008,49 @@ TEST(BraveWalletUtilsUnitTest, SetUserAssetVisible) {
   EXPECT_FALSE(SetUserAssetVisible(&prefs, asset, false));
 }
 
+TEST(BraveWalletUtilsUnitTest, SetUserAssetVisible_ShieldedZCash) {
+  sync_preferences::TestingPrefServiceSyncable prefs;
+  RegisterProfilePrefs(prefs.registry());
+
+  auto transparent = GetZcashNativeToken(mojom::kZCashMainnet);
+  auto legacy = GetZcashNativeShieldedToken(mojom::kZCashMainnet);
+  auto ironwood = GetZcashNativeIronwoodToken(mojom::kZCashMainnet);
+
+  // Shielded Legacy (Orchard) is not in the default list. Hiding it must
+  // persist without changing transparent or Ironwood ZEC.
+  EXPECT_TRUE(SetUserAssetVisible(&prefs, legacy.Clone(), false));
+  legacy->visible = false;
+
+  EXPECT_THAT(GetAllUserAssets(&prefs), Contains(Eq(std::ref(legacy))));
+  EXPECT_EQ(
+      transparent,
+      GetUserAsset(&prefs, mojom::CoinType::ZEC, mojom::kZCashMainnet, "", "",
+                   false, false, mojom::ZCashTokenType::kTransparent));
+  EXPECT_EQ(legacy,
+            GetUserAsset(&prefs, mojom::CoinType::ZEC, mojom::kZCashMainnet, "",
+                         "", false, false, mojom::ZCashTokenType::kOrchard));
+
+  EXPECT_TRUE(SetUserAssetVisible(&prefs, legacy.Clone(), true));
+  legacy->visible = true;
+  EXPECT_EQ(legacy,
+            GetUserAsset(&prefs, mojom::CoinType::ZEC, mojom::kZCashMainnet, "",
+                         "", false, false, mojom::ZCashTokenType::kOrchard));
+
+  EXPECT_TRUE(SetUserAssetVisible(&prefs, ironwood.Clone(), false));
+  ironwood->visible = false;
+  EXPECT_EQ(ironwood,
+            GetUserAsset(&prefs, mojom::CoinType::ZEC, mojom::kZCashMainnet, "",
+                         "", false, false, mojom::ZCashTokenType::kIronwood));
+  EXPECT_EQ(legacy,
+            GetUserAsset(&prefs, mojom::CoinType::ZEC, mojom::kZCashMainnet, "",
+                         "", false, false, mojom::ZCashTokenType::kOrchard));
+  auto transparent_asset =
+      GetUserAsset(&prefs, mojom::CoinType::ZEC, mojom::kZCashMainnet, "", "",
+                   false, false, mojom::ZCashTokenType::kTransparent);
+  ASSERT_TRUE(transparent_asset);
+  EXPECT_TRUE(transparent_asset->visible);
+}
+
 TEST(BraveWalletUtilsUnitTest, SetAssetSpamStatus) {
   sync_preferences::TestingPrefServiceSyncable prefs;
   RegisterProfilePrefs(prefs.registry());

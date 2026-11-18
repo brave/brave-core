@@ -6,8 +6,8 @@
 #include "base/files/file_util.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
-#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/components/constants/brave_paths.h"
@@ -343,12 +343,9 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2InstallerBrowserTest,
   installer->set_allow_silent_install(true);
   installer->set_is_gallery_install(true);
 
-  base::RunLoop run_loop;
-  installer->AddInstallerCallback(base::BindLambdaForTesting(
-      [&run_loop](const std::optional<extensions::CrxInstallError>& result) {
-        EXPECT_FALSE(result.has_value());
-        run_loop.Quit();
-      }));
+  base::test::TestFuture<std::optional<extensions::CrxInstallError>> future;
+  installer->AddInstallerCallback(
+      future.GetCallback<const std::optional<extensions::CrxInstallError>&>());
 
   ui_test_utils::TabAddedWaiter tab_waiter(browser());
 
@@ -357,7 +354,7 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2InstallerBrowserTest,
   crx.required_format = crx_file::VerifierFormat::CRX3;
   installer->InstallCrxFile(crx);
 
-  run_loop.Run();
+  EXPECT_FALSE(future.Get().has_value());
 
   content::WebContents* web_contents = tab_waiter.Wait();
   content::WaitForLoadStop(web_contents);

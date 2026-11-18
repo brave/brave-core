@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6229752134959014186">Jifunze zaidi kuhusu Widevine</translation>
+<translation id="3318169548229684688">Pakua modeli ya utambuzi wa usemi (<ph name="DOWNLOAD_SIZE"/>) ili kuchakata usemi kwenye kifaa hiki</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> inataka</translation>
 <translation id="3218385319396786393">Kufungua kiotomati kumezuiwa kwenye ukurasa huu</translation>
 <translation id="4988333904713528597">Daima ruhusu kufungua kiotomati kwenye <ph name="HOST"/></translation>
@@ -610,6 +611,8 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3540231253392253941">Tumia huduma za Google kwa ujumbe wa programu</translation>
 <translation id="2224032129673914306">Utafutaji wa historia wa kisemantiki</translation>
 <translation id="6045998903985162478">Orodhesha kurasa unazotembelea ili uweze kuzipata kwa urahisi katika historia, vichupo vilivyofunguliwa na Leo.</translation>
+<translation id="3962946446120925966">Utambuzi wa usemi kwenye kifaa</translation>
+<translation id="6408242130028978631">Pakua modeli ya utambuzi wa usemi (<ph name="DOWNLOAD_SIZE"/>) ili tovuti ziweze kuchakata usemi kwenye kifaa hiki. Zima mpangilio huu ili kuondoa modeli.</translation>
 <translation id="5813105074916486721">Uhifadhi wa historia ya ndani</translation>
 <translation id="5671611745062206644">Muda ambao Brave huhifadhi historia yako ya kuvinjari kwa ndani</translation>
 <translation id="7184510058087008090">siku 1</translation>

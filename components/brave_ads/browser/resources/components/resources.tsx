@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Link from '@brave/leo/react/link'
+import Link from '@brave/nala/react/link'
 
 import { useAppState, useAppActions } from '../lib/app_context'
 import { Campaign, DiagnosticEntry } from '../lib/app_store'

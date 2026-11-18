@@ -17,12 +17,15 @@
 #include "ui/base/unowned_user_data/user_data_factory.h"
 
 class AIChatSidePanelTabTransferBridge;
+class BeforeUnloadIgnoreController;
 class BraveNonClientHitTestHelper;
 class BraveShieldsUIContentsCache;
 class BraveVPNController;
-class BrowserView;
 class BrowserWindowInterface;
+class ClosingLastTabController;
 class PlaylistSidePanelCoordinator;
+class ShieldsHelpBubbleController;
+class TabCyclingController;
 class TreeTabSessionManager;
 class WindowClosingConfirmController;
 class WorkspacesBubbleController;
@@ -54,7 +57,7 @@ class BraveBrowserWindowFeatures {
   ~BraveBrowserWindowFeatures();
 
   void Init();
-  void InitPostBrowserViewConstruction(BrowserView* browser_view);
+  void InitPostWindowConstruction();
   void TearDownPreBrowserWindowDestruction();
 
  private:
@@ -98,12 +101,21 @@ class BraveBrowserWindowFeatures {
 
   std::unique_ptr<TreeTabSessionManager> tree_tab_session_manager_;
 
+  std::unique_ptr<TabCyclingController> tab_cycling_controller_;
+
+  std::unique_ptr<ShieldsHelpBubbleController> shields_help_bubble_controller_;
+
   std::unique_ptr<screenshot::ScreenshotController> screenshot_controller_;
 
   std::unique_ptr<WorkspacesBubbleController> workspaces_bubble_controller_;
 
   std::unique_ptr<WindowClosingConfirmController>
       window_closing_confirm_controller_;
+
+  std::unique_ptr<ClosingLastTabController> closing_last_tab_controller_;
+
+  std::unique_ptr<BeforeUnloadIgnoreController>
+      before_unload_ignore_controller_;
 };
 
 #endif  // BRAVE_BROWSER_UI_BROWSER_WINDOW_INTERNAL_BRAVE_BROWSER_WINDOW_FEATURES_H_

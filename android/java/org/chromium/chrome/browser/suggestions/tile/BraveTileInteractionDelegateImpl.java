@@ -42,8 +42,10 @@ class BraveTileInteractionDelegateImpl extends TileInteractionDelegateImpl
 
     @Override
     public boolean isBraveItemSupported(int menuItemId) {
-        return menuItemId == BRAVE_ADD_SITE
-                || menuItemId == BRAVE_SHOW_FREQUENT
+        if (menuItemId == BRAVE_ADD_SITE) {
+            return NtpUtil.getTopSitesDisplayMode() == NtpUtil.TOP_SITES_MODE_SHORTCUTS;
+        }
+        return menuItemId == BRAVE_SHOW_FREQUENT
                 || menuItemId == BRAVE_SHOW_SHORTCUTS
                 || menuItemId == BRAVE_HIDE_WIDGET;
     }

@@ -15,7 +15,7 @@ import {
 // redux
 import { useAppDispatch } from '../common/hooks/use-redux'
 
-import ProgressRing from '@brave/leo/react/progressRing'
+import ProgressRing from '@brave/nala/react/progressRing'
 
 // utils
 import { getWalletLocationTitle } from '../utils/string-utils'

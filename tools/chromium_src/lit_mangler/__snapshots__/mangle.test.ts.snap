@@ -219,6 +219,141 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "
 `;
 
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/history/app.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/history/app.html.ts
++++ gen/chrome/browser/resources/history/preprocessed/app.html.ts
+@@ -5,55 +5,25 @@
+ 
+ export function getHtml(this: HistoryAppElement) {
+   // clang-format off
+   return html\`<!--_html_template_start_-->
+-<history-query-manager .queryResult="\${this.queryResult_}"
+-    @query-finished="\${this.onQueryFinished_}"
+-    @query-state-changed="\${this.onQueryStateChanged_}">
++<history-query-manager .queryResult="\${this.queryResult_}" @query-finished="\${this.onQueryFinished_}" @query-state-changed="\${this.onQueryStateChanged_}">
+ </history-query-manager>
+-<history-router id="router" .selectedPage="\${this.selectedPage_}"
+-    .queryState="\${this.queryState_}"
+-    .lastSelectedTab="\${this.lastSelectedTab_}"
+-    @selected-page-changed="\${this.onSelectedPageChanged_}">
++<history-router id="router" .selectedPage="\${this.selectedPage_}" .queryState="\${this.queryState_}" .lastSelectedTab="\${this.lastSelectedTab_}" @selected-page-changed="\${this.onSelectedPageChanged_}">
+ </history-router>
+-<history-toolbar id="toolbar" ?has-drawer="\${this.hasDrawer_}"
+-    ?has-more-results="\${!this.queryResult_.info?.finished}"
+-    ?pending-delete="\${this.pendingDelete_}"
+-    .queryInfo="\${this.queryResult_.info}"
+-    ?querying="\${this.queryState_.querying}"
+-    .searchTerm="\${this.queryState_.searchTerm}"
+-    ?spinner-active="\${this.shouldShowSpinner_()}"
+-    .selectedPage="\${this.selectedPage_}" @search-term-native-before-input="\${
+-        this.onToolbarSearchTermNativeBeforeInput_}"
+-    @search-term-native-input="\${this.onToolbarSearchTermNativeInput_}"
+-    @search-term-cleared="\${this.onToolbarSearchTermCleared_}">
++<history-toolbar id="toolbar" ?has-drawer="\${this.hasDrawer_}" ?has-more-results="\${!this.queryResult_.info?.finished}" ?pending-delete="\${this.pendingDelete_}" .queryInfo="\${this.queryResult_.info}" ?querying="\${this.queryState_.querying}" .searchTerm="\${this.queryState_.searchTerm}" ?spinner-active="\${this.shouldShowSpinner_()}" .selectedPage="\${this.selectedPage_}" @search-term-native-before-input="\${
++        this.onToolbarSearchTermNativeBeforeInput_}" @search-term-native-input="\${this.onToolbarSearchTermNativeInput_}" @search-term-cleared="\${this.onToolbarSearchTermCleared_}">
+ </history-toolbar>
+ <div id="main-container">
+-  <history-side-bar id="contentSideBar" .selectedPage="\${this.selectedPage_}"
+-      @selected-page-changed="\${this.onSelectedPageChanged_}"
+-      .selectedTab="\${this.selectedTab_}"
+-      @selected-tab-changed="\${this.onSelectedTabChanged_}"
+-      .footerInfo="\${this.footerInfo}"
+-      ?history-clusters-enabled="\${this.historyClustersEnabled_}"
+-      ?history-clusters-visible="\${this.historyClustersVisible_}"
+-      @history-clusters-visible-changed="\${
+-          this.onHistoryClustersVisibleChanged_}"
+-      ?hidden="\${this.hasDrawer_}">
++  <history-side-bar id="contentSideBar" .selectedPage="\${this.selectedPage_}" @selected-page-changed="\${this.onSelectedPageChanged_}" .selectedTab="\${this.selectedTab_}" @selected-tab-changed="\${this.onSelectedTabChanged_}" .footerInfo="\${this.footerInfo}" ?history-clusters-enabled="\${this.historyClustersEnabled_}" ?history-clusters-visible="\${this.historyClustersVisible_}" @history-clusters-visible-changed="\${
++          this.onHistoryClustersVisibleChanged_}" ?hidden="\${this.hasDrawer_}">
+   </history-side-bar>
+-  <cr-page-selector id="content" attr-for-selected="path"
+-      selected="\${this.contentPage_}"
+-      @iron-select="\${this.onContentIronSelect_}">
++  <cr-page-selector id="content" attr-for-selected="path" selected="\${this.contentPage_}" @iron-select="\${this.onContentIronSelect_}">
+     <div id="tabsContainer" path="history">
+-      <div id="historyEmbeddingsDisclaimer" class="history-cards"
+-          ?hidden="\${!this.enableHistoryEmbeddings_}"
+-          ?narrow="\${this.hasDrawer_}">
++      <div id="historyEmbeddingsDisclaimer" class="history-cards" ?hidden="\${!this.enableHistoryEmbeddings_}" ?narrow="\${this.hasDrawer_}">
+         <div id="historyEmbeddingsDisclaimerContent">
+           $i18n{historyEmbeddingsDisclaimer}
+-          <a id="historyEmbeddingsDisclaimerLink"
+-              href="$i18n{historyEmbeddingsSettingsUrl}" target="_blank"
+-              aria-describedby="historyEmbeddingsDisclaimer"
+-              @click="\${this.onHistoryEmbeddingsDisclaimerLinkClick_}"
+-              @auxclick="\${this.onHistoryEmbeddingsDisclaimerLinkAuxclick_}">
++          <a id="historyEmbeddingsDisclaimerLink" href="$i18n{historyEmbeddingsSettingsUrl}" target="_blank" aria-describedby="historyEmbeddingsDisclaimer" @click="\${this.onHistoryEmbeddingsDisclaimerLinkClick_}" @auxclick="\${this.onHistoryEmbeddingsDisclaimerLinkAuxclick_}">
+             $i18n{learnMore}
+           </a>
+         </div>
+       </div>
+@@ -79,22 +49,20 @@
+         </history-filter-chips>
+       \` : ''}
+       <div id="tabsScrollContainer" class="cr-scrollable">
+         <div class="cr-scrollable-top-shadow" ?hidden="\${this.showTabs_}"></div>
+-<if expr="not is_chromeos">
++
+         \${this.shouldShowHistoryPageHistorySyncPromo_() ? html\`
+           <div class="history-cards">
+             <history-sync-promo></history-sync-promo>
+           </div>
+         \` : ''}
+-        <div class="history-cards"
+-            ?hidden="\${!this.shouldShowHistoryCrossDeviceSigninPromo_}">
+-          <history-cross-device-signin-promo id="historyCrossDeviceSigninPromo"
+-              @should-show-history-cross-device-signin-promo="\${
++        <div class="history-cards" ?hidden="\${!this.shouldShowHistoryCrossDeviceSigninPromo_}">
++          <history-cross-device-signin-promo id="historyCrossDeviceSigninPromo" @should-show-history-cross-device-signin-promo="\${
+                   this.onShouldShowHistoryCrossDeviceSigninPromo_}">
+           </history-cross-device-signin-promo>
+         </div>
+-</if>
++
+         \${this.enableHistoryEmbeddings_ ? html\`
+           <div id="historyEmbeddingsContainer" class="history-cards">
+             <history-embeddings-promo></history-embeddings-promo>
+             <cr-history-embeddings-filter-chips
+@@ -128,18 +96,13 @@
+               </cr-history-embeddings>
+             \` : ''}
+           </div>
+         \` : ''}
+-        <cr-page-selector id="tabsContent" attr-for-selected="path"
+-            selected="\${this.tabsContentPage_}"
+-            @iron-select="\${this.onTabsContentIronSelect_}">
+-          <history-list id="history" .queryState="\${this.queryState_}"
+-              ?is-active="\${this.getShowHistoryList_()}"
+-              searched-term="\${this.queryResult_.info?.term}"
+-              ?pending-delete="\${this.pendingDelete_}"
+-              @pending-delete-changed="\${this.onListPendingDeleteChanged_}"
+-              path="history" .scrollTarget="\${this.scrollTarget_}"
+-              .scrollOffset="\${this.tabContentScrollOffset_}">
++        \${loadTimeData.getBoolean('enableBraveHistoryEmbeddings') ? html\`
++        <brave-history-embeddings class="history-cards" search-query="\${this.queryState_.searchTerm}">
++        </brave-history-embeddings>
++      \` : ''}<cr-page-selector id="tabsContent" attr-for-selected="path" selected="\${this.tabsContentPage_}" @iron-select="\${this.onTabsContentIronSelect_}">
++          <history-list id="history" .queryState="\${this.queryState_}" ?is-active="\${this.getShowHistoryList_()}" searched-term="\${this.queryResult_.info?.term}" ?pending-delete="\${this.pendingDelete_}" @pending-delete-changed="\${this.onListPendingDeleteChanged_}" path="history" .scrollTarget="\${this.scrollTarget_}" .scrollOffset="\${this.tabContentScrollOffset_}">
+           </history-list>
+           \${this.historyClustersSelected_() ? html\`
+             <history-clusters id="history-clusters"
+                 ?is-active="\${this.getShowResultsByGroup_()}"
+@@ -163,10 +126,9 @@
+     \` : ''}
+   </cr-page-selector>
+ </div>
+ 
+-<cr-lazy-render-lit id="drawer"
+-    .template="\${() => html\`
++<cr-lazy-render-lit id="drawer" .template="\${() => html\`
+       <cr-drawer heading="$i18n{title}" align="$i18n{textdirection}">
+         <history-side-bar id="drawer-side-bar" slot="body"
+             .selectedPage="\${this.selectedPage_}"
+             @selected-page-changed="\${this.onSelectedPageChanged_}"
+"
+`;
+
 exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/history/synced_device_manager.html.ts.lit_mangler.ts should match snapshot 1`] = `
 "===================================================================
 --- ../chrome/browser/resources/history/synced_device_manager.html.ts
@@ -927,7 +1062,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/settings/autofill_page/contact_info/contact_info_page.html.ts
 +++ gen/chrome/browser/resources/settings/preprocessed/autofill_page/contact_info/contact_info_page.html.ts
-@@ -3,46 +3,26 @@
+@@ -3,46 +3,27 @@
  import type {SettingsContactInfoPageElement} from './contact_info_page.js';
  
  export function getHtml(this: SettingsContactInfoPageElement) {
@@ -967,22 +1102,23 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
        </div>
 -      <settings-toggle-button id="autofillOtpFillingToggle" class="hr"
 -          ?hidden="\${!this.shouldShowOtpFillingToggle_()}"
--          label="$i18n{enableGmailOtpFillingTitle}"
--          sub-label-with-link="$i18n{enableGmailOtpFillingDescription}"
+-          label="$i18n{enableGmailOtpFillingTitle}" sub-label-with-link="\${
+-              this.getGmailOtpFillingDescription_().toString()}"
 -          @sub-label-link-clicked="\${
 -              this.onGmailOtpFillingSubLabelLinkClicked_}"
 -          @settings-boolean-control-change="\${
 -              this.onAutofillOtpFillingToggleSettingsBooleanControlChange_}"
 -          pref-key="synthetic.settings.autofill.otp_filling"
 -          no-set-pref>
-+      <settings-toggle-button id="autofillOtpFillingToggle" class="hr" ?hidden="\${!this.shouldShowOtpFillingToggle_()}" label="$i18n{enableGmailOtpFillingTitle}" sub-label-with-link="$i18n{enableGmailOtpFillingDescription}" @sub-label-link-clicked="\${
++      <settings-toggle-button id="autofillOtpFillingToggle" class="hr" ?hidden="\${!this.shouldShowOtpFillingToggle_()}" label="$i18n{enableGmailOtpFillingTitle}" sub-label-with-link="\${
++              this.getGmailOtpFillingDescription_().toString()}" @sub-label-link-clicked="\${
 +              this.onGmailOtpFillingSubLabelLinkClicked_}" @settings-boolean-control-change="\${
 +              this.onAutofillOtpFillingToggleSettingsBooleanControlChange_}" pref-key="synthetic.settings.autofill.otp_filling" no-set-pref="">
        </settings-toggle-button>
        \${this.profileEnabledSyntheticPref_?.extensionId ? html\`
          <div class="cr-row continuation">
            <extension-controlled-indicator class="flex"
-@@ -59,17 +39,13 @@
+@@ -59,17 +40,13 @@
      </div>
      <div class="card">
        <div class="cr-row continuation">
@@ -1002,7 +1138,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
            \${this.addresses.map((item, index) => html\`
              <div class="list-item" role="listitem">
                <div class="start">
-@@ -96,10 +72,9 @@
+@@ -96,10 +73,9 @@
                </cr-icon-button>
              </div>
            \`)}
@@ -1014,7 +1150,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
          </div>
        </div>
        <cr-action-menu id="addressSharedMenu" role-description="$i18n{menu}">
-@@ -154,9 +129,9 @@
+@@ -154,9 +130,9 @@
              @close="\${this.onEmailRemoveConfirmationDialogClose_}">
          </settings-simple-confirmation-dialog>
        \` : ''}
@@ -1025,7 +1161,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
          <h2 class="flex">$i18n{emailVerificationSectionTitle}</h2>
        </div>
        \${this.isEmailVerificationProtocolEnabled_ ? html\`
-@@ -236,10 +211,9 @@
+@@ -236,10 +212,9 @@
            $i18n{emailVerificationEmptyLabel}
          </div>
        \` : ''}
@@ -2209,7 +2345,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
                  <h3 class="description-header">
                    $i18n{columnHeadingWhenOn}
                  </h3>
-@@ -84,44 +71,24 @@
+@@ -84,45 +71,28 @@
                    </li>
                  </ul>
                </div>
@@ -2246,6 +2382,11 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
                </settings-toggle-button>
              \` : ''}
            </div>
++        <div slot="sub-label" ?hidden="\${!loadTimeData.getBoolean('isExtensionMalwareBlocklistEnabled')}">
++      $i18n{braveSafeBrowsingExtensionMalwareBlocklistDesc}
++      <a href="$i18n{braveSafeBrowsingLearnMoreURL}" target="_blank">$i18n{learnMore}</a>
++    </div></settings-collapse-radio-button>
++        <settings-collapse-radio-button id="safeBrowsingDisabled" no-collapse="" name="\${SafeBrowsingSetting.DISABLED}" pref-key="generated.safe_browsing" label="$i18n{safeBrowsingNone}" sub-label="$i18n{safeBrowsingNoneDesc}" indicator-aria-label="$i18n{controlledSettingPolicy}">
          </settings-collapse-radio-button>
 -        <settings-collapse-radio-button id="safeBrowsingDisabled" no-collapse
 -            name="\${SafeBrowsingSetting.DISABLED}"
@@ -2253,12 +2394,12 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -            label="$i18n{safeBrowsingNone}"
 -            sub-label="$i18n{safeBrowsingNoneDesc}"
 -            indicator-aria-label="$i18n{controlledSettingPolicy}">
-+        <settings-collapse-radio-button id="safeBrowsingDisabled" no-collapse="" name="\${SafeBrowsingSetting.DISABLED}" pref-key="generated.safe_browsing" label="$i18n{safeBrowsingNone}" sub-label="$i18n{safeBrowsingNoneDesc}" indicator-aria-label="$i18n{controlledSettingPolicy}">
-         </settings-collapse-radio-button>
+-        </settings-collapse-radio-button>
        </settings-radio-group>
      </div>
      \${this.enableHttpsFirstModeNewSettings_ ? html\`
-@@ -161,19 +128,12 @@
+       <div id="secureConnectionsSection">
+@@ -161,19 +131,12 @@
      \` : ''}
      <div class="cr-row first">
        <h2 class="cr-title-text">$i18n{advancedPageTitle}</h2>
@@ -2280,7 +2421,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
        \${this.showSecureDnsSetting_ ? html\`
          <settings-secure-dns id="secureDnsSettingOld">
          </settings-secure-dns>
-@@ -182,21 +142,10 @@
+@@ -182,21 +145,10 @@
      \${this.enableHttpsFirstModeNewSettings_ && this.showSecureDnsSetting_ ? html\`
        <settings-secure-dns class="hr" id="secureDnsSettingNew">
        </settings-secure-dns>
@@ -2304,7 +2445,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
      \${this.enableSecurityKeysSubpage_ ? html\`
        <cr-link-row id="securityKeysSubpageTrigger" class="hr"
            label="$i18n{securityKeysTitle}"
-@@ -205,20 +154,12 @@
+@@ -205,20 +157,12 @@
            role-description="$i18n{subpageArrowRoleDescription}">
        </cr-link-row>
      \` : ''}
@@ -2489,48 +2630,48 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/settings/settings_main/settings_main.html
 +++ gen/chrome/browser/resources/settings/preprocessed/settings_main/settings_main.html
-@@ -42,14 +42,9 @@
+@@ -39,14 +39,9 @@
      </div>
-   \` : '')}
+   \` : ''}
  
-   \${cache(this.showPage_(this.pageVisibility_?.performance) ? html\`
+   \${this.showPage_(this.pageVisibility_?.performance) ? html\`
 -    <div slot="view" id="performance">
--      \${cache(this.renderPlugin_(this.routes_.PERFORMANCE) ? html\`
+-      \${this.renderPlugin_(this.routes_.PERFORMANCE) ? html\`
 -        <settings-performance-page-index ?in-search-mode="\${this.inSearchMode_}">
 -        </settings-performance-page-index>
--      \` : '')}
+-      \` : ''}
 -    </div>
 +    
-   \` : '')}
+   \` : ''}
  
-   \${cache(this.showAiPage_(this.pageVisibility_?.ai) ? html\`
+   \${this.showAiPage_(this.pageVisibility_?.ai) ? html\`
      <div slot="view" id="ai">
-@@ -75,18 +70,18 @@
+@@ -72,18 +67,18 @@
        </settings-search-page-index>
-     \` : '')}
+     \` : ''}
    </div>
  
 -<if expr="not is_chromeos">
 +
-   \${cache(this.showPage_(this.pageVisibility_?.defaultBrowser) ? html\`
+   \${this.showPage_(this.pageVisibility_?.defaultBrowser) ? html\`
      <div slot="view" id="defaultBrowser">
-       \${cache(this.renderPlugin_(this.routes_.DEFAULT_BROWSER) ? html\`
+       \${this.renderPlugin_(this.routes_.DEFAULT_BROWSER) ? html\`
          <settings-default-browser-page></settings-default-browser-page>
-       \` : '')}
+       \` : ''}
      </div>
-   \` : '')}
+   \` : ''}
 -</if>
  
 +
-   \${cache(this.showPage_(this.pageVisibility_?.onStartup) ? html\`
+   \${this.showPage_(this.pageVisibility_?.onStartup) ? html\`
      <div slot="view" id="onStartup">
-       \${cache(this.renderPlugin_(this.routes_.ON_STARTUP) ? html\`
+       \${this.renderPlugin_(this.routes_.ON_STARTUP) ? html\`
          <settings-on-startup-page></settings-on-startup-page>
-@@ -96,17 +91,14 @@
+@@ -93,17 +88,14 @@
  
-   \${cache(this.showPage_(this.pageVisibility_?.languages) ? html\`
+   \${this.showPage_(this.pageVisibility_?.languages) ? html\`
      <div slot="view" id="languages">
-       \${cache(this.renderPlugin_(this.routes_.LANGUAGES) ? html\`
+       \${this.renderPlugin_(this.routes_.LANGUAGES) ? html\`
 -<if expr="is_chromeos">
 -        <settings-languages-page-index-cros>
 -        </settings-languages-page-index-cros>
@@ -2543,86 +2684,86 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
          </settings-languages-page-index>
 -</if>
 +
-       \` : '')}
+       \` : ''}
      </div>
-   \` : '')}
+   \` : ''}
  
-@@ -126,18 +118,18 @@
-       \` : '')}
+@@ -123,18 +115,18 @@
+       \` : ''}
      </div>
-   \` : '')}
+   \` : ''}
  
 -<if expr="not is_chromeos">
 +
-   \${cache(this.showPage_(this.pageVisibility_?.system) ? html\`
+   \${this.showPage_(this.pageVisibility_?.system) ? html\`
      <div slot="view" id="system">
-       \${cache(this.renderPlugin_(this.routes_.SYSTEM) ? html\`
+       \${this.renderPlugin_(this.routes_.SYSTEM) ? html\`
 -        <settings-system-page></settings-system-page>
 +        <settings-brave-system-page-index></settings-brave-system-page-index>
-       \` : '')}
+       \` : ''}
      </div>
-   \` : '')}
+   \` : ''}
 -</if>
  
 +
-   \${cache(this.showPage_(this.pageVisibility_?.reset) ? html\`
+   \${this.showPage_(this.pageVisibility_?.reset) ? html\`
      <div slot="view" id="reset">
-       \${cache(this.renderPlugin_(this.routes_.RESET) ? html\`
+       \${this.renderPlugin_(this.routes_.RESET) ? html\`
          <settings-reset-page></settings-reset-page>
-@@ -150,5 +142,52 @@
+@@ -147,5 +139,52 @@
        <settings-about-page role="main" class="cr-centered-card-container">
        </settings-about-page>
-     \` : '')}
+     \` : ''}
    </div>
 -</cr-view-manager>
-+\${cache(this.showPage_(this.pageVisibility_?.getStarted) ? html\`
++\${this.showPage_(this.pageVisibility_?.getStarted) ? html\`
 +    <div slot="view" id="getStarted">
-+      \${cache(this.renderPlugin_(this.routes_.GET_STARTED) ? html\`
++      \${this.renderPlugin_(this.routes_.GET_STARTED) ? html\`
 +        <settings-getting-started-page-index ?in-search-mode="\${this.inSearchMode_}"></settings-getting-started-page-index>
-+      \` : '')}
++      \` : ''}
 +    </div>
-+  \` : '')}\${cache(this.showPage_(this.pageVisibility_?.origin) ? html\`
++  \` : ''}\${this.showPage_(this.pageVisibility_?.origin) ? html\`
 +    <div slot="view" id="origin">
-+      \${cache(this.renderPlugin_(this.routes_.ORIGIN) ? html\`
++      \${this.renderPlugin_(this.routes_.ORIGIN) ? html\`
 +        <settings-brave-origin-page ?in-search-mode="\${this.inSearchMode_}"></settings-brave-origin-page>
-+      \` : '')}
++      \` : ''}
 +    </div>
-+  \` : '')}\${cache(this.showPage_(this.pageVisibility_?.content) ? html\`
++  \` : ''}\${this.showPage_(this.pageVisibility_?.content) ? html\`
 +    <div slot="view" id="content">
-+      \${cache(this.renderPlugin_(this.routes_.BRAVE_CONTENT) ? html\`
++      \${this.renderPlugin_(this.routes_.BRAVE_CONTENT) ? html\`
 +        <settings-brave-content-page-index ?in-search-mode="\${this.inSearchMode_}"></settings-brave-content-page-index>
-+      \` : '')}
++      \` : ''}
 +    </div>
-+  \` : '')}\${cache(this.showPage_(this.pageVisibility_?.shields) ? html\`
++  \` : ''}\${this.showPage_(this.pageVisibility_?.shields) ? html\`
 +    <div slot="view" id="shields">
-+      \${cache(this.renderPlugin_(this.routes_.SHIELDS) ? html\`
++      \${this.renderPlugin_(this.routes_.SHIELDS) ? html\`
 +        <settings-shields-page-index ?in-search-mode="\${this.inSearchMode_}"></settings-shields-page-index>
-+      \` : '')}
++      \` : ''}
 +    </div>
-+  \` : '')}\${cache(this.showPage_(this.pageVisibility_?.braveWallet) ? html\`
++  \` : ''}\${this.showPage_(this.pageVisibility_?.braveWallet) ? html\`
 +    <div slot="view" id="web3">
-+      \${cache(this.renderPlugin_(this.routes_.BRAVE_WEB3) ? html\`
++      \${this.renderPlugin_(this.routes_.BRAVE_WEB3) ? html\`
 +        <settings-wallet-page-index ?in-search-mode="\${this.inSearchMode_}"></settings-wallet-page-index>
-+      \` : '')}
++      \` : ''}
 +    </div>
-+  \` : '')}\${cache(this.showPage_(this.pageVisibility_?.leoAssistant) ? html\`
++  \` : ''}\${this.showPage_(this.pageVisibility_?.leoAssistant) ? html\`
 +    <div slot="view" id="leoAssistant">
-+      \${cache(this.renderPlugin_(this.routes_.BRAVE_LEO_ASSISTANT) ? html\`
++      \${this.renderPlugin_(this.routes_.BRAVE_LEO_ASSISTANT) ? html\`
 +        <settings-brave-leo-assistant-page-index ?in-search-mode="\${this.inSearchMode_}"></settings-brave-leo-assistant-page-index>
-+      \` : '')}
++      \` : ''}
 +    </div>
-+  \` : '')}\${cache(this.showPage_(this.pageVisibility_?.braveSync) ? html\`
++  \` : ''}\${this.showPage_(this.pageVisibility_?.braveSync) ? html\`
 +    <div slot="view" id="braveSync">
-+      \${cache(this.renderPlugin_(this.routes_.BRAVE_SYNC) ? html\`
++      \${this.renderPlugin_(this.routes_.BRAVE_SYNC) ? html\`
 +        <settings-brave-sync-page-index ?in-search-mode="\${this.inSearchMode_}"></settings-brave-sync-page-index>
-+      \` : '')}
++      \` : ''}
 +    </div>
-+  \` : '')}\${cache(this.showPage_(this.pageVisibility_?.extensions) ? html\`
++  \` : ''}\${this.showPage_(this.pageVisibility_?.extensions) ? html\`
 +      <div slot="view" id="extensions">
 +        <settings-brave-extensions-page-index ?in-search-mode="\${this.inSearchMode_}">
 +        </settings-brave-extensions-page-index>
 +      </div>
-+    \` : '')}</cr-view-manager>
++    \` : ''}</cr-view-manager>
 "
 `;
 

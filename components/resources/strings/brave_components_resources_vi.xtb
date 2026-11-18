@@ -947,6 +947,11 @@
 <translation id="4362717653795263052">Khôi phục tài khoản tiền mã hóa chính</translation>
 <translation id="3038077262567136741">Nhập cụm từ khôi phục của bạn để khôi phục tài khoản tiền mã hóa ví Brave của bạn.</translation>
 <translation id="955918646509748368">Cụm từ khôi phục nhập vào không hợp lệ.</translation>
+<translation id="7496330898672236908">Cụm từ phục hồi này không khớp với ví của bạn. Hãy kiểm tra lại cụm từ và thử lại.</translation>
+<translation id="3798792138617904098">Xóa các tài khoản đã nhập?</translation>
+<translation id="2960631345291747230">Các tài khoản đã nhập không được sao lưu bằng cụm từ phục hồi của bạn. Chúng sẽ bị xóa khỏi Ví Brave và bạn có thể mất vĩnh viễn quyền truy cập vào số tiền trong đó, trừ khi bạn đã sao lưu khóa riêng tư của chúng.</translation>
+<translation id="8898583604592472741">Xóa tài khoản</translation>
+<translation id="1577629163207045190">Nhập "<ph name="CONFIRMATION_PHRASE"/>" để xác nhận.</translation>
 <translation id="8107437138787377150">Dán cụm từ khôi phục từ khay nhớ tạm</translation>
 <translation id="4811736040444856406">Hiển thị cụm từ khôi phục</translation>
 <translation id="4359319875297001084">Nhập từ ví tiền mã hóa Brave cũ?</translation>
@@ -2241,13 +2246,12 @@
 <translation id="3934503473603661122">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Grok 4.7, mô hình suy luận tiên tiến của xAI trên Amazon Bedrock. Grok 4.7 được phục vụ thông qua cơ sở hạ tầng AWS bảo mật của Brave.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi GPT Luna, mô hình nhanh, độ trễ thấp của OpenAI trên Amazon Bedrock. GPT Luna được phục vụ thông qua cơ sở hạ tầng AWS bảo mật của Brave.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi GPT 5.6 Terra, mô hình sản xuất cân bằng của OpenAI trên Amazon Bedrock Mantle. GPT 5.6 Terra được phục vụ thông qua cơ sở hạ tầng AWS bảo mật của Brave.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Mistral Large, một mô hình được tạo ra bởi Mistral để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. Mistral Large được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Claude Haiku, một mô hình được tạo ra bởi Anthropic để hỗ trợ các công việc đàm thoại và xử lý văn bản. Claude Haiku được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Qwen 3.8 Flash Next, một mô hình được tạo ra bởi Alibaba Cloud để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. Qwen 3.8 Flash Next được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Deepseek V3.2, một mô hình được tạo ra bởi Deepseek để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. Deepseek V3.2 được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi GLM 5.3, một mô hình được tạo ra bởi Z.ai để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. GLM 5.3 được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Claude Opus, một mô hình được tạo ra bởi Anthropic để hỗ trợ các công việc đàm thoại và xử lý văn bản. Claude Opus được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi GLM-4-7-Flash, một mô hình được tạo ra bởi Zhipu AI để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. GLM-4-7-Flash được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Kimi K2.5, một mô hình được tạo ra bởi Moonshot AI để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. Kimi K2.5 được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Nemotron Nano 3 30B, một mô hình được tạo ra bởi NVIDIA để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. Nemotron Nano 3 30B được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Brave Ocelot, một mô hình được tạo ra bởi Brave để tóm tắt các trang web. Brave Ocelot được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Cục bộ</translation>
@@ -2387,8 +2391,8 @@
 <translation id="7465032796278724624">Riêng tư có thể xác minh với NEAR AI TEE</translation>
 <translation id="8782867266498869301">Mô hình thay đổi động để sử dụng mô hình tốt nhất cho tác vụ</translation>
 <translation id="7348809809749151120">Nhanh • Tìm kiếm</translation>
+<translation id="7711013627639951065">Nhanh • Tìm kiếm • Thị giác • Công cụ</translation>
 <translation id="3213834013136637671">Tìm kiếm • Thị giác</translation>
-<translation id="2793458212460902934">Nhanh • Tìm kiếm • Công cụ</translation>
 <translation id="5276681919620506371">Tìm kiếm • Công cụ</translation>
 <translation id="7434375176361995333">Tóm tắt • Nhanh</translation>
 <translation id="3965507912994218570">Cài đặt Leo</translation>
@@ -2461,6 +2465,8 @@
 <translation id="6287023598025162715">Cuộc trò chuyện mới</translation>
 <translation id="7230502562132448519">Lọc cuộc trò chuyện</translation>
 <translation id="821070843380699990">Vui lòng thử một truy vấn khác</translation>
+<translation id="241415280196701326">Không gian làm việc gần đây</translation>
+<translation id="5388053981690151266">Cuộc trò chuyện mới trong không gian làm việc này</translation>
 <translation id="7097822247923237815">Cuộc trò chuyện tạm thời</translation>
 <translation id="7481750859362986254">Cuộc trò chuyện này sẽ không được lưu vào lịch sử của bạn và sẽ không sử dụng bất kỳ lựa chọn tùy chỉnh nào hoặc ký ức của Leo.</translation>
 <translation id="4238305333951712482">Đã cập nhật bộ nhớ: <ph name="MEMORY_CONTENT"/></translation>
@@ -2486,6 +2492,7 @@
 <translation id="5103625298494362646">Chế độ duyệt AI hoạt động với các mô hình hỗ trợ công cụ. Các mô hình không tương thích sẽ bị ẩn khỏi danh sách này.</translation>
 <translation id="3397808797783614750">Kích hoạt AI để tự động duyệt web thay cho bạn có thể dẫn đến hậu quả không mong muốn và gây hại cho quyền riêng tư, tài chính và giao tiếp trực tuyến của bạn. <ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Cảnh báo bảo mật</translation>
+<translation id="717245811623757038">Yêu cầu cấp quyền cho công cụ</translation>
 <translation id="6077070599873946984">Brave AI cần quyền của bạn cho: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI muốn thực thi **<ph name="TOOL_NAME"/>** trên **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Hoạt động này được phát hiện là có khả năng không phù hợp với yêu cầu của bạn:</translation>

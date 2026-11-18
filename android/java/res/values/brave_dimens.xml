@@ -114,4 +114,13 @@
          which leaves the app menu too narrow for the five buttons of Brave's icon row footer.
          Keep the previous width as the minimum. -->
     <dimen name="menu_width_min">@dimen/menu_width</dimen>
+
+    <!-- New Tab Takeover Disclosure Tooltip -->
+    <dimen name="new_tab_takeover_disclosure_label_shadow_radius">3dp</dimen>
+    <dimen name="new_tab_takeover_disclosure_label_shadow_dy">1dp</dimen>
+    <dimen name="new_tab_takeover_disclosure_tooltip_width">310dp</dimen>
+    <dimen name="new_tab_takeover_disclosure_tooltip_padding">16dp</dimen>
+    <dimen name="new_tab_takeover_disclosure_tooltip_arrow_width">12dp</dimen>
+    <dimen name="new_tab_takeover_disclosure_tooltip_arrow_height">6dp</dimen>
+    <dimen name="new_tab_takeover_disclosure_tooltip_screen_margin">16dp</dimen>
 </resources>

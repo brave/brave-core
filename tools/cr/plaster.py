@@ -2620,6 +2620,466 @@ class CxxAddEnumEntriesRewriter(_AstGrepRewriter):
         return list(entries)
 
 
+# The header an include names, ahead of any comment an `#import`'s argument
+# carries after it.
+_CXX_DECORATED_HEADER_RE: Final = re.compile(r'<[^<>"\s]+>|"[^<>"\s]+"')
+
+# A header as `add_include` takes it: a system header in angle brackets, or the
+# path of any other, which is included in quotes.
+_CXX_HEADER_ARG_RE: Final = re.compile(r'<[^<>"\s]+>|[^<>"\s]+')
+
+# `selector`s for `cxx.find_preamble_directive`, picking out every directive,
+# or every include.
+_CXX_ANY_DIRECTIVE: Final = '^#'
+_CXX_ANY_INCLUDE: Final = '^#[ \\t]*(?:include|import)'
+
+# The `IncludeCategories` of Chromium's `//.clang-format`, in the order they
+# are tried: the first regex found in a decorated header name gives its
+# priority. Includes of one priority form one group, groups are ordered by
+# priority, and clang-format ignores case in these regexes.
+_CXX_INCLUDE_CATEGORIES: Final = tuple(
+    (re.compile(pattern, re.IGNORECASE), priority)
+    for pattern, priority in (
+        (r'^<objbase\.h>', 1),
+        (
+            r'^<(atlbase|initguid|mmdeviceapi|ocidl|ole2|shobjidl|tchar|'
+            r'unknwn|windows|winsock2|winternl|ws2tcpip)\.h>',
+            2,
+        ),
+        (r'^<UIAutomation.*\.h>', 6),
+        (r'^<.*\.h>', 3),
+        (r'^<.*>', 4),
+        (r'"(.*/)?windows_h_disallowed\.h"', 7),
+        (r'.*', 5),
+    )
+)
+
+
+def _cxx_include_sort_key(header: str) -> tuple[int, str]:
+    """The order clang-format sorts `header` in: priority, then name."""
+    priority = next(
+        priority
+        for regex, priority in _CXX_INCLUDE_CATEGORIES
+        if regex.search(header)
+    )
+    return (priority, header)
+
+
+def _rest_of_line(source: bytes, end: int) -> tuple[str, str]:
+    """What a paragraph inserted after the directive ending at `end` needs.
+
+    That is the remainder of the directive's line, for the op to re-emit, and
+    the blank line to close the paragraph with, unless one is there already.
+    """
+    newline = source.find(b'\n', end - 1)
+    after = len(source) if newline < 0 else newline + 1
+    rest = source[end:after].decode('utf-8')
+    blank_follows = after == len(source) or source[after : after + 1] == b'\n'
+    return rest, '' if blank_follows else '\n'
+
+
+@dataclass(frozen=True)
+class _CxxInclude:
+    """An unconditional include a C++ source opens with."""
+
+    # The include's directive, newline included.
+    match: AstMatch
+
+    # The header as included, e.g. `<vector>` or `"base/check.h"`.
+    header: str
+
+    @property
+    def sort_key(self) -> tuple[int, str]:
+        return _cxx_include_sort_key(self.header)
+
+    @property
+    def priority(self) -> int:
+        return self.sort_key[0]
+
+    @property
+    def selector(self) -> str:
+        return f'{_CXX_ANY_INCLUDE}[ \\t]*{re.escape(self.header)}'
+
+
+class CxxAddIncludeRewriter(_AstGrepRewriter):
+    """Include one or more headers in a C++ source, in order."""
+
+    NAME: Final = 'add_include'
+    OP_ID: Final = 'cxx.insert_before_preamble_directive'
+    SUMMARY: Final = 'Add `#include`(s), in order.'
+    # Authored in Markdown; `Help` renders it with rich.
+    HELP: Final = r"""
+        Adds an `#include` for each header, in order among the file's own.
+        A header the file already includes fails the substitution.
+
+        Fields:
+
+        - `header` — a list of the headers to include.
+
+        Example:
+
+        ```yaml
+        substitutions:
+          - description: Make the Brave browser process available.
+            add_include:
+              header:
+                - brave/browser/brave_browser_process.h
+                - <vector>
+        ```
+
+        ```diff
+         #include "chrome/browser/browser_process_impl.h"
+
+        +#include <vector>
+        +
+         #include "base/memory/ptr_util.h"
+        +#include "brave/browser/brave_browser_process.h"
+         #include "chrome/browser/browser_process.h"
+        ```
+    """
+
+    _INSERT_AFTER: Final = 'cxx.insert_after_preamble_directive'
+
+    def __init__(self, *, headers: list[str]):
+        super().__init__()
+        self._headers = headers
+
+    @classmethod
+    def validate_count(cls, count: int, description: str) -> None:
+        # Each header is included once, so no other count means anything here.
+        if count != 1:
+            raise ValueError(
+                f'{cls.NAME} adds each include exactly once and '
+                f'does not accept a count other than 1 '
+                f'(in "{description}")'
+            )
+
+    def apply(
+        self,
+        contents: str,
+        *,
+        count: int,
+        description: str,
+        blank_for_parse: BlankForParseOptions = BlankForParseOptions(),
+    ) -> tuple[str, list[str]]:
+        del count  # Rejected by `validate_count`; always applies once.
+        # Blanking macros would blank the conditionals the includes are told
+        # apart by, so the source is parsed as is.
+        del blank_for_parse
+        engine = AstRewriter(RewritersEval.load(), contents)
+        errors: list[str] = []
+        for header in self._headers:
+            if re.search(
+                rf'^[ \t]*#[ \t]*(?:include|import)[ \t]*{re.escape(header)}',
+                engine.content,
+                re.MULTILINE,
+            ):
+                errors.append(
+                    f'{self.NAME} found {header} already included '
+                    f'(in "{description}")'
+                )
+                continue
+            op = self._operation(engine, header)
+            if op is None or engine.run(op) != 1:
+                errors.append(
+                    f'{self.NAME} found no includes or include guard to add '
+                    f'{header} by (in "{description}")'
+                )
+        return engine.content, errors
+
+    def _operation(self, engine: AstRewriter, header: str) -> Operation | None:
+        """The op inserting `header` where clang-format would sort it.
+
+        None when the source opens with code, leaving nowhere to include it.
+        """
+        source = engine.content.encode('utf-8')
+        line = f'#include {header}\n'
+        sort_key = _cxx_include_sort_key(header)
+        priority = sort_key[0]
+        matches = engine.matches(
+            Operation(
+                self._INSERT_AFTER,
+                {'selector': _CXX_ANY_INCLUDE, 'rest': '', 'text': ''},
+            )
+        )
+        regions = self._regions(source, matches)
+        main_include = self._main_include(regions, matches)
+        if main_include:
+            regions[0] = regions[0][1:]
+        regions = [region for region in regions if region]
+
+        if not regions:
+            if main_include:
+                return self._paragraph_after(source, main_include, line)
+            directives = engine.matches(
+                Operation(
+                    'cxx.insert_after_preamble',
+                    {'selector': _CXX_ANY_DIRECTIVE, 'rest': '', 'text': ''},
+                )
+            )
+            if not directives:
+                return None
+            rest, trail = _rest_of_line(source, directives[-1].end)
+            return Operation(
+                'cxx.insert_after_preamble',
+                {
+                    'selector': _CXX_ANY_DIRECTIVE,
+                    'rest': rest,
+                    'text': f'\n{line}{trail}',
+                },
+            )
+
+        def has_priority(group: list[_CxxInclude]) -> bool:
+            return any(i.priority == priority for i in group)
+
+        # A conditional block or a comment splits the includes into regions,
+        # which clang-format sorts separately. The header joins the region
+        # already holding its kind of include, or else the first one.
+        region = next(
+            (r for r in regions if any(has_priority(g) for g in r)), regions[0]
+        )
+        same_priority = [group for group in region if has_priority(group)]
+        if same_priority:
+            group = next(
+                (g for g in same_priority if g[-1].sort_key > sort_key),
+                same_priority[-1],
+            )
+            successor = next((i for i in group if i.sort_key > sort_key), None)
+            if successor:
+                return self._before(successor, line)
+            return Operation(
+                self._INSERT_AFTER,
+                {'selector': group[-1].selector, 'rest': '', 'text': line},
+            )
+
+        # A new group, ordered among the others by its priority.
+        successor_group = next(
+            (
+                group
+                for group in region
+                if min(i.priority for i in group) > priority
+            ),
+            None,
+        )
+        if successor_group:
+            return self._before(successor_group[0], f'{line}\n')
+        return self._paragraph_after(source, region[-1][-1], line)
+
+    def _before(self, include: _CxxInclude, text: str) -> Operation:
+        return Operation(
+            self.OP_ID, {'selector': include.selector, 'text': text}
+        )
+
+    def _paragraph_after(
+        self, source: bytes, include: _CxxInclude, line: str
+    ) -> Operation:
+        rest, trail = _rest_of_line(source, include.match.end)
+        return Operation(
+            self._INSERT_AFTER,
+            {
+                'selector': include.selector,
+                'rest': rest,
+                'text': f'\n{line}{trail}',
+            },
+        )
+
+    @staticmethod
+    def _regions(
+        source: bytes, matches: list[AstMatch]
+    ) -> list[list[list[_CxxInclude]]]:
+        """The includes, split as clang-format sees them.
+
+        A region is a run of include and blank lines, which clang-format sorts
+        as a unit, and its groups are split by those blank lines. An include
+        naming its header through a macro has no header to sort by, and splits
+        the regions as any other directive does.
+        """
+        regions: list[list[list[_CxxInclude]]] = []
+        previous: AstMatch | None = None
+        for match in matches:
+            start, end = match.metavars['HEADER']
+            header = _CXX_DECORATED_HEADER_RE.match(
+                source[start:end].decode('utf-8')
+            )
+            if not header:
+                previous = None
+                continue
+            include = _CxxInclude(match=match, header=header[0])
+            between = source[previous.end : match.start] if previous else b''
+            if previous is None or between.strip():
+                regions.append([[include]])
+            elif between:
+                regions[-1].append([include])
+            else:
+                regions[-1][-1].append(include)
+            previous = match
+        return regions
+
+    @staticmethod
+    def _main_include(
+        regions: list[list[list[_CxxInclude]]], matches: list[AstMatch]
+    ) -> _CxxInclude | None:
+        """The include of the header a source implements, if it has one.
+
+        Plaster does not hand rewriters the target's path, so the main include
+        is told apart the way it is laid out: a source's first include, quoted
+        and alone in its group, as the style guide places it. A header, whose
+        includes sit in its include guard, has none.
+        """
+        if not regions or any('GUARD' in m.metavars for m in matches):
+            return None
+        first_group = regions[0][0]
+        if len(first_group) == 1 and first_group[0].header.startswith('"'):
+            return first_group[0]
+        return None
+
+    @classmethod
+    def parse(cls, body: object, *, description: str) -> CxxAddIncludeRewriter:
+        """Validate an `add_include:` body and its list of headers."""
+        if not isinstance(body, dict):
+            raise ValueError(
+                f'"{cls.NAME}" must be a mapping (in "{description}")'
+            )
+        unknown = sorted(set(body) - {'header'})
+        if unknown:
+            raise ValueError(
+                f'Unrecognised {cls.NAME} arg(s): '
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")'
+            )
+        headers = body.get('header')
+        if not (
+            isinstance(headers, list)
+            and headers
+            and all(isinstance(header, str) for header in headers)
+        ):
+            raise ValueError(
+                f'{cls.NAME} `header` must be a non-empty list of strings '
+                f'(in "{description}")'
+            )
+        for header in headers:
+            if not _CXX_HEADER_ARG_RE.fullmatch(header):
+                raise ValueError(
+                    f'{cls.NAME} `header` items must be a path, e.g. '
+                    f'base/check.h, or a system header in angle brackets, '
+                    f'e.g. <vector>: {header!r} (in "{description}")'
+                )
+        if len(set(headers)) != len(headers):
+            raise ValueError(
+                f'{cls.NAME} `header` lists a header more than once '
+                f'(in "{description}")'
+            )
+        return cls(
+            headers=[h if h.startswith('<') else f'"{h}"' for h in headers]
+        )
+
+
+class CxxAddAfterIncludesRewriter(_AstGrepRewriter):
+    """Insert code after a C++ source's includes, ahead of its declarations."""
+
+    NAME: Final = 'add_after_includes'
+    OP_ID: Final = 'cxx.insert_after_preamble'
+    SUMMARY: Final = 'Insert code after the includes, before any declaration.'
+    # Authored in Markdown; `Help` renders it with rich.
+    HELP: Final = r"""
+        Inserts code after a file's includes and before its first
+        declaration, e.g. forward declarations.
+
+        Fields:
+
+        - `code` — the line(s) to insert.
+
+        Example:
+
+        ```yaml
+        substitutions:
+          - description: Forward declare the Brave delegate.
+            add_after_includes:
+              code: |-
+                namespace brave {
+                class BraveTabStripModelDelegate;
+                }  // namespace brave
+        ```
+
+        ```diff
+         #include "ui/base/models/list_selection_model.h"
+
+        +namespace brave {
+        +class BraveTabStripModelDelegate;
+        +}  // namespace brave
+        +
+         class Profile;
+        ```
+    """
+
+    def __init__(self, *, code: str):
+        super().__init__()
+        self._code = code
+
+    @classmethod
+    def validate_count(cls, count: int, description: str) -> None:
+        # A file has a single place after its includes.
+        if count != 1:
+            raise ValueError(
+                f'{cls.NAME} inserts the code exactly once and '
+                f'does not accept a count other than 1 '
+                f'(in "{description}")'
+            )
+
+    def apply(
+        self,
+        contents: str,
+        *,
+        count: int,
+        description: str,
+        blank_for_parse: BlankForParseOptions = BlankForParseOptions(),
+    ) -> tuple[str, list[str]]:
+        del count  # Rejected by `validate_count`; always applies once.
+        # Blanking macros would blank the conditionals the preamble is told
+        # apart by, so the source is parsed as is.
+        del blank_for_parse
+        engine = AstRewriter(RewritersEval.load(), contents)
+        inputs = {'selector': _CXX_ANY_DIRECTIVE, 'rest': '', 'text': ''}
+        directives = engine.matches(Operation(self.OP_ID, inputs))
+        if not directives:
+            return contents, [
+                f'{self.NAME} found no includes or include guard to insert '
+                f'after (in "{description}")'
+            ]
+        source = contents.encode('utf-8')
+        rest, trail = _rest_of_line(source, directives[-1].end)
+        code = self._code.strip('\n').replace('\\', '\\\\')
+        engine.run(
+            Operation(
+                self.OP_ID,
+                inputs | {'rest': rest, 'text': f'\n{code}\n{trail}'},
+            )
+        )
+        return engine.content, []
+
+    @classmethod
+    def parse(
+        cls, body: object, *, description: str
+    ) -> CxxAddAfterIncludesRewriter:
+        """Validate an `add_after_includes:` body."""
+        if not isinstance(body, dict):
+            raise ValueError(
+                f'"{cls.NAME}" must be a mapping (in "{description}")'
+            )
+        unknown = sorted(set(body) - {'code'})
+        if unknown:
+            raise ValueError(
+                f'Unrecognised {cls.NAME} arg(s): '
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")'
+            )
+        code = body.get('code')
+        if not isinstance(code, str) or not code.strip():
+            raise ValueError(
+                f'{cls.NAME} `code` must be a non-empty string '
+                f'(in "{description}")'
+            )
+        return cls(code=code)
+
+
 class JsSetBlinkRuntimeEnabledFeatureStateRewriter(_AstGrepRewriter):
     """Override a value `base::Feature` for a `runtime_enabled_features.json5`.
 
@@ -3948,6 +4408,8 @@ _DECLARED_REWRITERS: Final = (
     CxxAddToProtectedRewriter,
     CxxAddToPublicRewriter,
     CxxAddEnumEntriesRewriter,
+    CxxAddIncludeRewriter,
+    CxxAddAfterIncludesRewriter,
     JsSetBlinkRuntimeEnabledFeatureStateRewriter,
     GnAddLiteralToListRewriter,
     GnAddLiteralToVariableRewriter,
@@ -4294,9 +4756,12 @@ _MATCHER_RESULT_SCHEMA = {
 }
 
 # A matcher op: a templated ast-grep query plus its result shape. Its inputs
-# are the template's `{placeholder}`s, inferred rather than declared.
+# are the template's `{placeholder}`s, inferred rather than declared. `utils`
+# are named ast-grep rule bodies the template refers to with `matches:`; they
+# are passed through as they are, unformatted.
 _MATCHER_SCHEMA = {
     'template': _NON_EMPTY_STR,
+    schema.Optional('utils'): {_NON_EMPTY_STR: _NON_EMPTY_STR},
     'result': _MATCHER_RESULT_SCHEMA,
 }
 
@@ -4305,16 +4770,18 @@ _MATCHER_SCHEMA = {
 # templates it feeds in `_check_cross_references`); `replace` may name adjacent
 # tokens to fold into each rewritten span, which are `{input}`-formatted like
 # `replace` itself. `first_match`, when true, rewrites only the first match (in
-# source order) and ignores any later ones. `capture_overrides` names matcher
-# captures the caller may supply directly, as an input of the same name: a set
-# one wins and the match is not read for it, an unset one leaves the capture to
-# resolve as usual. An input may not otherwise share a capture's name, so
-# listing it here is what makes that precedence visible at the spec.
+# source order) and ignores any later ones; `last_match` likewise rewrites only
+# the last one, and an op sets one or the other. `capture_overrides` names
+# matcher captures the caller may supply directly, as an input of the same
+# name: a set one wins and the match is not read for it, an unset one leaves
+# the capture to resolve as usual. An input may not otherwise share a capture's
+# name, so listing it here is what makes that precedence visible at the spec.
 _REWRITER_SCHEMA = {
     'matcher': _NON_EMPTY_STR,
     'inputs': [str],
     schema.Optional('capture_overrides'): [_CAPTURE_NAME],
     schema.Optional('first_match'): bool,
+    schema.Optional('last_match'): bool,
     schema.Optional('when_set'): {_NON_EMPTY_STR: _NON_EMPTY_STR},
     'replace': {
         schema.Optional('consume_before'): str,
@@ -4581,6 +5048,11 @@ class RewritersEval:
                 f'{self._source}: rewriter {op_id!r} references unknown '
                 f'matcher {ref!r}'
             )
+        if spec.get('first_match') and spec.get('last_match'):
+            raise RewritersSchemaError(
+                f'{self._source}: rewriter {op_id!r} sets both `first_match` '
+                f'and `last_match`'
+            )
         matcher = self._matchers[ref]
         matcher_node = matcher['result']['node']
         if spec['result']['node'] != matcher_node:
@@ -4838,19 +5310,28 @@ def _leading_indent(source: bytes, pos: int) -> str:
 
 
 def run_ast_grep(
-    *, language: str, rule_body: str, source: str
+    *,
+    language: str,
+    rule_body: str,
+    source: str,
+    utils: Mapping[str, str] | None = None,
 ) -> list[AstMatch]:
     """Run an ast-grep rule against in-memory source and return its matches.
 
     This function is the main entrypoint for the ast-grep binary invocation.
 
-    `rule_body` is an ast-grep YAML rule body (the part under `rule:`). Source
-    is fed over stdin with an explicit `--lang`. The reported offsets are into
+    `rule_body` is an ast-grep YAML rule body (the part under `rule:`), and
+    `utils` the named rule bodies it may refer to with `matches:`. Source is fed
+    over stdin with an explicit `--lang`. The reported offsets are into
     `source`'s UTF-8 bytes, regardless of how stdin is encoded.
     """
-    doc = f'id: plaster\nlanguage: {language}\nrule:\n' + _indent_yaml(
-        rule_body
-    )
+    doc = f'id: plaster\nlanguage: {language}\n'
+    if utils:
+        doc += 'utils:\n' + ''.join(
+            f'  {name}:\n{_indent_yaml(body, 4)}\n'
+            for name, body in utils.items()
+        )
+    doc += 'rule:\n' + _indent_yaml(rule_body)
     # Route through terminal.run for consistent logging / infra keep-alive,
     # like the rest of plaster's subprocess use. It runs with check=True, so a
     # non-zero exit (e.g. a bad rule) raises CalledProcessError.
@@ -5112,7 +5593,10 @@ class AstRewriter:
         if self._macros_eraser is not None:
             source_for_parse = self._macros_eraser.erase(self._source)
         return run_ast_grep(
-            language=language, rule_body=rule_body, source=source_for_parse
+            language=language,
+            rule_body=rule_body,
+            source=source_for_parse,
+            utils=matcher.get('utils'),
         )
 
     def matches(self, op: Operation) -> list[AstMatch]:
@@ -5280,13 +5764,16 @@ class AstRewriter:
         kind stops short of an adjacent token (e.g. the `:` after an
         access_specifier, or the space before a `final` specifier). An op that
         sets `first_match` rewrites only the first match (in source order),
-        leaving any later matches untouched.
+        leaving any later matches untouched, and one that sets `last_match`
+        only the last.
         """
         rewriter = self._rewriters.rewriter(op.op_id)
         matcher = self._rewriters.matcher(rewriter['matcher'])
         matches = self._locate(op)
         if rewriter.get('first_match'):
             matches = matches[:1]
+        elif rewriter.get('last_match'):
+            matches = matches[-1:]
 
         replace = rewriter['replace']
         pattern = replace['re_pattern']

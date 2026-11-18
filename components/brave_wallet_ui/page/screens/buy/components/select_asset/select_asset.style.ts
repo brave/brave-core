@@ -4,8 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import { font, color } from '@brave/leo/tokens/css/variables'
-import ProgressRing from '@brave/leo/react/progressRing'
+import { font, color } from '@brave/nala/tokens/css/variables'
+import ProgressRing from '@brave/nala/react/progressRing'
 
 // Shared Styles
 import { Row } from '../../../../../components/shared/style'
