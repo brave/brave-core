@@ -12,6 +12,8 @@
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "chrome/test/base/web_ui_mocha_browser_test.h"
+#include "components/password_manager/content/common/web_ui_constants.h"
 #include "components/password_manager/core/browser/password_form_manager_for_ui.h"
 #include "components/password_manager/core/browser/password_store/password_form_converters.h"
 #include "components/password_manager/core/browser/password_string.h"
@@ -99,4 +101,16 @@ IN_PROC_BROWSER_TEST_F(PasswordManagerTest,
   )"));
 
   EXPECT_TRUE(console_observer.messages().empty());
+}
+
+class PasswordManagerUITest : public WebUIMochaBrowserTest {
+ protected:
+  PasswordManagerUITest() {
+    set_test_loader_host(password_manager::kChromeUIPasswordManagerHost);
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(PasswordManagerUITest, BraveSettingsSection) {
+  RunTest("password_manager/settings_section_test.js",
+          "runMochaSuite('BraveSettingsSection')");
 }
