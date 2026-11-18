@@ -5,6 +5,7 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <memory>
 #include <optional>
 
 #include "base/check.h"
@@ -17,12 +18,14 @@
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/values_test_util.h"
+#include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_browsertest_base.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
+#include "brave/browser/ui/tabs/brave_tab_menu_model.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/animations/web_panel_animations.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
@@ -30,6 +33,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
+#include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/constants.h"
@@ -37,25 +41,38 @@
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/components/sidebar/common/features.h"
+#include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
 #include "chrome/browser/sessions/session_restore.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
 #include "chrome/browser/ui/animation/browser_animation_controller.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
+#include "chrome/browser/ui/tabs/split_tab_metrics.h"
+#include "chrome/browser/ui/tabs/tab_menu_model_delegate.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/contents_container_view.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
+#include "chrome/browser/ui/views/tabs/tab/tab_context_menu_controller.h"
+#include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "components/sessions/core/serialized_navigation_entry.h"
 #include "components/sessions/core/tab_restore_service.h"
 #include "components/sessions/core/tab_restore_types.h"
+#include "components/split_tabs/split_tab_id.h"
+#include "components/split_tabs/split_tab_visual_data.h"
+#include "components/tabs/public/tab_interface.h"
+#include "content/public/browser/context_menu_params.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -83,6 +100,8 @@ constexpr char kRegularTabURL[] = "chrome://version/";
 // Like kRegularTabURL this has to commit without redirecting, since the pinned
 // tab pref records the last committed URL.
 constexpr char kUserPinnedTabURL[] = "chrome://gpu/";
+// Target of the right-clicked link in the context menu tests. Never loaded.
+constexpr char kLinkURL[] = "https://example.com/";
 
 }  // namespace
 
@@ -1602,6 +1621,207 @@ IN_PROC_BROWSER_TEST_F(WebPanelAnimationBrowserTest,
   EXPECT_FALSE(IsPanelAnimating());
   EXPECT_FALSE(multi_contents_view->IsWebPanelVisible());
   EXPECT_FALSE(web_panel_controller()->HasPanelTab());
+}
+
+// Covers the rule that the panel's tab must never join a split view. It's a
+// plain pinned tab, so upstream offers to split it like any other, and putting
+// it in a split is unsafe: AddToNewSplit() holds the TabStripModel re-entrancy
+// guard across ShowSplitView(), whose contents attach raises a synchronous
+// focus notification that the web panel delegate turns into ActivateTabAt().
+class WebPanelSplitViewBrowserTest : public WebPanelBrowserTest {
+ public:
+  WebPanelSplitViewBrowserTest() = default;
+  ~WebPanelSplitViewBrowserTest() override = default;
+
+  // The controller holds pointers into the tab strip, so it can't outlive the
+  // browser window.
+  void TearDownOnMainThread() override {
+    menu_controller_.reset();
+    WebPanelBrowserTest::TearDownOnMainThread();
+  }
+
+ protected:
+  // Builds the tab context menu for `tab_index` the way the tab strip does.
+  std::unique_ptr<BraveTabMenuModel> CreateTabMenuModelAt(int tab_index) {
+    auto* strip_controller = static_cast<BraveBrowserTabStripController*>(
+        BrowserView::GetBrowserViewForBrowser(browser())
+            ->horizontal_tab_strip_for_testing()
+            ->controller());
+    menu_controller_ = std::make_unique<TabContextMenuController>(
+        tab_model()->GetTabAtIndex(tab_index)->GetHandle(), strip_controller);
+    return std::make_unique<BraveTabMenuModel>(
+        menu_controller_.get(), TabMenuModelDelegate::From(browser()),
+        tab_model(), tab_index);
+  }
+
+  static bool HasAnySplitEntry(const BraveTabMenuModel& model) {
+    return model.GetIndexOfCommandId(TabStripModel::CommandAddToSplit) ||
+           model.GetIndexOfCommandId(
+               TabStripModel::CommandSwapWithActiveSplit) ||
+           model.GetIndexOfCommandId(TabStripModel::CommandArrangeSplit);
+  }
+
+  // Builds the menu for a right-click on a link inside `contents`.
+  static std::unique_ptr<TestRenderViewContextMenu> CreateLinkContextMenu(
+      content::WebContents* contents) {
+    content::ContextMenuParams params;
+    params.page_url = contents->GetLastCommittedURL();
+    params.frame_url = params.page_url;
+    params.link_url = GURL(kLinkURL);
+    // The link item group keys off the unfiltered URL, not link_url.
+    params.unfiltered_link_url = params.link_url;
+    auto menu = std::make_unique<TestRenderViewContextMenu>(
+        *contents->GetPrimaryMainFrame(), params);
+    menu->Init();
+    return menu;
+  }
+
+  int PanelIndex() {
+    return tab_model()->GetIndexOfWebContents(
+        web_panel_controller()->panel_contents());
+  }
+
+ private:
+  std::unique_ptr<TabContextMenuController> menu_controller_;
+};
+
+// Right-clicking the panel's own tab offers nothing that would split it.
+IN_PROC_BROWSER_TEST_F(WebPanelSplitViewBrowserTest, PanelTabHasNoSplitEntry) {
+  OpenWebPanel(GURL(kTestWebPanelURL));
+  const int panel_index = PanelIndex();
+  ASSERT_NE(TabStripModel::kNoTab, panel_index);
+
+  EXPECT_FALSE(HasAnySplitEntry(*CreateTabMenuModelAt(panel_index)));
+
+  // A normal tab is unaffected while the panel is merely open but inactive.
+  chrome::AddTabAt(browser(), GURL(kRegularTabURL), -1, /*foreground=*/true);
+  EXPECT_TRUE(CreateTabMenuModelAt(tab_model()->active_index())
+                  ->GetIndexOfCommandId(TabStripModel::CommandAddToSplit))
+      << "splitting ordinary tabs should still be offered";
+}
+
+// The second, less obvious path to the same place: CommandAddToSplit pairs the
+// clicked tab with the *active* one, so with the panel active, splitting a
+// normal tab would pull the panel into the split.
+IN_PROC_BROWSER_TEST_F(WebPanelSplitViewBrowserTest,
+                       NoSplitEntryWhilePanelIsActive) {
+  OpenWebPanel(GURL(kTestWebPanelURL));
+  chrome::AddTabAt(browser(), GURL(kRegularTabURL), -1, /*foreground=*/true);
+  const int normal_index = tab_model()->active_index();
+
+  tab_model()->ActivateTabAt(PanelIndex());
+  ASSERT_TRUE(IsWebPanelTabActive(browser()));
+
+  EXPECT_FALSE(CreateTabMenuModelAt(normal_index)
+                   ->GetIndexOfCommandId(TabStripModel::CommandAddToSplit));
+}
+
+// The split commands Brave owns are disabled for the same reason.
+IN_PROC_BROWSER_TEST_F(WebPanelSplitViewBrowserTest,
+                       SplitCommandsDisabledWhilePanelIsActive) {
+  OpenWebPanel(GURL(kTestWebPanelURL));
+  chrome::AddTabAt(browser(), GURL(kRegularTabURL), -1, /*foreground=*/true);
+  ASSERT_TRUE(brave::CanOpenNewSplitTabsWithSideBySide(browser()));
+
+  tab_model()->ActivateTabAt(PanelIndex());
+  ASSERT_TRUE(IsWebPanelTabActive(browser()));
+
+  EXPECT_FALSE(brave::CanOpenNewSplitTabsWithSideBySide(browser()));
+
+  // Selecting the panel's tab alongside a normal one must not enable tiling.
+  tab_model()->SelectTabAt(tab_model()->count() - 1);
+  ASSERT_EQ(2u, tab_model()->selection_model().size());
+  EXPECT_FALSE(brave::CanSplitTabsWithSideBySide(browser()));
+}
+
+// IDC_NEW_SPLIT_TAB splits the active tab. Its enabled state is upstream's, so
+// the refusal is at execute time - the accelerator must simply do nothing.
+IN_PROC_BROWSER_TEST_F(WebPanelSplitViewBrowserTest,
+                       NewSplitTabCommandIsRefusedWhilePanelIsActive) {
+  OpenWebPanel(GURL(kTestWebPanelURL));
+  chrome::AddTabAt(browser(), GURL(kRegularTabURL), -1, /*foreground=*/true);
+
+  tab_model()->ActivateTabAt(PanelIndex());
+  ASSERT_TRUE(IsWebPanelTabActive(browser()));
+  const int count_before = tab_model()->count();
+
+  chrome::ExecuteCommand(browser(), IDC_NEW_SPLIT_TAB);
+
+  EXPECT_EQ(count_before, tab_model()->count())
+      << "IDC_NEW_SPLIT_TAB created a split while the panel was active";
+  EXPECT_FALSE(tab_model()->GetTabAtIndex(PanelIndex())->IsSplit());
+}
+
+// Rearranging an existing split doesn't add a tab, so it has to keep working
+// while the panel is open and active beside it.
+IN_PROC_BROWSER_TEST_F(WebPanelSplitViewBrowserTest,
+                       ArrangeSplitStillOfferedWhilePanelIsActive) {
+  chrome::AddTabAt(browser(), GURL(kRegularTabURL), -1, /*foreground=*/true);
+  chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
+                      split_tabs::SplitTabCreatedSource::kTabContextMenu);
+  // Opening the panel inserts a pinned tab at index 0, so hold the contents
+  // and resolve its index again afterwards.
+  content::WebContents* split_contents = tab_model()->GetActiveWebContents();
+  ASSERT_TRUE(tab_model()->GetActiveTab()->IsSplit());
+
+  OpenWebPanel(GURL(kTestWebPanelURL));
+  tab_model()->ActivateTabAt(PanelIndex());
+  ASSERT_TRUE(IsWebPanelTabActive(browser()));
+
+  const int split_index = tab_model()->GetIndexOfWebContents(split_contents);
+  ASSERT_NE(TabStripModel::kNoTab, split_index);
+  EXPECT_TRUE(CreateTabMenuModelAt(split_index)
+                  ->GetIndexOfCommandId(TabStripModel::CommandArrangeSplit));
+}
+
+// The third command upstream can offer on the panel's tab. With a split
+// active, right-clicking a tab outside it offers to swap that tab into the
+// split, which would put the panel in one.
+IN_PROC_BROWSER_TEST_F(WebPanelSplitViewBrowserTest,
+                       PanelTabHasNoSwapWithActiveSplitEntry) {
+  chrome::AddTabAt(browser(), GURL(kRegularTabURL), -1, /*foreground=*/true);
+  chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
+                      split_tabs::SplitTabCreatedSource::kTabContextMenu);
+  ASSERT_TRUE(tab_model()->GetActiveTab()->IsSplit());
+
+  // A tab outside the split, to establish that the swap is offered here at all.
+  chrome::AddTabAt(browser(), GURL(kRegularTabURL), -1, /*foreground=*/false);
+  content::WebContents* outside_contents =
+      tab_model()->GetWebContentsAt(tab_model()->count() - 1);
+
+  OpenWebPanel(GURL(kTestWebPanelURL));
+  ASSERT_TRUE(tab_model()->GetActiveTab()->IsSplit())
+      << "opening the panel shouldn't change the active tab";
+
+  const int outside_index =
+      tab_model()->GetIndexOfWebContents(outside_contents);
+  ASSERT_NE(TabStripModel::kNoTab, outside_index);
+  ASSERT_TRUE(
+      CreateTabMenuModelAt(outside_index)
+          ->GetIndexOfCommandId(TabStripModel::CommandSwapWithActiveSplit));
+
+  EXPECT_FALSE(HasAnySplitEntry(*CreateTabMenuModelAt(PanelIndex())));
+}
+
+// The link context menu's "Open link in split view" pairs the new tab with the
+// active one, so it has to go while the panel is active. Right-clicking inside
+// the panel while a normal tab is active is fine: that splits the normal tab.
+IN_PROC_BROWSER_TEST_F(WebPanelSplitViewBrowserTest,
+                       LinkContextMenuHasNoSplitViewItemWhilePanelIsActive) {
+  OpenWebPanel(GURL(kTestWebPanelURL));
+  chrome::AddTabAt(browser(), GURL(kRegularTabURL), -1, /*foreground=*/true);
+  ASSERT_FALSE(IsWebPanelTabActive(browser()));
+
+  content::WebContents* panel_contents =
+      tab_model()->GetWebContentsAt(PanelIndex());
+  EXPECT_TRUE(CreateLinkContextMenu(panel_contents)
+                  ->IsItemPresent(IDC_CONTENT_CONTEXT_OPENLINKSPLITVIEW));
+
+  tab_model()->ActivateTabAt(PanelIndex());
+  ASSERT_TRUE(IsWebPanelTabActive(browser()));
+
+  EXPECT_FALSE(CreateLinkContextMenu(panel_contents)
+                   ->IsItemPresent(IDC_CONTENT_CONTEXT_OPENLINKSPLITVIEW));
 }
 
 }  // namespace sidebar
