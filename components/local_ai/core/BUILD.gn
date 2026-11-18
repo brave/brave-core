@@ -83,6 +83,7 @@ static_library("core") {
 
   public_deps = [
     ":features",
+    ":speech_recognition_mojom",
     "//base",
     "//mojo/public/cpp/base",
   ]
