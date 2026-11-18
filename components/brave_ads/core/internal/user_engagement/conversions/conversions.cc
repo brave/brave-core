@@ -8,6 +8,7 @@
 #include <ranges>
 
 #include "base/check.h"
+#include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "base/trace_event/trace_event.h"
@@ -139,6 +140,8 @@ void Conversions::CheckForConversions(
   // Conversions are based on the last touch attribution model.
   bool did_convert = false;
 
+  PruneAttemptedAdEventKeys();
+
   for (const auto& ad_event : std::views::reverse(ad_events)) {
     // Do we have campaign conversions for this ad event?
     const auto iter = campaign_conversion_buckets.find(ad_event.campaign_id);
@@ -167,18 +170,25 @@ void Conversions::CheckForConversions(
       continue;
     }
 
-    Convert(ad_event);
+    // Skip this ad event if it has already converted, so a repeat check
+    // cannot inflate the count from the same user action.
+    const AttemptedAdEventKey ad_event_key = BuildAttemptedAdEventKey(ad_event);
+    const auto [_, did_insert] = attempted_ad_event_keys_.insert(ad_event_key);
+    if (did_insert) {
+      Convert(ad_event, ad_event_key);
 
-    did_convert = true;
+      did_convert = true;
 
-    // Have we exceeded the limit for campaign conversions?
-    ++campaign_conversion_counts[campaign_id];
-
-    if (did_convert) {
-      // Remove the bucket for this campaign so that we deduplicate
-      // conversions for the remainder of the ad events.
-      campaign_conversion_buckets.erase(campaign_id);
+      // Track the conversion count for this campaign so later checks can
+      // enforce the cap.
+      ++campaign_conversion_counts[campaign_id];
     }
+
+    // Remove the bucket for this campaign now that its most recent
+    // qualifying ad event has been resolved, whether newly converted or
+    // already attempted, so last-touch attribution deduplicates the
+    // remainder of the ad events.
+    campaign_conversion_buckets.erase(campaign_id);
   }
 
   if (!did_convert) {
@@ -186,16 +196,36 @@ void Conversions::CheckForConversions(
   }
 }
 
-void Conversions::Convert(const AdEventInfo& ad_event) {
-  RecordAdEvent(RebuildAdEvent(ad_event, mojom::ConfirmationType::kConversion,
-                               /*created_at=*/base::Time::Now()),
-                base::BindOnce(&Conversions::ConvertCallback,
-                               weak_factory_.GetWeakPtr(), ad_event));
+void Conversions::PruneAttemptedAdEventKeys() {
+  const base::Time ad_events_time_window_start_at =
+      base::Time::Now() - kAdEventsTimeWindow.Get();
+
+  base::EraseIf(attempted_ad_event_keys_,
+                [&ad_events_time_window_start_at](
+                    const AttemptedAdEventKey& ad_event_key) {
+                  return std::get<base::Time>(ad_event_key) <
+                         ad_events_time_window_start_at;
+                });
 }
 
-void Conversions::ConvertCallback(const AdEventInfo& ad_event, bool success) {
+void Conversions::Convert(const AdEventInfo& ad_event,
+                          const AttemptedAdEventKey& ad_event_key) {
+  RecordAdEvent(
+      RebuildAdEvent(ad_event, mojom::ConfirmationType::kConversion,
+                     /*created_at=*/base::Time::Now()),
+      base::BindOnce(&Conversions::ConvertCallback, weak_factory_.GetWeakPtr(),
+                     ad_event, ad_event_key));
+}
+
+void Conversions::ConvertCallback(const AdEventInfo& ad_event,
+                                  const AttemptedAdEventKey& ad_event_key,
+                                  bool success) {
   if (!success) {
     BLOG(0, "Failed to record ad conversion event");
+
+    // Remove the attempt so this ad event can be retried.
+    attempted_ad_event_keys_.erase(ad_event_key);
+
     return NotifyFailedToConvertAd(ad_event.creative_instance_id);
   }
 

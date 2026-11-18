@@ -57,4 +57,9 @@ bool DidAdEventOccurWithinObservationWindow(
   return ad_event.created_at >= base::Time::Now() - observation_window;
 }
 
+AttemptedAdEventKey BuildAttemptedAdEventKey(const AdEventInfo& ad_event) {
+  return {ad_event.placement_id, ad_event.confirmation_type,
+          ad_event.created_at.value_or(base::Time::Now())};
+}
+
 }  // namespace brave_ads

@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/scoped_observation.h"
@@ -17,6 +18,7 @@
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/attempted_ad_event_key.h"
 
 class GURL;
 
@@ -59,8 +61,17 @@ class Conversions final : public TabManagerObserver {
   void CheckForConversions(const std::vector<GURL>& redirect_chain,
                            const CampaignConversionList& campaign_conversions,
                            const AdEventList& ad_events);
-  void Convert(const AdEventInfo& ad_event);
-  void ConvertCallback(const AdEventInfo& ad_event, bool success);
+
+  // Forgets ad events that have fallen outside `kAdEventsTimeWindow`, as they
+  // can no longer be matched by `GetAdEventsCallback` and so can never be
+  // reconverted.
+  void PruneAttemptedAdEventKeys();
+
+  void Convert(const AdEventInfo& ad_event,
+               const AttemptedAdEventKey& ad_event_key);
+  void ConvertCallback(const AdEventInfo& ad_event,
+                       const AttemptedAdEventKey& ad_event_key,
+                       bool success);
 
   void NotifyDidConvertAd(const ConversionInfo& conversion);
   void NotifyFailedToConvertAd(const std::string& creative_instance_id);
@@ -69,6 +80,8 @@ class Conversions final : public TabManagerObserver {
   void OnTabDidChange(const TabInfo& tab) override;
 
   base::ObserverList<ConversionsObserver> observers_;
+
+  base::flat_set<AttemptedAdEventKey> attempted_ad_event_keys_;
 
   const database::table::CampaignConversions
       campaign_conversions_database_table_;

@@ -104,6 +104,8 @@ constexpr char kSinglePageApplicationWebpage[] =
     "/brave_ads/single_page_application.html";
 constexpr char kSinglePageApplicationClickSelector[] =
     "[data-navigation-type='same_document']";
+constexpr char kSinglePageApplicationSameDocumentPath[] =
+    "/brave_ads/same_document";
 
 constexpr char kAutoplayVideoWebpage[] = "/brave_ads/autoplay_video.html";
 constexpr char kVideoWebpage[] = "/brave_ads/video.html";
@@ -493,6 +495,35 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
                   /*is_new_navigation=*/false, /*is_restoring=*/true,
                   /*is_visible=*/::testing::_));
   RestoreBrowser(profile);
+
+  EXPECT_TRUE(WaitForActiveWebContentsToLoad());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
+                       NotifyTabDidChangeForSameDocumentNavigation) {
+  // Arrange
+  EXPECT_CALL(
+      GetAdsServiceMock(),
+      NotifyTabDidChange(
+          TabId(), RedirectChainExpectation(kSinglePageApplicationWebpage),
+          /*is_new_navigation=*/true, /*is_restoring=*/false,
+          /*is_visible=*/::testing::_))
+      .Times(::testing::AtLeast(1));
+  NavigateToRelativeURL(kSinglePageApplicationWebpage,
+                        /*has_user_gesture=*/true);
+  ::testing::Mock::VerifyAndClearExpectations(&GetAdsServiceMock());
+
+  // Act & Assert
+  EXPECT_CALL(
+      GetAdsServiceMock(),
+      NotifyTabDidChange(
+          TabId(),
+          RedirectChainExpectation(kSinglePageApplicationSameDocumentPath),
+          /*is_new_navigation=*/true, /*is_restoring=*/false,
+          /*is_visible=*/::testing::_))
+      .Times(::testing::AtLeast(1));
+  SimulateClick(kSinglePageApplicationClickSelector,
+                /*has_user_gesture=*/true);
 
   EXPECT_TRUE(WaitForActiveWebContentsToLoad());
 }
