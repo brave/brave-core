@@ -73,6 +73,7 @@
 #if BUILDFLAG(ENABLE_LOCAL_AI)
 #include "brave/browser/history_embeddings/brave_history_embeddings_status.h"
 #include "brave/browser/history_embeddings/history_embeddings_utils.h"
+#include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "brave/components/local_ai/core/utils.h"
 #endif
 
@@ -516,6 +517,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"onDeviceSpeechModelOff", IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_OFF},
       {"onDeviceSpeechModelEnglish",
        IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_ENGLISH},
+      {"onDeviceSpeechModelMultilingual",
+       IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_MULTILINGUAL},
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
       {"historyRetentionLabel", IDS_SETTINGS_HISTORY_RETENTION_LABEL},
       {"historyRetentionSubLabel", IDS_SETTINGS_HISTORY_RETENTION_SUB_LABEL},
@@ -1247,6 +1250,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isOnDeviceSpeechModelAvailable",
       local_ai::CanOfferOnDeviceSpeech(g_browser_process->local_state()));
+  html_source->AddBoolean("isOnDeviceSpeechMultilingualModelAvailable",
+                          local_ai::CanOfferOnDeviceSpeechModel(
+                              g_browser_process->local_state(),
+                              local_ai::OnDeviceSpeechModel::kMultilingual));
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY)

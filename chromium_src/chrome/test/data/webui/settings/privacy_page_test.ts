@@ -14,7 +14,7 @@ import {
   PrefsBrowserProxy,
   resetRouterForTesting,
 } from 'chrome://settings/settings.js'
-import {assertEquals, assertFalse, assertTrue} from 'chrome://webui-test/chai_assert.js'
+import {assertDeepEquals, assertEquals, assertFalse, assertTrue} from 'chrome://webui-test/chai_assert.js'
 import {isChildVisible, microtasksFinished} from 'chrome://webui-test/test_util.js'
 
 import {getInitialPrivacyGuideTestPrefs} from './privacy_guide_test_util.js'
@@ -150,5 +150,34 @@ suite('BravePrivacyPage', () => {
     prefsProxy.fakeApi.sendPrefChanges([{key, value: 0}])
     await microtasksFinished()
     assertEquals('0', select.value)
+  })
+
+  // The menu has the item of the multilingual model, 2, only while Brave can
+  // offer that model.
+  test('the on-device speech model menu offers the multilingual model only ' +
+           'while it is available',
+       async function() {
+    for (const available of [false, true]) {
+      loadTimeData.overrideValues({
+        isOnDeviceSpeechModelAvailable: true,
+        isOnDeviceSpeechMultilingualModelAvailable: available,
+      })
+
+      document.body.replaceChildren()
+      const options =
+          document.createElement('settings-brave-personalization-options')
+      document.body.appendChild(options)
+      await microtasksFinished()
+
+      const menu = options.shadowRoot!.querySelector<
+          SettingsDropdownMenuElement>('#onDeviceSpeechModel')
+      // Only built with local AI.
+      if (!menu) {
+        this.skip()
+      }
+      assertDeepEquals(
+          available ? [0, 1, 2] : [0, 1],
+          menu.menuOptions.map(option => option.value))
+    }
   })
 })
