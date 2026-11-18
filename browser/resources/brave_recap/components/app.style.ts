@@ -20,7 +20,6 @@ export const style = scoped.css`
    * resolve to dark values. */
   & {
     --recap-stage-background: var(--leo-color-primitive-neutral-5);
-    /* Read by the dot matrix canvas, which can't take CSS tokens directly. */
     --recap-dot-color: var(--leo-color-black);
     --recap-text: var(--leo-color-white);
     --recap-highlight: var(--leo-color-primitive-brands-rorange-2);
@@ -60,15 +59,6 @@ export const style = scoped.css`
     color: var(--recap-text);
     font: var(--leo-font-default-regular);
     text-wrap: pretty;
-  }
-
-  .dot-matrix {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
   }
 
   .recap-card {
