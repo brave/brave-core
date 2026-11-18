@@ -274,6 +274,17 @@ TEST_F(CustomProfileImageTest, RemovalRunsAfterPendingWrite) {
   EXPECT_FALSE(base::PathExists(ImagePath()));
 }
 
+TEST_F(CustomProfileImageTest, RemovingNothingDoesNotNotify) {
+  size_t notifications = 0;
+  AvatarChangeObserver observer(
+      manager_.profile_manager()->GetProfileAttributesStorage(),
+      base::BindLambdaForTesting([&] { ++notifications; }));
+  base::test::TestFuture<Result> removed;
+  image().Remove(removed.GetCallback());
+  EXPECT_EQ(removed.Get(), Result::kSuccess);
+  EXPECT_EQ(notifications, 0u);
+}
+
 TEST_F(CustomProfileImageTest, NewProfileAtSamePathHasNoImage) {
   Save(SK_ColorRED);
   // A write still pending at removal must not reach the new profile. Its file

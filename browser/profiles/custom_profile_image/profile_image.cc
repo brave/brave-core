@@ -173,9 +173,11 @@ void ProfileImage::Removed(Callback callback, bool success) {
   loaded_ = true;
   load_failed_ = false;
   has_committed_image_ = false;
-  entry_->SetCustomProfileImageFlag(kSaved, false);
-  entry_->SetCustomProfileImageFlag(kActive, false);
-  Notify();
+  const bool saved_changed = entry_->SetCustomProfileImageFlag(kSaved, false);
+  const bool active_changed = entry_->SetCustomProfileImageFlag(kActive, false);
+  if (saved_changed || active_changed) {
+    Notify();
+  }
   std::move(callback).Run(Result::kSuccess);
 }
 
