@@ -66,7 +66,7 @@ function addBraveTemplateModifications(moduleName: string, component: PolymerEle
     const t1 = debug ? performance.now() : null
     if (debug && t0 && t1)
       console.debug(`Modifying template '${moduleName}' took ${t1 - t0}ms`)
-  } else {
+  } else if (debug) {
     console.error(`Source template not found for override of component "${moduleName}"`)
   }
 }
@@ -75,16 +75,22 @@ const styleOverridePrefix = 'brave-override-style-'
 
 function addBraveStyleOverride(moduleName: string, styleOverrideModuleNames: string[], component: PolymerElement, template = component._template || component.template) {
   if (!styleOverrideModuleNames.length) {
-    console.warn(`Asked to add style overrides for ${moduleName} but was provided with an empty array`)
+    if (debug) {
+      console.warn(`Asked to add style overrides for ${moduleName} but was provided with an empty array`)
+    }
     return
   }
   if (!template) {
-    console.error(`No template found for component (${moduleName}) with found style overrides`, component)
+    if (debug) {
+      console.error(`No template found for component (${moduleName}) with found style overrides`, component)
+    }
     return
   }
   const styleElement = template.content.querySelector('style')
   if (!styleElement) {
-    console.error(`No style element found for component (${moduleName}) with found style overrides`, component)
+    if (debug) {
+      console.error(`No style element found for component (${moduleName}) with found style overrides`, component)
+    }
     return
   }
   styleElement.setAttribute(
@@ -147,9 +153,9 @@ export function RegisterPolymerTemplateModifications(modificationsMap: Modificat
 export function RegisterPolymerComponentReplacement(name, component) {
   if (debug) {
     console.log(`RegisterPolymerComponentReplacement: ${name}`)
-  }
-  if (!ignoredComponents.includes(name)) {
-    console.warn(`RegisterPolymerComponentReplacement: did not find component '${name}' as being ignored via RegisterPolymerComponentToIgnore`)
+    if (!ignoredComponents.includes(name)) {
+      console.warn(`RegisterPolymerComponentReplacement: did not find component '${name}' as being ignored via RegisterPolymerComponentToIgnore`)
+    }
   }
   define(name, component)
 }
@@ -202,24 +208,32 @@ export function OverrideIronIcons(iconSetName: string, overridingIconSetName: st
   meta.type = 'iconset'
   const srcIconSet = meta.byKey(iconSetName)
   if (!srcIconSet) {
-    console.error(`OverrideIronIcons: source icon set "${iconSetName} not found.`)
+    if (debug) {
+      console.error(`OverrideIronIcons: source icon set "${iconSetName} not found.`)
+    }
     return
   }
   const overrideIconSet = meta.byKey(overridingIconSetName)
   if (!overrideIconSet) {
-    console.error(`OverrideIronIcons: overriding icon set "${overridingIconSetName} not found.`)
+    if (debug) {
+      console.error(`OverrideIronIcons: overriding icon set "${overridingIconSetName} not found.`)
+    }
     return
   }
   for (const chromiumIconName in iconOverrides) {
     const chromiumIcon = srcIconSet.querySelector(`#${chromiumIconName}`)
     if (!chromiumIcon) {
-      console.error(`[brave overrides] Could not find chromium icon '${chromiumIconName}' in iconset '${iconSetName}' for replacement!`)
+      if (debug) {
+        console.error(`[brave overrides] Could not find chromium icon '${chromiumIconName}' in iconset '${iconSetName}' for replacement!`)
+      }
       continue
     }
     const braveIconName = iconOverrides[chromiumIconName]
     const braveIcon = overrideIconSet.querySelector(`#${braveIconName}`)
     if (!braveIcon) {
-      console.error(`[brave overrides] Could not find brave icon '${braveIconName}' in iconset '${overridingIconSetName}' for replacement!`)
+      if (debug) {
+        console.error(`[brave overrides] Could not find brave icon '${braveIconName}' in iconset '${overridingIconSetName}' for replacement!`)
+      }
       continue
     }
     // replace
@@ -243,7 +257,9 @@ export function OverrideIronIcons(iconSetName: string, overridingIconSetName: st
 const oldClass = Polymer.Class
 Polymer.Class = function (info, mixin) {
   if (!info) {
-    console.warn('Polymer.Class requires `info` argument');
+    if (debug) {
+      console.warn('Polymer.Class requires `info` argument');
+    }
   }
   const name = info.is
   if (!name) {
