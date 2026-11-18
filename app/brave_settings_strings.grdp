@@ -1880,7 +1880,7 @@
     Couldn't securely save your API key. Try again.
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_API_KEY_DECRYPTION_ERROR" desc="Error at the API key field when a saved custom model key could not be read. The original encrypted key is preserved.">
-    Couldn't read your saved API key. Try again or re-enter it.
+    Couldn't read your saved API key. Reopen this form or re-enter the key.
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_MODEL_SAVE_ERROR" desc="Error when a custom model cannot be saved, for example because it was removed while its form was open.">
     Couldn't save this model. Try again.

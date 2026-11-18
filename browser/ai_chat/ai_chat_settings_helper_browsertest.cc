@@ -56,6 +56,11 @@ class AIChatSettingsCryptoBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(model_service_);
   }
 
+  void TearDownOnMainThread() override {
+    model_service_ = nullptr;
+    InProcessBrowserTest::TearDownOnMainThread();
+  }
+
  protected:
   std::unique_ptr<KeyedService> CreateModelService(
       content::BrowserContext* context) {

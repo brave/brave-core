@@ -1199,6 +1199,33 @@ TEST_F(ModelServiceCryptoErrorsTest, InvalidIndexLeavesPreferencesUnchanged) {
   EXPECT_EQ(pref_service_.GetList("brave.ai_chat.custom_models"), before);
 }
 
+TEST_F(ModelServiceCryptoErrorsTest, StaleIndexLeavesRemainingModelUnchanged) {
+  ASSERT_EQ(
+      GetService()->AddCustomModel(MakeCustomModel("synthetic-first-key")),
+      mojom::OperationResult::Success);
+  ASSERT_EQ(
+      GetService()->AddCustomModel(MakeCustomModel("synthetic-second-key")),
+      mojom::OperationResult::Success);
+  auto models = GetService()->GetCustomModels();
+  ASSERT_EQ(models.size(), 2u);
+  auto stale_model = models[0]->Clone();
+  auto remaining_model = models[1]->Clone();
+
+  // Another settings tab removes the model while its edit form is open. The
+  // original index is still in range, but now refers to a different model.
+  GetService()->DeleteCustomModel(0);
+  const auto before =
+      pref_service_.GetList("brave.ai_chat.custom_models").Clone();
+  EXPECT_CALL(*observer_, OnModelListUpdated()).Times(0);
+
+  EXPECT_EQ(GetService()->SaveCustomModel(0, std::move(stale_model)),
+            mojom::OperationResult::InvalidModelIndex);
+  EXPECT_EQ(pref_service_.GetList("brave.ai_chat.custom_models"), before);
+  const auto models_after = GetService()->GetCustomModels();
+  ASSERT_EQ(models_after.size(), 1u);
+  EXPECT_TRUE(models_after[0]->Equals(*remaining_model));
+}
+
 TEST_F(ModelServiceAsyncEncryptorTest, StoredKeyUnavailableUntilReady) {
   PreloadCustomModelsInPrefs({{"test-model", "synthetic-key"}});
   auto service = std::make_unique<ModelService>(

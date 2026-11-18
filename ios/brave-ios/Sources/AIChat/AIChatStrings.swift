@@ -592,7 +592,7 @@ extension Strings {
       "aichat.customModelFormDecryptionErrorMessage",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Couldn't read your saved API key. Try again or re-enter it.",
+      value: "Couldn't read your saved API key. Reopen this form or re-enter the key.",
       comment: "The error message when a stored custom model API key could not be read"
     )
     public static let customModelFormSaveErrorMessage = NSLocalizedString(

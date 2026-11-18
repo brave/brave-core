@@ -1025,11 +1025,11 @@ mojom::OperationResult ModelService::SaveCustomModel(uint32_t index,
   const std::string& existing_key =
       *model_iter->GetDict().FindString(kCustomModelItemKey);
 
-  // Make sure the key is not changed when modifying the model
-  // because Dict::Merge is destructive.
-  CHECK(existing_key == model->key)
-      << "Model key mismatch. Existing key: " << existing_key
-      << ", sent model key: " << model->key << ".";
+  // A different settings tab may have removed this model while its form was
+  // open, shifting another model into the original index.
+  if (existing_key != model->key) {
+    return mojom::OperationResult::InvalidModelIndex;
+  }
 
   const auto& options = *model->options->get_custom_model_options();
   const std::string* stored_key =
