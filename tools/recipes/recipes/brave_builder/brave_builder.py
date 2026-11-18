@@ -13,6 +13,7 @@ import post_process
 from recipe_api import RecipeScriptApi
 from recipe_modules import (
     brave_core_checkout,
+    brave_tests,
     brave_tests_builder_config,
     chromium_checkout,
     platform,
@@ -24,12 +25,14 @@ from recipe_test_api import RecipeTestApi
 @dataclass
 class DEPS(RecipeScriptApi):
     brave_core_checkout: brave_core_checkout.API
+    brave_tests: brave_tests.API
     brave_tests_builder_config: brave_tests_builder_config.API
 
 
 @dataclass
 class TEST_DEPS(RecipeTestApi):
     brave_core_checkout: brave_core_checkout.TEST_API
+    brave_tests: brave_tests.TEST_API
     brave_tests_builder_config: brave_tests_builder_config.TEST_API
     chromium_checkout: chromium_checkout.TEST_API
     platform: platform.TEST_API
@@ -45,8 +48,7 @@ def RunSteps(api: DEPS) -> None:
     api.brave_core_checkout.configure_build(builder_id, builder_config)
     api.brave_core_checkout.ensure_checkout()
     api.brave_core_checkout.compile()
-    # TODO(http://brave.dev/b/56449): The builder's tests, once they run
-    # through the test harness.
+    api.brave_tests.run_tests(builder_id)
 
 
 def _deprecated_run_steps(api: DEPS) -> None:
@@ -78,6 +80,23 @@ def GenTests(api: TEST_DEPS):
             'build',
             ['pnpm', 'run', 'build', '--builder', 'linux-x64-asan-brave'],
         ),
+        api.brave_tests.test_spec('brave_unit_tests', 'brave_browser_tests'),
+        api.post_process(
+            post_process.StepCommandContains,
+            'brave_unit_tests',
+            [
+                '--build-dir',
+                '[WORKSPACE]/b/src/out/linux-x64-asan-brave',
+                '--builder',
+                'linux-x64-asan-brave',
+                '--builder-name=linux-x64-asan-brave',
+                '--builder-group=brave.sanitisers',
+                '--test-type=brave_unit_tests',
+                '--parse-gtest-output',
+                'brave_unit_tests',
+            ],
+        ),
+        api.post_process(post_process.MustRun, 'brave_browser_tests'),
         api.post_process(post_process.DoesNotRun, 'test brave_all_unit_tests'),
         api.post_process(post_process.StatusSuccess),
     )
