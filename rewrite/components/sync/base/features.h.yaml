@@ -12,3 +12,12 @@ substitutions:
     regex:
       pattern: 'DECLARE_SYNC_AUTOFILL_AI_FEATURE(kSyncAutofillValuableMetadata);'
       replace: 'BASE_DECLARE_FEATURE(kSyncAutofillValuableMetadata);'
+
+  - description: |-
+      Declare kSyncAutofillEntitySuppression without a country restriction.
+
+      features.cc ships this feature as a plain, always-disabled BASE_FEATURE,
+      so the declaration must agree on the type.
+    regex:
+      pattern: 'BASE_DECLARE_FEATURE_WITH_COUNTRY_RESTRICTIONS(kSyncAutofillEntitySuppression);'
+      replace: 'BASE_DECLARE_FEATURE(kSyncAutofillEntitySuppression);'

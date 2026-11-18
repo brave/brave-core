@@ -138,6 +138,8 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &attribution_reporting::features::kConversionMeasurement,
       &autofill::features::kAutofillAiServerModel,
       &autofill::features::kAutofillAiWithDataSchema,
+      &autofill::features::kAutofillAmbientAutofill,
+      &autofill::features::kAutofillAmbientAutofillSuppression,
       &autofill::features::kAutofillEnableAmountExtraction,
       &autofill::features::kAutofillEnableBuyNowPayLater,
       &autofill::features::debug::kAutofillServerCommunication,
@@ -321,6 +323,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &switches::kSigninLevelUpButton,
 #endif
       &switches::kSyncEnableBookmarksInTransportMode,
+      &syncer::kSyncAutofillEntitySuppression,
       &syncer::kSyncAutofillValuableMetadata,
       &ttc::kTtc,
       &webapps::features::kWebAppsEnableMLModelForPromotion,

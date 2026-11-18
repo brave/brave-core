@@ -26,3 +26,21 @@ substitutions:
     regex:
       pattern: 'DECLARE_FEATURE_WITH_MOBILE_COUNTRY_RESTRICTION(kAutofillAiWithDataSchema);'
       replace: 'BASE_DECLARE_FEATURE(kAutofillAiWithDataSchema);'
+
+  - description: |-
+      Declare kAutofillAmbientAutofill without a country restriction.
+
+      autofill_features.cc ships this feature as a plain, always-disabled
+      BASE_FEATURE, so the declaration must agree on the type.
+    regex:
+      pattern: 'BASE_DECLARE_FEATURE_WITH_COUNTRY_RESTRICTIONS(kAutofillAmbientAutofill);'
+      replace: 'BASE_DECLARE_FEATURE(kAutofillAmbientAutofill);'
+
+  - description: |-
+      Declare kAutofillAmbientAutofillSuppression without a country
+      restriction.
+
+      Same reason as kAutofillAmbientAutofill above.
+    regex:
+      re_pattern: 'BASE_DECLARE_FEATURE_WITH_COUNTRY_RESTRICTIONS\(\s*kAutofillAmbientAutofillSuppression\);'
+      replace: 'BASE_DECLARE_FEATURE(kAutofillAmbientAutofillSuppression);'
