@@ -12,7 +12,7 @@ import { SettingsViewMixin } from '../settings_page/settings_view_mixin.js'
 import {BraveDataCollectionBrowserProxyImpl} from './brave_data_collection_browser_proxy.js'
 import {getTemplate} from './brave_data_collection_page.html.js'
 
-import {MetricsReporting} from '/shared/settings/privacy_page/privacy_page_browser_proxy.js'
+import {MetricsReporting} from '../privacy_page/privacy_page_browser_proxy.js'
 
 import {loadTimeData} from "../i18n_setup.js"
 
