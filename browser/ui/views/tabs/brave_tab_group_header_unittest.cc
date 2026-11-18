@@ -169,6 +169,37 @@ TEST_F(BraveTabGroupHeaderTest, TitleChipFitsTitleInVerticalTabs) {
   EXPECT_EQ(kAvailableWidth, title_chip()->width());
 }
 
+// In vertical tabs, an empty-title |title_chip_| must not keep a width from
+// a taller layout, e.g. one done with horizontal tab bounds before switching.
+TEST_F(BraveTabGroupHeaderTest, EmptyTitleChipDoesNotGrowInVerticalTabs) {
+  TestingProfile profile;
+  profile.GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+
+  testing::NiceMock<MockBrowserWindowInterfaceWithVerticalTabController>
+      mock_browser_window(profile.GetPrefs());
+  EXPECT_CALL(mock_browser_window, GetProfile())
+      .WillRepeatedly(testing::Return(&profile));
+  EXPECT_CALL(testing::Const(mock_browser_window), GetProfile())
+      .WillRepeatedly(testing::Return(&profile));
+  EXPECT_CALL(mock_browser_window, GetType())
+      .WillRepeatedly(testing::Return(BrowserWindowInterface::TYPE_NORMAL));
+
+  EXPECT_CALL(*tab_slot_controller_, GetBrowserWindowInterface())
+      .WillRepeatedly(testing::Return(&mock_browser_window));
+
+  group_views_->header()->SetBounds(0, 0, 300, 100);
+  SetGroupTitle(u"");
+  group_views_->header()->SetBounds(0, 0, 300, 30);
+  group_views_->header()->InvalidateLayout();
+  views::test::RunScheduledLayout(group_views_->header());
+  const int width_after_shrink = title_chip()->width();
+
+  SetGroupTitle(u"");
+  EXPECT_EQ(title_chip()->width(), width_after_shrink);
+  EXPECT_LT(width_after_shrink,
+            100 - 2 * BraveTabGroupHeader::kPaddingForGroup);
+}
+
 // BraveTabGroupHeader::GetAnchorPosition() must return LEFT_TOP in vertical
 // tab mode so the hover card appears to the right of the tab strip, and must
 // delegate to TabGroupHeader::GetAnchorPosition() (TOP_LEFT) in horizontal

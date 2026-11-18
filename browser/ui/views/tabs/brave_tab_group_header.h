@@ -34,6 +34,10 @@ class BraveTabGroupHeader : public TabGroupHeader {
  private:
   bool ShouldShowVerticalTabs() const;
   void LayoutTitleChipForVerticalTabs();
+
+  // |title_chip_|'s width as last computed by TabGroupHeader::VisualsChanged(),
+  // before it is resized for vertical tabs.
+  int upstream_title_chip_width_ = 0;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_GROUP_HEADER_H_

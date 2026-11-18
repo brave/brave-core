@@ -72,7 +72,9 @@
 #include "chrome/test/base/interactive_test_utils.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/saved_tab_groups/public/tab_group_sync_service.h"
+#include "components/tab_groups/tab_group_color.h"
 #include "components/tab_groups/tab_group_id.h"
+#include "components/tab_groups/tab_group_visual_data.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/skia/include/core/SkPath.h"
@@ -1522,6 +1524,52 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ToggleWithGroups) {
   AddTabToNewGroup(browser(), 0);
   ToggleVerticalTabStrip();  // To vertical tab strip
   ToggleVerticalTabStrip();  // To horizontal tab strip
+}
+
+// Group header chips are sized and styled per orientation, so switching
+// orientation must rebuild them as a change to the group's visuals would.
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
+                       GroupHeaderChipUpdatesOnToggle) {
+  tab_groups::TabGroupSyncServiceFactory::GetForProfile(browser()->GetProfile())
+      ->SetIsInitializedForTesting(true);
+
+  const tab_groups::TabGroupId group = AddTabToNewGroup(browser(), 0);
+  browser()->tab_strip_model()->ChangeTabGroupVisuals(
+      group, tab_groups::TabGroupVisualData(
+                 u"Hola", tab_groups::TabGroupColorId::kGreen));
+
+  struct ChipState {
+    gfx::Rect bounds;
+    SkPath clip_path;
+  };
+  auto capture = [&]() {
+    GetTabStrip(browser())->StopAnimating();
+    views::test::RunScheduledLayout(browser_view());
+    const views::View* chip =
+        GetTabStrip(browser())->group_header(group)->title_chip_for_testing();
+    return ChipState{chip->bounds(), chip->clip_path()};
+  };
+  auto capture_rebuilt = [&]() {
+    GetTabStrip(browser())->group_header(group)->VisualsChanged();
+    return capture();
+  };
+  auto expect_rebuilt = [&](const char* orientation) {
+    SCOPED_TRACE(orientation);
+    const ChipState toggled = capture();
+    const ChipState rebuilt = capture_rebuilt();
+    EXPECT_EQ(rebuilt.bounds, toggled.bounds);
+    EXPECT_EQ(rebuilt.clip_path, toggled.clip_path);
+  };
+
+  const ChipState horizontal = capture_rebuilt();
+
+  ToggleVerticalTabStrip();
+  expect_rebuilt("vertical");
+  EXPECT_NE(horizontal.bounds, capture().bounds);
+
+  ToggleVerticalTabStrip();
+  expect_rebuilt("horizontal");
+  EXPECT_EQ(horizontal.bounds, capture().bounds);
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,

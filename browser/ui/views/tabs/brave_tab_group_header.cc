@@ -50,6 +50,7 @@ void BraveTabGroupHeader::AddedToWidget() {
 
 void BraveTabGroupHeader::VisualsChanged() {
   TabGroupHeader::VisualsChanged();
+  upstream_title_chip_width_ = title_chip_->width();
 
   if (!tabs::HorizontalTabsUpdateEnabled() && !ShouldShowVerticalTabs()) {
     return;
@@ -99,7 +100,7 @@ void BraveTabGroupHeader::LayoutTitleChipForVerticalTabs() {
   if (group_title_.empty()) {
     title_chip_->SetBounds(
         available_bounds.x(), available_bounds.y(),
-        std::max(title_chip_->width(), available_bounds.height()),
+        std::max(upstream_title_chip_width_, available_bounds.height()),
         available_bounds.height());
     return;
   }
