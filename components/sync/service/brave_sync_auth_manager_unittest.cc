@@ -9,6 +9,7 @@
 
 #include "base/strings/strcat.h"
 #include "base/test/task_environment.h"
+#include "base/time/time.h"
 #include "brave/components/brave_sync/network_time_helper.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/constants/network_constants.h"
@@ -55,6 +56,12 @@ class BraveSyncAuthManagerTest : public testing::Test {
   BraveSyncAuthManagerTest() : identity_env_(&test_url_loader_factory_) {}
 
   ~BraveSyncAuthManagerTest() override = default;
+
+  void TearDown() override {
+    // Undo SetNetworkTime(); the helper is a process-wide singleton.
+    brave_sync::NetworkTimeHelper::GetInstance()->SetNetworkTimeForTest(
+        base::Time());
+  }
 
   std::unique_ptr<BraveSyncAuthManager> CreateAuthManager() {
     return std::make_unique<BraveSyncAuthManager>(
