@@ -34,7 +34,7 @@ export interface ShareCard {
 
 // Each slide renders inside a frame. Only the current frame owns the shared
 // bottom bar, so the buttons stay put while slide content moves.
-export interface Frame {
+interface Frame {
   exiting: boolean
   bottomBar: HTMLElement | null
 }
@@ -45,7 +45,7 @@ export const FrameContext = React.createContext<Frame>({
 })
 
 export function SlideLayout(props: {
-  scope?: string
+  scope: string
   children: React.ReactNode
   start: React.ReactNode
   primary: React.ReactNode

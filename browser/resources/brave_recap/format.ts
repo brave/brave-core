@@ -5,7 +5,7 @@
 
 // Matches the NTP stats widget so users see the same numbers in both places.
 
-export interface FormattedValue {
+interface FormattedValue {
   value: string
   // The unit and spacing on either side of the number, in the locale's order.
   before: string

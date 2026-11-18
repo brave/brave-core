@@ -142,7 +142,7 @@ export function DotMatrix() {
       return
     }
 
-    const motion = window.matchMedia?.('(prefers-reduced-motion: reduce)')
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)')
     const dotColor = readColor(canvas, '--recap-dot-color', FALLBACK_DOT_COLOR)
     const highlightColor = readColor(
       canvas,
@@ -172,7 +172,7 @@ export function DotMatrix() {
 
     const play = () => {
       cancelAnimationFrame(frame)
-      if (motion?.matches) {
+      if (motion.matches) {
         render(STATIC_TIME_MS)
       } else {
         frame = requestAnimationFrame(tick)
@@ -194,17 +194,14 @@ export function DotMatrix() {
     }
 
     resize()
-    const observer =
-      typeof ResizeObserver === 'undefined'
-        ? undefined
-        : new ResizeObserver(resize)
-    observer?.observe(canvas)
-    motion?.addEventListener('change', play)
+    const observer = new ResizeObserver(resize)
+    observer.observe(canvas)
+    motion.addEventListener('change', play)
 
     return () => {
       cancelAnimationFrame(frame)
-      observer?.disconnect()
-      motion?.removeEventListener('change', play)
+      observer.disconnect()
+      motion.removeEventListener('change', play)
     }
   }, [])
 
