@@ -1,8 +1,8 @@
 diff --git a/components/autofill/core/common/autofill_features.h b/components/autofill/core/common/autofill_features.h
-index b8e0d71cbc458809f8cfb2cb16af9dd34da4d338..5fff2e7306e9098b3ea8725c2521f8e4f129ee2e 100644
+index 706aed4396ca52c484f40e1d9e28712be96d6625..ef3534b6e00a1fe9e095a844e816024f1f130d88 100644
 --- a/components/autofill/core/common/autofill_features.h
 +++ b/components/autofill/core/common/autofill_features.h
-@@ -110,7 +110,7 @@ COMPONENT_EXPORT(AUTOFILL)
+@@ -106,7 +106,7 @@ COMPONENT_EXPORT(AUTOFILL)
  BASE_DECLARE_FEATURE_PARAM(std::string,
                             kAutofillAiSavePromptSurveyDeclinedTriggerId);
  COMPONENT_EXPORT(AUTOFILL)
@@ -11,7 +11,7 @@ index b8e0d71cbc458809f8cfb2cb16af9dd34da4d338..5fff2e7306e9098b3ea8725c2521f8e4
  COMPONENT_EXPORT(AUTOFILL)
  BASE_DECLARE_FEATURE_PARAM(base::TimeDelta, kAutofillAiServerModelCacheAge);
  COMPONENT_EXPORT(AUTOFILL)
-@@ -168,7 +168,7 @@ COMPONENT_EXPORT(AUTOFILL)
+@@ -164,11 +164,11 @@ COMPONENT_EXPORT(AUTOFILL)
  DECLARE_FEATURE_WITH_MOBILE_COUNTRY_RESTRICTION(
      kAutofillAiWalletVehicleRegistration);
  COMPONENT_EXPORT(AUTOFILL)
@@ -20,3 +20,18 @@ index b8e0d71cbc458809f8cfb2cb16af9dd34da4d338..5fff2e7306e9098b3ea8725c2521f8e4
  COMPONENT_EXPORT(AUTOFILL)
  BASE_DECLARE_FEATURE(kAutofillAllowFillingModifiedInitialValues);
  COMPONENT_EXPORT(AUTOFILL)
+-BASE_DECLARE_FEATURE_WITH_COUNTRY_RESTRICTIONS(kAutofillAmbientAutofill);
++BASE_DECLARE_FEATURE(kAutofillAmbientAutofill);
+ COMPONENT_EXPORT(AUTOFILL)
+ BASE_DECLARE_FEATURE_PARAM(std::string,
+                            kAutofillAmbientAutofillSupportedEntityTypes);
+@@ -185,8 +185,7 @@ BASE_DECLARE_FEATURE_WITH_COUNTRY_RESTRICTIONS(
+ COMPONENT_EXPORT(AUTOFILL)
+ BASE_DECLARE_FEATURE(kAutofillAmbientAutofillSpiiCache);
+ COMPONENT_EXPORT(AUTOFILL)
+-BASE_DECLARE_FEATURE_WITH_COUNTRY_RESTRICTIONS(
+-    kAutofillAmbientAutofillSuppression);
++BASE_DECLARE_FEATURE(kAutofillAmbientAutofillSuppression);
+ 
+ COMPONENT_EXPORT(AUTOFILL)
+ BASE_DECLARE_FEATURE(kAutofillAndroidDesktopKeyboardAccessoryRevamp);

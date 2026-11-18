@@ -1,8 +1,8 @@
 diff --git a/components/autofill/core/common/autofill_features.cc b/components/autofill/core/common/autofill_features.cc
-index 0f87bde00dec42006cf0ab0eaac2707cdb4432f2..4b8eea5305f6af2b00263842363a4f9bf83d211f 100644
+index 8f5a2bc949031f9a540ceebcb139f5161f84772e..707e8b51bba33074d7b09a7dd78de53db89a4fc0 100644
 --- a/components/autofill/core/common/autofill_features.cc
 +++ b/components/autofill/core/common/autofill_features.cc
-@@ -267,7 +267,7 @@ BASE_FEATURE_PARAM(
+@@ -260,7 +260,7 @@ BASE_FEATURE_PARAM(
  
  // If enabled, the client may trigger the server model for AutofillAI type
  // predictions.
@@ -11,7 +11,7 @@ index 0f87bde00dec42006cf0ab0eaac2707cdb4432f2..4b8eea5305f6af2b00263842363a4f9b
  
  // The maximum duration for which an AutofillAI server model response is kept in
  // the local cache. NOTE: It is advisable to choose a value that is at least as
-@@ -416,7 +416,7 @@ DEFINE_FEATURE_WITH_MOBILE_COUNTRY_RESTRICTION(
+@@ -409,7 +409,7 @@ DEFINE_FEATURE_WITH_MOBILE_COUNTRY_RESTRICTION(
      kAutofillAiWalletVehicleRegistration);
  
  // Enables the second iteration AutofillAI.
@@ -20,3 +20,25 @@ index 0f87bde00dec42006cf0ab0eaac2707cdb4432f2..4b8eea5305f6af2b00263842363a4f9b
  
  // When enabled, autofill will fill not skip filling fields that had an initial
  // value which was modified.
+@@ -417,9 +417,7 @@ BASE_FEATURE(kAutofillAllowFillingModifiedInitialValues,
+              base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+ // When enabled, the ambient autofill experience is enabled in Chrome.
+-BASE_FEATURE_WITH_COUNTRY_RESTRICTIONS(kAutofillAmbientAutofill,
+-                                       base::FEATURE_ENABLED_FOR_COUNTRIES,
+-                                       "us");
++BASE_OVERRIDDEN_FEATURE(kAutofillAmbientAutofill, base::FEATURE_DISABLED_BY_DEFAULT);
+ // A comma-separated list of EntityType string names (e.g. "Passport,Driver's
+ // license,Vehicle") supported for Ambient Autofill, in addition to any types
+ // enabled via `kAutofillAmbientAutofillPassport` or
+@@ -455,9 +453,7 @@ BASE_FEATURE(kAutofillAmbientAutofillSpiiCache,
+ 
+ // Controls whether pContext suggestion suppression in Ambient Autofill is
+ // enabled, including the UI to suppress suggestions.
+-BASE_FEATURE_WITH_COUNTRY_RESTRICTIONS(kAutofillAmbientAutofillSuppression,
+-                                       base::FEATURE_ENABLED_FOR_COUNTRIES,
+-                                       "us");
++BASE_OVERRIDDEN_FEATURE(kAutofillAmbientAutofillSuppression, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // If enabled, on Android desktop, the Autofill keyboard accessory will have a
+ // new behavior and design.

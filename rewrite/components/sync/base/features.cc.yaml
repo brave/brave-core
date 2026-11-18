@@ -29,3 +29,15 @@ substitutions:
       function_name: IsReplaceSyncPromosWithSignInPromosEnabled
       code: |-
         if ((true)) return false;
+
+  - description: |-
+      Ship kSyncAutofillEntitySuppression disabled.
+
+      Upstream enables it in the US, where Brave derives the variations country
+      from the locale. It registers AUTOFILL_ENTITY_SUPPRESSION, which is an
+      always-preferred sync type that Brave does not use.
+    regex:
+      re_pattern: 'BASE_FEATURE_WITH_COUNTRY_RESTRICTIONS\(kSyncAutofillEntitySuppression,\s*base::FEATURE_ENABLED_FOR_COUNTRIES,\s*"us"\);'
+      replace:
+        'BASE_OVERRIDDEN_FEATURE(kSyncAutofillEntitySuppression,
+        base::FEATURE_DISABLED_BY_DEFAULT);'
