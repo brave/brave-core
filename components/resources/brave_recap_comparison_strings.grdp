@@ -108,7 +108,7 @@
     That's an hour-long yoga class, namaste
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_1H30M" desc="Fun comparison on the time saved slide of Brave Recap, shown from 1 hour 30 minutes of waiting saved." formatter_data="webui=BraveRecap">
-    That's a whole football match, minus stoppage time
+    That's a full 90-minute soccer match
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_2H" desc="Fun comparison on the time saved slide of Brave Recap, shown from 2 hours of waiting saved." formatter_data="webui=BraveRecap">
     That's a whole movie, credits included
