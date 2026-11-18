@@ -68,6 +68,7 @@ static_library("p3a") {
     "//brave/brave_domains",
     "//brave/components/brave_component_updater/browser:public",
     "//brave/components/brave_origin/buildflags",
+    "//brave/components/brave_referrals/common",
     "//brave/components/brave_stats/browser",
     "//brave/components/version_info",
     "//brave/vendor/brave_base",
@@ -86,7 +87,6 @@ static_library("p3a") {
     deps += [ "//ios/web/public/thread" ]
   } else {
     deps += [
-      "//brave/components/brave_referrals/common",
       "//brave/components/misc_metrics:default_browser_monitor",
       "//content/public/browser",
       "//content/public/common",
@@ -117,6 +117,7 @@ source_set("unit_tests") {
   deps = [
     "constellation/rs/cxx:rust_lib",
     "//base/test:test_support",
+    "//brave/components/brave_referrals/common",
     "//brave/components/brave_stats/browser",
     "//brave/components/constants",
     "//brave/components/p3a",
@@ -130,9 +131,6 @@ source_set("unit_tests") {
     "//testing/gtest",
   ]
   if (!is_ios) {
-    deps += [
-      "//brave/components/brave_referrals/common",
-      "//content/test:test_support",
-    ]
+    deps += [ "//content/test:test_support" ]
   }
 }

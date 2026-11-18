@@ -21,12 +21,17 @@
 #include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
-#include "content/public/test/browser_task_environment.h"
 #include "services/network/public/cpp/data_element.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+#if BUILDFLAG(IS_IOS)
+#include "ios/web/public/test/web_task_environment.h"
+#else
+#include "content/public/test/browser_task_environment.h"
+#endif  // BUILDFLAG(IS_IOS)
 
 namespace brave {
 
@@ -136,7 +141,11 @@ class BraveReferralsServiceTest : public testing::Test {
   }
 
  protected:
+#if BUILDFLAG(IS_IOS)
+  web::WebTaskEnvironment task_environment_;
+#else
   content::BrowserTaskEnvironment task_environment_;
+#endif  // BUILDFLAG(IS_IOS)
   base::Time first_run_time_ = base::Time::Now();
   network::TestURLLoaderFactory url_loader_factory_;
   TestingPrefServiceSimple pref_service_;
