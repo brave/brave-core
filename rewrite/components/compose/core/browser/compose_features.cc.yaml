@@ -4,7 +4,11 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: 'Ship kEnableCompose disabled.'
+  - description: |-
+      Ship kComposeEligible disabled.
+
+      Brave doesn't ship Compose, and kComposeEligible is the feature
+      ComposeEnabling checks before letting Compose show.
     set_feature_flag_default_state:
-      feature_name: kEnableCompose
+      feature_name: kComposeEligible
       value: base::FEATURE_DISABLED_BY_DEFAULT
