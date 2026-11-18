@@ -257,7 +257,9 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
                         getEdgeToEdgeManager(),
                         getAppHeaderCoordinator(),
                         this::getBrowserServicesThemeColorProvider,
-                        getClientPackageNameProvider().get());
+                        getClientPackageNameProvider().get(),
+                        getSavedInstanceState(),
+                        getPersistentInstanceState());
         return mBaseCustomTabRootUiCoordinator;
     }
 
