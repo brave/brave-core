@@ -1599,62 +1599,46 @@ if (!entry_was_found) {
 
 <a id="CS-075"></a>
 
-## ✅ Resolve Shields Settings to the Closest Non-Opaque Origin
+## ✅ Resolve Shields Settings to the Site Responsible for the Content
 
-**For both primary and secondary content-settings URLs, use the closest
-non-opaque origin in the applicable origin ancestry. Test each candidate with
-`url::Origin::opaque()`.**
+**Shields settings are keyed by site. The primary settings URL is the top-level
+site the user is visiting. The secondary settings URL is the site of the frame
+or resource being evaluated. Resolve each one independently, from the origin
+that actually represents it.**
 
-Start with the origin represented by that settings URL. If it is opaque, follow
-its parent/ancestor or opener/initiator relationship to the nearest non-opaque
-origin. For network requests, use the request URL's origin for main-frame
-requests, falling back to `request_initiator` only when that origin is opaque.
-For other requests, use the top-frame origin; fall back to `request_initiator`,
-then the request URL's origin, only when no top-frame origin is available. If
-the selected origin is opaque, use its precursor when valid; otherwise apply
-default settings rather than another frame's settings. Resolve each settings URL
-independently; the primary settings URL is the top-level site, but a secondary
-settings URL MUST NOT be assumed to be the main frame.
+An opaque origin does not mean "no site." Most opaque origins are derived from a
+real site, and Chromium records that site as the origin's precursor. When the
+relevant origin is opaque, use its precursor's site. Don't substitute a
+different origin, such as a child frame, the request destination, or some other
+ancestor. If an opaque origin has no precursor, no site is responsible for it,
+so apply the default settings.
 
-A Shields settings origin is not necessarily the document's security origin. For
-example, an HTTPS URL can produce a non-opaque `url::Origin` even when
-sandboxing makes the document's security origin opaque. This rule selects
-Shields settings; it MUST NOT change the document's origin or grant access or
-permissions using an ancestor's origin.
+A Shields settings origin is used only to choose settings. It MUST NOT change
+the document's security origin, and it MUST NOT be used to grant access or
+permissions.
 
-```cpp
-// ❌ WRONG - frame position does not establish the Shields settings origin.
-if (request.is_outermost_main_frame) {
-  return request.url;
-}
+Cases that need the precursor:
 
-// ✅ CORRECT - illustrative resolver; callers supply the applicable origins
-// in order: the relevant origin, then its nearest ancestors/initiators.
-std::optional<url::Origin> ResolveShieldsOrigin(
-    base::span<const url::Origin> origins_nearest_first) {
-  for (const url::Origin& origin : origins_nearest_first) {
-    if (!origin.opaque()) {
-      return origin;
-    }
-  }
-  return std::nullopt;
-}
-```
+- **Sandboxed top-level document** (CSP `sandbox` header): the top frame's
+  origin is opaque, and its precursor is the page's own site. Subresources and
+  iframes use that site's settings.
+- **Sandboxed iframe, or `about:blank` inside one:** the frame's origin is
+  opaque, and its precursor is the site the frame was loaded from.
+- **`data:` iframe or renderer-initiated `data:` document:** the origin is
+  opaque, and its precursor is the site that created it.
+- **Requests or workers started by an opaque document:** the initiator is
+  opaque, and its precursor is the site behind it.
 
-Convert the resolved non-opaque origin with `GetURL()` only when querying
-content settings. If no candidate is non-opaque, handle that case explicitly;
-NEVER treat opacity alone as a reason to bypass Shields.
+Cases that MUST NOT borrow another origin:
 
-- `about:blank` can inherit its opener/initiator's origin even though creating
-  an origin from the literal URL yields an opaque origin.
-- A `data:` main-frame navigation can have an opaque URL-derived origin and a
-  non-opaque `request_initiator`. Use the initiator for Shields settings.
-- For the primary settings URL, use the top-level site. For a secondary settings
-  URL in a nested opaque frame, select the nearest non-opaque ancestor in the
-  relevant chain; NEVER jump directly to the main frame or an unrelated request
-  destination.
+- **Browser-initiated opaque top frame**, such as a typed or bookmarked `data:`
+  URL: there is no precursor, so use the default settings. NEVER use the
+  settings of an iframe or of the request's initiator.
+- **Secondary settings in a nested frame:** use that frame's own site, or its
+  precursor. NEVER jump to the main frame or an unrelated request destination.
 
-NEVER use `is_outermost_main_frame`, a raw document URL, or a non-HTTP(S)
-document scheme as proof of which Shields settings apply.
+NEVER use frame position (`is_outermost_main_frame`), a raw document URL, or a
+non-HTTP(S) scheme as proof of which settings apply, and NEVER treat opacity
+alone as a reason to bypass Shields.
 
 ---
