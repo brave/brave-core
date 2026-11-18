@@ -11,6 +11,7 @@
 #include "base/run_loop.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/test/scoped_run_loop_timeout.h"
+#include "base/test/test_future.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/net/brave_network_audit_test_helper.h"
 #include "brave/components/brave_rewards/content/rewards_service_impl.h"
@@ -63,9 +64,9 @@ class BraveRewardsNetworkAuditTest : public InProcessBrowserTest {
     // Create and start the Rewards service
     rewards_service_ = static_cast<brave_rewards::RewardsServiceImpl*>(
         brave_rewards::RewardsServiceFactory::GetForProfile(GetProfile()));
-    base::RunLoop run_loop;
-    rewards_service_->StartProcessForTesting(run_loop.QuitClosure());
-    run_loop.Run();
+    base::test::TestFuture<void> future;
+    rewards_service_->StartProcessForTesting(future.GetCallback());
+    ASSERT_TRUE(future.Wait());
   }
 
   void TearDownOnMainThread() override {

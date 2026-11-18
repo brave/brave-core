@@ -15,6 +15,7 @@
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
+#include "base/test/test_future.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/browser_dialogs.h"
 #include "brave/browser/ui/views/text_recognition_dialog_tracker.h"
@@ -65,14 +66,6 @@ class TextRecognitionBrowserTest : public InProcessBrowserTest {
     InProcessBrowserTest::TearDownOnMainThread();
   }
 
-  void OnGetTextFromImage(
-      const std::pair<bool, std::vector<std::string>>& supported_strs) {
-    // Test image has "brave" text.
-    EXPECT_TRUE(supported_strs.first);
-    EXPECT_EQ("brave", supported_strs.second[0]);
-    run_loop_->Quit();
-  }
-
   // Runs the "Copy Text From Image" flow on the test image in |target| and
   // returns once the recognized text has been written to the clipboard.
   void RunTextRecognitionFlow(BrowserWindowInterface* target) {
@@ -103,11 +96,14 @@ class TextRecognitionBrowserTest : public InProcessBrowserTest {
       return;
     }
 
-    // OnGetTextFromImage() verifies extracted text from test image.
+    base::test::TestFuture<std::pair<bool, std::vector<std::string>>> future;
     dialog->SetOnGetTextCallbackForTesting(
-        base::BindOnce(&TextRecognitionBrowserTest::OnGetTextFromImage,
-                       base::Unretained(this)));
-    Run();
+        future.GetCallback<const std::pair<bool, std::vector<std::string>>&>());
+    const auto& [ok, texts] = future.Get();
+    // Test image has "brave" text.
+    EXPECT_TRUE(ok);
+    ASSERT_FALSE(texts.empty());
+    EXPECT_EQ("brave", texts[0]);
   }
 
   void OnGetImageForTextCopy(base::WeakPtr<content::WebContents> web_contents,

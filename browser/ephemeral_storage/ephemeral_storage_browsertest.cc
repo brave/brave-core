@@ -13,7 +13,6 @@
 #include "base/strings/escape.h"
 #include "base/strings/strcat.h"
 #include "base/task/sequenced_task_runner.h"
-#include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/test_future.h"
 #include "base/time/time.h"
@@ -516,15 +515,9 @@ network::mojom::CookieManager* EphemeralStorageBrowserTest::CookieManager() {
 }
 
 std::vector<net::CanonicalCookie> EphemeralStorageBrowserTest::GetAllCookies() {
-  base::RunLoop run_loop;
-  std::vector<net::CanonicalCookie> cookies_out;
-  CookieManager()->GetAllCookies(base::BindLambdaForTesting(
-      [&](const std::vector<net::CanonicalCookie>& cookies) {
-        cookies_out = cookies;
-        run_loop.Quit();
-      }));
-  run_loop.Run();
-  return cookies_out;
+  base::test::TestFuture<const std::vector<net::CanonicalCookie>&> future;
+  CookieManager()->GetAllCookies(future.GetCallback());
+  return future.Take();
 }
 
 brave_shields::BraveShieldsSettingsService*

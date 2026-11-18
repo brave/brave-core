@@ -7,8 +7,8 @@
 
 #include "base/base64.h"
 #include "base/containers/map_util.h"
+#include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "base/time/time.h"
@@ -185,24 +185,22 @@ IN_PROC_BROWSER_TEST_P(BackupResultsServiceBrowserTest, BasicRenderAndLoad) {
   GURL url = https_server_->GetURL("google.ca", kTestInitPath);
 
   {
-    base::RunLoop run_loop;
-    backup_results_service_->FetchBackupResults(
-        url, std::nullopt,
-        base::BindLambdaForTesting(
-            [&](std::optional<BackupResultsService::BackupResults> result) {
-              EXPECT_TRUE(result.has_value());
-              if (result) {
-                EXPECT_EQ(kTestFinalHtml, result->html);
-                EXPECT_EQ(net::HTTP_OK, result->final_status_code);
-              }
-              EXPECT_FALSE(last_custom_header_);
-              EXPECT_TRUE(last_user_agent_);
-              EXPECT_NE(last_user_agent_, kTestUAOverride);
-              EXPECT_EQ(request_paths_, (std::vector<std::string>{
-                                            kTestInitPath, kTestFinalPath}));
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+    base::test::TestFuture<std::optional<BackupResultsService::BackupResults>>
+        future;
+    backup_results_service_->FetchBackupResults(url, std::nullopt,
+                                                future.GetCallback());
+
+    auto result = future.Take();
+    EXPECT_TRUE(result.has_value());
+    if (result) {
+      EXPECT_EQ(kTestFinalHtml, result->html);
+      EXPECT_EQ(net::HTTP_OK, result->final_status_code);
+    }
+    EXPECT_FALSE(last_custom_header_);
+    EXPECT_TRUE(last_user_agent_);
+    EXPECT_NE(last_user_agent_, kTestUAOverride);
+    EXPECT_EQ(request_paths_,
+              (std::vector<std::string>{kTestInitPath, kTestFinalPath}));
   }
 
   BackupResultsServiceImpl::RecordLastViewGeometry(
@@ -211,84 +209,69 @@ IN_PROC_BROWSER_TEST_P(BackupResultsServiceBrowserTest, BasicRenderAndLoad) {
   request_paths_.clear();
 
   {
-    base::RunLoop run_loop;
-    backup_results_service_->FetchBackupResults(
-        url, std::nullopt,
-        base::BindLambdaForTesting(
-            [&](std::optional<BackupResultsService::BackupResults> result) {
-              EXPECT_TRUE(result.has_value());
-              if (result) {
-                EXPECT_EQ(kTestFinalHtml, result->html);
-                EXPECT_EQ(net::HTTP_OK, result->final_status_code);
-              }
-              EXPECT_EQ(request_paths_, (std::vector<std::string>{
-                                            kTestInitPath, kTestFinalPath}));
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+    base::test::TestFuture<std::optional<BackupResultsService::BackupResults>>
+        future;
+    backup_results_service_->FetchBackupResults(url, std::nullopt,
+                                                future.GetCallback());
+
+    auto result = future.Take();
+    EXPECT_TRUE(result.has_value());
+    if (result) {
+      EXPECT_EQ(kTestFinalHtml, result->html);
+      EXPECT_EQ(net::HTTP_OK, result->final_status_code);
+    }
+    EXPECT_EQ(request_paths_,
+              (std::vector<std::string>{kTestInitPath, kTestFinalPath}));
   }
 }
 
 IN_PROC_BROWSER_TEST_P(BackupResultsServiceBrowserTest, InvalidDomain) {
-  base::RunLoop run_loop;
   GURL url = https_server_->GetURL("google.invalid", kTestInitPath);
 
-  backup_results_service_->FetchBackupResults(
-      url, std::nullopt,
-      base::BindLambdaForTesting(
-          [&](std::optional<BackupResultsService::BackupResults> result) {
-            EXPECT_FALSE(result.has_value());
-            EXPECT_TRUE(request_paths_.empty());
-            run_loop.Quit();
-          }));
+  base::test::TestFuture<std::optional<BackupResultsService::BackupResults>>
+      future;
+  backup_results_service_->FetchBackupResults(url, std::nullopt,
+                                              future.GetCallback());
 
-  run_loop.Run();
+  EXPECT_FALSE(future.Take().has_value());
+  EXPECT_TRUE(request_paths_.empty());
 }
 
 IN_PROC_BROWSER_TEST_P(BackupResultsServiceBrowserTest, InvalidRedirect) {
   redirect_to_invalid_domain_ = true;
 
-  base::RunLoop run_loop;
   GURL url = https_server_->GetURL("google.ca", kTestInitPath);
 
-  backup_results_service_->FetchBackupResults(
-      url, std::nullopt,
-      base::BindLambdaForTesting(
-          [&](std::optional<BackupResultsService::BackupResults> result) {
-            EXPECT_FALSE(result.has_value());
-            EXPECT_EQ(request_paths_,
-                      (std::vector<std::string>{kTestInitPath}));
-            run_loop.Quit();
-          }));
+  base::test::TestFuture<std::optional<BackupResultsService::BackupResults>>
+      future;
+  backup_results_service_->FetchBackupResults(url, std::nullopt,
+                                              future.GetCallback());
 
-  run_loop.Run();
+  EXPECT_FALSE(future.Take().has_value());
+  EXPECT_EQ(request_paths_, (std::vector<std::string>{kTestInitPath}));
 }
 
 IN_PROC_BROWSER_TEST_P(BackupResultsServiceBrowserTest, CookieHeader) {
-  base::RunLoop run_loop;
   GURL url = https_server_->GetURL("google.co.uk", kTestFinalPath);
 
   net::HttpRequestHeaders headers;
   headers.SetHeader(net::HttpRequestHeaders::kCookie, "testcookie=value");
 
-  backup_results_service_->FetchBackupResults(
-      url, headers,
-      base::BindLambdaForTesting(
-          [&](std::optional<BackupResultsService::BackupResults> result) {
-            EXPECT_TRUE(result.has_value());
-            if (result) {
-              EXPECT_EQ(kTestFinalHtml, result->html);
-              EXPECT_EQ(net::HTTP_OK, result->final_status_code);
-            }
-            EXPECT_FALSE(last_custom_header_);
-            EXPECT_TRUE(last_user_agent_);
-            EXPECT_NE(last_user_agent_, kTestUAOverride);
-            EXPECT_EQ(request_paths_,
-                      (std::vector<std::string>{kTestFinalPath}));
-            run_loop.Quit();
-          }));
+  base::test::TestFuture<std::optional<BackupResultsService::BackupResults>>
+      future;
+  backup_results_service_->FetchBackupResults(url, headers,
+                                              future.GetCallback());
 
-  run_loop.Run();
+  auto result = future.Take();
+  EXPECT_TRUE(result.has_value());
+  if (result) {
+    EXPECT_EQ(kTestFinalHtml, result->html);
+    EXPECT_EQ(net::HTTP_OK, result->final_status_code);
+  }
+  EXPECT_FALSE(last_custom_header_);
+  EXPECT_TRUE(last_user_agent_);
+  EXPECT_NE(last_user_agent_, kTestUAOverride);
+  EXPECT_EQ(request_paths_, (std::vector<std::string>{kTestFinalPath}));
 }
 
 class BackupResultsServiceFullRenderBrowserTest
@@ -301,24 +284,21 @@ class BackupResultsServiceFullRenderBrowserTest
 };
 
 IN_PROC_BROWSER_TEST_F(BackupResultsServiceFullRenderBrowserTest, FullRender) {
-  base::RunLoop run_loop;
   GURL url = https_server_->GetURL("google.com", kTestInitPath);
 
-  backup_results_service_->FetchBackupResults(
-      url, std::nullopt,
-      base::BindLambdaForTesting(
-          [&](std::optional<BackupResultsService::BackupResults> result) {
-            EXPECT_TRUE(result.has_value());
-            if (result) {
-              EXPECT_EQ(kTestFinalHtml, result->html);
-              EXPECT_EQ(net::HTTP_OK, result->final_status_code);
-            }
-            EXPECT_EQ(request_paths_, (std::vector<std::string>{
-                                          kTestInitPath, kTestFinalPath}));
-            run_loop.Quit();
-          }));
+  base::test::TestFuture<std::optional<BackupResultsService::BackupResults>>
+      future;
+  backup_results_service_->FetchBackupResults(url, std::nullopt,
+                                              future.GetCallback());
 
-  run_loop.Run();
+  auto result = future.Take();
+  EXPECT_TRUE(result.has_value());
+  if (result) {
+    EXPECT_EQ(kTestFinalHtml, result->html);
+    EXPECT_EQ(net::HTTP_OK, result->final_status_code);
+  }
+  EXPECT_EQ(request_paths_,
+            (std::vector<std::string>{kTestInitPath, kTestFinalPath}));
 }
 
 class BackupResultsServiceDisabledBrowserTest
@@ -331,19 +311,15 @@ class BackupResultsServiceDisabledBrowserTest
 
 IN_PROC_BROWSER_TEST_F(BackupResultsServiceDisabledBrowserTest,
                        FeatureDisabled) {
-  base::RunLoop run_loop;
   GURL url = https_server_->GetURL("google.ca", kTestInitPath);
 
-  backup_results_service_->FetchBackupResults(
-      url, std::nullopt,
-      base::BindLambdaForTesting(
-          [&](std::optional<BackupResultsService::BackupResults> result) {
-            EXPECT_FALSE(result.has_value());
-            EXPECT_TRUE(request_paths_.empty());
-            run_loop.Quit();
-          }));
+  base::test::TestFuture<std::optional<BackupResultsService::BackupResults>>
+      future;
+  backup_results_service_->FetchBackupResults(url, std::nullopt,
+                                              future.GetCallback());
 
-  run_loop.Run();
+  EXPECT_FALSE(future.Take().has_value());
+  EXPECT_TRUE(request_paths_.empty());
 }
 
 class BackupResultsServiceFeatureHeadersBrowserTest
@@ -361,47 +337,38 @@ class BackupResultsServiceFeatureHeadersBrowserTest
 
 IN_PROC_BROWSER_TEST_F(BackupResultsServiceFeatureHeadersBrowserTest,
                        SimpleURLLoader) {
-  base::RunLoop run_loop;
   GURL url = https_server_->GetURL("google.co.uk", kTestFinalPath);
 
   net::HttpRequestHeaders headers;
   headers.SetHeader(net::HttpRequestHeaders::kCookie, "testcookie=value");
 
-  backup_results_service_->FetchBackupResults(
-      url, headers,
-      base::BindLambdaForTesting(
-          [&](std::optional<BackupResultsService::BackupResults> result) {
-            EXPECT_TRUE(result.has_value());
-            EXPECT_EQ(last_custom_header_, kTestCustomHeaderValue);
-            EXPECT_TRUE(last_user_agent_);
-            EXPECT_NE(last_user_agent_, kTestUAOverride);
-            EXPECT_EQ(request_paths_,
-                      (std::vector<std::string>{kTestFinalPath}));
-            run_loop.Quit();
-          }));
+  base::test::TestFuture<std::optional<BackupResultsService::BackupResults>>
+      future;
+  backup_results_service_->FetchBackupResults(url, headers,
+                                              future.GetCallback());
 
-  run_loop.Run();
+  EXPECT_TRUE(future.Take().has_value());
+  EXPECT_EQ(last_custom_header_, kTestCustomHeaderValue);
+  EXPECT_TRUE(last_user_agent_);
+  EXPECT_NE(last_user_agent_, kTestUAOverride);
+  EXPECT_EQ(request_paths_, (std::vector<std::string>{kTestFinalPath}));
 }
 
 IN_PROC_BROWSER_TEST_F(BackupResultsServiceFeatureHeadersBrowserTest,
                        WebContents) {
-  base::RunLoop run_loop;
   GURL url = https_server_->GetURL("google.ca", kTestInitPath);
 
-  backup_results_service_->FetchBackupResults(
-      url, std::nullopt,
-      base::BindLambdaForTesting(
-          [&](std::optional<BackupResultsService::BackupResults> result) {
-            EXPECT_TRUE(result.has_value());
-            EXPECT_EQ(last_custom_header_, kTestCustomHeaderValue);
-            EXPECT_TRUE(last_user_agent_);
-            EXPECT_NE(last_user_agent_, kTestUAOverride);
-            EXPECT_EQ(request_paths_, (std::vector<std::string>{
-                                          kTestInitPath, kTestFinalPath}));
-            run_loop.Quit();
-          }));
+  base::test::TestFuture<std::optional<BackupResultsService::BackupResults>>
+      future;
+  backup_results_service_->FetchBackupResults(url, std::nullopt,
+                                              future.GetCallback());
 
-  run_loop.Run();
+  EXPECT_TRUE(future.Take().has_value());
+  EXPECT_EQ(last_custom_header_, kTestCustomHeaderValue);
+  EXPECT_TRUE(last_user_agent_);
+  EXPECT_NE(last_user_agent_, kTestUAOverride);
+  EXPECT_EQ(request_paths_,
+            (std::vector<std::string>{kTestInitPath, kTestFinalPath}));
 }
 
 class BackupResultsServiceUAOverrideBrowserTest
@@ -416,21 +383,17 @@ class BackupResultsServiceUAOverrideBrowserTest
 };
 
 IN_PROC_BROWSER_TEST_F(BackupResultsServiceUAOverrideBrowserTest, WebContents) {
-  base::RunLoop run_loop;
   GURL url = https_server_->GetURL("google.ca", kTestInitPath);
 
-  backup_results_service_->FetchBackupResults(
-      url, std::nullopt,
-      base::BindLambdaForTesting(
-          [&](std::optional<BackupResultsService::BackupResults> result) {
-            EXPECT_TRUE(result.has_value());
-            EXPECT_EQ(last_user_agent_, kTestUAOverride);
-            EXPECT_EQ(request_paths_, (std::vector<std::string>{
-                                          kTestInitPath, kTestFinalPath}));
-            run_loop.Quit();
-          }));
+  base::test::TestFuture<std::optional<BackupResultsService::BackupResults>>
+      future;
+  backup_results_service_->FetchBackupResults(url, std::nullopt,
+                                              future.GetCallback());
 
-  run_loop.Run();
+  EXPECT_TRUE(future.Take().has_value());
+  EXPECT_EQ(last_user_agent_, kTestUAOverride);
+  EXPECT_EQ(request_paths_,
+            (std::vector<std::string>{kTestInitPath, kTestFinalPath}));
 }
 
 class BackupResultsServiceUAOverrideWithMetadataBrowserTest
@@ -461,21 +424,17 @@ class BackupResultsServiceUAOverrideWithMetadataBrowserTest
 
 IN_PROC_BROWSER_TEST_F(BackupResultsServiceUAOverrideWithMetadataBrowserTest,
                        WebContents) {
-  base::RunLoop run_loop;
   GURL url = https_server_->GetURL("google.ca", kTestInitPath);
 
-  backup_results_service_->FetchBackupResults(
-      url, std::nullopt,
-      base::BindLambdaForTesting(
-          [&](std::optional<BackupResultsService::BackupResults> result) {
-            EXPECT_TRUE(result.has_value());
-            EXPECT_EQ(last_user_agent_, kTestUAOverride);
-            EXPECT_EQ(request_paths_, (std::vector<std::string>{
-                                          kTestInitPath, kTestFinalPath}));
-            run_loop.Quit();
-          }));
+  base::test::TestFuture<std::optional<BackupResultsService::BackupResults>>
+      future;
+  backup_results_service_->FetchBackupResults(url, std::nullopt,
+                                              future.GetCallback());
 
-  run_loop.Run();
+  EXPECT_TRUE(future.Take().has_value());
+  EXPECT_EQ(last_user_agent_, kTestUAOverride);
+  EXPECT_EQ(request_paths_,
+            (std::vector<std::string>{kTestInitPath, kTestFinalPath}));
 }
 
 class BackupResultsServiceDailyLimitBrowserTest
@@ -500,33 +459,26 @@ IN_PROC_BROWSER_TEST_F(BackupResultsServiceDailyLimitBrowserTest,
   // First two requests should succeed (limit is 2).
   for (int i = 0; i < 2; i++) {
     request_paths_.clear();
-    base::RunLoop run_loop;
-    backup_results_service_->FetchBackupResults(
-        url, headers,
-        base::BindLambdaForTesting(
-            [&](std::optional<BackupResultsService::BackupResults> result) {
-              EXPECT_TRUE(result.has_value());
-              EXPECT_EQ(request_paths_,
-                        (std::vector<std::string>{kTestFinalPath}));
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+    base::test::TestFuture<std::optional<BackupResultsService::BackupResults>>
+        future;
+    backup_results_service_->FetchBackupResults(url, headers,
+                                                future.GetCallback());
+
+    EXPECT_TRUE(future.Take().has_value());
+    EXPECT_EQ(request_paths_, (std::vector<std::string>{kTestFinalPath}));
   }
 
   request_paths_.clear();
 
   // Third request should be rejected immediately.
   {
-    base::RunLoop run_loop;
-    backup_results_service_->FetchBackupResults(
-        url, headers,
-        base::BindLambdaForTesting(
-            [&](std::optional<BackupResultsService::BackupResults> result) {
-              EXPECT_FALSE(result.has_value());
-              run_loop.Quit();
-              EXPECT_TRUE(request_paths_.empty());
-            }));
-    run_loop.Run();
+    base::test::TestFuture<std::optional<BackupResultsService::BackupResults>>
+        future;
+    backup_results_service_->FetchBackupResults(url, headers,
+                                                future.GetCallback());
+
+    EXPECT_FALSE(future.Take().has_value());
+    EXPECT_TRUE(request_paths_.empty());
   }
 
   // Simulate a day passing by backdating the window start pref.
@@ -536,17 +488,13 @@ IN_PROC_BROWSER_TEST_F(BackupResultsServiceDailyLimitBrowserTest,
 
   // First request of the new window should succeed.
   {
-    base::RunLoop run_loop;
-    backup_results_service_->FetchBackupResults(
-        url, headers,
-        base::BindLambdaForTesting(
-            [&](std::optional<BackupResultsService::BackupResults> result) {
-              EXPECT_TRUE(result.has_value());
-              EXPECT_EQ(request_paths_,
-                        (std::vector<std::string>{kTestFinalPath}));
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+    base::test::TestFuture<std::optional<BackupResultsService::BackupResults>>
+        future;
+    backup_results_service_->FetchBackupResults(url, headers,
+                                                future.GetCallback());
+
+    EXPECT_TRUE(future.Take().has_value());
+    EXPECT_EQ(request_paths_, (std::vector<std::string>{kTestFinalPath}));
   }
 }
 
@@ -557,18 +505,14 @@ IN_PROC_BROWSER_TEST_P(BackupResultsServiceBrowserTest, NoDailyLimitByDefault) {
   headers.SetHeader(net::HttpRequestHeaders::kCookie, "testcookie=value");
 
   for (int i = 0; i < 5; i++) {
-    base::RunLoop run_loop;
     request_paths_.clear();
-    backup_results_service_->FetchBackupResults(
-        url, headers,
-        base::BindLambdaForTesting(
-            [&](std::optional<BackupResultsService::BackupResults> result) {
-              EXPECT_TRUE(result.has_value());
-              EXPECT_EQ(request_paths_,
-                        (std::vector<std::string>{kTestFinalPath}));
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+    base::test::TestFuture<std::optional<BackupResultsService::BackupResults>>
+        future;
+    backup_results_service_->FetchBackupResults(url, headers,
+                                                future.GetCallback());
+
+    EXPECT_TRUE(future.Take().has_value());
+    EXPECT_EQ(request_paths_, (std::vector<std::string>{kTestFinalPath}));
   }
 }
 
@@ -589,23 +533,20 @@ IN_PROC_BROWSER_TEST_F(BackupResultsServiceLoadAfterRestoreBrowserTest,
 
   for (bool low_latency_required : {false, true}) {
     request_paths_.clear();
-    base::RunLoop run_loop;
+    base::test::TestFuture<std::optional<BackupResultsService::BackupResults>>
+        future;
     backup_results_service_->FetchBackupResults(
-        url, std::nullopt,
-        base::BindLambdaForTesting(
-            [&](std::optional<BackupResultsService::BackupResults> result) {
-              EXPECT_TRUE(result.has_value());
-              if (result) {
-                EXPECT_EQ(kTestFinalHtml, result->html);
-                EXPECT_EQ(net::HTTP_OK, result->final_status_code);
-              }
-              EXPECT_EQ(request_paths_,
-                        (std::vector<std::string>{kTestRootPath, kTestInitPath,
-                                                  kTestFinalPath}));
-              run_loop.Quit();
-            }),
-        low_latency_required);
-    run_loop.Run();
+        url, std::nullopt, future.GetCallback(), low_latency_required);
+
+    auto result = future.Take();
+    EXPECT_TRUE(result.has_value());
+    if (result) {
+      EXPECT_EQ(kTestFinalHtml, result->html);
+      EXPECT_EQ(net::HTTP_OK, result->final_status_code);
+    }
+    EXPECT_EQ(request_paths_,
+              (std::vector<std::string>{kTestRootPath, kTestInitPath,
+                                        kTestFinalPath}));
   }
 }
 

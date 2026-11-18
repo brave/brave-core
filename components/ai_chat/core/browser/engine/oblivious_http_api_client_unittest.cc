@@ -14,9 +14,9 @@
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/memory/raw_ptr.h"
-#include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
@@ -151,16 +151,11 @@ class ObliviousHttpAPIClientUnitTest : public testing::Test,
           });
     }
 
-    run_loop_ = std::make_unique<base::RunLoop>();
     std::vector<OAIMessage> messages;
     messages.push_back(std::move(msg));
-    client_->PerformRequest(
-        *model_options, std::move(messages), std::nullopt,
-        std::move(data_received_callback),
-        base::BindLambdaForTesting([&](EngineConsumer::GenerationResult r) {
-          result_ = std::move(r);
-          run_loop_->Quit();
-        }));
+    client_->PerformRequest(*model_options, std::move(messages), std::nullopt,
+                            std::move(data_received_callback),
+                            future_.GetCallback());
   }
 
   // network::TestNetworkContext:
@@ -184,9 +179,7 @@ class ObliviousHttpAPIClientUnitTest : public testing::Test,
   std::unique_ptr<MockAIChatCredentialManager> credential_manager_;
   std::unique_ptr<ObliviousHttpAPIClient> client_;
   raw_ptr<MockObliviousHttpConfigManager> config_manager_ = nullptr;
-  std::unique_ptr<base::RunLoop> run_loop_;
-  EngineConsumer::GenerationResult result_ =
-      base::unexpected(mojom::APIError::None);
+  base::test::TestFuture<EngineConsumer::GenerationResult> future_;
   std::vector<EngineConsumer::GenerationResultData> received_chunks_;
   network::mojom::ObliviousHttpRequestPtr last_request_;
   mojo::Remote<network::mojom::ObliviousHttpClient> completion_client_;
@@ -201,11 +194,11 @@ TEST_F(ObliviousHttpAPIClientUnitTest, PerformRequest_NonStreaming_Completes) {
   EXPECT_FALSE(last_request_->chunk_client.is_valid());
 
   CompleteWithInnerResponse(net::HTTP_OK, kNonStreamingResponseBody);
-  run_loop_->Run();
+  auto result = future_.Take();
 
-  ASSERT_TRUE(result_.has_value());
-  ASSERT_TRUE(result_->event->is_completion_event());
-  EXPECT_EQ("hello world", result_->event->get_completion_event()->completion);
+  ASSERT_TRUE(result.has_value());
+  ASSERT_TRUE(result->event->is_completion_event());
+  EXPECT_EQ("hello world", result->event->get_completion_event()->completion);
 }
 
 TEST_F(ObliviousHttpAPIClientUnitTest,
@@ -219,7 +212,7 @@ TEST_F(ObliviousHttpAPIClientUnitTest,
   EmitChunk("part2");
 
   CompleteWithInnerResponse(net::HTTP_OK, "");
-  run_loop_->Run();
+  auto result = future_.Take();
 
   ASSERT_EQ(2u, received_chunks_.size());
   ASSERT_TRUE(received_chunks_[0].event->is_completion_event());
@@ -229,9 +222,9 @@ TEST_F(ObliviousHttpAPIClientUnitTest,
   EXPECT_EQ("part2",
             received_chunks_[1].event->get_completion_event()->completion);
 
-  ASSERT_TRUE(result_.has_value());
-  ASSERT_TRUE(result_->event->is_completion_event());
-  EXPECT_EQ("", result_->event->get_completion_event()->completion);
+  ASSERT_TRUE(result.has_value());
+  ASSERT_TRUE(result->event->is_completion_event());
+  EXPECT_EQ("", result->event->get_completion_event()->completion);
 }
 
 TEST_F(ObliviousHttpAPIClientUnitTest,
@@ -248,7 +241,7 @@ TEST_F(ObliviousHttpAPIClientUnitTest,
   EmitChunk("good3");
 
   CompleteWithInnerResponse(net::HTTP_OK, "");
-  run_loop_->Run();
+  ASSERT_TRUE(future_.Wait());
 
   ASSERT_EQ(3u, received_chunks_.size());
   ASSERT_TRUE(received_chunks_[0].event->is_completion_event());
@@ -267,16 +260,16 @@ TEST_F(ObliviousHttpAPIClientUnitTest,
   PerformRequest();
 
   CompleteWithInnerResponse(net::HTTP_INTERNAL_SERVER_ERROR, "");
-  run_loop_->Run();
+  auto result = future_.Take();
 
-  ASSERT_FALSE(result_.has_value());
-  EXPECT_EQ(mojom::APIError::ConnectionIssue, result_.error());
-  ASSERT_TRUE(result_.error().details);
+  ASSERT_FALSE(result.has_value());
+  EXPECT_EQ(mojom::APIError::ConnectionIssue, result.error());
+  ASSERT_TRUE(result.error().details);
   // The outer response code is OK, so status_code reflects that while the bad
   // inner response code is surfaced via inner_status_code.
-  EXPECT_EQ(net::HTTP_OK, result_.error().details->status_code);
+  EXPECT_EQ(net::HTTP_OK, result.error().details->status_code);
   EXPECT_EQ(net::HTTP_INTERNAL_SERVER_ERROR,
-            result_.error().details->inner_status_code);
+            result.error().details->inner_status_code);
 }
 
 TEST_F(ObliviousHttpAPIClientUnitTest, PerformRequest_Streaming_BadStatusCode) {
@@ -289,28 +282,28 @@ TEST_F(ObliviousHttpAPIClientUnitTest, PerformRequest_Streaming_BadStatusCode) {
   EmitChunk("part2");
 
   CompleteWithInnerResponse(net::HTTP_INTERNAL_SERVER_ERROR, "");
-  run_loop_->Run();
+  auto result = future_.Take();
 
-  ASSERT_FALSE(result_.has_value());
-  EXPECT_EQ(mojom::APIError::ConnectionIssue, result_.error());
-  ASSERT_TRUE(result_.error().details);
-  EXPECT_EQ(net::HTTP_OK, result_.error().details->status_code);
+  ASSERT_FALSE(result.has_value());
+  EXPECT_EQ(mojom::APIError::ConnectionIssue, result.error());
+  ASSERT_TRUE(result.error().details);
+  EXPECT_EQ(net::HTTP_OK, result.error().details->status_code);
   EXPECT_EQ(net::HTTP_INTERNAL_SERVER_ERROR,
-            result_.error().details->inner_status_code);
+            result.error().details->inner_status_code);
 }
 
 TEST_F(ObliviousHttpAPIClientUnitTest,
        PerformRequest_InnerUnauthorized_ReturnsConnectionIssue) {
   PerformRequest();
   CompleteWithInnerResponse(net::HTTP_UNAUTHORIZED, "");
-  run_loop_->Run();
-  ASSERT_FALSE(result_.has_value());
+  auto result = future_.Take();
+  ASSERT_FALSE(result.has_value());
   // An inner 401 is mapped to InvalidAPIKey but overridden to ConnectionIssue
   // to avoid showing the BYOM API key error in the UI.
-  EXPECT_EQ(mojom::APIError::ConnectionIssue, result_.error());
-  ASSERT_TRUE(result_.error().details);
-  EXPECT_EQ(net::HTTP_OK, result_.error().details->status_code);
-  EXPECT_EQ(net::HTTP_UNAUTHORIZED, result_.error().details->inner_status_code);
+  EXPECT_EQ(mojom::APIError::ConnectionIssue, result.error());
+  ASSERT_TRUE(result.error().details);
+  EXPECT_EQ(net::HTTP_OK, result.error().details->status_code);
+  EXPECT_EQ(net::HTTP_UNAUTHORIZED, result.error().details->inner_status_code);
 }
 
 TEST_F(ObliviousHttpAPIClientUnitTest,
@@ -336,7 +329,7 @@ TEST_F(ObliviousHttpAPIClientUnitTest,
       "}}}]}\n");
 
   CompleteWithInnerResponse(net::HTTP_OK, "");
-  run_loop_->Run();
+  ASSERT_TRUE(future_.Wait());
 
   ASSERT_EQ(2u, received_chunks_.size());
 
@@ -384,14 +377,14 @@ TEST_F(ObliviousHttpAPIClientUnitTest, PerformRequest_BadOuterResponseCode) {
         network::mojom::ObliviousHttpCompletionResult::
             NewOuterResponseErrorCode(c.response_code));
     completion_client_.FlushForTesting();
-    run_loop_->Run();
+    auto result = future_.Take();
 
-    ASSERT_FALSE(result_.has_value());
-    EXPECT_EQ(c.expected_error, result_.error());
-    ASSERT_TRUE(result_.error().details);
+    ASSERT_FALSE(result.has_value());
+    EXPECT_EQ(c.expected_error, result.error());
+    ASSERT_TRUE(result.error().details);
     // For outer errors there is no inner response, so inner_status_code is 0.
-    EXPECT_EQ(c.response_code, result_.error().details->status_code);
-    EXPECT_EQ(0, result_.error().details->inner_status_code);
+    EXPECT_EQ(c.response_code, result.error().details->status_code);
+    EXPECT_EQ(0, result.error().details->inner_status_code);
   }
 }
 
@@ -423,9 +416,9 @@ TEST_F(ObliviousHttpAPIClientUnitTest,
 
   PerformRequest();
   CompleteWithInnerResponse(net::HTTP_OK, kNonStreamingResponseBody);
-  run_loop_->Run();
+  auto result = future_.Take();
 
-  ASSERT_TRUE(result_.has_value());
+  ASSERT_TRUE(result.has_value());
 }
 
 TEST_F(ObliviousHttpAPIClientUnitTest,
@@ -445,9 +438,9 @@ TEST_F(ObliviousHttpAPIClientUnitTest,
       network::mojom::ObliviousHttpCompletionResult::NewOuterResponseErrorCode(
           net::HTTP_UNAUTHORIZED));
   completion_client_.FlushForTesting();
-  run_loop_->Run();
+  auto result = future_.Take();
 
-  ASSERT_FALSE(result_.has_value());
+  ASSERT_FALSE(result.has_value());
 }
 
 TEST_F(ObliviousHttpAPIClientUnitTest,
@@ -469,10 +462,10 @@ TEST_F(ObliviousHttpAPIClientUnitTest,
   EXPECT_CALL(*credential_manager_, PutCredentialInCache(_)).Times(1);
 
   PerformRequest();
-  run_loop_->Run();
+  auto result = future_.Take();
 
-  ASSERT_FALSE(result_.has_value());
-  EXPECT_EQ(mojom::APIError::ConnectionIssue, result_.error());
+  ASSERT_FALSE(result.has_value());
+  EXPECT_EQ(mojom::APIError::ConnectionIssue, result.error());
 }
 
 }  // namespace ai_chat

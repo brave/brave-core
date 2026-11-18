@@ -177,10 +177,9 @@ class RewardsPageBrowserTest : public InProcessBrowserTest {
   }
 
   void StartRewardsEngine() {
-    base::RunLoop run_loop;
-    GetRewardsService().StartProcessForTesting(
-        base::BindLambdaForTesting([&]() { run_loop.Quit(); }));
-    run_loop.Run();
+    base::test::TestFuture<void> future;
+    GetRewardsService().StartProcessForTesting(future.GetCallback());
+    ASSERT_TRUE(future.Wait());
   }
 
   void RunTests() {
@@ -258,11 +257,10 @@ class RewardsPageBrowserTest : public InProcessBrowserTest {
     publisher->name = id;
     publisher->url = id;
     publisher->status = mojom::PublisherStatus::UPHOLD_VERIFIED;
-    base::RunLoop run_loop;
-    GetRewardsService().SavePublisherInfo(
-        0, std::move(publisher),
-        base::BindLambdaForTesting([&](mojom::Result) { run_loop.Quit(); }));
-    run_loop.Run();
+    base::test::TestFuture<mojom::Result> future;
+    GetRewardsService().SavePublisherInfo(0, std::move(publisher),
+                                          future.GetCallback());
+    ASSERT_TRUE(future.Wait());
   }
 
  private:

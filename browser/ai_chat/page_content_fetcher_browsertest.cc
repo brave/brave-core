@@ -12,9 +12,8 @@
 #include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
-#include "base/run_loop.h"
 #include "base/strings/string_util.h"
-#include "base/test/bind.h"
+#include "base/test/test_future.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -82,52 +81,38 @@ class PageContentFetcherBrowserTest : public InProcessBrowserTest {
                         bool expected_is_video,
                         bool trim_whitespace = true) {
     SCOPED_TRACE(testing::Message() << location.ToString());
-    base::RunLoop run_loop;
+    base::test::TestFuture<std::string, bool, std::string> future;
     page_content_fetcher_ =
         std::make_unique<ai_chat::PageContentFetcher>(GetActiveWebContents());
     page_content_fetcher_->SetURLLoaderFactoryForTesting(
         shared_url_loader_factory_);
-    page_content_fetcher_->FetchPageContent(
-        "", base::BindLambdaForTesting([&run_loop, &expected_text,
-                                        &expected_is_video, &trim_whitespace](
-                                           std::string text, bool is_video,
-                                           std::string invalidation_token) {
-          EXPECT_EQ(expected_text,
-                    trim_whitespace ? base::TrimWhitespaceASCII(
-                                          text, base::TrimPositions::TRIM_ALL)
-                                    : text);
-          EXPECT_EQ(expected_is_video, is_video);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    page_content_fetcher_->FetchPageContent("", future.GetCallback());
+    auto [text, is_video, invalidation_token] = future.Take();
+    EXPECT_EQ(expected_text, trim_whitespace
+                                 ? base::TrimWhitespaceASCII(
+                                       text, base::TrimPositions::TRIM_ALL)
+                                 : text);
+    EXPECT_EQ(expected_is_video, is_video);
   }
 
   void GetSearchSummarizerKey(const base::Location& location,
                               const std::optional<std::string>& expected_key) {
     SCOPED_TRACE(testing::Message() << location.ToString());
-    base::RunLoop run_loop;
+    base::test::TestFuture<std::optional<std::string>> future;
     page_content_fetcher_ =
         std::make_unique<ai_chat::PageContentFetcher>(GetActiveWebContents());
-    page_content_fetcher_->GetSearchSummarizerKey(base::BindLambdaForTesting(
-        [&run_loop, &expected_key](const std::optional<std::string>& key) {
-          EXPECT_EQ(expected_key, key);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    page_content_fetcher_->GetSearchSummarizerKey(
+        future.GetCallback<const std::optional<std::string>&>());
+    EXPECT_EQ(expected_key, future.Get());
   }
 
   std::optional<std::string> GetOpenAIChatButtonNonce() {
-    std::optional<std::string> ret_nonce;
-    base::RunLoop run_loop;
+    base::test::TestFuture<std::optional<std::string>> future;
     page_content_fetcher_ =
         std::make_unique<ai_chat::PageContentFetcher>(GetActiveWebContents());
-    page_content_fetcher_->GetOpenAIChatButtonNonce(base::BindLambdaForTesting(
-        [&run_loop, &ret_nonce](const std::optional<std::string>& nonce) {
-          ret_nonce = nonce;
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-    return ret_nonce;
+    page_content_fetcher_->GetOpenAIChatButtonNonce(
+        future.GetCallback<const std::optional<std::string>&>());
+    return future.Take();
   }
 
  protected:

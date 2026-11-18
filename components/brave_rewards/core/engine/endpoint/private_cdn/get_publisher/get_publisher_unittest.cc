@@ -13,6 +13,7 @@
 #include "base/containers/span.h"
 #include "base/numerics/byte_conversions.h"
 #include "base/test/bind.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_rewards/core/engine/publisher/protos/channel_response.pb.h"
 #include "brave/components/brave_rewards/core/engine/test/rewards_engine_test.h"
 #include "brave/components/brave_rewards/core/engine/util/environment_config.h"
@@ -26,22 +27,13 @@ class RewardsGetPublisherTest : public RewardsEngineTest {
                         const std::string& prefix,
                         mojom::ServerPublisherInfoPtr* info) {
     DCHECK(info);
-    base::RunLoop run_loop;
-    mojom::Result result;
+    base::test::TestFuture<mojom::Result, mojom::ServerPublisherInfoPtr> future;
 
     endpoint::private_cdn::GetPublisher endpoint(engine());
+    endpoint.Request(id, prefix, future.GetCallback());
 
-    endpoint.Request(id, prefix,
-                     base::BindLambdaForTesting(
-                         [&run_loop, &result, info](
-                             mojom::Result request_result,
-                             mojom::ServerPublisherInfoPtr request_info) {
-                           result = request_result;
-                           *info = std::move(request_info);
-                           run_loop.Quit();
-                         }));
-
-    run_loop.Run();
+    auto [result, request_info] = future.Take();
+    *info = std::move(request_info);
     return result;
   }
 

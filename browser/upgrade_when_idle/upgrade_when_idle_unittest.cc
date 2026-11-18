@@ -11,8 +11,8 @@
 #include <utility>
 
 #include "base/memory/raw_ptr.h"
-#include "base/run_loop.h"
 #include "base/test/mock_callback.h"
+#include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -66,15 +66,16 @@ class UpgradeWhenIdleTest : public testing::Test {
 
  protected:
   void RunImplementation(ui::IdleState state, bool expect_upgrade) {
-    base::RunLoop run_loop;
-    upgrade_when_idle_->SetCheckIdleCallbackForTesting(run_loop.QuitClosure());
+    base::test::TestFuture<void> check_idle;
+    upgrade_when_idle_->SetCheckIdleCallbackForTesting(
+        check_idle.GetCallback());
     if (expect_upgrade) {
       EXPECT_CALL(mock_relaunch_callback_, Run);
     }
     ui::ScopedSetIdleState scoped_set_idle_state(state);
     upgrade_when_idle_->OnUpgradeRecommended();
     task_environment_.FastForwardBy(base::Minutes(3));
-    run_loop.Run();
+    ASSERT_TRUE(check_idle.Wait());
   }
 
   void SimulateOpenBrowserWindow() {

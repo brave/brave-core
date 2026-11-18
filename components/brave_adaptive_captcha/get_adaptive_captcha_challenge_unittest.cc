@@ -8,8 +8,8 @@
 #include <memory>
 #include <string>
 
-#include "base/run_loop.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_adaptive_captcha/server_util.h"
 #include "net/http/http_status_code.h"
@@ -33,51 +33,11 @@ class GetAdaptiveCaptchaChallengeTest : public testing::Test {
         "https://grants.rewards.brave.com");
   }
 
-  void OnGetChallengeServerOK(const std::string& captcha_id) {
-    EXPECT_EQ(captcha_id, "ae07288c-d078-11eb-b8bc-0242ac130003");
-    SignalUrlLoadCompleted();
-  }
-
-  void OnGetChallengeServerError404(const std::string& captcha_id) {
-    EXPECT_EQ(captcha_id, "");
-    SignalUrlLoadCompleted();
-  }
-
-  void OnGetChallengeServerError500(const std::string& captcha_id) {
-    EXPECT_EQ(captcha_id, "");
-    SignalUrlLoadCompleted();
-  }
-
-  void OnGetChallengeServerErrorRandom(const std::string& captcha_id) {
-    EXPECT_EQ(captcha_id, "");
-    SignalUrlLoadCompleted();
-  }
-
  protected:
   network::TestURLLoaderFactory test_url_loader_factory_;
   base::test::TaskEnvironment scoped_task_environment_;
   api_request_helper::APIRequestHelper api_request_helper_;
   std::unique_ptr<GetAdaptiveCaptchaChallenge> get_challenge_;
-
-  void WaitForUrlLoadToComplete() {
-    if (url_loaded_) {
-      return;
-    }
-
-    run_loop_ = std::make_unique<base::RunLoop>();
-    run_loop_->Run();
-  }
-
- private:
-  std::unique_ptr<base::RunLoop> run_loop_;
-  bool url_loaded_ = false;
-
-  void SignalUrlLoadCompleted() {
-    url_loaded_ = true;
-    if (run_loop_) {
-      run_loop_->Quit();
-    }
-  }
 };
 
 TEST_F(GetAdaptiveCaptchaChallengeTest, ServerOK) {
@@ -85,47 +45,40 @@ TEST_F(GetAdaptiveCaptchaChallengeTest, ServerOK) {
       "https://grants.rewards.brave.com/v3/captcha/challenge/payment_id",
       "{ \"captchaID\": \"ae07288c-d078-11eb-b8bc-0242ac130003\" }",
       net::HTTP_OK);
-  get_challenge_->Request(
-      "payment_id",
-      base::BindOnce(&GetAdaptiveCaptchaChallengeTest::OnGetChallengeServerOK,
-                     base::Unretained(this)));
-  WaitForUrlLoadToComplete();
+  base::test::TestFuture<std::string> future;
+  get_challenge_->Request("payment_id",
+                          future.GetCallback<const std::string&>());
+  EXPECT_EQ(future.Get(), "ae07288c-d078-11eb-b8bc-0242ac130003");
 }
 
 TEST_F(GetAdaptiveCaptchaChallengeTest, ServerError404) {
   test_url_loader_factory_.AddResponse(
       "https://grants.rewards.brave.com/v3/captcha/challenge/payment_id", "",
       net::HTTP_NOT_FOUND);
-  get_challenge_->Request(
-      "payment_id",
-      base::BindOnce(
-          &GetAdaptiveCaptchaChallengeTest::OnGetChallengeServerError404,
-          base::Unretained(this)));
-  WaitForUrlLoadToComplete();
+  base::test::TestFuture<std::string> future;
+  get_challenge_->Request("payment_id",
+                          future.GetCallback<const std::string&>());
+  EXPECT_EQ(future.Get(), "");
 }
 
 TEST_F(GetAdaptiveCaptchaChallengeTest, ServerError500) {
   test_url_loader_factory_.AddResponse(
       "https://grants.rewards.brave.com/v3/captcha/challenge/payment_id", "",
       net::HTTP_INTERNAL_SERVER_ERROR);
-  get_challenge_->Request(
-      "payment_id",
-      base::BindOnce(
-          &GetAdaptiveCaptchaChallengeTest::OnGetChallengeServerError500,
-          base::Unretained(this)));
-  WaitForUrlLoadToComplete();
+  base::test::TestFuture<std::string> future;
+  get_challenge_->Request("payment_id",
+                          future.GetCallback<const std::string&>());
+  EXPECT_EQ(future.Get(), "");
 }
 
 TEST_F(GetAdaptiveCaptchaChallengeTest, ServerErrorRandom) {
   test_url_loader_factory_.AddResponse(
       "https://grants.rewards.brave.com/v3/captcha/challenge/payment_id", "",
       net::HTTP_TOO_MANY_REQUESTS);
-  get_challenge_->Request(
-      "payment_id",
-      base::BindOnce(
-          &GetAdaptiveCaptchaChallengeTest::OnGetChallengeServerErrorRandom,
-          base::Unretained(this)));
-  WaitForUrlLoadToComplete();
+  base::test::TestFuture<std::string> future;
+  get_challenge_->Request("payment_id",
+                          future.GetCallback<const std::string&>());
+  EXPECT_EQ(future.Get(), "");
 }
 
 }  // namespace brave_adaptive_captcha
