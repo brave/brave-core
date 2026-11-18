@@ -9,8 +9,8 @@
 #include "brave/browser/ui/webui/psst/psst_internals_handler.h"
 #include "brave/components/psst/core/common/constants.h"
 #include "brave/components/psst/core/common/psst_ui_common.mojom.h"
+#include "content/public/browser/internal_webui_config.h"
 #include "content/public/browser/web_ui_controller.h"
-#include "content/public/browser/webui_config.h"
 #include "content/public/common/url_constants.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 
@@ -19,10 +19,9 @@ namespace psst {
 class PsstInternalsUI;
 
 class PsstInternalsUIConfig
-    : public content::DefaultWebUIConfig<PsstInternalsUI> {
+    : public content::DefaultInternalWebUIConfig<PsstInternalsUI> {
  public:
-  PsstInternalsUIConfig()
-      : DefaultWebUIConfig(content::kChromeUIScheme, kPsstInternalsHost) {}
+  PsstInternalsUIConfig() : DefaultInternalWebUIConfig(kPsstInternalsHost) {}
 
   // There is no PSST log service - and so nothing to show - for
   // off-the-record profiles or when the feature is disabled.
