@@ -17,6 +17,11 @@ import {assertEquals, assertTrue} from 'chrome://webui-test/chai_assert.js'
 import {microtasksFinished} from 'chrome://webui-test/test_util.js'
 
 import {TestSiteSettingsBrowserProxy} from './test_site_settings_browser_proxy.js'
+import {
+  createContentSettingTypeToValuePair,
+  createRawSiteException,
+  createSiteSettingsPrefs,
+} from './test_util.js'
 
 // The Shields exceptions list labels its actions "Shields up" and "Shields
 // down"; other lists keep "Allow" and "Block".
@@ -57,6 +62,52 @@ suite('BraveSiteListActionLabels', () => {
         getLabel('allow'))
     assertEquals(loadTimeData.getString('siteSettingsActionBlock'),
         getLabel('block'))
+  })
+})
+
+// The entries of an exception list keep the `braveCookieType` that C++ sets, so
+// `site-list-entry` can disable the reset of Shields-controlled exceptions.
+suite('BraveSiteListCookieType', () => {
+  let testElement: SiteListElement
+  let browserProxy: TestSiteSettingsBrowserProxy
+
+  setup(() => {
+    browserProxy = new TestSiteSettingsBrowserProxy()
+    SiteSettingsBrowserProxyImpl.setInstance(browserProxy)
+    document.body.replaceChildren()
+    testElement = document.createElement('site-list')
+    testElement.searchFilter = ''
+    document.body.appendChild(testElement)
+  })
+
+  test('entries keep the braveCookieType of their exception', async () => {
+    browserProxy.setPrefs(createSiteSettingsPrefs([], [
+      createContentSettingTypeToValuePair(ContentSettingsTypes.COOKIES, [
+        createRawSiteException('https://shields.com', {
+          type: ContentSettingsTypes.COOKIES,
+          braveCookieType: 'shields settings',
+        }),
+        createRawSiteException('https://user.com', {
+          type: ContentSettingsTypes.COOKIES,
+        }),
+      ]),
+    ]))
+    testElement.cookiesExceptionType = CookiesExceptionType.SITE_DATA
+    testElement.categorySubtype = ContentSetting.ALLOW
+    testElement.category = ContentSettingsTypes.COOKIES
+    await browserProxy.whenCalled('getExceptionList')
+    await microtasksFinished()
+
+    assertEquals(2, testElement.sites.length)
+    assertEquals('shields settings', testElement.sites[0]!.braveCookieType)
+    assertEquals(undefined, testElement.sites[1]!.braveCookieType)
+
+    const resets = Array.from(
+        testElement.shadowRoot.querySelectorAll('site-list-entry'))
+        .map(entry => entry.shadowRoot.querySelector('#resetSite'))
+    assertEquals(2, resets.length)
+    assertTrue(resets[0]!.hasAttribute('disabled'))
+    assertTrue(!resets[1]!.hasAttribute('disabled'))
   })
 })
 

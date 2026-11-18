@@ -48,6 +48,11 @@ IN_PROC_BROWSER_TEST_F(BraveSettingsToggleWebUITest, SiteListActionLabels) {
           "runMochaSuite('BraveSiteListActionLabels')");
 }
 
+IN_PROC_BROWSER_TEST_F(BraveSettingsToggleWebUITest, SiteListCookieType) {
+  RunTest("settings/site_list_test.js",
+          "runMochaSuite('BraveSiteListCookieType')");
+}
+
 IN_PROC_BROWSER_TEST_F(BraveSettingsToggleWebUITest, SiteListCookiesHeader) {
   RunTest("settings/site_list_test.js",
           "runMochaSuite('BraveSiteListCookiesHeader')");
