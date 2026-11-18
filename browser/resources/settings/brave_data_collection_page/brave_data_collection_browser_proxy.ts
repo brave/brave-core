@@ -3,8 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import {MetricsReporting} from '/shared/settings/privacy_page/privacy_page_browser_proxy.js'
 import {sendWithPromise} from 'chrome://resources/js/cr.js'
+
+import {MetricsReporting} from '../privacy_page/privacy_page_browser_proxy.js'
 
 export interface BraveDataCollectionBrowserProxy {
   getP3AEnabled: () => Promise<boolean>

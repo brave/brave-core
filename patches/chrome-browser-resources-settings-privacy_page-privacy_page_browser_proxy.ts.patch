@@ -1,7 +1,7 @@
-diff --git a/chrome/browser/resources/settings_shared/privacy_page/privacy_page_browser_proxy.ts b/chrome/browser/resources/settings_shared/privacy_page/privacy_page_browser_proxy.ts
+diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page_browser_proxy.ts b/chrome/browser/resources/settings/privacy_page/privacy_page_browser_proxy.ts
 index 896b7b026db57b566eaa1d26a8233b016597e7f5..9f2fd15b0706f2623ead66ca639f0feac89f0ae4 100644
---- a/chrome/browser/resources/settings_shared/privacy_page/privacy_page_browser_proxy.ts
-+++ b/chrome/browser/resources/settings_shared/privacy_page/privacy_page_browser_proxy.ts
+--- a/chrome/browser/resources/settings/privacy_page/privacy_page_browser_proxy.ts
++++ b/chrome/browser/resources/settings/privacy_page/privacy_page_browser_proxy.ts
 @@ -4,7 +4,7 @@
  
  /** @fileoverview Handles interprocess communication for the privacy page. */
