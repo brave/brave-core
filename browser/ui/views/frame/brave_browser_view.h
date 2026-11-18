@@ -293,6 +293,7 @@ class BraveBrowserView : public BrowserView,
   void OnPreferenceChanged(const std::string& pref_name);
   void UpdateFocusModeState();
   bool ShouldDisableFocusModeForActiveTab() const;
+  bool HasVisiblePendingNavigation();
 
   // We need to observe BookmarkTabHelper to update the starred state of the
   // star button in the toolbar when the active tab changes.
