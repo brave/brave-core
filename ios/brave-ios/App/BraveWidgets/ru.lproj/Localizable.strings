@@ -1,20 +1,8 @@
-/* Title for Ask Brave shortcut. Brave is the company name and should not be translated */
-"widgets.askBrave" = "Спросить Brave";
-
 /* Description for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated */
 "widgets.askBraveWidgetDescription" = "Задайте вопрос Brave.";
 
 /* Title for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated */
 "widgets.askBraveWidgetTitle" = "Спросить Brave";
-
-/* Title for bookmarks menu item */
-"widgets.BookmarksMenuItem" = "Закладки";
-
-/* The name of the feature */
-"widgets.braveLeo" = "ИИ-помощник Leo";
-
-/* Title for the Leo AI voice input shortcut. Leo is the name of a product and should not be translated */
-"widgets.braveLeoVoiceInput" = "Голосовой ввод Leo";
 
 /* The name of the feature */
 "widgets.braveNews" = "Brave News";
@@ -28,14 +16,8 @@
 /* Title for the Brave Search widget on 'add custom control' screen. Brave is the company name and should not be translated */
 "widgets.braveSearchWidgetTitle" = "Brave Поиск";
 
-/* Title for downloads menu item */
-"widgets.DownloadsMenuItem" = "Загрузки";
-
 /* Description for favorites widget on 'add widget' screen. */
 "widgets.favoritesWidgetDescription" = "Быстрый доступ к любимым сайтам.";
-
-/* Title for history menu item */
-"widgets.HistoryMenuItem" = "История";
 
 /* Displayed on a news widget that has failed to load */
 "widgets.newsClusteringErrorLabel" = "Повторите попытку позже";
@@ -58,12 +40,6 @@
 /* This shows when you add a widget but have no favorites added in your app */
 "widgets.noFavoritesFound" = "Откройте Brave, чтобы добавить сюда избранные сайты.";
 
-/* QR Code section title */
-"widgets.QRCode" = "QR-код";
-
-/* Description for the search option on the 'shortcuts' widget. */
-"widgets.searchShortcutTitle" = "Поиск";
-
 /* Description for Brave Shields widget on 'add widget' screen. */
 "widgets.shieldStatsDescription" = "Информация о том, как Brave экономит ваше время и обеспечивает конфиденциальность в Интернете.";
 
@@ -79,15 +55,6 @@
 /* Button to the browser and enter URL or make a search query there. */
 "widgets.shortcutsEnterURLButton" = "Ввести запрос или URL";
 
-/* Button to open new browser tab. */
-"widgets.shortcutsNewTabButton" = "Новая вкладка";
-
-/* Button to open video playlist window. */
-"widgets.shortcutsPlaylistButton" = "Brave Плейлист";
-
-/* Button to open new private browser tab. */
-"widgets.shortcutsPrivateTabButton" = "Приватная вкладка";
-
 /* Description for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetDescription" = "Быстрый доступ к поиску и веб-страницам в Brave.";
 
@@ -99,7 +66,4 @@
 
 /* Title for Brave Shields single stat widget on 'add widget' screen. */
 "widgets.singleStatTitle" = "Конфиденциальность";
-
-/* Description for the Brave Wallet option on the 'shortcuts' widget. */
-"widgets.walletShortcutTitle" = "Brave Кошелек";
 

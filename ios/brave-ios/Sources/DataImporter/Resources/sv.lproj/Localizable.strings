@@ -65,7 +65,7 @@
 "importTutorialDetailedProcessTitle" = "Vill du ha en detaljerad exportprocess?";
 
 /* The title of the tutorial page that shows in the Navigation Bar. */
-"importTutorialScreenTitle" = "Så här exporterar du från Safari";
+"importTutorialScreenTitle" = "Hur du exporterar från Safari";
 
 /* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
 "importTutorialStepFiveTitle" = "Spara filen i **Filer** och välj en plats som du lätt kan hitta senare.";

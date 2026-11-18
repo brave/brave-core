@@ -1,20 +1,8 @@
-/* Title for Ask Brave shortcut. Brave is the company name and should not be translated */
-"widgets.askBrave" = "Opýtajte sa Brave";
-
 /* Description for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated */
 "widgets.askBraveWidgetDescription" = "Opýtajte sa Brave otázku.";
 
 /* Title for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated */
 "widgets.askBraveWidgetTitle" = "Opýtajte sa Brave";
-
-/* Title for bookmarks menu item */
-"widgets.BookmarksMenuItem" = "Panel so záložkami";
-
-/* The name of the feature */
-"widgets.braveLeo" = "Leo AI";
-
-/* Title for the Leo AI voice input shortcut. Leo is the name of a product and should not be translated */
-"widgets.braveLeoVoiceInput" = "Hlasový vstup Leo";
 
 /* The name of the feature */
 "widgets.braveNews" = "Novinky Brave";
@@ -28,14 +16,8 @@
 /* Title for the Brave Search widget on 'add custom control' screen. Brave is the company name and should not be translated */
 "widgets.braveSearchWidgetTitle" = "Brave Search";
 
-/* Title for downloads menu item */
-"widgets.DownloadsMenuItem" = "Stiahnuté";
-
 /* Description for favorites widget on 'add widget' screen. */
 "widgets.favoritesWidgetDescription" = "Rýchly prístup k vašim obľúbeným webovým stránkam.";
-
-/* Title for history menu item */
-"widgets.HistoryMenuItem" = "História";
 
 /* Displayed on a news widget that has failed to load */
 "widgets.newsClusteringErrorLabel" = "Skúste to znova neskôr";
@@ -58,12 +40,6 @@
 /* This shows when you add a widget but have no favorites added in your app */
 "widgets.noFavoritesFound" = "Ak chcete zobraziť svoje obľúbené položky, otvorte Brave";
 
-/* QR Code section title */
-"widgets.QRCode" = "QR kód";
-
-/* Description for the search option on the 'shortcuts' widget. */
-"widgets.searchShortcutTitle" = "Vyhľadávanie";
-
 /* Description for Brave Shields widget on 'add widget' screen. */
 "widgets.shieldStatsDescription" = "Súhrn toho, ako vám Brave šetrí čas a chráni vás online.";
 
@@ -79,15 +55,6 @@
 /* Button to the browser and enter URL or make a search query there. */
 "widgets.shortcutsEnterURLButton" = "Vyhľadajte alebo zadajte adresu URL";
 
-/* Button to open new browser tab. */
-"widgets.shortcutsNewTabButton" = "Nová karta";
-
-/* Button to open video playlist window. */
-"widgets.shortcutsPlaylistButton" = "Zoznam";
-
-/* Button to open new private browser tab. */
-"widgets.shortcutsPrivateTabButton" = "Súkromná karta";
-
 /* Description for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetDescription" = "Rýchly prístup na vyhľadávanie na webe alebo otváranie webových stránok v Brave.";
 
@@ -99,7 +66,4 @@
 
 /* Title for Brave Shields single stat widget on 'add widget' screen. */
 "widgets.singleStatTitle" = "Štatistika ochrany osobných údajov";
-
-/* Description for the Brave Wallet option on the 'shortcuts' widget. */
-"widgets.walletShortcutTitle" = "Peňaženka Brave";
 
