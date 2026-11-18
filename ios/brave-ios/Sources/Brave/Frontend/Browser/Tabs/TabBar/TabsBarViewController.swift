@@ -167,7 +167,7 @@ class TabsBarViewController: UIViewController {
       return
     }
 
-    tabList = tabManager.tabsForCurrentMode
+    tabList = tabManager.tabsForTabBar
 
     overflowIndicators()
 
@@ -383,12 +383,7 @@ extension TabsBarViewController: UICollectionViewDataSource {
     cell.configure()
 
     cell.closeTabCallback = { [weak self] tab in
-      guard let self = self,
-        let tabManager = self.tabManager,
-        let previousIndex = self.tabList.firstIndex(where: { $0 === tab })
-      else {
-        return
-      }
+      guard let self, let tabManager = self.tabManager else { return }
 
       self.delegate?.tabsBarDidChangeReaderModeVisibility(true)
 
@@ -396,16 +391,10 @@ extension TabsBarViewController: UICollectionViewDataSource {
       tabManager.addTabToRecentlyClosed(tab)
       tabManager.removeTab(tab)
 
-      self.updateData()
-
-      let previousOrNext = max(0, previousIndex - 1)
-      tabManager.selectTab(self.tabList[previousOrNext])
-
-      self.collectionView.selectItem(
-        at: IndexPath(row: previousOrNext, section: 0),
-        animated: false,
-        scrollPosition: .centeredHorizontally
-      )
+      // removeTab already selected the next tab from the full list. The bar may now show a
+      // different group, so that old index is not a position in the new list.
+      self.updateData(reloadingCollectionView: false)
+      self.reloadDataAndRestoreSelectedTab(isAnimated: false)
       self.updateOverflowIndicatorsLayout()
     }
 
@@ -558,6 +547,11 @@ extension TabsBarViewController: TabManagerDelegate {
   }
 
   func tabManagerDidAddTabs(_ tabManager: TabManager) {
+    assert(Thread.current.isMainThread)
+    updateData()
+  }
+
+  func tabManagerDidChangeTabGroups(_ tabManager: TabManager) {
     assert(Thread.current.isMainThread)
     updateData()
   }
