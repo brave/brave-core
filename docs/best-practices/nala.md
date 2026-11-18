@@ -292,3 +292,50 @@ SetBackground(views::CreateThemedSolidBackground(nala::kColorContainerBackground
 ```
 
 ---
+
+<a id="NA-013"></a>
+
+## ❌ Don't Work Around `@brave/leo` npm Problems — File an Issue on brave/leo
+
+**NEVER work around a problem with the `@brave/leo` npm package in brave-core.
+Post an issue on [brave/leo](https://github.com/brave/leo/issues) that describes
+the problem instead.** This covers any Leo defect: wrong or surprising component
+behavior and timing, bad types, and packaging. Local workarounds hide the bug
+from the Leo team, make brave-core diverge from the design system, and leave
+every other Leo consumer to hit the same problem.
+
+When the cause is a Leo defect, you MUST NOT patch or edit `node_modules`, copy
+or re-implement a Leo component or style locally, suppress Leo type errors with
+`@ts-ignore`, `@ts-expect-error`, or `any` casts, or add application-side
+compensation (refs, stable-callback wrappers, extra effects, delays, retries).
+Adding a tracking `TODO` does not make a Leo workaround acceptable; the fix
+belongs in Leo.
+
+Ordinary refs, `useCallback`, and local components that do not compensate for a
+Leo defect are fine. Flag them only when the code or PR description ties them to
+a Leo problem.
+
+```tsx
+// ❌ WRONG - silencing a Leo problem locally
+// @ts-ignore Leo's types reject this usage
+<Dropdown onChange={(e: any) => onChange(e.detail.value)} />
+
+// ❌ WRONG - ref indirection added to compensate for Leo's component behavior
+const sendRef = React.useRef<() => void>(() => {})
+const onSendClick = React.useCallback(() => sendRef.current(), [])
+sendRef.current = () => props.onSend(amount)
+<Button onClick={onSendClick}>Send</Button>
+```
+
+```bash
+# ✅ CORRECT - report it on brave/leo and leave the brave-core code alone
+gh issue create --repo brave/leo \
+  --title "<component>: <short description of the problem>" \
+  --body "<steps to reproduce, @brave/leo version, expected vs. actual>"
+```
+
+Include the `@brave/leo` version, the affected component or import path, steps
+to reproduce, and expected vs. actual behavior so the Leo team can act on the
+issue without follow-up questions.
+
+---
