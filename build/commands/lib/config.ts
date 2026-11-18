@@ -40,85 +40,32 @@ const braveCoreDir = path.join(rootDir, 'src', 'brave')
 
 export class Config {
   internalDepsUrl: string
-  defaultBuildConfig: string
-  buildConfig: string
   buildTargets: string[]
   rootDir: string
   isUniversalBinary: boolean = false
   isChromium: boolean = false
   scriptDir: string
   srcDir: string
-  chromeVersion: string | undefined
-  chromiumRepo: string
   braveCoreDir: string
   buildToolsDir: string
   resourcesDir: string
-  depotToolsDir: string
-  depotToolsRepo: string
   gclientFile: string
-  gclientVerbose: boolean
-  disableGclientConfigUpdate: boolean
   gerritMirrorsUser: string | undefined
   gerritMirrorGitConfig: string
-  leanSync: boolean
-  // `quiet` in .env: the `--quiet`/`--no-quiet` default, AI agent or not.
-  quiet: boolean | undefined
-  gclientGlobalVars: Record<string, any>
-  targetArch: string
-  targetEnvironment: string | undefined
   gypTargetArch: string
-  ignorePatchVersionNumber: boolean
-  useDummyLastchange: boolean
-  braveVersion: string
-  braveIOSMarketingPatchVersion: string | undefined
-  releaseTag: string | undefined
-  mac_signing_identifier: string | undefined
-  mac_installer_signing_identifier: string
-  mac_signing_keychain: string
-  notary_user: string | undefined
-  notary_password: string | undefined
   channel: string
-  isBraveOriginBranded: boolean | undefined
-  // Parent cache directory for all internal caches (git, siso, vpython).
-  readonly cacheDir: string | undefined
-  gitCachePath: string | undefined
-  rbeService: string
-  rbeTlsClientAuthCert: string | undefined
-  rbeTlsClientAuthKey: string | undefined
   ignore_compile_failure: boolean
   enable_hangout_services_extension: boolean
   sign_widevine_cert: string
   sign_widevine_key: string
   sign_widevine_passwd: string
   signature_generator: string
-  extraGnArgs: Record<string, any>
-  extraGnGenOpts: string
   extraNinjaOpts: string[]
-  sisoLimits: Record<string, any>
   sisoJobsLimit: number | undefined
-  sisoCacheDir: string | undefined
-  braveAndroidSafeBrowsingApiKey: string | undefined
-  braveAndroidDeveloperOptionsCode: string | undefined
-  braveAndroidKeystorePath: string | undefined
-  braveAndroidKeystoreName: string | undefined
-  braveAndroidKeystorePassword: string | undefined
-  braveAndroidKeyPassword: string | undefined
   braveAndroidPkcs11Provider: string
   braveAndroidPkcs11Alias: string
-  useRemoteExec: boolean
-  offline: boolean
-  readonly rbeReadOnly: boolean
   use_libfuzzer: boolean
   androidAabToApk: boolean
-  useBraveHermeticToolchain: boolean
-  braveIOSDeveloperOptionsCode: string | undefined
-  is_asan: boolean | undefined
-  is_msan: boolean | undefined
-  is_ubsan: boolean | undefined
-  use_no_gn_gen?: boolean | undefined
-
-  chromiumCustomDeps: Record<string, any>
-  chromiumCustomVars: Record<string, any>
 
   skip_signing: boolean | undefined
   targetAndroidOutputFormat: string | undefined
@@ -133,6 +80,9 @@ export class Config {
 
   #envConfig: EnvConfig
 
+  // The values of the properties that can be set, once read or set.
+  #values = new Map<keyof Config, unknown>()
+
   // The checkout's config, read from its package.json and .env files.
   static load(): Config {
     return new Config(new EnvConfig(braveCoreDir))
@@ -142,102 +92,24 @@ export class Config {
     this.#envConfig = envConfig
     this.internalDepsUrl =
       'https://vhemnu34de4lf5cj6bx2wwshyy0egdxk.lambda-url.us-west-2.on.aws'
-    this.defaultBuildConfig = this.#envConfig.getString(
-      ['default_build_config'],
-      'Component',
-    )
-    this.buildConfig = this.defaultBuildConfig
     this.buildTargets = ['brave']
     this.rootDir = rootDir
     this.isUniversalBinary = false
     this.isChromium = false
     this.scriptDir = path.join(this.rootDir, 'scripts')
     this.srcDir = path.join(this.rootDir, 'src')
-    this.chromeVersion = this.getProjectVersion('chrome')
-    this.chromiumRepo = this.#envConfig.requireString([
-      'projects',
-      'chrome',
-      'repository',
-      'url',
-    ])
     this.braveCoreDir = braveCoreDir
     this.buildToolsDir = path.join(this.srcDir, 'build')
     this.resourcesDir = path.join(this.rootDir, 'resources')
-    this.depotToolsDir = this.#envConfig.requirePath([
-      'projects',
-      'depot_tools',
-      'dir',
-    ])
-    this.depotToolsRepo = this.#envConfig.requireString([
-      'projects',
-      'depot_tools',
-      'repository',
-      'url',
-    ])
     this.gclientFile = path.join(this.rootDir, '.gclient')
-    this.gclientVerbose = this.#envConfig.getBoolean(['gclient_verbose'], false)
-    this.disableGclientConfigUpdate = this.#envConfig.getBoolean(
-      ['disable_gclient_config_update'],
-      false,
-    )
     this.gerritMirrorsUser =
       process.env.BRAVE_USE_GERRIT_MIRRORS_USER || undefined
     this.gerritMirrorGitConfig = path.join(
       this.braveCoreDir,
       '.gitconfig_gerrit_mirror_redirect',
     )
-    this.leanSync = this.#envConfig.getBoolean(['lean_sync'], false)
-    this.quiet = this.#envConfig.getBoolean(['quiet'])
-    this.gclientGlobalVars = this.#envConfig.getMergedObject([
-      'gclient',
-      'global_vars',
-    ])
-    this.targetOS = this.#envConfig.getString(['target_os'], this.hostOS)
-    this.targetArch = this.#envConfig.getString(['target_arch'], process.arch)
-    this.targetEnvironment = this.#envConfig.getString(['target_environment'])
     this.gypTargetArch = 'x64'
-    this.ignorePatchVersionNumber =
-      !this.isBraveReleaseBuild()
-      && this.#envConfig.getBoolean(['ignore_patch_version_number'], !isCI)
-    this.useDummyLastchange = this.#envConfig.getBoolean(
-      ['use_dummy_lastchange'],
-      true,
-    )
-    this.braveVersion = this.#getBraveVersion()
-    this.braveIOSMarketingPatchVersion = this.#envConfig.getString(
-      ['brave_ios_marketing_version_patch'],
-      '',
-    )
-    this.releaseTag = this.braveVersion.split('+')[0]
-    this.mac_signing_identifier = this.#envConfig.getString([
-      'mac_signing_identifier',
-    ])
-    this.mac_installer_signing_identifier = this.#envConfig.getString(
-      ['mac_installer_signing_identifier'],
-      '',
-    )
-    this.mac_signing_keychain = this.#envConfig.getString(
-      ['mac_signing_keychain'],
-      'login',
-    )
-    this.notary_user = this.#envConfig.getString(['notary_user'])
-    this.notary_password = this.#envConfig.getString(['notary_password'])
     this.channel = 'development'
-    this.isBraveOriginBranded = this.#envConfig.getBoolean([
-      'is_brave_origin_branded',
-    ])
-    this.cacheDir = this.#envConfig.getPath(['cache_dir'])
-    this.gitCachePath =
-      this.#envConfig.getPath(['git_cache_path'])
-      || this.resolveCacheDir('git')
-      || process.env.GIT_CACHE_PATH
-    this.rbeService = this.#envConfig.getString(['rbe_service'], '')
-    this.rbeTlsClientAuthCert = this.#envConfig.getPath([
-      'rbe_tls_client_auth_cert',
-    ])
-    this.rbeTlsClientAuthKey = this.#envConfig.getPath([
-      'rbe_tls_client_auth_key',
-    ])
     this.ignore_compile_failure = false
     this.enable_hangout_services_extension = false
     this.sign_widevine_cert = process.env.SIGN_WIDEVINE_CERT || ''
@@ -251,60 +123,386 @@ export class Config {
         'scripts',
         'signature_generator.py',
       ) || ''
-    this.extraGnArgs = this.#envConfig.getMergedObject(['gn', 'args'])
-    this.extraGnGenOpts = this.#envConfig.getString(
-      ['brave_extra_gn_gen_opts'],
-      '',
-    )
     this.extraNinjaOpts = []
-    this.sisoLimits = this.#envConfig.getMergedObject(['siso_limits'])
     this.sisoJobsLimit = undefined
-    this.sisoCacheDir =
-      this.#envConfig.getPath(['siso_cache_dir'])
-      || this.resolveCacheDir('siso')
-    this.braveAndroidSafeBrowsingApiKey = this.#envConfig.getString([
-      'brave_safebrowsing_api_key',
-    ])
-    this.braveAndroidDeveloperOptionsCode = this.#envConfig.getString([
-      'brave_android_developer_options_code',
-    ])
-    this.braveAndroidKeystorePath = this.#envConfig.getString([
-      'brave_android_keystore_path',
-    ])
-    this.braveAndroidKeystoreName = this.#envConfig.getString([
-      'brave_android_keystore_name',
-    ])
-    this.braveAndroidKeystorePassword = this.#envConfig.getString([
-      'brave_android_keystore_password',
-    ])
-    this.braveAndroidKeyPassword = this.#envConfig.getString([
-      'brave_android_key_password',
-    ])
     this.braveAndroidPkcs11Provider = ''
     this.braveAndroidPkcs11Alias = ''
-    this.useRemoteExec = this.#envConfig.getBoolean(['use_remoteexec'], false)
-    this.offline = this.#envConfig.getBoolean(['offline'], false)
-    this.rbeReadOnly = this.#envConfig.getBoolean(['rbe_readonly'], false)
     this.use_libfuzzer = false
     this.androidAabToApk = false
-    this.useBraveHermeticToolchain = this.#envConfig.getBoolean(
-      ['use_brave_hermetic_toolchain'],
-      this.rbeService.includes('.brave.com:'),
-    )
-    this.braveIOSDeveloperOptionsCode = this.#envConfig.getString([
-      'brave_ios_developer_options_code',
-    ])
-    this.is_asan = this.#envConfig.getBoolean(['is_asan'])
-    this.is_msan = this.#envConfig.getBoolean(['is_msan'])
-    this.is_ubsan = this.#envConfig.getBoolean(['is_ubsan'])
-    this.use_no_gn_gen = this.#envConfig.getBoolean(['use_no_gn_gen'])
 
-    this.chromiumCustomDeps = this.#envConfig.getMergedObject([
+    if (this.cacheDir && !fs.existsSync(this.cacheDir)) {
+      fs.mkdirSync(this.cacheDir, { recursive: true })
+    }
+  }
+
+  // The value of the property `key` that can be set: what was last set, else
+  // what `read` returns, read once.
+  #value<K extends keyof Config>(key: K, read: () => Config[K]): Config[K] {
+    if (!this.#values.has(key)) {
+      this.#values.set(key, read())
+    }
+    return this.#values.get(key) as Config[K]
+  }
+
+  #set<K extends keyof Config>(key: K, value: Config[K]): void {
+    this.#values.set(key, value)
+  }
+
+  get defaultBuildConfig(): string {
+    return this.#envConfig.getString(['default_build_config'], 'Component')
+  }
+
+  get buildConfig(): string {
+    return this.#value('buildConfig', () => this.defaultBuildConfig)
+  }
+
+  set buildConfig(value: string) {
+    this.#set('buildConfig', value)
+  }
+
+  get chromeVersion(): string | undefined {
+    return this.getProjectVersion('chrome')
+  }
+
+  get chromiumRepo(): string {
+    return this.#value('chromiumRepo', () =>
+      this.#envConfig.requireString([
+        'projects',
+        'chrome',
+        'repository',
+        'url',
+      ]),
+    )
+  }
+
+  set chromiumRepo(value: string) {
+    this.#set('chromiumRepo', value)
+  }
+
+  get depotToolsDir(): string {
+    return this.#envConfig.requirePath(['projects', 'depot_tools', 'dir'])
+  }
+
+  get depotToolsRepo(): string {
+    return this.#envConfig.requireString([
       'projects',
-      'chrome',
-      'custom_deps',
+      'depot_tools',
+      'repository',
+      'url',
     ])
-    this.chromiumCustomVars = {
+  }
+
+  get gclientVerbose(): boolean {
+    return this.#value('gclientVerbose', () =>
+      this.#envConfig.getBoolean(['gclient_verbose'], false),
+    )
+  }
+
+  set gclientVerbose(value: boolean) {
+    this.#set('gclientVerbose', value)
+  }
+
+  get disableGclientConfigUpdate(): boolean {
+    return this.#envConfig.getBoolean(['disable_gclient_config_update'], false)
+  }
+
+  get leanSync(): boolean {
+    return this.#value('leanSync', () =>
+      this.#envConfig.getBoolean(['lean_sync'], false),
+    )
+  }
+
+  set leanSync(value: boolean) {
+    this.#set('leanSync', value)
+  }
+
+  // `quiet` in .env: the `--quiet`/`--no-quiet` default, AI agent or not.
+  get quiet(): boolean | undefined {
+    return this.#value('quiet', () => this.#envConfig.getBoolean(['quiet']))
+  }
+
+  set quiet(value: boolean | undefined) {
+    this.#set('quiet', value)
+  }
+
+  get gclientGlobalVars(): Record<string, any> {
+    return this.#value('gclientGlobalVars', () =>
+      this.#envConfig.getMergedObject(['gclient', 'global_vars']),
+    )
+  }
+
+  set gclientGlobalVars(value: Record<string, any>) {
+    this.#set('gclientGlobalVars', value)
+  }
+
+  get targetArch(): string {
+    return this.#value('targetArch', () =>
+      this.#envConfig.getString(['target_arch'], process.arch),
+    )
+  }
+
+  set targetArch(value: string) {
+    this.#set('targetArch', value)
+  }
+
+  get targetEnvironment(): string | undefined {
+    return this.#value('targetEnvironment', () =>
+      this.#envConfig.getString(['target_environment']),
+    )
+  }
+
+  set targetEnvironment(value: string | undefined) {
+    this.#set('targetEnvironment', value)
+  }
+
+  get ignorePatchVersionNumber(): boolean {
+    return (
+      !this.isBraveReleaseBuild()
+      && this.#envConfig.getBoolean(['ignore_patch_version_number'], !isCI)
+    )
+  }
+
+  get useDummyLastchange(): boolean {
+    return this.#envConfig.getBoolean(['use_dummy_lastchange'], true)
+  }
+
+  get braveVersion(): string {
+    return this.#getBraveVersion()
+  }
+
+  get braveIOSMarketingPatchVersion(): string | undefined {
+    return this.#envConfig.getString(['brave_ios_marketing_version_patch'], '')
+  }
+
+  get releaseTag(): string | undefined {
+    return this.braveVersion.split('+')[0]
+  }
+
+  get mac_signing_identifier(): string | undefined {
+    return this.#value('mac_signing_identifier', () =>
+      this.#envConfig.getString(['mac_signing_identifier']),
+    )
+  }
+
+  set mac_signing_identifier(value: string | undefined) {
+    this.#set('mac_signing_identifier', value)
+  }
+
+  get mac_installer_signing_identifier(): string {
+    return this.#value('mac_installer_signing_identifier', () =>
+      this.#envConfig.getString(['mac_installer_signing_identifier'], ''),
+    )
+  }
+
+  set mac_installer_signing_identifier(value: string) {
+    this.#set('mac_installer_signing_identifier', value)
+  }
+
+  get mac_signing_keychain(): string {
+    return this.#value('mac_signing_keychain', () =>
+      this.#envConfig.getString(['mac_signing_keychain'], 'login'),
+    )
+  }
+
+  set mac_signing_keychain(value: string) {
+    this.#set('mac_signing_keychain', value)
+  }
+
+  get notary_user(): string | undefined {
+    return this.#envConfig.getString(['notary_user'])
+  }
+
+  get notary_password(): string | undefined {
+    return this.#envConfig.getString(['notary_password'])
+  }
+
+  get isBraveOriginBranded(): boolean | undefined {
+    return this.#envConfig.getBoolean(['is_brave_origin_branded'])
+  }
+
+  // Parent cache directory for all internal caches (git, siso, vpython).
+  get cacheDir(): string | undefined {
+    return this.#envConfig.getPath(['cache_dir'])
+  }
+
+  get gitCachePath(): string | undefined {
+    return this.#value(
+      'gitCachePath',
+      () =>
+        this.#envConfig.getPath(['git_cache_path'])
+        || this.resolveCacheDir('git')
+        || process.env.GIT_CACHE_PATH,
+    )
+  }
+
+  set gitCachePath(value: string | undefined) {
+    this.#set('gitCachePath', value)
+  }
+
+  get rbeService(): string {
+    return this.#value('rbeService', () =>
+      this.#envConfig.getString(['rbe_service'], ''),
+    )
+  }
+
+  set rbeService(value: string) {
+    this.#set('rbeService', value)
+  }
+
+  get rbeTlsClientAuthCert(): string | undefined {
+    return this.#envConfig.getPath(['rbe_tls_client_auth_cert'])
+  }
+
+  get rbeTlsClientAuthKey(): string | undefined {
+    return this.#envConfig.getPath(['rbe_tls_client_auth_key'])
+  }
+
+  get extraGnArgs(): Record<string, any> {
+    return this.#value('extraGnArgs', () =>
+      this.#envConfig.getMergedObject(['gn', 'args']),
+    )
+  }
+
+  set extraGnArgs(value: Record<string, any>) {
+    this.#set('extraGnArgs', value)
+  }
+
+  get extraGnGenOpts(): string {
+    return this.#value('extraGnGenOpts', () =>
+      this.#envConfig.getString(['brave_extra_gn_gen_opts'], ''),
+    )
+  }
+
+  set extraGnGenOpts(value: string) {
+    this.#set('extraGnGenOpts', value)
+  }
+
+  get sisoLimits(): Record<string, any> {
+    return this.#envConfig.getMergedObject(['siso_limits'])
+  }
+
+  get sisoCacheDir(): string | undefined {
+    return this.#value(
+      'sisoCacheDir',
+      () =>
+        this.#envConfig.getPath(['siso_cache_dir'])
+        || this.resolveCacheDir('siso'),
+    )
+  }
+
+  set sisoCacheDir(value: string | undefined) {
+    this.#set('sisoCacheDir', value)
+  }
+
+  get braveAndroidSafeBrowsingApiKey(): string | undefined {
+    return this.#envConfig.getString(['brave_safebrowsing_api_key'])
+  }
+
+  get braveAndroidDeveloperOptionsCode(): string | undefined {
+    return this.#envConfig.getString(['brave_android_developer_options_code'])
+  }
+
+  get braveAndroidKeystorePath(): string | undefined {
+    return this.#envConfig.getString(['brave_android_keystore_path'])
+  }
+
+  get braveAndroidKeystoreName(): string | undefined {
+    return this.#envConfig.getString(['brave_android_keystore_name'])
+  }
+
+  get braveAndroidKeystorePassword(): string | undefined {
+    return this.#envConfig.getString(['brave_android_keystore_password'])
+  }
+
+  get braveAndroidKeyPassword(): string | undefined {
+    return this.#envConfig.getString(['brave_android_key_password'])
+  }
+
+  get useRemoteExec(): boolean {
+    return this.#value('useRemoteExec', () =>
+      this.#envConfig.getBoolean(['use_remoteexec'], false),
+    )
+  }
+
+  set useRemoteExec(value: boolean) {
+    this.#set('useRemoteExec', value)
+  }
+
+  get offline(): boolean {
+    return this.#value('offline', () =>
+      this.#envConfig.getBoolean(['offline'], false),
+    )
+  }
+
+  set offline(value: boolean) {
+    this.#set('offline', value)
+  }
+
+  get rbeReadOnly(): boolean {
+    return this.#envConfig.getBoolean(['rbe_readonly'], false)
+  }
+
+  get useBraveHermeticToolchain(): boolean {
+    return this.#value('useBraveHermeticToolchain', () =>
+      this.#envConfig.getBoolean(
+        ['use_brave_hermetic_toolchain'],
+        this.rbeService.includes('.brave.com:'),
+      ),
+    )
+  }
+
+  set useBraveHermeticToolchain(value: boolean) {
+    this.#set('useBraveHermeticToolchain', value)
+  }
+
+  get braveIOSDeveloperOptionsCode(): string | undefined {
+    return this.#envConfig.getString(['brave_ios_developer_options_code'])
+  }
+
+  get is_asan(): boolean | undefined {
+    return this.#value('is_asan', () => this.#envConfig.getBoolean(['is_asan']))
+  }
+
+  set is_asan(value: boolean | undefined) {
+    this.#set('is_asan', value)
+  }
+
+  get is_msan(): boolean | undefined {
+    return this.#envConfig.getBoolean(['is_msan'])
+  }
+
+  get is_ubsan(): boolean | undefined {
+    return this.#value('is_ubsan', () =>
+      this.#envConfig.getBoolean(['is_ubsan']),
+    )
+  }
+
+  set is_ubsan(value: boolean | undefined) {
+    this.#set('is_ubsan', value)
+  }
+
+  get use_no_gn_gen(): boolean | undefined {
+    return this.#value('use_no_gn_gen', () =>
+      this.#envConfig.getBoolean(['use_no_gn_gen']),
+    )
+  }
+
+  set use_no_gn_gen(value: boolean | undefined) {
+    this.#set('use_no_gn_gen', value)
+  }
+
+  get chromiumCustomDeps(): Record<string, any> {
+    return this.#value('chromiumCustomDeps', () =>
+      this.#envConfig.getMergedObject(['projects', 'chrome', 'custom_deps']),
+    )
+  }
+
+  set chromiumCustomDeps(value: Record<string, any>) {
+    this.#set('chromiumCustomDeps', value)
+  }
+
+  get chromiumCustomVars(): Record<string, any> {
+    return this.#value('chromiumCustomVars', () => ({
       'checkout_pgo_profiles': this.isBraveReleaseBuild(),
       ...(this.rbeService
         ? {
@@ -315,11 +513,11 @@ export class Config {
         : {}),
       ...(this.is_msan ? { 'checkout_instrumented_libraries': true } : {}),
       ...this.#envConfig.getMergedObject(['projects', 'chrome', 'custom_vars']),
-    }
+    }))
+  }
 
-    if (this.cacheDir && !fs.existsSync(this.cacheDir)) {
-      fs.mkdirSync(this.cacheDir, { recursive: true })
-    }
+  set chromiumCustomVars(value: Record<string, any>) {
+    this.#set('chromiumCustomVars', value)
   }
 
   isReleaseBuild() {
@@ -987,20 +1185,14 @@ export class Config {
     }
   }
 
-  #targetOS: TargetOS | undefined
-
-  get targetOS() {
-    return this.#targetOS ?? this.hostOS
+  get targetOS(): TargetOS {
+    return this.#value('targetOS', () =>
+      validTargetOS(this.#envConfig.getString(['target_os'], this.hostOS)),
+    )
   }
 
   set targetOS(value: string) {
-    if (!isValidTargetOSValue(value)) {
-      Log.error(
-        `Invalid target_os: ${value} (must be one of: ${validTargetOSValues.join(', ')})`,
-      )
-      process.exit(1)
-    }
-    this.#targetOS = value
+    this.#set('targetOS', validTargetOS(value))
   }
 
   static #capEnvNumber(env: NodeJS.ProcessEnv, name: string, max: number) {
@@ -1009,8 +1201,15 @@ export class Config {
   }
 }
 
-function isValidTargetOSValue(value: string): value is TargetOS {
-  return validTargetOSValues.some((os) => value === os)
+function validTargetOS(value: string): TargetOS {
+  const targetOS = validTargetOSValues.find((os) => value === os)
+  if (targetOS === undefined) {
+    Log.error(
+      `Invalid target_os: ${value} (must be one of: ${validTargetOSValues.join(', ')})`,
+    )
+    process.exit(1)
+  }
+  return targetOS
 }
 
 function readArgsGn(srcDir, outputDir, defaultOptions: ExecOptions) {
