@@ -9,6 +9,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/test/bind.h"
+#include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/devtools/devtools_window.h"
 #include "chrome/browser/media/router/media_router_feature.h"
@@ -83,6 +84,13 @@ TEST_F(TorProfileManagerUnitTest, InitTorProfileUserPrefs) {
   // In Tor windows Media Router is disabled, even if it's enabled in prefs.
   EXPECT_TRUE(tor_profile->GetPrefs()->GetBoolean(prefs::kEnableMediaRouter));
   EXPECT_FALSE(media_router::MediaRouterEnabled(tor_profile));
+}
+
+TEST_F(TorProfileManagerUnitTest, TorProfileServiceOnlyForTorProfile) {
+  Profile* tor_profile =
+      TorProfileManager::GetInstance().GetTorProfile(profile());
+  EXPECT_NE(TorProfileServiceFactory::GetForContext(tor_profile), nullptr);
+  EXPECT_EQ(TorProfileServiceFactory::GetForContext(profile()), nullptr);
 }
 
 TEST_F(TorProfileManagerUnitTest, ProfileForDevToolsWindow) {
