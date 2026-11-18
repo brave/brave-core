@@ -566,6 +566,7 @@ if (is_android) {
       "//chrome/android/junit:chrome_junit_tests_helper",
       "//chrome/browser/tabmodel:java",
       "//chrome/browser/tabwindow:java",
+      "//components/tab_groups:tab_groups_java",
     ]
   }
 
