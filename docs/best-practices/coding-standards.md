@@ -1601,17 +1601,19 @@ if (!entry_was_found) {
 
 ## ✅ Resolve Shields Settings to the Site Responsible for the Content
 
-**Shields settings are keyed by site. The primary settings URL is the top-level
-site the user is visiting. The secondary settings URL is the site of the frame
-or resource being evaluated. Resolve each one independently, from the origin
-that actually represents it.**
+**Use the closest non-opaque origin in the relevant origin’s ancestry.** Start
+with the top-level document for primary settings, or the frame or resource being
+evaluated for secondary settings. If its origin is non-opaque, use that origin’s
+site. If it’s opaque, use its precursor’s site. If there’s no precursor, use
+default settings.
 
-An opaque origin does not mean "no site." Most opaque origins are derived from a
-real site, and Chromium records that site as the origin's precursor. When the
-relevant origin is opaque, use its precursor's site. Don't substitute a
-different origin, such as a child frame, the request destination, or some other
-ancestor. If an opaque origin has no precursor, no site is responsible for it,
-so apply the default settings.
+Here, _ancestry_ means where the origin came from, not where the frame sits. For
+example, if `a.com` embeds a sandboxed `b.com` document with an opaque origin,
+the primary site is `a.com`. For the iframe’s secondary settings, the precursor
+points to `b.com`, so those settings come from `b.com`, not its parent.
+Conversely, if a user types a `data:` URL that embeds `b.com`, the top-level
+origin has no precursor. Primary settings stay at their defaults; the iframe
+doesn’t supply a site for the page.
 
 A Shields settings origin is used only to choose settings. It MUST NOT change
 the document's security origin, and it MUST NOT be used to grant access or
