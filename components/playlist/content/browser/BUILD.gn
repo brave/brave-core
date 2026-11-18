@@ -81,6 +81,7 @@ source_set("unit_tests") {
   sources = [
     "mime_util_unittest.cc",
     "playlist_media_file_downloader_unittest.cc",
+    "playlist_media_handler_unittest.cc",
   ]
 
   deps = [
@@ -90,8 +91,10 @@ source_set("unit_tests") {
     "//brave/components/playlist/core/common",
     "//components/download/public/common:public",
     "//content/test:test_support",
+    "//mojo/public/cpp/bindings",
     "//net:test_support",
     "//testing/gmock",
     "//testing/gtest",
+    "//url",
   ]
 }
