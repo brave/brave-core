@@ -1193,6 +1193,91 @@ open class MockTabManagerDelegate: TabManagerDelegate {
     XCTAssertEqual(manager.tabGroups.map(\.title), ["Renamed"])
   }
 
+  /// `configureTab` inserts the new tab after `afterTab`.
+  /// An insert at or before the selected tab shifts that tab's index, so the same tab must stay selected.
+  func testInsertingTabBeforeSelectedTabKeepsSelection() {
+    let firstTab = manager.addTestTab(isPrivate: false)
+    let selectedTab = manager.addTestTab(isPrivate: false)
+    manager.selectTab(selectedTab)
+
+    // The new tab takes the index the selected tab had.
+    manager.addTab(afterTab: firstTab, zombie: true, isPrivate: false)
+    XCTAssertTrue(manager.selectedTab === selectedTab)
+
+    let trailingTab = manager.addTestTab(isPrivate: false)
+    manager.selectTab(trailingTab)
+    // Insert ahead of the selected tab, with other tabs between them.
+    manager.addTab(afterTab: firstTab, zombie: true, isPrivate: false)
+    XCTAssertTrue(manager.selectedTab === trailingTab)
+
+    // Inserting after the selected tab does not move it.
+    manager.addTab(afterTab: trailingTab, zombie: true, isPrivate: false)
+    XCTAssertTrue(manager.selectedTab === trailingTab)
+  }
+
+  /// Adding a tab to a group inserts it after the group's last tab.
+  /// When that is the selected index, `selectTab` would return immediately if the index were left pointing at the new tab.
+  func testAddTabToGroupAtSelectedIndexSelectsNewTab() {
+    let groupedTab = manager.addTestTab(isPrivate: false)
+    let selectedTab = manager.addTestTab(isPrivate: false)
+    manager.selectTab(selectedTab)
+    let group = manager.createTabGroup(title: "Group", adding: [groupedTab])!
+
+    let delegate = MockTabManagerDelegate()
+    manager.addDelegate(delegate)
+    var addedTab: (any TabState)?
+    delegate.expect([
+      willAdd,
+      MethodSpy(functionName: "tabManager(_:didAddTab:)") { tabs in
+        addedTab = tabs[0]
+      },
+      MethodSpy(functionName: "tabManager(_:didSelectedTabChange:previous:)") { tabs in
+        XCTAssertTrue(tabs[0] === addedTab)
+        XCTAssertTrue(tabs[1] === selectedTab)
+      },
+    ])
+
+    let newTab = manager.addTabAndSelect(in: group)
+
+    delegate.verify("Adding a tab to the group did not report the selection change")
+    XCTAssertNotNil(newTab)
+    XCTAssertTrue(manager.selectedTab === newTab)
+    XCTAssertEqual(manager.tabs(in: group).map(\.id), [groupedTab.id, newTab!.id])
+  }
+
+  /// The group's last tab can sit before the selected tab, not on its index. The selection changestill has to report that tab as the previous one.
+  func testAddTabToGroupAheadOfSelectedTabSelectsNewTab() {
+    let groupedTab = manager.addTestTab(isPrivate: false)
+    let middleTab = manager.addTestTab(isPrivate: false)
+    let selectedTab = manager.addTestTab(isPrivate: false)
+    manager.selectTab(selectedTab)
+    let group = manager.createTabGroup(title: "Group", adding: [groupedTab])!
+
+    let delegate = MockTabManagerDelegate()
+    manager.addDelegate(delegate)
+    var addedTab: (any TabState)?
+    delegate.expect([
+      willAdd,
+      MethodSpy(functionName: "tabManager(_:didAddTab:)") { tabs in
+        addedTab = tabs[0]
+      },
+      MethodSpy(functionName: "tabManager(_:didSelectedTabChange:previous:)") { tabs in
+        XCTAssertTrue(tabs[0] === addedTab)
+        XCTAssertTrue(tabs[1] === selectedTab)
+      },
+    ])
+
+    let newTab = manager.addTabAndSelect(in: group)
+
+    delegate.verify("Adding a tab to the group did not report the selection change")
+    XCTAssertNotNil(newTab)
+    XCTAssertTrue(manager.selectedTab === newTab)
+    XCTAssertEqual(
+      manager.allTabs.map(\.id),
+      [groupedTab.id, newTab!.id, middleTab.id, selectedTab.id]
+    )
+  }
+
   func testAddTabToGroupCreatesAndSelectsTabInGroup() {
     let firstTab = manager.addTestTab(isPrivate: false)
     let secondTab = manager.addTestTab(isPrivate: false)
