@@ -205,6 +205,7 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
   }
 
   void TearDownOnMainThread() override {
+    BraveSettingsUI::ShouldExposeElementsForTesting() = false;
     dapp_contents_ = nullptr;
     InProcessBrowserTest::TearDownOnMainThread();
   }
