@@ -1627,11 +1627,24 @@ permissions.
 
 **Examples**
 
-| Situation                                                                                           | ✅ Good                                                                                                                                                                                                | ❌ Bad                                                                              |
-| --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
-| `a.com` embeds a sandboxed `b.com` iframe whose opaque origin has a `b.com` precursor.              | Use `a.com` for `TOP_ORIGIN_ONLY_SCOPE` settings. For the iframe’s cookies (`REQUESTING_ORIGIN_WITH_TOP_ORIGIN_EXCEPTIONS_SCOPE`), use `b.com` as the requesting origin and `a.com` as the top origin. | Walk up to `a.com` for the iframe’s requesting origin because its origin is opaque. |
-| An HTTPS page on `a.com` is itself sandboxed. Its opaque top-level origin has an `a.com` precursor. | Use `a.com` for `TOP_ORIGIN_ONLY_SCOPE` settings, including for subrequests.                                                                                                                           | Use defaults just because the top-level origin is opaque.                           |
-| The user types a `data:` URL that embeds `b.com`. The top-level origin has no precursor.            | Use defaults for `TOP_ORIGIN_ONLY_SCOPE` settings, including when the iframe makes a request.                                                                                                          | Use `b.com` for `TOP_ORIGIN_ONLY_SCOPE` settings because it initiated the request.  |
+- **Sandboxed iframe:** `a.com` embeds a sandboxed `b.com` iframe whose opaque
+  origin has a `b.com` precursor.
+  - ✅ Use `a.com` for `TOP_ORIGIN_ONLY_SCOPE` settings. For the iframe’s
+    cookies (`REQUESTING_ORIGIN_WITH_TOP_ORIGIN_EXCEPTIONS_SCOPE`), use `b.com`
+    as the requesting origin and `a.com` as the top origin.
+  - ❌ Walk up to `a.com` for the iframe’s requesting origin because its origin
+    is opaque.
+- **Sandboxed top-level page:** an HTTPS page on `a.com` is itself sandboxed.
+  Its opaque top-level origin has an `a.com` precursor.
+  - ✅ Use `a.com` for `TOP_ORIGIN_ONLY_SCOPE` settings, including for
+    subrequests.
+  - ❌ Use defaults just because the top-level origin is opaque.
+- **Typed `data:` URL:** the user types a `data:` URL that embeds `b.com`. The
+  top-level origin has no precursor.
+  - ✅ Use defaults for `TOP_ORIGIN_ONLY_SCOPE` settings, including when the
+    iframe makes a request.
+  - ❌ Use `b.com` for `TOP_ORIGIN_ONLY_SCOPE` settings because it initiated the
+    request.
 
 NEVER use frame position (`is_outermost_main_frame`), a raw document URL, or a
 non-HTTP(S) scheme as proof of which settings apply, and NEVER treat opaque
