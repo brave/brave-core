@@ -26,6 +26,7 @@
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
 #include "chrome/browser/ui/recently_audible_helper.h"
+#include "chrome/browser/ui/tab_ui_helper.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_muted_utils.h"
@@ -414,6 +415,40 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
   EXPECT_FALSE(
       shared_pinned_tab_service->GetTabDataForDummyContents(0, dummy_contents)
           ->blocked);
+}
+
+IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
+                       SynchronizeNeedsAttention) {
+  // Given that there're multiple windows with a shared pinned tab
+  auto* tab_strip_model_1 = browser()->tab_strip_model();
+  tab_strip_model_1->SetTabPinned(0, /* pinned= */ true);
+  auto* shared_tab = tab_strip_model_1->GetTabAtIndex(0);
+  auto* shared_pinned_tab_service = GetForBrowser(browser());
+  ASSERT_TRUE(shared_pinned_tab_service);
+
+  auto* browser_2 = CreateNewBrowser();
+  auto* tab_strip_model_2 = browser_2->tab_strip_model();
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return tab_strip_model_2->count() > 1; }));
+  auto* dummy_contents = tab_strip_model_2->GetWebContentsAt(0);
+  ASSERT_TRUE(shared_pinned_tab_service->IsDummyContents(dummy_contents));
+  auto dummy_needs_attention = [&]() {
+    return shared_pinned_tab_service
+        ->GetTabDataForDummyContents(0, dummy_contents)
+        ->needs_attention;
+  };
+  EXPECT_FALSE(dummy_needs_attention());
+
+  // When the shared pinned tab needs attention, e.g. for a JS dialog,
+  TabUIHelper::From(shared_tab)->SetNeedsAttention(true);
+
+  // Then the dummy pinned tab should show it too.
+  WaitUntil(
+      base::BindLambdaForTesting([&]() { return dummy_needs_attention(); }));
+
+  TabUIHelper::From(shared_tab)->SetNeedsAttention(false);
+  WaitUntil(
+      base::BindLambdaForTesting([&]() { return !dummy_needs_attention(); }));
 }
 
 IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,

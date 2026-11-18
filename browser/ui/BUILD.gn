@@ -1326,6 +1326,7 @@ source_set("ui") {
       "//brave/components/commands/common",
       "//brave/components/version_info",
       "//chrome/app:branded_strings",
+      "//chrome/browser/ui:tab_ui_helper",
       "//chrome/browser/ui/tabs:tab_enums",
       "//chrome/browser/ui/webui/top_chrome",
       "//components/input",

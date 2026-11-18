@@ -9,6 +9,8 @@
 #include <memory>
 #include <vector>
 
+#include "base/callback_list.h"
+#include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
@@ -100,6 +102,10 @@ class SharedPinnedTabService : public KeyedService,
                     const TabStripModelChange::Remove* remove);
   void OnActiveTabChanged(TabStripModel* tab_strip_model);
 
+  // Upstream reports needs-attention changes only through TabUIHelper, not
+  // through OnTabChangedAt(), so we subscribe to it for every tab.
+  void ObserveTabAttention(tabs::TabInterface* tab);
+
   void OnTabUnpinned(TabStripModel* tab_strip_model,
                      base::WeakPtr<content::WebContents> contents,
                      int index);
@@ -142,6 +148,10 @@ class SharedPinnedTabService : public KeyedService,
   std::vector<PinnedTabData> pinned_tab_data_;
 
   raw_ptr<TabStripModel> change_source_model_ = nullptr;
+
+  // Holds exactly the tabs of the observed tab strips.
+  base::flat_map<raw_ptr<tabs::TabInterface>, base::CallbackListSubscription>
+      tab_attention_subscriptions_;
 
   // Tab strips with an unpin whose OnTabUnpinned() is posted but hasn't run
   // yet. Until it runs, such a tab strip has fewer pinned tabs than

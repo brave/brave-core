@@ -24,6 +24,7 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
+#include "chrome/browser/ui/tab_ui_helper.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
@@ -253,6 +254,7 @@ void SharedPinnedTabService::Shutdown() {
   pinned_tab_data_.clear();
   pending_unpin_models_.clear();
   change_source_model_ = nullptr;
+  tab_attention_subscriptions_.clear();
   profile_observation_.Reset();
   browser_collection_observation_.Reset();
 }
@@ -269,7 +271,11 @@ void SharedPinnedTabService::OnBrowserCreated(BrowserWindowInterface* browser) {
 
   DVLOG(2) << __FUNCTION__ << " " << browser->GetTabStripModel()->count();
 
-  browser->GetTabStripModel()->AddObserver(this);
+  auto* tab_strip_model = browser->GetTabStripModel();
+  tab_strip_model->AddObserver(this);
+  for (int i = 0; i < tab_strip_model->count(); ++i) {
+    ObserveTabAttention(tab_strip_model->GetTabAtIndex(i));
+  }
   browsers_.insert(browser);
 }
 
@@ -375,6 +381,17 @@ void SharedPinnedTabService::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,
     const TabStripSelectionChange& selection) {
+  // This must run for our own synchronization too, as it moves shared tabs.
+  if (change.type() == TabStripModelChange::Type::kInserted) {
+    for (const auto& inserted : change.GetInsert()->contents) {
+      ObserveTabAttention(inserted.tab);
+    }
+  } else if (change.type() == TabStripModelChange::Type::kRemoved) {
+    for (const auto& removed : change.GetRemove()->contents) {
+      tab_attention_subscriptions_.erase(removed.tab);
+    }
+  }
+
   if (change_source_model_) {
     return;
   }
@@ -464,6 +481,14 @@ void SharedPinnedTabService::OnTabChangedAt(tabs::TabInterface* tab,
   }
 }
 
+void SharedPinnedTabService::ObserveTabAttention(tabs::TabInterface* tab) {
+  // |tab| owns the TabUIHelper, so it outlives the callback.
+  tab_attention_subscriptions_[tab] =
+      TabUIHelper::From(tab)->AddTabUIChangeCallback(base::BindRepeating(
+          &SharedPinnedTabService::OnTabChangedAt, base::Unretained(this),
+          base::Unretained(tab), TabChangeType::kAll));
+}
+
 void SharedPinnedTabService::OnTabBlockedStateChanged(tabs::TabInterface* tab) {
   // Blocked state used to be reported as a kind of tab change, so dummy tabs
   // would pick it up. Propagate it the same way.
@@ -480,6 +505,10 @@ void SharedPinnedTabService::OnTabStripModelDestroyed(
   // The posted OnTabUnpinned() may never see this model, so don't keep a
   // dangling pointer to it.
   std::erase(pending_unpin_models_, tab_strip_model);
+  // The model is destroyed with its tabs, without reporting their removal.
+  for (int i = 0; i < tab_strip_model->count(); ++i) {
+    tab_attention_subscriptions_.erase(tab_strip_model->GetTabAtIndex(i));
+  }
 }
 
 void SharedPinnedTabService::OnProfileWillBeDestroyed(Profile* profile) {
@@ -977,6 +1006,7 @@ void SharedPinnedTabService::OnSharedPinnedTabDisabled() {
   for (BrowserWindowInterface* browser : browsers_) {
     browser->GetTabStripModel()->RemoveObserver(this);
   }
+  tab_attention_subscriptions_.clear();
   browser_collection_observation_.Reset();
 
   // Remove all dummy contents
