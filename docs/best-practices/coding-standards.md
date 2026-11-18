@@ -1607,7 +1607,9 @@ evaluated for secondary settings. If its origin is non-opaque, use that origin�
 site. If it’s opaque, use its precursor’s site. If there’s no precursor, use
 default settings.
 
-Here, _ancestry_ means where the origin came from, not where the frame sits.
+A precursor is the non-opaque origin from which an opaque origin was derived. If
+one opaque origin is derived from another, it carries forward the same
+precursor, if there is one.
 
 A Shields settings origin is used only to choose settings. It MUST NOT change
 the document's security origin, and it MUST NOT be used to grant access or
