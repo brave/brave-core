@@ -70,6 +70,7 @@ type Result = {
 // inference are replaced with Jest mocks.
 type MockModel = {
   model: OrtNemotronModel
+  modelType: config.NemotronModelType
   runEncoder: jest.Mock
   runDecoder: jest.Mock
 }
@@ -216,6 +217,7 @@ function createMockModel(
 
   return {
     model,
+    modelType,
     runEncoder,
     runDecoder,
   }
@@ -224,7 +226,7 @@ function createMockModel(
 //
 function createSession(mock: MockModel, lang: string = 'en-US') {
   const results: Result[] = []
-  const locale = getNemotronLocale(lang)
+  const locale = getNemotronLocale(mock.modelType, lang)
   const onResult = jest.fn((text: string, isFinal: boolean) => {
     results.push({
       text,
@@ -258,7 +260,7 @@ describe('NemotronStreamSession', () => {
 
     it('accepts the Nemotron sample rate', () => {
       const mock = createMockModel()
-      const locale = getNemotronLocale('en-US')
+      const locale = getNemotronLocale(mock.modelType, 'en-US')
 
       expect(
         () =>
@@ -274,7 +276,7 @@ describe('NemotronStreamSession', () => {
 
     it('rejects unsupported sample rates', () => {
       const mock = createMockModel()
-      const locale = getNemotronLocale('en-US')
+      const locale = getNemotronLocale(mock.modelType, 'en-US')
       const wrongSamplingRate = 8000
 
       expect(
@@ -947,6 +949,7 @@ describe('NemotronStreamSession', () => {
     })
 
     it.each([
+      ['en-US', 0],
       ['es-ES', 2],
       ['fr-CA', 100],
       ['ar', 7],
