@@ -160,7 +160,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &commerce::kShoppingList,
       &commerce::kShoppingPDPMetrics,
       &commerce::kRetailCoupons,
-      &compose::features::kEnableCompose,
+      &compose::features::kComposeEligible,
       &contextual_tasks::kContextualTasks,
       &contextual_tasks::kContextualTasksCookiePrefetch,
       &critical_actions::features::kCriticalActionHistory,
