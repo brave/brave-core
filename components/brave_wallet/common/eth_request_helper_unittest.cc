@@ -845,9 +845,9 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParamsInvalidInput) {
 
 TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParamsChainId) {
   constexpr char kAddress[] = "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826";
-  // Make sure the EIP712Domain doesn't specify the chainId because because the
+  // Make sure the EIP712Domain doesn't specify the chainId because the
   // `expect_chain_id` calls under `// Malformed input.` pass non-numeric values
-  // // ([], {}, true, 1.5, -1, etc.). We don't need a correct hash to test
+  // ([], {}, true, 1.5, -1, etc.). We don't need a correct hash to test
   // "chainId" parsing in the "domain".
   constexpr char kTypedDataJson[] = R"({
     "types": {
