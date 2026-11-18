@@ -25,9 +25,10 @@ namespace {
 
 // Each tag must be a canonical BCP 47 tag that is in only one row. The
 // matcher gives "fr" or "fr-BE" the first of two locales at the same
-// distance, so "fr-FR" must come before "fr-CA". The English model serves only
-// en-US, the one locale for all English tags. The multilingual model serves
-// all other locales.
+// distance, so "fr-FR" must come before "fr-CA". The model of a row is the one
+// that the locale needs: the English model for en-US, the one locale for all
+// English tags, and the multilingual model for all other locales. The
+// multilingual model also serves en-US.
 constexpr auto kLocales = std::to_array<OnDeviceSpeechLocale>({
     {"en-US", OnDeviceSpeechModel::kEnglish},
     {"ar", OnDeviceSpeechModel::kMultilingual},
@@ -93,6 +94,11 @@ const OnDeviceSpeechLocale* ResolveOnDeviceSpeechLocale(
   }
   std::optional<base::i18n::LanguageTag> match = GetLocaleMatcher().Match(*tag);
   return match ? FindOnDeviceSpeechLocale(match->tag_string()) : nullptr;
+}
+
+bool OnDeviceSpeechModelServesLocale(OnDeviceSpeechModel model,
+                                     const OnDeviceSpeechLocale& locale) {
+  return model == OnDeviceSpeechModel::kMultilingual || model == locale.model;
 }
 
 }  // namespace local_ai

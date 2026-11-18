@@ -13,6 +13,7 @@
 #include "base/files/file_path.h"
 #include "base/logging.h"
 #include "brave/components/local_ai/core/features.h"
+#include "brave/components/local_ai/core/on_device_speech_locales.h"
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "brave/components/local_ai/core/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -22,6 +23,15 @@ namespace local_ai {
 bool CanOfferOnDeviceSpeech(const PrefService* local_state) {
   return base::FeatureList::IsEnabled(kBraveOnDeviceSpeechRecognition) &&
          (!local_state || local_state->GetBoolean(prefs::kBraveLocalAIEnabled));
+}
+
+bool CanOfferOnDeviceSpeechModel(const PrefService* local_state,
+                                 OnDeviceSpeechModel model) {
+  if (!CanOfferOnDeviceSpeech(local_state)) {
+    return false;
+  }
+  return model != OnDeviceSpeechModel::kMultilingual ||
+         base::FeatureList::IsEnabled(kBraveOnDeviceSpeechMultilingual);
 }
 
 std::optional<OnDeviceSpeechModel> GetEnabledOnDeviceSpeechModel(
@@ -49,14 +59,23 @@ void EnableOnDeviceSpeechModel(PrefService& local_state,
 
 bool ShouldInstallOnDeviceSpeechModel(const PrefService* local_state,
                                       OnDeviceSpeechModel model) {
-  if (!local_state || !CanOfferOnDeviceSpeech(local_state)) {
-    return false;
+  return CanOfferOnDeviceSpeechModel(local_state, model) &&
+         GetEnabledOnDeviceSpeechModel(local_state) == model;
+}
+
+std::optional<OnDeviceSpeechModel> GetInstalledOnDeviceSpeechModel(
+    const PrefService* local_state,
+    const OnDeviceSpeechLocale& locale) {
+  const auto* state = OnDeviceSpeechModelsState::GetInstance();
+  for (OnDeviceSpeechModel model :
+       {OnDeviceSpeechModel::kMultilingual, OnDeviceSpeechModel::kEnglish}) {
+    if (OnDeviceSpeechModelServesLocale(model, locale) &&
+        CanOfferOnDeviceSpeechModel(local_state, model) &&
+        state->IsModelInstalled(model)) {
+      return model;
+    }
   }
-  if (model == OnDeviceSpeechModel::kMultilingual &&
-      !base::FeatureList::IsEnabled(kBraveOnDeviceSpeechMultilingual)) {
-    return false;
-  }
-  return GetEnabledOnDeviceSpeechModel(local_state) == model;
+  return std::nullopt;
 }
 
 std::optional<mojo_base::BigBuffer> ReadFileToBigBuffer(

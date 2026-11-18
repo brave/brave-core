@@ -54,6 +54,19 @@ TEST(OnDeviceSpeechLocalesUnitTest, ResolvesFrenchToFrFR) {
   EXPECT_EQ("fr-FR", Resolve("fr-BE"));
 }
 
+// The multilingual model serves every locale, en-US too. The English model
+// serves only en-US.
+TEST(OnDeviceSpeechLocalesUnitTest, EachModelServesItsLocales) {
+  for (const OnDeviceSpeechLocale& locale : GetOnDeviceSpeechLocales()) {
+    SCOPED_TRACE(locale.tag);
+    EXPECT_TRUE(OnDeviceSpeechModelServesLocale(
+        OnDeviceSpeechModel::kMultilingual, locale));
+    EXPECT_EQ(
+        locale.tag == "en-US",
+        OnDeviceSpeechModelServesLocale(OnDeviceSpeechModel::kEnglish, locale));
+  }
+}
+
 TEST(OnDeviceSpeechLocalesUnitTest, RefusesTagsThatNoModelServes) {
   // Languages that no locale has, and tags that do not parse.
   for (std::string_view language :
