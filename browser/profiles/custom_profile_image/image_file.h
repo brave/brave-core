@@ -40,8 +40,12 @@ class ImageFile {
   ImageFile(const ImageFile&) = delete;
   ImageFile& operator=(const ImageFile&) = delete;
 
+  // Discards any uncommitted staging file. Returns the saved bitmap, or an
+  // empty one if it is missing or invalid.
   SkBitmap Read();
+  // Returns false for a bitmap that is not normalized or a failed write.
   bool Replace(const SkBitmap& bitmap);
+  // Returns true if neither the saved nor the staging file remains.
   bool Remove();
 
  private:

@@ -83,7 +83,7 @@ class ProfileImage : public base::SupportsUserData::Data {
   bool loading_ = false;
   bool loaded_ = false;
   bool load_failed_ = false;
-  bool has_committed_image_;
+  bool has_committed_image_ = false;
   // File replies are ordered. Only an immediate fallback choice can overtake
   // them; a later failed file operation must not cancel an earlier selection.
   uint64_t generation_ = 0;

@@ -38,19 +38,6 @@ bool ProfileImage::IsEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveCustomProfileImage);
 }
 
-ProfileImage::ProfileImage(ProfileAttributesEntry& entry)
-    : file_(base::ThreadPool::CreateSequencedTaskRunner(
-                {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
-                 base::TaskShutdownBehavior::BLOCK_SHUTDOWN}),
-            entry.GetPath()),
-      has_committed_image_(entry.GetCustomProfileImageFlag(kSaved)),
-      entry_(entry) {
-  if (!has_committed_image_) {
-    // A first write interrupted before metadata publication is not committed.
-    file_.AsyncCall(base::IgnoreResult(&ImageFile::Remove));
-  }
-}
-
 ProfileImage::~ProfileImage() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!has_committed_image_) {
@@ -87,19 +74,6 @@ const gfx::Image& ProfileImage::GetImage() {
   return image_;
 }
 
-void ProfileImage::Loaded(SkBitmap bitmap) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  loading_ = false;
-  // A Replace, Remove or Select that finished first already set newer state.
-  if (loaded_) {
-    return;
-  }
-  loaded_ = true;
-  load_failed_ = bitmap.drawsNothing();
-  image_ = gfx::Image::CreateFrom1xBitmap(bitmap);
-  Notify();
-}
-
 void ProfileImage::Replace(const SkBitmap& bitmap, Callback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!IsEnabled()) {
@@ -123,12 +97,73 @@ void ProfileImage::Replace(const SkBitmap& bitmap, Callback callback) {
     return;
   }
   copy.setImmutable();
-  const auto generation = generation_;
+  const uint64_t generation = generation_;
   file_.AsyncCall(&ImageFile::Replace)
       .WithArgs(copy)
       .Then(base::BindOnce(&ProfileImage::Replaced, weak_factory_.GetWeakPtr(),
                            generation, gfx::Image::CreateFrom1xBitmap(copy),
                            std::move(callback)));
+}
+
+void ProfileImage::Remove(Callback callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!IsEnabled()) {
+    ReplyLater(std::move(callback), Result::kUnavailable);
+    return;
+  }
+  file_.AsyncCall(&ImageFile::Remove)
+      .Then(base::BindOnce(&ProfileImage::Removed, weak_factory_.GetWeakPtr(),
+                           std::move(callback)));
+}
+
+void ProfileImage::Select(Callback callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!IsEnabled() || !HasSavedImage()) {
+    ReplyLater(std::move(callback), Result::kUnavailable);
+    return;
+  }
+  // Recheck the file so a missing or damaged saved image is recoverable.
+  file_.AsyncCall(&ImageFile::Read)
+      .Then(base::BindOnce(&ProfileImage::Selected, weak_factory_.GetWeakPtr(),
+                           generation_, std::move(callback)));
+}
+
+void ProfileImage::SelectFallback() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  // Overrides a pending Replace or Select even before anything is saved.
+  ++generation_;
+  // Record preset choices made while the feature is off so re-enabling it
+  // does not restore the custom image over the user's later choice. Without a
+  // saved image the flag means nothing, so Local State is left alone.
+  if (HasSavedImage() && entry_->SetCustomProfileImageFlag(kActive, false)) {
+    Notify();
+  }
+}
+
+ProfileImage::ProfileImage(ProfileAttributesEntry& entry)
+    : file_(base::ThreadPool::CreateSequencedTaskRunner(
+                {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+                 base::TaskShutdownBehavior::BLOCK_SHUTDOWN}),
+            entry.GetPath()),
+      has_committed_image_(entry.GetCustomProfileImageFlag(kSaved)),
+      entry_(entry) {
+  if (!has_committed_image_) {
+    // A first write interrupted before metadata publication is not committed.
+    file_.AsyncCall(base::IgnoreResult(&ImageFile::Remove));
+  }
+}
+
+void ProfileImage::Loaded(SkBitmap bitmap) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  loading_ = false;
+  // A Replace, Remove or Select that finished first already set newer state.
+  if (loaded_) {
+    return;
+  }
+  loaded_ = true;
+  load_failed_ = bitmap.drawsNothing();
+  image_ = gfx::Image::CreateFrom1xBitmap(bitmap);
+  Notify();
 }
 
 void ProfileImage::Replaced(uint64_t generation,
@@ -152,17 +187,6 @@ void ProfileImage::Replaced(uint64_t generation,
   std::move(callback).Run(Result::kSuccess);
 }
 
-void ProfileImage::Remove(Callback callback) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (!IsEnabled()) {
-    ReplyLater(std::move(callback), Result::kUnavailable);
-    return;
-  }
-  file_.AsyncCall(&ImageFile::Remove)
-      .Then(base::BindOnce(&ProfileImage::Removed, weak_factory_.GetWeakPtr(),
-                           std::move(callback)));
-}
-
 void ProfileImage::Removed(Callback callback, bool success) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!success) {
@@ -179,18 +203,6 @@ void ProfileImage::Removed(Callback callback, bool success) {
     Notify();
   }
   std::move(callback).Run(Result::kSuccess);
-}
-
-void ProfileImage::Select(Callback callback) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (!IsEnabled() || !HasSavedImage()) {
-    ReplyLater(std::move(callback), Result::kUnavailable);
-    return;
-  }
-  // Recheck the file so a missing or damaged saved image is recoverable.
-  file_.AsyncCall(&ImageFile::Read)
-      .Then(base::BindOnce(&ProfileImage::Selected, weak_factory_.GetWeakPtr(),
-                           generation_, std::move(callback)));
 }
 
 void ProfileImage::Selected(uint64_t generation,
@@ -215,18 +227,6 @@ void ProfileImage::Selected(uint64_t generation,
     Notify();
   }
   std::move(callback).Run(Result::kSuccess);
-}
-
-void ProfileImage::SelectFallback() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  // Overrides a pending Replace or Select even before anything is saved.
-  ++generation_;
-  // Record preset choices made while the feature is off so re-enabling it
-  // does not restore the custom image over the user's later choice. Without a
-  // saved image the flag means nothing, so Local State is left alone.
-  if (HasSavedImage() && entry_->SetCustomProfileImageFlag(kActive, false)) {
-    Notify();
-  }
 }
 
 // Early results are posted so every callback runs asynchronously, like the

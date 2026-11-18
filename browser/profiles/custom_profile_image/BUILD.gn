@@ -53,6 +53,11 @@ source_set("unit_tests") {
 }
 
 source_set("custom_profile_image") {
+  visibility = [
+    ":unit_tests",
+    "//brave/browser:core",
+    "//brave/browser/ui/views/profiles:browser_tests",
+  ]
   sources = [
     "profile_image.cc",
     "profile_image.h",

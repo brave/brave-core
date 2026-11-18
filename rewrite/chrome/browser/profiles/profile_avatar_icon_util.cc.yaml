@@ -6,8 +6,8 @@
 substitutions:
   - description: Count Brave's avatar icons.
     regex:
-      re_pattern: '(kDefaultAvatarIconsCount = 56);'
-      replace: '\1 + kBraveDefaultAvatarIconsCount;'
+      pattern: 'kDefaultAvatarIconsCount = 56;'
+      replace: 'kDefaultAvatarIconsCount = 56 + kBraveDefaultAvatarIconsCount;'
 
   - description: Let Brave adjust where the modern avatar icons start.
     add_before_line:

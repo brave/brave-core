@@ -56,8 +56,8 @@ SkBitmap ImageFile::Read() {
       !internal::HasNormalizedHeader(base::as_byte_span(bytes))) {
     return {};
   }
-  // Replace() is the only writer. If the file is altered on disk, the header
-  // check above still bounds what the decoder allocates.
+  // Replace() is the only writer. If the file is altered on disk,
+  // internal::HasNormalizedHeader() still bounds what the decoder allocates.
   SkBitmap bitmap = gfx::PNGCodec::Decode(base::as_byte_span(bytes));
   return IsNormalized(bitmap) ? bitmap : SkBitmap();
 }
