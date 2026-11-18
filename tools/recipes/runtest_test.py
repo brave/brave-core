@@ -568,6 +568,69 @@ class RunTestTest(_GeneratedConfigTest):
             kwargs['env']['TMPDIR'].startswith(tempfile.gettempdir())
         )
 
+    def test_writes_a_junit_report_of_the_summary(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            build_dir = Path(temp_dir)
+            (build_dir / 'browser_tests').touch()
+            summary = build_dir / 'summary.json'
+            report = build_dir / 'results' / 'browser_tests.xml'
+
+            def write_summary(*_args, **_kwargs):
+                summary.write_text(
+                    json.dumps(
+                        {
+                            'per_iteration_data': [
+                                {'A.B': [{'status': 'FAILURE'}]}
+                            ]
+                        }
+                    ),
+                    encoding='utf-8',
+                )
+                return 1
+
+            with (
+                mock.patch.object(m.sys, 'platform', 'linux'),
+                mock.patch.object(m, 'run_command', side_effect=write_summary),
+                contextlib.redirect_stdout(io.StringIO()),
+            ):
+                m.run_test(
+                    _options(
+                        build_dir=build_dir,
+                        test_type='browser_tests',
+                        parse_gtest_output=True,
+                        test_launcher_summary_output=summary,
+                        junit_xml_output=report,
+                    ),
+                    ['browser_tests'],
+                )
+            text = report.read_text(encoding='utf-8')
+        self.assertIn('<testsuites name="browser_tests" tests="1"', text)
+        self.assertIn('<testcase name="B" classname="A"', text)
+
+    def test_a_run_without_a_summary_is_an_error_in_its_junit_report(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            build_dir = Path(temp_dir)
+            (build_dir / 'browser_tests').touch()
+            report = build_dir / 'results' / 'browser_tests.xml'
+            with (
+                mock.patch.object(m.sys, 'platform', 'linux'),
+                mock.patch.object(m, 'run_command', return_value=-11),
+                contextlib.redirect_stdout(io.StringIO()),
+            ):
+                m.run_test(
+                    _options(
+                        build_dir=build_dir,
+                        test_type='browser_tests',
+                        parse_gtest_output=True,
+                        junit_xml_output=report,
+                    ),
+                    ['browser_tests'],
+                )
+            text = report.read_text(encoding='utf-8')
+        self.assertIn('<testsuites name="browser_tests" tests="1"', text)
+        self.assertIn('errors="1"', text)
+        self.assertIn('message="no gtest JSON summary"', text)
+
     def test_missing_binary_is_an_error(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             with self.assertRaises(FileNotFoundError):
