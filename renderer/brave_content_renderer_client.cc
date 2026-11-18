@@ -15,6 +15,7 @@
 #include "brave/components/brave_news/renderer/rss_link_reader.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search/renderer/brave_search_render_frame_observer.h"
+#include "brave/components/brave_shields/content/renderer/pressed_link_render_frame_observer.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_render_frame_observer.h"
@@ -194,6 +195,12 @@ void BraveContentRendererClient::RenderFrameCreated(
         render_frame, ISOLATED_WORLD_ID_BRAVE_INTERNAL, dynamic_params_closure);
   }
 
+  if (base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveAdblockPopupBlocking)) {
+    new brave_shields::PressedLinkRenderFrameObserver(
+        render_frame, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+  }
+
   new misc_metrics::Web3MetricsRenderFrameObserver(
       render_frame, std::make_unique<Web3MetricsDelegate>());
 
@@ -295,6 +302,11 @@ void BraveContentRendererClient::RunScriptsAtDocumentStart(
   // Run this before any extensions
   if (observer) {
     observer->RunScriptsAtDocumentStart();
+  }
+
+  if (auto* pressed_link_observer =
+          brave_shields::PressedLinkRenderFrameObserver::Get(render_frame)) {
+    pressed_link_observer->RunScriptsAtDocumentStart();
   }
 
 #if BUILDFLAG(ENABLE_PLAYLIST)

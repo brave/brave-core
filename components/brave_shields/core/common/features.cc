@@ -39,6 +39,8 @@ BASE_FEATURE(kBraveAdblockShowHiddenComponents,
 // default unless overridden by a locally set preference.
 BASE_FEATURE(kBraveAdblockMobileNotificationsListDefault,
              base::FEATURE_ENABLED_BY_DEFAULT);
+// When enabled, Brave will block popups that match `$popup` filter rules.
+BASE_FEATURE(kBraveAdblockPopupBlocking, base::FEATURE_DISABLED_BY_DEFAULT);
 // When enabled, Brave will enable "Brave Experimental Adblock Rules" list by
 // default unless overridden by a locally set preference.
 // NOTE: this should only be turned on by default in Nightly and Beta.

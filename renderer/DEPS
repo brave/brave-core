@@ -13,6 +13,7 @@ include_rules += [
   "+brave/components/brave_news/renderer",
   "+brave/components/brave_search/common",
   "+brave/components/brave_search/renderer",
+  "+brave/components/brave_shields/content/renderer",
   "+brave/components/brave_shields/core/common",
   "+brave/components/brave_vpn/common/buildflags/buildflags.h",
   "+brave/components/brave_wallet/common",

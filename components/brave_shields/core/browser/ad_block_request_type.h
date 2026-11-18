@@ -21,6 +21,7 @@ enum class AdBlockRequestType {
   kXhr,
   kPing,
   kOther,
+  kPopup,
   // No matching filter option; the engine receives an empty request type.
   kUnknown,
 };
