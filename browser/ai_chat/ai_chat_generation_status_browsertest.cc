@@ -15,11 +15,13 @@
 #include "base/strings/strcat.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/test_timeouts.h"
 #include "base/types/expected.h"
 #include "brave/browser/ai_chat/ai_chat_conversation_ui_browsertest_base.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "chrome/browser/notifications/notification_display_service_tester.h"
 #include "chrome/browser/notifications/notification_handler.h"
@@ -98,6 +100,11 @@ constexpr char kWaitForRowIndicatorScript[] = R"(
 class AIChatGenerationStatusBrowserTest
     : public AIChatConversationUIBrowserTestBase {
  public:
+  AIChatGenerationStatusBrowserTest() {
+    scoped_feature_list_.InitAndEnableFeature(
+        features::kAIChatCompletionNotifications);
+  }
+
   void SetUpCommandLine(base::CommandLine* command_line) override {
     AIChatConversationUIBrowserTestBase::SetUpCommandLine(command_line);
     // The tests wait on pages in background tabs, whose renderers run at a
@@ -201,6 +208,7 @@ class AIChatGenerationStatusBrowserTest
     return testing::AssertionSuccess();
   }
 
+  base::test::ScopedFeatureList scoped_feature_list_;
   std::unique_ptr<NotificationDisplayServiceTester> notification_tester_;
   // How many times a notification has been shown.
   int notifications_shown_ = 0;

@@ -958,6 +958,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
           "Renders LaTeX expressions in assistant responses as typeset math.", \
           kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatMathRendering),         \
+      },                                                                       \
+      {                                                                        \
+          "brave-ai-chat-completion-notifications",                            \
+          "Brave AI Chat Completion Notifications",                            \
+          "Shows a notification when a response finishes in a conversation "   \
+          "that isn't open.",                                                  \
+          kOsWin | kOsMac | kOsLinux,                                          \
+          FEATURE_VALUE_TYPE(                                                  \
+              ai_chat::features::kAIChatCompletionNotifications),              \
       })
 #else
 #define BRAVE_AI_CHAT_FEATURE_ENTRIES

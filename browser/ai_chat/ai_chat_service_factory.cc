@@ -160,8 +160,10 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
   }
 
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
-  service->SetNotificationDelegate(std::make_unique<AIChatNotificationHelper>(
-      Profile::FromBrowserContext(context)));
+  if (base::FeatureList::IsEnabled(features::kAIChatCompletionNotifications)) {
+    service->SetNotificationDelegate(std::make_unique<AIChatNotificationHelper>(
+        Profile::FromBrowserContext(context)));
+  }
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
   return service;

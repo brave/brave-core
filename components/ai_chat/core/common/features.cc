@@ -265,4 +265,9 @@ BASE_FEATURE(kAIChatExportJSON, base::FEATURE_DISABLED_BY_DEFAULT);
 
 BASE_FEATURE(kAIChatMathRendering, base::FEATURE_ENABLED_BY_DEFAULT);
 
+// Shows a desktop notification when a response finishes in a conversation that
+// isn't open. Off until clicking it opens the conversation:
+// https://github.com/brave/brave-browser/issues/60355
+BASE_FEATURE(kAIChatCompletionNotifications, base::FEATURE_DISABLED_BY_DEFAULT);
+
 }  // namespace ai_chat::features
