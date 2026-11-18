@@ -7,6 +7,7 @@
 
 #include "base/files/file_path.h"
 #include "base/test/metrics/histogram_tester.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "build/build_config.h"
@@ -14,10 +15,16 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_test_util.h"
+#include "chrome/common/pref_names.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/browser_features.h"
+#include "chrome/test/base/profile_destruction_waiter.h"
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 namespace brave_ads {
 
@@ -125,5 +132,41 @@ IN_PROC_BROWSER_TEST_F(BraveAdsStatsHelperBrowserTest,
   histogram_tester_.ExpectBucketCount(kAdsEnabledInstallationTimeHistogramName,
                                       1, 1);
 }
+
+#if !BUILDFLAG(IS_ANDROID)
+// With profile unloading turned on, a closed profile unloads when its last
+// window closes.
+class BraveAdsStatsHelperProfileUnloadBrowserTest
+    : public BraveAdsStatsHelperBrowserTest {
+ public:
+  BraveAdsStatsHelperProfileUnloadBrowserTest() {
+    feature_list_.InitAndEnableFeature(features::kDestroyProfileOnBrowserClose);
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(BraveAdsStatsHelperProfileUnloadBrowserTest,
+                       DoesNotLoadClosedLastUsedProfile) {
+  Profile* default_profile = browser()->profile();
+  const base::FilePath default_profile_path = default_profile->GetPath();
+
+  // Open another profile, then close the default profile's only window so
+  // the default profile unloads.
+  base::FilePath profile_one_path;
+  CreateProfile(profile_one_path);
+  profiles::testing::SwitchToProfileSync(profile_one_path);
+  ProfileDestructionWaiter default_profile_destruction_waiter(default_profile);
+  CloseBrowserSynchronously(browser());
+  default_profile_destruction_waiter.Wait();
+  ASSERT_FALSE(profile_manager()->GetProfileByPath(default_profile_path));
+
+  // With no last-used profile recorded, the default profile counts as last
+  // used. Reading stats for it must not load it again.
+  local_state()->SetFilePath(::prefs::kProfileLastUsed, base::FilePath());
+  EXPECT_FALSE(profile_manager()->GetProfileByPath(default_profile_path));
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 }  // namespace brave_ads
