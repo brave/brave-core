@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_view.h b/chrome/browser/ui/views/page_action/page_action_view.h
-index 23f2f81454d9e93c843c0f3271a17e9855147239..948592b4b8dc0d72135cd8a23ec5bbf76ac66852 100644
+index 5c213a11bf251a43c9cb5ba2b2e03d0bc78be299..3bb2c0f30198886b8d11e909dc41f543a5f0c8e0 100644
 --- a/chrome/browser/ui/views/page_action/page_action_view.h
 +++ b/chrome/browser/ui/views/page_action/page_action_view.h
-@@ -157,6 +157,21 @@ class PageActionView : public IconLabelBubbleView,
+@@ -166,6 +166,19 @@ class PageActionView : public IconLabelBubbleView,
  
    static PageActionPassKey PassKeyForTesting() { return PageActionPassKey(); }
  
@@ -13,8 +13,6 @@ index 23f2f81454d9e93c843c0f3271a17e9855147239..948592b4b8dc0d72135cd8a23ec5bbf7
 +                           DefaultBackgroundColorIsTransparent);
 +  FRIEND_TEST_ALL_PREFIXES(PageActionViewTest,
 +                           OverrideBackgroundColorReturnsModelValue);
-+  views::ProposedLayout CalculateProposedLayout(
-+      const views::SizeBounds& size_bounds) const override;
 +  gfx::Size GetSizeForLabelWidth(int label_width) const override;
 +  bool ShouldShowLabel() const override;
 +  std::optional<int> GetOverrideHeight() const;

@@ -7,12 +7,12 @@ substitutions:
   - description: |
       Add the extra IconLabelBubbleView overrides and hooks Brave needs.
 
-      CalculateProposedLayout/GetSizeForLabelWidth/ShouldShowLabel/
-      ShouldAlwaysShowLabel let Brave honor a per-model height override and an
-      always-show-label flag. GetOverrideHeight and
-      OnPageActionModelVisualRefresh are plain Brave hooks used by those
-      overrides, and by OnNewActiveController/OnPageActionModelChanged
-      (see page_action_view.cc.yaml).
+      GetSizeForLabelWidth/ShouldShowLabel/ShouldAlwaysShowLabel let Brave
+      honor a per-model height override and an always-show-label flag.
+      GetOverrideHeight and OnPageActionModelVisualRefresh are plain Brave
+      hooks used by those overrides, and by CalculateProposedLayout,
+      OnNewActiveController and OnPageActionModelChanged (see
+      page_action_view.cc.yaml).
     add_to_public:
       class_name: PageActionView
       code: |-
@@ -23,8 +23,6 @@ substitutions:
                                  DefaultBackgroundColorIsTransparent);
         FRIEND_TEST_ALL_PREFIXES(PageActionViewTest,
                                  OverrideBackgroundColorReturnsModelValue);
-        views::ProposedLayout CalculateProposedLayout(
-            const views::SizeBounds& size_bounds) const override;
         gfx::Size GetSizeForLabelWidth(int label_width) const override;
         bool ShouldShowLabel() const override;
         std::optional<int> GetOverrideHeight() const;

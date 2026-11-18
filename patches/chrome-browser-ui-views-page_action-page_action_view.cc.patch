@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_view.cc b/chrome/browser/ui/views/page_action/page_action_view.cc
-index 4d0e79119f2ccfaade8b3757a78d61d31e668086..10b3ab959e8aecc1a2a51ed1d103129e96231374 100644
+index 4d0e79119f2ccfaade8b3757a78d61d31e668086..931eeac1612d2022e1f48ae081454c298c3b449a 100644
 --- a/chrome/browser/ui/views/page_action/page_action_view.cc
 +++ b/chrome/browser/ui/views/page_action/page_action_view.cc
 @@ -93,7 +93,7 @@ PageActionView::PageActionView(actions::ActionItem* action_item,
@@ -76,7 +76,17 @@ index 4d0e79119f2ccfaade8b3757a78d61d31e668086..10b3ab959e8aecc1a2a51ed1d103129e
    action_item_->InvokeAction(std::move(builder).Build());
  }
  
-@@ -702,6 +719,7 @@ gfx::Size PageActionView::CalculatePreferredSize(
+@@ -677,6 +694,9 @@ void PageActionView::SetModel(PageActionModelInterface* model) {
+ 
+ views::ProposedLayout PageActionView::CalculateProposedLayout(
+     const views::SizeBounds& size_bounds) const {
++  if (auto bounds = GetBraveSizeBounds(*this, size_bounds)) {
++    return CalculateProposedLayout(*bounds);
++  }
+   if (!visibility_animation_.is_animating()) {
+     return IconLabelBubbleView::CalculateProposedLayout(size_bounds);
+   }
+@@ -702,6 +722,7 @@ gfx::Size PageActionView::CalculatePreferredSize(
  }
  
  gfx::Size PageActionView::GetMinimumSize() const {
@@ -84,7 +94,7 @@ index 4d0e79119f2ccfaade8b3757a78d61d31e668086..10b3ab959e8aecc1a2a51ed1d103129e
    gfx::Size icon_preferred_size = image_container_view()->GetPreferredSize();
    if (observation_.IsObserving() &&
        !observation_.GetSource()->GetImage().IsVectorIcon()) {
-@@ -714,6 +732,15 @@ gfx::Size PageActionView::GetMinimumSize() const {
+@@ -714,6 +735,15 @@ gfx::Size PageActionView::GetMinimumSize() const {
    icon_preferred_size.set_width(
        ScaleWidthForVisibilityAnimation(icon_preferred_size.width()));
    return icon_preferred_size;
@@ -100,7 +110,7 @@ index 4d0e79119f2ccfaade8b3757a78d61d31e668086..10b3ab959e8aecc1a2a51ed1d103129e
  }
  
  bool PageActionView::IsBubbleShowing() const {
-@@ -943,6 +970,9 @@ void PageActionView::MaybeRecordCollapsedMetrics(int label_width) {
+@@ -943,6 +973,9 @@ void PageActionView::MaybeRecordCollapsedMetrics(int label_width) {
  }
  
  SkColor PageActionView::GetBackgroundColor() const {
@@ -110,7 +120,7 @@ index 4d0e79119f2ccfaade8b3757a78d61d31e668086..10b3ab959e8aecc1a2a51ed1d103129e
    if (observation_.IsObserving() &&
        observation_.GetSource()->GetOverrideBackgroundColorId().has_value() &&
        GetColorProvider()) {
-@@ -953,6 +983,9 @@ SkColor PageActionView::GetBackgroundColor() const {
+@@ -953,6 +986,9 @@ SkColor PageActionView::GetBackgroundColor() const {
  }
  
  SkColor PageActionView::GetForegroundColor() const {
