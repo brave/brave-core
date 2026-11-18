@@ -29,6 +29,7 @@
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
@@ -521,10 +522,19 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
         base::StrCat({" ", ai_chat::features::kRichSearchWidgetsOrigin.Get(),
                       "/embed.html"});
   }
+  // `::workspace[path]{inline}` directives embed the workspace's file viewer
+  // in the conversation. Workspaces live at
+  // chrome-untrusted://<uuid>.leo-workspace origins.
+  std::string workspace_url;
+  if (base::FeatureList::IsEnabled(ai_chat::features::kAIChatWorkspaceTools)) {
+    workspace_url = base::StrCat({" ", content::kChromeUIUntrustedScheme,
+                                  url::kStandardSchemeSeparator, "*.",
+                                  ai_chat::kAIChatLeoWorkspaceUIHost});
+  }
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
       base::StrCat({"frame-src ", kAIChatChartDisplayUIURL,
-                    rich_search_widgets_url, ";"}));
+                    rich_search_widgets_url, workspace_url, ";"}));
 
   // If the feature is not enabled don't specify an origin for loading the rich
   // search widgets.

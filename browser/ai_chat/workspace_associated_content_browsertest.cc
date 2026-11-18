@@ -28,6 +28,7 @@
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "build/build_config.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -551,6 +552,60 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
   ASSERT_TRUE(FrameLoads(first_contents, ViewerURL(first->page_url())));
   EXPECT_FALSE(FrameLoads(first_contents, ViewerURL(second->page_url())));
   EXPECT_FALSE(first_contents->IsCrashed());
+}
+
+// `::workspace[path]{inline}` embeds a workspace file in the conversation, so
+// the conversation frame (itself framed by the AI Chat page) must be able to
+// frame the workspace page, which in turn frames its viewer.
+IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
+                       ConversationFrameCanFrameWorkspaceFile) {
+  auto* content = CreateContent(CreateWorkspaceFolder());
+  // Let the hidden page save its handle before another copy of it loads.
+  ASSERT_TRUE(WaitForStoredHandle(content));
+
+  // Appends an iframe for `url` to `parent` and returns it once it's loaded.
+  auto add_frame = [](content::RenderFrameHost* parent,
+                      const GURL& url) -> content::RenderFrameHost* {
+    EXPECT_TRUE(content::ExecJs(parent, content::JsReplace(R"JS(
+        new Promise(resolve => {
+          const frame = document.createElement('iframe');
+          frame.addEventListener('load', () => resolve());
+          frame.src = $1;
+          document.body.appendChild(frame);
+        })
+    )JS",
+                                                           url)));
+    return content::ChildFrameAt(parent, 0);
+  };
+
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(NavigateActiveTabAndGetSuccess(GURL(kAIChatUIURL)));
+
+  const GURL conversation_url(kAIChatUntrustedConversationUIURL);
+  content::RenderFrameHost* conversation =
+      add_frame(web_contents->GetPrimaryMainFrame(), conversation_url);
+  ASSERT_TRUE(conversation);
+  ASSERT_EQ(conversation_url, conversation->GetLastCommittedURL());
+  ASSERT_FALSE(conversation->IsErrorDocument());
+
+  const std::optional<GURL> file_url =
+      WorkspaceAssociatedContent::GetFileUrl(content->url(), "hello.txt");
+  ASSERT_TRUE(file_url);
+  content::RenderFrameHost* workspace = add_frame(conversation, *file_url);
+  ASSERT_TRUE(workspace);
+  EXPECT_EQ(*file_url, workspace->GetLastCommittedURL());
+  EXPECT_FALSE(workspace->IsErrorDocument());
+
+  // The workspace page frames its viewer itself on seeing #file=.
+  const GURL viewer_url = ViewerURL(content->page_url());
+  content::RenderFrameHost* viewer = nullptr;
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    viewer = content::ChildFrameAt(workspace, 0);
+    return viewer &&
+           viewer->GetLastCommittedOrigin() == url::Origin::Create(viewer_url);
+  }));
+  EXPECT_FALSE(viewer->IsErrorDocument());
 }
 
 // Opting into subdomains hands the workspace config every otherwise unclaimed
