@@ -4,18 +4,57 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-"""Build the shared checkout image from a brave-core branch or tag.
+"""Build a reusable Linux x64 Brave checkout image from a branch or tag.
 
-Run ``python3 build_brave_image.py [REF] [--docker EXECUTABLE] [--git-cache-path PATH]`` on the host
-(default: master). --git-cache-path copies an existing depot_tools Git cache
-into a new image container before normal initialization. Retained containers
-resume with their existing cache.
-Sync all target operating systems, then compile macOS, Windows, Linux and Android
-before publishing the image. Image tags and recorded refs use the selected Git
-tag, or the checked-out commit SHA for a branch. Failed builds retain their
-container for diagnosis.
-In agent mode, output is written to a temporary log file in the current working
-directory; the log path and final exit code remain visible.
+Requirements:
+  Run on a Linux or macOS host with Python 3.11 or newer, Docker with BuildKit,
+  and access to Brave's remote build service. The Docker daemon needs an x64
+  Linux environment with /dev/fuse. The Windows SDK hook requires SYS_ADMIN
+  and an unconfined AppArmor profile. Platform SDKs are fetched by the hooks.
+  Keep this script, Dockerfile, and .dockerignore together when copying them.
+
+Builds and image tags:
+  REF selects an exact brave-core branch or tag (default: master).
+  Branch images are tagged brave-linux-build:<commit-sha>; tag images are
+  tagged brave-linux-build:<tag>. Initialization covers all target operating
+  systems, installs Chromium build dependencies, and requests Component builds
+  for macOS x64, Windows x64, Linux x64, and Android arm64. Android falls back
+  to Static because component builds are unsupported there. The image is
+  committed only after all four builds succeed.
+
+Credentials and Docker selection:
+  Provide readable mTLS credentials at ~/.reclient/engflow.crt and
+  ~/.reclient/engflow.key, or override them with BRAVE_RBE_CERT and
+  BRAVE_RBE_KEY. Credentials are mounted read-only under /run/brave-rbe at
+  runtime and excluded from the committed image. Host paths are resolved from
+  the current user's home directory or environment overrides. The build
+  context allows only the Dockerfile; keep credential contents out of this
+  directory and the optional Git cache.
+  Docker defaults to the executable on PATH; --docker selects another one.
+  DOCKER_HOST and DOCKER_CONTEXT select the daemon using Docker's precedence.
+  Credential files and any Git cache must be accessible to that daemon.
+  --git-cache-path seeds a new image from an existing depot_tools Git cache;
+  retained containers keep their current cache.
+
+Failure recovery and output:
+  Failed builds retain their container for inspection. Rerunning the same REF
+  resumes at its original commit, even if the branch has advanced. Successful
+  builds remove only that image-build container.
+  Agent runs save output to brave-image-*.log in the current working directory
+  and print the log path and exit status. Interactive runs stream output.
+
+Container layout and further builds:
+  builder is an image-local user with the host's UID/GID. The checkout is at
+  /workspace/src/brave and caches are under /home/builder/.cache/brave.
+  Create a container from the resulting image with the same credential mounts,
+  then run /usr/local/bin/brave-build from /workspace/src/brave; arguments are
+  forwarded to pnpm run build. /usr/local/bin/brave-linux-build --sync
+  synchronizes the checkout. The default command keeps the container running.
+
+Examples:
+  python3 build_brave_image.py
+  python3 build_brave_image.py v1.101.39
+  python3 build_brave_image.py master --git-cache-path ~/.cache/brave/git
 """
 
 import argparse
@@ -435,9 +474,13 @@ test "$(git rev-parse HEAD)" = "$commit"
 
 def parse_args():
     """Parse image-build options before agent logging is configured."""
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
     parser.add_argument(
         "ref",
+        metavar="REF",
         nargs="?",
         default="master",
         help="Brave branch or tag (default: master)",

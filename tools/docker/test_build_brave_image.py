@@ -346,7 +346,20 @@ sys.exit(builder.main())
             capture_output=True,
             check=True,
         )
-        self.assertIn("--git-cache-path", result.stdout)
+        for topic in (
+            "Requirements:",
+            "Builds and image tags:",
+            "Credentials and Docker selection:",
+            "Failure recovery and output:",
+            "Container layout and further builds:",
+            "Examples:",
+            "BRAVE_RBE_CERT",
+            "BRAVE_RBE_KEY",
+            "DOCKER_HOST",
+            "DOCKER_CONTEXT",
+            "--git-cache-path",
+        ):
+            self.assertIn(topic, result.stdout)
         self.assertEqual(list(self.cwd.iterdir()), [])
 
 
