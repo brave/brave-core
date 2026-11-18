@@ -8,6 +8,7 @@ import("//testing/test.gni")
 
 source_set("brave_shields") {
   sources = [
+    "ad_block_popup_throttle_delegate.h",
     "ad_block_pref_service_factory.h",
     "ad_block_subscription_download_manager_getter.h",
     "brave_shields_settings_service_factory.h",
@@ -38,6 +39,7 @@ source_set("brave_shields") {
 
 source_set("brave_shields_impl") {
   sources = [
+    "ad_block_popup_throttle_delegate.cc",
     "ad_block_pref_service_factory.cc",
     "ad_block_subscription_download_manager_getter.cc",
     "brave_shields_settings_service_factory.cc",
@@ -63,7 +65,9 @@ source_set("brave_shields_impl") {
     "//chrome/browser/net",
     "//chrome/browser/policy",
     "//chrome/browser/profiles",
+    "//chrome/browser/ui/blocked_content",
     "//chrome/common:mojo_bindings",
+    "//components/blocked_content",
     "//components/content_settings/core/browser:cookie_settings",
     "//components/favicon/content",
     "//components/prefs",
@@ -73,6 +77,7 @@ source_set("brave_shields_impl") {
     "//extensions/buildflags",
     "//net",
     "//net:net_features",
+    "//third_party/blink/public/common",
   ]
 
   deps += [ "//brave/components/containers/buildflags" ]

@@ -1318,6 +1318,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
                                  kBraveAdblockMobileNotificationsListDefault), \
       },                                                                       \
       {                                                                        \
+          "brave-adblock-popup-blocking",                                      \
+          "Enable support for popup rules",                                    \
+          "Closes windows that a page opens if their URL matches a $popup "    \
+          "rule from a filter list",                                           \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kBraveAdblockPopupBlocking),            \
+      },                                                                       \
+      {                                                                        \
           "brave-adblock-procedural-filtering",                                \
           "Enable procedural filtering",                                       \
           "Enable support for procedural cosmetic filtering",                  \
