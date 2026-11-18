@@ -95,6 +95,12 @@ class BraveRequestInfo {
   const std::optional<url::Origin>& top_frame_origin() const;
   void set_top_frame_origin(std::optional<url::Origin> value);
 
+  // Whether the request's isolation info is for a main frame navigation. This
+  // is used instead of `resource_type()`, which is also `kMainFrame` for
+  // navigation requests that a service worker fetches itself.
+  bool is_main_frame_request() const;
+  void set_is_main_frame_request(bool value);
+
   // The origin to treat as first party when applying Shields rules to this
   // request. This is the top-level site that Shields settings are looked up
   // for. Main frames use the request URL's origin, unless it is opaque, in
@@ -241,6 +247,7 @@ class BraveRequestInfo {
   GURL tab_url_;
   std::optional<url::Origin> request_initiator_;
   std::optional<url::Origin> top_frame_origin_;
+  bool is_main_frame_request_ = false;
 
   bool internal_redirect_ = false;
   GURL redirect_source_;

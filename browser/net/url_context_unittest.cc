@@ -22,10 +22,13 @@
 namespace brave {
 namespace {
 
-net::IsolationInfo MakeIsolationInfo(const url::Origin& top_frame_origin) {
+net::IsolationInfo MakeIsolationInfo(
+    const url::Origin& top_frame_origin,
+    net::IsolationInfo::RequestType request_type =
+        net::IsolationInfo::RequestType::kOther) {
   return net::IsolationInfo::Create(
-      net::IsolationInfo::RequestType::kOther, top_frame_origin,
-      top_frame_origin, net::SiteForCookies::FromOrigin(top_frame_origin));
+      request_type, top_frame_origin, top_frame_origin,
+      net::SiteForCookies::FromOrigin(top_frame_origin));
 }
 
 class BraveRequestInfoTest : public testing::Test {
@@ -178,6 +181,53 @@ TEST_F(BraveRequestInfoTest, WorkerWebSocketFallsBackToInitiatorTabOrigin) {
   EXPECT_EQ(initiator, *ctx->request_initiator());
   EXPECT_EQ(initiator.GetURL(), ctx->tab_origin());
   EXPECT_FALSE(ctx->top_frame_origin());
+  // WebSocket requests have the default resource type, which is `kMainFrame`,
+  // but they are not main frame requests.
+  EXPECT_FALSE(ctx->is_main_frame_request());
+  EXPECT_EQ(initiator, ctx->first_party_origin_for_settings());
+}
+
+TEST_F(BraveRequestInfoTest, MainFrameNavigationIsMainFrameRequest) {
+  TestingProfile profile;
+  const GURL url("https://b.com/page");
+  network::ResourceRequest request;
+  request.url = url;
+  request.request_initiator = url::Origin::Create(GURL("https://a.com"));
+  request.resource_type =
+      static_cast<int>(blink::mojom::ResourceType::kMainFrame);
+  request.trusted_params = network::ResourceRequest::TrustedParams();
+  request.trusted_params->isolation_info = MakeIsolationInfo(
+      url::Origin::Create(url), net::IsolationInfo::RequestType::kMainFrame);
+
+  auto ctx = BraveRequestInfo::MakeCTX(
+      request, content::GlobalRenderFrameHostToken(), 1, &profile,
+      /*old_ctx=*/nullptr);
+
+  EXPECT_TRUE(ctx->is_main_frame_request());
+  EXPECT_EQ(url::Origin::Create(url), ctx->first_party_origin_for_settings());
+}
+
+// A service worker fetching a navigation request keeps the `kMainFrame`
+// resource type, but uses the service worker's isolation info.
+TEST_F(BraveRequestInfoTest,
+       ServiceWorkerNavigationFetchIsNotMainFrameRequest) {
+  TestingProfile profile;
+  const url::Origin a_com = url::Origin::Create(GURL("https://a.com"));
+  network::ResourceRequest request;
+  request.url = GURL("https://b.com/page");
+  request.request_initiator = a_com;
+  request.resource_type =
+      static_cast<int>(blink::mojom::ResourceType::kMainFrame);
+
+  auto ctx = BraveRequestInfo::MakeCTX(
+      request, content::GlobalRenderFrameHostToken(), 1, &profile,
+      /*old_ctx=*/nullptr, /*original_request_initiator=*/std::nullopt,
+      content::ContentBrowserClient::URLLoaderFactoryType::
+          kServiceWorkerSubResource,
+      a_com, MakeIsolationInfo(a_com));
+
+  EXPECT_FALSE(ctx->is_main_frame_request());
+  EXPECT_EQ(a_com, ctx->first_party_origin_for_settings());
 }
 
 // Opaque top frame origins are kept as is, so their precursor is not lost.
@@ -223,7 +273,7 @@ TEST_F(BraveRequestInfoTest, FirstPartyOriginForSettingsMainFrame) {
   const url::Origin initiator =
       url::Origin::Create(GURL("https://initiator.example"));
   BraveRequestInfo ctx(url);
-  ctx.set_resource_type(blink::mojom::ResourceType::kMainFrame);
+  ctx.set_is_main_frame_request(true);
 
   EXPECT_EQ(url::Origin::Create(url), ctx.first_party_origin_for_settings());
 
@@ -244,7 +294,7 @@ TEST_F(BraveRequestInfoTest,
   const url::Origin initiator =
       url::Origin::Create(GURL("https://initiator.example"));
   BraveRequestInfo ctx(GURL("data:text/html,hello"));
-  ctx.set_resource_type(blink::mojom::ResourceType::kMainFrame);
+  ctx.set_is_main_frame_request(true);
   ctx.set_request_initiator(initiator);
 
   EXPECT_EQ(initiator, ctx.first_party_origin_for_settings());
@@ -308,7 +358,7 @@ TEST_F(BraveRequestInfoTest, FirstPartyOriginForSettingsSandboxedInitiator) {
     // A main frame with an opaque request URL origin also uses the initiator's
     // precursor.
     BraveRequestInfo ctx(GURL("data:text/html,hello"));
-    ctx.set_resource_type(blink::mojom::ResourceType::kMainFrame);
+    ctx.set_is_main_frame_request(true);
     ctx.set_request_initiator(sandboxed);
     EXPECT_EQ(a_com, ctx.first_party_origin_for_settings());
   }
@@ -316,7 +366,7 @@ TEST_F(BraveRequestInfoTest, FirstPartyOriginForSettingsSandboxedInitiator) {
   {
     // A main frame with a regular request URL still ignores the initiator.
     BraveRequestInfo ctx(GURL("https://b.com/page"));
-    ctx.set_resource_type(blink::mojom::ResourceType::kMainFrame);
+    ctx.set_is_main_frame_request(true);
     ctx.set_request_initiator(sandboxed);
     EXPECT_EQ(url::Origin::Create(GURL("https://b.com")),
               ctx.first_party_origin_for_settings());
@@ -335,7 +385,7 @@ TEST_F(BraveRequestInfoTest,
 
   {
     BraveRequestInfo ctx(GURL("data:text/html,hello"));
-    ctx.set_resource_type(blink::mojom::ResourceType::kMainFrame);
+    ctx.set_is_main_frame_request(true);
     EXPECT_TRUE(ctx.first_party_origin_for_settings().opaque());
   }
 }
