@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 
+#include <cmath>
 #include <memory>
 #include <optional>
 #include <tuple>
@@ -25,6 +26,7 @@
 #include "brave/components/brave_wallet/common/eth_requests.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/json_rpc_requests.h"
+#include "brave/components/brave_wallet/common/string_utils.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/gurl.h"
 
@@ -136,6 +138,30 @@ mojom::EthSignTypedDataMetaPtr ParseCowSwapOrder(const base::DictValue& value) {
 
   return mojom::EthSignTypedDataMeta::NewCowSwapOrder(
       std::move(cow_swap_order));
+}
+
+std::optional<uint256_t> ParseChainId(const base::DictValue& domain) {
+  const base::Value* chain_id_value = domain.Find("chainId");
+  if (!chain_id_value) {
+    return std::nullopt;
+  }
+
+  if (auto chain_id = chain_id_value->GetIfDouble()) {
+    if (std::trunc(*chain_id) != *chain_id || *chain_id < 0 ||
+        *chain_id > static_cast<double>(kMaxSafeIntegerUint64)) {
+      return std::nullopt;
+    }
+    return uint256_t(static_cast<uint64_t>(*chain_id));
+  }
+
+  if (auto* chain_id_str = chain_id_value->GetIfString()) {
+    if (auto chain_id = HexValueToUint256(*chain_id_str)) {
+      return chain_id;
+    }
+    return Base10ValueToUint256(*chain_id_str);
+  }
+
+  return std::nullopt;
 }
 
 }  // namespace
@@ -486,9 +512,8 @@ mojom::EthSignTypedDataPtr ParseEthSignTypedDataParams(
 
   result->primary_type = *primary_type;
 
-  auto chain_id = domain->FindDouble("chainId");
-  if (chain_id) {
-    result->chain_id = Uint256ValueToHex(uint256_t(uint64_t(*chain_id)));
+  if (auto chain_id = ParseChainId(*domain)) {
+    result->chain_id = Uint256ValueToHex(*chain_id);
   }
 
   DCHECK(!result->domain_hash.empty());

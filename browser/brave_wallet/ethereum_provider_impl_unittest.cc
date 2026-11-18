@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/ethereum_provider_impl.h"
 
 #include <algorithm>
+#include <array>
 #include <memory>
 #include <optional>
 #include <string_view>
@@ -144,6 +145,46 @@ std::vector<uint8_t> DecodeHexHash(const std::string& hash_hex) {
   base::HexStringToBytes(hash_hex, &hash);
   return hash;
 }
+
+// The canonical "Ether Mail" EIP-712 payload. `domain.chainId` is replaced by
+// the chain id under test.
+constexpr char kSignTypedDataV4Json[] = R"({
+  "types": {
+    "EIP712Domain": [
+      {"name": "name", "type": "string"},
+      {"name": "version", "type": "string"},
+      {"name": "chainId", "type": "uint256"},
+      {"name": "verifyingContract", "type": "address"}
+    ],
+    "Mail": [
+      {"name": "from", "type": "Person"},
+      {"name": "to", "type": "Person"},
+      {"name": "contents", "type": "string"}
+    ],
+    "Person": [
+      {"name": "name", "type": "string"},
+      {"name": "wallet", "type": "address"}
+    ]
+  },
+  "primaryType": "Mail",
+  "domain": {
+    "name": "Ether Mail",
+    "version": "1",
+    "chainId": 1,
+    "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"
+  },
+  "message": {
+    "from": {
+      "name": "Cow",
+      "wallet": "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826"
+    },
+    "to": {
+      "name": "Bob",
+      "wallet": "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"
+    },
+    "contents": "Hello, Bob!"
+  }
+})";
 
 class TestEventsListener : public brave_wallet::mojom::EventsListener {
  public:
@@ -670,6 +711,57 @@ class EthereumProviderImplUnitTest : public testing::Test {
               run_loop.Quit();
             }),
         base::Value());
+    if (user_approved) {
+      // Wait for EthereumProviderImpl::ContinueSignMessage
+      ASSERT_TRUE(
+          WaitForSignMessageRequestOrResponse(previous_size, responded));
+      brave_wallet_service_->NotifySignMessageRequestProcessed(
+          *user_approved, brave_wallet_service_->sign_message_id_ - 1, nullptr,
+          std::nullopt);
+    }
+    run_loop.Run();
+  }
+
+  void SignTypedMessageV4Request(std::optional<bool> user_approved,
+                                 const std::string& address,
+                                 base::Value chain_id,
+                                 std::string* signature_out,
+                                 mojom::ProviderError* error_out,
+                                 std::string* error_message_out) {
+    if (!signature_out || !error_out || !error_message_out) {
+      return;
+    }
+
+    auto typed_data = ParseJsonDict(kSignTypedDataV4Json);
+    typed_data.SetByDottedPath("domain.chainId", std::move(chain_id));
+
+    base::ListValue params;
+    params.Append(address);
+    params.Append(base::Value(std::move(typed_data)));
+
+    base::DictValue request;
+    request.Set("id", "1");
+    request.Set("jsonrpc", "2.0");
+    request.Set("method", "eth_signTypedData_v4");
+    request.Set("params", std::move(params));
+
+    bool responded = false;
+    const size_t previous_size = GetSignMessageQueueSize();
+    base::RunLoop run_loop;
+    provider()->Request(
+        base::Value(std::move(request)),
+        base::BindLambdaForTesting(
+            [&](mojom::EthereumProviderResponsePtr response) {
+              signature_out->clear();
+              if (response->formed_response.type() ==
+                  base::Value::Type::STRING) {
+                *signature_out = response->formed_response.GetString();
+              }
+              GetErrorCodeMessage(std::move(response->formed_response),
+                                  error_out, error_message_out);
+              responded = true;
+              run_loop.Quit();
+            }));
     if (user_approved) {
       // Wait for EthereumProviderImpl::ContinueSignMessage
       ASSERT_TRUE(
@@ -1948,6 +2040,59 @@ TEST_F(EthereumProviderImplUnitTest, SignTypedMessage) {
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kUnauthorized);
   EXPECT_EQ(error_message, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
+}
+
+TEST_F(EthereumProviderImplUnitTest, SignTypedMessageChainIdForms) {
+  // Prove that our code can handle EIP-712 `chainId`s passed as numbers,
+  // strings and hex strings, and that this chain is successfully used to reject
+  // network mismatches during signing.
+
+  ASSERT_EQ(
+      json_rpc_service()->GetChainIdSync(mojom::CoinType::ETH, std::nullopt),
+      "0x1");
+  CreateWallet();
+  auto account_0 = GetAccountUtils().EnsureEthAccount(0);
+  GURL url("https://brave.com");
+  Navigate(url);
+  AddEthereumPermission(account_0->account_id);
+
+  std::string signature;
+  mojom::ProviderError error = mojom::ProviderError::kUnknown;
+  std::string error_message;
+
+  // Each of these denotes chain 0x1, which is the active network, so the
+  // request has to get past the chain id check and be signed.
+  std::array<base::Value, 4> matching = {base::Value(1), base::Value("0x1"),
+                                         base::Value("0x01"), base::Value("1")};
+  for (auto& chain_id : matching) {
+    SCOPED_TRACE(chain_id.DebugString());
+    SignTypedMessageV4Request(true, account_0->address, std::move(chain_id),
+                              &signature, &error, &error_message);
+    EXPECT_FALSE(signature.empty());
+    EXPECT_EQ(error, mojom::ProviderError::kSuccess);
+    EXPECT_TRUE(error_message.empty());
+  }
+
+  // Each of these denotes Sepolia, which is not the active network, so the
+  // request has to be rejected. The error carries the normalized chain id
+  // regardless of the form it arrived in.
+  std::array<base::Value, 4> mismatching = {
+      base::Value(11155111), base::Value("0xaa36a7"), base::Value("0x00aa36a7"),
+      base::Value("11155111")};
+  for (auto& chain_id : mismatching) {
+    SCOPED_TRACE(chain_id.DebugString());
+    // nullopt: the request is rejected before it is ever queued for approval.
+    SignTypedMessageV4Request(std::nullopt, account_0->address,
+                              std::move(chain_id), &signature, &error,
+                              &error_message);
+    EXPECT_TRUE(signature.empty());
+    EXPECT_EQ(error, mojom::ProviderError::kInternalError);
+    EXPECT_EQ(error_message,
+              l10n_util::GetStringFUTF8(
+                  IDS_BRAVE_WALLET_SIGN_MESSAGE_CHAIN_ID_MISMATCH,
+                  base::ASCIIToUTF16(std::string(mojom::kSepoliaChainId))));
+    EXPECT_THAT(GetPendingSignMessageRequests(), IsEmpty());
+  }
 }
 
 TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
