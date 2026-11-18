@@ -174,5 +174,46 @@ TEST_F(BraveRequestInfoTest, WorkerWebSocketFallsBackToInitiatorTabOrigin) {
   EXPECT_EQ(initiator.GetURL(), ctx->tab_origin());
 }
 
+TEST_F(BraveRequestInfoTest, FirstPartyOriginForShieldsMainFrame) {
+  const GURL url("https://example.com/page");
+  const url::Origin initiator =
+      url::Origin::Create(GURL("https://initiator.example"));
+  BraveRequestInfo ctx(url);
+  ctx.set_resource_type(blink::mojom::ResourceType::kMainFrame);
+
+  EXPECT_EQ(url::Origin::Create(url), ctx.first_party_origin_for_shields());
+
+  // The initiator is ignored, even if it is opaque.
+  ctx.set_request_initiator(initiator);
+  EXPECT_EQ(url::Origin::Create(url), ctx.first_party_origin_for_shields());
+  ctx.set_request_initiator(url::Origin());
+  EXPECT_EQ(url::Origin::Create(url), ctx.first_party_origin_for_shields());
+}
+
+TEST_F(BraveRequestInfoTest,
+       FirstPartyOriginForShieldsOpaqueMainFrameUsesInitiator) {
+  const url::Origin initiator =
+      url::Origin::Create(GURL("https://initiator.example"));
+  BraveRequestInfo ctx(GURL("data:text/html,hello"));
+  ctx.set_resource_type(blink::mojom::ResourceType::kMainFrame);
+  ctx.set_request_initiator(initiator);
+
+  EXPECT_EQ(initiator, ctx.first_party_origin_for_shields());
+}
+
+TEST_F(BraveRequestInfoTest, FirstPartyOriginForShieldsSubFrameUsesInitiator) {
+  const GURL url("https://example.com/frame");
+  const url::Origin initiator =
+      url::Origin::Create(GURL("https://initiator.example"));
+  BraveRequestInfo ctx(url);
+  ctx.set_resource_type(blink::mojom::ResourceType::kSubFrame);
+
+  // Falls back to the request URL without an initiator.
+  EXPECT_EQ(url::Origin::Create(url), ctx.first_party_origin_for_shields());
+
+  ctx.set_request_initiator(initiator);
+  EXPECT_EQ(initiator, ctx.first_party_origin_for_shields());
+}
+
 }  // namespace
 }  // namespace brave
