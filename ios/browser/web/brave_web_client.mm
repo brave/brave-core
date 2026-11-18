@@ -307,6 +307,23 @@ bool BraveWebClient::ShouldBlockUniversalLinks(web::WebState* webState,
   return false;
 }
 
+NSURLRequest* BraveWebClient::GetAlternateRequest(web::WebState* webState,
+                                                  NSURLRequest* request) {
+  BraveWebView* webView = [BraveWebView braveWebViewForWebState:webState];
+  if (!webView) {
+    return nil;
+  }
+  id<BraveWebViewNavigationDelegate> navigationDelegate =
+      webView.navigationDelegate;
+
+  if ([navigationDelegate
+          respondsToSelector:@selector(webView:alternateRequestForRequest:)]) {
+    return [navigationDelegate webView:webView
+            alternateRequestForRequest:request];
+  }
+  return nil;
+}
+
 bool BraveWebClient::ShouldBlockUniversalLinksForURL(
     web::BrowserState* browser_state,
     const GURL& url) const {

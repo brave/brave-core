@@ -79,6 +79,10 @@ CWV_EXPORT
 - (nullable NSString*)webView:(CWVWebView*)webView
     userAgentForUserAgentType:(CWVUserAgentType)userAgentType
                       request:(NSURLRequest*)request;
+/// Asks the delegate for a replacement request to use for a main frame
+/// navigation's main resource load. Only used on iOS 27+.
+- (nullable NSURLRequest*)webView:(CWVWebView*)webView
+       alternateRequestForRequest:(NSURLRequest*)request;
 /// Notifies the delegate that basic authentication is required to access the
 /// requested resource
 - (void)webView:(CWVWebView*)webView

@@ -346,8 +346,31 @@ extension BrowserViewController {
       return modifiedRequest
     }
 
+    // On iOS 27+ this is applied in place via `WKWebpagePreferences.alternateRequest`
+    if #available(iOS 27.0, *) { return nil }
+    return debouncedOrStrippedRequest(from: request, in: tab, isAdBlockEnabled: isAdBlockEnabled)
+  }
+
+  public func tab(_ tab: some TabState, alternateRequestFor request: URLRequest) -> URLRequest? {
+    // Only called for main frame navigations
+    guard let mainDocumentURL = request.mainDocumentURL else { return nil }
+    let isAdBlockEnabled =
+      tab.braveShieldsHelper?.shieldLevel(
+        for: mainDocumentURL,
+        considerAllShieldsOption: true
+      ).isEnabled ?? true
+    return debouncedOrStrippedRequest(from: request, in: tab, isAdBlockEnabled: isAdBlockEnabled)
+  }
+
+  /// Get a possible redirect request from debouncing or query param stripping
+  private func debouncedOrStrippedRequest(
+    from request: URLRequest,
+    in tab: some TabState,
+    isAdBlockEnabled: Bool
+  ) -> URLRequest? {
     // Only if shields are enabled
-    guard requestURL.isWebPage(includeDataURIs: false),
+    guard let requestURL = request.url,
+      requestURL.isWebPage(includeDataURIs: false),
       isAdBlockEnabled
     else { return nil }
 
