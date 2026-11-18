@@ -74,7 +74,7 @@ async function copyImage(card: ShareCard) {
 }
 
 export function ShareSlide({ stats, nav, card }: SlideProps) {
-  const [imageCopied, setImageCopied] = React.useState(false)
+  const [copyFailed, setCopyFailed] = React.useState(false)
   // On the wide card the post buttons sit beside the image, off the glass, so
   // they're filled instead of outlined.
   const landscape = useMediaQuery(LANDSCAPE_QUERY)
@@ -94,9 +94,7 @@ export function ShareSlide({ stats, nav, card }: SlideProps) {
   // Copy first: the post opens in a new tab, and the clipboard can only be
   // written while this page has focus.
   const share = async (url: string) => {
-    if (card && (await copyImage(card))) {
-      setImageCopied(true)
-    }
+    setCopyFailed(!card || !(await copyImage(card)))
     openShareIntent(url)
   }
 
@@ -169,14 +167,14 @@ export function ShareSlide({ stats, nav, card }: SlideProps) {
             />
             {getLocale(S.BRAVE_RECAP_POST_ON_REDDIT)}
           </Button>
-          {imageCopied && (
-            <p
-              className='share-hint'
-              role='status'
-            >
-              {getLocale(S.BRAVE_RECAP_IMAGE_COPIED)}
-            </p>
-          )}
+          <p
+            className='share-hint'
+            role='status'
+          >
+            {getLocale(
+              copyFailed ? S.BRAVE_RECAP_COPY_FAILED : S.BRAVE_RECAP_SHARE_HINT,
+            )}
+          </p>
         </div>
       </div>
     </SlideLayout>

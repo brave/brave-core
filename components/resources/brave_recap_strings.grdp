@@ -51,8 +51,11 @@
   <message name="IDS_BRAVE_RECAP_POST_ON_REDDIT" desc="Button to share on Reddit" formatter_data="webui=BraveRecap">
     Post on Reddit
   </message>
-  <message name="IDS_BRAVE_RECAP_IMAGE_COPIED" desc="Shown after the share image is copied to the clipboard and X or Reddit opens in a new tab, since those sites can't receive the image directly" formatter_data="webui=BraveRecap">
-    Image copied. Paste it into your post to include it.
+  <message name="IDS_BRAVE_RECAP_SHARE_HINT" desc="Shown under the buttons that post on X and Reddit. Posting copies the share image to the clipboard, since those sites can't receive an image through a share link." formatter_data="webui=BraveRecap">
+    We'll copy your image so you can paste it into your post.
+  </message>
+  <message name="IDS_BRAVE_RECAP_COPY_FAILED" desc="Replaces the hint under the post buttons when the share image couldn't be copied to the clipboard" formatter_data="webui=BraveRecap">
+    Couldn't copy the image. Download it instead.
   </message>
   <message name="IDS_BRAVE_RECAP_SHARE_POST_TEXT" desc="Prefilled social post on X, and the body of the prefilled Reddit post. $1 is a count of ads and trackers, $2 a duration, $3 an amount of data." formatter_data="webui=BraveRecap">
     Brave has blocked <ph name="BLOCKED">$1<ex>184,213</ex></ph> ads and trackers for me, saving <ph name="TIME_SAVED">$2<ex>2.14 days</ex></ph> and <ph name="DATA_SAVED">$3<ex>6.9 GB</ex></ph> of data. Try it:

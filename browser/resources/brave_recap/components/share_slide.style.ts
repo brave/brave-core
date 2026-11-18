@@ -58,6 +58,10 @@ export const style = scoped.css`
     animation-delay: var(--leo-duration-xs);
   }
 
+  .share-actions > :nth-child(3) {
+    animation-delay: calc(2 * var(--leo-duration-xs));
+  }
+
   @keyframes recap-action-in {
     from {
       opacity: 0;
@@ -72,6 +76,10 @@ export const style = scoped.css`
 
     .slide-frame[data-motion='enter'] & .share-actions > :nth-child(2) {
       animation-delay: calc(var(--leo-duration-l) + var(--leo-duration-xs));
+    }
+
+    .slide-frame[data-motion='enter'] & .share-actions > :nth-child(3) {
+      animation-delay: calc(var(--leo-duration-l) + 2 * var(--leo-duration-xs));
     }
   }
 

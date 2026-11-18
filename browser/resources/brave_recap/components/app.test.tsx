@@ -622,18 +622,25 @@ describe('brave recap share slide', () => {
         expect(write.mock.invocationCallOrder[0]).toBeLessThan(
           open.mock.invocationCallOrder[0],
         )
-        expect(screen.getByRole('status')).toHaveTextContent(
-          'BRAVE_RECAP_IMAGE_COPIED',
-        )
       },
     )
+
+    it('says the image will be copied before posting', async () => {
+      renderShareSlide()
+      await screen.findByRole('img')
+      expect(screen.getByRole('status')).toHaveTextContent(
+        'BRAVE_RECAP_SHARE_HINT',
+      )
+    })
 
     it('still opens the post if the image cannot be copied', async () => {
       jest.spyOn(console, 'error').mockImplementation(() => {})
       write.mockRejectedValue(new Error('Document is not focused'))
       await post('BRAVE_RECAP_POST_ON_X')
       expect(open).toHaveBeenCalled()
-      expect(screen.queryByRole('status')).not.toBeInTheDocument()
+      expect(screen.getByRole('status')).toHaveTextContent(
+        'BRAVE_RECAP_COPY_FAILED',
+      )
     })
   })
 })
