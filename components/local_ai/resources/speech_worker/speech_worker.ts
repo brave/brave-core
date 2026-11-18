@@ -55,7 +55,7 @@ class AsrStreamInputAdapter implements AsrStreamInputInterface {
               {
                 transcript: text,
                 isFinal,
-                // TODO: Populate real audio timestamps. brave/brave-browser#58975
+                // TODO(@vandana-rajan https://github.com/brave/brave-browser/issues/58975): Populate real audio timestamps.
                 audioStartTime: undefined,
                 audioEndTime: undefined,
               },
