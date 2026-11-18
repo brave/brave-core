@@ -937,6 +937,10 @@ class TargetsRegistry:
         self._bundles[name] = bundle
         return None
 
+    def all_binaries(self) -> tuple[Binary, ...]:
+        """Every declared binary, by name."""
+        return tuple(self._binaries[name] for name in sorted(self._binaries))
+
     def expand(self, bundle: str | Bundle) -> Targets:
         """A bundle's tests and compile targets, every bundle it includes
         expanded and every mixin applied.
