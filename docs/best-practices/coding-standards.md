@@ -1616,7 +1616,10 @@ use default settings.
 
 A precursor is the non-opaque origin from which an opaque origin was derived. If
 one opaque origin is derived from another, it carries forward the same
-precursor, if there is one.
+precursor, if there is one. Retrieve it with
+`url::Origin::GetTupleOrPrecursorTupleIfOpaque()`, which returns the origin’s
+own tuple when it is non-opaque. The returned `url::SchemeHostPort` is invalid
+when there is no precursor.
 
 A Shields settings origin is used only to choose settings. It MUST NOT change
 the document's security origin, and it MUST NOT be used to grant access or
