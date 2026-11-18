@@ -16,6 +16,8 @@ import {
   indentWithTab,
 } from '@codemirror/commands'
 
+import { adblockFilterExtensions } from './adblock_language'
+
 // Apply default <textarea> styling
 const theme = EditorView.theme({
   '&': {
@@ -92,6 +94,12 @@ class BraveCodeEditor extends HTMLElement {
         display: block;
         width: 100%;
         height: 100%;
+        --brave-code-comment-color: #5f6368;
+      }
+      @media (prefers-color-scheme: dark) {
+        :host {
+          --brave-code-comment-color: #9aa0a6;
+        }
       }
       :host([readonly]) .cm-editor {
         opacity: .5;
@@ -110,6 +118,7 @@ class BraveCodeEditor extends HTMLElement {
           keymap.of([indentWithTab, ...defaultKeymap, ...historyKeymap]),
           EditorView.lineWrapping,
           EditorView.contentAttributes.of({ spellcheck: 'false' }),
+          ...adblockFilterExtensions,
           theme,
           EditorView.updateListener.of((update) => {
             if (!update.docChanged) {

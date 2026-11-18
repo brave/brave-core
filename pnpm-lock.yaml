@@ -95,6 +95,9 @@ importers:
       '@ledgerhq/hw-transport-webhid':
         specifier: 6.36.0
         version: 6.36.0
+      '@lezer/highlight':
+        specifier: 1.2.5
+        version: 1.2.5
       '@mozilla/readability':
         specifier: 0.6.0
         version: 0.6.0
