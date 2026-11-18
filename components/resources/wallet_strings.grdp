@@ -1338,4 +1338,9 @@
   <message name="IDS_BRAVE_WALLET_ONBOARDING_WALLET_READY_TITLE" desc="Title on the onboarding screen shown after wallet setup finishes" formatter_data="webui=Wallet">Your wallet is ready</message>
   <message name="IDS_BRAVE_WALLET_ONBOARDING_WALLET_READY_DESCRIPTION" desc="Description on the onboarding screen shown after wallet setup finishes" formatter_data="webui=Wallet">You’re all set. Open the Wallet to start sending, receiving, and paying with Brave.</message>
   <message name="IDS_BRAVE_WALLET_ONBOARDING_OPEN_WALLET_BUTTON" desc="Button on the onboarding success screen that opens the wallet" formatter_data="webui=Wallet">Open wallet</message>
+  <message name="IDS_BRAVE_WALLET_CARD_HUB_GET_STARTED_TITLE" desc="Title on the wallet card hub screen shown before wallet setup" formatter_data="webui=Wallet">Your cards, crypto, and Rewards</message>
+  <message name="IDS_BRAVE_WALLET_CARD_HUB_GET_STARTED_DESCRIPTION" desc="Description on the wallet card hub screen shown before wallet setup" formatter_data="webui=Wallet">Set up your wallet to unlock the Brave Rewards Card. Import saved cards and earn BAT.</message>
+  <message name="IDS_BRAVE_WALLET_CARD_HUB_GET_STARTED_BUTTON" desc="Button on the wallet card hub screen that begins wallet setup" formatter_data="webui=Wallet">Get started</message>
+  <message name="IDS_BRAVE_WALLET_CARD_HUB_GET_STARTED_DURATION" desc="Caption under the wallet card hub get started button estimating setup time" formatter_data="webui=Wallet">Takes about a minute</message>
+  <message name="IDS_BRAVE_WALLET_CARD_HUB_GET_STARTED_SAMPLE_CARD_NUMBER" desc="Sample masked card number on the wallet card hub get started illustration. Do not translate the digits." formatter_data="webui=Wallet">•••• 5028</message>
 </grit-part>
