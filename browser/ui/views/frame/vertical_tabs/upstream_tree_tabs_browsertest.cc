@@ -21,6 +21,7 @@
 #include "brave/browser/ui/views/tabs/tree_tab_view_utils.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -46,6 +47,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/page_transition_types.h"
 #include "ui/events/event.h"
 #include "ui/gfx/animation/animation.h"
@@ -330,8 +332,9 @@ IN_PROC_BROWSER_TEST_F(UpstreamTreeTabsBrowserTest, ToggleButton) {
       GetTabViewAt(0)->tree_toggle_button_for_testing();
   ASSERT_TRUE(button);
   EXPECT_TRUE(button->GetVisible());
-  EXPECT_EQ(u"Collapse tab tree", button->GetTooltipText());
-  EXPECT_EQ(u"Collapse tab tree",
+  EXPECT_EQ(l10n_util::GetStringUTF16(IDS_TREE_TAB_COLLAPSE_BUTTON),
+            button->GetTooltipText());
+  EXPECT_EQ(l10n_util::GetStringUTF16(IDS_TREE_TAB_COLLAPSE_BUTTON),
             button->GetViewAccessibility().GetCachedName());
 
   // The toggle button takes the close button's place.
@@ -342,7 +345,8 @@ IN_PROC_BROWSER_TEST_F(UpstreamTreeTabsBrowserTest, ToggleButton) {
   EXPECT_TRUE(GetTreeTabNodeAt(0).collapsed());
   WaitForViewModelSynced();
   EXPECT_FALSE(GetTabViewAt(1)->GetVisible());
-  EXPECT_EQ(u"Expand tab tree", button->GetTooltipText());
+  EXPECT_EQ(l10n_util::GetStringUTF16(IDS_TREE_TAB_EXPAND_BUTTON),
+            button->GetTooltipText());
 
   // The toggle button stays visible while collapsed, even for an inactive
   // tab.

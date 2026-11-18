@@ -11,6 +11,12 @@ substitutions:
       class_name: TabView
       code: 'bool IsTabMuteIndicatorNotClickable() override;'
 
+  - description: |
+      Include header for collapse/expand button
+    add_include:
+      header:
+        - 'ui/views/controls/button/image_button.h'
+
   - description: |-
       Declare the tree tab collapse/expand button of TabView.
 
@@ -33,4 +39,3 @@ substitutions:
         void MaybeInitTreeToggleButton();
         void OnTreeToggleButtonPressed();
         raw_ptr<views::ImageButton> tree_toggle_button_ = nullptr;
-
