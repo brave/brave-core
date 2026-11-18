@@ -27,20 +27,14 @@
   <message name="IDS_BRAVE_RECAP_BLOCKED_TEXT" desc="Explanation on the ads and trackers blocked slide" formatter_data="webui=BraveRecap">
     Each one wanted to watch, profile or interrupt you, and none of them got to
   </message>
-  <message name="IDS_BRAVE_RECAP_TIME_HEADING" desc="Label under the amount of time saved on the share image, after a number and unit, e.g. '3.6 hours'" formatter_data="webui=BraveRecap">
+  <message name="IDS_BRAVE_RECAP_TIME_HEADING" desc="Label under the amount of time saved, on the time saved slide and the share image. It follows a number and unit, e.g. '3.6 hours'." formatter_data="webui=BraveRecap">
     of waiting saved
-  </message>
-  <message name="IDS_BRAVE_RECAP_TIME_CAPTION" desc="Label under the large number on the time saved slide. $1 is a time unit, e.g. 'hours' or 'minutes'." formatter_data="webui=BraveRecap">
-    <ph name="UNIT">$1<ex>hours</ex></ph> of waiting saved
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_TEXT" desc="Explanation on the time saved slide" formatter_data="webui=BraveRecap">
     Time spent on what you came for, not on what came for you
   </message>
-  <message name="IDS_BRAVE_RECAP_DATA_HEADING" desc="Label under the amount of data saved on the share image, after a number and unit, e.g. '8.83 GB'" formatter_data="webui=BraveRecap">
+  <message name="IDS_BRAVE_RECAP_DATA_HEADING" desc="Label under the amount of data saved, on the data saved slide and the share image. It follows a number and unit, e.g. '8.83 GB'." formatter_data="webui=BraveRecap">
     of data saved
-  </message>
-  <message name="IDS_BRAVE_RECAP_DATA_CAPTION" desc="Label under the large number on the data saved slide. $1 is a data unit, e.g. 'GB' or 'MB'." formatter_data="webui=BraveRecap">
-    <ph name="UNIT">$1<ex>GB</ex></ph> of data saved
   </message>
   <message name="IDS_BRAVE_RECAP_DATA_TEXT" desc="Explanation on the data saved slide" formatter_data="webui=BraveRecap">
     Every ad costs data, and yours went to what you actually wanted

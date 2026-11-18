@@ -16,6 +16,17 @@ export const style = scoped.css`
   }
 
   .big-value {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: baseline;
+  }
+
+  .big-unit {
+    white-space: pre;
+  }
+
+  .big-number {
     display: grid;
     font: var(--leo-font-heading-display1);
     font-weight: 800;
@@ -30,12 +41,12 @@ export const style = scoped.css`
     white-space: nowrap;
   }
 
-  .big-value > * {
+  .big-number > * {
     grid-area: 1 / 1;
   }
 
   /* Invisible, but still read out: it holds the final value. */
-  .big-value .sizer {
+  .big-number .sizer {
     opacity: 0;
   }
 `

@@ -41,14 +41,15 @@ describe('brave recap formatting', () => {
     const final = formatTimeSaved(3.6 * HOUR_MS)
     const counting = formatTimeSaved(30 * MINUTE_MS, 3.6 * HOUR_MS)
     expect(counting.value).toBe('0.5')
-    expect(counting.unit).toBe(final.unit)
+    expect(counting.after).toBe(final.after)
     expect(formatBandwidth(512 * MB, 8 * GB).value).toBe('0.5')
   })
 
-  it('returns a unit separate from the number', () => {
+  it('returns the unit separate from the number', () => {
     const formatted = formatBandwidth(2 * GB)
-    expect(formatted.unit).not.toBe('')
-    expect(formatted.unit).not.toContain('2')
+    expect(formatted.value).toBe('2')
+    expect(formatted.before).toBe('')
+    expect(formatted.after).toMatch(/^\s\S/)
   })
 
   it('keeps the locale order and spacing in the full text', () => {
@@ -59,7 +60,8 @@ describe('brave recap formatting', () => {
     ])
     expect(formatTimeSaved(3 * 24 * 60 * 60 * 1000)).toEqual({
       value: '3',
-      unit: 'siku',
+      before: 'siku\u00a0',
+      after: '',
       text: 'siku\u00a03',
     })
     jest.restoreAllMocks()

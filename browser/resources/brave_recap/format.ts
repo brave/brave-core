@@ -7,22 +7,28 @@
 
 export interface FormattedValue {
   value: string
-  unit: string
-  // Both together, in the locale's own order and spacing.
+  // The unit and spacing on either side of the number, in the locale's order.
+  before: string
+  after: string
   text: string
 }
 
 function splitParts(parts: Intl.NumberFormatPart[]): FormattedValue {
-  let value = ''
-  let unit = ''
-  for (const part of parts) {
-    if (part.type === 'unit') {
-      unit += part.value
-    } else if (part.type !== 'literal') {
-      value += part.value
-    }
+  const join = (from: number, to?: number) =>
+    parts
+      .slice(from, to)
+      .map((part) => part.value)
+      .join('')
+  const isNumber = (part: Intl.NumberFormatPart) =>
+    part.type !== 'unit' && part.type !== 'literal'
+  const first = parts.findIndex(isNumber)
+  const last = parts.findLastIndex(isNumber)
+  return {
+    value: join(first, last + 1),
+    before: join(0, first),
+    after: join(last + 1),
+    text: join(0),
   }
-  return { value, unit, text: parts.map((part) => part.value).join('') }
 }
 
 const numberFormats = new Map<string, Intl.NumberFormat>()

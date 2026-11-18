@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { getLocale, formatLocale } from '$web-common/locale'
+import { getLocale } from '$web-common/locale'
 import { getTimeSavedMs } from '../stats'
 import {
   BLOCKED_COMPARISONS,
@@ -58,20 +58,29 @@ function CountUp(props: { to: number; format: (value: number) => string }) {
 
 // Reserves the final value's width so the number doesn't shift while counting.
 // The final value is what screen readers get; the counting one is hidden.
-function BigValue(props: { to: number; format: (value: number) => string }) {
+function BigValue(props: {
+  to: number
+  format: (value: number) => string
+  before?: string
+  after?: string
+}) {
   const final = props.format(props.to)
   return (
-    <span
-      className='big-value'
-      style={{ '--chars': final.length } as React.CSSProperties}
-    >
-      <span className='sizer'>{final}</span>
-      <span aria-hidden='true'>
-        <CountUp
-          to={props.to}
-          format={props.format}
-        />
+    <span className='big-value'>
+      {props.before && <span className='big-unit'>{props.before}</span>}
+      <span
+        className='big-number'
+        style={{ '--chars': final.length } as React.CSSProperties}
+      >
+        <span className='sizer'>{final}</span>
+        <span aria-hidden='true'>
+          <CountUp
+            to={props.to}
+            format={props.format}
+          />
+        </span>
       </span>
+      {props.after && <span className='big-unit'>{props.after}</span>}
     </span>
   )
 }
@@ -80,6 +89,8 @@ function StatSlide(props: {
   nav: Nav
   to: number
   format: (value: number) => string
+  // The final value's unit, kept with the number so it agrees with it.
+  unit?: { before: string; after: string }
   caption: string
   comparisons: Comparison[]
   finalValue: number
@@ -97,6 +108,8 @@ function StatSlide(props: {
         <BigValue
           to={props.to}
           format={props.format}
+          before={props.unit?.before}
+          after={props.unit?.after}
         />
         {props.caption}
       </h2>
@@ -126,14 +139,14 @@ export function BlockedSlide({ stats, nav }: SlideProps) {
 
 export function TimeSlide({ stats, nav }: SlideProps) {
   const timeSaved = getTimeSavedMs(stats)
-  const final = formatTimeSaved(timeSaved)
   return (
     <StatSlide
       nav={nav}
       to={timeSaved}
       // Keeps the final value's unit while counting.
       format={(value) => formatTimeSaved(value, timeSaved).value}
-      caption={formatLocale(S.BRAVE_RECAP_TIME_CAPTION, { $1: final.unit })}
+      unit={formatTimeSaved(timeSaved)}
+      caption={getLocale(S.BRAVE_RECAP_TIME_HEADING)}
       comparisons={TIME_COMPARISONS}
       finalValue={timeSaved}
       text={getLocale(S.BRAVE_RECAP_TIME_TEXT)}
@@ -143,13 +156,13 @@ export function TimeSlide({ stats, nav }: SlideProps) {
 
 export function DataSlide({ stats, nav }: SlideProps) {
   const bytes = stats.bandwidthSavedBytes
-  const final = formatBandwidth(bytes)
   return (
     <StatSlide
       nav={nav}
       to={bytes}
       format={(value) => formatBandwidth(value, bytes).value}
-      caption={formatLocale(S.BRAVE_RECAP_DATA_CAPTION, { $1: final.unit })}
+      unit={formatBandwidth(bytes)}
+      caption={getLocale(S.BRAVE_RECAP_DATA_HEADING)}
       comparisons={DATA_COMPARISONS}
       finalValue={bytes}
       text={getLocale(S.BRAVE_RECAP_DATA_TEXT)}

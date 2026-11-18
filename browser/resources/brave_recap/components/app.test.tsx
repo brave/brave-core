@@ -123,10 +123,10 @@ describe('brave recap app', () => {
     expect(heading(2)).toHaveTextContent('BRAVE_RECAP_BLOCKED_HEADING')
 
     clickText('BRAVE_RECAP_NEXT')
-    expect(heading(2)).toHaveTextContent('BRAVE_RECAP_TIME_CAPTION')
+    expect(heading(2)).toHaveTextContent('BRAVE_RECAP_TIME_HEADING')
 
     pressKey('ArrowRight')
-    expect(heading(2)).toHaveTextContent('BRAVE_RECAP_DATA_CAPTION')
+    expect(heading(2)).toHaveTextContent('BRAVE_RECAP_DATA_HEADING')
 
     pressKey('ArrowLeft')
     click(screen.getByTestId('recap-back'))
@@ -218,10 +218,21 @@ describe('brave recap app', () => {
   it('reads out the final count while it is counting', () => {
     renderApp(274_184)
     pressKey('ArrowRight')
-    const value = currentFrame().querySelector('.big-value')!
+    const value = currentFrame().querySelector('.big-number')!
     expect(value.querySelector('.sizer')).toHaveTextContent('274,184')
     expect(value.querySelector('.sizer')).not.toHaveAttribute('aria-hidden')
     expect(value.lastElementChild).toHaveAttribute('aria-hidden', 'true')
+  })
+
+  it('keeps the unit with the big number', () => {
+    mockMatchMedia(true)
+    renderApp(1_284_213)
+    pressKey('ArrowRight')
+    pressKey('ArrowRight')
+    expect(heading(2)).toHaveTextContent(
+      /17\.9 hours\s*BRAVE_RECAP_TIME_HEADING$/,
+    )
+    expect(currentFrame().querySelector('.big-unit')).toHaveTextContent('hours')
   })
 
   it('skips the comparison below the first milestone', () => {
@@ -377,7 +388,7 @@ describe('brave recap auto-advance', () => {
   it('advances when the current step finishes', () => {
     renderOnBlocked()
     fireEvent.animationEnd(runningStep()!)
-    expect(heading(2)).toHaveTextContent('BRAVE_RECAP_TIME_CAPTION')
+    expect(heading(2)).toHaveTextContent('BRAVE_RECAP_TIME_HEADING')
     expect(progress()).toHaveAttribute('aria-valuenow', '3')
   })
 
