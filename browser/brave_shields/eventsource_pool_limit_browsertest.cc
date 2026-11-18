@@ -98,8 +98,10 @@ constexpr char kEventSourceCloseInSwScript[] = R"(
 class EventSourcePoolLimitBrowserTest : public InProcessBrowserTest {
  public:
   EventSourcePoolLimitBrowserTest() {
-    scoped_feature_list_.InitAndEnableFeature(
-        webcompat::features::kBraveWebcompatExceptionsService);
+    scoped_feature_list_.InitWithFeatures(
+        {webcompat::features::kBraveWebcompatExceptionsService,
+         blink::features::kRestrictEventSourcePool},
+        {});
   }
 
   void SetUpOnMainThread() override {
