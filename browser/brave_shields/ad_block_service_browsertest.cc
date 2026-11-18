@@ -2098,8 +2098,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRule) {
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
-// Main-frame documents always use the request URL as first_party_origin
-// (unless the initiator is opaque), so they are first-party for `$csp`.
+// Main-frame documents use the request URL as first_party_origin, so they are
+// first-party for `$csp`.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleThirdPartyLogic) {
   // Applied to third-party only.
   UpdateAdBlockInstanceWithRules(
@@ -2120,8 +2120,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleThirdPartyLogic) {
   }
 
   {
-    // Cross-origin renderer navigation (from about:blank). Document is
-    // third-party relative the opaque origin, so the rule matches.
+    // Renderer navigation from about:blank (opaque initiator). Document is
+    // still first-party, so the rule does not match.
     NavigateToURL(GURL("about:blank"));
     const GURL url =
         embedded_test_server()->GetURL("example.com", "/csp_rules.html");
@@ -2130,7 +2130,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleThirdPartyLogic) {
 
     ASSERT_TRUE(ExecJs(contents, "window.allLoaded"));
     EXPECT_EQ(true, EvalJs(contents, "!!window.loadedNonceScript"));
-    EXPECT_EQ(false, EvalJs(contents, "!!window.loadedUnsafeInlineScript"));
+    EXPECT_EQ(true, EvalJs(contents, "!!window.loadedUnsafeInlineScript"));
   }
 
   {
@@ -2146,6 +2146,59 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleThirdPartyLogic) {
     ASSERT_TRUE(ExecJs(contents, "window.allLoaded"));
     EXPECT_EQ(true, EvalJs(contents, "!!window.loadedNonceScript"));
     EXPECT_EQ(true, EvalJs(contents, "!!window.loadedUnsafeInlineScript"));
+  }
+}
+
+// An about:blank popup inherits its opener's origin, so frames it loads use the
+// opener as first party.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleAboutBlankPopup) {
+  // Applied to third-party only.
+  UpdateAdBlockInstanceWithRules(
+      "||example.com^$third-party,csp=script-src 'nonce-abcdef' "
+      "'unsafe-eval' 'self'");
+  const GURL url =
+      embedded_test_server()->GetURL("example.com", "/csp_rules.html");
+
+  auto open_about_blank_popup = [&]() {
+    NavigateToURL(embedded_test_server()->GetURL("a.com", "/simple.html"));
+    content::WebContentsAddedObserver popup_observer;
+    EXPECT_TRUE(ExecJs(web_contents(), "window.open('about:blank')"));
+    content::WebContents* popup = popup_observer.GetWebContents();
+    EXPECT_TRUE(content::WaitForLoadStop(popup));
+    EXPECT_EQ("a.com",
+              popup->GetPrimaryMainFrame()->GetLastCommittedOrigin().host());
+    return popup;
+  };
+
+  {
+    // Subframe of the popup. The first party is a.com, so the rule matches.
+    content::WebContents* popup = open_about_blank_popup();
+    ASSERT_TRUE(ExecJs(popup, content::JsReplace(R"(
+      new Promise(resolve => {
+        const frame = document.createElement('iframe');
+        frame.onload = () => resolve(true);
+        frame.src = $1;
+        document.body.appendChild(frame);
+      }))",
+                                                 url)));
+    content::RenderFrameHost* frame =
+        content::ChildFrameAt(popup->GetPrimaryMainFrame(), 0);
+    ASSERT_TRUE(frame);
+
+    ASSERT_TRUE(ExecJs(frame, "window.allLoaded"));
+    EXPECT_EQ(true, EvalJs(frame, "!!window.loadedNonceScript"));
+    EXPECT_EQ(false, EvalJs(frame, "!!window.loadedUnsafeInlineScript"));
+  }
+
+  {
+    // Popup navigated to example.com. Main frames are first-party, so the
+    // rule does not match.
+    content::WebContents* popup = open_about_blank_popup();
+    ASSERT_TRUE(content::NavigateToURLFromRenderer(popup, url));
+
+    ASSERT_TRUE(ExecJs(popup, "window.allLoaded"));
+    EXPECT_EQ(true, EvalJs(popup, "!!window.loadedNonceScript"));
+    EXPECT_EQ(true, EvalJs(popup, "!!window.loadedUnsafeInlineScript"));
   }
 }
 
