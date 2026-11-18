@@ -155,6 +155,10 @@ std::optional<uint256_t> ParseChainId(const base::DictValue& domain) {
   }
 
   if (auto* chain_id_str = chain_id_value->GetIfString()) {
+    if (chain_id_str->empty()) {
+      return 0;
+    }
+
     if (auto chain_id = HexValueToUint256(*chain_id_str)) {
       return chain_id;
     }

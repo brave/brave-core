@@ -899,6 +899,7 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParamsChainId) {
           "0x0000000000000000000000000000000000000000000000000000000000000001"),
       "0x1");
 
+  expect_chain_id(base::Value(""), "0x0");
   expect_chain_id(base::Value(0), "0x0");
   expect_chain_id(base::Value("0x0"), "0x0");
   expect_chain_id(base::Value("0"), "0x0");
@@ -914,7 +915,6 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParamsChainId) {
   expect_chain_id(base::Value("9007199254740993"), "0x20000000000001");
 
   // Malformed input.
-  expect_chain_id(base::Value(""), std::nullopt);
   expect_chain_id(base::Value("0X1"), std::nullopt);
   expect_chain_id(base::Value(" 1"), std::nullopt);
   expect_chain_id(base::Value("1.5"), std::nullopt);
@@ -973,14 +973,16 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParamsChainIdDomainHash) {
       "contents": "Hello, Bob!"
     }
   })";
-  constexpr char kExpectedDomainHash[] =
+
+  constexpr char kExpectedDomainHashChainId0x01[] =
       "f2cee375fa42b42143804025fc449deafd50cc031ca257e0b194a650a912090f";
 
-  // Prove that given these inputs as the chainId, we generate the correct hash.
-  std::array<base::Value, 4> chain_ids = {base::Value(1), base::Value("0x1"),
-                                          base::Value("0x01"),
-                                          base::Value("1")};
-  for (auto& chain_id : chain_ids) {
+  constexpr char kExpectedDomainHashChainId0x00[] =
+      "cd1d853b565f5718d30be2eeaf0e7771a571e153cafb1e3919d41d0ae2bed104";
+
+  auto expect_normalized_chain_id = [=](base::Value chain_id,
+                                        std::string_view expected_chain_id,
+                                        std::string_view expected_domain_hash) {
     SCOPED_TRACE(chain_id.DebugString());
 
     auto typed_data = ParseJsonDict(kTypedDataJson);
@@ -993,8 +995,22 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParamsChainIdDomainHash) {
     auto result = ParseEthSignTypedDataParams(
         params, EthSignTypedDataHelper::Version::kV4);
     ASSERT_TRUE(result);
-    EXPECT_EQ(result->chain_id, "0x1");
-    EXPECT_EQ(base::HexEncodeLower(result->domain_hash), kExpectedDomainHash);
+    EXPECT_EQ(result->chain_id, expected_chain_id);
+    EXPECT_EQ(base::HexEncodeLower(result->domain_hash), expected_domain_hash);
+  };
+
+  // Prove that given these inputs as the chainId, we generate the correct hash.
+  for (const auto& chain_id : {base::Value(1), base::Value("0x1"),
+                               base::Value("0x01"), base::Value("1")}) {
+    expect_normalized_chain_id(chain_id.Clone(), "0x1",
+                               kExpectedDomainHashChainId0x01);
+  }
+
+  for (const auto& chain_id :
+       {base::Value(0), base::Value(""), base::Value("0x0"),
+        base::Value("0x00"), base::Value("0")}) {
+    expect_normalized_chain_id(chain_id.Clone(), "0x0",
+                               kExpectedDomainHashChainId0x00);
   }
 }
 
