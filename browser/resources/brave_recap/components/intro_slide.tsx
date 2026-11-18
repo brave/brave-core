@@ -11,6 +11,8 @@ import { getLocale, formatLocale } from '$web-common/locale'
 import { getDaysSinceFirstRun } from '../stats'
 import { formatCount, formatMonthYear } from '../format'
 import { SlideLayout, SlideProps } from './slide_layout'
+import { Panels } from './panels'
+import { style } from './intro_slide.style'
 import '../strings'
 
 function AppIcon() {
@@ -25,6 +27,7 @@ export function IntroSlide({ stats, nav }: SlideProps) {
   const days = getDaysSinceFirstRun(stats)
   return (
     <SlideLayout
+      scope={style.scope}
       onContentClick={nav.tap}
       start={
         <Tooltip
@@ -90,14 +93,17 @@ export function IntroSlide({ stats, nav }: SlideProps) {
 
 export function EmptySlide() {
   return (
-    <div className='slide'>
+    <div
+      className='slide'
+      data-css-scope={style.scope}
+    >
       <div className='intro'>
         <AppIcon />
         <h2>{getLocale(S.BRAVE_RECAP_EMPTY_HEADING)}</h2>
       </div>
-      <div className='panels'>
+      <Panels>
         <p className='panel note'>{getLocale(S.BRAVE_RECAP_EMPTY_TEXT)}</p>
-      </div>
+      </Panels>
     </div>
   )
 }

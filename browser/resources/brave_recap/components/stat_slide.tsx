@@ -22,6 +22,8 @@ import {
   SlideLayout,
   SlideProps,
 } from './slide_layout'
+import { Panels } from './panels'
+import { style } from './stat_slide.style'
 import '../strings'
 
 const COUNT_UP_MS = 1400
@@ -86,6 +88,7 @@ function StatSlide(props: {
   const comparison = pickComparison(props.comparisons, props.finalValue)
   return (
     <SlideLayout
+      scope={style.scope}
       onContentClick={props.nav.tap}
       start={<BackButton nav={props.nav} />}
       primary={<NextButton nav={props.nav} />}
@@ -97,12 +100,12 @@ function StatSlide(props: {
         />
         {props.caption}
       </h2>
-      <div className='panels'>
+      <Panels>
         {comparison && (
           <p className='panel comparison'>{getLocale(comparison)}</p>
         )}
         <p className='panel note'>{props.text}</p>
-      </div>
+      </Panels>
     </SlideLayout>
   )
 }

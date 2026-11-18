@@ -45,6 +45,7 @@ export const FrameContext = React.createContext<Frame>({
 })
 
 export function SlideLayout(props: {
+  scope?: string
   children: React.ReactNode
   start: React.ReactNode
   primary: React.ReactNode
@@ -55,6 +56,7 @@ export function SlideLayout(props: {
     <>
       <div
         className='slide'
+        data-css-scope={props.scope}
         onClick={props.onContentClick}
       >
         {props.children}

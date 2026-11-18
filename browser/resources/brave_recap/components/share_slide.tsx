@@ -14,6 +14,7 @@ import { getShareCardContent } from '../share_content'
 import { useMediaQuery } from './hooks'
 import { BackButton, ShareCard, SlideLayout, SlideProps } from './slide_layout'
 import { LANDSCAPE_QUERY } from './app.style'
+import { style } from './share_slide.style'
 import '../strings'
 
 // TODO: replace with an attributed download link once growth provides one.
@@ -108,6 +109,7 @@ export function ShareSlide({ stats, nav, card }: SlideProps) {
 
   return (
     <SlideLayout
+      scope={style.scope}
       start={<BackButton nav={nav} />}
       primary={
         <Button

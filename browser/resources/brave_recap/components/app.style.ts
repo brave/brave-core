@@ -293,177 +293,11 @@ export const style = scoped.css`
     transform: translateX(calc(100% * var(--recap-inline)));
   }
 
-  .slide {
-    flex: 1;
-    min-height: 0;
-    /* Hidden, not auto, so content sliding in doesn't flash a scrollbar. */
-    overflow-x: hidden;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: var(--leo-spacing-5xl);
-    cursor: pointer;
-  }
-
-  .slide-intro .slide,
-  .slide-empty .slide {
-    gap: 0;
-  }
-
-  .slide-share .slide {
-    gap: var(--leo-spacing-s);
-  }
-
-  .slide-share .slide,
-  .slide-empty .slide {
-    cursor: default;
-  }
-
+  /* Shared by the slide styles. */
   @keyframes fade-in {
     from {
       opacity: 0;
     }
-  }
-
-  .slide h2,
-  .slide p {
-    margin: 0;
-  }
-
-  .visually-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-
-  .intro {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--leo-spacing-3xl);
-    padding: var(--leo-spacing-4xl);
-    text-align: center;
-  }
-
-  .intro h2 {
-    font: var(--leo-font-heading-display3);
-    text-wrap: balance;
-  }
-
-  .app-icon {
-    --app-icon-size: 88px;
-    display: grid;
-    place-items: center;
-    width: var(--app-icon-size);
-    height: var(--app-icon-size);
-    border-radius: var(--leo-radius-xxl);
-    background: var(--leo-color-white);
-    /* The release logo's artwork fills most, but not all, of its square. */
-    --leo-icon-size: calc(var(--app-icon-size) * 0.93);
-  }
-
-  .messages {
-    display: flex;
-    flex-direction: column;
-    gap: var(--leo-spacing-xl);
-  }
-
-  .message {
-    padding-block: var(--leo-spacing-2xl);
-    font: var(--leo-font-heading-h2);
-    background: var(--recap-glass);
-    backdrop-filter: var(--recap-glass-blur);
-    animation: recap-message-in var(--leo-duration-l) var(--leo-easing-out) both;
-  }
-
-  @keyframes recap-message-in {
-    from {
-      transform: translateX(var(--recap-message-from));
-    }
-  }
-
-  .message strong {
-    font-weight: 700;
-    color: var(--recap-highlight);
-  }
-
-  .message.start {
-    --recap-message-from: calc(-100% * var(--recap-inline));
-    margin-inline-end: var(--leo-spacing-2xl);
-    padding-inline: var(--leo-spacing-4xl) var(--leo-spacing-2xl);
-    border-start-end-radius: var(--leo-radius-xxl);
-    border-end-end-radius: var(--leo-radius-xxl);
-  }
-
-  .message.end {
-    --recap-message-from: calc(100% * var(--recap-inline));
-    animation-delay: var(--leo-duration-xs);
-    margin-inline-start: var(--leo-spacing-2xl);
-    padding-inline: var(--leo-spacing-2xl) var(--leo-spacing-4xl);
-    border-start-start-radius: var(--leo-radius-xxl);
-    border-end-start-radius: var(--leo-radius-xxl);
-    text-align: end;
-  }
-
-  .help {
-    max-width: 240px;
-    font: var(--leo-font-default-regular);
-  }
-
-  .stat {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-inline: var(--leo-spacing-2xl);
-    font: var(--leo-font-heading-h1);
-    text-align: center;
-  }
-
-  .big-value {
-    display: grid;
-    font: var(--leo-font-heading-display1);
-    font-weight: 800;
-    /* Shrinks long numbers to fit; the factor is roughly a digit's width. */
-    font-size: min(
-      var(--recap-hero-size),
-      (var(--recap-column-width) - 2 * var(--leo-spacing-2xl)) /
-        (var(--chars) * 0.6)
-    );
-    line-height: 1;
-    font-variant-numeric: tabular-nums;
-    white-space: nowrap;
-  }
-
-  .big-value > * {
-    grid-area: 1 / 1;
-  }
-
-  /* Invisible, but still read out: it holds the final value. */
-  .big-value .sizer {
-    opacity: 0;
-  }
-
-  .panels {
-    display: flex;
-    flex-direction: column;
-    gap: var(--leo-spacing-s);
-    padding-inline: var(--leo-spacing-2xl);
-  }
-
-  .panel {
-    padding: var(--leo-spacing-xl);
-    border-radius: var(--leo-radius-xxl);
-    background: var(--recap-glass);
-    backdrop-filter: var(--recap-glass-blur);
-    text-align: center;
-    /* Fading the panel itself, not a parent, keeps its blur. */
-    --recap-panel-from: var(--leo-spacing-l);
-    animation: recap-panel-in var(--leo-duration-l) var(--leo-easing-out)
-      var(--leo-duration-s) both;
   }
 
   @keyframes recap-panel-in {
@@ -473,116 +307,9 @@ export const style = scoped.css`
     }
   }
 
-  .panel.comparison {
-    --recap-panel-from: calc(-1 * var(--leo-spacing-l));
-    padding-block: var(--leo-spacing-2xl);
-    font: var(--leo-font-heading-h1);
-    text-wrap: balance;
-    border-end-start-radius: var(--leo-radius-m);
-    border-end-end-radius: var(--leo-radius-m);
-  }
-
-  .panel.note {
-    font: var(--leo-font-heading-h4);
-  }
-
-  .panel.comparison + .panel.note {
-    border-start-start-radius: var(--leo-radius-m);
-    border-start-end-radius: var(--leo-radius-m);
-  }
-
-  /* After navigation, content waits for the slide to land, so the two motions
-   * don't add up. */
-  @media (prefers-reduced-motion: no-preference) {
-    .slide-frame[data-motion='enter'] .message {
-      animation-delay: var(--leo-duration-l);
-    }
-
-    .slide-frame[data-motion='enter'] .message.end {
-      animation-delay: calc(var(--leo-duration-l) + var(--leo-duration-xs));
-    }
-
-    .slide-frame[data-motion='enter'] .panel {
-      animation-delay: var(--leo-duration-l);
-    }
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .panel.comparison + .panel.note {
-      animation-delay: calc(2 * var(--leo-duration-s));
-    }
-
-    .slide-frame[data-motion='enter'] .panel.comparison + .panel.note {
-      animation-delay: calc(var(--leo-duration-l) + var(--leo-duration-s));
-    }
-  }
-
-  .share {
-    margin-inline: var(--leo-spacing-2xl);
-    padding: var(--leo-spacing-m);
-    border-radius: var(--leo-radius-xxl);
-    background: var(--recap-glass-thick);
-    backdrop-filter: var(--recap-glass-blur);
-  }
-
-  .card-preview {
-    aspect-ratio: 336 / 408;
-    overflow: hidden;
-    border-radius: var(--leo-radius-xl);
-    background: var(--recap-card-background);
-    box-shadow: var(--leo-effect-elevation-02);
-  }
-
-  .card-preview img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    animation: recap-preview-in var(--leo-duration-m) var(--leo-easing-out);
-  }
-
-  @keyframes recap-preview-in {
-    from {
-      opacity: 0;
-      transform: scale(0.97);
-    }
-  }
-
-  .share-actions {
-    display: flex;
-    flex-direction: column;
-    gap: var(--leo-spacing-m);
-    padding: var(--leo-spacing-xl);
-    --leo-button-color: var(--leo-color-white);
-  }
-
-  .share-hint {
-    font: var(--leo-font-small-regular);
-    text-align: center;
-  }
-
-  .share-actions > * {
-    animation: recap-action-in var(--leo-duration-m) var(--leo-easing-out) both;
-  }
-
-  .share-actions > :nth-child(2) {
-    animation-delay: var(--leo-duration-xs);
-  }
-
-  @keyframes recap-action-in {
-    from {
-      opacity: 0;
-      transform: translateY(var(--leo-spacing-s));
-    }
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .slide-frame[data-motion='enter'] .share-actions > * {
-      animation-delay: var(--leo-duration-l);
-    }
-
-    .slide-frame[data-motion='enter'] .share-actions > :nth-child(2) {
-      animation-delay: calc(var(--leo-duration-l) + var(--leo-duration-xs));
-    }
+  .help {
+    max-width: 240px;
+    font: var(--leo-font-default-regular);
   }
 
   .bottom-bar {
@@ -633,7 +360,6 @@ export const style = scoped.css`
     }
   }
 
-  /* A wide card, with each slide split into two columns. */
   @media ${LANDSCAPE_QUERY} {
     .recap-card {
       --recap-card-width: min(
@@ -644,94 +370,6 @@ export const style = scoped.css`
       --recap-column-width: 50cqi;
       width: var(--recap-card-width);
       height: calc(var(--recap-card-width) * 10 / 16);
-    }
-
-    .recap-card .slide {
-      flex-direction: row;
-      align-items: safe center;
-      justify-content: normal;
-      gap: 0;
-    }
-
-    .slide > * {
-      flex: 1 1 0;
-      min-width: 0;
-    }
-
-    .intro {
-      padding-inline: var(--leo-spacing-2xl);
-    }
-
-    /* The intro messages become a pair of panels, like the stat slides'. */
-    .messages {
-      gap: var(--leo-spacing-s);
-      padding-inline-end: var(--leo-spacing-2xl);
-    }
-
-    .message {
-      animation-name: recap-panel-in;
-    }
-
-    .message.start {
-      --recap-panel-from: calc(-1 * var(--leo-spacing-l));
-      margin-inline: 0;
-      padding: var(--leo-spacing-2xl);
-      border-radius: var(--leo-radius-xxl) var(--leo-radius-xxl)
-        var(--leo-radius-m) var(--leo-radius-m);
-    }
-
-    .message.end {
-      --recap-panel-from: var(--leo-spacing-l);
-      margin-inline: 0;
-      padding: var(--leo-spacing-xl) var(--leo-spacing-2xl);
-      border-radius: var(--leo-radius-m) var(--leo-radius-m) var(--leo-radius-xxl)
-        var(--leo-radius-xxl);
-      text-align: start;
-    }
-
-    .panels {
-      padding-inline: 0 var(--leo-spacing-2xl);
-    }
-
-    .panel {
-      padding-inline: var(--leo-spacing-2xl);
-      text-align: start;
-    }
-
-    /* The image fills the height of its column, with the post buttons beside
-     * it. Only the image sits on glass. */
-    .share {
-      align-self: stretch;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: minmax(0, 1fr);
-      align-items: center;
-      margin: 0;
-      padding: 0;
-      border-radius: 0;
-      background: none;
-      backdrop-filter: none;
-    }
-
-    .share-frame {
-      /* Content-box, so the ratio is the image's and the glass goes around it. */
-      box-sizing: content-box;
-      justify-self: center;
-      height: calc(100% - 2 * var(--leo-spacing-m));
-      aspect-ratio: 336 / 408;
-      padding: var(--leo-spacing-m);
-      border-radius: var(--leo-radius-xxl);
-      background: var(--recap-glass-thick);
-      backdrop-filter: var(--recap-glass-blur);
-    }
-
-    .share-actions {
-      gap: var(--leo-spacing-xl);
-      padding: 0;
-      padding-inline-end: var(--leo-spacing-2xl);
-      /* Filled black, like the card's own call to action. Leo's filled kind
-       * keeps its content white whenever the button color is set. */
-      --leo-button-color: var(--leo-color-black);
     }
 
     .bottom-bar {
@@ -751,24 +389,67 @@ export const style = scoped.css`
       transition: none;
     }
 
-    .message {
-      animation: none;
-    }
-
-    .panel {
-      animation: fade-in var(--leo-duration-s) var(--leo-easing-out);
-    }
-
     .background-image {
       animation: none;
     }
+  }
+`
 
-    .card-preview img {
-      animation: fade-in var(--leo-duration-m) var(--leo-easing-out);
+// Slides have their own scopes, so these reach into them.
+style.passthrough.css`
+  .slide {
+    flex: 1;
+    min-height: 0;
+    /* Hidden, not auto, so content sliding in doesn't flash a scrollbar. */
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--leo-spacing-5xl);
+    cursor: pointer;
+  }
+
+  .slide-intro .slide,
+  .slide-empty .slide {
+    gap: 0;
+  }
+
+  .slide-share .slide {
+    gap: var(--leo-spacing-s);
+  }
+
+  .slide-share .slide,
+  .slide-empty .slide {
+    cursor: default;
+  }
+
+  .slide h2,
+  .slide p {
+    margin: 0;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* On the wide card, each slide splits into two columns. */
+  @media ${LANDSCAPE_QUERY} {
+    .recap-card .slide {
+      flex-direction: row;
+      align-items: safe center;
+      justify-content: normal;
+      gap: 0;
     }
 
-    .share-actions > * {
-      animation: none;
+    .slide > * {
+      flex: 1 1 0;
+      min-width: 0;
     }
   }
 `
