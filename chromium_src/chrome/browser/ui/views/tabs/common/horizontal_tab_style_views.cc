@@ -90,6 +90,7 @@ class BraveVerticalTabStyle : public HorizontalTabStyleViews {
   gfx::Insets GetContentsInsets() const override;
   TabStyle::SeparatorBounds GetSeparatorBounds(float scale) const override;
   float GetSeparatorOpacity(bool for_layout, bool leading) const override;
+  void PaintSeparators(gfx::Canvas* canvas) const override;
   int GetStrokeThickness() const override;
   void PaintTab(gfx::Canvas* canvas) const override;
   TabStyle::TabColors CalculateTargetColors() const override;
@@ -361,6 +362,41 @@ TabStyle::SeparatorBounds BraveVerticalTabStyle::GetSeparatorBounds(
   origin.Scale(scale);
   bounds.trailing.Offset(-origin.x(), -origin.y());
   return bounds;
+}
+
+void BraveVerticalTabStyle::PaintSeparators(gfx::Canvas* canvas) const {
+  if (!HorizontalTabsUpdateEnabled()) {
+    HorizontalTabStyleViews::PaintSeparators(canvas);
+    return;
+  }
+
+  // Upstream's static PaintSeparators() computes its own bounds, which would
+  // bypass GetSeparatorBounds() above.
+  const auto separator_opacities = GetSeparatorOpacities(false);
+  if (!separator_opacities.left && !separator_opacities.right) {
+    return;
+  }
+
+  gfx::ScopedCanvas scoped_canvas(canvas);
+  const float scale = canvas->UndoDeviceScaleFactor();
+  const TabStyle::SeparatorBounds separator_bounds = GetSeparatorBounds(scale);
+  const SkColor separator_base_color = GetTabSeparatorColor();
+  const int separator_radius = separator_bounds.leading.width() / 2;
+
+  cc::PaintFlags flags;
+  flags.setAntiAlias(true);
+  const auto paint_separator = [&](const gfx::RectF& bounds, float opacity) {
+    if (opacity <= 0) {
+      return;
+    }
+    flags.setColor(
+        SkColorSetA(separator_base_color,
+                    gfx::Tween::IntValueBetween(opacity, SK_AlphaTRANSPARENT,
+                                                SK_AlphaOPAQUE)));
+    canvas->DrawRoundRect(bounds, separator_radius, flags);
+  };
+  paint_separator(separator_bounds.leading, separator_opacities.left);
+  paint_separator(separator_bounds.trailing, separator_opacities.right);
 }
 
 float BraveVerticalTabStyle::GetSeparatorOpacity(bool for_layout,
