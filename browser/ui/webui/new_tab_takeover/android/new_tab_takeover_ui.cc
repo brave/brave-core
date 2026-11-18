@@ -40,14 +40,19 @@
 namespace {
 
 content::WebContents* GetActiveWebContents() {
-  const TabModelList::TabModelVector& tab_models = TabModelList::models();
-  const auto iter = std::ranges::find_if(
-      tab_models, [](const auto& model) { return model->IsActiveModel(); });
-  if (iter == tab_models.cend()) {
+  TabModel* active_model = nullptr;
+  TabModelList::ForEachAll([&](TabModel* model) {
+    if (!model->IsActiveModel()) {
+      return true;
+    }
+    active_model = model;
+    return false;
+  });
+  if (!active_model) {
     return nullptr;
   }
 
-  return (*iter)->GetActiveWebContents();
+  return active_model->GetActiveWebContents();
 }
 
 }  // namespace

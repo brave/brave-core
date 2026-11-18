@@ -49,22 +49,21 @@ TabModel* AddTabModelObserver(WebContents* web_contents,
     return nullptr;
   }
 
-  for (TabModel* tab_model : TabModelList::models()) {
-    if (tab_model->GetProfile() != current_profile) {
-      continue;
-    }
+  TabModel* observed_tab_model = nullptr;
+  TabModelList::ForEach(current_profile, [&](TabModel* tab_model) {
     const size_t tab_count = tab_model->GetTabCount();
     for (size_t index = 0; index < tab_count; index++) {
-      auto* tab = tab_model->GetTabAt(index);
-      if (!tab) {
+      if (!tab_model->GetTabAt(index)) {
         continue;
       }
       tab_model->AddObserver(tab_helper);
-      return tab_model;
+      observed_tab_model = tab_model;
+      return false;
     }
-  }
+    return true;
+  });
 
-  return nullptr;
+  return observed_tab_model;
 }
 
 void RemoveTabModelObserver(TabModel* tab_model,
@@ -74,11 +73,8 @@ void RemoveTabModelObserver(TabModel* tab_model,
   }
   // Verify TabModel is still valid (not destroyed) before using it.
   // This protects against dangling pointers during browser shutdown.
-  for (TabModel* model : TabModelList::models()) {
-    if (model == tab_model) {
-      tab_model->RemoveObserver(tab_helper);
-      return;
-    }
+  if (TabModelList::Contains(tab_model)) {
+    tab_model->RemoveObserver(tab_helper);
   }
 }
 
