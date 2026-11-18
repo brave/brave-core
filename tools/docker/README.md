@@ -23,10 +23,11 @@ python3 tools/docker/build_brave_image.py v1.101.39
 The optional positional argument selects an exact branch or tag (default:
 `master`). Branch images are tagged `brave-linux-build:<commit-sha>`; tag images
 are tagged `brave-linux-build:<tag>`. The script initializes all target
-operating systems, installs Chromium build dependencies, and completes four
-static builds before committing the image. A failed build retains its container
-for inspection and resumption at the original commit. Successful builds remove
-only that image-build container.
+operating systems, installs Chromium build dependencies, and requests four
+`Component` builds before committing the image. Android falls back to `Static`
+because component builds are unsupported there. A failed build retains its
+container for inspection and resumption at the original commit. Successful
+builds remove only that image-build container.
 
 `--docker EXECUTABLE` selects a Docker executable. `DOCKER_HOST` and
 `DOCKER_CONTEXT` select the daemon using Docker's normal precedence.

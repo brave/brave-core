@@ -382,7 +382,7 @@ test "$(git rev-parse HEAD)" = "$commit"
                 identifier,
                 "/workspace/src/brave",
                 [
-                    "Static",
+                    "Component",
                     "--target_os",
                     platform,
                     "--target_arch",

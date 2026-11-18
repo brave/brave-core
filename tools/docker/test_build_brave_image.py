@@ -176,6 +176,9 @@ class ImageBuildTests(unittest.TestCase):
             if "/usr/local/bin/brave-build" in command
         ]
         self.assertEqual(len(builds), 4)
+        for command in builds:
+            build_command = command.index("/usr/local/bin/brave-build")
+            self.assertEqual(command[build_command + 1], "Component")
         platforms = {
             (
                 command[command.index("--target_os") + 1],
