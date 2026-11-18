@@ -711,7 +711,7 @@ function StoryContext(
             },
           })
         },
-        getConversationHistory: async (_threadUuid: string | null) => ({
+        getConversationHistory: async () => ({
           conversationHistory: await getConversationHistory(),
         }),
         getContentTools: () => Promise.resolve({ tools: SAMPLE_CONTENT_TOOLS }),

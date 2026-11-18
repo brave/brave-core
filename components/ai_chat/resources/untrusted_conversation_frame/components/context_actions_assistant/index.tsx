@@ -121,17 +121,17 @@ export default function ContextActionsAssistant(
   // do nothing.
   const handleCreateThread = React.useCallback(async () => {
     if (!props.turnUuid) return
-    const { threadId } =
+    const { threadUuid } =
       await conversationContext.conversationHandler.createConversationThread(
         props.turnUuid,
       )
-    if (!threadId) return
+    if (!threadUuid) return
     // Only scroll if this answer is the last group in the conversation, so we
     // don't yank the view away from an earlier answer the user threaded.
     if (props.isLastGroup) {
       props.scrollToBottom?.()
     }
-    conversationContext.parentUiFrame?.openThread(threadId)
+    conversationContext.parentUiFrame?.openThread(threadUuid)
   }, [
     conversationContext,
     props.turnUuid,
