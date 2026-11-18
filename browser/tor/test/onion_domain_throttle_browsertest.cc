@@ -77,6 +77,12 @@ class OnionDomainThrottleBrowserTest
     tor::TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(true);
   }
 
+  void TearDownOnMainThread() override {
+    tor::TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(false);
+    net::ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(false);
+    InProcessBrowserTest::TearDownOnMainThread();
+  }
+
   void SetUpCommandLine(base::CommandLine* command_line) override {
     command_line->AppendSwitch(switches::kWebTransportDeveloperMode);
     InProcessBrowserTest::SetUpCommandLine(command_line);
