@@ -1,5 +1,5 @@
 diff --git a/components/permissions/android/BUILD.gn b/components/permissions/android/BUILD.gn
-index 0448c17cfb0568667f71f2e00439194da3770fc7..3b5df45cb7a93ec4f26dd45fcb28dd7090e31209 100644
+index e0a34de9fd030d62f81080aaafb3779f9bf7e614..a99a5785111da0d0e384d662713a7d741ddddaa4 100644
 --- a/components/permissions/android/BUILD.gn
 +++ b/components/permissions/android/BUILD.gn
 @@ -197,6 +197,7 @@ android_library("java") {
@@ -10,7 +10,7 @@ index 0448c17cfb0568667f71f2e00439194da3770fc7..3b5df45cb7a93ec4f26dd45fcb28dd70
    deps = [
      ":content_settings_enums_java",
      ":core_java",
-@@ -225,6 +226,7 @@ android_library("java") {
+@@ -226,6 +227,7 @@ android_library("java") {
      "//ui/android:ui_java",
      "//url:gurl_java",
    ]
