@@ -83,6 +83,7 @@ source_set("peek") {
     "//ui/base/cursor",
     "//ui/base/cursor/mojom:cursor_type",
     "//ui/color",
+    "//ui/content_accelerators",
     "//ui/events",
     "//ui/gfx",
     "//ui/strings",

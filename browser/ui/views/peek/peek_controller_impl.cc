@@ -16,6 +16,7 @@
 #include "base/location.h"
 #include "base/memory/raw_ptr.h"
 #include "base/task/single_thread_task_runner.h"
+#include "build/build_config.h"
 #include "brave/browser/ui/peek/peek_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
@@ -39,6 +40,7 @@
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/content_accelerators/accelerator_util.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/views/focus/focus_manager.h"
 #include "ui/views/widget/widget.h"
@@ -537,6 +539,20 @@ bool PeekControllerImpl::HandleKeyboardEvent(
   // Browser shortcuts run as browser commands, which `HandleCommand()` sends
   // to Peek while this is set. `this` outlives the call even if Peek closes.
   base::AutoReset<bool> forwarding(&forwarding_keyboard_event_, true);
+
+  // Dispatching through the browser only processes accelerators while the
+  // browser window is active, which it isn't while Peek's widget is, so look
+  // the key up in the browser's accelerator table and run its command here.
+  // Unregistered keys fall through. Not needed on macOS, where shortcuts with
+  // modifiers are menu key equivalents rather than this table.
+#if !BUILDFLAG(IS_MAC)
+  if (event.GetType() == blink::WebInputEvent::Type::kRawKeyDown &&
+      browser_view_->AcceleratorPressed(
+          ui::GetAcceleratorFromNativeWebKeyboardEvent(event))) {
+    return true;
+  }
+#endif
+
   return CHECK_DEREF(BrowserWebContentsDelegate::From(&*browser_))
       .HandleKeyboardEvent(source, event);
 }
