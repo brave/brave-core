@@ -745,32 +745,26 @@ class EthereumProviderImplUnitTest : public testing::Test {
     request.Set("method", "eth_signTypedData_v4");
     request.Set("params", std::move(params));
 
-    bool responded = false;
     const size_t previous_size = GetSignMessageQueueSize();
-    base::RunLoop run_loop;
-    provider()->Request(
-        base::Value(std::move(request)),
-        base::BindLambdaForTesting(
-            [&](mojom::EthereumProviderResponsePtr response) {
-              signature_out->clear();
-              if (response->formed_response.type() ==
-                  base::Value::Type::STRING) {
-                *signature_out = response->formed_response.GetString();
-              }
-              GetErrorCodeMessage(std::move(response->formed_response),
-                                  error_out, error_message_out);
-              responded = true;
-              run_loop.Quit();
-            }));
+    base::test::TestFuture<mojom::EthereumProviderResponsePtr> future;
+
+    provider()->Request(base::Value(std::move(request)), future.GetCallback());
     if (user_approved) {
       // Wait for EthereumProviderImpl::ContinueSignMessage
       ASSERT_TRUE(
-          WaitForSignMessageRequestOrResponse(previous_size, responded));
+          WaitForSignMessageRequestOrResponse(previous_size, future.IsReady()));
       brave_wallet_service_->NotifySignMessageRequestProcessed(
           *user_approved, brave_wallet_service_->sign_message_id_ - 1, nullptr,
           std::nullopt);
     }
-    run_loop.Run();
+
+    auto response = future.Take();
+    signature_out->clear();
+    if (response->formed_response.type() == base::Value::Type::STRING) {
+      *signature_out = response->formed_response.GetString();
+    }
+    GetErrorCodeMessage(std::move(response->formed_response), error_out,
+                        error_message_out);
   }
 
   // current request id will be returned
