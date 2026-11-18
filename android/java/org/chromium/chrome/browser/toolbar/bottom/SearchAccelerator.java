@@ -87,6 +87,7 @@ class SearchAccelerator extends ChromeImageButton
     public void onTintChanged(
             ColorStateList tint,
             ColorStateList activityFocusTint,
+            float unfocusedAlpha,
             @BrandedColorScheme int brandedColorScheme) {
         ImageViewCompat.setImageTintList(this, tint);
         updateBackground();
