@@ -752,14 +752,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, OpaqueTopFrameUsesDefaultSettings) {
   NavigateToURL(GURL("data:text/html,<body></body>"));
   content::RenderFrameHost* main_frame = web_contents()->GetPrimaryMainFrame();
   ASSERT_TRUE(main_frame->GetLastCommittedOrigin().opaque());
-  ASSERT_TRUE(ExecJs(main_frame, content::JsReplace(R"(
-      new Promise(resolve => {
-        const frame = document.createElement('iframe');
-        frame.onload = () => resolve(true);
-        frame.src = $1;
-        document.body.appendChild(frame);
-      }))",
-                                                    frame_url)));
+  ASSERT_NO_FATAL_FAILURE(AddFrame(main_frame, frame_url));
   content::RenderFrameHost* frame = content::ChildFrameAt(main_frame, 0);
   ASSERT_TRUE(frame);
 
