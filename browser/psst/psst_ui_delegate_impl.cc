@@ -7,7 +7,9 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
+#include "brave/components/psst/core/browser/pref_names.h"
 #include "brave/components/psst/core/common/psst_metadata_schema.h"
+#include "components/prefs/pref_service.h"
 
 namespace {
 
@@ -20,13 +22,16 @@ namespace psst {
 PsstUiDelegateImpl::PsstUiDelegateImpl(
     PsstSettingsService* psst_settings_service,
     PsstReporterService* psst_reporter_service,
+    PrefService* prefs,
     std::unique_ptr<PsstUiPresenter> ui_presenter)
     : ui_presenter_(std::move(ui_presenter)),
       psst_settings_service_(psst_settings_service),
-      psst_reporter_service_(psst_reporter_service) {
+      psst_reporter_service_(psst_reporter_service),
+      prefs_(prefs) {
   CHECK(psst_settings_service_);
   CHECK(psst_reporter_service_);
   CHECK(ui_presenter_);
+  CHECK(prefs_);
   psst_settings_service_->AddObserver(this);
 }
 PsstUiDelegateImpl::~PsstUiDelegateImpl() {
@@ -64,11 +69,11 @@ void PsstUiDelegateImpl::Show(
                      weak_ptr_factory_.GetWeakPtr()));
 
   const int infobar_shown_count =
-      psst_settings_service_->GetInfobarShownCount(origin_.value());
-  // Show the infobar only if it has been shown less than the max allowed
-  // times for this site.
+      prefs_->GetInteger(prefs::kPsstInfobarShownCounter);
+  // Show the infobar only if it has been shown less than the max allowed times.
   if (infobar_shown_count < kMaxPsstInfobarShownCounter) {
-    psst_settings_service_->IncrementInfobarShownCount(origin_.value());
+    prefs_->SetInteger(prefs::kPsstInfobarShownCounter,
+                       infobar_shown_count + 1);
     ui_presenter_->ShowInfoBar(
         base::BindOnce(&PsstUiDelegateImpl::OnUserAcceptedInfobar,
                        weak_ptr_factory_.GetWeakPtr()));

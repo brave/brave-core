@@ -19,7 +19,6 @@ constexpr char kUserIdSettingsKey[] = "user_id";
 constexpr char kConsentStatusSettingsKey[] = "consent_status";
 constexpr char kScriptVersionSettingsKey[] = "script_version";
 constexpr char kUidsToPerformSettingsKey[] = "uids_to_perform";
-constexpr char kInfobarShownCounterSettingsKey[] = "infobar_shown_counter";
 
 base::ListValue VectorToList(std::vector<std::string> values) {
   base::ListValue list;
@@ -182,38 +181,6 @@ void PsstSettingsService::SetPsstWebsiteSettings(
             user_id, CreatePsstSettingsObject(std::move(psst_metadata)))));
   }
   NotifyPsstPrefsChange(prefs_, observers_, this);
-}
-
-int PsstSettingsService::GetInfobarShownCount(const url::Origin& origin) {
-  auto metadata_objects = host_content_settings_map_->GetWebsiteSetting(
-      origin.GetURL(), origin.GetURL(), ContentSettingsType::BRAVE_PSST);
-  auto* metadata_objects_dict = metadata_objects.GetIfDict();
-  if (!metadata_objects_dict) {
-    return 0;
-  }
-
-  return metadata_objects_dict->FindInt(kInfobarShownCounterSettingsKey)
-      .value_or(0);
-}
-
-void PsstSettingsService::IncrementInfobarShownCount(
-    const url::Origin& origin) {
-  if (origin.scheme() != url::kHttpsScheme) {
-    return;
-  }
-
-  auto metadata_objects = host_content_settings_map_->GetWebsiteSetting(
-      origin.GetURL(), origin.GetURL(), ContentSettingsType::BRAVE_PSST);
-  auto* metadata_objects_dict = metadata_objects.GetIfDict();
-  base::DictValue updated_dict = metadata_objects_dict
-                                     ? std::move(*metadata_objects_dict)
-                                     : base::DictValue();
-  const int count =
-      updated_dict.FindInt(kInfobarShownCounterSettingsKey).value_or(0);
-  updated_dict.Set(kInfobarShownCounterSettingsKey, count + 1);
-  host_content_settings_map_->SetWebsiteSettingDefaultScope(
-      origin.GetURL(), origin.GetURL(), ContentSettingsType::BRAVE_PSST,
-      base::Value(std::move(updated_dict)));
 }
 
 bool PsstSettingsService::IsPsstEnabled() const {

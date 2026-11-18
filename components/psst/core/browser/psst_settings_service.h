@@ -64,15 +64,6 @@ class PsstSettingsService : public KeyedService {
   void SetPsstWebsiteSettings(const url::Origin& origin,
                               PsstWebsiteSettings psst_metadata);
 
-  // Returns the number of times the PSST infobar has been shown for
-  // `origin`.
-  int GetInfobarShownCount(const url::Origin& origin);
-
-  // Records that the PSST infobar was shown for `origin`. No-op unless `origin`
-  // is https. The count is persisted in the origin's BRAVE_PSST website
-  // setting.
-  void IncrementInfobarShownCount(const url::Origin& origin);
-
   bool IsPsstEnabled() const;
   void SetPsstEnabled(bool enabled);
 
