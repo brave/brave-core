@@ -2098,8 +2098,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRule) {
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
-// Main-frame documents use the request URL as first_party_origin unless its
-// origin is opaque, in which case the initiator is used.
+// Main-frame documents use the request URL as first_party_origin unless
+// `url::Origin::Create(request_url).opaque()`, in which case the initiator is
+// used.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleThirdPartyLogic) {
   // Applied to third-party only.
   UpdateAdBlockInstanceWithRules(
