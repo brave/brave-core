@@ -17,67 +17,45 @@ Use the exact image tag printed by the image builder:
 tag. The builder does not create a `latest` tag. The example below assumes
 `v1.101.39` was built; replace it with your image's tag.
 
-Run these commands in Bash on the host. Adjust the SSH key path to the identity
-used for GitHub in your host SSH configuration. The example selects that key
-directly and does not use the host SSH configuration or an SSH agent. The key
-must work in batch mode without a passphrase prompt. `known_hosts` must already
-contain verified GitHub host keys. Use absolute source paths. All four
-credential files must be readable by the image's `builder` user, whose UID/GID
-were selected when the image was built, and accessible at these source paths on
-the Docker daemon's host.
+`create_container.py` resolves the GitHub identity from the host's
+`~/.ssh/config`; `--ssh-key PATH` selects a key explicitly. It mounts that key,
+`~/.ssh/known_hosts`, and the mTLS certificate and key read-only, starts the
+container, and configures GitHub authentication and SSH commit signing.
+
+The key must work without an agent or passphrase prompt, and `known_hosts` must
+contain verified GitHub host keys. Credential files must be readable by the
+image's `builder` user and accessible on the Docker daemon's host. Remote-build
+credentials default to `~/.reclient/engflow.crt` and `~/.reclient/engflow.key`;
+`BRAVE_RBE_CERT` and `BRAVE_RBE_KEY` override those locations.
 
 ```bash
-set -euo pipefail
 brave_image=brave-linux-build:v1.101.39
 brave_container=brave-dev
-brave_rbe_cert="${BRAVE_RBE_CERT:-$HOME/.reclient/engflow.crt}"
-brave_rbe_key="${BRAVE_RBE_KEY:-$HOME/.reclient/engflow.key}"
-brave_ssh_key="$HOME/.ssh/id_ed25519"
-brave_known_hosts="$HOME/.ssh/known_hosts"
 brave_docker=(docker)
-brave_ssh_command='ssh -F /dev/null -i /home/builder/.ssh/github_key'
-brave_ssh_command+=' -o IdentitiesOnly=yes -o IdentityAgent=none'
-brave_ssh_command+=' -o AddKeysToAgent=no -o BatchMode=yes'
-brave_ssh_command+=' -o StrictHostKeyChecking=yes'
-brave_ssh_command+=' -o UserKnownHostsFile=/home/builder/.ssh/known_hosts'
+python3 tools/docker/create_container.py \
+  --image "$brave_image" --name "$brave_container"
 
-for brave_file in "$brave_rbe_cert" "$brave_rbe_key" \
-  "$brave_ssh_key" "$brave_known_hosts"; do
-  test -f "$brave_file"
-  test -r "$brave_file"
-done
-
-"${brave_docker[@]}" create \
-  --name "$brave_container" \
-  --init --platform=linux/amd64 --shm-size=4g \
-  --device /dev/fuse --cap-add SYS_ADMIN \
-  --security-opt apparmor=unconfined \
-  --mount "type=bind,source=$brave_rbe_cert,target=/run/brave-rbe/engflow.crt,readonly" \
-  --mount "type=bind,source=$brave_rbe_key,target=/run/brave-rbe/engflow.key,readonly" \
-  --mount "type=bind,source=$brave_ssh_key,target=/home/builder/.ssh/github_key,readonly" \
-  --mount "type=bind,source=$brave_known_hosts,target=/home/builder/.ssh/known_hosts,readonly" \
-  --env "GIT_SSH_COMMAND=$brave_ssh_command" \
-  "$brave_image"
-"${brave_docker[@]}" start "$brave_container"
+# For an explicit identity, add --ssh-key /path/to/github-key to the command.
+# See all requirements and options:
+python3 tools/docker/create_container.py --help
 ```
 
-`brave_docker` honors `DOCKER_HOST` and `DOCKER_CONTEXT`. To select an endpoint
-explicitly, add `--context CONTEXT` or `--host ENDPOINT` to that array before
-creating the container, and use the same array for subsequent commands.
-`/dev/fuse`, `SYS_ADMIN`, and the AppArmor setting support the Windows SDK's
-case-insensitive filesystem hook. The container keeps its checkout and build
-outputs in its writable layer; stopping and restarting it preserves them.
+The command honors `DOCKER_HOST` and `DOCKER_CONTEXT`; use the same endpoint for
+later Docker commands. It supplies `/dev/fuse`, `SYS_ADMIN`, and the AppArmor
+setting required by the Windows SDK hook. It leaves the image's checkout
+unchanged. Checkout selection, sync, and builds are separate steps. Stopping and
+restarting the container preserves its checkout and build output.
 
 The image already configures remote execution in `/workspace/src/brave/.env`,
-with `use_remoteexec=true`, service `rbe.ba.brave.com:443`, and the certificate
-and key paths used above. It also sets `SISO_CREDENTIAL_HELPER=mTLS`.
-Reclient/Siso use the mounted mTLS files; no credential contents are copied into
-the image. The SSH mounts supply Git authentication separately.
+with `use_remoteexec=true`, service `rbe.ba.brave.com:443`, and the mTLS paths
+under `/run/brave-rbe`. It also sets `SISO_CREDENTIAL_HELPER=mTLS`.
+Reclient/Siso use the mounted credentials; no credential contents are copied
+into the image.
 
 ## Configure Git and build
 
-Configure Git to use the mounted SSH identity for GitHub HTTPS remotes, then
-verify both the remote-build mounts and GitHub repository access:
+The helper configures GitHub HTTPS remotes to use SSH. Verify the remote-build
+mounts and GitHub repository access:
 
 ```bash
 "${brave_docker[@]}" exec --workdir /workspace/src/brave \
@@ -85,15 +63,13 @@ verify both the remote-build mounts and GitHub repository access:
     set -euo pipefail
     test -r "$RBE_tls_client_auth_cert"
     test -r "$RBE_tls_client_auth_key"
-    git config --global core.sshCommand "$GIT_SSH_COMMAND"
-    git config --global url."ssh://git@github.com/".insteadOf https://github.com/
     git ls-remote origin HEAD
   '
 ```
 
-For commits, supply your Git identity from the host checkout. To sign commits
-with the mounted key, register its public key with GitHub as a signing key and
-configure SSH signing inside the container:
+For commits, supply your Git identity from the host checkout. SSH signing is
+already configured by the helper; register the selected public key with GitHub
+as a signing key for verified signatures:
 
 ```bash
 brave_git_name=$(git config user.name)
@@ -103,14 +79,6 @@ brave_git_email=$(git config user.email)
 "${brave_docker[@]}" exec --workdir /workspace/src/brave \
   "$brave_container" git config --global user.email "$brave_git_email"
 
-# Optional SSH commit signing.
-"${brave_docker[@]}" exec --workdir /workspace/src/brave \
-  "$brave_container" bash -c '
-    set -euo pipefail
-    git config --global gpg.format ssh
-    git config --global user.signingkey /home/builder/.ssh/github_key
-    git config --global commit.gpgsign true
-  '
 ```
 
 The checkout initially contains the image's ref. If you select a different ref,
