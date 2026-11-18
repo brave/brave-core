@@ -130,7 +130,7 @@ const pageInitialPrefs: Array<[string, chrome.settingsPrivate.PrefType,
   ['signin.allowed_on_next_startup', B, true],
   ['tor.onion_only_in_tor_windows', B, true],
   ['webrtc.ip_handling_policy', S, 'default'],
-  ['brave.local_ai.on_device_speech_model_enabled', B, false],
+  ['brave.local_ai.on_device_speech_model', N, 0],
   ['brave.shields.fb_embed_default', B, true],
 ]
 const pagePrefObjects =

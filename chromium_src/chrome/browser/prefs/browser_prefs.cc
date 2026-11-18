@@ -27,6 +27,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/ipfs_prefs.h"
 #include "brave/components/l10n/common/prefs.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/view_counter_pref_registry.h"
@@ -83,6 +84,10 @@ void MaybeApplyVerticalTabMigrationTestingOverride(PrefService* prefs);
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/decentralized_dns/core/utils.h"
+#endif
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/components/local_ai/core/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -333,6 +338,10 @@ void MigrateObsoleteBraveLocalStatePrefsAfterChromium(
       MigrateObsoleteLocalStatePrefs(local_state);
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   brave_wallet::MigrateObsoleteLocalStatePrefs(local_state);
+#endif
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  // Added 2026-11.
+  local_ai::prefs::MigrateObsoleteLocalStatePrefs(local_state);
 #endif
   // END_MIGRATE_OBSOLETE_LOCAL_STATE_PREFS
 }

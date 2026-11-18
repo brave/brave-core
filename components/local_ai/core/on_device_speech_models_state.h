@@ -17,10 +17,12 @@
 
 namespace local_ai {
 
-// Brave's on-device speech recognition models.
+// Brave's on-device speech recognition models. `prefs::kOnDeviceSpeechModel`
+// stores these values, and the settings page uses them, so do not change them.
+// The pref stores 0 when the user enabled no model.
 enum class OnDeviceSpeechModel {
-  kEnglish,
-  kMultilingual,
+  kEnglish = 1,
+  kMultilingual = 2,
 };
 
 // Subdirectory of `model`'s install dir holding its files. Shared so that the

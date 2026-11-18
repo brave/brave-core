@@ -9,7 +9,9 @@
 #include <variant>
 
 #include "base/test/test_future.h"
+#include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "brave/components/local_ai/core/pref_names.h"
+#include "brave/components/local_ai/core/utils.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -31,8 +33,8 @@ class OnDeviceSpeechModelPermissionRequestUnitTest : public testing::Test {
   }
 
   bool IsEnabled() {
-    return local_state_.GetBoolean(
-        local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled);
+    return local_ai::GetEnabledOnDeviceSpeechModel(&local_state_) ==
+           local_ai::OnDeviceSpeechModel::kEnglish;
   }
 
   bool IsAskEnabled() {

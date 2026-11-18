@@ -12,6 +12,7 @@
 #include "base/functional/bind.h"
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "brave/components/local_ai/core/pref_names.h"
+#include "brave/components/local_ai/core/utils.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "components/permissions/permission_decision.h"
 #include "components/permissions/permission_prompt_decision.h"
@@ -63,8 +64,8 @@ void OnDeviceSpeechModelPermissionRequest::PermissionDecided(
   }
 
   if (decision.overall_decision == PermissionDecision::kAllow) {
-    local_state_->SetBoolean(
-        local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled, true);
+    local_ai::EnableOnDeviceSpeechModel(
+        *local_state_, local_ai::OnDeviceSpeechModel::kEnglish);
   } else if (decision.overall_decision == PermissionDecision::kDeny) {
     profile_prefs_->SetBoolean(local_ai::prefs::kAskEnableOnDeviceSpeechModel,
                                !get_dont_ask_again());
