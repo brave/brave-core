@@ -1,0 +1,19 @@
+diff --git a/components/policy/core/common/cloud/cloud_policy_util.cc b/components/policy/core/common/cloud/cloud_policy_util.cc
+index 1fb1b09ff3f71314631801ddfefd0b103b4a6838..8cbeb56d6718474ee35cc9fea10ed70cf98fa810 100644
+--- a/components/policy/core/common/cloud/cloud_policy_util.cc
++++ b/components/policy/core/common/cloud/cloud_policy_util.cc
+@@ -272,6 +272,14 @@ std::string GetDeviceFqdn() {
+ }
+ 
+ std::string GetNetworkName() {
++#if BUILDFLAG(IS_WIN)
++  // TODO(crbug.com/585174438): Re-enable once the network name query is made
++  // asynchronous. On Windows 11 24H2+, the synchronous WLAN API calls made by
++  // `net::GetWifiSSID()` can hang the calling thread.
++  if (base::win::GetVersion() >= base::win::Version::WIN11_24H2) {
++    return std::string();
++  }
++#endif  // BUILDFLAG(IS_WIN)
+   return net::GetWifiSSID();
+ }
+ 
