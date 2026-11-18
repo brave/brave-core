@@ -12,6 +12,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/map_util.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
@@ -214,11 +215,8 @@ std::optional<base::Uuid> WorkspaceService::GetWorkspaceForWindow(
 
 std::optional<SessionID> WorkspaceService::GetWindowForWorkspace(
     const base::Uuid& id) const {
-  auto it = workspace_to_window_.find(id);
-  if (it == workspace_to_window_.end()) {
-    return std::nullopt;
-  }
-  return it->second;
+  const SessionID* window = base::FindOrNull(workspace_to_window_, id);
+  return window ? std::optional(*window) : std::nullopt;
 }
 
 void WorkspaceService::UnbindWindow(SessionID window_id) {
@@ -267,14 +265,14 @@ void WorkspaceService::SaveWorkspaceFromWindow(const base::Uuid& id,
                                 std::move(on_error)));
 }
 
-std::string WorkspaceService::GetWorkspaceNameForWindow(
+std::optional<std::string> WorkspaceService::GetWorkspaceNameForWindow(
     SessionID window_id) const {
   std::optional<base::Uuid> id = GetWorkspaceForWindow(window_id);
   if (!id) {
-    return std::string();
+    return std::nullopt;
   }
   std::optional<WorkspaceMetadata> workspace = GetWorkspace(*id);
-  return workspace ? workspace->name : std::string();
+  return workspace ? std::optional(workspace->name) : std::nullopt;
 }
 
 base::CallbackListSubscription WorkspaceService::RegisterWorkspacesChanged(
@@ -297,11 +295,9 @@ bool WorkspaceService::IsWorkspaceOnScreenElsewhere(const base::Uuid& id,
 
 std::optional<SessionID> WorkspaceService::GetUnmanagedWindowFor(
     SessionID window_id) const {
-  auto it = window_to_unmanaged_window_.find(window_id);
-  if (it == window_to_unmanaged_window_.end()) {
-    return std::nullopt;
-  }
-  return it->second;
+  const SessionID* unmanaged =
+      base::FindOrNull(window_to_unmanaged_window_, window_id);
+  return unmanaged ? std::optional(*unmanaged) : std::nullopt;
 }
 
 void WorkspaceService::SwapVisibleWindow(BrowserWindowInterface* from_window,

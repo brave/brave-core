@@ -132,9 +132,10 @@ class WorkspaceService : public KeyedService,
   // this session yet.
   std::optional<SessionID> GetWindowForWorkspace(const base::Uuid& id) const;
 
-  // Returns the display name of the workspace shown in |window_id|, or an
-  // empty string when that window is unmanaged.
-  std::string GetWorkspaceNameForWindow(SessionID window_id) const;
+  // Returns the display name of the workspace shown in |window_id|, or
+  // nullopt when that window is unmanaged.
+  std::optional<std::string> GetWorkspaceNameForWindow(
+      SessionID window_id) const;
 
   // Notifies when the workspace shown in some window changes, or is renamed.
   // Subscribers re-read whichever window they belong to.

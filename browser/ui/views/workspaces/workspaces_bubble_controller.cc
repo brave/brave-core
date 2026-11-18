@@ -40,7 +40,8 @@ void WorkspacesBubbleController::ShowBubble(views::View* anchor_view,
     return;
   }
 
-  // Capture what the save dialog needs: the browser window the bubble acts on
+  // Capture what the workspace dialog needs: the browser window the bubble
+  // acts on
   // and the native window that hosts the anchor (used to parent the modal).
   browser_ = browser;
   parent_window_ = anchor_view->GetWidget()->GetNativeWindow();

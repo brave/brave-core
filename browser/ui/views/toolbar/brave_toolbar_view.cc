@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "base/check.h"
@@ -839,8 +840,11 @@ void BraveToolbarView::UpdateWorkspaceButtonLabel() {
   auto* service =
       WorkspaceServiceFactory::GetForProfile(browser_->GetProfile());
   CHECK(service);
-  const std::u16string name = base::UTF8ToUTF16(
-      service->GetWorkspaceNameForWindow(browser_->GetSessionID()));
+  // An unmanaged window has no name, which clears the label back to the icon.
+  const std::optional<std::string> workspace_name =
+      service->GetWorkspaceNameForWindow(browser_->GetSessionID());
+  const std::u16string name =
+      workspace_name ? base::UTF8ToUTF16(*workspace_name) : std::u16string();
   if (name == workspaces_button_->GetText()) {
     return;
   }

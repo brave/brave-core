@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/frame/brave_tab_strip_region_view.h"
 
 #include <memory>
+#include <optional>
 
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
@@ -363,8 +364,11 @@ void BraveHorizontalTabStripRegionView::UpdateWorkspaceButtonLabel() {
   auto* bwi = tab_strip_->GetBrowserWindowInterface();
   auto* service = WorkspaceServiceFactory::GetForProfile(bwi->GetProfile());
   CHECK(service);
-  workspaces_button_->SetText(base::UTF8ToUTF16(
-      service->GetWorkspaceNameForWindow(bwi->GetSessionID())));
+  // An unmanaged window has no name, which clears the label back to the icon.
+  const std::optional<std::string> workspace_name =
+      service->GetWorkspaceNameForWindow(bwi->GetSessionID());
+  workspaces_button_->SetText(
+      workspace_name ? base::UTF8ToUTF16(*workspace_name) : std::u16string());
 }
 
 void BraveHorizontalTabStripRegionView::

@@ -67,7 +67,8 @@ class WorkspacesBubbleController {
   void OnBubbleClosed(views::Widget::ClosedReason reason);
   void OnCreateDialogClosed(views::Widget::ClosedReason reason);
 
-  // Captured when the bubble is shown and used to launch the save dialog.
+  // Captured when the bubble is shown and used to launch the workspace
+  // dialog.
   raw_ptr<BrowserWindowInterface> browser_ = nullptr;
   gfx::NativeWindow parent_window_ = gfx::NativeWindow();
 
