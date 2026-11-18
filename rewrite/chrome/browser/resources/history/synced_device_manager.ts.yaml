@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Keep the synced device list when the Google identity state changes
+
+      Brave's synced tabs come from Brave Sync, with no Google account, so
+      the identity state reads as signed out and must not clear the devices.
+    regex:
+      re_pattern:
+        '(onIdentityStateChanged_\(.*?)\n\s*//[^\n]*\n\s*//[^\n]*\n\s*if
+        \(this\.isSignInState_\(HistorySignInState\.SIGNED_OUT\)
+        \|\|\s*this\.isTabsSyncDisabled_\(\)\) \{.*?\n\s*return;\n\s*\}'
+      re_flags: [DOTALL]
+      replace: '\1'
