@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/common/omnibox_features.cc b/components/omnibox/common/omnibox_features.cc
-index 21f0f8a9733853cd51ec025b1479d9875d2f90b3..00c30efc52a13034574a7b02ef8a2ed05bc23bc2 100644
+index 21f0f8a9733853cd51ec025b1479d9875d2f90b3..21bcdfe08e17364c9aba3ef01c32d86099dfbb56 100644
 --- a/components/omnibox/common/omnibox_features.cc
 +++ b/components/omnibox/common/omnibox_features.cc
 @@ -175,7 +175,7 @@ BASE_FEATURE(kMostVisitedTilesHorizontalRenderGroup,
@@ -53,3 +53,12 @@ index 21f0f8a9733853cd51ec025b1479d9875d2f90b3..00c30efc52a13034574a7b02ef8a2ed0
  
  // Kill switch. If enabled, the Android X-Geo header is dropped when the device
  // hands back a precise fix for a site that only holds approximate location
+@@ -670,7 +676,7 @@ BASE_FEATURE(kUrlBarWithoutLigatures, ENABLED);
+ 
+ // If enabled, Java-cached ZPS will be served.
+ // The cached ZPS made sense on sub-4GB Android Go devices
+-BASE_FEATURE(kServeJavaCachedZeroSuggest, ENABLED);
++BASE_OVERRIDDEN_FEATURE(kServeJavaCachedZeroSuggest, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // If enabled, OmniboxSuggestionsDropdown will force reset the scroll position
+ // of the Omnibox suggestion list to the top during any re-layout.

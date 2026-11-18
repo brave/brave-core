@@ -281,6 +281,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &omnibox::kOmniboxMobileParityUpdateV2,
 #endif
       &omnibox::kRichAutocompletion,
+#if BUILDFLAG(IS_ANDROID)
+      &omnibox::kServeJavaCachedZeroSuggest,
+#endif
       &omnibox::kStarterPackExpansion,
       &one_time_tokens::features::kGmailOtpRetrievalService,
       &optimization_guide::kPredictionModelComponentDelivery,

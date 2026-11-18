@@ -31,6 +31,11 @@ substitutions:
       feature_name: kRichAutocompletion
       value: base::FEATURE_DISABLED_BY_DEFAULT
 
+  - description: 'Ship kServeJavaCachedZeroSuggest disabled.'
+    set_feature_flag_default_state:
+      feature_name: kServeJavaCachedZeroSuggest
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
   - description: 'Ship kStarterPackExpansion disabled.'
     set_feature_flag_default_state:
       feature_name: kStarterPackExpansion

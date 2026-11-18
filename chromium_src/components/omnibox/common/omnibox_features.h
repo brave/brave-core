@@ -9,8 +9,13 @@
 #include <components/omnibox/common/omnibox_features.h>  // IWYU pragma: export
 
 #include "base/feature_list.h"
+#include "build/build_config.h"
 
 namespace omnibox {
+
+#if BUILDFLAG(IS_ANDROID)
+BASE_DECLARE_FEATURE(kServeJavaCachedZeroSuggest);
+#endif
 
 BASE_DECLARE_FEATURE(kOmniboxTabSwitchByDefault);
 
