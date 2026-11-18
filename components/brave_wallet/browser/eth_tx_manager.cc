@@ -348,9 +348,11 @@ void EthTxManager::ContinueAddUnapprovedTransaction(
     const std::string& result,
     mojom::ProviderError error,
     const std::string& error_message) {
+  const std::string chain_id = Uint256ValueToHex(tx->chain_id());
+  const std::string to = tx->GetToChecksumAddress();
   mojom::TransactionType tx_type = mojom::TransactionType::Other;
   std::vector<std::string> tx_args;
-  if (auto tx_info = GetTransactionInfoFromData(tx->data())) {
+  if (auto tx_info = GetTransactionInfoFromData(chain_id, to, tx->data())) {
     tx_type = std::get<0>(*tx_info);
     tx_args = std::move(std::get<2>(*tx_info));
   }
@@ -358,8 +360,7 @@ void EthTxManager::ContinueAddUnapprovedTransaction(
   // Every transaction creation path we have seems to route through this
   // function, which makes it the perfect spot to scan the transaction
   // (including its calldata) for restricted addresses.
-  if (HasRestrictedAddress(Uint256ValueToHex(tx->chain_id()),
-                           tx->GetToChecksumAddress(), tx_type, tx_args)) {
+  if (HasRestrictedAddress(chain_id, to, tx_type, tx_args)) {
     std::move(callback).Run(false, "", WalletInternalErrorMessage());
     return;
   }
@@ -386,7 +387,6 @@ void EthTxManager::ContinueAddUnapprovedTransaction(
   }
   tx->set_gas_limit(gas_limit);
 
-  const std::string chain_id = Uint256ValueToHex(tx->chain_id());
   auto meta = EthTxMeta::MakeUnapproved(from, std::move(tx), chain_id,
                                         swap_info.Clone(), dapp_origin);
   meta->set_sign_only(sign_only);
@@ -1129,7 +1129,8 @@ void EthTxManager::SpeedupOrCancelTransaction(
       tx->set_data(std::vector<uint8_t>());
     }
 
-    if (!GetTransactionInfoFromData(tx->data())) {
+    if (!GetTransactionInfoFromData(meta->chain_id(),
+                                    tx->GetToChecksumAddress(), tx->data())) {
       std::move(callback).Run(
           false, "",
           l10n_util::GetStringUTF8(
