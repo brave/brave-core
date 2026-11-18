@@ -5,18 +5,24 @@
 
 import { Command } from 'commander'
 import './commanderApply.ts'
+import { supportBuilder } from './builder.ts'
 import { Config, setConfigInstance } from './config.ts'
 
 // Installs the checkout's config as `config` once `command`'s arguments are
-// parsed. Apply it before adding any other hook: commander runs a command's
-// hooks in the order they are added, and before its subcommands', so the
-// config is then there for every hook and action.
+// parsed, or with `--builder`, the builder's. Apply it before adding any other
+// hook: commander runs a command's hooks in the order they are added, and
+// before its subcommands', so the config is then there for every hook and
+// action.
 export function installConfig<
   Args extends any[],
   Opts extends {},
   GlobalOpts extends {},
 >(command: Command<Args, Opts, GlobalOpts>) {
-  return command.hook('preAction', () => setConfigInstance(Config.load()))
+  return command.apply(supportBuilder).hook('preAction', (thisCommand) => {
+    if (thisCommand.getOptionValue('builder') === undefined) {
+      setConfigInstance(Config.load())
+    }
+  })
 }
 
 // A command-line script's program, with installConfig() applied.

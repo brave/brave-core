@@ -13,6 +13,7 @@ import * as Log from './log.ts'
 import util from './util.ts'
 import { isCI, isTeamcity } from './ciDetect.ts'
 import type * as buildOptions from './buildOptions.ts'
+import type { Builder } from './builderTypes.ts'
 
 type ExecOptions = {
   env: NodeJS.ProcessEnv
@@ -37,6 +38,27 @@ const validTargetOSValues = ['android', 'ios', 'linux', 'mac', 'win'] as const
 type TargetOS = (typeof validTargetOSValues)[number]
 
 const braveCoreDir = path.join(rootDir, 'src', 'brave')
+
+// TODO(http://brave.dev/b/56449): Experimental implementation for integration
+// with our bots generator.
+// The only .env keys read with `--builder`, which takes everything else from
+// the builder: what stays local to the machine, its remote execution, caches
+// and output. Keep this short and audited.
+const BUILDER_ALLOWED_DOTENV_KEYS: readonly string[] = [
+  'cache_dir',
+  'gclient_verbose',
+  'git_cache_path',
+  'lean_sync',
+  'offline',
+  'quiet',
+  'rbe_jobs_limit',
+  'rbe_readonly',
+  'rbe_service',
+  'rbe_tls_client_auth_cert',
+  'rbe_tls_client_auth_key',
+  'siso_cache_dir',
+  'use_remoteexec',
+]
 
 export class Config {
   internalDepsUrl: string
@@ -79,17 +101,37 @@ export class Config {
   xcode_gen_target: string | undefined
 
   #envConfig: EnvConfig
+  // TODO(http://brave.dev/b/56449): Experimental implementation for integration
+  // with our bots generator.
+  // The `--builder` the config is for, which provides what .env otherwise
+  // does: the builder's values, and fixed ones for what a builder does not
+  // configure.
+  #builder: Builder | undefined
 
   // The values of the properties that can be set, once read or set.
   #values = new Map<keyof Config, unknown>()
 
-  // The checkout's config, read from its package.json and .env files.
-  static load(): Config {
-    return new Config(new EnvConfig(braveCoreDir))
+  // The checkout's config, read from its package.json and `dotenvConfig`, or
+  // its .env files without it. With a builder, .env may only have
+  // BUILDER_ALLOWED_DOTENV_KEYS, and reading any other value package.json does not
+  // provide throws.
+  static load(builder?: Builder, dotenvConfig?: NodeJS.Dict<string>): Config {
+    return new Config(
+      new EnvConfig(
+        braveCoreDir,
+        dotenvConfig,
+        builder ? BUILDER_ALLOWED_DOTENV_KEYS : undefined,
+      ),
+      builder,
+    )
   }
 
-  constructor(envConfig: EnvConfig) {
+  constructor(envConfig: EnvConfig, builder?: Builder) {
+    if (builder && !builder.spec.chromium_config.build_config) {
+      throw new Error(`builder ${builder.name}: its spec has no build_config`)
+    }
     this.#envConfig = envConfig
+    this.#builder = builder
     this.internalDepsUrl =
       'https://vhemnu34de4lf5cj6bx2wwshyy0egdxk.lambda-url.us-west-2.on.aws'
     this.buildTargets = ['brave']
@@ -144,12 +186,25 @@ export class Config {
     return this.#values.get(key) as Config[K]
   }
 
+  // Sets the property `key`, which only the builder sets with `--builder`.
   #set<K extends keyof Config>(key: K, value: Config[K]): void {
+    assert(
+      !this.#builder,
+      `${key} is set, but with --builder only the builder sets it`,
+    )
     this.#values.set(key, value)
   }
 
+  // Whether the config is for a `--builder`.
+  isBuilderSet(): boolean {
+    return this.#builder !== undefined
+  }
+
   get defaultBuildConfig(): string {
-    return this.#envConfig.getString(['default_build_config'], 'Component')
+    return (
+      this.#builder?.spec.chromium_config.build_config
+      ?? this.#envConfig.getString(['default_build_config'], 'Component')
+    )
   }
 
   get buildConfig(): string {
@@ -203,7 +258,10 @@ export class Config {
   }
 
   get disableGclientConfigUpdate(): boolean {
-    return this.#envConfig.getBoolean(['disable_gclient_config_update'], false)
+    return (
+      !this.#builder
+      && this.#envConfig.getBoolean(['disable_gclient_config_update'], false)
+    )
   }
 
   get leanSync(): boolean {
@@ -227,7 +285,9 @@ export class Config {
 
   get gclientGlobalVars(): Record<string, any> {
     return this.#value('gclientGlobalVars', () =>
-      this.#envConfig.getMergedObject(['gclient', 'global_vars']),
+      this.#builder
+        ? { ...this.#builder.spec.gclient_config.global_vars }
+        : this.#envConfig.getMergedObject(['gclient', 'global_vars']),
     )
   }
 
@@ -236,8 +296,11 @@ export class Config {
   }
 
   get targetArch(): string {
-    return this.#value('targetArch', () =>
-      this.#envConfig.getString(['target_arch'], process.arch),
+    return this.#value(
+      'targetArch',
+      () =>
+        this.#builder?.buildTarget.targetArch
+        ?? this.#envConfig.getString(['target_arch'], process.arch),
     )
   }
 
@@ -256,6 +319,11 @@ export class Config {
   }
 
   get ignorePatchVersionNumber(): boolean {
+    if (this.#builder) {
+      return (
+        this.#builder.spec.brave_config?.ignore_patch_version_number ?? false
+      )
+    }
     return (
       !this.isBraveReleaseBuild()
       && this.#envConfig.getBoolean(['ignore_patch_version_number'], !isCI)
@@ -378,7 +446,7 @@ export class Config {
   }
 
   get sisoLimits(): Record<string, any> {
-    return this.#envConfig.getMergedObject(['siso_limits'])
+    return this.#builder ? {} : this.#envConfig.getMergedObject(['siso_limits'])
   }
 
   get sisoCacheDir(): string | undefined {
@@ -444,10 +512,13 @@ export class Config {
 
   get useBraveHermeticToolchain(): boolean {
     return this.#value('useBraveHermeticToolchain', () =>
-      this.#envConfig.getBoolean(
-        ['use_brave_hermetic_toolchain'],
-        this.rbeService.includes('.brave.com:'),
-      ),
+      this.#builder
+        ? (this.#builder.spec.brave_config?.use_brave_hermetic_toolchain
+          ?? false)
+        : this.#envConfig.getBoolean(
+            ['use_brave_hermetic_toolchain'],
+            this.rbeService.includes('.brave.com:'),
+          ),
     )
   }
 
@@ -482,8 +553,9 @@ export class Config {
   }
 
   get use_no_gn_gen(): boolean | undefined {
-    return this.#value('use_no_gn_gen', () =>
-      this.#envConfig.getBoolean(['use_no_gn_gen']),
+    return this.#value(
+      'use_no_gn_gen',
+      () => !this.#builder && this.#envConfig.getBoolean(['use_no_gn_gen']),
     )
   }
 
@@ -491,29 +563,50 @@ export class Config {
     this.#set('use_no_gn_gen', value)
   }
 
+  // The custom deps of the chromium solution of the .gclient file. A builder
+  // adds its own to package.json's.
   get chromiumCustomDeps(): Record<string, any> {
-    return this.#value('chromiumCustomDeps', () =>
-      this.#envConfig.getMergedObject(['projects', 'chrome', 'custom_deps']),
-    )
+    return this.#value('chromiumCustomDeps', () => ({
+      ...this.#envConfig.getMergedObject(['projects', 'chrome', 'custom_deps']),
+      ...this.#builder?.spec.gclient_config.custom_deps,
+    }))
   }
 
   set chromiumCustomDeps(value: Record<string, any>) {
     this.#set('chromiumCustomDeps', value)
   }
 
+  // The custom vars of the chromium solution of the .gclient file. A builder
+  // adds its own to package.json's, and the remote execution vars from .env.
   get chromiumCustomVars(): Record<string, any> {
-    return this.#value('chromiumCustomVars', () => ({
-      'checkout_pgo_profiles': this.isBraveReleaseBuild(),
-      ...(this.rbeService
+    return this.#value('chromiumCustomVars', () => {
+      const packageVars = this.#envConfig.getMergedObject([
+        'projects',
+        'chrome',
+        'custom_vars',
+      ])
+      // For remote execution through `rbe_service`.
+      const reapiVars = this.rbeService
         ? {
             'reapi_address': this.rbeService,
             'reapi_backend_config_path': 'google.star',
             'reapi_instance': 'default',
           }
-        : {}),
-      ...(this.is_msan ? { 'checkout_instrumented_libraries': true } : {}),
-      ...this.#envConfig.getMergedObject(['projects', 'chrome', 'custom_vars']),
-    }))
+        : {}
+      if (this.#builder) {
+        return {
+          ...packageVars,
+          ...this.#builder.spec.gclient_config.custom_vars,
+          ...reapiVars,
+        }
+      }
+      return {
+        'checkout_pgo_profiles': this.isBraveReleaseBuild(),
+        ...reapiVars,
+        ...(this.is_msan ? { 'checkout_instrumented_libraries': true } : {}),
+        ...packageVars,
+      }
+    })
   }
 
   set chromiumCustomVars(value: Record<string, any>) {
@@ -525,6 +618,9 @@ export class Config {
   }
 
   isBraveReleaseBuild() {
+    if (this.#builder) {
+      return this.#builder.spec.brave_config?.is_brave_release_build ?? false
+    }
     const isBraveReleaseBuildValue = this.#envConfig.getNumber([
       'is_brave_release_build',
     ])
@@ -1187,7 +1283,10 @@ export class Config {
 
   get targetOS(): TargetOS {
     return this.#value('targetOS', () =>
-      validTargetOS(this.#envConfig.getString(['target_os'], this.hostOS)),
+      validTargetOS(
+        this.#builder?.buildTarget.targetOS
+          ?? this.#envConfig.getString(['target_os'], this.hostOS),
+      ),
     )
   }
 
