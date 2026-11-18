@@ -7,16 +7,11 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_ABI_DECODER_H_
 
 #include <optional>
-#include <string>
-#include <vector>
 
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 
 namespace brave_wallet {
-
-std::optional<std::vector<std::string>> UniswapEncodedPathDecode(
-    const std::string& encoded_path);
 
 std::optional<base::ListValue> ABIDecode(const eth_abi::Type& type,
                                          base::span<const uint8_t> input);
