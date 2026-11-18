@@ -117,7 +117,7 @@
     That's a short-haul flight, gate to gate
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_3H" desc="Fun comparison on the time saved slide of Brave Recap, shown from 3 hours of waiting saved." formatter_data="webui=BraveRecap">
-    That's a proper asado
+    That's a slow-cooked stew, start to finish
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_3H30M" desc="Fun comparison on the time saved slide of Brave Recap, shown from 3 hours 30 minutes of waiting saved." formatter_data="webui=BraveRecap">
     That's bread from scratch, rising time included
@@ -147,7 +147,7 @@
     That's a full 10-episode season, no skipping intros
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_12H" desc="Fun comparison on the time saved slide of Brave Recap, shown from 12 hours of waiting saved." formatter_data="webui=BraveRecap">
-    That's a Texas brisket, smoked low and slow
+    That's a full 12-hour shift
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_13H" desc="Fun comparison on the time saved slide of Brave Recap, shown from 13 hours of waiting saved." formatter_data="webui=BraveRecap">
     That's an Ironman triathlon at an average pace
@@ -174,7 +174,7 @@
     That's a full day on Mars
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_27H" desc="Fun comparison on the time saved slide of Brave Recap, shown from 27 hours of waiting saved." formatter_data="webui=BraveRecap">
-    That's the last 100 km of the Camino de Santiago, on foot
+    That's enough to walk 100 km, breaks included
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_30H" desc="Fun comparison on the time saved slide of Brave Recap, shown from 30 hours of waiting saved." formatter_data="webui=BraveRecap">
     That's all of The Lord of the Rings, cover to cover
