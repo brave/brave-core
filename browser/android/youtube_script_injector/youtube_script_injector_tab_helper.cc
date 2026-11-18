@@ -153,8 +153,11 @@ constexpr char16_t kYoutubeFullscreenVideoFitWorkaround[] =
 // 'previoustrack' handlers, so wrap the handlers YouTube registers: when a
 // playlist is playing, follow the URL of the page's own Next or Previous video
 // button, taken from YouTube's watch data, through a link click so YouTube
-// navigates in-page as it would for a tap. The playlist panel isn't used
-// because it renders only some items. As in music players, Previous first
+// navigates in-page as it would for a tap. Click the playlist panel's link for
+// that item when the panel has rendered it: after a click on a link of our own
+// while the device is locked, the page reverts to the previous item on unlock
+// while the new video plays. The panel renders only some items, so otherwise
+// click a link of our own. As in music players, Previous first
 // restarts the item if it's more than a few seconds in, and on the first item
 // always restarts it. On the last item YouTube disables the Next button, so
 // Next is removed. Ignore both while the watch data still describes the
@@ -216,6 +219,18 @@ constexpr char16_t kYoutubePlaylistMediaControlsWorkaround[] =
     }
     return button.command?.commandMetadata?.webCommandMetadata?.url ?? null;
   }
+  function playlistPanelLink(url) {
+    const target = new URL(url, location.href).searchParams;
+    for (const link of document.querySelectorAll(
+             'ytm-playlist-panel-video-renderer a[href]')) {
+      const params = new URL(link.href).searchParams;
+      if (['v', 'list', 'index'].every(
+              key => params.get(key) === target.get(key))) {
+        return link;
+      }
+    }
+    return null;
+  }
   const restartThresholdSeconds = 3;
   const youtubeHandlers = {};
   const setActionHandler = mediaSession.setActionHandler.bind(mediaSession);
@@ -237,6 +252,11 @@ constexpr char16_t kYoutubePlaylistMediaControlsWorkaround[] =
       return;
     }
     if (url) {
+      const panelLink = playlistPanelLink(url);
+      if (panelLink) {
+        panelLink.click();
+        return;
+      }
       const link = document.createElement('a');
       link.href = url;
       link.hidden = true;
