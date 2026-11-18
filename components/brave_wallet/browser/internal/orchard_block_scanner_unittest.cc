@@ -236,7 +236,8 @@ TEST(OrchardBlockScannerTest, DiscoverNewNotes) {
 
   auto result = scanner.ScanBlocks({}, std::move(blocks), std::nullopt);
 
-  EXPECT_EQ(result.value().orchard.discovered_notes.size(), 4u);
+  ASSERT_TRUE(result.has_value());
+  ASSERT_EQ(result.value().orchard.discovered_notes.size(), 4u);
   EXPECT_EQ(result.value().orchard.discovered_notes[0].block_id, 10u);
   EXPECT_EQ(result.value().orchard.discovered_notes[0].amount, 3625561528u);
   EXPECT_EQ(result.value().orchard.discovered_notes[1].block_id, 10u);
@@ -530,11 +531,12 @@ TEST(OrchardBlockScanner, FoundKnownNullifiers_SameBatch) {
 
   auto result = scanner.ScanBlocks({}, std::move(blocks), std::nullopt);
 
-  EXPECT_EQ(result.value().orchard.discovered_notes.size(), 1u);
+  ASSERT_TRUE(result.has_value());
+  ASSERT_EQ(result.value().orchard.discovered_notes.size(), 1u);
   EXPECT_EQ(result.value().orchard.discovered_notes[0].block_id, 10u);
   EXPECT_EQ(result.value().orchard.discovered_notes[0].amount, 3625561528u);
 
-  EXPECT_EQ(result.value().orchard.found_spends.size(), 2u);
+  ASSERT_EQ(result.value().orchard.found_spends.size(), 2u);
   EXPECT_EQ(result.value().orchard.found_spends[0].block_id, 10u);
   EXPECT_EQ(result.value().orchard.found_spends[1].block_id, 11u);
 
@@ -597,8 +599,8 @@ TEST(OrchardBlockScanner, FoundKnownNullifiers) {
 
   auto result = scanner.ScanBlocks(tree_state, std::move(blocks), std::nullopt);
 
-  EXPECT_TRUE(result.has_value());
-  EXPECT_EQ(result.value().orchard.found_spends.size(), 1u);
+  ASSERT_TRUE(result.has_value());
+  ASSERT_EQ(result.value().orchard.found_spends.size(), 1u);
   EXPECT_EQ(result.value().orchard.found_spends[0].nullifier, spend.nullifier);
   EXPECT_EQ(result.value().orchard.discovered_notes.size(), 0u);
 }

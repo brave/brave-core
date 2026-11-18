@@ -742,6 +742,15 @@
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "Перейти на %@ (небезпечно)";
 
+/* Button to exclude a topsite url from the most visited list */
+"ExcludeMostVisitedSite" = "Видалити";
+
+/* Message for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertMessage" = "Цей сайт не з'являтиметься у вашому списку найвідвідуваніших, але не буде вилучений з історії.";
+
+/* Title for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertTitle" = "Вилучити з найвідвідуваніших?";
+
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ запустить зовнішню програму";
 
@@ -864,6 +873,9 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Недійсні дані в запиті платежу";
+
+/* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
+"JavaScriptDialogEmbeddedPageTitle" = "Убудована сторінка на цій сторінці";
 
 /* History tableview section header */
 "LastMonth" = "Останній місяць";
@@ -1868,7 +1880,7 @@
 "ReaderModeSmallerFontButtonAccessibilityLabel" = "Зменшити розмір шрифту";
 
 /* Button for smaller reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
-"ReaderModeSmallerFontButtonTitle" = "–";
+"ReaderModeSmallerFontButtonTitle" = "-";
 
 /* Accessibility hint for the color theme setting buttons in reader mode display settings */
 "ReaderModeThemeButtonAccessibilityHint" = "Зміна кольорової теми.";
@@ -2481,6 +2493,18 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "Рекламу у відео заблоковано на цьому вебсайті.";
+
+/* Title for the Brave Wallet shortcut. Brave Wallet is the name of a product and should not be translated */
+"shortcut.braveWallet" = "Гаманець Brave";
+
+/* Title for the private tab shortcut. */
+"shortcut.privateTab" = "Приватна вкладка";
+
+/* Title for the QR Code shortcut. */
+"shortcut.qrCode" = "QR код";
+
+/* Title for the Search shortcut. */
+"shortcut.search" = "Пошук";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Нова приватна вкладка";

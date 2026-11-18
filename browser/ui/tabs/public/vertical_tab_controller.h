@@ -6,11 +6,14 @@
 #ifndef BRAVE_BROWSER_UI_TABS_PUBLIC_VERTICAL_TAB_CONTROLLER_H_
 #define BRAVE_BROWSER_UI_TABS_PUBLIC_VERTICAL_TAB_CONTROLLER_H_
 
+#include "base/callback_list.h"
+#include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 
 class FocusModeController;
+class FullscreenController;
 class PrefService;
 
 class VerticalTabController {
@@ -59,11 +62,22 @@ class VerticalTabController {
   // expand/collapse the vertical tab strip) should be shown.
   bool ShouldShowVerticalTabToggleButton() const;
 
+  // Relays the window's fullscreen state changes to the callbacks registered
+  // with RegisterOnFullscreenStateChanged(). The window's fullscreen controller
+  // only exists once the window is constructed, after the vertical tab strip.
+  void ListenFullscreenChanges(FullscreenController& fullscreen_controller);
+  base::CallbackListSubscription RegisterOnFullscreenStateChanged(
+      base::RepeatingClosure callback);
+
  private:
+  void OnFullscreenStateChanged();
+
   BrowserWindowInterface::Type type_;
   raw_ptr<PrefService> prefs_;
   raw_ptr<FocusModeController> focus_mode_controller_;
 
+  base::RepeatingClosureList fullscreen_state_changed_callbacks_;
+  base::CallbackListSubscription fullscreen_subscription_;
   ui::ScopedUnownedUserData<VerticalTabController> scoped_unowned_user_data_;
 };
 

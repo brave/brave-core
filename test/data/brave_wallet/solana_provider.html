@@ -2,6 +2,7 @@
 
 <script>
   var connectedAccount = ''
+  var connectPromise = Promise.resolve()
   var signMessageResult = ''
   var signAndSendTransactionResult = ''
   var signTransactionResult = ''
@@ -29,7 +30,7 @@
   }
 
   function solanaConnect() {
-    window.braveSolana.connect().then(result => {
+    connectPromise = window.braveSolana.connect().then(result => {
         connectedAccount = result.publicKey.toString()
     }).catch(error => {
         connectedAccount = ''
@@ -44,7 +45,8 @@
       return false
   }
 
-  function getConnectedAccount() {
+  async function getConnectedAccount() {
+    await connectPromise
     return connectedAccount;
   }
 

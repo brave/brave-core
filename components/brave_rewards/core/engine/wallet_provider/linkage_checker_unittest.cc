@@ -3,9 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <algorithm>
 #include <string>
 #include <utility>
 
+#include "base/test/run_until.h"
 #include "brave/components/brave_rewards/core/engine/test/rewards_engine_test.h"
 #include "brave/components/brave_rewards/core/engine/util/environment_config.h"
 #include "brave/components/brave_rewards/core/engine/util/rewards_prefs.h"
@@ -63,9 +65,12 @@ TEST_F(RewardsLinkageChecker, ServerLinked) {
         "id": "2d7519f4-cb7b-41b7-9f33-9d716f2e7915",
         "linkingId": "2698ba94-7129-5a85-abcd-0c166ab75189",
         "name": "uphold"
+        }
       })");
 
   InitializeEngine();
+  // Absence check: a linked server response must not disconnect the wallet,
+  // so there is no event to wait for. Drain pending tasks instead.
   task_environment().RunUntilIdle();
 
   auto external_wallet =
@@ -90,7 +95,10 @@ TEST_F(RewardsLinkageChecker, ServerUnlinked) {
       })");
 
   InitializeEngine();
-  task_environment().RunUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return std::ranges::contains(client().GetObserverEventsForTesting(),
+                                 "external-wallet-disconnected");
+  }));
 
   auto external_wallet =
       WaitFor<mojom::ExternalWalletPtr>([this](auto callback) {

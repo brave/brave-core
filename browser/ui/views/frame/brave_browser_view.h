@@ -21,9 +21,9 @@
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
-#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/commands/browser/accelerator_pref_manager.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/bookmarks/bookmark_tab_helper.h"
 #include "chrome/browser/ui/bookmarks/bookmark_tab_helper_observer.h"
@@ -37,20 +37,8 @@
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-#include "brave/browser/ui/views/toolbar/brave_vpn_panel_controller.h"
-#endif
-
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
-#endif
-
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-namespace speedreader {
-class SpeedreaderBubbleView;
-class SpeedreaderTabHelper;
-enum class SpeedreaderBubbleLocation : int;
-}  // namespace speedreader
 #endif
 
 namespace sidebar {
@@ -71,7 +59,6 @@ class Widget;
 }  // namespace views
 
 class BraveShieldsToolbarButton;
-class BraveHelpBubbleHostView;
 class BraveMultiContentsView;
 class BrowserWindowInterface;
 class FocusModeTitleBarView;
@@ -119,19 +106,10 @@ class BraveBrowserView : public BrowserView,
   // off, the strip overlays the contents, or it's floated open over them.
   std::optional<int> GetVerticalTabStripWidthAtWindowEdge() const;
 
-  void ShowBraveVPNBubble(bool show_select = false);
-
   // BrowserView overrides:
-  void StartTabCycling() override;
-  views::View* GetAnchorViewForBraveVPNPanel();
-  gfx::Rect GetShieldsBubbleRect() override;
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   // Give active tab's reader mode toolbar.
   ReaderModeToolbarView* reader_mode_toolbar();
-  speedreader::SpeedreaderBubbleView* ShowSpeedreaderBubble(
-      speedreader::SpeedreaderTabHelper* tab_helper,
-      speedreader::SpeedreaderBubbleLocation location) override;
-  void UpdateReaderModeToolbar() override;
 #endif
   bool GetTabStripVisible() const override;
   bool ShouldShowWindowTitle() const override;
@@ -142,8 +120,6 @@ class BraveBrowserView : public BrowserView,
   void UpdateToolbar(content::WebContents* contents) override;
   bool UpdateToolbarSecurityState() override;
   bool AcceleratorPressed(const ui::Accelerator& accelerator) override;
-  bool IsInTabDragging() const override;
-  void ReadyToListenFullscreenChanges() override;
   ClientFrameElementInfo GetFrameElementInfo() const override;
 
   void OnImmersiveFullscreenExited() override;
@@ -153,13 +129,24 @@ class BraveBrowserView : public BrowserView,
   views::View* sidebar_host_view() { return sidebar_host_view_; }
 #endif
 
-  void StopListeningFullscreenChanges();
   bool IsSidebarVisible() const;
+
+  // Web panel state the layout needs for its corner radii calculations. It is
+  // hosted inside the contents area, so the layout cannot reach it directly -
+  // BraveMultiContentsView's target depends on this one.
+  bool IsWebPanelVisible() const;
+  bool IsWebPanelOnLeft() const;
+
+  // Sidebar state the layout needs for its corner radii calculations. The side
+  // panel is a separate view sharing the sidebar's edge, and can be visible
+  // while the sidebar control view is not, so the layout asks about both.
+  bool IsSidePanelVisible() const;
+  // Reports the unmirrored visual side; RTL mirroring is the layout's job.
+  bool IsSidebarOnLeft() const;
 
   BraveVerticalTabStripContainerView* vertical_tab_strip_container_view() {
     return vertical_tab_strip_container_view_;
   }
-  bool ShowBraveHelpBubbleView(const std::string& text) override;
 
   // BookmarkTabHelperObserver:
   void URLStarredChanged(content::WebContents* web_contents,
@@ -180,13 +167,20 @@ class BraveBrowserView : public BrowserView,
 
   BraveMultiContentsView* GetBraveMultiContentsView() const;
 
-  // Applies the contents area corner radii computed by the layout. Called at
-  // the end of every layout pass.
-  void UpdateContentsCornerRadii(const gfx::RoundedCornersF& corner_radii);
+  // Applies the corner radii computed by the layout for the contents area and
+  // for the web panel hosted beside it. Called at the end of every layout pass.
+  void UpdateContentsCornerRadii(
+      const gfx::RoundedCornersF& corner_radii,
+      const gfx::RoundedCornersF& web_panel_corner_radii);
 
   void UpdateRoundedCornersUI();
   void UpdateVerticalTabStripBorder();
-  void UpdateSidePanelBorder();
+
+  // Re-evaluates the rounded corners state when the side panel or the web panel
+  // is shown or hidden: rounded corners around the main contents are used while
+  // either panel is open. Wired as the side panel's visibility-changed
+  // callback; BraveMultiContentsView forwards its web panel container's.
+  void OnPanelVisibilityChanged();
 
   // Re-applies the side panel border so the content corner radii track the
   // sidebar control view's visibility. Wired as SidebarContainerView's
@@ -238,7 +232,6 @@ class BraveBrowserView : public BrowserView,
 #endif
 
  private:
-  class TabCyclingEventHandler;
   class BrowserWindowMouseEventHandler;
   friend class WindowClosingConfirmBrowserTest;
   friend class sidebar::SidebarBrowserTest;
@@ -296,7 +289,6 @@ class BraveBrowserView : public BrowserView,
   void UpdateTabSearchBubbleHost() override;
 
   void HandleBrowserWindowMouseEvent(const ui::MouseEvent& event);
-  void StopTabCycling();
   void OnCompactModePrefChanged();
   void OnPreferenceChanged(const std::string& pref_name);
   void UpdateFocusModeState();
@@ -326,21 +318,12 @@ class BraveBrowserView : public BrowserView,
   // class's ctor body runs).
   void EnsureFindBarHostViewIsLastChild();
 
-  void ToggleSidebar() override;
-  bool HasSelectedURL() const override;
-  void CleanAndCopySelectedURL() override;
-
-#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-  void ShowPlaylistBubble() override;
-#endif
-
   void UpdateSideBarHorizontalAlignment();
 
   std::unique_ptr<TabStripPlacementCoordinator> tab_strip_placement_;
   std::unique_ptr<views::Widget> vertical_tab_strip_widget_;
 
   bool show_active_contents_domain_ = false;
-  raw_ptr<BraveHelpBubbleHostView> brave_help_bubble_host_view_ = nullptr;
   raw_ptr<SidebarContainerView> sidebar_container_view_ = nullptr;
   raw_ptr<views::View> vertical_tab_strip_host_view_ = nullptr;
   raw_ptr<BraveVerticalTabStripContainerView>
@@ -359,15 +342,10 @@ class BraveBrowserView : public BrowserView,
   raw_ptr<views::View> sidebar_host_view_ = nullptr;
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  BraveVPNPanelController vpn_panel_controller_{this};
-#endif
-
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   raw_ptr<ReaderModeToolbarView> reader_mode_toolbar_;
 #endif
 
-  std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;
   std::unique_ptr<BrowserWindowMouseEventHandler>
       browser_window_mouse_event_handler_;
 
@@ -382,6 +360,7 @@ class BraveBrowserView : public BrowserView,
       bookmark_tab_helper_observation_{this};
   base::CallbackListSubscription active_tab_will_discard_contents_subscription_;
   base::CallbackListSubscription active_tab_will_detach_subscription_;
+  base::CallbackListSubscription side_panel_visible_subscription_;
 
   base::WeakPtrFactory<BraveBrowserView> weak_ptr_{this};
 };

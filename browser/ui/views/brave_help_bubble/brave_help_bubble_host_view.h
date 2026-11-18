@@ -30,6 +30,9 @@ class BraveHelpBubbleHostView : public views::View,
   bool Show();
   void Hide();
 
+  // True while the help bubble is open, and not closing.
+  bool IsBubbleOpen() const;
+
   void set_text(const std::string& text) { text_ = text; }
   void set_tracked_element(views::View* element) { tracked_element_ = element; }
 

@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import JSZip from 'jszip'
 import * as ops from './file_ops'
 import {
   createFakeWorkspace,
@@ -577,5 +578,63 @@ describe('workspace confinement', () => {
     // root, so this reads the workspace's own a.txt.
     const root = createFakeWorkspace(layout)
     expect(await ops.viewFile(root, '/a.txt', undefined)).toBe('1\tcontents')
+  })
+})
+
+describe('zipWorkspace', () => {
+  // Lists every entry in the archive, with the contents of each file.
+  async function entries(zip: JSZip): Promise<Record<string, string | null>> {
+    const out: Record<string, string | null> = {}
+    for (const entry of Object.values(zip.files)) {
+      out[entry.name] = entry.dir ? null : await entry.async('string')
+    }
+    return out
+  }
+
+  it('archives every file and folder, keeping empty folders', async () => {
+    const root = createFakeWorkspace({
+      'notes.txt': 'hello',
+      'src/main.ts': 'export {}',
+      'src/lib/util.ts': 'export const x = 1',
+      'empty/': '',
+    })
+    expect(await entries(await ops.zipWorkspace(root))).toEqual({
+      'notes.txt': 'hello',
+      'src/': null,
+      'src/main.ts': 'export {}',
+      'src/lib/': null,
+      'src/lib/util.ts': 'export const x = 1',
+      'empty/': null,
+    })
+  })
+
+  it('stores bytes, not decoded text', async () => {
+    const root = createFakeWorkspace({ 'bin.dat': 'aé' })
+    const zip = await ops.zipWorkspace(root)
+    expect(await zip.file('bin.dat')!.async('uint8array')).toEqual(
+      new Uint8Array([0x61, 0xc3, 0xa9]),
+    )
+  })
+
+  it('produces an archive that round-trips', async () => {
+    const root = createFakeWorkspace({ 'a/b.txt': 'b' })
+    const bytes = await (
+      await ops.zipWorkspace(root)
+    ).generateAsync({
+      type: 'uint8array',
+    })
+    const reloaded = await JSZip.loadAsync(bytes)
+    expect(await reloaded.file('a/b.txt')!.async('string')).toBe('b')
+  })
+
+  it('is empty for an empty workspace', async () => {
+    const zip = await ops.zipWorkspace(createFakeWorkspace({}))
+    expect(Object.keys(zip.files)).toEqual([])
+  })
+
+  it('fails rather than silently omitting an unreadable file', async () => {
+    const root = createFakeWorkspace({ 'a.txt': 'a', 'secret.txt': 's' })
+    makeFileUnreadable(root, 'secret.txt')
+    await expect(ops.zipWorkspace(root)).rejects.toThrow('NotAllowedError')
   })
 })

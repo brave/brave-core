@@ -483,7 +483,8 @@ std::vector<content::WebContents*> tabs_to_close_;
 
 // ✅ CORRECT - integer IDs, safe from pointer reuse
 std::vector<tabs::TabHandle> tabs_to_close_;
-// Use TabInterface::GetFromWebContents to map WC to Handle
+// Map a WebContents to its handle with
+// TabInterface::GetFromContents(web_contents)->GetHandle()
 ```
 
 ---
@@ -719,8 +720,8 @@ after construction. Default to `const raw_ref<T>`.
 
 ```cpp
 // raw_ptr<T> - replaces T* fields (can be null or reassigned)
-class TabFeatures {
-  raw_ptr<content::WebContents> web_contents_;
+class FooBubbleController {
+  raw_ptr<views::Widget> widget_;
 };
 
 // const raw_ref<T> - replaces T& fields (mandatory, cannot be null or reseated)

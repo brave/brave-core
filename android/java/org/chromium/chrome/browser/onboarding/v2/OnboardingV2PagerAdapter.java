@@ -12,7 +12,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import org.chromium.chrome.browser.onboarding.v2.HighlightDialogFragment.HighlightDialogListener;
-import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 
 public class OnboardingV2PagerAdapter extends FragmentPagerAdapter {
 
@@ -35,11 +34,7 @@ public class OnboardingV2PagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
-            return 3;
-        } else {
-            return 4;
-        }
+        return OnboardingV2Fragment.getPageCount();
     }
 
     public void setHighlightListener(HighlightDialogListener highlightDialogListener) {

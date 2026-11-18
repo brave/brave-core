@@ -9,7 +9,9 @@ static_library("common") {
   visibility = [
     ":*",
     "//brave/browser:core",
+    "//brave/browser/search_engines",
     "//brave/browser/ui",
+    "//brave/browser/ui/webui/brave_rewards:rewards_page_handler",
     "//brave/components/ai_chat/core/browser",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/core/internal",

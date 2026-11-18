@@ -25,7 +25,7 @@ namespace speech {
 // Asks to download Brave's on-device speech recognition model. There is no
 // content setting to remember the answer in, because the model is shared by
 // every site, so this records it itself:
-//   - Allow sets `kOnDeviceSpeechModelEnabled`, which is what makes the
+//   - Allow sets `kOnDeviceSpeechEnglishModelEnabled`, which is what makes the
 //     component registrar register the model for download.
 //   - Block, with "Don't ask again" checked, sets
 //     `kAskEnableOnDeviceSpeechModel` to false in the profile.

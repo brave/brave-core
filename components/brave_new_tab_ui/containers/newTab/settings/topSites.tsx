@@ -14,7 +14,7 @@ import {
   StyledTopSitesCustomizationOptionTitle,
   StyledTopSitesCustomizationOptionDesc
 } from '../../../components/default'
-import Toggle from '@brave/leo/react/toggle'
+import Toggle from '@brave/nala/react/toggle'
 
 import { getLocale } from '$web-common/locale'
 

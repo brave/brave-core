@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Button from '@brave/leo/react/button';
+import Button from '@brave/nala/react/button';
 import { useNewTabPref } from '../../hooks/usePref';
 import * as React from 'react';
 import styled from 'styled-components';
 import { useSearchContext } from './SearchContext';
-import { color, font, spacing } from '@brave/leo/tokens/css/variables';
+import { color, font, spacing } from '@brave/nala/tokens/css/variables';
 import { getLocale } from '$web-common/locale';
 
 const Container = styled.div`
@@ -38,7 +38,7 @@ const Actions = styled.div`
     display: flex;
     gap: ${spacing.s};
     justify-content: start;
-    
+
     text-wrap: nowrap;
 
     > leo-button {

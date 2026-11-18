@@ -4,11 +4,11 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import * as leo from '@brave/leo/tokens/css/variables'
+import * as leo from '@brave/nala/tokens/css/variables'
 
-import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
-import Collapse from '@brave/leo/react/collapse'
+import Button from '@brave/nala/react/button'
+import Icon from '@brave/nala/react/icon'
+import Collapse from '@brave/nala/react/collapse'
 
 // shared styles
 import { styledScrollbarMixin } from '../../../shared/style'

@@ -17,7 +17,7 @@ namespace brave_account::endpoints {
 using AccountsDelete = endpoint_client::BraveEndpoint<
     "accounts.bsg",
     "/v2/accounts",
-    endpoint_client::Delete<AccountsDeleteRequestBody>,
+    endpoint_client::Delete<>,
     endpoint_client::Response<AccountsDeleteSuccessBody, ErrorBody>>;
 
 }  // namespace brave_account::endpoints

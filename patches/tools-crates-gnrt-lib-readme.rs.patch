@@ -1,18 +1,22 @@
 diff --git a/tools/crates/gnrt/lib/readme.rs b/tools/crates/gnrt/lib/readme.rs
-index d8c24875fe1e2fb86a2da99d8ed5b043766e104e..1bba8fc0a0680c35c5e1dca0cdd83f8c587acdc9 100644
+index d8c24875fe1e2fb86a2da99d8ed5b043766e104e..106cde3cda4164df261a013b62669dff9e5487a0 100644
 --- a/tools/crates/gnrt/lib/readme.rs
 +++ b/tools/crates/gnrt/lib/readme.rs
-@@ -118,7 +118,8 @@ fn readme_file_from_package<'a>(
-         &crate_vendor_dir,
-         config_license_files,
-         package.license(),
--    )?;
-+    )
-+    .unwrap_or_default();
+@@ -76,7 +76,12 @@ fn readme_file_from_package<'a>(
+     find_shipped: &mut dyn FnMut(&'a PackageId) -> Option<bool>,
+ ) -> Result<(PathBuf, ReadmeFile)> {
+     let crate_build_dir = get_build_dir_for_package(paths, package.name(), package.version());
+-    let crate_vendor_dir = get_vendor_dir_for_package(paths, package.name(), package.version());
++    let crate_vendor_dir = if package.source().is_local() {
++        let manifest_dir = package.manifest_path().parent().context("No crate dir")?;
++        manifest_dir.canonicalize()?.strip_prefix(paths.root.canonicalize()?)?.to_path_buf()
++    } else {
++        get_vendor_dir_for_package(paths, package.name(), package.version())
++    };
  
-     let revision = {
-         if let Ok(file) = std::fs::File::open(
-@@ -284,6 +285,11 @@ enum LicenseKind {
+     let crate_config = extra_config.get_crate_config(package.name(), package.version());
+     let group = find_group(package.id());
+@@ -284,6 +289,11 @@ enum LicenseKind {
      /// https://spdx.org/licenses/CC0-1.0.html
      #[strum(serialize = "CC0-1.0")]
      CC0_1,

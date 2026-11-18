@@ -8,9 +8,10 @@
 #include <utility>
 
 #include "base/check.h"
-#include "brave/browser/ui/brave_browser.h"
+#include "base/check_deref.h"
 #include "brave/browser/ui/brave_file_select_utils.h"
 #include "brave/browser/ui/split_view/split_view_link_redirect_utils.h"
+#include "brave/browser/ui/tabs/public/before_unload_ignore_controller.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/unload_controller.h"
 #include "components/tabs/public/tab_interface.h"
@@ -100,9 +101,9 @@ void BraveBrowserWebContentsDelegate::BeforeUnloadFired(
 bool BraveBrowserWebContentsDelegate::ShouldSuppressDialogs(
     content::WebContents* source) {
   auto* tab = tabs::TabInterface::MaybeGetFromContents(source);
-  auto* brave_browser = static_cast<BraveBrowser*>(&*browser_);
-  return (tab && brave_browser->ShouldIgnoreBeforeUnloadHandlerForTab(
-                     tab->GetHandle())) ||
+  return (tab &&
+          CHECK_DEREF(BeforeUnloadIgnoreController::From(&*browser_))
+              .ShouldIgnoreBeforeUnloadHandlerForTab(tab->GetHandle())) ||
          BrowserWebContentsDelegate::ShouldSuppressDialogs(source);
 }
 

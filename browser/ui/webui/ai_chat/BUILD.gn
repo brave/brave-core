@@ -34,6 +34,9 @@ source_set("ai_chat") {
     "//brave/browser/ai_chat",
     "//brave/browser/ai_chat/ollama",
     "//brave/browser/misc_metrics",
+    "//brave/browser/ui/side_panel/ai_chat",
+    "//brave/browser/ui/webui:brave_webui_source",
+    "//brave/browser/ui/webui:untrusted_sanitized_image_source",
     "//brave/common:webui_url_constants",
     "//brave/components/ai_chat/content/browser",
     "//brave/components/ai_chat/core/browser",
@@ -52,7 +55,6 @@ source_set("ai_chat") {
     "//chrome/browser/bookmarks",
     "//chrome/browser/favicon",
     "//chrome/browser/history",
-    "//chrome/browser/history_embeddings",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/navigator",
@@ -61,8 +63,6 @@ source_set("ai_chat") {
     "//chrome/browser/ui/webui:theme_source",
     "//components/favicon/core",
     "//components/favicon_base",
-    "//components/history_embeddings/content",
-    "//components/history_embeddings/core",
     "//components/keyed_service/core",
     "//components/prefs",
     "//components/strings:components_strings",
@@ -89,6 +89,7 @@ source_set("ai_chat") {
     ]
   } else {
     deps += [
+      "//brave/browser/ui/android/ai_chat",
       "//chrome/browser/android:tabs_public",
       "//chrome/browser/ui/android/tab_model",
     ]
@@ -97,7 +98,12 @@ source_set("ai_chat") {
   if (enable_local_ai) {
     # SearchForTabs ranks the user's open tabs with on-device history
     # embeddings; open_tab_search is desktop only.
-    deps += [ "//brave/browser/history_embeddings:open_tab_search" ]
+    deps += [
+      "//brave/browser/history_embeddings:open_tab_search",
+      "//brave/browser/history_embeddings:service",
+      "//brave/components/history_embeddings/content",
+      "//brave/components/history_embeddings/core",
+    ]
   }
 
   if (enable_brave_ai_chat_agent_profile) {
@@ -120,6 +126,7 @@ source_set("unit_tests") {
     ":ai_chat",
     "//brave/browser/ai_chat",
     "//brave/browser/brave_shields",
+    "//brave/browser/ephemeral_storage",
     "//brave/components/ai_chat/content/browser",
     "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common",

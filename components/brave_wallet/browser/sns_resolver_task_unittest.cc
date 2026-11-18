@@ -37,8 +37,11 @@ TEST(SnsResolverTask, GetMintAddress) {
 
   for (auto& test_case : test_cases) {
     SCOPED_TRACE(test_case.domain);
-    EXPECT_EQ(GetMintAddress(*GetDomainKey(test_case.domain))->ToBase58(),
-              test_case.expected);
+    auto domain_key = GetDomainKey(test_case.domain);
+    ASSERT_TRUE(domain_key);
+    auto mint_address = GetMintAddress(*domain_key);
+    ASSERT_TRUE(mint_address);
+    EXPECT_EQ(mint_address->ToBase58(), test_case.expected);
   }
 }
 
@@ -70,7 +73,9 @@ TEST(SnsResolverTask, GetDomainKey) {
 
   for (auto& test_case : test_cases) {
     SCOPED_TRACE(test_case.domain);
-    EXPECT_EQ(GetDomainKey(test_case.domain)->ToBase58(), test_case.expected);
+    auto domain_key = GetDomainKey(test_case.domain);
+    ASSERT_TRUE(domain_key);
+    EXPECT_EQ(domain_key->ToBase58(), test_case.expected);
   }
 }
 
@@ -117,10 +122,10 @@ TEST(SnsResolverTask, GetRecordKey) {
 
   for (auto& test_case : test_cases_v1) {
     SCOPED_TRACE(test_case.domain);
-    EXPECT_EQ(GetRecordKey(test_case.domain, test_case.record,
-                           SnsRecordsVersion::kRecordsV1)
-                  ->ToBase58(),
-              test_case.expected);
+    auto record_key = GetRecordKey(test_case.domain, test_case.record,
+                                   SnsRecordsVersion::kRecordsV1);
+    ASSERT_TRUE(record_key);
+    EXPECT_EQ(record_key->ToBase58(), test_case.expected);
   }
 
   // https://github.com/Bonfida/sns-sdk/blob/e930b83c24/js/tests/records-v2.test.ts#L346-L376
@@ -159,10 +164,10 @@ TEST(SnsResolverTask, GetRecordKey) {
 
   for (auto& test_case : test_cases_v2) {
     SCOPED_TRACE(test_case.domain);
-    EXPECT_EQ(GetRecordKey(test_case.domain, test_case.record,
-                           SnsRecordsVersion::kRecordsV2)
-                  ->ToBase58(),
-              test_case.expected);
+    auto record_key = GetRecordKey(test_case.domain, test_case.record,
+                                   SnsRecordsVersion::kRecordsV2);
+    ASSERT_TRUE(record_key);
+    EXPECT_EQ(record_key->ToBase58(), test_case.expected);
   }
 }
 

@@ -93,6 +93,12 @@ class FakeAgent : public brave_vpn::mojom::BrowserHostProvider {
   // session without exiting.
   void DropSessionHandles();
 
+  // The BrowserEndpoint of the newest session, for calling into the browser the
+  // way the agent does. Usable as soon as BindBrowserHost() has arrived, even
+  // while its reply is withheld: the real agent sends its current state before
+  // it answers, too. Needs a session.
+  mojom::BrowserEndpoint* browser_endpoint();
+
   // Closes everything: connections, sessions, and any withheld reply. Models
   // the agent process exiting.
   void CloseAllConnections();

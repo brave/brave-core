@@ -18,7 +18,7 @@ void CheckFindCanonicalLinkResult(const std::string& expected_link,
   if (expected_detect_amp) {  // Only check for canonical link if this is an AMP
                               // page
     auto canonical_link = FindCanonicalAmpUrl(body);
-    EXPECT_EQ(expected_find_canonical, canonical_link.has_value());
+    ASSERT_EQ(expected_find_canonical, canonical_link.has_value());
     if (expected_find_canonical) {
       EXPECT_EQ(expected_link, canonical_link.value());
     }

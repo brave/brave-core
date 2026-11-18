@@ -34,7 +34,8 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashTransparentInputs) {
 
     auto result = PickZCashTransparentInputs(
         utxo_map, 30000u, ZCashTargetOutputType::kTransparent);
-    EXPECT_TRUE(result);
+    ASSERT_TRUE(result);
+    ASSERT_EQ(result->inputs.size(), 1u);
     EXPECT_EQ(result->change, 100000u - 30000u - result->fee);
     // max(2, max(1, 1)) * 5000.
     EXPECT_EQ(result->fee, 10000u);
@@ -49,7 +50,8 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashTransparentInputs) {
 
     auto result = PickZCashTransparentInputs(utxo_map, 30000,
                                              ZCashTargetOutputType::kOrchard);
-    EXPECT_TRUE(result);
+    ASSERT_TRUE(result);
+    ASSERT_EQ(result->inputs.size(), 1u);
     // max(2, max(1, 1) + max(1, 0, 2)) * 5000.
     EXPECT_EQ(result->change, 100000u - 30000u - 15000u);
     EXPECT_EQ(result->fee, 15000u);
@@ -76,6 +78,8 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashTransparentInputs) {
     utxo_map["30000"] = GetZCashUtxo(30000);
     auto result = PickZCashTransparentInputs(
         utxo_map, kZCashFullAmount, ZCashTargetOutputType::kTransparent);
+    ASSERT_TRUE(result);
+    ASSERT_EQ(result->inputs.size(), 3u);
     EXPECT_EQ(result->change, 0u);
     // max(2, max(3, 1)) * 5000.
     EXPECT_EQ(result->fee, 15000u);
@@ -97,6 +101,8 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashTransparentInputs) {
     utxo_map["30000"] = GetZCashUtxo(30000);
     auto result = PickZCashTransparentInputs(
         utxo_map, 60000u - 15000u, ZCashTargetOutputType::kTransparent);
+    ASSERT_TRUE(result);
+    ASSERT_EQ(result->inputs.size(), 3u);
     EXPECT_EQ(result->change, 0u);
     // max(2, max(3, 0)) * 5000.
     EXPECT_EQ(result->fee, 15000u);
@@ -118,6 +124,8 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashTransparentInputs) {
     utxo_map["30000"] = GetZCashUtxo(30000);
     auto result = PickZCashTransparentInputs(utxo_map, 60000u - 25000u,
                                              ZCashTargetOutputType::kOrchard);
+    ASSERT_TRUE(result);
+    ASSERT_EQ(result->inputs.size(), 3u);
     EXPECT_EQ(result->change, 0u);
     // max(2, max(3, 1) + max(0, 1, 2)) * 5000.
     EXPECT_EQ(result->fee, 25000u);
@@ -141,7 +149,8 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashTransparentInputs) {
 
     auto result = PickZCashTransparentInputs(
         utxo_map, 30000, ZCashTargetOutputType::kTransparent);
-    EXPECT_TRUE(result);
+    ASSERT_TRUE(result);
+    ASSERT_EQ(result->inputs.size(), 3u);
     // max(2, max(3, 1)) * 5000.
     EXPECT_EQ(result->change, 15000u);
     EXPECT_EQ(result->fee, 15000u);
@@ -165,7 +174,8 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashTransparentInputs) {
 
     auto result = PickZCashTransparentInputs(utxo_map, 30000,
                                              ZCashTargetOutputType::kOrchard);
-    EXPECT_TRUE(result);
+    ASSERT_TRUE(result);
+    ASSERT_EQ(result->inputs.size(), 3u);
     EXPECT_EQ(result->change, 5000u);
     // max(2, max(3, 1) + max(0, 1, 2)) * 5000.
     EXPECT_EQ(result->fee, 25000u);
@@ -187,6 +197,8 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashTransparentInputs) {
     utxo_map["30000"] = GetZCashUtxo(30000);
     auto result = PickZCashTransparentInputs(utxo_map, kZCashFullAmount,
                                              ZCashTargetOutputType::kOrchard);
+    ASSERT_TRUE(result);
+    ASSERT_EQ(result->inputs.size(), 3u);
     EXPECT_EQ(result->change, 0u);
     // max(2, max(3, 0) + max(0, 1, 2)) * 5000.
     EXPECT_EQ(result->fee, 25000u);
@@ -221,7 +233,8 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashTransparentInputs) {
 
     auto result = PickZCashTransparentInputs(
         utxo_map, 4295067295u, ZCashTargetOutputType::kTransparent);
-    EXPECT_TRUE(result);
+    ASSERT_TRUE(result);
+    ASSERT_EQ(result->inputs.size(), 2u);
     EXPECT_EQ(result->change,
               4294967295u + 4294967296u - 4295067295u - result->fee);
     // max(2, max(2, 2)) * 5000.
@@ -243,7 +256,8 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashTransparentInputs) {
 
     auto result = PickZCashTransparentInputs(utxo_map, 4295067295u,
                                              ZCashTargetOutputType::kOrchard);
-    EXPECT_TRUE(result);
+    ASSERT_TRUE(result);
+    ASSERT_EQ(result->inputs.size(), 2u);
     EXPECT_EQ(result->change,
               4294967295u + 4294967296u - 4295067295u - result->fee);
     // max(2, max(2, 1) + max(1, 0, 2)) * 5000.
@@ -299,9 +313,9 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
     notes.push_back(OrchardNote{{}, 1u, {}, 200000u, 0, {}, {}, 2});
     auto result =
         PickZCashOrchardInputs(notes, 10000u, ZCashTargetOutputType::kOrchard);
-    EXPECT_TRUE(result.has_value());
+    ASSERT_TRUE(result.has_value());
     EXPECT_EQ(result->change, 200000u - 10000u - result->fee);
-    EXPECT_EQ(result->inputs.size(), 1u);
+    ASSERT_EQ(result->inputs.size(), 1u);
     // max(2, spend(1) + change(1) + target(1)) * 5000.
     EXPECT_EQ(result->fee, 15000u);
 
@@ -315,9 +329,9 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
     notes.push_back(OrchardNote{{}, 1u, {}, 200000u, 0, {}, {}, 2});
     auto result = PickZCashOrchardInputs(notes, 10000u,
                                          ZCashTargetOutputType::kTransparent);
-    EXPECT_TRUE(result.has_value());
+    ASSERT_TRUE(result.has_value());
     EXPECT_EQ(result->change, 200000u - 10000u - result->fee);
-    EXPECT_EQ(result->inputs.size(), 1u);
+    ASSERT_EQ(result->inputs.size(), 1u);
     // max(2, max(0, 1) + max(spend(1) + change(1), 2)) * 5000.
     EXPECT_EQ(result->fee, 15000u);
 
@@ -333,9 +347,9 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
     notes.push_back(OrchardNote{{}, 3u, {}, 70000u, 0, {}, {}, 2});
     auto result =
         PickZCashOrchardInputs(notes, 150000u, ZCashTargetOutputType::kOrchard);
-    EXPECT_TRUE(result.has_value());
+    ASSERT_TRUE(result.has_value());
     EXPECT_EQ(result->change, 170000u - 150000u - result->fee);
-    EXPECT_EQ(result->inputs.size(), 2u);
+    ASSERT_EQ(result->inputs.size(), 2u);
     // max(2, spends(2) + change(1) + target(1)) * 5000.
     EXPECT_EQ(result->fee, 20000u);
     EXPECT_EQ(result->inputs[0].amount, 70000u);
@@ -352,10 +366,10 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
     notes.push_back(OrchardNote{{}, 3u, {}, 70000u, 0, {}, {}, 2});
     auto result = PickZCashOrchardInputs(notes, kZCashFullAmount,
                                          ZCashTargetOutputType::kOrchard);
-    EXPECT_TRUE(result.has_value());
+    ASSERT_TRUE(result.has_value());
 
     EXPECT_EQ(result->change, 0u);
-    EXPECT_EQ(result->inputs.size(), 3u);
+    ASSERT_EQ(result->inputs.size(), 3u);
     // max(2, spends(3) + target(1)) * 5000, no change output.
     EXPECT_EQ(result->fee, 20000u);
 
@@ -375,10 +389,10 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
     notes.push_back(OrchardNote{{}, 3u, {}, 70000u, 0, {}, {}, 2});
     auto result = PickZCashOrchardInputs(notes, 370000u - 25000u,
                                          ZCashTargetOutputType::kOrchard);
-    EXPECT_TRUE(result.has_value());
+    ASSERT_TRUE(result.has_value());
 
     EXPECT_EQ(result->change, 0u);
-    EXPECT_EQ(result->inputs.size(), 3u);
+    ASSERT_EQ(result->inputs.size(), 3u);
     // max(2, spends(3) + change(1) + target(1)) * 5000. The change output is
     // assumed while picking, so it is still paid for even though change is 0.
     EXPECT_EQ(result->fee, 25000u);
@@ -400,9 +414,9 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
 
     auto result = PickZCashOrchardInputs(notes, 150000u,
                                          ZCashTargetOutputType::kTransparent);
-    EXPECT_TRUE(result.has_value());
+    ASSERT_TRUE(result.has_value());
     EXPECT_EQ(result->change, 170000u - 150000u - result->fee);
-    EXPECT_EQ(result->inputs.size(), 2u);
+    ASSERT_EQ(result->inputs.size(), 2u);
     // max(2, max(0, 1) + max(spends(2) + change(1), 2)) * 5000.
     EXPECT_EQ(result->fee, 20000u);
 
@@ -420,10 +434,10 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
     notes.push_back(OrchardNote{{}, 3u, {}, 70000u, 0, {}, {}, 2});
     auto result = PickZCashOrchardInputs(notes, kZCashFullAmount,
                                          ZCashTargetOutputType::kTransparent);
-    EXPECT_TRUE(result.has_value());
+    ASSERT_TRUE(result.has_value());
 
     EXPECT_EQ(result->change, 0u);
-    EXPECT_EQ(result->inputs.size(), 3u);
+    ASSERT_EQ(result->inputs.size(), 3u);
     // max(2, max(0, 1) + max(spends(3) + outputs(0), 2)) * 5000.
     EXPECT_EQ(result->fee, 20000u);
 
@@ -443,10 +457,10 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
     notes.push_back(OrchardNote{{}, 3u, {}, 70000u, 0, {}, {}, 2});
     auto result = PickZCashOrchardInputs(notes, 370000u - 25000u,
                                          ZCashTargetOutputType::kTransparent);
-    EXPECT_TRUE(result.has_value());
+    ASSERT_TRUE(result.has_value());
 
     EXPECT_EQ(result->change, 0u);
-    EXPECT_EQ(result->inputs.size(), 3u);
+    ASSERT_EQ(result->inputs.size(), 3u);
     // max(2, max(0, 1) + max(spends(3) + change(1), 2)) * 5000. The change
     // output is assumed while picking, so it is paid for even when change is 0.
     EXPECT_EQ(result->fee, 25000u);
@@ -484,9 +498,9 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
     notes.push_back(OrchardNote{{}, 5u, {}, 0u, 0, {}, {}, 2});
     auto result = PickZCashOrchardInputs(notes, 10000u,
                                          ZCashTargetOutputType::kTransparent);
-    EXPECT_TRUE(result.has_value());
+    ASSERT_TRUE(result.has_value());
     // Only the two value-bearing notes are selected.
-    EXPECT_EQ(result->inputs.size(), 2u);
+    ASSERT_EQ(result->inputs.size(), 2u);
     // max(2, max(0, 1) + max(spends(2) + change(1), 2)) * 5000.
     EXPECT_EQ(result->fee, 20000u);
     EXPECT_EQ(result->change, 105000u - 10000u - result->fee);
@@ -555,9 +569,10 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
         OrchardNote{{}, 2u, {}, 0xFFFFFFFF + 200000u, 0, {}, {}, 2});
     auto result = PickZCashOrchardInputs(notes, kZCashFullAmount,
                                          ZCashTargetOutputType::kOrchard);
+    ASSERT_TRUE(result.has_value());
 
     EXPECT_EQ(result->change, 0u);
-    EXPECT_EQ(result->inputs.size(), 2u);
+    ASSERT_EQ(result->inputs.size(), 2u);
     // max(2, spends(2) + target(1)) * 5000, no change output.
     EXPECT_EQ(result->fee, 15000u);
 
@@ -576,9 +591,10 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
         OrchardNote{{}, 2u, {}, 0xFFFFFFFF + 200000u, 0, {}, {}, 2});
     auto result = PickZCashOrchardInputs(notes, kZCashFullAmount,
                                          ZCashTargetOutputType::kTransparent);
+    ASSERT_TRUE(result.has_value());
 
     EXPECT_EQ(result->change, 0u);
-    EXPECT_EQ(result->inputs.size(), 2u);
+    ASSERT_EQ(result->inputs.size(), 2u);
     // max(2, max(0, 1) + max(spends(2) + outputs(0), 2)) * 5000.
     EXPECT_EQ(result->fee, 15000u);
 
@@ -595,10 +611,11 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
     notes.push_back(OrchardNote{{}, 2u, {}, 4295167295u, 0, {}, {}, 2});
     auto result = PickZCashOrchardInputs(notes, 4295117295u,
                                          ZCashTargetOutputType::kOrchard);
+    ASSERT_TRUE(result.has_value());
 
     EXPECT_EQ(result->change,
               notes[0].amount + notes[1].amount - 4295117295u - result->fee);
-    EXPECT_EQ(result->inputs.size(), 2u);
+    ASSERT_EQ(result->inputs.size(), 2u);
     // max(2, spends(2) + change(1) + target(1)) * 5000.
     EXPECT_EQ(result->fee, 20000u);
 
@@ -615,10 +632,11 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
     notes.push_back(OrchardNote{{}, 2u, {}, 4295167295u, 0, {}, {}, 2});
     auto result = PickZCashOrchardInputs(notes, 4295117295u,
                                          ZCashTargetOutputType::kTransparent);
+    ASSERT_TRUE(result.has_value());
 
     EXPECT_EQ(result->change,
               notes[0].amount + notes[1].amount - 4295117295u - result->fee);
-    EXPECT_EQ(result->inputs.size(), 2u);
+    ASSERT_EQ(result->inputs.size(), 2u);
     // max(2, max(0, 1) + max(spends(2) + change(1), 2)) * 5000.
     EXPECT_EQ(result->fee, 20000u);
 
@@ -662,10 +680,10 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashIronwoodInputs) {
     notes.push_back(OrchardNote{{}, 1u, {}, 200000u, 0, {}, {}, 3});
     auto result = PickZCashIronwoodInputs(notes, 10000u,
                                           ZCashTargetOutputType::kIronwood);
-    EXPECT_TRUE(result.has_value());
+    ASSERT_TRUE(result.has_value());
     EXPECT_EQ(result->fee, 10000u);
     EXPECT_EQ(result->change, 200000u - 10000u - result->fee);
-    EXPECT_EQ(result->inputs.size(), 1u);
+    ASSERT_EQ(result->inputs.size(), 1u);
     EXPECT_EQ(result->inputs[0].amount, 200000u);
     EXPECT_EQ(result->inputs[0].block_id, 1u);
   }
@@ -676,11 +694,11 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashIronwoodInputs) {
     notes.push_back(OrchardNote{{}, 1u, {}, 200000u, 0, {}, {}, 3});
     auto result = PickZCashIronwoodInputs(notes, 10000u,
                                           ZCashTargetOutputType::kTransparent);
-    EXPECT_TRUE(result.has_value());
+    ASSERT_TRUE(result.has_value());
     // max(2, max(0, 1) + max(1, 1, 2)) * 5000.
     EXPECT_EQ(result->fee, 15000u);
     EXPECT_EQ(result->change, 200000u - 10000u - result->fee);
-    EXPECT_EQ(result->inputs.size(), 1u);
+    ASSERT_EQ(result->inputs.size(), 1u);
     EXPECT_EQ(result->inputs[0].amount, 200000u);
   }
 
@@ -692,11 +710,11 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashIronwoodInputs) {
     notes.push_back(OrchardNote{{}, 3u, {}, 70000u, 0, {}, {}, 3});
     auto result = PickZCashIronwoodInputs(notes, 150000u,
                                           ZCashTargetOutputType::kIronwood);
-    EXPECT_TRUE(result.has_value());
+    ASSERT_TRUE(result.has_value());
     // max(2, max(2, 1 + 1, 2)) * 5000.
     EXPECT_EQ(result->fee, 10000u);
     EXPECT_EQ(result->change, 170000u - 150000u - result->fee);
-    EXPECT_EQ(result->inputs.size(), 2u);
+    ASSERT_EQ(result->inputs.size(), 2u);
     EXPECT_EQ(result->inputs[0].amount, 70000u);
     EXPECT_EQ(result->inputs[0].block_id, 3u);
     EXPECT_EQ(result->inputs[1].amount, 100000u);
@@ -711,9 +729,9 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashIronwoodInputs) {
     notes.push_back(OrchardNote{{}, 3u, {}, 70000u, 0, {}, {}, 3});
     auto result = PickZCashIronwoodInputs(notes, kZCashFullAmount,
                                           ZCashTargetOutputType::kIronwood);
-    EXPECT_TRUE(result.has_value());
+    ASSERT_TRUE(result.has_value());
     EXPECT_EQ(result->change, 0u);
-    EXPECT_EQ(result->inputs.size(), 3u);
+    ASSERT_EQ(result->inputs.size(), 3u);
     // max(2, max(3, 1, 2)) * 5000.
     EXPECT_EQ(result->fee, 15000u);
     EXPECT_EQ(result->inputs[0].amount, 100000u);
@@ -729,7 +747,7 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashIronwoodInputs) {
     notes.push_back(OrchardNote{{}, 3u, {}, 70000u, 0, {}, {}, 3});
     auto result = PickZCashIronwoodInputs(notes, kZCashFullAmount,
                                           ZCashTargetOutputType::kTransparent);
-    EXPECT_TRUE(result.has_value());
+    ASSERT_TRUE(result.has_value());
     EXPECT_EQ(result->change, 0u);
     EXPECT_EQ(result->inputs.size(), 3u);
     // max(2, max(0, 1) + max(3, 0, 2)) * 5000.
@@ -744,7 +762,7 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashIronwoodInputs) {
     notes.push_back(OrchardNote{{}, 3u, {}, 70000u, 0, {}, {}, 3});
     auto result = PickZCashIronwoodInputs(notes, 370000u - 15000u,
                                           ZCashTargetOutputType::kIronwood);
-    EXPECT_TRUE(result.has_value());
+    ASSERT_TRUE(result.has_value());
     EXPECT_EQ(result->change, 0u);
     EXPECT_EQ(result->inputs.size(), 3u);
     // max(2, max(3, 1 + 1, 2)) * 5000.
@@ -772,9 +790,9 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashIronwoodInputs) {
     notes.push_back(OrchardNote{{}, 5u, {}, 0u, 0, {}, {}, 3});
     auto result = PickZCashIronwoodInputs(notes, 10000u,
                                           ZCashTargetOutputType::kTransparent);
-    EXPECT_TRUE(result.has_value());
+    ASSERT_TRUE(result.has_value());
     // Only the two value-bearing notes are selected.
-    EXPECT_EQ(result->inputs.size(), 2u);
+    ASSERT_EQ(result->inputs.size(), 2u);
     // max(2, max(0, 1) + max(2, 1, 2)) * 5000.
     EXPECT_EQ(result->fee, 15000u);
     EXPECT_EQ(result->change, 105000u - 10000u - result->fee);
@@ -811,9 +829,9 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashIronwoodInputs) {
         OrchardNote{{}, 2u, {}, 0xFFFFFFFF + 200000u, 0, {}, {}, 3});
     auto result = PickZCashIronwoodInputs(notes, kZCashFullAmount,
                                           ZCashTargetOutputType::kIronwood);
-    EXPECT_TRUE(result.has_value());
+    ASSERT_TRUE(result.has_value());
     EXPECT_EQ(result->change, 0u);
-    EXPECT_EQ(result->inputs.size(), 2u);
+    ASSERT_EQ(result->inputs.size(), 2u);
     // max(2, max(2, 1, 2)) * 5000.
     EXPECT_EQ(result->fee, 10000u);
     EXPECT_EQ(result->inputs[0].amount, 0xFFFFFFFF + 100000u);
@@ -827,10 +845,10 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashIronwoodInputs) {
     notes.push_back(OrchardNote{{}, 2u, {}, 4295167295u, 0, {}, {}, 3});
     auto result = PickZCashIronwoodInputs(notes, 4295117295u,
                                           ZCashTargetOutputType::kIronwood);
-    EXPECT_TRUE(result.has_value());
+    ASSERT_TRUE(result.has_value());
     EXPECT_EQ(result->change,
               notes[0].amount + notes[1].amount - 4295117295u - result->fee);
-    EXPECT_EQ(result->inputs.size(), 2u);
+    ASSERT_EQ(result->inputs.size(), 2u);
     // max(2, max(2, 1 + 1, 2)) * 5000.
     EXPECT_EQ(result->fee, 10000u);
     EXPECT_EQ(result->inputs[0].amount, 4295117295u);
@@ -902,7 +920,10 @@ TEST(ZCashTransactionUtilsUnitTest, CalculateZCashTxFee) {
                                    ZCashTargetOutputType::kTransparent,
                                    /*has_change=*/true)
                    .IsValid());
+}
 
+TEST(ZCashTransactionUtilsDeathTest,
+     CalculateZCashTxFee_InputsFromMultiplePools) {
   // Inputs must come from exactly one pool.
   EXPECT_DEATH_IF_SUPPORTED(
       {

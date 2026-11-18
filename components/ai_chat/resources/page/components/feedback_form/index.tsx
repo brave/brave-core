@@ -4,9 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
-import Checkbox from '@brave/leo/react/checkbox'
-import Dialog from '@brave/leo/react/dialog'
+import Button from '@brave/nala/react/button'
+import Checkbox from '@brave/nala/react/checkbox'
+import Dialog from '@brave/nala/react/dialog'
 import { getLocale, formatLocale } from '$web-common/locale'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'

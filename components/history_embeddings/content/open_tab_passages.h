@@ -23,7 +23,7 @@ namespace history {
 class HistoryService;
 }  // namespace history
 
-namespace history_embeddings {
+namespace brave_history_embeddings {
 
 class HistoryEmbeddingsService;
 
@@ -53,6 +53,6 @@ void GetPassagesForUrls(history::HistoryService* history_service,
                         TabPassagesCallback callback,
                         base::CancelableTaskTracker* task_tracker);
 
-}  // namespace history_embeddings
+}  // namespace brave_history_embeddings
 
 #endif  // BRAVE_COMPONENTS_HISTORY_EMBEDDINGS_CONTENT_OPEN_TAB_PASSAGES_H_

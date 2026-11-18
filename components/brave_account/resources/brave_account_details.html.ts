@@ -118,7 +118,7 @@ export function getHtml(this: BraveAccountDetailsElement) {
           </div>
         </if>
         <div class="details">
-          <div class="detail">
+          <div class="detail card">
             <div class="label">
               ${loadTimeData.getString(
                 BraveAccountSettingsStrings.SETTINGS_BRAVE_ACCOUNT_EMAIL_ADDRESS_LABEL,
@@ -130,7 +130,7 @@ export function getHtml(this: BraveAccountDetailsElement) {
               .value=${this.truncatedEmail}
             ></leo-input>
           </div>
-          <div class="detail">
+          <div class="detail card">
             <div class="label">
               ${loadTimeData.getString(
                 BraveAccountSettingsStrings.SETTINGS_BRAVE_ACCOUNT_PASSWORD_LABEL,

@@ -14,6 +14,7 @@
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
+#include "base/memory/raw_ptr.h"
 #include "base/notreached.h"
 #include "base/path_service.h"
 #include "base/strings/sys_string_conversions.h"
@@ -24,6 +25,7 @@
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api.h"
 #include "brave/ios/browser/api/bookmarks/exporter/bookmark_html_writer.h"
 #include "brave/ios/browser/api/bookmarks/exporter/bookmarks_encoder.h"
+#include "brave/ios/browser/api/profile/profile_bridge_impl.h"
 #include "components/bookmarks/browser/bookmark_node.h"
 #include "components/bookmarks/browser/bookmark_uuids.h"
 #include "components/strings/grit/components_strings.h"
@@ -78,22 +80,24 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
   delete this;
 }
 
-@interface IOSBookmarkNode(BookmarksExporter)
+@interface IOSBookmarkNode (BookmarksExporter)
 - (void)setNativeParent:(bookmarks::BookmarkNode*)parent;
 @end
 
 @interface BraveBookmarksExporter () {
   scoped_refptr<base::SequencedTaskRunner> export_thread_;
+  raw_ptr<ProfileIOS> _profile;
 }
 @end
 
 @implementation BraveBookmarksExporter
 
-- (instancetype)init {
+- (instancetype)initWithProfile:(id<ProfileBridge>)profile {
   if ((self = [super init])) {
     // This work must be done on the UI thread because it currently relies on
     // fetching information from ProfileIOS which is main-thread bound
     export_thread_ = web::GetUIThreadTaskRunner({});
+    _profile = base::apple::ObjCCastStrict<ProfileBridgeImpl>(profile).profile;
   }
   return self;
 }
@@ -118,12 +122,8 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
 
     listener(BraveBookmarksExporterStateStarted);
 
-    std::vector<ProfileIOS*> profiles =
-        GetApplicationContext()->GetProfileManager()->GetLoadedProfiles();
-    ProfileIOS* last_used_profile = profiles.at(0);
-
     bookmark_html_writer::WriteBookmarks(
-        last_used_profile, destination_file_path,
+        exporter->_profile, destination_file_path,
         new BraveBookmarksExportObserver(base::BindOnce(listener)));
   };
 
@@ -175,7 +175,8 @@ void BraveBookmarksExportObserver::OnExportFinished(Result result) {
   export_thread_->PostTask(FROM_HERE, base::BindOnce(start_export));
 }
 
-// MARK: - Internal artificial nodes used for exporting arbitrary bookmarks to a file
+// MARK: - Internal artificial nodes used for exporting arbitrary bookmarks to a
+// file
 
 - (std::unique_ptr<bookmarks::BookmarkNode>)getRootNode {
   return std::make_unique<bookmarks::BookmarkNode>(

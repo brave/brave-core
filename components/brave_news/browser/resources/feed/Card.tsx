@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react';
-import { color, effect, font, radius, spacing } from '@brave/leo/tokens/css/variables';
+import { color, effect, font, radius, spacing } from '@brave/nala/tokens/css/variables';
 import styled from "styled-components";
 import SecureLink, { SecureLinkProps, defaultAllowedSchemes, validateScheme } from '$web-common/SecureLink';
 import { useBraveNews } from '../shared/Context';

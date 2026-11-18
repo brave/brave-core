@@ -8,7 +8,7 @@ import * as React from 'react'
 import styled, { css } from 'styled-components'
 import { Link } from 'react-router-dom'
 
-import Icon from '@brave/leo/react/icon'
+import Icon from '@brave/nala/react/icon'
 import {
   color,
   font,
@@ -16,8 +16,8 @@ import {
   spacing,
   icon,
   elevation
-} from '@brave/leo/tokens/css/variables'
-import LeoButton from '@brave/leo/react/button'
+} from '@brave/nala/tokens/css/variables'
+import LeoButton from '@brave/nala/react/button'
 
 import PlaylistInfo from './playlistInfo'
 import {
@@ -175,7 +175,7 @@ function NameEditField ({
 }) {
   const inputRef = React.useRef<HTMLInputElement>(null)
   const [currentLength, setCurrentLength] = React.useState(defaultName.length);
-  
+
   return (
     <NameEditFieldContainer>
       <StyledInput
@@ -184,8 +184,8 @@ function NameEditField ({
         maxLength={maxNameLength}
         defaultValue={defaultName}
         autoFocus
-        onChange={(e) => { 
-          onChange(e.target.value) 
+        onChange={(e) => {
+          onChange(e.target.value)
           setCurrentLength(e.target.value.length)
         }}
         onKeyDown={(e) => {

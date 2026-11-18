@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 ຫຼືປັບແກ້ໃນຮ່າງ <ph name="SETTINGS_EXTENIONS_LINK"/> ຕໍ່ມາ.</translation>
 <translation id="6229752134959014186">ຮຽນຮູ້ເພີ່ມເຕີມກ່ຽວກັບ Widevine</translation>
+<translation id="3318169548229684688">ດາວໂຫລດໂມເດວການຮັບຮູ້ສຽງເວົ້າ (<ph name="DOWNLOAD_SIZE"/>) ເພື່ອປະມວນຜົນສຽງເວົ້າໃນອຸປະກອນນີ້</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> ກຳລັງຂໍຂໍ້ມູນ</translation>
 <translation id="3218385319396786393">ການເລັ່ນອັກຕະໂລມົນຖືກບລັອກໃນໜ້ານີ້</translation>
 <translation id="4988333904713528597">ອນຸຍາດໃຫ້ເລັ່ນອັກຕະໂລມົນເບື້ອງ <ph name="HOST"/></translation>
@@ -609,6 +610,8 @@
 <translation id="3540231253392253941">ໃຊ້ບໍລິການ Google ສໍາຫັດຂໍ້ຄວາມ Push</translation>
 <translation id="2224032129673914306">ການຄົ້ນຫາ history ຕາມຄວາມໝາຍ</translation>
 <translation id="6045998903985162478">ຈັດດັດຊະນີໜ້າເວັບທີ່ທ່ານໄດ້ເຂົ້າເບິ່ງ ເພື່ອໃຫ້ທ່ານສາມາດຄົ້ນຫາມັນໄດ້ຢ່າງງ່າຍດາຍໃນ history, ແຖບທີ່ເປີດຢູ່ ແລະ Leo.</translation>
+<translation id="3962946446120925966">ການຮັບຮູ້ສຽງເວົ້າຢູ່ໃນອຸປະກອນ</translation>
+<translation id="6408242130028978631">ດາວໂຫຼດໂມເດວການຮັບຮູ້ສຽງເວົ້າ (<ph name="DOWNLOAD_SIZE"/>) ເພື່ອໃຫ້ເວັບໄຊຕ່າງໆສາມາດປະມວນຜົນສຽງເວົ້າຢູ່ໃນອຸປະກອນນີ້ໄດ້. ປິດການຕັ້ງຄ່ານີ້ເພື່ອລຶບໂມເດວອອກ.</translation>
 <translation id="5813105074916486721">ການເກັບຮັກສາ history ໃນເຄື່ອງ</translation>
 <translation id="5671611745062206644">Brave ເກັບຮັກສາ browsing history ຂອງທ່ານໄວ້ໃນເຄື່ອງດົນເທົ່າໃດ</translation>
 <translation id="7184510058087008090">1 ວັນ</translation>

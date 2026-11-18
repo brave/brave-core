@@ -4,8 +4,8 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Icon from '@brave/leo/react/icon'
-import Label from '@brave/leo/react/label'
+import Icon from '@brave/nala/react/icon'
+import Label from '@brave/nala/react/label'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'

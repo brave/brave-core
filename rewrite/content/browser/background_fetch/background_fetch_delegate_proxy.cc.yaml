@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Deny Background Fetch in off-the-record profiles.
+
+      Off-the-record profiles download through InMemoryDownloadImpl, whose
+      request carries no initiator and no isolation info. The network service
+      then treats the fetched URL as its own top-level site, so the request
+      sends that site's first-party cookies from a third-party context, and a
+      .onion page's Origin header goes out unmodified. Denying the permission
+      makes backgroundFetch.fetch() reject before any request is made, in
+      Private and Tor windows alike.
+    preempt_function_impl:
+      function_name: BackgroundFetchDelegateProxy::GetPermissionForOrigin
+      code: |-
+        if (auto* browser_context = GetBrowserContext();
+            browser_context && browser_context->IsOffTheRecord()) {
+          std::move(callback).Run(BackgroundFetchPermission::BLOCKED);
+          return;
+        }

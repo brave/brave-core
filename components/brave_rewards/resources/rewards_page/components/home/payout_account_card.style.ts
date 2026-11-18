@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { color, effect, font } from '@brave/leo/tokens/css/variables'
+import { color, effect, font } from '@brave/nala/tokens/css/variables'
 
 import { scoped } from '$web-common/scoped_css'
 

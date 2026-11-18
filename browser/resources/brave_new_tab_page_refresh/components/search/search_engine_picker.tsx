@@ -4,8 +4,8 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
-import ButtonMenu from '@brave/leo/react/buttonMenu'
+import Button from '@brave/nala/react/button'
+import ButtonMenu from '@brave/nala/react/buttonMenu'
 
 import { getString } from '../../lib/strings'
 import { SearchEngineInfo } from '../../state/search_store'

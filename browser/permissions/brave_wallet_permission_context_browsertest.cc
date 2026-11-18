@@ -91,7 +91,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletPermissionContextBrowserTest,
   allowed_accounts = BraveWalletPermissionContext::GetAllowedAccounts(
       blink::PermissionType::BRAVE_ETHEREUM,
       web_contents()->GetPrimaryMainFrame(), addresses);
-  EXPECT_TRUE(allowed_accounts);
+  ASSERT_TRUE(allowed_accounts);
   EXPECT_TRUE(allowed_accounts->empty());
 
   // Return allowed accounts after permissions are set.
@@ -110,7 +110,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletPermissionContextBrowserTest,
   allowed_accounts = BraveWalletPermissionContext::GetAllowedAccounts(
       blink::PermissionType::BRAVE_ETHEREUM,
       web_contents()->GetPrimaryMainFrame(), addresses);
-  EXPECT_TRUE(allowed_accounts);
+  ASSERT_TRUE(allowed_accounts);
   EXPECT_EQ(*allowed_accounts, expected_allowed_accounts);
 }
 

@@ -6,6 +6,4 @@
 #include "brave/browser/ui/views/frame/brave_system_menu_model_builder.h"
 #include "chrome/browser/ui/views/frame/system_menu_model_builder.h"
 
-#define SystemMenuModelBuilder BraveSystemMenuModelBuilder
 #include <chrome/browser/ui/views/frame/browser_widget.cc>
-#undef SystemMenuModelBuilder

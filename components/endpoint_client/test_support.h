@@ -10,8 +10,6 @@
 #include <string>
 #include <utility>
 
-#include "base/check_deref.h"
-#include "base/json/json_writer.h"
 #include "base/test/gmock_expected_support.h"
 #include "base/test/protobuf_matchers.h"
 #include "base/test/values_test_util.h"
@@ -23,6 +21,7 @@
 #include "brave/components/endpoint_client/is_protobuf_message.h"
 #include "brave/components/endpoint_client/is_response.h"
 #include "brave/components/endpoint_client/maybe_strip_with_headers.h"
+#include "brave/components/endpoint_client/serialize_body.h"
 #include "brave/components/endpoint_client/url_replacements.h"
 #include "brave/components/endpoint_client/with_headers.h"
 #include "net/http/http_response_headers.h"
@@ -36,28 +35,22 @@
 
 namespace endpoint_client {
 
-namespace detail {
+namespace internal {
 
-template <IsJSONResponse Response>
-  requires(HasToValue<typename Response::SuccessBody> &&
-           HasToValue<typename Response::ErrorBody>)
+template <IsResponse Response>
 std::string ToContent(const Response& response) {
-  return response.body
-      .transform([](const auto& body) {
-        return CHECK_DEREF(base::WriteJson(body.has_value()
-                                               ? body.value().ToValue()
-                                               : body.error().ToValue()));
-      })
-      .value_or(R"({"invalid": json})");  // malformed JSON
-}
-
-std::string ToContent(const IsProtobufResponse auto& response) {
-  return response.body
-      .transform([](const auto& body) {
-        return body.has_value() ? body.value().SerializeAsString()
-                                : body.error().SerializeAsString();
-      })
-      .value_or("\x0A");  // malformed Protobuf
+  if constexpr (IsResponseWithoutBodies<Response>) {
+    return "";
+  } else {
+    return response.body
+        .transform([](const auto& body) {
+          return body.has_value() ? SerializeBody(body.value())
+                                  : SerializeBody(body.error());
+        })
+        // A lone 0x0A is malformed as both JSON (whitespace only, no value) and
+        // Protobuf (a length-delimited field 1 tag missing its length).
+        .value_or("\x0A");
+  }
 }
 
 template <typename Body>
@@ -94,7 +87,7 @@ ResponseBodyEq(
   return testing::Optional(base::test::ErrorIs(BodyEq(expected->error())));
 }
 
-}  // namespace detail
+}  // namespace internal
 
 // Registers a mock response for Endpoint in network::TestURLLoaderFactory.
 // Supports simulating transport errors, HTTP status codes, and
@@ -118,7 +111,7 @@ void MockResponseFor(network::TestURLLoaderFactory& test_url_loader_factory,
 
   test_url_loader_factory.AddResponse(
       url_replacements.Apply(Endpoint::URL()), std::move(head),
-      detail::ToContent(response),
+      internal::ToContent(response),
       network::URLLoaderCompletionStatus(response.net_error));
 }
 
@@ -136,14 +129,20 @@ bool MatchesEndpoint(const network::ResourceRequest& request,
 }
 
 template <typename Response>
-  requires detail::IsResponse<detail::MaybeStripWithHeaders<Response>>
+  requires internal::IsResponse<internal::MaybeStripWithHeaders<Response>>
 testing::Matcher<const Response&> ResponseEq(const Response& expected) {
-  auto response_matcher = testing::AllOf(
+  testing::Matcher<const Response&> response_matcher = testing::AllOf(
       testing::Field("net_error", &Response::net_error, expected.net_error),
       testing::Field("status_code", &Response::status_code,
-                     expected.status_code),
-      testing::Field("body", &Response::body,
-                     detail::ResponseBodyEq(expected.body)));
+                     expected.status_code));
+
+  if constexpr (internal::IsResponseWithBodies<
+                    internal::MaybeStripWithHeaders<Response>>) {
+    response_matcher =
+        testing::AllOf(response_matcher,
+                       testing::Field("body", &Response::body,
+                                      internal::ResponseBodyEq(expected.body)));
+  }
 
   if constexpr (base::is_instantiation<Response, WithHeaders>) {
     static constexpr auto kRawHeaders = [](const auto& headers) {

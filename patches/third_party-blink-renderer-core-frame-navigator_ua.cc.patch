@@ -1,8 +1,16 @@
 diff --git a/third_party/blink/renderer/core/frame/navigator_ua.cc b/third_party/blink/renderer/core/frame/navigator_ua.cc
-index d334ce3951aff6746fefdaa3857e9e99d6e7cb0b..b7dbea24865f5ff486751f7d3bc9aad19c3a49b7 100644
+index d334ce3951aff6746fefdaa3857e9e99d6e7cb0b..a53cea06375f8d6f2d26b8a6e9da24468c60cc7c 100644
 --- a/third_party/blink/renderer/core/frame/navigator_ua.cc
 +++ b/third_party/blink/renderer/core/frame/navigator_ua.cc
-@@ -14,7 +14,8 @@ NavigatorUAData* NavigatorUA::userAgentData() {
+@@ -4,6 +4,7 @@
+ 
+ #include "third_party/blink/renderer/core/frame/navigator_ua.h"
+ 
++#include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
+ #include "third_party/blink/public/common/user_agent/user_agent_metadata.h"
+ #include "third_party/blink/renderer/core/frame/navigator_ua_data.h"
+ #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+@@ -14,7 +15,8 @@ NavigatorUAData* NavigatorUA::userAgentData() {
    NavigatorUAData* ua_data =
        MakeGarbageCollected<NavigatorUAData>(GetUAExecutionContext());
  

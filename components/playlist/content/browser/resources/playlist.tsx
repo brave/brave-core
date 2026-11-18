@@ -9,7 +9,7 @@ import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 
-import { setIconBasePath } from '@brave/leo/react/icon'
+import { setIconBasePath } from '@brave/nala/react/icon'
 
 // Components
 import App from './components/app.v1'

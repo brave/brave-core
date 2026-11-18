@@ -4,9 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
-import Toggle from '@brave/leo/react/toggle'
+import Button from '@brave/nala/react/button'
+import Icon from '@brave/nala/react/icon'
+import Toggle from '@brave/nala/react/toggle'
 
 import { getString } from '../../lib/strings'
 import { ConnectionState } from '../../state/vpn_store'

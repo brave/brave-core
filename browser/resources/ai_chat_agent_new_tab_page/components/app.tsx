@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Icon from '@brave/leo/react/icon'
+import Icon from '@brave/nala/react/icon'
 import { getLocale } from '$web-common/locale'
 import backgroundImage from '../assets/agent_ntp_background.jpg'
 import styles from './style.module.scss'

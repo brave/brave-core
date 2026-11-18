@@ -60,7 +60,7 @@ TEST(CardanoTxMeta, ToTransactionInfo) {
   EXPECT_EQ(ti->chain_id, meta.chain_id());
   EXPECT_EQ(ti->from_account_id, cardano_account_id);
   EXPECT_EQ(ti->tx_status, meta.status());
-  EXPECT_TRUE(ti->tx_data_union->is_cardano_tx_data());
+  ASSERT_TRUE(ti->tx_data_union->is_cardano_tx_data());
   EXPECT_EQ(meta.created_time(), ti->created_time);
   EXPECT_EQ(meta.submitted_time(), ti->submitted_time);
   EXPECT_EQ(meta.confirmed_time(), ti->confirmed_time);
@@ -70,21 +70,21 @@ TEST(CardanoTxMeta, ToTransactionInfo) {
   EXPECT_EQ(tx_data->to, kMockCardanoAddress2);
   EXPECT_EQ(tx_data->sending_lovelace, 299000u);
   EXPECT_EQ(tx_data->fee, 1000u);
-  EXPECT_EQ(tx_data->inputs.size(), 2u);
+  ASSERT_EQ(tx_data->inputs.size(), 2u);
   EXPECT_EQ(tx_data->inputs[0]->address, kMockCardanoAddress1);
   EXPECT_EQ(tx_data->inputs[0]->value, 200000u);
   EXPECT_EQ(tx_data->inputs[1]->address, kMockCardanoAddress2);
   EXPECT_EQ(tx_data->inputs[1]->value, 400000u);
-  EXPECT_EQ(tx_data->inputs[1]->tokens.size(), 1u);
+  ASSERT_EQ(tx_data->inputs[1]->tokens.size(), 1u);
   EXPECT_EQ(tx_data->inputs[1]->tokens[0],
             mojom::CardanoTxTokenValue::New(
                 base::HexEncodeLower(GetMockTokenId("brave")), 123));
-  EXPECT_EQ(tx_data->outputs.size(), 2u);
+  ASSERT_EQ(tx_data->outputs.size(), 2u);
   EXPECT_EQ(tx_data->outputs[0]->address, kMockCardanoAddress2);
   EXPECT_EQ(tx_data->outputs[0]->value, 300000u - 1000);
   EXPECT_EQ(tx_data->outputs[1]->address, kMockCardanoAddress2);
   EXPECT_EQ(tx_data->outputs[1]->value, 300000u);
-  EXPECT_EQ(tx_data->outputs[1]->tokens.size(), 1u);
+  ASSERT_EQ(tx_data->outputs[1]->tokens.size(), 1u);
   EXPECT_EQ(tx_data->outputs[1]->tokens[0],
             mojom::CardanoTxTokenValue::New(
                 base::HexEncodeLower(GetMockTokenId("foo")), 1));

@@ -8,7 +8,8 @@
 #include <vector>
 
 #include "base/functional/bind.h"
-#include "base/test/task_environment.h"
+#include "base/run_loop.h"
+#include "base/test/gmock_callback_support.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/playlist/test/mock_playlist_render_frame_observer_configurator.h"
 #include "brave/browser/playlist/test/playlist_unittest_base.h"
@@ -38,14 +39,21 @@ TEST_F(PlaylistBackgroundWebContentsHelperTest,
       PlaylistServiceFactory::GetForBrowserContext(browser_context()),
       base::BindOnce([](GURL, std::vector<mojom::PlaylistItemPtr>) {}));
 
-  EXPECT_CALL(configurator_,
-              AddMediaSourceAPISuppressor(testing::Not(testing::IsEmpty())))
-      .Times(1);
-  EXPECT_CALL(configurator_, AddMediaDetector(testing::Not(testing::IsEmpty())))
-      .Times(1);
+  // AddMediaDetector is sent after AddMediaSourceAPISuppressor on the same
+  // pipe, so once it arrives both calls have been received.
+  base::RunLoop run_loop;
+  {
+    testing::InSequence in_sequence;
+    EXPECT_CALL(configurator_,
+                AddMediaSourceAPISuppressor(testing::Not(testing::IsEmpty())))
+        .Times(1);
+    EXPECT_CALL(configurator_,
+                AddMediaDetector(testing::Not(testing::IsEmpty())))
+        .WillOnce(base::test::RunClosure(run_loop.QuitClosure()));
+  }
 
   NavigateAndCommit(GURL("https://example.com"));
-  task_environment()->RunUntilIdle();
+  run_loop.Run();
 }
 
 }  // namespace playlist

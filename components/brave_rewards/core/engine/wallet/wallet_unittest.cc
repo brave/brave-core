@@ -8,7 +8,7 @@
 #include <optional>
 #include <utility>
 
-#include "base/test/bind.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
 #include "brave/components/brave_rewards/core/engine/test/rewards_engine_test.h"
 #include "brave/components/brave_rewards/core/engine/util/environment_config.h"
@@ -33,18 +33,10 @@ class RewardsWalletTest : public RewardsEngineTest {
                                         mojom::UrlMethod::POST,
                                         std::move(response));
 
-    base::RunLoop run_loop;
-    mojom::CreateRewardsWalletResult result;
-    engine().wallet()->CreateWalletIfNecessary(
-        std::nullopt,
-        base::BindLambdaForTesting(
-            [&result, &run_loop](mojom::CreateRewardsWalletResult r) {
-              result = r;
-              run_loop.Quit();
-            }));
-
-    run_loop.Run();
-    return result;
+    base::test::TestFuture<mojom::CreateRewardsWalletResult> future;
+    engine().wallet()->CreateWalletIfNecessary(std::nullopt,
+                                               future.GetCallback());
+    return future.Get();
   }
 };
 

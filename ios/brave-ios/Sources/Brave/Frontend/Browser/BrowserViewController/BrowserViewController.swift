@@ -2642,7 +2642,7 @@ extension BrowserViewController: WalletTabHelperDelegate {
       profile = profile.offTheRecordProfile
     }
     if let cryptoStore = self.walletStore?.cryptoStore
-      ?? CryptoStore.from(ipfsApi: profileController.ipfsAPI, profile: profile)
+      ?? CryptoStore.from(profile: profile)
     {
       cryptoStore.rejectAllPendingWebpageRequests()
     }
@@ -2688,7 +2688,7 @@ extension BrowserViewController: WalletTabHelperDelegate {
     }
     guard
       let cryptoStore = self.walletStore?.cryptoStore
-        ?? CryptoStore.from(ipfsApi: profileController.ipfsAPI, profile: profile)
+        ?? CryptoStore.from(profile: profile)
     else {
       return false
     }

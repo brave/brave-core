@@ -195,10 +195,14 @@ TEST_F(EthTxStateManagerUnitTest, MetaChainIdUsedWhenTxChainIdMissing) {
 
   // `chain_id` might be missing in tx value, `chain_id` from meta should be
   // used in that case.
-  EXPECT_EQ(*meta_value.FindStringByDottedPath("tx.chain_id"), "0x1");
+  const std::string* tx_chain_id =
+      meta_value.FindStringByDottedPath("tx.chain_id");
+  ASSERT_TRUE(tx_chain_id);
+  EXPECT_EQ(*tx_chain_id, "0x1");
   meta_value.RemoveByDottedPath("tx.chain_id");
   meta_value.Set("chain_id", "0x123");
   auto meta_from_value = eth_tx_state_manager_->ValueToEthTxMeta(meta_value);
+  ASSERT_NE(meta_from_value, nullptr);
   EXPECT_EQ(meta_from_value->tx()->chain_id(), uint256_t{0x123});
 }
 

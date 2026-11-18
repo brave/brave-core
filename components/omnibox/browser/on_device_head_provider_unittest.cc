@@ -9,6 +9,7 @@
 
 #include "base/files/file_util.h"
 #include "base/path_service.h"
+#include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "build/build_config.h"
 #include "components/omnibox/browser/autocomplete_input.h"
@@ -30,13 +31,11 @@ class OnDeviceHeadProviderTest : public testing::Test,
     client_ = std::make_unique<FakeAutocompleteProviderClient>();
     SetupTestOnDeviceHeadModel();
     provider_ = OnDeviceHeadProvider::Create(client_.get(), this);
-    task_environment_.RunUntilIdle();
   }
 
   void TearDown() override {
     provider_ = nullptr;
     client_.reset();
-    task_environment_.RunUntilIdle();
   }
 
   // AutocompleteProviderListener:
@@ -54,8 +53,9 @@ class OnDeviceHeadProviderTest : public testing::Test,
     auto* update_listener = OnDeviceModelUpdateListener::GetInstance();
     if (update_listener) {
       update_listener->OnHeadModelUpdate(file_path);
+      ASSERT_TRUE(base::test::RunUntil(
+          [&] { return !update_listener->head_model_filename().empty(); }));
     }
-    task_environment_.RunUntilIdle();
   }
 
   bool IsOnDeviceHeadProviderAllowed(const AutocompleteInput& input) {
@@ -79,9 +79,8 @@ TEST_F(OnDeviceHeadProviderTest, CheckEnabledIfSuggestionsAreDisabled) {
   ASSERT_TRUE(IsOnDeviceHeadProviderAllowed(input));
 
   provider_->Start(input, false);
-  task_environment_.RunUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil([&] { return provider_->done(); }));
 
-  EXPECT_TRUE(provider_->done());
   ASSERT_EQ(3U, provider_->matches().size());
   EXPECT_EQ(u"maps", provider_->matches()[0].contents);
   EXPECT_EQ(u"mail", provider_->matches()[1].contents);

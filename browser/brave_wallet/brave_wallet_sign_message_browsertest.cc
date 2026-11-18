@@ -3,9 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <cstdint>
 #include <optional>
 
 #include "base/command_line.h"
+#include "base/test/run_until.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -68,6 +70,17 @@ bool WaitForWalletBubble(content::WebContents* web_contents) {
   return tab_helper->IsShowingBubble();
 }
 
+// The bubble may already be open from an earlier step, so waiting for it does
+// not prove the sign request was queued. Notify...Processed() is a silent
+// no-op unless the front request has this id, so wait for exactly that.
+bool WaitForPendingSignMessageRequest(BraveWalletService* service,
+                                      int32_t request_id) {
+  return base::test::RunUntil([&] {
+    auto requests = service->GetPendingSignMessageRequestsSync();
+    return !requests.empty() && requests.front()->id == request_id;
+  });
+}
+
 }  // namespace
 
 class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
@@ -121,8 +134,9 @@ class BraveWalletSignMessageBrowserTest : public InProcessBrowserTest {
     } else {
       permissions::BraveWalletPermissionContext::Cancel(web_contents());
     }
-    ASSERT_EQ(EvalJs(web_contents(), "getPermissionGranted()").ExtractBool(),
-              granted);
+    // The page sets the value once the enable() reply reaches the renderer,
+    // so wait for the stored promise to settle.
+    ASSERT_EQ(EvalJs(web_contents(), "waitForEnable()").ExtractBool(), granted);
   }
   void CallEthereumEnable() {
     ASSERT_TRUE(ExecJs(web_contents(), "ethereumEnable()"));
@@ -171,16 +185,16 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserApprovedRequest) {
 
   CallEthereumEnable();
   UserGrantPermission(true);
-  size_t request_index = 0;
+  int32_t request_index = 0;
   for (const std::string& method : methods_) {
     ASSERT_TRUE(
         ExecJs(web_contents(),
                base::StrCat({method,
                              "('0x084DCb94038af1715963F149079cE011C4B22961',"
                              " '0xdeadbeef')"})));
-    // Wait for EthereumProviderImpl::ContinueSignMessage
-    base::RunLoop().RunUntilIdle();
-    EXPECT_TRUE(WaitForWalletBubble(web_contents()));
+    ASSERT_TRUE(WaitForPendingSignMessageRequest(brave_wallet_service(),
+                                                 request_index));
+    ASSERT_TRUE(WaitForWalletBubble(web_contents()));
     brave_wallet_service()->NotifySignMessageRequestProcessed(
         true, request_index++, nullptr, std::nullopt);
     EXPECT_EQ(EvalJs(web_contents(), kWaitForSignMessageResult).ExtractString(),
@@ -199,16 +213,16 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UserRejectedRequest) {
   CallEthereumEnable();
   UserGrantPermission(true);
 
-  size_t request_index = 0;
+  int32_t request_index = 0;
   for (const std::string& method : methods_) {
     ASSERT_TRUE(
         ExecJs(web_contents(),
                base::StrCat({method,
                              "('0x084DCb94038af1715963F149079cE011C4B22961',"
                              " '0xdeadbeef')"})));
-    // Wait for EthereumProviderImpl::ContinueSignMessage
-    base::RunLoop().RunUntilIdle();
-    EXPECT_TRUE(WaitForWalletBubble(web_contents()));
+    ASSERT_TRUE(WaitForPendingSignMessageRequest(brave_wallet_service(),
+                                                 request_index));
+    ASSERT_TRUE(WaitForWalletBubble(web_contents()));
     brave_wallet_service()->NotifySignMessageRequestProcessed(
         false, request_index++, nullptr, std::nullopt);
     EXPECT_EQ(EvalJs(web_contents(), kWaitForSignMessageResult).ExtractString(),
@@ -230,13 +244,13 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, UnknownAddress) {
                base::StrCat({method,
                              "('0x6b1Bd828cF8CE051B6282dCFEf6863746E2E1909',"
                              " '0xdeadbeef')"})));
-    // Wait for EthereumProviderImpl::ContinueSignMessage
-    base::RunLoop().RunUntilIdle();
+    // Wait for the request to be rejected and the error delivered to the page.
+    const std::string result =
+        EvalJs(web_contents(), kWaitForSignMessageResult).ExtractString();
     EXPECT_FALSE(brave_wallet::BraveWalletTabHelper::From(
                      tabs::TabInterface::MaybeGetFromContents(web_contents()))
                      ->IsShowingBubble());
-    EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()").ExtractString(),
-              l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
+    EXPECT_EQ(result, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
   }
 }
 
@@ -252,12 +266,13 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, InvalidAddressParam) {
     ASSERT_TRUE(ExecJs(web_contents(), base::StrCat({method,
                                                      "(null,"
                                                      " '0xdeadbeef')"})));
-    // Wait for EthereumProviderImpl::ContinueSignMessage
-    base::RunLoop().RunUntilIdle();
+    // Wait for the request to be rejected and the error delivered to the page.
+    const std::string result =
+        EvalJs(web_contents(), kWaitForSignMessageResult).ExtractString();
     EXPECT_FALSE(brave_wallet::BraveWalletTabHelper::From(
                      tabs::TabInterface::MaybeGetFromContents(web_contents()))
                      ->IsShowingBubble());
-    EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()").ExtractString(),
+    EXPECT_EQ(result,
               l10n_util::GetStringUTF8(IDS_WALLET_REQUEST_PROCESSING_ERROR));
   }
 }
@@ -276,13 +291,13 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, NoEthPermission) {
                base::StrCat({method,
                              "('0x084DCb94038af1715963F149079cE011C4B22961',"
                              " '0xdeadbeef')"})));
-    // Wait for EthereumProviderImpl::ContinueSignMessage
-    base::RunLoop().RunUntilIdle();
+    // Wait for the request to be rejected and the error delivered to the page.
+    const std::string result =
+        EvalJs(web_contents(), kWaitForSignMessageResult).ExtractString();
     EXPECT_FALSE(brave_wallet::BraveWalletTabHelper::From(
                      tabs::TabInterface::MaybeGetFromContents(web_contents()))
                      ->IsShowingBubble());
-    EXPECT_EQ(EvalJs(web_contents(), "getSignMessageResult()").ExtractString(),
-              l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
+    EXPECT_EQ(result, l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED));
   }
 }
 
@@ -295,7 +310,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, SIWE) {
 
   CallEthereumEnable();
   UserGrantPermission(true);
-  size_t request_index = 0;
+  int32_t request_index = 0;
   struct {
     std::string api_account;
     std::string msg_account;
@@ -344,9 +359,9 @@ IN_PROC_BROWSER_TEST_F(BraveWalletSignMessageBrowserTest, SIWE) {
           absl::StrFormat(
               "%s('%s', '%s')", method, valid_case.api_account,
               ToHex(GetSIWEMessage(valid_case.msg_account, "www.a.com")))));
-      // Wait for EthereumProviderImpl::ContinueSignMessage
-      base::RunLoop().RunUntilIdle();
-      EXPECT_TRUE(WaitForWalletBubble(web_contents()));
+      ASSERT_TRUE(WaitForPendingSignMessageRequest(brave_wallet_service(),
+                                                   request_index));
+      ASSERT_TRUE(WaitForWalletBubble(web_contents()));
       brave_wallet_service()->NotifySignMessageRequestProcessed(
           true, request_index++, nullptr, std::nullopt);
       // The second sign message (wrong origin) is rejected immediately,

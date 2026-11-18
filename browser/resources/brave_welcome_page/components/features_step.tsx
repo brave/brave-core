@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
+import Button from '@brave/nala/react/button'
 
 import { useStepTransition } from './use_step_transition'
 import { useProductFeatures } from './use_product_features'

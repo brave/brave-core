@@ -11,13 +11,13 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
-#include "base/run_loop.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_test_utils.h"
@@ -148,13 +148,7 @@ class CardanoApiImplTest : public testing::Test {
   }
 
   void UnlockWallet() {
-    base::RunLoop run_loop;
-    keyring_service()->Unlock(
-        "brave", base::BindLambdaForTesting([&run_loop](bool success) {
-          ASSERT_TRUE(success);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    ASSERT_TRUE(keyring_service()->UnlockSync(kTestWalletPassword));
   }
 
   CardanoApiImpl* provider() { return provider_.get(); }
@@ -422,21 +416,20 @@ TEST_F(CardanoApiImplTest, SignData_Approved) {
   auto& signature = future.Get<0>();
   auto& error = future.Get<1>();
 
-  base::DictValue expected_signature;
-  expected_signature.Set(
-      "key",
+  base::DictValue expected_signature = base::test::ParseJsonDict(
+      R"({"key": ")"
       "a50101025839010fdc780023d8be7c9ff3a6bdc0d8d3b263bd0cc12448c40948efbf42e5"
       "57890352095f1cf6fd2b7d1a28e3c3cb029f48cf34ff890a28d176032720062158207ea0"
-      "9a34aebb13c9841c71397b1cabfec5ddf950405293dee496cac2f437480a");
-  expected_signature.Set(
-      "signature",
+      "9a34aebb13c9841c71397b1cabfec5ddf950405293dee496cac2f437480a"
+      R"(", "signature": ")"
       "845882a30127045839010fdc780023d8be7c9ff3a6bdc0d8d3b263bd0cc12448c40948ef"
       "bf42e557890352095f1cf6fd2b7d1a28e3c3cb029f48cf34ff890a28d176676164647265"
       "73735839010fdc780023d8be7c9ff3a6bdc0d8d3b263bd0cc12448c40948efbf42e55789"
       "0352095f1cf6fd2b7d1a28e3c3cb029f48cf34ff890a28d176a166686173686564f4476d"
       "657373616765584082b878be1769641643040d851379d8dacf398377133edd1a5022751b"
       "d24bc5d769aa720d83faf653953865b3c104c766da9273f164e831cdf76bc1370c4f5d0"
-      "c");
+      "c"
+      R"("})");
 
   EXPECT_EQ(signature, expected_signature);
   EXPECT_FALSE(error);
@@ -803,7 +796,7 @@ TEST_F(CardanoApiImplTest, MethodReturnsSuccess_WhenHasPermission) {
   CreateWallet();
   UnlockWallet();
   auto added_account = AddAccount();
-  EXPECT_TRUE(added_account);
+  ASSERT_TRUE(added_account);
 
   ON_CALL(*delegate(), GetAllowedAccounts(_, _))
       .WillByDefault(
@@ -891,7 +884,7 @@ TEST_F(CardanoApiImplTest, GetBalance) {
   CreateWallet();
   UnlockWallet();
   auto added_account = AddAccount();
-  EXPECT_TRUE(added_account);
+  ASSERT_TRUE(added_account);
 
   auto address = brave_wallet_service()
                      ->GetCardanoWalletService()
@@ -930,6 +923,7 @@ TEST_F(CardanoApiImplTest, GetBalance) {
     provider()->GetBalance(future.GetCallback());
     auto [balance, error] = future.Take();
     EXPECT_FALSE(error);
+    ASSERT_TRUE(balance.has_value());
     EXPECT_EQ(
         balance.value(),
         base::HexEncodeLower(
@@ -947,7 +941,7 @@ TEST_F(CardanoApiImplTest, GetBalance_Error) {
   CreateWallet();
   UnlockWallet();
   auto added_account = AddAccount();
-  EXPECT_TRUE(added_account);
+  ASSERT_TRUE(added_account);
 
   test_rpc_service()->set_fail_address_utxo_request(true);
 
@@ -974,7 +968,7 @@ TEST_F(CardanoApiImplTest, GetUtxos_Error) {
   CreateWallet();
   UnlockWallet();
   auto added_account = AddAccount();
-  EXPECT_TRUE(added_account);
+  ASSERT_TRUE(added_account);
 
   test_rpc_service()->set_fail_address_utxo_request(true);
 
@@ -1001,7 +995,7 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
   CreateWallet();
   UnlockWallet();
   auto added_account = AddAccount();
-  EXPECT_TRUE(added_account);
+  ASSERT_TRUE(added_account);
 
   auto address = brave_wallet_service()
                      ->GetCardanoWalletService()
@@ -1045,6 +1039,7 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
     provider()->GetUtxos(std::nullopt, nullptr, future.GetCallback());
     auto [utxos, error] = future.Take();
 
+    ASSERT_TRUE(utxos.has_value());
     EXPECT_EQ(utxos.value(), utxos_span);
 
     EXPECT_FALSE(error);
@@ -1061,7 +1056,7 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
                                  .value()),
         nullptr, future.GetCallback());
     auto [utxos, error] = future.Take();
-    EXPECT_TRUE(utxos);
+    ASSERT_TRUE(utxos);
     EXPECT_EQ(utxos.value(), utxos_span.first(3u));
     EXPECT_FALSE(error);
   }
@@ -1094,7 +1089,7 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
                 .value()),
         nullptr, future.GetCallback());
     auto [utxos, error] = future.Take();
-    EXPECT_TRUE(utxos);
+    ASSERT_TRUE(utxos);
     EXPECT_EQ(utxos.value(), utxos_span.subspan(1u, 2u));
     EXPECT_FALSE(error);
   }
@@ -1112,7 +1107,7 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
                                  .value()),
         nullptr, future.GetCallback());
     auto [utxos, error] = future.Take();
-    EXPECT_TRUE(utxos);
+    ASSERT_TRUE(utxos);
     EXPECT_EQ(utxos.value(), base::ToVector({utxos_as_vec[1], utxos_as_vec[2],
                                              utxos_as_vec[4]}));
     EXPECT_FALSE(error);
@@ -1146,7 +1141,7 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
                                  .value()),
         mojom::CardanoProviderPagination::New(1, 2), future.GetCallback());
     auto [utxos, error] = future.Take();
-    EXPECT_TRUE(utxos);
+    ASSERT_TRUE(utxos);
     EXPECT_EQ(utxos.value(), utxos_span.subspan(2u, 1u));
     EXPECT_FALSE(error);
   }
@@ -1160,7 +1155,7 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
                          mojom::CardanoProviderPagination::New(3, 1),
                          future.GetCallback());
     auto [utxos, error] = future.Take();
-    EXPECT_TRUE(utxos);
+    ASSERT_TRUE(utxos);
     EXPECT_EQ(utxos.value(), utxos_span.subspan(3u, 1u));
     EXPECT_FALSE(error);
   }
@@ -1174,7 +1169,7 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
                          mojom::CardanoProviderPagination::New(3, 1),
                          future.GetCallback());
     auto [utxos, error] = future.Take();
-    EXPECT_TRUE(utxos);
+    ASSERT_TRUE(utxos);
     EXPECT_EQ(utxos.value(), utxos_span.subspan(3u, 1u));
     EXPECT_FALSE(error);
   }
@@ -1189,7 +1184,8 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
                          future.GetCallback());
     auto [utxos, error] = future.Take();
     EXPECT_FALSE(utxos);
-    EXPECT_TRUE(error);
+    ASSERT_TRUE(error);
+    ASSERT_TRUE(error->pagination_error_payload);
     EXPECT_EQ(error->pagination_error_payload->payload, 5);
   }
 
@@ -1203,7 +1199,8 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
                          future.GetCallback());
     auto [utxos, error] = future.Take();
     EXPECT_FALSE(utxos);
-    EXPECT_TRUE(error);
+    ASSERT_TRUE(error);
+    ASSERT_TRUE(error->pagination_error_payload);
     // 5 utxos, 3 page limit, so 2 pages.
     EXPECT_EQ(error->pagination_error_payload->payload, 2);
   }
@@ -1239,7 +1236,7 @@ TEST_F(CardanoApiImplTest, GetUtxos_NumericOverflow) {
   CreateWallet();
   UnlockWallet();
   auto added_account = AddAccount();
-  EXPECT_TRUE(added_account);
+  ASSERT_TRUE(added_account);
 
   test_rpc_service()->AddUtxo(brave_wallet_service()
                                   ->GetCardanoWalletService()
@@ -1267,7 +1264,7 @@ TEST_F(CardanoApiImplTest, SubmitTx_Fails) {
   CreateWallet();
   UnlockWallet();
   auto added_account = AddAccount();
-  EXPECT_TRUE(added_account);
+  ASSERT_TRUE(added_account);
 
   ON_CALL(*delegate(), GetAllowedAccounts(_, _))
       .WillByDefault(
@@ -1287,7 +1284,7 @@ TEST_F(CardanoApiImplTest, SubmitTx_Fails) {
     provider()->SubmitTx("aaaa", future.GetCallback());
     auto [tx_hash, error] = future.Take();
     EXPECT_FALSE(tx_hash);
-    EXPECT_TRUE(error);
+    ASSERT_TRUE(error);
     EXPECT_EQ(error->code, 2);
   }
 }
@@ -1296,7 +1293,7 @@ TEST_F(CardanoApiImplTest, SubmitTx) {
   CreateWallet();
   UnlockWallet();
   auto added_account = AddAccount();
-  EXPECT_TRUE(added_account);
+  ASSERT_TRUE(added_account);
 
   ON_CALL(*delegate(), GetAllowedAccounts(_, _))
       .WillByDefault(
@@ -1313,6 +1310,7 @@ TEST_F(CardanoApiImplTest, SubmitTx) {
         future;
     provider()->SubmitTx("aaaa", future.GetCallback());
     auto [tx_hash, error] = future.Take();
+    ASSERT_TRUE(tx_hash.has_value());
     EXPECT_EQ(kMockCardanoTxid, *tx_hash);
     EXPECT_FALSE(error);
   }
@@ -1322,7 +1320,7 @@ TEST_F(CardanoApiImplTest, SubmitTx_FailsNotHex) {
   CreateWallet();
   UnlockWallet();
   auto added_account = AddAccount();
-  EXPECT_TRUE(added_account);
+  ASSERT_TRUE(added_account);
 
   ON_CALL(*delegate(), GetAllowedAccounts(_, _))
       .WillByDefault(
@@ -1341,7 +1339,7 @@ TEST_F(CardanoApiImplTest, SubmitTx_FailsNotHex) {
     provider()->SubmitTx("rrrr", future.GetCallback());
     auto [tx_hash, error] = future.Take();
     EXPECT_FALSE(tx_hash);
-    EXPECT_TRUE(error);
+    ASSERT_TRUE(error);
     EXPECT_EQ(error->code, 2);
   }
 }
@@ -1509,6 +1507,7 @@ TEST_F(CardanoApiImplTest, SignTx_DeclinedByPartialSignError) {
             mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0),
             tx_bytes);
 
+    ASSERT_TRUE(sign_result);
     tx.AddWitness(CardanoTransaction::TxWitness(sign_result->pubkey,
                                                 sign_result->signature));
   }
@@ -1548,22 +1547,14 @@ TEST_F(CardanoApiImplTest, SignTx) {
 
   auto tx_hash = *CardanoTransactionSerializer().GetTxHash(unsigned_tx);
   std::vector<CardanoSignMessageResult> sign_results;
-  sign_results.emplace_back(
-      brave_wallet_service()
-          ->keyring_service()
-          ->SignMessageByCardanoKeyring(
-              added_account->account_id,
-              mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0),
-              tx_hash)
-          .value());
-  sign_results.emplace_back(
-      brave_wallet_service()
-          ->keyring_service()
-          ->SignMessageByCardanoKeyring(
-              added_account->account_id,
-              mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 1),
-              tx_hash)
-          .value());
+  for (uint32_t index : {0u, 1u}) {
+    auto sign_result = keyring_service()->SignMessageByCardanoKeyring(
+        added_account->account_id,
+        mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, index),
+        tx_hash);
+    ASSERT_TRUE(sign_result);
+    sign_results.push_back(*sign_result);
+  }
 
   CardanoTxDecoder::SerializableTxWitness witness;
   for (const auto& sign_result : sign_results) {
@@ -1599,6 +1590,7 @@ TEST_F(CardanoApiImplTest, SignTx) {
   auto& api_signed_tx = future.Get<0>();
   auto& error = future.Get<1>();
 
+  ASSERT_TRUE(api_signed_tx.has_value());
   EXPECT_EQ(api_signed_tx.value(), base::HexEncode(witness_bytes));
   EXPECT_FALSE(error);
 }
@@ -1629,22 +1621,14 @@ TEST_F(CardanoApiImplTest, SignTx_ExistingExternalSignature) {
 
   auto tx_hash = *CardanoTransactionSerializer().GetTxHash(unsigned_tx);
   std::vector<CardanoSignMessageResult> sign_results;
-  sign_results.emplace_back(
-      brave_wallet_service()
-          ->keyring_service()
-          ->SignMessageByCardanoKeyring(
-              added_account->account_id,
-              mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0),
-              tx_hash)
-          .value());
-  sign_results.emplace_back(
-      brave_wallet_service()
-          ->keyring_service()
-          ->SignMessageByCardanoKeyring(
-              added_account->account_id,
-              mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 1),
-              tx_hash)
-          .value());
+  for (uint32_t index : {0u, 1u}) {
+    auto sign_result = keyring_service()->SignMessageByCardanoKeyring(
+        added_account->account_id,
+        mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, index),
+        tx_hash);
+    ASSERT_TRUE(sign_result);
+    sign_results.push_back(*sign_result);
+  }
 
   CardanoTxDecoder::SerializableTxWitness witness;
   for (const auto& sign_result : sign_results) {
@@ -1665,6 +1649,7 @@ TEST_F(CardanoApiImplTest, SignTx_ExistingExternalSignature) {
   auto& api_signed_tx = future.Get<0>();
   auto& error = future.Get<1>();
 
+  ASSERT_TRUE(api_signed_tx.has_value());
   EXPECT_EQ(api_signed_tx.value(), base::HexEncode(witness_bytes));
   EXPECT_FALSE(error);
 }
@@ -1695,22 +1680,14 @@ TEST_F(CardanoApiImplTest, SignTx_NoDuplicateSignatures) {
 
   auto tx_hash = *CardanoTransactionSerializer().GetTxHash(unsigned_tx);
   std::vector<CardanoSignMessageResult> sign_results;
-  sign_results.emplace_back(
-      brave_wallet_service()
-          ->keyring_service()
-          ->SignMessageByCardanoKeyring(
-              added_account->account_id,
-              mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0),
-              tx_hash)
-          .value());
-  sign_results.emplace_back(
-      brave_wallet_service()
-          ->keyring_service()
-          ->SignMessageByCardanoKeyring(
-              added_account->account_id,
-              mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 1),
-              tx_hash)
-          .value());
+  for (uint32_t index : {0u, 1u}) {
+    auto sign_result = keyring_service()->SignMessageByCardanoKeyring(
+        added_account->account_id,
+        mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, index),
+        tx_hash);
+    ASSERT_TRUE(sign_result);
+    sign_results.push_back(*sign_result);
+  }
 
   // Add first signature to transaction.
   unsigned_tx.AddWitness(CardanoTransaction::TxWitness(
@@ -1736,6 +1713,7 @@ TEST_F(CardanoApiImplTest, SignTx_NoDuplicateSignatures) {
   auto& api_signed_tx = future.Get<0>();
   auto& error = future.Get<1>();
 
+  ASSERT_TRUE(api_signed_tx.has_value());
   EXPECT_EQ(api_signed_tx.value(), base::HexEncode(witness_bytes));
   EXPECT_FALSE(error);
 }
@@ -1769,22 +1747,14 @@ TEST_F(CardanoApiImplTest, SignTx_PartialSign) {
 
   auto tx_hash = *CardanoTransactionSerializer().GetTxHash(unsigned_tx);
   std::vector<CardanoSignMessageResult> sign_results;
-  sign_results.emplace_back(
-      brave_wallet_service()
-          ->keyring_service()
-          ->SignMessageByCardanoKeyring(
-              added_account->account_id,
-              mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0),
-              tx_hash)
-          .value());
-  sign_results.emplace_back(
-      brave_wallet_service()
-          ->keyring_service()
-          ->SignMessageByCardanoKeyring(
-              added_account->account_id,
-              mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 1),
-              tx_hash)
-          .value());
+  for (uint32_t index : {0u, 1u}) {
+    auto sign_result = keyring_service()->SignMessageByCardanoKeyring(
+        added_account->account_id,
+        mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, index),
+        tx_hash);
+    ASSERT_TRUE(sign_result);
+    sign_results.push_back(*sign_result);
+  }
 
   CardanoTxDecoder::SerializableTxWitness witness;
   for (const auto& sign_result : sign_results) {
@@ -1819,6 +1789,7 @@ TEST_F(CardanoApiImplTest, SignTx_PartialSign) {
   auto& api_signed_tx = future.Get<0>();
   auto& error = future.Get<1>();
 
+  ASSERT_TRUE(api_signed_tx.has_value());
   EXPECT_EQ(api_signed_tx.value(), base::HexEncode(witness_bytes));
   EXPECT_FALSE(error);
 }

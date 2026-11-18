@@ -6,9 +6,9 @@
 import { FC } from 'react'
 import styled, { css, CSSProperties } from 'styled-components'
 import { Link } from 'react-router-dom'
-import * as leo from '@brave/leo/tokens/css/variables'
-import Icon from '@brave/leo/react/icon'
-import ProgressRing from '@brave/leo/react/progressRing'
+import * as leo from '@brave/nala/tokens/css/variables'
+import Icon from '@brave/nala/react/icon'
+import ProgressRing from '@brave/nala/react/progressRing'
 
 // types
 import { BraveWallet } from '../../constants/types'

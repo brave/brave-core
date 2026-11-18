@@ -11,7 +11,7 @@
 
 #include "base/values.h"
 
-namespace endpoint_client::detail {
+namespace endpoint_client::internal {
 
 // A type with a non-static ToValue()
 // callable on a const object and returning base::DictValue.
@@ -20,6 +20,6 @@ concept HasToValue = requires(const T& t) {
   { t.ToValue() } -> std::same_as<base::DictValue>;
 } && std::is_member_function_pointer_v<decltype(&T::ToValue)>;
 
-}  // namespace endpoint_client::detail
+}  // namespace endpoint_client::internal
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_HAS_TO_VALUE_H_

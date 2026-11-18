@@ -17,15 +17,19 @@ substitutions:
       function_name: EmbedderBrowserWindowFeatures::Init
       code: 'brave_browser_window_features_->Init();'
 
-  - description: 'Forward InitPostBrowserViewConstruction().'
+  - description: 'Forward InitPostWindowConstruction().'
     preempt_function_impl:
-      function_name: EmbedderBrowserWindowFeatures::InitPostBrowserViewConstruction
-      code: |-
-        brave_browser_window_features_->InitPostBrowserViewConstruction(
-            browser_view);
+      function_name: EmbedderBrowserWindowFeatures::InitPostWindowConstruction
+      code: 'brave_browser_window_features_->InitPostWindowConstruction();'
 
   - description: 'Forward TearDownPreBrowserWindowDestruction().'
     preempt_function_impl:
       function_name: >-
         EmbedderBrowserWindowFeatures::TearDownPreBrowserWindowDestruction
       code: 'brave_browser_window_features_->TearDownPreBrowserWindowDestruction();'
+
+  - description: |-
+      Include what the substitutions above use
+    add_include:
+      header:
+        - brave/browser/ui/browser_window/internal/brave_browser_window_features.h

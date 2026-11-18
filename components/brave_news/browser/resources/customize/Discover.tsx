@@ -5,10 +5,10 @@
 
 import Flex from '$web-common/Flex'
 import { getLocale } from '$web-common/locale'
-import Button from '@brave/leo/react/button'
+import Button from '@brave/nala/react/button'
 import * as React from 'react'
 import styled from 'styled-components'
-import { font, spacing } from '@brave/leo/tokens/css/variables'
+import { font, spacing } from '@brave/nala/tokens/css/variables'
 import { ChannelsCachingWrapper } from '../shared/channelsCache'
 import { useBraveNews, useChannels } from '../shared/Context'
 import { PublishersCachingWrapper } from '../shared/publishersCache'
@@ -19,7 +19,7 @@ import PublisherCard, { DirectPublisherCard } from '../shared/PublisherCard'
 import { PopularCarousel } from './Popular'
 import { SuggestionsCarousel } from './Suggestions'
 import useSearch from './useSearch'
-import Input from '@brave/leo/react/input'
+import Input from '@brave/nala/react/input'
 
 const Header = styled.span`
   font: ${font.heading.h2};

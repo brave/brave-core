@@ -184,6 +184,10 @@ class ClientHintsBrowserTest : public InProcessBrowserTest,
         hints_map.at(network::mojom::WebClientHintsType::kUAPlatformVersion));
     allowed_hints_.push_back(
         hints_map.at(network::mojom::WebClientHintsType::kUAWoW64));
+    allowed_hints_.push_back(
+        hints_map.at(network::mojom::WebClientHintsType::kViewportHeight));
+    allowed_hints_.push_back(
+        hints_map.at(network::mojom::WebClientHintsType::kViewportWidth));
   }
 
   void MonitorResourceRequest(const net::test_server::HttpRequest& request) {
@@ -229,7 +233,7 @@ IN_PROC_BROWSER_TEST_P(ClientHintsBrowserTest, ClientHintsDisabled) {
   }
 
   const size_t expected_default_client_hints_count = 3u;
-  const size_t expected_allowed_client_hints_count = 6u;
+  const size_t expected_allowed_client_hints_count = 8u;
 
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), no_client_hints_headers_url()));

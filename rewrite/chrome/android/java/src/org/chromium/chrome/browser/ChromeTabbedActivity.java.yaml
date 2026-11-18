@@ -30,3 +30,18 @@ substitutions:
         \1}
 
         \1private void \2_ChromiumImpl\3
+  - description: |-
+      Keep the Private tab cipher key when the activity is recreated.
+
+      The key that encrypts Private tab state is only created the first time a
+      Private tab's state is saved. A Private New Tab page is never saved, so
+      when it is the only Private tab, no key exists. Without a key, Chromium
+      cannot restore Private tabs after the activity is recreated, and the
+      Private New Tab page is lost. Create the key before the instance state is
+      saved so the Private tabs can be restored.
+    add_after_line:
+      line: 'super.onSaveInstanceState(outState);'
+      code: |2-
+                    if (mIsRecreating) {
+                        CipherLazyHolder.sCipherInstance.getCipher(javax.crypto.Cipher.ENCRYPT_MODE);
+                    }

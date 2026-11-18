@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/ui/views/frame/browser_frame_view_layout_linux.h b/chrome/browser/ui/views/frame/browser_frame_view_layout_linux.h
+index 64928feb6c014ee144d41b4c95579dccca6dc6c3..7671256f78e4054b38f9960c9cb7c1ce2f2fcbfb 100644
+--- a/chrome/browser/ui/views/frame/browser_frame_view_layout_linux.h
++++ b/chrome/browser/ui/views/frame/browser_frame_view_layout_linux.h
+@@ -28,6 +28,10 @@ class BrowserFrameViewLayoutLinux : public OpaqueBrowserFrameViewLayout {
+ 
+   void set_view(BrowserFrameViewLinux* view) { view_ = view; }
+ 
++  void SetBoundsForButton(views::FrameButton button_id,
++                          views::Button* button,
++                          ButtonAlignment align) override;
++
+  protected:
+   // OpaqueBrowserFrameViewLayout:
+   int CaptionButtonY(views::FrameButton button_id,

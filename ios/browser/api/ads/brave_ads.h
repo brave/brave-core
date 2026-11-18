@@ -10,6 +10,8 @@
 #import <UserNotifications/UserNotifications.h>
 #import "brave_ads.mojom.objc.h"
 
+@protocol ProfileBridge;
+
 NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT NSString* const kBraveAdsFirstRunAtPrefName;
@@ -159,7 +161,8 @@ OBJC_EXPORT
 #pragma mark -
 
 - (instancetype)init NS_UNAVAILABLE;
-- (instancetype)initWithStateStoragePath:(NSString*)path;
+- (instancetype)initWithStateStoragePath:(NSString*)path
+                                 profile:(id<ProfileBridge>)profile;
 
 @end
 

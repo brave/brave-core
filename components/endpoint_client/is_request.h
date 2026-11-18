@@ -9,32 +9,34 @@
 #include "brave/components/endpoint_client/is_request_body.h"
 #include "brave/components/endpoint_client/request.h"
 
-namespace endpoint_client::detail {
+namespace endpoint_client::internal {
 
 template <typename>
-inline constexpr bool kIsJSONRequest = false;
+inline constexpr bool kIsRequestWithoutBody = false;
 
-template <IsJSONRequestBody RequestBody, Method M>
-inline constexpr bool kIsJSONRequest<Request<RequestBody, M>> = true;
+// A request without a body is a Request<> with only an HTTP method.
+template <Method M>
+inline constexpr bool kIsRequestWithoutBody<Request<M>> = true;
 
-// A JSON request is a Request<> whose body is a JSON request body.
 template <typename Request>
-concept IsJSONRequest = kIsJSONRequest<Request>;
+concept IsRequestWithoutBody = kIsRequestWithoutBody<Request>;
 
 template <typename>
-inline constexpr bool kIsProtobufRequest = false;
+inline constexpr bool kIsRequestWithBody = false;
 
-template <IsProtobufRequestBody RequestBody, Method M>
-inline constexpr bool kIsProtobufRequest<Request<RequestBody, M>> = true;
+// A request with a body is a Request<> with a request body whose method allows
+// one.
+template <Method M, IsRequestBody RequestBody>
+  requires(MethodAllowsBody(M))
+inline constexpr bool kIsRequestWithBody<Request<M, RequestBody>> = true;
 
-// A Protobuf request is a Request<> whose body is a Protobuf request body.
 template <typename Request>
-concept IsProtobufRequest = kIsProtobufRequest<Request>;
+concept IsRequestWithBody = kIsRequestWithBody<Request>;
 
-// A request is either a JSON request or a Protobuf request.
+// A request is either a request without a body or a request with a body.
 template <typename Request>
-concept IsRequest = IsJSONRequest<Request> || IsProtobufRequest<Request>;
+concept IsRequest = IsRequestWithoutBody<Request> || IsRequestWithBody<Request>;
 
-}  // namespace endpoint_client::detail
+}  // namespace endpoint_client::internal
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_IS_REQUEST_H_

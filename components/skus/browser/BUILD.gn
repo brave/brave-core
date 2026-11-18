@@ -62,6 +62,7 @@ source_set("unit_tests") {
 
   deps = [
     "//base",
+    "//base/test:test_support",
     "//brave/components/skus/browser",
     "//brave/components/skus/common",
     "//brave/components/skus/common:mojom",

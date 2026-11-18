@@ -4,10 +4,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import AlertCenter from '@brave/leo/react/alertCenter'
-import Button from '@brave/leo/react/button'
-import Dialog from '@brave/leo/react/dialog'
-import Icon from '@brave/leo/react/icon'
+import AlertCenter from '@brave/nala/react/alertCenter'
+import Button from '@brave/nala/react/button'
+import Dialog from '@brave/nala/react/dialog'
+import Icon from '@brave/nala/react/icon'
 import { getLocale } from '$web-common/locale'
 import classnames from '$web-common/classnames'
 import DragOverlay from '../drag_overlay'
@@ -50,6 +50,12 @@ function Main() {
     React.useState(false)
   const { isDragActive, isDragOver } = conversationContext
 
+  // Deleting the open conversation, usually from this list, starts a new one.
+  // Show it, as starting a new conversation from the list does.
+  conversationContext.api.useOnConversationDeleted(() => {
+    setIsConversationsListOpen(false)
+  }, [conversationContext.api])
+
   const showAttachments = !!conversationContext.attachmentsDialog
 
   const headerElement = React.useRef<HTMLDivElement>(null)
@@ -63,6 +69,10 @@ function Main() {
   const hasConversationStarted = useHasConversationStarted(
     conversationContext.conversationUuid,
   )
+
+  const conversationTitle = aiChatContext.conversations.find(
+    (c) => c.uuid === conversationContext.conversationUuid,
+  )?.title
 
   const isHistoryPlaceholderData =
     conversationContext.api.useGetConversationHistory().isPlaceholderData
@@ -166,7 +176,10 @@ function Main() {
     >
       <DragOverlay />
       {isConversationListOpen && !aiChatContext.isStandalone && (
-        <div className={styles.conversationsList}>
+        <div
+          className={styles.conversationsList}
+          data-testid='conversations-list'
+        >
           <div
             className={classnames({
               [styles.conversationsListHeader]: true,
@@ -275,6 +288,7 @@ function Main() {
       <WorkspaceFileLightbox
         file={conversationContext.previewWorkspaceFile}
         onClose={() => conversationContext.setPreviewWorkspaceFile(null)}
+        conversationTitle={conversationTitle}
         onOpen={(file) => {
           aiChatContext.api.uiHandler.openWorkspaceFile(
             { url: file.workspaceUrl },

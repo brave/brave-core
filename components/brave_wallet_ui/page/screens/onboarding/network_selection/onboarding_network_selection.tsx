@@ -10,9 +10,9 @@ import { useHistory } from 'react-router'
 // redux
 import { useAppDispatch } from '../../../../common/hooks/use-redux'
 
-import Checkbox from '@brave/leo/react/checkbox'
-import ProgressRing from '@brave/leo/react/progressRing'
-import * as leo from '@brave/leo/tokens/css/variables'
+import Checkbox from '@brave/nala/react/checkbox'
+import ProgressRing from '@brave/nala/react/progressRing'
+import * as leo from '@brave/nala/tokens/css/variables'
 
 // context
 import {

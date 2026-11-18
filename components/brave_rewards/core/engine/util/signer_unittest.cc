@@ -25,7 +25,7 @@ TEST_F(RewardsSignerTest, SignMessage) {
       base::Base64Decode("AhqrBVFFNLLfSwKTjPc4KCSf4lb323lmRrcShvJmpGE=");
 
   auto signer = Signer::FromRecoverySeed(*seed);
-  EXPECT_TRUE(signer);
+  ASSERT_TRUE(signer);
 
   EXPECT_EQ(base::Base64Encode(signer->public_key()),
             "fmbEEi3h+N1Xzgrsxgbhbp5tXExDGn1jeM02Pvtzs+g=");

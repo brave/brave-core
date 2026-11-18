@@ -21,6 +21,7 @@ class TabBarCell: UICollectionViewCell {
     button.tintColor = UIColor(braveSystemName: .textPrimary)
     // Close button is a bit wider to increase tap area, this aligns the 'X' image closer to the right.
     var configuration = UIButton.Configuration.plain()
+    configuration.baseBackgroundColor = .clear
     configuration.image =
       UIImage(named: "close_tab_bar", in: .module, compatibleWith: nil)!.template
     configuration.contentInsets = NSDirectionalEdgeInsets(

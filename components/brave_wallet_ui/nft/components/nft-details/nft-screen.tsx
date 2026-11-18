@@ -5,8 +5,8 @@
 import * as React from 'react'
 import { useHistory } from 'react-router'
 import { skipToken } from '@reduxjs/toolkit/dist/query'
-import Alert from '@brave/leo/react/alert'
-import Tooltip from '@brave/leo/react/tooltip'
+import Alert from '@brave/nala/react/alert'
+import Tooltip from '@brave/nala/react/tooltip'
 
 // types
 import { BraveWallet, AccountPageTabs } from '../../../constants/types'

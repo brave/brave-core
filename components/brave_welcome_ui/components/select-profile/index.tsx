@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import * as S from './style'
-import Button from '@brave/leo/react/button'
+import Button from '@brave/nala/react/button'
 import LeftArrowSVG from '../svg/left-arrow'
 import AvatarIconSVG from '../svg/avatar-icon'
 import DataContext from '../../state/context'

@@ -20,8 +20,6 @@ struct SaferSignMessageRequestContainerView: View {
   let cowSwapOrder: BraveWallet.CowSwapOrder
   let ethSwapDetails: EthSwapDetails?
 
-  /// A map between request id and a boolean value indicates this request message needs pilcrow formating.
-  @Binding var needPilcrowFormatted: [Int32: Bool]
   /// A map between request id and a boolean value indicates this request message is displayed as
   /// its original content.
   @Binding var showOrignalMessage: [Int32: Bool]
@@ -50,7 +48,6 @@ struct SaferSignMessageRequestContainerView: View {
         if isShowingDetails {
           SignMessageRequestContentView(
             request: request,
-            needPilcrowFormatted: $needPilcrowFormatted,
             showOrignalMessage: $showOrignalMessage
           )
           // match spacing from comparison in `SaferSignTransactionView`

@@ -228,6 +228,7 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
             if (mTopSitesDisplayModePref != null) {
                 mTopSitesDisplayModePref.setVisible((boolean) newValue);
             }
+            notifyPreferencesUpdated();
         } else if (PREF_TOP_SITES_DISPLAY_MODE.equals(key)) {
             NtpUtil.setTopSitesDisplayMode((int) newValue);
         } else if (PREF_SHOW_BRAVE_STATS.equals(key)) {

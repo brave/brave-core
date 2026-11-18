@@ -105,7 +105,7 @@ inline constexpr char kMiscMetricsCombinedSearchStudyMediaTime[] =
 inline constexpr char kMiscMetricsFingerprintHashes[] =
     "brave.misc_metrics.fp_hashes";
 inline constexpr char kMiscMetricsFingerprintChangeCounts[] =
-    "brave.misc_metrics.fp_change_counts";
+    "brave.misc_metrics.fp_change_counts";  // DEPRECATED
 inline constexpr char kMiscMetricsFingerprintReportFrameStartTime[] =
     "brave.misc_metrics.fp_report_frame_start_time";
 inline constexpr char kMiscMetricsFingerprintLastExecutionTime[] =

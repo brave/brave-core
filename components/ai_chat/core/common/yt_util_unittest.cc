@@ -162,7 +162,7 @@ TEST(YTCaptionTrackTest, ParseAndGetTrackUrl_ValidYTJson) {
     }
   })";
   auto result = ParseAndChooseCaptionTrackUrl(body);
-  EXPECT_TRUE(result.has_value());
+  ASSERT_TRUE(result.has_value());
   EXPECT_EQ(result.value(), "https://www.example.com/caption1");
 }
 

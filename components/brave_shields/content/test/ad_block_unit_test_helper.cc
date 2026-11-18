@@ -8,8 +8,8 @@
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/task/sequenced_task_runner.h"
-#include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
+#include "brave/components/brave_shields/core/browser/ad_block_service.h"
 
 namespace brave_shields {
 

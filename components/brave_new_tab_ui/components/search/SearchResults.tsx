@@ -2,7 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-import { color, radius, spacing } from '@brave/leo/tokens/css/variables'
+import { color, radius, spacing } from '@brave/nala/tokens/css/variables'
 import { AutocompleteMatch, AutocompleteResult, OmniboxPopupSelection } from 'chrome://resources/mojo/components/omnibox/browser/searchbox.mojom-webui.js'
 import type { FormattedString } from 'chrome://resources/mojo/components/omnibox/browser/suggest_template_info.mojom-webui.js'
 import * as React from 'react'

@@ -31,6 +31,16 @@ std::optional<std::string> GetFinalRecipient(
     mojom::TransactionType tx_type,
     base::span<const std::string> tx_args);
 
+// Returns true for token transfer and approval types that should be rendered
+// generically when they also carry native value, so token-only metadata does
+// not hide the native transfer. This is a display policy, not a determination
+// of contract payability: ERC-721 permits payable entrypoints, and calldata
+// selectors do not encode state mutability.
+//
+// ETHSend, ETHSwap and ETHFilForwarderTransfer are excluded because their
+// classifications already account for native value.
+bool IsNonPayableTokenTransactionType(mojom::TransactionType tx_type);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_DATA_PARSER_H_

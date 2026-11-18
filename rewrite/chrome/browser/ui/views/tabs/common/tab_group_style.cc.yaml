@@ -43,3 +43,9 @@ substitutions:
         if (tabs::HorizontalTabsUpdateEnabled()) {
           return tabs::GetHorizontalTabHeight();
         }
+
+  - description: |-
+      Include what the substitutions above use
+    add_include:
+      header:
+        - chrome/browser/ui/tabs/features.h

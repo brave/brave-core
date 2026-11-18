@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 किंवा नंतर बदलण्यासाठी <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
 <translation id="6229752134959014186">Widevine बद्दल अधिक जाणून घ्या</translation>
+<translation id="3318169548229684688">या डिव्हाइसवर स्पीच प्रोसेस करण्यासाठी स्पीच रेकग्निशन मॉडेल (<ph name="DOWNLOAD_SIZE"/>) डाउनलोड करा</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> तुम्हाला विचारत आहे</translation>
 <translation id="3218385319396786393">या पृष्ठावर स्वतःहून खेळणे अवरोधित केले गेले</translation>
 <translation id="4988333904713528597"><ph name="HOST"/> वर स्वतःहून खेळणेस नेहमी अनुमत करा</translation>
@@ -610,6 +611,8 @@
 <translation id="3540231253392253941">गुगल सेवांचा वापर पुश मेसेजिंगसाठी</translation>
 <translation id="2224032129673914306">सिमेंटिक इतिहास शोध</translation>
 <translation id="6045998903985162478">तुम्ही भेट देता त्या पृष्ठांची अनुक्रमणिका तयार करा जेणेकरून तुम्ही ती इतिहास, उघड्या टॅब आणि Leo मध्ये सहज शोधू शकता.</translation>
+<translation id="3962946446120925966">डिव्हाइसवरील स्पीच रेकग्निशन</translation>
+<translation id="6408242130028978631">साइट्सना या डिव्हाइसवर स्पीचवर प्रक्रिया करता यावी यासाठी स्पीच रेकग्निशन मॉडेल (<ph name="DOWNLOAD_SIZE"/>) डाउनलोड करा. मॉडेल काढून टाकण्यासाठी हे बंद करा.</translation>
 <translation id="5813105074916486721">स्थानिक इतिहास धारणा</translation>
 <translation id="5671611745062206644">Brave तुमचा ब्राउझिंग इतिहास स्थानिकरित्या किती काळ संग्रहित करते</translation>
 <translation id="7184510058087008090">1 दिवस</translation>

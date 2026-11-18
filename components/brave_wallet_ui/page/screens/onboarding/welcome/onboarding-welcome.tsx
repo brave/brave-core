@@ -28,7 +28,7 @@ import { UISelectors } from '../../../../common/selectors'
 import { useSafeUISelector } from '../../../../common/hooks/use-safe-selector'
 
 // styles
-import * as leo from '@brave/leo/tokens/css/variables'
+import * as leo from '@brave/nala/tokens/css/variables'
 import { Row, VerticalSpace } from '../../../../components/shared/style'
 import {
   BraveIcon,

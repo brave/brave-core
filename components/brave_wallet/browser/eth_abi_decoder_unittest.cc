@@ -325,8 +325,8 @@ TEST(EthABIDecoderTest, ABIDecodeArray) {
       data);
   ASSERT_NE(decoded, std::nullopt);
   ASSERT_EQ(decoded->size(), 1UL);
-  EXPECT_TRUE(decoded->back().is_list());
-  EXPECT_EQ(decoded->back().GetList().size(), 2UL);
+  ASSERT_TRUE(decoded->back().is_list());
+  ASSERT_EQ(decoded->back().GetList().size(), 2UL);
   EXPECT_EQ(decoded->back().GetList()[0],
             base::Value("0x00000000000000000000000000000000000000ff"));
   EXPECT_EQ(decoded->back().GetList()[1],
@@ -346,7 +346,7 @@ TEST(EthABIDecoderTest, ABIDecodeArray) {
       data);
   ASSERT_NE(decoded, std::nullopt);
   ASSERT_EQ(decoded->size(), 1UL);
-  EXPECT_TRUE(decoded->back().is_list());
+  ASSERT_TRUE(decoded->back().is_list());
   EXPECT_EQ(decoded->back().GetList().size(), 0UL);
 
   // OK: valid address[] with extra tail calldata
@@ -366,8 +366,8 @@ TEST(EthABIDecoderTest, ABIDecodeArray) {
       data);
   ASSERT_NE(decoded, std::nullopt);
   ASSERT_EQ(decoded->size(), 1UL);
-  EXPECT_TRUE(decoded->back().is_list());
-  EXPECT_EQ(decoded->back().GetList().size(), 2UL);
+  ASSERT_TRUE(decoded->back().is_list());
+  ASSERT_EQ(decoded->back().GetList().size(), 2UL);
   EXPECT_EQ(decoded->back().GetList()[0],
             base::Value("0x00000000000000000000000000000000000000ff"));
   EXPECT_EQ(decoded->back().GetList()[1],
@@ -453,8 +453,8 @@ TEST(EthABIDecoderTest, ABIDecodeArray) {
       data);
   ASSERT_NE(decoded, std::nullopt);
   ASSERT_EQ(decoded->size(), 1UL);
-  EXPECT_TRUE(decoded->back().is_list());
-  EXPECT_EQ(decoded->back().GetList().size(), 2UL);
+  ASSERT_TRUE(decoded->back().is_list());
+  ASSERT_EQ(decoded->back().GetList().size(), 2UL);
   EXPECT_EQ(decoded->back().GetList()[0], base::Value("0x1"));
   EXPECT_EQ(decoded->back().GetList()[1], base::Value("0x3"));
 
@@ -471,8 +471,8 @@ TEST(EthABIDecoderTest, ABIDecodeArray) {
       data);
   ASSERT_NE(decoded, std::nullopt);
   ASSERT_EQ(decoded->size(), 1UL);
-  EXPECT_TRUE(decoded->back().is_list());
-  EXPECT_EQ(decoded->back().GetList().size(), 2UL);
+  ASSERT_TRUE(decoded->back().is_list());
+  ASSERT_EQ(decoded->back().GetList().size(), 2UL);
   EXPECT_EQ(decoded->back().GetList()[0], base::Value("0x1"));
   EXPECT_EQ(decoded->back().GetList()[1], base::Value("0x3"));
 
@@ -495,8 +495,8 @@ TEST(EthABIDecoderTest, ABIDecodeArray) {
       data);
   ASSERT_NE(decoded, std::nullopt);
   ASSERT_EQ(decoded->size(), 1UL);
-  EXPECT_TRUE(decoded->back().is_list());
-  EXPECT_EQ(decoded->back().GetList().size(), 2UL);
+  ASSERT_TRUE(decoded->back().is_list());
+  ASSERT_EQ(decoded->back().GetList().size(), 2UL);
   EXPECT_EQ(decoded->back().GetList()[0], base::Value("hello"));
   EXPECT_EQ(decoded->back().GetList()[1], base::Value("web3"));
 
@@ -520,8 +520,8 @@ TEST(EthABIDecoderTest, ABIDecodeArray) {
       data);
   ASSERT_NE(decoded, std::nullopt);
   ASSERT_EQ(decoded->size(), 1UL);
-  EXPECT_TRUE(decoded->back().is_list());
-  EXPECT_EQ(decoded->back().GetList().size(), 2UL);
+  ASSERT_TRUE(decoded->back().is_list());
+  ASSERT_EQ(decoded->back().GetList().size(), 2UL);
   EXPECT_EQ(decoded->back().GetList()[0], base::Value("hello"));
   EXPECT_EQ(decoded->back().GetList()[1], base::Value("web3"));
 }
@@ -695,7 +695,7 @@ TEST(EthABIDecoderTest, ABIDecodeTuple) {
                            data);
   ASSERT_NE(decoded, std::nullopt);
   ASSERT_EQ(decoded->size(), 1UL);
-  EXPECT_TRUE(decoded->back().is_list());
+  ASSERT_TRUE(decoded->back().is_list());
   ASSERT_EQ(decoded->back().GetList().size(), 2UL);
   EXPECT_EQ(decoded->back().GetList()[0], base::Value("0x45"));
   EXPECT_EQ(decoded->back().GetList()[1], base::Value(true));
@@ -720,10 +720,10 @@ TEST(EthABIDecoderTest, ABIDecodeTuple) {
       data);
   ASSERT_NE(decoded, std::nullopt);
   ASSERT_EQ(decoded->size(), 1UL);
-  EXPECT_TRUE(decoded->back().is_list());
+  ASSERT_TRUE(decoded->back().is_list());
   ASSERT_EQ(decoded->back().GetList().size(), 2UL);
   EXPECT_EQ(decoded->back().GetList()[0], base::Value(true));
-  EXPECT_TRUE(decoded->back().GetList()[1].is_list());
+  ASSERT_TRUE(decoded->back().GetList()[1].is_list());
   ASSERT_EQ(decoded->back().GetList()[1].GetList().size(), 2UL);
   EXPECT_EQ(decoded->back().GetList()[1].GetList()[0], base::Value("0x45"));
   EXPECT_EQ(decoded->back().GetList()[1].GetList()[1], base::Value(true));
@@ -757,11 +757,11 @@ TEST(EthABIDecoderTest, ABIDecodeTuple) {
       data);
   ASSERT_NE(decoded, std::nullopt);
   ASSERT_EQ(decoded->size(), 1UL);
-  EXPECT_TRUE(decoded->back().is_list());
+  ASSERT_TRUE(decoded->back().is_list());
   ASSERT_EQ(decoded->back().GetList().size(), 3UL);
   EXPECT_EQ(decoded->back().GetList()[0], base::Value("marin123123123123"));
   EXPECT_EQ(decoded->back().GetList()[1], base::Value(true));
-  EXPECT_TRUE(decoded->back().GetList()[2].is_list());
+  ASSERT_TRUE(decoded->back().GetList()[2].is_list());
   ASSERT_EQ(decoded->back().GetList()[2].GetList().size(), 2UL);
   EXPECT_EQ(decoded->back().GetList()[2].GetList()[0], base::Value(true));
   EXPECT_EQ(
@@ -778,7 +778,7 @@ TEST(EthABIDecoderTest, UniswapEncodedPathDecodeValid) {
       "002710"                                      // POOL FEE (10000)
       "af5191b0de278c7286d6c7cc6ab6bb8a73ba2cd6");  // STG
   ASSERT_NE(path, std::nullopt);
-  EXPECT_EQ(path->size(), 2UL);
+  ASSERT_EQ(path->size(), 2UL);
   EXPECT_EQ(path->at(0), "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2");
   EXPECT_EQ(path->at(1), "0xaf5191b0de278c7286d6c7cc6ab6bb8a73ba2cd6");
 

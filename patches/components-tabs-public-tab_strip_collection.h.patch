@@ -1,8 +1,22 @@
 diff --git a/components/tabs/public/tab_strip_collection.h b/components/tabs/public/tab_strip_collection.h
-index 8e9717922fe779ae432a0c2df38609547108aefc..772a0b252022734aee10a7c6c66e611f9e52176a 100644
+index 8e9717922fe779ae432a0c2df38609547108aefc..2f606accbe7fd09fff3a5a2206c7e6d155686b00 100644
 --- a/components/tabs/public/tab_strip_collection.h
 +++ b/components/tabs/public/tab_strip_collection.h
-@@ -55,11 +55,11 @@ class TabStripCollection : public TabCollection {
+@@ -16,6 +16,13 @@
+ #include "components/tabs/public/split_tab_data.h"
+ #include "components/tabs/public/tab_collection.h"
+ 
++namespace tree_tab {
++class TreeTabNodeId;
++}  // namespace tree_tab
++namespace tabs {
++class TreeTabNodeTabCollection;
++}  // namespace tabs
++
+ class TabStripModel;
+ 
+ namespace tabs {
+@@ -55,11 +62,11 @@ class TabStripCollection : public TabCollection {
                      new_pinned_state);
    }
  
@@ -16,7 +30,7 @@ index 8e9717922fe779ae432a0c2df38609547108aefc..772a0b252022734aee10a7c6c66e611f
        const std::vector<int>& tab_indices,
        size_t destination_index,
        std::optional<tab_groups::TabGroupId> new_group_id,
-@@ -69,7 +69,7 @@ class TabStripCollection : public TabCollection {
+@@ -69,7 +76,7 @@ class TabStripCollection : public TabCollection {
    // Removes the tab present at a recursive index in the collection and
    // returns the unique_ptr to the tab model. If there is no tab present
    // due to bad input then CHECK.
@@ -25,7 +39,7 @@ index 8e9717922fe779ae432a0c2df38609547108aefc..772a0b252022734aee10a7c6c66e611f
  
    // TabCollection:
    // Tabs and Collections are not allowed to be removed from TabStripCollection.
-@@ -78,7 +78,7 @@ class TabStripCollection : public TabCollection {
+@@ -78,14 +85,14 @@ class TabStripCollection : public TabCollection {
    std::unique_ptr<TabCollection> MaybeRemoveCollection(
        TabCollection* collection) override;
  
@@ -34,7 +48,15 @@ index 8e9717922fe779ae432a0c2df38609547108aefc..772a0b252022734aee10a7c6c66e611f
        std::unique_ptr<TabCollection> collection,
        int index,
        bool pinned,
-@@ -112,11 +112,11 @@ class TabStripCollection : public TabCollection {
+       std::optional<tab_groups::TabGroupId> parent_group);
+ 
+   // Remove a tab collection and send the appropriate notifications.
+-  std::unique_ptr<TabCollection> RemoveTabCollection(TabCollection* collection);
++  virtual std::unique_ptr<TabCollection> RemoveTabCollection(TabCollection* collection);
+ 
+   // Adds the `tab_group_collection` to `detached_group_collections_`
+   // so that it can be used when inserting a tab to a group.
+@@ -112,11 +119,11 @@ class TabStripCollection : public TabCollection {
  
    // Split tab operations.
    SplitTabCollection* GetSplitTabCollection(split_tabs::SplitTabId split_id);
@@ -48,7 +70,7 @@ index 8e9717922fe779ae432a0c2df38609547108aefc..772a0b252022734aee10a7c6c66e611f
    std::set<split_tabs::SplitTabId> ListSplits() const;
  
    void ValidateData() const;
-@@ -125,7 +125,33 @@ class TabStripCollection : public TabCollection {
+@@ -125,7 +132,33 @@ class TabStripCollection : public TabCollection {
        const tabs::TabCollection::Handle& collection_handle,
        base::PassKey<TabStripModel>) const;
  
@@ -82,7 +104,7 @@ index 8e9717922fe779ae432a0c2df38609547108aefc..772a0b252022734aee10a7c6c66e611f
    // Removes the group collection with `group_id` from
    // `detached_group_collections_`.
    std::unique_ptr<tabs::TabGroupTabCollection> PopDetachedGroupCollection(
-@@ -152,8 +178,8 @@ class TabStripCollection : public TabCollection {
+@@ -152,8 +185,8 @@ class TabStripCollection : public TabCollection {
    // Helper to centralize updates to `group_mapping_` and `split_mapping_`. If
    // `root_collection` is a group, the appropriate splits need to group need to
    // be updated in the `split_mapping_`.

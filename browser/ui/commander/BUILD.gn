@@ -3,7 +3,88 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/commander/common/buildflags/buildflags.gni")
 import("//testing/libfuzzer/fuzzer_test.gni")
+
+assert(enable_commander)
+
+source_set("commander") {
+  sources = [
+    "bookmark_command_source.cc",
+    "bookmark_command_source.h",
+    "command_source.cc",
+    "command_source.h",
+    "commander_service.cc",
+    "commander_service.h",
+    "commander_service_factory.cc",
+    "commander_service_factory.h",
+    "entity_match.cc",
+    "entity_match.h",
+    "open_url_command_source.cc",
+    "open_url_command_source.h",
+    "ranker.cc",
+    "ranker.h",
+    "simple_command_source.cc",
+    "simple_command_source.h",
+    "tab_command_source.cc",
+    "tab_command_source.h",
+    "window_command_source.cc",
+    "window_command_source.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/commander/browser",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/browser_window",
+    "//components/keyed_service/core",
+    "//content/public/browser",
+    "//third_party/abseil-cpp:absl",
+  ]
+
+  deps = [
+    ":fuzzy_finder",
+    "//brave/app:command_ids",
+    "//brave/browser/misc_metrics",
+    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/commander/common",
+    "//brave/components/resources:strings",
+    "//chrome/app:command_ids",
+    "//chrome/app:generated_resources",
+    "//chrome/browser/bookmarks",
+    "//chrome/browser/send_tab_to_self",
+    "//chrome/browser/ui:accelerator_utils_headers",
+    "//chrome/browser/ui:browser_command_controller",
+    "//chrome/browser/ui:browser_commands",
+    "//chrome/browser/ui:browser_tabstrip",
+    "//chrome/browser/ui:browser_window_header",
+    "//chrome/browser/ui:tab_ui_helper",
+    "//chrome/browser/ui/location_bar",
+    "//chrome/browser/ui/omnibox",
+    "//chrome/browser/ui/tabs",
+    "//chrome/browser/ui/tabs:tab_enums",
+    "//chrome/browser/ui/tabs:tab_group",
+    "//chrome/browser/ui/tabs:tab_strip",
+    "//chrome/browser/ui/window_metadata",
+    "//components/bookmarks/browser",
+    "//components/history/core/browser",
+    "//components/omnibox/browser",
+    "//components/pref_registry",
+    "//components/prefs",
+    "//components/sessions",
+    "//components/tab_groups",
+    "//components/tabs:public",
+    "//ui/base",
+    "//ui/gfx",
+    "//ui/gfx/range",
+    "//url",
+  ]
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/core/browser" ]
+  }
+}
 
 source_set("browser_tests") {
   testonly = true
@@ -12,9 +93,11 @@ source_set("browser_tests") {
   sources = [ "commander_service_browsertest.cc" ]
 
   deps = [
+    ":commander",
     "//base",
     "//brave/browser/ui",
     "//brave/components/commander/browser",
+    "//brave/components/containers/core/common:features",
     "//brave/components/resources:strings_grit",
     "//chrome/browser/profiles",
     "//chrome/browser/profiles:profile",
@@ -35,6 +118,7 @@ source_set("interactive_ui_tests") {
   sources = [ "commander_service_interactive_ui_tests.cc" ]
 
   deps = [
+    ":commander",
     "//base",
     "//brave/browser/ui",
     "//brave/components/commander/browser",
@@ -57,6 +141,7 @@ source_set("unit_tests") {
   ]
 
   deps = [
+    ":commander",
     ":fuzzy_finder",
     "//base",
     "//brave/browser/ui",

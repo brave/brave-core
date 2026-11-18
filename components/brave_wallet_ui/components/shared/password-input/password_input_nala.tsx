@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { type InputEvent } from '@brave/leo/react/input'
+import { type InputEvent } from '@brave/nala/react/input'
 
 // utils
 import { getLocale } from '../../../../common/locale'

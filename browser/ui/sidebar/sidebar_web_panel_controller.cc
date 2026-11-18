@@ -6,9 +6,8 @@
 #include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
 
 #include "base/check_op.h"
-#include "base/types/to_address.h"
+#include "base/functional/bind.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
-#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -32,39 +31,90 @@ SidebarWebPanelController::~SidebarWebPanelController() {
   CHECK(!panel_contents_);
 }
 
-void SidebarWebPanelController::ToggleWebPanel(const SidebarItem& item) {
-  // If panel is for |item|, close and return.
-  // Otherwise, open new panel after closing.
-  // When item is same but url has been changed, closes the current panel and
-  // reopens the panel with the new url.
-  const bool close_and_return = HasOpenPanel() && panel_item_.url == item.url;
-  CloseWebPanel();
+void SidebarWebPanelController::ToggleWebPanel(const SidebarItem& item,
+                                               bool suppress_animations) {
+  const bool same_url = panel_contents_ && panel_item_.url == item.url;
 
-  if (close_and_return) {
+  // Pressing the item again mid-close reverses the animation in place: the tab
+  // is still there, so there is nothing to recreate.
+  if (state_ == State::kClosing && same_url) {
+    state_ = State::kOpen;
+    GetMultiContentsView()->CancelWebPanelCloseAnimation();
+    web_panel_state_changed_.Run();
     return;
   }
 
-  OpenWebPanel(item);
+  if (state_ == State::kOpen && same_url) {
+    CloseWebPanel(suppress_animations);
+    return;
+  }
 
-  // browser view could have different UI per web panel state.
-  BraveBrowserView::From(base::to_address(browser_view_))
-      ->UpdateRoundedCornersUI();
+  // Either a cold open, or one panel replacing another - including when the
+  // item is the same but its url changed. Only a cold open that isn't taking
+  // over the side panel's space animates; in every other case the strip is
+  // already the width it will end up at.
+  const bool had_panel = HasPanelTab();
+  CloseWebPanelImmediately();
+  OpenWebPanel(item, /*animate=*/!had_panel && !suppress_animations);
 }
 
 bool SidebarWebPanelController::HasOpenPanel() const {
-  return panel_contents_ && panel_item_.IsValidItem();
+  return HasPanelTab() && panel_item_.IsValidItem() && state_ == State::kOpen;
 }
 
-void SidebarWebPanelController::OpenWebPanel(const SidebarItem& item) {
+bool SidebarWebPanelController::HasPanelTab() const {
+  return !!panel_contents_;
+}
+
+void SidebarWebPanelController::OpenWebPanel(const SidebarItem& item,
+                                             bool animate) {
   panel_contents_ = chrome::AddAndReturnTabAt(
       browser_view_->browser(), item.url, 0, false, std::nullopt, true);
   panel_item_ = item;
-  GetMultiContentsView()->SetWebPanelContents(panel_contents_);
+  state_ = State::kOpen;
+  GetMultiContentsView()->SetWebPanelContents(panel_contents_, animate);
   web_panel_state_changed_.Run();
 }
 
-void SidebarWebPanelController::CloseWebPanel() {
+void SidebarWebPanelController::CloseWebPanel(bool suppress_animations) {
+  if (suppress_animations) {
+    // Guarded on HasPanelTab(), so this also finishes a panel that is already
+    // animating closed - it still occupies the space being taken over.
+    CloseWebPanelImmediately();
+    return;
+  }
+
   if (!HasOpenPanel()) {
+    return;
+  }
+
+  state_ = State::kClosing;
+  if (GetMultiContentsView()->StartWebPanelCloseAnimation(
+          base::BindOnce(&SidebarWebPanelController::FinishClose,
+                         weak_factory_.GetWeakPtr()))) {
+    // The panel is on its way out, so stop presenting it as active while it
+    // animates.
+    web_panel_state_changed_.Run();
+    return;
+  }
+
+  FinishClose();
+}
+
+void SidebarWebPanelController::CloseWebPanelImmediately() {
+  if (!HasPanelTab()) {
+    return;
+  }
+
+  state_ = State::kClosing;
+  GetMultiContentsView()->ResetWebPanelAnimation();
+  FinishClose();
+}
+
+void SidebarWebPanelController::FinishClose() {
+  // The tab may already be gone - closed from the tab strip, or taken by
+  // shutdown, while the animation was still running.
+  if (state_ != State::kClosing || !panel_contents_) {
     return;
   }
 
@@ -72,7 +122,10 @@ void SidebarWebPanelController::CloseWebPanel() {
 }
 
 void SidebarWebPanelController::CloseWebPanelForShutdown() {
-  if (!HasOpenPanel()) {
+  // Deliberately HasPanelTab(), not HasOpenPanel(): a panel animating closed
+  // still has its tab in the strip, and leaving it there would both restore it
+  // next launch and trip the destructor's CHECK.
+  if (!HasPanelTab()) {
     return;
   }
 
@@ -91,6 +144,7 @@ void SidebarWebPanelController::CloseWebPanelForShutdown() {
 }
 
 void SidebarWebPanelController::ClearPanelState() {
+  state_ = State::kClosed;
   GetMultiContentsView()->SetWebPanelContents(nullptr);
   panel_contents_ = nullptr;
   panel_item_ = sidebar::SidebarItem();

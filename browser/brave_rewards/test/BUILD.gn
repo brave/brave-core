@@ -33,6 +33,8 @@ source_set("browser_tests") {
   # TODO(https://github.com/brave/brave-browser/issues/41833): Update these
   # tests to run on Android as well.
   if (!is_android) {
+    deps += [ "//brave/browser/ui/brave_rewards" ]
+
     sources += [
       "rewards_flag_browsertest.cc",
       "rewards_notification_browsertest.cc",

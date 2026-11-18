@@ -10,7 +10,7 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { initLocale } from 'brave-ui'
-import { setIconBasePath } from '@brave/leo/react/icon'
+import { setIconBasePath } from '@brave/nala/react/icon'
 import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 
 import { loadTimeData } from '../../common/loadTimeData'
@@ -24,6 +24,18 @@ import {
   runLocalStorageMigrations, //
 } from '../common/constants/local-storage-keys'
 setIconBasePath('chrome://resources/brave-icons')
+
+function createPolkadotBridgeFrame() {
+  if (loadTimeData.getBoolean('isPolkadotDAppSupportEnabled')) {
+    const element = document.createElement('iframe')
+    element.style.display = 'none'
+    element.src = 'chrome-untrusted://polkadot-bridge/'
+    element.onerror = () => {
+      console.error('failed to load the Polkadot bridge frame')
+    }
+    document.body.appendChild(element)
+  }
+}
 
 function App() {
   React.useEffect(() => {
@@ -46,6 +58,7 @@ function App() {
 
 function initialize() {
   initLocale(loadTimeData.data_)
+  createPolkadotBridgeFrame()
   const root = createRoot(document.getElementById('mountPoint')!)
   root.render(
     <StyledComponentsProvider>

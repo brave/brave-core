@@ -308,13 +308,16 @@ TEST(CardanoTransactionSerializerTest, ReferenceTransactions) {
   EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
       tx_with_tag, GetReferenceEpochParameters()));
 
-  EXPECT_EQ(base::HexEncodeLower(
-                *CardanoTransactionSerializer::GetTxHash(tx_with_tag)),
+  auto tx_with_tag_hash = CardanoTransactionSerializer::GetTxHash(tx_with_tag);
+  ASSERT_TRUE(tx_with_tag_hash);
+  EXPECT_EQ(base::HexEncodeLower(*tx_with_tag_hash),
             "0a176a7e0add815704f5b2f3bd4aee0de0c3d331585d39d3b9b0d426fab57f16");
 
+  auto tx_with_tag_bytes =
+      CardanoTransactionSerializer::SerializeTransaction(tx_with_tag);
+  ASSERT_TRUE(tx_with_tag_bytes);
   EXPECT_EQ(
-      base::HexEncodeLower(
-          *CardanoTransactionSerializer::SerializeTransaction(tx_with_tag)),
+      base::HexEncodeLower(*tx_with_tag_bytes),
       "84a400d9010282825820cf36372f1d91161bb1b6ce882890ae8d6c20bd7175f9c8430acc"
       "50023075e80f00825820cf36372f1d91161bb1b6ce882890ae8d6c20bd7175f9c8430acc"
       "50023075e80f01018182583901ba21e35d6191cdf04207893e4d25eb2dfa58be535f3b3e"
@@ -334,12 +337,15 @@ TEST(CardanoTransactionSerializerTest, ReferenceTransactions) {
   EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
       tx_no_tag, GetReferenceEpochParameters()));
 
-  EXPECT_EQ(
-      base::HexEncodeLower(*CardanoTransactionSerializer::GetTxHash(tx_no_tag)),
-      "a634a34c535a86aa7125023e816d2fac982d530b0848dcc40738a33aca09c9ba");
+  auto tx_no_tag_hash = CardanoTransactionSerializer::GetTxHash(tx_no_tag);
+  ASSERT_TRUE(tx_no_tag_hash);
+  EXPECT_EQ(base::HexEncodeLower(*tx_no_tag_hash),
+            "a634a34c535a86aa7125023e816d2fac982d530b0848dcc40738a33aca09c9ba");
 
-  EXPECT_EQ(base::HexEncodeLower(
-                *CardanoTransactionSerializer::SerializeTransaction(tx_no_tag)),
+  auto tx_no_tag_bytes =
+      CardanoTransactionSerializer::SerializeTransaction(tx_no_tag);
+  ASSERT_TRUE(tx_no_tag_bytes);
+  EXPECT_EQ(base::HexEncodeLower(*tx_no_tag_bytes),
             "84a40081825820a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240a"
             "dd8c71edb9250001828258390144e5e8699ab31de351be61dfeb7c220eff61d29d"
             "9c88ca9d1599b36deb20324c1f3c7c6a216e551523ff7ef4e784f3fde3606a5bac"
@@ -356,13 +362,17 @@ TEST(CardanoTransactionSerializerTest, ReferenceTransactionWithTokens) {
   EXPECT_TRUE(CardanoTransactionSerializer::ValidateAmounts(
       tx_with_tokens, GetReferenceEpochParameters()));
 
-  EXPECT_EQ(base::HexEncodeLower(
-                *CardanoTransactionSerializer::GetTxHash(tx_with_tokens)),
+  auto tx_with_tokens_hash =
+      CardanoTransactionSerializer::GetTxHash(tx_with_tokens);
+  ASSERT_TRUE(tx_with_tokens_hash);
+  EXPECT_EQ(base::HexEncodeLower(*tx_with_tokens_hash),
             "d39318f58e4c26030f87260933fb04f6ebc21fd896570ed4ac795cc503dbe135");
 
+  auto tx_with_tokens_bytes =
+      CardanoTransactionSerializer::SerializeTransaction(tx_with_tokens);
+  ASSERT_TRUE(tx_with_tokens_bytes);
   EXPECT_EQ(
-      base::HexEncodeLower(
-          *CardanoTransactionSerializer::SerializeTransaction(tx_with_tokens)),
+      base::HexEncodeLower(*tx_with_tokens_bytes),
       "84a400d90102858258200a7c65b36a437c4ef5c7c9a1c9eef236da1820ab9b2418900a57"
       "96e870cc5b0b182c8258200aa8b16c3d4abb059f419913885ca5122798fefc72615a64e1"
       "f4231b68c41e7c018258201d05bfeb8bb2015815284ed6644f56ee56b0d13206616c0039"
@@ -388,49 +398,58 @@ TEST(CardanoTransactionSerializerTest, ReferenceTransactionWithTokens) {
 }
 
 TEST(CardanoTransactionSerializerTest, SerializeTransaction) {
-  EXPECT_EQ(base::HexEncodeLower(*CardanoTransactionSerializer::GetTxHash(
-                GetReferenceTransactionWithTag())),
+  auto hash =
+      CardanoTransactionSerializer::GetTxHash(GetReferenceTransactionWithTag());
+  ASSERT_TRUE(hash);
+  EXPECT_EQ(base::HexEncodeLower(*hash),
             "0a176a7e0add815704f5b2f3bd4aee0de0c3d331585d39d3b9b0d426fab57f16");
 
   ScopedUseSetTagForTesting scoped_use_set_tag_for_testing(false);
 
-  EXPECT_EQ(
-      base::HexEncodeLower(*CardanoTransactionSerializer::SerializeTransaction(
-          GetReferenceTransactionNoTag())),
-      "84a40081825820a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240a"
-      "dd8c71edb9250001828258390144e5e8699ab31de351be61dfeb7c220eff61d29d"
-      "9c88ca9d1599b36deb20324c1f3c7c6a216e551523ff7ef4e784f3fde3606a5bac"
-      "e785391a0098968082583901e057e6ff439d606a3e6c47a00b867734098461b83a"
-      "d9943242b6bc04b7b276465449b932964b6173bc9f38a87677136918dc79f746c1"
-      "c21d1a017286c0021a0002917d031a08ed50c4a10081825820e68ca46554098776"
-      "f19f1433da96a108ea8bdda693fb1bea748f89adbfa7c2af58404dd83381fdc64b"
-      "6123f193e23c983a99c979a1af44b1bda5ea15d06cf7364161b7b3609bca439b62"
-      "e232731fb5290c495601cf40b358f915ade8bcff1eb7b802f5f6");
+  auto bytes = CardanoTransactionSerializer::SerializeTransaction(
+      GetReferenceTransactionNoTag());
+  ASSERT_TRUE(bytes);
+  EXPECT_EQ(base::HexEncodeLower(*bytes),
+            "84a40081825820a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240a"
+            "dd8c71edb9250001828258390144e5e8699ab31de351be61dfeb7c220eff61d29d"
+            "9c88ca9d1599b36deb20324c1f3c7c6a216e551523ff7ef4e784f3fde3606a5bac"
+            "e785391a0098968082583901e057e6ff439d606a3e6c47a00b867734098461b83a"
+            "d9943242b6bc04b7b276465449b932964b6173bc9f38a87677136918dc79f746c1"
+            "c21d1a017286c0021a0002917d031a08ed50c4a10081825820e68ca46554098776"
+            "f19f1433da96a108ea8bdda693fb1bea748f89adbfa7c2af58404dd83381fdc64b"
+            "6123f193e23c983a99c979a1af44b1bda5ea15d06cf7364161b7b3609bca439b62"
+            "e232731fb5290c495601cf40b358f915ade8bcff1eb7b802f5f6");
 }
 
 TEST(CardanoTransactionSerializerTest, GetTxHash) {
-  EXPECT_EQ(base::HexEncodeLower(*CardanoTransactionSerializer::GetTxHash(
-                GetReferenceTransactionWithTag())),
+  auto hash_with_tag =
+      CardanoTransactionSerializer::GetTxHash(GetReferenceTransactionWithTag());
+  ASSERT_TRUE(hash_with_tag);
+  EXPECT_EQ(base::HexEncodeLower(*hash_with_tag),
             "0a176a7e0add815704f5b2f3bd4aee0de0c3d331585d39d3b9b0d426fab57f16");
 
   ScopedUseSetTagForTesting scoped_use_set_tag_for_testing(false);
 
-  EXPECT_EQ(base::HexEncodeLower(*CardanoTransactionSerializer::GetTxHash(
-                GetReferenceTransactionNoTag())),
+  auto hash_no_tag =
+      CardanoTransactionSerializer::GetTxHash(GetReferenceTransactionNoTag());
+  ASSERT_TRUE(hash_no_tag);
+  EXPECT_EQ(base::HexEncodeLower(*hash_no_tag),
             "a634a34c535a86aa7125023e816d2fac982d530b0848dcc40738a33aca09c9ba");
 }
 
 TEST(CardanoTransactionSerializerTest, CalcMinTransactionFee) {
   cardano_rpc::EpochParameters epoch_parameters = GetReferenceEpochParameters();
 
-  EXPECT_EQ(*CardanoTransactionSerializer::CalcMinTransactionFee(
-                GetReferenceTransactionWithTag(), epoch_parameters),
-            171749u);
+  auto fee_with_tag = CardanoTransactionSerializer::CalcMinTransactionFee(
+      GetReferenceTransactionWithTag(), epoch_parameters);
+  ASSERT_TRUE(fee_with_tag);
+  EXPECT_EQ(*fee_with_tag, 171749u);
 
   ScopedUseSetTagForTesting scoped_use_set_tag_for_testing(false);
-  EXPECT_EQ(*CardanoTransactionSerializer::CalcMinTransactionFee(
-                GetReferenceTransactionNoTag(), epoch_parameters),
-            168141u);
+  auto fee_no_tag = CardanoTransactionSerializer::CalcMinTransactionFee(
+      GetReferenceTransactionNoTag(), epoch_parameters);
+  ASSERT_TRUE(fee_no_tag);
+  EXPECT_EQ(*fee_no_tag, 168141u);
 }
 
 TEST(CardanoTransactionSerializerTest, CalcMinAdaRequired) {
@@ -780,6 +799,7 @@ TEST(CardanoTransactionSerializerTest, AdjustFeeAndOutputsForTx) {
 
     auto found_tx = CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
         tx_no_change, epoch_parameters, false);
+    ASSERT_TRUE(found_tx);
 
     EXPECT_EQ(found_tx->fee(), 172981u);
     EXPECT_EQ(found_tx->inputs(), base_tx.inputs());
@@ -809,6 +829,7 @@ TEST(CardanoTransactionSerializerTest, AdjustFeeAndOutputsForTx) {
 
     auto found_tx = CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
         tx_with_change, epoch_parameters, false);
+    ASSERT_TRUE(found_tx);
 
     EXPECT_EQ(found_tx->fee(), 175841u);
     EXPECT_EQ(found_tx->inputs(), base_tx.inputs());
@@ -821,6 +842,7 @@ TEST(CardanoTransactionSerializerTest, AdjustFeeAndOutputsForTx) {
 
     found_tx = CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
         tx_with_change, epoch_parameters, false);
+    ASSERT_TRUE(found_tx);
 
     EXPECT_EQ(found_tx->fee(), 175841u);
     EXPECT_EQ(found_tx->inputs(), base_tx.inputs());
@@ -848,6 +870,7 @@ TEST(CardanoTransactionSerializerTest, AdjustFeeAndOutputsForTx) {
     // tx_max_send.set_sending_amount(std::nullopt);
     auto found_tx = CardanoTransactionSerializer::AdjustFeeAndOutputsForTx(
         tx_max_send, epoch_parameters, true);
+    ASSERT_TRUE(found_tx);
 
     EXPECT_EQ(found_tx->fee(), 172981u);
     EXPECT_EQ(found_tx->inputs(), base_tx.inputs());

@@ -202,13 +202,13 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test,
   base::test::TestFuture<CreativeNewTabPageAdList> test_future_1;
   eligible_ads_->GetForUserModel(user_model, test_future_1.GetCallback());
   const CreativeNewTabPageAdList creative_ads_1 = test_future_1.Take();
-  EXPECT_THAT(creative_ads_1, ::testing::SizeIs(1));
+  ASSERT_THAT(creative_ads_1, ::testing::SizeIs(1));
   SimulateServeAd(creative_ads_1);
 
   base::test::TestFuture<CreativeNewTabPageAdList> test_future_2;
   eligible_ads_->GetForUserModel(user_model, test_future_2.GetCallback());
   const CreativeNewTabPageAdList creative_ads_2 = test_future_2.Take();
-  EXPECT_THAT(creative_ads_2, ::testing::SizeIs(1));
+  ASSERT_THAT(creative_ads_2, ::testing::SizeIs(1));
   SimulateServeAd(creative_ads_2);
 
   ASSERT_NE(creative_ads_1, creative_ads_2);
@@ -367,14 +367,14 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test,
   eligible_ads_->GetForUserModel(user_model, test_future_1.GetCallback());
   const CreativeNewTabPageAdList first_served_creative_ads =
       test_future_1.Take();
-  EXPECT_THAT(first_served_creative_ads, ::testing::SizeIs(1));
+  ASSERT_THAT(first_served_creative_ads, ::testing::SizeIs(1));
   SimulateServeAd(first_served_creative_ads);
 
   base::test::TestFuture<CreativeNewTabPageAdList> test_future_2;
   eligible_ads_->GetForUserModel(user_model, test_future_2.GetCallback());
   const CreativeNewTabPageAdList second_served_creative_ads =
       test_future_2.Take();
-  EXPECT_THAT(second_served_creative_ads, ::testing::SizeIs(1));
+  ASSERT_THAT(second_served_creative_ads, ::testing::SizeIs(1));
   ASSERT_NE(first_served_creative_ads, second_served_creative_ads);
   SimulateServeAd(second_served_creative_ads);
 
@@ -687,7 +687,7 @@ TEST_F(
     eligible_ads_->GetForUserModel(user_model, test_future.GetCallback());
     const CreativeNewTabPageAdList lower_priority_served_creative_ads =
         test_future.Take();
-    EXPECT_THAT(lower_priority_served_creative_ads, ::testing::SizeIs(1));
+    ASSERT_THAT(lower_priority_served_creative_ads, ::testing::SizeIs(1));
     SimulateServeAd(lower_priority_served_creative_ads);
   }
 
@@ -788,7 +788,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test,
     base::test::TestFuture<CreativeNewTabPageAdList> test_future;
     eligible_ads_->GetForUserModel(user_model, test_future.GetCallback());
     const CreativeNewTabPageAdList creative_ads = test_future.Take();
-    EXPECT_THAT(creative_ads,
+    ASSERT_THAT(creative_ads,
                 ::testing::AllOf(::testing::SizeIs(1),
                                  ::testing::Not(::testing::AnyOf(
                                      ::testing::Contains(creative_ad_3),
@@ -831,7 +831,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test,
     base::test::TestFuture<CreativeNewTabPageAdList> test_future;
     eligible_ads_->GetForUserModel(user_model, test_future.GetCallback());
     const CreativeNewTabPageAdList creative_ads = test_future.Take();
-    EXPECT_THAT(creative_ads,
+    ASSERT_THAT(creative_ads,
                 ::testing::AllOf(::testing::SizeIs(1),
                                  ::testing::Not(::testing::AnyOf(
                                      ::testing::Contains(creative_ad_3),
@@ -862,7 +862,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test,
     base::test::TestFuture<CreativeNewTabPageAdList> test_future;
     eligible_ads_->GetForUserModel(user_model, test_future.GetCallback());
     ntt8_creative_ads = test_future.Take();
-    EXPECT_THAT(ntt8_creative_ads,
+    ASSERT_THAT(ntt8_creative_ads,
                 ::testing::AllOf(::testing::SizeIs(1),
                                  ::testing::Not(::testing::AnyOf(
                                      ::testing::Contains(creative_ad_3),
@@ -879,7 +879,7 @@ TEST_F(BraveAdsEligibleNewTabPageAdsV2Test,
     base::test::TestFuture<CreativeNewTabPageAdList> test_future;
     eligible_ads_->GetForUserModel(user_model, test_future.GetCallback());
     const CreativeNewTabPageAdList creative_ads = test_future.Take();
-    EXPECT_THAT(creative_ads,
+    ASSERT_THAT(creative_ads,
                 ::testing::AllOf(::testing::SizeIs(1),
                                  ::testing::Not(::testing::AnyOf(
                                      ::testing::Contains(creative_ad_3),

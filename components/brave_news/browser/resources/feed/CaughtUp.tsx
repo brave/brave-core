@@ -7,8 +7,8 @@ import * as React from 'react';
 import styled from 'styled-components';
 import Flex from '$web-common/Flex';
 import { getLocale } from '../../../../common/locale';
-import Icon from '@brave/leo/react/icon';
-import { spacing } from '@brave/leo/tokens/css/variables';
+import Icon from '@brave/nala/react/icon';
+import { spacing } from '@brave/nala/tokens/css/variables';
 
 const Container = styled(Flex)`
   color: var(--bn-glass-50);

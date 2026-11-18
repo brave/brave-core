@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/omaha/android/java/src/org/chromium/chrome/browser/omaha/VersionNumberGetter.java b/chrome/browser/omaha/android/java/src/org/chromium/chrome/browser/omaha/VersionNumberGetter.java
+index 8e3f7d34d6291829c62db419247792ef69befedd..37d8a75b21c78b0759bf49365130c3a33a9368a4 100644
+--- a/chrome/browser/omaha/android/java/src/org/chromium/chrome/browser/omaha/VersionNumberGetter.java
++++ b/chrome/browser/omaha/android/java/src/org/chromium/chrome/browser/omaha/VersionNumberGetter.java
+@@ -63,7 +63,7 @@ public class VersionNumberGetter {
+      * @return The latest version if we retrieved one from the Omaha server, or "" if we haven't.
+      */
+     public String getCurrentlyUsedVersion() {
+-        return ApkInfo.getPackageVersionName();
++        return "0.0.0." + ApkInfo.getPackageVersionCode();
+     }
+ 
+     /**

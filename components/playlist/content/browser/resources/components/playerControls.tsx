@@ -7,9 +7,9 @@ import * as React from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 
-import Icon from '@brave/leo/react/icon'
-import Button from '@brave/leo/react/button'
-import { spacing } from '@brave/leo/tokens/css/variables'
+import Icon from '@brave/nala/react/icon'
+import Button from '@brave/nala/react/button'
+import { spacing } from '@brave/nala/tokens/css/variables'
 
 import { getPlayerActions } from '../api/getPlayerActions'
 import { ApplicationState, useLoopMode } from '../reducers/states'

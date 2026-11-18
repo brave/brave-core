@@ -59,7 +59,7 @@ protocol SettingsDelegate: AnyObject {
   func settingsCreateFakeHistory()
 }
 
-class SettingsViewController: TableViewController, BraveAccountDialogOpenerBridge {
+class SettingsViewController: TableViewController {
   weak var settingsDelegate: SettingsDelegate?
 
   private let profile: LegacyBrowserProfile
@@ -77,7 +77,6 @@ class SettingsViewController: TableViewController, BraveAccountDialogOpenerBridg
   private let keyringStore: KeyringStore?
   private let cryptoStore: CryptoStore?
   private let windowProtection: WindowProtection?
-  private let ipfsAPI: IpfsAPI
   private let altIconsModel = AltIconsModel()
 
   private let featureSectionUUID: UUID = .init()
@@ -87,7 +86,6 @@ class SettingsViewController: TableViewController, BraveAccountDialogOpenerBridg
   private let appIconRowUUID: UUID = .init()
 
   private var cancellables: Set<AnyCancellable> = []
-  private weak var braveAccountDialog: UIViewController?
 
   init(
     profile: LegacyBrowserProfile,
@@ -117,7 +115,6 @@ class SettingsViewController: TableViewController, BraveAccountDialogOpenerBridg
     self.attributionManager = attributionManager
     self.keyringStore = keyringStore
     self.cryptoStore = cryptoStore
-    self.ipfsAPI = braveCore.ipfsAPI
 
     super.init(style: .insetGrouped)
 
@@ -301,7 +298,16 @@ class SettingsViewController: TableViewController, BraveAccountDialogOpenerBridg
       rows.append(
         Row(
           selection: { [unowned self] in
-            openBraveAccountSettings()
+            guard
+              let page = BraveAccountWebUIController(
+                screen: .settingsPage(.braveAccount),
+                profile: braveCore.profile
+              )
+            else { return }
+            (navigationController ?? self).present(
+              UINavigationController(rootViewController: page),
+              animated: true
+            )
           },
           cellClass: BraveAccountIconCell.self
         )
@@ -380,54 +386,6 @@ class SettingsViewController: TableViewController, BraveAccountDialogOpenerBridg
 
     return Static.Section(rows: rows)
   }()
-
-  @discardableResult
-  private func openBraveAccountWebUI(
-    url: URL,
-    dialogMode: BraveAccount.DialogMode? = nil
-  ) -> UIViewController {
-    let controller = ChromeWebUIController(braveCore: braveCore, isPrivateBrowsing: false)
-    let container = UINavigationController(rootViewController: controller)
-    controller.title = L10nUtils.string(messageId: .BRAVE_ACCOUNT_TITLE)
-    if let dialogMode {
-      controller.webView.braveAccountDialogMode = dialogMode
-    }
-    controller.webView.braveAccountDialogOpener = self
-    controller.webView.load(URLRequest(url: url))
-    controller.navigationItem.rightBarButtonItem = .doneButton { [unowned container] in
-      container.dismiss(animated: true)
-    }
-
-    // Present from whatever is on top rather than from here - UIKit ignores a
-    // second presentation from a controller that is already presenting.
-    var presenter: UIViewController = navigationController ?? self
-    while let presented = presenter.presentedViewController {
-      presenter = presented
-    }
-    presenter.present(container, animated: true)
-    return container
-  }
-
-  private func openBraveAccountSettings() {
-    openBraveAccountWebUI(
-      url: URL(string: "brave://account/\(BraveAccountSettingsPath)")!
-    )
-  }
-
-  // MARK: - BraveAccountDialogOpenerBridge
-
-  // Also called from the WebUI serving the account rows, which asks for the
-  // dialog to be opened over it.
-  func openBraveAccountDialog(dialogMode: BraveAccount.DialogMode = .default) {
-    if braveAccountDialog?.presentingViewController != nil {
-      return
-    }
-
-    braveAccountDialog = openBraveAccountWebUI(
-      url: URL(string: "brave://account")!,
-      dialogMode: dialogMode
-    )
-  }
 
   private func makeFeaturesSection() -> Static.Section {
     weak var spinner: SpinnerView?

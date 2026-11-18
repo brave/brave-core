@@ -27,14 +27,20 @@ public class BraveRewards: PreferencesObserver {
 
   private(set) var ads: BraveAds
   private(set) var rewardsAPI: BraveRewardsAPI?
+  private let profile: any Profile
+
   var rewardsServiceDidStart: ((BraveRewardsAPI) -> Void)?
 
   private let configuration: Configuration
 
-  public init(configuration: Configuration) {
+  public init(configuration: Configuration, profile: any Profile) {
     self.configuration = configuration
+    self.profile = profile
 
-    ads = BraveAds(stateStoragePath: configuration.storageURL.appendingPathComponent("ads").path)
+    ads = BraveAds(
+      stateStoragePath: configuration.storageURL.appendingPathComponent("ads").path,
+      profile: profile
+    )
 
     if Preferences.Rewards.adsEnabledTimestamp.value == nil, ads.isNotificationsEnabled {
       Preferences.Rewards.adsEnabledTimestamp.value = Date()
@@ -56,7 +62,7 @@ public class BraveRewards: PreferencesObserver {
     }
     let storagePath = configuration.storageURL.appendingPathComponent("ledger").path
     if rewardsAPI == nil {
-      rewardsAPI = BraveRewardsAPI(stateStoragePath: storagePath)
+      rewardsAPI = BraveRewardsAPI(stateStoragePath: storagePath, prefService: profile.prefs)
     }
     rewardsAPI?.initializeRewardsService { [weak self] in
       guard let self = self, let rewardsAPI = self.rewardsAPI else { return }

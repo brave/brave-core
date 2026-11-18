@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import { getLocale } from '$web-common/locale'
-import Icon from '@brave/leo/react/icon'
+import Icon from '@brave/nala/react/icon'
 import styles from './style.module.scss'
 import { useConversation } from '../../state/conversation_context'
 

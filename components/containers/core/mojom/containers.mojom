@@ -45,6 +45,18 @@ struct Container {
   skia.mojom.SkColor background_color;
 };
 
+// Where blank new tabs (Ctrl+T, the new-tab button) open. A null
+// NewTabTarget means no container (the default).
+union NewTabTarget {
+  // Open new tabs in the container with this id.
+  string container_id;
+  // Each new tab gets a fresh temporary container. The value is ignored.
+  bool temporary_container;
+  // The new-tab button shows the container menu instead of opening a tab.
+  // Keyboard shortcuts open a plain tab in this mode. The value is ignored.
+  bool ask_each_time;
+};
+
 // Represents an error that occurred during a container CRUD operation.
 enum ContainerOperationError {
   // The container ID is set, but the operation expects it to be empty.
@@ -86,6 +98,12 @@ interface ContainersSettingsHandler {
   // must contain exactly the same set of ids as the current containers list.
   ReorderContainers(array<string> ordered_ids) =>
       (ContainerOperationError? error);
+
+  // Returns where blank new tabs currently open; null means no container.
+  GetNewTabTarget() => (NewTabTarget? target);
+  // Sets where blank new tabs open; null means no container. A
+  // `container_id` target must name a container in the list.
+  SetNewTabTarget(NewTabTarget? target) => (ContainerOperationError? error);
 };
 
 // Interface for browser -> settings UI communication. This interface allows the
@@ -96,4 +114,6 @@ interface ContainersSettingsUI {
   // the UI stays in sync with the browser-side container state.
   // - `containers`: Updated list of all containers.
   OnContainersChanged(array<Container> containers);
+  // Called when the new-tab target changes (from this window or others).
+  OnNewTabTargetChanged(NewTabTarget? target);
 };

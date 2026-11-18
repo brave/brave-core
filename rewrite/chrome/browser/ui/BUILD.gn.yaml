@@ -4,18 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: |
-      Let //brave/browser/ui:brave_browser_header depend on :browser_header.
-
-      Upstream restricted browser.h to :core, but BraveBrowser subclasses
-      Browser. Only brave_browser.h includes browser.h, so only the leaf target
-      holding it is added to the visibility.
-    add_literal_to_list:
-      target: browser_header
-      list_name: visibility
-      literal: brave_chrome_browser_ui_browser_header_visibility
-      import: //brave/browser/sources.gni
-
   - description: |-
       accelerator_table.cc chromium_src override uses ENABLE_COMMANDER build
       flag. The dependency for the flag needs to be added.

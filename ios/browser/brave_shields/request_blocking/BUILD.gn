@@ -50,6 +50,7 @@ source_set("unit_tests") {
     "//ios/web/public/test",
     "//ios/web/public/test/fakes",
     "//net",
+    "//net:test_support",
     "//testing/gtest",
     "//url",
   ]

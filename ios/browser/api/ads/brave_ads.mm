@@ -11,6 +11,7 @@
 #include <optional>
 #include <utility>
 
+#include "base/apple/foundation_util.h"
 #include "base/check.h"
 #include "base/containers/flat_map.h"
 #include "base/files/file.h"
@@ -50,6 +51,8 @@
 #import "brave/ios/browser/api/ads/ads_client_ios.h"
 #import "brave/ios/browser/api/ads/brave_ads.mojom.objc+private.h"
 #import "brave/ios/browser/api/common/common_operations.h"
+#include "brave/ios/browser/api/profile/profile_bridge.h"
+#include "brave/ios/browser/api/profile/profile_bridge_impl.h"
 #include "brave/ios/browser/brave_ads/ads_service_factory_ios.h"
 #include "brave/ios/browser/brave_ads/ads_service_impl_ios.h"
 #include "brave/ios/browser/brave_ads/virtual_pref_provider_delegate_ios.h"
@@ -57,7 +60,6 @@
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
-#include "ios/chrome/browser/shared/model/profile/profile_manager_ios.h"
 #include "net/base/apple/url_conversions.h"
 #include "net/base/net_errors.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -100,6 +102,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   std::unique_ptr<brave_ads::VirtualPrefProvider> virtualPrefProvider;
   std::unique_ptr<brave_ads::HttpClient> httpClient;
   raw_ptr<brave_ads::AdsServiceImplIOS> adsService;
+  raw_ptr<ProfileIOS> _profile;
 }
 
 // TODO(https://github.com/brave/brave-browser/issues/33730): Unify Brave Ads
@@ -123,30 +126,35 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
 @implementation BraveAds
 
-- (instancetype)initWithStateStoragePath:(NSString*)path {
+- (instancetype)initWithStateStoragePath:(NSString*)path
+                                 profile:(id<ProfileBridge>)profile {
   if ((self = [super init])) {
+    _profile = base::apple::ObjCCastStrict<ProfileBridgeImpl>(profile).profile;
+    CHECK(_profile);
+    CHECK(!_profile->IsOffTheRecord());
+    _profilePrefService = _profile->GetPrefs();
+    CHECK(_profilePrefService);
+
     self.storagePath = path;
     self.commonOps = [[BraveCommonOperations alloc] initWithStoragePath:path];
 
     [self initComponentUpdater];
 
-    [self initProfilePrefService];
+    [self maybeMigrateProfilePrefs];
     [self initLocalStatePrefService];
 
     [self initObservers];
 
-    ProfileIOS* profile = [self getLastUsedProfile];
-    CHECK(profile);
     virtualPrefProvider = std::make_unique<brave_ads::VirtualPrefProvider>(
         *self.profilePrefService, *self.localStatePrefService,
-        std::make_unique<brave_ads::VirtualPrefProviderDelegateIOS>(*profile));
+        std::make_unique<brave_ads::VirtualPrefProviderDelegateIOS>(*_profile));
 
     httpClient = std::make_unique<brave_ads::HttpClient>(
         *self.profilePrefService, *self.localStatePrefService,
-        profile->GetSharedURLLoaderFactory(),
+        _profile->GetSharedURLLoaderFactory(),
         base::BindRepeating(
             [](ProfileIOS* profile) { return profile->GetNetworkContext(); },
-            profile),
+            _profile.get()),
         /*use_ohttp_staging=*/
         brave_ads::IsStagingEnvironment(*self.profilePrefService));
   }
@@ -234,9 +242,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   auto cppWalletInfo =
       walletInfo ? walletInfo.cppObjPtr : brave_ads::mojom::WalletInfoPtr();
 
-  // This will always be the regular profile (not private/OTR).
-  ProfileIOS* profile = [self getLastUsedProfile];
-  adsService = brave_ads::AdsServiceFactoryIOS::GetForProfile(profile);
+  adsService = brave_ads::AdsServiceFactoryIOS::GetForProfile(_profile);
   CHECK(adsService);
 
   adsService->InitializeAds(
@@ -317,23 +323,9 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   return urls;
 }
 
-#pragma mark - Profile
-
-- (ProfileIOS*)getLastUsedProfile {
-  std::vector<ProfileIOS*> profiles =
-      GetApplicationContext()->GetProfileManager()->GetLoadedProfiles();
-  CHECK(!profiles.empty());
-  return profiles.front();
-}
-
 #pragma mark - Profile prefs
 
-- (void)initProfilePrefService {
-  ProfileIOS* last_used_profile = [self getLastUsedProfile];
-
-  _profilePrefService = last_used_profile->GetPrefs();
-  CHECK(_profilePrefService);
-
+- (void)maybeMigrateProfilePrefs {
   // iOS used to incorrectly set kNewTabPageShowBackgroundImage alongside
   // kSponsoredEnabled, even though iOS doesn't use or expose this pref
   // separately. Reset it back to its default (true) so it can't override

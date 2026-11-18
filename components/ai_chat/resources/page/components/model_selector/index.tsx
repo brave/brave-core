@@ -4,10 +4,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Alert from '@brave/leo/react/alert'
-import ButtonMenu from '@brave/leo/react/buttonMenu'
-import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
+import Alert from '@brave/nala/react/alert'
+import ButtonMenu from '@brave/nala/react/buttonMenu'
+import Button from '@brave/nala/react/button'
+import Icon from '@brave/nala/react/icon'
 import classnames from '$web-common/classnames'
 import * as Mojom from '../../../common/mojom'
 import { getLocale } from '$web-common/locale'

@@ -17,6 +17,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
@@ -28,6 +29,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -36,6 +38,7 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
+#include "mojo/public/cpp/bindings/remote.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -177,6 +180,7 @@ class PolkadotProviderRendererTest : public InProcessBrowserTest {
 
   void TearDownOnMainThread() override {
     content::SetBrowserClientForTesting(old_client_);
+    InProcessBrowserTest::TearDownOnMainThread();
   }
 
   content::WebContents* web_contents(BrowserWindowInterface* browser) const {
@@ -207,6 +211,23 @@ class PolkadotProviderRendererTest : public InProcessBrowserTest {
           api()->BindReceiver(remote.InitWithNewPipeAndPassReceiver());
           std::move(callback).Run(std::move(remote), nullptr);
         });
+  }
+
+  void ExpectEnableGrantedRepeated() {
+    EXPECT_CALL(*provider(), Enable(testing::_))
+        .WillRepeatedly([&](mojom::PolkadotProvider::EnableCallback callback) {
+          mojo::PendingRemote<mojom::PolkadotApi> remote;
+          api()->BindReceiver(remote.InitWithNewPipeAndPassReceiver());
+          std::move(callback).Run(std::move(remote), nullptr);
+        });
+  }
+
+  bool BindsPolkadotProvider(content::RenderFrameHost* frame_host) {
+    mojo::Remote<mojom::PolkadotProvider> polkadot_provider;
+    BraveWalletTabHelper::BindPolkadotProvider(
+        frame_host, polkadot_provider.BindNewPipeAndPassReceiver());
+    polkadot_provider.FlushForTesting();
+    return polkadot_provider.is_bound() && polkadot_provider.is_connected();
   }
 
  protected:
@@ -523,6 +544,73 @@ IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest, SecureContextOnly) {
       content::EvalJs(main_frame, kCheckPolkadotProviderScript).ExtractBool());
 }
 
+IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest, BinderAcceptsDappOrigin) {
+  // Prove that our tab helper binds a PolkadotProvider for valid dapp origins.
+
+  GURL url = https_server_.GetURL("a.com", "/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  content::RenderFrameHost* main_frame =
+      web_contents(browser())->GetPrimaryMainFrame();
+  ASSERT_FALSE(main_frame->GetLastCommittedOrigin().opaque());
+
+  EXPECT_TRUE(BindsPolkadotProvider(main_frame));
+}
+
+IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest,
+                       BinderRejectsOpaqueOrigin) {
+  // Prove that an opaque origin via a sandboxed iframe is rejected by our
+  // TabHelper's BindPolkadotProvider.
+
+  GURL top_url(https_server_.GetURL("a.com", "/iframe.html"));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), top_url));
+
+  content::RenderFrameHost* main_frame =
+      web_contents(browser())->GetPrimaryMainFrame();
+  ASSERT_TRUE(content::ExecJs(main_frame, R"(
+      document.querySelector('iframe').setAttribute('sandbox', 'allow-scripts');
+  )"));
+  ASSERT_TRUE(
+      NavigateIframeToURL(web_contents(browser()), "test",
+                          https_server_.GetURL("a.com", "/simple.html")));
+
+  content::RenderFrameHost* sandboxed_frame = ChildFrameAt(main_frame, 0);
+  ASSERT_TRUE(sandboxed_frame);
+  ASSERT_TRUE(sandboxed_frame->GetLastCommittedOrigin().opaque());
+
+  EXPECT_FALSE(BindsPolkadotProvider(sandboxed_frame));
+}
+
+IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest,
+                       BinderRejectsNonHttpOrigin) {
+  // Prove that our TabHelper doesn't bind a PolkadotProvider for data URLs and
+  // internal URLs that direct to WebUI pages.
+
+  const GURL non_dapp_urls[] = {
+      GURL("data:text/html;,<html><body></body></html>"),
+      GURL("brave://settings"),
+  };
+
+  for (const auto& url : non_dapp_urls) {
+    SCOPED_TRACE(testing::Message() << "url: " << url);
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+    EXPECT_FALSE(
+        BindsPolkadotProvider(web_contents(browser())->GetPrimaryMainFrame()));
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(PolkadotProviderDisabledRendererTest,
+                       BinderRejectsWhenFeatureDisabled) {
+  // Prove that when Polkadot dapp support is disabled that our TabHelper
+  // doesn't install a PolkadotProvider.
+
+  GURL url = https_server_.GetURL("a.com", "/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  EXPECT_FALSE(
+      BindsPolkadotProvider(web_contents(browser())->GetPrimaryMainFrame()));
+}
+
 IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest, EnableShape) {
   ExpectEnableGranted();
 
@@ -648,6 +736,72 @@ IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest, SignerRejects) {
        })())");
   EXPECT_EQ(base::Value("Signing is not implemented by this extension yet"),
             result);
+}
+
+IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest, SealedSubObjects) {
+  ExpectEnableGrantedRepeated();
+
+  EXPECT_TRUE(content::EvalJs(web_contents(browser()), R"((
+    async function() {
+      'use strict';
+
+      const hijackProperty = (obj, property) => {
+        let assignThrew = false;
+        try {
+          obj[property] = 'spoofed!';
+        } catch(e) {
+          assignThrew = true;
+        }
+
+        let deleteThrew = false;
+        try {
+          delete obj[property];
+        } catch(e) {
+          deleteThrew = true;
+        }
+
+        let defineThrew = false;
+        try {
+          Object.defineProperty(obj, property, { value: {} });
+        } catch(e) {
+          defineThrew = true;
+        }
+
+        return assignThrew && deleteThrew && defineThrew;
+      };
+
+      const methods = ['enable', 'connect'];
+      return (await Promise.all(
+        methods.map(async (method) => {
+          const injectedProps =
+            method === 'connect'
+            ? ['name', 'version', 'accounts', 'signer']
+            : ['accounts', 'signer'];
+
+          const accountsProps = ['get', 'subscribe'];
+          const signerProps = ['signPayload', 'signRaw'];
+
+          const injected = await window.injectedWeb3['brave-wallet'][method](
+            'test dapp');
+
+          const { accounts, signer } = injected;
+
+          const topLevelPropsValidated = injectedProps.every(
+            (prop) => hijackProperty(injected, prop));
+
+          const accountsPropsValidated = accountsProps.every(
+            (prop) => hijackProperty(accounts, prop));
+
+          const signerPropsValidated = signerProps.every(
+            (prop) => hijackProperty(signer, prop));
+
+          return topLevelPropsValidated
+            && accountsPropsValidated
+            && signerPropsValidated;
+        })
+      )).every((x) => x);
+    })())")
+                  .ExtractBool());
 }
 
 }  // namespace brave_wallet

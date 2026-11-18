@@ -60,6 +60,9 @@ def RunSteps(api: DEPS):
     assert api.path.is_dir(first) and api.path.is_dir(unpacked)
     assert first.parent == api.path.cleanup_dir, first
     api.step('temp dirs', ['echo', str(first), str(second), str(unpacked)])
+    # The job's temp dir is scratch space too, apart from mkdtemp's.
+    assert api.path.temp_dir.parent == api.path.cleanup_dir
+    assert api.path.temp_dir not in (first, second, unpacked)
 
 
 def GenTests(api: TEST_DEPS):

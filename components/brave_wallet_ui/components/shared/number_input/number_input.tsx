@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Input from '@brave/leo/react/input'
+import Input from '@brave/nala/react/input'
 
 // Leo Input keeps the native <input> in shadow DOM, so page-level CSS cannot
 // hide number spinners. Inject the rules into each host's shadow root instead.

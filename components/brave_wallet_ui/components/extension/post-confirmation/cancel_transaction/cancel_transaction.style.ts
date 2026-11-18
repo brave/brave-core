@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
-import Button from '@brave/leo/react/button'
-import * as leo from '@brave/leo/tokens/css/variables'
+import Button from '@brave/nala/react/button'
+import * as leo from '@brave/nala/tokens/css/variables'
 
 export const CancelButton = styled(Button)`
   --leo-button-color: ${leo.color.button.errorBackground};

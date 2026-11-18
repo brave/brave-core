@@ -52,7 +52,10 @@
   min-width: 0;
 }
 
-.openButton {
+.actionButton {
+  // leo-button's host defaults to flex-grow: 1, which splits the row's spare
+  // space between the buttons and pushes all but the first away from the title.
+  flex-grow: 0;
   flex-shrink: 0;
   // Cancel out the button's vertical padding so it doesn't make the title row
   // taller than the title.

@@ -2,7 +2,7 @@ Name: brave_wallet
 URL: https://crates.io/crates/brave_wallet
 Version: 1.0.0
 License: MPL-2.0
-License File:
+License File: //brave/components/brave_wallet/common/../../../common/licenses/MPL-2.0
 Shipped: yes
 Security Critical: yes
 

@@ -10,9 +10,9 @@
 #include <vector>
 
 #include "base/files/scoped_temp_dir.h"
-#include "base/test/bind.h"
-#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_sync_state.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_test_utils.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
@@ -34,6 +34,11 @@ namespace {
 
 constexpr uint32_t kLatestScannedBlock = kNu5BlockUpdate + 10000u;
 constexpr char kLatestScannedBlockHash[] = "0x00bbaa";
+
+using VerifyChainStateFuture =
+    base::test::TestFuture<base::expected<bool, ZCashShieldSyncService::Error>>;
+using StorageResultFuture = base::test::TestFuture<
+    base::expected<OrchardStorage::Result, OrchardStorage::Error>>;
 
 class MockZCashRPC : public ZCashRpc {
  public:
@@ -86,28 +91,26 @@ class ZCashVerifyChainStateTaskTest : public testing::Test {
     sync_state_ = OrchardSyncState::SequenceBound(
         OrchardSyncState::CreateSyncStateSequence(),
         std::move(mocked_sync_state));
-    InitSyncState();
+    ASSERT_NO_FATAL_FAILURE(InitSyncState());
   }
 
   void InitSyncState() {
-    auto lambda = base::BindLambdaForTesting(
-        [&](base::expected<OrchardStorage::Result, OrchardStorage::Error>
-                result) {
-          EXPECT_EQ(OrchardStorage::Result::kSuccess, result.value());
-        });
+    StorageResultFuture register_future;
     sync_state_.AsyncCall(&OrchardSyncState::RegisterAccount)
         .WithArgs(account_id_.Clone(), kNu5BlockUpdate + 1)
-        .Then(std::move(lambda));
+        .Then(register_future.GetCallback());
 
     OrchardBlockScanner::Result result = CreateResultForTesting(
         OrchardTreeState(), std::vector<OrchardCommitment>(),
         kLatestScannedBlock, kLatestScannedBlockHash);
+    StorageResultFuture apply_future;
     sync_state_.AsyncCall(&OrchardSyncState::ApplyScanResults)
         .WithArgs(account_id_.Clone(), std::move(result))
-        .Then(base::BindLambdaForTesting(
-            [&](base::expected<OrchardStorage::Result, OrchardStorage::Error>
-                    r) { EXPECT_TRUE(r.has_value()); }));
-    task_environment().RunUntilIdle();
+        .Then(apply_future.GetCallback());
+
+    ASSERT_TRUE(register_future.Get().has_value());
+    EXPECT_EQ(OrchardStorage::Result::kSuccess, register_future.Get().value());
+    EXPECT_TRUE(apply_future.Get().has_value());
   }
 
   ZCashActionContext CreateContext() {
@@ -164,22 +167,14 @@ TEST_F(ZCashVerifyChainStateTaskTest, NoReorg) {
 
   ZCashActionContext context = CreateContext();
 
-  base::MockCallback<
-      ZCashVerifyChainStateTask::ZCashVerifyChainStateTaskCallback>
-      callback;
-  EXPECT_CALL(callback, Run(testing::_))
-      .Times(1)
-      .WillRepeatedly(
-          [&](base::expected<bool, ZCashShieldSyncService::Error> result) {
-            EXPECT_TRUE(result.has_value());
-          });
+  VerifyChainStateFuture future;
 
   EXPECT_CALL(mocked_sync_state(), Rewind(_, _, _)).Times(0);
 
-  auto task = ZCashVerifyChainStateTask(context, callback.Get());
+  auto task = ZCashVerifyChainStateTask(context, future.GetCallback());
   task.Start();
 
-  task_environment().RunUntilIdle();
+  EXPECT_TRUE(future.Get().has_value());
 }
 
 TEST_F(ZCashVerifyChainStateTaskTest, Reorg_ChainTipBeforeLatestScannedBlock) {
@@ -221,17 +216,9 @@ TEST_F(ZCashVerifyChainStateTaskTest, Reorg_ChainTipBeforeLatestScannedBlock) {
 
   ZCashActionContext context = CreateContext();
 
-  base::MockCallback<
-      ZCashVerifyChainStateTask::ZCashVerifyChainStateTaskCallback>
-      callback;
-  EXPECT_CALL(callback, Run(testing::_))
-      .Times(1)
-      .WillRepeatedly(
-          [&](base::expected<bool, ZCashShieldSyncService::Error> result) {
-            EXPECT_TRUE(result.has_value());
-          });
+  VerifyChainStateFuture future;
 
-  auto task = ZCashVerifyChainStateTask(context, callback.Get());
+  auto task = ZCashVerifyChainStateTask(context, future.GetCallback());
   task.Start();
 
   EXPECT_CALL(mocked_sync_state(),
@@ -239,7 +226,7 @@ TEST_F(ZCashVerifyChainStateTaskTest, Reorg_ChainTipBeforeLatestScannedBlock) {
                      Eq("0x2200bbaa")))
       .Times(1);
 
-  task_environment().RunUntilIdle();
+  EXPECT_TRUE(future.Get().has_value());
 }
 
 TEST_F(ZCashVerifyChainStateTaskTest, Reorg_ChainTipAfterLatestScannedBlock) {
@@ -283,17 +270,9 @@ TEST_F(ZCashVerifyChainStateTaskTest, Reorg_ChainTipAfterLatestScannedBlock) {
 
   ZCashActionContext context = CreateContext();
 
-  base::MockCallback<
-      ZCashVerifyChainStateTask::ZCashVerifyChainStateTaskCallback>
-      callback;
-  EXPECT_CALL(callback, Run(testing::_))
-      .Times(1)
-      .WillRepeatedly(
-          [&](base::expected<bool, ZCashShieldSyncService::Error> result) {
-            EXPECT_TRUE(result.has_value());
-          });
+  VerifyChainStateFuture future;
 
-  auto task = ZCashVerifyChainStateTask(context, callback.Get());
+  auto task = ZCashVerifyChainStateTask(context, future.GetCallback());
   task.Start();
 
   EXPECT_CALL(mocked_sync_state(),
@@ -301,7 +280,7 @@ TEST_F(ZCashVerifyChainStateTaskTest, Reorg_ChainTipAfterLatestScannedBlock) {
                      Eq("0x2200bbaa")))
       .Times(1);
 
-  task_environment().RunUntilIdle();
+  EXPECT_TRUE(future.Get().has_value());
 }
 
 TEST_F(ZCashVerifyChainStateTaskTest, Reorg_LatestBlockHashChanged) {
@@ -342,17 +321,9 @@ TEST_F(ZCashVerifyChainStateTaskTest, Reorg_LatestBlockHashChanged) {
 
   ZCashActionContext context = CreateContext();
 
-  base::MockCallback<
-      ZCashVerifyChainStateTask::ZCashVerifyChainStateTaskCallback>
-      callback;
-  EXPECT_CALL(callback, Run(testing::_))
-      .Times(1)
-      .WillRepeatedly(
-          [&](base::expected<bool, ZCashShieldSyncService::Error> result) {
-            EXPECT_TRUE(result.has_value());
-          });
+  VerifyChainStateFuture future;
 
-  auto task = ZCashVerifyChainStateTask(context, callback.Get());
+  auto task = ZCashVerifyChainStateTask(context, future.GetCallback());
   task.Start();
 
   EXPECT_CALL(mocked_sync_state(),
@@ -360,7 +331,7 @@ TEST_F(ZCashVerifyChainStateTaskTest, Reorg_LatestBlockHashChanged) {
                      Eq("0x2211")))
       .Times(1);
 
-  task_environment().RunUntilIdle();
+  EXPECT_TRUE(future.Get().has_value());
 }
 
 TEST_F(ZCashVerifyChainStateTaskTest, Error_CheckpointIdFailed) {
@@ -395,22 +366,14 @@ TEST_F(ZCashVerifyChainStateTaskTest, Error_CheckpointIdFailed) {
 
   ZCashActionContext context = CreateContext();
 
-  base::MockCallback<
-      ZCashVerifyChainStateTask::ZCashVerifyChainStateTaskCallback>
-      callback;
-  EXPECT_CALL(callback, Run(testing::_))
-      .Times(1)
-      .WillRepeatedly(
-          [&](base::expected<bool, ZCashShieldSyncService::Error> result) {
-            EXPECT_FALSE(result.has_value());
-          });
+  VerifyChainStateFuture future;
 
-  auto task = ZCashVerifyChainStateTask(context, callback.Get());
+  auto task = ZCashVerifyChainStateTask(context, future.GetCallback());
   task.Start();
 
   EXPECT_CALL(mocked_sync_state(), Rewind(_, _, _)).Times(0);
 
-  task_environment().RunUntilIdle();
+  EXPECT_FALSE(future.Get().has_value());
 }
 
 TEST_F(ZCashVerifyChainStateTaskTest, Error_NoCheckpointId) {
@@ -445,22 +408,14 @@ TEST_F(ZCashVerifyChainStateTaskTest, Error_NoCheckpointId) {
 
   ZCashActionContext context = CreateContext();
 
-  base::MockCallback<
-      ZCashVerifyChainStateTask::ZCashVerifyChainStateTaskCallback>
-      callback;
-  EXPECT_CALL(callback, Run(testing::_))
-      .Times(1)
-      .WillRepeatedly(
-          [&](base::expected<bool, ZCashShieldSyncService::Error> result) {
-            EXPECT_FALSE(result.has_value());
-          });
+  VerifyChainStateFuture future;
 
-  auto task = ZCashVerifyChainStateTask(context, callback.Get());
+  auto task = ZCashVerifyChainStateTask(context, future.GetCallback());
   task.Start();
 
   EXPECT_CALL(mocked_sync_state(), Rewind(_, _, _)).Times(0);
 
-  task_environment().RunUntilIdle();
+  EXPECT_FALSE(future.Get().has_value());
 }
 
 TEST_F(ZCashVerifyChainStateTaskTest, Error_LatestBlockFailed) {
@@ -501,22 +456,14 @@ TEST_F(ZCashVerifyChainStateTaskTest, Error_LatestBlockFailed) {
 
   ZCashActionContext context = CreateContext();
 
-  base::MockCallback<
-      ZCashVerifyChainStateTask::ZCashVerifyChainStateTaskCallback>
-      callback;
-  EXPECT_CALL(callback, Run(testing::_))
-      .Times(1)
-      .WillRepeatedly(
-          [&](base::expected<bool, ZCashShieldSyncService::Error> result) {
-            EXPECT_FALSE(result.has_value());
-          });
+  VerifyChainStateFuture future;
 
-  auto task = ZCashVerifyChainStateTask(context, callback.Get());
+  auto task = ZCashVerifyChainStateTask(context, future.GetCallback());
   task.Start();
 
   EXPECT_CALL(mocked_sync_state(), Rewind(_, _, _)).Times(0);
 
-  task_environment().RunUntilIdle();
+  EXPECT_FALSE(future.Get().has_value());
 }
 
 TEST_F(ZCashVerifyChainStateTaskTest, Error_TreeStateFailed) {
@@ -543,22 +490,14 @@ TEST_F(ZCashVerifyChainStateTaskTest, Error_TreeStateFailed) {
 
   ZCashActionContext context = CreateContext();
 
-  base::MockCallback<
-      ZCashVerifyChainStateTask::ZCashVerifyChainStateTaskCallback>
-      callback;
-  EXPECT_CALL(callback, Run(testing::_))
-      .Times(1)
-      .WillRepeatedly(
-          [&](base::expected<bool, ZCashShieldSyncService::Error> result) {
-            EXPECT_FALSE(result.has_value());
-          });
+  VerifyChainStateFuture future;
 
-  auto task = ZCashVerifyChainStateTask(context, callback.Get());
+  auto task = ZCashVerifyChainStateTask(context, future.GetCallback());
   task.Start();
 
   EXPECT_CALL(mocked_sync_state(), Rewind(_, _, _)).Times(0);
 
-  task_environment().RunUntilIdle();
+  EXPECT_FALSE(future.Get().has_value());
 }
 
 }  // namespace brave_wallet

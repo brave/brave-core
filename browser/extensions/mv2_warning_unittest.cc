@@ -48,7 +48,7 @@ TEST(Mv2WarningTest, ExtensionManifestVersions) {
 
   auto& warnings = extension->install_warnings();
   // MV2 deprecation warning is no longer suppressed for unplacked extensions.
-  EXPECT_EQ(warnings.size(), 1UL);
+  ASSERT_EQ(warnings.size(), 1UL);
   EXPECT_EQ(warnings.front().message,
             extensions::manifest_errors::kManifestV2IsDeprecatedWarning);
 }

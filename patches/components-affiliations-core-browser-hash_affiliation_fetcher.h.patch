@@ -1,8 +1,16 @@
 diff --git a/components/affiliations/core/browser/hash_affiliation_fetcher.h b/components/affiliations/core/browser/hash_affiliation_fetcher.h
-index b69618d506098a74332ff707926e2631f1e64d08..094144a27afc0472ec0ab7e612e3f5c26eda0aaa 100644
+index b69618d506098a74332ff707926e2631f1e64d08..eb7456b4964e3d18c997b45971395d7c2535b20e 100644
 --- a/components/affiliations/core/browser/hash_affiliation_fetcher.h
 +++ b/components/affiliations/core/browser/hash_affiliation_fetcher.h
-@@ -47,6 +47,9 @@ class HashAffiliationFetcher : public AffiliationFetcherInterface {
+@@ -12,6 +12,7 @@
+ #include "base/functional/callback.h"
+ #include "base/memory/raw_ptr.h"
+ #include "base/memory/scoped_refptr.h"
++#include "base/memory/weak_ptr.h"
+ #include "base/timer/elapsed_timer.h"
+ #include "components/affiliations/core/browser/affiliation_fetcher_interface.h"
+ 
+@@ -47,6 +48,9 @@ class HashAffiliationFetcher : public AffiliationFetcherInterface {
    static GURL BuildQueryURL();
    static bool IsFetchPossible();
  
@@ -12,7 +20,7 @@ index b69618d506098a74332ff707926e2631f1e64d08..094144a27afc0472ec0ab7e612e3f5c2
   private:
    // Actually starts the request to retrieve affiliations and optionally
    // groupings for each facet in |facet_uris| along with the details based on
-@@ -78,6 +81,8 @@ class HashAffiliationFetcher : public AffiliationFetcherInterface {
+@@ -78,6 +82,8 @@ class HashAffiliationFetcher : public AffiliationFetcherInterface {
    base::ElapsedTimer fetch_timer_;
  
    std::unique_ptr<network::SimpleURLLoader> simple_url_loader_;

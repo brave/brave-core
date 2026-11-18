@@ -17,6 +17,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
@@ -437,6 +438,18 @@ class AIChatService : public KeyedService,
       base::expected<std::vector<std::string>, mojom::APIError> result);
   // Creates the tool providers for |conversation| and adds them to it.
   void AddToolProvidersToConversation(ConversationHandler* conversation);
+  // Sends |conversation_generation_state_| to all |observer_remotes_|.
+  void NotifyConversationGenerationStateChanged();
+  // Whether |uuid| has a loaded ConversationHandler with a connected client.
+  // This doesn't mean the conversation is on screen.
+  bool IsConversationClientConnected(const std::string& uuid) const;
+  // Marks |conversation_uuid| as no longer generating once its handler is
+  // neither generating nor running tools: kCompletedNotViewed, or idle if a
+  // client is connected.
+  void MaybeMarkGenerationComplete(const std::string& conversation_uuid);
+  // DeleteConversation() without OnConversationListChanged(), for callers that
+  // delete several conversations and then send the list once.
+  void DeleteConversationWithoutNotifyingList(const std::string& id);
 
   raw_ptr<ModelService> model_service_;
   raw_ptr<TabTrackerService> tab_tracker_service_;
@@ -512,6 +525,11 @@ class AIChatService : public KeyedService,
   mojo::ReceiverSet<mojom::UntrustedService> untrusted_service_receivers_;
   mojo::RemoteSet<mojom::UntrustedServiceObserver>
       untrusted_service_observer_remotes_;
+
+  // Session-only generation state per conversation uuid. A conversation with
+  // no entry is idle.
+  base::flat_map<std::string, mojom::ConversationGenerationState>
+      conversation_generation_state_;
 
   mojo::Receiver<mojom::TabDataObserver> tab_data_observer_receiver_{this};
 

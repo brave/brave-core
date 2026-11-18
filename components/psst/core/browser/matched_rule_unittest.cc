@@ -91,12 +91,13 @@ class MatchedRuleTest : public testing::Test {
 
 TEST_F(MatchedRuleTest, LoadSimpleMatchedRule) {
   const auto psst_rules = PsstRule::ParseRules(kPsstJsonFileContent);
+  ASSERT_TRUE(psst_rules.has_value());
   ASSERT_EQ(psst_rules->size(), 1u);
 
   auto matched_rule = MatchedRule::Create(
       std::make_unique<RuleDataReader>(GetBasePath()), psst_rules->front());
 
-  EXPECT_TRUE(matched_rule);
+  ASSERT_TRUE(matched_rule);
 
   const auto user_script = matched_rule->user_script();
   ASSERT_FALSE(user_script.empty());
@@ -111,6 +112,7 @@ TEST_F(MatchedRuleTest, LoadSimpleMatchedRule) {
 TEST_F(MatchedRuleTest, TryToLoadMatchedRuleWithNoUserOrPolicyScript) {
   const auto psst_rules_no_user_script =
       PsstRule::ParseRules(kPsstJsonFileNoUserScriptContent);
+  ASSERT_TRUE(psst_rules_no_user_script.has_value());
   ASSERT_EQ(psst_rules_no_user_script->size(), 1u);
   EXPECT_TRUE(psst_rules_no_user_script->front().user_script_path().empty());
   EXPECT_FALSE(psst_rules_no_user_script->front().policy_script_path().empty());
@@ -122,6 +124,7 @@ TEST_F(MatchedRuleTest, TryToLoadMatchedRuleWithNoUserOrPolicyScript) {
 
   const auto psst_rules_no_policy_script =
       PsstRule::ParseRules(kPsstJsonFileNoPolicyScriptContent);
+  ASSERT_TRUE(psst_rules_no_policy_script.has_value());
   ASSERT_EQ(psst_rules_no_policy_script->size(), 1u);
   EXPECT_FALSE(psst_rules_no_policy_script->front().user_script_path().empty());
   EXPECT_TRUE(

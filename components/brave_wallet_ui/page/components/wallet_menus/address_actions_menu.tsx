@@ -4,8 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { showAlert } from '@brave/leo/react/alertCenter'
-import Icon from '@brave/leo/react/icon'
+import { showAlert } from '@brave/nala/react/alertCenter'
+import Icon from '@brave/nala/react/icon'
 
 // Types
 import { BraveWallet } from '$wallet/constants/types'

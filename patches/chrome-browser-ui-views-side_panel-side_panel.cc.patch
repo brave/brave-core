@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/side_panel/side_panel.cc b/chrome/browser/ui/views/side_panel/side_panel.cc
-index 0098885c7d17b32f9cb08bcecbc1411f16af56cc..a616921de0d17928070a8389de8edc0effeef9c1 100644
+index 0098885c7d17b32f9cb08bcecbc1411f16af56cc..364ec98cbf0c1c26169c9ad3d2174630b1e9b5b0 100644
 --- a/chrome/browser/ui/views/side_panel/side_panel.cc
 +++ b/chrome/browser/ui/views/side_panel/side_panel.cc
 @@ -218,6 +218,7 @@ class ContentParentView : public views::View, public views::ViewObserver {
@@ -10,3 +10,31 @@ index 0098885c7d17b32f9cb08bcecbc1411f16af56cc..a616921de0d17928070a8389de8edc0e
      return GetLayoutProvider() ? gfx::RoundedCornersF(
                                       GetLayoutProvider()->GetCornerRadiusMetric(
                                           kSidePanelContentRadius))
+@@ -404,6 +405,7 @@ gfx::Rect SidePanel::GetContentAnimationBounds(
+ }
+ 
+ void SidePanel::AddHeaderView(std::unique_ptr<views::View> view) {
++  [&]() -> void {
+   // If a header view already exists make sure we remove it so that it is
+   // replaced.
+   if (header_view_) {
+@@ -419,14 +421,19 @@ void SidePanel::AddHeaderView(std::unique_ptr<views::View> view) {
+   int top_inset = header_view_->height() - GetBorderInsets().top();
+   SetBorder(views::CreateEmptyBorder(GetBorderInsets() +
+                                      gfx::Insets::TLBR(top_inset, 0, 0, 0)));
++  }();
++  UpdateBorder();
+ }
+ 
+ void SidePanel::RemoveHeaderView() {
++  [&]() -> void {
+   SetBorder(views::CreateEmptyBorder(GetBorderInsets().set_top(0)));
+   if (header_view_) {
+     auto header_view = RemoveChildViewT(header_view_);
+     header_view_ = nullptr;
+   }
++  }();
++  UpdateBorder();
+ }
+ 
+ gfx::Size SidePanel::GetContentSizeUpperBound() const {

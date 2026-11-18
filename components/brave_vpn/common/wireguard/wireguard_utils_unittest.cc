@@ -130,7 +130,7 @@ TEST(BraveVPNWireGuardUtilsUnitTest, ValidateAddress) {
       brave_vpn::wireguard::ValidateAddress("10.146.91.135").has_value());
 
   auto response = brave_vpn::wireguard::ValidateAddress("192.168.1.1");
-  EXPECT_TRUE(response.has_value());
+  ASSERT_TRUE(response.has_value());
   // Verify parsing worked.
   EXPECT_EQ(response.value(), "192.168.1.1");
 }

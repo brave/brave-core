@@ -171,6 +171,23 @@ TEST_F(ProxyConfigServiceTorTest, CircuitAnonymizationKey) {
   }
 }
 
+TEST_F(ProxyConfigServiceTorTest, PendingUntilProxyURIIsKnown) {
+  ProxyConfigServiceTor proxy_config_service;
+  ProxyConfigWithAnnotation config;
+  EXPECT_EQ(proxy_config_service.GetLatestProxyConfig(&config),
+            ProxyConfigService::CONFIG_PENDING);
+
+  proxy_config_service.UpdateProxyURI(proxy_uri());
+  ASSERT_EQ(proxy_config_service.GetLatestProxyConfig(&config),
+            ProxyConfigService::CONFIG_VALID);
+  const ProxyServer proxy_server =
+      config.value().proxy_rules().single_proxies.First().GetProxyServer(
+          /*chain_index=*/0);
+  EXPECT_EQ(proxy_server.scheme(), ProxyServer::SCHEME_SOCKS5);
+  EXPECT_EQ(proxy_server.host_port_pair().host(), "127.0.0.1");
+  EXPECT_EQ(proxy_server.host_port_pair().port(), 5566);
+}
+
 TEST_F(ProxyConfigServiceTorTest, SetNewTorCircuit) {
   const GURL site_url("https://check.torproject.org/");
   const std::string circuit_anonymization_key =
@@ -259,6 +276,40 @@ TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization) {
       empty_proxy_rules_config, site_url, network_anonymization_key, service(),
       &info);
   EXPECT_TRUE(info.is_empty());
+}
+
+TEST_F(ProxyConfigServiceTorTest, ClearProxyAuthorization) {
+  const GURL site_url("https://check.torproject.org/");
+  const std::string circuit_anonymization_key =
+      ProxyConfigServiceTor::CircuitAnonymizationKey(site_url);
+  const net::SchemefulSite site(site_url);
+  const auto network_anonymization_key =
+      net::NetworkAnonymizationKey::CreateFromFrameSite(site, site);
+
+  ProxyConfigServiceTor proxy_config_service(proxy_uri());
+  ProxyConfigWithAnnotation config;
+  proxy_config_service.GetLatestProxyConfig(&config);
+
+  ProxyInfo info;
+  ProxyConfigServiceTor::SetProxyAuthorization(
+      config, site_url, network_anonymization_key, service(), &info);
+  auto proxy_server = info.proxy_chain().GetProxyServer(/*server_index=*/0);
+  CheckProxyServer(FROM_HERE, proxy_server, circuit_anonymization_key);
+  const std::string password = proxy_server.host_port_pair().password();
+
+  // The same service keeps the site's credentials.
+  ProxyConfigServiceTor::SetProxyAuthorization(
+      config, site_url, network_anonymization_key, service(), &info);
+  proxy_server = info.proxy_chain().GetProxyServer(/*server_index=*/0);
+  EXPECT_EQ(proxy_server.host_port_pair().password(), password);
+
+  // Once cleared, the service gets new credentials for the site.
+  ProxyConfigServiceTor::ClearProxyAuthorization(service());
+  ProxyConfigServiceTor::SetProxyAuthorization(
+      config, site_url, network_anonymization_key, service(), &info);
+  proxy_server = info.proxy_chain().GetProxyServer(/*server_index=*/0);
+  CheckProxyServer(FROM_HERE, proxy_server, circuit_anonymization_key);
+  EXPECT_NE(proxy_server.host_port_pair().password(), password);
 }
 
 TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization_Subresources) {

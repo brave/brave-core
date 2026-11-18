@@ -5,29 +5,32 @@
 
 #include "net/proxy_resolution/configured_proxy_resolution_service.h"
 
+#include "base/types/optional_ref.h"
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 #include "net/base/network_anonymization_key.h"
 
 namespace net {
 namespace {
 
-void SetTorCircuitIsolation(const ProxyConfigWithAnnotation& config,
-                            const GURL& url,
-                            const NetworkAnonymizationKey& key,
-                            ProxyInfo* result,
-                            ProxyResolutionService* service) {
-  ProxyConfigServiceTor::SetProxyAuthorization(config, url, key, service,
+// Called at the top of ProcessResolutionResult(), which both synchronous and
+// asynchronous resolutions reach, so every request resolved to the Tor proxy
+// gets per-site SOCKS credentials. A failed resolution, or one without a
+// config, has no Tor proxy to add credentials to.
+void MaybeSetTorCircuitIsolation(
+    int result_code,
+    base::optional_ref<const ProxyConfigWithAnnotation> config,
+    const GURL& url,
+    const NetworkAnonymizationKey& key,
+    ProxyInfo* result,
+    ProxyResolutionService* service) {
+  if (result_code != OK || !config) {
+    return;
+  }
+  ProxyConfigServiceTor::SetProxyAuthorization(*config, url, key, service,
                                                result);
 }
 
 }  // namespace
 }  // namespace net
 
-#define BRAVE_CONFIGURED_PROXY_RESOLUTION_SERVICE_RESOLVE_PROXY      \
-  if (rv == OK) {                                                    \
-    SetTorCircuitIsolation(config_.value(), raw_url,                 \
-                           network_anonymization_key, result, this); \
-  }
-
 #include <net/proxy_resolution/configured_proxy_resolution_service.cc>
-#undef BRAVE_CONFIGURED_PROXY_RESOLUTION_SERVICE_RESOLVE_PROXY

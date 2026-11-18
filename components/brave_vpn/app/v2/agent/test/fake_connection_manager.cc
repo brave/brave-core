@@ -5,14 +5,22 @@
 
 #include "brave/components/brave_vpn/app/v2/agent/test/fake_connection_manager.h"
 
+#include <memory>
+
 #include "base/functional/bind.h"
 #include "base/location.h"
+#include "base/notreached.h"
 #include "base/task/sequenced_task_runner.h"
+#include "brave/components/brave_vpn/app/v2/agent/connection_api.h"
 #include "mojo/public/cpp/bindings/clone_traits.h"
 
 namespace brave_vpn::v2 {
 
-FakeConnectionManager::FakeConnectionManager() = default;
+FakeConnectionManager::FakeConnectionManager()
+    : ConnectionManager(base::BindRepeating(
+          [](ConnectionApi::Delegate*) -> std::unique_ptr<ConnectionApi> {
+            NOTREACHED();
+          })) {}
 
 FakeConnectionManager::~FakeConnectionManager() = default;
 

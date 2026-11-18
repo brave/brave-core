@@ -261,6 +261,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &net::features::kEnableWebTransportDraft07,
       &net::features::kTLSTrustAnchorIDs,
       &network::features::kBrowsingTopics,
+      &network::features::kPervasiveSharedDictionaries,
       &network_time::kNetworkTimeServiceQuerying,
       &ntp_features::kCustomizeChromeSidePanelExtensionsCard,
       &ntp_features::kCustomizeChromeWallpaperSearch,
@@ -388,6 +389,7 @@ TEST(FeatureDefaultsTest, EnabledBlinkRuntimeEnabledFeatures) {
   // Please, keep alphabetized.
   const base::Feature* enabled_features[] = {
       &blink::features::kReduceUserAgentMinorVersion,
+      &blink::features::kWebMCP,
   };
 
   for (const auto* feature : enabled_features) {

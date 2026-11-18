@@ -7,50 +7,17 @@
 
 #include <memory>
 #include <optional>
+#include <string>
 #include <utility>
+#include <vector>
 
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
-
-namespace {
-
-void OnGetPrice(bool* callback_run,
-                bool expected_success,
-                std::vector<brave_wallet::mojom::AssetPricePtr> expected_values,
-                bool success,
-                std::vector<brave_wallet::mojom::AssetPricePtr> values) {
-  EXPECT_EQ(expected_success, success);
-  EXPECT_EQ(expected_values, values);
-  *callback_run = true;
-}
-
-void OnGetPriceHistory(
-    bool* callback_run,
-    bool expected_success,
-    std::vector<brave_wallet::mojom::AssetTimePricePtr> expected_values,
-    bool success,
-    std::vector<brave_wallet::mojom::AssetTimePricePtr> values) {
-  EXPECT_EQ(expected_success, success);
-  EXPECT_EQ(expected_values, values);
-  *callback_run = true;
-}
-
-void OnGetCoinMarkets(
-    bool* callback_run,
-    bool expected_success,
-    std::vector<brave_wallet::mojom::CoinMarketPtr> expected_values,
-    bool success,
-    std::vector<brave_wallet::mojom::CoinMarketPtr> values) {
-  EXPECT_EQ(expected_success, success);
-  EXPECT_EQ(expected_values, values);
-  *callback_run = true;
-}
-
-}  // namespace
 
 namespace brave_wallet {
 
@@ -185,44 +152,33 @@ TEST_F(AssetRatioServiceUnitTest, GetPrice) {
   asset_price->percentage_change_24h = "5.2";
   expected_prices_response.push_back(std::move(asset_price));
 
-  bool callback_run = false;
-  auto requests = CreatePriceRequests();
-  asset_ratio_service_->GetPrice(
-      std::move(requests), "USD",
-      base::BindOnce(&OnGetPrice, &callback_run, true,
-                     std::move(expected_prices_response)));
-
-  task_environment_.RunUntilIdle();
-  EXPECT_TRUE(callback_run);
+  base::test::TestFuture<bool, std::vector<mojom::AssetPricePtr>> future;
+  asset_ratio_service_->GetPrice(CreatePriceRequests(), "USD",
+                                 future.GetCallback());
+  auto [success, values] = future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_EQ(expected_prices_response, values);
 }
 
 TEST_F(AssetRatioServiceUnitTest, GetPriceError) {
   std::string error = "error";
   SetErrorInterceptor(error);
-  std::vector<brave_wallet::mojom::AssetPricePtr> expected_prices_response;
-  bool callback_run = false;
-  auto requests = CreatePriceRequests();
-  asset_ratio_service_->GetPrice(
-      std::move(requests), "USD",
-      base::BindOnce(&OnGetPrice, &callback_run, false,
-                     std::move(expected_prices_response)));
-
-  task_environment_.RunUntilIdle();
-  EXPECT_TRUE(callback_run);
+  base::test::TestFuture<bool, std::vector<mojom::AssetPricePtr>> future;
+  asset_ratio_service_->GetPrice(CreatePriceRequests(), "USD",
+                                 future.GetCallback());
+  auto [success, values] = future.Take();
+  EXPECT_FALSE(success);
+  EXPECT_TRUE(values.empty());
 }
 
 TEST_F(AssetRatioServiceUnitTest, GetPriceUnexpectedResponse) {
   SetInterceptor("expecto patronum");
-  std::vector<brave_wallet::mojom::AssetPricePtr> expected_prices_response;
-  bool callback_run = false;
-  auto requests = CreatePriceRequests();
-  asset_ratio_service_->GetPrice(
-      std::move(requests), "USD",
-      base::BindOnce(&OnGetPrice, &callback_run, false,
-                     std::move(expected_prices_response)));
-
-  task_environment_.RunUntilIdle();
-  EXPECT_TRUE(callback_run);
+  base::test::TestFuture<bool, std::vector<mojom::AssetPricePtr>> future;
+  asset_ratio_service_->GetPrice(CreatePriceRequests(), "USD",
+                                 future.GetCallback());
+  auto [success, values] = future.Take();
+  EXPECT_FALSE(success);
+  EXPECT_TRUE(values.empty());
 }
 
 TEST_F(AssetRatioServiceUnitTest, GetPriceHistory) {
@@ -249,43 +205,36 @@ TEST_F(AssetRatioServiceUnitTest, GetPriceHistory) {
   asset_time_price->price = "0.8096978545029869";
   expected_price_history_response.push_back(std::move(asset_time_price));
 
-  bool callback_run = false;
+  base::test::TestFuture<bool, std::vector<mojom::AssetTimePricePtr>> future;
   asset_ratio_service_->GetPriceHistory(
       "bat", "usd", brave_wallet::mojom::AssetPriceTimeframe::OneDay,
-      base::BindOnce(&OnGetPriceHistory, &callback_run, true,
-                     std::move(expected_price_history_response)));
-
-  task_environment_.RunUntilIdle();
-  EXPECT_TRUE(callback_run);
+      future.GetCallback());
+  auto [success, values] = future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_EQ(expected_price_history_response, values);
 }
 
 TEST_F(AssetRatioServiceUnitTest, GetPriceHistoryError) {
   std::string error = "error";
   SetErrorInterceptor(error);
-  std::vector<brave_wallet::mojom::AssetTimePricePtr>
-      expected_price_history_response;
-  bool callback_run = false;
+  base::test::TestFuture<bool, std::vector<mojom::AssetTimePricePtr>> future;
   asset_ratio_service_->GetPriceHistory(
       "bat", "usd", brave_wallet::mojom::AssetPriceTimeframe::OneDay,
-      base::BindOnce(&OnGetPriceHistory, &callback_run, false,
-                     std::move(expected_price_history_response)));
-  task_environment_.RunUntilIdle();
-  EXPECT_TRUE(callback_run);
+      future.GetCallback());
+  auto [success, values] = future.Take();
+  EXPECT_FALSE(success);
+  EXPECT_TRUE(values.empty());
 }
 
 TEST_F(AssetRatioServiceUnitTest, GetPriceHistoryUnexpectedResponse) {
   SetInterceptor("Accio!");
-  std::vector<brave_wallet::mojom::AssetTimePricePtr>
-      expected_price_history_response;
-
-  bool callback_run = false;
+  base::test::TestFuture<bool, std::vector<mojom::AssetTimePricePtr>> future;
   asset_ratio_service_->GetPriceHistory(
       "bat", "usd", brave_wallet::mojom::AssetPriceTimeframe::OneDay,
-      base::BindOnce(&OnGetPriceHistory, &callback_run, false,
-                     std::move(expected_price_history_response)));
-
-  task_environment_.RunUntilIdle();
-  EXPECT_TRUE(callback_run);
+      future.GetCallback());
+  auto [success, values] = future.Take();
+  EXPECT_FALSE(success);
+  EXPECT_TRUE(values.empty());
 }
 
 TEST_F(AssetRatioServiceUnitTest, GetPriceHistoryURL) {
@@ -358,29 +307,20 @@ TEST_F(AssetRatioServiceUnitTest, GetCoinMarkets) {
   coin_market->total_volume = 17160995925;
   expected_coin_markets_response.push_back(std::move(coin_market));
 
-  bool callback_run = false;
-  asset_ratio_service_->GetCoinMarkets(
-      "usd", 100,
-      base::BindOnce(&OnGetCoinMarkets, &callback_run, true,
-                     std::move(expected_coin_markets_response)));
-
-  task_environment_.RunUntilIdle();
-  EXPECT_TRUE(callback_run);
+  base::test::TestFuture<bool, std::vector<mojom::CoinMarketPtr>> future;
+  asset_ratio_service_->GetCoinMarkets("usd", 100, future.GetCallback());
+  auto [success, values] = future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_EQ(expected_coin_markets_response, values);
 }
 
 TEST_F(AssetRatioServiceUnitTest, GetCoinMarketsUnexpectedResponse) {
   SetInterceptor("wingardium leviosa");
-  std::vector<brave_wallet::mojom::CoinMarketPtr>
-      expected_coin_markets_response;
-
-  bool callback_run = false;
-  asset_ratio_service_->GetCoinMarkets(
-      "bat", 99,
-      base::BindOnce(&OnGetCoinMarkets, &callback_run, false,
-                     std::move(expected_coin_markets_response)));
-
-  task_environment_.RunUntilIdle();
-  EXPECT_TRUE(callback_run);
+  base::test::TestFuture<bool, std::vector<mojom::CoinMarketPtr>> future;
+  asset_ratio_service_->GetCoinMarkets("bat", 99, future.GetCallback());
+  auto [success, values] = future.Take();
+  EXPECT_FALSE(success);
+  EXPECT_TRUE(values.empty());
 }
 
 }  // namespace brave_wallet

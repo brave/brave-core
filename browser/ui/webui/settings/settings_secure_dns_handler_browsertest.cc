@@ -15,15 +15,18 @@
 
 #include <ranges>
 
+#include "base/test/run_until.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/net/secure_dns_config.h"
 #include "chrome/browser/net/system_network_context_manager.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/policy/core/browser/browser_policy_connector.h"
 #include "components/policy/core/common/mock_configuration_policy_provider.h"
+#include "components/policy/core/common/policy_pref_names.h"
 #include "components/policy/policy_constants.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
@@ -75,7 +78,6 @@ class BraveSecureDnsHandlerTest : public InProcessBrowserTest {
     handler_->set_web_ui(&web_ui_);
     handler_->RegisterMessages();
     handler_->AllowJavascriptForTesting();
-    base::RunLoop().RunUntilIdle();
   }
 
   void TearDownOnMainThread() override { handler_.reset(); }
@@ -132,7 +134,10 @@ class BraveSecureDnsHandlerTest : public InProcessBrowserTest {
                     policy::POLICY_SCOPE_USER, policy::POLICY_SOURCE_CLOUD,
                     std::move(value), nullptr);
     provider_.UpdateChromePolicy(*policy_map);
-    base::RunLoop().RunUntilIdle();
+    ASSERT_TRUE(base::test::RunUntil([&] {
+      return browser()->GetProfile()->GetPrefs()->IsManagedPreference(
+          policy::policy_prefs::kIncognitoModeAvailability);
+    }));
   }
 
   std::unique_ptr<BraveTestSecureDnsHandler> handler_;

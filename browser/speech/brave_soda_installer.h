@@ -64,7 +64,8 @@ class BraveSodaInstaller final
 
  private:
   // local_ai::OnDeviceSpeechModelsState::Observer:
-  void OnSpeechModelDirChanged(const base::FilePath& model_dir) override;
+  void OnSpeechModelDirChanged(local_ai::OnDeviceSpeechModel model,
+                               const base::FilePath& model_dir) override;
 
   // Called when the install `InstallLanguage` asked for finishes. `success` is
   // whether a model ended up installed.

@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/check_deref.h"
 #include "base/check_op.h"
 #include "base/command_line.h"
 #include "base/dcheck_is_on.h"
@@ -398,6 +399,11 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
   if (auto* focus_mode_controller = FocusModeController::From(browser_)) {
     focus_mode_observation_.Observe(focus_mode_controller);
   }
+  fullscreen_subscription_ =
+      CHECK_DEREF(VerticalTabController::From(browser_))
+          .RegisterOnFullscreenStateChanged(base::BindRepeating(
+              &BraveVerticalTabStripRegionView::OnFullscreenStateChanged,
+              base::Unretained(this)));
   UpdateFloatingStateForBrowserMode();
 
   // Subscribe browser closing event, so we can dispose of the context menu.
@@ -482,22 +488,6 @@ void BraveVerticalTabStripRegionView::OnFullscreenStateChanged() {
 
 void BraveVerticalTabStripRegionView::OnFocusModeToggled(bool enabled) {
   UpdateFloatingStateForBrowserMode();
-}
-
-void BraveVerticalTabStripRegionView::ListenFullscreenChanges() {
-  auto* fullscreen_controller = GetFullscreenController();
-  DCHECK(fullscreen_controller);
-  // Observe changes to fullscreen state.
-  fullscreen_subscription_ =
-      ExclusiveAccessManager::From(browser_view_->browser())
-          ->fullscreen_controller()
-          ->RegisterOnFullscreenStateChanged(base::BindRepeating(
-              &BraveVerticalTabStripRegionView::OnFullscreenStateChanged,
-              base::Unretained(this)));
-}
-
-void BraveVerticalTabStripRegionView::StopListeningFullscreenChanges() {
-  fullscreen_subscription_ = {};
 }
 
 FullscreenController* BraveVerticalTabStripRegionView::GetFullscreenController()
@@ -1206,11 +1196,6 @@ void BraveVerticalTabStripRegionView::UpdateFloatingStateForBrowserMode() {
 }
 
 void BraveVerticalTabStripRegionView::ScheduleFloatingModeTimer() {
-  if (mouse_events_for_test_) {
-    SetState(State::kFloating);
-    return;
-  }
-
   if (mouse_enter_timer_.IsRunning()) {
     return;
   }

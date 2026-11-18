@@ -4,8 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import ButtonMenu from '@brave/leo/react/buttonMenu'
-import Icon from '@brave/leo/react/icon'
+import ButtonMenu from '@brave/nala/react/buttonMenu'
+import Icon from '@brave/nala/react/icon'
 import classnames from '$web-common/classnames'
 import styles from './style.module.scss'
 import { useMemo } from 'react'

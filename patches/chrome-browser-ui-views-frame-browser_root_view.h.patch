@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/frame/browser_root_view.h b/chrome/browser/ui/views/frame/browser_root_view.h
+index 6bff662b1f477b699ac53c152886e3a0579273e6..901e90b66ee1fcc736f7e8939616d6223d5b4b88 100644
+--- a/chrome/browser/ui/views/frame/browser_root_view.h
++++ b/chrome/browser/ui/views/frame/browser_root_view.h
+@@ -94,6 +94,7 @@ class BrowserRootView : public views::internal::RootView {
+   void PaintChildren(const views::PaintInfo& paint_info) override;
+ 
+  private:
++  friend class VerticalTabStripRootViewBrowserTest;
+   friend class BrowserRootViewBrowserTest;
+   FRIEND_TEST_ALL_PREFIXES(BrowserRootViewBrowserTest, ClearDropInfo);
+   FRIEND_TEST_ALL_PREFIXES(BrowserRootViewBrowserTest, DropOrderingCorrect);

@@ -197,3 +197,13 @@ substitutions:
     set_blink_runtime_enabled_feature_state:
       feature_name: UserMediaElement
       value: disabled
+
+  - description: 'Ship the WebMCP API base feature enabled.'
+    set_blink_runtime_enabled_feature_state:
+      feature_name: WebMCP
+      value: enabled
+
+  - description: 'Ship the WebMCP runtime flag stable.'
+    regex:
+      re_pattern: '(\bname: "WebMCP",[^}]*?status: )"experimental"'
+      replace: '\1"stable"'

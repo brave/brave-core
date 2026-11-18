@@ -43,7 +43,6 @@ components/brave_rewards/core/engine/util/request_signer.cc @brave/sec-team
 components/brave_rewards/core/engine/util/request_signer.h @brave/sec-team
 
 # Network
-browser/net/ @brave/brave-core-owners
 chromium_src/chrome/browser/net/profile_network_context_service.cc @brave/sec-team
 chromium_src/net/tools/transport_security_state_generator/input_file_parsers.cc @brave/sec-team
 

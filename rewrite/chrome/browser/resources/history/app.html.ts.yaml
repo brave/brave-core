@@ -3,12 +3,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-# Brave has no user-facing history-search setting page, so the disclaimer's
-# "Learn more" link (which points at historyEmbeddingsSettingsUrl) would
-# navigate to a page we hide. Drop the link; the disclaimer still renders.
-
 substitutions:
-  - description: 'Remove the disclaimer Learn more link from the history page.'
-    regex:
-      re_pattern: '\s*<a id="historyEmbeddingsDisclaimerLink"[\s\S]+?</a>'
-      replace: ''
+  - description: |
+      Import loadTimeData for Brave's history embeddings card.
+
+      The app.html.ts.lit_mangler.ts insertion reads
+      enableBraveHistoryEmbeddings to decide whether to render it.
+    add_import:
+      entry:
+        import {loadTimeData} from 'chrome://resources/js/load_time_data.js';

@@ -17,7 +17,7 @@ from recipe_test_api import RecipeTestApi, TestData
 # Default simulated git cache directory.
 _GIT_CACHE = '/b/cache'
 
-# Default simulated mirror directory `git cache exists` resolves to.
+# Default simulated mirror directory `git cache populate` fetches into.
 _MIRROR_DIR = '/b/cache/chromium.googlesource.com-chromium-src'
 
 
@@ -33,17 +33,18 @@ class ChromiumCheckoutTestApi(RecipeTestApi):
         return self.m.path.files('b/src/chrome/VERSION')
 
     def git_cache_populated(self, mirror_dir: str = _MIRROR_DIR) -> TestData:
-        """Seed `clone`/`checkout_ref`'s `git cache exists` lookups.
+        """Seed the mirror `clone`/`checkout_ref` populate as *mirror_dir*.
 
-        Both `clone` and `checkout_ref` run a `git cache exists` step to
-        resolve the mirror directory `git cache populate` just fetched into;
-        required whenever either of them runs, since the simulated stdout is
-        an empty string unless seeded.
+        Both look the mirror up once `git cache populate` has created it;
+        required whenever either of them runs, since the simulated lookup
+        finds no mirror unless seeded.
         """
         stdout = self.m.raw_io.output_text(mirror_dir)
         return self.step_data(
-            'git cache exists', stdout=stdout
-        ) + self.step_data('git cache exists for ref', stdout=stdout)
+            'git cache populate exists (after)', stdout=stdout
+        ) + self.step_data(
+            'git cache populate for ref exists (after)', stdout=stdout
+        )
 
     def win_toolchain_hash(
         self, toolchain_hash: str = '', published_hash: str | None = None

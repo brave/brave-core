@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Override SetBoundsForButton in BrowserFrameViewLayoutLinux
+
+      Brave syncs the caption button bounds with the toolbar when vertical tabs
+      are shown.
+    add_to_public:
+      class_name: BrowserFrameViewLayoutLinux
+      code: |-
+        void SetBoundsForButton(views::FrameButton button_id,
+                                views::Button* button,
+                                ButtonAlignment align) override;

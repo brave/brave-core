@@ -15,11 +15,12 @@ struct SignMessageRequestContentView: View {
 
   let request: BraveWallet.SignMessageRequest
 
-  /// A map between request id and a boolean value indicates this request message needs pilcrow formating.
-  @Binding var needPilcrowFormatted: [Int32: Bool]
   /// A map between request id and a boolean value indicates this request message is displayed as
   /// its original content.
   @Binding var showOrignalMessage: [Int32: Bool]
+
+  /// Whether the message is taller than the text view, so the overflow hint is shown.
+  @State private var isOverflowing: Bool = false
 
   private let staticTextViewHeight: CGFloat = 200
 
@@ -81,27 +82,36 @@ struct SignMessageRequestContentView: View {
 
   private var requestDomain: String {
     guard let domain = currentRequestDomain else { return "" }
-    if showOrignalMessage[request.id] == true {
-      return domain
-    } else {
-      let uuid = UUID()
-      var result = domain
-      if needPilcrowFormatted[request.id] == true {
-        var copy = domain
-        while copy.range(of: "\\n{2,}", options: .regularExpression) != nil {
-          if let range = copy.range(of: "\\n{2,}", options: .regularExpression) {
-            let newlines = String(copy[range])
-            result.replaceSubrange(range, with: "\n\(uuid.uuidString) <\(newlines.count)>\n")
-            copy.replaceSubrange(range, with: "\n\(uuid.uuidString) <\(newlines.count)>\n")
-          }
-        }
-      }
-      if domain.hasUnknownUnicode {
-        result = result.printableWithUnknownUnicode
-      }
+    return displayText(for: domain, minimumNewLineRun: 2)
+  }
 
-      return result.replacingOccurrences(of: uuid.uuidString, with: "\u{00B6}")
+  /// Display-only text. The signature always covers the original message bytes.
+  private func displayText(for string: String, minimumNewLineRun: Int) -> String {
+    if showOrignalMessage[request.id] == true {
+      return string.visibleNullBytes
     }
+    // Collapse each newline run into a `¶ <count>` marker so content that the run
+    // would push out of view stays visible. Inserted via a UUID placeholder so the
+    // escaping below cannot mangle the marker.
+    let placeholder = UUID().uuidString
+    var result = string
+    // The marker itself contains newlines, so each pass resumes past the one just
+    // inserted rather than re-matching it.
+    var searchOffset = 0
+    while let range = result.range(
+      of: "\\n{\(minimumNewLineRun),}",
+      options: .regularExpression,
+      range: result.index(result.startIndex, offsetBy: searchOffset)..<result.endIndex
+    ) {
+      let newLineCount = result[range].count
+      let marker = "\n\(placeholder) <\(newLineCount)>\n"
+      searchOffset = result.distance(from: result.startIndex, to: range.lowerBound) + marker.count
+      result.replaceSubrange(range, with: marker)
+    }
+    if string.hasUnknownUnicode || string.hasNullBytes || string.hasControlCharacters {
+      result = result.printableWithUnknownUnicode
+    }
+    return result.replacingOccurrences(of: placeholder, with: "\u{00B6}")
   }
 
   private var currentRequestMessage: String? {
@@ -122,37 +132,19 @@ struct SignMessageRequestContentView: View {
     guard let message = currentRequestMessage else {
       return ""
     }
-    if showOrignalMessage[request.id] == true {
-      return message
-    } else {
-      let uuid = UUID()
-      var result = message
-      if needPilcrowFormatted[request.id] == true {
-        var copy = message
-        while copy.range(of: "\\n{3,}", options: .regularExpression) != nil {
-          if let range = copy.range(of: "\\n{3,}", options: .regularExpression) {
-            let newlines = String(copy[range])
-            result.replaceSubrange(range, with: "\n\(uuid.uuidString) <\(newlines.count)>\n")
-            copy.replaceSubrange(range, with: "\n\(uuid.uuidString) <\(newlines.count)>\n")
-          }
-        }
-      }
-      if message.hasUnknownUnicode {
-        result = result.printableWithUnknownUnicode
-      }
+    return displayText(for: message, minimumNewLineRun: 3)
+  }
 
-      return result.replacingOccurrences(of: uuid.uuidString, with: "\u{00B6}")
-    }
+  /// Whether the displayed text can disagree with the bytes being signed.
+  private var hasUnexpectedCharacters: Bool {
+    currentRequestDomain?.hasUnexpectedCharacters == true
+      || currentRequestMessage?.hasUnexpectedCharacters == true
   }
 
   var body: some View {
     VStack(spacing: 20) {
-      if needPilcrowFormatted[request.id] == true
-        || currentRequestMessage?.hasUnknownUnicode == true
-      {
+      if hasUnexpectedCharacters {
         MessageWarningView(
-          needsPilcrowFormatted: needPilcrowFormatted[request.id] == true,
-          hasUnknownUnicode: currentRequestMessage?.hasUnknownUnicode == true,
           isShowingOriginalMessage: showOrignalMessage[request.id] == true,
           action: {
             let value = showOrignalMessage[request.id] ?? false
@@ -172,25 +164,28 @@ struct SignMessageRequestContentView: View {
         Color(.tertiarySystemGroupedBackground),
         in: RoundedRectangle(cornerRadius: 5, style: .continuous)
       )
+      .overlay(alignment: .bottom) {
+        if isOverflowing {
+          // Indicates there is more message below the visible area.
+          Image(braveSystemName: "leo.carat.down")
+            .imageScale(.small)
+            .foregroundColor(Color(braveSystemName: .iconDefault))
+            .padding(.bottom, 4)
+        }
+      }
       .padding()
       .background(
         Color(.secondarySystemGroupedBackground),
         in: RoundedRectangle(cornerRadius: 10, style: .continuous)
       )
       .introspect(.textEditor, on: .iOS(.v18...)) { textView in
-        // A flash to show users message is overflowing the text view (related to issue https://github.com/brave/brave-ios/issues/6277)
-        if showOrignalMessage[request.id] == true {
-          let currentRequestHasConsecutiveNewLines =
-            currentRequestDomain?.hasConsecutiveNewLines == true
-            || currentRequestMessage?.hasConsecutiveNewLines == true
-          if textView.contentSize.height > staticTextViewHeight
-            && currentRequestHasConsecutiveNewLines
-          {
-            needPilcrowFormatted[request.id] = true
-            textView.flashScrollIndicators()
-          } else {
-            needPilcrowFormatted[request.id] = false
-          }
+        let overflowing = textView.contentSize.height > staticTextViewHeight
+        if isOverflowing != overflowing {
+          isOverflowing = overflowing
+        }
+        if overflowing {
+          // A flash to show users message is overflowing the text view (related to issue https://github.com/brave/brave-ios/issues/6277)
+          textView.flashScrollIndicators()
         }
       }
     }
@@ -200,8 +195,6 @@ struct SignMessageRequestContentView: View {
 /// Yellow background warning view with a button to toggle between showing original message and encoded message.
 private struct MessageWarningView: View {
 
-  let needsPilcrowFormatted: Bool
-  let hasUnknownUnicode: Bool
   let isShowingOriginalMessage: Bool
   let action: () -> Void
 
@@ -209,22 +202,12 @@ private struct MessageWarningView: View {
 
   var body: some View {
     VStack(spacing: 8) {
-      if needsPilcrowFormatted {
-        Text(
-          "\(Image(braveSystemName: "leo.warning.triangle-filled")) \(Strings.Wallet.signMessageConsecutiveNewlineWarning)"
-        )
-        .font(.subheadline.weight(.medium))
-        .foregroundColor(Color(braveSystemName: .textPrimary))
-        .multilineTextAlignment(.center)
-      }
-      if hasUnknownUnicode {
-        Text(
-          "\(Image(braveSystemName: "leo.warning.triangle-filled"))  \(Strings.Wallet.signMessageRequestUnknownUnicodeWarning)"
-        )
-        .font(.subheadline.weight(.medium))
-        .foregroundColor(Color(braveSystemName: .textPrimary))
-        .multilineTextAlignment(.center)
-      }
+      Text(
+        "\(Image(braveSystemName: "leo.warning.triangle-filled"))  \(Strings.Wallet.signMessageUnexpectedCharactersWarning)"
+      )
+      .font(.subheadline.weight(.medium))
+      .foregroundColor(Color(braveSystemName: .textPrimary))
+      .multilineTextAlignment(.center)
       Button {
         action()
       } label: {

@@ -70,13 +70,13 @@ TEST(BraveNewsFeedSampling, PickFirstIndexPicksFirstUnlessArticlesAreEmpty) {
 
   infos.push_back({mojom::FeedItemMetadata::New(), ArticleMetadata()});
 
-  EXPECT_EQ(0u, PickFirstIndex(infos).value());
+  EXPECT_EQ(0u, PickFirstIndex(infos));
 
   infos.push_back({mojom::FeedItemMetadata::New(), ArticleMetadata()});
   infos.push_back({mojom::FeedItemMetadata::New(), ArticleMetadata()});
   infos.push_back({mojom::FeedItemMetadata::New(), ArticleMetadata()});
 
-  EXPECT_EQ(0u, PickFirstIndex(infos).value());
+  EXPECT_EQ(0u, PickFirstIndex(infos));
 }
 
 TEST(BraveNewsFeedSampling, PickRouletteDoesntBreakOnEmptyList) {

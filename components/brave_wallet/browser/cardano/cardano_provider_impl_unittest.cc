@@ -10,10 +10,7 @@
 #include <utility>
 #include <vector>
 
-#include "base/run_loop.h"
 #include "base/test/bind.h"
-#include "base/test/gmock_callback_support.h"
-#include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
@@ -104,13 +101,9 @@ class CardanoProviderImplUnitTest : public testing::Test {
   }
 
   void UnlockWallet() {
-    base::RunLoop run_loop;
-    keyring_service()->Unlock(
-        "brave", base::BindLambdaForTesting([&run_loop](bool success) {
-          ASSERT_TRUE(success);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    TestFuture<bool> future;
+    keyring_service()->Unlock("brave", future.GetCallback());
+    ASSERT_TRUE(future.Get());
   }
 
   CardanoProviderImpl* provider() { return provider_.get(); }
@@ -326,13 +319,10 @@ TEST_F(CardanoProviderImplUnitTest, Enable_OnWalletUnlock_PermissionApproved) {
 
   keyring_service()->Lock();
 
-  base::MockCallback<CardanoProviderImpl::EnableCallback> first_callback;
-  base::RunLoop main_run_loop;
-  EXPECT_CALL(
-      first_callback,
-      Run(testing::_, EqualsMojo(mojom::CardanoProviderErrorBundlePtr())))
-      .WillOnce(base::test::RunOnceClosure(main_run_loop.QuitClosure()));
-  provider()->Enable(first_callback.Get());
+  TestFuture<mojo::PendingRemote<mojom::CardanoApi>,
+             mojom::CardanoProviderErrorBundlePtr>
+      first_future;
+  provider()->Enable(first_future.GetCallback());
 
   {
     // Request will be rejected because it is still waiting for wallet unlock.
@@ -362,7 +352,8 @@ TEST_F(CardanoProviderImplUnitTest, Enable_OnWalletUnlock_PermissionApproved) {
 
   UnlockWallet();
 
-  main_run_loop.Run();
+  EXPECT_TRUE(first_future.Get<0>());
+  EXPECT_FALSE(first_future.Get<1>());
 }
 
 // The provider isn't injected without a wallet, but the request must still fail

@@ -185,6 +185,18 @@ class AIChatGlobalSidePanelBrowserTest
     return conversation->get_conversation_uuid();
   }
 
+  // Returns the uuid of the conversation shown by the AI Chat UI whose main
+  // frame is |conversation_rfh_|, or an empty string until it shows one. The
+  // UI loads its conversation entries frame from a URL ending in that uuid.
+  std::string ShownConversationUuid() {
+    content::RenderFrameHost* entries_frame = GetConversationEntriesFrame();
+    if (!entries_frame) {
+      return std::string();
+    }
+    std::string path(entries_frame->GetLastCommittedURL().path());
+    return path.empty() ? path : path.substr(1);
+  }
+
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
@@ -906,6 +918,54 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
 
   EXPECT_FALSE(IsSidePanelOpen(browser()));
   EXPECT_FALSE(ai_chat::GetSidePanelWebContents(browser()));
+}
+
+// The side panel's main conversation isn't selected by id, whether the panel
+// is global or tied to the tab, so the UI only learns of its deletion from the
+// conversation itself. It then moves to a new conversation.
+IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
+                       DeletingShownConversationShowsNewOne) {
+  auto* coordinator = SidePanelCoordinator::From(browser());
+  ASSERT_TRUE(coordinator);
+  coordinator->Show(SidePanelEntry::Id::kChatUI);
+
+  content::WebContents* panel_contents = nullptr;
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    panel_contents = ai_chat::GetSidePanelWebContents(browser());
+    return IsSidePanelOpen(browser()) && panel_contents != nullptr &&
+           panel_contents->GetWebUI() != nullptr &&
+           !panel_contents->IsLoading();
+  }));
+  conversation_rfh_ = panel_contents->GetPrimaryMainFrame();
+
+  std::string deleted_uuid;
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    deleted_uuid = ShownConversationUuid();
+    return !deleted_uuid.empty();
+  }));
+
+  ai_chat::AIChatService* service =
+      ai_chat::AIChatServiceFactory::GetForBrowserContext(
+          browser()->GetProfile());
+  ASSERT_TRUE(service);
+  // Check the panel is still on that conversation, or deleting it would show
+  // nothing about the panel.
+  ai_chat::ConversationHandler* shown_conversation =
+      service->GetConversation(deleted_uuid);
+  ASSERT_TRUE(shown_conversation);
+  ASSERT_TRUE(shown_conversation->IsAnyClientConnected());
+  shown_conversation = nullptr;
+  service->DeleteConversation(deleted_uuid);
+
+  std::string new_uuid;
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    new_uuid = ShownConversationUuid();
+    return !new_uuid.empty() && new_uuid != deleted_uuid;
+  }));
+  ai_chat::ConversationHandler* new_conversation =
+      service->GetConversation(new_uuid);
+  ASSERT_TRUE(new_conversation);
+  EXPECT_TRUE(new_conversation->IsAnyClientConnected());
 }
 
 INSTANTIATE_TEST_SUITE_P(

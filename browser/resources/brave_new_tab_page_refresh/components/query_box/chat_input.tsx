@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Dialog from '@brave/leo/react/dialog'
+import Dialog from '@brave/nala/react/dialog'
 
 import { useAIChat } from '../../../../../components/ai_chat/resources/page/state/ai_chat_context'
 import { useConversation } from '../../../../../components/ai_chat/resources/page/state/conversation_context'

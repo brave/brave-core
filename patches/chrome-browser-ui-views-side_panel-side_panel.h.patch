@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/side_panel/side_panel.h b/chrome/browser/ui/views/side_panel/side_panel.h
+index de391b015c1fa483b38a0e85a74629c211021261..5ee66c3071b2a239ababffe7418dc854c359f290 100644
+--- a/chrome/browser/ui/views/side_panel/side_panel.h
++++ b/chrome/browser/ui/views/side_panel/side_panel.h
+@@ -128,6 +128,8 @@ class SidePanel : public views::AccessiblePaneView,
+   void SetClipToVisibleArea(
+       const std::optional<gfx::Rect>& clip_to_visible_area);
+ 
++  void UpdateBorder();
++
+  private:
+   // This method is the shared implementation of Open/Close.
+   void UpdateVisibility(bool should_be_open, bool animated);

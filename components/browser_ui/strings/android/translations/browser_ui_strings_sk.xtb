@@ -181,9 +181,7 @@
 <translation id="2710883118091822664">Prihláste sa a pokračujte jednoducho vo všetkých svojich zariadeniach</translation>
 <translation id="2713106313042589954">Vypnúť kameru</translation>
 <translation id="2717722538473713889">E‑mailové adresy</translation>
-<translation id="8181634240306014548">Spúšťajte Brave s aktívnym omniboxom, čím sa skráti čas spustenia v zariadeniach s nízkym výkonom.</translation>
 <translation id="2750481671343847896">Weby môžu zobrazovať výzvy na prihlásenie od služieb identity.</translation>
-<translation id="2787357173144933081">Rýchly štart omniboxu</translation>
 <translation id="2789132527330338807">Weby môžu žiadať o vytvorenie 3D mapy vášho okolia alebo sledovanie polohy vašej kamery</translation>
 <translation id="2790501146643349491">Keď je táto možnosť zapnutá, nedávno zavreté weby môžu dokončiť odosielanie a prijímanie údajov. Keď je táto možnosť vypnutá, nedávno zavreté weby nemôžu dokončiť odosielanie ani prijímanie údajov.</translation>
 <translation id="2795716239552913152">Weby zvyčajne používajú vašu polohu, aby mohli poskytovať relevantné funkcie či informácie, napríklad miestne správy alebo predajne v okolí</translation>
@@ -291,7 +289,6 @@
 <translation id="9046306654872718870">Prispôsobte si Brave vlastnými farbami a obrázkami na domovskej stránke</translation>
 <translation id="389521680295183045">Weby sa môžu pýtať, keď chcú zistiť, kedy aktívne používate zariadenie</translation>
 <translation id="3895926599014793903">Vynútiť povolenie priblíženia</translation>
-<translation id="3905475044299942653">Zastavenie veľkého množstva upozornení</translation>
 <translation id="3922092564198021702">Otvorte v telefóne Nastavenia</translation>
 <translation id="3924858949939391676">Zobrazovať odkazy po zapnutí režimu čítania</translation>
 <translation id="3933121352599513978">Zbaliť nechcené požiadavky (odporúčané)</translation>
@@ -385,7 +382,6 @@
 <translation id="4936863036653376783">Skupiny nájdete v sekcii skupín kariet vo všetkých svojich zariadeniach</translation>
 <translation id="4945443401464700059"><ph name="SITE"/> má zablokované používanie vašich informácií na webe</translation>
 <translation id="4953688446973710931">Keď je táto možnosť zapnutá, weby môžu žiadať o automatické sťahovanie viacerých súborov. Keď je táto možnosť vypnutá, weby nemôžu automaticky stiahnuť viacero súborov.</translation>
-<translation id="4962975101802056554">Odvolať všetky povolenia pre zariadenie</translation>
 <translation id="4972737347717125191">Weby môžu žiadať o použitie zariadení virtuálnej reality a súvisiacich údajov</translation>
 <translation id="1275242979020712923">Dolný hárok farieb Chromu</translation>
 <translation id="497421865427891073">Ďalej</translation>
@@ -525,6 +521,7 @@
 <translation id="6439114592976064011">Brániť webom používať zariadenie a dáta pre virtuálnu realitu</translation>
 <translation id="6447842834002726250">Súbory cookie</translation>
 <translation id="6452138246455930388">Pokles ceny na vašej otvorenej karte z <ph name="OLD_PRICE"/> na <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
+<translation id="6495608040096939405">Zrušiť povolenie zariadenia pre: <ph name="NAME"/></translation>
 <translation id="6500423977866688905">Keď je okno úzke, požiadajte o zobrazenie v mobile</translation>
 <translation id="6527303717912515753">Zdieľať</translation>
 <translation id="6530703012083415527">Keď je táto možnosť zapnutá, weby môžu používať vyskakovacie okná a presmerovania. Keď je táto možnosť vypnutá, weby nemôžu používať vyskakovacie okná ani presmerovania.</translation>
@@ -590,6 +587,7 @@
 <translation id="7188508872042490670">Dáta webov v zariadení</translation>
 <translation id="7201549776650881587">Touto akciou odstránite všetky údaje a súbory cookie uložené všetkými webmi domény <ph name="ORIGIN"/> alebo jej aplikáciou na ploche</translation>
 <translation id="7219254577985949841">Chcete odstrániť dáta webu?</translation>
+<translation id="7225256190577194089">Zrušiť všetky povolenia pre zariadenie <ph name="DEVICE_NAME"/></translation>
 <translation id="723171743924126238">Výber obrázkov</translation>
 <translation id="7243246278722455312">Dolný hárok úprav stránky na novej karte</translation>
 <translation id="7243308994586599757">Možnosti sú k dispozícii v dolnej časti obrazovky</translation>
@@ -702,7 +700,6 @@ Rozšírená ochrana ovláda tieto nastavenia Chromu:</translation>
 <translation id="8428213095426709021">Nastavenia</translation>
 <translation id="8441146129660941386">Pretočiť dozadu</translation>
 <translation id="8444433999583714703">Ak chcete povoliť aplikácii <ph name="APP_NAME"/> používať vašu polohu, zapnite ju aj v <ph name="BEGIN_LINK"/>nastaveniach Androidu<ph name="END_LINK"/>.</translation>
-<translation id="8447861592752582886">Odvolať povolenie pre zariadenie</translation>
 <translation id="8463843545738141778">Toto nastavenie je deaktivované, pretože ste v nastaveniach Androidu zapli rozšírenú ochranu.</translation>
 <translation id="8467359479529706065">Dolný hárok vzhľadu stránky na novej karte je otvorený na polovičnú výšku</translation>
 <translation id="8471525937465764768">Weby sa zvyčajne pripájajú k zariadeniam USB, aby mohli poskytovať funkcie, ako tlač dokumentu alebo uloženie do zariadenia</translation>

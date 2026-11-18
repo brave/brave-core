@@ -742,6 +742,15 @@
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "Nastavi na: %@ (nesigurno)";
 
+/* Button to exclude a topsite url from the most visited list */
+"ExcludeMostVisitedSite" = "Uklonite";
+
+/* Message for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertMessage" = "Ovaj sajt se neće pojaviti na vašoj listi najčešće posećenih, ali neće biti uklonjen iz vaše istorije.";
+
+/* Title for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertTitle" = "Ukloniti iz najčešće posećenih?";
+
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ pokreće vanjsku aplikaciju";
 
@@ -864,6 +873,9 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Nevaljane pojedinosti zahtjeva za plaćanjem";
+
+/* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
+"JavaScriptDialogEmbeddedPageTitle" = "Ugrađena stranica na ovoj stranici";
 
 /* History tableview section header */
 "LastMonth" = "Prošli mjesec";
@@ -2481,6 +2493,18 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "Oglasi su blokirani tijekom gledanja videozapisa na ovom mrežnom mjestu.";
+
+/* Title for the Brave Wallet shortcut. Brave Wallet is the name of a product and should not be translated */
+"shortcut.braveWallet" = "Novčanik Brave";
+
+/* Title for the private tab shortcut. */
+"shortcut.privateTab" = "Kartica Privatno";
+
+/* Title for the QR Code shortcut. */
+"shortcut.qrCode" = "QR kȏd";
+
+/* Title for the Search shortcut. */
+"shortcut.search" = "Pretraži";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Nova privatna kartica";

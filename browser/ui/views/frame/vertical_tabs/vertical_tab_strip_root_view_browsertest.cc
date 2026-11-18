@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/test/test_future.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
@@ -71,8 +72,9 @@ class VerticalTabStripRootViewBrowserTest : public InProcessBrowserTest {
     BrowserRootView* root_view = browser_root_view();
     EXPECT_NE(nullptr, root_view);
 
-    base::RunLoop run_loop;
-    root_view->SetOnFilteringCompleteClosureForTesting(run_loop.QuitClosure());
+    base::test::TestFuture<void> filtering_done;
+    root_view->SetOnFilteringCompleteClosureForTesting(
+        filtering_done.GetCallback());
     root_view->OnDragEntered(event);
 
     // At this point, the drag information will have been set, and a background
@@ -80,7 +82,7 @@ class VerticalTabStripRootViewBrowserTest : public InProcessBrowserTest {
     // (`GetURLMimeTypes()` -> `FilterURLs()`). Ensure that all background
     // processing is complete before checking the drag operation or invoking the
     // drag callback.
-    run_loop.Run();
+    ASSERT_TRUE(filtering_done.Wait());
 
     EXPECT_NE(ui::DragDropTypes::DRAG_NONE, root_view->OnDragUpdated(event));
 

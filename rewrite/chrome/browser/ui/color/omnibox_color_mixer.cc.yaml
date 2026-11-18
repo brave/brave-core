@@ -12,3 +12,9 @@ substitutions:
         #if !BUILDFLAG(IS_ANDROID)
         AddBraveOmniboxColorMixer(provider, key);
         #endif  // #if !BUILDFLAG(IS_ANDROID)
+
+  - description: |-
+      Include what the substitutions above use
+    add_include:
+      header:
+        - brave/browser/ui/color/brave_color_mixer.h

@@ -6,8 +6,8 @@
 import './leo_menu_elements'
 import * as React from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
-import Toggle from '@brave/leo/react/toggle'
-import Icon from '@brave/leo/react/icon'
+import Toggle from '@brave/nala/react/toggle'
+import Icon from '@brave/nala/react/icon'
 
 // Page API Proxy
 import getWalletPageApiProxy from '$wallet/page/wallet_page_api_proxy'
@@ -111,8 +111,10 @@ export const WalletSettingsMenu = (props: Props) => {
         },
       )
     } else {
-      // Tabs.create is desktop specific. Using window.open for mobile
-      window.open(HELP_CENTER_URL, '_blank', 'noopener noreferrer')
+      // Tabs.create is desktop specific.
+      getWalletPageApiProxy().pageHandler.openTab({
+        url: HELP_CENTER_URL,
+      })
     }
   }
 

@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 Ili promijenite kasnije putem <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6229752134959014186">Doznaj više o dodatku Widevine</translation>
+<translation id="3318169548229684688">preuzme model za prepoznavanje govora (<ph name="DOWNLOAD_SIZE"/>) radi obrade govora na ovom uređaju</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> traži od vas da</translation>
 <translation id="3218385319396786393">Na ovoj je stranici blokirana automatska reprodukcija</translation>
 <translation id="4988333904713528597">Uvijek omogući automatsku reprodukciju na <ph name="HOST"/></translation>
@@ -610,6 +611,8 @@ Ili promijenite kasnije putem <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="3540231253392253941">Upotrijebi Google Services za prosljeđivanje poruka</translation>
 <translation id="2224032129673914306">Semantička pretraga historije</translation>
 <translation id="6045998903985162478">Indeksirajte stranice koje posjetite kako biste ih lako pronašli u historiji, otvorenim karticama i Leu.</translation>
+<translation id="3962946446120925966">Prepoznavanje govora na uređaju</translation>
+<translation id="6408242130028978631">Preuzmite model za prepoznavanje govora (<ph name="DOWNLOAD_SIZE"/>) kako bi stranice mogle obrađivati govor na ovom uređaju. Isključite ovo da biste uklonili model.</translation>
 <translation id="5813105074916486721">Zadržavanje lokalne historije</translation>
 <translation id="5671611745062206644">Koliko dugo Brave pohranjuje vašu historiju pregledavanja lokalno</translation>
 <translation id="7184510058087008090">1 dan</translation>

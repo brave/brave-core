@@ -17,6 +17,8 @@ from core import perf_benchmark
 
 from core.path_util import SysPath, GetChromiumSrcDir
 
+from telemetry.web_perf import timeline_based_measurement
+
 with SysPath(os.path.join(GetChromiumSrcDir(), 'brave', 'tools', 'perf')):
   from brave_page_sets.brave_perf_utils_pages import BravePerfUtilsStorySet
 
@@ -29,6 +31,14 @@ class BraveUtilsBenchmark(perf_benchmark.PerfBenchmark):
 
   def CreateStorySet(self, options):
     return BravePerfUtilsStorySet(30, False, options)
+
+  def CreateCoreTimelineBasedMeasurementOptions(self):
+    # This benchmark only updates a profile. Chrome tracing makes trace
+    # shutdown attach DevTools to every restored tab, and a discarded one
+    # hangs until Log.enable times out.
+    options = timeline_based_measurement.Options()
+    options.config.enable_chrome_trace = False
+    return options
 
   @classmethod
   def Name(cls):

@@ -953,6 +953,11 @@
 <translation id="4362717653795263052">Przywróć główne konta kryptowalutowe</translation>
 <translation id="3038077262567136741">Wprowadź wyrażenie odzyskiwania, aby przywrócić swoje konto kryptowalutowe w portfelu Brave.</translation>
 <translation id="955918646509748368">Wprowadzone wyrażenie odzyskiwania jest nieprawidłowe.</translation>
+<translation id="7496330898672236908">Ta fraza odzyskiwania nie pasuje do Twojego portfela. Sprawdź frazę i spróbuj ponownie.</translation>
+<translation id="3798792138617904098">Usunąć zaimportowane konta?</translation>
+<translation id="2960631345291747230">Zaimportowane konta nie są zabezpieczone Twoją frazą odzyskiwania. Zostaną usunięte z Portfela Brave, a Ty możesz bezpowrotnie utracić dostęp do ich środków, chyba że masz kopię zapasową ich kluczy prywatnych.</translation>
+<translation id="8898583604592472741">Usuń konta</translation>
+<translation id="1577629163207045190">Wpisz „<ph name="CONFIRMATION_PHRASE"/>”, aby potwierdzić.</translation>
 <translation id="8107437138787377150">Wklej wyrażenie odzyskiwania ze schowka</translation>
 <translation id="4811736040444856406">Pokaż wyrażenie odzyskiwania</translation>
 <translation id="4359319875297001084">Importować ze starszych portfeli kryptowalutowych Brave?</translation>
@@ -2251,13 +2256,12 @@
 <translation id="3934503473603661122">Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu Grok 4.7, czołowym modelu rozumowania firmy xAI w Amazon Bedrock. Grok 4.7 jest udostępniany za pośrednictwem bezpiecznej infrastruktury AWS firmy Brave.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu GPT Luna, szybkim modelu o niskich opóźnieniach firmy OpenAI w Amazon Bedrock. GPT Luna jest udostępniany za pośrednictwem bezpiecznej infrastruktury AWS firmy Brave.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu GPT 5.6 Terra, zrównoważonym modelu produkcyjnym firmy OpenAI w Amazon Bedrock Mantle. GPT 5.6 Terra jest udostępniany za pośrednictwem bezpiecznej infrastruktury AWS firmy Brave.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu Mistral Large opracowanym przez firmę Mistral z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. Mistral Large jest hostowany przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu Claude Haiku opracowanym przez firmę Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu. Claude Haiku jest hostowany przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu Qwen 3.8 Flash Next opracowanym przez firmę Alibaba Cloud z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. Qwen 3.8 Flash Next jest hostowany przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">Cześć, jestem Leo. Jestem asystentem Brave opartym na sztucznej inteligencji. Korzystam z modelu Deepseek V3.2 opracowanym przez firmę Deepseek z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. Deepseek V3.2 jest hostowany przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu GLM 5.3 opracowanym przez firmę Z.ai z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. GLM 5.3 jest hostowany przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu Claude Opus opracowanym przez firmę Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu. Claude Opus jest hostowany przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu GLM-4-7-Flash opracowanym przez firmę Zhipu AI z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. GLM-4-7-Flash jest hostowany przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu Kimi K2.5 opracowanym przez firmę Moonshot AI z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. Kimi K2.5 jest hostowany przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu Nemotron Nano 3 30B opracowanym przez firmę NVIDIA z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. Nemotron Nano 3 30B jest hostowany przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu Brave Ocelot opracowanym przez Brave do podsumowywania stron internetowych. Brave Ocelot jest hostowany przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Lokalny</translation>
@@ -2397,8 +2401,8 @@
 <translation id="7465032796278724624">Zweryfikowana prywatność dzięki NEAR AI TEE</translation>
 <translation id="8782867266498869301">Model jest dynamicznie zmieniany, by dopasować się do specyfiki zadania.</translation>
 <translation id="7348809809749151120">Fast • Search</translation>
+<translation id="7711013627639951065">Szybki • Search • Obraz • Narzędzia</translation>
 <translation id="3213834013136637671">Wyszukaj • Wizja</translation>
-<translation id="2793458212460902934">Fast • Search • Tools</translation>
 <translation id="5276681919620506371">Wyszukaj • Narzędzia</translation>
 <translation id="7434375176361995333">Podsumowania • Szybko</translation>
 <translation id="3965507912994218570">Ustawienia Leo</translation>
@@ -2471,6 +2475,8 @@
 <translation id="6287023598025162715">Nowa rozmowa</translation>
 <translation id="7230502562132448519">Filtruj rozmowy</translation>
 <translation id="821070843380699990">Spróbuj innej kwerendy</translation>
+<translation id="241415280196701326">Ostatnie przestrzenie robocze</translation>
+<translation id="5388053981690151266">Nowa rozmowa w tej przestrzeni roboczej</translation>
 <translation id="7097822247923237815">Tymczasowy czat</translation>
 <translation id="7481750859362986254">Ten czat nie zostanie zapisany w Twojej historii ani nie będzie korzystał z personalizacji lub wspomnień Leo.</translation>
 <translation id="4238305333951712482">Pamięć zaktualizowana: <ph name="MEMORY_CONTENT"/></translation>
@@ -2496,6 +2502,7 @@
 <translation id="5103625298494362646">Tryb Agenta działa z modelami obsługującymi narzędzia. Modele niekompatybilne są ukrywane z tej listy.</translation>
 <translation id="3397808797783614750">Włączenie AI, która automatycznie przegląda strony w twoim imieniu, może prowadzić do szkodliwych, niezamierzonych konsekwencji dla twojej prywatności, finansów i komunikacji online. <ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Ostrzeżenie o bezpieczeństwie</translation>
+<translation id="717245811623757038">Prośba o zgodę na użycie narzędzia</translation>
 <translation id="6077070599873946984">Brave AI potrzebuje twojej zgody na: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI chce wykonać **<ph name="TOOL_NAME"/>** na **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Operacja została zidentyfikowana jako potencjalnie niezgodna z twoim żądaniem:</translation>

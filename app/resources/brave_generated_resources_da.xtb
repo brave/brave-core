@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 Eller skift senere på<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6229752134959014186">Få mere at vide om Widevine</translation>
+<translation id="3318169548229684688">Hent en model til talegenkendelse (<ph name="DOWNLOAD_SIZE"/>) for at behandle tale på denne enhed</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> beder dig om at</translation>
 <translation id="3218385319396786393">Autoplay er blevet blokeret på denne side</translation>
 <translation id="4988333904713528597">Slå altid autoplay til <ph name="HOST"/></translation>
@@ -611,6 +612,8 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="3540231253392253941">Brug Google-tjenester til push-beskeder</translation>
 <translation id="2224032129673914306">Semantisk historiksøgning</translation>
 <translation id="6045998903985162478">Indeksér de sider, du besøger, så du nemt kan finde dem i historikken, åbne faner og Leo.</translation>
+<translation id="3962946446120925966">Talegenkendelse på enheden</translation>
+<translation id="6408242130028978631">Download en talegenkendelsesmodel (<ph name="DOWNLOAD_SIZE"/>), så websteder kan behandle tale på denne enhed. Slå dette fra for at fjerne modellen.</translation>
 <translation id="5813105074916486721">Lokal historikopbevaring</translation>
 <translation id="5671611745062206644">Hvor længe Brave gemmer din browserhistorik lokalt</translation>
 <translation id="7184510058087008090">1 dag</translation>

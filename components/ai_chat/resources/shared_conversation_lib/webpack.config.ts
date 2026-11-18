@@ -115,7 +115,7 @@ export default async function (
     {
       from: path.resolve(
         import.meta.dirname,
-        '../../../../node_modules/@brave/leo/tokens/css/variables.css',
+        '../../../../node_modules/@brave/nala/tokens/css/variables.css',
       ),
       to: 'nala.css',
       transform: {

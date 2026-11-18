@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import Icon from '@brave/leo/react/icon'
+import Icon from '@brave/nala/react/icon'
 
 import { StyledWidgetMenuContainer, StyledWidgetMenu, StyledWidgetButton, StyledWidgetIcon, StyledSpan, StyledWidgetLink, StyledEllipsis } from './styles'
 import { IconButton } from '../../default'

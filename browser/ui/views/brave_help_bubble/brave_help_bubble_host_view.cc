@@ -21,6 +21,7 @@
 #include "ui/views/bubble/bubble_frame_view.h"
 #include "ui/views/view_class_properties.h"
 #include "ui/views/view_utils.h"
+#include "ui/views/widget/widget.h"
 
 namespace {
 constexpr int kWidth = 60;
@@ -133,6 +134,10 @@ bool BraveHelpBubbleHostView::Show() {
   }
 
   return true;
+}
+
+bool BraveHelpBubbleHostView::IsBubbleOpen() const {
+  return help_bubble_ && !help_bubble_->IsClosed();
 }
 
 void BraveHelpBubbleHostView::Hide() {

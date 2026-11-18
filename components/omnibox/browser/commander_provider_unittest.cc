@@ -157,7 +157,7 @@ TEST_F(CommanderProviderTest, ItemsAreConvertedToMatches) {
       {commander::CommandItemModel(u"First", {}, u"Ctrl+F", 1),
        commander::CommandItemModel(u"Second", {}, u"Ctrl+S", 1)});
 
-  EXPECT_EQ(2u, provider()->matches().size());
+  ASSERT_EQ(2u, provider()->matches().size());
 
   EXPECT_EQ(u"First", provider()->matches()[0].description);
   EXPECT_EQ(u"Ctrl+F", provider()->matches()[0].contents);
@@ -203,7 +203,7 @@ TEST_F(CommanderProviderTest, NoMatchRangeAllDimStyle) {
   delegate()->Notify({commander::CommandItemModel(u"Foo", {}, u"", 1)},
                      u"What thing?");
 
-  EXPECT_EQ(1u, provider()->matches().size());
+  ASSERT_EQ(1u, provider()->matches().size());
   const auto& c = provider()->matches()[0].description_class;
   ASSERT_EQ(1u, c.size());
   EXPECT_EQ(0u, c[0].offset);
@@ -217,7 +217,7 @@ TEST_F(CommanderProviderTest, ZeroCharMatchIsIgnored) {
       {commander::CommandItemModel(u"Foo", {gfx::Range()}, u"", 1)},
       u"What thing?");
 
-  EXPECT_EQ(1u, provider()->matches().size());
+  ASSERT_EQ(1u, provider()->matches().size());
   const auto& c = provider()->matches()[0].description_class;
   ASSERT_EQ(1u, c.size());
   EXPECT_EQ(0u, c[0].offset);
@@ -233,7 +233,7 @@ TEST_F(CommanderProviderTest, OneCharMatchIsHighlighted) {
       {commander::CommandItemModel(u"Foo", {gfx::Range(0, 1)}, u"", 1)},
       u"What thing?");
 
-  EXPECT_EQ(1u, provider()->matches().size());
+  ASSERT_EQ(1u, provider()->matches().size());
   const auto& c = provider()->matches()[0].description_class;
   ASSERT_EQ(2u, c.size());
 
@@ -258,8 +258,8 @@ TEST_F(CommanderProviderTest, AdjacentMatchesDontSwitchBackAndForth) {
                          u"Foo", {gfx::Range(0, 1), gfx::Range(1, 2)}, u"", 1)},
                      u"What thing?");
 
+  ASSERT_EQ(1u, provider()->matches().size());
   const auto& c = provider()->matches()[0].description_class;
-  EXPECT_EQ(1u, provider()->matches().size());
   ASSERT_EQ(3u, c.size());
 
   // F is MATCH, but shouldn't add a closing DIM
@@ -284,8 +284,8 @@ TEST_F(CommanderProviderTest, FullLengthMatchIsApplied) {
       {commander::CommandItemModel(u"Foo", {gfx::Range(0, 3)}, u"", 1)},
       u"What thing?");
 
+  ASSERT_EQ(1u, provider()->matches().size());
   const auto& c = provider()->matches()[0].description_class;
-  EXPECT_EQ(1u, provider()->matches().size());
   ASSERT_EQ(1u, c.size());
 
   // Foo is MATCH
@@ -302,8 +302,8 @@ TEST_F(CommanderProviderTest, MatchesCanHaveGaps) {
           u"Foo Bar", {gfx::Range(0, 2), gfx::Range(4, 6)}, u"", 1)},
       u"What thing?");
 
+  ASSERT_EQ(1u, provider()->matches().size());
   const auto& c = provider()->matches()[0].description_class;
-  EXPECT_EQ(1u, provider()->matches().size());
   ASSERT_EQ(4u, c.size());
 
   // |Fo|o Bar is MATCH
@@ -394,7 +394,7 @@ TEST_F(CommanderProviderTest, UnprefixedModeCullsBadMatches) {
        commander::CommandItemModel(u"Fizz", {gfx::Range(0, 3)}, u"", 0.5)},
       u"What thing?");
 
-  EXPECT_EQ(1u, provider()->matches().size());
+  ASSERT_EQ(1u, provider()->matches().size());
   EXPECT_EQ(u"Foo", provider()->matches()[0].description);
 }
 
@@ -406,7 +406,7 @@ TEST_F(CommanderProviderTest, PrefixedModeDoesNotCullBadMatches) {
        commander::CommandItemModel(u"Fizz", {gfx::Range(0, 3)}, u"", 0.5)},
       u"What thing?");
 
-  EXPECT_EQ(2u, provider()->matches().size());
+  ASSERT_EQ(2u, provider()->matches().size());
   EXPECT_EQ(u"Foo", provider()->matches()[0].description);
   EXPECT_EQ(u"Fizz", provider()->matches()[1].description);
 }

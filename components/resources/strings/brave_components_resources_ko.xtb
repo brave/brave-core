@@ -947,6 +947,11 @@
 <translation id="4362717653795263052">주사용 암호화폐 계정 복구</translation>
 <translation id="3038077262567136741">Brave 월렛 암호화폐 계정을 복구하려면 복구 문구를 입력하세요.</translation>
 <translation id="955918646509748368">입력한 복구 문구가 유효하지 않습니다.</translation>
+<translation id="7496330898672236908">이 복구 문구가 지갑과 일치하지 않습니다. 문구를 확인한 후 다시 시도해 주세요.</translation>
+<translation id="3798792138617904098">가져온 계정을 제거하시겠어요?</translation>
+<translation id="2960631345291747230">가져온 계정은 복구 문구로 백업되지 않습니다. 해당 계정은 Brave 지갑에서 제거되며, 개인 키를 백업해 두지 않았다면 해당 계정의 자금에 영구적으로 접근하지 못할 수 있습니다.</translation>
+<translation id="8898583604592472741">계정 제거</translation>
+<translation id="1577629163207045190">확인하려면 "<ph name="CONFIRMATION_PHRASE"/>"을(를) 입력하세요.</translation>
 <translation id="8107437138787377150">클립 보드에서 복구 문구 붙여넣기</translation>
 <translation id="4811736040444856406">복구 문구 표시</translation>
 <translation id="4359319875297001084">레거시 Brave 암호화폐 월렛에서 가져오시겠습니까?</translation>
@@ -2241,13 +2246,12 @@
 <translation id="3934503473603661122">안녕하세요, 저는 레오예요. 저는 Brave의 AI 어시스턴트로, Amazon Bedrock에서 제공되는 xAI의 최첨단 추론 모델인 Grok 4.7을 기반으로 구동됩니다. Grok 4.7은 Brave의 안전한 AWS 인프라를 통해 제공됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">안녕하세요, 저는 레오예요. 저는 Brave의 AI 어시스턴트로, Amazon Bedrock에서 제공되는 OpenAI의 빠르고 낮은 지연 시간의 모델인 GPT Luna를 기반으로 구동됩니다. GPT Luna는 Brave의 안전한 AWS 인프라를 통해 제공됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">안녕하세요, 저는 레오예요. 저는 Brave의 AI 어시스턴트로, Amazon Bedrock Mantle에서 제공되는 OpenAI의 균형 잡힌 프로덕션 모델인 GPT 5.6 Terra를 기반으로 구동됩니다. GPT 5.6 Terra는 Brave의 안전한 AWS 인프라를 통해 제공됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 Mistral에서 개발한 Mistral Large 모델을 기반으로 구동됩니다. Mistral Large는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, 대화문과 텍스트 처리 성능을 제공하기 위해 앤쓰라픽에서 개발한 클로드 하이쿠 모델을 기반으로 구동됩니다. 클로드 하이쿠는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 Alibaba Cloud에서 개발한 Qwen 3.8 Flash Next 모델을 기반으로 구동됩니다. Qwen 3.8 Flash Next는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 Deepseek에서 개발한 Deepseek V3.2 모델을 기반으로 구동됩니다. Deepseek V3.2은 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">안녕하세요, 저는 레오예요. 저는 Brave의 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 Z.ai에서 개발한 GLM 5.3 모델을 기반으로 구동됩니다. GLM 5.3은 Brave의 안전한 자체 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 대화문과 텍스트 처리 성능을 제공하기 위해 Anthropic에서 개발한 클로드 오퍼스 모델을 기반으로 구동됩니다. 클로드 오퍼스는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 Zhipu AI에서 개발한 GLM-4-7-Flash 모델을 기반으로 구동됩니다. GLM-4-7-Flash는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 Moonshot AI에서 개발한 Kimi K2.5 모델을 기반으로 구동됩니다. Kimi K2.5는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 NVIDIA에서 개발한 Nemotron Nano 3 30B 모델을 기반으로 구동됩니다. Nemotron Nano 3 30B는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 웹페이지를 요약하도록 Brave에서 개발한 Brave Ocelot 모델을 기반으로 구동됩니다. Brave Ocelot은 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">프리미엄</translation>
 <translation id="5807427080183870259">로컬</translation>
@@ -2387,8 +2391,8 @@
 <translation id="7465032796278724624">NEAR AI TEE로 입증 가능한 개인 정보 보호</translation>
 <translation id="8782867266498869301">최고의 작업을 위해 동적으로 모델을 변경합니다</translation>
 <translation id="7348809809749151120">빠름 • 검색</translation>
+<translation id="7711013627639951065">빠른 속도 • 검색 • 비전 • 도구</translation>
 <translation id="3213834013136637671">검색 • 비전</translation>
-<translation id="2793458212460902934">빠름 • 검색 • 도구</translation>
 <translation id="5276681919620506371">검색 • 도구</translation>
 <translation id="7434375176361995333">요약 • 빠름</translation>
 <translation id="3965507912994218570">레오 설정</translation>
@@ -2461,6 +2465,8 @@
 <translation id="6287023598025162715">새 대화</translation>
 <translation id="7230502562132448519">대화 필터링</translation>
 <translation id="821070843380699990">다른 검색어를 시도해보세요</translation>
+<translation id="241415280196701326">최근 워크스페이스</translation>
+<translation id="5388053981690151266">이 워크스페이스에서 새 대화 시작</translation>
 <translation id="7097822247923237815">임시 채팅</translation>
 <translation id="7481750859362986254">이 채팅은 기록에 저장되지 않으며, 레오의 사용자 지정이나 메모리를 사용하지 않습니다.</translation>
 <translation id="4238305333951712482">메모리 업데이트: <ph name="MEMORY_CONTENT"/></translation>
@@ -2486,6 +2492,7 @@
 <translation id="5103625298494362646">에이전트 모드는 도구 지원이 있는 모델과 함께 작동합니다. 호환되지 않는 모델은 목록에서 숨겨집니다.</translation>
 <translation id="3397808797783614750">AI가 자동으로 탐색하도록 허용하면 개인정보, 재정 및 온라인 통신과 관련하여 유해하거나 원치 않는 결과로 이어질 수 있습니다. <ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">보안 경고</translation>
+<translation id="717245811623757038">도구 권한 요청</translation>
 <translation id="6077070599873946984">Brave AI에서 다음 작업에 대한 권한이 필요합니다: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI가 **<ph name="SITE_ORIGIN"/>**에서 **<ph name="TOOL_NAME"/>**을(를) 실행하려고 합니다</translation>
 <translation id="4163837693685963037">해당 작업이 귀하의 요청과 일치하지 않을 가능성이 있습니다:</translation>

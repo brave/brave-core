@@ -355,10 +355,7 @@ extension SyncSettingsTableViewController {
     if section == .otherActions {
       if indexPath.row == 0 {
         // Sync internals
-        let syncInternalsController = ChromeWebUIController(
-          braveCore: braveCoreMain,
-          isPrivateBrowsing: false
-        ).then {
+        let syncInternalsController = ChromeWebUIController(profile: braveCoreMain.profile).then {
           $0.title = Strings.Sync.internalsTitle
           $0.webView.load(URLRequest(url: URL(string: "brave://sync-internals")!))
         }

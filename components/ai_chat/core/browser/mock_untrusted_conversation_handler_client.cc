@@ -22,4 +22,8 @@ void MockUntrustedConversationHandlerClient::Disconnect() {
   conversation_ui_receiver_.reset();
 }
 
+void MockUntrustedConversationHandlerClient::FlushForTesting() {
+  conversation_ui_receiver_.FlushForTesting();
+}
+
 }  // namespace ai_chat

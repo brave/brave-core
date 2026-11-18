@@ -14,11 +14,13 @@
 namespace brave_wallet {
 
 TEST(FilTxMeta, ToTransactionInfo) {
+  auto transaction = FilTransaction::FromTxData(
+      false,
+      mojom::FilTxData::New("1", "2", "3", "4", "5",
+                            "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6"));
+  ASSERT_TRUE(transaction);
   std::unique_ptr<FilTransaction> tx =
-      std::make_unique<FilTransaction>(*FilTransaction::FromTxData(
-          false, mojom::FilTxData::New(
-                     "1", "2", "3", "4", "5",
-                     "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6")));
+      std::make_unique<FilTransaction>(*transaction);
 
   const char from_address[] = "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq";
   auto fil_account_id =
@@ -29,7 +31,7 @@ TEST(FilTxMeta, ToTransactionInfo) {
   meta.set_chain_id("0x66");
   base::Time::Exploded x{1981, 3, 0, 1, 2};
   base::Time confirmed_time = meta.confirmed_time();
-  EXPECT_TRUE(base::Time::FromUTCExploded(x, &confirmed_time));
+  ASSERT_TRUE(base::Time::FromUTCExploded(x, &confirmed_time));
   meta.set_submitted_time(confirmed_time - base::Seconds(3));
   meta.set_created_time(confirmed_time - base::Minutes(1));
 
@@ -38,7 +40,7 @@ TEST(FilTxMeta, ToTransactionInfo) {
   EXPECT_EQ(ti->chain_id, meta.chain_id());
   EXPECT_EQ(ti->from_account_id, fil_account_id);
   EXPECT_EQ(ti->tx_status, meta.status());
-  EXPECT_TRUE(ti->tx_data_union->is_fil_tx_data());
+  ASSERT_TRUE(ti->tx_data_union->is_fil_tx_data());
 
   const auto& tx_data = ti->tx_data_union->get_fil_tx_data();
   EXPECT_EQ(tx_data->nonce, "1");
@@ -64,6 +66,7 @@ TEST(FilTxMeta, ToValue) {
       false,
       mojom::FilTxData::New("1", "2", "3", "4", "5",
                             "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q", "6"));
+  ASSERT_TRUE(transaction);
   std::unique_ptr<FilTransaction> tx =
       std::make_unique<FilTransaction>(*transaction);
   FilTxMeta meta(fil_account_id, std::move(tx));

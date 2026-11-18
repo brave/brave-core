@@ -30,16 +30,35 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_ServiceProvider) {
     "name": "Banxa",
     "status": "LIVE",
     "categories": [
+      "CRYPTO_OFFRAMP",
       "CRYPTO_ONRAMP"
     ],
-    "categoryStatuses": {
-      "CRYPTO_ONRAMP": "LIVE"
+    "capabilities": [
+      {
+        "category": "CRYPTO_OFFRAMP",
+        "domains": ["PAYMENT"],
+        "status": "LIVE"
+      },
+      {
+        "category": "CRYPTO_ONRAMP",
+        "domains": ["PAYMENT"],
+        "status": "LIVE"
+      }
+    ],
+    "url": "https://www.banxa.com",
+    "supportUrl": "https://support.banxa.com",
+    "logo": {
+      "dark": "https://cdn.meld.io/images-serviceprovider/BANXA/logo_dark.png",
+      "light": "https://cdn.meld.io/images-serviceprovider/BANXA/logo_light.png",
+      "darkShort": "https://cdn.meld.io/images-serviceprovider/BANXA/short_logo_dark.png",
+      "lightShort": "https://cdn.meld.io/images-serviceprovider/BANXA/short_logo_light.png"
     },
-    "websiteUrl": "http://www.banxa.com",
-    "logos": {
-      "darkShort": "https://images-serviceprovider.meld.io/BANXA/short_logo_dark.png",
-      "lightShort": "https://images-serviceprovider.meld.io/BANXA/short_logo_light.png"
-    }
+    "headless": {
+      "supported": false,
+      "uiCustomization": false
+    },
+    "checkout": true,
+    "isExchange": false
   }])");
 
   auto service_providers = ParseServiceProviders(ParseJson(json));
@@ -47,73 +66,73 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_ServiceProvider) {
 
   std::vector<mojom::MeldServiceProviderPtr> expected;
   expected.push_back(mojom::MeldServiceProvider::New(
-      "Banxa", "BANXA", "LIVE", "http://www.banxa.com",
-      std::vector<std::string>{"CRYPTO_ONRAMP"},
-      base::flat_map<std::string, std::string>{{"CRYPTO_ONRAMP", "LIVE"}},
-      "https://images-serviceprovider.meld.io/BANXA/short_logo_dark.png",
-      "https://images-serviceprovider.meld.io/BANXA/short_logo_light.png"));
+      "Banxa", "BANXA", "LIVE", "https://www.banxa.com",
+      std::vector<std::string>{"CRYPTO_OFFRAMP", "CRYPTO_ONRAMP"},
+      base::flat_map<std::string, std::string>{{"CRYPTO_OFFRAMP", "LIVE"},
+                                               {"CRYPTO_ONRAMP", "LIVE"}},
+      "https://cdn.meld.io/images-serviceprovider/BANXA/short_logo_dark.png",
+      "https://cdn.meld.io/images-serviceprovider/BANXA/short_logo_light.png"));
   EXPECT_EQ(*service_providers, expected);
-  std::string json_null_logos(R"([
+
+  // No logo, url or capabilities.
+  std::string json_no_optionals(R"([
   {
     "serviceProvider": "BANXA",
     "name": "Banxa",
     "status": "LIVE",
-    "categories": [],
-    "categoryStatuses": {
-      "CRYPTO_ONRAMP": "LIVE"
-    },
-    "websiteUrl": "http://www.banxa.com"
+    "categories": []
   }])");
-  service_providers = ParseServiceProviders(ParseJson(json_null_logos));
+  service_providers = ParseServiceProviders(ParseJson(json_no_optionals));
   ASSERT_TRUE(service_providers);
 
-  std::vector<mojom::MeldServiceProviderPtr> expected_null_logos;
-  expected_null_logos.push_back(mojom::MeldServiceProvider::New(
-      "Banxa", "BANXA", "LIVE", "http://www.banxa.com",
-      std::vector<std::string>{},
-      base::flat_map<std::string, std::string>{{"CRYPTO_ONRAMP", "LIVE"}},
-      std::nullopt, std::nullopt));
-  EXPECT_EQ(*service_providers, expected_null_logos);
+  std::vector<mojom::MeldServiceProviderPtr> expected_no_optionals;
+  expected_no_optionals.push_back(mojom::MeldServiceProvider::New(
+      "Banxa", "BANXA", "LIVE", std::nullopt, std::vector<std::string>{},
+      base::flat_map<std::string, std::string>{}, std::nullopt, std::nullopt));
+  EXPECT_EQ(*service_providers, expected_no_optionals);
 
+  // A capability without a status is left out of the category statuses.
+  service_providers = ParseServiceProviders(ParseJson(R"([
+  {
+    "serviceProvider": "BANXA",
+    "status": "LIVE",
+    "categories": ["CRYPTO_ONRAMP"],
+    "capabilities": [{ "category": "CRYPTO_ONRAMP" }]
+  }])"));
+  ASSERT_TRUE(service_providers);
+  EXPECT_TRUE((*service_providers)[0]->category_statuses.empty());
+
+  // Missing serviceProvider.
   EXPECT_FALSE(ParseServiceProviders(ParseJson(R"([
   {
     "name": "Banxa",
     "status": "LIVE",
-    "categories": [],
-    "categoryStatuses": {
-      "CRYPTO_ONRAMP": "LIVE"
-    },
-    "websiteUrl": "http://www.banxa.com"
+    "categories": []
   }])")));
 
+  // Missing status.
   EXPECT_FALSE(ParseServiceProviders(ParseJson(R"([
   {
     "serviceProvider": "BANXA",
     "name": "Banxa",
-    "categories": [],
-    "categoryStatuses": {
-      "CRYPTO_ONRAMP": "LIVE"
-    },
-    "websiteUrl": "http://www.banxa.com"
+    "categories": []
   }])")));
 
+  // Missing categories.
   EXPECT_FALSE(ParseServiceProviders(ParseJson(R"([
   {
     "serviceProvider": "BANXA",
     "name": "Banxa",
-    "status": "LIVE",
-    "categoryStatuses": {
-      "CRYPTO_ONRAMP": "LIVE"
-    },
-    "websiteUrl": "http://www.banxa.com"
+    "status": "LIVE"
   }])")));
+
+  // A capability without a category.
   EXPECT_FALSE(ParseServiceProviders(ParseJson(R"([
   {
     "serviceProvider": "BANXA",
-    "name": "Banxa",
     "status": "LIVE",
     "categories": [],
-    "websiteUrl": "http://www.banxa.com"
+    "capabilities": [{ "status": "LIVE" }]
   }])")));
 
   // Invalid json
@@ -137,7 +156,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_MeldErrorResponse) {
   })");
 
   auto errors = ParseMeldErrorResponse(ParseJson(json));
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(errors->size(), static_cast<size_t>(2));
 
   errors = ParseMeldErrorResponse(base::Value());
@@ -154,7 +173,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_MeldErrorResponse) {
     "timestamp": "2024-04-05T07:54:01.318455Z"
   })");
   errors = ParseMeldErrorResponse(ParseJson(json_only_msg));
-  EXPECT_TRUE(errors);
+  ASSERT_TRUE(errors);
   EXPECT_EQ(errors->size(), static_cast<size_t>(1));
 
   // Malformed success responses are not Meld errors.
@@ -201,7 +220,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoQuotes) {
   "error": "No Valid Quote Combinations Found For Provided Quote Request."})");
 
   quotes_result = ParseCryptoQuotes(ParseJson(json_null_quotes));
-  EXPECT_FALSE(quotes_result.has_value());
+  ASSERT_FALSE(quotes_result.has_value());
   EXPECT_EQ(quotes_result.error(),
             "No Valid Quote Combinations Found For Provided Quote Request.");
 
@@ -210,7 +229,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoQuotes) {
 
   json = R"({})";
   quotes_result = ParseCryptoQuotes(ParseJson(json));
-  EXPECT_TRUE(quotes_result.has_value());
+  ASSERT_TRUE(quotes_result.has_value());
   EXPECT_TRUE(quotes_result.value().empty());
 }
 
@@ -501,7 +520,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoWidgetCreate) {
     "token": "tknvalue"
   })");
   auto result = ParseCryptoWidgetCreate(ParseJson(json));
-  EXPECT_TRUE(result);
+  ASSERT_TRUE(result);
   EXPECT_EQ("WXDpzmm2cNmtJWLDHgu1GT", result->id);
   EXPECT_EQ("test_session_id", result->external_session_id);
   EXPECT_EQ("test_session_customer_id", result->external_customer_id);
@@ -516,7 +535,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoWidgetCreate) {
     "token": "tknvalue"
   })";
   result = ParseCryptoWidgetCreate(ParseJson(json));
-  EXPECT_TRUE(result);
+  ASSERT_TRUE(result);
   EXPECT_EQ("WXDpzmm2cNmtJWLDHgu1GT", result->id);
   EXPECT_FALSE(result->external_session_id);
   EXPECT_FALSE(result->external_customer_id);

@@ -63,10 +63,10 @@
 #include "brave/components/brave_search/common/brave_search_default.mojom.h"
 #include "brave/components/brave_search/common/brave_search_fallback.mojom.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
-#include "brave/components/brave_shields/content/browser/ad_block_engine_wrapper.h"
-#include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/content/browser/domain_block_navigation_throttle.h"
+#include "brave/components/brave_shields/core/browser/ad_block_engine_wrapper.h"
+#include "brave/components/brave_shields/core/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -90,6 +90,7 @@
 #include "brave/components/password_strength_meter/password_strength_meter.mojom.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
+#include "brave/components/query_filter/browser/query_filter_throttle.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/skus/common/skus_internals.mojom.h"
@@ -150,6 +151,7 @@
 #include "net/base/net_errors.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/cookies/site_for_cookies.h"
+#include "services/network/public/mojom/network_context.mojom.h"
 #include "services/network/public/mojom/web_transport.mojom.h"
 #include "services/network/public/mojom/websocket.mojom.h"
 #include "services/service_manager/public/cpp/binder_registry.h"
@@ -180,6 +182,8 @@
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
 #include "brave/browser/speech/on_device_speech_recognition_controller.h"
+#include "brave/browser/ui/webui/history_embeddings/history_embeddings.mojom.h"
+#include "brave/browser/ui/webui/history_embeddings/history_embeddings_handler.h"
 #include "brave/browser/ui/webui/local_ai/on_device_speech_recognition_worker_ui.h"
 #include "brave/components/local_ai/content/no_network_connection_allowlist_throttle.h"
 #include "brave/components/local_ai/core/features.h"
@@ -286,6 +290,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/net/onion_origin_header_client.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/tor/common/onion_domain_throttle.h"
 #include "brave/components/tor/onion_location_navigation_throttle.h"
@@ -351,7 +356,9 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
+#include "brave/browser/psst/psst_log_receiver.h"
 #include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
+#include "brave/components/psst/core/common/features.h"
 #include "brave/components/psst/core/common/psst_ui_common.mojom-shared.h"
 #endif
 
@@ -379,8 +386,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/brave_wallet/wallet_page/wallet_page_ui.h"
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/webui/brave_wallet/ledger/ledger_ui.h"
+#include "brave/browser/ui/webui/brave_wallet/polkadot/polkadot_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel/wallet_panel_ui.h"
 #include "brave/components/brave_wallet/common/ledger_bridge.mojom.h"
+#include "brave/components/brave_wallet/common/polkadot_bridge.mojom.h"
 #endif
 #if BUILDFLAG(ENABLE_SNAP)
 #include "brave/browser/ui/webui/brave_wallet/snaps_container/snaps_container_ui.h"
@@ -676,6 +685,16 @@ void BraveContentBrowserClient::
       &cosmetic_filters::CosmeticFiltersTabHelper::BindCosmeticFiltersHandler,
       &render_frame_host));
 
+#if BUILDFLAG(ENABLE_PSST)
+  // Only the PSST isolated world ever asks for this, and entries are dropped
+  // when the profile has no log service (off-the-record).
+  if (base::FeatureList::IsEnabled(psst::features::kEnablePsst)) {
+    associated_registry.AddInterface<psst::mojom::PsstLogSink>(
+        base::BindRepeating(&psst::PsstLogReceiver::BindPsstLogSink,
+                            &render_frame_host));
+  }
+#endif  // BUILDFLAG(ENABLE_PSST)
+
   ChromeContentBrowserClient::
       RegisterAssociatedInterfaceBindersForRenderFrameHost(render_frame_host,
                                                            associated_registry);
@@ -920,6 +939,8 @@ void BraveContentBrowserClient::RegisterUntrustedWebUIInterfaceBrokers(
     registry.ForWebUI<ledger::UntrustedLedgerUI>()
         .Add<brave_wallet::mojom::LedgerBridgeUIHandler>();
   }
+  registry.ForWebUI<polkadot::UntrustedPolkadotUI>()
+      .Add<brave_wallet::mojom::PolkadotBridgeUIHandler>();
 #endif
 }
 
@@ -1086,6 +1107,10 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         local_ai::mojom::SpeechRecognitionFactoryHost,
         local_ai::UntrustedOnDeviceSpeechRecognitionWorkerUI>(map);
   }
+  map->Add<brave_history_embeddings::mojom::PageHandlerFactory>(
+      base::BindRepeating(
+          &brave_history_embeddings::HistoryEmbeddingsPageHandlerFactory::
+              BindForFrame));
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   map->Add<brave_vpn::mojom::ServiceHandler>(
@@ -1218,6 +1243,20 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
   auto result = ChromeContentBrowserClient::CreateURLLoaderThrottles(
       request, browser_context, wc_getter, navigation_ui_data,
       frame_tree_node_id, navigation_id);
+
+  // Intercept navigations only. We don't yet have a renderer side throttler for
+  // the same, which would encompass a wider array for n/w requests like
+  // sub-resources, fetch etc. Currently, those requests are handled via
+  // brave_site_hacks_network_delegate_helper.
+  // TODO(https://github.com/brave/brave-browser/issues/61817): Add a renderer
+  // side throttler.
+  Profile* profile = Profile::FromBrowserContext(browser_context);
+  if (auto query_filter_throttle =
+          query_filter::QueryFilterThrottle::MaybeCreateThrottle(
+              BraveShieldsSettingsServiceFactory::GetForProfile(profile),
+              request)) {
+    result.push_back(std::move(query_filter_throttle));
+  }
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
   // Not in the `contents` check: worker scripts load with no WebContents.
@@ -1362,6 +1401,25 @@ void BraveContentBrowserClient::WillCreateURLLoaderFactory(
   }
 }
 
+content::ContentBrowserClient::WebSocketOptions
+BraveContentBrowserClient::GetWebSocketOptions(
+    content::RenderFrameHost* frame) {
+  auto options = ChromeContentBrowserClient::GetWebSocketOptions(frame);
+#if BUILDFLAG(ENABLE_TOR)
+  // Only .onion pages need their Origin rewritten. Shared and service workers
+  // have no frame, so their origin is not known here and they always get the
+  // client.
+  if (!frame || net::IsOnion(frame->GetLastCommittedOrigin())) {
+    mojo::PendingRemote<network::mojom::TrustedHeaderClient> header_client;
+    brave::OnionOriginHeaderClient::Create(
+        header_client.InitWithNewPipeAndPassReceiver(),
+        std::move(options.header_client));
+    options.header_client = std::move(header_client);
+  }
+#endif  // BUILDFLAG(ENABLE_TOR)
+  return options;
+}
+
 // Intercept frame and worker handshakes so they go through Brave's network
 // request handling (e.g. ad blocking). Shared and service workers have no
 // RenderFrameHost; see crbug.com/40195467.
@@ -1393,6 +1451,23 @@ void BraveContentBrowserClient::WillCreateWebTransport(
   ChromeContentBrowserClient::WillCreateWebTransport(
       process_id, frame_routing_id, url, initiator_origin,
       std::move(handshake_client), std::move(callback));
+}
+
+void BraveContentBrowserClient::ConfigureNetworkContextParams(
+    content::BrowserContext* context,
+    bool in_memory,
+    const base::FilePath& relative_partition_path,
+    network::mojom::NetworkContextParams* network_context_params,
+    cert_verifier::mojom::CertVerifierCreationParams*
+        cert_verifier_creation_params) {
+  ChromeContentBrowserClient::ConfigureNetworkContextParams(
+      context, in_memory, relative_partition_path, network_context_params,
+      cert_verifier_creation_params);
+  // .onion may only be resolved in Tor profiles, where it goes through the
+  // Tor proxy.
+  network_context_params->tor_mode = context->IsTor()
+                                         ? network::mojom::TorMode::kEnabled
+                                         : network::mojom::TorMode::kDisabled;
 }
 
 template <template <typename> class T>

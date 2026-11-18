@@ -1,8 +1,16 @@
 diff --git a/chrome/browser/extensions/api/api_browser_context_keyed_service_factories.cc b/chrome/browser/extensions/api/api_browser_context_keyed_service_factories.cc
-index 9758702292fb390cdf57b57ce13fd5979af8249d..29ef6d3fa172323a72834dd7d863cbb22f0e2d5f 100644
+index 9758702292fb390cdf57b57ce13fd5979af8249d..16608ca5082352294be537540a1dd825676adc4a 100644
 --- a/chrome/browser/extensions/api/api_browser_context_keyed_service_factories.cc
 +++ b/chrome/browser/extensions/api/api_browser_context_keyed_service_factories.cc
-@@ -69,7 +69,8 @@
+@@ -2,6 +2,7 @@
+ // Use of this source code is governed by a BSD-style license that can be
+ // found in the LICENSE file.
+ 
++#include "build/android_buildflags.h"
+ #include "build/build_config.h"
+ #include "chrome/browser/extensions/api/bookmarks/bookmarks_api.h"
+ #include "chrome/browser/extensions/api/bookmarks/bookmarks_api_watcher.h"
+@@ -69,7 +70,8 @@
  #include "extensions/browser/api/bluetooth_low_energy/bluetooth_low_energy_api.h"
  #endif
  
@@ -12,7 +20,7 @@ index 9758702292fb390cdf57b57ce13fd5979af8249d..29ef6d3fa172323a72834dd7d863cbb2
  #include "chrome/browser/extensions/api/mdns/mdns_api.h"
  #endif
  
-@@ -93,7 +94,8 @@ void EnsureApiBrowserContextKeyedServiceFactoriesBuilt() {
+@@ -93,7 +95,8 @@ void EnsureApiBrowserContextKeyedServiceFactoriesBuilt() {
    extensions::HistoryAPI::GetFactoryInstance();
    extensions::IdentityAPI::GetFactoryInstance();
    extensions::IncognitoConnectability::EnsureFactoryBuilt();

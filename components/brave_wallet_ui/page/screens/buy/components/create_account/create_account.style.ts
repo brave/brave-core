@@ -4,8 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import LeoInput from '@brave/leo/react/input'
-import LeoDialog from '@brave/leo/react/dialog'
+import LeoInput from '@brave/nala/react/input'
+import LeoDialog from '@brave/nala/react/dialog'
 import {
   layoutPanelWidth, //
 } from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'

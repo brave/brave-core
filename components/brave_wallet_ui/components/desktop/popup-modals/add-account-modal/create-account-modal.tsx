@@ -6,9 +6,9 @@
 import { assert } from 'chrome://resources/js/assert.js'
 import * as React from 'react'
 import { useHistory, useLocation, useParams } from 'react-router'
-import { InputEventDetail } from '@brave/leo/react/input'
-import Button from '@brave/leo/react/button'
-import { showAlert } from '@brave/leo/react/alertCenter'
+import { InputEventDetail } from '@brave/nala/react/input'
+import Button from '@brave/nala/react/button'
+import { showAlert } from '@brave/nala/react/alertCenter'
 
 // utils
 import { getLocale } from '$web-common/locale'

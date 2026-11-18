@@ -49,6 +49,10 @@ class ContainersSettingsHandler : public mojom::ContainersSettingsHandler {
   // Reorders containers to match the order of `ordered_ids`.
   void ReorderContainers(const std::vector<std::string>& ordered_ids,
                          ReorderContainersCallback callback) override;
+  // Returns / sets where blank new tabs open (prefs::kNewTabTarget).
+  void GetNewTabTarget(GetNewTabTargetCallback callback) override;
+  void SetNewTabTarget(mojom::NewTabTargetPtr target,
+                       SetNewTabTargetCallback callback) override;
 
   // Returns an error if the given container properties are invalid.
   static std::optional<mojom::ContainerOperationError>
@@ -57,6 +61,8 @@ class ContainersSettingsHandler : public mojom::ContainersSettingsHandler {
  private:
   // Called when the containers list in preferences changes.
   void OnContainersChanged();
+  // Called when the new-tab target in preferences changes.
+  void OnNewTabTargetChanged();
 
   // Interface to communicate with the settings page in the renderer.
   mojo::Remote<mojom::ContainersSettingsUI> ui_;

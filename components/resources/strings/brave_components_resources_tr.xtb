@@ -947,6 +947,11 @@
 <translation id="4362717653795263052">Ana kripto hesaplarını geri yükle</translation>
 <translation id="3038077262567136741">Brave cüzdanı kripto hesabınızı geri yüklemek için kurtarma cümlenizi girin.</translation>
 <translation id="955918646509748368">Girilen kurtarma cümlesi geçersiz.</translation>
+<translation id="7496330898672236908">Bu kurtarma ifadesi cüzdanınızla eşleşmiyor. İfadeyi kontrol edip tekrar deneyin.</translation>
+<translation id="3798792138617904098">İçe aktarılan hesaplar kaldırılsın mı?</translation>
+<translation id="2960631345291747230">İçe aktarılan hesaplar kurtarma ifadenizle yedeklenmez. Bu hesaplar Brave Cüzdan'dan kaldırılacaktır ve özel anahtarlarını yedeklemediyseniz fonlarına erişiminizi kalıcı olarak kaybedebilirsiniz.</translation>
+<translation id="8898583604592472741">Hesapları kaldır</translation>
+<translation id="1577629163207045190">Onaylamak için "<ph name="CONFIRMATION_PHRASE"/>" yazın.</translation>
 <translation id="8107437138787377150">Kurtarma cümlesini panodan yapıştır</translation>
 <translation id="4811736040444856406">Kurtarma ifadesini göster</translation>
 <translation id="4359319875297001084">Eski Brave kripto cüzdanlarından içe aktarılsın mı?</translation>
@@ -2241,13 +2246,12 @@
 <translation id="3934503473603661122">Merhaba, ben Leo. Brave tarafından geliştirilen bir yapay zeka asistanıyım. Amazon Bedrock üzerinde çalışan, xAI'nin öncü akıl yürütme modeli Grok 4.7 ile çalışıyorum. Grok 4.7, Brave'in güvenli AWS altyapısı üzerinden sunulmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">Merhaba, ben Leo. Brave tarafından geliştirilen bir yapay zeka asistanıyım. Amazon Bedrock üzerinde çalışan, OpenAI'nin hızlı ve düşük gecikmeli modeli GPT Luna ile çalışıyorum. GPT Luna, Brave'in güvenli AWS altyapısı üzerinden sunulmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">Merhaba, ben Leo. Brave tarafından geliştirilen bir yapay zeka asistanıyım. Amazon Bedrock Mantle üzerinde çalışan, OpenAI'nin dengeli üretim modeli GPT 5.6 Terra ile çalışıyorum. GPT 5.6 Terra, Brave'in güvenli AWS altyapısı üzerinden sunulmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Mistral tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen Mistral Large modeliyle çalışıyorum. Mistral Large, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Anthropic'in sohbet ve metin işleme görevleri için geliştirdiği Claude Haiku modeliyle çalışıyorum. Claude Haiku, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">Merhaba, ben Leo. Brave tarafından geliştirilen bir yapay zeka asistanıyım. Alibaba Cloud tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen Qwen 3.8 Flash Next modeliyle çalışıyorum. Qwen 3.8 Flash Next, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Deepseek tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen Deepseek V3.2 modeliyle çalışıyorum. Deepseek V3.2, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">Merhaba, ben Leo. Brave tarafından geliştirilen bir yapay zeka asistanıyım. Z.ai tarafından birçok kullanım senaryosunda yüksek performans göstermesi ve uygulanabilir olması için oluşturulan GLM 5.3 modeliyle çalışıyorum. GLM 5.3, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Anthropic'in sohbet ve metin işleme görevleri için geliştirdiği Claude Opus modeliyle çalışıyorum. Claude Opus, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Zhipu AI tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen GLM-4-7-Flash modeliyle çalışıyorum. GLM-4-7-Flash, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Moonshot AI tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen Kimi K2.5 modeliyle çalışıyorum. Kimi K2.5, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. NVIDIA tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen Nemotron Nano 3 30B modeliyle çalışıyorum. Nemotron Nano 3 30B, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Brave tarafından web sayfalarını özetlemek üzere geliştirilen Brave Ocelot modeliyle çalışıyorum. Brave Ocelot, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Yerel</translation>
@@ -2387,8 +2391,8 @@
 <translation id="7465032796278724624">NEAR AI TEE ile Doğrulanabilir Gizlilik</translation>
 <translation id="8782867266498869301">Görev için en iyi olanı kullanmak üzere model dinamik olarak değişir</translation>
 <translation id="7348809809749151120">Hızlı • Arama</translation>
+<translation id="7711013627639951065">Hızlı • Arama • Görüntü • Araçlar</translation>
 <translation id="3213834013136637671">Arama • Görüntü</translation>
-<translation id="2793458212460902934">Hızlı • Arama • Araçlar</translation>
 <translation id="5276681919620506371">Arama • Araçlar</translation>
 <translation id="7434375176361995333">Özetler • Hızlı</translation>
 <translation id="3965507912994218570">Leo ayarları</translation>
@@ -2461,6 +2465,8 @@
 <translation id="6287023598025162715">Yeni sohbet</translation>
 <translation id="7230502562132448519">Sohbetleri filtrele</translation>
 <translation id="821070843380699990">Lütfen farklı bir sorgu deneyin</translation>
+<translation id="241415280196701326">Son çalışma alanları</translation>
+<translation id="5388053981690151266">Bu çalışma alanında yeni sohbet</translation>
 <translation id="7097822247923237815">Geçici sohbet</translation>
 <translation id="7481750859362986254">Bu sohbet, geçmişinize kaydedilmeyecek veya Leo'nun herhangi bir özelleştirme veya anısını kullanmayacaktır.</translation>
 <translation id="4238305333951712482">Bellek güncellendi: <ph name="MEMORY_CONTENT"/></translation>
@@ -2486,6 +2492,7 @@
 <translation id="5103625298494362646">Aracı modu, araç desteğine sahip modellerle çalışır. Uyumlu olmayan modeller bu listede gizlenmiştir.</translation>
 <translation id="3397808797783614750">AI'nin sizin için otomatik olarak gezinmesine izin vermek, gizliliğiniz, mali durumunuz ve çevrimiçi iletişimleriniz açısından zararlı, istenmeyen sonuçlara neden olabilir. <ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Güvenlik uyarısı</translation>
+<translation id="717245811623757038">Araç izni isteği</translation>
 <translation id="6077070599873946984">Brave AI aşağıdakiler için izninize ihtiyaç duyuyor: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI, **<ph name="SITE_ORIGIN"/>** üzerinde **<ph name="TOOL_NAME"/>** çalıştırmak istiyor</translation>
 <translation id="4163837693685963037">İşlem, talebinizle potansiyel olarak uyumsuz olarak algılandı:</translation>

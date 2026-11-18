@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
@@ -95,9 +96,15 @@ TEST_F(AccountDiscoveryManagerUnitTest, DiscoverBtcAccountCreatesNew) {
   AccountDiscoveryManager discovery_manager(
       *json_rpc_service_, *keyring_service_, bitcoin_wallet_service_.get());
   discovery_manager.StartDiscovery();
-  task_environment_.RunUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    auto accounts = GetAccountUtils().AllBtcAccounts();
+    return accounts.size() == 2 &&
+           *keyring_service_->GetBitcoinAccountInfo(accounts[1]->account_id)
+                   ->next_receive_address->key_id ==
+               *mojom::BitcoinKeyId::New(0, 19 + 1);
+  }));
 
-  EXPECT_EQ(2u, GetAccountUtils().AllBtcAccounts().size());
+  ASSERT_EQ(2u, GetAccountUtils().AllBtcAccounts().size());
   auto account_0 = GetAccountUtils().AllBtcAccounts()[0]->account_id->Clone();
   auto account_1 = GetAccountUtils().AllBtcAccounts()[1]->account_id->Clone();
 
@@ -136,7 +143,13 @@ TEST_F(AccountDiscoveryManagerUnitTest, DiscoverBtcAccountUpdatesExisting) {
   AccountDiscoveryManager discovery_manager(
       *json_rpc_service_, *keyring_service_, bitcoin_wallet_service_.get());
   discovery_manager.StartDiscovery();
-  task_environment_.RunUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    auto info = keyring_service_->GetBitcoinAccountInfo(account_id);
+    return *info->next_receive_address->key_id ==
+               *mojom::BitcoinKeyId::New(0, 10 + 1) &&
+           *info->next_change_address->key_id ==
+               *mojom::BitcoinKeyId::New(1, 15 + 1);
+  }));
 
   EXPECT_EQ(*mojom::BitcoinKeyId::New(0, 10 + 1),
             *keyring_service_->GetBitcoinAccountInfo(account_id)

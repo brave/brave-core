@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import { color } from '@brave/leo/tokens/css/variables'
+import { color } from '@brave/nala/tokens/css/variables'
 import wavesLightUrl from '../../assets/svg-icons/waves-light.svg'
 import wavesDarkUrl from '../../assets/svg-icons/waves-dark.svg'
 

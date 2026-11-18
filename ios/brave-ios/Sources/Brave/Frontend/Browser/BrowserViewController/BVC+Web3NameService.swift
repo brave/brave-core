@@ -21,7 +21,6 @@ extension BrowserViewController: Web3NameServiceScriptHandlerDelegate {
     else { return nil }
     return DecentralizedDNSHelper(
       rpcService: rpcService,
-      ipfsApi: profileController.ipfsAPI,
       isPrivateMode: isPrivateMode
     )
   }
@@ -52,7 +51,7 @@ extension BrowserViewController: Web3NameServiceScriptHandlerDelegate {
       switch result {
       case .load(let resolvedURL):
         if resolvedURL.isIPFSScheme,
-          let resolvedIPFSURL = profileController.ipfsAPI.resolveGatewayUrl(for: resolvedURL)
+          let resolvedIPFSURL = IpfsAPI.resolveGatewayUrl(for: resolvedURL)
         {
           finishEditingAndSubmit(resolvedIPFSURL)
         } else {

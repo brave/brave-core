@@ -1,0 +1,21 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #import=./help_bubble-chromium.css.js
+ * #scheme=relative
+ * #include=help-bubble-chromium
+ * #css_wrapper_metadata_end */
+
+/* Brave's cr-button is a leo-button, which ignores the --cr-button-* colors
+ * upstream uses, so the buttons would otherwise render in the interactive
+ * color on top of the (primary colored) bubble and be unreadable. Drive the
+ * leo-button from the bubble's button colors instead. */
+#buttons cr-button {
+  --leo-button-color: var(--help-bubble-button-foreground);
+  background-color: var(--help-bubble-button-background);
+  border-radius: var(--leo-radius-full);
+}

@@ -13,8 +13,8 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/ad_block_browser_test_helper.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
-#include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
-#include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/core/browser/ad_block_custom_filters_provider.h"
+#include "brave/components/brave_shields/core/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/constants/brave_paths.h"
 #include "build/build_config.h"
@@ -297,7 +297,7 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
   EXPECT_TRUE(WaitForLoadStop(GetWebContents()));
   EXPECT_GT(brave_shields_web_contents_observer()->block_javascript_count(), 0);
   auto blocked_list = GetBlockedJsList();
-  EXPECT_EQ(blocked_list.size(), 3u);
+  ASSERT_EQ(blocked_list.size(), 3u);
 
   // Allow One Script
   brave_shields_web_contents_observer()->AllowScriptsOnce(
@@ -309,7 +309,7 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
   EXPECT_EQ(GetAllowedJsList().size(), 1u);
 
   blocked_list.pop_back();
-  EXPECT_EQ(blocked_list.size(), 2u);
+  ASSERT_EQ(blocked_list.size(), 2u);
 
   // Allow Second Script
   brave_shields_web_contents_observer()->AllowScriptsOnce(

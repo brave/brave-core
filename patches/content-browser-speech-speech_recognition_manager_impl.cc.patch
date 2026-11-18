@@ -1,5 +1,5 @@
 diff --git a/content/browser/speech/speech_recognition_manager_impl.cc b/content/browser/speech/speech_recognition_manager_impl.cc
-index afd4b9730dfa57c01ac31bbc912798e24a7734d2..38383ecb25244d03ffe1b23a142e6b17d54b1653 100644
+index ceecca8afdd3a69529d7c32a3f4d43373ffd06a5..98aac20e6f014740705bac4bf96d3ccfc83fef60 100644
 --- a/content/browser/speech/speech_recognition_manager_impl.cc
 +++ b/content/browser/speech/speech_recognition_manager_impl.cc
 @@ -344,6 +344,9 @@ int SpeechRecognitionManagerImpl::GetSessionTrackerCountForTesting(  // IN-TEST

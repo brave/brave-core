@@ -4,10 +4,10 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
+import Button from '@brave/nala/react/button'
+import Icon from '@brave/nala/react/icon'
 import guardianLogoUrl from '../../assets/svg-icons/guardian-logo.svg'
-import { color, effect, font, gradient, icon, radius, spacing } from '@brave/leo/tokens/css/variables'
+import { color, effect, font, gradient, icon, radius, spacing } from '@brave/nala/tokens/css/variables'
 
 export const Box = styled.div`
   width: 100%;

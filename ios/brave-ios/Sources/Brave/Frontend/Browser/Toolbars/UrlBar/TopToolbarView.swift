@@ -199,7 +199,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
   lazy var actionButtons: [UIButton] = [
     shareButton, tabsButton, shortcutButton,
     forwardButton, backButton, menuButton,
-    shieldsButton, rewardsButton,
+    shieldsButton, rewardsButton, addTabButton,
   ].compactMap { $0 }
 
   private let mainStackView = UIStackView().then {

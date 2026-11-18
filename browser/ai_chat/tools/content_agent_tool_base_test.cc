@@ -64,13 +64,20 @@ ContentAgentToolBaseTest::RunWithExpectedSuccess(
   run_loop.Run();
   // Verify proto action
   EXPECT_EQ(captured_actions.task_id(), test_task_id_.value());
-  EXPECT_EQ(captured_actions.actions_size(), 1);
+  if (captured_actions.actions_size() != 1) {
+    ADD_FAILURE() << "Expected 1 action, got "
+                  << captured_actions.actions_size();
+    return {};
+  }
 
   const auto& action = captured_actions.actions(0);
 
   // Verify CreateToolRequest works and produces correct ClickToolRequest
   auto tool_request = actor::CreateToolRequestForTesting(action);
-  EXPECT_NE(tool_request, nullptr);
+  if (!tool_request) {
+    ADD_FAILURE() << "CreateToolRequestForTesting failed";
+    return {};
+  }
   EXPECT_EQ(tool_request->JournalEvent(), expected_tool_name);
 
   if (uses_tab) {

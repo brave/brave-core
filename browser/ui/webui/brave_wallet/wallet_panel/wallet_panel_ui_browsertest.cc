@@ -14,8 +14,10 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
+#include "brave/browser/ui/webui/brave_wallet/polkadot/polkadot_ui.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -24,6 +26,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
@@ -31,14 +34,18 @@
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "content/public/browser/web_ui.h"
+#include "content/public/browser/web_ui_controller.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
+#include "content/public/test/test_navigation_observer.h"
 #include "content/public/test/test_utils.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "url/origin.h"
 
 using content::EvalJsResult;
 
@@ -125,6 +132,15 @@ bool WaitAndClickElement(content::WebContents* web_contents,
     }
   }
   return false;
+}
+
+// Probes the panel's FrameTree for a RenderFrameHost whose last committed URL
+// matches the Polkadot bridge's.
+content::RenderFrameHost* FindPolkadotBridgeFrame(content::WebContents* panel) {
+  return content::FrameMatchingPredicateOrNullptr(
+      panel->GetPrimaryPage(),
+      base::BindRepeating(&content::FrameHasSourceUrl,
+                          GURL(kUntrustedPolkadotURL)));
 }
 
 }  // namespace
@@ -468,6 +484,118 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, SelectRpcEndpoint) {
 
   // Wait for endpoint to become known one.
   WaitForNeonEVMNetworkUrl(known_neon_evm_rpc);
+}
+
+class PolkadotDisabledWalletPanelUIBrowserTest
+    : public WalletPanelUIBrowserTest {
+ public:
+  void SetUp() override {
+    scoped_feature_list_.InitWithFeaturesAndParameters(
+        {{features::kBraveWalletPolkadotFeature,
+          {{"polkadot_dapp_support", "false"}}}},
+        {});
+
+    WalletPanelUIBrowserTest::SetUp();
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(PolkadotDisabledWalletPanelUIBrowserTest,
+                       NoPolkadotIframeBridge) {
+  // Prove that when Polkadot dapp support is not enabled that the panel does
+  // not have the <iframe/> appended to its DOM. Because of lag, probing the
+  // FrameTree may yield false negatives so we use a normal JS selector call
+  // which probes the DOM itself.
+
+  ReloadWalletTab();
+  EXPECT_EQ(false, EvalJs(wallet(),
+                          "loadTimeData.getBoolean('"
+                          "isPolkadotDAppSupportEnabled')")
+                       .ExtractBool());
+  EXPECT_EQ(0, EvalJs(wallet(),
+                      absl::StrFormat("document.querySelectorAll(`iframe[src^="
+                                      "\"%s\"]`).length",
+                                      kUntrustedPolkadotURL))
+                   .ExtractInt());
+}
+
+class PolkadotWalletPanelUIBrowserTest : public WalletPanelUIBrowserTest {
+ public:
+  void SetUp() override {
+    scoped_feature_list_.InitWithFeaturesAndParameters(
+        {{features::kBraveWalletPolkadotFeature,
+          {{"polkadot_dapp_support", "true"}}}},
+        {});
+
+    WalletPanelUIBrowserTest::SetUp();
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(PolkadotWalletPanelUIBrowserTest, IframeBridge) {
+  // Prove that our wallet panel actually attempts a navigation to the Polkadot
+  // bridge. Because the wallet panel is created as part of the test fixture
+  // startup routines, we have to reload the panel after establishing the
+  // TestNavigationObserver.
+
+  content::TestNavigationObserver bridge_observer{GURL(kUntrustedPolkadotURL)};
+  bridge_observer.WatchExistingWebContents();
+  ReloadWalletTab();
+  bridge_observer.Wait();
+  EXPECT_TRUE(bridge_observer.last_navigation_succeeded());
+
+  auto* bridge = FindPolkadotBridgeFrame(wallet());
+  ASSERT_TRUE(bridge);
+  EXPECT_EQ(url::Origin::Create(GURL(kUntrustedPolkadotURL)),
+            bridge->GetLastCommittedOrigin());
+  // Prove both RenderFrameHosts live in separate processes.
+  EXPECT_TRUE(bridge->IsCrossProcessSubframe());
+
+  // Prove that our iframe loaded the bundle and we were able to bind the
+  // mojom::Receiver in the browser process.
+  auto* bridge_web_ui = bridge->GetWebUI();
+  ASSERT_TRUE(bridge_web_ui);
+  auto* polkadot_ui =
+      bridge_web_ui->GetController()->GetAs<polkadot::UntrustedPolkadotUI>();
+  ASSERT_TRUE(polkadot_ui);
+  EXPECT_TRUE(
+      base::test::RunUntil([&]() { return polkadot_ui->IsBoundForTesting(); }));
+
+  // Prove we didn't destroy the main wallet panel.
+  EXPECT_EQ(true, EvalJs(wallet(), "!!document.getElementById('mountPoint')")
+                      .ExtractBool());
+}
+
+IN_PROC_BROWSER_TEST_F(PolkadotWalletPanelUIBrowserTest,
+                       IframeBridgeCannotFetch) {
+  // It's paramount that the iframe is air gapped and that the @polkadot/types
+  // code can't exfiltrate any data via network calls.
+
+  content::TestNavigationObserver bridge_observer{GURL(kUntrustedPolkadotURL)};
+  bridge_observer.WatchExistingWebContents();
+  ReloadWalletTab();
+  bridge_observer.Wait();
+  EXPECT_TRUE(bridge_observer.last_navigation_succeeded());
+
+  auto* bridge = FindPolkadotBridgeFrame(wallet());
+  ASSERT_TRUE(bridge);
+
+  EXPECT_EQ("connect-src", EvalJs(bridge, R"(
+       new Promise((resolve) => {
+         document.addEventListener('securitypolicyviolation', (event) => {
+           if (event.disposition === 'enforce' &&
+               event.blockedURI.startsWith('https://rpc.polkadot.io')) {
+             resolve(event.effectiveDirective);
+           }
+         });
+         fetch('https://rpc.polkadot.io/').catch(() => {});
+       })
+   )")
+                               .ExtractString());
 }
 
 }  // namespace brave_wallet

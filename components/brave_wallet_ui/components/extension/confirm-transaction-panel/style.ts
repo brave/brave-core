@@ -4,8 +4,8 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
 import { ArrowRightIcon, LoaderIcon } from 'brave-ui/components/icons'
-import * as leo from '@brave/leo/tokens/css/variables'
-import Icon from '@brave/leo/react/icon'
+import * as leo from '@brave/nala/tokens/css/variables'
+import Icon from '@brave/nala/react/icon'
 
 import LinkIcon from '../../../assets/svg-icons/link-icon.svg'
 import { WarningBoxIcon } from '../shared-panel-styles'

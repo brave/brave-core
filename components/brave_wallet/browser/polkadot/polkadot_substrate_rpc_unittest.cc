@@ -214,11 +214,12 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
                                                future.GetCallback());
 
     auto* reqs = url_loader_factory_.pending_requests();
-    EXPECT_TRUE(reqs);
-    EXPECT_EQ(reqs->size(), 1u);
+    ASSERT_TRUE(reqs);
+    ASSERT_EQ(reqs->size(), 1u);
 
     auto const& req = reqs->at(0);
-    EXPECT_TRUE(req.request.request_body->elements());
+    ASSERT_TRUE(req.request.request_body->elements());
+    ASSERT_FALSE(req.request.request_body->elements()->empty());
     auto const& element = req.request.request_body->elements()->at(0);
 
     std::string expected_body = R"(
@@ -256,6 +257,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
     auto [account_info, error] = future.Take();
 
     EXPECT_EQ(error, std::nullopt);
+    ASSERT_TRUE(account_info);
     EXPECT_EQ(account_info->nonce, 886u);
     EXPECT_EQ(account_info->consumers, 2u);
     EXPECT_EQ(account_info->providers, 1u);
@@ -302,6 +304,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
     auto [account_info, error] = future.Take();
 
     EXPECT_EQ(error, std::nullopt);
+    ASSERT_TRUE(account_info);
     EXPECT_EQ(account_info->nonce, 0u);
     EXPECT_EQ(account_info->consumers, 0u);
     EXPECT_EQ(account_info->providers, 0u);
@@ -489,6 +492,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAccountBalance) {
     auto [account_info, error] = future.Take();
 
     EXPECT_EQ(error, std::nullopt);
+    ASSERT_TRUE(account_info);
     EXPECT_EQ(account_info->nonce, std::numeric_limits<uint32_t>::max());
     EXPECT_EQ(account_info->consumers, std::numeric_limits<uint32_t>::max());
     EXPECT_EQ(account_info->providers, std::numeric_limits<uint32_t>::max());
@@ -810,11 +814,12 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetFinalizedHead) {
     polkadot_substrate_rpc_->GetFinalizedHead(chain_id, future.GetCallback());
 
     auto* reqs = url_loader_factory_.pending_requests();
-    EXPECT_TRUE(reqs);
-    EXPECT_EQ(reqs->size(), 1u);
+    ASSERT_TRUE(reqs);
+    ASSERT_EQ(reqs->size(), 1u);
 
     auto const& req = reqs->at(0);
-    EXPECT_TRUE(req.request.request_body->elements());
+    ASSERT_TRUE(req.request.request_body->elements());
+    ASSERT_FALSE(req.request.request_body->elements()->empty());
     auto const& element = req.request.request_body->elements()->at(0);
 
     std::string expected_body = R"(
@@ -840,8 +845,9 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetFinalizedHead) {
     auto [hash, error] = future.Take();
 
     EXPECT_EQ(error, std::nullopt);
+    ASSERT_TRUE(hash.has_value());
     EXPECT_EQ(
-        base::HexEncode(hash.value()),
+        base::HexEncode(*hash),
         "BA38D3E0E1033E97A3AA294E59741C9F4AB8786C8D55C493D0EBC58B885961B3");
   }
 
@@ -984,11 +990,12 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlockHeader) {
                                             future.GetCallback());
 
     auto* reqs = url_loader_factory_.pending_requests();
-    EXPECT_TRUE(reqs);
-    EXPECT_EQ(reqs->size(), 1u);
+    ASSERT_TRUE(reqs);
+    ASSERT_EQ(reqs->size(), 1u);
 
     auto const& req = reqs->at(0);
-    EXPECT_TRUE(req.request.request_body->elements());
+    ASSERT_TRUE(req.request.request_body->elements());
+    ASSERT_FALSE(req.request.request_body->elements()->empty());
     auto const& element = req.request.request_body->elements()->at(0);
 
     std::string expected_body = R"(
@@ -1028,7 +1035,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlockHeader) {
     auto [header, error] = future.Take();
 
     EXPECT_EQ(error, std::nullopt);
-    EXPECT_TRUE(header);
+    ASSERT_TRUE(header);
 
     EXPECT_EQ(
         base::HexEncodeLower(header->parent_hash),
@@ -1064,11 +1071,12 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlockHeader) {
                                             future.GetCallback());
 
     auto* reqs = url_loader_factory_.pending_requests();
-    EXPECT_TRUE(reqs);
-    EXPECT_EQ(reqs->size(), 1u);
+    ASSERT_TRUE(reqs);
+    ASSERT_EQ(reqs->size(), 1u);
 
     auto const& req = reqs->at(0);
-    EXPECT_TRUE(req.request.request_body->elements());
+    ASSERT_TRUE(req.request.request_body->elements());
+    ASSERT_FALSE(req.request.request_body->elements()->empty());
     auto const& element = req.request.request_body->elements()->at(0);
 
     std::string expected_body = R"(
@@ -1108,7 +1116,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlockHeader) {
     auto [header, error] = future.Take();
 
     EXPECT_EQ(error, std::nullopt);
-    EXPECT_TRUE(header);
+    ASSERT_TRUE(header);
 
     EXPECT_EQ(
         base::HexEncodeLower(header->parent_hash),
@@ -1156,7 +1164,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlockHeader) {
     auto [header, error] = future.Take();
 
     EXPECT_EQ(error, std::nullopt);
-    EXPECT_TRUE(header);
+    ASSERT_TRUE(header);
 
     EXPECT_EQ(
         base::HexEncodeLower(header->parent_hash),
@@ -1617,11 +1625,12 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlockHash) {
                                           future.GetCallback());
 
     auto* reqs = url_loader_factory_.pending_requests();
-    EXPECT_TRUE(reqs);
-    EXPECT_EQ(reqs->size(), 1u);
+    ASSERT_TRUE(reqs);
+    ASSERT_EQ(reqs->size(), 1u);
 
     auto const& req = reqs->at(0);
-    EXPECT_TRUE(req.request.request_body->elements());
+    ASSERT_TRUE(req.request.request_body->elements());
+    ASSERT_FALSE(req.request.request_body->elements()->empty());
     auto const& element = req.request.request_body->elements()->at(0);
 
     std::string expected_body = R"(
@@ -1649,8 +1658,9 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlockHash) {
     auto [block_hash, error] = future.Take();
 
     EXPECT_EQ(error, std::nullopt);
+    ASSERT_TRUE(block_hash.has_value());
     EXPECT_EQ(
-        base::HexEncode(block_hash.value_or({})),
+        base::HexEncode(*block_hash),
         "4D788F8BA1A64E6CCA41C047B456826F201502F5EB9B469E3F6754BE1BA83564");
   }
 
@@ -1663,11 +1673,12 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlockHash) {
                                           future.GetCallback());
 
     auto* reqs = url_loader_factory_.pending_requests();
-    EXPECT_TRUE(reqs);
-    EXPECT_EQ(reqs->size(), 1u);
+    ASSERT_TRUE(reqs);
+    ASSERT_EQ(reqs->size(), 1u);
 
     auto const& req = reqs->at(0);
-    EXPECT_TRUE(req.request.request_body->elements());
+    ASSERT_TRUE(req.request.request_body->elements());
+    ASSERT_FALSE(req.request.request_body->elements()->empty());
     auto const& element = req.request.request_body->elements()->at(0);
 
     std::string expected_body = R"(
@@ -1695,8 +1706,9 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlockHash) {
     auto [block_hash, error] = future.Take();
 
     EXPECT_EQ(error, std::nullopt);
+    ASSERT_TRUE(block_hash.has_value());
     EXPECT_EQ(
-        base::HexEncode(block_hash.value_or({})),
+        base::HexEncode(*block_hash),
         "637FCB9534389A0AC56AE2E697655A9E73A0CD4A91D9F090C094D1F9219E5E04");
   }
 
@@ -1708,11 +1720,12 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlockHash) {
     polkadot_substrate_rpc_->GetBlockHash(chain_id, 0, future.GetCallback());
 
     auto* reqs = url_loader_factory_.pending_requests();
-    EXPECT_TRUE(reqs);
-    EXPECT_EQ(reqs->size(), 1u);
+    ASSERT_TRUE(reqs);
+    ASSERT_EQ(reqs->size(), 1u);
 
     auto const& req = reqs->at(0);
-    EXPECT_TRUE(req.request.request_body->elements());
+    ASSERT_TRUE(req.request.request_body->elements());
+    ASSERT_FALSE(req.request.request_body->elements()->empty());
     auto const& element = req.request.request_body->elements()->at(0);
 
     std::string expected_body = R"(
@@ -1738,8 +1751,9 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlockHash) {
     auto [block_hash, error] = future.Take();
 
     EXPECT_EQ(error, std::nullopt);
+    ASSERT_TRUE(block_hash.has_value());
     EXPECT_EQ(
-        base::HexEncode(block_hash.value_or({})),
+        base::HexEncode(*block_hash),
         "67F9723393EF76214DF0118C34BBBD3DBEBC8ED46A10973A8C969D48FE7598C9");
   }
 
@@ -1930,11 +1944,12 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetRuntimeVersion) {
                                                future.GetCallback());
 
     auto* reqs = url_loader_factory_.pending_requests();
-    EXPECT_TRUE(reqs);
-    EXPECT_EQ(reqs->size(), 1u);
+    ASSERT_TRUE(reqs);
+    ASSERT_EQ(reqs->size(), 1u);
 
     auto const& req = reqs->at(0);
-    EXPECT_TRUE(req.request.request_body->elements());
+    ASSERT_TRUE(req.request.request_body->elements());
+    ASSERT_FALSE(req.request.request_body->elements()->empty());
     auto const& element = req.request.request_body->elements()->at(0);
 
     std::string expected_body = R"(
@@ -1974,6 +1989,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetRuntimeVersion) {
     auto [runtime_version, error] = future.Take();
 
     EXPECT_EQ(error, std::nullopt);
+    ASSERT_TRUE(runtime_version);
     EXPECT_EQ(runtime_version->spec_version, 1020001u);
     EXPECT_EQ(runtime_version->transaction_version, 27u);
   }
@@ -1993,11 +2009,12 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetRuntimeVersion) {
                                                future.GetCallback());
 
     auto* reqs = url_loader_factory_.pending_requests();
-    EXPECT_TRUE(reqs);
-    EXPECT_EQ(reqs->size(), 1u);
+    ASSERT_TRUE(reqs);
+    ASSERT_EQ(reqs->size(), 1u);
 
     auto const& req = reqs->at(0);
-    EXPECT_TRUE(req.request.request_body->elements());
+    ASSERT_TRUE(req.request.request_body->elements());
+    ASSERT_FALSE(req.request.request_body->elements()->empty());
     auto const& element = req.request.request_body->elements()->at(0);
 
     std::string expected_body = R"(
@@ -2036,6 +2053,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetRuntimeVersion) {
     auto [runtime_version, error] = future.Take();
 
     EXPECT_EQ(error, std::nullopt);
+    ASSERT_TRUE(runtime_version);
     EXPECT_EQ(runtime_version->spec_version, 1u);
     EXPECT_EQ(runtime_version->transaction_version, 1u);
   }
@@ -2309,11 +2327,12 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetMetadata) {
     polkadot_substrate_rpc_->GetMetadata(chain_id, future.GetCallback());
 
     auto* reqs = url_loader_factory_.pending_requests();
-    EXPECT_TRUE(reqs);
-    EXPECT_EQ(reqs->size(), 1u);
+    ASSERT_TRUE(reqs);
+    ASSERT_EQ(reqs->size(), 1u);
 
     auto const& req = reqs->at(0);
-    EXPECT_TRUE(req.request.request_body->elements());
+    ASSERT_TRUE(req.request.request_body->elements());
+    ASSERT_FALSE(req.request.request_body->elements()->empty());
     auto const& element = req.request.request_body->elements()->at(0);
 
     std::string expected_body = R"(
@@ -2442,6 +2461,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetSystemProperties) {
 
     auto const& req = reqs->at(0);
     ASSERT_TRUE(req.request.request_body->elements());
+    ASSERT_FALSE(req.request.request_body->elements()->empty());
     auto const& element = req.request.request_body->elements()->at(0);
 
     std::string expected_body = R"(
@@ -2871,11 +2891,12 @@ TEST_F(PolkadotSubstrateRpcUnitTest, SubmitExtrinsic) {
                                              future.GetCallback());
 
     auto* reqs = url_loader_factory_.pending_requests();
-    EXPECT_TRUE(reqs);
-    EXPECT_EQ(reqs->size(), 1u);
+    ASSERT_TRUE(reqs);
+    ASSERT_EQ(reqs->size(), 1u);
 
     auto const& req = reqs->at(0);
-    EXPECT_TRUE(req.request.request_body->elements());
+    ASSERT_TRUE(req.request.request_body->elements());
+    ASSERT_FALSE(req.request.request_body->elements()->empty());
     auto const& element = req.request.request_body->elements()->at(0);
 
     std::string expected_body = R"(
@@ -3004,16 +3025,17 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetPaymentInfo) {
         chain_id, extrinsic,
         base::BindLambdaForTesting(
             [&](base::expected<uint128_t, std::string> partial_fee) {
-              EXPECT_EQ(partial_fee.value(), uint128_t{15937408476});
+              EXPECT_EQ(partial_fee, uint128_t{15937408476});
               quit_closure.Run();
             }));
 
     auto* reqs = url_loader_factory_.pending_requests();
-    EXPECT_TRUE(reqs);
-    EXPECT_EQ(reqs->size(), 1u);
+    ASSERT_TRUE(reqs);
+    ASSERT_EQ(reqs->size(), 1u);
 
     auto const& req = reqs->at(0);
-    EXPECT_TRUE(req.request.request_body->elements());
+    ASSERT_TRUE(req.request.request_body->elements());
+    ASSERT_FALSE(req.request.request_body->elements()->empty());
     auto const& element = req.request.request_body->elements()->at(0);
 
     // The important thing to note here is that we're using state_call method
@@ -3056,8 +3078,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetPaymentInfo) {
         chain_id, extrinsic,
         base::BindLambdaForTesting(
             [&](base::expected<uint128_t, std::string> partial_fee) {
-              EXPECT_EQ(partial_fee.value(),
-                        std::numeric_limits<uint128_t>::max());
+              EXPECT_EQ(partial_fee, std::numeric_limits<uint128_t>::max());
               quit_closure.Run();
             }));
 
@@ -3295,11 +3316,12 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlock) {
                                       future.GetCallback());
 
     auto* reqs = url_loader_factory_.pending_requests();
-    EXPECT_TRUE(reqs);
-    EXPECT_EQ(reqs->size(), 1u);
+    ASSERT_TRUE(reqs);
+    ASSERT_EQ(reqs->size(), 1u);
 
     auto const& req = reqs->at(0);
-    EXPECT_TRUE(req.request.request_body->elements());
+    ASSERT_TRUE(req.request.request_body->elements());
+    ASSERT_FALSE(req.request.request_body->elements()->empty());
     auto const& element = req.request.request_body->elements()->at(0);
 
     std::string expected_body = R"(
@@ -3396,11 +3418,12 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlock) {
                                       future.GetCallback());
 
     auto* reqs = url_loader_factory_.pending_requests();
-    EXPECT_TRUE(reqs);
-    EXPECT_EQ(reqs->size(), 1u);
+    ASSERT_TRUE(reqs);
+    ASSERT_EQ(reqs->size(), 1u);
 
     auto const& req = reqs->at(0);
-    EXPECT_TRUE(req.request.request_body->elements());
+    ASSERT_TRUE(req.request.request_body->elements());
+    ASSERT_FALSE(req.request.request_body->elements()->empty());
     auto const& element = req.request.request_body->elements()->at(0);
 
     std::string expected_body = R"(
@@ -3497,11 +3520,12 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetBlock) {
                                       future.GetCallback());
 
     auto* reqs = url_loader_factory_.pending_requests();
-    EXPECT_TRUE(reqs);
-    EXPECT_EQ(reqs->size(), 1u);
+    ASSERT_TRUE(reqs);
+    ASSERT_EQ(reqs->size(), 1u);
 
     auto const& req = reqs->at(0);
-    EXPECT_TRUE(req.request.request_body->elements());
+    ASSERT_TRUE(req.request.request_body->elements());
+    ASSERT_FALSE(req.request.request_body->elements()->empty());
     auto const& element = req.request.request_body->elements()->at(0);
 
     std::string expected_body = R"(
@@ -3685,11 +3709,12 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetEvents) {
                                        future.GetCallback());
 
     auto* reqs = url_loader_factory_.pending_requests();
-    EXPECT_TRUE(reqs);
-    EXPECT_EQ(reqs->size(), 1u);
+    ASSERT_TRUE(reqs);
+    ASSERT_EQ(reqs->size(), 1u);
 
     auto const& req = reqs->at(0);
-    EXPECT_TRUE(req.request.request_body->elements());
+    ASSERT_TRUE(req.request.request_body->elements());
+    ASSERT_FALSE(req.request.request_body->elements()->empty());
     auto const& element = req.request.request_body->elements()->at(0);
 
     std::string expected_body = R"(

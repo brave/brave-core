@@ -65,7 +65,11 @@ class AIChatBraveSearchThrottle : public content::NavigationThrottle {
 
  private:
   void OnGetOpenAIChatButtonNonce(const std::optional<std::string>& nonce);
-  void OnPermissionPromptResult(content::PermissionResult status);
+  static void OnPermissionPromptResult(
+      base::WeakPtr<content::WebContents> web_contents,
+      base::OnceCallback<void(content::WebContents*)> open_ai_chat_delegate,
+      AIChatService* ai_chat_service,
+      content::PermissionResult status);
   void OnOpenAIChat();
 
   void OpenAIChatWithStagedEntries();

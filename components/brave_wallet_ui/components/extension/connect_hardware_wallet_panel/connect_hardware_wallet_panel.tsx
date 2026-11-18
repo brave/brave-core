@@ -5,9 +5,9 @@
 
 import { assertNotReached } from 'chrome://resources/js/assert.js'
 import * as React from 'react'
-import Label from '@brave/leo/react/label'
-import Icon from '@brave/leo/react/icon'
-import Button from '@brave/leo/react/button'
+import Label from '@brave/nala/react/label'
+import Icon from '@brave/nala/react/icon'
+import Button from '@brave/nala/react/button'
 
 import { useHistory } from 'react-router'
 

@@ -343,60 +343,6 @@ std::optional<EthSignParams> ParsePersonalSignParams(
   return result;
 }
 
-std::optional<std::string> ParseEthGetEncryptionPublicKeyParams(
-    const base::ListValue& params) {
-  // eth_getEncryptionPublicKey allows extra params
-  if (params.empty()) {
-    return std::nullopt;
-  }
-
-  return base::OptionalFromPtr(params.front().GetIfString());
-}
-
-std::optional<EthDecryptParams> ParseEthDecryptParams(
-    const base::ListValue& params) {
-  // eth_decrypt allows extra params
-  if (params.size() < 2) {
-    return std::nullopt;
-  }
-
-  const std::string* untrusted_hex_json_str = params[0].GetIfString();
-  if (!untrusted_hex_json_str) {
-    return std::nullopt;
-  }
-
-  const std::string* address_str = params[1].GetIfString();
-  if (!address_str) {
-    return std::nullopt;
-  }
-
-  std::string untrusted_json;
-
-  // untrusted_hex_json should hex decode to this schema example:
-  // {
-  //   "version": "x25519-xsalsa20-poly1305",
-  //   "nonce": "base64-string",
-  //   "ephemPublicKey": "base64-string",
-  //   "ciphertext":"base64-string"
-  // }
-
-  if (!IsValidHexString(*untrusted_hex_json_str)) {
-    return std::nullopt;
-  }
-
-  // IsValidHexString guarantees at least 2 bytes and starts with 0x
-  if (!base::HexStringToString(
-          base::as_string_view(*untrusted_hex_json_str).substr(2),
-          &untrusted_json)) {
-    return std::nullopt;
-  }
-
-  EthDecryptParams result;
-  result.untrusted_encrypted_data_json = untrusted_json;
-  result.address = *address_str;
-  return result;
-}
-
 std::optional<PersonalEcRecoverParams> ParsePersonalEcRecoverParams(
     const base::ListValue& params) {
   // personal_ecRecover allows extra params
@@ -529,59 +475,6 @@ mojom::EthSignTypedDataPtr ParseEthSignTypedDataParams(
 
   DCHECK(!result->domain_hash.empty());
   DCHECK(!result->primary_hash.empty());
-  return result;
-}
-
-EthDecryptData::EthDecryptData() = default;
-EthDecryptData::~EthDecryptData() = default;
-EthDecryptData::EthDecryptData(EthDecryptData&&) = default;
-
-std::optional<EthDecryptData> ParseEthDecryptData(const base::DictValue& dict) {
-  // {
-  //   "version": "x25519-xsalsa20-poly1305",
-  //   "nonce": "base64-string",
-  //   "ephemPublicKey": "base64-string",
-  //   "ciphertext":"base64-string"
-  // }
-
-  EthDecryptData result;
-  const std::string* version_str = dict.FindString("version");
-  if (!version_str) {
-    return std::nullopt;
-  }
-  result.version = *version_str;
-
-  const std::string* nonce_str = dict.FindString("nonce");
-  if (!nonce_str) {
-    return std::nullopt;
-  }
-  auto nonce = base::Base64Decode(*nonce_str);
-  if (!nonce) {
-    return std::nullopt;
-  }
-  result.nonce = std::move(*nonce);
-
-  const std::string* ephemeral_public_key_str =
-      dict.FindString("ephemPublicKey");
-  if (!ephemeral_public_key_str) {
-    return std::nullopt;
-  }
-  auto ephemeral_public_key = base::Base64Decode(*ephemeral_public_key_str);
-  if (!ephemeral_public_key) {
-    return std::nullopt;
-  }
-  result.ephemeral_public_key = std::move(*ephemeral_public_key);
-
-  const std::string* ciphertext_str = dict.FindString("ciphertext");
-  if (!ciphertext_str) {
-    return std::nullopt;
-  }
-  auto ciphertext = base::Base64Decode(*ciphertext_str);
-  if (!ciphertext) {
-    return std::nullopt;
-  }
-  result.ciphertext = std::move(*ciphertext);
-
   return result;
 }
 

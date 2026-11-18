@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import styled from 'styled-components'
-import Button from '@brave/leo/react/button'
+import Button from '@brave/nala/react/button'
 import { getLocale } from '../../../../../common/locale'
 import * as Card from '../cardIntro'
 

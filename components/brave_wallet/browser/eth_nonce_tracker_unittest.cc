@@ -48,8 +48,6 @@ class EthNonceTrackerUnitTest : public testing::Test {
 
   PrefService* GetPrefs() { return &prefs_; }
 
-  void WaitForResponse() { task_environment_.RunUntilIdle(); }
-
   void SetTransactionCount(uint256_t count) {
     transaction_count_ = count;
     url_loader_factory_.ClearResponses();

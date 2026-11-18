@@ -56,6 +56,13 @@ if (enable_brave_wallet) {
   ]
 }
 
+if (enable_tor) {
+  brave_browser_net_sources += [
+    "//brave/browser/net/onion_origin_header_client.cc",
+    "//brave/browser/net/onion_origin_header_client.h",
+  ]
+}
+
 brave_browser_net_deps = [
   "//base",
   "//brave/app:brave_generated_resources_grit",

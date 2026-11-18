@@ -5,10 +5,12 @@
 
 #include <iostream>
 #include <string>
+#include <string_view>
 
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/origin.h"
 #include "url/third_party/mozilla/url_parse.h"
+#include "url/url_canon.h"
 #include "url/url_canon_ip.h"
 
 #include <net/base/url_util.cc>
@@ -25,15 +27,16 @@ std::string URLToEphemeralStorageDomain(const GURL& url) {
 
   // GetDomainAndRegistry might return an empty string if this host is an IP
   // address or a file URL.
-  if (domain.empty())
+  if (domain.empty()) {
     domain = url::Origin::Create(url).Serialize();
+  }
 
   return domain;
 }
 
 bool IsOnion(const GURL& url) {
   return (url.SchemeIsWSOrWSS() || url.SchemeIsHTTPOrHTTPS()) &&
-         url.DomainIs(kOnionDomain);
+         IsOnionHostname(url.host());
 }
 
 bool IsOnion(const url::Origin& origin) {
@@ -48,6 +51,24 @@ bool IsOnion(const url::Origin& origin) {
 
 bool IsLocalhostOrOnion(const GURL& url) {
   return IsLocalhost(url) || IsOnion(url);
+}
+
+bool IsCrossOriginOnionRequest(const url::Origin& initiator, const GURL& url) {
+  if (!IsOnion(initiator)) {
+    return false;
+  }
+  const GURL& target_url =
+      url.SchemeIsWSOrWSS() ? ChangeWebSocketSchemeToHttpScheme(url) : url;
+  return !initiator.IsSameOriginWith(target_url);
+}
+
+bool IsCrossOriginOnionRequest(std::string_view initiator, const GURL& url) {
+  return IsCrossOriginOnionRequest(url::Origin::Create(GURL(initiator)), url);
+}
+
+bool IsOnionHostname(std::string_view host) {
+  url::CanonHostInfo host_info;
+  return url::DomainIs(CanonicalizeHost(host, &host_info), kOnionDomain);
 }
 
 }  // namespace net

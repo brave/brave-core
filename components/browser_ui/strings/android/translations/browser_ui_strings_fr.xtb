@@ -181,9 +181,7 @@
 <translation id="2710883118091822664">Connectez-vous pour continuer facilement sur tous vos appareils</translation>
 <translation id="2713106313042589954">Désactiver la caméra</translation>
 <translation id="2717722538473713889">Adresses e-mail</translation>
-<translation id="8181634240306014548">Lancer Brave avec l'omnibox sélectionné pour réduire le temps de démarrage sur les appareils bas de gamme.</translation>
-<translation id="2750481671343847896">Les sites peuvent afficher les invites de connexion des services d'identité.</translation>
-<translation id="2787357173144933081">Démarrer l'omnibox directement</translation>
+<translation id="2750481671343847896">Autoriser les sites à afficher des invites de connexion de services d'identité</translation>
 <translation id="2789132527330338807">Les sites peuvent demander à créer un plan 3D de votre environnement ou à suivre la position de la caméra</translation>
 <translation id="2790501146643349491">Lorsque cette option est activée, les sites fermés récemment peuvent terminer l'envoi et la réception de données. Lorsqu'elle est désactivée, les sites fermés récemment ne peuvent pas terminer l'envoi ni la réception de données.</translation>
 <translation id="2795716239552913152">Les sites utilisent généralement votre position pour vous proposer des fonctionnalités ou des informations pertinentes, comme les actualités locales ou les magasins à proximité</translation>
@@ -291,7 +289,6 @@
 <translation id="9046306654872718870">Personnalisez Brave avec des couleurs et des images personnalisées pour votre page d'accueil</translation>
 <translation id="389521680295183045">Les sites peuvent demander à savoir quand vous utilisez activement votre appareil</translation>
 <translation id="3895926599014793903">Forcer l'activation du zoom</translation>
-<translation id="3905475044299942653">Arrêter les nombreuses notifications</translation>
 <translation id="3922092564198021702">Sur votre téléphone, ouvrez Paramètres.</translation>
 <translation id="3924858949939391676">Afficher les liens une fois le mode Lecture activé</translation>
 <translation id="3933121352599513978">Réduire les demandes indésirables (recommandé)</translation>
@@ -385,7 +382,6 @@
 <translation id="4936863036653376783">Vos groupes s'afficheront dans la section "Groupes d'onglets" sur tous vos appareils</translation>
 <translation id="4945443401464700059"><ph name="SITE"/> ne peut pas utiliser vos informations sur</translation>
 <translation id="4953688446973710931">Lorsque cette option est activée, les sites peuvent demander à télécharger automatiquement plusieurs fichiers. Lorsqu'elle est désactivée, les sites ne peuvent pas télécharger automatiquement plusieurs fichiers.</translation>
-<translation id="4962975101802056554">Révoquer toutes les autorisations de l'appareil</translation>
 <translation id="4972737347717125191">Les sites peuvent demander à utiliser des données et des appareils de réalité virtuelle</translation>
 <translation id="1275242979020712923">Bottom sheet des couleurs Brave</translation>
 <translation id="497421865427891073">Avancer</translation>
@@ -450,7 +446,7 @@
 <translation id="5690795753582697420">L'appareil photo est désactivé dans les paramètres Android</translation>
 <translation id="5700761515355162635">Cookies tiers autorisés</translation>
 <translation id="5706552988683188916">Cette action supprimera les cookies et les autres données de site pour <ph name="WEBSITE"/></translation>
-<translation id="571222594670061844">Les sites peuvent afficher les invites de connexion des services d'identité</translation>
+<translation id="571222594670061844">Autoriser les sites à afficher des invites de connexion de services d'identité</translation>
 <translation id="5719854774000914513">Les sites peuvent demander à se connecter à des périphériques HID</translation>
 <translation id="5740126560802162366">Les sites peuvent enregistrer des données sur votre appareil</translation>
 <translation id="5743425052258407233">Accédez à votre historique sur vos appareils pour reprendre facilement là où vous vous étiez arrêté</translation>
@@ -471,7 +467,7 @@
 <translation id="5860491529813859533">Activer</translation>
 <translation id="5876056640971328065">Mettre la vidéo en pause</translation>
 <translation id="5877248419911025165">Réduire toutes les demandes</translation>
-<translation id="5878945009165002849">Bloquer les invites de connexion des services d'identité</translation>
+<translation id="5878945009165002849">Bloquer les invites de connexion de services d'identité</translation>
 <translation id="588258955323874662">Plein écran</translation>
 <translation id="5884085660368669834">Préférence liée au site</translation>
 <translation id="5887687176710214216">Dernière visite : hier</translation>
@@ -525,6 +521,7 @@
 <translation id="6439114592976064011">Empêcher les sites d'utiliser vos données et votre appareil de réalité virtuelle</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="6452138246455930388">Baisse de prix dans votre onglet ouvert, de <ph name="OLD_PRICE"/> à <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
+<translation id="6495608040096939405">Révoquer l'autorisation d'accès à l'appareil pour <ph name="NAME"/></translation>
 <translation id="6500423977866688905">Si la fenêtre est étroite, demander l'affichage sur mobile</translation>
 <translation id="6527303717912515753">Partager</translation>
 <translation id="6530703012083415527">Lorsque cette option est activée, les sites peuvent utiliser des pop-ups et des redirections. Lorsqu'elle est désactivée, les sites ne peuvent pas utiliser de pop-ups ni de redirections.</translation>
@@ -551,7 +548,7 @@
 <translation id="6689172468748959065">Photos de profil</translation>
 <translation id="6697925417670533197">Téléchargements actifs</translation>
 <translation id="6709432001666529933">Demander avant d'autoriser les sites à suivre vos mains (recommandé)</translation>
-<translation id="6722828510648505498">Bloquer les invites de connexion des services d'identité.</translation>
+<translation id="6722828510648505498">Bloquer les invites de connexion de services d'identité.</translation>
 <translation id="6746124502594467657">Descendre</translation>
 <translation id="6749077623962119521">Réinitialiser les autorisations ?</translation>
 <translation id="6766622839693428701">Balayez l'écran vers le bas pour fermer la feuille.</translation>
@@ -590,6 +587,7 @@
 <translation id="7188508872042490670">Données des sites sur l'appareil</translation>
 <translation id="7201549776650881587">L'ensemble des données et cookies stockés par tous les sites dépendant de <ph name="ORIGIN"/> ou par l'appli associée sur votre écran d'accueil seront supprimés</translation>
 <translation id="7219254577985949841">Supprimer les données du site ?</translation>
+<translation id="7225256190577194089">Révoquer toutes les autorisations pour l'appareil <ph name="DEVICE_NAME"/></translation>
 <translation id="723171743924126238">Sélectionner des images</translation>
 <translation id="7243246278722455312">Bottom sheet de personnalisation de la page Nouvel onglet</translation>
 <translation id="7243308994586599757">Options disponibles au bas de l'écran</translation>
@@ -702,7 +700,6 @@ La Protection Avancée contrôle les paramètres Brave suivants :</translation
 <translation id="8428213095426709021">Paramètres</translation>
 <translation id="8441146129660941386">Retour rapide</translation>
 <translation id="8444433999583714703">Pour autoriser <ph name="APP_NAME"/> à accéder à votre position, activez également la localisation dans les <ph name="BEGIN_LINK"/>paramètres Android<ph name="END_LINK"/>.</translation>
-<translation id="8447861592752582886">Révoquer l'autorisation d'accès à l'appareil</translation>
 <translation id="8463843545738141778">Ce paramètre est désactivé, car vous avez activé la Protection Avancée dans les paramètres Android.</translation>
 <translation id="8467359479529706065">Bottom sheet de l'apparence de la page Nouvel onglet ouverte à mi-hauteur</translation>
 <translation id="8471525937465764768">Les sites se connectent généralement aux appareils USB pour proposer des fonctionnalités comme l'impression de documents ou l'enregistrement sur un périphérique de stockage</translation>

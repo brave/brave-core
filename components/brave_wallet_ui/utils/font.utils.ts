@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { font, typography } from '@brave/leo/tokens/css/variables'
+import { font, typography } from '@brave/nala/tokens/css/variables'
 
 export const walletFontFamily =
   "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"

@@ -1,8 +1,8 @@
 diff --git a/content/browser/renderer_host/render_frame_host_manager.cc b/content/browser/renderer_host/render_frame_host_manager.cc
-index 97b080c56f58b7e9cbc78ebb5e639601cdc334c4..49b25a328a218b8e9bee79de2ca5ae522c68de70 100644
+index 2c6cd48fced362491cbc725fea35b41392330630..bd634ab5c58aaa5af157a17cd81f766509c5dfcf 100644
 --- a/content/browser/renderer_host/render_frame_host_manager.cc
 +++ b/content/browser/renderer_host/render_frame_host_manager.cc
-@@ -3153,7 +3153,9 @@ RenderFrameHostManager::GetSiteInstanceForNavigation(
+@@ -3161,7 +3161,9 @@ RenderFrameHostManager::GetSiteInstanceForNavigation(
        GetNavigationController().GetBrowserContext();
    const GURL& last_successful_url = render_frame_host_->last_successful_url();
    const GURL& current_effective_url =

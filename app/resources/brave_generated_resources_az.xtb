@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 Və ya bunu sonra <ph name="SETTINGS_EXTENIONS_LINK"/>-də dəyişdirin.</translation>
 <translation id="6229752134959014186">Widevine haqqında daha çox öyrənin</translation>
+<translation id="3318169548229684688">Bu cihazda nitqi emal etmək üçün nitq tanıma modelini (<ph name="DOWNLOAD_SIZE"/>) endirmək</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> sizdə icazə tələb etməkdədir</translation>
 <translation id="3218385319396786393">Bu səhifədə autoplay bloklandı</translation>
 <translation id="4988333904713528597">Autoplay-ı <ph name="HOST"/> üçün həmişə icazə ver</translation>
@@ -610,6 +611,8 @@ Və ya bunu sonra <ph name="SETTINGS_EXTENIONS_LINK"/>-də dəyişdirin.</transl
 <translation id="3540231253392253941">Push mesajlaşma üçün Google xidmətlərindən istifadə et</translation>
 <translation id="2224032129673914306">Semantik tarixçə axtarışı</translation>
 <translation id="6045998903985162478">Ziyarət etdiyiniz səhifələri indeksləyin ki, onları tarixçədə, açıq tablarda və Leo-da asanlıqla tapa biləsiniz.</translation>
+<translation id="3962946446120925966">Cihazda nitq tanınması</translation>
+<translation id="6408242130028978631">Saytların bu cihazda nitqi emal edə bilməsi üçün nitq tanıma modelini (<ph name="DOWNLOAD_SIZE"/>) endirin. Modeli silmək üçün bunu söndürün.</translation>
 <translation id="5813105074916486721">Yerli tarixçə saxlanması</translation>
 <translation id="5671611745062206644">Brave sizin baxış tarixçənizi yerli olaraq nə qədər müddət saxlayır</translation>
 <translation id="7184510058087008090">1 gün</translation>

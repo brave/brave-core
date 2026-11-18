@@ -937,6 +937,11 @@
 <translation id="4362717653795263052">ຟື້ນຟູການປ້ອງມູນຜຜາສາສະເເນໂວເວກເປັນທຸລະກລາດ.</translation>
 <translation id="3038077262567136741">ໃສ່ຄ່າຄື້ນຟູເພື່ອຫາສາງ Brave Wallet crypto account.</translation>
 <translation id="955918646509748368">ໃສ່ຄ່າຄື້ນຟູບໍ່ຖືກຕ້ອງ.</translation>
+<translation id="7496330898672236908">ປະໂຫຍກກູ້ຄືນນີ້ບໍ່ກົງກັບກະເປົາເງິນຂອງທ່ານ. ກວດສອບປະໂຫຍກແລ້ວລອງໃໝ່ອີກຄັ້ງ.</translation>
+<translation id="3798792138617904098">ເອົາບັນຊີທີ່ນຳເຂົ້າອອກບໍ?</translation>
+<translation id="2960631345291747230">ບັນຊີທີ່ນຳເຂົ້າບໍ່ໄດ້ຖືກສຳຮອງໄວ້ດ້ວຍປະໂຫຍກກູ້ຄືນຂອງທ່ານ. ບັນຊີເຫຼົ່ານັ້ນຈະຖືກເອົາອອກຈາກ Brave Wallet ແລະ ທ່ານອາດຈະສູນເສຍການເຂົ້າເຖິງເງິນໃນບັນຊີດັ່ງກ່າວຖາວອນ ເວັ້ນເສຍແຕ່ທ່ານໄດ້ສຳຮອງຄີສ່ວນຕົວຂອງບັນຊີເຫຼົ່ານັ້ນໄວ້.</translation>
+<translation id="8898583604592472741">ເອົາບັນຊີອອກ</translation>
+<translation id="1577629163207045190">ພິມ "<ph name="CONFIRMATION_PHRASE"/>" ເພື່ອຢືນຢັນ.</translation>
 <translation id="8107437138787377150">ຕົກມື້ກັບຄຳສັບຄືນມາຈາກ clipboard</translation>
 <translation id="4811736040444856406">ເບີ່ງຄຳສັບກູ່ຄືນ</translation>
 <translation id="4359319875297001084">ນຳເຂົ້າຈາກກະເປົາ Brave ເກົ່າ?</translation>
@@ -2224,13 +2229,12 @@
 <translation id="3934503473603661122">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ Grok 4.7, ໂມເດລ frontier reasoning ຂອງ xAI ເທິງ Amazon Bedrock. Grok 4.7 ຖືກໃຫ້ບໍລິການຜ່ານໂຄງສ້າງ AWS ທີ່ປອດໄພຂອງ Brave.<ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ GPT Luna, ໂມເດລທີ່ໄວ, latency ຕ່ຳ ຂອງ OpenAI ເທິງ Amazon Bedrock. GPT Luna ຖືກໃຫ້ບໍລິການຜ່ານໂຄງສ້າງ AWS ທີ່ປອດໄພຂອງ Brave.<ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ GPT 5.6 Terra, ໂມເດລ production ທີ່ສົມດຸນ ຂອງ OpenAI ເທິງ Amazon Bedrock Mantle. GPT 5.6 Terra ຖືກໃຫ້ບໍລິການຜ່ານໂຄງສ້າງ AWS ທີ່ປອດໄພຂອງ Brave.<ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ Mistral Large, ນາມິໄບໂດຍ Mistral ເພື່ອໃຫ້ເປັນເລື່ອງແລະໃຫ້ເປັນທີ່ນີ້ໃນຫຼາຍກຽດ. Mistral Large ຖືກຖືໂດຍ Brave ຜ່ານໂຄງສ້າງປອດໄພຂອງພວກເຮົາ.<ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ Claude Haiku, ນາມິໄບໂດຍ Anthropic ເພື່ອເປັນພິທີການມືນຣືທີ່ແລະລຸງນີ້ສ່ອງອັກຮີກຳມານອາການແລະການດຳລັດຄວາມ. Claude Haiku ຖືກຖືໂດຍ Brave ໂດຍຜ່ານໂຄງສ້າງປອດໄພຂອງພວກເຮົາ. <ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ Qwen 3.8 Flash Next, ໂມເດລທີ່ສ້າງໂດຍ Alibaba Cloud ເພື່ອໃຫ້ມີປະສິດທິພາບ ແລະໃຊ້ງານໄດ້ໃນຫຼາຍກໍລະນີ. Qwen 3.8 Flash Next ໄດ້ຖືກໂຮສໂດຍ Brave ຜ່ານໂຄງສ້າງຄວາມປອດໄພຂອງພວກເຮົາ.<ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ Deepseek V3.2, ໂມເດລທີ່ສ້າງໂດຍ Deepseek ເພື່ອໃຫ້ມີປະສິດທິພາບ ແລະໃຊ້ງານໄດ້ໃນຫຼາຍກໍລະນີ. Deepseek V3.2 ໄດ້ຖືກໂຮສໂດຍ Brave ຜ່ານໂຄງສ້າງຄວາມປອດໄພຂອງພວກເຮົາ.<ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ GLM 5.3, ໂມເດລທີ່ສ້າງໂດຍ Z.ai ເພື່ອໃຫ້ມີປະສິດທິພາບ ແລະໃຊ້ງານໄດ້ໃນຫຼາຍກໍລະນີ. GLM 5.3 ໄດ້ຖືກໂຮສໂດຍ Brave ຜ່ານໂຄງສ້າງຄວາມປອດໄພຂອງພວກເຮົາ.<ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ Claude Opus, ທີ່ຖືກພັດທະນາໂດຍ Anthropic ເພື່ອຂັບເຄື່ອນພາລະກິດການສົນທະນາແລະການແປຂໍ້ຄວາມ. Claude Opus ໄດ້ຮັບການໂຮສໂດຍ Brave ໂດຍຜ່ານໂຄງຮ່າງທີ່ປອດໄພຂອງຕົນເອງ.<ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ GLM-4-7-Flash, ໂມເດລທີ່ສ້າງໂດຍ Zhipu AI ເພື່ອໃຫ້ມີປະສິດທິພາບ ແລະໃຊ້ງານໄດ້ໃນຫຼາຍກໍລະນີ. GLM-4-7-Flash ໄດ້ຖືກໂຮສໂດຍ Brave ຜ່ານໂຄງສ້າງປອດໄພຂອງພວກເຮົາ. <ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ Kimi K2.5, ໂມເດລທີ່ສ້າງໂດຍ Moonshot AI ເພື່ອໃຫ້ມີປະສິດທິພາບ ແລະໃຊ້ງານໄດ້ໃນຫຼາຍກໍລະນີ. Kimi K2.5 ໄດ້ຖືກໂຮສໂດຍ Brave ຜ່ານໂຄງສ້າງປອດໄພຂອງພວກເຮົາ. <ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ Nemotron Nano 3 30B, ໂມເດລທີ່ສ້າງໂດຍ NVIDIA ເພື່ອໃຫ້ມີປະສິດທິພາບ ແລະໃຊ້ງານໄດ້ໃນຫຼາຍກໍລະນີ. Nemotron Nano 3 30B ໄດ້ຖືກໂຮສໂດຍ Brave ຜ່ານໂຄງສ້າງຄວາມປອດໄພຂອງພວກເຮົາ.<ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">ສະບາຍດີ, ຂ້ອຍແມ່ນ Leo. ຂ້ອຍແມ່ນ AI assistant ຂອງ Brave. ຂ້ອຍໄດ້ຮັບກຳລັງໂດຍ Brave Ocelot, ໂມເດລທີ່ສ້າງໂດຍ Brave ເພື່ອສະຫຼຸບຫນ້າເວບ. Brave Ocelot ໄດ້ຖືກໂຮສໂດຍ Brave ຜ່ານໂຄງສ້າງປອດໄພຂອງພວກເຮົາ. <ph name="LINK_BEFORE"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">ທ້ອງຖິ່ນ</translation>
@@ -2370,8 +2374,8 @@
 <translation id="7465032796278724624">ເປັນຄວາມລັບ ກັບ NEAR AI TEE</translation>
 <translation id="8782867266498869301">ແບບລຸ່ນປ່ຽນແປງເພື່ອໃຊ້ລຸ່ນທີ່ດີທີ່ສຸດສໍາຫຼັບວຽກງານ</translation>
 <translation id="7348809809749151120">ໄວ • ຊອກຫາ</translation>
+<translation id="7711013627639951065">ໄວ • ຊອກຫາ • ການເຫັນເປັນຮູບ • ເຄື່ອງມື</translation>
 <translation id="3213834013136637671">ຊອກຫາ • ການເຫັນເປັນຮູບ</translation>
-<translation id="2793458212460902934">ໄວ • ຊອກຫາ • ເຄື່ອງມື</translation>
 <translation id="5276681919620506371">ຊອກຫາ • ເຄື່ອງມື</translation>
 <translation id="7434375176361995333">ສະຫຼຸບ • ໄວ</translation>
 <translation id="3965507912994218570">ຕັ້ງຄ່າ Leo</translation>
@@ -2444,6 +2448,8 @@
 <translation id="6287023598025162715">ການສົນທະນາໃຕ້ໃໝ່</translation>
 <translation id="7230502562132448519">ກັ່ນຕອງການສົນທະນາ</translation>
 <translation id="821070843380699990">ກະລຸນາລອງຊອກຫາດ້ວຍຄຳອື່ນ</translation>
+<translation id="241415280196701326">ພື້ນທີ່ເຮັດວຽກຫຼ້າສຸດ</translation>
+<translation id="5388053981690151266">ການສົນທະນາໃໝ່ໃນພື້ນທີ່ເຮັດວຽກນີ້</translation>
 <translation id="7097822247923237815">ການສົນທະນາຊົ່ວຄາວ</translation>
 <translation id="7481750859362986254">ການ​ສົນ​ທະ​ນາ​ນີ້​ຈະ​ບໍ່​ຖືກ​ບັນ​ທຶກໄວ້ໃນປະ​ຫວັດ​ຂອງ​ທ່ານ​ຫລື​ໃຊ້ງານການປັບແຕ່ງຂອງ Leo ຫລືຄວາມຈໍາຂອງ.</translation>
 <translation id="4238305333951712482">ໜ່ວຍຄວາມຈຳອັບເດດ: <ph name="MEMORY_CONTENT"/></translation>
@@ -2469,6 +2475,7 @@
 <translation id="5103625298494362646">ໂໝດ Agent ເຮັດວຽກກັບໂມເດລທີ່ຮອງຮັບຄື່ງມື. ໂມເດລທີ່ບໍ່ສາມາດໃຊ້ໄດ້ຈະຖືກເຊື່ອງອອກຈາກລາຍຊື່ນີ້.</translation>
 <translation id="3397808797783614750">ການໃຫ້ AI ເບິ່ງເວັບໃຫ້ອັດຕະໂນມັດອາດຈະເຮັດໃຫ້ເກີດຜົນກະທົບຕໍ່ຄວາມສ່ຽງ, ການເງິນ, ແລະການສື່ສານອອນໄລນ໌ຂອງທ່ານ. <ph name="LINK_BEFORE"/>ຮຽນຮູ້ຕື່ມເຕີມ<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">ຄຳເຕືອນຄວາມປອດໄພ</translation>
+<translation id="717245811623757038">ຄຳຂໍອະນຸຍາດເຄື່ອງມື</translation>
 <translation id="6077070599873946984">Brave AI ຕ້ອງການຄວາມຍິນຍອມຂອງທ່ານສຳລັບ: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI ຢາກຈະປະຕິບັດ **<ph name="TOOL_NAME"/>** ໃນ **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">ການປະຕິບັດຖືກກວດພົບວ່າອາດເຂົ້າຍ້າງຕໍ່ຄໍາຂໍຂອງທ່ານ:</translation>

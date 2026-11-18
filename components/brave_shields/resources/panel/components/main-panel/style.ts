@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled, { css } from 'styled-components'
 import { CaratStrongDownIcon } from 'brave-ui/components/icons'
-import { color } from '@brave/leo/tokens/css/variables'
+import { color } from '@brave/nala/tokens/css/variables'
 
 interface CaratIconProps {
   isExpanded: boolean
@@ -210,11 +210,11 @@ export const AdvancedControlsButton = styled.button`
   text-align: left;
   cursor: pointer;
 
-  i { 
+  i {
     grid-column: 1;
   }
-  
-  span { 
+
+  span {
     grid-column: 2;
   }
 

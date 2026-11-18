@@ -25,3 +25,9 @@ substitutions:
     add_to_protected:
       class_name: GlobalFeatures
       code: 'std::unique_ptr<BraveGlobalFeatures> brave_global_features_;'
+
+  - description: |-
+      Forward declare the types the substitutions above use
+    add_after_includes:
+      code: |-
+        class BraveGlobalFeatures;

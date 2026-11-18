@@ -12,7 +12,7 @@ substitutions:
     regex:
       re_pattern: '(void UnloadController::TabStripEmpty\(\) \{\n)'
       replace: |
-        \1  if (!browser_->GetProfile()->GetPrefs()->GetBoolean(kEnableClosingLastTab)) {
+        \1  if (!browser_->GetProfile()->GetPrefs()->GetBoolean(brave_tabs::kEnableClosingLastTab)) {
             return;
           }
   - description: |

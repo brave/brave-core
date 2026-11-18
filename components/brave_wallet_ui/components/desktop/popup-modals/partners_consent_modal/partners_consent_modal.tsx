@@ -4,8 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Checkbox from '@brave/leo/react/checkbox'
-import Button from '@brave/leo/react/button'
+import Checkbox from '@brave/nala/react/checkbox'
+import Button from '@brave/nala/react/button'
 
 // Utils
 import { getLocale, formatLocale } from '$web-common/locale'

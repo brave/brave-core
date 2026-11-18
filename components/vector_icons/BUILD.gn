@@ -164,7 +164,7 @@ aggregate_vector_icons("brave_components_vector_icons") {
   }
 
   sources +=
-      rebase_path(leo_icons, ".", "//brave/node_modules/@brave/leo/icons-skia")
+      rebase_path(leo_icons, ".", "//brave/node_modules/@brave/nala/icons-skia")
 }
 
 static_library("vector_icons") {

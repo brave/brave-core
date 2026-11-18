@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Create BraveBrowserView in CreateBrowserWindow
+
+      The Brave headers are included by the chromium_src shadow of this file.
+      Renaming every token also changes the `BrowserView* view` declaration and
+      the BrowserView::GetBrowserViewForBrowser static call, matching what the
+      former #define did; both resolve through the subclass.
+    rename_class:
+      class_name: BrowserView
+      rename: BraveBrowserView
+
+  - description: |-
+      Create BraveBrowserWidget in CreateBrowserWindow
+
+      Use Brave's BrowserWidget subclass for the browser window.
+    rename_class:
+      class_name: BrowserWidget
+      rename: BraveBrowserWidget

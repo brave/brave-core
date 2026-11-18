@@ -10,6 +10,9 @@ import { BlockExplorerUrlTypes, BraveWallet } from '../constants/types'
 import { getLocale } from '../../common/locale'
 import Amount from './amount'
 
+// Proxy
+import getWalletPageApiProxy from '../page/wallet_page_api_proxy'
+
 export const buildExplorerUrl = (
   network: Pick<BraveWallet.NetworkInfo, 'chainId' | 'blockExplorerUrls'>,
   type: BlockExplorerUrlTypes,
@@ -148,7 +151,7 @@ export const openBlockExplorerURL = ({
     const url = buildExplorerUrl(network, type, value, id)
 
     if (!chrome.tabs) {
-      window.open(url, '_blank', 'noreferrer')
+      getWalletPageApiProxy().pageHandler.openTab({ url })
     } else {
       chrome.tabs.create({ url: url }, () => {
         if (chrome.runtime.lastError) {

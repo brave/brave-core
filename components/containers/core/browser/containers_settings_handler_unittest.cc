@@ -76,10 +76,25 @@ class MockContainersSettingsObserver : public mojom::ContainersSettingsUI {
 
   int containers_changed_count() const { return containers_changed_count_; }
 
+  void OnNewTabTargetChanged(mojom::NewTabTargetPtr target) override {
+    last_new_tab_target_ = std::move(target);
+    new_tab_target_changed_count_++;
+  }
+
+  const mojom::NewTabTargetPtr& last_new_tab_target() const {
+    return last_new_tab_target_;
+  }
+
+  int new_tab_target_changed_count() const {
+    return new_tab_target_changed_count_;
+  }
+
  private:
   mojo::Receiver<mojom::ContainersSettingsUI> receiver_{this};
   std::vector<mojom::ContainerPtr> last_containers_;
   int containers_changed_count_ = 0;
+  mojom::NewTabTargetPtr last_new_tab_target_;
+  int new_tab_target_changed_count_ = 0;
 };
 
 }  // namespace
@@ -407,6 +422,73 @@ TEST_F(ContainersSettingsHandlerTest, ExternalContainerChanges) {
   ASSERT_EQ(1u, mock_observer_->last_containers().size());
   EXPECT_EQ("test-id", mock_observer_->last_containers()[0]->id);
   EXPECT_EQ("Test Container", mock_observer_->last_containers()[0]->name);
+}
+
+TEST_F(ContainersSettingsHandlerTest, GetNewTabTarget_DefaultsToNoContainer) {
+  base::test::TestFuture<mojom::NewTabTargetPtr> future;
+  handler_->GetNewTabTarget(future.GetCallback());
+  EXPECT_FALSE(future.Get());
+}
+
+TEST_F(ContainersSettingsHandlerTest, SetNewTabTarget_PersistsAndNotifies) {
+  std::vector<mojom::ContainerPtr> containers;
+  containers.push_back(
+      mojom::Container::New("id-1", "Work", mojom::Icon::kWork, SK_ColorRED));
+  SetContainersToPrefs(containers, prefs_);
+
+  base::test::TestFuture<std::optional<mojom::ContainerOperationError>> future;
+  handler_->SetNewTabTarget(mojom::NewTabTarget::NewContainerId("id-1"),
+                            future.GetCallback());
+  EXPECT_EQ(future.Get(), std::nullopt);
+  auto stored_target = GetNewTabTargetFromPrefs(prefs_);
+  ASSERT_TRUE(stored_target);
+  ASSERT_TRUE(stored_target->is_container_id());
+  EXPECT_EQ(stored_target->get_container_id(), "id-1");
+  EXPECT_EQ(mock_observer_->new_tab_target_changed_count(), 1);
+  const auto& notified_target = mock_observer_->last_new_tab_target();
+  ASSERT_TRUE(notified_target);
+  ASSERT_TRUE(notified_target->is_container_id());
+  EXPECT_EQ(notified_target->get_container_id(), "id-1");
+
+  // Switching to a temporary container is a second notification.
+  base::test::TestFuture<std::optional<mojom::ContainerOperationError>>
+      temporary_future;
+  handler_->SetNewTabTarget(mojom::NewTabTarget::NewTemporaryContainer(true),
+                            temporary_future.GetCallback());
+  EXPECT_EQ(temporary_future.Get(), std::nullopt);
+  auto temporary_target = GetNewTabTargetFromPrefs(prefs_);
+  ASSERT_TRUE(temporary_target);
+  EXPECT_TRUE(temporary_target->is_temporary_container());
+  EXPECT_EQ(mock_observer_->new_tab_target_changed_count(), 2);
+
+  // Null resets to no container.
+  base::test::TestFuture<std::optional<mojom::ContainerOperationError>>
+      reset_future;
+  handler_->SetNewTabTarget(nullptr, reset_future.GetCallback());
+  EXPECT_EQ(reset_future.Get(), std::nullopt);
+  EXPECT_FALSE(GetNewTabTargetFromPrefs(prefs_));
+  EXPECT_EQ(mock_observer_->new_tab_target_changed_count(), 3);
+  EXPECT_FALSE(mock_observer_->last_new_tab_target());
+}
+
+TEST_F(ContainersSettingsHandlerTest, SetNewTabTarget_RejectsUnknownContainer) {
+  base::test::TestFuture<std::optional<mojom::ContainerOperationError>> future;
+  handler_->SetNewTabTarget(mojom::NewTabTarget::NewContainerId("missing"),
+                            future.GetCallback());
+  EXPECT_THAT(future.Get(),
+              testing::Optional(mojom::ContainerOperationError::kNotFound));
+  EXPECT_FALSE(GetNewTabTargetFromPrefs(prefs_));
+  EXPECT_EQ(mock_observer_->new_tab_target_changed_count(), 0);
+}
+
+TEST_F(ContainersSettingsHandlerTest, SetNewTabTarget_AskEachTime) {
+  base::test::TestFuture<std::optional<mojom::ContainerOperationError>> future;
+  handler_->SetNewTabTarget(mojom::NewTabTarget::NewAskEachTime(true),
+                            future.GetCallback());
+  EXPECT_EQ(future.Get(), std::nullopt);
+  auto target = GetNewTabTargetFromPrefs(prefs_);
+  ASSERT_TRUE(target);
+  EXPECT_TRUE(target->is_ask_each_time());
 }
 
 }  // namespace containers

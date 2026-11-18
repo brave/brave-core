@@ -22,7 +22,7 @@ import LoadingPanel from '../components/loading-panel'
 import ContactSupport from '../components/contact-support'
 import PurchaseFailedPanel from '../components/purchase-failed-panel'
 import './mock-data/api'
-import '@brave/leo/tokens/css/variables.css'
+import '@brave/nala/tokens/css/variables.css'
 
 export default {
   title: 'VPN/Panels',

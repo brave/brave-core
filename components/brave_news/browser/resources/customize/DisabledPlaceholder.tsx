@@ -7,7 +7,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { getLocale } from '$web-common/locale'
 import Flex from '$web-common/Flex'
-import { color, font, spacing } from '@brave/leo/tokens/css/variables'
+import { color, font, spacing } from '@brave/nala/tokens/css/variables'
 
 const Container = styled(Flex)`
   padding: ${spacing['2Xl']} 0;

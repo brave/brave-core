@@ -12,7 +12,7 @@
 #include "brave/components/endpoint_client/is_response.h"
 #include "brave/components/endpoint_client/with_headers.h"
 
-namespace endpoint_client::detail {
+namespace endpoint_client::internal {
 
 // Primary template: leaves types unchanged unless
 // matched by the partial specialization below.
@@ -30,6 +30,6 @@ struct MaybeStripWithHeadersImpl<WithHeaders<T>> : std::type_identity<T> {};
 template <typename T>
 using MaybeStripWithHeaders = typename MaybeStripWithHeadersImpl<T>::type;
 
-}  // namespace endpoint_client::detail
+}  // namespace endpoint_client::internal
 
 #endif  // BRAVE_COMPONENTS_ENDPOINT_CLIENT_MAYBE_STRIP_WITH_HEADERS_H_

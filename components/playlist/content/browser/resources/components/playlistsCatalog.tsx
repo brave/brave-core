@@ -19,8 +19,8 @@ import {
   verticalListSortingStrategy
 } from '@dnd-kit/sortable'
 
-import Icon from '@brave/leo/react/icon'
-import { color, spacing } from '@brave/leo/tokens/css/variables'
+import Icon from '@brave/nala/react/icon'
+import { color, spacing } from '@brave/nala/tokens/css/variables'
 
 import { Playlist } from 'gen/brave/components/playlist/core/common/mojom/playlist.mojom.m.js'
 

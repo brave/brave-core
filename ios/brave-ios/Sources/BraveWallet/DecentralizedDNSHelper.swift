@@ -18,16 +18,13 @@ public enum Web3Service: String, CaseIterable {
 @MainActor public class DecentralizedDNSHelper {
 
   private let rpcService: BraveWalletJsonRpcService
-  private let ipfsApi: IpfsAPI?
 
   public init?(
     rpcService: BraveWalletJsonRpcService,
-    ipfsApi: IpfsAPI?,
     isPrivateMode: Bool
   ) {
     guard !isPrivateMode else { return nil }
     self.rpcService = rpcService
-    self.ipfsApi = ipfsApi
   }
 
   public enum DNSLookupResult: Equatable {
@@ -84,7 +81,7 @@ public enum Web3Service: String, CaseIterable {
       }
       guard status == .success,
         !contentHash.isEmpty,
-        let ipfsUrl = ipfsApi?.contentHashToCIDv1URL(for: contentHash),
+        let ipfsUrl = IpfsAPI.contentHashToCIDv1URL(for: contentHash),
         !ipfsUrl.isBookmarklet
       else {
         return .none

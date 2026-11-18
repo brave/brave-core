@@ -76,9 +76,9 @@ class BraveWaybackMachineTabHelper : public content::WebContentsObserver,
   // Looks up the latest snapshot of the current page.
   void FetchSnapshotInfo();
 
-  // Navigates to the snapshot found by FetchSnapshotInfo(). Must be in the
-  // |kFound| state.
-  void NavigateToSnapshot();
+  // Navigates to the snapshot found by FetchSnapshotInfo(), if a snapshot was
+  // found.
+  void MaybeNavigateToSnapshot();
 
  private:
   // content::WebContentsObserver:

@@ -7,12 +7,15 @@
 
 #include "base/containers/fixed_flat_set.h"
 #include "base/logging.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/commands/common/features.h"
 #include "build/buildflag.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
@@ -106,14 +109,20 @@ IN_PROC_BROWSER_TEST_F(CommandUtilsBrowserTest,
       // If this is the only tab the browser will exit, so add a new tab
       // before executing the command
       SCOPED_TRACE(testing::Message() << commands::GetCommandName(command));
+      const int tab_count = browser()->GetTabStripModel()->count();
       chrome::ExecuteCommand(browser(), IDC_NEW_TAB);
-      base::RunLoop().RunUntilIdle();
+      ASSERT_TRUE(base::test::RunUntil([&]() {
+        return browser()->GetTabStripModel()->count() > tab_count;
+      }));
     } else if (command == IDC_CLOSE_WINDOW) {
       // If this is the only window the browser will exit, so add a new window
       // before executing the command
       SCOPED_TRACE(testing::Message() << commands::GetCommandName(command));
+      const size_t browser_count = GetAllBrowserWindowInterfaces().size();
       chrome::ExecuteCommand(browser(), IDC_NEW_WINDOW);
-      base::RunLoop().RunUntilIdle();
+      ASSERT_TRUE(base::test::RunUntil([&]() {
+        return GetAllBrowserWindowInterfaces().size() > browser_count;
+      }));
     }
 #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
 

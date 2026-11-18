@@ -5,10 +5,8 @@
 
 package org.chromium.chrome.browser.preferences.website;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import org.junit.After;
 import org.junit.Before;
@@ -43,63 +41,13 @@ public class BraveShieldsContentSettingsResetTest {
     }
 
     @Test
-    public void testResetSiteToDefaults_appliesAllGlobalDefaultsToSite() {
-        when(mNatives.isBraveShieldsEnabled("", mProfile)).thenReturn(true);
-        when(mNatives.getNoScriptControlType("", mProfile)).thenReturn("block");
-        when(mNatives.getForgetFirstPartyStorageEnabled("", mProfile)).thenReturn(false);
-        when(mNatives.getFingerprintingControlType("", mProfile)).thenReturn("block");
-        when(mNatives.getHttpsUpgradeControlType("", mProfile)).thenReturn("block");
-        when(mNatives.getCookieControlType("", mProfile)).thenReturn("block_third_party");
-        when(mNatives.getCosmeticFilteringControlType("", mProfile))
-                .thenReturn("block_third_party");
-        when(mNatives.getAdControlType("", mProfile)).thenReturn("block");
-
+    public void testResetSiteToDefaults_delegatesToNativeReset() {
         BraveShieldsContentSettings.resetSiteToDefaults(mProfile, SITE_URL);
 
-        verify(mNatives).setBraveShieldsEnabled(true, SITE_URL, mProfile);
-        verify(mNatives).setNoScriptControlType("block", SITE_URL, mProfile);
-        verify(mNatives).setForgetFirstPartyStorageEnabled(false, SITE_URL, mProfile);
-        verify(mNatives).setFingerprintingControlType("block", SITE_URL, mProfile);
-        verify(mNatives).setHttpsUpgradeControlType("block", SITE_URL, mProfile);
-        verify(mNatives).setCookieControlType("block_third_party", SITE_URL, mProfile);
-        verify(mNatives).setCosmeticFilteringControlType("block_third_party", SITE_URL, mProfile);
-        verify(mNatives).setAdControlType("block", SITE_URL, mProfile);
-    }
-
-    @Test
-    public void testResetSiteToDefaults_callsHttpsUpgradeWhenDefaultIsDefault() {
-        when(mNatives.isBraveShieldsEnabled("", mProfile)).thenReturn(true);
-        when(mNatives.getNoScriptControlType("", mProfile)).thenReturn("block");
-        when(mNatives.getForgetFirstPartyStorageEnabled("", mProfile)).thenReturn(false);
-        when(mNatives.getFingerprintingControlType("", mProfile)).thenReturn("default");
-        when(mNatives.getHttpsUpgradeControlType("", mProfile)).thenReturn("default");
-        when(mNatives.getCookieControlType("", mProfile)).thenReturn("block_third_party");
-        when(mNatives.getCosmeticFilteringControlType("", mProfile))
-                .thenReturn("block_third_party");
-        when(mNatives.getAdControlType("", mProfile)).thenReturn("block");
-
-        BraveShieldsContentSettings.resetSiteToDefaults(mProfile, SITE_URL);
-
-        verify(mNatives).setHttpsUpgradeControlType(anyString(), anyString(), any(Profile.class));
-        verify(mNatives).setBraveShieldsEnabled(true, SITE_URL, mProfile);
-        verify(mNatives).setFingerprintingControlType("default", SITE_URL, mProfile);
-    }
-
-    @Test
-    public void testResetSiteToDefaults_setsHttpsUpgradeWhenDefaultIsAllow() {
-        when(mNatives.isBraveShieldsEnabled("", mProfile)).thenReturn(false);
-        when(mNatives.getNoScriptControlType("", mProfile)).thenReturn("allow");
-        when(mNatives.getForgetFirstPartyStorageEnabled("", mProfile)).thenReturn(true);
-        when(mNatives.getFingerprintingControlType("", mProfile)).thenReturn("allow");
-        when(mNatives.getHttpsUpgradeControlType("", mProfile)).thenReturn("allow");
-        when(mNatives.getCookieControlType("", mProfile)).thenReturn("allow");
-        when(mNatives.getCosmeticFilteringControlType("", mProfile)).thenReturn("allow");
-        when(mNatives.getAdControlType("", mProfile)).thenReturn("allow");
-
-        BraveShieldsContentSettings.resetSiteToDefaults(mProfile, SITE_URL);
-
-        verify(mNatives).setHttpsUpgradeControlType("allow", SITE_URL, mProfile);
-        verify(mNatives).setBraveShieldsEnabled(false, SITE_URL, mProfile);
-        verify(mNatives).setForgetFirstPartyStorageEnabled(true, SITE_URL, mProfile);
+        // The actual per-setting clearing lives natively (ResetShieldsSettingsForSite /
+        // ResetForgetFirstPartyStorageEnabled) so the site keeps following the global defaults
+        // as they change later, instead of this layer snapshotting current values per setting.
+        verify(mNatives).resetSiteToDefaults(SITE_URL, mProfile);
+        verifyNoMoreInteractions(mNatives);
     }
 }

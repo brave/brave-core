@@ -102,6 +102,7 @@ source_set("unit_tests") {
     "associated_url_content_unittest.cc",
     "associated_web_contents_content_unittest.cc",
     "content_tool_unittest.cc",
+    "full_screenshotter_unittest.cc",
     "page_content_blocks_unittest.cc",
     "page_content_fetcher_unittest.cc",
   ]
@@ -120,7 +121,12 @@ source_set("unit_tests") {
     "//components/favicon/core/test:test_support",
     "//components/optimization_guide/content/browser",
     "//components/optimization_guide/proto:optimization_guide_proto",
+    "//components/paint_preview/browser",
+    "//components/paint_preview/common:test_utils",
+    "//components/paint_preview/common/mojom",
+    "//components/paint_preview/public",
     "//components/pdf/common:constants",
+    "//components/services/paint_preview_compositor/public/mojom",
     "//components/tabs:public",
     "//components/tabs:test_support",
     "//content/public/browser",
@@ -134,6 +140,9 @@ source_set("unit_tests") {
     "//services/service_manager/public/cpp",
     "//testing/gmock",
     "//testing/gtest",
+    "//third_party/abseil-cpp:absl",
+    "//third_party/blink/public/common",
+    "//ui/gfx:test_support",
     "//url",
   ]
 

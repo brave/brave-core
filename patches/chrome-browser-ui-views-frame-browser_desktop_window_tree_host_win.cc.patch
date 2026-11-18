@@ -1,0 +1,232 @@
+diff --git a/chrome/browser/ui/views/frame/browser_desktop_window_tree_host_win.cc b/chrome/browser/ui/views/frame/browser_desktop_window_tree_host_win.cc
+index 234e7a390abf8ea6129503181a9f682767e87c6e..3519817bc16c7471778f1a863c34ea28c5988073 100644
+--- a/chrome/browser/ui/views/frame/browser_desktop_window_tree_host_win.cc
++++ b/chrome/browser/ui/views/frame/browser_desktop_window_tree_host_win.cc
+@@ -229,7 +229,7 @@ std::string VirtualDesktopHelper::GetWindowDesktopIdImpl(
+ ////////////////////////////////////////////////////////////////////////////////
+ // BrowserDesktopWindowTreeHostWin, public:
+ 
+-BrowserDesktopWindowTreeHostWin::BrowserDesktopWindowTreeHostWin(
++BrowserDesktopWindowTreeHostWin_ChromiumImpl::BrowserDesktopWindowTreeHostWin_ChromiumImpl(
+     views::internal::NativeWidgetDelegate* native_widget_delegate,
+     views::DesktopNativeWidgetAura* desktop_native_widget_aura,
+     BrowserView* browser_view,
+@@ -250,9 +250,9 @@ BrowserDesktopWindowTreeHostWin::BrowserDesktopWindowTreeHostWin(
+   }
+ }
+ 
+-BrowserDesktopWindowTreeHostWin::~BrowserDesktopWindowTreeHostWin() = default;
++BrowserDesktopWindowTreeHostWin_ChromiumImpl::~BrowserDesktopWindowTreeHostWin_ChromiumImpl() = default;
+ 
+-views::NativeMenuWin* BrowserDesktopWindowTreeHostWin::GetSystemMenu() {
++views::NativeMenuWin* BrowserDesktopWindowTreeHostWin_ChromiumImpl::GetSystemMenu() {
+   if (!system_menu_.get()) {
+     CHECK(browser_widget_);
+     SystemMenuInsertionDelegateWin insertion_delegate;
+@@ -267,15 +267,15 @@ views::NativeMenuWin* BrowserDesktopWindowTreeHostWin::GetSystemMenu() {
+ // BrowserDesktopWindowTreeHostWin, BrowserDesktopWindowTreeHost implementation:
+ 
+ views::DesktopWindowTreeHost*
+-BrowserDesktopWindowTreeHostWin::AsDesktopWindowTreeHost() {
++BrowserDesktopWindowTreeHostWin_ChromiumImpl::AsDesktopWindowTreeHost() {
+   return this;
+ }
+ 
+-bool BrowserDesktopWindowTreeHostWin::UsesNativeSystemMenu() const {
++bool BrowserDesktopWindowTreeHostWin_ChromiumImpl::UsesNativeSystemMenu() const {
+   return !features::IsMenuSimplificationEnabled();
+ }
+ 
+-void BrowserDesktopWindowTreeHostWin::ShowCustomSystemMenu(
++void BrowserDesktopWindowTreeHostWin_ChromiumImpl::ShowCustomSystemMenu(
+     const gfx::Point& screen_point) {
+   gfx::Point dip_point =
+       gfx::ToFlooredPoint(display::win::GetScreenWin()->ScreenToDIPPoint(
+@@ -287,7 +287,7 @@ void BrowserDesktopWindowTreeHostWin::ShowCustomSystemMenu(
+ ////////////////////////////////////////////////////////////////////////////////
+ // BrowserDesktopWindowTreeHostWin, views::DesktopWindowTreeHostWin overrides:
+ 
+-void BrowserDesktopWindowTreeHostWin::Init(
++void BrowserDesktopWindowTreeHostWin_ChromiumImpl::Init(
+     const views::Widget::InitParams& params) {
+   DesktopWindowTreeHostWin::Init(params);
+   virtual_desktop_helper_ =
+@@ -295,7 +295,7 @@ void BrowserDesktopWindowTreeHostWin::Init(
+   virtual_desktop_helper_->Init(GetHWND());
+ }
+ 
+-void BrowserDesktopWindowTreeHostWin::Show(
++void BrowserDesktopWindowTreeHostWin_ChromiumImpl::Show(
+     ui::mojom::WindowShowState show_state,
+     const gfx::Rect& restore_bounds) {
+   // This will make BrowserWindowState remember the initial workspace.
+@@ -314,7 +314,7 @@ void BrowserDesktopWindowTreeHostWin::Show(
+   DesktopWindowTreeHostWin::Show(show_state, restore_bounds);
+ }
+ 
+-void BrowserDesktopWindowTreeHostWin::HandleWindowMinimizedOrRestored(
++void BrowserDesktopWindowTreeHostWin_ChromiumImpl::HandleWindowMinimizedOrRestored(
+     bool restored) {
+   DesktopWindowTreeHostWin::HandleWindowMinimizedOrRestored(restored);
+ 
+@@ -323,12 +323,12 @@ void BrowserDesktopWindowTreeHostWin::HandleWindowMinimizedOrRestored(
+   }
+ }
+ 
+-std::string BrowserDesktopWindowTreeHostWin::GetWorkspace() const {
++std::string BrowserDesktopWindowTreeHostWin_ChromiumImpl::GetWorkspace() const {
+   return virtual_desktop_helper_ ? virtual_desktop_helper_->GetWorkspace()
+                                  : std::string();
+ }
+ 
+-int BrowserDesktopWindowTreeHostWin::GetInitialShowState() const {
++int BrowserDesktopWindowTreeHostWin_ChromiumImpl::GetInitialShowState() const {
+   STARTUPINFO si = {0};
+   si.cb = sizeof(si);
+   si.dwFlags = STARTF_USESHOWWINDOW;
+@@ -336,7 +336,7 @@ int BrowserDesktopWindowTreeHostWin::GetInitialShowState() const {
+   return si.wShowWindow;
+ }
+ 
+-bool BrowserDesktopWindowTreeHostWin::GetClientAreaInsets(
++bool BrowserDesktopWindowTreeHostWin_ChromiumImpl::GetClientAreaInsets(
+     gfx::Insets* insets,
+     int frame_thickness) const {
+   // Always use default insets for opaque frame.
+@@ -367,7 +367,7 @@ bool BrowserDesktopWindowTreeHostWin::GetClientAreaInsets(
+   return true;
+ }
+ 
+-bool BrowserDesktopWindowTreeHostWin::GetDwmFrameInsetsInPixels(
++bool BrowserDesktopWindowTreeHostWin_ChromiumImpl::GetDwmFrameInsetsInPixels(
+     gfx::Insets* insets) const {
+   // For "normal" windows on Aero, we always need to reset the glass area
+   // correctly, even if we're not currently showing the native frame (e.g.
+@@ -388,7 +388,7 @@ bool BrowserDesktopWindowTreeHostWin::GetDwmFrameInsetsInPixels(
+   return true;
+ }
+ 
+-void BrowserDesktopWindowTreeHostWin::HandleCreate() {
++void BrowserDesktopWindowTreeHostWin_ChromiumImpl::HandleCreate() {
+   if (!browser_view_) {
+     return;
+   }
+@@ -408,12 +408,12 @@ void BrowserDesktopWindowTreeHostWin::HandleCreate() {
+   }
+ }
+ 
+-void BrowserDesktopWindowTreeHostWin::HandleDestroying() {
++void BrowserDesktopWindowTreeHostWin_ChromiumImpl::HandleDestroying() {
+   browser_window_property_manager_.reset();
+   DesktopWindowTreeHostWin::HandleDestroying();
+ }
+ 
+-bool BrowserDesktopWindowTreeHostWin::PreHandleMSG(UINT message,
++bool BrowserDesktopWindowTreeHostWin_ChromiumImpl::PreHandleMSG(UINT message,
+                                                    WPARAM w_param,
+                                                    LPARAM l_param,
+                                                    LRESULT* result) {
+@@ -452,7 +452,7 @@ bool BrowserDesktopWindowTreeHostWin::PreHandleMSG(UINT message,
+                                                 result);
+ }
+ 
+-void BrowserDesktopWindowTreeHostWin::PostHandleMSG(UINT message,
++void BrowserDesktopWindowTreeHostWin_ChromiumImpl::PostHandleMSG(UINT message,
+                                                     WPARAM w_param,
+                                                     LPARAM l_param) {
+   if (!GetWidget()) {
+@@ -494,7 +494,7 @@ void BrowserDesktopWindowTreeHostWin::PostHandleMSG(UINT message,
+   }
+ }
+ 
+-views::FrameMode BrowserDesktopWindowTreeHostWin::GetFrameMode() const {
++views::FrameMode BrowserDesktopWindowTreeHostWin_ChromiumImpl::GetFrameMode() const {
+   if (!browser_view_) {
+     // If there is no browser view the frame should be system drawn.
+     return views::FrameMode::SYSTEM_DRAWN;
+@@ -519,7 +519,7 @@ views::FrameMode BrowserDesktopWindowTreeHostWin::GetFrameMode() const {
+              : views::FrameMode::CUSTOM_DRAWN;
+ }
+ 
+-bool BrowserDesktopWindowTreeHostWin::ShouldUseNativeFrame() const {
++bool BrowserDesktopWindowTreeHostWin_ChromiumImpl::ShouldUseNativeFrame() const {
+   if (!browser_view_ ||
+       !views::DesktopWindowTreeHostWin::ShouldUseNativeFrame()) {
+     return false;
+@@ -541,13 +541,13 @@ bool BrowserDesktopWindowTreeHostWin::ShouldUseNativeFrame() const {
+   return GetWidget()->GetThemeProvider()->ShouldUseNativeFrame();
+ }
+ 
+-bool BrowserDesktopWindowTreeHostWin::ShouldWindowContentsBeTransparent()
++bool BrowserDesktopWindowTreeHostWin_ChromiumImpl::ShouldWindowContentsBeTransparent()
+     const {
+   CHECK(browser_view_);
+   return false;
+ }
+ 
+-void BrowserDesktopWindowTreeHostWin::ClientDestroyedWidget() {
++void BrowserDesktopWindowTreeHostWin_ChromiumImpl::ClientDestroyedWidget() {
+   profile_observation_.Reset();
+   system_menu_.reset();
+   browser_window_property_manager_.reset();
+@@ -559,7 +559,7 @@ void BrowserDesktopWindowTreeHostWin::ClientDestroyedWidget() {
+ ////////////////////////////////////////////////////////////////////////////////
+ // ProfileAttributesStorage::Observer overrides:
+ 
+-void BrowserDesktopWindowTreeHostWin::OnProfileAvatarChanged(
++void BrowserDesktopWindowTreeHostWin_ChromiumImpl::OnProfileAvatarChanged(
+     const base::FilePath& profile_path) {
+   // If we're currently badging the window icon (>1 available profile),
+   // and this window's profile's avatar changed, update the window icon.
+@@ -573,7 +573,7 @@ void BrowserDesktopWindowTreeHostWin::OnProfileAvatarChanged(
+   }
+ }
+ 
+-void BrowserDesktopWindowTreeHostWin::OnProfileAdded(
++void BrowserDesktopWindowTreeHostWin_ChromiumImpl::OnProfileAdded(
+     const base::FilePath& profile_path) {
+   if (g_browser_process->profile_manager()
+           ->GetProfileAttributesStorage()
+@@ -582,7 +582,7 @@ void BrowserDesktopWindowTreeHostWin::OnProfileAdded(
+   }
+ }
+ 
+-void BrowserDesktopWindowTreeHostWin::OnProfileWasRemoved(
++void BrowserDesktopWindowTreeHostWin_ChromiumImpl::OnProfileWasRemoved(
+     const base::FilePath& profile_path,
+     const std::u16string& profile_name) {
+   if (g_browser_process->profile_manager()
+@@ -596,13 +596,13 @@ void BrowserDesktopWindowTreeHostWin::OnProfileWasRemoved(
+ ////////////////////////////////////////////////////////////////////////////////
+ // BrowserDesktopWindowTreeHostWin, private:
+ 
+-void BrowserDesktopWindowTreeHostWin::UpdateWorkspace() {
++void BrowserDesktopWindowTreeHostWin_ChromiumImpl::UpdateWorkspace() {
+   if (!virtual_desktop_helper_) {
+     return;
+   }
+   virtual_desktop_helper_->UpdateWindowDesktopId(
+       GetHWND(),
+-      base::BindOnce(&BrowserDesktopWindowTreeHostWin::OnHostWorkspaceChanged,
++      base::BindOnce(&BrowserDesktopWindowTreeHostWin_ChromiumImpl::OnHostWorkspaceChanged,
+                      weak_factory_.GetWeakPtr()));
+ }
+ 
+@@ -633,7 +633,7 @@ SkBitmap GetBadgedIconBitmapForProfile(Profile* profile) {
+                                                    avatar_bitmap_2x);
+ }
+ 
+-void BrowserDesktopWindowTreeHostWin::SetWindowIcon(bool badged) {
++void BrowserDesktopWindowTreeHostWin_ChromiumImpl::SetWindowIcon(bool badged) {
+   // Keep the previous badged icon alive until the window has switched away
+   // from it.
+   base::win::ScopedGDIObject<HICON> previous_badged_icon =
+@@ -652,7 +652,7 @@ void BrowserDesktopWindowTreeHostWin::SetWindowIcon(bool badged) {
+   SendMessage(GetHWND(), WM_SETICON, ICON_BIG, reinterpret_cast<LPARAM>(icon));
+ }
+ 
+-void BrowserDesktopWindowTreeHostWin::ShowViewsSystemMenuAtDefaultLocation() {
++void BrowserDesktopWindowTreeHostWin_ChromiumImpl::ShowViewsSystemMenuAtDefaultLocation() {
+   gfx::Point point = browser_widget_->non_client_view()
+                          ->frame_view()
+                          ->GetKeyboardContextMenuLocation();

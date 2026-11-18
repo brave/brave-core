@@ -140,7 +140,8 @@ TEST_F(WebDiscoveryServerConfigLoaderTest, LoadConfigs) {
   task_environment_.FastForwardBy(base::Seconds(40));
 
   server_config_loader_->LoadConfigs();
-  task_environment_.RunUntilIdle();
+  // Stay below the 15 second patterns request delay.
+  task_environment_.FastForwardBy(base::Seconds(1));
 
   EXPECT_EQ(hpn_config_requests_made_, 1u);
   EXPECT_EQ(quorum_config_requests_made_, 1u);

@@ -948,6 +948,11 @@ other {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_EN
 <translation id="4362717653795263052">Vrati primarne kripto naloge</translation>
 <translation id="3038077262567136741">Unesite frazu za oporavak da biste vratili svoj kripto nalog na Brave novčaniku.</translation>
 <translation id="955918646509748368">Uneta fraza za oporavak je nevažeća.</translation>
+<translation id="7496330898672236908">Ova fraza za oporavak ne odgovara vašem novčaniku. Proverite frazu i pokušajte ponovo.</translation>
+<translation id="3798792138617904098">Ukloniti uvezene naloge?</translation>
+<translation id="2960631345291747230">Vaša fraza za oporavak ne obuhvata rezervnu kopiju uvezenih naloga. Biće uklonjeni iz Brave novčanika, a možete trajno izgubiti pristup njihovim sredstvima ako niste sačuvali rezervnu kopiju njihovih privatnih ključeva.</translation>
+<translation id="8898583604592472741">Ukloni naloge</translation>
+<translation id="1577629163207045190">Ukucajte „<ph name="CONFIRMATION_PHRASE"/>“ da biste potvrdili.</translation>
 <translation id="8107437138787377150">Nalepi frazu za oporavak iz privremene memorije</translation>
 <translation id="4811736040444856406">Prikaži frazu za oporavak</translation>
 <translation id="4359319875297001084">Želite li da uvezete iz zastarelih Brave kripto novčanika?</translation>
@@ -2243,13 +2248,12 @@ other {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_EN
 <translation id="3934503473603661122">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me Grok 4.7, xAI-jev vrhunski model rezonovanja na Amazon Bedrock-u. Grok 4.7 se poslužuje preko Brave-ove bezbedne AWS infrastrukture.<ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me GPT Luna, OpenAI-jev brz model sa niskom latencijom na Amazon Bedrock-u. GPT Luna se poslužuje preko Brave-ove bezbedne AWS infrastrukture.<ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me GPT 5.6 Terra, OpenAI-jev uravnoteženi produkcioni model na Amazon Bedrock Mantle. GPT 5.6 Terra se poslužuje preko Brave-ove bezbedne AWS infrastrukture.<ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me Mistral Large, model koji je kreirala kompanija Mistral kako bih bio efikasan i primenljiv na mnoge slučajeve upotrebe. Mistral Large se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi.<ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me Claude Haiku, model koji je kreirala kompanija Anthropic kako bi omogućila razgovorne zadatke i zadatke obrade teksta. Claude Haiku se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi.<ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me Qwen 3.8 Flash Next, model koji je kreirala kompanija Alibaba Cloud kako bih bio efikasan i primenljiv na mnoge slučajeve upotrebe. Qwen 3.8 Flash Next se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi.<ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me Deepseek V3.2, model koji je kreirala kompanija Deepseek kako bih bio efikasan i primenljiv na mnoge slučajeve upotrebe. Deepseek V3.2 se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi.<ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me GLM 5.3, model koji je kreirala kompanija Z.ai kako bi bio efikasan i primenljiv na mnoge slučajeve upotrebe. GLM 5.3 se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi.<ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me Claude Opus, model koji je kreirala kompanija Anthropic kako bi omogućila razgovorne zadatke i zadatke obrade teksta. Claude Opus se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi.<ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me GLM-4-7-Flash, model koji je kreirala kompanija Zhipu AI kako bih bio efikasan i primenljiv na mnoge slučajeve upotrebe. GLM-4-7-Flash se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi.<ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me Kimi K2.5, model koji je kreirala kompanija Moonshot AI kako bih bio efikasan i primenljiv na mnoge slučajeve upotrebe. Kimi K2.5 se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi.<ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me Nemotron Nano 3 30B, model koji je kreirala kompanija NVIDIA kako bih bio efikasan i primenljiv na mnoge slučajeve upotrebe. Nemotron Nano 3 30B se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi.<ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me Brave Ocelot, model koji je kreirala kompanija Brave kako bih rezimirao veb stranice. Brave Ocelot se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi.<ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premijum</translation>
 <translation id="5807427080183870259">Lokalno</translation>
@@ -2389,8 +2393,8 @@ other {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_EN
 <translation id="7465032796278724624">Verifikovano privatno uz NEAR AI TEE</translation>
 <translation id="8782867266498869301">Model se dinamički menja kako bi koristio najbolji za zadatak</translation>
 <translation id="7348809809749151120">Brzo • Pretraga</translation>
+<translation id="7711013627639951065">Brzo • Pretraga • Vizija • Alatke</translation>
 <translation id="3213834013136637671">Pretraga • Vizija</translation>
-<translation id="2793458212460902934">Brzo • Pretraga • Alatke</translation>
 <translation id="5276681919620506371">Pretraga • Alatke</translation>
 <translation id="7434375176361995333">Rezimea • Brzo</translation>
 <translation id="3965507912994218570">Podešavanja asistenta Leo</translation>
@@ -2463,6 +2467,8 @@ other {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_EN
 <translation id="6287023598025162715">Novi razgovor</translation>
 <translation id="7230502562132448519">Filtriraj razgovore</translation>
 <translation id="821070843380699990">Pokušajte drugu pretragu</translation>
+<translation id="241415280196701326">Nedavni radni prostori</translation>
+<translation id="5388053981690151266">Nova konverzacija u ovom radnom prostoru</translation>
 <translation id="7097822247923237815">Privremeno ćaskanje</translation>
 <translation id="7481750859362986254">Ovaj ćaskanje neće biti sačuvano u vašoj istoriji niti će koristiti bilo kakva prilagođavanja ili memorije asistenta Leo.</translation>
 <translation id="4238305333951712482">Memorija ažurirana: <ph name="MEMORY_CONTENT"/></translation>
@@ -2488,6 +2494,7 @@ other {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_EN
 <translation id="5103625298494362646">Režim Agenta funkcioniše sa modelima koji podržavaju alate. Neodgovarajući modeli su skriveni sa ove liste.</translation>
 <translation id="3397808797783614750">Omogućavanje AI da automatski pretražuje umesto vas može izazvati štetne, nepredviđene posledice po vašu privatnost, finansije i onlajn komunikacije. <ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Bezbednosno upozorenje</translation>
+<translation id="717245811623757038">Zahtev za dozvolu za alatku</translation>
 <translation id="6077070599873946984">Brave AI zahteva vašu dozvolu za: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI želi da izvrši **<ph name="TOOL_NAME"/>** na **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Radnja je detektovana kao potencijalno nesaglasna sa vašim zahtevom:</translation>

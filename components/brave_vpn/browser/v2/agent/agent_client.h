@@ -22,6 +22,7 @@
 #include "brave/components/brave_vpn/browser/v2/agent/agent_identity.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/mojom/browser_agent.mojom.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "mojo/public/cpp/platform/named_platform_channel.h"
 #include "mojo/public/cpp/system/message_pipe.h"
@@ -30,8 +31,6 @@
 static_assert(BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS));
 
 namespace brave_vpn::v2 {
-
-class BrowserEndpointImpl;
 
 // The browser end of the browser to agent contract: owns the single connection
 // a VPN keyed service has to the user's agent, drives the handshake, and hands
@@ -152,7 +151,13 @@ class AgentClient {
 
   static std::string_view ErrorToString(Error error);
 
-  AgentClient();
+  // The agent calls into the browser through the |browser_endpoint|. It must
+  // outlive this object; it's called on this object's sequence and only while a
+  // session is up: nothing arrives before observers got OnAgentConnected(), and
+  // nothing after they got OnAgentDisconnected(). Whatever the agent sends
+  // ahead of the handshake completing is held back until then, not dropped.
+  explicit AgentClient(mojom::BrowserEndpoint* browser_endpoint);
+
   ~AgentClient();
 
   AgentClient(const AgentClient&) = delete;
@@ -162,6 +167,7 @@ class AgentClient {
   // |tick_clock| overrides the backoff's clock; tests using MOCK_TIME must pass
   // TaskEnvironment's mock tick clock, or the retry paths will not advance.
   static std::unique_ptr<AgentClient> CreateForTesting(
+      mojom::BrowserEndpoint* browser_endpoint,
       ServerNameProvider server_name_provider,
       Connector connector,
       const base::TickClock* tick_clock);
@@ -189,7 +195,8 @@ class AgentClient {
   void RemoveObserver(Observer* observer);
 
  private:
-  AgentClient(ServerNameProvider server_name_provider,
+  AgentClient(mojom::BrowserEndpoint* browser_endpoint,
+              ServerNameProvider server_name_provider,
               Connector connector,
               const base::TickClock* tick_clock = nullptr);
 
@@ -239,8 +246,8 @@ class AgentClient {
   bool session_pipe_dropped_ = false;
   mojo::Remote<mojom::BrowserHostProvider> provider_;
   mojo::Remote<mojom::BrowserHost> host_;
+  mojo::Receiver<mojom::BrowserEndpoint> endpoint_receiver_;
   std::unique_ptr<AgentIdentity> agent_identity_;
-  std::unique_ptr<BrowserEndpointImpl> browser_endpoint_;
   base::OneShotTimer handshake_timer_;
   base::OneShotTimer retry_timer_;
   base::OneShotTimer stable_session_timer_;

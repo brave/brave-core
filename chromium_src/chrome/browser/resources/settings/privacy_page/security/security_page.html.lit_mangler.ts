@@ -27,6 +27,14 @@ mangle((root) => {
   }
   standard.removeAttribute('?no-collapse')
   standard.setAttribute('no-collapse', '')
+  standard.insertAdjacentHTML(
+    'beforeend',
+    `<div slot="sub-label"
+        ?hidden="\${!loadTimeData.getBoolean('isExtensionMalwareBlocklistEnabled')}">
+      $i18n{braveSafeBrowsingExtensionMalwareBlocklistDesc}
+      <a href="$i18n{braveSafeBrowsingLearnMoreURL}" target="_blank">$i18n{learnMore}</a>
+    </div>`,
+  )
 
   // Make loadTimeData available to the template, via the imports
   // html_to_wrapper carries over to the generated security_page.html.ts.

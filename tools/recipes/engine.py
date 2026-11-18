@@ -16,6 +16,11 @@ Run a recipe directly (recipe names are `/`-separated paths under recipes/).
     python3 engine.py toolchains/rust/package_rust \\
         --properties '{"chromium_ref": "refs/tags/151.0.7917.1",
                        "brave_subrevision": 1}'
+
+`--properties-file` reads the properties from a file instead. `--output`
+writes the final build (status, summary and output properties), and
+`--output-result-json` the legacy result; the exit code is 0 only when the
+recipe succeeded.
 """
 
 from __future__ import annotations
@@ -30,21 +35,33 @@ import logging
 import os
 from pathlib import Path
 import sys
+import tempfile
 import types
 import typing
 
 from google.protobuf import json_format as jsonpb
+from google.protobuf import text_format as textpb
 
+from engine_types import MAX_SUMMARY_MARKDOWN_SIZE
 import proto_support
-from recipe_api import RecipeApi, RecipeScriptApi
+from recipe_api import RecipeApi, RecipeScriptApi, StepFailure
 from recipe_test_api import RecipeTestApi
 from step_stack import StepStack
+
+if typing.TYPE_CHECKING:
+    from PB.recipe_engine import result as result_pb
+    from step_data import StepData
 
 # Root of the recipes tree (this file's directory). Recipe modules live under
 # `recipe_modules/<name>/` and recipes under `recipes/<name>.py`.
 RECIPES_ROOT = Path(__file__).resolve().parent
 MODULES_PKG = 'recipe_modules'
 RECIPES_PKG = 'recipes'
+
+# The variables a job's temp dir is given in, as luciexe's `TempDirEnvVars`:
+# Python reads `TMPDIR`, `TEMP` and `TMP`; Windows' `GetTempPath()` reads `TMP`
+# then `TEMP`; Chromium on Mac reads `MAC_CHROMIUM_TMPDIR`.
+TEMP_DIR_ENV_VARS = ('MAC_CHROMIUM_TMPDIR', 'TEMP', 'TEMPDIR', 'TMP', 'TMPDIR')
 
 
 def _ensure_on_sys_path() -> None:
@@ -368,12 +385,25 @@ class _Engine:
         self._environ: Mapping[str, str] = {}
         # The run's stack of open steps, shared by every module so `step` and
         # `futures` reach the same one without depending on each other.
-        self._step_stack = StepStack()
+        self._step_stack = StepStack(self._finalise_step)
+        # The build's output properties, as exported by the steps closed so
+        # far; a later step's value for a key replaces an earlier one's.
+        self.output_properties: dict[str, object] = {}
         # module name -> instantiated RecipeApi (one instance per run).
         self._cache: dict[str, RecipeApi] = {}
         # module name -> instantiated RecipeTestApi, attached to each module as
         # its `test_api` (see `instantiate_test_module`).
         self._test_api_cache: dict[str, RecipeTestApi] = {}
+
+    def _finalise_step(
+        self, step_data: StepData, properties: dict[str, object]
+    ) -> None:
+        """Export the output properties of a step that just closed."""
+        self.output_properties.update(properties)
+        if self._test is not None and properties:
+            self._test.step_runner.record_output_properties(
+                step_data.name, properties
+            )
 
     def _module_property_args(
         self, name: str, package: types.ModuleType
@@ -466,9 +496,20 @@ class _Engine:
         self._cache[name] = inst
         return inst
 
+    def use_temp_dir(self) -> None:
+        """Gives the job its own temp dir, the path module's `temp_dir`, as a
+        luciexe host does: every step inherits it, and the engine's own
+        temporary files go there too."""
+        temp_dir = Path(self._instantiate_module('path', []).temp_dir)
+        temp_dir.mkdir(parents=True, exist_ok=True)
+        for var in TEMP_DIR_ENV_VARS:
+            os.environ[var] = str(temp_dir)
+        # `tempfile` caches the temp dir it found first.
+        tempfile.tempdir = None
+
     def run_recipe(
         self, recipe_name: str, properties: dict[str, object] | None = None
-    ) -> object:
+    ) -> result_pb.RawResult:
         return self.run_loaded_recipe(
             _import_recipe(recipe_name), recipe_name, properties
         )
@@ -478,12 +519,20 @@ class _Engine:
         recipe: types.ModuleType,
         recipe_name: str,
         properties: dict[str, object] | None = None,
-    ) -> object:
+    ) -> result_pb.RawResult:
         """Run an already-imported *recipe* module's `RunSteps`.
 
         Splits the import from the run so the test runner can import a recipe
         once (from either `recipes/` or a module's `examples/`) and drive it.
+
+        Returns the recipe's result. `RunSteps` returning None is a
+        `SUCCESS`, and returning a `RawResult` sets the result directly. A
+        `StepFailure` escaping it is a `FAILURE` with the failure's reason as
+        the summary; any other exception is an `INFRA_FAILURE`.
         """
+        # Late proto import: the `PB` package is compiled on first use.
+        from PB.recipe_engine import result as result_pb
+
         # Seed the run's input before instantiating any module, so a module's
         # PROPERTIES/ENV_PROPERTIES can be bound from it (see
         # `_module_property_args`). In test mode ENV_PROPERTIES is sourced from
@@ -495,36 +544,85 @@ class _Engine:
         if run_steps is None:
             raise RuntimeError(f"recipe '{recipe_name}' is missing RunSteps")
 
+        result = result_pb.RawResult()
         recipe_file = Path(recipe.__file__).resolve()
         resources_dir = recipe_file.parent / f'{recipe_file.stem}.resources'
         deps_spec = getattr(recipe, 'DEPS', ())
-        deps = {
-            local_name: self._instantiate_module(dep_name, [])
-            for local_name, dep_name in parse_deps_spec(
-                deps_spec, source=str(recipe_file)
-            ).items()
-        }
-        if dataclasses.is_dataclass(deps_spec):
-            api = deps_spec(self._test, recipe_name, resources_dir, **deps)
-        else:
-            api = RecipeScriptApi(self._test, recipe_name, resources_dir)
-            for local_name, dep in deps.items():
-                setattr(api, local_name, dep)
+        try:
+            deps = {
+                local_name: self._instantiate_module(dep_name, [])
+                for local_name, dep_name in parse_deps_spec(
+                    deps_spec, source=str(recipe_file)
+                ).items()
+            }
+            if dataclasses.is_dataclass(deps_spec):
+                api = deps_spec(self._test, recipe_name, resources_dir, **deps)
+            else:
+                api = RecipeScriptApi(self._test, recipe_name, resources_dir)
+                for local_name, dep in deps.items():
+                    setattr(api, local_name, dep)
+        except Exception as ex:  # pylint: disable=broad-except
+            if self._test is None:
+                logging.exception('Uncaught exception while loading recipe')
+            self._step_stack.unwind()
+            result.status = result_pb.INFRA_FAILURE
+            result.summary_markdown = 'Uncaught exception: ' + repr(ex)
+            return result
 
         try:
-            return _run_steps(
-                run_steps,
-                api,
-                self._properties,
-                self._environ,
-                getattr(recipe, 'PROPERTIES', None),
-                getattr(recipe, 'ENV_PROPERTIES', None),
-            )
-        finally:
-            # Closes the last step, then the root, which waits for any work the
-            # recipe spawned and never collected. A recipe that fails partway
-            # unwinds the same way, so nothing is left running.
-            self._step_stack.unwind()
+            try:
+                raw_result = _run_steps(
+                    run_steps,
+                    api,
+                    self._properties,
+                    self._environ,
+                    getattr(recipe, 'PROPERTIES', None),
+                    getattr(recipe, 'ENV_PROPERTIES', None),
+                )
+                if raw_result is None:
+                    result.status = result_pb.SUCCESS
+                # Notify user that they used the wrong recipe return type.
+                elif not isinstance(raw_result, result_pb.RawResult):
+                    result.status = result_pb.FAILURE
+                    result.summary_markdown = (
+                        '"%r" is not a valid return type for recipes. Did you '
+                        'mean to use "RawResult"?' % (type(raw_result),)
+                    )
+                elif (
+                    len(raw_result.summary_markdown.encode('utf-8'))
+                    > MAX_SUMMARY_MARKDOWN_SIZE
+                ):
+                    result.status = result_pb.FAILURE
+                    result.summary_markdown = (
+                        'summary_markdown is greater than '
+                        f'{MAX_SUMMARY_MARKDOWN_SIZE} bytes '
+                        f'({len(raw_result.summary_markdown.encode("utf-8"))}'
+                        f' > {MAX_SUMMARY_MARKDOWN_SIZE})'
+                    )
+                else:
+                    result.CopyFrom(raw_result)
+            finally:
+                # Closes the last step, then the root, which waits for any work
+                # the recipe spawned and never collected. A recipe that fails
+                # partway unwinds the same way, so nothing is left running.
+                self._step_stack.unwind()
+
+        except StepFailure as ex:
+            result.status = result_pb.FAILURE
+            reason = ex.reason
+            max_size = MAX_SUMMARY_MARKDOWN_SIZE - 25
+            if len(reason.encode('utf-8')) > max_size:
+                reason = reason[: max_size - 15] + '...\n(truncated)'
+            result.summary_markdown = reason
+
+        # All other exceptions are reported to the user and are fatal.
+        except Exception as ex:  # pylint: disable=broad-except
+            if self._test is None:
+                logging.exception('Uncaught exception')
+            result.status = result_pb.INFRA_FAILURE
+            result.summary_markdown = 'Uncaught Exception: ' + repr(ex)
+
+        return result
 
 
 def _module_names() -> set[str]:
@@ -608,15 +706,6 @@ def _run_steps(
     return run_steps(*args)
 
 
-def run_recipe(
-    recipe_name: str,
-    properties: dict[str, object] | None = None,
-    workspace: str | Path | None = None,
-) -> object:
-    """Resolve DEPS for *recipe_name* and run its `RunSteps`."""
-    return _Engine(workspace).run_recipe(recipe_name, properties)
-
-
 def main(argv: list[str] | None = None) -> int:
     argv = sys.argv[1:] if argv is None else list(argv)
     # `engine.py test run|train|list [...]` dispatches to the simulation-test
@@ -633,8 +722,34 @@ def main(argv: list[str] | None = None) -> int:
         'recipe',
         help='Recipe name under recipes/ (e.g. toolchains/rust/package_rust)',
     )
+    prop_group = parser.add_mutually_exclusive_group()
+    prop_group.add_argument(
+        '--properties-file',
+        dest='properties',
+        type=_properties_file_type,
+        help=(
+            'A file containing a json blob of properties. Pass "-" to read '
+            'from stdin'
+        ),
+    )
+    prop_group.add_argument(
+        '--properties',
+        type=_properties_type,
+        help='A json string containing the properties',
+    )
     parser.add_argument(
-        '--properties', default='{}', help='JSON object of recipe properties'
+        '--output-result-json',
+        type=os.path.abspath,
+        help='The file to write the JSON serialized result of the recipe to',
+    )
+    parser.add_argument(
+        '--output',
+        type=_valid_output,
+        help=(
+            'Path to write the final build.proto state to. The path extension '
+            'MUST be one of (.pb, .json, .textpb). This will decide the '
+            'encoding of the final build proto state.'
+        ),
     )
     parser.add_argument(
         '--workspace',
@@ -646,11 +761,98 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         '--verbose', action='store_true', help='Enable verbose (debug) logging'
     )
+    parser.set_defaults(properties={})
     args = parser.parse_args(argv)
 
     logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO)
-    run_recipe(args.recipe, json.loads(args.properties), args.workspace)
-    return 0
+    job = _Engine(args.workspace)
+    job.use_temp_dir()
+    raw_result = job.run_recipe(args.recipe, args.properties)
+    _write_outputs(args, raw_result, job.output_properties)
+
+    # Late proto import: the `PB` package is compiled on first use.
+    from PB.recipe_engine import result as result_pb
+
+    return 0 if raw_result.status == result_pb.SUCCESS else 1
+
+
+def _properties_file_type(filename: str) -> dict[str, object]:
+    with (
+        sys.stdin if filename == '-' else open(filename, encoding='utf-8')
+    ) as fil:
+        obj = json.load(fil)
+        if not isinstance(obj, dict):
+            raise argparse.ArgumentTypeError(
+                'must contain a JSON object, i.e. `{}`.'
+            )
+        return obj
+
+
+def _properties_type(value: str) -> dict[str, object]:
+    obj = json.loads(value)
+    if not isinstance(obj, dict):
+        raise argparse.ArgumentTypeError(
+            'must contain a JSON object, i.e. `{}`.'
+        )
+    return obj
+
+
+def _valid_output(output: str) -> str:
+    _, ext = os.path.splitext(output)
+    allowed_exts = ('.pb', '.json', '.textpb')
+    if ext not in allowed_exts:
+        raise argparse.ArgumentTypeError(
+            'Extension of output path must be one of '
+            'one of %s; Got %s' % (allowed_exts, ext)
+        )
+    # Absolute now, as the engine moves into the workspace before writing it.
+    return os.path.abspath(output)
+
+
+def _write_outputs(
+    args: argparse.Namespace,
+    raw_result: result_pb.RawResult,
+    output_properties: dict[str, object],
+) -> None:
+    """Write the run's result and final build to the files *args* asked for.
+
+    `--output-result-json` gets the legacy `Result`, and `--output` the final
+    `Build`: its status, summary and output properties.
+    """
+    # Late proto import: the `PB` package is compiled on first use.
+    from PB.recipe_engine import build as build_pb
+    import legacy
+
+    if args.output_result_json:
+        result = legacy.to_legacy_result(raw_result)
+        with open(args.output_result_json, 'w', encoding='utf-8') as fil:
+            fil.write(
+                str(
+                    jsonpb.MessageToJson(
+                        result, always_print_fields_with_no_presence=True
+                    )
+                )
+            )
+
+    if args.output:
+        final_build = build_pb.Build(
+            status=raw_result.status,
+            summary_markdown=raw_result.summary_markdown,
+        )
+        final_build.output.properties.update(output_properties)
+        if args.output.endswith('.pb'):
+            out = final_build.SerializeToString(deterministic=True)
+        elif args.output.endswith('.json'):
+            out = jsonpb.MessageToJson(
+                final_build,
+                preserving_proto_field_name=True,
+                sort_keys=True,
+                indent=2,
+            ).encode('utf-8')
+        else:
+            out = textpb.MessageToString(final_build).encode('utf-8')
+        with open(args.output, 'wb') as f:
+            f.write(out)
 
 
 if __name__ == '__main__':

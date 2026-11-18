@@ -40,9 +40,10 @@ class PlaylistPageActionController
 
   void ExecuteAction();
 
-  // Shows the Playlist bubble with an explicit bubble type. Used both by
-  // ExecuteAction() (kInfer) and by BraveLocationBarView::ShowPlaylistBubble()
-  // (IDC_SHOW_PLAYLIST_BUBBLE, e.g. a keyboard shortcut).
+  // Shows the Playlist bubble with an explicit bubble type. Used by
+  // ExecuteAction() (kInfer), by brave::ShowPlaylistBubble()
+  // (IDC_SHOW_PLAYLIST_BUBBLE, e.g. a keyboard shortcut) and by
+  // BraveLocationBarView::ShowPlaylistBubble().
   void ShowBubble(playlist::PlaylistBubblesController::BubbleType type);
 
  private:

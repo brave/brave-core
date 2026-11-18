@@ -10,7 +10,7 @@ import {
   icon,
   radius,
   spacing,
-} from '@brave/leo/tokens/css/variables'
+} from '@brave/nala/tokens/css/variables'
 import { scoped } from '$web-common/scoped_css'
 
 export const style = scoped.css`

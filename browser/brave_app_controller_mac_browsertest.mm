@@ -16,10 +16,12 @@
 #include "base/apple/foundation_util.h"
 #include "base/apple/scoped_objc_class_swizzler.h"
 #include "base/check.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -97,7 +99,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerCleanLinkFeatureDisabledBrowserTest,
   omnibox_view->SetFocus(true);
   omnibox_view->SelectAll(false);
   EXPECT_TRUE(omnibox_view->IsSelectAll());
-  EXPECT_TRUE(BraveBrowserWindow::FromBrowser(browser())->HasSelectedURL());
+  EXPECT_TRUE(brave::HasSelectedURL(browser()));
 
   BraveAppController* ac = base::apple::ObjCCastStrict<BraveAppController>(
       [[NSApplication sharedApplication] delegate]);
@@ -108,7 +110,6 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerCleanLinkFeatureDisabledBrowserTest,
       [edit_submenu itemWithTag:IDC_COPY_CLEAN_LINK];
 
   [ac menuNeedsUpdate:[clean_link_menu_item menu]];
-  base::RunLoop().RunUntilIdle();
   EXPECT_FALSE([clean_link_menu_item isHidden]);
 
   EXPECT_TRUE([[clean_link_menu_item keyEquivalent] isEqualToString:@""]);
@@ -129,7 +130,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemVisible) {
   omnibox_view->SetFocus(true);
   omnibox_view->SelectAll(false);
   EXPECT_TRUE(omnibox_view->IsSelectAll());
-  EXPECT_TRUE(BraveBrowserWindow::FromBrowser(browser())->HasSelectedURL());
+  EXPECT_TRUE(brave::HasSelectedURL(browser()));
 
   BraveAppController* ac = base::apple::ObjCCastStrict<BraveAppController>(
       [[NSApplication sharedApplication] delegate]);
@@ -141,7 +142,6 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemVisible) {
       [edit_submenu itemWithTag:IDC_COPY_CLEAN_LINK];
 
   [ac menuNeedsUpdate:[clean_link_menu_item menu]];
-  base::RunLoop().RunUntilIdle();
   EXPECT_FALSE([clean_link_menu_item isHidden]);
 
   EXPECT_TRUE([[clean_link_menu_item keyEquivalent] isEqualToString:@"c"]);
@@ -190,7 +190,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
       BraveBrowserView::GetBrowserViewForBrowser(browser());
   OmniboxView* omnibox_view = browser_view->GetLocationBar()->GetOmniboxView();
   EXPECT_FALSE(omnibox_view->IsSelectAll());
-  EXPECT_FALSE(BraveBrowserWindow::FromBrowser(browser())->HasSelectedURL());
+  EXPECT_FALSE(brave::HasSelectedURL(browser()));
 
   BraveAppController* ac = base::apple::ObjCCastStrict<BraveAppController>(
       [[NSApplication sharedApplication] delegate]);
@@ -201,7 +201,6 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
       [edit_submenu itemWithTag:IDC_COPY_CLEAN_LINK];
 
   [ac menuNeedsUpdate:[clean_link_menu_item menu]];
-  base::RunLoop().RunUntilIdle();
   EXPECT_TRUE([clean_link_menu_item isHidden]);
 }
 
@@ -276,11 +275,15 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, TorItemEnabled) {
 
   // Executing the item should create a new incognito window with Tor
   [ac executeCommand:tor_menu withProfile:browser()->GetProfile()];
-  base::RunLoop().RunUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil([]() {
+    BrowserWindowInterface* last_active =
+        GetLastActiveBrowserWindowInterfaceWithAnyProfile();
+    return last_active && last_active->GetProfile()->IsTor();
+  }));
 
   BrowserWindowInterface* tor_window =
       GetLastActiveBrowserWindowInterfaceWithAnyProfile();
-  EXPECT_TRUE(tor_window);
+  ASSERT_TRUE(tor_window);
   EXPECT_TRUE(tor_window->GetProfile()->IsTor());
 }
 

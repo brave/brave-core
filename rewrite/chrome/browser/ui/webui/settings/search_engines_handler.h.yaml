@@ -9,6 +9,11 @@ substitutions:
       class_name: SearchEnginesHandler
       method_name: GetSearchEnginesList
 
+  - description: 'Make CreateDictionaryForEngine virtual'
+    make_virtual:
+      class_name: SearchEnginesHandler
+      method_name: CreateDictionaryForEngine
+
   - description: 'Friend BraveSearchEnginesHandler'
     add_friend:
       class_name: SearchEnginesHandler

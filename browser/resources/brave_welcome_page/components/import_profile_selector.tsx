@@ -4,8 +4,8 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Icon from '@brave/leo/react/icon'
-import Label from '@brave/leo/react/label'
+import Icon from '@brave/nala/react/icon'
+import Label from '@brave/nala/react/label'
 
 import { BrowserProfile } from '../api/welcome_api'
 import { getString } from '../lib/strings'

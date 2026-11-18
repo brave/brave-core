@@ -937,6 +937,11 @@
 <translation id="4362717653795263052">Riktheni llogaritë kryesore kripto</translation>
 <translation id="3038077262567136741">Shkruani frazën tuaj të rikuperimit për të rikthyer llogarinë tuaj të kriptos portofolit Brave.</translation>
 <translation id="955918646509748368">Fjalëkalimi i rikuperimit i dhënë është i pavlefshëm.</translation>
+<translation id="7496330898672236908">Kjo frazë rikuperimi nuk përputhet me portofolin tuaj. Kontrolloni frazën dhe provoni përsëri.</translation>
+<translation id="3798792138617904098">Të hiqen llogaritë e importuara?</translation>
+<translation id="2960631345291747230">Llogaritë e importuara nuk kanë kopje rezervë nga fraza juaj e rikuperimit. Ato do të hiqen nga Brave Wallet dhe mund të humbni përgjithmonë qasjen te fondet e tyre, përveç nëse keni bërë kopje rezervë të çelësave të tyre privatë.</translation>
+<translation id="8898583604592472741">Hiq llogaritë</translation>
+<translation id="1577629163207045190">Shkruani "<ph name="CONFIRMATION_PHRASE"/>" për të konfirmuar.</translation>
 <translation id="8107437138787377150">Ngjisni kodin e rikuperimit nga bordi i kujtesës</translation>
 <translation id="4811736040444856406">Shfaq frazën e rikuperimit</translation>
 <translation id="4359319875297001084">Import nga portofoli të trashëguara Brave kripto?</translation>
@@ -2231,13 +2236,12 @@
 <translation id="3934503473603661122">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Grok 4.7, modeli frontier i arsyetimit i xAI në Amazon Bedrock. Grok 4.7 shërbehet përmes infrastrukturës së sigurt AWS të Brave.<ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga GPT Luna, modeli i shpejtë dhe me vonesë të ulët i OpenAI në Amazon Bedrock. GPT Luna shërbehet përmes infrastrukturës së sigurt AWS të Brave.<ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga GPT 5.6 Terra, modeli i balancuar i prodhimit i OpenAI në Amazon Bedrock Mantle. GPT 5.6 Terra shërbehet përmes infrastrukturës së sigurt AWS të Brave.<ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Mistral Large, një model i krijuar nga Mistral për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Mistral Large është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Claude Haiku, një model i krijuar nga Anthropic për të fuqizuar detyrat e bisedave dhe përpunimit të teksteve. Claude Haiku është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Qwen 3.8 Flash Next, një model i krijuar nga Alibaba Cloud për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Qwen 3.8 Flash Next është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt.<ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Deepseek V3.2, një model i krijuar nga Deepseek për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Deepseek V3.2 është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga GLM 5.3, një model i krijuar nga Z.ai për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. GLM 5.3 është i mbajtur nga Brave përmes infrastrukturës sonë të sigurt.<ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Claude Opus, një model i krijuar nga Anthropic për të fuqizuar detyrat e bisedave dhe përpunimit të teksteve. Claude Opus është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga GLM-4-7-Flash, një model i krijuar nga Zhipu AI për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. GLM-4-7-Flash është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Kimi K2.5, një model i krijuar nga Moonshot AI për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Kimi K2.5 është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Nemotron Nano 3 30B, një model i krijuar nga NVIDIA për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Nemotron Nano 3 30B është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Brave Ocelot, një model i krijuar nga Brave për të përmbledhur faqet e internetit. Brave Ocelot është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Lokal</translation>
@@ -2377,8 +2381,8 @@
 <translation id="7465032796278724624">Verifikuar si Privat nga NEAR AI TEE</translation>
 <translation id="8782867266498869301">Modeli ndryshon dinamikisht për të përdorur më të mirën për detyrën</translation>
 <translation id="7348809809749151120">I shpejtë • Kërkim</translation>
+<translation id="7711013627639951065">I shpejtë • Kërkim • Vision • Mjete</translation>
 <translation id="3213834013136637671">Kërkim • Vision</translation>
-<translation id="2793458212460902934">I shpejtë • Kërkim • Mjete</translation>
 <translation id="5276681919620506371">Kërkim • Mjete</translation>
 <translation id="7434375176361995333">Përmbledhje • I shpejtë</translation>
 <translation id="3965507912994218570">Parametrat e Leo</translation>
@@ -2451,6 +2455,8 @@
 <translation id="6287023598025162715">Bisedë e re</translation>
 <translation id="7230502562132448519">Filtro bisedën</translation>
 <translation id="821070843380699990">Ju lutem provoni një kërkesë tjetër</translation>
+<translation id="241415280196701326">Hapësirat e fundit të punës</translation>
+<translation id="5388053981690151266">Bisedë e re në këtë hapësirë pune</translation>
 <translation id="7097822247923237815">Bisedë e përkohshme</translation>
 <translation id="7481750859362986254">Kjo bisedë nuk do të ruhet në historik dhe nuk do të përdorë asnjë nga personalizimet ose memoriet e Leos.</translation>
 <translation id="4238305333951712482">Memoria u përditësua: <ph name="MEMORY_CONTENT"/></translation>
@@ -2476,6 +2482,7 @@
 <translation id="5103625298494362646">Modaliteti i shfletimit me AI funksionon me modele që mbështesin mjete. Modelet që nuk janë të pajtueshme janë fshehur nga kjo listë.</translation>
 <translation id="3397808797783614750">Aktivizimi i AI për të shfletuar automatikisht për ju mund të shkaktojë pasoja të dëmshme dhe të padëshiruara për privatësinë, financat dhe komunikimet tuaja në internet. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Paralajmërim sigurie</translation>
+<translation id="717245811623757038">Kërkesë për autorizim të mjetit</translation>
 <translation id="6077070599873946984">Brave AI ka nevojë për lejen tuaj për: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI dëshiron të ekzekutojë **<ph name="TOOL_NAME"/>** në **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Operacioni është detektuar si potencialisht jo në përputhje me kërkesën tuaj:</translation>

@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import Icon from '@brave/leo/react/icon'
+import Icon from '@brave/nala/react/icon'
 import createSanitizedImageUrl from '$web-common/create_sanitized_image_url'
 import { getLocale, formatLocale } from '$web-common/locale'
 import * as mojom from '../../../common/mojom'

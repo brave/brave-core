@@ -11,9 +11,8 @@ let package = Package(
   ],
   dependencies: [
     .package(
-      // webrtc 124.0.2
       url: "https://github.com/jitsi/webrtc",
-      revision: "M124"
+      from: "155.0.0"
     )
   ],
   targets: [

@@ -1,0 +1,48 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Make MultiContentsViewMiniToolbar::UpdateState virtual
+    make_virtual:
+      class_name: MultiContentsViewMiniToolbar
+      method_name: UpdateState
+
+  - description: |-
+      Make MultiContentsViewMiniToolbar::UpdateContents virtual
+    make_virtual:
+      class_name: MultiContentsViewMiniToolbar
+      method_name: UpdateContents
+
+  - description: |-
+      Add Brave helpers and friends to MultiContentsViewMiniToolbar
+
+      Both static methods are defined in
+      brave_multi_contents_view_mini_toolbar.cc to avoid a brave dependency
+      here.
+    add_to_public:
+      class_name: MultiContentsViewMiniToolbar
+      code: |-
+        static const gfx::VectorIcon& GetMoreVerticalIcon();
+        static std::unique_ptr<SplitTabMenuModel> CreateBraveSplitTabMenuModel(
+            TabStripModel* tab_strip_model,
+            SplitTabMenuModel::MenuSource source,
+            int split_tab_index);
+
+  - description: |-
+      Add friend class for BraveMultiContentsViewMiniToolbar
+
+    add_friend:
+      class_name: MultiContentsViewMiniToolbar
+      friend_type: class BraveMultiContentsViewMiniToolbar
+
+  - description: |-
+      Add FRIEND_TEST_ALL_PREFIXES for SplitViewBrowserTest, SelectTabTest
+
+    regex:
+      re_pattern: (friend class BraveMultiContentsViewMiniToolbar;)
+      replace: |-
+        \1
+          FRIEND_TEST_ALL_PREFIXES(SplitViewBrowserTest, SelectTabTest);

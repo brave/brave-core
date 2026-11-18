@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/contents_container_view.cc b/chrome/browser/ui/views/frame/contents_container_view.cc
-index 5407bd717cc8c493bfa79a08bd2d984aaccce146..10caceb1694563e0d20b9df4276d47b17e15a960 100644
+index 413b2f626db33f5c834d0e184786626bdea0e8b2..7f821593480911274a8d1a635a158abd23cdb128 100644
 --- a/chrome/browser/ui/views/frame/contents_container_view.cc
 +++ b/chrome/browser/ui/views/frame/contents_container_view.cc
-@@ -159,11 +159,11 @@ ContentsContainerView::ContentsContainerView(BrowserView* browser_view)
+@@ -156,11 +156,11 @@ ContentsContainerView::ContentsContainerView(BrowserView* browser_view)
              .Build());
    }
  

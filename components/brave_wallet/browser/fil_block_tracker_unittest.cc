@@ -12,6 +12,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -68,18 +69,15 @@ class FilBlockTrackerUnitTest : public testing::Test {
                            uint64_t expected_latest_height,
                            mojom::FilecoinProviderError expected_error,
                            const std::string& expected_error_message) {
-    base::RunLoop run_loop;
+    base::test::TestFuture<uint64_t, mojom::FilecoinProviderError, std::string>
+        future;
     tracker_->GetFilBlockHeight(
-        chain_id,
-        base::BindLambdaForTesting([&](uint64_t latest_height,
-                                       mojom::FilecoinProviderError error,
-                                       const std::string& error_message) {
-          EXPECT_EQ(latest_height, expected_latest_height);
-          EXPECT_EQ(error, expected_error);
-          EXPECT_EQ(error_message, expected_error_message);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+        chain_id, future.GetCallback<uint64_t, mojom::FilecoinProviderError,
+                                     const std::string&>());
+    auto [latest_height, error, error_message] = future.Take();
+    EXPECT_EQ(latest_height, expected_latest_height);
+    EXPECT_EQ(error, expected_error);
+    EXPECT_EQ(error_message, expected_error_message);
   }
 
  protected:

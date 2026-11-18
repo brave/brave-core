@@ -73,8 +73,6 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
 
  private:
   FRIEND_TEST_ALL_PREFIXES(SolanaProviderImplUnitTest, GetDeserializedMessage);
-  FRIEND_TEST_ALL_PREFIXES(SolanaProviderImplUnitTest,
-                           ConnectWithNoSolanaAccount);
 
   std::string GetCurrentChainId();
 

@@ -54,14 +54,13 @@ TEST(ZCashUtilsUnitTest, ValidateOrchardRecipientAddress) {
        0x20, 0x0a, 0x1f, 0x42, 0x09, 0x2a, 0xc8, 0x4a, 0x30, 0x37, 0x8f,
        0x8c, 0x1f, 0xb9, 0x0d, 0xff, 0x71, 0xa6, 0xd5, 0x04, 0x2d});
 
+  auto mainnet_addr = GetOrchardUnifiedAddress(orchard_raw_bytes, false);
+  ASSERT_TRUE(mainnet_addr.has_value());
   EXPECT_TRUE(
-      ValidateOrchardRecipientAddress(
-          false, GetOrchardUnifiedAddress(orchard_raw_bytes, false).value())
-          .has_value());
-  EXPECT_TRUE(
-      ValidateOrchardRecipientAddress(
-          true, GetOrchardUnifiedAddress(orchard_raw_bytes, true).value())
-          .has_value());
+      ValidateOrchardRecipientAddress(false, *mainnet_addr).has_value());
+  auto testnet_addr = GetOrchardUnifiedAddress(orchard_raw_bytes, true);
+  ASSERT_TRUE(testnet_addr.has_value());
+  EXPECT_TRUE(ValidateOrchardRecipientAddress(true, *testnet_addr).has_value());
 
   EXPECT_EQ(mojom::ZCashAddressError::kInvalidAddressNetworkMismatch,
             ValidateOrchardRecipientAddress(
@@ -83,41 +82,46 @@ TEST(ZCashUtilsUnitTest, ValidateOrchardRecipientAddress) {
 }
 
 TEST(ZCashUtilsUnitTest, PubkeyToTransparentAddress) {
-  EXPECT_EQ("t1MmQ8PGfRygwhSK6qyianhMtb5tixuK8ZS",
-            PubkeyToTransparentAddress(
-                PrefixedHexStringToBytes("0x0248e93db0ad3e748f02688fdbbad77aafd"
-                                         "f0cf2dfb9c7d6db42808cc7e5603d9a")
-                    .value(),
-                false));
+  {
+    auto pubkey = PrefixedHexStringToBytes(
+        "0x0248e93db0ad3e748f02688fdbbad77aafdf0cf2dfb9c7d6db42808cc7e5603d9a");
+    ASSERT_TRUE(pubkey.has_value());
+    EXPECT_EQ("t1MmQ8PGfRygwhSK6qyianhMtb5tixuK8ZS",
+              PubkeyToTransparentAddress(*pubkey, false));
+  }
 
-  EXPECT_EQ("t1PycYmkim4L4PQyipovyHyAmiCS8z7Xwxq",
-            PubkeyToTransparentAddress(
-                PrefixedHexStringToBytes("0x035df6f58fd110b989eaa28659ea5c4cab3"
-                                         "3545d313061f713a9d726c24eb83430")
-                    .value(),
-                false));
+  {
+    auto pubkey = PrefixedHexStringToBytes(
+        "0x035df6f58fd110b989eaa28659ea5c4cab33545d313061f713a9d726c24eb83430");
+    ASSERT_TRUE(pubkey.has_value());
+    EXPECT_EQ("t1PycYmkim4L4PQyipovyHyAmiCS8z7Xwxq",
+              PubkeyToTransparentAddress(*pubkey, false));
+  }
 
-  EXPECT_EQ("t1WU75sSfiPbK5ez33uuhEbd9ZD3XNCxMRj",
-            PubkeyToTransparentAddress(
-                PrefixedHexStringToBytes("0x02c45d998fedfdad735c064f860d99c79b8"
-                                         "0620c04d7d3dbf0307c7cfe24567f84")
-                    .value(),
-                false));
+  {
+    auto pubkey = PrefixedHexStringToBytes(
+        "0x02c45d998fedfdad735c064f860d99c79b80620c04d7d3dbf0307c7cfe24567f84");
+    ASSERT_TRUE(pubkey.has_value());
+    EXPECT_EQ("t1WU75sSfiPbK5ez33uuhEbd9ZD3XNCxMRj",
+              PubkeyToTransparentAddress(*pubkey, false));
+  }
 
-  EXPECT_EQ("t1g2srkA6K4M6oVAaeuJdZMi4JRYev25G1J",
-            PubkeyToTransparentAddress(
-                PrefixedHexStringToBytes("0x03b3d315d9599c38d91265ac67c60200dc5"
-                                         "d87878217c6007c74d18459f43c64a2")
-                    .value(),
-                false));
+  {
+    auto pubkey = PrefixedHexStringToBytes(
+        "0x03b3d315d9599c38d91265ac67c60200dc5d87878217c6007c74d18459f43c64a2");
+    ASSERT_TRUE(pubkey.has_value());
+    EXPECT_EQ("t1g2srkA6K4M6oVAaeuJdZMi4JRYev25G1J",
+              PubkeyToTransparentAddress(*pubkey, false));
+  }
 
   // https://github.com/zcash/zcash-android-wallet-sdk/blob/57f3b7ada6381dcf67b072c84d2f24a6d331045f/sdk-lib/src/androidTest/java/cash/z/ecc/android/sdk/jni/TransparentTest.kt#L49
-  EXPECT_EQ("t1PKtYdJJHhc3Pxowmznkg7vdTwnhEsCvR4",
-            PubkeyToTransparentAddress(
-                PrefixedHexStringToBytes("0x03b1d7fb28d17c125b504d06b1530097e0a"
-                                         "3c76ada184237e3bc0925041230a5af")
-                    .value(),
-                false));
+  {
+    auto pubkey = PrefixedHexStringToBytes(
+        "0x03b1d7fb28d17c125b504d06b1530097e0a3c76ada184237e3bc0925041230a5af");
+    ASSERT_TRUE(pubkey.has_value());
+    EXPECT_EQ("t1PKtYdJJHhc3Pxowmznkg7vdTwnhEsCvR4",
+              PubkeyToTransparentAddress(*pubkey, false));
+  }
 }
 
 TEST(ZCashUtilsUnitTest, PubkeyHashToTransparentAddress) {
@@ -127,8 +131,7 @@ TEST(ZCashUtilsUnitTest, PubkeyHashToTransparentAddress) {
       PubkeyHashToTransparentAddress(std::vector<uint8_t>(21, 0), false));
   // https://github.com/zcash/librustzcash/blob/zcash_address-0.3.1/components/zcash_address/src/encoding.rs#L243
   EXPECT_EQ("t1Hsc1LR8yKnbbe3twRp88p6vFfC5t7DLbs",
-            PubkeyHashToTransparentAddress(std::vector<uint8_t>(20, 0), false)
-                .value());
+            PubkeyHashToTransparentAddress(std::vector<uint8_t>(20, 0), false));
 }
 
 TEST(ZCashUtilsUnitTest, ExtractTransparentPart) {
@@ -289,7 +292,7 @@ TEST(ZCashUtilsUnitTest, GetTransparentRawBytes) {
     EXPECT_EQ(std::vector<uint8_t>({0x65, 0x70, 0x4e, 0x3a, 0xb7, 0x67, 0xca,
                                     0x57, 0x8e, 0x5b, 0x09, 0x2f, 0xb4, 0x76,
                                     0x04, 0xf6, 0x59, 0x47, 0x5b, 0xae}),
-              transparent_raw_bytes.value());
+              transparent_raw_bytes);
   }
 
   // Unknown typecode
@@ -335,8 +338,9 @@ TEST(ZCashUtilsUnitTest, OrchardAddress) {
          0x44, 0x6b, 0x98, 0xe7, 0x1d, 0xf9, 0xd1, 0xd6, 0xa5, 0xca});
     EXPECT_EQ(GetOrchardRawBytes(addr, false), orchard_raw_bytes);
     EXPECT_EQ(GetTransparentRawBytes(addr, false), transparent_raw_bytes);
-    EXPECT_EQ(orchard_part.value(),
-              GetOrchardUnifiedAddress(orchard_raw_bytes, false).value());
+    ASSERT_TRUE(orchard_part.has_value());
+    EXPECT_EQ(*orchard_part,
+              GetOrchardUnifiedAddress(orchard_raw_bytes, false));
   }
 
   // Orchard only
@@ -352,9 +356,10 @@ TEST(ZCashUtilsUnitTest, OrchardAddress) {
          0xee, 0xff, 0x33, 0x7e, 0x88, 0xe6, 0x91, 0x5f, 0x6c, 0x3e, 0xc1,
          0xb6, 0xea, 0x83, 0x5a, 0x88, 0xd5, 0x66, 0x12, 0xd2, 0xbd});
     EXPECT_EQ(GetOrchardRawBytes(addr, false), orchard_raw_bytes);
-    EXPECT_EQ(orchard_part.value(),
-              GetOrchardUnifiedAddress(orchard_raw_bytes, false).value());
-    EXPECT_EQ(addr, orchard_part.value());
+    ASSERT_TRUE(orchard_part.has_value());
+    EXPECT_EQ(*orchard_part,
+              GetOrchardUnifiedAddress(orchard_raw_bytes, false));
+    EXPECT_EQ(addr, *orchard_part);
   }
 
   // No orchard part
@@ -398,7 +403,7 @@ TEST(ZCashUtilsUnitTest, GetMergedUnifiedAddress) {
                   0xb7, 0xe6, 0x8f, 0x39, 0x05, 0x92, 0x3f, 0x35, 0xcb,
                   0x01, 0xf1, 0x19, 0xb2, 0x23, 0xf4, 0x93}))},
         false);
-    EXPECT_EQ(addr.value(),
+    EXPECT_EQ(addr,
               "u1n9znrl4zyuvds24rcapzglzapqdlax4r8rgkvek0y0xlzfjfvn7zexe"
               "lrafkchea24w030cr9jqsel7t8lvveaq7m7w4z0khmrlzc6748w9ldlcc"
               "y02scd5xngtcv2yy4ctnyu9zn5m");
@@ -416,7 +421,7 @@ TEST(ZCashUtilsUnitTest, GetMergedUnifiedAddress) {
                  0x21, 0xc6, 0xdc, 0x22, 0xa8, 0xbc, 0xce, 0x15, 0x89,
                  0x8e, 0x26, 0x78, 0x29, 0xfc, 0x1e, 0x01}))},
         false);
-    EXPECT_EQ(addr.value(),
+    EXPECT_EQ(addr,
               "u1nztelxna9h7w0vtpd2xjhxt4lpu8s9cmdl8n8vcr7actf2ny45nd07cy8cyuhu"
               "vw3axcp545y0ktq9cezuzx84jyhex8dk4tdvwhu4dl");
   }
@@ -442,13 +447,11 @@ TEST(ZCashUtilsUnitTest, RevertHex) {
   EXPECT_FALSE(RevertHex(""));
   EXPECT_EQ(
       RevertHex(
-          "000000000061ef6a26dcf7597a3ffddd087c23df5f44398d070dbd26a9699ae9")
-          .value(),
+          "000000000061ef6a26dcf7597a3ffddd087c23df5f44398d070dbd26a9699ae9"),
       "0xe99a69a926bd0d078d39445fdf237c08ddfd3f7a59f7dc266aef610000000000");
   EXPECT_EQ(
       RevertHex(
-          "000000000049900203ce1cba81a36d29390ea40fc78cf4799e8139b96f3a8114")
-          .value(),
+          "000000000049900203ce1cba81a36d29390ea40fc78cf4799e8139b96f3a8114"),
       "0x14813a6fb939819e79f48cc70fa40e39296da381ba1cce030290490000000000");
 }
 
@@ -465,8 +468,7 @@ TEST(ZCashUtilsUnitTest, OrchardMemo) {
   {
     OrchardMemo memo;
     memo.fill(2);
-    EXPECT_EQ(memo,
-              ToOrchardMemo(std::vector<uint8_t>(kOrchardMemoSize, 2)).value());
+    EXPECT_EQ(memo, ToOrchardMemo(std::vector<uint8_t>(kOrchardMemoSize, 2)));
   }
 
   {
@@ -474,7 +476,7 @@ TEST(ZCashUtilsUnitTest, OrchardMemo) {
     memo.fill(1);
     memo.back() = 0;
     EXPECT_EQ(memo,
-              *ToOrchardMemo(std::vector<uint8_t>(kOrchardMemoSize - 1, 1)));
+              ToOrchardMemo(std::vector<uint8_t>(kOrchardMemoSize - 1, 1)));
   }
   EXPECT_FALSE(ToOrchardMemo(std::vector<uint8_t>(kOrchardMemoSize + 1, 1)));
 }
@@ -498,14 +500,16 @@ TEST(ZCashUtilsUnitTest, ZCashAddressToScriptPubkey_Fails) {
 }
 
 TEST(ZCashUtilsUnitTest, ZCashAddressToScriptPubkey) {
+  auto testnet_script =
+      ZCashAddressToScriptPubkey("tmCxJG72RWN66xwPtNgu4iKHpyysGrc7rEg", true);
+  ASSERT_TRUE(testnet_script.has_value());
   EXPECT_EQ("0x76a914238ba3549d04a616913940e04d30fa5494f3bffc88ac",
-            ToHex(ZCashAddressToScriptPubkey(
-                      "tmCxJG72RWN66xwPtNgu4iKHpyysGrc7rEg", true)
-                      .value()));
+            ToHex(*testnet_script));
+  auto mainnet_script =
+      ZCashAddressToScriptPubkey("t1Hsc1LR8yKnbbe3twRp88p6vFfC5t7DLbs", false);
+  ASSERT_TRUE(mainnet_script.has_value());
   EXPECT_EQ("0x76a914000000000000000000000000000000000000000088ac",
-            ToHex(ZCashAddressToScriptPubkey(
-                      "t1Hsc1LR8yKnbbe3twRp88p6vFfC5t7DLbs", false)
-                      .value()));
+            ToHex(*mainnet_script));
 }
 
 }  // namespace brave_wallet

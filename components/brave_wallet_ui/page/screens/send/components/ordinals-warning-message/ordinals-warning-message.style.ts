@@ -6,10 +6,10 @@
 import styled from 'styled-components'
 
 // Leo styles
-import * as leo from '@brave/leo/tokens/css/variables'
+import * as leo from '@brave/nala/tokens/css/variables'
 
 // Leo icons
-import Icon from '@brave/leo/react/icon'
+import Icon from '@brave/nala/react/icon'
 
 // Shared Styles
 import { Row } from '../../shared.styles'

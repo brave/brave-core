@@ -450,6 +450,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CheckExpectedExtensions) {
 
   const auto* brave_extension =
       registry->GetInstalledExtension(brave_extension_id);
+  ASSERT_TRUE(brave_extension);
 
   // Brave Extension background page should be disabled by default.
   EXPECT_FALSE(extensions::BackgroundInfo::HasBackgroundPage(brave_extension));

@@ -5,7 +5,7 @@
 
 import styled from 'styled-components'
 import { StyledDiv, Row } from '../../shared-swap.styles'
-import * as leo from '@brave/leo/tokens/css/variables'
+import * as leo from '@brave/nala/tokens/css/variables'
 
 export const SelectorBox = styled(StyledDiv)<{
   isHeader?: boolean

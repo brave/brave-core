@@ -89,6 +89,16 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
     mojom::SwapInfoPtr swap_info_from_data;
     std::tie(tx_type, tx_params, tx_args, swap_info_from_data) =
         std::move(*tx_info);
+
+    // If the user's transaction is a non-payable type and the associated send
+    // amount is non-zero, we must treat it like a general unclassified
+    // transaction whose recipient is the explicit `to` with `value`.
+    if (tx_->value() != 0 && IsNonPayableTokenTransactionType(tx_type)) {
+      tx_type = mojom::TransactionType::Other;
+      tx_params.clear();
+      tx_args.clear();
+    }
+
     final_recipient = GetFinalRecipient(chain_id_, tx_->GetToChecksumAddress(),
                                         tx_type, tx_args);
 

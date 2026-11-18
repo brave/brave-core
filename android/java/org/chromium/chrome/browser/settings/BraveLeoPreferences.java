@@ -143,6 +143,7 @@ public class BraveLeoPreferences extends BravePreferenceFragment
                                     // if the status is Premium already
                                     goPremium.setVisible(false);
                                     category.setVisible(false);
+                                    notifyPreferencesUpdated();
                                     return;
                                 }
                                 goPremium.setVisible(true);
@@ -151,6 +152,7 @@ public class BraveLeoPreferences extends BravePreferenceFragment
                                             BraveLeoUtils.goPremium(getActivity());
                                             return true;
                                         });
+                                notifyPreferencesUpdated();
                             });
             linkSubscription.setVisible(false);
             manageSubscription.setVisible(false);
@@ -159,6 +161,7 @@ public class BraveLeoPreferences extends BravePreferenceFragment
         goPremium.setVisible(false);
         linkSubscription.setVisible(!BraveLeoPrefUtils.isSubscriptionLinked());
         manageSubscription.setVisible(true);
+        notifyPreferencesUpdated();
         linkSubscription.setOnPreferenceClickListener(
                 preference -> {
                     TabUtils.openURLWithBraveActivity(

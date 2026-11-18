@@ -68,6 +68,7 @@ TEST(SolanaInstructionUnitTest, FromToCompiledInstruction) {
 
   auto ins = SolanaInstruction::FromCompiledInstruction(
       compiled_ins, message_header, static_accounts, lookups, 3, 1);
+  ASSERT_TRUE(ins.has_value());
   EXPECT_EQ(*ins, expected_ins);
 
   EXPECT_EQ(ins->GetProgramId(), expected_ins.GetProgramId());
@@ -125,6 +126,7 @@ TEST(SolanaInstructionUnitTest, FromToCompiledInstruction) {
 
   auto ins2 = SolanaInstruction::FromCompiledInstruction(
       compiled_ins2, message_header2, static_accounts2, lookups2, 3, 3);
+  ASSERT_TRUE(ins2.has_value());
   EXPECT_EQ(*ins2, expected_ins2);
 
   EXPECT_EQ(ins2->GetProgramId(), expected_ins2.GetProgramId());

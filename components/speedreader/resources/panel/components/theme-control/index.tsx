@@ -7,7 +7,7 @@ import * as React from 'react'
 import * as S from './style'
 import classnames from '$web-common/classnames'
 import { Theme } from '../../api/browser'
-import Icon from '@brave/leo/react/icon'
+import Icon from '@brave/nala/react/icon'
 import { getLocale } from '$web-common/locale'
 
 const themeOptions = [

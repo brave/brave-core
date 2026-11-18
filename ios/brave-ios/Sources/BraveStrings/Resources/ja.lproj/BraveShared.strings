@@ -742,6 +742,15 @@
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "%@ （安全ではありません）に進む";
 
+/* Button to exclude a topsite url from the most visited list */
+"ExcludeMostVisitedSite" = "削除する";
+
+/* Message for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertMessage" = "このサイトはよくアクセスするサイトのリストに表示されなくなりますが、履歴からは削除されません。";
+
+/* Title for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertTitle" = "よくアクセスするサイトから削除しますか？";
+
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ は他のアプリケーションを起動します";
 
@@ -864,6 +873,9 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "不正な支払いリクエスト";
+
+/* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
+"JavaScriptDialogEmbeddedPageTitle" = "このページに埋め込まれたページ";
 
 /* History tableview section header */
 "LastMonth" = "先月";
@@ -2481,6 +2493,18 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "このサイトで動画を見ているとき広告はブロックされています。";
+
+/* Title for the Brave Wallet shortcut. Brave Wallet is the name of a product and should not be translated */
+"shortcut.braveWallet" = "Braveウォレット";
+
+/* Title for the private tab shortcut. */
+"shortcut.privateTab" = "プライベートタブ";
+
+/* Title for the QR Code shortcut. */
+"shortcut.qrCode" = "QRコード";
+
+/* Title for the Search shortcut. */
+"shortcut.search" = "検索";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "新しいプライベートタブ";

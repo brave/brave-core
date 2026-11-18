@@ -4,8 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { DialogProps } from '@brave/leo/react/dialog'
-import { spacing } from '@brave/leo/tokens/css/variables'
+import { DialogProps } from '@brave/nala/react/dialog'
+import { spacing } from '@brave/nala/tokens/css/variables'
 
 // Selectors
 import {

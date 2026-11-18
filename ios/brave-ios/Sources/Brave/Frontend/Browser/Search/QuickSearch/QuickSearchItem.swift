@@ -12,12 +12,19 @@ enum QuickSearchItemID: Hashable {
   case aiChat
   case braveVertical(String)
 
+  private enum Prefix {
+    static let engine = "engine:"
+    static let customEngine = "custom:"
+    static let braveVertical = "vertical:"
+    static let aiChat = "ai-chat"
+  }
+
   var rawValue: String {
     switch self {
-    case .engine(let id): return "engine:\(id)"
-    case .customEngine(let id): return "custom:\(id)"
-    case .aiChat: return "ai-chat"
-    case .braveVertical(let id): return "vertical:\(id)"
+    case .engine(let id): return Prefix.engine + id
+    case .customEngine(let id): return Prefix.customEngine + id
+    case .aiChat: return Prefix.aiChat
+    case .braveVertical(let id): return Prefix.braveVertical + id
     }
   }
 
@@ -29,6 +36,28 @@ enum QuickSearchItemID: Hashable {
     } else {
       assertionFailure("bundled engine without engineID")
       self = .customEngine(engine.searchTemplate)
+    }
+  }
+}
+
+extension QuickSearchItemID {
+  init?(rawValue: String) {
+    func value(after prefix: String) -> String? {
+      guard rawValue.hasPrefix(prefix) else { return nil }
+      let value = String(rawValue.dropFirst(prefix.count))
+      return value.isEmpty ? nil : value
+    }
+
+    if rawValue == Prefix.aiChat {
+      self = .aiChat
+    } else if let id = value(after: Prefix.engine) {
+      self = .engine(id.lowercased())
+    } else if let id = value(after: Prefix.customEngine) {
+      self = .customEngine(id)
+    } else if let id = value(after: Prefix.braveVertical) {
+      self = .braveVertical(id)
+    } else {
+      return nil
     }
   }
 }

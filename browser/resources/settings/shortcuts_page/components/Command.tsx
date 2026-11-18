@@ -10,9 +10,9 @@ import Keys from './Keys'
 import ConfigureShortcut from './ConfigureShortcut'
 import { commandsCache } from '../commands'
 import { stringToKeys } from '../utils/accelerator'
-import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
-import { color, spacing } from '@brave/leo/tokens/css/variables'
+import Button from '@brave/nala/react/button'
+import Icon from '@brave/nala/react/icon'
+import { color, spacing } from '@brave/nala/tokens/css/variables'
 import { getLocale } from '$web-common/locale'
 
 const Grid = styled.div`

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/glic/public/features.cc b/chrome/browser/glic/public/features.cc
-index 8378f0375a637ee5149d69172e45f50e55d2b785..5c6e2f67916689c6338dc1742d4d4333d75cfa0b 100644
+index 6f58411380e7ab8cdcc50765bf3de1717b405aa4..d8f148649b6a9b4be77aefac52bb0c89697dd6bd 100644
 --- a/chrome/browser/glic/public/features.cc
 +++ b/chrome/browser/glic/public/features.cc
 @@ -109,8 +109,8 @@ BASE_FEATURE(kGlicContextMenuBelowSearch, base::FEATURE_DISABLED_BY_DEFAULT);

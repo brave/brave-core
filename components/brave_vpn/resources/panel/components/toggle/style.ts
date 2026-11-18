@@ -4,9 +4,9 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import Icon from '@brave/leo/react/icon'
-import ProgressRing from '@brave/leo/react/progressRing'
-import { color, font, spacing } from '@brave/leo/tokens/css/variables'
+import Icon from '@brave/nala/react/icon'
+import ProgressRing from '@brave/nala/react/progressRing'
+import { color, font, spacing } from '@brave/nala/tokens/css/variables'
 
 export const Content = styled.div`
   display: flex;

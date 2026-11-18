@@ -108,7 +108,10 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
     extensions::ChromeTestExtensionLoader loader(browser()->GetProfile());
     scoped_refptr<const extensions::Extension> extension =
         loader.LoadExtension(path);
-    EXPECT_TRUE(extension);
+    if (!extension) {
+      ADD_FAILURE() << "Failed to load extension";
+      return std::string();
+    }
     return extension->id();
   }
 
@@ -461,7 +464,7 @@ IN_PROC_BROWSER_TEST_F(BraveScreenFarblingBrowserTest_EnableFlag,
   test_extension_dir.WriteFile(FILE_PATH_LITERAL("popup.html"),
                                "<!doctype html><html>This is a popup</html>");
   std::string extension_id = LoadExtension(test_extension_dir.UnpackedPath());
-  base::RunLoop().RunUntilIdle();  // Ensure the extension is fully loaded.
+  ASSERT_FALSE(extension_id.empty());
   const GURL extension_url("chrome-extension://" + extension_id +
                            "/popup.html");
   FarbleScreenSize(extension_url, false);

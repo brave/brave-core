@@ -4,12 +4,12 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import Button from '@brave/leo/react/button'
-import Dialog from '@brave/leo/react/dialog'
-import Dropdown from '@brave/leo/react/dropdown'
-import Icon from '@brave/leo/react/icon'
-import Input from '@brave/leo/react/input'
-import TextArea from '@brave/leo/react/textarea'
+import Button from '@brave/nala/react/button'
+import Dialog from '@brave/nala/react/dialog'
+import Dropdown from '@brave/nala/react/dropdown'
+import Icon from '@brave/nala/react/icon'
+import Input from '@brave/nala/react/input'
+import TextArea from '@brave/nala/react/textarea'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
 import styles from './skill_modal_style.module.scss'

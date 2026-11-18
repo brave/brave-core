@@ -34,6 +34,7 @@ class WalletURLBarButton: UIButton {
 
     var configuration = UIButton.Configuration.plain()
     configuration.baseForegroundColor = UIColor(braveSystemName: .textPrimary)
+    configuration.baseBackgroundColor = .clear
     configuration.contentInsets = .init(top: 3, leading: 3, bottom: 3, trailing: 3)
     configuration.image = UIImage(braveSystemNamed: "leo.product.brave-wallet")
     configuration.imageColorTransformer = .init { _ in
