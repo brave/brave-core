@@ -41,11 +41,15 @@ class BraveTabHoverTest : public InProcessBrowserTest {
   BraveTabHoverTest()
       : animation_mode_reset_(gfx::AnimationTestApi::SetRichAnimationRenderMode(
             gfx::Animation::RichAnimationRenderMode::FORCE_DISABLED)) {
-    TabHoverCardController::disable_animations_for_testing_ = true;
+    TabHoverCardController::set_disable_animations_for_testing(true);
   }
 
   BraveTabHoverTest(const BraveTabHoverTest&) = delete;
   BraveTabHoverTest& operator=(const BraveTabHoverTest&) = delete;
+
+  ~BraveTabHoverTest() override {
+    TabHoverCardController::set_disable_animations_for_testing(false);
+  }
 
   content::WebContents* contents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
@@ -82,6 +86,17 @@ class BraveTabHoverTest : public InProcessBrowserTest {
  private:
   std::unique_ptr<base::AutoReset<gfx::Animation::RichAnimationRenderMode>>
       animation_mode_reset_;
+};
+
+// Pins kTabHoverCardImages off so tests don't depend on its default.
+class BraveTabHoverTestWithChromeFlagDisabled : public BraveTabHoverTest {
+ public:
+  BraveTabHoverTestWithChromeFlagDisabled() {
+    features_.InitAndDisableFeature(features::kTabHoverCardImages);
+  }
+
+ private:
+  base::test::ScopedFeatureList features_;
 };
 
 // The ThumbnailTabHelper needs to be attached in all |TabHoverModes| so that
@@ -141,7 +156,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest, ThumbnailHelperIsAlwaysAttached) {
 #else
 #define MAYBE_HoverModesAreCorrectlyConfigured HoverModesAreCorrectlyConfigured
 #endif
-IN_PROC_BROWSER_TEST_F(BraveTabHoverTest,
+IN_PROC_BROWSER_TEST_F(BraveTabHoverTestWithChromeFlagDisabled,
                        MAYBE_HoverModesAreCorrectlyConfigured) {
   // In Card mode, the widget should become visible but the thumbnail should not
   // be created.
