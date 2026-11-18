@@ -1627,6 +1627,17 @@ permissions.
 
 **Examples**
 
+- **Cross-site iframe:** `a.com` embeds a `b.com` iframe, which loads a script.
+  - ✅ Use `a.com` for `TOP_ORIGIN_ONLY_SCOPE` settings of the script request.
+  - ❌ Use `b.com` because the iframe initiated the request.
+- **`about:blank` popup:** `a.com` calls `window.open('about:blank')`. The popup
+  inherits the `a.com` origin.
+  - ✅ Use `a.com` for `TOP_ORIGIN_ONLY_SCOPE` settings in the popup.
+  - ❌ Use defaults, or skip Shields, because the URL is `about:blank`.
+- **`data:` iframe:** `a.com` embeds a `data:` iframe. Its opaque origin has an
+  `a.com` precursor.
+  - ✅ Use `a.com` for the iframe’s requesting origin.
+  - ❌ Use defaults because the iframe’s origin is opaque.
 - **Sandboxed iframe:** `a.com` embeds a sandboxed `b.com` iframe whose opaque
   origin has a `b.com` precursor.
   - ✅ Use `a.com` for `TOP_ORIGIN_ONLY_SCOPE` settings. For the iframe’s
@@ -1646,8 +1657,14 @@ permissions.
   - ❌ Use `b.com` for `TOP_ORIGIN_ONLY_SCOPE` settings because it initiated the
     request.
 
-NEVER use frame position (`is_outermost_main_frame`), a raw document URL, or a
-non-HTTP(S) scheme as proof of which settings apply, and NEVER treat opaque
-origins alone as a reason to bypass Shields.
+Main-frame status (`is_outermost_main_frame`,
+`net::IsolationInfo::RequestType::kMainFrame`, etc.) only identifies the
+top-level document. NEVER treat it as proof that the request or document URL is
+the settings origin; resolve that URL's origin as described above. NEVER use
+`blink::mojom::ResourceType::kMainFrame` to detect a main-frame request:
+WebSocket requests default to it, and navigations fetched by a service worker
+keep it. NEVER use a raw document URL or a non-HTTP(S) scheme as proof of which
+settings apply, and NEVER treat opaque origins alone as a reason to bypass
+Shields.
 
 ---
