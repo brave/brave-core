@@ -5,6 +5,8 @@
 
 #include "brave/third_party/blink/renderer/core/resource_pool_limiter/resource_pool_limiter.h"
 
+#include <utility>
+
 #include "base/check.h"
 #include "base/notreached.h"
 #include "third_party/blink/renderer/core/execution_context/security_context.h"
@@ -94,8 +96,7 @@ ResourcePoolLimiter::IssueResourceInUseTracker(
   }
 
   ++resource_in_use_count;
-  return std::make_unique<ResourceInUseTracker>(
-      resource_id.Impl()->IsolatedCopy());
+  return std::make_unique<ResourceInUseTracker>(std::move(resource_id));
 }
 
 void ResourcePoolLimiter::DropResourceInUse(
