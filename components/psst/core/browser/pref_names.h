@@ -14,7 +14,6 @@ namespace psst {
 
 namespace prefs {
 inline constexpr char kPsstEnabled[] = "brave.psst.settings.enable_psst";
-// Deprecated 11/2026
 inline constexpr char kPsstInfobarShownCounter[] =
     "brave.psst.settings.infobar_shown_counter";
 inline constexpr char kPsstInfobarDeclineCounter[] =
