@@ -76,7 +76,7 @@ export default function createConversationApi(
         },
         getConversationHistory: {
           response: (result) => result.conversationHistory,
-          prefetchWithArgs: [null],
+          prefetchWithArgs: [],
           placeholderData: [] as Mojom.ConversationTurn[],
         },
         // The set of tools a page exposes changes as the user interacts with
@@ -147,10 +147,10 @@ export default function createConversationApi(
             if (!entry) {
               // Force full update, getConversationHistory will be re-fetched if the
               // data is asked for (or if set to prefetch).
-              api.getConversationHistory.invalidate(null)
+              api.getConversationHistory.invalidate()
             } else {
               // Update can also be called with a function that takes the previous state
-              api.getConversationHistory.update(null, (old) =>
+              api.getConversationHistory.update((old) =>
                 updateConversationHistory(old, entry),
               )
             }
