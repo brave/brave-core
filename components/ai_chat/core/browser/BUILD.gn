@@ -20,7 +20,6 @@ static_library("browser") {
     "ai_chat_feedback_api.h",
     "ai_chat_metrics.cc",
     "ai_chat_metrics.h",
-    "ai_chat_notification_delegate.h",
     "ai_chat_service.cc",
     "ai_chat_service.h",
     "ai_chat_tab_focus_metrics.cc",

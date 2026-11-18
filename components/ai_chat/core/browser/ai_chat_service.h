@@ -32,7 +32,6 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
-#include "brave/components/ai_chat/core/browser/ai_chat_notification_delegate.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/conversation_share_manager.h"
@@ -89,6 +88,25 @@ class AIChatService : public KeyedService,
       base::expected<std::vector<std::string>, mojom::APIError>)>;
   using GetFocusTabsCallback = base::OnceCallback<void(
       base::expected<std::vector<std::string>, mojom::APIError>)>;
+
+  // Lets the embedder tell the user when a response finishes in the
+  // background.
+  class NotificationDelegate {
+   public:
+    virtual ~NotificationDelegate() = default;
+
+    // A response in |conversation_uuid| finished while no client was
+    // connected to it. |conversation_title| is empty if the conversation has
+    // none.
+    virtual void ShowCompletionNotification(
+        const std::string& conversation_uuid,
+        const std::u16string& conversation_title) = 0;
+
+    // The conversation was viewed or deleted, or is no longer kept, so its
+    // notification is out of date.
+    virtual void CloseCompletionNotification(
+        const std::string& conversation_uuid) = 0;
+  };
 
   AIChatService(
       ModelService* model_service,
@@ -281,8 +299,7 @@ class AIChatService : public KeyedService,
   // finishes while no client is connected to it (kCompletedNotViewed), and
   // closes it once the conversation leaves that state or is removed. Android
   // and iOS don't set one.
-  void SetNotificationDelegate(
-      std::unique_ptr<AIChatNotificationDelegate> delegate);
+  void SetNotificationDelegate(std::unique_ptr<NotificationDelegate> delegate);
 
   std::unique_ptr<EngineConsumer> GetDefaultAIEngine();
   std::unique_ptr<EngineConsumer> GetEngineForModel(
@@ -579,8 +596,8 @@ class AIChatService : public KeyedService,
   // is owned, accessed, and destroyed only on |db_task_runner_|.
   scoped_refptr<AIChatSyncBackend> sync_backend_;
 
-  std::unique_ptr<AIChatNotificationDelegate> notification_delegate_;
-  // Conversations whose notification is showing.
+  std::unique_ptr<NotificationDelegate> notification_delegate_;
+  // Conversations we've shown a notification for.
   base::flat_set<std::string> notified_conversations_;
 
   base::WeakPtrFactory<AIChatService> weak_ptr_factory_{this};

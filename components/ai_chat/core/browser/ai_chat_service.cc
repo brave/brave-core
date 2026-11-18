@@ -1627,7 +1627,7 @@ void AIChatService::NotifyConversationGenerationStateChanged() {
 }
 
 void AIChatService::SetNotificationDelegate(
-    std::unique_ptr<AIChatNotificationDelegate> delegate) {
+    std::unique_ptr<NotificationDelegate> delegate) {
   notification_delegate_ = std::move(delegate);
 }
 

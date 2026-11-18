@@ -37,7 +37,6 @@
 #include "base/time/time.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
-#include "brave/components/ai_chat/core/browser/ai_chat_notification_delegate.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
@@ -95,7 +94,7 @@ class MockAIChatCredentialManager : public AIChatCredentialManager {
   MOCK_METHOD(void, PutCredentialInCache, (CredentialCacheEntry), (override));
 };
 
-class MockNotificationDelegate : public AIChatNotificationDelegate {
+class MockNotificationDelegate : public AIChatService::NotificationDelegate {
  public:
   MOCK_METHOD(void,
               ShowCompletionNotification,

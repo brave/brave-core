@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/components/ai_chat/core/browser/ai_chat_notification_delegate.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 
 class Profile;
 
@@ -17,14 +17,14 @@ namespace ai_chat {
 
 // Shows background completion notifications through the profile's
 // NotificationDisplayService.
-class AIChatNotificationHelper : public AIChatNotificationDelegate {
+class AIChatNotificationHelper : public AIChatService::NotificationDelegate {
  public:
   explicit AIChatNotificationHelper(Profile* profile);
   ~AIChatNotificationHelper() override;
   AIChatNotificationHelper(const AIChatNotificationHelper&) = delete;
   AIChatNotificationHelper& operator=(const AIChatNotificationHelper&) = delete;
 
-  // AIChatNotificationDelegate:
+  // AIChatService::NotificationDelegate:
   void ShowCompletionNotification(
       const std::string& conversation_uuid,
       const std::u16string& conversation_title) override;
