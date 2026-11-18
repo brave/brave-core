@@ -21,25 +21,25 @@ public struct OpenControlWidgetShortcutIntent: UISceneAppIntent {
   public static let openAppWhenRun: Bool = true
 
   @Parameter(title: "Shortcut")
-  public var shortcutOption: ShortcutOption?
+  public var shortcutOption: ShortcutOption
 
   public init() {}
 
-  public init(shortcut: ShortcutOption?) {
+  public init(shortcut: ShortcutOption) {
     self.shortcutOption = shortcut
   }
 
   /// `.unset` is a parameter that has not resolved, which is distinct from one resolved to `nil`.
-  public var shortcut: WidgetShortcut? {
-    guard case .set(let option) = $shortcutOption.valueState else { return nil }
-    return option?.widgetShortcut
+  public var shortcut: WidgetShortcut {
+    guard case .set(let option) = $shortcutOption.valueState else { return .search }
+    return option.widgetShortcut
   }
 
   /// The system delivers the intent to a scene and resolves parameters before running `perform()`,
   /// so both `shortcut` and `uiScene` are available here.
   @MainActor
   public func perform() async throws -> some IntentResult {
-    if let shortcut, let opener = uiScene?.delegate as? ControlWidgetShortcutOpening {
+    if let opener = uiScene?.delegate as? ControlWidgetShortcutOpening {
       opener.openControlWidgetShortcut(shortcut)
     }
     return .result()

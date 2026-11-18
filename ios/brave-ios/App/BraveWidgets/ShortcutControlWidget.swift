@@ -18,12 +18,13 @@ struct ShortcutControlWidget: ControlWidget {
         provider: ShortcutControlValueProvider()
       ) { shortcut in
         ControlWidgetButton(
-          action: OpenControlWidgetShortcutIntent(shortcut: shortcut)
+          action: OpenControlWidgetShortcutIntent(shortcut: shortcut ?? .search)
         ) {
           Label(
-            shortcut?.widgetShortcut.displayString ?? Strings.Widgets.shortcutControlWidgetTitle,
+            shortcut?.widgetShortcut.displayString
+              ?? ShortcutOption.search.widgetShortcut.displayString,
             braveSystemImage: shortcut?.widgetShortcut.braveSystemImageName
-              ?? "leo.brave.icon-monochrome"
+              ?? "leo.search"
           )
         }
       }
