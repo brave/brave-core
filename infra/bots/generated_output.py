@@ -152,7 +152,7 @@ def render(builder, gn_args_registry) -> dict[str, str]:
             }
         ),
         f'targets/{builder.builder_group}.json': _dump(
-            {builder.name: _targets_spec(builder.targets)}
+            {builder.name: _targets_spec(builder.targets, resolved['gn_args'])}
         ),
     }
 
@@ -170,16 +170,78 @@ def render_isolate_map(targets_registry) -> str:
     )
 
 
-def _targets_spec(targets) -> dict:
+def _targets_spec(targets, gn_args: dict) -> dict:
     """A builder's entry in its group's targets spec,
-    `targets/<builder_group>.json`."""
+    `targets/<builder_group>.json`.
+
+    Each test's arguments end with the filter files that apply to it.
+    """
     spec = {}
     if targets.additional_compile_targets:
         spec['additional_compile_targets'] = list(
             targets.additional_compile_targets
         )
-    spec['gtest_tests'] = [dict(test) for test in targets.gtest_tests]
+    spec['gtest_tests'] = []
+    for test in targets.gtest_tests:
+        test = dict(test)
+        filter_files = _filter_files(test['test'], gn_args)
+        if filter_files:
+            test['args'] = [
+                *test.get('args', []),
+                '--test-launcher-filter-file=' + ';'.join(filter_files),
+            ]
+        spec['gtest_tests'].append(test)
     return spec
+
+
+# Suites that run another suite's tests, and so take its filters too.
+_ADDITIONAL_SUITE_FILTERS = {'updater_tests_system': ['updater_tests']}
+
+
+def _filter_files(suite: str, gn_args: dict) -> list[str]:
+    """The filter files that apply to `suite` on a build with `gn_args`, as
+    `pnpm run test` picks them (`getApplicableFilters()` in testUtils.ts):
+    Brave's by suite, OS, CPU and sanitiser, and upstream's ASan filter.
+
+    The paths are relative to a build directory under `out/`, as a test
+    launcher reads them.
+    """
+    src_dir = gen_paths.CHROMIUM_SRC_DIR
+    target_os = gn_args['target_os']
+    target_cpu = gn_args['target_cpu']
+    filter_dirs = (
+        src_dir / 'brave' / 'test' / 'filters',
+        src_dir / 'brave' / 'test' / 'filters' / 'generated',
+    )
+    files = []
+    for name in [*_ADDITIONAL_SUITE_FILTERS.get(suite, []), suite]:
+        names = [
+            name,
+            f'{name}-{target_os}',
+            f'{name}-{target_os}-{target_cpu}',
+        ]
+        for sanitiser in ('ubsan', 'asan', 'msan'):
+            if gn_args.get(f'is_{sanitiser}'):
+                names.append(f'{name}-{target_os}-{sanitiser}')
+        candidates = [
+            directory / f'{filter_name}.filter'
+            for filter_name in names
+            for directory in filter_dirs
+        ]
+        if gn_args.get('is_asan'):
+            candidates.append(
+                src_dir
+                / 'testing'
+                / 'buildbot'
+                / 'filters'
+                / f'{target_os}.asan.{name}.filter'
+            )
+        files.extend(
+            '../../' + path.relative_to(src_dir).as_posix()
+            for path in candidates
+            if path.is_file()
+        )
+    return files
 
 
 @dataclasses.dataclass(frozen=True)
