@@ -214,7 +214,15 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
       },
     }))
 
+    const isSendButtonDisabled =
+      props.context.shouldDisableUserInput
+      || props.context.isUploadingFiles
+      || stringifyContent(props.context.inputText).trim() === ''
+
     const handleSubmit = () => {
+      if (isSendButtonDisabled) {
+        return
+      }
       querySubmitted.current = true
       props.context.submitInputTextToAPI()
     }
@@ -229,7 +237,8 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
 
     const handleOnKeyDown = (e: React.KeyboardEvent) => {
       if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
-        if (!e.repeat) {
+        if (!e.repeat && !isSendButtonDisabled) {
+          querySubmitted.current = true
           props.context.submitInputTextToAPI()
         }
 
@@ -309,9 +318,6 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
       isContentAgentOn
       && props.context.toolUseTaskState !== Mojom.TaskState.kNone
       && props.context.toolUseTaskState !== Mojom.TaskState.kStopped
-    const isSendButtonDisabled =
-      props.context.shouldDisableUserInput
-      || stringifyContent(props.context.inputText) === ''
 
     const handleLearnMoreClicked = React.useCallback(() => {
       const mojomUrl = new Url()
@@ -457,6 +463,7 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
                   fab
                   kind='plain-faint'
                   onClick={handleMic}
+                  isDisabled={props.context.shouldDisableUserInput}
                   disabled={props.context.shouldDisableUserInput}
                   title={getLocale(S.AI_CHAT_USE_MICROPHONE_BUTTON_LABEL)}
                 >
@@ -556,6 +563,7 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
                     [styles.sendButtonDisabled]: isSendButtonDisabled,
                   })}
                   onClick={handleSubmit}
+                  isDisabled={isSendButtonDisabled}
                   disabled={isSendButtonDisabled}
                   title={getLocale(S.CHAT_UI_SEND_CHAT_BUTTON_LABEL)}
                   data-testid='leo-submit-button'
