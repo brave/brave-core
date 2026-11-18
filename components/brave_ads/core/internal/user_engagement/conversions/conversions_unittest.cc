@@ -7,12 +7,14 @@
 
 #include "base/run_loop.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/test/campaign_conversion_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/test/ad_event_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_feature.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_test_base.h"
@@ -100,6 +102,11 @@ TEST_F(BraveAdsConversionsTest, DoNotCapConversionsWithinTheSameCampaign) {
   conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
   view_through_run_loop.Run();
 
+  // A second, genuinely distinct ad event for the same campaign, e.g. the
+  // user viewed the ad again later, should still be allowed to convert.
+  AdvanceClockBy(base::Milliseconds(1));
+  test::RecordAdEvent(ad, mojom::ConfirmationType::kViewedImpression);
+
   // Act & Assert
   base::RunLoop click_through_run_loop;
   VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
@@ -128,15 +135,141 @@ TEST_F(BraveAdsConversionsTest, CapConversionsWithinTheSameCampaign) {
   conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
   view_through_run_loop.Run();
 
+  // A second, genuinely distinct ad event for the same campaign should still
+  // convert, as the cap has not yet been reached.
+  AdvanceClockBy(base::Milliseconds(1));
+  test::RecordAdEvent(ad, mojom::ConfirmationType::kViewedImpression);
+
   base::RunLoop click_through_run_loop;
   VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
                                   click_through_run_loop.QuitClosure());
   conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
   click_through_run_loop.Run();
 
+  // A third, genuinely distinct ad event for the same campaign must be
+  // blocked, as the cap has now been reached.
+  AdvanceClockBy(base::Milliseconds(1));
+  test::RecordAdEvent(ad, mojom::ConfirmationType::kViewedImpression);
+
   // Act & Assert
   VerifyOnDidNotConvertAdExpectation();
   conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+}
+
+TEST_F(BraveAdsConversionsTest, DoNotConvertTheSameViewedAdEventMoreThanOnce) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
+
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
+                                  /*use_random_uuids=*/true);
+  test::BuildAndSaveCampaignConversion(ad.campaign_id,
+                                       test::kMatchingUrlPattern,
+                                       /*observation_window=*/base::Days(3));
+  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
+                            mojom::ConfirmationType::kViewedImpression});
+
+  base::RunLoop run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
+                                  run_loop.QuitClosure());
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  run_loop.Run();
+
+  // Act & Assert
+  VerifyOnDidNotConvertAdExpectation();
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+
+  base::test::TestFuture<bool, AdEventList> test_future;
+  test::GetAll(test_future.GetCallback<bool, const AdEventList&>());
+  const auto [success, ad_events] = test_future.Take();
+  ASSERT_TRUE(success);
+  EXPECT_THAT(ad_events, ::testing::SizeIs(3));
+}
+
+TEST_F(BraveAdsConversionsTest, DoNotConvertTheSameClickedAdEventMoreThanOnce) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
+
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
+                                  /*use_random_uuids=*/true);
+  test::BuildAndSaveCampaignConversion(ad.campaign_id,
+                                       test::kMatchingUrlPattern,
+                                       /*observation_window=*/base::Days(3));
+  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
+                            mojom::ConfirmationType::kClicked});
+
+  base::RunLoop run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kClickThrough,
+                                  run_loop.QuitClosure());
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  run_loop.Run();
+
+  // Act & Assert
+  VerifyOnDidNotConvertAdExpectation();
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+
+  base::test::TestFuture<bool, AdEventList> test_future;
+  test::GetAll(test_future.GetCallback<bool, const AdEventList&>());
+  const auto [success, ad_events] = test_future.Take();
+  ASSERT_TRUE(success);
+  EXPECT_THAT(ad_events, ::testing::SizeIs(3));
+}
+
+TEST_F(BraveAdsConversionsTest,
+       DoNotConvertViewedAdEventAfterClickAlreadyConverted) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
+
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
+                                  /*use_random_uuids=*/true);
+  test::BuildAndSaveCampaignConversion(ad.campaign_id,
+                                       test::kMatchingUrlPattern,
+                                       /*observation_window=*/base::Days(3));
+  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
+                            mojom::ConfirmationType::kViewedImpression,
+                            mojom::ConfirmationType::kClicked});
+
+  base::RunLoop run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kClickThrough,
+                                  run_loop.QuitClosure());
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  run_loop.Run();
+
+  // Act & Assert
+
+  // The click already converted, so the preceding viewed ad event must not
+  // be allowed to convert as a view-through on a repeat check.
+  VerifyOnDidNotConvertAdExpectation();
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+}
+
+TEST_F(BraveAdsConversionsTest, ConvertClickAfterViewAlreadyConverted) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
+
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
+                                  /*use_random_uuids=*/true);
+  test::BuildAndSaveCampaignConversion(ad.campaign_id,
+                                       test::kMatchingUrlPattern,
+                                       /*observation_window=*/base::Days(3));
+  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
+                            mojom::ConfirmationType::kViewedImpression});
+
+  base::RunLoop view_through_run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
+                                  view_through_run_loop.QuitClosure());
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  view_through_run_loop.Run();
+
+  // A click recorded without advancing the clock shares the view's exact
+  // `created_at`, so only `confirmation_type` distinguishes its key.
+  test::RecordAdEvent(ad, mojom::ConfirmationType::kClicked);
+
+  // Act & Assert
+  base::RunLoop click_through_run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kClickThrough,
+                                  click_through_run_loop.QuitClosure());
+  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  click_through_run_loop.Run();
 }
 
 TEST_F(BraveAdsConversionsTest, ConvertViewedAdAfterTheSameAdWasDismissed) {

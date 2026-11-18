@@ -1130,6 +1130,7 @@ static_library("internal") {
     "user_engagement/conversions/actions/conversion_action_types_constants.h",
     "user_engagement/conversions/actions/conversion_action_types_util.cc",
     "user_engagement/conversions/actions/conversion_action_types_util.h",
+    "user_engagement/conversions/attempted_ad_event_key.h",
     "user_engagement/conversions/conversion/conversion_builder.cc",
     "user_engagement/conversions/conversion/conversion_builder.h",
     "user_engagement/conversions/conversion/conversion_info.cc",
