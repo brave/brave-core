@@ -10,6 +10,7 @@
 
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/numerics/byte_conversions.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/skia/include/core/SkColor.h"
 
@@ -27,9 +28,8 @@ std::vector<uint8_t> PngHeader(uint32_t width, uint32_t height) {
   std::vector<uint8_t> bytes = {0x89, 'P', 'N', 'G', '\r', '\n', 0x1a, '\n',
                                 0,    0,   0,   13,  'I',  'H',  'D',  'R'};
   for (uint32_t value : {width, height}) {
-    for (int shift = 24; shift >= 0; shift -= 8) {
-      bytes.push_back(static_cast<uint8_t>(value >> shift));
-    }
+    const auto big_endian = base::U32ToBigEndian(value);
+    bytes.insert(bytes.end(), big_endian.begin(), big_endian.end());
   }
   return bytes;
 }
@@ -43,14 +43,15 @@ class CustomProfileImageFileTest : public testing::Test {
 
 TEST_F(CustomProfileImageFileTest, ReplaceReloadAndRemove) {
   ImageFile file(path());
-  ASSERT_TRUE(file.Replace(Bitmap(512, SK_ColorRED)));
+  ASSERT_TRUE(file.Replace(Bitmap(kMaxImageSide, SK_ColorRED)));
   ImageFile reopened(path());
   auto bitmap = reopened.Read();
   ASSERT_FALSE(bitmap.drawsNothing());
-  EXPECT_EQ(bitmap.width(), 512);
-  EXPECT_EQ(bitmap.getColor(256, 256), SK_ColorRED);
+  EXPECT_EQ(bitmap.width(), kMaxImageSide);
+  EXPECT_EQ(bitmap.getColor(kMaxImageSide / 2, kMaxImageSide / 2), SK_ColorRED);
   ASSERT_TRUE(reopened.Replace(Bitmap(16, SK_ColorBLUE)));
   bitmap = file.Read();
+  ASSERT_FALSE(bitmap.drawsNothing());
   EXPECT_EQ(bitmap.width(), 16);
   EXPECT_EQ(bitmap.getColor(8, 8), SK_ColorBLUE);
   ASSERT_TRUE(file.Remove());
@@ -94,9 +95,10 @@ TEST_F(CustomProfileImageFileTest, CorruptImageAndUncommittedFileAreNotLoaded) {
 }
 
 TEST(CustomProfileImageHeaderTest, AcceptsOnlySquareHeadersUpToMaxSide) {
-  EXPECT_TRUE(internal::HasNormalizedHeader(PngHeader(512, 512)));
+  constexpr uint32_t kMax = kMaxImageSide;
+  EXPECT_TRUE(internal::HasNormalizedHeader(PngHeader(kMax, kMax)));
   EXPECT_TRUE(internal::HasNormalizedHeader(PngHeader(1, 1)));
-  EXPECT_FALSE(internal::HasNormalizedHeader(PngHeader(513, 513)));
+  EXPECT_FALSE(internal::HasNormalizedHeader(PngHeader(kMax + 1, kMax + 1)));
   EXPECT_FALSE(
       internal::HasNormalizedHeader(PngHeader(0xffffffff, 0xffffffff)));
   EXPECT_FALSE(internal::HasNormalizedHeader(PngHeader(16, 8)));

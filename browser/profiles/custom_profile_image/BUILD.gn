@@ -35,6 +35,8 @@ source_set("unit_tests") {
     ":image_file",
     "//base/test:test_support",
     "//brave/browser/ui/webui/custom_profile_image",
+    "//chrome/browser/profiles:profile_manager",
+    "//chrome/browser/profiles:profile_util",
     "//chrome/test:test_support",
     "//chrome/test/base:testing_browser_process",
     "//components/prefs",
@@ -45,8 +47,6 @@ source_set("unit_tests") {
     sources += [ "profile_image_unittest_win.cc" ]
     deps += [
       "//chrome/browser/profiles:misc",
-      "//chrome/browser/profiles:profile_manager",
-      "//chrome/browser/profiles:profile_util",
       "//skia",
     ]
   }

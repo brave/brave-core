@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/files/file_util.h"
+#include "base/location.h"
 #include "base/run_loop.h"
 #include "base/scoped_observation.h"
 #include "base/task/sequenced_task_runner.h"
@@ -24,6 +25,7 @@
 #include "chrome/browser/profiles/profile_attributes_init_params.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
+#include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/testing_profile_manager.h"
@@ -101,7 +103,9 @@ class CustomProfileImageTest : public testing::Test {
     bitmap.eraseColor(color);
     return bitmap;
   }
-  void Save(SkColor color) {
+  void Save(SkColor color,
+            const base::Location& location = base::Location::Current()) {
+    SCOPED_TRACE(location.ToString());
     base::test::TestFuture<Result> result;
     image().Replace(Bitmap(color), result.GetCallback());
     ASSERT_EQ(result.Get(), Result::kSuccess);
@@ -113,13 +117,16 @@ class CustomProfileImageTest : public testing::Test {
 };
 
 TEST_F(CustomProfileImageTest, SaveResolvesThroughEntry) {
-  Save(SK_ColorRED);
+  ASSERT_NO_FATAL_FAILURE(Save(SK_ColorRED));
   EXPECT_EQ(entry().GetAvatarIcon().AsBitmap().getColor(8, 8), SK_ColorRED);
 }
 
 TEST_F(CustomProfileImageTest, EarlyResultsAreAsynchronous) {
   auto expect_async = [](base::OnceCallback<void(ProfileImage::Callback)> start,
-                         Result expected) {
+                         Result expected,
+                         const base::Location& location =
+                             base::Location::Current()) {
+    SCOPED_TRACE(location.ToString());
     bool replied = false;
     base::test::TestFuture<Result> result;
     std::move(start).Run(base::BindLambdaForTesting([&](Result value) {
@@ -200,6 +207,8 @@ TEST_F(CustomProfileImageTest, UnusableBitmapIsRejected) {
   SkBitmap oversized;
   oversized.allocN32Pixels(kMaxImageSide + 1, kMaxImageSide + 1);
   for (const SkBitmap& bitmap : {SkBitmap(), non_square, oversized}) {
+    SCOPED_TRACE(testing::Message()
+                 << bitmap.width() << "x" << bitmap.height());
     base::test::TestFuture<Result> result;
     image().Replace(bitmap, result.GetCallback());
     EXPECT_EQ(result.Get(), Result::kInvalidImage);
@@ -216,6 +225,7 @@ TEST_F(CustomProfileImageTest, OtherColorTypesAreSavedAsN32) {
   image().Replace(wide, result.GetCallback());
   ASSERT_EQ(result.Get(), Result::kSuccess);
   const SkBitmap saved = image().GetImage().AsBitmap();
+  ASSERT_FALSE(saved.drawsNothing());
   EXPECT_EQ(saved.colorType(), kN32_SkColorType);
   EXPECT_EQ(saved.getColor(8, 8), SK_ColorRED);
   auto reloaded = Reload();
@@ -228,7 +238,7 @@ TEST_F(CustomProfileImageTest, OtherColorTypesAreSavedAsN32) {
 }
 
 TEST_F(CustomProfileImageTest, SamePresetDeactivatesWithoutDeletingSavedImage) {
-  Save(SK_ColorRED);
+  ASSERT_NO_FATAL_FAILURE(Save(SK_ColorRED));
   SelectPreset(entry().GetAvatarIconIndex());
   EXPECT_FALSE(image().IsActive());
   EXPECT_TRUE(image().HasSavedImage());
@@ -248,7 +258,7 @@ TEST_F(CustomProfileImageTest, PresetChoiceWinsOverPendingWrite) {
 }
 
 TEST_F(CustomProfileImageTest, FailedWriteDoesNotCancelPendingSelection) {
-  Save(SK_ColorRED);
+  ASSERT_NO_FATAL_FAILURE(Save(SK_ColorRED));
   SelectPreset(entry().GetAvatarIconIndex());
   const auto pending = PendingPath();
   ASSERT_TRUE(base::CreateDirectory(pending));
@@ -260,6 +270,7 @@ TEST_F(CustomProfileImageTest, FailedWriteDoesNotCancelPendingSelection) {
   EXPECT_EQ(selected.Get(), Result::kSuccess);
   EXPECT_EQ(replaced.Get(), Result::kFileError);
   EXPECT_TRUE(image().IsActive());
+  ASSERT_FALSE(image().GetImage().IsEmpty());
   EXPECT_EQ(image().GetImage().AsBitmap().getColor(8, 8), SK_ColorRED);
 }
 
@@ -286,7 +297,7 @@ TEST_F(CustomProfileImageTest, RemovingNothingDoesNotNotify) {
 }
 
 TEST_F(CustomProfileImageTest, NewProfileAtSamePathHasNoImage) {
-  Save(SK_ColorRED);
+  ASSERT_NO_FATAL_FAILURE(Save(SK_ColorRED));
   // A write still pending at removal must not reach the new profile. Its file
   // is left for upstream's profile directory deletion.
   bool replied = false;
@@ -311,7 +322,7 @@ TEST_F(CustomProfileImageTest, NewProfileAtSamePathHasNoImage) {
 }
 
 TEST_F(CustomProfileImageTest, ReloadShowsPresetUntilSavedImageLoads) {
-  Save(SK_ColorRED);
+  ASSERT_NO_FATAL_FAILURE(Save(SK_ColorRED));
   auto reloaded = Reload();
   auto* reopened = reloaded->GetProfileAttributesWithPath(path_);
   ASSERT_TRUE(reopened);
@@ -329,7 +340,7 @@ TEST_F(CustomProfileImageTest, ReloadShowsPresetUntilSavedImageLoads) {
 }
 
 TEST_F(CustomProfileImageTest, FailedLoadKeepsSavedImageForRetry) {
-  Save(SK_ColorRED);
+  ASSERT_NO_FATAL_FAILURE(Save(SK_ColorRED));
   const auto file = ImagePath();
   const auto aside = path_.AppendASCII("aside.png");
   ASSERT_TRUE(base::Move(file, aside));
@@ -347,6 +358,7 @@ TEST_F(CustomProfileImageTest, FailedLoadKeepsSavedImageForRetry) {
     failed.Select(selected.GetCallback());
     EXPECT_EQ(selected.Get(), Result::kSuccess);
     EXPECT_TRUE(failed.IsSelected());
+    ASSERT_FALSE(failed.GetImage().IsEmpty());
     EXPECT_EQ(failed.GetImage().AsBitmap().getColor(8, 8), SK_ColorRED);
   }
   // A later launch also retries.
@@ -361,7 +373,7 @@ TEST_F(CustomProfileImageTest, FailedLoadKeepsSavedImageForRetry) {
 }
 
 TEST_F(CustomProfileImageTest, FailedRemovalPreservesCachedSelection) {
-  Save(SK_ColorRED);
+  ASSERT_NO_FATAL_FAILURE(Save(SK_ColorRED));
   const auto destination = ImagePath();
   ASSERT_TRUE(base::DeleteFile(destination));
   ASSERT_TRUE(base::CreateDirectory(destination));
@@ -370,18 +382,19 @@ TEST_F(CustomProfileImageTest, FailedRemovalPreservesCachedSelection) {
   image().Remove(removed.GetCallback());
   EXPECT_EQ(removed.Get(), Result::kFileError);
   EXPECT_TRUE(image().IsActive());
+  ASSERT_FALSE(image().GetImage().IsEmpty());
   EXPECT_EQ(image().GetImage().AsBitmap().getColor(8, 8), SK_ColorRED);
 }
 
 TEST_F(CustomProfileImageTest, CustomSelectionClearsPresetSelectionFlags) {
-  Save(SK_ColorRED);
+  ASSERT_NO_FATAL_FAILURE(Save(SK_ColorRED));
   EXPECT_EQ(CountSelectedAvatars(), 0u);
   SelectPreset(entry().GetAvatarIconIndex());
   EXPECT_EQ(CountSelectedAvatars(), 1u);
 }
 
 TEST_F(CustomProfileImageTest, SelectionNotificationContainsFinalState) {
-  Save(SK_ColorRED);
+  ASSERT_NO_FATAL_FAILURE(Save(SK_ColorRED));
   size_t notifications = 0;
   const size_t new_index = profiles::GetDefaultAvatarIconCount() - 1;
   AvatarChangeObserver observer(
@@ -401,7 +414,7 @@ TEST_F(CustomProfileImageTest, SelectionNotificationContainsFinalState) {
 }
 
 TEST_F(CustomProfileImageTest, MirroringFallbackDoesNotChangeCustomSelection) {
-  Save(SK_ColorRED);
+  ASSERT_NO_FATAL_FAILURE(Save(SK_ColorRED));
   entry().SetAvatarIconIndex(profiles::GetDefaultAvatarIconCount() - 1);
   entry().SetIsUsingGAIAPicture(true);
   EXPECT_TRUE(image().IsActive());
@@ -409,7 +422,7 @@ TEST_F(CustomProfileImageTest, MirroringFallbackDoesNotChangeCustomSelection) {
 }
 
 TEST_F(CustomProfileImageTest, DisabledFeatureRetainsSavedSelection) {
-  Save(SK_ColorRED);
+  ASSERT_NO_FATAL_FAILURE(Save(SK_ColorRED));
   {
     base::test::ScopedFeatureList disabled;
     disabled.InitAndDisableFeature(features::kBraveCustomProfileImage);
@@ -423,7 +436,7 @@ TEST_F(CustomProfileImageTest, DisabledFeatureRetainsSavedSelection) {
 }
 
 TEST_F(CustomProfileImageTest, PresetChosenWhileDisabledSurvivesReenable) {
-  Save(SK_ColorRED);
+  ASSERT_NO_FATAL_FAILURE(Save(SK_ColorRED));
   {
     base::test::ScopedFeatureList disabled;
     disabled.InitAndDisableFeature(features::kBraveCustomProfileImage);
@@ -434,7 +447,7 @@ TEST_F(CustomProfileImageTest, PresetChosenWhileDisabledSurvivesReenable) {
 }
 
 TEST_F(CustomProfileImageTest, MissingImageFallsBackAndCanBeReplaced) {
-  Save(SK_ColorRED);
+  ASSERT_NO_FATAL_FAILURE(Save(SK_ColorRED));
   ASSERT_TRUE(base::DeleteFile(ImagePath()));
   base::test::TestFuture<Result> selected;
   image().Select(selected.GetCallback());
