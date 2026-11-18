@@ -40,6 +40,7 @@ test("brave_components_unittests") {
     "//brave/components/brave_private_cdn:unit_tests",
     "//brave/components/brave_shields/core/browser:unit_tests",
     "//brave/components/brave_shields/core/common:unit_tests",
+    "//brave/components/brave_stats/browser:unit_tests",
     "//brave/components/brave_sync:unit_tests",
     "//brave/components/component_updater:unit_tests",
     "//brave/components/endpoint_client:unit_tests",

@@ -156,4 +156,87 @@ TEST_F(BraveStatsUpdaterUtilTest, GetYMDAsDateForUtcTime) {
   EXPECT_EQ(time, GetYMDAsDate(ymd, /*use_utc=*/true));
 }
 
+TEST_F(BraveStatsUpdaterUtilTest, GetIsoWeekNumber) {
+  base::Time::Exploded exploded;
+  exploded.hour = 0;
+  exploded.minute = 0;
+  exploded.second = 0;
+  exploded.millisecond = 0;
+  exploded.day_of_week = 1;
+  exploded.day_of_month = 29;
+  exploded.month = 7;
+  exploded.year = 2019;
+
+  base::Time time;
+  EXPECT_TRUE(base::Time::FromLocalExploded(exploded, &time));
+  EXPECT_EQ(GetIsoWeekNumber(time), 31);
+
+  exploded.day_of_month = 30;
+  exploded.month = 9;
+
+  EXPECT_TRUE(base::Time::FromLocalExploded(exploded, &time));
+  EXPECT_EQ(GetIsoWeekNumber(time), 40);
+
+  exploded.day_of_month = 1;
+  exploded.month = 9;
+  exploded.day_of_week = 0;
+
+  EXPECT_TRUE(base::Time::FromLocalExploded(exploded, &time));
+  EXPECT_EQ(GetIsoWeekNumber(time), 35);
+}
+
+TEST_F(BraveStatsUpdaterUtilTest, UsageBitstringDaily) {
+  base::Time last_reported_use;
+  base::Time last_use;
+
+  EXPECT_TRUE(base::Time::FromString("2020-03-31", &last_use));
+  EXPECT_TRUE(base::Time::FromString("2020-03-30", &last_reported_use));
+
+  EXPECT_EQ(0b001, UsageBitfieldFromTimestamp(last_use, last_reported_use));
+}
+
+TEST_F(BraveStatsUpdaterUtilTest, UsageBitstringWeekly) {
+  base::Time last_reported_use;
+  base::Time last_use;
+
+  EXPECT_TRUE(base::Time::FromString("2020-03-31", &last_use));
+  EXPECT_TRUE(base::Time::FromString("2020-03-26", &last_reported_use));
+
+  EXPECT_EQ(0b011, UsageBitfieldFromTimestamp(last_use, last_reported_use));
+}
+
+TEST_F(BraveStatsUpdaterUtilTest, UsageBitstringMonthlySameWeek) {
+  base::Time last_reported_use;
+  base::Time last_use;
+
+  EXPECT_TRUE(base::Time::FromString("2020-07-01", &last_use));
+  EXPECT_TRUE(base::Time::FromString("2020-06-30", &last_reported_use));
+
+  EXPECT_EQ(0b101, UsageBitfieldFromTimestamp(last_use, last_reported_use));
+}
+
+TEST_F(BraveStatsUpdaterUtilTest, UsageBitstringMonthlyDiffWeek) {
+  base::Time last_reported_use;
+  base::Time last_use;
+
+  EXPECT_TRUE(base::Time::FromString("2020-03-01", &last_use));
+  EXPECT_TRUE(base::Time::FromString("2020-02-15", &last_reported_use));
+
+  EXPECT_EQ(0b111, UsageBitfieldFromTimestamp(last_use, last_reported_use));
+}
+
+TEST_F(BraveStatsUpdaterUtilTest, UsageBitstringInactive) {
+  base::Time last_reported_use;
+  base::Time last_use;
+
+  EXPECT_TRUE(base::Time::FromString("2020-03-31", &last_use));
+  EXPECT_TRUE(base::Time::FromString("2020-03-31", &last_reported_use));
+
+  EXPECT_EQ(0b000, UsageBitfieldFromTimestamp(last_use, last_reported_use));
+}
+
+TEST_F(BraveStatsUpdaterUtilTest, UsageBitstringNeverUsed) {
+  EXPECT_EQ(0b000, UsageBitfieldFromTimestamp(base::Time(), base::Time()));
+}
+
 }  // namespace brave_stats
