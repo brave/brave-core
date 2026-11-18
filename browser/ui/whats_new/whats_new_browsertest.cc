@@ -35,7 +35,10 @@ class BraveWhatsNewBrowserTest : public InProcessBrowserTest {
     set_open_about_blank_on_browser_launch(false);
   }
 
-  ~BraveWhatsNewBrowserTest() override = default;
+  ~BraveWhatsNewBrowserTest() override {
+    // Clear the process-wide version override set in the constructor.
+    SetCurrentVersionForTesting(0);
+  }
 
   void SetUpDefaultCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpDefaultCommandLine(command_line);
