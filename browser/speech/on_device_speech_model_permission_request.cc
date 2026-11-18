@@ -20,11 +20,11 @@
 #include "components/permissions/request_type.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "ui/base/text/bytes_formatting.h"
 
 namespace speech {
 
 OnDeviceSpeechModelPermissionRequest::OnDeviceSpeechModelPermissionRequest(
+    local_ai::OnDeviceSpeechModel model,
     PrefService& local_state,
     PrefService& profile_prefs,
     const GURL& requesting_origin,
@@ -37,6 +37,7 @@ OnDeviceSpeechModelPermissionRequest::OnDeviceSpeechModelPermissionRequest(
           base::BindRepeating(
               &OnDeviceSpeechModelPermissionRequest::PermissionDecided,
               base::Unretained(this))),
+      model_(model),
       callback_(std::move(callback)),
       local_state_(local_state),
       profile_prefs_(profile_prefs) {
@@ -48,9 +49,8 @@ OnDeviceSpeechModelPermissionRequest::~OnDeviceSpeechModelPermissionRequest() =
 
 std::u16string OnDeviceSpeechModelPermissionRequest::GetMessageTextFragment()
     const {
-  return l10n_util::GetStringFUTF16(
-      IDS_ON_DEVICE_SPEECH_MODEL_PERMISSION_FRAGMENT,
-      ui::FormatBytes(local_ai::kApproxModelSize));
+  return l10n_util::GetStringUTF16(
+      IDS_ON_DEVICE_SPEECH_MODEL_PERMISSION_FRAGMENT);
 }
 
 void OnDeviceSpeechModelPermissionRequest::PermissionDecided(
@@ -64,8 +64,12 @@ void OnDeviceSpeechModelPermissionRequest::PermissionDecided(
   }
 
   if (decision.overall_decision == PermissionDecision::kAllow) {
-    local_ai::EnableOnDeviceSpeechModel(
-        *local_state_, local_ai::OnDeviceSpeechModel::kEnglish);
+    // The multilingual model also serves English, so an English prompt that
+    // the user allows after it does not replace it.
+    if (local_ai::GetEnabledOnDeviceSpeechModel(&*local_state_) !=
+        local_ai::OnDeviceSpeechModel::kMultilingual) {
+      local_ai::EnableOnDeviceSpeechModel(*local_state_, model_);
+    }
   } else if (decision.overall_decision == PermissionDecision::kDeny) {
     profile_prefs_->SetBoolean(local_ai::prefs::kAskEnableOnDeviceSpeechModel,
                                !get_dont_ask_again());

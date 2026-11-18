@@ -396,8 +396,8 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         brave://settings/extensions
       </message>
       <!-- On-device speech recognition -->
-      <message name="IDS_ON_DEVICE_SPEECH_MODEL_PERMISSION_FRAGMENT" desc="Text fragment of the permission prompt that asks to download Brave's on-device speech recognition model. It follows 'example.com wants to'.">
-        Download a speech recognition model (<ph name="DOWNLOAD_SIZE">$1<ex>636 MB</ex></ph>) to process speech on this device
+      <message name="IDS_ON_DEVICE_SPEECH_MODEL_PERMISSION_FRAGMENT" desc="Text fragment of the permission prompt that asks to download one of Brave's on-device speech recognition models. The size is the approximate download size of each model. It follows 'example.com wants to'.">
+        Download a speech recognition model (about 700 MB) to process speech on this device
       </message>
       <message name="IDS_BRAVE_PERMISSIONS_BUBBLE_PROMPT" desc="The label that is used to introduce permission request details to the user in a popup.">
         <ph name="SITE_NAME">$1<ex>google.com</ex></ph> is asking you to

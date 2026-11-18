@@ -18,6 +18,12 @@
 
 namespace speech {
 
+namespace {
+
+using local_ai::OnDeviceSpeechModel;
+
+}  // namespace
+
 class OnDeviceSpeechModelPermissionRequestUnitTest : public testing::Test {
  public:
   void SetUp() override {
@@ -26,15 +32,15 @@ class OnDeviceSpeechModelPermissionRequestUnitTest : public testing::Test {
   }
 
  protected:
-  std::unique_ptr<OnDeviceSpeechModelPermissionRequest> CreateRequest() {
+  std::unique_ptr<OnDeviceSpeechModelPermissionRequest> CreateRequest(
+      OnDeviceSpeechModel model = OnDeviceSpeechModel::kEnglish) {
     return std::make_unique<OnDeviceSpeechModelPermissionRequest>(
-        local_state_, profile_prefs_, GURL("https://example.com"),
+        model, local_state_, profile_prefs_, GURL("https://example.com"),
         allowed_.GetCallback());
   }
 
-  bool IsEnabled() {
-    return local_ai::GetEnabledOnDeviceSpeechModel(&local_state_) ==
-           local_ai::OnDeviceSpeechModel::kEnglish;
+  bool IsEnabled(OnDeviceSpeechModel model) {
+    return local_ai::GetEnabledOnDeviceSpeechModel(&local_state_) == model;
   }
 
   bool IsAskEnabled() {
@@ -53,7 +59,34 @@ TEST_F(OnDeviceSpeechModelPermissionRequestUnitTest, AllowEnablesTheModel) {
 
   ASSERT_TRUE(allowed_.IsReady());
   EXPECT_TRUE(allowed_.Get());
-  EXPECT_TRUE(IsEnabled());
+  EXPECT_TRUE(IsEnabled(OnDeviceSpeechModel::kEnglish));
+}
+
+// The multilingual model replaces the English model.
+TEST_F(OnDeviceSpeechModelPermissionRequestUnitTest,
+       AllowReplacesTheEnglishModel) {
+  local_ai::EnableOnDeviceSpeechModel(local_state_,
+                                      OnDeviceSpeechModel::kEnglish);
+  auto request = CreateRequest(OnDeviceSpeechModel::kMultilingual);
+  request->PermissionGranted(std::monostate(), /*is_one_time=*/false);
+
+  ASSERT_TRUE(allowed_.IsReady());
+  EXPECT_TRUE(allowed_.Get());
+  EXPECT_TRUE(IsEnabled(OnDeviceSpeechModel::kMultilingual));
+}
+
+// The multilingual model also serves English, so an English prompt that the
+// user allows after it answers true and keeps the multilingual model.
+TEST_F(OnDeviceSpeechModelPermissionRequestUnitTest,
+       AllowKeepsTheMultilingualModel) {
+  local_ai::EnableOnDeviceSpeechModel(local_state_,
+                                      OnDeviceSpeechModel::kMultilingual);
+  auto request = CreateRequest(OnDeviceSpeechModel::kEnglish);
+  request->PermissionGranted(std::monostate(), /*is_one_time=*/false);
+
+  ASSERT_TRUE(allowed_.IsReady());
+  EXPECT_TRUE(allowed_.Get());
+  EXPECT_TRUE(IsEnabled(OnDeviceSpeechModel::kMultilingual));
 }
 
 // "Don't ask again" is kept only on a block.
@@ -64,7 +97,7 @@ TEST_F(OnDeviceSpeechModelPermissionRequestUnitTest, DenyWithDontAskAgain) {
 
   ASSERT_TRUE(allowed_.IsReady());
   EXPECT_FALSE(allowed_.Get());
-  EXPECT_FALSE(IsEnabled());
+  EXPECT_FALSE(IsEnabled(OnDeviceSpeechModel::kEnglish));
   EXPECT_FALSE(IsAskEnabled());
 }
 
@@ -76,7 +109,7 @@ TEST_F(OnDeviceSpeechModelPermissionRequestUnitTest,
 
   ASSERT_TRUE(allowed_.IsReady());
   EXPECT_FALSE(allowed_.Get());
-  EXPECT_FALSE(IsEnabled());
+  EXPECT_FALSE(IsEnabled(OnDeviceSpeechModel::kEnglish));
   EXPECT_TRUE(IsAskEnabled());
 }
 
@@ -88,7 +121,7 @@ TEST_F(OnDeviceSpeechModelPermissionRequestUnitTest, DismissSavesNothing) {
 
   ASSERT_TRUE(allowed_.IsReady());
   EXPECT_FALSE(allowed_.Get());
-  EXPECT_FALSE(IsEnabled());
+  EXPECT_FALSE(IsEnabled(OnDeviceSpeechModel::kEnglish));
   EXPECT_TRUE(IsAskEnabled());
 }
 

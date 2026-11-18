@@ -19,8 +19,9 @@ struct OnDeviceSpeechLocale {
   // stream.
   std::string_view tag;
   // The model that the locale needs: the English model for en-US, and the
-  // multilingual model for the other locales. It does not tell whether Brave
-  // can offer the model.
+  // multilingual model for the other locales. Brave asks for this model when a
+  // page needs only this locale. It does not tell whether Brave can offer the
+  // model.
   OnDeviceSpeechModel model = OnDeviceSpeechModel::kEnglish;
 };
 
