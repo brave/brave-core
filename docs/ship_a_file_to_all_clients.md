@@ -25,9 +25,9 @@
       `package.json`.
 5. Get a security review in
    [`brave/reviews`](https://github.com/brave/reviews/issues) covering the
-   component, the packaging script and the data. 
+   component, the packaging script and the data.
 6. In `brave/devops` ([Example](https://github.com/brave/devops/issues/13229)):
-   1. Open an issue to create a Jenkins job to
-      publish the crx-package, linking the passed security review.
+   1. Open an issue to create a Jenkins job to publish the crx-package, linking
+      the passed security review.
 7. Once the package is published, test it in your local development of Brave to
    be sure it's downloaded and consumed as expected.
