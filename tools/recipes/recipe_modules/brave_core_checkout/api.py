@@ -172,6 +172,13 @@ class BraveCoreCheckoutApi(RecipeApi):
         )
 
     @property
+    def build_dir(self) -> str | Path | config_types.Path:
+        """Where `pnpm run build` builds the configured builder:
+        `<chromium_src>/out/<builder>`."""
+        assert self.c is not None and self.c.BUILDER, 'see configure_build()'
+        return self.m.path.chromium_src / 'out' / self.c.BUILDER
+
+    @property
     def _builder_args(self) -> list[str]:
         """The `pnpm` arguments that make it run as the configured builder,
         none for the deprecated mode."""

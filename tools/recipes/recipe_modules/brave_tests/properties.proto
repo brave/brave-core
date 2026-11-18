@@ -1,0 +1,15 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+syntax = "proto3";
+
+package recipe_modules.brave.brave_tests;
+
+message InputProperties {
+  // A directory to write each suite's JUnit XML report to, as
+  // `<suite>.xml`, for CI to publish the test results from; empty writes
+  // none.
+  string junit_xml_dir = 1;
+}
