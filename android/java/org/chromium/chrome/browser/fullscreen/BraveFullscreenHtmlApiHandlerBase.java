@@ -7,8 +7,8 @@ package org.chromium.chrome.browser.fullscreen;
 
 import android.app.Activity;
 
-import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.media.BraveFullscreenVideoPictureInPictureController;
+import org.chromium.chrome.browser.media.YouTubePictureInPictureHost;
 import org.chromium.chrome.browser.tab.TabHidingType;
 
 /**
@@ -37,8 +37,8 @@ public abstract class BraveFullscreenHtmlApiHandlerBase {
             return true;
         }
 
-        return activity instanceof final BraveActivity braveActivity
-                && braveActivity.isYouTubePictureInPictureActive();
+        return activity instanceof final YouTubePictureInPictureHost host
+                && host.isYouTubePictureInPictureActive();
     }
 
     /**

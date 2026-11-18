@@ -7,33 +7,27 @@ package org.chromium.chrome.browser.fullscreen;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.when;
 
 import android.app.Activity;
 import android.app.KeyguardManager;
+import android.app.PictureInPictureParams;
 import android.content.Context;
 import android.os.PowerManager;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
+import org.robolectric.Robolectric;
 import org.robolectric.Shadows;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.base.test.util.CommandLineFlags;
-import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.media.YouTubePictureInPictureHost;
 import org.chromium.chrome.browser.tab.TabHidingType;
+import org.chromium.content_public.browser.WebContents;
 
 @RunWith(BaseRobolectricTestRunner.class)
-// TODO(https://github.com/brave/brave-browser/issues/59632): Remove mocking of Views/Activities.
-// Tests fake isInPictureInPictureMode() and BraveActivity's YouTube picture-in-picture state;
-// BraveActivity is too heavy to build in a unit test.
-@SuppressWarnings("DoNotMock")
 public class BraveFullscreenHtmlApiHandlerBaseTest {
     private static final String DISABLE_BACKGROUND_MEDIA_SUSPEND =
             "disable-background-media-suspend";
@@ -41,10 +35,31 @@ public class BraveFullscreenHtmlApiHandlerBaseTest {
     private static final class TestBraveFullscreenHtmlApiHandlerBase
             extends BraveFullscreenHtmlApiHandlerBase {}
 
-    @Rule public MockitoRule mMockitoRule = MockitoJUnit.rule();
+    /** Stands in for BraveActivity, which is too heavy to build in a unit test. */
+    public static final class TestHostActivity extends Activity
+            implements YouTubePictureInPictureHost {
+        private boolean mYouTubePictureInPictureActive;
 
-    @Mock private Activity mActivity;
-    @Mock private BraveActivity mBraveActivity;
+        @Override
+        public void onYouTubePictureInPictureRequested(WebContents webContents) {}
+
+        @Override
+        public void onYouTubePictureInPictureEnterFailed() {}
+
+        @Override
+        public boolean isYouTubePictureInPictureActive() {
+            return mYouTubePictureInPictureActive;
+        }
+
+        @Override
+        public void onYouTubePictureInPictureFullscreenInterrupted() {}
+
+        @Override
+        public void onYouTubePictureInPictureNewTab() {}
+    }
+
+    private Activity mActivity;
+    private TestHostActivity mHostActivity;
 
     private final TestBraveFullscreenHtmlApiHandlerBase mHandler =
             new TestBraveFullscreenHtmlApiHandlerBase();
@@ -54,6 +69,8 @@ public class BraveFullscreenHtmlApiHandlerBaseTest {
 
     @Before
     public void setUp() {
+        mActivity = Robolectric.buildActivity(Activity.class).setup().get();
+        mHostActivity = Robolectric.buildActivity(TestHostActivity.class).setup().get();
         Context context = ContextUtils.getApplicationContext();
         mPowerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         mKeyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
@@ -61,10 +78,15 @@ public class BraveFullscreenHtmlApiHandlerBaseTest {
         Shadows.shadowOf(mKeyguardManager).setKeyguardLocked(false);
     }
 
+    private static void enterPictureInPicture(Activity activity) {
+        assertTrue(
+                activity.enterPictureInPictureMode(new PictureInPictureParams.Builder().build()));
+    }
+
     @Test
     @CommandLineFlags.Add(DISABLE_BACKGROUND_MEDIA_SUSPEND)
     public void generalPictureInPicture_screenOff_preservesFullscreen() {
-        when(mActivity.isInPictureInPictureMode()).thenReturn(true);
+        enterPictureInPicture(mActivity);
         Shadows.shadowOf(mPowerManager).setIsInteractive(false);
 
         assertTrue(mHandler.shouldPreservePersistentFullscreenForPictureInPicture(mActivity));
@@ -73,7 +95,7 @@ public class BraveFullscreenHtmlApiHandlerBaseTest {
     @Test
     @CommandLineFlags.Add(DISABLE_BACKGROUND_MEDIA_SUSPEND)
     public void generalPictureInPicture_locked_preservesFullscreenUntilUnlocked() {
-        when(mActivity.isInPictureInPictureMode()).thenReturn(true);
+        enterPictureInPicture(mActivity);
         Shadows.shadowOf(mKeyguardManager).setKeyguardLocked(true);
 
         assertTrue(mHandler.shouldPreservePersistentFullscreenForPictureInPicture(mActivity));
@@ -95,7 +117,7 @@ public class BraveFullscreenHtmlApiHandlerBaseTest {
     @Test
     @CommandLineFlags.Remove(DISABLE_BACKGROUND_MEDIA_SUSPEND)
     public void generalPictureInPicture_backgroundPlaybackDisabledScreenOff_doesNotPreserve() {
-        when(mActivity.isInPictureInPictureMode()).thenReturn(true);
+        enterPictureInPicture(mActivity);
         Shadows.shadowOf(mPowerManager).setIsInteractive(false);
 
         assertFalse(mHandler.shouldPreservePersistentFullscreenForPictureInPicture(mActivity));
@@ -104,7 +126,7 @@ public class BraveFullscreenHtmlApiHandlerBaseTest {
     @Test
     @CommandLineFlags.Remove(DISABLE_BACKGROUND_MEDIA_SUSPEND)
     public void generalPictureInPicture_backgroundPlaybackDisabledLocked_doesNotPreserve() {
-        when(mActivity.isInPictureInPictureMode()).thenReturn(true);
+        enterPictureInPicture(mActivity);
         Shadows.shadowOf(mKeyguardManager).setKeyguardLocked(true);
 
         assertFalse(mHandler.shouldPreservePersistentFullscreenForPictureInPicture(mActivity));
@@ -113,7 +135,7 @@ public class BraveFullscreenHtmlApiHandlerBaseTest {
     @Test
     @CommandLineFlags.Add(DISABLE_BACKGROUND_MEDIA_SUSPEND)
     public void tabHidden_lockedPictureInPicture_recordsAndClearsTabSwitch() {
-        when(mActivity.isInPictureInPictureMode()).thenReturn(true);
+        enterPictureInPicture(mActivity);
         Shadows.shadowOf(mKeyguardManager).setKeyguardLocked(true);
 
         assertTrue(
@@ -132,15 +154,15 @@ public class BraveFullscreenHtmlApiHandlerBaseTest {
 
     @Test
     public void shouldPreservePersistentFullscreenForPictureInPicture_inactiveBraveActivity() {
-        when(mBraveActivity.isYouTubePictureInPictureActive()).thenReturn(false);
+        mHostActivity.mYouTubePictureInPictureActive = false;
 
-        assertFalse(mHandler.shouldPreservePersistentFullscreenForPictureInPicture(mBraveActivity));
+        assertFalse(mHandler.shouldPreservePersistentFullscreenForPictureInPicture(mHostActivity));
     }
 
     @Test
     public void shouldPreservePersistentFullscreenForPictureInPicture_activeBraveActivity() {
-        when(mBraveActivity.isYouTubePictureInPictureActive()).thenReturn(true);
+        mHostActivity.mYouTubePictureInPictureActive = true;
 
-        assertTrue(mHandler.shouldPreservePersistentFullscreenForPictureInPicture(mBraveActivity));
+        assertTrue(mHandler.shouldPreservePersistentFullscreenForPictureInPicture(mHostActivity));
     }
 }

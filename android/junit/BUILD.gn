@@ -467,8 +467,10 @@ if (is_android) {
     sources = [ "src/org/chromium/chrome/browser/fullscreen/BraveFullscreenHtmlApiHandlerBaseTest.java" ]
 
     deps = [
+      "//brave/browser/media/android:java",
       "//chrome/android/junit:chrome_junit_tests_helper",
       "//chrome/browser/fullscreen/android:java",
+      "//content/public/android:content_java",
     ]
   }
 
@@ -500,6 +502,7 @@ if (is_android) {
     ]
 
     deps = [
+      "//brave/browser/media/android:java",
       "//brave/components/browser_ui/media/android:java",
       "//chrome/android/junit:chrome_junit_tests_helper",
       "//chrome/browser/fullscreen/android:java",

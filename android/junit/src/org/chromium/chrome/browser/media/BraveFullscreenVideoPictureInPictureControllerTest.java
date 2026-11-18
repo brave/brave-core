@@ -5,18 +5,20 @@
 
 package org.chromium.chrome.browser.media;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.app.Activity;
 import android.app.KeyguardManager;
+import android.app.PictureInPictureParams;
 import android.content.Context;
 import android.os.PowerManager;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,6 +26,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import org.robolectric.Robolectric;
 import org.robolectric.Shadows;
 import org.robolectric.shadows.ShadowSystemClock;
 
@@ -31,10 +34,10 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.base.test.util.CommandLineFlags;
 import org.chromium.chrome.browser.ActivityTabProvider;
-import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.content_public.browser.MediaSession;
+import org.chromium.content_public.browser.WebContents;
 import org.chromium.content_public.browser.WebContentsObserver;
 import org.chromium.content_public.browser.test.mock.MockWebContents;
 import org.chromium.media_session.mojom.MediaSession.SuspendType;
@@ -42,17 +45,12 @@ import org.chromium.media_session.mojom.MediaSession.SuspendType;
 import java.time.Duration;
 
 @RunWith(BaseRobolectricTestRunner.class)
-// TODO(https://github.com/brave/brave-browser/issues/59632): Remove mocking of Views/Activities.
-// Tests fake isInPictureInPictureMode() and verify moveTaskToBack() on BraveActivity, which is too
-// heavy to build in a unit test.
-@SuppressWarnings("DoNotMock")
 public class BraveFullscreenVideoPictureInPictureControllerTest {
     private static final String DISABLE_BACKGROUND_MEDIA_SUSPEND =
             "disable-background-media-suspend";
 
     @Rule public MockitoRule mMockitoRule = MockitoJUnit.rule();
 
-    @Mock private BraveActivity mBraveActivity;
     @Mock private FullscreenManager mFullscreenManager;
     @Mock private Tab mTab;
     @Mock private MockWebContents mWebContents;
@@ -60,6 +58,50 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
     private WebContentsObserver mObserver;
     private PowerManager mPowerManager;
     private KeyguardManager mKeyguardManager;
+    private TestHostActivity mHostActivity;
+
+    /** Stands in for BraveActivity, which is too heavy to build in a unit test. */
+    public static final class TestHostActivity extends Activity
+            implements YouTubePictureInPictureHost {
+        private boolean mYouTubePictureInPictureActive;
+        private int mFullscreenInterruptedCount;
+        private int mNewTabCount;
+
+        @Override
+        public void onYouTubePictureInPictureRequested(WebContents webContents) {}
+
+        @Override
+        public void onYouTubePictureInPictureEnterFailed() {}
+
+        @Override
+        public boolean isYouTubePictureInPictureActive() {
+            return mYouTubePictureInPictureActive;
+        }
+
+        @Override
+        public void onYouTubePictureInPictureFullscreenInterrupted() {
+            mFullscreenInterruptedCount++;
+        }
+
+        @Override
+        public void onYouTubePictureInPictureNewTab() {
+            mNewTabCount++;
+        }
+    }
+
+    @Before
+    public void setUp() {
+        mHostActivity = Robolectric.buildActivity(TestHostActivity.class).setup().get();
+    }
+
+    private static void enterPictureInPicture(Activity activity) {
+        assertTrue(
+                activity.enterPictureInPictureMode(new PictureInPictureParams.Builder().build()));
+    }
+
+    private static boolean isTaskMovedToBack(Activity activity) {
+        return Shadows.shadowOf(activity).isTaskMovedToBack();
+    }
 
     // Creates a playing PiP controller through the upstream lifecycle.
     private FullscreenVideoPictureInPictureController enterPlayingPictureInPicture(
@@ -69,7 +111,6 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
         mKeyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
         Shadows.shadowOf(mPowerManager).setIsInteractive(true);
         Shadows.shadowOf(mKeyguardManager).setKeyguardLocked(false);
-        when(activity.getSystemService(Context.POWER_SERVICE)).thenReturn(mPowerManager);
         when(mTab.getWebContents()).thenReturn(mWebContents);
         ActivityTabProvider activityTabProvider = new ActivityTabProvider();
         activityTabProvider.setForTesting(mTab);
@@ -100,7 +141,7 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
     @CommandLineFlags.Add(DISABLE_BACKGROUND_MEDIA_SUSPEND)
     public void onStop_screenOff_preservesPlaybackUntilAwakeClose() {
         FullscreenVideoPictureInPictureController controller =
-                enterPlayingPictureInPicture(mBraveActivity);
+                enterPlayingPictureInPicture(mHostActivity);
         Shadows.shadowOf(mPowerManager).setIsInteractive(false);
 
         controller.onStop();
@@ -123,7 +164,7 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
     @Test
     @CommandLineFlags.Add(DISABLE_BACKGROUND_MEDIA_SUSPEND)
     public void onStop_nonBraveActivityLocked_preservesPlaybackUntilUnlockedClose() {
-        Activity activity = mock(Activity.class);
+        Activity activity = Robolectric.buildActivity(Activity.class).setup().get();
         FullscreenVideoPictureInPictureController controller =
                 enterPlayingPictureInPicture(activity);
         Shadows.shadowOf(mKeyguardManager).setKeyguardLocked(true);
@@ -148,7 +189,7 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
     @CommandLineFlags.Add(DISABLE_BACKGROUND_MEDIA_SUSPEND)
     public void onStop_awakeClose_suspendsOnce() {
         FullscreenVideoPictureInPictureController controller =
-                enterPlayingPictureInPicture(mBraveActivity);
+                enterPlayingPictureInPicture(mHostActivity);
 
         controller.onStop();
         verify(mMediaSession).suspend(SuspendType.SYSTEM);
@@ -162,7 +203,7 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
     @CommandLineFlags.Remove(DISABLE_BACKGROUND_MEDIA_SUSPEND)
     public void onStop_backgroundPlaybackDisabledScreenOff_suspendsOnce() {
         FullscreenVideoPictureInPictureController controller =
-                enterPlayingPictureInPicture(mBraveActivity);
+                enterPlayingPictureInPicture(mHostActivity);
         Shadows.shadowOf(mPowerManager).setIsInteractive(false);
 
         controller.onStop();
@@ -177,7 +218,7 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
     @CommandLineFlags.Remove(DISABLE_BACKGROUND_MEDIA_SUSPEND)
     public void onStop_backgroundPlaybackDisabledLocked_suspendsOnce() {
         FullscreenVideoPictureInPictureController controller =
-                enterPlayingPictureInPicture(mBraveActivity);
+                enterPlayingPictureInPicture(mHostActivity);
         Shadows.shadowOf(mKeyguardManager).setKeyguardLocked(true);
 
         controller.onStop();
@@ -192,8 +233,8 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
     @CommandLineFlags.Add(DISABLE_BACKGROUND_MEDIA_SUSPEND)
     public void onResume_afterRepeatedScreenLocks_keepsPictureInPictureUntilClose() {
         FullscreenVideoPictureInPictureController controller =
-                enterPlayingPictureInPicture(mBraveActivity);
-        when(mBraveActivity.isInPictureInPictureMode()).thenReturn(true);
+                enterPlayingPictureInPicture(mHostActivity);
+        enterPictureInPicture(mHostActivity);
 
         for (int i = 0; i < 2; i++) {
             Shadows.shadowOf(mPowerManager).setIsInteractive(false);
@@ -205,7 +246,7 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
             controller.onResume();
         }
 
-        verify(mBraveActivity, never()).moveTaskToBack(/* nonRoot= */ true);
+        assertFalse(isTaskMovedToBack(mHostActivity));
         verify(mMediaSession, never()).suspend(SuspendType.SYSTEM);
         verify(mMediaSession, never()).resume(SuspendType.SYSTEM);
 
@@ -220,8 +261,8 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
     @CommandLineFlags.Add(DISABLE_BACKGROUND_MEDIA_SUSPEND)
     public void onResume_userPausedBeforeScreenLock_keepsPictureInPicturePaused() {
         FullscreenVideoPictureInPictureController controller =
-                enterPlayingPictureInPicture(mBraveActivity);
-        when(mBraveActivity.isInPictureInPictureMode()).thenReturn(true);
+                enterPlayingPictureInPicture(mHostActivity);
+        enterPictureInPicture(mHostActivity);
         mObserver.mediaStoppedPlaying(0);
         Shadows.shadowOf(mPowerManager).setIsInteractive(false);
         Shadows.shadowOf(mKeyguardManager).setKeyguardLocked(true);
@@ -236,7 +277,7 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
         controller.onResume();
         controller.onStop();
 
-        verify(mBraveActivity, never()).moveTaskToBack(/* nonRoot= */ true);
+        assertFalse(isTaskMovedToBack(mHostActivity));
         verify(mMediaSession, never()).suspend(SuspendType.SYSTEM);
         verify(mMediaSession, never()).resume(SuspendType.SYSTEM);
     }
@@ -245,12 +286,12 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
     @CommandLineFlags.Add(DISABLE_BACKGROUND_MEDIA_SUSPEND)
     public void onResume_withoutScreenLock_preservesUpstreamDismiss() {
         FullscreenVideoPictureInPictureController controller =
-                enterPlayingPictureInPicture(mBraveActivity);
-        when(mBraveActivity.isInPictureInPictureMode()).thenReturn(true);
+                enterPlayingPictureInPicture(mHostActivity);
+        enterPictureInPicture(mHostActivity);
 
         controller.onResume();
 
-        verify(mBraveActivity).moveTaskToBack(/* nonRoot= */ true);
+        assertTrue(isTaskMovedToBack(mHostActivity));
         verify(mMediaSession, never()).resume(SuspendType.SYSTEM);
     }
 
@@ -258,17 +299,17 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
     @CommandLineFlags.Add(DISABLE_BACKGROUND_MEDIA_SUSPEND)
     public void onResume_afterUnlockThenOrdinaryResume_dismissesPictureInPicture() {
         FullscreenVideoPictureInPictureController controller =
-                enterPlayingPictureInPicture(mBraveActivity);
-        when(mBraveActivity.isInPictureInPictureMode()).thenReturn(true);
+                enterPlayingPictureInPicture(mHostActivity);
+        enterPictureInPicture(mHostActivity);
         Shadows.shadowOf(mPowerManager).setIsInteractive(false);
         controller.onStop();
         Shadows.shadowOf(mPowerManager).setIsInteractive(true);
         controller.onResume();
-        verify(mBraveActivity, never()).moveTaskToBack(/* nonRoot= */ true);
+        assertFalse(isTaskMovedToBack(mHostActivity));
 
         controller.onResume();
 
-        verify(mBraveActivity).moveTaskToBack(/* nonRoot= */ true);
+        assertTrue(isTaskMovedToBack(mHostActivity));
         verify(mMediaSession, never()).resume(SuspendType.SYSTEM);
     }
 
@@ -276,14 +317,14 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
     @CommandLineFlags.Add(DISABLE_BACKGROUND_MEDIA_SUSPEND)
     public void onResume_leftPictureInPictureAfterScreenLock_preservesUpstreamDismiss() {
         FullscreenVideoPictureInPictureController controller =
-                enterPlayingPictureInPicture(mBraveActivity);
+                enterPlayingPictureInPicture(mHostActivity);
         Shadows.shadowOf(mPowerManager).setIsInteractive(false);
         controller.onStop();
         Shadows.shadowOf(mPowerManager).setIsInteractive(true);
 
         controller.onResume();
 
-        verify(mBraveActivity).moveTaskToBack(/* nonRoot= */ true);
+        assertTrue(isTaskMovedToBack(mHostActivity));
         verify(mMediaSession, never()).resume(SuspendType.SYSTEM);
     }
 
@@ -292,12 +333,12 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
 
     @Test
     public void maybeHandleDismiss_activeYouTubePictureInPictureDefersResumeCleanup() {
-        when(mBraveActivity.isYouTubePictureInPictureActive()).thenReturn(true);
+        mHostActivity.mYouTubePictureInPictureActive = true;
         mController.mDismissPending = true;
 
         boolean handled =
                 mController.maybeHandleDismissActivityForYouTubePictureInPicture(
-                        mBraveActivity,
+                        mHostActivity,
                         /* isStart= */ false,
                         /* isResume= */ true,
                         /* isLeftFullscreen= */ false,
@@ -306,17 +347,17 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
 
         assertTrue(handled);
         assertFalse(mController.mDismissPending);
-        verify(mBraveActivity, never()).onYouTubePictureInPictureFullscreenInterrupted();
+        assertEquals(0, mHostActivity.mFullscreenInterruptedCount);
     }
 
     @Test
     public void maybeHandleDismiss_activeYouTubePictureInPictureDefersStartCleanup() {
-        when(mBraveActivity.isYouTubePictureInPictureActive()).thenReturn(true);
+        mHostActivity.mYouTubePictureInPictureActive = true;
         mController.mDismissPending = true;
 
         boolean handled =
                 mController.maybeHandleDismissActivityForYouTubePictureInPicture(
-                        mBraveActivity,
+                        mHostActivity,
                         /* isStart= */ true,
                         /* isResume= */ false,
                         /* isLeftFullscreen= */ false,
@@ -325,18 +366,18 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
 
         assertTrue(handled);
         assertFalse(mController.mDismissPending);
-        verify(mBraveActivity, never()).onYouTubePictureInPictureFullscreenInterrupted();
+        assertEquals(0, mHostActivity.mFullscreenInterruptedCount);
     }
 
     @Test
     public void maybeHandleDismiss_activePictureInPictureKeepsPictureInPictureAlive() {
-        when(mBraveActivity.isInPictureInPictureMode()).thenReturn(true);
-        when(mBraveActivity.isYouTubePictureInPictureActive()).thenReturn(true);
+        enterPictureInPicture(mHostActivity);
+        mHostActivity.mYouTubePictureInPictureActive = true;
         mController.mDismissPending = true;
 
         boolean handled =
                 mController.maybeHandleDismissActivityForYouTubePictureInPicture(
-                        mBraveActivity,
+                        mHostActivity,
                         /* isStart= */ false,
                         /* isResume= */ false,
                         /* isLeftFullscreen= */ true,
@@ -345,18 +386,18 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
 
         assertTrue(handled);
         assertFalse(mController.mDismissPending);
-        verify(mBraveActivity, never()).onYouTubePictureInPictureFullscreenInterrupted();
+        assertEquals(0, mHostActivity.mFullscreenInterruptedCount);
     }
 
     @Test
     public void maybeHandleDismiss_webContentsSignalDuringActivePictureInPicture_keepsAlive() {
-        when(mBraveActivity.isInPictureInPictureMode()).thenReturn(true);
-        when(mBraveActivity.isYouTubePictureInPictureActive()).thenReturn(true);
+        enterPictureInPicture(mHostActivity);
+        mHostActivity.mYouTubePictureInPictureActive = true;
         mController.mDismissPending = true;
 
         boolean handled =
                 mController.maybeHandleDismissActivityForYouTubePictureInPicture(
-                        mBraveActivity,
+                        mHostActivity,
                         /* isStart= */ false,
                         /* isResume= */ false,
                         /* isLeftFullscreen= */ false,
@@ -365,20 +406,19 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
 
         assertTrue(handled);
         assertFalse(mController.mDismissPending);
-        verify(mBraveActivity, never()).onYouTubePictureInPictureFullscreenInterrupted();
+        assertEquals(0, mHostActivity.mFullscreenInterruptedCount);
     }
 
     @Test
     public void maybeHandleDismiss_inactiveYouTubeAndNotInPip_doesNotKeepAlive() {
         // Not a YT PiP session and not in PiP: the hook should fall through to the upstream
         // dismiss logic.
-        when(mBraveActivity.isInPictureInPictureMode()).thenReturn(false);
-        when(mBraveActivity.isYouTubePictureInPictureActive()).thenReturn(false);
+        mHostActivity.mYouTubePictureInPictureActive = false;
         mController.mDismissPending = true;
 
         boolean handled =
                 mController.maybeHandleDismissActivityForYouTubePictureInPicture(
-                        mBraveActivity,
+                        mHostActivity,
                         /* isStart= */ false,
                         /* isResume= */ false,
                         /* isLeftFullscreen= */ true,
@@ -387,7 +427,7 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
 
         assertFalse(handled);
         assertTrue(mController.mDismissPending);
-        verify(mBraveActivity, never()).onYouTubePictureInPictureFullscreenInterrupted();
+        assertEquals(0, mHostActivity.mFullscreenInterruptedCount);
     }
 
     @Test
@@ -396,13 +436,13 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
         // moveTaskToBack(true) so the activity stays in the foreground (e.g. when the user taps
         // the "New tab" launcher shortcut while PiP is active). The hook also signals the
         // controller to drop persistent fullscreen so the new tab is rendered correctly.
-        when(mBraveActivity.isInPictureInPictureMode()).thenReturn(true);
-        when(mBraveActivity.isYouTubePictureInPictureActive()).thenReturn(true);
+        enterPictureInPicture(mHostActivity);
+        mHostActivity.mYouTubePictureInPictureActive = true;
         mController.mDismissPending = true;
 
         boolean handled =
                 mController.maybeHandleDismissActivityForYouTubePictureInPicture(
-                        mBraveActivity,
+                        mHostActivity,
                         /* isStart= */ false,
                         /* isResume= */ false,
                         /* isLeftFullscreen= */ false,
@@ -411,19 +451,18 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
 
         assertTrue(handled);
         assertFalse(mController.mDismissPending);
-        verify(mBraveActivity).onYouTubePictureInPictureNewTab();
-        verify(mBraveActivity, never()).onYouTubePictureInPictureFullscreenInterrupted();
+        assertEquals(1, mHostActivity.mNewTabCount);
+        assertEquals(0, mHostActivity.mFullscreenInterruptedCount);
     }
 
     @Test
     public void maybeHandleDismiss_newTabWhenActiveButNotInPictureInPicture_doesNotKeepAlive() {
-        when(mBraveActivity.isInPictureInPictureMode()).thenReturn(false);
-        when(mBraveActivity.isYouTubePictureInPictureActive()).thenReturn(true);
+        mHostActivity.mYouTubePictureInPictureActive = true;
         mController.mDismissPending = true;
 
         boolean handled =
                 mController.maybeHandleDismissActivityForYouTubePictureInPicture(
-                        mBraveActivity,
+                        mHostActivity,
                         /* isStart= */ false,
                         /* isResume= */ false,
                         /* isLeftFullscreen= */ false,
@@ -432,18 +471,18 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
 
         assertFalse(handled);
         assertTrue(mController.mDismissPending);
-        verify(mBraveActivity, never()).onYouTubePictureInPictureNewTab();
-        verify(mBraveActivity, never()).onYouTubePictureInPictureFullscreenInterrupted();
+        assertEquals(0, mHostActivity.mNewTabCount);
+        assertEquals(0, mHostActivity.mFullscreenInterruptedCount);
     }
 
     @Test
     public void maybeHandleDismiss_newTabWithoutActiveYouTubePictureInPicture_doesNotKeepAlive() {
-        when(mBraveActivity.isYouTubePictureInPictureActive()).thenReturn(false);
+        mHostActivity.mYouTubePictureInPictureActive = false;
         mController.mDismissPending = true;
 
         boolean handled =
                 mController.maybeHandleDismissActivityForYouTubePictureInPicture(
-                        mBraveActivity,
+                        mHostActivity,
                         /* isStart= */ false,
                         /* isResume= */ false,
                         /* isLeftFullscreen= */ false,
@@ -452,7 +491,7 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
 
         assertFalse(handled);
         assertTrue(mController.mDismissPending);
-        verify(mBraveActivity, never()).onYouTubePictureInPictureNewTab();
-        verify(mBraveActivity, never()).onYouTubePictureInPictureFullscreenInterrupted();
+        assertEquals(0, mHostActivity.mNewTabCount);
+        assertEquals(0, mHostActivity.mFullscreenInterruptedCount);
     }
 }
