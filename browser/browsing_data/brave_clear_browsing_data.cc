@@ -207,11 +207,14 @@ bool StartClearingOnExitData(
 
 #if !BUILDFLAG(IS_ANDROID)
 // Returns true when a keep-alive of |origin| may mean the profile writes
-// data. Data clearing does not, an open window is checked directly, and the
-// macOS History menu holds a profile only while it loads entries for the menu.
+// data. Data clearing does not. An open window is checked directly. A private
+// window keeps its regular profile loaded, but private browsing data is kept
+// apart, in memory, so it writes nothing to that profile. The macOS History
+// menu holds a profile only while it loads entries for the menu.
 bool MayWriteData(ProfileKeepAliveOrigin origin) {
   return origin != ProfileKeepAliveOrigin::kClearingBrowsingData &&
          origin != ProfileKeepAliveOrigin::kBrowserWindow &&
+         origin != ProfileKeepAliveOrigin::kOffTheRecordProfile &&
          origin != ProfileKeepAliveOrigin::kHistoryMenuBridge;
 }
 
