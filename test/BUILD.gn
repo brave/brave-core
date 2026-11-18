@@ -1159,14 +1159,6 @@ test("brave_browser_tests") {
     ]
   }
 
-  if (enable_email_aliases) {
-    deps += [
-      "//brave/browser/ui/email_aliases",
-      "//brave/components/email_aliases:features",
-      "//brave/components/email_aliases:pref_names",
-    ]
-  }
-
   deps += [
     "//brave/components/brave_account:features",
     "//brave/components/brave_news/common/buildflags",
@@ -1493,8 +1485,13 @@ test("brave_browser_tests") {
     ]
   }
 
-  if (enable_email_aliases) {
-    deps += [ "//brave/browser/email_aliases:browser_tests" ]
+  if (enable_email_aliases && !is_android) {
+    deps += [
+      "//brave/browser/email_aliases:browser_tests",
+      "//brave/browser/ui/email_aliases",
+      "//brave/components/email_aliases:features",
+      "//brave/components/email_aliases:pref_names",
+    ]
   }
 
   if (is_win || is_linux) {
