@@ -877,9 +877,13 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, ResizingCardKeepsItCenteredAndSaves) {
   EXPECT_TRUE(controller()->IsShowing());
 
   const gfx::Size resized = card->size();
+  content::WebContents* old_contents = controller()->GetWebContents();
   OpenPeek(GetURL("c.com", "/title2.html"));
+  // The next Peek gets a fresh view, which starts from the saved size. Its
+  // page is created before the old Peek is destroyed, so the contents pointers
+  // can't collide, unlike the views', which the allocator may reuse.
+  ASSERT_NE(old_contents, controller()->GetWebContents());
   PeekView* next_view = controller()->peek_view_for_testing();
-  ASSERT_NE(peek_view, next_view);
   views::test::RunScheduledLayout(next_view);
   EXPECT_EQ(resized, next_view->card_for_testing()->size());
 }
