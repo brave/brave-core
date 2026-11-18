@@ -32,10 +32,10 @@ export class BraveAccountDialogElement extends CrLitElement {
       showBackButton: { type: Boolean },
     }
   }
-  protected accessor dialogDescription: string = ''
-  protected accessor dialogTitle: string = ''
+  accessor dialogDescription: string = ''
+  accessor dialogTitle: string = ''
   protected accessor isFooterSlotted: boolean = false
-  protected accessor showBackButton: boolean = false
+  accessor showBackButton: boolean = false
 
   override firstUpdated(changedProperties: PropertyValues<this>) {
     super.firstUpdated(changedProperties)
