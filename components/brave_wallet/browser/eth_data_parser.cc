@@ -143,9 +143,11 @@ constexpr char kLiFiSwapAndStartBridgeTokensViaSymbiosis[] = "0x6e067161";
 constexpr char kLiFiStartBridgeTokensViaThorSwap[] = "0x2541ec57";
 constexpr char kLiFiSwapAndStartBridgeTokensViaThorSwap[] = "0xad673d88";
 
-// Squid function selectors
+// Squid function selectors, called on the SquidRouter proxy. Its
+// implementation is upgradable and differs per chain.
 // Ref:
-// https://etherscan.io/address/0x9c01172bdbed2eea06e4e18ad534bf651c9089ea#code#F1#L87
+// https://docs.squidrouter.com/additional-resources/contracts
+// https://etherscan.io/address/0xce16F69375520ab01377ce7B88f5BA8C48F8D666#code
 constexpr char kSquidFundAndRunMulticall[] = "0x58181a80";
 constexpr char kSquidExactInputSingle[] = "0x04e45aaf";
 constexpr char kSquidExactInputSingleV2[] = "0xbc651188";
@@ -1006,8 +1008,8 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     //                      bytes callData,
     //                      bytes payload)[] calls)
     //
-    // Ref:
-    // https://etherscan.io/address/0x9c01172bdbed2eea06e4e18ad534bf651c9089ea#code#F1#L88
+    // Ref (SquidRouter implementation on Ethereum as of 2026-11):
+    // https://etherscan.io/address/0xd1373e7ffc30486079f7215b90c49c2251c0d8f8#code
     auto type = eth_abi::Tuple()
                     .AddTupleType(eth_abi::Address())
                     .AddTupleType(eth_abi::Uint(256))
