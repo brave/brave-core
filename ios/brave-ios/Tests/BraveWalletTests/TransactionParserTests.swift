@@ -739,6 +739,100 @@ class TransactionParserTests: XCTestCase {
     XCTAssertNoDifference(expectedParsedTransaction, parsedTransaction)
   }
 
+  func testErc721SetApprovalForAllTransaction() {
+    let network: BraveWallet.NetworkInfo = .mockMainnet
+    let spenderAddress = "0x0987654321098765432109876543210987654321"
+
+    let transactionData: BraveWallet.TxData1559 = .init(
+      baseData: .init(
+        chainId: network.chainId,
+        nonce: "1",
+        gasPrice: "0x0",
+        gasLimit: "0x5208",
+        to: BraveWallet.BlockchainToken.previewDaiToken.contractAddress,
+        value: "0x0",
+        data: []
+      ),
+      maxPriorityFeePerGas: "0x59672ead",
+      maxFeePerGas: "0x59672eb6"
+    )
+
+    let expectedDetails: ParsedTransaction.Details = .erc721SetApprovalForAll(
+      .init(
+        spenderAddress: spenderAddress,
+        gasFee: .init(
+          fee: "0.0000314986",
+          fiat: "$0.0000315"
+        )
+      )
+    )
+
+    // Granting and revoking parse identically; only `txArgs[1]` differs, which
+    // the UI reads via `isGrantingERC721SetApprovalForAll`.
+    for approved in ["0x1", "0x0"] {
+      let transaction = mockTransaction(
+        fromAccount: accountInfos[0],
+        txDataUnion: .init(ethTxData1559: transactionData),
+        txType: .erc721SetApprovalForAll,
+        txArgs: [
+          spenderAddress,  // operator
+          approved,
+        ],
+        effectiveRecipient: transactionData.baseData.to
+      )
+
+      guard
+        let parsedTransaction = TransactionParser.parseTransaction(
+          transaction: transaction,
+          allNetworks: [network, .mockPolygon],
+          accountInfos: accountInfos,
+          userAssets: tokens,
+          allTokens: tokens,
+          assetRatios: assetRatios,
+          nftMetadata: [:],
+          solEstimatedTxFee: nil,
+          currencyFormatter: currencyFormatter
+        )
+      else {
+        XCTFail("Failed to parse erc721SetApprovalForAll transaction")
+        return
+      }
+      XCTAssertNoDifference(
+        ParsedTransaction(
+          transaction: transaction,
+          fromAccountInfo: accountInfos[0],
+          namedToAddress: "",
+          toAddress: spenderAddress,
+          network: network,
+          details: expectedDetails
+        ),
+        parsedTransaction
+      )
+    }
+
+    // Missing the `approved` arg is unparseable.
+    let malformedTransaction = mockTransaction(
+      fromAccount: accountInfos[0],
+      txDataUnion: .init(ethTxData1559: transactionData),
+      txType: .erc721SetApprovalForAll,
+      txArgs: [spenderAddress],
+      effectiveRecipient: transactionData.baseData.to
+    )
+    XCTAssertNil(
+      TransactionParser.parseTransaction(
+        transaction: malformedTransaction,
+        allNetworks: [network, .mockPolygon],
+        accountInfos: accountInfos,
+        userAssets: tokens,
+        allTokens: tokens,
+        assetRatios: assetRatios,
+        nftMetadata: [:],
+        solEstimatedTxFee: nil,
+        currencyFormatter: currencyFormatter
+      )
+    )
+  }
+
   func testSolanaSystemTransfer() {
     let network: BraveWallet.NetworkInfo = .mockSolana
 
