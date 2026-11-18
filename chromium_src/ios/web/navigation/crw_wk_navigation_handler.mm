@@ -69,6 +69,19 @@
           }
         }
 
+        if (@available(iOS 27, *)) {
+          if (policy == WKNavigationActionPolicyAllow &&
+              action.targetFrame.mainFrame && preferences) {
+            NSURLRequest* alternateRequest =
+                web::GetWebClient()->GetAlternateRequest(
+                    static_cast<web::WebState*>(self.webStateImpl),
+                    action.request);
+            if (alternateRequest) {
+              preferences.alternateRequest = alternateRequest;
+            }
+          }
+        }
+
         if (policy == WKNavigationActionPolicyAllow) {
           // Check if we want to explicitly block universal links
           bool forceBlockUniversalLinks =
