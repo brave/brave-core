@@ -65,11 +65,13 @@ class AIChatProfilesEnabledTest
       public ::testing::WithParamInterface<ProfileType> {
  public:
   AIChatProfilesEnabledTest() {
-    // Disable the global side panel feature so the AI Chat side panel entry
-    // is registered on the tab's SidePanelRegistry (the non-global path) for
-    // TabSidePanelRegistry below.
-    scoped_feature_list_.InitAndDisableFeature(
-        ai_chat::features::kAIChatGlobalSidePanelEverywhere);
+    // Pin kAIChat on. Disable the global side panel feature so the AI Chat
+    // side panel entry is registered on the tab's SidePanelRegistry (the
+    // non-global path) for TabSidePanelRegistry below.
+    scoped_feature_list_.InitWithFeatures(
+        /*enabled_features=*/{ai_chat::features::kAIChat},
+        /*disabled_features=*/
+        {ai_chat::features::kAIChatGlobalSidePanelEverywhere});
   }
   ~AIChatProfilesEnabledTest() override = default;
 
