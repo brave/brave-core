@@ -2,6 +2,7 @@
 
 `Dockerfile` and `build_brave_image.py` build a reusable Linux x64 image with
 Brave and dependencies for macOS x64, Windows x64, Linux x64, and Android arm64.
+The image includes ripgrep (`rg`) and ast-grep (`ast-grep`) for code searches.
 
 For prerequisites, credentials, Docker selection, image tags, and recovery
 instructions, run from the brave-core checkout:
@@ -17,16 +18,29 @@ Use the exact image tag printed by the image builder:
 tag. The builder does not create a `latest` tag. The example below assumes
 `v1.101.39` was built; replace it with your image's tag.
 
-`create_container.py` resolves the GitHub identity from the host's
-`~/.ssh/config`; `--ssh-key PATH` selects a key explicitly. It mounts that key,
-`~/.ssh/known_hosts`, and the mTLS certificate and key read-only, starts the
-container, and configures GitHub authentication and SSH commit signing.
+`create_container.py` prefers forwarding the host's SSH agent. It probes
+`SSH_AUTH_SOCK` and the Docker Desktop/OrbStack bridge at
+`/run/host-services/ssh-auth.sock` through the selected Docker daemon; on macOS
+the bridge is tried first. Probe containers are removed after each check. Load
+your GitHub key into the host agent with `ssh-add` before running the command.
+Passphrase and approval prompts are handled on the host, and the private key is
+not mounted in agent mode.
 
-The key must work without an agent or passphrase prompt, and `known_hosts` must
-contain verified GitHub host keys. Credential files must be readable by the
-image's `builder` user and accessible on the Docker daemon's host. Remote-build
-credentials default to `~/.reclient/engflow.crt` and `~/.reclient/engflow.key`;
-`BRAVE_RBE_CERT` and `BRAVE_RBE_KEY` override those locations.
+The configured GitHub identity's public key is preferred when available;
+otherwise the agent's first identity is used for authentication and signing.
+Load the configured key into the agent so it can be selected. Only the selected
+public key is written to the container. If no usable agent is found, the helper
+resolves the key from `~/.ssh/config` and mounts it read-only. `--ssh-key PATH`
+explicitly selects direct key mounting and bypasses agent detection. Direct key
+mounting requires a key usable without an agent or passphrase prompt.
+
+Both modes mount `~/.ssh/known_hosts` and the mTLS certificate and key
+read-only, then configure GitHub authentication and SSH commit signing.
+`known_hosts` must contain verified GitHub host keys. Credential files must be
+readable by the image's `builder` user and accessible on the daemon's host.
+Remote-build credentials default to `~/.reclient/engflow.crt` and
+`~/.reclient/engflow.key`; `BRAVE_RBE_CERT` and `BRAVE_RBE_KEY` override those
+locations.
 
 ```bash
 brave_image=brave-linux-build:v1.101.39
@@ -35,7 +49,7 @@ brave_docker=(docker)
 python3 tools/docker/create_container.py \
   --image "$brave_image" --name "$brave_container"
 
-# For an explicit identity, add --ssh-key /path/to/github-key to the command.
+# To mount a key directly, add --ssh-key /path/to/github-key to the command.
 # See all requirements and options:
 python3 tools/docker/create_container.py --help
 ```
@@ -44,7 +58,10 @@ The command honors `DOCKER_HOST` and `DOCKER_CONTEXT`; use the same endpoint for
 later Docker commands. It supplies `/dev/fuse`, `SYS_ADMIN`, and the AppArmor
 setting required by the Windows SDK hook. It leaves the image's checkout
 unchanged. Checkout selection, sync, and builds are separate steps. Stopping and
-restarting the container preserves its checkout and build output.
+restarting the container preserves its checkout and build output. The chosen SSH
+mounts also persist: reusing a container retains its agent or direct-key mode.
+Agent containers require the original socket and selected identity to remain
+available; changing SSH mounts requires a new container.
 
 The image already configures remote execution in `/workspace/src/brave/.env`,
 with `use_remoteexec=true`, service `rbe.ba.brave.com:443`, and the mTLS paths

@@ -13,10 +13,30 @@ import shutil
 from pathlib import Path
 import subprocess
 import tempfile
+import time
 import unittest
 from unittest.mock import patch
 
 import create_container as container_tools
+
+
+@contextlib.contextmanager
+def running_agent(socket):
+    """Keep an isolated test agent running until its signing check finishes."""
+    with subprocess.Popen(
+        ["ssh-agent", "-D", "-a", socket],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    ) as process:
+        try:
+            for _ in range(100):
+                if Path(socket).exists():
+                    break
+                time.sleep(0.01)
+            yield
+        finally:
+            process.terminate()
+            process.wait(timeout=5)
 
 
 class SSHCredentialTests(unittest.TestCase):
@@ -89,7 +109,35 @@ class SSHCredentialTests(unittest.TestCase):
                     ["docker"], "test-container", other
                 )
 
-    def test_configure_ssh_enables_verifiable_commit_signing(self):
+    def test_agent_prefers_configured_public_key_and_strips_comments(self):
+        (self.ssh / "config").write_text(
+            f"Host github.com\n  IdentityFile {self.key}\n"
+        )
+        Path(str(self.key) + ".pub").write_text(
+            "ssh-ed25519 BBBB configured\n", encoding="utf-8"
+        )
+        self.assertEqual(
+            container_tools.agent_identity(
+                "ssh-ed25519 AAAA first\nssh-ed25519 BBBB second\n"
+            ),
+            "ssh-ed25519 BBBB",
+        )
+        self.assertIsNone(
+            container_tools.agent_identity("ssh-ed25519 AAAA first\n")
+        )
+
+    def test_agent_without_config_uses_first_public_identity(self):
+        self.assertEqual(
+            container_tools.agent_identity(
+                "ssh-ed25519 AAAA first\nssh-ed25519 BBBB second\n"
+            ),
+            "ssh-ed25519 AAAA",
+        )
+        self.assertIsNone(
+            container_tools.agent_identity("The agent has no identities.\n")
+        )
+
+    def check_signing(self, agent=False):
         signing_key = self.root / "signing-key"
         subprocess.run(
             [
@@ -109,6 +157,28 @@ class SSHCredentialTests(unittest.TestCase):
             GIT_CONFIG_GLOBAL=str(self.root / "gitconfig"),
             GIT_CONFIG_NOSYSTEM="1",
         )
+        if agent:
+            socket = str(self.root / "agent.sock")
+            self.enterContext(running_agent(socket))
+            environment["SSH_AUTH_SOCK"] = socket
+            subprocess.run(
+                ["ssh-add", str(signing_key)],
+                env=environment,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+                check=True,
+            )
+            signing_key.rename(self.root / "unmounted-private-key")
+            self.enterContext(
+                patch.object(container_tools, "SSH_AGENT", socket)
+            )
+            self.enterContext(
+                patch.object(
+                    container_tools,
+                    "SSH_AGENT_KEY",
+                    str(self.root / "agent.pub"),
+                )
+            )
         real_run = subprocess.run
 
         def docker_run(command, **kwargs):
@@ -125,7 +195,12 @@ class SSHCredentialTests(unittest.TestCase):
             ),
         ):
             container_tools.configure_ssh(
-                ["test-docker"], "test-container", env=environment
+                ["test-docker"],
+                "test-container",
+                env=environment,
+                agent_key=signing_key.with_suffix(".pub").read_text()
+                if agent
+                else None,
             )
         repo = self.root / "repository"
         subprocess.run(
@@ -171,6 +246,121 @@ class SSHCredentialTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn("Good", result.stderr)
 
+    def test_direct_key_enables_verifiable_commit_signing(self):
+        self.check_signing()
+
+    def test_forwarded_agent_signs_without_mounted_private_key(self):
+        self.check_signing(agent=True)
+
+
+class AgentDetectionTests(unittest.TestCase):
+    def test_bridge_is_probed_on_mac_using_selected_daemon_and_removed(self):
+        environment = {
+            "DOCKER_HOST": "ssh://docker-host",
+            "SSH_AUTH_SOCK": "/host/agent",
+        }
+        with (
+            patch.object(container_tools.sys, "platform", "darwin"),
+            patch.object(
+                container_tools,
+                "agent_identity",
+                return_value="ssh-ed25519 AAAA",
+            ),
+            patch.object(
+                container_tools.subprocess,
+                "run",
+                side_effect=[
+                    subprocess.CompletedProcess([], 0, "probe-id\n", ""),
+                    subprocess.CompletedProcess(
+                        [], 0, "ssh-ed25519 AAAA comment\n", ""
+                    ),
+                    subprocess.CompletedProcess([], 0),
+                ],
+            ) as run,
+        ):
+            result = container_tools.find_ssh_agent(
+                "docker", environment, {"Id": "image"}
+            )
+        self.assertEqual(
+            result, ("/run/host-services/ssh-auth.sock", "ssh-ed25519 AAAA")
+        )
+        commands = [call.args[0] for call in run.call_args_list]
+        self.assertIn(
+            "type=bind,source=/run/host-services/ssh-auth.sock,"
+            "target=/run/brave-ssh-agent.sock,readonly",
+            commands[0],
+        )
+        self.assertEqual(commands[-1], ["docker", "rm", "--force", "probe-id"])
+        self.assertTrue(
+            all(
+                call.kwargs["env"] == environment for call in run.call_args_list
+            )
+        )
+
+    def test_unavailable_bridge_tries_environment_socket(self):
+        with (
+            patch.object(container_tools.sys, "platform", "darwin"),
+            patch.object(
+                container_tools,
+                "agent_identity",
+                return_value="ssh-ed25519 AAAA",
+            ),
+            patch.object(
+                container_tools.subprocess,
+                "run",
+                side_effect=[
+                    subprocess.CompletedProcess([], 1, "", "missing socket"),
+                    subprocess.CompletedProcess([], 0, "probe-id\n", ""),
+                    subprocess.CompletedProcess(
+                        [], 0, "ssh-ed25519 AAAA\n", ""
+                    ),
+                    subprocess.CompletedProcess([], 0),
+                ],
+            ),
+        ):
+            self.assertEqual(
+                container_tools.find_ssh_agent(
+                    "docker", {"SSH_AUTH_SOCK": "/host/agent"}, {"Id": "image"}
+                ),
+                ("/host/agent", "ssh-ed25519 AAAA"),
+            )
+
+    def test_empty_agent_and_timeouts_remove_probes_before_fallback(self):
+        for outcome in (
+            subprocess.CompletedProcess(
+                [], 1, "", "The agent has no identities."
+            ),
+            subprocess.TimeoutExpired(["docker", "start"], 15),
+        ):
+            with (
+                self.subTest(outcome=outcome),
+                patch.object(container_tools.sys, "platform", "linux"),
+                contextlib.redirect_stderr(io.StringIO()),
+                patch.object(
+                    container_tools.subprocess,
+                    "run",
+                    side_effect=[
+                        subprocess.CompletedProcess([], 0, "probe-id\n", ""),
+                        outcome,
+                        subprocess.CompletedProcess([], 0),
+                        subprocess.CompletedProcess(
+                            [], 1, "", "missing socket"
+                        ),
+                    ],
+                ) as run,
+            ):
+                self.assertIsNone(
+                    container_tools.find_ssh_agent(
+                        "docker",
+                        {"SSH_AUTH_SOCK": "/host/agent"},
+                        {"Id": "image"},
+                    )
+                )
+            self.assertEqual(
+                run.call_args_list[2].args[0],
+                ["docker", "rm", "--force", "probe-id"],
+            )
+
 
 class ContainerCreationTests(unittest.TestCase):
     def setUp(self):
@@ -207,6 +397,14 @@ class ContainerCreationTests(unittest.TestCase):
                     "/home/builder/.ssh/known_hosts": self.hosts,
                 },
             )
+        )
+        self.enterContext(
+            patch.object(
+                container_tools, "host_known_hosts", return_value=self.hosts
+            )
+        )
+        self.agent = self.enterContext(
+            patch.object(container_tools, "find_ssh_agent", return_value=None)
         )
         self.configure = self.enterContext(
             patch.object(container_tools, "configure_ssh")
@@ -258,6 +456,41 @@ class ContainerCreationTests(unittest.TestCase):
                 for call in self.run.call_args_list
             )
         )
+        self.configure.assert_called_once_with(
+            ["docker"], "development", self.key, env=self.environment
+        )
+        self.agent.assert_not_called()
+
+    def test_agent_mode_mounts_socket_without_private_key(self):
+        self.agent.return_value = ("/fixture/agent.sock", "ssh-ed25519 AAAA")
+        container_tools.create_container(
+            "docker", self.environment, "development", self.image
+        )
+        create = self.run.call_args_list[0].args[0]
+        self.assertIn(
+            "type=bind,source=/fixture/agent.sock,"
+            "target=/run/brave-ssh-agent.sock,readonly",
+            create,
+        )
+        self.assertIn("SSH_AUTH_SOCK=/run/brave-ssh-agent.sock", create)
+        self.assertIn("io.brave.checkout.credentials=host-ssh-agent", create)
+        self.resolve.assert_not_called()
+        self.files.assert_not_called()
+        self.configure.assert_called_once_with(
+            ["docker"],
+            "development",
+            env=self.environment,
+            agent_key="ssh-ed25519 AAAA\n",
+        )
+
+    def test_no_agent_falls_back_to_configured_key(self):
+        container_tools.create_container(
+            "docker", self.environment, "development", self.image
+        )
+        self.agent.assert_called_once_with(
+            "docker", self.environment, self.image
+        )
+        self.resolve.assert_called_once_with(None)
         self.configure.assert_called_once_with(
             ["docker"], "development", self.key, env=self.environment
         )
