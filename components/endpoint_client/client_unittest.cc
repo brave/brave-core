@@ -1195,20 +1195,44 @@ TEST_F(ClientTestCancelableRequest, ResetPreventsCallback) {
   EXPECT_FALSE(cancelled_future.IsReady());
 }
 
-TEST_F(ClientTestCancelableRequest, ResetInsideCallbackIsSafe) {
-  MockResponseFor<JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint>(
+TEST_F(ClientTestCancelableRequest,
+       ResetInsideCallbackIsSafeForResponsesWithBodies) {
+  MockResponseFor<RequestWithoutBodyJSONResponseBodiesEndpoint>(
       test_url_loader_factory_,
       {.net_error = net::OK, .status_code = net::HTTP_OK});
 
   base::test::TestFuture<void> future;
   RequestHandle request_handle =
-      Client<JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint>::Send<
+      Client<RequestWithoutBodyJSONResponseBodiesEndpoint>::Send<
           RequestCancelability::kCancelable>(
           test_url_loader_factory_,
-          JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Request(),
+          RequestWithoutBodyJSONResponseBodiesEndpoint::Request(),
           base::BindLambdaForTesting(
               [&request_handle, done = future.GetCallback()](
-                  JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::
+                  RequestWithoutBodyJSONResponseBodiesEndpoint::
+                      Response) mutable {
+                request_handle.reset();
+                std::move(done).Run();
+              }));
+
+  ASSERT_TRUE(future.Wait());
+}
+
+TEST_F(ClientTestCancelableRequest,
+       ResetInsideCallbackIsSafeForResponsesWithoutBodies) {
+  MockResponseFor<RequestWithoutBodyResponseWithoutBodiesEndpoint>(
+      test_url_loader_factory_,
+      {.net_error = net::OK, .status_code = net::HTTP_OK});
+
+  base::test::TestFuture<void> future;
+  RequestHandle request_handle =
+      Client<RequestWithoutBodyResponseWithoutBodiesEndpoint>::Send<
+          RequestCancelability::kCancelable>(
+          test_url_loader_factory_,
+          RequestWithoutBodyResponseWithoutBodiesEndpoint::Request(),
+          base::BindLambdaForTesting(
+              [&request_handle, done = future.GetCallback()](
+                  RequestWithoutBodyResponseWithoutBodiesEndpoint::
                       Response) mutable {
                 request_handle.reset();
                 std::move(done).Run();
@@ -1321,6 +1345,29 @@ TEST(ClientTestMaxBodySize, ExceedingItFailsWithInsufficientResources) {
   JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Response expected_response;
   expected_response.net_error = net::ERR_INSUFFICIENT_RESOURCES;
   EXPECT_THAT(future.Take(), ResponseEq(expected_response));
+}
+
+TEST(ClientTestMaxBodySize, DoesNotApplyToResponsesWithoutBodies) {
+  base::test::TaskEnvironment task_environment;
+  network::TestURLLoaderFactory test_url_loader_factory;
+
+  test_url_loader_factory.AddResponse(
+      RequestWithoutBodyResponseWithoutBodiesEndpoint::URL().spec(),
+      "longer than max_body_size", net::HTTP_OK);
+
+  RequestWithoutBodyResponseWithoutBodiesEndpoint::Request request;
+  request.max_body_size = 1;
+
+  base::test::TestFuture<
+      RequestWithoutBodyResponseWithoutBodiesEndpoint::Response>
+      future;
+  Client<RequestWithoutBodyResponseWithoutBodiesEndpoint>::Send(
+      test_url_loader_factory, std::move(request), future.GetCallback());
+
+  EXPECT_THAT(
+      future.Take(),
+      ResponseEq(RequestWithoutBodyResponseWithoutBodiesEndpoint::Response{
+          .net_error = net::OK, .status_code = net::HTTP_OK}));
 }
 
 TEST(ClientTestResponseHeaders, NotSetWithoutStatusCode) {
