@@ -239,6 +239,7 @@ void ProfileImage::ReplyLater(Callback callback, Result result) {
 }
 
 void ProfileImage::Reply(Callback callback, Result result) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   std::move(callback).Run(result);
 }
 
