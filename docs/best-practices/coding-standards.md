@@ -1601,9 +1601,11 @@ if (!entry_was_found) {
 
 ## ✅ Resolve Shields Settings to the Site Responsible for the Content
 
-**Use the closest non-opaque origin in the relevant origin’s ancestry.** Start
-with the top-level document for primary settings, or the frame or resource being
-evaluated for secondary settings. If its origin is non-opaque, use that origin’s
+**Use the closest non-opaque origin in the relevant origin’s ancestry.** The
+setting’s scope determines the relevant origin: the top-level document for a
+top-origin setting, such as Shields, ads, or referrers, or the requesting frame
+or resource for a requesting-origin setting, such as cookies. Settings with both
+scopes resolve each origin independently. If an origin is non-opaque, use its
 site. If it’s opaque, use its precursor’s site. If there’s no precursor, use
 default settings.
 
@@ -1617,11 +1619,11 @@ permissions.
 
 **Examples**
 
-| Situation                                                                                           | ✅ Good                                                                           | ❌ Bad                                                                           |
-| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| `a.com` embeds a sandboxed `b.com` iframe whose opaque origin has a `b.com` precursor.              | Use `a.com` for primary settings and `b.com` for the iframe’s secondary settings. | Walk up to `a.com` for secondary settings because the iframe’s origin is opaque. |
-| An HTTPS page on `a.com` is itself sandboxed. Its opaque top-level origin has an `a.com` precursor. | Use `a.com` for primary settings, including for subrequests.                      | Use defaults just because the top-level origin is opaque.                        |
-| The user types a `data:` URL that embeds `b.com`. The top-level origin has no precursor.            | Use default primary settings, including when the iframe makes a request.          | Use `b.com` for primary settings because it initiated the request.               |
+| Situation                                                                                           | ✅ Good                                                                                                       | ❌ Bad                                                                                       |
+| --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `a.com` embeds a sandboxed `b.com` iframe whose opaque origin has a `b.com` precursor.              | Use `a.com` for top-origin settings and `b.com` for the iframe’s requesting-origin settings, such as cookies. | Walk up to `a.com` for the iframe’s requesting-origin settings because its origin is opaque. |
+| An HTTPS page on `a.com` is itself sandboxed. Its opaque top-level origin has an `a.com` precursor. | Use `a.com` for top-origin settings, including for subrequests.                                               | Use defaults just because the top-level origin is opaque.                                    |
+| The user types a `data:` URL that embeds `b.com`. The top-level origin has no precursor.            | Use default top-origin settings, including when the iframe makes a request.                                   | Use `b.com` for top-origin settings because it initiated the request.                        |
 
 NEVER use frame position (`is_outermost_main_frame`), a raw document URL, or a
 non-HTTP(S) scheme as proof of which settings apply, and NEVER treat opacity
