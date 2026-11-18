@@ -2023,6 +2023,12 @@ class RebaseDryRunTest(unittest.TestCase):
         with self.assertRaises(brockit.RebaseNeededException):
             self._dry_run(squash_minor_bumps=True)
 
+    def test_commit_with_another_branchs_tag_needs_a_rebase(self):
+        self.fake_chromium_src.commit_empty('[cr150] Feature A', self.brave)
+        with self.assertRaises(brockit.RebaseNeededException):
+            self._dry_run(squash_minor_bumps=True)
+        self._dry_run()
+
     def test_wip_commit_needs_no_rebase(self):
         self.fake_chromium_src.commit_empty('[cr149] Feature A', self.brave)
         self.fake_chromium_src.commit_empty(

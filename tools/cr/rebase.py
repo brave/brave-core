@@ -513,6 +513,7 @@ def rewrite_plan(
     carry_change_id: Callable[[list[str]], str] | None = None,
     changed_paths: Callable[[str], list[str]] | None = None,
     has_change_id: Callable[[str], bool] | None = None,
+    foreign_cr_tag: Callable[[str], bool] | None = None,
 ) -> None:
     """Rewrites a `git rebase --interactive` TODO file in place.
 
@@ -552,6 +553,11 @@ def rewrite_plan(
             ahead of the other pinned groups. A commit stays in place when it
             shares a path with an earlier one that does, which it would
             otherwise replay ahead of.
+        foreign_cr_tag: Whether a subject has another branch's `[cr<N>]`
+            tag, as a commit picked from another `cr` branch keeps. When
+            set, with `pinned_squashed` and `carry_change_id`, a
+            `carry_change_id` line also follows each such commit, which
+            gives it the branch's own tag.
 
     Raises:
         EditorRecoverableFailure: Any TODO line that doesn't parse
@@ -744,13 +750,18 @@ def rewrite_plan(
     folded: list[str] = []
     derived = False
     adds_id = False
+    retagged = False
 
     def carry() -> None:
         # Also corrects a commit picked from another branch with that
         # branch's derived Change-Id, which no squash may come to fix.
         if not folded or new_plan[-1].startswith('exec '):
             return
-        if derived or (adds_id and not any(map(has_change_id, folded))):
+        if (
+            derived
+            or retagged
+            or (adds_id and not any(map(has_change_id, folded)))
+        ):
             new_plan.append(carry_change_id(folded))
 
     for entry in [
@@ -777,6 +788,12 @@ def rewrite_plan(
                 and carry_change_id is not None
                 and has_change_id is not None
                 and not entry.is_orphan
+            )
+            retagged = (
+                pinned_squashed
+                and carry_change_id is not None
+                and foreign_cr_tag is not None
+                and foreign_cr_tag(entry.message)
             )
         new_plan.append(entry.out)
         if entry.command in _REPLACING_COMMANDS:

@@ -446,6 +446,38 @@ class RewritePlanTest(unittest.TestCase):
         )
         self.assertNotIn('exec carry aaa', path.read_text())
 
+    def test_a_commit_with_another_branchs_tag_is_retagged(self):
+        """Only with `pinned_squashed`, and after what folds into it."""
+        content = (
+            'pick aaa # [cr148] Feature A\n'
+            'pick bbb # [cr149][Tabs] Feature B\n'
+            'fixup ccc # fixup! [cr149][Tabs] Feature B\n'
+        )
+        with_ids = {'aaa', 'bbb'}
+
+        def foreign(subject: str) -> bool:
+            return subject.startswith('[cr149]')
+
+        path = self._todo(content)
+        rebase.rewrite_plan(
+            todo_file=path,
+            pinned_squashed=True,
+            carry_change_id=self._carry,
+            has_change_id=with_ids.__contains__,
+            foreign_cr_tag=foreign,
+        )
+        self.assertEqual(path.read_text(), content + 'exec carry bbb\n')
+
+        path = self._todo(content)
+        rebase.rewrite_plan(
+            todo_file=path,
+            discard_recyclable=True,
+            carry_change_id=self._carry,
+            has_change_id=with_ids.__contains__,
+            foreign_cr_tag=foreign,
+        )
+        self.assertEqual(path.read_text(), content)
+
     def test_exec_lines_name_no_commit(self):
         self.assertIsNone(rebase.EntryLine.parse('exec carry aaa'))
 
@@ -2803,6 +2835,41 @@ class RebaseStopTest(unittest.TestCase):
             f'{ours}\n\nChange-Id: '
             f'{pinned_commits.derived_change_id("cr150", ours)}',
         )
+
+    def test_a_commit_picked_from_another_branch_takes_this_tag(self):
+        """Its other tags and its Change-Id stay as they are."""
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={'other': 'o\n'},
+            commits=[
+                (
+                    f'[cr151][Tabs] Fix tabs\n\nBody.\n\n'
+                    f'Change-Id: {self._FIRST_ID}',
+                    {'tabs': 'x\n'},
+                ),
+            ],
+            branch='cr150',
+        )
+
+        self.rebase(fork, squash_minor_bumps=True)
+
+        self.assertEqual(
+            self.git('log', '-1', '--format=%B'),
+            f'[cr150][Tabs] Fix tabs\n\nBody.\n\nChange-Id: {self._FIRST_ID}',
+        )
+
+    def test_a_picked_commit_keeps_its_tag_without_squash_minor_bumps(self):
+        subject = '[cr151][Tabs] Fix tabs'
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={'other': 'o\n'},
+            commits=[(subject, {'tabs': 'x\n'})],
+            branch='cr150',
+        )
+
+        self.rebase(fork)
+
+        self.assertEqual([subject], self.subjects())
 
     def test_a_squashed_pinned_group_takes_this_branchs_tag(self):
         """The last commit of the group was picked from a newer branch."""

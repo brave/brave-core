@@ -200,7 +200,8 @@ script/version_up.py rebase --skip
 Furthermore, there is also `--squash-minor-bumps`, which can be used to squash
 away all minor bumps in a branch down to a single one. This is useful when
 when running a cr branch, as it is common to have multiple minor daily bumps
-in a branch.
+in a branch. It also gives a commit picked from another cr branch the branch's
+own `[cr<N>]` tag in place of the one it was picked with.
 
 To check whether a rebase is needed at all, without rebasing, pass `--dry-run`.
 It exits with 2 when the rebase would change the branch: the base moved on, or
@@ -2067,6 +2068,9 @@ class RebasePlan:
 
     current: list[rebase.EntryLine]
     rewritten: list[rebase.EntryLine]
+    # The commits whose subject `pinned_squashed` gives the branch's own
+    # `[cr<N>]` tag.
+    retagged: list[rebase.EntryLine] = field(default_factory=list)
 
     @classmethod
     def capture(
@@ -2088,7 +2092,15 @@ class RebasePlan:
                 discard_recyclable=discard_recyclable,
                 changed_paths=Rebase.changed_paths,
             )
-            return cls(cls._parse(current), cls._parse(rewritten))
+            rewritten_entries = cls._parse(rewritten)
+            retagged = [
+                entry
+                for entry in rewritten_entries
+                if pinned_squashed
+                and entry.command == 'pick'
+                and Rebase.foreign_cr_tag(entry.message, branch)
+            ]
+            return cls(cls._parse(current), rewritten_entries, retagged)
 
     @property
     def changes(self) -> bool:
@@ -2096,11 +2108,11 @@ class RebasePlan:
 
         Comparing the `(command, hash)` sequence catches squashes/fixups (a
         command other than `pick`), drops (a missing entry), and reordering
-        (pinned commits grouped to the top).
+        (pinned commits grouped to the top). A commit to retag is one too.
         """
-        return [(e.command, e.hash) for e in self.current] != [
-            (e.command, e.hash) for e in self.rewritten
-        ]
+        return bool(self.retagged) or [
+            (e.command, e.hash) for e in self.current
+        ] != [(e.command, e.hash) for e in self.rewritten]
 
     def log_diff(self) -> None:
         """Prints a syntax-highlighted diff between the two plans."""
@@ -2121,6 +2133,10 @@ class RebasePlan:
                 (0, 4),
             )
         )
+        for entry in self.retagged:
+            console.print(
+                f'    Retags {escape(entry.hash)} {escape(entry.message)}'
+            )
 
     @staticmethod
     def _capture_todo(
@@ -2741,6 +2757,13 @@ class Rebase(Task):
         return rebase.change_id_of(chromium_changes.fixed(message)) is not None
 
     @staticmethod
+    def foreign_cr_tag(subject: str, branch: str | None = None) -> bool:
+        """Whether `subject` has another `cr` branch's `[cr<N>]` tag than the
+        one `branch`, by default the one being rebased, gives its commits."""
+        branch = branch or repository.brave.rebased_branch()
+        return rebase.MessageWriter.with_branch_tag(subject, branch) != subject
+
+    @staticmethod
     def changed_paths(commit: str) -> list[str]:
         """The paths `commit` changes, for `rebase.rewrite_plan` to keep the
         tooling commits it moves behind the commits they build on."""
@@ -2752,11 +2775,10 @@ class Rebase(Task):
     def carry_change_id(commits: list[str]) -> None:
         """Amends HEAD to carry the first Change-Id of `commits`, the ones
         folded into it, in place of whatever an `amend!` brought. With none
-        among them, HEAD keeps its own, or gets a new one. A pinned commit
-        also takes the branch's own `[cr<N>]` tag, which a pick from a newer
-        branch, with no squash to fix it, would otherwise keep. A culprit
-        quoted without its indentation gets it, and its Change-Id stops
-        counting as the commit's."""
+        among them, HEAD keeps its own, or gets a new one. HEAD also takes
+        the branch's own `[cr<N>]` tag in place of the one a pick from another
+        `cr` branch keeps. A culprit quoted without its indentation gets it,
+        and its Change-Id stops counting as the commit's."""
         brave = repository.brave
         branch = brave.rebased_branch()
         messages = [
@@ -2774,9 +2796,7 @@ class Rebase(Task):
             or rebase.change_id_of(message)
             or rebase.new_change_id(brave.run_git('rev-parse', 'HEAD'), message)
         )
-        amended = message
-        if pinned_commits.get_pinned_group_for_subject(subject) is not None:
-            amended = rebase.MessageWriter.with_branch_tag(amended, branch)
+        amended = rebase.MessageWriter.with_branch_tag(message, branch)
         amended = rebase.with_change_id(amended, change_id)
         if amended != original:
             brave.run_git(
@@ -3702,7 +3722,8 @@ def main():
         '--squash-minor-bumps',
         action='store_true',
         help='Squashes all the minor bumps in-between the the last version and the '
-        'previous upstream ref.',
+        'previous upstream ref, and gives commits picked from other cr branches '
+        "this branch's [cr<N>] tag.",
     )
     rebase_parser.add_argument(
         '--dry-run',
@@ -4213,6 +4234,7 @@ class RebaseHook:
                     carry_change_id=Rebase.carry_change_id_line,
                     changed_paths=Rebase.changed_paths,
                     has_change_id=Rebase.has_change_id,
+                    foreign_cr_tag=Rebase.foreign_cr_tag,
                 )
             except rebase.EditorRecoverableFailure as e:
                 rebase.hand_off_to_editor(
