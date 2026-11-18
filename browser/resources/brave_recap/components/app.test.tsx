@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { renderShareCard } from '../share_card'
 import { App } from './app'
 
@@ -480,12 +480,30 @@ describe('brave recap auto-advance', () => {
   })
 })
 
+// jsdom lacks these, so they're added for a test and removed after it.
+function stubGlobals(target: object, values: Record<string, unknown>) {
+  const originals = Object.keys(values).map(
+    (key) => [key, Object.getOwnPropertyDescriptor(target, key)] as const,
+  )
+  Object.assign(target, values)
+  return () => {
+    for (const [key, descriptor] of originals) {
+      if (descriptor) {
+        Object.defineProperty(target, key, descriptor)
+      } else {
+        delete (target as Record<string, unknown>)[key]
+      }
+    }
+  }
+}
+
 describe('brave recap share slide', () => {
   const SHARE_TEXT = 'BRAVE_RECAP_SHARE_POST_TEXT https://brave.com/download/'
 
   let card: Blob
   let createObjectURL: jest.Mock
   let revokeObjectURL: jest.Mock
+  let restoreGlobals: Array<() => void>
 
   beforeEach(() => {
     mockMatchMedia(false)
@@ -493,9 +511,14 @@ describe('brave recap share slide', () => {
     mockRenderShareCard.mockResolvedValue(card)
     createObjectURL = jest.fn(() => 'blob:card')
     revokeObjectURL = jest.fn()
-    Object.assign(URL, { createObjectURL, revokeObjectURL })
+    restoreGlobals = [stubGlobals(URL, { createObjectURL, revokeObjectURL })]
   })
-  afterEach(() => jest.restoreAllMocks())
+  afterEach(() => {
+    // Unmount first: unmounting revokes the card's URL.
+    cleanup()
+    restoreGlobals.forEach((restore) => restore())
+    jest.restoreAllMocks()
+  })
 
   function renderShareSlide() {
     const result = renderApp(1_284_213)
@@ -581,9 +604,11 @@ describe('brave recap share slide', () => {
 
     beforeEach(() => {
       write = jest.fn().mockResolvedValue(undefined)
-      Object.assign(navigator, { clipboard: { write } })
       ClipboardItem = jest.fn()
-      Object.assign(window, { ClipboardItem })
+      restoreGlobals.push(
+        stubGlobals(navigator, { clipboard: { write } }),
+        stubGlobals(window, { ClipboardItem }),
+      )
       open = jest.spyOn(window, 'open').mockImplementation(() => null)
     })
 
@@ -642,5 +667,13 @@ describe('brave recap share slide', () => {
         'BRAVE_RECAP_COPY_FAILED',
       )
     })
+  })
+})
+
+describe('brave recap test globals', () => {
+  it('are removed again after the share slide tests', () => {
+    expect(URL.createObjectURL).toBeUndefined()
+    expect(navigator.clipboard).toBeUndefined()
+    expect('ClipboardItem' in window).toBe(false)
   })
 })
