@@ -9,9 +9,12 @@
 #include <cstdint>
 #include <iterator>
 #include <memory>
+#include <optional>
 #include <string>
+#include <string_view>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
@@ -27,6 +30,7 @@
 #include "components/component_updater/component_updater_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "components/update_client/update_client.h"
 #include "crypto/hash.h"
 
@@ -44,8 +48,19 @@ constexpr uint8_t kPublicKeySHA256[32] = {
 static_assert(std::size(kPublicKeySHA256) == crypto::hash::kSha256Size,
               "Wrong hash length");
 
+// Whether the model is to be on disk: the master switch is on and at least one
+// profile turned Semantic history search on. Without a `local_state` there is
+// no record of any profile opting in, so the model is not installed.
+bool ShouldInstallLocalModels(const PrefService* local_state) {
+  return local_state && local_state->GetBoolean(prefs::kBraveLocalAIEnabled) &&
+         !local_state->GetList(prefs::kHistoryEmbeddingsEnabledProfiles)
+              .empty();
+}
+
 // Keeps the component registration in sync with the `kBraveLocalAIEnabled`
-// master switch, which Brave Origin can flip long after startup.
+// master switch, which Brave Origin can flip long after startup, and with
+// `kHistoryEmbeddingsEnabledProfiles`, so the model is on disk only while a
+// profile uses it.
 class LocalModelsComponentRegistrar {
  public:
   static LocalModelsComponentRegistrar* GetInstance() {
@@ -68,6 +83,10 @@ class LocalModelsComponentRegistrar {
           prefs::kBraveLocalAIEnabled,
           base::BindRepeating(&LocalModelsComponentRegistrar::Sync,
                               base::Unretained(this)));
+      pref_change_registrar_.Add(
+          prefs::kHistoryEmbeddingsEnabledProfiles,
+          base::BindRepeating(&LocalModelsComponentRegistrar::Sync,
+                              base::Unretained(this)));
     }
     Sync();
   }
@@ -86,9 +105,7 @@ class LocalModelsComponentRegistrar {
   ~LocalModelsComponentRegistrar() = default;
 
   bool IsEnabled() const {
-    const PrefService* local_state = pref_change_registrar_.prefs();
-    return cus_ && local_state &&
-           local_state->GetBoolean(prefs::kBraveLocalAIEnabled) &&
+    return cus_ && ShouldInstallLocalModels(pref_change_registrar_.prefs()) &&
            base::FeatureList::IsEnabled(
                brave_history_embeddings::kHistoryEmbeddings);
   }
@@ -197,8 +214,9 @@ void LocalModelsComponentInstallerPolicy::ComponentReady(
     return;
   }
   // Unregistration is deferred behind an in-flight update, so this still fires
-  // for a download that started before the switch turned off.
-  if (local_state_ && !local_state_->GetBoolean(prefs::kBraveLocalAIEnabled)) {
+  // for a download that started before the switch turned off or the last
+  // profile turned Semantic history search off.
+  if (!ShouldInstallLocalModels(local_state_)) {
     return;
   }
   LocalModelsUpdaterState::GetInstance()->SetInstallDir(install_dir);
@@ -278,12 +296,38 @@ LocalModelsUpdaterState::~LocalModelsUpdaterState() = default;
 
 void ManageLocalModelsComponentRegistration(
     component_updater::ComponentUpdateService* cus,
-    PrefService* local_state) {
+    PrefService* local_state,
+    const std::optional<base::flat_set<std::string>>& profile_names) {
+  if (local_state && profile_names) {
+    ScopedListPrefUpdate update(local_state,
+                                prefs::kHistoryEmbeddingsEnabledProfiles);
+    update->EraseIf([&profile_names](const base::Value& name) {
+      return !name.is_string() || !profile_names->contains(name.GetString());
+    });
+  }
   LocalModelsComponentRegistrar::GetInstance()->Start(cus, local_state);
 }
 
 void ShutdownLocalModelsComponentRegistration() {
   LocalModelsComponentRegistrar::GetInstance()->Shutdown();
+}
+
+void SetHistoryEmbeddingsEnabledForProfile(PrefService& local_state,
+                                           std::string_view profile_name,
+                                           bool enabled) {
+  // Skipping a write that changes nothing keeps the registrar from syncing on
+  // every profile load.
+  if (local_state.GetList(prefs::kHistoryEmbeddingsEnabledProfiles)
+          .contains(profile_name) == enabled) {
+    return;
+  }
+  ScopedListPrefUpdate update(&local_state,
+                              prefs::kHistoryEmbeddingsEnabledProfiles);
+  if (enabled) {
+    update->Append(profile_name);
+  } else {
+    update->EraseValue(base::Value(profile_name));
+  }
 }
 
 }  // namespace local_ai

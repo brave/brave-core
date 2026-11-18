@@ -19,7 +19,9 @@ namespace brave_history_embeddings {
 // The services are built at most once per session, so the setting is captured
 // at profile setup and then held: a later change has no effect on them until
 // the browser relaunches. A change does take immediate effect on the Tab Focus
-// page-content opt-in, which is withdrawn whenever the setting goes away.
+// page-content opt-in, which is withdrawn whenever the setting goes away, and
+// on the profile's entry in local_ai::prefs::kHistoryEmbeddingsEnabledProfiles,
+// which keeps the shared embedding model on disk while any profile has one.
 class BraveHistoryEmbeddingsStatus : public base::SupportsUserData::Data {
  public:
   BraveHistoryEmbeddingsStatus(Profile* profile,
@@ -41,13 +43,21 @@ class BraveHistoryEmbeddingsStatus : public base::SupportsUserData::Data {
   bool NeedsRestart() const;
 
  private:
+  void OnHistoryEmbeddingsEnabledChanged();
+
   // Withdraws the Tab Focus page-content opt-in whenever the passage index is
   // unavailable, so turning it back on needs a fresh opt-in rather than
   // silently resuming on consent the user believes they withdrew. Runs at
   // startup as well as on change, because the Local AI master switch only
   // takes effect on relaunch. Lives here rather than on the settings toggle
   // because the prefs have other writers.
-  void OnEnabledPrefChanged();
+  void WithdrawTabFocusOptInIfUnavailable();
+
+  // Records in local state whether this profile needs the embedding model,
+  // which every profile shares. Runs at profile setup as well as on change, so
+  // a profile that turned the setting on before this was recorded still keeps
+  // the model.
+  void UpdateLocalModelsUsage();
 
   const raw_ptr<Profile> profile_;
   const bool enabled_;
