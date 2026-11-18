@@ -1,0 +1,72 @@
+diff --git a/chrome/test/data/webui/side_panel/bookmarks/power_bookmarks_app_test.ts b/chrome/test/data/webui/side_panel/bookmarks/power_bookmarks_app_test.ts
+index 0bde366669..6b921d5457 100644
+--- a/chrome/test/data/webui/side_panel/bookmarks/power_bookmarks_app_test.ts
++++ b/chrome/test/data/webui/side_panel/bookmarks/power_bookmarks_app_test.ts
+@@ -184,6 +184,67 @@ suite('General', () => {
+   });
+ 
+   suite('Part1', function() {
++    test('PreventsMiddleMouseDownOnBookmark', () => {
++      const item = getCrUrlListItemElementWithId('3');
++      assertTrue(!!item);
++
++      const event = new MouseEvent('mousedown', {
++        button: 1,
++        bubbles: true,
++        composed: true,
++        cancelable: true,
++      });
++
++      item.dispatchEvent(event);
++
++      assertTrue(event.defaultPrevented);
++      assertEquals(0, bookmarksApi.getCallCount('openBookmark'));
++    });
++
++    test('AllowsLeftAndRightMouseDownOnBookmark', () => {
++      const item = getCrUrlListItemElementWithId('3');
++      assertTrue(!!item);
++
++      for (const button of [0, 2]) {
++        const event = new MouseEvent('mousedown', {
++          button,
++          bubbles: true,
++          composed: true,
++          cancelable: true,
++        });
++
++        item.dispatchEvent(event);
++
++        assertFalse(event.defaultPrevented);
++      }
++    });
++
++    test('MiddleClickStillOpensBookmark', async () => {
++      const item = getCrUrlListItemElementWithId('3');
++      assertTrue(!!item);
++
++      item.dispatchEvent(new MouseEvent('mousedown', {
++        button: 1,
++        bubbles: true,
++        composed: true,
++        cancelable: true,
++      }));
++
++      item.dispatchEvent(new MouseEvent('auxclick', {
++        button: 1,
++        bubbles: true,
++        composed: true,
++        cancelable: true,
++      }));
++
++      const [id, , modifiers] =
++          await bookmarksApi.whenCalled('openBookmark');
++
++      assertEquals('3', id);
++      assertTrue(modifiers.middleButton);
++      assertEquals(1, bookmarksApi.getCallCount('openBookmark'));
++    });
++
+     test('GetsAndShowsTopLevelBookmarks', () => {
+       assertEquals(1, bookmarksApi.getCallCount('getAllBookmarks'));
+       assertEquals(
