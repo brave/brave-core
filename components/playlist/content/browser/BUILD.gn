@@ -78,11 +78,19 @@ static_library("browser") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "mime_util_unittest.cc" ]
+  sources = [
+    "mime_util_unittest.cc",
+    "playlist_media_file_downloader_unittest.cc",
+  ]
 
   deps = [
     ":browser",
     "//base",
+    "//base/test:test_support",
+    "//brave/components/playlist/core/common",
+    "//components/download/public/common:public",
+    "//content/test:test_support",
+    "//net:test_support",
     "//testing/gmock",
     "//testing/gtest",
   ]
