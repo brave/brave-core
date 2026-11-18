@@ -1607,9 +1607,14 @@ non-opaque origin in the applicable origin ancestry. Test each candidate with
 
 Start with the origin represented by that settings URL. If it is opaque, follow
 its parent/ancestor or opener/initiator relationship to the nearest non-opaque
-origin. For network requests, preserve the `request_initiator` fallback. Resolve
-each settings URL independently; the appropriate ancestor may be the main frame,
-but MUST NOT be assumed to be the main frame.
+origin. For network requests, use the request URL's origin for main-frame
+requests, falling back to `request_initiator` only when that origin is opaque.
+For other requests, use the top-frame origin; fall back to `request_initiator`,
+then the request URL's origin, only when no top-frame origin is available. If
+the selected origin is opaque, use its precursor when valid; otherwise apply
+default settings rather than another frame's settings. Resolve each settings URL
+independently; the primary settings URL is the top-level site, but a secondary
+settings URL MUST NOT be assumed to be the main frame.
 
 A Shields settings origin is not necessarily the document's security origin. For
 example, an HTTPS URL can produce a non-opaque `url::Origin` even when
@@ -1644,7 +1649,8 @@ NEVER treat opacity alone as a reason to bypass Shields.
   an origin from the literal URL yields an opaque origin.
 - A `data:` main-frame navigation can have an opaque URL-derived origin and a
   non-opaque `request_initiator`. Use the initiator for Shields settings.
-- For a nested opaque frame, select the nearest non-opaque ancestor in the
+- For the primary settings URL, use the top-level site. For a secondary settings
+  URL in a nested opaque frame, select the nearest non-opaque ancestor in the
   relevant chain; NEVER jump directly to the main frame or an unrelated request
   destination.
 
