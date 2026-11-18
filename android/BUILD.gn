@@ -507,6 +507,7 @@ android_resources("java_resources") {
     "java/brave-res/layout/brave_homepage_mobile_bookmarks_button.xml",
     "java/brave-res/layout/brave_https_upgrade_panel.xml",
     "java/brave-res/layout/brave_leo_clear_history_dialog.xml",
+    "java/brave-res/layout/brave_leo_default_model_radio_button.xml",
     "java/brave-res/layout/brave_leo_reset_dialog.xml",
     "java/brave-res/layout/brave_news_card_menu.xml",
     "java/brave-res/layout/brave_news_load_new_content.xml",

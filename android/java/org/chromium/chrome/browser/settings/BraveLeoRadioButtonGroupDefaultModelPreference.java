@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.settings;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.widget.RadioGroup;
 
 import androidx.preference.Preference;
@@ -75,7 +76,13 @@ public class BraveLeoRadioButtonGroupDefaultModelPreference extends Preference
 
     private RadioButtonWithDescription createRadioButtonWithDescription(
             String primary, String description, Object tag, boolean checked, int id) {
-        RadioButtonWithDescription b = new RadioButtonWithDescription(mContext, null);
+        RadioButtonWithDescription b =
+                (RadioButtonWithDescription)
+                        LayoutInflater.from(mContext)
+                                .inflate(
+                                        R.layout.brave_leo_default_model_radio_button,
+                                        mGroup,
+                                        false);
         b.setPrimaryText(primary);
         b.setDescriptionText(description);
         b.setTag(tag);
