@@ -2091,8 +2091,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleThirdPartyLogic) {
   }
 
   {
-    // Renderer navigation from about:blank, so the initiator is an opaque
-    // security origin. `url::Origin::Create(request_url).opaque()` is false,
+    // Renderer navigation from about:blank. The main frame ignores the
+    // initiator because `url::Origin::Create(request_url).opaque()` is false,
     // so the request URL is used and the rule does not match.
     NavigateToURL(GURL("about:blank"));
     const GURL url =
@@ -2121,8 +2121,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleThirdPartyLogic) {
   }
 }
 
-// An about:blank popup inherits its opener's security origin, so frames it
-// loads have the opener as initiator and use it as first party.
+// Frames loaded by an about:blank popup opened from a.com have a.com as their
+// initiator, so they use a.com as first party.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleAboutBlankPopup) {
   // Applied to third-party only.
   UpdateAdBlockInstanceWithRules(
