@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_EMAIL_ALIASES_EMAIL_ALIASES_SETTINGS_UI_ANDROID_H_
 #define BRAVE_BROWSER_UI_WEBUI_EMAIL_ALIASES_EMAIL_ALIASES_SETTINGS_UI_ANDROID_H_
 
-#include <string>
-
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "content/public/browser/web_ui_controller.h"

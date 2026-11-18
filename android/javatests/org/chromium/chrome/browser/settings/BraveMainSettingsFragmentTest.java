@@ -80,16 +80,19 @@ public class BraveMainSettingsFragmentTest {
     @Test
     @SmallTest
     @EnableFeatures(BraveFeatureList.EMAIL_ALIASES)
-    public void testEmailAliasesPreferenceFollowsPasswords() {
+    public void testEmailAliasesPreferenceFollowsAutofill() {
+        // Enable the email aliases user preference so the preference is visible
+        ChromeSharedPreferences.getInstance().writeBoolean("brave.email_aliases.enabled", true);
+
         startSettings();
 
-        Preference passwordsPreference = mMainSettings.findPreference("passwords");
+        Preference autofillPreference = mMainSettings.findPreference("autofill_and_passwords");
         Preference emailAliasesPreference = mMainSettings.findPreference("email_aliases");
 
-        assertNotNull(passwordsPreference);
+        assertNotNull(autofillPreference);
         assertNotNull(emailAliasesPreference);
         assertTrue(emailAliasesPreference.isVisible());
-        assertEquals(passwordsPreference.getOrder() + 1, emailAliasesPreference.getOrder());
+        assertEquals(autofillPreference.getOrder() + 1, emailAliasesPreference.getOrder());
     }
 
     @After
@@ -100,6 +103,7 @@ public class BraveMainSettingsFragmentTest {
         PolicyServiceFactory.setPolicyServiceForTest(null);
         ChromeSharedPreferences.getInstance()
                 .removeKey(BravePreferenceKeys.BRAVE_ORIGIN_CREDENTIAL_SUMMARY_CACHED);
+        ChromeSharedPreferences.getInstance().removeKey("brave.email_aliases.enabled");
     }
 
     private static final String[] sSortedPrefKeys = {

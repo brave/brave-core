@@ -889,9 +889,17 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
   }
 #endif
 
-#else  // !BUILDFLAG(IS_ANDROID)
+#else   // !BUILDFLAG(IS_ANDROID)
   registry.ForWebUI<NewTabTakeoverUI>()
       .Add<new_tab_takeover::mojom::NewTabTakeover>();
+
+  if (brave_account::features::IsBraveAccountEnabled()) {
+    registry.ForWebUI<BraveAccountUIAndroid>()
+        .Add<brave_account::mojom::Authentication>()
+        .Add<brave_account::mojom::DialogOpener>()
+        .Add<brave_account::mojom::DialogController>()
+        .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
+  }
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   if (email_aliases::features::IsEmailAliasesEnabled()) {
@@ -902,14 +910,6 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
         .Add<email_aliases::mojom::EmailAliasesMetrics>();
   }
 #endif
-
-  if (brave_account::features::IsBraveAccountEnabled()) {
-    registry.ForWebUI<BraveAccountUIAndroid>()
-        .Add<brave_account::mojom::Authentication>()
-        .Add<brave_account::mojom::DialogOpener>()
-        .Add<brave_account::mojom::DialogController>()
-        .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
-  }
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(ENABLE_PSST)
