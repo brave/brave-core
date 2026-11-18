@@ -2585,7 +2585,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 +  \` : ''}\${this.showPage_(this.pageVisibility_?.origin) ? html\`
 +    <div slot="view" id="origin">
 +      \${this.renderPlugin_(this.routes_.ORIGIN) ? html\`
-+        <settings-brave-origin-page ?in-search-mode="\${this.inSearchMode_}"></settings-brave-origin-page>
++        <settings-brave-origin-page class="cr-centered-card-container" ?in-search-mode="\${this.inSearchMode_}"></settings-brave-origin-page>
 +      \` : ''}
 +    </div>
 +  \` : ''}\${this.showPage_(this.pageVisibility_?.content) ? html\`
