@@ -8,8 +8,9 @@
 On Linux, macOS and Windows desktop it runs a gtest binary with the command
 mb.py writes into upstream's isolates: `testing/xvfb.py` (windowed suites on
 Linux) or `testing/test_env.py` wrapping `./<suite>` from the build dir, with
-the suite's arguments from upstream's generated target spec for a reference
-builder, and a per-run temp dir as swarming gives each task. Android suites
+the suite's arguments from the generated target spec of a Brave builder
+(`--builder`) or of an upstream reference builder, and a per-run temp dir as
+swarming gives each task. Android suites
 run through `logdog_wrapper.py` (junit ones through their `bin/run_<suite>`),
 with the arguments of the upstream builder running the same emulator. Either
 way it optionally parses the gtest summary and reports the outcome.
@@ -52,6 +53,11 @@ SRC_DIR = Path(__file__).resolve().parents[3]
 
 # Where upstream's generated build configs keep each builder's target spec.
 _GENERATED_DIR = SRC_DIR / 'infra' / 'config' / 'generated'
+
+# Where Brave's keep theirs, from brave/infra/config.
+_BRAVE_GENERATED_DIR = (
+    Path(__file__).resolve().parents[2] / 'infra' / 'config' / 'generated'
+)
 
 # The upstream builder whose suites a desktop run mirrors, by host.
 _DESKTOP_REFERENCE_BUILDERS = {
@@ -132,8 +138,13 @@ class Options:
     # Name of the AVD config Android suites that need a device run on.
     avd_config: str = DEFAULT_AVD_CONFIG
 
-    # Apply Brave's test/filters and the reference builder's filter files.
+    # Apply the suite's filter files: its spec's and, without a `builder`,
+    # those in Brave's test/filters.
     test_filters: bool = True
+
+    # The Brave builder whose target spec gives the suite's arguments; None
+    # mirrors an upstream reference builder instead.
+    builder: str | None = None
 
 
 # -- Running the test -------------------------------------------------------
@@ -263,16 +274,20 @@ def report_outcome(
 
 @functools.cache
 def _isolate_map() -> dict:
-    path = _GENERATED_DIR / 'testing' / 'gn_isolate_map.pyl'
-    return ast.literal_eval(path.read_text(encoding='utf-8'))
+    """Upstream's `gn_isolate_map.pyl`, with Brave's binaries added."""
+    isolate_map = {}
+    for generated in (_GENERATED_DIR, _BRAVE_GENERATED_DIR):
+        path = generated / 'testing' / 'gn_isolate_map.pyl'
+        isolate_map.update(ast.literal_eval(path.read_text(encoding='utf-8')))
+    return isolate_map
 
 
 def is_windowed_suite(suite: str) -> bool:
-    """Whether upstream runs `suite` under an X server on Linux.
+    """Whether `suite` runs under an X server on Linux.
 
     mb.py wraps `windowed_test_launcher` suites in `testing/xvfb.py`, and
-    console ones in `testing/test_env.py`. Suites upstream doesn't list, such
-    as Brave's own, are taken as windowed.
+    console ones in `testing/test_env.py`. Suites neither isolate map lists
+    are taken as windowed.
     """
     entry = _isolate_map().get(suite, {})
     return entry.get('type', 'windowed_test_launcher') != (
@@ -280,11 +295,18 @@ def is_windowed_suite(suite: str) -> bool:
     )
 
 
-def _builder_specs(builder: str) -> Iterator[dict]:
-    """The generated target specs of the CI builder `builder`."""
-    targets = _GENERATED_DIR / 'builders' / 'ci' / builder / 'targets'
+def _builder_specs(targets: Path) -> Iterator[dict]:
+    """The generated target specs in a builder's `targets` dir."""
     for path in sorted(targets.glob('*.json')):
         yield from json.loads(path.read_text(encoding='utf-8')).values()
+
+
+def _spec_test(suite: str, targets: Path) -> dict | None:
+    for spec in _builder_specs(targets):
+        for test in spec.get('gtest_tests', []):
+            if test.get('name') == suite:
+                return test
+    return None
 
 
 def spec_args(test: dict) -> list[str]:
@@ -297,11 +319,20 @@ def spec_args(test: dict) -> list[str]:
 def suite_args(suite: str, builder: str) -> list[str]:
     """`suite`'s arguments on the upstream builder `builder`; none if the
     builder doesn't run it."""
-    for spec in _builder_specs(builder):
-        for test in spec.get('gtest_tests', []):
-            if test.get('name') == suite:
-                return spec_args(test)
-    return []
+    test = _spec_test(
+        suite, _GENERATED_DIR / 'builders' / 'ci' / builder / 'targets'
+    )
+    return spec_args(test) if test else []
+
+
+def brave_builder_suite_args(suite: str, builder: str) -> list[str]:
+    """`suite`'s arguments, filter files included, in the Brave builder
+    `builder`'s target spec."""
+    targets = _BRAVE_GENERATED_DIR / 'builders' / builder / 'targets'
+    test = _spec_test(suite, targets)
+    if test is None:
+        raise ValueError(f'{builder} runs no suite named {suite}')
+    return test.get('args', [])
 
 
 def desktop_reference_builder(sanitizers: Sanitizers) -> str:
@@ -509,10 +540,14 @@ def build_desktop_command(
         '--cfi-diag=0',
     ]
     name = suite.removesuffix('.exe')
-    upstream = suite_args(name, desktop_reference_builder(sanitizers))
-    return command + merge_filter_files(
-        suite_filters(options, name, upstream) + args
-    )
+    if options.builder:
+        spec = brave_builder_suite_args(name, options.builder)
+        if not options.test_filters:
+            spec = without_filter_files(spec)
+    else:
+        upstream = suite_args(name, desktop_reference_builder(sanitizers))
+        spec = suite_filters(options, name, upstream)
+    return command + merge_filter_files(spec + args)
 
 
 @contextlib.contextmanager
@@ -825,13 +860,20 @@ def main() -> int:
         action='store_true',
         default=None,
         help='On Linux, run under an X server (testing/xvfb.py); by default '
-        "when upstream's gn_isolate_map.pyl says the suite is windowed.",
+        'when the gn_isolate_map.pyl files say the suite is windowed.',
     )
     parser.add_argument(
         '--no-xvfb',
         dest='xvfb',
         action='store_false',
         help='On Linux, run without an X server (testing/test_env.py).',
+    )
+    parser.add_argument(
+        '--builder',
+        default=None,
+        help="Take the suite's arguments, filter files included, from this "
+        "Brave builder's generated target spec, instead of an upstream "
+        "reference builder's and Brave's test/filters.",
     )
     parser.add_argument(
         '--builder-group',
@@ -889,9 +931,8 @@ def main() -> int:
         '--no-test-filters',
         dest='test_filters',
         action='store_false',
-        help="Ignore Brave's test/filters and the upstream reference "
-        "builder's filter files; filter files passed to the suite still "
-        'apply.',
+        help="Ignore the filter files of the suite's spec and Brave's "
+        'test/filters; filter files passed to the suite still apply.',
     )
     parser.add_argument(
         'test_command',
@@ -902,6 +943,8 @@ def main() -> int:
     parsed = parser.parse_args()
     if not parsed.test_command:
         parser.error('a test command is required')
+    if parsed.builder and parsed.test_platform:
+        parser.error('--builder runs desktop suites only')
 
     options = Options(
         build_dir=Path(parsed.build_dir).resolve(),
@@ -922,6 +965,7 @@ def main() -> int:
         test_platform=parsed.test_platform,
         avd_config=parsed.avd_config,
         test_filters=parsed.test_filters,
+        builder=parsed.builder,
     )
     args = list(parsed.test_command)
 
