@@ -13,6 +13,7 @@ import WorkspaceFileLightbox, {
 import MarkdownRenderer from './index'
 import AssistantResponseContextProvider from '../assistant_response/assistant_response_context'
 import WorkspaceFileButton from '../assistant_response/workspace_file_button'
+import WorkspaceFileViewer from '../assistant_response/workspace_file_viewer'
 import MockContext from '../../mock_untrusted_conversation_context'
 import * as searchResults from '../search_widget/storybook-data/searchResults.json'
 import { getEventTemplate } from '../../../common/test_data_utils'
@@ -336,6 +337,44 @@ export const _WorkspaceFileButton = {
         }}
       >
         <WorkspaceFileButton path='src/components/app.tsx' />
+        <WorkspaceFileLightbox
+          file={file}
+          onClose={() => setFile(null)}
+          onOpen={() => setFile(null)}
+          renderViewer={(file) => <PlaceholderViewer file={file} />}
+        />
+      </MockContext>
+    )
+  },
+}
+
+// Renders the `::workspace[path]{inline}` directive: the file embedded in the
+// conversation. Expanding it opens the lightbox, as with the button.
+export const _WorkspaceFileViewer = {
+  args: workspaceFileButtonArgs,
+  argTypes: InferControlsFromArgs(workspaceFileButtonArgs),
+  render: function Render(args: WorkspaceFileButtonArgs) {
+    const [file, setFile] = React.useState<WorkspaceFileInfo | null>(null)
+    const path = 'src/components/app.tsx'
+
+    return (
+      <MockContext
+        parentUIFrame={{
+          showWorkspaceFileLightbox: (filePath: string) =>
+            setFile({ workspaceUrl: WORKSPACE_URL, filePath }),
+        }}
+        overrides={{
+          associatedContent: args.hasWorkspace ? [workspaceContent] : [],
+        }}
+      >
+        <WorkspaceFileViewer
+          path={path}
+          renderViewer={() => (
+            <PlaceholderViewer
+              file={{ workspaceUrl: WORKSPACE_URL, filePath: path }}
+            />
+          )}
+        />
         <WorkspaceFileLightbox
           file={file}
           onClose={() => setFile(null)}

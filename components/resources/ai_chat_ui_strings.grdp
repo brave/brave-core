@@ -825,6 +825,9 @@
   <message name="IDS_CHAT_UI_WORKSPACE_FILE_LIGHTBOX_DOWNLOAD_BUTTON_LABEL" desc="Button label in the workspace file viewer to download every file in the workspace as a zip archive" formatter_data="webui=AiChat">
     Download all files
   </message>
+  <message name="IDS_CHAT_UI_WORKSPACE_FILE_EXPAND_BUTTON_LABEL" desc="Button label on a workspace file shown inline in the conversation, which opens the file in a larger viewer" formatter_data="webui=AiChat">
+    Expand
+  </message>
   <message name="IDS_AI_CHAT_CURRENT_TAB_CONTENTS_BUTTON_LABEL" desc="The button label for current tab contents" formatter_data="webui=AiChat">
     Current tab contents
   </message>
