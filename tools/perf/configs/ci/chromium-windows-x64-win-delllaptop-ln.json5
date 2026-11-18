@@ -1,7 +1,7 @@
 {
   'configurations': [
     {
-      'dashboard-bot-name': 'win11-hp-laptop-typical',
+      'dashboard-bot-name': 'win11-hp-laptop-ln',
       'browser-type': 'chromium',
       'profile': 'chrome-typical-win',
       'extra-browser-args': ['--disable-backgrounding-occluded-windows'],
