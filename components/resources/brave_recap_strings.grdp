@@ -9,8 +9,8 @@
   <message name="IDS_BRAVE_RECAP_INTRO_SINCE" desc="Text on the first slide. $1 is a month and year, e.g. 'October 2024', and is highlighted." formatter_data="webui=BraveRecap">
     Since <ph name="MONTH_YEAR">$1<ex>October 2024</ex></ph>, Brave Shields has been keeping you safe by blocking third-party ads and trackers
   </message>
-  <message name="IDS_BRAVE_RECAP_INTRO_DAYS" desc="Text on the first slide. $1 is a number of days, always more than one, and is highlighted." formatter_data="webui=BraveRecap">
-    That's <ph name="DAYS">$1<ex>731</ex></ph> days of browsing with peace of mind!
+  <message name="IDS_BRAVE_RECAP_INTRO_DAYS" desc="Text on the first slide. $1 is a number of days with its unit, already formatted for the locale, and is highlighted." formatter_data="webui=BraveRecap">
+    That's <ph name="DAYS">$1<ex>731 days</ex></ph> of browsing with peace of mind!
   </message>
   <message name="IDS_BRAVE_RECAP_INTRO_NO_DATE" desc="Text on the first slide when the install date is unknown." formatter_data="webui=BraveRecap">
     Brave Shields keeps you safe by blocking third-party ads and trackers

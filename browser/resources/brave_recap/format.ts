@@ -59,6 +59,10 @@ export function formatCount(value: number) {
   return getNumberFormat().format(Math.round(value))
 }
 
+export function formatDays(days: number) {
+  return formatUnit(days, 'day', 'long').text
+}
+
 const SECOND_MS = 1000
 const MINUTE_MS = 60 * SECOND_MS
 const HOUR_MS = 60 * MINUTE_MS

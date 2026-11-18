@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { formatBandwidth, formatTimeSaved } from './format'
+import { formatBandwidth, formatDays, formatTimeSaved } from './format'
 
 const SECOND_MS = 1000
 const MINUTE_MS = 60 * SECOND_MS
@@ -63,5 +63,10 @@ describe('brave recap formatting', () => {
       text: 'siku\u00a03',
     })
     jest.restoreAllMocks()
+  })
+
+  it('formats days with the locale plural rules', () => {
+    expect(formatDays(1)).toBe('1 day')
+    expect(formatDays(731)).toBe('731 days')
   })
 })

@@ -9,7 +9,7 @@ import Icon from '@brave/nala/react/icon'
 import Tooltip from '@brave/nala/react/tooltip'
 import { getLocale, formatLocale } from '$web-common/locale'
 import { getDaysSinceFirstRun } from '../stats'
-import { formatCount, formatMonthYear } from '../format'
+import { formatDays, formatMonthYear } from '../format'
 import { SlideLayout, SlideProps } from './slide_layout'
 import { Panels } from './panels'
 import { style } from './intro_slide.style'
@@ -82,7 +82,7 @@ export function IntroSlide({ stats, nav }: SlideProps) {
         {days > 1 && (
           <p className='message end'>
             {formatLocale(S.BRAVE_RECAP_INTRO_DAYS, {
-              $1: <strong>{formatCount(days)}</strong>,
+              $1: <strong>{formatDays(days)}</strong>,
             })}
           </p>
         )}
