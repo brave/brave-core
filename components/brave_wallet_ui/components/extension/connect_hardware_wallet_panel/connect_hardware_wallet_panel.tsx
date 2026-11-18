@@ -14,8 +14,8 @@ import { useHistory } from 'react-router'
 // utils
 import { getLocale } from '../../../../common/locale'
 import { isHardwareAccount } from '../../../utils/account-utils'
-import { UISelectors } from '../../../common/selectors'
 import { PanelActions } from '../../../panel/actions'
+import { PanelSelectors } from '$wallet/panel/selectors'
 
 // types
 import {
@@ -26,16 +26,22 @@ import {
 // hooks
 import useInterval from '../../../common/hooks/interval'
 import { useAppDispatch } from '../../../common/hooks/use-redux'
-import { useAccountQuery } from '../../../common/slices/api.slice.extra'
-import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
+import {
+  useAccountFromAddressQuery,
+  useAccountQuery,
+} from '$wallet/common/slices/api.slice.extra'
+import { useUnsafePanelSelector } from '$wallet/common/hooks/use-safe-selector'
 import {
   usePendingTransactions, //
 } from '../../../common/hooks/use-pending-transaction'
 import {
   useGetPendingSignMessageRequestsQuery,
-  useProcessSignMessageRequestMutation,
   useSignMessageHardwareMutation,
 } from '../../../common/slices/api.slice'
+import {
+  hardwareOperationMatchesSignMessage,
+  hardwareOperationMatchesTransaction,
+} from './hardware_wallet_retry'
 
 // style
 import {
@@ -81,22 +87,21 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
   const dispatch = useAppDispatch()
   const history = useHistory()
 
-  const selectedPendingTransactionId = useSafeUISelector(
-    UISelectors.selectedPendingTransactionId,
+  const hardwareWalletOperation = useUnsafePanelSelector(
+    PanelSelectors.hardwareWalletOperation,
   )
-
-  const isConfirming = !!selectedPendingTransactionId
 
   // mutations
   const [signMessageHardware] = useSignMessageHardwareMutation()
-  const [processSignMessageRequest] = useProcessSignMessageRequestMutation()
 
   // queries
   const { data: signMessageData } = useGetPendingSignMessageRequestsQuery()
   const request = signMessageData?.at(0)
-  const isSigning = request && request.id !== -1
 
   const { account: signMessageAccount } = useAccountQuery(request?.accountId)
+  const { account: operationAccount } = useAccountFromAddressQuery(
+    hardwareWalletOperation?.accountUniqueKey,
+  )
 
   const [deviceName, setDeviceName] = React.useState<string>('')
 
@@ -107,7 +112,8 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
     fromAccount: confirmTransactionAccount,
   } = usePendingTransactions()
 
-  const account = signMessageAccount || confirmTransactionAccount
+  const account =
+    operationAccount || signMessageAccount || confirmTransactionAccount
 
   // memos
   const isConnected = React.useMemo((): boolean => {
@@ -148,29 +154,6 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
     dispatch(PanelActions.cancelConnectHardwareWallet(account))
   }, [account, dispatch])
 
-  const onSignData = React.useCallback(async () => {
-    if (!signMessageAccount || !request) {
-      return
-    }
-
-    if (isHardwareAccount(signMessageAccount.accountId)) {
-      await signMessageHardware({
-        account: signMessageAccount,
-        request: request,
-      }).unwrap()
-    } else {
-      await processSignMessageRequest({
-        approved: true,
-        id: request.id,
-      }).unwrap()
-    }
-  }, [
-    signMessageAccount,
-    processSignMessageRequest,
-    request,
-    signMessageHardware,
-  ])
-
   const updateDeviceName = React.useCallback(async () => {
     if (!account || !account.hardware) {
       return
@@ -184,18 +167,36 @@ export const ConnectHardwareWalletPanel = ({ hardwareWalletCode }: Props) => {
 
   useInterval(updateDeviceName, isConnected ? 500 : null)
 
+  // Retry only the operation that opened this panel. Other pending queues
+  // stay pending until their own confirmation UI is shown.
   const retryHardwareOperation = React.useCallback(() => {
-    if (isSigning) {
-      onSignData()
+    if (
+      hardwareOperationMatchesSignMessage(hardwareWalletOperation, request)
+      && signMessageAccount
+      && signMessageAccount.accountId.uniqueKey === request.accountId.uniqueKey
+      && isHardwareAccount(signMessageAccount.accountId)
+    ) {
+      signMessageHardware({
+        account: signMessageAccount,
+        request,
+      })
+      return
     }
-    if (isConfirming && selectedPendingTransaction) {
+
+    if (
+      hardwareOperationMatchesTransaction(
+        hardwareWalletOperation,
+        selectedPendingTransaction,
+      )
+    ) {
       onConfirmTransaction()
     }
   }, [
-    isSigning,
-    isConfirming,
+    hardwareWalletOperation,
+    request,
+    signMessageAccount,
     selectedPendingTransaction,
-    onSignData,
+    signMessageHardware,
     onConfirmTransaction,
   ])
 

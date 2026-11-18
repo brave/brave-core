@@ -8,6 +8,9 @@ import { Store } from 'redux'
 // actions
 import { PanelActions } from '../panel/actions'
 
+// types
+import { HardwareWalletOperation } from '$wallet/constants/types'
+
 // utils
 import getAPIProxy from '../common/async/bridge'
 
@@ -26,18 +29,23 @@ export function handleEndpointError(
 
 export function navigateToConnectHardwareWallet(
   store: Pick<Store, 'dispatch' | 'getState'>,
+  operation: HardwareWalletOperation,
 ) {
   const selectedPanel: string | undefined =
     store.getState()?.panel?.selectedPanel
 
-  if (selectedPanel === 'connectHardwareWallet') {
-    return
+  // Entering the panel clears any previous operation. Retries while the panel
+  // is already open must keep the operation that opened it.
+  if (selectedPanel !== 'connectHardwareWallet') {
+    store.dispatch(PanelActions.navigateTo('connectHardwareWallet'))
+    store.dispatch(
+      PanelActions.setHardwareWalletInteractionError('deviceNotConnected'),
+    )
   }
 
-  store.dispatch(PanelActions.navigateTo('connectHardwareWallet'))
-  store.dispatch(
-    PanelActions.setHardwareWalletInteractionError('deviceNotConnected'),
-  )
+  if (!store.getState()?.panel?.hardwareWalletOperation) {
+    store.dispatch(PanelActions.setHardwareWalletOperation(operation))
+  }
 }
 
 export const getHasPendingRequests = async () => {
