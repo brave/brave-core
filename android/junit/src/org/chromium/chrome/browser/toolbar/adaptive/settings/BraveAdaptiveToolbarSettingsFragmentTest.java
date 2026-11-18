@@ -229,8 +229,9 @@ public class BraveAdaptiveToolbarSettingsFragmentTest {
                     Assert.assertEquals(23, AdaptiveToolbarButtonVariant.NEWS);
                     Assert.assertEquals(24, AdaptiveToolbarButtonVariant.GLIC);
                     Assert.assertEquals(25, AdaptiveToolbarButtonVariant.TTC);
+                    Assert.assertEquals(26, AdaptiveToolbarButtonVariant.ASK_GOOGLE);
                     Assert.assertEquals(
-                            AdaptiveToolbarButtonVariant.TTC,
+                            AdaptiveToolbarButtonVariant.ASK_GOOGLE,
                             AdaptiveToolbarButtonVariant.MAX_VALUE);
 
                     // Test Bookmarks button
