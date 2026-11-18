@@ -25,15 +25,20 @@
 
 namespace {
 
-base::flat_map<std::string, std::string> ParseOptionalMapOfStrings(
-    const base::Value& val) {
+// Status per category, from the partner's capabilities.
+base::flat_map<std::string, std::string> GetCategoryStatuses(
+    const std::optional<std::vector<
+        brave_wallet::meld_integration_responses::PartnerCapability>>&
+        capabilities) {
   base::flat_map<std::string, std::string> result;
-  if (!val.is_dict()) {
+  if (!capabilities) {
     return result;
   }
 
-  for (const auto [key, value] : val.GetDict()) {
-    result.insert_or_assign(key, value.GetString());
+  for (const auto& capability : *capabilities) {
+    if (capability.status) {
+      result.insert_or_assign(capability.category, *capability.status);
+    }
   }
 
   return result;
@@ -82,26 +87,24 @@ namespace brave_wallet {
 
 std::optional<std::vector<mojom::MeldServiceProviderPtr>> ParseServiceProviders(
     const base::Value& json_value) {
-  // Parses results like this:
-  // {
-  //    "categories": [ "CRYPTO_ONRAMP" ],
-  //    "categoryStatuses": {
-  //       "CRYPTO_ONRAMP": "LIVE"
-  //    },
-  //    "logos": {
-  //       "dark": "https://images-serviceprovider.meld.io/BANXA/logo_dark.png",
-  //       "darkShort":
-  //       "https://images-serviceprovider.meld.io/BANXA/short_logo_dark.png",
-  //       "light":
-  //       "https://images-serviceprovider.meld.io/BANXA/logo_light.png",
-  //       "lightShort":
-  //       "https://images-serviceprovider.meld.io/BANXA/short_logo_light.png"
-  //    },
-  //    "name": "Banxa",
+  // Parses results of /network-partner/supported/partners like this:
+  // [{
   //    "serviceProvider": "BANXA",
+  //    "name": "Banxa",
   //    "status": "LIVE",
-  //    "websiteUrl": "http://www.banxa.com"
-  // }
+  //    "categories": [ "CRYPTO_OFFRAMP", "CRYPTO_ONRAMP" ],
+  //    "capabilities": [
+  //      { "category": "CRYPTO_ONRAMP", "domains": [ "PAYMENT" ],
+  //        "status": "LIVE" }
+  //    ],
+  //    "url": "https://www.banxa.com",
+  //    "logo": {
+  //       "darkShort":
+  //       "https://cdn.meld.io/images-serviceprovider/BANXA/short_logo_dark.png",
+  //       "lightShort":
+  //       "https://cdn.meld.io/images-serviceprovider/BANXA/short_logo_light.png"
+  //    }
+  // }]
 
   if (!json_value.is_list()) {
     return std::nullopt;
@@ -115,14 +118,14 @@ std::optional<std::vector<mojom::MeldServiceProviderPtr>> ParseServiceProviders(
       return std::nullopt;
     }
 
-    const auto& logos = service_provider_value->logos;
+    const auto& logo = service_provider_value->logo;
     auto sp = mojom::MeldServiceProvider::New(
         service_provider_value->name, service_provider_value->service_provider,
-        service_provider_value->status, service_provider_value->website_url,
+        service_provider_value->status, service_provider_value->url,
         service_provider_value->categories,
-        ParseOptionalMapOfStrings(service_provider_value->category_statuses),
-        logos ? logos->dark_short : std::nullopt,
-        logos ? logos->light_short : std::nullopt);
+        GetCategoryStatuses(service_provider_value->capabilities),
+        logo ? logo->dark_short : std::nullopt,
+        logo ? logo->light_short : std::nullopt);
 
     service_providers.emplace_back(std::move(sp));
   }
