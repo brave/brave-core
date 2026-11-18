@@ -8,10 +8,9 @@
 #include <memory>
 
 #include "base/test/metrics/histogram_tester.h"
+#include "base/test/task_environment.h"
 #include "base/time/time.h"
-#include "brave/browser/playlist/playlist_service_factory.h"
 #include "components/prefs/testing_pref_service.h"
-#include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace playlist {
@@ -24,13 +23,13 @@ class PlaylistP3AUnitTest : public testing::Test {
 
   // testing::Test:
   void SetUp() override {
-    PlaylistServiceFactory::RegisterLocalStatePrefs(local_state_.registry());
+    PlaylistP3A::RegisterLocalStatePrefs(local_state_.registry());
     playlist_p3a_ =
         std::make_unique<PlaylistP3A>(&local_state_, base::Time::Now());
   }
 
  protected:
-  content::BrowserTaskEnvironment task_environment_;
+  base::test::TaskEnvironment task_environment_;
   TestingPrefServiceSimple local_state_;
   base::HistogramTester histogram_tester_;
   std::unique_ptr<PlaylistP3A> playlist_p3a_;

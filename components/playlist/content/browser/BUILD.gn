@@ -82,6 +82,7 @@ source_set("unit_tests") {
     "mime_util_unittest.cc",
     "playlist_media_file_downloader_unittest.cc",
     "playlist_media_handler_unittest.cc",
+    "playlist_p3a_unittest.cc",
   ]
 
   deps = [
@@ -90,6 +91,7 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//brave/components/playlist/core/common",
     "//components/download/public/common:public",
+    "//components/prefs:test_support",
     "//content/test:test_support",
     "//mojo/public/cpp/bindings",
     "//net:test_support",

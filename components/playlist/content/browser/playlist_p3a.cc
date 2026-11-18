@@ -11,6 +11,7 @@
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/p3a_utils/feature_usage.h"
 #include "brave/components/playlist/core/common/pref_names.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
 namespace playlist {
@@ -22,6 +23,14 @@ namespace {
 constexpr int kFirstTimeOffsetBuckets[] = {0, 6, 13, 20, 27};
 
 }  // namespace
+
+// static
+void PlaylistP3A::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+  registry->RegisterTimePref(kPlaylistFirstUsageTime, base::Time());
+  registry->RegisterTimePref(kPlaylistLastUsageTime, base::Time());
+  registry->RegisterBooleanPref(kPlaylistUsedSecondDay, false);
+  registry->RegisterListPref(kPlaylistUsageWeeklyStorage);
+}
 
 PlaylistP3A::PlaylistP3A(PrefService* local_state,
                          base::Time browser_first_run_time)

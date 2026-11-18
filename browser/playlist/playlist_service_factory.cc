@@ -22,6 +22,7 @@
 #include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/components/playlist/content/browser/media_detector_component_manager.h"
 #include "brave/components/playlist/content/browser/playlist_constants.h"
+#include "brave/components/playlist/content/browser/playlist_p3a.h"
 #include "brave/components/playlist/content/browser/playlist_service.h"
 #include "brave/components/playlist/content/browser/type_converter.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
@@ -235,11 +236,7 @@ PlaylistServiceFactory::GetRemoteForProfile(Profile* profile) {
 // static
 void PlaylistServiceFactory::RegisterLocalStatePrefs(
     PrefRegistrySimple* registry) {
-  // Prefs for P3A
-  registry->RegisterTimePref(kPlaylistFirstUsageTime, base::Time());
-  registry->RegisterTimePref(kPlaylistLastUsageTime, base::Time());
-  registry->RegisterBooleanPref(kPlaylistUsedSecondDay, false);
-  registry->RegisterListPref(kPlaylistUsageWeeklyStorage);
+  PlaylistP3A::RegisterLocalStatePrefs(registry);
 }
 
 void PlaylistServiceFactory::RegisterProfilePrefs(
