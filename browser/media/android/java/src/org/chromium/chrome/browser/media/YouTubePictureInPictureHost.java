@@ -22,6 +22,11 @@ public interface YouTubePictureInPictureHost {
      */
     void onYouTubePictureInPictureEnterFailed();
 
+    /**
+     * Returns true from {@link #onYouTubePictureInPictureRequested} until the session ends (PiP
+     * exit, entry failure or activity destroy), including while it is paused by a screen-lock
+     * interruption and no PiP window is showing.
+     */
     boolean isYouTubePictureInPictureActive();
 
     /** Called when the session's video leaves fullscreen while the screen is off or locked. */
