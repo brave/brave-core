@@ -50,6 +50,7 @@ import {
 } from '../../../stories/mock-data/mock-asset-options'
 import {
   mockETHSwapTransaction,
+  mockETHTokenSwapWithNativeValueTransaction,
   mockETHNativeTokenSendTransaction,
   mockFilSendTransaction,
   mockTransactionInfo,
@@ -190,6 +191,7 @@ export class MockedWalletApiProxy {
     deserializeTransaction(mockedErc20ApprovalTransaction),
     deserializeTransaction(mockETHNativeTokenSendTransaction),
     mockETHSwapTransaction,
+    mockETHTokenSwapWithNativeValueTransaction,
   ]
 
   // name service lookups
