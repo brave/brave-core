@@ -5,7 +5,6 @@
 
 #include "chrome/browser/ui/layout_constants.h"
 
-#include <algorithm>
 #include <optional>
 
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -180,14 +179,6 @@ int GetHorizontalTabStripHeight() {
 
 int GetHorizontalTabPadding() {
   return UseCompactHorizontalTabs() ? 4 : 8;
-}
-
-int GetTabGroupTitleVerticalInset() {
-  return std::max(0, (GetHorizontalTabHeight() - kTabGroupLineHeight) / 2);
-}
-
-int GetTabGroupTitleHorizontalInset() {
-  return UseCompactHorizontalTabs() ? 6 : 10;
 }
 
 int GetDragHandleExtensionHeight() {

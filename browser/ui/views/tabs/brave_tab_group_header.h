@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_GROUP_HEADER_H_
 #define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_GROUP_HEADER_H_
 
-#include <optional>
-
 #include "chrome/browser/ui/views/tabs/tab_group_header.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_layout_types.h"
 #include "ui/views/bubble/bubble_border.h"
@@ -36,8 +34,6 @@ class BraveTabGroupHeader : public TabGroupHeader {
  private:
   bool ShouldShowVerticalTabs() const;
   void LayoutTitleChipForVerticalTabs();
-  SkColor GetGroupColor() const;
-  std::optional<SkColor> GetChipBackgroundColor() const;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_TAB_GROUP_HEADER_H_
