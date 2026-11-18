@@ -350,6 +350,12 @@ void BraveTabStrip::UpdateOrientation() {
     tab_at(active_index.value())->ActiveStateChanged();
   }
 
+  // Group headers size and style their chips per orientation, and only do so
+  // when their visuals change.
+  if (auto* tab_container = GetBraveTabContainer()) {
+    tab_container->RefreshGroupHeaderVisuals();
+  }
+
   // Lay out tabs for the current orientation immediately.
   DeprecatedLayoutImmediately();
 }

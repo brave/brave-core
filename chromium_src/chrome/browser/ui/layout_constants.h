@@ -72,16 +72,6 @@ inline constexpr int kHorizontalGroupUnderlineInset = 2;
 // The tab border radius.
 inline constexpr int kTabBorderRadius = 8;
 
-// The line height of the tab group header text.
-inline constexpr int kTabGroupLineHeight = 24;
-
-// The amount of padding at the top and bottom of tab group header "chips"
-// (i.e. the rectangle enclosing the tab group title).
-int GetTabGroupTitleVerticalInset();
-
-// The amount of padding at sides of tab group header "chips".
-int GetTabGroupTitleHorizontalInset();
-
 // The amount of space at the top of inactive tabs where mouse clicks are
 // treated as clicks in the "caption" area, i.e. the draggable part of the
 // window frame.
