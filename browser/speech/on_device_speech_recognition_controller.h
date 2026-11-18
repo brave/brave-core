@@ -50,8 +50,10 @@ namespace speech {
 // next Start() restarts the pipeline. A Start() that arrives before kReady is
 // queued in pending_sessions_ and forwarded once Ready.
 //
-// The worker holds one model, the one the language of its first session needs.
-// A Start() for the other model is refused while another session is
+// The worker holds one model, the model on disk that serves the language of its
+// first session. The multilingual model serves every language, so only the
+// change from the English model to the multilingual model needs the other
+// model. A Start() for the other model is refused while another session is
 // connected. When none is, StopWorker() returns to kIdle, so that the model
 // leaves memory, and a new worker starts with the other model.
 class OnDeviceSpeechRecognitionController

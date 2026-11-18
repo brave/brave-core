@@ -5,8 +5,11 @@
 
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
 
+#include <optional>
+
 #include "base/files/file_path.h"
 #include "base/scoped_observation.h"
+#include "brave/components/local_ai/core/on_device_speech_recognition.mojom-shared.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -62,6 +65,23 @@ TEST_F(OnDeviceSpeechModelsStateUnitTest, IsModelInstalledFollowsInstallDir) {
   EXPECT_FALSE(state()->IsModelInstalled(kEnglish));
   EXPECT_TRUE(state()->GetInstallDir(kEnglish).empty());
   EXPECT_TRUE(state()->GetModelDir(kEnglish).empty());
+}
+
+// Tests that `GetInstalledModel` gives the one model on disk, and nothing while
+// no model is on disk.
+TEST_F(OnDeviceSpeechModelsStateUnitTest,
+       GetInstalledModelGivesTheModelOnDisk) {
+  EXPECT_EQ(std::nullopt, state()->GetInstalledModel());
+
+  state()->SetInstallDir(kEnglish, install_dir_);
+  EXPECT_EQ(kEnglish, state()->GetInstalledModel());
+
+  state()->SetInstallDir(kEnglish, base::FilePath());
+  state()->SetInstallDir(kMultilingual, install_dir_);
+  EXPECT_EQ(kMultilingual, state()->GetInstalledModel());
+
+  state()->SetInstallDir(kMultilingual, base::FilePath());
+  EXPECT_EQ(std::nullopt, state()->GetInstalledModel());
 }
 
 // Tests that a consumer can follow the model by observing alone, without
