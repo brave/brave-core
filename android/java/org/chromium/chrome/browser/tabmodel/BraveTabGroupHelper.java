@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.tabmodel;
 import org.chromium.base.Token;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.app.tabwindow.TabWindowManagerSingleton;
+import org.chromium.components.tab_groups.TabGroupId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ public class BraveTabGroupHelper {
         for (Token tabGroupId : tabGroupIds) {
             tabModel.getTabUngrouper()
                     .ungroupTabGroup(
-                            tabGroupId,
+                            TabGroupId.fromRawToken(tabGroupId),
                             /* trailing= */ true,
                             // The user already confirmed this in settings, so don't ask again per
                             // group.
