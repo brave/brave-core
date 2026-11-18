@@ -90,6 +90,7 @@ describe('with --builder', () => {
       },
     },
     buildTarget: { targetOS: 'android', targetArch: 'arm64' },
+    isBraveOriginBranded: false,
     targets: { compile: [], tests: [] },
   }
 
@@ -128,16 +129,19 @@ describe('with --builder', () => {
           use_brave_hermetic_toolchain: true,
         },
       },
+      isBraveOriginBranded: true,
     }
     const release = mockConfig({}, releaseBuilder)
     expect(release.isBraveReleaseBuild()).toBe(true)
     expect(release.ignorePatchVersionNumber).toBe(false)
     expect(release.useBraveHermeticToolchain).toBe(true)
+    expect(release.isBraveOriginBranded).toBe(true)
     expect(release.gclientGlobalVars).toEqual({ a: 1 })
 
     // Not from rbe_service, whatever service it names.
     const plain = mockConfig({ rbe_service: 'rbe.ba.brave.com:443' }, builder)
     expect(plain.useBraveHermeticToolchain).toBe(false)
+    expect(plain.isBraveOriginBranded).toBe(false)
     expect(plain.gclientGlobalVars).toEqual({})
   })
 

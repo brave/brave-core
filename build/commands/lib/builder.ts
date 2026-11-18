@@ -10,9 +10,10 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { type Command, InvalidArgumentError } from 'commander'
 import { isCI } from './ciDetect.ts'
-import { Config, setConfigInstance } from './config.ts'
+import config, { Config, setConfigInstance } from './config.ts'
 import * as Log from './log.ts'
 import rootDir from './rootDir.cjs'
+import util from './util.ts'
 import type { Builder, BuilderSpec } from './builderTypes.ts'
 import type { GclientTargets } from './syncTypes.ts'
 
@@ -82,6 +83,7 @@ export function loadBuilder(name: string, dir = buildersDir): Builder {
       targetOS: readGnTarget(name, gnArgs, 'target_os'),
       targetArch: readGnTarget(name, gnArgs, 'target_cpu'),
     },
+    isBraveOriginBranded: gnArgs?.is_brave_origin_branded === true,
     targets: readJson<Builder['targets']>(builderDir, 'targets.json'),
   }
 }
@@ -119,6 +121,22 @@ export function getBuilderGclientTargets(builder: Builder): GclientTargets {
   const { target_os: targetOSList, target_cpu: targetArchList } =
     builder.spec.gclient_config
   return { targetOSList, targetArchList }
+}
+
+// Runs `bots gen` for the builder: writes its build directory, with its
+// `args.gn` and the values of the secrets it declares, and runs `gn gen` in it.
+export async function runBotsGen(builder: Builder): Promise<void> {
+  await Log.progressScopeAsync(`bots gen ${builder.name}`, async () => {
+    util.run(
+      'vpython3',
+      [
+        path.join(config.braveCoreDir, 'infra', 'bots', 'bots.py'),
+        'gen',
+        builder.name,
+      ],
+      config.defaultOptions,
+    )
+  })
 }
 
 // Adds `--builder <name>`, which configures everything from the builder:

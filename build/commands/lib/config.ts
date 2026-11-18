@@ -385,6 +385,9 @@ export class Config {
   }
 
   get isBraveOriginBranded(): boolean | undefined {
+    if (this.#builder) {
+      return this.#builder.isBraveOriginBranded
+    }
     return this.#envConfig.getBoolean(['is_brave_origin_branded'])
   }
 
@@ -1236,6 +1239,10 @@ export class Config {
     }
 
     const baseDir = path.join(this.srcDir, 'out')
+    // Where `bots gen` writes the builder's build directory.
+    if (this.#builder) {
+      return path.join(baseDir, this.#builder.name)
+    }
     if (this.#outputDir) {
       if (path.isAbsolute(this.#outputDir)) {
         return this.#outputDir
