@@ -63,7 +63,14 @@ HostPortPair ToLegacyDestinationEndpoint(
 
 int SOCKS5ClientSocket::DoAuth(int rv) {
   rv = Authenticate(rv, net_log_, io_callback_);
-  next_state_ = (rv == OK ? STATE_HANDSHAKE_WRITE : STATE_AUTH);
+  if (rv == OK) {
+    next_state_ = STATE_HANDSHAKE_WRITE;
+  } else if (rv == ERR_IO_PENDING) {
+    next_state_ = STATE_AUTH;
+  } else {
+    // Stop the state machine and propagate authentication failures.
+    next_state_ = STATE_NONE;
+  }
   return rv;
 }
 
@@ -125,6 +132,12 @@ int SOCKS5ClientSocketAuth::Authenticate(
         //        0x01, usernamelen, username, passwordlen, password
         size_t usernamelen = username().size();
         size_t passwordlen = password().size();
+        // RFC 1929 requires both fields to be between 1 and 255 octets.
+        if (usernamelen == 0 || usernamelen > 255 || passwordlen == 0 ||
+            passwordlen > 255) {
+          next_state_ = STATE_BAD;
+          return ERR_SOCKS_CONNECTION_FAILED;
+        }
         buffer_ = std::string(1 + 1 + usernamelen + 1 + passwordlen, 0);
         buffer_[0] = 0x01;
         buffer_[1] = usernamelen;
@@ -153,9 +166,9 @@ int SOCKS5ClientSocketAuth::Authenticate(
         // TODO(riastradh): Zero iobuf?  Zero buffer?
         net_log.EndEventWithNetErrorCode(NetLogEventType::SOCKS5_AUTH_WRITE,
                                          std::max(rv, 0));
-        if (rv < 0) {
+        if (rv <= 0) {
           next_state_ = STATE_BAD;
-          return rv;
+          return rv < 0 ? rv : ERR_SOCKS_CONNECTION_FAILED;
         }
         DCHECK_LE(static_cast<size_t>(rv), buffer_left_);
         buffer_left_ -= rv;
@@ -183,9 +196,9 @@ int SOCKS5ClientSocketAuth::Authenticate(
       case STATE_READ_COMPLETE:
         net_log.EndEventWithNetErrorCode(NetLogEventType::SOCKS5_AUTH_READ,
                                          std::max(rv, 0));
-        if (rv < 0) {
+        if (rv <= 0) {
           next_state_ = STATE_BAD;
-          return rv;
+          return rv < 0 ? rv : ERR_SOCKS_CONNECTION_FAILED;
         }
         DCHECK_LE(static_cast<size_t>(rv), buffer_left_);
         buffer_.append(iobuf_->data(), rv);
@@ -202,7 +215,7 @@ int SOCKS5ClientSocketAuth::Authenticate(
         uint8_t status = buffer_[1];
         next_state_ = STATE_BAD;  // Caller had better stop here.
         if (ver != 0x01 || status != 0x00)
-          return ERR_FAILED;
+          return ERR_SOCKS_CONNECTION_FAILED;
         return OK;
       }
 
