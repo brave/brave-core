@@ -37,14 +37,20 @@ network::mojom::URLResponseHeadPtr MakeWebUIResponse() {
 
 }  // namespace
 
-TEST(NoNetworkConnectionAllowlistThrottleTest, CreatedForSpeechWorkerOrigin) {
+class NoNetworkConnectionAllowlistThrottleTest : public testing::Test {
+ protected:
+  base::test::ScopedFeatureList feature_list_{
+      network::features::kConnectionAllowlists};
+};
+
+TEST_F(NoNetworkConnectionAllowlistThrottleTest, CreatedForSpeechWorkerOrigin) {
   EXPECT_TRUE(NoNetworkConnectionAllowlistThrottle::MaybeCreateThrottleFor(
       WorkerUrl()));
   EXPECT_TRUE(NoNetworkConnectionAllowlistThrottle::MaybeCreateThrottleFor(
       WorkerUrl().Resolve("ort.worker.js")));
 }
 
-TEST(NoNetworkConnectionAllowlistThrottleTest, NotCreatedForOtherOrigins) {
+TEST_F(NoNetworkConnectionAllowlistThrottleTest, NotCreatedForOtherOrigins) {
   EXPECT_FALSE(NoNetworkConnectionAllowlistThrottle::MaybeCreateThrottleFor(
       GURL("chrome-untrusted://other-page/")));
   GURL::Replacements https;
@@ -53,14 +59,15 @@ TEST(NoNetworkConnectionAllowlistThrottleTest, NotCreatedForOtherOrigins) {
       WorkerUrl().ReplaceComponents(https)));
 }
 
-TEST(NoNetworkConnectionAllowlistThrottleTest, NotCreatedWhenFeatureDisabled) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndDisableFeature(network::features::kConnectionAllowlists);
+TEST_F(NoNetworkConnectionAllowlistThrottleTest,
+       NotCreatedWhenFeatureDisabled) {
+  feature_list_.Reset();
+  feature_list_.InitAndDisableFeature(network::features::kConnectionAllowlists);
   EXPECT_FALSE(NoNetworkConnectionAllowlistThrottle::MaybeCreateThrottleFor(
       WorkerUrl()));
 }
 
-TEST(NoNetworkConnectionAllowlistThrottleTest, AddsEmptyEnforcedAllowlist) {
+TEST_F(NoNetworkConnectionAllowlistThrottleTest, AddsEmptyEnforcedAllowlist) {
   NoNetworkConnectionAllowlistThrottle throttle;
   auto head = MakeWebUIResponse();
   bool defer = false;
