@@ -144,7 +144,8 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
         },
       },
       semanticHistorySearchPref_: Object,
-      // The values of `local_ai::OnDeviceSpeechModel`, and 0 for no model.
+      // The values of `local_ai::OnDeviceSpeechModel`, and 0 for no model. The
+      // multilingual model also serves English.
       onDeviceSpeechModelOptions_: {
         readOnly: true,
         type: Array,
@@ -156,6 +157,14 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
               name: loadTimeData.getString('onDeviceSpeechModelEnglish'),
             },
           ]
+          if (
+            loadTimeData.getBoolean('isOnDeviceSpeechMultilingualModelAvailable')
+          ) {
+            options.push({
+              value: 2,
+              name: loadTimeData.getString('onDeviceSpeechModelMultilingual'),
+            })
+          }
           return options
         },
       },
