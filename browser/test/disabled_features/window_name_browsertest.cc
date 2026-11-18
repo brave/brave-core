@@ -30,9 +30,8 @@ class BraveWindowNameBrowserTest : public InProcessBrowserTest,
  public:
   BraveWindowNameBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    if (GetParam()) {
-      feature_list_.InitAndDisableFeature(features::kRenderDocument);
-    }
+    // The param means "RenderDocument disabled".
+    feature_list_.InitWithFeatureState(features::kRenderDocument, !GetParam());
   }
 
   BraveWindowNameBrowserTest(const BraveWindowNameBrowserTest&) = delete;
