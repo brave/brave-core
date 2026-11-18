@@ -157,9 +157,9 @@ constexpr char16_t kYoutubeFullscreenVideoFitWorkaround[] =
 // because it renders only some items. As in music players, Previous first
 // restarts the item if it's more than a few seconds in, and on the first item
 // always restarts it. On the last item YouTube disables the Next button, so
-// Next does nothing, as the page's does. Ignore both while the watch data still
-// describes the previous video. Otherwise (no playlist, or no button data),
-// call YouTube's handler unchanged. YouTube registers its handlers only after
+// Next is removed. Ignore both while the watch data still describes the
+// previous video. Otherwise (no playlist, or unreadable watch data), call
+// YouTube's handler unchanged. YouTube registers its handlers only after
 // an in-page navigation, so the first playlist item played had no controls.
 // Register Next whenever the playlist has a next item, and Previous whenever a
 // playlist is playing, rechecking as playback progresses because the watch data
@@ -224,18 +224,18 @@ constexpr char16_t kYoutubePlaylistMediaControlsWorkaround[] =
     if (playlist.state === 'stale') {
       return;
     }
-    const button = playlistButton(playlist, details.action);
+    if (playlist.state !== 'ready') {
+      return youtubeHandlers[details.action]?.call(this, details);
+    }
+    // In a playlist, don't fall through to YouTube's handlers: Previous goes
+    // back in history and Next plays a recommendation, both leaving it.
     const player = playlist.player;
-    if (button && details.action === 'previoustrack' &&
-        (button.isDisabled ||
-         player?.getCurrentTime?.() > restartThresholdSeconds)) {
-      player?.seekTo?.(0);
+    const url = buttonUrl(playlistButton(playlist, details.action));
+    if (details.action === 'previoustrack' &&
+        (!url || player.getCurrentTime?.() > restartThresholdSeconds)) {
+      player.seekTo?.(0);
       return;
     }
-    if (button?.isDisabled) {
-      return;
-    }
-    const url = buttonUrl(button);
     if (url) {
       const link = document.createElement('a');
       link.href = url;
@@ -243,21 +243,28 @@ constexpr char16_t kYoutubePlaylistMediaControlsWorkaround[] =
       document.body.appendChild(link);
       link.click();
       link.remove();
-      return;
     }
-    return youtubeHandlers[details.action]?.call(this, details);
   }
   const trackHandlerEnabled = {};
   function updateTrackHandler(action) {
     const playlist = readPlaylist();
-    // Wait for current watch data before disabling a control.
-    if (playlist.state === 'stale' && !youtubeHandlers[action]) {
+    // Wait for readable, current watch data before disabling a control.
+    if ((playlist.state === 'stale' || playlist.state === 'unknown') &&
+        !youtubeHandlers[action]) {
       return;
     }
+    // In a playlist the watch data decides: Previous can always restart the
+    // current item, and Next is removed on the last item, where YouTube
+    // disables the button and pressing it would do nothing. After a navigation
+    // the watch data can lack the buttons for several seconds while locked, so
+    // don't remove Next until the button is present.
     const button = playlistButton(playlist, action);
-    // Previous can always restart the current item.
-    const enabled = Boolean(youtubeHandlers[action] ||
-        (action === 'previoustrack' ? button : buttonUrl(button)));
+    if (playlist.state === 'ready' && action === 'nexttrack' && !button) {
+      return;
+    }
+    const enabled = playlist.state === 'ready' ?
+        (action === 'previoustrack' || Boolean(buttonUrl(button))) :
+        Boolean(youtubeHandlers[action]);
     if (trackHandlerEnabled[action] === enabled) {
       return;
     }
