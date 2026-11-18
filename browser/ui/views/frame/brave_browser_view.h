@@ -137,6 +137,13 @@ class BraveBrowserView : public BrowserView,
   bool IsWebPanelVisible() const;
   bool IsWebPanelOnLeft() const;
 
+  // Sidebar state the layout needs for its corner radii calculations. The side
+  // panel is a separate view sharing the sidebar's edge, and can be visible
+  // while the sidebar control view is not, so the layout asks about both.
+  bool IsSidePanelVisible() const;
+  // Reports the unmirrored visual side; RTL mirroring is the layout's job.
+  bool IsSidebarOnLeft() const;
+
   BraveVerticalTabStripContainerView* vertical_tab_strip_container_view() {
     return vertical_tab_strip_container_view_;
   }

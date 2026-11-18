@@ -15,6 +15,7 @@
 #include "base/memory/raw_ptr.h"
 #include "chrome/browser/ui/animation/browser_animation_types.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
+#include "components/split_tabs/split_tab_visual_data.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
 
@@ -100,11 +101,22 @@ class BraveMultiContentsView : public MultiContentsView {
       content::WebContents* web_contents) const override;
 
  private:
+  friend class BraveMultiContentsViewTest;
   friend class SplitViewBrowserTest;
   friend class SpeedReaderWithSplitViewBrowserTest;
   FRIEND_TEST_ALL_PREFIXES(SplitViewBrowserTest, BraveMultiContentsViewTest);
   FRIEND_TEST_ALL_PREFIXES(sidebar::SidebarBrowserWithWebPanelTest,
                            WebPanelTest);
+
+  // Returns |corner_radii| with the corners that meet the split divider
+  // replaced by the smaller border radius. Which corners those are depends on
+  // |layout|: the divider is vertical for kSideBySide and horizontal for
+  // kStacked.
+  static gfx::RoundedCornersF GetSplitContentsCornerRadii(
+      const gfx::RoundedCornersF& corner_radii,
+      split_tabs::SplitTabLayout layout,
+      bool is_first,
+      bool is_last);
 
   // MultiContentsView:
   views::ProposedLayout CalculateProposedLayout(

@@ -859,14 +859,6 @@ int BraveBrowserViewTabbedLayoutImpl::GetUpstreamVerticalTabStripWidth() const {
   return views().vertical_tab_strip_region_view->GetPreferredSize().width();
 }
 
-bool BraveBrowserViewTabbedLayoutImpl::IsSidebarAtContentsEdge() const {
-  // Checking the sidebar control view alone is not sufficient, because a panel
-  // can be visible while the control view is hidden.
-  return (views().sidebar_container &&
-          views().sidebar_container->IsSidebarVisible()) ||
-         (views().side_panel && views().side_panel->GetVisible());
-}
-
 // Returns the radii for one hosted area, given which of its sides meet
 // neighbouring UI rather than the window. A side with UI beyond it is an
 // interior edge and takes the smaller border radius; a side that reaches the
@@ -914,14 +906,11 @@ BraveBrowserViewTabbedLayoutImpl::GetUiAtContentsEdges() const {
     }
   }
 
-  if (IsSidebarAtContentsEdge()) {
-    bool on_left = false;
-    if (views().sidebar_container) {
-      on_left = views().sidebar_container->sidebar_on_left();
-    } else if (views().side_panel) {
-      on_left = !views().side_panel->IsRightAligned();
-    }
-    if (on_left) {
+  // The sidebar control view and the side panel are separate views sharing the
+  // contents' alignment edge. Either one alone puts UI there - in particular
+  // the panel can be visible while the control view is hidden.
+  if (delegate().IsSidebarControlVisible() || delegate().IsSidePanelVisible()) {
+    if (delegate().IsSidebarOnLeft()) {
       adjacent_ui.left = true;
     } else {
       adjacent_ui.right = true;

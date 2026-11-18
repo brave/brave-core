@@ -1060,6 +1060,16 @@ bool BraveBrowserView::IsWebPanelOnLeft() const {
   return GetBraveMultiContentsView()->web_panel_on_left();
 }
 
+bool BraveBrowserView::IsSidePanelVisible() const {
+  return side_panel_ && side_panel_->GetVisible();
+}
+
+bool BraveBrowserView::IsSidebarOnLeft() const {
+  return sidebar_container_view_
+             ? sidebar_container_view_->sidebar_on_left()
+             : (side_panel_ && !side_panel_->IsRightAligned());
+}
+
 void BraveBrowserView::UpdateContentsCornerRadii(
     const gfx::RoundedCornersF& corner_radii,
     const gfx::RoundedCornersF& web_panel_corner_radii) {

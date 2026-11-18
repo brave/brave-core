@@ -150,6 +150,21 @@ bool BrowserViewLayoutDelegateImpl::IsWebPanelOnLeft() const {
   return brave_browser_view && brave_browser_view->IsWebPanelOnLeft();
 }
 
+bool BrowserViewLayoutDelegateImpl::IsSidebarControlVisible() const {
+  auto* brave_browser_view = BraveBrowserView::From(&browser_view());
+  return brave_browser_view && brave_browser_view->IsSidebarVisible();
+}
+
+bool BrowserViewLayoutDelegateImpl::IsSidePanelVisible() const {
+  auto* brave_browser_view = BraveBrowserView::From(&browser_view());
+  return brave_browser_view && brave_browser_view->IsSidePanelVisible();
+}
+
+bool BrowserViewLayoutDelegateImpl::IsSidebarOnLeft() const {
+  auto* brave_browser_view = BraveBrowserView::From(&browser_view());
+  return brave_browser_view && brave_browser_view->IsSidebarOnLeft();
+}
+
 void BrowserViewLayoutDelegateImpl::UpdateContentsCornerRadii(
     const gfx::RoundedCornersF& corner_radii,
     const gfx::RoundedCornersF& web_panel_corner_radii) {

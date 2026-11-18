@@ -64,10 +64,10 @@ class WebPanelResizeArea : public views::ResizeArea,
 BEGIN_METADATA(WebPanelResizeArea)
 END_METADATA
 
-// Returns |corner_radii| with the corners that meet the split divider replaced
-// by the smaller border radius. Which corners those are depends on |layout|:
-// the divider is vertical for kSideBySide and horizontal for kStacked.
-gfx::RoundedCornersF GetSplitContentsCornerRadii(
+}  // namespace
+
+// static
+gfx::RoundedCornersF BraveMultiContentsView::GetSplitContentsCornerRadii(
     const gfx::RoundedCornersF& corner_radii,
     split_tabs::SplitTabLayout layout,
     bool is_first,
@@ -109,8 +109,6 @@ gfx::RoundedCornersF GetSplitContentsCornerRadii(
 
   return split_radii;
 }
-
-}  // namespace
 
 // static
 BraveMultiContentsView* BraveMultiContentsView::From(MultiContentsView* view) {

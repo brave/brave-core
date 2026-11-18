@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h b/chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h
-index 2d92bee805b7e8fca4d72b4ce594f2c7db0b166a..9591c927703fb42d6cab4206260dcdfdac371c60 100644
+index 2d92bee805b7e8fca4d72b4ce594f2c7db0b166a..68028aa81549c2258e019478777e369825a413a0 100644
 --- a/chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h
 +++ b/chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h
 @@ -8,6 +8,7 @@
@@ -10,7 +10,7 @@ index 2d92bee805b7e8fca4d72b4ce594f2c7db0b166a..9591c927703fb42d6cab4206260dcdfd
  #include "ui/gfx/native_ui_types.h"
  #include "ui/views/layout/layout_types.h"
  
-@@ -70,6 +71,21 @@ class BrowserViewLayoutDelegate {
+@@ -70,6 +71,24 @@ class BrowserViewLayoutDelegate {
        base::RepeatingCallback<void(bool)> callback,
        bool* current_state_out) = 0;
    virtual int GetRestoredWindowCornerRadius() const = 0;
@@ -25,6 +25,9 @@ index 2d92bee805b7e8fca4d72b4ce594f2c7db0b166a..9591c927703fb42d6cab4206260dcdfd
 +  virtual bool IsFullscreenForTab() const = 0;
 +  virtual bool IsWebPanelVisible() const = 0;
 +  virtual bool IsWebPanelOnLeft() const = 0;
++  virtual bool IsSidebarControlVisible() const = 0;
++  virtual bool IsSidePanelVisible() const = 0;
++  virtual bool IsSidebarOnLeft() const = 0;
 +  virtual void UpdateContentsCornerRadii(
 +      const gfx::RoundedCornersF& corner_radii,
 +      const gfx::RoundedCornersF& web_panel_corner_radii) = 0;
