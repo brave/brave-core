@@ -11,6 +11,7 @@
 #include "base/time/time.h"
 #include "brave/components/psst/core/browser/pref_names.h"
 #include "brave/components/psst/core/browser/psst_settings_service.h"
+#include "brave/components/psst/core/common/psst_metadata_schema.h"
 #include "components/prefs/pref_service.h"
 
 namespace psst {
@@ -18,6 +19,19 @@ namespace psst {
 namespace {
 
 constexpr base::TimeDelta kFlushDelay = base::Milliseconds(250);
+
+// psst::mojom::ConsentStatus must stay numerically identical to
+// psst::ConsentStatus (psst_metadata_schema.idl)
+static_assert(static_cast<int>(mojom::ConsentStatus::kNone) ==
+              static_cast<int>(ConsentStatus::kNone));
+static_assert(static_cast<int>(mojom::ConsentStatus::kAsk) ==
+              static_cast<int>(ConsentStatus::kAsk));
+static_assert(static_cast<int>(mojom::ConsentStatus::kAllow) ==
+              static_cast<int>(ConsentStatus::kAllow));
+static_assert(static_cast<int>(mojom::ConsentStatus::kBlock) ==
+              static_cast<int>(ConsentStatus::kBlock));
+static_assert(static_cast<int>(mojom::ConsentStatus::kMaxValue) ==
+              static_cast<int>(ConsentStatus::kMaxValue));
 
 }  // namespace
 
