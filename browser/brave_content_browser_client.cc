@@ -101,6 +101,7 @@
 #include "brave/components/traffic_control/buildflags/buildflags.h"
 #include "brave/components/translate/core/common/brave_translate_switches.h"
 #include "brave/components/url_sanitizer/core/browser/url_sanitizer_service.h"
+#include "brave/components/v8/buildflags/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "brave/ui/webui/brave_color_change_listener/brave_color_change_handler.h"
