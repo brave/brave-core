@@ -13,6 +13,7 @@ import { Command } from 'commander'
 import {
   getBuilderGclientTargets,
   loadBuilder,
+  runBotsGen,
   supportBuilder,
 } from './builder.ts'
 import {
@@ -22,7 +23,9 @@ import {
 } from './builderMock.ts'
 import type { Builder, BuilderSpec } from './builderTypes.ts'
 import config, { Config } from './config.ts'
+import { mockConfig } from './configMock.ts'
 import * as Log from './log.ts'
+import util from './util.ts'
 
 // `var`, as imports run before this initialiser and read `isCI` while loading.
 // eslint-disable-next-line no-var
@@ -34,8 +37,17 @@ jest.mock('./ciDetect.ts', () => ({
   },
 }))
 
+// The progress scopes entered, not in a jest.fn(), whose implementation the
+// `resetMocks` setting clears.
+// eslint-disable-next-line no-var
+var mockScopes: string[] = []
+
 jest.mock('./log.ts', () => ({
   warn: jest.fn(),
+  progressScopeAsync: (name: string, fn: () => Promise<void>) => {
+    mockScopes.push(name)
+    return fn()
+  },
 }))
 
 describe('loadBuilder', () => {
@@ -208,5 +220,29 @@ describe('getBuilderGclientTargets', () => {
     expect(
       getBuilderGclientTargets(builder({ target_os: [], target_cpu: [] })),
     ).toEqual({ targetOSList: [], targetArchList: [] })
+  })
+})
+
+describe('runBotsGen', () => {
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
+  it('runs `bots gen` for the builder', async () => {
+    const installed = mockConfig()
+    const run = jest
+      .spyOn(util, 'run')
+      .mockReturnValue({} as ReturnType<typeof util.run>)
+    await runBotsGen({ name: 'fake-builder' } as Builder)
+    expect(mockScopes).toEqual(['bots gen fake-builder'])
+    expect(run).toHaveBeenCalledWith(
+      'vpython3',
+      [
+        path.join(installed.braveCoreDir, 'infra', 'bots', 'bots.py'),
+        'gen',
+        'fake-builder',
+      ],
+      expect.objectContaining({ env: expect.any(Object) }),
+    )
   })
 })

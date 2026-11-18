@@ -385,7 +385,9 @@ export class Config {
   }
 
   get isBraveOriginBranded(): boolean | undefined {
-    return this.#envConfig.getBoolean(['is_brave_origin_branded'])
+    return (
+      !this.#builder && this.#envConfig.getBoolean(['is_brave_origin_branded'])
+    )
   }
 
   // Parent cache directory for all internal caches (git, siso, vpython).
@@ -1236,6 +1238,10 @@ export class Config {
     }
 
     const baseDir = path.join(this.srcDir, 'out')
+    // Where `bots gen` writes the builder's build directory.
+    if (this.#builder) {
+      return path.join(baseDir, this.#builder.name)
+    }
     if (this.#outputDir) {
       if (path.isAbsolute(this.#outputDir)) {
         return this.#outputDir
