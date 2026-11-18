@@ -40,7 +40,9 @@ class MockBraveLocationBarModelDelegate
 
 class BraveLocationBarModelDelegateBrowserTest : public InProcessBrowserTest {
  public:
-  BraveLocationBarModelDelegateBrowserTest() = default;
+  BraveLocationBarModelDelegateBrowserTest()
+      : BraveLocationBarModelDelegateBrowserTest(
+            /*shields_in_page_info=*/false) {}
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -80,6 +82,12 @@ class BraveLocationBarModelDelegateBrowserTest : public InProcessBrowserTest {
   }
 
  protected:
+  explicit BraveLocationBarModelDelegateBrowserTest(bool shields_in_page_info) {
+    feature_list_.InitWithFeatureState(
+        page_info::features::kShowBraveShieldsInPageInfo, shields_in_page_info);
+  }
+
+  base::test::ScopedFeatureList feature_list_;
   std::unique_ptr<MockBraveLocationBarModelDelegate> delegate_;
 };
 
@@ -115,15 +123,11 @@ IN_PROC_BROWSER_TEST_F(BraveLocationBarModelDelegateBrowserTest,
 class BraveLocationBarModelDelegateShieldsBrowserTest
     : public BraveLocationBarModelDelegateBrowserTest {
  public:
-  BraveLocationBarModelDelegateShieldsBrowserTest() {
-    feature_list.InitAndEnableFeature(
-        page_info::features::kShowBraveShieldsInPageInfo);
-  }
+  BraveLocationBarModelDelegateShieldsBrowserTest()
+      : BraveLocationBarModelDelegateBrowserTest(
+            /*shields_in_page_info=*/true) {}
 
   ~BraveLocationBarModelDelegateShieldsBrowserTest() override = default;
-
- protected:
-  base::test::ScopedFeatureList feature_list;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveLocationBarModelDelegateShieldsBrowserTest,
