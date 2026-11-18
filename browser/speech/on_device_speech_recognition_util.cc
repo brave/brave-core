@@ -7,15 +7,13 @@
 // `chrome/browser/speech/on_device_speech_recognition_util.cc` forward
 // declares.
 
-#include <optional>
 #include <string_view>
 
-#include "base/i18n/language_tag.h"
-#include "base/i18n/tag_converters.h"
-#include "brave/components/local_ai/core/on_device_speech_models_state.h"
+#include "brave/components/local_ai/core/on_device_speech_locales.h"
 #include "brave/components/local_ai/core/utils.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
 #include "media/mojo/mojom/speech_recognizer.mojom.h"
 
@@ -26,33 +24,31 @@ media::mojom::AvailabilityStatus GetBraveOnDeviceSpeechAvailability(
     content::BrowserContext* context,
     std::string_view language,
     media::mojom::SpeechRecognitionQuality quality) {
-  // With the feature or the master switch off Brave serves nothing, and there
-  // is no upstream on-device backend to fall back to.
-  if (!local_ai::CanOfferOnDeviceSpeech(g_browser_process->local_state())) {
-    return media::mojom::AvailabilityStatus::kUnavailable;
-  }
-
   // Private, Tor and Guest profiles get none.
   if (!Profile::FromBrowserContext(context)->IsRegularProfile()) {
     return media::mojom::AvailabilityStatus::kUnavailable;
   }
 
-  // The qualities Brave's model supports.
+  // The qualities Brave's models support.
   if (quality != media::mojom::SpeechRecognitionQuality::kCommand &&
       quality != media::mojom::SpeechRecognitionQuality::kDictation) {
     return media::mojom::AvailabilityStatus::kUnavailable;
   }
 
-  // English only for now. Parsing the tag normalizes case, so a plain compare
-  // covers "EN-GB" too.
-  std::optional<base::i18n::LanguageTag> tag =
-      base::i18n::GetLanguageTagFromString(language);
-  if (!tag || tag->language_subtag() != "en") {
+  // Brave serves a language only while it can offer the language's model. With
+  // the feature or the master switch off Brave serves nothing, and there is no
+  // upstream on-device backend to fall back to.
+  const PrefService* local_state = g_browser_process->local_state();
+  const local_ai::OnDeviceSpeechLocale* locale =
+      local_ai::ResolveOnDeviceSpeechLocale(language);
+  if (!locale ||
+      !local_ai::CanOfferOnDeviceSpeechModel(local_state, locale->model)) {
     return media::mojom::AvailabilityStatus::kUnavailable;
   }
 
-  return local_ai::OnDeviceSpeechModelsState::GetInstance()->IsModelInstalled(
-             local_ai::OnDeviceSpeechModel::kEnglish)
+  // Any model on disk that serves the language, such as the multilingual model
+  // for en-US.
+  return local_ai::GetInstalledOnDeviceSpeechModel(local_state, *locale)
              ? media::mojom::AvailabilityStatus::kAvailable
              : media::mojom::AvailabilityStatus::kDownloadable;
 }

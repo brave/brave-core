@@ -20,9 +20,9 @@ class PrefService;
 namespace speech {
 
 // The global `SodaInstaller`, replaced so that `SpeechRecognition.install()`
-// installs Brave's own model rather than SODA. Availability is answered
-// elsewhere, by `GetBraveOnDeviceSpeechAvailability`, so nothing here is
-// consulted for it.
+// installs the Brave model a language needs rather than SODA. Availability is
+// answered elsewhere, by `GetBraveOnDeviceSpeechAvailability`, so nothing here
+// is consulted for it.
 //
 // `OnDeviceSpeechRecognitionImpl::Install` reads this class to decide whether
 // to act and whether the work is already done, then parks a reply settled by
@@ -67,9 +67,9 @@ class BraveSodaInstaller final
   void OnSpeechModelDirChanged(local_ai::OnDeviceSpeechModel model,
                                const base::FilePath& model_dir) override;
 
-  // Called when the install `InstallLanguage` asked for finishes. `success` is
-  // whether a model ended up installed.
-  void OnSpeechModelInstallFinished(bool success);
+  // Called when the install `InstallLanguage` asked for `language_code`
+  // finishes. `success` is whether a model ended up installed.
+  void OnSpeechModelInstallFinished(LanguageCode language_code, bool success);
 
   base::WeakPtrFactory<BraveSodaInstaller> weak_factory_{this};
 };
