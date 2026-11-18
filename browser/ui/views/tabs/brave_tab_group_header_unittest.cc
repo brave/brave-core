@@ -85,7 +85,9 @@ class BraveTabGroupHeaderTest : public ChromeViewsTestBase {
     group_views_->OnGroupVisualsChanged();
   }
 
-  views::View* title_chip() { return group_views_->header()->children()[0]; }
+  views::View* title_chip() {
+    return group_views_->header()->title_chip_for_testing();
+  }
 
   std::unique_ptr<views::Widget> widget_;
   raw_ptr<views::View> tab_container_;
