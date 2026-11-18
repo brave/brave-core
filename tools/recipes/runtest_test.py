@@ -87,6 +87,12 @@ class _GeneratedConfigTest(unittest.TestCase):
         stack.enter_context(
             mock.patch.object(m, '_GENERATED_DIR', self.generated)
         )
+        self.brave_generated = (
+            self.root / 'brave' / 'infra' / 'config' / 'generated'
+        )
+        stack.enter_context(
+            mock.patch.object(m, '_BRAVE_GENERATED_DIR', self.brave_generated)
+        )
         stack.enter_context(
             mock.patch.object(
                 m, '_BRAVE_FILTER_DIRS', (self.root / 'no_filters',)
@@ -106,11 +112,27 @@ class _GeneratedConfigTest(unittest.TestCase):
             ),
             encoding='utf-8',
         )
+        brave_testing = self.brave_generated / 'testing'
+        brave_testing.mkdir(parents=True)
+        (brave_testing / 'gn_isolate_map.pyl').write_text(
+            '# A generated header.\n\n'
+            + json.dumps(
+                {'brave_console_tests': {'type': 'console_test_launcher'}}
+            ),
+            encoding='utf-8',
+        )
 
     def write_spec(self, builder: str, tests: list[dict]) -> None:
         targets = self.generated / 'builders' / 'ci' / builder / 'targets'
         targets.mkdir(parents=True)
         (targets / 'chromium.json').write_text(
+            json.dumps({builder: {'gtest_tests': tests}}), encoding='utf-8'
+        )
+
+    def write_brave_spec(self, builder: str, tests: list[dict]) -> None:
+        targets = self.brave_generated / 'builders' / builder / 'targets'
+        targets.mkdir(parents=True)
+        (targets / 'brave.sanitisers.json').write_text(
             json.dumps({builder: {'gtest_tests': tests}}), encoding='utf-8'
         )
 
@@ -150,6 +172,12 @@ class DesktopCommandTest(_GeneratedConfigTest):
     def test_suites_upstream_does_not_list_are_windowed(self):
         self.assertEqual(
             self._command('brave_unit_tests')[1], '../../testing/xvfb.py'
+        )
+
+    def test_brave_s_isolate_map_gives_its_console_suites(self):
+        self.assertEqual(
+            self._command('brave_console_tests')[1],
+            '../../testing/test_env.py',
         )
 
     def test_xvfb_flags_override_the_suite_type(self):
@@ -246,6 +274,61 @@ class DesktopCommandTest(_GeneratedConfigTest):
         self.assertIn('--asan=1', command)
         self.assertIn('--lsan=1', command)
         self.assertIn('--test-launcher-print-test-stdio=always', command)
+
+    def _write_brave_builder_specs(self):
+        self._write_asan_specs()
+        self.write_brave_spec(
+            'linux-x64-asan-brave',
+            [
+                {
+                    'name': 'browser_tests',
+                    'args': [
+                        '--asan-detect-odr-violation=0',
+                        '--test-launcher-filter-file=../../brave/test/'
+                        'filters/browser_tests.filter',
+                    ],
+                }
+            ],
+        )
+        brave_filter = self.root / 'no_filters' / 'browser_tests.filter'
+        brave_filter.parent.mkdir(parents=True)
+        brave_filter.touch()
+
+    def test_a_brave_builder_s_spec_gives_the_suite_s_args(self):
+        self._write_brave_builder_specs()
+        command = self._command(
+            'browser_tests',
+            args=['--test-launcher-filter-file=../../extra.filter'],
+            enable_asan=True,
+            builder='linux-x64-asan-brave',
+        )
+        # Neither the reference builder's args nor test/filters' discovery.
+        self.assertEqual(
+            command[9:],
+            [
+                '--asan-detect-odr-violation=0',
+                '--test-launcher-filter-file=../../brave/test/filters/'
+                'browser_tests.filter;../../extra.filter',
+            ],
+        )
+
+    def test_a_brave_builder_s_filter_files_can_be_ignored(self):
+        self._write_brave_builder_specs()
+        command = self._command(
+            'browser_tests',
+            args=(),
+            builder='linux-x64-asan-brave',
+            test_filters=False,
+        )
+        self.assertEqual(command[9:], ['--asan-detect-odr-violation=0'])
+
+    def test_a_brave_builder_runs_only_the_suites_in_its_spec(self):
+        self._write_brave_builder_specs()
+        with self.assertRaisesRegex(
+            ValueError,
+            'linux-x64-asan-brave runs no suite named base_unittests',
+        ):
+            self._command('base_unittests', builder='linux-x64-asan-brave')
 
     def test_hosts_without_a_sanitizer_builder_mirror_the_plain_one(self):
         self.write_spec(
