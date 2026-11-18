@@ -5,6 +5,7 @@
 
 #include "brave/browser/browsing_data/brave_clear_browsing_data.h"
 
+#include <memory>
 #include <optional>
 #include <tuple>
 
@@ -16,10 +17,14 @@
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/task/single_thread_task_runner.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
+#include "chrome/browser/browser_features.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
+#include "chrome/browser/profiles/keep_alive/profile_keep_alive_types.h"
+#include "chrome/browser/profiles/keep_alive/scoped_profile_keep_alive.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_window.h"
@@ -28,6 +33,7 @@
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/profile_destruction_waiter.h"
 #include "chrome/test/base/search_test_utils.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
@@ -40,6 +46,7 @@
 #include "content/public/common/content_features.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/browsing_data_remover_test_util.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "url/url_constants.h"
 
@@ -365,6 +372,198 @@ IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTwoBrowsersTest, TwoProfiles) {
   // Close second profile window.
   CloseBrowserWindow(second_profile_window);
   EXPECT_EQ(0, remove_data_call_count());
+
+  // Tell the application to quit.
+  chrome::ExecuteCommand(browser(), IDC_EXIT);
+}
+
+// With profile unloading turned on, a profile that clears data on exit is
+// cleared when its last window closes, then unloads unless something else
+// still uses it.
+class BraveClearDataOnProfileUnloadTest
+    : public BraveClearDataOnExitTwoBrowsersTest {
+ public:
+  BraveClearDataOnProfileUnloadTest() {
+    // Must be set before the browser starts, when clearing on close starts.
+    feature_list_.InitAndEnableFeature(features::kDestroyProfileOnBrowserClose);
+  }
+
+ protected:
+  // Waits until |profile| has no removal left, then lets the clearing reply.
+  void WaitForClearingToFinish(Profile* profile) {
+    content::BrowsingDataRemover* remover = profile->GetBrowsingDataRemover();
+    ASSERT_TRUE(base::test::RunUntil(
+        [&] { return remover->GetPendingTaskCountForTesting() == 0; }));
+    base::RunLoop().RunUntilIdle();
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(BraveClearDataOnProfileUnloadTest,
+                       ClearsAndUnloadsWhenLastWindowCloses) {
+  BrowserWindowInterface* second_profile_window = NewProfileBrowserWindow();
+  DCHECK(second_profile_window);
+  Profile* second_profile = second_profile_window->GetProfile();
+  SetDeleteBrowsingHistoryOnExit(second_profile);
+
+  // Only the second profile clears data on exit.
+  SetExepectedRemoveDataCallCount(1);
+
+  ProfileDestructionWaiter second_profile_destruction_waiter(second_profile);
+  CloseBrowserWindow(second_profile_window);
+  EXPECT_EQ(1, remove_data_call_count());
+  second_profile_destruction_waiter.Wait();
+
+  // Tell the application to quit.
+  chrome::ExecuteCommand(browser(), IDC_EXIT);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveClearDataOnProfileUnloadTest, ClearsOnceOnQuit) {
+  SetClearAll(browser()->GetProfile()->GetPrefs());
+  SetExpectedRemoveDataRemovalMasks(GetRemoveMaskAll(), GetOriginMaskAll());
+
+  // The profile is cleared as its last window closes during the quit. Exit
+  // must not clear it a second time.
+  SetExepectedRemoveDataCallCount(1);
+
+  // Tell the application to quit.
+  chrome::ExecuteCommand(browser(), IDC_EXIT);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveClearDataOnProfileUnloadTest,
+                       ProfileStillInUseIsClearedAgainOnExit) {
+  BrowserWindowInterface* second_profile_window = NewProfileBrowserWindow();
+  DCHECK(second_profile_window);
+  Profile* second_profile = second_profile_window->GetProfile();
+  SetDeleteBrowsingHistoryOnExit(second_profile);
+
+  // Once when its last window closes, and again on exit, because something
+  // still used the profile after the first clear.
+  SetExepectedRemoveDataCallCount(2);
+
+  auto download_keep_alive = std::make_unique<ScopedProfileKeepAlive>(
+      second_profile, ProfileKeepAliveOrigin::kDownloadInProgress);
+  CloseBrowserWindow(second_profile_window);
+  EXPECT_EQ(1, remove_data_call_count());
+  WaitForClearingToFinish(second_profile);
+
+  // The profile stays held after the download ends, so exit reaches it.
+  download_keep_alive.reset();
+
+  // Tell the application to quit.
+  chrome::ExecuteCommand(browser(), IDC_EXIT);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveClearDataOnProfileUnloadTest,
+                       ReopenedProfileIsClearedAgain) {
+  BrowserWindowInterface* second_profile_window = NewProfileBrowserWindow();
+  DCHECK(second_profile_window);
+  Profile* second_profile = second_profile_window->GetProfile();
+  SetDeleteBrowsingHistoryOnExit(second_profile);
+  const base::FilePath second_profile_path = second_profile->GetPath();
+
+  // Once when its last window closes, and once more when the application
+  // quits after the profile was reopened.
+  SetExepectedRemoveDataCallCount(2);
+
+  ProfileDestructionWaiter second_profile_destruction_waiter(second_profile);
+  CloseBrowserWindow(second_profile_window);
+  EXPECT_EQ(1, remove_data_call_count());
+  second_profile_destruction_waiter.Wait();
+
+  base::ScopedAllowBlockingForTesting allow_blocking;
+  Profile* reopened_profile =
+      g_browser_process->profile_manager()->GetProfile(second_profile_path);
+  ASSERT_TRUE(reopened_profile);
+  NewBrowserWindow(reopened_profile);
+
+  // Tell the application to quit.
+  chrome::ExecuteCommand(browser(), IDC_EXIT);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveClearDataOnProfileUnloadTest,
+                       ClosedProfileUnloadsWithoutClearing) {
+  // Nothing is set to clear on exit, so no calls are expected.
+  SetExepectedRemoveDataCallCount(0);
+
+  BrowserWindowInterface* second_profile_window = NewProfileBrowserWindow();
+  DCHECK(second_profile_window);
+  Profile* second_profile = second_profile_window->GetProfile();
+
+  ProfileDestructionWaiter second_profile_destruction_waiter(second_profile);
+  CloseBrowserWindow(second_profile_window);
+  second_profile_destruction_waiter.Wait();
+
+  // Tell the application to quit.
+  chrome::ExecuteCommand(browser(), IDC_EXIT);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveClearDataOnProfileUnloadTest,
+                       ClearsAgainWhenUsedDuringClearing) {
+  BrowserWindowInterface* second_profile_window = NewProfileBrowserWindow();
+  DCHECK(second_profile_window);
+  Profile* second_profile = second_profile_window->GetProfile();
+  SetDeleteBrowsingHistoryOnExit(second_profile);
+
+  // Once when its last window closes, and again because a download ran while
+  // that clear was in progress.
+  SetExepectedRemoveDataCallCount(2);
+
+  content::BrowsingDataRemoverCompletionInhibitor inhibitor(
+      second_profile->GetBrowsingDataRemover());
+  ProfileDestructionWaiter second_profile_destruction_waiter(second_profile);
+  CloseBrowserWindow(second_profile_window);
+  EXPECT_EQ(1, remove_data_call_count());
+
+  // Hold the first clear just before it finishes, and run a download that
+  // starts and ends meanwhile.
+  inhibitor.BlockUntilNearCompletion();
+  {
+    ScopedProfileKeepAlive download_keep_alive(
+        second_profile, ProfileKeepAliveOrigin::kDownloadInProgress);
+  }
+  // Let this clear and any later one finish normally.
+  inhibitor.Reset();
+  inhibitor.ContinueToCompletion();
+
+  // The profile is cleared a second time, then unloads.
+  second_profile_destruction_waiter.Wait();
+  EXPECT_EQ(2, remove_data_call_count());
+
+  // Tell the application to quit.
+  chrome::ExecuteCommand(browser(), IDC_EXIT);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveClearDataOnProfileUnloadTest,
+                       ClearsAgainWhenRunningWorkEndsDuringClearing) {
+  BrowserWindowInterface* second_profile_window = NewProfileBrowserWindow();
+  DCHECK(second_profile_window);
+  Profile* second_profile = second_profile_window->GetProfile();
+  SetDeleteBrowsingHistoryOnExit(second_profile);
+
+  // Once when its last window closes, and again because a download that was
+  // already running ended during that clear.
+  SetExepectedRemoveDataCallCount(2);
+
+  auto download_keep_alive = std::make_unique<ScopedProfileKeepAlive>(
+      second_profile, ProfileKeepAliveOrigin::kDownloadInProgress);
+  content::BrowsingDataRemoverCompletionInhibitor inhibitor(
+      second_profile->GetBrowsingDataRemover());
+  ProfileDestructionWaiter second_profile_destruction_waiter(second_profile);
+  CloseBrowserWindow(second_profile_window);
+  EXPECT_EQ(1, remove_data_call_count());
+
+  // The download ends just before the first clear finishes.
+  inhibitor.BlockUntilNearCompletion();
+  download_keep_alive.reset();
+  inhibitor.Reset();
+  inhibitor.ContinueToCompletion();
+
+  // The profile is cleared a second time, then unloads.
+  second_profile_destruction_waiter.Wait();
+  EXPECT_EQ(2, remove_data_call_count());
 
   // Tell the application to quit.
   chrome::ExecuteCommand(browser(), IDC_EXIT);
