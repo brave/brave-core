@@ -1634,7 +1634,7 @@ permissions.
 | The user types a `data:` URL that embeds `b.com`. The top-level origin has no precursor.            | Use defaults for `TOP_ORIGIN_ONLY_SCOPE` settings, including when the iframe makes a request.                                                                                                          | Use `b.com` for `TOP_ORIGIN_ONLY_SCOPE` settings because it initiated the request.  |
 
 NEVER use frame position (`is_outermost_main_frame`), a raw document URL, or a
-non-HTTP(S) scheme as proof of which settings apply, and NEVER treat opacity
-alone as a reason to bypass Shields.
+non-HTTP(S) scheme as proof of which settings apply, and NEVER treat opaque
+origins alone as a reason to bypass Shields.
 
 ---
