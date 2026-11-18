@@ -9,6 +9,7 @@ import Data
 import Preferences
 import Shared
 @_spi(ChromiumWebViewAccess) import Web
+import WebKit
 import os.log
 
 extension TabDataValues {
@@ -38,10 +39,13 @@ class ProtectionStatsTabHelper: TabObserver, @preconcurrency ProtectionStatsTabH
     case ad
   }
 
+  private let torScriptManager: TabContentScriptManager?
   private weak var tab: (any TabState)?
 
   init(tab: some TabState) {
     self.tab = tab
+    self.torScriptManager = tab.isTor ? TabContentScriptManager() : nil
+    torScriptManager?.tab = tab
 
     tab.addObserver(self)
   }
@@ -53,9 +57,37 @@ class ProtectionStatsTabHelper: TabObserver, @preconcurrency ProtectionStatsTabH
   // MARK: - TabObserver
 
   func tabDidCreateWebView(_ tab: some TabState) {
-    if FeatureList.kUseProfileWebViewConfiguration.enabled {
+    if let torScriptManager {
+      guard !Preferences.UserScript.blockAllScripts.value,
+        Preferences.UserScript.trackingProtectionStats.value,
+        let controller = tab.configuration?.userContentController,
+        let blocker = tab.contentBlocker,
+        let bootstrap = ContentBlockerHelper.loadUserScript(named: "__firefox__"),
+        let statsScript = ContentBlockerHelper.userScript
+      else { return }
+
+      // Keep the stats hooks and native message handler out of the website's JS world.
+      let world = WKContentWorld.defaultClient
+      torScriptManager.addContentScript(
+        blocker, name: ContentBlockerHelper.scriptName, forTab: tab, contentWorld: world
+      )
+      for source in [bootstrap, statsScript.source] {
+        controller.addUserScript(
+          WKUserScript(
+            source: source, injectionTime: .atDocumentStart, forMainFrameOnly: false, in: world
+          )
+        )
+      }
+    } else if FeatureList.kUseProfileWebViewConfiguration.enabled {
       BraveWebView.from(tab: tab)?.protectionStatsHelper = self
     }
+  }
+
+  func tabWillDeleteWebView(_ tab: some TabState) {
+    guard let torScriptManager else { return }
+    torScriptManager.removeContentScript(
+      name: ContentBlockerHelper.scriptName, forTab: tab, contentWorld: .defaultClient
+    )
   }
 
   func tabWillBeDestroyed(_ tab: some TabState) {

@@ -38,6 +38,7 @@ extension UIImageView {
   func loadFavicon(
     for siteURL: URL,
     isPrivateBrowsing: Bool,
+    cachedOnly: Bool = false,
     monogramFallbackCharacter: Character? = nil,
     completion: ((Favicon?) -> Void)? = nil
   ) {
@@ -46,9 +47,12 @@ extension UIImageView {
     self.image = Favicon.defaultImage
     faviconTask = Task { @MainActor in
       if let icon = await FaviconFetcher.getIconFromCache(for: siteURL) {
+        guard !Task.isCancelled else { return }
         self.image = icon.image ?? Favicon.defaultImage
         return
       }
+      // Local search results in Tor must not fetch missing icons over the network.
+      guard !Task.isCancelled, !cachedOnly else { return }
       do {
         let favicon = try await FaviconFetcher.loadIcon(
           url: siteURL,

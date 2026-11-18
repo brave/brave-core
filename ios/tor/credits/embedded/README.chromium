@@ -1,0 +1,47 @@
+Name: Tor
+URL: https://www.torproject.org/
+Version: 0.4.9.14
+License: BSD-3-Clause
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/tor.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: OpenSSL
+URL: https://www.openssl.org/
+Version: 3.6.5
+License: Apache-2.0
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/openssl.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: libevent
+URL: https://libevent.org/
+Version: 2.1.13
+License: BSD-3-Clause
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/libevent.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: liblzma
+URL: https://tukaani.org/xz/
+Version: 5.8.4
+License: 0BSD
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/liblzma.txt
+Shipped: yes
+Security Critical: yes
+
+-------------------- DEPENDENCY DIVIDER --------------------
+
+Name: Tor.framework
+URL: https://github.com/iCepa/Tor.framework
+Version: 409.14.1
+License: MIT
+License File: //brave/ios/tor/Sources/BraveTorUI/Resources/Credits/tor-framework.txt
+Shipped: yes
+Security Critical: yes

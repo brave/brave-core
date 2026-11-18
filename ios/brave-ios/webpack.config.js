@@ -30,6 +30,7 @@ const MainFrameAtDocumentEndSandboxed = glob.sync("./ios/brave-ios/Sources/Brave
 export default {
   mode: "production",
   entry: {
+    TorPageTools: "./ios/brave-ios/Sources/Brave/Frontend/UserContent/UserScripts/TorPageTools.js",
     "__firefox__": __firefox__,
     AllFramesAtDocumentStart: AllFramesAtDocumentStart,
     AllFramesAtDocumentStartSandboxed: AllFramesAtDocumentStartSandboxed,

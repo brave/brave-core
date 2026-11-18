@@ -26,6 +26,7 @@ class TopSitesSectionProvider: NSObject, NTPObservableSectionProvider {
   var sectionDidChange: (() -> Void)?
   var action: (TopSiteAction) -> Void
 
+  private let allowsIconNetworkRequests: Bool
   private let isPrivateBrowsing: Bool
   private let tileSource: TopSitesTileSource
   /// The tiles the collection view is currently showing. Kept separate from the source so that the
@@ -39,8 +40,10 @@ class TopSitesSectionProvider: NSObject, NTPObservableSectionProvider {
   init(
     action: @escaping (TopSiteAction) -> Void,
     isPrivateBrowsing: Bool,
-    tileSource: TopSitesTileSource
+    tileSource: TopSitesTileSource,
+    allowsIconNetworkRequests: Bool = true
   ) {
+    self.allowsIconNetworkRequests = allowsIconNetworkRequests
     self.action = action
     self.isPrivateBrowsing = isPrivateBrowsing
     self.tileSource = tileSource
@@ -133,7 +136,10 @@ class TopSitesSectionProvider: NSObject, NTPObservableSectionProvider {
     if cell.loadedSiteURL != item.url {
       // Reset Fav-icon loading and image-view to default
       cell.imageView.cancelLoading()
-      cell.imageView.loadFavicon(siteURL: item.url, isPrivateBrowsing: isPrivateBrowsing)
+      cell.imageView.loadFavicon(
+        siteURL: item.url, isPrivateBrowsing: isPrivateBrowsing,
+        allowsNetworkRequests: allowsIconNetworkRequests
+      )
       cell.loadedSiteURL = item.url
     }
     cell.accessibilityLabel = cell.title

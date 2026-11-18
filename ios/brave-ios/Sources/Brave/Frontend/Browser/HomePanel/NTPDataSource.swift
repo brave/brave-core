@@ -157,8 +157,12 @@ public class NTPDataSource {
     return backgroundSet[safe: backgroundIndex]
   }
 
-  func newBackground(completion: @escaping (NTPWallpaper?) -> Void) {
+  func newBackground(
+    allowsSponsoredMedia: Bool = true, completion: @escaping (NTPWallpaper?) -> Void
+  ) {
     if !Preferences.NewTabPage.backgroundImages.value { return completion(nil) }
+
+    if !allowsSponsoredMedia { return completion(getImageBackground()) }
 
     // Force back to `0` if at end
     Preferences.NewTabPage.backgroundRotationCounter.value %= service.countToNewTabTakeoverWallpaper

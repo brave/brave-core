@@ -29,6 +29,19 @@ class NavigationRouterTests: XCTestCase {
     "brave"
   }
 
+  func testTorShortcutHasDistinctActivityWithoutBrowsingData() {
+    let type = ActivityType.newPrivateTorTab
+    XCTAssertTrue(ActivityType.allCases.contains(type))
+    XCTAssertNotEqual(type.identifier, ActivityType.newPrivateTab.identifier)
+    XCTAssertEqual(type.rawValue, "NewPrivateTorTab")
+    let activity = ActivityShortcutManager.shared.createShortcutActivity(type: type)
+    XCTAssertEqual(activity.activityType, type.identifier)
+    XCTAssertEqual(activity.title, type.title)
+    XCTAssertEqual(activity.suggestedInvocationPhrase, type.suggestedPhrase)
+    XCTAssertNil(activity.webpageURL)
+    XCTAssertNil(activity.userInfo)
+  }
+
   func testOpenURLScheme() {
     let testURLEncoding = { [appScheme] (url: String) -> Bool in
       guard let escaped = url.escape() else {

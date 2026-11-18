@@ -13,6 +13,7 @@ extension BrowserViewController {
   /// There is also one hack required: STWebpageController breaks if you pass scheme other than http or https,
   /// it will not block anything for the rest of its lifecycle. Our internal urls have to be bridged to an empty https url.
   func updateScreenTimeUrl(_ url: URL?) {
+    guard tabManager.selectedTab?.isTor != true else { return }
     guard let screenTimeViewController = screenTimeViewController else {
       return
     }

@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveStrings
 import Shared
 import UIKit
 
@@ -31,7 +32,11 @@ class SearchEnginePickerViewController: UITableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    navigationItem.title = type == .standard ? Strings.standardTabSearch : Strings.privateTabSearch
+    if type == .tor {
+      navigationItem.title = Strings.Tor.searchTab
+    } else {
+      navigationItem.title = type == .standard ? Strings.standardTabSearch : Strings.privateTabSearch
+    }
     if showCancel {
       navigationItem.leftBarButtonItem = UIBarButtonItem(
         title: Strings.cancelButtonTitle,

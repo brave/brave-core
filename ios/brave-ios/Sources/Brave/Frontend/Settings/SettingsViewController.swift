@@ -555,7 +555,8 @@ class SettingsViewController: TableViewController {
                       SearchQuickEnginesViewController(profile: self.profile),
                       animated: true
                     )
-                  }
+                  },
+                  torSearchEngines: self.profile.searchEngines
                 )
               )
               self.navigationController?.pushViewController(viewController, animated: true)

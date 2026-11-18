@@ -147,6 +147,8 @@ extension ActivityType {
       return Strings.Shortcuts.shortcutSettingsOpenNewTabTitle
     case .newPrivateTab:
       return Strings.Shortcuts.shortcutSettingsOpenNewPrivateTabTitle
+    case .newPrivateTorTab:
+      return Strings.Tor.shortcutTitle
     case .openBookmarks:
       return Strings.Shortcuts.shortcutSettingsOpenBookmarksTitle
     case .openHistoryList:
@@ -170,6 +172,8 @@ extension ActivityType {
       return Strings.Shortcuts.shortcutSettingsOpenNewTabDescription
     case .newPrivateTab:
       return Strings.Shortcuts.shortcutSettingsOpenNewPrivateTabDescription
+    case .newPrivateTorTab:
+      return Strings.Tor.shortcutDescription
     case .openBookmarks:
       return Strings.Shortcuts.shortcutSettingsOpenBookmarksDescription
     case .openHistoryList:

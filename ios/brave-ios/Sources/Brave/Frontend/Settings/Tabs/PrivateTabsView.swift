@@ -6,6 +6,7 @@
 import BraveStrings
 import BraveUI
 import Data
+import DesignSystem
 import LocalAuthentication
 import Preferences
 import SwiftUI
@@ -113,6 +114,18 @@ struct PrivateTabsView: View {
           }
           .disabled(true)
           .tint(Color(braveSystemName: .primitivePrimary40))
+        }
+      }
+
+      Section {
+        NavigationLink {
+          TorSettingsView()
+        } label: {
+          Label {
+            Text(Strings.Tor.settings)
+          } icon: {
+            Image(braveSystemName: "leo.product.tor")
+          }
         }
       }
     }

@@ -24,6 +24,7 @@ extension BrowserViewController: TabPolicyDecider {
     shouldAllowResponse response: URLResponse,
     responseInfo: WebResponseInfo
   ) async -> WebPolicyDecision {
+    tab.receiveOnionLocationResponse(response, isMainFrame: responseInfo.isForMainFrame)
     let responseURL = response.url
 
     // Store the response in the tab
@@ -70,6 +71,12 @@ extension BrowserViewController: TabPolicyDecider {
   ) async -> WebPolicyDecision {
     guard let requestURL = request.url else {
       return .cancel
+    }
+    if !tab.isTor {
+      if Preferences.Privacy.onlyOnionInTor.value,
+        requestURL.host?.lowercased().hasSuffix(".onion") == true { return .cancel }
+      do { try await TorOnionPolicy.install(on: tab) }
+      catch { return .cancel }
     }
     let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
 

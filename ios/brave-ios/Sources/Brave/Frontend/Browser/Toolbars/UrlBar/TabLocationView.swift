@@ -27,6 +27,7 @@ protocol TabLocationViewDelegate {
   )
   func tabLocationViewDidTapTranslateButton(_ tabLocationView: TabLocationView)
   func tabLocationViewDidTapReload(_ tabLocationView: TabLocationView)
+  func tabLocationViewDidTapOnionLocation(_ tabLocationView: TabLocationView)
   func tabLocationViewDidTapStop(_ tabLocationView: TabLocationView)
   func tabLocationViewDidTapVoiceSearch(_ tabLocationView: TabLocationView)
   func tabLocationViewDidTapWalletButton(_ urlBar: TabLocationView)
@@ -42,6 +43,12 @@ private struct TabLocationViewUX {
 
 class TabLocationView: UIView {
   var delegate: TabLocationViewDelegate?
+  var onionLocation: URL? {
+    didSet {
+      onionButton.isHidden = onionLocation == nil
+      onionButton.accessibilityValue = onionLocation?.absoluteString
+    }
+  }
   let contentView = UIView()
   private var cancellables: Set<AnyCancellable> = []
 
@@ -259,6 +266,17 @@ class TabLocationView: UIView {
     $0.addTarget(self, action: #selector(didTapStopReloadButton), for: .touchUpInside)
   }
 
+  private lazy var onionButton = ToolbarButton().then {
+    $0.isHidden = true
+    $0.accessibilityIdentifier = "TabToolbar.onionLocationButton"
+    $0.accessibilityLabel = Strings.Tor.openOnionLocation
+    $0.setImage(UIImage(braveSystemNamed: "leo.product.tor"), for: .normal)
+    $0.addAction(UIAction { [weak self] _ in
+      guard let self else { return }
+      self.delegate?.tabLocationViewDidTapOnionLocation(self)
+    }, for: .touchUpInside)
+  }
+
   private lazy var voiceSearchButton = ToolbarButton().then {
     $0.accessibilityIdentifier = "TabToolbar.voiceSearchButton"
     $0.isAccessibilityElement = true
@@ -348,7 +366,7 @@ class TabLocationView: UIView {
 
     var trailingOptionSubviews: [UIView] = [walletButton, playlistButton, voiceSearchButton]
     voiceSearchButton.isHidden = !speechRecognizer.isVoiceSearchAvailable
-    trailingOptionSubviews.append(contentsOf: [reloadButton])
+    trailingOptionSubviews.append(contentsOf: [onionButton, reloadButton])
 
     trailingOptionSubviews.forEach {
       $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
@@ -448,7 +466,7 @@ class TabLocationView: UIView {
     get {
       return [
         urlDisplayLabel, placeholderLabel, readerModeButton, playlistButton, translateButton,
-        reloadButton,
+        onionButton, reloadButton,
       ]
       .filter { !$0.isHidden }
     }
@@ -481,6 +499,10 @@ class TabLocationView: UIView {
       .init(pointSize: pointSize, weight: .regular, scale: .large),
       forImageIn: .normal
     )
+    onionButton.setPreferredSymbolConfiguration(
+      .init(pointSize: pointSize, weight: .regular, scale: .medium),
+      forImageIn: .normal
+    )
     voiceSearchButton.setPreferredSymbolConfiguration(
       .init(pointSize: pointSize, weight: .regular, scale: .large),
       forImageIn: .normal
@@ -490,6 +512,9 @@ class TabLocationView: UIView {
       compatibleWith: toolbarTraitCollection
     )
     reloadButton.snp.remakeConstraints {
+      $0.width.equalTo(width)
+    }
+    onionButton.snp.remakeConstraints {
       $0.width.equalTo(width)
     }
     voiceSearchButton.snp.remakeConstraints {
@@ -512,7 +537,7 @@ class TabLocationView: UIView {
     ].map {
       $0.resolvedColor(with: traitCollection).cgColor
     }
-    for button in [reloadButton, voiceSearchButton] {
+    for button in [reloadButton, voiceSearchButton, onionButton] {
       button.primaryTintColor = browserColors.iconDefault
       button.disabledTintColor = browserColors.iconDisabled
       button.selectedTintColor = browserColors.iconActive

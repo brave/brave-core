@@ -584,6 +584,13 @@ extension SceneDelegate {
       }
 
       return
+    case ActivityType.newPrivateTorTab.identifier:
+      if let browserViewController = scene.browserViewController {
+        ActivityShortcutManager.shared.performShortcutActivity(
+          type: .newPrivateTorTab, using: browserViewController
+        )
+      }
+      return
     case ActivityType.openHistoryList.identifier:
       if let browserViewController = scene.browserViewController {
         ActivityShortcutManager.shared.performShortcutActivity(

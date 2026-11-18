@@ -30,6 +30,8 @@ class SearchContainerViewController: UIViewController {
 
   let inputBar: SearchURLBarInputView
   private let topSitesController: TopSitesViewController
+  private let isTor: Bool
+  private let browserColors: any BrowserColors
   private let searchController: SearchViewController
   private let searchLoader: SearchLoader
 
@@ -59,13 +61,16 @@ class SearchContainerViewController: UIViewController {
     recentSearchAction: @escaping (RecentSearch?, Bool) -> Void
   ) {
     self.delegate = delegate
+    self.isTor = privateBrowsingManager.isTorBrowsing
+    self.browserColors = privateBrowsingManager.browserColors
 
     let searchController = SearchViewController(
       with: .init(
         isPrivate: privateBrowsingManager.isPrivateBrowsing,
-        isAIChatAvailable: isAIChatAvailable,
-        isPlaylistAvailable: isPlaylistAvailable,
-        searchEngines: searchEngines
+        isAIChatAvailable: isAIChatAvailable && !privateBrowsingManager.isTorBrowsing,
+        isPlaylistAvailable: isPlaylistAvailable && !privateBrowsingManager.isTorBrowsing,
+        searchEngines: searchEngines,
+        isTor: privateBrowsingManager.isTorBrowsing
       ),
       browserColors: privateBrowsingManager.browserColors
     )
@@ -83,7 +88,10 @@ class SearchContainerViewController: UIViewController {
     self.topSitesController = TopSitesViewController(
       privateBrowsingManager: privateBrowsingManager,
       defaultSearchEngine: searchEngines.defaultEngine(
-        forType: privateBrowsingManager.isPrivateBrowsing ? .privateMode : .standard
+        forType: .init(
+          isPrivate: privateBrowsingManager.isPrivateBrowsing,
+          isTor: privateBrowsingManager.isTorBrowsing
+        )
       ),
       tileSource: tileSource,
       topSiteAction: topSiteAction,
@@ -114,7 +122,7 @@ class SearchContainerViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    view.backgroundColor = .clear
+    view.backgroundColor = browserColors.favoritesAndSearchScreenBackground
 
     // Track the view's bottom edge (not the safe area) when the keyboard is down so the bottom-bar
     // input field's background extends to the bottom of the screen behind the home indicator.
@@ -241,6 +249,11 @@ class SearchContainerViewController: UIViewController {
 
   /// Drives the search results/suggestions for the current field text.
   private func updateSearchResults(for text: String) {
+    guard !isTor else {
+      searchController.setSearchQuery(query: text, showSearchSuggestions: false)
+      searchLoader.query = text.lowercased()
+      return
+    }
     if text.isEmpty {
       searchController.setSearchQuery(query: "", showSearchSuggestions: false)
       searchLoader.query = ""
@@ -320,6 +333,7 @@ extension SearchContainerViewController: SearchURLBarInputViewDelegate {
   }
 
   func searchURLBarInputViewDidTapVoiceSearch(_ inputView: SearchURLBarInputView) {
+    guard !isTor else { return }
     delegate?.searchContainerDidTapVoiceSearch(self)
   }
 }

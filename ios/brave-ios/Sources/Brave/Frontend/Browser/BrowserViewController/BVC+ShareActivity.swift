@@ -5,6 +5,7 @@
 
 import BraveCore
 import BraveNews
+import UIKit
 import Web
 
 extension BrowserViewController {
@@ -14,6 +15,14 @@ extension BrowserViewController {
     source: SharePopoverSource,
     onDismiss: (() -> Void)? = nil
   ) {
+    if let tab = tab ?? tabManager.selectedTab, tab.isTor {
+      let controller = ShareExtensionHelper(url: url, tab: tab).createActivityViewController()
+      controller.popoverPresentationController?.sourceView = source.view
+      controller.popoverPresentationController?.sourceRect = source.rect
+      controller.popoverPresentationController?.permittedArrowDirections = source.arrowDirection
+      present(controller, animated: true)
+      return
+    }
     presentShareActivity(
       url: url,
       tab: tab,

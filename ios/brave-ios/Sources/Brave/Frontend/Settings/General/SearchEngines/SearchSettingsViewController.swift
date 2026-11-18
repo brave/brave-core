@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveStrings
 import Shared
 import UIKit
 import Web
@@ -54,6 +55,7 @@ class SearchSettingsViewController: UITableViewController {
   enum CurrentEngineType: Int, CaseIterable {
     case standard
     case `private`
+    case tor
     case quick
     case searchSuggestions
     case recentSearches
@@ -186,6 +188,8 @@ class SearchSettingsViewController: UITableViewController {
       text = Strings.standardTabSearch
     case .privateMode:
       text = Strings.privateTabSearch
+    case .tor:
+      text = Strings.Tor.searchTab
     }
 
     let cell = UITableViewCell(style: .value1, reuseIdentifier: Constants.searchEngineRowIdentifier)
@@ -257,6 +261,9 @@ class SearchSettingsViewController: UITableViewController {
       case CurrentEngineType.private.rawValue:
         engine = searchEngines.defaultEngine(forType: .privateMode)
         cell = configureSearchEngineCell(type: .privateMode, engineName: engine?.displayName)
+      case CurrentEngineType.tor.rawValue:
+        engine = searchEngines.defaultEngine(forType: .tor)
+        cell = configureSearchEngineCell(type: .tor, engineName: engine?.displayName)
       case CurrentEngineType.quick.rawValue:
         cell = tableView.dequeueReusableCell(
           withIdentifier: Constants.quickSearchEngineRowIdentifier,
@@ -380,6 +387,12 @@ extension SearchSettingsViewController {
       navigationController?.pushViewController(
         configureSearchEnginePicker(.privateMode),
         animated: true
+      )
+    } else if indexPath.section == Section.current.rawValue
+      && indexPath.item == CurrentEngineType.tor.rawValue
+    {
+      navigationController?.pushViewController(
+        configureSearchEnginePicker(.tor), animated: true
       )
     } else if indexPath.section == Section.current.rawValue
       && indexPath.item == CurrentEngineType.quick.rawValue
