@@ -84,7 +84,7 @@ int OnHeadersReceived_AdBlockCspWork(
     (*override_response_headers)->RemoveHeader("Content-Security-Policy");
 
     // Use the request initiator as the first party origin for subframes and
-    // for main frames with an opaque origin.
+    // for main frames where `url::Origin::Create(request_url).opaque()`.
     // TODO(https://brave.dev/b/57775): Move first_party_origin to
     // BraveRequestInfo.
     const url::Origin request_origin = url::Origin::Create(ctx->request_url());
