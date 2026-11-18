@@ -64,8 +64,16 @@ class WorkspacesBubbleController {
   // Widget and its delegate. Destruction is deferred because the delegate
   // (e.g. a button handler that called Widget::Close()) may still be on the
   // stack when this runs.
+  //
+  // Ownership stays with this controller across that hop. Handing it to
+  // DeleteSoon() instead would let a delegate outlive the controller, and so
+  // outlive the browser window that its raw_ptr points at.
   void OnBubbleClosed(views::Widget::ClosedReason reason);
   void OnCreateDialogClosed(views::Widget::ClosedReason reason);
+
+  // Widget first, then the delegate it was pointing at.
+  void DestroyBubble();
+  void DestroyCreateDialog();
 
   // Captured when the bubble is shown and used to launch the workspace
   // dialog.

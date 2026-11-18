@@ -79,17 +79,29 @@ void WorkspacesBubbleController::ShowWorkspaceDialog(
 }
 
 void WorkspacesBubbleController::OnBubbleClosed(views::Widget::ClosedReason) {
-  // Destroy the Widget before its delegate, and defer both past the current
-  // stack (the delegate that requested the close may still be unwinding). The
-  // two DeleteSoon tasks run in posting order, so the Widget is freed first.
-  auto runner = base::SingleThreadTaskRunner::GetCurrentDefault();
-  runner->DeleteSoon(FROM_HERE, bubble_widget_.release());
-  runner->DeleteSoon(FROM_HERE, bubble_.release());
+  // Defer past the current stack: the delegate that requested the close may
+  // still be unwinding. Ownership is kept here rather than released to
+  // DeleteSoon so that a bubble closed while the window is being torn down
+  // cannot outlive the window its raw_ptr refers to.
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, base::BindOnce(&WorkspacesBubbleController::DestroyBubble,
+                                weak_factory_.GetWeakPtr()));
+}
+
+void WorkspacesBubbleController::DestroyBubble() {
+  bubble_widget_.reset();
+  bubble_.reset();
 }
 
 void WorkspacesBubbleController::OnCreateDialogClosed(
     views::Widget::ClosedReason) {
-  auto runner = base::SingleThreadTaskRunner::GetCurrentDefault();
-  runner->DeleteSoon(FROM_HERE, create_dialog_widget_.release());
-  runner->DeleteSoon(FROM_HERE, create_dialog_.release());
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE,
+      base::BindOnce(&WorkspacesBubbleController::DestroyCreateDialog,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void WorkspacesBubbleController::DestroyCreateDialog() {
+  create_dialog_widget_.reset();
+  create_dialog_.reset();
 }
