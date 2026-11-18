@@ -1032,9 +1032,10 @@ describe('NemotronStreamSession', () => {
       const blank = config.MODEL_CONFIGS.multilingual.NEMO_BLANK
       const emitted = [1, 100, 2, blank]
       let call = 0
-      mock.runDecoder.mockImplementation(async () =>
-        makeDecoderResult(emitted[call++], 13, 'multilingual'),
-      )
+      mock.runDecoder.mockImplementation(async () => {
+        const i = call++
+        return makeDecoderResult(emitted[i], 10 + i, 'multilingual')
+      })
 
       session.addAudio(new Float32Array(samplesForChunks(1)))
       await waitForIdle(session)
@@ -1044,7 +1045,7 @@ describe('NemotronStreamSession', () => {
       // The language-control token is retained as the predictor input.
       const feedsAfterTag = mock.runDecoder.mock.calls[2][0] as DecoderFeeds
       expect((feedsAfterTag.targets.data as Int32Array)[0]).toBe(100)
-      expect((feedsAfterTag.input_states_1.data as Float32Array)[0]).toBe(13)
+      expect((feedsAfterTag.input_states_1.data as Float32Array)[0]).toBe(11)
     })
 
     it('does not emit an interim result when only a language tag is decoded', async () => {

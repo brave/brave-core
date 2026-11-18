@@ -7,7 +7,7 @@ import { describe, expect, it } from '@jest/globals'
 
 import { findLanguageTagTokenIds, getNemotronLocale } from './utils'
 
-describe('getNemotronModelType', () => {
+describe('getNemotronLocale', () => {
   it.each(['en-US'])('picks the English model for %s', (lang: string) => {
     expect(getNemotronLocale(lang)).toEqual({
       model: 'english',

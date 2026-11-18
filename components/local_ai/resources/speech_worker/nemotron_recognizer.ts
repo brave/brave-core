@@ -140,9 +140,7 @@ export class NemotronStreamSession {
   private readonly onError: () => void
   private readonly model: OrtNemotronModel
   private readonly locale: config.NemotronLocale
-  private readonly modelConfig:
-    | typeof config.MODEL_CONFIGS.english
-    | typeof config.MODEL_CONFIGS.multilingual
+  private readonly modelConfig: config.NemotronModelConfig
 
   private readonly frontend: StreamingMelFrontend
 
@@ -168,7 +166,7 @@ export class NemotronStreamSession {
   // Hypothesis token IDs.
   private readonly hyp: number[] = []
 
-  // Token IDs belonging to lang tags, non-null value only for multi-lingual model
+  // Token IDs belonging to lang tags for multi-lingual model, empty for english-only model
   private readonly langTagTokenIds: Set<number>
 
   // Audio is accepted only while streaming. The final flush runs in finishing
@@ -192,10 +190,7 @@ export class NemotronStreamSession {
   ) {
     this.model = model
     this.locale = locale
-    this.modelConfig =
-      locale.model === 'english'
-        ? config.MODEL_CONFIGS.english
-        : config.MODEL_CONFIGS.multilingual
+    this.modelConfig = config.MODEL_CONFIGS[locale.model]
 
     this.langTagTokenIds = findLanguageTagTokenIds(this.model.tokens)
 
