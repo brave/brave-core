@@ -585,17 +585,19 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
 
   Profile* profile = Profile::FromBrowserContext(browser_context);
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
+  // Opaque first party origins have an empty URL, so they get the default
+  // settings.
+  const GURL first_party_url = ctx->first_party_origin_for_settings().GetURL();
   ctx->set_allow_brave_shields(
-      map ? brave_shields::IsBraveShieldsEnabled(map, ctx->tab_origin())
-          : true);
+      map ? brave_shields::IsBraveShieldsEnabled(map, first_party_url) : true);
   ctx->set_allow_ads(map &&
-                     brave_shields::GetAdControlType(map, ctx->tab_origin()) ==
+                     brave_shields::GetAdControlType(map, first_party_url) ==
                          brave_shields::ControlType::ALLOW);
   // Currently, "aggressive" mode is registered as a cosmetic filtering control
   // type, even though it can also affect network blocking.
   ctx->set_aggressive_blocking(
       map && brave_shields::GetCosmeticFilteringControlType(
-                 map, ctx->tab_origin()) == brave_shields::ControlType::BLOCK);
+                 map, first_party_url) == brave_shields::ControlType::BLOCK);
 
   // HACK: after we fix multiple creations of BraveRequestInfo we should
   // use only tab_origin. Since we recreate BraveRequestInfo during consequent
@@ -603,7 +605,7 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
   // flag, which is not what we want for determining referrers.
   ctx->set_allow_referrers(map && brave_shields::AreReferrersAllowed(
                                       map, ctx->redirect_source().is_empty()
-                                               ? ctx->tab_origin()
+                                               ? first_party_url
                                                : ctx->redirect_source()));
   ctx->set_upload_data(GetUploadData(request));
 

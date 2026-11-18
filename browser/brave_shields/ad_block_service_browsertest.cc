@@ -740,6 +740,34 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubFrameShieldsOff) {
   brave_shields::SetBraveShieldsEnabled(content_settings(), true, url);
 }
 
+// Frames in a browser-initiated data: page use the default Shields settings,
+// and not those of the frame that made the request.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, OpaqueTopFrameUsesDefaultSettings) {
+  UpdateAdBlockInstanceWithRules("adbanner.js");
+
+  const GURL frame_url =
+      embedded_test_server()->GetURL("b.com", "/simple.html");
+  brave_shields::SetBraveShieldsEnabled(content_settings(), false, frame_url);
+
+  NavigateToURL(GURL("data:text/html,<body></body>"));
+  content::RenderFrameHost* main_frame = web_contents()->GetPrimaryMainFrame();
+  ASSERT_TRUE(main_frame->GetLastCommittedOrigin().opaque());
+  ASSERT_TRUE(ExecJs(main_frame, content::JsReplace(R"(
+      new Promise(resolve => {
+        const frame = document.createElement('iframe');
+        frame.onload = () => resolve(true);
+        frame.src = $1;
+        document.body.appendChild(frame);
+      }))",
+                                                    frame_url)));
+  content::RenderFrameHost* frame = content::ChildFrameAt(main_frame, 0);
+  ASSERT_TRUE(frame);
+
+  EXPECT_EQ(false, EvalJs(frame, R"(
+      fetch('/adbanner.js').then(() => true, () => false))"));
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+}
+
 // Requests made by a service worker should be blocked as well.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ServiceWorkerRequest) {
   UpdateAdBlockInstanceWithRules("adbanner.js");
