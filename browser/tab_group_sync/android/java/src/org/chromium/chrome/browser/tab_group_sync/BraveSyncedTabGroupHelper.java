@@ -19,6 +19,7 @@ import org.chromium.components.tab_group_sync.LocalTabGroupId;
 import org.chromium.components.tab_group_sync.SavedTabGroup;
 import org.chromium.components.tab_group_sync.TabGroupSyncService;
 import org.chromium.components.tab_group_sync.TabGroupUiActionHandler;
+import org.chromium.components.tab_groups.TabGroupId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,7 +95,9 @@ public class BraveSyncedTabGroupHelper {
             // delete it outright, so leave it open.
             if (tabGroupSyncService.getGroup(new LocalTabGroupId(tabGroupId)) == null) continue;
 
-            var closeTabsBuilder = TabClosureParams.forCloseTabGroup(tabModel, tabGroupId);
+            var closeTabsBuilder =
+                    TabClosureParams.forCloseTabGroup(
+                            tabModel, TabGroupId.fromRawToken(tabGroupId));
             if (closeTabsBuilder == null) continue;
 
             tabModel.getTabRemover()
