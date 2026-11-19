@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Mock OnUseDarkerThemeChanged in MockPage.
+
+      Brave adds OnUseDarkerThemeChanged to the CustomizeChromePage mojom
+      interface, so the mock must implement it.
+    regex:
+      pattern: 'MOCK_METHOD(void, SetToolsSettings, (bool visible));'
+      replace: |-
+        MOCK_METHOD(void, SetToolsSettings, (bool visible));
+          MOCK_METHOD(void, OnUseDarkerThemeChanged, (bool use_darker_theme));
+    count: 1

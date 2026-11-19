@@ -1,0 +1,64 @@
+diff --git a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_page_handler.h b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_page_handler.h
+index f8bf8b96df08f6544c11080cf40ae69daa558da6..eb13eeee558a223108c8241326e5709f32a63cc4 100644
+--- a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_page_handler.h
++++ b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_page_handler.h
+@@ -65,8 +65,8 @@ enum class NtpChromeWebStoreOpen {
+   kMaxValue = kHomePage,
+ };
+ 
+-class CustomizeChromePageHandler
+-    : public side_panel::mojom::CustomizeChromePageHandler,
++class CustomizeChromePageHandler_Chromium
++    : public side_panel::mojom::CustomizeChromePageHandler_Chromium,
+       public NtpBackgroundServiceObserver,
+       public ui::NativeThemeObserver,
+       public ThemeServiceObserver,
+@@ -85,8 +85,8 @@ class CustomizeChromePageHandler
+       NtpCustomBackgroundService* ntp_custom_background_service,
+       Profile* profile);
+ 
+-  CustomizeChromePageHandler(
+-      mojo::PendingReceiver<side_panel::mojom::CustomizeChromePageHandler>
++  CustomizeChromePageHandler_Chromium(
++      mojo::PendingReceiver<side_panel::mojom::CustomizeChromePageHandler_Chromium>
+           pending_page_handler,
+       mojo::PendingRemote<side_panel::mojom::CustomizeChromePage> pending_page,
+       NtpCustomBackgroundService* ntp_custom_background_service,
+@@ -95,11 +95,11 @@ class CustomizeChromePageHandler
+       std::optional<base::RepeatingCallback<void(const GURL&)>>
+           open_url_callback = std::nullopt);
+ 
+-  CustomizeChromePageHandler(const CustomizeChromePageHandler&) = delete;
+-  CustomizeChromePageHandler& operator=(const CustomizeChromePageHandler&) =
++  CustomizeChromePageHandler_Chromium(const CustomizeChromePageHandler_Chromium&) = delete;
++  CustomizeChromePageHandler_Chromium& operator=(const CustomizeChromePageHandler_Chromium&) =
+       delete;
+ 
+-  ~CustomizeChromePageHandler() override;
++  ~CustomizeChromePageHandler_Chromium() override;
+ 
+   // Passes ScrollToSection calls to the CustomizeChromePage.
+   void ScrollToSection(CustomizeChromeSection section);
+@@ -157,6 +157,7 @@ class CustomizeChromePageHandler
+   void UpdateNtpManagedByName() override;
+ 
+  private:
++  friend class CustomizeChromePageHandler;
+   void MaybeDisableExtensionOverridingNtp();
+   void LogEvent(NTPLoggingEventType event);
+   void UpdatePrefAndLogEvent(const char* pref_name,
+@@ -248,12 +249,12 @@ class CustomizeChromePageHandler
+   base::CallbackListSubscription browser_window_changed_subscription_;
+ 
+   mojo::Remote<side_panel::mojom::CustomizeChromePage> page_;
+-  mojo::Receiver<side_panel::mojom::CustomizeChromePageHandler> receiver_;
++  mojo::Receiver<side_panel::mojom::CustomizeChromePageHandler_Chromium> receiver_;
+ 
+   // Callback used to open a URL.
+   base::RepeatingCallback<void(const GURL&)> open_url_callback_;
+ 
+-  base::WeakPtrFactory<CustomizeChromePageHandler> weak_ptr_factory_{this};
++  base::WeakPtrFactory<CustomizeChromePageHandler_Chromium> weak_ptr_factory_{this};
+ };
+ 
+ #endif  // CHROME_BROWSER_UI_WEBUI_SIDE_PANEL_CUSTOMIZE_CHROME_CUSTOMIZE_CHROME_PAGE_HANDLER_H_

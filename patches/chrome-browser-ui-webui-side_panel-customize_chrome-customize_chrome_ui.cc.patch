@@ -1,0 +1,49 @@
+diff --git a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_ui.cc b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_ui.cc
+index 8b03865cbcc59d35e8a5b5826d2f56bf1a52a798..43a13e2ee43e0a31d71facb7133cc372f3f23c03 100644
+--- a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_ui.cc
++++ b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_ui.cc
+@@ -112,7 +112,7 @@ CustomizeChromeUI::CustomizeChromeUI(content::WebUI* web_ui)
+       {"backButton", IDS_ACCNAME_BACK},
+       {"title", IDS_SIDE_PANEL_CUSTOMIZE_CHROME_TITLE},
+       // Header strings.
+-      {"appearanceHeader", IDS_NTP_CUSTOMIZE_APPEARANCE_LABEL},
++      {"appearanceHeader", IDS_BRAVE_NTP_CUSTOMIZE_APPEARANCE_LABEL},
+       {"cardsHeader", IDS_NTP_CUSTOMIZE_MENU_MODULES_LABEL},
+       {"categoriesHeader", IDS_NTP_CUSTOMIZE_THEMES_HEADER},
+       {"footerHeader", IDS_NTP_CUSTOMIZE_FOOTER_HEADER},
+@@ -278,6 +278,9 @@ CustomizeChromeUI::CustomizeChromeUI(content::WebUI* web_ui)
+       {"newBadgeLabel", IDS_NEW_BADGE},
+   };
+   source->AddLocalizedStrings(kLocalizedStrings);
++  source->AddLocalizedString("braveCustomizeMenuToolbarLabel",
++                             IDS_BRAVE_CUSTOMIZE_MENU_TOOLBAR_LABEL);
++  source->AddLocalizedStrings(webui::kCustomizeChromeStrings);
+ 
+   source->AddBoolean(
+       "modulesEnabled",
+@@ -347,10 +350,16 @@ CustomizeChromeUI::CustomizeChromeUI(content::WebUI* web_ui)
+ 
+   source->AddBoolean("footerEnabled",
+                      base::FeatureList::IsEnabled(ntp_features::kNtpFooter));
++#if defined(TOOLKIT_VIEWS)
++  source->AddBoolean("shouldShowDarkerThemeToggle",
++                     base::FeatureList::IsEnabled(
++                         darker_theme::features::kBraveDarkerTheme));
++#endif  // defined(TOOLKIT_VIEWS)
+ 
+   webui::SetupWebUIDataSource(
+       source, kSidePanelCustomizeChromeResources,
+       IDR_SIDE_PANEL_CUSTOMIZE_CHROME_CUSTOMIZE_CHROME_HTML);
++  source->AddBoolean("showDeviceThemeToggle", false);
+   source->AddResourcePaths(kSidePanelSharedResources);
+ 
+   content::URLDataSource::Add(profile_,
+@@ -463,7 +472,7 @@ void CustomizeChromeUI::BindInterface(
+ }
+ #endif
+ 
+-void CustomizeChromeUI::CreatePageHandler(
++void CustomizeChromeUI::CreatePageHandlerChromium(
+     mojo::PendingRemote<side_panel::mojom::CustomizeChromePage> pending_page,
+     mojo::PendingReceiver<side_panel::mojom::CustomizeChromePageHandler>
+         pending_page_handler) {

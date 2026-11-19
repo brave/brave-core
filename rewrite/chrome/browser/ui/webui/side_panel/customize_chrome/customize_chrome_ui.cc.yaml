@@ -1,0 +1,60 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Add Brave-specific strings to the WebUI data source.
+
+      Adds the Brave toolbar label and the customize chrome strings.
+    regex:
+      pattern: 'source->AddLocalizedStrings(kLocalizedStrings);'
+      replace: |-
+        source->AddLocalizedStrings(kLocalizedStrings);
+          source->AddLocalizedString("braveCustomizeMenuToolbarLabel",
+                                     IDS_BRAVE_CUSTOMIZE_MENU_TOOLBAR_LABEL);
+          source->AddLocalizedStrings(webui::kCustomizeChromeStrings);
+    count: 1
+
+  - description: |-
+      Use a Brave-specific label for the appearance header.
+    regex:
+      pattern: 'IDS_NTP_CUSTOMIZE_APPEARANCE_LABEL'
+      replace: 'IDS_BRAVE_NTP_CUSTOMIZE_APPEARANCE_LABEL'
+    count: 1
+
+  - description: |-
+      Add a boolean for the Darker Theme toggle to the WebUI data source.
+    regex:
+      pattern: 'base::FeatureList::IsEnabled(ntp_features::kNtpFooter));'
+      replace: |-
+        base::FeatureList::IsEnabled(ntp_features::kNtpFooter));
+        #if defined(TOOLKIT_VIEWS)
+          source->AddBoolean("shouldShowDarkerThemeToggle",
+                             base::FeatureList::IsEnabled(
+                                 darker_theme::features::kBraveDarkerTheme));
+        #endif  // defined(TOOLKIT_VIEWS)
+    count: 1
+
+  - description: |-
+      Never show the device theme toggle.
+
+      Brave does not support following the device theme here, so override the
+      value set earlier.
+    regex:
+      pattern: 'IDR_SIDE_PANEL_CUSTOMIZE_CHROME_CUSTOMIZE_CHROME_HTML);'
+      replace: |-
+        IDR_SIDE_PANEL_CUSTOMIZE_CHROME_CUSTOMIZE_CHROME_HTML);
+          source->AddBoolean("showDeviceThemeToggle", false);
+    count: 1
+
+  - description: |-
+      Rename the upstream CreatePageHandler so Brave can wrap it.
+
+      The Brave CreatePageHandler calls CreatePageHandlerChromium and then
+      hands the new page handler a reference to CustomizeChromeUI.
+    regex:
+      pattern: 'void CustomizeChromeUI::CreatePageHandler('
+      replace: 'void CustomizeChromeUI::CreatePageHandlerChromium('
+    count: 1

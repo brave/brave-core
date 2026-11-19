@@ -8,30 +8,14 @@
 
 #include "chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome.mojom.h"
 
-// Declares our own version of CustomizeChromePageHandler before replacing
-// Chromium's class name in order to avoid name conflicts.
-class CustomizeChromePageHandler;
-using BraveCustomizeChromePageHandler = CustomizeChromePageHandler;
-
+// The plaster rewrite renames every CustomizeChromePageHandler token in the
+// upstream header, including the mojom interface. Alias the renamed mojom
+// interface back to the real one.
 namespace side_panel::mojom {
 using CustomizeChromePageHandler_Chromium = CustomizeChromePageHandler;
 }  // namespace side_panel::mojom
 
-// In order to replace the Chromium version of CustomizeChromePageHandler with
-// our own version, changes Chromium version's name to
-// CustomizeChromePageHandler_Chromium
-#define CustomizeChromePageHandler CustomizeChromePageHandler_Chromium
-
-// Add friend declaration
-#define ScrollToSection                   \
-  ScrollToSection_Unused() {}             \
-  friend BraveCustomizeChromePageHandler; \
-  void ScrollToSection
-
 #include <chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_page_handler.h>  // IWYU pragma: export
-
-#undef ScrollToSection
-#undef CustomizeChromePageHandler
 
 class CustomizeChromeUI;
 

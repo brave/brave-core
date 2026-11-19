@@ -1,0 +1,41 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Add a close panel callback to CustomizeChromeUI.
+
+      The Brave CustomizeChromePageHandler closes the side panel through this
+      callback, which is set by the side panel owner.
+    regex:
+      pattern: 'void AttachedTabStateUpdated(const GURL& url);'
+      replace: |-
+        void AttachedTabStateUpdated(const GURL& url);
+          void SetClosePanelCallback(base::RepeatingClosure close_panel_callback);
+          base::RepeatingClosure close_panel_callback() const {
+            return close_panel_callback_;
+          }
+
+         private:
+          base::RepeatingClosure close_panel_callback_;
+
+         public:
+    count: 1
+
+  - description: |-
+      Rename the upstream CreatePageHandler so Brave can wrap it.
+
+      The Brave CreatePageHandler calls CreatePageHandlerChromium and then
+      hands the new page handler a reference to CustomizeChromeUI.
+    regex:
+      pattern: 'void CreatePageHandler('
+      replace: |-
+        void CreatePageHandlerChromium(
+              mojo::PendingRemote<side_panel::mojom::CustomizeChromePage>
+                  pending_page,
+              mojo::PendingReceiver<side_panel::mojom::CustomizeChromePageHandler>
+                  pending_page_handler);
+          void CreatePageHandler(
+    count: 1

@@ -1,0 +1,32 @@
+diff --git a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_ui.h b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_ui.h
+index abe1e4c3bc7ca0419d11799a791aff00f4cbae62..8a6b884835246e0eeca1fe552a7c6406b55b9e90 100644
+--- a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_ui.h
++++ b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_ui.h
+@@ -87,6 +87,15 @@ class CustomizeChromeUI
+ 
+   // Passthrough that calls the CustomizeChromePage's AttachedTabStateUpdated.
+   void AttachedTabStateUpdated(const GURL& url);
++  void SetClosePanelCallback(base::RepeatingClosure close_panel_callback);
++  base::RepeatingClosure close_panel_callback() const {
++    return close_panel_callback_;
++  }
++
++ private:
++  base::RepeatingClosure close_panel_callback_;
++
++ public:
+ 
+   // Passthrough that calls to CustomizeChromePage's UpdateThemeEditable.
+   void UpdateThemeEditable(bool is_theme_editable);
+@@ -130,6 +139,11 @@ class CustomizeChromeUI
+ 
+  private:
+   // side_panel::mojom::CustomizeChromePageHandlerFactory
++  void CreatePageHandlerChromium(
++      mojo::PendingRemote<side_panel::mojom::CustomizeChromePage>
++          pending_page,
++      mojo::PendingReceiver<side_panel::mojom::CustomizeChromePageHandler>
++          pending_page_handler);
+   void CreatePageHandler(
+       mojo::PendingRemote<side_panel::mojom::CustomizeChromePage> pending_page,
+       mojo::PendingReceiver<side_panel::mojom::CustomizeChromePageHandler>

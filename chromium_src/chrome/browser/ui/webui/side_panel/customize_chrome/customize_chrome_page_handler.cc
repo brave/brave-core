@@ -11,11 +11,7 @@
 #include "brave/browser/ui/darker_theme/pref_names.h"
 #endif  // defined(TOOLKIT_VIEWS)
 
-#define CustomizeChromePageHandler CustomizeChromePageHandler_Chromium
-
 #include <chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_page_handler.cc>
-
-#undef CustomizeChromePageHandler
 
 CustomizeChromePageHandler::CustomizeChromePageHandler(
     mojo::PendingReceiver<side_panel::mojom::CustomizeChromePageHandler>

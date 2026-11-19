@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_page_handler_unittest.cc b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_page_handler_unittest.cc
+index 70f2abf98ea43fb45515eb0ead0000f9ef627bf8..80bb2354093c81758eacefb5583551e475ea0630 100644
+--- a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_page_handler_unittest.cc
++++ b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_page_handler_unittest.cc
+@@ -184,6 +184,7 @@ class MockPage : public side_panel::mojom::CustomizeChromePage {
+               NtpManagedByNameUpdated,
+               (const std::string&, const std::string&));
+   MOCK_METHOD(void, SetToolsSettings, (bool visible));
++  MOCK_METHOD(void, OnUseDarkerThemeChanged, (bool use_darker_theme));
+   MOCK_METHOD(
+       void,
+       SetFooterSettings,
