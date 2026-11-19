@@ -28,7 +28,7 @@
 #include "sql/database.h"
 #include "sql/init_status.h"
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
 inline constexpr base::FilePath::CharType kHistoryEmbeddingsName[] =
     FILE_PATH_LITERAL("HistoryEmbeddings");
@@ -162,6 +162,6 @@ class SqlDatabase : public VectorDatabase {
   base::WeakPtrFactory<SqlDatabase> weak_ptr_factory_;
 };
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings
 
 #endif  // BRAVE_COMPONENTS_HISTORY_EMBEDDINGS_CORE_SQL_DATABASE_H_

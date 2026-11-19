@@ -636,8 +636,7 @@ bool TabManagementTool::CanReadPageContent() const {
   // The embeddings service is original-profile only, so an off-the-record
   // profile would otherwise attach the regular profile's page text.
   if (profile_->IsOffTheRecord() ||
-      !brave_history_embeddings::IsHistoryEmbeddingsEnabledForProfile(
-          profile_)) {
+      !history_embeddings::IsHistoryEmbeddingsEnabledForProfile(profile_)) {
     return false;
   }
   if (tab_passages_fetcher_for_testing_) {
@@ -645,8 +644,8 @@ bool TabManagementTool::CanReadPageContent() const {
   }
   return HistoryServiceFactory::GetForProfile(
              profile_, ServiceAccessType::EXPLICIT_ACCESS) &&
-         brave_history_embeddings::HistoryEmbeddingsServiceFactory::
-             GetForProfile(profile_);
+         history_embeddings::HistoryEmbeddingsServiceFactory::GetForProfile(
+             profile_);
 #else
   return false;
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
@@ -886,12 +885,12 @@ void TabManagementTool::HandleListTabs(UseToolCallback callback) {
       if (tab_passages_fetcher_for_testing_) {
         tab_passages_fetcher_for_testing_.Run(urls, std::move(on_ready));
       } else {
-        brave_history_embeddings::GetPassagesForUrls(
+        history_embeddings::GetPassagesForUrls(
             HistoryServiceFactory::GetForProfile(
                 profile_, ServiceAccessType::EXPLICIT_ACCESS),
-            brave_history_embeddings::HistoryEmbeddingsServiceFactory::
-                GetForProfile(profile_)
-                    ->AsWeakPtr(),
+            history_embeddings::HistoryEmbeddingsServiceFactory::GetForProfile(
+                profile_)
+                ->AsWeakPtr(),
             urls, kMaxPassagesPerTab, kMaxPassageBytes, std::move(on_ready),
             &passages_task_tracker_);
       }

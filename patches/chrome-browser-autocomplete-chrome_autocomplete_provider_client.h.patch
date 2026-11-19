@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/autocomplete/chrome_autocomplete_provider_client.h b/chrome/browser/autocomplete/chrome_autocomplete_provider_client.h
-index b62bb4a2d7cb8e9be9f5d7f9836bfb3703ed503b..48e7c95cadb83ff4c02990656d17ac330657dedb 100644
+index b62bb4a2d7cb8e9be9f5d7f9836bfb3703ed503b..41bdc75463b1371f8ca33582651e6bbd3e4032fb 100644
 --- a/chrome/browser/autocomplete/chrome_autocomplete_provider_client.h
 +++ b/chrome/browser/autocomplete/chrome_autocomplete_provider_client.h
 @@ -171,6 +171,9 @@ class ChromeAutocompleteProviderClient : public AutocompleteProviderClient {
      storage_partition_ = storage_partition;
    }
  
-+  brave_history_embeddings::HistoryEmbeddingsSearch*
++  history_embeddings::HistoryEmbeddingsSearch*
 +  GetBraveHistoryEmbeddingsSearch() override;
 +
   private:

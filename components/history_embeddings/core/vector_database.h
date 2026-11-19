@@ -21,7 +21,7 @@
 #include "components/passage_embeddings/core/passage_embeddings_types.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
 // Hash function used for query filtering.
 uint32_t HashString(std::string_view str);
@@ -250,6 +250,6 @@ std::vector<std::string> SplitQueryToTerms(
 void EraseNonAsciiCharacters(std::string& passage);
 void EraseNonAsciiCharacters(std::vector<std::string>& passages);
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings
 
 #endif  // BRAVE_COMPONENTS_HISTORY_EMBEDDINGS_CORE_VECTOR_DATABASE_H_

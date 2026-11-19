@@ -1109,10 +1109,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         local_ai::mojom::SpeechRecognitionFactoryHost,
         local_ai::UntrustedOnDeviceSpeechRecognitionWorkerUI>(map);
   }
-  map->Add<brave_history_embeddings::mojom::PageHandlerFactory>(
-      base::BindRepeating(
-          &brave_history_embeddings::HistoryEmbeddingsPageHandlerFactory::
-              BindForFrame));
+  map->Add<history_embeddings::mojom::PageHandlerFactory>(base::BindRepeating(
+      &history_embeddings::HistoryEmbeddingsPageHandlerFactory::BindForFrame));
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   map->Add<brave_vpn::mojom::ServiceHandler>(

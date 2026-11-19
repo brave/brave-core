@@ -41,7 +41,7 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
 using passage_embeddings::ComputeEmbeddingsStatus;
 using passage_embeddings::Embedding;
@@ -440,10 +440,9 @@ TEST_F(HistoryEmbeddingsServiceTest, CountWords) {
 }
 
 TEST_F(HistoryEmbeddingsServiceTest, StaticHashVerificationTest) {
-  EXPECT_EQ(brave_history_embeddings::HashString("special"), 3962775614u);
-  EXPECT_EQ(brave_history_embeddings::HashString("something something"),
-            4220142007u);
-  EXPECT_EQ(brave_history_embeddings::HashString("hello world"), 430397466u);
+  EXPECT_EQ(history_embeddings::HashString("special"), 3962775614u);
+  EXPECT_EQ(history_embeddings::HashString("something something"), 4220142007u);
+  EXPECT_EQ(history_embeddings::HashString("hello world"), 430397466u);
 }
 
 TEST_F(HistoryEmbeddingsServiceTest, SearchDoesNotWordMatchBoostLongQueries) {
@@ -897,4 +896,4 @@ TEST_F(HistoryEmbeddingsServiceTest, RebuildAbsentEmbeddings) {
   ASSERT_EQ(url_data.passage_embeddings[3]->embedding.GetData().size(), 3u);
 }
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings

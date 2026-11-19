@@ -8,5 +8,5 @@ substitutions:
     add_to_public:
       class_name: ChromeAutocompleteProviderClient
       code: |-
-        brave_history_embeddings::HistoryEmbeddingsSearch*
+        history_embeddings::HistoryEmbeddingsSearch*
         GetBraveHistoryEmbeddingsSearch() override;

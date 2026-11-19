@@ -78,7 +78,7 @@ void BrowserToolProvider::CreateTools(content::BrowserContext* browser_context,
     code_execution_tool_ = std::make_unique<CodeExecutionTool>(browser_context);
   }
 #if BUILDFLAG(ENABLE_LOCAL_AI)
-  if (brave_history_embeddings::IsHistoryEmbeddingsEnabledForProfile(
+  if (history_embeddings::IsHistoryEmbeddingsEnabledForProfile(
           Profile::FromBrowserContext(browser_context))) {
     history_search_tool_ = std::make_unique<HistorySearchTool>(browser_context);
   }

@@ -12,7 +12,7 @@ syntax = "proto3";
 
 option optimize_for = LITE_RUNTIME;
 
-package brave_history_embeddings.proto;
+package history_embeddings.proto;
 
 // The packed value that encapsulates all the passages.
 message PassagesValue {

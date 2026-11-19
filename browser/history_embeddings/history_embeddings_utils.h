@@ -8,7 +8,7 @@
 
 class Profile;
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
 // Whether semantic history search can run at all: the Local AI master switch
 // is on and `kHistoryEmbeddings` is enabled. Does not check the per-profile
@@ -20,6 +20,6 @@ bool IsHistoryEmbeddingsFeatureEnabled();
 // the live setting; the services are built from it once at profile setup.
 bool IsHistoryEmbeddingsEnabledForProfile(Profile* profile);
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings
 
 #endif  // BRAVE_BROWSER_HISTORY_EMBEDDINGS_HISTORY_EMBEDDINGS_UTILS_H_

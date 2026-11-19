@@ -1206,7 +1206,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
 #if BUILDFLAG(ENABLE_LOCAL_AI)
   html_source->AddBoolean(
       "isHistoryEmbeddingsFeatureEnabled",
-      brave_history_embeddings::IsHistoryEmbeddingsFeatureEnabled());
+      history_embeddings::IsHistoryEmbeddingsFeatureEnabled());
 #else
   html_source->AddBoolean("isHistoryEmbeddingsFeatureEnabled", false);
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
@@ -1237,14 +1237,13 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
 
   html_source->AddBoolean(
       "isSemanticHistorySearchAvailable",
-      brave_history_embeddings::IsHistoryEmbeddingsFeatureEnabled());
+      history_embeddings::IsHistoryEmbeddingsFeatureEnabled());
 
   // The value the embedding services were built with, so the page can tell
   // whether the toggle is waiting on a relaunch.
   html_source->AddBoolean(
       "semanticHistorySearchEnabledAtStartup",
-      brave_history_embeddings::BraveHistoryEmbeddingsStatus::GetForProfile(
-          profile)
+      history_embeddings::BraveHistoryEmbeddingsStatus::GetForProfile(profile)
           ->IsEnabled());
 
   html_source->AddString(

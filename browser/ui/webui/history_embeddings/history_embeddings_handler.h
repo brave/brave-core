@@ -24,39 +24,38 @@
 
 class Profile;
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
-class HistoryEmbeddingsHandler
-    : public brave_history_embeddings::mojom::PageHandler {
+class HistoryEmbeddingsHandler : public history_embeddings::mojom::PageHandler {
  public:
   HistoryEmbeddingsHandler(
-      mojo::PendingReceiver<brave_history_embeddings::mojom::PageHandler>
+      mojo::PendingReceiver<history_embeddings::mojom::PageHandler>
           pending_page_handler,
-      mojo::PendingRemote<brave_history_embeddings::mojom::Page> pending_page,
+      mojo::PendingRemote<history_embeddings::mojom::Page> pending_page,
       base::WeakPtr<Profile> profile);
   HistoryEmbeddingsHandler(const HistoryEmbeddingsHandler&) = delete;
   HistoryEmbeddingsHandler& operator=(const HistoryEmbeddingsHandler&) = delete;
   ~HistoryEmbeddingsHandler() override;
 
-  // brave_history_embeddings::mojom::PageHandler:
-  void Search(brave_history_embeddings::mojom::SearchQueryPtr query) override;
+  // history_embeddings::mojom::PageHandler:
+  void Search(history_embeddings::mojom::SearchQueryPtr query) override;
 
  private:
   // Builds mojom result and publishes it to the browser page UI.
   void PublishResultToPage(
-      const brave_history_embeddings::SearchResult& native_search_result);
+      const history_embeddings::SearchResult& native_search_result);
 
   // Callback for querying `HistoryEmbeddingsService::Search()`.
-  void OnReceivedSearchResult(brave_history_embeddings::SearchResult result);
+  void OnReceivedSearchResult(history_embeddings::SearchResult result);
 
-  mojo::Receiver<brave_history_embeddings::mojom::PageHandler> page_handler_;
-  mojo::Remote<brave_history_embeddings::mojom::Page> page_;
+  mojo::Receiver<history_embeddings::mojom::PageHandler> page_handler_;
+  mojo::Remote<history_embeddings::mojom::Page> page_;
 
   // The profile is used to get the HistoryEmbeddingsService to fulfill
   // search requests.
   const base::WeakPtr<Profile> profile_;
 
-  brave_history_embeddings::SearchResult last_result_;
+  history_embeddings::SearchResult last_result_;
 
   base::WeakPtrFactory<HistoryEmbeddingsHandler> weak_ptr_factory_{this};
 };
@@ -95,6 +94,6 @@ class HistoryEmbeddingsPageHandlerFactory
   std::unique_ptr<HistoryEmbeddingsHandler> handler_;
 };
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_HISTORY_EMBEDDINGS_HISTORY_EMBEDDINGS_HANDLER_H_

@@ -14,7 +14,7 @@
 #include "content/public/test/browser_test.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
 class HistoryEmbeddingsServiceFactoryBrowserTest : public InProcessBrowserTest {
  public:
@@ -42,4 +42,4 @@ IN_PROC_BROWSER_TEST_F(HistoryEmbeddingsServiceFactoryBrowserTest,
   EXPECT_TRUE(HistoryEmbeddingsServiceFactory::GetForProfile(profile));
 }
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings

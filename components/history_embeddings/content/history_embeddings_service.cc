@@ -42,7 +42,7 @@
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 #include "url/gurl.h"
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
 namespace {
 
@@ -713,4 +713,4 @@ bool HistoryEmbeddingsService::QueryIsFiltered(
   return false;
 }
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings

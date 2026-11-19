@@ -14,7 +14,7 @@
 #include "base/metrics/field_trial_params.h"
 #include "build/build_config.h"
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
 namespace {
 
@@ -38,7 +38,7 @@ const base::FeatureParam<int> kSearchPassageMinimumWordCount(
     "SearchPassageMinimumWordCount",
     5);
 
-// See comment at `brave_history_embeddings::GetScoreThreshold()`.
+// See comment at `history_embeddings::GetScoreThreshold()`.
 const base::FeatureParam<double> kSearchScoreThreshold(&kHistoryEmbeddings,
                                                        "SearchScoreThreshold",
                                                        -1);
@@ -167,4 +167,4 @@ void SetFeatureParametersForTesting(FeatureParameters parameters) {
   GetFeatureParametersMutable() = parameters;
 }
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings

@@ -21,8 +21,7 @@ namespace optimization_guide::features {
 
 bool IsOptimizationHintsEnabled_Brave() {
 #if BUILDFLAG(ENABLE_LOCAL_AI)
-  if (base::FeatureList::IsEnabled(
-          brave_history_embeddings::kHistoryEmbeddings)) {
+  if (base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings)) {
     return true;
   }
 #endif

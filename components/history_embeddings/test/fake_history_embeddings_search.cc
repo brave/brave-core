@@ -20,16 +20,16 @@ FakeHistoryEmbeddingsSearch::FakeHistoryEmbeddingsSearch() = default;
 FakeHistoryEmbeddingsSearch::~FakeHistoryEmbeddingsSearch() = default;
 
 // static
-brave_history_embeddings::ScoredUrlRow FakeHistoryEmbeddingsSearch::MakeRow(
+history_embeddings::ScoredUrlRow FakeHistoryEmbeddingsSearch::MakeRow(
     history::URLID url_id,
     const GURL& url,
     const std::u16string& title,
     base::Time last_visit,
     float score) {
-  brave_history_embeddings::ScoredUrl scored_url(url_id, /*visit_id=*/1,
-                                                 base::Time::Now(), score,
-                                                 /*word_match_score=*/0.0f);
-  brave_history_embeddings::ScoredUrlRow row(std::move(scored_url));
+  history_embeddings::ScoredUrl scored_url(url_id, /*visit_id=*/1,
+                                           base::Time::Now(), score,
+                                           /*word_match_score=*/0.0f);
+  history_embeddings::ScoredUrlRow row(std::move(scored_url));
   row.row.set_url(url);
   row.row.set_title(title);
   row.row.set_last_visit(last_visit);
@@ -37,29 +37,29 @@ brave_history_embeddings::ScoredUrlRow FakeHistoryEmbeddingsSearch::MakeRow(
 }
 
 void FakeHistoryEmbeddingsSearch::SetScoredRows(
-    std::vector<brave_history_embeddings::ScoredUrlRow> rows) {
+    std::vector<history_embeddings::ScoredUrlRow> rows) {
   scored_rows_ = std::move(rows);
 }
 
-brave_history_embeddings::SearchResult FakeHistoryEmbeddingsSearch::Search(
-    brave_history_embeddings::SearchResult* previous_search_result,
+history_embeddings::SearchResult FakeHistoryEmbeddingsSearch::Search(
+    history_embeddings::SearchResult* previous_search_result,
     std::string query,
     std::optional<base::Time> time_range_start,
     size_t count,
     std::vector<history::URLID> url_id_filter,
-    brave_history_embeddings::SearchResultCallback callback) {
+    history_embeddings::SearchResultCallback callback) {
   last_query_ = query;
   last_time_range_start_ = time_range_start;
   last_count_ = count;
   last_url_id_filter_ = url_id_filter;
 
-  brave_history_embeddings::SearchResult result;
+  history_embeddings::SearchResult result;
   result.query = std::move(query);
   result.scored_url_rows = scored_rows_;
 
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(callback, std::move(result)));
-  return brave_history_embeddings::SearchResult();
+  return history_embeddings::SearchResult();
 }
 
 }  // namespace ai_chat

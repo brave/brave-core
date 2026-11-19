@@ -5,7 +5,7 @@
 
 #include <components/omnibox/browser/autocomplete_provider_client.cc>
 
-brave_history_embeddings::HistoryEmbeddingsSearch*
+history_embeddings::HistoryEmbeddingsSearch*
 AutocompleteProviderClient::GetBraveHistoryEmbeddingsSearch() {
   return nullptr;
 }

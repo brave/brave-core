@@ -54,29 +54,29 @@ AutocompleteInput CreateAutocompleteInput(const std::u16string& input) {
   return {input, metrics::OmniboxEventProto::OTHER, TestSchemeClassifier()};
 }
 
-brave_history_embeddings::ScoredUrlRow CreateScoredUrlRow(
+history_embeddings::ScoredUrlRow CreateScoredUrlRow(
     float score,
     const std::string& url,
     const std::u16string& title) {
-  brave_history_embeddings::ScoredUrlRow scored_url_row(
-      brave_history_embeddings::ScoredUrl(0, 0, {}, score, 0));
+  history_embeddings::ScoredUrlRow scored_url_row(
+      history_embeddings::ScoredUrl(0, 0, {}, score, 0));
   scored_url_row.row = history::URLRow{GURL{url}};
   scored_url_row.row.set_title(title);
   scored_url_row.url_data.passages.add_passages("passage");
   std::vector<float> data(768, 0.0f);
   data[0] = 1.0f;
   scored_url_row.url_data.passage_embeddings.emplace_back(
-      brave_history_embeddings::PassageEmbedding(
+      history_embeddings::PassageEmbedding(
           passage_embeddings::Embedding(std::move(data)), 1));
 
   scored_url_row.scores.push_back(score);
   return scored_url_row;
 }
 
-brave_history_embeddings::SearchResult CreateSearchResult(
+history_embeddings::SearchResult CreateSearchResult(
     const std::string& query,
     const std::u16string& title) {
-  brave_history_embeddings::SearchResult result;
+  history_embeddings::SearchResult result;
   result.query = query;
   result.scored_url_rows = {
       CreateScoredUrlRow(.5, "https://url.com/", title),
@@ -93,16 +93,16 @@ TemplateURL CreateTemplateUrl() {
 }
 
 class MockHistoryEmbeddingsSearch
-    : public brave_history_embeddings::HistoryEmbeddingsSearch {
+    : public history_embeddings::HistoryEmbeddingsSearch {
  public:
-  MOCK_METHOD(brave_history_embeddings::SearchResult,
+  MOCK_METHOD(history_embeddings::SearchResult,
               Search,
-              (brave_history_embeddings::SearchResult * previous_search_result,
+              (history_embeddings::SearchResult * previous_search_result,
                std::string query,
                std::optional<base::Time> time_range_start,
                size_t count,
                std::vector<history::URLID> url_id_filter,
-               brave_history_embeddings::SearchResultCallback callback),
+               history_embeddings::SearchResultCallback callback),
               (override));
 };
 
@@ -111,8 +111,8 @@ class MockHistoryEmbeddingsSearch
 class HistoryEmbeddingsAutocompleteProviderClient
     : public BraveFakeAutocompleteProviderClient {
  public:
-  brave_history_embeddings::HistoryEmbeddingsSearch*
-  GetBraveHistoryEmbeddingsSearch() override {
+  history_embeddings::HistoryEmbeddingsSearch* GetBraveHistoryEmbeddingsSearch()
+      override {
     return search_.get();
   }
 
@@ -125,14 +125,13 @@ class HistoryEmbeddingsAutocompleteProviderClient
   }
 
   void set_search(
-      std::unique_ptr<brave_history_embeddings::HistoryEmbeddingsSearch>
-          search) {
+      std::unique_ptr<history_embeddings::HistoryEmbeddingsSearch> search) {
     search_ = std::move(search);
   }
 
  private:
   std::unique_ptr<history::HistoryService> history_service_;
-  std::unique_ptr<brave_history_embeddings::HistoryEmbeddingsSearch> search_;
+  std::unique_ptr<history_embeddings::HistoryEmbeddingsSearch> search_;
 };
 
 }  // namespace
@@ -177,18 +176,18 @@ class BraveHistoryEmbeddingsProviderTest : public testing::Test,
             Search(testing::_, testing::_, testing::_, testing::_, testing::_,
                    testing::_))
         .WillByDefault(
-            [&](brave_history_embeddings::SearchResult* previous_search_result,
+            [&](history_embeddings::SearchResult* previous_search_result,
                 std::string query, std::optional<base::Time> time_range_start,
                 size_t count, std::vector<history::URLID> url_id_filter,
-                brave_history_embeddings::SearchResultCallback callback) {
+                history_embeddings::SearchResultCallback callback) {
               search_callbacks_.push_back(base::BindOnce(
-                  [](brave_history_embeddings::SearchResultCallback callback,
+                  [](history_embeddings::SearchResultCallback callback,
                      std::string query, std::u16string response) {
                     std::move(callback).Run(
                         CreateSearchResult(query, response));
                   },
                   std::move(callback)));
-              return brave_history_embeddings::SearchResult();
+              return history_embeddings::SearchResult();
             });
   }
 
@@ -196,8 +195,8 @@ class BraveHistoryEmbeddingsProviderTest : public testing::Test,
     history_embeddings_search_ = nullptr;
     history_embeddings_provider_ = nullptr;
     client_.reset();
-    brave_history_embeddings::SetFeatureParametersForTesting(
-        brave_history_embeddings::FeatureParameters(/*load_finch=*/false));
+    history_embeddings::SetFeatureParametersForTesting(
+        history_embeddings::FeatureParameters(/*load_finch=*/false));
     testing::Test::TearDown();
   }
 
@@ -209,10 +208,9 @@ class BraveHistoryEmbeddingsProviderTest : public testing::Test,
 
  protected:
   void SetSearchQueryMinimumWordCount(size_t count) {
-    auto feature_parameters = brave_history_embeddings::GetFeatureParameters();
+    auto feature_parameters = history_embeddings::GetFeatureParameters();
     feature_parameters.search_query_minimum_word_count = count;
-    brave_history_embeddings::SetFeatureParametersForTesting(
-        feature_parameters);
+    history_embeddings::SetFeatureParametersForTesting(feature_parameters);
   }
 
   base::ScopedTempDir history_dir_;
@@ -445,7 +443,7 @@ TEST_F(BraveHistoryEmbeddingsProviderTest, DeleteMatch) {
 
 TEST_F(BraveHistoryEmbeddingsProviderTest,
        OnReceivedSearchResult_CreatesAutocompleteMatches) {
-  brave_history_embeddings::SearchResult result;
+  history_embeddings::SearchResult result;
   result.query = "query";
   result.scored_url_rows = {
       CreateScoredUrlRow(.5, "https://url.com/", u"title"),
@@ -480,7 +478,7 @@ TEST_F(BraveHistoryEmbeddingsProviderTest,
   TemplateURL template_url = CreateTemplateUrl();
   history_embeddings_provider_->starter_pack_engine_ = &template_url;
 
-  brave_history_embeddings::SearchResult result;
+  history_embeddings::SearchResult result;
   result.query = "query";
   result.scored_url_rows = {
       CreateScoredUrlRow(.5, "https://url.com/", u"title"),

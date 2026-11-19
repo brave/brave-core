@@ -48,7 +48,7 @@ void BraveHistoryEmbeddingsProvider::Start(const AutocompleteInput& input,
     return;
   }
 
-  brave_history_embeddings::HistoryEmbeddingsSearch* search =
+  history_embeddings::HistoryEmbeddingsSearch* search =
       client()->GetBraveHistoryEmbeddingsSearch();
   if (!search) {
     return;
@@ -63,8 +63,8 @@ void BraveHistoryEmbeddingsProvider::Start(const AutocompleteInput& input,
   starter_pack_engine_ = starter_pack_engine;
 
   int num_terms =
-      brave_history_embeddings::CountWords(base::UTF16ToUTF8(input_.text()));
-  if (num_terms < brave_history_embeddings::GetFeatureParameters()
+      history_embeddings::CountWords(base::UTF16ToUTF8(input_.text()));
+  if (num_terms < history_embeddings::GetFeatureParameters()
                       .search_query_minimum_word_count) {
     return;
   }
@@ -91,7 +91,7 @@ void BraveHistoryEmbeddingsProvider::Stop(AutocompleteStopReason stop_reason) {
 }
 
 void BraveHistoryEmbeddingsProvider::OnReceivedSearchResult(
-    brave_history_embeddings::SearchResult search_result) {
+    history_embeddings::SearchResult search_result) {
   // Check `done_` in case the stop timer fired or the user closed the omnibox
   // before `Search()` completed. Check `last_search_input_` in case this is the
   // result for an earlier `Search()` request; there's usually 2 requests
@@ -104,7 +104,7 @@ void BraveHistoryEmbeddingsProvider::OnReceivedSearchResult(
   // request. Clear `matches_``to avoid aggregating duplicates.
   matches_.clear();
 
-  for (const brave_history_embeddings::ScoredUrlRow& scored_url_row :
+  for (const history_embeddings::ScoredUrlRow& scored_url_row :
        search_result.scored_url_rows) {
     matches_.push_back(CreateMatch(scored_url_row));
   }
@@ -114,7 +114,7 @@ void BraveHistoryEmbeddingsProvider::OnReceivedSearchResult(
 }
 
 AutocompleteMatch BraveHistoryEmbeddingsProvider::CreateMatch(
-    const brave_history_embeddings::ScoredUrlRow& scored_url_row) {
+    const history_embeddings::ScoredUrlRow& scored_url_row) {
   AutocompleteMatch match(
       this, std::min(scored_url_row.scored_url.score, 1.f) * kMaxRelevance,
       client()->AllowDeletingBrowserHistory(),

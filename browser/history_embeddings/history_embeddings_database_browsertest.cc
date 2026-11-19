@@ -17,7 +17,7 @@
 #include "content/public/test/test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
 namespace {
 
@@ -58,4 +58,4 @@ IN_PROC_BROWSER_TEST_F(HistoryEmbeddingsDatabaseBrowserTest,
   EXPECT_EQ(kMarker, contents);
 }
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings

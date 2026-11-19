@@ -15,7 +15,7 @@
 
 #include "base/check.h"
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
 size_t CountWords(const std::string& s) {
   if (s.empty()) {
@@ -103,4 +103,4 @@ bool SearchResult::IsContinuationOf(const SearchResult& other) {
   return session_id == other.session_id && query == other.query;
 }
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings

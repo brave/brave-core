@@ -25,7 +25,7 @@
 #include "components/keyed_service/core/service_access_type.h"
 #include "components/passage_embeddings/core/passage_embeddings_service_controller.h"
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
 namespace {
 
@@ -110,13 +110,13 @@ HistoryEmbeddingsServiceFactory::BuildServiceInstanceForBrowserContext(
       passage_embeddings_service_controller->GetEmbedder());
 }
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings
 
 // Forward declared by the chromium_src override of
 // chrome_autocomplete_provider_client.cc, which hands the service to the
 // omnibox provider.
-brave_history_embeddings::HistoryEmbeddingsSearch*
-BraveGetHistoryEmbeddingsSearch(Profile* profile) {
-  return brave_history_embeddings::HistoryEmbeddingsServiceFactory::
-      GetForProfile(profile);
+history_embeddings::HistoryEmbeddingsSearch* BraveGetHistoryEmbeddingsSearch(
+    Profile* profile) {
+  return history_embeddings::HistoryEmbeddingsServiceFactory::GetForProfile(
+      profile);
 }

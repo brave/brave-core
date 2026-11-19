@@ -42,20 +42,20 @@
 #include "brave/components/local_ai/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
-namespace brave_history_embeddings {
+namespace history_embeddings {
 class HistoryEmbeddingsSearch;
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings
 
 // Implemented in //brave/browser/history_embeddings:service. Returns the
 // profile's HistoryEmbeddingsService, or null when it was not built. Forward
 // declared to keep this override free of a compile-time dependency on //brave.
-brave_history_embeddings::HistoryEmbeddingsSearch*
-BraveGetHistoryEmbeddingsSearch(Profile* profile);
+history_embeddings::HistoryEmbeddingsSearch* BraveGetHistoryEmbeddingsSearch(
+    Profile* profile);
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 #include <chrome/browser/autocomplete/chrome_autocomplete_provider_client.cc>
 
-brave_history_embeddings::HistoryEmbeddingsSearch*
+history_embeddings::HistoryEmbeddingsSearch*
 ChromeAutocompleteProviderClient::GetBraveHistoryEmbeddingsSearch() {
 #if BUILDFLAG(ENABLE_LOCAL_AI)
   return BraveGetHistoryEmbeddingsSearch(profile_);

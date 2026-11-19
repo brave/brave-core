@@ -18,8 +18,7 @@ namespace page_content_annotations::features {
 
 inline bool ShouldEnablePageContentAnnotations_Brave() {
 #if BUILDFLAG(ENABLE_LOCAL_AI)
-  return base::FeatureList::IsEnabled(
-      brave_history_embeddings::kHistoryEmbeddings);
+  return base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings);
 #else
   return false;
 #endif

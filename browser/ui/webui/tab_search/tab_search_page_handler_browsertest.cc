@@ -453,7 +453,7 @@ class TabSearchPageHandlerHistoryEmbeddingsBrowserTest
  public:
   TabSearchPageHandlerHistoryEmbeddingsBrowserTest() {
     scoped_features_.InitAndEnableFeature(
-        brave_history_embeddings::kHistoryEmbeddings);
+        history_embeddings::kHistoryEmbeddings);
   }
 
  private:
@@ -582,7 +582,7 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerTabPassagesBrowserTest,
   // hold anything.
   handler()->SetTabPassagesFetcherForTesting(base::BindLambdaForTesting(
       [](const std::vector<GURL>& urls,
-         brave_history_embeddings::TabPassagesCallback callback) {
+         history_embeddings::TabPassagesCallback callback) {
         std::move(callback).Run(
             std::vector<std::vector<std::string>>(urls.size(), {kPassage}));
       }));
@@ -618,7 +618,7 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerTabPassagesBrowserTest,
   bool fetched = false;
   handler()->SetTabPassagesFetcherForTesting(base::BindLambdaForTesting(
       [&fetched](const std::vector<GURL>& urls,
-                 brave_history_embeddings::TabPassagesCallback callback) {
+                 history_embeddings::TabPassagesCallback callback) {
         fetched = true;
         std::move(callback).Run(
             std::vector<std::vector<std::string>>(urls.size(), {kPassage}));
@@ -654,7 +654,7 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerTabPassagesBrowserTest,
   bool fetched = false;
   handler()->SetTabPassagesFetcherForTesting(base::BindLambdaForTesting(
       [this, &fetched](const std::vector<GURL>& urls,
-                       brave_history_embeddings::TabPassagesCallback callback) {
+                       history_embeddings::TabPassagesCallback callback) {
         fetched = true;
         // The user turns the opt-in off while the read is outstanding.
         profile1()->GetPrefs()->SetBoolean(
@@ -694,7 +694,7 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerTabPassagesBrowserTest,
   bool fetched = false;
   handler()->SetTabPassagesFetcherForTesting(base::BindLambdaForTesting(
       [&fetched](const std::vector<GURL>& urls,
-                 brave_history_embeddings::TabPassagesCallback callback) {
+                 history_embeddings::TabPassagesCallback callback) {
         fetched = true;
         std::move(callback).Run(
             std::vector<std::vector<std::string>>(urls.size(), {kPassage}));

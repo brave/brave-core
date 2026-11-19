@@ -22,7 +22,7 @@
 #include "components/history/core/browser/history_service.h"
 #include "url/gurl.h"
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
 namespace {
 
@@ -144,4 +144,4 @@ void GetPassagesForUrls(history::HistoryService* history_service,
       task_tracker);
 }
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings

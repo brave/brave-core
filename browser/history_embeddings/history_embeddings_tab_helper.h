@@ -34,7 +34,7 @@ namespace tabs {
 class TabInterface;
 }
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
 class HistoryEmbeddingsService;
 
@@ -125,6 +125,6 @@ class HistoryEmbeddingsTabHelper : public tabs::ContentsObservingTabFeature {
   base::WeakPtrFactory<HistoryEmbeddingsTabHelper> weak_ptr_factory_{this};
 };
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings
 
 #endif  // BRAVE_BROWSER_HISTORY_EMBEDDINGS_HISTORY_EMBEDDINGS_TAB_HELPER_H_
