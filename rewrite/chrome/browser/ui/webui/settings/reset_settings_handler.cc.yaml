@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Create BraveProfileResetter instead of ProfileResetter.
+
+      BraveProfileResetter derives from ProfileResetter and is declared in
+      brave/browser/profile_resetter/brave_profile_resetter.h, which the
+      chromium_src shadow includes. rename_class is not applicable because the
+      declarations in reset_settings_handler.h (GetResetter() and resetter_)
+      must keep the ProfileResetter base type; only the constructed type
+      changes.
+    count: 2
+    regex:
+      pattern: std::make_unique<ProfileResetter>
+      replace: std::make_unique<BraveProfileResetter>
