@@ -474,8 +474,6 @@ class AIChatService : public KeyedService,
   // DeleteConversation() without OnConversationListChanged(), for callers that
   // delete several conversations and then send the list once.
   void DeleteConversationWithoutNotifyingList(const std::string& id);
-  // |needs_approval| is set when generation stopped on a permission challenge
-  // rather than finishing.
   void ShowCompletionNotification(const std::string& uuid, bool needs_approval);
 
   raw_ptr<ModelService> model_service_;

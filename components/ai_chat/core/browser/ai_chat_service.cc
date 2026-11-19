@@ -1434,7 +1434,6 @@ void AIChatService::OnClientConnectionChanged(ConversationHandler* handler) {
     }
   } else if (handler->IsAwaitingUserInput() &&
              !conversation_generation_state_.contains(uuid)) {
-    // Left without answering the challenge, so it still needs the user.
     conversation_generation_state_[uuid] =
         mojom::ConversationGenerationState::kAwaitingUserInput;
     NotifyConversationGenerationStateChanged();
