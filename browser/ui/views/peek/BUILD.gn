@@ -9,9 +9,15 @@ import("//build/config/ui.gni")
 assert(toolkit_views)
 
 source_set("peek") {
-  public = [ "peek_view.h" ]
+  public = [
+    "peek_contents.h",
+    "peek_view.h",
+  ]
 
-  sources = [ "peek_view.cc" ]
+  sources = [
+    "peek_contents.cc",
+    "peek_view.cc",
+  ]
 
   public_deps = [
     "//base",
