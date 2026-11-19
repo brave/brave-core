@@ -105,7 +105,7 @@ program
 
     config.update(options)
     // ignore use_no_gn_gen when updating the symlink
-    delete config.use_no_gn_gen
+    config.use_no_gn_gen = undefined
     const currentLink = options.symlink_dir
     if (!currentLink) {
       console.error('Symlink directory is required')
