@@ -128,7 +128,11 @@ public class BraveTabGroupHelperUnitTest {
         verifyNoInteractions(mRegularTabUngrouper);
     }
 
-    private static Set<Token> tabGroupIds(Token... tabGroupIds) {
-        return new LinkedHashSet<>(Arrays.asList(tabGroupIds));
+    private static Set<TabGroupId> tabGroupIds(Token... tokens) {
+        Set<TabGroupId> tabGroupIds = new LinkedHashSet<>();
+        for (Token token : tokens) {
+            tabGroupIds.add(TabGroupId.fromRawToken(token));
+        }
+        return tabGroupIds;
     }
 }

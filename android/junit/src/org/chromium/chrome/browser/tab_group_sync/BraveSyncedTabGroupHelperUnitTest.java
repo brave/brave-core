@@ -38,6 +38,7 @@ import org.chromium.components.tab_group_sync.LocalTabGroupId;
 import org.chromium.components.tab_group_sync.SavedTabGroup;
 import org.chromium.components.tab_group_sync.TabGroupSyncService;
 import org.chromium.components.tab_group_sync.TabGroupUiActionHandler;
+import org.chromium.components.tab_groups.TabGroupId;
 
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -49,8 +50,8 @@ import java.util.Set;
 public class BraveSyncedTabGroupHelperUnitTest {
     private static final String SYNC_ID_1 = "sync-id-1";
     private static final String SYNC_ID_2 = "sync-id-2";
-    private static final Token TAB_GROUP_ID_1 = new Token(1L, 2L);
-    private static final Token TAB_GROUP_ID_2 = new Token(3L, 4L);
+    private static final TabGroupId TAB_GROUP_ID_1 = TabGroupId.fromRawToken(new Token(1L, 2L));
+    private static final TabGroupId TAB_GROUP_ID_2 = TabGroupId.fromRawToken(new Token(3L, 4L));
 
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
@@ -102,7 +103,7 @@ public class BraveSyncedTabGroupHelperUnitTest {
         when(mTabModel.getTabsInGroup(TAB_GROUP_ID_1)).thenReturn(List.of(mSyncedGroupTab));
         when(mTabModel.getTabsInGroup(TAB_GROUP_ID_2)).thenReturn(List.of(mLocalOnlyGroupTab));
         when(mTabModel.getTabRemover()).thenReturn(mTabRemover);
-        when(mTabGroupSyncService.getGroup(new LocalTabGroupId(TAB_GROUP_ID_1)))
+        when(mTabGroupSyncService.getGroup(new LocalTabGroupId(TAB_GROUP_ID_1.getToken())))
                 .thenReturn(savedTabGroup(SYNC_ID_1));
 
         BraveSyncedTabGroupHelper.hideSyncedTabGroups(mTabModel, mTabGroupSyncService);
@@ -134,7 +135,7 @@ public class BraveSyncedTabGroupHelperUnitTest {
     @Test
     public void testOpensOnlyTheClosedGroups() {
         SavedTabGroup openGroup = savedTabGroup(SYNC_ID_2);
-        openGroup.localId = new LocalTabGroupId(TAB_GROUP_ID_2);
+        openGroup.localId = new LocalTabGroupId(TAB_GROUP_ID_2.getToken());
         when(mTabGroupSyncService.getAllGroupIds()).thenReturn(new String[] {SYNC_ID_1, SYNC_ID_2});
         when(mTabGroupSyncService.getGroup(SYNC_ID_1)).thenReturn(savedTabGroup(SYNC_ID_1));
         when(mTabGroupSyncService.getGroup(SYNC_ID_2)).thenReturn(openGroup);
@@ -165,7 +166,7 @@ public class BraveSyncedTabGroupHelperUnitTest {
         return savedTabGroup;
     }
 
-    private static Set<Token> tabGroupIds(Token... tabGroupIds) {
+    private static Set<TabGroupId> tabGroupIds(TabGroupId... tabGroupIds) {
         return new LinkedHashSet<>(List.of(tabGroupIds));
     }
 }
