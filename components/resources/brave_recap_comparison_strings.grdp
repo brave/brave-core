@@ -9,7 +9,7 @@
     That's a full ream of paper, one ad per sheet
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_1000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 1,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That's a thousand paper cranes, enough for a wish in Japan, yours was fewer ads
+    That's a thousand paper cranes, enough for a wish in Japan
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_10000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 10,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
     That's more than every star you can see in the night sky
@@ -30,13 +30,13 @@
     That's one for every hour of the last 20 years
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_200000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 200,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That's more than all of Finland's lakes, and Finland has a lot of lakes
+    That's more than all of Finland's lakes (and Finland has a lot of lakes)
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_250000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 250,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
     That's every grain of rice in a 5 kg bag
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_270000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 270,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That's more than all of Sweden's islands, the most of any country on Earth
+    That's more than all of Sweden's islands (and Sweden has more islands than any country on Earth)
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_300000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 300,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
     That's the whole crowd at the Indy 500, the biggest one-day sporting event in the world
@@ -45,13 +45,13 @@
     That's one for every known plant species on Earth
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_400000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 400,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That's a kilometer per ad, all the way to the Moon
+    That's a kilometer per ad (enough to get all the way to the Moon)
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_450000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 450,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
     That's a kilo per ad, heavier than the International Space Station
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_500000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 500,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That's almost one for every word of War and Peace
+    That's almost one for every word of "War and Peace"
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_600000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 600,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
     That's as many as the words in the Oxford English Dictionary
@@ -60,7 +60,7 @@
     That's one for every heartbeat in a week
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_770000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 770,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That's a kilometer per ad, to the Moon and back
+    That's a kilometer per ad (enough to get to the Moon and back)
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_850000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 850,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
     That's nearly one for every word Shakespeare ever wrote
@@ -78,7 +78,7 @@
     That's every rivet in both Golden Gate Bridge towers
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_1300000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 1,300,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That's every word of In Search of Lost Time, the longest novel ever written
+    That's every word of "In Search of Lost Time", the longest novel ever written
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_1500000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 1,500,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
     That's every wildebeest in the Great Migration across the Serengeti
@@ -87,7 +87,7 @@
     That's one for every person living in Barcelona
   </message>
   <message name="IDS_BRAVE_RECAP_BLOCKED_COMPARISON_2000000" desc="Fun comparison on the ads and trackers blocked slide of Brave Recap, shown from 2,000,000 ads and trackers blocked." formatter_data="webui=BraveRecap">
-    That's nearly as many as the stones in the Great Pyramid of Giza
+    That's nearly as many stones used in the Great Pyramid at Giza
   </message>
   <message name="IDS_BRAVE_RECAP_TIME_COMPARISON_30S" desc="Fun comparison on the time saved slide of Brave Recap, shown from 30 seconds of waiting saved." formatter_data="webui=BraveRecap">
     That's exactly one TV commercial you didn't have to sit through
