@@ -1,0 +1,33 @@
+[
+  {
+    "cmd": [],
+    "name": "notifications",
+    "output_properties": {
+      "notifications": [
+        {
+          "audience": "findings",
+          "text": "Sanitizer findings on <https://ci.example/build/7|linux-x64-asan-brave>:\n\u2022 ASan: heap-use-after-free in &lt;skus::SDK&gt;::summary (<https://github.com/o/r/issues/1|GitHub issue>)\n\u2022 LSan: direct-leak in brave::Bar::Make (<https://github.com/o/r/issues/2#issuecomment-1|GitHub issue>)\n\u2022 UBSan: signed integer overflow"
+        },
+        {
+          "audience": "new-findings",
+          "text": "New sanitizer findings on <https://ci.example/build/7|linux-x64-asan-brave>:\n\u2022 ASan: heap-use-after-free in &lt;skus::SDK&gt;::summary (<https://github.com/o/r/issues/1|GitHub issue>)"
+        },
+        {
+          "audience": "build-failure",
+          "text": "Issues for the tests that failed in this build, for reasons other than a sanitizer finding:\n\u2022 Test: BarTest.Fails (<https://github.com/o/t/issues/3|GitHub issue>)\n\u2022 Test: BazTest.Restarts (<https://github.com/o/t/issues/4#issuecomment-1|GitHub issue>)"
+        },
+        {
+          "audience": "new-test-issues",
+          "text": "Issues opened for the tests that failed on <https://ci.example/build/7|linux-x64-asan-brave>:\n\u2022 Test: BarTest.Fails (<https://github.com/o/t/issues/3|GitHub issue>)"
+        },
+        {
+          "audience": "ci",
+          "text": "Not filed for <https://ci.example/build/7|linux-x64-asan-brave>: 20 tests failed for 20 reasons, more than the 15 this files."
+        }
+      ]
+    }
+  },
+  {
+    "name": "$result"
+  }
+]
