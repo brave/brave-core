@@ -76,5 +76,8 @@ if (enable_traffic_control) {
 }
 
 if (enable_psst) {
-  brave_browser_ui_webui_configs_deps += [ "//brave/browser/ui/webui/psst" ]
+  brave_browser_ui_webui_configs_deps += [
+    "//brave/browser/ui/webui/psst",
+    "//brave/components/psst/core/common",
+  ]
 }
