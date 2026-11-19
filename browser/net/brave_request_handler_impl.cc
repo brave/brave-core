@@ -178,10 +178,12 @@ int BraveRequestHandlerImpl<T>::OnHeadersReceived(
   if (!ctx) {
     return net::OK;
   }
-  if (!ctx->tab_origin().is_empty()) {
+  if (const url::Origin first_party_origin =
+          ctx->first_party_origin_for_settings();
+      !first_party_origin.opaque()) {
     brave::RemoveTrackableSecurityHeadersForThirdParty(
-        ctx->request_url(), url::Origin::Create(ctx->tab_origin()),
-        original_response_headers, override_response_headers);
+        ctx->request_url(), first_party_origin, original_response_headers,
+        override_response_headers);
   }
 
   if (headers_received_callbacks_.empty() &&

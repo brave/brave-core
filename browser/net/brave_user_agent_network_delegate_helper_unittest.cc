@@ -17,6 +17,7 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 constexpr char kSecCHUAHeader[] = "Sec-CH-UA";
 constexpr char kSecCHUAFullVersionListHeader[] = "Sec-CH-UA-Full-Version-List";
@@ -74,7 +75,18 @@ class BraveUserAgentNetworkDelegateHelperTest : public ::testing::Test {
   }
 
   UserAgentTestResult RunUserAgentTest(bool feature_enabled,
-                                       const std::string& tab_origin,
+                                       const std::string& top_frame_url,
+                                       const std::string& header_name_1,
+                                       const std::string& header_value_1,
+                                       const std::string& header_name_2,
+                                       const std::string& header_value_2) {
+    return RunUserAgentTest(
+        feature_enabled, url::Origin::Create(GURL(top_frame_url)),
+        header_name_1, header_value_1, header_name_2, header_value_2);
+  }
+
+  UserAgentTestResult RunUserAgentTest(bool feature_enabled,
+                                       const url::Origin& top_frame_origin,
                                        const std::string& header_name_1,
                                        const std::string& header_value_1,
                                        const std::string& header_name_2,
@@ -100,7 +112,7 @@ class BraveUserAgentNetworkDelegateHelperTest : public ::testing::Test {
       owned_request_ = std::make_unique<BraveRequestInfo>();
       ctx = owned_request_->AsWeakPtr();
     }
-    ctx->set_tab_origin(GURL(tab_origin));
+    ctx->set_top_frame_origin(top_frame_origin);
     int result = OnBeforeStartTransaction_UserAgentWork(&headers, {}, ctx);
     EXPECT_EQ(result, net::OK);
     return {headers.GetHeader(kSecCHUAHeader),
@@ -120,6 +132,22 @@ TYPED_TEST(BraveUserAgentNetworkDelegateHelperTest,
   auto res = this->RunUserAgentTest(
       /*feature_enabled=*/true, "https://excepted.com", kSecCHUAHeader,
       kSecCHUABrave, kSecCHUAFullVersionListHeader,
+      kSecCHUABraveFullVersionList);
+  ASSERT_TRUE(res.header_value.has_value());
+  ASSERT_TRUE(res.full_version_list_header_value.has_value());
+  EXPECT_EQ(res.header_value.value(), kSecCHUAGoogleChrome);
+  EXPECT_EQ(res.full_version_list_header_value.value(),
+            kSecCHUAGoogleChromeFullVersionList);
+}
+
+// A sandboxed top frame has an opaque origin, so the exception is matched
+// against the origin it was derived from.
+TYPED_TEST(BraveUserAgentNetworkDelegateHelperTest,
+           ReplacesBraveWithGoogleChromeIfSandboxedTopFrameIsExcepted) {
+  auto res = this->RunUserAgentTest(
+      /*feature_enabled=*/true,
+      url::Origin::Create(GURL("https://excepted.com")).DeriveNewOpaqueOrigin(),
+      kSecCHUAHeader, kSecCHUABrave, kSecCHUAFullVersionListHeader,
       kSecCHUABraveFullVersionList);
   ASSERT_TRUE(res.header_value.has_value());
   ASSERT_TRUE(res.full_version_list_header_value.has_value());
