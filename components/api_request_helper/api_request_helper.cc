@@ -391,10 +391,9 @@ void APIRequestHelper::URLLoaderHandler::OnDataReceived(
   }
   // Get next chunk
   // TODO(petemill): Consider waiting until Parsing finishes to resume,
-  // then we don't need to worry about decoding order or counting decoding
-  // operations. Perhaps also provide the |resume| closure to the consumer
-  // so that we can be notified when ready for the next chunk and not overwhelm
-  // e.g. the UI.
+  // rather than queueing a parse per event. Perhaps also provide the |resume|
+  // closure to the consumer so that we can be notified when ready for the next
+  // chunk and not overwhelm e.g. the UI.
   std::move(resume).Run();
 }
 
@@ -403,22 +402,26 @@ void APIRequestHelper::URLLoaderHandler::OnComplete(bool success) {
   VLOG(1) << "[[" << __func__ << "]]"
           << " Response completed\n";
 
-  // Drop any partial line that didn't end with a newline. Per the SSE spec,
-  // events are terminated with a blank line, so well-formed streams should
-  // always end on a line boundary.
-  sse_parser_.Clear();
-  request_is_finished_ = true;
-
   if (MaybeParseErrorBody()) {
     return;
   }
 
-  // Delete now or when decoding operations are complete
-  MaybeSendResult();
+  if (is_sse_) {
+    // Sends the result once the events still being parsed are delivered. A
+    // partial line that didn't end with a newline is dropped: per the SSE spec,
+    // events are terminated with a blank line, so well-formed streams should
+    // always end on a line boundary.
+    sse_parser_.RunAfterPendingEvents(
+        base::BindOnce(&URLLoaderHandler::SendResult, GetWeakPtr()));
+    return;
+  }
+
+  SendResult();
 }
 
 void APIRequestHelper::URLLoaderHandler::OnRetry(
     base::OnceClosure start_retry) {
+  // Also drops the abandoned attempt's events that are still being parsed.
   sse_parser_.Clear();
   std::move(start_retry).Run();
   // We assume that a consumer of APIRequestHelper doesn't
@@ -435,9 +438,6 @@ void APIRequestHelper::URLLoaderHandler::OnResponse(
   VLOG(1) << "[[" << __func__ << "]]"
           << " Response received\n";
   DCHECK(result_callback_);
-  // This shouldn't be called on a request with multiple decoding operations,
-  // otherwise we need to modify this to use data_chunk_parsed_callback_.
-  DCHECK(!sse_parser_.IsDecoding());
   APIRequestResult result = ToAPIRequestResult(std::move(url_loader_));
 
   if (!response_body) {
@@ -518,29 +518,19 @@ void APIRequestHelper::URLLoaderHandler::OnParseErrorBody(
   if (result_value.has_value() && result_value->is_dict()) {
     error_value_ = std::move(*result_value);
   }
-  MaybeSendResult();
+  SendResult();
 }
 
 void APIRequestHelper::URLLoaderHandler::OnSSEValueReceived(
     ValueOrError result) {
   DCHECK(data_received_callback_);
   data_received_callback_.Run(std::move(result));
-  MaybeSendResult();
 }
 
-void APIRequestHelper::URLLoaderHandler::MaybeSendResult() {
-  // Don't allow completion if decoding is still in progress so that
-  // we don't delete the reference to |data_decoder_| which would cancel the
-  // operations.
-  // Response must be complete to know that decoding is definitely complete
-  // since streaming responses may get more reponse chunks which need decoding.
-  const bool decoding_is_complete = !sse_parser_.IsDecoding();
-
-  if (request_is_finished_ && decoding_is_complete) {
-    auto result = ToAPIRequestResult(std::move(url_loader_));
-    result.value_body_ = std::move(error_value_);
-    std::move(result_callback_).Run(std::move(result));
-  }
+void APIRequestHelper::URLLoaderHandler::SendResult() {
+  auto result = ToAPIRequestResult(std::move(url_loader_));
+  result.value_body_ = std::move(error_value_);
+  std::move(result_callback_).Run(std::move(result));
 }
 
 void APIRequestHelper::SetUrlLoaderFactoryForTesting(

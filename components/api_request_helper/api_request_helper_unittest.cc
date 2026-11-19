@@ -12,13 +12,20 @@
 #include <utility>
 #include <vector>
 
+#include "base/byte_size.h"
+#include "base/containers/span.h"
 #include "base/run_loop.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/task/thread_pool/thread_pool_instance.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
+#include "mojo/public/cpp/system/data_pipe.h"
 #include "net/base/load_flags.h"
+#include "net/base/net_errors.h"
 #include "net/http/http_response_headers.h"
 #include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
@@ -27,6 +34,7 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "services/network/test/test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using base::test::ParseJson;
@@ -34,6 +42,17 @@ using base::test::ParseJson;
 namespace api_request_helper {
 
 namespace {
+
+// Waits for JSON parses already posted to the thread pool, and their replies.
+// Needed to assert that an event is not delivered, which no `RunUntil()`
+// condition can wait for.
+void WaitForPendingParses() {
+  base::ThreadPoolInstance::Get()->FlushForTesting();
+  base::test::TestFuture<void> replies_done;
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, replies_done.GetCallback());
+  EXPECT_TRUE(replies_done.Wait());
+}
 
 std::optional<std::string> ConversionCallback(
     const std::string& expected_raw_response,
@@ -131,12 +150,46 @@ class ApiRequestHelperUnitTest : public testing::Test {
                                                        std::move(callback));
   }
 
+  // Answers the latest request with an event stream `body`, then completes it
+  // with `net_error`. Returns once the loader has read and completed it.
+  void RespondWithEventStream(std::string_view body, int net_error = net::OK) {
+    ASSERT_FALSE(url_loader_factory_.pending_requests()->empty());
+    const size_t index = url_loader_factory_.pending_requests()->size() - 1;
+    auto& client = url_loader_factory_.pending_requests()->at(index).client;
+
+    mojo::ScopedDataPipeProducerHandle producer;
+    mojo::ScopedDataPipeConsumerHandle consumer;
+    ASSERT_EQ(mojo::CreateDataPipe(body.size(), producer, consumer),
+              MOJO_RESULT_OK);
+    ASSERT_EQ(producer->WriteAllData(base::as_byte_span(body)), MOJO_RESULT_OK);
+    producer.reset();
+
+    auto head = network::CreateURLResponseHead(net::HTTP_OK);
+    head->headers->SetHeader("Content-Type", "text/event-stream");
+    head->mime_type = "text/event-stream";
+    client->OnReceiveResponse(std::move(head), std::move(consumer),
+                              std::nullopt);
+    network::URLLoaderCompletionStatus status(net_error);
+    status.decoded_body_length = base::ByteSize(body.size());
+    client->OnComplete(status);
+
+    // The loader closes the client pipe when it has the completion. As
+    // `RunUntil()` checks only once the thread is idle, the loader has also
+    // read the body by then. A retry may add a pending request, so `client` is
+    // not used again.
+    ASSERT_TRUE(base::test::RunUntil([&]() {
+      return !url_loader_factory_.pending_requests()
+                  ->at(index)
+                  .client.is_connected();
+    }));
+  }
+
  protected:
   std::unique_ptr<APIRequestHelper> api_request_helper_;
   base::test::TaskEnvironment task_environment_;
+  network::TestURLLoaderFactory url_loader_factory_;
 
  private:
-  network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<APIRequestHelper::URLLoaderHandler> loader_wrapper_handler_;
 };
@@ -403,6 +456,121 @@ TEST_F(ApiRequestHelperUnitTest, SSE400WithJsonErrorBody) {
   const auto* error = result.value_body().GetDict().FindDict("error");
   ASSERT_TRUE(error);
   EXPECT_EQ(error->FindInt("type"), std::optional<int>(1234));
+}
+
+// Events are parsed on a worker sequence, so a stream can complete while
+// several of its events are still being parsed. The result follows them.
+TEST_F(ApiRequestHelperUnitTest, SSEResultFollowsPendingEvents) {
+  const GURL url("http://localhost/");
+  std::vector<std::string> deliveries;
+  base::test::TestFuture<void> result_future;
+  api_request_helper_->RequestSSE(
+      "POST", url, "", "application/json",
+      base::BindLambdaForTesting([&](ValueOrError value) {
+        ASSERT_TRUE(value.has_value() && value->is_dict());
+        const std::string* event = value->GetDict().FindString("event");
+        ASSERT_TRUE(event);
+        deliveries.push_back(*event);
+      }),
+      base::BindLambdaForTesting([&](APIRequestResult result) {
+        EXPECT_EQ(result.error_code(), net::OK);
+        deliveries.push_back("result");
+        result_future.SetValue();
+      }),
+      {}, {});
+  {
+    // Holds the parses until the stream has completed.
+    base::test::TaskEnvironment::ParallelExecutionFence fence;
+    RespondWithEventStream(
+        "data: {\"event\":\"a\"}\n\n"
+        "data: {\"event\":\"b\"}\n\n"
+        "data: {\"event\":\"c\"}\n\n");
+    EXPECT_TRUE(deliveries.empty());
+  }
+  EXPECT_TRUE(result_future.Wait());
+  EXPECT_EQ(deliveries, std::vector<std::string>({"a", "b", "c", "result"}));
+}
+
+// A data callback may destroy the helper while the result waits for the
+// remaining events. Running that result on the deleted handler is reported
+// only under ASan, or as a crash.
+TEST_F(ApiRequestHelperUnitTest, DestroyHelperFromDataCallbackBeforeResult) {
+  const GURL url("http://localhost/");
+  auto helper = std::make_unique<APIRequestHelper>(
+      net::NetworkTrafficAnnotationTag(TRAFFIC_ANNOTATION_FOR_TESTS),
+      base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
+          &url_loader_factory_));
+  size_t data_count = 0;
+  helper->RequestSSE("POST", url, "", "application/json",
+                     base::BindLambdaForTesting([&](ValueOrError) {
+                       ++data_count;
+                       helper.reset();
+                     }),
+                     base::BindOnce([](APIRequestResult) { ADD_FAILURE(); }),
+                     {}, {});
+  {
+    // Holds the parses until the stream has completed.
+    base::test::TaskEnvironment::ParallelExecutionFence fence;
+    RespondWithEventStream("data: {\"a\":1}\n\ndata: {\"b\":2}\n\n");
+  }
+  ASSERT_TRUE(base::test::RunUntil([&]() { return data_count > 0; }));
+  // So that a second event or the result would be seen.
+  WaitForPendingParses();
+  EXPECT_EQ(data_count, 1u);
+  EXPECT_FALSE(helper);
+}
+
+// Nothing is delivered after a data callback cancels the request. Using the
+// deleted handler after the callback is only reported under ASan.
+TEST_F(ApiRequestHelperUnitTest, CancelFromDataCallback) {
+  const GURL url("http://localhost/");
+  for (const char* mime_type : {"text/event-stream", "text/plain"}) {
+    SCOPED_TRACE(mime_type);
+    SetInterceptor("POST", url, "data: {\"a\":1}\n\ndata: {\"b\":2}\n\n",
+                   /*enable_cache=*/false, net::HTTP_OK, mime_type);
+
+    size_t data_count = 0;
+    APIRequestHelper::Ticket ticket;
+    ticket = api_request_helper_->RequestSSE(
+        "POST", url, "", "application/json",
+        base::BindLambdaForTesting([&](ValueOrError) {
+          ++data_count;
+          api_request_helper_->Cancel(ticket);
+        }),
+        base::BindOnce([](APIRequestResult) { ADD_FAILURE(); }), {}, {});
+    ASSERT_TRUE(base::test::RunUntil([&]() { return data_count > 0; }));
+    // So that a second delivery would be seen.
+    WaitForPendingParses();
+    EXPECT_EQ(data_count, 1u);
+  }
+}
+
+// Events of an attempt abandoned for a retry are not delivered, even when
+// they are still being parsed at the retry.
+TEST_F(ApiRequestHelperUnitTest, SSERetryDropsAbandonedAttemptEvents) {
+  const GURL url("http://localhost/");
+  APIRequestOptions options;
+  options.auto_retry_on_network_change = true;
+  std::vector<base::Value> events;
+  base::test::TestFuture<APIRequestResult> result_future;
+  api_request_helper_->RequestSSE(
+      "POST", url, "", "application/json",
+      base::BindLambdaForTesting([&](ValueOrError value) {
+        ASSERT_TRUE(value.has_value());
+        events.push_back(std::move(*value));
+      }),
+      result_future.GetCallback(), {}, options);
+  {
+    // Holds the first attempt's parse until the request is retried.
+    base::test::TaskEnvironment::ParallelExecutionFence fence;
+    RespondWithEventStream("data: {\"attempt\":1}\n\n",
+                           net::ERR_NETWORK_CHANGED);
+  }
+  ASSERT_EQ(url_loader_factory_.pending_requests()->size(), 2u);
+  RespondWithEventStream("data: {\"attempt\":2}\n\n");
+  EXPECT_EQ(result_future.Take().error_code(), net::OK);
+  ASSERT_EQ(events.size(), 1u);
+  EXPECT_EQ(events[0], ParseJson(R"({"attempt":2})"));
 }
 
 }  // namespace api_request_helper

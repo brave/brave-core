@@ -34,6 +34,8 @@ source_set("unit_tests") {
   deps = [
     ":api_request_helper",
     "//base/test:test_support",
+    "//mojo/public/cpp/system",
+    "//net",
     "//net/traffic_annotation:test_support",
     "//services/network:test_support",
     "//testing/gtest",

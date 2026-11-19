@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/functional/callback_helpers.h"
 #include "base/trace_event/trace_event.h"
 #include "brave/components/api_request_helper/utils.h"
 
@@ -42,10 +43,19 @@ void SSEParser::Process(std::string_view chunk) {
 
 void SSEParser::Clear() {
   line_buffer_.clear();
+  weak_ptr_factory_.InvalidateWeakPtrs();
 }
 
-bool SSEParser::IsDecoding() const {
-  return decoding_count_ > 0;
+void SSEParser::RunAfterPendingEvents(base::OnceClosure callback) {
+  // Each event's parse, like this no-op, is posted to `task_runner_` with a
+  // reply. Once its task has run, a reply is posted to the default task runner
+  // of the sequence that posted it, which runs replies in posting order. As
+  // `task_runner_` is sequenced, this no-op runs after every parse already
+  // posted, so its reply runs after theirs.
+  task_runner_->PostTaskAndReply(
+      FROM_HERE, base::DoNothing(),
+      base::BindOnce(&SSEParser::RunCallback, weak_ptr_factory_.GetWeakPtr(),
+                     std::move(callback)));
 }
 
 void SSEParser::ProcessLine(std::string_view line) {
@@ -57,7 +67,6 @@ void SSEParser::ProcessLine(std::string_view line) {
   }
 
   auto json = line.substr(kDataPrefix.size() - 1);
-  decoding_count_++;
   ParseJsonInWorkerTaskRunner(
       std::string(json), task_runner_.get(),
       base::BindOnce(&SSEParser::OnJsonParsed, weak_ptr_factory_.GetWeakPtr()));
@@ -65,10 +74,12 @@ void SSEParser::ProcessLine(std::string_view line) {
 
 void SSEParser::OnJsonParsed(ValueOrError result) {
   TRACE_EVENT0("brave", "APIRequestHelper_ParseSSECallback");
-  CHECK_GT(decoding_count_, 0u);
-  decoding_count_--;
   DCHECK(on_event_);
   on_event_.Run(std::move(result));
+}
+
+void SSEParser::RunCallback(base::OnceClosure callback) {
+  std::move(callback).Run();
 }
 
 }  // namespace api_request_helper
