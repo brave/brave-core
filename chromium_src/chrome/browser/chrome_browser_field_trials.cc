@@ -5,15 +5,34 @@
 
 #include "chrome/browser/chrome_browser_field_trials.h"
 
+#include "build/build_config.h"
+#include "extensions/buildflags/buildflags.h"
+
 #define ChromeBrowserFieldTrials ChromeBrowserFieldTrialsChromium
 
 #include <chrome/browser/chrome_browser_field_trials.cc>
 
 #undef ChromeBrowserFieldTrials
 
+#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+// Implemented in
+// brave/browser/extensions/android/brave_extension_field_trials.cc, which
+// owns the kBraveAndroidExtensions check and the Brave feature deps.
+void BraveRegisterFeatureOverrides(base::FeatureList* feature_list);
+#endif  // BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+
 void ChromeBrowserFieldTrials::SetUpClientSideFieldTrials(
     bool has_seed,
     const variations::EntropyProviders& entropy_providers,
     base::FeatureList* feature_list) {
   // Don't setup upstream's client-side field trials.
+}
+
+void ChromeBrowserFieldTrials::RegisterFeatureOverrides(
+    base::FeatureList* feature_list) {
+  ChromeBrowserFieldTrialsChromium::RegisterFeatureOverrides(feature_list);
+
+#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+  BraveRegisterFeatureOverrides(feature_list);
+#endif  // BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
 }

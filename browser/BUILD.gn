@@ -81,6 +81,11 @@ source_set("brave_browser_features") {
     "brave_browser_features.h",
   ]
 
+  # //brave/browser/brave_stats only includes the header, not otherwise
+  # depending on :core (#41501). //brave/browser/extensions:extensions'
+  # Android implementation needs the same: it includes this header without
+  # otherwise depending on :core (which depends back on :extensions), so
+  # a direct dep here avoids a cycle.
   public_deps = [
     "//base",
     "//brave/components/v8/buildflags",

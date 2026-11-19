@@ -43,7 +43,7 @@ bool ChromeImporterCanImport(const base::FilePath& profile,
                              user_data_importer::ImporterType type,
                              uint16_t* services_supported);
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
+#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
 std::optional<std::vector<std::string>> GetImportableChromeExtensionsList(
     const base::FilePath& profile_path);
 #endif

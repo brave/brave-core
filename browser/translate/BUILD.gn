@@ -21,7 +21,12 @@ source_set("translate") {
     "//extensions/buildflags",
   ]
 
-  if (enable_extensions) {
+  # //chrome/browser/profiles:profile privately depends on //extensions/browser
+  # on any config where enable_extensions_core is on (e.g. Android), so
+  # brave_translate_utils.cc's #include of extensions/browser and
+  # extensions/common headers needs a direct dep here too, even though the
+  # code they guard is still ENABLE_EXTENSIONS-only (dead on Android for now).
+  if (enable_extensions_core) {
     deps += [
       "//extensions/browser",
       "//extensions/common",

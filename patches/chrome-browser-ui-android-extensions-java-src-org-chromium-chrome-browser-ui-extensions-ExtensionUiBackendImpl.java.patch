@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/android/extensions/java/src/org/chromium/chrome/browser/ui/extensions/ExtensionUiBackendImpl.java b/chrome/browser/ui/android/extensions/java/src/org/chromium/chrome/browser/ui/extensions/ExtensionUiBackendImpl.java
+index 3b26ce12a0041cf837003468fd0bf5b773c98f05..46a0b72b187345da3470525de1ccef3004e74a72 100644
+--- a/chrome/browser/ui/android/extensions/java/src/org/chromium/chrome/browser/ui/extensions/ExtensionUiBackendImpl.java
++++ b/chrome/browser/ui/android/extensions/java/src/org/chromium/chrome/browser/ui/extensions/ExtensionUiBackendImpl.java
+@@ -20,7 +20,7 @@ public class ExtensionUiBackendImpl implements ExtensionUiBackend {
+ 
+     @Override
+     public boolean isEnabled(Profile profile) {
+-        return true;
++        return BraveExtensionUiBackendUtil.isEnabled();
+     }
+ 
+     @Override

@@ -1,0 +1,22 @@
+diff --git a/chrome/app/theme/theme_resources.grd b/chrome/app/theme/theme_resources.grd
+index 31f8965ce76011fab5bb58d91c83db67a16dc336..80574eda36a318efe878de98f8f582df0e8ea53c 100644
+--- a/chrome/app/theme/theme_resources.grd
++++ b/chrome/app/theme/theme_resources.grd
+@@ -277,7 +277,7 @@
+         <structure type="chrome_scaled_image" name="IDR_UPLOAD_VIOLATION_DARK" file="common/upload_violation_dark.png" />
+       </if>
+       <if expr="not _google_chrome">
+-        <if expr="not is_android or is_desktop_android">
++        <if expr="not is_android or enable_extensions_core">
+           <!-- Desktop Android supports extensions and the web store. -->
+           <structure type="chrome_scaled_image" name="IDR_WEBSTORE_ICON" file="chromium/webstore_icon.png" />
+           <structure type="chrome_scaled_image" name="IDR_WEBSTORE_ICON_16" file="chromium/webstore_icon_16.png" />
+@@ -285,7 +285,7 @@
+         </if>
+       </if>
+       <if expr="_google_chrome">
+-        <if expr="not is_android or is_desktop_android">
++        <if expr="not is_android or enable_extensions_core">
+           <!-- Desktop Android supports extensions and the web store. -->
+           <structure type="chrome_scaled_image" name="IDR_WEBSTORE_ICON" file="google_chrome/webstore_icon.png" />
+           <structure type="chrome_scaled_image" name="IDR_WEBSTORE_ICON_16" file="google_chrome/webstore_icon_16.png" />

@@ -702,6 +702,10 @@ test("brave_unit_tests") {
     ]
   }
 
+  if (is_android) {
+    deps += [ "//brave/browser/extensions/android:unit_tests" ]
+  }
+
   if (enable_extensions) {
     sources += [
       "//brave/browser/extensions/mv2_warning_unittest.cc",
@@ -1070,6 +1074,7 @@ test("brave_browser_tests") {
     "//brave/app:command_ids",
     "//brave/base/test:test_vendor_is_brave",
     "//brave/browser",
+    "//brave/browser:brave_browser_features",
     "//brave/browser:brave_global_features",
     "//brave/browser:browser_process",
     "//brave/browser/autoplay:browser_tests",
@@ -1791,6 +1796,7 @@ if (is_android) {
       "//brave/android/javatests/org/chromium/chrome/browser/BraveSafetyNetThreatsPrioritiesTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/BytecodeTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/PrivateTabSystemUiModeChangeTest.java",
+      "//brave/android/javatests/org/chromium/chrome/browser/app/BraveActivityWindowingFeaturesTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/autofill/settings/BraveAutofillPaymentMethodsFragmentTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/autofill/settings/options/BraveAutofillOptionsFragmentTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/homepage/settings/BraveHomepageSettingsTest.java",
@@ -1867,6 +1873,7 @@ if (is_android) {
       "//chrome/browser/ui/android/desktop_windowing:java",
       "//chrome/browser/ui/android/edge_to_edge:java",
       "//chrome/browser/ui/android/extensions:java",
+      "//chrome/browser/ui/android/extensions/windowing:java",
       "//chrome/browser/ui/android/favicon:java",
       "//chrome/browser/ui/android/layouts:java",
       "//chrome/browser/ui/android/logo:java",
@@ -1878,6 +1885,8 @@ if (is_android) {
       "//chrome/browser/ui/android/theme:java",
       "//chrome/browser/ui/android/toolbar:java",
       "//chrome/browser/ui/android/toolbar:optional_button_java",
+      "//chrome/browser/ui/browser_window/public/android:factory_java",
+      "//chrome/browser/ui/browser_window/public/android:java",
       "//chrome/browser/ui/messages/android:java",
       "//chrome/browser/user_education:java",
       "//chrome/test:test_support_java",
