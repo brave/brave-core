@@ -34,9 +34,13 @@ class BraveTestsApi(RecipeApi):
     def __init__(self, properties: InputProperties) -> None:
         super().__init__()
         self._properties = properties
+        self._specs: dict[str, dict] = {}
 
     def _read_spec(self, builder_id: BuilderId) -> dict:
-        """The builder's own entry in its group's generated targets spec."""
+        """The builder's own entry in its group's generated targets spec,
+        read once per run."""
+        if builder_id.builder in self._specs:
+            return self._specs[builder_id.builder]
         spec_file = f'{builder_id.group}.json'
         spec_path = (
             self.m.path.brave_core
@@ -53,7 +57,15 @@ class BraveTestsApi(RecipeApi):
             spec_path,
             test_data={builder_id.builder: {}},
         )
-        return spec[builder_id.builder]
+        self._specs[builder_id.builder] = spec[builder_id.builder]
+        return self._specs[builder_id.builder]
+
+    def suites(self, builder_id: BuilderId) -> list[str]:
+        """The test targets of the builder's gtests, in its spec's order."""
+        return [
+            test['test']
+            for test in self._read_spec(builder_id).get('gtest_tests', [])
+        ]
 
     def run_tests(self, builder_id: BuilderId) -> TestRun:
         """Run each of the builder's gtests through `runtest.py --builder`,

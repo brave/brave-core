@@ -133,6 +133,8 @@ def _properties(builder) -> dict:
     }
     if siso:
         properties['$brave_siso'] = siso
+    if builder.archive_isolates:
+        properties['$isolate'] = {'enabled': True}
     if builder.recipe:
         properties['recipe'] = builder.recipe
     return properties

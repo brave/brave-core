@@ -1,0 +1,127 @@
+[
+  {
+    "cmd": [],
+    "name": "isolate tests"
+  },
+  {
+    "cmd": [],
+    "name": "isolate tests.base_unittests"
+  },
+  {
+    "cmd": [
+      "git",
+      "clone",
+      "--depth",
+      "1",
+      "https://chromium.googlesource.com/chromium/tools/depot_tools",
+      "[WORKSPACE]/b/src/third_party/depot_tools"
+    ],
+    "cwd": "[WORKSPACE]/b/src",
+    "name": "isolate tests.base_unittests.clone depot_tools"
+  },
+  {
+    "cmd": [
+      "gclient"
+    ],
+    "cwd": "[WORKSPACE]/b/src",
+    "name": "isolate tests.base_unittests.verify gclient"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
+      "[WORKSPACE]/b/src/tools/mb/mb.py",
+      "isolate",
+      "--no-build",
+      "out/Release",
+      "base_unittests",
+      "--isolate-map-file",
+      "[WORKSPACE]/b/src/brave/infra/config/generated/testing/gn_isolate_map.pyl"
+    ],
+    "cwd": "[WORKSPACE]/b/src",
+    "name": "isolate tests.base_unittests.mb isolate"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
+      "-u",
+      "RECIPE_MODULE[file]/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
+      "copy",
+      "[WORKSPACE]/b/src/out/Release/base_unittests.isolate",
+      "/path/to/tmp/"
+    ],
+    "name": "isolate tests.base_unittests.read isolate"
+  },
+  {
+    "cmd": [],
+    "name": "isolate tests.base_unittests.archive"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
+      "RECIPE_MODULE[cas]/resources/stage.py",
+      "--root",
+      "[WORKSPACE]/b/src",
+      "--cwd",
+      "[WORKSPACE]/b/src/out/Release",
+      "--stage",
+      "[WORKSPACE]/rc/cas_tmp_1",
+      "--paths-json",
+      "[\n  \"./base_unittests\",\n  \"../../testing/test_env.py\"\n]"
+    ],
+    "name": "isolate tests.base_unittests.archive.stage"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/cipd",
+      "ensure",
+      "-root",
+      "[WORKSPACE]/cipd/infra_rbe_client/re_client_version_0.187.0.ad10b508-gomaip",
+      "-ensure-file",
+      "infra/rbe/client/${platform} re_client_version:0.187.0.ad10b508-gomaip\n"
+    ],
+    "name": "isolate tests.base_unittests.archive.install infra/rbe/client/${platform}"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/cipd/infra_rbe_client/re_client_version_0.187.0.ad10b508-gomaip/remotetool",
+      "--service",
+      "rbe.example.com:443",
+      "--instance",
+      "default",
+      "--service_no_auth",
+      "--tls_client_auth_cert",
+      "/certs/client.crt",
+      "--tls_client_auth_key",
+      "/certs/client.key",
+      "--operation",
+      "upload_dir",
+      "--path",
+      "[WORKSPACE]/rc/cas_tmp_1",
+      "--json",
+      "/path/to/tmp/json"
+    ],
+    "name": "isolate tests.base_unittests.archive.upload"
+  },
+  {
+    "cmd": [],
+    "name": "isolate tests.isolates",
+    "output_properties": {
+      "isolates": {
+        "base_unittests": {
+          "command": [
+            "vpython3",
+            "../../testing/test_env.py",
+            "./base_unittests"
+          ],
+          "cwd": "out/Release",
+          "digest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/100"
+        }
+      }
+    }
+  },
+  {
+    "name": "$result"
+  }
+]

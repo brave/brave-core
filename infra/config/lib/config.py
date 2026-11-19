@@ -1230,6 +1230,7 @@ class Builder:
         siso_reapi_priority: int | None,
         builder_spec: BuilderSpec,
         targets: Targets,  # pylint: disable=redefined-outer-name
+        archive_isolates: bool = False,
     ) -> None:
         # The name it was registered under; also its `gn_args` node name.
         self.name = name
@@ -1260,6 +1261,10 @@ class Builder:
 
         # This builder's `builder_config.builder_spec()`.
         self.builder_spec = builder_spec
+
+        # Whether its builds archive each test suite to CAS, for another
+        # machine to run without a checkout or a build.
+        self.archive_isolates = archive_isolates
 
         # What this builder compiles and tests: its bundle, expanded.
         self.targets = targets
@@ -1348,6 +1353,7 @@ class BuildersRegistry:
         notifies: Sequence[str] = _UNSET,
         siso_remote_jobs: int | None = _UNSET,
         siso_reapi_priority: int | None = _UNSET,
+        archive_isolates: bool = False,
     ) -> Builder:
         """Defines a builder.
 
@@ -1362,6 +1368,8 @@ class BuildersRegistry:
             builder_group, recipe, execution_timeout_mins, notifies,
             siso_remote_jobs, siso_reapi_priority: Fall back to `defaults`
                 when omitted.
+            archive_isolates: Whether its builds archive each test suite to
+                CAS.
 
         Returns:
             The registered `Builder`.
@@ -1396,6 +1404,7 @@ class BuildersRegistry:
             ),
             builder_spec=builder_spec,
             targets=expanded_targets,
+            archive_isolates=archive_isolates,
         )
         self._builders[name] = builder
         return builder

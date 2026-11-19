@@ -560,6 +560,12 @@ class BuildersRegistryTest(unittest.TestCase):
         self.assertIsNone(builder.siso_remote_jobs)
         self.assertIsNone(builder.siso_reapi_priority)
 
+    def test_archive_isolates_is_off_unless_set(self):
+        self.assertFalse(self._builder_with().archive_isolates)
+        self.assertTrue(
+            self._builder_with('b2', archive_isolates=True).archive_isolates
+        )
+
     def test_siso_settings_take_defaults(self):
         self.builders.defaults.set(siso_remote_jobs=1440)
         builder = self._builder_with(siso_reapi_priority=2)

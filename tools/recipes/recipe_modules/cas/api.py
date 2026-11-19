@@ -26,7 +26,9 @@ if TYPE_CHECKING:
 REMOTETOOL_PACKAGE = 'infra/rbe/client/${platform}'
 REMOTETOOL_VERSION = 're_client_version:0.187.0.ad10b508-gomaip'
 
-# The instance trees go to when the `instance` property is unset.
+# The remote execution service Brave builds use, and its instance, when the
+# `service` and `instance` properties are unset.
+DEFAULT_SERVICE = 'rbe.ba.brave.com:443'
 DEFAULT_INSTANCE = 'default'
 
 
@@ -45,7 +47,7 @@ class CasApi(RecipeApi):
         self, properties: InputProperties, env_properties: EnvProperties
     ) -> None:
         super().__init__()
-        self._service = properties.service
+        self._service = properties.service or DEFAULT_SERVICE
         self._instance = properties.instance or DEFAULT_INSTANCE
         self._cert = env_properties.RBE_TLS_CLIENT_AUTH_CERT
         self._key = env_properties.RBE_TLS_CLIENT_AUTH_KEY
@@ -71,10 +73,8 @@ class CasApi(RecipeApi):
         """`remotetool`, connected to the service, to run *operation*.
 
         Raises:
-            ValueError: no service, or no client certificate and key.
+            ValueError: no client certificate and key.
         """
-        if not self._service:
-            raise ValueError('the cas module needs its `service` property')
         if not self._cert or not self._key:
             raise ValueError(
                 'the cas module needs RBE_tls_client_auth_cert and '

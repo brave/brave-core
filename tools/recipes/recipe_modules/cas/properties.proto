@@ -8,8 +8,8 @@ syntax = "proto3";
 package recipe_modules.brave.cas;
 
 message InputProperties {
-  // The remote execution service whose CAS trees go to, with its port, e.g.
-  // `rbe.ba.brave.com:443`.
+  // The remote execution service whose CAS trees go to, with its port; the
+  // one Brave builds use when unset.
   string service = 1;
 
   // Its instance name; `default` when unset.
