@@ -2933,6 +2933,7 @@ enum SignMessageErrorType {
   kChainIdMismatched,
   kAccountMismatched,
   kDomainMismatched,
+  kSIWEMessageMalformed,
 };
 
 struct SignMessageError {
