@@ -1,0 +1,38 @@
+diff --git a/chrome/browser/ui/webui/tab_search/tab_search_ui.h b/chrome/browser/ui/webui/tab_search/tab_search_ui.h
+index 1af84a4e19c2b84db8217ea470aae97e894fd19c..9a0c7931d3ac298001ad667244d82160095048d2 100644
+--- a/chrome/browser/ui/webui/tab_search/tab_search_ui.h
++++ b/chrome/browser/ui/webui/tab_search/tab_search_ui.h
+@@ -21,11 +21,11 @@
+ 
+ class SearchHandler;
+ class TabSearchPageHandler;
+-class TabSearchUI;
++class TabSearchUI_ChromiumImpl;
+ 
+-class TabSearchUIConfig : public DefaultTopChromeWebUIConfig<TabSearchUI> {
++class TabSearchUIConfig_Unused : public DefaultTopChromeWebUIConfig<TabSearchUI_ChromiumImpl> {
+  public:
+-  TabSearchUIConfig();
++  TabSearchUIConfig_Unused();
+ 
+   // DefaultTopChromeWebUIConfig:
+   bool ShouldAutoResizeHost() override;
+@@ -33,13 +33,13 @@ class TabSearchUIConfig : public DefaultTopChromeWebUIConfig<TabSearchUI> {
+   std::optional<int> GetCommandIdForTesting() override;
+ };
+ 
+-class TabSearchUI : public TopChromeWebUIController,
++class TabSearchUI_ChromiumImpl : public TopChromeWebUIController,
+                     public tab_search::mojom::PageHandlerFactory {
+  public:
+-  explicit TabSearchUI(content::WebUI* web_ui);
+-  TabSearchUI(const TabSearchUI&) = delete;
+-  TabSearchUI& operator=(const TabSearchUI&) = delete;
+-  ~TabSearchUI() override;
++  explicit TabSearchUI_ChromiumImpl(content::WebUI* web_ui);
++  TabSearchUI_ChromiumImpl(const TabSearchUI_ChromiumImpl&) = delete;
++  TabSearchUI_ChromiumImpl& operator=(const TabSearchUI_ChromiumImpl&) = delete;
++  ~TabSearchUI_ChromiumImpl() override;
+ 
+   // Instantiates the implementor of the mojom::PageHandlerFactory mojo
+   // interface passing the pending receiver that will be internally bound.

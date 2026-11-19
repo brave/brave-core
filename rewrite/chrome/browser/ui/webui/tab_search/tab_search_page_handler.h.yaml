@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Rename TabSearchPageHandler so Brave can subclass it.
+
+      The chromium_src shadow header defines a Brave TabSearchPageHandler
+      deriving from TabSearchPageHandler_ChromiumImpl.
+    rename_class:
+      class_name: TabSearchPageHandler
+      rename: TabSearchPageHandler_ChromiumImpl
+
+  - description: |-
+      Let the Brave TabSearchPageHandler access private members.
+
+      The Brave subclass uses private members such as page_ and web_ui_.
+    add_friend:
+      class_name: TabSearchPageHandler_ChromiumImpl
+      friend_type: class TabSearchPageHandler

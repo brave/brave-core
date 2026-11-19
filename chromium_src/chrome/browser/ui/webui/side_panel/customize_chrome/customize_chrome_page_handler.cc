@@ -11,11 +11,7 @@
 #include "brave/browser/ui/darker_theme/pref_names.h"
 #endif  // defined(TOOLKIT_VIEWS)
 
-#define CustomizeChromePageHandler CustomizeChromePageHandler_Chromium
-
 #include <chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_page_handler.cc>
-
-#undef CustomizeChromePageHandler
 
 CustomizeChromePageHandler::CustomizeChromePageHandler(
     mojo::PendingReceiver<side_panel::mojom::CustomizeChromePageHandler>
@@ -25,12 +21,12 @@ CustomizeChromePageHandler::CustomizeChromePageHandler(
     content::WebContents* web_contents,
     const std::vector<ntp::ModuleIdDetail> module_id_details,
     std::optional<base::RepeatingCallback<void(const GURL&)>> open_url_callback)
-    : CustomizeChromePageHandler_Chromium(std::move(pending_page_handler),
-                                          std::move(pending_page),
-                                          ntp_custom_background_service,
-                                          web_contents,
-                                          module_id_details,
-                                          open_url_callback) {
+    : CustomizeChromePageHandler_ChromiumImpl(std::move(pending_page_handler),
+                                              std::move(pending_page),
+                                              ntp_custom_background_service,
+                                              web_contents,
+                                              module_id_details,
+                                              open_url_callback) {
 #if defined(TOOLKIT_VIEWS)
   pref_change_registrar_.Add(
       darker_theme::prefs::kBraveDarkerMode,

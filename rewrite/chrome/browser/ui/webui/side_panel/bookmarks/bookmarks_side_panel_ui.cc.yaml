@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Rename BookmarksSidePanelUIConfig so Brave can re-define it.
+
+      The chromium_src shadow defines the Brave BookmarksSidePanelUIConfig
+      methods.
+    rename_class:
+      class_name: BookmarksSidePanelUIConfig
+      rename: BookmarksSidePanelUIConfig_Unused
+
+  - description: |-
+      Rename BookmarksSidePanelUI so Brave can subclass it.
+
+      The chromium_src shadow defines the Brave BookmarksSidePanelUI
+      constructor and destructor on top of BookmarksSidePanelUI_ChromiumImpl.
+    rename_class:
+      class_name: BookmarksSidePanelUI
+      rename: BookmarksSidePanelUI_ChromiumImpl
