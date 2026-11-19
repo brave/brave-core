@@ -155,7 +155,7 @@ void BraveRequestInfo::set_top_frame_origin(std::optional<url::Origin> value) {
   top_frame_origin_ = std::move(value);
 }
 
-url::Origin BraveRequestInfo::first_party_origin_for_shields() const {
+url::Origin BraveRequestInfo::first_party_origin_for_settings() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   url::Origin request_origin = url::Origin::Create(request_url_);
   if (resource_type_ == blink::mojom::ResourceType::kMainFrame) {

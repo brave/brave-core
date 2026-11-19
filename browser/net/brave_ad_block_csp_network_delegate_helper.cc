@@ -86,7 +86,7 @@ int OnHeadersReceived_AdBlockCspWork(
     auto* ad_block_service = g_brave_browser_process->ad_block_service();
     ad_block_service->AsyncCallAndReplyWithResult<std::optional<std::string>>(
         base::BindOnce(&GetCspDirectivesOnTaskRunner,
-                       ctx->first_party_origin_for_shields(),
+                       ctx->first_party_origin_for_settings(),
                        ctx->request_url(), ctx->resource_type(), ctx->method(),
                        std::move(original_csp)),
         base::BindOnce(&OnReceiveCspDirectives, next_callback,

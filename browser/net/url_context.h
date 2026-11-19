@@ -80,7 +80,8 @@ class BraveRequestInfo {
   const GURL& request_url() const;
   void set_request_url(const GURL& value);
 
-  // Deprecated: use `first_party_origin_for_shields()` or `top_frame_origin()`.
+  // Deprecated: use `first_party_origin_for_settings()` or
+  // `top_frame_origin()`.
   const GURL& tab_origin() const;
   void set_tab_origin(const GURL& value);
 
@@ -103,7 +104,7 @@ class BraveRequestInfo {
   // ignores sandboxing, so an opaque result is replaced by its precursor origin
   // when it has one. An opaque top frame origin without a precursor stays
   // opaque.
-  url::Origin first_party_origin_for_shields() const;
+  url::Origin first_party_origin_for_settings() const;
 
   bool internal_redirect() const;
   void set_internal_redirect(bool value);
