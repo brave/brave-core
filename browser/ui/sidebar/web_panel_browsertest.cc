@@ -59,6 +59,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/contents_container_view.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
+#include "chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 #include "chrome/browser/ui/views/tabs/tab/tab_context_menu_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
@@ -77,13 +78,18 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_utils.h"
+#include "ui/events/base_event_utils.h"
+#include "ui/events/event.h"
 #include "ui/gfx/animation/animation.h"
 #include "ui/gfx/animation/animation_container.h"
 #include "ui/gfx/animation/animation_test_api.h"
+#include "ui/gfx/geometry/point.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/views/animation/ink_drop.h"
+#include "ui/views/controls/button/image_button.h"
 #include "ui/views/controls/resize_area.h"
+#include "ui/views/test/button_test_api.h"
 #include "ui/views/view_utils.h"
 #include "url/gurl.h"
 
@@ -125,6 +131,23 @@ class WebPanelBrowserTest : public SidebarBrowserTest {
     service->AddItem(SidebarItem::CreateWebPanelItem(url, u"title"));
     controller()->OnItemPressed(model()->GetAllSidebarItems().size() - 1);
     ASSERT_TRUE(web_panel_controller()->HasOpenPanel());
+  }
+
+  // Clicks the close button on the mini toolbar drawn over the panel.
+  void PressWebPanelCloseButton(const base::Location& location = FROM_HERE) {
+    SCOPED_TRACE(location.ToString());
+
+    auto* container = views::AsViewClass<ContentsContainerView>(
+        GetBraveMultiContentsView()->GetWebPanelContainerForTesting());
+    ASSERT_TRUE(container);
+    auto* close_button = container->mini_toolbar()->close_button_for_testing();
+    ASSERT_TRUE(close_button->GetVisible());
+
+    const gfx::Point origin(0, 0);
+    views::test::ButtonTestApi(close_button)
+        .NotifyClick(ui::MouseEvent(ui::EventType::kMousePressed, origin,
+                                    origin, ui::EventTimeForNow(),
+                                    ui::EF_LEFT_MOUSE_BUTTON, 0));
   }
 
   bool ShouldUseRoundedCorners() const {
@@ -676,6 +699,42 @@ IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest, WebPanelItemActiveStateTest) {
   controller()->ToggleSidebarPinning();
   ASSERT_TRUE(sidebar->IsSidebarVisible());
   EXPECT_EQ(views::InkDropState::ACTIVATED, ink_drop_state_at(index_b));
+}
+
+// The mini toolbar's close button has to dismiss the panel the same way the
+// sidebar item does. It is the another way out once the user has removed the
+// item.
+IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest, CloseButtonClosesWebPanel) {
+  auto* profile = browser()->GetProfile();
+  auto* tab_restore_service = TabRestoreServiceFactory::GetForProfile(profile);
+  ASSERT_TRUE(tab_restore_service);
+
+  ASSERT_EQ(1, tab_model()->count());
+  OpenWebPanel(GURL(kTestWebPanelURL));
+  ASSERT_EQ(2, tab_model()->count());
+
+  // The panel's navigation has to commit, or the tab restore service would have
+  // nothing to record even on the wrong close path. The load itself fails -
+  // there is no network - but the error page still commits the URL.
+  auto* panel_contents = tab_model()->GetTabAtIndex(0)->GetContents();
+  ASSERT_EQ(panel_contents, web_panel_controller()->panel_contents());
+  content::WaitForLoadStopWithoutSuccessCheck(panel_contents);
+
+  // Removing the item leaves the panel open with nothing in the sidebar to
+  // toggle it off.
+  SidebarServiceFactory::GetForProfile(profile)->RemoveItemAt(
+      model()->GetAllSidebarItems().size() - 1);
+  ASSERT_TRUE(web_panel_controller()->HasOpenPanel());
+
+  RunScheduledLayouts();
+  PressWebPanelCloseButton();
+
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !web_panel_controller()->HasOpenPanel(); }));
+  EXPECT_FALSE(GetBraveMultiContentsView()->IsWebPanelVisible());
+  EXPECT_EQ(1, tab_model()->count());
+  EXPECT_TRUE(tab_restore_service->entries().empty())
+      << "the web panel's pinned tab is restorable";
 }
 
 // The side panel must not animate when it swaps with the web panel, as the two
@@ -1390,6 +1449,36 @@ IN_PROC_BROWSER_TEST_F(WebPanelAnimationBrowserTest, CloseKeepsTabUntilTheEnd) {
   RunScheduledLayouts();
   EXPECT_EQ(multi_contents_view->width(), LaidOutContentsWidth())
       << "the contents area should have taken the strip's width back";
+}
+
+// The mini toolbar's close button collapses the strip just like toggling the
+// item does, instead of making the panel vanish in a single frame.
+IN_PROC_BROWSER_TEST_F(WebPanelAnimationBrowserTest,
+                       CloseButtonCollapsesStrip) {
+  OpenWebPanel(GURL(kTestWebPanelURL));
+  FinishAnimation();
+
+  auto* multi_contents_view = GetBraveMultiContentsView();
+  const int target_width =
+      multi_contents_view->web_panel_width_for_testing();  // IN-TEST
+  const int tab_count = tab_model()->count();
+
+  RunScheduledLayouts();
+  PressWebPanelCloseButton();
+  ASSERT_TRUE(IsPanelAnimating());
+
+  AdvanceAnimation(base::Milliseconds(175));
+  RunScheduledLayouts();
+  EXPECT_TRUE(multi_contents_view->IsWebPanelVisible());
+  EXPECT_EQ(tab_count, tab_model()->count());
+  EXPECT_LT(LaidOutPanelWidth(), target_width);
+  EXPECT_GT(LaidOutPanelWidth(), 0);
+  ExpectStripTilesHost();
+
+  FinishAnimation();
+  EXPECT_FALSE(multi_contents_view->IsWebPanelVisible());
+  EXPECT_FALSE(web_panel_controller()->HasPanelTab());
+  EXPECT_EQ(tab_count - 1, tab_model()->count());
 }
 
 // Pressing the item again mid-close keeps the same tab and reverses the

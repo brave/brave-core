@@ -7,10 +7,15 @@
 
 #include <memory>
 
+#include "base/check.h"
+#include "base/functional/bind.h"
 #include "brave/browser/ui/brave_scheme_utils.h"
+#include "brave/browser/ui/sidebar/sidebar_controller.h"
+#include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
 #include "brave/browser/ui/tabs/brave_split_tab_menu_model.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_outline.h"
 #include "brave/components/vector_icons/vector_icons.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/contents_container_outline.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/vector_icon_types.h"
@@ -64,7 +69,22 @@ void BraveMultiContentsViewMiniToolbar::SetAlwaysShowDomain(
 }
 
 void BraveMultiContentsViewMiniToolbar::SetStyle(Style style) {
+  if (style_ == style) {
+    return;
+  }
+
   style_ = style;
+
+  // A web panel is not a tab the user manages from the strip, so closing it has
+  // to go through the panel controller: that animates the panel out and leaves
+  // no "recently closed" entry for its pinned tab.
+  close_button_->SetCallback(
+      style_ == Style::kWebPanel
+          ? base::BindRepeating(
+                &BraveMultiContentsViewMiniToolbar::CloseWebPanel,
+                base::Unretained(this))
+          : base::BindRepeating(&MultiContentsViewMiniToolbar::CloseCurrentView,
+                                base::Unretained(this)));
 }
 
 void BraveMultiContentsViewMiniToolbar::UpdateContents() {
@@ -88,8 +108,8 @@ void BraveMultiContentsViewMiniToolbar::UpdateState(bool is_active,
 
   is_active_ = is_active;
 
-  // The menu button acts on the split that hosts this toolbar.
-  close_button_->SetVisible(style_ == Style::kSplit);
+  // A standalone contents area is not closable from here; it is the whole tab.
+  close_button_->SetVisible(style_ != Style::kStandalone);
 
   // The leading margin must clear the curved inner side when the favicon is
   // displayed.
@@ -117,6 +137,15 @@ void BraveMultiContentsViewMiniToolbar::UpdateState(bool is_active,
 
 bool BraveMultiContentsViewMiniToolbar::UsesSplitBorder() const {
   return style_ != Style::kStandalone;
+}
+
+void BraveMultiContentsViewMiniToolbar::CloseWebPanel() {
+  auto* sidebar_controller =
+      sidebar::SidebarController::From(browser_view_->browser());
+  CHECK(sidebar_controller);
+  auto* web_panel_controller = sidebar_controller->GetWebPanelController();
+  CHECK(web_panel_controller);
+  web_panel_controller->CloseWebPanel();
 }
 
 BEGIN_METADATA(BraveMultiContentsViewMiniToolbar)
