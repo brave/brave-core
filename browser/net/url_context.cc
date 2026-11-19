@@ -114,16 +114,6 @@ void BraveRequestInfo::set_request_url(const GURL& value) {
   request_url_ = value;
 }
 
-const GURL& BraveRequestInfo::tab_origin() const {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return tab_origin_;
-}
-
-void BraveRequestInfo::set_tab_origin(const GURL& value) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  tab_origin_ = value;
-}
-
 const GURL& BraveRequestInfo::tab_url() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return tab_url_;
@@ -532,7 +522,7 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
 
   ctx->set_render_frame_token(render_frame_token);
 
-  // TODO(iefremov): remove tab_url. Change tab_origin from GURL to Origin.
+  // TODO(iefremov): remove tab_url.
   const net::IsolationInfo* isolation_info = nullptr;
   if (request.trusted_params) {
     isolation_info = &request.trusted_params->isolation_info;
@@ -549,22 +539,10 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
     // given that this is always empty for subresources.
     ctx->set_network_anonymization_key(
         isolation_info->network_anonymization_key());
-    ctx->set_tab_origin(
-        isolation_info->top_frame_origin().value_or(url::Origin()).GetURL());
     ctx->set_top_frame_origin(isolation_info->top_frame_origin());
     ctx->set_is_main_frame_request(isolation_info->IsMainFrameRequest());
   }
-  // TODO(iefremov): We still need this for WebSockets, currently
-  // |AddChannelRequest| provides only old-fashioned |site_for_cookies|.
-  // (See |BraveProxyingWebSocket|).
-  if (ctx->tab_origin().is_empty()) {
-    content::WebContents* contents = content::WebContents::FromRenderFrameHost(
-        content::RenderFrameHost::FromFrameToken(ctx->render_frame_token()));
-    if (contents) {
-      ctx->set_tab_origin(
-          url::Origin::Create(contents->GetLastCommittedURL()).GetURL());
-    }
-  }
+  // WebSockets have no isolation info, so use the outermost main frame.
   if (!ctx->top_frame_origin()) {
     if (auto* render_frame_host = content::RenderFrameHost::FromFrameToken(
             ctx->render_frame_token())) {
@@ -572,12 +550,6 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
           render_frame_host->GetOutermostMainFrame()->GetLastCommittedOrigin());
     }
   }
-  // Shared and service worker WebSockets have no frame, so fall back to the
-  // initiator origin for Shields settings.
-  if (ctx->tab_origin().is_empty() && ctx->request_initiator()) {
-    ctx->set_tab_origin(ctx->request_initiator()->GetURL());
-  }
-
   if (old_ctx) {
     ctx->set_internal_redirect(old_ctx->internal_redirect());
     ctx->set_redirect_source(old_ctx->redirect_source());
@@ -585,25 +557,28 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
 
   Profile* profile = Profile::FromBrowserContext(browser_context);
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
+  // Opaque first party origins have an empty URL, so they get the default
+  // settings.
+  const GURL first_party_url = ctx->first_party_origin_for_settings().GetURL();
   ctx->set_allow_brave_shields(
-      map ? brave_shields::IsBraveShieldsEnabled(map, ctx->tab_origin())
-          : true);
+      map ? brave_shields::IsBraveShieldsEnabled(map, first_party_url) : true);
   ctx->set_allow_ads(map &&
-                     brave_shields::GetAdControlType(map, ctx->tab_origin()) ==
+                     brave_shields::GetAdControlType(map, first_party_url) ==
                          brave_shields::ControlType::ALLOW);
   // Currently, "aggressive" mode is registered as a cosmetic filtering control
   // type, even though it can also affect network blocking.
   ctx->set_aggressive_blocking(
       map && brave_shields::GetCosmeticFilteringControlType(
-                 map, ctx->tab_origin()) == brave_shields::ControlType::BLOCK);
+                 map, first_party_url) == brave_shields::ControlType::BLOCK);
 
   // HACK: after we fix multiple creations of BraveRequestInfo we should
-  // use only tab_origin. Since we recreate BraveRequestInfo during consequent
-  // stages of navigation, |tab_origin| changes and so does |allow_referrers|
-  // flag, which is not what we want for determining referrers.
+  // use only first_party_url. Since we recreate BraveRequestInfo during
+  // consequent stages of navigation, |first_party_url| changes and so does
+  // |allow_referrers| flag, which is not what we want for determining
+  // referrers.
   ctx->set_allow_referrers(map && brave_shields::AreReferrersAllowed(
                                       map, ctx->redirect_source().is_empty()
-                                               ? ctx->tab_origin()
+                                               ? first_party_url
                                                : ctx->redirect_source()));
   ctx->set_upload_data(GetUploadData(request));
 

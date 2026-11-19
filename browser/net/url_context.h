@@ -80,11 +80,6 @@ class BraveRequestInfo {
   const GURL& request_url() const;
   void set_request_url(const GURL& value);
 
-  // Deprecated: use `first_party_origin_for_settings()` or
-  // `top_frame_origin()`.
-  const GURL& tab_origin() const;
-  void set_tab_origin(const GURL& value);
-
   const GURL& tab_url() const;
   void set_tab_url(const GURL& value);
 
@@ -243,7 +238,6 @@ class BraveRequestInfo {
 
   std::string method_;
   GURL request_url_;
-  GURL tab_origin_;
   GURL tab_url_;
   std::optional<url::Origin> request_initiator_;
   std::optional<url::Origin> top_frame_origin_;

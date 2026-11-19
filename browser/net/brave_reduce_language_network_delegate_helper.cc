@@ -100,10 +100,7 @@ int OnBeforeStartTransaction_ReduceLanguageWork(
   HostContentSettingsMap* content_settings =
       HostContentSettingsMapFactory::GetForProfile(profile);
   DCHECK(content_settings);
-  GURL origin_url(ctx->tab_origin());
-  if (origin_url.is_empty()) {
-    origin_url = ctx->request_initiator().value_or(url::Origin()).GetURL();
-  }
+  const GURL origin_url = ctx->first_party_origin_for_settings().GetURL();
   if (origin_url.is_empty()) {
     return net::OK;
   }

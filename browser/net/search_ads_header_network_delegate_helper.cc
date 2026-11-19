@@ -51,7 +51,7 @@ int OnBeforeStartTransaction_SearchAdsHeader(
   // - and all of the following are true:
   //   - The current tab is not in a Private browser window.
   //   - `request_url` host is allowed.
-  //   - `tab_origin` or `request_initiator` host is allowed.
+  //   - `top_frame_origin` or `request_initiator` host is allowed.
 
   // The header should not be set if any one of the following are true. (to
   // allow search ads):
@@ -59,12 +59,13 @@ int OnBeforeStartTransaction_SearchAdsHeader(
   // - Rewards is disabled.
   // - Rewards is enabled and not connected.
   // - `request_url` host is disallowed.
-  // - `tab_origin` and `request_initiator` hosts are disallowed.
+  // - `top_frame_origin` and `request_initiator` hosts are disallowed.
 
   Profile* profile = Profile::FromBrowserContext(request->browser_context());
   if (ShouldSetHeaderForProfile(profile) &&
       brave_search::IsAllowedHost(request->request_url()) &&
-      (brave_search::IsAllowedHost(request->tab_origin()) ||
+      (brave_search::IsAllowedHost(
+           request->top_frame_origin().value_or(url::Origin()).GetURL()) ||
        brave_search::IsAllowedHost(
            request->request_initiator().value_or(url::Origin()).GetURL()))) {
     headers->SetHeader(kSearchAdsHeader, kSearchAdsDisabledValue);

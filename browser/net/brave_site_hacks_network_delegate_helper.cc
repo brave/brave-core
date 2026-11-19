@@ -28,7 +28,8 @@ namespace {
 
 template <template <typename> class T>
 bool ApplyPotentialReferrerBlock(T<BraveRequestInfo> ctx) {
-  if (ctx->tab_origin().SchemeIs(kChromeExtensionScheme)) {
+  if (ctx->first_party_origin_for_settings().scheme() ==
+      kChromeExtensionScheme) {
     return false;
   }
 
