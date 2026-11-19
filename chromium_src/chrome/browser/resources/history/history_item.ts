@@ -14,7 +14,7 @@ injectStyle(HistoryItemElement, css`
     font-weight: 400;
   }
 
-  #menu-button {
+  #menuButton {
     transform: rotate(90deg) !important;
   }
 `)
