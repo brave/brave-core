@@ -29,6 +29,9 @@ test("ios_brave_unit_tests") {
     # Unit tests
     ":legacy_unit_tests",
     ":mojom_objc_generator_unit_tests",
+
+    # This unit test cant be moved to components due to Android Java inclusions
+    "//brave/components/brave_referrals/browser:unit_tests",
     "//brave/ios/browser/api/ads:unit_tests",
     "//brave/ios/browser/brave_ads:unit_tests",
     "//brave/ios/browser/brave_shields:unit_tests",

@@ -5,6 +5,8 @@ include_rules = [
   "+content/public/browser",
   "+content/public/common",
   "+content/public/test",
+  "+ios/web/public/test",
+  "+ios/web/public/thread",
   "+services/network/public",
   "+services/network/test",
 ]

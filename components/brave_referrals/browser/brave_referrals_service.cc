@@ -21,6 +21,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/system/sys_info.h"
+#include "base/task/single_thread_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/brave_domains/service_domains.h"
@@ -29,10 +30,10 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/vendor/brave_base/random.h"
+#include "build/blink_buildflags.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
-#include "content/public/browser/browser_thread.h"
 #include "net/base/load_flags.h"
 #include "net/http/http_response_headers.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
@@ -44,6 +45,14 @@
 #if BUILDFLAG(IS_ANDROID)
 #include "base/android/android_info.h"
 #endif  // BUILDFLAG(IS_ANDROID)
+
+#if BUILDFLAG(USE_BLINK)
+#include "content/public/browser/browser_task_traits.h"
+#include "content/public/browser/browser_thread.h"
+#else
+#include "ios/web/public/thread/web_task_traits.h"
+#include "ios/web/public/thread/web_thread.h"
+#endif  // BUILDFLAG(USE_BLINK)
 
 #if BUILDFLAG(IS_MAC)
 #include "base/apple/bundle_locations.h"
@@ -85,6 +94,22 @@ BraveReferralsService::ReferralInitializedCallback*
 // added in the meantime to fix the build error. Remove this attribute and
 // provide a proper fix.
 [[clang::no_destroy]] base::FilePath g_promo_file_path;
+
+scoped_refptr<base::SingleThreadTaskRunner> GetUIThreadTaskRunner() {
+#if BUILDFLAG(USE_BLINK)
+  return content::GetUIThreadTaskRunner({});
+#else
+  return web::GetUIThreadTaskRunner({});
+#endif  // BUILDFLAG(USE_BLINK)
+}
+
+void DCheckCurrentlyOnUIThread() {
+#if BUILDFLAG(USE_BLINK)
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+#else
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
+#endif  // BUILDFLAG(USE_BLINK)
+}
 
 void DeletePromoCodeFile(const base::FilePath& promo_code_file) {
   if (!base::DeleteFile(promo_code_file)) {
@@ -418,13 +443,13 @@ void BraveReferralsService::SetFirstRunTime(
 
 void BraveReferralsService::PerformFinalizationChecks() {
   // Delete the promo code preference, if appropriate.
-  content::GetUIThreadTaskRunner({})->PostTask(
+  GetUIThreadTaskRunner()->PostTask(
       FROM_HERE,
       base::BindOnce(&BraveReferralsService::MaybeDeletePromoCodePref,
                      weak_factory_.GetWeakPtr()));
 
   // Check for referral finalization, if appropriate.
-  content::GetUIThreadTaskRunner({})->PostTask(
+  GetUIThreadTaskRunner()->PostTask(
       FROM_HERE,
       base::BindOnce(&BraveReferralsService::MaybeCheckForReferralFinalization,
                      weak_factory_.GetWeakPtr()));
@@ -446,7 +471,7 @@ base::FilePath BraveReferralsService::GetPromoCodeFileName() const {
 }
 
 void BraveReferralsService::MaybeCheckForReferralFinalization() {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCheckCurrentlyOnUIThread();
 
   const auto& download_id = pref_service_->GetString(kReferralDownloadID);
   if (download_id.empty()) {
@@ -492,7 +517,7 @@ void BraveReferralsService::MaybeCheckForReferralFinalization() {
 }
 
 void BraveReferralsService::MaybeDeletePromoCodePref() const {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCheckCurrentlyOnUIThread();
 
   uint64_t delete_time = 90 * 24 * 60 * 60;
   auto env = base::Environment::Create();
@@ -643,7 +668,7 @@ void BraveReferralsService::InitAndroidReferrer() {
 
 void BraveReferralsService::OnAndroidBraveReferrerReady(
     const std::string& gbraid) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCheckCurrentlyOnUIThread();
   if (!gbraid.empty()) {
     pref_service_->SetString(kReferralAndroidGbraid, gbraid);
     // The referrer is fetched once per install and can't be re-fetched, so
@@ -657,7 +682,7 @@ void BraveReferralsService::OnAndroidBraveReferrerReady(
 }
 
 void BraveReferralsService::MaybeReportAndroidConversion() {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCheckCurrentlyOnUIThread();
 
   const std::string gbraid = pref_service_->GetString(kReferralAndroidGbraid);
   if (gbraid.empty()) {
