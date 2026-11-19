@@ -225,15 +225,20 @@ void ConnectionManager::SetSmartProxyRoutingState(bool enable) {
   // Persist the setting once agent-side storage exists.
   // TODO(https://github.com/brave/brave-browser/issues/54641)
   // Implement once there are concrete connection API stubs.
+  UpdateSmartProxyRoutingState(enable);
   NOTIMPLEMENTED_LOG_ONCE();
 }
 
 void ConnectionManager::SetAllowLanTrafficState(bool enable) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!allow_lan_traffic_available_) {
+    return;
+  }
   // TODO(https://github.com/brave/brave-browser/issues/59939)
   // Persist the setting once agent-side storage exists.
   // TODO(https://github.com/brave/brave-browser/issues/54641)
   // Implement once there are concrete connection API stubs.
+  UpdateAllowLanTrafficState(allow_lan_traffic_available_, enable);
   NOTIMPLEMENTED_LOG_ONCE();
 }
 

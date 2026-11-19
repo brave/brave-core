@@ -6,11 +6,14 @@
 #include "brave/components/brave_vpn/browser/v2/agent/test/fake_agent.h"
 
 #include <memory>
+#include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
+#include "base/strings/strcat.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_vpn/browser/v2/agent/test/fake_agent_identity.h"
 #include "build/build_config.h"
@@ -23,7 +26,53 @@ constexpr wchar_t kFakeServerName[] = L"fake-agent";
 #else
 constexpr char kFakeServerName[] = "fake-agent";
 #endif
+
+std::string DescribeCall(std::string_view method, mojom::VpnRegionPtr value) {
+  return value ? base::StrCat({method, "(", value->name, ")"})
+               : base::StrCat({method, "(null)"});
+}
+
+std::string DescribeCall(std::string_view method, bool value) {
+  return base::StrCat({method, value ? "(true)" : "(false)"});
+}
 }  // namespace
+
+FakeBrowserHost::FakeBrowserHost() = default;
+
+FakeBrowserHost::~FakeBrowserHost() = default;
+
+void FakeBrowserHost::Connect() {
+  calls_.push_back("Connect");
+}
+
+void FakeBrowserHost::Disconnect() {
+  calls_.push_back("Disconnect");
+}
+
+void FakeBrowserHost::ResetConnectionState() {
+  calls_.push_back("ResetConnectionState");
+}
+
+void FakeBrowserHost::GetAllRegions(GetAllRegionsCallback callback) {
+  calls_.push_back("GetAllRegions");
+  std::move(callback).Run({});
+}
+
+void FakeBrowserHost::SetSelectedRegion(mojom::VpnRegionPtr region) {
+  calls_.push_back(DescribeCall("SetSelectedRegion", std::move(region)));
+}
+
+void FakeBrowserHost::SetAutoReconnectState(bool enable) {
+  calls_.push_back(DescribeCall("SetAutoReconnectState", enable));
+}
+
+void FakeBrowserHost::SetSmartProxyRoutingState(bool enable) {
+  calls_.push_back(DescribeCall("SetSmartProxyRoutingState", enable));
+}
+
+void FakeBrowserHost::SetAllowLanTrafficState(bool enable) {
+  calls_.push_back(DescribeCall("SetAllowLanTrafficState", enable));
+}
 
 FakeAgent::FakeAgent() {
   // The real agent drops its per-connection state when the connection goes
@@ -69,7 +118,7 @@ void FakeAgent::AnswerHeldBindBrowserHostRequest(
 void FakeAgent::DropSessionHandles() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   browser_endpoints_.clear();
-  parked_hosts_.clear();
+  host_receivers_.Clear();
 }
 
 mojom::BrowserEndpoint* FakeAgent::browser_endpoint() {
@@ -120,6 +169,16 @@ bool FakeAgent::has_held_initialize_request() const {
 bool FakeAgent::has_held_bind_browser_host_request() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return !held_bind_browser_host_reply_.is_null();
+}
+
+const std::vector<std::string>& FakeAgent::browser_host_calls() const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  return browser_host_.calls();
+}
+
+void FakeAgent::FlushBrowserHostForTesting() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  host_receivers_.FlushForTesting();
 }
 
 void FakeAgent::OnProviderDisconnected() {
@@ -242,7 +301,7 @@ void FakeAgent::KeepSession(
     mojo::PendingReceiver<mojom::BrowserHost> host) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   browser_endpoints_.emplace_back(std::move(browser_endpoint));
-  parked_hosts_.push_back(std::move(host));
+  host_receivers_.Add(&browser_host_, std::move(host));
 }
 
 }  // namespace brave_vpn::v2
