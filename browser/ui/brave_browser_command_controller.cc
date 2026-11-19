@@ -22,6 +22,7 @@
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/focus_mode/focus_mode_utils.h"
+#include "brave/browser/ui/peek/public/peek_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
@@ -268,6 +269,10 @@ bool BraveBrowserCommandController::ExecuteCommandWithDispositionAndContext(
     WindowOpenDisposition disposition,
     std::optional<actions::ActionInvocationContext> context,
     base::TimeTicks time_stamp) {
+  if (auto* peek_controller = PeekController::From(&*browser_);
+      peek_controller && peek_controller->HandleCommand(id)) {
+    return true;
+  }
   return IsBraveCommands(id) || IsBraveOverrideCommands(
                                     id, *browser_->GetProfile()->GetPrefs())
              ? ExecuteBraveCommandWithDisposition(id, disposition, time_stamp)

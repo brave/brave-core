@@ -38,6 +38,11 @@ bool IsShiftClickOpen(const content::OpenURLParams& params);
 // renderer-initiated navigation.
 bool CanOpenInPeek(const content::OpenURLParams& params);
 
+// Whether browser command `command_id` acts on the page in the active tab,
+// e.g. find, print, reload or zoom. Pressed in Peek, the user means the Peek
+// page, not the tab under the card.
+bool IsPageCommand(int command_id);
+
 }  // namespace peek
 
 #endif  // BRAVE_BROWSER_UI_PEEK_PEEK_UTILS_H_

@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/auto_reset.h"
 #include "base/callback_list.h"
 #include "base/check.h"
 #include "base/check_deref.h"
@@ -21,11 +22,16 @@
 #include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
 #include "brave/browser/ui/views/peek/peek_contents.h"
 #include "brave/browser/ui/views/peek/peek_view.h"
+#include "build/build_config.h"
+#include "chrome/app/chrome_command_ids.h"
+#include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_web_contents_delegate/browser_web_contents_delegate.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/split_tab_metrics.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "components/input/native_web_keyboard_event.h"
 #include "components/split_tabs/split_tab_visual_data.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/frame_tree_node_id.h"
@@ -33,7 +39,9 @@
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/content_accelerators/accelerator_util.h"
 #include "ui/gfx/geometry/rect.h"
+#include "ui/views/focus/focus_manager.h"
 #include "ui/views/widget/widget.h"
 
 // One Peek: its page, and the widget and card that show it over its source
@@ -146,6 +154,24 @@ class PeekControllerImpl::Peek : public PeekContents::Delegate,
 
   void OnPeekMoveToTabOrCloseRequested() override {
     PostControllerTask(&PeekControllerImpl::MoveToTabOrClose);
+  }
+
+  bool OnPeekTakeFocus(bool reverse) override {
+    // Use the Peek widget's focus manager, not the browser's, so focus cycles
+    // between the card's toolbar and the page.
+    views::FocusManager* focus_manager = view_->GetFocusManager();
+    if (!focus_manager) {
+      return false;
+    }
+    focus_manager->AdvanceFocus(reverse);
+    return true;
+  }
+
+  bool OnPeekHandleKeyboardEvent(
+      content::WebContents* source,
+      const input::NativeWebKeyboardEvent& event) override {
+    // The shortcut can destroy `this`, so the controller handles it.
+    return controller_->HandleKeyboardEvent(source, event);
   }
 
   // PeekView::Delegate:
@@ -303,6 +329,25 @@ void PeekControllerImpl::Close() {
   }
 }
 
+bool PeekControllerImpl::HandleCommand(int command_id) {
+  Peek* peek = GetActivePeek();
+  if (!peek || !HasFocus()) {
+    return false;
+  }
+  // The command comes from an event in the Peek page or widget, which moving
+  // or closing Peek tears down, so both run asynchronously.
+  if (command_id == IDC_CLOSE_TAB) {
+    peek->PostControllerTask(&PeekControllerImpl::ClosePeek);
+    return true;
+  }
+  if (!peek::IsPageCommand(command_id)) {
+    return false;
+  }
+  peek->PostTask(base::BindOnce(&PeekControllerImpl::MoveToTabAndExecuteCommand,
+                                base::Unretained(this), command_id));
+  return true;
+}
+
 bool PeekControllerImpl::IsShowing() const {
   return !!GetActivePeek();
 }
@@ -440,6 +485,52 @@ void PeekControllerImpl::MoveToTabOrClose(Peek& peek) {
     return;
   }
   MoveToTab(peek);
+}
+
+void PeekControllerImpl::MoveToTabAndExecuteCommand(int command_id,
+                                                    Peek& peek) {
+  // Commands run on the active tab, so only run it if the Peek page becomes
+  // that tab.
+  const bool activate = peek.source_tab().IsActivated();
+  MoveToTab(peek);
+  if (activate) {
+    chrome::ExecuteCommand(&*browser_, command_id);
+  }
+}
+
+bool PeekControllerImpl::HandleKeyboardEvent(
+    content::WebContents* source,
+    const input::NativeWebKeyboardEvent& event) {
+  // Browser shortcuts run as browser commands, which `HandleCommand()` sends
+  // to Peek while this is set. `this` outlives the call even if Peek closes.
+  base::AutoReset<bool> forwarding(&forwarding_keyboard_event_, true);
+
+  // Dispatching through the browser only processes accelerators while the
+  // browser window is active, which it isn't while Peek's widget is, so look
+  // the key up in the browser's accelerator table and run its command here.
+  // Unregistered keys fall through. Not needed on macOS, where shortcuts with
+  // modifiers are menu key equivalents rather than this table.
+#if !BUILDFLAG(IS_MAC)
+  if (event.GetType() == blink::WebInputEvent::Type::kRawKeyDown &&
+      browser_view_->AcceleratorPressed(
+          ui::GetAcceleratorFromNativeWebKeyboardEvent(event))) {
+    return true;
+  }
+#endif
+
+  return CHECK_DEREF(BrowserWebContentsDelegate::From(&*browser_))
+      .HandleKeyboardEvent(source, event);
+}
+
+bool PeekControllerImpl::HasFocus() const {
+  if (forwarding_keyboard_event_) {
+    return true;
+  }
+  if (has_focus_for_testing_) {
+    return *has_focus_for_testing_;
+  }
+  Peek* peek = GetActivePeek();
+  return peek && peek->widget()->IsActive();
 }
 
 gfx::Rect PeekControllerImpl::GetTargetBoundsInScreen() const {
