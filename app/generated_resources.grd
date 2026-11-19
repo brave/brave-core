@@ -7451,7 +7451,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         This setting is managed by your organization
       </message>
       <message name="IDS_UPLOAD_IMAGE_FORMAT" desc="The permitted upload image format for the custom background. (On the New Tab Page)">
-        *.jpeg, *.jpg, *.png
+        *.avif, *.gif, *.jpeg, *.jpg, *.png
       </message>
       <message name="IDS_NTP_CUSTOM_LINKS_NAME" desc="The title for custom link name input field on the edit shortcut dialog. (On the New Tab Page)" meaning="Name of an inanimate object">
         Name
