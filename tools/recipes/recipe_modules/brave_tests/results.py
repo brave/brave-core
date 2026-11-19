@@ -9,6 +9,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from sanitizer_reports import RunReports
+from test_results import SuiteOutcome
 
 
 @dataclass(frozen=True)
@@ -18,8 +19,9 @@ class SuiteResult:
     # The suite's name, which its step is named after.
     name: str
     passed: bool
-    # The sanitiser reports in its output; None when `runtest.py` wrote none,
-    # as when it could not run the suite.
+    # How its tests did, and the sanitiser reports in its output; either is
+    # None when `runtest.py` wrote none, as when it could not run the suite.
+    outcome: SuiteOutcome | None
     sanitizer_reports: RunReports | None
 
 
@@ -32,6 +34,15 @@ class TestRun:
     @property
     def failed_suites(self) -> tuple[str, ...]:
         return tuple(suite.name for suite in self.suites if not suite.passed)
+
+    @property
+    def outcomes(self) -> dict[str, SuiteOutcome]:
+        """How each suite's tests did, by suite, for those it is known of."""
+        return {
+            suite.name: suite.outcome
+            for suite in self.suites
+            if suite.outcome is not None
+        }
 
     @property
     def sanitizer_reports(self) -> dict[str, RunReports]:

@@ -2,21 +2,13 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-#
-# For some of the code lifted below.
-#
-# Copyright 2020 The Chromium Authors. All rights reserved.
-# Use of this source code is governed by a BSD-style license that can be
-# found in the LICENSE file.
 """A JUnit XML report of a gtest run, from the launcher's JSON summary.
 
 It has the layout of the launcher's own `--gtest_output=xml` report, which
 CI systems read as JUnit: a `testsuite` per test case and a `testcase` per
-test, with its last run's result. The statuses and failure messages are
-derived as `result_adapter gtest` derives them for ResultDB, from
-infra/go/src/infra/tools/result_adapter/gtest.go. A test's earlier failed
-runs are reported as Surefire's `flakyFailure` (the last run passed) or
-`rerunFailure` (it failed too).
+test, with its last run's result, as `test_results` reads them. A test's
+earlier failed runs are reported as Surefire's `flakyFailure` (the last run
+passed) or `rerunFailure` (it failed too).
 
 Compared with the launcher's report that `pnpm run test --output_xml` asks
 for (with Brave's failure details from
@@ -38,248 +30,24 @@ chromium_src/base/test/launcher/test_results_tracker.cc):
 
 from __future__ import annotations
 
-import base64
-import binascii
 from collections import defaultdict
-from dataclasses import dataclass
-import enum
 from pathlib import Path
 import re
 from xml.etree import ElementTree
 
-import sanitizer_reports
-
-
-class Outcome(enum.Enum):
-    PASSED = 'passed'
-    FAILED = 'failed'
-    SKIPPED = 'skipped'
-    # The launcher could not run the test, or lost its result.
-    ERRORED = 'errored'
-
-
-_OUTCOMES = {
-    'SUCCESS': Outcome.PASSED,
-    'FAILURE': Outcome.FAILED,
-    'FAILURE_ON_EXIT': Outcome.FAILED,
-    'TIMEOUT': Outcome.FAILED,
-    'CRASH': Outcome.FAILED,
-    'SKIPPED': Outcome.SKIPPED,
-    'EXCESSIVE_OUTPUT': Outcome.FAILED,
-    'NOTRUN': Outcome.ERRORED,
-    'UNKNOWN': Outcome.ERRORED,
-}
-
-# A test the launcher makes up, not a real one.
-_SYNTHETIC_TEST_RE = re.compile(
-    r'^GoogleTestVerification.Uninstantiated(?:Type)?ParameterizedTestSuite'
-    r'<\w+>$'
-)
-
-# Output from SCOPED_TRACE calls, which isn't part of the failure.
-_GOOGLE_TEST_TRACE_RE = re.compile(r'Google Test trace:.*$', re.DOTALL)
-
-_FILE_DOT_EXTENSION = r'[a-zA-Z0-9_.]+\.[a-zA-Z0-9_]+'
-_LINE_NUMBER = r'(?:\([0-9]+\)|:[0-9]+)'
-_WHOLE_NUMBER_RE = re.compile(r'(\d+)')
-_HEX = r'[0-9a-f]+'
-_FUNCTION_NAME = r'[a-zA-Z_][a-zA-Z0-9_:]*'
-
-_CHECK_FAILED_RE = re.compile(
-    rf'.*?({_FILE_DOT_EXTENSION})({_LINE_NUMBER})\]? (Check failed:.*)'
-)
-_FATAL_MESSAGE_RE = re.compile(
-    rf'.*FATAL.*?({_FILE_DOT_EXTENSION})({_LINE_NUMBER})\]? (.*)'
-)
-
-_UNIX_SEGFAULT_MESSAGE_RE = re.compile(
-    r'[Rr]eceived signal(?:: Segmentation fault| 11 SEGV_MAPERR)'
-)
-_WINDOWS_SEGFAULT_MESSAGE_RE = re.compile(
-    r'Received fatal exception EXCEPTION_ACCESS_VIOLATION\n\s+(.*)\n'
-)
-_SIGACTION_LINE_RE = re.compile(r'(?:__GI___sigaction|libc.so| 0x0 \+).*\n(.*)')
-_SIGTRAMP_LINE_RE = re.compile(r'_sigtramp \+.*\n(.*)')
-_LINUX_FUNCTION_RE = re.compile(rf'#\d 0x{_HEX} ({_FUNCTION_NAME})')
-_LINUX_ASAN_FUNCTION_RE = re.compile(rf'#\d 0x{_HEX} in ({_FUNCTION_NAME})')
-_WINDOWS_FUNCTION_RE = re.compile(rf'({_FUNCTION_NAME})\s+\[0x0x{_HEX}\+\d+\]')
-_MAC_FUNCTION_RE = re.compile(rf'\d.* 0x{_HEX} ({_FUNCTION_NAME})')
-
-_GTEST_EXPECTATION_RE = re.compile(
-    r'([a-zA-Z0-9_.]+\.[a-zA-Z0-9_]+):([0-9]+): Failure\n(.*?)Stack trace:',
-    re.DOTALL,
-)
-_GTEST_EXPECTATION_WINDOWS_RE = re.compile(
-    r'([a-zA-Z0-9_.]+\.[a-zA-Z0-9_]+)\(([0-9]+)\): error: (.*?)Stack trace:',
-    re.DOTALL,
-)
+from test_results import Outcome, TestResult, read_summary
 
 # Characters XML 1.0 cannot carry, even escaped.
 _INVALID_XML_CHARS_RE = re.compile('[\x00-\x08\x0b\x0c\x0e-\x1f￾￿]')
-
-
-def _decode(value: str) -> str:
-    """A base64 field of the summary as text, `''` if it doesn't decode."""
-    try:
-        return base64.b64decode(value).decode('utf-8', errors='replace')
-    except (binascii.Error, ValueError):
-        return ''
 
 
 def _xml_text(value: str) -> str:
     return _INVALID_XML_CHARS_RE.sub('�', value)
 
 
-def _number(text: str) -> str:
-    return _WHOLE_NUMBER_RE.search(text).group(0)
-
-
-def _outcome(run: dict) -> Outcome:
-    status = run.get('status', 'UNKNOWN')
-    outcome = _OUTCOMES.get(status, Outcome.ERRORED)
-    if outcome is Outcome.PASSED and any(
-        part.get('type') == 'skip' for part in run.get('result_parts', [])
-    ):
-        return Outcome.SKIPPED
-    return outcome
-
-
-def _part_message(part: dict) -> str:
-    """A result part's summary, located by its file name and line."""
-    summary = _GOOGLE_TEST_TRACE_RE.sub(
-        '', _decode(part.get('summary_base64', ''))
-    ).strip()
-    file_name = re.split(r'[\\/]', part.get('file', ''))[-1]
-    return f'{file_name}({part.get("line", 0)}): {summary}'
-
-
-def _failure_messages(run: dict) -> list[str]:
-    """The run's failures, fatal ones first."""
-    parts = run.get('result_parts', [])
-    return [
-        _part_message(part)
-        for kind in ('fatal_failure', 'failure')
-        for part in parts
-        if part.get('type') == kind
-    ]
-
-
-def _fatal_message(snippet: str) -> str:
-    match = _FATAL_MESSAGE_RE.search(snippet)
-    check_failed = _CHECK_FAILED_RE.search(snippet)
-    if match is None or (
-        check_failed is not None and check_failed.start() < match.start()
-    ):
-        match = check_failed
-    if match is None:
-        return ''
-    return f'{match[1]}({_number(match[2])}): {match[3].strip()}'
-
-
-def _segfault_function(snippet: str) -> str:
-    """The function at the top of a segfault's stack, past the signal
-    handling."""
-    if unix := _UNIX_SEGFAULT_MESSAGE_RE.search(snippet):
-        rest = snippet[unix.end() :]
-        line = _SIGACTION_LINE_RE.search(rest) or _SIGTRAMP_LINE_RE.search(rest)
-        if line is None:
-            return ''
-        for function_re in (
-            _LINUX_ASAN_FUNCTION_RE,
-            _LINUX_FUNCTION_RE,
-            _MAC_FUNCTION_RE,
-        ):
-            if function := function_re.search(line[1]):
-                return function[1]
-        return ''
-    if windows := _WINDOWS_SEGFAULT_MESSAGE_RE.search(snippet):
-        if function := _WINDOWS_FUNCTION_RE.search(windows[1]):
-            return function[1]
-    return ''
-
-
-def _segfault_message(snippet: str) -> str:
-    function = _segfault_function(snippet)
-    return f'{function}: segfault' if function else ''
-
-
-def _sanitizer_message(snippet: str) -> str:
-    """The headline of the first sanitiser report in `snippet`."""
-    parser = sanitizer_reports.ReportParser()
-    for line in snippet.split('\n'):
-        parser.process_line(line)
-    parser.finish()
-    reports = parser.result.reports
-    return reports[0].headline if reports else ''
-
-
-def _expectation_message(snippet: str) -> str:
-    match = _GTEST_EXPECTATION_RE.search(snippet)
-    windows = _GTEST_EXPECTATION_WINDOWS_RE.search(snippet)
-    if match is None or (
-        windows is not None and windows.start() < match.start()
-    ):
-        match = windows
-    if match is None:
-        return ''
-    message = _GOOGLE_TEST_TRACE_RE.sub('', match[3]).strip()
-    return f'{match[1]}({match[2]}): {message}'
-
-
-def snippet_failure_message(snippet: str) -> str:
-    """A failure message from the run's output, for a test that crashed
-    before gtest could report its failures."""
-    for extract in (
-        _sanitizer_message,
-        _fatal_message,
-        _segfault_message,
-        _expectation_message,
-    ):
-        if message := extract(snippet):
-            return message
-    return ''
-
-
-@dataclass(frozen=True)
-class _Run:
-    outcome: Outcome
-    status: str
-    seconds: float
-    message: str
-    snippet: str
-
-    @classmethod
-    def parse(cls, run: dict) -> _Run:
-        outcome = _outcome(run)
-        snippet = _decode(run.get('output_snippet_base64', ''))
-        message = ''
-        if outcome is Outcome.FAILED:
-            messages = _failure_messages(run)
-            message = (
-                messages[0] if messages else snippet_failure_message(snippet)
-            )
-        return cls(
-            outcome=outcome,
-            status=run.get('status', 'UNKNOWN'),
-            seconds=run.get('elapsed_time_ms', 0) / 1000,
-            message=message or run.get('status', 'UNKNOWN'),
-            snippet=snippet,
-        )
-
-
-def _runs(summary: dict) -> dict[str, list[_Run]]:
-    """Every run of each real test, across the summary's iterations."""
-    runs: dict[str, list[_Run]] = defaultdict(list)
-    for iteration in summary.get('per_iteration_data', []):
-        for test, test_runs in iteration.items():
-            if _SYNTHETIC_TEST_RE.match(test):
-                continue
-            runs[test].extend(_Run.parse(run) for run in test_runs)
-    return runs
-
-
-def _add_testcase(element: ElementTree.Element, runs: list[_Run]) -> None:
-    last = runs[-1]
+def _add_testcase(element: ElementTree.Element, result: TestResult) -> None:
+    runs = result.runs
+    last = result.last
     if last.outcome is Outcome.SKIPPED:
         ElementTree.SubElement(element, 'skipped')
     elif last.outcome is not Outcome.PASSED:
@@ -311,11 +79,10 @@ def _set_counts(element: ElementTree.Element, counts: dict) -> None:
 
 def render(summary: dict, suite: str) -> str:
     """The JUnit XML report of the gtest JSON `summary` of `suite`."""
-    cases: dict[str, list[tuple[str, list[_Run]]]] = defaultdict(list)
-    for test, runs in sorted(_runs(summary).items()):
-        if runs:
-            case, _, name = test.partition('.')
-            cases[case].append((name or case, runs))
+    cases: dict[str, list[tuple[str, TestResult]]] = defaultdict(list)
+    for result in read_summary(summary):
+        case, _, name = result.name.partition('.')
+        cases[case].append((name or case, result))
 
     root = ElementTree.Element('testsuites', name=_xml_text(suite))
     totals = defaultdict(float)
@@ -330,22 +97,22 @@ def render(summary: dict, suite: str) -> str:
             'skipped': 0,
             'time': 0.0,
         }
-        for name, runs in tests:
+        for name, result in tests:
             testcase = ElementTree.SubElement(
                 element,
                 'testcase',
                 name=_xml_text(name),
                 classname=_xml_text(case),
-                time=f'{runs[-1].seconds:.3f}',
+                time=f'{result.last.seconds:.3f}',
             )
-            _add_testcase(testcase, runs)
+            _add_testcase(testcase, result)
             counts['tests'] += 1
-            counts['time'] += runs[-1].seconds
-            if runs[-1].outcome is Outcome.FAILED:
+            counts['time'] += result.last.seconds
+            if result.outcome is Outcome.FAILED:
                 counts['failures'] += 1
-            elif runs[-1].outcome is Outcome.ERRORED:
+            elif result.outcome is Outcome.ERRORED:
                 counts['errors'] += 1
-            elif runs[-1].outcome is Outcome.SKIPPED:
+            elif result.outcome is Outcome.SKIPPED:
                 counts['skipped'] += 1
         _set_counts(element, counts)
         for key, value in counts.items():

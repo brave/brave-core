@@ -275,6 +275,8 @@
       "--builder-group=brave.sanitisers",
       "--test-type=brave_unit_tests",
       "--parse-gtest-output",
+      "--test-results-output",
+      "/path/to/tmp/json",
       "--sanitizer-reports-output",
       "/path/to/tmp/json",
       "brave_unit_tests"
@@ -302,6 +304,8 @@
       "--builder-group=brave.sanitisers",
       "--test-type=brave_browser_tests",
       "--parse-gtest-output",
+      "--test-results-output",
+      "/path/to/tmp/json",
       "--sanitizer-reports-output",
       "/path/to/tmp/json",
       "brave_browser_tests"

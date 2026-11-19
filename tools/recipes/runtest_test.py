@@ -574,6 +574,7 @@ class RunTestTest(_GeneratedConfigTest):
             (build_dir / 'browser_tests').touch()
             summary = build_dir / 'summary.json'
             report = build_dir / 'results' / 'browser_tests.xml'
+            results_file = build_dir / 'results' / 'browser_tests.json'
 
             def write_summary(*_args, **_kwargs):
                 summary.write_text(
@@ -600,12 +601,18 @@ class RunTestTest(_GeneratedConfigTest):
                         parse_gtest_output=True,
                         test_launcher_summary_output=summary,
                         junit_xml_output=report,
+                        test_results_output=results_file,
                     ),
                     ['browser_tests'],
                 )
             text = report.read_text(encoding='utf-8')
+            outcome = m.test_results.SuiteOutcome.read(results_file)
         self.assertIn('<testsuites name="browser_tests" tests="1"', text)
         self.assertIn('<testcase name="B" classname="A"', text)
+        self.assertEqual(outcome.counts['failed'], 1)
+        self.assertEqual(
+            [failure.name for failure in outcome.failures], ['A.B']
+        )
 
     def test_writes_the_sanitizer_reports_in_the_output(self):
         with tempfile.TemporaryDirectory() as temp_dir:

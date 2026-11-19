@@ -39,6 +39,11 @@ def RunSteps(api: DEPS):
             group='brave.sanitisers', builder='linux-x64-asan-brave'
         )
     )
+    for suite, outcome in test_run.outcomes.items():
+        api.step(
+            f'{suite} failures',
+            ['echo', *(failure.name for failure in outcome.failures)],
+        )
     for suite, reports in test_run.sanitizer_reports.items():
         api.step(
             f'{suite} sanitizer reports',
@@ -134,6 +139,29 @@ def GenTests(api: TEST_DEPS):
         ),
         api.post_process(
             post_process.DoesNotRun, 'brave_browser_tests sanitizer reports'
+        ),
+        api.post_process(post_process.DropExpectation),
+    )
+    # How each suite's tests did comes back with its result.
+    yield api.test(
+        'test results',
+        api.platform.name('linux'),
+        api.brave_core_checkout.with_git_cache(),
+        api.brave_tests.test_spec('brave_unit_tests'),
+        api.brave_tests.test_results(
+            'brave_unit_tests',
+            {
+                'name': 'FooTest.Fails',
+                'flaky': False,
+                'status': 'FAILURE',
+                'message': 'foo.cc(3): Expected true',
+                'output': 'it broke',
+            },
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'brave_unit_tests failures',
+            ['echo', 'FooTest.Fails'],
         ),
         api.post_process(post_process.DropExpectation),
     )

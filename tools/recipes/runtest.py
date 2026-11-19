@@ -41,6 +41,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import gtest_output
 import junit_report
 import sanitizer_reports
+import test_results
 
 # Exit code used by the test launcher to signal a non-fatal warning.
 WARNING_EXIT_CODE = 88
@@ -152,6 +153,9 @@ class Options:
     # Where to write a JUnit XML report of the run, from its JSON summary.
     junit_xml_output: Path | None = None
 
+    # Where to write how the run's tests did, from its JSON summary.
+    test_results_output: Path | None = None
+
     # Where to write the sanitiser reports in the run's output.
     sanitizer_reports_output: Path | None = None
 
@@ -231,14 +235,17 @@ def create_log_processor(options: Options) -> gtest_output.GTestParser | None:
 def process_summary(
     options: Options, json_parser: gtest_output.GTestJSONParser, suite: str
 ) -> None:
-    """Parses the run's JSON summary, and writes its JUnit XML report if one
-    was asked for."""
+    """Parses the run's JSON summary, and writes its JUnit XML report and
+    how its tests did, if they were asked for."""
     json_parser.process_json_file()
+    summary = json_parser.summary() or {}
     if options.junit_xml_output:
         junit_report.write(
-            options.junit_xml_output,
-            json_parser.summary() or {},
-            options.test_type or suite,
+            options.junit_xml_output, summary, options.test_type or suite
+        )
+    if options.test_results_output:
+        test_results.SuiteOutcome.of(test_results.read_summary(summary)).write(
+            options.test_results_output
         )
 
 
@@ -963,6 +970,14 @@ def main() -> int:
         '--parse-gtest-output.',
     )
     parser.add_argument(
+        '--test-results-output',
+        type=Path,
+        default=None,
+        help='Write how the run\'s tests did there, as JSON: how many had each '
+        'outcome, and those that failed, flaky ones included, with their '
+        'failure and output; needs --parse-gtest-output.',
+    )
+    parser.add_argument(
         '--sanitizer-reports-output',
         type=Path,
         default=None,
@@ -998,10 +1013,14 @@ def main() -> int:
     parsed = parser.parse_args()
     if not parsed.test_command:
         parser.error('a test command is required')
-    if parsed.junit_xml_output and (
-        not parsed.parse_gtest_output or parsed.run_python_script
+    for flag, value in (
+        ('--junit-xml-output', parsed.junit_xml_output),
+        ('--test-results-output', parsed.test_results_output),
     ):
-        parser.error('--junit-xml-output needs a gtest JSON summary')
+        if value and (
+            not parsed.parse_gtest_output or parsed.run_python_script
+        ):
+            parser.error(f'{flag} needs a gtest JSON summary')
     if parsed.sanitizer_reports_output and parsed.test_platform:
         parser.error('--sanitizer-reports-output runs desktop suites only')
     if parsed.builder and parsed.test_platform:
@@ -1030,6 +1049,11 @@ def main() -> int:
         junit_xml_output=(
             parsed.junit_xml_output.resolve()
             if parsed.junit_xml_output
+            else None
+        ),
+        test_results_output=(
+            parsed.test_results_output.resolve()
+            if parsed.test_results_output
             else None
         ),
         sanitizer_reports_output=(
