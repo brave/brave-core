@@ -42,6 +42,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
+#include "printing/buildflags/buildflags.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -582,9 +583,13 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentWebMcpBrowserTest,
   for (const auto& tool : tools.Get()) {
     names.emplace_back(tool->Name());
   }
-  EXPECT_THAT(names, ::testing::UnorderedElementsAre(
-                         "view", "str_replace_based_edit_tool", "grep", "glob",
-                         "append_file"));
+  std::vector<std::string> expected = {"view", "str_replace_based_edit_tool",
+                                       "grep", "glob", "append_file"};
+#if BUILDFLAG(ENABLE_PRINTING)
+  // Only offered where the browser can print.
+  expected.push_back("html_to_pdf");
+#endif
+  EXPECT_THAT(names, ::testing::UnorderedElementsAreArray(expected));
 }
 
 // An empty workspace can only reach its own OPFS, so its tools run without

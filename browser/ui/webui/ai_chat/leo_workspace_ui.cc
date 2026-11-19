@@ -31,6 +31,7 @@
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
+#include "printing/buildflags/buildflags.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/blink/public/common/service_worker/service_worker_status_code.h"
 #include "third_party/blink/public/common/storage_key/storage_key.h"
@@ -122,6 +123,10 @@ void CreateAndAddWorkspaceDataSource(content::BrowserContext* browser_context,
                                      const GURL& url) {
   content::WebUIDataSource* source = CreateAndAddDataSource(
       browser_context, url.host(), IDR_AI_CHAT_LEO_WORKSPACE_HTML);
+
+  // Whether LeoWorkspaceHandler.PrintFileToPdf can print, so that the page
+  // only offers html_to_pdf where it works.
+  source->AddBoolean("isPrintToPdfSupported", BUILDFLAG(ENABLE_PRINTING));
 
   // Workspace-specific CSP overrides: allow inline styles and framing the
   // viewer origin.

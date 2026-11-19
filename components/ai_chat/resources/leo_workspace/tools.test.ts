@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { createFakeWorkspace, snapshotFakeWorkspace } from './test_file_system'
-import { registerTools } from './tools'
+import { registerTools, ToolOptions } from './tools'
 
 // The tool shape registered with document.modelContext. Mirrors the internal
 // ModelContextTool interface in tools.ts, which isn't exported.
@@ -31,9 +31,12 @@ function setModelContext(value: unknown) {
 }
 
 /** Registers the tools against a fresh fake workspace and returns the root. */
-async function setUpWorkspace(layout: Record<string, string> = {}) {
+async function setUpWorkspace(
+  layout: Record<string, string> = {},
+  options: ToolOptions = {},
+) {
   const root = createFakeWorkspace(layout)
-  await registerTools(async () => root)
+  await registerTools(async () => root, options)
   return root
 }
 
@@ -77,8 +80,20 @@ describe('registerTools', () => {
     ])
   })
 
+  it('registers html_to_pdf only when it can print', async () => {
+    await setUpWorkspace({}, { printFileToPdf: jest.fn() })
+    expect([...registered.keys()]).toEqual([
+      kViewTool,
+      kEditTool,
+      'grep',
+      'glob',
+      'append_file',
+      'html_to_pdf',
+    ])
+  })
+
   it('gives every tool a description and an object input schema', async () => {
-    await setUpWorkspace()
+    await setUpWorkspace({}, { printFileToPdf: jest.fn() })
     for (const tool of registered.values()) {
       expect(tool.description).toBeTruthy()
       expect(tool.inputSchema?.type).toBe('object')
@@ -355,6 +370,111 @@ describe('append_file tool', () => {
       'Appended 4 bytes to a.txt',
     )
     expect(snapshotFakeWorkspace(root)).toEqual({ 'a.txt': 'one\ntwo\n' })
+  })
+})
+
+describe('html_to_pdf tool', () => {
+  const kPdf = new Uint8Array([0x25, 0x50, 0x44, 0x46])
+  let printFileToPdf: jest.Mock
+
+  beforeEach(() => {
+    printFileToPdf = jest.fn(async () => kPdf)
+  })
+
+  const setUp = (layout: Record<string, string>) =>
+    setUpWorkspace(layout, { printFileToPdf })
+
+  it('declares its arguments', async () => {
+    await setUp({})
+    const schema = registered.get('html_to_pdf')!.inputSchema!
+    expect(schema.required).toEqual(['path'])
+    expect(Object.keys(schema.properties)).toEqual([
+      'path',
+      'output_path',
+      'landscape',
+    ])
+  })
+
+  it('saves the PDF next to the HTML file by default', async () => {
+    const root = await setUp({ 'docs/page.html': '<p>hi</p>' })
+    expect(await run('html_to_pdf', { path: 'docs/page.html' })).toBe(
+      'Created docs/page.pdf (4 bytes) from docs/page.html',
+    )
+    expect(printFileToPdf).toHaveBeenCalledWith('docs/page.html', {
+      landscape: false,
+    })
+    expect(snapshotFakeWorkspace(root)).toEqual({
+      'docs/page.html': '<p>hi</p>',
+      'docs/page.pdf': kPdf,
+    })
+  })
+
+  it('honours output_path and landscape', async () => {
+    const root = await setUp({ 'page.HTM': '', 'out/old.pdf': 'old' })
+    expect(
+      await run('html_to_pdf', {
+        path: './page.HTM',
+        output_path: 'out/old.pdf',
+        landscape: true,
+      }),
+    ).toBe('Overwrote out/old.pdf (4 bytes) from page.HTM')
+    // The viewer is given the normalized path.
+    expect(printFileToPdf).toHaveBeenCalledWith('page.HTM', {
+      landscape: true,
+    })
+    expect(snapshotFakeWorkspace(root)['out/old.pdf']).toEqual(kPdf)
+  })
+
+  it('only takes landscape as a boolean', async () => {
+    await setUp({ 'a.html': '' })
+    await run('html_to_pdf', { path: 'a.html', landscape: 'true' })
+    expect(printFileToPdf).toHaveBeenCalledWith('a.html', { landscape: false })
+  })
+
+  it('refuses files that are not HTML', async () => {
+    const root = await setUp({ 'a.md': '# hi' })
+    expect(await run('html_to_pdf', { path: 'a.md' })).toBe(
+      'Error: html_to_pdf converts .html, .htm and .xhtml files, not a.md',
+    )
+    expect(printFileToPdf).not.toHaveBeenCalled()
+    expect(snapshotFakeWorkspace(root)).toEqual({ 'a.md': '# hi' })
+  })
+
+  it('refuses an output_path that is not a PDF', async () => {
+    await setUp({ 'a.html': '' })
+    expect(
+      await run('html_to_pdf', { path: 'a.html', output_path: 'a.html' }),
+    ).toBe('Error: output_path must end in .pdf: a.html')
+    expect(printFileToPdf).not.toHaveBeenCalled()
+  })
+
+  it('does not print a file that does not exist', async () => {
+    const root = await setUp({})
+    expect(await run('html_to_pdf', { path: 'missing.html' })).toMatch(
+      /^Error: /,
+    )
+    expect(printFileToPdf).not.toHaveBeenCalled()
+    expect(snapshotFakeWorkspace(root)).toEqual({})
+  })
+
+  it('refuses paths outside the workspace', async () => {
+    await setUp({ 'a.html': '' })
+    expect(await run('html_to_pdf', { path: '../a.html' })).toMatch(
+      /^Error: path escapes the workspace root/,
+    )
+    expect(
+      await run('html_to_pdf', { path: 'a.html', output_path: '../a.pdf' }),
+    ).toMatch(/^Error: path escapes the workspace root/)
+    expect(printFileToPdf).not.toHaveBeenCalled()
+  })
+
+  it('reports a failure to print and writes nothing', async () => {
+    printFileToPdf.mockRejectedValue(new Error('could not print a.html'))
+    const root = await setUp({ 'a.html': '' })
+    expect(await run('html_to_pdf', { path: 'a.html' })).toBe(
+      'Error: could not print a.html',
+    )
+    expect(snapshotFakeWorkspace(root)).toEqual({ 'a.html': '' })
   })
 })
 

@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { loadTimeData } from '$web-common/loadTimeData'
 import { createFakeWorkspace } from './test_file_system'
 
 jest.mock('./storage', () => ({
@@ -133,8 +134,19 @@ describe('leo workspace entry point', () => {
       'grep',
       'glob',
       'append_file',
+      'html_to_pdf',
     ])
     expect(getDirectory).not.toHaveBeenCalled()
+  })
+
+  it('offers html_to_pdf only where the browser can print', async () => {
+    const getBoolean = jest
+      .spyOn(loadTimeData, 'getBoolean')
+      .mockReturnValue(false)
+    await load()
+    expect(getBoolean).toHaveBeenCalledWith('isPrintToPdfSupported')
+    expect(registered.has('html_to_pdf')).toBe(false)
+    expect(registered.has(kViewTool)).toBe(true)
   })
 
   it('runs the tools against the delivered directory handle', async () => {
