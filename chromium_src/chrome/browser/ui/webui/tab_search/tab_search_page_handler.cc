@@ -58,9 +58,7 @@
 #include "brave/components/history_embeddings/core/history_embeddings_search.h"
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
-#define TabSearchPageHandler TabSearchPageHandler_ChromiumImpl
 #include <chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc>
-#undef TabSearchPageHandler
 
 TabSearchPageHandler::TabSearchPageHandler(
     mojo::PendingReceiver<tab_search::mojom::PageHandler> receiver,

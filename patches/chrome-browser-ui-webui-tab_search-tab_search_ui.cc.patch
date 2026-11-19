@@ -1,0 +1,50 @@
+diff --git a/chrome/browser/ui/webui/tab_search/tab_search_ui.cc b/chrome/browser/ui/webui/tab_search/tab_search_ui.cc
+index 8fb9cbc28b7e4eaae51581fc65db2b6bec0c9462..727d3d2382b5c6ef6d2175adc98c4e77364f95f3 100644
+--- a/chrome/browser/ui/webui/tab_search/tab_search_ui.cc
++++ b/chrome/browser/ui/webui/tab_search/tab_search_ui.cc
+@@ -55,7 +55,7 @@ std::optional<int> TabSearchUIConfig::GetCommandIdForTesting() {
+   return IDC_TAB_SEARCH;
+ }
+ 
+-TabSearchUI::TabSearchUI(content::WebUI* web_ui)
++TabSearchUI_ChromiumImpl::TabSearchUI_ChromiumImpl(content::WebUI* web_ui)
+     : TopChromeWebUIController(web_ui,
+                                true /* Needed for webui browser tests */),
+       webui_load_timer_(web_ui->GetWebContents(),
+@@ -153,22 +153,22 @@ TabSearchUI::TabSearchUI(content::WebUI* web_ui)
+                     perfetto::Track::FromPointer(this));
+ }
+ 
+-TabSearchUI::~TabSearchUI() = default;
++TabSearchUI_ChromiumImpl::~TabSearchUI_ChromiumImpl() = default;
+ 
+-WEB_UI_CONTROLLER_TYPE_IMPL(TabSearchUI)
++WEB_UI_CONTROLLER_TYPE_IMPL(TabSearchUI_ChromiumImpl)
+ 
+-void TabSearchUI::BindInterface(
++void TabSearchUI_ChromiumImpl::BindInterface(
+     mojo::PendingReceiver<tab_search::mojom::PageHandlerFactory> receiver) {
+   page_factory_receiver_.reset();
+   page_factory_receiver_.Bind(std::move(receiver));
+ }
+ 
+-void TabSearchUI::BindInterface(
++void TabSearchUI_ChromiumImpl::BindInterface(
+     mojo::PendingReceiver<tab_search::mojom::SearchHandler> receiver) {
+   search_handler_ = std::make_unique<SearchHandler>(std::move(receiver));
+ }
+ 
+-void TabSearchUI::BeforeBubbleWidgetShowed() {
++void TabSearchUI_ChromiumImpl::BeforeBubbleWidgetShowed() {
+   if (page_handler_) {
+     // Notify the page handler that tab search bubble widget is shown.
+     // This allows it to force a refresh of the tabs.
+@@ -176,7 +176,7 @@ void TabSearchUI::BeforeBubbleWidgetShowed() {
+   }
+ }
+ 
+-void TabSearchUI::CreatePageHandler(
++void TabSearchUI_ChromiumImpl::CreatePageHandler(
+     mojo::PendingRemote<tab_search::mojom::Page> page,
+     mojo::PendingReceiver<tab_search::mojom::PageHandler> receiver) {
+   CHECK(page, base::NotFatalUntil::M162);

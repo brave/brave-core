@@ -1,0 +1,38 @@
+diff --git a/chrome/browser/ui/webui/tab_search/tab_search_page_handler.h b/chrome/browser/ui/webui/tab_search/tab_search_page_handler.h
+index fda3020817182368ad2ecf29e0a191f6cddf4ff6..c62fd1c99d6233e14772f91506b1f053c1fdc25c 100644
+--- a/chrome/browser/ui/webui/tab_search/tab_search_page_handler.h
++++ b/chrome/browser/ui/webui/tab_search/tab_search_page_handler.h
+@@ -66,20 +66,20 @@ enum class TabSearchRecentlyClosedToggleAction {
+   kMaxValue = kCollapse,
+ };
+ 
+-class TabSearchPageHandler
++class TabSearchPageHandler_ChromiumImpl
+     : public tab_search::mojom::PageHandler,
+       public tabs_api::observation::TabStripApiBatchedObserver,
+       public content::WebContentsObserver {
+  public:
+-  TabSearchPageHandler(
++  TabSearchPageHandler_ChromiumImpl(
+       mojo::PendingReceiver<tab_search::mojom::PageHandler> receiver,
+       mojo::PendingRemote<tab_search::mojom::Page> page,
+       content::WebUI* web_ui,
+       TopChromeWebUIController* webui_controller,
+       MetricsReporter* metrics_reporter);
+-  TabSearchPageHandler(const TabSearchPageHandler&) = delete;
+-  TabSearchPageHandler& operator=(const TabSearchPageHandler&) = delete;
+-  ~TabSearchPageHandler() override;
++  TabSearchPageHandler_ChromiumImpl(const TabSearchPageHandler_ChromiumImpl&) = delete;
++  TabSearchPageHandler_ChromiumImpl& operator=(const TabSearchPageHandler_ChromiumImpl&) = delete;
++  ~TabSearchPageHandler_ChromiumImpl() override;
+ 
+   // tab_search::mojom::PageHandler:
+   void CloseTab(int32_t tab_id) override;
+@@ -118,6 +118,7 @@ class TabSearchPageHandler
+   void SetTimerForTesting(std::unique_ptr<base::RetainingOneShotTimer> timer);
+ 
+  private:
++  friend class TabSearchPageHandler;
+   // Used to determine if a specific tab should be included or not in the
+   // results of GetProfileData. Tab url/group combinations that have been
+   // previously added to the ProfileData will not be added more than once by
