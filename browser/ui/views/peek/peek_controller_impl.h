@@ -106,6 +106,7 @@ class PeekControllerImpl : public PeekController,
   // they come from inside event handlers of the objects they destroy.
   void OpenPeekAsTab(Peek& peek);
   void MoveToSplitView(Peek& peek);
+  void MoveToTabOrClose(Peek& peek);
 
   gfx::Rect GetTargetBoundsInScreen() const;
 
