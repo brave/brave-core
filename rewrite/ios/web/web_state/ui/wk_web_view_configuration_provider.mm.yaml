@@ -1,0 +1,41 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Build the feature list in `UpdateScripts` once the controller and web
+      frames manager features are known.
+
+      Both are needed before `ConfigureFeatures`: the controller is passed to
+      it, and the web frames manager features are no longer part of the
+      built-in features.
+    regex:
+      re_pattern:
+        '(JavaScriptFeatureManager::FromBrowserState\(browser_state_\);\n)\n(\s*std::vector<JavaScriptFeature\*>
+        features;\n.*?java_script_feature_manager->ConfigureFeatures\(features\);\n)\n(\s*WKUserContentController\*
+        user_content_controller
+        =\n.*?AllContentWorldFeaturesFromBrowserState\(browser_state_\);\n)'
+      re_flags: [DOTALL]
+      replace: '\1\3\n\2\n'
+
+  - description: Configure the features on the configuration's controller.
+    regex:
+      pattern: 'java_script_feature_manager->ConfigureFeatures(features);'
+      replace: |-
+        java_script_feature_manager->ConfigureFeatures(user_content_controller,
+                                                         features);
+
+  - description: |-
+      Configure the web frames manager features after the built-in ones.
+
+      They are no longer returned by `GetBuiltInJavaScriptFeatures`, as they are
+      looked up separately to configure their handlers.
+    regex:
+      re_pattern:
+        '(java_script_features::GetBuiltInJavaScriptFeatures\(browser_state_\)\)
+        \{\n\s*features\.push_back\(feature\);\n\s*\}\n)'
+      replace: |
+        \1  features.insert(features.end(), web_frames_manager_features.begin(),
+                          web_frames_manager_features.end());

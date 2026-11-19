@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Forward declare `WebState` for `GetWebState` below.
+    add_after_line:
+      line: 'class JavaScriptContentWorld;'
+      code: |-
+        class WebState;
+
+  - description: |-
+      Expose the frame's `WebState` internally.
+
+      JavaScript injection state is moving from the `BrowserState` to the
+      `WebState`, so internal callers holding only a `WebFrame` need a way to
+      reach the `WebState` that owns it.
+    add_to_public:
+      class_name: WebFrameInternal
+      code: |-
+
+        // Returns the WebState which owns this frame.
+        virtual WebState* GetWebState() = 0;

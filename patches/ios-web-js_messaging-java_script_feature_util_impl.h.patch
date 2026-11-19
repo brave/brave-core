@@ -1,0 +1,14 @@
+diff --git a/ios/web/js_messaging/java_script_feature_util_impl.h b/ios/web/js_messaging/java_script_feature_util_impl.h
+index 070b0883ed4348cdf6e06a4b784ac02adaed696c..23c7d68d051b04ea17c20bab157a23eaf3f7fc30 100644
+--- a/ios/web/js_messaging/java_script_feature_util_impl.h
++++ b/ios/web/js_messaging/java_script_feature_util_impl.h
+@@ -17,7 +17,8 @@ class ScrollHelperJavaScriptFeature;
+ 
+ namespace java_script_features {
+ 
+-// Returns the JavaScriptFeatures built in to //ios/web.
++// Returns the JavaScriptFeatures built in to //ios/web. This excludes the
++// WebFramesManagerJavaScriptFeatures, which are configured separately.
+ std::vector<JavaScriptFeature*> GetBuiltInJavaScriptFeatures(
+     BrowserState* browser_state);
+ 

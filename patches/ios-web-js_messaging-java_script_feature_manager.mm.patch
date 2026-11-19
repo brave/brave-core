@@ -1,0 +1,20 @@
+diff --git a/ios/web/js_messaging/java_script_feature_manager.mm b/ios/web/js_messaging/java_script_feature_manager.mm
+index 7069376ee19b1667242bf3bca5a87b4df1c01942..1f39fa26a6082c2555f4c2b26714ec671ff7d536 100644
+--- a/ios/web/js_messaging/java_script_feature_manager.mm
++++ b/ios/web/js_messaging/java_script_feature_manager.mm
+@@ -62,12 +62,13 @@ JavaScriptFeatureManager::GetContentWorldForBrowserState(
+ }
+ 
+ void JavaScriptFeatureManager::ConfigureFeatures(
++    WKUserContentController* user_content_controller,
+     std::vector<JavaScriptFeature*> features) {
+   page_content_world_ = std::make_unique<JavaScriptContentWorld>(
+-      browser_state_, WKContentWorld.pageWorld);
++      user_content_controller, WKContentWorld.pageWorld);
+ 
+   isolated_world_ = std::make_unique<JavaScriptContentWorld>(
+-      browser_state_, WKContentWorld.defaultClientWorld);
++      user_content_controller, WKContentWorld.defaultClientWorld);
+ 
+   for (JavaScriptFeature* feature : features) {
+     switch (feature->GetSupportedContentWorld()) {

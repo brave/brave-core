@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Configure features on a given `WKUserContentController`.
+
+      The content worlds no longer look the controller up through the
+      `BrowserState`, so the caller owning the configuration passes it in.
+    regex:
+      re_pattern:
+        '// Configures `features` on `user_content_controller_` by adding user
+        scripts\n(\s*)// and script message handlers\.\n(.*?)void
+        ConfigureFeatures\(std::vector<JavaScriptFeature\*> features\);'
+      re_flags: [DOTALL]
+      replace: |-
+        // Configures `features` on `user_content_controller` by adding user scripts
+        \1// and script message handlers.
+        \2void ConfigureFeatures(WKUserContentController* user_content_controller,
+        \1                       std::vector<JavaScriptFeature*> features);

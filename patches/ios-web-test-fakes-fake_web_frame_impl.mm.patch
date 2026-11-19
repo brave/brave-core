@@ -1,0 +1,15 @@
+diff --git a/ios/web/test/fakes/fake_web_frame_impl.mm b/ios/web/test/fakes/fake_web_frame_impl.mm
+index 9208f9b067362cd7f84f59c898be7227b2d0069a..32fe688add55d2ec14745b674d4bcebec8087123 100644
+--- a/ios/web/test/fakes/fake_web_frame_impl.mm
++++ b/ios/web/test/fakes/fake_web_frame_impl.mm
+@@ -128,6 +128,10 @@ BrowserState* FakeWebFrameImpl::GetBrowserState() {
+   return browser_state_;
+ }
+ 
++WebState* FakeWebFrameImpl::GetWebState() {
++  return nullptr;
++}
++
+ void FakeWebFrameImpl::SetJavaScriptFunctionCallback(
+     const std::string& java_script_feature_name,
+     base::RepeatingClosure callback) {

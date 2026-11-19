@@ -1,0 +1,13 @@
+diff --git a/ios/web/public/test/js_test_util.mm b/ios/web/public/test/js_test_util.mm
+index 033c6a06d7b14d758b4016ca7da185ab5926071c..be1320e41788b74f2da32a1ca87ac3224ddd8333 100644
+--- a/ios/web/public/test/js_test_util.mm
++++ b/ios/web/public/test/js_test_util.mm
+@@ -192,7 +192,7 @@ void OverrideJavaScriptFeatures(web::BrowserState* browser_state,
+   [configuration.userContentController removeAllUserScripts];
+ 
+   JavaScriptFeatureManager::FromBrowserState(browser_state)
+-      ->ConfigureFeatures(features);
++      ->ConfigureFeatures(configuration.userContentController, features);
+ }
+ 
+ }  // namespace test

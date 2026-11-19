@@ -6,6 +6,7 @@
 #include "brave/ios/web/js_messaging/prompt_facade.h"
 
 #include <Foundation/Foundation.h>
+#include <WebKit/WebKit.h>
 
 #include <memory>
 #include <optional>
@@ -100,7 +101,8 @@ class PromptFacadeTest : public WebTest {
     feature_ =
         std::make_unique<TestPromptFeature>(ContentWorld::kPageContentWorld);
     JavaScriptFeatureManager::FromBrowserState(GetBrowserState())
-        ->ConfigureFeatures({feature_.get()});
+        ->ConfigureFeatures([[WKUserContentController alloc] init],
+                            {feature_.get()});
 
     web_state_ = std::make_unique<FakeWebState>();
     web_state_->SetBrowserState(GetBrowserState());

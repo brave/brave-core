@@ -1,0 +1,13 @@
+diff --git a/ios/web/test/fakes/fake_web_frame_impl.h b/ios/web/test/fakes/fake_web_frame_impl.h
+index 7fd3c1037899996830d7d8fd777928a65f2ca5dd..a07fffbbdbbce8a5e9f4b8a7b2ab29f68986c8b1 100644
+--- a/ios/web/test/fakes/fake_web_frame_impl.h
++++ b/ios/web/test/fakes/fake_web_frame_impl.h
+@@ -72,6 +72,8 @@ class FakeWebFrameImpl : public FakeWebFrame, public WebFrameInternal {
+       base::RepeatingClosure callback) override;
+ 
+   // WebFrameInternal:
++  WebState* GetWebState() override;
++
+   // The JavaScript call which would be executed by a real WebFrame will be
+   // added to `java_script_calls_`. Always returns true.
+   bool CallJavaScriptFunctionInContentWorld(

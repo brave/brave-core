@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Implement `WebFrameInternal::GetWebState`.
+    regex:
+      pattern: 'WebState* GetWebState();'
+      replace: 'WebState* GetWebState() override;'
+
+  - description: |-
+      Declare `ContentWorldForFrame`.
+
+      Consolidates the lookup of the frame's JavaScriptContentWorld so it can be
+      moved from the BrowserState to the WebState in one place.
+    regex:
+      re_pattern: '(class WebFrameImpl final .*?\n private:\n)'
+      re_flags: [DOTALL]
+      replace: |+
+        \1  // Returns the JavaScriptContentWorld for this frame's content world.
+          JavaScriptContentWorld* ContentWorldForFrame();
+

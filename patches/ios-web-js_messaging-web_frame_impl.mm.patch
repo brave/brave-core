@@ -1,0 +1,71 @@
+diff --git a/ios/web/js_messaging/web_frame_impl.mm b/ios/web/js_messaging/web_frame_impl.mm
+index cdfdc48cc8229f3ea4322b61d335ada10cc93667..d4e2833de778f5374090e7961eeb6d29dabaacb8 100644
+--- a/ios/web/js_messaging/web_frame_impl.mm
++++ b/ios/web/js_messaging/web_frame_impl.mm
+@@ -257,6 +257,11 @@ BrowserState* WebFrameImpl::GetBrowserState() {
+   return GetWebState()->GetBrowserState();
+ }
+ 
++JavaScriptContentWorld* WebFrameImpl::ContentWorldForFrame() {
++  return JavaScriptFeatureManager::GetContentWorldForBrowserState(
++      content_world_, GetBrowserState());
++}
++
+ bool WebFrameImpl::CallJavaScriptFunctionInContentWorld(
+     const std::string& name,
+     const base::ListValue& parameters,
+@@ -275,9 +280,7 @@ bool WebFrameImpl::CallJavaScriptFunctionInContentWorld(
+ 
+ bool WebFrameImpl::CallJavaScriptFunction(const std::string& name,
+                                           const base::ListValue& parameters) {
+-  JavaScriptContentWorld* content_world =
+-      JavaScriptFeatureManager::GetContentWorldForBrowserState(
+-          content_world_, GetBrowserState());
++  JavaScriptContentWorld* content_world = ContentWorldForFrame();
+ 
+   return CallJavaScriptFunctionInContentWorld(name, parameters, content_world,
+                                               /*reply_with_result=*/false);
+@@ -296,9 +299,7 @@ bool WebFrameImpl::CallJavaScriptFunction(
+     const base::ListValue& parameters,
+     base::OnceCallback<void(const base::Value*)> callback,
+     base::TimeDelta timeout) {
+-  JavaScriptContentWorld* content_world =
+-      JavaScriptFeatureManager::GetContentWorldForBrowserState(
+-          content_world_, GetBrowserState());
++  JavaScriptContentWorld* content_world = ContentWorldForFrame();
+   return CallJavaScriptFunctionInContentWorld(name, parameters, content_world,
+                                               std::move(callback), timeout);
+ }
+@@ -350,9 +351,7 @@ bool WebFrameImpl::ExecuteJavaScript(
+ bool WebFrameImpl::ExecuteJavaScript(
+     const std::u16string& script,
+     ExecuteJavaScriptCallbackWithError callback) {
+-  JavaScriptContentWorld* content_world =
+-      JavaScriptFeatureManager::GetContentWorldForBrowserState(
+-          content_world_, GetBrowserState());
++  JavaScriptContentWorld* content_world = ContentWorldForFrame();
+ 
+   return ExecuteJavaScriptInContentWorld(script, content_world,
+                                          std::move(callback));
+@@ -386,9 +385,7 @@ bool WebFrameImpl::ExecuteAsyncJavaScript(
+     const std::u16string& script,
+     const base::DictValue& parameters,
+     ExecuteJavaScriptCallbackWithError callback) {
+-  JavaScriptContentWorld* content_world =
+-      JavaScriptFeatureManager::GetContentWorldForBrowserState(
+-          content_world_, GetBrowserState());
++  JavaScriptContentWorld* content_world = ContentWorldForFrame();
+ 
+   return ExecuteAsyncJavaScriptInContentWorld(script, parameters, content_world,
+                                               std::move(callback));
+@@ -422,9 +419,7 @@ bool WebFrameImpl::CallAsyncJavaScriptFunction(
+     const std::string& name,
+     const base::DictValue& parameters,
+     ExecuteJavaScriptCallbackWithError callback) {
+-  JavaScriptContentWorld* content_world =
+-      JavaScriptFeatureManager::GetContentWorldForBrowserState(
+-          content_world_, GetBrowserState());
++  JavaScriptContentWorld* content_world = ContentWorldForFrame();
+   return CallAsyncJavaScriptFunctionInContentWorld(
+       name, parameters, content_world, std::move(callback));
+ }

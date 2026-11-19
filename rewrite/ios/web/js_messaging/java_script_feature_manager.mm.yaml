@@ -1,0 +1,26 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Take the `WKUserContentController` to configure features on.
+    regex:
+      re_pattern:
+        'void
+        JavaScriptFeatureManager::ConfigureFeatures\(\n\s*std::vector<JavaScriptFeature\*>
+        features\) \{'
+      replace: |-
+        void JavaScriptFeatureManager::ConfigureFeatures(
+            WKUserContentController* user_content_controller,
+            std::vector<JavaScriptFeature*> features) {
+
+  - description: Create the content worlds on the given controller.
+    count: 2 # The page content world and the isolated world.
+    regex:
+      re_pattern:
+        'std::make_unique<JavaScriptContentWorld>\(\n\s*browser_state_,
+        (WKContentWorld\.\w+)\);'
+      replace: |-
+        std::make_unique<JavaScriptContentWorld>(
+              user_content_controller, \1);

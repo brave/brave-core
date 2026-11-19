@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description:
+      Look up the frame's content world through `ContentWorldForFrame`.
+    count: 5 # Every WebFrame API running JavaScript in the frame's own world.
+    regex:
+      re_pattern:
+        'JavaScriptContentWorld\* content_world
+        =\s*JavaScriptFeatureManager::GetContentWorldForBrowserState\(\s*content_world_,
+        GetBrowserState\(\)\);'
+      replace: 'JavaScriptContentWorld* content_world = ContentWorldForFrame();'
+
+  - description: Define `ContentWorldForFrame`.
+    regex:
+      re_pattern:
+        '(\nBrowserState\* WebFrameImpl::GetBrowserState\(\) \{.*?\n\}\n)'
+      re_flags: [DOTALL]
+      replace: |
+        \1
+        JavaScriptContentWorld* WebFrameImpl::ContentWorldForFrame() {
+          return JavaScriptFeatureManager::GetContentWorldForBrowserState(
+              content_world_, GetBrowserState());
+        }

@@ -1,0 +1,22 @@
+diff --git a/ios/web/js_messaging/web_frame_internal.h b/ios/web/js_messaging/web_frame_internal.h
+index 11e6562c212edbb062dfb4db67a94f1613024168..613b1983ee612f952cc27cf1f1359dd969692a63 100644
+--- a/ios/web/js_messaging/web_frame_internal.h
++++ b/ios/web/js_messaging/web_frame_internal.h
+@@ -16,6 +16,7 @@
+ namespace web {
+ 
+ class JavaScriptContentWorld;
++class WebState;
+ 
+ class WebFrameInternal {
+  public:
+@@ -72,6 +73,9 @@ class WebFrameInternal {
+       const base::DictValue& parameters,
+       JavaScriptContentWorld* content_world,
+       ExecuteJavaScriptCallbackWithError callback) = 0;
++
++  // Returns the WebState which owns this frame.
++  virtual WebState* GetWebState() = 0;
+ };
+ 
+ }  // namespace web

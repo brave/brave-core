@@ -17,3 +17,44 @@ substitutions:
         \3if (feature->GetFeatureRepliesToPrompts()) {
         \3  prompt_replying_features_[optional_handler_name.value()] = feature;
         \3}\2
+
+  - description: |-
+      Take the user content controller from the constructor.
+
+      It is no longer looked up through the `BrowserState`, so that the
+      WKWebViewConfigurationProvider can become per-WebState.
+    regex:
+      re_pattern:
+        'JavaScriptContentWorld::JavaScriptContentWorld\(BrowserState\*
+        browser_state,\n(\s*)WKContentWorld\* content_world\)\n\s*:
+        browser_state_\(browser_state\),\n\s*user_content_controller_\(GetUserContentController\(browser_state\)\),'
+      replace: |-
+        JavaScriptContentWorld::JavaScriptContentWorld(
+            WKUserContentController* user_content_controller,
+            WKContentWorld* content_world)
+            : user_content_controller_(user_content_controller),
+
+  - description: Check the user content controller like the content world.
+    regex:
+      re_pattern: '\n(\s*)(DCHECK\(content_world_\);)'
+      replace: |-
+
+        \1DCHECK(user_content_controller_);
+        \1\2
+
+  - description: Drop the `BrowserState` user content controller lookup.
+    regex:
+      re_pattern:
+        '\n// Returns the WKUserContentController associated with
+        `browser_state`\.\n.*?\nWKUserContentController\*
+        GetUserContentController\(BrowserState\* browser_state\) \{\n.*?\n\}\n'
+      re_flags: [DOTALL]
+      replace: ''
+
+  - description: Drop the includes the lookup needed.
+    count: 2
+    regex:
+      re_pattern:
+        '#import
+        "ios/web/(public/browser_state|web_state/ui/wk_web_view_configuration_provider)\.h"\n'
+      replace: ''

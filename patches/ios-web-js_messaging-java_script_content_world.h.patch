@@ -1,5 +1,5 @@
 diff --git a/ios/web/js_messaging/java_script_content_world.h b/ios/web/js_messaging/java_script_content_world.h
-index 06bad8e89372c1ce885ce849f32ed558f751cbe0..91b74e8f70a2453e0cc86b852f722bbd51af6856 100644
+index 06bad8e89372c1ce885ce849f32ed558f751cbe0..80296f07757631fc8639dfb94701682362f8c1bf 100644
 --- a/ios/web/js_messaging/java_script_content_world.h
 +++ b/ios/web/js_messaging/java_script_content_world.h
 @@ -11,6 +11,7 @@
@@ -10,6 +10,38 @@ index 06bad8e89372c1ce885ce849f32ed558f751cbe0..91b74e8f70a2453e0cc86b852f722bbd
  #import "base/memory/raw_ptr.h"
  #include "base/memory/weak_ptr.h"
  #import "ios/web/js_messaging/scoped_wk_script_message_handler.h"
+@@ -18,7 +19,6 @@
+ 
+ namespace web {
+ 
+-class BrowserState;
+ class JavaScriptFeature;
+ 
+ // Represents a content world which can be configured with a given set of
+@@ -26,17 +26,18 @@ class JavaScriptFeature;
+ // JavaScript from interacting with the browser's feature JavaScript. This can
+ // improve the security and robustness of a feature's JavaScript.
+ // NOTE: Destruction of a JavaScriptContentWorld can not completely clean up
+-// the state added to the WKUserContentController associated with
+-// `browser_state` because WKUserContentController does not expose API to remove
+-// specific WKUserScript instances.
++// the state added to `user_content_controller_` because
++// WKUserContentController does not expose API to remove specific
++// WKUserScript instances.
+ class JavaScriptContentWorld {
+  public:
+   ~JavaScriptContentWorld();
+   JavaScriptContentWorld(const JavaScriptContentWorld&) = delete;
+ 
+   // Creates a content world for features which will interact with the given
+-  // `content_world`. `browser_state` and `content_world` must not be null.
+-  JavaScriptContentWorld(BrowserState* browser_state,
++  // `content_world`. `user_content_controller` and `content_world` must not be
++  // null.
++  JavaScriptContentWorld(WKUserContentController* user_content_controller,
+                          WKContentWorld* content_world);
+ 
+   // Returns the associated WKContentWorld.
 @@ -49,6 +50,16 @@ class JavaScriptContentWorld {
    // Returns true if and only if `feature` has been added to this content world.
    bool HasFeature(const JavaScriptFeature* feature);
@@ -27,3 +59,14 @@ index 06bad8e89372c1ce885ce849f32ed558f751cbe0..91b74e8f70a2453e0cc86b852f722bbd
   private:
    // Processes the response of a script message and forwards it to `handler`.
    void ScriptMessageReceived(base::WeakPtr<JavaScriptFeature> feature,
+@@ -63,10 +74,6 @@ class JavaScriptContentWorld {
+   // The features which have already been configured for `content_world_`.
+   std::set<raw_ptr<const JavaScriptFeature, DanglingUntriaged>> features_;
+ 
+-  // The associated browser state for configuring injected scripts and
+-  // communication.
+-  raw_ptr<BrowserState> browser_state_;
+-
+   // The associated user content controller for configuring injected scripts and
+   // script message handler JavaScript->native communication.
+   WKUserContentController* user_content_controller_;

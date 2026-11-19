@@ -32,3 +32,43 @@ substitutions:
     add_include:
       header:
         - base/containers/flat_map.h
+
+  - description: |-
+      Configure the content world on a given `WKUserContentController`.
+
+      The controller used to be looked up through the `BrowserState`'s
+      WKWebViewConfigurationProvider. Taking it from the owner lets the
+      configuration provider become per-WebState.
+    regex:
+      re_pattern:
+        '`browser_state` and `content_world` must not be
+        null\.\n(\s*)JavaScriptContentWorld\(BrowserState\*
+        browser_state,\n\s*WKContentWorld\* content_world\);'
+      replace: |-
+        `user_content_controller` and `content_world` must not be
+        \1// null.
+        \1JavaScriptContentWorld(WKUserContentController* user_content_controller,
+        \1                       WKContentWorld* content_world);
+
+  - description: Refer to the user content controller in the class comment.
+    regex:
+      re_pattern:
+        '// the state added to the WKUserContentController associated with\n//
+        `browser_state` because WKUserContentController does not expose API to
+        remove\n// specific WKUserScript instances\.'
+      replace: |-
+        // the state added to `user_content_controller_` because
+        // WKUserContentController does not expose API to remove specific
+        // WKUserScript instances.
+
+  - description: Drop the `BrowserState` member, which is no longer used.
+    regex:
+      re_pattern:
+        '\n\s*// The associated browser state for configuring injected scripts
+        and\n\s*// communication\.\n\s*raw_ptr<BrowserState> browser_state_;\n'
+      replace: "\n"
+
+  - description: Drop the `BrowserState` forward declaration.
+    regex:
+      re_pattern: '\nclass BrowserState;\n'
+      replace: "\n"

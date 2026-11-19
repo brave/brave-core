@@ -1,0 +1,23 @@
+diff --git a/ios/web/js_messaging/web_frame_impl.h b/ios/web/js_messaging/web_frame_impl.h
+index fcfff9a7b2cc1038ff8392aa990c46716bf8f3b6..2918078f7893a17803643c1baf9d25946f4fd101 100644
+--- a/ios/web/js_messaging/web_frame_impl.h
++++ b/ios/web/js_messaging/web_frame_impl.h
+@@ -71,7 +71,7 @@ class WebFrameImpl final : public WebFrame,
+   ~WebFrameImpl() override;
+ 
+   // The associated web state.
+-  WebState* GetWebState();
++  WebState* GetWebState() override;
+ 
+   // Caches a JavaScript execution error for later logging if webframe is
+   // confirmed to still exist. Used to ensure errors are not reported if they
+@@ -145,6 +145,9 @@ class WebFrameImpl final : public WebFrame,
+   void OnJSResultReceivedForMessageWithId(int message_id, id value);
+ 
+  private:
++  // Returns the JavaScriptContentWorld for this frame's content world.
++  JavaScriptContentWorld* ContentWorldForFrame();
++
+   // Calls the JavaScript function `name` in the frame context in the same
+   // manner as the inherited CallJavaScriptFunction functions. `content_world`
+   // is optional, but if specified, the function will be executed within that

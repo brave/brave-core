@@ -1,8 +1,62 @@
 diff --git a/ios/web/js_messaging/java_script_content_world.mm b/ios/web/js_messaging/java_script_content_world.mm
-index 8ee8cb896b3ce8dd0973753e8d37e325f82df978..6ba8c3902b628f4d9d6b183d8a5992e4fc465275 100644
+index 8ee8cb896b3ce8dd0973753e8d37e325f82df978..24bd15f803cd8ba7b1f9e1a4a5aa2f8781a23dad 100644
 --- a/ios/web/js_messaging/java_script_content_world.mm
 +++ b/ios/web/js_messaging/java_script_content_world.mm
-@@ -318,6 +318,9 @@ void JavaScriptContentWorld::AddFeature(const JavaScriptFeature* feature) {
+@@ -16,7 +16,6 @@
+ #import "ios/web/javascript_flags.h"
+ #import "ios/web/js_messaging/script_message_value_util.h"
+ #import "ios/web/js_messaging/web_view_web_state_map.h"
+-#import "ios/web/public/browser_state.h"
+ #import "ios/web/public/js_messaging/content_world.h"
+ #import "ios/web/public/js_messaging/java_script_feature.h"
+ #import "ios/web/public/js_messaging/script_message.h"
+@@ -24,7 +23,6 @@
+ #import "ios/web/public/js_messaging/web_view_js_utils.h"
+ #import "ios/web/util/wk_security_origin_util.h"
+ #import "ios/web/web_state/ui/crw_web_controller.h"
+-#import "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
+ #import "ios/web/web_state/web_state_impl.h"
+ #import "net/base/apple/url_conversions.h"
+ 
+@@ -53,19 +51,6 @@ WKUserScriptInjectionTime InjectionTimeToWKUserScriptInjectionTime(
+   NOTREACHED();
+ }
+ 
+-// Returns the WKUserContentController associated with `browser_state`.
+-// NOTE: Only fetch the WKUserContentController once at construction. Although
+-// it is not guaranteed to remain constant over the lifetime of the
+-// application, the entire JavaScriptcontentWorld will be recreated when it
+-// changes. Calling WKWebViewConfigurationProvider::GetWebViewConfiguration on
+-// a configuration provider during destruction will cause partial
+-// re-initialization during tear down.
+-WKUserContentController* GetUserContentController(BrowserState* browser_state) {
+-  return WKWebViewConfigurationProvider::FromBrowserState(browser_state)
+-      .GetWebViewConfiguration()
+-      .userContentController;
+-}
+-
+ // Creates a ScriptMessage from `script_message` using `web_state`.
+ // Returns std::nullopt if the message is invalid or if the associated
+ // WebController is missing.
+@@ -107,12 +92,13 @@ std::optional<ScriptMessage> GetMessage(WKScriptMessage* script_message,
+ 
+ }  // namespace
+ 
+-JavaScriptContentWorld::JavaScriptContentWorld(BrowserState* browser_state,
+-                                               WKContentWorld* content_world)
+-    : browser_state_(browser_state),
+-      user_content_controller_(GetUserContentController(browser_state)),
++JavaScriptContentWorld::JavaScriptContentWorld(
++    WKUserContentController* user_content_controller,
++    WKContentWorld* content_world)
++    : user_content_controller_(user_content_controller),
+       content_world_(content_world),
+       weak_factory_(this) {
++  DCHECK(user_content_controller_);
+   DCHECK(content_world_);
+ 
+ #if BUILDFLAG(ENABLE_IOS_JAVASCRIPT_FLAGS)
+@@ -318,6 +304,9 @@ void JavaScriptContentWorld::AddFeature(const JavaScriptFeature* feature) {
                                weak_factory_.GetWeakPtr(),
                                feature->AsWeakPtr()));
      }

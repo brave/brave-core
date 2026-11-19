@@ -1,0 +1,18 @@
+diff --git a/ios/web/js_messaging/java_script_feature_manager.h b/ios/web/js_messaging/java_script_feature_manager.h
+index 5e93a79073ee760b441291c800dec2c320facb10..e8bb9469d6b76baa4473260beea9444c62d08ab9 100644
+--- a/ios/web/js_messaging/java_script_feature_manager.h
++++ b/ios/web/js_messaging/java_script_feature_manager.h
+@@ -42,10 +42,11 @@ class JavaScriptFeatureManager : public base::SupportsUserData::Data {
+       ContentWorld content_world,
+       BrowserState* browser_state);
+ 
+-  // Configures `features` on `user_content_controller_` by adding user scripts
++  // Configures `features` on `user_content_controller` by adding user scripts
+   // and script message handlers.
+   // NOTE: `page_content_world_` and `isolated_world_` will be recreated.
+-  void ConfigureFeatures(std::vector<JavaScriptFeature*> features);
++  void ConfigureFeatures(WKUserContentController* user_content_controller,
++                         std::vector<JavaScriptFeature*> features);
+ 
+   // Returns the content world associated with `feature` or null if the feature
+   // has not be added to the associated `browser_state_`.

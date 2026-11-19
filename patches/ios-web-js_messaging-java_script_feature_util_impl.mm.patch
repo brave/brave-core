@@ -1,0 +1,24 @@
+diff --git a/ios/web/js_messaging/java_script_feature_util_impl.mm b/ios/web/js_messaging/java_script_feature_util_impl.mm
+index 114562a5d9cf7b82afbb81425da083cde1b03c69..0e2d118c808b21abcfb7e6d158027997ba48dea7 100644
+--- a/ios/web/js_messaging/java_script_feature_util_impl.mm
++++ b/ios/web/js_messaging/java_script_feature_util_impl.mm
+@@ -23,7 +23,6 @@
+ #import "ios/web/js_features/scroll_helper/scroll_helper_java_script_feature.h"
+ #import "ios/web/js_features/window_error/error_event_listener_java_script_feature.h"
+ #import "ios/web/js_features/window_error/script_error_message_handler_java_script_feature.h"
+-#import "ios/web/js_messaging/web_frames_manager_java_script_feature.h"
+ #import "ios/web/js_messaging/web_frames_tree_java_script_feature.h"
+ #import "ios/web/navigation/navigation_java_script_feature.h"
+ #import "ios/web/public/js_messaging/content_world.h"
+@@ -107,11 +106,6 @@ std::vector<JavaScriptFeature*> GetBuiltInJavaScriptFeatures(
+     features.push_back(WebFramesTreeJavaScriptFeature::GetInstance());
+   }
+ 
+-  auto frames_manager_features = WebFramesManagerJavaScriptFeature::
+-      AllContentWorldFeaturesFromBrowserState(browser_state);
+-  features.insert(features.end(), frames_manager_features.begin(),
+-                  frames_manager_features.end());
+-
+   return features;
+ }
+ 

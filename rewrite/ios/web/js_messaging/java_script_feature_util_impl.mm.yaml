@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Leave the web frames manager features out of the built-in features.
+
+      They are per content world and get their handlers configured separately,
+      so the owner of the configuration adds them itself.
+    regex:
+      re_pattern:
+        '\n\s*auto frames_manager_features =
+        WebFramesManagerJavaScriptFeature::\n\s*AllContentWorldFeaturesFromBrowserState\(browser_state\);\n\s*features\.insert\(features\.end\(\),
+        frames_manager_features\.begin\(\),\n\s*frames_manager_features\.end\(\)\);\n'
+      replace: "\n"
+
+  - description: Drop the include the web frames manager features needed.
+    regex:
+      pattern: |
+        #import "ios/web/js_messaging/web_frames_manager_java_script_feature.h"
+      replace: ''

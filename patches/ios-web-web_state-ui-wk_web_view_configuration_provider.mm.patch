@@ -1,0 +1,35 @@
+diff --git a/ios/web/web_state/ui/wk_web_view_configuration_provider.mm b/ios/web/web_state/ui/wk_web_view_configuration_provider.mm
+index 72bca8d629dde292de0bc64f2f9a0ae4335d5a3e..f2839f5ce6bd3e923bf9325f46314fab83fadc74 100644
+--- a/ios/web/web_state/ui/wk_web_view_configuration_provider.mm
++++ b/ios/web/web_state/ui/wk_web_view_configuration_provider.mm
+@@ -335,22 +335,25 @@ void WKWebViewConfigurationProvider::UpdateScripts() {
+ 
+   JavaScriptFeatureManager* java_script_feature_manager =
+       JavaScriptFeatureManager::FromBrowserState(browser_state_);
++  WKUserContentController* user_content_controller =
++      GetWebViewConfiguration().userContentController;
++  auto web_frames_manager_features = WebFramesManagerJavaScriptFeature::
++      AllContentWorldFeaturesFromBrowserState(browser_state_);
+ 
+   std::vector<JavaScriptFeature*> features;
+   for (JavaScriptFeature* feature :
+        java_script_features::GetBuiltInJavaScriptFeatures(browser_state_)) {
+     features.push_back(feature);
+   }
++  features.insert(features.end(), web_frames_manager_features.begin(),
++                  web_frames_manager_features.end());
+   for (JavaScriptFeature* feature :
+        GetWebClient()->GetJavaScriptFeatures(browser_state_)) {
+     features.push_back(feature);
+   }
+-  java_script_feature_manager->ConfigureFeatures(features);
++  java_script_feature_manager->ConfigureFeatures(user_content_controller,
++                                                 features);
+ 
+-  WKUserContentController* user_content_controller =
+-      GetWebViewConfiguration().userContentController;
+-  auto web_frames_manager_features = WebFramesManagerJavaScriptFeature::
+-      AllContentWorldFeaturesFromBrowserState(browser_state_);
+   for (WebFramesManagerJavaScriptFeature* feature :
+        web_frames_manager_features) {
+     feature->ConfigureHandlers(user_content_controller);
