@@ -28,6 +28,7 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "content/public/browser/global_routing_id.h"
@@ -216,7 +217,10 @@ class AIChatSourceLinkBrowserTest : public PlatformBrowserTest {
 
   static EchoedHeaders GetEchoedHeaders(content::WebContents* contents) {
     const std::string body =
-        content::EvalJs(contents, "document.body.innerText").ExtractString();
+        content::EvalJs(contents, "document.body.innerText",
+                        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                        ISOLATED_WORLD_ID_BRAVE_INTERNAL)
+            .ExtractString();
     const std::vector<std::string> lines = base::SplitString(
         body, "\n", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
     EXPECT_EQ(lines.size(), 2u) << body;
@@ -311,8 +315,11 @@ class AIChatSourceLinkBrowserTest : public PlatformBrowserTest {
              attributes: true});
       })
     )";
-    EXPECT_EQ(true, content::EvalJs(frame, content::JsReplace(
-                                               kWaitForLinkScript, url, text)));
+    EXPECT_EQ(true,
+              content::EvalJs(frame,
+                              content::JsReplace(kWaitForLinkScript, url, text),
+                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                              ISOLATED_WORLD_ID_BRAVE_INTERNAL));
 
     constexpr char kClickLinkScript[] = R"(
       [...document.querySelectorAll('a[target=_blank]')]
@@ -322,8 +329,10 @@ class AIChatSourceLinkBrowserTest : public PlatformBrowserTest {
     content::WebContentsAddedObserver new_tab_observer;
     content::TestNavigationObserver navigation_observer(final_url);
     navigation_observer.StartWatchingNewWebContents();
-    EXPECT_TRUE(content::ExecJs(
-        frame, content::JsReplace(kClickLinkScript, url, text)));
+    EXPECT_TRUE(content::ExecJs(frame,
+                                content::JsReplace(kClickLinkScript, url, text),
+                                content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                                ISOLATED_WORLD_ID_BRAVE_INTERNAL));
     navigation_observer.Wait();
     content::WebContents* new_tab = new_tab_observer.GetWebContents();
     EXPECT_EQ(new_tab->GetLastCommittedURL(), final_url);
