@@ -59,6 +59,8 @@ class SidebarService : public KeyedService {
     virtual void OnItemUpdated(const SidebarItem& item,
                                const SidebarItemUpdate& update) {}
     virtual void OnShowSidebarOptionChanged(ShowSidebarOption option) {}
+    virtual void OnNoteAdded(const Notes& note) {}
+    virtual void OnNoteDeleted(const std::string& id) {}
 
    protected:
     ~Observer() override = default;
@@ -133,6 +135,25 @@ class SidebarService : public KeyedService {
   void OnPreferenceChanged(const std::string& pref_name);
   void MigrateSidebarShowOptions();
   void MigratePrefSidebarBuiltInItemsToHidden();
+
+  void SidebarService::AddNote(const Notes& note) {
+  notes_.push_back(note);
+  for (Observer& obs : observers_) {
+    obs.OnNoteAdded(note);
+  }
+  UpdateNotesToPrefStore();
+}
+
+void SidebarService::DeleteNote(const std::string& id) {
+  const size_t erased = std::erase_if(
+      notes_, [&id](const Notes& note) { return note.id == id; });
+  if (erased > 0) {
+    for (Observer& obs : observers_) {
+      obs.OnNoteDeleted(id);
+    }
+    UpdateNotesToPrefStore();
+  }
+}
 
   SidebarItem::BuiltInItemType GetPrevBuiltInItemFor(
       const SidebarItem::BuiltInItemType& item) const;
