@@ -110,6 +110,7 @@ ObliviousHttpAPIClient::InnerClient::BindChunkReceiver() {
 
 void ObliviousHttpAPIClient::InnerClient::OnCompleted(
     network::mojom::ObliviousHttpCompletionResultPtr response) {
+  sse_parser_.Flush();
   switch (response->which()) {
     case network::mojom::ObliviousHttpCompletionResult::Tag::kNetError:
       pending_outer_response_code_ = response->get_net_error();

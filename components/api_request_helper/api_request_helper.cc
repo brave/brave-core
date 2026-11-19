@@ -23,10 +23,14 @@
 #include "base/trace_event/trace_event.h"
 #include "brave/components/api_request_helper/utils.h"
 #include "net/base/load_flags.h"
+#include "net/base/net_errors.h"
+#include "net/http/http_response_headers.h"
+#include "net/url_request/redirect_info.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "url/gurl_debug.h"
+#include "url/origin.h"
 
 namespace api_request_helper {
 
@@ -44,30 +48,44 @@ scoped_refptr<base::SequencedTaskRunner> MakeDecoderTaskRunner() {
        base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
 }
 
-APIRequestResult ToAPIRequestResult(
-    std::unique_ptr<network::SimpleURLLoader> loader) {
-  auto response_code = -1;
-  auto error_code = loader->NetError();
-  auto final_url = loader->GetFinalURL();
+base::flat_map<std::string, std::string> ToHeaderMap(
+    const net::HttpResponseHeaders* headers_list) {
   base::flat_map<std::string, std::string> headers;
-  if (loader->ResponseInfo()) {
-    auto headers_list = loader->ResponseInfo()->headers;
-    if (headers_list) {
-      response_code = headers_list->response_code();
-      DVLOG(1) << "Response code: " << response_code;
-      size_t header_iter = 0;
-      std::string key;
-      std::string value;
-      while (headers_list->EnumerateHeaderLines(&header_iter, &key, &value)) {
-        key = base::ToLowerASCII(key);
-        headers[key] = value;
-        DVLOG(2) << "< " << key << ": " << value;
-      }
+  if (headers_list) {
+    size_t header_iter = 0;
+    std::string key;
+    std::string value;
+    while (headers_list->EnumerateHeaderLines(&header_iter, &key, &value)) {
+      headers[base::ToLowerASCII(key)] = value;
+    }
+  }
+  return headers;
+}
+
+APIRequestResult MakeAPIRequestResult(
+    const net::HttpResponseHeaders* headers_list,
+    int error_code,
+    GURL final_url) {
+  auto response_code = -1;
+  base::flat_map<std::string, std::string> headers = ToHeaderMap(headers_list);
+  if (headers_list) {
+    response_code = headers_list->response_code();
+    DVLOG(1) << "Response code: " << response_code;
+    for (const auto& [key, value] : headers) {
+      DVLOG(2) << "< " << key << ": " << value;
     }
   }
 
   return APIRequestResult(response_code, base::Value(), std::move(headers),
-                          error_code, final_url);
+                          error_code, std::move(final_url));
+}
+
+APIRequestResult ToAPIRequestResult(
+    std::unique_ptr<network::SimpleURLLoader> loader) {
+  const network::mojom::URLResponseHead* response_info = loader->ResponseInfo();
+  return MakeAPIRequestResult(
+      response_info ? response_info->headers.get() : nullptr,
+      loader->NetError(), loader->GetFinalURL());
 }
 
 // A helper class to measure performance of the callback.
@@ -135,6 +153,16 @@ std::string APIRequestResult::SerializeBodyToString() const {
 
   return safe_json;
 }
+
+ResponseStartedInfo::ResponseStartedInfo() = default;
+ResponseStartedInfo::ResponseStartedInfo(const ResponseStartedInfo&) = default;
+ResponseStartedInfo& ResponseStartedInfo::operator=(
+    const ResponseStartedInfo&) = default;
+ResponseStartedInfo::ResponseStartedInfo(ResponseStartedInfo&&) noexcept =
+    default;
+ResponseStartedInfo& ResponseStartedInfo::operator=(
+    ResponseStartedInfo&&) noexcept = default;
+ResponseStartedInfo::~ResponseStartedInfo() = default;
 
 APIRequestHelper::APIRequestHelper(
     net::NetworkTrafficAnnotationTag annotation_tag,
@@ -209,6 +237,8 @@ APIRequestHelper::Ticket APIRequestHelper::RequestSSE(
   handler->data_received_callback_ = std::move(data_received_callback);
 
   handler->response_started_callback_ = std::move(response_started_callback);
+
+  handler->max_body_size_ = request_options.max_body_size;
 
   handler->url_loader_->DownloadAsStream(url_loader_factory_.get(), handler);
   return ticket_and_handler.first;
@@ -310,6 +340,11 @@ APIRequestHelper::CreateRequestURLLoaderHandler(
   if (request_options.timeout) {
     handler->url_loader_->SetTimeoutDuration(request_options.timeout.value());
   }
+  if (request_options.same_origin_redirects_only) {
+    handler->url_loader_->SetOnRedirectCallback(
+        base::BindRepeating(&APIRequestHelper::URLLoaderHandler::OnRedirect,
+                            handler->GetWeakPtr()));
+  }
   return ticket_and_handler;
 }
 
@@ -332,6 +367,8 @@ void APIRequestHelper::URLLoaderHandler::RegisterURLLoader(
          const GURL& final_url,
          const network::mojom::URLResponseHead& response_head) {
         if (handler) {
+          handler->final_url_ = final_url;
+          handler->response_headers_ = response_head.headers;
           if (response_head.mime_type == "text/event-stream") {
             handler->is_sse_ = true;
           }
@@ -342,8 +379,12 @@ void APIRequestHelper::URLLoaderHandler::RegisterURLLoader(
                 response_head.mime_type == "application/json";
           }
           if (handler->response_started_callback_) {
-            std::move(handler->response_started_callback_)
-                .Run(final_url.spec(), response_head.content_length);
+            ResponseStartedInfo info;
+            info.final_url = final_url;
+            info.content_length = response_head.content_length;
+            info.mime_type = response_head.mime_type;
+            info.headers = ToHeaderMap(response_head.headers.get());
+            std::move(handler->response_started_callback_).Run(info);
           }
         }
       };
@@ -377,6 +418,12 @@ void APIRequestHelper::URLLoaderHandler::OnDataReceived(
     std::string_view string_piece,
     base::OnceClosure resume) {
   DVLOG(2) << "[[" << __func__ << "]]" << " Chunk received";
+  body_bytes_received_ += string_piece.size();
+  if (body_bytes_received_ > max_body_size_) {
+    // Matches the error SimpleURLLoader reports for `Request()`.
+    Abort(net::ERR_INSUFFICIENT_RESOURCES, response_headers_.get(), final_url_);
+    return;
+  }
   if (is_sse_) {
     sse_parser_.Process(string_piece);
   } else {
@@ -387,6 +434,7 @@ void APIRequestHelper::URLLoaderHandler::OnDataReceived(
       std::move(resume).Run();
       return;
     }
+    // May delete `this` and the loader, after which `resume` does nothing.
     data_received_callback_.Run(base::Value(string_piece));
   }
   // Get next chunk
@@ -402,15 +450,14 @@ void APIRequestHelper::URLLoaderHandler::OnComplete(bool success) {
   VLOG(1) << "[[" << __func__ << "]]"
           << " Response completed\n";
 
+  sse_parser_.Flush();
+
   if (MaybeParseErrorBody()) {
     return;
   }
 
   if (is_sse_) {
-    // Sends the result once the events still being parsed are delivered. A
-    // partial line that didn't end with a newline is dropped: per the SSE spec,
-    // events are terminated with a blank line, so well-formed streams should
-    // always end on a line boundary.
+    // Sends the result once the events still being parsed are delivered.
     sse_parser_.RunAfterPendingEvents(
         base::BindOnce(&URLLoaderHandler::SendResult, GetWeakPtr()));
     return;
@@ -423,6 +470,7 @@ void APIRequestHelper::URLLoaderHandler::OnRetry(
     base::OnceClosure start_retry) {
   // Also drops the abandoned attempt's events that are still being parsed.
   sse_parser_.Clear();
+  body_bytes_received_ = 0;
   std::move(start_retry).Run();
   // We assume that a consumer of APIRequestHelper doesn't
   // care about discarding partial responses received so far
@@ -511,6 +559,31 @@ bool APIRequestHelper::URLLoaderHandler::MaybeParseErrorBody() {
       base::BindOnce(&APIRequestHelper::URLLoaderHandler::OnParseErrorBody,
                      GetWeakPtr()));
   return true;
+}
+
+void APIRequestHelper::URLLoaderHandler::OnRedirect(
+    const GURL& url_before_redirect,
+    const net::RedirectInfo& redirect_info,
+    const network::mojom::URLResponseHead& response_head,
+    std::vector<std::string>* removed_headers) {
+  if (url::IsSameOriginWith(url_before_redirect, redirect_info.new_url)) {
+    return;
+  }
+  Abort(net::ERR_UNSAFE_REDIRECT, response_head.headers.get(),
+        redirect_info.new_url);
+}
+
+void APIRequestHelper::URLLoaderHandler::Abort(
+    int error_code,
+    const net::HttpResponseHeaders* headers,
+    GURL url) {
+  CHECK(result_callback_);
+  APIRequestResult result =
+      MakeAPIRequestResult(headers, error_code, std::move(url));
+  // `headers` may be owned by the loader.
+  url_loader_.reset();
+  sse_parser_.RunAfterPendingEvents(
+      base::BindOnce(std::move(result_callback_), std::move(result)));
 }
 
 void APIRequestHelper::URLLoaderHandler::OnParseErrorBody(
