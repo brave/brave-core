@@ -13,9 +13,7 @@
 #include "chrome/browser/win/jumplist.h"
 #include "chrome/browser/win/jumplist_updater.h"
 
-// Put this function into `browsing_data` namespace so that we can anchor our
-// override at browsing_data::RecordDeleteBrowsingDataAction.
-namespace browsing_data {
+namespace {
 void BraveRemoveJumplist(uint64_t remove_mask, Profile* profile) {
   if (!(remove_mask & chrome_browsing_data_remover::DATA_TYPE_HISTORY) ||
       !profile || !JumpList::Enabled()) {
@@ -25,27 +23,7 @@ void BraveRemoveJumplist(uint64_t remove_mask, Profile* profile) {
       shell_integration::win::GetAppUserModelIdForBrowser(profile->GetPath());
   JumpListUpdater::DeleteJumpList(app_id);
 }
-}  // namespace browsing_data
-
-#define RecordDeleteBrowsingDataAction        \
-  BraveRemoveJumplist(remove_mask, profile_); \
-  RecordDeleteBrowsingDataAction
+}  // namespace
 #endif  // #if BUILDFLAG(IS_WIN)
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#define HOSTED_APPS_DATA                                                    \
-  BRAVE_AI_CHAT:                                                            \
-  remove_mask |= chrome_browsing_data_remover::DATA_TYPE_BRAVE_LEO_HISTORY; \
-  break;                                                                    \
-  case BrowsingDataType::HOSTED_APPS_DATA
-#endif
-
 #include <chrome/browser/ui/webui/settings/settings_clear_browsing_data_handler.cc>
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
-#undef HOSTED_APPS_DATA
-#endif
-
-#if BUILDFLAG(IS_WIN)
-#undef RecordDeleteBrowsingDataAction
-#endif

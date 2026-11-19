@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/webui/chrome_web_ui_configs.h"
 
+#include "base/strings/strcat.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
@@ -15,17 +16,16 @@
 #include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "chrome/common/webui_url_constants.h"
 #include "content/public/browser/webui_config_map.h"
+#include "content/public/common/url_constants.h"
+#include "url/gurl.h"
+#include "url/url_constants.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #endif
-
-#define RegisterChromeWebUIConfigs RegisterChromeWebUIConfigs_ChromiumImpl
-
-#include <chrome/browser/ui/webui/chrome_web_ui_configs.cc>
-#undef RegisterChromeWebUIConfigs
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/ui/webui/brave_wallet/wallet_page/wallet_page_ui.h"
@@ -86,6 +86,10 @@
 
 namespace {
 
+// Remove configs for Chromium WebUIs that we replace with our own WebUIs.
+// The map doesn't allow for multiple entries for the same origin, so the
+// upstream configs must be removed before we can add our own configs. This is
+// called from RegisterChromeWebUIConfigs() via the rewrite/ plaster.
 #if !BUILDFLAG(IS_ANDROID)
 const GURL GetWebUIConfigURL(const char* scheme, const char* host) {
   return GURL(base::StrCat({scheme, url::kStandardSchemeSeparator, host}));
@@ -110,15 +114,9 @@ void RemoveOverridenWebUIs(content::WebUIConfigMap& map) {
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
 
-}  // namespace
-
-void RegisterChromeWebUIConfigs() {
-  RegisterChromeWebUIConfigs_ChromiumImpl();
-
+// Called at the end of RegisterChromeWebUIConfigs() via the rewrite/ plaster.
+void RegisterBraveWebUIConfigs() {
   auto& map = content::WebUIConfigMap::GetInstance();
-  // Remove configs for Chromium WebUIs that we replace with our own WebUIs.
-  // The map doesn't allow for multiple entries for the same origin, so the
-  // upstream configs must be removed before we can add our own configs.
   RemoveOverridenWebUIs(map);
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -188,3 +186,7 @@ void RegisterChromeWebUIConfigs() {
   map.AddWebUIConfig(std::make_unique<psst::BravePsstDialogUIConfig>());
 #endif
 }
+
+}  // namespace
+
+#include <chrome/browser/ui/webui/chrome_web_ui_configs.cc>
