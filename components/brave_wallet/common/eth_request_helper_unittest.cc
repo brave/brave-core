@@ -6,6 +6,8 @@
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 
 #include <array>
+#include <optional>
+#include <string>
 #include <string_view>
 #include <utility>
 #include <vector>
@@ -838,6 +840,177 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParamsInvalidInput) {
     auto wrong_type = ParseJsonDict(kTypedDataJson);
     wrong_type.Set(key, 1);
     EXPECT_FALSE(parse(make_params(base::Value(std::move(wrong_type)))));
+  }
+}
+
+TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParamsChainId) {
+  constexpr char kAddress[] = "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826";
+  // Make sure the EIP712Domain doesn't specify the chainId because the
+  // `expect_chain_id` calls under `// Malformed input.` pass non-numeric values
+  // ([], {}, true, 1.5, -1, etc.). We don't need a correct hash to test
+  // "chainId" parsing in the "domain".
+  constexpr char kTypedDataJson[] = R"({
+    "types": {
+      "EIP712Domain": [
+        {"name": "name", "type": "string"},
+        {"name": "verifyingContract", "type": "address"}
+      ],
+      "Msg": [
+        {"name": "contents", "type": "string"}
+      ]
+    },
+    "primaryType": "Msg",
+    "domain": {
+      "name": "Ether Mail",
+      "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"
+    },
+    "message": {
+      "contents": "Hello, Bob!"
+    }
+  })";
+
+  auto parse = [&](std::optional<base::Value> chain_id) {
+    auto typed_data = ParseJsonDict(kTypedDataJson);
+    if (chain_id) {
+      typed_data.SetByDottedPath("domain.chainId", std::move(*chain_id));
+    }
+
+    base::ListValue params;
+    params.Append(std::string(kAddress));
+    params.Append(base::Value(std::move(typed_data)));
+    return ParseEthSignTypedDataParams(params,
+                                       EthSignTypedDataHelper::Version::kV4);
+  };
+
+  auto expect_chain_id = [&](base::Value chain_id,
+                             std::optional<std::string> expected) {
+    SCOPED_TRACE(chain_id.DebugString());
+    auto result = parse(std::move(chain_id));
+    ASSERT_TRUE(result);
+    EXPECT_EQ(result->chain_id, expected);
+  };
+
+  expect_chain_id(base::Value(1), "0x1");
+  expect_chain_id(base::Value("0x1"), "0x1");
+  expect_chain_id(base::Value("0x01"), "0x1");
+  expect_chain_id(base::Value("1"), "0x1");
+  expect_chain_id(
+      base::Value(
+          "0x0000000000000000000000000000000000000000000000000000000000000001"),
+      "0x1");
+
+  expect_chain_id(base::Value(""), "0x0");
+  expect_chain_id(base::Value(0), "0x0");
+  expect_chain_id(base::Value("0x0"), "0x0");
+  expect_chain_id(base::Value("0"), "0x0");
+
+  expect_chain_id(base::Value(43114), "0xa86a");
+  expect_chain_id(base::Value("0xa86a"), "0xa86a");
+  expect_chain_id(base::Value("0xA86A"), "0xa86a");
+  expect_chain_id(base::Value("43114"), "0xa86a");
+
+  // Test that strings which represent numbers outside of JSON's natural range
+  // are preserved.
+  expect_chain_id(base::Value("0x20000000000001"), "0x20000000000001");
+  expect_chain_id(base::Value("9007199254740993"), "0x20000000000001");
+
+  // Malformed input.
+  expect_chain_id(base::Value("0X1"), std::nullopt);
+  expect_chain_id(base::Value(" 1"), std::nullopt);
+  expect_chain_id(base::Value("1.5"), std::nullopt);
+  expect_chain_id(base::Value("-1"), std::nullopt);
+  expect_chain_id(base::Value("0xzz"), std::nullopt);
+  expect_chain_id(base::Value(-1), std::nullopt);
+  expect_chain_id(base::Value(1.5), std::nullopt);
+  // Numeric limits.
+  expect_chain_id(base::Value(9007199254740992.0), std::nullopt);
+  expect_chain_id(base::Value(true), std::nullopt);
+  expect_chain_id(base::Value(base::ListValue()), std::nullopt);
+  expect_chain_id(base::Value(base::DictValue()), std::nullopt);
+
+  // `chainId` is entirely absent.
+  auto result = parse(std::nullopt);
+  ASSERT_TRUE(result);
+  EXPECT_EQ(result->chain_id, std::nullopt);
+}
+
+TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParamsChainIdDomainHash) {
+  constexpr char kAddress[] = "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826";
+  constexpr char kTypedDataJson[] = R"({
+    "types": {
+      "EIP712Domain": [
+        {"name": "name", "type": "string"},
+        {"name": "version", "type": "string"},
+        {"name": "chainId", "type": "uint256"},
+        {"name": "verifyingContract", "type": "address"}
+      ],
+      "Mail": [
+        {"name": "from", "type": "Person"},
+        {"name": "to", "type": "Person"},
+        {"name": "contents", "type": "string"}
+      ],
+      "Person": [
+        {"name": "name", "type": "string"},
+        {"name": "wallet", "type": "address"}
+      ]
+    },
+    "primaryType": "Mail",
+    "domain": {
+      "name": "Ether Mail",
+      "version": "1",
+      "chainId": 1,
+      "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"
+    },
+    "message": {
+      "from": {
+        "name": "Cow",
+        "wallet": "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826"
+      },
+      "to": {
+        "name": "Bob",
+        "wallet": "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"
+      },
+      "contents": "Hello, Bob!"
+    }
+  })";
+
+  constexpr char kExpectedDomainHashChainId0x01[] =
+      "f2cee375fa42b42143804025fc449deafd50cc031ca257e0b194a650a912090f";
+
+  constexpr char kExpectedDomainHashChainId0x00[] =
+      "cd1d853b565f5718d30be2eeaf0e7771a571e153cafb1e3919d41d0ae2bed104";
+
+  auto expect_normalized_chain_id = [=](base::Value chain_id,
+                                        std::string_view expected_chain_id,
+                                        std::string_view expected_domain_hash) {
+    SCOPED_TRACE(chain_id.DebugString());
+
+    auto typed_data = ParseJsonDict(kTypedDataJson);
+    typed_data.SetByDottedPath("domain.chainId", std::move(chain_id));
+
+    base::ListValue params;
+    params.Append(std::string(kAddress));
+    params.Append(base::Value(std::move(typed_data)));
+
+    auto result = ParseEthSignTypedDataParams(
+        params, EthSignTypedDataHelper::Version::kV4);
+    ASSERT_TRUE(result);
+    EXPECT_EQ(result->chain_id, expected_chain_id);
+    EXPECT_EQ(base::HexEncodeLower(result->domain_hash), expected_domain_hash);
+  };
+
+  // Prove that given these inputs as the chainId, we generate the correct hash.
+  for (const auto& chain_id : {base::Value(1), base::Value("0x1"),
+                               base::Value("0x01"), base::Value("1")}) {
+    expect_normalized_chain_id(chain_id.Clone(), "0x1",
+                               kExpectedDomainHashChainId0x01);
+  }
+
+  for (const auto& chain_id :
+       {base::Value(0), base::Value(""), base::Value("0x0"),
+        base::Value("0x00"), base::Value("0")}) {
+    expect_normalized_chain_id(chain_id.Clone(), "0x0",
+                               kExpectedDomainHashChainId0x00);
   }
 }
 
