@@ -85,9 +85,8 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   class Observer : public base::CheckedObserver {
    public:
-    // Called when a generation request or tool use starts or stops.
     // |in_progress| and IsToolUseInProgress() are both false only once the
-    // tool loop has stopped, not between its steps.
+    // tool loop has stopped.
     virtual void OnRequestInProgressChanged(ConversationHandler* handler,
                                             bool in_progress) {}
     virtual void OnConversationEntryAdded(

@@ -1223,7 +1223,6 @@ void AIChatService::OnRequestInProgressChanged(ConversationHandler* handler,
       NotifyConversationGenerationStateChanged();
     }
   } else {
-    // The handler reports neither in progress only once its tool loop stops.
     MaybeMarkGenerationComplete(handler);
   }
 

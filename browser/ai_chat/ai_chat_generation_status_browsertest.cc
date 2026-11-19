@@ -557,9 +557,8 @@ IN_PROC_BROWSER_TEST_F(AIChatGenerationStatusBrowserTest,
   auto post_tool_generation = SetupMockGenerateAssistantResponse();
   tool_b_use.Take().Run(CreateContentBlocksForText("tool_b result"), {});
   MockGenerateCallbacks post_tool_response = post_tool_generation->Take();
-  // The service shows a notification as it decides a response has finished,
-  // which happens synchronously, so any step that looked finished has shown
-  // one by now.
+  // Notifications are shown synchronously, so any step that looked finished
+  // has shown one by now.
   EXPECT_EQ(notifications_shown_, 0);
 
   CompleteResponse(std::move(post_tool_response));
