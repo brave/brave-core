@@ -414,7 +414,7 @@ public class BraveToolbarManager extends ToolbarManager
 
         mTabGroupUiOneshotSupplier =
                 new TabGroupUiOneshotSupplier(
-                        mActivityTabProvider,
+                        mActivityTabProvider.asObservable(),
                         mTabModelSelector,
                         mActivity,
                         mWindowAndroid,
