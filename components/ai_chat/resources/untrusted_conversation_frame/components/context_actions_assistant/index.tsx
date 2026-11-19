@@ -173,6 +173,7 @@ export default function ContextActionsAssistant(
         </Button>
       )}
       {!conversationContext.isReadOnly
+        && conversationContext.isThreadsFeatureEnabled
         && !conversationContext.threadUuid
         && props.turnUuid && (
           <Button

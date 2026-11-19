@@ -25,6 +25,11 @@ interface Props {
 // origin entry) in an untrusted iframe and an input box scoped to the thread.
 export default function Thread(props: Props) {
   const activeChat = useActiveChat()
+  const aiChatContext = useAIChat()
+
+  if (!aiChatContext.isThreadsFeatureEnabled) {
+    return null
+  }
 
   return (
     <ConversationProvider

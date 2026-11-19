@@ -19,6 +19,7 @@ export interface UntrustedConversationContextProps {
 
 const IS_MOBILE = loadTimeData.getBoolean('isMobile')
 const IS_HISTORY_FEATURE_ENABLED = loadTimeData.getBoolean('isHistoryEnabled')
+const IS_THREADS_FEATURE_ENABLED = loadTimeData.getBoolean('isThreadsEnabled')
 
 /**
  * Provides the untrusted conversation context with API hooks
@@ -136,6 +137,8 @@ export function useProvideUntrustedConversationContext(
     // TODO(https://github.com/brave/brave-browser/issues/53878): Consider
     // using typed LoadTimeData.
     isHistoryFeatureEnabled: IS_HISTORY_FEATURE_ENABLED,
+
+    isThreadsFeatureEnabled: IS_THREADS_FEATURE_ENABLED,
 
     /**
      * @deprecated Use `api.useAssociatedContentData()` instead

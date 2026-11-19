@@ -11,6 +11,7 @@ import ContextActionsAssistant from '.'
 import MockContext, {
   MockContextRef,
 } from '../../mock_untrusted_conversation_context'
+import { UntrustedConversationContext } from '../../untrusted_conversation_context'
 import '@testing-library/jest-dom'
 
 const mockModels: Mojom.Model[] = [
@@ -120,7 +121,10 @@ const assistantSummaryTurn: Mojom.ConversationTurn = {
   nearVerificationStatus: undefined,
 }
 
-function renderAssistant(isSummaryResponse: boolean) {
+function renderAssistant(
+  isSummaryResponse: boolean,
+  overrides?: Partial<UntrustedConversationContext>,
+) {
   const conversationHistory: Mojom.ConversationTurn[] = isSummaryResponse
     ? [humanSummarizeTurn, assistantSummaryTurn]
     : [
@@ -146,6 +150,7 @@ function renderAssistant(isSummaryResponse: boolean) {
           isPremiumUser: false,
         },
       }}
+      overrides={overrides}
     >
       <ContextActionsAssistant
         turnUuid='turn-uuid'
@@ -226,5 +231,25 @@ describe('ContextActionsAssistant', () => {
         'false',
       )
     })
+  })
+
+  it('hides thread button when threads feature is disabled', () => {
+    const renderResult = renderAssistant(false, {
+      isThreadsFeatureEnabled: false,
+    })
+
+    expect(
+      renderResult.queryByTitle(S.CHAT_UI_CREATE_THREAD_BUTTON_LABEL),
+    ).not.toBeInTheDocument()
+  })
+
+  it('shows thread button when threads feature is enabled', () => {
+    const renderResult = renderAssistant(false, {
+      isThreadsFeatureEnabled: true,
+    })
+
+    expect(
+      renderResult.getByTitle(S.CHAT_UI_CREATE_THREAD_BUTTON_LABEL),
+    ).toBeInTheDocument()
   })
 })

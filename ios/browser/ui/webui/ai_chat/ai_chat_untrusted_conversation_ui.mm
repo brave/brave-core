@@ -264,6 +264,9 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
   source->AddBoolean(
       "isMathRenderingEnabled",
       base::FeatureList::IsEnabled(ai_chat::features::kAIChatMathRendering));
+  source->AddBoolean(
+      "isThreadsEnabled",
+      base::FeatureList::IsEnabled(ai_chat::features::kAIChatThreads));
 
   // If the feature is not enabled then don't add the origin to the CSP.
   if (base::FeatureList::IsEnabled(ai_chat::features::kRichSearchWidgets)) {
