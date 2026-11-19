@@ -1,0 +1,51 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/tor/buildflags/buildflags.gni")
+
+source_set("chromium_impl") {
+  visibility = [ "//brave/browser:core" ]
+  sources = [ "chrome_authenticator_request_delegate.cc" ]
+  deps = [
+    "//base",
+    "//content/public/browser",
+    "//device/fido",
+    "//services/network/public/mojom",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+  sources = [ "off_the_record_cable_browsertest.cc" ]
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/tor/buildflags",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/net",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/tabs:tab_strip",
+    "//chrome/browser/webauthn:impl",
+    "//chrome/test:test_support",
+    "//chrome/test:test_support_ui",
+    "//components/prefs",
+    "//components/proxy_config",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//device/bluetooth",
+    "//device/fido",
+    "//net",
+    "//net:test_support",
+    "//url",
+  ]
+  if (enable_tor) {
+    deps += [
+      "//brave/browser/tor",
+      "//brave/components/tor",
+    ]
+  }
+}

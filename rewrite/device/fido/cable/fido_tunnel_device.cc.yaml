@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Isolate caBLE tunnel WebSockets under the tunnel server's origin.
+
+      Brave opens an off-the-record profile's tunnel on that profile's own
+      network context, which requires a non-empty IsolationInfo for every
+      request. An internal-request IsolationInfo keyed to the tunnel server
+      keeps the connection out of any site's network partition, and in a Tor
+      window gives it a Tor circuit of its own.
+    count: 2
+    regex:
+      re_pattern:
+        '(CreateWebSocket\(\s*url, \{kCableWebSocketProtocol\},
+        net::StorageAccessApiStatus::kNone,\s*)net::IsolationInfo\(\)'
+      replace: |-
+        \1net::IsolationInfo::CreateForInternalRequest(
+                  url::Origin::Create(url))

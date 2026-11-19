@@ -1,0 +1,24 @@
+diff --git a/device/fido/cable/fido_tunnel_device.cc b/device/fido/cable/fido_tunnel_device.cc
+index ae12f5f06ba87731e32bb91c7ea68a9bfc4ef7fa..2e84a675c1852fa9f0381bc198a71d97233896fa 100644
+--- a/device/fido/cable/fido_tunnel_device.cc
++++ b/device/fido/cable/fido_tunnel_device.cc
+@@ -156,7 +156,8 @@ FidoTunnelDevice::FidoTunnelDevice(
+                           base::Unretained(this)));
+   network_context_factory.Run()->CreateWebSocket(
+       url, {kCableWebSocketProtocol}, net::StorageAccessApiStatus::kNone,
+-      net::IsolationInfo(),
++      net::IsolationInfo::CreateForInternalRequest(
++          url::Origin::Create(url)),
+       /*additional_headers=*/{}, network::OriginatingProcessId::browser(),
+       url::Origin::Create(url), network::mojom::ClientSecurityState::New(),
+       GetWebSocketOptions(),
+@@ -220,7 +221,8 @@ FidoTunnelDevice::FidoTunnelDevice(
+       network::mojom::HttpHeader::New(kCableSignalConnectionHeader, "true"));
+   network_context_factory.Run()->CreateWebSocket(
+       url, {kCableWebSocketProtocol}, net::StorageAccessApiStatus::kNone,
+-      net::IsolationInfo(), std::move(headers),
++      net::IsolationInfo::CreateForInternalRequest(
++          url::Origin::Create(url)), std::move(headers),
+       network::OriginatingProcessId::browser(), url::Origin::Create(url),
+       network::mojom::ClientSecurityState::New(), GetWebSocketOptions(),
+       net::MutableNetworkTrafficAnnotationTag(kTrafficAnnotation),
