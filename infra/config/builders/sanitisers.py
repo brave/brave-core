@@ -10,7 +10,6 @@ builders.defaults.set(
     builder_group='brave.sanitisers',
     recipe='brave_builder',
     execution_timeout_mins=270,
-    channel='nightly',
     siso_remote_jobs=1440,
     notifies=[
         'browser-sanitizers-bot',
@@ -34,7 +33,7 @@ builders.builder(
             'release',
             'asan',
             'remoteexec',
-            'nightly',
+            'channel',
             'linux',
             'x64',
         ]
@@ -76,7 +75,7 @@ builders.builder(
             'release',
             'msan',
             'remoteexec',
-            'nightly',
+            'channel',
             'linux',
             'x64',
         ]
@@ -111,7 +110,7 @@ builders.builder(
             'release',
             'ubsan',
             'remoteexec',
-            'nightly',
+            'channel',
             'linux',
             'x64',
         ]

@@ -1019,7 +1019,6 @@ class Builder:
         builder_group: str | None,
         recipe: str | None,
         execution_timeout_mins: int | None,
-        channel: str | None,
         notifies: Sequence[str],
         siso_remote_jobs: int | None,
         siso_reapi_priority: int | None,
@@ -1037,9 +1036,6 @@ class Builder:
 
         # How long the pipeline may run before it's killed.
         self.execution_timeout_mins = execution_timeout_mins
-
-        # The release channel this builder builds for, e.g. "nightly".
-        self.channel = channel
 
         # Who to notify on a build result worth telling someone about.
         self.notifies = tuple(notifies)
@@ -1101,7 +1097,6 @@ class BuildersRegistry:
             builder_group=None,
             recipe=None,
             execution_timeout_mins=None,
-            channel=None,
             notifies=(),
             siso_remote_jobs=None,
             siso_reapi_priority=None,
@@ -1144,7 +1139,6 @@ class BuildersRegistry:
         builder_group: str | None = _UNSET,
         recipe: str | None = _UNSET,
         execution_timeout_mins: int | None = _UNSET,
-        channel: str | None = _UNSET,
         notifies: Sequence[str] = _UNSET,
         siso_remote_jobs: int | None = _UNSET,
         siso_reapi_priority: int | None = _UNSET,
@@ -1159,7 +1153,7 @@ class BuildersRegistry:
                 `name`, describing this builder's GN args.
             targets: The bundle saying what this builder compiles and tests,
                 by name or as `targets.bundle()` returns it without `name`.
-            builder_group, recipe, execution_timeout_mins, channel, notifies,
+            builder_group, recipe, execution_timeout_mins, notifies,
             siso_remote_jobs, siso_reapi_priority: Fall back to `defaults`
                 when omitted.
 
@@ -1187,7 +1181,6 @@ class BuildersRegistry:
             execution_timeout_mins=self.defaults.get(
                 'execution_timeout_mins', execution_timeout_mins
             ),
-            channel=self.defaults.get('channel', channel),
             notifies=self.defaults.get('notifies', notifies),
             siso_remote_jobs=self.defaults.get(
                 'siso_remote_jobs', siso_remote_jobs

@@ -330,17 +330,17 @@ class GnArgsResolveTest(unittest.TestCase):
 
 class DefaultsTest(unittest.TestCase):
     def setUp(self):
-        self.defaults = Defaults(channel=None, notifies=())
+        self.defaults = Defaults(recipe=None, notifies=())
 
     def test_get_returns_value_when_given(self):
-        self.assertEqual(self.defaults.get('channel', 'beta'), 'beta')
+        self.assertEqual(self.defaults.get('recipe', 'other'), 'other')
 
     def test_get_falls_back_to_initial_default(self):
-        self.assertIsNone(self.defaults.get('channel', _UNSET))
+        self.assertIsNone(self.defaults.get('recipe', _UNSET))
 
     def test_set_changes_the_fallback(self):
-        self.defaults.set(channel='nightly')
-        self.assertEqual(self.defaults.get('channel', _UNSET), 'nightly')
+        self.defaults.set(recipe='brave_builder')
+        self.assertEqual(self.defaults.get('recipe', _UNSET), 'brave_builder')
 
     def test_set_unknown_field_raises(self):
         with self.assertRaises(ConfigError):
@@ -508,7 +508,6 @@ class BuildersRegistryTest(unittest.TestCase):
             builder_group='brave.sanitizers',
             recipe='brave_builder',
             execution_timeout_mins=270,
-            channel='nightly',
             notifies=['browser-sanitizers-bot'],
         )
         inherited = self.builders.builder(
@@ -525,7 +524,6 @@ class BuildersRegistryTest(unittest.TestCase):
         self.assertEqual(inherited.builder_group, 'brave.sanitizers')
         self.assertEqual(inherited.recipe, 'brave_builder')
         self.assertEqual(inherited.execution_timeout_mins, 270)
-        self.assertEqual(inherited.channel, 'nightly')
         self.assertEqual(inherited.notifies, ('browser-sanitizers-bot',))
 
         overridden = self.builders.builder(
@@ -538,11 +536,11 @@ class BuildersRegistryTest(unittest.TestCase):
                 }
             ),
             targets=self._targets(),
-            channel='beta',
+            execution_timeout_mins=60,
             notifies=['browser-bot'],
         )
         self.assertEqual(overridden.builder_group, 'brave.sanitizers')
-        self.assertEqual(overridden.channel, 'beta')
+        self.assertEqual(overridden.execution_timeout_mins, 60)
         self.assertEqual(overridden.notifies, ('browser-bot',))
 
     def test_get_and_all(self):

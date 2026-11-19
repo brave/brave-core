@@ -50,7 +50,10 @@ gn_args.config(
     },
 )
 
-gn_args.config(name='nightly', args={'brave_channel': 'nightly'})
+# The release channel this branch builds. Switch it in the channel
+# migration, then run `bots.py snapshot`: nightly on master; beta on the
+# branch one version behind it, and release on those further behind.
+gn_args.config(name='channel', args={'brave_channel': 'nightly'})
 
 # brave/build/args/brave_defaults.gni
 gn_args.config(
