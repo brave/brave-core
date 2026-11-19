@@ -22,12 +22,19 @@ export default function ThreadIndicator(props: Props) {
   const thread = context.threads.find((t) => t.uuid === props.threadUuid)
   const replyCount = thread?.entryCount ?? 0
 
-  const repliesLabel =
-    context.api.useGetPluralString(S.CHAT_UI_THREAD_REPLIES_LABEL, replyCount)
-      .data ?? ''
+  const { data: repliesLabel } = context.api.useGetPluralString(
+    S.CHAT_UI_THREAD_REPLIES_LABEL,
+    replyCount,
+  )
 
-  const label =
+  const nextLabel =
     replyCount === 0 ? getLocale(S.CHAT_UI_THREAD_EMPTY_LABEL) : repliesLabel
+
+  // Keep showing the previous label while the new plural string is loading.
+  const [label, setLabel] = React.useState(nextLabel ?? '')
+  if (nextLabel !== undefined && nextLabel !== label) {
+    setLabel(nextLabel)
+  }
 
   return (
     <ConversationAreaButton
