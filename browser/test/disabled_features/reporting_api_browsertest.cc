@@ -20,12 +20,12 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/chrome_test_utils.h"
-#include "chrome/test/base/in_process_browser_test.h"
-#include "chrome/test/base/ui_test_utils.h"
+#include "chrome/test/base/platform_browser_test.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/embedder_support/switches.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
@@ -46,15 +46,15 @@ constexpr base::TimeDelta kReportToUploadTimeout = base::Seconds(2);
 
 }  // namespace
 
-class ReportingApiBrowserTest : public InProcessBrowserTest {
+class ReportingApiBrowserTest : public PlatformBrowserTest {
  public:
   void SetUpCommandLine(base::CommandLine* command_line) override {
-    InProcessBrowserTest::SetUpCommandLine(command_line);
+    PlatformBrowserTest::SetUpCommandLine(command_line);
     command_line->AppendSwitch(embedder_support::kShortReportingDelay);
   }
 
   void SetUpOnMainThread() override {
-    InProcessBrowserTest::SetUpOnMainThread();
+    PlatformBrowserTest::SetUpOnMainThread();
 
     https_server_.ServeFilesFromDirectory(
         base::PathService::CheckedGet(brave::DIR_TEST_DATA));
@@ -93,7 +93,7 @@ class ReportingApiBrowserTest : public InProcessBrowserTest {
 
   void TriggerCspViolation(const std::string& page) {
     ASSERT_TRUE(
-        ui_test_utils::NavigateToURL(browser(), https_server_.GetURL(page)));
+        content::NavigateToURL(web_contents(), https_server_.GetURL(page)));
     EXPECT_EQ(true, content::EvalJs(web_contents(), "triggerViolation()"));
   }
 
