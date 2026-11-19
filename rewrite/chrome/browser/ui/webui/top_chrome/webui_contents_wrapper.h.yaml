@@ -1,0 +1,29 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Declare popup tracking methods
+
+      SetWebContentsAddNewContentsBrowser() enables redirecting new popup
+      contents to a browser window and CloseTrackedPopups() closes them.
+    regex:
+      pattern: 'void PrimaryPageChanged(content::Page& page) override;'
+      replace: |-
+        void SetWebContentsAddNewContentsBrowser(
+              base::WeakPtr<BrowserWindowInterface> browser);
+          void CloseTrackedPopups();
+          void PrimaryPageChanged(content::Page& page) override;
+    count: 1
+
+  - description: |-
+      Add popup tracking members
+    regex:
+      pattern: 'const bool webui_resizes_host_;'
+      replace: |-
+        const bool webui_resizes_host_;
+          std::vector<base::WeakPtr<content::WebContents>> tracked_popups_;
+          base::WeakPtr<BrowserWindowInterface> browser_;
+    count: 1

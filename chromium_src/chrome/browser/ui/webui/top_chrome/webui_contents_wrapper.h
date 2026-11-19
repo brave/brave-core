@@ -14,35 +14,6 @@
 
 class BrowserWindowInterface;
 
-#define HideCustomContextMenu                                                 \
-  HideCustomContextMenu() {}                                                  \
-  virtual content::WebContents* AddNewContents_ChromiumImpl(                  \
-      content::WebContents* source,                                           \
-      std::unique_ptr<content::WebContents> new_contents,                     \
-      const GURL& target_url, WindowOpenDisposition disposition,              \
-      const blink::mojom::WindowFeatures& window_features, bool user_gesture, \
-      bool* was_blocked);                                                     \
-  virtual void HideCustomContextMenu_Unused
-
-#define PrimaryPageChanged                                                    \
-  SetWebContentsAddNewContentsBrowser(                                        \
-      base::WeakPtr<BrowserWindowInterface> browser);                         \
-  void CloseTrackedPopups();                                                  \
-  content::WebContents* AddNewContents_ChromiumImpl(                          \
-      content::WebContents* source,                                           \
-      std::unique_ptr<content::WebContents> new_contents,                     \
-      const GURL& target_url, WindowOpenDisposition disposition,              \
-      const blink::mojom::WindowFeatures& window_features, bool user_gesture, \
-      bool* was_blocked) override;                                            \
-  void PrimaryPageChanged
-
-#define webui_resizes_host_                                         \
-  webui_resizes_host_;                                              \
-  std::vector<base::WeakPtr<content::WebContents>> tracked_popups_; \
-  base::WeakPtr<BrowserWindowInterface> browser_
 #include <chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.h>  // IWYU pragma: export
-#undef webui_resizes_host_
-#undef PrimaryPageChanged
-#undef HideCustomContextMenu
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_TOP_CHROME_WEBUI_CONTENTS_WRAPPER_H_
