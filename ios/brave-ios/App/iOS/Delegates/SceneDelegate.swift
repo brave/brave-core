@@ -505,8 +505,8 @@ extension SceneDelegate {
     }
   }
 
-  /// The static controls carry no parameter, so the intent type alone identifies the shortcut. The
-  /// configurable control reads its parameter in `perform()`, where the system has resolved it.
+  /// Static controls use the intent type alone. The configurable control supplies its shortcut
+  /// via `@Parameter`, which is available on the intent delivered to `willPerformAppIntent`.
   @available(iOS 26.0, *)
   private static func controlWidgetShortcut(
     for appIntent: any UISceneAppIntent
@@ -514,6 +514,7 @@ extension SceneDelegate {
     switch appIntent {
     case is OpenBraveSearchControlIntent: .search
     case is OpenAskBraveControlIntent: .askBrave
+    case let intent as OpenControlWidgetShortcutIntent: intent.shortcut
     default: nil
     }
   }
@@ -969,13 +970,6 @@ extension SceneDelegate: AppIntentSceneDelegate {
       for: appIntent,
       in: (scene as? UIWindowScene)?.browserViewController
     )
-  }
-}
-
-@available(iOS 26.0, *)
-extension SceneDelegate: ControlWidgetShortcutOpening {
-  func openControlWidgetShortcut(_ shortcut: WidgetShortcut) {
-    openControlWidgetShortcut(shortcut, in: window?.windowScene?.browserViewController)
   }
 }
 
