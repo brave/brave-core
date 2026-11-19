@@ -61,8 +61,17 @@ export function writeMockBuilder(dir: string, name: string): void {
       secrets: { service_key: 'SERVICE_KEY', api_key: 'API_KEY' },
     }),
   )
+  fs.mkdirSync(path.join(builderDir, 'targets'))
   fs.writeFileSync(
-    path.join(builderDir, 'targets.json'),
-    JSON.stringify({ compile: ['brave:all'], tests: ['brave_unit_tests'] }),
+    path.join(builderDir, 'targets', `${mockBuilderSpec.builder_group}.json`),
+    JSON.stringify({
+      [name]: {
+        additional_compile_targets: ['brave'],
+        gtest_tests: [
+          { name: 'brave_unit_tests', test: 'brave_unit_tests' },
+          { name: 'brave_unit_tests_too', test: 'brave_unit_tests' },
+        ],
+      },
+    }),
   )
 }

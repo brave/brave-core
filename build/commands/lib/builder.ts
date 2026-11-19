@@ -47,6 +47,13 @@ interface BuilderProperties {
   }
 }
 
+// A builder's entry in its generated `targets/<builder_group>.json`, as
+// upstream's targets specs have it.
+interface TargetsSpec {
+  additional_compile_targets?: string[]
+  gtest_tests?: { name: string; test: string }[]
+}
+
 function readJson<T>(builderDir: string, file: string): T {
   const filePath = path.join(builderDir, file)
   try {
@@ -75,9 +82,10 @@ export function loadBuilder(name: string, dir = buildersDir): Builder {
     'gn-args.json',
   )
   const properties = readJson<BuilderProperties>(builderDir, 'properties.json')
+  const spec = readBuilderSpec(name, properties)
   return {
     name,
-    spec: readBuilderSpec(name, properties),
+    spec,
     siso: {
       remoteJobs: properties['$brave_siso']?.remote_jobs,
       reapiPriority: properties['$brave_siso']?.reapi_priority,
@@ -87,8 +95,30 @@ export function loadBuilder(name: string, dir = buildersDir): Builder {
       targetArch: readGnTarget(name, gnArgs, 'target_cpu'),
     },
     isBraveOriginBranded: gnArgs?.is_brave_origin_branded === true,
-    targets: readJson<Builder['targets']>(builderDir, 'targets.json'),
+    compileTargets: readCompileTargets(name, builderDir, spec.builder_group),
   }
+}
+
+// The targets a builder compiles: the union of its tests' binaries and its
+// additional compile targets, sorted, as upstream's `TargetsConfig` has it.
+function readCompileTargets(
+  name: string,
+  builderDir: string,
+  builderGroup: string,
+): string[] {
+  const file = path.join('targets', `${builderGroup}.json`)
+  const targetsSpec = readJson<Record<string, TargetsSpec>>(builderDir, file)[
+    name
+  ]
+  if (!targetsSpec) {
+    throw new Error(`builder ${name}: ${file} has no entry for it`)
+  }
+  return [
+    ...new Set([
+      ...(targetsSpec.additional_compile_targets ?? []),
+      ...(targetsSpec.gtest_tests ?? []).map(({ test }) => test),
+    ]),
+  ].sort()
 }
 
 function readBuilderSpec(
