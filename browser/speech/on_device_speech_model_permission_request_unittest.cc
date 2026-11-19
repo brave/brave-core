@@ -8,6 +8,7 @@
 #include <memory>
 #include <variant>
 
+#include "base/functional/callback_helpers.h"
 #include "base/test/test_future.h"
 #include "brave/components/local_ai/core/pref_names.h"
 #include "components/prefs/testing_pref_service.h"
@@ -63,6 +64,21 @@ TEST_F(OnDeviceSpeechModelPermissionRequestUnitTest, DenyWithDontAskAgain) {
   ASSERT_TRUE(allowed_.IsReady());
   EXPECT_FALSE(allowed_.Get());
   EXPECT_FALSE(IsEnabled());
+  EXPECT_FALSE(IsAskEnabled());
+}
+
+// A request that joined the prompt gets the block of the user without the
+// checkbox, which only the shown request has. It keeps "Don't ask again".
+TEST_F(OnDeviceSpeechModelPermissionRequestUnitTest,
+       DenyOfAJoinedRequestKeepsDontAskAgain) {
+  auto shown = CreateRequest();
+  OnDeviceSpeechModelPermissionRequest joined(local_state_, profile_prefs_,
+                                              GURL("https://example.com"),
+                                              base::DoNothing());
+  shown->set_dont_ask_again(true);
+  shown->PermissionDenied();
+  joined.PermissionDenied();
+
   EXPECT_FALSE(IsAskEnabled());
 }
 
