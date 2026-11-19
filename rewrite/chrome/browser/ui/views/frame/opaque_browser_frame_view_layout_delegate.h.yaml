@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Tell the layout whether the window shows Brave's vertical tabs
+
+      Its tab strip is then hidden although the window is tabbed, which
+      IsTabStripVisible() and IsToolbarVisible() can't tell apart from a popup.
+      It returns false unless overridden, so upstream's delegates and fakes need
+      nothing.
+    add_to_public:
+      class_name: OpaqueBrowserFrameViewLayoutDelegate
+      code: 'virtual bool ShouldShowBraveVerticalTabs() const;'
