@@ -31,6 +31,19 @@ class BraveTestsTestApi(RecipeTestApi):
             ),
         )
 
+    def sanitizer_reports(
+        self, suite: str, *reports: dict, unreliable: tuple[str, ...] = ()
+    ) -> TestData:
+        """Seed the sanitiser reports `runtest.py` writes for *suite*:
+        *reports* as `sanitizer_reports.Report.to_json()` writes them."""
+        return self.step_data(
+            suite,
+            self.m.json.output(
+                {'reports': list(reports), 'unreliable': list(unreliable)},
+                name='sanitizer_reports',
+            ),
+        )
+
     def junit_xml_dir(self, path: str) -> TestData:
         """Write the suites' JUnit XML reports to *path*."""
         return self.properties(**{'$brave_tests': {'junit_xml_dir': path}})

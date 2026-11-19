@@ -1,0 +1,47 @@
+[
+  {
+    "cmd": [],
+    "name": "sanitizer findings",
+    "output_properties": {
+      "sanitizer_findings": {
+        "findings": [
+          {
+            "headline": "AddressSanitizer heap-use-after-free in brave::Foo::Bar (brave/foo.cc:12)",
+            "id": "66bebb395df1b54b",
+            "kind": "heap-use-after-free",
+            "occurrences": 2,
+            "sanitizer": "AddressSanitizer",
+            "signature": "AddressSanitizer: heap-use-after-free in brave::Foo::Bar",
+            "suites": [
+              "brave_unit_tests",
+              "brave_browser_tests"
+            ],
+            "tests": [
+              "FooTest.Frees"
+            ]
+          },
+          {
+            "headline": "LeakSanitizer direct-leak in brave::Bar::Make (brave/bar.cc:3)",
+            "id": "51087e1d8a985314",
+            "kind": "direct-leak",
+            "occurrences": 1,
+            "sanitizer": "LeakSanitizer",
+            "signature": "LeakSanitizer: direct-leak in brave::Bar::Make",
+            "suites": [
+              "brave_unit_tests"
+            ],
+            "tests": [
+              "BarTest.Leaks"
+            ]
+          }
+        ],
+        "unreliable_suites": [
+          "brave_components_unittests"
+        ]
+      }
+    }
+  },
+  {
+    "name": "$result"
+  }
+]

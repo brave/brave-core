@@ -15,6 +15,7 @@ from recipe_modules import (
     brave_tests,
     brave_tests_builder_config,
     platform,
+    step,
 )
 from recipe_test_api import RecipeTestApi
 
@@ -22,6 +23,7 @@ from recipe_test_api import RecipeTestApi
 @dataclass
 class DEPS(RecipeScriptApi):
     brave_tests: brave_tests.API
+    step: step.API
 
 
 @dataclass
@@ -32,11 +34,17 @@ class TEST_DEPS(RecipeTestApi):
 
 
 def RunSteps(api: DEPS):
-    api.brave_tests.run_tests(
+    test_run = api.brave_tests.run_tests(
         brave_tests_builder_config.BuilderId(
             group='brave.sanitisers', builder='linux-x64-asan-brave'
         )
     )
+    for suite, reports in test_run.sanitizer_reports.items():
+        api.step(
+            f'{suite} sanitizer reports',
+            ['echo', *(report.signature for report in reports.reports)],
+        )
+    api.brave_tests.raise_on_failure(test_run)
 
 
 def GenTests(api: TEST_DEPS):
@@ -95,6 +103,39 @@ def GenTests(api: TEST_DEPS):
         api.post_process(post_process.StatusFailure),
         api.post_process(post_process.DropExpectation),
         status='FAILURE',
+    )
+    # The sanitiser reports `runtest.py` writes come back with each suite's
+    # result; a suite that wrote none has none.
+    yield api.test(
+        'sanitizer reports',
+        api.platform.name('linux'),
+        api.brave_core_checkout.with_git_cache(),
+        api.brave_tests.test_spec('brave_unit_tests', 'brave_browser_tests'),
+        api.brave_tests.sanitizer_reports(
+            'brave_unit_tests',
+            {
+                'sanitizer': 'LeakSanitizer',
+                'kind': 'direct-leak',
+                'summary': '8 byte(s) leaked in 1 allocation(s).',
+                'frames': [
+                    {
+                        'function': 'brave::Bar::Make',
+                        'location': 'brave/bar.cc:3',
+                    }
+                ],
+                'text': 'Direct leak of 8 byte(s) in 1 object(s)',
+                'test': 'BarTest.Leaks',
+            },
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'brave_unit_tests sanitizer reports',
+            ['echo', 'LeakSanitizer: direct-leak in brave::Bar::Make'],
+        ),
+        api.post_process(
+            post_process.DoesNotRun, 'brave_browser_tests sanitizer reports'
+        ),
+        api.post_process(post_process.DropExpectation),
     )
     # A builder whose spec has no gtests runs none.
     yield api.test(
