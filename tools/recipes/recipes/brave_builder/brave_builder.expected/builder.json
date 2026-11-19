@@ -346,6 +346,13 @@
     }
   },
   {
+    "cmd": [],
+    "name": "notifications",
+    "output_properties": {
+      "notifications": []
+    }
+  },
+  {
     "name": "$result"
   }
 ]
