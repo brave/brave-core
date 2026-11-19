@@ -10,7 +10,12 @@
 
 #include "base/check.h"
 #include "base/values.h"
+#include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
+
+// Defined in //brave/browser/profiles/custom_profile_image, or as a no-op
+// in //brave/browser/profiles:chromium_impl.
+gfx::Image BraveGetCustomProfileImage(const ProfileAttributesEntry& entry);
 
 namespace {
 constexpr std::string_view kSerpMetricsKey = "serp_metrics";
@@ -58,8 +63,29 @@ void ProfileAttributesEntry::SetSerpMetrics(base::DictValue serp_metrics) {
   SetValue(kSerpMetricsKey.data(), base::Value(std::move(serp_metrics)));
 }
 
+ProfileAttributesEntry::~ProfileAttributesEntry() = default;
+
+std::unique_ptr<base::SupportsUserData::Data>&
+ProfileAttributesEntry::custom_profile_image() {
+  return custom_profile_image_;
+}
+
+bool ProfileAttributesEntry::GetCustomProfileImageFlag(const char* key) const {
+  return GetBool(key);
+}
+
+bool ProfileAttributesEntry::SetCustomProfileImageFlag(const char* key,
+                                                       bool value) {
+  return SetBool(key, value);
+}
+
+void ProfileAttributesEntry::NotifyCustomProfileImageChanged() {
+  profile_attributes_storage_->NotifyOnProfileAvatarChanged(profile_path_);
+}
+
 #define BRAVE_PROFILE_ATTRIBUTES_ENTRY_MIGRATE_OBSOLETE_PROFILE_ATTRIBUTES \
   BraveMigrateObsoleteProfileAttributes();
 
 #include <chrome/browser/profiles/profile_attributes_entry.cc>
+
 #undef BRAVE_PROFILE_ATTRIBUTES_ENTRY_MIGRATE_OBSOLETE_PROFILE_ATTRIBUTES

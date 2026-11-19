@@ -1,0 +1,32 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Define the destructor out of line.
+
+      The entry owns its custom profile image state, which makes an inline
+      destructor too complex for the Chromium style checker.
+    regex:
+      pattern: 'virtual ~ProfileAttributesEntry() = default;'
+      replace: 'virtual ~ProfileAttributesEntry();'
+
+  - description: |-
+      Expose the custom profile image state and the entry data it uses.
+
+      The state is a base::SupportsUserData::Data so this header need not
+      include desktop-only code.
+    add_to_public:
+      class_name: ProfileAttributesEntry
+      code: |-
+        std::unique_ptr<base::SupportsUserData::Data>& custom_profile_image();
+        bool GetCustomProfileImageFlag(const char* key) const;
+        bool SetCustomProfileImageFlag(const char* key, bool value);
+        void NotifyCustomProfileImageChanged();
+
+  - description: Let the entry own its custom profile image state.
+    add_to_protected:
+      class_name: ProfileAttributesEntry
+      code: std::unique_ptr<base::SupportsUserData::Data> custom_profile_image_;

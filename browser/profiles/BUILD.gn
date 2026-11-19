@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/ui/webui/custom_profile_image/buildflags/buildflags.gni")
+
 source_set("util") {
   sources = [
     "profile_util.cc",
@@ -29,6 +31,10 @@ source_set("chromium_impl") {
   visibility = [ "//brave/browser:core" ]
   sources = [ "profile_avatar_icon_util.cc" ]
   deps = [ "//brave/app/vector_icons" ]
+  if (!enable_brave_custom_profile_image_webui) {
+    sources += [ "custom_profile_image_disabled.cc" ]
+    deps += [ "//ui/gfx" ]
+  }
 }
 
 source_set("unit_tests") {

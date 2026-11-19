@@ -24,6 +24,11 @@ namespace gfx {
 struct VectorIcon;
 }  // namespace gfx
 
+// Defined in //brave/browser/profiles/custom_profile_image, or as no-ops
+// in //brave/browser/profiles:chromium_impl.
+bool BraveIsCustomProfileImageSelected(const ProfileAttributesEntry& entry);
+void BraveSelectFallbackProfileImage(ProfileAttributesEntry& entry);
+
 // First, define anything that patches will rely on.
 namespace profiles {
 
