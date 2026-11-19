@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/webui/help/version_updater.h b/chrome/browser/ui/webui/help/version_updater.h
+index 4181d4e0d567f7aedebe29d2d2df7c3e2b04c874..71b4286e80b1bebeb80919432974bd76d63f3b76 100644
+--- a/chrome/browser/ui/webui/help/version_updater.h
++++ b/chrome/browser/ui/webui/help/version_updater.h
+@@ -102,6 +102,9 @@ class VersionUpdater {
+ 
+ #if BUILDFLAG(IS_MAC)
+   // Make updates available for all users.
++  #if BUILDFLAG(ENABLE_SPARKLE)
++  virtual void GetIsSparkleForTesting(bool& result) const {}
++#endif
+   virtual void PromoteUpdater() = 0;
+ #endif
+ 

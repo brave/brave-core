@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/ui/webui/help/version_updater_mac.mm b/chrome/browser/ui/webui/help/version_updater_mac.mm
+index 57648956faf5058fada6b02abd3301deebb5a295..391e03390eeafae30027050d139c7e3d7d3e0cb7 100644
+--- a/chrome/browser/ui/webui/help/version_updater_mac.mm
++++ b/chrome/browser/ui/webui/help/version_updater_mac.mm
+@@ -133,5 +133,12 @@ class VersionUpdaterMac : public VersionUpdater {
+ 
+ std::unique_ptr<VersionUpdater> VersionUpdater::Create(
+     content::WebContents* /* web_contents */) {
++  #if BUILDFLAG(ENABLE_OMAHA4)
++  return base::WrapUnique(
++      brave_updater::ShouldUseOmaha4()
++          ? new VersionUpdaterMac()
++          : static_cast<VersionUpdater*>(new SparkleVersionUpdater()));
++#else
+   return base::WrapUnique(new VersionUpdaterMac());
++#endif
+ }
