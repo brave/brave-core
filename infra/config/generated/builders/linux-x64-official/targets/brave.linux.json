@@ -1,0 +1,94 @@
+{
+  "linux-x64-official": {
+    "additional_compile_targets": [
+      "brave"
+    ],
+    "gtest_tests": [
+      {
+        "name": "brave_components_unittests",
+        "test": "brave_components_unittests"
+      },
+      {
+        "name": "brave_unit_tests",
+        "test": "brave_unit_tests"
+      },
+      {
+        "name": "brave_installer_unittests",
+        "test": "brave_installer_unittests"
+      },
+      {
+        "name": "brave_updater_unittests",
+        "test": "brave_updater_unittests"
+      },
+      {
+        "name": "brave_browser_tests",
+        "test": "brave_browser_tests"
+      },
+      {
+        "name": "brave_interactive_ui_tests",
+        "test": "brave_interactive_ui_tests"
+      },
+      {
+        "args": [
+          "--test-launcher-filter-file=../../brave/test/filters/base_unittests.filter;../../brave/test/filters/base_unittests-linux.filter;../../brave/test/filters/generated/base_unittests-linux.filter"
+        ],
+        "name": "base_unittests",
+        "test": "base_unittests"
+      },
+      {
+        "args": [
+          "--test-launcher-filter-file=../../brave/test/filters/net_unittests.filter;../../brave/test/filters/generated/net_unittests-linux.filter"
+        ],
+        "name": "net_unittests",
+        "test": "net_unittests"
+      },
+      {
+        "args": [
+          "--test-launcher-filter-file=../../brave/test/filters/services_unittests.filter;../../brave/test/filters/generated/services_unittests-linux.filter"
+        ],
+        "name": "services_unittests",
+        "test": "services_unittests"
+      },
+      {
+        "args": [
+          "--test-launcher-filter-file=../../brave/test/filters/unit_tests.filter;../../brave/test/filters/unit_tests-linux.filter;../../brave/test/filters/generated/unit_tests-linux.filter"
+        ],
+        "name": "unit_tests",
+        "test": "unit_tests"
+      },
+      {
+        "args": [
+          "--test-launcher-filter-file=../../brave/test/filters/content_unittests.filter;../../brave/test/filters/generated/content_unittests-linux.filter"
+        ],
+        "name": "content_unittests",
+        "test": "content_unittests"
+      },
+      {
+        "args": [
+          "--test-launcher-filter-file=../../brave/test/filters/components_unittests.filter;../../brave/test/filters/components_unittests-linux.filter;../../brave/test/filters/generated/components_unittests-linux.filter"
+        ],
+        "name": "components_unittests",
+        "test": "components_unittests"
+      },
+      {
+        "args": [
+          "--test-launcher-filter-file=../../brave/test/filters/browser_tests.filter;../../brave/test/filters/browser_tests-linux.filter;../../brave/test/filters/generated/browser_tests-linux.filter"
+        ],
+        "name": "browser_tests",
+        "test": "browser_tests"
+      },
+      {
+        "name": "brave_cert_pinning_tests",
+        "test": "brave_cert_pinning_tests"
+      },
+      {
+        "args": [
+          "--ui-test-action-timeout=320000",
+          "--test-launcher-timeout=2200000"
+        ],
+        "name": "brave_network_audit_tests",
+        "test": "brave_network_audit_tests"
+      }
+    ]
+  }
+}

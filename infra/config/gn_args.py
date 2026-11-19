@@ -231,6 +231,21 @@ gn_args.config(
     },
 )
 
+# What buildArgs.ts derives for a Release build without a sanitiser.
+gn_args.config(
+    name='official',
+    configs=[
+        'brave_desktop_defaults',
+        'ci_desktop_defaults',
+        'brave_service_keys',
+    ],
+    args={
+        'is_official_build': True,
+        'enable_updater': True,
+        'enable_update_notifications': True,
+    },
+)
+
 # What buildArgs.ts derives for any sanitiser build.
 gn_args.config(
     name='sanitiser_defaults',
