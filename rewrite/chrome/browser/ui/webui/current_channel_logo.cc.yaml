@@ -1,0 +1,54 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Skip the channel switch on Android
+    regex:
+      pattern: 'switch (chrome::GetChannel()) {'
+      replace: |-
+        #if !BUILDFLAG(IS_ANDROID)
+          switch (chrome::GetChannel()) {
+    count: 1
+
+  - description: |-
+      Use channel logos for official builds
+
+      Brave has no GOOGLE_CHROME_BRANDING, so key off OFFICIAL_BUILD instead.
+    regex:
+      pattern: '#if BUILDFLAG(GOOGLE_CHROME_BRANDING)'
+      replace: '#if defined(OFFICIAL_BUILD)'
+    count: 1
+
+  - description: |-
+      Fail on non-official channels
+
+      Non-official builds only run on the UNKNOWN channel.
+    regex:
+      pattern: |-
+        CHECK_IS_TEST();
+              [[fallthrough]];
+      replace: 'NOTREACHED();'
+    count: 1
+
+  - description: |-
+      Use the development logo for the UNKNOWN channel
+    regex:
+      pattern: |-
+        case version_info::Channel::UNKNOWN:
+              return IDR_PRODUCT_LOGO_32;
+      replace: |-
+        case version_info::Channel::UNKNOWN:
+              return IDR_PRODUCT_LOGO_32_DEVELOPMENT;
+    count: 1
+
+  - description: |-
+      Close the Android guard around the channel switch
+    regex:
+      pattern: '  return -1;'
+      replace: |-
+        #endif  // BUILDFLAG(IS_ANDROID)
+          return -1;
+    count: 1

@@ -1,0 +1,31 @@
+diff --git a/chrome/browser/ui/webui/current_channel_logo.cc b/chrome/browser/ui/webui/current_channel_logo.cc
+index 70f983e5c683eece6224751679d7b58e2cc13ac3..1a3d5febe7d19a4559aec992c7750b3f3aeeb8fd 100644
+--- a/chrome/browser/ui/webui/current_channel_logo.cc
++++ b/chrome/browser/ui/webui/current_channel_logo.cc
+@@ -14,8 +14,9 @@
+ namespace webui {
+ 
+ int CurrentChannelLogoResourceId() {
++  #if !BUILDFLAG(IS_ANDROID)
+   switch (chrome::GetChannel()) {
+-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
++#if defined(OFFICIAL_BUILD)
+     case version_info::Channel::CANARY:
+       return IDR_PRODUCT_LOGO_32_CANARY;
+     case version_info::Channel::DEV:
+@@ -29,12 +30,12 @@ int CurrentChannelLogoResourceId() {
+     case version_info::Channel::DEV:
+     case version_info::Channel::BETA:
+     case version_info::Channel::STABLE:
+-      CHECK_IS_TEST();
+-      [[fallthrough]];
++      NOTREACHED();
+ #endif
+     case version_info::Channel::UNKNOWN:
+-      return IDR_PRODUCT_LOGO_32;
++      return IDR_PRODUCT_LOGO_32_DEVELOPMENT;
+   }
++#endif  // BUILDFLAG(IS_ANDROID)
+   return -1;
+ }
+ 
