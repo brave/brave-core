@@ -278,6 +278,59 @@ TEST_F(AcceleratorServiceUnitTest, DuplicateDefaultsAreIgnored) {
   EXPECT_FALSE(command->modified);
 }
 
+TEST_F(AcceleratorServiceUnitTest,
+       RemovedAcceleratorsSurviveRestartWithEquivalentDefaults) {
+  // Test case for https://github.com/brave/brave-browser/issues/47302
+  // On Windows/Views, GetAcceleratorList() contains both VKEY_LMENU and
+  // VKEY_MENU mapped to IDC_FOCUS_MENU_BAR (along with VKEY_RMENU for AltGr).
+  auto make_defaults = []() {
+    return MakeDefaults(
+        {{IDC_FOCUS_MENU_BAR,
+          {ui::Accelerator(ui::VKEY_LMENU, ui::EF_NONE),
+           ui::Accelerator(ui::VKEY_MENU, ui::EF_NONE),
+           ui::Accelerator(ui::VKEY_RMENU, ui::EF_NONE)}}});
+  };
+
+  {
+    commands::AcceleratorService service(profile().GetPrefs(), make_defaults());
+    auto accelerators = service.GetAcceleratorsForTesting();
+    ASSERT_EQ(2u, accelerators[IDC_FOCUS_MENU_BAR].size());
+    EXPECT_EQ("Alt",
+              commands::ToCodesString(accelerators[IDC_FOCUS_MENU_BAR][0]));
+    EXPECT_EQ("AltGr",
+              commands::ToCodesString(accelerators[IDC_FOCUS_MENU_BAR][1]));
+
+    // Remove the Alt shortcut
+    service.UnassignAcceleratorFromCommand(IDC_FOCUS_MENU_BAR, "Alt");
+    accelerators = service.GetAcceleratorsForTesting();
+    ASSERT_EQ(1u, accelerators[IDC_FOCUS_MENU_BAR].size());
+    EXPECT_EQ("AltGr",
+              commands::ToCodesString(accelerators[IDC_FOCUS_MENU_BAR][0]));
+  }
+
+  // Simulate browser restart by creating a new service with the same prefs
+  {
+    commands::AcceleratorService service(profile().GetPrefs(), make_defaults());
+    auto accelerators = service.GetAcceleratorsForTesting();
+    // Alt must NOT be re-added on restart
+    ASSERT_EQ(1u, accelerators[IDC_FOCUS_MENU_BAR].size());
+    EXPECT_EQ("AltGr",
+              commands::ToCodesString(accelerators[IDC_FOCUS_MENU_BAR][0]));
+
+    // Also remove the remaining shortcut (AltGr) so none remain
+    service.UnassignAcceleratorFromCommand(IDC_FOCUS_MENU_BAR, "AltGr");
+    accelerators = service.GetAcceleratorsForTesting();
+    EXPECT_EQ(0u, accelerators[IDC_FOCUS_MENU_BAR].size());
+  }
+
+  // Simulate another restart: clearing all shortcuts must also persist
+  {
+    commands::AcceleratorService service(profile().GetPrefs(), make_defaults());
+    auto accelerators = service.GetAcceleratorsForTesting();
+    EXPECT_EQ(0u, accelerators[IDC_FOCUS_MENU_BAR].size());
+  }
+}
+
 // System managed accelerators only exist on macOS (see DefaultAccelerators).
 #if BUILDFLAG(IS_MAC)
 TEST_F(AcceleratorServiceUnitTest, UnmodifiableDefaultsAreReset) {
