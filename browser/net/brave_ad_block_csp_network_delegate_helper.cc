@@ -83,21 +83,10 @@ int OnHeadersReceived_AdBlockCspWork(
 
     (*override_response_headers)->RemoveHeader("Content-Security-Policy");
 
-    // Use the request initiator as the first party origin for subframes and
-    // for main frames where `url::Origin::Create(request_url).opaque()`.
-    // TODO(https://brave.dev/b/57775): Move first_party_origin to
-    // BraveRequestInfo.
-    const url::Origin request_origin = url::Origin::Create(ctx->request_url());
-    const bool use_initiator_origin =
-        ctx->request_initiator() &&
-        (ctx->resource_type() != blink::mojom::ResourceType::kMainFrame ||
-         request_origin.opaque());
-    const url::Origin first_party_origin =
-        use_initiator_origin ? *ctx->request_initiator() : request_origin;
-
     auto* ad_block_service = g_brave_browser_process->ad_block_service();
     ad_block_service->AsyncCallAndReplyWithResult<std::optional<std::string>>(
-        base::BindOnce(&GetCspDirectivesOnTaskRunner, first_party_origin,
+        base::BindOnce(&GetCspDirectivesOnTaskRunner,
+                       ctx->first_party_origin_for_shields(),
                        ctx->request_url(), ctx->resource_type(), ctx->method(),
                        std::move(original_csp)),
         base::BindOnce(&OnReceiveCspDirectives, next_callback,
