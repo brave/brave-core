@@ -25,6 +25,7 @@ import org.chromium.base.test.util.Feature;
 import org.chromium.base.test.util.Features.DisableFeatures;
 import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.base.test.util.UrlUtils;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.chrome.test.transit.AutoResetCtaTransitTestRule;
@@ -39,13 +40,20 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-/** End-to-end coverage of native {@code BraveDownloadManagerDelegate} on Android. */
+/**
+ * End-to-end coverage of native {@code BraveDownloadManagerDelegate} on Android. Note around
+ * ChromeFeatureList.ANDROID_BOTTOM_BAR: This allows to short-circuit the code-path inside {@link
+ * org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration} which checks for small
+ * screen. Checking for that results in querying a null {@link Activity} because {@link
+ * org.chromium.chrome.browser.document.BraveLauncherActivity} is not yet added to the list of
+ * running Activities.
+ */
 @RunWith(ChromeJUnit4ClassRunner.class)
 @CommandLineFlags.Add({ChromeSwitches.DISABLE_FIRST_RUN_EXPERIENCE})
+@EnableFeatures(ChromeFeatureList.ANDROID_BOTTOM_BAR)
 @Batch(Batch.PER_CLASS)
-@EnableFeatures(BraveDownloadImageMetadataStripperTest.STRIP_IMAGE_METADATA_FEATURE)
 public class BraveDownloadImageMetadataStripperTest {
-    private static final String STRIP_IMAGE_METADATA_FEATURE = "StripImageMetadataV1";
+    static final String STRIP_IMAGE_METADATA_FEATURE = "StripImageMetadataV1";
 
     // The "real" JPEG fixture shared with the desktop browser test. It carries a Facebook FBMD
     // record inside its IPTC metadata that the stripper is expected to scrub.
@@ -153,6 +161,7 @@ public class BraveDownloadImageMetadataStripperTest {
     @Test
     @LargeTest
     @Feature({"Downloads"})
+    @EnableFeatures(STRIP_IMAGE_METADATA_FEATURE)
     public void testRemovesFbmdMetadataFromDownloadedJpegImage() throws Exception {
         byte[] originalContents = readOriginalImageBytes();
         // Sanity check the fixture actually carries an FBMD record to strip.
