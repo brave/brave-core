@@ -35,6 +35,7 @@ import {
   getReasoningText,
   getToolArtifacts,
   getPairedConversationGroups,
+  getThreadOriginConversationGroup,
   isAssistantGroupTask,
 } from './conversation_entries_utils'
 import useConversationEventClipboardCopyHandler from './use_conversation_event_clipboard_copy_handler'
@@ -184,6 +185,21 @@ function usePairedConversationGroups() {
   )
 }
 
+/**
+ * In a thread frame, returns the assistant group from the root conversation
+ * which the thread originates from, so it can be shown above the thread's own
+ * entries. Null when not viewing a thread, or when it can't be found.
+ */
+function useThreadOriginConversationGroup() {
+  const { threads, threadUuid, rootConversationHistory } =
+    useUntrustedConversationContext()
+  const thread = threads.find((t) => t.uuid === threadUuid)
+  return React.useMemo(
+    () => getThreadOriginConversationGroup(rootConversationHistory, thread),
+    [rootConversationHistory, thread],
+  )
+}
+
 function ConversationEntries(props: {
   modelIntroMarkers?: ModelIntroMarker[]
   scrollToBottom?: () => void
@@ -195,6 +211,7 @@ function ConversationEntries(props: {
   const [activeMenuId, setActiveMenuId] = React.useState<number>()
   const [editInputId, setEditInputId] = React.useState<number>()
   const entryPairs = usePairedConversationGroups()
+  const threadOriginGroup = useThreadOriginConversationGroup()
 
   // We are only generating for this frame if the in-progress thread matches
   // the thread this frame is rendering. Both the frame's threadUuid and the
@@ -269,21 +286,27 @@ function ConversationEntries(props: {
       ...(firstEntry.edits?.map((edit) => edit.uuid) ?? []),
     ])
 
+    // The thread origin (negative entryNumber) belongs to the root conversation,
+    // so it can't be edited or regenerated from here.
+    const isThreadOrigin = entryNumber < 0
+
     // Can't edit complicated structured content (for now)
     // Not allowed to edit agent conversations until the edit submission
     // happens on a different frame.
     const canEditEntry =
-      !conversationContext.conversationCapabilities.includes(
+      !isThreadOrigin
+      && !conversationContext.conversationCapabilities.includes(
         Mojom.ConversationCapability.CONTENT_AGENT,
       )
       && group.length === 1
       && !firstEntryEdit.events?.some((event) => !!event.toolUseEvent)
 
-    const turnModelKey = firstEntryEdit.modelKey
-      ? (conversationContext.allModels.find(
-          (m) => m.key === firstEntryEdit.modelKey,
-        )?.key ?? undefined)
-      : undefined
+    const turnModelKey =
+      firstEntryEdit.modelKey && !isThreadOrigin
+        ? (conversationContext.allModels.find(
+            (m) => m.key === firstEntryEdit.modelKey,
+          )?.key ?? undefined)
+        : undefined
 
     // A thread branches from a specific assistant entry. Show an indicator for
     // each child thread on the group's last assistant entry.
@@ -553,6 +576,11 @@ function ConversationEntries(props: {
 
   return (
     <div className={hasGenerated.current ? styles.hasGenerated : ''}>
+      {threadOriginGroup && (
+        <div data-testid='thread-origin'>
+          {renderEntryGroup(false, threadOriginGroup, -1)}
+        </div>
+      )}
       {entryPairs.map((pair, pairIndex) => (
         <div
           key={pairIndex}

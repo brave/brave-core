@@ -131,8 +131,8 @@ export default function createUntrustedConversationApi(
       ...endpointsFor(conversationHandler, {
         getConversationHistory: {
           response: (result) => result.conversationHistory,
-          // In a thread frame, prefetch the thread's history (which includes
-          // the origin entry); otherwise prefetch the root conversation.
+          // In a thread frame, prefetch the thread's history; otherwise
+          // prefetch the root conversation.
           prefetchWithArgs: [threadUuid],
           placeholderData: [] as Mojom.ConversationTurn[],
         },

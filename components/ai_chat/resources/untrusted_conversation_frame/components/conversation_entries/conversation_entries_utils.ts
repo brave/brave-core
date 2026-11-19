@@ -86,6 +86,24 @@ export function getPairedConversationGroups(
 }
 
 /**
+ * Returns the assistant group from the root conversation that contains the
+ * thread's origin entry, or null if it can't be found.
+ */
+export function getThreadOriginConversationGroup(
+  rootConversationHistory: Mojom.ConversationTurn[] | null,
+  thread: Mojom.Thread | undefined,
+): Mojom.ConversationTurn[] | null {
+  if (!rootConversationHistory || !thread) {
+    return null
+  }
+  return (
+    groupConversationEntries(rootConversationHistory).find((group) =>
+      group.some((entry) => entry.uuid === thread.originConversationEntryUuid),
+    ) ?? null
+  )
+}
+
+/**
  * A task is an assistant response group with at least {@link TASK_TOOL_COUNT}
  * task tool use events.
  * @param group Group of assistant conversation entries from

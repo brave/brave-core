@@ -1062,6 +1062,143 @@ describe('ContextActionsAssistant rendering', () => {
   })
 })
 
+describe('thread origin', () => {
+  const baseOverrides: Partial<UntrustedConversationContext> = {
+    isMobile: false,
+    isLeoModel: true,
+    isGenerating: false,
+    allModels: [],
+    canSubmitUserEntries: true,
+    trimmedTokens: BigInt(0),
+    totalTokens: BigInt(0),
+    contentUsedPercentage: 100,
+  }
+
+  const turn = (
+    characterType: Mojom.CharacterType,
+    uuid: string,
+    text: string,
+  ) =>
+    createConversationTurnWithDefaults({
+      characterType,
+      uuid,
+      text,
+      events:
+        characterType === Mojom.CharacterType.ASSISTANT
+          ? [getCompletionEvent(text)]
+          : undefined,
+    })
+
+  const rootHistory = [
+    turn(Mojom.CharacterType.HUMAN, 'h1', 'Root question 1'),
+    turn(Mojom.CharacterType.ASSISTANT, 'a1', 'Root answer 1'),
+    turn(Mojom.CharacterType.HUMAN, 'h2', 'Root question 2'),
+    turn(Mojom.CharacterType.ASSISTANT, 'a2', 'Root answer 2'),
+  ]
+
+  const thread: Mojom.Thread = {
+    uuid: 'thread-1',
+    conversationUuid: 'conversation-1',
+    originConversationEntryUuid: 'a1',
+    totalTokens: BigInt(0),
+    trimmedTokens: BigInt(0),
+    entryCount: 2,
+  }
+
+  const threadHistory = [
+    turn(Mojom.CharacterType.HUMAN, 'th1', 'Thread question'),
+    turn(Mojom.CharacterType.ASSISTANT, 'ta1', 'Thread answer'),
+  ]
+
+  const renderThread = (overrides: Partial<UntrustedConversationContext>) =>
+    render(
+      <MockContext
+        overrides={{
+          ...baseOverrides,
+          conversationHistory: threadHistory,
+          ...overrides,
+        }}
+      >
+        <ConversationEntries />
+      </MockContext>,
+    )
+
+  beforeEach(() => {
+    assistantResponseMock.mockClear()
+  })
+
+  it('renders only the origin assistant group before the thread entries', () => {
+    const { container } = renderThread({
+      threadUuid: 'thread-1',
+      threads: [thread],
+      rootConversationHistory: rootHistory,
+    })
+
+    const origin = screen.getByTestId('thread-origin')
+    expect(
+      origin.querySelectorAll('[data-testid="assistant-turn"]'),
+    ).toHaveLength(1)
+    expect(origin.querySelector('[data-testid="human-turn"]')).toBeNull()
+
+    expect(assistantResponseMock).toHaveBeenCalledTimes(2)
+    expect(assistantResponseMock.mock.calls[0][0].entryUuid).toBe('a1')
+    expect(assistantResponseMock.mock.calls[1][0].entryUuid).toBe('ta1')
+
+    const turns = container.querySelectorAll('[data-testid]')
+    expect(turns[0]).toBe(origin)
+    expect(screen.getAllByText('Thread question')).toHaveLength(1)
+    expect(screen.queryByText('Root question 1')).not.toBeInTheDocument()
+  })
+
+  it('does not allow editing or regenerating the origin', () => {
+    const withModel = (turns: Mojom.ConversationTurn[]) =>
+      turns.map((t) => ({ ...t, modelKey: 'model-1' }))
+
+    const { container } = renderThread({
+      allModels: [
+        {
+          key: 'model-1',
+          displayName: 'Model 1',
+          options: { leoModelOptions: {} },
+        } as unknown as Mojom.Model,
+      ],
+      conversationHistory: withModel(threadHistory),
+      threadUuid: 'thread-1',
+      threads: [thread],
+      rootConversationHistory: withModel(rootHistory),
+    })
+
+    const origin = screen.getByTestId('thread-origin')
+    const editSelector = `[title="${S.CHAT_UI_EDIT_BUTTON_LABEL}"]`
+    const regenerateSelector = '[data-key="retrySameModel"]'
+
+    expect(origin.querySelector(editSelector)).toBeNull()
+    expect(origin.querySelector(regenerateSelector)).toBeNull()
+
+    // The thread's own answer still has both.
+    expect(container.querySelectorAll(editSelector)).toHaveLength(1)
+    expect(container.querySelectorAll(regenerateSelector)).toHaveLength(1)
+  })
+
+  it('does not render an origin when not viewing a thread', () => {
+    renderThread({
+      threadUuid: null,
+      threads: [thread],
+      rootConversationHistory: null,
+    })
+    expect(screen.queryByTestId('thread-origin')).not.toBeInTheDocument()
+  })
+
+  it('does not render an origin when the thread is unknown', () => {
+    renderThread({
+      threadUuid: 'thread-1',
+      threads: [],
+      rootConversationHistory: rootHistory,
+    })
+    expect(screen.queryByTestId('thread-origin')).not.toBeInTheDocument()
+  })
+})
+
 describe('highlightRichText', () => {
   test('should highlight associated content mentions', () => {
     const associatedContent: Mojom.AssociatedContent[] = [
