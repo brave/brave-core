@@ -45,7 +45,6 @@ class CmdDescribeTest(unittest.TestCase):
                 'b': {
                     'gn_args': testing_support.GN_ARGS,
                     'builder_spec': testing_support.BUILDER_SPEC,
-                    'sync': testing_support.SYNC,
                     'targets_spec': testing_support.TARGETS_SPEC,
                 }
             },
@@ -94,14 +93,13 @@ class CmdDescribeTest(unittest.TestCase):
                         'build_config': 'Release',
                     },
                     'gclient_config': {
-                        'target_os': ['android'],
+                        'target_os': ['android', 'linux'],
                         'target_cpu': [],
                         'custom_deps': {'src/a': None, 'src/b': 'url'},
                         'custom_vars': {},
                     },
                 },
             ),
-            sync={'target_os': ['android', 'linux'], 'target_cpu': []},
         )
         output = self._describe('b')
         self.assertIn('  target_os:  android\n', output)

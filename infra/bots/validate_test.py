@@ -45,10 +45,10 @@ class FindProblemsTest(unittest.TestCase):
         self.assertEqual(validate.find_problems(), [])
 
     def test_a_builders_own_problems_are_reported(self):
-        write_builder(self.output_dir, 'b', omit=('sync.json',))
+        write_builder(self.output_dir, 'b', omit=('gn-args.json',))
         problems = validate.find_problems()
         self.assertEqual(len(problems), 1)
-        self.assertIn('sync.json: missing', problems[0])
+        self.assertIn('gn-args.json: missing', problems[0])
 
     def test_builders_sharing_gn_args_but_not_targets_are_fine(self):
         # Builders may resolve to identical gn_args and differ only in their
@@ -126,11 +126,11 @@ class CmdValidateTest(unittest.TestCase):
     def test_raises_bots_error_with_every_problem(self):
         write_builder(self.output_dir, 'b1')
         write_builder(self.output_dir, 'b2')
-        write_builder(self.output_dir, 'c', omit=('sync.json',))
+        write_builder(self.output_dir, 'c', omit=('gn-args.json',))
         with self.assertRaises(generated_output.BotsError) as ctx:
             self._validate(quiet=False)
         self.assertIn('duplicates', str(ctx.exception))
-        self.assertIn('sync.json: missing', str(ctx.exception))
+        self.assertIn('gn-args.json: missing', str(ctx.exception))
 
 
 if __name__ == '__main__':
