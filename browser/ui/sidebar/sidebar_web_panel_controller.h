@@ -49,7 +49,10 @@ class SidebarWebPanelController : public TabStripModelObserver {
   // Animates the panel closed, then lets the page run its unload handlers, so
   // the tab outlives this call. |suppress_animations| skips the animation, for
   // the case where the side panel is taking this panel's place - see
-  // ToggleWebPanel() for the other direction of the same swap.
+  // ToggleWebPanel() for the other direction of the same swap. That case takes
+  // the panel off screen before returning but closes its tab from a posted
+  // task, because the side panel can open from inside a TabStripModel
+  // notification.
   void CloseWebPanel(bool suppress_animations = false);
 
   // Skips unload handlers, so the tab is gone by the time this returns.

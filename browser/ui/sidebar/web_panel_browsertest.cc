@@ -9,6 +9,8 @@
 #include <optional>
 
 #include "base/check.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/i18n/rtl.h"
 #include "base/i18n/test/scoped_rtl_for_testing.h"
 #include "base/location.h"
@@ -51,7 +53,10 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry_scope.h"
+#include "chrome/browser/ui/side_panel/side_panel_registry.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tabs/split_tab_metrics.h"
 #include "chrome/browser/ui/tabs/tab_menu_model_delegate.h"
@@ -90,6 +95,7 @@
 #include "ui/views/controls/button/image_button.h"
 #include "ui/views/controls/resize_area.h"
 #include "ui/views/test/button_test_api.h"
+#include "ui/views/view.h"
 #include "ui/views/view_utils.h"
 #include "url/gurl.h"
 
@@ -784,6 +790,11 @@ IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
   ASSERT_TRUE(side_panel->GetVisible());
   // Showing the side panel is what closed the web panel.
   ASSERT_FALSE(GetBraveMultiContentsView()->IsWebPanelVisible());
+  // The panel leaves the screen in that same frame, but its tab is closed from
+  // a posted task. Let that finish, as it would before the next item press
+  // reaches the sidebar.
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !web_panel_controller()->HasPanelTab(); }));
 
   // Closing on its own animates out and stays on screen meanwhile.
   panel_ui->Close();
@@ -797,6 +808,46 @@ IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
   EXPECT_EQ(SidePanel::State::kClosed, side_panel->state());
   EXPECT_FALSE(side_panel->GetVisible());
   EXPECT_TRUE(GetBraveMultiContentsView()->IsWebPanelVisible());
+}
+
+// Activating a tab re-shows that tab's contextual side panel entry from inside
+// a TabStripModel notification, and showing a side panel closes the web panel.
+// The panel is a real pinned tab, so closing it there mutates the strip while
+// ActivateTab() holds the re-entrancy guard.
+IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
+                       ContextualSidePanelRestoredOnTabActivation) {
+  auto* panel_ui = SidePanelUI::From(browser());
+  panel_ui->SetNoDelaysForTesting(true);
+
+  // Only a tab-scoped entry is restored this way. Closing the side panel
+  // resets the active entry of the active tab's registry and of the window's,
+  // so a background tab's survives - which is what makes coming back re-show
+  // it.
+  auto* first_tab = tab_model()->GetActiveTab();
+  auto* registry = SidePanelRegistry::From(first_tab);
+  const SidePanelEntry::Key key(SidePanelEntry::Id::kBookmarks);
+  ASSERT_TRUE(registry->Register(std::make_unique<SidePanelEntry>(
+      key, base::BindRepeating([](SidePanelEntryScope&) {
+        return std::make_unique<views::View>();
+      }),
+      /*default_content_width_callback=*/base::NullCallback())));
+  registry->SetActiveEntry(registry->GetEntryForKey(key));
+
+  chrome::AddTabAt(browser(), GURL(kRegularTabURL), -1, /*foreground=*/true);
+  ASSERT_FALSE(panel_ui->IsSidePanelShowing());
+
+  OpenWebPanel(GURL(kTestWebPanelURL));
+
+  // Must not trip TabStripModel's re-entrancy CHECK.
+  tab_model()->ActivateTab(first_tab);
+
+  // The panel has to be off screen in the frame the side panel takes its space,
+  // even though its tab is closed from a posted task.
+  EXPECT_FALSE(GetBraveMultiContentsView()->IsWebPanelVisible());
+
+  EXPECT_TRUE(base::test::RunUntil(
+      [&]() { return !web_panel_controller()->HasPanelTab(); }));
+  EXPECT_TRUE(panel_ui->IsSidePanelShowing());
 }
 
 // The web panel is backed by a pinned tab, so it has to be closed while the
@@ -1583,8 +1634,12 @@ IN_PROC_BROWSER_TEST_F(WebPanelAnimationBrowserTest,
   EXPECT_FALSE(IsPanelAnimating())
       << "the web panel should not animate out from under the side panel";
   EXPECT_FALSE(multi_contents_view->IsWebPanelVisible());
-  EXPECT_FALSE(web_panel_controller()->HasPanelTab());
   EXPECT_EQ(SidePanel::State::kOpen, side_panel->state());
+
+  // The panel leaves the screen in the same frame, but its tab is closed from
+  // a posted task.
+  EXPECT_TRUE(base::test::RunUntil(
+      [&]() { return !web_panel_controller()->HasPanelTab(); }));
 
   RunScheduledLayouts();
   EXPECT_EQ(multi_contents_view->width(), LaidOutContentsWidth())
@@ -1610,9 +1665,10 @@ IN_PROC_BROWSER_TEST_F(WebPanelAnimationBrowserTest,
   panel_ui->Show(SidePanelEntryId::kBookmarks);
   EXPECT_FALSE(IsPanelAnimating());
   EXPECT_FALSE(multi_contents_view->IsWebPanelVisible());
-  EXPECT_FALSE(web_panel_controller()->HasPanelTab());
   EXPECT_EQ(SidePanel::State::kOpen, GetSidePanel()->state())
       << "the side panel should not animate in over the closing web panel";
+  EXPECT_TRUE(base::test::RunUntil(
+      [&]() { return !web_panel_controller()->HasPanelTab(); }));
 
   RunScheduledLayouts();
   EXPECT_EQ(multi_contents_view->width(), LaidOutContentsWidth())
