@@ -62,6 +62,10 @@ class ViewShadow : public ui::LayerDelegate, public views::ViewObserver {
 
   void SetVisible(bool visible);
 
+  // The layer drawing the shadow, so callers can animate it along with the
+  // view's own layer.
+  ui::Layer* layer() { return shadow_layer(); }
+
  protected:
   ui::Layer* shadow_layer() { return layer_owner_.layer(); }
   const ui::Layer* shadow_layer() const { return layer_owner_.layer(); }
