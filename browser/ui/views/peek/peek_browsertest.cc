@@ -56,6 +56,7 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "third_party/blink/public/common/input/web_input_event.h"
+#include "third_party/blink/public/common/input/web_mouse_event.h"
 #include "ui/base/page_transition_types.h"
 #include "ui/base/window_open_disposition.h"
 #include "ui/events/base_event_utils.h"
@@ -67,6 +68,7 @@
 #include "ui/gfx/animation/animation_test_api.h"
 #include "ui/gfx/animation/slide_animation.h"
 #include "ui/gfx/geometry/point.h"
+#include "ui/gfx/geometry/point_conversions.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/gfx/geometry/vector2d.h"
@@ -207,6 +209,25 @@ class PeekBrowserTest : public InProcessBrowserTest {
         base::test::RunUntil([&] { return !controller()->IsShowing(); }));
   }
 
+  // Adds a link covering the top-left of the page and Shift+clicks it.
+  void ShiftClickLink(content::WebContents* contents, const GURL& url) {
+    ASSERT_TRUE(content::ExecJs(contents, content::JsReplace(R"(
+          const a = document.createElement('a');
+          a.id = 'link';
+          a.href = $1;
+          a.style = 'position:absolute;left:0;top:0;width:100px;' +
+                    'height:100px;display:block';
+          document.body.appendChild(a);
+        )",
+                                                             url)));
+    content::SimulateEndOfPaintHoldingOnPrimaryMainFrame(contents);
+    content::SimulateMouseClickAt(
+        contents, blink::WebInputEvent::kShiftKey,
+        blink::WebMouseEvent::Button::kLeft,
+        gfx::ToFlooredPoint(
+            content::GetCenterCoordinatesOfElementWithId(contents, "link")));
+  }
+
   // Returns the headers of the request for `relative_url`, if one was seen.
   std::optional<net::test_server::HttpRequest::HeaderMap> GetRequestHeaders(
       const std::string& relative_url) {
@@ -258,6 +279,20 @@ class PeekBrowserTest : public InProcessBrowserTest {
   base::flat_map<std::string, net::test_server::HttpRequest::HeaderMap>
       request_headers_ GUARDED_BY(lock_);
 };
+
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, ShiftClickOpensPeek) {
+  const GURL target_url = GetURL("a.com", "/title2.html");
+  content::WebContents* contents = active_contents();
+
+  content::TestNavigationObserver observer(target_url);
+  observer.StartWatchingNewWebContents();
+  ShiftClickLink(contents, target_url);
+  observer.Wait();
+
+  ASSERT_TRUE(controller()->IsShowing());
+  EXPECT_EQ(target_url, peek_contents()->GetLastCommittedURL());
+  EXPECT_EQ(contents, active_contents());
+}
 
 // Escape is handled before the page gets it, so it works even if the page
 // would consume it or its renderer never acks it.
@@ -442,6 +477,22 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, CannotOpenFromAnotherWindow) {
       ui_test_utils::NavigateToURL(other, GetURL("a.com", "/title1.html")));
   EXPECT_FALSE(controller()->CanOpenFrom(
       other->GetTabStripModel()->GetActiveWebContents()));
+}
+
+// Peek navigations carry the opener's origin, so SameSite and Fetch Metadata
+// treat them like a link click rather than a typed URL.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, ShiftClickSendsInitiatorOrigin) {
+  const std::string path = "/title2.html?shift-click";
+  const GURL target_url = https_server_.GetURL("b.test", path);
+  SetSameSiteCookies(target_url);
+
+  content::TestNavigationObserver observer(target_url);
+  observer.StartWatchingNewWebContents();
+  ShiftClickLink(active_contents(), target_url);
+  observer.Wait();
+  ASSERT_TRUE(controller()->IsShowing());
+
+  ExpectCrossSiteRequestMetadata(path);
 }
 
 IN_PROC_BROWSER_TEST_F(PeekBrowserTest, IncognitoPeekStaysOffTheRecord) {
