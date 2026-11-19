@@ -277,13 +277,13 @@ IN_PROC_BROWSER_TEST_F(AIChatGenerationStatusBrowserTest,
   const auto notifications = GetNotifications();
   ASSERT_EQ(notifications.size(), 1u);
   EXPECT_EQ(notifications[0].id(), base::StrCat({"ai_chat.", uuid}));
-  EXPECT_EQ(notifications[0].title(),
-            l10n_util::GetStringUTF16(IDS_AI_CHAT_NOTIFICATION_TITLE));
-  EXPECT_EQ(notifications[0].message(), u"Rivers");
+  EXPECT_EQ(notifications[0].title(), u"Rivers - Leo AI");
+  EXPECT_EQ(notifications[0].message(),
+            l10n_util::GetStringUTF16(IDS_AI_CHAT_NOTIFICATION_BODY));
 }
 
-// Opening the conversation from the page closes its notification, whose body
-// is a generic message when the conversation has no title.
+// Opening the conversation from the page closes its notification, whose title
+// is just the product name when the conversation has no title.
 IN_PROC_BROWSER_TEST_F(AIChatGenerationStatusBrowserTest,
                        OpeningConversationClosesNotification) {
   content::RenderFrameHost* page = OpenFullPageOnNewChat();
@@ -295,8 +295,8 @@ IN_PROC_BROWSER_TEST_F(AIChatGenerationStatusBrowserTest,
 
   const auto notifications = GetNotifications();
   ASSERT_EQ(notifications.size(), 1u);
-  EXPECT_EQ(notifications[0].message(),
-            l10n_util::GetStringUTF16(IDS_AI_CHAT_NOTIFICATION_BODY_FALLBACK));
+  EXPECT_EQ(notifications[0].title(),
+            l10n_util::GetStringUTF16(IDS_CHAT_UI_TITLE));
 
   ASSERT_TRUE(ClickElement(base::StrCat({"conversation-item-", uuid}), page));
   EXPECT_TRUE(base::test::RunUntil([&] { return GetNotifications().empty(); }));

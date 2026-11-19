@@ -69,11 +69,12 @@ void AIChatNotificationHelper::ShowCompletionNotification(
       GetAIChatNotificationId(conversation_uuid);
 
   const std::u16string title =
-      l10n_util::GetStringUTF16(IDS_AI_CHAT_NOTIFICATION_TITLE);
-  std::u16string message = conversation_title;
-  if (message.empty()) {
-    message = l10n_util::GetStringUTF16(IDS_AI_CHAT_NOTIFICATION_BODY_FALLBACK);
-  }
+      conversation_title.empty()
+          ? l10n_util::GetStringUTF16(IDS_CHAT_UI_TITLE)
+          : l10n_util::GetStringFUTF16(IDS_AI_CHAT_NOTIFICATION_TITLE,
+                                       conversation_title);
+  const std::u16string message =
+      l10n_util::GetStringUTF16(IDS_AI_CHAT_NOTIFICATION_BODY);
 
   message_center::RichNotificationData data;
 
