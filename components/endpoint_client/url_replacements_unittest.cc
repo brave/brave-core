@@ -20,7 +20,9 @@ constexpr char kBaseUrl[] =
 
 struct TestCase {
   std::string test_name;
+  std::optional<std::string> scheme;
   std::optional<std::string> host;
+  std::optional<std::string> port;
   std::optional<std::string> path;
   std::optional<std::string> query;
   // Stored as a string, not a GURL: constructing a GURL at static-init time
@@ -38,8 +40,16 @@ TEST_P(UrlReplacementsApplyTest, Apply) {
 
   UrlReplacements replacements;
 
+  if (test_case.scheme) {
+    replacements.SetScheme(*test_case.scheme);
+  }
+
   if (test_case.host) {
     replacements.SetHost(*test_case.host);
+  }
+
+  if (test_case.port) {
+    replacements.SetPort(*test_case.port);
   }
 
   if (test_case.path) {
@@ -59,6 +69,21 @@ INSTANTIATE_TEST_SUITE_P(
     testing::Values(
         TestCase{.test_name = "default_leaves_url_unchanged",
                  .expected = kBaseUrl},
+        TestCase{.test_name = "replaces_scheme",
+                 .scheme = "http",
+                 .expected =
+                     "http://host1.example.com/path/to/resource?key1=value1"},
+        TestCase{
+            .test_name = "replaces_port",
+            .port = "8443",
+            .expected =
+                "https://host1.example.com:8443/path/to/resource?key1=value1"},
+        TestCase{
+            .test_name = "replaces_scheme_host_and_port",
+            .scheme = "http",
+            .host = "localhost",
+            .port = "3000",
+            .expected = "http://localhost:3000/path/to/resource?key1=value1"},
         TestCase{.test_name = "replaces_host",
                  .host = "host2.example.com",
                  .expected =

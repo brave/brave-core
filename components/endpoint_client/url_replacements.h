@@ -27,9 +27,9 @@ namespace endpoint_client {
 // transiently, uses it to rewrite the given base URL, and discards it - the
 // string_views never outlive the expression.
 //
-// This exposes only the components current callers need (host, path, query);
-// it is not a 1:1 mirror of GURL::Replacements. Others (scheme, port, etc.)
-// can be added if and when a caller needs them.
+// This exposes only the components current callers need (scheme, host, port,
+// path, query); it is not a 1:1 mirror of GURL::Replacements. Others
+// (username, ref, etc.) can be added if and when a caller needs them.
 class UrlReplacements {
  public:
   UrlReplacements();
@@ -42,8 +42,19 @@ class UrlReplacements {
 
   ~UrlReplacements();
 
+  UrlReplacements& SetScheme(std::string scheme) {
+    scheme_ = std::move(scheme);
+    return *this;
+  }
+
   UrlReplacements& SetHost(std::string host) {
     host_ = std::move(host);
+    return *this;
+  }
+
+  // An empty `port` removes the port, leaving the scheme's default.
+  UrlReplacements& SetPort(std::string port) {
+    port_ = std::move(port);
     return *this;
   }
 
@@ -62,8 +73,20 @@ class UrlReplacements {
   GURL Apply(const GURL& url) const {
     GURL::Replacements replacements;
 
+    if (scheme_) {
+      replacements.SetSchemeStr(*scheme_);
+    }
+
     if (host_) {
       replacements.SetHostStr(*host_);
+    }
+
+    if (port_) {
+      if (port_->empty()) {
+        replacements.ClearPort();
+      } else {
+        replacements.SetPortStr(*port_);
+      }
     }
 
     if (path_) {
@@ -78,7 +101,9 @@ class UrlReplacements {
   }
 
  private:
+  std::optional<std::string> scheme_;
   std::optional<std::string> host_;
+  std::optional<std::string> port_;
   std::optional<std::string> path_;
   std::optional<std::string> query_;
 };
