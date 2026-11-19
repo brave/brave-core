@@ -1,11 +1,12 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+- This Source Code Form is subject to the terms of the Mozilla Public
+- License, v. 2.0. If a copy of the MPL was not distributed with this file,
+- You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_SIDEBAR_BROWSER_SIDEBAR_SERVICE_H_
 #define BRAVE_COMPONENTS_SIDEBAR_BROWSER_SIDEBAR_SERVICE_H_
 
+#include <cstdint>
 #include <optional>
 #include <string>
 #include <vector>
@@ -23,6 +24,13 @@ class PrefRegistrySimple;
 class PrefService;
 
 namespace sidebar {
+
+struct Notes {
+  std::string title;
+  std::string content;
+  std::string id;
+  int64_t timestamp = 0;
+};
 
 struct SidebarItemUpdate {
   size_t index = 0;
@@ -65,6 +73,10 @@ class SidebarService : public KeyedService {
   ~SidebarService() override;
 
   const std::vector<SidebarItem>& items() const { return items_; }
+
+  void AddNote(const Notes& note);
+  void DeleteNote(const std::string& id);
+  const std::vector<Notes>& GetNotes() const;
 
   void AddItem(const SidebarItem& item);
   void RemoveItemAt(int index);
@@ -130,6 +142,7 @@ class SidebarService : public KeyedService {
   raw_ptr<PrefService> prefs_ = nullptr;
 
   std::vector<SidebarItem> items_;
+  std::vector<Notes> notes_;
 
   p3a::SidebarP3A sidebar_p3a_;
 

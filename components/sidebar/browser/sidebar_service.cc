@@ -169,6 +169,18 @@ SidebarService::SidebarService(
 
 SidebarService::~SidebarService() = default;
 
+void SidebarService::AddNote(const Notes& note) {
+  notes_.push_back(note);
+}
+
+void SidebarService::DeleteNote(const std::string& id) {
+  std::erase_if(notes_, [&id](const Notes& note) { return note.id == id; });
+}
+
+const std::vector<Notes>& SidebarService::GetNotes() const {
+  return notes_;
+}
+
 void SidebarService::MigrateSidebarShowOptions() {
   auto option =
       static_cast<ShowSidebarOption>(prefs_->GetInteger(kSidebarShowOption));
