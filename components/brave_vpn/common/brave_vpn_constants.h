@@ -32,8 +32,6 @@ inline constexpr char kRegionContinentKey[] = "continent";
 inline constexpr char kRegionCountryIsoCodeKey[] = "country-iso-code";
 inline constexpr char kRegionPrecisionKey[] = "region-precision";
 inline constexpr char kRegionCitiesKey[] = "cities";
-inline constexpr char kRegionLatitudeKey[] = "latitude";
-inline constexpr char kRegionLongitudeKey[] = "longitude";
 inline constexpr char kRegionServerCountKey[] = "server-count";
 inline constexpr char kRegionSmartRoutingProxyStateKey[] =
     "smart-routing-proxy-state";

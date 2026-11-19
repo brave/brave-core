@@ -27,8 +27,6 @@ using v1::endpoints::kRegionCitiesKey;
 using v1::endpoints::kRegionContinentKey;
 using v1::endpoints::kRegionCountryIsoCodeKey;
 using v1::endpoints::kRegionCountryKey;
-using v1::endpoints::kRegionLatitudeKey;
-using v1::endpoints::kRegionLongitudeKey;
 using v1::endpoints::kRegionNameKey;
 using v1::endpoints::kRegionNamePrettyKey;
 using v1::endpoints::kRegionPrecisionKey;
@@ -67,8 +65,6 @@ base::DictValue GetValueFromRegionWithoutCity(const mojom::RegionPtr& region) {
   region_dict.Set(kRegionContinentKey, region->continent);
   region_dict.Set(kRegionCountryIsoCodeKey, region->country_iso_code);
   region_dict.Set(kRegionPrecisionKey, region->region_precision);
-  region_dict.Set(kRegionLatitudeKey, region->latitude);
-  region_dict.Set(kRegionLongitudeKey, region->longitude);
   region_dict.Set(kRegionServerCountKey, region->server_count);
   region_dict.Set(kRegionSmartRoutingProxyStateKey,
                   region->smart_routing_proxy_state);
@@ -95,8 +91,6 @@ bool IsValidRegionValue(const base::DictValue& value) {
       !value.FindString(kRegionCountryIsoCodeKey) ||
       !value.FindString(kRegionPrecisionKey) ||
       !value.FindList(kRegionCitiesKey) ||
-      !value.FindDouble(kRegionLatitudeKey) ||
-      !value.FindDouble(kRegionLongitudeKey) ||
       !value.FindInt(kRegionServerCountKey) ||
       !value.FindString(kRegionSmartRoutingProxyStateKey)) {
     return false;
@@ -126,12 +120,6 @@ mojom::RegionPtr GetRegionFromValueWithoutCity(const base::DictValue& value) {
   if (auto* region_precision =
           value.FindString(brave_vpn::kRegionPrecisionKey)) {
     region->region_precision = *region_precision;
-  }
-  if (auto latitude = value.FindDouble(brave_vpn::kRegionLatitudeKey)) {
-    region->latitude = *latitude;
-  }
-  if (auto longitude = value.FindDouble(brave_vpn::kRegionLongitudeKey)) {
-    region->longitude = *longitude;
   }
   if (auto server_count = value.FindInt(brave_vpn::kRegionServerCountKey)) {
     region->server_count = *server_count;
