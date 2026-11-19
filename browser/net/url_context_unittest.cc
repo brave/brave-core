@@ -60,7 +60,6 @@ TEST_F(BraveRequestInfoTest,
 
   ASSERT_TRUE(ctx->request_initiator());
   EXPECT_EQ(factory_initiator, *ctx->request_initiator());
-  EXPECT_EQ(factory_top_frame_origin.GetURL(), ctx->tab_origin());
   EXPECT_EQ(factory_top_frame_origin, ctx->top_frame_origin());
   EXPECT_EQ(factory_top_frame_origin, ctx->first_party_origin_for_settings());
   EXPECT_EQ(ctx->network_anonymization_key(),
@@ -133,7 +132,6 @@ TEST_F(BraveRequestInfoTest, RequestContextOverridesFactoryContext) {
 
   ASSERT_TRUE(ctx->request_initiator());
   EXPECT_EQ(request_initiator, *ctx->request_initiator());
-  EXPECT_EQ(request_top_frame_origin.GetURL(), ctx->tab_origin());
   EXPECT_EQ(request_top_frame_origin, ctx->top_frame_origin());
   EXPECT_EQ(ctx->network_anonymization_key(),
             request.trusted_params->isolation_info.network_anonymization_key());
@@ -159,12 +157,11 @@ TEST_F(BraveRequestInfoTest,
       factory_initiator, MakeIsolationInfo(factory_top_frame_origin));
 
   EXPECT_FALSE(ctx->request_initiator());
-  EXPECT_TRUE(ctx->tab_origin().is_empty());
   EXPECT_FALSE(ctx->top_frame_origin());
   EXPECT_TRUE(ctx->network_anonymization_key().IsEmpty());
 }
 
-TEST_F(BraveRequestInfoTest, WorkerWebSocketFallsBackToInitiatorTabOrigin) {
+TEST_F(BraveRequestInfoTest, WorkerWebSocketFallsBackToInitiatorOrigin) {
   TestingProfile profile;
   const url::Origin initiator =
       url::Origin::Create(GURL("https://worker-initiator.example"));
@@ -179,7 +176,6 @@ TEST_F(BraveRequestInfoTest, WorkerWebSocketFallsBackToInitiatorTabOrigin) {
 
   ASSERT_TRUE(ctx->request_initiator());
   EXPECT_EQ(initiator, *ctx->request_initiator());
-  EXPECT_EQ(initiator.GetURL(), ctx->tab_origin());
   EXPECT_FALSE(ctx->top_frame_origin());
   // WebSocket requests have the default resource type, which is `kMainFrame`,
   // but they are not main frame requests.

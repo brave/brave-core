@@ -102,7 +102,8 @@ class SearchAdsHeaderDelegateHelperTest : public testing::Test {
                       std::shared_ptr<BraveRequestInfo>>) {
       auto request = std::make_shared<BraveRequestInfo>();
       request->set_request_url(GURL(url));
-      request->set_tab_origin(GURL(kBraveSearchTabUrl));
+      request->set_top_frame_origin(
+          url::Origin::Create(GURL(kBraveSearchTabUrl)));
       request->set_request_initiator(
           url::Origin::Create(GURL(kBraveSearchTabUrl)));
       request->set_resource_type(blink::mojom::ResourceType::kMainFrame);
@@ -112,7 +113,8 @@ class SearchAdsHeaderDelegateHelperTest : public testing::Test {
       // For WeakPtr strategy, store ownership in unique_ptr member
       owned_request_ = std::make_unique<BraveRequestInfo>();
       owned_request_->set_request_url(GURL(url));
-      owned_request_->set_tab_origin(GURL(kBraveSearchTabUrl));
+      owned_request_->set_top_frame_origin(
+          url::Origin::Create(GURL(kBraveSearchTabUrl)));
       owned_request_->set_request_initiator(
           url::Origin::Create(GURL(kBraveSearchTabUrl)));
       owned_request_->set_resource_type(blink::mojom::ResourceType::kMainFrame);
@@ -199,7 +201,7 @@ TYPED_TEST(
 
   auto request =
       this->MakeRequest(kBraveSearchRequestUrl, this->profile_.get());
-  request->set_tab_origin(GURL());
+  request->set_top_frame_origin(std::nullopt);
   this->VerifyHeaderExistsExpectation(request);
 }
 
@@ -221,7 +223,8 @@ TYPED_TEST(
 
   auto request =
       this->MakeRequest(kBraveSearchRequestUrl, this->profile_.get());
-  request->set_tab_origin(GURL(kNonBraveSearchTabUrl));
+  request->set_top_frame_origin(
+      url::Origin::Create(GURL(kNonBraveSearchTabUrl)));
   this->VerifyHeaderExistsExpectation(request);
 }
 
@@ -244,7 +247,7 @@ TYPED_TEST(
 
   auto request =
       this->MakeRequest(kBraveSearchRequestUrl, this->profile_.get());
-  request->set_tab_origin(GURL());
+  request->set_top_frame_origin(std::nullopt);
   request->set_request_initiator(std::nullopt);
   this->VerifyMissingHeaderExpectation(request);
 }
@@ -256,7 +259,7 @@ TYPED_TEST(
 
   auto request =
       this->MakeRequest(kBraveSearchRequestUrl, this->profile_.get());
-  request->set_tab_origin(GURL());
+  request->set_top_frame_origin(std::nullopt);
   request->set_request_initiator(std::nullopt);
   this->VerifyMissingHeaderExpectation(request);
 }
@@ -269,7 +272,8 @@ TYPED_TEST(SearchAdsHeaderDelegateHelperTest,
       this->MakeRequest(kBraveSearchRequestUrl, this->profile_.get());
   request->set_request_initiator(
       url::Origin::Create(GURL(kNonBraveSearchTabUrl)));
-  request->set_tab_origin(GURL(kNonBraveSearchTabUrl));
+  request->set_top_frame_origin(
+      url::Origin::Create(GURL(kNonBraveSearchTabUrl)));
   this->VerifyMissingHeaderExpectation(request);
 }
 

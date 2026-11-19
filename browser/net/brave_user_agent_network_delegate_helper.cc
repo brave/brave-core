@@ -42,7 +42,8 @@ int OnBeforeStartTransaction_UserAgentWork(
     net::HttpRequestHeaders* headers,
     const ResponseCallback& next_callback,
     T<BraveRequestInfo> ctx) {
-  if (ctx && brave_user_agent::ShouldHideBraveBrand(ctx->tab_origin())) {
+  if (ctx && brave_user_agent::ShouldHideBraveBrand(
+                 ctx->first_party_origin_for_settings().GetURL())) {
     if (ReplaceBraveWithGoogleChromeInHeader(headers, kHeaderSecCHUA)) {
       ctx->mutable_modified_headers().insert(kHeaderSecCHUA);
     }
