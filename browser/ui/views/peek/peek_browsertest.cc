@@ -17,6 +17,7 @@
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/peek/peek_features.h"
 #include "brave/browser/ui/peek/public/peek_controller.h"
 #include "brave/browser/ui/views/peek/peek_controller_impl.h"
@@ -25,6 +26,7 @@
 #include "build/build_config.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
 #include "chrome/browser/ssl/chrome_security_state_util.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/navigator/browser_navigator.h"
@@ -43,6 +45,7 @@
 #include "components/tab_groups/tab_group_id.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/context_menu_params.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/render_frame_host.h"
@@ -244,6 +247,23 @@ class PeekBrowserTest : public InProcessBrowserTest {
             content::GetCenterCoordinatesOfElementWithId(contents, "link")));
   }
 
+  std::unique_ptr<TestRenderViewContextMenu> CreateLinkContextMenu(
+      content::WebContents* contents,
+      const GURL& link_url) {
+    const GURL page_url = contents->GetLastCommittedURL();
+    content::ContextMenuParams params;
+    params.page_url = page_url;
+    params.frame_url = page_url;
+    params.frame_origin =
+        contents->GetPrimaryMainFrame()->GetLastCommittedOrigin();
+    params.link_url = link_url;
+    params.unfiltered_link_url = link_url;
+    auto menu = std::make_unique<TestRenderViewContextMenu>(
+        *contents->GetPrimaryMainFrame(), params);
+    menu->Init();
+    return menu;
+  }
+
   // Returns the headers of the request for `relative_url`, if one was seen.
   std::optional<net::test_server::HttpRequest::HeaderMap> GetRequestHeaders(
       const std::string& relative_url) {
@@ -308,6 +328,34 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, ShiftClickOpensPeek) {
   ASSERT_TRUE(controller()->IsShowing());
   EXPECT_EQ(target_url, peek_contents()->GetLastCommittedURL());
   EXPECT_EQ(contents, active_contents());
+}
+
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, ContextMenuOpensPeek) {
+  const GURL target_url = GetURL("b.com", "/title2.html");
+  auto menu = CreateLinkContextMenu(active_contents(), target_url);
+  ASSERT_TRUE(menu->IsItemPresent(IDC_CONTENT_CONTEXT_OPENLINKPEEK));
+  EXPECT_TRUE(menu->IsItemEnabled(IDC_CONTENT_CONTEXT_OPENLINKPEEK));
+
+  content::TestNavigationObserver observer(target_url);
+  observer.StartWatchingNewWebContents();
+  menu->ExecuteCommand(IDC_CONTENT_CONTEXT_OPENLINKPEEK, 0);
+  observer.Wait();
+
+  ASSERT_TRUE(controller()->IsShowing());
+  EXPECT_EQ(target_url, peek_contents()->GetLastCommittedURL());
+}
+
+// The menu can outlive the document it was opened on. A link from that document
+// must not be opened with the initiator of whatever replaced it.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, ContextMenuIgnoredAfterFrameNavigates) {
+  auto menu =
+      CreateLinkContextMenu(active_contents(), GetURL("b.com", "/title2.html"));
+  ASSERT_TRUE(menu->IsItemPresent(IDC_CONTENT_CONTEXT_OPENLINKPEEK));
+
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GetURL("c.com", "/title1.html")));
+  menu->ExecuteCommand(IDC_CONTENT_CONTEXT_OPENLINKPEEK, 0);
+  EXPECT_FALSE(controller()->IsShowing());
 }
 
 // Escape is handled before the page gets it, so it works even if the page
@@ -601,10 +649,21 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, OpenRequiresHttpInitiatorAndTarget) {
   EXPECT_FALSE(controller()->IsShowing());
 }
 
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, NoPeekMenuItemOnBrowserPages) {
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("chrome://version")));
+  auto menu =
+      CreateLinkContextMenu(active_contents(), GetURL("b.com", "/title2.html"));
+  EXPECT_FALSE(menu->IsItemPresent(IDC_CONTENT_CONTEXT_OPENLINKPEEK));
+}
+
 IN_PROC_BROWSER_TEST_F(PeekBrowserTest, NoNestedPeek) {
   OpenPeek(GetURL("b.com", "/title1.html"));
   content::WebContents* contents = peek_contents();
   EXPECT_FALSE(controller()->CanOpenFrom(contents));
+
+  auto menu = CreateLinkContextMenu(contents, GetURL("c.com", "/title2.html"));
+  EXPECT_FALSE(menu->IsItemPresent(IDC_CONTENT_CONTEXT_OPENLINKPEEK));
 }
 
 IN_PROC_BROWSER_TEST_F(PeekBrowserTest, CannotOpenFromAnotherWindow) {
@@ -712,6 +771,42 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, ShiftClickSendsInitiatorOrigin) {
   ASSERT_TRUE(controller()->IsShowing());
 
   ExpectCrossSiteRequestMetadata(path);
+}
+
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, ContextMenuSendsInitiatorOrigin) {
+  const std::string path = "/title2.html?context-menu";
+  const GURL target_url = https_server_.GetURL("b.test", path);
+  SetSameSiteCookies(target_url);
+
+  auto menu = CreateLinkContextMenu(active_contents(), target_url);
+  content::TestNavigationObserver observer(target_url);
+  observer.StartWatchingNewWebContents();
+  menu->ExecuteCommand(IDC_CONTENT_CONTEXT_OPENLINKPEEK, 0);
+  observer.Wait();
+  ASSERT_TRUE(controller()->IsShowing());
+
+  ExpectCrossSiteRequestMetadata(path);
+}
+
+// The state records the initiating document's policies, which Chromium uses
+// for the navigation's client security state. The menu is built in the browser,
+// so it has to supply the state itself.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest,
+                       ContextMenuLoadCarriesInitiatorNavigationState) {
+  const GURL target_url = GetURL("b.com", "/title2.html");
+  const url::Origin source_origin =
+      active_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin();
+
+  auto menu = CreateLinkContextMenu(active_contents(), target_url);
+  menu->ExecuteCommand(IDC_CONTENT_CONTEXT_OPENLINKPEEK, 0);
+  // The load starts synchronously but can't finish before this returns.
+  ASSERT_TRUE(controller()->IsShowing());
+
+  NavigationInitiatorObserver observer(peek_contents(), target_url);
+  observer.Wait();
+  EXPECT_TRUE(observer.has_initiator_navigation_state());
+  EXPECT_TRUE(observer.is_renderer_initiated());
+  EXPECT_EQ(source_origin, observer.initiator_origin());
 }
 
 IN_PROC_BROWSER_TEST_F(PeekBrowserTest, OpensFromSplitViewAsStandaloneTab) {
@@ -826,7 +921,7 @@ class PeekDisabledBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(PeekDisabledBrowserTest,
-                       LinkNavigatesWithoutPeek) {
+                       LinkNavigatesAndHasNoPeekMenuItem) {
   EXPECT_FALSE(PeekController::From(browser()));
 
   const GURL page_url = embedded_test_server()->GetURL("a.com", "/title1.html");
@@ -846,4 +941,12 @@ IN_PROC_BROWSER_TEST_F(PeekDisabledBrowserTest,
                                                            target_url)));
   observer.Wait();
   EXPECT_EQ(target_url, contents->GetLastCommittedURL());
+
+  content::ContextMenuParams params;
+  params.page_url = target_url;
+  params.frame_url = target_url;
+  params.link_url = page_url;
+  TestRenderViewContextMenu menu(*contents->GetPrimaryMainFrame(), params);
+  menu.Init();
+  EXPECT_FALSE(menu.IsItemPresent(IDC_CONTENT_CONTEXT_OPENLINKPEEK));
 }
