@@ -88,7 +88,6 @@ class TabManager: NSObject {
   var privateTabSelectedIndex: Int?
   var tempTabs: [any TabState]?
   private weak var rewards: BraveRewards?
-  private var braveCore: BraveProfileController?
   private let profile: any Profile
   private weak var tabGeneratorAPI: BraveTabGeneratorAPI?
   private var domainFrc = Domain.frc()
@@ -126,7 +125,6 @@ class TabManager: NSObject {
 
     self.windowId = windowId
     self.rewards = rewards
-    self.braveCore = braveCore
     self.profile = profile
     self.tabGeneratorAPI = braveCore?.tabGeneratorAPI
     self.historyAPI = braveCore?.historyAPI
@@ -961,13 +959,13 @@ class TabManager: NSObject {
   }
 
   private func websiteDataStore(isPrivate isPrivateBrowsing: Bool) -> WKWebsiteDataStore {
-    if FeatureList.kUseProfileWebViewConfiguration.enabled, let braveCore {
-      let configuration =
-        isPrivateBrowsing
-        ? braveCore.defaultWebViewConfiguration : braveCore.nonPersistentWebViewConfiguration
+    let profile = isPrivateBrowsing ? profile.offTheRecordProfile : profile
+    if FeatureList.kUseProfileWebViewConfiguration.enabled {
+      let configuration = BraveWebViewConfiguration(profile: profile)
       return configuration.websiteDataStore
     } else {
-      let configuration = isPrivateBrowsing ? Self.privateConfiguration : Self.defaultConfiguration
+      let configuration =
+        profile.isOffTheRecord ? Self.privateConfiguration : Self.defaultConfiguration
       return configuration.websiteDataStore
     }
   }

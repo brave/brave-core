@@ -1176,7 +1176,8 @@ class SettingsViewController: TableViewController {
         Row(
           text: Strings.Autofill.managePasswordsTitle,
           selection: { [unowned self] in
-            if let autofillDataManager = braveCore.defaultWebViewConfiguration.autofillDataManager {
+            let configuration = BraveWebViewConfiguration(profile: braveCore.profile)
+            if let autofillDataManager = configuration.autofillDataManager {
               let viewModel = ManagePasswordsViewModel(autofillDataManager: autofillDataManager)
               let controller = UIHostingController(
                 rootView:
