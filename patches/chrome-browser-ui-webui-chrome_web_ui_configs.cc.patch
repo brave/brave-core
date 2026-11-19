@@ -1,0 +1,19 @@
+diff --git a/chrome/browser/ui/webui/chrome_web_ui_configs.cc b/chrome/browser/ui/webui/chrome_web_ui_configs.cc
+index 105d9e9726a92518871a049ff44d8c8e0f488656..08bbdc9f71a85649a59c52803bb1aa980294bd5b 100644
+--- a/chrome/browser/ui/webui/chrome_web_ui_configs.cc
++++ b/chrome/browser/ui/webui/chrome_web_ui_configs.cc
+@@ -253,6 +253,7 @@
+         // BUILDFLAG(IS_CHROMEOS)
+ 
+ void RegisterChromeWebUIConfigs() {
++  [&]() -> void {
+   // Don't add calls to `AddWebUIConfig()` for Ash-specific WebUIs here. Add
+   // them to `AshWebUIConfigManager::RegisterWebUIConfigs()` in
+   // ash_web_ui_config_manager.cc.
+@@ -531,4 +532,6 @@ void RegisterChromeWebUIConfigs() {
+   map.AddWebUIConfig(std::make_unique<skills::SkillsUIConfig>());
+ #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
+         // BUILDFLAG(IS_CHROMEOS)
++  }();
++  RegisterBraveWebUIConfigs();
+ }

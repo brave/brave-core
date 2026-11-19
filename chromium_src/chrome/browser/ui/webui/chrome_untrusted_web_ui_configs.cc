@@ -58,15 +58,11 @@
 #include "brave/components/local_ai/core/features.h"
 #endif
 
-#define RegisterChromeUntrustedWebUIConfigs \
-  RegisterChromeUntrustedWebUIConfigs_ChromiumImpl
+namespace {
 
-#include <chrome/browser/ui/webui/chrome_untrusted_web_ui_configs.cc>
-
-#undef RegisterChromeUntrustedWebUIConfigs
-
-void RegisterChromeUntrustedWebUIConfigs() {
-  RegisterChromeUntrustedWebUIConfigs_ChromiumImpl();
+// Called at the end of RegisterChromeUntrustedWebUIConfigs() via the rewrite/
+// plaster.
+void RegisterBraveUntrustedWebUIConfigs() {
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
       std::make_unique<market::UntrustedMarketUIConfig>());
@@ -131,3 +127,7 @@ void RegisterChromeUntrustedWebUIConfigs() {
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_NEWS) && !BUILDFLAG(IS_ANDROID)
 }
+
+}  // namespace
+
+#include <chrome/browser/ui/webui/chrome_untrusted_web_ui_configs.cc>
