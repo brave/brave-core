@@ -80,8 +80,7 @@ class BraveRequestInfo {
   const GURL& request_url() const;
   void set_request_url(const GURL& value);
 
-  // Deprecated: use `first_party_origin_for_settings()` or
-  // `top_frame_origin()`.
+  // Deprecated: use `top_frame_origin()`.
   const GURL& tab_origin() const;
   void set_tab_origin(const GURL& value);
 
@@ -95,16 +94,15 @@ class BraveRequestInfo {
   const std::optional<url::Origin>& top_frame_origin() const;
   void set_top_frame_origin(std::optional<url::Origin> value);
 
-  // The origin to treat as first party when applying Shields rules to this
-  // request. This is the top-level site that Shields settings are looked up
-  // for. Main frames use the request URL's origin, unless it is opaque, in
+  // The origin to treat as first party when matching adblock rules against this
+  // request. Main frames use the request URL's origin, unless it is opaque, in
   // which case the request initiator is used when there is one. Subframes and
   // subresources use the top frame origin. When there is no top frame origin
   // they use the request initiator, then the request URL's origin. Shields
   // ignores sandboxing, so an opaque result is replaced by its precursor origin
   // when it has one. An opaque top frame origin without a precursor stays
   // opaque.
-  url::Origin first_party_origin_for_settings() const;
+  url::Origin first_party_origin_for_adblock_rules() const;
 
   bool internal_redirect() const;
   void set_internal_redirect(bool value);

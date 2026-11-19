@@ -59,7 +59,8 @@ TEST_F(BraveRequestInfoTest,
   EXPECT_EQ(factory_initiator, *ctx->request_initiator());
   EXPECT_EQ(factory_top_frame_origin.GetURL(), ctx->tab_origin());
   EXPECT_EQ(factory_top_frame_origin, ctx->top_frame_origin());
-  EXPECT_EQ(factory_top_frame_origin, ctx->first_party_origin_for_settings());
+  EXPECT_EQ(factory_top_frame_origin,
+            ctx->first_party_origin_for_adblock_rules());
   EXPECT_EQ(ctx->network_anonymization_key(),
             factory_isolation_info.network_anonymization_key());
 }
@@ -197,7 +198,7 @@ TEST_F(BraveRequestInfoTest, KeepsOpaqueTopFrameOrigin) {
       /*old_ctx=*/nullptr);
 
   EXPECT_EQ(sandboxed, ctx->top_frame_origin());
-  EXPECT_EQ(a_com, ctx->first_party_origin_for_settings());
+  EXPECT_EQ(a_com, ctx->first_party_origin_for_adblock_rules());
 }
 
 TEST_F(BraveRequestInfoTest, KeepsOpaqueTopFrameOriginWithoutPrecursor) {
@@ -215,42 +216,47 @@ TEST_F(BraveRequestInfoTest, KeepsOpaqueTopFrameOriginWithoutPrecursor) {
       /*old_ctx=*/nullptr);
 
   EXPECT_EQ(opaque, ctx->top_frame_origin());
-  EXPECT_TRUE(ctx->first_party_origin_for_settings().opaque());
+  EXPECT_TRUE(ctx->first_party_origin_for_adblock_rules().opaque());
 }
 
-TEST_F(BraveRequestInfoTest, FirstPartyOriginForSettingsMainFrame) {
+TEST_F(BraveRequestInfoTest, FirstPartyOriginForAdblockRulesMainFrame) {
   const GURL url("https://example.com/page");
   const url::Origin initiator =
       url::Origin::Create(GURL("https://initiator.example"));
   BraveRequestInfo ctx(url);
   ctx.set_resource_type(blink::mojom::ResourceType::kMainFrame);
 
-  EXPECT_EQ(url::Origin::Create(url), ctx.first_party_origin_for_settings());
+  EXPECT_EQ(url::Origin::Create(url),
+            ctx.first_party_origin_for_adblock_rules());
 
   // The initiator is ignored, even if it is opaque.
   ctx.set_request_initiator(initiator);
-  EXPECT_EQ(url::Origin::Create(url), ctx.first_party_origin_for_settings());
+  EXPECT_EQ(url::Origin::Create(url),
+            ctx.first_party_origin_for_adblock_rules());
   ctx.set_request_initiator(url::Origin());
-  EXPECT_EQ(url::Origin::Create(url), ctx.first_party_origin_for_settings());
+  EXPECT_EQ(url::Origin::Create(url),
+            ctx.first_party_origin_for_adblock_rules());
 
   // The top frame origin is ignored, since it is the previous document's.
   ctx.set_top_frame_origin(
       url::Origin::Create(GURL("https://top-frame.example")));
-  EXPECT_EQ(url::Origin::Create(url), ctx.first_party_origin_for_settings());
+  EXPECT_EQ(url::Origin::Create(url),
+            ctx.first_party_origin_for_adblock_rules());
 }
 
 TEST_F(BraveRequestInfoTest,
-       FirstPartyOriginForSettingsOpaqueMainFrameUsesInitiator) {
+       FirstPartyOriginForAdblockRulesOpaqueMainFrameUsesInitiator) {
   const url::Origin initiator =
       url::Origin::Create(GURL("https://initiator.example"));
   BraveRequestInfo ctx(GURL("data:text/html,hello"));
   ctx.set_resource_type(blink::mojom::ResourceType::kMainFrame);
   ctx.set_request_initiator(initiator);
 
-  EXPECT_EQ(initiator, ctx.first_party_origin_for_settings());
+  EXPECT_EQ(initiator, ctx.first_party_origin_for_adblock_rules());
 }
 
-TEST_F(BraveRequestInfoTest, FirstPartyOriginForSettingsSubFrameUsesTopFrame) {
+TEST_F(BraveRequestInfoTest,
+       FirstPartyOriginForAdblockRulesSubFrameUsesTopFrame) {
   const GURL url("https://example.com/frame");
   const url::Origin initiator =
       url::Origin::Create(GURL("https://initiator.example"));
@@ -260,18 +266,19 @@ TEST_F(BraveRequestInfoTest, FirstPartyOriginForSettingsSubFrameUsesTopFrame) {
   ctx.set_resource_type(blink::mojom::ResourceType::kSubFrame);
 
   // Falls back to the request URL without an initiator or top frame origin.
-  EXPECT_EQ(url::Origin::Create(url), ctx.first_party_origin_for_settings());
+  EXPECT_EQ(url::Origin::Create(url),
+            ctx.first_party_origin_for_adblock_rules());
 
   // Falls back to the initiator without a top frame origin.
   ctx.set_request_initiator(initiator);
-  EXPECT_EQ(initiator, ctx.first_party_origin_for_settings());
+  EXPECT_EQ(initiator, ctx.first_party_origin_for_adblock_rules());
 
   ctx.set_top_frame_origin(top_frame_origin);
-  EXPECT_EQ(top_frame_origin, ctx.first_party_origin_for_settings());
+  EXPECT_EQ(top_frame_origin, ctx.first_party_origin_for_adblock_rules());
 }
 
 TEST_F(BraveRequestInfoTest,
-       FirstPartyOriginForSettingsSubresourceUsesTopFrame) {
+       FirstPartyOriginForAdblockRulesSubresourceUsesTopFrame) {
   const url::Origin top_frame_origin =
       url::Origin::Create(GURL("https://a.com"));
   BraveRequestInfo ctx(GURL("https://c.com/script.js"));
@@ -280,12 +287,13 @@ TEST_F(BraveRequestInfoTest,
   ctx.set_request_initiator(url::Origin::Create(GURL("https://b.com")));
   ctx.set_top_frame_origin(top_frame_origin);
 
-  EXPECT_EQ(top_frame_origin, ctx.first_party_origin_for_settings());
+  EXPECT_EQ(top_frame_origin, ctx.first_party_origin_for_adblock_rules());
 }
 
 // Sandboxed documents have an opaque origin, but Shields uses the origin it
 // was derived from.
-TEST_F(BraveRequestInfoTest, FirstPartyOriginForSettingsSandboxedInitiator) {
+TEST_F(BraveRequestInfoTest,
+       FirstPartyOriginForAdblockRulesSandboxedInitiator) {
   const url::Origin a_com = url::Origin::Create(GURL("https://a.com"));
   const url::Origin sandboxed = a_com.DeriveNewOpaqueOrigin();
   ASSERT_TRUE(sandboxed.opaque());
@@ -294,14 +302,14 @@ TEST_F(BraveRequestInfoTest, FirstPartyOriginForSettingsSandboxedInitiator) {
     BraveRequestInfo ctx(GURL("https://b.com/frame"));
     ctx.set_resource_type(blink::mojom::ResourceType::kSubFrame);
     ctx.set_request_initiator(sandboxed);
-    EXPECT_EQ(a_com, ctx.first_party_origin_for_settings());
+    EXPECT_EQ(a_com, ctx.first_party_origin_for_adblock_rules());
   }
 
   {
     BraveRequestInfo ctx(GURL("https://a.com/script.js"));
     ctx.set_resource_type(blink::mojom::ResourceType::kScript);
     ctx.set_request_initiator(sandboxed);
-    EXPECT_EQ(a_com, ctx.first_party_origin_for_settings());
+    EXPECT_EQ(a_com, ctx.first_party_origin_for_adblock_rules());
   }
 
   {
@@ -310,7 +318,7 @@ TEST_F(BraveRequestInfoTest, FirstPartyOriginForSettingsSandboxedInitiator) {
     BraveRequestInfo ctx(GURL("data:text/html,hello"));
     ctx.set_resource_type(blink::mojom::ResourceType::kMainFrame);
     ctx.set_request_initiator(sandboxed);
-    EXPECT_EQ(a_com, ctx.first_party_origin_for_settings());
+    EXPECT_EQ(a_com, ctx.first_party_origin_for_adblock_rules());
   }
 
   {
@@ -319,24 +327,24 @@ TEST_F(BraveRequestInfoTest, FirstPartyOriginForSettingsSandboxedInitiator) {
     ctx.set_resource_type(blink::mojom::ResourceType::kMainFrame);
     ctx.set_request_initiator(sandboxed);
     EXPECT_EQ(url::Origin::Create(GURL("https://b.com")),
-              ctx.first_party_origin_for_settings());
+              ctx.first_party_origin_for_adblock_rules());
   }
 }
 
 TEST_F(BraveRequestInfoTest,
-       FirstPartyOriginForSettingsOpaqueWithoutPrecursor) {
+       FirstPartyOriginForAdblockRulesOpaqueWithoutPrecursor) {
   {
     // An opaque origin without a precursor stays opaque.
     BraveRequestInfo ctx(GURL("https://a.com/frame"));
     ctx.set_resource_type(blink::mojom::ResourceType::kSubFrame);
     ctx.set_request_initiator(url::Origin());
-    EXPECT_TRUE(ctx.first_party_origin_for_settings().opaque());
+    EXPECT_TRUE(ctx.first_party_origin_for_adblock_rules().opaque());
   }
 
   {
     BraveRequestInfo ctx(GURL("data:text/html,hello"));
     ctx.set_resource_type(blink::mojom::ResourceType::kMainFrame);
-    EXPECT_TRUE(ctx.first_party_origin_for_settings().opaque());
+    EXPECT_TRUE(ctx.first_party_origin_for_adblock_rules().opaque());
   }
 }
 
