@@ -1113,9 +1113,10 @@ struct SwapRouter {
   std::string_view address;
 };
 
-// Contracts that the swap calldata decoders above are meant for. Calldata
-// sent anywhere else is not a swap with that provider, whatever it decodes
-// to. Only chains where the provider currently serves routes are listed.
+// Contracts that the swap calldata decoded by DecodeTransactionData() is meant
+// for. Calldata sent anywhere else is not a swap with that provider, whatever
+// it decodes to. Only chains where the provider currently serves routes are
+// listed.
 constexpr SwapRouter kTrustedSwapRouters[] = {
     {mojom::SwapProvider::kCowSwap, mojom::kMainnetChainId, kCowSwapEthFlow},
     {mojom::SwapProvider::kCowSwap, mojom::kMainnetChainId,
