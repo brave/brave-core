@@ -10,6 +10,8 @@ assert(toolkit_views)
 
 source_set("peek") {
   sources = [
+    "peek_contents.cc",
+    "peek_contents.h",
     "peek_view.cc",
     "peek_view.h",
   ]
