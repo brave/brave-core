@@ -91,7 +91,6 @@ class ComputeFreshOutputTest(unittest.TestCase):
             {
                 'test-builder/gn-args.json',
                 'test-builder/properties.json',
-                'test-builder/sync.json',
                 'test-builder/targets/brave.test.json',
             },
         )
@@ -217,17 +216,10 @@ class ComputeFreshOutputTest(unittest.TestCase):
             'recipe', json.loads(fresh['no-recipe/properties.json'])
         )
 
-    def test_sync_json_and_targets_spec(self):
+    def test_targets_spec(self):
         builders_registry, gn_args_registry = _make_registries()
         fresh = snapshot.compute_fresh_output(
             builders_registry, gn_args_registry
-        )
-        self.assertEqual(
-            json.loads(fresh['test-builder/sync.json']),
-            {
-                'target_os': ['android', 'linux'],
-                'target_cpu': [],
-            },
         )
         # The test's arguments, then its bundle's mixin's.
         self.assertEqual(
@@ -329,7 +321,6 @@ class WriteSnapshotTest(unittest.TestCase):
                 [
                     'test-builder/gn-args.json',
                     'test-builder/properties.json',
-                    'test-builder/sync.json',
                     'test-builder/targets/brave.test.json',
                 ],
             )
@@ -357,7 +348,6 @@ class WriteSnapshotTest(unittest.TestCase):
                 [
                     'test-builder/gn-args.json',
                     'test-builder/properties.json',
-                    'test-builder/sync.json',
                     'test-builder/targets/brave.test.json',
                 ],
             )

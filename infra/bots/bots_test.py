@@ -96,10 +96,10 @@ class DispatchTest(_BotsTestCase):
         self.assertIn('looks ok', out)
 
     def test_validate_problems_return_1(self):
-        write_builder(self.output_dir, 'c', omit=('sync.json',))
+        write_builder(self.output_dir, 'c', omit=('gn-args.json',))
         ret, _, err = self._main('validate')
         self.assertEqual(ret, 1)
-        self.assertIn('sync.json: missing', err)
+        self.assertIn('gn-args.json: missing', err)
 
     def test_describe_one_builder(self):
         ret, out, _ = self._main('describe', 'b', '--json')

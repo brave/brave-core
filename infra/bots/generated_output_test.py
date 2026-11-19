@@ -55,7 +55,6 @@ class GeneratedBuilderTest(unittest.TestCase):
         output = self._read()
         self.assertEqual(output.gn_args, testing_support.GN_ARGS)
         self.assertEqual(output.builder_spec, testing_support.BUILDER_SPEC)
-        self.assertEqual(output.sync, testing_support.SYNC)
         self.assertEqual(output.targets_spec, testing_support.TARGETS_SPEC)
         self.assertEqual(self._problems(), [])
 
@@ -85,8 +84,8 @@ class GeneratedBuilderTest(unittest.TestCase):
             self._read()
 
     def test_missing_file(self):
-        write_builder(self.output_dir, 'b', omit=('sync.json',))
-        self.assertRegex(self._problems()[0], 'sync.json: missing$')
+        write_builder(self.output_dir, 'b', omit=('gn-args.json',))
+        self.assertRegex(self._problems()[0], 'gn-args.json: missing$')
 
     def test_invalid_json(self):
         write_builder(self.output_dir, 'b')
@@ -94,7 +93,7 @@ class GeneratedBuilderTest(unittest.TestCase):
         self.assertIn('gn-args.json: invalid JSON', self._problems()[0])
 
     def test_not_a_json_object(self):
-        write_builder(self.output_dir, 'b', sync=[])
+        write_builder(self.output_dir, 'b', gn_args=[])
         self.assertIn('expected a JSON object, got list', self._problems()[0])
 
     def test_gn_args_not_an_object(self):
@@ -248,12 +247,25 @@ class GeneratedBuilderTest(unittest.TestCase):
         self.assertIn('gclient_config" is not an object', self._problems()[0])
 
     def test_sync_lists_are_checked(self):
+        builder_spec = testing_support.BUILDER_SPEC
         write_builder(
-            self.output_dir, 'b', sync={'target_os': 'linux', 'target_cpu': [1]}
+            self.output_dir,
+            'b',
+            properties_json=testing_support.properties(
+                'b',
+                {
+                    **builder_spec,
+                    'gclient_config': {
+                        **builder_spec['gclient_config'],
+                        'target_os': 'linux',
+                        'target_cpu': [1],
+                    },
+                },
+            ),
         )
         problem = self._problems()[0]
-        self.assertIn("'target_os' is not a list of strings", problem)
-        self.assertIn("'target_cpu' is not a list of strings", problem)
+        self.assertIn('gclient_config.target_os" is not a list', problem)
+        self.assertIn('gclient_config.target_cpu" is not a list', problem)
 
 
 if __name__ == '__main__':

@@ -33,7 +33,6 @@ def _print_text(name: str, description: dict) -> None:
     """Prints one builder's description for a person to read."""
     gn_args = description['gn_args']['gn_args']
     chromium_config = description['builder_spec']['chromium_config']
-    sync = description['sync']
     targets_spec = description['targets_spec']
 
     print('%s:' % name)
@@ -41,10 +40,16 @@ def _print_text(name: str, description: dict) -> None:
     print('  target_cpu: %s' % gn_args['target_cpu'])
     if 'build_config' in chromium_config:
         print('  build_config: %s' % chromium_config['build_config'])
-    # What the checkout syncs, besides the host (always synced).
-    print('  sync target_os:  %s' % (', '.join(sync['target_os']) or '(host)'))
-    print('  sync target_cpu: %s' % (', '.join(sync['target_cpu']) or '(host)'))
     gclient_config = description['builder_spec']['gclient_config']
+    # What the checkout syncs, besides the host (always synced).
+    print(
+        '  sync target_os:  %s'
+        % (', '.join(gclient_config['target_os']) or '(host)')
+    )
+    print(
+        '  sync target_cpu: %s'
+        % (', '.join(gclient_config['target_cpu']) or '(host)')
+    )
     for field in ('custom_deps', 'custom_vars'):
         entries = gclient_config[field]
         print(

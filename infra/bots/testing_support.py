@@ -29,8 +29,6 @@ BUILDER_SPEC = {
     },
 }
 
-SYNC = {'target_os': [], 'target_cpu': []}
-
 # A builder's entry in its group's targets spec.
 TARGETS_SPEC = {
     'additional_compile_targets': ['brave:all'],
@@ -71,7 +69,6 @@ def write_builder(
     *,
     gn_args: dict | None = None,
     properties_json: dict | None = None,
-    sync: dict | None = None,
     targets_spec: dict | None = None,
     omit: tuple[str, ...] = (),
 ) -> None:
@@ -87,7 +84,6 @@ def write_builder(
         'properties.json': (
             properties(name) if properties_json is None else properties_json
         ),
-        'sync.json': SYNC if sync is None else sync,
         'targets/brave.test.json': {
             name: TARGETS_SPEC if targets_spec is None else targets_spec
         },

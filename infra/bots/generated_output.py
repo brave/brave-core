@@ -135,16 +135,9 @@ def render(builder, gn_args_registry) -> dict[str, str]:
         )
     resolved = gn_args_registry.resolve(builder.name)
     check_builder_spec(builder, resolved['gn_args'])
-    gclient_config = builder.builder_spec.gclient_config
     return {
         'gn-args.json': _dump(resolved),
         'properties.json': _dump(_properties(builder)),
-        'sync.json': _dump(
-            {
-                'target_os': list(gclient_config.target_os),
-                'target_cpu': list(gclient_config.target_cpu),
-            }
-        ),
         f'targets/{builder.builder_group}.json': _dump(
             {builder.name: _targets_spec(builder.targets, resolved['gn_args'])}
         ),
@@ -247,8 +240,6 @@ class GeneratedOutput:
     gn_args: dict
     # The builder's spec, out of its `properties.json`.
     builder_spec: dict
-    # `sync.json`: what `init`/`sync` write into `.gclient`.
-    sync: dict
     # Its entry in `targets/<builder_group>.json`: its tests, with their
     # arguments.
     targets_spec: dict
@@ -275,7 +266,6 @@ class GeneratedBuilder:
         return GeneratedOutput(
             gn_args=self._read_gn_args(),
             builder_spec=self._read_builder_spec(),
-            sync=self._read_sync(),
             targets_spec=self._read_targets_spec(),
         )
 
@@ -289,7 +279,6 @@ class GeneratedBuilder:
         for read in (
             self._read_gn_args,
             self._read_builder_spec,
-            self._read_sync,
             self._read_targets_spec,
         ):
             try:
@@ -422,16 +411,6 @@ class GeneratedBuilder:
             return problems
 
         return find(self._read_json('properties.json', check))
-
-    def _read_sync(self) -> dict:
-        def check(sync: dict) -> list[str]:
-            return [
-                '%r is not a list of strings' % field
-                for field in ('target_os', 'target_cpu')
-                if not _is_list_of_strings(sync.get(field))
-            ]
-
-        return self._read_json('sync.json', check)
 
     def _read_targets_spec(self) -> dict:
         targets_dir = gen_paths.BUILDERS_OUTPUT_DIR / self.name / 'targets'
