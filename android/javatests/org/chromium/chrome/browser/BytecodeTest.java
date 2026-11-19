@@ -1582,6 +1582,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/tasks/tab_management/TabGroupUiCoordinator",
                         "org/chromium/chrome/browser/tasks/tab_management/BraveTabGroupUiCoordinator", // presubmit: ignore-long-line
                         Activity.class,
+                        WindowAndroid.class,
                         ViewGroup.class,
                         BrowserControlsStateProvider.class,
                         ScrimManager.class,
