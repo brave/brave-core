@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/ui/views/tabs/tab/tab_icon.cc b/chrome/browser/ui/views/tabs/tab/tab_icon.cc
+index 191b1b5156532db5e396164031838205a3f6de71..b7718753c0d0577fa0b6071622d10498491d4afa 100644
+--- a/chrome/browser/ui/views/tabs/tab/tab_icon.cc
++++ b/chrome/browser/ui/views/tabs/tab/tab_icon.cc
+@@ -305,7 +305,7 @@ void TabIcon::PaintAttentionIndicatorAndIcon(gfx::Canvas* canvas,
+ 
+   // Draws the actual attention indicator.
+   cc::PaintFlags indicator_flags;
+-  indicator_flags.setColor(views::GetCascadingAccentColor(this));
++  indicator_flags.setColor(views::GetTabSpinningColor(this));
+   indicator_flags.setAntiAlias(true);
+   canvas->DrawCircle(circle_center, kAttentionIndicatorRadius, indicator_flags);
+ }
+@@ -339,7 +339,7 @@ void TabIcon::PaintDiscardRingAndIcon(gfx::Canvas* canvas,
+ void TabIcon::PaintLoadingAnimation(gfx::Canvas* canvas, gfx::Rect bounds) {
+   TRACE_EVENT0("views", "TabIcon::PaintLoadingAnimation");
+ 
+-  const SkColor spinning_color = views::GetCascadingAccentColor(this);
++  const SkColor spinning_color = views::GetTabSpinningColor(this);
+   const base::TimeTicks current_time = clock_->NowTicks();
+   if (loading_animation_start_time_.is_null()) {
+     loading_animation_start_time_ = current_time;

@@ -45,12 +45,12 @@ substitutions:
               NOTREACHED();\n
 
   - description: |
-      Rename `DraggingTabsSession` to `DraggingTabsSessionChromium`.
+      Rename `DraggingTabsSession` to `DraggingTabsSession_ChromiumImpl`.
 
       This avoids a name collision with Brave's `DraggingTabsSession` class.
     rename_class:
       class_name: DraggingTabsSession
-      rename: DraggingTabsSessionChromium
+      rename: DraggingTabsSession_ChromiumImpl
 
   - description: |
       Set opener_was_set_for_empty_new_tab() flag for new tabs with TYPED transition at last index.

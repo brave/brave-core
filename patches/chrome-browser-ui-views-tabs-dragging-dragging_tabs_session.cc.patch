@@ -1,0 +1,89 @@
+diff --git a/chrome/browser/ui/views/tabs/dragging/dragging_tabs_session.cc b/chrome/browser/ui/views/tabs/dragging/dragging_tabs_session.cc
+index fd61991673e9c941f6157a9c6d824738e7859ccf..be3c3a1c9d4411d7becd1db73668dd13e16ff9f1 100644
+--- a/chrome/browser/ui/views/tabs/dragging/dragging_tabs_session.cc
++++ b/chrome/browser/ui/views/tabs/dragging/dragging_tabs_session.cc
+@@ -38,7 +38,7 @@ int CalculateMouseOffset(const DragSessionData& drag_data_) {
+ 
+ }  // namespace
+ 
+-DraggingTabsSession::DraggingTabsSession(
++DraggingTabsSession_ChromiumImpl::DraggingTabsSession_ChromiumImpl(
+     DragSessionData drag_data,
+     TabDragContext& attached_context,
+     TabDragPositioningDelegate& drag_position_delegate,
+@@ -57,13 +57,13 @@ DraggingTabsSession::DraggingTabsSession(
+   MoveAttachedImpl(start_point_in_screen, true);
+ }
+ 
+-DraggingTabsSession::~DraggingTabsSession() = default;
++DraggingTabsSession_ChromiumImpl::~DraggingTabsSession_ChromiumImpl() = default;
+ 
+-void DraggingTabsSession::MoveAttached(gfx::Point point_in_screen) {
++void DraggingTabsSession_ChromiumImpl::MoveAttached(gfx::Point point_in_screen) {
+   MoveAttachedImpl(point_in_screen, false);
+ }
+ 
+-void DraggingTabsSession::MoveAttachedImpl(gfx::Point point_in_screen,
++void DraggingTabsSession_ChromiumImpl::MoveAttachedImpl(gfx::Point point_in_screen,
+                                            bool just_attached) {
+   last_point_in_screen_ = point_in_screen;
+ 
+@@ -90,7 +90,7 @@ void DraggingTabsSession::MoveAttachedImpl(gfx::Point point_in_screen,
+   const int threshold = base::ClampRound(
+       static_cast<double>(
+           drag_position_delegate_->GetTabAt(to_index)->bounds().width()) /
+-      TabStyle::Get()->GetStandardWidth(/*is_split=*/false) *
++      TabStyle::Get()->GetStandardWidth(/*is_split=*/false) * VerticalTabsDragThresholdScale(*attached_context_) *
+       kHorizontalMoveThreshold);
+ 
+   // Update the model, moving the WebContents from one index to another. Do this
+@@ -164,7 +164,7 @@ void DraggingTabsSession::MoveAttachedImpl(gfx::Point point_in_screen,
+   initial_move_ = false;
+ }
+ 
+-gfx::Rect DraggingTabsSession::GetDraggedViewTabStripBounds(
++gfx::Rect DraggingTabsSession_ChromiumImpl::GetDraggedViewTabStripBounds(
+     gfx::Point tab_strip_point) const {
+   // attached_view is null when inserting into a new context.
+   if (drag_data_.source_view_drag_data()->attached_view) {
+@@ -178,11 +178,11 @@ gfx::Rect DraggingTabsSession::GetDraggedViewTabStripBounds(
+   }
+ 
+   return gfx::Rect(tab_strip_point.x(), tab_strip_point.y(),
+-                   TabStyle::Get()->GetStandardWidth(/*is_split=*/false),
++                   TabStyle::Get()->GetStandardWidth(/*is_split=*/false) * VerticalTabsDragThresholdScale(*attached_context_),
+                    GetLayoutConstant(LayoutConstant::kTabHeight));
+ }
+ 
+-bool DraggingTabsSession::AreTabsConsecutive() const {
++bool DraggingTabsSession_ChromiumImpl::AreTabsConsecutive() const {
+   for (size_t i = 1; i < drag_data_.tab_drag_data_.size(); ++i) {
+     const std::optional<int> previous_source_index =
+         drag_data_.tab_drag_data_[i - 1].source_model_index;
+@@ -197,7 +197,7 @@ bool DraggingTabsSession::AreTabsConsecutive() const {
+ }
+ 
+ std::optional<tab_groups::TabGroupId>
+-DraggingTabsSession::CalculateGroupForDraggedTabs(int to_index) {
++DraggingTabsSession_ChromiumImpl::CalculateGroupForDraggedTabs(int to_index) {
+   TabStripModel* attached_model = attached_context_->GetTabStripModel();
+ 
+   // If a group is moved, the drag cannot be inserted into another group.
+@@ -210,7 +210,7 @@ DraggingTabsSession::CalculateGroupForDraggedTabs(int to_index) {
+   // Get the proposed tabstrip model assuming the selection has taken place.
+   std::pair<std::optional<int>, std::optional<int>> adjacent_indices =
+       attached_model->GetAdjacentTabsAfterSelectedMove(
+-          base::PassKey<DraggingTabsSession>(), to_index);
++          base::PassKey<DraggingTabsSession_ChromiumImpl>(), to_index);
+ 
+   const ui::ListSelectionModel::SelectedIndices selected =
+       attached_model->selection_model()
+@@ -326,7 +326,7 @@ DraggingTabsSession::CalculateGroupForDraggedTabs(int to_index) {
+   return std::nullopt;
+ }
+ 
+-gfx::Point DraggingTabsSession::GetAttachedDragPoint(
++gfx::Point DraggingTabsSession_ChromiumImpl::GetAttachedDragPoint(
+     gfx::Point point_in_screen) {
+   const gfx::Point tab_loc = views::View::ConvertPointFromScreen(
+       base::to_address(attached_context_), point_in_screen);

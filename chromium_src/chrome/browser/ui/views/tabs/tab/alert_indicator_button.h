@@ -10,26 +10,8 @@
 
 class AlertIndicatorButton;
 using AlertIndicatorButton_BraveImpl = AlertIndicatorButton;
-#define AlertIndicatorButton AlertIndicatorButtonBase
 
-// Making our `AlertIndicatorButton` friend of the chromium base one, so this
-// derived class can access `delegate_`.
-#define TabContentsTest \
-  TabContentsTest;      \
-  friend AlertIndicatorButton_BraveImpl
-
-// Inserting `IsTabMuteIndicatorNotClickable` into the Delegate interface to
-// to allow us to override the behaviour for `kTabMuteIndicatorNotClickable`.
-#define IsApparentlyActive              \
-  IsTabMuteIndicatorNotClickable() = 0; \
-  virtual bool IsApparentlyActive
-
-#define UpdateEnabledForMuteToggle virtual UpdateEnabledForMuteToggle
 #include <chrome/browser/ui/views/tabs/tab/alert_indicator_button.h>  // IWYU pragma: export
-#undef UpdateEnabledForMuteToggle
-#undef AlertIndicatorButton
-#undef TabContentsTest
-#undef IsApparentlyActive
 
 class AlertIndicatorButton : public AlertIndicatorButtonBase {
   METADATA_HEADER(AlertIndicatorButton, AlertIndicatorButtonBase)
