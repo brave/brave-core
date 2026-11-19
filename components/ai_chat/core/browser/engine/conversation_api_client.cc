@@ -11,15 +11,20 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/check_deref.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/map_util.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/location.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
@@ -32,21 +37,24 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
-#include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/api_request_helper/sse_parser.h"
 #include "brave/components/brave_service_keys/brave_service_key_utils.h"
 #include "brave/components/constants/brave_services_key.h"
+#include "brave/components/endpoint_client/client.h"
+#include "brave/components/endpoint_client/request_handle.h"
+#include "brave/components/endpoint_client/url_replacements.h"
 #include "brave/components/l10n/common/locale_util.h"
+#include "net/base/net_errors.h"
 #include "net/http/http_request_headers.h"
+#include "net/http/http_response_headers.h"
 #include "net/http/http_status_code.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
+#include "services/network/public/cpp/header_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace ai_chat {
 
 namespace {
-
-// https://github.com/brave/aichat/blob/8fc09e023e8674e1069b7c1c30f848c74c4c1154/aichat/serve/open_ai_api.py#L47
-constexpr char kRemotePath[] = "v1/chat/completions";
 
 // Error type returned with a 429 when the premium rate limit for the specific
 // model has been reached.
@@ -74,6 +82,26 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
           "Not implemented."
       }
     )");
+}
+
+// Replaces every component of an endpoint's URL with those of `url`.
+endpoint_client::UrlReplacements UrlReplacementsFor(const GURL& url) {
+  endpoint_client::UrlReplacements url_replacements;
+  url_replacements.SetScheme(std::string(url.scheme()))
+      .SetHost(std::string(url.host()))
+      .SetPort(std::string(url.port()))
+      .SetPath(std::string(url.path()))
+      .SetQuery(std::string(url.query()));
+  return url_replacements;
+}
+
+std::optional<bool> IsNearVerified(const net::HttpResponseHeaders* headers) {
+  if (!headers) {
+    return std::nullopt;
+  }
+
+  return headers->GetNormalizedHeader(kBraveNearVerifiedHeader)
+      .transform([](const std::string& value) { return value == "true"; });
 }
 
 std::string_view GetContentBlockTypeString(
@@ -334,23 +362,43 @@ base::ListValue ConversationAPIClient::SerializeOAIMessages(
   return serialized_messages;
 }
 
+struct ConversationAPIClient::Query {
+  endpoint_client::RequestHandle request_handle;
+  // Only for streaming requests.
+  std::unique_ptr<api_request_helper::SSEParser> sse_parser;
+  std::optional<bool> is_near_verified;
+  // Whether a 2xx response has started, so the credential has been spent.
+  bool request_accepted = false;
+};
+
+struct ConversationAPIClient::QueryResult {
+  // Only set on net::OK.
+  std::optional<int> status_code;
+  std::optional<bool> is_near_verified;
+  // The body of a non-streaming 2xx response, or the error body.
+  base::Value body;
+  bool request_accepted = false;
+};
+
 ConversationAPIClient::ConversationAPIClient(
     const std::string& model_name,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     AIChatCredentialManager* credential_manager,
     ModelService* model_service)
     : model_name_(model_name),
+      url_loader_factory_(std::move(url_loader_factory)),
+      decoder_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
+          {base::TaskPriority::USER_VISIBLE,
+           base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})),
       credential_manager_(credential_manager),
       model_service_(model_service) {
   CHECK(!model_name_.empty());
-  api_request_helper_ = std::make_unique<api_request_helper::APIRequestHelper>(
-      GetNetworkTrafficAnnotationTag(), url_loader_factory);
 }
 
 ConversationAPIClient::~ConversationAPIClient() = default;
 
 void ConversationAPIClient::ClearAllQueries() {
-  api_request_helper_->CancelAll();
+  queries_.clear();
 }
 
 void ConversationAPIClient::PerformRequest(
@@ -372,6 +420,18 @@ void ConversationAPIClient::PerformRequest(
 }
 
 std::string ConversationAPIClient::CreateJSONRequestBody(
+    std::vector<OAIMessage> messages,
+    std::optional<base::ListValue> oai_tool_definitions,
+    const std::optional<std::string>& preferred_tool_name,
+    const ConversationCapabilitySet& conversation_capabilities,
+    const std::optional<std::string>& model_name,
+    const bool is_sse_enabled) {
+  return CHECK_DEREF(base::WriteJson(CreateRequestBody(
+      std::move(messages), std::move(oai_tool_definitions), preferred_tool_name,
+      conversation_capabilities, model_name, is_sse_enabled)));
+}
+
+base::DictValue ConversationAPIClient::CreateRequestBody(
     std::vector<OAIMessage> messages,
     std::optional<base::ListValue> oai_tool_definitions,
     const std::optional<std::string>& preferred_tool_name,
@@ -400,9 +460,7 @@ std::string ConversationAPIClient::CreateJSONRequestBody(
     dict.Set("tools", std::move(oai_tool_definitions.value()));
   }
 
-  std::string json;
-  base::JSONWriter::Write(dict, &json);
-  return json;
+  return dict;
 }
 
 void ConversationAPIClient::PerformRequestWithCredentials(
@@ -420,7 +478,7 @@ void ConversationAPIClient::PerformRequestWithCredentials(
   }
 
   bool premium_enabled = credential.has_value();
-  const GURL api_url = GetEndpointUrl(premium_enabled, kRemotePath);
+  const GURL api_url = GetEndpointUrl(premium_enabled, kConversationAPIPath);
 
   if (!api_url.is_valid()) {
     std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
@@ -429,68 +487,169 @@ void ConversationAPIClient::PerformRequestWithCredentials(
 
   const bool is_sse_enabled =
       ai_chat::features::kAIChatSSE.Get() && !data_received_callback.is_null();
-  const std::string request_body = CreateJSONRequestBody(
+
+  endpoint_client::WithHeaders<ConversationAPIEndpoint::Request> request;
+  request.network_traffic_annotation_tag =
+      net::MutableNetworkTrafficAnnotationTag(GetNetworkTrafficAnnotationTag());
+  request.url_replacements = UrlReplacementsFor(api_url);
+  request.body.dict = CreateRequestBody(
       std::move(messages), std::move(oai_tool_definitions), preferred_tool_name,
       conversation_capabilities, model_name, is_sse_enabled);
 
+  // The digest has to cover the exact bytes Client<> sends, which it
+  // serializes with base::WriteJson() too.
   auto headers = GetBraveHeaders(credential);
-  const auto digest_header = brave_service_keys::GetDigestHeader(request_body);
+  const auto digest_header = brave_service_keys::GetDigestHeader(
+      CHECK_DEREF(base::WriteJson(request.body.dict)));
   headers.emplace(digest_header.first, digest_header.second);
   auto auth_header = brave_service_keys::GetAuthorizationHeader(
       BUILDFLAG(SERVICE_KEY_AICHAT), headers, api_url,
       net::HttpRequestHeaders::kPostMethod, {"digest"});
   headers.emplace(auth_header.first, auth_header.second);
   headers.emplace("Accept", "text/event-stream");
+  for (const auto& [name, value] : headers) {
+    request.headers.SetHeader(name, value);
+  }
+
+  const uint64_t query_id = next_query_id_++;
+  auto& query =
+      *queries_.emplace(query_id, std::make_unique<Query>()).first->second;
 
   if (is_sse_enabled) {
     DVLOG(2) << "Making streaming AI Chat Conversation API Request";
-    auto on_received = base::BindRepeating(
-        &ConversationAPIClient::OnQueryDataReceived,
-        weak_ptr_factory_.GetWeakPtr(), std::move(data_received_callback));
-    auto on_complete =
-        base::BindOnce(&ConversationAPIClient::OnQueryCompleted,
-                       weak_ptr_factory_.GetWeakPtr(), std::move(credential),
-                       std::move(completed_callback));
-
-    api_request_helper_->RequestSSE(net::HttpRequestHeaders::kPostMethod,
-                                    api_url, request_body, "application/json",
-                                    std::move(on_received),
-                                    std::move(on_complete), headers, {});
+    query.sse_parser = std::make_unique<api_request_helper::SSEParser>(
+        decoder_task_runner_,
+        base::BindRepeating(&ConversationAPIClient::OnQueryDataReceived,
+                            weak_ptr_factory_.GetWeakPtr(),
+                            std::move(data_received_callback)));
+    query.request_handle =
+        endpoint_client::Client<ConversationAPIStreamEndpoint>::Send(
+            *url_loader_factory_, std::move(request),
+            {.on_response_started =
+                 base::BindOnce(&ConversationAPIClient::OnStreamStarted,
+                                weak_ptr_factory_.GetWeakPtr(), query_id),
+             .on_chunk =
+                 base::BindRepeating(&ConversationAPIClient::OnStreamChunk,
+                                     weak_ptr_factory_.GetWeakPtr(), query_id),
+             .on_complete =
+                 base::BindOnce(&ConversationAPIClient::MakeStreamQueryResult)
+                     .Then(base::BindOnce(
+                         &ConversationAPIClient::OnStreamCompleted,
+                         weak_ptr_factory_.GetWeakPtr(), query_id,
+                         std::move(credential),
+                         std::move(completed_callback)))});
   } else {
     DVLOG(2) << "Making non-streaming AI Chat Conversation API Request";
-    auto on_complete =
-        base::BindOnce(&ConversationAPIClient::OnQueryCompleted,
-                       weak_ptr_factory_.GetWeakPtr(), std::move(credential),
-                       std::move(completed_callback));
-
-    api_request_helper_->Request(net::HttpRequestHeaders::kPostMethod, api_url,
-                                 request_body, "application/json",
-                                 std::move(on_complete), headers, {});
+    query.request_handle =
+        endpoint_client::Client<ConversationAPIEndpoint>::Send<
+            endpoint_client::RequestCancelability::kCancelable>(
+            *url_loader_factory_, std::move(request),
+            base::BindOnce(&ConversationAPIClient::MakeQueryResult)
+                .Then(base::BindOnce(&ConversationAPIClient::FinishQuery,
+                                     weak_ptr_factory_.GetWeakPtr(), query_id,
+                                     std::move(credential),
+                                     std::move(completed_callback))));
   }
+}
+
+// static
+ConversationAPIClient::QueryResult ConversationAPIClient::MakeQueryResult(
+    endpoint_client::WithHeaders<ConversationAPIEndpoint::Response> response) {
+  QueryResult result;
+  result.status_code = response.status_code;
+  result.is_near_verified = IsNearVerified(response.headers.get());
+  result.request_accepted = response.status_code &&
+                            network::IsSuccessfulStatus(*response.status_code);
+  if (response.body) {
+    result.body = response.body->has_value()
+                      ? std::move(response.body->value().value)
+                      : std::move(response.body->error().value);
+  }
+  return result;
+}
+
+// static
+ConversationAPIClient::QueryResult ConversationAPIClient::MakeStreamQueryResult(
+    ConversationAPIStreamEndpoint::Response::Result result) {
+  QueryResult query_result;
+  query_result.status_code = result.status_code;
+  if (result.error_body) {
+    query_result.body = std::move(result.error_body->value);
+  }
+  return query_result;
+}
+
+void ConversationAPIClient::OnStreamStarted(
+    uint64_t query_id,
+    scoped_refptr<net::HttpResponseHeaders> headers) {
+  auto* query = base::FindPtrOrNull(queries_, query_id);
+  if (!query) {
+    return;
+  }
+
+  query->is_near_verified = IsNearVerified(headers.get());
+  query->request_accepted =
+      headers && network::IsSuccessfulStatus(headers->response_code());
+}
+
+void ConversationAPIClient::OnStreamChunk(uint64_t query_id,
+                                          std::string_view chunk) {
+  if (auto* query = base::FindPtrOrNull(queries_, query_id)) {
+    query->sse_parser->Process(chunk);
+  }
+}
+
+void ConversationAPIClient::OnStreamCompleted(
+    uint64_t query_id,
+    std::optional<CredentialCacheEntry> credential,
+    GenerationCompletedCallback callback,
+    QueryResult result) {
+  auto* query = base::FindPtrOrNull(queries_, query_id);
+  if (!query) {
+    return;
+  }
+
+  result.is_near_verified = query->is_near_verified;
+  result.request_accepted = query->request_accepted;
+
+  // The parser parses events on `decoder_task_runner_`, which is sequenced, so
+  // this reply runs after those of the events dispatched so far.
+  decoder_task_runner_->PostTaskAndReply(
+      FROM_HERE, base::DoNothing(),
+      base::BindOnce(&ConversationAPIClient::FinishQuery,
+                     weak_ptr_factory_.GetWeakPtr(), query_id,
+                     std::move(credential), std::move(callback),
+                     std::move(result)));
+}
+
+void ConversationAPIClient::FinishQuery(
+    uint64_t query_id,
+    std::optional<CredentialCacheEntry> credential,
+    GenerationCompletedCallback callback,
+    QueryResult result) {
+  if (!queries_.erase(query_id)) {
+    return;
+  }
+
+  OnQueryCompleted(std::move(credential), std::move(callback),
+                   std::move(result));
 }
 
 void ConversationAPIClient::OnQueryCompleted(
     std::optional<CredentialCacheEntry> credential,
     GenerationCompletedCallback callback,
-    api_request_helper::APIRequestResult result) {
-  const bool success = result.Is2XXResponseCode();
+    QueryResult result) {
   // Handle successful request
-  if (success) {
-    std::optional<bool> is_near_verified = std::nullopt;
+  if (result.status_code && network::IsSuccessfulStatus(*result.status_code)) {
     std::optional<std::string> model_key = std::nullopt;
-    const auto& headers = result.headers();
-    if (const auto* header_value =
-            base::FindOrNull(headers, kBraveNearVerifiedHeader)) {
-      is_near_verified = *header_value == "true";
-    }
 
     // Parse OAI-format response for non-streaming API results
-    if (result.value_body().is_dict()) {
-      auto& result_dict = result.value_body().GetDict();
+    if (result.body.is_dict()) {
+      auto& result_dict = result.body.GetDict();
       model_key = GetLeoModelKeyFromResponse(result_dict);
       if (auto parsed_result =
               ParseOAICompletionResponse(result_dict, model_key)) {
-        parsed_result->is_near_verified = is_near_verified;
+        parsed_result->is_near_verified = result.is_near_verified;
         std::move(callback).Run(base::ok(std::move(*parsed_result)));
         return;
       }
@@ -498,36 +657,41 @@ void ConversationAPIClient::OnQueryCompleted(
 
     // Return null event if no completion was provided in response body, can
     // happen when server send them all via OnQueryDataReceived.
-    std::move(callback).Run(
-        GenerationResultData{nullptr, std::move(model_key), is_near_verified});
+    std::move(callback).Run(GenerationResultData{nullptr, std::move(model_key),
+                                                 result.is_near_verified});
     return;
   }
 
-  // If error code is not 401, put credential in cache
-  if (result.response_code() != net::HTTP_UNAUTHORIZED && credential) {
+  // No status code means the request failed, possibly midway through a stream.
+  const int response_code = result.status_code.value_or(-1);
+
+  // If error code is not 401, put credential in cache, unless a 2xx response
+  // has already spent it.
+  if (response_code != net::HTTP_UNAUTHORIZED && !result.request_accepted &&
+      credential) {
     credential_manager_->PutCredentialInCache(std::move(*credential));
   }
 
   // Handle error
   mojom::APIError error;
-  std::string error_type = ParseErrorCode(result.value_body());
+  std::string error_type = ParseErrorCode(result.body);
   std::optional<base::Time> rate_limit_expires_at;
 
-  if (net::HTTP_TOO_MANY_REQUESTS == result.response_code()) {
+  if (net::HTTP_TOO_MANY_REQUESTS == response_code) {
     if (error_type == kModelRateLimitErrorType) {
       error = mojom::APIError::ModelRateLimitReached;
-      rate_limit_expires_at = ParseRateLimitExpiresAt(result.value_body());
+      rate_limit_expires_at = ParseRateLimitExpiresAt(result.body);
     } else {
       error = mojom::APIError::RateLimitReached;
     }
-  } else if (net::HTTP_REQUEST_ENTITY_TOO_LARGE == result.response_code()) {
+  } else if (net::HTTP_REQUEST_ENTITY_TOO_LARGE == response_code) {
     error = mojom::APIError::ContextLimitReached;
   } else {
     error = mojom::APIError::ConnectionIssue;
   }
 
   auto details = mojom::APIErrorDetails::New(
-      static_cast<int32_t>(result.response_code()), std::move(error_type),
+      static_cast<int32_t>(response_code), std::move(error_type),
       /*inner_status_code=*/0, rate_limit_expires_at);
 
   std::move(callback).Run(

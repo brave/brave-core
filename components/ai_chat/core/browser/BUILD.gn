@@ -48,6 +48,7 @@ static_library("browser") {
     "customization_settings_handler.h",
     "engine/conversation_api_client.cc",
     "engine/conversation_api_client.h",
+    "engine/conversation_api_endpoints.h",
     "engine/deep_research_parsing.cc",
     "engine/deep_research_parsing.h",
     "engine/engine_consumer.cc",
@@ -125,6 +126,7 @@ static_library("browser") {
 
   public_deps = [
     "//base",
+    "//brave/components/endpoint_client",
     "//components/os_crypt/async/common",
     "//components/sync/model",
   ]

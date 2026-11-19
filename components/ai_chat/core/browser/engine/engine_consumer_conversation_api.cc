@@ -7,6 +7,7 @@
 
 #include "base/barrier_callback.h"
 #include "base/check.h"
+#include "base/functional/callback_helpers.h"
 #include "base/strings/string_split.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/engine/conversation_api_client.h"
