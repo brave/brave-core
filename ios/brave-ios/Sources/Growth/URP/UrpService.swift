@@ -29,7 +29,6 @@ struct UrpService {
   private let adReportsURL: String
   private let apiKey: String
   private let sessionManager: URLSession
-  private let certificateEvaluator: URPCertificatePinningService
   private let braveCoreStats: BraveStats?
 
   init(
@@ -45,11 +44,9 @@ struct UrpService {
     self.adReportsURL = adReportsURL
     self.braveCoreStats = braveCoreStats
 
-    // Certificate pinning
-    certificateEvaluator = URPCertificatePinningService()
     sessionManager = URLSession(
       configuration: .default,
-      delegate: certificateEvaluator,
+      delegate: nil,
       delegateQueue: .main
     )
   }
@@ -256,34 +253,5 @@ extension URLSession {
   func adGroupsReportApiRequest(endPoint: URL) async throws -> (Any, URLResponse) {
     // Having Reports Keywrod Lookup Endpoint 30 sec timeout
     return try await self.request(endPoint, method: .post, encoding: .json, timeout: 30)
-  }
-}
-
-class URPCertificatePinningService: NSObject, URLSessionDelegate {
-  func urlSession(
-    _ session: URLSession,
-    didReceive challenge: URLAuthenticationChallenge
-  ) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
-    if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
-      if let serverTrust = challenge.protectionSpace.serverTrust {
-        let result = BraveCertificateUtility.verifyTrust(
-          serverTrust,
-          host: challenge.protectionSpace.host,
-          port: challenge.protectionSpace.port
-        )
-        // Cert is valid and should be pinned
-        if result == 0 {
-          return (.useCredential, URLCredential(trust: serverTrust))
-        }
-
-        // Cert is valid and should not be pinned
-        // Let the system handle it and we'll show an error if the system cannot validate it
-        if result == Int32.min {
-          return (.performDefaultHandling, nil)
-        }
-      }
-      return (.cancelAuthenticationChallenge, nil)
-    }
-    return (.performDefaultHandling, nil)
   }
 }
