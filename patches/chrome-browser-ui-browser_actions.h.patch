@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_actions.h b/chrome/browser/ui/browser_actions.h
-index 6540dba73136ac8b8b97899d7f47810d11917d23..a47d474aab022fdbcb940ce7cbd9883b524e0b26 100644
+index 88a9ca8c1ad764ab699e3ad334d033763ca34248..b9b6b428935129886c0984c3fabfbbf6dc7bdda3 100644
 --- a/chrome/browser/ui/browser_actions.h
 +++ b/chrome/browser/ui/browser_actions.h
 @@ -27,18 +27,19 @@ class BrowserActions {

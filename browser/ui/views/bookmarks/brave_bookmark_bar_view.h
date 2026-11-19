@@ -12,14 +12,17 @@
 #include "components/prefs/pref_member.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
+namespace bookmark_bar_api {
 class BookmarkBarUIController;
+}  // namespace bookmark_bar_api
 
 class BraveBookmarkBarView : public BookmarkBarView {
   METADATA_HEADER(BraveBookmarkBarView, BookmarkBarView)
  public:
-  BraveBookmarkBarView(BrowserWindowInterface* browser,
-                       std::unique_ptr<BookmarkBarUIController> controller,
-                       BrowserView* browser_view);
+  BraveBookmarkBarView(
+      BrowserWindowInterface* browser,
+      std::unique_ptr<bookmark_bar_api::BookmarkBarUIController> controller,
+      BrowserView* browser_view);
   ~BraveBookmarkBarView() override;
 
   // BookmarkBarView:

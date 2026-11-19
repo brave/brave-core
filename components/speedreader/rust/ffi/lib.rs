@@ -3,8 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-use ::speedreader::*;
+chromium::import! {
+    "//brave/components/speedreader/rust/lib:lib" as speedreader_lib;
+}
+
 use libc::{c_char, c_int, size_t};
+use speedreader_lib::*;
 use std::{ptr, slice, str};
 
 #[inline]

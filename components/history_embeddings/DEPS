@@ -4,7 +4,7 @@ include_rules = [
 ]
 
 specific_include_rules = {
-  ".*_unittest\.cc": [
+  ".*_unittest\\.cc": [
     "+components/history/core/test",
     "+components/os_crypt/async/browser",
     "+components/page_content_annotations/content",

@@ -1,8 +1,8 @@
 diff --git a/components/omnibox/browser/autocomplete_provider_client.h b/components/omnibox/browser/autocomplete_provider_client.h
-index 8780e00050af45dfe6c28784074a6cf0fa69b59d..1aa4324f0d08e9f5e4198ea0e4a1c6229ec82c18 100644
+index b5e09fac90c4d6d5e32eea749e6545df5bb5c058..cce69d44fa6b76f6def54edb9c1f20c9f7c5c0c4 100644
 --- a/components/omnibox/browser/autocomplete_provider_client.h
 +++ b/components/omnibox/browser/autocomplete_provider_client.h
-@@ -84,6 +84,10 @@ namespace tab_groups {
+@@ -80,6 +80,10 @@ namespace tab_groups {
  class TabGroupSyncService;
  }
  
@@ -13,7 +13,7 @@ index 8780e00050af45dfe6c28784074a6cf0fa69b59d..1aa4324f0d08e9f5e4198ea0e4a1c622
  class TemplateURLService;
  
  class AutocompleteProviderClient : public OmniboxAction::Client {
-@@ -298,6 +302,8 @@ class AutocompleteProviderClient : public OmniboxAction::Client {
+@@ -299,6 +303,8 @@ class AutocompleteProviderClient : public OmniboxAction::Client {
    void OpenCoBrowsePanel() override;
    bool ShouldOpenComposeboxForAskG() const override;
    void OpenComposeboxForAskG() override;

@@ -3,7 +3,7 @@ include_rules = [
 ]
 
 specific_include_rules = {
-  "chrome_main_parts\.mm": [
+  "chrome_main_parts\\.mm": [
     "+brave/ios/browser/application_context/brave_application_context_impl.h",
     "+ios/web/public/init/web_main_parts.h",
   ]

@@ -59,6 +59,13 @@ substitutions:
       type: android_assets
       template: resource_packaging
 
+  - description: Package the Brave paks with the test APK ones.
+    add_literal_to_list:
+      target: chrome_test_apk_pak_assets
+      list_name: deps
+      literal: '[ "//brave:brave_pak_assets" ]'
+      type: android_assets
+
   - description: Add the Brave base module Java sources.
     add_literal_to_list:
       target: base_module_java

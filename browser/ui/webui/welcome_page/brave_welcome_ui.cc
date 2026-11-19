@@ -47,6 +47,7 @@
 #include "content/public/browser/web_ui_message_handler.h"
 #include "services/network/public/mojom/content_security_policy.mojom-shared.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 
 namespace {
 
@@ -100,7 +101,7 @@ void OpenJapanWelcomePage(Profile* profile) {
   if (browser) {
     content::OpenURLParams open_params(
         GURL("https://brave.com/ja/desktop-ntp-tutorial"), content::Referrer(),
-        WindowOpenDisposition::kNewBackgroundTab,
+        ui::mojom::WindowOpenDisposition::kNewBackgroundTab,
         ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false);
     browser->OpenURL(open_params, /*navigation_handle_callback=*/{});
   }

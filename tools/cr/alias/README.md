@@ -48,6 +48,30 @@ git cr commit --culprit abc123,def456 -m "Adjust to upstream API change"
 [commit-msg hook behaviour](#commit-msg-hook-behaviour) section below for more
 details.
 
+#### `--culprit-in-range`
+
+On a `cr<N>` branch, refuses a Chromium culprit outside the branch's range:
+after the Chromium tag its upstream pins, up to the one HEAD pins. Without it,
+any commit is accepted as a culprit, such as one from before the range for a
+latent issue that only now shows up.
+
+```sh
+git cr commit --culprit-in-range --culprit abc123 -m "Adjust to the new API"
+```
+
+#### `--format`
+
+Wraps the body at 72 columns with Chromium's CL description wrapper, as Gerrit's
+"Format" button does, and refuses a subject over 72 columns once the tags are
+added. The subject, indented paragraphs and the "Chromium changes:" block are
+left as they are. It applies to `fixup!` and `amend!` messages too, from an
+`amend!`'s new subject on. See [`../commit_messages.md`](../commit_messages.md).
+
+```sh
+git cr commit --format --culprit abc123 -m "Adjust to the new API" \
+    -m "One line per paragraph, however long: the hook wraps it."
+```
+
 #### `--fixup=reassign:<ref>`
 
 Git understands `--fixup=<ref>`, `--fixup=amend:<ref>`, and

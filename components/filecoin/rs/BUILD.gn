@@ -12,7 +12,6 @@ rust_static_library("rust_lib") {
     "//brave/components/brave_wallet/browser/test:*",
     "//brave/components/ipfs",
   ]
-  crate_name = "filecoin_cxx"
   crate_root = "src/lib.rs"
   allow_unsafe = true
   sources = [ "src/lib.rs" ]

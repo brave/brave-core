@@ -1,5 +1,5 @@
 diff --git a/components/feature_engagement/public/feature_constants.cc b/components/feature_engagement/public/feature_constants.cc
-index 360281b055d3963ff749386f4d62926780b7208a..157066493c03accc42f8b5da53e14150ce4a22eb 100644
+index 8307d3d7e20b432c4920e8d9850316bb3c0d0148..f81ae42bfccee3cd1c636cdd72d578d802dd142b 100644
 --- a/components/feature_engagement/public/feature_constants.cc
 +++ b/components/feature_engagement/public/feature_constants.cc
 @@ -86,9 +86,9 @@ BASE_FEATURE(kIPHDictationFeature,
@@ -14,7 +14,7 @@ index 360281b055d3963ff749386f4d62926780b7208a..157066493c03accc42f8b5da53e14150
  BASE_FEATURE(kIPHDownloadEsbPromoFeature,
               "IPH_DownloadEsbPromo",
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -130,9 +130,9 @@ BASE_FEATURE_ENUM_PARAM(IPHExtensionsZeroStatePromoVariant,
+@@ -127,9 +127,9 @@ BASE_FEATURE_ENUM_PARAM(IPHExtensionsZeroStatePromoVariant,
  BASE_FEATURE(kIPHFocusHelpBubbleScreenReaderPromoFeature,
               "IPH_FocusHelpBubbleScreenReaderPromo",
               base::FEATURE_ENABLED_BY_DEFAULT);
@@ -26,7 +26,7 @@ index 360281b055d3963ff749386f4d62926780b7208a..157066493c03accc42f8b5da53e14150
  BASE_FEATURE(kIPHGMCLocalMediaCastingFeature,
               "IPH_GMCLocalMediaCasting",
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -191,9 +191,9 @@ BASE_FEATURE(kIPHPasswordsSavePrimingPromoFeature,
+@@ -195,9 +195,9 @@ BASE_FEATURE(kIPHPasswordsSavePrimingPromoFeature,
  BASE_FEATURE(kIPHPasswordsSaveRecoveryPromoFeature,
               "IPH_PasswordsSaveRecoveryPromo",
               base::FEATURE_ENABLED_BY_DEFAULT);
@@ -38,7 +38,7 @@ index 360281b055d3963ff749386f4d62926780b7208a..157066493c03accc42f8b5da53e14150
  BASE_FEATURE(kIPHPasswordsManagementBubbleDuringSigninFeature,
               "IPH_PasswordsManagementBubbleDuringSignin",
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -209,9 +209,9 @@ BASE_FEATURE(kIPHPasswordSharingFeature,
+@@ -213,9 +213,9 @@ BASE_FEATURE(kIPHPasswordSharingFeature,
  BASE_FEATURE(kIPHPdfGlicSummarizeFeature,
               "IPH_PdfGlicSummarizeFeature",
               base::FEATURE_ENABLED_BY_DEFAULT);
@@ -50,7 +50,7 @@ index 360281b055d3963ff749386f4d62926780b7208a..157066493c03accc42f8b5da53e14150
  BASE_FEATURE(kIPHPdfSearchifyFeature,
               "IPH_PdfSearchifyFeature",
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -242,7 +242,7 @@ BASE_FEATURE(kIPHReadingListDiscoveryFeature,
+@@ -246,7 +246,7 @@ BASE_FEATURE(kIPHReadingListDiscoveryFeature,
  BASE_FEATURE(kIPHReadingListEntryPointFeature,
               "IPH_ReadingListEntryPoint",
               base::FEATURE_DISABLED_BY_DEFAULT);
@@ -59,7 +59,7 @@ index 360281b055d3963ff749386f4d62926780b7208a..157066493c03accc42f8b5da53e14150
               "IPH_ReadingListInSidePanel",
               base::FEATURE_DISABLED_BY_DEFAULT);
  BASE_FEATURE(kIPHReadingModeAiPlaybackFeature,
-@@ -278,21 +278,21 @@ BASE_FEATURE(kIPHSmartTabSharingFeature,
+@@ -282,23 +282,23 @@ BASE_FEATURE(kIPHSmartTabSharingFeature,
  BASE_FEATURE(kIPHSmartTabSharingTryItFeature,
               "IPH_SmartTabSharingTryItFeature",
               base::FEATURE_DISABLED_BY_DEFAULT);
@@ -81,15 +81,17 @@ index 360281b055d3963ff749386f4d62926780b7208a..157066493c03accc42f8b5da53e14150
  BASE_FEATURE(kIPHVerticalTabsExpandOnHoverFeature,
               "IPH_VerticalTabsExpandOnHoverFeature",
               base::FEATURE_ENABLED_BY_DEFAULT);
+ BASE_FEATURE(kIPH_VerticalTabsTabGroupsInOrganizerFeature,
+              base::FEATURE_ENABLED_BY_DEFAULT);
 -BASE_FEATURE(kIPHVerticalTabstripTutorialFeature,
 +BASE_OVERRIDDEN_FEATURE(kIPHVerticalTabstripTutorialFeature,
               "IPH_VerticalTabstripTutorialFeature",
 -             base::FEATURE_ENABLED_BY_DEFAULT);
 +             base::FEATURE_DISABLED_BY_DEFAULT);
- BASE_FEATURE(kIPHTabGroupsFocusingFeature,
-              "IPH_TabGroupsFocusingFeature",
-              base::FEATURE_DISABLED_BY_DEFAULT);
-@@ -320,9 +320,9 @@ BASE_FEATURE(kIPHSideSearchPageActionLabelFeature,
+ constinit const base::FeatureParam<int>
+     kIPHVerticalTabstripTutorialMinTabsParam{
+         &kIPHVerticalTabstripTutorialFeature, "x_min_tabs_for_promo", 20};
+@@ -332,9 +332,9 @@ BASE_FEATURE(kIPHSideSearchPageActionLabelFeature,
  BASE_FEATURE(kIPHPwaQuietNotificationFeature,
               "IPH_PwaQuietNotification",
               base::FEATURE_ENABLED_BY_DEFAULT);
@@ -101,7 +103,7 @@ index 360281b055d3963ff749386f4d62926780b7208a..157066493c03accc42f8b5da53e14150
  BASE_FEATURE(kIPHTabGroupsSaveV2CloseGroupFeature,
               "IPH_TabGroupsSaveV2CloseGroup",
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -353,9 +353,9 @@ BASE_FEATURE(kIPHPriceTrackingInSidePanelFeature,
+@@ -365,9 +365,9 @@ BASE_FEATURE(kIPHPriceTrackingInSidePanelFeature,
  BASE_FEATURE(kIPHBackNavigationMenuFeature,
               "IPH_BackNavigationMenu",
               base::FEATURE_DISABLED_BY_DEFAULT);

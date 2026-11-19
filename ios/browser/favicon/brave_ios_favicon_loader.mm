@@ -80,7 +80,7 @@ void BraveFaviconLoader::FaviconForPageUrlOrHost(
 
   const CGFloat scale = UIScreen.mainScreen.scale;
   GURL block_page_url(page_url);
-  auto favicon_block = ^(const favicon_base::LargeIconResult& result) {
+  auto favicon_block = ^(const favicon_base::LargeIconResult result) {
     if (result.bitmap.is_valid()) {
       scoped_refptr<base::RefCountedMemory> data =
           result.bitmap.bitmap_data.get();
@@ -125,7 +125,7 @@ void BraveFaviconLoader::RawFaviconForPageUrlOrHost(
 
   const CGFloat scale = UIScreen.mainScreen.scale;
   auto favicon_block = [](favicon_base::FaviconRawBitmapCallback cb,
-                          const favicon_base::LargeIconResult& result) {
+                          const favicon_base::LargeIconResult result) {
     std::move(cb).Run(result.bitmap);
   };
 

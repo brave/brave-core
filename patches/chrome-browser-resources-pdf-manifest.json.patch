@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/resources/pdf/manifest.json b/chrome/browser/resources/pdf/manifest.json
-index 571f62eee85eafd989bf6c7996c729737f9234ac..46b96c4493817b5065650215cc53d4afdc363440 100644
+index b8d7585cfc25c0d01dd883630f5de462b682466b..0844e173f6db98725c06804379560936f7c080a2 100644
 --- a/chrome/browser/resources/pdf/manifest.json
 +++ b/chrome/browser/resources/pdf/manifest.json
-@@ -9,6 +9,7 @@
-   "incognito": "split",
-   "permissions": [
-     "chrome://resources/",
-+    "chrome://theme/",
-     "chrome://webui-test/",
-     "contentSettings",
-     "metricsPrivate",
+@@ -16,6 +16,7 @@
+     {"fileSystem": ["write"]}
+   ],
+   "host_permissions": [
++    "chrome://theme/*",
+     "chrome://resources/*"
+   ],
+   "mime_types": [

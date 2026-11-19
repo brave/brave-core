@@ -172,12 +172,13 @@ public class BraveTabGridItemTouchHelperCallbackTest {
     private BraveTabGridItemTouchHelperCallback createCallback() {
         // The caller passes GROUPED for the grid; Brave downgrades it to FLAT on each use while the
         // switch is off.
+        TabListModel model = new TabListModel();
         return new BraveTabGridItemTouchHelperCallback(
                 ContextUtils.getApplicationContext(),
                 mTabGroupCreationDialogManager,
-                new TabListModel(),
+                model,
                 mTabModelSupplier,
-                mTabClosedListener,
+                new TabSwipeHandler(model, mTabClosedListener, ""),
                 /* ungroupBarStatusHandler= */ null,
                 /* componentName= */ "",
                 TabListLayoutType.GROUPED,

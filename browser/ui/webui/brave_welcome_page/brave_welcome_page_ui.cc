@@ -46,8 +46,8 @@
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/page_transition_types.h"
-#include "ui/base/window_open_disposition.h"
 #include "ui/webui/webui_util.h"
 #include "url/gurl.h"
 
@@ -68,11 +68,11 @@ void OpenJapanWelcomePage(base::WeakPtr<content::WebContents> web_contents) {
   if (!web_contents) {
     return;
   }
-  web_contents->OpenURL(
-      content::OpenURLParams(GURL(kJapanWelcomeURL), content::Referrer(),
-                             WindowOpenDisposition::kNewBackgroundTab,
-                             ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false),
-      /*navigation_handle_callback=*/{});
+  web_contents->OpenURL(content::OpenURLParams(
+                            GURL(kJapanWelcomeURL), content::Referrer(),
+                            ui::mojom::WindowOpenDisposition::kNewBackgroundTab,
+                            ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false),
+                        /*navigation_handle_callback=*/{});
 }
 
 bool IsJapanCountryId(PrefService* prefs) {

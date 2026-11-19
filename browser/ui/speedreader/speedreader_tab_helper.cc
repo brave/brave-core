@@ -32,10 +32,10 @@
 #include "brave/components/speedreader/speedreader_util.h"
 #include "brave/components/speedreader/tts_player.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
-#include "components/dom_distiller/content/browser/distillable_page_utils.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/tabs/public/tab_interface.h"
+#include "components/web_distiller/content/browser/distillable_page_utils.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
@@ -85,7 +85,7 @@ SpeedreaderTabHelper::SpeedreaderTabHelper(
       speedreader_service_(speedreader_service),
       rewriter_service_(rewriter_service),
       scoped_unowned_user_data_(tab.GetUnownedUserDataHost(), *this) {
-  dom_distiller::AddObserver(tab.GetContents(), this);
+  web_distiller::AddObserver(tab.GetContents(), this);
   speedreader_service_observation_.Observe(&speedreader_service_.get());
   tts_player_observation_.Observe(speedreader::TtsPlayer::GetInstance());
   is_visible_ =
@@ -452,7 +452,7 @@ void SpeedreaderTabHelper::StopObserving() {
   speedreader_service_observation_.Reset();
   tts_player_observation_.Reset();
   if (web_contents()) {
-    dom_distiller::RemoveObserver(web_contents(), this);
+    web_distiller::RemoveObserver(web_contents(), this);
   }
   SetWebContents(nullptr);
   HideSpeedreaderBubble();
@@ -464,14 +464,14 @@ void SpeedreaderTabHelper::OnDiscardContents(
     content::WebContents* new_contents) {
   // The distillation and its bubble belong to the old contents' page.
   HideSpeedreaderBubble();
-  dom_distiller::RemoveObserver(old_contents, this);
+  web_distiller::RemoveObserver(old_contents, this);
   receiver_.reset();
   single_show_content_.clear();
   distill_state_ = ViewOriginal();
   tabs::ContentsObservingTabFeature::OnDiscardContents(tab, old_contents,
                                                        new_contents);
   SetWebContents(new_contents);
-  dom_distiller::AddObserver(new_contents, this);
+  web_distiller::AddObserver(new_contents, this);
   is_visible_ = new_contents->GetVisibility() != content::Visibility::HIDDEN;
   UpdateUI();
 }
@@ -595,7 +595,7 @@ void SpeedreaderTabHelper::OnAppearanceSettingsChanged(
 }
 
 void SpeedreaderTabHelper::OnResult(
-    const dom_distiller::DistillabilityResult& result) {
+    const web_distiller::DistillabilityResult& result) {
   if (IsNotDistillable(distill_state_) && result.is_distillable) {
     TransitStateTo(DistillReverting(DistillReverting::Reason::kNone, false));
     TransitStateTo(ViewOriginal());

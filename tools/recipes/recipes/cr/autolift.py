@@ -10,13 +10,16 @@ from __future__ import annotations
 from dataclasses import dataclass
 import re
 
+from google.protobuf import json_format
 import post_process
-from PB.recipes.brave.cr.autolift import InputProperties
+from PB.recipe_engine import result as result_pb
+from PB.recipes.brave.cr.autolift import InputProperties, Outcome
 from recipe_api import RecipeScriptApi
 from recipe_modules import (
     brave_core_checkout,
     chromium_checkout,
     claude_cli,
+    depot_tools,
     file,
     git,
     json,
@@ -32,22 +35,32 @@ AUTOLIFT = 'tools/cr/autolift/autolift.py'
 # Where a channel bump's `prepare` and `autofix` copy the tooling, which the
 # channels' branches don't carry: what a resumed channel run runs.
 STAGED_AUTOLIFT = '.autolift/tooling/cr/autolift/autolift.py'
+CI_CLI = 'tools/cr/ci/cli.py'
 
 # The run's report, in its `.autolift/cr<N>/` (or `.autolift/cr<N>.x/`, for
 # a channel bump of M<N>) directory, as SKILL names it.
 REPORT = 'report.md'
+# How the agent recorded the run's end there, with `autolift.py outcome`.
+OUTCOME = 'outcome.json'
 
 _CR_BRANCH_RE = re.compile(r'refs/heads/cr(\d+)')
 
 # What a step's simulation reports when a test doesn't say.
-_LIFT_ADVICE = {'action': 'lift', 'prompt': 'Lift.', 'reasons': []}
+_LIFT_ADVICE = {
+    'action': 'lift',
+    'prompt': 'Lift.',
+    'reads': ['tools/cr/autolift/SKILL.md'],
+    'reasons': [],
+}
 _NOTHING_PENDING = {'pending': 0, 'prompt': None, 'report': 'sync-tooling.md'}
+_COMPLETE = {'complete': True, 'summary': 'Lifted.', 'review': []}
 
 
 @dataclass
 class DEPS(RecipeScriptApi):
     brave_core_checkout: brave_core_checkout.API
     claude_cli: claude_cli.API
+    depot_tools: depot_tools.API
     file: file.API
     git: git.API
     json: json.API
@@ -62,14 +75,15 @@ class TEST_DEPS(RecipeTestApi):
     chromium_checkout: chromium_checkout.TEST_API
     claude_cli: claude_cli.TEST_API
     json: json.TEST_API
+    path: path.TEST_API
     raw_io: raw_io.TEST_API
 
 
 PROPERTIES = InputProperties
 
 
-def _latest_milestone(api: DEPS) -> int:
-    """The milestone of the newest `cr<N>` branch on brave-core."""
+def _branch_milestones(api: DEPS) -> set[int]:
+    """The milestones of the `cr<N>` branches on brave-core."""
     result = api.git(
         'ls-remote',
         '--heads',
@@ -78,14 +92,24 @@ def _latest_milestone(api: DEPS) -> int:
         name='find latest cr branch',
         stdout=api.raw_io.output_text(),
     )
-    milestones = []
+    milestones = set()
     for line in result.stdout.splitlines():
         _, _, ref = line.partition('\t')
         if match := _CR_BRANCH_RE.fullmatch(ref):
-            milestones.append(int(match[1]))
+            milestones.add(int(match[1]))
     if not milestones:
         raise RuntimeError(f'no cr<N> branch on {BRAVE_CORE_URL}')
-    return max(milestones)
+    return milestones
+
+
+def _checkout_ref(milestone: int, branches: set[int]) -> str:
+    """The ref to check out for a run of cr<milestone>: the branch, or for a
+    new milestone, the base `autolift.py prepare` creates it from."""
+    if milestone in branches:
+        return f'refs/heads/cr{milestone}'
+    if milestone - 1 in branches:
+        return f'refs/heads/cr{milestone - 1}'
+    return 'refs/heads/master'
 
 
 def _advise(
@@ -93,7 +117,7 @@ def _advise(
 ) -> dict:
     """What the run does, and what its agent is told, as `autolift.py advise`
     decides it: no prompt for a run with nothing to do."""
-    cmd = ['vpython3', script, 'advise', target]
+    cmd = [api.depot_tools.vpython3(), script, 'advise', target]
     if properties.autofix:
         cmd.append('--autofix')
     if properties.resume:
@@ -119,7 +143,7 @@ def _sync_tooling(
     agent reconciling what the script leaves for judgement, before the lift
     reads its skill. Runs in the checkout, from the brave-core layout."""
     cmd = [
-        'python3',
+        api.depot_tools.vpython3(),
         api.resource('sync_tooling.py'),
         '--milestone',
         str(milestone),
@@ -144,14 +168,43 @@ def _sync_tooling(
         )
 
 
-def RunSteps(api: DEPS, properties: InputProperties) -> None:
+def _outcome(api: DEPS, script: str, target: str) -> Outcome:
+    """How the agent recorded the run's end, exported as the `outcome`
+    output property: incomplete when it recorded nothing."""
+    result = api.step(
+        'outcome',
+        [
+            api.depot_tools.vpython3(),
+            script,
+            'outcome',
+            target,
+            '--json-output',
+            api.json.output(),
+        ],
+        check=False,
+        step_test_data=lambda: api.json.test_api.output(_COMPLETE),
+    )
+    outcome = Outcome()
+    if result.json.output:
+        json_format.ParseDict(result.json.output, outcome)
+    else:
+        outcome.summary = f'`autolift.py outcome` failed ({result.retcode}).'
+    result.presentation.properties['outcome'] = outcome
+    return outcome
+
+
+def RunSteps(
+    api: DEPS, properties: InputProperties
+) -> result_pb.RawResult | None:
     tag = properties.chromium_version
     # A new run syncs its tooling with the newest branch, which a resumed run
     # has done already. A channel bump's tooling comes from the newest branch
     # as it is.
     newest = None
+    branches: set[int] = set()
     if not properties.resume or not (properties.milestone or tag):
-        newest = _latest_milestone(api)
+        branches = _branch_milestones(api)
+        newest = max(branches)
     milestone = properties.milestone or newest
     # A channel bump's run is named after its milestone, as its branches.
     run_name = f'cr{tag.split(".")[0]}.x' if tag else f'cr{milestone}'
@@ -163,7 +216,9 @@ def RunSteps(api: DEPS, properties: InputProperties) -> None:
         # clearing would lose the run's report and build.
         root = api.path.abs(api.path.brave_core)
     else:
-        api.brave_core_checkout.set_brave_core_ref(f'refs/heads/cr{milestone}')
+        api.brave_core_checkout.set_brave_core_ref(
+            _checkout_ref(milestone, branches)
+        )
         # Deprecated: the `.env` for the builds, with RBE when the module's
         # `use_remoteexec` property asks for it.
         api.brave_core_checkout.set_config('deprecated_brave')
@@ -181,21 +236,24 @@ def RunSteps(api: DEPS, properties: InputProperties) -> None:
     # without auto mode reviewing each edit. `publish`, the run's one push, is
     # allowed too: auto mode otherwise judges it by what the run printed before
     # it, and a rebased branch "behind" its remote reads as overwriting it.
-    # The agent runs it as `publish ... > <log> 2>&1; echo "exit $?"`.
+    # A rule only covers a command it matches whole, so the agent runs
+    # `publish` bare: it keeps its own log. An autofix run's rerun of an infra
+    # failure with a wiped workspace is allowed too, which auto mode otherwise
+    # refuses as modifying the shared CI.
     add_dirs = [checkout]
     allowed_tools = [
         f'Edit(/{checkout}/**)',
         f'Write(/{checkout}/**)',
         f'Bash(vpython3 {AUTOLIFT} publish *)',
         f'Bash(vpython3 {STAGED_AUTOLIFT} publish *)',
-        'Bash(echo *)',
+        f'Bash(vpython3 {CI_CLI} rerun --wipe-workspace *)',
     ]
     with api.brave_core_checkout.brave_core_layout():
         advice = _advise(api, script, tag or str(milestone), properties)
         # The advice step says why there is nothing to do; an earlier run's
         # report and build are left as they are.
         if not advice['prompt']:
-            return
+            return None
         if not properties.resume:
             # The run's logs and report start empty, so that the agent only
             # reads its own run's. Those of earlier runs are kept with the job
@@ -204,6 +262,8 @@ def RunSteps(api: DEPS, properties: InputProperties) -> None:
             # Each run builds from scratch, so that nothing an earlier run
             # built hides a failure of this one.
             api.file.rmtree('clear out dir', root.parent / 'out')
+        # An earlier session's outcome isn't this one's.
+        api.file.remove('clear outcome', run_dir / OUTCOME)
         try:
             # Only a new lift or rebase of an older branch reads the tooling
             # enough to be worth syncing it with the newer ones.
@@ -226,11 +286,29 @@ def RunSteps(api: DEPS, properties: InputProperties) -> None:
                 log_dir=run_dir,
                 add_dirs=add_dirs,
                 allowed_tools=allowed_tools,
+                # The skill's files the prompt names; the report lists any the
+                # agent didn't read in full.
+                must_read=[root / path for path in advice['reads']],
+                report=run_dir / REPORT,
             )
         finally:
+            # A channel bump ends on a channel's branch, which lacks the
+            # tooling, once `prepare` or `autofix` has staged its copy.
+            staged = tag and api.path.exists(root / STAGED_AUTOLIFT)
+            outcome = _outcome(
+                api,
+                STAGED_AUTOLIFT if staged else AUTOLIFT,
+                tag or str(milestone),
+            )
             # The report in full, however the run ended. A run that stopped
             # before writing one has none.
             api.step('report', ['cat', run_dir / REPORT], check=False)
+    # What follows the run (the Gerrit mirror and upload) is only for a
+    # complete one.
+    return result_pb.RawResult(
+        status=result_pb.SUCCESS if outcome.complete else result_pb.FAILURE,
+        summary_markdown=outcome.summary,
+    )
 
 
 def GenTests(api: TEST_DEPS):
@@ -261,7 +339,12 @@ def GenTests(api: TEST_DEPS):
         return api.step_data(
             'advise',
             api.json.output(
-                {'action': action, 'prompt': prompt, 'reasons': ['- Why.']}
+                {
+                    'action': action,
+                    'prompt': prompt,
+                    'reads': ['tools/cr/autolift/SKILL.md'] if prompt else [],
+                    'reasons': ['- Why.'],
+                }
             ),
         )
 
@@ -341,6 +424,41 @@ def GenTests(api: TEST_DEPS):
                 ['checkout', '--force', '-B', 'cr158'],
             ),
             advised('advise', '158'),
+            api.post_process(post_process.StatusSuccess),
+            api.post_process(post_process.DropExpectation),
+        ),
+    )
+
+    # A new milestone has no branch yet: its base is checked out, for
+    # `prepare` to create the branch from.
+    yield api.test(
+        'new milestone',
+        new_run(
+            api.properties(milestone=160),
+            api.post_process(
+                post_process.StepCommandContains,
+                'brave-core checkout branch',
+                ['checkout', '--force', '-B', 'cr159'],
+            ),
+            advised('advise', '160'),
+            api.post_process(post_process.DoesNotRun, 'sync tooling'),
+            api.post_process(post_process.MustRun, 'autolift'),
+            api.post_process(post_process.StatusSuccess),
+            api.post_process(post_process.DropExpectation),
+        ),
+    )
+
+    # Without the previous milestone's branch either, the base is master.
+    yield api.test(
+        'new milestone off master',
+        new_run(
+            api.properties(milestone=161),
+            api.post_process(
+                post_process.StepCommandContains,
+                'brave-core checkout branch',
+                ['checkout', '--force', '-B', 'master'],
+            ),
+            advised('advise', '161'),
             api.post_process(post_process.StatusSuccess),
             api.post_process(post_process.DropExpectation),
         ),
@@ -507,6 +625,28 @@ def GenTests(api: TEST_DEPS):
         ),
     )
 
+    # A minor bump of a channel, from a milestone with no branch yet: its
+    # base's tooling runs it.
+    yield api.test(
+        'channel bump from a new milestone',
+        new_run(
+            api.properties(milestone=160, chromium_version='157.0.8103.60'),
+            api.post_process(
+                post_process.StepCommandContains,
+                'brave-core checkout branch',
+                ['checkout', '--force', '-B', 'cr159'],
+            ),
+            advised(AUTOLIFT, 'advise', '157.0.8103.60'),
+            api.post_process(
+                post_process.StepCommandRE,
+                'report',
+                ['cat', r'.*/b/src/brave/\.autolift/cr157\.x/report\.md'],
+            ),
+            api.post_process(post_process.StatusSuccess),
+            api.post_process(post_process.DropExpectation),
+        ),
+    )
+
     # A channel bump's autofix run is advised as one.
     yield api.test(
         'channel bump autofix',
@@ -553,6 +693,114 @@ def GenTests(api: TEST_DEPS):
         api.post_process(post_process.StatusFailure),
         api.post_process(post_process.DropExpectation),
         status='FAILURE',
+    )
+
+    # A complete run exports its outcome, with the commits to review, and
+    # succeeds with its summary.
+    yield api.test(
+        'complete',
+        new_run(
+            api.step_data(
+                'outcome',
+                api.json.output(
+                    {
+                        'complete': True,
+                        'summary': 'Lifted to 159.0.8131.1.',
+                        'review': [
+                            {
+                                'branch': 'cr159',
+                                'commit': {
+                                    'sha': 'a' * 40,
+                                    'subject': '[cr159] Fix the build',
+                                },
+                                'url': 'https://github.com/brave/brave-core/'
+                                f'commit/{"a" * 40}',
+                            }
+                        ],
+                    }
+                ),
+            ),
+            api.post_process(post_process.MustRun, 'clear outcome'),
+            api.post_process(
+                post_process.StepCommandContains,
+                'outcome',
+                [AUTOLIFT, 'outcome', '159', '--json-output'],
+            ),
+            api.post_process(
+                post_process.PropertyMatchesCallable,
+                'outcome',
+                lambda check, value: check(
+                    value['complete']
+                    and value['review'][0]['branch'] == 'cr159'
+                ),
+            ),
+            api.post_process(
+                post_process.SummaryMarkdown, 'Lifted to 159.0.8131.1.'
+            ),
+            api.post_process(post_process.StatusSuccess),
+            api.post_process(post_process.DropExpectation),
+        ),
+    )
+
+    # A run the agent left incomplete, or recorded nothing for, fails with
+    # why, so that the Gerrit steps after it don't run.
+    yield api.test(
+        'incomplete',
+        new_run(
+            api.step_data(
+                'outcome',
+                api.json.output(
+                    {
+                        'complete': False,
+                        'summary': 'The base is broken.',
+                        'review': [],
+                    }
+                ),
+            ),
+            api.post_process(
+                post_process.PropertyMatchesCallable,
+                'outcome',
+                lambda check, value: check(not value.get('complete')),
+            ),
+            api.post_process(
+                post_process.SummaryMarkdown, 'The base is broken.'
+            ),
+            api.post_process(post_process.StatusFailure),
+            api.post_process(post_process.DropExpectation),
+        ),
+        status='FAILURE',
+    )
+
+    # So does one whose outcome can't be read.
+    yield api.test(
+        'outcome fails',
+        new_run(
+            api.step_data('outcome', api.json.output(None, retcode=1)),
+            api.post_process(
+                post_process.SummaryMarkdown,
+                '`autolift.py outcome` failed (1).',
+            ),
+            api.post_process(post_process.StatusFailure),
+            api.post_process(post_process.DropExpectation),
+        ),
+        status='FAILURE',
+    )
+
+    # A channel bump's outcome is read with the tooling `prepare` staged, as
+    # the run ends on a channel's branch.
+    yield api.test(
+        'channel bump outcome',
+        new_run(
+            api.properties(chromium_version='157.0.8103.38'),
+            api.path.files(f'b/src/brave/{STAGED_AUTOLIFT}'),
+            api.post_process(
+                post_process.StepCommandContains,
+                'outcome',
+                [STAGED_AUTOLIFT, 'outcome', '157.0.8103.38'],
+            ),
+            api.post_process(post_process.StatusSuccess),
+            api.post_process(post_process.DropExpectation),
+        ),
     )
 
     # No cr<N> branch to lift.

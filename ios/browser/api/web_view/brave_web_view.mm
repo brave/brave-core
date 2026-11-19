@@ -104,6 +104,7 @@
 #include "net/base/apple/url_conversions.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_status_code.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
 #include "brave/ios/browser/brave_talk/brave_talk_tab_helper.h"
@@ -627,8 +628,9 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   // requested disposition, so handle the new tab dispositions here to match
   // Chrome.
   const bool inBackground =
-      params.disposition == WindowOpenDisposition::kNewBackgroundTab;
-  if ((params.disposition == WindowOpenDisposition::kNewForegroundTab ||
+      params.disposition == ui::mojom::WindowOpenDisposition::kNewBackgroundTab;
+  if ((params.disposition ==
+           ui::mojom::WindowOpenDisposition::kNewForegroundTab ||
        inBackground) &&
       [self.UIDelegate
           respondsToSelector:

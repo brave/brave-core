@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env vpython3
 # Copyright (c) 2026 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -66,7 +66,10 @@ class SyncToolingTest(unittest.TestCase):
     def setUp(self):
         stack = contextlib.ExitStack()
         self.addCleanup(stack.close)
-        self.root = Path(stack.enter_context(tempfile.TemporaryDirectory()))
+        # Resolved, as `Path.cwd()` is: macOS's /var is a /private/var link.
+        self.root = Path(
+            stack.enter_context(tempfile.TemporaryDirectory())
+        ).resolve()
         self.origin = self.root / 'origin.git'
         self._git(
             self.root, 'init', '-q', '--bare', '-b', 'master', 'origin.git'

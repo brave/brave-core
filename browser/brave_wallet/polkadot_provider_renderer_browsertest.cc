@@ -39,6 +39,7 @@
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "testing/gmock/include/gmock/gmock.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "url/gurl.h"
 
 namespace brave_wallet {
@@ -184,7 +185,7 @@ class PolkadotProviderRendererTest : public InProcessBrowserTest {
   }
 
   void ReloadAndWaitForLoadStop(BrowserWindowInterface* browser) {
-    chrome::Reload(browser, WindowOpenDisposition::kCurrentTab);
+    chrome::Reload(browser, ui::mojom::WindowOpenDisposition::kCurrentTab);
     ASSERT_TRUE(content::WaitForLoadStop(web_contents(browser)));
   }
 

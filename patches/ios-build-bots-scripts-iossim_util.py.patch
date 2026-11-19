@@ -1,8 +1,8 @@
 diff --git a/ios/build/bots/scripts/iossim_util.py b/ios/build/bots/scripts/iossim_util.py
-index dd767664ed0cdc06dea8ccd984b1082cc113d3ef..af3cd5b13ae038a26062fe11f51bb7a289671348 100644
+index f83b562f83f20339a4ff54a99f7cb7617702cd70..1eb554bce68c0aaf1552413d749ad0dfe2d19ad3 100644
 --- a/ios/build/bots/scripts/iossim_util.py
 +++ b/ios/build/bots/scripts/iossim_util.py
-@@ -532,6 +532,7 @@ def update_dyld_shared_cache(runtime=None):
+@@ -542,6 +542,7 @@ def update_dyld_shared_cache(runtime=None):
  
  
  def ensure_simulator_fully_booted(sim_udid: str, path=None, num_attempts=1):

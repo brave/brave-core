@@ -52,6 +52,7 @@
 #include "services/network/public/cpp/network_switches.h"
 #include "services/screen_ai/buildflags/buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/compositor/compositor_switches.h"
 #include "url/gurl.h"
 
@@ -271,7 +272,7 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, FetchPageContentPDF) {
   // Test pdf tab loaded in background.
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), https_server_.GetURL("a.com", "/dummy.pdf"),
-      WindowOpenDisposition::kNewBackgroundTab,
+      ui::mojom::WindowOpenDisposition::kNewBackgroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_EQ(2, browser()->tab_strip_model()->count());
 

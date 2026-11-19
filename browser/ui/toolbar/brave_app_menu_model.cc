@@ -463,6 +463,13 @@ void BraveAppMenuModel::RemoveUpstreamMenus() {
     RemoveItemAt(*index);
   }
 
+  // Remove upstream's Chrome Enterprise release notes link shown for managed
+  // browsers on Linux, as it's not relevant to Brave.
+  if (const auto index =
+          GetIndexOfCommandId(IDC_CHROME_ENTERPRISE_RELEASE_NOTES)) {
+    RemoveItemAt(*index);
+  }
+
   // Remove upstream's Screenshot menu from Save and share menu. We'll move it
   // to appear after "Save Page As..." menu item.
   ui::SimpleMenuModel* save_and_share_model =

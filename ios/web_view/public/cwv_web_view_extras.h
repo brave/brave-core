@@ -91,11 +91,14 @@ CWV_EXPORT
 
 #pragma mark -
 
-/// Creates a PDF of the current page
+/// Creates a PDF of the portion of the current page in `rect`, in the
+/// document's coordinate space (CSS pixels). Pass `CGRectNull` to render the
+/// entire page.
 ///
 /// Equivalent of -[WKWebView
 /// createPDFWithConfiguration:completionHandler:]
-- (void)createFullPagePDF:(void (^)(NSData* _Nullable))completionHandler;
+- (void)createPDFWithRect:(CGRect)rect
+        completionHandler:(void (^)(NSData* _Nullable))completionHandler;
 
 /// Downloads the last committed page to the file at `path` using the web
 /// view's network session (cookies, auth, etc.).

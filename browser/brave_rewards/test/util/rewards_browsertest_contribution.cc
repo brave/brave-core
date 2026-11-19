@@ -22,6 +22,7 @@
 #include "content/public/test/browser_test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 
 namespace brave_rewards::test_util {
 
@@ -82,7 +83,7 @@ void RewardsBrowserTestContribution::TipPublisher(
 
   // Navigate to a site in a new tab
   ui_test_utils::NavigateToURLWithDisposition(
-      browser_, url, WindowOpenDisposition::kNewForegroundTab,
+      browser_, url, ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that the tip button is disabled for unverified publishers.

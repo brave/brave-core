@@ -33,10 +33,10 @@ group("storybook_deps") {
     "//brave/components/brave_welcome_ui:welcome_pyramid",
     "//brave/components/brave_welcome_ui:welcome_sky",
     "//brave/components/resources:strings",
-    "//components/omnibox/composebox:mojo_bindings_js",
     "//mojo/public/js:bindings",
     "//mojo/public/js:resources",
     "//ui/webui/resources/js:build_ts",
+    "//ui/webui/resources/mojo:build_ts",
   ]
 
   if (!is_android) {
@@ -62,8 +62,8 @@ group("storybook_deps") {
 
   if (enable_email_aliases) {
     deps += [
-      "//brave/components/brave_account/mojom:mojom_js",
-      "//brave/components/email_aliases:mojom_js",
+      "//brave/components/brave_account/mojom:mojom_ts__generator",
+      "//brave/components/email_aliases:mojom_ts__generator",
     ]
   }
 
@@ -76,6 +76,6 @@ group("storybook_deps") {
   }
 
   if (enable_speedreader) {
-    deps += [ "//brave/components/speedreader/common:mojom_js" ]
+    deps += [ "//brave/components/speedreader/common:mojom_ts__generator" ]
   }
 }

@@ -236,11 +236,6 @@ def __wrap_with_redirect_cc_handler(ctx, rule, handlers):
         rule["handler"] = "redirect_cc"
         return
 
-    # If the handler is rewrite_rewrapper_large, use the rewrite_rewrapper
-    # handler instead (EngFlow-specific).
-    if handler_name == "rewrite_rewrapper_large":
-        handler_name = "rewrite_rewrapper"
-
     # If the rule has a handler, create a new handler that wraps the original
     # handler with the redirect_cc handler.
     new_handler_name = handler_name + "_redirect_cc"
@@ -480,10 +475,6 @@ def __chromium_src_inputs_handler(ctx, cmd, fixed_inputs):
 def __set_rule_timeout(rule, duration):
     rule["timeout"] = duration
     rule["exec_timeout"] = duration
-    reproxy_config = rule.get("reproxy_config")
-    if reproxy_config:
-        reproxy_config["exec_timeout"] = duration
-        reproxy_config["reclient_timeout"] = duration
 
 
 # Sets the remote wrapper for a rule.
@@ -491,9 +482,6 @@ def __set_remote_wrapper(ctx, rule, wrapper):
     if __is_remote_disabled(rule):
         return
     rule["remote_wrapper"] = wrapper
-    reproxy_config = rule.get("reproxy_config")
-    if reproxy_config:
-        reproxy_config["remote_wrapper"] = wrapper
     __append_executables(rule, ctx.fs.canonpath(wrapper))
 
 

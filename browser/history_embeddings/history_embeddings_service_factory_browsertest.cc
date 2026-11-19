@@ -8,7 +8,6 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/history_embeddings/core/history_embeddings_features.h"
 #include "brave/components/local_ai/core/pref_names.h"
-#include "chrome/browser/history_embeddings/history_embeddings_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
@@ -17,10 +16,6 @@
 
 namespace brave_history_embeddings {
 
-// Brave builds its own HistoryEmbeddingsService. Upstream's must never be
-// built alongside it: both would index the same visits into the same
-// HistoryEmbeddings database, and upstream's tab helper would attach to every
-// tab.
 class HistoryEmbeddingsServiceFactoryBrowserTest : public InProcessBrowserTest {
  public:
   HistoryEmbeddingsServiceFactoryBrowserTest() {
@@ -33,19 +28,18 @@ class HistoryEmbeddingsServiceFactoryBrowserTest : public InProcessBrowserTest {
 
 // Leaves the setting on for the run below, which captures it at startup.
 IN_PROC_BROWSER_TEST_F(HistoryEmbeddingsServiceFactoryBrowserTest,
-                       PRE_OnlyBraveServiceIsBuilt) {
+                       PRE_ServiceIsBuiltWithSettingOn) {
   browser()->GetProfile()->GetPrefs()->SetBoolean(
       local_ai::prefs::kBraveHistoryEmbeddingsEnabled, true);
 }
 
 IN_PROC_BROWSER_TEST_F(HistoryEmbeddingsServiceFactoryBrowserTest,
-                       OnlyBraveServiceIsBuilt) {
+                       ServiceIsBuiltWithSettingOn) {
   Profile* profile = browser()->GetProfile();
   ASSERT_TRUE(profile->GetPrefs()->GetBoolean(
       local_ai::prefs::kBraveHistoryEmbeddingsEnabled));
 
   EXPECT_TRUE(HistoryEmbeddingsServiceFactory::GetForProfile(profile));
-  EXPECT_FALSE(::HistoryEmbeddingsServiceFactory::GetForProfile(profile));
 }
 
 }  // namespace brave_history_embeddings

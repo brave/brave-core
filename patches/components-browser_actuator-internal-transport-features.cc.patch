@@ -1,5 +1,5 @@
 diff --git a/components/browser_actuator/internal/transport/features.cc b/components/browser_actuator/internal/transport/features.cc
-index 29371e609e2d233ad576d85b4f4cc9023363e17a..7712ace86b87fa19db796517fdcc1947d889e1e2 100644
+index d802ee723ae62f50ffc2c847c161d299abc285c4..39bac803678d06454007a124bb9801c079a59b1f 100644
 --- a/components/browser_actuator/internal/transport/features.cc
 +++ b/components/browser_actuator/internal/transport/features.cc
 @@ -8,8 +8,8 @@ namespace browser_actuator::transport {

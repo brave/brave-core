@@ -24,5 +24,7 @@ def CreateCoreTimelineBasedMeasurementOptions(self, original_method):
 
 
 @override_utils.override_method(DesktopCommonSystemHealth)
-def CreateCoreTimelineBasedMeasurementOptions(self, original_method):
+def CreateCoreTimelineBasedMeasurementOptions(  # noqa: F811
+    self, original_method
+):
     return _add_brave_metrics(original_method(self))

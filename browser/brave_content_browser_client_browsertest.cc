@@ -41,6 +41,7 @@
 #include "extensions/common/constants.h"
 #include "extensions/common/manifest_handlers/background_info.h"
 #include "net/dns/mock_host_resolver.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "url/origin.h"
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -90,7 +91,7 @@ class BraveContentBrowserClientTest : public InProcessBrowserTest {
     ui_test_utils::UrlLoadObserver load_complete(final_url);
     browser()->OpenURL(
         content::OpenURLParams(original_url, content::Referrer(),
-                               WindowOpenDisposition::kCurrentTab,
+                               ui::mojom::WindowOpenDisposition::kCurrentTab,
                                ui::PAGE_TRANSITION_TYPED, false),
         /*navigation_handle_callback=*/{});
     load_complete.Wait();

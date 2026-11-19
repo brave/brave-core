@@ -46,6 +46,7 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 
 // IDR_BRAVE_WALLET_SOLANA_WEB3_JS_FOR_TEST is excluded from Android build to
 // save space. Ensure this test is not build on Android. If it will be required
@@ -584,7 +585,7 @@ class SolanaProviderRendererTest : public InProcessBrowserTest {
   }
 
   void ReloadAndWaitForLoadStop(BrowserWindowInterface* browser) {
-    chrome::Reload(browser, WindowOpenDisposition::kCurrentTab);
+    chrome::Reload(browser, ui::mojom::WindowOpenDisposition::kCurrentTab);
     ASSERT_TRUE(content::WaitForLoadStop(web_contents(browser)));
   }
 

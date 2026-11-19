@@ -37,8 +37,8 @@ Subcommands:
         the base instead, and leaves the rebase out. With no lift, and 20 base
         commits or fewer to rebase over within 12 hours of the last rebase, it
         exits 3 before rebasing, as a lift run isn't worth it (the run turns to
-        an autofix run instead), unless `--always` or the branch conflicts
-        with the base.
+        an autofix run instead), unless `--always`, the branch conflicts with
+        the base, or it has fixups or repeated pinned commits left to squash.
     plan N
         Says, without changing anything, whether a run of the checked-out
         cr<N> would lift, only rebase, or isn't worth it (exit 3), as
@@ -68,8 +68,10 @@ Subcommands:
         `--no-rebase`, for an autofix run, it only picks what landed (and asks
         for a rebuild if that changed the branch), and refuses to push the
         run's commits unless each is a fixup, has a pinned subject, or is
-        tooling `sync_tooling.py` picked (any commit with `--allow-new`). With
-        no fixes of the run's own, it does nothing.
+        tooling `sync_tooling.py` picked (any commit with `--allow-new`). It
+        squashes them with `brockit rebase --squash-minor-bumps` onto the
+        branch's own fork point, which needs no rebuild unless it conflicts.
+        With no fixes of the run's own, it does nothing.
     autofix N|TAG [--dry-run]
         Starts an autofix run: resets cr<N> to origin/cr<N>, with no rebase,
         keeping the tooling `sync_tooling.py` picked, sets the base as its
@@ -115,12 +117,21 @@ Subcommands:
         Records step N as done or skipped, as a `## Step N` report heading:
         for the checked-out channel bump branch, for the steps each channel
         takes.
+    outcome (--complete SUMMARY | --incomplete WHY)
+        Records how the run ended, for CI: `--complete` is refused while
+        anything is in progress or uncommitted, or GitHub's branch lacks a
+        commit of the run's.
+    outcome N|TAG --json-output FILE
+        Writes the outcome the run recorded, for CI; a run that recorded none
+        is incomplete.
 """
 
 from __future__ import annotations
 
 import argparse
-from collections.abc import Mapping, Sequence
+from collections import Counter
+from collections.abc import Iterator, Mapping, Sequence
+import contextlib
 import os
 import dataclasses
 from dataclasses import dataclass
@@ -133,22 +144,24 @@ import shutil
 import subprocess
 import sys
 
+import requests
+
 import _boot  # noqa: F401  -- adds parent tools/cr to sys.path
-from ci import failures as ci_failures  # noqa: E402  -- after _boot
 from ci import github as ci_github  # noqa: E402  -- after _boot
 from ci import report as ci_report  # noqa: E402  -- after _boot
 from exceptions import RebaseNeededException  # noqa: E402  -- after _boot
-import rebase as brockit_rebase  # noqa: E402  -- after _boot
+import pinned_commits  # noqa: E402  -- after _boot
 import repository  # noqa: E402  -- after _boot
 from versioning import (  # noqa: E402  -- after _boot
     Version,
     load_package_file,
+    previous_version_commit,
     read_chromium_version_file,
 )
 
 # The checkout's own Brockit, which may not be this tooling's: a channel
 # bump's branch regenerates its patches as its channel does.
-_BROCKIT = (repository.brave.root / 'tools' / 'cr' / 'brockit.py').resolve()
+_BROCKIT = 'brockit'
 
 # `brockit rebase --dry-run`'s exit status when the rebase would change the
 # branch.
@@ -376,6 +389,10 @@ class Commit:
 
     # An unquoted trailer: a revert or reland quotes the original's with `>`.
     _CHANGE_ID = re.compile(r'^[ \t]*Change-Id: (I[0-9a-f]{40})[ \t]*$', re.M)
+    # As `git log` quotes it, indented: the Brave commit's own trailer isn't.
+    _QUOTED_CHANGE_ID = re.compile(
+        r'^[ \t]+Change-Id: (I[0-9a-f]{40})[ \t]*$', re.M
+    )
 
     @classmethod
     def change_ids_in(cls, message: str) -> tuple[str, ...]:
@@ -387,7 +404,9 @@ class Commit:
         """The Change-Ids of a Brave commit's culprits, from the upstream
         messages its "Chromium changes:" block quotes."""
         _, found, quoted = message.partition('Chromium changes:')
-        return cls.change_ids_in(quoted) if found else ()
+        if not found:
+            return ()
+        return tuple(dict.fromkeys(cls._QUOTED_CHANGE_ID.findall(quoted)))
 
     def identities(self) -> list[str]:
         """Every name the upstream change goes by here: hashes and
@@ -631,7 +650,7 @@ def _remote_branch_exists(branch: str) -> bool:
 def _brockit_show(option: str, prefix: str) -> Version | None:
     """The version `brockit show <option>` prints after `prefix`, if any."""
     output = subprocess.run(
-        [sys.executable, str(_BROCKIT), 'show', option],
+        [_BROCKIT, 'show', option],
         cwd=repository.brave.root,
         check=False,
         capture_output=True,
@@ -672,14 +691,16 @@ def not_worth_a_run(
     base_commits: int,
     since_rebase: timedelta,
     conflicts: Sequence[str] = (),
+    to_squash: bool = False,
 ) -> str | None:
     """Why a run would be wasted, or None when it's worth it.
 
     `base_commits` is how many commits the base has that the branch doesn't,
-    `since_rebase` how long ago the branch was last rebased, and `conflicts`
-    the files the branch conflicts with the base in.
+    `since_rebase` how long ago the branch was last rebased, `conflicts` the
+    files the branch conflicts with the base in, and `to_squash` whether the
+    branch has commits left for a rebase to squash.
     """
-    if lift:
+    if lift or to_squash:
         return None
     if base_commits == 0:
         return 'no lift, and nothing to rebase'
@@ -692,6 +713,30 @@ def not_worth_a_run(
             f'{hours:.0f}h after the last rebase'
         )
     return None
+
+
+def left_to_squash(base: str) -> bool | None:
+    """Whether HEAD has commits `brockit rebase --squash-minor-bumps` would
+    squash (fixups, repeated pinned subjects, minor bumps), whatever the
+    base did since: by the dry run of a rebase onto the branch's own fork
+    point. None when the dry run fails."""
+    brave = repository.brave
+    fork = brave.run_git('merge-base', base, 'HEAD')
+    returncode = subprocess.run(
+        [
+            _BROCKIT,
+            'rebase',
+            '--squash-minor-bumps',
+            f'--to-ref={fork}',
+            '--dry-run',
+        ],
+        cwd=brave.root,
+        check=False,
+        capture_output=True,
+    ).returncode
+    if returncode not in (0, _REBASE_NEEDED):
+        return None
+    return returncode == _REBASE_NEEDED
 
 
 def _since_rebase(base: str, head: str = 'HEAD') -> timedelta:
@@ -716,6 +761,10 @@ def merge_conflicts(base: str, head: str = 'HEAD') -> list[str]:
             '--write-tree',
             '--name-only',
             '--no-messages',
+            # GitHub doesn't follow a file the base renamed, which a lift's
+            # whole milestone of changes makes likely, and shows the branch's
+            # change to the old path as a conflict.
+            '-Xno-renames',
             head,
             base,
         )
@@ -744,6 +793,42 @@ def maintenance_target(
             and release > current
         ),
         default=None,
+    )
+
+
+_CHROMIUMDASH_MILESTONE = (
+    'https://chromiumdash.appspot.com/fetch_milestones?mstone={milestone}'
+)
+
+
+class UnknownBranch(Exception):
+    """ChromiumDash couldn't say whether a milestone has branched."""
+
+
+def milestone_branch(milestone: int) -> int | None:
+    """The build number Chromium branched `milestone` at, per ChromiumDash,
+    or None while it hasn't branched."""
+    url = _CHROMIUMDASH_MILESTONE.format(milestone=milestone)
+    try:
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        branch = response.json()[0]['chromium_branch']
+    except (requests.RequestException, ValueError, LookupError) as e:
+        raise UnknownBranch(f'{url}: {e}') from e
+    return int(branch) if branch else None
+
+
+def lifts_branched_minor_bump(
+    current: Version, tag: Version, branch: int | None
+) -> bool:
+    """Whether a head branch on `current` lifts to `tag`, a minor bump of it
+    (only PATCH moves), which it otherwise skips: once its milestone has
+    branched at `current`'s build, its milestone's tags only move PATCH. It
+    stays the head branch, and so lifts them, until cr<N+1> is created."""
+    return (
+        tag.parts[:3] == current.parts[:3]
+        and tag > current
+        and branch == current.parts[2]
     )
 
 
@@ -998,11 +1083,13 @@ class RunPlan:
             # A head branch already on its milestone's latest tag lifts
             # nothing, nor does it lift to a minor bump of its tag (only
             # PATCH moves): not worth a run's hassle until the build number
-            # moves too.
+            # moves too, except once its milestone has branched, when only
+            # PATCH moves.
             if (
                 self.exists
                 and tag is not None
                 and tag.parts[:3] == current.parts[:3]
+                and not self._lifts_branched_minor_bump(current, tag)
             ):
                 self.lift_to = None
                 if tag != current:
@@ -1016,6 +1103,29 @@ class RunPlan:
                 return False
             self.regen, plan_summary = plan
             self.summary += plan_summary
+        return True
+
+    def _lifts_branched_minor_bump(
+        self, current: Version, tag: Version
+    ) -> bool:
+        """`lifts_branched_minor_bump`, saying why in the summary."""
+        if tag == current:
+            return False
+        try:
+            branch = milestone_branch(self.milestone)
+        except UnknownBranch as e:
+            self.summary += (
+                f'- Could not tell whether M{self.milestone} has branched '
+                f'({e}), so its minor bumps are skipped.\n'
+            )
+            return False
+        if not lifts_branched_minor_bump(current, tag, branch):
+            return False
+        self.summary += (
+            f'- M{self.milestone} branched at {branch} and '
+            f'origin/cr{self.milestone + 1} doesn\'t exist yet, so {branch}.x '
+            f'minor bumps are lifted: to {tag}.\n'
+        )
         return True
 
     def not_worth(self) -> str | None:
@@ -1035,8 +1145,23 @@ class RunPlan:
                 f'{len(conflicts)} file(s), so it is rebased however little it '
                 f'is behind: {", ".join(conflicts)}.'
             )
+        to_squash = False if lifts else left_to_squash(self.base)
+        if to_squash:
+            self.summary += (
+                f'\n- {self.branch} has fixups or repeated pinned commits left '
+                'to squash, so it is rebased however little it is behind.'
+            )
+        elif to_squash is None:
+            self.summary += (
+                f'\n- `brockit rebase --dry-run` failed, so whether '
+                f'{self.branch} has commits left to squash is unknown.'
+            )
         return not_worth_a_run(
-            lifts, base_commits, _since_rebase(self.base), conflicts
+            lifts,
+            base_commits,
+            _since_rebase(self.base),
+            conflicts,
+            bool(to_squash),
         )
 
 
@@ -1167,11 +1292,63 @@ def _cmd_prepare(args: argparse.Namespace) -> int:
         return 0
     if mismatch and (returncode := sync_chromium(run)):
         return returncode
-    cmd = [sys.executable, str(_BROCKIT), 'rebase', '--squash-minor-bumps']
+    cmd = [_BROCKIT, 'rebase', '--squash-minor-bumps']
     # Without a lift or `brockit regen` to remake them, they must stay.
     if lift_to or regen:
         cmd.append('--discard-regen-changes')
     return subprocess.run(cmd, cwd=brave.root, check=False).returncode
+
+
+# The lines of a diff's file header, which say nothing about its content.
+_DIFF_HEADER = (
+    '--- ',
+    '+++ ',
+    'index ',
+    'new file mode',
+    'deleted file mode',
+    'old mode',
+    'new mode',
+)
+
+
+def _patch_line(line: str) -> str | None:
+    """A line of a `.patch` file as its content: its own removed and added
+    lines and file headers, and its hunks' function names, but not its
+    context, hunk positions or `index` lines, which follow upstream."""
+    if line.startswith('@@'):
+        name = line.split('@@', 2)[-1].strip()
+        return f'@@ {name}' if name else None
+    if not line or line.startswith((' ', 'index ')):
+        return None
+    return line
+
+
+def content_fingerprint(diff: str) -> dict[str, tuple]:
+    """What a diff without context lines (`-U0`) changes, as a rebase alone
+    doesn't change it: per file, the lines it removes and adds, in order,
+    without hunk positions. A `.patch` file counts by `_patch_line`, as lines
+    whose net count changed: what a refresh removes and adds back cancels.
+    """
+    lines: dict[str, list[str]] = {}
+    path = ''
+    for line in diff.splitlines():
+        if line.startswith('diff --git '):
+            path = line.rsplit(' b/', 1)[-1]
+            lines.setdefault(path, [])
+        elif path and not line.startswith(('@@', *_DIFF_HEADER)):
+            lines[path].append(line)
+    fingerprint: dict[str, tuple] = {}
+    for path, changed in lines.items():
+        if not path.endswith('.patch'):
+            fingerprint[path] = tuple(changed)
+            continue
+        net: Counter[str] = Counter()
+        for line in changed:
+            if line[:1] in '+-' and (inner := _patch_line(line[1:])):
+                net[inner] += 1 if line[0] == '+' else -1
+        if counts := sorted((line, n) for line, n in net.items() if n):
+            fingerprint[path] = tuple(counts)
+    return fingerprint
 
 
 class Publish:
@@ -1228,6 +1405,7 @@ class Publish:
             'rebuild-needed',
             'regen-needed',
             'presubmit-passed',
+            REVIEW,
         ):
             publish._state(name).unlink(missing_ok=True)
         publish._state('start').write_text(f'{commit}\n', encoding='utf-8')
@@ -1236,10 +1414,11 @@ class Publish:
         self, *, built: bool, rebase: bool = True, allow_new: bool = False
     ) -> int:
         """Publishes the branch. Without `rebase`, for an autofix run, the
-        base isn't caught up with and nothing is rebased or regenerated:
-        only what landed on GitHub is picked, and only fixups, pinned
-        subjects and the tooling `sync_tooling.py` picked are pushed (any
-        commit with `allow_new`), for the next `brockit rebase` to squash.
+        base isn't caught up with and nothing is regenerated: only what
+        landed on GitHub is picked, and only fixups, pinned subjects and the
+        tooling `sync_tooling.py` picked are pushed (any commit with
+        `allow_new`), squashed in place onto the branch's fork point, so that
+        no `brockit rebase` is left to do.
         """
         ready = self.ready(built=built, rebase=rebase, allow_new=allow_new)
         if isinstance(ready, int):
@@ -1285,7 +1464,7 @@ class Publish:
             '--format=%H%x00%s',
             f'{remote}...HEAD',
         )
-        picked = self._picked_tooling(start)
+        picked = self.picked_tooling(start)
         commits = (line.split('\x00', 1) for line in own.splitlines())
         return [(sha, subject) for sha, subject in commits if sha not in picked]
 
@@ -1323,7 +1502,7 @@ class Publish:
             return 'Tracked files have changes; commit them first.'
         return None
 
-    def _picked_tooling(self, tip: str) -> set[str]:
+    def picked_tooling(self, tip: str) -> set[str]:
         """The commits `sync_tooling.py` picked onto `tip` this run, from the
         newer branches: they go with the fixups."""
         marker = self._state('synced-head')
@@ -1407,6 +1586,11 @@ class Publish:
                 f'{self.branch} changed; a lower channel isn\'t built or '
                 'checked, so its CI is left to cover it.'
             )
+        if not rebase:
+            if returncode := self._squash_in_place():
+                return returncode
+            # Squashing without conflicts leaves the tree as it was built.
+            head = brave.run_git('rev-parse', 'HEAD')
         rebuild.unlink()
 
         if not new and head == expected:
@@ -1486,22 +1670,24 @@ class Publish:
 
     def _brockit(self, *args: str) -> int:
         return subprocess.run(
-            [sys.executable, str(_BROCKIT), *args],
+            [_BROCKIT, *args],
             cwd=self._brave.root,
             check=False,
         ).returncode
 
-    def _rebase_needed(self, rebase_args: list[str]) -> bool | None:
+    def _rebase_needed(
+        self, rebase_args: list[str], onto: str = '@{upstream}'
+    ) -> bool | None:
         """Whether `brockit rebase` would change the branch, by its
         `--dry-run`; None when that fails.
 
         A channel's own Brockit can predate `--dry-run` (cr157's master), and
         argparse's usage error exits 2, as `_REBASE_NEEDED` does: then the
-        rebase is needed when the branch lacks its upstream's tip, as a
-        channel's single bump leaves nothing else to squash.
+        rebase is needed when the branch lacks `onto`, as a channel's single
+        bump leaves nothing else to squash.
         """
         result = subprocess.run(
-            [sys.executable, str(_BROCKIT), *rebase_args, '--dry-run'],
+            [_BROCKIT, *rebase_args, '--dry-run'],
             cwd=self._brave.root,
             check=False,
             capture_output=True,
@@ -1512,12 +1698,10 @@ class Publish:
         if 'unrecognized arguments: --dry-run' in result.stderr:
             self._note(
                 'This Brockit has no `rebase --dry-run`: rebasing when the '
-                'branch lacks its upstream\'s tip.'
+                f'branch lacks `{onto}`.'
             )
             try:
-                self._brave.run_git(
-                    'merge-base', '--is-ancestor', '@{upstream}', 'HEAD'
-                )
+                self._brave.run_git('merge-base', '--is-ancestor', onto, 'HEAD')
             except subprocess.CalledProcessError:
                 return True
             return False
@@ -1688,6 +1872,32 @@ class Publish:
             regen.unlink()
         return 0
 
+    def _squash_in_place(self) -> int:
+        """Squashes the run's fixups and repeated pinned subjects into their
+        commits, rebasing onto the branch's own fork point rather than the
+        base's tip. A branch `brockit rebase` would still change fails the
+        Gerrit upload, its repeats sharing a Change-Id. Returns an exit status
+        to stop with, or 0."""
+        fork = self._brave.run_git('merge-base', '@{upstream}', 'HEAD')
+        rebase_args = ['rebase', '--squash-minor-bumps', f'--to-ref={fork}']
+        needed = self._rebase_needed(rebase_args, onto=fork)
+        if needed is None:
+            self._note('`brockit rebase --dry-run` failed; not pushing.')
+            return 1
+        if not needed:
+            return 0
+        self._note(
+            f'Ran `brockit {" ".join(rebase_args)}`, to squash what the run '
+            'committed without catching up with the base.'
+        )
+        if returncode := self._brockit(*rebase_args):
+            self._note(
+                'The squash stopped. Finish it with `brockit rebase '
+                '--continue`, rebuild, and run publish again with `--built`.'
+            )
+            return returncode
+        return 0
+
     def _push(self, expected: str) -> bool:
         """Force-pushes HEAD over `expected` ('' for none), if still there.
 
@@ -1739,73 +1949,111 @@ class Publish:
             return 0
         return self._brockit('update-version-issue')
 
-    # Groups of `rebase.PINNED_GROUPS` whose commits Brockit writes itself.
+    # Groups of `pinned_commits.PINNED_GROUPS` whose commits Brockit writes
+    # itself.
     # Conflict-resolved patches aren't among them: they hold the agent's
     # resolutions.
     _BROCKIT_GROUPS = frozenset({'version', 'plaster_reruns', 'gnrt'})
 
     def _note_for_review(self, pushed_over: str) -> None:
-        """Notes the pushed commits the run wrote or changed, as URLs.
+        """Notes the pushed commits whose content the run changed, as URLs,
+        as `_to_review` finds them since the push's `pushed_over`, and
+        records them since the run's start for the `Outcome`.
 
-        A commit counts when no commit GitHub had before the push
-        (`pushed_over`, '' for a new branch) has its diff: rebases change
-        hashes, but not diffs. So a squashed-in fixup counts, and a picked
-        teammate's commit doesn't. Commits Brockit writes itself don't count
-        either.
+        A squashed-in fixup counts; a commit only rebased doesn't, nor does
+        a new one, which the Gerrit upload flags as a new CL.
         """
-        upstream = self._brave.run_git(
-            'rev-parse', '--abbrev-ref', '@{upstream}'
-        )
-        before = (
-            set(self._patch_ids(f'{upstream}..{pushed_over}').values())
-            if pushed_over
-            else set()
-        )
-        after = self._patch_ids(f'{upstream}..HEAD')
         url = self._commit_url_base()
         review = [
             f'  - [{subject}]({url}{sha})'
-            for sha, subject in self._commits(f'{upstream}..HEAD')
-            if after.get(sha) not in before
-            and not self._written_by_brockit(subject)
+            for sha, subject in self._to_review(pushed_over)
         ]
         if review:
             self._notes.append(f'To review ({len(review)}):')
             self._notes.extend(review)
         else:
             self._notes.append('Nothing to review: no commit changed.')
+        # Against the run's start, so that a later push in the same run keeps
+        # what an earlier one pushed.
+        start = self._state('start')
+        since = (
+            start.read_text(encoding='utf-8').strip() if start.exists() else ''
+        )
+        self._state(REVIEW).write_text(
+            json.dumps(
+                [
+                    {
+                        'branch': self.branch,
+                        'commit': {'sha': sha, 'subject': subject},
+                        'url': f'{url}{sha}',
+                    }
+                    for sha, subject in self._to_review(since)
+                ]
+            )
+            + '\n',
+            encoding='utf-8',
+        )
+
+    def _to_review(self, pushed_over: str) -> list[tuple[str, str]]:
+        """`(sha, subject)` of the commits since the upstream whose content
+        changed from `pushed_over`'s ('' for none), but those Brockit writes.
+
+        Commits pair up by Change-Id, which rebases keep, or by subject
+        without one; a group sharing one (pinned commits left unsquashed)
+        counts as one. Content is `content_fingerprint`'s, which a rebase
+        alone doesn't change. A commit with no counterpart is new, which the
+        Gerrit upload flags as a new CL.
+        """
+        if not pushed_over:
+            return []
+        upstream = self._brave.run_git(
+            'rev-parse', '--abbrev-ref', '@{upstream}'
+        )
+        before = self._diffs_by_change(f'{upstream}..{pushed_over}')
+        after = self._diffs_by_change(f'{upstream}..HEAD')
+        return [
+            (sha, subject)
+            for key, (sha, subject, diff) in after.items()
+            if key in before
+            and not self._written_by_brockit(subject)
+            and content_fingerprint(diff) != content_fingerprint(before[key][2])
+        ]
+
+    def _diffs_by_change(
+        self, revision_range: str
+    ) -> dict[str, tuple[str, str, str]]:
+        """`{Change-Id or subject: (sha, subject, diff)}` of the commits of
+        `revision_range`, oldest first, without context lines: the first
+        commit of each key, with the diffs of all its commits."""
+        output = self._brave.run_git(
+            'log',
+            '--reverse',
+            '-p',
+            '-U0',
+            '--no-color',
+            '--no-renames',
+            '--format=%x00%H%x00%s%x00%(trailers:key=Change-Id,valueonly,'
+            'separator=%x2C)%x00',
+            revision_range,
+            no_trim=True,
+        )
+        found: dict[str, tuple[str, str, str]] = {}
+        fields = output.split('\x00')[1:]
+        for index in range(0, len(fields) - 3, 4):
+            sha, subject, change_ids, diff = fields[index : index + 4]
+            key = change_ids.split(',')[0].strip() or subject
+            if key in found:
+                first_sha, first_subject, diffs = found[key]
+                found[key] = (first_sha, first_subject, diffs + diff)
+            else:
+                found[key] = (sha, subject, diff)
+        return found
 
     @classmethod
     def _written_by_brockit(cls, subject: str) -> bool:
-        return brockit_rebase.get_pinned_group_for_subject(
+        return pinned_commits.get_pinned_group_for_subject(
             subject
-        ) in cls._BROCKIT_GROUPS or brockit_rebase.is_recyclable(subject)
-
-    def _commits(self, revision_range: str) -> list[tuple[str, str]]:
-        output = self._brave.run_git(
-            'log', '--reverse', '--format=%H%x00%s', revision_range
-        )
-        return [tuple(line.split('\x00', 1)) for line in output.splitlines()]
-
-    def _patch_ids(self, revision_range: str) -> dict[str, str]:
-        """`{commit: patch id}` for the commits of *revision_range*."""
-        diffs = self._brave.run_git(
-            'log', '-p', '--format=commit %H', revision_range, no_trim=True
-        )
-        output = subprocess.run(
-            ['git', 'patch-id', '--stable'],
-            cwd=self._brave.root,
-            input=diffs,
-            capture_output=True,
-            text=True,
-            check=True,
-        ).stdout
-        return {
-            commit: patch_id
-            for patch_id, commit in (
-                line.split() for line in output.splitlines()
-            )
-        }
+        ) in cls._BROCKIT_GROUPS or pinned_commits.is_recyclable(subject)
 
     def _commit_url_base(self) -> str:
         """`https://github.com/<owner>/<repo>/commit/`, from the push URL."""
@@ -2408,8 +2656,9 @@ class ChannelBump:
             numbers = _CHANNEL_STEPS if index == 0 else _LOWER_CHANNEL_STEPS
             steps += [(number, channel.run) for number in numbers]
             if index == 0:
-                steps.append((8, None))
-        return steps + [(9, None), (10, None), (11, None)]
+                # The review. Step 8 is an autofix run's, for a channel bump.
+                steps.append((9, None))
+        return steps + [(10, None), (11, None), (12, None)]
 
     @classmethod
     def next_step(
@@ -2454,7 +2703,7 @@ class ChannelBump:
             return '\n'.join(lines)
         if reason := run_not_worth_it(report):
             lines.append(
-                'Next: the "Autofix run" section, carrying on from where the '
+                'Next: autofix.md, read in full, carrying on from where the '
                 'report leaves it; `prepare` found nothing worth a lift run '
                 f'({reason}).'
             )
@@ -2542,9 +2791,9 @@ class ChannelBump:
         """Whether a lower channel picks a commit with `subject` from a
         higher one's bump."""
         return not (
-            brockit_rebase.get_pinned_group_for_subject(subject)
+            pinned_commits.get_pinned_group_for_subject(subject)
             in cls._NOT_PICKED
-            or brockit_rebase.is_recyclable(subject)
+            or pinned_commits.is_recyclable(subject)
         )
 
     def picks(self, higher: list[Channel]) -> list[tuple[str, str]]:
@@ -2577,7 +2826,7 @@ class ChannelBump:
                 # Every channel disables its own failing tests under the same
                 # subject, so only the change tells a higher one's apart.
                 by_change = (
-                    brockit_rebase.get_pinned_group_for_subject(subject)
+                    pinned_commits.get_pinned_group_for_subject(subject)
                     == 'disable_tests'
                 )
                 if by_change or subject not in have:
@@ -2697,6 +2946,51 @@ def _cmd_publish(args: argparse.Namespace) -> int:
     return Publish(run).run(**options)
 
 
+# How many of a logged command's last lines it prints.
+_LOGGED_TAIL_LINES = 15
+
+
+@contextlib.contextmanager
+def _output_to(log: Path) -> Iterator[None]:
+    """Sends this process's output, and its subprocesses', to `log`."""
+    log.parent.mkdir(parents=True, exist_ok=True)
+    sys.stdout.flush()
+    sys.stderr.flush()
+    saved = os.dup(1), os.dup(2)
+    try:
+        with log.open('wb') as file:
+            os.dup2(file.fileno(), 1)
+            os.dup2(file.fileno(), 2)
+            try:
+                yield
+            finally:
+                sys.stdout.flush()
+                sys.stderr.flush()
+                os.dup2(saved[0], 1)
+                os.dup2(saved[1], 2)
+    finally:
+        os.close(saved[0])
+        os.close(saved[1])
+
+
+def _cmd_publish_logged(args: argparse.Namespace) -> int:
+    """`publish`, with its output in the run's `publish.log`: the agent runs
+    it as a bare command, which the job's permission rule for it matches,
+    without a redirect or a chained command."""
+    run = (
+        Run.bump(args.target.major, 'master')
+        if isinstance(args.target, Version)
+        else Run.cr(args.target)
+    )
+    log = run.log('publish')
+    with _output_to(log):
+        returncode = _cmd_publish(args)
+    tail = log.read_bytes().decode('utf-8', errors='replace').splitlines()
+    print(f'`publish` exited {returncode}; its output is in {log}. It ends:')
+    print('\n'.join(tail[-_LOGGED_TAIL_LINES:]))
+    return returncode
+
+
 _AUTOSQUASH = re.compile(r'(?:fixup|amend|squash)! ')
 
 
@@ -2706,13 +3000,14 @@ def squashes_into_branch(subject: str) -> bool:
     `IWYU fixes.`."""
     return bool(
         _AUTOSQUASH.match(subject)
-        or brockit_rebase.get_pinned_group_for_subject(subject)
+        or pinned_commits.get_pinned_group_for_subject(subject)
     )
 
 
 # `ci-failures`' exit statuses, besides 0 when every check passed.
 CI_FAILED = 2
 CI_PENDING = 3
+CI_NO_PULL_REQUEST = 4
 
 # A failed test's name as CI reports it: TeamCity prefixes the binary
 # (`unit_tests: Suite.Test`), and parameterised tests carry an instantiation
@@ -2720,6 +3015,16 @@ CI_PENDING = 3
 _FAILED_TEST_NAME = re.compile(
     r'(?:(?P<binary>\w+): )?(?:\w+/)?(?P<suite>\w+)\.(?P<test>\w+)(?:/\w+)?'
 )
+# A Java test as CI reports it: `<package>.<Class>: <method>`.
+_FAILED_JAVA_TEST_NAME = re.compile(
+    r'(?:(?P<binary>\w+): )?(?:\w+\.)+(?P<suite>\w+): (?P<test>\w+)'
+)
+
+
+def _parse_failed_test(name: str) -> re.Match | None:
+    name = name.strip()
+    match = _FAILED_TEST_NAME.fullmatch(name)
+    return match or _FAILED_JAVA_TEST_NAME.fullmatch(name)
 
 
 @dataclass(frozen=True)
@@ -2755,34 +3060,49 @@ class TestLeads:
         )
 
 
-# A gtest pattern quoted in the tracker, e.g. `ActorTaskListBubble*` or
-# `-Suite.Test`: its suite part.
-_QUOTED_SUITE_PATTERN = re.compile(r'`-?([\w*]*\*[\w*]*)(?:\.[\w*]+)?`')
+# A gtest pattern or test name quoted in the tracker, e.g.
+# `ActorTaskListBubble*`, `-Suite*.*` or `-All/Suite.Test/*`.
+_QUOTED_TEST_PATTERN = re.compile(
+    r'`-?(?:[\w*]+/)?(?P<suite>[\w*]+)(?:\.(?P<test>[\w*]+)(?:/[\w*]+)?)?`'
+)
 
 
 class _SuiteNamed:
-    """Whether a tracker line names a suite: by its name, or by a quoted
-    gtest pattern matching it (`ActorTaskListBubble*`)."""
+    """Whether tracker text names a failed test: by its suite's name, or by a
+    quoted gtest pattern matching it (`ActorTaskListBubble*`, `-Suite*.Test`).
+    """
 
-    def __init__(self, suite: str) -> None:
+    def __init__(self, suite: str, test: str) -> None:
         self._suite = suite
+        self._test = test
         self._word = re.compile(rf'\b{re.escape(suite)}\b')
 
-    def search(self, line: str) -> bool:
-        return bool(self._word.search(line)) or any(
-            fnmatch.fnmatchcase(self._suite, pattern)
-            for pattern in _QUOTED_SUITE_PATTERN.findall(line)
+    def _matches(self, quoted: re.Match) -> bool:
+        if quoted['test']:
+            return fnmatch.fnmatchcase(
+                self._suite, quoted['suite']
+            ) and fnmatch.fnmatchcase(self._test, quoted['test'])
+        return '*' in quoted['suite'] and fnmatch.fnmatchcase(
+            self._suite, quoted['suite']
+        )
+
+    def search(self, text: str) -> bool:
+        return bool(self._word.search(text)) or any(
+            self._matches(quoted)
+            for quoted in _QUOTED_TEST_PATTERN.finditer(text)
         )
 
 
-def _tracker_mentions(tracker: str, suite: str) -> tuple[str, ...]:
+def _tracker_mentions(tracker: str, suite: str, test: str) -> tuple[str, ...]:
     """The tracker's `###` headings, with the tasks under them, that name
-    `suite`, as `<line>: <text>`."""
-    word = _SuiteNamed(suite)
+    the failed `suite.test`, as `<line>: <text>`. A task's wrapped lines count
+    as part of it."""
+    word = _SuiteNamed(suite, test)
+    lines = tracker.splitlines()
     mentions = []
     heading: tuple[int, str] | None = None
     heading_named = False
-    for number, line in enumerate(tracker.splitlines(), 1):
+    for number, line in enumerate(lines, 1):
         if line.startswith('#'):
             heading = (number, line) if line.startswith('### ') else None
             heading_named = bool(heading and word.search(line))
@@ -2791,7 +3111,16 @@ def _tracker_mentions(tracker: str, suite: str) -> tuple[str, ...]:
             continue
         if not line.lstrip().startswith('- ['):
             continue
-        if heading_named or word.search(line):
+        task = [line]
+        for wrapped in lines[number:]:
+            if (
+                not wrapped[:1].isspace()
+                or not wrapped.strip()
+                or wrapped.lstrip().startswith('- ')
+            ):
+                break
+            task.append(wrapped)
+        if heading_named or word.search(' '.join(task)):
             if (
                 heading
                 and not heading_named
@@ -2852,7 +3181,7 @@ def test_leads(
     renames = renames or {}
     leads = []
     for name in dict.fromkeys(names):
-        match = _FAILED_TEST_NAME.fullmatch(name.strip())
+        match = _parse_failed_test(name)
         if not match:
             continue
         suite = match['suite']
@@ -2874,7 +3203,7 @@ def test_leads(
                 name=name,
                 binary=match['binary'],
                 suite=suite,
-                tracker=_tracker_mentions(tracker, suite),
+                tracker=_tracker_mentions(tracker, suite, match['test']),
                 filters=direct,
                 inherited=tuple(dict.fromkeys(inherited)),
                 renamed=tuple(dict.fromkeys(renamed)),
@@ -3110,7 +3439,7 @@ def _collect_leads(milestone: int, found: list) -> list[TestLeads]:
         dict.fromkeys(
             match['suite']
             for name in names
-            if (match := _FAILED_TEST_NAME.fullmatch(name.strip()))
+            if (match := _parse_failed_test(name))
         )
     )
     if not suites:
@@ -3154,20 +3483,21 @@ class PullRequestFailures:
         written to `output`. The leads are read from the checkout, which must
         be on the run's branch."""
         run = self.run
-        checks = ci_github.pr_checks(run.branch)
-        found = ci_report.collect(checks)
-        pending = checks.in_state(ci_github.State.PENDING)
-        leads = _collect_leads(run.milestone, found)
-        text = (
-            f'# CI failures of {run.branch} (PR {checks.number}) at '
-            f'{checks.head}\n\n' + ci_failures.to_markdown(found)
-        )
+        if not ci_github.has_pull_request(run.branch):
+            return (
+                CI_NO_PULL_REQUEST,
+                f'- {run.branch} has no pull request yet: there is no CI to '
+                'read.',
+            )
+        found = ci_report.of(run.branch)
+        checks = found.checks
+        leads = _collect_leads(run.milestone, list(found.failed))
+        text = found.markdown()
         if leads:
             text += '\n' + _leads_markdown(leads, f'M{run.milestone}.md')
         output.write_text(text, encoding='utf-8', newline='')
         lines = [
-            f'- PR {checks.number} at {checks.head[:12]}: {len(found)} '
-            f'failed, {len(pending)} pending of {len(checks.checks)} checks. '
+            f'- PR {checks.number} at {checks.head[:12]}: {found.counts()} '
             f'Details in {output}.'
         ]
         head = repository.brave.run_git('rev-parse', 'HEAD')
@@ -3176,11 +3506,7 @@ class PullRequestFailures:
                 f'- The checks ran on {checks.head[:12]}, not HEAD '
                 f'({head[:12]}).'
             )
-        for check in found:
-            kinds = ', '.join(f'{b.name}: {b.kind}' for b in check.builds)
-            lines.append(
-                f'- {check.check}: {kinds or check.error or "no failed builds"}'
-            )
+        lines += [f'- {line}' for line in found.summary()]
         if leads:
             named = [lead.name for lead in leads if lead.any]
             lines.append(
@@ -3189,8 +3515,10 @@ class PullRequestFailures:
                 + (f': {", ".join(named)}' if named else '')
                 + '.'
             )
-        lines += [f'- Pending: {check.name}' for check in pending]
-        status = CI_FAILED if found else CI_PENDING if pending else 0
+        lines += [f'- Pending: {check.name}' for check in found.pending]
+        status = (
+            CI_FAILED if found.failed else CI_PENDING if found.pending else 0
+        )
         return status, '\n'.join(lines)
 
 
@@ -3201,6 +3529,11 @@ def _cmd_advise(args: argparse.Namespace) -> int:
     print('\n'.join([*advice.reasons, f'- Advice: {advice.action}.']))
     advice.write(args.json_output)
     return 0
+
+
+def _and_list(items: list[str]) -> str:
+    """`a`, `a and b`, `a, b and c`."""
+    return ' and '.join(filter(None, [', '.join(items[:-1]), items[-1]]))
 
 
 @dataclass(frozen=True)
@@ -3218,63 +3551,64 @@ class Advice:
     action: str
     reasons: tuple[str, ...]
     prompt: str | None = None
+    # The skill's files the run must read in full, which the prompt names.
+    reads: tuple[str, ...] = ()
 
-    _SKILL = 'tools/cr/autolift/SKILL.md'
+    _SKILL_DIR = 'tools/cr/autolift'
     # The channels don't carry the tooling: a resumed channel bump reads the
     # copy its `prepare` or `autofix` made.
-    _STAGED_SKILL = '.autolift/tooling/cr/autolift/SKILL.md'
+    _STAGED_SKILL_DIR = '.autolift/tooling/cr/autolift'
 
     _UNATTENDED = (
         '\n\nThis is an unattended CI run: there is no human to ask, so make '
-        'the calls the document describes and record them in the report.'
+        'the calls the document describes and record them in the report. '
+        "End it with `vpython3 {script} outcome --complete '<summary>'` once "
+        'everything it had to do is done and published (or there was '
+        "nothing to publish), or `--incomplete '<why>'` when it stops short "
+        'of that, for whatever reason. A run that records neither counts as '
+        'incomplete, and CI then stops.'
     )
 
-    # By (channel bump, kind of run).
+    # By (channel bump, kind of run), with the skill's files as `skill`,
+    # `autofix` and `bump`.
     _PROMPTS = {
         (False, 'lift'): (
             'Lift cr{target} by following {skill} from step 1 to the end. '
-            'Read the whole file before starting. The milestone N is {target}.'
+            'The milestone N is {target}.'
         ),
         (False, 'resume'): (
             'Resume the lift of cr{target}, which an earlier run of {skill} '
-            'stopped before it finished. Read the whole file, then follow its '
-            '"Resuming a run" section to carry on where that run stopped. The '
-            'milestone N is {target}.'
+            'stopped before it finished: follow its "Resuming a run" section '
+            'to carry on where that run stopped. The milestone N is {target}.'
         ),
         (False, 'autofix'): (
             "Fix what fails in the CI of cr{target}'s pull request by "
-            'following the "Autofix run" section of {skill}. Read the whole '
-            'file before starting. The milestone N is {target}.'
+            'following {autofix}. The milestone N is {target}.'
         ),
         (False, 'resume autofix'): (
-            'Resume the autofix run of cr{target}, which an earlier run of the '
-            '"Autofix run" section of {skill} stopped before it finished. Read '
-            'the whole file, then carry on where the report says that run '
-            'stopped. The milestone N is {target}.'
+            'Resume the autofix run of cr{target}, which an earlier run of '
+            '{autofix} stopped before it finished: carry on where the report '
+            'says that run stopped. The milestone N is {target}.'
         ),
         (True, 'lift'): (
             "Bump Brave's release channels to Chromium {target} by following "
-            'the "Channel bump run" section of {skill}. Read the whole file '
-            'before starting. The tag is {target}.'
+            '{bump}. The tag is {target}.'
         ),
         (True, 'resume'): (
             'Resume the channel bump to Chromium {target}, which an earlier '
-            'run of the "Channel bump run" section of {skill} stopped before '
-            'it finished. Read the whole file, then follow its "Resuming a '
-            'run" section to carry on where that run stopped. The tag is '
-            '{target}.'
+            'run of {bump} stopped before it finished: follow the "Resuming a '
+            'run" section of {skill} to carry on where that run stopped. The '
+            'tag is {target}.'
         ),
         (True, 'autofix'): (
             'Fix what fails in the CI of the pull requests of the channel bump '
-            'to Chromium {target} by following the "Autofix run" section of '
-            '{skill}, for each channel. Read the whole file before starting. '
-            'The tag is {target}.'
+            'to Chromium {target} by following the "Autofix run of a tag" part '
+            'of {bump}, for each channel. The tag is {target}.'
         ),
         (True, 'resume autofix'): (
             'Resume the autofix run of the channel bump to Chromium {target}, '
-            'which an earlier run of the "Autofix run" section of {skill} '
-            'stopped before it finished. Read the whole file, then carry on '
-            'where the report says that run stopped. The tag is {target}.'
+            'which an earlier run of {bump} stopped before it finished: carry '
+            'on where the report says that run stopped. The tag is {target}.'
         ),
     }
 
@@ -3298,13 +3632,31 @@ class Advice:
         cls, action: str, reasons: list[str], target: int | Version, kind: str
     ) -> Advice:
         bump = isinstance(target, Version)
-        skill = (
-            cls._STAGED_SKILL
+        root = (
+            cls._STAGED_SKILL_DIR
             if bump and kind.startswith('resume')
-            else cls._SKILL
+            else cls._SKILL_DIR
         )
-        prompt = cls._PROMPTS[(bump, kind)].format(target=target, skill=skill)
-        return cls(action, tuple(reasons), prompt + cls._UNATTENDED)
+        files = {
+            'skill': f'{root}/SKILL.md',
+            'autofix': f'{root}/autofix.md',
+            'bump': f'{root}/channel_bump.md',
+            'commits': f'{root.rsplit("/", 1)[0]}/commit_messages.md',
+        }
+        reads = [files['skill'], files['commits']]
+        if bump:
+            reads.append(files['bump'])
+        # A lift of cr<N> fixes its pull request's CI as autofix.md says, at
+        # step 8.
+        if kind.endswith('autofix') or not bump:
+            reads.append(files['autofix'])
+        prompt = (
+            cls._PROMPTS[(bump, kind)].format(target=target, **files)
+            + f' Before starting, read {_and_list(reads)} yourself, each in '
+            'full with the Read tool.'
+            + cls._UNATTENDED.format(script=f'{root}/autolift.py')
+        )
+        return cls(action, tuple(reasons), prompt, tuple(reads))
 
     @classmethod
     def _of_cr(cls, milestone: int, autofix: bool) -> Advice | None:
@@ -3375,6 +3727,7 @@ class Advice:
         advice = {
             'action': self.action,
             'prompt': self.prompt,
+            'reads': list(self.reads),
             'reasons': list(self.reasons),
         }
         path.write_text(json.dumps(advice, indent=2) + '\n', encoding='utf-8')
@@ -3537,15 +3890,16 @@ STEPS = {
     5: 'Lit mangler snapshot',
     6: 'Android',
     7: 'Presubmit',
-    8: 'Code health review',
-    9: 'Update this document',
-    10: 'Wrap up',
-    11: 'Publish',
+    8: 'Pull request CI',
+    9: 'Code health review',
+    10: 'Update this document',
+    11: 'Wrap up',
+    12: 'Publish',
 }
 # A maintenance run without a lift (SKILL.md's "Maintenance run without a
 # lift"): step 2 is skipped, and so is everything only a lift needs.
-_NO_LIFT_STEPS = (1, 2, 3, 4, 10, 11)
-# A channel bump (SKILL.md's "Channel bump run"): the steps each channel's
+_NO_LIFT_STEPS = (1, 2, 3, 4, 11, 12)
+# A channel bump (channel_bump.md): the steps each channel's
 # branch takes, recorded on it. Only the highest channel is built, tested
 # and checked; the lower ones are lifted, and take its fixes. No Android
 # build: the pull requests' CI builds it, and autofix fixes what fails there.
@@ -3617,6 +3971,94 @@ def _cmd_step(args: argparse.Namespace) -> int:
     return 0
 
 
+# How the agent says the run ended, in the run's directory, for CI to read,
+# with each branch's commits to review, which `publish` writes in its state.
+# Both in the JSONPB form of the recipe's `Outcome` message.
+OUTCOME = 'outcome.json'
+REVIEW = 'review.json'
+_NO_OUTCOME = 'The agent recorded no outcome: the run stopped before its end.'
+
+
+def _run_directory(target: int | Version) -> Path:
+    """Where a run of `target` keeps its report, logs and outcome."""
+    if isinstance(target, Version):
+        return _RUN_ROOT / f'cr{target.major}.x'
+    return _RUN_ROOT / f'cr{target}'
+
+
+def unfinished(run: Run) -> list[str]:
+    """What keeps the checked-out branch from being a finished run's: work
+    left in progress or uncommitted, or commits GitHub's branch lacks other
+    than the picked tooling, which `publish` doesn't push alone."""
+    brave = repository.brave
+    found = [f'{operation} in progress' for operation in _in_progress(run)]
+    if brave.run_git('status', '--porcelain', '--untracked-files=no'):
+        found.append('uncommitted changes to tracked files')
+    if run.dry_run:
+        return found
+    # The push URL is GitHub's, whichever mirror `origin` fetches from.
+    github = brave.run_git('remote', 'get-url', '--push', 'origin')
+    tip = brave.run_git(
+        'ls-remote', '--heads', github, f'refs/heads/{run.branch}'
+    ).split()[:1]
+    if not tip:
+        found.append(f'{run.branch} is not on GitHub')
+        return found
+    brave.run_git('fetch', '-q', github, f'refs/heads/{run.branch}')
+    unpushed = set(
+        brave.run_git('rev-list', f'{tip[0]}..HEAD').split()
+    ) - Publish(run).picked_tooling(tip[0])
+    if unpushed:
+        found.append(f'{len(unpushed)} commit(s) GitHub\'s {run.branch} lacks')
+    return found
+
+
+def _cmd_outcome(args: argparse.Namespace) -> int:
+    if args.json_output:
+        if args.target is None:
+            print('Pass the milestone or the tag of the run to read.')
+            return 1
+        directory = _run_directory(args.target)
+        try:
+            outcome = json.loads(
+                (directory / OUTCOME).read_text(encoding='utf-8')
+            )
+        except FileNotFoundError:
+            outcome = {'complete': False, 'summary': _NO_OUTCOME}
+        # A channel bump keeps each branch's state in a directory of its own.
+        reviews = [directory / REVIEW, *sorted(directory.glob(f'*/{REVIEW}'))]
+        outcome['review'] = [
+            commit
+            for path in reviews
+            if path.exists()
+            for commit in json.loads(path.read_text(encoding='utf-8'))
+        ]
+        args.json_output.write_text(json.dumps(outcome), encoding='utf-8')
+        state = 'complete' if outcome['complete'] else 'incomplete'
+        print(f'The run is {state}: {outcome["summary"]}')
+        return 0
+    run = Run.current()
+    if run is None:
+        print('Check out a cr<N> or channel bump branch first.')
+        return 1
+    complete = args.complete is not None
+    if complete and (problems := unfinished(run)):
+        print(
+            f'Not complete: {"; ".join(problems)}. Finish the run, or record '
+            'it with `--incomplete`.'
+        )
+        return 1
+    summary = args.complete if complete else args.incomplete
+    (run.directory / OUTCOME).write_text(
+        json.dumps({'complete': complete, 'summary': summary}) + '\n',
+        encoding='utf-8',
+    )
+    state = 'complete' if complete else 'incomplete'
+    report = run.append_report(f'Outcome: {state}', summary)
+    print(f'Recorded the run as {state} in {report}.')
+    return 0
+
+
 @dataclass(frozen=True)
 class RunStatus:
     """Where a run is: what `status` gathers for a starting or resumed run."""
@@ -3667,7 +4109,7 @@ def format_status(status: RunStatus) -> str:
         return '\n'.join(lines)
     if status.not_worth_it:
         lines.append(
-            'Next: the "Autofix run" section, carrying on from where the '
+            'Next: autofix.md, read in full, carrying on from where the '
             'report leaves it; `prepare` found nothing worth a lift run '
             f'({status.not_worth_it}).'
         )
@@ -3856,6 +4298,11 @@ def summarize_lift(log: str) -> LiftSummary:
     )
 
 
+def _brockit_kept_continuation() -> bool:
+    """Whether Brockit's `lift --continue` has a continuation to resume."""
+    return (repository.brave.root / '.version_upgrade').exists()
+
+
 def _package_range() -> str | None:
     """`<upstream tag>..<HEAD tag>` from `package.json`, if they differ."""
     old = Version.from_git('@{upstream}')
@@ -3942,7 +4389,7 @@ def _cmd_lift(args: argparse.Namespace) -> int:
     name = 'lift-continue' if args.continue_ else 'lift'
     stamp = datetime.now().strftime('%Y%m%d-%H%M%S')
     log = run.log(f'{name}-{stamp}')
-    cmd = [sys.executable, str(_BROCKIT), 'lift', '--infra-mode']
+    cmd = [_BROCKIT, 'lift', '--infra-mode']
     # Brockit continues to the tag the lift started with.
     if args.continue_:
         cmd.append('--continue')
@@ -3958,6 +4405,14 @@ def _cmd_lift(args: argparse.Namespace) -> int:
             check=False,
         ).returncode
     summary = summarize_lift(log.read_bytes().decode('utf-8', errors='replace'))
+    # Brockit can stop on an error in `--continue` (a patch whose hunk count
+    # changed) without saying so, keeping its continuation for the rerun.
+    if (
+        not summary.resumable
+        and not summary.done
+        and _brockit_kept_continuation()
+    ):
+        summary = dataclasses.replace(summary, resumable=True)
     if summary.resumable:
         stopped.touch()
     else:
@@ -4158,6 +4613,15 @@ class FixSources:
         """What the run has: a fix on a source past it is the source's own."""
         return 'HEAD' if self.run.channel else f'origin/{self.run.branch}'
 
+    def since_on(self, ref: str) -> str:
+        """Where `ref`'s own fixes start: `since`, or for a newer `cr<M>`
+        branch, its milestone's first bump, found as `brockit rebase` finds
+        it. Past `since`, that branch also holds copies of the run's commits
+        from before their last rewrite."""
+        if re.fullmatch(r'origin/cr\d+', ref):
+            return previous_version_commit(ref, major=True)
+        return self.since
+
     def refs(self) -> list[str]:
         refs = []
         if self.run.channel and (bump := ChannelBump.of_run(self.run)):
@@ -4240,7 +4704,9 @@ def _find_next_fixes(
 ) -> list[NextFix]:
     cherry_picks = _cherry_picks(revision_range, paths)
     sources = FixSources(run)
-    branches = {ref: _fixes_on(ref, sources.since) for ref in sources.refs()}
+    branches = {
+        ref: _fixes_on(ref, sources.since_on(ref)) for ref in sources.refs()
+    }
     return match_next_fixes(cherry_picks, branches)
 
 
@@ -4249,7 +4715,7 @@ def _cmd_next_tracker(args: argparse.Namespace) -> int:
     if run is None:
         print('Check out a cr<N> or channel bump branch first.')
         return 1
-    since = FixSources(run).since
+    sources = FixSources(run)
     cherry_picks = _cherry_picks(args.range, [], with_files=True)
     for branch in _newer_branches(run.milestone):
         major = branch.removeprefix('cr')
@@ -4281,7 +4747,8 @@ def _cmd_next_tracker(args: argparse.Namespace) -> int:
             for file, pick in match.named:
                 print(f'    names {file}: changed by {pick.sha} {pick.subject}')
             if match.ticked:
-                fixes = match.fixes(since, f'origin/{branch}')
+                ref = f'origin/{branch}'
+                fixes = match.fixes(sources.since_on(ref), ref)
                 if match.fixed_in:
                     for fix in fixes:
                         print(f'    fix on origin/{branch}: {fix}')
@@ -4469,7 +4936,7 @@ def main() -> int:
         help='End the dry run `prepare` or `autofix` started, and publish for '
         'real.',
     )
-    publish.set_defaults(func=_cmd_publish)
+    publish.set_defaults(func=_cmd_publish_logged)
 
     autofix = subparsers.add_parser(
         'autofix',
@@ -4568,11 +5035,37 @@ def main() -> int:
     step = subparsers.add_parser(
         'step', help='Record a finished or skipped step in the report.'
     )
-    step.add_argument('number', type=int, help='The step, 1 to 11.')
+    step.add_argument('number', type=int, help=f'The step, 1 to {len(STEPS)}.')
     outcome = step.add_mutually_exclusive_group(required=True)
     outcome.add_argument('--done', metavar='OUTCOME', help='What it found.')
     outcome.add_argument('--skipped', metavar='WHY', help='Why it was skipped.')
     step.set_defaults(func=_cmd_step)
+
+    outcome_parser = subparsers.add_parser(
+        'outcome',
+        help='Record how the run ended, or read it for CI: a run with no '
+        'outcome is incomplete.',
+    )
+    outcome_parser.add_argument(
+        'target', type=Run.target, nargs='?', help=target['help']
+    )
+    ended = outcome_parser.add_mutually_exclusive_group(required=True)
+    ended.add_argument(
+        '--complete',
+        metavar='SUMMARY',
+        help='Everything the run had to do is done and published.',
+    )
+    ended.add_argument(
+        '--incomplete',
+        metavar='WHY',
+        help='The run stopped short of that, for whatever reason.',
+    )
+    ended.add_argument(
+        '--json-output',
+        type=Path,
+        help="Where to write the recorded outcome of TARGET's run.",
+    )
+    outcome_parser.set_defaults(func=_cmd_outcome)
 
     args = parser.parse_args()
     return args.func(args)

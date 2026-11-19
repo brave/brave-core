@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/webapps/webapps_client_android.cc b/chrome/browser/webapps/webapps_client_android.cc
-index 3d28fa1a39c6232a1d4b30a209a88d08c853c662..7a753d26c0e66716926e42691e4b4dc4ad5f70f0 100644
+index 223ad372e959781bd7a5316739041aa975c629da..dde6e64c43d29ecb8412dd5f2aac8adb69f4da78 100644
 --- a/chrome/browser/webapps/webapps_client_android.cc
 +++ b/chrome/browser/webapps/webapps_client_android.cc
-@@ -191,7 +191,7 @@ void WebappsClientAndroid::InstallWebApk(content::WebContents* web_contents,
+@@ -192,7 +192,7 @@ void WebappsClientAndroid::InstallWebApk(content::WebContents* web_contents,
  void WebappsClientAndroid::InstallShortcut(
      content::WebContents* web_contents,
      const AddToHomescreenParams& params) {

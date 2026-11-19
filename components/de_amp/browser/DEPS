@@ -10,7 +10,7 @@ include_rules = [
 ]
 
 specific_include_rules = {
-  "de_amp_browsertest\.cc": [
+  "de_amp_browsertest\\.cc": [
     "+components/keep_alive_registry",
   ],
 }

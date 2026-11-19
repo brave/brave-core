@@ -19,7 +19,7 @@ class BrowserWindowInterface;
   virtual content::WebContents* AddNewContents_ChromiumImpl(                  \
       content::WebContents* source,                                           \
       std::unique_ptr<content::WebContents> new_contents,                     \
-      const GURL& target_url, WindowOpenDisposition disposition,              \
+      const GURL& target_url, ui::mojom::WindowOpenDisposition disposition,   \
       const blink::mojom::WindowFeatures& window_features, bool user_gesture, \
       bool* was_blocked);                                                     \
   virtual void HideCustomContextMenu_Unused
@@ -31,7 +31,7 @@ class BrowserWindowInterface;
   content::WebContents* AddNewContents_ChromiumImpl(                          \
       content::WebContents* source,                                           \
       std::unique_ptr<content::WebContents> new_contents,                     \
-      const GURL& target_url, WindowOpenDisposition disposition,              \
+      const GURL& target_url, ui::mojom::WindowOpenDisposition disposition,   \
       const blink::mojom::WindowFeatures& window_features, bool user_gesture, \
       bool* was_blocked) override;                                            \
   void PrimaryPageChanged

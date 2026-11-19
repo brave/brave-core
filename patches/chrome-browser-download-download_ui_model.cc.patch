@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/download/download_ui_model.cc b/chrome/browser/download/download_ui_model.cc
-index 66ba8b1890c4b6aaaa2a5bd99babb9858f60c147..9750f88ae70a7094572742bedcf0fd563f6e4c2d 100644
+index e76b10b83e3b30b8f14e8b9da3588b9e3c879c76..a3c15eaf02f2cbba347e28a1db1c346a6beb6be4 100644
 --- a/chrome/browser/download/download_ui_model.cc
 +++ b/chrome/browser/download/download_ui_model.cc
 @@ -649,6 +649,9 @@ bool DownloadUIModel::IsCommandEnabled(

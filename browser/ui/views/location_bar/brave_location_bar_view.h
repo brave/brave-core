@@ -51,7 +51,6 @@ class BraveLocationBarView : public LocationBarView {
 
   void Init() override;
   void Update(content::WebContents* contents) override;
-  void OnChanged() override;
   BraveActionsContainer* GetBraveActionsContainer() { return brave_actions_; }
 
   // LocationBarView:
@@ -98,6 +97,9 @@ class BraveLocationBarView : public LocationBarView {
                            SearchConversionButtonTest);
   friend class ::BraveActionsContainerTest;
   friend class ::RewardsBrowserTest;
+
+  // LocationBarView:
+  void OnChangedImpl(bool suppress_animations) override;
 
   void SetupShadow();
 

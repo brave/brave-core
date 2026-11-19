@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/extensions/extensions_ui.cc b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-index 453c88c973eeed6b3b0da09010e4f0210334addb..3b092a4633e1a459d03e1bf26285e63cac56d573 100644
+index 94c66bc85e205ca14e282acaf66fb54745f6d9f9..4d3c5bcdf848787d9845b25f2ce94f4f4e4fa0d9 100644
 --- a/chrome/browser/ui/webui/extensions/extensions_ui.cc
 +++ b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-@@ -125,7 +125,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
+@@ -126,7 +126,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
        {"appsTitle", IDS_EXTENSIONS_APPS_TITLE},
        {"noExtensionsOrApps", IDS_EXTENSIONS_NO_INSTALLED_ITEMS},
        {"noDescription", IDS_EXTENSIONS_NO_DESCRIPTION},
@@ -11,7 +11,7 @@ index 453c88c973eeed6b3b0da09010e4f0210334addb..3b092a4633e1a459d03e1bf26285e63c
        {"extensionWebsite", IDS_EXTENSIONS_ITEM_EXTENSION_WEBSITE},
        {"dropToInstall", IDS_EXTENSIONS_INSTALL_DROP_TARGET},
        {"editSitePermissionsAllowAllExtensions",
-@@ -256,7 +256,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
+@@ -259,7 +259,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
        {"itemSourcePolicy", IDS_EXTENSIONS_ITEM_SOURCE_POLICY},
        {"itemSourceSideloaded", IDS_EXTENSIONS_ITEM_SOURCE_SIDELOADED},
        {"itemSourceUnpacked", IDS_EXTENSIONS_ITEM_SOURCE_UNPACKED},
@@ -20,7 +20,7 @@ index 453c88c973eeed6b3b0da09010e4f0210334addb..3b092a4633e1a459d03e1bf26285e63c
        {"itemVersion", IDS_EXTENSIONS_ITEM_VERSION},
        {"itemReloaded", IDS_EXTENSIONS_ITEM_RELOADED},
        {"itemReloading", IDS_EXTENSIONS_ITEM_RELOADING},
-@@ -542,6 +542,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
+@@ -549,6 +549,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
                                              ? "webui-refresh-2026"
                                              : "");
  

@@ -43,7 +43,7 @@ include_rules = [
 ]
 
 specific_include_rules = {
-  "browser_prefs\.cc": [
+  "browser_prefs\\.cc": [
     "+brave/components/l10n/common/prefs.h",
   ],
 }

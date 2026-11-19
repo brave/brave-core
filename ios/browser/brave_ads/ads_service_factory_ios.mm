@@ -25,10 +25,9 @@ AdsServiceFactoryIOS::AdsServiceFactoryIOS(PassKey key)
           ProfileSelection::kNoInstanceInIncognito) {}
 
 std::unique_ptr<KeyedService> AdsServiceFactoryIOS::BuildServiceInstanceFor(
-    ProfileIOS* profile) const {
-  CHECK(profile);
+    ProfileIOS& profile) const {
   return std::make_unique<AdsServiceImplIOS>(
-      CHECK_DEREF(profile->GetPrefs()), std::make_unique<AdsFactoryImpl>());
+      CHECK_DEREF(profile.GetPrefs()), std::make_unique<AdsFactoryImpl>());
 }
 
 }  // namespace brave_ads

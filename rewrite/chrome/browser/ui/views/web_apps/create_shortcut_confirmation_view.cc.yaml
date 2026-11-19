@@ -13,9 +13,5 @@ substitutions:
       that its compiled default stays disabled no longer holds. Kept as a
       comment, rather than removed, so the guard stays visible.
     regex:
-      re_pattern: |-
-        CHECK_EQ\(features::kDesktopPWAsTabStripSettings\.default_state,\s+base::FEATURE_DISABLED_BY_DEFAULT, base::NotFatalUntil::M162\);
-      replace: |-
-        // CHECK_EQ(features::kDesktopPWAsTabStripSettings.default_state,
-          //          base::FEATURE_DISABLED_BY_DEFAULT,
-          //          base::NotFatalUntil::M162);
+      re_pattern: '(CHECK\w*\(\s*features::kDesktopPWAsTabStripSettings\b[^;]*;)'
+      replace: '/* \1 */'

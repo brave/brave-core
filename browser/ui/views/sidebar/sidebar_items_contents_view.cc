@@ -47,6 +47,7 @@
 #include "ui/base/default_style.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/window_open_disposition_utils.h"
 #include "ui/compositor/compositor.h"
@@ -534,7 +535,7 @@ void SidebarItemsContentsView::OnItemPressed(const views::View* item,
   auto index = GetIndexOf(item);
   CHECK(index);
 
-  auto open_disposition = WindowOpenDisposition::kCurrentTab;
+  auto open_disposition = ui::mojom::WindowOpenDisposition::kCurrentTab;
   if (event_utils::IsPossibleDispositionEvent(event)) {
     open_disposition = ui::DispositionFromEventFlags(event.flags());
   }

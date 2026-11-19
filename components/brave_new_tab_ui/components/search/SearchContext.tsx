@@ -9,8 +9,7 @@ import { SuggestInventory } from 'chrome://resources/mojo/components/omnibox/bro
 import * as React from 'react';
 import getNTPBrowserAPI, { SearchEngineInfo } from '../../api/background';
 import { useEngineContext } from './EngineContext';
-import { ContextUploadErrorType, ContextUploadStatus } from 'gen/components/omnibox/composebox/composebox_query.mojom.m';
-import { InputState } from 'gen/ui/webui/resources/tsc/mojo/components/omnibox/composebox/composebox_query.mojom-webui';
+import { ContextUploadErrorType, ContextUploadStatus, InputState } from 'gen/ui/webui/resources/tsc/mojo/components/omnibox/composebox/composebox_query.mojom-webui';
 import { WindowOpenDisposition } from 'gen/ui/webui/resources/tsc/mojo/ui/base/mojom/window_open_disposition.mojom-webui';
 import { Size } from 'gen/ui/webui/resources/tsc/mojo/ui/gfx/geometry/mojom/geometry.mojom-webui';
 import { Url } from 'gen/ui/webui/resources/tsc/mojo/url/mojom/url.mojom-webui';

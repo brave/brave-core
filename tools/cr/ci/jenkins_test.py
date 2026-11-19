@@ -745,7 +745,16 @@ class WatchLoopTest(unittest.TestCase):
         self.assertTrue(succeeded)
 
 
-_RUN = 'https://ci.brave.com/job/brave-core-build-pr-windows-x64/job/PR-1/84'
+_JOB = 'https://ci.brave.com/job/brave-core-build-pr-windows-x64/job/PR-1'
+_RUN = f'{_JOB}/84'
+_TEST_REPORT = (
+    'testReport/api/json?tree=suites[cases[className,name,status,age,'
+    'failedSince,errorDetails,errorStackTrace]]'
+)
+_JOB_BUILDS = (
+    'api/json?tree=builds[number,result,'
+    'actions[remoteUrls,lastBuiltRevision[SHA1]]]{0,30}'
+)
 
 
 def _json_session(responses: dict[str, object]) -> MagicMock:
@@ -797,8 +806,7 @@ class FailedBuildsTest(unittest.TestCase):
                 'execution/node/21/wfapi/log': {
                     'text': '<span>error: a &amp; b</span>\nFAILED: x.o'
                 },
-                'testReport/api/json?tree=suites[cases[className,name,'
-                'status,age,errorDetails,errorStackTrace]]': {
+                _TEST_REPORT: {
                     'suites': [
                         {
                             'cases': [
@@ -807,6 +815,7 @@ class FailedBuildsTest(unittest.TestCase):
                                     'name': 'Old',
                                     'status': 'FAILED',
                                     'age': 34,
+                                    'failedSince': 50,
                                     'errorDetails': 'Expected 1',
                                 },
                                 {
@@ -839,11 +848,234 @@ class FailedBuildsTest(unittest.TestCase):
         self.assertEqual(
             [(t.name, t.status, t.known) for t in tests.tests],
             [
-                ('Suite.Old', 'FAILED', 'failing for 34 builds'),
+                ('Suite.Old', 'FAILED', 'failing for 34 builds, since #50'),
                 ('Suite.New', 'REGRESSION', ''),
             ],
         )
         self.assertEqual(tests.tests[0].details, 'Expected 1')
+
+    def test_history_names_the_last_run_that_reported_the_test(self):
+        def revisions(brave_core):
+            return [
+                None,
+                {
+                    'remoteUrls': ['https://github.com/brave/devops'],
+                    'lastBuiltRevision': {'SHA1': 'd' * 40},
+                },
+                {
+                    'remoteUrls': ['git@github.com:brave/brave-core.git'],
+                    'lastBuiltRevision': {'SHA1': brave_core * 40},
+                },
+            ]
+
+        responses = {
+            f'{_RUN}/wfapi/describe': {
+                'stages': [{'id': '4', 'name': 'test', 'status': 'UNSTABLE'}]
+            },
+            f'{_RUN}/{_TEST_REPORT}': {
+                'suites': [
+                    {
+                        'cases': [
+                            {
+                                'className': 'Suite',
+                                'name': 'New',
+                                'status': 'FAILED',
+                                'age': 1,
+                                'failedSince': 84,
+                            },
+                            {
+                                'className': 'Suite',
+                                'name': 'Other',
+                                'status': 'FAILED',
+                                'age': 1,
+                            },
+                            {
+                                'className': 'org.chromium.chrome.JavaTest',
+                                'name': 'testA',
+                                'status': 'FAILED',
+                            },
+                        ]
+                    }
+                ]
+            },
+            f'{_JOB}/{_JOB_BUILDS}': {
+                'builds': [
+                    {'number': 85, 'result': None, 'actions': []},
+                    {
+                        'number': 83,
+                        'result': 'NOT_BUILT',
+                        'actions': revisions('c'),
+                    },
+                    {
+                        'number': 82,
+                        'result': 'ABORTED',
+                        'actions': revisions('b'),
+                    },
+                    {
+                        'number': 81,
+                        'result': 'SUCCESS',
+                        'actions': revisions('a'),
+                    },
+                ]
+            },
+            f'{_JOB}/82/testReport/(root)/Suite/api/json'
+            '?tree=child[name,status]': {
+                'child': [{'name': 'Other', 'status': 'FAILED'}]
+            },
+            f'{_JOB}/81/testReport/(root)/Suite/api/json'
+            '?tree=child[name,status]': {
+                'child': [
+                    {'name': 'New', 'status': 'PASSED'},
+                    {'name': 'Other', 'status': 'PASSED'},
+                ]
+            },
+        }
+        requested = []
+
+        def get(url, **_):
+            requested.append(url)
+            response = MagicMock()
+            if url in responses:
+                response.json.return_value = responses[url]
+            else:
+                response.raise_for_status.side_effect = (
+                    jenkins.requests.HTTPError(url)
+                )
+            return response
+
+        session = MagicMock()
+        session.get.side_effect = get
+        with patch('ci.jenkins.requests.Session', return_value=session):
+            builds = jenkins.JenkinsCi('u', 't').failed_builds(_RUN)
+        self.assertEqual(len(builds), 1)
+        build = builds[0]
+        self.assertEqual(
+            [(t.name, t.known, t.history) for t in build.tests],
+            [
+                (
+                    'Suite.New',
+                    '',
+                    (
+                        f'last ran in #81 (SUCCESS) on `{"a" * 10}`: PASSED; '
+                        'not in #83 (NOT_BUILT), #82 (ABORTED)',
+                    ),
+                ),
+                (
+                    'Suite.Other',
+                    '',
+                    (
+                        f'last ran in #82 (ABORTED) on `{"b" * 10}`: FAILED; '
+                        'not in #83 (NOT_BUILT)',
+                    ),
+                ),
+                (
+                    'org.chromium.chrome.JavaTest.testA',
+                    '',
+                    ("not in the job's 3 earlier runs",),
+                ),
+            ],
+        )
+        # Each run's class report is read once, whichever tests share it.
+        self.assertEqual(
+            requested.count(
+                f'{_JOB}/81/testReport/(root)/Suite/api/json'
+                '?tree=child[name,status]'
+            ),
+            1,
+        )
+        self.assertIn(
+            f'{_JOB}/83/testReport/org.chromium.chrome/JavaTest/api/json'
+            '?tree=child[name,status]',
+            requested,
+        )
+
+    def test_a_fatal_line_only_the_console_has_leads_the_tail(self):
+        fatal = (
+            'F1108 13:30:24.969724   11708 glog.go:261] log: exiting: '
+            'There is not enough space on the disk.'
+        )
+        session = _json_session(
+            {
+                'wfapi/describe': {
+                    'stages': [{'id': '2', 'name': 'build', 'status': 'FAILED'}]
+                },
+                'execution/node/2/wfapi/describe': {
+                    'stageFlowNodes': [{'id': '21', 'status': 'FAILED'}],
+                },
+                'execution/node/21/wfapi/log': {'text': 'I1108 spew'},
+            }
+        )
+        json_get = session.get.side_effect
+
+        def get(url, **kwargs):
+            if url == f'{_RUN}/logText/progressiveText?start=0':
+                response = MagicMock()
+                response.text = f'[2026-11-08T13:30:25.238Z] {fatal}\nspew\n'
+                return response
+            return json_get(url, **kwargs)
+
+        session.get.side_effect = get
+        session.head.return_value.headers = {'X-Text-Size': '1000'}
+        with patch('ci.jenkins.requests.Session', return_value=session):
+            builds = jenkins.JenkinsCi('u', 't').failed_builds(_RUN)
+        self.assertEqual(len(builds), 1)
+        build = builds[0]
+        self.assertEqual(build.log_tail, f'{fatal}\n[...]\nI1108 spew')
+        self.assertEqual(build.kind, failures.Kind.INFRA)
+
+    def test_full_log(self):
+        session = MagicMock()
+        session.get.return_value.text = (
+            '[2026-11-08T14:30:44.281Z] \x1b[8mha:////abc=\x1b[0m'
+            '[Pipeline] sh\n[2026-11-08T14:31:34.913Z] Finished: FAILURE\n'
+        )
+        with patch('ci.jenkins.requests.Session', return_value=session):
+            ci = jenkins.JenkinsCi('u', 't')
+            log = ci.full_log(_RUN, timestamps=False)
+            stamped = ci.full_log(_RUN)
+        session.get.assert_called_with(f'{_RUN}/consoleText', timeout=120)
+        self.assertEqual(log, '[Pipeline] sh\nFinished: FAILURE\n')
+        self.assertEqual(
+            stamped,
+            '[2026-11-08T14:30:44.281Z] [Pipeline] sh\n'
+            '[2026-11-08T14:31:34.913Z] Finished: FAILURE\n',
+        )
+
+    def test_a_stage_s_tail_has_no_timestamps(self):
+        builds = self._failed_builds(
+            {
+                'wfapi/describe': {
+                    'stages': [{'id': '2', 'name': 'build', 'status': 'FAILED'}]
+                },
+                'execution/node/2/wfapi/describe': {
+                    'stageFlowNodes': [{'id': '21', 'status': 'FAILED'}],
+                },
+                'execution/node/21/wfapi/log': {
+                    'text': '14:30:33 [2026-11-08T14:30:33.600Z] Program '
+                    'autoninja exited with error code 1.\n'
+                    '14:30:33 [2026-11-08T14:30:33.600Z] '
+                },
+            }
+        )
+        self.assertEqual(
+            builds[0].log_tail, 'Program autoninja exited with error code 1.'
+        )
+
+    def test_full_log_of_a_test_report_is_its_run_s(self):
+        session = MagicMock()
+        session.get.return_value.text = ''
+        with patch('ci.jenkins.requests.Session', return_value=session):
+            jenkins.JenkinsCi('u', 't').full_log(f'{_RUN}/testReport/')
+        session.get.assert_called_once_with(f'{_RUN}/consoleText', timeout=120)
+
+    def test_unreadable_full_log_raises(self):
+        session = MagicMock()
+        session.get.return_value.raise_for_status.side_effect = (
+            jenkins.requests.HTTPError('404')
+        )
+        with patch('ci.jenkins.requests.Session', return_value=session):
+            with self.assertRaises(jenkins.BadOutcomeException):
+                jenkins.JenkinsCi('u', 't').full_log(_RUN)
 
     def test_unreadable_run_raises(self):
         with self.assertRaises(jenkins.BadOutcomeException):
@@ -928,18 +1160,23 @@ class FailedBuildsTest(unittest.TestCase):
 
 
 class RerunTest(unittest.TestCase):
-    def _rerun(self, **kwargs) -> MagicMock:
+    def _rerun(self, **kwargs) -> tuple[MagicMock, str]:
         session = MagicMock()
         session.get.return_value.json.return_value = {
             'crumbRequestField': 'Jenkins-Crumb',
             'crumb': 'c',
         }
         with patch('ci.jenkins.requests.Session', return_value=session):
-            jenkins.JenkinsCi('u', 't').rerun(f'{_RUN}/', **kwargs)
-        return session
+            said = jenkins.JenkinsCi('u', 't').rerun(f'{_RUN}/', **kwargs)
+        return session, said
 
     def test_queues_the_job_again(self):
-        session = self._rerun()
+        session, said = self._rerun()
+        self.assertEqual(
+            said,
+            'Queued https://ci.brave.com/job/brave-core-build-pr-windows-x64/'
+            'job/PR-1 again.',
+        )
         session.post.assert_called_once_with(
             'https://ci.brave.com/job/brave-core-build-pr-windows-x64/job/'
             'PR-1/buildWithParameters',
@@ -949,7 +1186,7 @@ class RerunTest(unittest.TestCase):
         )
 
     def test_wipes_the_workspace_when_asked(self):
-        session = self._rerun(wipe_workspace=True)
+        session, _ = self._rerun(wipe_workspace=True)
         self.assertEqual(
             session.post.call_args.kwargs['params'], {'WIPE_WORKSPACE': 'true'}
         )

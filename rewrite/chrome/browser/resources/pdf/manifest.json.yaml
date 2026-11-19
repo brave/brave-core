@@ -9,5 +9,5 @@ substitutions:
       Brave's colors_css_updater override can provide the theme colors, and so
       the theme source gets registered for the extension.
     regex:
-      re_pattern: '(\n(\s*)"chrome://resources/",)'
-      replace: '\1\n\2"chrome://theme/",'
+      re_pattern: '("host_permissions": \[\s*?\n(\s*))("chrome://resources/\*")'
+      replace: '\1"chrome://theme/*",\n\2\3'

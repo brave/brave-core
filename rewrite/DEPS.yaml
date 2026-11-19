@@ -12,7 +12,7 @@ substitutions:
       upstream hook as it causes confusing output to be printed to the user.
     regex:
       re_pattern: |-
-        ('name': 'mac_toolchain',.+?'condition':\s*)'checkout_mac or checkout_ios'
+        ('name': 'mac_toolchain',.+?'condition':\s*)'[^']*'
       re_flags: [DOTALL]
       replace: |-
         \1'False'
