@@ -177,6 +177,29 @@ struct CustomFilterListView: View {
   }
 }
 
+/// Hosts `CustomFilterListView` outside of the content filtering settings screen.
+///
+/// `CustomFilterListView` snapshots the rules in its initializer, so it can only be
+/// created once they have loaded.
+struct CustomFilterListEditor: View {
+  @State private var customRules: String?
+  @State private var hasLoadedRules = false
+
+  var body: some View {
+    NavigationView {
+      if hasLoadedRules {
+        CustomFilterListView(customRules: $customRules)
+      } else {
+        ProgressView()
+      }
+    }
+    .task {
+      customRules = try? await CustomFilterListStorage.shared.loadCustomRules()
+      hasLoadedRules = true
+    }
+  }
+}
+
 #Preview {
   CustomFilterListView(
     customRules: .constant(

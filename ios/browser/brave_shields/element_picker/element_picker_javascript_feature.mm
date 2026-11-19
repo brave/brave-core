@@ -9,10 +9,12 @@
 
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
+#include "base/strings/string_util.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/values.h"
 #include "brave/ios/browser/brave_shields/element_picker/element_picker_localized_texts.h"
@@ -45,6 +47,13 @@ constexpr char kResponseManageTextKey[] = "btnManageText";
 constexpr char kResponseShowRulesTextKey[] = "btnShowRulesBoxText";
 constexpr char kResponseHideRulesTextKey[] = "btnHideRulesBoxText";
 constexpr char kResponseQuitTextKey[] = "btnQuitText";
+
+// Rules are split into lines by adblock-rust and by the Swift custom filter
+// storage, so a selector containing a line break would inject extra rules.
+bool IsValidFilterText(std::string_view selector) {
+  return base::IsStringUTF8(selector) &&
+         selector.find_first_of("\r\n") == std::string_view::npos;
+}
 
 }  // namespace
 
@@ -127,7 +136,7 @@ void ElementPickerJavaScriptFeature::ScriptMessageReceivedWithReply(
     const base::DictValue* data_dict = script_dict->FindDict(kMessageDataKey);
     const std::string* selector =
         data_dict ? data_dict->FindString(kMessageSelectorKey) : nullptr;
-    if (!selector) {
+    if (!selector || !IsValidFilterText(*selector)) {
       std::move(callback).Run(nullptr, nil);
       return;
     }

@@ -149,6 +149,9 @@ extension BrowserViewController: TabManagerDelegate {
         !tab.isPrivate
       {
         tab.elementPickerTabHelper = .init(tab: tab)
+        tab.elementPickerTabHelper?.onManageCustomFilters = { [weak self] in
+          self?.showCustomFilterListEditor()
+        }
       }
       tab.scriptletsTabHelper = .init(tab: tab)
     }
