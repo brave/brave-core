@@ -38,12 +38,15 @@ public class BraveOriginDeepLinkHandlerTest {
     @Test
     public void consumeFromIntent_canonicalUrl_returnsTrueAndNeutralizesIntent() {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(CANONICAL_URL));
+        intent.putExtra(Intent.EXTRA_TEXT, "brave://flags");
 
         assertTrue(BraveOriginDeepLinkHandler.consumeFromIntent(intent));
 
         // Action becomes MAIN and data is cleared so upstream URL handling skips this intent.
+        // EXTRA_TEXT is cleared with the data: once data is gone, URL extraction reads it.
         assertEquals(Intent.ACTION_MAIN, intent.getAction());
         assertNull(intent.getData());
+        assertNull(intent.getStringExtra(Intent.EXTRA_TEXT));
     }
 
     @Test
@@ -114,11 +117,13 @@ public class BraveOriginDeepLinkHandlerTest {
         // first-party Origin flow, even though the last path segment matches.
         Uri uri = Uri.parse("https://example.invalid/" + BraveOriginDeepLinkHandler.PATH_TOKEN);
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        intent.putExtra(Intent.EXTRA_TEXT, "brave://flags");
 
         assertFalse(BraveOriginDeepLinkHandler.consumeFromIntent(intent));
         // Intent must be left intact so normal navigation to the URL proceeds.
         assertEquals(Intent.ACTION_VIEW, intent.getAction());
         assertEquals(uri, intent.getData());
+        assertEquals("brave://flags", intent.getStringExtra(Intent.EXTRA_TEXT));
     }
 
     @Test

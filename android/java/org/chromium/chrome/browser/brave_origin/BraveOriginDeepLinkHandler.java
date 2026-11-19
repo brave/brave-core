@@ -53,6 +53,9 @@ public final class BraveOriginDeepLinkHandler {
         }
         intent.setData(null);
         intent.setAction(Intent.ACTION_MAIN);
+        // The external-intent check already ran against the data URI. Once that data is cleared,
+        // URL extraction falls through to EXTRA_TEXT.
+        intent.removeExtra(Intent.EXTRA_TEXT);
         return true;
     }
 
