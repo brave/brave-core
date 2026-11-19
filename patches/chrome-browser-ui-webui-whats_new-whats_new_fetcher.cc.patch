@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/ui/webui/whats_new/whats_new_fetcher.cc b/chrome/browser/ui/webui/whats_new/whats_new_fetcher.cc
+index 0bf8c3e436926c6a2ac9b18b75091adec0f9dd04..5051f6da72e363d74a7db5cbe20af1a70910c5a3 100644
+--- a/chrome/browser/ui/webui/whats_new/whats_new_fetcher.cc
++++ b/chrome/browser/ui/webui/whats_new/whats_new_fetcher.cc
+@@ -264,6 +264,10 @@ class WhatsNewFetcher {
+ }  // namespace
+ 
+ void StartWhatsNewFetch(BrowserWindowInterface* browser) {
++  if ((true)) {
++    StartBraveWhatsNew(browser);
++    return;
++  }
+   new WhatsNewFetcher(browser);
+ }
+ 

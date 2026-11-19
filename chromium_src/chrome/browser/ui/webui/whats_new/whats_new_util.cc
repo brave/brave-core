@@ -7,15 +7,4 @@
 
 #include "brave/browser/ui/whats_new/whats_new_util.h"
 
-#define ShouldShowForState ShouldShowForState_UnUsed
 #include <chrome/browser/ui/webui/whats_new/whats_new_util.cc>
-#undef ShouldShowForState
-
-namespace whats_new {
-
-bool ShouldShowForState(PrefService* local_state,
-                        bool promotional_tabs_enabled) {
-  return ShouldShowBraveWhatsNewForState(local_state);
-}
-
-}  // namespace whats_new

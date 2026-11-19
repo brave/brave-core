@@ -7,14 +7,4 @@
 
 #include "brave/browser/ui/whats_new/whats_new_util.h"
 
-#define StartWhatsNewFetch StartWhatsNewFetch_UnUsed
 #include <chrome/browser/ui/webui/whats_new/whats_new_fetcher.cc>
-#undef StartWhatsNewFetch
-
-namespace whats_new {
-
-void StartWhatsNewFetch(BrowserWindowInterface* browser) {
-  StartBraveWhatsNew(browser);
-}
-
-}  // namespace whats_new
