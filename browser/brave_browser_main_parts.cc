@@ -105,6 +105,10 @@ void ChromeBrowserMainParts::PreBrowserStart() {
 void ChromeBrowserMainParts::PostBrowserStart() {
   ChromeBrowserMainParts_ChromiumImpl::PostBrowserStart();
 
+#if !BUILDFLAG(IS_ANDROID)
+  content::BraveClearBrowsingData::StartClearingOnProfileClose();
+#endif  // !BUILDFLAG(IS_ANDROID)
+
 #if BUILDFLAG(ENABLE_TOR)
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   base::FilePath tor_legacy_path =
@@ -177,6 +181,9 @@ void ChromeBrowserMainParts::PostBrowserStart() {
 
 void ChromeBrowserMainParts::PreShutdown() {
   content::BraveClearBrowsingData::ClearOnExit();
+#if !BUILDFLAG(IS_ANDROID)
+  content::BraveClearBrowsingData::StopClearingOnProfileClose();
+#endif  // !BUILDFLAG(IS_ANDROID)
   ChromeBrowserMainParts_ChromiumImpl::PreShutdown();
 }
 
