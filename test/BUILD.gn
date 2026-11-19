@@ -1930,7 +1930,6 @@ if (is_android) {
       "//components/browser_ui/util/android:java",
       "//components/browser_ui/widget/android:java",
       "//components/commerce/core/android:core_java",
-      "//components/embedder_support/android:browser_context_java",
       "//components/embedder_support/android:context_menu_java",
       "//components/external_intents/android:java",
       "//components/externalauth/android:java",
