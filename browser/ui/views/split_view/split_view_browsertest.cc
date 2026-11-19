@@ -619,20 +619,20 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, MiniToolbarStyleTest) {
   NewSplitTab();
 
   auto* mini_toolbar = active_mini_toolbar();
-  auto* menu_button = mini_toolbar->close_button_for_testing();
+  auto* close_button = mini_toolbar->close_button_for_testing();
 
   mini_toolbar->SetStyle(ToolbarStyle::kSplit);
   mini_toolbar->UpdateState(/*is_active*/ true, /*is_highlighted*/ false);
-  EXPECT_TRUE(menu_button->GetVisible());
+  EXPECT_TRUE(close_button->GetVisible());
 
-  // The menu button acts on the split, so it is offered only by a split.
   mini_toolbar->SetStyle(ToolbarStyle::kWebPanel);
   mini_toolbar->UpdateState(/*is_active*/ true, /*is_highlighted*/ false);
-  EXPECT_FALSE(menu_button->GetVisible());
+  EXPECT_TRUE(close_button->GetVisible());
 
+  // A standalone contents area is the whole tab, so it isn't closable here.
   mini_toolbar->SetStyle(ToolbarStyle::kStandalone);
   mini_toolbar->UpdateState(/*is_active*/ true, /*is_highlighted*/ false);
-  EXPECT_FALSE(menu_button->GetVisible());
+  EXPECT_FALSE(close_button->GetVisible());
 }
 
 class SplitViewWithRoundedCornersTest : public SplitViewBrowserTest {
