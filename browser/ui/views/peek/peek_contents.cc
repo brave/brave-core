@@ -232,6 +232,10 @@ void PeekContents::VisibleSecurityStateChanged(content::WebContents* source) {
   delegate_->OnPeekNavigationStateChanged();
 }
 
+bool PeekContents::TakeFocus(content::WebContents* source, bool reverse) {
+  return delegate_->OnPeekTakeFocus(reverse);
+}
+
 content::KeyboardEventProcessingResult PeekContents::PreHandleKeyboardEvent(
     content::WebContents* source,
     const input::NativeWebKeyboardEvent& event) {
@@ -245,6 +249,13 @@ content::KeyboardEventProcessingResult PeekContents::PreHandleKeyboardEvent(
     return content::KeyboardEventProcessingResult::HANDLED;
   }
   return content::KeyboardEventProcessingResult::NOT_HANDLED;
+}
+
+bool PeekContents::HandleKeyboardEvent(
+    content::WebContents* source,
+    const input::NativeWebKeyboardEvent& event) {
+  // A shortcut can close Peek and destroy `this` before this returns.
+  return delegate_->OnPeekHandleKeyboardEvent(source, event);
 }
 
 void PeekContents::RunFileChooser(

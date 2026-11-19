@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_PEEK_PEEK_CONTROLLER_IMPL_H_
 
 #include <memory>
+#include <optional>
 #include <vector>
 
 #include "base/memory/raw_ref.h"
@@ -23,6 +24,10 @@ class PeekView;
 namespace gfx {
 class Rect;
 }  // namespace gfx
+
+namespace input {
+struct NativeWebKeyboardEvent;
+}  // namespace input
 
 namespace tabs {
 class TabInterface;
@@ -59,6 +64,10 @@ class PeekControllerImpl : public PeekController,
   views::Widget* widget_for_testing();
   // The contents of `tab`'s Peek, shown or hidden.
   content::WebContents* GetWebContentsForTesting(tabs::TabInterface& tab);
+  // Widget activation isn't reliable in browser tests.
+  void set_has_focus_for_testing(bool has_focus) {
+    has_focus_for_testing_ = has_focus;
+  }
 
   // PeekController:
   bool CanOpenFrom(content::WebContents* source) override;
@@ -66,6 +75,7 @@ class PeekControllerImpl : public PeekController,
             const content::OpenURLParams& params) override;
   void OpenAsTab(content::WebContents& peek_contents) override;
   void Close() override;
+  bool HandleCommand(int command_id) override;
   bool IsShowing() const override;
   content::WebContents* GetWebContents() override;
 
@@ -107,7 +117,13 @@ class PeekControllerImpl : public PeekController,
   void OpenPeekAsTab(Peek& peek);
   void MoveToSplitView(Peek& peek);
   void MoveToTabOrClose(Peek& peek);
+  void MoveToTabAndExecuteCommand(int command_id, Peek& peek);
+  bool HandleKeyboardEvent(content::WebContents* source,
+                           const input::NativeWebKeyboardEvent& event);
 
+  // Whether the user is in the active tab's Peek: its widget is active, or the
+  // page is handing a key it didn't handle to the browser.
+  bool HasFocus() const;
   gfx::Rect GetTargetBoundsInScreen() const;
 
   const raw_ref<BrowserWindowInterface> browser_;
@@ -115,6 +131,8 @@ class PeekControllerImpl : public PeekController,
 
   std::vector<std::unique_ptr<Peek>> peeks_;
 
+  bool forwarding_keyboard_event_ = false;
+  std::optional<bool> has_focus_for_testing_;
   base::ScopedObservation<views::View, views::ViewObserver>
       contents_area_observation_{this};
   base::ScopedObservation<views::Widget, views::WidgetObserver>

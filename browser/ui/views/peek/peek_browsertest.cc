@@ -22,6 +22,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/peek/peek_features.h"
 #include "brave/browser/ui/peek/public/peek_controller.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/peek/peek_controller_impl.h"
 #include "brave/browser/ui/views/peek/peek_view.h"
 #include "brave/components/containers/buildflags/buildflags.h"
@@ -34,6 +35,7 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/navigator/browser_navigator.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/split_tab_metrics.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -141,6 +143,20 @@ class NavigationInitiatorObserver : public content::WebContentsObserver {
   bool is_renderer_initiated_ = false;
   std::optional<url::Origin> initiator_origin_;
 };
+
+#if !BUILDFLAG(IS_MAC)
+input::NativeWebKeyboardEvent CreateCtrlWEvent() {
+  input::NativeWebKeyboardEvent event(
+      blink::WebInputEvent::Type::kRawKeyDown,
+      blink::WebInputEvent::kControlKey,
+      blink::WebInputEvent::GetStaticTimeStampForTests());
+  event.windows_key_code = ui::VKEY_W;
+  event.dom_key = ui::DomKey::FromCharacter('w');
+  event.dom_code = static_cast<int>(ui::DomCode::US_W);
+  event.skip_if_unhandled = false;
+  return event;
+}
+#endif  // !BUILDFLAG(IS_MAC)
 
 }  // namespace
 
@@ -427,6 +443,101 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, EscapeClosesPeek) {
   EXPECT_FALSE(peek_contents());
 }
 
+// The card covers the active tab, so closing "the tab" from Peek means Peek.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, CloseTabShortcutClosesPeek) {
+  content::WebContents* source = active_contents();
+  OpenPeek(GetURL("b.com", "/title2.html"));
+  controller()->set_has_focus_for_testing(true);
+
+  EXPECT_TRUE(chrome::ExecuteCommand(browser(), IDC_CLOSE_TAB));
+  WaitForPeekClosed();
+  EXPECT_EQ(1, tab_strip_model()->count());
+  EXPECT_EQ(source, active_contents());
+}
+
+// A command on the page, pressed in Peek, acts on the Peek page once it's in a
+// tab, not on the tab hidden under the card.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, PageShortcutMovesToTabAndRuns) {
+  const GURL url = GetURL("b.com", "/title2.html");
+  OpenPeek(url);
+  content::WebContents* contents = peek_contents();
+  controller()->set_has_focus_for_testing(true);
+
+  content::TestNavigationObserver reload_observer(contents);
+  EXPECT_TRUE(chrome::ExecuteCommand(browser(), IDC_RELOAD));
+  WaitForMovedToTab(contents);
+  reload_observer.Wait();
+  EXPECT_EQ(url, contents->GetLastCommittedURL());
+  EXPECT_EQ(2, tab_strip_model()->count());
+}
+
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, CommandsFromOutsidePeekRunOnTab) {
+  content::WebContents* source = active_contents();
+  OpenPeek(GetURL("b.com", "/title2.html"));
+  content::WebContents* contents = peek_contents();
+  // E.g. the toolbar's reload button was clicked, which activates the window.
+  controller()->set_has_focus_for_testing(false);
+
+  content::TestNavigationObserver reload_observer(source);
+  EXPECT_TRUE(chrome::ExecuteCommand(browser(), IDC_RELOAD));
+  reload_observer.Wait();
+  EXPECT_TRUE(controller()->IsShowing());
+  EXPECT_EQ(contents, peek_contents());
+  EXPECT_EQ(1, tab_strip_model()->count());
+}
+
+#if !BUILDFLAG(IS_MAC)
+// On macOS, shortcuts with modifiers are menu key equivalents, which only fire
+// for real key events, so this covers the key path elsewhere.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, CloseTabKeyClosesPeek) {
+  content::WebContents* source = active_contents();
+  OpenPeek(GetURL("b.com", "/title2.html"));
+
+  // Handed to Peek's delegate as a key the page didn't handle. It isn't sent
+  // through the page: a hidden renderer, e.g. in an occluded window on the
+  // bots, never sends unhandled keys back.
+  const input::NativeWebKeyboardEvent event = CreateCtrlWEvent();
+  content::WebContents* contents = peek_contents();
+  EXPECT_TRUE(contents->GetDelegate()->HandleKeyboardEvent(contents, event));
+  WaitForPeekClosed();
+  EXPECT_EQ(1, tab_strip_model()->count());
+  EXPECT_EQ(source, active_contents());
+}
+
+class PeekSharedPinnedTabsBrowserTest : public PeekBrowserTest {
+ public:
+  PeekSharedPinnedTabsBrowserTest() {
+    shared_pinned_tabs_features_.InitAndEnableFeature(
+        tabs::kBraveSharedPinnedTabs);
+  }
+
+  void SetUpOnMainThread() override {
+    PeekBrowserTest::SetUpOnMainThread();
+    browser()->GetProfile()->GetPrefs()->SetBoolean(
+        brave_tabs::kSharedPinnedTab, true);
+  }
+
+ private:
+  base::test::ScopedFeatureList shared_pinned_tabs_features_;
+};
+
+// The window ignores Ctrl+W on a shared pinned tab, but in Peek it means Peek.
+IN_PROC_BROWSER_TEST_F(PeekSharedPinnedTabsBrowserTest,
+                       CloseTabKeyClosesPeekFromPinnedTab) {
+  content::WebContents* source = active_contents();
+  tab_strip_model()->SetTabPinned(0, true);
+  OpenPeek(GetURL("b.com", "/title2.html"));
+
+  const input::NativeWebKeyboardEvent event = CreateCtrlWEvent();
+  content::WebContents* contents = peek_contents();
+  EXPECT_TRUE(contents->GetDelegate()->HandleKeyboardEvent(contents, event));
+  WaitForPeekClosed();
+  EXPECT_EQ(1, tab_strip_model()->count());
+  EXPECT_EQ(source, active_contents());
+  EXPECT_TRUE(tab_strip_model()->IsTabPinned(0));
+}
+#endif  // !BUILDFLAG(IS_MAC)
+
 IN_PROC_BROWSER_TEST_F(PeekBrowserTest, CloseButtonClosesPeek) {
   OpenPeek(GetURL("b.com", "/title2.html"));
 
@@ -434,6 +545,22 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, CloseButtonClosesPeek) {
       controller()->peek_view_for_testing()->close_button_for_testing())
       .NotifyDefaultMouseClick();
   WaitForPeekClosed();
+}
+
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, TabOutOfPageMovesFocusToToolbar) {
+  OpenPeek(GetURL("b.com", "/title2.html"));
+
+  views::FocusManager* focus_manager =
+      controller()->peek_view_for_testing()->GetFocusManager();
+  ASSERT_TRUE(focus_manager);
+  views::View* page_view = focus_manager->GetFocusedView();
+  ASSERT_TRUE(page_view);
+
+  // The page hands focus back when Tab or Shift+Tab leaves it. It must stay
+  // inside Peek instead of being dropped.
+  content::WebContents* contents = peek_contents();
+  EXPECT_TRUE(contents->GetDelegate()->TakeFocus(contents, /*reverse=*/false));
+  EXPECT_NE(page_view, focus_manager->GetFocusedView());
 }
 
 IN_PROC_BROWSER_TEST_F(PeekBrowserTest, ClickOutsideCardClosesPeek) {

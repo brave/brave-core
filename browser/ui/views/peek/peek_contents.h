@@ -42,6 +42,16 @@ class PeekContents : public content::WebContentsDelegate,
     // ever shown in Peek, closes it instead.
     virtual void OnPeekMoveToTabOrCloseRequested() = 0;
 
+    // Moves focus out of the page into the card's toolbar (or back around).
+    // Returns false if there is nowhere to move it.
+    virtual bool OnPeekTakeFocus(bool reverse) = 0;
+
+    // Handles a key the page didn't, e.g. a browser shortcut. The shortcut
+    // may destroy the PeekContents.
+    virtual bool OnPeekHandleKeyboardEvent(
+        content::WebContents* source,
+        const input::NativeWebKeyboardEvent& event) = 0;
+
    protected:
     virtual ~Delegate() = default;
   };
@@ -88,9 +98,12 @@ class PeekContents : public content::WebContentsDelegate,
   void NavigationStateChanged(content::WebContents* source,
                               content::InvalidateTypes changed_flags) override;
   void VisibleSecurityStateChanged(content::WebContents* source) override;
+  bool TakeFocus(content::WebContents* source, bool reverse) override;
   content::KeyboardEventProcessingResult PreHandleKeyboardEvent(
       content::WebContents* source,
       const input::NativeWebKeyboardEvent& event) override;
+  bool HandleKeyboardEvent(content::WebContents* source,
+                           const input::NativeWebKeyboardEvent& event) override;
   void RunFileChooser(content::RenderFrameHost* render_frame_host,
                       scoped_refptr<content::FileSelectListener> listener,
                       const blink::mojom::FileChooserParams& params) override;

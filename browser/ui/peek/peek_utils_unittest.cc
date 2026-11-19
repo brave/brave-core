@@ -6,6 +6,7 @@
 #include "brave/browser/ui/peek/peek_utils.h"
 
 #include "base/memory/scoped_refptr.h"
+#include "chrome/app/chrome_command_ids.h"
 #include "content/public/browser/initiator_navigation_state.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/common/referrer.h"
@@ -105,6 +106,20 @@ TEST(PeekUtilsTest, CanOpenInPeek) {
   params.initiator_origin = url::Origin::Create(GURL("https://a.com/"));
   params.url = GURL("data:text/html,hi");
   EXPECT_FALSE(CanOpenInPeek(params));
+}
+
+TEST(PeekUtilsTest, IsPageCommand) {
+  EXPECT_TRUE(IsPageCommand(IDC_FIND));
+  EXPECT_TRUE(IsPageCommand(IDC_PRINT));
+  EXPECT_TRUE(IsPageCommand(IDC_RELOAD));
+  EXPECT_TRUE(IsPageCommand(IDC_BACK));
+  EXPECT_TRUE(IsPageCommand(IDC_ZOOM_PLUS));
+  // Closing the tab is handled separately: it closes Peek.
+  EXPECT_FALSE(IsPageCommand(IDC_CLOSE_TAB));
+  // Window commands don't act on a page.
+  EXPECT_FALSE(IsPageCommand(IDC_NEW_TAB));
+  EXPECT_FALSE(IsPageCommand(IDC_NEW_WINDOW));
+  EXPECT_FALSE(IsPageCommand(IDC_SELECT_NEXT_TAB));
 }
 
 }  // namespace peek

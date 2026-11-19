@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/peek/peek_utils.h"
 
+#include "chrome/app/chrome_command_ids.h"
 #include "content/public/browser/page_navigator.h"
 #include "ui/base/window_open_disposition.h"
 #include "url/gurl.h"
@@ -32,6 +33,35 @@ bool CanOpenInPeek(const content::OpenURLParams& params) {
   return IsPeekableURL(params.url) && params.initiator_origin.has_value() &&
          IsPeekableInitiator(*params.initiator_origin) &&
          params.initiator_navigation_state;
+}
+
+bool IsPageCommand(int command_id) {
+  switch (command_id) {
+    case IDC_BACK:
+    case IDC_FORWARD:
+    case IDC_RELOAD:
+    case IDC_RELOAD_BYPASSING_CACHE:
+    case IDC_RELOAD_CLEARING_CACHE:
+    case IDC_STOP:
+    case IDC_SAVE_PAGE:
+    case IDC_PRINT:
+    case IDC_BASIC_PRINT:
+    case IDC_FIND:
+    case IDC_FIND_NEXT:
+    case IDC_FIND_PREVIOUS:
+    case IDC_ZOOM_PLUS:
+    case IDC_ZOOM_NORMAL:
+    case IDC_ZOOM_MINUS:
+    case IDC_BOOKMARK_THIS_TAB:
+    case IDC_VIEW_SOURCE:
+    case IDC_DEV_TOOLS:
+    case IDC_DEV_TOOLS_CONSOLE:
+    case IDC_DEV_TOOLS_INSPECT:
+    case IDC_DEV_TOOLS_TOGGLE:
+      return true;
+    default:
+      return false;
+  }
 }
 
 }  // namespace peek
