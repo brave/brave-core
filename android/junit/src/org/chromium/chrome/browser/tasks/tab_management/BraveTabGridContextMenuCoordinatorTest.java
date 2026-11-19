@@ -48,6 +48,7 @@ import org.chromium.components.tab_group_sync.LocalTabGroupId;
 import org.chromium.components.tab_group_sync.SavedTabGroup;
 import org.chromium.components.tab_group_sync.SavedTabGroupTab;
 import org.chromium.components.tab_group_sync.TabGroupSyncService;
+import org.chromium.components.tab_groups.TabGroupId;
 import org.chromium.ui.base.TestActivity;
 import org.chromium.ui.listmenu.ListMenuItemProperties;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
@@ -105,8 +106,8 @@ public class BraveTabGridContextMenuCoordinatorTest {
         // GroupWindowChecker walks the sync service, so an unstubbed getAllGroupIds() would
         // return null and NPE before any menu item is built. A second group is needed because
         // the menu title depends on a group other than the tab's own existing.
-        when(mTabModel.containsTabGroup(mTabGroupId)).thenReturn(true);
-        when(mTabModel.containsTabGroup(otherGroupId)).thenReturn(true);
+        when(mTabModel.containsTabGroup(TabGroupId.fromRawToken(mTabGroupId))).thenReturn(true);
+        when(mTabModel.containsTabGroup(TabGroupId.fromRawToken(otherGroupId))).thenReturn(true);
         SavedTabGroup savedGroup = new SavedTabGroup();
         savedGroup.syncId = SYNC_GROUP_ID;
         savedGroup.localId = new LocalTabGroupId(mTabGroupId);
