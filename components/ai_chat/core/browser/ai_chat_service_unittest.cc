@@ -2151,7 +2151,7 @@ TEST_P(AIChatServiceUnitTest, GenerationState_StaysGeneratingThroughToolLoop) {
       base::BindLambdaForTesting(
           [&] { ai_chat_service_->OnRequestInProgressChanged(other, true); }));
 
-  // Completed as soon as the loop stops, without waiting for a later task.
+  // Completed as soon as the loop stops.
   ExpectGenerationState(*client_, uuid,
                         mojom::ConversationGenerationState::kCompletedNotViewed,
                         base::BindLambdaForTesting([&] {
@@ -2194,8 +2194,6 @@ TEST_P(AIChatServiceUnitTest,
   auto resolve_queued = queued_generation.Take();
   EXPECT_EQ(show_count, 0);
 
-  // Observer messages arrive in order, so once a later change arrives, any
-  // change for |handler| would already have been delivered.
   ConversationHandler* other = CreateConversation();
   ExpectGenerationState(
       *client_, other->get_conversation_uuid(),

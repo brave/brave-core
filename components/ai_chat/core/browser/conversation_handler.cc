@@ -2425,9 +2425,8 @@ void ConversationHandler::CompleteGeneration(
                          weak_ptr_factory_.GetWeakPtr()));
     }
 
-    // The finished request isn't reported yet: a queued request or the next
-    // tool reports its own start, and MaybeRespondToNextToolUseRequest reports
-    // the conversation idle if neither starts.
+    // Not reported idle yet: MaybeRespondToNextToolUseRequest does that if
+    // nothing else starts.
     MaybePopPendingRequests();
     if (!MaybeRespondToNextToolUseRequest(thread_uuid)) {
       // Inform tool providers that there are no more tool use requests to
@@ -2442,10 +2441,9 @@ void ConversationHandler::CompleteGeneration(
     }
   } else {
     // Failure should stop any tool handling, and relay to ToolProviders because
-    // we can't resume. User will have to resubmit. Stop before reporting idle
-    // so observers don't count a challenge on the stopped task as awaiting
-    // input.
+    // we can't resume. User will have to resubmit.
     StopTask();
+    // After StopTask(), so its challenge doesn't count as awaiting input.
     OnAPIRequestInProgressChanged();
   }
 }
@@ -2469,8 +2467,7 @@ bool ConversationHandler::MaybeAutoRetry(
 
 void ConversationHandler::RetryAfterConnectionIssue(
     const std::optional<std::string>& thread_uuid) {
-  // The retry continues the same request, so the conversation is only reported
-  // idle if it isn't resubmitted.
+  // Only reported finished if the retry doesn't restart the request.
   is_request_in_progress_ = false;
   thread_uuid_in_progress_ = std::nullopt;
   StopTask();
@@ -3000,11 +2997,8 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest(
   // - Any tool use requests require user interaction (permission challenge
   //   or providing output via UI)
 
-  // The flag is cleared without notifying, so the conversation isn't reported
-  // idle between steps. The next tool or generation reports its own start, and
-  // if neither starts, the loop has stopped and that is reported on the way
-  // out. If a request started while the tool ran, the conversation isn't idle,
-  // so the UI is told the tool finished now.
+  // Cleared without notifying so the loop isn't reported idle between steps,
+  // unless a request started while the tool ran.
   if (std::exchange(is_tool_use_in_progress_, false) &&
       is_request_in_progress_) {
     OnStateForConversationEntriesChanged();
@@ -3019,8 +3013,7 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest(
       OnAPIRequestInProgressChanged();
     }
   };
-  // Reports a tool starting, with any task state change first so that no
-  // client sees the request finished while the task still looks unstarted.
+  // Reports the task state first, so no client sees it unstarted mid-loop.
   auto start_tool_use = [&] {
     is_tool_use_in_progress_ = true;
     thread_uuid_in_progress_ = thread_uuid;
@@ -3069,9 +3062,8 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest(
       // before the user-interaction checks below - UI that must not change
       // mid-loop (e.g. the website tools dialog's permission pickers) relies
       // on the task state to know that. The cost is that a tool which only
-      // needs user interaction also puts the Task pause/stop UI up. The change
-      // is reported once a tool starts or on the way out: before then it would
-      // show the conversation idle.
+      // needs user interaction also puts the Task pause/stop UI up.
+      // It's reported when a tool starts, so the loop never looks idle.
       if (tool_use_task_state_ == mojom::TaskState::kNone) {
         tool_use_task_state_ = mojom::TaskState::kRunning;
         task_state_changed = true;
