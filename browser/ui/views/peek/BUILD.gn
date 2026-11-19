@@ -88,6 +88,7 @@ source_set("browser_tests") {
 
   sources = [
     "peek_browsertest.cc",
+    "peek_interactive_browsertest.cc",
   ]
 
   deps = [
@@ -104,9 +105,11 @@ source_set("browser_tests") {
     "//chrome/browser/ui/tabs:tab_enums",
     "//chrome/browser/ui/tabs:tab_strip",
     "//chrome/browser/ui/views/frame:browser_view_header",
+    "//chrome/browser/ui/views/interaction",
     "//chrome/common:constants",
     "//chrome/test:test_support",
     "//chrome/test:test_support_ui",
+    "//chrome/test/interaction",
     "//components/input",
     "//components/prefs",
     "//components/split_tabs",
@@ -118,6 +121,7 @@ source_set("browser_tests") {
     "//testing/gtest",
     "//third_party/blink/public/common",
     "//ui/base",
+    "//ui/base/interaction",
     "//ui/events",
     "//ui/gfx",
     "//ui/gfx:test_support",
