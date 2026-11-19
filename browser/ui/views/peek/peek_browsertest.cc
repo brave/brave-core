@@ -25,6 +25,7 @@
 #include "build/build_config.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ssl/chrome_security_state_util.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/navigator/browser_navigator.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
@@ -35,6 +36,8 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/input/native_web_keyboard_event.h"
 #include "components/prefs/pref_service.h"
+#include "components/security_interstitials/content/security_interstitial_tab_helper.h"
+#include "components/security_state/core/security_state.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
@@ -477,6 +480,84 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, CannotOpenFromAnotherWindow) {
       ui_test_utils::NavigateToURL(other, GetURL("a.com", "/title1.html")));
   EXPECT_FALSE(controller()->CanOpenFrom(
       other->GetTabStripModel()->GetActiveWebContents()));
+}
+
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, BlocksNonHttpNavigations) {
+  const GURL peek_url = GetURL("b.com", "/title1.html");
+  OpenPeek(peek_url);
+  content::WebContents* contents = peek_contents();
+
+  // Top-level data: navigations from the renderer are already blocked before a
+  // navigation starts, so they aren't covered here.
+  for (const char* script : {
+           "location.href = URL.createObjectURL(new Blob(['<p>hi</p>'], "
+           "{type: 'text/html'}));",
+           "location.href = 'about:blank';",
+           "location.href = 'mailto:peek@example.com';",
+       }) {
+    SCOPED_TRACE(script);
+    content::TestNavigationObserver observer(contents);
+    ASSERT_TRUE(content::ExecJs(contents, script));
+    observer.Wait();
+    EXPECT_FALSE(observer.last_navigation_succeeded());
+    EXPECT_EQ(peek_url, contents->GetLastCommittedURL());
+  }
+  EXPECT_TRUE(controller()->IsShowing());
+}
+
+// Server redirects to external protocols are allowed in tabs, so they have to
+// be caught by the Peek throttle.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, BlocksRedirectToExternalProtocol) {
+  const GURL peek_url = GetURL("b.com", "/title1.html");
+  OpenPeek(peek_url);
+  content::WebContents* contents = peek_contents();
+
+  content::TestNavigationObserver observer(contents);
+  ASSERT_TRUE(content::ExecJs(
+      contents,
+      content::JsReplace(
+          "location.href = $1;",
+          GetURL("b.com", "/server-redirect?mailto:peek@example.com"))));
+  observer.Wait();
+  EXPECT_FALSE(observer.last_navigation_succeeded());
+  EXPECT_EQ(peek_url, contents->GetLastCommittedURL());
+}
+
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, HttpPageIsNotMarkedSecure) {
+  const GURL url = GetURL("b.com", "/title2.html");
+  OpenPeek(url);
+  ASSERT_EQ(url, peek_contents()->GetLastCommittedURL());
+  EXPECT_NE(security_state::SECURE,
+            chrome_security_state::GetSecurityLevel(peek_contents()));
+}
+
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, HttpsPageIsMarkedSecure) {
+  OpenPeek(https_server_.GetURL("b.test", "/title2.html"));
+  EXPECT_EQ(security_state::SECURE,
+            chrome_security_state::GetSecurityLevel(peek_contents()));
+}
+
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, CertErrorShowsInterstitial) {
+  net::EmbeddedTestServer bad_server(net::EmbeddedTestServer::TYPE_HTTPS);
+  bad_server.SetSSLConfig(net::EmbeddedTestServer::CERT_MISMATCHED_NAME);
+  bad_server.ServeFilesFromSourceDirectory("chrome/test/data");
+  ASSERT_TRUE(bad_server.Start());
+
+  const GURL url = bad_server.GetURL("b.test", "/title2.html");
+  content::TestNavigationObserver observer(url);
+  observer.StartWatchingNewWebContents();
+  ASSERT_TRUE(controller()->Open(*active_contents(), LinkParams(url)));
+  observer.Wait();
+  content::WebContents* contents = peek_contents();
+  ASSERT_TRUE(contents);
+
+  auto* helper =
+      security_interstitials::SecurityInterstitialTabHelper::FromWebContents(
+          contents);
+  ASSERT_TRUE(helper);
+  EXPECT_TRUE(helper->IsDisplayingInterstitial());
+  EXPECT_EQ(security_state::DANGEROUS,
+            chrome_security_state::GetSecurityLevel(contents));
 }
 
 // Peek navigations carry the opener's origin, so SameSite and Fetch Metadata

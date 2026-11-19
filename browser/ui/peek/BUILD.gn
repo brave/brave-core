@@ -27,6 +27,8 @@ source_set("peek") {
   sources = [
     "peek_features.cc",
     "peek_features.h",
+    "peek_navigation_throttle.cc",
+    "peek_navigation_throttle.h",
     "peek_utils.cc",
     "peek_utils.h",
   ]
