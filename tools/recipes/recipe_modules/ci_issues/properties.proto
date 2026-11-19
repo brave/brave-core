@@ -1,0 +1,25 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+syntax = "proto3";
+
+package recipe_modules.brave.ci_issues;
+
+// Where CI files what a build found. Each repository is CI's to give: none
+// files nothing of that kind.
+message InputProperties {
+  // The repository to file sanitiser findings in, as `owner/name`.
+  string sanitizer_repository = 1;
+
+  // The repository to file failing tests in, as `owner/name`.
+  string test_repository = 2;
+
+  // The build's page, which issues and comments link to.
+  string build_url = 3;
+
+  // The labels every issue gets besides its own, e.g. the branch it was
+  // built from.
+  repeated string labels = 4;
+}

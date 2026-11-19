@@ -13,6 +13,7 @@ import post_process
 from recipe_api import RecipeScriptApi
 from recipe_modules import (
     brave_core_checkout,
+    ci_issues,
     brave_tests,
     brave_tests_builder_config,
     chromium_checkout,
@@ -26,6 +27,7 @@ from recipe_test_api import RecipeTestApi
 @dataclass
 class DEPS(RecipeScriptApi):
     brave_core_checkout: brave_core_checkout.API
+    ci_issues: ci_issues.API
     brave_tests: brave_tests.API
     brave_tests_builder_config: brave_tests_builder_config.API
     sanitizer_findings: sanitizer_findings.API
@@ -51,7 +53,12 @@ def RunSteps(api: DEPS) -> None:
     api.brave_core_checkout.ensure_checkout()
     api.brave_core_checkout.compile()
     test_run = api.brave_tests.run_tests(builder_id)
-    api.sanitizer_findings.report(test_run.sanitizer_reports)
+    findings = api.sanitizer_findings.report(test_run.sanitizer_reports)
+    api.ci_issues.file(
+        builder=builder_id.builder,
+        findings=findings,
+        outcomes=test_run.outcomes,
+    )
     api.brave_tests.raise_on_failure(test_run)
 
 
