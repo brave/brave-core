@@ -18,6 +18,7 @@ if TYPE_CHECKING:
 
     import config_types
     from recipe_modules import isolate
+    from step_data import StepData
 
 # Brave's suites, on top of Chromium's.
 ISOLATE_MAP = 'brave/infra/config/generated/testing/gn_isolate_map.pyl'
@@ -40,6 +41,14 @@ class Isolate:
             'command': list(self.command),
             'cwd': self.cwd,
         }
+
+    @classmethod
+    def from_json(cls, data: dict) -> Isolate:
+        return cls(
+            digest=data['digest'],
+            command=tuple(data['command']),
+            cwd=data['cwd'],
+        )
 
 
 class IsolateApi(RecipeApi):
@@ -83,6 +92,30 @@ class IsolateApi(RecipeApi):
                 'isolates'
             ] = {name: i.to_json() for name, i in isolates.items()}
         return isolates
+
+    def run(
+        self, step_name: str, isolate: Isolate, args: Sequence[str] = ()
+    ) -> StepData:
+        """Downloads *isolate*'s tree into a new directory and runs its
+        command there, with *args* after it.
+
+        Args:
+            step_name: The step the download and the run nest under.
+            isolate: The suite to run.
+            args: Arguments to add to its command.
+
+        Returns:
+            The run's step, which does not raise when the command fails.
+        """
+        with self.m.step.nest(step_name):
+            tree = self.m.path.mkdtemp('isolate')
+            self.m.cas.download('download', isolate.digest, tree)
+            # Commands start with `vpython3`, which depot_tools puts on PATH.
+            self.m.depot_tools.ensure_on_path()
+            with self.m.context(cwd=tree / isolate.cwd):
+                return self.m.step(
+                    'run', [*isolate.command, *args], check=False
+                )
 
     def _isolate(
         self, src: str | Path | config_types.Path, build_dir: str, target: str

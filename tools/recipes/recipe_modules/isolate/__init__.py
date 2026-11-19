@@ -8,9 +8,9 @@ from dataclasses import dataclass
 
 from PB.recipe_modules.brave.isolate.properties import InputProperties
 from recipe_api import RecipeScriptApi
-from recipe_modules import cas, context, depot_tools, file, step
+from recipe_modules import cas, context, depot_tools, file, path, step
 
-from .api import IsolateApi as API
+from .api import Isolate, IsolateApi as API
 from .test_api import IsolateTestApi as TEST_API
 
 
@@ -20,6 +20,7 @@ class DEPS(RecipeScriptApi):
     context: context.API
     depot_tools: depot_tools.API
     file: file.API
+    path: path.API
     step: step.API
 
 

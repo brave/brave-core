@@ -1,5 +1,9 @@
 [
   {
+    "cmd": [],
+    "name": "suite"
+  },
+  {
     "cmd": [
       "git",
       "clone",
@@ -8,13 +12,13 @@
       "https://chromium.googlesource.com/chromium/tools/depot_tools",
       "[WORKSPACE]/b/src/third_party/depot_tools"
     ],
-    "name": "clone depot_tools"
+    "name": "suite.clone depot_tools"
   },
   {
     "cmd": [
       "gclient"
     ],
-    "name": "verify gclient"
+    "name": "suite.verify gclient"
   },
   {
     "cmd": [
@@ -25,7 +29,7 @@
       "-ensure-file",
       "infra/rbe/client/${platform} re_client_version:0.187.0.ad10b508-gomaip\n"
     ],
-    "name": "install infra/rbe/client/${platform}"
+    "name": "suite.install infra/rbe/client/${platform}"
   },
   {
     "cmd": [
@@ -46,7 +50,7 @@
       "--path",
       "[WORKSPACE]/rc/isolate_tmp_1"
     ],
-    "name": "download"
+    "name": "suite.download"
   },
   {
     "cmd": [
@@ -55,7 +59,7 @@
       "./foo_tests"
     ],
     "cwd": "[WORKSPACE]/rc/isolate_tmp_1/out/Release",
-    "name": "run"
+    "name": "suite.run"
   },
   {
     "name": "$result"

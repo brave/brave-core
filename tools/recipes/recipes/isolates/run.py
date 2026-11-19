@@ -15,16 +15,13 @@ from dataclasses import dataclass
 import post_process
 from PB.recipes.brave.isolates.run import InputProperties
 from recipe_api import RecipeScriptApi
-from recipe_modules import cas, context, depot_tools, path, step
+from recipe_modules import cas, isolate, step
 from recipe_test_api import RecipeTestApi
 
 
 @dataclass
 class DEPS(RecipeScriptApi):
-    cas: cas.API
-    context: context.API
-    depot_tools: depot_tools.API
-    path: path.API
+    isolate: isolate.API
     step: step.API
 
 
@@ -39,12 +36,16 @@ PROPERTIES = InputProperties
 def RunSteps(api: DEPS, properties: InputProperties) -> None:
     if not properties.digest or not properties.command:
         raise ValueError('isolates/run needs `digest` and `command`')
-    tree = api.path.mkdtemp('isolate')
-    api.cas.download('download', properties.digest, tree)
-    # Commands start with `vpython3`, which depot_tools puts on PATH.
-    api.depot_tools.ensure_on_path()
-    with api.context(cwd=tree / properties.cwd):
-        api.step('run', list(properties.command))
+    result = api.isolate.run(
+        'suite',
+        isolate.Isolate(
+            digest=properties.digest,
+            command=tuple(properties.command),
+            cwd=properties.cwd,
+        ),
+    )
+    if result.retcode:
+        raise api.step.StepFailure(f'the suite failed ({result.retcode})')
 
 
 def GenTests(api: TEST_DEPS):
@@ -58,15 +59,26 @@ def GenTests(api: TEST_DEPS):
         api.cas.configured(),
         api.post_process(
             post_process.StepCommandContains,
-            'download',
+            'suite.download',
             ['--digest', f'{"a" * 64}/498'],
         ),
         api.post_process(
             post_process.StepCommandRE,
-            'run',
+            'suite.run',
             ['vpython3', r'\.\./\.\./testing/test_env\.py', r'\./foo_tests'],
         ),
         api.post_process(post_process.StatusSuccess),
+    )
+    yield api.test(
+        'fails',
+        api.properties(
+            digest=f'{"a" * 64}/498', command=['./foo_tests'], cwd='out/Release'
+        ),
+        api.cas.configured(),
+        api.step_data('suite.run', retcode=1),
+        api.post_process(post_process.StatusFailure),
+        api.post_process(post_process.DropExpectation),
+        status='FAILURE',
     )
     yield api.test(
         'no digest',
