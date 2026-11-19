@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/tabs/BUILD.gn b/chrome/browser/ui/views/tabs/BUILD.gn
+index 0337c81547c6d3aaa717699a1a854175c78b5d86..c4cefd5e4fa56241ee15dfb4c7e59948a659d1e8 100644
+--- a/chrome/browser/ui/views/tabs/BUILD.gn
++++ b/chrome/browser/ui/views/tabs/BUILD.gn
+@@ -20,6 +20,7 @@ source_set("base") {
+ 
+   deps = [
+     "//base",
++    "//brave/components/tabs",
+     "//chrome/browser/ui/tabs",
+     "//chrome/browser/ui/views/tabs/shared",
+     "//components/split_tabs",

@@ -1,0 +1,35 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add getters and setters for the vertical and tree tab modes
+    add_to_public:
+      class_name: TabStripLayoutHelper
+      code: |
+        void set_use_vertical_tabs(bool vertical) { use_vertical_tabs_ = vertical; }
+        void set_tab_strip(TabStrip* tab_strip) { tab_strip_ = tab_strip; }
+        void set_use_tree_tabs(bool tree) { use_tree_tabs_ = tree; }
+
+        std::map<tab_groups::TabGroupId, gfx::Rect>& group_header_ideal_bounds() {
+          return group_header_ideal_bounds_;
+        }
+        BraveTabStrip* GetBraveTabStrip();
+
+  - description: Let BraveTabContainer reach the private vertical tab state.
+    add_friend:
+      class_name: TabStripLayoutHelper
+      friend_type: class BraveTabContainer
+
+  - description: Add the vertical tab methods and state.
+    add_to_protected:
+      class_name: TabStripLayoutHelper
+      code: |-
+        void FillGroupInfo(std::vector<TabWidthConstraints>& tab_widths);
+        void FillNestingInfo(std::vector<TabWidthConstraints>& tab_widths);
+
+        bool use_vertical_tabs_ = false;
+        bool use_tree_tabs_ = false;
+        raw_ptr<TabStrip> tab_strip_ = nullptr;

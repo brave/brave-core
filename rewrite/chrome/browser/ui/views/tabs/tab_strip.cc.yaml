@@ -5,21 +5,33 @@
 
 substitutions:
   - description:
-      'Insert Brave-specific macro in CalculateBoundsForDraggedViews()'
-    regex:
-      re_pattern:
-        '(std::vector<gfx::Rect> CalculateBoundsForDraggedViews\(\s*const
-        std::vector<views::View\*>& views\) override {)'
-      replace:
-        '\1\n    BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS'
+      'Use Brave vertical tabs bounds in CalculateBoundsForDraggedViews() when
+      applicable'
+    preempt_function_impl:
+      function_name: CalculateBoundsForDraggedViews
+      code: |-
+        if (auto bounds = tabs::MaybeCalculateBoundsForVerticalDraggedViews(
+                views, tab_strip_)) {
+          return *bounds;
+        }
 
-  - description: 'Insert Brave-specific macro in CalculateInsertionIndex()'
+  - description:
+      'Skip the upstream logic in CalculateInsertionIndex() when Brave handled
+      the candidate for vertical tabs'
     regex:
       re_pattern:
         '(int CalculateInsertionIndex\(const gfx::Rect&
         dragged_bounds,[\s\S]*continue;\n\s*}\n)(\n\s*// If there)'
-      replace:
-        '\1\n      BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_INSERTION_INDEX\2'
+      replace: |-
+        \1
+              if (tabs::MaybeUpdateInsertionIndexForVerticalTabs(
+                      dragged_bounds, first_dragged_tab_index, num_dragged_tabs,
+                      GetTabAt(first_dragged_tab_index)->group().has_value(),
+                      candidate_index, tab_strip_->controller_.get(),
+                      tab_strip_->tab_container_.get(), min_distance,
+                      min_distance_index, tab_strip_)) {
+                continue;
+              }\2
 
   - description:
       'allow to expand tab groups only when tabstrip is editable inside
@@ -39,3 +51,14 @@ substitutions:
     regex:
       pattern: 'std::make_unique<TabDragController>()'
       replace: 'std::make_unique<BraveTabDragController>()'
+
+  - description: Create BraveTab instead of Tab in AddTabsAt().
+    regex:
+      pattern: 'std::make_unique<Tab>(tab_data.handle, this)'
+      replace: 'std::make_unique<BraveTab>(tab_data.handle, this)'
+
+  - description: Use BraveTabHoverCardController.
+    count: 2 # The constructor parameter and the unique_ptr in the constructor.
+    rename_class:
+      class_name: TabHoverCardController
+      rename: BraveTabHoverCardController
