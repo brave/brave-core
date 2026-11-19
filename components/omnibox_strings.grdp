@@ -54,6 +54,9 @@
   <message name="IDS_ACC_CONTEXTUAL_SEARCH_OPEN_LENS_ACTION" desc="Announcement when lens action button is focused">
     Ask Brave about this page button, activate to ask Brave about this page
   </message>
+  <message name="IDS_ACC_CONTEXTUAL_SEARCH_OPENS_IN_SIDE_PANEL_SUFFIX" desc="Suffix for the spoken description of the 'Ask Brave about this page' omnibox suggestion and contextual suggestions, informing the user that selecting the suggestion opens the results in the browser side panel." is_accessibility_with_no_ui="true">
+    <ph name="SUGGESTION_TEXT">$1<ex>Ask Brave about this page</ex></ph>, opens in side panel
+  </message>
 
   <!-- AI Mode Entrypoint Strings -->
   <message name="IDS_AI_MODE_ENTRYPOINT_LABEL" desc="The label of the omnibox AI mode entrypoint" formatter_data="android_java">
@@ -141,6 +144,9 @@
   <message name="IDS_OFFLINE_VERBOSE_STATE" desc="Text for the Offline Omnibox Verbose state. Displayed when the current page is loaded from a previously-downloaded cache.">
     Offline
   </message>
+  <message name="IDS_OMNIBOX_NAVATTACH_TABS" desc="The text displayed in the omnibox attachments popup. When clicked - opens tabs picker." formatter_data="android_java">
+    Tabs
+  </message>
   <if expr="is_ios or is_android or enable_vr">
     <message name="IDS_OMNIBOX_EMPTY_HINT" desc="The text displayed in the omnibox when it is empty." formatter_data="android_java">
       Search or type URL
@@ -164,9 +170,6 @@
       <message name="IDS_OMNIBOX_NAVATTACH_ADD_FILES" desc="The text displayed in the omnibox attachments popup. When clicked - opens file picker." formatter_data="android_java">
         Add files
       </message>
-      <message name="IDS_OMNIBOX_NAVATTACH_TABS" desc="The text displayed in the omnibox attachments popup. When clicked - opens tabs picker." formatter_data="android_java">
-        Tabs
-      </message>
       <message name="IDS_OMNIBOX_NAVATTACH_DRIVE" desc="The text displayed in the omnibox attachments popup. When clicked - opens drive file picker." formatter_data="android_java">
         Drive
       </message>
@@ -178,9 +181,6 @@
       </message>
       <message name="IDS_FUSEBOX_UPLOAD_FAILED" desc="The text displayed in a snackbar when an attachment fails to upload" formatter_data="android_java">
         Unable to add attachments
-      </message>
-      <message name="IDS_OMNIBOX_EMPTY_HINT_FOR_IMAGE_GENERATION" desc="The text displayed in the omnibox when it is empty and image generation is selected." formatter_data="android_java">
-        Describe your image
       </message>
       <message name="IDS_FUSEBOX_RECENT_TABS_HEADER" desc="The text displayed in the omnibox attachments popup as a header for the most recent tabs list." formatter_data="android_java">
         Add recent tabs
@@ -449,6 +449,7 @@
   <message name="IDS_FUSEBOX_CANVAS_SUBTEXT" desc="Subtext displayed under the Canvas button in the Fusebox popup." formatter_data="android_java">
     Build and code
   </message>
+  <message name="IDS_FUSEBOX_PTM_TOOL_SUBTEXT" desc="Optional subtext displayed under an additional tool button in the Fusebox popup." formatter_data="android_java" translateable="false" />
   <message name="IDS_NTP_SEARCH_BOX_HINT_MAKE_A_PLAN" desc="Cycling hint text displayed inside the New Tab Page search box to suggest using AI Mode to make a plan." formatter_data="android_java">
     Make a plan
   </message>
@@ -661,11 +662,8 @@
   <message name="IDS_OMNIBOX_BOOKMARKS_SCOPE_PLACEHOLDER_TEXT" desc="The string displayed in the omnibox as placeholder text when the user input is empty and the user is in the @bookmarks scope.">
     Enter a word or two
   </message>
-  <message name="IDS_OMNIBOX_HISTORY_SCOPE_PLACEHOLDER_TEXT" desc="The string displayed in the omnibox as placeholder text when the user input is empty and the user is in the @history scope and hasn't opted into the history AI setting.">
+  <message name="IDS_OMNIBOX_HISTORY_SCOPE_PLACEHOLDER_TEXT" desc="The string displayed in the omnibox as placeholder text when the user input is empty and the user is in the @history scope.">
     Enter a word or two
-  </message>
-  <message name="IDS_OMNIBOX_HISTORY_EMBEDDINGS_SCOPE_PLACEHOLDER_TEXT" desc="The string displayed in the omnibox as placeholder text when the user input is empty and the user is in the @history scope and has opted into the history AI setting.">
-    In a few words, describe what you're searching for
   </message>
   <message name="IDS_OMNIBOX_TABS_SCOPE_PLACEHOLDER_TEXT" desc="The string displayed in the omnibox as placeholder text when the user input is empty and the user is in the @tabs scope.">
     Enter a word or two
