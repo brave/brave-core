@@ -51,7 +51,6 @@ type UIHandlerActions = Pick<
   | 'hasMemory'
   | 'deleteMemory'
   | 'openAIChatCustomizationSettings'
-  | 'openURLFromResponse'
   | 'goPremium'
   | 'refreshPremiumSession'
   | 'openModelSupportUrl'

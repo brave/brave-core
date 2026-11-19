@@ -7,7 +7,6 @@ module ai_chat.mojom;
 
 import "brave/components/ai_chat/core/common/mojom/common.mojom";
 import "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom";
-import "url/mojom/url.mojom";
 
 // Interfaces for communication between the untrusted content frame and both
 // the Browser and the parent trusted UI frame.
@@ -168,10 +167,6 @@ interface UntrustedUIHandler {
   OpenSearchURL(string query);
 
   OpenLearnMoreAboutBraveSearchWithLeo();
-
-  // Opens a URL linked from an assistant response or web search event in the
-  // response. Could be any http/https destination.
-  OpenURLFromResponse(url.mojom.Url url);
 
   // Open AI Chat customization settings page
   OpenAIChatCustomizationSettings();

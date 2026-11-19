@@ -86,13 +86,6 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
                  base::EscapeQueryParamValue(search_query, true)));
   }
 
-  void OpenURLFromResponse(const GURL& url) override {
-    if (!url.is_valid() || !url.SchemeIs(url::kHttpsScheme)) {
-      return;
-    }
-    OpenURL(url);
-  }
-
   void GoPremium() override {
     id<AIChatUIHandlerBridge> bridge =
         ai_chat::UIHandlerBridgeHolder::FromWebState(web_ui_->GetWebState())

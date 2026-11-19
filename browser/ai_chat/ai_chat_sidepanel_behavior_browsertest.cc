@@ -1022,6 +1022,12 @@ class AIChatSidePanelLinkBrowserTest : public AIChatGlobalSidePanelBrowserTest {
         "b.com", "/echoheader?Cookie&Sec-Fetch-Site");
   }
 
+  // Site C: redirects to `url`.
+  GURL GetRedirectURL(const GURL& url) {
+    return embedded_https_test_server().GetURL(
+        "c.com", base::StrCat({"/server-redirect?", url.spec()}));
+  }
+
   void SetSameSiteCookies(const GURL& url) {
     ASSERT_TRUE(
         content::SetCookie(browser()->GetProfile(), url,
@@ -1075,18 +1081,37 @@ class AIChatSidePanelLinkBrowserTest : public AIChatGlobalSidePanelBrowserTest {
     EXPECT_TRUE(content::NavigateToURL(
         panel_contents, ai_chat::ConversationUrl(
                             conversation_handler_->get_conversation_uuid())));
+    return WaitForEntriesFrame(panel_contents);
+  }
 
+  // Shows a mock-engine conversation as a full page in a tab after site A and
+  // returns its conversation entries frame.
+  content::RenderFrameHost* ShowConversationFullPage() {
+    EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), GetSiteAURL()));
+
+    CreateConversationWithMockEngine();
+    EXPECT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+        browser(),
+        ai_chat::ConversationUrl(
+            conversation_handler_->get_conversation_uuid()),
+        WindowOpenDisposition::kNewForegroundTab,
+        ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+    return WaitForEntriesFrame(
+        browser()->tab_strip_model()->GetActiveWebContents());
+  }
+
+  // Waits for `contents` to embed the conversation entries frame.
+  static content::RenderFrameHost* WaitForEntriesFrame(
+      content::WebContents* contents) {
     content::RenderFrameHost* entries_frame = nullptr;
     EXPECT_TRUE(base::test::RunUntil([&]() {
-      panel_contents->ForEachRenderFrameHost(
-          [&](content::RenderFrameHost* frame) {
-            if (frame->GetWebUI() &&
-                frame->GetWebUI()
-                    ->GetController()
-                    ->GetAs<AIChatUntrustedConversationUI>()) {
-              entries_frame = frame;
-            }
-          });
+      contents->ForEachRenderFrameHost([&](content::RenderFrameHost* frame) {
+        if (frame->GetWebUI() && frame->GetWebUI()
+                                     ->GetController()
+                                     ->GetAs<AIChatUntrustedConversationUI>()) {
+          entries_frame = frame;
+        }
+      });
       return entries_frame != nullptr;
     }));
     return entries_frame;
@@ -1156,19 +1181,22 @@ class AIChatSidePanelLinkBrowserTest : public AIChatGlobalSidePanelBrowserTest {
     return result == true;
   }
 
-  // Clicks the link and returns the tab it loaded in.
+  // Clicks the link and returns the tab it loaded in, once it reaches
+  // `final_url` (the link's own URL unless it redirects).
   content::WebContents* FollowLink(
       content::RenderFrameHost* frame,
       const GURL& url,
       std::string_view text,
+      std::optional<GURL> final_url = std::nullopt,
       base::Location location = base::Location::Current()) {
     SCOPED_TRACE(location.ToString());
+    const GURL& expected_url = final_url.value_or(url);
     constexpr char kClickLinkScript[] = R"(
       [...document.querySelectorAll('a[target=_blank]')]
           .find((a) => a.href === $1 && a.textContent.trim() === $2)
           .click()
     )";
-    content::TestNavigationObserver observer(url);
+    content::TestNavigationObserver observer(expected_url);
     observer.StartWatchingNewWebContents();
     observer.WatchExistingWebContents();
     EXPECT_TRUE(content::ExecJs(frame,
@@ -1178,7 +1206,7 @@ class AIChatSidePanelLinkBrowserTest : public AIChatGlobalSidePanelBrowserTest {
     observer.Wait();
     content::WebContents* active =
         browser()->tab_strip_model()->GetActiveWebContents();
-    EXPECT_EQ(active->GetLastCommittedURL(), url);
+    EXPECT_EQ(active->GetLastCommittedURL(), expected_url);
     return active;
   }
 
@@ -1198,7 +1226,14 @@ class AIChatSidePanelLinkBrowserTest : public AIChatGlobalSidePanelBrowserTest {
       EXPECT_NE(opened, site_a_tab);
       EXPECT_EQ(tab_strip->count(), initial_tab_count + 1);
     }
+    ExpectCrossSiteHeaders(opened);
+  }
 
+  // Checks that B saw a cross-site request in `opened`.
+  void ExpectCrossSiteHeaders(
+      content::WebContents* opened,
+      base::Location location = base::Location::Current()) {
+    SCOPED_TRACE(location.ToString());
     const EchoedHeaders headers = GetEchoedHeaders(opened);
     const std::string context =
         base::StrCat({"Cookie: ", headers.cookie,
@@ -1263,6 +1298,53 @@ IN_PROC_BROWSER_TEST_P(AIChatSidePanelLinkBrowserTest,
 
   ExpectCrossSiteNavigation(site_a_tab, initial_tab_count,
                             FollowLink(entries_frame, echo_url, "1"));
+}
+
+// Web sources are links too, and must reach B as a cross-site navigation even
+// via a redirect.
+IN_PROC_BROWSER_TEST_P(AIChatSidePanelLinkBrowserTest,
+                       CrossSiteSourceLinkRedirectKeepsInitiator) {
+  const GURL echo_url = GetSiteBEchoURL();
+  SetSameSiteCookies(echo_url);
+
+  content::RenderFrameHost* entries_frame = ShowConversationInSidePanel();
+  ASSERT_TRUE(entries_frame);
+  content::WebContents* site_a_tab =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  const int initial_tab_count = browser()->tab_strip_model()->count();
+
+  // No citation in the text, so the source is only reachable via its link.
+  const GURL source_url = GetRedirectURL(echo_url);
+  constexpr char kSourceText[] = "1 - c.com";
+  Respond("An answer.", /*sources=*/{source_url});
+  ASSERT_TRUE(WaitForLink(entries_frame, source_url, kSourceText));
+
+  ExpectCrossSiteNavigation(
+      site_a_tab, initial_tab_count,
+      FollowLink(entries_frame, source_url, kSourceText, echo_url));
+}
+
+IN_PROC_BROWSER_TEST_P(AIChatSidePanelLinkBrowserTest,
+                       CrossSiteSourceLinkRedirectKeepsInitiatorFullPage) {
+  const GURL echo_url = GetSiteBEchoURL();
+  SetSameSiteCookies(echo_url);
+
+  content::RenderFrameHost* entries_frame = ShowConversationFullPage();
+  ASSERT_TRUE(entries_frame);
+  content::WebContents* ai_chat_tab =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  const GURL source_url = GetRedirectURL(echo_url);
+  constexpr char kSourceText[] = "1 - c.com";
+  Respond("An answer.", /*sources=*/{source_url});
+  ASSERT_TRUE(WaitForLink(entries_frame, source_url, kSourceText));
+
+  // The source opens in a tab of its own, which the conversation may then
+  // move out of the way of (with the move-to-side-panel feature).
+  content::WebContents* opened =
+      FollowLink(entries_frame, source_url, kSourceText, echo_url);
+  EXPECT_NE(opened, ai_chat_tab);
+  ExpectCrossSiteHeaders(opened);
 }
 
 INSTANTIATE_TEST_SUITE_P(

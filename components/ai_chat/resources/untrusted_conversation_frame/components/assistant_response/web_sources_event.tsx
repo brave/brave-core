@@ -8,36 +8,49 @@ import Icon from '@brave/nala/react/icon'
 import createSanitizedImageUrl from '$web-common/create_sanitized_image_url'
 import { getLocale, formatLocale } from '$web-common/locale'
 import * as mojom from '../../../common/mojom'
-import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import styles from './web_sources_event.module.scss'
 
 const UNEXPANDED_SOURCES_COUNT = 4
 
 function WebSource(props: { source: mojom.WebSource; citationNumber: number }) {
-  const context = useUntrustedConversationContext()
-
   const { source } = props
-
-  const handleOpenSource = (source: mojom.WebSource) => {
-    context.uiHandler?.openURLFromResponse(source.url)
-  }
 
   const faviconSrc = source.faviconUrl.url.startsWith('chrome-untrusted://')
     ? source.faviconUrl.url
     : createSanitizedImageUrl(source.faviconUrl.url)
 
-  const host = new URL(source.url.url).hostname
+  const url = new URL(source.url.url)
+  const content = (
+    <>
+      <span className={styles.favicon}>
+        <img src={faviconSrc} />
+      </span>
+      {props.citationNumber} - {url.hostname}
+    </>
+  )
+
+  // Sources open as ordinary links, like citations, so that the browser opens
+  // them as a link from this frame. Only https sources are linked.
   return (
     <li>
-      <button
-        title={source.title}
-        onClick={() => handleOpenSource(source)}
-      >
-        <span>
-          <img src={faviconSrc} />
+      {url.protocol === 'https:' ? (
+        <a
+          className={styles.source}
+          title={source.title}
+          href={url.href}
+          target='_blank'
+          rel='noopener noreferrer'
+        >
+          {content}
+        </a>
+      ) : (
+        <span
+          className={styles.source}
+          title={source.title}
+        >
+          {content}
         </span>
-        {props.citationNumber} - {host}
-      </button>
+      )}
     </li>
   )
 }
@@ -65,6 +78,7 @@ export default function WebSourcesEvent(props: { sources: mojom.WebSource[] }) {
         {!isExpanded && hiddenSources.length > 0 && (
           <li>
             <button
+              className={`${styles.source} ${styles.expand}`}
               name='expand'
               onClick={() => setIsExpanded(true)}
             >
