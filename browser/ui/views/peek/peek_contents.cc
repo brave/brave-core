@@ -112,6 +112,13 @@ std::unique_ptr<content::WebContents> PeekContents::CreateWebContents(
   return contents;
 }
 
+std::unique_ptr<content::WebContents> PeekContents::ReleaseWebContents() {
+  if (web_contents_) {
+    web_contents_->SetDelegate(nullptr);
+  }
+  return std::move(web_contents_);
+}
+
 content::WebContents* PeekContents::OpenURLFromTab(
     content::WebContents* source,
     const content::OpenURLParams& params,

@@ -50,15 +50,23 @@ class PeekController {
   virtual bool Open(content::WebContents& source,
                     const content::OpenURLParams& params) = 0;
 
-  // Closes the active tab's Peek and destroys its contents. Does nothing if
-  // the active tab has no Peek.
+  // Moves the Peek showing `peek_contents` into a tab right after its source
+  // tab. The new tab is activated if the source tab is active; a hidden Peek
+  // is added as a background tab. Does nothing if `peek_contents` isn't shown
+  // in a Peek of this window.
+  virtual void OpenAsTab(content::WebContents& peek_contents) = 0;
+
+  // Closes the active tab's Peek and destroys its contents. Unlike
+  // `OpenAsTab()`, the page is discarded. Does nothing if the active tab has no
+  // Peek.
   virtual void Close() = 0;
 
   // Whether the active tab has a Peek, which is then shown.
   virtual bool IsShowing() const = 0;
 
   // Returns the contents of the active tab's Peek, or nullptr if it has none.
-  // The controller owns the contents until they are destroyed with their Peek.
+  // The controller owns the contents until they're destroyed with their Peek
+  // or `OpenAsTab()` hands them to the tab strip.
   virtual content::WebContents* GetWebContents() = 0;
 
  protected:

@@ -45,6 +45,10 @@ class PeekContents : public content::WebContentsDelegate {
 
   content::WebContents* web_contents() { return web_contents_.get(); }
 
+  // Hands over the contents, e.g. to the tab strip. The caller becomes
+  // responsible for setting a new delegate.
+  std::unique_ptr<content::WebContents> ReleaseWebContents();
+
   // content::WebContentsDelegate:
   content::WebContents* OpenURLFromTab(
       content::WebContents* source,

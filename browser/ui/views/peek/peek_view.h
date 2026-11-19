@@ -41,11 +41,16 @@ class PeekView : public views::View, public views::AnimationDelegateViews {
 
  public:
   DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kCardElementId);
+  DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kOpenAsTabButtonElementId);
+  DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kSplitViewButtonElementId);
   DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kCloseButtonElementId);
 
   class Delegate {
    public:
     virtual void OnPeekViewCloseRequested() = 0;
+    virtual void OnPeekViewOpenAsTabRequested() = 0;
+    // Moves the page into a tab shown in split view with the source tab.
+    virtual void OnPeekViewOpenInSplitViewRequested() = 0;
 
    protected:
     virtual ~Delegate() = default;
@@ -69,6 +74,10 @@ class PeekView : public views::View, public views::AnimationDelegateViews {
   // Moves keyboard focus into the page.
   void FocusContents();
 
+  // Shows the split view button. Hidden while the source tab is already in a
+  // split.
+  void SetCanOpenInSplitView(bool can_open);
+
   // Grows the card from the center and fades in the scrim. Call before the
   // widget is shown.
   void AnimateOpen();
@@ -76,6 +85,12 @@ class PeekView : public views::View, public views::AnimationDelegateViews {
   views::View* card_for_testing() { return card_; }
   gfx::SlideAnimation& open_animation_for_testing() { return open_animation_; }
   views::ImageButton* close_button_for_testing() { return close_button_; }
+  views::ImageButton* open_as_tab_button_for_testing() {
+    return open_as_tab_button_;
+  }
+  views::ImageButton* split_view_button_for_testing() {
+    return split_view_button_;
+  }
 
   // views::View:
   void Layout(PassKey) override;
@@ -100,6 +115,8 @@ class PeekView : public views::View, public views::AnimationDelegateViews {
   raw_ptr<views::ImageView> favicon_ = nullptr;
   raw_ptr<views::Label> title_ = nullptr;
   raw_ptr<views::Label> host_ = nullptr;
+  raw_ptr<views::ImageButton> open_as_tab_button_ = nullptr;
+  raw_ptr<views::ImageButton> split_view_button_ = nullptr;
   raw_ptr<views::ImageButton> close_button_ = nullptr;
   raw_ptr<views::WebView> web_view_ = nullptr;
 };

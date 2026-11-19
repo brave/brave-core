@@ -109,6 +109,8 @@ std::unique_ptr<views::ImageButton> CreateToolbarButton(
 }  // namespace
 
 DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(PeekView, kCardElementId);
+DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(PeekView, kOpenAsTabButtonElementId);
+DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(PeekView, kSplitViewButtonElementId);
 DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(PeekView, kCloseButtonElementId);
 
 PeekView::PeekView(Delegate& delegate, BrowserWindowInterface& browser)
@@ -186,6 +188,19 @@ PeekView::PeekView(Delegate& delegate, BrowserWindowInterface& browser)
           .WithOrder(3));
   spacer->SetProperty(views::kMarginsKey, gfx::Insets());
 
+  open_as_tab_button_ = toolbar->AddChildView(CreateToolbarButton(
+      base::BindRepeating(&Delegate::OnPeekViewOpenAsTabRequested,
+                          base::Unretained(&delegate)),
+      kLeoFullscreenOnIcon, IDS_PEEK_OPEN_AS_TAB));
+  open_as_tab_button_->SetProperty(views::kElementIdentifierKey,
+                                   kOpenAsTabButtonElementId);
+  // The same icon as the split view button in the browser toolbar.
+  split_view_button_ = toolbar->AddChildView(CreateToolbarButton(
+      base::BindRepeating(&Delegate::OnPeekViewOpenInSplitViewRequested,
+                          base::Unretained(&delegate)),
+      kLeoBrowserSplitViewVerticalIcon, IDS_PEEK_OPEN_IN_SPLIT_VIEW));
+  split_view_button_->SetProperty(views::kElementIdentifierKey,
+                                  kSplitViewButtonElementId);
   close_button_ = toolbar->AddChildView(CreateToolbarButton(
       base::BindRepeating(&Delegate::OnPeekViewCloseRequested,
                           base::Unretained(&delegate)),
@@ -243,6 +258,10 @@ void PeekView::UpdateToolbar() {
 
 void PeekView::FocusContents() {
   web_view_->RequestFocus();
+}
+
+void PeekView::SetCanOpenInSplitView(bool can_open) {
+  split_view_button_->SetVisible(can_open);
 }
 
 void PeekView::AnimateOpen() {
