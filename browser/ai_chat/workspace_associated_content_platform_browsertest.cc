@@ -4,23 +4,33 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
 
 #include "base/json/json_writer.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_view_util.h"
 #include "base/test/run_until.h"
 #include "base/test/test_future.h"
 #include "base/values.h"
 #include "brave/browser/ai_chat/workspace_associated_content_browsertest_base.h"
+#include "brave/browser/ui/webui/ai_chat/leo_workspace_page_handler.h"
+#include "brave/browser/ui/webui/ai_chat/leo_workspace_ui.h"
 #include "brave/components/ai_chat/content/browser/workspace_associated_content.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/leo_workspace.mojom.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_ui.h"
+#include "content/public/browser/web_ui_controller.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "mojo/public/cpp/base/big_buffer.h"
+#include "mojo/public/cpp/bindings/remote.h"
+#include "printing/buildflags/buildflags.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -82,6 +92,44 @@ class WorkspaceAssociatedContentPlatformBrowserTest
                             .Set("file_text", text)),
                 ::testing::StartsWith(base::StrCat({"Created ", path})));
   }
+
+  // Frames the viewer of |web_contents|' workspace, as a frame named |name|,
+  // displaying |file|, and waits for the viewer to report that it has.
+  static void DisplayFile(content::WebContents* web_contents,
+                          const GURL& workspace_url,
+                          std::string_view name,
+                          std::string_view file) {
+    EXPECT_EQ(file, content::EvalJs(
+                        web_contents,
+                        content::JsReplace(
+                            R"JS(
+        new Promise(resolve => {
+          addEventListener('message', event => {
+            if (event.data?.type === 'FILE_DISPLAYED') {
+              resolve(event.data.file);
+            }
+          });
+          const frame = document.createElement('iframe');
+          frame.name = $1;
+          frame.src = $2;
+          document.body.appendChild(frame);
+        })
+    )JS",
+                            name,
+                            ViewerURL(workspace_url)
+                                .Resolve(base::StrCat({"/#file=", file})))));
+  }
+
+  // The page size of the first page of |pdf|, in points, as "0 0 <w> <h>".
+  static std::string PdfMediaBox(std::string_view pdf) {
+    static constexpr std::string_view kMediaBox = "/MediaBox [";
+    const size_t media_box = pdf.find(kMediaBox);
+    if (media_box == std::string_view::npos) {
+      return std::string();
+    }
+    const size_t start = media_box + kMediaBox.size();
+    return std::string(pdf.substr(start, pdf.find(']', start) - start));
+  }
 };
 
 // The viewer serves a file from the path of its URL, so a file name containing
@@ -120,5 +168,110 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentPlatformBrowserTest,
       })
   )JS"));
 }
+
+// The browser prints a workspace file by finding the frame that displays it:
+// the file frame inside the viewer the workspace named, and nothing else.
+IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentPlatformBrowserTest,
+                       FindsOnlyTheNamedViewersFileFrame) {
+  auto* content = CreateOpfsWorkspace();
+  CreateFile(content, "hello.txt", "hello world");
+  content::WebContents* web_contents = content->GetWebContentsForTesting();
+  content::RenderFrameHost* workspace = web_contents->GetPrimaryMainFrame();
+
+  DisplayFile(web_contents, content->page_url(), "viewer", "hello.txt");
+  content::RenderFrameHost* viewer = content::ChildFrameAt(workspace, 0);
+  ASSERT_TRUE(viewer);
+  content::RenderFrameHost* file = content::ChildFrameAt(viewer, 0);
+  ASSERT_TRUE(file);
+  EXPECT_EQ(ViewerURL(content->page_url()).Resolve("/hello.txt"),
+            file->GetLastCommittedURL());
+  EXPECT_EQ(file, FindLeoWorkspaceFileFrame(workspace, "viewer"));
+
+  EXPECT_FALSE(FindLeoWorkspaceFileFrame(workspace, "other"));
+  EXPECT_FALSE(FindLeoWorkspaceFileFrame(workspace, ""));
+  // Only ever looked for inside the workspace's own document.
+  EXPECT_FALSE(FindLeoWorkspaceFileFrame(viewer, "viewer"));
+  EXPECT_FALSE(FindLeoWorkspaceFileFrame(file, "viewer"));
+  EXPECT_FALSE(FindLeoWorkspaceFileFrame(nullptr, "viewer"));
+
+  // A viewer that displays no file has nothing to print.
+  ASSERT_TRUE(content::ExecJs(
+      web_contents, content::JsReplace(R"JS(
+      new Promise(resolve => {
+        const frame = document.createElement('iframe');
+        frame.name = 'empty';
+        frame.onload = () => resolve();
+        frame.src = $1;
+        document.body.appendChild(frame);
+      })
+  )JS",
+                                       ViewerURL(content->page_url()))));
+  EXPECT_FALSE(FindLeoWorkspaceFileFrame(workspace, "empty"));
+
+  // Nor is a frame the workspace named which isn't its viewer.
+  ASSERT_TRUE(content::ExecJs(web_contents, R"JS(
+      new Promise(resolve => {
+        const frame = document.createElement('iframe');
+        frame.name = 'impostor';
+        frame.onload = () => resolve();
+        frame.src = 'about:blank';
+        document.body.appendChild(frame);
+      })
+  )JS"));
+  EXPECT_FALSE(FindLeoWorkspaceFileFrame(workspace, "impostor"));
+}
+
+#if BUILDFLAG(ENABLE_PRINTING)
+// The workspace page asks the browser to print the file its named viewer
+// displays, and gets back that file, as laid out by Blink, as a PDF. The file
+// sets its own page size, so the PDF's page size shows which document was
+// printed.
+IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentPlatformBrowserTest,
+                       PrintsTheDisplayedFileToPdf) {
+  auto* content = CreateOpfsWorkspace();
+  CreateFile(content, "page.html",
+             "<!doctype html><style>@page { size: 2in 3in; margin: 0 }</style>"
+             "<p>Hello, PDF</p>");
+  content::WebContents* web_contents = content->GetWebContentsForTesting();
+  DisplayFile(web_contents, content->page_url(), "viewer", "page.html");
+
+  // Bound the way the page binds it.
+  auto* ui = web_contents->GetWebUI()->GetController()->GetAs<LeoWorkspaceUI>();
+  ASSERT_TRUE(ui);
+  mojo::Remote<mojom::LeoWorkspaceHandler> handler;
+  ui->BindInterface(handler.BindNewPipeAndPassReceiver());
+
+  {
+    base::test::TestFuture<std::optional<mojo_base::BigBuffer>,
+                           std::optional<std::string>>
+        printed;
+    handler->PrintFileToPdf(
+        "viewer", /*landscape=*/false,
+        printed.GetCallback<std::optional<mojo_base::BigBuffer>,
+                            const std::optional<std::string>&>());
+    const auto& [pdf, error] = printed.Get();
+    EXPECT_FALSE(error) << *error;
+    ASSERT_TRUE(pdf);
+    const std::string_view bytes = base::as_string_view(pdf->byte_span());
+    EXPECT_TRUE(bytes.starts_with("%PDF-"));
+    // 2x3 inches is 144x216 points.
+    EXPECT_EQ("0 0 144 216", PdfMediaBox(bytes));
+  }
+
+  // A viewer the page hasn't framed has nothing to print.
+  {
+    base::test::TestFuture<std::optional<mojo_base::BigBuffer>,
+                           std::optional<std::string>>
+        printed;
+    handler->PrintFileToPdf(
+        "other", /*landscape=*/false,
+        printed.GetCallback<std::optional<mojo_base::BigBuffer>,
+                            const std::optional<std::string>&>());
+    const auto& [pdf, error] = printed.Get();
+    EXPECT_FALSE(pdf);
+    EXPECT_EQ("The file to print is not being displayed", error);
+  }
+}
+#endif  // BUILDFLAG(ENABLE_PRINTING)
 
 }  // namespace ai_chat
