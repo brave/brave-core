@@ -1,0 +1,37 @@
+caption: Configure default Shields filter lists
+default: null
+desc: |-
+  Configures the default set of filter lists enabled in Brave Shields.
+
+  This policy accepts a list of filter list UUIDs (as strings). The UUIDs
+  correspond to entries in Brave's filter list catalog
+  (https://github.com/brave/adblock-resources/blob/master/filter_lists/regional.json).
+
+  If this policy is set, the specified filter lists will be enabled by default
+  for all users, overriding Brave's built-in defaults. Users will not be able
+  to disable the policy-specified lists.
+
+  If a UUID in the list is not recognized, it is ignored.
+
+  If this policy is not set, Brave uses its own default filter list selection.
+example_value:
+- "FBpkI776-E-vub7x"
+- "2F3DCE16-A19A-493C-A88F-2E110FBD37D2"
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: false
+  per_profile: false
+owners:
+- managed-policies@brave.com
+schema:
+  items:
+    type: string
+  type: array
+supported_on:
+- chrome.win:142-
+- chrome.mac:142-
+- chrome.linux:142-
+- android:142-
+tags: []
+type: list

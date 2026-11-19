@@ -99,6 +99,8 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
     {policy::key::kBraveWalletDisabled,
      brave_wallet::kBraveWalletDisabledByPolicy, base::Value::Type::BOOLEAN},
 #endif
+    {policy::key::kBraveShieldsDefaultFilterlists,
+     kManagedBraveShieldsDefaultFilterlists, base::Value::Type::LIST},
     {policy::key::kBraveShieldsDisabledForUrls,
      kManagedBraveShieldsDisabledForUrls, base::Value::Type::LIST},
     {policy::key::kBraveShieldsEnabledForUrls,

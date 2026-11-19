@@ -36,6 +36,7 @@
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
@@ -351,6 +352,20 @@ bool AdBlockComponentServiceManager::IsFilterListEnabled(
       local_state_->GetDict(prefs::kAdBlockRegionalFilters);
   const auto* user_pref_dict = regional_filters_dict.FindDict(uuid);
   const bool list_touched = user_pref_dict;
+
+  // Apply managed policy override: if the administrator has configured default
+  // filter lists via group policy, those lists are always enabled regardless
+  // of user preferences.
+  if (local_state_->IsManagedPreference(
+          kManagedBraveShieldsDefaultFilterlists)) {
+    const auto& managed_list =
+        local_state_->GetList(kManagedBraveShieldsDefaultFilterlists);
+    for (const auto& item : managed_list) {
+      if (item.is_string() && item.GetString() == uuid) {
+        return true;
+      }
+    }
+  }
 
   // Apply feature overrides from Griffin without overriding user preference
   for (const auto& constants : kFeatureOverrideConstants) {
