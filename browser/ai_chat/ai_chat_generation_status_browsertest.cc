@@ -200,13 +200,9 @@ class AIChatGenerationStatusBrowserTest
                         CreateToolUseEvent(kPermissionToolName, "tool_use")));
   }
 
-  // Content ignores hidden updates for a WebContents until it has first been
-  // shown for real, which can fail to happen when the test's window isn't on
-  // screen, as on some bots; a tab switch there hides nothing. Call this while
-  // |contents| shows. The test then sets the visibility a switch would give it
-  // with UpdateWebContentsVisibility(). Only hide contents that aren't in the
-  // window, such as a background tab or an inactive side panel entry, so that
-  // no update from the window can show them again.
+  // A WebContents ignores hidden updates until it has been shown, which may
+  // not happen on bots whose window is off screen. Call this while |contents|
+  // shows, and only hide contents that are out of the window.
   static void MarkShown(content::WebContents* contents) {
     contents->UpdateWebContentsVisibility(content::Visibility::VISIBLE);
   }
@@ -527,8 +523,6 @@ IN_PROC_BROWSER_TEST_F(AIChatGenerationStatusBrowserTest,
   EXPECT_TRUE(WaitForRowIndicator(other_page, uuid, kGeneratingIndicator));
 
   CompleteResponse(std::move(response));
-  // The service shows the notification as it sends the state that adds the
-  // dot, so it is there once the dot is.
   ASSERT_TRUE(WaitForRowIndicator(other_page, uuid, kCompletedIndicator));
   EXPECT_EQ(notifications_shown_, 1);
   const auto notifications = GetNotifications();
@@ -538,7 +532,6 @@ IN_PROC_BROWSER_TEST_F(AIChatGenerationStatusBrowserTest,
   browser()->GetTabStripModel()->ActivateTabAt(conversation_tab);
   conversation_contents->UpdateWebContentsVisibility(
       content::Visibility::VISIBLE);
-  // Likewise it closes the notification as it sends the state that clears it.
   EXPECT_TRUE(WaitForRowIndicator(other_page, uuid, kNoIndicator));
   EXPECT_TRUE(GetNotifications().empty());
   EXPECT_EQ(notifications_shown_, 1);
@@ -568,7 +561,6 @@ IN_PROC_BROWSER_TEST_F(AIChatGenerationStatusBrowserTest,
   side_panel_ui->Show(SidePanelEntryId::kBookmarks);
   ASSERT_TRUE(base::test::RunUntil(
       [&] { return GetSidePanelWebContents(browser()) != side_panel.get(); }));
-  // The side panel keeps the conversation's view while another entry shows.
   ASSERT_TRUE(side_panel);
   side_panel->UpdateWebContentsVisibility(content::Visibility::HIDDEN);
   ASSERT_TRUE(

@@ -1426,9 +1426,8 @@ void AIChatService::OnClientConnectionChanged(ConversationHandler* handler) {
 }
 
 void AIChatService::OnClientVisibilityChanged(ConversationHandler* handler) {
-  // Only a visible client counts as viewing the conversation, whichever path
-  // bound it. A hidden one, such as a tab's side panel while another tab is
-  // active, still keeps the conversation loaded.
+  // A hidden client, such as the side panel of an inactive tab, keeps the
+  // conversation loaded but doesn't view it.
   const std::string& uuid = handler->get_conversation_uuid();
   if (handler->IsAnyClientVisible()) {
     auto it = conversation_generation_state_.find(uuid);

@@ -523,9 +523,7 @@ interface ConversationHandler {
   SetContentAgentChosen(bool chosen);
 
   // Reports whether this client's UI is visible, when it binds and whenever
-  // that changes. The conversation counts as viewed only while a client
-  // reports it is visible. Until a client reports, it counts as visible only
-  // if another client already is.
+  // that changes. The conversation counts as viewed only while a client is.
   SetClientVisible(bool visible);
 };
 
