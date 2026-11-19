@@ -215,5 +215,62 @@ TEST_F(BraveRequestInfoTest, FirstPartyOriginForShieldsSubFrameUsesInitiator) {
   EXPECT_EQ(initiator, ctx.first_party_origin_for_shields());
 }
 
+// Sandboxed documents have an opaque origin, but Shields uses the origin it
+// was derived from.
+TEST_F(BraveRequestInfoTest, FirstPartyOriginForShieldsSandboxedInitiator) {
+  const url::Origin a_com = url::Origin::Create(GURL("https://a.com"));
+  const url::Origin sandboxed = a_com.DeriveNewOpaqueOrigin();
+  ASSERT_TRUE(sandboxed.opaque());
+
+  {
+    BraveRequestInfo ctx(GURL("https://b.com/frame"));
+    ctx.set_resource_type(blink::mojom::ResourceType::kSubFrame);
+    ctx.set_request_initiator(sandboxed);
+    EXPECT_EQ(a_com, ctx.first_party_origin_for_shields());
+  }
+
+  {
+    BraveRequestInfo ctx(GURL("https://a.com/script.js"));
+    ctx.set_resource_type(blink::mojom::ResourceType::kScript);
+    ctx.set_request_initiator(sandboxed);
+    EXPECT_EQ(a_com, ctx.first_party_origin_for_shields());
+  }
+
+  {
+    // A main frame with an opaque request URL origin also uses the initiator's
+    // precursor.
+    BraveRequestInfo ctx(GURL("data:text/html,hello"));
+    ctx.set_resource_type(blink::mojom::ResourceType::kMainFrame);
+    ctx.set_request_initiator(sandboxed);
+    EXPECT_EQ(a_com, ctx.first_party_origin_for_shields());
+  }
+
+  {
+    // A main frame with a regular request URL still ignores the initiator.
+    BraveRequestInfo ctx(GURL("https://b.com/page"));
+    ctx.set_resource_type(blink::mojom::ResourceType::kMainFrame);
+    ctx.set_request_initiator(sandboxed);
+    EXPECT_EQ(url::Origin::Create(GURL("https://b.com")),
+              ctx.first_party_origin_for_shields());
+  }
+}
+
+TEST_F(BraveRequestInfoTest,
+       FirstPartyOriginForShieldsOpaqueWithoutPrecursor) {
+  {
+    // An opaque origin without a precursor stays opaque.
+    BraveRequestInfo ctx(GURL("https://a.com/frame"));
+    ctx.set_resource_type(blink::mojom::ResourceType::kSubFrame);
+    ctx.set_request_initiator(url::Origin());
+    EXPECT_TRUE(ctx.first_party_origin_for_shields().opaque());
+  }
+
+  {
+    BraveRequestInfo ctx(GURL("data:text/html,hello"));
+    ctx.set_resource_type(blink::mojom::ResourceType::kMainFrame);
+    EXPECT_TRUE(ctx.first_party_origin_for_shields().opaque());
+  }
+}
+
 }  // namespace
 }  // namespace brave

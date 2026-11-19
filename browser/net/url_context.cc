@@ -141,7 +141,15 @@ url::Origin BraveRequestInfo::first_party_origin_for_shields() const {
       request_initiator_ &&
       (resource_type_ != blink::mojom::ResourceType::kMainFrame ||
        request_origin.opaque());
-  return use_initiator_origin ? *request_initiator_ : request_origin;
+  const url::Origin& origin =
+      use_initiator_origin ? *request_initiator_ : request_origin;
+  // Shields ignores sandboxing, so an opaque origin is replaced by the origin
+  // it was derived from, when there is one.
+  if (!origin.opaque()) {
+    return origin;
+  }
+  const GURL precursor_url = origin.GetTupleOrPrecursorTupleIfOpaque().GetURL();
+  return precursor_url.is_valid() ? url::Origin::Create(precursor_url) : origin;
 }
 
 bool BraveRequestInfo::internal_redirect() const {
