@@ -1,0 +1,20 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+syntax = "proto3";
+
+package recipes.brave.isolates.archive;
+
+message InputProperties {
+  // The Chromium checkout the suites were built in; the workspace's when
+  // unset.
+  string src_dir = 1;
+
+  // The build directory, relative to `src_dir`, e.g. `out/Release`.
+  string build_dir = 2;
+
+  // The test suites to archive, e.g. `brave_unit_tests`.
+  repeated string targets = 3;
+}

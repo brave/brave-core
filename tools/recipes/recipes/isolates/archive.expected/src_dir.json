@@ -1,0 +1,121 @@
+[
+  {
+    "cmd": [],
+    "name": "brave_cert_pinning_tests"
+  },
+  {
+    "cmd": [
+      "git",
+      "clone",
+      "--depth",
+      "1",
+      "https://chromium.googlesource.com/chromium/tools/depot_tools",
+      "[WORKSPACE]/b/src/third_party/depot_tools"
+    ],
+    "cwd": "/checkout/src",
+    "name": "brave_cert_pinning_tests.clone depot_tools"
+  },
+  {
+    "cmd": [
+      "gclient"
+    ],
+    "cwd": "/checkout/src",
+    "name": "brave_cert_pinning_tests.verify gclient"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
+      "/checkout/src/tools/mb/mb.py",
+      "isolate",
+      "--no-build",
+      "out/Component",
+      "brave_cert_pinning_tests",
+      "--isolate-map-file",
+      "/checkout/src/brave/infra/config/generated/testing/gn_isolate_map.pyl"
+    ],
+    "cwd": "/checkout/src",
+    "name": "brave_cert_pinning_tests.mb isolate"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
+      "-u",
+      "RECIPE_MODULE[file]/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
+      "copy",
+      "/checkout/src/out/Component/brave_cert_pinning_tests.isolate",
+      "/path/to/tmp/"
+    ],
+    "name": "brave_cert_pinning_tests.read isolate"
+  },
+  {
+    "cmd": [],
+    "name": "brave_cert_pinning_tests.archive"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
+      "RECIPE_MODULE[cas]/resources/stage.py",
+      "--root",
+      "/checkout/src",
+      "--cwd",
+      "/checkout/src/out/Component",
+      "--stage",
+      "[WORKSPACE]/rc/cas_tmp_1",
+      "--paths-json",
+      "[\n  \"./brave_cert_pinning_tests\",\n  \"../../testing/test_env.py\"\n]"
+    ],
+    "name": "brave_cert_pinning_tests.archive.stage"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/cipd",
+      "ensure",
+      "-root",
+      "[WORKSPACE]/cipd/infra_rbe_client/re_client_version_0.187.0.ad10b508-gomaip",
+      "-ensure-file",
+      "infra/rbe/client/${platform} re_client_version:0.187.0.ad10b508-gomaip\n"
+    ],
+    "name": "brave_cert_pinning_tests.archive.install infra/rbe/client/${platform}"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/cipd/infra_rbe_client/re_client_version_0.187.0.ad10b508-gomaip/remotetool",
+      "--service",
+      "rbe.example.com:443",
+      "--instance",
+      "default",
+      "--service_no_auth",
+      "--tls_client_auth_cert",
+      "/certs/client.crt",
+      "--tls_client_auth_key",
+      "/certs/client.key",
+      "--operation",
+      "upload_dir",
+      "--path",
+      "[WORKSPACE]/rc/cas_tmp_1",
+      "--json",
+      "/path/to/tmp/json"
+    ],
+    "name": "brave_cert_pinning_tests.archive.upload"
+  },
+  {
+    "cmd": [],
+    "name": "isolates",
+    "output_properties": {
+      "isolates": {
+        "brave_cert_pinning_tests": {
+          "command": [
+            "./brave_cert_pinning_tests"
+          ],
+          "cwd": "out/Component",
+          "digest": "0000000000000000000000000000000000000000000000000000000000000000/100"
+        }
+      }
+    }
+  },
+  {
+    "name": "$result"
+  }
+]
