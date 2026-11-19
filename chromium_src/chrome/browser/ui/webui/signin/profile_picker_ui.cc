@@ -18,6 +18,4 @@ class BraveAccountConsistencyModeManager {
 
 }  // namespace
 
-#define AccountConsistencyModeManager BraveAccountConsistencyModeManager
 #include <chrome/browser/ui/webui/signin/profile_picker_ui.cc>
-#undef AccountConsistencyModeManager

@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/webui/signin/profile_picker_ui.cc b/chrome/browser/ui/webui/signin/profile_picker_ui.cc
+index 4a22401782eeb51759ba1f67ed896c1fb0a16acf..b8f80d3b3a0784b3821126c70035d1e4a309412f 100644
+--- a/chrome/browser/ui/webui/signin/profile_picker_ui.cc
++++ b/chrome/browser/ui/webui/signin/profile_picker_ui.cc
+@@ -237,7 +237,7 @@ void AddFlags(content::WebUIDataSource* html_source,
+       "profilesReorderingEnabled",
+       base::FeatureList::IsEnabled(switches::kProfilesReordering));
+   html_source->AddBoolean("signInProfileCreationFlowSupported",
+-                          AccountConsistencyModeManager::IsDiceSignInAllowed());
++                          BraveAccountConsistencyModeManager::IsDiceSignInAllowed());
+ 
+   html_source->AddBoolean("isBrowserSigninAllowed", IsBrowserSigninAllowed());
+   html_source->AddBoolean("isForceSigninEnabled",
