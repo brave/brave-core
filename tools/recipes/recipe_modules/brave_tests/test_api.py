@@ -31,6 +31,28 @@ class BraveTestsTestApi(RecipeTestApi):
             ),
         )
 
+    def test_results(
+        self, suite: str, *failures: dict, counts: dict | None = None
+    ) -> TestData:
+        """Seed how *suite*'s tests did, as `runtest.py` writes it:
+        *failures* as `test_results.TestFailure.to_json()` writes them."""
+        return self.step_data(
+            suite,
+            self.m.json.output(
+                {
+                    'counts': counts
+                    or {
+                        'passed': 1,
+                        'failed': len(failures),
+                        'skipped': 0,
+                        'errored': 0,
+                    },
+                    'failures': list(failures),
+                },
+                name='test_results',
+            ),
+        )
+
     def sanitizer_reports(
         self, suite: str, *reports: dict, unreliable: tuple[str, ...] = ()
     ) -> TestData:

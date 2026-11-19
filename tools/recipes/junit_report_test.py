@@ -211,38 +211,6 @@ class RenderTest(unittest.TestCase):
         self.assertEqual(error.get('type'), 'NOSUMMARY')
 
 
-class SnippetFailureMessageTest(unittest.TestCase):
-    def test_check_failures(self):
-        self.assertEqual(
-            m.snippet_failure_message(
-                '[1:2:FATAL:foo.cc(42)] Check failed: x. \n'
-            ),
-            'foo.cc(42): Check failed: x.',
-        )
-
-    def test_segfaults(self):
-        self.assertEqual(
-            m.snippet_failure_message(
-                'Received signal 11 SEGV_MAPERR 000000000000\n'
-                '#0 0x7f0 base::debug::StackTrace::StackTrace()\n'
-                '#1 0x7f1 libc.so.6+0x42\n'
-                '#2 0x7f2 brave::Foo::Bar()\n'
-            ),
-            'brave::Foo::Bar: segfault',
-        )
-
-    def test_expectations(self):
-        self.assertEqual(
-            m.snippet_failure_message(
-                '../../brave/foo.cc:7: Failure\nValue of: x\nStack trace:\n'
-            ),
-            'foo.cc(7): Value of: x',
-        )
-
-    def test_nothing_known(self):
-        self.assertEqual(m.snippet_failure_message('it went away'), '')
-
-
 class WriteTest(unittest.TestCase):
     def test_writes_the_report_making_its_dir(self):
         with tempfile.TemporaryDirectory() as tmp:

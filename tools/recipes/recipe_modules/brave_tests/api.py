@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING
 from PB.recipe_modules.brave.brave_tests.properties import InputProperties
 from recipe_api import RecipeApi
 from sanitizer_reports import RunReports
+from test_results import SuiteOutcome
 
 from .gtest import GTest
 from .results import SuiteResult, TestRun
@@ -23,7 +24,8 @@ if TYPE_CHECKING:
     from recipe_modules.brave_tests_builder_config import BuilderId
 
 
-# The name of the `json.output()` each suite's sanitiser reports come back in.
+# The names of the `json.output()`s each suite's results come back in.
+_TEST_RESULTS = 'test_results'
 _SANITIZER_REPORTS = 'sanitizer_reports'
 
 
@@ -82,7 +84,8 @@ class BraveTestsApi(RecipeApi):
             builder_id: The builder the build runs as.
 
         Returns:
-            What each suite did, with the sanitiser reports in its output.
+            What each suite did: how its tests did, and the sanitiser reports
+            in its output.
         """
         tests = self.gtest_tests(builder_id)
         suites = []
@@ -100,6 +103,8 @@ class BraveTestsApi(RecipeApi):
                     f'--builder-group={builder_id.group}',
                     f'--test-type={name}',
                     '--parse-gtest-output',
+                    '--test-results-output',
+                    self.m.json.output(name=_TEST_RESULTS),
                     '--sanitizer-reports-output',
                     self.m.json.output(name=_SANITIZER_REPORTS),
                 ]
@@ -110,11 +115,15 @@ class BraveTestsApi(RecipeApi):
                     ]
                 cmd.append(test.test)
                 result = self.m.step(name, cmd, check=False)
+                outcome = result.json.outputs.get(_TEST_RESULTS)
                 reports = result.json.outputs.get(_SANITIZER_REPORTS)
                 suites.append(
                     SuiteResult(
                         name=name,
                         passed=result.retcode == 0,
+                        outcome=(
+                            SuiteOutcome.from_json(outcome) if outcome else None
+                        ),
                         sanitizer_reports=(
                             RunReports.from_json(reports) if reports else None
                         ),
