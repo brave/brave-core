@@ -356,9 +356,8 @@ void ConversationHandler::Bind(
     mojo::PendingReceiver<mojom::ConversationHandler> receiver,
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
   const mojo::ReceiverId id = receivers_.Add(this, std::move(receiver));
-  // Until it reports, a new client takes the conversation's current
-  // visibility. A UI rebinding to the conversation it shows then doesn't hide
-  // it in the gap before its report arrives on the new pipe.
+  // Until it reports, a new client takes the current visibility, so a UI that
+  // rebinds doesn't hide the conversation in between.
   if (IsAnyClientVisible()) {
     visible_receivers_.insert(id);
   }

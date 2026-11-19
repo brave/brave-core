@@ -5,10 +5,8 @@
 
 import * as React from 'react'
 
-// The browser counts a conversation as viewed only while a client reports it's
-// on screen, so report whenever that changes: the page's visibility, or whether
-// the UI is showing the conversation. Nothing is reported on cleanup: the next
-// run reports straight away, and the browser clears a closed binding itself.
+// Reports whether the conversation is on screen. Cleanup reports nothing: the
+// next run reports, and the browser drops a closed binding itself.
 export default function useReportClientVisibility(
   setClientVisible: (visible: boolean) => void,
   isConversationShown: boolean,
