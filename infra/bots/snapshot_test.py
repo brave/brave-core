@@ -56,6 +56,7 @@ def _make_registries():
         recipe='brave_builder',
         siso_remote_jobs=500,
         siso_reapi_priority=2,
+        archive_isolates=True,
         builder_spec=builder_config.builder_spec(
             gclient_config=builder_config.gclient_config(
                 target_os=['linux', 'android'],
@@ -179,6 +180,7 @@ class ComputeFreshOutputTest(unittest.TestCase):
         self.assertEqual(
             properties['$brave_siso'], {'remote_jobs': 500, 'reapi_priority': 2}
         )
+        self.assertEqual(properties['$isolate'], {'enabled': True})
 
     def test_properties_json_needs_a_builder_group(self):
         gn_args_registry = GnArgsRegistry()

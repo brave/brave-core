@@ -48,6 +48,7 @@ builders.builder(
             'x64',
         ]
     ),
+    archive_isolates=True,
     targets=targets.bundle(
         targets=[
             'brave_all_unit_tests_linux',

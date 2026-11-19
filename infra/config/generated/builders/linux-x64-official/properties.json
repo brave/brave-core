@@ -44,6 +44,9 @@
       ]
     }
   },
+  "$isolate": {
+    "enabled": true
+  },
   "builder_group": "brave.linux",
   "recipe": "brave_builder"
 }

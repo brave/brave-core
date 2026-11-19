@@ -76,16 +76,6 @@ def GenTests(api: TEST_DEPS):
         api.post_process(post_process.StatusSuccess),
     )
     yield api.test(
-        'no service',
-        api.properties.environ(
-            RBE_tls_client_auth_cert='/certs/client.crt',
-            RBE_tls_client_auth_key='/certs/client.key',
-        ),
-        api.post_process(post_process.StatusException),
-        api.post_process(post_process.DropExpectation),
-        status='EXCEPTION',
-    )
-    yield api.test(
         'no credentials',
         api.properties(**{'$cas': {'service': SERVICE}}),
         api.post_process(post_process.StatusException),

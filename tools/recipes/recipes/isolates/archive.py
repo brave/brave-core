@@ -16,21 +16,14 @@ from dataclasses import dataclass
 import post_process
 from PB.recipes.brave.isolates.archive import InputProperties
 from recipe_api import RecipeScriptApi
-from recipe_modules import cas, context, depot_tools, file, path, step
+from recipe_modules import cas, isolate, path
 from recipe_test_api import RecipeTestApi
-
-# Brave's suites, on top of Chromium's.
-ISOLATE_MAP = 'brave/infra/config/generated/testing/gn_isolate_map.pyl'
 
 
 @dataclass
 class DEPS(RecipeScriptApi):
-    cas: cas.API
-    context: context.API
-    depot_tools: depot_tools.API
-    file: file.API
+    isolate: isolate.API
     path: path.API
-    step: step.API
 
 
 @dataclass
@@ -49,43 +42,7 @@ def RunSteps(api: DEPS, properties: InputProperties) -> None:
         if properties.src_dir
         else api.path.chromium_src
     )
-    build_dir = src / properties.build_dir
-    isolates = {}
-    for target in properties.targets:
-        with api.step.nest(target):
-            with api.context(cwd=src):
-                api.step(
-                    'mb isolate',
-                    [
-                        api.depot_tools.vpython3(),
-                        src / 'tools/mb/mb.py',
-                        'isolate',
-                        '--no-build',
-                        properties.build_dir,
-                        target,
-                        '--isolate-map-file',
-                        src / ISOLATE_MAP,
-                    ],
-                )
-            isolate = api.file.read_json(
-                'read isolate',
-                build_dir / f'{target}.isolate',
-                test_data={
-                    'variables': {
-                        'command': [f'./{target}'],
-                        'files': [f'./{target}', '../../testing/test_env.py'],
-                    }
-                },
-            )['variables']
-            digest = api.cas.archive(
-                'archive', src, isolate['files'], cwd=build_dir
-            )
-        isolates[target] = {
-            'digest': digest,
-            'command': isolate['command'],
-            'cwd': properties.build_dir,
-        }
-    api.step('isolates', None).presentation.properties['isolates'] = isolates
+    api.isolate.isolate_tests(src, properties.build_dir, properties.targets)
 
 
 def GenTests(api: TEST_DEPS):
@@ -96,13 +53,15 @@ def GenTests(api: TEST_DEPS):
             targets=['brave_unit_tests', 'brave_browser_tests'],
         ),
         api.cas.configured(),
-        api.cas.archived('brave_unit_tests.archive', 'a' * 64),
+        api.cas.archived('isolate tests.brave_unit_tests.archive', 'a' * 64),
         api.post_process(
             post_process.StepCommandContains,
-            'brave_unit_tests.mb isolate',
+            'isolate tests.brave_unit_tests.mb isolate',
             ['isolate', '--no-build', 'out/Release', 'brave_unit_tests'],
         ),
-        api.post_process(post_process.MustRun, 'brave_browser_tests.archive'),
+        api.post_process(
+            post_process.MustRun, 'isolate tests.brave_browser_tests.archive'
+        ),
         api.post_process(post_process.StatusSuccess),
     )
     yield api.test(
@@ -115,7 +74,7 @@ def GenTests(api: TEST_DEPS):
         api.cas.configured(),
         api.post_process(
             post_process.StepCommandRE,
-            'brave_cert_pinning_tests.archive.stage',
+            'isolate tests.brave_cert_pinning_tests.archive.stage',
             [
                 r'.*vpython3',
                 r'.*stage\.py',

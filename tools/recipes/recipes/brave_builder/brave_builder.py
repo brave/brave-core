@@ -18,6 +18,8 @@ from recipe_modules import (
     brave_tests,
     brave_tests_builder_config,
     chromium_checkout,
+    isolate,
+    path,
     platform,
     raw_io,
     sanitizer_findings,
@@ -32,6 +34,8 @@ class DEPS(RecipeScriptApi):
     ci_notifications: ci_notifications.API
     brave_tests: brave_tests.API
     brave_tests_builder_config: brave_tests_builder_config.API
+    isolate: isolate.API
+    path: path.API
     sanitizer_findings: sanitizer_findings.API
 
 
@@ -41,6 +45,7 @@ class TEST_DEPS(RecipeTestApi):
     brave_tests: brave_tests.TEST_API
     brave_tests_builder_config: brave_tests_builder_config.TEST_API
     chromium_checkout: chromium_checkout.TEST_API
+    isolate: isolate.TEST_API
     platform: platform.TEST_API
     raw_io: raw_io.TEST_API
 
@@ -54,6 +59,12 @@ def RunSteps(api: DEPS) -> None:
     api.brave_core_checkout.configure_build(builder_id, builder_config)
     api.brave_core_checkout.ensure_checkout()
     api.brave_core_checkout.compile()
+    if api.isolate.enabled:
+        api.isolate.isolate_tests(
+            api.path.chromium_src,
+            f'out/{builder_id.builder}',
+            [test.test for test in api.brave_tests.gtest_tests(builder_id)],
+        )
     test_run = api.brave_tests.run_tests(builder_id)
     findings = api.sanitizer_findings.report(test_run.sanitizer_reports)
     filing = api.ci_issues.file(
@@ -112,7 +123,45 @@ def GenTests(api: TEST_DEPS):
         ),
         api.post_process(post_process.MustRun, 'brave_browser_tests'),
         api.post_process(post_process.DoesNotRun, 'test brave_all_unit_tests'),
+        api.post_process(post_process.DoesNotRun, 'isolate tests'),
         api.post_process(post_process.StatusSuccess),
+    )
+    # A builder with `archive_isolates` archives its suites before it runs
+    # them, with the client certificate builds already use.
+    yield api.test(
+        'isolates',
+        api.brave_tests_builder_config.ci_build(
+            builder='linux-x64-official', builder_group='brave.linux'
+        ),
+        api.brave_core_checkout.with_git_cache(),
+        api.brave_core_checkout.git_cache_populated(),
+        api.chromium_checkout.existing_checkout(),
+        api.brave_core_checkout.rbe(siso_cache_dir='/b/siso'),
+        api.isolate.enabled(),
+        api.properties.environ(
+            RBE_tls_client_auth_cert='/certs/client.crt',
+            RBE_tls_client_auth_key='/certs/client.key',
+        ),
+        api.platform.name('linux'),
+        api.brave_tests.test_spec(
+            'base_unittests',
+            'brave_unit_tests',
+            builder='linux-x64-official',
+            builder_group='brave.linux',
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'isolate tests.base_unittests.mb isolate',
+            ['out/linux-x64-official', 'base_unittests'],
+        ),
+        api.post_process(
+            post_process.StepCommandContains,
+            'isolate tests.brave_unit_tests.archive.upload',
+            ['--service', 'rbe.ba.brave.com:443'],
+        ),
+        api.post_process(post_process.MustRun, 'brave_unit_tests'),
+        api.post_process(post_process.StatusSuccess),
+        api.post_process(post_process.DropExpectation),
     )
     # Deprecated: fresh workspace without a builder: brave-core and Chromium
     # are deployed and synced, then built and tested.

@@ -1,7 +1,11 @@
 [
   {
     "cmd": [],
-    "name": "brave_unit_tests"
+    "name": "isolate tests"
+  },
+  {
+    "cmd": [],
+    "name": "isolate tests.brave_unit_tests"
   },
   {
     "cmd": [
@@ -13,14 +17,14 @@
       "[WORKSPACE]/b/src/third_party/depot_tools"
     ],
     "cwd": "[WORKSPACE]/b/src",
-    "name": "brave_unit_tests.clone depot_tools"
+    "name": "isolate tests.brave_unit_tests.clone depot_tools"
   },
   {
     "cmd": [
       "gclient"
     ],
     "cwd": "[WORKSPACE]/b/src",
-    "name": "brave_unit_tests.verify gclient"
+    "name": "isolate tests.brave_unit_tests.verify gclient"
   },
   {
     "cmd": [
@@ -34,7 +38,7 @@
       "[WORKSPACE]/b/src/brave/infra/config/generated/testing/gn_isolate_map.pyl"
     ],
     "cwd": "[WORKSPACE]/b/src",
-    "name": "brave_unit_tests.mb isolate"
+    "name": "isolate tests.brave_unit_tests.mb isolate"
   },
   {
     "cmd": [
@@ -47,11 +51,11 @@
       "[WORKSPACE]/b/src/out/Release/brave_unit_tests.isolate",
       "/path/to/tmp/"
     ],
-    "name": "brave_unit_tests.read isolate"
+    "name": "isolate tests.brave_unit_tests.read isolate"
   },
   {
     "cmd": [],
-    "name": "brave_unit_tests.archive"
+    "name": "isolate tests.brave_unit_tests.archive"
   },
   {
     "cmd": [
@@ -66,7 +70,7 @@
       "--paths-json",
       "[\n  \"./brave_unit_tests\",\n  \"../../testing/test_env.py\"\n]"
     ],
-    "name": "brave_unit_tests.archive.stage"
+    "name": "isolate tests.brave_unit_tests.archive.stage"
   },
   {
     "cmd": [
@@ -77,7 +81,7 @@
       "-ensure-file",
       "infra/rbe/client/${platform} re_client_version:0.187.0.ad10b508-gomaip\n"
     ],
-    "name": "brave_unit_tests.archive.install infra/rbe/client/${platform}"
+    "name": "isolate tests.brave_unit_tests.archive.install infra/rbe/client/${platform}"
   },
   {
     "cmd": [
@@ -98,11 +102,11 @@
       "--json",
       "/path/to/tmp/json"
     ],
-    "name": "brave_unit_tests.archive.upload"
+    "name": "isolate tests.brave_unit_tests.archive.upload"
   },
   {
     "cmd": [],
-    "name": "brave_browser_tests"
+    "name": "isolate tests.brave_browser_tests"
   },
   {
     "cmd": [
@@ -116,7 +120,7 @@
       "[WORKSPACE]/b/src/brave/infra/config/generated/testing/gn_isolate_map.pyl"
     ],
     "cwd": "[WORKSPACE]/b/src",
-    "name": "brave_browser_tests.mb isolate"
+    "name": "isolate tests.brave_browser_tests.mb isolate"
   },
   {
     "cmd": [
@@ -129,11 +133,11 @@
       "[WORKSPACE]/b/src/out/Release/brave_browser_tests.isolate",
       "/path/to/tmp/"
     ],
-    "name": "brave_browser_tests.read isolate"
+    "name": "isolate tests.brave_browser_tests.read isolate"
   },
   {
     "cmd": [],
-    "name": "brave_browser_tests.archive"
+    "name": "isolate tests.brave_browser_tests.archive"
   },
   {
     "cmd": [
@@ -148,7 +152,7 @@
       "--paths-json",
       "[\n  \"./brave_browser_tests\",\n  \"../../testing/test_env.py\"\n]"
     ],
-    "name": "brave_browser_tests.archive.stage"
+    "name": "isolate tests.brave_browser_tests.archive.stage"
   },
   {
     "cmd": [
@@ -169,15 +173,17 @@
       "--json",
       "/path/to/tmp/json"
     ],
-    "name": "brave_browser_tests.archive.upload"
+    "name": "isolate tests.brave_browser_tests.archive.upload"
   },
   {
     "cmd": [],
-    "name": "isolates",
+    "name": "isolate tests.isolates",
     "output_properties": {
       "isolates": {
         "brave_browser_tests": {
           "command": [
+            "vpython3",
+            "../../testing/test_env.py",
             "./brave_browser_tests"
           ],
           "cwd": "out/Release",
@@ -185,6 +191,8 @@
         },
         "brave_unit_tests": {
           "command": [
+            "vpython3",
+            "../../testing/test_env.py",
             "./brave_unit_tests"
           ],
           "cwd": "out/Release",
