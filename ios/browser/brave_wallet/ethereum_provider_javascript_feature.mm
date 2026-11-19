@@ -127,7 +127,7 @@ std::optional<ProviderMethod> ParseMethod(std::string_view method) {
 
 std::string LoadDataResource(int id) {
   auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
-  if (resource_bundle.IsGzipped(id)) {
+  if (resource_bundle.IsCompressed(id)) {
     return resource_bundle.LoadDataResourceString(id);
   }
   return std::string(resource_bundle.GetRawDataResource(id));

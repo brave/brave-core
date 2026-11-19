@@ -185,7 +185,7 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
   // The resource bundle is not available until after WebMainParts is setup
   auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
   std::string resource_string = "";
-  if (resource_bundle.IsGzipped(resource_id)) {
+  if (resource_bundle.IsCompressed(resource_id)) {
     resource_string =
         std::string(resource_bundle.LoadDataResourceString(resource_id));
   } else {
