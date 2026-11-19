@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/webui/side_panel/reading_list/reading_list_page_handler.h b/chrome/browser/ui/webui/side_panel/reading_list/reading_list_page_handler.h
+index f80dc9fddf5d1cbe29b91bbe263e1bbdafda2336..3e4f2bd9eebb56c397a305289f3eb2426ffd54eb 100644
+--- a/chrome/browser/ui/webui/side_panel/reading_list/reading_list_page_handler.h
++++ b/chrome/browser/ui/webui/side_panel/reading_list/reading_list_page_handler.h
+@@ -88,6 +88,7 @@ class ReadingListPageHandler : public reading_list::mojom::PageHandler,
+       GURL url);
+ 
+  private:
++  friend class BraveReadingListPageHandler;
+   // Gets the reading list entry data used for displaying to the user and
+   // triggering actions.
+   reading_list::mojom::ReadLaterEntryPtr GetEntryData(
