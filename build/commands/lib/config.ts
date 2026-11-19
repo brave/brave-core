@@ -319,9 +319,7 @@ export class Config {
 
   get ignorePatchVersionNumber(): boolean {
     if (this.#builder) {
-      return (
-        this.#builder.spec.brave_config?.ignore_patch_version_number ?? false
-      )
+      return this.#builder.spec.brave_config.ignore_patch_version_number
     }
     return (
       !this.isBraveReleaseBuild()
@@ -539,8 +537,7 @@ export class Config {
   get useBraveHermeticToolchain(): boolean {
     return this.#value('useBraveHermeticToolchain', () =>
       this.#builder
-        ? (this.#builder.spec.brave_config?.use_brave_hermetic_toolchain
-          ?? false)
+        ? this.#builder.spec.brave_config.use_brave_hermetic_toolchain
         : this.#envConfig.getBoolean(
             ['use_brave_hermetic_toolchain'],
             this.rbeService.includes('.brave.com:'),
@@ -645,7 +642,7 @@ export class Config {
 
   isBraveReleaseBuild() {
     if (this.#builder) {
-      return this.#builder.spec.brave_config?.is_brave_release_build ?? false
+      return this.#builder.spec.brave_config.is_brave_release_build
     }
     const isBraveReleaseBuildValue = this.#envConfig.getNumber([
       'is_brave_release_build',

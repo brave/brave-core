@@ -151,6 +151,12 @@ class ComputeFreshOutputTest(unittest.TestCase):
                         'src/b': None,
                     },
                     'custom_vars': {'checkout_x': True},
+                    'global_vars': {},
+                },
+                'brave_config': {
+                    'is_brave_release_build': False,
+                    'ignore_patch_version_number': False,
+                    'use_brave_hermetic_toolchain': False,
                 },
             },
         )

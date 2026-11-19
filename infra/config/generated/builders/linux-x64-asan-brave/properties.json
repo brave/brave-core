@@ -11,6 +11,11 @@
               "builder": "linux-x64-asan-brave"
             },
             "builder_spec": {
+              "brave_config": {
+                "ignore_patch_version_number": false,
+                "is_brave_release_build": false,
+                "use_brave_hermetic_toolchain": true
+              },
               "builder_group": "brave.sanitisers",
               "chromium_config": {
                 "build_config": "Release",
@@ -22,6 +27,7 @@
               "gclient_config": {
                 "custom_deps": {},
                 "custom_vars": {},
+                "global_vars": {},
                 "target_cpu": [],
                 "target_os": []
               }

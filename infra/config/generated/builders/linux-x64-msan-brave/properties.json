@@ -11,6 +11,11 @@
               "builder": "linux-x64-msan-brave"
             },
             "builder_spec": {
+              "brave_config": {
+                "ignore_patch_version_number": false,
+                "is_brave_release_build": false,
+                "use_brave_hermetic_toolchain": true
+              },
               "builder_group": "brave.sanitisers",
               "chromium_config": {
                 "build_config": "Release",
@@ -24,6 +29,7 @@
                 "custom_vars": {
                   "checkout_instrumented_libraries": true
                 },
+                "global_vars": {},
                 "target_cpu": [],
                 "target_os": []
               }
