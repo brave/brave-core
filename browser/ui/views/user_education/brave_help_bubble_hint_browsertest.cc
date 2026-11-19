@@ -15,7 +15,6 @@
 #include "chrome/test/interaction/interactive_browser_test.h"
 #include "components/user_education/common/feature_promo/feature_promo_specification.h"
 #include "content/public/test/browser_test.h"
-#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/base/interaction/element_tracker.h"
@@ -45,14 +44,18 @@ IN_PROC_BROWSER_TEST_F(BraveHelpBubbleHintTest, PaneFocusShortcutChanges) {
               view);
         };
 
+        const auto expect_shortcut_in_hints = [&](const ui::Accelerator& key) {
+          const auto text = key.GetShortcutText();
+          ASSERT_FALSE(text.empty());
+          EXPECT_TRUE(promo_hint().contains(text));
+          EXPECT_TRUE(tutorial_hint().contains(text));
+        };
+
         ui::Accelerator binding;
         ASSERT_TRUE(
             view->GetAcceleratorForCommandId(IDC_FOCUS_NEXT_PANE, &binding));
         ASSERT_EQ(binding, ui::Accelerator(ui::VKEY_F6, ui::EF_NONE));
-        EXPECT_THAT(promo_hint(),
-                    testing::HasSubstr(binding.GetShortcutText()));
-        EXPECT_THAT(tutorial_hint(),
-                    testing::HasSubstr(binding.GetShortcutText()));
+        expect_shortcut_in_hints(binding);
 
         service->UnassignAcceleratorFromCommand(IDC_FOCUS_NEXT_PANE, "F6");
         ASSERT_FALSE(
@@ -64,10 +67,7 @@ IN_PROC_BROWSER_TEST_F(BraveHelpBubbleHintTest, PaneFocusShortcutChanges) {
         ASSERT_TRUE(
             view->GetAcceleratorForCommandId(IDC_FOCUS_NEXT_PANE, &binding));
         ASSERT_EQ(binding, ui::Accelerator(ui::VKEY_F8, ui::EF_ALT_DOWN));
-        EXPECT_THAT(promo_hint(),
-                    testing::HasSubstr(binding.GetShortcutText()));
-        EXPECT_THAT(tutorial_hint(),
-                    testing::HasSubstr(binding.GetShortcutText()));
+        expect_shortcut_in_hints(binding);
       }));
 }
 
