@@ -154,6 +154,7 @@ import pinned_commits  # noqa: E402  -- after _boot
 import repository  # noqa: E402  -- after _boot
 from versioning import (  # noqa: E402  -- after _boot
     Version,
+    branch_start,
     load_package_file,
     previous_version_commit,
     read_chromium_version_file,
@@ -718,16 +719,18 @@ def not_worth_a_run(
 def left_to_squash(base: str) -> bool | None:
     """Whether HEAD has commits `brockit rebase --squash-minor-bumps` would
     squash (fixups, repeated pinned subjects, minor bumps), whatever the
-    base did since: by the dry run of a rebase onto the branch's own fork
-    point. None when the dry run fails."""
+    base did since: by the dry run of a rebase of the commits the real
+    rebase replays, from `branch_start()`, onto where they start. None when
+    the dry run fails."""
     brave = repository.brave
-    fork = brave.run_git('merge-base', base, 'HEAD')
+    start = brave.run_git('rev-parse', branch_start('HEAD', base))
     returncode = subprocess.run(
         [
             _BROCKIT,
             'rebase',
             '--squash-minor-bumps',
-            f'--to-ref={fork}',
+            f'--from-ref={start}',
+            f'--to-ref={start}',
             '--dry-run',
         ],
         cwd=brave.root,
@@ -737,6 +740,37 @@ def left_to_squash(base: str) -> bool | None:
     if returncode not in (0, _REBASE_NEEDED):
         return None
     return returncode == _REBASE_NEEDED
+
+
+_SQUASH_MARKER = re.compile(r'^(?:(?:fixup|amend|squash)! )+')
+
+
+def unsquashable_fixups(base: str) -> list[str]:
+    """The `fixup!`, `amend!` and `squash!` commits the rebase onto `base`
+    replays whose target isn't one of the commits it replays, so no rebase
+    squashes them: a base commit, typically, which the branch can't rewrite.
+    Matched as git's autosquash matches them, by subject prefix or hash."""
+    brave = repository.brave
+    start = brave.run_git('rev-parse', branch_start('HEAD', base))
+    commits = [
+        line.split(' ', 1)
+        for line in brave.run_git(
+            'log', '--reverse', '--format=%H %s', f'{start}..HEAD'
+        ).splitlines()
+    ]
+    stuck = []
+    for index, (sha, subject) in enumerate(commits):
+        marker = _SQUASH_MARKER.match(subject)
+        if not marker:
+            continue
+        target = subject[marker.end() :]
+        if not any(
+            other.startswith(target) or other_sha.startswith(target)
+            for other_sha, other in commits[:index]
+            if not _SQUASH_MARKER.match(other)
+        ):
+            stuck.append(f'{sha[:11]} {subject}')
+    return stuck
 
 
 def _since_rebase(base: str, head: str = 'HEAD') -> timedelta:
@@ -932,7 +966,12 @@ def _no_lift_plan(base: str, current: Version) -> tuple[bool, str] | None:
 def _cmd_autofix(args: argparse.Namespace) -> int:
     """Starts an autofix run: cr<N> as GitHub has it, with no rebase."""
     if isinstance(args.target, Version):
-        return ChannelBump(args.target).autofix(dry_run=args.dry_run)
+        return ChannelBump(args.target, args.skip_channel).autofix(
+            dry_run=args.dry_run
+        )
+    if args.skip_channel:
+        print('--skip-channel is for a channel bump, given a tag.')
+        return 1
     brave = repository.brave
     run = Run.cr(args.target)
     branch = run.branch
@@ -1156,6 +1195,20 @@ class RunPlan:
                 f'\n- `brockit rebase --dry-run` failed, so whether '
                 f'{self.branch} has commits left to squash is unknown.'
             )
+        stuck = unsquashable_fixups(self.base)
+        if stuck:
+            # A `cr<N>` base's commits are rewritten by its own runs, so a
+            # fixup of one belongs there; master's and a channel's aren't.
+            action = (
+                f'it belongs on {self.base}, whose commit it fixes'
+                if re.fullmatch(r'(?:origin/)?cr\d+', self.base)
+                else 'reword each into a commit of its own'
+            )
+            self.summary += (
+                f'\n- {len(stuck)} fixup(s) on {self.branch} target commits '
+                f'only {self.base} has, so no rebase squashes them: '
+                f'{action}.\n' + ''.join(f'  - `{line}`\n' for line in stuck)
+            )
         return not_worth_a_run(
             lifts,
             base_commits,
@@ -1176,9 +1229,12 @@ def _cmd_plan(args: argparse.Namespace) -> int:
 
 def _cmd_prepare(args: argparse.Namespace) -> int:
     if isinstance(args.target, Version):
-        return ChannelBump(args.target).prepare(
+        return ChannelBump(args.target, args.skip_channel).prepare(
             force=args.force, dry_run=args.dry_run
         )
+    if args.skip_channel:
+        print('--skip-channel is for a channel bump, given a tag.')
+        return 1
     brave = repository.brave
     run = Run.cr(args.target)
     milestone, branch = run.milestone, run.branch
@@ -2019,6 +2075,35 @@ class Publish:
             and content_fingerprint(diff) != content_fingerprint(before[key][2])
         ]
 
+    def session_commits(self, since: str = '') -> list[tuple[str, str, str]]:
+        """`(sha, subject, diff)` of the commits since the upstream that the
+        run made or changed since its start (or `since`), paired as
+        `_to_review` pairs them, oldest first, but those Brockit writes: what
+        the run wrote."""
+        if not since:
+            start = self._state('start')
+            since = (
+                start.read_text(encoding='utf-8').strip()
+                if start.exists()
+                else ''
+            )
+        upstream = self._brave.run_git(
+            'rev-parse', '--abbrev-ref', '@{upstream}'
+        )
+        before = self._diffs_by_change(f'{upstream}..{since}') if since else {}
+        return [
+            (sha, subject, diff)
+            for key, (sha, subject, diff) in self._diffs_by_change(
+                f'{upstream}..HEAD'
+            ).items()
+            if not self._written_by_brockit(subject)
+            and (
+                key not in before
+                or content_fingerprint(diff)
+                != content_fingerprint(before[key][2])
+            )
+        ]
+
     def _diffs_by_change(
         self, revision_range: str
     ) -> dict[str, tuple[str, str, str]]:
@@ -2117,8 +2202,23 @@ class ChannelBump:
         }
     )
 
-    def __init__(self, tag: Version):
+    def __init__(self, tag: Version, skip: Sequence[str] = ()):
         self.tag = tag
+        # Channels the bump leaves alone, by name (`beta`) or branch
+        # (`1.101.x`): a tag meant only for some of them.
+        self.skip = tuple(skip)
+
+    def skips(self, channel: Channel) -> bool:
+        return channel.name in self.skip or channel.branch in self.skip
+
+    def unknown_skips(self, channels: list[Channel]) -> list[str]:
+        """The `skip` entries no channel answers to: likely a typo, which
+        would bump the channel it meant."""
+        return [
+            name
+            for name in self.skip
+            if not any(name in (c.name, c.branch) for c in channels)
+        ]
 
     @classmethod
     def of_run(cls, run: Run) -> ChannelBump | None:
@@ -2191,18 +2291,30 @@ class ChannelBump:
         )
 
     def bumped(self, channels: list[Channel]) -> list[Channel]:
-        """The channels on the tag's milestone, and behind it."""
+        """The channels on the tag's milestone, and behind it, but those the
+        bump skips."""
         return [
             channel
             for channel in channels
             if channel.version.major == self.tag.major
             and channel.version < self.tag
+            and not self.skips(channel)
         ]
 
     def published_bumps(self) -> list[Channel]:
         """The bumped channels whose bump to the tag is on GitHub, highest
         first: those an autofix run has the CI of."""
         return [c for c in self.bumped(self.channels()) if self.published(c)]
+
+    def skip_error(self, channels: list[Channel]) -> str | None:
+        """Why the `skip` entries can't be taken: one no channel answers to."""
+        if unknown := self.unknown_skips(channels):
+            names = ', '.join(f'{c.name} ({c.branch})' for c in channels)
+            return (
+                f'- No channel answers to --skip-channel {", ".join(unknown)}:'
+                f' the channels are {names}.'
+            )
+        return None
 
     def recorded(self) -> list[Channel]:
         """The channels `prepare` or `autofix` set the run's branches up
@@ -2339,7 +2451,15 @@ class ChannelBump:
     ) -> list[str]:
         return [f'- Channel bump to {self.tag}.'] + [
             f'- {channel.name} ({channel.branch}) is on {channel.version}'
-            + ('.' if channel in bumped else ': not bumped.')
+            + (
+                '.'
+                if channel in bumped
+                else (
+                    ': skipped (--skip-channel).'
+                    if self.skips(channel)
+                    else ': not bumped.'
+                )
+            )
             for channel in channels
         ]
 
@@ -2348,6 +2468,8 @@ class ChannelBump:
         the run does on it, and the lines saying why; none when no channel is.
         Changes nothing but what it fetches."""
         channels = self.channels()
+        if error := self.skip_error(channels):
+            return [], [error]
         bumped = self.bumped(channels)
         lines = self._channel_lines(channels, bumped)
         if not bumped:
@@ -2494,6 +2616,9 @@ class ChannelBump:
         brave = repository.brave
         if reason := self._refuse_to_reset(force=False):
             print(reason)
+            return 1
+        if error := self.skip_error(self.channels()):
+            print(error)
             return 1
         published = self.published_bumps()
         if not published:
@@ -2649,15 +2774,17 @@ class ChannelBump:
     def sequence(channels: list[Channel]) -> list[tuple[int, Run | None]]:
         """The run's steps in order, each with the branch it is taken on, or
         None for the run's own: every channel's the run works on, highest
-        first, with the review once the highest one's are done."""
+        first, with the review right after the highest one's lift, so that
+        its picks are built and checked with the rest."""
         steps: list[tuple[int, Run | None]] = [(1, None)]
         active = [channel for channel in channels if channel.active]
         for index, channel in enumerate(active):
             numbers = _CHANNEL_STEPS if index == 0 else _LOWER_CHANNEL_STEPS
-            steps += [(number, channel.run) for number in numbers]
-            if index == 0:
-                # The review. Step 8 is an autofix run's, for a channel bump.
-                steps.append((9, None))
+            for number in numbers:
+                steps.append((number, channel.run))
+                if index == 0 and number == 2:
+                    # Step 8 is an autofix run's, for a channel bump.
+                    steps.append((9, None))
         return steps + [(10, None), (11, None), (12, None)]
 
     @classmethod
@@ -3523,7 +3650,15 @@ class PullRequestFailures:
 
 
 def _cmd_advise(args: argparse.Namespace) -> int:
-    advice = Advice.of(args.target, autofix=args.autofix, resume=args.resume)
+    if args.skip_channel and not isinstance(args.target, Version):
+        print('--skip-channel is for a channel bump, given a tag.')
+        return 1
+    advice = Advice.of(
+        args.target,
+        autofix=args.autofix,
+        resume=args.resume,
+        skip=args.skip_channel,
+    )
     if advice is None:
         return 1
     print('\n'.join([*advice.reasons, f'- Advice: {advice.action}.']))
@@ -3614,22 +3749,36 @@ class Advice:
 
     @classmethod
     def of(
-        cls, target: int | Version, autofix: bool, resume: bool
+        cls,
+        target: int | Version,
+        autofix: bool,
+        resume: bool,
+        skip: Sequence[str] = (),
     ) -> Advice | None:
         """The advice for a run of `target`, a milestone or a channel bump's
-        tag; None, having said why, when it can't be told."""
+        tag, leaving out the channels in `skip`; None, having said why, when
+        it can't be told."""
         if resume:
             kind = 'resume autofix' if autofix else 'resume'
             return cls._told(
-                'resume', ['- Carry on with the stopped run.'], target, kind
+                'resume',
+                ['- Carry on with the stopped run.'],
+                target,
+                kind,
+                skip,
             )
         if isinstance(target, Version):
-            return cls._of_bump(ChannelBump(target), autofix)
+            return cls._of_bump(ChannelBump(target, skip), autofix)
         return cls._of_cr(target, autofix)
 
     @classmethod
     def _told(
-        cls, action: str, reasons: list[str], target: int | Version, kind: str
+        cls,
+        action: str,
+        reasons: list[str],
+        target: int | Version,
+        kind: str,
+        skip: Sequence[str] = (),
     ) -> Advice:
         bump = isinstance(target, Version)
         root = (
@@ -3650,8 +3799,16 @@ class Advice:
         # step 8.
         if kind.endswith('autofix') or not bump:
             reads.append(files['autofix'])
+        flags = ' '.join(f'--skip-channel {name}' for name in skip)
         prompt = (
             cls._PROMPTS[(bump, kind)].format(target=target, **files)
+            + (
+                f' Leave the {_and_list(list(skip))} channel(s) out of it: '
+                f'pass `{flags}` to every `prepare {target}` and '
+                f'`autofix {target}`.'
+                if skip
+                else ''
+            )
             + f' Before starting, read {_and_list(reads)} yourself, each in '
             'full with the Read tool.'
             + cls._UNATTENDED.format(script=f'{root}/autolift.py')
@@ -3679,6 +3836,8 @@ class Advice:
     def _of_bump(cls, bump: ChannelBump, autofix: bool) -> Advice:
         reasons: list[str] = []
         if autofix:
+            if error := bump.skip_error(bump.channels()):
+                return cls('none', (error,))
             published = bump.published_bumps()
         else:
             plan, reasons = bump.plan()
@@ -3687,7 +3846,7 @@ class Advice:
             if active := [c for c in plan if c.active]:
                 lifts = any(c.action == 'lift' for c in active)
                 action = 'lift' if lifts else 'rebase'
-                return cls._told(action, reasons, bump.tag, 'lift')
+                return cls._told(action, reasons, bump.tag, 'lift', bump.skip)
             # With none to lift or rebase, every one is on GitHub.
             published = plan
         if not published:
@@ -3696,12 +3855,16 @@ class Advice:
             )
             return cls('none', tuple(reasons))
         return cls._of_checks(
-            [c.run.branch for c in published], reasons, bump.tag
+            [c.run.branch for c in published], reasons, bump.tag, bump.skip
         )
 
     @classmethod
     def _of_checks(
-        cls, branches: list[str], reasons: list[str], target: int | Version
+        cls,
+        branches: list[str],
+        reasons: list[str],
+        target: int | Version,
+        skip: Sequence[str] = (),
     ) -> Advice:
         """`autofix` when a check of any of `branches`' pull requests failed,
         and `none` otherwise: a pending check is for a later run."""
@@ -3719,7 +3882,7 @@ class Advice:
             reasons += [f'  - Failed: {check.name}' for check in failures]
             failed = failed or bool(failures)
         if failed:
-            return cls._told('autofix', reasons, target, 'autofix')
+            return cls._told('autofix', reasons, target, 'autofix', skip)
         reasons.append('- Nothing failed: pending checks are for a later run.')
         return cls('none', tuple(reasons))
 
@@ -4600,9 +4763,10 @@ class FixSources:
     """Where a run looks for fixes made already, nearest first.
 
     The newer `cr<M>` branches on origin, which lifted past what a minor
-    bump cherry-picks. A channel bump's lower channel also has the higher
-    channels' bump branches, and the higher channels themselves, for what
-    they have that wasn't uplifted.
+    bump cherry-picks, and master once it is past the run's milestone, for
+    the `cr<M>` branches merged into it and gone from origin. A channel
+    bump's lower channel also has the higher channels' bump branches, and
+    the higher channels themselves, for what they have that wasn't uplifted.
     """
 
     def __init__(self, run: Run):
@@ -4626,9 +4790,30 @@ class FixSources:
         refs = []
         if self.run.channel and (bump := ChannelBump.of_run(self.run)):
             refs += bump.higher_refs(self.run)
+        if 'origin/master' not in refs and self._master_is_newer():
+            refs.append('origin/master')
         return refs + [
             f'origin/{branch}' for branch in _newer_branches(self.run.milestone)
         ]
+
+    def _master_is_newer(self) -> bool:
+        repository.brave.run_git('fetch', 'origin', 'master')
+        return Version.from_git('origin/master').major > self.run.milestone
+
+    def subjects(self) -> set[str]:
+        """The subjects of the run's branch since it forked, as `picked`
+        reads it: a fix picked as it is keeps its subject."""
+        return {
+            subject for _, subject, _ in _log(repository.brave, self._fork())
+        }
+
+    def _fork(self) -> str:
+        fork = (
+            repository.brave.run_git('merge-base', 'HEAD', 'origin/master')
+            if self.run.channel
+            else '@{upstream}'
+        )
+        return f'{fork}..HEAD'
 
     @staticmethod
     def is_minor(revision_range: str) -> bool:
@@ -4642,8 +4827,16 @@ class FixSources:
         matched through the culprits both cite, with the files each
         touches: what `lift` reports, to pick before fixing anything."""
         matches = _find_next_fixes(self.run, revision_range, [])
+        search = (
+            '- For a failure no culprit explains (a crate, the toolchain), '
+            'search the newer branches by what failed: `next-fixes '
+            f'{revision_range} <path>... [--text <name>]`.'
+        )
         if not matches:
-            return '- No newer branch has a fix for this bump\'s cherry-picks.'
+            return (
+                "- No newer branch has a fix for this bump's cherry-picks.\n"
+                + search
+            )
         picked = self.picked()
         lines = [
             f'- Fixes on newer branches for this bump\'s cherry-picks '
@@ -4666,7 +4859,7 @@ class FixSources:
                 )
             )
             lines += [f'    - `{path}`' for path in files]
-        return '\n'.join(lines)
+        return '\n'.join([*lines, search])
 
     @staticmethod
     def _fit(fix: Commit) -> str:
@@ -4684,14 +4877,9 @@ class FixSources:
         """The culprits the run's branch cites since it forked, by hash and
         Change-Id: from its upstream, or for a channel, from master, uplifts
         included."""
-        fork = (
-            repository.brave.run_git('merge-base', 'HEAD', 'origin/master')
-            if self.run.channel
-            else '@{upstream}'
-        )
         return {
             name
-            for _, _, body in _log(repository.brave, f'{fork}..HEAD')
+            for _, _, body in _log(repository.brave, self._fork())
             for name in (
                 *parse_culprit_hashes(body),
                 *Commit.culprit_change_ids(body),
@@ -4708,6 +4896,73 @@ def _find_next_fixes(
         ref: _fixes_on(ref, sources.since_on(ref)) for ref in sources.refs()
     }
     return match_next_fixes(cherry_picks, branches)
+
+
+_CR_PREFIX = re.compile(r'\[cr(\d+)\]')
+
+
+def _fix_pathspecs(paths: list[str]) -> list[str]:
+    """Brave pathspecs for what a fix of `paths` touches: the Brave files
+    themselves, or for a Chromium path, its `chromium_src` shadow, its yaml
+    and its patch."""
+    specs = []
+    for path in paths:
+        path = path.strip('/').removeprefix('./').removeprefix('brave/')
+        specs += [
+            f':(glob)**/{path}',
+            f':(glob)**/{path}/**',
+            f':(glob)**/{path}.yaml',
+            f':(glob)patches/{path.replace("/", "-")}.patch',
+        ]
+    return specs
+
+
+@dataclass(frozen=True)
+class FoundFix:
+    """A fix on a newer branch citing no culprit, found by path or text."""
+
+    branch: str
+    fix: Commit
+    done: bool
+
+
+def _search_next_fixes(
+    run: Run, paths: list[str], text: str | None
+) -> list[FoundFix]:
+    """The newer branches' fixes that cite no culprit, touching `paths` or
+    mentioning `text` in their message or diff, nearest branch first: for
+    breakage no upstream change caused (cr158.x: a crate's missing licence
+    failing `gnrt vendor`), which a culprit can't match."""
+    brave = repository.brave
+    sources = FixSources(run)
+    have = sources.subjects()
+    found: list[FoundFix] = []
+    seen: set[str] = set()
+    for ref in sources.refs():
+        span = f'{sources.since_on(ref)}..{ref}'
+        hits: list[tuple[str, str, str]] = []
+        if paths:
+            hits += _log(brave, span, '--', *_fix_pathspecs(paths))
+        if text:
+            hits += _log(brave, '-i', '--fixed-strings', f'--grep={text}', span)
+            hits += _log(brave, f'-G{re.escape(text)}', span)
+        for sha, subject, body in hits:
+            if sha in seen or parse_culprit_hashes(body):
+                continue
+            seen.add(sha)
+            # A newer `cr<M>` branch's own commits carry its prefix; a higher
+            # channel's bump branch has none.
+            prefix = _CR_PREFIX.search(subject)
+            if ref.startswith('origin/') and not (
+                prefix and int(prefix[1]) > run.milestone
+            ):
+                continue
+            if not ChannelBump.picked(subject):
+                continue
+            found.append(
+                FoundFix(ref, Commit(sha, subject, []), subject in have)
+            )
+    return found
 
 
 def _cmd_next_tracker(args: argparse.Namespace) -> int:
@@ -4771,6 +5026,10 @@ def _cmd_next_fixes(args: argparse.Namespace) -> int:
         return 1
     picked = FixSources(run).picked()
     matches = _find_next_fixes(run, args.range, args.paths)
+    print(
+        f"By culprit: {len(matches)} fix(es) on newer branches cite this "
+        "bump's cherry-picks."
+    )
     for match in matches:
         pick = match.cherry_pick
         done = _same_commit([pick.sha, *pick.identities()], list(picked))
@@ -4780,7 +5039,111 @@ def _cmd_next_fixes(args: argparse.Namespace) -> int:
             f'  {match.branch} {match.fix.sha[:12]} {match.fix.subject}'
             + (f' (already on {run.branch})' if done else '')
         )
-    print(f'{len(matches)} fix(es) found on newer branches.')
+        if not done:
+            print(f'  pick it: autolift.py pick-fix {match.fix.sha} {pick.sha}')
+    if not (args.paths or args.text):
+        print(
+            'For a failure no culprit explains, search by what failed: '
+            'next-fixes <range> <path>... [--text <name>].'
+        )
+        return 0
+    found = _search_next_fixes(run, args.paths, args.text)
+    searched = ' or '.join(
+        part
+        for part in (
+            ', '.join(args.paths) if args.paths else '',
+            f'"{args.text}"' if args.text else '',
+        )
+        if part
+    )
+    print(
+        f'By path or text, citing no culprit: {len(found)} fix(es) on newer '
+        f'branches for {searched}. Check that one does what this branch '
+        'needs before picking it.'
+    )
+    for hit in found:
+        print(
+            f'  {hit.branch} {hit.fix.sha[:12]} {hit.fix.subject}'
+            + (
+                f' (already on {run.branch})'
+                if hit.done
+                else FixSources._fit(hit.fix)
+            )
+        )
+        if not hit.done:
+            print(f'    pick it: autolift.py pick-fix {hit.fix.sha}')
+    if not (matches or found):
+        print('No newer branch has a fix for it: fix it here.')
+    return 0
+
+
+# The knowledge bases' matcher, beside this tooling, staged copies included.
+_KNOWLEDGE_BASE = (
+    Path(__file__).resolve().parents[1]
+    / 'codehealth'
+    / 'scripts'
+    / 'knowledge_base.py'
+)
+
+
+def _cmd_rules(args: argparse.Namespace) -> int:
+    run = Run.current()
+    if run is None:
+        print('Check out a cr<N> or channel bump branch first.')
+        return 1
+    commits = Publish(run).session_commits(args.since)
+    if not commits:
+        print(
+            f'No commit on {run.branch} that this run wrote: nothing to check.'
+        )
+        return 0
+    found = 0
+    for sha, subject, diff in commits:
+        result = subprocess.run(
+            [sys.executable, str(_KNOWLEDGE_BASE), 'match', '-'],
+            input=diff,
+            cwd=repository.brave.root,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        if result.returncode:
+            print(f'knowledge_base.py failed on {sha[:12]}:\n{result.stderr}')
+            return 1
+        matches = json.loads(result.stdout)
+        # Upstream's language-wide rules match any file of their language by
+        # path alone: hundreds for one C++ change, most about other code.
+        broad = [
+            m
+            for m in matches
+            if m['name'].startswith('general/') and not m['targeted']
+        ]
+        if not args.all:
+            matches = [m for m in matches if m not in broad]
+        print(
+            f'{sha[:12]} {subject}: {len(matches)} rule(s)'
+            + (
+                f', and {len(broad)} language-wide one(s) matched by path '
+                'alone (--all lists them)'
+                if broad and not args.all
+                else ''
+            )
+        )
+        for match in matches:
+            # Targeted: a group found the lines the rule is about.
+            where = 'lines' if match['targeted'] else 'files'
+            print(
+                f'  - {match["severity"]} {match["name"]} ({where}): '
+                f'{match["file"]}'
+            )
+            for path, lines in match['files'].items():
+                print(f'    - {path}: {len(lines)} line(s)')
+        found += len(matches)
+    print(
+        f'{found} rule(s) to check over {len(commits)} commit(s): read each '
+        "rule, and fix what a commit breaks as a fixup of it, or say in the "
+        'report why the rule is wrong for it.'
+    )
     return 0
 
 
@@ -4789,8 +5152,8 @@ def _cmd_pick_fix(args: argparse.Namespace) -> int:
     if Run.current() is None:
         print('Check out a cr<N> or channel bump branch first.')
         return 1
-    # Without a culprit, the commit is a tracker item's fix, as next-tracker
-    # lists it, and is picked as it is.
+    # Without a culprit, the commit is a fix that cites none, as next-tracker
+    # or next-fixes' search lists it, and is picked as it is.
     if args.culprit:
         culprit = repository.chromium.run_git('rev-parse', args.culprit)
         _, _, message = _log(brave, '-1', args.commit)[0]
@@ -4839,6 +5202,13 @@ def main() -> int:
         'help': 'Start a dry run: all the work, but `lift` writes no issue, '
         'and `publish` pushes nothing and opens no pull request.',
     }
+    skip_channel = {
+        'action': 'append',
+        'default': [],
+        'metavar': 'CHANNEL',
+        'help': 'For a channel bump: leave this channel alone, by name '
+        '(nightly, beta, release) or branch (1.101.x). Repeat for more.',
+    }
     prepare = subparsers.add_parser(
         'prepare',
         help='Reset cr<N>, set its base as upstream, and start the rebase; '
@@ -4863,6 +5233,7 @@ def main() -> int:
         'has commits origin lacks (discards them).',
     )
     prepare.add_argument('--dry-run', **dry_run)
+    prepare.add_argument('--skip-channel', **skip_channel)
     prepare.set_defaults(func=_cmd_prepare)
 
     plan = subparsers.add_parser(
@@ -4886,6 +5257,7 @@ def main() -> int:
     advise.add_argument(
         '--resume', action='store_true', help='Carry on with a stopped run.'
     )
+    advise.add_argument('--skip-channel', **skip_channel)
     advise.add_argument(
         '--json-output',
         type=Path,
@@ -4945,6 +5317,7 @@ def main() -> int:
     )
     autofix.add_argument('target', **target)
     autofix.add_argument('--dry-run', **dry_run)
+    autofix.add_argument('--skip-channel', **skip_channel)
     autofix.set_defaults(func=_cmd_autofix)
 
     ci_failures_parser = subparsers.add_parser(
@@ -4994,7 +5367,16 @@ def main() -> int:
     )
     next_fixes.add_argument('range', help='e.g. 158.0.8127.2..158.0.8127.4')
     next_fixes.add_argument(
-        'paths', nargs='*', help='Chromium-relative paths, e.g. net/http/x.cc'
+        'paths',
+        nargs='*',
+        help='What failed: Chromium-relative paths (net/http/x.cc), whose '
+        'shadows, yamls and patches count too, or Brave files '
+        '(third_party/rust/chromium_crates_io/vendor/crunchy-v0_2).',
+    )
+    next_fixes.add_argument(
+        '--text',
+        help='A name in the failure (a crate, a symbol, a feature), looked '
+        "for in the fixes' messages and diffs.",
     )
     next_fixes.set_defaults(func=_cmd_next_fixes)
 
@@ -5004,6 +5386,25 @@ def main() -> int:
     )
     next_tracker.add_argument('range', help='e.g. 158.0.8127.2..158.0.8127.4')
     next_tracker.set_defaults(func=_cmd_next_tracker)
+
+    rules = subparsers.add_parser(
+        'rules',
+        help="List the knowledge bases' review rules each commit the run "
+        'wrote on this branch needs.',
+    )
+    rules.add_argument(
+        '--since',
+        default='',
+        help="The commit to compare with, instead of the run's start: "
+        'commits it lacks, or changed since it, are checked.',
+    )
+    rules.add_argument(
+        '--all',
+        action='store_true',
+        help="Also list upstream's language-wide rules that match a file by "
+        'path alone.',
+    )
+    rules.set_defaults(func=_cmd_rules)
 
     pick_fix = subparsers.add_parser(
         'pick-fix',
@@ -5016,7 +5417,8 @@ def main() -> int:
         'culprit',
         nargs='?',
         help="The cherry-pick in this branch's bump range the fix is for. "
-        "Leave it out for a ticked tracker item's fix.",
+        "Leave it out for a fix that cites no culprit: a ticked tracker "
+        "item's, or one next-fixes found by path or text.",
     )
     pick_fix.set_defaults(func=_cmd_pick_fix)
 

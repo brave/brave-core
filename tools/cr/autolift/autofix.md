@@ -38,19 +38,21 @@ with the differences it lists.
    stalled. For a TeamCity build, try `--failed-step` first: it writes the end
    of the step that failed, or each failed test's whole output when only tests
    failed, in seconds, while the whole log of a build with thousands of tests (a
-   test build) takes many minutes to download.
-   `vpython3 tools/cr/ci/cli.py checks <branch>`, with the run's branch
-   (`cr<N>`), lists every check. It takes a branch or a pull request number, so
-   `<N>` alone names another pull request.
+   test build) takes many minutes to download. For a Jenkins test whose excerpt
+   cuts what you need, `--test '<Suite>.*'` writes the whole output of each
+   failed test the glob matches, from the run's test report, instead of its log
+   (tens of MB). `vpython3 tools/cr/ci/cli.py checks <branch>`, with the run's
+   branch (`cr<N>`), lists every check. It takes a branch or a pull request
+   number, so `<N>` alone names another pull request.
 3. Triage each failed build. Its `infra`, `tests` or `build` label is a hint
    from the log; check it against the log tail.
    - **Infra** (the CI machine or its workspace: disk, agent, a workspace built
      another way): no commit. Rerun the check once with
-     `vpython3 tools/cr/ci/cli.py rerun <check URL>`, adding `--wipe-workspace`
-     on Jenkins when the workspace is the problem. TeamCity has no wipe through
-     the CLI yet: when a plain rerun can't clear the workspace, report it for
-     the CI owners (cr159: Android's "Run gn clean before switching from ninja
-     to siso").
+     `vpython3 tools/cr/ci/cli.py rerun <check URL>`. When the out dir is the
+     problem (stale generated files, a build that switched tools: cr159:
+     Android's "Run gn clean before switching from ninja to siso"), add
+     `--remove-src-out`; when the rest of the workspace is, `--wipe-workspace`,
+     which takes much longer.
    - **Tests**: a test failing on several platforms, on every retry (TeamCity's
      "2 of 2 runs"), or since earlier builds ("failing since build", "failing
      for N builds") is broken, not flaky: fix it, unless its "History" lines

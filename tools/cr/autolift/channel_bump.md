@@ -30,7 +30,9 @@ The [Procedure](SKILL.md#procedure)'s steps apply, with these differences:
   each channel's action (`lift`, `rebase` or `none`), which `status` shows. Exit
   3: every channel's bump to the tag is on GitHub already, and none needs a
   rebase, so carry on as an autofix run of the tag (below). Exit 1 with "No
-  channel is on M<N>": stop and report.
+  channel is on M<N>", or with "No channel answers to --skip-channel": stop and
+  report. When the prompt names channels to leave out, pass its `--skip-channel`
+  flags to every `prepare` and `autofix` of the tag.
 - **Step 2 on a branch to rebase** is `brockit rebase --squash-minor-bumps` with
   the checkout synced to it (`pnpm run sync`), resolved with the recipes in
   [step 1](SKILL.md#1-reset-and-rebase), then `channel-picks`: a channel left as
@@ -64,18 +66,23 @@ The [Procedure](SKILL.md#procedure)'s steps apply, with these differences:
   when this channel's lift needs it. For a lift's action item, compare with the
   higher channel's branch first (`git show <higher branch>:<path>`), and resolve
   as it did where the code is the same. `next-fixes` there also looks at the
-  higher channels' bump branches and the channels themselves. A fix the bump
-  needs that is on master but not uplifted to the channel
-  (`git log origin/<channel>..origin/master -- <path>`) is picked with
-  `pick-fix` and listed in the report as an uplift.
+  higher channels' bump branches and the channels themselves.
+- **Uplifts.** What fails on a channel because of the channel itself (no bump
+  commit causes it; cr158.x: a crate `gnrt` can't vendor) isn't left to the
+  channel as [Scope](SKILL.md#scope) leaves a base's breakage: when master or a
+  newer `cr` branch has fixed it (`next-fixes` by path or `--text`, or
+  `git log origin/<channel>..origin/master -- <path>`), pick the fix onto each
+  bump branch that needs it with `pick-fix`, and list it in the report as an
+  uplift. Only breakage nothing ahead has fixed is left to the channel.
 - **Commits** on these branches get no `[cr<N>]` prefix and no culprit range
   check; `--culprit` still writes the "Chromium changes:" block. A fix only a
   lower channel needs goes on its branch alone, and on the channels below it
   through `channel-picks`.
 - **There is no step 8**: the channels' pull requests have their CI fixed by an
   autofix run of the tag (below).
-- **Step 9** is the [Minor bump review](SKILL.md#minor-bump-review), once, after
-  the highest channel's step 7, so that its picks reach the lower channels too.
+- **Step 9** is the [Minor bump review](SKILL.md#minor-bump-review), once, right
+  after the highest channel's lift, so that its picks are built and checked with
+  the rest and reach the lower channels too.
 - **Step 12** is `publish <tag>`. It brings every branch up to date with its
   channel, runs the presubmit of the branches the run builds (the highest
   channel's, and in an autofix run a lower one's with a fix of its own), and
