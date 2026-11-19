@@ -56,7 +56,7 @@ class GeneratedBuilderTest(unittest.TestCase):
         self.assertEqual(output.gn_args, testing_support.GN_ARGS)
         self.assertEqual(output.builder_spec, testing_support.BUILDER_SPEC)
         self.assertEqual(output.sync, testing_support.SYNC)
-        self.assertEqual(output.targets, testing_support.TARGETS)
+        self.assertEqual(output.targets_spec, testing_support.TARGETS_SPEC)
         self.assertEqual(self._problems(), [])
 
     def test_unknown_builder_lists_available_ones(self):
@@ -73,20 +73,20 @@ class GeneratedBuilderTest(unittest.TestCase):
             self.output_dir,
             'b',
             gn_args={'gn_args': {}},
-            targets={'compile': 'brave:all', 'tests': []},
+            targets_spec={'gtest_tests': 'a_test'},
         )
         problems = self._problems()
         self.assertEqual(len(problems), 2)
         self.assertIn(
             "gn-args.json: \"gn_args\" is missing 'target_os'; ", problems[0]
         )
-        self.assertIn("targets.json: 'compile' is not a list", problems[1])
+        self.assertIn('"gtest_tests" is not a list', problems[1])
         with self.assertRaisesRegex(generated_output.BotsError, 'gn-args'):
             self._read()
 
     def test_missing_file(self):
-        write_builder(self.output_dir, 'b', omit=('targets.json',))
-        self.assertRegex(self._problems()[0], 'targets.json: missing$')
+        write_builder(self.output_dir, 'b', omit=('sync.json',))
+        self.assertRegex(self._problems()[0], 'sync.json: missing$')
 
     def test_invalid_json(self):
         write_builder(self.output_dir, 'b')

@@ -785,24 +785,6 @@ class Targets:
         # binary) and, when there are any, its `args`.
         self.gtest_tests = tuple(dict(test) for test in gtest_tests)
 
-    @property
-    def compile(self) -> tuple[str, ...]:
-        """The ninja targets to build: the additional compile targets, then
-        the binaries the tests run."""
-        return tuple(
-            dict.fromkeys(
-                [
-                    *self.additional_compile_targets,
-                    *(test['test'] for test in self.gtest_tests),
-                ]
-            )
-        )
-
-    @property
-    def tests(self) -> tuple[str, ...]:
-        """The names of the tests to run."""
-        return tuple(test['name'] for test in self.gtest_tests)
-
 
 class _Binaries:
     def __init__(self, registry: TargetsRegistry) -> None:

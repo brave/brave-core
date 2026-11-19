@@ -45,23 +45,23 @@ class FindProblemsTest(unittest.TestCase):
         self.assertEqual(validate.find_problems(), [])
 
     def test_a_builders_own_problems_are_reported(self):
-        write_builder(self.output_dir, 'b', omit=('targets.json',))
+        write_builder(self.output_dir, 'b', omit=('sync.json',))
         problems = validate.find_problems()
         self.assertEqual(len(problems), 1)
-        self.assertIn('targets.json: missing', problems[0])
+        self.assertIn('sync.json: missing', problems[0])
 
     def test_builders_sharing_gn_args_but_not_targets_are_fine(self):
-        # The two real ASan builders resolve to identical gn_args by design
-        # and differ only in targets.json.
+        # Builders may resolve to identical gn_args and differ only in their
+        # targets specs.
         write_builder(
             self.output_dir,
             'a',
-            targets={'compile': ['brave:all'], 'tests': ['brave_unit_tests']},
+            targets_spec={'gtest_tests': [{'name': 'a', 'test': 'a'}]},
         )
         write_builder(
             self.output_dir,
             'b',
-            targets={'compile': ['brave:all'], 'tests': ['chromium_tests']},
+            targets_spec={'gtest_tests': [{'name': 'b', 'test': 'b'}]},
         )
         self.assertEqual(validate.find_problems(), [])
 

@@ -96,10 +96,10 @@ class DispatchTest(_BotsTestCase):
         self.assertIn('looks ok', out)
 
     def test_validate_problems_return_1(self):
-        write_builder(self.output_dir, 'c', omit=('targets.json',))
+        write_builder(self.output_dir, 'c', omit=('sync.json',))
         ret, _, err = self._main('validate')
         self.assertEqual(ret, 1)
-        self.assertIn('targets.json: missing', err)
+        self.assertIn('sync.json: missing', err)
 
     def test_describe_one_builder(self):
         ret, out, _ = self._main('describe', 'b', '--json')

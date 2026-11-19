@@ -384,8 +384,9 @@ class BuildersRegistryTest(unittest.TestCase):
         self.targets.tests.gtest_test(name='t')
         self.targets.bundle(name='suite', targets=['t'])
         builder = self._builder_with(targets='suite')
-        self.assertEqual(builder.targets.tests, ('t',))
-        self.assertEqual(builder.targets.compile, ('t',))
+        self.assertEqual(
+            builder.targets.gtest_tests, ({'name': 't', 'test': 't'},)
+        )
 
     def test_builder_bundle_errors_name_the_builder(self):
         with self.assertRaisesRegex(
@@ -876,7 +877,7 @@ class TargetsRegistryTest(unittest.TestCase):
             [['--a', '--m2', '--outer'], ['--m1', '--m2', '--outer']],
         )
 
-    def test_compile_targets_are_the_additional_ones_then_the_binaries(self):
+    def test_a_bundle_expands_to_its_tests_and_compile_targets(self):
         expanded = self.targets.expand(
             self.targets.bundle(
                 targets=['b', 'b_too', 'w'],
@@ -884,8 +885,10 @@ class TargetsRegistryTest(unittest.TestCase):
             )
         )
         self.assertEqual(expanded.additional_compile_targets, ('chrome',))
-        self.assertEqual(expanded.compile, ('chrome', 'b', 'w'))
-        self.assertEqual(expanded.tests, ('b', 'b_too', 'w'))
+        self.assertEqual(
+            [(test['name'], test['test']) for test in expanded.gtest_tests],
+            [('b', 'b'), ('b_too', 'b'), ('w', 'w')],
+        )
 
     def test_a_test_included_twice_is_an_error(self):
         self.targets.bundle(name='first', targets=['a'])
