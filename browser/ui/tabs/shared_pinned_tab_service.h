@@ -86,7 +86,7 @@ class SharedPinnedTabService : public KeyedService,
   void OnTabPinnedStateChanged(tabs::TabHandle handle) override;
   void OnTabChangedAt(tabs::TabInterface* tab,
                       TabChangeType change_type) override;
-  void OnTabBlockedStateChanged(tabs::TabInterface* tab) override;
+  void OnTabBlockedStateChanged(tabs::TabHandle handle) override;
   void OnTabAudioChanged(tabs::TabInterface* tab) override;
   void OnTabStripModelDestroyed(TabStripModel* tab_strip_model) override;
 
