@@ -60,12 +60,10 @@ class BraveTestsApi(RecipeApi):
         self._specs[builder_id.builder] = spec[builder_id.builder]
         return self._specs[builder_id.builder]
 
-    def suites(self, builder_id: BuilderId) -> list[str]:
-        """The test targets of the builder's gtests, in its spec's order."""
-        return [
-            test['test']
-            for test in self._read_spec(builder_id).get('gtest_tests', [])
-        ]
+    def gtests(self, builder_id: BuilderId) -> list[dict]:
+        """The builder's gtests, as its spec lists them: each with its
+        `name`, its `test` target and its `args`."""
+        return self._read_spec(builder_id).get('gtest_tests', [])
 
     def run_tests(self, builder_id: BuilderId) -> TestRun:
         """Run each of the builder's gtests through `runtest.py --builder`,

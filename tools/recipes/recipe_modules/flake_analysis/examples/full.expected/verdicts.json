@@ -1,0 +1,301 @@
+[
+  {
+    "cmd": [],
+    "name": "flake analysis"
+  },
+  {
+    "cmd": [],
+    "name": "flake analysis.browser_tests"
+  },
+  {
+    "cmd": [],
+    "name": "flake analysis.browser_tests.rerun"
+  },
+  {
+    "cmd": [
+      "git",
+      "clone",
+      "--depth",
+      "1",
+      "https://chromium.googlesource.com/chromium/tools/depot_tools",
+      "[WORKSPACE]/b/src/third_party/depot_tools"
+    ],
+    "name": "flake analysis.browser_tests.rerun.clone depot_tools"
+  },
+  {
+    "cmd": [
+      "gclient"
+    ],
+    "name": "flake analysis.browser_tests.rerun.verify gclient"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/cipd",
+      "ensure",
+      "-root",
+      "[WORKSPACE]/cipd/infra_rbe_client/re_client_version_0.187.0.ad10b508-gomaip",
+      "-ensure-file",
+      "infra/rbe/client/${platform} re_client_version:0.187.0.ad10b508-gomaip\n"
+    ],
+    "name": "flake analysis.browser_tests.rerun.install infra/rbe/client/${platform}"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/cipd/infra_rbe_client/re_client_version_0.187.0.ad10b508-gomaip/remotetool",
+      "--service",
+      "rbe.example.com:443",
+      "--instance",
+      "default",
+      "--service_no_auth",
+      "--tls_client_auth_cert",
+      "/certs/client.crt",
+      "--tls_client_auth_key",
+      "/certs/client.key",
+      "--operation",
+      "download_dir",
+      "--digest",
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/100",
+      "--path",
+      "[WORKSPACE]/rc/isolate_tmp_1"
+    ],
+    "name": "flake analysis.browser_tests.rerun.download"
+  },
+  {
+    "cmd": [
+      "vpython3",
+      "../../testing/xvfb.py",
+      "./browser_tests",
+      "--a",
+      "--gtest_filter=Upstream.Fails",
+      "--gtest_repeat=10",
+      "--test-launcher-retry-limit=0",
+      "--test-launcher-batch-limit=1",
+      "--test-launcher-summary-output=[WORKSPACE]/rc/rerun_tmp_1/summary.json"
+    ],
+    "cwd": "[WORKSPACE]/rc/isolate_tmp_1/out/Release",
+    "name": "flake analysis.browser_tests.rerun.run"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
+      "-u",
+      "RECIPE_MODULE[file]/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
+      "copy",
+      "[WORKSPACE]/rc/rerun_tmp_1/summary.json",
+      "/path/to/tmp/"
+    ],
+    "name": "flake analysis.browser_tests.read rerun results"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
+      "[WORKSPACE]/b/src/brave/tools/chromium_tests_analysis/is_upstream_flake.py",
+      "Upstream.Flaky",
+      "--suite",
+      "^browser_tests$",
+      "--builder",
+      "^(linux-rel|Linux Tests)$",
+      "--json"
+    ],
+    "name": "flake analysis.browser_tests.upstream Upstream.Flaky"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
+      "[WORKSPACE]/b/src/brave/tools/chromium_tests_analysis/is_upstream_flake.py",
+      "Upstream.Fails",
+      "--suite",
+      "^browser_tests$",
+      "--builder",
+      "^(linux-rel|Linux Tests)$",
+      "--json"
+    ],
+    "name": "flake analysis.browser_tests.upstream Upstream.Fails"
+  },
+  {
+    "cmd": [],
+    "name": "flake analysis.brave_unit_tests"
+  },
+  {
+    "cmd": [],
+    "name": "flake analysis.brave_unit_tests.rerun"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/cipd/infra_rbe_client/re_client_version_0.187.0.ad10b508-gomaip/remotetool",
+      "--service",
+      "rbe.example.com:443",
+      "--instance",
+      "default",
+      "--service_no_auth",
+      "--tls_client_auth_cert",
+      "/certs/client.crt",
+      "--tls_client_auth_key",
+      "/certs/client.key",
+      "--operation",
+      "download_dir",
+      "--digest",
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/100",
+      "--path",
+      "[WORKSPACE]/rc/isolate_tmp_2"
+    ],
+    "name": "flake analysis.brave_unit_tests.rerun.download"
+  },
+  {
+    "cmd": [
+      "vpython3",
+      "../../testing/xvfb.py",
+      "./brave_unit_tests",
+      "--a",
+      "--gtest_filter=Brave.Flaky:Brave.Once",
+      "--gtest_repeat=10",
+      "--test-launcher-retry-limit=0",
+      "--test-launcher-batch-limit=1",
+      "--test-launcher-summary-output=[WORKSPACE]/rc/rerun_tmp_2/summary.json"
+    ],
+    "cwd": "[WORKSPACE]/rc/isolate_tmp_2/out/Release",
+    "name": "flake analysis.brave_unit_tests.rerun.run"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
+      "-u",
+      "RECIPE_MODULE[file]/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
+      "copy",
+      "[WORKSPACE]/rc/rerun_tmp_2/summary.json",
+      "/path/to/tmp/"
+    ],
+    "name": "flake analysis.brave_unit_tests.read rerun results"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
+      "[WORKSPACE]/b/src/brave/tools/chromium_tests_analysis/is_upstream_flake.py",
+      "Brave.Flaky",
+      "--suite",
+      "^brave_unit_tests$",
+      "--builder",
+      "^(linux-rel|Linux Tests)$",
+      "--json"
+    ],
+    "name": "flake analysis.brave_unit_tests.upstream Brave.Flaky",
+    "retcode": 3
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
+      "[WORKSPACE]/b/src/brave/tools/chromium_tests_analysis/is_upstream_flake.py",
+      "Brave.Once",
+      "--suite",
+      "^brave_unit_tests$",
+      "--builder",
+      "^(linux-rel|Linux Tests)$",
+      "--json"
+    ],
+    "name": "flake analysis.brave_unit_tests.upstream Brave.Once",
+    "retcode": 1
+  },
+  {
+    "cmd": [],
+    "name": "flake analysis.base_unittests"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
+      "[WORKSPACE]/b/src/brave/tools/chromium_tests_analysis/is_upstream_flake.py",
+      "Base.NoIsolate",
+      "--suite",
+      "^base_unittests$",
+      "--builder",
+      "^(linux-rel|Linux Tests)$",
+      "--json"
+    ],
+    "name": "flake analysis.base_unittests.upstream Base.NoIsolate"
+  },
+  {
+    "cmd": [],
+    "name": "flake analysis.interactive_ui_tests"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
+      "[WORKSPACE]/b/src/brave/tools/chromium_tests_analysis/is_upstream_flake.py",
+      "Retried.Once",
+      "--suite",
+      "^interactive_ui_tests$",
+      "--builder",
+      "^(linux-rel|Linux Tests)$",
+      "--json"
+    ],
+    "name": "flake analysis.interactive_ui_tests.upstream Retried.Once"
+  },
+  {
+    "cmd": [],
+    "name": "flake analysis.verdicts",
+    "output_properties": {
+      "flake_analysis": [
+        {
+          "exonerated": true,
+          "local": "flaky",
+          "rerun_failures": 0,
+          "reruns": 0,
+          "suite": "browser_tests",
+          "test": "Upstream.Flaky",
+          "upstream": "flaky"
+        },
+        {
+          "exonerated": true,
+          "local": "deterministic",
+          "rerun_failures": 10,
+          "reruns": 10,
+          "suite": "browser_tests",
+          "test": "Upstream.Fails",
+          "upstream": "failing"
+        },
+        {
+          "exonerated": false,
+          "local": "flaky",
+          "rerun_failures": 3,
+          "reruns": 10,
+          "suite": "brave_unit_tests",
+          "test": "Brave.Flaky",
+          "upstream": "stable"
+        },
+        {
+          "exonerated": false,
+          "local": "not_reproduced",
+          "rerun_failures": 0,
+          "reruns": 10,
+          "suite": "brave_unit_tests",
+          "test": "Brave.Once",
+          "upstream": "unknown"
+        },
+        {
+          "exonerated": false,
+          "local": "not_rerun",
+          "rerun_failures": 0,
+          "reruns": 0,
+          "suite": "base_unittests",
+          "test": "Base.NoIsolate",
+          "upstream": "no_data"
+        },
+        {
+          "exonerated": false,
+          "local": "flaky",
+          "rerun_failures": 0,
+          "reruns": 0,
+          "suite": "interactive_ui_tests",
+          "test": "Retried.Once",
+          "upstream": "no_data"
+        }
+      ]
+    }
+  },
+  {
+    "name": "$result"
+  }
+]

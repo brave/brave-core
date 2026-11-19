@@ -33,6 +33,9 @@ def RunSteps(api: DEPS):
         api.path.chromium_src, 'out/Release', ['base_unittests']
     )
     assert isolates['base_unittests'].cwd == 'out/Release'
+    isolate_ = isolate.Isolate.from_json(isolates['base_unittests'].to_json())
+    result = api.isolate.run('rerun', isolate_, ['--gtest_repeat=2'])
+    assert result.retcode == 0
 
 
 def GenTests(api: TEST_DEPS):
@@ -47,6 +50,21 @@ def GenTests(api: TEST_DEPS):
             ['isolate', '--no-build', 'out/Release', 'base_unittests'],
         ),
         api.post_process(post_process.MustRun, 'isolate tests.isolates'),
+        api.post_process(
+            post_process.StepCommandContains,
+            'rerun.download',
+            ['--digest', f'{"b" * 64}/100'],
+        ),
+        api.post_process(
+            post_process.StepCommandRE,
+            'rerun.run',
+            [
+                'vpython3',
+                r'.*test_env\.py',
+                r'\./base_unittests',
+                '--gtest_repeat=2',
+            ],
+        ),
         api.post_process(post_process.StatusSuccess),
     )
     yield api.test(

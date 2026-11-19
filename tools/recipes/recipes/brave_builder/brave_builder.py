@@ -18,6 +18,7 @@ from recipe_modules import (
     brave_tests,
     brave_tests_builder_config,
     chromium_checkout,
+    flake_analysis,
     isolate,
     path,
     platform,
@@ -34,6 +35,7 @@ class DEPS(RecipeScriptApi):
     ci_notifications: ci_notifications.API
     brave_tests: brave_tests.API
     brave_tests_builder_config: brave_tests_builder_config.API
+    flake_analysis: flake_analysis.API
     isolate: isolate.API
     path: path.API
     sanitizer_findings: sanitizer_findings.API
@@ -45,6 +47,7 @@ class TEST_DEPS(RecipeTestApi):
     brave_tests: brave_tests.TEST_API
     brave_tests_builder_config: brave_tests_builder_config.TEST_API
     chromium_checkout: chromium_checkout.TEST_API
+    flake_analysis: flake_analysis.TEST_API
     isolate: isolate.TEST_API
     platform: platform.TEST_API
     raw_io: raw_io.TEST_API
@@ -59,13 +62,28 @@ def RunSteps(api: DEPS) -> None:
     api.brave_core_checkout.configure_build(builder_id, builder_config)
     api.brave_core_checkout.ensure_checkout()
     api.brave_core_checkout.compile()
-    if api.isolate.enabled:
+    gtests = api.brave_tests.gtests(builder_id)
+    isolates = (
         api.isolate.isolate_tests(
             api.path.chromium_src,
             f'out/{builder_id.builder}',
-            api.brave_tests.suites(builder_id),
+            [test['test'] for test in gtests],
         )
+        if api.isolate.enabled
+        else {}
+    )
     test_run = api.brave_tests.run_tests(builder_id)
+    if isolates:
+        analysis = api.flake_analysis.analyse(
+            test_run,
+            {
+                test['name']: flake_analysis.Rerunnable(
+                    isolates[test['test']], tuple(test.get('args', ()))
+                )
+                for test in gtests
+            },
+        )
+        test_run = analysis.exonerate(test_run)
     findings = api.sanitizer_findings.report(test_run.sanitizer_reports)
     filing = api.ci_issues.file(
         builder=builder_id.builder,
@@ -127,7 +145,9 @@ def GenTests(api: TEST_DEPS):
         api.post_process(post_process.StatusSuccess),
     )
     # A builder with `archive_isolates` archives its suites before it runs
-    # them, with the client certificate builds already use.
+    # them, with the client certificate builds already use. It reruns a
+    # failing test from its isolate and asks upstream about it: one flaky
+    # or failing there too does not fail the build or get filed.
     yield api.test(
         'isolates',
         api.brave_tests_builder_config.ci_build(
@@ -158,6 +178,25 @@ def GenTests(api: TEST_DEPS):
             post_process.StepCommandContains,
             'isolate tests.brave_unit_tests.archive.upload',
             ['--service', 'rbe.ba.brave.com:443'],
+        ),
+        api.brave_tests.test_results(
+            'base_unittests',
+            {
+                'name': 'Upstream.Fails',
+                'flaky': False,
+                'status': 'FAILURE',
+                'message': 'Expected equality',
+                'output': '',
+            },
+        ),
+        api.step_data('base_unittests', retcode=1),
+        api.flake_analysis.rerun('base_unittests', {'Upstream.Fails': 10}),
+        api.flake_analysis.upstream_status(
+            'base_unittests', 'Upstream.Fails', 'failing'
+        ),
+        api.post_process(
+            post_process.MustRun,
+            'flake analysis.base_unittests.rerun.download',
         ),
         api.post_process(post_process.MustRun, 'brave_unit_tests'),
         api.post_process(post_process.StatusSuccess),

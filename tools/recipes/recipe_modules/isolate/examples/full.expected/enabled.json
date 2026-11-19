@@ -122,6 +122,41 @@
     }
   },
   {
+    "cmd": [],
+    "name": "rerun"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/cipd/infra_rbe_client/re_client_version_0.187.0.ad10b508-gomaip/remotetool",
+      "--service",
+      "rbe.example.com:443",
+      "--instance",
+      "default",
+      "--service_no_auth",
+      "--tls_client_auth_cert",
+      "/certs/client.crt",
+      "--tls_client_auth_key",
+      "/certs/client.key",
+      "--operation",
+      "download_dir",
+      "--digest",
+      "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb/100",
+      "--path",
+      "[WORKSPACE]/rc/isolate_tmp_1"
+    ],
+    "name": "rerun.download"
+  },
+  {
+    "cmd": [
+      "vpython3",
+      "../../testing/test_env.py",
+      "./base_unittests",
+      "--gtest_repeat=2"
+    ],
+    "cwd": "[WORKSPACE]/rc/isolate_tmp_1/out/Release",
+    "name": "rerun.run"
+  },
+  {
     "name": "$result"
   }
 ]
