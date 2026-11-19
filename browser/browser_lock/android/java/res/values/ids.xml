@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+<!-- Declares the id so this module's own R class has the symbol to compile against.
+     The id itself is assigned to a view by the layout overlay in
+     //brave/android:incognito_reauth_overlay_resources, which still applies at the
+     final app resource link — unaffected by which target declares the symbol name. -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <item name="incognito_lock_status_text" type="id" />
+</resources>

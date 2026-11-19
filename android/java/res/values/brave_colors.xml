@@ -170,8 +170,6 @@
     <!-- Incognito mode colors -->
     <color name="toolbar_background_primary_dark">@color/primitive_private_window_5</color>
     <color name="toolbar_background_incognito">@color/primitive_private_window_5</color>
-    <color name="brave_private_tabs_bg_color">#13052A</color>
-    <color name="brave_private_reauth_unlock_button_bg_color">#4B415D</color>
 
     <color name="toolbar_text_box_background_incognito">@color/primitive_private_window_10</color>
 

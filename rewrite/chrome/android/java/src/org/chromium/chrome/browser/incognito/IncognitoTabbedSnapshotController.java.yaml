@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Instantiate Brave's tabbed incognito snapshot controller instead of
+      upstream's.
+
+      Part of Brave's Browser Lock feature: lets the "Entire application"
+      lock force FLAG_SECURE on the tabbed browser window regardless of
+      whether an incognito tab is showing, which is all upstream's own
+      controller considers. Same package as the call site, so no import is
+      needed.
+    regex:
+      re_pattern: |-
+        new (IncognitoTabbedSnapshotController\()
+      replace: |-
+        new Brave\1

@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/android/screenshot_protection/BUILD.gn b/chrome/browser/android/screenshot_protection/BUILD.gn
+index 074a726e178e964aec343fc26ce66eb3d708dc0b..3d711019d9ccdb278a6fdef0748c1116411ba9ed 100644
+--- a/chrome/browser/android/screenshot_protection/BUILD.gn
++++ b/chrome/browser/android/screenshot_protection/BUILD.gn
+@@ -12,6 +12,7 @@ if (is_android) {
+       "//base:features_java",
+       "//base:supplier_java",
+       "//base:tasks_java",
++      "//brave/browser/browser_lock/android:java",
+       "//chrome/browser/enterprise/util:java",
+       "//chrome/browser/flags:java",
+       "//chrome/browser/policy/android:java",
