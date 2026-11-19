@@ -4,6 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_ads/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/email_aliases/buildflags/buildflags.gni")
 import("//brave/ui/webui/custom_profile_image/buildflags/buildflags.gni")
@@ -81,6 +82,7 @@ source_set("browser_tests") {
 
     deps = [
       "//base/test:test_support",
+      "//brave/components/brave_vpn/common/buildflags",
       "//brave/ui/webui/custom_profile_image/buildflags",
       "//chrome/browser/ui/webui/settings",
       "//chrome/test:test_support",
@@ -91,6 +93,10 @@ source_set("browser_tests") {
 
     if (enable_brave_custom_profile_image_webui) {
       deps += [ "//brave/browser/ui/webui/custom_profile_image" ]
+    }
+
+    if (enable_brave_vpn) {
+      deps += [ "//brave/components/brave_vpn/common" ]
     }
 
     if (enable_email_aliases) {
