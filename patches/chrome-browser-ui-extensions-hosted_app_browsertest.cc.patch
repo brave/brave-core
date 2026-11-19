@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/extensions/hosted_app_browsertest.cc b/chrome/browser/ui/extensions/hosted_app_browsertest.cc
-index 6068da43edc0a30d4f6e7d1c462f7698ee87977a..51c309537b102188c3a0d351107987fb3d422347 100644
+index 6068da43edc0a30d4f6e7d1c462f7698ee87977a..e4b26cc4fad1544ad80194e508ed7ac8f06f3871 100644
 --- a/chrome/browser/ui/extensions/hosted_app_browsertest.cc
 +++ b/chrome/browser/ui/extensions/hosted_app_browsertest.cc
 @@ -1976,7 +1976,7 @@ class HostedAppJitTestBase : public HostedAppProcessModelTest {

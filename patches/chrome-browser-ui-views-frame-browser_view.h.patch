@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/browser_view.h b/chrome/browser/ui/views/frame/browser_view.h
-index 39f1b1c4311eabf5253579509d7f6810a2c0e652..37bf4bba9a3194cf020b8f603138180c42426b21 100644
+index 39f1b1c4311eabf5253579509d7f6810a2c0e652..f7fc79f304553de45383e6aafbc8bd1ad8b73b68 100644
 --- a/chrome/browser/ui/views/frame/browser_view.h
 +++ b/chrome/browser/ui/views/frame/browser_view.h
-@@ -132,7 +132,7 @@ class WebView;
+@@ -133,7 +133,7 @@ class WebView;
  //  A ClientView subclass that provides the contents of a browser window,
  //  including the TabStrip, toolbars, download shelves, the content area etc.
  //

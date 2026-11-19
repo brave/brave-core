@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..3c1a1fbf1e4f5279dcb2f3574ebec0d0396faf22 100644
+index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..8e4197ae5589ab66ef547bf036142483136774bf 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
 @@ -185,6 +185,14 @@
@@ -239,8 +239,7 @@ index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..3c1a1fbf1e4f5279dcb2f3574ebec0d0
        status: {
          "Android": "",
          "iOS": "",
-@@ -7781,6 +7827,7 @@
-@@ -8098,5 +8138,10 @@
+@@ -8244,5 +8290,10 @@
        // crbug.com/435623334.
        name: "XSLTSpecialTrial",
      },

@@ -1,8 +1,8 @@
 diff --git a/ios/web/web_state/web_state_impl.h b/ios/web/web_state/web_state_impl.h
-index 3181ad9ed9092f9085b8e22e4d18405b700f9ca9..38b1e7c599b0525cec033e739621b2d5a2a79af6 100644
+index 3181ad9ed9092f9085b8e22e4d18405b700f9ca9..88b7bf4e88675ceddae2bb4441f4bfaaa120d3a2 100644
 --- a/ios/web/web_state/web_state_impl.h
 +++ b/ios/web/web_state/web_state_impl.h
-@@ -403,6 +403,9 @@ class WebStateImpl final : public WebState {
+@@ -404,6 +404,9 @@ class WebStateImpl final : public WebState {
    UIColor* GetThemeColor() final;
    UIColor* GetUnderPageBackgroundColor() final;
  

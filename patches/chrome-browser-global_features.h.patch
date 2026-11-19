@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/global_features.h b/chrome/browser/global_features.h
-index 71c24f2345ab2c2dd4a59af4d23441a6090dbe8f..925c813f2115068f814008923664b17b136d3073 100644
+index 71c24f2345ab2c2dd4a59af4d23441a6090dbe8f..2951f850b217dcdb9f9593bfcb152be7c701897f 100644
 --- a/chrome/browser/global_features.h
 +++ b/chrome/browser/global_features.h
 @@ -285,7 +285,12 @@ class GlobalFeatures {
