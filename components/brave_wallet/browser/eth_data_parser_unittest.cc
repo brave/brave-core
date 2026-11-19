@@ -41,6 +41,8 @@ std::optional<DecodedTransaction> GetNonSwapTxInfo(
 void ExpectNotSwap(std::string_view chain_id,
                    std::string_view to,
                    const std::vector<uint8_t>& data) {
+  SCOPED_TRACE(testing::Message()
+               << "chain_id: " << chain_id << ", to: " << to);
   auto tx_info = GetTransactionInfoFromData(chain_id, to, data);
   ASSERT_NE(tx_info, std::nullopt);
   EXPECT_EQ(std::get<0>(*tx_info), mojom::TransactionType::Other);
@@ -53,6 +55,8 @@ void ExpectNotSwap(std::string_view chain_id,
 void ExpectSwap(std::string_view chain_id,
                 std::string_view to,
                 const std::vector<uint8_t>& data) {
+  SCOPED_TRACE(testing::Message()
+               << "chain_id: " << chain_id << ", to: " << to);
   auto tx_info = GetTransactionInfoFromData(chain_id, to, data);
   ASSERT_NE(tx_info, std::nullopt);
   EXPECT_EQ(std::get<0>(*tx_info), mojom::TransactionType::ETHSwap);
