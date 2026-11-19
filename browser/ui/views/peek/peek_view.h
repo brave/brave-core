@@ -7,12 +7,15 @@
 #define BRAVE_BROWSER_UI_VIEWS_PEEK_PEEK_VIEW_H_
 
 #include <memory>
+#include <optional>
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "ui/base/interaction/element_identifier.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/animation/slide_animation.h"
+#include "ui/gfx/geometry/point.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/views/animation/animation_delegate_views.h"
 #include "ui/views/view.h"
@@ -37,6 +40,9 @@ class WebView;
 // the Peek web contents. Clicking outside the card dismisses Peek.
 //
 // The card is centered horizontally and its top stays attached to the toolbar.
+// Its left, right and bottom edges can be dragged to resize it; the left and
+// right edges resize it symmetrically, so it stays centered. The size is saved
+// in the profile, relative to the covered area, for the next Peeks.
 class PeekView : public views::View, public views::AnimationDelegateViews {
   METADATA_HEADER(PeekView, views::View)
 
@@ -105,7 +111,11 @@ class PeekView : public views::View, public views::AnimationDelegateViews {
 
   // views::View:
   void Layout(PassKey) override;
+  ui::Cursor GetCursor(const ui::MouseEvent& event) override;
   bool OnMousePressed(const ui::MouseEvent& event) override;
+  bool OnMouseDragged(const ui::MouseEvent& event) override;
+  void OnMouseReleased(const ui::MouseEvent& event) override;
+  void OnMouseCaptureLost() override;
   bool AcceleratorPressed(const ui::Accelerator& accelerator) override;
   void OnPaintBackground(gfx::Canvas* canvas) override;
   void OnThemeChanged() override;
@@ -114,16 +124,44 @@ class PeekView : public views::View, public views::AnimationDelegateViews {
   void AnimationProgressed(const gfx::Animation* animation) override;
 
  private:
+  // Card edges a resize drags.
+  struct ResizeEdges {
+    bool left = false;
+    bool right = false;
+    bool bottom = false;
+
+    bool any() const { return left || right || bottom; }
+  };
+
+  struct Resize {
+    ResizeEdges edges;
+    gfx::Point start_point;
+    gfx::Size start_size;
+    gfx::Size size;
+  };
+
   void ShowPageInfo();
 
-  // The card's size in `bounds`.
+  // The edges of the card whose resize handle is at `point`, if any. The
+  // handles are thin bands just outside the card, over the backdrop, since the
+  // page inside the card gets its own mouse events.
+  ResizeEdges GetResizeEdgesAt(const gfx::Point& point) const;
+
+  // The card's full size in `bounds`: the size being dragged, the saved size,
+  // or the default, clamped to fit.
   gfx::Size GetCardSize(const gfx::Rect& bounds) const;
+
+  // Ends a resize and saves the size for the next Peeks.
+  void EndResize();
 
   const raw_ref<Delegate> delegate_;
   const raw_ref<BrowserWindowInterface> browser_;
 
   std::unique_ptr<ViewShadow> card_shadow_;
   gfx::SlideAnimation open_animation_{this};
+  std::optional<Resize> resize_;
+  // Other Peeks follow a size saved by one of them.
+  PrefChangeRegistrar pref_change_registrar_;
 
   raw_ptr<views::View> card_ = nullptr;
   raw_ptr<views::ImageButton> site_info_button_ = nullptr;
