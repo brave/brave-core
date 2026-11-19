@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_controller.h b/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_controller.h
-index 4f73bfe2c743f472a548ac36ebf6f6e6c9cd9832..5b6b4767b2c739a38ae53b5b1315ef7f01e925dd 100644
+index da8ead1e7cf6e71e5460c4a194df4e91d97e8c9c..5810bb96071218eaebca0b4bdaeae12b6b88498d 100644
 --- a/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_controller.h
 +++ b/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_controller.h
 @@ -80,6 +80,8 @@ class TabHoverCardController : public views::ViewObserver,

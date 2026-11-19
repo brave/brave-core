@@ -1,5 +1,5 @@
 diff --git a/front_end/panels/network/BUILD.gn b/front_end/panels/network/BUILD.gn
-index de18f7823f310a28cdbe92e453856647e22f7138..fcbf67d0b36e682f4dc4415cb773d13fdb0e581e 100644
+index 4eb3374aedb8972fcf7ba91570a16df550caa1ba..6cd998d53e64485f070755a80271f515c63d71da 100644
 --- a/front_end/panels/network/BUILD.gn
 +++ b/front_end/panels/network/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index de18f7823f310a28cdbe92e453856647e22f7138..fcbf67d0b36e682f4dc4415cb773d13f
  import("../../../scripts/build/ninja/devtools_entrypoint.gni")
  import("../../../scripts/build/ninja/devtools_module.gni")
  import("../../../scripts/build/ninja/generate_css.gni")
-@@ -66,6 +67,7 @@ devtools_ui_module("network") {
+@@ -65,6 +66,7 @@ devtools_ui_module("network") {
      "ShowMoreDetailsWidget.ts",
      "SignedExchangeInfoView.ts",
    ]

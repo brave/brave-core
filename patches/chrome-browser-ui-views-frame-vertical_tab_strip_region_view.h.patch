@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.h b/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.h
-index 5c8d5a6d2038b452b94656096a0057209ea34d32..0f2245c762310c89abca34d1d01d2872142771b5 100644
+index 6abb5907caa39b6bf53e74d1189420f88c2d2d12..67923b61fc789d922a6ada45ec2e0b19b34e058a 100644
 --- a/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.h
 +++ b/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.h
 @@ -52,26 +52,26 @@ class View;
@@ -35,7 +35,7 @@ index 5c8d5a6d2038b452b94656096a0057209ea34d32..0f2245c762310c89abca34d1d01d2872
  
    VerticalTabStripTopContainer* GetTopContainer() {
      return top_button_container_;
-@@ -153,14 +153,20 @@ class VerticalTabStripRegionView final
+@@ -152,14 +152,20 @@ class VerticalTabStripRegionView final
      return focus_swipe_controller_.get();
    }
  
@@ -57,7 +57,7 @@ index 5c8d5a6d2038b452b94656096a0057209ea34d32..0f2245c762310c89abca34d1d01d2872
      RegionViewFocusListener(const RegionViewFocusListener&) = delete;
      RegionViewFocusListener& operator=(const RegionViewFocusListener&) = delete;
      ~RegionViewFocusListener() override = default;
-@@ -170,7 +176,7 @@ class VerticalTabStripRegionView final
+@@ -169,7 +175,7 @@ class VerticalTabStripRegionView final
                            views::View* focused_now) override;
  
     private:
@@ -66,7 +66,7 @@ index 5c8d5a6d2038b452b94656096a0057209ea34d32..0f2245c762310c89abca34d1d01d2872
    };
  
    // Used to create and destroy locks for the expand on hover state.
-@@ -189,7 +195,7 @@ class VerticalTabStripRegionView final
+@@ -188,7 +194,7 @@ class VerticalTabStripRegionView final
    void OnCollapseStateChanged(
        tabs::VerticalTabStripCollapseState collapse_state);
  

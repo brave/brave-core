@@ -1,8 +1,8 @@
 diff --git a/chrome/common/chrome_isolated_world_ids.h b/chrome/common/chrome_isolated_world_ids.h
-index 846e4777c4d2e983078ad629621a3eb3acf780e4..b1b5bee528ac36ec00e47e5a459e68be96cd82e7 100644
+index a095f3c9f5f3bfe846df83ec349c886b6f1685fa..4017914384a1a6b00b205055dfcb7ecec1adc036 100644
 --- a/chrome/common/chrome_isolated_world_ids.h
 +++ b/chrome/common/chrome_isolated_world_ids.h
-@@ -27,6 +27,8 @@ enum ChromeIsolatedWorldIDs {
+@@ -33,6 +33,8 @@ enum ChromeIsolatedWorldIDs {
    // Numbers for isolated worlds for extensions are set in
    // extensions/renderer/script_injection.cc, and are are greater than or equal
    // to this number.

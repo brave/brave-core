@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/web_applications/BUILD.gn b/chrome/browser/ui/web_applications/BUILD.gn
-index 98f3a252a803989d95d01b7563a69a605915e8df..c42d21f2cd7f96e8d83994e3951e4d522c30c8de 100644
+index e30285918d768bb1f64c338ba2184ea5820ffb86..97dafdf309221ea6dabb76884a570637bc5525c4 100644
 --- a/chrome/browser/ui/web_applications/BUILD.gn
 +++ b/chrome/browser/ui/web_applications/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 98f3a252a803989d95d01b7563a69a605915e8df..c42d21f2cd7f96e8d83994e3951e4d52
  import("//build/config/ui.gni")
  import("//extensions/buildflags/buildflags.gni")
  
-@@ -108,6 +109,7 @@ source_set("impl") {
+@@ -119,6 +120,7 @@ source_set("impl") {
      "//chrome/browser/ui:unload_controller",
      "//chrome/browser/ui/browser_window:create_browser_window",
    ]

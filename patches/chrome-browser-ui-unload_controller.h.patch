@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/unload_controller.h b/chrome/browser/ui/unload_controller.h
-index ce7d56c1db28bd6434c706f6ce7db6ab7f396f87..b82349d413c8e723428dd2ff82cb70c5d89fbd36 100644
+index e8dac602beb8c5b4887298eb0c6bb5590d7f753e..83672e97d8eccc7b27664770efca8b9dfdd39846 100644
 --- a/chrome/browser/ui/unload_controller.h
 +++ b/chrome/browser/ui/unload_controller.h
-@@ -87,6 +87,9 @@ class UnloadController : public WebContentsCollection::Observer,
+@@ -91,6 +91,9 @@ class UnloadController : public WebContentsCollection::Observer,
  
    ~UnloadController() override;
  
@@ -12,7 +12,7 @@ index ce7d56c1db28bd6434c706f6ce7db6ab7f396f87..b82349d413c8e723428dd2ff82cb70c5
    // Handles a `WebContentsDelegate::CloseContents()` request for `contents`
    // after its unload handler (`ClosePage()`) has completed. When `browser_` is
    // attempting to close, this clears `contents`'s unload state and advances
-@@ -456,6 +459,10 @@ class UnloadController : public WebContentsCollection::Observer,
+@@ -463,6 +466,10 @@ class UnloadController : public WebContentsCollection::Observer,
    // shortly (after a PostTask).
    bool is_delete_scheduled_ = false;
  

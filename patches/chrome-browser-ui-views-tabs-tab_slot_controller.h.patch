@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_slot_controller.h b/chrome/browser/ui/views/tabs/tab_slot_controller.h
-index 1e88e464745068ce46f573977f1ed5f09caf9169..ca1485b75a506dcfbc519899bc790063cefe4155 100644
+index 35ccad8e5d81d24b055405a292bc9d61d5737583..66381085f362506ddf17c52f0ec683cf1ce606ca 100644
 --- a/chrome/browser/ui/views/tabs/tab_slot_controller.h
 +++ b/chrome/browser/ui/views/tabs/tab_slot_controller.h
-@@ -256,6 +256,50 @@ class TabSlotController {
+@@ -247,6 +247,50 @@ class TabSlotController {
  
    virtual BrowserWindowInterface* GetBrowserWindowInterface() = 0;
  

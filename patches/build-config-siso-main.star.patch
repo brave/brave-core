@@ -1,5 +1,5 @@
 diff --git a/build/config/siso/main.star b/build/config/siso/main.star
-index 9b5dff745ab83d157b3d273f3d4f2741bbe3cf2a..2dedaa1d8db0b9e8994bd42164404497cc9d86d8 100644
+index 6bc080f0b3059664bc750ddffe4011ccf5dc0377..a589138ea1f22a99f86700f9a19f584d9f6613bc 100644
 --- a/build/config/siso/main.star
 +++ b/build/config/siso/main.star
 @@ -23,6 +23,7 @@ load("./rust.star", "rust")
@@ -10,7 +10,7 @@ index 9b5dff745ab83d157b3d273f3d4f2741bbe3cf2a..2dedaa1d8db0b9e8994bd42164404497
  
  def __setup_python(ctx, step_config):
      for rule in step_config["rules"]:
-@@ -131,6 +132,7 @@ def init(ctx):
+@@ -128,6 +129,7 @@ def init(ctx):
      handlers.update(simple.handlers)
      handlers.update(typescript_all.handlers)
  

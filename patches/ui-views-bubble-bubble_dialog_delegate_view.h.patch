@@ -1,8 +1,8 @@
 diff --git a/ui/views/bubble/bubble_dialog_delegate_view.h b/ui/views/bubble/bubble_dialog_delegate_view.h
-index c63a5501d9728017774451adf23d0985d0aedd98..feb13c9b373a884a12ba9ee564d17a20d14a90a2 100644
+index 234d2e1a6a954f64872df368ca28fc474464c0c6..188330aff8cfd0d1f182a0f744d4ad9d2769cde1 100644
 --- a/ui/views/bubble/bubble_dialog_delegate_view.h
 +++ b/ui/views/bubble/bubble_dialog_delegate_view.h
-@@ -45,6 +45,20 @@
+@@ -46,6 +46,20 @@
  #include "ui/base/cocoa/bubble_closer.h"
  #endif
  
@@ -23,7 +23,7 @@ index c63a5501d9728017774451adf23d0985d0aedd98..feb13c9b373a884a12ba9ee564d17a20
  class AccountChooserDialogView;
  class AppDialogView;
  class AnnouncementView;
-@@ -78,7 +92,7 @@ class ProfileMenuViewBase;
+@@ -79,7 +93,7 @@ class ProfileMenuViewBase;
  class RemoveSuggestionBubbleDialogDelegateView;
  class StoragePressureBubbleView;
  class TabGroupEditorBubbleView;
@@ -32,7 +32,7 @@ index c63a5501d9728017774451adf23d0985d0aedd98..feb13c9b373a884a12ba9ee564d17a20
  class TestBubbleView;
  class ToolbarActionHoverCardBubbleView;
  class ScreenshotSurfaceTestDialog;
-@@ -883,6 +897,15 @@ class VIEWS_EXPORT BubbleDialogDelegateView : public View,
+@@ -903,6 +917,15 @@ class VIEWS_EXPORT BubbleDialogDelegateView : public View,
    gfx::Size GetMaximumSize() const final;
  
   private:
@@ -48,7 +48,7 @@ index c63a5501d9728017774451adf23d0985d0aedd98..feb13c9b373a884a12ba9ee564d17a20
    FRIEND_TEST_ALL_PREFIXES(BubbleDelegateTest, CreateDelegate);
    FRIEND_TEST_ALL_PREFIXES(BubbleDelegateTest, NonClientHitTest);
  
-@@ -922,7 +945,7 @@ class VIEWS_EXPORT BubbleDialogDelegateView : public View,
+@@ -942,7 +965,7 @@ class VIEWS_EXPORT BubbleDialogDelegateView : public View,
    friend class ::RemoveSuggestionBubbleDialogDelegateView;
    friend class ::StoragePressureBubbleView;
    friend class ::TabGroupEditorBubbleView;

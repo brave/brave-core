@@ -1,8 +1,8 @@
 diff --git a/build/android/gyp/proguard.py b/build/android/gyp/proguard.py
-index 01f47464873234ba20baf2b22daa82476c77c84f..3f089bcb64a0d5db97c5039ce7c33255806f7a2f 100755
+index 47ed71a31efe3976b1ea4628245c782fcb45d87d..3b4df85503662a9ecf88e427502b542cca595b4b 100755
 --- a/build/android/gyp/proguard.py
 +++ b/build/android/gyp/proguard.py
-@@ -520,8 +520,6 @@ def _OptimizeWithR8(options, config_paths, libraries, dynamic_config_data):
+@@ -533,8 +533,6 @@ def _OptimizeWithR8(options, config_paths, libraries, dynamic_config_data):
              ]
          cmd += [
              '--no-data-resources',

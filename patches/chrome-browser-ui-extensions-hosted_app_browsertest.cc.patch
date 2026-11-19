@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/extensions/hosted_app_browsertest.cc b/chrome/browser/ui/extensions/hosted_app_browsertest.cc
-index b582126191f5f6dc1d8f35bdde8f6cc34655d23b..a7a588ac7141b365bf20478efa9a24af6629c448 100644
+index 6068da43edc0a30d4f6e7d1c462f7698ee87977a..51c309537b102188c3a0d351107987fb3d422347 100644
 --- a/chrome/browser/ui/extensions/hosted_app_browsertest.cc
 +++ b/chrome/browser/ui/extensions/hosted_app_browsertest.cc
 @@ -21,6 +21,7 @@

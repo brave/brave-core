@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/common/tab_view.h b/chrome/browser/ui/views/tabs/common/tab_view.h
-index 94398daa53be9e06c1345e1dca12ebcd0122ee17..94f8184169946c545d202fbd51a5e29fccb4c299 100644
+index 32e63b5b4926de5c4de988bb0b8d213a6659b61f..37d09b9ed4b4fb12a4641bf34cf805df919af5a5 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_view.h
 +++ b/chrome/browser/ui/views/tabs/common/tab_view.h
-@@ -26,6 +26,7 @@
+@@ -27,6 +27,7 @@
  #include "ui/base/metadata/metadata_header_macros.h"
  #include "ui/gfx/canvas.h"
  #include "ui/views/context_menu_controller.h"
@@ -10,7 +10,7 @@ index 94398daa53be9e06c1345e1dca12ebcd0122ee17..94f8184169946c545d202fbd51a5e29f
  #include "ui/views/layout/layout_manager_base.h"
  #include "ui/views/masked_targeter_delegate.h"
  #include "ui/views/view.h"
-@@ -125,6 +126,20 @@ class TabView : public views::View,
+@@ -128,6 +129,20 @@ class TabView : public views::View,
    views::BubbleAnchor GetAnchor() override;
    views::BubbleBorder::Arrow GetAnchorPosition() const override;
  

@@ -1,5 +1,5 @@
 diff --git a/components/affiliations/core/browser/hash_affiliation_fetcher.cc b/components/affiliations/core/browser/hash_affiliation_fetcher.cc
-index 9495cf4d053bd755b90c2f45b28211de176aba9b..efe16ae7fe6df3be637b590ca8c238aae638a6ee 100644
+index a3164122d3d93a0e1f74730beea9e1ab9b6adb44..34d05724a8141d48c967aa4e0fdd9594b407d191 100644
 --- a/components/affiliations/core/browser/hash_affiliation_fetcher.cc
 +++ b/components/affiliations/core/browser/hash_affiliation_fetcher.cc
 @@ -134,6 +134,12 @@ void HashAffiliationFetcher::StartRequest(

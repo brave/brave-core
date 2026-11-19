@@ -1,8 +1,8 @@
 diff --git a/extensions/browser/extensions_browser_client.h b/extensions/browser/extensions_browser_client.h
-index 59c522279caf40bdd3334e9362d723b62d3fca9c..67b491679164737747dccb01d4d97726df7ff235 100644
+index c4cc41ab5f6424c99be95c6ed392c69af663b27c..cd35c3769188583743e46fc61ccb736cc59548a3 100644
 --- a/extensions/browser/extensions_browser_client.h
 +++ b/extensions/browser/extensions_browser_client.h
-@@ -740,6 +740,10 @@ class ExtensionsBrowserClient {
+@@ -744,6 +744,10 @@ class ExtensionsBrowserClient {
    // extension API resource manager and dispatcher services.
    virtual bool IsLazyChromeOSResourceKeyedServiceInstantiationEnabled() const;
  

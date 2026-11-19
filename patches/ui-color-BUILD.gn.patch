@@ -1,5 +1,5 @@
 diff --git a/ui/color/BUILD.gn b/ui/color/BUILD.gn
-index ec9833009fdf84b89430a94100c93979f2fcf625..4331115ac841510235125940e3c98c88f4b38252 100644
+index 4535fc502ddc9b5498d50f710bdc4a09ed1cb199..f0f993572f483096ca17253ead28d5384c766305 100644
 --- a/ui/color/BUILD.gn
 +++ b/ui/color/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -26,7 +26,7 @@ index ec9833009fdf84b89430a94100c93979f2fcf625..4331115ac841510235125940e3c98c88
  
    deps = [
      ":color_provider_utils_internal",
-@@ -196,6 +199,7 @@ component("mixers") {
+@@ -197,6 +200,7 @@ component("mixers") {
      "ui_color_mixer.cc",
      "ui_color_mixer.h",
    ]
@@ -34,7 +34,7 @@ index ec9833009fdf84b89430a94100c93979f2fcf625..4331115ac841510235125940e3c98c88
  
    defines = [ "IS_COLOR_IMPL" ]
  
-@@ -213,6 +217,7 @@ component("mixers") {
+@@ -214,6 +218,7 @@ component("mixers") {
    ]
  
    public_deps = [ "//base" ]

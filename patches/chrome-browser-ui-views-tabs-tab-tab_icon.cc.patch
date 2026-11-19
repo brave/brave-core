@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab/tab_icon.cc b/chrome/browser/ui/views/tabs/tab/tab_icon.cc
-index 191b1b5156532db5e396164031838205a3f6de71..b7718753c0d0577fa0b6071622d10498491d4afa 100644
+index 63c5e6a47e9387bb878d959e985d4d8931bede3d..755f8d1d6776e151f3c1f3c48e2da3e7db296373 100644
 --- a/chrome/browser/ui/views/tabs/tab/tab_icon.cc
 +++ b/chrome/browser/ui/views/tabs/tab/tab_icon.cc
-@@ -305,7 +305,7 @@ void TabIcon::PaintAttentionIndicatorAndIcon(gfx::Canvas* canvas,
+@@ -306,7 +306,7 @@ void TabIcon::PaintAttentionIndicatorAndIcon(gfx::Canvas* canvas,
  
    // Draws the actual attention indicator.
    cc::PaintFlags indicator_flags;
@@ -11,7 +11,7 @@ index 191b1b5156532db5e396164031838205a3f6de71..b7718753c0d0577fa0b6071622d10498
    indicator_flags.setAntiAlias(true);
    canvas->DrawCircle(circle_center, kAttentionIndicatorRadius, indicator_flags);
  }
-@@ -339,7 +339,7 @@ void TabIcon::PaintDiscardRingAndIcon(gfx::Canvas* canvas,
+@@ -340,7 +340,7 @@ void TabIcon::PaintDiscardRingAndIcon(gfx::Canvas* canvas,
  void TabIcon::PaintLoadingAnimation(gfx::Canvas* canvas, gfx::Rect bounds) {
    TRACE_EVENT0("views", "TabIcon::PaintLoadingAnimation");
  

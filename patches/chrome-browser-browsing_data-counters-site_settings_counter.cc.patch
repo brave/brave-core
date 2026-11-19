@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/browsing_data/counters/site_settings_counter.cc b/chrome/browser/browsing_data/counters/site_settings_counter.cc
-index 3532ac1acdbfa093745c5ad4b810b53661c985e6..f3908a4b248a3db5f510c38e4a1f1cde30658053 100644
+index b527bde280d5c98638f9549504beb2ab27435f15..2259c1b0a9a1b9ae6f89741eabf0445e0d5e6dee 100644
 --- a/chrome/browser/browsing_data/counters/site_settings_counter.cc
 +++ b/chrome/browser/browsing_data/counters/site_settings_counter.cc
 @@ -125,5 +125,7 @@ void SiteSettingsCounter::Count() {

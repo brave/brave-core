@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/web_applications/web_app_launch_process.cc b/chrome/browser/ui/web_applications/web_app_launch_process.cc
-index 1ca4d40a9a99322c666bbbaf8f7f87627e6bfbfb..5774bd2684aaea714744d62468f1c873af089dee 100644
+index ededa34e90dcd7da146cf7bc5e850405876fbd57..1f1a26aec27371f891e7296e38564a779cc7add6 100644
 --- a/chrome/browser/ui/web_applications/web_app_launch_process.cc
 +++ b/chrome/browser/ui/web_applications/web_app_launch_process.cc
-@@ -356,8 +356,7 @@ content::WebContents* WebAppLaunchProcess::Run() {
+@@ -361,8 +361,7 @@ content::WebContents* WebAppLaunchProcess::Run() {
  
    nav_params.web_app_navigation_data->SetLaunchParams(std::move(launch_params));
    nav_params.web_app_navigation_data->SetLaunchSource(params_->launch_source);

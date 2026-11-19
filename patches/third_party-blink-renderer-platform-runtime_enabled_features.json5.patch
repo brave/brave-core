@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index ed0c21189a78ab6165c72c63feec9c9b17f0b8c7..093cee7134153d72931768d29facc723f7fb7687 100644
+index 62c811fd9675eda3821c2d46eacece2cbda9ebe1..3c1a1fbf1e4f5279dcb2f3574ebec0d0396faf22 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
 @@ -185,6 +185,14 @@
@@ -211,7 +211,7 @@ index ed0c21189a78ab6165c72c63feec9c9b17f0b8c7..093cee7134153d72931768d29facc723
        status: "stable",
      },
      {
-@@ -7110,7 +7151,8 @@
+@@ -7121,7 +7162,8 @@
          "ChromeOS": "stable",
          "default": "",
        },
@@ -221,7 +221,7 @@ index ed0c21189a78ab6165c72c63feec9c9b17f0b8c7..093cee7134153d72931768d29facc723
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -7298,6 +7340,8 @@
+@@ -7309,6 +7351,8 @@
      },
      {
        name: "UserMediaElement",
@@ -230,7 +230,7 @@ index ed0c21189a78ab6165c72c63feec9c9b17f0b8c7..093cee7134153d72931768d29facc723
        status: "stable",
        public: true,
      },
-@@ -7440,6 +7484,8 @@
+@@ -7451,6 +7495,8 @@
      {
        // https://chromestatus.com/feature/5183481574850560
        name: "WebAppInstallation",
@@ -239,7 +239,7 @@ index ed0c21189a78ab6165c72c63feec9c9b17f0b8c7..093cee7134153d72931768d29facc723
        status: {
          "Android": "",
          "iOS": "",
-@@ -7761,6 +7807,7 @@
+@@ -7781,6 +7827,7 @@
        origin_trial_feature_name: "WebMCP",
        origin_trial_allows_third_party: true,
        public: true,
@@ -247,7 +247,7 @@ index ed0c21189a78ab6165c72c63feec9c9b17f0b8c7..093cee7134153d72931768d29facc723
        base_feature_status: "enabled",
        copied_from_base_feature_if: "overridden",
        // Note that `depends_on` isn't supported by origin trials.
-@@ -7770,7 +7817,7 @@
+@@ -7790,7 +7837,7 @@
          "WebMCPFormAssociatedCustomElements",
          "WebMCPWaitForToolsUntil"
        ],
@@ -256,7 +256,7 @@ index ed0c21189a78ab6165c72c63feec9c9b17f0b8c7..093cee7134153d72931768d29facc723
      },
      {
        name: "WebMCPContinuations",
-@@ -8224,5 +8271,10 @@
+@@ -8244,5 +8291,10 @@
        // crbug.com/435623334.
        name: "XSLTSpecialTrial",
      },

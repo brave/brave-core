@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/signin/BUILD.gn b/chrome/browser/ui/webui/signin/BUILD.gn
-index e07b65c9528ea7afe8034caac11de2f836c94afe..d12d0423db8551bf0645a0529431488cbfdb8157 100644
+index fc5248c344fae5b94e11b0d68403e9b1a6540b2f..c794659cb0d1b9c494dff89e9470118dfddc431c 100644
 --- a/chrome/browser/ui/webui/signin/BUILD.gn
 +++ b/chrome/browser/ui/webui/signin/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index e07b65c9528ea7afe8034caac11de2f836c94afe..d12d0423db8551bf0645a0529431488c
  import("//chrome/common/features.gni")
  import("//components/signin/features.gni")
  
-@@ -467,6 +468,13 @@ if (!is_chromeos) {
+@@ -420,6 +421,13 @@ if (!is_chromeos) {
      if (is_win || is_mac || is_linux) {
        deps += [ "//chrome/browser/ui/views/profiles:profile_management_types" ]
      }

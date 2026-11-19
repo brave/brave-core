@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/color/omnibox_color_mixer.cc b/chrome/browser/ui/color/omnibox_color_mixer.cc
-index ad861937abc2d8ffaf707cfba6dfee841b47bddc..68df34052207f0a40c1551a3621395ffe9b303e6 100644
+index fe10d60cc48a3a8c35939d92f4052aaa7d15074a..e9638557d924837696a177199d2652989b55ccb1 100644
 --- a/chrome/browser/ui/color/omnibox_color_mixer.cc
 +++ b/chrome/browser/ui/color/omnibox_color_mixer.cc
 @@ -6,6 +6,7 @@
@@ -10,7 +10,7 @@ index ad861937abc2d8ffaf707cfba6dfee841b47bddc..68df34052207f0a40c1551a3621395ff
  #include "chrome/browser/ui/color/chrome_color_id.h"
  #include "chrome/browser/ui/color/chrome_color_provider_utils.h"
  #include "third_party/skia/include/core/SkColor.h"
-@@ -260,6 +261,7 @@ void ApplyOmniboxCR2023Colors(ui::ColorMixer& mixer,
+@@ -264,6 +265,7 @@ void ApplyOmniboxCR2023Colors(ui::ColorMixer& mixer,
  
  void AddOmniboxColorMixer(ui::ColorProvider* provider,
                            const ui::ColorProviderKey& key) {
@@ -18,7 +18,7 @@ index ad861937abc2d8ffaf707cfba6dfee841b47bddc..68df34052207f0a40c1551a3621395ff
    ui::ColorMixer& mixer = provider->AddMixer();
  
    const bool high_contrast_custom_handling = ShouldApplyHighContrastColors(key);
-@@ -521,4 +523,8 @@ void AddOmniboxColorMixer(ui::ColorProvider* provider,
+@@ -531,4 +533,8 @@ void AddOmniboxColorMixer(ui::ColorProvider* provider,
  
    // Apply specific baseline colors for the composebox submit button.
    ApplyComposeboxBaselineColors(mixer, key);

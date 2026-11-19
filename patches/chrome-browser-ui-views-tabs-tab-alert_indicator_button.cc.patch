@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab/alert_indicator_button.cc b/chrome/browser/ui/views/tabs/tab/alert_indicator_button.cc
-index 7e269b1680bcb19da453ead5b4e77332390a4641..6085508b65085de457b5c26a3e378dc25fcd123d 100644
+index 58ea7649ef69b67a7fff7dc79bd7ca9e878ff059..a21dab4c60a8c3c4ca116db23222586d790fa0d5 100644
 --- a/chrome/browser/ui/views/tabs/tab/alert_indicator_button.cc
 +++ b/chrome/browser/ui/views/tabs/tab/alert_indicator_button.cc
 @@ -108,10 +108,10 @@ ui::ImageModel GetTabAlertIndicatorImageForPressedState(
@@ -40,7 +40,7 @@ index 7e269b1680bcb19da453ead5b4e77332390a4641..6085508b65085de457b5c26a3e378dc2
    if (actor_indicator_spinner_) {
      return;
    }
-@@ -209,7 +209,7 @@ void AlertIndicatorButton::MaybeLoadActorAccessingSpinner() {
+@@ -210,7 +210,7 @@ void AlertIndicatorButton::MaybeLoadActorAccessingSpinner() {
    }
  }
  
@@ -49,7 +49,7 @@ index 7e269b1680bcb19da453ead5b4e77332390a4641..6085508b65085de457b5c26a3e378dc2
    if (!actor_indicator_spinner_ || !actor_spinner_scaled_size_.has_value()) {
      return;
    }
-@@ -222,7 +222,7 @@ void AlertIndicatorButton::SetActorAccessingSpinnerBounds() {
+@@ -223,7 +223,7 @@ void AlertIndicatorButton::SetActorAccessingSpinnerBounds() {
                                        spinner_scaled_size.height());
  }
  
@@ -58,7 +58,7 @@ index 7e269b1680bcb19da453ead5b4e77332390a4641..6085508b65085de457b5c26a3e378dc2
      std::optional<tabs::TabAlert> next_state) {
    if (next_state == alert_state_) {
      return;
-@@ -265,7 +265,7 @@ void AlertIndicatorButton::TransitionToAlertState(
+@@ -267,7 +267,7 @@ void AlertIndicatorButton::TransitionToAlertState(
    UpdateEnabledForMuteToggle();
  }
  
@@ -67,7 +67,7 @@ index 7e269b1680bcb19da453ead5b4e77332390a4641..6085508b65085de457b5c26a3e378dc2
    const bool was_enabled = GetEnabled();
  
    bool enable = base::FeatureList::IsEnabled(media::kEnableTabMuting) &&
-@@ -287,19 +287,19 @@ void AlertIndicatorButton::UpdateEnabledForMuteToggle() {
+@@ -289,19 +289,19 @@ void AlertIndicatorButton::UpdateEnabledForMuteToggle() {
    SetEnabled(enable);
  }
  
@@ -90,7 +90,7 @@ index 7e269b1680bcb19da453ead5b4e77332390a4641..6085508b65085de457b5c26a3e378dc2
    // Do not handle this mouse event when anything but the left mouse button is
    // pressed or when any modifier keys are being held down.  Instead, the Tab
    // should react (e.g., middle-click for close, right-click for context menu).
-@@ -310,16 +310,16 @@ bool AlertIndicatorButton::OnMousePressed(const ui::MouseEvent& event) {
+@@ -312,16 +312,16 @@ bool AlertIndicatorButton::OnMousePressed(const ui::MouseEvent& event) {
    return ImageButton::OnMousePressed(event);
  }
  
@@ -110,7 +110,7 @@ index 7e269b1680bcb19da453ead5b4e77332390a4641..6085508b65085de457b5c26a3e378dc2
    CHECK(actor_indicator_spinner_);
    const ui::ColorProvider* color_provider = GetColorProvider();
    if (!color_provider) {
-@@ -357,7 +357,7 @@ void AlertIndicatorButton::UpdateSpinnerTheme() {
+@@ -359,7 +359,7 @@ void AlertIndicatorButton::UpdateSpinnerTheme() {
    SetActorAccessingSpinnerBounds();
  }
  
@@ -119,7 +119,7 @@ index 7e269b1680bcb19da453ead5b4e77332390a4641..6085508b65085de457b5c26a3e378dc2
    ImageButton::OnThemeChanged();
  
    if (!actor_indicator_spinner_ ||
-@@ -372,12 +372,12 @@ void AlertIndicatorButton::OnThemeChanged() {
+@@ -374,12 +374,12 @@ void AlertIndicatorButton::OnThemeChanged() {
    }
  }
  
@@ -134,7 +134,7 @@ index 7e269b1680bcb19da453ead5b4e77332390a4641..6085508b65085de457b5c26a3e378dc2
                                               const gfx::Rect& rect) const {
    // If this button is not enabled, Tab (the parent View) handles all mouse
    // events.
-@@ -385,7 +385,7 @@ bool AlertIndicatorButton::DoesIntersectRect(const views::View* target,
+@@ -387,7 +387,7 @@ bool AlertIndicatorButton::DoesIntersectRect(const views::View* target,
           views::ViewTargeterDelegate::DoesIntersectRect(target, rect);
  }
  
@@ -143,7 +143,7 @@ index 7e269b1680bcb19da453ead5b4e77332390a4641..6085508b65085de457b5c26a3e378dc2
    // Call TransitionToAlertState() to change the image, providing the user with
    // instant feedback.  In the very unlikely event that the mute toggle fails,
    // TransitionToAlertState() will be called again, via another code path, to
-@@ -403,7 +403,7 @@ void AlertIndicatorButton::NotifyClick(const ui::Event& event) {
+@@ -405,7 +405,7 @@ void AlertIndicatorButton::NotifyClick(const ui::Event& event) {
    delegate_->ToggleTabAudioMute();
  }
  
@@ -152,7 +152,7 @@ index 7e269b1680bcb19da453ead5b4e77332390a4641..6085508b65085de457b5c26a3e378dc2
    // For mouse events, only trigger on the left mouse button and when no
    // modifier keys are being held down.
    if (event.IsMouseEvent() &&
-@@ -424,7 +424,7 @@ bool AlertIndicatorButton::IsTriggerableEvent(const ui::Event& event) {
+@@ -426,7 +426,7 @@ bool AlertIndicatorButton::IsTriggerableEvent(const ui::Event& event) {
    return views::ImageButton::IsTriggerableEvent(event);
  }
  
@@ -161,7 +161,7 @@ index 7e269b1680bcb19da453ead5b4e77332390a4641..6085508b65085de457b5c26a3e378dc2
    double opaqueness = 1.0;
    if (fade_animation_) {
      opaqueness = fade_animation_->GetCurrentValue();
-@@ -441,11 +441,11 @@ void AlertIndicatorButton::PaintButtonContents(gfx::Canvas* canvas) {
+@@ -443,11 +443,11 @@ void AlertIndicatorButton::PaintButtonContents(gfx::Canvas* canvas) {
    }
  }
  
@@ -175,7 +175,7 @@ index 7e269b1680bcb19da453ead5b4e77332390a4641..6085508b65085de457b5c26a3e378dc2
    // Can add different cases for other alert states that require an animation.
    if (alert_state_.has_value() &&
        alert_state_.value() == tabs::TabAlert::kActorAccessing) {
-@@ -465,7 +465,7 @@ void AlertIndicatorButton::UpdateAlertIndicatorAnimation() {
+@@ -467,7 +467,7 @@ void AlertIndicatorButton::UpdateAlertIndicatorAnimation() {
  }
  
  std::unique_ptr<gfx::Animation>
@@ -184,7 +184,7 @@ index 7e269b1680bcb19da453ead5b4e77332390a4641..6085508b65085de457b5c26a3e378dc2
      std::optional<tabs::TabAlert> alert_state) {
    if (alert_state == tabs::TabAlert::kMediaRecording ||
        alert_state == tabs::TabAlert::kAudioRecording ||
-@@ -513,7 +513,7 @@ AlertIndicatorButton::CreateTabAlertIndicatorFadeAnimation(
+@@ -515,7 +515,7 @@ AlertIndicatorButton::CreateTabAlertIndicatorFadeAnimation(
    return std::move(animation);
  }
  
@@ -193,7 +193,7 @@ index 7e269b1680bcb19da453ead5b4e77332390a4641..6085508b65085de457b5c26a3e378dc2
    const ui::ColorId color =
        GetColorProvider()
            ? tabs::GetAlertIndicatorColor(state, delegate_->IsApparentlyActive(),
-@@ -527,5 +527,5 @@ void AlertIndicatorButton::UpdateIconForAlertState(tabs::TabAlert state) {
+@@ -529,5 +529,5 @@ void AlertIndicatorButton::UpdateIconForAlertState(tabs::TabAlert state) {
                  GetTabAlertIndicatorImageForPressedState(state, color));
  }
  

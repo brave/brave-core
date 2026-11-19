@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/side_panel/customize_chrome/side_panel_controller_views.cc b/chrome/browser/ui/views/side_panel/customize_chrome/side_panel_controller_views.cc
-index 4b88ed698cec3a06a47013b4cd8cd82ac0aa1568..4c857fb661223175240a7362240cdd39ddcb4c0e 100644
+index 7c3149d7a1243b3871b53dcb13e4ba6566dd44a2..796d85f6502bf27ab870e6ad4e173f6c3aced00f 100644
 --- a/chrome/browser/ui/views/side_panel/customize_chrome/side_panel_controller_views.cc
 +++ b/chrome/browser/ui/views/side_panel/customize_chrome/side_panel_controller_views.cc
 @@ -63,6 +63,7 @@ void SidePanelControllerViews::OpenSidePanel(

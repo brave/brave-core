@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index 6ffd1fb2bb32c10668054134c552f0933e3382bf..2d7306623a6098a8eacb84d3e847b2372f918828 100644
+index 0e536de36a3af64cdc7e0829d6d778556116ff0a..39ad514a0f5bd38c8a114612a85c01fa18d6a6b1 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 @@ -211,10 +211,10 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
@@ -43,7 +43,7 @@ index 6ffd1fb2bb32c10668054134c552f0933e3382bf..2d7306623a6098a8eacb84d3e847b237
          // May happen if account is removed from the device while this screen is shown.
          if (primaryAccount == null) {
              finishCurrentSettings();
-@@ -1051,6 +1055,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+@@ -1054,6 +1058,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
  
      /** Whether there is no primary account, leaving this page with nothing to describe. */
      private boolean isSignedOut() {

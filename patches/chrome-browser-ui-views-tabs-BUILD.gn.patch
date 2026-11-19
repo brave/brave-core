@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/BUILD.gn b/chrome/browser/ui/views/tabs/BUILD.gn
-index 0337c81547c6d3aaa717699a1a854175c78b5d86..c4cefd5e4fa56241ee15dfb4c7e59948a659d1e8 100644
+index ec3e6a78b71994c420f17b24591c83813cbfaeda..02c181659aaf3e2bc674618e2cb04fa2290754a8 100644
 --- a/chrome/browser/ui/views/tabs/BUILD.gn
 +++ b/chrome/browser/ui/views/tabs/BUILD.gn
-@@ -20,6 +20,7 @@ source_set("base") {
+@@ -22,6 +22,7 @@ source_set("base") {
  
    deps = [
      "//base",

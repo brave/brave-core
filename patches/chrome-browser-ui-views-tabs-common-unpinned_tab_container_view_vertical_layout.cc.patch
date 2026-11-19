@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/common/unpinned_tab_container_view_vertical_layout.cc b/chrome/browser/ui/views/tabs/common/unpinned_tab_container_view_vertical_layout.cc
-index b06151d621af24da821e51dcd9a0179b9008c3ff..4776405efb5ac7edbfa889ad805b551280f2cbc3 100644
+index 959e8b76e724cf0ed50f7c465a5de77422c74eef..0631b797e991a95823ca34da941bd75ddc5c9851 100644
 --- a/chrome/browser/ui/views/tabs/common/unpinned_tab_container_view_vertical_layout.cc
 +++ b/chrome/browser/ui/views/tabs/common/unpinned_tab_container_view_vertical_layout.cc
-@@ -82,12 +82,19 @@ UnpinnedTabContainerViewVerticalLayout::CalculateProposedLayout(
+@@ -81,12 +81,19 @@ UnpinnedTabContainerViewVerticalLayout::CalculateProposedLayout(
    const int horizontal_padding =
        GetLayoutConstant(LayoutConstant::kVerticalTabStripHorizontalPadding);
  
@@ -22,7 +22,7 @@ index b06151d621af24da821e51dcd9a0179b9008c3ff..4776405efb5ac7edbfa889ad805b5512
      views::SizeBound child_height_bound = size_bounds.height();
      // In focused mode, pass the scroll viewport height constraint to the child
      // focused group if the incoming size bounds height is unbounded, so that
-@@ -108,7 +115,7 @@ UnpinnedTabContainerViewVerticalLayout::CalculateProposedLayout(
+@@ -113,7 +120,7 @@ UnpinnedTabContainerViewVerticalLayout::CalculateProposedLayout(
  
      auto drag_data =
          UnpinnedTabContainerView().GetVisualDataForDraggedView(*child);

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/bookmarks/bookmark_utils.cc b/chrome/browser/ui/bookmarks/bookmark_utils.cc
-index bd5f7ccf15a8305dcad5add992201b3c4a4215c2..2d75d923e34e8038b34569e477db6e4952c81495 100644
+index e22886a51a3b9bc35283fabb3d539c889c15c688..67873993b358ae54bd8d4789d84d21ffaa01e4c4 100644
 --- a/chrome/browser/ui/bookmarks/bookmark_utils.cc
 +++ b/chrome/browser/ui/bookmarks/bookmark_utils.cc
 @@ -186,6 +186,7 @@ bool GetURLAndTitleToBookmark(content::WebContents* web_contents,

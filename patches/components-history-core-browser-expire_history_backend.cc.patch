@@ -1,8 +1,8 @@
 diff --git a/components/history/core/browser/expire_history_backend.cc b/components/history/core/browser/expire_history_backend.cc
-index deedebf63a31a11fe26d13040876bc1f4ec29aff..55f2e3062151dbb981ebdce101c6a40eed4e5935 100644
+index e35d0180393a547d353dd8e8290fde145bc1c0dd..81696a012e34675a4a6dff0188169907085db47d 100644
 --- a/components/history/core/browser/expire_history_backend.cc
 +++ b/components/history/core/browser/expire_history_backend.cc
-@@ -395,6 +395,7 @@ void ExpireHistoryBackend::StartExpiringOldStuff(
+@@ -407,6 +407,7 @@ void ExpireHistoryBackend::StartExpiringOldStuff(
  
    // Remove all readers, just in case this was method was called before.
    readers_.clear();

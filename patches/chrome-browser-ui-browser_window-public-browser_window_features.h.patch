@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_window/public/browser_window_features.h b/chrome/browser/ui/browser_window/public/browser_window_features.h
-index ad03f3e0b0dbe98eba8c1f41c54fc38aa023ed4e..9bba89706e9da79cb47907732dca882642b9cb40 100644
+index 2cc7c9a27c45943afb7e981672cb13f71af29c36..bc6850fbf53522cd5a20fd996f919ccae45e60e5 100644
 --- a/chrome/browser/ui/browser_window/public/browser_window_features.h
 +++ b/chrome/browser/ui/browser_window/public/browser_window_features.h
 @@ -31,6 +31,9 @@
@@ -12,7 +12,7 @@ index ad03f3e0b0dbe98eba8c1f41c54fc38aa023ed4e..9bba89706e9da79cb47907732dca8826
  class ActorBorderViewController;
  class ActorUiWindowController;
  class AvatarToolbarIphController;
-@@ -298,7 +301,12 @@ class BrowserWindowFeatures {
+@@ -301,7 +304,12 @@ class BrowserWindowFeatures {
    static ui::UserDataFactoryWithOwner<BrowserWindowInterface>&
    GetUserDataFactoryForTesting();
  
