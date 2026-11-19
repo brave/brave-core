@@ -8,6 +8,7 @@
 import argparse
 import os
 import hashlib
+import platform
 import deps
 
 from brave_chromium_utils import wspath
@@ -22,8 +23,10 @@ def main():
 
     url = f'{DEPS_PACKAGES_URL}/swift-format/swift-format-{args.version}.zip'
     # Overwrite Chromium's swift-format version as it very out of date and
-    # we will not be editing Chromium swift files to format anyways.
-    output_dir = wspath('//third_party/swift-toolchain/usr/bin')
+    # we will not be editing Chromium swift files to format anyways. depot_tools
+    # prefers the per-arch directory over the legacy `usr/bin` one.
+    arch = 'mac-arm64' if platform.machine() == 'arm64' else 'mac-amd64'
+    output_dir = wspath(f'//third_party/swift-toolchain/{arch}/usr/bin')
     swift_format_bin = os.path.join(output_dir, 'swift-format')
     if get_swift_format_hash(swift_format_bin) != args.sha256hash:
         deps.DownloadAndUnpack(url, output_dir)
