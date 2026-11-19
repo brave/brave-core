@@ -11,10 +11,13 @@
 #include "base/containers/flat_map.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
+#include "base/memory/raw_ref.h"
 #include "base/types/to_address.h"
 #include "base/unguessable_token.h"
+#include "brave/browser/ui/page_info/features.h"
 #include "brave/browser/ui/peek/peek_features.h"
 #include "brave/browser/ui/peek/public/peek_controller.h"
+#include "brave/browser/ui/peek/public/peek_shields_panel_provider.h"
 #include "brave/browser/ui/screenshot/screenshot_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
@@ -24,6 +27,7 @@
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/tabs/tree_tab_session_manager.h"
 #include "brave/browser/ui/views/animations/web_panel_animations.h"
+#include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/brave_help_bubble/shields_help_bubble_controller.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/page_info/brave_shields_ui_contents_cache.h"
@@ -46,8 +50,12 @@
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/interaction/browser_elements_views.h"
+#include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "printing/buildflags/buildflags.h"
 #include "ui/gfx/native_ui_types.h"
+#include "ui/views/view.h"
+#include "ui/views/view_utils.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
@@ -79,6 +87,46 @@
 #include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_tab_transfer_bridge.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #endif
+
+namespace {
+
+// Opens the Shields panel the way the location bar's Shields button does. Peek
+// is only shown in normal windows, so there's no web app title bar button.
+class PeekShieldsPanelProviderImpl : public PeekShieldsPanelProvider {
+ public:
+  PeekShieldsPanelProviderImpl(BrowserWindowInterface& browser,
+                               BrowserView& browser_view)
+      : browser_(browser), browser_view_(browser_view) {}
+  PeekShieldsPanelProviderImpl(const PeekShieldsPanelProviderImpl&) = delete;
+  PeekShieldsPanelProviderImpl& operator=(const PeekShieldsPanelProviderImpl&) =
+      delete;
+  ~PeekShieldsPanelProviderImpl() override = default;
+
+  // PeekShieldsPanelProvider:
+  bool ShowShieldsPanelForActiveTab() override {
+    if (page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
+      // Page Info opens on its Shields tab.
+      LocationBarView* location_bar = browser_view_->GetLocationBarView();
+      return location_bar && location_bar->ShowPageInfoDialog();
+    }
+
+    for (views::View* view :
+         CHECK_DEREF(BrowserElementsViews::From(base::to_address(browser_)))
+             .GetAllViews(BraveShieldsActionView::kShieldsActionIcon)) {
+      if (auto* action_view = views::AsViewClass<BraveShieldsActionView>(view);
+          action_view && action_view->GetVisible()) {
+        return action_view->ShowPanel();
+      }
+    }
+    return false;
+  }
+
+ private:
+  const raw_ref<BrowserWindowInterface> browser_;
+  const raw_ref<BrowserView> browser_view_;
+};
+
+}  // namespace
 
 BraveBrowserWindowFeatures::BraveBrowserWindowFeatures(
     BrowserWindowInterface& browser)
@@ -236,7 +284,9 @@ void BraveBrowserWindowFeatures::InitPostWindowConstruction() {
         BrowserView::GetBrowserViewForBrowser(base::to_address(browser_));
     CHECK(browser_view);
     peek_controller_ = GetUserDataFactory().CreateInstance<PeekControllerImpl>(
-        *browser_, *browser_, *browser_view);
+        *browser_, *browser_, *browser_view,
+        std::make_unique<PeekShieldsPanelProviderImpl>(*browser_,
+                                                       *browser_view));
   }
 
 #if BUILDFLAG(ENABLE_AI_CHAT)

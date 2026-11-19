@@ -10,6 +10,7 @@ source_set("public") {
   sources = [
     "public/peek_controller.cc",
     "public/peek_controller.h",
+    "public/peek_shields_panel_provider.h",
   ]
 
   public_deps = [
