@@ -9,13 +9,17 @@
 #include <vector>
 
 #include "base/functional/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "components/history/core/browser/browsing_history_driver.h"
 #include "components/history/core/browser/browsing_history_service.h"
 #include "url/gurl.h"
 
+class PrefService;
+
 class HistoryDriverIOS : public history::BrowsingHistoryDriver {
  public:
-  HistoryDriverIOS();
+  // `prefs` must be non-null and outlive this instance.
+  explicit HistoryDriverIOS(PrefService* prefs);
 
   HistoryDriverIOS(const HistoryDriverIOS&) = delete;
   HistoryDriverIOS& operator=(const HistoryDriverIOS&) = delete;
@@ -42,6 +46,8 @@ class HistoryDriverIOS : public history::BrowsingHistoryDriver {
       const syncer::SyncService* sync_service,
       history::WebHistoryService* history_service,
       base::OnceCallback<void(bool)> callback) override;
+
+  raw_ptr<PrefService> prefs_;
 };
 
 #endif  // BRAVE_IOS_BROWSER_API_HISTORY_HISTORY_DRIVER_IOS_H_
