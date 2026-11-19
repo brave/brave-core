@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/webui/whats_new/whats_new_util.cc b/chrome/browser/ui/webui/whats_new/whats_new_util.cc
+index 72f8a1070f1d89cb088e40a11c6f99ab9dbaad79..82c14ce503531309edc2d46edff436ce57d17090 100644
+--- a/chrome/browser/ui/webui/whats_new/whats_new_util.cc
++++ b/chrome/browser/ui/webui/whats_new/whats_new_util.cc
+@@ -58,6 +58,9 @@ bool IsRemoteContentDisabled() {
+ 
+ bool ShouldShowForState(PrefService* local_state,
+                         bool promotional_tabs_enabled) {
++  if ((true)) {
++    return ShouldShowBraveWhatsNewForState(local_state);
++  }
+ #if BUILDFLAG(IS_CHROMEOS)
+   return false;
+ #else
