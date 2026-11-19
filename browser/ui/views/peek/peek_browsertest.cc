@@ -20,10 +20,14 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/ui/peek/peek_features.h"
 #include "brave/browser/ui/peek/public/peek_controller.h"
+#include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/peek/peek_controller_impl.h"
+#include "brave/browser/ui/views/peek/peek_shields_button.h"
 #include "brave/browser/ui/views/peek/peek_view.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -38,6 +42,7 @@
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/interaction/browser_elements_views.h"
 #include "chrome/browser/ui/views/page_info/page_info_bubble_view.h"
 #include "chrome/browser/ui/views/page_info/page_info_bubble_view_base.h"
 #include "chrome/browser/ui/views/site_data/page_specific_site_data_dialog_controller.h"
@@ -101,6 +106,12 @@
 #include "ui/views/widget/widget.h"
 #include "url/gurl.h"
 #include "url/origin.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
+#include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
+#include "brave/components/brave_wallet/common/mojom/brave_wallet_common.mojom.h"
+#endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
@@ -724,6 +735,67 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest,
   WaitForMovedToTab(contents);
   EXPECT_TRUE(PageSpecificSiteDataDialogController::FromWebContents(contents));
 }
+
+// Only tabs get Brave's helpers from `BraveTabFeatures`, so Peek attaches the
+// privacy-sensitive ones itself.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, AttachesShieldsHelpers) {
+  OpenPeek(GetURL("b.com", "/title2.html"));
+  EXPECT_TRUE(brave_shields::BraveShieldsWebContentsObserver::FromWebContents(
+      peek_contents()));
+}
+
+// Changing Shields is a decision about the site, so it happens in a tab, with
+// the panel the tab's own Shields button opens.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, ShieldsButtonMovesToTabAndShowsPanel) {
+  OpenPeek(GetURL("b.com", "/title2.html"));
+  content::WebContents* contents = peek_contents();
+
+  views::test::ButtonTestApi(
+      controller()->peek_view_for_testing()->shields_button_for_testing())
+      .NotifyDefaultMouseClick();
+  WaitForMovedToTab(contents);
+
+  auto* shields_button =
+      BrowserElementsViews::From(browser())->GetViewAs<BraveShieldsActionView>(
+          BraveShieldsActionView::kShieldsActionIcon);
+  ASSERT_TRUE(shields_button);
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return !!shields_button->GetBubbleWidget(); }));
+}
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+// The wallet moves Peek into a tab and keeps using the same contents, so the
+// move must be synchronous and must not destroy them.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, WalletPanelMovesToTab) {
+  const GURL url = https_server_.GetURL("b.test", "/title1.html");
+  OpenPeek(url);
+  content::WebContents* contents = peek_contents();
+
+  brave_wallet::ShowPanel(contents);
+
+  EXPECT_FALSE(controller()->IsShowing());
+  ASSERT_EQ(contents, active_contents());
+  EXPECT_EQ(url, contents->GetLastCommittedURL());
+  EXPECT_TRUE(brave_wallet::BraveWalletTabHelper::From(
+      tab_strip_model()->GetActiveTab()));
+}
+
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, WalletAccountCreationMovesToTab) {
+  const GURL url = https_server_.GetURL("b.test", "/title1.html");
+  OpenPeek(url);
+  content::WebContents* contents = peek_contents();
+
+  brave_wallet::ShowAccountCreation(contents,
+                                    brave_wallet::mojom::CoinType::SOL);
+
+  EXPECT_FALSE(controller()->IsShowing());
+  // Account creation opens the wallet in another tab, after the moved one.
+  ASSERT_NE(TabStripModel::kNoTab,
+            tab_strip_model()->GetIndexOfWebContents(contents));
+  EXPECT_EQ(url, contents->GetLastCommittedURL());
+}
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+
 IN_PROC_BROWSER_TEST_F(PeekBrowserTest, OpenGrowsCard) {
   auto rich_animation = gfx::AnimationTestApi::SetRichAnimationRenderMode(
       gfx::Animation::RichAnimationRenderMode::FORCE_ENABLED);

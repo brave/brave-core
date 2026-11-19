@@ -11,6 +11,7 @@
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
+#include "brave/browser/ui/views/peek/peek_shields_button.h"
 #include "brave/browser/ui/views/view_shadow.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -119,6 +120,7 @@ std::unique_ptr<views::ImageButton> CreateToolbarButton(
 
 DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(PeekView, kCardElementId);
 DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(PeekView, kSiteInfoButtonElementId);
+DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(PeekView, kShieldsButtonElementId);
 DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(PeekView, kOpenAsTabButtonElementId);
 DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(PeekView, kSplitViewButtonElementId);
 DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(PeekView, kCloseButtonElementId);
@@ -204,6 +206,13 @@ PeekView::PeekView(Delegate& delegate, BrowserWindowInterface& browser)
           .WithOrder(3));
   spacer->SetProperty(views::kMarginsKey, gfx::Insets());
 
+  shields_button_ = toolbar->AddChildView(std::make_unique<PeekShieldsButton>(
+      *browser.GetProfile()->GetPrefs(),
+      base::BindRepeating(&Delegate::OnPeekViewShieldsRequested,
+                          base::Unretained(&delegate))));
+  shields_button_->SetProperty(views::kElementIdentifierKey,
+                               kShieldsButtonElementId);
+
   open_as_tab_button_ = toolbar->AddChildView(CreateToolbarButton(
       base::BindRepeating(&Delegate::OnPeekViewOpenAsTabRequested,
                           base::Unretained(&delegate)),
@@ -241,6 +250,7 @@ PeekView::PeekView(Delegate& delegate, BrowserWindowInterface& browser)
 PeekView::~PeekView() = default;
 
 void PeekView::SetWebContents(content::WebContents* contents) {
+  shields_button_->SetWebContents(contents);
   web_view_->SetWebContents(contents);
   if (contents) {
     web_view_->holder()->SetNativeViewCornerRadii(GetWebViewCorners());
@@ -286,6 +296,7 @@ void PeekView::UpdateToolbar() {
   }
   favicon_->SetImage(favicon);
   favicon_->SetVisible(!favicon.IsEmpty());
+  shields_button_->UpdateImage();
 }
 
 void PeekView::FocusContents() {

@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 
@@ -14,17 +15,21 @@ source_set("peek") {
     "peek_contents.h",
     "peek_controller_impl.cc",
     "peek_controller_impl.h",
+    "peek_shields_button.cc",
+    "peek_shields_button.h",
     "peek_view.cc",
     "peek_view.h",
   ]
 
   public = [
     "peek_controller_impl.h",
+    "peek_shields_button.h",
     "peek_view.h",
   ]
 
   public_deps = [
     "//base",
+    "//brave/browser/brave_shields",
     "//brave/browser/ui/peek",
     "//chrome/browser/ui/tabs:tab_strip_model_observer",
     "//components/download/public/common:public",
@@ -38,8 +43,10 @@ source_set("peek") {
 
   deps = [
     "//brave/app:brave_generated_resources_grit",
+    "//brave/browser:tab_helpers_header",
     "//brave/browser/ui/sidebar",
     "//brave/browser/ui/views:view_shadow",
+    "//brave/browser/ui/views/brave_actions",
     "//brave/components/containers/buildflags",
     "//brave/components/resources:strings",
     "//brave/components/vector_icons",
@@ -105,7 +112,10 @@ source_set("browser_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/app:command_ids",
+    "//brave/browser/brave_shields",
     "//brave/browser/ui/peek",
+    "//brave/browser/ui/views/brave_actions",
+    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/containers/buildflags",
     "//chrome/app:command_ids",
     "//chrome/browser",
@@ -149,6 +159,14 @@ source_set("browser_tests") {
     "//ui/views:test_support",
     "//url",
   ]
+
+  if (enable_brave_wallet) {
+    deps += [
+      "//brave/browser/brave_wallet:brave_wallet_delegate",
+      "//brave/browser/brave_wallet:tab_helper",
+      "//brave/components/brave_wallet/common:mojom",
+    ]
+  }
 
   if (enable_containers) {
     deps += [

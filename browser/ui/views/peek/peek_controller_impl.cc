@@ -188,6 +188,10 @@ class PeekControllerImpl::Peek : public PeekContents::Delegate,
     PostControllerTask(&PeekControllerImpl::MoveToSplitView);
   }
 
+  void OnPeekViewShieldsRequested() override {
+    PostControllerTask(&PeekControllerImpl::MoveToTabAndShowShields);
+  }
+
  private:
   void CreateWidget() {
     views::Widget::InitParams params(
@@ -227,11 +231,15 @@ class PeekControllerImpl::Peek : public PeekContents::Delegate,
   base::WeakPtrFactory<Peek> weak_factory_{this};
 };
 
-PeekControllerImpl::PeekControllerImpl(BrowserWindowInterface& browser,
-                                       BrowserView& browser_view)
+PeekControllerImpl::PeekControllerImpl(
+    BrowserWindowInterface& browser,
+    BrowserView& browser_view,
+    std::unique_ptr<PeekShieldsPanelProvider> shields_panel_provider)
     : PeekController(browser),
+      shields_panel_provider_(std::move(shields_panel_provider)),
       browser_(browser),
       browser_view_(browser_view) {
+  CHECK(shields_panel_provider_);
   browser_->GetTabStripModel()->AddObserver(this);
   contents_area_observation_.Observe(browser_view_->contents_container());
   browser_widget_observation_.Observe(browser_view_->GetWidget());
@@ -496,6 +504,15 @@ void PeekControllerImpl::MoveToTabOrClose(Peek& peek) {
   MoveToTab(peek);
 }
 
+void PeekControllerImpl::MoveToTabAndShowShields(Peek& peek) {
+  // Shields settings are a decision about the site, so they're changed in a
+  // tab, with the panel the tab's own Shields button opens.
+  const bool activate = peek.source_tab().IsActivated();
+  MoveToTab(peek);
+  if (activate) {
+    shields_panel_provider_->ShowShieldsPanelForActiveTab();
+  }
+}
 
 void PeekControllerImpl::MoveToTabAndShowCookiesDialog(Peek& peek) {
   // The dialog is tab-modal and `TabDialogs` only exists for tabs.

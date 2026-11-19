@@ -18,6 +18,7 @@
 #include "ui/views/view.h"
 
 class BrowserWindowInterface;
+class PeekShieldsButton;
 class ViewShadow;
 
 namespace content {
@@ -42,6 +43,7 @@ class PeekView : public views::View, public views::AnimationDelegateViews {
  public:
   DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kCardElementId);
   DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kSiteInfoButtonElementId);
+  DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kShieldsButtonElementId);
   DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kOpenAsTabButtonElementId);
   DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kSplitViewButtonElementId);
   DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kCloseButtonElementId);
@@ -52,6 +54,8 @@ class PeekView : public views::View, public views::AnimationDelegateViews {
     virtual void OnPeekViewOpenAsTabRequested() = 0;
     // Moves the page into a tab shown in split view with the source tab.
     virtual void OnPeekViewOpenInSplitViewRequested() = 0;
+    // Moves the page into a tab and opens the Shields panel for it.
+    virtual void OnPeekViewShieldsRequested() = 0;
 
    protected:
     virtual ~Delegate() = default;
@@ -95,6 +99,7 @@ class PeekView : public views::View, public views::AnimationDelegateViews {
   views::ImageButton* site_info_button_for_testing() {
     return site_info_button_;
   }
+  PeekShieldsButton* shields_button_for_testing() { return shields_button_; }
 
   // views::View:
   void Layout(PassKey) override;
@@ -123,6 +128,7 @@ class PeekView : public views::View, public views::AnimationDelegateViews {
   raw_ptr<views::ImageView> favicon_ = nullptr;
   raw_ptr<views::Label> title_ = nullptr;
   raw_ptr<views::Label> host_ = nullptr;
+  raw_ptr<PeekShieldsButton> shields_button_ = nullptr;
   raw_ptr<views::ImageButton> open_as_tab_button_ = nullptr;
   raw_ptr<views::ImageButton> split_view_button_ = nullptr;
   raw_ptr<views::ImageButton> close_button_ = nullptr;

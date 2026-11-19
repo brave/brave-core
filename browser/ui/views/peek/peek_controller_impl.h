@@ -14,6 +14,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/peek/public/peek_controller.h"
+#include "brave/browser/ui/peek/public/peek_shields_panel_provider.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "ui/views/view_observer.h"
 #include "ui/views/widget/widget_observer.h"
@@ -48,8 +49,10 @@ class PeekControllerImpl : public PeekController,
                            public views::ViewObserver,
                            public views::WidgetObserver {
  public:
-  PeekControllerImpl(BrowserWindowInterface& browser,
-                     BrowserView& browser_view);
+  PeekControllerImpl(
+      BrowserWindowInterface& browser,
+      BrowserView& browser_view,
+      std::unique_ptr<PeekShieldsPanelProvider> shields_panel_provider);
   PeekControllerImpl(const PeekControllerImpl&) = delete;
   PeekControllerImpl& operator=(const PeekControllerImpl&) = delete;
   ~PeekControllerImpl() override;
@@ -118,6 +121,7 @@ class PeekControllerImpl : public PeekController,
   void OpenPeekAsTab(Peek& peek);
   void MoveToSplitView(Peek& peek);
   void MoveToTabOrClose(Peek& peek);
+  void MoveToTabAndShowShields(Peek& peek);
   void MoveToTabAndShowCookiesDialog(Peek& peek);
   void MoveToTabAndExecuteCommand(int command_id, Peek& peek);
   bool HandleKeyboardEvent(content::WebContents* source,
@@ -128,6 +132,7 @@ class PeekControllerImpl : public PeekController,
   bool HasFocus() const;
   gfx::Rect GetTargetBoundsInScreen() const;
 
+  const std::unique_ptr<PeekShieldsPanelProvider> shields_panel_provider_;
   const raw_ref<BrowserWindowInterface> browser_;
   const raw_ref<BrowserView> browser_view_;
 
