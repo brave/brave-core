@@ -1,4 +1,0 @@
-include_rules = [
-  "+third_party/boringssl/src/include",
-  "+third_party/boringssl/src/pki",
-]

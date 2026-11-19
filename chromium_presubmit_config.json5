@@ -203,7 +203,6 @@
     "/\\bstd::shared_ptr\\b": [
       "browser/net/.*",
       "ios/browser/api/certificate/brave_certificate\\.mm",
-      "ios/browser/api/net/certificate_utility\\.mm",
     ],
     "/\\bstd::sto(i|l|ul|ll|ull)\\b": [
       "components/brave_wallet/browser/rlp_encode_unittest\\.cc",
