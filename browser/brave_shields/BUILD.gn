@@ -119,7 +119,7 @@ source_set("test_support") {
     "//content/public/browser",
   ]
 
-  public_deps = [ "//brave/components/brave_shields/content/test:test_support" ]
+  public_deps = [ "//brave/components/brave_shields/core/test:test_support" ]
 }
 
 source_set("unit_tests") {
