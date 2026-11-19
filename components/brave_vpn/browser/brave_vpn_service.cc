@@ -65,6 +65,13 @@ void BraveVpnService::NotifySelectedRegionChanged(mojom::RegionPtr region) {
   }
 }
 
+void BraveVpnService::NotifyAutoReconnectStateChanged(bool enabled) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  for (const auto& obs : observers_) {
+    obs->OnAutoReconnectStateChanged(enabled);
+  }
+}
+
 void BraveVpnService::NotifySmartProxyRoutingStateChanged(bool enabled) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   for (const auto& obs : observers_) {

@@ -67,6 +67,11 @@ class TestServiceObserver : public mojom::ServiceObserver {
     MaybeQuit(selected_region_quit_);
   }
 
+  void OnAutoReconnectStateChanged(bool enabled) override {
+    auto_reconnect_calls_.push_back(enabled);
+    MaybeQuit(auto_reconnect_quit_);
+  }
+
   void OnSmartProxyRoutingStateChanged(bool enabled) override {
     smart_proxy_calls_.push_back(enabled);
     MaybeQuit(smart_proxy_quit_);
@@ -92,6 +97,9 @@ class TestServiceObserver : public mojom::ServiceObserver {
   const std::vector<mojom::RegionPtr>& selected_region_calls() const {
     return selected_region_calls_;
   }
+  const std::vector<bool>& auto_reconnect_calls() const {
+    return auto_reconnect_calls_;
+  }
   const std::vector<bool>& smart_proxy_calls() const {
     return smart_proxy_calls_;
   }
@@ -104,6 +112,11 @@ class TestServiceObserver : public mojom::ServiceObserver {
   void WaitForNextSelectedRegionCall() {
     base::RunLoop loop;
     selected_region_quit_ = loop.QuitClosure();
+    loop.Run();
+  }
+  void WaitForNextAutoReconnectCall() {
+    base::RunLoop loop;
+    auto_reconnect_quit_ = loop.QuitClosure();
     loop.Run();
   }
   void WaitForNextSmartProxyCall() {
@@ -128,9 +141,11 @@ class TestServiceObserver : public mojom::ServiceObserver {
 #if !BUILDFLAG(IS_ANDROID)
   std::vector<mojom::ConnectionState> connection_state_calls_;
   std::vector<mojom::RegionPtr> selected_region_calls_;
+  std::vector<bool> auto_reconnect_calls_;
   std::vector<bool> smart_proxy_calls_;
   base::OnceClosure connection_state_quit_;
   base::OnceClosure selected_region_quit_;
+  base::OnceClosure auto_reconnect_quit_;
   base::OnceClosure smart_proxy_quit_;
 #endif
 };
@@ -338,6 +353,22 @@ TEST_F(BraveVpnServiceTest, NotifySelectedRegionChangedClonesPerObserver) {
   ASSERT_EQ(observer2.selected_region_calls().size(), 1u);
   EXPECT_TRUE(observer1.selected_region_calls()[0]);
   EXPECT_TRUE(observer2.selected_region_calls()[0]);
+}
+
+// Auto-reconnect state changes should propagate the boolean unchanged in
+// both directions.
+TEST_F(BraveVpnServiceTest, NotifyAutoReconnectStateChangedDeliversBothStates) {
+  TestServiceObserver observer;
+  service()->AddObserver(observer.BindAndGetRemote());
+
+  service()->NotifyAutoReconnectStateChanged(true);
+  observer.WaitForNextAutoReconnectCall();
+  service()->NotifyAutoReconnectStateChanged(false);
+  observer.WaitForNextAutoReconnectCall();
+
+  ASSERT_EQ(observer.auto_reconnect_calls().size(), 2u);
+  EXPECT_TRUE(observer.auto_reconnect_calls()[0]);
+  EXPECT_FALSE(observer.auto_reconnect_calls()[1]);
 }
 
 // Smart-proxy routing state changes should propagate the boolean unchanged in

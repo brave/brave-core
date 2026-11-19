@@ -10,7 +10,8 @@ import { PanelHeader } from '../select-region-list'
 import getPanelBrowserAPI, { ManageURLType } from '../../api/panel_browser_api'
 import { getLocale } from '$web-common/locale'
 import Toggle from '@brave/nala/react/toggle'
-import { useSelector } from '../../state/hooks'
+import { useDispatch, useSelector } from '../../state/hooks'
+import * as Actions from '../../state/actions'
 
 interface Props {
   closeSettingsPanel: () => void
@@ -18,16 +19,20 @@ interface Props {
 }
 
 function SettingsPanel(props: Props) {
-  const [autoReconnect, setAutoReconnect] = React.useState({
-    available: false,
-    enabled: false
-  })
+  const [autoReconnectAvailable, setAutoReconnectAvailable] = React.useState(false)
+  const dispatch = useDispatch()
 
+  const autoReconnectEnabled = useSelector((state) => state.autoReconnectEnabled)
   const smartProxyRoutingEnabled = useSelector((state) => state.smartProxyRoutingEnabled)
 
   React.useEffect(() => {
-    getPanelBrowserAPI().serviceHandler.getAutoReconnectState().then(setAutoReconnect)
-  }, [])
+    getPanelBrowserAPI()
+      .serviceHandler.getAutoReconnectState()
+      .then(({ available, enabled }) => {
+        setAutoReconnectAvailable(available)
+        dispatch(Actions.autoReconnectStateChanged(enabled))
+      })
+  }, [dispatch])
 
   const handleClick = (entry: ManageURLType) => {
     getPanelBrowserAPI().panelHandler.openVpnUI(entry)
@@ -47,8 +52,8 @@ function SettingsPanel(props: Props) {
     handleClick(entry)
   }
 
-  const handleToggleChange = ({ checked }: { checked: boolean }) => {
-    setAutoReconnect({ ...autoReconnect, enabled: checked })
+  const handleAutoReconnectChange = ({ checked }: { checked: boolean }) => {
+    dispatch(Actions.autoReconnectStateChanged(checked))
     getPanelBrowserAPI().serviceHandler.enableAutoReconnect(checked)
   }
 
@@ -68,11 +73,11 @@ function SettingsPanel(props: Props) {
         />
         <Styles.Divider />
         <Styles.SettingsList>
-          {autoReconnect.available && (
+          {autoReconnectAvailable && (
             <>
               <Styles.Setting
                 onClick={
-                  e => handleToggleChange({ checked: !autoReconnect.enabled })
+                  e => handleAutoReconnectChange({ checked: !autoReconnectEnabled })
                 }
               >
                 <Styles.StyledIcon name='refresh'></Styles.StyledIcon>
@@ -82,8 +87,8 @@ function SettingsPanel(props: Props) {
                   </Styles.SettingLabel>
                 </Styles.SettingLabelBox>
                 <Toggle
-                  checked={autoReconnect.enabled}
-                  onChange={handleToggleChange}
+                  checked={autoReconnectEnabled}
+                  onChange={handleAutoReconnectChange}
                   size='small'
                   aria-label={getLocale(S.BRAVE_VPN_RECONNECT_AUTOMATICALLY)}
                 />

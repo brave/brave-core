@@ -330,9 +330,10 @@ void BraveVpnServiceImpl::OnSelectedRegionChanged(mojom::VpnRegionPtr region) {
 void BraveVpnServiceImpl::OnAutoReconnectStateChanged(bool enabled) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(agent_state_);
-  agent_state_->auto_reconnect_enabled = enabled;
-  // TODO(https://github.com/brave/brave-browser/issues/54604)
-  // Propagate the change to the UI.
+  if (agent_state_->auto_reconnect_enabled != enabled) {
+    agent_state_->auto_reconnect_enabled = enabled;
+    NotifyAutoReconnectStateChanged(enabled);
+  }
 }
 
 void BraveVpnServiceImpl::OnSmartProxyRoutingStateChanged(bool enabled) {
