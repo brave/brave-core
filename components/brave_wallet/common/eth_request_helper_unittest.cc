@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 
 #include <array>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -1201,19 +1202,30 @@ TEST(EthResponseHelperUnitTest, ParseEthSendRawTransaction) {
       ParseParamsList(R"({"params": [123]})")));
 }
 
-TEST(EthRequestHelperUnitTest, ParseCowSwapOrderRequiresSettlementDomain) {
-  auto params_for_domain = [](const std::string& domain_json) {
-    return base::test::ParseJsonList(absl::StrFormat(
-        R"([
+namespace {
+
+constexpr char kCowSwapDomainTypes[] = R"([
+  {"name": "name", "type": "string"},
+  {"name": "version", "type": "string"},
+  {"name": "chainId", "type": "uint256"},
+  {"name": "verifyingContract", "type": "address"}
+])";
+
+constexpr char kCowSwapDomain[] = R"({
+  "name": "Gnosis Protocol",
+  "version": "v2",
+  "chainId": 1,
+  "verifyingContract": "0x9008D19f58AAbD9eD0D60971565AA8510560ab41"
+})";
+
+base::ListValue CowSwapOrderParams(std::string_view domain_types_json,
+                                   std::string_view domain_json) {
+  return base::test::ParseJsonList(absl::StrFormat(
+      R"([
       "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826",
       {
         "types": {
-          "EIP712Domain": [
-            {"name": "name", "type": "string"},
-            {"name": "version", "type": "string"},
-            {"name": "chainId", "type": "uint256"},
-            {"name": "verifyingContract", "type": "address"}
-          ],
+          "EIP712Domain": %s,
           "Order": [
             {"name": "sellToken", "type": "address"},
             {"name": "buyToken", "type": "address"},
@@ -1247,7 +1259,14 @@ TEST(EthRequestHelperUnitTest, ParseCowSwapOrderRequiresSettlementDomain) {
         }
       }
     ])",
-        domain_json));
+      domain_types_json, domain_json));
+}
+
+}  // namespace
+
+TEST(EthRequestHelperUnitTest, ParseCowSwapOrderRequiresSettlementDomain) {
+  auto params_for_domain = [](std::string_view domain_json) {
+    return CowSwapOrderParams(kCowSwapDomainTypes, domain_json);
   };
 
   auto typed_data =
@@ -1284,6 +1303,58 @@ TEST(EthRequestHelperUnitTest, ParseCowSwapOrderRequiresSettlementDomain) {
         "verifyingContract": "0x9008D19f58AAbD9eD0D60971565AA8510560ab41"
       })"),
                                   EthSignTypedDataHelper::Version::kV4);
+  ASSERT_TRUE(typed_data);
+  EXPECT_FALSE(typed_data->meta);
+}
+
+// The CoW preview must only be shown when the CoW domain fields are part of
+// the signed domain hash, not merely present in the raw domain JSON.
+TEST(EthRequestHelperUnitTest, ParseCowSwapOrderRequiresSignedDomainFields) {
+  auto parse = [](std::string_view domain_types_json) {
+    return ParseEthSignTypedDataParams(
+        CowSwapOrderParams(domain_types_json, kCowSwapDomain),
+        EthSignTypedDataHelper::Version::kV4);
+  };
+
+  // Canonical domain type.
+  auto typed_data = parse(kCowSwapDomainTypes);
+  ASSERT_TRUE(typed_data);
+  ASSERT_TRUE(typed_data->meta);
+  EXPECT_TRUE(typed_data->meta->is_cow_swap_order());
+
+  // CoW fields are only in the raw domain; none of them are signed.
+  typed_data = parse("[]");
+  ASSERT_TRUE(typed_data);
+  EXPECT_FALSE(typed_data->meta);
+  EXPECT_EQ(typed_data->domain_json, "{}");
+
+  // verifyingContract is not signed.
+  typed_data = parse(R"([
+    {"name": "name", "type": "string"},
+    {"name": "version", "type": "string"},
+    {"name": "chainId", "type": "uint256"}
+  ])");
+  ASSERT_TRUE(typed_data);
+  EXPECT_FALSE(typed_data->meta);
+
+  // verifyingContract is signed as a string, which yields a different domain
+  // hash than CoW's settlement domain.
+  typed_data = parse(R"([
+    {"name": "name", "type": "string"},
+    {"name": "version", "type": "string"},
+    {"name": "chainId", "type": "uint256"},
+    {"name": "verifyingContract", "type": "string"}
+  ])");
+  ASSERT_TRUE(typed_data);
+  EXPECT_FALSE(typed_data->meta);
+
+  // Same fields in a different order also change the domain hash.
+  typed_data = parse(R"([
+    {"name": "version", "type": "string"},
+    {"name": "name", "type": "string"},
+    {"name": "chainId", "type": "uint256"},
+    {"name": "verifyingContract", "type": "address"}
+  ])");
   ASSERT_TRUE(typed_data);
   EXPECT_FALSE(typed_data->meta);
 }
