@@ -17,4 +17,12 @@ TEST_F(MenuConfigTest, ChangedValueTest) {
                     menu_config.item_horizontal_border_padding);
 }
 
+TEST_F(MenuConfigTest, ReloadInstanceKeepsOurValues) {
+  views::MenuConfig::ReloadInstance();
+  const auto& menu_config = views::MenuConfig::instance();
+  EXPECT_EQ(24, menu_config.item_horizontal_padding +
+                    menu_config.item_horizontal_border_padding);
+  EXPECT_EQ(8, menu_config.CornerRadiusForMenu(nullptr));
+}
+
 }  // namespace views
