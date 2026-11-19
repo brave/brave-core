@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Add Brave's LeakSanitizer suppressions to the default ones.
+
+      `kLSanDefaultSuppressions` is compiled into every LeakSanitizer build,
+      so Brave's suppressions apply however a test binary is run, without a
+      suppressions file in `LSAN_OPTIONS`.
+    add_before_line:
+      line: '// PLEASE READ ABOVE BEFORE ADDING NEW SUPPRESSIONS.'
+      code: |2
+            // ================ Brave ================
+
+            // https://github.com/brave/brave-browser/issues/52522
+            "leak:update_client::UpdateEngine\n"
+            "leak:update_client::TaskUpdate\n"
+
+            // https://github.com/brave/brave-browser/issues/52743
+            "leak:skus::initialize_sdk\n"
+
+            // Clipboard data can "leak" if the browser is closing whilst the
+            // clipboard data is processed. Also happens in Chromium test browsers.
+            "leak:ui::X11ClipboardOzone::RequestClipboardData\n"
