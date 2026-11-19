@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Use Brave's title for brave://downloads.
+
+      IDS_DOWNLOADS_TITLE is declared in brave/grit/brave_generated_resources.h,
+      which the chromium_src shadow includes. rename_class does not apply as
+      this is a resource id, not a class.
+    regex:
+      pattern: IDS_DOWNLOAD_HISTORY_TITLE
+      replace: IDS_DOWNLOADS_TITLE
