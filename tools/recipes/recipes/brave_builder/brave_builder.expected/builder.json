@@ -332,6 +332,20 @@
     }
   },
   {
+    "cmd": [],
+    "name": "file issues"
+  },
+  {
+    "cmd": [],
+    "name": "file issues.filed",
+    "output_properties": {
+      "ci_issues": {
+        "filed": [],
+        "withheld": []
+      }
+    }
+  },
+  {
     "name": "$result"
   }
 ]

@@ -1,0 +1,14 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+syntax = "proto3";
+
+package recipe_modules.brave.ci_issues.examples.full;
+
+message InputProperties {
+  // How many more tests than the example's own fail, each for a reason of
+  // its own.
+  int32 extra_failing_tests = 1;
+}
