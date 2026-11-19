@@ -1175,9 +1175,11 @@ describe('thread origin', () => {
     expect(origin.querySelector(editSelector)).toBeNull()
     expect(origin.querySelector(regenerateSelector)).toBeNull()
 
-    // The thread's own answer still has both.
-    expect(container.querySelectorAll(editSelector)).toHaveLength(1)
-    expect(container.querySelectorAll(regenerateSelector)).toHaveLength(1)
+    // TODO(https://github.com/brave/brave-browser/issues/57705): The thread's
+    // own answer should have both once editing and regeneration are supported
+    // for threads.
+    expect(container.querySelectorAll(editSelector)).toHaveLength(0)
+    expect(container.querySelectorAll(regenerateSelector)).toHaveLength(0)
   })
 
   it('does not render an origin when not viewing a thread', () => {
