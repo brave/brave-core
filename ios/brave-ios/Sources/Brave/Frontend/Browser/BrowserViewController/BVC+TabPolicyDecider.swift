@@ -183,18 +183,11 @@ extension BrowserViewController: TabPolicyDecider {
 
       // Handle the "forget me" feature on navigation
       if requestInfo.isMainFrame {
-        // Cancel any forget data requests
-        tabManager.cancelForgetData(for: mainDocumentURL, in: tab)
-
-        // Forget any websites that have Auto Shred set to Site Tabs Closed
-        // if we navigated away from the previous domain
-        if let currentURL = tab.visibleURL,
-          !InternalURL.isValid(url: currentURL),
-          let currentETLDP1 = currentURL.baseDomain,
-          mainDocumentURL.baseDomain != currentETLDP1
-        {
-          tabManager.forgetDataIfNeeded(for: currentURL, in: tab)
-        }
+        tabManager.shredManager.navigated(
+          from: tab.visibleURL,
+          to: mainDocumentURL,
+          in: tab
+        )
       }
 
       let isAdBlockEnabled =
