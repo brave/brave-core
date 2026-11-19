@@ -837,7 +837,8 @@ export const mockETHSwapTransaction: BraveWallet.TransactionInfo = {
   txStatus: BraveWallet.TransactionStatus.Unapproved,
   swapInfo: {
     routeId: 'test-route-id',
-    sourceAmount: '0xde0b6b3a7640000',
+    // Matches the transaction value, as for a native asset swap.
+    sourceAmount: '0x15ddf09c97b0000',
     sourceTokenAddress: '',
     sourceCoin: BraveWallet.CoinType.ETH,
     sourceChainId: BraveWallet.MAINNET_CHAIN_ID,
@@ -850,6 +851,23 @@ export const mockETHSwapTransaction: BraveWallet.TransactionInfo = {
     provider: BraveWallet.SwapProvider.kLiFi,
   },
 }
+
+// Token swap that also sends native value, e.g. a bridge fee.
+export const mockETHTokenSwapWithNativeValueTransaction: BraveWallet.TransactionInfo =
+  {
+    ...mockETHSwapTransaction,
+    id: 'mock-eth-token-swap-with-native-value-tx',
+    swapInfo: {
+      ...mockETHSwapTransaction.swapInfo!,
+      sourceAmount: '0x56bc75e2d63100000', // 100 BAT
+      sourceTokenAddress: mockBasicAttentionToken.contractAddress,
+      destinationAmount: '',
+      destinationAmountMin: '0x2386f26fc10000',
+      destinationTokenAddress: '',
+      destinationChainId: BraveWallet.BNB_SMART_CHAIN_MAINNET_CHAIN_ID,
+      provider: BraveWallet.SwapProvider.kSquid,
+    },
+  }
 
 export const mockETHNativeTokenSendTransaction = {
   chainId: BraveWallet.MAINNET_CHAIN_ID,

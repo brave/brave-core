@@ -6,7 +6,8 @@
 import * as React from 'react'
 
 import {
-  mockETHSwapTransaction, //
+  mockETHSwapTransaction,
+  mockETHTokenSwapWithNativeValueTransaction,
 } from '../../../stories/mock-data/mock-transaction-info'
 
 // Components
@@ -15,10 +16,19 @@ import {
   WalletPanelStory, //
 } from '../../../stories/wrappers/wallet-panel-story-wrapper'
 
+const renderForTransaction = (id: string) => (
+  <WalletPanelStory uiStateOverride={{ selectedPendingTransactionId: id }}>
+    <ConfirmSwapTransaction />
+  </WalletPanelStory>
+)
+
 export const _ConfirmSwapTransaction = {
-  render: () => {
-    return <ConfirmSwapTransaction />
-  },
+  render: () => renderForTransaction(mockETHSwapTransaction.id),
+}
+
+export const _ConfirmSwapTransactionWithNativeValue = {
+  render: () =>
+    renderForTransaction(mockETHTokenSwapWithNativeValueTransaction.id),
 }
 
 export default {
@@ -27,15 +37,4 @@ export default {
   parameters: {
     layout: 'centered',
   },
-  decorators: [
-    (Story: any) => (
-      <WalletPanelStory
-        uiStateOverride={{
-          selectedPendingTransactionId: mockETHSwapTransaction.id,
-        }}
-      >
-        <Story />
-      </WalletPanelStory>
-    ),
-  ],
 }
