@@ -219,6 +219,8 @@ class MockSidebarServiceObserver : public SidebarService::Observer {
               OnItemMoved,
               (const SidebarItem& item, size_t from, size_t to),
               (override));
+  MOCK_METHOD(void, OnNoteAdded, (const Notes& note), (override));
+  MOCK_METHOD(void, OnNoteDeleted, (const std::string& id), (override));
 };
 
 class SidebarServiceTest : public testing::Test {
@@ -1500,5 +1502,82 @@ TEST_F(SidebarServiceWithWebPanelTest, BraveTalkPanelTypeTest) {
   EXPECT_TRUE(talk_iter->opens_in_panel());
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_TALK)
+
+TEST_F(SidebarServiceTest, AddDeleteNotes) {
+  InitService();
+  EXPECT_TRUE(service_->GetNotes().empty());
+
+  Notes note1;
+  note1.id = "note-1";
+  note1.title = "First Note";
+  note1.content = "Hello Brave Sidebar";
+  note1.timestamp = 1700000000;
+
+  EXPECT_CALL(observer_, OnNoteAdded(testing::Field(&Notes::id, "note-1")))
+      .Times(1);
+  service_->AddNote(note1);
+  testing::Mock::VerifyAndClearExpectations(&observer_);
+
+  ASSERT_EQ(1u, service_->GetNotes().size());
+  EXPECT_EQ("note-1", service_->GetNotes()[0].id);
+  EXPECT_EQ("First Note", service_->GetNotes()[0].title);
+  EXPECT_EQ("Hello Brave Sidebar", service_->GetNotes()[0].content);
+  EXPECT_EQ(1700000000, service_->GetNotes()[0].timestamp);
+
+  // Deleting a non-existent ID should not notify observers or alter state.
+  EXPECT_CALL(observer_, OnNoteDeleted(testing::_)).Times(0);
+  service_->DeleteNote("non-existent");
+  testing::Mock::VerifyAndClearExpectations(&observer_);
+  EXPECT_EQ(1u, service_->GetNotes().size());
+
+  // Deleting an existing ID removes the note and notifies observers.
+  EXPECT_CALL(observer_, OnNoteDeleted("note-1")).Times(1);
+  service_->DeleteNote("note-1");
+  testing::Mock::VerifyAndClearExpectations(&observer_);
+  EXPECT_TRUE(service_->GetNotes().empty());
+}
+
+TEST_F(SidebarServiceTest, NotesSavedToPrefs) {
+  InitService();
+
+  Notes note1;
+  note1.id = "note-1";
+  note1.title = "Persistent Title";
+  note1.content = "Saved across restarts";
+  note1.timestamp = 1700000123;
+
+  Notes note2;
+  note2.id = "note-2";
+  note2.title = "Second Note";
+  note2.content = "More content";
+  note2.timestamp = 1700000456;
+
+  service_->AddNote(note1);
+  service_->AddNote(note2);
+  ASSERT_EQ(2u, service_->GetNotes().size());
+
+  // Simulate browser restart by recreating SidebarService with the same prefs.
+  ResetService();
+  InitService();
+
+  ASSERT_EQ(2u, service_->GetNotes().size());
+  EXPECT_EQ("note-1", service_->GetNotes()[0].id);
+  EXPECT_EQ("Persistent Title", service_->GetNotes()[0].title);
+  EXPECT_EQ("Saved across restarts", service_->GetNotes()[0].content);
+  EXPECT_EQ(1700000123, service_->GetNotes()[0].timestamp);
+
+  EXPECT_EQ("note-2", service_->GetNotes()[1].id);
+  EXPECT_EQ("Second Note", service_->GetNotes()[1].title);
+  EXPECT_EQ("More content", service_->GetNotes()[1].content);
+  EXPECT_EQ(1700000456, service_->GetNotes()[1].timestamp);
+
+  // Delete one note and verify the deletion persists across restart.
+  service_->DeleteNote("note-1");
+  ResetService();
+  InitService();
+
+  ASSERT_EQ(1u, service_->GetNotes().size());
+  EXPECT_EQ("note-2", service_->GetNotes()[0].id);
+}
 
 }  // namespace sidebar
