@@ -1,0 +1,39 @@
+diff --git a/chrome/browser/ui/webui/settings/safety_hub_handler_unittest.cc b/chrome/browser/ui/webui/settings/safety_hub_handler_unittest.cc
+index 1703d27a86b7720b71c88d021edca74ba364b6b5..5193eaa1d322cbc7a2a5c39ff0639978cf7352a9 100644
+--- a/chrome/browser/ui/webui/settings/safety_hub_handler_unittest.cc
++++ b/chrome/browser/ui/webui/settings/safety_hub_handler_unittest.cc
+@@ -918,12 +918,34 @@ TEST_F(SafetyHubHandlerTest, RevokeAllContentSettingTypes) {
+   static constexpr auto kNoNameTypes =
+       base::MakeFixedFlatSet<ContentSettingsType>({
+           // clang-format off
++          ContentSettingsType::BRAVE_WEBCOMPAT_NONE,
++          ContentSettingsType::BRAVE_WEBCOMPAT_AUDIO,
++          ContentSettingsType::BRAVE_WEBCOMPAT_CANVAS,
++          ContentSettingsType::BRAVE_WEBCOMPAT_DEVICE_MEMORY,
++          ContentSettingsType::BRAVE_WEBCOMPAT_EVENT_SOURCE_POOL,
++          ContentSettingsType::BRAVE_WEBCOMPAT_FONT,
++          ContentSettingsType::BRAVE_WEBCOMPAT_HARDWARE_CONCURRENCY,
++          ContentSettingsType::BRAVE_WEBCOMPAT_KEYBOARD,
++          ContentSettingsType::BRAVE_WEBCOMPAT_LANGUAGE,
++          ContentSettingsType::BRAVE_WEBCOMPAT_MEDIA_DEVICES,
++          ContentSettingsType::BRAVE_WEBCOMPAT_PLUGINS,
++          ContentSettingsType::BRAVE_WEBCOMPAT_SCREEN,
++          ContentSettingsType::BRAVE_WEBCOMPAT_SPEECH_SYNTHESIS,
++          ContentSettingsType::BRAVE_WEBCOMPAT_USB_DEVICE_SERIAL_NUMBER,
++          ContentSettingsType::BRAVE_WEBCOMPAT_USER_AGENT,
++          ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL,
++          ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2,
++          ContentSettingsType::BRAVE_WEBCOMPAT_WEBGPU,
++          ContentSettingsType::BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL,
++          ContentSettingsType::BRAVE_WEBCOMPAT_ALL,
+           ContentSettingsType::MIDI,
+           ContentSettingsType::PERSISTENT_STORAGE,
+           ContentSettingsType::NFC,
+           ContentSettingsType::FILE_SYSTEM_READ_GUARD,
+           ContentSettingsType::CAMERA_PAN_TILT_ZOOM,
+           ContentSettingsType::FILE_SYSTEM_ACCESS_EXTENDED_PERMISSION,
++          ContentSettingsType::BRAVE_FINGERPRINTING_V2,
++          ContentSettingsType::BRAVE_HTTPS_UPGRADE,
+           ContentSettingsType::POINTER_LOCK,
+           ContentSettingsType::LOCAL_NETWORK_ACCESS,
+           ContentSettingsType::SUB_APPS_WITHOUT_PROMPTS,

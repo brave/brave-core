@@ -1,0 +1,40 @@
+diff --git a/chrome/browser/ui/webui/settings/site_settings_handler_unittest.cc b/chrome/browser/ui/webui/settings/site_settings_handler_unittest.cc
+index 8f6ba6e1771056f55ba892c5918b306c4bce1ccf..65645783fa8c7e99007f7c33af202399849f1e8b 100644
+--- a/chrome/browser/ui/webui/settings/site_settings_handler_unittest.cc
++++ b/chrome/browser/ui/webui/settings/site_settings_handler_unittest.cc
+@@ -186,7 +186,7 @@ using ::testing::NiceMock;
+ using ::testing::Return;
+ using ::testing::UnorderedElementsAre;
+ 
+-using GroupingKey = settings::SiteSettingsHandler::GroupingKey;
++using GroupingKey = settings::BraveSiteSettingsHandler::GroupingKey;
+ using PermissionStatus = blink::mojom::PermissionStatus;
+ 
+ constexpr char kCallbackId[] = "test-callback-id";
+@@ -389,7 +389,7 @@ class SiteSettingsHandlerBaseTest : public testing::Test {
+ 
+     SetUpIsolatedWebApp();
+ 
+-    handler_ = std::make_unique<SiteSettingsHandler>(profile());
++    handler_ = std::make_unique<BraveSiteSettingsHandler>(profile());
+     handler()->set_web_ui(web_ui());
+     handler()->AllowJavascript();
+     // AllowJavascript() adds a callback to create leveldb_env::ChromiumEnv
+@@ -446,7 +446,7 @@ class SiteSettingsHandlerBaseTest : public testing::Test {
+   TestingProfile* profile() { return profile_.get(); }
+   Profile* incognito_profile() { return incognito_profile_; }
+   content::TestWebUI* web_ui() { return &web_ui_; }
+-  SiteSettingsHandler* handler() { return handler_.get(); }
++  BraveSiteSettingsHandler* handler() { return handler_.get(); }
+   MockPrivacySandboxService* mock_privacy_sandbox_service() {
+     return mock_privacy_sandbox_service_.get();
+   }
+@@ -1211,7 +1211,7 @@ class SiteSettingsHandlerBaseTest : public testing::Test {
+   raw_ptr<TestingProfile> profile_ = nullptr;
+   raw_ptr<Profile, DanglingUntriaged> incognito_profile_ = nullptr;
+   content::TestWebUI web_ui_;
+-  std::unique_ptr<SiteSettingsHandler> handler_;
++  std::unique_ptr<BraveSiteSettingsHandler> handler_;
+ #if BUILDFLAG(IS_CHROMEOS)
+   std::unique_ptr<user_manager::ScopedUserManager> scoped_user_manager_;
+ #endif

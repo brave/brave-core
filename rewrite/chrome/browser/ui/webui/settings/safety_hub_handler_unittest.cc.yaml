@@ -1,0 +1,50 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Add Brave content setting types without names to kNoNameTypes
+
+      Brave fingerprinting v2 and HTTPS upgrade settings have no names in the
+      content settings registry.
+    regex:
+      pattern: |-
+        ContentSettingsType::FILE_SYSTEM_ACCESS_EXTENDED_PERMISSION,
+      replace: |-
+        ContentSettingsType::FILE_SYSTEM_ACCESS_EXTENDED_PERMISSION,
+                  ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+                  ContentSettingsType::BRAVE_HTTPS_UPGRADE,
+    count: 1
+
+  - description: |-
+      Add Brave webcompat content setting types without names to kNoNameTypes
+
+      Brave webcompat settings have no names in the content settings registry.
+    regex:
+      pattern: |-
+        ContentSettingsType::MIDI,
+      replace: |-
+        ContentSettingsType::BRAVE_WEBCOMPAT_NONE,
+                  ContentSettingsType::BRAVE_WEBCOMPAT_AUDIO,
+                  ContentSettingsType::BRAVE_WEBCOMPAT_CANVAS,
+                  ContentSettingsType::BRAVE_WEBCOMPAT_DEVICE_MEMORY,
+                  ContentSettingsType::BRAVE_WEBCOMPAT_EVENT_SOURCE_POOL,
+                  ContentSettingsType::BRAVE_WEBCOMPAT_FONT,
+                  ContentSettingsType::BRAVE_WEBCOMPAT_HARDWARE_CONCURRENCY,
+                  ContentSettingsType::BRAVE_WEBCOMPAT_KEYBOARD,
+                  ContentSettingsType::BRAVE_WEBCOMPAT_LANGUAGE,
+                  ContentSettingsType::BRAVE_WEBCOMPAT_MEDIA_DEVICES,
+                  ContentSettingsType::BRAVE_WEBCOMPAT_PLUGINS,
+                  ContentSettingsType::BRAVE_WEBCOMPAT_SCREEN,
+                  ContentSettingsType::BRAVE_WEBCOMPAT_SPEECH_SYNTHESIS,
+                  ContentSettingsType::BRAVE_WEBCOMPAT_USB_DEVICE_SERIAL_NUMBER,
+                  ContentSettingsType::BRAVE_WEBCOMPAT_USER_AGENT,
+                  ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL,
+                  ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2,
+                  ContentSettingsType::BRAVE_WEBCOMPAT_WEBGPU,
+                  ContentSettingsType::BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL,
+                  ContentSettingsType::BRAVE_WEBCOMPAT_ALL,
+                  ContentSettingsType::MIDI,
+    count: 1
