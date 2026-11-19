@@ -580,6 +580,16 @@ function ConversationEntries(props: {
 
   let entryNumber = 0
 
+  const renderModelIntroMarkers = (afterPairIndex: number | null) =>
+    modelIntroMarkers
+      .filter((marker) => marker.afterPairIndex === afterPairIndex)
+      .map((marker) => (
+        <ModelIntro
+          key={marker.id}
+          modelKey={marker.modelKey}
+        />
+      ))
+
   return (
     <div className={hasGenerated.current ? styles.hasGenerated : ''}>
       {threadOriginGroup && (
@@ -587,6 +597,9 @@ function ConversationEntries(props: {
           {renderEntryGroup(false, threadOriginGroup, -1)}
         </div>
       )}
+      {/* In threads, top markers go below the origin entry. Conversation
+          renders them for the root conversation. */}
+      {conversationContext.threadUuid && renderModelIntroMarkers(null)}
       {entryPairs.map((pair, pairIndex) => (
         <div
           key={pairIndex}
@@ -615,14 +628,7 @@ function ConversationEntries(props: {
               </React.Fragment>
             ))}
           </ProgressBubbleContextProvider>
-          {modelIntroMarkers
-            .filter((marker) => marker.afterPairIndex === pairIndex)
-            .map((marker) => (
-              <ModelIntro
-                key={marker.id}
-                modelKey={marker.modelKey}
-              />
-            ))}
+          {renderModelIntroMarkers(pairIndex)}
         </div>
       ))}
     </div>
