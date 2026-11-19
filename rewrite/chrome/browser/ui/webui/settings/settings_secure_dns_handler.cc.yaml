@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Hide the secure DNS provider options while the setting is locked
+
+      Upstream shows the provider options whenever the mode isn't `kOff` and
+      `dns_over_https.mode` isn't policy-managed. While Brave VPN is connected
+      on Windows, we report `kSecure` with `kDisabledManaged`, which upstream
+      never does, so the options would open under the locked toggle. Choosing
+      a provider writes `dns_over_https.*` with `kSecure`, which makes us stop
+      applying the VPN's DoH config. Only show the options when nothing
+      overrides the setting.
+    regex:
+      re_pattern:
+        '(bool ShouldShowProviderOptionsFor\(net::SecureDnsMode
+        mode\)\s*\{\s*return mode != net::SecureDnsMode::kOff &&)'
+      replace:
+        '\1 GetSecureDnsConfig().management_mode() ==
+        SecureDnsConfig::ManagementMode::kNoOverride &&'

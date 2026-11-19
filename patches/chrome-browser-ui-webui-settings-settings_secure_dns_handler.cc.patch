@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/webui/settings/settings_secure_dns_handler.cc b/chrome/browser/ui/webui/settings/settings_secure_dns_handler.cc
+index f1534aea8545a0247c572ddef1d6c8cfb5cc4fff..f0be7fb8c3e57c729d1675db472e0a01fe137aae 100644
+--- a/chrome/browser/ui/webui/settings/settings_secure_dns_handler.cc
++++ b/chrome/browser/ui/webui/settings/settings_secure_dns_handler.cc
+@@ -54,7 +54,7 @@ SecureDnsConfig GetSecureDnsConfig() {
+ 
+ #if !BUILDFLAG(IS_CHROMEOS)
+ bool ShouldShowProviderOptionsFor(net::SecureDnsMode mode) {
+-  return mode != net::SecureDnsMode::kOff &&
++  return mode != net::SecureDnsMode::kOff && GetSecureDnsConfig().management_mode() == SecureDnsConfig::ManagementMode::kNoOverride &&
+          !g_browser_process->local_state()
+               ->FindPreference(prefs::kDnsOverHttpsMode)
+               ->IsManaged();
