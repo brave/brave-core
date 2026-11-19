@@ -18,12 +18,15 @@
 // system (OPFS) root becomes its folder, and is stored in IndexedDB the same
 // way. The file tools are registered with Leo via WebMCP (see tools.ts /
 // file_ops.ts). The `view.` sibling origin can also read files over
-// postMessage (see message_handler.ts).
+// postMessage (see message_handler.ts), which is how files are displayed, and
+// printed to PDF (see pdf.ts).
 //
 // When navigated to with a #file=<path> fragment, the workspace creates a
 // fullscreen iframe to the viewer origin which displays the file content.
 
+import { loadTimeData } from '$web-common/loadTimeData'
 import { installMessageHandler, viewOrigin } from './message_handler'
+import { createPdfPrinter } from './pdf'
 import { registerTools } from './tools'
 import { restoreDirectoryHandle, storeDirectoryHandle } from './storage'
 
@@ -173,7 +176,12 @@ function initialize() {
   foundExistingRoot = findExistingRoot()
   // Register the tools up front: they resolve the folder when they run, so a
   // workspace that is never sent a folder still gets them (backed by OPFS).
-  void registerTools(getRoot)
+  // html_to_pdf is only offered where the browser can print.
+  void registerTools(getRoot, {
+    printFileToPdf: loadTimeData.getBoolean('isPrintToPdfSupported')
+      ? createPdfPrinter()
+      : undefined,
+  })
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

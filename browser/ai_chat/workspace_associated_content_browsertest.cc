@@ -112,8 +112,10 @@ class WorkspaceAssociatedContentBrowserTest : public InProcessBrowserTest {
   }
 
   // Creates a workspace for |folder|, owned by the fixture so that it outlives
-  // its page's IndexedDB write (see TearDownOnMainThread()).
-  WorkspaceAssociatedContent* CreateContent(const base::FilePath& folder) {
+  // its page's IndexedDB write (see TearDownOnMainThread()). A workspace with
+  // no folder only writes one once one of its tools has run.
+  WorkspaceAssociatedContent* CreateContent(
+      std::optional<base::FilePath> folder) {
     return contents_
         .emplace_back(std::make_unique<WorkspaceAssociatedContent>(
             folder, browser()->GetProfile(), base::DoNothing()))
@@ -917,10 +919,86 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentWebMcpBrowserTest,
   for (const auto& tool : tools.Get()) {
     names.emplace_back(tool->Name());
   }
-  EXPECT_THAT(names, ::testing::UnorderedElementsAre(
-                         "view", "str_replace_based_edit_tool", "grep", "glob",
-                         "append_file"));
+  std::vector<std::string> expected = {"view", "str_replace_based_edit_tool",
+                                       "grep", "glob", "append_file"};
+#if BUILDFLAG(ENABLE_PRINTING)
+  // Only offered where the browser can print.
+  expected.push_back("html_to_pdf");
+#endif
+  EXPECT_THAT(names, ::testing::UnorderedElementsAreArray(expected));
 }
+
+#if BUILDFLAG(ENABLE_PRINTING)
+// html_to_pdf renders a workspace file exactly as the viewer displays it, and
+// saves it to the workspace as a PDF. The file's own stylesheet, referenced by
+// relative path, sets the page size, so the PDF's page size shows that the file
+// was rendered with the resources it references, served from the workspace by
+// the viewer's service worker. The file name has a space in it, which has to
+// survive the trip through the viewer's URLs.
+IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentWebMcpBrowserTest,
+                       HtmlToPdfSavesAPdfOfTheRenderedFile) {
+  // An empty workspace, whose files live in its OPFS, so the test can write
+  // them through the page on every platform.
+  auto* content = CreateContent(/*folder=*/std::nullopt);
+  content::WebContents* web_contents = content->GetWebContentsForTesting();
+  ASSERT_TRUE(base::test::RunUntil([&] { return content->tools_attached(); }));
+  ASSERT_TRUE(content::ExecJs(web_contents, R"JS(
+      (async () => {
+        const root = await navigator.storage.getDirectory();
+        const docs = await root.getDirectoryHandle('docs', {create: true});
+        const write = async (name, text) => {
+          const file = await docs.getFileHandle(name, {create: true});
+          const writable = await file.createWritable();
+          await writable.write(text);
+          await writable.close();
+        };
+        await write('print.css', '@page { size: 2in 3in; margin: 0 }');
+        await write('my page.html',
+            '<!doctype html><link rel="stylesheet" href="print.css">' +
+            '<p>Hello, PDF</p>');
+      })()
+  )JS"));
+
+  base::test::TestFuture<std::vector<std::unique_ptr<Tool>>> tools;
+  content->GetContentTools(tools.GetCallback());
+  Tool* html_to_pdf = nullptr;
+  for (const auto& tool : tools.Get()) {
+    if (tool->Name() == "html_to_pdf") {
+      html_to_pdf = tool.get();
+    }
+  }
+  ASSERT_TRUE(html_to_pdf);
+
+  base::test::TestFuture<Tool::ToolResult, Tool::ToolArtifacts> result;
+  html_to_pdf->UseTool(R"({"path": "docs/my page.html"})",
+                       result.GetCallback());
+  const Tool::ToolResult& output = result.Get<0>();
+  ASSERT_EQ(1u, output.size());
+  ASSERT_TRUE(output[0]->is_text_content_block());
+  const std::string& text = output[0]->get_text_content_block()->text;
+  EXPECT_THAT(text, ::testing::StartsWith("Created docs/my page.pdf ("));
+  EXPECT_THAT(text, ::testing::EndsWith(" bytes) from docs/my page.html"));
+
+  // Read back as Latin-1, so every byte is one character.
+  const std::string pdf = content::EvalJs(web_contents, R"JS(
+          (async () => {
+            const root = await navigator.storage.getDirectory();
+            const docs = await root.getDirectoryHandle('docs');
+            const file = await (await docs.getFileHandle('my page.pdf'))
+                .getFile();
+            return Array.from(new Uint8Array(await file.arrayBuffer()),
+                              byte => String.fromCharCode(byte)).join('');
+          })()
+      )JS")
+                              .ExtractString();
+  EXPECT_THAT(pdf, ::testing::StartsWith("%PDF-"));
+  // 2x3 inches is 144x216 points.
+  EXPECT_EQ("0 0 144 216", PdfMediaBox(pdf));
+
+  // The viewer it was rendered in is gone again.
+  EXPECT_FALSE(content::ChildFrameAt(web_contents->GetPrimaryMainFrame(), 0));
+}
+#endif  // BUILDFLAG(ENABLE_PRINTING)
 
 // An empty workspace can only reach its own OPFS, so its tools run without
 // asking.
