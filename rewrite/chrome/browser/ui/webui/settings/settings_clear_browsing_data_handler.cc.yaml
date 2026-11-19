@@ -1,0 +1,33 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Clear Leo history when the Brave AI Chat data type is selected.
+
+      Brave adds BrowsingDataType::BRAVE_AI_CHAT, which maps to the Leo history
+      data type in the remove mask.
+    regex:
+      re_pattern: '(HandleClearBrowsingData\([^)]*\)\s*\{.*?\n\s*switch[^{]*\{)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+        #if BUILDFLAG(ENABLE_AI_CHAT)
+              case BrowsingDataType::BRAVE_AI_CHAT:
+                remove_mask |= chrome_browsing_data_remover::DATA_TYPE_BRAVE_LEO_HISTORY;
+                break;
+        #endif
+
+  - description: |-
+      Remove the Windows jump list when history is cleared.
+
+      BraveRemoveJumplist is defined in the browsing_data namespace by the
+      chromium_src override of this file.
+    add_before_line:
+      line: 'browsing_data::RecordDeleteBrowsingDataAction('
+      code: |-
+        #if BUILDFLAG(IS_WIN)
+          browsing_data::BraveRemoveJumplist(remove_mask, profile_);
+        #endif
