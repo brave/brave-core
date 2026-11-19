@@ -11,21 +11,4 @@
 #include "brave/browser/ui/webui/settings/brave_relaunch_handler_mac.h"
 #endif
 
-#define BrowserLifetimeHandler BrowserLifetimeHandler_ChromiumImpl
 #include <chrome/browser/ui/webui/settings/browser_lifetime_handler.cc>
-#undef BrowserLifetimeHandler
-
-namespace settings {
-
-BrowserLifetimeHandler::~BrowserLifetimeHandler() {}
-
-void BrowserLifetimeHandler::HandleRelaunch(const base::ListValue& args) {
-#if BUILDFLAG(ENABLE_SPARKLE)
-  if (brave_relaunch_handler::RelaunchOnMac()) {
-    return;
-  }
-#endif
-  BrowserLifetimeHandler_ChromiumImpl::HandleRelaunch(args);
-}
-
-}  // namespace settings
