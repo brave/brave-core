@@ -10,15 +10,7 @@
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 
-// The bubble doesn't allow opening popups, so we redirect new popup content to
-// the browser window via chrome::AddWebContents() (forcing kNewPopup), causing
-// it to open as a separate popup window instead of being suppressed.
-// In order to close all popups we also save tab ids of each opened popup window
-// and close all with the bubble together.
-
-#define AddNewContents AddNewContents_ChromiumImpl
 #include <chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.cc>
-#undef AddNewContents
 
 void WebUIContentsWrapper::SetWebContentsAddNewContentsBrowser(
     base::WeakPtr<BrowserWindowInterface> browser) {
@@ -32,42 +24,4 @@ void WebUIContentsWrapper::CloseTrackedPopups() {
     }
   }
   tracked_popups_.clear();
-}
-
-content::WebContents* WebUIContentsWrapper::Host::AddNewContents(
-    content::WebContents* source,
-    std::unique_ptr<content::WebContents> new_contents,
-    const GURL& target_url,
-    ui::mojom::WindowOpenDisposition disposition,
-    const blink::mojom::WindowFeatures& window_features,
-    bool user_gesture,
-    bool* was_blocked) {
-  return WebUIContentsWrapper::Host::AddNewContents_ChromiumImpl(
-      source, std::move(new_contents), target_url, disposition, window_features,
-      user_gesture, was_blocked);
-}
-
-content::WebContents* WebUIContentsWrapper::AddNewContents(
-    content::WebContents* source,
-    std::unique_ptr<content::WebContents> new_contents,
-    const GURL& target_url,
-    ui::mojom::WindowOpenDisposition disposition,
-    const blink::mojom::WindowFeatures& window_features,
-    bool user_gesture,
-    bool* was_blocked) {
-  if (!browser_) {
-    return host_ ? host_->AddNewContents(
-                       source, std::move(new_contents), target_url, disposition,
-                       window_features, user_gesture, was_blocked)
-                 : nullptr;
-  }
-  auto* contents = chrome::AddWebContents(
-      browser_.get(), source, std::move(new_contents), target_url,
-      ui::mojom::WindowOpenDisposition::kNewPopup, window_features,
-      NavigateParams::WindowAction::kShowWindow, user_gesture);
-  if (!contents) {
-    return nullptr;
-  }
-  tracked_popups_.push_back(contents->GetWeakPtr());
-  return contents;
 }

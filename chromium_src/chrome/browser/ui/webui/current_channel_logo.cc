@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#define CurrentChannelLogoResourceId CurrentChannelLogoResourceId_Unused
 #include "base/notreached.h"
-
-#include <chrome/browser/ui/webui/current_channel_logo.cc>
-#undef CurrentChannelLogoResourceId
+#include "base/version_info/channel.h"
+#include "build/build_config.h"
+#include "chrome/common/channel_info.h"
+#include "chrome/grit/theme_resources.h"
 
 namespace webui {
 
-int CurrentChannelLogoResourceId() {
+int CurrentChannelBraveLogoResourceId() {
 #if !BUILDFLAG(IS_ANDROID)
   switch (chrome::GetChannel()) {
 #if defined(OFFICIAL_BUILD)
@@ -38,3 +38,5 @@ int CurrentChannelLogoResourceId() {
 }
 
 }  // namespace webui
+
+#include <chrome/browser/ui/webui/current_channel_logo.cc>

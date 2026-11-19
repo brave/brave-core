@@ -8,16 +8,6 @@
 
 #include "brave/browser/sparkle_buildflags.h"
 
-#if BUILDFLAG(ENABLE_SPARKLE)
-#define PromoteUpdater                          \
-  GetIsSparkleForTesting(bool& result) const {} \
-  virtual void PromoteUpdater
-#endif
-
 #include <chrome/browser/ui/webui/help/version_updater.h>  // IWYU pragma: export
-
-#if BUILDFLAG(ENABLE_SPARKLE)
-#undef PromoteUpdater
-#endif
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_HELP_VERSION_UPDATER_H_

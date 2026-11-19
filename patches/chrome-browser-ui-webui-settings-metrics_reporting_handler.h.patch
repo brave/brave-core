@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/webui/settings/metrics_reporting_handler.h b/chrome/browser/ui/webui/settings/metrics_reporting_handler.h
+index 0a4ce5b2899cbd8d66b612c369bd8066484a173e..c819b0448bf68af1d8be51caa93cdc946ad2206b 100644
+--- a/chrome/browser/ui/webui/settings/metrics_reporting_handler.h
++++ b/chrome/browser/ui/webui/settings/metrics_reporting_handler.h
+@@ -7,7 +7,7 @@
+ 
+ #include "build/branding_buildflags.h"
+ 
+-#if BUILDFLAG(GOOGLE_CHROME_BRANDING) && !BUILDFLAG(IS_CHROMEOS)
++#if ((true /*BUILDFLAG(GOOGLE_CHROME_BRANDING)*/)) && !BUILDFLAG(IS_CHROMEOS)
+ 
+ #include <memory>
+ 

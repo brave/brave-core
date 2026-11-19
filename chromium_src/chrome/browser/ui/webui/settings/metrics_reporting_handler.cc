@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "build/branding_buildflags.h"
+#include "build/build_config.h"
 
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
 

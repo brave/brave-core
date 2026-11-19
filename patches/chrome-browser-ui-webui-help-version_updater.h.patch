@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/webui/help/version_updater.h b/chrome/browser/ui/webui/help/version_updater.h
+index 4181d4e0d567f7aedebe29d2d2df7c3e2b04c874..418e180788d05c29716d4835cab627a67005f5ec 100644
+--- a/chrome/browser/ui/webui/help/version_updater.h
++++ b/chrome/browser/ui/webui/help/version_updater.h
+@@ -135,6 +135,9 @@ class VersionUpdater {
+   // If an update is downloaded but deferred, apply the deferred update.
+   virtual void ApplyDeferredUpdateAdvanced() = 0;
+ #endif
++  #if BUILDFLAG(ENABLE_SPARKLE)
++  virtual void GetIsSparkleForTesting(bool& result) const {}
++  #endif
+ };
+ 
+ #endif  // CHROME_BROWSER_UI_WEBUI_HELP_VERSION_UPDATER_H_
