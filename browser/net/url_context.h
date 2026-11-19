@@ -89,11 +89,19 @@ class BraveRequestInfo {
   const std::optional<url::Origin>& request_initiator() const;
   void set_request_initiator(const std::optional<url::Origin>& value);
 
+  // The origin of the top-level frame the request belongs to, when known.
+  const std::optional<url::Origin>& top_frame_origin() const;
+  void set_top_frame_origin(std::optional<url::Origin> value);
+
   // The origin to treat as first party when applying Shields rules to this
-  // request. Main frames use the request URL's origin, unless it is opaque.
-  // Subframes, subresources and main frames with an opaque request URL origin
-  // use the request initiator when there is one. Shields ignores sandboxing, so
-  // an opaque result is replaced by its precursor origin when it has one.
+  // request. This is the top-level site that Shields settings are looked up
+  // for. Main frames use the request URL's origin, unless it is opaque, in
+  // which case the request initiator is used when there is one. Subframes and
+  // subresources use the top frame origin. When there is no top frame origin
+  // they use the request initiator, then the request URL's origin. Shields
+  // ignores sandboxing, so an opaque result is replaced by its precursor origin
+  // when it has one. An opaque top frame origin without a precursor stays
+  // opaque.
   url::Origin first_party_origin_for_shields() const;
 
   bool internal_redirect() const;
@@ -230,6 +238,7 @@ class BraveRequestInfo {
   GURL tab_origin_;
   GURL tab_url_;
   std::optional<url::Origin> request_initiator_;
+  std::optional<url::Origin> top_frame_origin_;
 
   bool internal_redirect_ = false;
   GURL redirect_source_;
