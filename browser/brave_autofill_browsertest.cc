@@ -8,9 +8,9 @@
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/password_manager/chrome_password_manager_client.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/autofill/chrome_autofill_client.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/autofill/content/browser/content_autofill_client.h"
 #include "components/autofill/content/browser/content_autofill_driver.h"
 #include "components/autofill/core/browser/foundations/browser_autofill_manager.h"
 #include "content/public/browser/web_contents.h"
@@ -47,9 +47,8 @@ class BraveAutofillBrowserTest : public InProcessBrowserTest {
                             bool enabled) {
     auto* active_contents = PrepareWebContents(browser, url);
     // Logins.
-    autofill::ChromeAutofillClient* autofill_client =
-        autofill::ChromeAutofillClient::FromWebContentsForTesting(
-            active_contents);
+    autofill::ContentAutofillClient* autofill_client =
+        autofill::ContentAutofillClient::FromWebContents(active_contents);
     EXPECT_EQ(autofill_client->IsAutocompleteEnabled(), enabled);
     // Passwords.
     ChromePasswordManagerClient* client =
