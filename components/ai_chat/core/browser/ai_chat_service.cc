@@ -1657,10 +1657,10 @@ void AIChatService::MaybeMarkGenerationComplete(
   }
   it->second = mojom::ConversationGenerationState::kCompletedNotViewed;
   NotifyConversationGenerationStateChanged();
-  MaybeShowCompletionNotification(conversation_uuid);
+  ShowCompletionNotification(conversation_uuid);
 }
 
-void AIChatService::MaybeShowCompletionNotification(const std::string& uuid) {
+void AIChatService::ShowCompletionNotification(const std::string& uuid) {
   if (!notification_delegate_) {
     return;
   }

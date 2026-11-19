@@ -469,7 +469,7 @@ class AIChatService : public KeyedService,
   // DeleteConversation() without OnConversationListChanged(), for callers that
   // delete several conversations and then send the list once.
   void DeleteConversationWithoutNotifyingList(const std::string& id);
-  void MaybeShowCompletionNotification(const std::string& uuid);
+  void ShowCompletionNotification(const std::string& uuid);
 
   raw_ptr<ModelService> model_service_;
   raw_ptr<TabTrackerService> tab_tracker_service_;
