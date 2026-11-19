@@ -20,7 +20,7 @@ from __future__ import annotations
 
 import argparse
 import ast
-from collections.abc import Iterator
+from collections.abc import Iterator, Sequence
 import contextlib
 from dataclasses import dataclass
 import functools
@@ -34,11 +34,13 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from typing import Protocol
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import gtest_output
 import junit_report
+import sanitizer_reports
 
 # Exit code used by the test launcher to signal a non-fatal warning.
 WARNING_EXIT_CODE = 88
@@ -150,6 +152,9 @@ class Options:
     # Where to write a JUnit XML report of the run, from its JSON summary.
     junit_xml_output: Path | None = None
 
+    # Where to write the sanitiser reports in the run's output.
+    sanitizer_reports_output: Path | None = None
+
 
 # -- Running the test -------------------------------------------------------
 
@@ -160,23 +165,30 @@ def _kill_if_running(proc: subprocess.Popen) -> None:
         proc.kill()
 
 
+class LineConsumer(Protocol):
+    """Reads a run's output a line at a time."""
+
+    def process_line(self, line: str) -> None: ...
+
+
 def run_command(
     command: list[str],
     *,
     env: dict[str, str],
-    parser: gtest_output.GTestParser | None = None,
+    consumers: Sequence[LineConsumer] = (),
     cwd: Path | None = None,
 ) -> int:
     """Runs `command`, streaming its output and returning its exit code.
 
-    Without `parser` the child inherits stdout and stderr. With one, stdout and
-    stderr are merged and each line is echoed and handed to the parser.
+    Without `consumers` the child inherits stdout and stderr. With them,
+    stdout and stderr are merged and each line is echoed and handed to each
+    consumer.
     """
     print('\n' + subprocess.list2cmdline(command))
     sys.stdout.flush()
     sys.stderr.flush()
 
-    if not parser:
+    if not consumers:
         return subprocess.run(command, env=env, cwd=cwd, check=False).returncode
 
     with contextlib.ExitStack() as stack:
@@ -197,7 +209,8 @@ def run_command(
         for line in proc.stdout:
             line = line.rstrip('\n').rstrip('\r')
             print(line)
-            parser.process_line(line)
+            for consumer in consumers:
+                consumer.process_line(line)
         return proc.wait()
 
 
@@ -667,6 +680,12 @@ def run_test(options: Options, args: list[str]) -> int:
     json_parser = (
         parser if isinstance(parser, gtest_output.GTestJSONParser) else None
     )
+    reports = (
+        sanitizer_reports.ReportParser()
+        if options.sanitizer_reports_output
+        else None
+    )
+    consumers = [consumer for consumer in (parser, reports) if consumer]
     try:
         if json_parser:
             json_file = json_parser.prepare_json_file(
@@ -680,11 +699,14 @@ def run_test(options: Options, args: list[str]) -> int:
             )
         with task_temp_dir() as temp_env:
             result = run_command(
-                command, env=_build_env(temp_env), parser=parser, cwd=cwd
+                command, env=_build_env(temp_env), consumers=consumers, cwd=cwd
             )
     finally:
         if json_parser:
             process_summary(options, json_parser, suite)
+        if reports:
+            reports.finish()
+            reports.result.write(options.sanitizer_reports_output)
 
     if options.parse_gtest_output and parser is not None:
         report_outcome(options.test_type, result, parser)
@@ -941,6 +963,13 @@ def main() -> int:
         '--parse-gtest-output.',
     )
     parser.add_argument(
+        '--sanitizer-reports-output',
+        type=Path,
+        default=None,
+        help="Write the sanitiser reports in the run's output there, as JSON, "
+        'one per finding with its signature.',
+    )
+    parser.add_argument(
         '--test-platform',
         choices=['android'],
         default=None,
@@ -973,6 +1002,8 @@ def main() -> int:
         not parsed.parse_gtest_output or parsed.run_python_script
     ):
         parser.error('--junit-xml-output needs a gtest JSON summary')
+    if parsed.sanitizer_reports_output and parsed.test_platform:
+        parser.error('--sanitizer-reports-output runs desktop suites only')
     if parsed.builder and parsed.test_platform:
         parser.error('--builder runs desktop suites only')
 
@@ -999,6 +1030,11 @@ def main() -> int:
         junit_xml_output=(
             parsed.junit_xml_output.resolve()
             if parsed.junit_xml_output
+            else None
+        ),
+        sanitizer_reports_output=(
+            parsed.sanitizer_reports_output.resolve()
+            if parsed.sanitizer_reports_output
             else None
         ),
     )

@@ -607,6 +607,45 @@ class RunTestTest(_GeneratedConfigTest):
         self.assertIn('<testsuites name="browser_tests" tests="1"', text)
         self.assertIn('<testcase name="B" classname="A"', text)
 
+    def test_writes_the_sanitizer_reports_in_the_output(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            build_dir = Path(temp_dir)
+            (build_dir / 'browser_tests').touch()
+            reports_file = build_dir / 'reports' / 'browser_tests.json'
+
+            def print_a_leak(*_args, consumers, **_kwargs):
+                for line in (
+                    '[ RUN      ] A.B',
+                    '==1==ERROR: LeakSanitizer: detected memory leaks',
+                    'Direct leak of 8 byte(s) in 1 object(s) allocated from:',
+                    '    #1 0x11 in Foo::Make() ../../brave/foo.cc:30:10',
+                    'SUMMARY: AddressSanitizer: 8 byte(s) leaked in 1 '
+                    'allocation(s).',
+                ):
+                    for consumer in consumers:
+                        consumer.process_line(line)
+                return 1
+
+            with (
+                mock.patch.object(m.sys, 'platform', 'linux'),
+                mock.patch.object(m, 'run_command', side_effect=print_a_leak),
+                contextlib.redirect_stdout(io.StringIO()),
+            ):
+                m.run_test(
+                    _options(
+                        build_dir=build_dir,
+                        sanitizer_reports_output=reports_file,
+                    ),
+                    ['browser_tests'],
+                )
+            reports = m.sanitizer_reports.RunReports.read(reports_file).reports
+        self.assertEqual(len(reports), 1)
+        report = reports[0]
+        self.assertEqual(
+            report.signature, 'LeakSanitizer: direct-leak in Foo::Make'
+        )
+        self.assertEqual(report.test, 'A.B')
+
     def test_missing_binary_is_an_error(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             with self.assertRaises(FileNotFoundError):

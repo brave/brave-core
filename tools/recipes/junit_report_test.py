@@ -126,9 +126,27 @@ class RenderTest(unittest.TestCase):
         failure = _testcase(root, 'Crashes').find('failure')
         self.assertEqual(
             failure.get('message'),
-            'foo.cc(12): ASan heap-use-after-free\nAllocated: foo.cc(30)',
+            'AddressSanitizer heap-use-after-free in Foo::Bar '
+            '(brave/foo.cc:12)',
         )
         self.assertEqual(failure.get('type'), 'CRASH')
+
+    def test_a_leak_on_exit_takes_its_message_from_the_output(self):
+        snippet = (
+            '==1==ERROR: LeakSanitizer: detected memory leaks\n'
+            'Direct leak of 8 byte(s) in 1 object(s) allocated from:\n'
+            '    #0 0x10 in __interceptor_malloc ??:0:0\n'
+            '    #1 0x11 in Foo::Make() ../../brave/foo.cc:30:10\n'
+            'SUMMARY: AddressSanitizer: 8 byte(s) leaked in 1 allocation(s).\n'
+        )
+        root = _report(
+            {'FooTest.Leaks': [_run('FAILURE_ON_EXIT', snippet=snippet)]}
+        )
+        failure = _testcase(root, 'Leaks').find('failure')
+        self.assertEqual(
+            failure.get('message'),
+            'LeakSanitizer direct-leak in Foo::Make (brave/foo.cc:30)',
+        )
 
     def test_a_crash_without_a_known_message_takes_its_status(self):
         root = _report({'FooTest.Hangs': [_run('TIMEOUT', snippet='...')]})
