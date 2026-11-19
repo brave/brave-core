@@ -12,7 +12,9 @@
 #include "brave/components/psst/core/browser/pref_names.h"
 #include "brave/components/psst/core/browser/psst_settings_service.h"
 #include "brave/components/psst/core/common/psst_metadata_schema.h"
+#include "brave/components/psst/core/common/psst_ui_common.mojom-forward.h"
 #include "components/prefs/pref_service.h"
+#include "mojo/public/cpp/bindings/callback_helpers.h"
 
 namespace psst {
 
@@ -32,6 +34,27 @@ static_assert(static_cast<int>(mojom::ConsentStatus::kBlock) ==
               static_cast<int>(ConsentStatus::kBlock));
 static_assert(static_cast<int>(mojom::ConsentStatus::kMaxValue) ==
               static_cast<int>(ConsentStatus::kMaxValue));
+
+std::vector<mojom::PsstWebsiteSettingsEntryPtr> BuildWebsiteSettingsEntries(
+    const base::flat_map<std::string, PsstWebsiteSettingsExtended>&
+        psst_websites_settings) {
+  std::vector<mojom::PsstWebsiteSettingsEntryPtr> result;
+  for (const auto& [site, settings] : psst_websites_settings) {
+    for (const auto& wss : settings.website_settings) {
+      auto entry = mojom::PsstWebsiteSettingsEntry::New();
+      entry->site = site;
+      entry->infobar_shown_count = settings.infobar_shown_counter;
+      entry->infobar_decline_count = settings.infobar_decline_counter;
+      entry->consent_status =
+          static_cast<mojom::ConsentStatus>(wss.consent_status);
+      entry->script_version = wss.script_version;
+      entry->user_id = wss.user_id;
+      entry->uids_to_perform = wss.uids_to_perform;
+      result.push_back(std::move(entry));
+    }
+  }
+  return result;
+}
 
 }  // namespace
 
@@ -73,29 +96,17 @@ void PsstInternalsHandler::Clear() {
   }
 }
 
-void PsstInternalsHandler::GetDiagnosticsInfo(
-    GetDiagnosticsInfoCallback callback) {
-  auto info = mojom::PsstDiagnosticsInfo::New();
-  if (prefs_) {
-    info->infobar_shown_count =
-        prefs_->GetInteger(prefs::kPsstInfobarShownCounter);
-    info->infobar_decline_count =
-        prefs_->GetInteger(prefs::kPsstInfobarDeclineCounter);
+void PsstInternalsHandler::GetPsstWebsiteSettingsEntries(
+    GetPsstWebsiteSettingsEntriesCallback callback) {
+  callback = mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+      std::move(callback), std::vector<mojom::PsstWebsiteSettingsEntryPtr>());
+
+  if (!settings_service_) {
+    return;
   }
-  if (settings_service_) {
-    for (const auto& [site, settings] :
-         settings_service_->GetAllPsstWebsitesSettings()) {
-      auto entry = mojom::PsstWebsiteSettingsEntry::New();
-      entry->site = site;
-      entry->consent_status =
-          static_cast<mojom::ConsentStatus>(settings.consent_status);
-      entry->script_version = settings.script_version;
-      entry->user_id = settings.user_id;
-      entry->uids_to_perform = settings.uids_to_perform;
-      info->website_settings.push_back(std::move(entry));
-    }
-  }
-  std::move(callback).Run(std::move(info));
+
+  std::move(callback).Run(BuildWebsiteSettingsEntries(
+      settings_service_->GetAllPsstWebsitesSettings()));
 }
 
 void PsstInternalsHandler::OnPsstLogEntryAdded(
@@ -121,28 +132,18 @@ void PsstInternalsHandler::OnPsstLogCleared() {
 }
 
 void PsstInternalsHandler::OnPsstPrefsChange(
-    int infobar_shown_counter,
-    int infobar_decline_counter,
-    const base::flat_map<std::string, PsstWebsiteSettings>&
+    const base::flat_map<std::string, PsstWebsiteSettingsExtended>&
         psst_websites_settings) {
   if (!page_) {
     return;
   }
 
-  auto info = mojom::PsstDiagnosticsInfo::New();
-  info->infobar_shown_count = infobar_shown_counter;
-  info->infobar_decline_count = infobar_decline_counter;
-  for (const auto& [site, settings] : psst_websites_settings) {
-    auto entry = mojom::PsstWebsiteSettingsEntry::New();
-    entry->site = site;
-    entry->consent_status =
-        static_cast<mojom::ConsentStatus>(settings.consent_status);
-    entry->script_version = settings.script_version;
-    entry->user_id = settings.user_id;
-    entry->uids_to_perform = settings.uids_to_perform;
-    info->website_settings.push_back(std::move(entry));
+  if (!settings_service_) {
+    return;
   }
-  page_->OnPsstSettingsChanged(std::move(info));
+
+  page_->OnPsstSettingsChanged(BuildWebsiteSettingsEntries(
+      settings_service_->GetAllPsstWebsitesSettings()));
 }
 
 void PsstInternalsHandler::FlushPendingEntries() {

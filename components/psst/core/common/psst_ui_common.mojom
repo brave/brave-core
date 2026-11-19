@@ -67,17 +67,12 @@ enum ConsentStatus {
 // Per-site PSST settings snapshot, shown on the brave://psst-internals.
 struct PsstWebsiteSettingsEntry {
   string site;
+  int32 infobar_shown_count;
+  int32 infobar_decline_count;
   ConsentStatus consent_status;
   int32 script_version;
   string user_id;
   array<string> uids_to_perform;
-};
-
-// Infobar counters and per-site settings, shown on the brave://psst-internals.
-struct PsstDiagnosticsInfo {
-  int32 infobar_shown_count;
-  int32 infobar_decline_count;
-  array<PsstWebsiteSettingsEntry> website_settings;
 };
 
 // WebUI -> browser interface for brave://psst-internals.
@@ -92,12 +87,12 @@ interface PsstInternalsHandler {
 
   // Returns the infobar counters and per-site PSST settings. Fetched once
   // when the page loads.
-  GetDiagnosticsInfo() => (PsstDiagnosticsInfo info);
+  GetPsstWebsiteSettingsEntries() => (array<PsstWebsiteSettingsEntry> entries);
 };
 
 // Browser -> WebUI interface for brave://psst-internals.
 interface PsstInternalsPage {
-  OnPsstSettingsChanged(PsstDiagnosticsInfo info);
+  OnPsstSettingsChanged(array<PsstWebsiteSettingsEntry> entries);
   OnEntriesAdded(array<PsstLogEntry> entries);
   OnCleared();
 };

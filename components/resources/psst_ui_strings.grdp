@@ -51,9 +51,6 @@
     <message name="IDS_PSST_INTERNALS_WEBSITE_SETTINGS_DESCRIPTION" formatter_data="webui=Psst" desc="Description of the website settings section of the PSST internals page">
         Per-site consent decisions, user identifiers, and infobar interactions that Brave stores to drive the Privacy Settings Tuning flow. This data persists across browser restarts.
     </message>
-    <message name="IDS_PSST_INTERNALS_INFOBAR_COUNT" formatter_data="webui=Psst" desc="Count of times the PSST infobar was shown and declined, on the PSST internals page">
-        The Infobar shown <ph name="SHOWN_COUNT">$1</ph> and declined <ph name="DECLINE_COUNT">$2</ph> times.
-    </message>
     <message name="IDS_PSST_INTERNALS_LOG_ENTRIES_TITLE" formatter_data="webui=Psst" desc="Heading for the log entries section of the PSST internals page">
         Log Entries
     </message>
@@ -110,6 +107,12 @@
     </message>
     <message name="IDS_PSST_INTERNALS_LOG_DATA_LABEL" formatter_data="webui=Psst" desc="Label for the collapsible extra data payload attached to a log entry, on the PSST internals page">
         data
+    </message>
+    <message name="IDS_PSST_INTERNALS_TABLE_HEADER_INFOBAR_SHOWN_COUNT" formatter_data="webui=Psst" desc="Column header for the number of times the PSST infobar was shown for a site, on the PSST internals page">
+        Infobar shown
+    </message>
+    <message name="IDS_PSST_INTERNALS_TABLE_HEADER_INFOBAR_DECLINE_COUNT" formatter_data="webui=Psst" desc="Column header for the number of times the PSST infobar was declined for a site, on the PSST internals page">
+        Infobar declined
     </message>
     <message name="IDS_PSST_INTERNALS_TABLE_HEADER_CONSENT" formatter_data="webui=Psst" desc="Column header for the consent status, on the PSST internals page">
         Consent

@@ -35,9 +35,10 @@ export function createPsstInternalsApi() {
       // Infobar counters and per-site PSST settings. Fetched once when the
       // page loads, then kept in sync via `onPsstSettingsChanged`.
       diagnosticsInfo: query({
-        query: () => handler.getDiagnosticsInfo().then((r) => r.info),
+        query: () =>
+          handler.getPsstWebsiteSettingsEntries().then((r) => r.entries),
         prefetchWithArgs: [],
-        placeholderData: null as Mojom.PsstDiagnosticsInfo | null,
+        placeholderData: [] as Mojom.PsstWebsiteSettingsEntry[],
       }),
     },
 
@@ -55,7 +56,7 @@ export function createPsstInternalsApi() {
           onCleared() {
             api.entries.update([])
           },
-          onPsstSettingsChanged(info: Mojom.PsstDiagnosticsInfo) {
+          onPsstSettingsChanged(info: Mojom.PsstWebsiteSettingsEntry[]) {
             api.diagnosticsInfo.update(info)
           },
         },

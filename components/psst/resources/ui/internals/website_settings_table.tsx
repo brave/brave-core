@@ -42,6 +42,12 @@ export function WebsiteSettingsTable({ entries }: Props) {
         <thead>
           <tr>
             <th>{getLocale(S.PSST_INTERNALS_TABLE_HEADER_SITE)}</th>
+            <th>
+              {getLocale(S.PSST_INTERNALS_TABLE_HEADER_INFOBAR_SHOWN_COUNT)}
+            </th>
+            <th>
+              {getLocale(S.PSST_INTERNALS_TABLE_HEADER_INFOBAR_DECLINE_COUNT)}
+            </th>
             <th>{getLocale(S.PSST_INTERNALS_TABLE_HEADER_CONSENT)}</th>
             <th>{getLocale(S.PSST_INTERNALS_TABLE_HEADER_SCRIPT_VERSION)}</th>
             <th>
@@ -63,6 +69,8 @@ export function WebsiteSettingsTable({ entries }: Props) {
           {entries.map((entry, index) => (
             <tr key={`${entry.site}-${index}`}>
               <td className='site'>{entry.site}</td>
+              <td>{entry.infobarShownCount}</td>
+              <td>{entry.infobarDeclineCount}</td>
               <td>{consentStatusNames.get(entry.consentStatus) ?? ''}</td>
               <td>{entry.scriptVersion}</td>
               <td className='user-id'>

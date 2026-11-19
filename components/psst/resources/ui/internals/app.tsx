@@ -28,10 +28,9 @@ import '../strings'
 const kAnyFilter = 'any'
 
 export function App({ api }: { api: PsstInternalsApi }) {
-  // The mojom module is untyped JS, so annotate what comes back from it.
   const entries: Mojom.PsstLogEntry[] = api.useEntries().data ?? []
-  const diagnosticsInfo: Mojom.PsstDiagnosticsInfo | null =
-    api.useDiagnosticsInfo().data ?? null
+  const diagnosticsInfo: Mojom.PsstWebsiteSettingsEntry[] =
+    api.useDiagnosticsInfo().data ?? []
   const [search, setSearch] = React.useState('')
   const [minLevel, setMinLevel] = React.useState<string>(kAnyFilter)
   const [source, setSource] = React.useState<string>(kAnyFilter)
@@ -70,16 +69,7 @@ export function App({ api }: { api: PsstInternalsApi }) {
           {getLocale(S.PSST_INTERNALS_WEBSITE_SETTINGS_DESCRIPTION)}
         </div>
 
-        <div className='count'>
-          {formatLocale(S.PSST_INTERNALS_INFOBAR_COUNT, {
-            $1: String(diagnosticsInfo?.infobarShownCount ?? 0),
-            $2: String(diagnosticsInfo?.infobarDeclineCount ?? 0),
-          })}
-        </div>
-
-        <WebsiteSettingsTable
-          entries={diagnosticsInfo?.websiteSettings ?? []}
-        />
+        <WebsiteSettingsTable entries={diagnosticsInfo} />
       </section>
 
       <section>
