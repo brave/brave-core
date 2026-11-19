@@ -107,7 +107,7 @@ ContentAgentToolProvider::ContentAgentToolProvider(
       actor::TaskSourceInfo(actor::TaskSourceInfo::Client::kExperimentalActor,
                             /*id=*/std::nullopt),
       AIChatEnterprisePolicyChecker::NoEnterprisePolicyChecker(),
-      /*options=*/nullptr, /*delegate=*/nullptr, &*ui_state_manager_);
+      &*ui_state_manager_);
 
   actor_task_state_changed_subscription_ =
       actor_service_->AddTaskStateChangedCallback(base::BindRepeating(
@@ -171,7 +171,7 @@ void ContentAgentToolProvider::StopAllTasks() {
         actor::TaskSourceInfo(actor::TaskSourceInfo::Client::kExperimentalActor,
                               /*id=*/std::nullopt),
         AIChatEnterprisePolicyChecker::NoEnterprisePolicyChecker(),
-        /*options=*/nullptr, /*delegate=*/nullptr, &*ui_state_manager_);
+        &*ui_state_manager_);
     actor_service_->StopTask(stopping_task_id,
                              actor::ActorTask::StoppedReason::kTaskComplete);
   }
