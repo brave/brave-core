@@ -9,13 +9,7 @@
 #include "chrome/browser/ui/webui/side_panel/bookmarks/bookmarks_page_handler.h"
 #include "ui/base/l10n/l10n_util.h"
 
-#define BookmarksSidePanelUIConfig BookmarksSidePanelUIConfig_Unused
-#define BookmarksSidePanelUI BookmarksSidePanelUI_ChromiumImpl
-
 #include <chrome/browser/ui/webui/side_panel/bookmarks/bookmarks_side_panel_ui.cc>
-
-#undef BookmarksSidePanelUIConfig
-#undef BookmarksSidePanelUI
 
 BookmarksSidePanelUIConfig::BookmarksSidePanelUIConfig()
     : DefaultTopChromeWebUIConfig(content::kChromeUIScheme,

@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/webui/side_panel/bookmarks/bookmarks_page_handler.cc b/chrome/browser/ui/webui/side_panel/bookmarks/bookmarks_page_handler.cc
+index dedee52d92c5536d24ddcf5a7d8b8103216473ff..e9b96e7bf3fc1d47ee88fad4723f6fb66392294c 100644
+--- a/chrome/browser/ui/webui/side_panel/bookmarks/bookmarks_page_handler.cc
++++ b/chrome/browser/ui/webui/side_panel/bookmarks/bookmarks_page_handler.cc
+@@ -387,7 +387,7 @@ std::vector<side_panel::mojom::BookmarksTreeNodePtr> ConstructMojoChildNodes(
+ BookmarksPageHandler::BookmarksPageHandler(
+     mojo::PendingReceiver<side_panel::mojom::BookmarksPageHandler> receiver,
+     mojo::PendingRemote<side_panel::mojom::BookmarksPage> page,
+-    BookmarksSidePanelUI* bookmarks_ui,
++    BookmarksSidePanelUI_ChromiumImpl* bookmarks_ui,
+     content::WebUI* web_ui)
+     : receiver_(this, std::move(receiver)),
+       page_(std::move(page)),
