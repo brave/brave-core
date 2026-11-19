@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_strip.h b/chrome/browser/ui/views/tabs/tab_strip.h
-index f0ddafa5fe695b4b749e816be5c6c61fd27e6839..e6320af26dd328f0f581f0975a226c2ac243623f 100644
+index cfbe9710814bd7b91658ca96ecfbda25c32459c8..7cb0810f04c3627f32f4c1612c667be0d71f83da 100644
 --- a/chrome/browser/ui/views/tabs/tab_strip.h
 +++ b/chrome/browser/ui/views/tabs/tab_strip.h
 @@ -41,7 +41,7 @@
@@ -29,20 +29,25 @@ index f0ddafa5fe695b4b749e816be5c6c61fd27e6839..e6320af26dd328f0f581f0975a226c2a
  
    // Removes a tab at the specified index. If the tab with `contents` is being
    // dragged then the drag is completed.
-@@ -146,10 +146,10 @@ class TabStrip : public views::View,
+@@ -146,13 +146,13 @@ class TabStrip : public views::View,
  
-   void OnTabWillBeRemoved(content::WebContents* contents, int model_index);
+   void OnTabWillBeRemoved(content::WebContents* contents);
  
 -  void OnTabPinnedStateChanged(int model_index, bool is_pinned);
+-  void OnTabPinnedStateChanged(tabs::TabHandle tab, bool is_pinned);
 +  virtual void OnTabPinnedStateChanged(int model_index, bool is_pinned);
++  virtual void OnTabPinnedStateChanged(tabs::TabHandle tab, bool is_pinned);
  
-   // Sets the tab group at the specified model index.
+   // Sets the tab group at the specified model index or tab handle.
 -  void AddTabToGroup(std::optional<tab_groups::TabGroupId> group,
 +  virtual void AddTabToGroup(std::optional<tab_groups::TabGroupId> group,
                       int model_index);
+-  void AddTabToGroup(std::optional<tab_groups::TabGroupId> group,
++  virtual void AddTabToGroup(std::optional<tab_groups::TabGroupId> group,
+                      tabs::TabHandle tab);
  
    // Creates the views associated with a newly-created tab group.
-@@ -215,7 +215,7 @@ class TabStrip : public views::View,
+@@ -227,7 +227,7 @@ class TabStrip : public views::View,
    TabStripController* controller() const { return controller_.get(); }
    TabContainer* tab_container_for_testing() { return tab_container_; }
  
@@ -51,7 +56,7 @@ index f0ddafa5fe695b4b749e816be5c6c61fd27e6839..e6320af26dd328f0f581f0975a226c2a
  
    // Stops any ongoing animations and lays out the tabstrip.
    void StopAnimating();
-@@ -337,11 +337,34 @@ class TabStrip : public views::View,
+@@ -349,11 +349,34 @@ class TabStrip : public views::View,
    views::View* GetViewForDrop() override;
  
    void DisableTabStripEditingForTesting();
@@ -87,7 +92,7 @@ index f0ddafa5fe695b4b749e816be5c6c61fd27e6839..e6320af26dd328f0f581f0975a226c2a
    class TabDragContextImpl;
  
    friend class TabDragControllerTest;
-@@ -416,7 +439,7 @@ class TabStrip : public views::View,
+@@ -432,7 +455,7 @@ class TabStrip : public views::View,
  
    std::unique_ptr<TabStripController> controller_;
  
