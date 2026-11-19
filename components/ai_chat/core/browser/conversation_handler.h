@@ -186,8 +186,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   bool IsRequestInProgress();
   // Whether a tool use loop is running, between generation requests.
   bool IsToolUseInProgress() const;
-  // Whether the last response has an unanswered permission challenge, so the
-  // conversation can't continue without the user.
+  // Whether the last response has an unanswered permission challenge.
   bool IsAwaitingUserInput() const;
 
   const mojom::Model& GetCurrentModel();

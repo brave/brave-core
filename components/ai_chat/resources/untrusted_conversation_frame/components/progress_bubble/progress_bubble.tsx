@@ -161,7 +161,6 @@ function useProgressState(
     ? conversationState.toolUseTaskState
     : Mojom.TaskState.kNone
 
-  // The loop has stopped to ask the user for permission, so it isn't done.
   // Any tool use in the turn can carry the challenge, not just the last one.
   const isAwaitingApproval =
     isActiveGroup
