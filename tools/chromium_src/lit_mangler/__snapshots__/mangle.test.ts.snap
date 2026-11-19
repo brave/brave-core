@@ -2264,6 +2264,33 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "
 `;
 
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/settings_page/settings_section.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/settings/settings_page/settings_section.html.ts
++++ gen/chrome/browser/resources/settings/preprocessed/settings_page/settings_section.html.ts
+@@ -1,17 +1,12 @@
+-/
+-
+ import {html, nothing} from '//resources/lit/v3_0/lit.rollup.js';
+ 
+ import type {SettingsSectionElement} from './settings_section.js';
+ 
+ export function getHtml(this: SettingsSectionElement) {
+   return html\`<!--_html_template_start_-->
+-<div id="header"
+-    ?hidden="\${this.settingsRefresh2026Enabled_ && !this.pageTitle &&
+-        !this.showSendFeedbackButton}">
+-  <h2 id="title" class="title" tabindex="-1"
+-      aria-hidden="\${this.getTitleHiddenStatus_() || nothing}">
++<div ?hidden="\${this.settingsRefresh2026Enabled_ !== null && !this.pageTitle && !this.showSendFeedbackButton}" id="header">
++  <h2 id="title" class="title" tabindex="-1" aria-hidden="\${this.getTitleHiddenStatus_() || nothing}">
+     \${this.pageTitle}
+   </h2>
+   \${this.showSendFeedbackButton ? html\`
+     <cr-icon-button id="feedback" iron-icon="settings:feedback"
+"
+`;
+
 exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/site_settings/add_site_dialog.html.ts.lit_mangler.ts should match snapshot 1`] = `
 "===================================================================
 --- ../chrome/browser/resources/settings/site_settings/add_site_dialog.html.ts
