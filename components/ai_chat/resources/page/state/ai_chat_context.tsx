@@ -62,6 +62,7 @@ export default function useProvideAIChatContext(props: AIChatContextProps) {
     initialized: isStandalone !== undefined && !isConversationsLoading,
     isMobile: loadTimeData.getBoolean('isMobile'),
     isHistoryFeatureEnabled: loadTimeData.getBoolean('isHistoryEnabled'),
+    isThreadsFeatureEnabled: loadTimeData.getBoolean('isThreadsEnabled'),
     isAIChatAgentProfileFeatureEnabled: loadTimeData.getBoolean(
       'isAIChatAgentProfileFeatureEnabled',
     ),

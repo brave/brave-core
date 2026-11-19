@@ -10,6 +10,8 @@ const boolValues: Record<string, boolean> = {
   isHistoryEnabled: false,
   // Matches the default state of `kAIChatMathRendering`.
   isMathRenderingEnabled: true,
+  // Matches the default state of `kAIChatThreads`.
+  isThreadsEnabled: false,
   isAIChatAgentProfileFeatureEnabled: false,
   isAIChatAgentProfile: false,
 }

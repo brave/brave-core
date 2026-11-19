@@ -519,6 +519,9 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
   source->AddBoolean(
       "isMathRenderingEnabled",
       base::FeatureList::IsEnabled(ai_chat::features::kAIChatMathRendering));
+  source->AddBoolean(
+      "isThreadsEnabled",
+      base::FeatureList::IsEnabled(ai_chat::features::kAIChatThreads));
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,

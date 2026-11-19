@@ -36,6 +36,10 @@ export default function ThreadIndicator(props: Props) {
     setLabel(nextLabel)
   }
 
+  if (!context.isThreadsFeatureEnabled) {
+    return null
+  }
+
   return (
     <ConversationAreaButton
       className={styles.threadIndicator}
