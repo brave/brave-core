@@ -80,6 +80,7 @@ class BraveRequestInfo {
   const GURL& request_url() const;
   void set_request_url(const GURL& value);
 
+  // Deprecated: use `first_party_origin_for_shields()` or `top_frame_origin()`.
   const GURL& tab_origin() const;
   void set_tab_origin(const GURL& value);
 

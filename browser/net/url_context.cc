@@ -163,6 +163,8 @@ url::Origin BraveRequestInfo::first_party_origin_for_shields() const {
         request_origin.opaque() && request_initiator_ ? *request_initiator_
                                                       : request_origin);
   }
+  // The initiator may be a subframe, but the first party is the top frame (or
+  // its precursor), so prefer the top frame origin when there is one.
   if (top_frame_origin_) {
     return GetPrecursorOriginIfOpaque(*top_frame_origin_);
   }
@@ -521,7 +523,6 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
   ctx->set_render_frame_token(render_frame_token);
 
   // TODO(iefremov): remove tab_url. Change tab_origin from GURL to Origin.
-  // ctx->set_tab_url(request.top_frame_origin);
   const net::IsolationInfo* isolation_info = nullptr;
   if (request.trusted_params) {
     isolation_info = &request.trusted_params->isolation_info;
