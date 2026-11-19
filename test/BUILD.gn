@@ -655,6 +655,10 @@ test("brave_unit_tests") {
     data_deps += [ "//chrome:packed_resources" ]
   }
 
+  if (is_mac) {
+    data_deps += [ "//chrome:chrome_framework" ]
+  }
+
   if (is_android) {
     deps += [
       "//brave:brave_pak_assets",
