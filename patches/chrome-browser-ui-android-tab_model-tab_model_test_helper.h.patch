@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/tab_model/tab_model_test_helper.h b/chrome/browser/ui/android/tab_model/tab_model_test_helper.h
-index 0e78ba0f354cb550dd6f4b05cec478506eb9a82a..2dfb3a935ca14ae48454813ac97116cc5e54cf72 100644
+index 71dcfb8f669bd603cb1c6b1e2067fece0ba299db..4b338d69ad049f6692ea0782c5b8c3c318e91207 100644
 --- a/chrome/browser/ui/android/tab_model/tab_model_test_helper.h
 +++ b/chrome/browser/ui/android/tab_model/tab_model_test_helper.h
 @@ -12,6 +12,7 @@

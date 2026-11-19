@@ -1,8 +1,8 @@
 diff --git a/chrome/app/theme/theme_resources.grd b/chrome/app/theme/theme_resources.grd
-index 538b8a6f073a749cb292fc6e2c428fd12673b4a1..0f37a01344544b6fc839321634d73e569d81eba9 100644
+index 31f8965ce76011fab5bb58d91c83db67a16dc336..80574eda36a318efe878de98f8f582df0e8ea53c 100644
 --- a/chrome/app/theme/theme_resources.grd
 +++ b/chrome/app/theme/theme_resources.grd
-@@ -278,7 +278,7 @@
+@@ -277,7 +277,7 @@
          <structure type="chrome_scaled_image" name="IDR_UPLOAD_VIOLATION_DARK" file="common/upload_violation_dark.png" />
        </if>
        <if expr="not _google_chrome">
@@ -11,7 +11,7 @@ index 538b8a6f073a749cb292fc6e2c428fd12673b4a1..0f37a01344544b6fc839321634d73e56
            <!-- Desktop Android supports extensions and the web store. -->
            <structure type="chrome_scaled_image" name="IDR_WEBSTORE_ICON" file="chromium/webstore_icon.png" />
            <structure type="chrome_scaled_image" name="IDR_WEBSTORE_ICON_16" file="chromium/webstore_icon_16.png" />
-@@ -286,7 +286,7 @@
+@@ -285,7 +285,7 @@
          </if>
        </if>
        <if expr="_google_chrome">

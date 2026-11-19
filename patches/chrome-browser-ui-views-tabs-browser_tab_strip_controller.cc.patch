@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc b/chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc
-index ecdaefd9080ff03ea64faa8c5453ece813c5e94e..f425375724dade37f4abf471bf7c6dad7e1ed77b 100644
+index a2f36e5353e80b00abb211f716defd3a88508914..4b214994a810a1040a8d9c2d0f5df9d495a21f62 100644
 --- a/chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc
 +++ b/chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc
-@@ -251,7 +251,7 @@ void BrowserTabStripController::SelectTab(int model_index,
+@@ -250,7 +250,7 @@ void BrowserTabStripController::SelectTab(int model_index,
    std::optional<split_tabs::SplitTabId> split_id =
        tabstrip_->tab_at(model_index)->split();
    if (split_id.has_value()) {
@@ -11,7 +11,7 @@ index ecdaefd9080ff03ea64faa8c5453ece813c5e94e..f425375724dade37f4abf471bf7c6dad
    }
  
    std::unique_ptr<viz::PeakGpuMemoryTracker> tracker =
-@@ -431,7 +431,7 @@ void BrowserTabStripController::ShowContextMenuForTab(
+@@ -430,7 +430,7 @@ void BrowserTabStripController::ShowContextMenuForTab(
    context_menu_controller_ = std::make_unique<TabContextMenuController>(
        model_->GetTabAtIndex(tab_index.value())->GetHandle(), this);
  
