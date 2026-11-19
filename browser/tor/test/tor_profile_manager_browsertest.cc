@@ -8,7 +8,7 @@
 #include "base/path_service.h"
 #include "base/process/launch.h"
 #include "base/test/bind.h"
-#include "base/test/scoped_command_line.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
@@ -33,6 +33,7 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
+#include "chrome/common/chrome_features.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/test/base/chrome_test_path_utils.h"
 #include "chrome/test/base/chrome_test_utils.h"
@@ -667,12 +668,8 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, NoBuiltInBridgesRequest) {
 // set, so Tor profiles must not get one.
 class TorProfileManagerSystemProxyResolverTest : public TorProfileManagerTest {
  protected:
-  // Not set at startup, so real contexts never launch the resolver service.
   network::mojom::NetworkContextParamsPtr ConfigureNetworkContextParams(
       Profile* profile) {
-    base::test::ScopedCommandLine scoped_command_line;
-    scoped_command_line.GetProcessCommandLine()->AppendSwitch(
-        switches::kUseSystemProxyResolver);
     auto params = network::mojom::NetworkContextParams::New();
     auto cert_verifier_params =
         cert_verifier::mojom::CertVerifierCreationParams::New();
@@ -682,13 +679,17 @@ class TorProfileManagerSystemProxyResolverTest : public TorProfileManagerTest {
             cert_verifier_params.get());
     return params;
   }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_{
+      features::kSystemProxyResolver};
 };
 
 IN_PROC_BROWSER_TEST_F(TorProfileManagerSystemProxyResolverTest,
                        TorProfileHasNoSystemProxyResolver) {
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || \
     (BUILDFLAG(IS_LINUX) && BUILDFLAG(USE_DBUS))
-  // Other profiles get it, which also shows that the switch took effect.
+  // Other profiles get it, which also shows that the feature took effect.
   EXPECT_TRUE(ConfigureNetworkContextParams(browser()->GetProfile())
                   ->system_proxy_resolver.is_valid());
 #endif
