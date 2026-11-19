@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/common/tab_view.cc b/chrome/browser/ui/views/tabs/common/tab_view.cc
-index 7ad4897a7557b7f5559a66356ec8b2078a1c3039..708ddb4bf73a4be4802c2e281bf211773b5ac4ed 100644
+index 954e9a517d9936bd5640e2cc8ebd53ec2f28612e..0b2d6e54f428638a056e26d083ea5ebf2a65a007 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_view.cc
 +++ b/chrome/browser/ui/views/tabs/common/tab_view.cc
-@@ -336,6 +336,7 @@ TabView::TabView(TabCollectionNode* collection_node)
+@@ -337,6 +337,7 @@ TabView::TabView(TabCollectionNode* collection_node)
                                    this,
                                    kGlowHoverAnimationDuration)
                              : nullptr) {
@@ -10,7 +10,7 @@ index 7ad4897a7557b7f5559a66356ec8b2078a1c3039..708ddb4bf73a4be4802c2e281bf21177
    tabs::TabInterface* tab = const_cast<tabs::TabInterface*>(GetTabInterface());
    BrowserWindowInterface* browser_window = tab->GetBrowserWindowInterface();
  
-@@ -1253,6 +1254,7 @@ void TabView::UpdateBorder() {
+@@ -1310,6 +1311,7 @@ void TabView::UpdateBorder() {
  }
  
  void TabView::UpdateColors() {
