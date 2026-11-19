@@ -153,8 +153,29 @@ function MainPanel() {
     return currentRegion.namePretty
   }
 
+  const isAgentUnavailable =
+    connectionStatus === ConnectionState.CONNECT_NO_AGENT
+
+  // Losing the agent makes settings and the region selector meaningless, and
+  // they shouldn't come back by themselves once the agent recovers.
+  React.useEffect(() => {
+    if (isAgentUnavailable) {
+      setSettingsPanelVisible(false)
+      dispatch(Actions.toggleRegionSelector(false))
+    }
+  }, [isAgentUnavailable, dispatch])
+
   if (isContactSupportVisible) {
     return <ContactSupport onCloseContactSupport={closeContactSupport} />
+  }
+
+  if (isAgentUnavailable) {
+    return (
+      <ErrorPanel
+        showContactSupport={showContactSupport}
+        isAgentUnavailable
+      />
+    )
   }
 
   if (isSettingsPanelVisible) {
@@ -162,15 +183,6 @@ function MainPanel() {
       <SettingsPanel
         closeSettingsPanel={closeSettingsPanel}
         showContactSupport={showContactSupport}
-      />
-    )
-  }
-
-  if (connectionStatus === ConnectionState.CONNECT_NO_AGENT) {
-    return (
-      <ErrorPanel
-        showContactSupport={showContactSupport}
-        isAgentUnavailable
       />
     )
   }
