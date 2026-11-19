@@ -1,0 +1,35 @@
+diff --git a/chrome/browser/ui/views/user_education/browser_help_bubble.cc b/chrome/browser/ui/views/user_education/browser_help_bubble.cc
+index 0a023e5e9cd22b2c1f0c705afd9702f2370998b9..1a591e02c0dc496b10cbb6b0ef25fc33ddf18eaa 100644
+--- a/chrome/browser/ui/views/user_education/browser_help_bubble.cc
++++ b/chrome/browser/ui/views/user_education/browser_help_bubble.cc
+@@ -229,6 +229,9 @@ std::u16string BrowserHelpBubble::GetFocusHelpBubbleScreenReaderHint(
+ 
+   const std::u16string accelerator_text =
+       GetFocusBubbleAcceleratorText(accelerator_provider);
++  if (accelerator_text.empty()) {
++    return {};
++  }
+ 
+   // Present the user with the full help bubble navigation shortcut.
+   auto* const anchor_view = anchor_element->AsA<views::TrackedElementViews>();
+@@ -253,6 +256,9 @@ std::u16string BrowserHelpBubble::GetFocusTutorialBubbleScreenReaderHint(
+     const ui::AcceleratorProvider* accelerator_provider) {
+   const std::u16string accelerator_text =
+       GetFocusBubbleAcceleratorText(accelerator_provider);
++  if (accelerator_text.empty()) {
++    return {};
++  }
+   return l10n_util::GetStringFUTF16(IDS_FOCUS_HELP_BUBBLE_TUTORIAL_DESCRIPTION,
+                                     accelerator_text);
+ }
+@@ -269,7 +275,9 @@ std::u16string BrowserHelpBubble::GetFocusBubbleAcceleratorText(
+ #else
+   static const auto kAccelerator = IDC_FOCUS_NEXT_PANE;
+ #endif
+-  CHECK(provider->GetAcceleratorForCommandId(kAccelerator, &accelerator));
++  if (!provider->GetAcceleratorForCommandId(kAccelerator, &accelerator)) {
++    return {};
++  }
+   return accelerator.GetShortcutText();
+ }
+ 
