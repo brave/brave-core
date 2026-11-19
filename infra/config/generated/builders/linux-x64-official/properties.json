@@ -1,0 +1,49 @@
+{
+  "$brave_siso": {
+    "remote_jobs": 1440
+  },
+  "$brave_tests_builder_config": {
+    "builder_config": {
+      "builder_db": {
+        "entries": [
+          {
+            "builder_id": {
+              "builder": "linux-x64-official"
+            },
+            "builder_spec": {
+              "brave_config": {
+                "ignore_patch_version_number": false,
+                "is_brave_release_build": true,
+                "use_brave_hermetic_toolchain": true
+              },
+              "builder_group": "brave.linux",
+              "chromium_config": {
+                "build_config": "Release",
+                "host_platform": "linux",
+                "target_arch": "intel",
+                "target_bits": 64,
+                "target_platform": "linux"
+              },
+              "gclient_config": {
+                "custom_deps": {},
+                "custom_vars": {
+                  "checkout_pgo_profiles": true
+                },
+                "global_vars": {},
+                "target_cpu": [],
+                "target_os": []
+              }
+            }
+          }
+        ]
+      },
+      "builder_ids": [
+        {
+          "builder": "linux-x64-official"
+        }
+      ]
+    }
+  },
+  "builder_group": "brave.linux",
+  "recipe": "brave_builder"
+}

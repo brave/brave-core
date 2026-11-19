@@ -20,3 +20,12 @@ targets.tests.gtest_test(
 )
 targets.tests.gtest_test(name='brave_unit_tests')
 targets.tests.gtest_test(name='brave_updater_unittests')
+
+# Chromium's suites, which Brave builds also run.
+targets.tests.gtest_test(name='base_unittests')
+targets.tests.gtest_test(name='browser_tests')
+targets.tests.gtest_test(name='components_unittests')
+targets.tests.gtest_test(name='content_unittests')
+targets.tests.gtest_test(name='net_unittests')
+targets.tests.gtest_test(name='services_unittests')
+targets.tests.gtest_test(name='unit_tests')
