@@ -219,7 +219,7 @@ void AdBlockResourceObserver::OnResourcesLoaded(
   // The resource bundle is not available until after WebMainParts is setup
   auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
   std::string resource_string = "";
-  if (resource_bundle.IsGzipped(
+  if (resource_bundle.IsCompressed(
           IDR_COSMETIC_FILTERS_CONTENT_COSMETIC_IOS_BUNDLE_JS)) {
     resource_string = std::string(resource_bundle.LoadDataResourceString(
         IDR_COSMETIC_FILTERS_CONTENT_COSMETIC_IOS_BUNDLE_JS));

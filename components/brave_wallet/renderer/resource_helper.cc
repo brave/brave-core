@@ -11,7 +11,7 @@ namespace brave_wallet {
 
 std::string LoadDataResource(int id) {
   auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
-  if (resource_bundle.IsGzipped(id)) {
+  if (resource_bundle.IsCompressed(id)) {
     return resource_bundle.LoadDataResourceString(id);
   }
 

@@ -138,7 +138,7 @@ constexpr char kBtnQuitTextPropery[] = "btnQuitText";
 
 std::string LoadDataResource(const int id) {
   auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
-  if (resource_bundle.IsGzipped(id)) {
+  if (resource_bundle.IsCompressed(id)) {
     return resource_bundle.LoadDataResourceString(id);
   }
 
