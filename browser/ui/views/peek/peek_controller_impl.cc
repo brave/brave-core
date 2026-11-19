@@ -136,6 +136,12 @@ class PeekControllerImpl::Peek : public PeekContents::Delegate,
 
   void OnPeekNavigationStateChanged() override { view_->UpdateToolbar(); }
 
+  void OnPeekMoveToTabRequired() override { controller_->MoveToTab(*this); }
+
+  void OnPeekMoveToTabOrCloseRequested() override {
+    PostControllerTask(&PeekControllerImpl::MoveToTabOrClose);
+  }
+
   // PeekView::Delegate:
   void OnPeekViewCloseRequested() override {
     PostControllerTask(&PeekControllerImpl::ClosePeek);
@@ -387,6 +393,11 @@ content::WebContents* PeekControllerImpl::MoveToTab(Peek& peek) {
       source_index + 1, std::move(contents),
       activate ? AddTabTypes::ADD_ACTIVE | AddTabTypes::ADD_INHERIT_OPENER
                : AddTabTypes::ADD_NONE);
+  // A background tab stays inactive until the user switches to it, which
+  // updates it like any other tab.
+  if (activate) {
+    PeekContents::OnMovedToTab(*raw_contents);
+  }
   return raw_contents;
 }
 
@@ -415,6 +426,17 @@ void PeekControllerImpl::MoveToSplitView(Peek& peek) {
       {source_index, peek_index},
       split_tabs::SplitTabVisualData(split_tabs::SplitTabLayout::kSideBySide),
       split_tabs::SplitTabCreatedSource::kLinkClick);
+}
+
+void PeekControllerImpl::MoveToTabOrClose(Peek& peek) {
+  // E.g. a link that's a download: there's no page to keep.
+  content::NavigationEntry* entry =
+      peek.web_contents()->GetController().GetLastCommittedEntry();
+  if (!entry || entry->IsInitialEntry()) {
+    ClosePeek(peek);
+    return;
+  }
+  MoveToTab(peek);
 }
 
 gfx::Rect PeekControllerImpl::GetTargetBoundsInScreen() const {

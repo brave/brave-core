@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_deref.h"
 #include "base/feature_list.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/containers/buildflags/buildflags.h"
@@ -17,16 +18,22 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/tab_contents/tab_util.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "components/blocked_content/popup_blocker.h"
 #include "components/input/native_web_keyboard_event.h"
+#include "components/web_modal/web_contents_modal_dialog_manager.h"
+#include "content/public/browser/download_item_utils.h"
+#include "content/public/browser/file_select_listener.h"
 #include "content/public/browser/keyboard_event_processing_result.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/page_navigator.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/security_principal.h"
 #include "content/public/browser/site_instance.h"
 #include "content/public/browser/storage_partition_config.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/blink/public/common/input/web_input_event.h"
+#include "third_party/blink/public/mojom/frame/fullscreen.mojom.h"
 #include "ui/base/window_open_disposition.h"
 #include "ui/events/keycodes/keyboard_codes.h"
 #include "url/gurl.h"
@@ -38,10 +45,20 @@
 
 namespace {
 
+web_modal::WebContentsModalDialogManagerDelegate* GetModalDialogDelegate(
+    content::WebContents* web_contents) {
+  auto* manager =
+      web_modal::WebContentsModalDialogManager::FromWebContents(web_contents);
+  return manager ? manager->delegate() : nullptr;
+}
+
 // Tab features are only created for contents in a tab, but Peek needs these
-// before then: the favicon is shown in the card and visits are recorded in
+// before then: tab-modal dialogs and permission prompts are how Peek knows to
+// move into a tab, the favicon is shown in the card and visits are recorded in
 // history. Once the contents are in a tab, the tab features reuse them.
 void AttachHelpersFromTabFeatures(content::WebContents& web_contents) {
+  web_modal::WebContentsModalDialogManager::CreateForWebContents(&web_contents);
+  permissions::PermissionRequestManager::CreateForWebContents(&web_contents);
   favicon::CreateContentFaviconDriverForWebContents(&web_contents);
   if (!Profile::FromBrowserContext(web_contents.GetBrowserContext())
            ->IsOffTheRecord()) {
@@ -80,9 +97,30 @@ PeekContents::PeekContents(BrowserWindowInterface& browser,
   CHECK(web_contents_);
   AttachHelpersFromTabFeatures(*web_contents_);
   web_contents_->SetDelegate(this);
+
+  // Without a modal dialog delegate, tab-modal dialogs such as HTTP auth
+  // have nowhere to show.
+  CHECK_DEREF(web_modal::WebContentsModalDialogManager::FromWebContents(
+                  web_contents_.get()))
+      .SetDelegate(this);
+
+  // Prompts can't be shown while the "tab" is inactive. Trying to fails with
+  // `OnPromptCreationFailedHiddenTab()`, at which point Peek moves into a tab,
+  // where the prompt is attached to the tab and its omnibox.
+  if (auto* manager = permissions::PermissionRequestManager::FromWebContents(
+          web_contents_.get())) {
+    manager->OnTabActiveStateChanged(false);
+    permission_request_manager_observation_.Observe(manager);
+  }
+
+  if (auto* download_manager =
+          web_contents_->GetBrowserContext()->GetDownloadManager()) {
+    download_manager_observation_.Observe(download_manager);
+  }
 }
 
 PeekContents::~PeekContents() {
+  StopObserving();
   if (web_contents_) {
     web_contents_->SetDelegate(nullptr);
   }
@@ -112,7 +150,16 @@ std::unique_ptr<content::WebContents> PeekContents::CreateWebContents(
   return contents;
 }
 
+// static
+void PeekContents::OnMovedToTab(content::WebContents& contents) {
+  if (auto* manager =
+          permissions::PermissionRequestManager::FromWebContents(&contents)) {
+    manager->OnTabActiveStateChanged(true);
+  }
+}
+
 std::unique_ptr<content::WebContents> PeekContents::ReleaseWebContents() {
+  StopObserving();
   if (web_contents_) {
     web_contents_->SetDelegate(nullptr);
   }
@@ -125,6 +172,13 @@ content::WebContents* PeekContents::OpenURLFromTab(
     base::OnceCallback<void(content::NavigationHandle&)>
         navigation_handle_callback) {
   if (params.disposition != WindowOpenDisposition::kCurrentTab) {
+    // Chromium's popup blocker is a tab feature, so it doesn't run for Peek.
+    // As in `AddNewContents()`, a page can't open a tab or window without a
+    // user gesture.
+    if (params.is_renderer_initiated && !params.user_gesture &&
+        blocked_content::ConsiderForPopupBlocking(params.disposition)) {
+      return nullptr;
+    }
     return browser_->OpenURL(params, std::move(navigation_handle_callback));
   }
 
@@ -135,6 +189,33 @@ content::WebContents* PeekContents::OpenURLFromTab(
     std::move(navigation_handle_callback).Run(*handle);
   }
   return source;
+}
+
+content::WebContents* PeekContents::AddNewContents(
+    content::WebContents* source,
+    std::unique_ptr<content::WebContents> new_contents,
+    const GURL& target_url,
+    WindowOpenDisposition disposition,
+    const blink::mojom::WindowFeatures& window_features,
+    bool user_gesture,
+    bool* was_blocked) {
+  if (!user_gesture) {
+    if (was_blocked) {
+      *was_blocked = true;
+    }
+    return nullptr;
+  }
+
+  // The new window can script its opener, so the opener can't stay in Peek.
+  delegate_->OnPeekMoveToTabRequired();
+  // `this` is gone; `source` is now a tab with the browser as its delegate.
+  content::WebContentsDelegate* tab_delegate = source->GetDelegate();
+  if (!tab_delegate) {
+    return nullptr;
+  }
+  return tab_delegate->AddNewContents(source, std::move(new_contents),
+                                      target_url, disposition, window_features,
+                                      user_gesture, was_blocked);
 }
 
 void PeekContents::CloseContents(content::WebContents* source) {
@@ -164,4 +245,123 @@ content::KeyboardEventProcessingResult PeekContents::PreHandleKeyboardEvent(
     return content::KeyboardEventProcessingResult::HANDLED;
   }
   return content::KeyboardEventProcessingResult::NOT_HANDLED;
+}
+
+void PeekContents::RunFileChooser(
+    content::RenderFrameHost* render_frame_host,
+    scoped_refptr<content::FileSelectListener> listener,
+    const blink::mojom::FileChooserParams& params) {
+  // Which files to give the site is the user's trust decision, so it's made in
+  // a tab, like the permission prompts. The chooser that was asked for is
+  // cancelled rather than handed to the tab: the tab's own checks (visibility,
+  // active tab, window size) run after the move and would decide whether the
+  // user ever sees it. The user presses the file input again in the tab.
+  delegate_->OnPeekMoveToTabRequired();
+  // `this` is gone; `listener` is independent of it.
+  listener->FileSelectionCanceled();
+}
+
+void PeekContents::RequestMediaAccessPermission(
+    content::WebContents* web_contents,
+    const content::MediaStreamRequest& request,
+    content::MediaResponseCallback callback) {
+  delegate_->OnPeekMoveToTabRequired();
+  // `this` is gone; the tab's delegate shows the prompt.
+  if (content::WebContentsDelegate* tab_delegate =
+          web_contents->GetDelegate()) {
+    tab_delegate->RequestMediaAccessPermission(web_contents, request,
+                                               std::move(callback));
+  }
+}
+
+bool PeekContents::CheckMediaAccessPermission(
+    content::RenderFrameHost* render_frame_host,
+    const url::Origin& security_origin,
+    blink::mojom::MediaStreamType type) {
+  return false;
+}
+
+void PeekContents::EnterFullscreenModeForTab(
+    content::RenderFrameHost* requesting_frame,
+    const blink::mojom::FullscreenOptions& options) {
+  content::WebContents* contents =
+      content::WebContents::FromRenderFrameHost(requesting_frame);
+  delegate_->OnPeekMoveToTabRequired();
+  // `this` is gone.
+  if (content::WebContentsDelegate* tab_delegate = contents->GetDelegate()) {
+    tab_delegate->EnterFullscreenModeForTab(requesting_frame, options);
+  }
+}
+
+void PeekContents::RequestPointerLock(content::WebContents* web_contents,
+                                      bool user_gesture,
+                                      bool last_unlocked_by_target) {
+  delegate_->OnPeekMoveToTabRequired();
+  // `this` is gone.
+  if (content::WebContentsDelegate* tab_delegate =
+          web_contents->GetDelegate()) {
+    tab_delegate->RequestPointerLock(web_contents, user_gesture,
+                                     last_unlocked_by_target);
+  }
+}
+
+void PeekContents::RequestKeyboardLock(content::WebContents* web_contents,
+                                       bool esc_key_locked) {
+  delegate_->OnPeekMoveToTabRequired();
+  // `this` is gone.
+  if (content::WebContentsDelegate* tab_delegate =
+          web_contents->GetDelegate()) {
+    tab_delegate->RequestKeyboardLock(web_contents, esc_key_locked);
+  }
+}
+
+void PeekContents::SetWebContentsBlocked(content::WebContents* web_contents,
+                                         bool blocked) {
+  if (!blocked) {
+    return;
+  }
+  delegate_->OnPeekMoveToTabRequired();
+  // `this` is gone.
+  if (auto* tab_delegate = GetModalDialogDelegate(web_contents)) {
+    tab_delegate->SetWebContentsBlocked(web_contents, blocked);
+  }
+}
+
+web_modal::WebContentsModalDialogHost*
+PeekContents::GetWebContentsModalDialogHost(
+    content::WebContents* web_contents) {
+  delegate_->OnPeekMoveToTabRequired();
+  // `this` is gone; the dialog is shown over the tab instead.
+  auto* tab_delegate = GetModalDialogDelegate(web_contents);
+  return tab_delegate
+             ? tab_delegate->GetWebContentsModalDialogHost(web_contents)
+             : nullptr;
+}
+
+void PeekContents::OnPromptCreationFailedHiddenTab() {
+  delegate_->OnPeekMoveToTabOrCloseRequested();
+}
+
+void PeekContents::OnDownloadCreated(content::DownloadManager* manager,
+                                     download::DownloadItem* item) {
+  if (content::DownloadItemUtils::GetWebContents(item) == web_contents_.get()) {
+    delegate_->OnPeekMoveToTabOrCloseRequested();
+  }
+}
+
+void PeekContents::ManagerGoingDown(content::DownloadManager* manager) {
+  download_manager_observation_.Reset();
+}
+
+void PeekContents::StopObserving() {
+  permission_request_manager_observation_.Reset();
+  download_manager_observation_.Reset();
+  if (web_contents_) {
+    if (auto* manager =
+            web_modal::WebContentsModalDialogManager::FromWebContents(
+                web_contents_.get());
+        manager && manager->delegate() == this) {
+      manager->SetDelegate(nullptr);
+    }
+  }
 }

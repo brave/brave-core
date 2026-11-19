@@ -9,6 +9,11 @@
 #include <memory>
 
 #include "base/memory/raw_ref.h"
+#include "base/scoped_observation.h"
+#include "components/download/public/common/download_item.h"
+#include "components/permissions/permission_request_manager.h"
+#include "components/web_modal/web_contents_modal_dialog_manager_delegate.h"
+#include "content/public/browser/download_manager.h"
 #include "content/public/browser/web_contents_delegate.h"
 
 class BrowserWindowInterface;
@@ -16,13 +21,26 @@ class GURL;
 class Profile;
 
 // Owns the WebContents shown in Peek and acts as its delegate. Same-tab
-// navigations stay in Peek.
-class PeekContents : public content::WebContentsDelegate {
+// navigations stay in Peek. Anything that needs a tab, e.g. permission
+// prompts, file choosers, popups, fullscreen or tab-modal dialogs, moves the
+// contents into a tab first so the browser UI for it is attached to that tab.
+class PeekContents : public content::WebContentsDelegate,
+                     public web_modal::WebContentsModalDialogManagerDelegate,
+                     public permissions::PermissionRequestManager::Observer,
+                     public content::DownloadManager::Observer {
  public:
   class Delegate {
    public:
     virtual void OnPeekCloseRequested() = 0;
     virtual void OnPeekNavigationStateChanged() = 0;
+
+    // Moves the contents into a tab, synchronously. Destroys the
+    // PeekContents.
+    virtual void OnPeekMoveToTabRequired() = 0;
+
+    // Like `OnPeekMoveToTabRequired()`, but asynchronously. If nothing was
+    // ever shown in Peek, closes it instead.
+    virtual void OnPeekMoveToTabOrCloseRequested() = 0;
 
    protected:
     virtual ~Delegate() = default;
@@ -43,6 +61,9 @@ class PeekContents : public content::WebContentsDelegate {
       const GURL& url,
       content::WebContents& source);
 
+  // Restores what Peek restricted on `contents` once it's in a tab.
+  static void OnMovedToTab(content::WebContents& contents);
+
   content::WebContents* web_contents() { return web_contents_.get(); }
 
   // Hands over the contents, e.g. to the tab strip. The caller becomes
@@ -55,6 +76,14 @@ class PeekContents : public content::WebContentsDelegate {
       const content::OpenURLParams& params,
       base::OnceCallback<void(content::NavigationHandle&)>
           navigation_handle_callback) override;
+  content::WebContents* AddNewContents(
+      content::WebContents* source,
+      std::unique_ptr<content::WebContents> new_contents,
+      const GURL& target_url,
+      WindowOpenDisposition disposition,
+      const blink::mojom::WindowFeatures& window_features,
+      bool user_gesture,
+      bool* was_blocked) override;
   void CloseContents(content::WebContents* source) override;
   void NavigationStateChanged(content::WebContents* source,
                               content::InvalidateTypes changed_flags) override;
@@ -62,11 +91,52 @@ class PeekContents : public content::WebContentsDelegate {
   content::KeyboardEventProcessingResult PreHandleKeyboardEvent(
       content::WebContents* source,
       const input::NativeWebKeyboardEvent& event) override;
+  void RunFileChooser(content::RenderFrameHost* render_frame_host,
+                      scoped_refptr<content::FileSelectListener> listener,
+                      const blink::mojom::FileChooserParams& params) override;
+  void RequestMediaAccessPermission(
+      content::WebContents* web_contents,
+      const content::MediaStreamRequest& request,
+      content::MediaResponseCallback callback) override;
+  bool CheckMediaAccessPermission(content::RenderFrameHost* render_frame_host,
+                                  const url::Origin& security_origin,
+                                  blink::mojom::MediaStreamType type) override;
+  void EnterFullscreenModeForTab(
+      content::RenderFrameHost* requesting_frame,
+      const blink::mojom::FullscreenOptions& options) override;
+  void RequestPointerLock(content::WebContents* web_contents,
+                          bool user_gesture,
+                          bool last_unlocked_by_target) override;
+  void RequestKeyboardLock(content::WebContents* web_contents,
+                           bool esc_key_locked) override;
+
+  // web_modal::WebContentsModalDialogManagerDelegate:
+  void SetWebContentsBlocked(content::WebContents* web_contents,
+                             bool blocked) override;
+  web_modal::WebContentsModalDialogHost* GetWebContentsModalDialogHost(
+      content::WebContents* web_contents) override;
+
+  // permissions::PermissionRequestManager::Observer:
+  void OnPromptCreationFailedHiddenTab() override;
+
+  // content::DownloadManager::Observer:
+  void OnDownloadCreated(content::DownloadManager* manager,
+                         download::DownloadItem* item) override;
+  void ManagerGoingDown(content::DownloadManager* manager) override;
 
  private:
+  void StopObserving();
+
   std::unique_ptr<content::WebContents> web_contents_;
   const raw_ref<BrowserWindowInterface> browser_;
   const raw_ref<Delegate> delegate_;
+
+  base::ScopedObservation<permissions::PermissionRequestManager,
+                          permissions::PermissionRequestManager::Observer>
+      permission_request_manager_observation_{this};
+  base::ScopedObservation<content::DownloadManager,
+                          content::DownloadManager::Observer>
+      download_manager_observation_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_PEEK_PEEK_CONTENTS_H_

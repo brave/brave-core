@@ -10,6 +10,7 @@
 #include "base/callback_list.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/map_util.h"
+#include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/run_loop.h"
@@ -17,6 +18,7 @@
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/threading/thread_restrictions.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/peek/peek_features.h"
 #include "brave/browser/ui/peek/public/peek_controller.h"
@@ -25,6 +27,7 @@
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/app/chrome_command_ids.h"
+#include "chrome/browser/download/download_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
 #include "chrome/browser/ssl/chrome_security_state_util.h"
@@ -35,9 +38,11 @@
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/input/native_web_keyboard_event.h"
+#include "components/permissions/permission_request_manager.h"
 #include "components/prefs/pref_service.h"
 #include "components/security_interstitials/content/security_interstitial_tab_helper.h"
 #include "components/security_state/core/security_state.h"
@@ -46,6 +51,7 @@
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/context_menu_params.h"
+#include "content/public/browser/download_manager.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/render_frame_host.h"
@@ -59,6 +65,7 @@
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/download_test_observer.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "content/public/test/test_utils.h"
 #include "net/dns/mock_host_resolver.h"
@@ -81,6 +88,8 @@
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/gfx/geometry/vector2d.h"
+#include "ui/shell_dialogs/fake_select_file_dialog.h"
+#include "ui/shell_dialogs/select_file_dialog.h"
 #include "ui/views/controls/button/image_button.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/focus/focus_manager.h"
@@ -155,6 +164,11 @@ class PeekBrowserTest : public InProcessBrowserTest {
     // Peek only opens from http(s) pages.
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(),
                                              GetURL("a.com", "/title1.html")));
+  }
+
+  void TearDownOnMainThread() override {
+    ui::SelectFileDialog::SetFactory(nullptr);
+    InProcessBrowserTest::TearDownOnMainThread();
   }
 
  protected:
@@ -247,6 +261,21 @@ class PeekBrowserTest : public InProcessBrowserTest {
             content::GetCenterCoordinatesOfElementWithId(contents, "link")));
   }
 
+  // Adds a file input to `frame` and clicks it, with a user gesture. The page
+  // sets `window.fileInputCancelled` once the chooser is cancelled.
+  static void ClickFileInput(content::RenderFrameHost& frame) {
+    ASSERT_TRUE(content::ExecJs(&frame, R"(
+          window.fileInputCancelled = new Promise(resolve => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.addEventListener('cancel', () => resolve(true));
+            document.body.appendChild(input);
+            input.click();
+          });
+        )",
+                                content::EXECUTE_SCRIPT_NO_RESOLVE_PROMISES));
+  }
+
   std::unique_ptr<TestRenderViewContextMenu> CreateLinkContextMenu(
       content::WebContents* contents,
       const GURL& link_url) {
@@ -295,6 +324,19 @@ class PeekBrowserTest : public InProcessBrowserTest {
     EXPECT_EQ(std::string::npos, cookies.find("strict=1")) << cookies;
   }
 
+  // Saves downloads to a temp dir without prompting.
+  content::DownloadManager* SetUpDownloads() {
+    {
+      base::ScopedAllowBlockingForTesting allow_blocking;
+      CHECK(downloads_dir_.CreateUniqueTempDir());
+    }
+    Profile* profile = browser()->GetProfile();
+    profile->GetPrefs()->SetBoolean(prefs::kPromptForDownload, false);
+    DownloadPrefs::FromBrowserContext(profile)->SetDownloadPath(
+        downloads_dir_.GetPath());
+    return profile->GetDownloadManager();
+  }
+
   void SetSameSiteCookies(const GURL& url) {
     ASSERT_TRUE(content::SetCookie(browser()->GetProfile(), url,
                                    "strict=1; SameSite=Strict"));
@@ -303,6 +345,7 @@ class PeekBrowserTest : public InProcessBrowserTest {
   }
 
   net::EmbeddedTestServer https_server_;
+  base::ScopedTempDir downloads_dir_;
   base::test::ScopedFeatureList scoped_features_;
 
  private:
@@ -561,6 +604,36 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, ClosingSourceTabClosesHiddenPeek) {
   EXPECT_FALSE(controller()->IsShowing());
 }
 
+// A hidden Peek that needs a tab, e.g. for a permission prompt, becomes a
+// background tab, so its page can't take over the window from the tab the
+// user is on. The prompt waits until the user switches to it.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, HiddenPeekMovesToBackgroundTab) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server_.GetURL("a.test", "/title1.html")));
+  OpenPeek(https_server_.GetURL("b.test", "/title1.html"));
+  content::WebContents* contents = peek_contents();
+  auto* manager =
+      permissions::PermissionRequestManager::FromWebContents(contents);
+  ASSERT_TRUE(manager);
+  content::WebContents* other = AddTab();
+  ASSERT_EQ(other, active_contents());
+
+  ASSERT_TRUE(content::ExecJs(contents, "Notification.requestPermission();",
+                              content::EXECUTE_SCRIPT_NO_RESOLVE_PROMISES));
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return tab_strip_model()->GetIndexOfWebContents(contents) !=
+           TabStripModel::kNoTab;
+  }));
+  // Right after its source tab, in the background.
+  EXPECT_EQ(1, tab_strip_model()->GetIndexOfWebContents(contents));
+  EXPECT_EQ(other, active_contents());
+  EXPECT_FALSE(manager->GetCurrentPrompt());
+
+  tab_strip_model()->ActivateTabAt(1);
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return manager->GetCurrentPrompt(); }));
+}
+
 IN_PROC_BROWSER_TEST_F(PeekBrowserTest, OpeningAnotherPeekReplacesIt) {
   OpenPeek(GetURL("b.com", "/title1.html"));
   const GURL second_url = GetURL("c.com", "/title2.html");
@@ -713,6 +786,204 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, BlocksRedirectToExternalProtocol) {
   observer.Wait();
   EXPECT_FALSE(observer.last_navigation_succeeded());
   EXPECT_EQ(peek_url, contents->GetLastCommittedURL());
+}
+
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, PermissionRequestMovesToTab) {
+  OpenPeek(https_server_.GetURL("b.test", "/title1.html"));
+  content::WebContents* contents = peek_contents();
+  auto* manager =
+      permissions::PermissionRequestManager::FromWebContents(contents);
+  ASSERT_TRUE(manager);
+
+  ASSERT_TRUE(content::ExecJs(contents, "Notification.requestPermission();",
+                              content::EXECUTE_SCRIPT_NO_RESOLVE_PROMISES));
+  WaitForMovedToTab(contents);
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return manager->GetCurrentPrompt(); }));
+}
+
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, FullscreenMovesToTab) {
+  OpenPeek(GetURL("b.com", "/title1.html"));
+  content::WebContents* contents = peek_contents();
+
+  ASSERT_TRUE(content::ExecJs(contents, "document.body.requestFullscreen();",
+                              content::EXECUTE_SCRIPT_NO_RESOLVE_PROMISES));
+  WaitForMovedToTab(contents);
+}
+
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, PopupWithGestureMovesToTab) {
+  OpenPeek(GetURL("b.com", "/title1.html"));
+  content::WebContents* contents = peek_contents();
+  const int tab_count = tab_strip_model()->count();
+
+  const GURL popup_url = GetURL("b.com", "/title2.html");
+  content::TestNavigationObserver popup_observer(popup_url);
+  popup_observer.StartWatchingNewWebContents();
+  ASSERT_TRUE(content::ExecJs(
+      contents, content::JsReplace("window.open($1);", popup_url)));
+  popup_observer.Wait();
+
+  WaitForPeekClosed();
+  // Both the promoted Peek and the popup are now tabs.
+  EXPECT_EQ(tab_count + 2, tab_strip_model()->count());
+  EXPECT_NE(TabStripModel::kNoTab,
+            tab_strip_model()->GetIndexOfWebContents(contents));
+}
+
+// Chromium's popup blocker is a tab feature that Peek pages don't have, so
+// window.open() may still hand the page a window. PeekContents refuses to add
+// it anywhere, which closes it.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, PopupWithoutGestureIsBlocked) {
+  OpenPeek(GetURL("b.com", "/title1.html"));
+  content::WebContents* contents = peek_contents();
+  const int tab_count = tab_strip_model()->count();
+
+  std::unique_ptr<content::WebContentsDestroyedWatcher> popup_watcher;
+  base::CallbackListSubscription subscription =
+      content::RegisterWebContentsCreationCallback(
+          base::BindLambdaForTesting([&](content::WebContents* popup) {
+            popup_watcher =
+                std::make_unique<content::WebContentsDestroyedWatcher>(popup);
+          }));
+  ASSERT_TRUE(
+      content::ExecJs(contents,
+                      content::JsReplace("window.popup = window.open($1);",
+                                         GetURL("b.com", "/title2.html")),
+                      content::EXECUTE_SCRIPT_NO_USER_GESTURE));
+  if (popup_watcher) {
+    popup_watcher->Wait();
+  }
+  // The renderer only learns that the popup is gone after the browser destroys
+  // it, so wait for `closed` to flip instead of reading it once.
+  EXPECT_EQ(true, content::EvalJs(contents,
+                                  R"(new Promise((resolve) => {
+                                       const check = () => {
+                                         if (!window.popup ||
+                                             window.popup.closed) {
+                                           resolve(true);
+                                         } else {
+                                           setTimeout(check, 10);
+                                         }
+                                       };
+                                       check();
+                                     }))",
+                                  content::EXECUTE_SCRIPT_NO_USER_GESTURE));
+  EXPECT_TRUE(controller()->IsShowing());
+  EXPECT_EQ(contents, peek_contents());
+  EXPECT_EQ(tab_count, tab_strip_model()->count());
+}
+
+// The browser only runs the popup blocker for sources that have its tab
+// feature, so Peek blocks new tabs and windows without a gesture itself.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, NewTabWithoutGestureIsBlocked) {
+  OpenPeek(GetURL("b.com", "/title1.html"));
+  content::WebContents* contents = peek_contents();
+  const int tab_count = tab_strip_model()->count();
+
+  content::OpenURLParams params = LinkParamsFrom(
+      *contents->GetPrimaryMainFrame(), GetURL("c.com", "/title2.html"));
+  params.disposition = WindowOpenDisposition::kNewBackgroundTab;
+  params.user_gesture = false;
+  EXPECT_FALSE(contents->GetDelegate()->OpenURLFromTab(contents, params, {}));
+  EXPECT_EQ(tab_count, tab_strip_model()->count());
+
+  // With a gesture, e.g. a Ctrl+click, the link opens in a tab.
+  params.user_gesture = true;
+  EXPECT_TRUE(contents->GetDelegate()->OpenURLFromTab(contents, params, {}));
+  EXPECT_EQ(tab_count + 1, tab_strip_model()->count());
+  EXPECT_TRUE(controller()->IsShowing());
+}
+
+// Downloads are served over HTTPS so they aren't held back by insecure
+// download warnings.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, PeekedDownloadLinkClosesPeek) {
+  content::DownloadManager* download_manager = SetUpDownloads();
+  content::DownloadTestObserverTerminal download_observer(
+      download_manager, 1,
+      content::DownloadTestObserver::ON_DANGEROUS_DOWNLOAD_ACCEPT);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server_.GetURL("a.test", "/title1.html")));
+  const int tab_count = tab_strip_model()->count();
+
+  ASSERT_TRUE(controller()->Open(
+      *active_contents(),
+      LinkParams(https_server_.GetURL("b.test", "/downloads/a_zip_file.zip"))));
+
+  WaitForPeekClosed();
+  EXPECT_EQ(tab_count, tab_strip_model()->count());
+  download_observer.WaitForFinished();
+}
+
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, DownloadFromPeekedPageMovesToTab) {
+  content::DownloadManager* download_manager = SetUpDownloads();
+  content::DownloadTestObserverTerminal download_observer(
+      download_manager, 1,
+      content::DownloadTestObserver::ON_DANGEROUS_DOWNLOAD_ACCEPT);
+
+  OpenPeek(https_server_.GetURL("b.test", "/title1.html"));
+  content::WebContents* contents = peek_contents();
+  ASSERT_TRUE(content::ExecJs(contents, R"(
+        const a = document.createElement('a');
+        a.href = '/downloads/a_zip_file.zip';
+        a.download = '';
+        document.body.appendChild(a);
+        a.click();
+      )"));
+
+  WaitForMovedToTab(contents);
+  download_observer.WaitForFinished();
+}
+
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, HttpAuthMovesToTab) {
+  const GURL auth_url = GetURL("b.com", "/auth-basic");
+  ASSERT_TRUE(controller()->Open(*active_contents(), LinkParams(auth_url)));
+  content::WebContents* contents = peek_contents();
+  ASSERT_TRUE(contents);
+  WaitForMovedToTab(contents);
+}
+
+// Which files to give the site is decided in a tab, where the omnibox shows the
+// site. Peek moves there and cancels the chooser, so the page gets `cancel` and
+// the user presses the input again.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, FileChooserMovesToTabAndCancels) {
+  ui::FakeSelectFileDialog::Factory* factory =
+      ui::FakeSelectFileDialog::RegisterFactory();
+  OpenPeek(GetURL("b.com", "/title1.html"));
+  content::WebContents* contents = peek_contents();
+
+  ClickFileInput(*contents->GetPrimaryMainFrame());
+
+  WaitForMovedToTab(contents);
+  EXPECT_EQ(true, content::EvalJs(contents->GetPrimaryMainFrame(),
+                                  "window.fileInputCancelled"));
+  EXPECT_EQ(contents, active_contents());
+  EXPECT_FALSE(factory->GetLastDialog());
+}
+
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest,
+                       FileChooserInCrossSiteFrameMovesToTabAndCancels) {
+  ui::FakeSelectFileDialog::Factory* factory =
+      ui::FakeSelectFileDialog::RegisterFactory();
+  const GURL url = GetURL("b.com", "/title1.html");
+  OpenPeek(url);
+  content::WebContents* contents = peek_contents();
+  ASSERT_TRUE(content::ExecJs(
+      contents,
+      "const f = document.createElement('iframe'); f.id = 'frame';"
+      "document.body.appendChild(f);"));
+  const GURL frame_url = GetURL("c.com", "/title2.html");
+  ASSERT_TRUE(content::NavigateIframeToURL(contents, "frame", frame_url));
+  content::RenderFrameHost* frame =
+      content::ChildFrameAt(contents->GetPrimaryMainFrame(), 0);
+  ASSERT_TRUE(frame);
+  ASSERT_EQ(url::Origin::Create(frame_url), frame->GetLastCommittedOrigin());
+
+  ClickFileInput(*frame);
+
+  WaitForMovedToTab(contents);
+  EXPECT_EQ(true, content::EvalJs(frame, "window.fileInputCancelled"));
+  EXPECT_EQ(contents, active_contents());
+  EXPECT_FALSE(factory->GetLastDialog());
 }
 
 IN_PROC_BROWSER_TEST_F(PeekBrowserTest, HttpPageIsNotMarkedSecure) {
