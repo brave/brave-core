@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/ui/webui/version/version_ui.cc b/chrome/browser/ui/webui/version/version_ui.cc
+index 7a9234630b90fce67d4e9e51f03c786355141f9d..ca95ad2cb5235f345f48c291dad81f15644e1421 100644
+--- a/chrome/browser/ui/webui/version/version_ui.cc
++++ b/chrome/browser/ui/webui/version/version_ui.cc
+@@ -248,7 +248,7 @@ void VersionUI::AddVersionDetailStrings(content::WebUIDataSource* html_source) {
+ 
+   // Data strings.
+   html_source->AddString(version_ui::kVersion,
+-                         version_info::GetVersionNumber());
++                         version_info::GetBraveVersionNumberForDisplay());
+   html_source->AddString(version_ui::kVersionSuffix,
+                          GetVersionInformationalSuffix());
+ 
+@@ -340,7 +340,7 @@ void VersionUI::AddVersionDetailStrings(content::WebUIDataSource* html_source) {
+ std::u16string VersionUI::GetAnnotatedVersionStringForUi() {
+   return l10n_util::GetStringFUTF16(
+       IDS_SETTINGS_ABOUT_PAGE_BROWSER_VERSION,
+-      base::UTF8ToUTF16(version_info::GetVersionNumber()),
++      base::UTF8ToUTF16(version_info::GetBraveVersionNumberForDisplay()),
+       base::UTF8ToUTF16(GetVersionInformationalSuffix()),
+       l10n_util::GetStringUTF16(version_info::IsOfficialBuild()
+                                     ? IDS_VERSION_UI_OFFICIAL

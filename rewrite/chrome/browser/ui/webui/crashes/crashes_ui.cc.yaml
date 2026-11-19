@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Show Brave's version number on brave://crashes.
+
+      GetBraveVersionNumberForDisplay is declared in
+      brave/components/version_info/version_info.h, which the chromium_src
+      shadow includes. rename_class does not apply as this is a function in a
+      namespace, not a class.
+    regex:
+      pattern: version_info::GetVersionNumber
+      replace: version_info::GetBraveVersionNumberForDisplay

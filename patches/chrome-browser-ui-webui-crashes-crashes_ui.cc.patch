@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/webui/crashes/crashes_ui.cc b/chrome/browser/ui/webui/crashes/crashes_ui.cc
+index 95c5ea1100fb3fe06121adeae041647341d05126..ba331f621567b337d458c1c6e651441d0cc415f2 100644
+--- a/chrome/browser/ui/webui/crashes/crashes_ui.cc
++++ b/chrome/browser/ui/webui/crashes/crashes_ui.cc
+@@ -219,7 +219,7 @@ void CrashesDOMHandler::UpdateUI() {
+   result.Set("dynamicBackend", system_crash_reporter);
+   result.Set("manualUploads", allow_manual_uploads);
+   result.Set("crashes", std::move(crash_list));
+-  result.Set("version", version_info::GetVersionNumber());
++  result.Set("version", version_info::GetBraveVersionNumberForDisplay());
+   result.Set("os", base::SysInfo::OperatingSystemName() + " " +
+                        base::SysInfo::OperatingSystemVersion());
+   result.Set("isGoogleAccount", is_internal);
