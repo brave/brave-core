@@ -330,7 +330,7 @@ generated_file("generated_xcconfig") {
 
   # If absolute paths are stripped from debug symbols ensure that SPM/Xcode
   # also maps debug symbols the same way to allow proper debugging with LLDB
-  if (strip_absolute_paths_from_debug_symbols) {
+  if (enable_dsyms && strip_absolute_paths_from_debug_symbols) {
     ios_dir = rebase_path("//brave/ios/brave-ios")
     ios_dir_build_relative =
         rebase_path("//brave/ios/brave-ios", root_build_dir)
