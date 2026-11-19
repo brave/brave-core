@@ -123,6 +123,8 @@ class SidebarService : public KeyedService {
 
   void LoadSidebarItems();
   void UpdateSidebarItemsToPrefStore();
+  void LoadNotes();
+  void UpdateNotesToPrefStore();  
   std::vector<SidebarItem> GetDefaultSidebarItems() const;
   SidebarItem GetBuiltInItemForType(SidebarItem::BuiltInItemType type) const;
   std::vector<SidebarItem::BuiltInItemType> GetCurrentlyPresentBuiltInTypes()
