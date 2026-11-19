@@ -144,6 +144,21 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
         },
       },
       semanticHistorySearchPref_: Object,
+      // The values of `local_ai::OnDeviceSpeechModel`, and 0 for no model.
+      onDeviceSpeechModelOptions_: {
+        readOnly: true,
+        type: Array,
+        value: function () {
+          const options = [
+            { value: 0, name: loadTimeData.getString('onDeviceSpeechModelOff') },
+            {
+              value: 1,
+              name: loadTimeData.getString('onDeviceSpeechModelEnglish'),
+            },
+          ]
+          return options
+        },
+      },
       // </if>
       requestOTRActions_: {
         readOnly: true,
@@ -179,6 +194,7 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
   declare private isSemanticHistorySearchAvailable_: boolean
   declare private isOnDeviceSpeechModelAvailable_: boolean
   declare private semanticHistorySearchPref_: chrome.settingsPrivate.PrefObject<boolean>
+  declare private onDeviceSpeechModelOptions_: Object[]
   // </if>
   declare private requestOTRActions_: Object[]
   declare private requestOTRAction_: String

@@ -849,11 +849,17 @@
     Index pages you visit so you can find them easily in history, open tabs and Leo.
   </message>
   <!-- On-device speech recognition -->
-  <message name="IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_LABEL" desc="Label for the setting that downloads Brave's on-device speech recognition model, so that sites can process speech on this device">
+  <message name="IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_LABEL" desc="Label for the setting that selects Brave's on-device speech recognition model, so that sites can process speech on this device">
     On-device speech recognition
   </message>
-  <message name="IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_SUB_LABEL" desc="Description for the setting that downloads Brave's on-device speech recognition model. Turning the setting off removes the model.">
-    Download a speech recognition model (<ph name="DOWNLOAD_SIZE">$1<ex>636 MB</ex></ph>) so sites can process speech on this device. Turn this off to remove the model.
+  <message name="IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_SUB_LABEL" desc="Description for the setting that selects Brave's on-device speech recognition model. The size is the approximate download size of the model. Choosing Off removes the model.">
+    Download a speech recognition model (about 700 MB) so sites can process speech on this device. Choose "Off" to remove the model.
+  </message>
+  <message name="IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_OFF" desc="Option of the on-device speech recognition setting that removes the speech recognition model">
+    Off
+  </message>
+  <message name="IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_ENGLISH" desc="Option of the on-device speech recognition setting that downloads the model that recognizes only English speech">
+    English
   </message>
   <!-- History retention -->
   <message name="IDS_SETTINGS_HISTORY_RETENTION_LABEL" desc="Label for the setting that controls how long browsing history is retained">

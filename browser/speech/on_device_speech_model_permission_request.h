@@ -24,9 +24,9 @@ namespace speech {
 
 // Asks to download Brave's on-device speech recognition model. There is no
 // content setting to remember the answer in, because the model is shared by
-// every site, so this records it itself:
-//   - Allow sets `kOnDeviceSpeechEnglishModelEnabled`, which is what makes the
-//     component registrar register the model for download.
+// every site:
+//   - Allow answers true. The caller then enables the model, which is what
+//     makes the component registrar register the model for download.
 //   - Block, with "Don't ask again" checked, sets
 //     `kAskEnableOnDeviceSpeechModel` to false in the profile.
 //   - Dismissing saves nothing, the same as upstream permission prompts.
@@ -36,9 +36,8 @@ class OnDeviceSpeechModelPermissionRequest
   using ConsentCallback = base::OnceCallback<void(bool)>;
 
   // `callback` runs once, with the final decision: whether the user allowed
-  // the download. `local_state` and `profile_prefs` must outlive the request.
-  OnDeviceSpeechModelPermissionRequest(PrefService& local_state,
-                                       PrefService& profile_prefs,
+  // the download. `profile_prefs` must outlive the request.
+  OnDeviceSpeechModelPermissionRequest(PrefService& profile_prefs,
                                        const GURL& requesting_origin,
                                        ConsentCallback callback);
 
@@ -53,7 +52,6 @@ class OnDeviceSpeechModelPermissionRequest
       const permissions::PermissionRequestData& request_data);
 
   ConsentCallback callback_;
-  const raw_ref<PrefService> local_state_;
   const raw_ref<PrefService> profile_prefs_;
 };
 

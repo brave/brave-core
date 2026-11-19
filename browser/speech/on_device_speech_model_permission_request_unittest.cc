@@ -20,20 +20,13 @@ namespace speech {
 class OnDeviceSpeechModelPermissionRequestUnitTest : public testing::Test {
  public:
   void SetUp() override {
-    local_ai::prefs::RegisterLocalStatePrefs(local_state_.registry());
     local_ai::prefs::RegisterProfilePrefs(profile_prefs_.registry());
   }
 
  protected:
   std::unique_ptr<OnDeviceSpeechModelPermissionRequest> CreateRequest() {
     return std::make_unique<OnDeviceSpeechModelPermissionRequest>(
-        local_state_, profile_prefs_, GURL("https://example.com"),
-        allowed_.GetCallback());
-  }
-
-  bool IsEnabled() {
-    return local_state_.GetBoolean(
-        local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled);
+        profile_prefs_, GURL("https://example.com"), allowed_.GetCallback());
   }
 
   bool IsAskEnabled() {
@@ -41,19 +34,9 @@ class OnDeviceSpeechModelPermissionRequestUnitTest : public testing::Test {
         local_ai::prefs::kAskEnableOnDeviceSpeechModel);
   }
 
-  TestingPrefServiceSimple local_state_;
   TestingPrefServiceSimple profile_prefs_;
   base::test::TestFuture<bool> allowed_;
 };
-
-TEST_F(OnDeviceSpeechModelPermissionRequestUnitTest, AllowEnablesTheModel) {
-  auto request = CreateRequest();
-  request->PermissionGranted(std::monostate(), /*is_one_time=*/false);
-
-  ASSERT_TRUE(allowed_.IsReady());
-  EXPECT_TRUE(allowed_.Get());
-  EXPECT_TRUE(IsEnabled());
-}
 
 // "Don't ask again" is kept only on a block.
 TEST_F(OnDeviceSpeechModelPermissionRequestUnitTest, DenyWithDontAskAgain) {
@@ -63,7 +46,6 @@ TEST_F(OnDeviceSpeechModelPermissionRequestUnitTest, DenyWithDontAskAgain) {
 
   ASSERT_TRUE(allowed_.IsReady());
   EXPECT_FALSE(allowed_.Get());
-  EXPECT_FALSE(IsEnabled());
   EXPECT_FALSE(IsAskEnabled());
 }
 
@@ -72,9 +54,8 @@ TEST_F(OnDeviceSpeechModelPermissionRequestUnitTest, DenyWithDontAskAgain) {
 TEST_F(OnDeviceSpeechModelPermissionRequestUnitTest,
        DenyOfAJoinedRequestKeepsDontAskAgain) {
   auto shown = CreateRequest();
-  OnDeviceSpeechModelPermissionRequest joined(local_state_, profile_prefs_,
-                                              GURL("https://example.com"),
-                                              base::DoNothing());
+  OnDeviceSpeechModelPermissionRequest joined(
+      profile_prefs_, GURL("https://example.com"), base::DoNothing());
   shown->set_dont_ask_again(true);
   shown->PermissionDenied();
   joined.PermissionDenied();
@@ -90,7 +71,6 @@ TEST_F(OnDeviceSpeechModelPermissionRequestUnitTest,
 
   ASSERT_TRUE(allowed_.IsReady());
   EXPECT_FALSE(allowed_.Get());
-  EXPECT_FALSE(IsEnabled());
   EXPECT_TRUE(IsAskEnabled());
 }
 
@@ -102,7 +82,6 @@ TEST_F(OnDeviceSpeechModelPermissionRequestUnitTest, DismissSavesNothing) {
 
   ASSERT_TRUE(allowed_.IsReady());
   EXPECT_FALSE(allowed_.Get());
-  EXPECT_FALSE(IsEnabled());
   EXPECT_TRUE(IsAskEnabled());
 }
 

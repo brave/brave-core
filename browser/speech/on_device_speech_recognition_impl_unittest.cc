@@ -18,6 +18,7 @@
 #include "brave/components/local_ai/core/features.h"
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "brave/components/local_ai/core/pref_names.h"
+#include "brave/components/local_ai/core/utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -61,8 +62,7 @@ class BraveOnDeviceSpeechInstallPromptUnitTest
     soda_installer_.reset();
     local_ai::OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(
         local_ai::OnDeviceSpeechModel::kEnglish, base::FilePath());
-    local_state()->ClearPref(
-        local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled);
+    local_state()->ClearPref(local_ai::prefs::kOnDeviceSpeechModel);
     ChromeRenderViewHostTestHarness::TearDown();
   }
 
@@ -124,8 +124,8 @@ class BraveOnDeviceSpeechInstallPromptUnitTest
   int show_count() { return prompt_factory_->show_count(); }
 
   bool IsEnabled() {
-    return local_state()->GetBoolean(
-        local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled);
+    return local_ai::GetEnabledOnDeviceSpeechModel(local_state()) ==
+           local_ai::OnDeviceSpeechModel::kEnglish;
   }
 
   bool AsksAgain() {
@@ -155,8 +155,8 @@ TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest, DenyPromptsOnce) {
 }
 
 TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest, NoPromptWhenEnabled) {
-  local_state()->SetBoolean(local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled,
-                            true);
+  local_ai::EnableOnDeviceSpeechModel(*local_state(),
+                                      local_ai::OnDeviceSpeechModel::kEnglish);
   Install({"en-US"});
   EXPECT_EQ(0, show_count());
 }
@@ -193,8 +193,8 @@ TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest,
 // profile gets true.
 TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest,
        RefusedOutsideRegularProfilesWithTheModel) {
-  local_state()->SetBoolean(local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled,
-                            true);
+  local_ai::EnableOnDeviceSpeechModel(*local_state(),
+                                      local_ai::OnDeviceSpeechModel::kEnglish);
   local_ai::OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(
       local_ai::OnDeviceSpeechModel::kEnglish,
       base::FilePath(FILE_PATH_LITERAL("/brave/speech/models")));
