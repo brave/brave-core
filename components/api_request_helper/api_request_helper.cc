@@ -434,12 +434,8 @@ void APIRequestHelper::URLLoaderHandler::OnDataReceived(
       std::move(resume).Run();
       return;
     }
-    // The callback may cancel the request, deleting `this`.
-    base::WeakPtr<URLLoaderHandler> weak_this = GetWeakPtr();
+    // May delete `this` and the loader, after which `resume` does nothing.
     data_received_callback_.Run(base::Value(string_piece));
-    if (!weak_this) {
-      return;
-    }
   }
   // Get next chunk
   // TODO(petemill): Consider waiting until Parsing finishes to resume,
@@ -586,8 +582,8 @@ void APIRequestHelper::URLLoaderHandler::Abort(
       MakeAPIRequestResult(headers, error_code, std::move(url));
   // `headers` may be owned by the loader.
   url_loader_.reset();
-  // Deletes this handler, which drops any in-flight SSE parses.
-  std::move(result_callback_).Run(std::move(result));
+  sse_parser_.RunAfterPendingEvents(
+      base::BindOnce(std::move(result_callback_), std::move(result)));
 }
 
 void APIRequestHelper::URLLoaderHandler::OnParseErrorBody(
@@ -601,12 +597,7 @@ void APIRequestHelper::URLLoaderHandler::OnParseErrorBody(
 void APIRequestHelper::URLLoaderHandler::OnSSEValueReceived(
     ValueOrError result) {
   DCHECK(data_received_callback_);
-  // The callback may cancel the request, deleting `this`.
-  base::WeakPtr<URLLoaderHandler> weak_this = GetWeakPtr();
   data_received_callback_.Run(std::move(result));
-  if (!weak_this) {
-    return;
-  }
 }
 
 void APIRequestHelper::URLLoaderHandler::SendResult() {

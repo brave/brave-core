@@ -100,9 +100,8 @@ struct APIRequestOptions {
   bool enable_cache = false;
   // When exceeded, the request is aborted and the result has error code
   // `net::ERR_INSUFFICIENT_RESOURCES`. The result keeps the response's HTTP
-  // status, so check `error_code()` and not only `Is2XXResponseCode()`. For
-  // `RequestSSE()`, events received but whose JSON is still being parsed when
-  // the limit is crossed are not delivered. -1u means unbounded.
+  // status, so check `error_code()` and not only `Is2XXResponseCode()`. -1u
+  // means unbounded.
   size_t max_body_size = -1u;
   std::optional<base::TimeDelta> timeout;
   // A redirect to another origin, which would also receive any
@@ -202,7 +201,8 @@ class APIRequestHelper {
                     const network::mojom::URLResponseHead& response_head,
                     std::vector<std::string>* removed_headers);
 
-    // Cancels the request and sends a failed result. Deletes `this`.
+    // Cancels the request, then sends a failed result once the events already
+    // received are delivered.
     void Abort(int error_code,
                const net::HttpResponseHeaders* headers,
                GURL url);
