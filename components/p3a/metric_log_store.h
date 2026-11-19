@@ -89,7 +89,9 @@ class MetricLogStore : public metrics::LogStore {
   const std::string& staged_log_signature() const override;
   std::optional<uint64_t> staged_log_user_id() const override;
   void StageNextLog() override;
-  void DiscardStagedLogImpl(std::string_view reason) override;
+  void DiscardStagedLogImpl(
+      std::string_view reason,
+      std::optional<metrics::UnsentLogDropReason> drop_reason) override;
   void MarkStagedLogAsSent() override;
   const metrics::LogMetadata& staged_log_metadata() const override;
 

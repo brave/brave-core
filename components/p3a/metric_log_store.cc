@@ -262,7 +262,9 @@ void MetricLogStore::StageNextLog() {
   VLOG(2) << "MetricLogStore::StageNextLog: staged " << staged_entry_key_;
 }
 
-void MetricLogStore::DiscardStagedLogImpl(std::string_view reason) {
+void MetricLogStore::DiscardStagedLogImpl(
+    std::string_view reason,
+    std::optional<metrics::UnsentLogDropReason> drop_reason) {
   if (!has_staged_log()) {
     return;
   }
