@@ -24,9 +24,8 @@ chromium_src/base/test/launcher/test_results_tracker.cc):
 
 - Skipped tests are `<skipped/>`, GTEST_SKIP() ones included, not failures.
 - A failure's message is its first assertion with its location, fatal ones
-  first, or for a crash the CHECK, segfault, ASan report (with the
-  allocation site) or expectation found in its output, instead of
-  `[  FAILED  ] Case.Test`.
+  first, or for a crash the sanitiser report, CHECK, segfault or
+  expectation found in its output, instead of `[  FAILED  ] Case.Test`.
 - A failure's type is the gtest status (CRASH, TIMEOUT, ...), and a test the
   launcher lost (NOTRUN, UNKNOWN) is an `<error>`.
 - A failing test has one `<failure>`, not an empty one besides Brave's.
@@ -49,6 +48,8 @@ import enum
 from pathlib import Path
 import re
 from xml.etree import ElementTree
+
+import sanitizer_reports
 
 
 # The message of the error a run without a summary is reported as.
@@ -109,14 +110,6 @@ _LINUX_FUNCTION_RE = re.compile(rf'#\d 0x{_HEX} ({_FUNCTION_NAME})')
 _LINUX_ASAN_FUNCTION_RE = re.compile(rf'#\d 0x{_HEX} in ({_FUNCTION_NAME})')
 _WINDOWS_FUNCTION_RE = re.compile(rf'({_FUNCTION_NAME})\s+\[0x0x{_HEX}\+\d+\]')
 _MAC_FUNCTION_RE = re.compile(rf'\d.* 0x{_HEX} ({_FUNCTION_NAME})')
-
-_ASAN_STACK_FRAME_RE = re.compile(
-    rf'^\s*#\d+ 0x{_HEX} in (.*?)\(.*\).*?({_FILE_DOT_EXTENSION})'
-    rf'({_LINE_NUMBER})'
-)
-_ASAN_RE = re.compile(r'ERROR: AddressSanitizer: (\S+)(.*)\n')
-_ASAN_LOCATION_RE = re.compile(rf'({_FILE_DOT_EXTENSION})({_LINE_NUMBER})')
-_ASAN_ALLOCATED_RE = re.compile(r'previously allocated by thread .* here:\n')
 
 _GTEST_EXPECTATION_RE = re.compile(
     r'([a-zA-Z0-9_.]+\.[a-zA-Z0-9_]+):([0-9]+): Failure\n(.*?)Stack trace:',
@@ -216,39 +209,14 @@ def _segfault_message(snippet: str) -> str:
     return f'{function}: segfault' if function else ''
 
 
-def _asan_stack_frames(snippet: str) -> list[re.Match]:
-    """The first run of lines in `snippet` that are ASan stack frames."""
-    frames = []
+def _sanitizer_message(snippet: str) -> str:
+    """The headline of the first sanitiser report in `snippet`."""
+    parser = sanitizer_reports.ReportParser()
     for line in snippet.split('\n'):
-        if match := _ASAN_STACK_FRAME_RE.search(line):
-            frames.append(match)
-        elif frames:
-            break
-    return frames
-
-
-def _asan_allocated_location(snippet: str) -> str:
-    """The first frame of the stack in `snippet` that isn't `operator new`."""
-    for frame in _asan_stack_frames(snippet):
-        if frame[1] != 'operator new':
-            return f'{frame[2]}({_number(frame[3])})'
-    return ''
-
-
-def _asan_message(snippet: str) -> str:
-    match = _ASAN_RE.search(snippet)
-    if match is None:
-        return ''
-    location = 'Unknown'
-    if location_match := _ASAN_LOCATION_RE.search(snippet, match.end(1)):
-        location = f'{location_match[1]}({_number(location_match[2])})'
-    message = f'{location}: ASan {match[1]}'
-    if allocated := _ASAN_ALLOCATED_RE.search(snippet, match.start(2)):
-        if allocated_location := _asan_allocated_location(
-            snippet[allocated.end() :]
-        ):
-            message += f'\nAllocated: {allocated_location}'
-    return message
+        parser.process_line(line)
+    parser.finish()
+    reports = parser.result.reports
+    return reports[0].headline if reports else ''
 
 
 def _expectation_message(snippet: str) -> str:
@@ -268,9 +236,9 @@ def snippet_failure_message(snippet: str) -> str:
     """A failure message from the run's output, for a test that crashed
     before gtest could report its failures."""
     for extract in (
+        _sanitizer_message,
         _fatal_message,
         _segfault_message,
-        _asan_message,
         _expectation_message,
     ):
         if message := extract(snippet):
