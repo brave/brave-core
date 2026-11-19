@@ -1,0 +1,18 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+syntax = "proto3";
+
+package recipes.brave.isolates.run;
+
+message InputProperties {
+  // The tree's digest, as `<hash>/<size>`, from `isolates/archive`.
+  string digest = 1;
+
+  // The command the suite runs with, and the directory in the tree it runs
+  // in, both from `isolates/archive`.
+  repeated string command = 2;
+  string cwd = 3;
+}

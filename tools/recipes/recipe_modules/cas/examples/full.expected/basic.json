@@ -1,0 +1,94 @@
+[
+  {
+    "cmd": [],
+    "name": "archive foo_unittests"
+  },
+  {
+    "cmd": [
+      "git",
+      "clone",
+      "--depth",
+      "1",
+      "https://chromium.googlesource.com/chromium/tools/depot_tools",
+      "[WORKSPACE]/b/src/third_party/depot_tools"
+    ],
+    "name": "archive foo_unittests.clone depot_tools"
+  },
+  {
+    "cmd": [
+      "gclient"
+    ],
+    "name": "archive foo_unittests.verify gclient"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
+      "RECIPE_MODULE[cas]/resources/stage.py",
+      "--root",
+      "[WORKSPACE]/b/src",
+      "--cwd",
+      "[WORKSPACE]/b/src/out/Release",
+      "--stage",
+      "[WORKSPACE]/rc/cas_tmp_1",
+      "--paths-json",
+      "[\n  \"./foo_unittests\",\n  \"../../brave/test/data/\"\n]"
+    ],
+    "name": "archive foo_unittests.stage"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/cipd",
+      "ensure",
+      "-root",
+      "[WORKSPACE]/cipd/infra_rbe_client/re_client_version_0.187.0.ad10b508-gomaip",
+      "-ensure-file",
+      "infra/rbe/client/${platform} re_client_version:0.187.0.ad10b508-gomaip\n"
+    ],
+    "name": "archive foo_unittests.install infra/rbe/client/${platform}"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/cipd/infra_rbe_client/re_client_version_0.187.0.ad10b508-gomaip/remotetool",
+      "--service",
+      "rbe.example.com:443",
+      "--instance",
+      "default",
+      "--service_no_auth",
+      "--tls_client_auth_cert",
+      "/certs/client.crt",
+      "--tls_client_auth_key",
+      "/certs/client.key",
+      "--operation",
+      "upload_dir",
+      "--path",
+      "[WORKSPACE]/rc/cas_tmp_1",
+      "--json",
+      "/path/to/tmp/json"
+    ],
+    "name": "archive foo_unittests.upload"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/cipd/infra_rbe_client/re_client_version_0.187.0.ad10b508-gomaip/remotetool",
+      "--service",
+      "rbe.example.com:443",
+      "--instance",
+      "tests",
+      "--service_no_auth",
+      "--tls_client_auth_cert",
+      "/certs/client.crt",
+      "--tls_client_auth_key",
+      "/certs/client.key",
+      "--operation",
+      "download_dir",
+      "--digest",
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/498",
+      "--path",
+      "[WORKSPACE]/rc/tmp_tmp_1"
+    ],
+    "name": "download foo_unittests"
+  },
+  {
+    "name": "$result"
+  }
+]

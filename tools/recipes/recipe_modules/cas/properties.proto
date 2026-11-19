@@ -1,0 +1,24 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+syntax = "proto3";
+
+package recipe_modules.brave.cas;
+
+message InputProperties {
+  // The remote execution service whose CAS trees go to, with its port, e.g.
+  // `rbe.ba.brave.com:443`.
+  string service = 1;
+
+  // Its instance name; `default` when unset.
+  string instance = 2;
+}
+
+message EnvProperties {
+  // The mTLS client certificate and key the service authenticates with, as
+  // Siso reads them for a build.
+  string RBE_TLS_CLIENT_AUTH_CERT = 1;
+  string RBE_TLS_CLIENT_AUTH_KEY = 2;
+}
