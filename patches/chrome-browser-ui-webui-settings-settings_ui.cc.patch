@@ -1,0 +1,36 @@
+diff --git a/chrome/browser/ui/webui/settings/settings_ui.cc b/chrome/browser/ui/webui/settings/settings_ui.cc
+index 1437a643e275ba752f482464c3a24a2e83cd6026..af6e96739d979a725de476719c4f8d425969cf86 100644
+--- a/chrome/browser/ui/webui/settings/settings_ui.cc
++++ b/chrome/browser/ui/webui/settings/settings_ui.cc
+@@ -281,7 +281,7 @@ SettingsUI::SettingsUI(content::WebUI* web_ui)
+   AddSettingsPageUIHandler(std::make_unique<AccessibilityMainHandler>());
+   AddSettingsPageUIHandler(std::make_unique<BrowserLifetimeHandler>());
+   AddSettingsPageUIHandler(
+-      std::make_unique<ClearBrowsingDataHandler>(web_ui, profile));
++      std::make_unique<BraveClearBrowsingDataHandler>(web_ui, profile));
+   AddSettingsPageUIHandler(std::make_unique<SafetyHubHandler>(profile));
+   if (base::FeatureList::IsEnabled(syncer::kDeviceTabVisibilitySettings)) {
+     AddSettingsPageUIHandler(
+@@ -291,7 +291,7 @@ SettingsUI::SettingsUI(content::WebUI* web_ui)
+   AddSettingsPageUIHandler(std::make_unique<DownloadsHandler>(profile));
+   AddSettingsPageUIHandler(std::make_unique<ExtensionControlHandler>());
+   AddSettingsPageUIHandler(std::make_unique<FontHandler>(profile));
+-  AddSettingsPageUIHandler(std::make_unique<ImportDataHandler>());
++  AddSettingsPageUIHandler(std::make_unique<BraveImportDataHandler>());
+   AddSettingsPageUIHandler(std::make_unique<HatsHandler>());
+ 
+ #if BUILDFLAG(IS_WIN)
+@@ -311,11 +311,11 @@ SettingsUI::SettingsUI(content::WebUI* web_ui)
+   AddSettingsPageUIHandler(std::make_unique<PeopleHandler>(profile));
+   AddSettingsPageUIHandler(std::make_unique<ProfileInfoHandler>(profile));
+   AddSettingsPageUIHandler(std::make_unique<ProtocolHandlersHandler>(profile));
+-  AddSettingsPageUIHandler(std::make_unique<SearchEnginesHandler>(profile));
++  AddSettingsPageUIHandler(std::make_unique<BraveSearchEnginesHandler>( profile, regional_capabilities::RegionalCapabilitiesServiceFactory::GetForProfile( profile)));
+   AddSettingsPageUIHandler(
+       std::make_unique<OmniboxEverywhereSettingsHandler>());
+   AddSettingsPageUIHandler(std::make_unique<SecureDnsHandler>());
+-  AddSettingsPageUIHandler(std::make_unique<SiteSettingsHandler>(profile));
++  AddSettingsPageUIHandler(std::make_unique<BraveSiteSettingsHandler>(profile));
+   AddSettingsPageUIHandler(std::make_unique<StartupPagesHandler>(web_ui));
+   AddSettingsPageUIHandler(std::make_unique<SettingsTelemetryHandler>());
+   AddSettingsPageUIHandler(std::make_unique<SecurityKeysPINHandler>());

@@ -1,0 +1,40 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Use BraveClearBrowsingDataHandler.
+
+      Brave extends the clear browsing data handler with its own data types.
+    rename_class:
+      class_name: ClearBrowsingDataHandler
+      rename: BraveClearBrowsingDataHandler
+
+  - description: |-
+      Use BraveImportDataHandler.
+
+      Brave extends the import data handler with its own importers.
+    rename_class:
+      class_name: ImportDataHandler
+      rename: BraveImportDataHandler
+
+  - description: |-
+      Use BraveSiteSettingsHandler.
+
+      Brave extends the site settings handler with its own content settings.
+    rename_class:
+      class_name: SiteSettingsHandler
+      rename: BraveSiteSettingsHandler
+
+  - description: |-
+      Use BraveSearchEnginesHandler.
+
+      Brave's handler also needs the regional capabilities service.
+    regex:
+      pattern: 'std::make_unique<SearchEnginesHandler>(profile)'
+      replace: >-
+        std::make_unique<BraveSearchEnginesHandler>( profile,
+        regional_capabilities::RegionalCapabilitiesServiceFactory::GetForProfile(
+        profile))

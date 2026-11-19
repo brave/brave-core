@@ -19,17 +19,8 @@
 #define SecureDnsHandler BraveSecureDnsHandler
 #endif  // BUILDFLAG(IS_WIN) && BUILDFLAG(ENABLE_BRAVE_VPN)
 
-#define SiteSettingsHandler BraveSiteSettingsHandler
-#define ImportDataHandler BraveImportDataHandler
-#define SearchEnginesHandler BraveSearchEnginesHandler>(profile, regional_capabilities::RegionalCapabilitiesServiceFactory::GetForProfile(profile))); \
-  if (false) AddSettingsPageUIHandler(std::make_unique<SearchEnginesHandler
-
-#define ClearBrowsingDataHandler BraveClearBrowsingDataHandler
 #include <chrome/browser/ui/webui/settings/settings_ui.cc>
-#undef ClearBrowsingDataHandler
-#undef SearchEnginesHandler
-#undef ImportDataHandler
-#undef SiteSettingsHandler
+
 #if BUILDFLAG(IS_WIN) && BUILDFLAG(ENABLE_BRAVE_VPN)
 #undef SecureDnsHandler
 #endif  // BUILDFLAG(IS_WIN) && BUILDFLAG(ENABLE_BRAVE_VPN)
