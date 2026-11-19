@@ -155,6 +155,7 @@ import org.chromium.chrome.browser.informers.BraveSyncAccountDeletedInformer;
 import org.chromium.chrome.browser.layouts.LayoutType;
 import org.chromium.chrome.browser.lifetime.ApplicationLifetime;
 import org.chromium.chrome.browser.media.BraveYouTubePictureInPictureController;
+import org.chromium.chrome.browser.media.YouTubePictureInPictureHost;
 import org.chromium.chrome.browser.misc_metrics.MiscAndroidMetricsConnectionErrorHandler;
 import org.chromium.chrome.browser.misc_metrics.MiscAndroidMetricsFactory;
 import org.chromium.chrome.browser.multiwindow.BraveMultiWindowUtils;
@@ -277,7 +278,8 @@ public abstract class BraveActivity extends ChromeActivity
                 QuickSearchEnginesCallback,
                 KeyboardVisibilityHelper.KeyboardVisibilityListener,
                 OnSharedPreferenceChangeListener,
-                FirstPartyStorageCleanerInterface {
+                FirstPartyStorageCleanerInterface,
+                YouTubePictureInPictureHost {
     public static final String BRAVE_WALLET_HOST = "wallet";
     public static final String BRAVE_WALLET_ORIGIN = "brave://wallet/";
     public static final String BRAVE_WALLET_URL = "brave://wallet/crypto/portfolio/assets";
@@ -2511,6 +2513,7 @@ public abstract class BraveActivity extends ChromeActivity
     /**
      * @see BraveYouTubePictureInPictureController#onSessionRequested
      */
+    @Override
     public void onYouTubePictureInPictureRequested(final WebContents webContents) {
         getYouTubePictureInPictureController().onSessionRequested(webContents);
     }
@@ -2518,6 +2521,7 @@ public abstract class BraveActivity extends ChromeActivity
     /**
      * @see BraveYouTubePictureInPictureController#onSessionEnterFailed
      */
+    @Override
     public void onYouTubePictureInPictureEnterFailed() {
         getYouTubePictureInPictureController().onSessionEnterFailed();
     }
@@ -2525,6 +2529,7 @@ public abstract class BraveActivity extends ChromeActivity
     /**
      * @see BraveYouTubePictureInPictureController#isActive
      */
+    @Override
     public boolean isYouTubePictureInPictureActive() {
         return getYouTubePictureInPictureController().isActive();
     }
@@ -2532,6 +2537,7 @@ public abstract class BraveActivity extends ChromeActivity
     /**
      * @see BraveYouTubePictureInPictureController#onFullscreenInterrupted
      */
+    @Override
     public void onYouTubePictureInPictureFullscreenInterrupted() {
         getYouTubePictureInPictureController().onFullscreenInterrupted();
     }
@@ -2539,6 +2545,7 @@ public abstract class BraveActivity extends ChromeActivity
     /**
      * @see BraveYouTubePictureInPictureController#onNewTabDuringPictureInPicture
      */
+    @Override
     public void onYouTubePictureInPictureNewTab() {
         getYouTubePictureInPictureController().onNewTabDuringPictureInPicture();
     }

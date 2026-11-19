@@ -12,7 +12,6 @@ import android.graphics.Rect;
 import org.chromium.base.CommandLine;
 import org.chromium.base.Log;
 import org.chromium.build.annotations.Nullable;
-import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.youtube_script_injector.BraveYouTubeScriptInjectorNativeHelper;
 import org.chromium.content_public.browser.WebContents;
 
@@ -26,17 +25,17 @@ public class BraveFullscreenVideoPictureInPictureController {
     protected boolean mDismissPending;
 
     /**
-     * Tracks the Brave activity that owns the YouTube PiP session being attempted in
-     * attemptPictureInPicture, so we can notify it if entry fails.
+     * Tracks the host that owns the YouTube PiP session being attempted in attemptPictureInPicture,
+     * so we can notify it if entry fails.
      */
-    @Nullable private BraveActivity mPendingBraveActivityForPiP;
+    @Nullable private YouTubePictureInPictureHost mPendingHostForPiP;
 
     // Records a screen-lock stop so onResume() can keep the PiP window open.
     private boolean mStoppedForScreenLock;
 
     /**
      * Performs the YouTube PiP entry that upstream's attemptPictureInPicture delegates to once the
-     * PictureInPictureParams are built. Notifies the pending Brave activity that a session is being
+     * PictureInPictureParams are built. Notifies the pending host that a session is being
      * requested, asks the framework to enter PiP, and rolls that state back via {@link
      * #onYouTubePictureInPictureEnterFailed} when entry is refused or throws. {@code bounds} is
      * used only for the failure log.
@@ -65,7 +64,7 @@ public class BraveFullscreenVideoPictureInPictureController {
             // however the attempt resolves — success, refusal, a caught throw, or even an
             // exception escaping the rollback itself. (No lifetime concern either way: it
             // aliases the controller's own activity.)
-            mPendingBraveActivityForPiP = null;
+            mPendingHostForPiP = null;
         }
         return true;
     }
@@ -76,34 +75,33 @@ public class BraveFullscreenVideoPictureInPictureController {
      * Brave-managed YouTube PiP attempt) and notifies it that a session is being requested.
      */
     private void onYouTubePictureInPictureAttempt(Activity activity, WebContents webContents) {
-        mPendingBraveActivityForPiP =
-                resolveBraveActivityForYouTubePictureInPicture(activity, webContents);
-        if (mPendingBraveActivityForPiP != null) {
-            mPendingBraveActivityForPiP.onYouTubePictureInPictureRequested(webContents);
+        mPendingHostForPiP = resolveHostForYouTubePictureInPicture(activity, webContents);
+        if (mPendingHostForPiP != null) {
+            mPendingHostForPiP.onYouTubePictureInPictureRequested(webContents);
         }
     }
 
     /**
      * Called by {@link #braveAttemptPictureInPicture} when {@code enterPictureInPictureMode}
-     * returns false or throws, so the Brave activity can roll back any YouTube PiP session state
-     * set up in {@link #onYouTubePictureInPictureAttempt}. Does not clear the pending reference:
-     * the sole caller clears it unconditionally once the attempt resolves, keeping a single owner
-     * for that field's lifetime.
+     * returns false or throws, so the host can roll back any YouTube PiP session state set up in
+     * {@link #onYouTubePictureInPictureAttempt}. Does not clear the pending reference: the sole
+     * caller clears it unconditionally once the attempt resolves, keeping a single owner for that
+     * field's lifetime.
      */
     private void onYouTubePictureInPictureEnterFailed() {
-        if (mPendingBraveActivityForPiP != null) {
-            mPendingBraveActivityForPiP.onYouTubePictureInPictureEnterFailed();
+        if (mPendingHostForPiP != null) {
+            mPendingHostForPiP.onYouTubePictureInPictureEnterFailed();
         }
     }
 
-    private @Nullable BraveActivity resolveBraveActivityForYouTubePictureInPicture(
+    private @Nullable YouTubePictureInPictureHost resolveHostForYouTubePictureInPicture(
             Activity activity, WebContents webContents) {
-        if (!(activity instanceof BraveActivity braveActivity)
+        if (!(activity instanceof YouTubePictureInPictureHost host)
                 || !BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureAvailable(
                         webContents)) {
             return null;
         }
-        return braveActivity;
+        return host;
     }
 
     public static boolean shouldPreservePlaybackOnScreenLock() {
@@ -153,8 +151,8 @@ public class BraveFullscreenVideoPictureInPictureController {
             return false;
         }
 
-        return activity instanceof final BraveActivity braveActivity
-                && braveActivity.isYouTubePictureInPictureActive();
+        return activity instanceof final YouTubePictureInPictureHost host
+                && host.isYouTubePictureInPictureActive();
     }
 
     private boolean shouldKeepPictureInPictureAlive(
@@ -166,13 +164,13 @@ public class BraveFullscreenVideoPictureInPictureController {
         // Only act when an active YouTube PiP session managed by Brave is in flight. Without
         // this guard, we would swallow upstream's dismiss for unrelated PiP sessions whenever
         // the screen happens to be locked.
-        if (!(activity instanceof final BraveActivity braveActivity)
-                || !braveActivity.isYouTubePictureInPictureActive()) {
+        if (!(activity instanceof final YouTubePictureInPictureHost host)
+                || !host.isYouTubePictureInPictureActive()) {
             return false;
         }
 
         if (BraveYouTubePictureInPictureController.isScreenOffOrLocked()) {
-            braveActivity.onYouTubePictureInPictureFullscreenInterrupted();
+            host.onYouTubePictureInPictureFullscreenInterrupted();
             return true;
         }
 
@@ -195,13 +193,13 @@ public class BraveFullscreenVideoPictureInPictureController {
         // onPictureInPictureModeChanged when Android brings the activity to the foreground for
         // the new intent. Also drop Brave's persistent fullscreen UI synchronously so the new
         // tab is not rendered on a residual fullscreen layout.
-        if (!(activity instanceof final BraveActivity braveActivity)
-                || !braveActivity.isYouTubePictureInPictureActive()
+        if (!(activity instanceof final YouTubePictureInPictureHost host)
+                || !host.isYouTubePictureInPictureActive()
                 || !activity.isInPictureInPictureMode()) {
             return false;
         }
 
-        braveActivity.onYouTubePictureInPictureNewTab();
+        host.onYouTubePictureInPictureNewTab();
         return true;
     }
 }
