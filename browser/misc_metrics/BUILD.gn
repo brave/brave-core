@@ -211,6 +211,7 @@ source_set("unit_tests") {
     "//content/public/common",
     "//content/test:test_support",
     "//mojo/public/cpp/bindings",
+    "//net",
     "//services/media_session/public/mojom",
     "//testing/gtest",
   ]

@@ -6,6 +6,7 @@
 #include "base/byte_size.h"
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/run_loop.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/window_closing_confirm/window_closing_confirm_controller.h"
@@ -72,6 +73,8 @@ class WindowClosingConfirmBrowserTest : public InProcessBrowserTest,
 
   void TearDownOnMainThread() override {
     WindowClosingConfirmController::SuppressDialogForTesting(true);
+    WindowClosingConfirmDialogView::SetCreationCallbackForTesting(
+        base::NullCallback());
 
     InProcessBrowserTest::TearDownOnMainThread();
   }

@@ -26,6 +26,10 @@ class BraveAdsAdsUtilTest : public ::testing::Test {
     brave_rewards::RewardsFlags::SetForceParsingForTesting(true);
   }
 
+  void TearDown() override {
+    brave_rewards::RewardsFlags::SetForceParsingForTesting(false);
+  }
+
  protected:
   test::FakeLocale fake_locale_;
 

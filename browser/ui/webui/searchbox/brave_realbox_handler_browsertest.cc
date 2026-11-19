@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include <memory>
-#include <optional>
 #include <string>
 
 #include "base/test/bind.h"
@@ -42,7 +41,8 @@
 
 struct NewTabSourceTestParams {
   const std::string source;
-  const std::optional<base::test::FeatureRef> enabled_feature;
+  const bool search_v1_enabled;
+  const bool ai_chat_input_enabled;
 };
 
 class BraveRealboxHandlerTest : public InProcessBrowserTest {
@@ -95,9 +95,14 @@ class BraveRealboxHandlerSourceTest
       public testing::WithParamInterface<NewTabSourceTestParams> {
  public:
   BraveRealboxHandlerSourceTest() {
-    if (GetParam().enabled_feature) {
-      scoped_feature_list_.InitWithFeatures({*GetParam().enabled_feature}, {});
-    }
+    scoped_feature_list_.InitWithFeatureStates({
+        {brave_search::features::kSearchNewTabV1Source,
+         GetParam().search_v1_enabled},
+#if BUILDFLAG(ENABLE_AI_CHAT)
+        {ai_chat::features::kShowAIChatInputOnNewTabPage,
+         GetParam().ai_chat_input_enabled},
+#endif
+    });
   }
 
  protected:
@@ -126,16 +131,13 @@ IN_PROC_BROWSER_TEST_P(BraveRealboxHandlerSourceTest,
 INSTANTIATE_TEST_SUITE_P(
     ,
     BraveRealboxHandlerSourceTest,
-    testing::Values(
-        NewTabSourceTestParams{"newtab", std::nullopt},
-        NewTabSourceTestParams{"newtab_v1b",
-                               brave_search::features::kSearchNewTabV1Source}
+    testing::Values(NewTabSourceTestParams{"newtab", false, false},
+                    NewTabSourceTestParams{"newtab_v1b", true, false}
 #if BUILDFLAG(ENABLE_AI_CHAT)
-        ,
-        NewTabSourceTestParams{"newtab_v2b",
-                               ai_chat::features::kShowAIChatInputOnNewTabPage}
+                    ,
+                    NewTabSourceTestParams{"newtab_v2b", false, true}
 #endif
-        ));
+                    ));
 
 IN_PROC_BROWSER_TEST_F(BraveRealboxHandlerTest,
                        BraveSearchNoKeywordIsUnaffected) {

@@ -5,6 +5,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "base/strings/string_util.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_content_browser_client.h"
@@ -130,7 +131,7 @@ class SkusAPIBrowserTest : public PlatformBrowserTest {
     local_state_->SetDict(skus::prefs::kSkusState, std::move(state));
 
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
-    content::SetBrowserClientForTesting(&client_);
+    original_client_ = content::SetBrowserClientForTesting(&client_);
 
     https_server_.RegisterRequestHandler(base::BindRepeating(HandleRequest));
     https_server_.StartAcceptingConnections();
@@ -147,6 +148,11 @@ class SkusAPIBrowserTest : public PlatformBrowserTest {
             ",EXCLUDE localhost");
     PlatformBrowserTest::SetUpCommandLine(command_line);
     mock_cert_verifier_.SetUpCommandLine(command_line);
+  }
+
+  void TearDownOnMainThread() override {
+    content::SetBrowserClientForTesting(original_client_);
+    PlatformBrowserTest::TearDownOnMainThread();
   }
 
   void SetUpInProcessBrowserTestFixture() override {
@@ -172,6 +178,7 @@ class SkusAPIBrowserTest : public PlatformBrowserTest {
   content::ContentMockCertVerifier mock_cert_verifier_;
   base::test::ScopedFeatureList scoped_feature_list_{
       skus::features::kSkusFeature};
+  raw_ptr<content::ContentBrowserClient> original_client_ = nullptr;
 };
 
 IN_PROC_BROWSER_TEST_F(SkusAPIBrowserTest, FetchOrderCredentialsSuccess) {

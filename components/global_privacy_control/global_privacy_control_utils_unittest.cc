@@ -5,26 +5,25 @@
 
 #include "brave/components/global_privacy_control/global_privacy_control_utils.h"
 
+#include "base/values.h"
 #include "brave/components/global_privacy_control/pref_names.h"
-#include "chrome/test/base/testing_profile.h"
-#include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "content/public/test/browser_task_environment.h"
+#include "components/prefs/pref_registry_simple.h"
+#include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace global_privacy_control {
 
 class GlobalPrivacyControlUtilsTest : public testing::Test {
  public:
-  GlobalPrivacyControlUtilsTest() = default;
+  GlobalPrivacyControlUtilsTest() {
+    prefs_.registry()->RegisterBooleanPref(kGlobalPrivacyControlEnabled, true);
+  }
   ~GlobalPrivacyControlUtilsTest() override = default;
 
-  sync_preferences::TestingPrefServiceSyncable* GetPrefs() {
-    return profile_.GetTestingPrefService();
-  }
+  TestingPrefServiceSimple* GetPrefs() { return &prefs_; }
 
  private:
-  content::BrowserTaskEnvironment task_environment_;
-  TestingProfile profile_;
+  TestingPrefServiceSimple prefs_;
 };
 
 TEST_F(GlobalPrivacyControlUtilsTest,

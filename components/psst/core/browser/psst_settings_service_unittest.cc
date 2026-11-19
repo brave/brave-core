@@ -5,15 +5,23 @@
 
 #include "brave/components/psst/core/browser/psst_settings_service.h"
 
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "base/memory/scoped_refptr.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/browser/psst/psst_settings_service_factory.h"
+#include "base/test/task_environment.h"
+#include "base/values.h"
+#include "brave/components/psst/core/browser/pref_names.h"
 #include "brave/components/psst/core/common/features.h"
 #include "brave/components/psst/core/common/psst_metadata_schema.h"
-#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
-#include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
-#include "content/public/test/browser_task_environment.h"
+#include "components/content_settings/core/common/content_settings_types.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
+#include "url/origin.h"
 
 namespace {
 
@@ -53,22 +61,31 @@ namespace psst {
 class PsstSettingsServiceUnitTest : public testing::Test {
  public:
   void SetUp() override {
-    map_ = HostContentSettingsMapFactory::GetForProfile(&profile_);
-    ASSERT_TRUE(map_);
+    HostContentSettingsMap::RegisterProfilePrefs(prefs_.registry());
+    psst::RegisterProfilePrefs(prefs_.registry());
+    map_ = base::MakeRefCounted<HostContentSettingsMap>(
+        &prefs_, /*is_off_the_record=*/false, /*store_last_modified=*/false,
+        /*restore_session=*/false, /*should_record_metrics=*/false);
     psst_settings_service_ =
-        PsstSettingsServiceFactory::GetForProfile(&profile_);
-    ASSERT_TRUE(psst_settings_service_);
+        std::make_unique<PsstSettingsService>(*map_, &prefs_);
+  }
+
+  void TearDown() override {
+    psst_settings_service_.reset();
+    map_->ShutdownOnUIThread();
   }
 
   HostContentSettingsMap* map() { return map_.get(); }
-  PsstSettingsService* settings_service() { return psst_settings_service_; }
+  PsstSettingsService* settings_service() {
+    return psst_settings_service_.get();
+  }
 
  private:
   base::test::ScopedFeatureList feature_list_{psst::features::kEnablePsst};
-  content::BrowserTaskEnvironment task_environment_;
-  TestingProfile profile_;
+  base::test::TaskEnvironment task_environment_;
+  sync_preferences::TestingPrefServiceSyncable prefs_;
   scoped_refptr<HostContentSettingsMap> map_;
-  raw_ptr<PsstSettingsService> psst_settings_service_;
+  std::unique_ptr<PsstSettingsService> psst_settings_service_;
 };
 
 TEST_F(PsstSettingsServiceUnitTest, DontAllowToSaveMetadataForWrongSchema) {

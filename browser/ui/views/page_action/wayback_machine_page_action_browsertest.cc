@@ -61,7 +61,17 @@ constexpr char kSnapshotURL[] =
 }  // namespace
 
 class WaybackMachinePageActionBrowserTest : public InProcessBrowserTest {
+ public:
+  WaybackMachinePageActionBrowserTest()
+      : WaybackMachinePageActionBrowserTest(/*auto_show_bubble=*/false) {}
+
  protected:
+  explicit WaybackMachinePageActionBrowserTest(bool auto_show_bubble) {
+    feature_list_.InitWithFeatureState(
+        brave_wayback_machine::features::kWaybackMachineAutoShowBubble,
+        auto_show_bubble);
+  }
+
   BraveWaybackMachineTabHelper* GetTabHelper() {
     return BraveWaybackMachineTabHelper::From(
         tabs::TabInterface::MaybeGetFromContents(
@@ -173,6 +183,9 @@ class WaybackMachinePageActionBrowserTest : public InProcessBrowserTest {
     EXPECT_FALSE(bubble->GetExtraView()->GetVisible());
     ExpectLoading(bubble, false);
   }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(WaybackMachinePageActionBrowserTest, BubbleLaunchTest) {
@@ -456,10 +469,8 @@ IN_PROC_BROWSER_TEST_F(WaybackMachinePageActionBrowserTest,
 class WaybackMachineAutoShowBubbleBrowserTest
     : public WaybackMachinePageActionBrowserTest {
  public:
-  WaybackMachineAutoShowBubbleBrowserTest() {
-    feature_list_.InitAndEnableFeature(
-        brave_wayback_machine::features::kWaybackMachineAutoShowBubble);
-  }
+  WaybackMachineAutoShowBubbleBrowserTest()
+      : WaybackMachinePageActionBrowserTest(/*auto_show_bubble=*/true) {}
 
  protected:
   void CloseBubble() {
@@ -472,9 +483,6 @@ class WaybackMachineAutoShowBubbleBrowserTest
     waiter.Wait();
     EXPECT_EQ(GetBubbleView(), nullptr);
   }
-
- private:
-  base::test::ScopedFeatureList feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(WaybackMachineAutoShowBubbleBrowserTest,

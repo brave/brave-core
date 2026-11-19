@@ -9,6 +9,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/ad_block_browser_test_helper.h"
@@ -36,7 +37,13 @@ using content::WebContents;
 class EphemeralStorage1pDomainBlockBrowserTest
     : public EphemeralStorageBrowserTest {
  public:
-  EphemeralStorage1pDomainBlockBrowserTest() = default;
+  EphemeralStorage1pDomainBlockBrowserTest() {
+    scoped_feature_list_.InitWithFeatures(
+        {brave_shields::features::kBraveDomainBlock,
+         brave_shields::features::kBraveDomainBlock1PES,
+         net::features::kBraveFirstPartyEphemeralStorage},
+        {});
+  }
   ~EphemeralStorage1pDomainBlockBrowserTest() override = default;
 
   void SetUpInProcessBrowserTestFixture() override {
@@ -178,6 +185,7 @@ class EphemeralStorage1pDomainBlockBrowserTest
   }
 
  protected:
+  base::test::ScopedFeatureList scoped_feature_list_;
   std::unique_ptr<brave_shields::AdBlockBrowserTestHelper> helper_;
   std::unique_ptr<brave_shields::TestFiltersProvider> source_provider_;
   GURL a_site_simple_url_;

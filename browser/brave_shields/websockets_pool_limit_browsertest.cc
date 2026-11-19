@@ -96,8 +96,10 @@ constexpr char kWsCloseInSwScript[] = R"(
 class WebSocketsPoolLimitBrowserTest : public InProcessBrowserTest {
  public:
   WebSocketsPoolLimitBrowserTest() {
-    scoped_feature_list_.InitAndEnableFeature(
-        webcompat::features::kBraveWebcompatExceptionsService);
+    scoped_feature_list_.InitWithFeatures(
+        {webcompat::features::kBraveWebcompatExceptionsService,
+         blink::features::kRestrictWebSocketsPool},
+        {});
   }
 
   void SetUpOnMainThread() override {

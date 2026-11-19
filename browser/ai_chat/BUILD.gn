@@ -326,7 +326,6 @@ if (enable_brave_ai_chat_agent_profile) {
 source_set("unit_tests") {
   testonly = true
   sources = [
-    "ai_chat_throttle_unittest.cc",
     "brave_open_ai_chat_permission_context_unittest.cc",
     "tools/attach_workspace_tool_unittest.cc",
   ]

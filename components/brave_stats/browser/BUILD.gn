@@ -22,3 +22,16 @@ static_library("browser") {
     "//components/prefs",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "brave_stats_updater_util_unittest.cc" ]
+
+  deps = [
+    ":browser",
+    "//base",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}

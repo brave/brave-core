@@ -10,9 +10,9 @@
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
-#include "chrome/test/base/testing_profile.h"
 #include "components/download/public/common/download_task_runner.h"
 #include "content/public/test/browser_task_environment.h"
+#include "content/public/test/test_browser_context.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
@@ -70,7 +70,7 @@ class PlaylistMediaFileDownloaderTest : public testing::Test {
  protected:
   content::BrowserTaskEnvironment task_environment_{
       content::BrowserTaskEnvironment::IO_MAINLOOP};
-  TestingProfile profile_;
+  content::TestBrowserContext profile_;
   testing::NiceMock<MockMediaFileDownloaderDelegate> delegate_;
   std::unique_ptr<PlaylistMediaFileDownloader> downloader_;
   net::EmbeddedTestServer server_{net::EmbeddedTestServer::TYPE_HTTP};

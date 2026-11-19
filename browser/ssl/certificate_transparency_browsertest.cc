@@ -11,6 +11,8 @@
 //   Use of this source code is governed by a BSD-style license that can be
 //   found in the LICENSE file.
 
+#include <optional>
+
 #include "base/memory/scoped_refptr.h"
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/browser/ssl/ssl_browsertest_util.h"
@@ -38,7 +40,10 @@ class CertificateTransparencyBrowserTest : public InProcessBrowserTest {
   CertificateTransparencyBrowserTest& operator=(
       const CertificateTransparencyBrowserTest&) = delete;
 
-  ~CertificateTransparencyBrowserTest() override {}
+  ~CertificateTransparencyBrowserTest() override {
+    SystemNetworkContextManager::SetEnableCertificateTransparencyForTesting(
+        std::nullopt);
+  }
 
   void SetUpOnMainThread() override {
     host_resolver()->AddRule("*", "127.0.0.1");

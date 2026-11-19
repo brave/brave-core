@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "base/test/scoped_feature_list.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/common/features.h"
 #include "chrome/test/base/testing_profile.h"
@@ -18,15 +19,14 @@ namespace containers {
 
 class PermissionUtilContainersTest : public testing::Test {
  public:
-  PermissionUtilContainersTest() {
-    scoped_feature_list_.InitAndEnableFeature(features::kContainers);
-  }
+  PermissionUtilContainersTest() = default;
   ~PermissionUtilContainersTest() override = default;
 
  protected:
+  // Declared first so kContainers is pinned before profile_ builds services.
+  base::test::ScopedFeatureList scoped_feature_list_{features::kContainers};
   content::BrowserTaskEnvironment task_environment_;
   TestingProfile profile_;
-  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 TEST_F(PermissionUtilContainersTest,

@@ -41,6 +41,11 @@ class BraveWhatsNewTest : public testing::Test {
     ChromeVersionService::SetVersion(profile_->GetPrefs(), "112.1.50.4");
   }
 
+  void TearDown() override {
+    // Clear the file-static version override set by tests.
+    SetCurrentVersionForTesting(0);
+  }
+
   void PrepareValidFieldTrialParams() {
     std::map<std::string, std::string> params;
     params[GetTargetMajorVersionParamName()] = "1.51";

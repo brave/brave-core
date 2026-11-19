@@ -15,3 +15,17 @@ static_library("global_privacy_control") {
     "//components/prefs",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "global_privacy_control_utils_unittest.cc" ]
+
+  deps = [
+    ":global_privacy_control",
+    "//base",
+    "//components/prefs",
+    "//components/prefs:test_support",
+    "//testing/gtest",
+  ]
+}

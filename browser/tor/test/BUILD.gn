@@ -13,10 +13,7 @@ assert(enable_tor)
 source_set("unit_tests") {
   testonly = true
 
-  sources = [
-    "tor_navigation_throttle_unittest.cc",
-    "tor_profile_manager_unittest.cc",
-  ]
+  sources = [ "tor_profile_manager_unittest.cc" ]
 
   deps = [
     "//base",
@@ -24,7 +21,6 @@ source_set("unit_tests") {
     "//brave/browser/tor",
     "//brave/components/constants",
     "//brave/components/tor",
-    "//brave/components/tor:test_support",
     "//chrome/browser/devtools",
     "//chrome/common",
     "//chrome/test:test_support",

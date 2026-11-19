@@ -8,9 +8,11 @@
 #include <memory>
 #include <utility>
 
+#include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/mock_browser_window_interface_with_vertical_tab_controller.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/tabs/fake_base_tab_strip_controller.h"
 #include "chrome/browser/ui/views/tabs/fake_tab_slot_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_group_header.h"
@@ -45,6 +47,11 @@ class MockTabSlotController : public FakeTabSlotController {
 
 class BraveTabGroupHeaderTest : public ChromeViewsTestBase {
  public:
+  BraveTabGroupHeaderTest() {
+    // Brave vertical tabs are unsupported when kTabStripUnification is on.
+    feature_list_.InitAndDisableFeature(tabs::kTabStripUnification);
+  }
+
   void SetUp() override {
     ChromeViewsTestBase::SetUp();
 
@@ -89,6 +96,7 @@ class BraveTabGroupHeaderTest : public ChromeViewsTestBase {
     return group_views_->header()->title_chip_for_testing();
   }
 
+  base::test::ScopedFeatureList feature_list_;
   std::unique_ptr<views::Widget> widget_;
   raw_ptr<views::View> tab_container_;
   raw_ptr<views::View> drag_context_;

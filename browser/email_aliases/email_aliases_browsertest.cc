@@ -156,6 +156,7 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
 
   ~EmailAliasesBrowserTestBase() override {
     BraveSettingsUI::ShouldExposeElementsForTesting() = false;
+    EmailAliasesController::DisableAutoCloseBubbleForTesting(false);
   }
 
   void SetUpBrowserContextKeyedServices(

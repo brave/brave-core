@@ -11,9 +11,9 @@
 #include "base/run_loop.h"
 #include "base/test/mock_callback.h"
 #include "base/values.h"
-#include "brave/browser/playlist/test/playlist_unittest_base.h"
 #include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
 #include "brave/components/playlist/core/common/playlist_render_frame_observer_helper.h"
+#include "content/public/test/test_renderer_host.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -35,7 +35,7 @@ auto GetPlaylistItems() {
 }  // namespace
 
 template <typename>
-class PlaylistMediaHandlerTest : public PlaylistUnitTestBase {};
+class PlaylistMediaHandlerTest : public content::RenderViewHostTestHarness {};
 
 using CallbackTypes = testing::Types<PlaylistMediaHandler::OnceCallback,
                                      PlaylistMediaHandler::RepeatingCallback>;
