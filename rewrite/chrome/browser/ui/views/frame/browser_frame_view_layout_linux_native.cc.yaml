@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Keep the GTK headerbar off windows that show Brave's vertical tabs
+
+      Upstream uses the headerbar layout whenever IsTabStripVisible() is false,
+      intending it for popup and app windows. With our vertical tabs,
+      IsTabStripVisible() is also false in tabbed windows that show the title,
+      which would give them a headerbar-height title bar.
+    preempt_function_impl:
+      function_name: BrowserFrameViewLayoutLinuxNative::ShouldUseNativeHeaderBar
+      return_if: delegate_->ShouldShowBraveVerticalTabs()
+      return_value: 'false'
