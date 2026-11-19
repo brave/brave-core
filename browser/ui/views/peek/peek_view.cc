@@ -10,7 +10,9 @@
 
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
+#include "base/numerics/safe_conversions.h"
 #include "base/time/time.h"
+#include "brave/browser/ui/peek/peek_prefs.h"
 #include "brave/browser/ui/views/peek/peek_shields_button.h"
 #include "brave/browser/ui/views/view_shadow.h"
 #include "brave/components/vector_icons/vector_icons.h"
@@ -26,6 +28,7 @@
 #include "chrome/grit/generated_resources.h"
 #include "components/favicon/content/content_favicon_driver.h"
 #include "components/omnibox/browser/location_bar_model_util.h"
+#include "components/prefs/pref_service.h"
 #include "components/security_state/core/security_state.h"
 #include "components/url_formatter/elide_url.h"
 #include "content/public/browser/navigation_controller.h"
@@ -33,6 +36,8 @@
 #include "content/public/browser/web_contents.h"
 #include "ui/accessibility/ax_enums.mojom.h"
 #include "ui/base/accelerators/accelerator.h"
+#include "ui/base/cursor/cursor.h"
+#include "ui/base/cursor/mojom/cursor_type.mojom-shared.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/image_model.h"
@@ -76,6 +81,12 @@ constexpr int kMinCardInset = 24;
 // hanging from it rather than something drawn by the page.
 constexpr float kCardInsetRatio = 0.075f;
 constexpr float kOpenInitialScale = 0.9f;
+// Smallest size the user can resize the card to, if the covered area fits it.
+constexpr int kMinCardWidth = 400;
+constexpr int kMinCardHeight = 300;
+// Width of the resize handles just outside the card's edges. Less than
+// `kMinCardInset`, so a handle never covers the whole backdrop margin.
+constexpr int kResizeHandleThickness = 8;
 constexpr base::TimeDelta kOpenDuration = base::Milliseconds(200);
 
 constexpr int kCardShadowOffsetY = 4;
@@ -135,6 +146,15 @@ PeekView::PeekView(Delegate& delegate, BrowserWindowInterface& browser)
   GetViewAccessibility().SetName(
       l10n_util::GetStringUTF16(IDS_PEEK_ACCESSIBLE_NAME));
   AddAccelerator(ui::Accelerator(ui::VKEY_ESCAPE, ui::EF_NONE));
+
+  pref_change_registrar_.Init(browser.GetProfile()->GetPrefs());
+  for (const char* pref :
+       {peek::prefs::kCardWidthRatio, peek::prefs::kCardHeightRatio}) {
+    pref_change_registrar_.Add(
+        pref,
+        base::BindRepeating([](PeekView* view) { view->InvalidateLayout(); },
+                            base::Unretained(this)));
+  }
 
   card_ = AddChildView(std::make_unique<views::View>());
   card_->SetProperty(views::kElementIdentifierKey, kCardElementId);
@@ -331,11 +351,70 @@ void PeekView::Layout(PassKey) {
       open_animation_.GetCurrentValue(), initial_bounds, card_bounds));
 }
 
+ui::Cursor PeekView::GetCursor(const ui::MouseEvent& event) {
+  const ResizeEdges edges =
+      resize_ ? resize_->edges : GetResizeEdgesAt(event.location());
+  if (edges.bottom && edges.left) {
+    return ui::mojom::CursorType::kSouthWestResize;
+  }
+  if (edges.bottom && edges.right) {
+    return ui::mojom::CursorType::kSouthEastResize;
+  }
+  if (edges.bottom) {
+    return ui::mojom::CursorType::kSouthResize;
+  }
+  if (edges.left || edges.right) {
+    return ui::mojom::CursorType::kEastWestResize;
+  }
+  return views::View::GetCursor(event);
+}
+
 bool PeekView::OnMousePressed(const ui::MouseEvent& event) {
+  if (const ResizeEdges edges = GetResizeEdgesAt(event.location());
+      edges.any() && event.IsOnlyLeftMouseButton()) {
+    // Resize from the full size, not a size the open animation is passing.
+    open_animation_.Reset(1);
+    const gfx::Size size = GetCardSize(GetLocalBounds());
+    resize_ = Resize{.edges = edges,
+                     .start_point = event.location(),
+                     .start_size = size,
+                     .size = size};
+    InvalidateLayout();
+    return true;
+  }
   if (!card_->bounds().Contains(event.location())) {
     delegate_->OnPeekViewCloseRequested();
   }
   return true;
+}
+
+bool PeekView::OnMouseDragged(const ui::MouseEvent& event) {
+  if (!resize_) {
+    return false;
+  }
+  const gfx::Vector2d delta = event.location() - resize_->start_point;
+  gfx::Size size = resize_->start_size;
+  // The card stays centered, so each side moves by the drag and the width
+  // changes by twice that.
+  if (resize_->edges.left) {
+    size.Enlarge(-2 * delta.x(), 0);
+  } else if (resize_->edges.right) {
+    size.Enlarge(2 * delta.x(), 0);
+  }
+  if (resize_->edges.bottom) {
+    size.Enlarge(0, delta.y());
+  }
+  resize_->size = size;
+  InvalidateLayout();
+  return true;
+}
+
+void PeekView::OnMouseReleased(const ui::MouseEvent& event) {
+  EndResize();
+}
+
+void PeekView::OnMouseCaptureLost() {
+  EndResize();
 }
 
 bool PeekView::AcceleratorPressed(const ui::Accelerator& accelerator) {
@@ -372,13 +451,68 @@ void PeekView::AnimationProgressed(const gfx::Animation* animation) {
   SchedulePaint();
 }
 
+PeekView::ResizeEdges PeekView::GetResizeEdgesAt(
+    const gfx::Point& point) const {
+  const gfx::Rect card = card_->bounds();
+  ResizeEdges edges;
+  if (point.y() >= card.y() &&
+      point.y() < card.bottom() + kResizeHandleThickness) {
+    edges.left =
+        point.x() >= card.x() - kResizeHandleThickness && point.x() < card.x();
+    edges.right = point.x() >= card.right() &&
+                  point.x() < card.right() + kResizeHandleThickness;
+  }
+  edges.bottom = point.y() >= card.bottom() &&
+                 point.y() < card.bottom() + kResizeHandleThickness &&
+                 point.x() >= card.x() - kResizeHandleThickness &&
+                 point.x() < card.right() + kResizeHandleThickness;
+  return edges;
+}
+
 gfx::Size PeekView::GetCardSize(const gfx::Rect& bounds) const {
-  const int inset_x = std::max(
-      kMinCardInset, static_cast<int>(bounds.width() * kCardInsetRatio));
-  const int inset_y = std::max(
-      kMinCardInset, static_cast<int>(bounds.height() * kCardInsetRatio));
-  return gfx::Size(std::max(0, bounds.width() - 2 * inset_x),
-                   std::max(0, bounds.height() - inset_y));
+  gfx::Size size;
+  const PrefService& prefs = *browser_->GetProfile()->GetPrefs();
+  const double width_ratio = prefs.GetDouble(peek::prefs::kCardWidthRatio);
+  const double height_ratio = prefs.GetDouble(peek::prefs::kCardHeightRatio);
+  if (resize_) {
+    size = resize_->size;
+  } else if (width_ratio > 0 && height_ratio > 0) {
+    size = gfx::Size(base::ClampRound(bounds.width() * width_ratio),
+                     base::ClampRound(bounds.height() * height_ratio));
+  } else {
+    const int inset_x = std::max(
+        kMinCardInset, static_cast<int>(bounds.width() * kCardInsetRatio));
+    const int inset_y = std::max(
+        kMinCardInset, static_cast<int>(bounds.height() * kCardInsetRatio));
+    size = gfx::Size(bounds.width() - 2 * inset_x, bounds.height() - inset_y);
+  }
+
+  // Leave a margin of backdrop to click, and to grab the edges from.
+  const int max_width = std::max(0, bounds.width() - 2 * kMinCardInset);
+  const int max_height = std::max(0, bounds.height() - kMinCardInset);
+  return gfx::Size(
+      std::clamp(size.width(), std::min(kMinCardWidth, max_width), max_width),
+      std::clamp(size.height(), std::min(kMinCardHeight, max_height),
+                 max_height));
+}
+
+void PeekView::EndResize() {
+  if (!resize_) {
+    return;
+  }
+  const gfx::Rect bounds = GetLocalBounds();
+  const gfx::Size size = GetCardSize(bounds);
+  resize_.reset();
+  if (bounds.IsEmpty()) {
+    return;
+  }
+  // Relative to the covered area, so the size fits other windows too. Saving
+  // relayouts every Peek through the pref observer.
+  PrefService& prefs = *browser_->GetProfile()->GetPrefs();
+  prefs.SetDouble(peek::prefs::kCardWidthRatio,
+                  static_cast<double>(size.width()) / bounds.width());
+  prefs.SetDouble(peek::prefs::kCardHeightRatio,
+                  static_cast<double>(size.height()) / bounds.height());
 }
 
 void PeekView::ShowPageInfo() {

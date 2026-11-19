@@ -830,6 +830,89 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, CardIsAttachedToToolbar) {
   EXPECT_EQ(0, peek_view->card_for_testing()->y());
 }
 
+// Drags from `from` to `to` in `peek_view`'s coordinates with the left button.
+void DragInPeekView(PeekView& peek_view,
+                    const gfx::Point& from,
+                    const gfx::Point& to) {
+  peek_view.OnMousePressed(ui::MouseEvent(
+      ui::EventType::kMousePressed, from, from, ui::EventTimeForNow(),
+      ui::EF_LEFT_MOUSE_BUTTON, ui::EF_LEFT_MOUSE_BUTTON));
+  peek_view.OnMouseDragged(ui::MouseEvent(
+      ui::EventType::kMouseDragged, to, to, ui::EventTimeForNow(),
+      ui::EF_LEFT_MOUSE_BUTTON, ui::EF_LEFT_MOUSE_BUTTON));
+  peek_view.OnMouseReleased(ui::MouseEvent(
+      ui::EventType::kMouseReleased, to, to, ui::EventTimeForNow(),
+      ui::EF_LEFT_MOUSE_BUTTON, ui::EF_LEFT_MOUSE_BUTTON));
+  views::test::RunScheduledLayout(&peek_view);
+}
+
+// Dragging one side resizes the card on both sides, so it stays centered, and
+// the size is remembered for the next Peek.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, ResizingCardKeepsItCenteredAndSaves) {
+  auto rich_animation = gfx::AnimationTestApi::SetRichAnimationRenderMode(
+      gfx::Animation::RichAnimationRenderMode::FORCE_DISABLED);
+  OpenPeek(GetURL("b.com", "/title2.html"));
+  PeekView* peek_view = controller()->peek_view_for_testing();
+  views::test::RunScheduledLayout(peek_view);
+  views::View* card = peek_view->card_for_testing();
+  const gfx::Rect initial = card->bounds();
+
+  // Just outside the left edge, dragged 50 px in.
+  const gfx::Point left_handle(initial.x() - 2, initial.CenterPoint().y());
+  DragInPeekView(*peek_view, left_handle, left_handle + gfx::Vector2d(50, 0));
+  EXPECT_EQ(initial.width() - 100, card->width());
+  // Centered, give or take the odd pixel.
+  EXPECT_NEAR(peek_view->width() - card->bounds().right(), card->x(), 1);
+  EXPECT_EQ(0, card->y());
+
+  // Just below the bottom edge, dragged 40 px up.
+  const gfx::Rect narrower = card->bounds();
+  const gfx::Point bottom_handle(narrower.CenterPoint().x(),
+                                 narrower.bottom() + 2);
+  DragInPeekView(*peek_view, bottom_handle,
+                 bottom_handle - gfx::Vector2d(0, 40));
+  EXPECT_EQ(narrower.height() - 40, card->height());
+  EXPECT_EQ(0, card->y());
+  // Resizing doesn't dismiss Peek, unlike a click on the backdrop.
+  EXPECT_TRUE(controller()->IsShowing());
+
+  const gfx::Size resized = card->size();
+  content::WebContents* old_contents = controller()->GetWebContents();
+  OpenPeek(GetURL("c.com", "/title2.html"));
+  // The next Peek gets a fresh view, which starts from the saved size. Its
+  // page is created before the old Peek is destroyed, so the contents pointers
+  // can't collide, unlike the views', which the allocator may reuse.
+  ASSERT_NE(old_contents, controller()->GetWebContents());
+  PeekView* next_view = controller()->peek_view_for_testing();
+  views::test::RunScheduledLayout(next_view);
+  EXPECT_EQ(resized, next_view->card_for_testing()->size());
+}
+
+// The card can't be resized past the backdrop margin or below a minimum.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, ResizingCardIsClamped) {
+  auto rich_animation = gfx::AnimationTestApi::SetRichAnimationRenderMode(
+      gfx::Animation::RichAnimationRenderMode::FORCE_DISABLED);
+  OpenPeek(GetURL("b.com", "/title2.html"));
+  PeekView* peek_view = controller()->peek_view_for_testing();
+  views::test::RunScheduledLayout(peek_view);
+  views::View* card = peek_view->card_for_testing();
+
+  const gfx::Rect initial = card->bounds();
+  const gfx::Point right_handle(initial.right() + 2, initial.CenterPoint().y());
+  DragInPeekView(*peek_view, right_handle,
+                 right_handle + gfx::Vector2d(10000, 0));
+  EXPECT_LT(card->width(), peek_view->width());
+  EXPECT_GT(card->x(), 0);
+
+  const gfx::Rect wide = card->bounds();
+  const gfx::Point corner(wide.right() + 2, wide.bottom() + 2);
+  DragInPeekView(*peek_view, corner, corner - gfx::Vector2d(10000, 10000));
+  EXPECT_GT(card->width(), 0);
+  EXPECT_GT(card->height(), 0);
+  // Centered, give or take the odd pixel.
+  EXPECT_NEAR(peek_view->width() - card->bounds().right(), card->x(), 1);
+}
+
 IN_PROC_BROWSER_TEST_F(PeekBrowserTest, OpenRequiresHttpInitiatorAndTarget) {
   content::OpenURLParams no_initiator =
       LinkParams(GetURL("b.com", "/title2.html"));
