@@ -39,7 +39,7 @@ export async function build(
   if (options.builder) {
     // `bots gen` writes the builder's `args.gn` and runs `gn gen` itself.
     await runBotsGen(options.builder)
-    await util.buildTargets(options.builder.targets.compile)
+    await util.buildTargets(options.builder.compileTargets)
     return
   }
 

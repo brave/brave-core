@@ -21,7 +21,7 @@ const builder: Builder = {
   buildTarget: { targetOS: 'linux', targetArch: 'x64' },
   isBraveOriginBranded: false,
   siso: {},
-  targets: { compile: ['brave:all', 'chrome'], tests: [] },
+  compileTargets: ['brave:all', 'chrome'],
 }
 
 describe('build', () => {
