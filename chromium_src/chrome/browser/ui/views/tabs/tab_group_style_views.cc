@@ -11,13 +11,7 @@
 #include "chrome/browser/ui/tabs/features.h"
 #include "third_party/skia/include/core/SkPathBuilder.h"
 
-#define TabGroupUnderline BraveTabGroupUnderline
-#define TabGroupStyleViews TabGroupStyleViews_ChromiumImpl
-
 #include <chrome/browser/ui/views/tabs/tab_group_style_views.cc>
-
-#undef TabGroupStyleViews
-#undef TabGroupUnderline
 
 bool TabGroupStyleViews::TabGroupUnderlineShouldBeHidden() const {
   return false;

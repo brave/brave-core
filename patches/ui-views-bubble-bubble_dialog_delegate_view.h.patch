@@ -1,5 +1,5 @@
 diff --git a/ui/views/bubble/bubble_dialog_delegate_view.h b/ui/views/bubble/bubble_dialog_delegate_view.h
-index c63a5501d9728017774451adf23d0985d0aedd98..5e0c6aab78580cbeb4361e92330e7a7d672a31f6 100644
+index c63a5501d9728017774451adf23d0985d0aedd98..feb13c9b373a884a12ba9ee564d17a20d14a90a2 100644
 --- a/ui/views/bubble/bubble_dialog_delegate_view.h
 +++ b/ui/views/bubble/bubble_dialog_delegate_view.h
 @@ -45,6 +45,20 @@
@@ -23,6 +23,15 @@ index c63a5501d9728017774451adf23d0985d0aedd98..5e0c6aab78580cbeb4361e92330e7a7d
  class AccountChooserDialogView;
  class AppDialogView;
  class AnnouncementView;
+@@ -78,7 +92,7 @@ class ProfileMenuViewBase;
+ class RemoveSuggestionBubbleDialogDelegateView;
+ class StoragePressureBubbleView;
+ class TabGroupEditorBubbleView;
+-class TabHoverCardBubbleView;
++class TabHoverCardBubbleView_ChromiumImpl;
+ class TestBubbleView;
+ class ToolbarActionHoverCardBubbleView;
+ class ScreenshotSurfaceTestDialog;
 @@ -883,6 +897,15 @@ class VIEWS_EXPORT BubbleDialogDelegateView : public View,
    gfx::Size GetMaximumSize() const final;
  
@@ -39,3 +48,12 @@ index c63a5501d9728017774451adf23d0985d0aedd98..5e0c6aab78580cbeb4361e92330e7a7d
    FRIEND_TEST_ALL_PREFIXES(BubbleDelegateTest, CreateDelegate);
    FRIEND_TEST_ALL_PREFIXES(BubbleDelegateTest, NonClientHitTest);
  
+@@ -922,7 +945,7 @@ class VIEWS_EXPORT BubbleDialogDelegateView : public View,
+   friend class ::RemoveSuggestionBubbleDialogDelegateView;
+   friend class ::StoragePressureBubbleView;
+   friend class ::TabGroupEditorBubbleView;
+-  friend class ::TabHoverCardBubbleView;
++  friend class ::TabHoverCardBubbleView_ChromiumImpl;
+   friend class ::TestBubbleView;
+   friend class ::ToolbarActionHoverCardBubbleView;
+   friend class ::ScreenshotSurfaceTestDialog;

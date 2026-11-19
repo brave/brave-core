@@ -1,0 +1,322 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_strip_control_button.cc b/chrome/browser/ui/views/tabs/tab_strip_control_button.cc
+index dfd8e94c702b5ab3f4cd17212fd28fc08ab74ec4..3c5a3d50085d9d773bdad1781258e3303cd3addb 100644
+--- a/chrome/browser/ui/views/tabs/tab_strip_control_button.cc
++++ b/chrome/browser/ui/views/tabs/tab_strip_control_button.cc
+@@ -34,7 +34,7 @@ class ControlButtonHighlightPathGenerator
+     : public views::HighlightPathGenerator {
+  public:
+   explicit ControlButtonHighlightPathGenerator(
+-      TabStripControlButton* control_button)
++      TabStripControlButton_ChromiumImpl* control_button)
+       : control_button_(control_button) {}
+ 
+   // HighlightPathGenerator:
+@@ -56,40 +56,40 @@ class ControlButtonHighlightPathGenerator
+   }
+ 
+  private:
+-  raw_ptr<TabStripControlButton> control_button_;
++  raw_ptr<TabStripControlButton_ChromiumImpl> control_button_;
+ };
+ }  // namespace
+ 
+-const int TabStripControlButton::kIconSize = 16;
+-const gfx::Size TabStripControlButton::kButtonSize{28, 28};
++const int TabStripControlButton_ChromiumImpl::kIconSize = 16;
++const gfx::Size TabStripControlButton_ChromiumImpl::kButtonSize{28, 28};
+ 
+-TabStripControlButton::TabStripControlButton(
++TabStripControlButton_ChromiumImpl::TabStripControlButton_ChromiumImpl(
+     BrowserWindowInterface* browser_window_interface,
+     PressedCallback callback,
+     const gfx::VectorIcon& icon,
+     Edge fixed_flat_edge,
+     Edge animated_flat_edge)
+-    : TabStripControlButton(browser_window_interface,
++    : TabStripControlButton_ChromiumImpl(browser_window_interface,
+                             std::move(callback),
+                             icon,
+                             std::u16string(),
+                             fixed_flat_edge,
+                             animated_flat_edge) {}
+ 
+-TabStripControlButton::TabStripControlButton(
++TabStripControlButton_ChromiumImpl::TabStripControlButton_ChromiumImpl(
+     BrowserWindowInterface* browser_window_interface,
+     PressedCallback callback,
+     const std::u16string& text,
+     Edge fixed_flat_edge,
+     Edge animated_flat_edge)
+-    : TabStripControlButton(browser_window_interface,
++    : TabStripControlButton_ChromiumImpl(browser_window_interface,
+                             std::move(callback),
+                             gfx::VectorIcon::EmptyIcon(),
+                             text,
+                             fixed_flat_edge,
+                             animated_flat_edge) {}
+ 
+-TabStripControlButton::TabStripControlButton(
++TabStripControlButton_ChromiumImpl::TabStripControlButton_ChromiumImpl(
+     BrowserWindowInterface* browser_window_interface,
+     PressedCallback callback,
+     const gfx::VectorIcon& icon,
+@@ -104,12 +104,12 @@ TabStripControlButton::TabStripControlButton(
+   SetImageCentered(true);
+   SetEventTargeter(std::make_unique<views::ViewTargeter>(this));
+ 
+-  foreground_frame_active_color_id_ = kColorTabForegroundInactiveFrameActive;
++  foreground_frame_active_color_id_ = kColorNewTabButtonCRForegroundFrameActive;
+   foreground_frame_inactive_color_id_ =
+       kColorNewTabButtonCRForegroundFrameInactive;
+-  background_frame_active_color_id_ = kColorNewTabButtonBackgroundFrameActive;
++  background_frame_active_color_id_ = kColorNewTabButtonCRBackgroundFrameActive;
+   background_frame_inactive_color_id_ =
+-      kColorNewTabButtonBackgroundFrameInactive;
++      kColorNewTabButtonCRBackgroundFrameInactive;
+ 
+   inkdrop_hover_color_id_ = kColorTabStripControlButtonInkDrop;
+   inkdrop_ripple_color_id_ = kColorTabStripControlButtonInkDropRipple;
+@@ -133,31 +133,31 @@ TabStripControlButton::TabStripControlButton(
+   }
+ }
+ 
+-void TabStripControlButton::SetForegroundFrameActiveColorId(
++void TabStripControlButton_ChromiumImpl::SetForegroundFrameActiveColorId(
+     ui::ColorId new_color_id) {
+   foreground_frame_active_color_id_ = new_color_id;
+   UpdateColors();
+ }
+ 
+-void TabStripControlButton::SetForegroundFrameInactiveColorId(
++void TabStripControlButton_ChromiumImpl::SetForegroundFrameInactiveColorId(
+     ui::ColorId new_color_id) {
+   foreground_frame_inactive_color_id_ = new_color_id;
+   UpdateColors();
+ }
+ 
+-void TabStripControlButton::SetBackgroundFrameActiveColorId(
++void TabStripControlButton_ChromiumImpl::SetBackgroundFrameActiveColorId(
+     ui::ColorId new_color_id) {
+   background_frame_active_color_id_ = new_color_id;
+   UpdateColors();
+ }
+ 
+-void TabStripControlButton::SetBackgroundFrameInactiveColorId(
++void TabStripControlButton_ChromiumImpl::SetBackgroundFrameInactiveColorId(
+     ui::ColorId new_color_id) {
+   background_frame_inactive_color_id_ = new_color_id;
+   UpdateColors();
+ }
+ 
+-void TabStripControlButton::SetInkdropHoverColorId(
++void TabStripControlButton_ChromiumImpl::SetInkdropHoverColorId(
+     const ChromeColorIds new_color_id) {
+   if (inkdrop_hover_color_id_ == new_color_id) {
+     return;
+@@ -166,7 +166,7 @@ void TabStripControlButton::SetInkdropHoverColorId(
+   UpdateInkDrop();
+ }
+ 
+-void TabStripControlButton::SetInkdropRippleColorId(
++void TabStripControlButton_ChromiumImpl::SetInkdropRippleColorId(
+     const ChromeColorIds new_color_id) {
+   if (inkdrop_ripple_color_id_ == new_color_id) {
+     return;
+@@ -175,12 +175,12 @@ void TabStripControlButton::SetInkdropRippleColorId(
+   UpdateInkDrop();
+ }
+ 
+-void TabStripControlButton::SetVectorIcon(const gfx::VectorIcon& icon) {
++void TabStripControlButton_ChromiumImpl::SetVectorIcon(const gfx::VectorIcon& icon) {
+   icon_ = icon;
+   UpdateIcon();
+ }
+ 
+-void TabStripControlButton::UpdateIcon() {
++void TabStripControlButton_ChromiumImpl::UpdateIcon() {
+   if (icon_->is_empty()) {
+     return;
+   }
+@@ -193,15 +193,15 @@ void TabStripControlButton::UpdateIcon() {
+   SetImageModel(views::Button::STATE_PRESSED, icon_image_model);
+ }
+ 
+-int TabStripControlButton::GetCornerRadius() const {
+-  return TabStripControlButton::kButtonSize.width() / 2;
++int TabStripControlButton_ChromiumImpl::GetCornerRadius() const {
++  return TabStripControlButton_ChromiumImpl::kButtonSize.width() / 2;
+ }
+ 
+-int TabStripControlButton::GetFlatCornerRadius() const {
++int TabStripControlButton_ChromiumImpl::GetFlatCornerRadius() const {
+   return 0;
+ }
+ 
+-float TabStripControlButton::GetScaledCornerRadius(float initial_radius,
++float TabStripControlButton_ChromiumImpl::GetScaledCornerRadius(float initial_radius,
+                                                    Edge edge) const {
+   const int flat_corner_radius = GetFlatCornerRadius();
+   if (fixed_flat_edge_ == edge) {
+@@ -214,13 +214,13 @@ float TabStripControlButton::GetScaledCornerRadius(float initial_radius,
+   }
+ }
+ 
+-void TabStripControlButton::SetLeftRightCornerRadii(int left, int right) {
++void TabStripControlButton_ChromiumImpl::SetLeftRightCornerRadii(int left, int right) {
+   left_corner_radius_ = left;
+   right_corner_radius_ = right;
+   UpdateBackground();
+ }
+ 
+-void TabStripControlButton::SetFlatEdgeFactor(float factor) {
++void TabStripControlButton_ChromiumImpl::SetFlatEdgeFactor(float factor) {
+   flat_edge_factor_ = factor;
+   UpdateBackground();
+   // The ink drop doesn't automatically pick up on rounded corner changes, so
+@@ -230,23 +230,23 @@ void TabStripControlButton::SetFlatEdgeFactor(float factor) {
+   views::InkDrop::Get(this)->GetInkDrop()->HostSizeChanged(size());
+ }
+ 
+-void TabStripControlButton::AnimateToStateForTesting(
++void TabStripControlButton_ChromiumImpl::AnimateToStateForTesting(
+     views::InkDropState state) {
+   views::InkDrop::Get(this)->GetInkDrop()->AnimateToState(state);
+ }
+ 
+-gfx::Size TabStripControlButton::CalculatePreferredSize(
++gfx::Size TabStripControlButton_ChromiumImpl::CalculatePreferredSize(
+     const views::SizeBounds& available_size) const {
+-  gfx::Size size = TabStripControlButton::kButtonSize;
++  gfx::Size size = TabStripControlButton_ChromiumImpl::kButtonSize;
+   const auto insets = GetInsets();
+   size.Enlarge(insets.width(), insets.height());
+   return size;
+ }
+ 
+-void TabStripControlButton::AddedToWidget() {
++void TabStripControlButton_ChromiumImpl::AddedToWidget() {
+   paint_as_active_subscription_ =
+       GetWidget()->RegisterPaintAsActiveChangedCallback(base::BindRepeating(
+-          &TabStripControlButton::UpdateColors, base::Unretained(this)));
++          &TabStripControlButton_ChromiumImpl::UpdateColors, base::Unretained(this)));
+   // Only subscribe to glass frame eligibility changes if this button's
+   // background becomes transparent for glass frames.
+   auto* const glass_frame_service = GlassFrameService::GetInstance();
+@@ -255,23 +255,23 @@ void TabStripControlButton::AddedToWidget() {
+         glass_frame_service->RegisterGlassFrameEligibilityChangedCallback(
+             browser_window_interface_,
+             base::BindRepeating(
+-                &TabStripControlButton::OnGlassFrameEligibilityChanged,
++                &TabStripControlButton_ChromiumImpl::OnGlassFrameEligibilityChanged,
+                 base::Unretained(this)));
+   }
+   UpdateColors();
+ }
+ 
+-void TabStripControlButton::RemovedFromWidget() {
++void TabStripControlButton_ChromiumImpl::RemovedFromWidget() {
+   paint_as_active_subscription_ = {};
+   glass_frame_subscription_ = {};
+ }
+ 
+-void TabStripControlButton::OnThemeChanged() {
++void TabStripControlButton_ChromiumImpl::OnThemeChanged() {
+   views::LabelButton::OnThemeChanged();
+   UpdateColors();
+ }
+ 
+-bool TabStripControlButton::GetHitTestMask(SkPath* mask) const {
++bool TabStripControlButton_ChromiumImpl::GetHitTestMask(SkPath* mask) const {
+   const bool extend_to_top = IsFrameCondensed();
+ 
+   const SkScalar bottom_left_radius = GetLeftCornerRadius();
+@@ -303,7 +303,7 @@ bool TabStripControlButton::GetHitTestMask(SkPath* mask) const {
+   return true;
+ }
+ 
+-void TabStripControlButton::SetText(std::u16string_view text) {
++void TabStripControlButton_ChromiumImpl::SetText(std::u16string_view text) {
+   label()->SetText(text);
+   // Required for text to be visible on hover.
+   // TODO(crbug.com/431015299): Fix text on hover and remove.
+@@ -313,19 +313,19 @@ void TabStripControlButton::SetText(std::u16string_view text) {
+   label()->SetSubpixelRenderingEnabled(false);
+ }
+ 
+-ui::ColorId TabStripControlButton::GetBackgroundColor() {
++ui::ColorId TabStripControlButton_ChromiumImpl::GetBackgroundColor() {
+   return (GetWidget() && GetWidget()->ShouldPaintAsActive())
+              ? background_frame_active_color_id_
+              : background_frame_inactive_color_id_;
+ }
+ 
+-ui::ColorId TabStripControlButton::GetForegroundColor() {
++ui::ColorId TabStripControlButton_ChromiumImpl::GetForegroundColor() {
+   return (GetWidget() && GetWidget()->ShouldPaintAsActive())
+              ? foreground_frame_active_color_id_
+              : foreground_frame_inactive_color_id_;
+ }
+ 
+-void TabStripControlButton::UpdateColors() {
++void TabStripControlButton_ChromiumImpl::UpdateColors() {
+   const auto* const color_provider = GetColorProvider();
+   if (!color_provider || !IsWidgetAlive()) {
+     return;
+@@ -338,18 +338,18 @@ void TabStripControlButton::UpdateColors() {
+   SchedulePaint();
+ }
+ 
+-void TabStripControlButton::NotifyClick(const ui::Event& event) {
++void TabStripControlButton_ChromiumImpl::NotifyClick(const ui::Event& event) {
+   LabelButton::NotifyClick(event);
+   views::InkDrop::Get(this)->GetInkDrop()->AnimateToState(
+       views::InkDropState::ACTION_TRIGGERED);
+ }
+ 
+-bool TabStripControlButton::IsFrameCondensed() const {
++bool TabStripControlButton_ChromiumImpl::IsFrameCondensed() const {
+   BrowserFrameView* const browser_frame_view = GetBrowserFrameView();
+   return browser_frame_view ? browser_frame_view->IsFrameCondensed() : false;
+ }
+ 
+-void TabStripControlButton::UpdateBackground() {
++void TabStripControlButton_ChromiumImpl::UpdateBackground() {
+   const auto* const color_provider = GetColorProvider();
+   if (!color_provider || !IsWidgetAlive()) {
+     return;
+@@ -383,7 +383,7 @@ void TabStripControlButton::UpdateBackground() {
+   }
+ }
+ 
+-void TabStripControlButton::UpdateInkDrop() {
++void TabStripControlButton_ChromiumImpl::UpdateInkDrop() {
+   const auto* const color_provider = GetColorProvider();
+   if (!color_provider || !IsWidgetAlive()) {
+     return;
+@@ -393,16 +393,16 @@ void TabStripControlButton::UpdateInkDrop() {
+                                 inkdrop_ripple_color_id_);
+ }
+ 
+-void TabStripControlButton::OnGlassFrameEligibilityChanged(bool is_eligible) {
++void TabStripControlButton_ChromiumImpl::OnGlassFrameEligibilityChanged(bool is_eligible) {
+   UpdateColors();
+ }
+ 
+-bool TabStripControlButton::IsWidgetAlive() const {
++bool TabStripControlButton_ChromiumImpl::IsWidgetAlive() const {
+   const views::Widget* widget = GetWidget();
+   return widget && !widget->IsClosed();
+ }
+ 
+-BrowserFrameView* TabStripControlButton::GetBrowserFrameView() const {
++BrowserFrameView* TabStripControlButton_ChromiumImpl::GetBrowserFrameView() const {
+   BrowserView* const browser_view =
+       BrowserView::GetBrowserViewForBrowser(browser_window_interface_);
+   // 'browser_view' can be null during startup before the BrowserView is added
+@@ -414,5 +414,5 @@ BrowserFrameView* TabStripControlButton::GetBrowserFrameView() const {
+   return browser_view->browser_widget()->GetFrameView();
+ }
+ 
+-BEGIN_METADATA(TabStripControlButton)
++BEGIN_METADATA(TabStripControlButton_ChromiumImpl)
+ END_METADATA

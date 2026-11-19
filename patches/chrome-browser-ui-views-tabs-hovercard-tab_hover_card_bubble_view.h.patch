@@ -1,7 +1,50 @@
 diff --git a/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.h b/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.h
-index 4091112541511dc4dcbd8568b5e8bf3078ffac2b..bdc38035b2f51922e731f1d7ea78d3033c3fe283 100644
+index 4091112541511dc4dcbd8568b5e8bf3078ffac2b..a3a4e822490b2974fbeb36a815f7b1f79a5dd457 100644
 --- a/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.h
 +++ b/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.h
+@@ -36,8 +36,8 @@ class FadeLabelView;
+ class HoverCardAnchorTarget;
+ 
+ // Dialog that displays an informational hover card containing page information.
+-class TabHoverCardBubbleView : public views::BubbleDialogDelegateView {
+-  METADATA_HEADER(TabHoverCardBubbleView, views::BubbleDialogDelegateView)
++class TabHoverCardBubbleView_ChromiumImpl : public views::BubbleDialogDelegateView {
++  METADATA_HEADER(TabHoverCardBubbleView_ChromiumImpl, views::BubbleDialogDelegateView)
+ 
+  public:
+   static constexpr base::TimeDelta kHoverCardSlideDuration =
+@@ -59,24 +59,24 @@ class TabHoverCardBubbleView : public views::BubbleDialogDelegateView {
+     bool show_memory_usage = true;
+   };
+ 
+-  explicit TabHoverCardBubbleView(HoverCardAnchorTarget* anchor_target,
++  explicit TabHoverCardBubbleView_ChromiumImpl(HoverCardAnchorTarget* anchor_target,
+                                   const InitParams& params);
+-  TabHoverCardBubbleView(const TabHoverCardBubbleView&) = delete;
+-  TabHoverCardBubbleView& operator=(const TabHoverCardBubbleView&) = delete;
+-  ~TabHoverCardBubbleView() override;
++  TabHoverCardBubbleView_ChromiumImpl(const TabHoverCardBubbleView_ChromiumImpl&) = delete;
++  TabHoverCardBubbleView_ChromiumImpl& operator=(const TabHoverCardBubbleView_ChromiumImpl&) = delete;
++  ~TabHoverCardBubbleView_ChromiumImpl() override;
+ 
+   // Updates and formats title, alert state, domain, and preview image.
+-  void UpdateCardContent(const HoverCardAnchorTarget* anchor_target);
++  virtual void UpdateCardContent(const HoverCardAnchorTarget* anchor_target);
+ 
+   // Update the text fade to the given percent, which should be between 0 and 1.
+   void SetTextFade(double percent);
+ 
+   // Set the preview image to use for the target tab.
+-  void SetTargetTabImage(gfx::ImageSkia preview_image);
++  virtual void SetTargetTabImage(gfx::ImageSkia preview_image);
+ 
+   // Specifies that the hover card should display a placeholder image
+   // specifying that no preview for the tab is available (yet).
+-  void SetPlaceholderImage();
++  virtual void SetPlaceholderImage();
+ 
+   // Specifies that the hover card should display a crashed image
+   // specifying that the tab has crashed.
 @@ -103,7 +103,10 @@ class TabHoverCardBubbleView : public views::BubbleDialogDelegateView {
    // available, or `std::nullopt` to disable crossfades entirely.
    static std::optional<double> GetPreviewImageCrossfadeStart();

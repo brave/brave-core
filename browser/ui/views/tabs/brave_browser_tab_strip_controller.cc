@@ -6,12 +6,14 @@
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 
 #include <algorithm>
+#include <memory>
 #include <optional>
 #include <unordered_set>
 #include <utility>
 #include <vector>
 
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/tabs/brave_tab_menu_model.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
@@ -26,6 +28,7 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/split_tab_util.h"
+#include "chrome/browser/ui/tabs/tab_menu_model_delegate.h"
 #include "chrome/browser/ui/tabs/tab_muted_utils.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
@@ -238,6 +241,16 @@ bool BraveBrowserTabStripController::IsContextMenuCommandEnabled(
 
   return BrowserTabStripController::IsContextMenuCommandEnabled(tab,
                                                                 command_id);
+}
+
+std::unique_ptr<TabMenuModel>
+BraveBrowserTabStripController::CreateTabMenuModel(
+    ui::SimpleMenuModel::Delegate* delegate,
+    TabMenuModelDelegate* tab_menu_model_delegate,
+    TabStripModel* tab_strip_model,
+    int index) {
+  return std::make_unique<BraveTabMenuModel>(delegate, tab_menu_model_delegate,
+                                             tab_strip_model, index);
 }
 
 void BraveBrowserTabStripController::OnTabStripModelChanged(

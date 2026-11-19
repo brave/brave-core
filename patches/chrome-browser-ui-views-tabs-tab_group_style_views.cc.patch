@@ -1,0 +1,89 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_group_style_views.cc b/chrome/browser/ui/views/tabs/tab_group_style_views.cc
+index ea4158e0b13b37224dc80c44445d7e1fd4bc9e6b..b9e9e5bf4ed2d0ea58e5fcd2ad554069ce1fa7aa 100644
+--- a/chrome/browser/ui/views/tabs/tab_group_style_views.cc
++++ b/chrome/browser/ui/views/tabs/tab_group_style_views.cc
+@@ -31,12 +31,12 @@ constexpr int kAttentionIndicatorWidth = 8;
+ 
+ }  // namespace
+ 
+-TabGroupStyleViews::TabGroupStyleViews(const TabGroupViews& tab_group_views)
++TabGroupStyleViews_ChromiumImpl::TabGroupStyleViews_ChromiumImpl(const TabGroupViews& tab_group_views)
+     : tab_group_views_(tab_group_views) {}
+ 
+-TabGroupStyleViews::~TabGroupStyleViews() = default;
++TabGroupStyleViews_ChromiumImpl::~TabGroupStyleViews_ChromiumImpl() = default;
+ 
+-bool TabGroupStyleViews::TabGroupUnderlineShouldBeHidden() const {
++bool TabGroupStyleViews_ChromiumImpl::TabGroupUnderlineShouldBeHidden() const {
+   if (tab_group_views_->IsFocusModeActive()) {
+     return true;
+   }
+@@ -48,7 +48,7 @@ bool TabGroupStyleViews::TabGroupUnderlineShouldBeHidden() const {
+                                          trailing_group_view);
+ }
+ 
+-bool TabGroupStyleViews::TabGroupUnderlineShouldBeHidden(
++bool TabGroupStyleViews_ChromiumImpl::TabGroupUnderlineShouldBeHidden(
+     const views::View* const leading_view,
+     const views::View* const trailing_view) const {
+   if (tab_group_views_->IsFocusModeActive()) {
+@@ -69,14 +69,14 @@ bool TabGroupStyleViews::TabGroupUnderlineShouldBeHidden(
+ }
+ 
+ // The path is a rounded rect.
+-SkPath TabGroupStyleViews::GetUnderlinePath(
++SkPath TabGroupStyleViews_ChromiumImpl::GetUnderlinePath(
+     const gfx::Rect local_bounds) const {
+   return SkPath::RRect(SkRRect::MakeRectXY(
+-      gfx::RectToSkRect(local_bounds), TabGroupUnderline::kStrokeThickness / 2,
+-      TabGroupUnderline::kStrokeThickness / 2));
++      gfx::RectToSkRect(local_bounds), BraveTabGroupUnderline::kStrokeThickness / 2,
++      BraveTabGroupUnderline::kStrokeThickness / 2));
+ }
+ 
+-gfx::Rect TabGroupStyleViews::GetEmptyTitleChipBounds(
++gfx::Rect TabGroupStyleViews_ChromiumImpl::GetEmptyTitleChipBounds(
+     const TabGroupHeader* const header) const {
+   return gfx::Rect(TabGroupStyle::GetTitleChipOffset(std::nullopt).x(),
+                    TabGroupStyle::GetTitleChipOffset(std::nullopt).y(),
+@@ -85,34 +85,34 @@ gfx::Rect TabGroupStyleViews::GetEmptyTitleChipBounds(
+ }
+ 
+ std::unique_ptr<views::Background>
+-TabGroupStyleViews::GetEmptyTitleChipBackground(const SkColor color) const {
++TabGroupStyleViews_ChromiumImpl::GetEmptyTitleChipBackground(const SkColor color) const {
+   return views::CreateRoundedRectBackground(
+       color, TabGroupStyle::GetChipCornerRadius());
+ }
+ 
+-int TabGroupStyleViews::GetHighlightPathGeneratorCornerRadius(
++int TabGroupStyleViews_ChromiumImpl::GetHighlightPathGeneratorCornerRadius(
+     const views::View* const title) const {
+   return tab_group_views_->IsFocusModeActive()
+              ? TabGroupStyle::GetFocusedChipCornerRadius()
+              : TabGroupStyle::GetChipCornerRadius();
+ }
+ 
+-int TabGroupStyleViews::GetTitleAdjustmentToTabGroupHeaderDesiredWidth(
++int TabGroupStyleViews_ChromiumImpl::GetTitleAdjustmentToTabGroupHeaderDesiredWidth(
+     const std::u16string title) const {
+   // Since the shape of the header in ChromeRefresh23 is a rounded rect this
+   // value should be `kTitleAdjustmentForNonEmptyHeader`.
+   return kTitleAdjustmentForNonEmptyHeader;
+ }
+ 
+-float TabGroupStyleViews::GetSyncIconWidth() const {
++float TabGroupStyleViews_ChromiumImpl::GetSyncIconWidth() const {
+   return kSyncIconWidth;
+ }
+ 
+-float TabGroupStyleViews::GetAttentionIndicatorWidth() const {
++float TabGroupStyleViews_ChromiumImpl::GetAttentionIndicatorWidth() const {
+   return kAttentionIndicatorWidth;
+ }
+ 
+-int TabGroupStyleViews::GetTabGroupViewOverlap() const {
++int TabGroupStyleViews_ChromiumImpl::GetTabGroupViewOverlap() const {
+   // For refresh the tab has an overlap value is 18. In order to have a margin
+   // of 10 from the neighbor tabs this is required.
+   return TabStyle::Get()->GetTabOverlap() -
