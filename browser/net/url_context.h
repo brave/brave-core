@@ -92,7 +92,8 @@ class BraveRequestInfo {
   // The origin to treat as first party when applying Shields rules to this
   // request. Main frames use the request URL's origin, unless it is opaque.
   // Subframes, subresources and main frames with an opaque request URL origin
-  // use the request initiator when there is one.
+  // use the request initiator when there is one. Shields ignores sandboxing, so
+  // an opaque result is replaced by its precursor origin when it has one.
   url::Origin first_party_origin_for_shields() const;
 
   bool internal_redirect() const;
