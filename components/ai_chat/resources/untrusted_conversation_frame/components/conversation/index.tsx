@@ -213,14 +213,17 @@ function Conversation(props: ConversationProps) {
         className={styles.conversationContent}
         ref={contentRef}
       >
-        {modelIntroMarkers
-          .filter((marker) => marker.afterPairIndex === null)
-          .map((marker) => (
-            <ModelIntro
-              key={marker.id}
-              modelKey={marker.modelKey}
-            />
-          ))}
+        {/* Skipped for threads: ConversationEntries renders their top markers
+            below the origin entry instead. */}
+        {!context.threadUuid
+          && modelIntroMarkers
+            .filter((marker) => marker.afterPairIndex === null)
+            .map((marker) => (
+              <ModelIntro
+                key={marker.id}
+                modelKey={marker.modelKey}
+              />
+            ))}
 
         {showTemporaryChatInfo && (
           <div className={styles.promptContainer}>
