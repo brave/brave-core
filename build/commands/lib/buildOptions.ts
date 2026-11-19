@@ -261,6 +261,11 @@ export function supportTestOptions<
     )
     .option('--run_disabled_tests', 'run disabled tests')
     .option(
+      '--skip_build',
+      'do not build the test target; run the existing binary',
+    )
+    .option('--skip_run', 'build the test target but do not run it')
+    .option(
       '--manual_android_test_device',
       'indicates that Android test device is run manually',
     )
