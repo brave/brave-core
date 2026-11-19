@@ -1,0 +1,425 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# The rules of docs/best-practices/coding-standards-memory.md. See
+# docs/knowledge_base/README.md for the fields.
+agentic_review {
+  # Allocates with `new` or frees with `delete` by hand.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "(?:^|[=(,{?:]|\\breturn)\\s*new\\s+(?:\\w+::)*\\w+(?:<[^;]*>)?\\s*[({\\[;]"
+    content_patterns: "\\bdelete\\s*(?:\\[\\s*\\]\\s*)?[\\w.\\->()*]+\\s*;"
+    rules: "docs/knowledge_base/rules/cxx_memory/prefer-unique-ptr-over-new-delete.md"
+  }
+  # Wraps an existing pointer or handle in an owning wrapper.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\bstd::unique_ptr<[^;]*>\\s*\\w*\\s*[({]\\s*[a-z_]\\w*(?:(?:\\.|->)\\w+)*\\s*[)}]"
+    content_patterns: "\\bWrapUnique\\s*\\(\\s*[a-z_]\\w*(?:(?:\\.|->)\\w+)*\\s*\\)"
+    content_patterns: "\\bWrapRefCounted\\s*\\("
+    content_patterns: "\\.reset\\(\\s*[a-z_]\\w*(?:(?:\\.|->)\\w+)*\\s*\\)"
+    content_patterns: "\\b(?:ScopedCFTypeRef|ScopedTypeRef|ScopedHandle|ScopedGeneric|ScopedFD)\\b[^;]*[({]"
+    rules: "docs/knowledge_base/rules/cxx_memory/no-ownership-wrappers-for-unowned-resources.md"
+  }
+  # Uses `std::shared_ptr`.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\bstd::(?:shared_ptr|make_shared|allocate_shared)\\b"
+    rules: "docs/knowledge_base/rules/cxx_memory/std-shared-ptr-is-banned.md"
+  }
+  # Defines or changes a shutdown or cleanup method, or invalidates WeakPtrs.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\bInvalidateWeakPtrs\\s*\\("
+    content_patterns: "^\\+?\\s*(?:void\\s+)?(?:\\w+::)+(?:Shutdown|ShutDown|Cleanup|CleanUp)\\s*\\(\\s*\\)"
+    content_patterns: "\\bvoid\\s+(?:Shutdown|ShutDown|Cleanup|CleanUp)\\s*\\(\\s*\\)\\s*(?:override\\s*)?(?:final\\s*)?\\{"
+    ast_patterns: "{kind: function_definition, has: {field: declarator, regex: '(?:^|::)(?:Shutdown|ShutDown|Cleanup|CleanUp)\\s*\\('}}"
+    rules: "docs/knowledge_base/rules/cxx_memory/invalidate-weak-ptrs-at-start-of-shutdown.md"
+  }
+  # Declares or dereferences a `WeakPtr`.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\bWeakPtr<"
+    content_patterns: "\\b(?:weak_?\\w*|self)\\s*->"
+    content_patterns: "\\bweak_?\\w*\\.get\\(\\)"
+    rules: "docs/knowledge_base/rules/cxx_memory/check-weak-ptr-before-dereference.md"
+    rules: "docs/knowledge_base/rules/cxx_memory/sequence-check-weak-ptr-and-bound-methods.md"
+  }
+  # Binds a member function as a callback target.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\bBind(?:Once|Repeating)\\s*\\(\\s*&\\w+(?:::\\w+)+"
+    content_patterns: "^\\+?\\s*&\\w+(?:::\\w+)+\\s*,"
+    rules: "docs/knowledge_base/rules/cxx_memory/sequence-check-weak-ptr-and-bound-methods.md"
+  }
+  # Inherits from `SupportsWeakPtr`.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\bSupportsWeakPtr\\b"
+    rules: "docs/knowledge_base/rules/cxx_memory/weak-ptr-factory-over-supports-weak-ptr.md"
+  }
+  # Declares a `WeakPtrFactory`, or a member after one.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\bWeakPtrFactory<"
+    ast_patterns: "{kind: field_declaration, follows: {kind: field_declaration, regex: '\\bWeakPtrFactory<', stopBy: end}}"
+    rules: "docs/knowledge_base/rules/cxx_memory/weak-ptr-factory-last-member.md"
+  }
+  # Passes a `WeakPtr` into a lambda bound as a callback.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\[[^\\]]*\\]\\s*\\([^)]*\\bWeakPtr<"
+    ast_patterns: "{kind: call_expression, has: {field: function, regex: '^(?:base::)?Bind(?:Once|Repeating)$'}, all: [{has: {kind: lambda_expression, stopBy: end}}, {has: {regex: '[Ww]eak', stopBy: end}}]}"
+    rules: "docs/knowledge_base/rules/cxx_memory/bind-weak-ptr-to-method-not-lambda.md"
+  }
+  # Binds `base::Unretained` into a posted task.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\b(?:ThreadPool::\\w+|PostTask\\w*|PostDelayedTask)\\b[^;]*\\bUnretained\\s*\\("
+    ast_patterns: "{kind: call_expression, has: {field: function, regex: '(?:PostTask\\w*|PostDelayedTask\\w*|PostNonNestable\\w*)$'}, all: [{has: {kind: call_expression, regex: '^(?:base::)?Unretained\\b', stopBy: end}}]}"
+    rules: "docs/knowledge_base/rules/cxx_memory/no-unretained-in-thread-pool-tasks.md"
+  }
+  # Binds `base::Unretained`.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\bUnretained\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx_memory/flag-unretained-only-when-callback-can-outlive-this.md"
+  }
+  # Declares or starts a timer.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\b(?:OneShotTimer|RepeatingTimer|RetainingOneShotTimer|DeadlineTimer|MetronomeTimer|WallClockTimer)\\b"
+    content_patterns: "\\.Start\\s*\\(\\s*FROM_HERE\\b"
+    content_patterns: "\\b\\w*[Tt]imer\\w*\\s*(?:\\.|->)\\s*Start\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx_memory/unretained-for-owned-timer-callbacks.md"
+  }
+  # Sets a Mojo disconnect or connection error handler.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\bset_(?:disconnect|connection_error)(?:_with_reason)?_handler\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx_memory/reset-on-disconnect-for-simple-mojo-cleanup.md"
+  }
+  # Declares a `raw_ptr`, `raw_ref` or `std::unique_ptr` member.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "^\\+?\\s*(?:const\\s+)?raw_(?:ptr|ref)<[^;]*>\\s+\\w+_\\s*(?:;|=|\\{)"
+    content_patterns: "^\\+?\\s*(?:const\\s+)?std::unique_ptr<[^;]*>\\s+\\w+_\\s*(?:;|=|\\{)"
+    rules: "docs/knowledge_base/rules/cxx_memory/raw-ptr-members-after-owning-members.md"
+  }
+  # Uses a vector of `raw_ptr`s.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\bvector<\\s*raw_ptr<"
+    rules: "docs/knowledge_base/rules/cxx_memory/no-raw-ptr-vector-bound-in-callbacks.md"
+  }
+  # Adds or removes sequence checks, or changes an unchecked method in a file that has them.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\bDCHECK_CALLED_ON_VALID_(?:SEQUENCE|THREAD)\\b"
+    content_patterns: "\\b(?:SEQUENCE|THREAD)_CHECKER\\s*\\("
+    content_patterns: "\\bDETACH_FROM_(?:SEQUENCE|THREAD)\\b"
+    diff_patterns: "^-.*\\bDCHECK_CALLED_ON_VALID_(?:SEQUENCE|THREAD)\\b"
+    ast_patterns: "{kind: function_definition, has: {field: declarator, has: {field: declarator, kind: qualified_identifier}}, not: {has: {kind: call_expression, regex: '^DCHECK_CALLED_ON_VALID_(?:SEQUENCE|THREAD)\\b', stopBy: end}}, inside: {kind: translation_unit, has: {kind: call_expression, regex: '^DCHECK_CALLED_ON_VALID_(?:SEQUENCE|THREAD)\\b', stopBy: end}}}"
+    rules: "docs/knowledge_base/rules/cxx_memory/sequence-checker-on-all-methods.md"
+  }
+  # Touches a `KeyedService`, its `Shutdown()` or destructor, or its observations.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\bKeyedService\\b"
+    content_patterns: "\\bShutdown\\s*\\(\\s*\\)"
+    content_patterns: "\\b\\w+Service::~\\w+Service\\s*\\("
+    ast_patterns: "{kind: field_declaration, regex: '\\b(?:ScopedObservation|ScopedMultiSourceObservation|PrefChangeRegistrar)\\b', inside: {kind: class_specifier, has: {kind: base_class_clause, regex: '\\bKeyedService\\b'}, stopBy: end}}"
+    ast_patterns: "{kind: function_definition, has: {field: declarator, regex: '(?:^|::)Shutdown\\s*\\('}}"
+    ast_patterns: "{kind: call_expression, has: {field: function, regex: '(?:(?:\\.|->)(?:Observe|AddObserver|AddObservation)|registrar\\w*_?(?:\\.|->)Add)$'}, inside: {kind: function_definition, has: {field: declarator, regex: '^\\w*Service::'}, stopBy: end}}"
+    rules: "docs/knowledge_base/rules/cxx_memory/keyed-service-cleanup-in-shutdown.md"
+    rules: "docs/knowledge_base/rules/cxx_memory/unsubscribe-observers-in-keyed-service-shutdown.md"
+  }
+  # Uses `BrowserContext` in a component.
+  capability_groups {
+    path_expression: "components/.*\\.(?:cc|h|mm)"
+    path_expression: "patches/components-[^/]*\\.(?:cc|h|mm)\\.patch"
+    content_patterns: "\\bBrowserContext\\b"
+    rules: "docs/knowledge_base/rules/cxx_memory/no-browser-context-in-component-services.md"
+  }
+  # Defines a global or static object of a type with a non-trivial destructor.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "^\\+?(?:static\\s+)?(?:const\\s+)?(?:std|base)::(?:map|multimap|set|multiset|vector|list|deque|string|u16string|wstring|unordered_map|unordered_set|flat_map|flat_set)\\b[^;(]*\\s\\w+\\s*(?:=|\\{|;)"
+    content_patterns: "^\\+?\\s*static\\s+(?:const\\s+)?(?:std|base)::(?:map|multimap|set|multiset|vector|list|deque|string|u16string|wstring|unordered_map|unordered_set|flat_map|flat_set)\\b[^;(]*\\s\\w+\\s*(?:=|\\{|;)"
+    content_patterns: "\\bNoDestructor<"
+    rules: "docs/knowledge_base/rules/cxx_memory/use-no-destructor-for-non-trivial-statics.md"
+  }
+  # Posts to the thread pool, creates one of its task runners, or writes task traits.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\bThreadPool::\\w+"
+    content_patterns: "\\bMayBlock\\s*\\(\\s*\\)"
+    content_patterns: "\\bTaskPriority::\\w+"
+    content_patterns: "\\bTaskShutdownBehavior::\\w+"
+    rules: "docs/knowledge_base/rules/cxx_memory/consider-sequence-bound-for-blocking-objects.md"
+    rules: "docs/knowledge_base/rules/cxx_memory/explicit-task-traits-for-thread-pool-tasks.md"
+  }
+  # Uses the synchronous `OSCrypt` interface.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\bOSCrypt::\\w+"
+    content_patterns: "components/os_crypt/sync/"
+    rules: "docs/knowledge_base/rules/cxx_memory/no-sync-os-crypt-in-new-code.md"
+  }
+  # Declares a callback member in a component.
+  capability_groups {
+    path_expression: "components/.*\\.(?:cc|h|mm)"
+    path_expression: "patches/components-[^/]*\\.(?:cc|h|mm)\\.patch"
+    content_patterns: "^\\+?\\s*(?:base::)?\\w*(?:Callback|Closure)\\b[^;]*\\s\\w+_\\s*(?:;|=|\\{)"
+    rules: "docs/knowledge_base/rules/cxx_memory/delegate-over-callbacks-for-platform-behavior.md"
+  }
+  # Stores `WebContents` pointers.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\b(?:vector|set|map|list|deque|queue|flat_set|flat_map|unordered_map|unordered_set|optional)<\\s*(?:raw_ptr<\\s*)?(?:const\\s+)?(?:content::)?WebContents\\b"
+    content_patterns: "^\\+?\\s*(?:raw_ptr<\\s*)?(?:const\\s+)?(?:content::)?WebContents\\s*\\*?\\s*>?\\s+\\w+_\\s*(?:;|=|\\{)"
+    rules: "docs/knowledge_base/rules/cxx_memory/tab-handle-over-raw-web-contents.md"
+  }
+  # Takes a URL in a mojom interface.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.mojom"
+    path_expression: "patches/[^/]*\\.mojom\\.patch"
+    content_patterns: "\\burl\\.mojom\\.Url\\b"
+    content_patterns: "\\bstring\\s+\\w*(?:url|Url|URL)\\w*\\b"
+    rules: "docs/knowledge_base/rules/cxx_memory/restrict-url-parameters-in-mojom.md"
+  }
+  # Writes an empty lambda or a `FunctionRef`.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\[\\]\\s*\\([^)]*\\)\\s*\\{\\s*\\}"
+    content_patterns: "\\bFunctionRef<"
+    rules: "docs/knowledge_base/rules/cxx_memory/no-op-lambda-for-function-ref-params.md"
+  }
+  # Calls a lookup that can return `nullptr`.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\b(?:GetTask|FindWebContentsById|FromWebContents|FromBrowserContext|GetTabById|GetWindowById)\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx_memory/null-check-nullable-return-values.md"
+  }
+  # Moves from a variable.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\bstd::move\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx_memory/no-use-after-std-move.md"
+  }
+  # Takes or returns a smart pointer by `const` reference.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\bconst\\s+(?:std::unique_ptr|scoped_refptr)<[^;]*>\\s*&"
+    rules: "docs/knowledge_base/rules/cxx_memory/no-smart-pointer-const-ref-params.md"
+  }
+  # Defines or creates a reference-counted class.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\bRefCounted(?:ThreadSafe|DeleteOnSequence)?<"
+    content_patterns: "\\bMakeRefCounted<"
+    rules: "docs/knowledge_base/rules/cxx_memory/prefer-single-ownership-over-ref-counting.md"
+  }
+  # Keeps a pointer or reference to a pref value.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "&\\s*[^;&]*\\bGet(?:Dict|List|Value)\\s*\\("
+    content_patterns: "\\bGet(?:UserPref|DefaultPref|Recommended)Value\\s*\\("
+    content_patterns: "\\b(?:raw_ptr|raw_ref)<\\s*const\\s+base::Value\\b"
+    content_patterns: "^\\+?\\s*const\\s+base::Value(?:::Dict|::List)?\\s*[*&]\\s*\\w+_\\s*(?:;|=|\\{)"
+    rules: "docs/knowledge_base/rules/cxx_memory/no-pointers-to-pref-values.md"
+  }
+  # Declares a member holding views, pointers or observations into other objects.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\b(?:string_view|u16string_view|span|raw_span|raw_ptr|raw_ref|ScopedObservation|ScopedMultiSourceObservation)\\b[^;]*\\s\\w+_\\s*(?:;|=|\\{)"
+    rules: "docs/knowledge_base/rules/cxx_memory/declare-members-in-dependency-order.md"
+  }
+  # Uses `thread_local` or a thread-local helper.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\bthread_local\\b"
+    content_patterns: "\\bThreadLocal(?:OwnedPointer|Pointer|Boolean)\\b"
+    rules: "docs/knowledge_base/rules/cxx_memory/sequence-local-storage-over-thread-local.md"
+    rules: "docs/knowledge_base/rules/cxx_memory/thread-local-requirements.md"
+  }
+  # Declares a `T*` or `T&` field.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    ast_patterns: "{kind: field_declaration, has: {field: declarator, any: [{kind: pointer_declarator}, {kind: reference_declarator}]}, not: {any: [{has: {kind: function_declarator, stopBy: end}}, {has: {kind: storage_class_specifier}}]}}"
+    rules: "docs/knowledge_base/rules/cxx_memory/raw-ptr-or-raw-ref-for-pointer-fields.md"
+    rules: "docs/knowledge_base/rules/cxx_memory/const-raw-ref-for-non-null-fields.md"
+    rules: "docs/knowledge_base/rules/cxx_memory/no-raw-ptr-for-plugin-exempt-pointers.md"
+  }
+  # Declares a `T*` or `T&` member, in a patch or plaster.
+  capability_groups {
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "^\\+?\\s*(?:const\\s+)?(?:\\w+::)*\\w+(?:<[^;]*>)?\\s*[*&]\\s*(?:const\\s+)?\\w+_\\s*(?:;|=|\\{)"
+    rules: "docs/knowledge_base/rules/cxx_memory/raw-ptr-or-raw-ref-for-pointer-fields.md"
+    rules: "docs/knowledge_base/rules/cxx_memory/const-raw-ref-for-non-null-fields.md"
+    rules: "docs/knowledge_base/rules/cxx_memory/no-raw-ptr-for-plugin-exempt-pointers.md"
+  }
+  # Declares a `raw_ptr` or `raw_ref` field.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "^\\+?\\s*(?:const\\s+)?raw_(?:ptr|ref)<[^;]*>\\s+\\w+_\\s*(?:;|=|\\{)"
+    ast_patterns: "{kind: field_declaration, regex: '^\\s*(?:const\\s+)?raw_(?:ptr|ref)<'}"
+    rules: "docs/knowledge_base/rules/cxx_memory/const-raw-ref-for-non-null-fields.md"
+  }
+  # Wraps a type the Clang plugin exempts in `raw_ptr`.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\braw_ptr<\\s*(?:const\\s+)?(?:char|wchar_t|char16_t)\\s*>"
+    content_patterns: "\\braw_ptr<[^;]*\\(\\s*\\*\\s*\\)"
+    content_patterns: "\\braw_ptr<\\s*(?:const\\s+)?(?:NS|UI|WK|CF)\\w+"
+    rules: "docs/knowledge_base/rules/cxx_memory/no-raw-ptr-for-plugin-exempt-pointers.md"
+  }
+  # Uses `CHECK_DEREF`, or initializes a member from a dereferenced call.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\bCHECK_DEREF\\s*\\("
+    content_patterns: "\\b\\w+_\\s*\\(\\s*\\*\\s*[\\w.\\->]+\\("
+    rules: "docs/knowledge_base/rules/cxx_memory/check-deref-only-for-nullable-pointers.md"
+  }
+  # Excludes a field from `raw_ptr`.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\bRAW_PTR_EXCLUSION\\b"
+    rules: "docs/knowledge_base/rules/cxx_memory/raw-ptr-exclusion-only-for-listed-cases.md"
+    rules: "docs/knowledge_base/rules/cxx_memory/no-raw-ptr-for-plugin-exempt-pointers.md"
+  }
+  # Uses `raw_ptr` or `raw_ref` in Blink renderer code.
+  capability_groups {
+    path_expression: "(?:chromium_src/)?third_party/blink/renderer/.*\\.(?:cc|h|mm)"
+    path_expression: "patches/third_party-blink-renderer-[^/]*\\.(?:cc|h)\\.patch"
+    content_patterns: "\\braw_(?:ptr|ref|span)<"
+    rules: "docs/knowledge_base/rules/cxx_memory/no-raw-ptr-outside-partition-alloc.md"
+  }
+  # Points a `raw_ptr` or `raw_ref` at a garbage-collected object.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\braw_(?:ptr|ref|span)<\\s*(?:const\\s+)?(?:v8|cppgc|blink)::"
+    ast_patterns: "{kind: field_declaration, regex: '\\braw_(?:ptr|ref|span)<', inside: {kind: class_specifier, has: {kind: base_class_clause, regex: '\\bGarbageCollected(?:Mixin)?\\b'}, stopBy: end}}"
+    rules: "docs/knowledge_base/rules/cxx_memory/no-raw-ptr-outside-partition-alloc.md"
+  }
+  # Binds a view, or binds in a function taking one.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\bBind(?:Once|Repeating)\\s*\\([^;]*\\b(?:base::(?:raw_)?span|std::(?:u16|w)?string_view|base::as_(?:byte_)?span|base::as_bytes)\\s*[<({]"
+    ast_patterns: "{kind: call_expression, has: {field: function, regex: '^(?:base::)?Bind(?:Once|Repeating)$'}, inside: {kind: function_definition, has: {field: declarator, has: {field: parameters, regex: '\\b(?:std::(?:u16|w)?string_view|base::(?:raw_)?span|base::cstring_view)\\b'}}, stopBy: end}}"
+    rules: "docs/knowledge_base/rules/cxx_memory/no-view-types-bound-into-callbacks.md"
+  }
+  # Takes or returns a smart pointer.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\b(?:std::unique_ptr|scoped_refptr)<[^;]*>\\s*&{0,2}\\s*\\w+\\s*[,)]"
+    content_patterns: "^\\+?\\s*(?:static\\s+|virtual\\s+)?(?:const\\s+)?(?:std::unique_ptr|scoped_refptr)<[^;=]*>\\s*&?\\s+(?:\\w+::)*\\w+\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx_memory/pointer-types-express-ownership.md"
+    rules: "docs/knowledge_base/rules/cxx_memory/take-moveable-values-by-value.md"
+  }
+  # Takes ownership of a raw pointer.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\.reset\\(\\s*[a-z_]\\w*\\s*\\)"
+    content_patterns: "\\bWrapUnique\\s*\\(\\s*[a-z_]\\w*\\s*\\)"
+    content_patterns: "\\bdelete\\s+[a-z_]\\w*\\s*;"
+    rules: "docs/knowledge_base/rules/cxx_memory/pointer-types-express-ownership.md"
+  }
+  # Moves a value in a `return`.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\breturn\\s+std::move\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx_memory/no-std-move-on-return.md"
+  }
+  # Manages a Windows `HANDLE` or Core Foundation object.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "patches/[^/]*\\.(?:cc|h|mm)\\.patch"
+    path_expression: "rewrite/.*\\.(?:cc|h|mm)\\.yaml"
+    content_patterns: "\\bHANDLE\\b"
+    content_patterns: "\\bCloseHandle\\s*\\("
+    content_patterns: "\\bCFRelease\\s*\\("
+    content_patterns: "\\bCF[A-Z]\\w*Ref\\b"
+    content_patterns: "\\bbase::mac::Scoped\\w+"
+    rules: "docs/knowledge_base/rules/cxx_memory/platform-scopers-for-os-handles.md"
+  }
+}

@@ -1,0 +1,60 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# The rules of docs/best-practices/plaster.md. See
+# docs/knowledge_base/README.md for the fields.
+agentic_review {
+  # The match of a regex substitution.
+  capability_groups {
+    path_expression: "rewrite/.*\\.yaml"
+    content_patterns: "^\\s*(?:-\\s+)?(?:re_)?pattern:"
+    rules: "docs/knowledge_base/rules/plaster/plaster-patterns-match-specific-context.md"
+    rules: "docs/knowledge_base/rules/plaster/plaster-anchors-wildcard-incidental-detail.md"
+  }
+  # The number of matches a substitution expects.
+  capability_groups {
+    path_expression: "rewrite/.*\\.yaml"
+    content_patterns: "^\\s*(?:-\\s+)?count:"
+    rules: "docs/knowledge_base/rules/plaster/plaster-patterns-match-specific-context.md"
+  }
+  # A literal match.
+  capability_groups {
+    path_expression: "rewrite/.*\\.yaml"
+    content_patterns: "^\\s*(?:-\\s+)?pattern:"
+    rules: "docs/knowledge_base/rules/plaster/plaster-pattern-only-for-replaced-text.md"
+  }
+  # A regular expression match.
+  capability_groups {
+    path_expression: "rewrite/.*\\.yaml"
+    content_patterns: "^\\s*(?:-\\s+)?re_pattern:"
+    rules: "docs/knowledge_base/rules/plaster/plaster-plain-pattern-for-literal-anchors.md"
+  }
+  # A regex substitution, where an AST rewriter may fit.
+  capability_groups {
+    path_expression: "rewrite/.*\\.yaml"
+    content_patterns: "^\\s*(?:-\\s+)?regex:"
+    rules: "docs/knowledge_base/rules/plaster/plaster-prefer-ast-rewriters.md"
+  }
+  # Macros with a body, and #undef, in a C++ override.
+  capability_groups {
+    path_expression: "chromium_src/.*\\.(?:cc|h|mm)"
+    content_patterns: "^\\s*#\\s*define\\s+\\w+(?:\\(|\\s*\\\\|\\s+\\S)"
+    content_patterns: "^\\s*#\\s*undef\\s"
+    rules: "docs/knowledge_base/rules/plaster/no-new-macros-editing-upstream-code.md"
+  }
+  # Macros a patch adds to upstream C++.
+  capability_groups {
+    path_expression: "patches/.*\\.(?:cc|h|mm)\\.patch"
+    content_patterns: "^\\+\\s*#\\s*define\\s"
+    rules: "docs/knowledge_base/rules/plaster/no-new-macros-editing-upstream-code.md"
+  }
+  # Renames of upstream code to _ChromiumImpl.
+  capability_groups {
+    path_expression: "chromium_src/.*\\.(?:cc|h|mm)"
+    path_expression: "rewrite/.*\\.yaml"
+    content_patterns: "_ChromiumImpl\\b"
+    rules: "docs/knowledge_base/rules/plaster/no-chromium-impl-rename-to-wrap.md"
+  }
+}

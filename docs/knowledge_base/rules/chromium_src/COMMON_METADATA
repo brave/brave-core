@@ -1,0 +1,176 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# The rules of docs/best-practices/chromium-src-overrides.md. See
+# docs/knowledge_base/README.md for the fields.
+agentic_review {
+  # A C++ override re-including its upstream source: a new override.
+  capability_groups {
+    path_expression: "chromium_src/.*\\.(?:cc|h|mm)"
+    content_patterns: "^\\s*#\\s*(?:include|import)\\s+<\\w[\\w.+-]*(?:/[\\w.+-]+)+>"
+    content_patterns: "^\\s*#\\s*include\\s+\"src/"
+    rules: "docs/knowledge_base/rules/chromium_src/keep-changes-inside-brave-core.md"
+  }
+  # A TypeScript override importing its upstream module, or a Lit mangler.
+  capability_groups {
+    path_expression: "chromium_src/.*\\.ts"
+    content_patterns: "-chromium\\.js['\"]"
+    content_patterns: "^\\s*mangle\\("
+    rules: "docs/knowledge_base/rules/chromium_src/keep-changes-inside-brave-core.md"
+  }
+  # A new patch file.
+  capability_groups {
+    path_expression: "patches/.*\\.patch"
+    content_patterns: "^diff --git "
+    rules: "docs/knowledge_base/rules/chromium_src/keep-changes-inside-brave-core.md"
+  }
+  # A new plaster substitution.
+  capability_groups {
+    path_expression: "rewrite/.*\\.yaml"
+    content_patterns: "^\\s*-\\s+[a-z_]+:"
+    rules: "docs/knowledge_base/rules/chromium_src/keep-changes-inside-brave-core.md"
+  }
+  # Lines a patch adds to upstream C++.
+  capability_groups {
+    path_expression: "patches/.*\\.(?:cc|h|mm)\\.patch"
+    content_patterns: "^\\+(?:[^+]|\\+[^+]|\\+\\+[^+ ])"
+    rules: "docs/knowledge_base/rules/chromium_src/prefer-chromium-src-override-over-patch.md"
+    rules: "docs/knowledge_base/rules/chromium_src/prefer-subclassing-over-patching.md"
+    rules: "docs/knowledge_base/rules/chromium_src/replace-disabled-classes-with-chromium-src-stubs.md"
+    rules: "docs/knowledge_base/rules/chromium_src/patch-internal-linkage-upstream-functions.md"
+  }
+  # Lines a patch adds to upstream Java.
+  capability_groups {
+    path_expression: "patches/.*\\.java\\.patch"
+    content_patterns: "^\\+(?:[^+]|\\+[^+]|\\+\\+[^+ ])"
+    rules: "docs/knowledge_base/rules/chromium_src/prefer-subclassing-over-patching.md"
+  }
+  # Lines a patch adds to upstream sources that chromium_src can override.
+  capability_groups {
+    path_expression: "patches/.*\\.(?:ts|js|html|css|mojom|py)\\.patch"
+    content_patterns: "^\\+(?:[^+]|\\+[^+]|\\+\\+[^+ ])"
+    rules: "docs/knowledge_base/rules/chromium_src/prefer-chromium-src-override-over-patch.md"
+  }
+  # Includes a patch adds to upstream C++.
+  capability_groups {
+    path_expression: "patches/.*\\.(?:cc|h|mm)\\.patch"
+    content_patterns: "^\\+\\s*#\\s*(?:include|import)\\b"
+    rules: "docs/knowledge_base/rules/chromium_src/no-includes-added-by-patches.md"
+  }
+  # DISABLED_ test names in a C++ override.
+  capability_groups {
+    path_expression: "chromium_src/.*\\.(?:cc|h|mm)"
+    content_patterns: "\\bDISABLED_\\w+"
+    rules: "docs/knowledge_base/rules/chromium_src/no-define-to-disable-upstream-tests.md"
+  }
+  # Function definitions of 20 lines or more in a C++ override, which may be
+  # copies of upstream code.
+  capability_groups {
+    path_expression: "chromium_src/.*\\.(?:cc|h|mm)"
+    ast_patterns: "{kind: function_definition, regex: '(?:\\n[^\\n]*){20,}'}"
+    rules: "docs/knowledge_base/rules/chromium_src/no-duplicated-upstream-code-in-overrides.md"
+  }
+  # Includes of brave/chromium_src/ paths in a C++ override.
+  capability_groups {
+    path_expression: "chromium_src/.*\\.(?:cc|h|mm)"
+    content_patterns: "^\\s*#\\s*(?:include|import)\\s+[\"<]brave/chromium_src/"
+    rules: "docs/knowledge_base/rules/chromium_src/include-original-header-path-in-overrides.md"
+  }
+  # The virtual keyword in a C++ override, as a macro injects it.
+  capability_groups {
+    path_expression: "chromium_src/.*\\.(?:cc|h|mm)"
+    content_patterns: "\\bvirtual\\b"
+    rules: "docs/knowledge_base/rules/chromium_src/use-make-virtual-not-define-virtual.md"
+  }
+  # The virtual keyword a patch adds to upstream C++.
+  capability_groups {
+    path_expression: "patches/.*\\.(?:cc|h|mm)\\.patch"
+    content_patterns: "^\\+.*\\bvirtual\\b"
+    rules: "docs/knowledge_base/rules/chromium_src/use-make-virtual-not-define-virtual.md"
+  }
+  # A macro redefining final.
+  capability_groups {
+    path_expression: "chromium_src/.*\\.(?:cc|h|mm)"
+    content_patterns: "^\\s*#\\s*(?:define|undef)\\s+final\\b"
+    rules: "docs/knowledge_base/rules/chromium_src/no-define-final.md"
+  }
+  # Any change to a C++ override, whose purpose must be explained.
+  capability_groups {
+    path_expression: "chromium_src/.*\\.(?:cc|h|mm)"
+    rules: "docs/knowledge_base/rules/chromium_src/explain-chromium-src-overrides.md"
+  }
+  # Quoted includes in a C++ override, which the upstream target must depend
+  # on.
+  capability_groups {
+    path_expression: "chromium_src/.*\\.(?:cc|h|mm)"
+    content_patterns: "^\\s*#\\s*(?:include|import)\\s+\""
+    rules: "docs/knowledge_base/rules/chromium_src/verify-gn-deps-for-chromium-src-includes.md"
+  }
+  # Brave headers included by a C++ override.
+  capability_groups {
+    path_expression: "chromium_src/.*\\.(?:cc|h|mm)"
+    content_patterns: "^\\s*#\\s*(?:include|import)\\s+[\"<]brave/"
+    rules: "docs/knowledge_base/rules/chromium_src/no-brave-deps-in-chromium-src.md"
+  }
+  # //brave/ dependencies given to upstream GN files.
+  capability_groups {
+    path_expression: "patches/.*(?:BUILD\\.gn|\\.gni)\\.patch"
+    path_expression: "rewrite/.*(?:BUILD\\.gn|\\.gni)\\.yaml"
+    path_expression: "chromium_src/.*(?:BUILD\\.gn|\\.gni)"
+    content_patterns: "\"//brave\\b"
+    rules: "docs/knowledge_base/rules/chromium_src/no-brave-deps-in-chromium-src.md"
+  }
+  # nullptr assignments in a C++ override.
+  capability_groups {
+    path_expression: "chromium_src/.*\\.(?:cc|h|mm)"
+    content_patterns: "(?:^|[^=!<>])=\\s*nullptr\\b"
+    rules: "docs/knowledge_base/rules/chromium_src/comment-non-obvious-nullptr-assignments.md"
+  }
+  # Brave values and upstream enum bounds in a C++ override.
+  capability_groups {
+    path_expression: "chromium_src/.*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:kMaxValue|k[A-Z]\\w*Count|k[A-Z]\\w*Last|[A-Z][A-Z0-9_]*_(?:COUNT|LAST|MAX|MAX_VALUE))\\b"
+    content_patterns: "\\bkBrave\\w*\\s*=[^=]"
+    rules: "docs/knowledge_base/rules/chromium_src/static-assert-after-upstream-enum-values.md"
+  }
+  # Feature entries added to runtime_enabled_features.json5.
+  capability_groups {
+    path_expression: "patches/(?:.*-)?runtime_enabled_features\\.json5\\.patch"
+    path_expression: "rewrite/third_party/blink/renderer/platform/runtime_enabled_features\\.json5\\.yaml"
+    content_patterns: "\\bname:\\s*\""
+    rules: "docs/knowledge_base/rules/chromium_src/blink-runtime-features-in-override-json5.md"
+  }
+  # Macros in a C++ source override, which may target an upstream function
+  # with internal linkage.
+  capability_groups {
+    path_expression: "chromium_src/.*\\.(?:cc|mm)"
+    content_patterns: "^\\s*#\\s*define\\s+\\w+(?:\\(|\\s*\\\\|\\s+\\S)"
+    rules: "docs/knowledge_base/rules/chromium_src/patch-internal-linkage-upstream-functions.md"
+  }
+  # Upstream string IDs redefined by a C++ override.
+  capability_groups {
+    path_expression: "chromium_src/.*\\.(?:cc|h|mm)"
+    content_patterns: "^\\s*#\\s*(?:define|undef)\\s+IDS_\\w+"
+    rules: "docs/knowledge_base/rules/chromium_src/match-placeholders-in-replacement-strings.md"
+    rules: "docs/knowledge_base/rules/chromium_src/guard-overridden-string-ids.md"
+  }
+  # Fallbacks to upstream code in a C++ override: ChromiumImpl references, and
+  # methods calling a qualified method of their own name.
+  capability_groups {
+    path_expression: "chromium_src/.*\\.(?:cc|h|mm)"
+    content_patterns: "\\bChromiumImpl\\b"
+    content_patterns: "_ChromiumImpl\\b"
+    ast_patterns: "{kind: call_expression, all: ["
+                  "{has: {field: function, kind: qualified_identifier, "
+                  "has: {field: name, pattern: $M}}}, "
+                  "{inside: {kind: function_definition, stopBy: end, "
+                  "has: {kind: function_declarator, stopBy: end, "
+                  "has: {field: declarator, any: ["
+                  "{kind: qualified_identifier, has: {field: name, pattern: $M}}, "
+                  "{kind: field_identifier, pattern: $M}, "
+                  "{kind: identifier, pattern: $M}]}}}}]}"
+    rules: "docs/knowledge_base/rules/chromium_src/fallback-calls-correct-base-class.md"
+  }
+}

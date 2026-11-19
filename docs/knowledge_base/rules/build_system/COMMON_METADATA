@@ -1,0 +1,332 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# The rules of docs/best-practices/build-system.md. See
+# docs/knowledge_base/README.md for the fields.
+agentic_review {
+  # Git dependency URLs and revisions in DEPS.
+  capability_groups {
+    path_expression: "(?:.*/)?DEPS|patches/DEPS\\.patch|rewrite/DEPS\\.yaml"
+    content_patterns: "https?://[^'\"\\s]+@"
+    content_patterns: "['\"]\\w*revision['\"]\\s*:"
+    rules: "docs/knowledge_base/rules/build_system/pin-deps-to-commit-hashes.md"
+  }
+  # Dependencies on Brave-owned repositories in DEPS.
+  capability_groups {
+    path_expression: "(?:.*/)?DEPS|patches/DEPS\\.patch|rewrite/DEPS\\.yaml"
+    content_patterns: "github\\.com/brave[\\w-]*/"
+    rules: "docs/knowledge_base/rules/build_system/no-separate-feature-repositories.md"
+  }
+  # Include rules in DEPS files.
+  capability_groups {
+    path_expression: "(?:.*/)?DEPS"
+    content_patterns: "^\\s*['\"][+!-]"
+    content_patterns: "\\b(?:specific_)?include_rules\\b"
+    rules: "docs/knowledge_base/rules/build_system/include-rules-for-common-includes.md"
+    rules: "docs/knowledge_base/rules/build_system/deps-allowlist-matches-include-paths.md"
+  }
+  # Scripts run from GN actions or DEPS hooks out of brave/script.
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn|(?:.*/)?[^/]*\\.gni|(?:.*/)?DEPS"
+    content_patterns: "brave/script/"
+    rules: "docs/knowledge_base/rules/build_system/keep-scripts-near-their-use.md"
+  }
+  # New scripts in brave/script.
+  capability_groups {
+    path_expression: "script/[^/]+\\.(?:py|sh|js|mjs|cjs|ts)"
+    content_patterns: "^#!"
+    content_patterns: "^(?:import|from)\\s"
+    content_patterns: "\\brequire\\s*\\("
+    rules: "docs/knowledge_base/rules/build_system/keep-scripts-near-their-use.md"
+  }
+  # Shell and Node.js scripts, and GN actions or DEPS hooks running them.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:sh|bash)|(?:script|build|tools)/.*\\.(?:js|mjs|cjs)"
+    content_patterns: "^#!"
+    content_patterns: "^import\\s"
+    content_patterns: "\\brequire\\s*\\("
+    rules: "docs/knowledge_base/rules/build_system/build-scripts-in-python.md"
+  }
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn|(?:.*/)?[^/]*\\.gni|(?:.*/)?DEPS"
+    content_patterns: "\\.(?:sh|bash|js|mjs|cjs)['\"]"
+    content_patterns: "['\"](?:node|npm|npx|bash|sh)['\"]"
+    rules: "docs/knowledge_base/rules/build_system/build-scripts-in-python.md"
+  }
+  # Command-line parsing in Python scripts.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.py"
+    content_patterns: "\\bsys\\.argv\\b"
+    rules: "docs/knowledge_base/rules/build_system/python-build-scripts-use-argparse.md"
+  }
+  # Entry points of Python scripts.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.py"
+    content_patterns: "__name__\\s*==\\s*['\"]__main__['\"]"
+    content_patterns: "^\\s*(?:sys\\.exit\\()?main\\(\\)\\)?\\s*$"
+    rules: "docs/knowledge_base/rules/build_system/python-build-scripts-exit-with-main.md"
+  }
+  # Files opened or written by Python scripts.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.py"
+    content_patterns: "\\bopen\\s*\\("
+    content_patterns: "\\.write_text\\s*\\("
+    rules: "docs/knowledge_base/rules/build_system/python-file-writes-use-lf-newline.md"
+  }
+  # Copies of license files.
+  capability_groups {
+    path_expression: "(?:.*/)?(?:LICENSE|LICENCE|COPYING|NOTICE)(?:[._-][^/]*)?"
+    rules: "docs/knowledge_base/rules/build_system/no-duplicate-license-files.md"
+  }
+  # JSON data read from disk in C++.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bReadFileToString\\s*\\("
+    content_patterns: "\\bJSONFileValueDeserializer\\b"
+    content_patterns: "\\.json\""
+    rules: "docs/knowledge_base/rules/build_system/json-resources-in-grd.md"
+  }
+  # Resource ID ranges.
+  capability_groups {
+    path_expression: "(?:.*/)?resource_ids\\.spec|rewrite/tools/gritsettings/resource_ids\\.spec\\.yaml"
+    content_patterns: "\\[\\s*\\d+"
+    rules: "docs/knowledge_base/rules/build_system/bump-resource-ids-by-five.md"
+  }
+  # Visibility and //brave/ deps added to Chromium GN files.
+  capability_groups {
+    path_expression: "patches/.*(?:BUILD\\.gn|\\.gni)\\.patch|rewrite/.*(?:BUILD\\.gn|\\.gni)\\.yaml|chromium_src/.*(?:BUILD\\.gn|\\.gni)"
+    content_patterns: "\\bvisibility\\b"
+    content_patterns: "//brave/"
+    rules: "docs/knowledge_base/rules/build_system/brave-deps-not-chromium-visibility-edits.md"
+  }
+  # New GN args declared in declare_args().
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn|(?:.*/)?[^/]*\\.gni"
+    ast_patterns: "{kind: assignment_statement, inside: {kind: primary_expression, stopBy: end, follows: {kind: primary_expression, has: {kind: call_expression, regex: '^declare_args\\b'}}}}"
+    rules: "docs/knowledge_base/rules/build_system/reuse-existing-gn-args.md"
+    rules: "docs/knowledge_base/rules/build_system/enable-brave-buildflag-naming.md"
+  }
+  # Buildflags exposed to C++ through buildflag_header().
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn|(?:.*/)?[^/]*\\.gni"
+    content_patterns: "\\bbuildflag_header\\s*\\("
+    content_patterns: "\"[A-Z][A-Z0-9_]*=\\$"
+    rules: "docs/knowledge_base/rules/build_system/validate-build-flags-in-both-states.md"
+  }
+  # Channel and official-build conditions in GN.
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn|(?:.*/)?[^/]*\\.gni"
+    content_patterns: "\\bbrave_channel\\b"
+    content_patterns: "\\bis_official_build\\b"
+    content_patterns: "\\bis_release_channel\\b"
+    rules: "docs/knowledge_base/rules/build_system/no-compound-buildflags.md"
+  }
+  # Source files of other directories listed in a GN target.
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn|(?:.*/)?[^/]*\\.gni"
+    content_patterns: "\"(?:[^\"/:$]+/)+[^\"/]+\\.(?:cc|h|mm)\""
+    rules: "docs/knowledge_base/rules/build_system/group-gn-sources-with-their-deps.md"
+  }
+  # Conditional blocks in GN.
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn|(?:.*/)?[^/]*\\.gni"
+    content_patterns: "^\\s*(?:\\}\\s*else\\s+)?if\\s*\\("
+    rules: "docs/knowledge_base/rules/build_system/one-gn-guard-per-target.md"
+  }
+  # Top-level conditionals and asserts of a BUILD.gn file.
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn"
+    content_patterns: "^if\\s*\\("
+    content_patterns: "^assert\\s*\\("
+    rules: "docs/knowledge_base/rules/build_system/assert-feature-flag-in-feature-build-files.md"
+  }
+  # Asserts, and flags defined from other flags, in GN.
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn|(?:.*/)?[^/]*\\.gni"
+    content_patterns: "\\bassert\\s*\\("
+    content_patterns: "^\\s*(?:enable_\\w+|\\w+_enabled)\\s*=.*\\b(?:enable_\\w+|\\w+_enabled)\\b"
+    rules: "docs/knowledge_base/rules/build_system/assert-dependent-feature-flags.md"
+  }
+  # OS guards in GN, and sources or deps added under one.
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn|(?:.*/)?[^/]*\\.gni"
+    content_patterns: "^\\s*(?:\\}\\s*else\\s+)?if\\s*\\(.*\\bis_[a-z]"
+    ast_patterns: "{kind: assignment_statement, regex: '^(?:public_)?(?:deps|sources)\\s*\\+?=', inside: {kind: if_statement, stopBy: end, has: {field: condition, regex: '\\bis_[a-z]'}}}"
+    rules: "docs/knowledge_base/rules/build_system/feature-guards-not-os-guards.md"
+    rules: "docs/knowledge_base/rules/build_system/no-platform-guards-around-feature-deps.md"
+  }
+  # OS guards in C++.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "^\\s*#\\s*(?:el)?if\\b.*\\bBUILDFLAG\\(IS_"
+    rules: "docs/knowledge_base/rules/build_system/feature-guards-not-os-guards.md"
+  }
+  # !is_ios guards in GN, and what is added under them.
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn|(?:.*/)?[^/]*\\.gni"
+    content_patterns: "!\\s*is_ios\\b"
+    ast_patterns: "{kind: assignment_statement, inside: {kind: if_statement, stopBy: end, has: {field: condition, regex: '!\\s*is_ios\\b'}}}"
+    rules: "docs/knowledge_base/rules/build_system/use-blink-for-content-layer-guards.md"
+  }
+  # !BUILDFLAG(IS_IOS) guards in C++.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "!\\s*BUILDFLAG\\(IS_IOS\\)"
+    rules: "docs/knowledge_base/rules/build_system/use-blink-for-content-layer-guards.md"
+  }
+  # Deps appended inside GN conditionals.
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn|(?:.*/)?[^/]*\\.gni"
+    content_patterns: "[:/]buildflags\""
+    ast_patterns: "{kind: assignment_statement, regex: '^(?:public_)?deps\\s*\\+=', inside: {kind: if_statement, stopBy: end}}"
+    rules: "docs/knowledge_base/rules/build_system/unconditional-buildflags-dep.md"
+    rules: "docs/knowledge_base/rules/build_system/no-unrelated-deps-in-guards.md"
+  }
+  # Runtime feature flags written as GN conditions.
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn|(?:.*/)?[^/]*\\.gni"
+    content_patterns: "^\\s*(?:\\}\\s*else\\s+)?if\\s*\\(.*\\bk[A-Z]\\w*"
+    content_patterns: "\\bFeatureList\\b|\\bfeatures::"
+    rules: "docs/knowledge_base/rules/build_system/no-runtime-feature-flags-in-gn.md"
+  }
+  # Runtime feature flags declared or checked in C++.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bBASE_(?:DECLARE_)?FEATURE\\s*\\("
+    content_patterns: "\\bFeatureList::IsEnabled\\s*\\("
+    rules: "docs/knowledge_base/rules/build_system/no-redundant-feature-flag-on-buildflag-code.md"
+  }
+  # Runtime feature checks and preprocessor blocks in WebUI code.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:ts|tsx|js|html)"
+    content_patterns: "\\bloadTimeData\\.(?:getBoolean|valueExists)\\s*\\("
+    content_patterns: "<if expr="
+    rules: "docs/knowledge_base/rules/build_system/webui-preprocessor-for-feature-code.md"
+  }
+  # Test files and test targets listed in GN.
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn|(?:.*/)?[^/]*\\.gni"
+    content_patterns: "_(?:unit|browser)?tests?\\.(?:cc|mm)\""
+    content_patterns: ":(?:unit_tests|browser_tests)\""
+    rules: "docs/knowledge_base/rules/build_system/wire-component-unit-tests-into-components-unittests.md"
+    rules: "docs/knowledge_base/rules/build_system/compile-out-disabled-feature-tests.md"
+  }
+  # Fake and mock sources listed in GN.
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn|(?:.*/)?[^/]*\\.gni"
+    content_patterns: "\"[^\"]*(?:fake|mock)[^\"]*\\.(?:cc|h|mm)\""
+    rules: "docs/knowledge_base/rules/build_system/fakes-in-test-support-targets.md"
+  }
+  # Browser test fixtures based on InProcessBrowserTest.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*_browsertest\\.(?:cc|mm)"
+    content_patterns: "\\bInProcessBrowserTest\\b"
+    rules: "docs/knowledge_base/rules/build_system/platform-browser-test-for-cross-platform-tests.md"
+  }
+  # Unit tests in browser/ that include component code.
+  capability_groups {
+    path_expression: "browser/(?:.*/)?[^/]*_unittest\\.(?:cc|mm)"
+    content_patterns: "^\\s*#\\s*include\\s+\"brave/components/"
+    rules: "docs/knowledge_base/rules/build_system/component-unit-tests-not-in-browser.md"
+  }
+  # Dependency labels added to GN targets.
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn|(?:.*/)?[^/]*\\.gni"
+    content_patterns: "\\b(?:public_)?deps\\s*\\+?="
+    content_patterns: "^\\s*\"(?://|:)[^\"]*\",?\\s*(?:#.*)?$"
+    rules: "docs/knowledge_base/rules/build_system/public-deps-for-public-header-includes.md"
+  }
+  # Headers and public lists of GN targets.
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn|(?:.*/)?[^/]*\\.gni"
+    content_patterns: "^\\s*\"[^\"]*\\.h\",?\\s*$"
+    content_patterns: "\\b(?:sources|public)\\s*\\+?=.*\"[^\"]*\\.h\""
+    content_patterns: "^\\s*public\\s*="
+    rules: "docs/knowledge_base/rules/build_system/list-public-headers-in-public.md"
+  }
+  # source_set targets and their visibility.
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn|(?:.*/)?[^/]*\\.gni"
+    content_patterns: "^\\s*source_set\\s*\\("
+    content_patterns: "^\\s*visibility\\s*="
+    rules: "docs/knowledge_base/rules/build_system/source-set-only-for-internal-targets.md"
+  }
+  # static_library targets of services.
+  capability_groups {
+    path_expression: "(?:.*/)?services/(?:.*/)?BUILD\\.gn"
+    content_patterns: "^\\s*static_library\\s*\\("
+    rules: "docs/knowledge_base/rules/build_system/component-for-mojo-service-targets.md"
+  }
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn"
+    content_patterns: "^\\s*static_library\\s*\\(\\s*\"[^\"]*service"
+    rules: "docs/knowledge_base/rules/build_system/component-for-mojo-service-targets.md"
+  }
+  # Source files added to brave/browser/ui/BUILD.gn.
+  capability_groups {
+    path_expression: "browser/ui/BUILD\\.gn"
+    content_patterns: "\"[^\"]+\\.(?:cc|h|mm)\""
+    rules: "docs/knowledge_base/rules/build_system/no-new-sources-in-browser-ui-target.md"
+  }
+  # Suppressed include checks and allowed circular includes.
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn|(?:.*/)?[^/]*\\.gni"
+    content_patterns: "\\bcheck_includes\\s*="
+    content_patterns: "allow_circular_includes_from"
+    rules: "docs/knowledge_base/rules/build_system/break-circular-deps-without-suppression.md"
+  }
+  # sources.gni files.
+  capability_groups {
+    path_expression: "(?:.*/)?sources\\.gni"
+    rules: "docs/knowledge_base/rules/build_system/no-build-gn-beside-sources-gni.md"
+    rules: "docs/knowledge_base/rules/build_system/sources-gni-only-for-upstream-cycles.md"
+  }
+  # One-argument rebase_path() calls and system-absolute paths in GN.
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn|(?:.*/)?[^/]*\\.gni"
+    content_patterns: "\"/(?:usr|opt|home|Users|tmp|var|etc|Applications|Library|System)/"
+    content_patterns: "\"[A-Za-z]:[/\\\\]"
+    content_patterns: "\"abspath\""
+    ast_patterns: "rebase_path($A)"
+    rules: "docs/knowledge_base/rules/build_system/no-system-absolute-paths-in-gn.md"
+  }
+  # Suppressed gn check on includes.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)|patches/.*\\.patch"
+    content_patterns: "\\bnogncheck\\b"
+    rules: "docs/knowledge_base/rules/build_system/no-nogncheck-suppressions.md"
+  }
+  # Constants defined in C++.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bconst(?:expr)?\\b[^=;()]*\\bk[A-Z]\\w*\\s*(?:\\[[^\\]]*\\])?\\s*(?:=|\\{)"
+    rules: "docs/knowledge_base/rules/build_system/share-constants-via-common-headers.md"
+  }
+  # Additions to components/constants, and uses of it.
+  capability_groups {
+    path_expression: "components/constants/.*"
+    content_patterns: "\\S"
+    rules: "docs/knowledge_base/rules/build_system/nothing-new-in-components-constants.md"
+  }
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn|(?:.*/)?[^/]*\\.gni|(?:.*/)?[^/]*\\.(?:cc|h|mm)|(?:.*/)?DEPS"
+    content_patterns: "brave/components/constants\\b"
+    rules: "docs/knowledge_base/rules/build_system/nothing-new-in-components-constants.md"
+  }
+  # Endpoint URLs outside tests.
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn|(?:.*/)?[^/]*\\.gni|(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_tests)\\.(?:cc|h|mm)|(?:.*/)?test/.*"
+    content_patterns: "[\"'](?:https?|wss?)://[^\"'\\s]"
+    rules: "docs/knowledge_base/rules/build_system/network-audit-allowlist-new-endpoints.md"
+  }
+  # Brave hosts outside tests.
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn|(?:.*/)?[^/]*\\.gni|(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_tests)\\.(?:cc|h|mm)|(?:.*/)?test/.*"
+    content_patterns: "\\b(?:brave|bravesoftware)\\.(?:com|software|app)\\b"
+    rules: "docs/knowledge_base/rules/build_system/hsts-pin-list-new-endpoints.md"
+  }
+}

@@ -161,7 +161,9 @@ disabled.
 ```cpp
 // In brave/components/brave_wallet/browser/brave_wallet_service.h
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
-static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
+static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET),
+              "brave_wallet_service.h must not be included when "
+              "enable_brave_wallet is false");
 ```
 
 ---

@@ -1,0 +1,33 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# The rules of docs/best-practices/testing-javascript.md. See
+# docs/knowledge_base/README.md for the fields.
+agentic_review {
+  # Polling JavaScript from a C++ loop, or delaying between polls.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest|_test_utils?|_test_helpers?|_test_base)\\.(?:cc|h|mm)"
+    path_expression: "(?:.*/)?test/.*\\.(?:cc|h|mm)"
+    content_patterns: "\\bNonBlockingDelay\\s*\\("
+    ast_patterns: "{any: [{kind: for_statement}, {kind: while_statement}, {kind: do_statement}], has: {kind: call_expression, regex: '^(?:content::)?(?:EvalJs|ExecJs)\\b', stopBy: end}}"
+    rules: "docs/knowledge_base/rules/testing_javascript/prefer-event-driven-js-waits-over-cxx-polling.md"
+  }
+  # An EvalJs() or ExecJs() that does not run in Brave's internal isolated
+  # world.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest|_test_utils?|_test_helpers?|_test_base)\\.(?:cc|h|mm)"
+    path_expression: "(?:.*/)?test/.*\\.(?:cc|h|mm)"
+    ast_patterns: "{kind: call_expression, regex: '^(?:content::)?(?:EvalJs|ExecJs)\\s*\\(', not: {regex: '\\bISOLATED_WORLD_ID_BRAVE_INTERNAL\\b'}}"
+    rules: "docs/knowledge_base/rules/testing_javascript/evaluate-test-js-in-isolated-world.md"
+  }
+  # Waits for a Mojo binding, and uses of a JavaScript event emitter.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest|_test_utils?|_test_helpers?|_test_base)\\.(?:cc|h|mm)"
+    path_expression: "(?:.*/)?test/.*\\.(?:cc|h|mm)"
+    content_patterns: "\\bWaitFor\\w*Binding\\s*\\("
+    content_patterns: "\\??\\.on\\s*(?:\\(|===|!==)"
+    rules: "docs/knowledge_base/rules/testing_javascript/wait-for-renderer-js-api-setup.md"
+  }
+}

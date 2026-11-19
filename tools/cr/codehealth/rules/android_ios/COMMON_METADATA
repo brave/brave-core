@@ -1,10 +1,10 @@
-# Sweep h: Android and iOS. See tools/cr/codehealth/scripts/sweep.py for the fields.
+# Sweep h: Android and iOS. See tools/cr/knowledge_base.py for the fields.
 agentic_review {
   # Removed or re-signed Java declarations: a change always has a `-` line.
   capability_groups {
     path_expression: ".*\\.java"
-    exclude_path_expression: ".*(?:Test|/javatests/.*|/junit/.*)\\.java"
-    content_patterns: "^-\\s*(?:@\\w+(?:\\([^)]*\\))?\\s+)*(?:public|protected|private|static|final|abstract|synchronized)\\b[^;=]*\\("
+    path_expression_exclusion: ".*(?:Test|/javatests/.*|/junit/.*)\\.java"
+    diff_patterns: "^-\\s*(?:@\\w+(?:\\([^)]*\\))?\\s+)*(?:public|protected|private|static|final|abstract|synchronized)\\b[^;=]*\\("
     brave_mentions: "(\\w+)\\s*\\("
     rules: "tools/cr/codehealth/rules/android_ios/bytecode-adapters.md"
     rules: "tools/cr/codehealth/rules/android_ios/changed-java-signatures.md"
@@ -17,90 +17,90 @@ agentic_review {
   }
   capability_groups {
     path_expression: ".*\\.(?:xml|java)"
-    exclude_path_expression: ".*/(?:values[^/]*/[^/]*\\.xml|histograms\\.xml|enums\\.xml)"
-    content_patterns: "^[-+].*\\b(?:android|app):key=\""
-    content_patterns: "^[-+].*\\bandroid:id=\"@\\+id/\\w+\""
-    content_patterns: "^[-+].*\\bPREF_\\w+\\s*=\\s*\""
+    path_expression_exclusion: ".*/(?:values[^/]*/[^/]*\\.xml|histograms\\.xml|enums\\.xml)"
+    diff_patterns: "^[-+].*\\b(?:android|app):key=\""
+    diff_patterns: "^[-+].*\\bandroid:id=\"@\\+id/\\w+\""
+    diff_patterns: "^[-+].*\\bPREF_\\w+\\s*=\\s*\""
     brave_mentions: "/(\\w+)\\.(?:xml|java)$"
     rules: "tools/cr/codehealth/rules/android_ios/hide-lists-keyed-by-name.md"
   }
   capability_groups {
     path_expression: ".*\\.(?:java|cc|h)"
-    exclude_path_expression: ".*(?:about_flags\\.cc|flag-metadata\\.json)"
+    path_expression_exclusion: ".*(?:about_flags\\.cc|flag-metadata\\.json)"
     # A flip removes the old default and adds the new one; a deletion only
     # removes.
-    content_patterns: "^-.*(?:CachedFlag\\(|newMutableFlagWithSafeDefault|newFlag\\(.*FeatureState\\.|FEATURE_(?:EN|DIS)ABLED_BY_DEFAULT)"
-    required_patterns: "^\\+.*(?:CachedFlag\\(|newMutableFlagWithSafeDefault|newFlag\\(.*FeatureState\\.|FEATURE_(?:EN|DIS)ABLED_BY_DEFAULT)"
+    diff_patterns: "^-.*(?:CachedFlag\\(|newMutableFlagWithSafeDefault|newFlag\\(.*FeatureState\\.|FEATURE_(?:EN|DIS)ABLED_BY_DEFAULT)"
+    required_diff_patterns: "^\\+.*(?:CachedFlag\\(|newMutableFlagWithSafeDefault|newFlag\\(.*FeatureState\\.|FEATURE_(?:EN|DIS)ABLED_BY_DEFAULT)"
     rules: "tools/cr/codehealth/rules/android_ios/default-flips-to-new-ui-class.md"
   }
   # The defaults upstream's preference widgets persist with.
   capability_groups {
     path_expression: ".*/settings/.*\\.java"
-    exclude_path_expression: ".*(?:Test|/javatests/.*|/junit/.*)\\.java"
-    content_patterns: "^[-+].*(?:setPersistent\\(|Preference_(?:android_)?persistent\\b|initializePreferenceDefaults)"
+    path_expression_exclusion: ".*(?:Test|/javatests/.*|/junit/.*)\\.java"
+    diff_patterns: "^[-+].*(?:setPersistent\\(|Preference_(?:android_)?persistent\\b|initializePreferenceDefaults)"
     rules: "tools/cr/codehealth/rules/android_ios/preference-persistence-defaults.md"
   }
   # A new feature gate, with no flip, in a class Brave rewrites by bytecode.
   capability_groups {
     path_expression: ".*\\.java"
     bytecode_adapted: true
-    content_patterns: "^\\+.*\\bChromeFeatureList\\.(?:isEnabled\\(|s\\w+\\.isEnabled\\(\\))"
+    diff_patterns: "^\\+.*\\bChromeFeatureList\\.(?:isEnabled\\(|s\\w+\\.isEnabled\\(\\))"
     rules: "tools/cr/codehealth/rules/android_ios/default-flips-to-new-ui-class.md"
   }
   capability_groups {
     path_expression: ".*\\.java"
-    content_patterns: "SettingsFragmentRegistry"
-    content_patterns: "finishCurrentSettings\\("
-    content_patterns: "SettingsNavigation\\w*\\.\\w+\\(.*\\.class"
+    diff_patterns: "SettingsFragmentRegistry"
+    diff_patterns: "finishCurrentSettings\\("
+    diff_patterns: "SettingsNavigation\\w*\\.\\w+\\(.*\\.class"
     rules: "tools/cr/codehealth/rules/android_ios/registries-keyed-by-class.md"
   }
   # Moves and deletions: the old file's package or type line goes away.
   capability_groups {
     path_expression: ".*\\.java"
-    content_patterns: "^-package\\s"
-    content_patterns: "^-(?:public\\s+|final\\s+|abstract\\s+)*(?:class|interface|@interface|enum|record)\\s+\\w+"
+    diff_patterns: "^-package\\s"
+    diff_patterns: "^-(?:public\\s+|final\\s+|abstract\\s+)*(?:class|interface|@interface|enum|record)\\s+\\w+"
     brave_mentions: "/(\\w+)\\.java$"
     rules: "tools/cr/codehealth/rules/android_ios/java-moves-break-xml-references.md"
   }
   capability_groups {
     path_expression: ".*/ChromeFeatureList\\.java"
-    content_patterns: "^-\\s*public static final String \\w+"
+    diff_patterns: "^-\\s*public static final String \\w+"
     brave_mentions: "public static final String (\\w+)"
     rules: "tools/cr/codehealth/rules/android_ios/removed-flag-constants.md"
   }
   capability_groups {
     path_expression: ".*\\.java"
-    content_patterns: "^-.*\\b(?:SDK_INT|VERSION_CODES|isAtLeast\\w*|isAndroid\\w*)\\b"
-    content_patterns: "(?i)callers? must check"
+    diff_patterns: "^-.*\\b(?:SDK_INT|VERSION_CODES|isAtLeast\\w*|isAndroid\\w*)\\b"
+    diff_patterns: "(?i)callers? must check"
     rules: "tools/cr/codehealth/rules/android_ios/guard-moved-out-of-shared-helper.md"
   }
   capability_groups {
     path_expression: "(?:build/android|tools/android)/.*|.*\\.(?:gni?|java)"
-    content_patterns: "^[-+].*\\b(?:NullAway|ErrorProne|errorprone|DoNotMock)\\b"
+    diff_patterns: "^[-+].*\\b(?:NullAway|ErrorProne|errorprone|DoNotMock)\\b"
     rules: "tools/cr/codehealth/rules/android_ios/java-campaigns.md"
   }
   capability_groups {
     path_expression: "ios/(?:web|chrome)/.*\\.h"
-    content_patterns: "^[-+].*(?:\\[\\[deprecated|ABSL_DEPRECATED|DEPRECATED_ATTRIBUTE|\\blegacy_\\w+\\()"
-    content_patterns: "^-.*\\bGetForProfile\\("
+    diff_patterns: "^[-+].*(?:\\[\\[deprecated|ABSL_DEPRECATED|DEPRECATED_ATTRIBUTE|\\blegacy_\\w+\\()"
+    diff_patterns: "^-.*\\bGetForProfile\\("
     brave_mentions: "/(\\w+)\\.h$"
     rules: "tools/cr/codehealth/rules/android_ios/ios-wrapped-api-changes.md"
   }
   # Objective-C method and property declarations in headers.
   capability_groups {
     path_expression: "ios/.*\\.h"
-    content_patterns: "^[-+](?:[-+]\\s*\\(|@property\\b|@protocol\\b)"
+    diff_patterns: "^[-+](?:[-+]\\s*\\(|@property\\b|@protocol\\b)"
     brave_mentions: "/(\\w+)\\.h$"
     rules: "tools/cr/codehealth/rules/android_ios/ios-protocols-brave-adopts.md"
   }
   capability_groups {
     path_expression: "ios/(?:public/provider|chrome/browser/providers)/.*|ios/chrome/browser/tabs/model/tab_helper_util\\.mm|ios/.*_tab_helper\\.(?:h|mm)|ios/.*policy_decider.*"
-    exclude_path_expression: ".*(?:_unittest|_egtest|_test|_fake|_mock)\\.(?:h|mm)"
+    path_expression_exclusion: ".*(?:_unittest|_egtest|_test|_fake|_mock)\\.(?:h|mm)"
     rules: "tools/cr/codehealth/rules/android_ios/ios-providers-and-tab-helpers.md"
   }
   capability_groups {
     path_expression: "ios/.*"
-    exclude_path_expression: "ios/chrome/browser/(?:flags|shared/model/prefs)/.*"
+    path_expression_exclusion: "ios/chrome/browser/(?:flags|shared/model/prefs)/.*"
     overridden_by_brave: true
     rules: "tools/cr/codehealth/rules/android_ios/ios-providers-and-tab-helpers.md"
   }

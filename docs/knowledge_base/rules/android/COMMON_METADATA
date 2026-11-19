@@ -1,0 +1,448 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# The rules of docs/best-practices/android.md. See
+# docs/knowledge_base/README.md for the fields.
+agentic_review {
+  # UI work in async callbacks, listeners and lambdas, and lifecycle guards.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:java|kt)"
+    content_patterns: "\\bisActivityFinishingOrDestroyed\\s*\\("
+    content_patterns: "\\b(?:isAdded|isDetached|getActivity|requireActivity)\\s*\\("
+    content_patterns: "\\bonAnimation(?:End|Cancel|Repeat)\\s*\\("
+    content_patterns: "\\bPostTask\\.(?:postTask|postDelayedTask|runOrPostTask)\\s*\\("
+    content_patterns: "\\bvoid\\s+on\\w*(?:Result|Response|Complete|Completed|Finished|Success|Error|Failure|Loaded|Received|Ready)\\s*\\("
+    diff_patterns: "^-.*\\b(?:isActivityFinishingOrDestroyed|isAdded|isDetached)\\s*\\("
+    ast_patterns: "{kind: method_invocation, has: {field: name, regex: '^(?:show\\w*|startActivit\\w*|setVisibility|setText|addView|removeView\\w*|dismiss\\w*|finish|recreate|updateUI|notifyDataSetChanged)$'}, "
+                  "inside: {stopBy: end, any: [{kind: lambda_expression}, {kind: class_body, inside: {kind: object_creation_expression}}]}}"
+    rules: "docs/knowledge_base/rules/android/check-activity-finishing-before-async-ui.md"
+    rules: "docs/knowledge_base/rules/android/check-fragment-attached-before-async-ui.md"
+  }
+  # Click handlers, which may start async work, and enabling of controls.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:java|kt)"
+    content_patterns: "\\bsetOn(?:Preference)?Click(?:Listener)?\\b"
+    content_patterns: "\\b(?:void\\s+onClick|boolean\\s+onPreferenceClick)\\s*\\("
+    content_patterns: "\\bsetEnabled\\s*\\("
+    diff_patterns: "^-.*\\bsetEnabled\\s*\\("
+    rules: "docs/knowledge_base/rules/android/disable-controls-during-async-operations.md"
+  }
+  # Null checks of member fields, and uses of fields null-checked elsewhere.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:java|kt)"
+    content_patterns: "\\bm[A-Z]\\w*\\s*[!=]=\\s*null\\b"
+    content_patterns: "\\bnull\\s*[!=]=\\s*m[A-Z]\\w*\\b"
+    diff_patterns: "^-.*\\bm[A-Z]\\w*\\s*[!=]=\\s*null\\b"
+    ast_patterns: "{any: [{kind: method_invocation, has: {field: object, kind: identifier, regex: '^m[A-Z]', pattern: $F}}, "
+                  "{kind: field_access, has: {field: object, kind: identifier, regex: '^m[A-Z]', pattern: $F}}], "
+                  "inside: {kind: class_body, stopBy: end, has: {stopBy: end, any: [{pattern: $F != null}, {pattern: $F == null}]}}}"
+    rules: "docs/knowledge_base/rules/android/consistent-null-checks-on-member-fields.md"
+  }
+  # Profile-keyed services used from JNI bridges and other native code.
+  capability_groups {
+    path_expression: "(?:.*/)?android/(?:.*/)?[^/]*\\.(?:cc|h)"
+    path_expression: "(?:.*/)?[^/]*(?:_android|bridge)[^/]*\\.(?:cc|h)"
+    path_expression: "(?:.*/)?[^/]*\\.(?:java|kt)"
+    content_patterns: "\\b\\w+_service_->"
+    content_patterns: "\\b\\w*ServiceFactory\\w*::Get\\w*\\s*\\("
+    content_patterns: "\\bGetFor(?:Profile|BrowserContext)\\s*\\("
+    content_patterns: "\\b\\w*ServiceFactory\\.\\w+\\s*\\("
+    content_patterns: "\\bgetForProfile\\s*\\("
+    rules: "docs/knowledge_base/rules/android/null-check-services-unavailable-in-incognito.md"
+  }
+  # Lazily created singletons.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:java|kt)"
+    content_patterns: "\\bsynchronized\\s*\\("
+    content_patterns: "\\bstatic\\s+final\\s+Object\\s+\\w+\\s*=\\s*new\\s+Object\\s*\\("
+    content_patterns: "\\bs[A-Z]\\w*\\s*==\\s*null\\b"
+    content_patterns: "\\bclass\\s+LazyHolder\\b"
+    rules: "docs/knowledge_base/rules/android/lazyholder-for-singleton-factories.md"
+  }
+  # Colors resolved from theme attributes.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:java|kt)"
+    content_patterns: "\\bR\\.attr\\.\\w+"
+    content_patterns: "\\b(?:resolveAttribute|obtainStyledAttributes)\\s*\\("
+    content_patterns: "\\bMaterialColors\\.getColor\\w*\\s*\\("
+    content_patterns: "\\bSemanticColorUtils\\.\\w+\\s*\\("
+    content_patterns: "\\b(?:resolve\\w*Color|get\\w*ThemeColor)\\w*\\s*\\("
+    rules: "docs/knowledge_base/rules/android/resolve-theme-colors-at-bind-time.md"
+  }
+  # Preferences declared in XML.
+  capability_groups {
+    path_expression: "(?:.*/)?(?:brave-)?res/xml[^/]*/.*\\.xml"
+    content_patterns: "<[\\w.]*Preference\\b"
+    content_patterns: "\\bisPreferenceVisible\\b"
+    rules: "docs/knowledge_base/rules/android/hide-conditional-preferences-in-xml.md"
+  }
+  # Preferences removed or hidden from code.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:java|kt)"
+    content_patterns: "\\bremovePreference(?:Recursively)?\\s*\\("
+    content_patterns: "\\.setVisible\\s*\\("
+    rules: "docs/knowledge_base/rules/android/hide-conditional-preferences-in-xml.md"
+  }
+  # Guards that log errors, and assertions.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:java|kt)"
+    content_patterns: "\\bLog\\.(?:e|w|wtf)\\s*\\("
+    content_patterns: "^\\s*assert\\s"
+    rules: "docs/knowledge_base/rules/android/pair-validation-guards-with-assert.md"
+  }
+  # System service lookups.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:java|kt)"
+    content_patterns: "\\b(?:getSystemService|getPackageManager)\\s*\\("
+    content_patterns: "\\b(?:PackageManager|AppOpsManager)\\b"
+    content_patterns: "\\b(?:checkOpNoThrow|unsafeCheckOpNoThrow|checkSelfPermission|checkPermission)\\s*\\("
+    rules: "docs/knowledge_base/rules/android/cache-system-service-lookups-off-hot-paths.md"
+  }
+  # Validation logic written in Java.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:java|kt)"
+    content_patterns: "\\b(?:is|has)Valid\\w*\\s*\\("
+    content_patterns: "\\bvalidate\\w*\\s*\\("
+    content_patterns: "\\bPattern\\.(?:compile|matches)\\s*\\("
+    content_patterns: "\\.matches\\s*\\(\\s*\""
+    content_patterns: "\\bPatterns\\.[A-Z_]+\\b"
+    rules: "docs/knowledge_base/rules/android/prefer-native-side-validation.md"
+  }
+  # Robolectric tests, and native-initialization guards.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:java|kt)"
+    content_patterns: "\\b(?:Base)?RobolectricTestRunner\\b"
+    content_patterns: "\\bFeatureList\\.isNativeInitialized\\s*\\("
+    diff_patterns: "^-.*\\bisNativeInitialized\\s*\\("
+    rules: "docs/knowledge_base/rules/android/guard-jni-calls-for-robolectric.md"
+  }
+  # Bytecode adapters that change superclasses or redirect constructors.
+  capability_groups {
+    path_expression: "build/android/bytecode/java/org/brave/bytecode/.*\\.java"
+    content_patterns: "\\b(?:changeSuperName|redirectConstructor)\\s*\\("
+    rules: "docs/knowledge_base/rules/android/java-patch-when-bytecode-adapter-cannot-apply.md"
+    rules: "docs/knowledge_base/rules/android/no-own-static-state-in-redirected-constructors.md"
+  }
+  # Lines a Java patch adds, or the header of a new one.
+  capability_groups {
+    path_expression: "patches/[^/]*\\.java\\.patch"
+    content_patterns: "^diff --git "
+    content_patterns: "^\\+(?:$|[^+]|\\+$|\\+[^+]|\\+\\+$|\\+\\+[^ ])"
+    rules: "docs/knowledge_base/rules/android/java-patch-when-bytecode-adapter-cannot-apply.md"
+    rules: "docs/knowledge_base/rules/android/patch-fallback-for-anonymous-inner-classes.md"
+  }
+  # Java sources that a BUILD.gn patch adds.
+  capability_groups {
+    path_expression: "patches/[^/]*BUILD\\.gn\\.patch"
+    content_patterns: "\\.java\""
+    rules: "docs/knowledge_base/rules/android/build-gn-patch-for-circular-java-sources.md"
+  }
+  # Calls to the last used regular profile.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:java|kt)"
+    content_patterns: "\\bgetLastUsedRegularProfile\\s*\\("
+    rules: "docs/knowledge_base/rules/android/last-used-regular-profile-allowed-in-widgets.md"
+  }
+  # Interfaces, listener plumbing and private helper methods.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:java|kt)"
+    content_patterns: "\\binterface\\s+\\w+"
+    content_patterns: "\\b(?:set|add)\\w*(?:Listener|Callback|Observer|Delegate)\\s*\\("
+    content_patterns: "^\\s*private\\s+(?:static\\s+)?(?:final\\s+)?[\\w.<>\\[\\],?@ ]+\\s+\\w+\\s*\\([^;]*$"
+    rules: "docs/knowledge_base/rules/android/remove-unused-java-interfaces-and-helpers.md"
+  }
+  # Views made clickable or focusable.
+  capability_groups {
+    path_expression: "(?:.*/)?(?:brave-)?res/.*\\.xml"
+    path_expression: "(?:.*/)?[^/]*\\.(?:java|kt)"
+    content_patterns: "\\bandroid:(?:clickable|focusable)\\s*=\\s*\"true\""
+    content_patterns: "\\bset(?:Clickable|Focusable)\\s*\\(\\s*true\\s*\\)"
+    rules: "docs/knowledge_base/rules/android/no-clickable-focusable-on-decorative-views.md"
+  }
+  # Raw and animation assets, which Android and iOS may share.
+  capability_groups {
+    path_expression: "(?:.*/)?(?:brave-)?res/raw/.*"
+    path_expression: "(?:.*/)?[^/]*\\.lottie"
+    path_expression: "ios/.*/Lottie[^/]*/.*\\.json"
+    rules: "docs/knowledge_base/rules/android/share-identical-assets-with-ios.md"
+  }
+  # Java sources added to GN source lists.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*java_sources\\.gni"
+    content_patterns: "\\.java\""
+    rules: "docs/knowledge_base/rules/android/separate-targets-for-accumulated-java-sources.md"
+    rules: "docs/knowledge_base/rules/android/feature-java-in-feature-android-directories.md"
+    rules: "docs/knowledge_base/rules/android/feature-android-module-as-dependency.md"
+  }
+  # New Java files in the legacy Android Java tree.
+  capability_groups {
+    path_expression: "android/java/org/chromium/.*\\.(?:java|kt)"
+    content_patterns: "^package\\s+[\\w.]+\\s*;"
+    rules: "docs/knowledge_base/rules/android/feature-java-in-feature-android-directories.md"
+  }
+  # GN wiring of Android library targets.
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn"
+    path_expression: "(?:.*/)?[^/]*\\.gni"
+    content_patterns: "\\bbrave_chrome_java_deps\\b"
+    content_patterns: "//chrome/android:chrome_java\\b"
+    content_patterns: "\\bandroid_library\\s*\\("
+    rules: "docs/knowledge_base/rules/android/feature-android-module-as-dependency.md"
+  }
+  # An if, with no else, at the top of a method body that nests another if.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.java"
+    ast_patterns: "{kind: if_statement, not: {has: {field: alternative, regex: '.'}}, inside: {kind: block, inside: {kind: method_declaration}}, "
+                  "has: {field: consequence, has: {kind: if_statement}}}"
+    rules: "docs/knowledge_base/rules/android/early-returns-over-nested-ifs-in-java.md"
+  }
+  # Any change to a bytecode class adapter.
+  capability_groups {
+    path_expression: "build/android/bytecode/java/org/brave/bytecode/.*\\.java"
+    rules: "docs/knowledge_base/rules/android/bytecode-tests-for-class-adapters.md"
+  }
+  # ProGuard keep rules.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.flags"
+    content_patterns: "^\\s*-(?:keep|if|assumenosideeffects|dontwarn)\\w*"
+    rules: "docs/knowledge_base/rules/android/test-only-proguard-rules-in-apk-for-test-flags.md"
+  }
+  # Constructor static reads and static blocks in bytecode-adapted classes.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.java"
+    bytecode_adapted: true
+    content_patterns: "^\\s*static\\s*\\{"
+    ast_patterns: "{kind: identifier, any: [{regex: '^s[A-Z]\\w*$'}, {regex: '^[A-Z][A-Z0-9_]*$', not: {inside: {kind: field_access}}}], "
+                  "inside: {kind: constructor_body, stopBy: end}}"
+    rules: "docs/knowledge_base/rules/android/no-own-static-state-in-redirected-constructors.md"
+  }
+  # Members opened up for tests.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:java|kt)"
+    content_patterns: "@VisibleForTesting\\b"
+    content_patterns: "\\b\\w+ForTesting\\b"
+    diff_patterns: "^-\\s*private\\s"
+    rules: "docs/knowledge_base/rules/android/visible-for-testing-on-test-only-accessors.md"
+  }
+  # Layouts that override upstream ones.
+  capability_groups {
+    path_expression: "android/java/res/layout[^/]*/.*"
+    rules: "docs/knowledge_base/rules/android/addview-over-replacing-upstream-layouts.md"
+  }
+  # Any resource in the upstream-override folder.
+  capability_groups {
+    path_expression: "android/java/res/.*"
+    rules: "docs/knowledge_base/rules/android/new-android-resources-in-brave-res.md"
+  }
+  # Entries of the upstream-override resource list.
+  capability_groups {
+    path_expression: "(?:.*/)?brave_java_resources\\.gni"
+    content_patterns: "\"java/res/"
+    rules: "docs/knowledge_base/rules/android/addview-over-replacing-upstream-layouts.md"
+    rules: "docs/knowledge_base/rules/android/new-android-resources-in-brave-res.md"
+  }
+  # Removed classes, Java sources, feature definitions and keep rules.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:java|kt)"
+    path_expression: "(?:.*/)?BUILD\\.gn"
+    path_expression: "(?:.*/)?[^/]*\\.gni"
+    path_expression: "(?:.*/)?[^/]*\\.flags"
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h)"
+    diff_patterns: "^-.*\"[^\"]*\\.java\""
+    diff_patterns: "^-\\s*(?:(?:public|protected|private|abstract|final|static)\\s+)*(?:class|interface)\\s+\\w+"
+    diff_patterns: "^-.*\\bBASE_FEATURE\\s*\\("
+    diff_patterns: "^-\\s*-keep"
+    rules: "docs/knowledge_base/rules/android/remove-every-artifact-of-removed-android-feature.md"
+  }
+  # Android version checks.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:java|kt)"
+    content_patterns: "\\bSDK_INT\\b"
+    content_patterns: "\\bVERSION_CODES\\.\\w+"
+    content_patterns: "@(?:RequiresApi|TargetApi)\\b"
+    rules: "docs/knowledge_base/rules/android/remove-sdk-checks-below-min-sdk.md"
+  }
+  # Lines a patch of an upstream Android file removes or changes.
+  capability_groups {
+    path_expression: "patches/[^/]*android[^/]*\\.patch"
+    path_expression: "patches/[^/]*\\.(?:java|xml|gn|gni)\\.patch"
+    content_patterns: "^-(?:$|[^-]|-$|-[^-]|--$|--[^ ])"
+    rules: "docs/knowledge_base/rules/android/android-patches-add-new-lines.md"
+  }
+  # Changed values of shared colors, dimensions and styles.
+  capability_groups {
+    path_expression: "(?:.*/)?(?:brave-)?res/(?:values|color)[^/]*/.*\\.xml"
+    diff_patterns: "^-.*<(?:color|dimen|style|item|integer|bool)\\b"
+    diff_patterns: "^-.*\\bandroid:color\\s*="
+    rules: "docs/knowledge_base/rules/android/check-usages-before-changing-shared-resources.md"
+  }
+  # Colors set from Java code or Java patches.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:java|kt)"
+    path_expression: "patches/[^/]*\\.java\\.patch"
+    content_patterns: "\\bset(?:Text|Background|Hint|Link|Highlight|Status|Navigation)\\w*Color\\s*\\("
+    content_patterns: "\\bset\\w*Tint(?:List|Mode)?\\s*\\("
+    content_patterns: "\\bsetColorFilter\\s*\\("
+    content_patterns: "\\bColor\\.(?:parseColor|argb|rgb)\\s*\\("
+    rules: "docs/knowledge_base/rules/android/baseline-color-resources-over-java-color-patches.md"
+  }
+  # Any change to an upstream string resource file.
+  capability_groups {
+    path_expression: "patches/[^/]*strings[^/]*\\.(?:grd|grdp|xml)\\.patch"
+    path_expression: "rewrite/.*strings[^/]*\\.(?:grd|grdp|xml)\\.yaml"
+    path_expression: "chromium_src/.*strings[^/]*\\.(?:grd|grdp|xml)"
+    path_expression: "android/java/res/values[^/]*/[^/]*strings[^/]*\\.xml"
+    rules: "docs/knowledge_base/rules/android/no-edits-to-upstream-string-resources.md"
+  }
+  # Overriding methods, and @NullUnmarked.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:java|kt)"
+    content_patterns: "@Override\\b"
+    content_patterns: "@NullUnmarked\\b"
+    rules: "docs/knowledge_base/rules/android/match-upstream-nullability-in-overrides.md"
+  }
+  # Log tags.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:java|kt)"
+    content_patterns: "\\bString\\s+TAG\\s*="
+    rules: "docs/knowledge_base/rules/android/short-log-tags.md"
+  }
+  # Start/end and top/bottom padding and margins in XML.
+  capability_groups {
+    path_expression: "(?:.*/)?(?:brave-)?res/.*\\.xml"
+    content_patterns: "\\b(?:padding|layout_margin)(?:Start|End|Top|Bottom|Left|Right)\\b"
+    rules: "docs/knowledge_base/rules/android/layout-shorthand-attributes.md"
+  }
+  # @Nullable on its own line, before modifiers or qualified types, on arrays.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.java"
+    content_patterns: "^\\s*@Nullable\\s*$"
+    content_patterns: "@Nullable\\s+(?:@\\w+\\s+)*(?:public|protected|private|static|final|abstract|synchronized|native|volatile|transient|default)\\b"
+    content_patterns: "@Nullable\\s+(?:[a-z]\\w*\\.)*[A-Z]\\w*\\.[A-Z]\\w*"
+    content_patterns: "@Nullable\\s*\\[|@Nullable\\s+[\\w.]+(?:<[^>]*>)?\\s*\\["
+    rules: "docs/knowledge_base/rules/android/nullable-immediately-before-type.md"
+  }
+  # NullAway method annotations, and nullness predicates that could carry one.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.java"
+    content_patterns: "@(?:RequiresNonNull|EnsuresNonNull|EnsuresNonNullIf|Contract)\\b"
+    content_patterns: "\\breturn\\s+[\\w.]+\\s*[!=]=\\s*null\\b"
+    rules: "docs/knowledge_base/rules/android/nullaway-method-annotations-for-conditions.md"
+  }
+  # Nullable and late-initialized fields.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.java"
+    content_patterns: "@Nullable\\s+[\\w.<>?,@\\[\\] ]+\\s+[ms][A-Z]\\w*\\s*(?:=\\s*null\\s*)?;"
+    content_patterns: "@MonotonicNonNull\\b"
+    rules: "docs/knowledge_base/rules/android/monotonic-non-null-for-late-init-fields.md"
+  }
+  # Null assertions.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.java"
+    content_patterns: "\\b(?:assumeNonNull|assertNonNull)\\s*\\("
+    content_patterns: "\\bObjects\\.requireNonNull\\s*\\("
+    content_patterns: "^\\s*assert\\s+[^;]*\\bnull\\b"
+    rules: "docs/knowledge_base/rules/android/choose-null-assertion-mechanism.md"
+  }
+  # NullUtil imported or called as a class.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.java"
+    content_patterns: "\\bNullUtil\\.(?:assumeNonNull|assertNonNull)\\s*\\("
+    content_patterns: "^import\\s+org\\.chromium\\.build\\.NullUtil\\s*;"
+    rules: "docs/knowledge_base/rules/android/static-import-null-util-helpers.md"
+  }
+  # destroy() methods, the fields they null out, and isDestroyed() guards.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.java"
+    content_patterns: "\\bvoid\\s+destroy\\w*\\s*\\("
+    content_patterns: "\\bisDestroyed\\s*\\("
+    ast_patterns: "{kind: assignment_expression, has: {field: right, kind: null_literal}, "
+                  "inside: {kind: method_declaration, stopBy: end, has: {field: name, regex: '^(?:destroy|onDestroy)'}}}"
+    rules: "docs/knowledge_base/rules/android/nullable-fields-with-is-destroyed-guard.md"
+    rules: "docs/knowledge_base/rules/android/suppress-nullaway-on-destroy.md"
+  }
+  # @Initializer, and the initialize and bind methods it could go on.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.java"
+    content_patterns: "@Initializer\\b"
+    content_patterns: "\\bvoid\\s+(?:initialize|init|onBind)\\w*\\s*\\("
+    content_patterns: "\\bassertBound\\s*\\("
+    rules: "docs/knowledge_base/rules/android/assert-bound-instead-of-initializer-on-bind.md"
+    rules: "docs/knowledge_base/rules/android/initializer-for-two-phase-initialization.md"
+  }
+  # Public, non-static, non-final, non-primitive fields with no initializer.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.java"
+    ast_patterns: "{kind: field_declaration, has: {kind: modifiers, regex: '\\bpublic\\b', not: {regex: '\\b(?:static|final)\\b|@Nullable'}}, "
+                  "not: {any: [{has: {field: type, any: [{kind: integral_type}, {kind: floating_point_type}, {kind: boolean_type}]}}, "
+                  "{has: {kind: variable_declarator, has: {field: value, regex: '.'}}}]}}"
+    rules: "docs/knowledge_base/rules/android/constructor-for-struct-like-class-fields.md"
+  }
+  # @NonNull, and Checked companions.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.java"
+    content_patterns: "@NonNull\\b"
+    content_patterns: "\\b\\w+Checked\\s*\\("
+    content_patterns: "\\breturn\\s+assertNonNull\\s*\\("
+    rules: "docs/knowledge_base/rules/android/checked-companion-for-effectively-non-null-returns.md"
+  }
+  # Suppliers of nullable values, and conversions between supplier types.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.java"
+    content_patterns: "\\b\\w*Supplier<\\s*@Nullable\\b"
+    content_patterns: "\\bSupplierUtils\\.\\w+"
+    content_patterns: "\\(\\s*\\w*Supplier<[^>]*>\\s*\\)"
+    rules: "docs/knowledge_base/rules/android/explicit-supplier-nullability-conversion.md"
+  }
+  # NullAway suppressions.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.java"
+    content_patterns: "@NullUnmarked\\b"
+    content_patterns: "@SuppressWarnings\\([^)]*\"NullAway\""
+    rules: "docs/knowledge_base/rules/android/suppress-warnings-nullaway-over-null-unmarked.md"
+  }
+  # Null checks stored in variables.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:java|kt)"
+    content_patterns: "\\b(?:boolean|var|val)\\s+\\w+\\s*=[^;]*(?:[!=]=\\s*null\\b|\\bnull\\s*[!=]=)"
+    rules: "docs/knowledge_base/rules/android/direct-null-checks-not-intermediate-booleans.md"
+  }
+  # Methods crossing the JNI boundary.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.java"
+    content_patterns: "@(?:CalledByNative|NativeMethods)\\b"
+    content_patterns: "\\binterface\\s+Natives\\b"
+    rules: "docs/knowledge_base/rules/android/annotate-native-bound-parameter-nullability.md"
+  }
+  # JSpecify annotations and the build settings mirrored code needs.
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn"
+    path_expression: "(?:.*/)?[^/]*\\.gni"
+    path_expression: "(?:.*/)?[^/]*\\.java"
+    content_patterns: "\\borg_jspecify_jspecify_java\\b"
+    content_patterns: "\\bchromium_code\\s*=\\s*false\\b"
+    content_patterns: "\\benable_errorprone\\b"
+    content_patterns: "\\borg\\.jspecify\\."
+    rules: "docs/knowledge_base/rules/android/jspecify-annotations-for-mirrored-code.md"
+  }
+  # Custom views, dialogs and widgets that Material components could replace.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:java|kt)"
+    path_expression: "(?:.*/)?(?:brave-)?res/.*\\.xml"
+    content_patterns: "\\bextends\\s+(?:android\\.widget\\.|androidx\\.appcompat\\.widget\\.)?(?:View|ViewGroup|FrameLayout|LinearLayout|RelativeLayout|Button|AppCompatButton|ImageButton|CompoundButton|ToggleButton|Switch|SwitchCompat|CheckBox|Dialog|AlertDialog|DialogFragment|PopupWindow|CardView|EditText|AppCompatEditText)\\b"
+    content_patterns: "\\bnew\\s+(?:Dialog|AlertDialog\\.Builder|PopupWindow)\\s*\\("
+    content_patterns: "<(?:Button|Switch|ToggleButton|CheckBox|EditText|androidx\\.appcompat\\.widget\\.(?:SwitchCompat|AppCompatButton)|androidx\\.cardview\\.widget\\.CardView)\\b"
+    rules: "docs/knowledge_base/rules/android/prefer-material-components.md"
+  }
+  # Image views and their content descriptions.
+  capability_groups {
+    path_expression: "(?:.*/)?(?:brave-)?res/.*\\.xml"
+    path_expression: "(?:.*/)?[^/]*\\.(?:java|kt)"
+    content_patterns: "<[\\w.]*ImageView\\b"
+    content_patterns: "\\bandroid:contentDescription\\s*="
+    content_patterns: "\\bsetContentDescription\\s*\\("
+    rules: "docs/knowledge_base/rules/android/null-content-description-on-decorative-images.md"
+  }
+}

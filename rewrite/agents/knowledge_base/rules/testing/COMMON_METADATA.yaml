@@ -1,0 +1,28 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Drop the rules for Chromium's field trial testing config.
+
+      Brave builds with disable_fieldtrial_testing_config, so
+      fieldtrial_testing_config.json and the experiments it mirrors never
+      reach a Brave build.
+    count: 10
+    regex:
+      re_pattern:
+        '\n\s*rules:
+        "[^"]*/(?:consistent-naming-for-platform-study-configs|consolidate-multi-feature-field-trials-in-testing-config|enable-prerequisite-gating-params-in-testing-config|helios-prefix-for-ios-gemini-studies|keep-fieldtrial-testing-config-for-default-disabled-features|list-only-launch-candidate-experiment-in-testing-config|match-virtual-test-suites-with-field-trial-experiments|omit-unsupported-platforms-in-fieldtrial-testing-config|separate-fieldtrial-testing-config-from-large-feature-cls|use-disable-features-for-default-enabled-features)\.md"'
+      replace: ''
+  - description: |-
+      Drop the rule tying feature flags to the field trial testing config.
+
+      It asks tests to override the flags the config would turn on, which
+      Brave's builds never apply.
+    regex:
+      re_pattern:
+        '\n\s*capability_groups \{[^{}]*rules:
+        "[^"]*/explicitly-override-feature-flags-in-affected-tests\.md"\s*\}'
+      replace: ''

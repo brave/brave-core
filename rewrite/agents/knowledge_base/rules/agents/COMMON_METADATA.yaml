@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Review Brave's agent guidance with the rules for Chromium's.
+
+      Brave keeps the instructions it writes for AI agents in its own agents/
+      and .claude/ directories, and its code review rules in
+      docs/knowledge_base/, which Chromium's tree sees under brave/.
+    add_after_line:
+      line: 'path_expression: "agents/.*"'
+      code: |2-
+            path_expression: "brave/(?:agents|[.]claude|docs/knowledge_base)/.*"

@@ -438,10 +438,13 @@ is required. Prefer `std::vector` with `reserve()` for known sizes.
 ## ✅ Use `std::optional` Instead of Sentinel Values
 
 **Never use empty string `""`, `-1`, or other magic values as sentinels for "no
-value".** Use `std::optional<T>`.
+value".** Use `std::optional<T>`. The exception is a string whose empty value
+has no meaning apart from absence (such as a lookup that finds nothing): return
+the string itself and test `.empty()`, as `std::optional` would add a second
+empty state.
 
 ```cpp
-// ❌ WRONG - "" as sentinel for "no custom title"
+// ❌ WRONG - "" as sentinel for "no custom title", though "" is a valid title
 void SetCustomTitle(const std::string& title);  // "" means "unset"
 
 // ✅ CORRECT - explicit optionality
@@ -879,16 +882,20 @@ bool found = std::ranges::any_of(items,
 
 **Only call `substr()` when the content actually exceeds the limit.** For
 content within the limit, use the original string to avoid unnecessary memory
-allocation and copying.
+allocation and copying. When the result is only read, slice a `std::string_view`
+instead: its `substr()` never allocates.
 
 ```cpp
 // ❌ WRONG - always creates a substring
 std::string truncated = content.substr(0, max_length);
 
-// ✅ CORRECT - only substr when needed
-const std::string& truncated = (content.size() > max_length)
-    ? content.substr(0, max_length)
-    : content;
+// ✅ CORRECT - only substr when needed; otherwise move the original
+std::string truncated = content.size() > max_length
+                            ? content.substr(0, max_length)
+                            : std::move(content);
+
+// ✅ CORRECT - a view never allocates, whatever the length
+std::string_view truncated = std::string_view(content).substr(0, max_length);
 ```
 
 ---
@@ -1316,7 +1323,9 @@ struct TopicArticle {
 
 **Use `std::string_view` instead of `const char*` for function parameters that
 accept string data.** `std::string_view` is more flexible (accepts
-`std::string`, `const char*`, string literals) and carries size information.
+`std::string`, `const char*`, string literals) and carries size information. A
+parameter that must be NUL-terminated, such as one passed on to a C API, takes
+`base::cstring_view` instead.
 
 ```cpp
 // ❌ WRONG

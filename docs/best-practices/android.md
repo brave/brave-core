@@ -96,7 +96,8 @@ preference.setOnPreferenceClickListener(pref -> {
 
 **If a member field (e.g., a View reference) is checked for null in some code
 paths, check it in all code paths that use it.** Inconsistent null checking
-suggests some paths may crash.
+suggests some paths may crash. If the field is unconditionally initialized in a
+constructor or field initializer, it is never null: remove the checks instead.
 
 ```java
 // ❌ WRONG - null check in some places but not others
@@ -240,7 +241,8 @@ visual flash before the code hides it.**
 **Pair defensive null/validation checks with `assert` statements.** Assertions
 crash in debug builds making problems immediately visible, while graceful
 handling still protects release builds. Log-only guards are easily missed in
-logcat output.
+logcat output. When the condition is an invariant that always holds, assert it
+and drop the fallback branch instead.
 
 ```java
 // ❌ WRONG - log-only guard, easily missed

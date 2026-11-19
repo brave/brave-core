@@ -1,0 +1,307 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# The rules of docs/best-practices/testing-isolation.md. See
+# docs/knowledge_base/README.md for the fields.
+agentic_review {
+  # Real services and implementations constructed in unit tests.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_test)\\.(?:cc|mm)"
+    content_patterns: "\\bstd::make_unique<[\\w:]*(?:Service|Impl|Manager|Client|Tool|Fetcher|Provider|Controller|Downloader)>"
+    content_patterns: "\\bbase::MakeRefCounted<"
+    content_patterns: "\\b\\w+Factory::Get(?:ForProfile|ForBrowserContext|Instance)\\s*\\("
+    rules: "docs/knowledge_base/rules/testing_isolation/prefer-fakes-over-real-dependencies-in-tests.md"
+  }
+  # Members and test hooks of the class under test reached from tests.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "(?:->|\\.)[a-z]\\w*_(?:[^\\w(]|$)"
+    content_patterns: "#\\s*define\\s+private\\s+public"
+    content_patterns: "\\b\\w+(?:ForTesting|_for_testing)\\s*\\("
+    rules: "docs/knowledge_base/rules/testing_isolation/test-public-api-not-private-state.md"
+    rules: "docs/knowledge_base/rules/testing_isolation/no-impossible-production-states-in-tests.md"
+  }
+  # Request monitors, request handlers and URL interceptors in test code.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    path_expression: "(?:.*/)?(?:test/.*\\.(?:cc|h|mm)|[^/]*_test_utils?\\.(?:cc|h)|[^/]*(?:fake|mock|test)_[^/]*\\.(?:cc|h))"
+    content_patterns: "\\bHttpRequest\\b"
+    content_patterns: "\\bHttpResponse>"
+    content_patterns: "\\bRegisterRequest(?:Monitor|Handler)\\s*\\("
+    content_patterns: "\\bURLLoaderInterceptor\\b"
+    content_patterns: "\\bSetInterceptor\\s*\\("
+    content_patterns: "\\bheaders\\s*(?:\\[|\\.(?:find|at|contains)\\b)"
+    rules: "docs/knowledge_base/rules/testing_isolation/per-domain-expected-values-for-subresource-requests.md"
+    rules: "docs/knowledge_base/rules/testing_isolation/fail-loudly-on-unhandled-test-server-requests.md"
+  }
+  # Throttle durations and the delays that check them, in tests.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    path_expression: "(?:.*/)?(?:test/.*\\.(?:cc|h|mm)|[^/]*_test_utils?\\.(?:cc|h)|[^/]*(?:fake|mock|test)_[^/]*\\.(?:cc|h))"
+    content_patterns: "[Tt]hrottl"
+    content_patterns: "\\bNonBlockingDelay\\s*\\("
+    rules: "docs/knowledge_base/rules/testing_isolation/throttle-windows-larger-than-polling-time.md"
+  }
+  # Waits, delays and run loops in tests, as fixes for async problems add.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    path_expression: "(?:.*/)?(?:test/.*\\.(?:cc|h|mm)|[^/]*_test_utils?\\.(?:cc|h)|[^/]*(?:fake|mock|test)_[^/]*\\.(?:cc|h))"
+    content_patterns: "\\bRunLoop\\b"
+    content_patterns: "\\bRunUntil\\s*\\("
+    content_patterns: "\\bTestFuture\\b"
+    content_patterns: "\\bPostDelayedTask\\s*\\("
+    content_patterns: "\\bNonBlockingDelay\\s*\\("
+    content_patterns: "\\bMutationObserver\\b"
+    content_patterns: "\\bsetTimeout\\s*\\("
+    content_patterns: "\\bPlatformThread::Sleep\\s*\\("
+    content_patterns: "\\bFastForwardBy\\s*\\("
+    content_patterns: "\\bWait(?:For|Until)\\w*\\s*\\("
+    rules: "docs/knowledge_base/rules/testing_isolation/follow-chromium-patterns-for-async-test-fixes.md"
+    rules: "docs/knowledge_base/rules/testing_isolation/reference-the-chromium-pattern-followed.md"
+  }
+  # EvalJs() calls outside any EXPECT_*/ASSERT_* in tests.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    path_expression: "(?:.*/)?(?:test/.*\\.(?:cc|h|mm)|[^/]*_test_utils?\\.(?:cc|h)|[^/]*(?:fake|mock|test)_[^/]*\\.(?:cc|h))"
+    ast_patterns: "{kind: call_expression, regex: '^(?:content::)?EvalJs\\w*\\s*\\(', not: {inside: {kind: call_expression, regex: '^(?:EXPECT|ASSERT)_', stopBy: end}}}"
+    rules: "docs/knowledge_base/rules/testing_isolation/check-eval-js-results.md"
+  }
+  # Constants defined in test code.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    path_expression: "(?:.*/)?(?:test/.*\\.(?:cc|h|mm)|[^/]*_test_utils?\\.(?:cc|h)|[^/]*(?:fake|mock|test)_[^/]*\\.(?:cc|h))"
+    content_patterns: "\\b(?:constexpr|const)\\s+[^=;]*\\bk[A-Z]\\w*"
+    rules: "docs/knowledge_base/rules/testing_isolation/share-constants-between-code-and-tests.md"
+  }
+  # //chrome includes and deps in the tests and test targets of components/.
+  capability_groups {
+    path_expression: "(?:chromium_src/)?components/(?:.*/)?(?:[^/]*(?:_unittest|_browsertest|_test|_test_utils?|_test_support)\\.(?:cc|h|mm)|test/.*\\.(?:cc|h|mm)|[^/]*(?:fake|mock|test)_[^/]*\\.(?:cc|h))"
+    path_expression: "(?:chromium_src/)?components/(?:.*/)?(?:BUILD\\.gn|[^/]*\\.gni)"
+    content_patterns: "#\\s*include\\s+[\"<]chrome/"
+    content_patterns: "\"//chrome[/:\"]"
+    rules: "docs/knowledge_base/rules/testing_isolation/no-chrome-deps-in-components-tests.md"
+  }
+  # Test friend declarations in classes.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bFRIEND_TEST(?:_ALL_PREFIXES)?\\s*\\("
+    content_patterns: "\\bfriend\\s+(?:class\\s+)?\\w*Test\\w*\\s*;"
+    rules: "docs/knowledge_base/rules/testing_isolation/prefer-for-testing-accessor-over-friend-test.md"
+  }
+  # Test-only globals and hooks that tests set.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    path_expression: "(?:.*/)?(?:test/.*\\.(?:cc|h|mm)|[^/]*_test_utils?\\.(?:cc|h)|[^/]*(?:fake|mock|test)_[^/]*\\.(?:cc|h))"
+    content_patterns: "\\bg_\\w+\\s*=[^=]"
+    content_patterns: "\\b\\w+_for_testing\\s*=[^=]"
+    content_patterns: "\\b(?:Set|Disable|Enable|Override|Skip)\\w*ForTesting\\s*\\("
+    rules: "docs/knowledge_base/rules/testing_isolation/tests-must-exercise-the-code-they-claim.md"
+    rules: "docs/knowledge_base/rules/testing_isolation/reset-test-only-globals-in-teardown.md"
+  }
+  # Feature overrides and checks in tests, and overrides they remove.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    path_expression: "(?:.*/)?(?:test/.*\\.(?:cc|h|mm)|[^/]*_test_utils?\\.(?:cc|h)|[^/]*(?:fake|mock|test)_[^/]*\\.(?:cc|h))"
+    content_patterns: "\\bScopedFeatureList\\b"
+    content_patterns: "\\bInit(?:AndEnable|AndDisable|With)Feature\\w*\\s*\\("
+    content_patterns: "\\bFeatureList::IsEnabled\\s*\\("
+    content_patterns: "\\bFeatureRef\\b"
+    diff_patterns: "^-.*\\b(?:ScopedFeatureList|Init(?:AndEnable|AndDisable|With)Feature\\w*)\\b"
+    rules: "docs/knowledge_base/rules/testing_isolation/tests-must-exercise-the-code-they-claim.md"
+    rules: "docs/knowledge_base/rules/testing_isolation/cover-all-feature-flag-combinations.md"
+    rules: "docs/knowledge_base/rules/testing_isolation/pin-feature-flags-tests-depend-on.md"
+    rules: "docs/knowledge_base/rules/testing_isolation/init-scoped-feature-list-before-flag-readers.md"
+  }
+  # Feature defaults flipped in code, chromium_src overrides or plasters.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "rewrite/.*\\.yaml"
+    diff_patterns: "^[-+].*\\bFEATURE_(?:ENABLED|DISABLED)_BY_DEFAULT\\b"
+    rules: "docs/knowledge_base/rules/testing_isolation/pin-feature-flags-tests-depend-on.md"
+  }
+  # Assertions in tests.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    path_expression: "(?:.*/)?(?:test/.*\\.(?:cc|h|mm)|[^/]*_test_utils?\\.(?:cc|h)|[^/]*(?:fake|mock|test)_[^/]*\\.(?:cc|h))"
+    content_patterns: "\\b(?:EXPECT|ASSERT)_[A-Z_]+\\s*\\("
+    rules: "docs/knowledge_base/rules/testing_isolation/add-diagnostic-context-to-assertions.md"
+    rules: "docs/knowledge_base/rules/testing_isolation/extract-repeated-assertions-into-helpers.md"
+  }
+  # Helper functions with assertions but no SCOPED_TRACE, in browser tests and
+  # test support.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_browsertest|_interactive_uitest)\\.(?:cc|mm)"
+    path_expression: "(?:.*/)?(?:test/.*\\.(?:cc|h|mm)|[^/]*_test_utils?\\.(?:cc|h)|[^/]*(?:fake|mock|test)_[^/]*\\.(?:cc|h))"
+    ast_patterns: "{kind: function_definition, all: [{has: {field: type, regex: '.'}}, {has: {kind: call_expression, regex: '^(?:EXPECT|ASSERT)_', stopBy: end}}, {not: {has: {kind: call_expression, regex: '^SCOPED_TRACE', stopBy: end}}}, {not: {has: {field: declarator, regex: '^(?:\\w+::)*(?:SetUp|TearDown|TestBody)'}}}]}"
+    rules: "docs/knowledge_base/rules/testing_isolation/scoped-trace-caller-location-in-test-helpers.md"
+  }
+  # Tool and handler classes in production code.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?(?:test/.*|[^/]*_test_utils?\\.(?:cc|h)|[^/]*(?:fake|mock|test)_[^/]*\\.(?:cc|h))"
+    content_patterns: "\\b(?:class|struct)\\s+\\w*(?:Tool|Handler)\\b"
+    content_patterns: "\\b\\w*(?:Tool|Handler)::\\w+\\s*\\("
+    rules: "docs/knowledge_base/rules/testing_isolation/test-bad-input-for-tools-and-handlers.md"
+  }
+  # Assertions, mock expectations and tests that a change removes.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    path_expression: "(?:.*/)?(?:test/.*\\.(?:cc|h|mm)|[^/]*_test_utils?\\.(?:cc|h)|[^/]*(?:fake|mock|test)_[^/]*\\.(?:cc|h))"
+    path_expression: "(?:.*/)?[^/]*Test\\.java"
+    path_expression: "(?:.*/)?[^/]*\\.test\\.tsx?"
+    diff_patterns: "^-\\s*(?:EXPECT|ASSERT)_[A-Z_]+\\s*\\("
+    diff_patterns: "^-.*\\bEXPECT_CALL\\s*\\("
+    diff_patterns: "^-\\s*(?:IN_PROC_BROWSER_|TYPED_)?TEST(?:_F|_P)?\\s*\\("
+    diff_patterns: "^-.*\\b(?:assert[A-Z]\\w*|expect|verify)\\s*\\("
+    diff_patterns: "^-\\s*(?:it|test)\\s*\\("
+    rules: "docs/knowledge_base/rules/testing_isolation/relocate-test-checks-when-refactoring.md"
+  }
+  # Membership-only and size checks on results, in tests.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\b(?:base::)?Contains\\w*\\s*\\("
+    content_patterns: "\\b(?:UnorderedElementsAre(?:Array)?|IsSupersetOf|IsSubsetOf|UnorderedPointwise)\\s*\\("
+    content_patterns: "\\b(?:EXPECT|ASSERT)_EQ\\s*\\(.*\\.size\\s*\\(\\s*\\)"
+    rules: "docs/knowledge_base/rules/testing_isolation/verify-order-of-ordered-results.md"
+  }
+  # Substring checks in tests.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\bHasSubstr\\s*\\("
+    rules: "docs/knowledge_base/rules/testing_isolation/no-substring-matching-on-json.md"
+  }
+  # Expected JSON values built or parsed in tests.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    path_expression: "(?:.*/)?(?:test/.*\\.(?:cc|h|mm)|[^/]*_test_utils?\\.(?:cc|h)|[^/]*(?:fake|mock|test)_[^/]*\\.(?:cc|h))"
+    content_patterns: "\\bbase::Value::(?:Dict|List)\\s+expected\\w*"
+    content_patterns: "\\bexpected\\w*\\.Set\\s*\\("
+    content_patterns: "\\bParseJson\\w*\\s*\\("
+    content_patterns: "\\bJSONReader::Read\\w*\\s*\\("
+    content_patterns: "\\bJSONWriter::Write\\w*\\s*\\("
+    rules: "docs/knowledge_base/rules/testing_isolation/compare-json-with-parse-json-dict.md"
+  }
+  # Tests of error and failure paths.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\b(?:IN_PROC_BROWSER_|TYPED_)?TEST(?:_F|_P)?\\s*\\(\\s*\\w+\\s*,\\s*\\w*(?:Error|Fail|Invalid|Reject|Denied|Bad|Malformed|Missing|Timeout|NotFound)"
+    content_patterns: "\\b(?:EXPECT|ASSERT)_FALSE\\s*\\("
+    content_patterns: "\\bstd::nullopt\\b"
+    content_patterns: "\\.error\\s*\\(\\s*\\)"
+    content_patterns: "\\.Times\\s*\\(\\s*0\\s*\\)"
+    rules: "docs/knowledge_base/rules/testing_isolation/verify-side-effects-do-not-happen-on-failure.md"
+  }
+  # Serialization, deserialization and parsing in tests.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "[Ss]eriali[sz]"
+    content_patterns: "\\b(?:To|From)(?:Value|Dict|Json|JSON|Proto|Mojom|String)\\s*\\("
+    content_patterns: "\\bParse\\w*\\s*\\("
+    content_patterns: "\\bStructTraits\\b"
+    rules: "docs/knowledge_base/rules/testing_isolation/verify-all-fields-in-serialization-tests.md"
+    rules: "docs/knowledge_base/rules/testing_isolation/test-malformed-input-in-deserialization-tests.md"
+  }
+  # Test definitions.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "^\\s*(?:IN_PROC_BROWSER_|TYPED_|PLATFORM_BROWSER_)?TEST(?:_F|_P)?\\s*\\("
+    rules: "docs/knowledge_base/rules/testing_isolation/parameterize-similar-test-scenarios.md"
+    rules: "docs/knowledge_base/rules/testing_isolation/test-both-sides-of-guard-conditions.md"
+    rules: "docs/knowledge_base/rules/testing_isolation/descriptive-test-names.md"
+  }
+  # Optionals unwrapped or defaulted in tests.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    path_expression: "(?:.*/)?(?:test/.*\\.(?:cc|h|mm)|[^/]*_test_utils?\\.(?:cc|h)|[^/]*(?:fake|mock|test)_[^/]*\\.(?:cc|h))"
+    content_patterns: "\\bvalue_or\\s*\\("
+    content_patterns: "\\bhas_value\\s*\\(\\s*\\)"
+    content_patterns: "(?:\\.|->)value\\s*\\(\\s*\\)"
+    rules: "docs/knowledge_base/rules/testing_isolation/assert-optional-engaged-before-access.md"
+  }
+  # Mock expectations allowed to repeat.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    path_expression: "(?:.*/)?(?:test/.*\\.(?:cc|h|mm)|[^/]*_test_utils?\\.(?:cc|h)|[^/]*(?:fake|mock|test)_[^/]*\\.(?:cc|h))"
+    content_patterns: "\\.WillRepeatedly\\s*\\("
+    rules: "docs/knowledge_base/rules/testing_isolation/will-once-for-single-mock-calls.md"
+  }
+  # Return values of calls asserted in browser tests.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_browsertest|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\b(?:EXPECT|ASSERT)_(?:TRUE|FALSE)\\s*\\(\\s*!?[\\w:.>-]+\\("
+    rules: "docs/knowledge_base/rules/testing_isolation/verify-observable-side-effects-in-browser-tests.md"
+  }
+  # Branches added to production code.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|mm|java|ts|tsx)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest|_fuzzer)\\.(?:cc|mm)"
+    path_expression_exclusion: "(?:.*/)?(?:test|tests|javatests|test_support)/.*"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_test_utils?|_test_support)\\.(?:cc|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:fake|mock)_[^/]*\\.(?:cc|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*Test\\.java"
+    path_expression_exclusion: "(?:.*/)?[^/]*\\.(?:test|stories)\\.tsx?"
+    content_patterns: "^\\s*(?:\\}\\s*)?(?:else\\s+)?(?:if|switch|for|while)\\s*\\("
+    content_patterns: "^\\s*(?:\\}\\s*)?else\\b"
+    content_patterns: "^\\s*case\\b"
+    rules: "docs/knowledge_base/rules/testing_isolation/bug-fixes-need-a-regression-test.md"
+    rules: "docs/knowledge_base/rules/testing_isolation/changes-need-reasonable-test-coverage.md"
+  }
+  # Changed or removed lines of existing tests and test filters, as fixing a
+  # test makes.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    path_expression: "test/filters/[^/]*\\.filter"
+    diff_patterns: "^-"
+    rules: "docs/knowledge_base/rules/testing_isolation/run-whole-test-file-when-fixing-a-test.md"
+    rules: "docs/knowledge_base/rules/testing_isolation/confirm-filtered-tests-ran.md"
+  }
+  # Non-fatal checks of pointers, optionals and sizes in tests.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    path_expression: "(?:.*/)?(?:test/.*\\.(?:cc|h|mm)|[^/]*_test_utils?\\.(?:cc|h)|[^/]*(?:fake|mock|test)_[^/]*\\.(?:cc|h))"
+    content_patterns: "\\bEXPECT_(?:TRUE|FALSE|NE)\\s*\\("
+    content_patterns: "\\bEXPECT_(?:EQ|GE|GT|THAT)\\s*\\(.*(?:\\b(?:size|has_value|empty|is_\\w+|ok)\\s*\\(|\\bnullptr\\b|\\bSizeIs\\b|\\bNotNull\\b|\\bOptional\\b)"
+    rules: "docs/knowledge_base/rules/testing_isolation/assert-preconditions-later-code-depends-on.md"
+  }
+  # Sequence checkers and constructors in database classes.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:database|_db|storage|_store|_table)[^/]*\\.(?:cc|h)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test)\\.(?:cc|h)"
+    content_patterns: "\\bSEQUENCE_CHECKER\\s*\\("
+    content_patterns: "\\bDETACH_FROM_SEQUENCE\\s*\\("
+    content_patterns: "^\\s*(?:\\w+::)*\\w*(?:Database|Storage|Store|Table|Db|DB)::\\w*(?:Database|Storage|Store|Table|Db|DB)\\s*\\("
+    rules: "docs/knowledge_base/rules/testing_isolation/detach-database-sequence-checker-in-constructor.md"
+  }
+  # Classes holding an sql::Database, whatever their file is called.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test)\\.(?:cc|h)"
+    content_patterns: "\\bsql::Database\\b"
+    rules: "docs/knowledge_base/rules/testing_isolation/detach-database-sequence-checker-in-constructor.md"
+  }
+  # Fixtures deriving directly from testing::Test.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\b(?:class|struct)\\s+\\w+\\s*(?:final\\s*)?:\\s*public\\s+(?:::)?testing::Test\\b"
+    content_patterns: "\\busing\\s+\\w+\\s*=\\s*(?:::)?testing::Test\\s*;"
+    rules: "docs/knowledge_base/rules/testing_isolation/plain-test-for-empty-fixtures.md"
+  }
+  # chromium_src overrides and the tests in chromium_src.
+  capability_groups {
+    path_expression: "chromium_src/.*\\.(?:cc|h|mm)"
+    content_patterns: "#\\s*include\\s+[<\"][^>\"]+\\.(?:cc|mm)[>\"]"
+    content_patterns: "\\b\\w+_ChromiumImpl\\b"
+    content_patterns: "^\\s*#\\s*define\\s+BRAVE_\\w+"
+    content_patterns: "^\\s*(?:IN_PROC_BROWSER_|TYPED_)?TEST(?:_F|_P)?\\s*\\("
+    rules: "docs/knowledge_base/rules/testing_isolation/test-chromium-src-overrides-by-including-upstream-tests.md"
+  }
+  # Test filter entries without an instantiation prefix.
+  capability_groups {
+    path_expression: "test/filters/[^/]*\\.filter"
+    content_patterns: "^-?[A-Za-z_*][\\w*]*\\.[\\w*]+\\s*$"
+    rules: "docs/knowledge_base/rules/testing_isolation/gtest-filters-need-instantiation-prefix.md"
+  }
+}

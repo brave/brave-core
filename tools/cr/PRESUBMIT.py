@@ -81,3 +81,29 @@ def CheckTests(input_api, output_api):
                     )
                 )
     return input_api.RunTestsWithProgress('CheckTests', tests, groups=groups)
+
+
+def CheckKnowledgeBases(input_api, output_api):
+    """Lints the knowledge bases when the code health rules, or the module
+    reading them, change."""
+    if not any(
+        f.LocalPath()
+        .replace(os.sep, '/')
+        .startswith(('tools/cr/codehealth/rules/', 'tools/cr/knowledge_base'))
+        for f in input_api.AffectedFiles()
+    ):
+        return []
+    script_dir = input_api.PresubmitLocalPath()
+    return input_api.RunTests(
+        [
+            input_api.Command(
+                name='knowledge_base.py lint',
+                cmd=[
+                    input_api.os_path.join(script_dir, 'knowledge_base.py'),
+                    'lint',
+                ],
+                kwargs={'cwd': script_dir},
+                message=output_api.PresubmitError,
+            )
+        ]
+    )

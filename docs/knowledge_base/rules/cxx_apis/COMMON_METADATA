@@ -1,0 +1,603 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# The rules of docs/best-practices/coding-standards-apis.md. See
+# docs/knowledge_base/README.md for the fields.
+agentic_review {
+  # Any C++ change: custom helpers, and uses of possibly deprecated APIs.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    rules: "docs/knowledge_base/rules/cxx_apis/reuse-existing-utilities.md"
+    rules: "docs/knowledge_base/rules/cxx_apis/no-new-uses-of-deprecated-apis.md"
+  }
+  # The deprecated callback types and Bind().
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bbase::(?:Callback|Closure|Bind)\\b"
+    rules: "docs/knowledge_base/rules/cxx_apis/no-deprecated-callback-types.md"
+  }
+  # Once callbacks, and callbacks run without std::move.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bOnce(?:Callback|Closure)\\b"
+    content_patterns: "\\b\\w*(?:[Cc]allback|cb|[Cc]losure)_?\\.Run\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx_apis/move-once-callbacks.md"
+  }
+  # The C time API.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bstd::(?:time|ctime|localtime|gmtime|mktime|difftime|strftime|tm)\\b"
+    content_patterns: "\\btime_t\\b"
+    content_patterns: "\\bstruct\\s+tm\\b"
+    content_patterns: "#\\s*include\\s*<(?:ctime|time\\.h)>"
+    content_patterns: "(?:^|[^\\w.>:])(?:time|localtime|gmtime|mktime|ctime)\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx_apis/base-time-over-c-time.md"
+  }
+  # Key-by-key reads of a dictionary.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "(?:\\.|->)Find(?:String|Int|Bool|Double|Dict|List)(?:Key|ByDottedPath)?\\s*\\("
+    content_patterns: "\\bJSONValueConverter\\b"
+    rules: "docs/knowledge_base/rules/cxx_apis/json-value-converter-over-manual-parsing.md"
+  }
+  # The banned standard unordered containers.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bstd::unordered_(?:map|set|multimap|multiset)\\b"
+    content_patterns: "#\\s*include\\s*<unordered_(?:map|set)>"
+    rules: "docs/knowledge_base/rules/cxx_apis/no-std-unordered-containers.md"
+  }
+  # The banned Abseil B-tree containers.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\babsl::btree_(?:map|set|multimap|multiset)\\b"
+    content_patterns: "absl/container/btree_"
+    rules: "docs/knowledge_base/rules/cxx_apis/no-absl-btree-containers.md"
+  }
+  # Declarations of maps and sets.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:std::(?:map|set|multimap|multiset)|base::flat_(?:map|set)|absl::flat_hash_(?:map|set))\\s*<"
+    rules: "docs/knowledge_base/rules/cxx_apis/choose-associative-container-by-use.md"
+  }
+  # Node hash containers, and flat hash maps of unique_ptr values.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\babsl::node_hash_(?:map|set)\\b"
+    content_patterns: "\\babsl::flat_hash_map\\s*<.*\\bstd::unique_ptr\\s*<"
+    rules: "docs/knowledge_base/rules/cxx_apis/hash-map-pointer-stability.md"
+  }
+  # The deprecated base::Value GetAs*() methods.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bGetAs(?:String|Integer|Int|Boolean|Bool|Double|List|Dictionary|Dict)\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx_apis/no-value-get-as-methods.md"
+  }
+  # base::Value accessors that CHECK the type.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "(?:\\.|->)Get(?:Bool|Int|Double|String|Dict|List|Blob)\\s*\\(\\s*\\)"
+    rules: "docs/knowledge_base/rules/cxx_apis/value-get-if-accessors-for-unchecked-types.md"
+  }
+  # std::to_string().
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bstd::to_w?string\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx_apis/number-to-string-over-std-to-string.md"
+  }
+  # C-style casts, other than to void.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    ast_patterns: "{kind: cast_expression, not: {has: {field: type, regex: '^void$'}}}"
+    rules: "docs/knowledge_base/rules/cxx_apis/no-c-style-casts.md"
+  }
+  # Clone() calls, and callbacks run with arguments.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\.Clone\\s*\\(\\s*\\)"
+    content_patterns: "\\.Run\\s*\\(\\s*[^)\\s]"
+    rules: "docs/knowledge_base/rules/cxx_apis/move-instead-of-copying-values.md"
+  }
+  # Definitions of plural-named structs and classes.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression: "(?:.*/)?[^/]*\\.mojom"
+    content_patterns: "^\\s*(?:struct|class)\\s+(?:\\w+(?:\\([^)]*\\))?\\s+)?[A-Z]\\w*s(?:\\s+final)?\\s*(?:\\{|:|$)"
+    rules: "docs/knowledge_base/rules/cxx_apis/no-plural-wrapper-types.md"
+  }
+  # JSON written to, or read from, string prefs.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bJSONWriter::Write\\w*\\s*\\("
+    content_patterns: "\\bJSONReader::Read\\w*\\s*\\([^;]*GetString\\s*\\("
+    content_patterns: "(?:\\.|->)SetString\\s*\\([^;]*(?:json|JSON)"
+    rules: "docs/knowledge_base/rules/cxx_apis/pref-dict-and-list-values-not-json-strings.md"
+  }
+  # String constants defined as macros.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "^\\s*#\\s*define\\s+\\w+\\s+(?:u8|u|U|L)?\""
+    rules: "docs/knowledge_base/rules/cxx_apis/const-char-arrays-over-string-defines.md"
+  }
+  # String parameters and comparisons that name a type, kind, mode or state.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:const\\s+std::string\\s*&|std::string_view)\\s*\\w*(?:type|kind|mode|state|status|level|category)\\s*(?:[,)]|$)"
+    content_patterns: "\\b\\w*(?:type|kind|mode|state|status)\\w*\\s*[!=]=\\s*\""
+    rules: "docs/knowledge_base/rules/cxx_apis/enums-over-string-constants.md"
+  }
+  # C++ code that throws or catches exceptions.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bthrow\\b"
+    content_patterns: "\\btry\\s*\\{"
+    content_patterns: "\\bcatch\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx_apis/no-cxx-exceptions-in-third-party-code.md"
+  }
+  # GN targets that change the exceptions configs.
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn|(?:.*/)?[^/]*\\.gni"
+    content_patterns: "//build/config/compiler:(?:no_)?exceptions\\b"
+    content_patterns: "-fexceptions\\b"
+    rules: "docs/knowledge_base/rules/cxx_apis/no-cxx-exceptions-in-third-party-code.md"
+  }
+  # Hand-written erase loops and the erase-remove idiom.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "=\\s*\\S*(?:\\.|->)erase\\s*\\(\\s*\\w+\\s*\\)"
+    content_patterns: "(?:\\.|->)erase\\s*\\(\\s*(?:std::)?(?:ranges::)?remove_if\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx_apis/erase-if-over-manual-erase-loops.md"
+  }
+  # Parameters taking a const std::vector reference.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "(?:^|[(,])\\s*const\\s+std::vector<.*>\\s*&\\s*\\w+\\s*(?:[,)]|$)"
+    rules: "docs/knowledge_base/rules/cxx_apis/span-params-over-const-vector-refs.md"
+  }
+  # Vectors constructed with a size or other arguments.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bstd::vector<[^;=]*>\\s+\\w+\\s*\\(\\s*[^)\\s]"
+    content_patterns: "=\\s*std::vector<[^;]*>\\s*\\(\\s*[^)\\s]"
+    rules: "docs/knowledge_base/rules/cxx_apis/fixed-array-for-runtime-sized-arrays.md"
+  }
+  # Byte vectors.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bstd::vector<\\s*(?:unsigned\\s+char|uint8_t|std::byte)\\s*>"
+    rules: "docs/knowledge_base/rules/cxx_apis/heap-array-for-byte-buffers.md"
+  }
+  # Manual copies of a range into a vector.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bstd::back_inserter\\s*\\("
+    content_patterns: "(?:\\.|->)reserve\\s*\\("
+    content_patterns: "\\bstd::(?:ranges::)?copy(?:_n|_if)?\\s*\\("
+    content_patterns: "\\bstd::vector<[^;]*>\\s*\\w*\\s*\\(\\s*[\\w.()>-]+(?:\\.|->)c?begin\\s*\\(\\s*\\)"
+    rules: "docs/knowledge_base/rules/cxx_apis/to-vector-for-range-conversions.md"
+  }
+  # Linked lists.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bstd::(?:list|forward_list)\\s*<"
+    content_patterns: "#\\s*include\\s*<(?:list|forward_list)>"
+    rules: "docs/knowledge_base/rules/cxx_apis/contiguous-containers-over-std-list.md"
+  }
+  # Sentinel returns, comparisons and comments.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\breturn\\s+-1\\s*;"
+    content_patterns: "\\breturn\\s+(?:\"\"|std::string\\(\\)|std::string_view\\(\\))\\s*;"
+    content_patterns: "[!=]=\\s*-1\\b"
+    content_patterns: "=\\s*-1\\s*;"
+    content_patterns: "(?:\"\"|-1)\\s+means\\b"
+    content_patterns: "\\bmeans\\s+\"?(?:unset|none|no value|not set|missing)\\b"
+    rules: "docs/knowledge_base/rules/cxx_apis/optional-over-sentinel-values.md"
+  }
+  # Members assigned a freshly constructed value.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b\\w+_\\s*=\\s*(?:\\w+::)+[A-Z]\\w*(?:<[^;]*>)?\\s*[({]"
+    content_patterns: "\\b\\w+_\\s*=\\s*[A-Z]\\w*(?:<[^;]*>)?\\s*(?:\\(\\s*\\)|\\{\\s*\\})\\s*;"
+    content_patterns: "=\\s*std::make_optional\\b"
+    rules: "docs/knowledge_base/rules/cxx_apis/emplace-to-engage-optional-members.md"
+  }
+  # Functions returning bool with an out parameter.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bbool\\s+(?:\\w+::)*[A-Z]\\w*\\s*\\(.*\\*\\s*(?:out\\w*|\\w*_out|result|output)\\s*(?:[,)]|$)"
+    content_patterns: "^\\s*[\\w:<>, ]+\\*\\s*(?:out\\w*|\\w*_out)\\s*[,)]"
+    rules: "docs/knowledge_base/rules/cxx_apis/optional-over-bool-and-out-param.md"
+  }
+  # Constants declared const.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "^\\s*(?:static\\s+)?const\\s+[^=;(]*\\bk[A-Z]\\w*(?:\\[\\w*\\])?\\s*="
+    rules: "docs/knowledge_base/rules/cxx_apis/constexpr-for-compile-time-constants.md"
+  }
+  # Constants in an anonymous namespace at file scope.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|mm)"
+    path_expression_exclusion: "chromium_src/.*"
+    ast_patterns: "{kind: declaration, regex: '^(?:static\\s+)?(?:constexpr|const)\\b', inside: {kind: declaration_list, inside: {kind: namespace_definition, not: {has: {kind: namespace_identifier}}, inside: {kind: translation_unit}}}}"
+    rules: "docs/knowledge_base/rules/cxx_apis/constants-inside-component-namespace.md"
+  }
+  # String literals ending in an escaped newline.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\\\n\"\\s*[),;]*\\s*$"
+    rules: "docs/knowledge_base/rules/cxx_apis/raw-string-literals-for-multiline-strings.md"
+  }
+  # Primitive types and pointers taken by const reference.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bconst\\s+(?:unsigned\\s+)?(?:int|bool|float|double|char|char16_t|size_t|ptrdiff_t|u?int(?:8|16|32|64)_t|long|short)\\s*&"
+    content_patterns: "\\bconst\\s+[\\w:]+\\s*\\*\\s*(?:const\\s*)?&"
+    content_patterns: "[\\w:>]\\s*\\*\\s*const\\s*&"
+    rules: "docs/knowledge_base/rules/cxx_apis/primitives-by-value-not-const-ref.md"
+  }
+  # DISALLOW_COPY_AND_ASSIGN.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bDISALLOW_COPY_AND_ASSIGN\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx_apis/no-disallow-copy-and-assign.md"
+  }
+  # Move constructors and move assignments declared without noexcept.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b[A-Z]\\w*\\s*\\(\\s*[A-Z]\\w*\\s*&&\\s*\\w*\\s*\\)\\s*(?:=\\s*default|;|\\{|:)"
+    content_patterns: "\\boperator=\\s*\\(\\s*[A-Z]\\w*\\s*&&\\s*\\w*\\s*\\)\\s*(?:=\\s*default|;|\\{|:)"
+    rules: "docs/knowledge_base/rules/cxx_apis/noexcept-move-operations.md"
+  }
+  # Parameters taking a std::optional by reference.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "(?:^|[(,])\\s*(?:const\\s+)?std::optional<.*>\\s*&\\s*\\w+\\s*(?:[,)]|$)"
+    rules: "docs/knowledge_base/rules/cxx_apis/no-optional-reference-params.md"
+  }
+  # Functions taking a URL in shields, debounce and content settings code.
+  capability_groups {
+    path_expression: "(?:.*/)?(?:brave_shields|debounce|content_settings)/(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\bGURL\\s*&?\\s*\\w+\\s*(?:[,)]|$)"
+    rules: "docs/knowledge_base/rules/cxx_apis/early-return-for-non-http-urls.md"
+  }
+  # Setters taking a narrow numeric parameter.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:set_\\w+|Set[A-Z]\\w*)\\s*\\(\\s*(?:u?int(?:8|16|32)_t|int|unsigned(?:\\s+int)?|short|long|float|double)\\s+\\w+\\s*\\)"
+    rules: "docs/knowledge_base/rules/cxx_apis/no-narrowing-in-setter-params.md"
+  }
+  # Removed pref registrations.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    diff_patterns: "^-.*\\bRegister\\w*Pref\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx_apis/deprecate-prefs-before-removing.md"
+  }
+  # Test-only signals in production code.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest|_test_util|_test_utils|_test_support|_test_helper|_test_helpers|_mock|_fake)\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?(?:test|tests|testing)/.*"
+    content_patterns: "\\bCHECK_IS_TEST\\s*\\("
+    content_patterns: "#\\s*if(?:def)?\\s*(?:defined\\s*\\(\\s*)?UNIT_TEST\\b"
+    content_patterns: "\\b\\w+_for_testing\\b"
+    content_patterns: "\\b\\w+ForTesting\\b"
+    content_patterns: "//.*\\b(?:for|in|by|during)\\s+(?:unit\\s+|browser\\s+)?tests?\\b"
+    content_patterns: "\\bis_test(?:ing)?\\b"
+    content_patterns: "\\bIsTest\\w*\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx_apis/no-test-only-code-in-production.md"
+  }
+  # A hard-coded scheme separator.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\"://\""
+    rules: "docs/knowledge_base/rules/cxx_apis/standard-scheme-separator-constant.md"
+  }
+  # Empty lambdas.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\[[^\\]]*\\]\\s*\\([^()]*\\)\\s*(?:mutable\\s*)?(?:->\\s*[\\w:<>]+\\s*)?\\{\\s*\\}"
+    rules: "docs/knowledge_base/rules/cxx_apis/do-nothing-for-no-op-callbacks.md"
+  }
+  # StrCat() appended with +=.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\+=\\s*(?:base::)?StrCat\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx_apis/str-append-over-plus-equals-str-cat.md"
+  }
+  # Reverse iterators.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "(?:\\.|->)c?r(?:begin|end)\\s*\\(\\s*\\)"
+    content_patterns: "\\bstd::(?:ranges::)?c?r(?:begin|end)\\s*\\("
+    content_patterns: "\\bstd::(?:make_)?reverse_iterator\\b"
+    content_patterns: "\\bbase::Reversed\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx_apis/views-reverse-over-reverse-iterators.md"
+  }
+  # Reverse traversals of any kind.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "(?:\\.|->)c?r(?:begin|end)\\s*\\(\\s*\\)"
+    content_patterns: "\\bstd::(?:ranges::)?c?r(?:begin|end)\\s*\\("
+    content_patterns: "\\bstd::(?:make_)?reverse_iterator\\b"
+    content_patterns: "\\bbase::Reversed\\s*\\("
+    content_patterns: "\\bstd::(?:ranges::)?views::reverse\\s*\\("
+    content_patterns: "\\bstd::ranges::reverse_view\\b"
+    content_patterns: "\\bfor\\s*\\([^;]*;[^;]*;\\s*(?:--\\s*\\w+|\\w+\\s*--)\\s*\\)"
+    rules: "docs/knowledge_base/rules/cxx_apis/comment-why-reverse-order.md"
+  }
+  # StringPrintf().
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:base::)?StringPrintf\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx_apis/str-format-over-string-printf.md"
+  }
+  # Integer static_casts and base/numerics casts.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bstatic_cast<\\s*(?:u?int(?:8|16|32|64)_t|size_t|ptrdiff_t|int|unsigned(?:\\s+int)?|long(?:\\s+long)?|short)\\s*>"
+    content_patterns: "\\bbase::(?:saturated|checked|strict)_cast\\s*<"
+    rules: "docs/knowledge_base/rules/cxx_apis/saturated-or-checked-cast-for-integer-conversions.md"
+  }
+  # Casts of arithmetic, size arithmetic, and checked math.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "_cast<[^>]+>\\s*\\([^;]*\\w\\s*[-+*]\\s*\\w"
+    content_patterns: "\\bCheckedNumeric<"
+    content_patterns: "\\bMakeCheckedNum\\s*\\("
+    content_patterns: "\\b(?:WithSize|Uninit|resize|reserve|malloc|calloc|realloc)\\s*\\([^;]*\\w\\s*[*+]\\s*\\w"
+    content_patterns: "\\b(?:size_t|u?int(?:32|64)_t)\\s+\\w+\\s*=\\s*\\w+\\s*\\*\\s*\\w+"
+    rules: "docs/knowledge_base/rules/cxx_apis/checked-arithmetic-before-casting.md"
+  }
+  # CheckedNumeric arithmetic.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bCheckedNumeric<"
+    content_patterns: "\\bMakeCheckedNum\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx_apis/checked-math-non-member-helpers.md"
+  }
+  # Loops that break or return a bool from inside.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    ast_patterns: "{any: [{kind: for_range_loop}, {kind: for_statement}], has: {stopBy: end, any: [{kind: break_statement}, {pattern: 'return true;'}, {pattern: 'return false;'}]}}"
+    rules: "docs/knowledge_base/rules/cxx_apis/ranges-algorithms-over-search-loops.md"
+  }
+  # substr() calls.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "(?:\\.|->)substr\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx_apis/substr-only-when-over-limit.md"
+  }
+  # Error out parameters.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\*\\s*\\w*err(?:or)?\\w*\\s*(?:[,)]|$)"
+    rules: "docs/knowledge_base/rules/cxx_apis/expected-over-optional-and-error-out-param.md"
+  }
+  # Constant maps and sets built at runtime, and switch cases returning literals.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bconst\\s+(?:std::(?:map|set|unordered_map|unordered_set)|base::flat_(?:map|set))\\s*<"
+    content_patterns: "\\bstatic\\s+(?:const\\s+)?(?:std::(?:map|set)|base::flat_(?:map|set))\\s*<"
+    content_patterns: "\\bbase::NoDestructor<\\s*(?:const\\s+)?(?:std::(?:map|set)|base::flat_(?:map|set)|absl::flat_hash_(?:map|set))"
+    content_patterns: "\\bcase\\s+[\\w:]+\\s*:\\s*(?:\\{\\s*)?return\\s+u?\""
+    rules: "docs/knowledge_base/rules/cxx_apis/fixed-flat-map-for-constant-lookup-tables.md"
+  }
+  # JSONReader::Read().
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bJSONReader::Read\\s*\\("
+    content_patterns: "\\bJSONReader::ReadAndReturnValueWithError\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx_apis/json-reader-read-dict.md"
+  }
+  # Rvalue reference parameters.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "(?:^|[(,])\\s*(?:const\\s+)?(?:\\w+::)*\\w+(?:<.*>)?\\s*&&\\s*\\w+\\s*(?:[,)]|$)"
+    rules: "docs/knowledge_base/rules/cxx_apis/sink-params-by-value-not-rvalue-ref.md"
+  }
+  # Pref migration entries.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bClearPref\\s*\\("
+    content_patterns: "ForMigration\\b"
+    content_patterns: "\\bMigrateObsolete\\w*Prefs\\b"
+    rules: "docs/knowledge_base/rules/cxx_apis/date-obsolete-pref-migrations.md"
+  }
+  # find() results compared with end().
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "[!=]=\\s*[\\w.()>-]*(?:\\.|->)c?end\\s*\\(\\s*\\)"
+    content_patterns: "\\bauto\\s+\\w+\\s*=\\s*[\\w.()>-]*(?:\\.|->)find\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx_apis/find-or-null-for-map-lookups.md"
+  }
+  # insert() at the end of a vector.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "(?:\\.|->)insert\\s*\\(\\s*(?:std::)?[\\w.()>-]*c?end\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx_apis/extend-to-append-ranges.md"
+  }
+  # Manual JSON parsing and dictionary checks in C++ tests.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)"
+    content_patterns: "\\bJSONReader::Read\\w*\\s*\\("
+    content_patterns: "\\bJSONWriter::Write\\w*\\s*\\("
+    content_patterns: "ASSERT_TRUE\\s*\\(\\s*[\\w.()>-]*(?:\\.|->)is_(?:dict|list)\\s*\\("
+    content_patterns: "(?:\\.|->)Find(?:String|Int|Bool|Double|Dict|List)\\w*\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx_apis/json-test-utilities-in-tests.md"
+  }
+  # Platform masks of about_flags entries.
+  capability_groups {
+    path_expression: "(?:.*/)?about_flags[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bkOs(?:Desktop|Android|Mac|Win|Linux|CrOS|Ios|Fuchsia)\\b"
+    rules: "docs/knowledge_base/rules/cxx_apis/os-all-for-cross-platform-flags.md"
+  }
+  # Workaround comments, and TODOs without a Brave issue URL.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm|java|kt|ts|tsx|js|jsx|py|swift|rs|gn|gni)"
+    content_patterns: "(?://|#|/\\*|^\\s*\\*).*\\b(?:HACK|[Hh]ack|[Ww]orkaround|WORKAROUND|FIXME|XXX|[Tt]emporar(?:y|ily))\\b"
+    content_patterns: "\\bTODO\\b(?:[^(]|$|\\((?:[^h]|$))"
+    rules: "docs/knowledge_base/rules/cxx_apis/tracking-issue-for-workarounds.md"
+  }
+  # Dictionary accesses with literal keys.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "(?:\\.|->)(?:Find(?:String|Int|Bool|Double|Dict|List|Blob)?|Set|Remove|Extract(?:String|Int|Bool|Double|Dict|List)?|EnsureDict|EnsureList|FindByDottedPath|SetByDottedPath|RemoveByDottedPath)\\s*\\(\\s*\""
+    rules: "docs/knowledge_base/rules/cxx_apis/named-constants-for-json-keys.md"
+  }
+  # Functions returning a string view of a string they build.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    ast_patterns: "{kind: function_definition, all: [{has: {field: type, regex: 'string_view'}}, {has: {field: body, has: {stopBy: end, any: [{kind: declaration, regex: '^(?:const\\s+)?std::(?:u16)?string\\s'}, {kind: call_expression, regex: '^(?:base::)?(?:StrCat|StringPrintf|JoinString|NumberToString|UTF16ToUTF8|UTF8ToUTF16|ToLowerASCII|ToUpperASCII|ReplaceStringPlaceholders)\\b|^(?:absl::)?StrFormat\\b|^std::(?:u16)?string\\s*\\('}]}}}]}"
+    rules: "docs/knowledge_base/rules/cxx_apis/no-string-view-return-of-built-strings.md"
+  }
+  # Enums with a single enumerator.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    ast_patterns: "{kind: enum_specifier, has: {kind: enumerator_list, not: {has: {kind: enumerator, nthChild: {position: 2, ofRule: {kind: enumerator}}}}}}"
+    rules: "docs/knowledge_base/rules/cxx_apis/constexpr-int-over-single-value-enum.md"
+  }
+  # String parameters named as paths.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:const\\s+)?std::(?:u16)?(?:string|string_view)\\s*&?\\s*\\w*(?:path|dir|directory|folder|filename|file_name)\\w*\\s*(?:[,)]|$)"
+    rules: "docs/knowledge_base/rules/cxx_apis/file-path-for-path-params.md"
+  }
+  # Enumerators without an explicit value.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "^\\s*k[A-Z]\\w*\\s*,?\\s*(?://.*)?$"
+    rules: "docs/knowledge_base/rules/cxx_apis/explicit-enum-values-around-conditional-members.md"
+  }
+  # Unnamed parameters in header declarations.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.h"
+    ast_patterns: "{kind: parameter_declaration, not: {has: {kind: identifier, stopBy: end}}, inside: {kind: parameter_list, inside: {kind: function_declarator, not: {inside: {stopBy: end, any: [{kind: function_definition}, {regex: '=\\s*(?:delete|default)\\s*;$'}, {regex: '^MOCK_'}]}}}}}"
+    rules: "docs/knowledge_base/rules/cxx_apis/name-params-in-header-declarations.md"
+  }
+  # Struct fields with a trailing underscore.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    ast_patterns: "{kind: field_identifier, regex: '_$', inside: {kind: field_declaration, stopBy: end, inside: {kind: field_declaration_list, inside: {kind: struct_specifier}}}}"
+    rules: "docs/knowledge_base/rules/cxx_apis/no-trailing-underscore-on-struct-members.md"
+  }
+  # Scalar data members without a default initializer, in headers.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.h"
+    ast_patterns: "{kind: field_declaration, any: [{has: {field: type, any: [{kind: primitive_type}, {kind: sized_type_specifier}]}}, {has: {field: declarator, kind: pointer_declarator}}], not: {any: [{has: {field: default_value, regex: '.'}}, {has: {kind: function_declarator, stopBy: end}}, {has: {kind: storage_class_specifier}}, {has: {kind: bitfield_clause}}]}}"
+    rules: "docs/knowledge_base/rules/cxx_apis/default-initialize-pod-members.md"
+  }
+  # Parameters taking a C string pointer.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "(?:^|[(,])\\s*const\\s+(?:char|char16_t|wchar_t)\\s*\\*\\s*(?:const\\s+)?\\w+\\s*(?:[,)]|$)"
+    rules: "docs/knowledge_base/rules/cxx_apis/string-view-over-const-char-params.md"
+  }
+  # std::string_view data members.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    ast_patterns: "{kind: field_declaration, has: {field: type, regex: 'string_view'}}"
+    rules: "docs/knowledge_base/rules/cxx_apis/string-view-member-lifetimes.md"
+  }
+  # The standard deque, queue and stack.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bstd::(?:deque|queue|stack)\\s*<"
+    content_patterns: "#\\s*include\\s*<(?:deque|queue|stack)>"
+    rules: "docs/knowledge_base/rules/cxx_apis/circular-deque-over-std-deque.md"
+  }
+  # Sizes, counts and indices held in int or 32-bit types.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bstatic_cast<\\s*(?:int|u?int32_t|unsigned(?:\\s+int)?|long)\\s*>\\s*\\([^;]*(?:\\.|->)(?:size|length)\\s*\\(\\s*\\)"
+    content_patterns: "\\bfor\\s*\\(\\s*(?:int|unsigned|u?int(?:8|16|32|64)_t|long)\\s+\\w+\\s*="
+    content_patterns: "\\b(?:int|u?int32_t|unsigned)\\s+\\w*(?:size|count|index|length|offset|num_\\w*)\\s*[=;,)]"
+    rules: "docs/knowledge_base/rules/cxx_apis/size-t-for-sizes-and-indices.md"
+  }
+  # Lookups that build a temporary std::string, and sets of unique_ptr.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\[\\s*\"[^\"]*\"\\s*\\]"
+    content_patterns: "\\[\\s*std::string\\s*\\("
+    content_patterns: "(?:\\.|->)(?:find|contains|count|erase|at)\\s*\\(\\s*std::string\\s*\\("
+    content_patterns: "\\bbase::flat_set<\\s*std::unique_ptr<"
+    rules: "docs/knowledge_base/rules/cxx_apis/transparent-lookups-in-flat-containers.md"
+  }
+  # Byte buffers turned into char pointers or views without a size.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\breinterpret_cast<\\s*(?:const\\s+)?char\\s*\\*\\s*>"
+    content_patterns: "string_view\\s*\\w*\\s*[({]\\s*[\\w.()>-]*(?:\\.|->)data\\s*\\(\\s*\\)\\s*[)}]"
+    rules: "docs/knowledge_base/rules/cxx_apis/explicit-size-for-string-view-from-bytes.md"
+  }
+  # Borrowed text in cxx bridges.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:rs|cc|h)"
+    content_patterns: "&\\s*CxxString\\b"
+    content_patterns: "\\brust::Str\\b"
+    content_patterns: "\\bRustStrToStringView\\b"
+    rules: "docs/knowledge_base/rules/cxx_apis/rust-ffi-borrow-text-as-str.md"
+  }
+  # rust::String in C++, and bridge functions returning String.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:rs|cc|h)"
+    content_patterns: "\\brust::String\\b"
+    content_patterns: "->\\s*String\\s*;"
+    rules: "docs/knowledge_base/rules/cxx_apis/rust-ffi-copy-rust-string-before-storing.md"
+  }
+  # Owned payloads in cxx bridges.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:rs|cc|h)"
+    content_patterns: "\\bBox<\\s*Vec<\\s*u8\\s*>\\s*>"
+    content_patterns: "\\brust::Box<\\s*rust::Vec<"
+    content_patterns: "\\bUniquePtr<\\s*CxxString\\s*>"
+    content_patterns: "\\bfn\\s+\\w+\\s*\\([^)]*\\)\\s*->\\s*String\\s*;"
+    content_patterns: "\\bfn\\s+\\w+\\s*\\([^)]*:\\s*String\\b[^)]*\\)\\s*(?:->[^;{]*)?;"
+    rules: "docs/knowledge_base/rules/cxx_apis/rust-ffi-large-payloads-by-pointer.md"
+  }
+  # Text passed from C++ into Rust.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:rs|cc|h)"
+    content_patterns: "\\bfn\\s+\\w+\\s*\\([^)]*:\\s*(?:String|&\\s*CxxString)\\b[^)]*\\)\\s*(?:->[^;{]*)?;"
+    content_patterns: "\\brust::String\\s*\\("
+    rules: "docs/knowledge_base/rules/cxx_apis/rust-ffi-owned-text-into-rust-as-string.md"
+  }
+  # String collections in cxx bridges.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:rs|cc|h)"
+    content_patterns: "\\bCxxVector\\s*<"
+    content_patterns: "&\\s*\\[\\s*&\\s*str\\s*\\]"
+    content_patterns: "\\bVec<\\s*String\\s*>"
+    content_patterns: "\\brust::(?:Vec|Slice)<\\s*(?:rust::)?(?:String|Str)\\s*>"
+    rules: "docs/knowledge_base/rules/cxx_apis/rust-ffi-string-collections.md"
+  }
+  # Wide strings outside Windows-only code, and UTF-16 built from narrow literals.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?[^/]*_win(?:_[a-z]+)?\\.(?:cc|h|mm)"
+    path_expression_exclusion: "(?:.*/)?win/.*"
+    content_patterns: "\\bstd::wstring(?:_view)?\\b"
+    content_patterns: "\\bwchar_t\\b"
+    content_patterns: "(?:^|[^\\w])L\""
+    content_patterns: "\\b(?:base::)?(?:ASCIIToUTF16|UTF8ToUTF16)\\s*\\(\\s*\""
+    rules: "docs/knowledge_base/rules/cxx_apis/u16string-not-wstring.md"
+  }
+  # Byte escapes in UTF-16 literals.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\bu\"[^\"]*\\\\x[0-9A-Fa-f]"
+    content_patterns: "\\bu'\\\\x[0-9A-Fa-f]"
+    rules: "docs/knowledge_base/rules/cxx_apis/no-byte-escapes-in-utf16-literals.md"
+  }
+  # UTF-8/UTF-16 conversions and fields named for an encoding.
+  capability_groups {
+    path_expression: "(?:.*/)?[^/]*\\.(?:cc|h|mm)"
+    content_patterns: "\\b(?:base::)?(?:UTF8ToUTF16|UTF16ToUTF8|ASCIIToUTF16|UTF16ToASCII)\\s*\\("
+    content_patterns: "\\bstd::u16string\\s+\\w*(?:16|_utf16)\\w*\\s*[;={]"
+    content_patterns: "\\bstd::string\\s+\\w*(?:_utf8|8)\\s*[;={]"
+    rules: "docs/knowledge_base/rules/cxx_apis/convert-utf-strings-at-boundaries.md"
+  }
+}

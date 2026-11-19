@@ -8,8 +8,8 @@ source and headers live in
 
 ## ✅ DEPS File - Use Commit Hashes
 
-**In DEPS files, always use commit hashes rather than branch names or tags.**
-Commit hashes are immutable and ensure reproducible builds.
+**In DEPS files, always pin git dependencies to commit hashes rather than branch
+names or tags.** Commit hashes are immutable and ensure reproducible builds.
 
 ---
 
@@ -401,10 +401,11 @@ class MyBrowserTest : public PlatformBrowserTest {};
 
 ## ✅ Use `public_deps` for Header-File Includes in BUILD.gn
 
-**When a dependency's headers are included in your target's header files (not
-just .cc files), that dependency must be listed in `public_deps`, not `deps`.**
-This ensures consumers of your target also get the transitive include paths they
-need.
+**When a dependency's headers are included in your target's public headers (not
+just its .cc files or internal headers), that dependency must be listed in
+`public_deps`, not `deps`.** This ensures consumers of your target also get the
+transitive include paths they need. Every header in `sources` is public unless
+the target lists its public headers in `public`.
 
 ```gn
 # ❌ WRONG - header-visible dependency in regular deps

@@ -383,11 +383,12 @@ EXPECT_EQ(results.size(), 3u);
 EXPECT_TRUE(ContainsUrl(results, "https://a.com"));
 EXPECT_TRUE(ContainsUrl(results, "https://b.com"));
 
-// ✅ CORRECT - verifies order
-EXPECT_EQ(results.size(), 3u);
-EXPECT_EQ(results[0].url, "https://c.com");  // most recent
-EXPECT_EQ(results[1].url, "https://b.com");
-EXPECT_EQ(results[2].url, "https://a.com");  // oldest
+// ✅ CORRECT - verifies order (ElementsAre also checks the size)
+EXPECT_THAT(results,
+            testing::ElementsAre(
+                testing::Field(&Result::url, "https://c.com"),  // most recent
+                testing::Field(&Result::url, "https://b.com"),
+                testing::Field(&Result::url, "https://a.com")));  // oldest
 ```
 
 ---
@@ -526,17 +527,18 @@ VerifyImageBlock(*blocks[1], "img.png");
 
 <a id="TI-025"></a>
 
-## ✅ Use `ASSERT_TRUE` Before Accessing Optional Values
+## ✅ Use `ASSERT_NE` Before Accessing Optional Values
 
-**In tests, use `ASSERT_TRUE(optional.has_value())` before accessing an
-optional's value.** Do not use `value_or("")` as a fallback -- it hides bugs.
+**In tests, use `ASSERT_NE(optional, std::nullopt)` before accessing an
+optional's value,** or `ASSERT_OK_AND_ASSIGN` to check and unwrap an optional a
+call returns. Do not use `value_or("")` as a fallback -- it hides bugs.
 
 ```cpp
 // ❌ WRONG - hides missing values
 EXPECT_EQ(map[entry->uuid.value_or("")], expected_content);
 
 // ✅ CORRECT - fail fast on missing value
-ASSERT_TRUE(entry->uuid.has_value());
+ASSERT_NE(entry->uuid, std::nullopt);
 EXPECT_EQ(map[*entry->uuid], expected_content);
 ```
 

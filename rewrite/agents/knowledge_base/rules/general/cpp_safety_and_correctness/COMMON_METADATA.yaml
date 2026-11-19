@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Drop the rule asking for Google's official trybots.
+
+      Brave has no access to Google's branded builders, nor branded code of
+      Google's to run them for.
+    regex:
+      re_pattern:
+        '\n\s*capability_groups \{\s*rules:
+        "[^"]*/run-official-trybots-for-branded-builds\.md"\s*\}'
+      replace: ''
+  - description: |-
+      Drop the rule about Gerrit access controls.
+
+      It concerns project.config files of Chromium's Gerrit hosts, which
+      Brave does not use.
+    regex:
+      re_pattern:
+        '\n\s*rules: "[^"]*/avoid-broad-addpatchset-in-project-config\.md"'
+      replace: ''

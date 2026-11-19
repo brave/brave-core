@@ -1,4 +1,4 @@
-# Sweep g: obsolete Brave code. See tools/cr/codehealth/scripts/sweep.py for the fields.
+# Sweep g: obsolete Brave code. See tools/cr/knowledge_base.py for the fields.
 # Most of it is indexes of Brave's own code, which obsolete.py builds.
 agentic_review {
   capability_groups {
@@ -33,14 +33,14 @@ agentic_review {
   # upstream's own business.
   capability_groups {
     overridden_by_brave: true
-    content_patterns: "^-.*(?i:\\bworkaround\\b|\\bhack\\b|TODO\\((?:https?://)?crbug)"
+    diff_patterns: "^-.*(?i:\\bworkaround\\b|\\bhack\\b|TODO\\((?:https?://)?crbug)"
     rules: "tools/cr/codehealth/rules/obsolete/workarounds-upstream-removed.md"
   }
   # An early return needs both halves: the flag check and the return.
   capability_groups {
     overridden_by_brave: true
-    content_patterns: "^\\+\\s*if \\(!?\\s*(?:base::FeatureList::IsEnabled\\(|[\\w:]*Is\\w*Enabled\\()"
-    required_patterns: "^\\+\\s*return\\b"
+    diff_patterns: "^\\+\\s*if \\(!?\\s*(?:base::FeatureList::IsEnabled\\(|[\\w:]*Is\\w*Enabled\\()"
+    required_diff_patterns: "^\\+\\s*return\\b"
     rules: "tools/cr/codehealth/rules/obsolete/hooks-unreachable-early-return.md"
   }
   capability_groups {
@@ -50,7 +50,7 @@ agentic_review {
   capability_groups {
     path_expression: "(?:.*/)?BUILD\\.gn"
     overridden_by_brave: true
-    content_patterns: "^\\+.*(?:sources\\s*=\\s*\\[\\s*\\]|[Dd]o not add (?:new )?sources|no sources)"
+    diff_patterns: "^\\+.*(?:sources\\s*=\\s*\\[\\s*\\]|[Dd]o not add (?:new )?sources|no sources)"
     rules: "tools/cr/codehealth/rules/obsolete/gn-targets-emptied.md"
   }
 }

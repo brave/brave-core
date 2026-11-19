@@ -1,0 +1,16 @@
+diff --git a/agents/knowledge_base/rules/chrome/COMMON_METADATA b/agents/knowledge_base/rules/chrome/COMMON_METADATA
+index e0b96f1d1a261d324156a62dda1965f950e898f9..188b2a2811c45fcfa7c0b4dae24e87fcc12958b0 100644
+--- a/agents/knowledge_base/rules/chrome/COMMON_METADATA
++++ b/agents/knowledge_base/rules/chrome/COMMON_METADATA
+@@ -9,11 +9,9 @@ agentic_review {
+     rules: "agents/knowledge_base/rules/chrome/match-target-platforms-in-webui-paks.md"
+     rules: "agents/knowledge_base/rules/chrome/no-browser-window-host-calls-in-app-shims.md"
+     rules: "agents/knowledge_base/rules/chrome/no-legacy-idc-command-ids-for-new-actions.md"
+-    rules: "agents/knowledge_base/rules/chrome/refer-to-updater-as-googleupdater-or-chromes-updater.md"
+     rules: "agents/knowledge_base/rules/chrome/reuse-updater-platform-utilities-in-enterprise-companion.md"
+     rules: "agents/knowledge_base/rules/chrome/test-preference-registration-and-propagation.md"
+     rules: "agents/knowledge_base/rules/chrome/update-ui-strings-across-all-surfaces.md"
+-    rules: "agents/knowledge_base/rules/chrome/use-dot-separator-in-profile-version-filenames.md"
+   }
+   capability_groups {
+     path_expression: "chrome/.*"

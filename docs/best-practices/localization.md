@@ -161,8 +161,10 @@ capitalization style.** Do not mix title case ("Background Image") and sentence
 case ("Brave backgrounds") within the same group of UI controls at the same
 hierarchy level.
 
-- **Title case** for: page titles, section headers, button labels, menu items
-- **Sentence case** for: descriptions, body text, tooltips, helper text
+- **Sentence case** for: page titles, section headers, button labels, menu
+  items, descriptions, body text, tooltips, helper text
+- **Title case** only for branded product and feature names (e.g., "Brave
+  Rewards"), and where Apple's platform rules require it on iOS and macOS
 
 ---
 

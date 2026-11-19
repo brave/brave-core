@@ -6,8 +6,8 @@ description:
   docs, audit bp docs.'
 disable-model-invocation: true
 allowed-tools:
-  Bash(find:*), Bash(ls:*), Bash(head:*), Bash(git:*), Bash(python3:*), Read,
-  Grep, Glob, Edit
+  Bash(find:*), Bash(ls:*), Bash(head:*), Bash(git:*), Bash(python3:*),
+  Bash(vpython3:*), Read, Grep, Glob, Edit
 ---
 
 # Fix Best Practices Docs
@@ -140,6 +140,10 @@ After all fixes, run ID validation:
 ```bash
 python3 ./script/manage-bp-ids.py --validate
 ```
+
+Then make the same fixes to the rules of `docs/knowledge_base/` that state the
+conventions you changed (`grep -r` its `rules/` for them), and run
+`vpython3 tools/cr/knowledge_base.py lint`.
 
 ---
 

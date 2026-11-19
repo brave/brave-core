@@ -48,6 +48,13 @@ Shared abstractions used by the entry points and tests:
 - `conflict_resolution.py` — The fixed answers `brockit rebase` gives to the
   conflicts it stops on.
 - `git_status.py` — Parser for `git status --porcelain` output.
+- `knowledge_base.py` — Code review knowledge bases in the format of Chromium's
+  `agents/knowledge_base`: rules, their `agentic_review` capability groups and
+  DIR_METADATA scoping, and which rules a change needs. Its `match` command
+  lists the Brave and upstream rules a brave-core change needs, and `lint`
+  checks every knowledge base in brave-core. `codehealth/` sweeps and the
+  `review-prs` skill match with it. See
+  [`docs/knowledge_base/README.md`](../../docs/knowledge_base/README.md).
 - `versioning.py` — Chromium version number parsing.
 - `vscode.py` — IPC for opening files in VS Code in the integrated terminal.
 

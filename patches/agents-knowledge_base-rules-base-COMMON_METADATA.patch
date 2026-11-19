@@ -1,0 +1,12 @@
+diff --git a/agents/knowledge_base/rules/base/COMMON_METADATA b/agents/knowledge_base/rules/base/COMMON_METADATA
+index f8a37c127ad263e6de307ec63722a23fbf3c5d83..d895cc19a7e837ce442bf4ba68c536894dae87ab 100644
+--- a/agents/knowledge_base/rules/base/COMMON_METADATA
++++ b/agents/knowledge_base/rules/base/COMMON_METADATA
+@@ -17,7 +17,6 @@ agentic_review {
+     rules: "agents/knowledge_base/rules/base/document-extensions-in-standard-deviations-header-overview.md"
+     rules: "agents/knowledge_base/rules/base/document-nullability-conditions-in-perfetto-sql-schemas.md"
+     rules: "agents/knowledge_base/rules/base/document-partitionalloc-base-divergence-from-base.md"
+-    rules: "agents/knowledge_base/rules/base/document-perfetto-diff-test-command-in-commit-message.md"
+     rules: "agents/knowledge_base/rules/base/document-perfetto-sql-functions-and-tables.md"
+     rules: "agents/knowledge_base/rules/base/enable-companion-flags-on-feature-launch.md"
+     rules: "agents/knowledge_base/rules/base/expose-x-and-y-dimensions-in-perfetto-sql-tables.md"

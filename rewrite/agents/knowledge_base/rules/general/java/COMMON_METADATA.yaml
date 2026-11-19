@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Drop the rule asking for a test of all new Java code.
+
+      Brave's rules ask for reasonable coverage instead, and for no test of
+      trivial UI such as a switch wired to a pref.
+    regex:
+      re_pattern: '\n\s*rules: "[^"]*/add-unit-tests-for-new-code\.md"'
+      replace: ''

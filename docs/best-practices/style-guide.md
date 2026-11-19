@@ -148,8 +148,9 @@ email subject lines, Mac file system warnings, Windows warnings.
 
 Title case is used only for branded product/plan names (see [SG-014](#SG-014)).
 
-Exception: iOS uses title case on UI copy and settings per Apple's platform
-rules, which override Brave's defaults.
+Exception: iOS uses title case on UI copy and settings, and macOS on menu items
+and other strings branched on `use_titlecase`, per Apple's platform rules, which
+override Brave's defaults.
 
 ---
 

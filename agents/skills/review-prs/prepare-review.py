@@ -30,6 +30,7 @@ import tempfile
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
+from pathlib import Path
 
 # ---------------------------------------------------------------------------
 # Paths
@@ -306,6 +307,7 @@ def parse_args():
     auto_mode = False
     reviewer_priority = False
     full = False
+    kb = False
     max_prs = None
     fetch_args = []
 
@@ -319,6 +321,8 @@ def parse_args():
             reviewer_priority = True
         elif arg == "--full":
             full = True
+        elif arg == "--kb":
+            kb = True
         elif arg == "--max-prs" and i + 1 < len(args):
             max_prs = int(args[i + 1])
             i += 1
@@ -326,7 +330,7 @@ def parse_args():
             fetch_args.append(arg)
         i += 1
 
-    return auto_mode, reviewer_priority, full, max_prs, fetch_args
+    return auto_mode, reviewer_priority, full, kb, max_prs, fetch_args
 
 
 # ---------------------------------------------------------------------------
@@ -1138,15 +1142,17 @@ _NEVER_POST = (
 )
 
 
-def _detect_output(candidates_file, chunk_id, rules):
+def _detect_output(candidates_file, chunk_id, rule=None):
+    """The output instructions; `rule` is how a finding names the rule it
+    breaks, or None for the bugs no rule names."""
     audit = (
-        '  "audit": ["PASS: <rule heading>", "N/A: <rule heading>", "FAIL: <rule heading>"],\n'
-        if rules
+        f'  "audit": ["PASS: {rule}", "N/A: {rule}", "FAIL: {rule}"],\n'
+        if rule
         else '  "audit": [],\n'
     )
-    link = ', "rule_link": "<full URL>"' if rules else ""
-    rule = "<rule heading>" if rules else "<short name of the bug>"
-    severity = "high|medium|low" if rules else "high"
+    link = ', "rule_link": "<full URL>"' if rule else ""
+    severity = "high|medium|low" if rule else "high"
+    rule = rule or "<short name of the bug>"
     return f"""\
 Output:
 Write your findings with the Write tool to: {candidates_file}
@@ -1258,7 +1264,7 @@ def build_detect_prompt(
     if ctx.get("prior_comments"):
         parts += [_PRIOR_COMMENTS_RULES, ""]
     parts += [_SYSTEMATIC_AUDIT_REQUIREMENT, ""]
-    parts.append(_detect_output(candidates_file, chunk_id, rules=True))
+    parts.append(_detect_output(candidates_file, chunk_id, "<rule heading>"))
     return "\n".join(parts)
 
 
@@ -1270,8 +1276,209 @@ def build_correctness_prompt(ctx, diff_text, ranges, candidates_file, chunk_id):
     parts += [_CORRECTNESS_RULES, ""]
     if ctx.get("prior_comments"):
         parts += [_PRIOR_COMMENTS_RULES, ""]
-    parts.append(_detect_output(candidates_file, chunk_id, rules=False))
+    parts.append(_detect_output(candidates_file, chunk_id))
     return "\n".join(parts)
+
+
+# ---------------------------------------------------------------------------
+# Knowledge base mode (`kb`): the rules of docs/knowledge_base/ and Chromium's
+# agents/knowledge_base/ whose capability groups a change meets
+# ---------------------------------------------------------------------------
+
+# Rules per detect prompt, and the matched lines shown with each rule.
+KB_RULES_PER_PROMPT = 20
+KB_LINES_PER_RULE = 6
+
+# pylint: disable=line-too-long
+_KB_LINK_REQUIREMENT = """\
+Rule link requirement: every violation MUST set `rule` to the name of the rule it breaks and `rule_link` to the URL listed with that rule, copied verbatim. Do NOT invent rules or URLs. A finding you cannot tie to a rule below is not a finding for this review: leave it out.
+
+Precedence: Brave's rules (named `brave/...`) take precedence over Chromium's. Where following a Chromium rule would break a Brave rule (a Brave override convention, say), NEVER report the Chromium rule."""
+
+_KB_AUDIT_REQUIREMENT = """\
+Systematic Audit Requirement:
+CRITICAL — this is what prevents you from stopping after finding a few violations.
+Work through the rules one by one, checking each against every added line of the files it applies to, not only the lines listed with it, and put one entry per rule in `audit`:
+- "PASS: <rule name>" — checked the diff, no violation found
+- "N/A: <rule name>" — the rule doesn't apply to these changes after all
+- "FAIL: <rule name>" — violation found; it must have an entry in `violations`"""
+
+_KB_CATALOG_REQUIREMENT = """\
+These are Chromium's rules that apply to the changed files by their type alone, so most will not concern this change. Each line gives a rule's file, under {root}/, its severity and what it asks:
+- Read the diff, then go down the list. For a rule whose summary the added lines may break, Read its file before deciding; never report from the summary alone.
+- Report only violations the rule's full text supports. Set `rule` to the `name` in its frontmatter and `rule_link` to {url}<its file>.
+- Brave's own rules take precedence over these. NEVER report one of these rules where Brave's conventions (chromium_src overrides, patches, plasters, Leo icons, Brave branding) call for what it forbids.
+- Put one entry in `audit` per rule you opened: "PASS: <rule name>" or "FAIL: <rule name>"."""
+
+# A catalog summary is cut at a word after this many characters.
+KB_SUMMARY_CHARS = 160
+# pylint: enable=line-too-long
+
+
+def _knowledge_base():
+    """tools/cr/knowledge_base.py, imported on first use."""
+    tools_cr = os.path.join(_REPO_DIR, "tools", "cr")
+    if tools_cr not in sys.path:
+        sys.path.insert(0, tools_cr)
+    import knowledge_base  # pylint: disable=import-outside-toplevel
+
+    return knowledge_base
+
+
+def knowledge_base_matches(paths, sections, source_path):
+    """The rules the changed files need, most severe first, as
+    `(full, catalog)`: the rules whose patterns found the lines they concern
+    and Brave's own, which prompts hold in full, and Chromium's that only
+    file types select, which a prompt lists for the reviewer to open."""
+    kb = _knowledge_base()
+    change = kb.Change.parse(
+        join_sections(sections[p] for p in paths),
+        source=kb.Source(Path(source_path)),
+    )
+    brave = Path(_REPO_DIR).resolve()
+    full, catalog = [], []
+    for match in kb.review(change):
+        own = match.rule.repository.resolve() == brave
+        (full if match.targeted or own else catalog).append(match)
+    return full, catalog
+
+
+def _shortened(text):
+    """`text`, cut at a word after `KB_SUMMARY_CHARS` characters."""
+    if len(text) <= KB_SUMMARY_CHARS:
+        return text
+    return text[:KB_SUMMARY_CHARS].rsplit(" ", 1)[0] + " …"
+
+
+def _kb_files(matches, paths):
+    """The changed files a set of matches applies to, in diff order: a rule
+    with no files applies to all of them."""
+    named = set()
+    for match in matches:
+        named.update(match.files or paths)
+    return [p for p in paths if p in named]
+
+
+def _kb_rule_parts(match):
+    lines = [
+        f"### {match.rule.name} ({match.rule.severity})",
+        f"URL: {match.rule.url}",
+    ]
+    shown = [
+        f"{path}: {line[:160]}"
+        for path, changed in match.files.items()
+        for line in changed
+    ][:KB_LINES_PER_RULE]
+    if shown:
+        lines.append("Applies because of these changed lines:")
+        lines += [f"    {line}" for line in shown]
+    # Four backticks: the rule's own examples are fenced with three.
+    return lines + ["````markdown", match.rule.text.strip("\n"), "````", ""]
+
+
+def build_kb_prompt(
+    ctx, matches, diff_text, stubs, ranges, candidates_file, chunk_id, index
+):
+    """The prompt for a share of the knowledge base rules the change needs."""
+    parts = _prompt_header(ctx)
+    parts += _diff_parts(diff_text, stubs, ranges)
+    parts += _prior_parts(ctx)
+    parts += [
+        (
+            f"Here are the code review rules to check (share {index[0]} of "
+            f"{index[1]}). Each applies to the change by the files it touches "
+            "and, where listed, the changed lines that made it apply:"
+        ),
+        "",
+    ]
+    for match in matches:
+        parts += _kb_rule_parts(match)
+    parts += [_DETECT_RULES, "", _KB_LINK_REQUIREMENT, ""]
+    if ctx.get("prior_comments"):
+        parts += [_PRIOR_COMMENTS_RULES, ""]
+    parts += [_KB_AUDIT_REQUIREMENT, ""]
+    parts.append(_detect_output(candidates_file, chunk_id, "<rule name>"))
+    return "\n".join(parts)
+
+
+def build_kb_catalog_prompt(
+    ctx, matches, diff_text, stubs, ranges, candidates_file, chunk_id
+):
+    """The prompt listing the rules only file types select."""
+    parts = _prompt_header(ctx)
+    parts += _diff_parts(diff_text, stubs, ranges)
+    parts += _prior_parts(ctx)
+    root = matches[0].rule.repository.resolve()
+    url = matches[0].rule.url.removesuffix(matches[0].rule.path)
+    parts += [_KB_CATALOG_REQUIREMENT.format(root=root, url=url), "", "```"]
+    parts += [
+        f"{m.rule.path} ({m.rule.severity}): {_shortened(m.rule.summary)}"
+        for m in matches
+    ]
+    parts += ["```", "", _DETECT_RULES, ""]
+    if ctx.get("prior_comments"):
+        parts += [_PRIOR_COMMENTS_RULES, ""]
+    parts.append(_detect_output(candidates_file, chunk_id, "<rule name>"))
+    return "\n".join(parts)
+
+
+def knowledge_base_prompts(
+    ctx, paths, sections, omitted, source_path, rules_file
+):
+    """`(chunk_id, build, chunk)` for each knowledge base prompt, `build`
+    taking the results file. Writes the text of every rule they hold, by URL,
+    to `rules_file` for the validator."""
+    full, catalog = knowledge_base_matches(paths, sections, source_path)
+    with open(rules_file, "w", encoding="utf-8") as f:
+        json.dump({m.rule.url: m.rule.text for m in full + catalog}, f)
+    # Rules matching the same files share a prompt, which keeps its diff
+    # small.
+    full.sort(key=lambda m: tuple(_kb_files([m], paths)))
+    shares = [
+        full[i : i + KB_RULES_PER_PROMPT]
+        for i in range(0, len(full), KB_RULES_PER_PROMPT)
+    ]
+    prompts = []
+    for i, share in enumerate(shares):
+        chunk_id = f"knowledge_base_{i}"
+        scoped = _scoped_diff(_kb_files(share, paths), sections, omitted)
+        chunk = {
+            "doc": "knowledge_base",
+            "chunk_index": i,
+            "total_chunks": len(shares),
+            "rule_count": len(share),
+            "headings": [m.rule.name for m in share],
+        }
+        prompts.append(
+            (
+                chunk_id,
+                lambda rf, share=share, scoped=scoped, chunk_id=chunk_id, i=i: (
+                    build_kb_prompt(
+                        ctx, share, *scoped, rf, chunk_id, (i + 1, len(shares))
+                    )
+                ),
+                chunk,
+            )
+        )
+    if catalog:
+        scoped = _scoped_diff(_kb_files(catalog, paths), sections, omitted)
+        chunk = {
+            "doc": "knowledge_base_catalog",
+            "chunk_index": 0,
+            "total_chunks": 1,
+            "rule_count": len(catalog),
+            "headings": [m.rule.name for m in catalog],
+        }
+        prompts.append(
+            (
+                "knowledge_base_catalog",
+                lambda rf: build_kb_catalog_prompt(
+                    ctx, catalog, *scoped, rf, "knowledge_base_catalog"
+                ),
+                chunk,
+            )
+        )
+    return prompts
 
 
 # pylint: disable=line-too-long
@@ -1415,9 +1622,17 @@ def _scoped_diff(paths, sections, omitted):
 
 
 def process_pr(
-    pr, bot_username, org_members, work_dir, auto_mode=False, prior_hashes=None
+    pr,
+    bot_username,
+    org_members,
+    work_dir,
+    auto_mode=False,
+    prior_hashes=None,
+    kb=False,
 ):
-    """Write the detect prompts for one PR. Returns (manifest entry, error)."""
+    """Write the detect prompts for one PR, from the knowledge base's rules
+    when `kb`, else from the best-practices documents. Returns (manifest
+    entry, error)."""
     pr_number = pr["number"]
     pr_title = pr["title"]
     head_sha = pr["headRefOid"]
@@ -1501,13 +1716,17 @@ def process_pr(
         }
         log(f"  WARNING: thread resolution failed for #{pr_number}: {e}")
 
-    try:
-        applicable_docs = docs_for_flags(
-            discover_best_practices(file_flags), file_flags
-        )
-    except Exception as e:
-        applicable_docs = []
-        log(f"  WARNING: discover best practices failed for #{pr_number}: {e}")
+    applicable_docs = []
+    if not kb:
+        try:
+            applicable_docs = docs_for_flags(
+                discover_best_practices(file_flags), file_flags
+            )
+        except Exception as e:
+            log(
+                f"  WARNING: discover best practices failed for #{pr_number}: "
+                f"{e}"
+            )
 
     # At the PR head, so the validator's line numbers agree with the diff.
     worktree_path = None
@@ -1564,6 +1783,27 @@ def process_pr(
         with open(prompt_file, "w", encoding='utf-8') as f:
             f.write(prompt)
         return prompt_file, results_file, prompt
+
+    if kb:
+        try:
+            kb_prompts = knowledge_base_prompts(
+                ctx,
+                changed,
+                sections,
+                omitted,
+                worktree_path or SOURCE_PATH_OVERRIDE or TARGET_REPO_PATH,
+                os.path.join(pr_work_dir, "rules.json"),
+            )
+        except Exception as e:
+            kb_prompts = []
+            log(f"  WARNING: knowledge base failed for #{pr_number}: {e}")
+        for chunk_id, build, chunk in kb_prompts:
+            prompt_file, results_file, prompt = write_prompt(chunk_id, build)
+            subagent_prompts.append(
+                _prompt_entry(
+                    "rules", chunk_id, prompt_file, results_file, prompt, chunk
+                )
+            )
 
     for doc_info in applicable_docs:
         scope = files_in_scope(doc_info.get("condition"), changed)
@@ -1715,7 +1955,7 @@ def process_cached_pr(pr, bot_username):
 # Main
 # ---------------------------------------------------------------------------
 def main():
-    auto_mode, reviewer_priority, full, max_prs, fetch_args = parse_args()
+    auto_mode, reviewer_priority, full, kb, max_prs, fetch_args = parse_args()
 
     # 1. Resolve bot username
     log("Resolving bot username...")
@@ -1868,6 +2108,7 @@ def main():
                     work_dir,
                     auto_mode,
                     prior_files.get(str(pr["number"])),
+                    kb,
                 ): pr
                 for pr in prs_to_process
             }
@@ -1940,6 +2181,7 @@ def main():
         "auto_mode": auto_mode,
         "reviewer_priority": reviewer_priority,
         "full": full,
+        "kb": kb,
         "fetch_summary": fetch_summary,
         "progress_lines": progress_lines,
         "prs": processed_prs,

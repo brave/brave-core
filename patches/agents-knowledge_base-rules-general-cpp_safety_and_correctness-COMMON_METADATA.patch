@@ -1,0 +1,18 @@
+diff --git a/agents/knowledge_base/rules/general/cpp_safety_and_correctness/COMMON_METADATA b/agents/knowledge_base/rules/general/cpp_safety_and_correctness/COMMON_METADATA
+index dc4c449ff26520f5f37affad52f96f70e852ab8c..f90c20ac1cec37adc91a4e7fc048bdb11c71665c 100644
+--- a/agents/knowledge_base/rules/general/cpp_safety_and_correctness/COMMON_METADATA
++++ b/agents/knowledge_base/rules/general/cpp_safety_and_correctness/COMMON_METADATA
+@@ -1,13 +1,9 @@
+ agentic_review {
+-  capability_groups {
+-    rules: "agents/knowledge_base/rules/general/cpp_safety_and_correctness/run-official-trybots-for-branded-builds.md"
+-  }
+   capability_groups {
+     path_expression: "(?:.*/)?[^/]*\\.(?:h|hpp|cc|cpp|mm)"
+     rules: "agents/knowledge_base/rules/general/cpp_safety_and_correctness/assert-associative-container-erasure-count.md"
+     rules: "agents/knowledge_base/rules/general/cpp_safety_and_correctness/assert-delimiters-when-slicing-packed-buffers.md"
+     rules: "agents/knowledge_base/rules/general/cpp_safety_and_correctness/audit-callers-and-remove-obsolete-metrics-on-query-semantic.md"
+-    rules: "agents/knowledge_base/rules/general/cpp_safety_and_correctness/avoid-broad-addpatchset-in-project-config.md"
+     rules: "agents/knowledge_base/rules/general/cpp_safety_and_correctness/avoid-eager-fallbacks-in-value-or.md"
+     rules: "agents/knowledge_base/rules/general/cpp_safety_and_correctness/avoid-intermediate-string-when-parsing-hex-bytes.md"
+     rules: "agents/knowledge_base/rules/general/cpp_safety_and_correctness/avoid-premature-fallback-logging.md"
