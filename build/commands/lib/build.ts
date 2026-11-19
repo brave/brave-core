@@ -38,7 +38,7 @@ export async function build(
   // with our bots generator.
   if (options.builder) {
     await runBotsGen(options.builder)
-    await util.buildTargets(options.builder.targets.compile)
+    await util.buildTargets(options.builder.compileTargets)
     return
   }
 

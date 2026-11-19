@@ -68,7 +68,7 @@ describe('loadBuilder', () => {
       spec: mockBuilderSpec,
       buildTarget: { targetOS: 'linux', targetArch: 'x64' },
       siso: {},
-      targets: { compile: ['brave:all'], tests: ['brave_unit_tests'] },
+      compileTargets: ['brave', 'brave_unit_tests'],
     })
   })
 
@@ -122,6 +122,17 @@ describe('loadBuilder', () => {
     )
     expect(() => loadBuilder('b', dir)).toThrow(
       'builder b: properties.json has no spec for it',
+    )
+  })
+
+  it('requires its entry in its targets spec', () => {
+    writeMockBuilder(dir, 'b')
+    fs.writeFileSync(
+      path.join(dir, 'b', 'targets', 'brave.test.json'),
+      JSON.stringify({ other: {} }),
+    )
+    expect(() => loadBuilder('b', dir)).toThrow(
+      'builder b: targets/brave.test.json has no entry for it',
     )
   })
 
@@ -222,7 +233,7 @@ describe('getBuilderGclientTargets', () => {
     },
     buildTarget: { targetOS: 'android', targetArch: 'arm64' },
     siso: {},
-    targets: { compile: [], tests: [] },
+    compileTargets: [],
   })
 
   it('returns the lists from properties.json', () => {

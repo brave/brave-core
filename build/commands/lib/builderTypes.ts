@@ -47,5 +47,7 @@ export interface Builder {
   buildTarget: { targetOS: string; targetArch: string }
   // Its `$brave_siso` properties.
   siso: { remoteJobs?: number | undefined; reapiPriority?: number | undefined }
-  targets: { compile: string[]; tests: string[] }
+  // What it compiles: the binaries its tests run and its additional compile
+  // targets, from its targets spec.
+  compileTargets: string[]
 }
