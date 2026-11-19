@@ -247,13 +247,12 @@ public class BraveProfileMigrations {
   // Prune Wallet dApps Permission
   // ref: brave/internal#1937
   private func pruneWalletDAppsPermissions() {
-    if !Preferences.Wallet.pruneDAppsPermissionsCompleted.value {
-      Task { @MainActor in
-        for coin in WalletConstants.supportedCoinTypes(.dapps) {
-          await Domain.clearAllWalletPermissions(for: coin)
-        }
-        Preferences.Wallet.pruneDAppsPermissionsCompleted.value = true
+    guard !Preferences.Wallet.pruneDAppsPermissionsCompleted.value else { return }
+    Task { @MainActor in
+      for coin in WalletConstants.supportedCoinTypes(.dapps) {
+        await Domain.clearAllWalletPermissions(for: coin)
       }
+      Preferences.Wallet.pruneDAppsPermissionsCompleted.value = true
     }
   }
 }
