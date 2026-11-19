@@ -32,10 +32,11 @@ TEST(OnDeviceSpeechLocalesUnitTest, EachLocaleResolvesToItself) {
 }
 
 // en-US is the one English locale. It serves the language alone and each
-// other region.
+// other region. The case of the tag does not change the locale.
 TEST(OnDeviceSpeechLocalesUnitTest, ResolvesEachEnglishTagToEnUS) {
   EXPECT_EQ("en-US", Resolve("en"));
   EXPECT_EQ("en-US", Resolve("en-GB"));
+  EXPECT_EQ("en-US", Resolve("EN-GB"));
 }
 
 // A region can select a locale that is not the first of its language. See
