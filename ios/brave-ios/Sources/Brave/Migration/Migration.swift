@@ -4,6 +4,7 @@
 
 import BraveCore
 import BraveShields
+import BraveWallet
 import BraveWidgetsModels
 import Data
 import Foundation
@@ -36,6 +37,7 @@ public class BraveProfileMigrations {
     migrateTopSitesModePreference()
     migrateSponsoredAdsEnabledPreference()
     migrateHTTPSUpgradeLevelPreference()
+    pruneWalletDAppsPermissions()
   }
 
   private func migrateDefaultUserAgentPreferences() {
@@ -240,6 +242,19 @@ public class BraveProfileMigrations {
 
   static func isSponsoredAdsEnabled(forBackgroundMediaTypeRawValue rawValue: Int) -> Bool {
     rawValue != DeprecatedBackgroundMediaType.defaultImages.rawValue
+  }
+
+  // Prune Wallet dApps Permission
+  // ref: brave/internal#1937
+  private func pruneWalletDAppsPermissions() {
+    if !Preferences.Wallet.pruneDAppsPermissionsCompleted.value {
+      Task { @MainActor in
+        for coin in WalletConstants.supportedCoinTypes(.dapps) {
+          await Domain.clearAllWalletPermissions(for: coin)
+        }
+        Preferences.Wallet.pruneDAppsPermissionsCompleted.value = true
+      }
+    }
   }
 }
 
