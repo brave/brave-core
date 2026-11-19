@@ -20,12 +20,6 @@ public struct OpenControlWidgetShortcutIntent: UISceneAppIntent {
   public init(shortcut: ShortcutOption) {
     self.shortcutOption = shortcut
   }
-
-  /// `.unset` is a parameter that has not resolved, which is distinct from one resolved to `nil`.
-  public var shortcut: WidgetShortcut {
-    guard case .set(let option) = $shortcutOption.valueState else { return .search }
-    return option.widgetShortcut
-  }
 }
 
 /// Static Search control. Control Center restores an intent with `init()`, so the intent type is the shortcut.
