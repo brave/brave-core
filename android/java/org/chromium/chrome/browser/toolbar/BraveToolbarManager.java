@@ -417,6 +417,7 @@ public class BraveToolbarManager extends ToolbarManager
                         mActivityTabProvider,
                         mTabModelSelector,
                         mActivity,
+                        mWindowAndroid,
                         mBottomControls.findViewById(R.id.bottom_container_slot),
                         mBrowserControlsSizer,
                         mScrimManager,
