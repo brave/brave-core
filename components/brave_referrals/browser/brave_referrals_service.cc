@@ -30,6 +30,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/vendor/brave_base/random.h"
+#include "build/blink_buildflags.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -45,13 +46,13 @@
 #include "base/android/android_info.h"
 #endif  // BUILDFLAG(IS_ANDROID)
 
-#if BUILDFLAG(IS_IOS)
-#include "ios/web/public/thread/web_task_traits.h"
-#include "ios/web/public/thread/web_thread.h"
-#else
+#if BUILDFLAG(USE_BLINK)
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
-#endif  // BUILDFLAG(IS_IOS)
+#else
+#include "ios/web/public/thread/web_task_traits.h"
+#include "ios/web/public/thread/web_thread.h"
+#endif  // BUILDFLAG(USE_BLINK)
 
 #if BUILDFLAG(IS_MAC)
 #include "base/apple/bundle_locations.h"
@@ -95,19 +96,19 @@ BraveReferralsService::ReferralInitializedCallback*
 [[clang::no_destroy]] base::FilePath g_promo_file_path;
 
 scoped_refptr<base::SingleThreadTaskRunner> GetUIThreadTaskRunner() {
-#if BUILDFLAG(IS_IOS)
-  return web::GetUIThreadTaskRunner({});
-#else
+#if BUILDFLAG(USE_BLINK)
   return content::GetUIThreadTaskRunner({});
-#endif  // BUILDFLAG(IS_IOS)
+#else
+  return web::GetUIThreadTaskRunner({});
+#endif  // BUILDFLAG(USE_BLINK)
 }
 
 void DCheckCurrentlyOnUIThread() {
-#if BUILDFLAG(IS_IOS)
-  DCHECK_CURRENTLY_ON(web::WebThread::UI);
-#else
+#if BUILDFLAG(USE_BLINK)
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-#endif  // BUILDFLAG(IS_IOS)
+#else
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
+#endif  // BUILDFLAG(USE_BLINK)
 }
 
 void DeletePromoCodeFile(const base::FilePath& promo_code_file) {

@@ -18,6 +18,7 @@
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/constants/network_constants.h"
 #include "brave/components/constants/pref_names.h"
+#include "build/blink_buildflags.h"
 #include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
@@ -27,11 +28,11 @@
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-#if BUILDFLAG(IS_IOS)
-#include "ios/web/public/test/web_task_environment.h"
-#else
+#if BUILDFLAG(USE_BLINK)
 #include "content/public/test/browser_task_environment.h"
-#endif  // BUILDFLAG(IS_IOS)
+#else
+#include "ios/web/public/test/web_task_environment.h"
+#endif  // BUILDFLAG(USE_BLINK)
 
 namespace brave {
 
@@ -141,11 +142,11 @@ class BraveReferralsServiceTest : public testing::Test {
   }
 
  protected:
-#if BUILDFLAG(IS_IOS)
-  web::WebTaskEnvironment task_environment_;
-#else
+#if BUILDFLAG(USE_BLINK)
   content::BrowserTaskEnvironment task_environment_;
-#endif  // BUILDFLAG(IS_IOS)
+#else
+  web::WebTaskEnvironment task_environment_;
+#endif  // BUILDFLAG(USE_BLINK)
   base::Time first_run_time_ = base::Time::Now();
   network::TestURLLoaderFactory url_loader_factory_;
   TestingPrefServiceSimple pref_service_;

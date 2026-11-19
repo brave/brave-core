@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//build/config/features.gni")
+
 if (is_android) {
   import("//build/config/android/rules.gni")
   import("//third_party/jni_zero/jni_zero.gni")
@@ -23,16 +25,17 @@ static_library("browser") {
     "//brave/components/constants",
     "//brave/components/version_info",
     "//brave/vendor/brave_base",
+    "//build:blink_buildflags",
     "//components/prefs",
     "//components/url_matcher",
     "//net",
     "//services/network/public/cpp",
   ]
 
-  if (is_ios) {
-    deps += [ "//ios/web/public/thread" ]
-  } else {
+  if (use_blink) {
     deps += [ "//content/public/browser" ]
+  } else {
+    deps += [ "//ios/web/public/thread" ]
   }
 
   if (is_mac) {
@@ -67,6 +70,7 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//brave/components/brave_referrals/common",
     "//brave/components/constants",
+    "//build:blink_buildflags",
     "//components/prefs:test_support",
     "//net",
     "//services/network:test_support",
@@ -74,10 +78,10 @@ source_set("unit_tests") {
     "//testing/gtest",
   ]
 
-  if (is_ios) {
-    deps += [ "//ios/web/public/test" ]
-  } else {
+  if (use_blink) {
     deps += [ "//content/test:test_support" ]
+  } else {
+    deps += [ "//ios/web/public/test" ]
   }
 
   if (is_mac) {
