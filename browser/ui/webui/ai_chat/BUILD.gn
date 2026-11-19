@@ -5,6 +5,7 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/local_ai/buildflags/buildflags.gni")
+import("//printing/buildflags/buildflags.gni")
 
 assert(enable_ai_chat)
 
@@ -20,6 +21,8 @@ source_set("ai_chat") {
     "chart_display_ui.h",
     "code_sandbox_ui.cc",
     "code_sandbox_ui.h",
+    "leo_workspace_page_handler.cc",
+    "leo_workspace_page_handler.h",
     "leo_workspace_ui.cc",
     "leo_workspace_ui.h",
     "workspace_folder_chooser.cc",
@@ -70,8 +73,10 @@ source_set("ai_chat") {
     "//components/strings:components_strings",
     "//components/user_prefs",
     "//content/public/browser",
+    "//mojo/public/cpp/base",
     "//pdf:buildflags",
     "//printing",
+    "//printing/buildflags",
     "//services/data_decoder/public/cpp",
     "//third_party/abseil-cpp:absl",
     "//ui/base",
@@ -93,6 +98,16 @@ source_set("ai_chat") {
       "//brave/browser/ui/android/ai_chat",
       "//chrome/browser/android:tabs_public",
       "//chrome/browser/ui/android/tab_model",
+    ]
+  }
+
+  if (enable_printing) {
+    # LeoWorkspacePageHandler prints workspace files to PDF.
+    deps += [
+      "//chrome/browser/printing",
+      "//components/printing/browser/headless",
+      "//components/printing/browser/print_to_pdf",
+      "//components/printing/common:mojo_interfaces",
     ]
   }
 

@@ -245,6 +245,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
+#include "brave/browser/ui/webui/ai_chat/leo_workspace_ui.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_brave_search_throttle.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_throttle.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -254,6 +255,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/history.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/leo_workspace.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/ollama.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
@@ -943,6 +945,14 @@ void BraveContentBrowserClient::RegisterUntrustedWebUIInterfaceBrokers(
   }
   registry.ForWebUI<polkadot::UntrustedPolkadotUI>()
       .Add<brave_wallet::mojom::PolkadotBridgeUIHandler>();
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  if (ai_chat::features::IsAIChatEnabled() &&
+      base::FeatureList::IsEnabled(ai_chat::features::kAIChatWorkspaceTools)) {
+    registry.ForWebUI<ai_chat::LeoWorkspaceUI>()
+        .Add<ai_chat::mojom::LeoWorkspaceHandler>();
+  }
 #endif
 }
 

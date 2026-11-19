@@ -4,6 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import {
+  kFileDisplayed,
+  kFileDisplayFailed,
   kReadFileRequest,
   kReadFileResponse,
   workspaceOrigin,
@@ -16,6 +18,14 @@ export function parseFileFragment(hash: string): string | null {
   }
   const params = new URLSearchParams(hash.slice(1))
   return params.get('file')
+}
+
+// Tells the workspace whether the file it asked for has been displayed, e.g. so
+// that it can be printed.
+function notifyParent(message: Record<string, unknown>) {
+  if (pendingParent && pendingWsOrigin) {
+    pendingParent.postMessage(message, pendingWsOrigin)
+  }
 }
 
 function setupParentBridge(
@@ -105,6 +115,10 @@ function displayFileInIframe(filename: string) {
     contentIframe = document.createElement('iframe')
   }
 
+  // Fires once the file and its subresources have loaded.
+  contentIframe.onload = () => {
+    notifyParent({ type: kFileDisplayed, file: filename })
+  }
   contentIframe.src = `/${filename}`
   root.appendChild(contentIframe)
 
@@ -166,6 +180,11 @@ async function displayFile(filename: string) {
     displayFileInIframe(filename)
   } catch (error) {
     console.error('[leo-workspace-view] Failed to display file:', error)
+    notifyParent({
+      type: kFileDisplayFailed,
+      file: filename,
+      error: error instanceof Error ? error.message : String(error),
+    })
   }
 }
 
