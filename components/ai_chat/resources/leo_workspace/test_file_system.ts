@@ -30,6 +30,15 @@ function validateName(name: string) {
   }
 }
 
+// What a fake file holds: text, or bytes once something binary is written.
+export type FakeFileContents = string | Uint8Array
+
+function toBytes(contents: FakeFileContents): Uint8Array {
+  return typeof contents === 'string'
+    ? new TextEncoder().encode(contents)
+    : contents
+}
+
 class FakeFileHandle {
   readonly kind = 'file'
 
@@ -37,33 +46,50 @@ class FakeFileHandle {
   // going through the async API.
   constructor(
     readonly name: string,
-    public contents: string,
+    public contents: FakeFileContents,
   ) {}
 
   // Stands in for the File the real API returns; it can't be a real File because
   // jsdom's Blob implements neither text() nor stream(). `size` and arrayBuffer()
   // are in bytes, as in the browser.
   async getFile() {
-    const bytes = new TextEncoder().encode(this.contents)
+    const bytes = toBytes(this.contents)
     return {
       name: this.name,
       size: bytes.byteLength,
       type: '',
-      text: async () => this.contents,
-      arrayBuffer: async () => bytes.buffer,
+      text: async () =>
+        typeof this.contents === 'string'
+          ? this.contents
+          : new TextDecoder().decode(this.contents),
+      arrayBuffer: async () => bytes.slice().buffer,
     }
   }
 
   async createWritable() {
     // Matches the default { keepExistingData: false }: the file is truncated
-    // and ends up with whatever was written before close().
-    let buffer = ''
+    // and ends up with whatever was written before close(). Text stays text
+    // unless bytes are written.
+    const chunks: FakeFileContents[] = []
     return {
-      write: async (data: string) => {
-        buffer += data
+      write: async (data: FakeFileContents) => {
+        chunks.push(typeof data === 'string' ? data : data.slice())
       },
       close: async () => {
-        this.contents = buffer
+        if (chunks.every((c) => typeof c === 'string')) {
+          this.contents = chunks.join('')
+          return
+        }
+        const parts = chunks.map(toBytes)
+        const bytes = new Uint8Array(
+          parts.reduce((n, p) => n + p.byteLength, 0),
+        )
+        let offset = 0
+        for (const part of parts) {
+          bytes.set(part, offset)
+          offset += part.byteLength
+        }
+        this.contents = bytes
       },
     }
   }
@@ -186,12 +212,12 @@ export function makeFileUnreadable(
 /**
  * Flattens a fake workspace to a { path: contents } map of every file, so tests
  * can assert on the whole tree after a mutating operation. Directories are not
- * included.
+ * included. A file that had bytes written to it maps to a Uint8Array.
  */
 export function snapshotFakeWorkspace(
   root: FileSystemDirectoryHandle,
-): Record<string, string> {
-  const files: Record<string, string> = {}
+): Record<string, FakeFileContents> {
+  const files: Record<string, FakeFileContents> = {}
   const walk = (dir: FakeDirectoryHandle, prefix: string) => {
     for (const [name, child] of dir.children) {
       const path = prefix ? `${prefix}/${name}` : name

@@ -20,6 +20,13 @@ export function parseFileFragment(hash: string): string | null {
   return params.get('file')
 }
 
+// The URL path the service worker serves |filename| from. Each segment is
+// escaped so that a name containing e.g. a space, '#' or '?' reaches the
+// service worker intact; it unescapes them again.
+export function filePathToUrlPath(filename: string): string {
+  return '/' + filename.split('/').map(encodeURIComponent).join('/')
+}
+
 // Tells the workspace whether the file it asked for has been displayed, e.g. so
 // that it can be printed.
 function notifyParent(message: Record<string, unknown>) {
@@ -119,7 +126,7 @@ function displayFileInIframe(filename: string) {
   contentIframe.onload = () => {
     notifyParent({ type: kFileDisplayed, file: filename })
   }
-  contentIframe.src = `/${filename}`
+  contentIframe.src = filePathToUrlPath(filename)
   root.appendChild(contentIframe)
 
   console.debug('[leo-workspace-view] displaying file:', filename)

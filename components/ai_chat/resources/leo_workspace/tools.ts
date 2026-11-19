@@ -13,9 +13,11 @@
 // modify them. Search and repo-structure helpers with no text-editor analog
 // are registered as separate auxiliary tools. All ops run against the
 // FileSystemDirectoryHandle in file_ops, which is resolved lazily on each call
-// (see registerTools).
+// (see registerTools). html_to_pdf also needs the browser, to print, which is
+// passed in (see pdf.ts).
 
 import * as ops from './file_ops'
+import type { PrintFileToPdf } from './pdf'
 
 interface ModelContextTool {
   name: string
@@ -45,6 +47,7 @@ const strEnum = (values: string[], description: string) => ({
   enum: values,
   description,
 })
+const bool = (description: string) => ({ type: 'boolean', description })
 const intArray = (description: string) => ({
   type: 'array',
   description,
@@ -58,11 +61,50 @@ function asInt(v: unknown, fallback: number): number {
   return typeof v === 'number' ? v : fallback
 }
 
+// Files html_to_pdf converts. Anything else the viewer could display, such as
+// text or images, is left to other tools.
+const kHtmlExtension = /\.(html?|xhtml)$/i
+
+// Converts the workspace HTML file at |path| to a PDF at |outputPath| (by
+// default |path| with a .pdf extension).
+async function htmlToPdf(
+  root: FileSystemDirectoryHandle,
+  printFileToPdf: PrintFileToPdf,
+  path: string,
+  outputPath: string,
+  landscape: boolean,
+): Promise<string> {
+  const source = ops.normalizePath(path)
+  if (!kHtmlExtension.test(source)) {
+    throw new Error(
+      `html_to_pdf converts .html, .htm and .xhtml files, not ${path}`,
+    )
+  }
+  const output = ops.normalizePath(
+    outputPath || source.replace(kHtmlExtension, '.pdf'),
+  )
+  if (!/\.pdf$/i.test(output)) {
+    throw new Error(`output_path must end in .pdf: ${outputPath}`)
+  }
+  // Checked first: the viewer would otherwise render, and so print, its "not
+  // found" response.
+  await ops.readFile(root, source)
+  const pdf = await printFileToPdf(source, { landscape })
+  return `${await ops.writeBinaryFile(root, output, pdf)} from ${source}`
+}
+
+export interface ToolOptions {
+  // Prints a workspace file to PDF. html_to_pdf is only registered when this
+  // is provided.
+  printFileToPdf?: PrintFileToPdf
+}
+
 // |getRoot| is called each time a tool runs, rather than once up front, so the
 // tools can be registered before the workspace has a folder and the folder can
 // be chosen the first time one is actually needed.
 export async function registerTools(
   getRoot: () => Promise<FileSystemDirectoryHandle>,
+  { printFileToPdf }: ToolOptions = {},
 ): Promise<void> {
   const mc = document.modelContext
   if (!mc) {
@@ -260,6 +302,44 @@ export async function registerTools(
     ),
     (root, i) => ops.appendFile(root, asString(i.path), asString(i.content)),
   )
+
+  if (printFileToPdf) {
+    reg(
+      'html_to_pdf',
+      'Convert an HTML file in the workspace to a PDF file in the workspace. '
+        + 'The browser renders the file as the workspace viewer displays it, '
+        + 'so stylesheets, images and fonts it references by relative path '
+        + 'from the workspace are used, and its scripts run. Control the page '
+        + 'size, margins and page breaks with CSS @page rules and print media '
+        + 'queries. Backgrounds are printed. Overwrites output_path if it '
+        + 'exists.',
+      schema(
+        {
+          path: str(
+            'The .html, .htm or .xhtml file to convert, relative to the '
+              + 'workspace root.',
+          ),
+          output_path: str(
+            'Where to save the PDF, relative to the workspace root. Must end '
+              + 'in .pdf. Defaults to `path` with a .pdf extension.',
+          ),
+          landscape: bool(
+            'Print in landscape rather than portrait. Ignored for pages whose '
+              + 'CSS @page rule sets a size.',
+          ),
+        },
+        ['path'],
+      ),
+      (root, i) =>
+        htmlToPdf(
+          root,
+          printFileToPdf,
+          asString(i.path),
+          asString(i.output_path),
+          i.landscape === true,
+        ),
+    )
+  }
 
   await Promise.all(registrations)
   console.log('[leo-workspace] registered WebMCP tools')
