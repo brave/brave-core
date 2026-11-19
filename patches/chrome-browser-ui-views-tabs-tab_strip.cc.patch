@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_strip.cc b/chrome/browser/ui/views/tabs/tab_strip.cc
-index 14badf5d9370bfae3fc608b7f5fbfe1d91f82731..cf0e49b224660cc48fcf146dc229f81d60d05c23 100644
+index 14badf5d9370bfae3fc608b7f5fbfe1d91f82731..c0985b6aa5ab837e4a55cd571f5d1ccc621b5cf8 100644
 --- a/chrome/browser/ui/views/tabs/tab_strip.cc
 +++ b/chrome/browser/ui/views/tabs/tab_strip.cc
 @@ -125,7 +125,7 @@ std::unique_ptr<TabContainer> MakeTabContainer(

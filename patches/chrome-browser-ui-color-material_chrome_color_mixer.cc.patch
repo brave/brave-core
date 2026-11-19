@@ -1,9 +1,8 @@
 diff --git a/chrome/browser/ui/color/material_chrome_color_mixer.cc b/chrome/browser/ui/color/material_chrome_color_mixer.cc
-index b5dbe96ea4347d0b95388367c6f26abfb5cd4200..d705c2954f662621e2530b544fec3b05cd69199c 100644
+index b5dbe96ea4347d0b95388367c6f26abfb5cd4200..e627e8d694ad71326e12c5c8380abc1e4b1b6423 100644
 --- a/chrome/browser/ui/color/material_chrome_color_mixer.cc
 +++ b/chrome/browser/ui/color/material_chrome_color_mixer.cc
 @@ -80,6 +80,7 @@ void ApplyChromeSettingsRefresh2026ColorOverrides(ui::ColorMixer& mixer) {
- #include "chrome/browser/ui/ui_features.h"
  
  void AddMaterialChromeColorMixer(ui::ColorProvider* provider,
                                   const ui::ColorProviderKey& key) {
