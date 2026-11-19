@@ -1244,7 +1244,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
           "Brave Recap",                                                       \
           "Enables brave://recap, a shareable summary of what Shields has "    \
           "blocked over the lifetime of the profile",                          \
-          kOsDesktop,                                                          \
+          kOsDesktop | kOsAndroid,                                             \
           FEATURE_VALUE_TYPE(features::kBraveRecap),                           \
       },                                                                       \
       {                                                                        \

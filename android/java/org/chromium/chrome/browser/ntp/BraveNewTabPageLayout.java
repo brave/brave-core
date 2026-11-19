@@ -44,6 +44,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import com.bumptech.glide.Glide;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
@@ -72,6 +73,7 @@ import org.chromium.chrome.browser.brave_news.models.FeedItemCard;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindowTooltip;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.model.NTPImage;
 import org.chromium.chrome.browser.ntp_background_images.model.SponsoredTab;
@@ -294,6 +296,12 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                 .writeBoolean(BravePreferenceKeys.BRAVE_NTP_TOP_SITES_TOOLTIP_DISMISSED, true);
     }
 
+    private static boolean shouldDisplayRecapBanner() {
+        return ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_RECAP)
+                && !ChromeSharedPreferences.getInstance()
+                        .readBoolean(BravePreferenceKeys.BRAVE_NTP_RECAP_BANNER_DISMISSED, false);
+    }
+
     private void maybeShowTopSitesTooltip() {
         assumeNonNull(mMvTilesContainerLayout);
         if ((mTopSitesTooltip != null && mTopSitesTooltip.isShowing())
@@ -482,6 +490,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                 if (mDisclosureTooltipController != null) {
                     mNtpAdapter.setNewTabTakeoverDisclosureVisible(true);
                 }
+                mNtpAdapter.setRecapBannerVisible(shouldDisplayRecapBanner());
                 mRecyclerView.setAdapter(mNtpAdapter);
 
                 if (mRecyclerView.getItemAnimator() != null) {
@@ -496,6 +505,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
             mNtpAdapter.setRecyclerViewHeight(mRecyclerView.getHeight());
             mNtpAdapter.setTopSitesEnabled(mIsTopSitesEnabled);
             mNtpAdapter.setBraveStatsEnabled(mIsBraveStatsEnabled);
+            mNtpAdapter.setRecapBannerVisible(shouldDisplayRecapBanner());
             mNtpAdapter.setDisplayNewsFeed(mIsDisplayNewsFeed);
         }
 
@@ -900,6 +910,12 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                         // The stats row sits above the top-sites row, so toggling it shifts the
                         // tooltip's anchor view - dismiss since PopupWindowTooltip can't reposition
                         // itself once shown.
+                        dismissTopSitesTooltip();
+                    } else if (TextUtils.equals(
+                            key, BravePreferenceKeys.BRAVE_NTP_RECAP_BANNER_DISMISSED)) {
+                        assertNonNull(mNtpAdapter);
+                        mNtpAdapter.setRecapBannerVisible(shouldDisplayRecapBanner());
+                        // Shares the stats row's slot, see above.
                         dismissTopSitesTooltip();
                     }
                 };

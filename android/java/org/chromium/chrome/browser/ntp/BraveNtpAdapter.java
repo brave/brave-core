@@ -13,6 +13,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.style.UnderlineSpan;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
 
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Log;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
@@ -53,6 +55,8 @@ import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.LoadUrlParams;
+import org.chromium.ui.text.SpanApplier;
+import org.chromium.ui.text.SpanApplier.SpanInfo;
 import org.chromium.url.Origin;
 
 import java.util.List;
@@ -77,6 +81,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private boolean mIsNewContentLoading;
     private boolean mIsTopSitesEnabled;
     private boolean mIsBraveStatsEnabled;
+    private boolean mIsRecapBannerVisible;
     private int mRecyclerViewHeight;
     private int mStatsHeight;
     private int mTopSitesHeight;
@@ -93,10 +98,12 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int TYPE_NEWS_LOADING = 6;
     private static final int TYPE_NEWS = 7;
     private static final int TYPE_NEWS_NO_CONTENT_SOURCES = 8;
+    private static final int TYPE_RECAP_BANNER = 9;
 
     private static final int ONE_ITEM_SPACE = 1;
     private static final int TWO_ITEMS_SPACE = 2;
     private static final String TAG = "BraveNtpAdapter";
+    private static final String BRAVE_RECAP_URL = "brave://recap";
 
     // Matches @dimen/mvt_container_lateral_margin used on the New Tab Page layout.
     static final int CARD_MARGIN_DP = 16;
@@ -171,6 +178,34 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     });
 
             mStatsHeight = NTPImageUtil.getViewHeight(statsViewHolder.itemView) + margin;
+
+        } else if (holder instanceof RecapBannerViewHolder) {
+            RecapBannerViewHolder recapBannerViewHolder = (RecapBannerViewHolder) holder;
+
+            recapBannerViewHolder.mText.setText(
+                    SpanApplier.applySpans(
+                            mActivity.getString(R.string.ntp_recap_banner_text),
+                            new SpanInfo("<link>", "</link>", new UnderlineSpan())));
+            recapBannerViewHolder.mCloseImg.setOnClickListener(
+                    view -> {
+                        ChromeSharedPreferences.getInstance()
+                                .writeBoolean(
+                                        BravePreferenceKeys.BRAVE_NTP_RECAP_BANNER_DISMISSED, true);
+                    });
+
+            LinearLayout.LayoutParams layoutParams =
+                    new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT);
+            int margin = dpToPx(mActivity, CARD_MARGIN_DP);
+            layoutParams.setMargins(margin, margin, margin, 0);
+            recapBannerViewHolder.mBannerLayout.setLayoutParams(layoutParams);
+            recapBannerViewHolder.mBannerLayout.setOnClickListener(
+                    view -> {
+                        TabUtils.openUrlInSameTab(BRAVE_RECAP_URL);
+                    });
+
+            mStatsHeight = NTPImageUtil.getViewHeight(recapBannerViewHolder.itemView) + margin;
 
         } else if (holder instanceof TopSitesViewHolder) {
             if (!mIsTopSitesEnabled) {
@@ -316,7 +351,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                                 - NTPImageUtil.getViewHeight(imageCreditViewHolder.itemView)
                                 - extraMarginForNews;
 
-                if (isStatsEnabled()) {
+                if (getStatsCount() == 1) {
                     mTopMarginImageCredit -= mStatsHeight;
                 } else {
                     mTopMarginImageCredit -= dpToPx(mActivity, CARD_MARGIN_DP);
@@ -442,6 +477,11 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         LayoutInflater.from(parent.getContext())
                                 .inflate(R.layout.brave_stats_layout, parent, false);
                 return new StatsViewHolder(view);
+            case TYPE_RECAP_BANNER:
+                view =
+                        LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.brave_recap_banner_layout, parent, false);
+                return new RecapBannerViewHolder(view);
             case TYPE_TOP_SITES:
                 {
                     // mMvTilesContainerLayout may have been placed in the NTP layout tree by
@@ -491,7 +531,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         int topSitesCount = getTopSitesCount();
 
         if (position == 0 && statsCount == 1) {
-            return TYPE_STATS;
+            return mIsRecapBannerVisible ? TYPE_RECAP_BANNER : TYPE_STATS;
         } else if (topSitesCount == 1 && position == statsCount) {
             return TYPE_TOP_SITES;
         } else if (position == statsCount + topSitesCount && mIsNewContent) {
@@ -514,13 +554,9 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
+    // The recap banner temporarily takes the stats widget's slot, even if stats are hidden.
     public int getStatsCount() {
-        return isStatsEnabled() ? 1 : 0;
-    }
-
-    // Will be used in privacy hub feature
-    private boolean isStatsEnabled() {
-        return mIsBraveStatsEnabled;
+        return mIsBraveStatsEnabled || mIsRecapBannerVisible ? 1 : 0;
     }
 
     public int getTopSitesCount() {
@@ -547,17 +583,36 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public void setBraveStatsEnabled(boolean isBraveStatsEnabled) {
         if (mIsBraveStatsEnabled != isBraveStatsEnabled) {
+            int oldStatsCount = getStatsCount();
             mIsBraveStatsEnabled = isBraveStatsEnabled;
-            if (mIsBraveStatsEnabled) {
-                notifyItemInserted(getStatsCount());
-            } else {
-                notifyItemRemoved(getStatsCount());
-            }
-            // Rebind items shifted by the insert/remove above so they're positioned correctly.
-            notifyItemRangeChanged(
-                    getStatsCount(),
-                    getStatsCount() + getTopSitesCount() + getNewContentCount() + ONE_ITEM_SPACE);
+            onStatsSlotChanged(oldStatsCount);
         }
+    }
+
+    public void setRecapBannerVisible(boolean isRecapBannerVisible) {
+        if (mIsRecapBannerVisible != isRecapBannerVisible) {
+            int oldStatsCount = getStatsCount();
+            mIsRecapBannerVisible = isRecapBannerVisible;
+            onStatsSlotChanged(oldStatsCount);
+        }
+    }
+
+    private void onStatsSlotChanged(int oldStatsCount) {
+        int statsCount = getStatsCount();
+        if (statsCount == oldStatsCount) {
+            // The slot stays, but may swap between the recap banner and the stats widget.
+            if (statsCount == 1) notifyItemChanged(0);
+            return;
+        }
+        if (statsCount == 1) {
+            notifyItemInserted(0);
+        } else {
+            notifyItemRemoved(0);
+        }
+        // Rebind items shifted by the insert/remove above so they're positioned correctly.
+        notifyItemRangeChanged(
+                statsCount,
+                statsCount + getTopSitesCount() + getNewContentCount() + ONE_ITEM_SPACE);
     }
 
     public void setDisplayNewsFeed(boolean isDisplayNewsFeed) {
@@ -704,6 +759,19 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             this.mEstTimeSavedCountTextTv =
                     (TextView) itemView.findViewById(R.id.brave_stats_text_time_count_text);
             BraveTouchUtils.ensureMinTouchTarget(this.mHideStatsImg);
+        }
+    }
+
+    public static class RecapBannerViewHolder extends RecyclerView.ViewHolder {
+        LinearLayout mBannerLayout;
+        TextView mText;
+        ImageView mCloseImg;
+
+        RecapBannerViewHolder(View itemView) {
+            super(itemView);
+            this.mBannerLayout = itemView.findViewById(R.id.ntp_recap_banner_layout);
+            this.mText = itemView.findViewById(R.id.recap_banner_text);
+            this.mCloseImg = itemView.findViewById(R.id.recap_banner_close);
         }
     }
 

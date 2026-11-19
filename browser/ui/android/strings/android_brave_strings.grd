@@ -1737,6 +1737,12 @@ Are you sure you want to do this?
       <message name="IDS_PRIVACY_STATS" desc="Private stats title text.">
         Privacy Stats
       </message>
+      <message name="IDS_NTP_RECAP_BANNER_TITLE" desc="Title of the new tab page banner announcing that the Shields recap page is available.">
+        Your Shields recap is ready
+      </message>
+      <message name="IDS_NTP_RECAP_BANNER_TEXT" desc="Body of the new tab page banner announcing the Shields recap page. The text between the link tags is underlined; tapping the banner opens the recap.">
+        Brave has been busy blocking the bad stuff for you! <ph name="BEGIN_LINK">&lt;link&gt;</ph>See your recap<ph name="END_LINK">&lt;/link&gt;</ph>
+      </message>
       <message name="IDS_PRIVACY_POLICY" desc="Brave rewards tos text">
         Privacy Policy
       </message>
