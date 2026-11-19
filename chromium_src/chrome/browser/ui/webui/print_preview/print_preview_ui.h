@@ -9,14 +9,6 @@
 #include "base/containers/flat_map.h"
 #include "base/unguessable_token.h"
 
-#define ClearPreviewUIId                              \
-  ClearPreviewUIId_Unused();                          \
-  static base::flat_map<base::UnguessableToken, int>& \
-  GetPrintPreviewUIRequestIdMap();                    \
-  void ClearPreviewUIId
-
 #include <chrome/browser/ui/webui/print_preview/print_preview_ui.h>  // IWYU pragma: export
-
-#undef ClearPreviewUIId
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_PRINT_PREVIEW_PRINT_PREVIEW_UI_H_

@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Use the Brave channel logo
+
+      Brave has no GOOGLE_CHROME_BRANDING and only runs development builds on
+      the UNKNOWN channel, so the logo is chosen by
+      CurrentChannelBraveLogoResourceId() defined in the chromium_src override.
+    preempt_function_impl:
+      function_name: CurrentChannelLogoResourceId
+      code: |-
+        return CurrentChannelBraveLogoResourceId();

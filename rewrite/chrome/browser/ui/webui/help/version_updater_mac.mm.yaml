@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Use SparkleVersionUpdater unless Omaha4 is enabled
+    regex:
+      pattern: 'return base::WrapUnique(new VersionUpdaterMac());'
+      replace: |-
+        #if BUILDFLAG(ENABLE_OMAHA4)
+          return base::WrapUnique(
+              brave_updater::ShouldUseOmaha4()
+                  ? new VersionUpdaterMac()
+                  : static_cast<VersionUpdater*>(new SparkleVersionUpdater()));
+        #else
+          return base::WrapUnique(new VersionUpdaterMac());
+        #endif
+    count: 1
