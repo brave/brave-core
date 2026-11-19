@@ -37,7 +37,8 @@ const FORWARD_ENV_CONFIG_VARS_TO_GN_ARGS = [
 
 export function getBuildArgs(config: Config) {
   let args: Record<string, any> = {
-    'import("//brave/build/args/brave_defaults.gni")': null,
+    'import("//brave/infra/config/generated/defaults/brave_defaults.gni")':
+      null,
     is_asan: config.isAsan(),
     is_lsan: config.isLsan(),
     enable_full_stack_frames_for_profiling: config.isAsan(),
@@ -61,21 +62,31 @@ export function getBuildArgs(config: Config) {
   }
 
   if (config.targetOS !== 'ios') {
-    args['import("//brave/build/args/blink_platform_defaults.gni")'] = null
+    args[
+      'import("//brave/infra/config/generated/defaults/blink_platform_defaults.gni")'
+    ] = null
     if (config.isBraveOriginBranded) {
-      args['import("//brave/build/args/brave_origin/branding_defaults.gni")'] =
-        null
+      args[
+        'import("//brave/infra/config/generated/defaults/brave_origin/branding_defaults.gni")'
+      ] = null
     } else {
-      args['import("//brave/build/args/branding_defaults.gni")'] = null
+      args[
+        'import("//brave/infra/config/generated/defaults/branding_defaults.gni")'
+      ] = null
     }
   } else {
-    args['import("//brave/build/args/ios_defaults.gni")'] = null
+    args['import("//brave/infra/config/generated/defaults/ios_defaults.gni")'] =
+      null
   }
   if (config.targetOS === 'android') {
-    args['import("//brave/build/args/android_defaults.gni")'] = null
+    args[
+      'import("//brave/infra/config/generated/defaults/android_defaults.gni")'
+    ] = null
   }
   if (config.targetOS !== 'ios' && config.targetOS !== 'android') {
-    args['import("//brave/build/args/desktop_defaults.gni")'] = null
+    args[
+      'import("//brave/infra/config/generated/defaults/desktop_defaults.gni")'
+    ] = null
   }
 
   config.forwardEnvConfigVarsToObject(FORWARD_ENV_CONFIG_VARS_TO_GN_ARGS, args)

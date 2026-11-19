@@ -34,6 +34,19 @@ Example:
     # {"gn_args": {"target_os": "linux", "target_cpu": "x64",
     #              "is_asan": True, "is_lsan": True},
     #  "secrets": {"brave_services_key": "BRAVE_SERVICES_KEY"}}
+
+A config with a `defaults_file` is also written out by `bots.py snapshot` as
+that `.gni` under `infra/config/generated/defaults/`, which every Brave build
+imports. Its `description` heads the file, and its `comments` say why each arg,
+or run of args, is set:
+
+    gn_args.config(
+        name = "desktop_defaults",
+        defaults_file = "desktop_defaults.gni",
+        description = "Defaults for desktop builds.",
+        args = {"safe_browsing_mode": 1},
+        comments = {"safe_browsing_mode": "Brave's own Safe Browsing mode."},
+    )
 """
 
 from __future__ import annotations
@@ -159,6 +172,9 @@ class _GnConfigNode:
         configs: Sequence[str],
         args_file: str,
         secrets: Mapping[str, str],
+        defaults_file: str = '',
+        description: str = '',
+        comments: Mapping[str | tuple[str, ...], str] | None = None,
     ) -> None:
         # The name it was registered under.
         self.name = name
@@ -175,6 +191,16 @@ class _GnConfigNode:
         # GN arg name -> environment variable name, resolved outside version
         # control.
         self.secrets = freeze(secrets)
+
+        # The `.gni`, relative to `generated/defaults/`, that `bots.py
+        # snapshot` writes this config's args to; '' for none.
+        self.defaults_file = defaults_file
+
+        # What heads that file.
+        self.description = description
+
+        # Arg name, or tuple of consecutive arg names -> why it is set.
+        self.comments = freeze(dict(comments or {}))
 
 
 def _merge_into(
@@ -227,6 +253,9 @@ class GnArgsRegistry:
         configs: Sequence[str] | None = None,
         args_file: str = '',
         secrets: Mapping[str, str] | None = None,
+        defaults_file: str = '',
+        description: str = '',
+        comments: Mapping[str | tuple[str, ...], str] | None = None,
     ) -> None | AnonymousGnConfig:
         """Defines a GN config, or returns one inline.
 
@@ -243,13 +272,35 @@ class GnArgsRegistry:
             args_file: The path of one `.gni` this config imports.
             secrets: GN arg name to environment variable name, for values
                 resolved outside version control instead of checked in.
+            defaults_file: The `.gni`, relative to `generated/defaults/`, that
+                `bots.py snapshot` writes `args` to, for every Brave build to
+                import. Only for a named config of `args` alone.
+            description: What heads the `defaults_file`.
+            comments: Why an arg is set, by its name, or by a tuple of the
+                names of consecutive args the comment covers. Only with a
+                `defaults_file`.
 
         Returns:
             None if `name` is set, otherwise an `AnonymousGnConfig`.
+
+        Raises:
+            ConfigError: `name` is already defined, or the `defaults_file`,
+                `description` or `comments` are not valid as described above.
         """
         args = args or {}
         configs = configs or []
         secrets = secrets or {}
+        comments = comments or {}
+
+        if defaults_file:
+            self._check_defaults_file(
+                name, defaults_file, args, configs, args_file, secrets, comments
+            )
+        elif description or comments:
+            raise ConfigError(
+                'gn_args config %r: description and comments are for a '
+                'defaults_file' % name
+            )
 
         if name:
             if name in self._nodes:
@@ -260,12 +311,83 @@ class GnArgsRegistry:
                 configs=configs,
                 args_file=args_file,
                 secrets=secrets,
+                defaults_file=defaults_file,
+                description=description,
+                comments=comments,
             )
             return None
 
         return AnonymousGnConfig(
             args=args, configs=configs, args_file=args_file, secrets=secrets
         )
+
+    def _check_defaults_file(
+        self,
+        name: str | None,
+        defaults_file: str,
+        args: Mapping[str, Any],
+        configs: Sequence[str],
+        args_file: str,
+        secrets: Mapping[str, str],
+        comments: Mapping[str | tuple[str, ...], str],
+    ) -> None:
+        if not name:
+            raise ConfigError(
+                'a defaults_file (%r) needs a named config' % defaults_file
+            )
+        parts = defaults_file.split('/')
+        if (
+            not defaults_file.endswith('.gni')
+            or defaults_file.startswith('/')
+            or '' in parts
+            or '..' in parts
+        ):
+            raise ConfigError(
+                'gn_args config %r: defaults_file %r is not a .gni path '
+                'relative to generated/defaults/' % (name, defaults_file)
+            )
+        if configs or args_file or secrets:
+            raise ConfigError(
+                'gn_args config %r: a defaults_file holds the config\'s own '
+                'args alone, without configs, args_file or secrets' % name
+            )
+        if not args:
+            raise ConfigError(
+                'gn_args config %r: defaults_file %r has no args'
+                % (name, defaults_file)
+            )
+        for node in self._nodes.values():
+            if node.defaults_file == defaults_file:
+                raise ConfigError(
+                    'gn_args configs %r and %r write the same defaults_file '
+                    '%r' % (node.name, name, defaults_file)
+                )
+        names = list(args)
+        commented: set[str] = set()
+        for key in comments:
+            covered = (key,) if isinstance(key, str) else tuple(key)
+            unknown = [arg for arg in covered if arg not in args]
+            if not covered or unknown:
+                raise ConfigError(
+                    'gn_args config %r: comment for %r names no arg of the '
+                    'config: %r' % (name, key, unknown or covered)
+                )
+            start = names.index(covered[0])
+            if tuple(names[start : start + len(covered)]) != covered:
+                raise ConfigError(
+                    'gn_args config %r: comment for %r covers args that are '
+                    'not consecutive in args' % (name, key)
+                )
+            if commented & set(covered):
+                raise ConfigError(
+                    'gn_args config %r: more than one comment covers %r'
+                    % (name, sorted(commented & set(covered)))
+                )
+            commented.update(covered)
+
+    def defaults_files(self) -> list[_GnConfigNode]:
+        """The configs with a `defaults_file`, in declaration order."""
+        return [node for node in self._nodes.values() if node.defaults_file]
 
     def resolve(self, name: str) -> dict:
         """Resolves the named config's GN args, secrets and args_file.

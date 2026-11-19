@@ -720,7 +720,8 @@ describe('util', () => {
         is_asan: true,
         brave_channel: 'nightly',
         target_cpu: undefined,
-        'import("//brave/build/args/brave_defaults.gni")': null,
+        'import("//brave/infra/config/generated/defaults/brave_defaults.gni")':
+          null,
         list: ['a', 'b'],
       })
 
@@ -733,7 +734,7 @@ describe('util', () => {
       expect(generated).toContain('is_asan=true\n')
       expect(generated).toContain('brave_channel="nightly"\n')
       expect(generated).toContain(
-        'import("//brave/build/args/brave_defaults.gni")\n',
+        'import("//brave/infra/config/generated/defaults/brave_defaults.gni")\n',
       )
       expect(generated).toContain('list=["a","b"]\n')
       expect(generated).not.toContain('target_cpu')

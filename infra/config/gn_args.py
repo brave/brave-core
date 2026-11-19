@@ -2,14 +2,13 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Named GN-arg configs, composed by builders in `builders/ci/*.py`.
+"""Named GN-arg configs, composed by builders in `builders/*.py`.
 
-Values here are reverse-engineered from a real `linux-x64-asan-brave` nightly
-run (captured `args.gn`/`.env`), not from reading `buildArgs.ts` in the
-abstract, so they hold for that job today. A wider audit across all of
-`config.ts`'s `envConfig.*` call sites (see the ASan migration design doc's
-Appendix C) will likely split some of these further as more builders are
-added.
+The configs with a `defaults_file` are the defaults every Brave build imports.
+`bots.py snapshot` writes each to `generated/defaults/`, where
+`build/commands/lib/buildArgs.ts` imports them from, and builders compose them
+like any other config. The other values here are those of a real
+`linux-x64-asan-brave` nightly run, from its `args.gn` and `.env`.
 """
 
 from lib.config import gn_args
@@ -55,24 +54,54 @@ gn_args.config(
 # branch one version behind it, and release on those further behind.
 gn_args.config(name='channel', args={'brave_channel': 'nightly'})
 
-# brave/build/args/brave_defaults.gni
+_ALWAYS_OVERRIDDEN = (
+    'This file contains defaults for gn values in Chromium which are always '
+    'overridden in Brave builds.'
+)
+_GIVE_A_REASON = (
+    'Please provide a reason if you are adding new overrides to this file.'
+)
+
 gn_args.config(
     name='brave_defaults',
+    defaults_file='brave_defaults.gni',
+    description=(
+        'This file contains strict overrides for gn values in Chromium which '
+        'we always override in Brave builds.\n\n' + _GIVE_A_REASON
+    ),
     args={
         'disable_fieldtrial_testing_config': True,
-        'translate_genders': False,
+        'root_extra_deps': ['//brave'],
         'enable_precompiled_headers': False,
         'enable_pseudolocales': False,
         'ignore_missing_widevine_signing_cert': False,
-        'root_extra_deps': [
-            '//brave',
-        ],
+        'report_activity': False,
+    },
+    comments={
+        'enable_precompiled_headers': (
+            'Chromium_src overrides do not work with precompiled headers.'
+        ),
+        'ignore_missing_widevine_signing_cert': (
+            "Our copy of signature_generator.py doesn't support "
+            '--ignore_missing_cert:'
+        ),
+        'report_activity': (
+            "Brave doesn't report activity via //components/activity_reporter. "
+            'The value upstream is currently gated on is_chrome_branded, but '
+            'if that ever changes we want to make sure no reporting to the '
+            'Google endpoint can happen.'
+        ),
     },
 )
 
-# brave/build/args/blink_platform_defaults.gni (non-iOS only)
 gn_args.config(
     name='blink_platform_defaults',
+    defaults_file='blink_platform_defaults.gni',
+    description=(
+        _ALWAYS_OVERRIDDEN + ' This file in particular is only included in '
+        'builds for platforms supporting blink, meaning anything other than '
+        'iOS.\n\n' + _GIVE_A_REASON
+    ),
     args={
         'proprietary_codecs': True,
         'ffmpeg_branding': 'Chrome',
@@ -80,22 +109,117 @@ gn_args.config(
         'enable_platform_hevc': True,
         'enable_hevc_parser_and_hw_decoder': True,
     },
+    comments={
+        ('enable_platform_hevc', 'enable_hevc_parser_and_hw_decoder'): (
+            'Enable HEVC/H.265 hardware decoding support on all desktop and '
+            'mobile platforms. Chromium already includes HEVC support for '
+            'Windows, macOS, and Android, but excludes Linux. Since Brave '
+            'enables proprietary_codecs, we can enable HEVC platform-wide to '
+            'allow hardware-accelerated H.265 playback (e.g., via VA-API/NVDEC '
+            'on Linux).'
+        ),
+    },
 )
 
-# brave/build/args/branding_defaults.gni
 gn_args.config(
     name='branding_defaults',
+    defaults_file='branding_defaults.gni',
     args={
         'branding_path_component': 'brave',
         'branding_path_product': 'brave',
     },
 )
 
-# brave/build/args/desktop_defaults.gni (non-mobile only)
+gn_args.config(
+    name='brave_origin_branding_defaults',
+    defaults_file='brave_origin/branding_defaults.gni',
+    args={
+        'branding_path_component': 'brave_origin',
+        'branding_path_product': 'brave_origin',
+    },
+)
+
 gn_args.config(
     name='desktop_defaults',
+    defaults_file='desktop_defaults.gni',
+    description=(
+        _ALWAYS_OVERRIDDEN + ' This file in particular is only included in '
+        'builds for non-mobile builds (mac, linux, win)'
+    ),
     args={
         'safe_browsing_mode': 1,
+    },
+)
+
+gn_args.config(
+    name='android_defaults',
+    defaults_file='android_defaults.gni',
+    description=(
+        _ALWAYS_OVERRIDDEN + ' This file in particular is only included in '
+        'builds for android'
+    ),
+    args={
+        'safe_browsing_mode': 2,
+        'enable_mdns': True,
+        'disable_android_lint': False,
+        'enable_extensions_core': True,
+    },
+    comments={
+        'enable_mdns': 'Fixes WebRTC IP leak with default option',
+        'disable_android_lint': (
+            'We want it to be enabled for all configurations'
+        ),
+        'enable_extensions_core': (
+            'Compile the extensions core on Android. Runtime use is gated by '
+            'the BraveAndroidExtensions feature, so this only controls whether '
+            'the code is in the APK.'
+        ),
+    },
+)
+
+gn_args.config(
+    name='ios_defaults',
+    defaults_file='ios_defaults.gni',
+    description=(
+        _ALWAYS_OVERRIDDEN + ' This file in particular is only included in '
+        'builds for ios'
+    ),
+    args={
+        'ios_enable_code_signing': False,
+        'ios_enable_share_extension': False,
+        'ios_enable_credential_provider_extension': True,
+        'ios_enable_widget_kit_extension': False,
+        'use_partition_alloc_as_malloc': False,
+        'enable_backup_ref_ptr_support': False,
+        'use_alloc_token': False,
+        'chrome_key_pinning_supported': True,
+        'ios_provider_target': '//brave/ios/browser/providers:brave_providers',
+        'ios_locales_pack_extra_source_patterns': [
+            '%root_gen_dir%/components/brave_components_strings_'
+        ],
+        'ios_locales_pack_extra_deps': ['//brave/components/resources:strings'],
+        'enable_run_ios_unittests_with_xctest': True,
+    },
+    comments={
+        ('use_partition_alloc_as_malloc', 'enable_backup_ref_ptr_support'): (
+            'The app currently crashes on launch without disabling these 2 '
+            'args:\n'
+            'https://github.com/brave/brave-browser/issues/49595\n'
+            'When this is fixed in Chromium we can remove these 2 arguments'
+        ),
+        'use_alloc_token': (
+            "AllocToken needs the allocator shim's PartitionAlloc-Everywhere "
+            'support.'
+        ),
+        'chrome_key_pinning_supported': (
+            'Brave iOS relies on static key pinning, which upstream disables '
+            'for iOS.'
+        ),
+        'enable_run_ios_unittests_with_xctest': (
+            'Configure unit tests to run outside of chromium infra\n'
+            'https://source.chromium.org/chromium/chromium/src/+/main:ios/'
+            'build/bots/scripts/README.md'
+        ),
     },
 )
 

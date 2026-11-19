@@ -12,8 +12,9 @@ Only iOS, CRONET, and Android Webview rely on the root cert list. Brave doesn't
 ship CRONET or Android Webview, so this is only pertinant for iOS.
 
 Upstream has seemingly given up on cert pinning in iOS, but Brave depends on it
-and will be keeping it enabled via `chrome_key_pinning_supported` in
-`build/args/ios_defaults.gni`. We shouldn't expect much help from upstream.
+and will be keeping it enabled via `chrome_key_pinning_supported` in the
+`ios_defaults` config of `infra/config/gn_args.py`. We shouldn't expect much
+help from upstream.
 
 If this change is not made, then certificates which *should* be rejected due to
 certificate pinning failures may be accepted under the incorrect conclusion that

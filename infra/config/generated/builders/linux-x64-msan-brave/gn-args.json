@@ -23,6 +23,7 @@
     "is_universal_binary": false,
     "msan_track_origins": 0,
     "proprietary_codecs": true,
+    "report_activity": false,
     "root_extra_deps": [
       "//brave"
     ],
@@ -31,7 +32,6 @@
     "symbol_level": 1,
     "target_cpu": "x64",
     "target_os": "linux",
-    "translate_genders": false,
     "use_debug_fission": true,
     "use_libfuzzer": false,
     "use_remoteexec": true,
