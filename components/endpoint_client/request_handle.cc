@@ -12,6 +12,7 @@
 #include "base/check_deref.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/task/sequenced_task_runner.h"
+#include "brave/components/endpoint_client/stream_consumer.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 
 namespace endpoint_client {
@@ -29,6 +30,12 @@ RequestHandle::RequestHandle(
     scoped_refptr<base::SequencedTaskRunner> task_runner)
     : loader_(loader.release(), Deleter(std::move(task_runner))) {}
 
+RequestHandle::RequestHandle(
+    std::unique_ptr<internal::StreamConsumer> stream_consumer,
+    scoped_refptr<base::SequencedTaskRunner> task_runner)
+    : stream_consumer_(stream_consumer.release(),
+                       Deleter(std::move(task_runner))) {}
+
 RequestHandle::Deleter::Deleter(
     scoped_refptr<base::SequencedTaskRunner> task_runner)
     : task_runner_(std::move(task_runner)) {}
@@ -43,6 +50,12 @@ void RequestHandle::Deleter::operator()(
     network::SimpleURLLoader* loader) const {
   CHECK(CHECK_DEREF(task_runner_).RunsTasksInCurrentSequence());
   delete loader;
+}
+
+void RequestHandle::Deleter::operator()(
+    internal::StreamConsumer* stream_consumer) const {
+  CHECK(CHECK_DEREF(task_runner_).RunsTasksInCurrentSequence());
+  delete stream_consumer;
 }
 
 }  // namespace endpoint_client

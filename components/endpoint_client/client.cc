@@ -35,19 +35,13 @@ void OnHeadersOnly(OnResponseCallback on_response_callback,
       .Run(simple_url_loader->NetError(), std::move(headers), std::nullopt);
 }
 
-}  // namespace
-
-std::unique_ptr<network::SimpleURLLoader> StartSimpleURLLoader(
-    network::mojom::URLLoaderFactory& url_loader_factory,
+std::unique_ptr<network::SimpleURLLoader> CreateSimpleURLLoader(
     std::string_view method,
     const GURL& url,
     net::HttpRequestHeaders headers,
     std::optional<std::string> upload_data,
     std::string_view content_type,
-    RequestOptions options,
-    RequestCancelability cancelability,
-    bool download_headers_only,
-    OnResponseCallback on_response_callback) {
+    RequestOptions& options) {
   if (!options.network_traffic_annotation_tag.is_valid()) {
     CHECK_IS_TEST() << "Client<> requires a valid network traffic annotation "
                        "and only permits a missing annotation in tests.";
@@ -75,9 +69,28 @@ std::unique_ptr<network::SimpleURLLoader> StartSimpleURLLoader(
     simple_url_loader->AttachStringForUpload(std::move(*upload_data),
                                              content_type);
   }
+  simple_url_loader->SetTimeoutDuration(options.timeout_duration);
+  return simple_url_loader;
+}
+
+}  // namespace
+
+std::unique_ptr<network::SimpleURLLoader> StartSimpleURLLoader(
+    network::mojom::URLLoaderFactory& url_loader_factory,
+    std::string_view method,
+    const GURL& url,
+    net::HttpRequestHeaders headers,
+    std::optional<std::string> upload_data,
+    std::string_view content_type,
+    RequestOptions options,
+    RequestCancelability cancelability,
+    bool download_headers_only,
+    OnResponseCallback on_response_callback) {
+  auto simple_url_loader =
+      CreateSimpleURLLoader(method, url, std::move(headers),
+                            std::move(upload_data), content_type, options);
   simple_url_loader->SetRetryOptions(options.retry_options.max_retries,
                                      options.retry_options.retry_mode);
-  simple_url_loader->SetTimeoutDuration(options.timeout_duration);
 
   auto* simple_url_loader_ptr = simple_url_loader.get();
   // How the response callback holds the loader.
@@ -107,6 +120,24 @@ std::unique_ptr<network::SimpleURLLoader> StartSimpleURLLoader(
   }
 
   return simple_url_loader;
+}
+
+std::unique_ptr<StreamConsumer> StartStreamingSimpleURLLoader(
+    network::mojom::URLLoaderFactory& url_loader_factory,
+    std::string_view method,
+    const GURL& url,
+    net::HttpRequestHeaders headers,
+    std::optional<std::string> upload_data,
+    std::string_view content_type,
+    RequestOptions options,
+    bool buffer_error_body,
+    RawStreamCallbacks callbacks) {
+  auto stream_consumer = std::make_unique<StreamConsumer>(
+      CreateSimpleURLLoader(method, url, std::move(headers),
+                            std::move(upload_data), content_type, options),
+      buffer_error_body, options.max_body_size, std::move(callbacks));
+  stream_consumer->Start(url_loader_factory);
+  return stream_consumer;
 }
 
 }  // namespace endpoint_client::internal

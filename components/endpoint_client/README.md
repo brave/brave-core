@@ -224,14 +224,15 @@ Requests also have:
   `DownloadToString()` `DCHECK`s it does not exceed. Larger responses fail with
   `net::ERR_INSUFFICIENT_RESOURCES`. `std::nullopt` lifts the limit via
   `SimpleURLLoader::DownloadToStringOfUnboundedSizeUntilCrashAndDie()`. Doesn't
-  apply to `Response<>` without body types, whose body is discarded.
+  apply to `Response<>` without body types, whose body is discarded, and only
+  caps the error body of a `Stream<>`.
 - `redirect_mode`: forwarded to `network::ResourceRequest::redirect_mode`;
   defaults to `kError`, so the network service fails a redirect with
   `net::ERR_FAILED`. With `kFollow`, the headers set on the request (e.g. bearer
   tokens) and, unless the redirect changes the method, the body are sent to the
   redirect target, even if it is another origin.
 - `retry_options`: forwarded to `SimpleURLLoader::SetRetryOptions()`; defaults
-  to no retries.
+  to no retries. Doesn't apply to `Stream<>`.
 - `timeout_duration`: forwarded to `SimpleURLLoader::SetTimeoutDuration()`;
   defaults to zero, i.e. no timeout.
 - `url_replacements`: overrides the host, path, and/or query of
@@ -306,7 +307,55 @@ A non-empty handle must be destroyed (or `reset()`) on the sequence that called
 
 ---
 
-### 5. Mocking endpoints in tests
+### 5. Streaming responses
+
+An endpoint whose response body arrives over time, e.g. Server-Sent Events,
+declares a `Stream<>` instead of a `Response<>`:
+
+```cpp
+struct MyStreamingEndpoint {
+  using Request = Post<MyRequestBody>;
+  using Response = Stream<MyErrorBody>;  // or Stream<> without an error body
+
+  static GURL URL() {
+    return GURL("https://myservice.com/my_stream");
+  }
+};
+```
+
+`Client<>` doesn't parse the stream: it hands a 2xx body back as raw chunks,
+with arbitrary boundaries, and framing (e.g. SSE) and deserializing messages
+are up to the caller. The body of any other response is buffered and
+deserialized into the error body, if there is one. Streaming requests are
+always cancelable:
+
+```cpp
+RequestHandle request_handle = Client<MyStreamingEndpoint>::Send(
+    *url_loader_factory_, std::move(request),
+    {.on_response_started = base::BindOnce(
+         [](scoped_refptr<net::HttpResponseHeaders> headers) {}),
+     .on_chunk = base::BindRepeating([](std::string_view chunk) {}),
+     .on_complete = base::BindOnce(
+         [](MyStreamingEndpoint::Response::Result result) {
+           // result.net_error, result.status_code, result.error_body
+         })});
+```
+
+- `on_response_started` (optional) runs once the response headers arrive,
+  whatever the status.
+- `on_chunk` runs for each chunk of a 2xx body. The chunk is only valid during
+  the call.
+- `on_complete` runs once the stream has ended. As with `Response<>`,
+  `status_code` is only set on `net::OK`, so a stream cut off midway never
+  looks like a success.
+
+Any of them may destroy the handle. `max_body_size` only caps the buffered
+error body, and `retry_options` doesn't apply, since a retry would deliver the
+chunks received so far again.
+
+---
+
+### 6. Mocking endpoints in tests
 
 In tests, construct and configure a `network::TestURLLoaderFactory` and pass it
 to `Send<>()` directly.

@@ -15,6 +15,7 @@
 #include "base/check.h"
 #include "base/check_deref.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/location.h"
@@ -38,6 +39,7 @@
 #include "brave/components/endpoint_client/request_types.h"
 #include "brave/components/endpoint_client/response.h"
 #include "brave/components/endpoint_client/retry_options.h"
+#include "brave/components/endpoint_client/stream.h"
 #include "brave/components/endpoint_client/test_support.h"
 #include "brave/components/endpoint_client/url_replacements.h"
 #include "brave/components/endpoint_client/with_headers.h"
@@ -1441,5 +1443,213 @@ INSTANTIATE_TEST_SUITE_P(
             // Initial request + 2 retries.
             .expected_num_requests = 3}),
     ClientTestRetryOptions::kNameGenerator);
+
+namespace {
+
+template <typename StreamT>
+struct TestStreamEndpoint {
+  using Request = Post<>;
+  using Response = StreamT;
+  static GURL URL() { return GURL("https://example.com/api/stream"); }
+};
+
+using StreamWithErrorBodyEndpoint = TestStreamEndpoint<Stream<JSONErrorBody>>;
+using StreamWithoutErrorBodyEndpoint = TestStreamEndpoint<Stream<>>;
+
+class ClientTestStream : public testing::Test {
+ protected:
+  void AddResponse(net::HttpStatusCode status_code,
+                   std::string_view body,
+                   int net_error = net::OK) {
+    test_url_loader_factory_.AddResponse(
+        StreamWithErrorBodyEndpoint::URL(),
+        network::CreateURLResponseHead(status_code), body,
+        network::URLLoaderCompletionStatus(net_error));
+  }
+
+  static base::RepeatingCallback<void(std::string_view)> FailOnChunk() {
+    return base::BindRepeating([](std::string_view) { ADD_FAILURE(); });
+  }
+
+  base::test::TaskEnvironment task_environment_;
+  network::TestURLLoaderFactory test_url_loader_factory_;
+};
+
+}  // namespace
+
+TEST_F(ClientTestStream, DeliversSuccessfulBodyInChunks) {
+  AddResponse(net::HTTP_OK, "data: {}\n\n");
+
+  std::optional<int> started_status_code;
+  std::string body;
+  base::test::TestFuture<StreamWithErrorBodyEndpoint::Response::Result> future;
+  RequestHandle request_handle = Client<StreamWithErrorBodyEndpoint>::Send(
+      test_url_loader_factory_, StreamWithErrorBodyEndpoint::Request(),
+      {.on_response_started = base::BindLambdaForTesting(
+           [&](scoped_refptr<net::HttpResponseHeaders> headers) {
+             started_status_code = headers->response_code();
+           }),
+       .on_chunk = base::BindLambdaForTesting(
+           [&](std::string_view chunk) { body.append(chunk); }),
+       .on_complete = future.GetCallback()});
+
+  auto result = future.Take();
+  EXPECT_EQ(result.net_error, net::OK);
+  EXPECT_EQ(result.status_code, net::HTTP_OK);
+  EXPECT_FALSE(result.error_body);
+  EXPECT_EQ(started_status_code, net::HTTP_OK);
+  EXPECT_EQ(body, "data: {}\n\n");
+}
+
+TEST_F(ClientTestStream, DeserializesErrorBody) {
+  AddResponse(net::HTTP_BAD_REQUEST, R"({"error": "error"})");
+
+  base::test::TestFuture<StreamWithErrorBodyEndpoint::Response::Result> future;
+  RequestHandle request_handle = Client<StreamWithErrorBodyEndpoint>::Send(
+      test_url_loader_factory_, StreamWithErrorBodyEndpoint::Request(),
+      {.on_chunk = FailOnChunk(), .on_complete = future.GetCallback()});
+
+  auto result = future.Take();
+  EXPECT_EQ(result.net_error, net::OK);
+  EXPECT_EQ(result.status_code, net::HTTP_BAD_REQUEST);
+  ASSERT_TRUE(result.error_body);
+  EXPECT_EQ(result.error_body->error, "error");
+}
+
+TEST_F(ClientTestStream, ErrorBodyThatFailsToParseIsNullopt) {
+  AddResponse(net::HTTP_BAD_GATEWAY, "<html>Bad Gateway</html>");
+
+  base::test::TestFuture<StreamWithErrorBodyEndpoint::Response::Result> future;
+  RequestHandle request_handle = Client<StreamWithErrorBodyEndpoint>::Send(
+      test_url_loader_factory_, StreamWithErrorBodyEndpoint::Request(),
+      {.on_chunk = FailOnChunk(), .on_complete = future.GetCallback()});
+
+  auto result = future.Take();
+  EXPECT_EQ(result.net_error, net::OK);
+  EXPECT_EQ(result.status_code, net::HTTP_BAD_GATEWAY);
+  EXPECT_FALSE(result.error_body);
+}
+
+TEST_F(ClientTestStream, ErrorBodyExceedingMaxBodySizeFails) {
+  AddResponse(net::HTTP_BAD_REQUEST, R"({"error": "error"})");
+
+  StreamWithErrorBodyEndpoint::Request request;
+  request.max_body_size = 1;
+
+  base::test::TestFuture<StreamWithErrorBodyEndpoint::Response::Result> future;
+  RequestHandle request_handle = Client<StreamWithErrorBodyEndpoint>::Send(
+      test_url_loader_factory_, std::move(request),
+      {.on_chunk = FailOnChunk(), .on_complete = future.GetCallback()});
+
+  auto result = future.Take();
+  EXPECT_EQ(result.net_error, net::ERR_INSUFFICIENT_RESOURCES);
+  EXPECT_FALSE(result.status_code);
+  EXPECT_FALSE(result.error_body);
+}
+
+TEST_F(ClientTestStream, MaxBodySizeDoesNotApplyToSuccessfulBody) {
+  AddResponse(net::HTTP_OK, "longer than max_body_size");
+
+  StreamWithErrorBodyEndpoint::Request request;
+  request.max_body_size = 1;
+
+  std::string body;
+  base::test::TestFuture<StreamWithErrorBodyEndpoint::Response::Result> future;
+  RequestHandle request_handle = Client<StreamWithErrorBodyEndpoint>::Send(
+      test_url_loader_factory_, std::move(request),
+      {.on_chunk = base::BindLambdaForTesting(
+           [&](std::string_view chunk) { body.append(chunk); }),
+       .on_complete = future.GetCallback()});
+
+  auto result = future.Take();
+  EXPECT_EQ(result.net_error, net::OK);
+  EXPECT_EQ(result.status_code, net::HTTP_OK);
+  EXPECT_EQ(body, "longer than max_body_size");
+}
+
+TEST_F(ClientTestStream, StreamWithoutErrorBodyDiscardsErrorBody) {
+  AddResponse(net::HTTP_INTERNAL_SERVER_ERROR, R"({"error": "error"})");
+
+  base::test::TestFuture<StreamWithoutErrorBodyEndpoint::Response::Result>
+      future;
+  RequestHandle request_handle = Client<StreamWithoutErrorBodyEndpoint>::Send(
+      test_url_loader_factory_, StreamWithoutErrorBodyEndpoint::Request(),
+      {.on_chunk = FailOnChunk(), .on_complete = future.GetCallback()});
+
+  auto result = future.Take();
+  EXPECT_EQ(result.net_error, net::OK);
+  EXPECT_EQ(result.status_code, net::HTTP_INTERNAL_SERVER_ERROR);
+}
+
+TEST_F(ClientTestStream, FailureMidStreamHasNoStatusCode) {
+  AddResponse(net::HTTP_OK, "data: {}\n\n", net::ERR_CONNECTION_RESET);
+
+  base::test::TestFuture<StreamWithErrorBodyEndpoint::Response::Result> future;
+  RequestHandle request_handle = Client<StreamWithErrorBodyEndpoint>::Send(
+      test_url_loader_factory_, StreamWithErrorBodyEndpoint::Request(),
+      {.on_chunk = base::DoNothing(), .on_complete = future.GetCallback()});
+
+  auto result = future.Take();
+  EXPECT_EQ(result.net_error, net::ERR_CONNECTION_RESET);
+  EXPECT_FALSE(result.status_code);
+}
+
+TEST_F(ClientTestStream, ResetInsideOnResponseStartedIsSafe) {
+  AddResponse(net::HTTP_OK, "data: {}\n\n");
+
+  base::test::TestFuture<void> future;
+  RequestHandle request_handle = Client<StreamWithErrorBodyEndpoint>::Send(
+      test_url_loader_factory_, StreamWithErrorBodyEndpoint::Request(),
+      {.on_response_started = base::BindLambdaForTesting(
+           [&request_handle, done = future.GetCallback()](
+               scoped_refptr<net::HttpResponseHeaders>) mutable {
+             request_handle.reset();
+             std::move(done).Run();
+           }),
+       .on_chunk = FailOnChunk(),
+       .on_complete =
+           base::BindOnce([](StreamWithErrorBodyEndpoint::Response::Result) {
+             ADD_FAILURE();
+           })});
+
+  ASSERT_TRUE(future.Wait());
+}
+
+TEST_F(ClientTestStream, ResetInsideOnChunkIsSafe) {
+  AddResponse(net::HTTP_OK, "data: {}\n\n");
+
+  base::test::TestFuture<void> future;
+  RequestHandle request_handle = Client<StreamWithErrorBodyEndpoint>::Send(
+      test_url_loader_factory_, StreamWithErrorBodyEndpoint::Request(),
+      {.on_chunk = base::BindLambdaForTesting(
+           [&request_handle,
+            done = future.GetRepeatingCallback()](std::string_view) {
+             request_handle.reset();
+             done.Run();
+           }),
+       .on_complete =
+           base::BindOnce([](StreamWithErrorBodyEndpoint::Response::Result) {
+             ADD_FAILURE();
+           })});
+
+  ASSERT_TRUE(future.Wait());
+}
+
+TEST_F(ClientTestStream, ResetInsideOnCompleteIsSafe) {
+  AddResponse(net::HTTP_OK, "data: {}\n\n");
+
+  base::test::TestFuture<void> future;
+  RequestHandle request_handle = Client<StreamWithErrorBodyEndpoint>::Send(
+      test_url_loader_factory_, StreamWithErrorBodyEndpoint::Request(),
+      {.on_chunk = base::DoNothing(),
+       .on_complete = base::BindLambdaForTesting(
+           [&request_handle, done = future.GetCallback()](
+               StreamWithErrorBodyEndpoint::Response::Result) mutable {
+             request_handle.reset();
+             std::move(done).Run();
+           })});
+
+  ASSERT_TRUE(future.Wait());
+}
 
 }  // namespace endpoint_client
