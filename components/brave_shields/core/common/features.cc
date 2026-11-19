@@ -98,12 +98,7 @@ BASE_FEATURE(kBlockAllCookiesToggle,
              base::FEATURE_DISABLED_BY_DEFAULT);
 #endif
 // when enabled, allow to select and block HTML elements
-BASE_FEATURE(kBraveShieldsElementPicker,
-#if BUILDFLAG(IS_IOS)
-             base::FEATURE_DISABLED_BY_DEFAULT);
-#else
-             base::FEATURE_ENABLED_BY_DEFAULT);
-#endif
+BASE_FEATURE(kBraveShieldsElementPicker, base::FEATURE_ENABLED_BY_DEFAULT);
 
 BASE_FEATURE(kAdblockOnlyMode,
 #if BUILDFLAG(IS_IOS) || BUILDFLAG(IS_ANDROID)
