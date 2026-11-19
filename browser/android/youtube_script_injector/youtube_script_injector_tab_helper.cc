@@ -157,16 +157,19 @@ constexpr char16_t kYoutubeFullscreenVideoFitWorkaround[] =
 // that item when the panel has rendered it: after a click on a link of our own
 // while the device is locked, the page reverts to the previous item on unlock
 // while the new video plays. The panel renders only some items, so otherwise
-// click a link of our own. As in music players, Previous first
-// restarts the item if it's more than a few seconds in, and on the first item
-// always restarts it. On the last item YouTube disables the Next button, so
-// Next is removed. Ignore both while the watch data still describes the
-// previous video. Otherwise (no playlist, or unreadable watch data), call
-// YouTube's handler unchanged. YouTube registers its handlers only after
-// an in-page navigation, so the first playlist item played had no controls.
-// Register Next whenever the playlist has a next item, and Previous whenever a
-// playlist is playing, rechecking as playback progresses because the watch data
-// can load after a video starts playing.
+// click a link of our own. While the watch data is unreadable or lacks the
+// button, click the link of the panel item next to the one playing. As in
+// music players, Previous first restarts the item if it's more than a few
+// seconds in, and on the first item always restarts it. On the last item
+// YouTube disables the Next button, so Next is removed. Ignore both while the
+// watch data still describes the previous video. Otherwise (no playlist, or
+// unreadable watch data and no neighbouring panel item), call YouTube's
+// handler unchanged.
+// YouTube registers its handlers only after an in-page navigation, so the
+// first playlist item played had no controls. Register Next whenever the
+// playlist has a next item, and Previous whenever a playlist is playing,
+// rechecking as playback progresses because the watch data can load after a
+// video starts playing.
 // See https://github.com/brave/brave-browser/issues/61748.
 constexpr char16_t kYoutubePlaylistMediaControlsWorkaround[] =
     uR"(
@@ -205,7 +208,7 @@ constexpr char16_t kYoutubePlaylistMediaControlsWorkaround[] =
     if (playlist?.playlistId !== list) {
       return {state: 'none'};
     }
-    return {state: 'ready', player, playlist};
+    return {state: 'ready', playlist};
   }
   function playlistButton(playlist, action) {
     if (playlist.state !== 'ready') {
@@ -231,24 +234,59 @@ constexpr char16_t kYoutubePlaylistMediaControlsWorkaround[] =
     }
     return null;
   }
+  // The panel item for the URL's video, if exactly one is rendered, and the
+  // link of the item before or after it, if rendered.
+  function playlistPanelNeighbour(action) {
+    const params = new URLSearchParams(location.search);
+    const items = [...document.querySelectorAll(
+        'ytm-playlist-panel-video-renderer')];
+    const itemLink = item => item?.querySelector('a[href]') ?? null;
+    const current = items.filter(item => {
+      const link = itemLink(item);
+      if (!link) {
+        return false;
+      }
+      const linkParams = new URL(link.href).searchParams;
+      return linkParams.get('v') === params.get('v') &&
+          linkParams.get('list') === params.get('list');
+    });
+    if (current.length !== 1) {
+      return null;
+    }
+    const offset = action === 'nexttrack' ? 1 : -1;
+    return {link: itemLink(items[items.indexOf(current[0]) + offset])};
+  }
   const restartThresholdSeconds = 3;
   const youtubeHandlers = {};
   const setActionHandler = mediaSession.setActionHandler.bind(mediaSession);
   function handleTrack(details) {
+    const action = details.action;
     const playlist = readPlaylist();
     if (playlist.state === 'stale') {
       return;
     }
-    if (playlist.state !== 'ready') {
-      return youtubeHandlers[details.action]?.call(this, details);
+    if (playlist.state === 'none') {
+      return youtubeHandlers[action]?.call(this, details);
+    }
+    // After a navigation while the device is locked, the watch data can be
+    // unreadable or lack the buttons for several seconds, while the panel
+    // still lists the items.
+    const url = buttonUrl(playlistButton(playlist, action));
+    const neighbour = url ? null : playlistPanelNeighbour(action);
+    if (playlist.state === 'unknown' && !neighbour?.link) {
+      return youtubeHandlers[action]?.call(this, details);
     }
     // In a playlist, don't fall through to YouTube's handlers: Previous goes
     // back in history and Next plays a recommendation, both leaving it.
-    const player = playlist.player;
-    const url = buttonUrl(playlistButton(playlist, details.action));
-    if (details.action === 'previoustrack' &&
-        (!url || player.getCurrentTime?.() > restartThresholdSeconds)) {
-      player.seekTo?.(0);
+    const player = document.getElementById('movie_player');
+    if (action === 'previoustrack' &&
+        (player?.getCurrentTime?.() > restartThresholdSeconds ||
+         !(url || neighbour?.link))) {
+      player?.seekTo?.(0);
+      return;
+    }
+    if (neighbour?.link) {
+      neighbour.link.click();
       return;
     }
     if (url) {
