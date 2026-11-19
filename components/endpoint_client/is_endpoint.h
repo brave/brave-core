@@ -10,12 +10,13 @@
 
 #include "brave/components/endpoint_client/is_request.h"
 #include "brave/components/endpoint_client/is_response.h"
+#include "brave/components/endpoint_client/is_stream.h"
 #include "url/gurl.h"
 
 namespace endpoint_client {
 
 // An endpoint defines a static URL() and Request and Response type aliases that
-// satisfy IsRequest and IsResponse.
+// satisfy IsRequest, and IsResponse or IsStream.
 template <typename Endpoint>
 concept IsEndpoint =
     requires {
@@ -23,7 +24,8 @@ concept IsEndpoint =
       typename Endpoint::Request;
       typename Endpoint::Response;
     } && internal::IsRequest<typename Endpoint::Request> &&
-    internal::IsResponse<typename Endpoint::Response>;
+    (internal::IsResponse<typename Endpoint::Response> ||
+     internal::IsStream<typename Endpoint::Response>);
 
 }  // namespace endpoint_client
 

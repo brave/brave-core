@@ -10,9 +10,8 @@
 #include <string_view>
 #include <utility>
 
-#include "base/json/json_reader.h"
 #include "base/types/expected.h"
-#include "base/values.h"
+#include "brave/components/endpoint_client/deserialize_body.h"
 #include "brave/components/endpoint_client/is_response_body.h"
 #include "net/base/net_errors.h"
 #include "services/network/public/cpp/header_util.h"
@@ -50,9 +49,9 @@ struct Response<SuccessResponseBody, ErrorResponseBody> {
     std::optional<base::expected<SuccessBody, ErrorBody>> body;
 
     if (network::IsSuccessfulStatus(status_code)) {  // 2xx
-      body = DeserializeBody<SuccessBody>(response_body);
+      body = internal::DeserializeBody<SuccessBody>(response_body);
     } else {  // non-2xx
-      body = DeserializeBody<ErrorBody>(response_body)
+      body = internal::DeserializeBody<ErrorBody>(response_body)
                  .transform([](ErrorBody error_body) {
                    return base::unexpected(std::move(error_body));
                  });
@@ -64,27 +63,6 @@ struct Response<SuccessResponseBody, ErrorResponseBody> {
   int net_error = net::ERR_IO_PENDING;
   std::optional<int> status_code;
   std::optional<base::expected<SuccessBody, ErrorBody>> body;
-
- private:
-  // Deserializes a JSON response body into ResponseBody.
-  template <internal::IsJSONResponseBody ResponseBody>
-  static std::optional<ResponseBody> DeserializeBody(
-      std::string_view response_body) {
-    return base::JSONReader::Read(response_body, base::JSON_PARSE_RFC)
-        .and_then(
-            [](base::Value value) { return ResponseBody::FromValue(value); });
-  }
-
-  // Deserializes a Protobuf response body into ResponseBody.
-  template <internal::IsProtobufResponseBody ResponseBody>
-  static std::optional<ResponseBody> DeserializeBody(
-      std::string_view response_body) {
-    if (ResponseBody body; body.ParseFromString(response_body)) {
-      return body;
-    }
-
-    return std::nullopt;
-  }
 };
 
 }  // namespace endpoint_client

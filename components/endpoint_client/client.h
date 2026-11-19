@@ -19,12 +19,15 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/types/is_instantiation.h"
+#include "brave/components/endpoint_client/deserialize_body.h"
 #include "brave/components/endpoint_client/is_endpoint.h"
 #include "brave/components/endpoint_client/is_request.h"
 #include "brave/components/endpoint_client/is_response.h"
+#include "brave/components/endpoint_client/is_stream.h"
 #include "brave/components/endpoint_client/maybe_strip_with_headers.h"
 #include "brave/components/endpoint_client/request_handle.h"
 #include "brave/components/endpoint_client/request_options.h"
+#include "brave/components/endpoint_client/stream_consumer.h"
 #include "brave/components/endpoint_client/with_headers.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_request_headers.h"
@@ -65,6 +68,27 @@ std::unique_ptr<network::SimpleURLLoader> StartSimpleURLLoader(
     bool download_headers_only,
     OnResponseCallback on_response_callback);
 
+// Creates and starts a `SimpleURLLoader` that streams the response to
+// `callbacks`, and returns its consumer, which owns it. Destroying the
+// consumer cancels the request. `max_body_size` only caps the buffered error
+// body, and `retry_options` doesn't apply.
+std::unique_ptr<StreamConsumer> StartStreamingSimpleURLLoader(
+    network::mojom::URLLoaderFactory& url_loader_factory,
+    std::string_view method,
+    const GURL& url,
+    net::HttpRequestHeaders headers,
+    std::optional<std::string> upload_data,
+    std::string_view content_type,
+    RequestOptions options,
+    bool buffer_error_body,
+    RawStreamCallbacks callbacks);
+
+struct SerializedRequest {
+  net::HttpRequestHeaders headers;
+  std::optional<std::string> upload_data;
+  std::string_view content_type;
+};
+
 }  // namespace internal
 
 // Client<> performs a full network roundtrip for a given endpoint using
@@ -73,7 +97,8 @@ std::unique_ptr<network::SimpleURLLoader> StartSimpleURLLoader(
 // deserialized as the endpoint's Response type. Requests and responses may
 // optionally be wrapped in WithHeaders<> to include HTTP headers. Requests
 // can also be made cancelable, in which case Send<>() returns a RequestHandle
-// that can cancel the request.
+// that can cancel the request. For endpoints whose Response is a Stream<>,
+// Send<>() streams the response body to callbacks instead.
 template <IsEndpoint Endpoint>
 class Client {
  public:
@@ -91,36 +116,12 @@ class Client {
       network::mojom::URLLoaderFactory& url_loader_factory,
       Request request,
       base::OnceCallback<void(Response)> callback) {
-    auto headers = [&] {
-      if constexpr (base::is_instantiation<Request, WithHeaders>) {
-        return std::move(request.headers);
-      } else {
-        return net::HttpRequestHeaders();
-      }
-    }();
-
-    constexpr bool kIsRequestWithoutBody =
-        internal::IsRequestWithoutBody<typename Endpoint::Request>;
-
-    auto upload_data = [&]() -> std::optional<std::string> {
-      if constexpr (kIsRequestWithoutBody) {
-        return std::nullopt;
-      } else {
-        return request.Serialize();
-      }
-    }();
-
-    constexpr auto kContentType = [] {
-      if constexpr (kIsRequestWithoutBody) {
-        return std::string_view();
-      } else {
-        return Request::ContentType();
-      }
-    }();
-
+    auto serialized_request = SerializeRequest(request);
     auto simple_url_loader = internal::StartSimpleURLLoader(
         url_loader_factory, Request::Method(), Endpoint::URL(),
-        std::move(headers), std::move(upload_data), kContentType,
+        std::move(serialized_request.headers),
+        std::move(serialized_request.upload_data),
+        serialized_request.content_type,
         std::move(static_cast<internal::RequestOptions&>(request)), C,
         /*download_headers_only=*/
         internal::IsResponseWithoutBodies<typename Endpoint::Response>,
@@ -132,7 +133,75 @@ class Client {
     }
   }
 
+  // Streaming requests, for endpoints whose Response is a Stream<>, are always
+  // cancelable. `Stream` defers `Stream::Callbacks` to overload resolution, so
+  // that Client<> can still be instantiated for endpoints without a Stream<>.
+  template <typename Request, typename Stream = typename Endpoint::Response>
+    requires(internal::IsStream<Stream> &&
+             std::same_as<internal::MaybeStripWithHeaders<Request>,
+                          typename Endpoint::Request>)
+  [[nodiscard]] static RequestHandle Send(
+      network::mojom::URLLoaderFactory& url_loader_factory,
+      Request request,
+      typename Stream::Callbacks callbacks) {
+    internal::RawStreamCallbacks raw_callbacks;
+    raw_callbacks.on_response_started =
+        std::move(callbacks.on_response_started);
+    raw_callbacks.on_chunk = std::move(callbacks.on_chunk);
+    raw_callbacks.on_complete = base::BindOnce(MakeStreamResult<Stream>)
+                                    .Then(std::move(callbacks.on_complete));
+
+    auto serialized_request = SerializeRequest(request);
+    auto stream_consumer = internal::StartStreamingSimpleURLLoader(
+        url_loader_factory, Request::Method(), Endpoint::URL(),
+        std::move(serialized_request.headers),
+        std::move(serialized_request.upload_data),
+        serialized_request.content_type,
+        std::move(static_cast<internal::RequestOptions&>(request)),
+        /*buffer_error_body=*/internal::IsStreamWithErrorBody<Stream>,
+        std::move(raw_callbacks));
+
+    return RequestHandle(std::move(stream_consumer),
+                         base::SequencedTaskRunner::GetCurrentDefault());
+  }
+
  private:
+  template <typename Request>
+  static internal::SerializedRequest SerializeRequest(Request& request) {
+    internal::SerializedRequest serialized_request;
+    if constexpr (base::is_instantiation<Request, WithHeaders>) {
+      serialized_request.headers = std::move(request.headers);
+    }
+    if constexpr (!internal::IsRequestWithoutBody<typename Endpoint::Request>) {
+      serialized_request.upload_data = request.Serialize();
+      serialized_request.content_type = Request::ContentType();
+    }
+    return serialized_request;
+  }
+
+  template <typename Stream>
+  static typename Stream::Result MakeStreamResult(
+      int net_error,
+      scoped_refptr<net::HttpResponseHeaders> headers,
+      std::optional<std::string> error_body) {
+    typename Stream::Result result;
+    result.net_error = net_error;
+    if (net_error != net::OK || !headers) {
+      return result;
+    }
+
+    result.status_code = headers->response_code();
+
+    if constexpr (internal::IsStreamWithErrorBody<Stream>) {
+      if (error_body) {
+        result.error_body =
+            internal::DeserializeBody<typename Stream::ErrorBody>(*error_body);
+      }
+    }
+
+    return result;
+  }
+
   template <typename Response>
   static Response MakeResponse(int net_error,
                                scoped_refptr<net::HttpResponseHeaders> headers,

@@ -21,9 +21,14 @@ class SimpleURLLoader;
 
 namespace endpoint_client {
 
-// RequestHandle is intentionally opaque: it hides the managed SimpleURLLoader
-// to prevent direct API access. Callers can only hold, move, or reset the
-// handle to cancel a request, and only Client<> can create a non-empty one.
+namespace internal {
+class StreamConsumer;
+}  // namespace internal
+
+// RequestHandle is intentionally opaque: it hides the managed SimpleURLLoader,
+// or the stream consumer owning it, to prevent direct API access. Callers can
+// only hold, move, or reset the handle to cancel a request, and only Client<>
+// can create a non-empty one.
 class RequestHandle {
  public:
   RequestHandle();
@@ -33,15 +38,18 @@ class RequestHandle {
 
   ~RequestHandle();
 
-  void reset() { loader_.reset(); }
+  void reset() {
+    loader_.reset();
+    stream_consumer_.reset();
+  }
 
  private:
   template <IsEndpoint>
   friend class Client;
 
-  // Deletes the RequestHandle's SimpleURLLoader inline, so cancellation is
-  // synchronous. CHECKs that this happens on the sequence that issued the
-  // request, the only one the loader may be touched from.
+  // Deletes the RequestHandle's SimpleURLLoader or stream consumer inline, so
+  // cancellation is synchronous. CHECKs that this happens on the sequence that
+  // issued the request, the only one the loader may be touched from.
   class Deleter {
    public:
     explicit Deleter(
@@ -53,6 +61,7 @@ class RequestHandle {
     ~Deleter();
 
     void operator()(network::SimpleURLLoader* loader) const;
+    void operator()(internal::StreamConsumer* stream_consumer) const;
 
    private:
     scoped_refptr<base::SequencedTaskRunner> task_runner_;
@@ -61,7 +70,11 @@ class RequestHandle {
   RequestHandle(std::unique_ptr<network::SimpleURLLoader> loader,
                 scoped_refptr<base::SequencedTaskRunner> task_runner);
 
+  RequestHandle(std::unique_ptr<internal::StreamConsumer> stream_consumer,
+                scoped_refptr<base::SequencedTaskRunner> task_runner);
+
   std::unique_ptr<network::SimpleURLLoader, Deleter> loader_;
+  std::unique_ptr<internal::StreamConsumer, Deleter> stream_consumer_;
 };
 
 }  // namespace endpoint_client
