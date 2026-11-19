@@ -24,6 +24,7 @@
     "is_ubsan_vptr": true,
     "is_universal_binary": false,
     "proprietary_codecs": true,
+    "report_activity": false,
     "root_extra_deps": [
       "//brave"
     ],
@@ -32,7 +33,6 @@
     "symbol_level": 1,
     "target_cpu": "x64",
     "target_os": "linux",
-    "translate_genders": false,
     "use_debug_fission": true,
     "use_libfuzzer": false,
     "use_remoteexec": true,

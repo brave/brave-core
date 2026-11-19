@@ -2,7 +2,8 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""bots snapshot: write `infra/config` builders matrix."""
+"""bots snapshot: write `infra/config/generated/` from the spec: the builders,
+the isolate map, and the `.gni` defaults every Brave build imports."""
 
 from __future__ import annotations
 
@@ -150,6 +151,19 @@ def cmd_snapshot(args: argparse.Namespace) -> int:
                 dry_run=args.check,
             ),
         ),
+        (
+            'defaults',
+            write_output(
+                gen_paths.DEFAULTS_OUTPUT_DIR,
+                {
+                    path: generated_output.gn_format(content)
+                    for path, content in generated_output.render_defaults(
+                        gn_args
+                    ).items()
+                },
+                dry_run=args.check,
+            ),
+        ),
     ):
         prefix = '' if name == 'builders' else name + '/'
         for path in result.deleted:
@@ -173,7 +187,7 @@ def add_subparser(subparsers) -> argparse.ArgumentParser:
     """Registers the `snapshot` subcommand onto `bots.py`'s subparsers."""
     snapshot_parser = subparsers.add_parser(
         'snapshot',
-        help='Write infra/config/generated/builders/ from the current spec.',
+        help='Write infra/config/generated/ from the current spec.',
     )
     snapshot_parser.add_argument(
         '--check',

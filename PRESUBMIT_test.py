@@ -190,7 +190,8 @@ class CheckNoCommittedSecretsFilesTest(unittest.TestCase):
         input_api = MockInputApi()
         input_api.files = [
             MockAffectedFile(
-                'brave/build/args/brave_defaults.gni', ['is_asan = true']
+                'brave/infra/config/generated/defaults/brave_defaults.gni',
+                ['is_asan = true'],
             ),
         ]
 

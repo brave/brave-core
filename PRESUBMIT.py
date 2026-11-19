@@ -281,6 +281,8 @@ def CheckLicense(input_api, output_api):
     files_to_skip = input_api.DEFAULT_FILES_TO_SKIP + (
         r"ios/browser/api/brave_rewards/legacy_database/core_data_models/",
         r'win_build_output/',
+        # Generated output carries no year to regenerate.
+        r'infra/config/generated/',
     )
 
     current_year = int(input_api.time.strftime('%Y'))

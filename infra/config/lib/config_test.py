@@ -120,6 +120,61 @@ class GnArgsConfigTest(unittest.TestCase):
         )
 
 
+class GnArgsDefaultsFileTest(unittest.TestCase):
+    def setUp(self):
+        self.registry = GnArgsRegistry()
+
+    def defaults(self, name='d', **kwargs):
+        kwargs.setdefault('defaults_file', name + '.gni')
+        kwargs.setdefault('args', {'a': True, 'b': 1, 'c': 'x'})
+        self.registry.config(name=name, **kwargs)
+
+    def test_listed_in_declaration_order(self):
+        self.defaults('z')
+        self.registry.config(name='plain', args={'a': True})
+        self.defaults('y', defaults_file='sub/y.gni', description='Why.')
+        self.assertEqual(
+            [
+                (config.name, config.defaults_file)
+                for config in self.registry.defaults_files()
+            ],
+            [('z', 'z.gni'), ('y', 'sub/y.gni')],
+        )
+
+    def test_needs_a_name(self):
+        with self.assertRaisesRegex(ConfigError, 'needs a named config'):
+            self.registry.config(defaults_file='d.gni', args={'a': True})
+
+    def test_is_a_gni_under_generated_defaults(self):
+        for path in ('d.gn', '/d.gni', '../d.gni', 'a//d.gni'):
+            with self.subTest(path=path):
+                with self.assertRaisesRegex(ConfigError, 'not a .gni path'):
+                    self.defaults(defaults_file=path)
+
+    def test_holds_the_configs_own_args_alone(self):
+        for extra in (
+            {'configs': ['other']},
+            {'args_file': '//x.gni'},
+            {'secrets': {'k': 'K'}},
+        ):
+            with self.subTest(extra=extra):
+                with self.assertRaisesRegex(ConfigError, 'own args alone'):
+                    self.defaults(**extra)
+
+    def test_needs_args(self):
+        with self.assertRaisesRegex(ConfigError, 'has no args'):
+            self.defaults(args={})
+
+    def test_one_config_per_file(self):
+        self.defaults('one', defaults_file='d.gni')
+        with self.assertRaisesRegex(ConfigError, 'write the same'):
+            self.defaults('two', defaults_file='d.gni')
+
+    def test_a_description_needs_a_defaults_file(self):
+        with self.assertRaisesRegex(ConfigError, 'for a defaults_file'):
+            self.registry.config(name='d', args={'a': True}, description='Why.')
+
+
 class GnArgsResolveTest(unittest.TestCase):
     def setUp(self):
         self.registry = GnArgsRegistry()
