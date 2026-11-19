@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Rename TabSearchUI so Brave can subclass it.
+
+      The chromium_src shadow header defines a Brave TabSearchUI deriving from
+      TabSearchUI_ChromiumImpl.
+    rename_class:
+      class_name: TabSearchUI
+      rename: TabSearchUI_ChromiumImpl
+
+  - description: |-
+      Rename TabSearchUIConfig so Brave can re-define it.
+
+      The shadow header re-defines TabSearchUIConfig on top of the Brave
+      TabSearchUI.
+    rename_class:
+      class_name: TabSearchUIConfig
+      rename: TabSearchUIConfig_Unused

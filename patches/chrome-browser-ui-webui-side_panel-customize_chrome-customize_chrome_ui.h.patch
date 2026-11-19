@@ -1,0 +1,19 @@
+diff --git a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_ui.h b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_ui.h
+index abe1e4c3bc7ca0419d11799a791aff00f4cbae62..cca183805d5c5dd99e3c88e04173715ec9d981fd 100644
+--- a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_ui.h
++++ b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_chrome_ui.h
+@@ -128,6 +128,14 @@ class CustomizeChromeUI
+ 
+   static constexpr std::string_view GetWebUIName() { return "CustomizeChrome"; }
+ 
++  void SetClosePanelCallback(base::RepeatingClosure close_panel_callback);
++  base::RepeatingClosure close_panel_callback() const {
++    return close_panel_callback_;
++  }
++
++ protected:
++  base::RepeatingClosure close_panel_callback_;
++
+  private:
+   // side_panel::mojom::CustomizeChromePageHandlerFactory
+   void CreatePageHandler(

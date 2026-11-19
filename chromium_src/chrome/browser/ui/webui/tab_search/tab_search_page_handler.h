@@ -31,21 +31,7 @@ class HistoryEmbeddingsSearch;
 
 class SessionID;
 
-class TabSearchPageHandler;
-using TabSearchPageHandler_BraveImpl = TabSearchPageHandler;
-
-#define TabSearchPageHandler TabSearchPageHandler_ChromiumImpl
-// Inject friend declaration via CreateProfileData (private method) so our
-// Brave subclass can access private members like page_, web_ui_, etc.
-#define CreateProfileData                \
-  NotUsed();                             \
-  friend TabSearchPageHandler_BraveImpl; \
-  tab_search::mojom::ProfileDataPtr CreateProfileData
-
 #include <chrome/browser/ui/webui/tab_search/tab_search_page_handler.h>  // IWYU pragma: export
-
-#undef TabSearchPageHandler
-#undef CreateProfileData
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 namespace ai_chat {
