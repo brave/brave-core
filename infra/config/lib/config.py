@@ -513,6 +513,11 @@ _GCLIENT_CPUS = (
     'x86',
 )
 
+# The top-level `.gclient` variables `init`/`sync` write themselves.
+_GCLIENT_OWN_VARS = frozenset(
+    {'cache_dir', 'solutions', 'target_cpu', 'target_os'}
+)
+
 # GN's target_cpu for a chromium_config's (target_arch, target_bits).
 _GN_TARGET_CPU = {
     (_target_arch.INTEL, 32): 'x86',
@@ -531,7 +536,8 @@ class GclientConfig:
     its host can leave both lists empty.
 
     And what the builder adds to the chromium solution's `custom_deps` and
-    `custom_vars`, on top of `package.json`'s, which every checkout has.
+    `custom_vars`, on top of `package.json`'s, which every checkout has, and
+    the variables it sets at the top of `.gclient`.
     """
 
     def __init__(
@@ -541,6 +547,7 @@ class GclientConfig:
         target_cpu: Sequence[str],
         custom_deps: Mapping[str, str | None],
         custom_vars: Mapping[str, bool | str],
+        global_vars: Mapping[str, bool | int | str],
     ) -> None:
         # gclient's `target_os`: `target_platform` values.
         self.target_os = _sorted_values(
@@ -563,6 +570,17 @@ class GclientConfig:
         self.custom_vars = _sorted_mapping(
             'custom_vars', custom_vars, (bool, str)
         )
+
+        # The top-level `.gclient` variables, besides those `init`/`sync`
+        # write themselves.
+        self.global_vars = _sorted_mapping(
+            'global_vars', global_vars, (bool, int, str)
+        )
+        if reserved := sorted(set(self.global_vars) & _GCLIENT_OWN_VARS):
+            raise ConfigError(
+                'global_vars %s are written by init/sync themselves'
+                % ', '.join(reserved)
+            )
 
 
 def _sorted_mapping(
@@ -645,11 +663,50 @@ class ChromiumConfig:
         return _GN_TARGET_CPU[(self.target_arch, self.target_bits)]
 
 
+class BraveConfig:
+    """What Brave's build tooling takes from a builder rather than `.env`:
+    whether the build is a Brave release, whether it ignores the patch version
+    number, and whether it uses Brave's hermetic toolchain."""
+
+    def __init__(
+        self,
+        *,
+        is_brave_release_build: bool,
+        ignore_patch_version_number: bool,
+        use_brave_hermetic_toolchain: bool,
+    ) -> None:
+        for field, value in (
+            ('is_brave_release_build', is_brave_release_build),
+            ('ignore_patch_version_number', ignore_patch_version_number),
+            ('use_brave_hermetic_toolchain', use_brave_hermetic_toolchain),
+        ):
+            if not isinstance(value, bool):
+                raise ConfigError('%s must be a bool, got %r' % (field, value))
+        if is_brave_release_build and ignore_patch_version_number:
+            raise ConfigError(
+                'a Brave release build cannot ignore the patch version number'
+            )
+
+        # A release build, as `is_brave_release_build=1` in `.env` makes one.
+        self.is_brave_release_build = is_brave_release_build
+
+        # Leave the patch version out of the build, so that a version bump
+        # does not rebuild everything.
+        self.ignore_patch_version_number = ignore_patch_version_number
+
+        # Sync and build with Brave's own hermetic toolchain, internally.
+        self.use_brave_hermetic_toolchain = use_brave_hermetic_toolchain
+
+
 class BuilderSpec:
     """How a builder syncs and what it builds for."""
 
     def __init__(
-        self, *, gclient_config: GclientConfig, chromium_config: ChromiumConfig
+        self,
+        *,
+        gclient_config: GclientConfig,
+        chromium_config: ChromiumConfig,
+        brave_config: BraveConfig,
     ) -> None:
         if not isinstance(gclient_config, GclientConfig):
             raise ConfigError(
@@ -659,12 +716,19 @@ class BuilderSpec:
             raise ConfigError(
                 'chromium_config must be a builder_config.chromium_config()'
             )
+        if not isinstance(brave_config, BraveConfig):
+            raise ConfigError(
+                'brave_config must be a builder_config.brave_config()'
+            )
 
         # This builder's `gclient_config()`.
         self.gclient_config = gclient_config
 
         # This builder's `chromium_config()`.
         self.chromium_config = chromium_config
+
+        # This builder's `brave_config()`.
+        self.brave_config = brave_config
 
 
 class _BuilderConfig:
@@ -683,10 +747,11 @@ class _BuilderConfig:
         target_cpu: Sequence[str] = (),
         custom_deps: Mapping[str, str | None] | None = None,
         custom_vars: Mapping[str, bool | str] | None = None,
+        global_vars: Mapping[str, bool | int | str] | None = None,
     ) -> GclientConfig:
-        """The platforms `init`/`sync` sync for, besides the host's, and what
+        """The platforms `init`/`sync` sync for, besides the host's, what
         the builder adds to the chromium solution's `custom_deps` and
-        `custom_vars`.
+        `custom_vars`, and the variables it sets at the top of `.gclient`.
 
         Unlike upstream's, which names gclient recipe config items, this
         takes what they set directly: `target_os` takes `target_platform`
@@ -697,6 +762,7 @@ class _BuilderConfig:
             target_cpu=target_cpu,
             custom_deps=custom_deps or {},
             custom_vars=custom_vars or {},
+            global_vars=global_vars or {},
         )
 
     @staticmethod
@@ -717,11 +783,29 @@ class _BuilderConfig:
         )
 
     @staticmethod
+    def brave_config(
+        *,
+        is_brave_release_build: bool = False,
+        ignore_patch_version_number: bool = False,
+        use_brave_hermetic_toolchain: bool = False,
+    ) -> BraveConfig:
+        return BraveConfig(
+            is_brave_release_build=is_brave_release_build,
+            ignore_patch_version_number=ignore_patch_version_number,
+            use_brave_hermetic_toolchain=use_brave_hermetic_toolchain,
+        )
+
+    @staticmethod
     def builder_spec(
-        *, gclient_config: GclientConfig, chromium_config: ChromiumConfig
+        *,
+        gclient_config: GclientConfig,
+        chromium_config: ChromiumConfig,
+        brave_config: BraveConfig | None = None,
     ) -> BuilderSpec:
         return BuilderSpec(
-            gclient_config=gclient_config, chromium_config=chromium_config
+            gclient_config=gclient_config,
+            chromium_config=chromium_config,
+            brave_config=brave_config or _BuilderConfig.brave_config(),
         )
 
 

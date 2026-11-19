@@ -5,6 +5,7 @@
 
 import { build } from './build.ts'
 import * as builderModule from './builder.ts'
+import { mockBuilderSpec } from './builderMock.ts'
 import type { Builder } from './builderTypes.ts'
 import branding from './branding.js'
 import * as buildUtils from './buildUtils.ts'
@@ -17,6 +18,7 @@ const builder: Builder = {
     builder_group: 'brave.test',
     chromium_config: { target_platform: 'linux', build_config: 'Release' },
     gclient_config: { target_os: [], target_cpu: [] },
+    brave_config: mockBuilderSpec.brave_config,
   },
   buildTarget: { targetOS: 'linux', targetArch: 'x64' },
   isBraveOriginBranded: false,

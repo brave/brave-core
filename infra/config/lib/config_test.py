@@ -789,6 +789,59 @@ class BuilderConfigTest(unittest.TestCase):
             )
 
 
+class BraveConfigTest(unittest.TestCase):
+    def test_a_builder_spec_defaults_to_nothing_set(self):
+        brave_config = builder_config.builder_spec(
+            gclient_config=builder_config.gclient_config(),
+            chromium_config=builder_config.chromium_config(
+                target_platform='linux'
+            ),
+        ).brave_config
+        self.assertFalse(brave_config.is_brave_release_build)
+        self.assertFalse(brave_config.ignore_patch_version_number)
+        self.assertFalse(brave_config.use_brave_hermetic_toolchain)
+
+    def test_takes_bools_only(self):
+        with self.assertRaisesRegex(
+            ConfigError, 'use_brave_hermetic_toolchain must be a bool'
+        ):
+            builder_config.brave_config(use_brave_hermetic_toolchain='yes')
+
+    def test_a_release_build_keeps_the_patch_version_number(self):
+        with self.assertRaisesRegex(ConfigError, 'cannot ignore the patch'):
+            builder_config.brave_config(
+                is_brave_release_build=True, ignore_patch_version_number=True
+            )
+
+    def test_a_builder_spec_takes_a_brave_config(self):
+        with self.assertRaisesRegex(ConfigError, 'brave_config must be'):
+            builder_config.builder_spec(
+                gclient_config=builder_config.gclient_config(),
+                chromium_config=builder_config.chromium_config(
+                    target_platform='linux'
+                ),
+                brave_config={'is_brave_release_build': True},
+            )
+
+
+class GclientGlobalVarsTest(unittest.TestCase):
+    def test_are_sorted_and_frozen(self):
+        global_vars = builder_config.gclient_config(
+            global_vars={'b': 1, 'a': True}
+        ).global_vars
+        self.assertEqual(list(global_vars.items()), [('a', True), ('b', 1)])
+        with self.assertRaises(TypeError):
+            global_vars['a'] = False
+
+    def test_leave_init_and_syncs_own_vars_alone(self):
+        with self.assertRaisesRegex(
+            ConfigError, 'global_vars cache_dir, target_os are written'
+        ):
+            builder_config.gclient_config(
+                global_vars={'target_os': 'linux', 'cache_dir': '/c'}
+            )
+
+
 class CheckBuilderSpecTest(unittest.TestCase):
     def _builder(self, *, target_os=(), custom_vars=None, **chromium_config):
         gn_args = GnArgsRegistry()

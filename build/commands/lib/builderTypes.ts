@@ -27,18 +27,15 @@ export interface BuilderSpec {
     // The variables the builder sets at the top of `.gclient`.
     global_vars?: Record<string, string | boolean | number> | undefined
   }
-  // What the build tooling takes from the builder rather than `.env`; each
-  // is false when the spec leaves it out.
+  // What the build tooling takes from the builder rather than `.env`.
   // TODO(http://brave.dev/b/56449): Each of these is a leak in the build
   // abstraction: a Brave setting the build tooling acts on outside GN, which
   // GN should decide from the builder's args instead.
-  brave_config?:
-    | {
-        is_brave_release_build?: boolean | undefined
-        ignore_patch_version_number?: boolean | undefined
-        use_brave_hermetic_toolchain?: boolean | undefined
-      }
-    | undefined
+  brave_config: {
+    is_brave_release_build: boolean
+    ignore_patch_version_number: boolean
+    use_brave_hermetic_toolchain: boolean
+  }
 }
 
 export interface Builder {

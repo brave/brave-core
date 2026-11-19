@@ -146,15 +146,6 @@ describe('with --builder', () => {
     expect(plain.gclientGlobalVars).toEqual({})
   })
 
-  it('takes none of them when the spec leaves them out', () => {
-    const { brave_config: _, ...spec } = builder.spec
-    const installed = mockConfig({}, { ...builder, spec })
-    expect(installed.isBraveReleaseBuild()).toBe(false)
-    expect(installed.ignorePatchVersionNumber).toBe(false)
-    expect(installed.useBraveHermeticToolchain).toBe(false)
-    expect(installed.gclientGlobalVars).toEqual({})
-  })
-
   it('adds the builder .gclient solution to package.json', () => {
     const installed = mockConfig(
       { rbe_service: 'rbe.example.com:443' },

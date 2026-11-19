@@ -26,6 +26,12 @@ BUILDER_SPEC = {
         'target_cpu': [],
         'custom_deps': {},
         'custom_vars': {},
+        'global_vars': {},
+    },
+    'brave_config': {
+        'is_brave_release_build': False,
+        'ignore_patch_version_number': False,
+        'use_brave_hermetic_toolchain': False,
     },
 }
 

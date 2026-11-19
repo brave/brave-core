@@ -246,6 +246,34 @@ class GeneratedBuilderTest(unittest.TestCase):
         )
         self.assertIn('gclient_config" is not an object', self._problems()[0])
 
+    def test_brave_config_is_checked(self):
+        spec = dict(
+            testing_support.BUILDER_SPEC,
+            brave_config={'is_brave_release_build': 'yes'},
+        )
+        write_builder(
+            self.output_dir,
+            'b',
+            properties_json=testing_support.properties('b', spec),
+        )
+        problem = self._problems()[0]
+        self.assertIn(
+            'brave_config.is_brave_release_build" is not a bool', problem
+        )
+        self.assertIn(
+            'brave_config.use_brave_hermetic_toolchain" is not', problem
+        )
+
+    def test_spec_without_brave_config(self):
+        spec = dict(testing_support.BUILDER_SPEC)
+        del spec['brave_config']
+        write_builder(
+            self.output_dir,
+            'b',
+            properties_json=testing_support.properties('b', spec),
+        )
+        self.assertIn('brave_config" is not an object', self._problems()[0])
+
     def test_sync_lists_are_checked(self):
         builder_spec = testing_support.BUILDER_SPEC
         write_builder(
