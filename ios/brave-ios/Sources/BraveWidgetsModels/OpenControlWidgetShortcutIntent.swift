@@ -19,7 +19,8 @@ public protocol ControlWidgetShortcutOpening: AnyObject {
 public struct OpenControlWidgetShortcutIntent: UISceneAppIntent {
   public static let title: LocalizedStringResource = "Open Brave"
   public static let openAppWhenRun: Bool = true
-
+  public static let isDiscoverable: Bool = false
+  
   @Parameter(title: "Shortcut")
   public var shortcutOption: ShortcutOption
 
