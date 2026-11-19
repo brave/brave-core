@@ -14,7 +14,8 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
     return
   }
   if (pageVisibility.getStarted) {
-    r.GET_STARTED = r.BASIC.createSection('/getStarted', 'getStarted')
+    r.GET_STARTED = r.BASIC.createSection('/getStarted', 'getStarted',
+      loadTimeData.getString('braveGetStartedTitle'), 'rocket')
 
     // Bring back people's /manageProfile (now in getStarted)
     if (!r.MANAGE_PROFILE) {
@@ -34,9 +35,11 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
     }
   }
   if (pageVisibility.origin) {
-    r.ORIGIN = r.BASIC.createSection('/origin', 'origin')
+    r.ORIGIN = r.BASIC.createSection('/origin', 'origin',
+      loadTimeData.getString('braveOriginTitle'), 'product-origin')
   }
-  r.SHIELDS = r.BASIC.createSection('/shields', 'shields')
+  r.SHIELDS = r.BASIC.createSection('/shields', 'shields',
+    loadTimeData.getString('braveShieldsTitle'), 'shield-done')
   r.SHIELDS_ADBLOCK = r.SHIELDS.createChild('/shields/filters')
 
   if (loadTimeData.getBoolean('areShortcutsSupported')) {
@@ -47,22 +50,27 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
     }
   }
 
-  r.EXTENSIONS = r.BASIC.createSection('/extensions', 'extensions')
+  r.EXTENSIONS = r.BASIC.createSection('/extensions', 'extensions',
+    loadTimeData.getString('braveDefaultExtensions'), 'browser-extensions')
   r.EXTENSIONS_V2 = r.EXTENSIONS.createChild('/extensions/v2')
   if (pageVisibility.braveSync) {
-    r.BRAVE_SYNC = r.BASIC.createSection('/braveSync', 'braveSync')
+    r.BRAVE_SYNC = r.BASIC.createSection('/braveSync', 'braveSync',
+      loadTimeData.getString('braveSync'), 'product-sync')
     r.BRAVE_SYNC_SETUP = r.BRAVE_SYNC.createChild('/braveSync/setup')
   }
   if (pageVisibility.braveWallet) {
-    r.BRAVE_WEB3 = r.BASIC.createSection('/web3', 'web3')
+    r.BRAVE_WEB3 = r.BASIC.createSection('/web3', 'web3',
+      loadTimeData.getString('braveWeb3'), 'product-brave-wallet')
 
     r.BRAVE_WALLET_NETWORKS = r.BRAVE_WEB3.createChild('/wallet/networks')
   }
-  r.BRAVE_NEW_TAB = r.BASIC.createSection('/newTab', 'newTab')
+  r.BRAVE_NEW_TAB = r.BASIC.createSection('/newTab', 'newTab',
+    loadTimeData.getString('braveNewTab'), 'browser-ntp-widget')
 
   if (pageVisibility.leoAssistant) {
     r.BRAVE_LEO_ASSISTANT =
-      r.BASIC.createSection('/leo-ai', 'leoAssistant')
+      r.BASIC.createSection('/leo-ai', 'leoAssistant',
+        loadTimeData.getString('leoAssistant'), 'product-brave-leo')
 
     r.BRAVE_LEO_CUSTOMIZATION = r.BRAVE_LEO_ASSISTANT
       .createChild('/leo-ai/customization')
@@ -71,7 +79,9 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
       .createChild('/leo-ai/add-model')
   }
   if (pageVisibility.content) {
-    r.BRAVE_CONTENT = r.BASIC.createSection('/braveContent', 'content')
+    r.BRAVE_CONTENT = r.BASIC.createSection('/braveContent', 'content',
+      loadTimeData.getString('contentSettingsContentSection'),
+      'window-content')
 
     // Move fonts from APPEARANCE to BRAVE_CONTENT
     if (r.FONTS) {
