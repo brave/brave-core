@@ -843,33 +843,41 @@ TEST_F(ApiRequestHelperUnitTest, SSEMaxBodySizeAbortsStream) {
       }),
       result_future.GetCallback(), {}, options);
 
-  // Respond via a data pipe so the body arrives in separate chunks.
+  // Respond via a data pipe that holds one event, so the body arrives in
+  // separate chunks.
   ASSERT_EQ(url_loader_factory_.NumPending(), 1);
   auto* pending_request = url_loader_factory_.GetPendingRequest(0);
   mojo::ScopedDataPipeProducerHandle producer;
   mojo::ScopedDataPipeConsumerHandle consumer;
-  ASSERT_EQ(mojo::CreateDataPipe(1024, producer, consumer), MOJO_RESULT_OK);
+  ASSERT_EQ(mojo::CreateDataPipe(first_event.size(), producer, consumer),
+            MOJO_RESULT_OK);
   pending_request->client->OnReceiveResponse(
       CreateResponseHead("text/event-stream", {}), std::move(consumer),
       std::nullopt);
 
-  ASSERT_TRUE(mojo::BlockingCopyFromString(first_event, producer));
-  ASSERT_TRUE(base::test::RunUntil([&]() { return events.size() == 1u; }));
-  EXPECT_FALSE(result_future.IsReady());
+  {
+    // Holds the first event's parse until the stream is aborted.
+    base::test::TaskEnvironment::ParallelExecutionFence fence;
+    ASSERT_TRUE(mojo::BlockingCopyFromString(first_event, producer));
+    // Writable again once the loader has read the first event.
+    ASSERT_TRUE(base::test::RunUntil(
+        [&]() { return producer->QuerySignalsState().writable(); }));
+    EXPECT_FALSE(result_future.IsReady());
 
-  // Crosses the limit, so the complete event in this chunk is not delivered.
-  ASSERT_TRUE(mojo::BlockingCopyFromString("data: {\"b\":2}\n\n", producer));
+    // Crosses the limit, so the complete event in this chunk is not delivered.
+    ASSERT_TRUE(mojo::BlockingCopyFromString("data: {\"b\":2}\n\n", producer));
+    // The request is cancelled.
+    ASSERT_TRUE(base::test::RunUntil(
+        [&]() { return !pending_request->client.is_connected(); }));
+    EXPECT_TRUE(events.empty());
+  }
+
+  // The result follows the event received before the limit was crossed.
   APIRequestResult result = result_future.Take();
+  EXPECT_EQ(events.size(), 1u);
   EXPECT_EQ(result.error_code(), net::ERR_INSUFFICIENT_RESOURCES);
   EXPECT_EQ(result.response_code(), net::HTTP_OK);
   EXPECT_TRUE(result.value_body().is_none());
-
-  // The request is cancelled.
-  ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return !pending_request->client.is_connected(); }));
-
-  WaitForPendingParses();
-  EXPECT_EQ(events.size(), 1u);
 }
 
 TEST_F(ApiRequestHelperUnitTest, SSEMaxBodySizeAbortsErrorBody) {
@@ -933,32 +941,31 @@ TEST_F(ApiRequestHelperUnitTest, MaxBodySizeAllowsBodyAtLimit) {
   }
 }
 
-// Nothing is delivered after a data callback destroys the helper. Using the
-// deleted handler after the callback is only reported under ASan.
+// Nothing is delivered after a data callback for a body that isn't an event
+// stream destroys the helper. Using the deleted handler after the callback is
+// only reported under ASan. `DestroyHelperFromDataCallbackBeforeResult` covers
+// an event stream.
 TEST_F(ApiRequestHelperUnitTest, DestroyHelperFromDataCallback) {
   const GURL url("http://localhost/");
-  for (const char* mime_type : {"text/event-stream", "text/plain"}) {
-    SCOPED_TRACE(mime_type);
-    AddResponse(url, "data: {\"a\":1}\n\ndata: {\"b\":2}\n\n", mime_type);
+  AddResponse(url, "data: {\"a\":1}\n\ndata: {\"b\":2}\n\n", "text/plain");
 
-    auto helper = std::make_unique<APIRequestHelper>(
-        net::NetworkTrafficAnnotationTag(TRAFFIC_ANNOTATION_FOR_TESTS),
-        base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-            &url_loader_factory_));
-    size_t data_count = 0;
-    helper->RequestSSE("POST", url, "", "application/json",
-                       base::BindLambdaForTesting([&](ValueOrError) {
-                         ++data_count;
-                         helper.reset();
-                       }),
-                       base::BindOnce([](APIRequestResult) { ADD_FAILURE(); }),
-                       {}, {});
-    ASSERT_TRUE(base::test::RunUntil([&]() { return data_count > 0; }));
-    // So that a second delivery would be seen.
-    WaitForPendingParses();
-    EXPECT_EQ(data_count, 1u);
-    EXPECT_FALSE(helper);
-  }
+  auto helper = std::make_unique<APIRequestHelper>(
+      net::NetworkTrafficAnnotationTag(TRAFFIC_ANNOTATION_FOR_TESTS),
+      base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
+          &url_loader_factory_));
+  size_t data_count = 0;
+  helper->RequestSSE("POST", url, "", "application/json",
+                     base::BindLambdaForTesting([&](ValueOrError) {
+                       ++data_count;
+                       helper.reset();
+                     }),
+                     base::BindOnce([](APIRequestResult) { ADD_FAILURE(); }),
+                     {}, {});
+  ASSERT_TRUE(base::test::RunUntil([&]() { return data_count > 0; }));
+  // So that a second delivery would be seen.
+  WaitForPendingParses();
+  EXPECT_EQ(data_count, 1u);
+  EXPECT_FALSE(helper);
 }
 
 }  // namespace api_request_helper

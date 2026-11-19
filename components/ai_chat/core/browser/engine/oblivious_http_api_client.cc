@@ -150,12 +150,7 @@ void ObliviousHttpAPIClient::InnerClient::OnBodyChunk(
 void ObliviousHttpAPIClient::InnerClient::OnSSEEvent(
     api_request_helper::ValueOrError result) {
   if (!chunk_callback_.is_null() && result.has_value()) {
-    // The callback may clear all queries, deleting `this`.
-    base::WeakPtr<InnerClient> weak_this = weak_ptr_factory_.GetWeakPtr();
     chunk_callback_.Run(std::move(result.value()));
-    if (!weak_this) {
-      return;
-    }
   }
 }
 
