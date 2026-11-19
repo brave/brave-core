@@ -74,6 +74,7 @@ class PeekControllerImpl : public PeekController,
   bool Open(content::WebContents& source,
             const content::OpenURLParams& params) override;
   void OpenAsTab(content::WebContents& peek_contents) override;
+  void ShowCookiesDialogInTab(content::WebContents& peek_contents) override;
   void Close() override;
   bool HandleCommand(int command_id) override;
   bool IsShowing() const override;
@@ -117,6 +118,7 @@ class PeekControllerImpl : public PeekController,
   void OpenPeekAsTab(Peek& peek);
   void MoveToSplitView(Peek& peek);
   void MoveToTabOrClose(Peek& peek);
+  void MoveToTabAndShowCookiesDialog(Peek& peek);
   void MoveToTabAndExecuteCommand(int command_id, Peek& peek);
   bool HandleKeyboardEvent(content::WebContents* source,
                            const input::NativeWebKeyboardEvent& event);

@@ -27,6 +27,7 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_web_contents_delegate/browser_web_contents_delegate.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/tab_dialogs.h"
 #include "chrome/browser/ui/tabs/split_tab_metrics.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -323,6 +324,14 @@ void PeekControllerImpl::OpenAsTab(content::WebContents& peek_contents) {
   }
 }
 
+void PeekControllerImpl::ShowCookiesDialogInTab(
+    content::WebContents& peek_contents) {
+  if (Peek* peek = FindPeek(peek_contents)) {
+    peek->PostControllerTask(
+        &PeekControllerImpl::MoveToTabAndShowCookiesDialog);
+  }
+}
+
 void PeekControllerImpl::Close() {
   if (Peek* peek = GetActivePeek()) {
     ClosePeek(*peek);
@@ -485,6 +494,15 @@ void PeekControllerImpl::MoveToTabOrClose(Peek& peek) {
     return;
   }
   MoveToTab(peek);
+}
+
+
+void PeekControllerImpl::MoveToTabAndShowCookiesDialog(Peek& peek) {
+  // The dialog is tab-modal and `TabDialogs` only exists for tabs.
+  content::WebContents* contents = MoveToTab(peek);
+  if (auto* tab_dialogs = TabDialogs::FromWebContents(contents)) {
+    tab_dialogs->ShowCollectedCookies();
+  }
 }
 
 void PeekControllerImpl::MoveToTabAndExecuteCommand(int command_id,

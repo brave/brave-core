@@ -9,18 +9,26 @@
 #include <string>
 
 #include "base/functional/bind.h"
+#include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "brave/browser/ui/views/view_shadow.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ssl/chrome_security_state_util.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "chrome/browser/ui/views/page_info/page_info_bubble_specification.h"
+#include "chrome/browser/ui/views/page_info/page_info_bubble_view.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/favicon/content/content_favicon_driver.h"
+#include "components/omnibox/browser/location_bar_model_util.h"
+#include "components/security_state/core/security_state.h"
 #include "components/url_formatter/elide_url.h"
+#include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/accessibility/ax_enums.mojom.h"
 #include "ui/base/accelerators/accelerator.h"
@@ -41,6 +49,7 @@
 #include "ui/strings/grit/ui_strings.h"
 #include "ui/views/accessibility/view_accessibility.h"
 #include "ui/views/background.h"
+#include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/controls/button/image_button.h"
 #include "ui/views/controls/button/image_button_factory.h"
 #include "ui/views/controls/image_view.h"
@@ -109,12 +118,13 @@ std::unique_ptr<views::ImageButton> CreateToolbarButton(
 }  // namespace
 
 DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(PeekView, kCardElementId);
+DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(PeekView, kSiteInfoButtonElementId);
 DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(PeekView, kOpenAsTabButtonElementId);
 DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(PeekView, kSplitViewButtonElementId);
 DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(PeekView, kCloseButtonElementId);
 
 PeekView::PeekView(Delegate& delegate, BrowserWindowInterface& browser)
-    : AnimationDelegateViews(this), delegate_(delegate) {
+    : AnimationDelegateViews(this), delegate_(delegate), browser_(browser) {
   open_animation_.SetSlideDuration(kOpenDuration);
   open_animation_.SetTweenType(gfx::Tween::EASE_OUT);
   open_animation_.Reset(1);
@@ -147,6 +157,12 @@ PeekView::PeekView(Delegate& delegate, BrowserWindowInterface& browser)
   toolbar->SetBackground(views::CreateRoundedRectBackground(
       kColorToolbar, /*top_radius=*/kCardTopCornerRadius,
       /*bottom_radius=*/0.f));
+
+  site_info_button_ = toolbar->AddChildView(CreateToolbarButton(
+      base::BindRepeating(&PeekView::ShowPageInfo, base::Unretained(this)),
+      kLeoTuneSmallIcon, IDS_TOOLTIP_LOCATION_ICON));
+  site_info_button_->SetProperty(views::kElementIdentifierKey,
+                                 kSiteInfoButtonElementId);
 
   favicon_ = toolbar->AddChildView(std::make_unique<views::ImageView>());
   favicon_->SetImageSize(gfx::Size(kFaviconSize, kFaviconSize));
@@ -240,6 +256,22 @@ void PeekView::UpdateToolbar() {
     host_->SetText(std::u16string());
     return;
   }
+
+  // Matches the omnibox, which uses the Nala icon for secure pages.
+  const security_state::SecurityLevel security_level =
+      chrome_security_state::GetSecurityLevel(contents);
+  std::unique_ptr<security_state::VisibleSecurityState> security_state =
+      chrome_security_state::GetVisibleSecurityState(contents);
+  views::SetImageFromVectorIconWithColor(
+      site_info_button_,
+      security_level == security_state::SECURE
+          ? kLeoTuneSmallIcon
+          : location_bar_model::GetSecurityVectorIcon(security_level,
+                                                      security_state.get()),
+      kButtonIconSize,
+      views::IconColors(kColorToolbarButtonIcon,
+                        kColorToolbarButtonIconInactive,
+                        kColorToolbarButtonIconHovered));
 
   const GURL& url = contents->GetVisibleURL();
   title_->SetText(contents->GetTitle());
@@ -336,6 +368,31 @@ gfx::Size PeekView::GetCardSize(const gfx::Rect& bounds) const {
       kMinCardInset, static_cast<int>(bounds.height() * kCardInsetRatio));
   return gfx::Size(std::max(0, bounds.width() - 2 * inset_x),
                    std::max(0, bounds.height() - inset_y));
+}
+
+void PeekView::ShowPageInfo() {
+  content::WebContents* contents = web_view_->web_contents();
+  if (!contents) {
+    return;
+  }
+  content::NavigationEntry* entry = contents->GetController().GetVisibleEntry();
+  if (!entry || entry->IsInitialEntry()) {
+    return;
+  }
+
+  // The Peek contents isn't a tab, so page info can't look up its browser.
+  std::unique_ptr<PageInfoBubbleSpecification> specification =
+      PageInfoBubbleSpecification::Builder(
+          views::BubbleAnchor(site_info_button_.get()),
+          GetWidget()->GetNativeWindow(), contents, entry->GetVirtualURL())
+          .AddGetBrowserCallback(base::BindRepeating(
+              [](base::WeakPtr<BrowserWindowInterface> browser,
+                 content::WebContents*) { return browser.get(); },
+              browser_->GetWeakPtr()))
+          .Build();
+  views::BubbleDialogDelegateView* bubble =
+      PageInfoBubbleView::CreatePageInfoBubble(std::move(specification));
+  bubble->GetWidget()->Show();
 }
 
 BEGIN_METADATA(PeekView)
