@@ -17,7 +17,7 @@
 #include "third_party/litert/src/litert/cc/litert_compiled_model.h"
 #include "third_party/litert/src/litert/cc/litert_environment.h"
 
-namespace brave_history_embeddings {
+namespace passage_embeddings {
 
 // Runs an embeddings model through LiteRT's CompiledModel on the CPU. This is
 // the execution engine only: it knows nothing about
@@ -70,6 +70,6 @@ class LitertModelRunner {
   size_t input_window_size_ = 0;
 };
 
-}  // namespace brave_history_embeddings
+}  // namespace passage_embeddings
 
 #endif  // BRAVE_SERVICES_PASSAGE_EMBEDDINGS_LITERT_MODEL_RUNNER_H_
