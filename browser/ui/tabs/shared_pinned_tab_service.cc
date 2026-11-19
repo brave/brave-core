@@ -489,7 +489,9 @@ void SharedPinnedTabService::ObserveTabAttention(tabs::TabInterface* tab) {
           base::Unretained(tab), TabChangeType::kAll));
 }
 
-void SharedPinnedTabService::OnTabBlockedStateChanged(tabs::TabInterface* tab) {
+void SharedPinnedTabService::OnTabBlockedStateChanged(tabs::TabHandle handle) {
+  tabs::TabInterface* tab = handle.Get();
+  CHECK(tab);
   // Blocked state used to be reported as a kind of tab change, so dummy tabs
   // would pick it up. Propagate it the same way.
   OnTabChangedAt(tab, TabChangeType::kAll);
