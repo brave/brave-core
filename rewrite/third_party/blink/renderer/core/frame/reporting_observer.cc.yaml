@@ -4,6 +4,11 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
+  - description: Headers for the kBraveReportingAPI check.
+    add_include:
+      header:
+        - base/feature_list.h
+        - third_party/blink/public/common/features.h
   - description: |-
       No-op ReportingObserver reports as part of disabling the Reporting API.
 
