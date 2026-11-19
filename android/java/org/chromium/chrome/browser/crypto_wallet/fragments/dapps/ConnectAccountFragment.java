@@ -161,7 +161,15 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
     }
 
     private void updateWebsite(Tab tab) {
-        mOriginInfo = Utils.getOriginInfo(tab.getUrl());
+        // The last committed URL, not tab.getUrl(): the visible URL already names
+        // a pending navigation's site, while permissions belong to the committed
+        // page, as in desktop's WalletPanelHandler::GetActivePanelOrigin.
+        WebContents webContents = tab.getWebContents();
+        mOriginInfo =
+                Utils.getOriginInfo(
+                        webContents != null
+                                ? webContents.getLastCommittedUrl()
+                                : GURL.emptyGURL());
         mWebSite.setText(Utils.geteTldSpanned(mOriginInfo));
     }
 
@@ -250,7 +258,10 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
         if (tab != null && tab.getWebContents() != null) {
             if (!ConnectAccountFragmentJni.get()
                     .connectAccount(
-                            account.address, account.accountId.coin, tab.getWebContents())) {
+                            account.address,
+                            account.accountId.coin,
+                            mOriginInfo.originSpec,
+                            tab.getWebContents())) {
                 return;
             }
             if (CoinType.SOL != account.accountId.coin) {
@@ -310,6 +321,10 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
 
     @NativeMethods
     interface Natives {
-        boolean connectAccount(String accountAddress, int accountIdCoin, WebContents webContents);
+        boolean connectAccount(
+                String accountAddress,
+                int accountIdCoin,
+                String originSpec,
+                WebContents webContents);
     }
 }

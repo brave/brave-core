@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/android/jni_android.h"
-#include "base/android/jni_array.h"
 #include "base/android/jni_string.h"
 #include "base/check.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
@@ -14,11 +13,14 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
+#include "url/gurl.h"
+#include "url/origin.h"
 
 static bool JNI_ConnectAccountFragment_ConnectAccount(
     JNIEnv* env,
     const base::android::JavaRef<jstring>& java_account_address,
     jint account_id_coin,
+    const base::android::JavaRef<jstring>& java_origin_spec,
     const base::android::JavaRef<jobject>& java_web_contents) {
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(java_web_contents);
@@ -36,6 +38,14 @@ static bool JNI_ConnectAccountFragment_ConnectAccount(
   // durable permission the user was never shown and cannot revoke from that
   // screen.
   content::RenderFrameHost* rfh = web_contents->GetPrimaryMainFrame();
+  const url::Origin& origin = rfh->GetLastCommittedOrigin();
+
+  // Tapping Connect is consent only for the site the panel shows. Refuse if the
+  // page committed a different origin since the panel last read it.
+  if (!origin.IsSameOriginWith(
+          GURL(base::android::ConvertJavaStringToUTF8(java_origin_spec)))) {
+    return false;
+  }
 
   brave_wallet::mojom::CoinType coin =
       static_cast<brave_wallet::mojom::CoinType>(account_id_coin);
@@ -54,7 +64,6 @@ static bool JNI_ConnectAccountFragment_ConnectAccount(
   }
 
   content::BrowserContext* browser_context = web_contents->GetBrowserContext();
-  const url::Origin& origin = rfh->GetLastCommittedOrigin();
 
   // Tapping Connect in the panel is the consent, so the grant is written here
   // directly. IsPermissionDenied must run before AddPermission: on a blocked
