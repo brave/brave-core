@@ -61,9 +61,10 @@ bool ShouldPromptForBraveOnDeviceSpeechModel(
       });
 }
 
-// Answers the prompt that `PromptForBraveOnDeviceSpeechModel` shows. Runs
-// `install` with `callback` when the user allows it, and otherwise answers
-// false.
+// Answers the prompt that `PromptForBraveOnDeviceSpeechModel` shows. When the
+// user allows it, enables the model, which is what makes the component
+// registrar register the model for download, and runs `install` with
+// `callback`. Otherwise answers false.
 void OnPromptAnswered(
     base::OnceCallback<void(base::OnceCallback<void(bool)>)> install,
     base::OnceCallback<void(bool)> callback,
@@ -72,6 +73,8 @@ void OnPromptAnswered(
     std::move(callback).Run(false);
     return;
   }
+  local_ai::EnableOnDeviceSpeechModel(*g_browser_process->local_state(),
+                                      local_ai::OnDeviceSpeechModel::kEnglish);
   std::move(install).Run(std::move(callback));
 }
 
@@ -92,8 +95,7 @@ void PromptForBraveOnDeviceSpeechModel(
 
   manager->AddRequest(
       &rfh, std::make_unique<OnDeviceSpeechModelPermissionRequest>(
-                *g_browser_process->local_state(), *profile->GetPrefs(),
-                rfh.GetLastCommittedOrigin().GetURL(),
+                *profile->GetPrefs(), rfh.GetLastCommittedOrigin().GetURL(),
                 base::BindOnce(&OnPromptAnswered, std::move(install),
                                std::move(callback))));
 }

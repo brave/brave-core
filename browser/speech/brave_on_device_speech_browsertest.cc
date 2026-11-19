@@ -24,6 +24,7 @@
 #include "brave/components/local_ai/core/on_device_speech_recognition.mojom.h"
 #include "brave/components/local_ai/core/pref_names.h"
 #include "brave/components/local_ai/core/test/fake_asr_session.h"
+#include "brave/components/local_ai/core/utils.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/test/base/chrome_test_utils.h"
@@ -137,8 +138,9 @@ class BraveOnDeviceSpeechBrowserTest : public InProcessBrowserTest {
     // (`chrome/test/base/test_launcher_utils.cc`), so startup registers no
     // components and the registrar has no update service. Start it here
     // instead, as a user who enabled the model leaves it.
-    g_browser_process->local_state()->SetBoolean(
-        local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled, true);
+    local_ai::EnableOnDeviceSpeechModel(
+        *g_browser_process->local_state(),
+        local_ai::OnDeviceSpeechModel::kEnglish);
     local_ai::ManageOnDeviceSpeechModelsComponentRegistration(
         g_browser_process->component_updater(),
         g_browser_process->local_state());
@@ -443,7 +445,7 @@ class BraveOnDeviceSpeechPromptBrowserTest
   void SetUpOnMainThread() override {
     BraveOnDeviceSpeechQualityBrowserTest::SetUpOnMainThread();
     g_browser_process->local_state()->ClearPref(
-        local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled);
+        local_ai::prefs::kOnDeviceSpeechModel);
     prompt_factory_ =
         std::make_unique<permissions::MockPermissionPromptFactory>(
             permissions::PermissionRequestManager::FromWebContents(
@@ -457,8 +459,9 @@ class BraveOnDeviceSpeechPromptBrowserTest
 
  protected:
   bool IsEnabled() {
-    return g_browser_process->local_state()->GetBoolean(
-        local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled);
+    return local_ai::GetEnabledOnDeviceSpeechModel(
+               g_browser_process->local_state()) ==
+           local_ai::OnDeviceSpeechModel::kEnglish;
   }
 
   std::unique_ptr<permissions::MockPermissionPromptFactory> prompt_factory_;

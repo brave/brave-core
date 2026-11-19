@@ -6,7 +6,7 @@
 import './privacy_page_test-chromium.js'
 
 import {ClearBrowsingDataBrowserProxyImpl} from 'chrome://settings/lazy_load.js'
-import type {SettingsPrivacyPageElement, SettingsToggleButtonElement} from 'chrome://settings/settings.js'
+import type {SettingsDropdownMenuElement, SettingsPrivacyPageElement} from 'chrome://settings/settings.js'
 import {
   loadTimeData,
   MetricsBrowserProxyImpl,
@@ -42,7 +42,7 @@ function getBravePrefs(): chrome.settingsPrivate.PrefObject[] {
     pref('brave.request_otr.request_otr_action_option', NUMBER, 0),
     pref('brave.psst.settings.enable_psst', BOOLEAN, true),
     pref('enable_do_not_track', BOOLEAN, false),
-    pref('brave.local_ai.on_device_speech_model_enabled', BOOLEAN, false),
+    pref('brave.local_ai.on_device_speech_model', NUMBER, 0),
   ]
 }
 
@@ -120,9 +120,11 @@ suite('BravePrivacyPage', () => {
     assertFalse(isChildVisible(page, '#privacyGuideLinkRow'))
   })
 
-  test('the on-device speech model toggle reflects and saves its pref',
+  // The menu stores the values of `local_ai::OnDeviceSpeechModel`, and 0 for
+  // no model.
+  test('the on-device speech model menu reflects and saves its pref',
        async function() {
-    const key = 'brave.local_ai.on_device_speech_model_enabled'
+    const key = 'brave.local_ai.on_device_speech_model'
     loadTimeData.overrideValues({isOnDeviceSpeechModelAvailable: true})
 
     document.body.replaceChildren()
@@ -131,21 +133,22 @@ suite('BravePrivacyPage', () => {
     document.body.appendChild(options)
     await microtasksFinished()
 
-    const toggle = options.shadowRoot!.querySelector<
-        SettingsToggleButtonElement>('#onDeviceSpeechModelEnabled')
+    const menu = options.shadowRoot!.querySelector<
+        SettingsDropdownMenuElement>('#onDeviceSpeechModel')
     // Only built with local AI.
-    if (!toggle) {
+    if (!menu) {
       this.skip()
     }
-    assertFalse(toggle.checked)
+    const select = menu.$.dropdownMenu
+    assertEquals('0', select.value)
 
-    toggle.click()
+    select.value = '1'
+    select.dispatchEvent(new CustomEvent('change'))
     await microtasksFinished()
-    assertTrue(toggle.checked)
-    assertTrue((await prefsProxy.getPref(key)).value as boolean)
+    assertEquals(1, (await prefsProxy.getPref(key)).value)
 
-    prefsProxy.fakeApi.sendPrefChanges([{key, value: false}])
+    prefsProxy.fakeApi.sendPrefChanges([{key, value: 0}])
     await microtasksFinished()
-    assertFalse(toggle.checked)
+    assertEquals('0', select.value)
   })
 })

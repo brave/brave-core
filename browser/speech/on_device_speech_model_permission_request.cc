@@ -10,7 +10,6 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "brave/components/local_ai/core/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "components/permissions/permission_decision.h"
@@ -19,12 +18,10 @@
 #include "components/permissions/request_type.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "ui/base/text/bytes_formatting.h"
 
 namespace speech {
 
 OnDeviceSpeechModelPermissionRequest::OnDeviceSpeechModelPermissionRequest(
-    PrefService& local_state,
     PrefService& profile_prefs,
     const GURL& requesting_origin,
     ConsentCallback callback)
@@ -37,7 +34,6 @@ OnDeviceSpeechModelPermissionRequest::OnDeviceSpeechModelPermissionRequest(
               &OnDeviceSpeechModelPermissionRequest::PermissionDecided,
               base::Unretained(this))),
       callback_(std::move(callback)),
-      local_state_(local_state),
       profile_prefs_(profile_prefs) {
   CHECK(callback_);
 }
@@ -47,9 +43,8 @@ OnDeviceSpeechModelPermissionRequest::~OnDeviceSpeechModelPermissionRequest() =
 
 std::u16string OnDeviceSpeechModelPermissionRequest::GetMessageTextFragment()
     const {
-  return l10n_util::GetStringFUTF16(
-      IDS_ON_DEVICE_SPEECH_MODEL_PERMISSION_FRAGMENT,
-      ui::FormatBytes(local_ai::kApproxModelSize));
+  return l10n_util::GetStringUTF16(
+      IDS_ON_DEVICE_SPEECH_MODEL_PERMISSION_FRAGMENT);
 }
 
 void OnDeviceSpeechModelPermissionRequest::PermissionDecided(
@@ -62,10 +57,7 @@ void OnDeviceSpeechModelPermissionRequest::PermissionDecided(
     return;
   }
 
-  if (decision.overall_decision == PermissionDecision::kAllow) {
-    local_state_->SetBoolean(
-        local_ai::prefs::kOnDeviceSpeechEnglishModelEnabled, true);
-  } else if (decision.overall_decision == PermissionDecision::kDeny) {
+  if (decision.overall_decision == PermissionDecision::kDeny) {
     profile_prefs_->SetBoolean(local_ai::prefs::kAskEnableOnDeviceSpeechModel,
                                !get_dont_ask_again());
   }
