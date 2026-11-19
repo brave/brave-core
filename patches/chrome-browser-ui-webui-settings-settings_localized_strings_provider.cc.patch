@@ -1,12 +1,136 @@
 diff --git a/chrome/browser/ui/webui/settings/settings_localized_strings_provider.cc b/chrome/browser/ui/webui/settings/settings_localized_strings_provider.cc
-index f7eca2dda778bce99d6fabb9ed09efebd3432910..e9a7b18b42132636d8585fa7b4c97d92976f0932 100644
+index f7eca2dda778bce99d6fabb9ed09efebd3432910..190c9521f4e31386636649358c8d557c53e0b4b6 100644
 --- a/chrome/browser/ui/webui/settings/settings_localized_strings_provider.cc
 +++ b/chrome/browser/ui/webui/settings/settings_localized_strings_provider.cc
-@@ -4640,6 +4640,7 @@ void AddLocalizedStrings(content::WebUIDataSource* html_source,
-   policy_indicator::AddLocalizedStrings(html_source);
+@@ -620,8 +620,8 @@ void AddAppearanceStrings(content::WebUIDataSource* html_source,
+       {"minimumFont", IDS_SETTINGS_MINIMUM_FONT_SIZE_LABEL},
+       {"tiny", IDS_SETTINGS_TINY_FONT_SIZE},
+       {"huge", IDS_SETTINGS_HUGE_FONT_SIZE},
+-      {"uiFeatureAlignLeft", IDS_SETTINGS_UI_FEATURE_ALIGN_LEFT},
+-      {"uiFeatureAlignRight", IDS_SETTINGS_UI_FEATURE_ALIGN_RIGHT},
++      {"uiFeatureAlignLeft", IDS_SETTINGS_APPEARANCE_SETTINGS_UI_FEATURE_ALIGN_LEFT},
++      {"uiFeatureAlignRight", IDS_SETTINGS_APPEARANCE_SETTINGS_UI_FEATURE_ALIGN_RIGHT},
+       {"uiFeatureAlignSide", IDS_SETTINGS_UI_FEATURE_ALIGN_SIDE},
+       {"uiFeatureAlignTop", IDS_SETTINGS_UI_FEATURE_ALIGN_TOP},
+       {"resetToDefault", IDS_SETTINGS_RESET_TO_DEFAULT},
+@@ -2334,9 +2334,9 @@ void AddPersonalizationOptionsStrings(content::WebUIDataSource* html_source) {
+ #if !BUILDFLAG(IS_CHROMEOS)
+       {"signinAllowedTitle", IDS_SETTINGS_SIGNIN_ALLOWED},
+ #endif
+-      {"enablePersonalizationLogging", IDS_SETTINGS_ENABLE_LOGGING_PREF},
++      {"enablePersonalizationLogging", IDS_BRAVE_DIAGNOSTIC_REPORTS_PREF},
+       {"enablePersonalizationLoggingDesc",
+-       IDS_SETTINGS_ENABLE_LOGGING_PREF_DESC},
++       IDS_BRAVE_DIAGNOSTIC_REPORTS_PREF_DESC},
+       {"spellingDescription", IDS_SETTINGS_SPELLING_PREF_DESC},
+       {"searchSuggestPref", IDS_SETTINGS_SUGGEST_PREF},
+       {"searchSuggestPrefDesc", IDS_SETTINGS_SUGGEST_PREF_DESC},
+@@ -2404,7 +2404,7 @@ void AddBrowserSyncPageStrings(content::WebUIDataSource* html_source) {
+        IDS_SETTINGS_PEOPLE_SIGN_IN_PROMPT_SECONDARY_WITH_ACCOUNT},
+ #endif
+       {"passwordsCheckboxLabel",
+-       IDS_SETTINGS_PASSWORDS_AND_PASSKEYS_CHECKBOX_LABEL},
++       IDS_SETTINGS_BRAVE_PASSWORDS_CHECKBOX_LABEL},
+   };
+   html_source->AddLocalizedStrings(kLocalizedStrings);
+ 
+@@ -2448,7 +2448,7 @@ void AddSyncControlsStrings(content::WebUIDataSource* html_source) {
+       {"historyTabsCheckboxSubLabelOff",
+        IDS_SETTINGS_ACCOUNT_HISTORY_TOGGLE_SUB_LABEL_OFF},
+ 
+-      {"autofillCheckboxLabel", IDS_SETTINGS_AUTOFILL_CHECKBOX_LABEL},
++      {"autofillCheckboxLabel", IDS_SETTINGS_BRAVE_AUTOFILL_CHECKBOX_LABEL},
+       {"historyCheckboxLabel", IDS_SETTINGS_HISTORY_CHECKBOX_LABEL},
+       {"extensionsCheckboxLabel", IDS_SETTINGS_EXTENSIONS_CHECKBOX_LABEL},
+       {"openTabsCheckboxLabel", IDS_SETTINGS_OPEN_TABS_CHECKBOX_LABEL},
+@@ -2460,7 +2460,7 @@ void AddSyncControlsStrings(content::WebUIDataSource* html_source) {
+        IDS_SETTINGS_WIFI_CONFIGURATIONS_CHECKBOX_LABEL},
+       {"syncEverythingCheckboxLabel",
+        IDS_SETTINGS_SYNC_EVERYTHING_CHECKBOX_LABEL},
+-      {"appCheckboxLabel", IDS_SETTINGS_APPS_CHECKBOX_LABEL},
++      {"appCheckboxLabel", IDS_SETTINGS_BRAVE_APPS_CHECKBOX_LABEL},
+       {"nonPersonalizedServicesSectionLabel",
+        IDS_SETTINGS_NON_PERSONALIZED_SERVICES_SECTION_LABEL},
+       {"customizeSyncLabel", IDS_SETTINGS_CUSTOMIZE_SYNC},
+@@ -2533,7 +2533,7 @@ void AddPeopleStrings(content::WebUIDataSource* html_source, Profile* profile) {
+       {"peopleSignInPromptSecondaryWithNoAccount",
+        IDS_SETTINGS_PEOPLE_SIGN_IN_PROMPT_SECONDARY_WITH_ACCOUNT},
+ #else
+-      {"editPerson", IDS_SETTINGS_CUSTOMIZE_PROFILE},
++      {"editPerson", IDS_SETTINGS_BRAVE_EDIT_PROFILE},
+ #endif
+ 
+   // Manage profile strings:
+@@ -2603,8 +2603,8 @@ void AddPeopleStrings(content::WebUIDataSource* html_source, Profile* profile) {
+   html_source->AddLocalizedString(
+       "profileNameAndPicture",
+       syncer::IsReplaceSyncPromosWithSignInPromosEnabled()
+-          ? IDS_SETTINGS_CUSTOMIZE_PROFILE
+-          : IDS_SETTINGS_CUSTOMIZE_YOUR_CHROME_PROFILE);
++          ? IDS_SETTINGS_BRAVE_EDIT_PROFILE
++          : IDS_SETTINGS_BRAVE_EDIT_PROFILE);
+ #endif
+ 
+   // Add Google Account URL and include UTM parameter to signal the source of
+@@ -2755,7 +2755,7 @@ void AddPrivacyStrings(content::WebUIDataSource* html_source,
+       {"safeBrowsingEnhancedThingsToConsiderBulThree",
+        IDS_SETTINGS_SAFEBROWSING_ENHANCED_THINGS_TO_CONSIDER_BULLET_THREE},
+       {"safeBrowsingStandard", IDS_SETTINGS_SAFEBROWSING_STANDARD},
+-      {"safeBrowsingStandardDesc", IDS_SETTINGS_SAFEBROWSING_STANDARD_DESC},
++      {"safeBrowsingStandardDesc", IDS_SETTINGS_BRAVE_SAFEBROWSING_STANDARD_DESC},
+ #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
+       {"safeBrowsingStandardDescProxy",
+        IDS_SETTINGS_SAFEBROWSING_STANDARD_DESC_PROXY},
+@@ -2765,7 +2765,7 @@ void AddPrivacyStrings(content::WebUIDataSource* html_source,
+       {"safeBrowsingStandardBulOne",
+        IDS_SETTINGS_SAFEBROWSING_STANDARD_BULLET_ONE},
+       {"safeBrowsingStandardBulTwo",
+-       IDS_SETTINGS_SAFEBROWSING_STANDARD_BULLET_TWO},
++       IDS_SETTINGS_BRAVE_SAFEBROWSING_STANDARD_BULLET_TWO},
+ #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
+       {"safeBrowsingStandardBulTwoProxy",
+        IDS_SETTINGS_SAFEBROWSING_STANDARD_BULLET_TWO_PROXY},
+@@ -2773,7 +2773,7 @@ void AddPrivacyStrings(content::WebUIDataSource* html_source,
+       {"safeBrowsingStandardReportingLabel",
+        IDS_SETTINGS_SAFEBROWSING_STANDARD_HELP_IMPROVE},
+       {"safeBrowsingNone", IDS_SETTINGS_SAFEBROWSING_NONE},
+-      {"safeBrowsingNoneDesc", IDS_SETTINGS_SAFEBROWSING_NONE_DESC},
++      {"safeBrowsingNoneDesc", IDS_SETTINGS_BRAVE_SAFEBROWSING_NONE_DESC},
+       {"safeBrowsingDisableDialog",
+        IDS_SETTINGS_SAFEBROWSING_DISABLE_DIALOG_TITLE},
+       {"safeBrowsingDisableDialogDesc",
+@@ -3143,7 +3143,7 @@ void AddSearchStrings(content::WebUIDataSource* html_source, Profile* profile) {
+       {"searchExplanationLearnMoreA11yLabel",
+        IDS_SETTINGS_SEARCH_EXPLANATION_ACCESSIBILITY_LABEL},
+       {"searchEngineChoiceEntryPointSubtitle",
+-       IDS_SEARCH_ENGINE_CHOICE_SETTINGS_ENTRY_POINT_SUBTITLE},
++       IDS_SETTINGS_NORMAL_PROFILE_SEARCH_EXPLANATION},
+       {"searchEnginesChange",
+        IDS_SEARCH_ENGINE_CHOICE_SETTINGS_CHANGE_DEFAULT_ENGINE},
+       {"searchEnginesSetAsDefaultButton",
+@@ -3343,7 +3343,7 @@ void AddSiteSettingsStrings(content::WebUIDataSource* html_source,
+       {"thirdPartyCookiesPageTitle",
+        IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_TITLE},
+       {"thirdPartyCookiesLinkRowLabel",
+-       IDS_SETTINGS_THIRD_PARTY_COOKIES_LINK_ROW_LABEL},
++       IDS_SETTINGS_BRAVE_BLOCK_COOKIES_LINK_ROW_LABEL},
+       {"thirdPartyCookiesAndSiteDataPageTitle",
+        IDS_SETTINGS_THIRD_PARTY_COOKIES_AND_SITE_DATA_PAGE_TITLE},
+       {"thirdPartyCookiesAndSiteDataLinkRowLabel",
+@@ -4602,6 +4602,7 @@ std::string GetPeopleSignInPromptSecondaryWithAccountForTesting(
+ void AddLocalizedStrings(content::WebUIDataSource* html_source,
+                          Profile* profile,
+                          content::WebContents* web_contents) {
++  [&]() -> void {
+   AddA11yStrings(html_source);
+   AddAboutStrings(html_source, profile);
+   AddAiStrings(html_source);
+@@ -4641,6 +4642,8 @@ void AddLocalizedStrings(content::WebUIDataSource* html_source,
    AddSecurityKeysStrings(html_source);
  
-+  BraveAddLocalizedStrings(html_source, profile);
    html_source->UseStringsJs();
++  }();
++  BraveAddLocalizedStrings(html_source, profile);
  }
  
+ }  // namespace settings
