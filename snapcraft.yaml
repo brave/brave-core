@@ -1,9 +1,9 @@
 name: brave
 version: 1.102.24
 grade: stable
-architectures:
-  - build-on: amd64
-  - build-on: arm64
+platforms:
+  amd64:
+  arm64:
 summary: Browse faster and safer with Brave.
 description: |
  The new Brave browser automatically blocks ads and trackers, making it
@@ -11,7 +11,7 @@ description: |
  today with our new Brave Payments system.
 confinement: strict
 compression: lzo
-base: core22
+base: core24
 apps:
   brave:
     command: opt/brave.com/brave/brave-browser
@@ -63,7 +63,7 @@ slots:
 parts:
   brave:
     plugin: dump
-    source: https://github.com/brave/brave-browser/releases/download/v$SNAPCRAFT_PROJECT_VERSION/brave-browser_$SNAPCRAFT_PROJECT_VERSION_$SNAPCRAFT_TARGET_ARCH.deb
+    source: https://github.com/brave/brave-browser/releases/download/v$CRAFT_PROJECT_VERSION/brave-browser_$CRAFT_PROJECT_VERSION_$CRAFT_ARCH_BUILD_FOR.deb
     override-pull: |
       set -eu
       craftctl default
@@ -111,7 +111,7 @@ parts:
     override-prime: |
       set -eux
       mkdir -p usr/bin
-      cp /snap/core22/current/usr/bin/xdg-open usr/bin
+      cp /snap/core24/current/usr/bin/xdg-open usr/bin
       cd usr/bin
       ln -s xdg-open xdg-email
 
@@ -119,7 +119,7 @@ parts:
     plugin: nil
     stage-packages:
       - groff-base
-      - libgdbm6
+      - libgdbm6t64
       - libpipeline1
       - man-db
     prime:
