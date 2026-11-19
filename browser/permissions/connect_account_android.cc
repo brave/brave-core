@@ -38,6 +38,9 @@ static bool JNI_ConnectAccountFragment_ConnectAccount(
   // durable permission the user was never shown and cannot revoke from that
   // screen.
   content::RenderFrameHost* rfh = web_contents->GetPrimaryMainFrame();
+  if (!rfh) {
+    return false;
+  }
   const url::Origin& origin = rfh->GetLastCommittedOrigin();
 
   // Tapping Connect is consent only for the site the panel shows. Refuse if the
