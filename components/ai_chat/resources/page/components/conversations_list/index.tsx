@@ -440,7 +440,6 @@ function RecentWorkspaces(props: RecentWorkspacesProps) {
 
 export default function ConversationsList(
   props: ConversationsListProps & {
-    // Set when the list covers the open conversation, as in the side panel.
     coversConversation?: boolean
   },
 ) {
