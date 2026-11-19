@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/webui/print_preview/fake_print_render_frame.h b/chrome/browser/ui/webui/print_preview/fake_print_render_frame.h
+index d1446e8d98ccc1450e90279f73db2f27c3d8c5c2..785f56b7a07fecbda1560ecde64045e8408fc86e 100644
+--- a/chrome/browser/ui/webui/print_preview/fake_print_render_frame.h
++++ b/chrome/browser/ui/webui/print_preview/fake_print_render_frame.h
+@@ -28,6 +28,7 @@ class FakePrintRenderFrame : public mojom::PrintRenderFrame {
+   void PrintRequestedPages() override;
+   void PrintWithParams(mojom::PrintPagesParamsPtr params,
+                        PrintWithParamsCallback callback) override;
++  void SetIsPrintPreviewExtraction(bool value) override;
+   void PrintForSystemDialog() override;
+   void SetPrintPreviewUI(
+       mojo::PendingAssociatedRemote<mojom::PrintPreviewUI> preview) override;
