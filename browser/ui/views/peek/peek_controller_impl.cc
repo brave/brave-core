@@ -22,8 +22,11 @@
 #include "brave/browser/ui/views/peek/peek_contents.h"
 #include "brave/browser/ui/views/peek/peek_view.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/tabs/split_tab_metrics.h"
+#include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "components/split_tabs/split_tab_visual_data.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/frame_tree_node_id.h"
 #include "content/public/browser/navigation_controller.h"
@@ -83,6 +86,8 @@ class PeekControllerImpl::Peek : public PeekContents::Delegate,
     // Peek has focus.
     paint_as_active_lock_ =
         controller_->browser_view_->GetWidget()->LockPaintAsActive();
+    // Joining an existing split would replace one of its tabs.
+    view_->SetCanOpenInSplitView(!source_tab_->IsSplit());
     UpdateBounds();
     if (animate) {
       view_->AnimateOpen();
@@ -101,6 +106,14 @@ class PeekControllerImpl::Peek : public PeekContents::Delegate,
 
   void UpdateBounds() {
     widget_->SetBounds(controller_->GetTargetBoundsInScreen());
+  }
+
+  // Hands over the page, e.g. to the tab strip. The Peek must be destroyed
+  // afterwards.
+  std::unique_ptr<content::WebContents> ReleaseWebContents() {
+    controller_->SetShowingContents(contents_->web_contents(), false);
+    view_->SetWebContents(nullptr);
+    return contents_->ReleaseWebContents();
   }
 
   // Runs `task` with this Peek, unless it has been destroyed since.
@@ -126,6 +139,14 @@ class PeekControllerImpl::Peek : public PeekContents::Delegate,
   // PeekView::Delegate:
   void OnPeekViewCloseRequested() override {
     PostControllerTask(&PeekControllerImpl::ClosePeek);
+  }
+
+  void OnPeekViewOpenAsTabRequested() override {
+    PostControllerTask(&PeekControllerImpl::OpenPeekAsTab);
+  }
+
+  void OnPeekViewOpenInSplitViewRequested() override {
+    PostControllerTask(&PeekControllerImpl::MoveToSplitView);
   }
 
  private:
@@ -182,6 +203,12 @@ PeekControllerImpl::PeekControllerImpl(BrowserWindowInterface& browser,
 
 PeekControllerImpl::~PeekControllerImpl() {
   peeks_.clear();
+}
+
+void PeekControllerImpl::OpenInSplitView() {
+  if (Peek* peek = GetActivePeek()) {
+    MoveToSplitView(*peek);
+  }
 }
 
 PeekView* PeekControllerImpl::peek_view_for_testing() {
@@ -253,6 +280,12 @@ bool PeekControllerImpl::Open(content::WebContents& source,
   load_params.frame_tree_node_id = content::FrameTreeNodeId();
   raw_contents->GetController().LoadURLWithParams(load_params);
   return true;
+}
+
+void PeekControllerImpl::OpenAsTab(content::WebContents& peek_contents) {
+  if (Peek* peek = FindPeek(peek_contents)) {
+    MoveToTab(*peek);
+  }
 }
 
 void PeekControllerImpl::Close() {
@@ -337,6 +370,51 @@ void PeekControllerImpl::UpdateVisibility() {
 
 void PeekControllerImpl::ClosePeek(Peek& peek) {
   std::erase_if(peeks_, [&](const auto& p) { return p.get() == &peek; });
+}
+
+content::WebContents* PeekControllerImpl::MoveToTab(Peek& peek) {
+  tabs::TabInterface& source_tab = peek.source_tab();
+  const bool activate = source_tab.IsActivated();
+  TabStripModel* tab_strip_model = browser_->GetTabStripModel();
+  const int source_index = tab_strip_model->GetIndexOfTab(&source_tab);
+  CHECK_NE(source_index, TabStripModel::kNoTab);
+
+  std::unique_ptr<content::WebContents> contents = peek.ReleaseWebContents();
+  content::WebContents* raw_contents = contents.get();
+  ClosePeek(peek);
+
+  tab_strip_model->InsertWebContentsAt(
+      source_index + 1, std::move(contents),
+      activate ? AddTabTypes::ADD_ACTIVE | AddTabTypes::ADD_INHERIT_OPENER
+               : AddTabTypes::ADD_NONE);
+  return raw_contents;
+}
+
+void PeekControllerImpl::OpenPeekAsTab(Peek& peek) {
+  MoveToTab(peek);
+}
+
+void PeekControllerImpl::MoveToSplitView(Peek& peek) {
+  tabs::TabInterface& source_tab = peek.source_tab();
+  if (source_tab.IsSplit() || !source_tab.IsActivated()) {
+    MoveToTab(peek);
+    return;
+  }
+
+  TabStripModel* tab_strip_model = browser_->GetTabStripModel();
+  content::WebContents* contents = MoveToTab(peek);
+  const int source_index = tab_strip_model->GetIndexOfTab(&source_tab);
+  const int peek_index = tab_strip_model->GetIndexOfWebContents(contents);
+  if (source_index == TabStripModel::kNoTab ||
+      peek_index == TabStripModel::kNoTab) {
+    return;
+  }
+  // The source tab is the pivot, so the new tab joins its pinned state and
+  // group, as with "Open link in split view".
+  tab_strip_model->AddToNewSplit(
+      {source_index, peek_index},
+      split_tabs::SplitTabVisualData(split_tabs::SplitTabLayout::kSideBySide),
+      split_tabs::SplitTabCreatedSource::kLinkClick);
 }
 
 gfx::Rect PeekControllerImpl::GetTargetBoundsInScreen() const {

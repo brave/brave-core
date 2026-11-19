@@ -29,6 +29,7 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/navigator/browser_navigator.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
+#include "chrome/browser/ui/tabs/split_tab_metrics.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -38,6 +39,8 @@
 #include "components/prefs/pref_service.h"
 #include "components/security_interstitials/content/security_interstitial_tab_helper.h"
 #include "components/security_state/core/security_state.h"
+#include "components/split_tabs/split_tab_visual_data.h"
+#include "components/tab_groups/tab_group_id.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
@@ -213,6 +216,15 @@ class PeekBrowserTest : public InProcessBrowserTest {
         base::test::RunUntil([&] { return !controller()->IsShowing(); }));
   }
 
+  // Waits until Peek closes and `contents` becomes the active tab.
+  void WaitForMovedToTab(
+      content::WebContents* contents,
+      const base::Location& location = base::Location::Current()) {
+    SCOPED_TRACE(location.ToString());
+    WaitForPeekClosed();
+    EXPECT_EQ(contents, active_contents());
+  }
+
   // Adds a link covering the top-left of the page and Shift+clicks it.
   void ShiftClickLink(content::WebContents* contents, const GURL& url) {
     ASSERT_TRUE(content::ExecJs(contents, content::JsReplace(R"(
@@ -343,6 +355,104 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, ClickOutsideCardClosesPeek) {
       ui::EventType::kMousePressed, outside, outside, ui::EventTimeForNow(),
       ui::EF_LEFT_MOUSE_BUTTON, ui::EF_LEFT_MOUSE_BUTTON));
   WaitForPeekClosed();
+}
+
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, OpenAsTabKeepsWebContents) {
+  const GURL target_url = GetURL("b.com", "/title2.html");
+  OpenPeek(target_url);
+  content::WebContents* contents = peek_contents();
+  const int tab_count = tab_strip_model()->count();
+
+  views::test::ButtonTestApi(
+      controller()->peek_view_for_testing()->open_as_tab_button_for_testing())
+      .NotifyDefaultMouseClick();
+  WaitForPeekClosed();
+
+  EXPECT_EQ(tab_count + 1, tab_strip_model()->count());
+  EXPECT_EQ(contents, active_contents());
+  EXPECT_EQ(target_url, active_contents()->GetLastCommittedURL());
+}
+
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, OpenInSplitViewSplitsWithSourceTab) {
+  const GURL target_url = GetURL("b.com", "/title2.html");
+  content::WebContents* source = active_contents();
+  OpenPeek(target_url);
+  content::WebContents* contents = peek_contents();
+  views::ImageButton* split_view_button =
+      controller()->peek_view_for_testing()->split_view_button_for_testing();
+  ASSERT_TRUE(split_view_button->GetVisible());
+
+  views::test::ButtonTestApi(split_view_button).NotifyDefaultMouseClick();
+  WaitForMovedToTab(contents);
+
+  // Moved without a reload, next to the source tab and in a split with it.
+  EXPECT_EQ(target_url, contents->GetLastCommittedURL());
+  EXPECT_EQ(2, tab_strip_model()->count());
+  tabs::TabInterface* tab = tab_strip_model()->GetActiveTab();
+  ASSERT_TRUE(tab->IsSplit());
+  EXPECT_EQ(tab->GetSplit(),
+            tabs::TabInterface::GetFromContents(source)->GetSplit());
+}
+
+// The source tab is the split's pivot, so the Peek page joins its pinned state.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, OpenInSplitViewFromPinnedTab) {
+  content::WebContents* source = active_contents();
+  tab_strip_model()->SetTabPinned(0, true);
+  AddTab();
+  tab_strip_model()->ActivateTabAt(0);
+  OpenPeek(GetURL("b.com", "/title2.html"));
+  content::WebContents* contents = peek_contents();
+
+  controller()->OpenInSplitView();
+  EXPECT_EQ(contents, active_contents());
+  tabs::TabInterface* tab = tab_strip_model()->GetActiveTab();
+  ASSERT_TRUE(tab->IsSplit());
+  EXPECT_EQ(tab->GetSplit(),
+            tabs::TabInterface::GetFromContents(source)->GetSplit());
+  EXPECT_TRUE(tab->IsPinned());
+  EXPECT_EQ(3, tab_strip_model()->count());
+}
+
+// The source tab is the split's pivot, so the Peek page joins its group.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, OpenInSplitViewFromGroupedTab) {
+  content::WebContents* source = active_contents();
+  AddTab();
+  tab_strip_model()->ActivateTabAt(0);
+  const tab_groups::TabGroupId group = tab_strip_model()->AddToNewGroup({0});
+  OpenPeek(GetURL("b.com", "/title2.html"));
+  content::WebContents* contents = peek_contents();
+
+  controller()->OpenInSplitView();
+  EXPECT_EQ(contents, active_contents());
+  tabs::TabInterface* tab = tab_strip_model()->GetActiveTab();
+  ASSERT_TRUE(tab->IsSplit());
+  EXPECT_EQ(tab->GetSplit(),
+            tabs::TabInterface::GetFromContents(source)->GetSplit());
+  EXPECT_EQ(group, tab->GetGroup());
+  EXPECT_EQ(3, tab_strip_model()->count());
+}
+
+// Joining the source tab's split would replace one of its tabs.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, OpenInSplitViewFromSplitOpensTab) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GetURL("a.com", "/title1.html"),
+      WindowOpenDisposition::kNewForegroundTab,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  tab_strip_model()->ActivateTabAt(0);
+  tab_strip_model()->AddToNewSplit(
+      {1}, split_tabs::SplitTabVisualData(),
+      split_tabs::SplitTabCreatedSource::kTabContextMenu);
+  OpenPeek(GetURL("b.com", "/title2.html"));
+  EXPECT_FALSE(controller()
+                   ->peek_view_for_testing()
+                   ->split_view_button_for_testing()
+                   ->GetVisible());
+
+  content::WebContents* contents = peek_contents();
+  controller()->OpenInSplitView();
+  EXPECT_EQ(contents, active_contents());
+  EXPECT_EQ(3, tab_strip_model()->count());
+  EXPECT_FALSE(tab_strip_model()->GetActiveTab()->IsSplit());
 }
 
 // A Peek belongs to its tab: switching away hides it, and switching back shows
@@ -581,6 +691,11 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, CertErrorShowsInterstitial) {
   EXPECT_TRUE(helper->IsDisplayingInterstitial());
   EXPECT_EQ(security_state::DANGEROUS,
             chrome_security_state::GetSecurityLevel(contents));
+
+  // Opening as a tab keeps the interstitial.
+  controller()->OpenAsTab(*contents);
+  EXPECT_EQ(contents, active_contents());
+  EXPECT_TRUE(helper->IsDisplayingInterstitial());
 }
 
 // Peek navigations carry the opener's origin, so SameSite and Fetch Metadata
@@ -597,6 +712,30 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, ShiftClickSendsInitiatorOrigin) {
   ASSERT_TRUE(controller()->IsShowing());
 
   ExpectCrossSiteRequestMetadata(path);
+}
+
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, OpensFromSplitViewAsStandaloneTab) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GetURL("a.com", "/title1.html"),
+      WindowOpenDisposition::kNewForegroundTab,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  tab_strip_model()->ActivateTabAt(0);
+  tab_strip_model()->AddToNewSplit(
+      {1}, split_tabs::SplitTabVisualData(),
+      split_tabs::SplitTabCreatedSource::kTabContextMenu);
+  ASSERT_TRUE(tab_strip_model()->GetActiveTab()->IsSplit());
+
+  // Peek covers the whole split, not just the source pane.
+  OpenPeek(GetURL("b.com", "/title2.html"));
+  EXPECT_EQ(BrowserView::GetBrowserViewForBrowser(browser())
+                ->contents_container()
+                ->GetBoundsInScreen(),
+            controller()->widget_for_testing()->GetWindowBoundsInScreen());
+
+  content::WebContents* contents = peek_contents();
+  controller()->OpenAsTab(*contents);
+  EXPECT_EQ(contents, active_contents());
+  EXPECT_FALSE(tab_strip_model()->GetActiveTab()->IsSplit());
 }
 
 IN_PROC_BROWSER_TEST_F(PeekBrowserTest, IncognitoPeekStaysOffTheRecord) {

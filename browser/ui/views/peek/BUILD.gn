@@ -116,6 +116,7 @@ source_set("browser_tests") {
     "//components/security_interstitials/content:security_interstitial_page",
     "//components/security_state/core",
     "//components/split_tabs",
+    "//components/tab_groups",
     "//components/tabs:public",
     "//content/public/browser",
     "//content/test:test_support",

@@ -23,6 +23,7 @@
 namespace {
 
 DEFINE_LOCAL_ELEMENT_IDENTIFIER_VALUE(kSourceTabId);
+DEFINE_LOCAL_ELEMENT_IDENTIFIER_VALUE(kPeekTabId);
 
 constexpr char kAddLinkScript[] = R"(() => {
   const a = document.createElement('a');
@@ -69,6 +70,25 @@ class PeekInteractiveBrowserTest : public InteractiveBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(PeekInteractiveBrowserTest,
+                       OpenAsTabButtonMovesPageToNewActiveTab) {
+  const GURL source_url =
+      embedded_test_server()->GetURL("a.com", "/title1.html");
+  const GURL peek_url = embedded_test_server()->GetURL("b.com", "/title2.html");
+
+  RunTestSequence(
+      InstrumentTab(kSourceTabId),
+      NavigateWebContents(kSourceTabId, source_url), ShiftClickLink(peek_url),
+      // The Peek card is in its own widget, so it has its own context.
+      InAnyContext(WaitForShow(PeekView::kCardElementId)),
+      InstrumentNextTab(kPeekTabId),
+      InAnyContext(PressButton(PeekView::kOpenAsTabButtonElementId)),
+      InAnyContext(WaitForHide(PeekView::kCardElementId)),
+      WaitForWebContentsReady(kPeekTabId, peek_url),
+      CheckResult([this] { return tab_count(); }, 2),
+      CheckResult([this] { return active_index(); }, 1));
+}
+
+IN_PROC_BROWSER_TEST_F(PeekInteractiveBrowserTest,
                        CloseButtonClosesPeekAndKeepsSourceTabActive) {
   const GURL source_url =
       embedded_test_server()->GetURL("a.com", "/title1.html");
@@ -82,4 +102,27 @@ IN_PROC_BROWSER_TEST_F(PeekInteractiveBrowserTest,
                   InAnyContext(WaitForHide(PeekView::kCardElementId)),
                   CheckResult([this] { return tab_count(); }, 1),
                   CheckResult([this] { return active_index(); }, 0));
+}
+
+IN_PROC_BROWSER_TEST_F(PeekInteractiveBrowserTest,
+                       SplitViewButtonOpensPageInSplitWithSourceTab) {
+  const GURL source_url =
+      embedded_test_server()->GetURL("a.com", "/title1.html");
+  const GURL peek_url = embedded_test_server()->GetURL("b.com", "/title2.html");
+
+  RunTestSequence(
+      InstrumentTab(kSourceTabId),
+      NavigateWebContents(kSourceTabId, source_url), ShiftClickLink(peek_url),
+      InAnyContext(WaitForShow(PeekView::kCardElementId)),
+      InstrumentNextTab(kPeekTabId),
+      InAnyContext(PressButton(PeekView::kSplitViewButtonElementId)),
+      InAnyContext(WaitForHide(PeekView::kCardElementId)),
+      WaitForWebContentsReady(kPeekTabId, peek_url),
+      CheckResult([this] { return tab_count(); }, 2),
+      CheckResult([this] { return active_index(); }, 1),
+      CheckResult(
+          [this] {
+            return browser()->GetTabStripModel()->GetActiveTab()->IsSplit();
+          },
+          true));
 }

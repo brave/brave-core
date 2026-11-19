@@ -49,6 +49,11 @@ class PeekControllerImpl : public PeekController,
   PeekControllerImpl& operator=(const PeekControllerImpl&) = delete;
   ~PeekControllerImpl() override;
 
+  // Moves the active tab's Peek into a tab shown in split view with the active
+  // tab, the one the Peek was opened from. Opens a standalone tab instead if
+  // the active tab is already in a split.
+  void OpenInSplitView();
+
   // The active tab's Peek view and widget.
   PeekView* peek_view_for_testing();
   views::Widget* widget_for_testing();
@@ -59,6 +64,7 @@ class PeekControllerImpl : public PeekController,
   bool CanOpenFrom(content::WebContents* source) override;
   bool Open(content::WebContents& source,
             const content::OpenURLParams& params) override;
+  void OpenAsTab(content::WebContents& peek_contents) override;
   void Close() override;
   bool IsShowing() const override;
   content::WebContents* GetWebContents() override;
@@ -89,6 +95,17 @@ class PeekControllerImpl : public PeekController,
 
   // Destroys `peek` and its page.
   void ClosePeek(Peek& peek);
+
+  // Moves `peek`'s page into a tab after its source tab and destroys `peek`.
+  // The new tab is activated if the source tab is active. A hidden Peek is
+  // added in the background instead, so its page can't take over the window
+  // from the tab the user is on. Returns the moved contents.
+  content::WebContents* MoveToTab(Peek& peek);
+
+  // Requests from a Peek's card or page. They're posted by the Peek, since
+  // they come from inside event handlers of the objects they destroy.
+  void OpenPeekAsTab(Peek& peek);
+  void MoveToSplitView(Peek& peek);
 
   gfx::Rect GetTargetBoundsInScreen() const;
 
