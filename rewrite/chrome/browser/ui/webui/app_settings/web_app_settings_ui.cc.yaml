@@ -1,0 +1,36 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Add tabbed window mode strings to the app settings data source
+
+      Brave enables the tab strip settings for PWAs, which needs these labels.
+    regex:
+      pattern: |-
+        html_source->AddLocalizedStrings(kLocalizedStrings);
+      replace: |-
+        html_source->AddLocalizedStrings(kLocalizedStrings);
+          html_source->AddLocalizedString("appManagementTabbedWindowModeLabel",
+                                          IDS_APP_MANAGEMENT_TABBED_WINDOW);
+          html_source->AddLocalizedString("appManagementBrowserModeLabel",
+                                          IDS_APP_MANAGEMENT_BROWSER);
+          html_source->AddLocalizedString("appManagementOpenModeLabel",
+                                          IDS_APP_MANAGEMENT_OPEN_MODE);
+    count: 1
+
+  - description: |-
+      Expose whether PWA tab strip settings are enabled to the WebUI
+
+      Lets the page show the tabbed window mode setting.
+    regex:
+      pattern: |-
+        IDR_APP_SETTINGS_WEB_APP_SETTINGS_HTML);
+      replace: |-
+        IDR_APP_SETTINGS_WEB_APP_SETTINGS_HTML);
+          html_source->AddBoolean(
+              "isPWAsTabStripSettingsEnabled",
+              base::FeatureList::IsEnabled(features::kDesktopPWAsTabStripSettings));
+    count: 1

@@ -1,0 +1,27 @@
+diff --git a/chrome/browser/ui/webui/app_settings/web_app_settings_ui.cc b/chrome/browser/ui/webui/app_settings/web_app_settings_ui.cc
+index c2b36a25a803d82a35ab8a0aba4b359121a71f0a..758c09e15e2c2578d5d9cc6904d6ce9307d97184 100644
+--- a/chrome/browser/ui/webui/app_settings/web_app_settings_ui.cc
++++ b/chrome/browser/ui/webui/app_settings/web_app_settings_ui.cc
+@@ -106,6 +106,12 @@ void AddAppManagementStrings(content::WebUIDataSource* html_source) {
+        IDS_APP_MANAGEMENT_PERMISSIONS_WITH_ORIGIN},
+   };
+   html_source->AddLocalizedStrings(kLocalizedStrings);
++  html_source->AddLocalizedString("appManagementTabbedWindowModeLabel",
++                                  IDS_APP_MANAGEMENT_TABBED_WINDOW);
++  html_source->AddLocalizedString("appManagementBrowserModeLabel",
++                                  IDS_APP_MANAGEMENT_BROWSER);
++  html_source->AddLocalizedString("appManagementOpenModeLabel",
++                                  IDS_APP_MANAGEMENT_OPEN_MODE);
+ }
+ 
+ class WebAppSettingsWindowDelegate
+@@ -153,6 +159,9 @@ WebAppSettingsUI::WebAppSettingsUI(content::WebUI* web_ui)
+   // Add required resources.
+   webui::SetupWebUIDataSource(html_source, kAppSettingsResources,
+                               IDR_APP_SETTINGS_WEB_APP_SETTINGS_HTML);
++  html_source->AddBoolean(
++      "isPWAsTabStripSettingsEnabled",
++      base::FeatureList::IsEnabled(features::kDesktopPWAsTabStripSettings));
+ 
+   auto* provider = web_app::WebAppProvider::GetForWebApps(profile);
+   install_manager_observation_.Observe(&provider->install_manager());

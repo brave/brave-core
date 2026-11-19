@@ -1,0 +1,175 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Add Brave localized strings to the settings data source
+
+      Brave adds its own settings strings after all upstream strings.
+    regex:
+      pattern: |-
+        AddSecurityKeysStrings(html_source);
+
+          html_source->UseStringsJs();
+      replace: |-
+        AddSecurityKeysStrings(html_source);
+
+          BraveAddLocalizedStrings(html_source, profile);
+          html_source->UseStringsJs();
+    count: 1
+
+  - description: |-
+      Use the Brave search engine settings subtitle
+
+      Brave has its own explanation for the search engine settings entry.
+    regex:
+      pattern: |-
+        IDS_SEARCH_ENGINE_CHOICE_SETTINGS_ENTRY_POINT_SUBTITLE
+      replace: |-
+        IDS_SETTINGS_NORMAL_PROFILE_SEARCH_EXPLANATION
+    count: 1
+
+  - description: |-
+      Use the Brave edit profile label
+
+      Brave does not have Chrome profile customization.
+    regex:
+      pattern: |-
+        IDS_SETTINGS_CUSTOMIZE_PROFILE
+      replace: |-
+        IDS_SETTINGS_BRAVE_EDIT_PROFILE
+    count: 2
+
+  - description: |-
+      Use the Brave edit profile label for the Chrome profile customization
+
+      Brave does not have Chrome profile customization.
+    regex:
+      pattern: |-
+        IDS_SETTINGS_CUSTOMIZE_YOUR_CHROME_PROFILE
+      replace: |-
+        IDS_SETTINGS_BRAVE_EDIT_PROFILE
+    count: 1
+
+  - description: |-
+      Use the Brave Safe Browsing standard bullet two string
+
+      Brave describes Safe Browsing differently.
+    regex:
+      pattern: |-
+        IDS_SETTINGS_SAFEBROWSING_STANDARD_BULLET_TWO}
+      replace: |-
+        IDS_SETTINGS_BRAVE_SAFEBROWSING_STANDARD_BULLET_TWO}
+    count: 1
+
+  - description: |-
+      Use the Brave Safe Browsing none description
+
+      Brave describes Safe Browsing differently.
+    regex:
+      pattern: |-
+        IDS_SETTINGS_SAFEBROWSING_NONE_DESC
+      replace: |-
+        IDS_SETTINGS_BRAVE_SAFEBROWSING_NONE_DESC
+    count: 1
+
+  - description: |-
+      Use the Brave Safe Browsing standard description
+
+      Brave describes Safe Browsing differently.
+    regex:
+      pattern: |-
+        IDS_SETTINGS_SAFEBROWSING_STANDARD_DESC}
+      replace: |-
+        IDS_SETTINGS_BRAVE_SAFEBROWSING_STANDARD_DESC}
+    count: 1
+
+  - description: |-
+      Use the Brave diagnostic reports description string
+
+      Brave uses custom strings for diagnostic (crashes, hangs) reporting.
+    regex:
+      pattern: |-
+        IDS_SETTINGS_ENABLE_LOGGING_PREF_DESC
+      replace: |-
+        IDS_BRAVE_DIAGNOSTIC_REPORTS_PREF_DESC
+    count: 1
+
+  - description: |-
+      Use the Brave diagnostic reports string
+
+      Brave uses custom strings for diagnostic (crashes, hangs) reporting.
+    regex:
+      pattern: |-
+        IDS_SETTINGS_ENABLE_LOGGING_PREF
+      replace: |-
+        IDS_BRAVE_DIAGNOSTIC_REPORTS_PREF
+    count: 1
+
+  - description: |-
+      Use the Brave sync autofill label
+
+      Brave has its own sync type labels.
+    regex:
+      pattern: |-
+        IDS_SETTINGS_AUTOFILL_CHECKBOX_LABEL
+      replace: |-
+        IDS_SETTINGS_BRAVE_AUTOFILL_CHECKBOX_LABEL
+    count: 1
+
+  - description: |-
+      Use the Brave sync apps label
+
+      Brave has its own sync type labels.
+    regex:
+      pattern: |-
+        IDS_SETTINGS_APPS_CHECKBOX_LABEL
+      replace: |-
+        IDS_SETTINGS_BRAVE_APPS_CHECKBOX_LABEL
+    count: 1
+
+  - description: |-
+      Use the Brave sync passwords label
+
+      Brave has its own sync type labels.
+    regex:
+      pattern: |-
+        IDS_SETTINGS_PASSWORDS_AND_PASSKEYS_CHECKBOX_LABEL
+      replace: |-
+        IDS_SETTINGS_BRAVE_PASSWORDS_CHECKBOX_LABEL
+    count: 1
+
+  - description: |-
+      Use the Brave UI alignment left string
+
+      Brave has its own appearance settings strings.
+    regex:
+      pattern: |-
+        IDS_SETTINGS_UI_FEATURE_ALIGN_LEFT
+      replace: |-
+        IDS_SETTINGS_APPEARANCE_SETTINGS_UI_FEATURE_ALIGN_LEFT
+    count: 1
+
+  - description: |-
+      Use the Brave UI alignment right string
+
+      Brave has its own appearance settings strings.
+    regex:
+      pattern: |-
+        IDS_SETTINGS_UI_FEATURE_ALIGN_RIGHT
+      replace: |-
+        IDS_SETTINGS_APPEARANCE_SETTINGS_UI_FEATURE_ALIGN_RIGHT
+    count: 1
+
+  - description: |-
+      Use the Brave block cookies link row label
+
+      Brave has its own cookies settings string.
+    regex:
+      pattern: |-
+        IDS_SETTINGS_THIRD_PARTY_COOKIES_LINK_ROW_LABEL
+      replace: |-
+        IDS_SETTINGS_BRAVE_BLOCK_COOKIES_LINK_ROW_LABEL
+    count: 1

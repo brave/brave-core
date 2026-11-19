@@ -1,7 +1,122 @@
 diff --git a/chrome/browser/ui/webui/settings/settings_localized_strings_provider.cc b/chrome/browser/ui/webui/settings/settings_localized_strings_provider.cc
-index 0bdda85eaadb15c23754e4968950df2c4fa0e14f..2b3b9175e0f05578f79e9d7453df43660f4e29e4 100644
+index 0bdda85eaadb15c23754e4968950df2c4fa0e14f..98d2aa15469321e71d0ddad8484a924d0c27372f 100644
 --- a/chrome/browser/ui/webui/settings/settings_localized_strings_provider.cc
 +++ b/chrome/browser/ui/webui/settings/settings_localized_strings_provider.cc
+@@ -661,8 +661,8 @@ void AddAppearanceStrings(content::WebUIDataSource* html_source,
+       {"minimumFont", IDS_SETTINGS_MINIMUM_FONT_SIZE_LABEL},
+       {"tiny", IDS_SETTINGS_TINY_FONT_SIZE},
+       {"huge", IDS_SETTINGS_HUGE_FONT_SIZE},
+-      {"uiFeatureAlignLeft", IDS_SETTINGS_UI_FEATURE_ALIGN_LEFT},
+-      {"uiFeatureAlignRight", IDS_SETTINGS_UI_FEATURE_ALIGN_RIGHT},
++      {"uiFeatureAlignLeft", IDS_SETTINGS_APPEARANCE_SETTINGS_UI_FEATURE_ALIGN_LEFT},
++      {"uiFeatureAlignRight", IDS_SETTINGS_APPEARANCE_SETTINGS_UI_FEATURE_ALIGN_RIGHT},
+       {"uiFeatureAlignSide", IDS_SETTINGS_UI_FEATURE_ALIGN_SIDE},
+       {"uiFeatureAlignTop", IDS_SETTINGS_UI_FEATURE_ALIGN_TOP},
+       {"resetToDefault", IDS_SETTINGS_RESET_TO_DEFAULT},
+@@ -2316,9 +2316,9 @@ void AddPersonalizationOptionsStrings(content::WebUIDataSource* html_source) {
+ #if !BUILDFLAG(IS_CHROMEOS)
+       {"signinAllowedTitle", IDS_SETTINGS_SIGNIN_ALLOWED},
+ #endif
+-      {"enablePersonalizationLogging", IDS_SETTINGS_ENABLE_LOGGING_PREF},
++      {"enablePersonalizationLogging", IDS_BRAVE_DIAGNOSTIC_REPORTS_PREF},
+       {"enablePersonalizationLoggingDesc",
+-       IDS_SETTINGS_ENABLE_LOGGING_PREF_DESC},
++       IDS_BRAVE_DIAGNOSTIC_REPORTS_PREF_DESC},
+       {"spellingDescription", IDS_SETTINGS_SPELLING_PREF_DESC},
+       {"searchSuggestPref", IDS_SETTINGS_SUGGEST_PREF},
+       {"searchSuggestPrefDesc", IDS_SETTINGS_SUGGEST_PREF_DESC},
+@@ -2386,7 +2386,7 @@ void AddBrowserSyncPageStrings(content::WebUIDataSource* html_source) {
+        IDS_SETTINGS_PEOPLE_SIGN_IN_PROMPT_SECONDARY_WITH_ACCOUNT},
+ #endif
+       {"passwordsCheckboxLabel",
+-       IDS_SETTINGS_PASSWORDS_AND_PASSKEYS_CHECKBOX_LABEL},
++       IDS_SETTINGS_BRAVE_PASSWORDS_CHECKBOX_LABEL},
+   };
+   html_source->AddLocalizedStrings(kLocalizedStrings);
+ 
+@@ -2430,7 +2430,7 @@ void AddSyncControlsStrings(content::WebUIDataSource* html_source) {
+       {"historyTabsCheckboxSubLabelOff",
+        IDS_SETTINGS_ACCOUNT_HISTORY_TOGGLE_SUB_LABEL_OFF},
+ 
+-      {"autofillCheckboxLabel", IDS_SETTINGS_AUTOFILL_CHECKBOX_LABEL},
++      {"autofillCheckboxLabel", IDS_SETTINGS_BRAVE_AUTOFILL_CHECKBOX_LABEL},
+       {"historyCheckboxLabel", IDS_SETTINGS_HISTORY_CHECKBOX_LABEL},
+       {"extensionsCheckboxLabel", IDS_SETTINGS_EXTENSIONS_CHECKBOX_LABEL},
+       {"openTabsCheckboxLabel", IDS_SETTINGS_OPEN_TABS_CHECKBOX_LABEL},
+@@ -2442,7 +2442,7 @@ void AddSyncControlsStrings(content::WebUIDataSource* html_source) {
+        IDS_SETTINGS_WIFI_CONFIGURATIONS_CHECKBOX_LABEL},
+       {"syncEverythingCheckboxLabel",
+        IDS_SETTINGS_SYNC_EVERYTHING_CHECKBOX_LABEL},
+-      {"appCheckboxLabel", IDS_SETTINGS_APPS_CHECKBOX_LABEL},
++      {"appCheckboxLabel", IDS_SETTINGS_BRAVE_APPS_CHECKBOX_LABEL},
+       {"nonPersonalizedServicesSectionLabel",
+        IDS_SETTINGS_NON_PERSONALIZED_SERVICES_SECTION_LABEL},
+       {"customizeSyncLabel", IDS_SETTINGS_CUSTOMIZE_SYNC},
+@@ -2515,7 +2515,7 @@ void AddPeopleStrings(content::WebUIDataSource* html_source, Profile* profile) {
+       {"peopleSignInPromptSecondaryWithNoAccount",
+        IDS_SETTINGS_PEOPLE_SIGN_IN_PROMPT_SECONDARY_WITH_ACCOUNT},
+ #else
+-      {"editPerson", IDS_SETTINGS_CUSTOMIZE_PROFILE},
++      {"editPerson", IDS_SETTINGS_BRAVE_EDIT_PROFILE},
+ #endif
+ 
+   // Manage profile strings:
+@@ -2571,8 +2571,8 @@ void AddPeopleStrings(content::WebUIDataSource* html_source, Profile* profile) {
+   html_source->AddLocalizedString(
+       "profileNameAndPicture",
+       syncer::IsReplaceSyncPromosWithSignInPromosEnabled()
+-          ? IDS_SETTINGS_CUSTOMIZE_PROFILE
+-          : IDS_SETTINGS_CUSTOMIZE_YOUR_CHROME_PROFILE);
++          ? IDS_SETTINGS_BRAVE_EDIT_PROFILE
++          : IDS_SETTINGS_BRAVE_EDIT_PROFILE);
+ #endif
+ 
+   html_source->AddBoolean(
+@@ -2727,7 +2727,7 @@ void AddPrivacyStrings(content::WebUIDataSource* html_source,
+       {"safeBrowsingEnhancedThingsToConsiderBulThree",
+        IDS_SETTINGS_SAFEBROWSING_ENHANCED_THINGS_TO_CONSIDER_BULLET_THREE},
+       {"safeBrowsingStandard", IDS_SETTINGS_SAFEBROWSING_STANDARD},
+-      {"safeBrowsingStandardDesc", IDS_SETTINGS_SAFEBROWSING_STANDARD_DESC},
++      {"safeBrowsingStandardDesc", IDS_SETTINGS_BRAVE_SAFEBROWSING_STANDARD_DESC},
+ #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
+       {"safeBrowsingStandardDescProxy",
+        IDS_SETTINGS_SAFEBROWSING_STANDARD_DESC_PROXY},
+@@ -2737,7 +2737,7 @@ void AddPrivacyStrings(content::WebUIDataSource* html_source,
+       {"safeBrowsingStandardBulOne",
+        IDS_SETTINGS_SAFEBROWSING_STANDARD_BULLET_ONE},
+       {"safeBrowsingStandardBulTwo",
+-       IDS_SETTINGS_SAFEBROWSING_STANDARD_BULLET_TWO},
++       IDS_SETTINGS_BRAVE_SAFEBROWSING_STANDARD_BULLET_TWO},
+ #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
+       {"safeBrowsingStandardBulTwoProxy",
+        IDS_SETTINGS_SAFEBROWSING_STANDARD_BULLET_TWO_PROXY},
+@@ -2745,7 +2745,7 @@ void AddPrivacyStrings(content::WebUIDataSource* html_source,
+       {"safeBrowsingStandardReportingLabel",
+        IDS_SETTINGS_SAFEBROWSING_STANDARD_HELP_IMPROVE},
+       {"safeBrowsingNone", IDS_SETTINGS_SAFEBROWSING_NONE},
+-      {"safeBrowsingNoneDesc", IDS_SETTINGS_SAFEBROWSING_NONE_DESC},
++      {"safeBrowsingNoneDesc", IDS_SETTINGS_BRAVE_SAFEBROWSING_NONE_DESC},
+       {"safeBrowsingDisableDialog",
+        IDS_SETTINGS_SAFEBROWSING_DISABLE_DIALOG_TITLE},
+       {"safeBrowsingDisableDialogDesc",
+@@ -3115,7 +3115,7 @@ void AddSearchStrings(content::WebUIDataSource* html_source, Profile* profile) {
+       {"searchExplanationLearnMoreA11yLabel",
+        IDS_SETTINGS_SEARCH_EXPLANATION_ACCESSIBILITY_LABEL},
+       {"searchEngineChoiceEntryPointSubtitle",
+-       IDS_SEARCH_ENGINE_CHOICE_SETTINGS_ENTRY_POINT_SUBTITLE},
++       IDS_SETTINGS_NORMAL_PROFILE_SEARCH_EXPLANATION},
+       {"searchEnginesChange",
+        IDS_SEARCH_ENGINE_CHOICE_SETTINGS_CHANGE_DEFAULT_ENGINE},
+       {"searchEnginesSetAsDefaultButton",
+@@ -3312,7 +3312,7 @@ void AddSiteSettingsStrings(content::WebUIDataSource* html_source,
+       {"thirdPartyCookiesPageTitle",
+        IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_TITLE},
+       {"thirdPartyCookiesLinkRowLabel",
+-       IDS_SETTINGS_THIRD_PARTY_COOKIES_LINK_ROW_LABEL},
++       IDS_SETTINGS_BRAVE_BLOCK_COOKIES_LINK_ROW_LABEL},
+       {"thirdPartyCookiesAndSiteDataPageTitle",
+        IDS_SETTINGS_THIRD_PARTY_COOKIES_AND_SITE_DATA_PAGE_TITLE},
+       {"thirdPartyCookiesAndSiteDataLinkRowLabel",
 @@ -4610,6 +4610,7 @@ void AddLocalizedStrings(content::WebUIDataSource* html_source,
    policy_indicator::AddLocalizedStrings(html_source);
    AddSecurityKeysStrings(html_source);
