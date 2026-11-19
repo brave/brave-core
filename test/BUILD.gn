@@ -1308,8 +1308,10 @@ test("brave_browser_tests") {
   if (is_win) {
     public_configs = [ "//build/config/win:delayloads" ]
 
-    sources +=
-        [ "//brave/browser/brave_font_prewarmer_tab_helper_browsertest.cc" ]
+    sources += [
+      "//brave/browser/brave_font_prewarmer_tab_helper_browsertest.cc",
+      "//brave/browser/ui/views/user_education/brave_help_bubble_hint_browsertest.cc",
+    ]
 
     deps += [
       "//brave/components/windows_recall",
@@ -1535,7 +1537,6 @@ test("brave_browser_tests") {
       "//brave/browser/ui/views/toolbar/brave_app_menu_browsertest.cc",
       "//brave/browser/ui/views/toolbar/brave_toolbar_view_browsertest.cc",
       "//brave/browser/ui/views/toolbar/screenshot_preview_dialog_browsertest.cc",
-      "//brave/browser/ui/views/user_education/brave_help_bubble_hint_browsertest.cc",
     ]
     deps += [
       "//brave/browser:brave_browser_features",
