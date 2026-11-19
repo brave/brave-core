@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Declare the tree tab toggle button refresh of TabStripCollectionController.
+
+      The controller owns the lookup from a tab to its TabView. Defined in
+      chromium_src.
+    add_to_public:
+      class_name: TabStripCollectionController
+      code: |-
+        // Refreshes the tree tab toggle button of the TabView showing |tab|.
+        void UpdateTreeToggleButton(const tabs::TabInterface* tab);

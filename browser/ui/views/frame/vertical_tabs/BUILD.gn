@@ -122,6 +122,7 @@ source_set("browser_tests") {
   if (enable_brave_tree_tabs) {
     sources += [ "upstream_tree_tabs_browsertest.cc" ]
     deps += [
+      "//brave/app:brave_generated_resources_grit",
       "//brave/browser/ui/tabs:tree_tab",
       "//brave/browser/ui/views/tabs:tree_tab_view_utils",
     ]

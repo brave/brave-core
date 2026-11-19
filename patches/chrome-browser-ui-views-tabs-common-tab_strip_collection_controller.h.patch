@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/views/tabs/common/tab_strip_collection_controller.h b/chrome/browser/ui/views/tabs/common/tab_strip_collection_controller.h
+index d241600d7194946d4cd65252a54e957848ab631d..a7ca4292d36cfb017943eb21ba65b1e6e94e2eab 100644
+--- a/chrome/browser/ui/views/tabs/common/tab_strip_collection_controller.h
++++ b/chrome/browser/ui/views/tabs/common/tab_strip_collection_controller.h
+@@ -152,6 +152,9 @@ class TabStripCollectionController : public TabContextMenuController::Delegate {
+   [[nodiscard]] base::AutoReset<bool> ScopedAnimateLayout();
+   bool ShouldAnimateLayout() const;
+ 
++  // Refreshes the tree tab toggle button of the TabView showing |tab|.
++  void UpdateTreeToggleButton(const tabs::TabInterface* tab);
++
+  private:
+   // TabContextMenuController::Delegate:
+   bool IsContextMenuCommandChecked(

@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/views/tabs/common/tab_view.cc b/chrome/browser/ui/views/tabs/common/tab_view.cc
+index 7ad4897a7557b7f5559a66356ec8b2078a1c3039..708ddb4bf73a4be4802c2e281bf211773b5ac4ed 100644
+--- a/chrome/browser/ui/views/tabs/common/tab_view.cc
++++ b/chrome/browser/ui/views/tabs/common/tab_view.cc
+@@ -336,6 +336,7 @@ TabView::TabView(TabCollectionNode* collection_node)
+                                   this,
+                                   kGlowHoverAnimationDuration)
+                             : nullptr) {
++  MaybeInitTreeToggleButton();
+   tabs::TabInterface* tab = const_cast<tabs::TabInterface*>(GetTabInterface());
+   BrowserWindowInterface* browser_window = tab->GetBrowserWindowInterface();
+ 
+@@ -1253,6 +1254,7 @@ void TabView::UpdateBorder() {
+ }
+ 
+ void TabView::UpdateColors() {
++  UpdateTreeToggleButton();
+   UpdateContrastRatioValues();
+   if (auto* theme_provider = GetThemeProvider()) {
+     should_fill_background_tab_color_ = theme_provider->GetDisplayProperty(

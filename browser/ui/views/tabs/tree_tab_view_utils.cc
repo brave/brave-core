@@ -10,16 +10,25 @@
 #include <memory>
 #include <variant>
 
+#include "base/functional/bind.h"
+#include "base/location.h"
+#include "base/task/single_thread_task_runner.h"
+#include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
+#include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/tabs/common/split_tab_view.h"
 #include "chrome/browser/ui/views/tabs/common/tab_collection_node.h"
 #include "chrome/browser/ui/views/tabs/common/tab_group_view.h"
 #include "chrome/browser/ui/views/tabs/common/tab_view.h"
 #include "components/tabs/public/tab_collection.h"
+#include "components/tabs/public/tab_interface.h"
 #include "third_party/abseil-cpp/absl/functional/overload.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/views/view.h"
+#include "ui/views/view_utils.h"
 
 namespace tree_tab_view_utils {
 
@@ -104,6 +113,23 @@ const tabs::TreeTabNode* GetTreeTabNodeForView(const views::View* view) {
   }
   return GetTreeTabNode(node->GetNodeData());
 }
+
+const tabs::TreeTabNode* GetTreeTabNodeForTab(const tabs::TabInterface* tab) {
+  return tab ? GetTreeTabNode(tabs::ConstChildPtr(tab)) : nullptr;
+}
+
+BraveTabStripModel* GetBraveTabStripModel(tabs::TabInterface* tab) {
+  if (!tab) {
+    return nullptr;
+  }
+
+  BrowserWindowInterface* browser =
+      tab ? tab->GetBrowserWindowInterface() : nullptr;
+  // Tree tab nodes only exist with BraveTabStripModel.
+  return browser ? static_cast<BraveTabStripModel*>(browser->GetTabStripModel())
+                 : nullptr;
+}
+
 }  // namespace
 
 std::vector<std::reference_wrapper<const tabs::Child>> GetUnwrappedChildren(
@@ -143,6 +169,69 @@ int GetTreeTabIndent(
 bool IsInCollapsedTreeTabNode(const views::View* view) {
   const tabs::TreeTabNode* node = GetTreeTabNodeForView(view);
   return node && node->GetClosestCollapsedAncestorId().has_value();
+}
+
+bool HasTreeTabDescendants(const tabs::TabInterface* tab) {
+  const tabs::TreeTabNode* node = GetTreeTabNodeForTab(tab);
+  return node && node->height() > 0;
+}
+
+bool IsTreeTabNodeCollapsed(const tabs::TabInterface* tab) {
+  const tabs::TreeTabNode* node = GetTreeTabNodeForTab(tab);
+  return node && node->collapsed();
+}
+
+std::u16string GetTreeTabToggleButtonLabel(const tabs::TabInterface* tab) {
+  return l10n_util::GetStringUTF16(IsTreeTabNodeCollapsed(tab)
+                                       ? IDS_TREE_TAB_EXPAND_BUTTON
+                                       : IDS_TREE_TAB_COLLAPSE_BUTTON);
+}
+
+void ToggleTreeTabNodeCollapsed(tabs::TabInterface* tab) {
+  const tabs::TreeTabNode* node = GetTreeTabNodeForTab(tab);
+  BraveTabStripModel* model = GetBraveTabStripModel(tab);
+  if (!node || !model) {
+    return;
+  }
+  model->SetTreeTabNodeCollapsed(node->id(), !node->collapsed());
+}
+
+void ExpandCollapsedTreeTabAncestors(tabs::TabInterface* tab) {
+  if (!tab) {
+    return;
+  }
+
+  // |tab| could be in a split or a group wrapped by a tree tab node.
+  tabs::TreeTabNodeTabCollection* tree_node_collection =
+      tabs::TreeTabNodeTabCollection::GetNearestTreeTabNodeCollection(tab);
+  BraveTabStripModel* model = GetBraveTabStripModel(tab);
+  if (!tree_node_collection || !model) {
+    return;
+  }
+
+  const tabs::TreeTabNode& node = tree_node_collection->node();
+  while (auto collapsed_ancestor = node.GetClosestCollapsedAncestorId()) {
+    model->SetTreeTabNodeCollapsed(*collapsed_ancestor, false);
+    CHECK(node.GetClosestCollapsedAncestorId() != collapsed_ancestor)
+        << "Failed to expand.";
+  }
+}
+
+void ExpandCollapsedTreeTabAncestorsAsync(tabs::TabInterface* tab) {
+  if (!tab) {
+    return;
+  }
+
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, base::BindOnce(
+                     [](tabs::TabHandle handle) {
+                       // Another tab could've been activated in the meantime.
+                       if (auto* tab = handle.Get();
+                           tab && tab->IsActivated()) {
+                         ExpandCollapsedTreeTabAncestors(tab);
+                       }
+                     },
+                     tab->GetHandle()));
 }
 
 }  // namespace tree_tab_view_utils

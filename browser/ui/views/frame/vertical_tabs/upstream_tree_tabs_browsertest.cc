@@ -21,6 +21,7 @@
 #include "brave/browser/ui/views/tabs/tree_tab_view_utils.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -46,10 +47,14 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/page_transition_types.h"
+#include "ui/events/event.h"
 #include "ui/gfx/animation/animation.h"
 #include "ui/gfx/animation/animation_test_api.h"
+#include "ui/gfx/geometry/point_f.h"
 #include "ui/gfx/range/range.h"
+#include "ui/views/test/button_test_api.h"
 #include "ui/views/test/views_test_utils.h"
 #include "ui/views/view_utils.h"
 
@@ -308,6 +313,69 @@ IN_PROC_BROWSER_TEST_F(UpstreamTreeTabsBrowserTest, CollapseAndExpand) {
   for (int i = 0; i < model().count(); ++i) {
     EXPECT_TRUE(GetTabViewAt(i)->GetVisible()) << "tab index: " << i;
   }
+}
+
+IN_PROC_BROWSER_TEST_F(UpstreamTreeTabsBrowserTest, ToggleButton) {
+  CreateTree();
+  model().ActivateTabAt(0);
+  LayoutNow();
+
+  // Only tabs with descendants have the toggle button.
+  EXPECT_TRUE(GetTabViewAt(0)->ShouldShowTreeToggleButton());
+  model().ActivateTabAt(2);
+  LayoutNow();
+  EXPECT_FALSE(GetTabViewAt(2)->ShouldShowTreeToggleButton());
+
+  model().ActivateTabAt(0);
+  LayoutNow();
+  views::ImageButton* button =
+      GetTabViewAt(0)->tree_toggle_button_for_testing();
+  ASSERT_TRUE(button);
+  EXPECT_TRUE(button->GetVisible());
+  EXPECT_EQ(l10n_util::GetStringUTF16(IDS_TREE_TAB_COLLAPSE_BUTTON),
+            button->GetTooltipText());
+  EXPECT_EQ(l10n_util::GetStringUTF16(IDS_TREE_TAB_COLLAPSE_BUTTON),
+            button->GetViewAccessibility().GetCachedName());
+
+  // The toggle button takes the close button's place.
+  views::test::ButtonTestApi(button).NotifyClick(
+      ui::MouseEvent(ui::EventType::kMousePressed, gfx::PointF(), gfx::PointF(),
+                     base::TimeTicks::Now(), ui::EF_LEFT_MOUSE_BUTTON,
+                     ui::EF_LEFT_MOUSE_BUTTON));
+  EXPECT_TRUE(GetTreeTabNodeAt(0).collapsed());
+  WaitForViewModelSynced();
+  EXPECT_FALSE(GetTabViewAt(1)->GetVisible());
+  EXPECT_EQ(l10n_util::GetStringUTF16(IDS_TREE_TAB_EXPAND_BUTTON),
+            button->GetTooltipText());
+
+  // The toggle button stays visible while collapsed, even for an inactive
+  // tab.
+  model().ActivateTabAt(3);
+  LayoutNow();
+  EXPECT_TRUE(GetTabViewAt(0)->ShouldShowTreeToggleButton());
+
+  views::test::ButtonTestApi(button).NotifyClick(
+      ui::MouseEvent(ui::EventType::kMousePressed, gfx::PointF(), gfx::PointF(),
+                     base::TimeTicks::Now(), ui::EF_LEFT_MOUSE_BUTTON,
+                     ui::EF_LEFT_MOUSE_BUTTON));
+  EXPECT_FALSE(GetTreeTabNodeAt(0).collapsed());
+}
+
+IN_PROC_BROWSER_TEST_F(UpstreamTreeTabsBrowserTest,
+                       ActivatingHiddenTabExpandsAncestors) {
+  CreateTree();
+  model().ActivateTabAt(3);
+  model().SetTreeTabNodeCollapsed(GetTreeTabNodeAt(1).id(), true);
+  model().SetTreeTabNodeCollapsed(GetTreeTabNodeAt(0).id(), true);
+  WaitForViewModelSynced();
+
+  // Expanded asynchronously, not in the middle of the model's notifications.
+  model().ActivateTabAt(2);
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return !GetTreeTabNodeAt(0).collapsed() && !GetTreeTabNodeAt(1).collapsed();
+  }));
+  WaitForViewModelSynced();
+  EXPECT_TRUE(GetTabViewAt(2)->GetVisible());
 }
 
 IN_PROC_BROWSER_TEST_F(UpstreamTreeTabsBrowserTest, FlattenAndRebuild) {
