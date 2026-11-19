@@ -38,6 +38,7 @@ TEST_F(BraveRequestInfoTest,
   TestingProfile profile;
   network::ResourceRequest request;
   request.url = GURL("https://worker.example/fetch");
+  request.resource_type = static_cast<int>(blink::mojom::ResourceType::kXhr);
   ASSERT_FALSE(request.request_initiator);
   ASSERT_FALSE(request.trusted_params);
 
@@ -57,6 +58,8 @@ TEST_F(BraveRequestInfoTest,
   ASSERT_TRUE(ctx->request_initiator());
   EXPECT_EQ(factory_initiator, *ctx->request_initiator());
   EXPECT_EQ(factory_top_frame_origin.GetURL(), ctx->tab_origin());
+  EXPECT_EQ(factory_top_frame_origin, ctx->top_frame_origin());
+  EXPECT_EQ(factory_top_frame_origin, ctx->first_party_origin_for_shields());
   EXPECT_EQ(ctx->network_anonymization_key(),
             factory_isolation_info.network_anonymization_key());
 }
@@ -128,6 +131,7 @@ TEST_F(BraveRequestInfoTest, RequestContextOverridesFactoryContext) {
   ASSERT_TRUE(ctx->request_initiator());
   EXPECT_EQ(request_initiator, *ctx->request_initiator());
   EXPECT_EQ(request_top_frame_origin.GetURL(), ctx->tab_origin());
+  EXPECT_EQ(request_top_frame_origin, ctx->top_frame_origin());
   EXPECT_EQ(ctx->network_anonymization_key(),
             request.trusted_params->isolation_info.network_anonymization_key());
 }
@@ -153,6 +157,7 @@ TEST_F(BraveRequestInfoTest,
 
   EXPECT_FALSE(ctx->request_initiator());
   EXPECT_TRUE(ctx->tab_origin().is_empty());
+  EXPECT_FALSE(ctx->top_frame_origin());
   EXPECT_TRUE(ctx->network_anonymization_key().IsEmpty());
 }
 
@@ -172,6 +177,45 @@ TEST_F(BraveRequestInfoTest, WorkerWebSocketFallsBackToInitiatorTabOrigin) {
   ASSERT_TRUE(ctx->request_initiator());
   EXPECT_EQ(initiator, *ctx->request_initiator());
   EXPECT_EQ(initiator.GetURL(), ctx->tab_origin());
+  EXPECT_FALSE(ctx->top_frame_origin());
+}
+
+// Opaque top frame origins are kept as is, so their precursor is not lost.
+TEST_F(BraveRequestInfoTest, KeepsOpaqueTopFrameOrigin) {
+  TestingProfile profile;
+  const url::Origin a_com = url::Origin::Create(GURL("https://a.com"));
+  const url::Origin sandboxed = a_com.DeriveNewOpaqueOrigin();
+  network::ResourceRequest request;
+  request.url = GURL("https://b.com/script.js");
+  request.request_initiator = url::Origin::Create(GURL("https://b.com"));
+  request.resource_type = static_cast<int>(blink::mojom::ResourceType::kScript);
+  request.trusted_params = network::ResourceRequest::TrustedParams();
+  request.trusted_params->isolation_info = MakeIsolationInfo(sandboxed);
+
+  auto ctx = BraveRequestInfo::MakeCTX(
+      request, content::GlobalRenderFrameHostToken(), 1, &profile,
+      /*old_ctx=*/nullptr);
+
+  EXPECT_EQ(sandboxed, ctx->top_frame_origin());
+  EXPECT_EQ(a_com, ctx->first_party_origin_for_shields());
+}
+
+TEST_F(BraveRequestInfoTest, KeepsOpaqueTopFrameOriginWithoutPrecursor) {
+  TestingProfile profile;
+  const url::Origin opaque;
+  network::ResourceRequest request;
+  request.url = GURL("https://b.com/script.js");
+  request.request_initiator = url::Origin::Create(GURL("https://b.com"));
+  request.resource_type = static_cast<int>(blink::mojom::ResourceType::kScript);
+  request.trusted_params = network::ResourceRequest::TrustedParams();
+  request.trusted_params->isolation_info = MakeIsolationInfo(opaque);
+
+  auto ctx = BraveRequestInfo::MakeCTX(
+      request, content::GlobalRenderFrameHostToken(), 1, &profile,
+      /*old_ctx=*/nullptr);
+
+  EXPECT_EQ(opaque, ctx->top_frame_origin());
+  EXPECT_TRUE(ctx->first_party_origin_for_shields().opaque());
 }
 
 TEST_F(BraveRequestInfoTest, FirstPartyOriginForShieldsMainFrame) {
@@ -188,6 +232,11 @@ TEST_F(BraveRequestInfoTest, FirstPartyOriginForShieldsMainFrame) {
   EXPECT_EQ(url::Origin::Create(url), ctx.first_party_origin_for_shields());
   ctx.set_request_initiator(url::Origin());
   EXPECT_EQ(url::Origin::Create(url), ctx.first_party_origin_for_shields());
+
+  // The top frame origin is ignored, since it is the previous document's.
+  ctx.set_top_frame_origin(
+      url::Origin::Create(GURL("https://top-frame.example")));
+  EXPECT_EQ(url::Origin::Create(url), ctx.first_party_origin_for_shields());
 }
 
 TEST_F(BraveRequestInfoTest,
@@ -201,18 +250,37 @@ TEST_F(BraveRequestInfoTest,
   EXPECT_EQ(initiator, ctx.first_party_origin_for_shields());
 }
 
-TEST_F(BraveRequestInfoTest, FirstPartyOriginForShieldsSubFrameUsesInitiator) {
+TEST_F(BraveRequestInfoTest, FirstPartyOriginForShieldsSubFrameUsesTopFrame) {
   const GURL url("https://example.com/frame");
   const url::Origin initiator =
       url::Origin::Create(GURL("https://initiator.example"));
+  const url::Origin top_frame_origin =
+      url::Origin::Create(GURL("https://top-frame.example"));
   BraveRequestInfo ctx(url);
   ctx.set_resource_type(blink::mojom::ResourceType::kSubFrame);
 
-  // Falls back to the request URL without an initiator.
+  // Falls back to the request URL without an initiator or top frame origin.
   EXPECT_EQ(url::Origin::Create(url), ctx.first_party_origin_for_shields());
 
+  // Falls back to the initiator without a top frame origin.
   ctx.set_request_initiator(initiator);
   EXPECT_EQ(initiator, ctx.first_party_origin_for_shields());
+
+  ctx.set_top_frame_origin(top_frame_origin);
+  EXPECT_EQ(top_frame_origin, ctx.first_party_origin_for_shields());
+}
+
+TEST_F(BraveRequestInfoTest,
+       FirstPartyOriginForShieldsSubresourceUsesTopFrame) {
+  const url::Origin top_frame_origin =
+      url::Origin::Create(GURL("https://a.com"));
+  BraveRequestInfo ctx(GURL("https://c.com/script.js"));
+  ctx.set_resource_type(blink::mojom::ResourceType::kScript);
+  // A subresource of a b.com iframe embedded in a.com.
+  ctx.set_request_initiator(url::Origin::Create(GURL("https://b.com")));
+  ctx.set_top_frame_origin(top_frame_origin);
+
+  EXPECT_EQ(top_frame_origin, ctx.first_party_origin_for_shields());
 }
 
 // Sandboxed documents have an opaque origin, but Shields uses the origin it
