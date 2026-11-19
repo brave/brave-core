@@ -1,5 +1,5 @@
 diff --git a/ios/web/web_state/ui/BUILD.gn b/ios/web/web_state/ui/BUILD.gn
-index d4cc932202f2b0081a1611f3aa9f34878b62b6bd..d6f74b0aca19e779dad6c957791533e3cfb46c09 100644
+index d4cc932202f2b0081a1611f3aa9f34878b62b6bd..71ab8d5129e4eca6b74b4d59125bdb54147d8006 100644
 --- a/ios/web/web_state/ui/BUILD.gn
 +++ b/ios/web/web_state/ui/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -18,3 +18,9 @@ index d4cc932202f2b0081a1611f3aa9f34878b62b6bd..d6f74b0aca19e779dad6c957791533e3
  
    if (!ios_is_app_extension) {
      deps += [ "//ios/web/common:uikit" ]
+@@ -179,4 +181,5 @@ source_set("wk_web_view_configuration_provider") {
+     "wk_content_rule_list_util.mm",
+     "wk_web_view_configuration_provider.mm",
+   ]
++  sources += brave_ios_web_wk_web_view_configuration_provider_sources
+ }

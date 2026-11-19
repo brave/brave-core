@@ -16,13 +16,13 @@
 #include "brave/ios/browser/api/web_view/brave_web_view_configuration_provider.h"
 #include "brave/ios/browser/skus/skus_javascript_feature.h"
 #include "brave/ios/browser/ui/web_view/features.h"
+#include "brave/ios/web/web_state/ui/wk_web_view_shared_resources_provider.h"
 #include "components/autofill/core/browser/data_manager/personal_data_manager.h"
 #include "components/keyed_service/core/service_access_type.h"
 #include "components/password_manager/core/browser/password_store/password_store_interface.h"
 #include "ios/chrome/browser/autofill/model/personal_data_manager_factory.h"
 #include "ios/chrome/browser/passwords/model/ios_chrome_profile_password_store_factory.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
-#include "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
 #include "ios/web_view/internal/autofill/cwv_autofill_data_manager_internal.h"
 #include "ios/web_view/internal/cwv_web_view_configuration_internal.h"
 
@@ -41,7 +41,7 @@
       brave::features::kUseProfileWebViewConfiguration))
       << "The resulting website data store is only valid when we don't "
          "override the configuration with every created BraveWebView";
-  return web::WKWebViewConfigurationProvider::FromBrowserState(
+  return web::WKWebViewSharedResourcesProvider::FromBrowserState(
              self.browserState)
       .GetWebsiteDataStore();
 }

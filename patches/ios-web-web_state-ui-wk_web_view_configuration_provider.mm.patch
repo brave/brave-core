@@ -1,8 +1,216 @@
 diff --git a/ios/web/web_state/ui/wk_web_view_configuration_provider.mm b/ios/web/web_state/ui/wk_web_view_configuration_provider.mm
-index 72bca8d629dde292de0bc64f2f9a0ae4335d5a3e..f2839f5ce6bd3e923bf9325f46314fab83fadc74 100644
+index 72bca8d629dde292de0bc64f2f9a0ae4335d5a3e..c47419b70577da9edb0a43252855b0345f5fda2a 100644
 --- a/ios/web/web_state/ui/wk_web_view_configuration_provider.mm
 +++ b/ios/web/web_state/ui/wk_web_view_configuration_provider.mm
-@@ -335,22 +335,25 @@ void WKWebViewConfigurationProvider::UpdateScripts() {
+@@ -21,6 +21,8 @@
+ #import "base/task/sequenced_task_runner.h"
+ #import "base/trace_event/trace_event.h"
+ #import "base/uuid.h"
++#import "brave/ios/web/web_state/ui/wk_content_rule_list_applier.h"
++#import "brave/ios/web/web_state/ui/wk_web_view_shared_resources_provider.h"
+ #import "components/safe_browsing/core/common/features.h"
+ #import "ios/public/provider/web/cobalt_api.h"
+ #import "ios/web/common/features.h"
+@@ -30,8 +32,6 @@
+ #import "ios/web/js_messaging/web_frames_manager_java_script_feature.h"
+ #import "ios/web/public/browser_state.h"
+ #import "ios/web/public/web_client.h"
+-#import "ios/web/web_state/ui/wk_content_rule_list_provider.h"
+-#import "ios/web/web_state/ui/wk_content_rule_list_util.h"
+ #import "ios/web/webui/crw_web_ui_scheme_handler.h"
+ 
+ namespace web {
+@@ -42,18 +42,6 @@ namespace {
+ constexpr char kWKWebViewConfigProviderKeyName[] =
+     "wk_web_view_config_provider";
+ 
+-// Converts `uuid` to an NSUUID.
+-NSUUID* ToNSUUID(const base::Uuid& uuid) {
+-  DCHECK(uuid.is_valid());
+-  // base::Uuid(...) uses lower-case but NSUUID uses upper-case, so convert
+-  // to upper-case before calling -initWithUUIDString: to avoid case issues.
+-  const std::string uuid_string = base::ToUpperASCII(uuid.AsLowercaseString());
+-  NSString* uuid_nsstring = base::SysUTF8ToNSString(uuid_string);
+-  NSUUID* nsuuid = [[NSUUID alloc] initWithUUIDString:uuid_nsstring];
+-  DCHECK(nsuuid);
+-  return nsuuid;
+-}
+-
+ }  // namespace
+ 
+ // static
+@@ -69,36 +57,6 @@ WKWebViewConfigurationProvider::FromBrowserState(BrowserState* browser_state) {
+       browser_state->GetUserData(kWKWebViewConfigProviderKeyName)));
+ }
+ 
+-// static
+-void WKWebViewConfigurationProvider::DeleteDataStorageForIdentifier(
+-    const base::Uuid& uuid,
+-    base::OnceCallback<void(NSError*)> callback) {
+-  if (@available(iOS 17.0, *)) {
+-    // Calling either +removeDataStoreForIdentifier:completionHandler: or
+-    // +fetchAllDataStoreIdentifiers: crashes if no WKWebsiteDataStore
+-    // instance have been created in the app before.
+-    //
+-    // To prevent a crash, access the default data store. This prevents the
+-    // crash. This is fine since the default data store cannot be deleted,
+-    // so there is no risk of preventing the deletion that could happen if
+-    // the code were trying to load the store that it is supposed to delete.
+-    @autoreleasepool {
+-      std::ignore = [WKWebsiteDataStore defaultDataStore];
+-    }
+-
+-    // The WebKit documentation does not specify on which queue the block
+-    // is run, so use base::BindPostTask(...) to ensure the callback will
+-    // be run on the calling sequence.
+-    auto completion = base::CallbackToBlock(base::BindPostTask(
+-        base::SequencedTaskRunner::GetCurrentDefault(), std::move(callback)));
+-
+-    [WKWebsiteDataStore removeDataStoreForIdentifier:ToNSUUID(uuid)
+-                                   completionHandler:completion];
+-  } else {
+-    NOTREACHED();
+-  }
+-}
+-
+ base::WeakPtr<WKWebViewConfigurationProvider>
+ WKWebViewConfigurationProvider::AsWeakPtr() {
+   DCHECK_CALLED_ON_VALID_SEQUENCE(_sequence_checker_);
+@@ -108,38 +66,14 @@ WKWebViewConfigurationProvider::AsWeakPtr() {
+ WKWebViewConfigurationProvider::WKWebViewConfigurationProvider(
+     BrowserState* browser_state)
+     : browser_state_(browser_state),
+-      content_rule_list_provider_(std::make_unique<WKContentRuleListProvider>(
+-          browser_state->GetStatePath())) {
+-  Initialize();
+-}
+-
+-WKWebViewConfigurationProvider::WKWebViewConfigurationProvider(
+-    BrowserState* browser_state,
+-    std::unique_ptr<WKContentRuleListProvider> rule_list_provider)
+-    : browser_state_(browser_state),
+-      content_rule_list_provider_(std::move(rule_list_provider)) {
+-  CHECK_IS_TEST();
+-  Initialize();
+-}
++      content_rule_list_applier_(std::make_unique<WKContentRuleListApplier>(
++          WKWebViewSharedResourcesProvider::FromBrowserState(browser_state)
++              .GetContentRuleListRegistry())) {}
+ 
+ WKWebViewConfigurationProvider::~WKWebViewConfigurationProvider() {
+   DCHECK_CALLED_ON_VALID_SEQUENCE(_sequence_checker_);
+ }
+ 
+-void WKWebViewConfigurationProvider::Initialize() {
+-  // Create the static content rule lists.
+-  // 1. Create Block Local List
+-  content_rule_list_provider_->UpdateRuleList(
+-      kBlockLocalResourcesRuleListKey,
+-      base::SysNSStringToUTF8(CreateAppSpecificURLsJsonRuleList()),
+-      base::DoNothing());
+-  // 2. Create Mixed Content Autoupgrade List
+-  content_rule_list_provider_->UpdateRuleList(
+-      kMixedContentUpgradeRuleListKey,
+-      base::SysNSStringToUTF8(CreateMixedContentAutoUpgradeJsonRuleList()),
+-      base::DoNothing());
+-}
+-
+ void WKWebViewConfigurationProvider::ResetWithWebViewConfiguration(
+     WKWebViewConfiguration* configuration) {
+   TRACE_EVENT("ui",
+@@ -155,24 +89,19 @@ void WKWebViewConfigurationProvider::ResetWithWebViewConfiguration(
+     configuration_ = [configuration copy];
+   }
+ 
+-  WKWebsiteDataStore* original_data_store = website_data_store_;
++  WKWebViewSharedResourcesProvider& shared_resources_provider =
++      WKWebViewSharedResourcesProvider::FromBrowserState(browser_state_);
+   // Update the configuration's website data store.
+   if (!configuration) {
+-    // Purge `website_data_store_` if current website data store is set from
+-    // configuration originated from somewhere outside //ios/web, so that the
+-    // next call to `GetWebsiteDataStore` will create a new data store for
+-    // //ios/web managed WKWebview.
+-    if (website_data_store_ && !is_data_store_originated_from_ios_web_) {
+-      website_data_store_ = nil;
+-    }
+-    [configuration_ setWebsiteDataStore:GetWebsiteDataStore()];
++    // Drop the data store set from a configuration originated from
++    // somewhere outside //ios/web, so that //ios/web managed WKWebViews use
++    // the BrowserState's own data store.
++    shared_resources_provider.ResetExternalWebsiteDataStore();
++    [configuration_
++        setWebsiteDataStore:shared_resources_provider.GetWebsiteDataStore()];
+   } else {
+-    website_data_store_ = configuration.websiteDataStore;
+-    is_data_store_originated_from_ios_web_ = false;
+-  }
+-
+-  if (website_data_store_ != original_data_store) {
+-    website_data_store_updated_callbacks_.Notify(website_data_store_);
++    shared_resources_provider.SetExternalWebsiteDataStore(
++        configuration.websiteDataStore);
+   }
+ 
+   [configuration_ setIgnoresViewportScaleLimits:YES];
+@@ -238,7 +167,7 @@ void WKWebViewConfigurationProvider::ResetWithWebViewConfiguration(
+                            forURLScheme:base::SysUTF8ToNSString(scheme)];
+   }
+ 
+-  content_rule_list_provider_->SetUserContentController(
++  content_rule_list_applier_->SetUserContentController(
+       configuration_.userContentController);
+ 
+   if (@available(iOS 27, *)) {
+@@ -287,47 +216,6 @@ void WKWebViewConfigurationProvider::SetUniversalOptOutEnabled(bool enabled) {
+ #endif
+ }
+ 
+-WKWebsiteDataStore* WKWebViewConfigurationProvider::GetWebsiteDataStore() {
+-  DCHECK_CALLED_ON_VALID_SEQUENCE(_sequence_checker_);
+-  if (!website_data_store_) {
+-    TRACE_EVENT("ui", "WKWebViewConfigurationProvider::GetWebsiteDataStore");
+-    if (browser_state_->IsOffTheRecord()) {
+-      // The data is stored in memory. A new non-persistent data store is
+-      // created for each incognito browser state.
+-      website_data_store_ = [WKWebsiteDataStore nonPersistentDataStore];
+-    } else {
+-      const base::Uuid& storage_id = browser_state_->GetWebKitStorageID();
+-      if (storage_id.is_valid()) {
+-        if (@available(iOS 17.0, *)) {
+-          // Set the data store to configuration when the browser state is not
+-          // incognito and the storage ID exists. `dataStoreForIdentifier:` is
+-          // available after iOS 17. Otherwise, use the default data store.
+-          NSUUID* uuid = ToNSUUID(storage_id);
+-          website_data_store_ =
+-              [WKWebsiteDataStore dataStoreForIdentifier:uuid];
+-        }
+-      }
+-    }
+-
+-    // Explicitly use the default data store.
+-    if (website_data_store_ == nil) {
+-      website_data_store_ = [WKWebsiteDataStore defaultDataStore];
+-    }
+-
+-    // Mark the data store is originated from //ios/web.
+-    is_data_store_originated_from_ios_web_ = true;
+-
+-    // Workaround to force the creation of the WKWebsiteDataStore.
+-    NSSet* data_types = [NSSet setWithObject:WKWebsiteDataTypeCookies];
+-    [website_data_store_
+-        fetchDataRecordsOfTypes:data_types
+-              completionHandler:^(NSArray<WKWebsiteDataRecord*>* records){
+-              }];
+-  }
+-  DCHECK(website_data_store_);
+-  return website_data_store_;
+-}
+-
+ void WKWebViewConfigurationProvider::UpdateScripts() {
+   TRACE_EVENT("ui", "WKWebViewConfigurationProvider::UpdateScripts");
+   DCHECK_CALLED_ON_VALID_SEQUENCE(_sequence_checker_);
+@@ -335,22 +223,25 @@ void WKWebViewConfigurationProvider::UpdateScripts() {
  
    JavaScriptFeatureManager* java_script_feature_manager =
        JavaScriptFeatureManager::FromBrowserState(browser_state_);
@@ -33,3 +241,21 @@ index 72bca8d629dde292de0bc64f2f9a0ae4335d5a3e..f2839f5ce6bd3e923bf9325f46314fab
    for (WebFramesManagerJavaScriptFeature* feature :
         web_frames_manager_features) {
      feature->ConfigureHandlers(user_content_controller);
+@@ -362,17 +253,4 @@ void WKWebViewConfigurationProvider::Purge() {
+   configuration_ = nil;
+ }
+ 
+-WKContentRuleListProvider&
+-WKWebViewConfigurationProvider::GetContentRuleListProvider() {
+-  DCHECK_CALLED_ON_VALID_SEQUENCE(_sequence_checker_);
+-  return *content_rule_list_provider_;
+-}
+-
+-base::CallbackListSubscription
+-WKWebViewConfigurationProvider::RegisterWebSiteDataStoreUpdatedCallback(
+-    WebSiteDataStoreUpdatedCallbackList::CallbackType callback) {
+-  DCHECK_CALLED_ON_VALID_SEQUENCE(_sequence_checker_);
+-  return website_data_store_updated_callbacks_.Add(std::move(callback));
+-}
+-
+ }  // namespace web

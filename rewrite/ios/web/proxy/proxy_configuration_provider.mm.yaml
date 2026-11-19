@@ -1,0 +1,30 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Include the shared resources provider holding the data store.
+    regex:
+      re_pattern:
+        '(#import "base/task/thread_pool\.h"\n)(.*?)#import
+        "ios/web/web_state/ui/wk_web_view_configuration_provider\.h"\n'
+      re_flags: [DOTALL]
+      replace: |-
+        \1#import "brave/ios/web/web_state/ui/wk_web_view_shared_resources_provider.h"
+        \2
+
+  - description: |-
+      Set the proxy configurations on the shared data store.
+
+      The website data store is shared by every WebState of the BrowserState,
+      so it moved out of the WKWebViewConfigurationProvider.
+    regex:
+      re_pattern:
+        'WKWebViewConfigurationProvider& config_provider
+        =\n(\s*)WKWebViewConfigurationProvider::FromBrowserState\(browser_state_\);\n(\s*)WKWebsiteDataStore\*
+        data_store = config_provider\.GetWebsiteDataStore\(\);'
+      replace: |-
+        WKWebsiteDataStore* data_store =
+        \1WKWebViewSharedResourcesProvider::FromBrowserState(browser_state_)
+        \1    .GetWebsiteDataStore();

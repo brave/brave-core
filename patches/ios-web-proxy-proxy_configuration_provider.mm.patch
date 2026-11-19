@@ -1,0 +1,28 @@
+diff --git a/ios/web/proxy/proxy_configuration_provider.mm b/ios/web/proxy/proxy_configuration_provider.mm
+index debd72e4be5618b5e9a6621c46a77eb51e797586..9aafece9323ec1242c249a16b42a11c2710d9a34 100644
+--- a/ios/web/proxy/proxy_configuration_provider.mm
++++ b/ios/web/proxy/proxy_configuration_provider.mm
+@@ -18,9 +18,9 @@
+ #import "base/memory/ptr_util.h"
+ #import "base/strings/string_number_conversions.h"
+ #import "base/task/thread_pool.h"
++#import "brave/ios/web/web_state/ui/wk_web_view_shared_resources_provider.h"
+ #import "ios/web/public/browser_state.h"
+ #import "ios/web/public/thread/web_thread.h"
+-#import "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
+ 
+ namespace web {
+ 
+@@ -145,9 +145,9 @@ void ProxyConfigurationProvider::OnNativeProxyConfigurationsMapped(
+     return;
+   }
+ 
+-  WKWebViewConfigurationProvider& config_provider =
+-      WKWebViewConfigurationProvider::FromBrowserState(browser_state_);
+-  WKWebsiteDataStore* data_store = config_provider.GetWebsiteDataStore();
++  WKWebsiteDataStore* data_store =
++      WKWebViewSharedResourcesProvider::FromBrowserState(browser_state_)
++          .GetWebsiteDataStore();
+   if (data_store) {
+     data_store.proxyConfigurations = *native_configs;
+   }

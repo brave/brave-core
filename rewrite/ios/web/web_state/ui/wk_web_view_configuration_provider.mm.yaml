@@ -39,3 +39,118 @@ substitutions:
       replace: |
         \1  features.insert(features.end(), web_frames_manager_features.begin(),
                           web_frames_manager_features.end());
+
+  - description: |-
+      Include the shared resources the configuration is built from, in place of
+      the rule list provider.
+    regex:
+      re_pattern:
+        '#import
+        "ios/web/web_state/ui/wk_content_rule_list_provider\.h"\n#import
+        "ios/web/web_state/ui/wk_content_rule_list_util\.h"\n'
+      replace: ''
+
+  - description: Include the shared resources the configuration is built from.
+    add_after_line:
+      line: '#import "base/uuid.h"'
+      code: |-
+        #import "brave/ios/web/web_state/ui/wk_content_rule_list_applier.h"
+        #import "brave/ios/web/web_state/ui/wk_web_view_shared_resources_provider.h"
+
+  - description:
+      Drop `ToNSUUID`, moved to the shared provider with the data store.
+    regex:
+      re_pattern:
+        '\n// Converts `uuid` to an NSUUID\.\nNSUUID\* ToNSUUID\(const
+        base::Uuid& uuid\) \{\n.*?\n\}\n'
+      re_flags: [DOTALL]
+      replace: ''
+
+  - description:
+      Drop `DeleteDataStorageForIdentifier`, moved to the shared provider.
+    regex:
+      re_pattern:
+        '// static\nvoid
+        WKWebViewConfigurationProvider::DeleteDataStorageForIdentifier\(.*?\n\}\n\n'
+      re_flags: [DOTALL]
+      replace: ''
+
+  - description: |-
+      Construct a rule list applier for the shared content rule lists.
+
+      The rule lists used to be compiled by this provider. They are now compiled
+      once per BrowserState by WKWebViewSharedResourcesProvider, including the
+      static ones.
+    regex:
+      re_pattern:
+        '(WKWebViewConfigurationProvider::WKWebViewConfigurationProvider\(\n\s*BrowserState\*
+        browser_state\)\n\s*:
+        browser_state_\(browser_state\),\n)\s*content_rule_list_provider_\(std::make_unique<WKContentRuleListProvider>\(\n\s*browser_state->GetStatePath\(\)\)\)
+        \{\n\s*Initialize\(\);\n\}\n\nWKWebViewConfigurationProvider::WKWebViewConfigurationProvider\(\n\s*BrowserState\*
+        browser_state,\n\s*std::unique_ptr<WKContentRuleListProvider>
+        rule_list_provider\)\n.*?\n\}\n'
+      re_flags: [DOTALL]
+      replace: |
+        \1      content_rule_list_applier_(std::make_unique<WKContentRuleListApplier>(
+                  WKWebViewSharedResourcesProvider::FromBrowserState(browser_state)
+                      .GetContentRuleListRegistry())) {}
+
+  - description:
+      Drop `Initialize`, as the shared provider compiles the static lists.
+    regex:
+      re_pattern:
+        '\nvoid WKWebViewConfigurationProvider::Initialize\(\) \{\n.*?\n\}\n'
+      re_flags: [DOTALL]
+      replace: ''
+
+  - description: |-
+      Take the website data store from the shared provider.
+
+      A configuration not originating from //ios/web still replaces the
+      BrowserState's data store, and a later //ios/web configuration restores
+      it.
+    regex:
+      re_pattern:
+        '\n\s*WKWebsiteDataStore\* original_data_store =
+        website_data_store_;\n(\s*)// Update the configuration''s website data
+        store\.\n.*?website_data_store_updated_callbacks_\.Notify\(website_data_store_\);\n\s*\}\n'
+      re_flags: [DOTALL]
+      replace: |+
+
+
+        \1WKWebViewSharedResourcesProvider& shared_resources_provider =
+        \1    WKWebViewSharedResourcesProvider::FromBrowserState(browser_state_);
+        \1// Update the configuration's website data store.
+        \1if (!configuration) {
+        \1  // Drop the data store set from a configuration originated from
+        \1  // somewhere outside //ios/web, so that //ios/web managed WKWebViews use
+        \1  // the BrowserState's own data store.
+        \1  shared_resources_provider.ResetExternalWebsiteDataStore();
+        \1  [configuration_
+        \1      setWebsiteDataStore:shared_resources_provider.GetWebsiteDataStore()];
+        \1} else {
+        \1  shared_resources_provider.SetExternalWebsiteDataStore(
+        \1      configuration.websiteDataStore);
+        \1}
+  - description: Install the shared content rule lists on this configuration.
+    regex:
+      pattern: 'content_rule_list_provider_->SetUserContentController('
+      replace: 'content_rule_list_applier_->SetUserContentController('
+
+  - description: Drop `GetWebsiteDataStore`, moved to the shared provider.
+    regex:
+      re_pattern:
+        '\nWKWebsiteDataStore\*
+        WKWebViewConfigurationProvider::GetWebsiteDataStore\(\) \{\n.*?\n\}\n'
+      re_flags: [DOTALL]
+      replace: ''
+
+  - description: |-
+      Drop `GetContentRuleListProvider` and
+      `RegisterWebSiteDataStoreUpdatedCallback`, moved to the shared provider.
+    regex:
+      re_pattern:
+        '\nWKContentRuleListProvider&\nWKWebViewConfigurationProvider::GetContentRuleListProvider\(\)
+        \{\n.*?\nWKWebViewConfigurationProvider::RegisterWebSiteDataStoreUpdatedCallback\(.*?\n\}\n'
+      re_flags: [DOTALL]
+      replace: ''

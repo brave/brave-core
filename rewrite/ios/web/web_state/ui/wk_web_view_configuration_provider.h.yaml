@@ -1,0 +1,112 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Apply the shared content rule lists instead of owning them.
+
+      The rule lists are compiled once per BrowserState by
+      WKWebViewSharedResourcesProvider, and a WKContentRuleListApplier installs
+      them on this provider's WKUserContentController.
+    regex:
+      pattern: 'class WKContentRuleListProvider;'
+      replace: 'class WKContentRuleListApplier;'
+
+  - description: |-
+      Drop the static content rule list keys.
+
+      They moved to WKWebViewSharedResourcesProvider, which compiles the lists.
+    regex:
+      re_pattern:
+        '\n// Keys for the static content rule lists managed by this
+        provider\.\n[^\n]*kBlockLocalResourcesRuleListKey[^\n]*\n[^\n]*kMixedContentUpgradeRuleListKey[^\n]*\n'
+      replace: ''
+
+  - description: |-
+      Drop the website data store API.
+
+      The website data store moved to WKWebViewSharedResourcesProvider.
+    regex:
+      re_pattern:
+        '\n\s*// Callbacks invoked when a new WKWebViewConfiguration is
+        created\.\n\s*using WebSiteDataStoreUpdatedCallbackList =\n[^;]*;\n'
+      replace: ''
+
+  - description:
+      Drop `DeleteDataStorageForIdentifier`, moved to the shared provider.
+    regex:
+      re_pattern:
+        '\n\n\s*// Delete the storage associated with
+        uuid\.[^;]*DeleteDataStorageForIdentifier\([^;]*;\n'
+      replace: "\n"
+
+  - description: Drop `GetWebsiteDataStore`, moved to the shared provider.
+    regex:
+      re_pattern:
+        '\n\n\s*// Returns a WKWebsiteDataStore associated with browser
+        state\.[^;]*GetWebsiteDataStore\(\);\n'
+      replace: "\n"
+
+  - description: |-
+      Drop `GetContentRuleListProvider` and
+      `RegisterWebSiteDataStoreUpdatedCallback`, moved to the shared provider.
+    regex:
+      re_pattern:
+        '\n\n\s*// Returns WKContentRuleListProvider associated with
+        WKWebViewConfiguration\..*?RegisterWebSiteDataStoreUpdatedCallback\([^;]*;\n'
+      re_flags: [DOTALL]
+      replace: "\n"
+
+  - description: Drop the constructor injecting a rule list provider for tests.
+    regex:
+      re_pattern:
+        '\n\s*// Constructor that allows for injecting a custom rule list
+        provider\.\n.*?std::unique_ptr<WKContentRuleListProvider>
+        rule_list_provider\);'
+      re_flags: [DOTALL]
+      replace: ''
+
+  - description: Drop `Initialize`, which only compiled the static rule lists.
+    regex:
+      re_pattern:
+        '\n\n\s*// Performs the initialization logic shared amongst
+        constructors\.\n\s*void Initialize\(\);\n'
+      replace: "\n"
+
+  - description:
+      Drop the website data store members, moved to the shared provider.
+    regex:
+      re_pattern: '\n\s*WKWebsiteDataStore\* website_data_store_ = nil;'
+      replace: ''
+
+  - description: Own a rule list applier for this provider's configuration.
+    regex:
+      pattern:
+        'std::unique_ptr<WKContentRuleListProvider> content_rule_list_provider_;'
+      replace:
+        'std::unique_ptr<WKContentRuleListApplier> content_rule_list_applier_;'
+
+  - description:
+      Drop the data store callbacks and origin, moved to the shared provider.
+    regex:
+      re_pattern:
+        '\n\n\s*// List of callbacks notified when the website data store is
+        updated\.\n.*?bool is_data_store_originated_from_ios_web_ = true;\n'
+      re_flags: [DOTALL]
+      replace: "\n"
+
+  - description: Drop the declarations only the website data store API used.
+    regex:
+      re_pattern:
+        '\n@class WKWebsiteDataStore;\n(.*?)\nnamespace base \{\nclass
+        Uuid;\n\}\n'
+      re_flags: [DOTALL]
+      replace: '\n\1'
+
+  - description: Drop the include only the website data store callbacks used.
+    regex:
+      pattern: |
+        #include "base/callback_list.h"
+      replace: ''

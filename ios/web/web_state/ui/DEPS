@@ -1,0 +1,10 @@
+include_rules = [
+  "+ios/web/public",
+  "+ios/web/web_state/ui",
+]
+
+specific_include_rules = {
+  ".*_unittest\.mm": [
+    "+third_party/ocmock",
+  ],
+}

@@ -1,0 +1,26 @@
+diff --git a/ios/web/browsing_data/browsing_data_removing_util.mm b/ios/web/browsing_data/browsing_data_removing_util.mm
+index 1b7a506e222598fe8b4e9b0c9d7ccc5b93669801..25ae59d70b6b440c5cf61ea17e735e3080e3ed53 100644
+--- a/ios/web/browsing_data/browsing_data_removing_util.mm
++++ b/ios/web/browsing_data/browsing_data_removing_util.mm
+@@ -8,9 +8,9 @@
+ 
+ #import "base/functional/callback_helpers.h"
+ #import "base/time/time.h"
++#import "brave/ios/web/web_state/ui/wk_web_view_shared_resources_provider.h"
+ #import "ios/web/public/browser_state.h"
+ #import "ios/web/public/browser_state_utils.h"
+-#import "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
+ 
+ namespace web {
+ namespace {
+@@ -70,8 +70,8 @@ void ClearBrowsingData(UIWindow* window,
+     // it is not a problem in practice since there is no UI to only have
+     // visited links be removed but not cookies.
+     base::OnceClosure purge_process_pool = base::BindOnce(
+-        &WKWebViewConfigurationProvider::Purge,
+-        WKWebViewConfigurationProvider::FromBrowserState(browser_state)
++        &WKWebViewSharedResourcesProvider::Purge,
++        WKWebViewSharedResourcesProvider::FromBrowserState(browser_state)
+             .AsWeakPtr());
+ 
+     closure = std::move(purge_process_pool).Then(std::move(closure));

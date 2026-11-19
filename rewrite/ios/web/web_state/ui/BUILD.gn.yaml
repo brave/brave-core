@@ -10,3 +10,14 @@ substitutions:
       list_name: deps
       literal: brave_ios_web_web_state_ui_deps
       import: //brave/ios/web/sources.gni
+
+  - description: |-
+      Build the shared WKWebView resources with the configuration provider.
+
+      They hold the website data store and the content rule lists shared by
+      every WebState of a BrowserState, and use the content rule list util
+      built by this target.
+    add_literal_to_list:
+      target: wk_web_view_configuration_provider
+      list_name: sources
+      literal: brave_ios_web_wk_web_view_configuration_provider_sources

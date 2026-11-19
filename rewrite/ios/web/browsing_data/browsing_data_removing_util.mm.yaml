@@ -1,0 +1,28 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description:
+      Include the shared resources provider in place of the config provider.
+    regex:
+      re_pattern:
+        '(#import "base/time/time\.h"\n)(.*?)#import
+        "ios/web/web_state/ui/wk_web_view_configuration_provider\.h"\n'
+      re_flags: [DOTALL]
+      replace: |-
+        \1#import "brave/ios/web/web_state/ui/wk_web_view_shared_resources_provider.h"
+        \2
+
+  - description: |-
+      Purge through the shared resources provider.
+
+      The configuration provider is moving to the WebState, so the
+      BrowserState-wide purge goes through the shared resources provider. It is
+      a no-op, as WKWebViews no longer share a visited link store.
+    regex:
+      re_pattern: '&WKWebViewConfigurationProvider::Purge,\n(\s*)WKWebViewConfigurationProvider::FromBrowserState\(browser_state\)\n'
+      replace: |
+        &WKWebViewSharedResourcesProvider::Purge,
+        \1WKWebViewSharedResourcesProvider::FromBrowserState(browser_state)

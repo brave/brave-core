@@ -1,0 +1,24 @@
+diff --git a/ios/web/net/cookies/wk_cookie_util.mm b/ios/web/net/cookies/wk_cookie_util.mm
+index 98b558310c1e16210c48ef302e9e17bad195819b..e681f4c8f07ae9a61afd8260e0b934de3d478996 100644
+--- a/ios/web/net/cookies/wk_cookie_util.mm
++++ b/ios/web/net/cookies/wk_cookie_util.mm
+@@ -6,15 +6,14 @@
+ 
+ #import <WebKit/WebKit.h>
+ 
+-#import "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
++#import "brave/ios/web/web_state/ui/wk_web_view_shared_resources_provider.h"
+ 
+ namespace web {
+ 
+ WKHTTPCookieStore* WKCookieStoreForBrowserState(BrowserState* browser_state) {
+-  WKWebViewConfigurationProvider& config_provider =
+-      WKWebViewConfigurationProvider::FromBrowserState(browser_state);
+-  WKWebViewConfiguration* config = config_provider.GetWebViewConfiguration();
+-  return config.websiteDataStore.httpCookieStore;
++  return WKWebViewSharedResourcesProvider::FromBrowserState(browser_state)
++      .GetWebsiteDataStore()
++      .httpCookieStore;
+ }
+ 
+ }  // namespace web

@@ -4,4 +4,5 @@ include_rules = [
   "+brave/components/brave_account/mojom",
   "+brave/components/playlist/core/common",
   "+brave/components/serp_metrics",
+  "+brave/ios/web/web_state/ui/wk_web_view_shared_resources_provider.h",
 ]

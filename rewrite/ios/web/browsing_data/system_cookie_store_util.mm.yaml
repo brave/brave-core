@@ -1,0 +1,39 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Include the shared resources provider holding the data store.
+    add_before_line:
+      line: '#import "ios/net/cookies/ns_http_system_cookie_store.h"'
+      code: |-
+        #import "brave/ios/web/web_state/ui/wk_web_view_shared_resources_provider.h"
+
+  - description: Drop the configuration provider include.
+    regex:
+      pattern: |
+        #import "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
+      replace: ''
+
+  - description: |-
+      Track the data store of the shared resources provider.
+
+      The website data store is shared by every WebState of the BrowserState,
+      so it moved out of the WKWebViewConfigurationProvider.
+    regex:
+      pattern:
+        'SystemCookieStoreHandleImpl(WKWebViewConfigurationProvider& provider)'
+      replace:
+        'SystemCookieStoreHandleImpl(WKWebViewSharedResourcesProvider& provider)'
+
+  - description: Look up the shared resources provider of the BrowserState.
+    regex:
+      re_pattern:
+        'WKWebViewConfigurationProvider& config_provider
+        =\n(\s*)WKWebViewConfigurationProvider::FromBrowserState\(browser_state\);\n(.*?)std::make_unique<SystemCookieStoreHandleImpl>\(config_provider\);'
+      re_flags: [DOTALL]
+      replace: |-
+        WKWebViewSharedResourcesProvider& provider =
+        \1WKWebViewSharedResourcesProvider::FromBrowserState(browser_state);
+        \2std::make_unique<SystemCookieStoreHandleImpl>(provider);

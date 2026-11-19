@@ -1,0 +1,31 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Include the shared resources provider holding the data store.
+    add_before_line:
+      line: '#import "ios/web/public/browser_state.h"'
+      code: |-
+        #import "brave/ios/web/web_state/ui/wk_web_view_shared_resources_provider.h"
+
+  - description: |-
+      Get the data store from the shared resources provider.
+
+      The website data store is shared by every WebState of the BrowserState,
+      so it moved out of the WKWebViewConfigurationProvider.
+    regex:
+      re_pattern:
+        'WKWebViewConfigurationProvider& provider
+        =\n(\s*)WKWebViewConfigurationProvider::FromBrowserState\(browser_state\);\n(\s*)WKWebsiteDataStore\*
+        data_store = provider\.GetWebsiteDataStore\(\);'
+      replace: |-
+        WKWebsiteDataStore* data_store =
+        \1WKWebViewSharedResourcesProvider::FromBrowserState(browser_state)
+        \1    .GetWebsiteDataStore();
+
+  - description: Delete data storage through the shared resources provider.
+    regex:
+      pattern: 'WKWebViewConfigurationProvider::DeleteDataStorageForIdentifier('
+      replace: 'WKWebViewSharedResourcesProvider::DeleteDataStorageForIdentifier('

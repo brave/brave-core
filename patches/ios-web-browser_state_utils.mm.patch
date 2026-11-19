@@ -1,0 +1,34 @@
+diff --git a/ios/web/browser_state_utils.mm b/ios/web/browser_state_utils.mm
+index 14135c9603cbe1e9003db339bd99b440b92cdcd5..2b794265bbf83a01357a49106fac2503d0327531 100644
+--- a/ios/web/browser_state_utils.mm
++++ b/ios/web/browser_state_utils.mm
+@@ -6,6 +6,7 @@
+ 
+ #import <WebKit/WebKit.h>
+ 
++#import "brave/ios/web/web_state/ui/wk_web_view_shared_resources_provider.h"
+ #import "ios/web/public/browser_state.h"
+ #import "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
+ 
+@@ -13,9 +14,9 @@ namespace web {
+ 
+ WKWebsiteDataStore* GetDataStoreForBrowserState(BrowserState* browser_state) {
+   CHECK(browser_state);
+-  WKWebViewConfigurationProvider& provider =
+-      WKWebViewConfigurationProvider::FromBrowserState(browser_state);
+-  WKWebsiteDataStore* data_store = provider.GetWebsiteDataStore();
++  WKWebsiteDataStore* data_store =
++      WKWebViewSharedResourcesProvider::FromBrowserState(browser_state)
++          .GetWebsiteDataStore();
+   CHECK(data_store);
+   return data_store;
+ }
+@@ -23,7 +24,7 @@ WKWebsiteDataStore* GetDataStoreForBrowserState(BrowserState* browser_state) {
+ void RemoveDataStorageForIdentifier(
+     const base::Uuid& uuid,
+     base::OnceCallback<void(NSError*)> callback) {
+-  WKWebViewConfigurationProvider::DeleteDataStorageForIdentifier(
++  WKWebViewSharedResourcesProvider::DeleteDataStorageForIdentifier(
+       uuid, std::move(callback));
+ }
+ 

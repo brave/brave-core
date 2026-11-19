@@ -79,7 +79,7 @@ source_set("web_view") {
     "//ios/net",
     "//ios/web/common",
     "//ios/web/web_state",
-    "//ios/web/web_state/ui:wk_web_view_configuration_provider_header",
+    "//ios/web/web_state/ui:wk_web_view_configuration_provider",
     "//ios/web_view/framework:web_view_sources",
     "//net",
   ]

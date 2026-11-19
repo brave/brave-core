@@ -1,0 +1,29 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Include the shared resources provider holding the data store.
+    regex:
+      pattern:
+        '#import "ios/web/web_state/ui/wk_web_view_configuration_provider.h"'
+      replace:
+        '#import
+        "brave/ios/web/web_state/ui/wk_web_view_shared_resources_provider.h"'
+
+  - description: |-
+      Get the cookie store from the shared data store.
+
+      The website data store is shared by every WebState of the BrowserState,
+      so it moved out of the WKWebViewConfigurationProvider.
+    regex:
+      re_pattern:
+        '(WKCookieStoreForBrowserState\(BrowserState\* browser_state\)
+        \{\n).*?\n\}'
+      re_flags: [DOTALL]
+      replace: |-
+        \1  return WKWebViewSharedResourcesProvider::FromBrowserState(browser_state)
+              .GetWebsiteDataStore()
+              .httpCookieStore;
+        }

@@ -1,0 +1,40 @@
+diff --git a/ios/web/browsing_data/system_cookie_store_util.mm b/ios/web/browsing_data/system_cookie_store_util.mm
+index 8075929308683fabf688882411934f0e6ce7e7a9..7273be618842f78fbb985c46b318ba2e8778827a 100644
+--- a/ios/web/browsing_data/system_cookie_store_util.mm
++++ b/ios/web/browsing_data/system_cookie_store_util.mm
+@@ -6,19 +6,19 @@
+ 
+ #import <WebKit/WebKit.h>
+ 
++#import "brave/ios/web/web_state/ui/wk_web_view_shared_resources_provider.h"
+ #import "ios/net/cookies/ns_http_system_cookie_store.h"
+ #import "ios/net/cookies/system_cookie_store.h"
+ #import "ios/web/net/cookies/wk_cookie_util.h"
+ #import "ios/web/net/cookies/wk_http_system_cookie_store.h"
+ #import "ios/web/public/browser_state.h"
+-#import "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
+ 
+ namespace web {
+ 
+ // Concrete implementation of SystemCookieStoreHandle.
+ class SystemCookieStoreHandleImpl : public SystemCookieStoreHandle {
+  public:
+-  SystemCookieStoreHandleImpl(WKWebViewConfigurationProvider& provider)
++  SystemCookieStoreHandleImpl(WKWebViewSharedResourcesProvider& provider)
+       : cookie_store_([[CRWWKHTTPCookieStore alloc] init]) {
+     cookie_store_.websiteDataStore = provider.GetWebsiteDataStore();
+ 
+@@ -57,10 +57,10 @@ std::pair<std::unique_ptr<net::SystemCookieStore>,
+ CreateSystemCookieStore(BrowserState* browser_state) {
+   // Using WKHTTPCookieStore guarantee that cookies are always in sync and
+   // allows SystemCookieStore to handle cookies for OffTheRecord browser.
+-  WKWebViewConfigurationProvider& config_provider =
+-      WKWebViewConfigurationProvider::FromBrowserState(browser_state);
++  WKWebViewSharedResourcesProvider& provider =
++      WKWebViewSharedResourcesProvider::FromBrowserState(browser_state);
+ 
+-  auto handle = std::make_unique<SystemCookieStoreHandleImpl>(config_provider);
++  auto handle = std::make_unique<SystemCookieStoreHandleImpl>(provider);
+   auto cookie_store = handle->cookie_store();
+ 
+   return std::make_pair(
