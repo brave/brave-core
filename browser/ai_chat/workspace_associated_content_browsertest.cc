@@ -584,6 +584,48 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
       GetSetting(viewer_url, ContentSettingsType::FILE_SYSTEM_WRITE_GUARD));
 }
 
+// The viewer serves a file from the path of its URL, so a file name containing
+// characters that are special in a URL has to be escaped on the way in, and
+// unescaped by the service worker, to reach the right file. Unescaped, the `#`
+// here would cut the name short, and the service worker would look for
+// "a%20b".
+IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
+                       ViewerDisplaysFileWhoseNameNeedsEscaping) {
+  const base::FilePath folder = CreateWorkspaceFolder();
+  {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    ASSERT_TRUE(base::WriteFile(folder.AppendASCII("a b#1.txt"), "escaped"));
+  }
+  auto* content = CreateContent(folder);
+  content::WebContents* web_contents = content->GetWebContentsForTesting();
+  ASSERT_TRUE(content::WaitForLoadStop(web_contents));
+
+  const GURL viewer_url = ViewerURL(content->page_url());
+  ASSERT_TRUE(
+      FrameLoads(web_contents, viewer_url.Resolve("/#file=a%20b%231.txt")));
+  content::RenderFrameHost* viewer =
+      content::ChildFrameAt(web_contents->GetPrimaryMainFrame(), 0);
+  ASSERT_TRUE(viewer);
+
+  // The viewer frames the file once its service worker is ready.
+  content::RenderFrameHost* file = nullptr;
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    file = content::ChildFrameAt(viewer, 0);
+    return file && file->GetLastCommittedURL().path() == "/a%20b%231.txt";
+  }));
+  EXPECT_EQ(viewer_url.Resolve("/a%20b%231.txt"), file->GetLastCommittedURL());
+  EXPECT_EQ("escaped", content::EvalJs(file, R"JS(
+      new Promise(resolve => {
+        const text = () => resolve(document.body.innerText);
+        if (document.readyState === 'complete') {
+          text();
+        } else {
+          addEventListener('load', text);
+        }
+      })
+  )JS"));
+}
+
 // Framing another workspace's viewer would let a workspace present unrelated
 // contents as its own. The framer's frame-src rejects it first, so this only
 // pins the outcome; the viewer's frame-ancestors is the redundant second half
