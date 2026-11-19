@@ -42,6 +42,7 @@ substitutions:
       method_name: GetDragContext
 
   - description: Allow BraveTabStrip to override AddTabToGroup.
+    count: 2 # The tab-index and `TabHandle` overloads.
     make_virtual:
       class_name: TabStrip
       method_name: AddTabToGroup
@@ -52,6 +53,7 @@ substitutions:
       method_name: MoveTab
 
   - description: Allow BraveTabStrip to override OnTabPinnedStateChanged.
+    count: 2 # The tab-index and `TabHandle` overloads.
     make_virtual:
       class_name: TabStrip
       method_name: OnTabPinnedStateChanged
