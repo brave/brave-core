@@ -89,21 +89,17 @@ class AIChatService : public KeyedService,
   using GetFocusTabsCallback = base::OnceCallback<void(
       base::expected<std::vector<std::string>, mojom::APIError>)>;
 
-  // Lets the embedder tell the user when a response finishes in the
-  // background.
+  // Tells the user when a response finishes in the background.
   class NotificationDelegate {
    public:
     virtual ~NotificationDelegate() = default;
 
-    // A response in |conversation_uuid| finished while no client was
-    // connected to it. |conversation_title| is empty if the conversation has
-    // none.
+    // |conversation_title| is empty if the conversation has none.
     virtual void ShowCompletionNotification(
         const std::string& conversation_uuid,
         const std::u16string& conversation_title) = 0;
 
-    // The conversation was viewed or deleted, or is no longer kept, so its
-    // notification is out of date.
+    // The conversation was viewed or removed.
     virtual void CloseCompletionNotification(
         const std::string& conversation_uuid) = 0;
   };
@@ -295,10 +291,6 @@ class AIChatService : public KeyedService,
   RestoreWorkspaceAssociatedContentFromUrl(const GURL& url,
                                            const std::string& content_uuid);
 
-  // Shows a notification through |delegate| when a conversation's response
-  // finishes while no client is connected to it (kCompletedNotViewed), and
-  // closes it once the conversation leaves that state or is removed. Android
-  // and iOS don't set one.
   void SetNotificationDelegate(std::unique_ptr<NotificationDelegate> delegate);
 
   std::unique_ptr<EngineConsumer> GetDefaultAIEngine();
@@ -464,9 +456,8 @@ class AIChatService : public KeyedService,
       base::expected<std::vector<std::string>, mojom::APIError> result);
   // Creates the tool providers for |conversation| and adds them to it.
   void AddToolProvidersToConversation(ConversationHandler* conversation);
-  // Sends |conversation_generation_state_| to all |observer_remotes_|, and
-  // closes the notifications of conversations that are no longer
-  // kCompletedNotViewed.
+  // Sends |conversation_generation_state_| to all |observer_remotes_| and
+  // closes out-of-date notifications.
   void NotifyConversationGenerationStateChanged();
   // Whether |uuid| has a loaded ConversationHandler with a connected client.
   // This doesn't mean the conversation is on screen.

@@ -107,7 +107,6 @@ class MockNotificationDelegate : public AIChatService::NotificationDelegate {
               (override));
 };
 
-// Gives |service| a mock notification delegate, which it owns.
 MockNotificationDelegate* SetMockNotificationDelegate(AIChatService& service) {
   auto delegate = std::make_unique<MockNotificationDelegate>();
   MockNotificationDelegate* raw = delegate.get();

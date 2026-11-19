@@ -127,7 +127,6 @@ class AIChatGenerationStatusBrowserTest
   }
 
  protected:
-  // The completion notifications currently shown.
   std::vector<message_center::Notification> GetNotifications() {
     return notification_tester_->GetDisplayedNotificationsForType(
         NotificationHandler::Type::TRANSIENT);
@@ -210,7 +209,6 @@ class AIChatGenerationStatusBrowserTest
 
   base::test::ScopedFeatureList scoped_feature_list_;
   std::unique_ptr<NotificationDisplayServiceTester> notification_tester_;
-  // How many times a notification has been shown.
   int notifications_shown_ = 0;
 };
 
@@ -305,8 +303,6 @@ IN_PROC_BROWSER_TEST_F(AIChatGenerationStatusBrowserTest,
   EXPECT_EQ(notifications_shown_, 1);
 }
 
-// A response that finishes while its conversation is open shows no
-// notification.
 IN_PROC_BROWSER_TEST_F(AIChatGenerationStatusBrowserTest,
                        NoNotificationWhenViewedAsItFinishes) {
   MockGenerateCallbacks response = StartBackgroundGeneration();
