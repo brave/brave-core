@@ -18,6 +18,7 @@ from recipe_modules import (
     chromium_checkout,
     platform,
     raw_io,
+    sanitizer_findings,
 )
 from recipe_test_api import RecipeTestApi
 
@@ -27,6 +28,7 @@ class DEPS(RecipeScriptApi):
     brave_core_checkout: brave_core_checkout.API
     brave_tests: brave_tests.API
     brave_tests_builder_config: brave_tests_builder_config.API
+    sanitizer_findings: sanitizer_findings.API
 
 
 @dataclass
@@ -48,7 +50,9 @@ def RunSteps(api: DEPS) -> None:
     api.brave_core_checkout.configure_build(builder_id, builder_config)
     api.brave_core_checkout.ensure_checkout()
     api.brave_core_checkout.compile()
-    api.brave_tests.run_tests(builder_id)
+    test_run = api.brave_tests.run_tests(builder_id)
+    api.sanitizer_findings.report(test_run.sanitizer_reports)
+    api.brave_tests.raise_on_failure(test_run)
 
 
 def _deprecated_run_steps(api: DEPS) -> None:

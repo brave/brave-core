@@ -275,6 +275,8 @@
       "--builder-group=brave.sanitisers",
       "--test-type=brave_unit_tests",
       "--parse-gtest-output",
+      "--sanitizer-reports-output",
+      "/path/to/tmp/json",
       "brave_unit_tests"
     ],
     "cwd": "[WORKSPACE]/b/src/brave",
@@ -300,6 +302,8 @@
       "--builder-group=brave.sanitisers",
       "--test-type=brave_browser_tests",
       "--parse-gtest-output",
+      "--sanitizer-reports-output",
+      "/path/to/tmp/json",
       "brave_browser_tests"
     ],
     "cwd": "[WORKSPACE]/b/src/brave",
@@ -312,6 +316,16 @@
       ]
     },
     "name": "brave_browser_tests"
+  },
+  {
+    "cmd": [],
+    "name": "sanitizer findings",
+    "output_properties": {
+      "sanitizer_findings": {
+        "findings": [],
+        "unreliable_suites": []
+      }
+    }
   },
   {
     "name": "$result"

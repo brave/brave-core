@@ -12,12 +12,14 @@ from recipe_modules import (
     brave_core_checkout,
     depot_tools,
     file,
+    json,
     path,
     step,
 )
 
 from .api import BraveTestsApi as API
 from .gtest import GTest
+from .results import SuiteResult, TestRun
 from .test_api import BraveTestsTestApi as TEST_API
 
 
@@ -26,6 +28,7 @@ class DEPS(RecipeScriptApi):
     brave_core_checkout: brave_core_checkout.API
     depot_tools: depot_tools.API
     file: file.API
+    json: json.API
     path: path.API
     step: step.API
 
