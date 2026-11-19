@@ -41,6 +41,7 @@ class PeekView : public views::View, public views::AnimationDelegateViews {
 
  public:
   DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kCardElementId);
+  DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kSiteInfoButtonElementId);
   DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kOpenAsTabButtonElementId);
   DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kSplitViewButtonElementId);
   DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kCloseButtonElementId);
@@ -91,6 +92,9 @@ class PeekView : public views::View, public views::AnimationDelegateViews {
   views::ImageButton* split_view_button_for_testing() {
     return split_view_button_;
   }
+  views::ImageButton* site_info_button_for_testing() {
+    return site_info_button_;
+  }
   views::Label* title_for_testing() { return title_; }
   views::Label* host_for_testing() { return host_; }
 
@@ -105,15 +109,19 @@ class PeekView : public views::View, public views::AnimationDelegateViews {
   void AnimationProgressed(const gfx::Animation* animation) override;
 
  private:
+  void ShowPageInfo();
+
   // The card's size in `bounds`.
   gfx::Size GetCardSize(const gfx::Rect& bounds) const;
 
   const raw_ref<Delegate> delegate_;
+  const raw_ref<BrowserWindowInterface> browser_;
 
   std::unique_ptr<ViewShadow> card_shadow_;
   gfx::SlideAnimation open_animation_{this};
 
   raw_ptr<views::View> card_ = nullptr;
+  raw_ptr<views::ImageButton> site_info_button_ = nullptr;
   raw_ptr<views::ImageView> favicon_ = nullptr;
   raw_ptr<views::Label> title_ = nullptr;
   raw_ptr<views::Label> host_ = nullptr;

@@ -56,6 +56,12 @@ class PeekController {
   // in a Peek of this window.
   virtual void OpenAsTab(content::WebContents& peek_contents) = 0;
 
+  // Moves the Peek showing `peek_contents` into a tab and shows the tab's
+  // cookies and site data dialog there. Runs asynchronously, because it's
+  // requested from the page info bubble, which is destroyed with the Peek
+  // card.
+  virtual void ShowCookiesDialogInTab(content::WebContents& peek_contents) = 0;
+
   // Closes the active tab's Peek and destroys its contents. Unlike
   // `OpenAsTab()`, the page is discarded. Does nothing if the active tab has no
   // Peek.

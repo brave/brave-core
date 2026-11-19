@@ -32,6 +32,7 @@
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/site_data/page_specific_site_data_dialog_controller.h"
 #include "components/input/native_web_keyboard_event.h"
 #include "components/split_tabs/split_tab_visual_data.h"
 #include "components/tabs/public/tab_interface.h"
@@ -321,6 +322,14 @@ void PeekControllerImpl::OpenAsTab(content::WebContents& peek_contents) {
   }
 }
 
+void PeekControllerImpl::ShowCookiesDialogInTab(
+    content::WebContents& peek_contents) {
+  if (Peek* peek = FindPeek(peek_contents)) {
+    peek->PostControllerTask(
+        &PeekControllerImpl::MoveToTabAndShowCookiesDialog);
+  }
+}
+
 void PeekControllerImpl::Close() {
   if (Peek* peek = GetActivePeek()) {
     ClosePeek(*peek);
@@ -483,6 +492,13 @@ void PeekControllerImpl::MoveToTabOrClose(Peek& peek) {
     return;
   }
   MoveToTab(peek);
+}
+
+
+void PeekControllerImpl::MoveToTabAndShowCookiesDialog(Peek& peek) {
+  // The dialog is tab-modal.
+  PageSpecificSiteDataDialogController::CreateAndShowForWebContents(
+      MoveToTab(peek));
 }
 
 void PeekControllerImpl::MoveToTabAndExecuteCommand(int command_id,
