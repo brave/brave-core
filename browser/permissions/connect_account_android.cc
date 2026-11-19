@@ -7,50 +7,24 @@
 #include "base/android/jni_array.h"
 #include "base/android/jni_string.h"
 #include "base/check.h"
-#include "base/functional/callback.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "chrome/android/chrome_jni_headers/ConnectAccountFragment_jni.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 
-namespace {
-
-base::android::ScopedJavaLocalRef<jobject> GetJavaBoolean(JNIEnv* env,
-                                                          bool native_bool) {
-  jclass booleanClass = env->FindClass("java/lang/Boolean");
-  jmethodID methodID = env->GetMethodID(booleanClass, "<init>", "(Z)V");
-  jobject booleanObject = env->NewObject(booleanClass, methodID, native_bool);
-
-  return base::android::ScopedJavaLocalRef<jobject>::Adopt(env, booleanObject);
-}
-
-void PlainCallConnectAccountCallback(
-    JNIEnv* env,
-    base::android::ScopedJavaGlobalRef<jobject> java_callback,
-    bool value_result) {
-  Java_ConnectAccountFragment_onConnectAccountDone(
-      env, java_callback, GetJavaBoolean(env, value_result));
-}
-
-}  // namespace
-
-static void JNI_ConnectAccountFragment_ConnectAccount(
+static bool JNI_ConnectAccountFragment_ConnectAccount(
     JNIEnv* env,
     const base::android::JavaRef<jstring>& java_account_address,
     jint account_id_coin,
-    const base::android::JavaRef<jobject>& java_web_contents,
-    const base::android::JavaRef<jobject>& callback) {
-  base::android::ScopedJavaGlobalRef<jobject> java_callback;
-  java_callback.Reset(env, callback);
-
+    const base::android::JavaRef<jobject>& java_web_contents) {
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(java_web_contents);
 
   if (web_contents == nullptr) {
-    PlainCallConnectAccountCallback(env, java_callback, false);
-    return;
+    return false;
   }
 
   std::string account_address =
@@ -71,29 +45,29 @@ static void JNI_ConnectAccountFragment_ConnectAccount(
   auto permission = brave_wallet::CoinTypeToPermissionType(coin);
 
   if (!request_type || !permission) {
-    PlainCallConnectAccountCallback(env, java_callback, false);
-    return;
+    return false;
   }
 
   if (permissions::BraveWalletPermissionContext::HasRequestsInProgress(
           rfh, *request_type)) {
-    PlainCallConnectAccountCallback(env, java_callback, false);
-    return;
+    return false;
   }
 
-  permissions::BraveWalletPermissionContext::RequestWalletPermissions(
-      {account_address}, *permission, rfh->GetLastCommittedOrigin(), rfh,
-      base::BindOnce(
-          [](JNIEnv* env,
-             base::android::ScopedJavaGlobalRef<jobject> java_callback,
-             const std::string& account_address,
-             std::vector<std::string> allowed_addresses) {
-            PlainCallConnectAccountCallback(
-                env, java_callback,
-                allowed_addresses.size() == 1 &&
-                    allowed_addresses.front() == account_address);
-          },
-          env, std::move(java_callback), account_address));
+  content::BrowserContext* browser_context = web_contents->GetBrowserContext();
+  const url::Origin& origin = rfh->GetLastCommittedOrigin();
+
+  // Tapping Connect in the panel is the consent, so the grant is written here
+  // directly. IsPermissionDenied must run before AddPermission: on a blocked
+  // site HasPermission succeeds with has_permission == false, which would make
+  // AddPermission write an allow rule over the block.
+  if (permissions::BraveWalletPermissionContext::IsPermissionDenied(
+          *permission, browser_context, origin) ||
+      !permissions::BraveWalletPermissionContext::AddPermission(
+          *permission, browser_context, origin, account_address)) {
+    return false;
+  }
+
+  return true;
 }
 
 DEFINE_JNI(ConnectAccountFragment)
