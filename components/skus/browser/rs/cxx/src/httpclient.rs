@@ -5,13 +5,13 @@
 
 use std::convert::{TryFrom, TryInto};
 
-use async_trait::async_trait;
-use futures::channel::oneshot;
-use skus::{
+use crate::skus::{
     errors::{DebugUnwrap, InternalError},
     http::http,
     HTTPClient,
 };
+use async_trait::async_trait;
+use futures::channel::oneshot;
 
 use log::debug;
 

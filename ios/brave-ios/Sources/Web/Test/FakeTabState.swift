@@ -79,7 +79,7 @@ public final class FakeTabState: TabState {
   public func goToBackForwardListItem(_ item: any BackForwardListItemProxy) {}
   public var canTakeSnapshot: Bool { false }
   public func takeSnapshot(rect: CGRect, handler: @escaping (UIImage?) -> Void) { handler(nil) }
-  public func createFullPagePDF() async throws -> Data? { nil }
+  public func createPDF(rect: CGRect) async throws -> Data? { nil }
   public func downloadCurrentPage(to fileURL: URL) async throws {}
   public func suggestedFilenameForCurrentPage(contentDisposition: String?) -> String {
     "document"

@@ -245,7 +245,6 @@ export function getBuildArgs(config: Config) {
     args.target_android_output_format =
       config.targetAndroidOutputFormat
       || (config.buildConfig === 'Release' ? 'aab' : 'apk')
-    args.android_override_version_name = config.androidOverrideVersionName
 
     args.brave_android_developer_options_code =
       config.braveAndroidDeveloperOptionsCode

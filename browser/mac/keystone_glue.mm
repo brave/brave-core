@@ -30,6 +30,7 @@
 #import "brave/browser/mac/keystone_registration.h"
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/updater/buildflags.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "build/branding_buildflags.h"
 #include "build/build_config.h"
 #include "chrome/common/channel_info.h"

@@ -3,7 +3,7 @@ include_rules = [
 ]
 
 specific_include_rules = {
-  "v8-isolate-page-graph-utils\.h": [
+  "v8-isolate-page-graph-utils\\.h": [
     "!brave/components/brave_page_graph/common/buildflags.h",
   ]
 }

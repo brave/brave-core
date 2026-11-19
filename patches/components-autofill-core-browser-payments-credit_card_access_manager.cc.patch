@@ -1,8 +1,8 @@
 diff --git a/components/autofill/core/browser/payments/credit_card_access_manager.cc b/components/autofill/core/browser/payments/credit_card_access_manager.cc
-index 1b8a67f1b82eed68a6e33ada9e7093915ec7a565..9d96fd2df6f52cca27c5e09e4ee8a0b1ce09636b 100644
+index e504060cf5e79f4168a3e12b4ab336f0f8fca682..e41c61afc6c5d66a0913ce66c8e64744f4aff707 100644
 --- a/components/autofill/core/browser/payments/credit_card_access_manager.cc
 +++ b/components/autofill/core/browser/payments/credit_card_access_manager.cc
-@@ -418,10 +418,10 @@ void CreditCardAccessManager::FetchCreditCard(
+@@ -419,10 +419,10 @@ void CreditCardAccessManager::FetchCreditCard(
    // Log the server card unmasking attempt, and differentiate based on server
    // card or virtual card.
    if (ShouldLogServerCardUnmaskAttemptMetrics(record_type)) {

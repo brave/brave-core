@@ -1,0 +1,15 @@
+diff --git a/components/permissions/permission_manager.cc b/components/permissions/permission_manager.cc
+index 341975cadeddbcdf7d73e691553a1a8370f236fb..daa67c6f613a5a15d0eaaf07ab904a0c1c5b58d0 100644
+--- a/components/permissions/permission_manager.cc
++++ b/components/permissions/permission_manager.cc
+@@ -271,7 +271,9 @@ void PermissionManager::RequestPermissionsInternal(
+ 
+   const PermissionRequestID request_id(render_frame_host, request_local_id);
+   const GURL requesting_origin =
+-      render_frame_host->GetLastCommittedOrigin().GetURL();
++      request_description.requesting_origin.is_empty()
++          ? render_frame_host->GetLastCommittedOrigin().GetURL()
++          : request_description.requesting_origin;
+   const GURL embedding_origin =
+       GetEmbeddingOrigin(render_frame_host, requesting_origin);
+   for (size_t i = 0; i < request_description.permissions.size(); ++i) {

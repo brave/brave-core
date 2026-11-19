@@ -34,7 +34,7 @@
 #include "content/public/test/web_ui_browsertest_util.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "ui/base/window_open_disposition.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/webui/untrusted_web_ui_controller.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -169,7 +169,7 @@ class WebUISubdomainBrowserTest : public InProcessBrowserTest {
     content::TestNavigationObserver observer(url);
     observer.StartWatchingNewWebContents();
     EXPECT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-        browser(), url, WindowOpenDisposition::kNewForegroundTab,
+        browser(), url, ui::mojom::WindowOpenDisposition::kNewForegroundTab,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
     observer.Wait();
     EXPECT_TRUE(observer.last_navigation_succeeded())

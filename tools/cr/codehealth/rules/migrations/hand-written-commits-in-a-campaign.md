@@ -19,3 +19,6 @@ the declarations it changes or removes.
 
 - M158, 8115.1: `ios::HistoryServiceFactory::GetForProfile()` lost its
   `ServiceAccessType`.
+- M160, 8155.1: `TabStripModel`'s "Add `TabHandle` overloads" commits made the
+  tab-index `DetachTabsAndCollectionsForInsertion()` Brave overrides a
+  forwarder.

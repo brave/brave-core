@@ -43,7 +43,12 @@ namespace brave_rewards {
 
 // static
 void RewardsProtocolNavigationThrottle::MaybeCreateAndAdd(
-    content::NavigationThrottleRegistry& registry) {
+    content::NavigationThrottleRegistry& registry,
+    RewardsService* rewards_service) {
+  if (!rewards_service) {
+    return;
+  }
+
   auto* pref_service = user_prefs::UserPrefs::Get(
       registry.GetNavigationHandle().GetWebContents()->GetBrowserContext());
   if (!pref_service->GetBoolean(brave_rewards::prefs::kEnabled)) {

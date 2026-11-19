@@ -7,6 +7,8 @@ syntax = "proto3";
 
 package recipes.brave.cr.autolift;
 
+import "recipes/brave/cr/commit.proto";
+
 message InputProperties {
   // The milestone of the `cr<N>` branch to lift; the latest `cr<N>` branch on
   // brave-core when unset.
@@ -27,4 +29,27 @@ message InputProperties {
   // from `cr<milestone>` (the latest when unset), without syncing it with the
   // newer branches.
   string chromium_version = 4;
+}
+
+// A commit the run wrote or changed, which a human should review.
+message ReviewCommit {
+  // The branch it was pushed to, e.g. `cr159` or `cr157.x-on-1.100.x`.
+  string branch = 1;
+  recipes.brave.cr.commit.Commit commit = 2;
+  // The commit on GitHub.
+  string url = 3;
+}
+
+// How the run ended: the recipe's `outcome` output property.
+message Outcome {
+  // Whether the agent finished everything the run had to do, and recorded it
+  // so; a run that recorded nothing is incomplete.
+  bool complete = 1;
+
+  // What the run did or, when incomplete, why it stopped short.
+  string summary = 2;
+
+  // The commits the run pushed that no commit on GitHub had the diff of
+  // before it, in branch order, for review after the job.
+  repeated ReviewCommit review = 3;
 }

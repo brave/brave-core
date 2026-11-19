@@ -139,10 +139,10 @@ describe('supportBuilder', () => {
     )
   })
 
-  it('is not allowed on CI', () => {
+  it('is not supported on CI without a recipe', () => {
     mockIsCI = true
     expect(() => run(['--builder', 'fake-builder'])).toThrow(
-      '--builder is experimental and not allowed on CI',
+      '--builder is experimental and not supported on CI without a recipe',
     )
   })
 

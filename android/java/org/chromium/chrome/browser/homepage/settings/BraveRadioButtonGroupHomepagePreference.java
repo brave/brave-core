@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.preference.PreferenceViewHolder;
 
-import org.chromium.base.ApkInfo;
+import org.chromium.build.BuildConfig;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.homepage.settings.RadioButtonGroupHomepagePreference.HomepageOption;
@@ -53,8 +53,8 @@ public final class BraveRadioButtonGroupHomepagePreference
         PreferenceValues preferenceValues = super.getPreferenceValue();
         if (preferenceValues == null) return;
 
-        // This hack is to avoid assert in `super.onCheckedChanged` in debug builds.
-        if (ApkInfo.isDebugApp()
+        // This hack is to avoid assert in `super.onCheckedChanged` when asserts are enabled.
+        if (BuildConfig.ENABLE_ASSERTS
                 && checkedId == R.id.brave_homepage_mobile_bookmarks
                 && mCustomUri != null) {
             mCustomUri.setChecked(true);

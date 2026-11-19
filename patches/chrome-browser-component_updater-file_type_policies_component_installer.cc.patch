@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/component_updater/file_type_policies_component_installer.cc b/chrome/browser/component_updater/file_type_policies_component_installer.cc
-index 455308e48cf09b950ccf23b6881888e7c183d71a..f9ca2295848178fa798e68e1e00ec122c991e976 100644
+index f24e6cd6d854af7434fc48967668b86b09873fb1..4804fa87665e78ae76e144fa6eb6436d1a2812d4 100644
 --- a/chrome/browser/component_updater/file_type_policies_component_installer.cc
 +++ b/chrome/browser/component_updater/file_type_policies_component_installer.cc
 @@ -124,10 +124,9 @@ FileTypePoliciesComponentInstallerPolicy::GetInstallerAttributes() const {

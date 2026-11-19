@@ -15,13 +15,11 @@ import {
 } from 'gen/brave/browser/ui/webui/brave_welcome_page/brave_welcome_page.mojom.m.js'
 
 import {
+  browserProxyFactory as themeColorPickerProxyFactory,
   Theme,
   ChromeColor,
   ThemeColorPickerClientInterface,
-  ThemeColorPickerClientReceiver,
-  ThemeColorPickerHandlerFactory,
   ThemeColorPickerHandlerInterface,
-  ThemeColorPickerHandlerRemote,
 } from 'chrome://resources/cr_components/theme_color_picker/theme_color_picker.mojom-webui.js'
 
 import { addWebUiListener, sendWithPromise } from 'chrome://resources/js/cr.js'
@@ -105,7 +103,8 @@ interface ApiInit {
 
 function defaultInit(): ApiInit {
   const welcomePageHandler = WelcomePageHandler.getRemote()
-  const themeColorPickerHandler = new ThemeColorPickerHandlerRemote()
+  const { handler: themeColorPickerHandler, callbackRouter } =
+    themeColorPickerProxyFactory.getInstance()
   return {
     welcomePageHandler,
     bindWelcomePageHandler: (page) => {
@@ -115,10 +114,7 @@ function defaultInit(): ApiInit {
     },
     themeColorPickerHandler,
     bindThemeColorPickerHandler: (client) => {
-      ThemeColorPickerHandlerFactory.getRemote().createThemeColorPickerHandler(
-        new ThemeColorPickerClientReceiver(client).$.bindNewPipeAndPassRemote(),
-        themeColorPickerHandler.$.bindNewPipeAndPassReceiver(),
-      )
+      callbackRouter.setTheme.addListener(client.setTheme)
     },
     messages: {
       getDefaultBrowserInfo() {

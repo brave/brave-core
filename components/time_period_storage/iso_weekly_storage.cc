@@ -13,8 +13,8 @@ ISOWeeklyStorage::ISOWeeklyStorage(PrefService* prefs, const char* pref_name)
     : TimePeriodStorage(prefs, pref_name, kRecordPeriodDays) {}
 
 uint64_t ISOWeeklyStorage::GetLastISOWeekSum() const {
-  return GetPeriodSumInTimeRange(GetLastMondayTime(1),
-                                 GetLastMondayTime(0) - base::Days(1));
+  return GetPeriodSumInTimeRange(
+      GetLastMondayTime(1), GetLastMondayTime(0).LocalMidnightWithOffset(-1));
 }
 
 uint64_t ISOWeeklyStorage::GetCurrentISOWeekSum() const {
@@ -22,9 +22,9 @@ uint64_t ISOWeeklyStorage::GetCurrentISOWeekSum() const {
 }
 
 base::Time ISOWeeklyStorage::GetLastMondayTime(int week_offset) const {
-  base::Time midnight = base::Time::Now().LocalMidnight();
+  const base::Time now = base::Time::Now();
   base::Time::Exploded exploded;
-  midnight.LocalExplode(&exploded);
+  now.LocalExplode(&exploded);
 
   int days_after_monday = 0;
   if (exploded.day_of_week >= 1) {
@@ -33,5 +33,5 @@ base::Time ISOWeeklyStorage::GetLastMondayTime(int week_offset) const {
     days_after_monday = 6;
   }
 
-  return midnight - base::Days(days_after_monday + (week_offset * 7));
+  return now.LocalMidnightWithOffset(-(days_after_monday + (week_offset * 7)));
 }

@@ -61,6 +61,7 @@
 #include "content/public/browser/render_view_host.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/actions/actions.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_utils.h"
@@ -258,7 +259,7 @@ bool BraveBrowserCommandController::IsCommandEnabled(int id) const {
 
 bool BraveBrowserCommandController::ExecuteCommandWithDispositionAndContext(
     int id,
-    WindowOpenDisposition disposition,
+    ui::mojom::WindowOpenDisposition disposition,
     std::optional<actions::ActionInvocationContext> context,
     base::TimeTicks time_stamp) {
   return IsBraveCommands(id) || IsBraveOverrideCommands(
@@ -665,7 +666,7 @@ void BraveBrowserCommandController::UpdateCommandForBraveWallet() {
 
 bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     int id,
-    WindowOpenDisposition disposition,
+    ui::mojom::WindowOpenDisposition disposition,
     base::TimeTicks time_stamp) {
   if (!SupportsCommand(id) || !IsCommandEnabled(id)) {
     return false;

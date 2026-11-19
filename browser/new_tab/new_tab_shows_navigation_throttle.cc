@@ -11,7 +11,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/webui/ntp/new_tab_ui.h"
+#include "chrome/browser/search/search.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
@@ -23,7 +23,7 @@ void NewTabShowsNavigationThrottle::MaybeCreateAndAdd(
   auto& navigation_handle = registry.GetNavigationHandle();
   auto* context = navigation_handle.GetWebContents()->GetBrowserContext();
   if (!Profile::FromBrowserContext(context)->IsRegularProfile() ||
-      !NewTabUI::IsNewTab(navigation_handle.GetURL())) {
+      !search::IsNewTabOrigin(navigation_handle.GetURL())) {
     return;
   }
 

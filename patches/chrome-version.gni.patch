@@ -1,0 +1,22 @@
+diff --git a/chrome/version.gni b/chrome/version.gni
+index e058a1b0d02e84b5fc97294d2dd957cd6b11f646..2ffea59ea350f4f977537b3195e048139124cad6 100644
+--- a/chrome/version.gni
++++ b/chrome/version.gni
+@@ -17,6 +17,8 @@
+ 
+ # Give version.py a pattern that will expand to a GN scope consisting of
+ # all values we need at once.
++import("//brave/build/version.gni")
++
+ _version_dictionary_template = "full = \"@MAJOR@.@MINOR@.@BUILD@.@PATCH@\" " +
+                                "major = \"@MAJOR@\" minor = \"@MINOR@\" " +
+                                "build = \"@BUILD@\" patch = \"@PATCH@\" "
+@@ -229,7 +231,7 @@ if (is_mac) {
+                            "webview_auto_64_32_high_version_code",
+                          ])
+ 
+-  chrome_version_name = chrome_version_full
++  chrome_version_name = brave_version
+ 
+   # There is a different version code only for arm64.
+   if (is_high_end_android && target_cpu != "arm64") {

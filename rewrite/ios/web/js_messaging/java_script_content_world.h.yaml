@@ -21,5 +21,6 @@ substitutions:
     add_to_protected:
       class_name: JavaScriptContentWorld
       code: |-
-        base::flat_map<std::string, const JavaScriptFeature*>
+        base::flat_map<std::string,
+                       raw_ptr<const JavaScriptFeature, DanglingUntriaged>>
             prompt_replying_features_;

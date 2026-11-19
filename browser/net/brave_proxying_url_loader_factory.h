@@ -216,7 +216,8 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
     std::unique_ptr<FollowRedirectParams> pending_follow_redirect_params_;
 
     // A task runner that should be used for the request when non-null. Non-null
-    // when this was created for a navigation request.
+    // for a navigation request, or for a main frame's subresource request under
+    // content's `kSubresourceLoaderProxyTaskQueue`.
     scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner_;
 
     base::WeakPtrFactory<InProgressRequest> weak_factory_;
@@ -304,8 +305,9 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
 
   DisconnectCallback disconnect_callback_;
 
-  // A task runner that should be used for requests when non-null. Non-null when
-  // this was created for a navigation request.
+  // A task runner that should be used for requests when non-null. Non-null for
+  // a navigation factory, or for a main frame's subresource factory under
+  // content's `kSubresourceLoaderProxyTaskQueue`.
   scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner_;
 
   base::WeakPtrFactory<BraveProxyingURLLoaderFactory> weak_factory_;

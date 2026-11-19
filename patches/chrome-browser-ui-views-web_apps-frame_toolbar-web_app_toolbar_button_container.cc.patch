@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/web_apps/frame_toolbar/web_app_toolbar_button_container.cc b/chrome/browser/ui/views/web_apps/frame_toolbar/web_app_toolbar_button_container.cc
-index 658c7d16c2f506abf1fc7552f580f2d10ec349a1..226aad235e0313568e0f33a946c8b38620dfec13 100644
+index 7dc23622fa0fec22060a55817d37a43cd68c1866..c92d07503345ce05a8627410e6114adde8a87bf9 100644
 --- a/chrome/browser/ui/views/web_apps/frame_toolbar/web_app_toolbar_button_container.cc
 +++ b/chrome/browser/ui/views/web_apps/frame_toolbar/web_app_toolbar_button_container.cc
-@@ -470,6 +470,7 @@ void WebAppToolbarButtonContainer::OnImmersiveRevealStarted() {
+@@ -471,6 +471,7 @@ void WebAppToolbarButtonContainer::OnImmersiveRevealStarted() {
  }
  
  void WebAppToolbarButtonContainer::AddedToWidget() {

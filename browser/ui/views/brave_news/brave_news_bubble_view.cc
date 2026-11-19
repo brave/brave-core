@@ -32,6 +32,7 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/mojom/dialog_button.mojom.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/page_transition_types.h"
 #include "ui/gfx/font.h"
 #include "ui/gfx/font_list.h"
@@ -145,7 +146,7 @@ void BraveNewsBubbleView::OpenManageFeeds() {
   auto* browser =
       GlobalBrowserCollection::GetInstance()->FindBrowserWithTab(contents_);
   browser->OpenGURL(GURL("brave://newtab/?openSettings=BraveNews"),
-                    WindowOpenDisposition::kNewForegroundTab);
+                    ui::mojom::WindowOpenDisposition::kNewForegroundTab);
 }
 
 void BraveNewsBubbleView::OnWidgetDestroyed(views::Widget*) {

@@ -76,7 +76,7 @@ void ReplyWithStringResult(ScriptMessageReplyCallback callback,
 SkusJavaScriptFeature::SkusJavaScriptFeature(ProfileIOS* profile)
     : JavaScriptFeature(web::ContentWorld::kPageContentWorld,
                         /*feature_scripts=*/{},
-                        /*dependent_feature=*/{},
+                        /*dependent_features=*/{},
                         web::OriginFilter::kBraveAccount),
       profile_(profile) {}
 

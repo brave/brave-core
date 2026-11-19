@@ -1,5 +1,5 @@
 diff --git a/ui/views/bubble/bubble_dialog_delegate_view.h b/ui/views/bubble/bubble_dialog_delegate_view.h
-index c63a5501d9728017774451adf23d0985d0aedd98..e0647a13501959fca8df726088b4f69ff28e438e 100644
+index 234d2e1a6a954f64872df368ca28fc474464c0c6..188330aff8cfd0d1f182a0f744d4ad9d2769cde1 100644
 --- a/ui/views/bubble/bubble_dialog_delegate_view.h
 +++ b/ui/views/bubble/bubble_dialog_delegate_view.h
 @@ -883,6 +883,15 @@ class VIEWS_EXPORT BubbleDialogDelegateView : public View,

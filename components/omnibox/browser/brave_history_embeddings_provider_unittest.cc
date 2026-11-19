@@ -19,6 +19,7 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
+#include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/test/task_environment.h"
@@ -30,13 +31,17 @@
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/url_row.h"
 #include "components/history/core/test/history_service_test_util.h"
+#include "components/omnibox/browser/autocomplete_controller.h"
 #include "components/omnibox/browser/autocomplete_enums.h"
 #include "components/omnibox/browser/autocomplete_input.h"
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/autocomplete_provider_listener.h"
+#include "components/omnibox/browser/fake_autocomplete_controller.h"
 #include "components/omnibox/browser/test_scheme_classifier.h"
 #include "components/search_engines/template_url.h"
 #include "components/search_engines/template_url_data.h"
+#include "components/search_engines/template_url_service.h"
+#include "components/search_engines/template_url_starter_pack_data.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/metrics_proto/omnibox_event.pb.h"
@@ -383,6 +388,40 @@ TEST_F(BraveHistoryEmbeddingsProviderTest,
   EXPECT_THAT(last_update_matches_,
               testing::ElementsAre(
                   testing::Field(&AutocompleteMatch::description, u"1")));
+}
+
+// The controller publishes the results of a search that outlasts its stop
+// timer.
+TEST_F(BraveHistoryEmbeddingsProviderTest,
+       Controller_StopTimer_SearchCompletesAfterStop) {
+  FakeAutocompleteController controller(&task_environment_);
+  for (auto& data : template_url_starter_pack_data::GetStarterPackEngines()) {
+    controller.template_url_service_->Add(
+        std::make_unique<TemplateURL>(std::move(*data)));
+  }
+  client_->set_template_url_service(controller.template_url_service_);
+  // The service is the controller's, which goes first.
+  base::ScopedClosureRunner reset_template_url_service(base::BindOnce(
+      &HistoryEmbeddingsAutocompleteProviderClient::set_template_url_service,
+      base::Unretained(client_.get()), nullptr));
+
+  controller.providers_ = {
+      base::MakeRefCounted<FakeBraveHistoryEmbeddingsProvider>(client_.get(),
+                                                               &controller)};
+
+  AutocompleteInput input = CreateAutocompleteInput(u"@history 1 1 1");
+  input.set_in_keyword_mode(true);
+  controller.Start(input);
+  ASSERT_EQ(search_callbacks_.size(), 1u);
+
+  // What the stop timer does when it fires.
+  controller.Stop(AutocompleteStopReason::kInactivity);
+
+  std::move(search_callbacks_[0]).Run("1 1 1", u"1");
+  EXPECT_EQ(controller.last_update_type(),
+            AutocompleteController::UpdateType::kLastAsyncPass);
+  ASSERT_EQ(controller.published_result_.size(), 1u);
+  EXPECT_EQ(controller.published_result_.match_at(0)->description, u"1");
 }
 
 TEST_F(BraveHistoryEmbeddingsProviderTest, Stop) {

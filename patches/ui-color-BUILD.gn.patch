@@ -1,5 +1,5 @@
 diff --git a/ui/color/BUILD.gn b/ui/color/BUILD.gn
-index e5006c5c67aebbf557ae3e97c2559b85a90d02e8..72da33ebbfaf05ba27e325ed9fcf60e7edd52fb0 100644
+index 4535fc502ddc9b5498d50f710bdc4a09ed1cb199..f0f993572f483096ca17253ead28d5384c766305 100644
 --- a/ui/color/BUILD.gn
 +++ b/ui/color/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index e5006c5c67aebbf557ae3e97c2559b85a90d02e8..72da33ebbfaf05ba27e325ed9fcf60e7
  import("//build/buildflag_header.gni")
  import("//mojo/public/tools/bindings/mojom.gni")
  import("//testing/test.gni")
-@@ -64,6 +65,7 @@ component("color") {
+@@ -78,6 +79,7 @@ component("color") {
      "color_transform.h",
      "color_variant.cc",
    ]
@@ -18,15 +18,15 @@ index e5006c5c67aebbf557ae3e97c2559b85a90d02e8..72da33ebbfaf05ba27e325ed9fcf60e7
  
    configs += [ "//build/config/compiler:prevent_unsafe_narrowing" ]
  
-@@ -76,6 +78,7 @@ component("color") {
+@@ -90,6 +92,7 @@ component("color") {
      "//ui/base:features",
      "//ui/gfx:color_utils",
    ]
 +  public_deps += brave_ui_color_public_deps
  
-   deps = [ "//third_party/abseil-cpp:absl" ]
- 
-@@ -179,6 +182,7 @@ component("mixers") {
+   deps = [
+     ":color_provider_utils_internal",
+@@ -197,6 +200,7 @@ component("mixers") {
      "ui_color_mixer.cc",
      "ui_color_mixer.h",
    ]
@@ -34,7 +34,7 @@ index e5006c5c67aebbf557ae3e97c2559b85a90d02e8..72da33ebbfaf05ba27e325ed9fcf60e7
  
    defines = [ "IS_COLOR_IMPL" ]
  
-@@ -196,6 +200,7 @@ component("mixers") {
+@@ -214,6 +218,7 @@ component("mixers") {
    ]
  
    public_deps = [ "//base" ]

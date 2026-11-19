@@ -2023,6 +2023,12 @@ class RebaseDryRunTest(unittest.TestCase):
         with self.assertRaises(brockit.RebaseNeededException):
             self._dry_run(squash_minor_bumps=True)
 
+    def test_commit_with_another_branchs_tag_needs_a_rebase(self):
+        self.fake_chromium_src.commit_empty('[cr150] Feature A', self.brave)
+        with self.assertRaises(brockit.RebaseNeededException):
+            self._dry_run(squash_minor_bumps=True)
+        self._dry_run()
+
     def test_wip_commit_needs_no_rebase(self):
         self.fake_chromium_src.commit_empty('[cr149] Feature A', self.brave)
         self.fake_chromium_src.commit_empty(
@@ -2126,8 +2132,10 @@ class ShowTest(unittest.TestCase):
         args = argparse.Namespace(
             package_version=None,
             from_ref_value=None,
+            from_ref_hash=None,
             log_link=False,
             chromium_version_label=None,
+            gerrit_ccs=None,
         )
         for key, value in kwargs.items():
             setattr(args, key, value)
@@ -2155,6 +2163,211 @@ class ShowTest(unittest.TestCase):
 
     def test_package_version_not_requested(self):
         self.assertEqual(self._show(), [])
+
+    def test_from_ref_hash_prints_the_full_hash(self):
+        brave = MagicMock(run_git=lambda *args: f'full-{args[-1]}')
+        with patch.object(brockit.repository, 'brave', brave):
+            lines = self._show(from_ref_hash='@previous-major')
+        self.assertEqual(['base commit: full-@previous-major'], lines)
+        self.assertEqual(self.solved_refs, ['@previous-major'])
+
+    def test_gerrit_ccs_are_the_staff_of_the_major(self):
+        """The same people the pull request is assigned to, by Gerrit
+        username, alternating with the major's parity."""
+        self.assertEqual(
+            self._show(gerrit_ccs=160),
+            ['gerrit ccs: cdesouza,erogul,alexey'],
+        )
+        self.assertEqual(
+            self._show(gerrit_ccs=159),
+            ['gerrit ccs: cdesouza,mkarolinskiy,artem'],
+        )
+
+
+class RebaseHookTest(unittest.TestCase):
+    """`--internal-rebase-*` flags parse strictly, so a step this Brockit
+    doesn't know fails rather than passing for done."""
+
+    def assert_rejected(self, argv: list[str]) -> None:
+        with patch('sys.stderr'), self.assertRaises(SystemExit) as raised:
+            brockit.RebaseHook.parse(argv)
+        self.assertEqual(raised.exception.code, 2)
+
+    def test_rejects_an_unknown_flag(self):
+        self.assert_rejected(
+            ['--internal-rebase-carry-change-id=aaa', '--internal-rebase-new']
+        )
+
+    def test_rejects_an_abbreviated_flag(self):
+        self.assert_rejected(
+            [
+                '--internal-rebase-plan-squash',
+                '--internal-rebase-crash-sequence-editor=vi',
+                'todo',
+            ]
+        )
+
+    def test_carry_change_id_runs_without_a_file(self):
+        args = brockit.RebaseHook.parse(
+            ['--internal-rebase-carry-change-id=aaa,bbb']
+        )
+        self.assertEqual(args.internal_rebase_carry_change_id, 'aaa,bbb')
+        self.assertIsNone(args.file)
+
+    def test_plan_rewrite_takes_the_todo_file(self):
+        args = brockit.RebaseHook.parse(
+            [
+                '--internal-rebase-plan-squash-pinned',
+                '--internal-rebase-crash-sequence-editor=vi',
+                'path/to/git-rebase-todo',
+            ]
+        )
+        self.assertTrue(args.internal_rebase_plan_squash_pinned)
+        self.assertEqual(args.file, Path('path/to/git-rebase-todo'))
+
+    def test_plan_rewrite_needs_a_crash_editor(self):
+        self.assert_rejected(['--internal-rebase-plan-squash-pinned', 'todo'])
+
+    def test_message_fix_needs_the_message_file(self):
+        self.assert_rejected(
+            [
+                '--internal-rebase-fix-message',
+                '--internal-rebase-crash-msg-editor=vi',
+            ]
+        )
+
+    def test_capture_needs_a_destination(self):
+        self.assert_rejected(['--internal-rebase-capture-plan', 'todo'])
+
+    def test_brockit_exits_with_an_error_on_an_unknown_flag(self):
+        result = subprocess.run(
+            [sys.executable, brockit.__file__, '--internal-rebase-new'],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 2, result.stderr)
+        self.assertIn('--internal-rebase-new', result.stderr)
+
+
+class ChangeIdGenTest(unittest.TestCase):
+    def setUp(self):
+        self.repo = FakeChromiumRepo()
+        self.repo.setup()
+        self.addCleanup(self.repo.cleanup)
+        self.repo.update_brave_version('1.0.0.0')
+        self._git('checkout', '-q', '-b', 'cr2')
+
+    def _git(self, *args: str) -> str:
+        return self.repo._run_git_command(list(args), self.repo.brave)
+
+    def _commit(self, message: str, name: str | None = None) -> str:
+        if name is None:
+            self._git('commit', '-q', '--allow-empty', '-m', message)
+        else:
+            self.repo.write_and_stage_file(name, f'{name}\n', self.repo.brave)
+            self._git('commit', '-q', '-m', message)
+        return self._git('rev-parse', 'HEAD')
+
+    def _messages(self) -> list[str]:
+        # Unstripped, as `_git` strips what git prints.
+        return [
+            subprocess.run(
+                ['git', 'cat-file', 'commit', commit],
+                cwd=self.repo.brave,
+                capture_output=True,
+                text=True,
+                check=True,
+            ).stdout.split('\n\n', 1)[1]
+            for commit in self._git(
+                'rev-list', '--reverse', 'master..HEAD'
+            ).splitlines()
+        ]
+
+    def test_adds_change_ids_only_where_missing(self):
+        bump = self.repo.update_brave_version('2.0.0.0')
+        bump_subject = self._git('log', '-1', '--format=%s', bump)
+        plain = self._commit('Add own.txt\n\nWith a body.', 'own.txt')
+        self._commit('Add kept.txt\n\nChange-Id: I' + 'a' * 40, 'kept.txt')
+        self._commit('fixup! Add own.txt', 'fixup.txt')
+        self._commit(f'drop!{plain[:12]}! Add own.txt')
+        self._commit(f'reassign!{plain[:12]}! Add own.txt')
+        trees = self._git('log', '--format=%T %an %ae %ad', 'master..HEAD')
+        self.repo.write_file('dirty.txt', 'dirty\n', self.repo.brave)
+
+        brockit.ChangeIdGen().execute(to_ref='master')
+
+        derived = brockit.pinned_commits.derived_change_id('cr2', bump_subject)
+        self.assertIsNotNone(derived)
+        plain_id = brockit.rebase.new_change_id(
+            plain, 'Add own.txt\n\nWith a body.'
+        )
+        self.assertEqual(
+            self._messages(),
+            [
+                f'{bump_subject}\n\nChange-Id: {derived}\n',
+                f'Add own.txt\n\nWith a body.\n\nChange-Id: {plain_id}\n',
+                'Add kept.txt\n\nChange-Id: I' + 'a' * 40 + '\n',
+                'fixup! Add own.txt\n',
+                f'drop!{plain[:12]}! Add own.txt\n',
+                f'reassign!{plain[:12]}! Add own.txt\n',
+            ],
+        )
+        self.assertEqual(
+            self._git('log', '--format=%T %an %ae %ad', 'master..HEAD'), trees
+        )
+        self.assertEqual(
+            (self.repo.brave / 'dirty.txt').read_text(encoding='utf-8'),
+            'dirty\n',
+        )
+
+        head = self._git('rev-parse', 'HEAD')
+        brockit.ChangeIdGen().execute(to_ref='master')
+        self.assertEqual(self._git('rev-parse', 'HEAD'), head)
+
+    _UPSTREAM_ID = 'I' + 'c' * 40
+
+    def _culprit_message(self, indent: str) -> str:
+        culprit = 'd' * 40
+        return (
+            'Follow upstream\n\nChromium changes:\n'
+            f'https://chromium.googlesource.com/chromium/src/+/{culprit}\n\n'
+            f'commit {culprit}\n'
+            'Author: Someone <someone@chromium.org>\n'
+            'Date:   Mon Nov 9 10:06:38 2026 -0800\n\n'
+            f'{indent}Upstream change\n\n'
+            f'{indent}Change-Id: {self._UPSTREAM_ID}'
+        )
+
+    def test_indents_culprits_quoted_without_it(self):
+        self.repo.update_brave_version('2.0.0.0')
+        commit = self._commit(self._culprit_message(''), 'own.txt')
+
+        brockit.ChangeIdGen().execute(to_ref='master')
+
+        indented = self._culprit_message('    ')
+        change_id = brockit.rebase.new_change_id(commit, indented)
+        self.assertEqual(
+            self._messages()[-1], f'{indented}\n\nChange-Id: {change_id}\n'
+        )
+
+    def test_rebase_steps_indent_culprits_quoted_without_it(self):
+        """`brockit rebase`'s plan counts such a commit as having no
+        Change-Id, and its `exec` step indents the quote and gives one."""
+        self.repo.update_brave_version('2.0.0.0')
+        commit = self._commit(self._culprit_message(''), 'own.txt')
+        self.assertFalse(brockit.Rebase.has_change_id(commit))
+
+        brockit.Rebase.carry_change_id([commit])
+
+        indented = self._culprit_message('    ')
+        change_id = brockit.rebase.new_change_id(commit, indented)
+        self.assertEqual(
+            self._messages()[-1], f'{indented}\n\nChange-Id: {change_id}\n'
+        )
+        self.assertTrue(
+            brockit.Rebase.has_change_id(self._git('rev-parse', 'HEAD'))
+        )
 
 
 if __name__ == '__main__':

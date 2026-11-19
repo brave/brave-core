@@ -262,9 +262,9 @@ void BraveHorizontalTabStripRegionView::CreateScrollButtonsIfNeeded() {
   tab_scroll_next_button_->SetFlipCanvasOnPaintForRTLUI(true);
 
   tab_scroll_previous_button_->SetTooltipText(
-      l10n_util::GetStringUTF16(IDS_TOOLTIP_TAB_SCROLL_LEADING));
+      l10n_util::GetStringUTF16(IDS_ACCNAME_TAB_SCROLL_LEADING));
   tab_scroll_next_button_->SetTooltipText(
-      l10n_util::GetStringUTF16(IDS_TOOLTIP_TAB_SCROLL_TRAILING));
+      l10n_util::GetStringUTF16(IDS_ACCNAME_TAB_SCROLL_TRAILING));
   tab_scroll_previous_button_->GetViewAccessibility().SetName(
       l10n_util::GetStringUTF16(IDS_ACCNAME_TAB_SCROLL_LEADING));
   tab_scroll_next_button_->GetViewAccessibility().SetName(

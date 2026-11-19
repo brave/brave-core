@@ -17,7 +17,7 @@ source_set("speedreader") {
   public_deps = [
     "//brave/browser/speedreader",
     "//chrome/browser/ui/tabs:tabs_public",
-    "//components/dom_distiller/content/browser",
+    "//components/web_distiller/content/browser",
     "//ui/base/unowned_user_data",
   ]
 

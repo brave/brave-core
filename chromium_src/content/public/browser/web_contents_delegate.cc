@@ -10,7 +10,7 @@ WebContents* WebContentsDelegate::AddNewContents_ChromiumImpl(
     WebContents* source,
     std::unique_ptr<WebContents> new_contents,
     const GURL& target_url,
-    WindowOpenDisposition disposition,
+    ui::mojom::WindowOpenDisposition disposition,
     const blink::mojom::WindowFeatures& window_features,
     bool user_gesture,
     bool* was_blocked) {

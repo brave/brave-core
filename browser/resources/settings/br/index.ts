@@ -13,7 +13,6 @@ import './config.js'
 import '../site_settings/constants.js'
 import './all_sites.js'
 import './about_page.js'
-import './autofill_section.js'
 // Must come before './settings_ui.js', which transitively defines the
 // autofill-page components this modifies.
 import './autofill_page.js'

@@ -1,8 +1,8 @@
 diff --git a/android_webview/browser/aw_permission_manager.cc b/android_webview/browser/aw_permission_manager.cc
-index 98a66976ba8dd60b586bc64ebcd5a63954cbf3e9..f570e62821df47bdae70edfb1de1614f9b92fcd5 100644
+index 5f721a88482564baa95133fe37e1c2f3a594b5d7..211d22fd161931407037fceadae40aed7ff17c05 100644
 --- a/android_webview/browser/aw_permission_manager.cc
 +++ b/android_webview/browser/aw_permission_manager.cc
-@@ -449,6 +449,22 @@ void AwPermissionManager::RequestPermissionsFromCurrentDocument(
+@@ -446,6 +446,22 @@ void AwPermissionManager::RequestPermissionsFromCurrentDocument(
              permissions[i],
              content::PermissionResult(PermissionStatus::GRANTED));
          break;
@@ -25,7 +25,7 @@ index 98a66976ba8dd60b586bc64ebcd5a63954cbf3e9..f570e62821df47bdae70edfb1de1614f
        case PermissionType::NUM:
          NOTREACHED() << "PermissionType::NUM was not expected here.";
      }
-@@ -586,6 +602,22 @@ PermissionStatus AwPermissionManager::GetPermissionStatusInternal(
+@@ -583,6 +599,22 @@ PermissionStatus AwPermissionManager::GetPermissionStatusInternal(
      case blink::PermissionType::LOCAL_FONTS:
      case blink::PermissionType::NFC:
      case blink::PermissionType::NOTIFICATIONS:
@@ -48,7 +48,7 @@ index 98a66976ba8dd60b586bc64ebcd5a63954cbf3e9..f570e62821df47bdae70edfb1de1614f
      case blink::PermissionType::NUM:
      case blink::PermissionType::PAYMENT_HANDLER:
      case blink::PermissionType::PERIODIC_BACKGROUND_SYNC:
-@@ -775,6 +807,22 @@ void AwPermissionManager::CancelPermissionRequest(int request_id) {
+@@ -756,6 +788,22 @@ void AwPermissionManager::CancelPermissionRequest(int request_id) {
        case PermissionType::LOOPBACK_NETWORK:
          // There is nothing to cancel so this is simply ignored.
          break;
@@ -71,7 +71,7 @@ index 98a66976ba8dd60b586bc64ebcd5a63954cbf3e9..f570e62821df47bdae70edfb1de1614f
        case PermissionType::NUM:
          NOTREACHED() << "PermissionType::NUM was not expected here.";
      }
-@@ -803,6 +851,9 @@ void AwPermissionManager::CancelPermissionRequests() {
+@@ -784,6 +832,9 @@ void AwPermissionManager::CancelPermissionRequests() {
  void AwPermissionManager::SetOriginCanReadEnumerateDevicesAudioLabels(
      const url::Origin& origin,
      bool audio) {
@@ -81,7 +81,7 @@ index 98a66976ba8dd60b586bc64ebcd5a63954cbf3e9..f570e62821df47bdae70edfb1de1614f
    auto it = enumerate_devices_labels_cache_.find(origin);
    if (it == enumerate_devices_labels_cache_.end()) {
      enumerate_devices_labels_cache_[origin] = std::make_pair(audio, false);
-@@ -814,6 +865,9 @@ void AwPermissionManager::SetOriginCanReadEnumerateDevicesAudioLabels(
+@@ -795,6 +846,9 @@ void AwPermissionManager::SetOriginCanReadEnumerateDevicesAudioLabels(
  void AwPermissionManager::SetOriginCanReadEnumerateDevicesVideoLabels(
      const url::Origin& origin,
      bool video) {

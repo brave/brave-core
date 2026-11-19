@@ -205,10 +205,9 @@ void BraveLocationBarView::OnVisibleBoundsChanged() {
   LocationBarView::OnVisibleBoundsChanged();
 }
 
-void BraveLocationBarView::OnChanged() {
-  auto hide_page_actions = ShouldHidePageActionIcons();
+void BraveLocationBarView::OnChangedImpl(bool suppress_animations) {
   if (brave_actions_) {
-    brave_actions_->SetShouldHide(hide_page_actions);
+    brave_actions_->SetShouldHide(ShouldHidePageActionIcons());
   }
 
   if (promotion_controller_) {
@@ -218,8 +217,8 @@ void BraveLocationBarView::OnChanged() {
     promotion_controller_->Show(show_button);
   }
 
-  // OnChanged calls Layout
-  LocationBarView::OnChanged();
+  // Invalidates the layout, so it picks up the visibility changes above.
+  LocationBarView::OnChangedImpl(suppress_animations);
 }
 
 std::vector<views::View*> BraveLocationBarView::GetRightMostTrailingViews() {

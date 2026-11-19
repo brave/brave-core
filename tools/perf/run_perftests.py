@@ -23,7 +23,6 @@ import shutil
 import sys
 import os
 import tempfile
-from typing import List, Optional
 
 from components import android_tools
 from components import perf_config

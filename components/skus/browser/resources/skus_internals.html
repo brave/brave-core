@@ -16,9 +16,12 @@
   <if expr="is_ios">
       <!-- TODO(crbug.com/487000): Remove this once injected by web. -->
     <script src="chrome://resources/js/ios/web_ui.js"></script>
-    <script src="chrome://resources/js/ios/mojo_api.js"></script>
+    <script type="module" src="chrome://resources/js/ios/mojo_api.js"></script>
+    <script src="/skus_internals.bundle.js" defer></script>
   </if>
-  <script src="/skus_internals.bundle.js"></script>
+  <if expr="not is_ios">
+    <script src="/skus_internals.bundle.js"></script>
+  </if>
   <style>
     body {
       margin: 0;

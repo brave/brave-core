@@ -150,12 +150,14 @@
             android:key="incognito_screenshot"
             android:title="@string/private_tab_screenshot_title"
             android:summary="@string/private_tab_screenshot_summary"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            android:persistent="true" />
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="close_tabs_on_exit"
             defaultValue="false"
             android:title="@string/close_tabs_on_exit_title"
-            android:summary="@string/close_tabs_on_exit_summary" />
+            android:summary="@string/close_tabs_on_exit_summary"
+            android:persistent="true" />
         <org.chromium.chrome.browser.settings.BraveDialogPreference
             android:key="request_otr"
             android:title="@string/request_otr"

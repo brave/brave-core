@@ -72,6 +72,7 @@ import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
 import org.chromium.chrome.browser.ntp.NtpUtil;
 import org.chromium.chrome.browser.omnibox.BraveLocationBarCoordinator;
 import org.chromium.chrome.browser.omnibox.LocationBarCoordinator;
+import org.chromium.chrome.browser.omnibox.styles.OmniboxResourceProvider;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl;
@@ -1629,7 +1630,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             ThemeColorProvider themeColorProvider,
             IncognitoStateProvider incognitoStateProvider,
             @Nullable Supplier<Integer> incognitoWindowCountSupplier,
-            WindowAndroid windowAndroid) {
+            WindowAndroid windowAndroid,
+            OmniboxResourceProvider omniboxResourceProvider) {
         super.initialize(
                 toolbarDataProvider,
                 tabController,
@@ -1648,7 +1650,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 themeColorProvider,
                 incognitoStateProvider,
                 incognitoWindowCountSupplier,
-                windowAndroid);
+                windowAndroid,
+                omniboxResourceProvider);
 
         BraveMenuButtonCoordinator.setMenuFromBottom(
                 isMenuButtonOnBottomControls() || isMenuOnBottomWithBottomAddressBar());

@@ -16,15 +16,13 @@ reviewers. Build files, flag metadata, histograms and strings are left out.
 from __future__ import annotations
 
 import argparse
-from collections import defaultdict
-import json
-from pathlib import Path
-import posixpath
 import re
 import sys
+from collections import defaultdict
 
 import _boot  # noqa: F401  -- adds tools/cr to sys.path
-import repository  # noqa: E402  -- after _boot
+import repository
+from knowledge_base import brave_tree
 
 _NOISE = (
     'BUILD.gn',
@@ -41,7 +39,7 @@ _NOISE = (
 
 KINDS = ('chromium_src', 'lit_mangler', 'patch', 'plaster')
 
-_REVERTS = re.compile(r'^This reverts commit ([0-9a-f]{40})', re.M)
+_REVERTS = re.compile(r'^This reverts commit ([0-9a-f]{40})', re.MULTILINE)
 
 
 def net_zero(log: str, abbrev: int = 12) -> set[str]:
@@ -63,31 +61,8 @@ def net_zero(log: str, abbrev: int = 12) -> set[str]:
 class OverrideIndex:
     """The upstream files Brave overrides, with how it overrides each."""
 
-    def __init__(self, root: Path):
-        self._kinds: dict[str, set[str]] = defaultdict(set)
-        chromium_src = root / 'chromium_src'
-        for path in chromium_src.rglob('*'):
-            # Brave's own presubmits, which override nothing upstream.
-            if path.is_file() and not path.name.startswith('PRESUBMIT'):
-                name = path.relative_to(chromium_src).as_posix()
-                if name.endswith('.lit_mangler.ts'):
-                    self._kinds[name.removesuffix('.lit_mangler.ts')].add(
-                        'lit_mangler'
-                    )
-                else:
-                    self._kinds[name].add('chromium_src')
-        patches = root / 'patches'
-        for info in patches.rglob('*.patchinfo'):
-            sub = info.parent.relative_to(patches).as_posix()
-            data = json.loads(info.read_bytes().decode('utf-8'))
-            for applies in data.get('appliesTo', []):
-                self._kinds[
-                    posixpath.normpath(posixpath.join(sub, applies['path']))
-                ].add('patch')
-        rewrite = root / 'rewrite'
-        for plaster in rewrite.rglob('*.yaml'):
-            upstream = plaster.relative_to(rewrite).with_suffix('')
-            self._kinds[upstream.as_posix()].add('plaster')
+    def __init__(self, kinds: dict[str, set[str]]):
+        self._kinds = kinds
 
     @property
     def kinds(self) -> dict[str, set[str]]:
@@ -152,7 +127,7 @@ def main() -> int:
     bodies = repository.chromium.run_git(
         'log', '--format=%H%x00%b%x01', args.range, no_trim=True
     )
-    index = OverrideIndex(repository.brave.root)
+    index = OverrideIndex(brave_tree().overridden)
     print(index.format(index.touched(log, args.kind, net_zero(bodies))))
     return 0
 

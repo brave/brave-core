@@ -26,7 +26,7 @@ static_library("core") {
     "vector_database.h",
   ]
 
-  public_deps = [ "//components/history_embeddings/core" ]
+  public_deps = [ "//base" ]
 
   deps = [
     "//base",

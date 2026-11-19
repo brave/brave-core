@@ -36,20 +36,20 @@ SkusServiceFactory::SkusServiceFactory(PassKey key)
                                          TestingCreation::kCreateService) {}
 
 std::unique_ptr<KeyedService> SkusServiceFactory::BuildServiceInstanceFor(
-    ProfileIOS* profile) const {
+    ProfileIOS& profile) const {
   // Return null if feature is disabled
   if (!base::FeatureList::IsEnabled(skus::features::kSkusFeature)) {
     return nullptr;
   }
 
-  if (profile->IsOffTheRecord()) {
+  if (profile.IsOffTheRecord()) {
     return nullptr;
   }
-  skus::MigrateSkusSettings(profile->GetPrefs(),
+  skus::MigrateSkusSettings(profile.GetPrefs(),
                             GetApplicationContext()->GetLocalState());
   std::unique_ptr<skus::SkusServiceImpl> sku_service(
       new skus::SkusServiceImpl(GetApplicationContext()->GetLocalState(),
-                                profile->GetSharedURLLoaderFactory()));
+                                profile.GetSharedURLLoaderFactory()));
   return sku_service;
 }
 
