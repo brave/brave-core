@@ -45,8 +45,9 @@ AcceleratorPrefManager::Accelerators GetAcceleratorsFromPref(
       continue;
     }
 
+    auto& list = result[id];
     for (const auto& accelerator : shortcuts.GetList()) {
-      result[id].push_back(FromCodesString(accelerator.GetString()));
+      list.push_back(FromCodesString(accelerator.GetString()));
     }
   }
 
@@ -124,8 +125,12 @@ void AcceleratorPrefManager::SetDefaultAccelerators(
   defaults_update->clear();
   for (const auto& [command, accelerators] : default_accelerators) {
     auto* items = defaults_update->EnsureList(base::NumberToString(command));
+    base::flat_set<std::string> seen;
     for (const auto& accelerator : accelerators) {
-      items->Append(ToCodesString(accelerator));
+      auto code = ToCodesString(accelerator);
+      if (seen.insert(code).second) {
+        items->Append(std::move(code));
+      }
     }
   }
 }
