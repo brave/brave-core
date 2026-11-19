@@ -34,7 +34,7 @@ def _print_text(name: str, description: dict) -> None:
     gn_args = description['gn_args']['gn_args']
     chromium_config = description['builder_spec']['chromium_config']
     sync = description['sync']
-    targets = description['targets']
+    targets_spec = description['targets_spec']
 
     print('%s:' % name)
     print('  target_os:  %s' % gn_args['target_os'])
@@ -59,10 +59,17 @@ def _print_text(name: str, description: dict) -> None:
             )
         )
 
-    compile_targets = targets['compile']
+    gtest_tests = targets_spec['gtest_tests']
+    # What `pnpm run build --builder` compiles.
+    compile_targets = sorted(
+        {
+            *targets_spec.get('additional_compile_targets', []),
+            *(test['test'] for test in gtest_tests),
+        }
+    )
     print('  compile: %s' % (', '.join(compile_targets) or '(none)'))
 
-    tests = targets['tests']
+    tests = [test['name'] for test in gtest_tests]
     print('  tests (%d): %s' % (len(tests), ', '.join(tests) or '(none)'))
 
     secrets = description['gn_args'].get('secrets')

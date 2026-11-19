@@ -145,12 +145,6 @@ def render(builder, gn_args_registry) -> dict[str, str]:
                 'target_cpu': list(gclient_config.target_cpu),
             }
         ),
-        'targets.json': _dump(
-            {
-                'compile': list(builder.targets.compile),
-                'tests': list(builder.targets.tests),
-            }
-        ),
         f'targets/{builder.builder_group}.json': _dump(
             {builder.name: _targets_spec(builder.targets, resolved['gn_args'])}
         ),
@@ -255,8 +249,6 @@ class GeneratedOutput:
     builder_spec: dict
     # `sync.json`: what `init`/`sync` write into `.gclient`.
     sync: dict
-    # `targets.json`: what the builder compiles and tests.
-    targets: dict
     # Its entry in `targets/<builder_group>.json`: its tests, with their
     # arguments.
     targets_spec: dict
@@ -284,7 +276,6 @@ class GeneratedBuilder:
             gn_args=self._read_gn_args(),
             builder_spec=self._read_builder_spec(),
             sync=self._read_sync(),
-            targets=self._read_targets(),
             targets_spec=self._read_targets_spec(),
         )
 
@@ -299,7 +290,6 @@ class GeneratedBuilder:
             self._read_gn_args,
             self._read_builder_spec,
             self._read_sync,
-            self._read_targets,
             self._read_targets_spec,
         ):
             try:
@@ -442,16 +432,6 @@ class GeneratedBuilder:
             ]
 
         return self._read_json('sync.json', check)
-
-    def _read_targets(self) -> dict:
-        def check(targets: dict) -> list[str]:
-            return [
-                '%r is not a list of strings' % field
-                for field in ('compile', 'tests')
-                if not _is_list_of_strings(targets.get(field))
-            ]
-
-        return self._read_json('targets.json', check)
 
     def _read_targets_spec(self) -> dict:
         targets_dir = gen_paths.BUILDERS_OUTPUT_DIR / self.name / 'targets'
