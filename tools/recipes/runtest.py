@@ -68,6 +68,7 @@ _SANITIZER_REFERENCE_BUILDERS = {
     ('linux', 'lsan'): 'Linux ASan LSan Tests (1)',
     ('linux', 'msan'): 'Linux MSan Tests',
     ('linux', 'tsan'): 'Linux TSan Tests',
+    ('linux', 'ubsan'): 'Linux UBSan Tests',
     ('darwin', 'asan'): 'Mac ASan 64 Tests (1)',
 }
 
@@ -307,7 +308,7 @@ def desktop_reference_builder(sanitizers: Sanitizers) -> str:
     """The upstream builder whose suites a run on this host mirrors: the one
     running a sanitizer build's tests, if upstream has one."""
     host = 'linux' if sys.platform.startswith('linux') else sys.platform
-    for sanitizer in ('asan', 'lsan', 'msan', 'tsan'):
+    for sanitizer in ('asan', 'lsan', 'msan', 'tsan', 'ubsan'):
         if getattr(sanitizers, sanitizer) and (
             builder := _SANITIZER_REFERENCE_BUILDERS.get((host, sanitizer))
         ):

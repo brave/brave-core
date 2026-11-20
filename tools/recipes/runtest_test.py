@@ -359,6 +359,32 @@ class BraveFilterFilesTest(unittest.TestCase):
         )
 
 
+class DesktopReferenceBuilderTest(unittest.TestCase):
+    def _builder(self, platform, **sanitizers):
+        flags = dict.fromkeys(('asan', 'lsan', 'msan', 'tsan', 'ubsan'), False)
+        flags.update(sanitizers)
+        with mock.patch.object(m.sys, 'platform', platform):
+            return m.desktop_reference_builder(m.Sanitizers(**flags))
+
+    def test_sanitizer_builds_mirror_upstreams_sanitizer_testers(self):
+        for sanitizer, builder in (
+            ('asan', 'Linux ASan LSan Tests (1)'),
+            ('msan', 'Linux MSan Tests'),
+            ('tsan', 'Linux TSan Tests'),
+            ('ubsan', 'Linux UBSan Tests'),
+        ):
+            with self.subTest(sanitizer=sanitizer):
+                self.assertEqual(
+                    self._builder('linux', **{sanitizer: True}), builder
+                )
+
+    def test_a_sanitizer_upstream_does_not_test_on_the_host(self):
+        self.assertEqual(
+            self._builder('win32', asan=True),
+            m._DESKTOP_REFERENCE_BUILDERS['win32'],
+        )
+
+
 class MergeFilterFilesTest(unittest.TestCase):
     def test_one_flag_is_left_alone(self):
         args = ['--a', '--test-launcher-filter-file=x']
