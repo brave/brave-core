@@ -6,19 +6,16 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_CHROME_BROWSER_FIELD_TRIALS_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_CHROME_BROWSER_FIELD_TRIALS_H_
 
-#define ChromeBrowserFieldTrials ChromeBrowserFieldTrialsChromium
-
 #include <chrome/browser/chrome_browser_field_trials.h>  // IWYU pragma: export
 
-#undef ChromeBrowserFieldTrials
-
 // Use empty subclass to not set client-side field trials.
-class ChromeBrowserFieldTrials : public ChromeBrowserFieldTrialsChromium {
+class ChromeBrowserFieldTrials : public ChromeBrowserFieldTrials_ChromiumImpl {
  public:
-  using ChromeBrowserFieldTrialsChromium::ChromeBrowserFieldTrialsChromium;
+  using ChromeBrowserFieldTrials_ChromiumImpl::
+      ChromeBrowserFieldTrials_ChromiumImpl;
   ~ChromeBrowserFieldTrials() override = default;
 
-  // ChromeBrowserFieldTrialsChromium overrides:
+  // ChromeBrowserFieldTrials_ChromiumImpl overrides:
   void SetUpClientSideFieldTrials(
       bool has_seed,
       const variations::EntropyProviders& entropy_providers,
