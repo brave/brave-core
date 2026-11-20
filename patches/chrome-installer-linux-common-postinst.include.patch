@@ -1,0 +1,22 @@
+diff --git a/chrome/installer/linux/common/postinst.include b/chrome/installer/linux/common/postinst.include
+index d237a1affe90b120b76e28539f526f0e2645af09..b2b2fe58a243fd7bff3d02fdd323feaf3b1c4bae 100644
+--- a/chrome/installer/linux/common/postinst.include
++++ b/chrome/installer/linux/common/postinst.include
+@@ -107,10 +107,13 @@ chrome_management_service_setup
+ if [ -f "@@INSTALLDIR/apparmor.d/@@usr_bin_symlink_name" ]; then
+   if [ -f "/etc/apparmor.d/abi/4.0" ] && [ -x /sbin/apparmor_parser ]; then
+     # Check for exact attachment collision with Ubuntu's native chrome profile.
+-    if [ "@@usr_bin_symlink_name" = "google-chrome-stable" ] && \
+-       [ -f "/etc/apparmor.d/chrome" ]; then
+-      # Skip installation if a conflicting profile exists.
+-      true
++    if [ -f "/etc/apparmor.d/brave" ]; then
++      # Ubuntu's native profile covers all Brave channels. Remove a copy
++      # installed by an earlier package version to avoid an attachment collision.
++      if [ -f "/etc/apparmor.d/@@usr_bin_symlink_name" ]; then
++        /sbin/apparmor_parser -R "/etc/apparmor.d/@@usr_bin_symlink_name" || true
++        rm -f "/etc/apparmor.d/@@usr_bin_symlink_name"
++      fi
+     else
+       cp "@@INSTALLDIR/apparmor.d/@@usr_bin_symlink_name" \
+         "/etc/apparmor.d/@@usr_bin_symlink_name"
