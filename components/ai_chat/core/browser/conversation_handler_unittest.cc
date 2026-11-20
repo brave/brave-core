@@ -1560,11 +1560,11 @@ TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_Delta) {
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
-    EXPECT_EQ(history.size(), 1u);
+    ASSERT_EQ(history.size(), 1u);
 
     EXPECT_EQ(history.back()->text, "This");
     auto& events = history.back()->events;
-    EXPECT_EQ(events->size(), 1u);
+    ASSERT_EQ(events->size(), 1u);
 
     EXPECT_TRUE(events->at(0)->is_completion_event());
     EXPECT_EQ(events->at(0)->get_completion_event()->completion, "This");
@@ -1579,11 +1579,11 @@ TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_Delta) {
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
-    EXPECT_EQ(history.size(), 1u);
+    ASSERT_EQ(history.size(), 1u);
 
     EXPECT_EQ(history.back()->text, "This is ");
     auto& events = history.back()->events;
-    EXPECT_EQ(events->size(), 1u);
+    ASSERT_EQ(events->size(), 1u);
 
     EXPECT_TRUE(events->at(0)->is_completion_event());
     EXPECT_EQ(events->at(0)->get_completion_event()->completion, "This is ");
@@ -1598,11 +1598,11 @@ TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_Delta) {
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
-    EXPECT_EQ(history.size(), 1u);
+    ASSERT_EQ(history.size(), 1u);
 
     EXPECT_EQ(history.back()->text, "This is successful.");
     auto& events = history.back()->events;
-    EXPECT_EQ(events->size(), 1u);
+    ASSERT_EQ(events->size(), 1u);
 
     EXPECT_TRUE(events->at(0)->is_completion_event());
     EXPECT_EQ(events->at(0)->get_completion_event()->completion,
@@ -1630,9 +1630,9 @@ TEST_F(ConversationHandlerUnitTest,
                                                             std::move(result));
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
-    EXPECT_EQ(history.size(), 1u);
+    ASSERT_EQ(history.size(), 1u);
     auto& events = history.back()->events;
-    EXPECT_EQ(events->size(), 1u);
+    ASSERT_EQ(events->size(), 1u);
   }
   {
     // Leading space on the first message should be removed
@@ -1645,11 +1645,11 @@ TEST_F(ConversationHandlerUnitTest,
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
-    EXPECT_EQ(history.size(), 1u);
+    ASSERT_EQ(history.size(), 1u);
 
     EXPECT_EQ(history.back()->text, "This is");
     auto& events = history.back()->events;
-    EXPECT_EQ(events->size(), 2u);
+    ASSERT_EQ(events->size(), 2u);
 
     EXPECT_TRUE(events->at(1)->is_completion_event());
     EXPECT_EQ(events->at(1)->get_completion_event()->completion, "This is");
@@ -1665,11 +1665,11 @@ TEST_F(ConversationHandlerUnitTest,
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
-    EXPECT_EQ(history.size(), 1u);
+    ASSERT_EQ(history.size(), 1u);
 
     EXPECT_EQ(history.back()->text, "This is successful.");
     auto& events = history.back()->events;
-    EXPECT_EQ(events->size(), 2u);
+    ASSERT_EQ(events->size(), 2u);
 
     EXPECT_TRUE(events->at(1)->is_completion_event());
     EXPECT_EQ(events->at(1)->get_completion_event()->completion,
@@ -1697,11 +1697,11 @@ TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_NotDelta) {
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
-    EXPECT_EQ(history.size(), 1u);
+    ASSERT_EQ(history.size(), 1u);
 
     EXPECT_EQ(history.back()->text, "This");
     auto& events = history.back()->events;
-    EXPECT_EQ(events->size(), 1u);
+    ASSERT_EQ(events->size(), 1u);
 
     EXPECT_TRUE(events->at(0)->is_completion_event());
     EXPECT_EQ(events->at(0)->get_completion_event()->completion, "This");
@@ -1717,11 +1717,11 @@ TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_NotDelta) {
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
-    EXPECT_EQ(history.size(), 1u);
+    ASSERT_EQ(history.size(), 1u);
 
     EXPECT_EQ(history.back()->text, "This is ");
     auto& events = history.back()->events;
-    EXPECT_EQ(events->size(), 1u);
+    ASSERT_EQ(events->size(), 1u);
 
     EXPECT_TRUE(events->at(0)->is_completion_event());
     EXPECT_EQ(events->at(0)->get_completion_event()->completion, "This is ");
@@ -1736,11 +1736,11 @@ TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_NotDelta) {
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
-    EXPECT_EQ(history.size(), 1u);
+    ASSERT_EQ(history.size(), 1u);
 
     EXPECT_EQ(history.back()->text, "This is successful.");
     auto& events = history.back()->events;
-    EXPECT_EQ(events->size(), 1u);
+    ASSERT_EQ(events->size(), 1u);
 
     EXPECT_TRUE(events->at(0)->is_completion_event());
     EXPECT_EQ(events->at(0)->get_completion_event()->completion,
@@ -1768,9 +1768,9 @@ TEST_F(ConversationHandlerUnitTest,
                                                             std::move(result));
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
-    EXPECT_EQ(history.size(), 1u);
+    ASSERT_EQ(history.size(), 1u);
     auto& events = history.back()->events;
-    EXPECT_EQ(events->size(), 1u);
+    ASSERT_EQ(events->size(), 1u);
   }
   {
     // Leading space should be removed for every partial message
@@ -1783,11 +1783,11 @@ TEST_F(ConversationHandlerUnitTest,
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
-    EXPECT_EQ(history.size(), 1u);
+    ASSERT_EQ(history.size(), 1u);
 
     EXPECT_EQ(history.back()->text, "This is ");
     auto& events = history.back()->events;
-    EXPECT_EQ(events->size(), 2u);
+    ASSERT_EQ(events->size(), 2u);
 
     EXPECT_TRUE(events->at(1)->is_completion_event());
     EXPECT_EQ(events->at(1)->get_completion_event()->completion, "This is ");
@@ -1802,11 +1802,11 @@ TEST_F(ConversationHandlerUnitTest,
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
-    EXPECT_EQ(history.size(), 1u);
+    ASSERT_EQ(history.size(), 1u);
 
     EXPECT_EQ(history.back()->text, "This is successful.");
     auto& events = history.back()->events;
-    EXPECT_EQ(events->size(), 2u);
+    ASSERT_EQ(events->size(), 2u);
 
     EXPECT_TRUE(events->at(1)->is_completion_event());
     EXPECT_EQ(events->at(1)->get_completion_event()->completion,
@@ -1838,7 +1838,7 @@ TEST_F(ConversationHandlerUnitTest,
         conversation_handler_->GetConversationHistory();
     ASSERT_EQ(history.size(), 1u);
     auto& events = history.back()->events;
-    EXPECT_EQ(events->size(), 1u);
+    ASSERT_EQ(events->size(), 1u);
     EXPECT_TRUE(events->at(0)->is_completion_event());
     EXPECT_EQ(events->at(0)->get_completion_event()->completion, "This is");
   }
@@ -1855,7 +1855,7 @@ TEST_F(ConversationHandlerUnitTest,
         conversation_handler_->GetConversationHistory();
     ASSERT_EQ(history.size(), 1u);
     auto& events = history.back()->events;
-    EXPECT_EQ(events->size(), 2u);
+    ASSERT_EQ(events->size(), 2u);
   }
   {
     // Second completion delta arriving after the inline search event. It must
@@ -1906,7 +1906,7 @@ TEST_F(ConversationHandlerUnitTest,
         conversation_handler_->GetConversationHistory();
     ASSERT_EQ(history.size(), 1u);
     auto& events = history.back()->events;
-    EXPECT_EQ(events->size(), 1u);
+    ASSERT_EQ(events->size(), 1u);
     EXPECT_EQ(events->at(0)->get_completion_event()->completion, "This is");
   }
   {
@@ -3631,12 +3631,13 @@ TEST_F(ConversationHandlerUnitTest,
 
   // Verify the conversation history doens't have an extra entry
   const auto& current_history = conversation_handler_->GetConversationHistory();
-  EXPECT_EQ(current_history.size(), 2u);
+  ASSERT_EQ(current_history.size(), 2u);
   EXPECT_EQ(current_history[0]->character_type, mojom::CharacterType::HUMAN);
   EXPECT_EQ(current_history[1]->character_type,
             mojom::CharacterType::ASSISTANT);
   EXPECT_EQ(current_history[0]->text, "Test question");
   EXPECT_EQ(current_history[1]->text, "");
+  ASSERT_TRUE(current_history[1]->events.has_value());
   EXPECT_EQ(current_history[1]->events.value().size(), 0u);
 
   EXPECT_EQ(conversation_handler_->current_error(),
@@ -3739,13 +3740,14 @@ TEST_F(ConversationHandlerUnitTest,
   // 2. Assistant response with tool use event
   // 3. Assistant response with no new entry
   const auto& current_history = conversation_handler_->GetConversationHistory();
-  EXPECT_EQ(current_history.size(), 3u);
+  ASSERT_EQ(current_history.size(), 3u);
   EXPECT_EQ(current_history[0]->character_type, mojom::CharacterType::HUMAN);
   EXPECT_EQ(current_history[1]->character_type,
             mojom::CharacterType::ASSISTANT);
   EXPECT_EQ(current_history[0]->text, "Test question");
+  ASSERT_TRUE(current_history[1]->events.has_value());
   auto& response_events = current_history[1]->events.value();
-  EXPECT_EQ(response_events.size(), 2u);
+  ASSERT_EQ(response_events.size(), 2u);
   EXPECT_EQ(response_events[0]->get_completion_event()->completion,
             "Ok, going to check...");
   EXPECT_EQ(response_events[1]->get_tool_use_event()->tool_name,
@@ -3784,7 +3786,7 @@ TEST_F(ConversationHandlerUnitTest, GetTools_FiltersUnsupportedTools) {
   });
 
   auto tools = conversation_handler_->GetToolsForTesting();
-  EXPECT_EQ(tools.size(), 1u);
+  ASSERT_EQ(tools.size(), 1u);
   EXPECT_EQ(tools[0]->Name(), "supported");
 }
 
@@ -3862,12 +3864,12 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_PartialEventsGetCombined) {
   // Verify the conversation history
   const std::vector<mojom::ConversationTurnPtr>& history =
       conversation_handler_->GetConversationHistory();
-  EXPECT_EQ(history.size(), 2u);
+  ASSERT_EQ(history.size(), 2u);
 
   auto& assistant_entry = history.back();
   ASSERT_TRUE(assistant_entry->events.has_value());
   auto& events = assistant_entry->events.value();
-  EXPECT_EQ(events.size(), 2u);  // combined event + separate event
+  ASSERT_EQ(events.size(), 2u);  // combined event + separate event
 
   // First event should have combined arguments
   EXPECT_TRUE(events[0]->is_tool_use_event());
@@ -4025,8 +4027,8 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
   ASSERT_EQ(events.size(), 2u);
   EXPECT_TRUE(events[1]->is_tool_use_event());
   auto& tool_event = events[1]->get_tool_use_event();
-  EXPECT_TRUE(tool_event->output.has_value());
-  EXPECT_EQ(tool_event->output->size(), 1u);
+  ASSERT_TRUE(tool_event->output.has_value());
+  ASSERT_EQ(tool_event->output->size(), 1u);
   EXPECT_MOJOM_EQ(
       tool_event->output->at(0),
       mojom::ContentBlock::NewTextContentBlock(
@@ -4566,7 +4568,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
 
   const auto& history = conversation_handler_->GetConversationHistory();
   // human entry + assistant entry with tool + assistant entry with response
-  EXPECT_EQ(history.size(), 3u);
+  ASSERT_EQ(history.size(), 3u);
 
   // Check the final response
   EXPECT_EQ(history.back()->text, "Based on the weather data, it's 72F");
@@ -4580,19 +4582,19 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
   auto& tool_event = events[0]->get_tool_use_event();
   EXPECT_TRUE(events[1]->is_tool_use_event());
   auto& tool_event2 = events[1]->get_tool_use_event();
-  EXPECT_TRUE(tool_event->output.has_value());
+  ASSERT_TRUE(tool_event->output.has_value());
   EXPECT_EQ(tool_event->tool_name, "test_tool");
   EXPECT_EQ(tool_event->id, "tool_id_1");
   EXPECT_EQ(tool_event->arguments_json, "{\"location\":\"NYC\"}");
-  EXPECT_EQ(tool_event->output->size(), 1u);
+  ASSERT_EQ(tool_event->output->size(), 1u);
   EXPECT_MOJOM_EQ(tool_event->output->at(0),
                   mojom::ContentBlock::NewTextContentBlock(
                       mojom::TextContentBlock::New("Result from tool1")));
-  EXPECT_TRUE(tool_event2->output.has_value());
+  ASSERT_TRUE(tool_event2->output.has_value());
   EXPECT_EQ(tool_event2->tool_name, "test_tool2");
   EXPECT_EQ(tool_event2->id, "tool_id_2");
   EXPECT_EQ(tool_event2->arguments_json, "{\"input1\":\"val1\"}");
-  EXPECT_EQ(tool_event2->output->size(), 1u);
+  ASSERT_EQ(tool_event2->output->size(), 1u);
   EXPECT_MOJOM_EQ(tool_event2->output->at(0),
                   mojom::ContentBlock::NewTextContentBlock(
                       mojom::TextContentBlock::New("Result from tool2")));
@@ -4817,7 +4819,7 @@ TEST_F(ConversationHandlerUnitTest,
   // Verify the pending tool use event was removed
   const auto& history_after = conversation_handler_->GetConversationHistory();
   // original human + assistant (with tools removed) + new human + new assistant
-  EXPECT_EQ(history_after.size(), 4u);
+  ASSERT_EQ(history_after.size(), 4u);
 
   // Check that the first assistant entry no longer has the pending tool use
   // event
@@ -5240,7 +5242,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
   const auto& history = conversation_handler_->GetConversationHistory();
   // human + assistant with tool1 + assistant with tool2 + assistant with final
   // response
-  EXPECT_EQ(history.size(), 4u);
+  ASSERT_EQ(history.size(), 4u);
 
   auto& assistant_with_tool1 = history[1];
   ASSERT_TRUE(assistant_with_tool1->events.has_value());
@@ -5514,7 +5516,7 @@ TEST_P(ConversationHandlerUnitTest_AutoScreenshot,
   ASSERT_EQ(history.size(), 2u);        // Human turn + assistant turn
   const auto& human_turn = history[0];  // Human turn (index 0)
   ASSERT_TRUE(human_turn->uploaded_files.has_value());
-  EXPECT_EQ(human_turn->uploaded_files->size(), 2u);
+  ASSERT_EQ(human_turn->uploaded_files->size(), 2u);
 
   // Verify that the files are screenshots
   for (const auto& file : *human_turn->uploaded_files) {
@@ -5730,7 +5732,7 @@ TEST_F(ConversationHandlerUnitTest, ScreenshotsOnlyOfContentWithoutText) {
   const auto& history = conversation_handler_->GetConversationHistory();
   ASSERT_EQ(history.size(), 2u);
   ASSERT_TRUE(history[0]->uploaded_files);
-  EXPECT_EQ(history[0]->uploaded_files->size(), 1u);
+  ASSERT_EQ(history[0]->uploaded_files->size(), 1u);
 
   testing::Mock::VerifyAndClearExpectations(associated_content_.get());
   testing::Mock::VerifyAndClearExpectations(&other_content);
@@ -5782,7 +5784,7 @@ TEST_F(ConversationHandlerUnitTest, NoScreenshotsAgainOfScreenshottedContent) {
   const auto& history = conversation_handler_->GetConversationHistory();
   ASSERT_EQ(history.size(), 6u);
   ASSERT_TRUE(history[0]->uploaded_files);
-  EXPECT_EQ(history[0]->uploaded_files->size(), 1u);
+  ASSERT_EQ(history[0]->uploaded_files->size(), 1u);
   EXPECT_FALSE(history[2]->uploaded_files);
   EXPECT_FALSE(history[4]->uploaded_files);
 
@@ -5837,7 +5839,7 @@ TEST_F(ConversationHandlerUnitTest, ScreenshotsJoinEachContentsEntry) {
   const auto& history = conversation_handler_->GetConversationHistory();
   ASSERT_EQ(history.size(), 4u);
   ASSERT_TRUE(history[0]->uploaded_files);
-  EXPECT_EQ(history[0]->uploaded_files->size(), 1u);
+  ASSERT_EQ(history[0]->uploaded_files->size(), 1u);
   ASSERT_TRUE(history[2]->uploaded_files);
   EXPECT_EQ(history[2]->uploaded_files->size(), 2u);
 
@@ -5923,7 +5925,7 @@ TEST_F(ConversationHandlerUnitTest, ScreenshotsAppendToExistingFiles) {
   ASSERT_EQ(new_history.size(), 2u);        // Human turn + assistant turn
   const auto& human_turn = new_history[0];  // Human turn (index 0)
   ASSERT_TRUE(human_turn->uploaded_files.has_value());
-  EXPECT_EQ(human_turn->uploaded_files->size(), 3u);  // 2 images + 1 screenshot
+  ASSERT_EQ(human_turn->uploaded_files->size(), 3u);  // 2 images + 1 screenshot
 
   // Verify that the first two files are images and the last is a screenshot
   EXPECT_EQ((*human_turn->uploaded_files)[0]->type,
@@ -5990,7 +5992,7 @@ TEST_F(ConversationHandlerUnitTest, VisionModelSwitchOnScreenshots) {
                                         // complete due to model switch)
   const auto& human_turn = history[0];  // Human turn (index 0)
   ASSERT_TRUE(human_turn->uploaded_files.has_value());
-  EXPECT_EQ(human_turn->uploaded_files->size(), 1u);
+  ASSERT_EQ(human_turn->uploaded_files->size(), 1u);
   EXPECT_EQ((*human_turn->uploaded_files)[0]->type,
             mojom::UploadedFileType::kScreenshot);
   EXPECT_TRUE(conversation_handler_->GetCurrentModel().vision_support);
@@ -6352,7 +6354,7 @@ TEST_F(ConversationHandlerUnitTest,
   ASSERT_EQ(history.size(), 2u);        // Human turn + assistant turn
   const auto& human_turn = history[0];  // Human turn (index 0)
   ASSERT_TRUE(human_turn->uploaded_files.has_value());
-  EXPECT_EQ(human_turn->uploaded_files->size(), mojom::MAX_IMAGES);
+  ASSERT_EQ(human_turn->uploaded_files->size(), mojom::MAX_IMAGES);
 
   // Verify all uploaded files are screenshots and in correct order
   for (size_t i = 0; i < human_turn->uploaded_files->size(); ++i) {
@@ -6431,7 +6433,7 @@ TEST_F(ConversationHandlerUnitTest,
   ASSERT_EQ(history.size(), 2u);        // Human turn + assistant turn
   const auto& human_turn = history[0];  // Human turn (index 0)
   ASSERT_TRUE(human_turn->uploaded_files.has_value());
-  EXPECT_EQ(human_turn->uploaded_files->size(), total_screenshots);
+  ASSERT_EQ(human_turn->uploaded_files->size(), total_screenshots);
 
   // Verify all uploaded files are screenshots and in correct order
   for (size_t i = 0; i < human_turn->uploaded_files->size(); ++i) {
@@ -6493,7 +6495,7 @@ TEST_F(ConversationHandlerUnitTest,
 
   // Verify the percentage is still the same and no UI update was triggered
   auto entries_state = conversation_handler_->GetStateForConversationEntries();
-  EXPECT_TRUE(entries_state->visual_content_used_percentage.has_value());
+  ASSERT_TRUE(entries_state->visual_content_used_percentage.has_value());
   EXPECT_EQ(entries_state->visual_content_used_percentage.value(), 66u);
 }
 
@@ -6603,7 +6605,7 @@ TEST_F(ConversationHandlerUnitTest,
 
   // Verify conversation has 2 turns (human + assistant)
   const auto& history = conversation_handler_->GetConversationHistory();
-  EXPECT_EQ(history.size(), 2u);
+  ASSERT_EQ(history.size(), 2u);
   EXPECT_EQ(history[0]->character_type, mojom::CharacterType::HUMAN);
   EXPECT_EQ(history[1]->character_type, mojom::CharacterType::ASSISTANT);
 }
@@ -6866,7 +6868,7 @@ TEST_F(ConversationHandlerUnitTest,
 
   // Verify error is set and conversation has only human entry
   const auto& history = conversation_handler_->GetConversationHistory();
-  EXPECT_EQ(history.size(), 1u);
+  ASSERT_EQ(history.size(), 1u);
   EXPECT_EQ(history[0]->character_type, mojom::CharacterType::HUMAN);
   EXPECT_EQ(conversation_handler_->current_error(),
             mojom::APIError::ConnectionIssue);
@@ -7151,7 +7153,7 @@ TEST_F(ConversationHandlerUnitTest,
 
   // Verify conversation history contains skill data
   const auto& history = conversation_handler_->GetConversationHistory();
-  EXPECT_EQ(history.size(), 2u);
+  ASSERT_EQ(history.size(), 2u);
   EXPECT_EQ(history[0]->text, "/playlist 2000");
   ASSERT_TRUE(history[0]->skill);
   EXPECT_EQ(history[0]->skill->shortcut, "playlist");
@@ -7195,7 +7197,7 @@ TEST_F(ConversationHandlerUnitTest,
 
   // Verify conversation history created but without skill data
   const auto& history = conversation_handler_->GetConversationHistory();
-  EXPECT_EQ(history.size(), 2u);
+  ASSERT_EQ(history.size(), 2u);
 
   // Human entry should NOT have skill data (invalid ID was ignored)
   EXPECT_FALSE(history[0]->skill);
@@ -7404,13 +7406,13 @@ TEST_P(ConversationHandlerSkillImageUploadTest, ResolvesModelAndPlumbsImage) {
               test_params.expects_vision_model_switch_request
           ? 1u
           : 2u;
-  EXPECT_EQ(history.size(), expected_size);
+  ASSERT_EQ(history.size(), expected_size);
   EXPECT_EQ(history[0]->text, "/describe photo");
   ASSERT_TRUE(history[0]->skill);
   EXPECT_EQ(history[0]->skill->shortcut, "describe");
   EXPECT_EQ(history[0]->skill->prompt, "Describe what you see in this image");
   ASSERT_TRUE(history[0]->uploaded_files);
-  EXPECT_EQ(history[0]->uploaded_files->size(), 1u);
+  ASSERT_EQ(history[0]->uploaded_files->size(), 1u);
   EXPECT_EQ(history[0]->uploaded_files->at(0)->type,
             mojom::UploadedFileType::kImage);
 }
@@ -7507,13 +7509,13 @@ TEST_F(ConversationHandlerUnitTest,
 
   // Verify conversation history contains both skill data and uploaded files
   const auto& history = conversation_handler_->GetConversationHistory();
-  EXPECT_EQ(history.size(), 2u);
+  ASSERT_EQ(history.size(), 2u);
   EXPECT_EQ(history[0]->text, "/summarize report");
   ASSERT_TRUE(history[0]->skill);
   EXPECT_EQ(history[0]->skill->shortcut, "summarize");
   EXPECT_EQ(history[0]->skill->prompt, "Summarize the attached document");
   ASSERT_TRUE(history[0]->uploaded_files);
-  EXPECT_EQ(history[0]->uploaded_files->size(), 1u);
+  ASSERT_EQ(history[0]->uploaded_files->size(), 1u);
   EXPECT_EQ(history[0]->uploaded_files->at(0)->type,
             mojom::UploadedFileType::kPdf);
 }
@@ -8574,11 +8576,13 @@ TEST_F(ConversationHandlerUnitTest, OnTaskStateChanged_Resumed) {
 
   // Verify tool was executed and final response was generated
   const auto& history_final = conversation_handler_->GetConversationHistory();
-  EXPECT_EQ(history_final.size(), 3u);
+  ASSERT_EQ(history_final.size(), 3u);
   EXPECT_EQ(history_final.back()->text, "Final response");
 
   // Verify tool output exists
   auto& tool_entry = history_final[1];
+  ASSERT_TRUE(tool_entry->events.has_value());
+  ASSERT_FALSE(tool_entry->events->empty());
   ASSERT_TRUE(
       tool_entry->events.value()[0]->get_tool_use_event()->output.has_value());
 }
@@ -8698,7 +8702,7 @@ TEST_F(ConversationHandlerUnitTest,
 
   // Verify both tools were executed exactly once and final response generated
   const auto& history = conversation_handler_->GetConversationHistory();
-  EXPECT_EQ(history.size(), 3u);
+  ASSERT_EQ(history.size(), 3u);
   EXPECT_EQ(history.back()->text, "Final response");
 
   // Verify both tools have output
