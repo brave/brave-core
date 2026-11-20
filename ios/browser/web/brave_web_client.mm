@@ -371,6 +371,11 @@ void BraveWebClient::DidResetConfiguration(web::BrowserState* browser_state,
   }
 }
 
+bool BraveWebClient::UseProfileWebViewConfigurationEnabled() {
+  return base::FeatureList::IsEnabled(
+      brave::features::kUseProfileWebViewConfiguration);
+}
+
 bool BraveWebClient::IsSmoothScrollingSupported() const {
   return true;
 }
