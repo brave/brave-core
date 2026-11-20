@@ -1426,7 +1426,8 @@ BraveContentBrowserClient::GetWebSocketOptions(
 // request handling (e.g. ad blocking). Shared and service workers have no
 // RenderFrameHost; see crbug.com/40195467.
 bool BraveContentBrowserClient::WillInterceptWebSocket(
-    content::RenderFrameHost*) {
+    content::RenderFrameHost*,
+    content::BrowserContext*) {
   return base::FeatureList::IsEnabled(
       features::kBraveEnableShieldsForWebSocketsFromWorkers);
 }
@@ -1475,6 +1476,7 @@ void BraveContentBrowserClient::ConfigureNetworkContextParams(
 template <template <typename> class T>
 void BraveContentBrowserClient::CreateChromeWebSocket(
     content::RenderFrameHost* frame,
+    content::BrowserContext* browser_context,
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
     const std::optional<std::string>& user_agent,
@@ -1482,7 +1484,8 @@ void BraveContentBrowserClient::CreateChromeWebSocket(
         handshake_client,
     content::ContentBrowserClient::WebSocketOptions options,
     BraveProxyingWebSocket<T>* proxy) {
-  if (ChromeContentBrowserClient::WillInterceptWebSocket(frame)) {
+  if (ChromeContentBrowserClient::WillInterceptWebSocket(frame,
+                                                         browser_context)) {
     ChromeContentBrowserClient::CreateWebSocket(
         frame, proxy->CreateWebSocketFactory(), url, site_for_cookies,
         user_agent, std::move(handshake_client), std::move(options));
@@ -1536,8 +1539,8 @@ void BraveContentBrowserClient::CreateWebSocketWithFrameId(
         browser_context, render_frame_token, request_initiator,
         std::move(factory), url, site_for_cookies, user_agent);
     CreateChromeWebSocket<base::WeakPtr>(
-        frame, url, site_for_cookies, user_agent, std::move(handshake_client),
-        std::move(options), proxy);
+        frame, browser_context, url, site_for_cookies, user_agent,
+        std::move(handshake_client), std::move(options), proxy);
   } else {
     // Ignore shared_ptr presubmit error, this is old code we are trying to
     // convert to unique_ptr/WeakPtr
@@ -1545,8 +1548,8 @@ void BraveContentBrowserClient::CreateWebSocketWithFrameId(
         BraveProxyingWebSocket<std::shared_ptr>::ProxyWebSocket(  // nocheck
             browser_context, render_frame_token, request_initiator,
             std::move(factory), url, site_for_cookies, user_agent);
-    CreateChromeWebSocket<std::shared_ptr>(  // nocheck
-        frame, url, site_for_cookies,        // nocheck
+    CreateChromeWebSocket<std::shared_ptr>(             // nocheck
+        frame, browser_context, url, site_for_cookies,  // nocheck
         user_agent, std::move(handshake_client), std::move(options), proxy);
   }
 }
