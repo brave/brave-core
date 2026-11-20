@@ -108,6 +108,7 @@ class TestConversationUI : public mojom::ConversationUI {
   void OnContentAgentChanged(bool is_content_agent_chosen,
                              const std::vector<mojom::ConversationCapability>&
                                  capabilities_enabled) override {}
+  void OnConversationThreadRemoved(const std::string& thread_uuid) override {}
   void OnConversationDeleted() override {}
 
  private:
