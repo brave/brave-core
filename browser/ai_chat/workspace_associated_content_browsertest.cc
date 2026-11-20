@@ -11,19 +11,15 @@
 #include <variant>
 #include <vector>
 
-#include "base/command_line.h"
 #include "base/files/file_path.h"
-#include "base/files/file_util.h"
-#include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback_helpers.h"
 #include "base/location.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/test/run_until.h"
-#include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
-#include "base/threading/thread_restrictions.h"
 #include "base/uuid.h"
+#include "brave/browser/ai_chat/workspace_associated_content_browsertest_base.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/common/constants.h"
@@ -48,7 +44,6 @@
 #include "content/public/test/test_navigation_observer.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/blink/public/common/features.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 #include "url/url_constants.h"
@@ -62,129 +57,17 @@ namespace ai_chat {
 // the delegate reports itself as a tool host. The page's own tool registration
 // (WebMCP) is covered separately by the workspace tools browser test, which
 // needs the workspace bundle.
-class WorkspaceAssociatedContentBrowserTest : public InProcessBrowserTest {
+class WorkspaceAssociatedContentBrowserTest
+    : public WorkspaceAssociatedContentBrowserTestBase {
  public:
-  WorkspaceAssociatedContentBrowserTest() {
-    scoped_feature_list_.InitAndEnableFeature(features::kAIChatWorkspaceTools);
-  }
+  explicit WorkspaceAssociatedContentBrowserTest(bool enable_web_mcp = false)
+      : WorkspaceAssociatedContentBrowserTestBase(enable_web_mcp) {}
   ~WorkspaceAssociatedContentBrowserTest() override = default;
 
  protected:
-  void SetUpOnMainThread() override {
-    InProcessBrowserTest::SetUpOnMainThread();
-    base::ScopedAllowBlockingForTesting allow_blocking;
-    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-  }
-
-  void TearDownOnMainThread() override {
-    // Each page saves the handle it's given to IndexedDB, which serializes it
-    // asynchronously while committing. Tearing the transaction down mid-commit
-    // trips the dangling pointer detector in IndexedDB's BackingStore (it binds
-    // the external object Unretained, guarded only by a WeakPtr checked inside
-    // the callback), so let every write land before destroying anything.
-    for (const auto& content : contents_) {
-      EXPECT_TRUE(WaitForStoredHandle(content.get()))
-          << "workspace " << content->uuid();
-    }
-    contents_.clear();
-    InProcessBrowserTest::TearDownOnMainThread();
-  }
-
-  // Returns a fresh folder, with a file in it, for a workspace to be pointed
-  // at. Tests which create more than one workspace need a folder each.
-  base::FilePath CreateWorkspaceFolder() {
-    base::ScopedAllowBlockingForTesting allow_blocking;
-    base::FilePath folder;
-    EXPECT_TRUE(base::CreateTemporaryDirInDir(
-        temp_dir_.GetPath(), FILE_PATH_LITERAL("workspace"), &folder));
-    EXPECT_TRUE(
-        base::WriteFile(folder.AppendASCII("hello.txt"), "hello world"));
-    return folder;
-  }
-
-  // Creates a workspace for |folder|, owned by the fixture so that it outlives
-  // its page's IndexedDB write (see TearDownOnMainThread()).
-  WorkspaceAssociatedContent* CreateContent(const base::FilePath& folder) {
-    return contents_
-        .emplace_back(std::make_unique<WorkspaceAssociatedContent>(
-            folder, browser()->GetProfile(), base::DoNothing()))
-        .get();
-  }
-
-  // Evaluates to the directory handle |content|'s page has committed to
-  // IndexedDB, waiting for the page to load and save it. A read transaction
-  // can't run until an earlier write to the same store has committed, so once
-  // this sees the handle the write is complete.
-  static constexpr char kGetStoredHandleJs[] = R"JS(
-      (async () => {
-        const getHandle = () => new Promise((resolve, reject) => {
-          const open = indexedDB.open('leo-workspace', 1);
-          open.onerror = () => reject(open.error);
-          open.onupgradeneeded = () => open.result.createObjectStore('handles');
-          open.onsuccess = () => {
-            const db = open.result;
-            const request =
-                db.transaction('handles').objectStore('handles').get('root');
-            request.onerror = () => reject(request.error);
-            request.onsuccess = () => {
-              db.close();
-              resolve(request.result);
-            };
-          };
-        });
-        let handle;
-        while (!(handle = await getHandle())) {
-          await new Promise(resolve => setTimeout(resolve, 10));
-        }
-        return handle;
-      })()
-  )JS";
-
-  [[nodiscard]] static bool WaitForStoredHandle(
-      WorkspaceAssociatedContent* content) {
-    content::WebContents* web_contents = content->GetWebContentsForTesting();
-    return content::WaitForLoadStop(web_contents) &&
-           content::EvalJs(web_contents, base::StrCat({kGetStoredHandleJs,
-                                                       ".then(h => h.kind)"}))
-                   .ExtractString() == "directory";
-  }
-
   ContentSetting GetSetting(const GURL& url, ContentSettingsType type) {
     return HostContentSettingsMapFactory::GetForProfile(browser()->GetProfile())
         ->GetContentSetting(url, url, type);
-  }
-
-  static GURL ViewerURL(const GURL& workspace_url) {
-    const std::string host = base::StrCat(
-        {kAIChatLeoWorkspaceViewUIHostPrefix, workspace_url.host()});
-    GURL::Replacements replacements;
-    replacements.SetHostStr(host);
-    return workspace_url.ReplaceComponents(replacements);
-  }
-
-  // Makes `url` the sole iframe of `web_contents`' main document and returns
-  // whether it ended up showing that URL's document. Blocked and permitted
-  // frames alike fire `load`, so the outcome is read off the committed
-  // document: frame-src leaves the frame on its initial empty document,
-  // frame-ancestors commits an error document at the URL.
-  static bool FrameLoads(content::WebContents* web_contents,
-                         const GURL& url,
-                         base::Location location = base::Location::Current()) {
-    SCOPED_TRACE(base::StrCat({location.ToString(), " framing ", url.spec()}));
-    EXPECT_TRUE(content::ExecJs(web_contents, content::JsReplace(R"JS(
-        new Promise(resolve => {
-          document.querySelectorAll('iframe').forEach(frame => frame.remove());
-          const frame = document.createElement('iframe');
-          frame.addEventListener('load', () => resolve());
-          frame.src = $1;
-          document.body.appendChild(frame);
-        })
-    )JS",
-                                                                 url)));
-    content::RenderFrameHost* child =
-        content::ChildFrameAt(web_contents->GetPrimaryMainFrame(), 0);
-    return child && child->GetLastCommittedURL() == url &&
-           !child->IsErrorDocument();
   }
 
   // Navigates the active tab to `url`, returning whether a document at that URL
@@ -202,12 +85,6 @@ class WorkspaceAssociatedContentBrowserTest : public InProcessBrowserTest {
     observer.Wait();
     return observer.last_navigation_succeeded();
   }
-
-  base::ScopedTempDir temp_dir_;
-
- private:
-  std::vector<std::unique_ptr<WorkspaceAssociatedContent>> contents_;
-  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
@@ -537,48 +414,6 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
       GetSetting(viewer_url, ContentSettingsType::FILE_SYSTEM_WRITE_GUARD));
 }
 
-// The viewer serves a file from the path of its URL, so a file name containing
-// characters that are special in a URL has to be escaped on the way in, and
-// unescaped by the service worker, to reach the right file. Unescaped, the `#`
-// here would cut the name short, and the service worker would look for
-// "a%20b".
-IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
-                       ViewerDisplaysFileWhoseNameNeedsEscaping) {
-  const base::FilePath folder = CreateWorkspaceFolder();
-  {
-    base::ScopedAllowBlockingForTesting allow_blocking;
-    ASSERT_TRUE(base::WriteFile(folder.AppendASCII("a b#1.txt"), "escaped"));
-  }
-  auto* content = CreateContent(folder);
-  content::WebContents* web_contents = content->GetWebContentsForTesting();
-  ASSERT_TRUE(content::WaitForLoadStop(web_contents));
-
-  const GURL viewer_url = ViewerURL(content->page_url());
-  ASSERT_TRUE(
-      FrameLoads(web_contents, viewer_url.Resolve("/#file=a%20b%231.txt")));
-  content::RenderFrameHost* viewer =
-      content::ChildFrameAt(web_contents->GetPrimaryMainFrame(), 0);
-  ASSERT_TRUE(viewer);
-
-  // The viewer frames the file once its service worker is ready.
-  content::RenderFrameHost* file = nullptr;
-  ASSERT_TRUE(base::test::RunUntil([&] {
-    file = content::ChildFrameAt(viewer, 0);
-    return file && file->GetLastCommittedURL().path() == "/a%20b%231.txt";
-  }));
-  EXPECT_EQ(viewer_url.Resolve("/a%20b%231.txt"), file->GetLastCommittedURL());
-  EXPECT_EQ("escaped", content::EvalJs(file, R"JS(
-      new Promise(resolve => {
-        const text = () => resolve(document.body.innerText);
-        if (document.readyState === 'complete') {
-          text();
-        } else {
-          addEventListener('load', text);
-        }
-      })
-  )JS"));
-}
-
 // Framing another workspace's viewer would let a workspace present unrelated
 // contents as its own. The framer's frame-src rejects it first, so this only
 // pins the outcome; the viewer's frame-ancestors is the redundant second half
@@ -700,20 +535,8 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
 class WorkspaceAssociatedContentWebMcpBrowserTest
     : public WorkspaceAssociatedContentBrowserTest {
  public:
-  WorkspaceAssociatedContentWebMcpBrowserTest() {
-    web_mcp_feature_list_.InitAndEnableFeature(blink::features::kWebMCP);
-  }
-
-  void SetUpCommandLine(base::CommandLine* command_line) override {
-    WorkspaceAssociatedContentBrowserTest::SetUpCommandLine(command_line);
-    // The runtime-enabled feature gating document.modelContext is marked
-    // "experimental", so the base::Feature toggle alone isn't enough to turn it
-    // on in the renderer.
-    command_line->AppendSwitchASCII("enable-blink-features", "WebMCP");
-  }
-
- private:
-  base::test::ScopedFeatureList web_mcp_feature_list_;
+  WorkspaceAssociatedContentWebMcpBrowserTest()
+      : WorkspaceAssociatedContentBrowserTest(/*enable_web_mcp=*/true) {}
 };
 
 // The workspace page registers its file tools via WebMCP from the
