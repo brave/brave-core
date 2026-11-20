@@ -6,14 +6,15 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_create_orchard_to_ironwood_transaction_task.h"
 
 #include <memory>
+#include <string>
 #include <utility>
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback_helpers.h"
-#include "base/test/gmock_callback_support.h"
-#include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_sync_state.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -22,9 +23,10 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_test_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 using testing::_;
-using testing::SaveArg;
 
 namespace brave_wallet {
 
@@ -115,6 +117,15 @@ class ZCashCreateOrchardToIronwoodTransactionTaskTest : public testing::Test {
 
   base::test::TaskEnvironment& task_environment() { return task_environment_; }
 
+  // Starts `task` and waits for its one-shot callback.
+  base::expected<ZCashTransaction, std::string> RunTask(
+      ZCashCreateOrchardToIronwoodTransactionTask& task) {
+    base::test::TestFuture<base::expected<ZCashTransaction, std::string>>
+        future;
+    task.Start(future.GetCallback());
+    return future.Take();
+  }
+
  private:
   base::test::TaskEnvironment task_environment_;
   base::test::ScopedFeatureList feature_list_;
@@ -159,53 +170,42 @@ TEST_F(ZCashCreateOrchardToIronwoodTransactionTaskTest, TransactionCreated) {
             zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
       });
 
-  base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
-
   auto orchard_part = GetOrchardRawBytes(
       "u19hwdcqxhkapje2p0744gq96parewuffyeg0kg3q3taq040zwqh2wxjwyxzs6l9dulzua"
       "p43ya7mq7q3mu2hjafzlwylvystjlc6n294emxww9xm8qn6tcldqkq4k9ccsqzmjeqk9yp"
       "kss572ut324nmxke666jm8lhkpt85gzq58d50rfnd7wufke8jjhc3lhswxrdr57ah42xck"
       "h2j",
       false);
+  ASSERT_TRUE(orchard_part);
 
   std::unique_ptr<ZCashCreateOrchardToIronwoodTransactionTask> task =
       std::make_unique<ZCashCreateOrchardToIronwoodTransactionTask>(
           pass_key(), zcash_wallet_service(), action_context(), *orchard_part,
           std::nullopt, 100000u);
 
-  base::expected<ZCashTransaction, std::string> tx_result;
-  EXPECT_CALL(callback, Run(_))
-      .WillOnce(::testing::DoAll(
-          SaveArg<0>(&tx_result),
-          base::test::RunOnceClosure(task_environment().QuitClosure())));
-
-  task->Start(callback.Get());
-
-  task_environment().RunUntilQuit();
+  auto tx_result = RunTask(*task);
 
   ASSERT_TRUE(tx_result.has_value());
-  EXPECT_TRUE(tx_result.value().is_v6());
+  ASSERT_TRUE(tx_result.value().is_v6());
 
-  EXPECT_EQ(tx_result.value().v6_part().legacy_orchard.inputs.size(), 2u);
+  ASSERT_EQ(tx_result.value().v6_part().legacy_orchard.inputs.size(), 2u);
   EXPECT_EQ(tx_result.value().v6_part().legacy_orchard.inputs[0].note.amount,
             70000u);
   EXPECT_EQ(tx_result.value().v6_part().legacy_orchard.inputs[1].note.amount,
             80000u);
-  EXPECT_EQ(
-      tx_result.value().v6_part().legacy_orchard.anchor_block_height.value(),
-      10u);
+  EXPECT_EQ(tx_result.value().v6_part().legacy_orchard.anchor_block_height,
+            10u);
 
-  EXPECT_EQ(tx_result.value().v6_part().legacy_orchard.outputs.size(), 1u);
+  ASSERT_EQ(tx_result.value().v6_part().legacy_orchard.outputs.size(), 1u);
   EXPECT_EQ(tx_result.value().v6_part().legacy_orchard.outputs[0].value,
             50000u - 5 * 5000u);
 
   EXPECT_EQ(tx_result.value().v6_part().ironwood.inputs.size(), 0u);
-  EXPECT_EQ(tx_result.value().v6_part().ironwood.outputs.size(), 1u);
+  ASSERT_EQ(tx_result.value().v6_part().ironwood.outputs.size(), 1u);
   EXPECT_EQ(tx_result.value().v6_part().ironwood.outputs[0].value, 100000u);
   EXPECT_EQ(tx_result.value().v6_part().ironwood.outputs[0].addr,
             orchard_part.value());
-  EXPECT_EQ(tx_result.value().v6_part().ironwood.anchor_block_height.value(),
-            1000u);
+  EXPECT_EQ(tx_result.value().v6_part().ironwood.anchor_block_height, 1000u);
 }
 
 }  // namespace brave_wallet
