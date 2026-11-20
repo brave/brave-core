@@ -149,6 +149,9 @@ public final class BravePreferenceKeys {
     public static final String BRAVE_NTP_TOP_SITES_TOOLTIP_DISMISSED =
             "brave_ntp_top_sites_tooltip_dismissed";
 
+    public static final String BRAVE_NTP_RECAP_BANNER_DISMISSED =
+            "brave_ntp_recap_banner_dismissed";
+
     /*
      * Checks if preference key is used in Brave.
      * It's no op currently. We might reconsider
