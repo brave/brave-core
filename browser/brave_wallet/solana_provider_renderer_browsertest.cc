@@ -948,6 +948,38 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAndSendTransaction) {
             result5);
 }
 
+IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest,
+                       RejectsUnconvertibleArguments) {
+  constexpr char kScript[] = R"(
+    (async () => {
+      const provider = window.braveSolana;
+      for (const value of [undefined, () => {}]) {
+        const transaction = {serializeMessage: () => value};
+        for (const [method, args] of [
+          ['signMessage', [value]],
+          ['signMessage', [new Uint8Array([1]), value]],
+          ['request', [value]],
+          ['signTransaction', [transaction]],
+          ['signAndSendTransaction', [transaction]],
+          ['signAllTransactions', [[transaction]]],
+        ]) {
+          const error = await provider[method](...args).then(
+              () => null, reason => reason);
+          if (error?.code !== $1 || error.message !== $2) {
+            throw new Error(method + ' argument ' + args.length + ' (' +
+                            typeof value + '): ' + JSON.stringify(error));
+          }
+        }
+      }
+    })()
+  )";
+  EXPECT_TRUE(
+      ExecJs(web_contents(browser()),
+             content::JsReplace(
+                 kScript, static_cast<int>(SolanaProviderError::kInvalidParams),
+                 l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS))));
+}
+
 IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignMessage) {
   const std::string msg_str = VectorToArrayString(kMessageToSign);
   const std::string msg = base::StrCat({"(new Uint8Array([", msg_str, "]))"});

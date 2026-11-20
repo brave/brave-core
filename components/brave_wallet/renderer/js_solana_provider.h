@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
@@ -154,8 +155,17 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
                     v8::Local<v8::Value> response,
                     bool success);
 
-  // Get solanaWeb3.Transaction.serializedMessage with base58 encoding
-  std::optional<std::string> GetSerializedMessage(
+  v8::Local<v8::Promise> RejectInvalidParams(
+      v8::Local<v8::Context> context,
+      v8::Local<v8::Promise::Resolver> resolver);
+
+  enum class TransactionParamError { kInvalidTransaction, kConversionFailed };
+  v8::Local<v8::Promise> HandleTransactionParamError(
+      TransactionParamError error,
+      gin::Arguments* arguments,
+      v8::Local<v8::Promise::Resolver> resolver);
+
+  base::expected<std::string, TransactionParamError> GetSerializedMessage(
       v8::Local<v8::Value> transaction);
 
   std::optional<std::vector<uint8_t>> GetSignatureBlobFromV8Signature(
@@ -169,8 +179,8 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
   std::optional<std::vector<mojom::SignaturePubkeyPairPtr>> GetSignatures(
       v8::Local<v8::Value> transaction);
 
-  mojom::SolanaSignTransactionParamPtr GetSignTransactionParam(
-      v8::Local<v8::Value> transaction);
+  base::expected<mojom::SolanaSignTransactionParamPtr, TransactionParamError>
+  GetSignTransactionParam(v8::Local<v8::Value> transaction);
 
   bool LoadSolanaWeb3ModuleIfNeeded(v8::Isolate* isolate);
 
