@@ -668,7 +668,7 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   // Above json data has 3 wallpapers.
   EXPECT_THAT(sponsored_content_data->campaigns, ::testing::SizeIs(1));
   const Campaign campaign = sponsored_content_data->campaigns[0];
-  EXPECT_THAT(campaign.campaign_id, ::testing::Not(::testing::IsEmpty()));
+  EXPECT_THAT(campaign.id, ::testing::Not(::testing::IsEmpty()));
   EXPECT_THAT(campaign.creatives, ::testing::SizeIs(1));
   EXPECT_EQ(25, campaign.creatives[0].focal_point.x());
   EXPECT_EQ(base::FilePath::FromUTF8Unsafe("background.jpg"),
@@ -802,7 +802,7 @@ TEST_F(NTPBackgroundImagesServiceTest, MultipleCampaignsTest) {
   EXPECT_TRUE(sponsored_content_data->IsValid());
   EXPECT_THAT(sponsored_content_data->campaigns, ::testing::SizeIs(2));
   const Campaign campaign_0 = sponsored_content_data->campaigns[0];
-  EXPECT_THAT(campaign_0.campaign_id, ::testing::Not(::testing::IsEmpty()));
+  EXPECT_THAT(campaign_0.id, ::testing::Not(::testing::IsEmpty()));
   EXPECT_THAT(campaign_0.creatives, ::testing::SizeIs(1));
   EXPECT_THAT(campaign_0.creatives[0].creative_instance_id,
               ::testing::Not(::testing::IsEmpty()));
@@ -812,7 +812,7 @@ TEST_F(NTPBackgroundImagesServiceTest, MultipleCampaignsTest) {
             campaign_0.creatives[0].logo.image_file.BaseName());
 
   const Campaign campaign_1 = sponsored_content_data->campaigns[1];
-  EXPECT_THAT(campaign_1.campaign_id, ::testing::Not(::testing::IsEmpty()));
+  EXPECT_THAT(campaign_1.id, ::testing::Not(::testing::IsEmpty()));
   EXPECT_THAT(campaign_1.creatives, ::testing::SizeIs(1));
   EXPECT_THAT(campaign_1.creatives[0].creative_instance_id,
               ::testing::Not(::testing::IsEmpty()));

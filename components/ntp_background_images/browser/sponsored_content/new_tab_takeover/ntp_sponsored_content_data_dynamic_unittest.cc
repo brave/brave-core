@@ -78,7 +78,8 @@ TEST_F(NTPSponsoredContentDataDynamicTest, ParseSponsoredDynamicCampaign) {
   EXPECT_THAT(
       sponsored_content_data.campaigns,
       testing::ElementsAre(testing::FieldsAre(
-          /*campaign_id=*/"c27a3fae-ee9e-48a2-b3a7-f4675744e6ec",
+          /*id=*/"c27a3fae-ee9e-48a2-b3a7-f4675744e6ec",
+          /*type=*/brave_ads::mojom::NewTabPageAdCampaignType::kPaid,
           /*creatives=*/
           testing::ElementsAre(testing::FieldsAre(
               WallpaperType::kDynamicNewTabTakeover,

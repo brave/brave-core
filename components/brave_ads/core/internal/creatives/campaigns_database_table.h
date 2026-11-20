@@ -31,6 +31,7 @@ class Campaigns final : public TableInterface {
 
  private:
   void MigrateToV52(const mojom::DBTransactionInfoPtr& mojom_db_transaction);
+  void MigrateToV62(const mojom::DBTransactionInfoPtr& mojom_db_transaction);
 };
 
 }  // namespace brave_ads::database::table

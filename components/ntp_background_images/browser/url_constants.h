@@ -22,6 +22,7 @@ inline constexpr char kCampaignsKey[] = "campaigns";
 inline constexpr char kLogoKey[] = "logo";
 
 inline constexpr char kCampaignIdKey[] = "campaignId";
+inline constexpr char kCampaignTypeKey[] = "type";
 inline constexpr char kCampaignMetricsKey[] = "metrics";
 
 inline constexpr char kImagesKey[] = "images";

@@ -224,7 +224,7 @@ class ViewCounterServiceTest : public testing::Test {
     logo.destination_url = kTargetUrl;
 
     Campaign campaign;
-    campaign.campaign_id = kCampaignId;
+    campaign.id = kCampaignId;
     campaign.creatives = {{wallpaper_type,
                            base::FilePath(FILE_PATH_LITERAL("wallpaper1.jpg")),
                            {3988, 2049},
