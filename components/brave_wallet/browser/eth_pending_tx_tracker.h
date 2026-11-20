@@ -39,9 +39,7 @@ class EthPendingTxTracker {
   void Reset();
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(EthPendingTxTrackerUnitTest, IsNonceTaken);
   FRIEND_TEST_ALL_PREFIXES(EthPendingTxTrackerUnitTest, ShouldTxDropped);
-  FRIEND_TEST_ALL_PREFIXES(EthPendingTxTrackerUnitTest, DropTransaction);
 
   void OnGetTxReceipt(const std::string& meta_id,
                       TransactionReceipt receipt,
