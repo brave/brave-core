@@ -103,6 +103,12 @@ extension Preferences {
       key: "wallet.wallet-user-asset-to-core",
       default: false
     )
+
+    /// Used to track whether to prune all dApps permissions
+    public static let pruneDAppsPermissionsCompleted = Option<Bool>(
+      key: "wallet.prune-dapps-permissions-completed",
+      default: false
+    )
   }
 }
 

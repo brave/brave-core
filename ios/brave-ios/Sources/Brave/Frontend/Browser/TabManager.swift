@@ -1962,7 +1962,8 @@ extension TabManager: NSFetchedResultsControllerDelegate {
       // wallet settings / manage web3 site connections, we need to
       // fire `accountsChanged` event on open tabs for this `Domain`
       let tabsForDomain = self.allTabs.filter {
-        $0.visibleURL?.domainURL.absoluteString.caseInsensitiveCompare(domainURL) == .orderedSame
+        $0.visibleURL.flatMap { URLOrigin(url: $0).serialized }?.caseInsensitiveCompare(domainURL)
+          == .orderedSame
       }
       tabsForDomain.forEach { tab in
         Task { @MainActor in
