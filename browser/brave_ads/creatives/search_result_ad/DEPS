@@ -1,3 +1,9 @@
 include_rules = [
   "+brave/components/infobars/core/brave_confirm_infobar_delegate.h",
 ]
+
+specific_include_rules = {
+  "creative_search_result_ad_conversion_interactive_uitest\.cc": [
+    "+brave/components/brave_ads/core/browser/network/oblivious_http_feature.h",
+  ],
+}
