@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/settings/settings_localized_strings_provider.cc b/chrome/browser/ui/webui/settings/settings_localized_strings_provider.cc
-index f7eca2dda778bce99d6fabb9ed09efebd3432910..190c9521f4e31386636649358c8d557c53e0b4b6 100644
+index 17c5ddc3af5376a0a042b971710ef17c691b9816..5f597f413bea8ff2f21e4556131fbd03be273b2e 100644
 --- a/chrome/browser/ui/webui/settings/settings_localized_strings_provider.cc
 +++ b/chrome/browser/ui/webui/settings/settings_localized_strings_provider.cc
-@@ -620,8 +620,8 @@ void AddAppearanceStrings(content::WebUIDataSource* html_source,
+@@ -660,8 +660,8 @@ void AddAppearanceStrings(content::WebUIDataSource* html_source,
        {"minimumFont", IDS_SETTINGS_MINIMUM_FONT_SIZE_LABEL},
        {"tiny", IDS_SETTINGS_TINY_FONT_SIZE},
        {"huge", IDS_SETTINGS_HUGE_FONT_SIZE},
@@ -13,9 +13,9 @@ index f7eca2dda778bce99d6fabb9ed09efebd3432910..190c9521f4e31386636649358c8d557c
        {"uiFeatureAlignSide", IDS_SETTINGS_UI_FEATURE_ALIGN_SIDE},
        {"uiFeatureAlignTop", IDS_SETTINGS_UI_FEATURE_ALIGN_TOP},
        {"resetToDefault", IDS_SETTINGS_RESET_TO_DEFAULT},
-@@ -2334,9 +2334,9 @@ void AddPersonalizationOptionsStrings(content::WebUIDataSource* html_source) {
- #if !BUILDFLAG(IS_CHROMEOS)
+@@ -2343,9 +2343,9 @@ void AddPersonalizationOptionsStrings(content::WebUIDataSource* html_source) {
        {"signinAllowedTitle", IDS_SETTINGS_SIGNIN_ALLOWED},
+       {"signinAllowedDescription", IDS_SETTINGS_SIGNIN_ALLOWED_DESC_2},
  #endif
 -      {"enablePersonalizationLogging", IDS_SETTINGS_ENABLE_LOGGING_PREF},
 +      {"enablePersonalizationLogging", IDS_BRAVE_DIAGNOSTIC_REPORTS_PREF},
@@ -25,8 +25,8 @@ index f7eca2dda778bce99d6fabb9ed09efebd3432910..190c9521f4e31386636649358c8d557c
        {"spellingDescription", IDS_SETTINGS_SPELLING_PREF_DESC},
        {"searchSuggestPref", IDS_SETTINGS_SUGGEST_PREF},
        {"searchSuggestPrefDesc", IDS_SETTINGS_SUGGEST_PREF_DESC},
-@@ -2404,7 +2404,7 @@ void AddBrowserSyncPageStrings(content::WebUIDataSource* html_source) {
-        IDS_SETTINGS_PEOPLE_SIGN_IN_PROMPT_SECONDARY_WITH_ACCOUNT},
+@@ -2408,7 +2408,7 @@ void AddBrowserSyncPageStrings(content::WebUIDataSource* html_source) {
+        IDS_SETTINGS_PEOPLE_EXPLICIT_SIGN_IN_PROMPT_SECONDARY_WITH_NO_ACCOUNT_WITH_BOOKMARKS},
  #endif
        {"passwordsCheckboxLabel",
 -       IDS_SETTINGS_PASSWORDS_AND_PASSKEYS_CHECKBOX_LABEL},
@@ -34,7 +34,7 @@ index f7eca2dda778bce99d6fabb9ed09efebd3432910..190c9521f4e31386636649358c8d557c
    };
    html_source->AddLocalizedStrings(kLocalizedStrings);
  
-@@ -2448,7 +2448,7 @@ void AddSyncControlsStrings(content::WebUIDataSource* html_source) {
+@@ -2444,7 +2444,7 @@ void AddSyncControlsStrings(content::WebUIDataSource* html_source) {
        {"historyTabsCheckboxSubLabelOff",
         IDS_SETTINGS_ACCOUNT_HISTORY_TOGGLE_SUB_LABEL_OFF},
  
@@ -43,7 +43,7 @@ index f7eca2dda778bce99d6fabb9ed09efebd3432910..190c9521f4e31386636649358c8d557c
        {"historyCheckboxLabel", IDS_SETTINGS_HISTORY_CHECKBOX_LABEL},
        {"extensionsCheckboxLabel", IDS_SETTINGS_EXTENSIONS_CHECKBOX_LABEL},
        {"openTabsCheckboxLabel", IDS_SETTINGS_OPEN_TABS_CHECKBOX_LABEL},
-@@ -2460,7 +2460,7 @@ void AddSyncControlsStrings(content::WebUIDataSource* html_source) {
+@@ -2456,7 +2456,7 @@ void AddSyncControlsStrings(content::WebUIDataSource* html_source) {
         IDS_SETTINGS_WIFI_CONFIGURATIONS_CHECKBOX_LABEL},
        {"syncEverythingCheckboxLabel",
         IDS_SETTINGS_SYNC_EVERYTHING_CHECKBOX_LABEL},
@@ -52,27 +52,18 @@ index f7eca2dda778bce99d6fabb9ed09efebd3432910..190c9521f4e31386636649358c8d557c
        {"nonPersonalizedServicesSectionLabel",
         IDS_SETTINGS_NON_PERSONALIZED_SERVICES_SECTION_LABEL},
        {"customizeSyncLabel", IDS_SETTINGS_CUSTOMIZE_SYNC},
-@@ -2533,7 +2533,7 @@ void AddPeopleStrings(content::WebUIDataSource* html_source, Profile* profile) {
+@@ -2527,8 +2527,8 @@ void AddPeopleStrings(content::WebUIDataSource* html_source, Profile* profile) {
        {"peopleSignInPromptSecondaryWithNoAccount",
         IDS_SETTINGS_PEOPLE_SIGN_IN_PROMPT_SECONDARY_WITH_ACCOUNT},
  #else
 -      {"editPerson", IDS_SETTINGS_CUSTOMIZE_PROFILE},
+-      {"profileNameAndPicture", IDS_SETTINGS_CUSTOMIZE_PROFILE},
 +      {"editPerson", IDS_SETTINGS_BRAVE_EDIT_PROFILE},
- #endif
- 
-   // Manage profile strings:
-@@ -2603,8 +2603,8 @@ void AddPeopleStrings(content::WebUIDataSource* html_source, Profile* profile) {
-   html_source->AddLocalizedString(
-       "profileNameAndPicture",
-       syncer::IsReplaceSyncPromosWithSignInPromosEnabled()
--          ? IDS_SETTINGS_CUSTOMIZE_PROFILE
--          : IDS_SETTINGS_CUSTOMIZE_YOUR_CHROME_PROFILE);
-+          ? IDS_SETTINGS_BRAVE_EDIT_PROFILE
-+          : IDS_SETTINGS_BRAVE_EDIT_PROFILE);
- #endif
- 
-   // Add Google Account URL and include UTM parameter to signal the source of
-@@ -2755,7 +2755,7 @@ void AddPrivacyStrings(content::WebUIDataSource* html_source,
++      {"profileNameAndPicture", IDS_SETTINGS_BRAVE_EDIT_PROFILE},
+       {"peopleSignInPrompt",
+        IDS_SETTINGS_PEOPLE_SIGNIN_SECTION_SIGNED_OUT_TITLE},
+       {"peopleSignInPromptSecondaryWithNoAccount",
+@@ -2736,7 +2736,7 @@ void AddPrivacyStrings(content::WebUIDataSource* html_source,
        {"safeBrowsingEnhancedThingsToConsiderBulThree",
         IDS_SETTINGS_SAFEBROWSING_ENHANCED_THINGS_TO_CONSIDER_BULLET_THREE},
        {"safeBrowsingStandard", IDS_SETTINGS_SAFEBROWSING_STANDARD},
@@ -81,7 +72,7 @@ index f7eca2dda778bce99d6fabb9ed09efebd3432910..190c9521f4e31386636649358c8d557c
  #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
        {"safeBrowsingStandardDescProxy",
         IDS_SETTINGS_SAFEBROWSING_STANDARD_DESC_PROXY},
-@@ -2765,7 +2765,7 @@ void AddPrivacyStrings(content::WebUIDataSource* html_source,
+@@ -2746,7 +2746,7 @@ void AddPrivacyStrings(content::WebUIDataSource* html_source,
        {"safeBrowsingStandardBulOne",
         IDS_SETTINGS_SAFEBROWSING_STANDARD_BULLET_ONE},
        {"safeBrowsingStandardBulTwo",
@@ -90,7 +81,7 @@ index f7eca2dda778bce99d6fabb9ed09efebd3432910..190c9521f4e31386636649358c8d557c
  #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
        {"safeBrowsingStandardBulTwoProxy",
         IDS_SETTINGS_SAFEBROWSING_STANDARD_BULLET_TWO_PROXY},
-@@ -2773,7 +2773,7 @@ void AddPrivacyStrings(content::WebUIDataSource* html_source,
+@@ -2754,7 +2754,7 @@ void AddPrivacyStrings(content::WebUIDataSource* html_source,
        {"safeBrowsingStandardReportingLabel",
         IDS_SETTINGS_SAFEBROWSING_STANDARD_HELP_IMPROVE},
        {"safeBrowsingNone", IDS_SETTINGS_SAFEBROWSING_NONE},
@@ -99,7 +90,7 @@ index f7eca2dda778bce99d6fabb9ed09efebd3432910..190c9521f4e31386636649358c8d557c
        {"safeBrowsingDisableDialog",
         IDS_SETTINGS_SAFEBROWSING_DISABLE_DIALOG_TITLE},
        {"safeBrowsingDisableDialogDesc",
-@@ -3143,7 +3143,7 @@ void AddSearchStrings(content::WebUIDataSource* html_source, Profile* profile) {
+@@ -3121,7 +3121,7 @@ void AddSearchStrings(content::WebUIDataSource* html_source, Profile* profile) {
        {"searchExplanationLearnMoreA11yLabel",
         IDS_SETTINGS_SEARCH_EXPLANATION_ACCESSIBILITY_LABEL},
        {"searchEngineChoiceEntryPointSubtitle",
@@ -108,7 +99,7 @@ index f7eca2dda778bce99d6fabb9ed09efebd3432910..190c9521f4e31386636649358c8d557c
        {"searchEnginesChange",
         IDS_SEARCH_ENGINE_CHOICE_SETTINGS_CHANGE_DEFAULT_ENGINE},
        {"searchEnginesSetAsDefaultButton",
-@@ -3343,7 +3343,7 @@ void AddSiteSettingsStrings(content::WebUIDataSource* html_source,
+@@ -3321,7 +3321,7 @@ void AddSiteSettingsStrings(content::WebUIDataSource* html_source,
        {"thirdPartyCookiesPageTitle",
         IDS_SETTINGS_THIRD_PARTY_COOKIES_PAGE_TITLE},
        {"thirdPartyCookiesLinkRowLabel",
@@ -117,7 +108,7 @@ index f7eca2dda778bce99d6fabb9ed09efebd3432910..190c9521f4e31386636649358c8d557c
        {"thirdPartyCookiesAndSiteDataPageTitle",
         IDS_SETTINGS_THIRD_PARTY_COOKIES_AND_SITE_DATA_PAGE_TITLE},
        {"thirdPartyCookiesAndSiteDataLinkRowLabel",
-@@ -4602,6 +4602,7 @@ std::string GetPeopleSignInPromptSecondaryWithAccountForTesting(
+@@ -4575,6 +4575,7 @@ std::string GetPeopleSignInPromptSecondaryWithAccountForTesting(
  void AddLocalizedStrings(content::WebUIDataSource* html_source,
                           Profile* profile,
                           content::WebContents* web_contents) {
@@ -125,7 +116,7 @@ index f7eca2dda778bce99d6fabb9ed09efebd3432910..190c9521f4e31386636649358c8d557c
    AddA11yStrings(html_source);
    AddAboutStrings(html_source, profile);
    AddAiStrings(html_source);
-@@ -4641,6 +4642,8 @@ void AddLocalizedStrings(content::WebUIDataSource* html_source,
+@@ -4614,6 +4615,8 @@ void AddLocalizedStrings(content::WebUIDataSource* html_source,
    AddSecurityKeysStrings(html_source);
  
    html_source->UseStringsJs();

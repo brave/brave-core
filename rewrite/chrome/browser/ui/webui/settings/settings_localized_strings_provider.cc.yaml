@@ -35,16 +35,6 @@ substitutions:
     count: 2
 
   - description: |-
-      Use the Brave edit profile label for the Chrome profile customization
-
-      Brave does not have Chrome profile customization.
-    regex:
-      pattern: |-
-        IDS_SETTINGS_CUSTOMIZE_YOUR_CHROME_PROFILE
-      replace: |-
-        IDS_SETTINGS_BRAVE_EDIT_PROFILE
-
-  - description: |-
       Use the Brave Safe Browsing standard bullet two string
 
       Brave describes Safe Browsing differently.
