@@ -33,6 +33,7 @@ import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
+import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.edge_to_edge.TopInsetProvider;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
@@ -81,6 +82,7 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                     omniboxSuggestionsDropdownScrollListener,
             MonotonicObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
             TopInsetProvider topInsetProvider,
+            MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
             LocationBarEmbedder locationBarEmbedder,
             LocationBarEmbedderUiOverrides uiOverrides,
             @Nullable View baseChromeLayout,
@@ -120,6 +122,7 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                 omniboxSuggestionsDropdownScrollListener,
                 tabModelSelectorSupplier,
                 topInsetProvider,
+                edgeToEdgeControllerSupplier,
                 locationBarEmbedder,
                 uiOverrides,
                 baseChromeLayout,

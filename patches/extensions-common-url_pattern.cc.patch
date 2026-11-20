@@ -1,0 +1,23 @@
+diff --git a/extensions/common/url_pattern.cc b/extensions/common/url_pattern.cc
+index f2059c089cd315543121ca8623120aa2a621ce2f..82f28f07ee619529d7e8a801bb870f0a8df21909 100644
+--- a/extensions/common/url_pattern.cc
++++ b/extensions/common/url_pattern.cc
+@@ -126,13 +126,15 @@ std::string_view StripTrailingWildcard(std::string_view path) {
+   return path;
+ }
+ 
++}  // namespace
++
+ // Removes trailing dot(s) from |host_piece| if any.
+-std::string_view CanonicalizeHostForMatching(std::string_view host_piece) {
++// static
++std::string_view URLPattern::CanonicalizeHostForMatching(
++    std::string_view host_piece) {
+   return base::TrimString(host_piece, ".", base::TRIM_TRAILING);
+ }
+ 
+-}  // namespace
+-
+ // static
+ bool URLPattern::IsValidSchemeForExtensions(std::string_view scheme) {
+   for (auto* valid_scheme : kValidSchemes) {

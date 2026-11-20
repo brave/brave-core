@@ -17,7 +17,8 @@ operations without a `BytecodeTest` assertion are where dead hooks accumulate.
 **How to check.** For each candidate commit, look up the classes and methods it
 re-declares or removes in Brave's adapters
 (`git grep -n '<Name>' -- build/android/bytecode`), and compare the declaration
-at both tags. A target that vanished is a dead hook.
+at both tags, its whole parameter list: a multi-line signature changes only on a
+parameter line. A target that vanished is a dead hook.
 
 ## Examples
 
@@ -25,3 +26,5 @@ at both tags. A target that vanished is a dead hook.
   a descriptor Brave lacks.
 - M158: the `OmniboxResourceProvider` statics, retired for same-named instance
   methods.
+- M160, 8159.0: `BookmarkUtils.addOrEditSingleBookmark` gained a trailing
+  `anchorView` parameter that the redirect's target lacks.

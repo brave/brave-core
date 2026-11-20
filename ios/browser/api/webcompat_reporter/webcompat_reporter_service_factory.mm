@@ -42,13 +42,13 @@ void WebcompatReporterServiceFactory::RegisterProfilePrefs(
 
 std::unique_ptr<KeyedService>
 WebcompatReporterServiceFactory::BuildServiceInstanceFor(
-    ProfileIOS* profile) const {
+    ProfileIOS& profile) const {
   auto report_uploader = std::make_unique<WebcompatReportUploader>(
-      profile->GetSharedURLLoaderFactory());
+      profile.GetSharedURLLoaderFactory());
   component_updater::ComponentUpdateService* cus =
       GetApplicationContext()->GetComponentUpdateService();
   return std::make_unique<WebcompatReporterService>(
-      !profile || profile->IsOffTheRecord() ? nullptr : profile->GetPrefs(),
+      profile.IsOffTheRecord() ? nullptr : profile.GetPrefs(),
       std::make_unique<WebcompatReporterServiceDelegateImpl>(cus),
       std::move(report_uploader));
 }

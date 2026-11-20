@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/tab_search/BUILD.gn b/chrome/browser/resources/tab_search/BUILD.gn
-index 1d85b91424ea75ab0fa126d9b26b8089e0c3b371..7e1b799559857a538ad5448c1055515f6ffaa310 100644
+index f13812c66c5cf6ac988b02017dea76c25628a067..3428974ac29112d8aa6e3343b047ee7f9872807e 100644
 --- a/chrome/browser/resources/tab_search/BUILD.gn
 +++ b/chrome/browser/resources/tab_search/BUILD.gn
 @@ -2,6 +2,7 @@

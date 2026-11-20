@@ -1,10 +1,10 @@
 diff --git a/components/sync/engine/data_type_worker.cc b/components/sync/engine/data_type_worker.cc
-index 78cb21347a19944e8ea97c06b2158dc51a813bea..7834761f0097bba5c7d88ec616e19d1151b96190 100644
+index a02fa2b33ba35551f24310cbad1938a01e38795c..1a898b55ec031e42360d993ae9fb0b954da1c08b 100644
 --- a/components/sync/engine/data_type_worker.cc
 +++ b/components/sync/engine/data_type_worker.cc
-@@ -965,6 +965,12 @@ std::unique_ptr<CommitContribution> DataTypeWorker::GetContribution(
+@@ -972,6 +972,12 @@ std::unique_ptr<CommitContribution> DataTypeWorker::GetContribution(
           (data_type_state_.encryption_key_name() ==
-           cryptographer_->GetDefaultEncryptionKeyName()));
+           cryptographer_->GetPrimaryEncryptionKeyName()));
  
 +  if (DropUnencryptedCommitRequests(type_, passphrase_type_, &response) > 0) {
 +    ReportDroppedUnencryptedCommits(type_);

@@ -6,11 +6,13 @@
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/resources/resource_loader.h"
 
 #include <memory>
+#include <utility>
 
 #include "base/files/file_path.h"
 #include "base/path_service.h"
 #include "brave/components/constants/brave_paths.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/icu/source/common/unicode/locid.h"
 
 namespace brave_vpn {
 
@@ -28,6 +30,22 @@ TEST(ResourceLoaderTest, FindPakPath) {
   // Fallback to english locale.
   EXPECT_EQ(FindPakFilePath(wireguard, "de-DE"),
             base::FilePath(wireguard.Append(L"Locales").Append(L"en-US.pak")));
+}
+
+TEST(ResourceLoaderTest, GetSystemLocale) {
+  const icu::Locale original = icu::Locale::getDefault();
+  for (const auto [icu_name, expected] :
+       {std::pair{"en_US", "en-US"}, std::pair{"de", "de"},
+        std::pair{"es_419", "es-419"}, std::pair{"pt_BR", "pt-BR"},
+        std::pair{"zh_CN", "zh-CN"}, std::pair{"zh_TW", "zh-TW"}}) {
+    SCOPED_TRACE(icu_name);
+    UErrorCode status = U_ZERO_ERROR;
+    icu::Locale::setDefault(icu::Locale(icu_name), status);
+    ASSERT_TRUE(U_SUCCESS(status));
+    EXPECT_EQ(GetSystemLocale(), expected);
+  }
+  UErrorCode status = U_ZERO_ERROR;
+  icu::Locale::setDefault(original, status);
 }
 
 }  // namespace brave_vpn

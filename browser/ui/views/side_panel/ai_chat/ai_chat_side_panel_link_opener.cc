@@ -18,8 +18,8 @@
 #include "content/public/browser/web_contents_user_data.h"
 #include "content/public/common/referrer.h"
 #include "third_party/blink/public/mojom/window_features/window_features.mojom.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/page_transition_types.h"
-#include "ui/base/window_open_disposition.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -101,7 +101,7 @@ content::WebContents* OpenSidePanelLinkContents(
   if (!navigate_active_tab && !new_contents->HasOpener()) {
     NavigateParams params(browser, std::move(new_contents));
     params.url = target_url;
-    params.disposition = WindowOpenDisposition::kNewForegroundTab;
+    params.disposition = ui::mojom::WindowOpenDisposition::kNewForegroundTab;
     params.window_features = window_features;
     params.window_action = NavigateParams::WindowAction::kNoAction;
     // Mirrors `chrome::AddWebContents()`.
@@ -126,9 +126,9 @@ content::WebContents* OpenSidePanelLinkContents(
       return nullptr;
     }
     params.source_contents = active_tab->GetContents();
-    params.disposition = WindowOpenDisposition::kCurrentTab;
+    params.disposition = ui::mojom::WindowOpenDisposition::kCurrentTab;
   } else {
-    params.disposition = WindowOpenDisposition::kNewForegroundTab;
+    params.disposition = ui::mojom::WindowOpenDisposition::kNewForegroundTab;
   }
   params.window_action = NavigateParams::WindowAction::kNoAction;
   params.user_gesture = user_gesture;

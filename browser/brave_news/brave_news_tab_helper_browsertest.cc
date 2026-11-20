@@ -43,8 +43,8 @@
 #include "net/dns/mock_host_resolver.h"
 #include "services/network/public/cpp/ip_address_space_overrides_test_utils.h"
 #include "services/network/public/mojom/ip_address_space.mojom.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/page_transition_types.h"
-#include "ui/base/window_open_disposition.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -243,7 +243,7 @@ IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, NonExistingFeedsAreRemoved) {
     WaitForFeedsChanged waiter(tab_helper, 1);
 
     ui_test_utils::NavigateToURLWithDisposition(
-        browser(), rss_page_url, WindowOpenDisposition::kCurrentTab,
+        browser(), rss_page_url, ui::mojom::WindowOpenDisposition::kCurrentTab,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
     auto result = waiter.WaitForFeeds();
 
@@ -280,7 +280,7 @@ IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, FeedsAreFoundWhenTheyExist) {
     WaitForFeedsChanged waiter(tab_helper, 1);
 
     ui_test_utils::NavigateToURLWithDisposition(
-        browser(), rss_page_url, WindowOpenDisposition::kCurrentTab,
+        browser(), rss_page_url, ui::mojom::WindowOpenDisposition::kCurrentTab,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
     auto result = waiter.WaitForFeeds();
 
@@ -311,7 +311,7 @@ IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, FeedsAreNotFoundWhenNotOptedIn) {
       tabs::TabInterface::MaybeGetFromContents(contents()));
 
   ui_test_utils::NavigateToURLWithDisposition(
-      browser(), rss_page_url, WindowOpenDisposition::kCurrentTab,
+      browser(), rss_page_url, ui::mojom::WindowOpenDisposition::kCurrentTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // We run until idle here rather than using the Waiter because we want the

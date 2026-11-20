@@ -77,15 +77,19 @@ class GhCli:
             ['pr', 'view', str(pr), '--repo', repo, '--json', fields]
         )
 
-    def list_prs(self, *, head: str, fields: str) -> list:
-        """Lists pull requests whose source branch is `head`.
+    def list_prs(
+        self, *, head: str, fields: str, repo: str | None = None
+    ) -> list:
+        """Lists the open pull requests whose source branch is `head`, in
+        `repo`, or the checkout's.
 
         `fields` is a comma-separated list of JSON fields to return (e.g.
         `number,url`).
         """
-        return self._run_json(
-            ['pr', 'list', '--head', head, f'--json={fields}']
-        )
+        args = ['pr', 'list', '--head', head, f'--json={fields}']
+        if repo is not None:
+            args += ['--repo', repo]
+        return self._run_json(args)
 
     def create_pr(
         self,

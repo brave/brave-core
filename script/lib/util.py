@@ -9,16 +9,10 @@ import atexit
 import contextlib
 import errno
 import shutil
-import ssl
 import subprocess
 import sys
 import tarfile
 import tempfile
-
-try:
-    from urllib.request import urlopen
-except ImportError:
-    from urllib2 import urlopen
 import os
 import zipfile
 

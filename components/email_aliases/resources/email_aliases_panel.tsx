@@ -20,7 +20,7 @@ import {
   EmailAliasesService,
   EmailAliasesPanelHandlerInterface,
   EmailAliasesPanelHandler,
-} from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+} from 'gen/brave/components/email_aliases/email_aliases.mojom-webui.js'
 import {
   useEmailAliases,
   useBraveAccountState,

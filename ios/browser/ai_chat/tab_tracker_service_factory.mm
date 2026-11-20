@@ -23,7 +23,7 @@ TabTrackerServiceFactory::TabTrackerServiceFactory(PassKey key)
           TestingCreation::kNoServiceForTests) {}
 
 std::unique_ptr<KeyedService> TabTrackerServiceFactory::BuildServiceInstanceFor(
-    ProfileIOS* profile) const {
+    ProfileIOS& profile) const {
   if (!features::IsAIChatEnabled()) {
     return nullptr;
   }

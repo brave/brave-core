@@ -48,7 +48,6 @@
 #include "chrome/browser/ui/ui_features.h"
 #include "components/content_settings/core/common/features.h"
 #include "components/history/core/browser/features.h"
-#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/sync/base/command_line_switches.h"
 #include "components/translate/core/browser/translate_prefs.h"
@@ -73,6 +72,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/components/history_embeddings/core/history_embeddings_features.h"
 #include "brave/components/local_ai/core/features.h"
 #endif
 
@@ -769,14 +769,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
 #define BRAVE_PAGE_INFO_FEATURE_ENTRIES
 #endif  // defined(TOOLKIT_VIEWS)
 
-#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-#define BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                      \
-  EXPAND_FEATURE_ENTRIES({                                               \
-      "middle-button-autoscroll",                                        \
-      "Middle button autoscroll",                                        \
-      "Enables autoscrolling when the middle mouse button is clicked",   \
-      kOsMac | kOsLinux,                                                 \
-      FEATURE_VALUE_TYPE(blink::features::kMiddleButtonClickAutoscroll), \
+// Exposes upstream's Linux-only #middle-click-autoscroll feature on Mac.
+#if BUILDFLAG(IS_MAC)
+#define BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                    \
+  EXPAND_FEATURE_ENTRIES({                                             \
+      "middle-button-autoscroll",                                      \
+      "Middle button autoscroll",                                      \
+      "Enables autoscrolling when the middle mouse button is clicked", \
+      kOsMac,                                                          \
+      FEATURE_VALUE_TYPE(blink::features::kMiddleClickAutoscroll),     \
   })
 #else
 #define BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY
@@ -965,13 +966,13 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
 // different name to bypass the expiry system while controlling the
 // same underlying kHistoryEmbeddings feature.
 #if BUILDFLAG(ENABLE_LOCAL_AI)
-#define BRAVE_HISTORY_EMBEDDINGS_FLAG                             \
-  EXPAND_FEATURE_ENTRIES({                                        \
-      "brave-history-embeddings",                                 \
-      "History Embeddings",                                       \
-      "Enables semantic history search using local embeddings.",  \
-      kOsDesktop,                                                 \
-      FEATURE_VALUE_TYPE(history_embeddings::kHistoryEmbeddings), \
+#define BRAVE_HISTORY_EMBEDDINGS_FLAG                                   \
+  EXPAND_FEATURE_ENTRIES({                                              \
+      "brave-history-embeddings",                                       \
+      "History Embeddings",                                             \
+      "Enables semantic history search using local embeddings.",        \
+      kOsDesktop,                                                       \
+      FEATURE_VALUE_TYPE(brave_history_embeddings::kHistoryEmbeddings), \
   })
 #else
 #define BRAVE_HISTORY_EMBEDDINGS_FLAG

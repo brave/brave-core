@@ -8,10 +8,10 @@
 #include <memory>
 
 #include "base/functional/bind.h"
+#include "brave/browser/history_embeddings/history_embeddings_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/local_ai/core/pref_names.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 
@@ -20,7 +20,7 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
-namespace history_embeddings {
+namespace brave_history_embeddings {
 
 namespace {
 
@@ -94,14 +94,14 @@ void BraveHistoryEmbeddingsStatus::OnEnabledPrefChanged() {
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 }
 
-}  // namespace history_embeddings
+}  // namespace brave_history_embeddings
 
 // Forward declared by the chromium_src overrides that need the captured
 // setting, so neither carries a Brave header: the passage embedder gate in
 // //chrome/browser/passage_embeddings and brave://history's data source in
 // //chrome/browser/ui/webui/history.
 bool BraveHistoryEmbeddingsEnabledAtStartup(Profile* profile) {
-  return history_embeddings::BraveHistoryEmbeddingsStatus::GetForProfile(
+  return brave_history_embeddings::BraveHistoryEmbeddingsStatus::GetForProfile(
              profile)
       ->IsEnabled();
 }

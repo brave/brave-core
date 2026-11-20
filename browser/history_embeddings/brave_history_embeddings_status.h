@@ -13,7 +13,7 @@
 class PrefService;
 class Profile;
 
-namespace history_embeddings {
+namespace brave_history_embeddings {
 
 // The Semantic History Search setting a profile's embedding services run with.
 // The services are built at most once per session, so the setting is captured
@@ -55,6 +55,6 @@ class BraveHistoryEmbeddingsStatus : public base::SupportsUserData::Data {
   PrefChangeRegistrar local_state_pref_change_registrar_;
 };
 
-}  // namespace history_embeddings
+}  // namespace brave_history_embeddings
 
 #endif  // BRAVE_BROWSER_HISTORY_EMBEDDINGS_BRAVE_HISTORY_EMBEDDINGS_STATUS_H_

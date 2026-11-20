@@ -61,6 +61,7 @@
 #include "services/data_decoder/public/mojom/image_decoder.mojom.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/page_transition_types.h"
 #include "ui/base/webui/web_ui_util.h"
 #include "ui/gfx/codec/png_codec.h"
@@ -459,7 +460,8 @@ void AIChatUIPageHandler::OpenWorkspaceFile(const GURL& workspace_url,
   // From the side panel, the current tab is the one the panel is alongside.
   if (active_chat_tab_helper_) {
     active_chat_tab_helper_->GetWebContents().OpenURL(
-        {*file_url, content::Referrer(), WindowOpenDisposition::kCurrentTab,
+        {*file_url, content::Referrer(),
+         ui::mojom::WindowOpenDisposition::kCurrentTab,
          ui::PAGE_TRANSITION_LINK, false},
         /*navigation_handle_callback=*/{});
     return;
@@ -509,7 +511,7 @@ void AIChatUIPageHandler::OpenConversationFullPage(
 
   NavigateParams params(profile_, ConversationUrl(conversation_uuid),
                         ui::PAGE_TRANSITION_TYPED);
-  params.disposition = WindowOpenDisposition::kNewForegroundTab;
+  params.disposition = ui::mojom::WindowOpenDisposition::kNewForegroundTab;
   params.referrer = content::Referrer();
   Navigate(&params);
 
@@ -547,12 +549,13 @@ void AIChatUIPageHandler::OpenURL(const GURL& url) {
 void AIChatUIPageHandler::OpenURLInNewTab(const GURL& url) {
 #if BUILDFLAG(IS_ANDROID)
   owner_web_contents_->OpenURL(
-      {url, content::Referrer(), WindowOpenDisposition::kNewForegroundTab,
+      {url, content::Referrer(),
+       ui::mojom::WindowOpenDisposition::kNewForegroundTab,
        ui::PAGE_TRANSITION_LINK, false},
       /*navigation_handle_callback=*/{});
 #else
   NavigateParams params(profile_, url, ui::PAGE_TRANSITION_LINK);
-  params.disposition = WindowOpenDisposition::kNewForegroundTab;
+  params.disposition = ui::mojom::WindowOpenDisposition::kNewForegroundTab;
   params.referrer = content::Referrer();
   Navigate(&params);
 #endif  // !BUILDFLAG(IS_ANDROID)

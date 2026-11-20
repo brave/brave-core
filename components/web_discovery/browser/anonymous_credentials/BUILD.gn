@@ -6,7 +6,6 @@
 import("//build/rust/rust_static_library.gni")
 
 rust_static_library("anonymous_credentials") {
-  crate_name = "anonymous_credentials"
   crate_root = "lib.rs"
   allow_unsafe = true
 

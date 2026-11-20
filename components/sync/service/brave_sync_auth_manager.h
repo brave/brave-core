@@ -27,7 +27,7 @@ class BraveSyncAuthManager : public SyncAuthManager {
   void DeriveSigningKeys(const std::string& seed);
   void ResetKeys();
 
-  void RequestAccessToken() override;
+  void RequestAccessTokenNow() override;
 
   // signin::IdentityManager::Observer implementation.
   void OnRefreshTokenUpdatedForAccount(

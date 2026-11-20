@@ -26,8 +26,10 @@ source_set("ai_chat") {
     "workspace_folder_chooser.h",
   ]
 
-  # workspace_folder_chooser.h derives from ui::SelectFileDialog::Listener.
-  public_deps = [ "//ui/shell_dialogs" ]
+  public_deps = [
+    "//chrome/browser/ui/webui/top_chrome",
+    "//ui/shell_dialogs",
+  ]
 
   deps = [
     "//brave/browser:tab_helpers_header",
@@ -54,7 +56,6 @@ source_set("ai_chat") {
     "//chrome/browser/bookmarks",
     "//chrome/browser/favicon",
     "//chrome/browser/history",
-    "//chrome/browser/history_embeddings",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/navigator",
@@ -63,8 +64,6 @@ source_set("ai_chat") {
     "//chrome/browser/ui/webui:theme_source",
     "//components/favicon/core",
     "//components/favicon_base",
-    "//components/history_embeddings/content",
-    "//components/history_embeddings/core",
     "//components/keyed_service/core",
     "//components/prefs",
     "//components/strings:components_strings",
@@ -86,7 +85,6 @@ source_set("ai_chat") {
       "//chrome/browser/ui/tabs:tab_model",
       "//chrome/browser/ui/tabs:tab_strip",
       "//chrome/browser/ui/thumbnails",
-      "//chrome/browser/ui/webui/top_chrome",
       "//chrome/browser/ui/webui/util",
     ]
   } else {
@@ -99,7 +97,12 @@ source_set("ai_chat") {
   if (enable_local_ai) {
     # SearchForTabs ranks the user's open tabs with on-device history
     # embeddings; open_tab_search is desktop only.
-    deps += [ "//brave/browser/history_embeddings:open_tab_search" ]
+    deps += [
+      "//brave/browser/history_embeddings:open_tab_search",
+      "//brave/browser/history_embeddings:service",
+      "//brave/components/history_embeddings/content",
+      "//brave/components/history_embeddings/core",
+    ]
   }
 
   if (enable_brave_ai_chat_agent_profile) {

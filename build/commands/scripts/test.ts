@@ -6,7 +6,7 @@
 // Check environment before doing anything.
 import '../lib/checkEnvironment.js'
 
-import { program } from 'commander'
+import { program } from '../lib/program.ts'
 import * as buildOptions from '../lib/buildOptions.ts'
 import fs from 'fs-extra'
 import path from 'node:path'

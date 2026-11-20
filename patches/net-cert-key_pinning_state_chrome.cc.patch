@@ -1,5 +1,5 @@
 diff --git a/net/cert/key_pinning_state_chrome.cc b/net/cert/key_pinning_state_chrome.cc
-index a389467d4905dc8978f8012c91d803c1146c8850..efb3f85f794c421d94b820a0a80f29f769346e58 100644
+index ee1f684fbb347c20efbdde5819a4a907c9688f62..9c946ce61fcc8cf3010e95db82bca9517388fe35 100644
 --- a/net/cert/key_pinning_state_chrome.cc
 +++ b/net/cert/key_pinning_state_chrome.cc
 @@ -27,16 +27,7 @@ struct DefaultOverrides {

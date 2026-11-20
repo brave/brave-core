@@ -5,7 +5,7 @@
 
 substitutions:
   - description:
-      'Insert kActionShowPartitionedStorage and kActionShowPsstIcon before
+      'Insert Brave page actions, with chip priorities, before
       kActionVirtualCardEnroll'
     regex:
       pattern: 'kActionVirtualCardEnroll,'
@@ -14,6 +14,8 @@ substitutions:
                 {
                     .histogram_name = "PartitionedStorage",
                     .type = brave::kPartitionedStorageActionIconType,
+                    .priority = page_actions::PageActionPriorityCategory::
+                        kSecurityTrustAndPermissions,
                 },
             },
             {
@@ -21,6 +23,8 @@ substitutions:
                 {
                    .histogram_name = "PsstIcon",
                    .type = brave::kPsstIconActionIconType,
+                   .priority = page_actions::PageActionPriorityCategory::
+                       kProactiveSuggestion,
                 },
             },
             {
@@ -28,6 +32,7 @@ substitutions:
                 {
                     .histogram_name = "Speedreader",
                     .type = brave::kSpeedreaderPageActionIconType,
+                    .priority = page_actions::PageActionPriorityCategory::kQuietUtility,
                 },
             },
             {
@@ -35,6 +40,8 @@ substitutions:
                 {
                     .histogram_name = "WaybackMachine",
                     .type = brave::kWaybackMachineActionIconType,
+                    .priority = page_actions::PageActionPriorityCategory::
+                        kProactiveSuggestion,
                 },
             },
             {
@@ -42,6 +49,7 @@ substitutions:
                 {
                     .histogram_name = "Playlist",
                     .type = brave::kPlaylistPageActionIconType,
+                    .priority = page_actions::PageActionPriorityCategory::kQuietUtility,
                 },
             },
             {
@@ -49,6 +57,8 @@ substitutions:
                 {
                     .histogram_name = "OnionLocation",
                     .type = brave::kOnionLocationPageActionIconType,
+                    .priority = page_actions::PageActionPriorityCategory::
+                        kSecurityTrustAndPermissions,
                 },
             },
             {
@@ -56,6 +66,7 @@ substitutions:
                 {
                     .histogram_name = "BraveNews",
                     .type = brave::kBraveNewsPageActionIconType,
+                    .priority = page_actions::PageActionPriorityCategory::kQuietUtility,
                 },
             },
             {

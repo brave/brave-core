@@ -28,13 +28,13 @@ BraveShieldsSettingsServiceFactory::BraveShieldsSettingsServiceFactory(
 
 std::unique_ptr<KeyedService>
 BraveShieldsSettingsServiceFactory::BuildServiceInstanceFor(
-    ProfileIOS* profile) const {
+    ProfileIOS& profile) const {
   auto* map = ios::HostContentSettingsMapFactory::GetForProfile(profile).get();
   CHECK(map);
   auto* local_state = GetApplicationContext()->GetLocalState();
 
   return std::make_unique<BraveShieldsSettingsService>(*map, local_state,
-                                                       profile->GetPrefs());
+                                                       profile.GetPrefs());
 }
 
 }  // namespace brave_shields

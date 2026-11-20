@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/html_capability_element_base.cc b/third_party/blink/renderer/core/html/html_capability_element_base.cc
-index c7e1bbfbfad29fb44f60bee027b4c02426b228d4..d7924280189a377bbaef681767d828fa3f70d41e 100644
+index 3db3dc846b51c0a2b4eb7a7e557f7f0e507bf6a8..e166c026c8526a2a6c8bb7ffaa7c1d5b59cb5c32 100644
 --- a/third_party/blink/renderer/core/html/html_capability_element_base.cc
 +++ b/third_party/blink/renderer/core/html/html_capability_element_base.cc
-@@ -705,6 +705,12 @@ bool HTMLCapabilityElementBase::MaybeRegisterPageEmbeddedPermissionControl() {
+@@ -713,6 +713,12 @@ bool HTMLCapabilityElementBase::MaybeRegisterPageEmbeddedPermissionControl() {
      return false;
    }
  

@@ -160,3 +160,36 @@ class Version:
         return GOOGLESOURCE_LOG_LINK.format(
             from_version=from_version, to_version=self
         )
+
+
+def previous_version_commit(ref: str = 'HEAD', *, major: bool = False) -> str:
+    """The full hash of the commit just before `ref`'s last version bump, or
+    its last major bump with `major`.
+
+    It walks the commits that changed `package.json`, rather than taking a
+    merge-base, so it holds when the base has since been rewritten. On a
+    branch with no bump of its own yet, it finds its base's.
+    """
+    brave = repository.brave
+    starting = Version.from_git(ref)
+    # `package.json` rather than the pinslist timestamp: a bump made by hand
+    # may not refresh the timestamp.
+    bump = brave.last_changed(PACKAGE_FILE, ref)
+    while True:
+        before = Version.from_git(f'{bump}~1')
+        if major:
+            changed = before.major != starting.major
+        else:
+            changed = before != starting
+        if changed:
+            return brave.run_git('rev-parse', f'{bump}~1')
+        bump = brave.last_changed(PACKAGE_FILE, f'{bump}~1')
+
+
+def branch_start(ref: str, base: str) -> str:
+    """Where `ref`'s own commits start, as `brockit rebase` onto `base` finds
+    it: before `ref`'s last major bump when `base` is on another major, and
+    before its last bump otherwise."""
+    return previous_version_commit(
+        ref, major=Version.from_git(base).major != Version.from_git(ref).major
+    )

@@ -1,0 +1,37 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_education/buildflags.gni")
+import("//chrome/test/data/webui/build_webui_tests.gni")
+
+assert(enable_brave_education)
+
+build_webui_tests("build") {
+  resource_path_prefix = "brave/brave_education"
+  cc_test_files = [ "//brave/browser/ui/webui/brave_education/brave_education_page_ui_mocha_browsertest.cc" ]
+
+  files = [
+    "brave_education_app_test.ts",
+    "test_brave_education_page_handler.ts",
+    "test_with_command.ts",
+  ]
+
+  static_files = [
+    "test.html",
+    "test_with_command.html",
+  ]
+
+  ts_path_mappings =
+      [ "chrome://getting-started/*|" +
+        rebase_path(
+            "$root_gen_dir/brave/browser/resources/brave_education/tsc/*",
+            target_gen_dir) ]
+  ts_deps = [
+    "//brave/browser/resources/brave_education:build_ts",
+    "//brave/ui/webui/resources:build_ts",
+    "//ui/webui/resources/js:build_ts",
+    "//ui/webui/resources/mojo:build_ts",
+  ]
+}

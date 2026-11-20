@@ -1,0 +1,15 @@
+diff --git a/extensions/common/url_pattern.h b/extensions/common/url_pattern.h
+index facd698b1ba30b3b4320f71f183defcbfdea556d..82328bfe64651aa0acfefb5672c1234bac401f25 100644
+--- a/extensions/common/url_pattern.h
++++ b/extensions/common/url_pattern.h
+@@ -256,6 +256,10 @@ class URLPattern {
+   // Get an error string for a ParseResult.
+   static const char* GetParseResultString(URLPattern::ParseResult parse_result);
+ 
++  // Removes trailing dot(s) from `host_piece` if any.
++  static std::string_view CanonicalizeHostForMatching(
++      std::string_view host_piece);
++
+  private:
+   // Returns true if any of the `schemes` items matches our scheme.
+   bool MatchesAnyScheme(const std::vector<std::string>& schemes) const;

@@ -10,7 +10,7 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/search_engines/template_url_starter_pack_data.h"
 
-#if (!BUILDFLAG(IS_ANDROID) || BUILDFLAG(ENABLE_VR)) && !BUILDFLAG(IS_IOS)
+#if !BUILDFLAG(IS_IOS)
 const gfx::VectorIcon& AutocompleteMatch::GetVectorIcon(
     bool is_bookmark,
     const TemplateURL* turl) const {

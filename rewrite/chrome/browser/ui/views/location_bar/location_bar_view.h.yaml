@@ -42,3 +42,12 @@ substitutions:
     make_virtual:
       class_name: LocationBarView
       method_name: RefreshBackground
+
+  - description: |-
+      Make OnChangedImpl virtual.
+
+      Every location bar change reaches it, whereas Update() bypasses the
+      virtual OnChanged(), so BraveLocationBarView refreshes its views here.
+    make_virtual:
+      class_name: LocationBarView
+      method_name: OnChangedImpl

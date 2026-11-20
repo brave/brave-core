@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.cc b/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.cc
-index 83df38d89bbc58335c0e7613311c11d87e734f30..7ee4d5255b8517bc1477a6d0c48a69369fdc470d 100644
+index 3178416c440561237a1d638448a7c4f797f97b4d..6e1f226186d186dec8b1d87ea16674185406d208 100644
 --- a/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.cc
 +++ b/third_party/blink/renderer/core/loader/modulescript/module_tree_linker.cc
-@@ -464,6 +464,7 @@ void ModuleTreeLinker::FetchDescendants(const ModuleScript* module_script) {
+@@ -470,6 +470,7 @@ void ModuleTreeLinker::FetchDescendants(ModuleScript* module_script) {
          module_script->FetchOptions().GetReferrerPolicy(),
          mojom::blink::FetchPriorityHint::kAuto,
          RenderBlockingBehavior::kNonBlocking);

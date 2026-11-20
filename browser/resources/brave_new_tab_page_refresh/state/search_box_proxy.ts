@@ -11,11 +11,11 @@ let instance: SearchBoxProxy | null = null
 
 export class SearchBoxProxy {
   callbackRouter: mojom.PageCallbackRouter
-  handler: mojom.PageHandlerRemote
+  handler: mojom.PageHandlerInterface
 
   constructor(
     callbackRouter: mojom.PageCallbackRouter,
-    handler: mojom.PageHandlerRemote,
+    handler: mojom.PageHandlerInterface,
   ) {
     this.callbackRouter = callbackRouter
     this.handler = handler
@@ -27,12 +27,8 @@ export class SearchBoxProxy {
 
   static getInstance(): SearchBoxProxy {
     if (!instance) {
-      const callbackRouter = new mojom.PageCallbackRouter()
-      const handler = new mojom.PageHandlerRemote()
-      mojom.PageHandlerFactory.getRemote().createPageHandler(
-        callbackRouter.$.bindNewPipeAndPassRemote(),
-        handler.$.bindNewPipeAndPassReceiver(),
-      )
+      const { callbackRouter, handler } =
+        mojom.browserProxyFactory.getInstance()
       instance = new SearchBoxProxy(callbackRouter, handler)
     }
     return instance

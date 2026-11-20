@@ -1,8 +1,8 @@
 diff --git a/components/policy/core/common/cloud/cloud_policy_util.cc b/components/policy/core/common/cloud/cloud_policy_util.cc
-index 1fb1b09ff3f71314631801ddfefd0b103b4a6838..8cbeb56d6718474ee35cc9fea10ed70cf98fa810 100644
+index db4c6462b2251f0bb1c6dfd73dbd1a1a79c90513..92447e17ec20cd4e322149f3c7dd23d443271177 100644
 --- a/components/policy/core/common/cloud/cloud_policy_util.cc
 +++ b/components/policy/core/common/cloud/cloud_policy_util.cc
-@@ -272,6 +272,14 @@ std::string GetDeviceFqdn() {
+@@ -305,6 +305,14 @@ std::string GetDeviceFqdn() {
  }
  
  std::string GetNetworkName() {

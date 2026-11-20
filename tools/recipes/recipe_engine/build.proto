@@ -1,0 +1,28 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+syntax = "proto3";
+
+package recipe_engine;
+
+import "google/protobuf/struct.proto";
+import "recipe_engine/result.proto";
+
+// The final state of a recipe run, as `--output` writes it.
+message Build {
+  message Output {
+    // The output properties the recipe's steps exported.
+    google.protobuf.Struct properties = 1;
+  }
+
+  // How the recipe ended.
+  Status status = 1;
+
+  // Human-readable summary of what happened, in Markdown.
+  string summary_markdown = 2;
+
+  // What the recipe produced.
+  Output output = 3;
+}

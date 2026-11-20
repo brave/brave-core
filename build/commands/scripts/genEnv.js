@@ -6,21 +6,28 @@
 'use strict'
 
 import config from '../lib/config.ts'
+import { program } from '../lib/program.ts'
 
 // Helper to convert an environment variable value into a string.
 function envValToString(envVal) {
   return envVal === undefined ? '' : envVal.toString()
 }
 
-// Gather all environment variable names.
-const envKeys = new Set()
-Object.keys(process.env).forEach((item) => envKeys.add(item))
-Object.keys(config.defaultOptions.env).forEach((item) => envKeys.add(item))
+program
+  .description('Print the environment variables the build system sets')
+  .action(() => {
+    // Gather all environment variable names.
+    const envKeys = new Set()
+    Object.keys(process.env).forEach((item) => envKeys.add(item))
+    Object.keys(config.defaultOptions.env).forEach((item) => envKeys.add(item))
 
-// Compare current environment with a required one and output updated values.
-for (let key of envKeys) {
-  const newEnvVal = envValToString(config.defaultOptions.env[key])
-  if (envValToString(process.env[key]) !== newEnvVal) {
-    process.stdout.write(`${key}=${newEnvVal}\n`)
-  }
-}
+    // Compare current environment with a required one and output updated
+    // values.
+    for (let key of envKeys) {
+      const newEnvVal = envValToString(config.defaultOptions.env[key])
+      if (envValToString(process.env[key]) !== newEnvVal) {
+        process.stdout.write(`${key}=${newEnvVal}\n`)
+      }
+    }
+  })
+  .parse()

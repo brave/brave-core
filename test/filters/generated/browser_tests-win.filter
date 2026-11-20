@@ -3683,6 +3683,9 @@
 # 1.2% flake rate over 30 days per LUCI Analysis (32657 passed, 28 failed, 367 flaky).
 -DictationOnboardingInteractiveTest.ResponsiveAfterTabSwitching
 
+# Confirmed flaky on M159 per LUCI Analysis (Win10 Tests x64, 5 of 117 verdicts flaky).
+-DictationSessionUiImplBrowserTest.AutoSessionEndDelayedShutdownOnAttachedStreamComplete
+
 # 1.4% flake rate over 30 days per LUCI Analysis (63014 passed, 94 failed, 821 flaky).
 -DocumentPictureInPicturePixelTest.InvokeUi_default
 

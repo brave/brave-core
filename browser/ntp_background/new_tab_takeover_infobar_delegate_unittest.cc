@@ -16,6 +16,7 @@
 #include "components/prefs/pref_service.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
@@ -158,7 +159,8 @@ TEST_F(NewTabTakeoverInfoBarDelegateTest,
   ASSERT_THAT(GetInfobarManager()->infobars(), ::testing::SizeIs(1));
 
   infobars::InfoBar* infobar = GetInfobarManager()->infobars()[0];
-  infobar->delegate()->LinkClicked(WindowOpenDisposition::kCurrentTab);
+  infobar->delegate()->LinkClicked(
+      ui::mojom::WindowOpenDisposition::kCurrentTab);
   CloseInfobar();
 
   VerifyInfobarWasNotDisplayedExpectation();

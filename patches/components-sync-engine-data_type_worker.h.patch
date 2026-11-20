@@ -1,8 +1,8 @@
 diff --git a/components/sync/engine/data_type_worker.h b/components/sync/engine/data_type_worker.h
-index 3474a6251c084ccaba251d67083a03b7d2749e72..2eead7e09fdfafbc404f3a10685238baf7a3c77f 100644
+index 73d8219c5822d4c4dda60c242baccea19d8bd4e6..20d247db358daecea8e047e795cc5922ade8d48d 100644
 --- a/components/sync/engine/data_type_worker.h
 +++ b/components/sync/engine/data_type_worker.h
-@@ -217,6 +217,11 @@ class DataTypeWorker : public UpdateHandler,
+@@ -218,6 +218,11 @@ class DataTypeWorker : public UpdateHandler,
    static constexpr size_t kMaxPendingInvalidations = 10u;
  
   private:
@@ -14,7 +14,7 @@ index 3474a6251c084ccaba251d67083a03b7d2749e72..2eead7e09fdfafbc404f3a10685238ba
    struct UnknownEncryptionKeyInfo {
      // Not increased if the cryptographer knows it's in a pending state
      // (cf. Cryptographer::CanEncrypt()).
-@@ -288,7 +293,7 @@ class DataTypeWorker : public UpdateHandler,
+@@ -289,7 +294,7 @@ class DataTypeWorker : public UpdateHandler,
    void DeduplicatePendingUpdatesBasedOnOriginatorClientItemId();
  
    // Callback for when our contribution gets a response.

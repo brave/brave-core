@@ -10,11 +10,9 @@ from __future__ import annotations
 import contextlib
 import importlib.util
 import io
-import os
 import sys
 import tempfile
 import unittest
-from datetime import timedelta
 from pathlib import Path
 from types import ModuleType
 from typing import Any
@@ -38,7 +36,7 @@ def load_script(file_name: str) -> ModuleType:
     return module
 
 
-from luci_analysis import (  # pylint: disable=wrong-import-position
+from luci_analysis import (  # pylint: disable=wrong-import-position  # noqa: E402
     ClusterFailure,
     ClusterSummary,
     Flakiness,

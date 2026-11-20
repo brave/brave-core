@@ -11,7 +11,6 @@
 #include "chrome/browser/ui/ui_features.h"
 #include "content/public/browser/navigation_handle.h"
 #include "net/http/http_request_headers.h"
-#include "ui/base/window_open_disposition.h"
 
 // static
 void SplitViewLinkNavigationThrottle::MaybeCreateAndAdd(

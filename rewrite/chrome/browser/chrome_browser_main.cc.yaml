@@ -12,3 +12,16 @@ substitutions:
     preempt_function_impl:
       function_name: PromptUpdaterPromotion
       return_if: '!ShouldPromptUpdaterPromotion()'
+
+  - description: |-
+      Keep the `HistoryEmbeddings` database on startup.
+
+      Brave's semantic history search, forked into
+      `brave/components/history_embeddings`, keeps its index in that file, so
+      upstream's cleanup of its retired database would wipe it on every start.
+    preempt_function_impl:
+      function_name: DeleteHistoryEmbeddingsDatabase
+      code: |-
+        if ((true)) {
+          return;
+        }

@@ -56,14 +56,52 @@
   {
     "cmd": [
       "git",
-      "cache",
-      "exists",
-      "--quiet",
-      "--cache-dir",
-      "/b/cache",
-      "https://github.com/brave/brave-core.git"
+      "config",
+      "gc.auto",
+      "0"
     ],
-    "name": "git cache exists"
+    "cwd": "/b/cache/brave-core",
+    "name": "git cache populate disable (after): gc.auto=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.autodetach",
+      "0"
+    ],
+    "cwd": "/b/cache/brave-core",
+    "name": "git cache populate disable (after): gc.autodetach=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.autopacklimit",
+      "0"
+    ],
+    "cwd": "/b/cache/brave-core",
+    "name": "git cache populate disable (after): gc.autopacklimit=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "maintenance.gc.enabled",
+      "false"
+    ],
+    "cwd": "/b/cache/brave-core",
+    "name": "git cache populate disable (after): maintenance.gc.enabled=false"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "maintenance.auto",
+      "false"
+    ],
+    "cwd": "/b/cache/brave-core",
+    "name": "git cache populate disable (after): maintenance.auto=false"
   },
   {
     "cmd": [
@@ -141,17 +179,67 @@
   {
     "cmd": [
       "git",
-      "cache",
-      "exists",
-      "--quiet",
-      "--cache-dir",
-      "/b/cache",
-      "https://chromium.googlesource.com/chromium/src.git"
+      "config",
+      "gc.auto",
+      "0"
     ],
+    "cwd": "/b/cache/chromium",
     "env": {
       "CHROME_HEADLESS": "1"
     },
-    "name": "git cache exists (2)"
+    "name": "git cache populate disable (after): gc.auto=0 (2)"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.autodetach",
+      "0"
+    ],
+    "cwd": "/b/cache/chromium",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "git cache populate disable (after): gc.autodetach=0 (2)"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.autopacklimit",
+      "0"
+    ],
+    "cwd": "/b/cache/chromium",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "git cache populate disable (after): gc.autopacklimit=0 (2)"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "maintenance.gc.enabled",
+      "false"
+    ],
+    "cwd": "/b/cache/chromium",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "git cache populate disable (after): maintenance.gc.enabled=false (2)"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "maintenance.auto",
+      "false"
+    ],
+    "cwd": "/b/cache/chromium",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "git cache populate disable (after): maintenance.auto=false (2)"
   },
   {
     "cmd": [

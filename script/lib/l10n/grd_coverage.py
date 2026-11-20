@@ -41,7 +41,7 @@ ALLOWLIST = {
         'Chrome-branded builds only'
     ),
     'chrome/app/chromeos_strings.grdp': (
-        'ChromeOS only; excluded in l10nUtil.js'
+        'ChromeOS only; excluded in l10nUtil.ts'
     ),
     'chrome/app/brave_strings.grd': 'Brave-owned file',
     'chrome/app/brave_origin_strings.grd': 'Brave-owned file',

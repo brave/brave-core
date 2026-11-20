@@ -9,7 +9,8 @@
 #include <memory>
 
 #include "base/files/file_path.h"
-#include "base/memory/memory_pressure_listener.h"
+#include "base/memory_coordinator/async_memory_consumer_registration.h"
+#include "base/memory_coordinator/memory_consumer.h"
 #include "base/sequence_checker.h"
 #include "brave/components/brave_rewards/core/mojom/rewards_database.mojom.h"
 #include "sql/database.h"
@@ -19,7 +20,7 @@
 namespace brave_rewards::internal {
 
 class RewardsDatabase : public mojom::RewardsDatabase,
-                        public base::MemoryPressureListener {
+                        public base::MemoryConsumer {
  public:
   explicit RewardsDatabase(const base::FilePath& path);
 
@@ -58,16 +59,17 @@ class RewardsDatabase : public mojom::RewardsDatabase,
 
   int GetTablesCount();
 
-  // MemoryPressureListener overrides:
-  void OnMemoryPressure(base::MemoryPressureLevel level) override;
+  // base::MemoryConsumer:
+  void OnUpdateMemoryLimit() override;
+  void OnReleaseMemory() override;
 
   const base::FilePath db_path_;
   sql::Database db_;
   sql::MetaTable meta_table_;
   bool initialized_ = false;
 
-  std::unique_ptr<base::AsyncMemoryPressureListenerRegistration>
-      memory_pressure_listener_registration_;
+  std::unique_ptr<base::AsyncMemoryConsumerRegistration>
+      memory_consumer_registration_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 };

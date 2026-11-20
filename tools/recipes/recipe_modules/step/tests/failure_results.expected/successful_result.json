@@ -1,0 +1,13 @@
+[
+  {
+    "cmd": [
+      "cmd",
+      "/path/to/tmp/json"
+    ],
+    "name": "step_result"
+  },
+  {
+    "name": "$result",
+    "summaryMarkdown": "This test should be successful"
+  }
+]
