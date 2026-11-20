@@ -598,6 +598,38 @@ IN_PROC_BROWSER_TEST_F(UpstreamTreeTabsBrowserTest,
   EXPECT_FALSE(model().IsTabSelected(2));
 }
 
+IN_PROC_BROWSER_TEST_F(UpstreamTreeTabsBrowserTest,
+                       PressingCollapsedTreeParentSelectsDescendants) {
+  CreateTree();
+  model().SetTreeTabNodeCollapsed(GetTreeTabNodeAt(0).id(), true);
+  model().ActivateTabAt(3);
+  WaitForViewModelSynced();
+  ASSERT_FALSE(GetTabViewAt(1)->GetVisible());
+  ASSERT_FALSE(GetTabViewAt(2)->GetVisible());
+
+  // Pressing a collapsed tree parent selects its hidden descendants as well,
+  // so that dragging it moves the whole subtree.
+  TabView* tab_view = GetTabViewAt(0);
+  const gfx::PointF point(tab_view->width() / 2, tab_view->height() / 2);
+  static_cast<views::View*>(tab_view)->OnMousePressed(ui::MouseEvent(
+      ui::EventType::kMousePressed, point, point, base::TimeTicks::Now(),
+      ui::EF_LEFT_MOUSE_BUTTON, ui::EF_LEFT_MOUSE_BUTTON));
+  EXPECT_EQ(0, model().active_index());
+  EXPECT_TRUE(model().IsTabSelected(0));
+  EXPECT_TRUE(model().IsTabSelected(1));
+  EXPECT_TRUE(model().IsTabSelected(2));
+  EXPECT_FALSE(model().IsTabSelected(3));
+
+  // Releasing right after the press keeps the subtree selected.
+  static_cast<views::View*>(tab_view)->OnMouseReleased(ui::MouseEvent(
+      ui::EventType::kMouseReleased, point, point, base::TimeTicks::Now(),
+      ui::EF_LEFT_MOUSE_BUTTON, ui::EF_LEFT_MOUSE_BUTTON));
+  EXPECT_TRUE(model().IsTabSelected(0));
+  EXPECT_TRUE(model().IsTabSelected(1));
+  EXPECT_TRUE(model().IsTabSelected(2));
+  EXPECT_FALSE(model().IsTabSelected(3));
+}
+
 // Moving the selected subtree, as dragging does, keeps it nested and the view
 // model in sync.
 IN_PROC_BROWSER_TEST_F(UpstreamTreeTabsBrowserTest, MoveSelectedSubtree) {
