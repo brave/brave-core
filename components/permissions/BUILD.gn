@@ -31,3 +31,25 @@ source_set("unit_tests") {
     deps += [ "//components/messages/android" ]
   }
 }
+
+# Registers its own TestPermissionsClient, so it must only be wired into
+# //brave/components:brave_components_unittests: a test binary that already
+# installs a PermissionsClient (e.g. //chrome's) would hit a DCHECK.
+source_set("content_unit_tests") {
+  testonly = true
+
+  sources = [ "contexts/brave_open_ai_chat_permission_context_unittest.cc" ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//components/content_settings/core/common",
+    "//components/permissions",
+    "//components/permissions:test_support",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//testing/gtest",
+    "//third_party/blink/public/common",
+    "//url",
+  ]
+}

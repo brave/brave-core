@@ -150,6 +150,7 @@ test("brave_components_unittests") {
       deps += [ "//brave/components/playlist/content/browser:unit_tests" ]
     }
     deps += [ "//brave/components/ephemeral_storage:unit_tests" ]
+    deps += [ "//brave/components/permissions:content_unit_tests" ]
     if (enable_brave_wallet) {
       deps += [
         "//brave/components/brave_wallet/browser:unit_tests",
