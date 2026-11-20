@@ -1,0 +1,29 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module notes.mojom;
+
+struct Note {
+  string id;
+  string title;
+  string content;
+  int64 timestamp;
+};
+
+interface Page {
+  OnNotesChanged(array<Note> notes);
+};
+
+interface PageHandlerFactory {
+  CreatePageHandler(pending_remote<Page> page,
+                    pending_receiver<PageHandler> handler);
+};
+
+interface PageHandler {
+  GetNotes() => (array<Note> notes);
+  AddNote(Note note);
+  UpdateNote(Note note);
+  DeleteNote(string id);
+};

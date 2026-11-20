@@ -106,6 +106,8 @@ source_set("core") {
            "//brave/browser/profiles:chromium_impl",
            "//brave/browser/ssl:chromium_impl",
            "//brave/browser/ui/webui:favicon_source_chromium_impl",
+           "//brave/browser/ui/webui:notes_mojom",
+           "//brave/browser/ui/webui:notes_panel",
            "//brave/browser/ui/window_feature_controller:chromium_impl",
            "//brave/components/brave_search_conversion",
            "//brave/components/variations",

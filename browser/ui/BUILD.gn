@@ -98,6 +98,7 @@ source_set("ui") {
     ":ui_features",
     "//brave/brave_domains",
     "//brave/browser:brave_browser_features",
+    "//brave/browser/ui/webui:notes_panel",
     "//brave/browser/brave_adaptive_captcha",
     "//brave/browser/brave_origin",
     "//brave/browser/brave_shields",

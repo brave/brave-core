@@ -32,6 +32,7 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
@@ -859,7 +860,8 @@ SidebarItem SidebarService::GetBuiltInItemForType(
 #endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
     case SidebarItem::BuiltInItemType::kNotes:
       return SidebarItem::CreateBuiltInItem(
-          SidebarItem::BuiltInItemType::kNotes, u"Notes",
+          SidebarItem::BuiltInItemType::kNotes,
+          l10n_util::GetStringUTF16(IDS_SIDEBAR_NOTES_ITEM_TITLE),
           SidebarItem::PanelType::kSidePanel);
     case SidebarItem::BuiltInItemType::kNone:
       break;

@@ -10,6 +10,33 @@ import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/ui/webui/custom_profile_image/buildflags/buildflags.gni")
 import("//ui/webui/webui_features.gni")
 
+import("//mojo/public/tools/bindings/mojom.gni")
+
+mojom("notes_mojom") {
+  sources = [ "side_panel/notes/notes.mojom" ]
+  webui_module_path = "/"
+}
+
+source_set("notes_panel") {
+  sources = [
+    "side_panel/notes/notes_ui.cc",
+    "side_panel/notes/notes_ui.h",
+  ]
+
+  public_deps = [ ":notes_mojom" ]
+  deps = [
+    "//base",
+    "//brave/browser/ui/sidebar",
+    "//brave/browser/resources/notes:pack_static_resources",
+    "//brave/components/sidebar/browser",
+    "//chrome/browser/profiles:profile",
+    "//components/prefs",
+    "//content/public/browser",
+    "//mojo/public/cpp/bindings",
+    "//ui/webui",
+  ]
+}
+
 source_set("favicon_source_chromium_impl") {
   sources = [ "favicon_source.cc" ]
   deps = [

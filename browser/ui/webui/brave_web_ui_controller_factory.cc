@@ -15,6 +15,7 @@
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
+#include "brave/browser/ui/webui/side_panel/notes/notes_ui.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
@@ -79,6 +80,8 @@ using content::WebUIController;
 
 namespace {
 
+inline constexpr char kNotesPanelHost[] = "notes-panel";
+
 // A function for creating a new WebUI. The caller owns the return value, which
 // may be NULL (for example, if the URL refers to an non-existent extension).
 typedef WebUIController* (*WebUIFactoryFunction)(WebUI* web_ui,
@@ -91,6 +94,8 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   CHECK(profile);
   if (host == kSkusInternalsHost) {
     return new SkusInternalsUI(web_ui, url.host());
+  } else if (host == kNotesPanelHost) {
+    return new NotesUI(web_ui);
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   } else if (host == kRewardsPageHost &&
              // We don't want to check for supported profile type here because
@@ -195,6 +200,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
       url.host() == kRewardsPageHost || url.host() == kRewardsInternalsHost ||
 #endif
+      url.host() == kNotesPanelHost ||
       (url.host() == kSkusInternalsHost &&
        base::FeatureList::IsEnabled(skus::features::kSkusFeature))) {
     return &NewWebUI;
