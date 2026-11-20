@@ -283,28 +283,32 @@ std::vector<mojom::ContentBlockPtr> CreateWebSourcesOutput(
 // Creates the [query, answer] entries for a thread, as they'd be loaded from
 // the service.
 std::vector<mojom::ConversationTurnPtr> CreateThreadEntries(
-    const std::string& thread_uuid) {
+    const std::string& thread_uuid,
+    size_t query_and_answer_pair_count = 1) {
   std::vector<mojom::ConversationTurnPtr> entries;
-  entries.push_back(mojom::ConversationTurn::New(
-      "thread-query", thread_uuid, mojom::CharacterType::HUMAN,
-      mojom::ActionType::QUERY, "thread query", std::nullopt /* prompt */,
-      std::nullopt /* selected_text */, std::nullopt /* events */,
-      base::Time::Now(), std::nullopt /* edits */,
-      std::nullopt /* uploaded_files */, nullptr /* skill */, false,
-      std::nullopt /* model_key */, nullptr /* near_verification_status */,
-      std::vector<std::string>{} /* child_thread_uuids */));
-  std::optional<std::vector<mojom::ConversationEntryEventPtr>> events =
-      std::vector<mojom::ConversationEntryEventPtr>();
-  events->push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
-      mojom::CompletionEvent::New("thread answer")));
-  entries.push_back(mojom::ConversationTurn::New(
-      "thread-answer", thread_uuid, mojom::CharacterType::ASSISTANT,
-      mojom::ActionType::RESPONSE, "thread answer", std::nullopt /* prompt */,
-      std::nullopt /* selected_text */, std::move(events), base::Time::Now(),
-      std::nullopt /* edits */, std::nullopt /* uploaded_files */,
-      nullptr /* skill */, false, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */,
-      std::vector<std::string>{} /* child_thread_uuids */));
+  for (size_t i = 0; i < query_and_answer_pair_count; i++) {
+    const std::string suffix = i == 0 ? "" : "-" + base::NumberToString(i + 1);
+    entries.push_back(mojom::ConversationTurn::New(
+        "thread-query" + suffix, thread_uuid, mojom::CharacterType::HUMAN,
+        mojom::ActionType::QUERY, "thread query" + suffix,
+        std::nullopt /* prompt */, std::nullopt /* selected_text */,
+        std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
+        std::nullopt /* uploaded_files */, nullptr /* skill */, false,
+        std::nullopt /* model_key */, nullptr /* near_verification_status */,
+        std::vector<std::string>{} /* child_thread_uuids */));
+    std::optional<std::vector<mojom::ConversationEntryEventPtr>> events =
+        std::vector<mojom::ConversationEntryEventPtr>();
+    events->push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New("thread answer" + suffix)));
+    entries.push_back(mojom::ConversationTurn::New(
+        "thread-answer" + suffix, thread_uuid, mojom::CharacterType::ASSISTANT,
+        mojom::ActionType::RESPONSE, "thread answer" + suffix,
+        std::nullopt /* prompt */, std::nullopt /* selected_text */,
+        std::move(events), base::Time::Now(), std::nullopt /* edits */,
+        std::nullopt /* uploaded_files */, nullptr /* skill */, false,
+        std::nullopt /* model_key */, nullptr /* near_verification_status */,
+        std::vector<std::string>{} /* child_thread_uuids */));
+  }
   return entries;
 }
 
@@ -1646,8 +1650,13 @@ TEST_F(ConversationHandlerUnitTest, ModifyConversation_Thread) {
   const std::string thread_uuid = CreateThreadOnSecondEntry();
   base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>> seed_future;
   conversation_handler_->OnConversationThreadHistoryReceived(
-      thread_uuid, seed_future.GetCallback(), CreateThreadEntries(thread_uuid));
-  EXPECT_EQ(seed_future.Take().size(), 2u);
+      thread_uuid, seed_future.GetCallback(),
+      CreateThreadEntries(thread_uuid, 2));
+  EXPECT_EQ(seed_future.Take().size(), 4u);
+  auto* container =
+      base::FindOrNull(conversation_handler_->threads_, thread_uuid);
+  ASSERT_TRUE(container);
+  container->thread->entry_count = 4;
   const std::string thread_query_uuid = "thread-query";
   const std::string thread_answer_uuid = "thread-answer";
 
@@ -1677,13 +1686,19 @@ TEST_F(ConversationHandlerUnitTest, ModifyConversation_Thread) {
                       mojom::CompletionEvent::New("")),
                   kChatAutomaticModelKey /* model_key */)))));
 
-  // The edited entry and the entry after it are removed, then the edited entry
-  // and the new answer are added back.
+  // All four thread entries are removed, then the edited entry and the new
+  // answer are added back.
   EXPECT_CALL(observer, OnConversationEntryRemoved(conversation_handler_.get(),
                                                    thread_query_uuid))
       .Times(1);
   EXPECT_CALL(observer, OnConversationEntryRemoved(conversation_handler_.get(),
                                                    thread_answer_uuid))
+      .Times(1);
+  EXPECT_CALL(observer, OnConversationEntryRemoved(conversation_handler_.get(),
+                                                   "thread-query-2"))
+      .Times(1);
+  EXPECT_CALL(observer, OnConversationEntryRemoved(conversation_handler_.get(),
+                                                   "thread-answer-2"))
       .Times(1);
   EXPECT_CALL(observer,
               OnConversationEntryAdded(conversation_handler_.get(), _, _))
@@ -1692,6 +1707,14 @@ TEST_F(ConversationHandlerUnitTest, ModifyConversation_Thread) {
   conversation_handler_->ModifyConversation(thread_query_uuid, "edited query",
                                             std::nullopt, thread_uuid);
   testing::Mock::VerifyAndClearExpectations(&observer);
+
+  // Erasing the edited entry and everything after it, then re-adding the
+  // question and the new answer, must decrease the thread's entry count from
+  // 4 to 2.
+  container = base::FindOrNull(conversation_handler_->threads_, thread_uuid);
+  ASSERT_TRUE(container);
+  EXPECT_EQ(container->thread->entry_count, 2u);
+  EXPECT_EQ(container->entries.size(), 2u);
 
   // The root history should be untouched by the edit.
   EXPECT_EQ(conversation_handler_->GetConversationHistory().size(), 2u);
@@ -1720,6 +1743,10 @@ TEST_F(ConversationHandlerUnitTest, ModifyConversation_ThreadAssistantEdit) {
   conversation_handler_->OnConversationThreadHistoryReceived(
       thread_uuid, seed_future.GetCallback(), CreateThreadEntries(thread_uuid));
   EXPECT_EQ(seed_future.Take().size(), 2u);
+  auto* container =
+      base::FindOrNull(conversation_handler_->threads_, thread_uuid);
+  ASSERT_TRUE(container);
+  container->thread->entry_count = 2;
   const std::string thread_answer_uuid = "thread-answer";
 
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
@@ -1730,6 +1757,12 @@ TEST_F(ConversationHandlerUnitTest, ModifyConversation_ThreadAssistantEdit) {
 
   conversation_handler_->ModifyConversation(
       thread_answer_uuid, " edited answer ", std::nullopt, thread_uuid);
+
+  // An assistant edit only re-notifies the existing entry, so the thread's
+  // entry count must not change.
+  container = base::FindOrNull(conversation_handler_->threads_, thread_uuid);
+  ASSERT_TRUE(container);
+  EXPECT_EQ(container->thread->entry_count, 2u);
 
   // The root history should be untouched by the edit.
   EXPECT_EQ(conversation_handler_->GetConversationHistory().size(), 2u);
@@ -1791,8 +1824,13 @@ TEST_F(ConversationHandlerUnitTest, RegenerateAnswer_Thread) {
   const std::string thread_uuid = CreateThreadOnSecondEntry();
   base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>> seed_future;
   conversation_handler_->OnConversationThreadHistoryReceived(
-      thread_uuid, seed_future.GetCallback(), CreateThreadEntries(thread_uuid));
-  EXPECT_EQ(seed_future.Take().size(), 2u);
+      thread_uuid, seed_future.GetCallback(),
+      CreateThreadEntries(thread_uuid, 2));
+  EXPECT_EQ(seed_future.Take().size(), 4u);
+  auto* container =
+      base::FindOrNull(conversation_handler_->threads_, thread_uuid);
+  ASSERT_TRUE(container);
+  container->thread->entry_count = 4;
   const std::string thread_query_uuid = "thread-query";
   const std::string thread_answer_uuid = "thread-answer";
 
@@ -1830,6 +1868,12 @@ TEST_F(ConversationHandlerUnitTest, RegenerateAnswer_Thread) {
   EXPECT_CALL(observer, OnConversationEntryRemoved(conversation_handler_.get(),
                                                    thread_answer_uuid))
       .Times(1);
+  EXPECT_CALL(observer, OnConversationEntryRemoved(conversation_handler_.get(),
+                                                   "thread-query-2"))
+      .Times(1);
+  EXPECT_CALL(observer, OnConversationEntryRemoved(conversation_handler_.get(),
+                                                   "thread-answer-2"))
+      .Times(1);
   EXPECT_CALL(observer,
               OnConversationEntryAdded(conversation_handler_.get(), _, _))
       .Times(2);
@@ -1837,6 +1881,14 @@ TEST_F(ConversationHandlerUnitTest, RegenerateAnswer_Thread) {
   conversation_handler_->RegenerateAnswer(thread_answer_uuid, new_model_key,
                                           thread_uuid);
   testing::Mock::VerifyAndClearExpectations(&observer);
+
+  // Regenerating the second entry erases it, its question and everything
+  // after, then re-adds the question and the new answer, so the thread's
+  // entry count must decrease from 4 to 2.
+  container = base::FindOrNull(conversation_handler_->threads_, thread_uuid);
+  ASSERT_TRUE(container);
+  EXPECT_EQ(container->thread->entry_count, 2u);
+  EXPECT_EQ(container->entries.size(), 2u);
 
   // The root history should be untouched.
   EXPECT_EQ(conversation_handler_->GetConversationHistory().size(), 2u);

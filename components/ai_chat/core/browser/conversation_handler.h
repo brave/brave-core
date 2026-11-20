@@ -488,6 +488,9 @@ class ConversationHandler : public mojom::ConversationHandler,
   // thread's first entry, observers also learn the thread now exists before its
   // first entry is reported. A no-op otherwise.
   void MaybeHandleNewThreadEntry(const std::optional<std::string>& thread_uuid);
+  void MaybeHandleRemovedThreadEntries(
+      const std::optional<std::string>& thread_uuid,
+      size_t removed_entry_count);
   // Builds the conversation history to send to the engine for a generation in
   // the given thread (or the root conversation). For a thread, this prepends
   // the root conversation entries up to and including the thread's origin

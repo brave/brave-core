@@ -1067,6 +1067,7 @@ void ConversationHandler::ModifyConversation(
       base::span(history).subspan(static_cast<size_t>(turn_index)));
   auto new_turn = std::move(history.at(turn_index));
   history.erase(history.begin() + turn_index, history.end());
+  MaybeHandleRemovedThreadEntries(thread_uuid, erased_turn_ids.size());
 
   for (auto& uuid : erased_turn_ids) {
     OnConversationEntryRemoved(uuid);
@@ -1118,6 +1119,7 @@ void ConversationHandler::RegenerateAnswer(
 
   // Erase the question turn in history and everything after it.
   history.erase(history.begin() + question_pos, history.end());
+  MaybeHandleRemovedThreadEntries(thread_uuid, erased_turn_ids.size());
   for (const auto& uuid : erased_turn_ids) {
     OnConversationEntryRemoved(uuid);
   }
@@ -1270,7 +1272,10 @@ void ConversationHandler::RetryAPIRequest(
     if (rit->get()->character_type == CharacterType::HUMAN) {
       auto turn = *std::make_move_iterator(rit);
       auto human_turn_iter = rit.base() - 1;
+      const size_t removed_entry_count =
+          std::distance(human_turn_iter, history.end());
       history.erase(human_turn_iter, history.end());
+      MaybeHandleRemovedThreadEntries(thread_uuid, removed_entry_count);
       SubmitHumanConversationEntry(std::move(turn));
       return;
     }
@@ -1281,7 +1286,10 @@ void ConversationHandler::RetryAPIRequest(
           return event->is_tool_use_event() &&
                  event->get_tool_use_event()->output.has_value();
         })) {
+      const size_t removed_entry_count =
+          std::distance(rit.base(), history.end());
       history.erase(rit.base(), history.end());
+      MaybeHandleRemovedThreadEntries(thread_uuid, removed_entry_count);
       OnHistoryUpdate(nullptr);
       // The failed generation stopped the task, which would otherwise prevent
       // the post-tool generation from running.
@@ -2649,6 +2657,25 @@ void ConversationHandler::MaybeHandleNewThreadEntry(
     // (and can be persisted) before any of its entries do.
     observers_.Notify(&Observer::OnNewConversationThread, this, *thread);
   }
+  OnConversationThreadUpdate(*thread);
+}
+
+void ConversationHandler::MaybeHandleRemovedThreadEntries(
+    const std::optional<std::string>& thread_uuid,
+    size_t removed_entry_count) {
+  if (!thread_uuid.has_value() || removed_entry_count == 0) {
+    return;
+  }
+  CHECK(base::FeatureList::IsEnabled(features::kAIChatThreads));
+  auto* container = base::FindOrNull(threads_, thread_uuid.value());
+  if (!container) {
+    return;
+  }
+  mojom::Thread* thread = container->thread.get();
+  thread->entry_count =
+      thread->entry_count > removed_entry_count
+          ? thread->entry_count - static_cast<uint32_t>(removed_entry_count)
+          : 0;
   OnConversationThreadUpdate(*thread);
 }
 
