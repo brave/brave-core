@@ -693,6 +693,20 @@ TEST_F(SolanaProviderImplUnitTest, Disconnect) {
   observer_->WaitAndVerify();
 }
 
+TEST_F(SolanaProviderImplUnitTest, SelectedDappAccountChanged_NotConnected) {
+  CreateWallet();
+  auto added_account = AddAccount();
+  ASSERT_FALSE(IsConnected());
+
+  // Switching the selected dapp account while not connected must not emit
+  // AccountChangedEvent or DisconnectEvent: there is nothing to reconcile.
+  EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
+  EXPECT_CALL(*observer_, DisconnectEvent()).Times(0);
+  SetSelectedAccount(added_account->account_id);
+  observer_->VerifyNoEvents();
+  EXPECT_FALSE(IsConnected());
+}
+
 TEST_F(SolanaProviderImplUnitTest,
        AccountChangedEvent_RemoveSelectedHardwareAccount) {
   EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
@@ -744,20 +758,35 @@ TEST_F(SolanaProviderImplUnitTest, AccountChangedEvent) {
   ASSERT_TRUE(!account.empty());
   ASSERT_TRUE(IsConnected());
 
-  // add another account selects it, since it is not connected, account is empty
+  // add another account selects it; since it is not permitted for this page,
+  // the page disconnects.
   observer_->ExpectAccountChangedEvent(std::nullopt);
   auto added_another_account = AddAccount();
   observer_->WaitAndVerify();
+  EXPECT_FALSE(IsConnected());
 
   // selecting same account does not trigger any notifications.
   EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
   SetSelectedAccount(added_another_account->account_id);
   observer_->VerifyNoEvents();
 
-  // now switch back to the account just connected
-  observer_->ExpectAccountChangedEvent(added_account->account_id->address);
+  // Once disconnected, switching selection back to a permitted account must
+  // not silently reconnect the page - that requires an explicit connect().
+  EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
   SetSelectedAccount(added_account->account_id);
+  observer_->VerifyNoEvents();
+  EXPECT_FALSE(IsConnected());
+
+  // Explicitly reconnect, then confirm account-change notifications resume
+  // now that the page is connected again.
+  account = Connect(std::nullopt, nullptr, nullptr);
+  ASSERT_TRUE(!account.empty());
+  ASSERT_TRUE(IsConnected());
+
+  observer_->ExpectAccountChangedEvent(std::nullopt);
+  SetSelectedAccount(added_another_account->account_id);
   observer_->WaitAndVerify();
+  EXPECT_FALSE(IsConnected());
 
   EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
   // select non SOL account

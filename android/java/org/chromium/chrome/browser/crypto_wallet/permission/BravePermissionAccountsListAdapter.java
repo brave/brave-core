@@ -184,8 +184,10 @@ public class BravePermissionAccountsListAdapter
 
             case ACCOUNT_CONNECTION -> {
                 int connectionButtonText;
-                boolean hasPermission = hasPermission(accountInfo.address);
-                boolean isConnected = accountInfo.address.equals(mSelectedAccount.address);
+                final boolean hasPermission = hasPermission(accountInfo.address);
+                final boolean isConnected =
+                        mSelectedAccount != null
+                                && accountInfo.address.equals(mSelectedAccount.address);
                 if (hasPermission) {
                     if (isConnected) {
                         connectionButtonText = R.string.fragment_connect_account_disconnect;

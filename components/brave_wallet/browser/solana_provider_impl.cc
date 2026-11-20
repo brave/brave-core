@@ -932,6 +932,12 @@ void SolanaProviderImpl::SelectedDappAccountChanged(
     return;
   }
 
+  if (!connected_account_) {
+    // No connected account now, can't connect by changing the selected dapp
+    // account.
+    return;
+  }
+
   if (account &&
       delegate_->IsAccountAllowed(mojom::CoinType::SOL, account->address)) {
     SetConnectedAccount(std::move(account));

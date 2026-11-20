@@ -413,7 +413,6 @@ public class BraveWalletPanel implements DialogInterface {
                 isConnected
                         ? R.string.dapp_wallet_panel_connectivity_status_connected
                         : R.string.dapp_wallet_panel_connectivity_status;
-        mBtnConnectedStatus.setVisibility(View.VISIBLE);
         mBtnConnectedStatus.setText(mPopupView.getResources().getString(connectedText));
         mBtnConnectedStatus.setVisibility(View.GONE);
         if (mObservedTab != null && mObservedTab.getWebContents() != null) {
