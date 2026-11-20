@@ -3177,8 +3177,8 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_USE_BRAVE_TRANSLATE" desc="The label of the check-box that enables the prompt to translate a page.">
       Use Brave Translate
     </message>
-    <message name="IDS_WALLET_NON_ASCII_CHARACTERS" desc="A warning about Non-ASCII characters detected in a message">
-      NON-ASCII characters detected!
+    <message name="IDS_WALLET_SIGN_MESSAGE_UNEXPECTED_CHARACTERS" desc="Warning title when a wallet sign message contains null bytes, newlines, other non-printable characters, or non-ASCII characters">
+      Unexpected characters detected
     </message>
     <message name="IDS_WALLET_NON_ASCII_CHARACTERS_ORIGINAL" desc="A title to view an original message if Unicode characters detected">
       View original message
