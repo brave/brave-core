@@ -40,6 +40,15 @@ std::vector<mojom::PsstWebsiteSettingsEntryPtr> BuildWebsiteSettingsEntries(
         psst_websites_settings) {
   std::vector<mojom::PsstWebsiteSettingsEntryPtr> result;
   for (const auto& [site, settings] : psst_websites_settings) {
+    if (settings.website_settings.empty()) {
+      auto entry = mojom::PsstWebsiteSettingsEntry::New();
+      entry->site = site;
+      entry->infobar_shown_count = settings.infobar_shown_counter;
+      entry->infobar_decline_count = settings.infobar_decline_counter;
+      result.push_back(std::move(entry));
+      continue;
+    }
+
     for (const auto& wss : settings.website_settings) {
       auto entry = mojom::PsstWebsiteSettingsEntry::New();
       entry->site = site;
