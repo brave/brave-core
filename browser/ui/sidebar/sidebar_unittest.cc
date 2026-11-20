@@ -134,7 +134,8 @@ TEST_F(SidebarModelTest, ItemsChangedTest) {
   EXPECT_CALL(observer_, OnItemUpdated(testing::_, expected_update)).Times(1);
   service()->UpdateItem(GURL("https://www.brave.com/"),
                         GURL("https://brave.com/"), u"brave software",
-                        u"brave software");
+                        u"brave software", /*old_is_web_panel=*/false,
+                        /*new_is_web_panel=*/false);
   testing::Mock::VerifyAndClearExpectations(&observer_);
 
   // Update the same item w/o url change.
@@ -142,7 +143,8 @@ TEST_F(SidebarModelTest, ItemsChangedTest) {
   expected_update.title_updated = true;
   EXPECT_CALL(observer_, OnItemUpdated(testing::_, expected_update)).Times(1);
   service()->UpdateItem(GURL("https://brave.com/"), GURL("https://brave.com/"),
-                        u"brave software", u"brave");
+                        u"brave software", u"brave", /*old_is_web_panel=*/false,
+                        /*new_is_web_panel=*/false);
   testing::Mock::VerifyAndClearExpectations(&observer_);
 
   // Move item at 1 to at index 2.

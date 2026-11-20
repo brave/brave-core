@@ -28,6 +28,7 @@ struct SidebarItemUpdate {
   size_t index = 0;
   bool title_updated = false;
   bool url_updated = false;
+  bool panel_type_updated = false;
 
   bool operator==(const SidebarItemUpdate& update) const;
 };
@@ -75,7 +76,9 @@ class SidebarService : public KeyedService {
   void UpdateItem(const GURL& old_url,
                   const GURL& new_url,
                   std::u16string_view old_title,
-                  std::u16string_view new_title);
+                  std::u16string_view new_title,
+                  bool old_is_web_panel,
+                  bool new_is_web_panel);
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);

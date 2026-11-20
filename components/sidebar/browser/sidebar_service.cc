@@ -98,7 +98,8 @@ SidebarItem::BuiltInItemType GetBuiltInItemTypeForLegacyURL(
 
 bool SidebarItemUpdate::operator==(const SidebarItemUpdate& update) const {
   return index == update.index && title_updated == update.title_updated &&
-         url_updated == update.url_updated;
+         url_updated == update.url_updated &&
+         panel_type_updated == update.panel_type_updated;
 }
 
 // static
@@ -397,11 +398,14 @@ void SidebarService::MoveItem(size_t from, size_t to) {
 void SidebarService::UpdateItem(const GURL& old_url,
                                 const GURL& new_url,
                                 std::u16string_view old_title,
-                                std::u16string_view new_title) {
+                                std::u16string_view new_title,
+                                bool old_is_web_panel,
+                                bool new_is_web_panel) {
   DCHECK(old_url.is_valid() && new_url.is_valid());
   DCHECK(!old_title.empty() && !new_title.empty());
 
-  if (old_url == new_url && old_title == new_title) {
+  if (old_url == new_url && old_title == new_title &&
+      old_is_web_panel == new_is_web_panel) {
     return;
   }
 
@@ -419,9 +423,12 @@ void SidebarService::UpdateItem(const GURL& old_url,
     DCHECK(IsEditableItemAt(index));
     item_iter->url = new_url;
     item_iter->title = new_title;
+    item_iter->panel_type = new_is_web_panel ? SidebarItem::PanelType::kWebPanel
+                                             : SidebarItem::PanelType::kNone;
     for (Observer& obs : observers_) {
       obs.OnItemUpdated(*item_iter,
-                        {index, old_title != new_title, old_url != new_url});
+                        {index, old_title != new_title, old_url != new_url,
+                         old_is_web_panel != new_is_web_panel});
     }
     UpdateSidebarItemsToPrefStore();
   }

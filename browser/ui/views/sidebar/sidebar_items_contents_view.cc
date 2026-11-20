@@ -367,6 +367,14 @@ void SidebarItemsContentsView::UpdateItem(
     }
     GetItemViewAt(update.index)->SetAccessibleName(title);
   }
+
+  // Re-sync highlight state against the model, as switching away from a
+  // panel-opening type should drop a stale highlight on an item that was
+  // active.
+  if (update.panel_type_updated) {
+    UpdateItemViewStateAt(update.index,
+                          update.index == sidebar_model_->active_index());
+  }
 }
 
 void SidebarItemsContentsView::ShowItemAddedFeedbackBubble(
@@ -513,9 +521,10 @@ void SidebarItemsContentsView::UpdateItemViewStateAt(size_t index,
   const auto& item = sidebar_model_->GetAllSidebarItems()[index];
   SidebarItemView* item_view = GetItemViewAt(index);
 
-  if (item.opens_in_panel()) {
-    item_view->SetActiveState(active);
-  }
+  // Only panel-opening items can be highlighted as active. Always set the
+  // state so an item whose type changed away from a panel drops any stale
+  // highlight.
+  item_view->SetActiveState(item.opens_in_panel() && active);
 
   if (item.is_built_in_type()) {
     for (const auto state : views::Button::kButtonStates) {

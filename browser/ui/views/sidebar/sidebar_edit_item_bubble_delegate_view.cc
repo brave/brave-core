@@ -24,6 +24,7 @@
 #include "ui/base/mojom/dialog_button.mojom.h"
 #include "ui/color/color_provider.h"
 #include "ui/views/bubble/bubble_frame_view.h"
+#include "ui/views/controls/button/checkbox.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/controls/textfield/textfield.h"
 #include "ui/views/layout/box_layout.h"
@@ -135,6 +136,24 @@ void SidebarEditItemBubbleDelegateView::AddChildViews() {
   url_tf_->SetAccessibleName(l10n_util::GetStringUTF16(
       IDS_SIDEBAR_EDIT_ITEM_BUBBLE_AX_URL_EDITOR_LABEL));
 
+  if (sidebar::IsWebPanelFeatureEnabled()) {
+    auto* checkbox_row = AddChildView(std::make_unique<views::View>());
+    auto* checkbox_row_layout =
+        checkbox_row->SetLayoutManager(std::make_unique<views::BoxLayout>(
+            views::BoxLayout::Orientation::kHorizontal, gfx::Insets()));
+    checkbox_row_layout->set_main_axis_alignment(
+        views::BoxLayout::MainAxisAlignment::kEnd);
+
+    open_in_panel_checkbox_ = checkbox_row->AddChildView(
+        std::make_unique<views::Checkbox>(l10n_util::GetStringUTF16(
+            IDS_SIDEBAR_EDIT_ITEM_BUBBLE_OPEN_IN_PANEL_CHECKBOX)));
+    open_in_panel_checkbox_->SetChecked(
+        target_item_.panel_type == sidebar::SidebarItem::PanelType::kWebPanel);
+    open_in_panel_checkbox_->SetCallback(base::BindRepeating(
+        &SidebarEditItemBubbleDelegateView::OnOpenInPanelCheckboxChanged,
+        base::Unretained(this)));
+  }
+
   UpdateOKButtonEnabledState();
 }
 
@@ -166,23 +185,45 @@ void SidebarEditItemBubbleDelegateView::UpdateItem() {
     new_url = target_item_.url;
   }
 
+  const bool old_is_web_panel =
+      target_item_.panel_type == sidebar::SidebarItem::PanelType::kWebPanel;
+  // No checkbox means the feature is off, not that the user chose "tab" -
+  // keep the item's stored type as-is so a plain title/url edit doesn't wipe
+  // out a kWebPanel item's type while the feature happens to be disabled.
+  const bool new_is_web_panel = open_in_panel_checkbox_
+                                    ? open_in_panel_checkbox_->GetChecked()
+                                    : old_is_web_panel;
+
   GetSidebarService(browser_)->UpdateItem(target_item_.url, new_url,
-                                          target_item_.title, new_title);
+                                          target_item_.title, new_title,
+                                          old_is_web_panel, new_is_web_panel);
 }
 
 void SidebarEditItemBubbleDelegateView::UpdateOKButtonEnabledState() {
   DCHECK(title_tf_ && url_tf_);
 
-  // Update item only when url or title is changed.
+  // Update item only when url, title or panel type is changed.
   GURL new_url(url_tf_->GetText());
   if (new_url.is_empty()) {
     new_url = target_item_.url;
   }
 
-  const bool ok_button_enabled =
-      target_item_.url != new_url || target_item_.title != title_tf_->GetText();
+  bool panel_type_changed = false;
+  if (open_in_panel_checkbox_) {
+    const bool was_web_panel =
+        target_item_.panel_type == sidebar::SidebarItem::PanelType::kWebPanel;
+    panel_type_changed = was_web_panel != open_in_panel_checkbox_->GetChecked();
+  }
+
+  const bool ok_button_enabled = target_item_.url != new_url ||
+                                 target_item_.title != title_tf_->GetText() ||
+                                 panel_type_changed;
 
   SetButtonEnabled(ui::mojom::DialogButton::kOk, ok_button_enabled);
+}
+
+void SidebarEditItemBubbleDelegateView::OnOpenInPanelCheckboxChanged() {
+  UpdateOKButtonEnabledState();
 }
 
 BEGIN_METADATA(SidebarEditItemBubbleDelegateView)

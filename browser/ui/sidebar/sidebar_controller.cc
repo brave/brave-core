@@ -278,6 +278,27 @@ void SidebarController::LoadAtTab(const GURL& url) {
   }
 }
 
+void SidebarController::OnItemUpdated(const SidebarItem& item,
+                                      const SidebarItemUpdate& update) {
+  if (!update.panel_type_updated || !web_panel_controller_ ||
+      !web_panel_controller_->HasOpenPanel()) {
+    return;
+  }
+
+  // Not the open web panel's item - its own type change doesn't affect it.
+  if (sidebar_model_->active_index() != update.index) {
+    return;
+  }
+
+  // The open web panel's item just switched away from web-panel type (the
+  // only way panel_type_updated can fire while this item is the active,
+  // open panel). OnWebPanelStateChanged() won't catch this on its own: it
+  // only clears the active index when the panel itself closes, and it
+  // gates that on is_web_panel_type(), which this item no longer satisfies.
+  web_panel_controller_->CloseWebPanel();
+  sidebar_model_->SetActiveIndex(std::nullopt);
+}
+
 void SidebarController::OnShowSidebarOptionChanged(
     SidebarService::ShowSidebarOption option) {
   // WebUI browser windows have no sidebar UI.

@@ -930,6 +930,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_SIDEBAR_EDIT_ITEM_BUBBLE_AX_URL_EDITOR_LABEL" desc="Spoken text for item url text field in edit item dialog">
           Sidebar item url
         </message>
+        <message name="IDS_SIDEBAR_EDIT_ITEM_BUBBLE_OPEN_IN_PANEL_CHECKBOX" desc="Label for the checkbox in sidebar edit item bubble that toggles whether the item opens in the panel">
+          Open in panel
+        </message>
         <message name="IDS_SIDEBAR_ADD_ITEM_BUBBLE_TITLE" desc="Title of sidebar add item bubble">
           Add to Sidebar
         </message>

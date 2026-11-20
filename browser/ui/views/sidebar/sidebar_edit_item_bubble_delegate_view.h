@@ -15,6 +15,7 @@
 #include "ui/views/controls/textfield/textfield_controller.h"
 
 namespace views {
+class Checkbox;
 class Textfield;
 }  // namespace views
 
@@ -52,11 +53,13 @@ class SidebarEditItemBubbleDelegateView
   void AddChildViews();
   void UpdateItem();
   void UpdateOKButtonEnabledState();
+  void OnOpenInPanelCheckboxChanged();
 
   sidebar::SidebarItem target_item_;
   raw_ptr<BrowserWindowInterface> browser_ = nullptr;
   raw_ptr<views::Textfield> title_tf_ = nullptr;
   raw_ptr<views::Textfield> url_tf_ = nullptr;
+  raw_ptr<views::Checkbox> open_in_panel_checkbox_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_EDIT_ITEM_BUBBLE_DELEGATE_VIEW_H_
