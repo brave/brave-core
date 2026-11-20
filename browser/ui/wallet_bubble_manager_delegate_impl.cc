@@ -14,7 +14,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/scoped_observation.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel/wallet_panel_ui.h"
@@ -33,14 +32,12 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/controls/webview/webview.h"
 #include "ui/views/widget/widget.h"
-#include "ui/views/widget/widget_observer.h"
 #include "url/gurl.h"
 
 namespace brave_wallet {
 
 class WalletWebUIBubbleDialogView : public WebUIBubbleDialogView,
-                                    public PictureInPictureOcclusionObserver,
-                                    public views::WidgetObserver {
+                                    public PictureInPictureOcclusionObserver {
   METADATA_HEADER(WalletWebUIBubbleDialogView, WebUIBubbleDialogView)
  public:
   WalletWebUIBubbleDialogView(
@@ -118,8 +115,7 @@ BEGIN_METADATA(WalletWebUIBubbleDialogView)
 END_METADATA
 
 class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
-                                 public views::ViewObserver,
-                                 public views::WidgetObserver {
+                                 public views::ViewObserver {
  public:
   WalletWebUIBubbleManager(views::View* anchor_view,
                            BrowserWindowInterface* browser,
@@ -136,22 +132,21 @@ class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
         anchor_view_(anchor_view) {}
 
   bool ShowBubble() {
-    const bool shown = WebUIBubbleManagerImpl::ShowBubble(anchor_view_.get());
-    views::Widget* widget = GetBubbleWidget();
-    if (widget && !bubble_widget_observation_.IsObservingSource(widget)) {
-      bubble_widget_observation_.Reset();
-      bubble_widget_observation_.Observe(widget);
-    }
-    return shown;
+    return WebUIBubbleManagerImpl::ShowBubble(anchor_view_.get());
   }
 
-  std::unique_ptr<WebUIBubbleDialogView> CreateWebUIBubbleDialog(
+  base::WeakPtr<WebUIBubbleDialogView> CreateWebUIBubbleDialog(
       Anchor anchor,
       views::BubbleBorder::Arrow arrow) override {
     // This is prevent duplicate logic of cached_contents_wrapper creation
-    // so we drop the WebUIBubbleDialogView and create a
-    // WalletWebUIBubbleDialogView instead.
-    WebUIBubbleManagerImpl::CreateWebUIBubbleDialog(anchor, arrow).reset();
+    // so we close WebUIBubbleDialogView and re-create bubble with
+    // WalletWebUIBubbleDialogView.
+    auto bubble_view_to_close =
+        WebUIBubbleManagerImpl::CreateWebUIBubbleDialog(anchor, arrow);
+    auto* widget_to_close = bubble_view_to_close->GetWidget();
+    if (widget_to_close) {
+      widget_to_close->CloseNow();
+    }
     auto* contents_wrapper = cached_contents_wrapper();
     CHECK(contents_wrapper);
     std::optional<gfx::Rect> anchor_rect;
@@ -161,16 +156,44 @@ class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
     auto bubble_view = std::make_unique<WalletWebUIBubbleDialogView>(
         anchor_view_, contents_wrapper, anchor_rect, arrow);
     bubble_view_ = bubble_view->GetWeakPtr();
-    SetUpWalletPanel(contents_wrapper);
-    return bubble_view;
+    auto* widget =
+        views::BubbleDialogDelegateView::CreateBubble(std::move(bubble_view));
+    CHECK(widget);
+
+    // Checking if we create WalletPanelUI instance of WebUI and
+    // extracting WebUIContentsWrapper class to pass real browser delegate
+    // into it to redirect popups to be opened as separate windows.
+    // Set a callback to be possible to activate/deactivate wallet panel from
+    // typescript side
+    if (!contents_wrapper->web_contents()) {
+      return bubble_view_;
+    }
+    content::WebUI* const webui = contents_wrapper->web_contents()->GetWebUI();
+    if (!webui || !webui->GetController()) {
+      return bubble_view_;
+    }
+    WalletPanelUI* wallet_panel =
+        webui->GetController()->template GetAs<WalletPanelUI>();
+    if (!wallet_panel) {
+      return bubble_view_;
+    }
+    wallet_panel->SetTabWebContents(web_contents_);
+    if (!browser_) {
+      return bubble_view_;
+    }
+    // Redirect popups opened from the panel to open as separate popup windows.
+    contents_wrapper->SetWebContentsAddNewContentsBrowser(
+        browser_->GetWeakPtr());
+
+    return bubble_view_;
   }
 
-  // views::WidgetObserver:
   void OnWidgetDestroying(views::Widget* widget) override {
-    bubble_widget_observation_.Reset();
     if (auto* contents_wrapper = cached_contents_wrapper()) {
       contents_wrapper->CloseTrackedPopups();
     }
+
+    WebUIBubbleManagerImpl::OnWidgetDestroying(widget);
   }
 
   content::WebContents* GetWebContentsForTesting() {
@@ -183,39 +206,10 @@ class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
   views::Widget* GetBubbleWidgetForTesting() { return GetBubbleWidget(); }
 
  private:
-  void SetUpWalletPanel(WebUIContentsWrapper* contents_wrapper) {
-    // Checking if we create WalletPanelUI instance of WebUI and
-    // extracting WebUIContentsWrapper class to pass real browser delegate
-    // into it to redirect popups to be opened as separate windows.
-    // Set a callback to be possible to activate/deactivate wallet panel from
-    // typescript side
-    if (!contents_wrapper->web_contents()) {
-      return;
-    }
-    content::WebUI* const webui = contents_wrapper->web_contents()->GetWebUI();
-    if (!webui || !webui->GetController()) {
-      return;
-    }
-    WalletPanelUI* wallet_panel =
-        webui->GetController()->template GetAs<WalletPanelUI>();
-    if (!wallet_panel) {
-      return;
-    }
-    wallet_panel->SetTabWebContents(web_contents_);
-    if (!browser_) {
-      return;
-    }
-    // Redirect popups opened from the panel to open as separate popup windows.
-    contents_wrapper->SetWebContentsAddNewContentsBrowser(
-        browser_->GetWeakPtr());
-  }
-
   const raw_ptr<BrowserWindowInterface> browser_;
   const raw_ptr<content::WebContents> web_contents_;
   const raw_ptr<views::View> anchor_view_;
   base::WeakPtr<WebUIBubbleDialogView> bubble_view_ = nullptr;
-  base::ScopedObservation<views::Widget, views::WidgetObserver>
-      bubble_widget_observation_{this};
   base::WeakPtrFactory<WalletWebUIBubbleManager> weak_factory_{this};
 };
 
