@@ -120,6 +120,9 @@ function SettingsPanel(props: Props) {
                   <Styles.SettingLabel>
                     {getLocale(S.BRAVE_VPN_ALLOW_LAN_TRAFFIC)}
                   </Styles.SettingLabel>
+                <Styles.SettingDesc>
+                  {getLocale(S.BRAVE_VPN_ALLOW_LAN_TRAFFIC_DESC)}
+                </Styles.SettingDesc>
                 </Styles.SettingLabelBox>
                 <Toggle
                   checked={allowLanTraffic.allowed}
