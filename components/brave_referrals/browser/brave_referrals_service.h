@@ -84,6 +84,14 @@ class BraveReferralsService {
 
   static bool IsDefaultReferralCode(const std::string& code);
 
+#if BUILDFLAG(IS_ANDROID)
+  // Invokes the private OnAndroidBraveReferrerReady(), standing in for the
+  // real Play Install Referrer JNI callback, which unit tests can't trigger.
+  void OnAndroidBraveReferrerReadyForTesting(const std::string& gbraid) {
+    OnAndroidBraveReferrerReady(gbraid);
+  }
+#endif
+
   // Returns the interval to use for the periodic finalization checks timer for
   // a randomized draw of `random_seconds`, clamped to a non-zero minimum so
   // that the timer can never refire immediately and forever.
@@ -119,11 +127,18 @@ class BraveReferralsService {
 
 #if BUILDFLAG(IS_ANDROID)
   void InitAndroidReferrer();
+  // Reports a "first_open" conversion right away when a gbraid is captured,
+  // and stashes the gbraid so MaybeReportAndroidConversion() can report
+  // "second_open" on the next run.
   void OnAndroidBraveReferrerReady(const std::string& gbraid);
-  // Reports the conversion on the first run after the one that captured the
-  // gbraid. The value is dropped either way, so this reports at most once.
+  // Reports the "second_open" conversion on the first run after the one that
+  // captured the gbraid. The value is dropped either way, so this reports at
+  // most once.
   void MaybeReportAndroidConversion();
-  std::string BuildConversionPayload(const std::string& gbraid) const;
+  void ReportAndroidConversion(const std::string& gbraid,
+                               const std::string& app_event_name);
+  std::string BuildConversionPayload(const std::string& gbraid,
+                                     const std::string& app_event_name) const;
   void OnConversionLoadComplete(
       scoped_refptr<net::HttpResponseHeaders> headers);
   android_brave_referrer::BraveReferrer android_brave_referrer_;
