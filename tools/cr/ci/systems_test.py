@@ -9,7 +9,9 @@ from unittest import mock
 
 import _boot  # noqa: F401  -- adds parent tools/cr to sys.path
 from ci import systems  # noqa: E402  -- after _boot
+from ci.actions import ActionsCi  # noqa: E402  -- after _boot
 from ci.jenkins import JenkinsCi  # noqa: E402  -- after _boot
+from ci.teamcity import TeamCityCi  # noqa: E402  -- after _boot
 
 _JENKINS = 'https://ci.brave.com/job/brave-core-build-pr-linux-x64/job/PR-1/2/'
 _TEAMCITY = 'https://teamcity.brave.com/buildConfiguration/X_Aggregate/7'
@@ -28,7 +30,8 @@ class NameTest(unittest.TestCase):
 class DispatchTest(unittest.TestCase):
     def setUp(self):
         self.jenkins = mock.create_autospec(JenkinsCi, instance=True)
-        self.teamcity = mock.Mock()
+        self.teamcity = mock.create_autospec(TeamCityCi, instance=True)
+        self.actions = mock.create_autospec(ActionsCi, instance=True)
         self.made = []
 
         def make(client):
@@ -44,6 +47,7 @@ class DispatchTest(unittest.TestCase):
                 {
                     'jenkins': make(self.jenkins),
                     'teamcity': make(self.teamcity),
+                    'actions': make(self.actions),
                 },
             )
         )
@@ -63,17 +67,26 @@ class DispatchTest(unittest.TestCase):
         with self.assertRaisesRegex(systems.Unsupported, 'Not a Jenkins'):
             systems.full_log('https://socket.dev/x')
 
-    def test_only_jenkins_wipes_the_workspace(self):
+    def test_jenkins_and_teamcity_clean_the_workspace(self):
         self.jenkins.rerun.return_value = 'Queued'
         self.assertEqual(systems.rerun(_JENKINS, wipe_workspace=True), 'Queued')
         self.jenkins.rerun.assert_called_once_with(
-            _JENKINS, wipe_workspace=True
+            _JENKINS, wipe_workspace=True, remove_src_out=False
         )
-        with self.assertRaisesRegex(systems.Unsupported, 'Jenkins only'):
-            systems.rerun(_TEAMCITY, wipe_workspace=True)
-        self.teamcity.rerun.assert_not_called()
-        systems.rerun(_TEAMCITY)
-        self.teamcity.rerun.assert_called_once_with(_TEAMCITY)
+        systems.rerun(_TEAMCITY, remove_src_out=True)
+        self.teamcity.rerun.assert_called_once_with(
+            _TEAMCITY, wipe_workspace=False, remove_src_out=True
+        )
+
+    def test_github_actions_cleans_nothing(self):
+        for flag in ('wipe_workspace', 'remove_src_out'):
+            with self.assertRaisesRegex(
+                systems.Unsupported, 'Jenkins and TeamCity only'
+            ):
+                systems.rerun(_ACTIONS, **{flag: True})
+        self.actions.rerun.assert_not_called()
+        systems.rerun(_ACTIONS)
+        self.actions.rerun.assert_called_once_with(_ACTIONS)
 
 
 if __name__ == '__main__':

@@ -63,8 +63,19 @@ class RerunTest(unittest.TestCase):
             systems, 'rerun', return_value='Queued it again.'
         ) as rerun:
             result, out = _main('rerun', _URL, '--wipe-workspace')
-        rerun.assert_called_once_with(_URL, wipe_workspace=True)
+        rerun.assert_called_once_with(
+            _URL, wipe_workspace=True, remove_src_out=False
+        )
         self.assertEqual((result, out), (0, 'Queued it again.\n'))
+
+    def test_passes_remove_src_out(self):
+        with mock.patch.object(
+            systems, 'rerun', return_value='Queued'
+        ) as rerun:
+            _main('rerun', _URL, '--remove-src-out')
+        rerun.assert_called_once_with(
+            _URL, wipe_workspace=False, remove_src_out=True
+        )
 
 
 if __name__ == '__main__':

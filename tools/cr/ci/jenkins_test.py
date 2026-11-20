@@ -1191,6 +1191,19 @@ class RerunTest(unittest.TestCase):
             session.post.call_args.kwargs['params'], {'WIPE_WORKSPACE': 'true'}
         )
 
+    def test_removes_src_out_when_asked(self):
+        session, _ = self._rerun(remove_src_out=True)
+        self.assertEqual(
+            session.post.call_args.kwargs['params'], {'RM_SRC_OUT': 'true'}
+        )
+
+    def test_wipes_and_removes_src_out_together(self):
+        session, _ = self._rerun(wipe_workspace=True, remove_src_out=True)
+        self.assertEqual(
+            session.post.call_args.kwargs['params'],
+            {'WIPE_WORKSPACE': 'true', 'RM_SRC_OUT': 'true'},
+        )
+
 
 if __name__ == '__main__':
     unittest.main()
