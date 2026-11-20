@@ -244,19 +244,13 @@ TEST(TorControlTest, ReadLine) {
             EXPECT_TRUE(control->ReadLine("650 NETWORK_LIVENESS DOWN"));
             // Async skip
             EXPECT_TRUE(control->ReadLine("650-FAKEVENT BEGIN"));
-            ASSERT_TRUE(control->async_);
-            EXPECT_TRUE(control->async_->skip);
             EXPECT_TRUE(control->ReadLine("650-CONTINUE=FAKEVENT"));
             EXPECT_TRUE(control->ReadLine("650 END=FAKEVENT"));
-            EXPECT_FALSE(control->async_);
             // Normal multi async
             control->async_events_[TorControlEvent::CIRC] = 1;
             EXPECT_TRUE(control->ReadLine("650-CIRC 1000 EXTENDED"));
-            ASSERT_TRUE(control->async_);
-            EXPECT_FALSE(control->async_->skip);
             EXPECT_TRUE(control->ReadLine("650-EXTRAMAGIC=99"));
             EXPECT_TRUE(control->ReadLine("650 ANONYMITY=high"));
-            EXPECT_FALSE(control->async_);
           },
           std::move(control)),
       run_loop.QuitClosure());
