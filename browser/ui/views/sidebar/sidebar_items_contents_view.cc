@@ -198,6 +198,20 @@ void SidebarItemsContentsView::ShowContextMenuForViewImpl(
   context_menu_model_->AddItemWithIcon(
       kItemEdit, l10n_util::GetStringUTF16(IDS_SIDEBAR_ITEM_CONTEXT_MENU_EDIT),
       ui::ImageModel::FromVectorIcon(kSidebarEditIcon, icon_color, 14));
+
+  const auto& items = sidebar_model_->GetAllSidebarItems();
+  const auto index = GetIndexOf(source);
+  const bool currently_mobile =
+      index && *index < items.size() && items[*index].use_mobile_user_agent;
+  context_menu_model_->AddItemWithIcon(
+      kItemToggleMobileUserAgent,
+      l10n_util::GetStringUTF16(
+          currently_mobile ? IDS_SIDEBAR_ITEM_CONTEXT_MENU_SHOW_DESKTOP_VERSION
+                           : IDS_SIDEBAR_ITEM_CONTEXT_MENU_SHOW_MOBILE_VERSION),
+      ui::ImageModel::FromVectorIcon(
+          currently_mobile ? kLeoMonitorIcon : kLeoSmartphoneIcon, icon_color,
+          14));
+
   context_menu_model_->AddItemWithIcon(
       kItemRemove,
       l10n_util::GetStringUTF16(IDS_SIDEBAR_ITEM_CONTEXT_MENU_REMOVE),
@@ -234,6 +248,15 @@ void SidebarItemsContentsView::ExecuteCommand(int command_id, int event_flags) {
     LaunchEditItemDialog();
     return;
   }
+
+  if (command_id == kItemToggleMobileUserAgent) {
+    const auto& items = sidebar_model_->GetAllSidebarItems();
+    const sidebar::SidebarItem old_item = items[*index];
+    sidebar::SidebarItem new_item = old_item;
+    new_item.use_mobile_user_agent = !old_item.use_mobile_user_agent;
+    GetSidebarService(browser_)->UpdateItem(old_item, new_item);
+    return;
+  }
 }
 
 bool SidebarItemsContentsView::IsCommandIdVisible(int command_id) const {
@@ -249,6 +272,13 @@ bool SidebarItemsContentsView::IsCommandIdVisible(int command_id) const {
 
   if (command_id == kItemEdit) {
     return GetSidebarService(browser_)->IsEditableItemAt(*index);
+  }
+
+  if (command_id == kItemToggleMobileUserAgent) {
+    // Mirrors IsEditableItemAt()/the edit bubble: only non-built-in web items
+    // are editable. is_web_panel_type() alone is not enough to exclude
+    // built-ins - Brave Talk is a built-in item with PanelType::kWebPanel.
+    return items[*index].is_web_type() && items[*index].is_web_panel_type();
   }
 
   NOTREACHED() << "No more commands now.";
@@ -617,6 +647,14 @@ bool SidebarItemsContentsView::IsBubbleVisible() const {
   }
 
   return false;
+}
+
+bool SidebarItemsContentsView::IsMobileUserAgentMenuEntryVisibleForTesting(
+    views::View* item_view) {
+  view_for_context_menu_ = item_view;
+  const bool visible = IsCommandIdVisible(kItemToggleMobileUserAgent);
+  view_for_context_menu_ = nullptr;
+  return visible;
 }
 
 BEGIN_METADATA(SidebarItemsContentsView)

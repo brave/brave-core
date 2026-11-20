@@ -90,11 +90,16 @@ class SidebarItemsContentsView : public views::View,
   bool IsBubbleVisible() const;
   void Update();
 
+  // Checks whether `item_view`'s context menu would show the "Show mobile
+  // version"/"Show desktop version" entry, without actually opening a menu.
+  bool IsMobileUserAgentMenuEntryVisibleForTesting(views::View* item_view);
+
  private:
   friend class sidebar::SidebarBrowserTest;
 
   enum ContextMenuIDs {
     kItemEdit,
+    kItemToggleMobileUserAgent,
     kItemRemove,
   };
 

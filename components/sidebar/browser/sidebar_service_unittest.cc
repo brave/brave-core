@@ -531,6 +531,45 @@ TEST_F(SidebarServiceTest, UpdateItem) {
   InitService();
   EXPECT_EQ(SidebarItem::PanelType::kWebPanel,
             service_->items()[last_item_index].panel_type);
+
+  // Update use_mobile_user_agent only (url/title/panel_type unchanged).
+  SidebarItemUpdate ua_update;
+  ua_update.index = last_item_index;
+  ua_update.title_updated = false;
+  ua_update.url_updated = false;
+  ua_update.panel_type_updated = false;
+  ua_update.use_mobile_user_agent_updated = true;
+  {
+    auto old_item = SidebarItem::CreateWebPanelItem(brave_url, brave_title);
+    auto new_item = old_item;
+    new_item.use_mobile_user_agent = true;
+    EXPECT_CALL(observer_, OnItemUpdated(testing::_, ua_update)).Times(1);
+    service_->UpdateItem(old_item, new_item);
+    testing::Mock::VerifyAndClearExpectations(&observer_);
+    EXPECT_TRUE(service_->items()[last_item_index].use_mobile_user_agent);
+  }
+
+  // Flip back to desktop.
+  {
+    auto old_item = SidebarItem::CreateWebPanelItem(brave_url, brave_title);
+    old_item.use_mobile_user_agent = true;
+    auto new_item = SidebarItem::CreateWebPanelItem(brave_url, brave_title);
+    EXPECT_CALL(observer_, OnItemUpdated(testing::_, ua_update)).Times(1);
+    service_->UpdateItem(old_item, new_item);
+    testing::Mock::VerifyAndClearExpectations(&observer_);
+    EXPECT_FALSE(service_->items()[last_item_index].use_mobile_user_agent);
+  }
+
+  // The use_mobile_user_agent choice persists across a reload from prefs.
+  {
+    auto old_item = SidebarItem::CreateWebPanelItem(brave_url, brave_title);
+    auto new_item = old_item;
+    new_item.use_mobile_user_agent = true;
+    service_->UpdateItem(old_item, new_item);
+  }
+  ResetService();
+  InitService();
+  EXPECT_TRUE(service_->items()[last_item_index].use_mobile_user_agent);
 }
 
 TEST_F(SidebarServiceTest, MoveItemSavedToPrefs) {

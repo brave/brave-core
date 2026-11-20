@@ -897,6 +897,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           <message name="IDS_TOOLTIP_SIDEBAR_SHOW" desc="The tooltip for the sidebar button, when closed">
             Show sidebar
           </message>
+          <message name="IDS_SIDEBAR_ITEM_CONTEXT_MENU_SHOW_MOBILE_VERSION" desc="Menu item to switch a sidebar web panel to load the mobile version of the site">
+            Show mobile version
+          </message>
+          <message name="IDS_SIDEBAR_ITEM_CONTEXT_MENU_SHOW_DESKTOP_VERSION" desc="Menu item to switch a sidebar web panel to load the desktop version of the site">
+            Show desktop version
+          </message>
         </if>
         <if expr="use_titlecase">
           <message name="IDS_HIDE_SIDE_PANEL_TOOLBAR_BUTTON" desc="The menu item to hide the side panel icon on the toolbar">
@@ -907,6 +913,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           </message>
           <message name="IDS_TOOLTIP_SIDEBAR_SHOW" desc="The tooltip for the sidebar button, when closed">
             Show Sidebar
+          </message>
+          <message name="IDS_SIDEBAR_ITEM_CONTEXT_MENU_SHOW_MOBILE_VERSION" desc="Menu item to switch a sidebar web panel to load the mobile version of the site">
+            Show Mobile Version
+          </message>
+          <message name="IDS_SIDEBAR_ITEM_CONTEXT_MENU_SHOW_DESKTOP_VERSION" desc="Menu item to switch a sidebar web panel to load the desktop version of the site">
+            Show Desktop Version
           </message>
         </if>
         <message name="IDS_SIDEBAR_ITEM_CONTEXT_MENU_EDIT" desc="Menu for editing an existing item from sidebar">

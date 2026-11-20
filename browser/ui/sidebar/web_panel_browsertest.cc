@@ -73,6 +73,8 @@
 #include "components/split_tabs/split_tab_visual_data.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/context_menu_params.h"
+#include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
@@ -720,6 +722,82 @@ IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
       [&]() { return !web_panel_controller()->HasOpenPanel(); }));
   EXPECT_FALSE(model()->active_index());
 }
+
+// Toggling a web panel item's use_mobile_user_agent while its panel is open
+// has to reload the panel's existing WebContents in place, preserving
+// whatever page the user navigated to inside the panel - closing and
+// reopening the tab (as EditingActiveItemAwayFromPanelClosesIt does for a
+// panel_type change) would instead reset it back to the item's original url.
+// See SidebarController::OnItemUpdated() and
+// SidebarWebPanelController::ReapplyUserAgent().
+IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
+                       TogglingMobileUserAgentReloadsOpenPanelInPlace) {
+  auto* service = SidebarServiceFactory::GetForProfile(browser()->GetProfile());
+
+  const GURL url(kTestWebPanelURL);
+  const std::u16string title(u"title");
+  OpenWebPanel(url);
+  const size_t index = model()->GetAllSidebarItems().size() - 1;
+  ASSERT_EQ(model()->active_index(), index);
+
+  auto* panel_contents = tab_model()->GetTabAtIndex(0)->GetContents();
+  ASSERT_EQ(panel_contents, web_panel_controller()->panel_contents());
+
+  // Navigate within the panel, away from the item's original url.
+  const GURL navigated_url(kRegularTabURL);
+  ASSERT_TRUE(content::NavigateToURL(panel_contents, navigated_url));
+
+  auto new_item = SidebarItem::CreateWebPanelItem(url, title);
+  new_item.use_mobile_user_agent = true;
+  service->UpdateItem(SidebarItem::CreateWebPanelItem(url, title), new_item);
+
+  // The panel stays open, on the same WebContents - not recreated.
+  EXPECT_TRUE(web_panel_controller()->HasOpenPanel());
+  EXPECT_EQ(model()->active_index(), index);
+  EXPECT_EQ(panel_contents, tab_model()->GetTabAtIndex(0)->GetContents());
+  EXPECT_EQ(panel_contents, web_panel_controller()->panel_contents());
+
+  // The in-panel navigation survived the reload - it wasn't reset back to
+  // the item's original url.
+  ASSERT_TRUE(content::WaitForLoadStop(panel_contents));
+  EXPECT_EQ(navigated_url, panel_contents->GetLastCommittedURL());
+
+  auto* entry = panel_contents->GetController().GetLastCommittedEntry();
+  ASSERT_TRUE(entry);
+  EXPECT_TRUE(entry->GetIsOverridingUserAgent());
+}
+
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+// The "Show mobile version"/"Show desktop version" menu entry is for
+// user-added web panel items only. is_web_panel_type() alone isn't enough to
+// exclude built-ins - Brave Talk is a built-in item that is also
+// PanelType::kWebPanel (see BraveTalkOpensWebPanel) - so
+// IsCommandIdVisible() must additionally require is_web_type().
+IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
+                       MobileUserAgentMenuEntryExcludesBuiltInWebPanelItems) {
+  auto* service = SidebarServiceFactory::GetForProfile(browser()->GetProfile());
+  auto items_contents_view = GetSidebarItemsContentsView(controller());
+
+  service->AddItem(
+      SidebarItem::CreateWebPanelItem(GURL(kTestWebPanelURL), u"title"));
+  const size_t web_panel_index = model()->GetAllSidebarItems().size() - 1;
+  service->AddItem(
+      SidebarItem::CreateWebTabItem(GURL(kRegularTabURL), u"title"));
+  const size_t web_tab_index = model()->GetAllSidebarItems().size() - 1;
+
+  const auto talk_index =
+      model()->GetIndexOf(SidebarItem::BuiltInItemType::kBraveTalk);
+  ASSERT_TRUE(talk_index);
+  ASSERT_TRUE(model()->GetAllSidebarItems()[*talk_index].is_web_panel_type());
+
+  EXPECT_TRUE(items_contents_view->IsMobileUserAgentMenuEntryVisibleForTesting(
+      items_contents_view->children()[web_panel_index].get()));
+  EXPECT_FALSE(items_contents_view->IsMobileUserAgentMenuEntryVisibleForTesting(
+      items_contents_view->children()[web_tab_index].get()));
+  EXPECT_FALSE(items_contents_view->IsMobileUserAgentMenuEntryVisibleForTesting(
+      items_contents_view->children()[*talk_index].get()));
+}
+#endif  // BUILDFLAG(ENABLE_BRAVE_TALK)
 
 // The mini toolbar's close button has to dismiss the panel the same way the
 // sidebar item does. It is the another way out once the user has removed the

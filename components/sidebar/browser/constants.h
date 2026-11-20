@@ -17,6 +17,10 @@ inline constexpr char kSidebarItemTitleKey[] = "title";
 // Whether a web item opens as a web panel. Stored under its original name,
 // which predates built-in items being able to open panels too.
 inline constexpr char kSidebarItemWebPanelKey[] = "open_in_panel";
+// Whether a web panel item loads with the mobile user agent instead of the
+// default desktop one. Meaningless for non-web-panel items.
+inline constexpr char kSidebarItemUseMobileUserAgentKey[] =
+    "use_mobile_user_agent";
 
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
 // list is provided from chrome layer.

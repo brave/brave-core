@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
 
+#include <string>
+
 #include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
@@ -12,8 +14,38 @@
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "components/embedder_support/user_agent_utils.h"
+#include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/navigation_entry.h"
+#include "content/public/browser/web_contents.h"
+#include "third_party/blink/public/common/user_agent/user_agent_metadata.h"
 
 namespace sidebar {
+
+namespace {
+
+// Mirrors Chromium's own desktop "request mobile/tablet site" user-agent
+// construction (chrome/browser/ui/browser_commands.cc,
+// SetAndroidOsForTabletSite()), but for phone form factor rather than tablet.
+constexpr char kOsOverrideForMobileSite[] = "Linux; Android 13; Mobile";
+constexpr char kChPlatformOverrideForMobileSite[] = "Android";
+
+blink::UserAgentOverride BuildMobileUserAgentOverride() {
+  blink::UserAgentOverride ua_override;
+  const std::string product =
+      embedder_support::GetProductAndVersion() + " Mobile";
+  ua_override.ua_string_override =
+      embedder_support::BuildUserAgentFromOSAndProduct(kOsOverrideForMobileSite,
+                                                       product);
+  ua_override.ua_metadata_override = embedder_support::GetUserAgentMetadata();
+  ua_override.ua_metadata_override->mobile = true;
+  ua_override.ua_metadata_override->form_factors = {blink::kMobileFormFactor};
+  ua_override.ua_metadata_override->platform = kChPlatformOverrideForMobileSite;
+  ua_override.ua_metadata_override->platform_version = std::string();
+  return ua_override;
+}
+
+}  // namespace
 
 SidebarWebPanelController::SidebarWebPanelController(
     BrowserView& browser_view,
@@ -70,10 +102,50 @@ void SidebarWebPanelController::OpenWebPanel(const SidebarItem& item,
                                              bool animate) {
   panel_contents_ = chrome::AddAndReturnTabAt(
       browser_view_->browser(), item.url, 0, false, std::nullopt, true);
+  if (item.use_mobile_user_agent) {
+    // AddAndReturnTabAt() already started a default-UA navigation to
+    // item.url above; this supersedes it with an explicitly UA-overridden
+    // one before it can commit, the same way
+    // BackupResultsServiceImpl::MaybeApplyUserAgentOverride() does for a
+    // fresh navigation.
+    panel_contents_->SetUserAgentOverride(BuildMobileUserAgentOverride(),
+                                          /*override_in_new_tabs=*/true);
+    content::NavigationController::LoadURLParams load_url_params(item.url);
+    load_url_params.override_user_agent =
+        content::NavigationController::UA_OVERRIDE_TRUE;
+    panel_contents_->GetController().LoadURLWithParams(load_url_params);
+  }
   panel_item_ = item;
   state_ = State::kOpen;
   GetMultiContentsView()->SetWebPanelContents(panel_contents_, animate);
   web_panel_state_changed_.Run();
+}
+
+void SidebarWebPanelController::ReapplyUserAgent(const SidebarItem& item) {
+  CHECK(panel_contents_);
+  panel_item_ = item;
+
+  content::NavigationController& controller = panel_contents_->GetController();
+  content::NavigationEntry* entry = controller.GetLastCommittedEntry();
+  if (!entry) {
+    return;
+  }
+
+  // Reloading the existing WebContents' current entry in place - rather than
+  // closing and reopening the panel's tab at item.url - preserves whatever
+  // page the user navigated to inside the panel. This mirrors Chromium's own
+  // desktop "request mobile site" toggle
+  // (chrome::ToggleRequestTabletSite()/SetAndroidOsForTabletSite() in
+  // chrome/browser/ui/browser_commands.cc), just applied to the panel's
+  // WebContents instead of the active tab's.
+  if (item.use_mobile_user_agent) {
+    entry->SetIsOverridingUserAgent(true);
+    panel_contents_->SetUserAgentOverride(BuildMobileUserAgentOverride(),
+                                          /*override_in_new_tabs=*/false);
+  } else {
+    entry->SetIsOverridingUserAgent(false);
+  }
+  controller.LoadOriginalRequestURL();
 }
 
 void SidebarWebPanelController::CloseWebPanel(bool suppress_animations) {

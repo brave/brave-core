@@ -99,7 +99,8 @@ SidebarItem::BuiltInItemType GetBuiltInItemTypeForLegacyURL(
 bool SidebarItemUpdate::operator==(const SidebarItemUpdate& update) const {
   return index == update.index && title_updated == update.title_updated &&
          url_updated == update.url_updated &&
-         panel_type_updated == update.panel_type_updated;
+         panel_type_updated == update.panel_type_updated &&
+         use_mobile_user_agent_updated == update.use_mobile_user_agent_updated;
 }
 
 // static
@@ -403,7 +404,10 @@ void SidebarService::UpdateItem(const SidebarItem& old_item,
   const bool url_updated = old_item.url != new_item.url;
   const bool title_updated = old_item.title != new_item.title;
   const bool panel_type_updated = old_item.panel_type != new_item.panel_type;
-  if (!url_updated && !title_updated && !panel_type_updated) {
+  const bool use_mobile_user_agent_updated =
+      old_item.use_mobile_user_agent != new_item.use_mobile_user_agent;
+  if (!url_updated && !title_updated && !panel_type_updated &&
+      !use_mobile_user_agent_updated) {
     return;
   }
 
@@ -424,10 +428,12 @@ void SidebarService::UpdateItem(const SidebarItem& old_item,
   item_iter->url = new_item.url;
   item_iter->title = new_item.title;
   item_iter->panel_type = new_item.panel_type;
+  item_iter->use_mobile_user_agent = new_item.use_mobile_user_agent;
 
   for (Observer& obs : observers_) {
     obs.OnItemUpdated(*item_iter,
-                      {index, title_updated, url_updated, panel_type_updated});
+                      {index, title_updated, url_updated, panel_type_updated,
+                       use_mobile_user_agent_updated});
   }
   UpdateSidebarItemsToPrefStore();
 }
@@ -458,6 +464,7 @@ void SidebarService::UpdateSidebarItemsToPrefStore() {
       // a kSidebarWebPanel toggle.
       dict.Set(kSidebarItemWebPanelKey,
                item.panel_type == SidebarItem::PanelType::kWebPanel);
+      dict.Set(kSidebarItemUseMobileUserAgentKey, item.use_mobile_user_agent);
     }
     items.Append(std::move(dict));
   }
@@ -610,10 +617,13 @@ void SidebarService::LoadSidebarItems() {
       if (const auto* value = item.FindString(kSidebarItemTitleKey)) {
         title = *value;
       }
-      items_.push_back(is_web_panel ? SidebarItem::CreateWebPanelItem(
-                                          GURL(url), base::UTF8ToUTF16(title))
-                                    : SidebarItem::CreateWebTabItem(
-                                          GURL(url), base::UTF8ToUTF16(title)));
+      auto new_item = is_web_panel ? SidebarItem::CreateWebPanelItem(
+                                         GURL(url), base::UTF8ToUTF16(title))
+                                   : SidebarItem::CreateWebTabItem(
+                                         GURL(url), base::UTF8ToUTF16(title));
+      new_item.use_mobile_user_agent =
+          item.FindBool(kSidebarItemUseMobileUserAgentKey).value_or(false);
+      items_.push_back(std::move(new_item));
     }
   }
 
