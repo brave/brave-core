@@ -7,15 +7,16 @@
 
 #include <cstdint>
 #include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback_helpers.h"
-#include "base/test/gmock_callback_support.h"
-#include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_sync_state.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -23,9 +24,10 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_test_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 using testing::_;
-using testing::SaveArg;
 
 namespace brave_wallet {
 
@@ -103,6 +105,15 @@ class ZCashCreateIronwoodToIronwoodTransactionTaskTest : public testing::Test {
 
   base::test::TaskEnvironment& task_environment() { return task_environment_; }
 
+  // Starts `task` and waits for its one-shot callback.
+  base::expected<ZCashTransaction, std::string> RunTask(
+      ZCashCreateIronwoodToIronwoodTransactionTask& task) {
+    base::test::TestFuture<base::expected<ZCashTransaction, std::string>>
+        future;
+    task.Start(future.GetCallback());
+    return future.Take();
+  }
+
  private:
   base::test::TaskEnvironment task_environment_;
 
@@ -143,48 +154,39 @@ TEST_F(ZCashCreateIronwoodToIronwoodTransactionTaskTest, TransactionCreated) {
         return spendable_notes_bundle;
       });
 
-  base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
-
   auto orchard_part = GetOrchardRawBytes(
       "u19hwdcqxhkapje2p0744gq96parewuffyeg0kg3q3taq040zwqh2wxjwyxzs6l9dulzua"
       "p43ya7mq7q3mu2hjafzlwylvystjlc6n294emxww9xm8qn6tcldqkq4k9ccsqzmjeqk9yp"
       "kss572ut324nmxke666jm8lhkpt85gzq58d50rfnd7wufke8jjhc3lhswxrdr57ah42xck"
       "h2j",
       false);
+  ASSERT_TRUE(orchard_part);
 
   std::unique_ptr<ZCashCreateIronwoodToIronwoodTransactionTask> task =
       std::make_unique<ZCashCreateIronwoodToIronwoodTransactionTask>(
           pass_key(), zcash_wallet_service(), action_context(), *orchard_part,
           std::nullopt, 100000u);
 
-  base::expected<ZCashTransaction, std::string> tx_result;
-  EXPECT_CALL(callback, Run(_))
-      .WillOnce(::testing::DoAll(
-          SaveArg<0>(&tx_result),
-          base::test::RunOnceClosure(task_environment().QuitClosure())));
-
-  task->Start(callback.Get());
-
-  task_environment().RunUntilQuit();
+  auto tx_result = RunTask(*task);
 
   ASSERT_TRUE(tx_result.has_value());
-  EXPECT_TRUE(tx_result.value().is_v6());
+  ASSERT_TRUE(tx_result->is_v6());
 
-  EXPECT_EQ(tx_result.value().v6_part().ironwood.inputs.size(), 2u);
+  ASSERT_EQ(tx_result.value().v6_part().ironwood.inputs.size(), 2u);
   EXPECT_EQ(tx_result.value().v6_part().ironwood.inputs[0].note.amount, 70000u);
   EXPECT_EQ(tx_result.value().v6_part().ironwood.inputs[1].note.amount, 80000u);
-  EXPECT_EQ(tx_result.value().v6_part().ironwood.anchor_block_height.value(),
-            10u);
+  EXPECT_EQ(tx_result.value().v6_part().ironwood.anchor_block_height, 10u);
 
   EXPECT_EQ(tx_result.value().v6_part().legacy_orchard.inputs.size(), 0u);
   EXPECT_EQ(tx_result.value().v6_part().legacy_orchard.outputs.size(), 0u);
 
-  EXPECT_EQ(tx_result.value().v6_part().ironwood.outputs.size(), 2u);
+  ASSERT_EQ(tx_result.value().v6_part().ironwood.outputs.size(), 2u);
   EXPECT_EQ(tx_result.value().v6_part().ironwood.outputs[0].value, 40000u);
   EXPECT_EQ(tx_result.value().v6_part().ironwood.outputs[1].value, 100000u);
 
   auto change_addr = keyring_service().GetOrchardRawBytes(
       account_id(), mojom::ZCashKeyId::New(0, 1, 0));
+  ASSERT_TRUE(change_addr);
 
   EXPECT_EQ(tx_result.value().v6_part().ironwood.outputs[0].addr,
             change_addr.value());
@@ -217,37 +219,28 @@ TEST_F(ZCashCreateIronwoodToIronwoodTransactionTaskTest,
         return spendable_notes_bundle;
       });
 
-  base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
-
   auto orchard_part = GetOrchardRawBytes(
       "u19hwdcqxhkapje2p0744gq96parewuffyeg0kg3q3taq040zwqh2wxjwyxzs6l9dulzua"
       "p43ya7mq7q3mu2hjafzlwylvystjlc6n294emxww9xm8qn6tcldqkq4k9ccsqzmjeqk9yp"
       "kss572ut324nmxke666jm8lhkpt85gzq58d50rfnd7wufke8jjhc3lhswxrdr57ah42xck"
       "h2j",
       false);
+  ASSERT_TRUE(orchard_part);
 
   std::unique_ptr<ZCashCreateIronwoodToIronwoodTransactionTask> task =
       std::make_unique<ZCashCreateIronwoodToIronwoodTransactionTask>(
           pass_key(), zcash_wallet_service(), action_context(), *orchard_part,
           std::nullopt, kZCashFullAmount);
 
-  base::expected<ZCashTransaction, std::string> tx_result;
-  EXPECT_CALL(callback, Run(_))
-      .WillOnce(::testing::DoAll(
-          SaveArg<0>(&tx_result),
-          base::test::RunOnceClosure(task_environment().QuitClosure())));
-
-  task->Start(callback.Get());
-
-  task_environment().RunUntilQuit();
+  auto tx_result = RunTask(*task);
 
   ASSERT_TRUE(tx_result.has_value());
+  ASSERT_TRUE(tx_result->is_v6());
 
   EXPECT_EQ(tx_result.value().v6_part().ironwood.inputs.size(), 2u);
-  EXPECT_EQ(tx_result.value().v6_part().ironwood.anchor_block_height.value(),
-            10u);
+  EXPECT_EQ(tx_result.value().v6_part().ironwood.anchor_block_height, 10u);
 
-  EXPECT_EQ(tx_result.value().v6_part().ironwood.outputs.size(), 1u);
+  ASSERT_EQ(tx_result.value().v6_part().ironwood.outputs.size(), 1u);
   EXPECT_EQ(tx_result.value().v6_part().ironwood.outputs[0].value, 140000u);
   EXPECT_EQ(tx_result.value().v6_part().ironwood.outputs[0].addr,
             orchard_part.value());
@@ -315,17 +308,10 @@ TEST_F(ZCashCreateIronwoodToIronwoodTransactionTaskTest, FeeCorrectness) {
         pass_key(), zcash_wallet_service(), action_context(), *receiver,
         std::nullopt, test_case.amount);
 
-    base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
-    base::expected<ZCashTransaction, std::string> tx_result;
-    EXPECT_CALL(callback, Run(_))
-        .WillOnce(::testing::DoAll(
-            SaveArg<0>(&tx_result),
-            base::test::RunOnceClosure(task_environment().QuitClosure())));
-
-    task->Start(callback.Get());
-    task_environment().RunUntilQuit();
+    auto tx_result = RunTask(*task);
 
     ASSERT_TRUE(tx_result.has_value());
+    ASSERT_TRUE(tx_result->is_v6());
     EXPECT_EQ(tx_result.value().v6_part().ironwood.inputs.size(),
               test_case.expected_inputs);
     EXPECT_EQ(tx_result.value().fee(), test_case.expected_fee);
@@ -381,21 +367,14 @@ TEST_F(ZCashCreateIronwoodToIronwoodTransactionTaskTest,
       pass_key(), zcash_wallet_service(), action_context(), *receiver,
       std::nullopt, kZCashFullAmount);
 
-  base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
-  base::expected<ZCashTransaction, std::string> tx_result;
-  EXPECT_CALL(callback, Run(_))
-      .WillOnce(::testing::DoAll(
-          SaveArg<0>(&tx_result),
-          base::test::RunOnceClosure(task_environment().QuitClosure())));
-
-  task->Start(callback.Get());
-  task_environment().RunUntilQuit();
+  auto tx_result = RunTask(*task);
 
   ASSERT_TRUE(tx_result.has_value());
+  ASSERT_TRUE(tx_result->is_v6());
 
   // 2 spends, no change, 1 target -> max(2, max(2, 1)) = 2 actions.
   EXPECT_EQ(tx_result.value().fee(), 10000u);
-  EXPECT_EQ(tx_result.value().v6_part().ironwood.outputs.size(), 1u);
+  ASSERT_EQ(tx_result.value().v6_part().ironwood.outputs.size(), 1u);
   EXPECT_EQ(tx_result.value().v6_part().ironwood.outputs[0].value,
             70000u + 80000u - 10000u);
   EXPECT_EQ(tx_result.value().v6_part().legacy_orchard.outputs.size(), 0u);
@@ -425,29 +404,20 @@ TEST_F(ZCashCreateIronwoodToIronwoodTransactionTaskTest, NotEnoughFunds) {
         return spendable_notes_bundle;
       });
 
-  base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
-
   auto orchard_part = GetOrchardRawBytes(
       "u19hwdcqxhkapje2p0744gq96parewuffyeg0kg3q3taq040zwqh2wxjwyxzs6l9dulzua"
       "p43ya7mq7q3mu2hjafzlwylvystjlc6n294emxww9xm8qn6tcldqkq4k9ccsqzmjeqk9yp"
       "kss572ut324nmxke666jm8lhkpt85gzq58d50rfnd7wufke8jjhc3lhswxrdr57ah42xck"
       "h2j",
       false);
+  ASSERT_TRUE(orchard_part);
 
   std::unique_ptr<ZCashCreateIronwoodToIronwoodTransactionTask> task =
       std::make_unique<ZCashCreateIronwoodToIronwoodTransactionTask>(
           pass_key(), zcash_wallet_service(), action_context(), *orchard_part,
           std::nullopt, 1000000u);
 
-  base::expected<ZCashTransaction, std::string> tx_result;
-  EXPECT_CALL(callback, Run(_))
-      .WillOnce(::testing::DoAll(
-          SaveArg<0>(&tx_result),
-          base::test::RunOnceClosure(task_environment().QuitClosure())));
-
-  task->Start(callback.Get());
-
-  task_environment().RunUntilQuit();
+  auto tx_result = RunTask(*task);
 
   EXPECT_FALSE(tx_result.has_value());
 }
