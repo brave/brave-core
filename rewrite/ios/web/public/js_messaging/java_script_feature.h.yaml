@@ -22,3 +22,20 @@ substitutions:
     add_friend:
       class_name: JavaScriptFeature
       friend_type: class PromptFacade
+
+  - description: |-
+      Declare `GetScriptsSignature`.
+
+      Each WebState configures its own scripts, so a feature whose scripts
+      depend on some state (e.g. a preference) can not update the scripts of
+      every WebState when it changes. Instead, a WebState compares the
+      signatures of its features before each main frame navigation, and
+      rebuilds its scripts when one changed.
+    add_after_line:
+      line: 'virtual std::vector<FeatureScript> GetScripts() const;'
+      code: |2-
+          // Returns a value identifying the state the scripts returned by
+          // `GetScripts()` depend on, e.g. a preference. The scripts of a WebState
+          // are rebuilt before its next main frame navigation when it changes.
+          // Defaults to an empty string, for features with constant scripts.
+          virtual std::string GetScriptsSignature() const;

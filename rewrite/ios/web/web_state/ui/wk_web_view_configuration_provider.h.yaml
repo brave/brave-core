@@ -195,7 +195,8 @@ substitutions:
     regex:
       re_pattern: '(class BrowserState;\n)(class WKContentRuleListApplier;\n)'
       replace: |-
-        \1class JavaScriptFeatureManager;
+        \1class JavaScriptFeature;
+        class JavaScriptFeatureManager;
         class WebFramesManagerJavaScriptFeature;
         class WebState;
         \2
@@ -204,7 +205,9 @@ substitutions:
     regex:
       re_pattern: '(#include <memory>\n)'
       replace: |
-        \1#include <vector>
+        \1#include <string>
+        #include <utility>
+        #include <vector>
 
   - description: Drop the include of the removed BrowserState user data base.
     regex:
@@ -232,3 +235,56 @@ substitutions:
       code: |2-
           // Null for a provider without a WebState.
           raw_ptr<WebState> web_state_;
+
+  - description: |-
+      Let the WebState rebuild its scripts before a navigation when they
+      changed.
+
+      The features of a WebState, and the state their scripts depend on, can
+      change after its configuration is created. As the WebState has its own
+      WKUserContentController, it checks whether its scripts are outdated
+      before each main frame navigation instead of being updated by the
+      features.
+    add_after_line:
+      line: 'void UpdateScripts();'
+      code: |2-
+
+          // Calls `UpdateScripts()` if the JavaScript features configured for the
+          // WebState, or the signature of their scripts, changed since the scripts
+          // were last updated. Like `UpdateScripts()`, only affects documents
+          // loaded afterwards. Does nothing before the configuration is created.
+          void UpdateScriptsIfNeeded();
+
+  - description: |-
+      Drop `SetUniversalOptOutEnabled`.
+
+      Universal Opt-Out is set when the configuration is created, and then
+      applied to the webpage preferences of each navigation.
+    regex:
+      re_pattern:
+        '\n\n\s*// Updates whether Universal Opt-Out \(Global Privacy Control\)
+        is enabled in\n\s*// the default webpage preferences of the
+        configuration\.\n\s*void SetUniversalOptOutEnabled\(bool enabled\)
+        API_AVAILABLE\(ios\(27\)\);\n'
+      replace: "\n"
+
+  - description: |-
+      Declare the helper returning the features to configure, and keep the
+      signature of the configured scripts.
+    add_after_line:
+      line: 'SEQUENCE_CHECKER(_sequence_checker_);'
+      code: |2-
+
+          // JavaScript features, with the signature of their scripts.
+          using ScriptsSignature =
+              std::vector<std::pair<raw_ptr<JavaScriptFeature>, std::string>>;
+
+          // Returns the JavaScript features to configure, in order.
+          std::vector<JavaScriptFeature*> GetJavaScriptFeatures() const;
+
+          // Returns `features` with the signature of their scripts.
+          static ScriptsSignature GetScriptsSignature(
+              const std::vector<JavaScriptFeature*>& features);
+
+          // The features configured by the last `UpdateScripts()`.
+          ScriptsSignature scripts_signature_;

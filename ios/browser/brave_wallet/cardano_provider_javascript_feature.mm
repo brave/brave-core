@@ -19,6 +19,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/notreached.h"
 #include "base/strings/sys_string_conversions.h"
+#include "base/strings/to_string.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -236,14 +237,22 @@ CardanoProviderJavaScriptFeature::FromBrowserState(
   return feature;
 }
 
+bool CardanoProviderJavaScriptFeature::ShouldInjectScripts() const {
+  PrefService* prefs = profile_->GetPrefs();
+  // Only inject the wallet script if wallet is enabled for this profile,
+  // Cardano dApp support is enabled, Brave is set as the default Cardano wallet
+  // provider, and the user has created a wallet.
+  return IsAllowed(prefs) && IsCardanoDAppSupportEnabled() &&
+         IsDefaultCardanoWalletBrave(prefs) && IsWalletCreated(prefs);
+}
+
+std::string CardanoProviderJavaScriptFeature::GetScriptsSignature() const {
+  return base::ToString(ShouldInjectScripts());
+}
+
 std::vector<web::JavaScriptFeature::FeatureScript>
 CardanoProviderJavaScriptFeature::GetScripts() const {
-  PrefService* prefs = profile_->GetPrefs();
-  if (!IsAllowed(prefs) || !IsCardanoDAppSupportEnabled() ||
-      !IsDefaultCardanoWalletBrave(prefs) || !IsWalletCreated(prefs)) {
-    // Dont inject the wallet script if wallet is not enabled for this profile,
-    // Cardano dApp support is disabled, Brave is not set as the default Cardano
-    // wallet provider, or the user hasn't created a wallet yet.
+  if (!ShouldInjectScripts()) {
     return {};
   }
   return {FeatureScript::CreateWithFilename(

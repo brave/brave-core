@@ -1,8 +1,19 @@
 diff --git a/ios/web/js_messaging/java_script_feature.mm b/ios/web/js_messaging/java_script_feature.mm
-index 00ba750c8191f4d0fdcb90601cf974351bc2ea25..75155c1cf9a32f0fbca5d547dbda0021a7c57ced 100644
+index 00ba750c8191f4d0fdcb90601cf974351bc2ea25..caf7d5b56078e399d3b3731a678a3e5bd234ce49 100644
 --- a/ios/web/js_messaging/java_script_feature.mm
 +++ b/ios/web/js_messaging/java_script_feature.mm
-@@ -337,8 +337,12 @@ bool JavaScriptFeature::CallJavaScriptFunction(
+@@ -265,6 +265,10 @@ std::vector<JavaScriptFeature::FeatureScript> JavaScriptFeature::GetScripts()
+   return scripts_;
+ }
+ 
++std::string JavaScriptFeature::GetScriptsSignature() const {
++  return std::string();
++}
++
+ const std::vector<raw_ptr<const JavaScriptFeature>>&
+ JavaScriptFeature::GetDependentFeatures() const {
+   return dependent_features_;
+@@ -337,8 +341,12 @@ bool JavaScriptFeature::CallJavaScriptFunction(
      return false;
    }
  
@@ -16,7 +27,7 @@ index 00ba750c8191f4d0fdcb90601cf974351bc2ea25..75155c1cf9a32f0fbca5d547dbda0021
    DCHECK(feature_manager);
  
    JavaScriptContentWorld* content_world =
-@@ -373,8 +377,12 @@ bool JavaScriptFeature::CallJavaScriptFunction(
+@@ -373,8 +381,12 @@ bool JavaScriptFeature::CallJavaScriptFunction(
      return false;
    }
  
@@ -30,7 +41,7 @@ index 00ba750c8191f4d0fdcb90601cf974351bc2ea25..75155c1cf9a32f0fbca5d547dbda0021
    DCHECK(feature_manager);
  
    JavaScriptContentWorld* content_world =
-@@ -434,8 +442,12 @@ bool JavaScriptFeature::ExecuteJavaScript(
+@@ -434,8 +446,12 @@ bool JavaScriptFeature::ExecuteJavaScript(
      return false;
    }
  
@@ -44,7 +55,7 @@ index 00ba750c8191f4d0fdcb90601cf974351bc2ea25..75155c1cf9a32f0fbca5d547dbda0021
    DCHECK(feature_manager);
  
    JavaScriptContentWorld* content_world =
-@@ -469,8 +481,12 @@ bool JavaScriptFeature::CallAsyncJavaScriptFunction(
+@@ -469,8 +485,12 @@ bool JavaScriptFeature::CallAsyncJavaScriptFunction(
      return false;
    }
  
@@ -58,7 +69,7 @@ index 00ba750c8191f4d0fdcb90601cf974351bc2ea25..75155c1cf9a32f0fbca5d547dbda0021
  
    JavaScriptContentWorld* content_world =
        feature_manager->GetContentWorldForFeature(this);
-@@ -502,8 +518,12 @@ bool JavaScriptFeature::ExecuteAsyncJavaScript(
+@@ -502,8 +522,12 @@ bool JavaScriptFeature::ExecuteAsyncJavaScript(
      return false;
    }
  

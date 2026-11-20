@@ -34,8 +34,8 @@ substitutions:
       Stop updating Universal Opt-Out on a BrowserState-wide configuration.
 
       Each WebState has its own configuration, which enables Universal Opt-Out
-      when it is created if the BrowserState has it enabled. A change only
-      applies to WebStates created afterwards.
+      when it is created if the BrowserState has it enabled. A change is
+      applied to the webpage preferences of each navigation instead.
     regex:
       re_pattern:
         '(void SetUniversalOptOutEnabled\(BrowserState\* browser_state, bool

@@ -40,6 +40,7 @@ class EthereumProviderJavaScriptFeature : public web::JavaScriptFeature,
   // web::JavaScriptFeature:
   std::vector<web::JavaScriptFeature::FeatureScript> GetScripts()
       const override;
+  std::string GetScriptsSignature() const override;
   bool GetFeatureRepliesToMessages() const override;
   std::optional<std::string> GetScriptMessageHandlerName() const override;
   void ScriptMessageReceivedWithReply(
@@ -49,6 +50,9 @@ class EthereumProviderJavaScriptFeature : public web::JavaScriptFeature,
 
  private:
   explicit EthereumProviderJavaScriptFeature(ProfileIOS* profile);
+
+  // Returns whether the provider scripts are injected.
+  bool ShouldInjectScripts() const;
 
   web::MessageHandlerToken token_;
   raw_ptr<ProfileIOS> profile_;

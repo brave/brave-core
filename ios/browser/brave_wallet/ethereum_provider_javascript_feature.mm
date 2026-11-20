@@ -18,6 +18,7 @@
 #include "base/memory/ptr_util.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/sys_string_conversions.h"
+#include "base/strings/to_string.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -163,14 +164,22 @@ EthereumProviderJavaScriptFeature::FromBrowserState(
   return feature;
 }
 
+bool EthereumProviderJavaScriptFeature::ShouldInjectScripts() const {
+  PrefService* prefs = profile_->GetPrefs();
+  // Only inject wallet scripts if wallet is enabled for this profile, Brave is
+  // set as the default ethereum wallet provider, and the user has created a
+  // wallet.
+  return IsAllowed(prefs) && IsDefaultEthereumWalletBrave(prefs) &&
+         IsWalletCreated(prefs);
+}
+
+std::string EthereumProviderJavaScriptFeature::GetScriptsSignature() const {
+  return base::ToString(ShouldInjectScripts());
+}
+
 std::vector<web::JavaScriptFeature::FeatureScript>
 EthereumProviderJavaScriptFeature::GetScripts() const {
-  PrefService* prefs = profile_->GetPrefs();
-  if (!IsAllowed(prefs) || !IsDefaultEthereumWalletBrave(prefs) ||
-      !IsWalletCreated(prefs)) {
-    // Dont inject wallet scripts if wallet is not enabled for this profile,
-    // Brave is not set as the default ethereum wallet provider, or the user
-    // hasn't created a wallet yet
+  if (!ShouldInjectScripts()) {
     return {};
   }
   return {

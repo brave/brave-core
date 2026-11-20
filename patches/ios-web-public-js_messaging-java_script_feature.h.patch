@@ -1,8 +1,20 @@
 diff --git a/ios/web/public/js_messaging/java_script_feature.h b/ios/web/public/js_messaging/java_script_feature.h
-index 632f353364c8a7322b3d9239170dca628bfff830..115911d568b47ac0dfb7d13cf414c917d66b7eab 100644
+index 632f353364c8a7322b3d9239170dca628bfff830..44288168ab761992396ed3257f1d421244024ff6 100644
 --- a/ios/web/public/js_messaging/java_script_feature.h
 +++ b/ios/web/public/js_messaging/java_script_feature.h
-@@ -203,6 +203,12 @@ class JavaScriptFeature {
+@@ -190,6 +190,11 @@ class JavaScriptFeature {
+ 
+   // Returns a vector of scripts used by this feature.
+   virtual std::vector<FeatureScript> GetScripts() const;
++  // Returns a value identifying the state the scripts returned by
++  // `GetScripts()` depend on, e.g. a preference. The scripts of a WebState
++  // are rebuilt before its next main frame navigation when it changes.
++  // Defaults to an empty string, for features with constant scripts.
++  virtual std::string GetScriptsSignature() const;
+   // Returns a vector of features which this one depends upon being available.
+   virtual const std::vector<raw_ptr<const JavaScriptFeature>>&
+   GetDependentFeatures() const;
+@@ -203,6 +208,12 @@ class JavaScriptFeature {
  
    JavaScriptFeature(const JavaScriptFeature&) = delete;
  
@@ -15,7 +27,7 @@ index 632f353364c8a7322b3d9239170dca628bfff830..115911d568b47ac0dfb7d13cf414c917
   protected:
    explicit JavaScriptFeature(ContentWorld supported_world);
  
-@@ -294,6 +300,7 @@ class JavaScriptFeature {
+@@ -294,6 +305,7 @@ class JavaScriptFeature {
        ScriptMessageReplyCallback callback);
  
   private:

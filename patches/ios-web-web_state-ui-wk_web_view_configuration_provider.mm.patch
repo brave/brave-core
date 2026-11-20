@@ -1,5 +1,5 @@
 diff --git a/ios/web/web_state/ui/wk_web_view_configuration_provider.mm b/ios/web/web_state/ui/wk_web_view_configuration_provider.mm
-index 72bca8d629dde292de0bc64f2f9a0ae4335d5a3e..e4db53ee623254d721483d25b8bac623e420b191 100644
+index 72bca8d629dde292de0bc64f2f9a0ae4335d5a3e..a064fe255fdfdd02a79e272c18f89ddf1db20d2d 100644
 --- a/ios/web/web_state/ui/wk_web_view_configuration_provider.mm
 +++ b/ios/web/web_state/ui/wk_web_view_configuration_provider.mm
 @@ -21,6 +21,8 @@
@@ -188,39 +188,81 @@ index 72bca8d629dde292de0bc64f2f9a0ae4335d5a3e..e4db53ee623254d721483d25b8bac623
    }
  
    [configuration_ setIgnoresViewportScaleLimits:YES];
-@@ -234,11 +159,16 @@ void WKWebViewConfigurationProvider::ResetWithWebViewConfiguration(
+@@ -234,35 +159,33 @@ void WKWebViewConfigurationProvider::ResetWithWebViewConfiguration(
    GetWebClient()->AddAdditionalSchemes(&schemes);
    GetWebClient()->GetAdditionalWebUISchemes(&(schemes.standard_schemes));
    for (std::string scheme : schemes.standard_schemes) {
 -    [configuration_ setURLSchemeHandler:scheme_handler_
 -                           forURLScheme:base::SysUTF8ToNSString(scheme)];
+-  }
+-
+-  content_rule_list_provider_->SetUserContentController(
+-      configuration_.userContentController);
+-
+-  if (@available(iOS 27, *)) {
+-    // Materialize `defaultWebpagePreferences` before `configuration_` is copied
+-    // by `GetWebViewConfiguration()`. `-[WKWebViewConfiguration
+-    // defaultWebpagePreferences]` lazily allocates its `WKWebpagePreferences`
+-    // instance on first access, and `-[WKWebViewConfiguration copyWithZone:]`
+-    // copies the underlying ivar directly without invoking the getter. Ensuring
+-    // `defaultWebpagePreferences` is initialized here guarantees that copied
+-    // configurations share the same `WKWebpagePreferences` instance when
+-    // `SetUniversalOptOutEnabled()` is called later in the session.
+-    std::ignore = [configuration_ defaultWebpagePreferences];
+-    bool is_universal_opt_out_enabled =
+-        GetWebClient()->GetUniversalOptOutState(browser_state_) ==
+-        UniversalOptOutState::kEnabled;
+-    // On early versions of iOS 27 betas,
+-    // `-[WKWebPagePreferences setGlobalPrivacyControlEnabled:]` was not defined
+-    // correctly, causing crashes. As a workaround, only set the preference if
+-    // Universal Opt-Out is enabled. Resetting the value to false using this
+-    // method is not supported.
+-    if (is_universal_opt_out_enabled) {
+-      SetUniversalOptOutEnabled(true);
 +    NSString* url_scheme = base::SysUTF8ToNSString(scheme);
 +    // A configuration derived from another //ios/web managed WKWebView
 +    // already has the handlers.
 +    if (![configuration_ urlSchemeHandlerForURLScheme:url_scheme]) {
 +      [configuration_ setURLSchemeHandler:scheme_handler_
 +                             forURLScheme:url_scheme];
-+    }
-   }
- 
--  content_rule_list_provider_->SetUserContentController(
-+  content_rule_list_applier_->SetUserContentController(
-       configuration_.userContentController);
- 
-   if (@available(iOS 27, *)) {
-@@ -263,6 +193,8 @@ void WKWebViewConfigurationProvider::ResetWithWebViewConfiguration(
-       SetUniversalOptOutEnabled(true);
      }
    }
++
++  content_rule_list_applier_->SetUserContentController(
++      configuration_.userContentController);
++
++#if defined(__IPHONE_27_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_27_0
++  if (@available(iOS 27, *)) {
++    // On early versions of iOS 27 betas,
++    // `-[WKWebPagePreferences setGlobalPrivacyControlEnabled:]` was not
++    // defined correctly, causing crashes. As a workaround, only set the
++    // preference if Universal Opt-Out is enabled.
++    if (GetWebClient()->GetUniversalOptOutState(browser_state_) ==
++        UniversalOptOutState::kEnabled) {
++      [[configuration_ defaultWebpagePreferences]
++          setGlobalPrivacyControlEnabled:YES];
++    }
++  }
++#endif
 +
 +  BraveDidResetConfiguration(web_state_, configuration_);
  }
  
  WKWebViewConfiguration*
-@@ -287,92 +219,55 @@ void WKWebViewConfigurationProvider::SetUniversalOptOutEnabled(bool enabled) {
- #endif
+@@ -277,84 +200,73 @@ WKWebViewConfigurationProvider::GetWebViewConfiguration() {
+   return [configuration_ copy];
  }
  
+-void WKWebViewConfigurationProvider::SetUniversalOptOutEnabled(bool enabled) {
+-  DCHECK_CALLED_ON_VALID_SEQUENCE(_sequence_checker_);
+-#if defined(__IPHONE_27_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_27_0
+-  if (@available(iOS 27, *)) {
+-    [[configuration_ defaultWebpagePreferences]
+-        setGlobalPrivacyControlEnabled:enabled];
+-  }
+-#endif
+-}
+-
 -WKWebsiteDataStore* WKWebViewConfigurationProvider::GetWebsiteDataStore() {
 -  DCHECK_CALLED_ON_VALID_SEQUENCE(_sequence_checker_);
 -  if (!website_data_store_) {
@@ -267,55 +309,83 @@ index 72bca8d629dde292de0bc64f2f9a0ae4335d5a3e..e4db53ee623254d721483d25b8bac623
    DCHECK_CALLED_ON_VALID_SEQUENCE(_sequence_checker_);
    [configuration_.userContentController removeAllUserScripts];
  
-   JavaScriptFeatureManager* java_script_feature_manager =
+-  JavaScriptFeatureManager* java_script_feature_manager =
 -      JavaScriptFeatureManager::FromBrowserState(browser_state_);
-+      java_script_feature_manager_.get();
 +  WKUserContentController* user_content_controller =
 +      GetWebViewConfiguration().userContentController;
-+  std::vector<WebFramesManagerJavaScriptFeature*> web_frames_manager_features;
-+  for (const auto& feature : web_frames_manager_features_) {
-+    web_frames_manager_features.push_back(feature.get());
-+  }
++  std::vector<JavaScriptFeature*> features = GetJavaScriptFeatures();
++  scripts_signature_ = GetScriptsSignature(features);
++  java_script_feature_manager_->ConfigureFeatures(user_content_controller,
++                                                  features);
  
++  for (const auto& feature : web_frames_manager_features_) {
++    feature->ConfigureHandlers(user_content_controller);
++  }
++}
++
++void WKWebViewConfigurationProvider::UpdateScriptsIfNeeded() {
++  TRACE_EVENT("ui", "WKWebViewConfigurationProvider::UpdateScriptsIfNeeded");
++  DCHECK_CALLED_ON_VALID_SEQUENCE(_sequence_checker_);
++  if (!configuration_) {
++    return;
++  }
++  if (GetScriptsSignature(GetJavaScriptFeatures()) != scripts_signature_) {
++    UpdateScripts();
++  }
++}
++
++std::vector<JavaScriptFeature*>
++WKWebViewConfigurationProvider::GetJavaScriptFeatures() const {
    std::vector<JavaScriptFeature*> features;
    for (JavaScriptFeature* feature :
         java_script_features::GetBuiltInJavaScriptFeatures(browser_state_)) {
      features.push_back(feature);
    }
-+  features.insert(features.end(), web_frames_manager_features.begin(),
-+                  web_frames_manager_features.end());
++  for (const auto& feature : web_frames_manager_features_) {
++    features.push_back(feature.get());
++  }
    for (JavaScriptFeature* feature :
         GetWebClient()->GetJavaScriptFeatures(browser_state_)) {
      features.push_back(feature);
    }
 -  java_script_feature_manager->ConfigureFeatures(features);
+-
+-  WKUserContentController* user_content_controller =
+-      GetWebViewConfiguration().userContentController;
+-  auto web_frames_manager_features = WebFramesManagerJavaScriptFeature::
+-      AllContentWorldFeaturesFromBrowserState(browser_state_);
+-  for (WebFramesManagerJavaScriptFeature* feature :
+-       web_frames_manager_features) {
+-    feature->ConfigureHandlers(user_content_controller);
 +  if (web_state_) {
 +    for (JavaScriptFeature* feature :
 +         GetWebClient()->GetWebStateJavaScriptFeatures(web_state_)) {
 +      features.push_back(feature);
 +    }
-+  }
-+  java_script_feature_manager->ConfigureFeatures(user_content_controller,
-+                                                 features);
- 
--  WKUserContentController* user_content_controller =
--      GetWebViewConfiguration().userContentController;
--  auto web_frames_manager_features = WebFramesManagerJavaScriptFeature::
--      AllContentWorldFeaturesFromBrowserState(browser_state_);
-   for (WebFramesManagerJavaScriptFeature* feature :
-        web_frames_manager_features) {
-     feature->ConfigureHandlers(user_content_controller);
    }
- }
- 
++  return features;
++}
++
++// static
++WKWebViewConfigurationProvider::ScriptsSignature
++WKWebViewConfigurationProvider::GetScriptsSignature(
++    const std::vector<JavaScriptFeature*>& features) {
++  ScriptsSignature signature;
++  signature.reserve(features.size());
++  for (JavaScriptFeature* feature : features) {
++    signature.emplace_back(feature, feature->GetScriptsSignature());
++  }
++  return signature;
++}
++
 +JavaScriptFeatureManager*
 +WKWebViewConfigurationProvider::GetJavaScriptFeatureManager() {
 +  DCHECK_CALLED_ON_VALID_SEQUENCE(_sequence_checker_);
 +  return java_script_feature_manager_.get();
-+}
-+
+ }
+ 
  void WKWebViewConfigurationProvider::Purge() {
-   DCHECK_CALLED_ON_VALID_SEQUENCE(_sequence_checker_);
+@@ -362,17 +274,4 @@ void WKWebViewConfigurationProvider::Purge() {
    configuration_ = nil;
  }
  

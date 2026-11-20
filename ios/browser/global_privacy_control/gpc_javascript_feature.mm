@@ -6,6 +6,7 @@
 #include "brave/ios/browser/global_privacy_control/gpc_javascript_feature.h"
 
 #include "base/functional/bind.h"
+#include "base/strings/to_string.h"
 #include "brave/components/global_privacy_control/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
@@ -41,10 +42,18 @@ GPCJavaScriptFeature* GPCJavaScriptFeature::FromBrowserState(
   return feature;
 }
 
+bool GPCJavaScriptFeature::IsGPCEnabled() const {
+  return profile_->GetPrefs()->GetBoolean(
+      global_privacy_control::kGlobalPrivacyControlEnabled);
+}
+
+std::string GPCJavaScriptFeature::GetScriptsSignature() const {
+  return base::ToString(IsGPCEnabled());
+}
+
 std::vector<web::JavaScriptFeature::FeatureScript>
 GPCJavaScriptFeature::GetScripts() const {
-  bool is_gpc_enabled = profile_->GetPrefs()->GetBoolean(
-      global_privacy_control::kGlobalPrivacyControlEnabled);
+  bool is_gpc_enabled = IsGPCEnabled();
   return {FeatureScript::CreateWithFilename(
       kScriptName, FeatureScript::InjectionTime::kDocumentStart,
       FeatureScript::TargetFrames::kAllFrames,

@@ -7,6 +7,7 @@
 
 #include "base/functional/bind.h"
 #include "base/memory/ptr_util.h"
+#include "base/strings/to_string.h"
 #include "base/values.h"
 #include "brave/ios/browser/shared/prefs/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -48,10 +49,17 @@ CookieControlJavaScriptFeature::FromBrowserState(
   return feature;
 }
 
+bool CookieControlJavaScriptFeature::IsBlockAllCookiesEnabled() const {
+  return profile_->GetPrefs()->GetBoolean(prefs::kBlockAllCookiesEnabled);
+}
+
+std::string CookieControlJavaScriptFeature::GetScriptsSignature() const {
+  return base::ToString(IsBlockAllCookiesEnabled());
+}
+
 std::vector<web::JavaScriptFeature::FeatureScript>
 CookieControlJavaScriptFeature::GetScripts() const {
-  bool is_block_all_cookies_enabled =
-      profile_->GetPrefs()->GetBoolean(prefs::kBlockAllCookiesEnabled);
+  bool is_block_all_cookies_enabled = IsBlockAllCookiesEnabled();
   return {FeatureScript::CreateWithFilename(
       kScriptName, FeatureScript::InjectionTime::kDocumentStart,
       FeatureScript::TargetFrames::kAllFrames,

@@ -1,0 +1,12 @@
+diff --git a/ios/web/navigation/BUILD.gn b/ios/web/navigation/BUILD.gn
+index 4ac078e219317d74a92017ea7589627b4287e3f6..3b7aaccf1d3711a8ffb10cdb83af873b6b3cd29d 100644
+--- a/ios/web/navigation/BUILD.gn
++++ b/ios/web/navigation/BUILD.gn
+@@ -40,6 +40,7 @@ source_set("navigation") {
+     "//ios/web/web_state:web_state_impl_header",
+     "//ios/web/web_state/ui:web_controller_header",
+     "//ios/web/web_state/ui:web_view_handler",
++    "//ios/web/web_state/ui:wk_web_view_configuration_provider_header",
+     "//net",
+     "//services/metrics/public/cpp:metrics_cpp",
+     "//ui/base",

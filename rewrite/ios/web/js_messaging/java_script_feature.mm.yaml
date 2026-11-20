@@ -22,3 +22,16 @@ substitutions:
           }
           JavaScriptFeatureManager* feature_manager =
               JavaScriptFeatureManager::FromWebState(web_state);
+
+  - description:
+      Define `GetScriptsSignature`, for features with constant scripts.
+    regex:
+      re_pattern:
+        '(\nstd::vector<JavaScriptFeature::FeatureScript>
+        JavaScriptFeature::GetScripts\(\)\n\s*const \{\n\s*return
+        scripts_;\n\}\n)'
+      replace: |
+        \1
+        std::string JavaScriptFeature::GetScriptsSignature() const {
+          return std::string();
+        }

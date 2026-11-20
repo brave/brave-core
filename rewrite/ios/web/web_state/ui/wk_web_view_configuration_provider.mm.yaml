@@ -5,42 +5,6 @@
 
 substitutions:
   - description: |-
-      Build the feature list in `UpdateScripts` once the controller and web
-      frames manager features are known.
-
-      Both are needed before `ConfigureFeatures`: the controller is passed to
-      it, and the web frames manager features are no longer part of the
-      built-in features.
-    regex:
-      re_pattern:
-        '(JavaScriptFeatureManager::FromBrowserState\(browser_state_\);\n)\n(\s*std::vector<JavaScriptFeature\*>
-        features;\n.*?java_script_feature_manager->ConfigureFeatures\(features\);\n)\n(\s*WKUserContentController\*
-        user_content_controller
-        =\n.*?AllContentWorldFeaturesFromBrowserState\(browser_state_\);\n)'
-      re_flags: [DOTALL]
-      replace: '\1\3\n\2\n'
-
-  - description: Configure the features on the configuration's controller.
-    regex:
-      pattern: 'java_script_feature_manager->ConfigureFeatures(features);'
-      replace: |-
-        java_script_feature_manager->ConfigureFeatures(user_content_controller,
-                                                         features);
-
-  - description: |-
-      Configure the web frames manager features after the built-in ones.
-
-      They are no longer returned by `GetBuiltInJavaScriptFeatures`, as they are
-      looked up separately to configure their handlers.
-    regex:
-      re_pattern:
-        '(java_script_features::GetBuiltInJavaScriptFeatures\(browser_state_\)\)
-        \{\n\s*features\.push_back\(feature\);\n\s*\}\n)'
-      replace: |
-        \1  features.insert(features.end(), web_frames_manager_features.begin(),
-                          web_frames_manager_features.end());
-
-  - description: |-
       Include the shared resources the configuration is built from, in place of
       the rule list provider.
     regex:
@@ -214,22 +178,6 @@ substitutions:
         \2                           forURLScheme:url_scheme];
         \2  }
 
-  - description: Configure the features with the manager this provider owns.
-    regex:
-      pattern: 'JavaScriptFeatureManager::FromBrowserState(browser_state_);'
-      replace: 'java_script_feature_manager_.get();'
-
-  - description: Configure the web frames manager features this provider owns.
-    regex:
-      re_pattern:
-        'auto web_frames_manager_features =
-        WebFramesManagerJavaScriptFeature::\n(\s*)AllContentWorldFeaturesFromBrowserState\(browser_state_\);'
-      replace: |-
-        std::vector<WebFramesManagerJavaScriptFeature*> web_frames_manager_features;
-          for (const auto& feature : web_frames_manager_features_) {
-            web_frames_manager_features.push_back(feature.get());
-          }
-
   - description: Define `GetJavaScriptFeatureManager`.
     regex:
       re_pattern: '(\nvoid WKWebViewConfigurationProvider::Purge\(\) \{\n)'
@@ -269,24 +217,6 @@ substitutions:
         \3: browser_state_(browser_state),
 
   - description: |-
-      Configure the JavaScript features the embedder provides for the WebState.
-
-      They are configured after the BrowserState's ones. A provider without a
-      WebState only configures the BrowserState's features.
-    regex:
-      re_pattern:
-        '(\n(\s*)for \(JavaScriptFeature\* feature
-        :\n\s*GetWebClient\(\)->GetJavaScriptFeatures\(browser_state_\)\)
-        \{\n\s*features\.push_back\(feature\);\n\s*\}\n)'
-      replace: |
-        \1\2if (web_state_) {
-        \2  for (JavaScriptFeature* feature :
-        \2       GetWebClient()->GetWebStateJavaScriptFeatures(web_state_)) {
-        \2    features.push_back(feature);
-        \2  }
-        \2}
-
-  - description: |-
       Derive the configuration from the BrowserState's external configuration
       when not given one.
 
@@ -303,3 +233,121 @@ substitutions:
         \2      WKWebViewSharedResourcesProvider::FromBrowserState(browser_state_)
         \2          .GetExternalConfiguration();
         \2}
+
+  - description: |-
+      Configure the JavaScript features of the WebState, and keep the signature
+      of their scripts.
+
+      The features are configured on this provider's WKUserContentController
+      with the manager it owns. After the built-in features come the web frames
+      manager features, owned by this provider and no longer part of the
+      built-in features, the BrowserState's features and the features the
+      embedder provides for the WebState. A provider without a WebState only
+      configures the BrowserState's features.
+
+      `UpdateScriptsIfNeeded` compares the features and the signature of their
+      scripts with the ones last configured, so the scripts of a WebState can be
+      rebuilt before a navigation when they changed.
+    regex:
+      re_pattern:
+        '(\nvoid WKWebViewConfigurationProvider::UpdateScripts\(\)
+        \{\n.*?\[configuration_\.userContentController
+        removeAllUserScripts\];\n)\n\s*JavaScriptFeatureManager\*
+        java_script_feature_manager =\n.*?\n\}\n'
+      re_flags: [DOTALL]
+      replace: |
+        \1
+          WKUserContentController* user_content_controller =
+              GetWebViewConfiguration().userContentController;
+          std::vector<JavaScriptFeature*> features = GetJavaScriptFeatures();
+          scripts_signature_ = GetScriptsSignature(features);
+          java_script_feature_manager_->ConfigureFeatures(user_content_controller,
+                                                          features);
+
+          for (const auto& feature : web_frames_manager_features_) {
+            feature->ConfigureHandlers(user_content_controller);
+          }
+        }
+
+        void WKWebViewConfigurationProvider::UpdateScriptsIfNeeded() {
+          TRACE_EVENT("ui", "WKWebViewConfigurationProvider::UpdateScriptsIfNeeded");
+          DCHECK_CALLED_ON_VALID_SEQUENCE(_sequence_checker_);
+          if (!configuration_) {
+            return;
+          }
+          if (GetScriptsSignature(GetJavaScriptFeatures()) != scripts_signature_) {
+            UpdateScripts();
+          }
+        }
+
+        std::vector<JavaScriptFeature*>
+        WKWebViewConfigurationProvider::GetJavaScriptFeatures() const {
+          std::vector<JavaScriptFeature*> features;
+          for (JavaScriptFeature* feature :
+               java_script_features::GetBuiltInJavaScriptFeatures(browser_state_)) {
+            features.push_back(feature);
+          }
+          for (const auto& feature : web_frames_manager_features_) {
+            features.push_back(feature.get());
+          }
+          for (JavaScriptFeature* feature :
+               GetWebClient()->GetJavaScriptFeatures(browser_state_)) {
+            features.push_back(feature);
+          }
+          if (web_state_) {
+            for (JavaScriptFeature* feature :
+                 GetWebClient()->GetWebStateJavaScriptFeatures(web_state_)) {
+              features.push_back(feature);
+            }
+          }
+          return features;
+        }
+
+        // static
+        WKWebViewConfigurationProvider::ScriptsSignature
+        WKWebViewConfigurationProvider::GetScriptsSignature(
+            const std::vector<JavaScriptFeature*>& features) {
+          ScriptsSignature signature;
+          signature.reserve(features.size());
+          for (JavaScriptFeature* feature : features) {
+            signature.emplace_back(feature, feature->GetScriptsSignature());
+          }
+          return signature;
+        }
+
+  - description: |-
+      Only enable Universal Opt-Out in the default webpage preferences when the
+      configuration is created.
+
+      Each WebState has its own configuration, so a change can not be applied
+      to every web view through shared default webpage preferences. It is
+      applied to the webpage preferences of each navigation instead.
+    regex:
+      re_pattern:
+        '\n  if \(@available\(iOS 27, \*\)\) \{\n\s*// Materialize
+        `defaultWebpagePreferences`
+        before.*?SetUniversalOptOutEnabled\(true\);\n\s*\}\n\s*\}\n'
+      re_flags: [DOTALL]
+      replace: |
+
+        #if defined(__IPHONE_27_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_27_0
+          if (@available(iOS 27, *)) {
+            // On early versions of iOS 27 betas,
+            // `-[WKWebPagePreferences setGlobalPrivacyControlEnabled:]` was not
+            // defined correctly, causing crashes. As a workaround, only set the
+            // preference if Universal Opt-Out is enabled.
+            if (GetWebClient()->GetUniversalOptOutState(browser_state_) ==
+                UniversalOptOutState::kEnabled) {
+              [[configuration_ defaultWebpagePreferences]
+                  setGlobalPrivacyControlEnabled:YES];
+            }
+          }
+        #endif
+
+  - description: Drop `SetUniversalOptOutEnabled`, inlined above.
+    regex:
+      re_pattern:
+        '\nvoid WKWebViewConfigurationProvider::SetUniversalOptOutEnabled\(bool
+        enabled\) \{\n.*?\n\}\n'
+      re_flags: [DOTALL]
+      replace: ''

@@ -7,6 +7,7 @@
 
 #include "base/functional/bind.h"
 #include "base/memory/ptr_util.h"
+#include "base/strings/to_string.h"
 #include "base/values.h"
 #include "brave/ios/browser/shared/prefs/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -50,10 +51,17 @@ MediaBackgroundingJavaScriptFeature::FromBrowserState(
   return feature;
 }
 
+bool MediaBackgroundingJavaScriptFeature::IsMediaBackgroundingEnabled() const {
+  return profile_->GetPrefs()->GetBoolean(prefs::kMediaBackgroundingEnabled);
+}
+
+std::string MediaBackgroundingJavaScriptFeature::GetScriptsSignature() const {
+  return base::ToString(IsMediaBackgroundingEnabled());
+}
+
 std::vector<web::JavaScriptFeature::FeatureScript>
 MediaBackgroundingJavaScriptFeature::GetScripts() const {
-  bool is_media_backgrounding_enabled =
-      profile_->GetPrefs()->GetBoolean(prefs::kMediaBackgroundingEnabled);
+  bool is_media_backgrounding_enabled = IsMediaBackgroundingEnabled();
   return {FeatureScript::CreateWithFilename(
       kScriptName, FeatureScript::InjectionTime::kDocumentStart,
       FeatureScript::TargetFrames::kAllFrames,

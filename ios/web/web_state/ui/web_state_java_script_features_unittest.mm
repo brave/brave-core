@@ -6,15 +6,18 @@
 #include <WebKit/WebKit.h>
 
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
+#include "base/strings/sys_string_conversions.h"
 #include "ios/web/common/web_view_creation_util.h"
 #include "ios/web/js_messaging/java_script_feature_manager.h"
 #include "ios/web/public/js_messaging/content_world.h"
 #include "ios/web/public/js_messaging/java_script_feature.h"
 #include "ios/web/public/test/fakes/fake_web_client.h"
 #include "ios/web/public/test/web_test.h"
+#include "ios/web/public/test/web_test_with_web_state.h"
 #include "ios/web/public/web_state.h"
 #include "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
 #include "ios/web/web_state/web_state_impl.h"
@@ -53,6 +56,45 @@ class TestFeature : public JavaScriptFeature {
                               FeatureScript::TargetFrames::kMainFrame)}) {}
 };
 
+// A feature whose script and signature can change, like a feature whose
+// script depends on a preference.
+class MutableScriptFeature : public JavaScriptFeature {
+ public:
+  MutableScriptFeature() : JavaScriptFeature(ContentWorld::kIsolatedWorld) {}
+
+  void SetScript(const std::string& script) { script_ = script; }
+  void SetSignature(const std::string& signature) { signature_ = signature; }
+
+  // JavaScriptFeature:
+  std::vector<FeatureScript> GetScripts() const override {
+    return {FeatureScript::CreateWithString(
+        script_, FeatureScript::InjectionTime::kDocumentStart,
+        FeatureScript::TargetFrames::kMainFrame)};
+  }
+  std::string GetScriptsSignature() const override { return signature_; }
+
+ private:
+  std::string script_;
+  std::string signature_;
+};
+
+// Returns whether a user script of `web_state`'s configuration contains
+// `text`.
+bool HasUserScriptContaining(WebState* web_state, const std::string& text) {
+  WKWebViewConfiguration* configuration =
+      WebStateImpl::FromWebState(web_state)
+          ->GetWKWebViewConfigurationProvider()
+          .GetWebViewConfiguration();
+  NSString* ns_text = base::SysUTF8ToNSString(text);
+  for (WKUserScript* script in configuration.userContentController
+           .userScripts) {
+    if ([script.source containsString:ns_text]) {
+      return true;
+    }
+  }
+  return false;
+}
+
 }  // namespace
 
 class WebStateJavaScriptFeaturesTest : public WebTest {
@@ -73,6 +115,12 @@ class WebStateJavaScriptFeaturesTest : public WebTest {
     WebStateImpl::FromWebState(web_state)
         ->GetWKWebViewConfigurationProvider()
         .GetWebViewConfiguration();
+  }
+
+  void UpdateScriptsIfNeeded(WebState* web_state) {
+    WebStateImpl::FromWebState(web_state)
+        ->GetWKWebViewConfigurationProvider()
+        .UpdateScriptsIfNeeded();
   }
 
   TestFeature feature_;
@@ -103,6 +151,82 @@ TEST_F(WebStateJavaScriptFeaturesTest, NotRequestedWithoutWebState) {
   WKWebView* web_view = BuildWKWebView(CGRectZero, GetBrowserState());
   EXPECT_TRUE(web_view);
   EXPECT_TRUE(web_client()->requested_web_states().empty());
+}
+
+// Tests that the scripts are rebuilt when the features provided for a WebState
+// change.
+TEST_F(WebStateJavaScriptFeaturesTest, UpdateScriptsIfNeededFeaturesChanged) {
+  std::unique_ptr<WebState> web_state = CreateWebState();
+  CreateConfiguration(web_state.get());
+  JavaScriptFeatureManager* manager =
+      JavaScriptFeatureManager::FromWebState(web_state.get());
+  ASSERT_FALSE(manager->GetContentWorldForFeature(&feature_));
+
+  web_client()->SetWebStateJavaScriptFeatures(web_state.get(), {&feature_});
+  UpdateScriptsIfNeeded(web_state.get());
+  EXPECT_TRUE(manager->GetContentWorldForFeature(&feature_));
+
+  web_client()->SetWebStateJavaScriptFeatures(web_state.get(), {});
+  UpdateScriptsIfNeeded(web_state.get());
+  EXPECT_FALSE(manager->GetContentWorldForFeature(&feature_));
+}
+
+// Tests that the scripts are only rebuilt when the signature of a feature's
+// scripts changes.
+TEST_F(WebStateJavaScriptFeaturesTest, UpdateScriptsIfNeededSignatureChanged) {
+  MutableScriptFeature feature;
+  feature.SetScript("/* script-a */");
+  feature.SetSignature("a");
+  std::unique_ptr<WebState> web_state = CreateWebState();
+  web_client()->SetWebStateJavaScriptFeatures(web_state.get(), {&feature});
+  CreateConfiguration(web_state.get());
+  ASSERT_TRUE(HasUserScriptContaining(web_state.get(), "script-a"));
+
+  // The signature didn't change, so the scripts are not rebuilt.
+  feature.SetScript("/* script-b */");
+  UpdateScriptsIfNeeded(web_state.get());
+  EXPECT_TRUE(HasUserScriptContaining(web_state.get(), "script-a"));
+  EXPECT_FALSE(HasUserScriptContaining(web_state.get(), "script-b"));
+
+  feature.SetSignature("b");
+  UpdateScriptsIfNeeded(web_state.get());
+  EXPECT_FALSE(HasUserScriptContaining(web_state.get(), "script-a"));
+  EXPECT_TRUE(HasUserScriptContaining(web_state.get(), "script-b"));
+}
+
+// Tests that the scripts are not built before the configuration is created.
+TEST_F(WebStateJavaScriptFeaturesTest, UpdateScriptsIfNeededNoConfiguration) {
+  std::unique_ptr<WebState> web_state = CreateWebState();
+  UpdateScriptsIfNeeded(web_state.get());
+  EXPECT_TRUE(web_client()->requested_web_states().empty());
+}
+
+class WebStateJavaScriptFeaturesNavigationTest : public WebTestWithWebState {
+ protected:
+  WebStateJavaScriptFeaturesNavigationTest()
+      : WebTestWithWebState(std::make_unique<FakeWebClient>()) {}
+
+  FakeWebClient* web_client() {
+    return static_cast<FakeWebClient*>(GetWebClient());
+  }
+
+  MutableScriptFeature feature_;
+};
+
+// Tests that a main frame navigation rebuilds the scripts after a feature's
+// signature changed.
+TEST_F(WebStateJavaScriptFeaturesNavigationTest, NavigationUpdatesScripts) {
+  feature_.SetScript("/* script-a */");
+  feature_.SetSignature("a");
+  web_client()->SetWebStateJavaScriptFeatures(web_state(), {&feature_});
+  ASSERT_TRUE(LoadHtml("<html><body>1</body></html>"));
+  ASSERT_TRUE(HasUserScriptContaining(web_state(), "script-a"));
+
+  feature_.SetScript("/* script-b */");
+  feature_.SetSignature("b");
+  ASSERT_TRUE(LoadHtml("<html><body>2</body></html>"));
+  EXPECT_FALSE(HasUserScriptContaining(web_state(), "script-a"));
+  EXPECT_TRUE(HasUserScriptContaining(web_state(), "script-b"));
 }
 
 }  // namespace web

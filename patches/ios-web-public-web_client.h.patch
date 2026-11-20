@@ -1,14 +1,16 @@
 diff --git a/ios/web/public/web_client.h b/ios/web/public/web_client.h
-index 36a0f65c5bd284447fb5552caddc829a6e9b8e63..74ed231359dcbe149dc9762d82af356f36e0130d 100644
+index 36a0f65c5bd284447fb5552caddc829a6e9b8e63..a8433ea371f4824a1ff0903f47afb16080b4ec91 100644
 --- a/ios/web/public/web_client.h
 +++ b/ios/web/public/web_client.h
-@@ -155,6 +155,12 @@ class WebClient {
+@@ -155,6 +155,14 @@ class WebClient {
    virtual std::vector<JavaScriptFeature*> GetJavaScriptFeatures(
        BrowserState* browser_state) const;
  
 +  // Gives the embedder a chance to provide custom JavaScriptFeatures for
 +  // `web_state` only, in addition to those of `GetJavaScriptFeatures`.
-+  // Called when the scripts of the WebState's configuration are updated.
++  // Called when the scripts of the WebState's configuration are updated,
++  // and before each main frame navigation of the WebState, whose scripts
++  // are rebuilt if the returned features changed.
 +  virtual std::vector<JavaScriptFeature*> GetWebStateJavaScriptFeatures(
 +      WebState* web_state) const;
 +

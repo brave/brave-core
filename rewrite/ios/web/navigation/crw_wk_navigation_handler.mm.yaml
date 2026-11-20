@@ -1,0 +1,52 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Update the scripts and Universal Opt-Out of the WebState before allowing
+      a navigation.
+
+      Each WebState has its own WKWebViewConfiguration and
+      WKUserContentController. Instead of updating the configuration of every
+      WebState when the features of a WebState, or the state their scripts
+      depend on, change, the WebState rebuilds its scripts before a main frame
+      navigation when they changed, so they apply to the new document.
+
+      Universal Opt-Out can no longer be changed for every web view through
+      shared default webpage preferences, so it is applied to the webpage
+      preferences of each navigation. As setting it crashes on early iOS 27
+      betas, it is only reset to false when it was set before.
+    regex:
+      re_pattern:
+        '(\n  auto decisionHandler = \^\(WKNavigationActionPolicy policy\)
+        \{\n.*?)(\n    handler\(policy, preferences\);\n  \};\n)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+            web::WebStateImpl* webState = self.webStateImpl;
+            if (!self.beingDestroyed && webState) {
+              if (isMainFrameNavigationAction &&
+                  (policy == WKNavigationActionPolicyAllow ||
+                   policy == web::kNavigationActionPolicyAllowAndBlockUniversalLinks)) {
+                webState->GetWKWebViewConfigurationProvider().UpdateScriptsIfNeeded();
+              }
+        #if defined(__IPHONE_27_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_27_0
+              if (@available(iOS 27, *)) {
+                bool universalOptOutEnabled =
+                    web::GetWebClient()->GetUniversalOptOutState(
+                        webState->GetBrowserState()) ==
+                    web::UniversalOptOutState::kEnabled;
+                if (universalOptOutEnabled || preferences.globalPrivacyControlEnabled) {
+                  preferences.globalPrivacyControlEnabled = universalOptOutEnabled;
+                }
+              }
+        #endif
+            }\2
+
+  - description: Include the configuration provider the scripts are updated by.
+    add_after_line:
+      line: '#import "ios/web/web_state/ui/crw_web_controller.h"'
+      code: |-
+        #import "ios/web/web_state/ui/wk_web_view_configuration_provider.h"

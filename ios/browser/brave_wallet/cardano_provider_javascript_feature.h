@@ -41,6 +41,7 @@ class CardanoProviderJavaScriptFeature : public web::JavaScriptFeature,
   // web::JavaScriptFeature:
   std::vector<web::JavaScriptFeature::FeatureScript> GetScripts()
       const override;
+  std::string GetScriptsSignature() const override;
   bool GetFeatureRepliesToMessages() const override;
   std::optional<std::string> GetScriptMessageHandlerName() const override;
   void ScriptMessageReceivedWithReply(
@@ -50,6 +51,9 @@ class CardanoProviderJavaScriptFeature : public web::JavaScriptFeature,
 
  private:
   explicit CardanoProviderJavaScriptFeature(ProfileIOS* profile);
+
+  // Returns whether the provider scripts are injected.
+  bool ShouldInjectScripts() const;
 
   web::MessageHandlerToken token_;
   raw_ptr<ProfileIOS> profile_;

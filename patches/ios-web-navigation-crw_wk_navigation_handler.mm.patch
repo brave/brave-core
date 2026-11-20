@@ -1,0 +1,38 @@
+diff --git a/ios/web/navigation/crw_wk_navigation_handler.mm b/ios/web/navigation/crw_wk_navigation_handler.mm
+index 3219c4c2a47d133af34f8152989c48c14f458582..671a5bcfaf3d957fc4991638b9d92809f30b167b 100644
+--- a/ios/web/navigation/crw_wk_navigation_handler.mm
++++ b/ios/web/navigation/crw_wk_navigation_handler.mm
+@@ -51,6 +51,7 @@
+ #import "ios/web/util/wk_security_origin_util.h"
+ #import "ios/web/util/wk_web_view_util.h"
+ #import "ios/web/web_state/ui/crw_web_controller.h"
++#import "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
+ #import "ios/web/web_state/user_interaction_state.h"
+ #import "ios/web/web_state/web_state_impl.h"
+ #import "net/base/apple/http_response_headers_util.h"
+@@ -357,6 +358,25 @@ NSError* SanitizeNavigationError(
+         }
+       }
+     }
++    web::WebStateImpl* webState = self.webStateImpl;
++    if (!self.beingDestroyed && webState) {
++      if (isMainFrameNavigationAction &&
++          (policy == WKNavigationActionPolicyAllow ||
++           policy == web::kNavigationActionPolicyAllowAndBlockUniversalLinks)) {
++        webState->GetWKWebViewConfigurationProvider().UpdateScriptsIfNeeded();
++      }
++#if defined(__IPHONE_27_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_27_0
++      if (@available(iOS 27, *)) {
++        bool universalOptOutEnabled =
++            web::GetWebClient()->GetUniversalOptOutState(
++                webState->GetBrowserState()) ==
++            web::UniversalOptOutState::kEnabled;
++        if (universalOptOutEnabled || preferences.globalPrivacyControlEnabled) {
++          preferences.globalPrivacyControlEnabled = universalOptOutEnabled;
++        }
++      }
++#endif
++    }
+     handler(policy, preferences);
+   };
+ 
