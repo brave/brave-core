@@ -155,6 +155,7 @@ test("brave_components_unittests") {
       deps += [
         "//brave/components/brave_wallet/browser:unit_tests",
         "//brave/components/brave_wallet/renderer/test:unit_tests",
+        "//brave/components/decentralized_dns/content:unit_tests",
       ]
     }
   }
