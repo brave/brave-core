@@ -187,7 +187,10 @@ export default function ToolPermissionChallenge(props: Props) {
           isDisabled={!props.isInteractive}
           onClick={() => answer(Mojom.PermissionChallengeDecision.kAllowOnce)}
         >
-          <div className={styles.permissionButtonText}>
+          <div
+            className={styles.permissionButtonText}
+            data-testid='permission-allow-once-button'
+          >
             {getLocale(S.CHAT_UI_PERMISSION_CHALLENGE_ALLOW_BUTTON)}
           </div>
         </ConversationAreaButton>

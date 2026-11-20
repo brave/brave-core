@@ -94,10 +94,12 @@ class AIChatService : public KeyedService,
    public:
     virtual ~NotificationDelegate() = default;
 
-    // |conversation_title| is empty if the conversation has none.
+    // |needs_approval| if it stopped on a tool use permission request rather
+    // than finishing. |conversation_title| is empty if it has none.
     virtual void ShowCompletionNotification(
         const std::string& conversation_uuid,
-        const std::u16string& conversation_title) = 0;
+        const std::u16string& conversation_title,
+        bool needs_approval) = 0;
 
     // The conversation was viewed or removed.
     virtual void CloseCompletionNotification(
@@ -463,13 +465,14 @@ class AIChatService : public KeyedService,
   // This doesn't mean the conversation is on screen.
   bool IsConversationClientConnected(const std::string& uuid) const;
   // Marks |conversation_uuid| as no longer generating once its handler is
-  // neither generating nor running tools: kCompletedNotViewed, or idle if a
-  // client is connected.
+  // neither generating nor running tools: idle if a client is connected,
+  // otherwise kAwaitingUserInput if it stopped on a permission challenge, or
+  // else kCompletedNotViewed.
   void MaybeMarkGenerationComplete(const std::string& conversation_uuid);
   // DeleteConversation() without OnConversationListChanged(), for callers that
   // delete several conversations and then send the list once.
   void DeleteConversationWithoutNotifyingList(const std::string& id);
-  void ShowCompletionNotification(const std::string& uuid);
+  void ShowCompletionNotification(const std::string& uuid, bool needs_approval);
 
   raw_ptr<ModelService> model_service_;
   raw_ptr<TabTrackerService> tab_tracker_service_;

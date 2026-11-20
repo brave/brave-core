@@ -1080,6 +1080,12 @@ bool AIChatService::CanUnloadConversation(ConversationHandler* conversation) {
     return false;
   }
 
+  // Permission challenges aren't persisted, so a reloaded conversation would
+  // lose the request the user still has to answer.
+  if (conversation->IsAwaitingUserInput()) {
+    return false;
+  }
+
   return true;
 }
 
@@ -1206,7 +1212,8 @@ void AIChatService::OnRequestInProgressChanged(ConversationHandler* handler,
   }
 
   const std::string uuid = handler->get_conversation_uuid();
-  if (in_progress) {
+  // A tool approved by the user runs without a request, so count it too.
+  if (in_progress || handler->IsToolUseInProgress()) {
     // Follow-up requests (e.g. tool use) report true again while generating.
     auto [it, inserted] = conversation_generation_state_.try_emplace(
         uuid, mojom::ConversationGenerationState::kGenerating);
@@ -1417,14 +1424,19 @@ void AIChatService::OnClientConnectionChanged(ConversationHandler* handler) {
   }
   // A connected client, whichever path bound it, counts as viewing the
   // conversation.
+  const std::string& uuid = handler->get_conversation_uuid();
   if (handler->IsAnyClientConnected()) {
-    const std::string& uuid = handler->get_conversation_uuid();
     auto it = conversation_generation_state_.find(uuid);
     if (it != conversation_generation_state_.end() &&
-        it->second == mojom::ConversationGenerationState::kCompletedNotViewed) {
+        it->second != mojom::ConversationGenerationState::kGenerating) {
       conversation_generation_state_.erase(it);
       NotifyConversationGenerationStateChanged();
     }
+  } else if (handler->IsAwaitingUserInput() &&
+             !conversation_generation_state_.contains(uuid)) {
+    conversation_generation_state_[uuid] =
+        mojom::ConversationGenerationState::kAwaitingUserInput;
+    NotifyConversationGenerationStateChanged();
   }
   QueueMaybeUnloadConversation(handler);
 }
@@ -1618,7 +1630,8 @@ void AIChatService::NotifyConversationGenerationStateChanged() {
   base::EraseIf(notified_conversations_, [this](const std::string& uuid) {
     const auto* state = base::FindOrNull(conversation_generation_state_, uuid);
     if (state &&
-        *state == mojom::ConversationGenerationState::kCompletedNotViewed) {
+        (*state == mojom::ConversationGenerationState::kCompletedNotViewed ||
+         *state == mojom::ConversationGenerationState::kAwaitingUserInput)) {
       return false;
     }
     notification_delegate_->CloseCompletionNotification(uuid);
@@ -1644,9 +1657,9 @@ void AIChatService::MaybeMarkGenerationComplete(
       it->second != mojom::ConversationGenerationState::kGenerating) {
     return;
   }
-  if (auto* handler =
-          base::FindPtrOrNull(conversation_handlers_, conversation_uuid);
-      handler &&
+  auto* handler =
+      base::FindPtrOrNull(conversation_handlers_, conversation_uuid);
+  if (handler &&
       (handler->IsRequestInProgress() || handler->IsToolUseInProgress())) {
     return;
   }
@@ -1655,12 +1668,16 @@ void AIChatService::MaybeMarkGenerationComplete(
     NotifyConversationGenerationStateChanged();
     return;
   }
-  it->second = mojom::ConversationGenerationState::kCompletedNotViewed;
+  const bool needs_approval = handler && handler->IsAwaitingUserInput();
+  it->second = needs_approval
+                   ? mojom::ConversationGenerationState::kAwaitingUserInput
+                   : mojom::ConversationGenerationState::kCompletedNotViewed;
   NotifyConversationGenerationStateChanged();
-  ShowCompletionNotification(conversation_uuid);
+  ShowCompletionNotification(conversation_uuid, needs_approval);
 }
 
-void AIChatService::ShowCompletionNotification(const std::string& uuid) {
+void AIChatService::ShowCompletionNotification(const std::string& uuid,
+                                               bool needs_approval) {
   if (!notification_delegate_) {
     return;
   }
@@ -1669,7 +1686,8 @@ void AIChatService::ShowCompletionNotification(const std::string& uuid) {
     title_u16 = base::UTF8ToUTF16(conversation->title);
   }
   notified_conversations_.insert(uuid);
-  notification_delegate_->ShowCompletionNotification(uuid, title_u16);
+  notification_delegate_->ShowCompletionNotification(uuid, title_u16,
+                                                     needs_approval);
 }
 
 void AIChatService::OpenConversationWithStagedEntries(
