@@ -6,7 +6,9 @@
 
 The branch is rebased from its merge-base with the branch it is rebased onto,
 as `git rebase` does, and the conflicts `brockit rebase` has a fixed answer
-for are resolved as the rebase goes.
+for are resolved as the rebase goes. After each commit is applied, its plaster
+patches are refreshed against the Chromium checkout with
+`plaster apply --rev HEAD --amend`.
 
 Usage
 -----
@@ -130,7 +132,11 @@ def cmd_rebase_feature_branch(args: list[str]) -> int:
             rebase.run(to_ref=to_ref, dry_run=True)
             return 0
         _require_chromium_synced(to_ref)
-        rebase.run(from_ref=merge_base, to_ref=to_ref)
+        rebase.run(
+            from_ref=merge_base,
+            to_ref=to_ref,
+            exec_command='plaster apply --rev HEAD --amend',
+        )
     except brockit.RebaseNeededException:
         wanted = _unsynced_chrome_tag(to_ref)
         if wanted is not None:
