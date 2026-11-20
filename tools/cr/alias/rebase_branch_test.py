@@ -80,6 +80,31 @@ class TestRebase(unittest.TestCase):
 
         self.assertEqual(result.returncode, 0, msg=result.stderr)
 
+    def test_a_conflict_stop_says_to_continue_with_git_cr(self) -> None:
+        _git(
+            self._sandbox.root,
+            'checkout',
+            '-b',
+            'feature',
+            '--track',
+            self._base,
+        )
+        self._commit_file('clash.txt')
+        _git(self._sandbox.root, 'checkout', self._base)
+        (self._sandbox.root / 'clash.txt').write_text(
+            'other\n', encoding='utf-8'
+        )
+        _git(self._sandbox.root, 'add', 'clash.txt')
+        _git(self._sandbox.root, 'commit', '-m', 'Add a different clash.txt')
+        _git(self._sandbox.root, 'checkout', 'feature')
+
+        result = self._sandbox.run_gc(['rebase'])
+
+        self.assertEqual(result.returncode, 1)
+        self.assertRegex(
+            result.stdout + result.stderr, r'git cr rebase\s+--continue'
+        )
+
     def test_continue_without_a_rebase_is_an_error(self) -> None:
         result = self._sandbox.run_gc(['rebase', '--continue'])
 
