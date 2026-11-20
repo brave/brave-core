@@ -2293,6 +2293,11 @@ class Rebase(Task):
     and the files left, and `--continue` carries on once they are resolved.
     """
 
+    def __init__(self, resume_command: str = 'brockit rebase'):
+        """`resume_command` is the command the stop messages tell the user to
+        rerun with `--continue` or `--skip`."""
+        self.resume_command = resume_command
+
     def status_message(self):
         return "Rebasing current branch..."
 
@@ -2444,8 +2449,8 @@ class Rebase(Task):
         if repository.brave.is_rebase_in_progress():
             raise InvalidInputException(
                 'A rebase is already in progress. Continue it '
-                '([bold cyan]brockit rebase --continue[/]), or abort it '
-                '([bold cyan]git rebase --abort[/]), before starting a new '
+                f'([bold cyan]{self.resume_command} --continue[/]), or abort '
+                'it ([bold cyan]git rebase --abort[/]), before starting a new '
                 'one.'
             )
 
@@ -2778,8 +2783,7 @@ class Rebase(Task):
         command, _, rest = lines[-1].strip().partition(' ')
         return rest if command in ('exec', 'x') else None
 
-    @staticmethod
-    def _stop_on_failed_exec(command: str) -> NoReturn:
+    def _stop_on_failed_exec(self, command: str) -> NoReturn:
         """Stops the rebase on an `exec` line that failed."""
         head = repository.brave.run_git('rev-parse', 'HEAD')
         subject = repository.brave.get_commit_short_description('HEAD')
@@ -2789,9 +2793,10 @@ class Rebase(Task):
             f'    ✘ {escape(command)}'
         )
         raise ActionNeededException(
-            '👋 (Fix what the command reported, and then rerun '
-            '[italic]🚀Brockit![/] with [bold cyan]--continue[/], which runs '
-            'it again, or skip it with [bold cyan]--skip[/])'
+            '👋 (Fix what the command reported, and then run '
+            f'[bold cyan]{self.resume_command} --continue[/], which runs it '
+            f'again, or skip it with [bold cyan]{self.resume_command} '
+            '--skip[/])'
         )
 
     @staticmethod
@@ -2877,8 +2882,7 @@ class Rebase(Task):
                 amended,
             )
 
-    @classmethod
-    def _run_git_rebase(cls, action: str, env: dict[str, str]) -> None:
+    def _run_git_rebase(self, action: str, env: dict[str, str]) -> None:
         """Runs `git rebase <action>`, until git finishes or stops the rebase.
 
         Raises InvalidInputException when git stops for anything other than a
@@ -2892,13 +2896,13 @@ class Rebase(Task):
         except subprocess.CalledProcessError as e:
             if (
                 conflict_resolution.ConflictedStep.load() is None
-                and cls._empty_stop() is None
-                and cls._failed_exec() is None
+                and self._empty_stop() is None
+                and self._failed_exec() is None
             ):
                 raise InvalidInputException(
                     'The rebase stopped without conflicts. Check '
-                    '[bold cyan]git status[/], and then rerun '
-                    '[italic]🚀Brockit![/] with [bold cyan]--continue[/].'
+                    '[bold cyan]git status[/], and then run '
+                    f'[bold cyan]{self.resume_command} --continue[/].'
                 ) from e
 
     def _resolve(
@@ -2934,8 +2938,8 @@ class Rebase(Task):
         )
         raise ActionNeededException(
             '👋 (Resolve the conflicts above, [bold cyan]git add[/] them, and '
-            'then rerun [italic]🚀Brockit![/] with [bold cyan]--continue[/], or '
-            'skip the commit with [bold cyan]--skip[/])'
+            f'then run [bold cyan]{self.resume_command} --continue[/], or '
+            f'skip the commit with [bold cyan]{self.resume_command} --skip[/])'
         )
 
     @staticmethod

@@ -79,18 +79,17 @@ def cmd_rebase_feature_branch(args: list[str]) -> int:
     # Imported lazily: brockit is a heavy module.
     import brockit
 
+    rebase = brockit.Rebase(resume_command='git cr rebase-feature-branch')
     try:
         if parsed.is_continuation or parsed.skip:
-            brockit.Rebase().run(
-                is_continuation=parsed.is_continuation, skip=parsed.skip
-            )
+            rebase.run(is_continuation=parsed.is_continuation, skip=parsed.skip)
             return 0
         to_ref = _resolve_to_ref(parsed.to_ref)
         if parsed.dry_run:
-            brockit.Rebase().run(to_ref=to_ref, dry_run=True)
+            rebase.run(to_ref=to_ref, dry_run=True)
             return 0
         merge_base = repository.brave.run_git('merge-base', to_ref, 'HEAD')
-        brockit.Rebase().run(from_ref=merge_base, to_ref=to_ref)
+        rebase.run(from_ref=merge_base, to_ref=to_ref)
     except brockit.RebaseNeededException:
         return brockit.RebaseNeededException.EXIT_CODE
     except (
