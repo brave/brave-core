@@ -240,17 +240,18 @@ function ConversationEntries(props: {
   }
 
   const handleEditSubmit = (index: number, content: Content) => {
-    const entryUuid = conversationContext.conversationHistory[index]?.uuid
-    if (!entryUuid) return
+    const entry = conversationContext.conversationHistory[index]
+    if (!entry?.uuid) return
     const text = stringifyContent(content)
     const skillNode = content.find(
       (c): c is Extract<Content[number], { type: string }> =>
         typeof c !== 'string' && c.type === 'skill',
     )
     conversationContext.userActions?.modifyConversation(
-      entryUuid,
+      entry.uuid,
       text,
       skillNode?.id ?? null,
+      entry.threadUuid ?? null,
     )
     setEditInputId(undefined)
   }
@@ -290,17 +291,11 @@ function ConversationEntries(props: {
     // so it can't be edited or regenerated from here.
     const isThreadOrigin = entryNumber < 0
 
-    // TODO(https://github.com/brave/brave-browser/issues/57705): Remove this
-    // to re-enable editing and answer regeneration for thread entries once
-    // they are supported for threads.
-    const isThreadEntry = !!conversationContext.threadUuid
-
     // Can't edit complicated structured content (for now)
     // Not allowed to edit agent conversations until the edit submission
     // happens on a different frame.
     const canEditEntry =
       !isThreadOrigin
-      && !isThreadEntry
       && !conversationContext.conversationCapabilities.includes(
         Mojom.ConversationCapability.CONTENT_AGENT,
       )
@@ -308,7 +303,7 @@ function ConversationEntries(props: {
       && !firstEntryEdit.events?.some((event) => !!event.toolUseEvent)
 
     const turnModelKey =
-      firstEntryEdit.modelKey && !isThreadOrigin && !isThreadEntry
+      firstEntryEdit.modelKey && !isThreadOrigin
         ? (conversationContext.allModels.find(
             (m) => m.key === firstEntryEdit.modelKey,
           )?.key ?? undefined)

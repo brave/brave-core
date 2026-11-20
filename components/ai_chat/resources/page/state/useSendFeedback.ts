@@ -14,7 +14,11 @@ import { useAIChat } from './ai_chat_context'
  */
 export interface SendFeedbackState {
   isFeedbackFormVisible: boolean
-  ratingTurnUuid?: { isLiked: boolean; turnUuid: string }
+  ratingInProgress?: {
+    isLiked: boolean
+    turnUuid: string
+    threadUuid: string | null
+  }
   handleFeedbackFormCancel: () => void
   handleFeedbackFormSubmit: (
     selectedCategory: string,
@@ -25,13 +29,14 @@ export interface SendFeedbackState {
   handleRateMessage: (
     turnUuid: string,
     isLiked: boolean,
+    threadUuid: string | null,
     ignoreFutureWarnings?: boolean,
   ) => Promise<void>
 }
 
 export const defaultSendFeedbackState: SendFeedbackState = {
   isFeedbackFormVisible: false,
-  ratingTurnUuid: undefined,
+  ratingInProgress: undefined,
   handleFeedbackFormCancel: () => {},
   handleFeedbackFormSubmit: async () => {},
   handleCloseRateMessagePrivacyModal: () => {},
@@ -52,9 +57,10 @@ export default function useSendFeedback(
   const feedbackId = React.useRef<string | null>(null)
   const [isFeedbackFormVisible, setIsFeedbackFormVisible] =
     React.useState(false)
-  const [ratingTurnUuid, setRatingTurnUuid] = React.useState<{
+  const [ratingInProgress, setRatingInProgress] = React.useState<{
     isLiked: boolean
     turnUuid: string
+    threadUuid: string | null
   }>()
 
   // Only allows a rating to be sent once the user has accepted
@@ -62,15 +68,15 @@ export default function useSendFeedback(
   // send the rating. To cancel, set handleCloseRateMessagePrivacyModal.
   // Also further allows a feedback form after a negative rating.
   const handleRateMessage = React.useCallback(
-    async (turnUuid: string, isLiked: boolean) => {
+    async (turnUuid: string, isLiked: boolean, threadUuid: string | null) => {
       // Reset feedback form
       feedbackId.current = null
       setIsFeedbackFormVisible(false)
 
-      // If ratingTurnUuid is undefined, set the ratingTurnUuid
+      // If ratingInProgress is undefined, set the ratingInProgress
       // to display the rate message privacy modal.
-      if (!ratingTurnUuid) {
-        setRatingTurnUuid({ isLiked, turnUuid })
+      if (!ratingInProgress) {
+        setRatingInProgress({ isLiked, turnUuid, threadUuid })
         return
       }
 
@@ -78,6 +84,7 @@ export default function useSendFeedback(
       const response = await api.conversationHandler.rateMessage(
         isLiked,
         turnUuid,
+        threadUuid,
       )
       if (!response.ratingId) {
         showAlert({
@@ -85,7 +92,7 @@ export default function useSendFeedback(
           content: getLocale(S.CHAT_UI_RATING_ERROR),
           actions: [],
         })
-        setRatingTurnUuid(undefined)
+        setRatingInProgress(undefined)
         return
       }
       if (isLiked) {
@@ -114,9 +121,9 @@ export default function useSendFeedback(
           5000,
         )
       }
-      setRatingTurnUuid(undefined)
+      setRatingInProgress(undefined)
     },
-    [api, ratingTurnUuid],
+    [api, ratingInProgress],
   )
 
   // Listen to ratings requests from the child frame
@@ -127,7 +134,7 @@ export default function useSendFeedback(
   }
 
   function handleCloseRateMessagePrivacyModal() {
-    setRatingTurnUuid(undefined)
+    setRatingInProgress(undefined)
   }
 
   async function handleFeedbackFormSubmit(
@@ -162,7 +169,7 @@ export default function useSendFeedback(
 
   return {
     isFeedbackFormVisible,
-    ratingTurnUuid,
+    ratingInProgress,
     handleFeedbackFormCancel,
     handleFeedbackFormSubmit,
     handleCloseRateMessagePrivacyModal,

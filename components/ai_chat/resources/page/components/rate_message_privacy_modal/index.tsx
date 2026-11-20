@@ -21,15 +21,16 @@ export default function RateMessagePrivacyModal() {
 
   // Methods
   const onClickSend = React.useCallback(() => {
-    if (conversationContext.ratingTurnUuid) {
+    if (conversationContext.ratingInProgress) {
       conversationContext.handleRateMessage(
-        conversationContext.ratingTurnUuid.turnUuid,
-        conversationContext.ratingTurnUuid.isLiked,
+        conversationContext.ratingInProgress.turnUuid,
+        conversationContext.ratingInProgress.isLiked,
+        conversationContext.ratingInProgress.threadUuid,
       )
     }
   }, [
     conversationContext.handleRateMessage,
-    conversationContext.ratingTurnUuid,
+    conversationContext.ratingInProgress,
   ])
 
   const handleLearnMoreClicked = () => {
@@ -40,7 +41,7 @@ export default function RateMessagePrivacyModal() {
 
   return (
     <Dialog
-      isOpen={!!conversationContext.ratingTurnUuid}
+      isOpen={!!conversationContext.ratingInProgress}
       showClose
       onClose={() => conversationContext.handleCloseRateMessagePrivacyModal()}
       className={styles.dialog}

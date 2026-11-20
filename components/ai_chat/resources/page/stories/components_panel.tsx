@@ -394,7 +394,13 @@ type CustomArgs = {
   isUploadingFiles: boolean
   attachmentsDialog: 'tabs' | 'bookmarks' | 'history' | null
   isNewConversation: boolean
-  ratingTurnUuid: { isLiked: boolean; turnUuid: string } | undefined
+  ratingInProgress:
+    | {
+        isLiked: boolean
+        turnUuid: string
+        threadUuid: string | null
+      }
+    | undefined
   isTemporaryChat: boolean
   isWaitingForVisionModelSwitch: boolean
   isDragActive: boolean
@@ -451,7 +457,7 @@ const args: CustomArgs = {
   isUploadingFiles: false,
   attachmentsDialog: null,
   isNewConversation: false,
-  ratingTurnUuid: undefined,
+  ratingInProgress: undefined,
   isTemporaryChat: false,
   isWaitingForVisionModelSwitch: false,
   isDragActive: false,
@@ -503,8 +509,8 @@ const meta: Meta<CustomArgs> = {
     deletingConversationId: CONVERSATION_ID_CONTROL,
     generatingConversationId: CONVERSATION_ID_CONTROL,
     completedNotViewedConversationId: CONVERSATION_ID_CONTROL,
-    ratingTurnUuid: {
-      options: [{ isLiked: true, turnUuid: 'turn-uuid' }],
+    ratingInProgress: {
+      options: [{ isLiked: true, turnUuid: 'turn-uuid', threadUuid: null }],
       control: { type: 'select' },
     },
   },
@@ -740,7 +746,7 @@ function StoryContext(
       }}
       conversationOverrides={{
         isFeedbackFormVisible: args.isFeedbackFormVisible,
-        ratingTurnUuid: args.ratingTurnUuid,
+        ratingInProgress: args.ratingInProgress,
         inputText: args.inputText,
         selectedActionType: args.selectedActionType,
         selectedSkill: args.selectedSkill,
