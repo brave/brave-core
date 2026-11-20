@@ -658,8 +658,8 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
           },
           base::NullCallback());
 
-  EXPECT_FALSE(browser_view()
-                   ->GetExclusiveAccessContext()
+  EXPECT_FALSE(ExclusiveAccessManager::From(browser())
+                   ->context()
                    ->IsExclusiveAccessBubbleDisplayed());
 }
 
@@ -678,8 +678,8 @@ IN_PROC_BROWSER_TEST_F(
       },
       base::NullCallback());
 
-  EXPECT_FALSE(browser_view()
-                   ->GetExclusiveAccessContext()
+  EXPECT_FALSE(ExclusiveAccessManager::From(browser())
+                   ->context()
                    ->IsExclusiveAccessBubbleDisplayed());
 }
 
@@ -699,8 +699,8 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
           },
           base::NullCallback());
 
-  EXPECT_TRUE(browser_view()
-                  ->GetExclusiveAccessContext()
+  EXPECT_TRUE(ExclusiveAccessManager::From(browser())
+                  ->context()
                   ->IsExclusiveAccessBubbleDisplayed());
 }
 
@@ -718,8 +718,8 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
       },
       base::NullCallback());
 
-  EXPECT_TRUE(browser_view()
-                  ->GetExclusiveAccessContext()
+  EXPECT_TRUE(ExclusiveAccessManager::From(browser())
+                  ->context()
                   ->IsExclusiveAccessBubbleDisplayed());
 }
 
@@ -740,8 +740,8 @@ IN_PROC_BROWSER_TEST_F(
       },
       base::NullCallback());
 
-  EXPECT_TRUE(browser_view()
-                  ->GetExclusiveAccessContext()
+  EXPECT_TRUE(ExclusiveAccessManager::From(browser())
+                  ->context()
                   ->IsExclusiveAccessBubbleDisplayed());
 }
 

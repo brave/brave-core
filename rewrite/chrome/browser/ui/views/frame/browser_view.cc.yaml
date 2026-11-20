@@ -32,15 +32,6 @@ substitutions:
           }
           // Update various elements that are interested in knowing the current
 
-  - description: |-
-      Hide the fullscreen exit reminder when Brave's setting turns it off.
-    preempt_function_impl:
-      function_name: UpdateExclusiveAccessBubble
-      code: |-
-        if (ShouldHideFullscreenReminder(params, GetProfile())) {
-          return;
-        }
-
   - description:
       'Create BraveToolbarView wherever BrowserView creates a ToolbarView.'
     count: 0 # Every creation of it in this file wants Brave's subclass.

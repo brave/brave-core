@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Hide the fullscreen exit reminder when Brave's setting turns it off.
+    preempt_function_impl:
+      function_name: BrowserViewExclusiveAccessContext::UpdateExclusiveAccessBubble
+      code: |-
+        if (ShouldHideFullscreenReminder(params, GetProfile())) {
+          return;
+        }
