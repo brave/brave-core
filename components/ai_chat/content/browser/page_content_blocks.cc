@@ -485,6 +485,11 @@ std::string GenerateContentStructure(const ContentNode& node,
       attributes = BuildAttributes(attrs, detail);
       break;
 
+    case ContentAttributeType::CONTENT_ATTRIBUTE_LABEL:
+      tag_name = "label";
+      attributes = BuildAttributes(attrs, detail);
+      break;
+
     case ContentAttributeType::CONTENT_ATTRIBUTE_UNKNOWN:
     case ContentAttributeType::
         ContentAttributeType_INT_MIN_SENTINEL_DO_NOT_USE_:
