@@ -7,8 +7,13 @@
 
 #include <array>
 #include <cstdint>
+#include <map>
+#include <memory>
 #include <optional>
+#include <string>
 #include <string_view>
+#include <utility>
+#include <vector>
 
 #include "base/base64.h"
 #include "base/check.h"
@@ -25,6 +30,8 @@
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/asset_discovery_manager.h"
@@ -44,18 +51,17 @@
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
-#include "chrome/browser/prefs/browser_prefs.h"
-#include "chrome/test/base/testing_profile.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "content/public/test/browser_task_environment.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver.h"
+#include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
 
@@ -250,7 +256,8 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
   // Stops account creation from kicking off a discovery run. Explicit
   // DiscoverAssetsOnAllSupportedChains() calls are unaffected.
   void DisableAutoDiscoveryForTesting() {
-    wallet_service_->asset_discovery_manager()->auto_discovery_enabled_ = false;
+    wallet_service_->asset_discovery_manager()
+        ->SetAutoDiscoveryEnabledForTesting(false);
   }
 
   void SetUp() override {
@@ -265,12 +272,8 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
     // an empty token list instead of inheriting the previous test's.
     BlockchainRegistry::GetInstance()->UpdateTokenList(TokenListMap());
 
-    TestingProfile::Builder builder;
-    auto prefs =
-        std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
-    RegisterUserProfilePrefs(prefs->registry());
-    builder.SetPrefService(std::move(prefs));
-    profile_ = builder.Build();
+    brave_wallet::RegisterProfilePrefs(prefs_.registry());
+    brave_wallet::RegisterProfilePrefsForMigration(prefs_.registry());
     wallet_service_ = std::make_unique<BraveWalletService>(
         url_loader_factory_.GetSafeWeakWrapper(),
         TestBraveWalletServiceDelegate::Create(), GetPrefs(), GetLocalState());
@@ -285,7 +288,7 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
 
     api_request_helper_ =
         std::make_unique<api_request_helper::APIRequestHelper>(
-            net::DefineNetworkTrafficAnnotation("asset_discovery_manager", ""),
+            TRAFFIC_ANNOTATION_FOR_TESTS,
             url_loader_factory_.GetSafeWeakWrapper());
     simple_hash_client_ = std::make_unique<SimpleHashClient>(
         url_loader_factory_.GetSafeWeakWrapper());
@@ -422,60 +425,47 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
         }));
   }
 
+  static std::vector<std::string> ContractAddresses(
+      std::vector<mojom::BlockchainTokenPtr> tokens) {
+    std::vector<std::string> contract_addresses;
+    for (const auto& token : tokens) {
+      contract_addresses.push_back(token->contract_address);
+    }
+    return contract_addresses;
+  }
+
   void TestDiscoverAnkrAssets(
       const std::vector<std::string>& chain_ids,
       const std::vector<std::string>& account_addresses,
       const std::vector<std::string>& expected_token_contract_addresses) {
-    base::RunLoop run_loop;
-    asset_discovery_task_->DiscoverAnkrTokens(
-        MakeAccountIds(account_addresses), MakeChainIds(chain_ids),
-        base::BindLambdaForTesting(
-            [&](const std::vector<mojom::BlockchainTokenPtr>
-                    discovered_assets) {
-              for (size_t i = 0; i < discovered_assets.size(); i++) {
-                EXPECT_EQ(discovered_assets[i]->contract_address,
-                          expected_token_contract_addresses[i]);
-              }
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+    base::test::TestFuture<std::vector<mojom::BlockchainTokenPtr>> future;
+    asset_discovery_task_->DiscoverAnkrTokens(MakeAccountIds(account_addresses),
+                                              MakeChainIds(chain_ids),
+                                              future.GetCallback());
+    EXPECT_THAT(ContractAddresses(future.Take()),
+                testing::ElementsAreArray(expected_token_contract_addresses));
   }
 
   void TestDiscoverEthAssets(
       const std::vector<std::string>& chain_ids,
       const std::vector<std::string>& account_addresses,
       const std::vector<std::string>& expected_token_contract_addresses) {
-    base::RunLoop run_loop;
+    base::test::TestFuture<std::vector<mojom::BlockchainTokenPtr>> future;
     asset_discovery_task_->DiscoverERC20sFromRegistry(
         MakeAccountIds(account_addresses), MakeChainIds(chain_ids),
-        base::BindLambdaForTesting(
-            [&](const std::vector<mojom::BlockchainTokenPtr>
-                    discovered_assets) {
-              for (size_t i = 0; i < discovered_assets.size(); i++) {
-                EXPECT_EQ(discovered_assets[i]->contract_address,
-                          expected_token_contract_addresses[i]);
-              }
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+        future.GetCallback());
+    EXPECT_THAT(ContractAddresses(future.Take()),
+                testing::ElementsAreArray(expected_token_contract_addresses));
   }
 
   void TestDiscoverSolAssets(
       const std::vector<std::string>& account_addresses,
       const std::vector<std::string>& expected_token_contract_addresses) {
-    base::RunLoop run_loop;
+    base::test::TestFuture<std::vector<mojom::BlockchainTokenPtr>> future;
     asset_discovery_task_->DiscoverSPLTokensFromRegistry(
-        MakeAccountIds(account_addresses),
-        base::BindLambdaForTesting(
-            [&](const std::vector<mojom::BlockchainTokenPtr>
-                    discovered_assets) {
-              for (size_t i = 0; i < discovered_assets.size(); i++) {
-                EXPECT_EQ(discovered_assets[i]->contract_address,
-                          expected_token_contract_addresses[i]);
-              }
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+        MakeAccountIds(account_addresses), future.GetCallback());
+    EXPECT_THAT(ContractAddresses(future.Take()),
+                testing::ElementsAreArray(expected_token_contract_addresses));
   }
 
   void SetUpPolkadotAccounts() {
@@ -555,24 +545,19 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
       base::span<const mojom::AccountIdPtr> accounts,
       base::span<const std::string> chain_ids,
       base::span<const std::string> expected_token_contract_addresses) {
-    base::RunLoop run_loop;
+    base::test::TestFuture<std::vector<mojom::BlockchainTokenPtr>> future;
     asset_discovery_task_->DiscoverPolkadotAssetsFromRegistry(
         accounts, MakeChainIds(chain_ids, mojom::CoinType::DOT),
-        base::BindLambdaForTesting(
-            [&](std::vector<mojom::BlockchainTokenPtr> discovered_assets) {
-              std::vector<std::string> contract_addresses;
-              for (const auto& asset : discovered_assets) {
-                EXPECT_EQ(asset->coin, mojom::CoinType::DOT);
-                contract_addresses.push_back(asset->contract_address);
-              }
-              // Assets are discovered per account and per chain, so the order
-              // they come back in follows whichever query finished first.
-              EXPECT_THAT(contract_addresses,
-                          testing::UnorderedElementsAreArray(
-                              expected_token_contract_addresses));
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+        future.GetCallback());
+    std::vector<mojom::BlockchainTokenPtr> discovered_assets = future.Take();
+    for (const auto& asset : discovered_assets) {
+      EXPECT_EQ(asset->coin, mojom::CoinType::DOT);
+    }
+    // Assets are discovered per account and per chain, so the order they come
+    // back in follows whichever query finished first.
+    EXPECT_THAT(
+        ContractAddresses(std::move(discovered_assets)),
+        testing::UnorderedElementsAreArray(expected_token_contract_addresses));
   }
 
   void TestDiscoverNFTsOnAllSupportedChains(
@@ -589,18 +574,11 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
                                          mojom::CoinType::ETH));
     base::Extend(chain_ids, MakeChainIds(chain_ids_map[mojom::CoinType::SOL],
                                          mojom::CoinType::SOL));
-    base::RunLoop run_loop;
-    asset_discovery_task_->DiscoverNFTs(
-        accounts, chain_ids,
-        base::BindLambdaForTesting(
-            [&](std::vector<mojom::BlockchainTokenPtr> discovered_assets) {
-              for (size_t i = 0; i < discovered_assets.size(); i++) {
-                EXPECT_EQ(discovered_assets[i]->contract_address,
-                          expected_token_contract_addresses[i]);
-              }
-              run_loop.Quit();
-            }));
-    run_loop.Run();
+    base::test::TestFuture<std::vector<mojom::BlockchainTokenPtr>> future;
+    asset_discovery_task_->DiscoverNFTs(accounts, chain_ids,
+                                        future.GetCallback());
+    EXPECT_THAT(ContractAddresses(future.Take()),
+                testing::ElementsAreArray(expected_token_contract_addresses));
   }
 
   void TestDiscoverAssets(
@@ -623,7 +601,7 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
     wallet_service_observer_->Reset();
   }
 
-  PrefService* GetPrefs() { return profile_->GetPrefs(); }
+  PrefService* GetPrefs() { return &prefs_; }
   TestingPrefServiceSimple* GetLocalState() { return &local_state_; }
   GURL GetNetwork(const std::string& chain_id, mojom::CoinType coin) {
     return wallet_service_->network_manager()->GetNetworkURL(chain_id, coin);
@@ -635,9 +613,9 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
   network::TestURLLoaderFactory url_loader_factory_;
   std::unique_ptr<TestBraveWalletServiceObserverForAssetDiscoveryTask>
       wallet_service_observer_;
-  content::BrowserTaskEnvironment task_environment_;
+  base::test::TaskEnvironment task_environment_;
   TestingPrefServiceSimple local_state_;
-  std::unique_ptr<TestingProfile> profile_;
+  sync_preferences::TestingPrefServiceSyncable prefs_;
   std::unique_ptr<BraveWalletService> wallet_service_;
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
   std::unique_ptr<SimpleHashClient> simple_hash_client_;
@@ -1039,7 +1017,7 @@ TEST_F(AssetDiscoveryTaskUnitTest, DiscoverSPLTokensFromRegistry) {
         {
           "account": {
             "data": [
-              $1,
+              "$1",
               "base64"
             ],
             "executable": false,
@@ -1052,7 +1030,7 @@ TEST_F(AssetDiscoveryTaskUnitTest, DiscoverSPLTokensFromRegistry) {
         {
           "account": {
             "data": [
-              $2,
+              "$2",
               "base64"
             ],
             "executable": false,
@@ -1107,7 +1085,7 @@ TEST_F(AssetDiscoveryTaskUnitTest, DiscoverSPLTokensFromRegistry) {
         {
           "account": {
             "data": [
-              $1,
+              "$1",
               "base64"
             ],
             "executable": false,
@@ -1120,7 +1098,7 @@ TEST_F(AssetDiscoveryTaskUnitTest, DiscoverSPLTokensFromRegistry) {
         {
           "account": {
             "data": [
-              $2,
+              "$2",
               "base64"
             ],
             "executable": false,
@@ -1163,7 +1141,7 @@ TEST_F(AssetDiscoveryTaskUnitTest, DiscoverSPLTokensFromRegistry) {
         {
           "account": {
             "data": [
-              $1,
+              "$1",
               "base64"
             ],
             "executable": false,
@@ -1176,7 +1154,7 @@ TEST_F(AssetDiscoveryTaskUnitTest, DiscoverSPLTokensFromRegistry) {
         {
           "account": {
             "data": [
-              $2,
+              "$2",
               "base64"
             ],
             "executable": false,
