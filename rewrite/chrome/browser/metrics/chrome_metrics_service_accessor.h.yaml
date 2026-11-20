@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Befriend upstream's renamed `ChromeBrowserFieldTrials`.
+
+      `chrome_browser_field_trials.h.yaml` renames it to
+      `ChromeBrowserFieldTrials_ChromiumImpl`, whose members still register
+      synthetic field trials through this accessor.
+    add_friend:
+      class_name: ChromeMetricsServiceAccessor
+      friend_type: class ChromeBrowserFieldTrials_ChromiumImpl
