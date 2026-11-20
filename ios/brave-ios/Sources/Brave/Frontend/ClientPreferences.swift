@@ -257,6 +257,12 @@ extension Preferences {
       key: "brave-search.promo-completion-state",
       default: BraveSearchPromotionState.undetermined.rawValue
     )
+    /// Whether this install is eligible for the Brave Search verticals. Captured once at first
+    /// launch; the feature ships to new installs only.
+    public static let braveSearchVerticalsEligible = Option<Bool>(
+      key: "brave-search.brave-search-verticals-eligible",
+      default: false
+    )
   }
 
   final public class Privacy {

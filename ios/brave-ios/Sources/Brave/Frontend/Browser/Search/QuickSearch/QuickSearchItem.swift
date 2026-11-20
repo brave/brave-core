@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import Shared
 import Strings
 import SwiftUI
 
@@ -41,6 +42,18 @@ enum QuickSearchItemID: Hashable {
 }
 
 extension QuickSearchItemID {
+  /// The bundled Brave Search engine, which the Brave Search verticals are introduced behind.
+  static let braveSearchEngine = QuickSearchItemID.engine(
+    InitialSearchEngines.SearchEngineID.braveSearch.rawValue.lowercased()
+  )
+
+  var isBraveVertical: Bool {
+    if case .braveVertical = self {
+      return true
+    }
+    return false
+  }
+
   init?(rawValue: String) {
     func value(after prefix: String) -> String? {
       guard rawValue.hasPrefix(prefix) else { return nil }
@@ -64,8 +77,63 @@ extension QuickSearchItemID {
 
 struct BraveSearchVertical: Identifiable {
   let id: String
-  let accessibilityTitle: String
-  let icon: Image
+  let displayName: String
+  let iconName: String
+  /// `%s` is the query insertion point, following the custom engine convention. `source=ios` is
+  /// what lets widget search attribution rewrite the URL, same as `bravesearch.xml` declares.
+  let searchTemplate: String
+
+  var icon: Image {
+    Image(braveSystemName: iconName)
+  }
+
+  func searchURL(for query: String, isWidgetSearchAttribution: Bool = false) -> URL? {
+    guard
+      let escapedQuery = query.addingPercentEncoding(withAllowedCharacters: .searchTermsAllowed),
+      let url = URL(string: searchTemplate.replacingOccurrences(of: "%s", with: escapedQuery))
+    else { return nil }
+
+    return isWidgetSearchAttribution
+      ? OpenSearchEngine.applyWidgetSearchAttribution(to: url) : url
+  }
+
+  enum Kind: CaseIterable {
+    case images
+    case videos
+    case news
+    case maps
+    case goggles
+  }
+
+  init(kind: BraveSearchVertical.Kind) {
+    switch kind {
+    case .images:
+      self.id = "brave-search-images"
+      self.displayName = Strings.braveImagesSearchTitle
+      self.iconName = "leo.image"
+      self.searchTemplate = "https://search.brave.com/images?q=%s&source=ios"
+    case .videos:
+      self.id = "brave-search-video"
+      self.displayName = Strings.braveVideosSearchTitle
+      self.iconName = "leo.media.player"
+      self.searchTemplate = "https://search.brave.com/videos?q=%s&source=ios"
+    case .news:
+      self.id = "brave-search-news"
+      self.displayName = Strings.braveNewsSearchTitle
+      self.iconName = "leo.product.brave-news"
+      self.searchTemplate = "https://search.brave.com/news?q=%s&source=ios"
+    case .maps:
+      self.id = "brave-search-maps"
+      self.displayName = Strings.braveMapsSearchTitle
+      self.iconName = "leo.location.on"
+      self.searchTemplate = "https://search.brave.com/maps?q=%s&source=ios"
+    case .goggles:
+      self.id = "brave-search-goggles"
+      self.displayName = Strings.braveGogglesSearchTitle
+      self.iconName = "leo.search.goggles"
+      self.searchTemplate = "https://search.brave.com/goggles?q=%s&source=ios"
+    }
+  }
 }
 
 struct QuickSearchItem: Identifiable {
@@ -104,7 +172,7 @@ struct QuickSearchItem: Identifiable {
     case .braveVertical(let vertical):
       return String(
         format: Strings.searchEngineFormatText,
-        vertical.accessibilityTitle
+        vertical.displayName
       )
     }
   }

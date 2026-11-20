@@ -24,6 +24,7 @@
 #include "brave/ios/browser/saved_tab_groups/features.h"
 #include "brave/ios/browser/search_engines/features.h"
 #include "brave/ios/browser/toolbar/features.h"
+#include "brave/ios/browser/ui/quick_search/features.h"
 #include "brave/ios/browser/ui/quick_view/features.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #include "build/build_config.h"
@@ -432,6 +433,13 @@ const flags_ui::FeatureEntry::FeatureVariation
           "Enables organizing tabs into groups in the tab tray",               \
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(brave::features::kTabGroupsEnabled),              \
+      },                                                                       \
+      {                                                                        \
+          "brave-search-engines-verticals-in-quick-search",                    \
+          "Enable 5 Brave Search Verticals in Quick Search",                   \
+          "Enable 5 Brave Search Verticals in Quick Search",                   \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(brave::features::kBraveSearchVerticalsEnabled),   \
       },                                                                       \
       {                                                                        \
           "brave-origin",                                                      \

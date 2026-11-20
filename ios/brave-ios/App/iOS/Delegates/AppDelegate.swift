@@ -197,6 +197,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     if isFirstLaunch {
       Preferences.PrivacyReports.ntpOnboardingCompleted.value = false
+      // Brave Search 5 verticals only available for new install users
+      Preferences.BraveSearch.braveSearchVerticalsEligible.value = true
     }
 
     if Preferences.Search.defaultEngineName.value != nil

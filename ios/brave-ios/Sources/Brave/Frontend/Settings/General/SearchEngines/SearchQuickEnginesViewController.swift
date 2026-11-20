@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import DesignSystem
 import Shared
 import UIKit
 import Web
@@ -112,10 +113,28 @@ class SearchQuickEnginesViewController: UITableViewController {
     _ tableView: UITableView,
     cellForRowAt indexPath: IndexPath
   ) -> UITableViewCell {
-    guard let item = quickSearchItems[safe: indexPath.item],
-      case .engine(let engine) = item.source
-    else {
-      assertionFailure("No engine backing quick search row \(indexPath.item)")
+    guard let item = quickSearchItems[safe: indexPath.item] else {
+      assertionFailure("No item backing quick search row \(indexPath.item)")
+      return UITableViewCell()
+    }
+
+    let title: String
+    let searchTemplate: String
+    let icon: UIImage?
+    switch item.source {
+    case .engine(let engine):
+      title = engine.displayName
+      searchTemplate = engine.searchTemplate
+      icon = engine.image.createScaled(UX.iconSize)
+    case .braveVertical(let vertical):
+      title = vertical.displayName
+      searchTemplate = vertical.searchTemplate
+      icon = UIImage(braveSystemNamed: vertical.iconName)?.createScaled(
+        CGSize(width: 26, height: 26)
+      )?.withRenderingMode(.alwaysTemplate)
+    case .aiChat:
+      // Leo is pinned to the row by the view and is not customizable here.
+      assertionFailure("Leo in the quick search customize list")
       return UITableViewCell()
     }
 
@@ -134,15 +153,25 @@ class SearchQuickEnginesViewController: UITableViewController {
       $0.showsReorderControl = true
       $0.accessoryView = toggle
       $0.selectionStyle = .none
-      $0.textLabel?.text = engine.displayName
+      $0.textLabel?.text = title
       $0.textLabel?.adjustsFontSizeToFitWidth = true
       $0.textLabel?.minimumScaleFactor = 0.5
-      $0.detailTextLabel?.text = searchTemplateHost(for: engine.searchTemplate)
+      $0.detailTextLabel?.text = searchTemplateHost(for: searchTemplate)
       $0.detailTextLabel?.textColor = UIColor.secondaryLabel
-      $0.imageView?.image = engine.image.createScaled(UX.iconSize)
+      $0.imageView?.image = icon
       $0.imageView?.layer.cornerRadius = 4
       $0.imageView?.layer.cornerCurve = .continuous
       $0.imageView?.layer.masksToBounds = true
+    }
+
+    if case .braveVertical = item.source, let icon, let imageView = searchEngineCell.imageView {
+      imageView.tintColor = .clear
+      let bounds = CGRect(origin: .zero, size: icon.size)
+      let gradientView = GradientView(braveSystemName: .hero).then {
+        $0.frame = bounds
+        $0.mask = UIImageView(image: icon).then { $0.frame = bounds }
+      }
+      imageView.addSubview(gradientView)
     }
 
     return searchEngineCell

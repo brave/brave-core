@@ -31,12 +31,33 @@ struct QuickSearchView: View {
           .font(.system(size: 20))
           .foregroundStyle(.white)
           .frame(width: 28.0, height: 28.0)
-          .background(LinearGradient(braveSystemName: .iconsActive), in: .rect(cornerRadius: 8))
+          .background(
+            LinearGradient(braveSystemName: .iconsActive),
+            in: .rect(cornerRadius: 8)
+          )
           .padding(8)
           .contentShape(.rect)
       }
       .accessibilityLabel(item.accessibilityTitle)
-    case .engine, .customEngine, .braveVertical:
+    case .braveVertical:
+      Button {
+        onSelection(item)
+      } label: {
+        item.icon
+          .font(.system(size: 20))
+          .foregroundStyle(LinearGradient(braveSystemName: .hero))
+          .padding(4)
+          .frame(width: 28.0, height: 28.0)
+          .background(
+            Color(braveSystemName: .containerBackground),
+            in: .rect(cornerRadius: 8)
+          )
+          .padding(8)
+          .contentShape(.rect)
+      }
+      .accessibilityLabel(item.accessibilityTitle)
+      .buttonStyle(.plain)
+    case .engine, .customEngine:
       Button {
         onSelection(item)
       } label: {
