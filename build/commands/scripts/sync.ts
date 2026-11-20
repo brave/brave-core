@@ -16,11 +16,7 @@ import depotTools from '../lib/depotTools.js'
 import { isCI } from '../lib/ciDetect.ts'
 import * as syncUtil from '../lib/syncUtils.ts'
 import { writeSisoRc } from '../lib/sisoUtils.ts'
-import {
-  getBuilderBuildTarget,
-  getBuilderGclientTargets,
-  supportBuilder,
-} from '../lib/builder.ts'
+import { getBuilderGclientTargets } from '../lib/builder.ts'
 import * as buildOptions from '../lib/buildOptions.ts'
 import type {
   BuildTarget,
@@ -56,11 +52,8 @@ program
     'An experimental lean sync checkout mode. https://github.com/brave/brave-browser/issues/44921',
   )
   .apply(buildOptions.supportQuiet)
-
-// TODO(http://brave.dev/b/56449): Experimental implementation for integration
-// with our bots generator.
-supportBuilder(program, { allowed: ['init'] })
-program.action(sync).parse()
+  .action(sync)
+  .parse()
 
 function syncBrave(options) {
   let args = ['sync', '--nohooks']
@@ -97,15 +90,18 @@ async function sync(options) {
   depotTools.installDepotTools()
 
   const { targetOSList, targetArchList } = getGclientTargets(options)
-  const { targetOS, targetArch } = getBuildTarget(options, {
-    targetOSList,
-    targetArchList,
-  })
-  if (targetOS) {
-    options.target_os = targetOS
-  }
-  if (targetArch) {
-    options.target_arch = targetArch
+  // A builder's config already builds for its target.
+  if (!options.builder) {
+    const { targetOS, targetArch } = getBuildTarget({
+      targetOSList,
+      targetArchList,
+    })
+    if (targetOS) {
+      options.target_os = targetOS
+    }
+    if (targetArch) {
+      options.target_arch = targetArch
+    }
   }
 
   config.update(options)
@@ -178,19 +174,12 @@ function getGclientTargets(options: SyncTargetOptions): GclientTargets {
   }
 }
 
-// Returns the one target passed to the config.update() call. A builder's comes
-// from its GN args. Without one, the first value of each .gclient list is the
-// target.
-function getBuildTarget(
-  options: SyncTargetOptions,
-  { targetOSList, targetArchList }: GclientTargets,
-): BuildTarget {
-  // TODO(http://brave.dev/b/56449): Experimental implementation for integration
-  // with our bots generator.
-  if (options.builder) {
-    return getBuilderBuildTarget(options.builder, config.hostOS)
-  }
-
+// Returns the one target passed to the config.update() call: the first value
+// of each .gclient list.
+function getBuildTarget({
+  targetOSList,
+  targetArchList,
+}: GclientTargets): BuildTarget {
   return { targetOS: targetOSList[0], targetArch: targetArchList[0] }
 }
 

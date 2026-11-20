@@ -11,11 +11,17 @@ import os from 'node:os'
 import path from 'node:path'
 import { Command } from 'commander'
 import {
-  getBuilderBuildTarget,
   getBuilderGclientTargets,
   loadBuilder,
   supportBuilder,
 } from './builder.ts'
+import {
+  mockBuilderProperties,
+  mockBuilderSpec,
+  writeMockBuilder,
+} from './builderMock.ts'
+import type { Builder, BuilderSpec } from './builderTypes.ts'
+import config, { Config } from './config.ts'
 import * as Log from './log.ts'
 
 // `var`, as imports run before this initialiser and read `isCI` while loading.
@@ -32,26 +38,6 @@ jest.mock('./log.ts', () => ({
   warn: jest.fn(),
 }))
 
-function writeBuilder(dir: string, name: string) {
-  const builderDir = path.join(dir, name)
-  fs.mkdirSync(builderDir, { recursive: true })
-  fs.writeFileSync(
-    path.join(builderDir, 'gn-args.json'),
-    JSON.stringify({
-      gn_args: { target_os: 'linux', target_cpu: 'x64', is_asan: true },
-      secrets: {},
-    }),
-  )
-  fs.writeFileSync(
-    path.join(builderDir, 'sync.json'),
-    JSON.stringify({ target_os: ['android'], target_cpu: [] }),
-  )
-  fs.writeFileSync(
-    path.join(builderDir, 'targets.json'),
-    JSON.stringify({ compile: ['brave:all'], tests: ['brave_unit_tests'] }),
-  )
-}
-
 describe('loadBuilder', () => {
   let dir: string
 
@@ -64,24 +50,21 @@ describe('loadBuilder', () => {
   })
 
   it('loads the generated files', () => {
-    writeBuilder(dir, 'linux-x64-asan-brave')
-    expect(loadBuilder('linux-x64-asan-brave', dir)).toEqual({
-      name: 'linux-x64-asan-brave',
-      gnArgs: {
-        gn_args: { target_os: 'linux', target_cpu: 'x64', is_asan: true },
-        secrets: {},
-      },
-      sync: { target_os: ['android'], target_cpu: [] },
+    writeMockBuilder(dir, 'fake-builder')
+    expect(loadBuilder('fake-builder', dir)).toEqual({
+      name: 'fake-builder',
+      spec: mockBuilderSpec,
+      buildTarget: { targetOS: 'linux', targetArch: 'x64' },
       targets: { compile: ['brave:all'], tests: ['brave_unit_tests'] },
     })
   })
 
   it('rejects an unknown builder, listing the known ones', () => {
-    writeBuilder(dir, 'linux-x64-asan-brave')
-    writeBuilder(dir, 'linux-x64-asan-chromium')
+    writeMockBuilder(dir, 'fake-builder')
+    writeMockBuilder(dir, 'other-builder')
     expect(() => loadBuilder('nope', dir)).toThrow(
       'unknown builder: nope\n\navailable builders:\n'
-        + '  linux-x64-asan-brave\n  linux-x64-asan-chromium',
+        + '  fake-builder\n  other-builder',
     )
   })
 
@@ -92,36 +75,62 @@ describe('loadBuilder', () => {
     },
   )
 
+  it('requires the build target in gn-args.json', () => {
+    writeMockBuilder(dir, 'b')
+    fs.writeFileSync(
+      path.join(dir, 'b', 'gn-args.json'),
+      JSON.stringify({ gn_args: { target_os: 'linux' } }),
+    )
+    expect(() => loadBuilder('b', dir)).toThrow(
+      'builder b: gn-args.json has no target_cpu',
+    )
+  })
+
+  it('requires its spec in properties.json', () => {
+    writeMockBuilder(dir, 'b')
+    fs.writeFileSync(
+      path.join(dir, 'b', 'properties.json'),
+      JSON.stringify(mockBuilderProperties('other')),
+    )
+    expect(() => loadBuilder('b', dir)).toThrow(
+      'builder b: properties.json has no spec for it',
+    )
+  })
+
   it('reports a missing file', () => {
-    writeBuilder(dir, 'b')
-    fs.rmSync(path.join(dir, 'b', 'sync.json'))
-    expect(() => loadBuilder('b', dir)).toThrow('sync.json')
+    writeMockBuilder(dir, 'b')
+    fs.rmSync(path.join(dir, 'b', 'properties.json'))
+    expect(() => loadBuilder('b', dir)).toThrow('properties.json')
   })
 })
 
 describe('supportBuilder', () => {
   let dir: string
+  let load: jest.SpiedFunction<typeof Config.load>
 
   beforeEach(() => {
     dir = fs.mkdtempSync(path.join(os.tmpdir(), 'builders-'))
-    writeBuilder(dir, 'fake-builder')
+    writeMockBuilder(dir, 'fake-builder')
+    const loadConfig = Config.load.bind(Config)
+    load = jest
+      .spyOn(Config, 'load')
+      .mockImplementation((builder) => loadConfig(builder, {}))
   })
 
   afterEach(() => {
     mockIsCI = false
+    load.mockRestore()
     fs.rmSync(dir, { recursive: true, force: true })
   })
 
-  const run = (argv: string[], allowed?: string[]) => {
+  const run = (argv: string[]) => {
     const action = jest.fn()
     const command = new Command()
       .exitOverride()
       .configureOutput({ writeErr: () => {} })
       .argument('[build_config]')
       .option('--target_os <os>')
-      .option('--no-history')
-      .option('--init')
-    supportBuilder(command, allowed ? { allowed, dir } : { dir })
+    supportBuilder(command, { dir })
     command.action(action).parse(argv, { from: 'user' })
     return { action }
   }
@@ -130,6 +139,14 @@ describe('supportBuilder', () => {
     const { action } = run(['Release', '--target_os', 'linux'])
     expect(action).toHaveBeenCalled()
     expect(Log.warn).not.toHaveBeenCalled()
+    expect(load).not.toHaveBeenCalled()
+  })
+
+  it("installs the builder's config", () => {
+    run(['--builder', 'fake-builder'])
+    expect(load).toHaveBeenCalledWith(loadBuilder('fake-builder', dir))
+    expect(config.isBuilderSet()).toBe(true)
+    expect(config.buildConfig).toBe('Release')
   })
 
   it('warns that --builder is experimental', () => {
@@ -164,119 +181,32 @@ describe('supportBuilder', () => {
       loadBuilder('fake-builder', dir),
     )
   })
-
-  it('rejects other flags and positional arguments', () => {
-    expect(() =>
-      run([
-        'Release',
-        '--builder',
-        'fake-builder',
-        '--target_os',
-        'linux',
-        '--no-history',
-      ]),
-    ).toThrow(
-      '--builder cannot be combined with: --target_os --no-history Release',
-    )
-  })
-
-  it('allows the listed options', () => {
-    const { action } = run(['--builder', 'fake-builder', '--init'], ['init'])
-    expect(action).toHaveBeenCalled()
-  })
-})
-
-const fakeBuilder = (
-  gnArgs: Record<string, unknown>,
-  sync: { target_os: string[]; target_cpu: string[] },
-) => ({
-  name: 'fake-builder',
-  gnArgs: { gn_args: gnArgs },
-  sync,
-  targets: { compile: [], tests: [] },
 })
 
 describe('getBuilderGclientTargets', () => {
-  it('returns the lists from sync.json, not the build target', () => {
+  const builder = (gclientConfig: BuilderSpec['gclient_config']): Builder => ({
+    name: 'fake-builder',
+    spec: {
+      builder_group: 'brave.test',
+      chromium_config: { target_platform: 'android' },
+      gclient_config: gclientConfig,
+      brave_config: mockBuilderSpec.brave_config,
+    },
+    buildTarget: { targetOS: 'android', targetArch: 'arm64' },
+    targets: { compile: [], tests: [] },
+  })
+
+  it('returns the lists from properties.json', () => {
     expect(
       getBuilderGclientTargets(
-        fakeBuilder(
-          { target_os: 'android', target_cpu: 'arm64' },
-          { target_os: ['android', 'linux'], target_cpu: [] },
-        ),
+        builder({ target_os: ['android', 'linux'], target_cpu: ['arm64'] }),
       ),
-    ).toEqual({ targetOSList: ['android', 'linux'], targetArchList: [] })
+    ).toEqual({ targetOSList: ['android', 'linux'], targetArchList: ['arm64'] })
   })
 
   it('leaves the lists empty to sync the host only', () => {
     expect(
-      getBuilderGclientTargets(
-        fakeBuilder(
-          { target_os: 'linux', target_cpu: 'x64' },
-          { target_os: [], target_cpu: [] },
-        ),
-      ),
+      getBuilderGclientTargets(builder({ target_os: [], target_cpu: [] })),
     ).toEqual({ targetOSList: [], targetArchList: [] })
-  })
-})
-
-describe('getBuilderBuildTarget', () => {
-  it('builds for the target in the GN args', () => {
-    expect(
-      getBuilderBuildTarget(
-        fakeBuilder(
-          { target_os: 'linux', target_cpu: 'x64' },
-          { target_os: [], target_cpu: [] },
-        ),
-        'linux',
-      ),
-    ).toEqual({ targetOS: 'linux', targetArch: 'x64' })
-  })
-
-  it('does not take the target from the gclient lists', () => {
-    expect(
-      getBuilderBuildTarget(
-        fakeBuilder(
-          { target_os: 'android', target_cpu: 'arm64' },
-          { target_os: ['linux', 'android'], target_cpu: ['x64'] },
-        ),
-        'linux',
-      ),
-    ).toEqual({ targetOS: 'android', targetArch: 'arm64' })
-  })
-
-  it('rejects a target_os the checkout does not sync', () => {
-    expect(() =>
-      getBuilderBuildTarget(
-        fakeBuilder(
-          { target_os: 'android', target_cpu: 'arm64' },
-          { target_os: [], target_cpu: [] },
-        ),
-        'linux',
-      ),
-    ).toThrow(
-      "builder fake-builder builds for target_os android, which is neither the host's (linux) nor in its sync.json",
-    )
-  })
-
-  it('does not require a cross target_cpu to be listed', () => {
-    expect(
-      getBuilderBuildTarget(
-        fakeBuilder(
-          { target_os: 'android', target_cpu: 'arm64' },
-          { target_os: ['android'], target_cpu: [] },
-        ),
-        'linux',
-      ),
-    ).toEqual({ targetOS: 'android', targetArch: 'arm64' })
-  })
-
-  it('requires the build target in the GN args', () => {
-    expect(() =>
-      getBuilderBuildTarget(
-        fakeBuilder({ target_os: 'linux' }, { target_os: [], target_cpu: [] }),
-        'linux',
-      ),
-    ).toThrow('builder fake-builder: gn-args.json has no target_cpu')
   })
 })

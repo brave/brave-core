@@ -290,6 +290,57 @@ describe('EnvConfig', () => {
     })
   })
 
+  describe('with a restriction', () => {
+    const allowedDotenvKeys = ['rbe_service']
+
+    beforeEach(() => {
+      mockFiles[packageJsonPath] = {
+        version: '1.2.3',
+        config: {
+          projects: { chrome: { tag: '1.0', custom_vars: { a: true } } },
+        },
+      }
+      mockFiles[envPath] = ['rbe_service=rbe.example.com:443']
+      envConfig = new EnvConfig(configDir, undefined, allowedDotenvKeys)
+    })
+
+    it('reads the allowed .env keys', () => {
+      expect(envConfig.getString(['rbe_service'])).toBe('rbe.example.com:443')
+    })
+
+    it('reads what package.json provides', () => {
+      expect(envConfig.getString(['projects', 'chrome', 'tag'])).toBe('1.0')
+      expect(
+        envConfig.getMergedObject(['projects', 'chrome', 'custom_vars']),
+      ).toEqual({ a: true })
+    })
+
+    it('reads an unset key under an object package.json sets', () => {
+      expect(envConfig.getString(['projects', 'chrome', 'revision'])).toBe(
+        undefined,
+      )
+    })
+
+    it('throws when reading anything else, even with a default', () => {
+      expect(() => envConfig.getBoolean(['gclient_verbose'], false)).toThrow(
+        'gclient_verbose is read, but with --builder only rbe_service are '
+          + 'read from .env, and package.json does not provide it.',
+      )
+      expect(() => envConfig.getMergedObject(['gn', 'args'])).toThrow(
+        'gn_args is read',
+      )
+    })
+
+    it('allows other .env keys, as long as nothing reads them', () => {
+      mockFiles[envPath] = ['rbe_service=x', 'gclient_verbose=true']
+      envConfig = new EnvConfig(configDir, undefined, allowedDotenvKeys)
+      expect(envConfig.getString(['rbe_service'])).toBe('x')
+      expect(() => envConfig.getBoolean(['gclient_verbose'])).toThrow(
+        'gclient_verbose is read',
+      )
+    })
+  })
+
   describe('getMergedObject', () => {
     beforeEach(() => {
       mockFiles[packageJsonPath] = {

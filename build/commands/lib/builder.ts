@@ -8,11 +8,13 @@
 
 import fs from 'node:fs'
 import path from 'node:path'
-import type { Command } from 'commander'
+import { type Command, InvalidArgumentError } from 'commander'
 import { isCI } from './ciDetect.ts'
+import { Config, setConfigInstance } from './config.ts'
 import * as Log from './log.ts'
 import rootDir from './rootDir.cjs'
-import type { BuildTarget, GclientTargets } from './syncTypes.ts'
+import type { Builder, BuilderSpec } from './builderTypes.ts'
+import type { GclientTargets } from './syncTypes.ts'
 
 export const buildersDir = path.join(
   rootDir,
@@ -27,12 +29,20 @@ export const buildersDir = path.join(
 // Builder names double as directory names, so keep them kebab-case.
 const BUILDER_NAME_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/
 
-export type Builder = {
-  name: string
-  gnArgs: { gn_args: Record<string, unknown>; secrets?: Record<string, string> }
-  // What the checkout syncs besides the host, which gclient always syncs.
-  sync: { target_os: string[]; target_cpu: string[] }
-  targets: { compile: string[]; tests: string[] }
+// A builder's `properties.json`: the input properties of its builds, with its
+// spec in the builder database of the `brave_tests_builder_config` recipe
+// module's properties, as upstream's `chromium_tests_builder_config` has it.
+interface BuilderProperties {
+  '$brave_tests_builder_config': {
+    builder_config: {
+      builder_db: {
+        entries: {
+          builder_id: { builder: string }
+          builder_spec: BuilderSpec
+        }[]
+      }
+    }
+  }
 }
 
 function readJson<T>(builderDir: string, file: string): T {
@@ -58,97 +68,88 @@ export function loadBuilder(name: string, dir = buildersDir): Builder {
         + (list ? `\n\navailable builders:\n${list}` : ''),
     )
   }
+  const { gn_args: gnArgs } = readJson<{ gn_args: Record<string, unknown> }>(
+    builderDir,
+    'gn-args.json',
+  )
   return {
     name,
-    gnArgs: readJson<Builder['gnArgs']>(builderDir, 'gn-args.json'),
-    sync: readJson<Builder['sync']>(builderDir, 'sync.json'),
+    spec: readBuilderSpec(
+      name,
+      readJson<BuilderProperties>(builderDir, 'properties.json'),
+    ),
+    buildTarget: {
+      targetOS: readGnTarget(name, gnArgs, 'target_os'),
+      targetArch: readGnTarget(name, gnArgs, 'target_cpu'),
+    },
     targets: readJson<Builder['targets']>(builderDir, 'targets.json'),
   }
+}
+
+function readBuilderSpec(
+  name: string,
+  properties: BuilderProperties,
+): BuilderSpec {
+  const entry = properties[
+    '$brave_tests_builder_config'
+  ]?.builder_config?.builder_db?.entries?.find(
+    ({ builder_id: builderId }) => builderId?.builder === name,
+  )
+  if (!entry) {
+    throw new Error(`builder ${name}: properties.json has no spec for it`)
+  }
+  return entry.builder_spec
+}
+
+function readGnTarget(
+  name: string,
+  gnArgs: Record<string, unknown>,
+  field: 'target_os' | 'target_cpu',
+): string {
+  const value = gnArgs?.[field]
+  if (typeof value !== 'string') {
+    throw new Error(`builder ${name}: gn-args.json has no ${field}`)
+  }
+  return value
 }
 
 // Returns the `target_os` and `target_cpu` lists `init`/`sync` write into
 // `.gclient` for a builder: what its checkout syncs besides the host.
 export function getBuilderGclientTargets(builder: Builder): GclientTargets {
-  return {
-    targetOSList: builder.sync.target_os,
-    targetArchList: builder.sync.target_cpu,
-  }
+  const { target_os: targetOSList, target_cpu: targetArchList } =
+    builder.spec.gclient_config
+  return { targetOSList, targetArchList }
 }
 
-// Returns the one platform a builder builds for, from its GN args. Its OS has
-// to be synced, so it has to be the host's or in the builder's gclient lists.
-// Its CPU need not be: as upstream, a cross CPU is rarely listed.
-export function getBuilderBuildTarget(
-  builder: Builder,
-  hostOS: string,
-): BuildTarget {
-  const targetOS = getBuildTarget(builder, 'target_os')
-  const targetArch = getBuildTarget(builder, 'target_cpu')
-  if (targetOS !== hostOS && !builder.sync.target_os.includes(targetOS)) {
-    throw new Error(
-      `builder ${builder.name} builds for target_os ${targetOS}, which is `
-        + `neither the host's (${hostOS}) nor in its sync.json`,
-    )
-  }
-  return { targetOS, targetArch }
-}
-
-function getBuildTarget(
-  builder: Builder,
-  field: 'target_os' | 'target_cpu',
-): string {
-  const value = builder.gnArgs.gn_args[field]
-  if (typeof value !== 'string') {
-    throw new Error(`builder ${builder.name}: gn-args.json has no ${field}`)
-  }
-  return value
-}
-
-// Returns the flags and positional arguments given on the command line, other
-// than `--builder` itself and `allowed` option attribute names.
-export function findBuilderConflicts(
-  command: Command<any, any, any>,
-  allowed: string[] = [],
-): string[] {
-  const conflicts: string[] = []
-  for (const option of command.options) {
-    const key = option.attributeName()
-    if (
-      key !== 'builder'
-      && !allowed.includes(key)
-      && command.getOptionValueSource(key) === 'cli'
-    ) {
-      conflicts.push(option.long ?? option.short!)
-    }
-  }
-  conflicts.push(...command.args)
-  return conflicts
-}
-
-// Adds `--builder <name>`. The builder config is authoritative, so when it is
-// given nothing else may be passed, except the `allowed` option attribute
-// names (e.g. the `--init` that `pnpm run init` implies). `dir` is where the
-// builders are looked up. The action receives the loaded `Builder` as the
-// `builder` option.
+// Adds `--builder <name>`, which configures everything from the builder:
+// once the arguments are parsed, the program's config is the builder's (see
+// Config). `dir` is where the builders are looked up. The option's value is
+// the loaded `Builder`.
 export function supportBuilder<
   Args extends any[],
   Opts extends {},
   GlobalOpts extends {},
 >(
   command: Command<Args, Opts, GlobalOpts>,
-  {
-    allowed = [],
-    dir = buildersDir,
-  }: { allowed?: string[]; dir?: string } = {},
+  { dir = buildersDir }: { dir?: string } = {},
 ) {
   return command
     .option(
       '--builder <name>',
-      'configure everything from a builder in infra/config; no other flags or arguments are accepted',
+      'configure everything from a builder in infra/config',
+      (name: string): Builder => {
+        try {
+          return loadBuilder(name, dir)
+        } catch (e) {
+          throw new InvalidArgumentError((e as Error).message)
+        }
+      },
     )
     .hook('preAction', (thisCommand) => {
-      const name = thisCommand.getOptionValue('builder')
-      if (typeof name !== 'string') {
+      const builder = thisCommand.getOptionValue('builder') as
+        | Builder
+        | undefined
+      if (builder === undefined) {
         return
       }
       if (isCI) {
@@ -157,16 +158,6 @@ export function supportBuilder<
         )
       }
       Log.warn('--builder is experimental and may change without notice.')
-      const conflicts = findBuilderConflicts(thisCommand, allowed)
-      if (conflicts.length) {
-        thisCommand.error(
-          `error: --builder cannot be combined with: ${conflicts.join(' ')}`,
-        )
-      }
-      try {
-        thisCommand.setOptionValue('builder', loadBuilder(name, dir))
-      } catch (e) {
-        thisCommand.error(`error: ${(e as Error).message}`)
-      }
+      setConfigInstance(Config.load(builder))
     })
 }
