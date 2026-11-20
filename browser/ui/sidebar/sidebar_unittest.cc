@@ -10,6 +10,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
@@ -29,6 +30,10 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/views/bubble/bubble_border.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/common/features.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
@@ -70,7 +75,13 @@ class MockSidebarModelObserver : public SidebarModel::Observer {
 
 class SidebarModelTest : public testing::Test {
  public:
-  SidebarModelTest() = default;
+  SidebarModelTest() {
+#if BUILDFLAG(ENABLE_AI_CHAT)
+    // SidebarService only creates the Leo item while kAIChat is enabled. Pin
+    // it before the profile and SidebarService are created in SetUp().
+    scoped_feature_list_.InitAndEnableFeature(ai_chat::features::kAIChat);
+#endif
+  }
 
   ~SidebarModelTest() override = default;
 
@@ -92,6 +103,7 @@ class SidebarModelTest : public testing::Test {
   SidebarModel* model() { return model_.get(); }
   SidebarService* service() { return service_; }
 
+  base::test::ScopedFeatureList scoped_feature_list_;
   content::BrowserTaskEnvironment browser_task_environment_;
   testing::NiceMock<MockSidebarModelObserver> observer_;
   std::unique_ptr<TestingProfile> profile_;
