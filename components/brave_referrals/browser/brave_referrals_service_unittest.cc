@@ -248,6 +248,60 @@ TEST_F(BraveReferralsServiceTest, AndroidConversionNotSentOnCaptureRun) {
   EXPECT_EQ(pref_service_.GetString(kReferralAndroidGbraid), kTestGbraid);
 }
 
+TEST_F(BraveReferralsServiceTest, AndroidFirstOpenSentImmediately) {
+  CreateReferralsService();
+  referrals_service_->Start();
+  task_environment_.FastForwardBy(base::Minutes(1));
+  ASSERT_EQ(conversion_request_count_, 0u);
+
+  referrals_service_->OnAndroidBraveReferrerReadyForTesting(kTestGbraid);
+  task_environment_.FastForwardBy(base::Minutes(1));
+
+  EXPECT_EQ(conversion_request_count_, 1u);
+  // Stashed for MaybeReportAndroidConversion() to report second_open later.
+  EXPECT_EQ(pref_service_.GetString(kReferralAndroidGbraid), kTestGbraid);
+
+  base::DictValue body = base::test::ParseJsonDict(conversion_request_body_);
+  EXPECT_EQ(*body.FindString("app_event_name"), "brave_first_open");
+  EXPECT_EQ(*body.FindString("gbraid"), kTestGbraid);
+  EXPECT_FALSE(body.FindString("app_version")->empty());
+  EXPECT_FALSE(body.FindString("os_version")->empty());
+  EXPECT_FALSE(body.FindString("sdk_version")->empty());
+}
+
+TEST_F(BraveReferralsServiceTest, AndroidFirstOpenThenSecondOpenOnNextRun) {
+  CreateReferralsService();
+  referrals_service_->Start();
+  referrals_service_->OnAndroidBraveReferrerReadyForTesting(kTestGbraid);
+  task_environment_.FastForwardBy(base::Minutes(1));
+  ASSERT_EQ(conversion_request_count_, 1u);
+
+  referrals_service_.reset();
+  CreateReferralsService();
+  referrals_service_->Start();
+  task_environment_.FastForwardBy(base::Minutes(1));
+
+  EXPECT_EQ(conversion_request_count_, 2u);
+  EXPECT_TRUE(pref_service_.GetString(kReferralAndroidGbraid).empty());
+
+  base::DictValue body = base::test::ParseJsonDict(conversion_request_body_);
+  EXPECT_EQ(*body.FindString("app_event_name"), "brave_second_open");
+  EXPECT_EQ(*body.FindString("gbraid"), kTestGbraid);
+}
+
+TEST_F(BraveReferralsServiceTest, AndroidFirstOpenDroppedWhenStatsDisabled) {
+  pref_service_.SetBoolean(kStatsReportingEnabled, false);
+
+  CreateReferralsService();
+  referrals_service_->Start();
+  referrals_service_->OnAndroidBraveReferrerReadyForTesting(kTestGbraid);
+  task_environment_.FastForwardBy(base::Minutes(1));
+
+  EXPECT_EQ(conversion_request_count_, 0u);
+  // Still stashed in case stats reporting is re-enabled before the next run.
+  EXPECT_EQ(pref_service_.GetString(kReferralAndroidGbraid), kTestGbraid);
+}
+
 TEST_F(BraveReferralsServiceTest, AndroidConversionSentOnFollowingRun) {
   pref_service_.SetString(kReferralAndroidGbraid, kTestGbraid);
 

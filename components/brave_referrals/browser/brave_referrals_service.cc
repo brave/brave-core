@@ -82,6 +82,12 @@ constexpr int kMaxReferralServerResponseSizeBytes = 1024 * 1024;
 // run.
 constexpr char kDefaultPromoCode[] = "BRV001";
 
+#if BUILDFLAG(IS_ANDROID)
+// Event names reported to the conversion endpoint.
+constexpr char kAndroidFirstOpenEventName[] = "brave_first_open";
+constexpr char kAndroidSecondOpenEventName[] = "brave_second_open";
+#endif
+
 namespace brave {
 
 namespace {
@@ -674,6 +680,10 @@ void BraveReferralsService::OnAndroidBraveReferrerReady(
     // The referrer is fetched once per install and can't be re-fetched, so
     // don't let a kill before the next scheduled flush lose it.
     pref_service_->CommitPendingWrite();
+    // Google Ads can only optimize towards second_open (or later events) if
+    // it has already seen a first_open, so report it immediately instead of
+    // waiting for the second_open call on the next run.
+    ReportAndroidConversion(gbraid, kAndroidFirstOpenEventName);
   }
   task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE, base::BindOnce(&ReadPromoCode, GetPromoCodeFileName()),
@@ -693,6 +703,14 @@ void BraveReferralsService::MaybeReportAndroidConversion() {
   pref_service_->ClearPref(kReferralAndroidGbraid);
   pref_service_->CommitPendingWrite();
 
+  ReportAndroidConversion(gbraid, kAndroidSecondOpenEventName);
+}
+
+void BraveReferralsService::ReportAndroidConversion(
+    const std::string& gbraid,
+    const std::string& app_event_name) {
+  DCheckCurrentlyOnUIThread();
+
   if (!pref_service_->GetBoolean(kStatsReportingEnabled)) {
     return;
   }
@@ -706,14 +724,15 @@ void BraveReferralsService::MaybeReportAndroidConversion() {
             "Attributes an Android install to the Play Store campaign that "
             "led to it."
           trigger:
-            "On the first Android startup following the one that received a "
-            "gbraid parameter from the Play Install Referrer."
+            "When the client detects a gbraid parameter from the Play "
+            "Install Referrer, and again on the following Android startup."
           data:
             "The gbraid parameter supplied by the Play Install Referrer, the "
-            "Brave version, the Android version and the Android SDK level."
+            "open event name, the Brave version, the Android version and the "
+            "Android SDK level."
           destination: OTHER
           destination_other: "Brave developers"
-          last_reviewed: "2026-08-27"
+          last_reviewed: "2026-11-20"
           user_data {
             type: HW_OS_INFO
             type: OTHER
@@ -729,7 +748,7 @@ void BraveReferralsService::MaybeReportAndroidConversion() {
         })");
 
   const GURL conversion_url(BuildConversionEndpoint(kBraveConversionPath));
-  const std::string payload = BuildConversionPayload(gbraid);
+  const std::string payload = BuildConversionPayload(gbraid, app_event_name);
 
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->method = "POST";
@@ -758,7 +777,8 @@ void BraveReferralsService::OnConversionLoadComplete(
 }
 
 std::string BraveReferralsService::BuildConversionPayload(
-    const std::string& gbraid) const {
+    const std::string& gbraid,
+    const std::string& app_event_name) const {
   int32_t os_major = 0;
   int32_t os_minor = 0;
   int32_t os_bugfix = 0;
@@ -766,7 +786,7 @@ std::string BraveReferralsService::BuildConversionPayload(
                                                &os_bugfix);
 
   base::DictValue root;
-  root.Set("app_event_name", "brave_second_open");
+  root.Set("app_event_name", app_event_name);
   root.Set("gbraid", gbraid);
   root.Set("app_version",
            version_info::GetBraveVersionWithoutChromiumMajorVersion());
