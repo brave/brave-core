@@ -146,7 +146,9 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   content::ContentBrowserClient::WebSocketOptions GetWebSocketOptions(
       content::RenderFrameHost* frame) override;
 
-  bool WillInterceptWebSocket(content::RenderFrameHost* frame) override;
+  bool WillInterceptWebSocket(
+      content::RenderFrameHost* frame,
+      content::BrowserContext* browser_context) override;
 
   void WillCreateWebTransport(
       int process_id,
@@ -258,6 +260,7 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   template <template <typename> class T>
   void CreateChromeWebSocket(
       content::RenderFrameHost* frame,
+      content::BrowserContext* browser_context,
       const GURL& url,
       const net::SiteForCookies& site_for_cookies,
       const std::optional<std::string>& user_agent,
