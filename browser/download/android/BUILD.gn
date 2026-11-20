@@ -28,3 +28,29 @@ generate_jni("jni_headers") {
   sources =
       [ "java/src/org/chromium/chrome/browser/download/BraveMimeUtils.java" ]
 }
+
+android_library("javatests") {
+  testonly = true
+
+  sources = [ "javatests/src/org/chromium/chrome/browser/download/BraveDownloadImageMetadataStripperTest.java" ]
+
+  deps = [
+    "//base:base_java",
+    "//base:base_java_test_support",
+    "//chrome/android:chrome_java",
+    "//chrome/android/javatests:chrome_test_java_helper",
+    "//chrome/browser/flags:java",
+    "//chrome/browser/tab:java",
+    "//chrome/test/android:chrome_java_integration_test_support",
+    "//chrome/test/android:chrome_java_test_support_common",
+    "//chrome/test/android:chrome_java_transit",
+    "//content/public/test/android:content_java_test_support",
+    "//net/android:net_java_test_support",
+    "//third_party/androidx:androidx_test_runner_java",
+    "//third_party/junit",
+    "//ui/android:ui_no_recycler_view_java",
+  ]
+
+  # Served by the EmbeddedTestServer and read back from disk by the tests.
+  data = [ "//brave/test/data/image_metadata_stripper/" ]
+}
