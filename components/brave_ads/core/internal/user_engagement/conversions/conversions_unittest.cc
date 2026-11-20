@@ -22,6 +22,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/test/conversions_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
+#include "url/gurl.h"
 
 // pnpm test brave_unit_tests --filter=BraveAds*
 
@@ -57,7 +58,8 @@ TEST_F(BraveAdsConversionsTest, DoNotCapConversionsWithinDifferentCampaigns) {
   base::RunLoop click_through_run_loop;
   VerifyOnDidConvertAdExpectation(ad_2, ConversionActionType::kClickThrough,
                                   click_through_run_loop.QuitClosure());
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
   view_through_run_loop.Run();
   click_through_run_loop.Run();
 }
@@ -78,7 +80,8 @@ TEST_F(BraveAdsConversionsTest, ConvertAdForMatchingCampaignConversion) {
   base::RunLoop run_loop;
   VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
                                   run_loop.QuitClosure());
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
   run_loop.Run();
 }
 
@@ -99,7 +102,8 @@ TEST_F(BraveAdsConversionsTest, DoNotCapConversionsWithinTheSameCampaign) {
   base::RunLoop view_through_run_loop;
   VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
                                   view_through_run_loop.QuitClosure());
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
   view_through_run_loop.Run();
 
   // A second, genuinely distinct ad event for the same campaign, e.g. the
@@ -111,7 +115,8 @@ TEST_F(BraveAdsConversionsTest, DoNotCapConversionsWithinTheSameCampaign) {
   base::RunLoop click_through_run_loop;
   VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
                                   click_through_run_loop.QuitClosure());
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
   click_through_run_loop.Run();
 }
 
@@ -132,7 +137,8 @@ TEST_F(BraveAdsConversionsTest, CapConversionsWithinTheSameCampaign) {
   base::RunLoop view_through_run_loop;
   VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
                                   view_through_run_loop.QuitClosure());
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
   view_through_run_loop.Run();
 
   // A second, genuinely distinct ad event for the same campaign should still
@@ -143,7 +149,8 @@ TEST_F(BraveAdsConversionsTest, CapConversionsWithinTheSameCampaign) {
   base::RunLoop click_through_run_loop;
   VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
                                   click_through_run_loop.QuitClosure());
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
   click_through_run_loop.Run();
 
   // A third, genuinely distinct ad event for the same campaign must be
@@ -153,7 +160,8 @@ TEST_F(BraveAdsConversionsTest, CapConversionsWithinTheSameCampaign) {
 
   // Act & Assert
   VerifyOnDidNotConvertAdExpectation();
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
 }
 
 TEST_F(BraveAdsConversionsTest, DoNotConvertTheSameViewedAdEventMoreThanOnce) {
@@ -171,12 +179,14 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertTheSameViewedAdEventMoreThanOnce) {
   base::RunLoop run_loop;
   VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
                                   run_loop.QuitClosure());
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
   run_loop.Run();
 
   // Act & Assert
   VerifyOnDidNotConvertAdExpectation();
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
 
   base::test::TestFuture<bool, AdEventList> test_future;
   test::GetAll(test_future.GetCallback<bool, const AdEventList&>());
@@ -200,12 +210,14 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertTheSameClickedAdEventMoreThanOnce) {
   base::RunLoop run_loop;
   VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kClickThrough,
                                   run_loop.QuitClosure());
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
   run_loop.Run();
 
   // Act & Assert
   VerifyOnDidNotConvertAdExpectation();
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
 
   base::test::TestFuture<bool, AdEventList> test_future;
   test::GetAll(test_future.GetCallback<bool, const AdEventList&>());
@@ -231,7 +243,8 @@ TEST_F(BraveAdsConversionsTest,
   base::RunLoop run_loop;
   VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kClickThrough,
                                   run_loop.QuitClosure());
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
   run_loop.Run();
 
   // Act & Assert
@@ -239,7 +252,8 @@ TEST_F(BraveAdsConversionsTest,
   // The click already converted, so the preceding viewed ad event must not
   // be allowed to convert as a view-through on a repeat check.
   VerifyOnDidNotConvertAdExpectation();
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
 }
 
 TEST_F(BraveAdsConversionsTest, ConvertClickAfterViewAlreadyConverted) {
@@ -257,7 +271,8 @@ TEST_F(BraveAdsConversionsTest, ConvertClickAfterViewAlreadyConverted) {
   base::RunLoop view_through_run_loop;
   VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
                                   view_through_run_loop.QuitClosure());
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
   view_through_run_loop.Run();
 
   // A click recorded without advancing the clock shares the view's exact
@@ -268,7 +283,8 @@ TEST_F(BraveAdsConversionsTest, ConvertClickAfterViewAlreadyConverted) {
   base::RunLoop click_through_run_loop;
   VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kClickThrough,
                                   click_through_run_loop.QuitClosure());
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
   click_through_run_loop.Run();
 }
 
@@ -289,7 +305,8 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedAdAfterTheSameAdWasDismissed) {
   base::RunLoop run_loop;
   VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
                                   run_loop.QuitClosure());
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
   run_loop.Run();
 }
 
@@ -313,7 +330,8 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertNonViewedOrClickedAds) {
 
   // Act & Assert
   VerifyOnDidNotConvertAdExpectation();
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
 }
 
 TEST_F(BraveAdsConversionsTest, DoNotConvertAdIfThereIsNoCampaignConversion) {
@@ -328,7 +346,8 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertAdIfThereIsNoCampaignConversion) {
 
   // Act & Assert
   VerifyOnDidNotConvertAdExpectation();
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -347,7 +366,8 @@ TEST_F(BraveAdsConversionsTest,
 
   // Act & Assert
   VerifyOnDidNotConvertAdExpectation();
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -367,7 +387,8 @@ TEST_F(BraveAdsConversionsTest,
   base::RunLoop run_loop;
   VerifyOnDidConvertAdExpectation(ad_1, ConversionActionType::kViewThrough,
                                   run_loop.QuitClosure());
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
   run_loop.Run();
 
   AdInfo ad_2 = ad_1;
@@ -378,7 +399,8 @@ TEST_F(BraveAdsConversionsTest,
 
   // Act & Assert
   VerifyOnDidNotConvertAdExpectation();
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
 }
 
 TEST_F(BraveAdsConversionsTest, DoNotConvertAdIfUrlPatternDoesNotMatch) {
@@ -396,7 +418,8 @@ TEST_F(BraveAdsConversionsTest, DoNotConvertAdIfUrlPatternDoesNotMatch) {
 
   // Act & Assert
   VerifyOnDidNotConvertAdExpectation();
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -417,7 +440,8 @@ TEST_F(BraveAdsConversionsTest,
   base::RunLoop run_loop;
   VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
                                   run_loop.QuitClosure());
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
   run_loop.Run();
 }
 
@@ -437,7 +461,8 @@ TEST_F(BraveAdsConversionsTest,
 
   // Act & Assert
   VerifyOnDidNotConvertAdExpectation();
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
 }
 
 TEST_F(BraveAdsConversionsTest,
@@ -460,7 +485,8 @@ TEST_F(BraveAdsConversionsTest,
   base::RunLoop run_loop;
   VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
                                   run_loop.QuitClosure());
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
   run_loop.Run();
 }
 
@@ -485,7 +511,206 @@ TEST_F(BraveAdsConversionsTest,
 
   // Act & Assert
   VerifyOnDidNotConvertAdExpectation();
-  conversions_->MaybeConvert(test::BuildDefaultConversionRedirectChain());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
+}
+
+TEST_F(BraveAdsConversionsTest,
+       ConvertTheSameClickedAdEventAgainAfterNavigatingAwayAndBack) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
+
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
+                                  /*use_random_uuids=*/true);
+  test::BuildAndSaveCampaignConversion(ad.campaign_id,
+                                       test::kMatchingUrlPattern,
+                                       /*observation_window=*/base::Days(30));
+  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
+                            mojom::ConfirmationType::kClicked});
+
+  base::RunLoop first_run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kClickThrough,
+                                  first_run_loop.QuitClosure());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
+  first_run_loop.Run();
+
+  // The tab navigates away from the matching URL pattern, e.g. back to the
+  // merchant's home page, then returns to the same page later and completes
+  // a genuinely separate purchase without clicking the ad again.
+  AdvanceClockBy(base::Days(1));
+  conversions_->MaybeConvert(test::kTabId,
+                             {GURL(test::kMismatchingUrlPattern)});
+
+  // Act & Assert
+  base::RunLoop second_run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kClickThrough,
+                                  second_run_loop.QuitClosure());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
+  second_run_loop.Run();
+}
+
+TEST_F(BraveAdsConversionsTest,
+       DoNotConvertTheSameClickedAdEventAgainWithoutNavigatingAway) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
+
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
+                                  /*use_random_uuids=*/true);
+  test::BuildAndSaveCampaignConversion(ad.campaign_id,
+                                       test::kMatchingUrlPattern,
+                                       /*observation_window=*/base::Days(30));
+  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
+                            mojom::ConfirmationType::kClicked});
+
+  base::RunLoop run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kClickThrough,
+                                  run_loop.QuitClosure());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
+  run_loop.Run();
+
+  // The tab refreshes the same matching page without ever navigating away,
+  // e.g. the merchant's thank you page, so this must not convert again.
+  AdvanceClockBy(base::Days(1));
+
+  // Act & Assert
+  VerifyOnDidNotConvertAdExpectation();
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
+}
+
+TEST_F(BraveAdsConversionsTest, ConvertTheSameClickedAdEventInADifferentTab) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
+
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
+                                  /*use_random_uuids=*/true);
+  test::BuildAndSaveCampaignConversion(ad.campaign_id,
+                                       test::kMatchingUrlPattern,
+                                       /*observation_window=*/base::Days(30));
+  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
+                            mojom::ConfirmationType::kClicked});
+
+  base::RunLoop first_run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kClickThrough,
+                                  first_run_loop.QuitClosure());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
+  first_run_loop.Run();
+
+  // Act & Assert
+  base::RunLoop second_run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kClickThrough,
+                                  second_run_loop.QuitClosure());
+  conversions_->MaybeConvert(test::kAnotherTabId,
+                             test::BuildDefaultConversionRedirectChain());
+  second_run_loop.Run();
+}
+
+TEST_F(BraveAdsConversionsTest, ConvertTheSameAdEventAgainAfterTabCloses) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
+
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
+                                  /*use_random_uuids=*/true);
+  test::BuildAndSaveCampaignConversion(ad.campaign_id,
+                                       test::kMatchingUrlPattern,
+                                       /*observation_window=*/base::Days(30));
+  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
+                            mojom::ConfirmationType::kClicked});
+
+  base::RunLoop first_run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kClickThrough,
+                                  first_run_loop.QuitClosure());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
+  first_run_loop.Run();
+
+  ads_client_notifier_.NotifyDidCloseTab(test::kTabId);
+
+  // Act & Assert
+  base::RunLoop second_run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kClickThrough,
+                                  second_run_loop.QuitClosure());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
+  second_run_loop.Run();
+}
+
+TEST_F(BraveAdsConversionsTest,
+       ConvertTheSameClickedAdEventAgainAfterNavigatingToADifferentCampaign) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kConversionsFeature);
+
+  const AdInfo ad_1 = test::BuildAd(mojom::AdType::kNotificationAd,
+                                    /*use_random_uuids=*/true);
+  test::BuildAndSaveCampaignConversion(ad_1.campaign_id,
+                                       test::kMatchingUrlPattern,
+                                       /*observation_window=*/base::Days(30));
+  test::RecordAdEvents(ad_1, {mojom::ConfirmationType::kServedImpression,
+                              mojom::ConfirmationType::kClicked});
+
+  const AdInfo ad_2 = test::BuildAd(mojom::AdType::kSearchResultAd,
+                                    /*use_random_uuids=*/true);
+  test::BuildAndSaveCampaignConversion(ad_2.campaign_id,
+                                       test::kAnotherMatchingUrlPattern,
+                                       /*observation_window=*/base::Days(30));
+  test::RecordAdEvents(ad_2, {mojom::ConfirmationType::kServedImpression,
+                              mojom::ConfirmationType::kClicked});
+
+  base::RunLoop first_run_loop;
+  VerifyOnDidConvertAdExpectation(ad_1, ConversionActionType::kClickThrough,
+                                  first_run_loop.QuitClosure());
+  conversions_->MaybeConvert(test::kTabId, {GURL("https://foo.com/bar")});
+  first_run_loop.Run();
+
+  base::RunLoop second_run_loop;
+  VerifyOnDidConvertAdExpectation(ad_2, ConversionActionType::kClickThrough,
+                                  second_run_loop.QuitClosure());
+  conversions_->MaybeConvert(test::kTabId,
+                             {GURL("https://qux.com/quux/corge")});
+  second_run_loop.Run();
+
+  // Act & Assert
+  base::RunLoop third_run_loop;
+  VerifyOnDidConvertAdExpectation(ad_1, ConversionActionType::kClickThrough,
+                                  third_run_loop.QuitClosure());
+  conversions_->MaybeConvert(test::kTabId, {GURL("https://foo.com/bar")});
+  third_run_loop.Run();
+}
+
+TEST_F(
+    BraveAdsConversionsTest,
+    DoNotConvertAfterNavigatingAwayAndBackOnceCampaignConversionCapIsReached) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      kConversionsFeature, {{"campaign_conversion_cap", "1"}});
+
+  const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,
+                                  /*use_random_uuids=*/true);
+  test::BuildAndSaveCampaignConversion(ad.campaign_id,
+                                       test::kMatchingUrlPattern,
+                                       /*observation_window=*/base::Days(30));
+  test::RecordAdEvents(ad, {mojom::ConfirmationType::kServedImpression,
+                            mojom::ConfirmationType::kViewedImpression});
+
+  base::RunLoop run_loop;
+  VerifyOnDidConvertAdExpectation(ad, ConversionActionType::kViewThrough,
+                                  run_loop.QuitClosure());
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
+  run_loop.Run();
+
+  conversions_->MaybeConvert(test::kTabId,
+                             {GURL(test::kMismatchingUrlPattern)});
+
+  // Act & Assert
+  VerifyOnDidNotConvertAdExpectation();
+  conversions_->MaybeConvert(test::kTabId,
+                             test::BuildDefaultConversionRedirectChain());
 }
 
 }  // namespace brave_ads
