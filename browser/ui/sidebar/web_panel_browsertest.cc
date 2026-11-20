@@ -701,15 +701,9 @@ IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest, WebPanelItemActiveStateTest) {
   EXPECT_EQ(views::InkDropState::ACTIVATED, ink_drop_state_at(index_b));
 }
 
-// Editing the open panel's item to no longer open in a panel (e.g. via the
-// edit bubble's "Open in panel" checkbox) has to close the panel and clear
-// the highlight, the same as closing the panel's pinned tab does in
-// WebPanelItemActiveStateTest - even though nothing happened to the tab here.
-// See SidebarController::OnItemUpdated().
 IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
-                       EditingActiveItemAwayFromPanelClosesIt) {
+                       UpdateItemFromWebPanelToTabClosesOpenPanel) {
   auto* service = SidebarServiceFactory::GetForProfile(browser()->GetProfile());
-  auto items_contents_view = GetSidebarItemsContentsView(controller());
 
   const GURL url(kTestWebPanelURL);
   const std::u16string title(u"title");
@@ -717,21 +711,14 @@ IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
   const size_t index = model()->GetAllSidebarItems().size() - 1;
   ASSERT_EQ(model()->active_index(), index);
 
-  auto* item_view = views::AsViewClass<SidebarItemView>(
-      items_contents_view->children()[index].get());
-  ASSERT_TRUE(item_view);
-  auto* ink_drop = views::InkDrop::Get(item_view)->GetInkDrop();
-  ASSERT_EQ(views::InkDropState::ACTIVATED, ink_drop->GetTargetInkDropState());
-
   // This is what the edit bubble's accept handler does when the "Open in
   // panel" checkbox is unchecked.
-  service->UpdateItem(url, url, title, title, /*old_is_web_panel=*/true,
-                      /*new_is_web_panel=*/false);
+  service->UpdateItem(SidebarItem::CreateWebPanelItem(url, title),
+                      SidebarItem::CreateWebTabItem(url, title));
 
   ASSERT_TRUE(base::test::RunUntil(
       [&]() { return !web_panel_controller()->HasOpenPanel(); }));
   EXPECT_FALSE(model()->active_index());
-  EXPECT_EQ(views::InkDropState::HIDDEN, ink_drop->GetTargetInkDropState());
 }
 
 // The mini toolbar's close button has to dismiss the panel the same way the

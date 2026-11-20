@@ -72,13 +72,10 @@ class SidebarService : public KeyedService {
   void MoveItem(size_t from, size_t to);
 
   // Only non-builtin type is editable.
-  // URL acts like an id for each item.
-  void UpdateItem(const GURL& old_url,
-                  const GURL& new_url,
-                  std::u16string_view old_title,
-                  std::u16string_view new_title,
-                  bool old_is_web_panel,
-                  bool new_is_web_panel);
+  // `old_item.url` acts like an id to find the item to update - it isn't
+  // otherwise required to be the exact, current stored item. Only `url`,
+  // `title` and `panel_type` are applied from `new_item`.
+  void UpdateItem(const SidebarItem& old_item, const SidebarItem& new_item);
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);

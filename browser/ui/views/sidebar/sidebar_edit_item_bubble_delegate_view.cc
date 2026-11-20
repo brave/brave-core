@@ -185,18 +185,19 @@ void SidebarEditItemBubbleDelegateView::UpdateItem() {
     new_url = target_item_.url;
   }
 
-  const bool old_is_web_panel =
-      target_item_.panel_type == sidebar::SidebarItem::PanelType::kWebPanel;
+  sidebar::SidebarItem new_item = target_item_;
+  new_item.url = new_url;
+  new_item.title = new_title;
   // No checkbox means the feature is off, not that the user chose "tab" -
-  // keep the item's stored type as-is so a plain title/url edit doesn't wipe
+  // leave the item's stored type as-is so a plain title/url edit doesn't wipe
   // out a kWebPanel item's type while the feature happens to be disabled.
-  const bool new_is_web_panel = open_in_panel_checkbox_
-                                    ? open_in_panel_checkbox_->GetChecked()
-                                    : old_is_web_panel;
+  if (open_in_panel_checkbox_) {
+    new_item.panel_type = open_in_panel_checkbox_->GetChecked()
+                              ? sidebar::SidebarItem::PanelType::kWebPanel
+                              : sidebar::SidebarItem::PanelType::kNone;
+  }
 
-  GetSidebarService(browser_)->UpdateItem(target_item_.url, new_url,
-                                          target_item_.title, new_title,
-                                          old_is_web_panel, new_is_web_panel);
+  GetSidebarService(browser_)->UpdateItem(target_item_, new_item);
 }
 
 void SidebarEditItemBubbleDelegateView::UpdateOKButtonEnabledState() {
