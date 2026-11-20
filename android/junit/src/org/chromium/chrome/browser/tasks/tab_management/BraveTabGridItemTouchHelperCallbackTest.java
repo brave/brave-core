@@ -38,6 +38,7 @@ import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tasks.tab_management.TabListMediator.TabListLayoutType;
+import org.chromium.components.tab_groups.TabGroupId;
 import org.chromium.ui.modelutil.PropertyModel;
 import org.chromium.ui.modelutil.SimpleRecyclerViewAdapter;
 
@@ -104,7 +105,7 @@ public class BraveTabGridItemTouchHelperCallbackTest {
 
         createCallback().onMove(mRecyclerView, mFromViewHolder, mToViewHolder);
 
-        verify(mTabModel).moveGroupToIndex(GROUP_ID, 1);
+        verify(mTabModel).moveGroupToIndex(TabGroupId.fromRawToken(GROUP_ID), 1);
         verify(mTabModel, never()).moveTab(anyInt(), anyInt());
     }
 
@@ -127,7 +128,7 @@ public class BraveTabGridItemTouchHelperCallbackTest {
         startDrag(callback);
         callback.onMove(mRecyclerView, mFromViewHolder, mToViewHolder);
 
-        verify(mTabModel).moveGroupToIndex(GROUP_ID, 1);
+        verify(mTabModel).moveGroupToIndex(TabGroupId.fromRawToken(GROUP_ID), 1);
     }
 
     @Test
