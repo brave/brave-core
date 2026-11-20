@@ -106,10 +106,12 @@ TEST(EthereumKeyringUnitTest, Accounts) {
 TEST(EthereumKeyringUnitTest, SignTransaction) {
   // Specific signature check is in eth_transaction_unittest.cc
   EthereumKeyring keyring({}, base::BindRepeating(IsAddressAllowed));
-  EthTransaction tx = *EthTransaction::FromTxData(
+  auto maybe_tx = EthTransaction::FromTxData(
       mojom::TxData::New("0x1", "0x09", "0x4a817c800", "0x5208",
                          "0x3535353535353535353535353535353535353535",
                          "0x0de0b6b3a7640000", std::vector<uint8_t>()));
+  ASSERT_TRUE(maybe_tx);
+  EthTransaction tx = *maybe_tx;
   keyring.SignTransaction("0xDEADBEEFdeadbeefdeadbeefdeadbeefDEADBEEF", &tx);
   EXPECT_FALSE(tx.IsSigned());
 
@@ -139,8 +141,9 @@ TEST(EthereumKeyringUnitTest, SignMessage) {
       "6969696969696969696969696969696969696969696969696969696969696969",
       private_key));
 
-  EthereumKeyring keyring(*MnemonicToSeed(kMnemonic),
-                          base::BindRepeating(IsAddressAllowed));
+  auto seed = MnemonicToSeed(kMnemonic);
+  ASSERT_TRUE(seed);
+  EthereumKeyring keyring(*seed, base::BindRepeating(IsAddressAllowed));
   auto imported_address = keyring.ImportAccount(private_key);
   ASSERT_TRUE(imported_address);
   const std::string address = *imported_address;
@@ -242,10 +245,12 @@ TEST(EthereumKeyringUnitTest, ImportedAccounts) {
                                    message, 0, false));
 
   // Sign Transaction
-  EthTransaction tx = *EthTransaction::FromTxData(
+  auto maybe_tx = EthTransaction::FromTxData(
       mojom::TxData::New("0x1", "0x09", "0x4a817c800", "0x5208",
                          "0x3535353535353535353535353535353535353535",
                          "0x0de0b6b3a7640000", std::vector<uint8_t>()));
+  ASSERT_TRUE(maybe_tx);
+  EthTransaction tx = *maybe_tx;
   keyring.SignTransaction("0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB", &tx);
   EXPECT_FALSE(tx.IsSigned());
 
@@ -306,9 +311,10 @@ TEST(EthereumKeyringUnitTest, ImportAccount_RestrictedAddress) {
   auto* registry = BlockchainRegistry::GetInstance();
   CHECK(registry);
 
+  auto seed = MnemonicToSeed(kMnemonic);
+  ASSERT_TRUE(seed);
   EthereumKeyring keyring(
-      *MnemonicToSeed(kMnemonic),
-      base::BindLambdaForTesting([=](const std::string& address) {
+      *seed, base::BindLambdaForTesting([=](const std::string& address) {
         return !registry->IsRestrictedAddress(address);
       }));
 
