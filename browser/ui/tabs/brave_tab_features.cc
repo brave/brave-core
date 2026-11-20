@@ -335,7 +335,7 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
   history_embeddings_tab_helper_ =
-      brave_history_embeddings::HistoryEmbeddingsTabHelper::MaybeCreate(tab);
+      history_embeddings::HistoryEmbeddingsTabHelper::MaybeCreate(tab);
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)

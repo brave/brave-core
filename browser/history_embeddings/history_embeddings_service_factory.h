@@ -18,7 +18,7 @@
 
 class Profile;
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
 class HistoryEmbeddingsService;
 
@@ -39,6 +39,6 @@ class HistoryEmbeddingsServiceFactory : public ProfileKeyedServiceFactory {
       content::BrowserContext* context) const override;
 };
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings
 
 #endif  // BRAVE_BROWSER_HISTORY_EMBEDDINGS_HISTORY_EMBEDDINGS_SERVICE_FACTORY_H_

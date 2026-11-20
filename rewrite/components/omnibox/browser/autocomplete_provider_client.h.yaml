@@ -8,9 +8,9 @@ substitutions:
     add_before_line:
       line: 'class TemplateURLService;'
       code: |
-        namespace brave_history_embeddings {
+        namespace history_embeddings {
         class HistoryEmbeddingsSearch;
-        }  // namespace brave_history_embeddings
+        }  // namespace history_embeddings
 
   - description: |
       Let providers reach Brave's semantic history search.
@@ -19,5 +19,5 @@ substitutions:
     add_to_public:
       class_name: AutocompleteProviderClient
       code: |-
-        virtual brave_history_embeddings::HistoryEmbeddingsSearch*
+        virtual history_embeddings::HistoryEmbeddingsSearch*
         GetBraveHistoryEmbeddingsSearch();

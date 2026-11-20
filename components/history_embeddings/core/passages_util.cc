@@ -18,7 +18,7 @@
 #include "components/os_crypt/async/common/encryptor.h"
 #include "third_party/zlib/google/compression_utils.h"
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
 std::vector<uint8_t> PassagesProtoToBlob(
     const proto::PassagesValue& passages_value,
@@ -51,9 +51,9 @@ std::vector<uint8_t> PassagesProtoToBlob(
   return result;
 }
 
-std::optional<brave_history_embeddings::proto::PassagesValue>
-PassagesBlobToProto(base::span<const uint8_t> passages_blob,
-                    const os_crypt_async::Encryptor& encryptor) {
+std::optional<history_embeddings::proto::PassagesValue> PassagesBlobToProto(
+    base::span<const uint8_t> passages_blob,
+    const os_crypt_async::Encryptor& encryptor) {
   if (passages_blob.empty()) {
     return std::nullopt;
   }
@@ -100,4 +100,4 @@ PassagesBlobToProto(base::span<const uint8_t> passages_blob,
   return proto;
 }
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings

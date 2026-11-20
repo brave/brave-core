@@ -124,8 +124,9 @@ void TabSearchPageHandler::GetTabsForAIEngine(
   if (MaySendPageContent(profile)) {
     auto* history_service = HistoryServiceFactory::GetForProfile(
         profile, ServiceAccessType::EXPLICIT_ACCESS);
-    auto* embeddings_service = brave_history_embeddings::
-        HistoryEmbeddingsServiceFactory::GetForProfile(profile);
+    auto* embeddings_service =
+        history_embeddings::HistoryEmbeddingsServiceFactory::GetForProfile(
+            profile);
     // Passages come from the test override, or from the two services.
     if (tab_passages_fetcher_for_testing_ ||
         (history_service && embeddings_service)) {
@@ -139,7 +140,7 @@ void TabSearchPageHandler::GetTabsForAIEngine(
             FROM_HERE, base::BindOnce(tab_passages_fetcher_for_testing_, urls,
                                       std::move(on_ready)));
       } else {
-        brave_history_embeddings::GetPassagesForUrls(
+        history_embeddings::GetPassagesForUrls(
             history_service, embeddings_service->AsWeakPtr(), urls,
             ai_chat::kMaxPassagesPerTab, ai_chat::kMaxPassageBytes,
             std::move(on_ready), &query_url_task_tracker_);
@@ -168,8 +169,7 @@ bool TabSearchPageHandler::MaySendPageContent(Profile* profile) {
   return !profile->IsOffTheRecord() && ai_chat::features::IsAIChatEnabled() &&
          profile->GetPrefs()->GetBoolean(
              ai_chat::prefs::kBraveAIChatTabOrganizationSendPageContent) &&
-         brave_history_embeddings::IsHistoryEmbeddingsEnabledForProfile(
-             profile);
+         history_embeddings::IsHistoryEmbeddingsEnabledForProfile(profile);
 }
 
 void TabSearchPageHandler::OnTabPassagesReady(
@@ -449,16 +449,14 @@ void TabSearchPageHandler::SearchTabsByContent(
   Profile* profile = Profile::FromWebUI(web_ui_);
   // The history-embeddings setting is off for this profile, so there's
   // no on-device ranker to consult.
-  if (!brave_history_embeddings::IsHistoryEmbeddingsEnabledForProfile(
-          profile)) {
+  if (!history_embeddings::IsHistoryEmbeddingsEnabledForProfile(profile)) {
     std::move(callback).Run({});
     return;
   }
-  base::WeakPtr<brave_history_embeddings::HistoryEmbeddingsSearch>
-      embeddings_search;
+  base::WeakPtr<history_embeddings::HistoryEmbeddingsSearch> embeddings_search;
   if (embeddings_search_for_testing_) {
     embeddings_search = *embeddings_search_for_testing_;
-  } else if (auto* service = brave_history_embeddings::
+  } else if (auto* service = history_embeddings::
                  HistoryEmbeddingsServiceFactory::GetForProfile(profile)) {
     embeddings_search = service->AsWeakPtr();
   }
@@ -473,13 +471,13 @@ void TabSearchPageHandler::SearchTabsByContent(
 
   // tab_search only needs the matched tab_ids; drop the rest of the metadata
   // the util carries for its other consumer.
-  brave_history_embeddings::SearchOpenTabsByContent(
+  history_embeddings::SearchOpenTabsByContent(
       profile, history_service, std::move(embeddings_search), query,
       base::BindOnce(
           [](SearchTabsByContentCallback callback,
-             std::vector<brave_history_embeddings::OpenTabInfo> tabs) {
-            std::move(callback).Run(base::ToVector(
-                tabs, &brave_history_embeddings::OpenTabInfo::tab_id));
+             std::vector<history_embeddings::OpenTabInfo> tabs) {
+            std::move(callback).Run(
+                base::ToVector(tabs, &history_embeddings::OpenTabInfo::tab_id));
           },
           std::move(callback)),
       &query_url_task_tracker_);

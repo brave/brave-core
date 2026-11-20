@@ -25,7 +25,7 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
 // The setting is captured at profile setup, so each test picks the value the
 // embedding services would have been built with before building `profile_`.
@@ -205,4 +205,4 @@ TEST_F(BraveHistoryEmbeddingsStatusTest,
 
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings

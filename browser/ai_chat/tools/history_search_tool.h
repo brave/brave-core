@@ -32,7 +32,7 @@ namespace internal {
 // returned by HistorySearchTool. Exposed for unit tests.
 std::string BuildHistorySearchResultJson(
     const std::string& query,
-    const brave_history_embeddings::SearchResult& result,
+    const history_embeddings::SearchResult& result,
     bool include_all_passages);
 
 }  // namespace internal
@@ -66,8 +66,7 @@ class HistorySearchTool : public Tool {
   // Tests inject a fake search interface to bypass the factory lookup and
   // the per-profile enablement gate. The pointer must outlive any UseTool
   // call made on this instance.
-  void SetSearchForTesting(
-      brave_history_embeddings::HistoryEmbeddingsSearch* search);
+  void SetSearchForTesting(history_embeddings::HistoryEmbeddingsSearch* search);
 
  private:
   // SearchResultCallback is a RepeatingCallback but is expected to fire
@@ -76,11 +75,11 @@ class HistorySearchTool : public Tool {
   // UseToolCallback, any further invocations are no-ops.
   void OnSearchResult(UseToolCallback* callback,
                       bool include_all_passages,
-                      brave_history_embeddings::SearchResult result);
+                      history_embeddings::SearchResult result);
 
   raw_ptr<Profile> profile_;
-  raw_ptr<brave_history_embeddings::HistoryEmbeddingsSearch>
-      search_for_testing_ = nullptr;
+  raw_ptr<history_embeddings::HistoryEmbeddingsSearch> search_for_testing_ =
+      nullptr;
   bool user_has_granted_permission_ = false;
 
   base::WeakPtrFactory<HistorySearchTool> weak_ptr_factory_{this};

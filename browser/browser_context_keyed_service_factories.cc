@@ -247,7 +247,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   brave_search::BackupResultsServiceFactory::GetInstance();
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
-  brave_history_embeddings::HistoryEmbeddingsServiceFactory::GetInstance();
+  history_embeddings::HistoryEmbeddingsServiceFactory::GetInstance();
 #endif
 
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)

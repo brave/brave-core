@@ -32,7 +32,7 @@
 #include "content/public/browser/web_contents.h"
 #include "url/gurl.h"
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
 namespace {
 
@@ -179,4 +179,4 @@ void SearchOpenTabsByContent(
       task_tracker);
 }
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings

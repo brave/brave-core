@@ -23,7 +23,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
 // The Semantic history search setting is live, but the embeddings service is
 // built from it once at profile setup, so the two can disagree until the
@@ -224,4 +224,4 @@ IN_PROC_BROWSER_TEST_F(BraveHistoryUIEmbeddingsBrowserTest,
   EXPECT_FALSE(SearchEnabled());
 }
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings

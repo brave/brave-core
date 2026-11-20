@@ -28,7 +28,7 @@
 #include "sql/meta_table.h"
 #include "sql/transaction.h"
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
 // These database versions should roll together unless we develop migrations.
 constexpr int kLowestSupportedDatabaseVersion = 1;
@@ -783,4 +783,4 @@ bool SqlDatabase::InsertOrReplaceEmbeddings(const UrlData& url_embeddings) {
   return statement.Run();
 }
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings

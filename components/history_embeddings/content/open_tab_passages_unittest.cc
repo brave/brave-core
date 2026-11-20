@@ -29,7 +29,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
 namespace {
 
@@ -265,4 +265,4 @@ TEST_F(OpenTabPassagesTest, ServiceShutDownDuringUrlLookup) {
   EXPECT_EQ(future.Take(), (std::vector<std::vector<std::string>>{{}}));
 }
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings

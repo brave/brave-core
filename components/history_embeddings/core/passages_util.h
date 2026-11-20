@@ -17,7 +17,7 @@
 #include "brave/components/history_embeddings/proto/history_embeddings.pb.h"
 #include "components/os_crypt/async/common/encryptor.h"
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
 // Compresses and encrypts `passages_value` to a bytestring blob suitable for
 // storage in the database. Returns an empty vector on error.
@@ -32,6 +32,6 @@ std::optional<proto::PassagesValue> PassagesBlobToProto(
     base::span<const uint8_t> passages_blob,
     const os_crypt_async::Encryptor& encryptor);
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings
 
 #endif  // BRAVE_COMPONENTS_HISTORY_EMBEDDINGS_CORE_PASSAGES_UTIL_H_

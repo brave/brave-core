@@ -27,7 +27,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
 using passage_embeddings::Embedding;
 
@@ -457,7 +457,7 @@ TEST(HistoryEmbeddingsVectorDatabaseTest, WordMatchBoostProtoDataTest) {
   EXPECT_TRUE(base::ReadFileToString(GetWordMatchBoostTestDataPath(),
                                      &test_proto_content));
 
-  brave_history_embeddings::proto::WordMatchBoostTest test;
+  history_embeddings::proto::WordMatchBoostTest test;
   EXPECT_TRUE(test.ParseFromString(test_proto_content));
 
   absl::flat_hash_set<uint32_t> stop_words_hashes;
@@ -509,4 +509,4 @@ TEST(HistoryEmbeddingsVectorDatabaseTest, WordMatchBoostProtoDataTest) {
   }
 }
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings

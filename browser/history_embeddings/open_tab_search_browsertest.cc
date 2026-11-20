@@ -40,7 +40,7 @@
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
 class OpenTabSearchBrowserTest : public InProcessBrowserTest {
  public:
@@ -287,4 +287,4 @@ IN_PROC_BROWSER_TEST_F(OpenTabSearchBrowserTest, SameUrlYieldsEveryTab) {
   EXPECT_THAT(tab_ids, testing::UnorderedElementsAre(tab_id_a, tab_id_b));
 }
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings

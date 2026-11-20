@@ -24,7 +24,7 @@ class HistoryService;
 
 class Profile;
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
 class HistoryEmbeddingsSearch;
 
@@ -63,6 +63,6 @@ void SearchOpenTabsByContent(
     RankedOpenTabsCallback callback,
     base::CancelableTaskTracker* task_tracker);
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings
 
 #endif  // BRAVE_BROWSER_HISTORY_EMBEDDINGS_OPEN_TAB_SEARCH_H_

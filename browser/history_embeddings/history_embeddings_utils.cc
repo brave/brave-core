@@ -12,7 +12,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
 bool IsHistoryEmbeddingsFeatureEnabled() {
   // The Local AI master switch lives in local state. Unit tests may run
@@ -32,4 +32,4 @@ bool IsHistoryEmbeddingsEnabledForProfile(Profile* profile) {
              local_ai::prefs::kBraveHistoryEmbeddingsEnabled);
 }
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings

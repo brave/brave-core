@@ -71,7 +71,7 @@ class HistorySearchToolBrowserTest
  public:
   HistorySearchToolBrowserTest() {
     scoped_feature_list_.InitAndEnableFeature(
-        brave_history_embeddings::kHistoryEmbeddings);
+        history_embeddings::kHistoryEmbeddings);
   }
 
   void SetUpOnMainThread() override {

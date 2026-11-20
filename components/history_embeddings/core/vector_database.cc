@@ -22,7 +22,7 @@
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 #include "third_party/farmhash/src/src/farmhash.h"
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
 uint32_t HashString(std::string_view str) {
   return util::Fingerprint32(str);
@@ -488,4 +488,4 @@ void EraseNonAsciiCharacters(std::vector<std::string>& passages) {
   }
 }
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings

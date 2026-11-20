@@ -29,7 +29,7 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
 using passage_embeddings::Embedding;
 using testing::AllOf;
@@ -659,4 +659,4 @@ TEST_F(HistoryEmbeddingsSqlDatabaseTest, OldVisitsAreExpired) {
       base::PathExists(history_dir_.GetPath().Append(kHistoryEmbeddingsName)));
 }
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings

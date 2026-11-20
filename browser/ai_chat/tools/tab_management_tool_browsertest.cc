@@ -898,7 +898,7 @@ class TabManagementToolPageContentBrowserTest
  public:
   TabManagementToolPageContentBrowserTest() {
     scoped_features_.InitAndEnableFeature(
-        brave_history_embeddings::kHistoryEmbeddings);
+        history_embeddings::kHistoryEmbeddings);
   }
 
   void SetUpOnMainThread() override {

@@ -21,7 +21,7 @@
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
 namespace {
 
@@ -126,4 +126,4 @@ TEST_F(HistoryEmbeddingsPassagesUtilTest, ProtoToBlobAndBack) {
   }
 }
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings

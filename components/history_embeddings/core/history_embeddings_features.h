@@ -15,7 +15,7 @@
 #include "base/functional/callback.h"
 #include "base/metrics/field_trial_params.h"
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
 BASE_DECLARE_FEATURE(kHistoryEmbeddings);
 
@@ -107,6 +107,6 @@ const FeatureParameters& GetFeatureParameters();
 // done in tests.
 void SetFeatureParametersForTesting(FeatureParameters parameters);
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings
 
 #endif  // BRAVE_COMPONENTS_HISTORY_EMBEDDINGS_CORE_HISTORY_EMBEDDINGS_FEATURES_H_

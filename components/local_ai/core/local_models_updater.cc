@@ -106,8 +106,7 @@ class LocalModelsComponentRegistrar {
 
   bool IsEnabled() const {
     return cus_ && ShouldInstallLocalModels(pref_change_registrar_.prefs()) &&
-           base::FeatureList::IsEnabled(
-               brave_history_embeddings::kHistoryEmbeddings);
+           base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings);
   }
 
   void Sync() {

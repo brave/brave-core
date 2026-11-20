@@ -180,24 +180,24 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
     Profile* profile = Profile::FromWebUI(web_ui_);
     // The history-embeddings setting is off for this profile, so there's no
     // on-device ranker to consult.
-    if (!brave_history_embeddings::IsHistoryEmbeddingsEnabledForProfile(
-            profile)) {
+    if (!history_embeddings::IsHistoryEmbeddingsEnabledForProfile(profile)) {
       std::move(callback).Run(std::nullopt);
       return;
     }
-    auto* embeddings_search = brave_history_embeddings::
-        HistoryEmbeddingsServiceFactory::GetForProfile(profile);
+    auto* embeddings_search =
+        history_embeddings::HistoryEmbeddingsServiceFactory::GetForProfile(
+            profile);
     auto* history_service = HistoryServiceFactory::GetForProfile(
         profile, ServiceAccessType::EXPLICIT_ACCESS);
     if (!embeddings_search || !history_service) {
       std::move(callback).Run(std::nullopt);
       return;
     }
-    brave_history_embeddings::SearchOpenTabsByContent(
+    history_embeddings::SearchOpenTabsByContent(
         profile, history_service, embeddings_search->AsWeakPtr(), query,
         base::BindOnce(
             [](SearchForTabsCallback callback,
-               std::vector<brave_history_embeddings::OpenTabInfo> tabs) {
+               std::vector<history_embeddings::OpenTabInfo> tabs) {
               std::vector<ai_chat::mojom::TabDataPtr> results;
               results.reserve(tabs.size());
               for (auto& tab : tabs) {

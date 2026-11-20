@@ -28,8 +28,8 @@ export function getHtml(this: BraveHistoryEmbeddingsElement) {
             <h2 class="heading results-heading">
               <cr-icon
                 icon="${this.webuiRoundedIconsEnabled_
-                  ? 'brave-history-embeddings:astrophotography-mode'
-                  : 'brave-history-embeddings:heading-old'}"
+                  ? 'history-embeddings:astrophotography-mode'
+                  : 'history-embeddings:heading-old'}"
               >
               </cr-icon>
               ${this.getHeadingText_()}

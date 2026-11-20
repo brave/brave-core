@@ -37,12 +37,11 @@ class BraveHistoryEmbeddingsProvider : public HistoryProvider {
   ~BraveHistoryEmbeddingsProvider() override;
 
   // Callback for querying `HistoryEmbeddingsService::Search()`.
-  void OnReceivedSearchResult(
-      brave_history_embeddings::SearchResult search_result);
+  void OnReceivedSearchResult(history_embeddings::SearchResult search_result);
 
   // Creates a `HISTORY_EMBEDDINGS` match.
   AutocompleteMatch CreateMatch(
-      const brave_history_embeddings::ScoredUrlRow& scored_url_row);
+      const history_embeddings::ScoredUrlRow& scored_url_row);
 
   // Assigned in `Start()`, accessed in `OnReceivedSearchResult()` which is only
   // called asyncly after `Start()`, so it's never null when accessed.

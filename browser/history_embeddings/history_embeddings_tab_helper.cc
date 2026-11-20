@@ -30,7 +30,7 @@
 #include "content/public/browser/weak_document_ptr.h"
 #include "content/public/browser/web_contents.h"
 
-namespace brave_history_embeddings {
+namespace history_embeddings {
 
 // static
 std::unique_ptr<HistoryEmbeddingsTabHelper>
@@ -302,4 +302,4 @@ history::HistoryService* HistoryEmbeddingsTabHelper::GetHistoryService() {
       profile, ServiceAccessType::IMPLICIT_ACCESS);
 }
 
-}  // namespace brave_history_embeddings
+}  // namespace history_embeddings
