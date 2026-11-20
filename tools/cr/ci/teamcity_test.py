@@ -414,6 +414,87 @@ class FailedBuildsTest(unittest.TestCase):
         self.assertEqual(build.name, 'Lint')
         self.assertEqual(build.kind, Kind.TESTS)
 
+    def test_reads_a_chain_that_failed_to_start(self):
+        """TeamCity's default filter hides builds that failed to start, and
+        with them a chain whose first build couldn't check out."""
+        cli = FakeCli(
+            {
+                '/app/rest/builds?locator=snapshotDependency:(to:(id:40)': (
+                    _builds(
+                        {
+                            'id': 41,
+                            'buildTypeId': 'Mac_Init',
+                            'statusText': 'Error while applying patch',
+                            'failedToStart': True,
+                        },
+                        {
+                            'id': 42,
+                            'buildTypeId': 'Mac_Build',
+                            'statusText': 'Snapshot dependency failed to start',
+                            'failedToStart': True,
+                        },
+                    )
+                ),
+                '/app/rest/problemOccurrences?locator=build:(id:41)': {
+                    'problemOccurrence': [
+                        {
+                            'type': 'UPDATE_SOURCES',
+                            'details': 'Failed to perform checkout on agent',
+                        }
+                    ]
+                },
+                '/app/rest/problemOccurrences?locator=build:(id:42)': {
+                    'problemOccurrence': [{'type': 'SNAPSHOT_DEPENDENCY_ERROR'}]
+                },
+                '/app/rest/testOccurrences': {},
+                **_log_messages(
+                    41, ['git checkout', 'Process exited with code 128']
+                ),
+            }
+        )
+        (build,) = teamcity.TeamCityCi(run=cli).failed_builds(_url(40))
+        self.assertEqual(build.name, 'Mac_Init')
+        self.assertEqual(build.kind, Kind.INFRA)
+        self.assertEqual(
+            build.problems, ('Failed to perform checkout on agent',)
+        )
+        (chain,) = [
+            cmd[-1] for cmd, _ in cli.calls if 'snapshotDependency' in cmd[-1]
+        ]
+        self.assertIn('defaultFilter:false', chain)
+
+    def test_an_aggregate_left_with_nothing_is_reported_itself(self):
+        cli = FakeCli(
+            {
+                '/app/rest/builds?locator=': {},
+                '/app/rest/builds/id:50': {
+                    'id': 50,
+                    'buildTypeId': 'Mac_Aggregate',
+                    'statusText': 'Build chain finished (failed: 4)',
+                    'failedToStart': True,
+                },
+                '/app/rest/problemOccurrences': {
+                    'problemOccurrence': [
+                        {
+                            'type': 'SNAPSHOT_DEPENDENCY_ERROR',
+                            'details': 'Snapshot dependency "build" failed',
+                        }
+                    ]
+                },
+                '/app/rest/testOccurrences': {},
+            }
+        )
+        (build,) = teamcity.TeamCityCi(run=cli).failed_builds(_url(50))
+        self.assertEqual(build.name, 'Mac_Aggregate')
+        self.assertEqual(build.summary, 'Build chain finished (failed: 4)')
+        self.assertEqual(
+            build.problems, ('Snapshot dependency "build" failed',)
+        )
+        self.assertEqual(build.kind, Kind.INFRA)
+        self.assertFalse(
+            any('/app/messages' in cmd[-1] for cmd, _ in cli.calls)
+        )
+
     def test_reads_a_failed_tests_history_on_the_branch(self):
         def run(config, revision, status):
             return {

@@ -222,33 +222,46 @@ class TeamCityCi:
         the aggregate itself when it has no failed dependencies.
 
         A build that failed only because one it depends on did is left out:
-        the one it depends on says why.
+        the one it depends on says why. Builds that failed to start count
+        too. When none is left, the aggregate itself is reported, with its
+        own status and problems.
         """
         aggregate = _build_id(url)
         fields = (
-            'id,buildTypeId,branchName,statusText,webUrl,'
+            'id,buildTypeId,branchName,statusText,webUrl,failedToStart,'
             'snapshot-dependencies(build(id,buildTypeId,status,state,webUrl))'
         )
+        # Without `defaultFilter:false`, builds that failed to start are left
+        # out, and a chain that never started lists none.
         builds = self._api(
             '/app/rest/builds?locator=snapshotDependency:'
-            f'(to:(id:{aggregate}),includeInitial:false),status:FAILURE'
-            f'&fields=build({fields})'
+            f'(to:(id:{aggregate}),includeInitial:false),status:FAILURE,'
+            f'defaultFilter:false&fields=build({fields})'
         ).get('build', [])
-        if not builds:
-            builds = [
-                self._api(f'/app/rest/builds/id:{aggregate}?fields={fields}')
-            ]
-        found = (self._failed_build(build) for build in builds)
-        return [build for build in found if build is not None]
+        found = [
+            failed
+            for failed in (self._failed_build(build) for build in builds)
+            if failed is not None
+        ]
+        if found:
+            return found
+        build = self._api(f'/app/rest/builds/id:{aggregate}?fields={fields}')
+        return [self._failed_build(build, keep_dependency_problems=True)]
 
-    def _failed_build(self, build: dict) -> FailedBuild | None:
+    def _failed_build(
+        self, build: dict, *, keep_dependency_problems: bool = False
+    ) -> FailedBuild | None:
         teamcity_id = build['id']
         problems = self._api(
             f'/app/rest/problemOccurrences?locator=build:(id:{teamcity_id}),'
             'count:100&fields=problemOccurrence(type,details)'
         ).get('problemOccurrence', [])
         types = [problem.get('type', '') for problem in problems]
-        if types and all('SNAPSHOT_DEPENDENCY' in kind for kind in types):
+        if (
+            not keep_dependency_problems
+            and types
+            and all('SNAPSHOT_DEPENDENCY' in kind for kind in types)
+        ):
             return None
         # Failed tests are a problem of their own, listed as tests instead.
         step_problems = tuple(
@@ -259,7 +272,12 @@ class TeamCityCi:
         branch = build.get('branchName', '')
         tests = self._failed_tests(teamcity_id, branch)
         log_tail = ''
-        if step_problems:
+        # An aggregate's dependency problems have no step log of its own.
+        if any(
+            not kind.startswith('TC_FAILED_TESTS')
+            and 'SNAPSHOT_DEPENDENCY' not in kind
+            for kind in types
+        ):
             try:
                 log_tail = self._failed_step_log(teamcity_id)
             except (TeamCityError, ValueError, KeyError) as e:
@@ -280,6 +298,7 @@ class TeamCityCi:
             log_tail=log_tail,
             dependencies=tuple(_dependency(d) for d in dependencies),
             previous=previous,
+            failed_to_start=build.get('failedToStart', False),
         )
 
     def _previous(self, teamcity_id: int, job: str, branch: str) -> str:

@@ -84,6 +84,8 @@ class FailedBuild:
     log_tail: str = ''
     # Whether the CI system stopped it (a timeout, a newer run).
     aborted: bool = False
+    # Whether it never started (e.g. its agent couldn't check out).
+    failed_to_start: bool = False
     # The builds it depends on, a line each with their result.
     dependencies: tuple[str, ...] = ()
     # The same job's previous build on the branch: its result and commit.
@@ -92,8 +94,10 @@ class FailedBuild:
     @property
     def kind(self) -> Kind:
         """What it most likely needs, from how it failed and its log."""
-        if self.aborted or any(
-            pattern.search(self.log_tail) for pattern in _INFRA_PATTERNS
+        if (
+            self.aborted
+            or self.failed_to_start
+            or any(pattern.search(self.log_tail) for pattern in _INFRA_PATTERNS)
         ):
             return Kind.INFRA
         if self.tests and not self.problems:
