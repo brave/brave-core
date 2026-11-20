@@ -114,10 +114,11 @@ class MockEventsListener : public mojom::SolanaEventsListener {
     testing::Mock::VerifyAndClearExpectations(this);
   }
 
-  // For expectations with Times(0). There is no completion signal for an event
-  // that must not happen, so drain the queue to let any stray event arrive.
-  void VerifyNoEvents() {
-    base::RunLoop().RunUntilIdle();
+  void VerifyNoEvents(SolanaProviderImpl& provider) {
+    // First deliver account changes to the provider, then deliver any events
+    // it emitted while processing those changes.
+    provider.FlushKeyringObserverForTesting();
+    observer_receiver_.FlushForTesting();
     testing::Mock::VerifyAndClearExpectations(this);
   }
 
@@ -703,7 +704,7 @@ TEST_F(SolanaProviderImplUnitTest, SelectedDappAccountChanged_NotConnected) {
   EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
   EXPECT_CALL(*observer_, DisconnectEvent()).Times(0);
   SetSelectedAccount(added_account->account_id);
-  observer_->VerifyNoEvents();
+  observer_->VerifyNoEvents(*provider_);
   EXPECT_FALSE(IsConnected());
 }
 
@@ -711,15 +712,15 @@ TEST_F(SolanaProviderImplUnitTest,
        AccountChangedEvent_RemoveSelectedHardwareAccount) {
   EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
   CreateWallet();
-  observer_->VerifyNoEvents();
+  observer_->VerifyNoEvents(*provider_);
 
   auto added_hw_account = AddHardwareAccount(kHardwareAccountAddr);
   EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
-  observer_->VerifyNoEvents();
+  observer_->VerifyNoEvents(*provider_);
 
   EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
   SetSelectedAccount(added_hw_account->account_id);
-  observer_->VerifyNoEvents();
+  observer_->VerifyNoEvents(*provider_);
 
   // Connect the account.
   Navigate(GURL("https://brave.com"));
@@ -739,17 +740,17 @@ TEST_F(SolanaProviderImplUnitTest, AccountChangedEvent) {
   // No events should be triggered before wallet creation.
   EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
   CreateWallet();
-  observer_->VerifyNoEvents();
+  observer_->VerifyNoEvents(*provider_);
 
   // Since it is not connected, account change does not happen.
   EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
   auto added_account = AddAccount();
-  observer_->VerifyNoEvents();
+  observer_->VerifyNoEvents(*provider_);
 
   // Selecting same account does not trigger any notifications.
   EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
   SetSelectedAccount(added_account->account_id);
-  observer_->VerifyNoEvents();
+  observer_->VerifyNoEvents(*provider_);
 
   // connect the account
   Navigate(GURL("https://brave.com"));
@@ -768,13 +769,13 @@ TEST_F(SolanaProviderImplUnitTest, AccountChangedEvent) {
   // selecting same account does not trigger any notifications.
   EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
   SetSelectedAccount(added_another_account->account_id);
-  observer_->VerifyNoEvents();
+  observer_->VerifyNoEvents(*provider_);
 
   // Once disconnected, switching selection back to a permitted account must
   // not silently reconnect the page - that requires an explicit connect().
   EXPECT_CALL(*observer_, AccountChangedEvent(_)).Times(0);
   SetSelectedAccount(added_account->account_id);
-  observer_->VerifyNoEvents();
+  observer_->VerifyNoEvents(*provider_);
   EXPECT_FALSE(IsConnected());
 
   // Explicitly reconnect, then confirm account-change notifications resume
@@ -792,7 +793,7 @@ TEST_F(SolanaProviderImplUnitTest, AccountChangedEvent) {
   // select non SOL account
   auto eth_account = GetAccountByIndex(0, mojom::KeyringId::kDefault);
   SetSelectedAccount(eth_account->account_id);
-  observer_->VerifyNoEvents();
+  observer_->VerifyNoEvents(*provider_);
 }
 
 TEST_F(SolanaProviderImplUnitTest, NoSelectedAccount) {
