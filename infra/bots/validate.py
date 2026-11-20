@@ -27,7 +27,7 @@ _UNSET_SECRET_PLACEHOLDER = 'dummy'
 def _leaked_secrets(builder_name: str, gn_args_json: dict) -> list[str]:
     """Where a declared secret's real value made it into `gn_args`.
 
-    The real values are those of the secrets `.env` file, by GN arg name.
+    The real values are those of the secrets file, by GN arg name.
     """
     secrets = gn_args_json.get('secrets') or {}
     if not secrets:

@@ -3,7 +3,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Tests for dotenv.py: parsing the secrets `.env` file CI writes."""
+"""Tests for dotenv.py: parsing the secrets file CI writes."""
 
 import os
 import sys
@@ -14,6 +14,7 @@ from pathlib import Path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import dotenv
+import gen_paths
 
 
 class ParseTest(unittest.TestCase):
@@ -62,6 +63,11 @@ class ParseTest(unittest.TestCase):
 
 
 class ReadTest(unittest.TestCase):
+    def test_secrets_file_is_apart_from_the_build_env(self):
+        self.assertNotEqual(
+            dotenv.DEFAULT_PATH, gen_paths.CHROMIUM_SRC_DIR / 'brave' / '.env'
+        )
+
     def test_missing_file_returns_empty(self):
         self.assertEqual(
             dotenv.read(Path(tempfile.mkdtemp()) / 'does-not-exist'), {}
