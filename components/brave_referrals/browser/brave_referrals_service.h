@@ -90,7 +90,7 @@ class BraveReferralsService {
   void OnAndroidBraveReferrerReadyForTesting(const std::string& gbraid) {
     OnAndroidBraveReferrerReady(gbraid);
   }
-#endif
+#endif  // BUILDFLAG(IS_ANDROID)
 
   // Returns the interval to use for the periodic finalization checks timer for
   // a randomized draw of `random_seconds`, clamped to a non-zero minimum so
@@ -145,7 +145,7 @@ class BraveReferralsService {
       scoped_refptr<net::HttpResponseHeaders> headers);
   android_brave_referrer::BraveReferrer android_brave_referrer_;
   std::unique_ptr<network::SimpleURLLoader> conversion_loader_;
-#endif
+#endif  // BUILDFLAG(IS_ANDROID)
 
   bool initialized_ = false;
   base::Time first_run_timestamp_;
