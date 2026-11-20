@@ -277,7 +277,7 @@ IN_PROC_BROWSER_TEST_F(AIChatGenerationStatusBrowserTest,
   const auto notifications = GetNotifications();
   ASSERT_EQ(notifications.size(), 1u);
   EXPECT_EQ(notifications[0].id(), base::StrCat({"ai_chat.", uuid}));
-  EXPECT_EQ(notifications[0].title(), u"Rivers - Leo AI");
+  EXPECT_EQ(notifications[0].title(), u"Leo AI - Rivers");
   EXPECT_EQ(notifications[0].message(),
             l10n_util::GetStringUTF16(IDS_AI_CHAT_NOTIFICATION_BODY));
 }
