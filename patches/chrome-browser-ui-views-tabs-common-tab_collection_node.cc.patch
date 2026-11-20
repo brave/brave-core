@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/common/tab_collection_node.cc b/chrome/browser/ui/views/tabs/common/tab_collection_node.cc
-index cc043a901e8eb2aa144184e6951ed306e1a621e9..5a8a0d1a4f7cbc9683a2d93e5950e632181aae76 100644
+index 9f29b17ece788d45f86594f20dd76ca17c344cf1..16941ef6bf766c4d12f3772169ed375c0404bd21 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_collection_node.cc
 +++ b/chrome/browser/ui/views/tabs/common/tab_collection_node.cc
 @@ -30,6 +30,8 @@ TabCollectionNode::Type GetTypeFromNode(tabs::ConstChildPtr node_data_) {
@@ -27,14 +27,5 @@ index cc043a901e8eb2aa144184e6951ed306e1a621e9..5a8a0d1a4f7cbc9683a2d93e5950e632
 -    for (const auto& child_data : collection->GetChildren()) {
 +    for (const tabs::Child& child_data : tree_tab_view_utils::GetUnwrappedChildren(*collection)) {
        tabs::ConstChildPtr child_ptr;
-       if (std::holds_alternative<std::unique_ptr<tabs::TabCollection>>(
-               child_data)) {
-@@ -144,7 +148,7 @@ void TabCollectionNode::Deinitialize() {
-           node_data_)) {
-     const tabs::TabCollection* collection =
-         std::get<tabs::ConstDanglingUntriagedTabCollection>(node_data_);
--    for (const auto& child_data : collection->GetChildren()) {
-+    for (const tabs::Child& child_data : tree_tab_view_utils::GetUnwrappedChildren(*collection)) {
-       tabs::TabCollectionNodeHandle child_handle;
        if (std::holds_alternative<std::unique_ptr<tabs::TabCollection>>(
                child_data)) {
