@@ -41,13 +41,38 @@
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
+#include <optional>
+#include <string>
+
+#include "base/containers/flat_set.h"
 #include "brave/components/local_ai/core/local_models_updater.h"
 #include "brave/components/local_ai/core/on_device_speech_models_component_installer.h"
+#include "chrome/browser/profiles/profile_attributes_entry.h"
+#include "chrome/browser/profiles/profile_attributes_storage.h"
+#include "chrome/browser/profiles/profile_manager.h"
 #endif
 
 namespace component_updater {
 
 namespace {
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+// Base names of the profiles that still exist. Profiles deleted in an earlier
+// session are gone from storage by the time components are registered.
+std::optional<base::flat_set<std::string>> GetProfileNames() {
+  ProfileManager* profile_manager = g_browser_process->profile_manager();
+  if (!profile_manager) {
+    return std::nullopt;
+  }
+  base::flat_set<std::string> names;
+  for (const ProfileAttributesEntry* entry :
+       profile_manager->GetProfileAttributesStorage()
+           .GetAllProfilesAttributes()) {
+    names.insert(entry->GetPath().BaseName().AsUTF8Unsafe());
+  }
+  return names;
+}
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 void RegisterBraveComponentsForUpdate() {
   ComponentUpdateService* cus = g_browser_process->component_updater();
@@ -82,7 +107,7 @@ void RegisterBraveComponentsForUpdate() {
 #endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 #if BUILDFLAG(ENABLE_LOCAL_AI)
   local_ai::ManageLocalModelsComponentRegistration(
-      cus, g_browser_process->local_state());
+      cus, g_browser_process->local_state(), GetProfileNames());
   local_ai::ManageOnDeviceSpeechModelsComponentRegistration(
       cus, g_browser_process->local_state());
 #endif

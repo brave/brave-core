@@ -68,6 +68,12 @@ class BraveHistoryEmbeddingsStatusTest : public testing::Test {
     local_state()->SetBoolean(local_ai::prefs::kBraveLocalAIEnabled, enabled);
   }
 
+  bool IsProfileRecordedForLocalModels() {
+    return local_state()
+        ->GetList(local_ai::prefs::kHistoryEmbeddingsEnabledProfiles)
+        .contains(profile_->GetBaseName().AsUTF8Unsafe());
+  }
+
   BraveHistoryEmbeddingsStatus* status() {
     return BraveHistoryEmbeddingsStatus::GetForProfile(profile_.get());
   }
@@ -86,6 +92,26 @@ TEST_F(BraveHistoryEmbeddingsStatusTest, CapturesTheSettingAtProfileSetup) {
   BuildProfileWithSetting(true);
 
   EXPECT_TRUE(status()->IsEnabled());
+}
+
+// The model is shared by every profile, so each records its own need for it in
+// local state, where the model's registration reads it.
+TEST_F(BraveHistoryEmbeddingsStatusTest,
+       RecordsTheProfileWhileSemanticHistorySearchIsOn) {
+  BuildProfileWithSetting(false);
+  EXPECT_FALSE(IsProfileRecordedForLocalModels());
+  SetSemanticHistorySearchEnabled(true);
+  EXPECT_TRUE(IsProfileRecordedForLocalModels());
+  SetSemanticHistorySearchEnabled(false);
+  EXPECT_FALSE(IsProfileRecordedForLocalModels());
+}
+
+// A profile that turned the setting on before the list existed still keeps the
+// model once it loads.
+TEST_F(BraveHistoryEmbeddingsStatusTest,
+       RecordsTheProfileAtProfileSetupWhenAlreadyOn) {
+  BuildProfileWithSetting(true);
+  EXPECT_TRUE(IsProfileRecordedForLocalModels());
 }
 
 TEST_F(BraveHistoryEmbeddingsStatusTest, HoldsTheSettingWhenThePrefTurnsOn) {
