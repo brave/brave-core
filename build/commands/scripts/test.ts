@@ -353,7 +353,14 @@ program
     }
 
     const passthroughArgs = getPassthroughArgs(command)
-    await buildTests(testsSuitesToRun)
-    await runTests(mainTestSuite, testsSuitesToRun, options, passthroughArgs)
+    // CI can --skip_run to build, then re-sign, then --skip_build to run
+    // the signed binary. Used on macOS so Removable Volumes Allow sticks
+    // across rebuilds.
+    if (!options.skip_build) {
+      await buildTests(testsSuitesToRun)
+    }
+    if (!options.skip_run) {
+      await runTests(mainTestSuite, testsSuitesToRun, options, passthroughArgs)
+    }
   })
   .parseAsync()
