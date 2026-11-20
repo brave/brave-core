@@ -114,6 +114,21 @@ def override_canned_checks(canned_checks):
 
 _STILL_RUNNING_RE = re.compile(r'Still running (\w+) after (\d+s)\.\.\.\n')
 
+# For tests that create git repos: ignores the developer's and the system's git
+# config, e.g. `tag.gpgsign` makes `git tag` open an editor that hangs the
+# presubmit. `safe.directory` is kept as the test repos can be owned by another
+# account (Windows CI). A prompt that still gets through fails instead of
+# hanging.
+CLEAN_GIT_ENV = {
+    'GIT_CONFIG_GLOBAL': os.devnull,
+    'GIT_CONFIG_NOSYSTEM': '1',
+    'GIT_CONFIG_COUNT': '1',
+    'GIT_CONFIG_KEY_0': 'safe.directory',
+    'GIT_CONFIG_VALUE_0': '*',
+    'GIT_EDITOR': 'true',
+    'GIT_TERMINAL_PROMPT': '0',
+}
+
 
 # Adds the number of finished commands, e.g. "(5/8)", to the "Still running
 # <check> after Ns..." messages depot_tools prints for `check_name`.
@@ -144,9 +159,14 @@ class _StillRunningWithProgress:
 # message gets "<finished groups>/<groups>", and each slow group is reported
 # once its last command is done. `groups` maps a command's name to its group's
 # label, e.g. the test file its shards belong to. By default every command is
-# a group of its own.
+# a group of its own. With `clean_git_env`, commands run with `CLEAN_GIT_ENV`.
 def run_tests_with_progress(
-    input_api, check_name, tests, show_progress=True, groups=None
+    input_api,
+    check_name,
+    tests,
+    show_progress=True,
+    groups=None,
+    clean_git_env=False,
 ):
     results = []
     tests = list(tests)
@@ -155,6 +175,11 @@ def run_tests_with_progress(
     for test in tests:
         if not test.kwargs.get('cwd'):
             test.kwargs['cwd'] = input_api.PresubmitLocalPath()
+        if clean_git_env:
+            test.kwargs['env'] = {
+                **(test.kwargs.get('env') or os.environ),
+                **CLEAN_GIT_ENV,
+            }
 
     groups = groups or {}
     group_of = {test.name: groups.get(test.name, test.name) for test in tests}
