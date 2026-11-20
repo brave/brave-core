@@ -1138,7 +1138,6 @@ static_library("internal") {
     "user_engagement/conversions/conversions.cc",
     "user_engagement/conversions/conversions.h",
     "user_engagement/conversions/conversions_feature.cc",
-    "user_engagement/conversions/conversions_feature.h",
     "user_engagement/conversions/conversions_observer.h",
     "user_engagement/conversions/conversions_util.cc",
     "user_engagement/conversions/conversions_util.h",

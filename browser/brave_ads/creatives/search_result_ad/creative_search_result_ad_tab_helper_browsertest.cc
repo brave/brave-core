@@ -14,6 +14,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "base/types/optional_util.h"
+#include "brave/browser/brave_ads/creatives/search_result_ad/test/creative_search_result_ad_test_util.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/browser/service/test/ads_service_mock.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
@@ -22,9 +23,6 @@
 #include "chrome/browser/ssl/cert_verifier_browser_test.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "components/infobars/content/content_infobar_manager.h"
-#include "components/infobars/core/infobar.h"
-#include "components/infobars/core/infobar_delegate.h"
 #include "components/prefs/pref_service.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
@@ -63,22 +61,6 @@ constexpr auto kCreativeAdPlacementIdToIndex =
     base::MakeFixedFlatMap<std::string_view, size_t>(
         {{"824657d0-eaed-4b80-8a42-a18c12f2977d", 1},
          {"fE%22%27%2B%2A%26-._~", 2}});
-
-bool HasSearchResultAdClickedInfoBar(content::WebContents* web_contents) {
-  infobars::ContentInfoBarManager* info_bar_manager =
-      infobars::ContentInfoBarManager::FromWebContents(web_contents);
-  if (!info_bar_manager) {
-    return false;
-  }
-
-  for (infobars::InfoBar* info_bar : info_bar_manager->infobars()) {
-    if (info_bar->delegate()->GetIdentifier() ==
-        infobars::InfoBarDelegate::SEARCH_RESULT_AD_CLICKED_INFOBAR_DELEGATE) {
-      return true;
-    }
-  }
-  return false;
-}
 
 class ScopedTestingAdsServiceSetter {
  public:
@@ -500,7 +482,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
   run_loop.Run();
   EXPECT_TRUE(content::WaitForLoadStop(web_contents));
 
-  EXPECT_TRUE(HasSearchResultAdClickedInfoBar(web_contents));
+  EXPECT_TRUE(test::HasSearchResultAdClickedInfoBar(web_contents));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
@@ -532,7 +514,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
   run_loop.Run();
   EXPECT_TRUE(content::WaitForLoadStop(web_contents));
 
-  EXPECT_TRUE(HasSearchResultAdClickedInfoBar(web_contents));
+  EXPECT_TRUE(test::HasSearchResultAdClickedInfoBar(web_contents));
 
   content::TestNavigationObserver client_redirect_observer(web_contents);
   ASSERT_TRUE(content::ExecJs(
@@ -543,7 +525,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
   client_redirect_observer.Wait();
   ASSERT_TRUE(client_redirect_observer.last_navigation_succeeded());
 
-  EXPECT_TRUE(HasSearchResultAdClickedInfoBar(web_contents));
+  EXPECT_TRUE(test::HasSearchResultAdClickedInfoBar(web_contents));
 }
 
 IN_PROC_BROWSER_TEST_F(
@@ -576,7 +558,7 @@ IN_PROC_BROWSER_TEST_F(
   run_loop.Run();
   EXPECT_TRUE(content::WaitForLoadStop(web_contents));
 
-  EXPECT_TRUE(HasSearchResultAdClickedInfoBar(web_contents));
+  EXPECT_TRUE(test::HasSearchResultAdClickedInfoBar(web_contents));
 
   content::TestNavigationObserver same_document_observer(web_contents);
   ASSERT_TRUE(
@@ -584,7 +566,7 @@ IN_PROC_BROWSER_TEST_F(
   same_document_observer.Wait();
   ASSERT_TRUE(same_document_observer.last_navigation_succeeded());
 
-  EXPECT_TRUE(HasSearchResultAdClickedInfoBar(web_contents));
+  EXPECT_TRUE(test::HasSearchResultAdClickedInfoBar(web_contents));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
@@ -616,12 +598,12 @@ IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
   run_loop.Run();
   EXPECT_TRUE(content::WaitForLoadStop(web_contents));
 
-  EXPECT_TRUE(HasSearchResultAdClickedInfoBar(web_contents));
+  EXPECT_TRUE(test::HasSearchResultAdClickedInfoBar(web_contents));
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
       browser(), GetURL(kTargetDomain, "/simple_link.html")));
 
-  EXPECT_FALSE(HasSearchResultAdClickedInfoBar(web_contents));
+  EXPECT_FALSE(test::HasSearchResultAdClickedInfoBar(web_contents));
 }
 
 }  // namespace brave_ads

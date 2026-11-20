@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Single Page Application Conversion</title>
+  <script>
+    document.addEventListener("click", (event) => {
+      const path = event.target.getAttribute("data-same-document-path");
+      if (path) {
+        event.preventDefault();
+        history.pushState({}, "", path);
+      }
+    });
+  </script>
+</head>
+
+<body>
+  <a id="conversion_link" href="/simple_link.html"
+    data-same-document-path="/simple_link.html">Convert</a>
+  <a id="non_conversion_link" href="/non_conversion"
+    data-same-document-path="/non_conversion">Non conversion</a>
+  <a id="second_conversion_link" href="/second_conversion"
+    data-same-document-path="/second_conversion">Second convert</a>
+</body>
+
+</html>
