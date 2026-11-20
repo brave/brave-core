@@ -98,7 +98,6 @@ source_set("ui") {
     ":ui_features",
     "//brave/brave_domains",
     "//brave/browser:brave_browser_features",
-    "//brave/browser/ui/webui:notes_panel",
     "//brave/browser/brave_adaptive_captcha",
     "//brave/browser/brave_origin",
     "//brave/browser/brave_shields",
@@ -146,6 +145,13 @@ source_set("ui") {
     "//media",
     "//ui/base/unowned_user_data",
   ]
+
+  if (!is_android) {
+    deps += [
+      "//brave/browser/ui/webui:notes_mojom",
+      "//brave/browser/ui/webui:notes_panel",
+    ]
+  }
 
   if (toolkit_views) {
     deps += [

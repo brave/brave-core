@@ -15,7 +15,6 @@
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
-#include "brave/browser/ui/webui/side_panel/notes/notes_ui.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
@@ -38,6 +37,7 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
+#include "brave/browser/ui/webui/side_panel/notes/notes_ui.h"
 #include "brave/browser/ui/webui/welcome_page/brave_welcome_ui.h"
 #include "brave/components/commands/common/features.h"
 #include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
@@ -80,7 +80,9 @@ using content::WebUIController;
 
 namespace {
 
+#if !BUILDFLAG(IS_ANDROID)
 inline constexpr char kNotesPanelHost[] = "notes-panel";
+#endif
 
 // A function for creating a new WebUI. The caller owns the return value, which
 // may be NULL (for example, if the URL refers to an non-existent extension).
@@ -94,10 +96,14 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   CHECK(profile);
   if (host == kSkusInternalsHost) {
     return new SkusInternalsUI(web_ui, url.host());
-  } else if (host == kNotesPanelHost) {
+  }
+#if !BUILDFLAG(IS_ANDROID)
+  else if (host == kNotesPanelHost) {
     return new NotesUI(web_ui);
+  }
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
-  } else if (host == kRewardsPageHost &&
+  else if (host == kRewardsPageHost &&
              // We don't want to check for supported profile type here because
              // we want private windows to redirect to the regular profile.
              // Additionally, if Rewards aren't supported because of the OFAC
@@ -200,7 +206,9 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
       url.host() == kRewardsPageHost || url.host() == kRewardsInternalsHost ||
 #endif
+#if !BUILDFLAG(IS_ANDROID)
       url.host() == kNotesPanelHost ||
+#endif
       (url.host() == kSkusInternalsHost &&
        base::FeatureList::IsEnabled(skus::features::kSkusFeature))) {
     return &NewWebUI;

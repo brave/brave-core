@@ -5,7 +5,10 @@
 
 #include "brave/browser/ui/views/side_panel/notes/notes_side_panel_web_view.h"
 
+#include <utility>
+
 #include "base/check.h"
+#include "base/functional/callback.h"
 #include "brave/browser/ui/webui/side_panel/notes/notes_ui.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"

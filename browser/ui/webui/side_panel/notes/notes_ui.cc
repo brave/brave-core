@@ -5,13 +5,15 @@
 
 #include "brave/browser/ui/webui/side_panel/notes/notes_ui.h"
 
+#include <utility>
+
+#include "base/containers/span.h"
+#include "brave/grit/notes_resources.h"
+#include "brave/grit/notes_resources_map.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
-#include "brave/browser/resources/notes/grit/notes_static_resources.h"
-#include "brave/browser/resources/notes/grit/notes_static_resources_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
-#include "services/network/public/mojom/content_security_policy.mojom.h"
 #include "ui/webui/webui_util.h"
 
 NotesUI::NotesUI(content::WebUI* web_ui)
@@ -24,8 +26,8 @@ NotesUI::NotesUI(content::WebUI* web_ui)
       content::WebUIDataSource::CreateAndAdd(
           Profile::FromWebUI(web_ui), "notes-panel");
   webui::SetupWebUIDataSource(
-      source, {}, IDR_NOTES_STATIC_NOTES_HTML);
-  source->AddResourcePaths(kNotesStaticResources);
+      source, base::span<const webui::ResourcePath>(kNotesResources),
+      IDR_NOTES_NOTES_HTML);
 }
 
 NotesUI::~NotesUI() {

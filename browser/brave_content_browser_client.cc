@@ -168,8 +168,6 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/hid/brave_hid_delegate.h"
 #include "brave/browser/ui/geolocation/brave_geolocation_permission_tab_helper.h"
-#include "brave/browser/ui/webui/side_panel/notes/notes.mojom.h"
-#include "brave/browser/ui/webui/side_panel/notes/notes_ui.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page.mojom.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page_ui.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
@@ -178,6 +176,8 @@
 #include "brave/browser/ui/webui/brave_welcome_page/brave_welcome_page_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
+#include "brave/browser/ui/webui/side_panel/notes/notes.mojom.h"
+#include "brave/browser/ui/webui/side_panel/notes/notes_ui.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
 #include "brave/components/brave_private_new_tab_ui/common/brave_private_new_tab.mojom.h"
 #endif  // !BUILDFLAG(IS_ANDROID)

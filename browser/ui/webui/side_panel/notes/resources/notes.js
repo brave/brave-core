@@ -54,7 +54,7 @@ form.addEventListener('submit', async (event) => {
     id: editingId || crypto.randomUUID(),
     title: titleInput.value,
     content: contentInput.value,
-    timestamp: Date.now(),
+    timestamp: BigInt(Date.now()),
   };
   if (editingId) {
     await handler.updateNote(note);

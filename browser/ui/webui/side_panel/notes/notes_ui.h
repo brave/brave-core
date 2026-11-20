@@ -6,6 +6,10 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_SIDE_PANEL_NOTES_NOTES_UI_H_
 #define BRAVE_BROWSER_UI_WEBUI_SIDE_PANEL_NOTES_NOTES_UI_H_
 
+#include <string>
+#include <vector>
+
+#include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/webui/side_panel/notes/notes.mojom.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
