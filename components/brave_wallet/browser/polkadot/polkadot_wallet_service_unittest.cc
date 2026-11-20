@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 
+#include <array>
 #include <optional>
 #include <set>
 #include <string>
@@ -57,6 +58,9 @@ using SignRequestFuture =
                            std::optional<std::vector<uint8_t>>,
                            const std::optional<std::string>&>;
 
+using ChainMetadataFuture =
+    base::test::TestFuture<base::expected<PolkadotChainMetadata, std::string>>;
+
 void AddValidMetadataResponses(
     network::TestURLLoaderFactory& url_loader_factory,
     const std::string& testnet_url,
@@ -107,16 +111,9 @@ class PolkadotWalletServiceUnitTest : public testing::Test {
   }
 
   void UnlockWallet() {
-    keyring_service_->Unlock(
-        kTestWalletPassword,
-        base::BindOnce(
-            [](base::RepeatingClosure quit_closure, bool unlocked) {
-              EXPECT_TRUE(unlocked);
-              quit_closure.Run();
-            },
-            task_environment_.QuitClosure()));
-
-    task_environment_.RunUntilQuit();
+    base::test::TestFuture<bool> unlock_future;
+    keyring_service_->Unlock(kTestWalletPassword, unlock_future.GetCallback());
+    ASSERT_TRUE(unlock_future.Take());
 
     keyring_service_
         ->GetKeyring<PolkadotKeyring>(mojom::KeyringId::kPolkadotTestnet)
@@ -289,36 +286,26 @@ TEST_F(PolkadotWalletServiceUnitTest, Constructor) {
     for (int i = 0; i < 2; ++i) {
       // Testnet chain metadata.
 
-      polkadot_wallet_service->GetChainMetadata(
-          mojom::kPolkadotTestnet,
-          base::BindOnce(
-              [](base::RepeatingClosure quit_closure,
-                 base::expected<PolkadotChainMetadata, std::string> metadata) {
-                EXPECT_TRUE(metadata.has_value());
-                VerifyTestnet(*metadata);
-                std::move(quit_closure).Run();
-              },
-              task_environment_.QuitClosure()));
+      ChainMetadataFuture future;
+      polkadot_wallet_service->GetChainMetadata(mojom::kPolkadotTestnet,
+                                                future.GetCallback());
 
-      task_environment_.RunUntilQuit();
+      auto metadata = future.Take();
+      ASSERT_TRUE(metadata.has_value());
+      VerifyTestnet(*metadata);
     }
 
     // Do this twice to prove our fetching and caching layers work.
     for (int i = 0; i < 2; ++i) {
       // Mainnet chain metadata.
 
-      polkadot_wallet_service->GetChainMetadata(
-          mojom::kPolkadotMainnet,
-          base::BindOnce(
-              [](base::RepeatingClosure quit_closure,
-                 base::expected<PolkadotChainMetadata, std::string> metadata) {
-                EXPECT_TRUE(metadata.has_value());
-                VerifyMainnet(*metadata);
-                std::move(quit_closure).Run();
-              },
-              task_environment_.QuitClosure()));
+      ChainMetadataFuture future;
+      polkadot_wallet_service->GetChainMetadata(mojom::kPolkadotMainnet,
+                                                future.GetCallback());
 
-      task_environment_.RunUntilQuit();
+      auto metadata = future.Take();
+      ASSERT_TRUE(metadata.has_value());
+      VerifyMainnet(*metadata);
     }
   }
 
@@ -348,33 +335,19 @@ TEST_F(PolkadotWalletServiceUnitTest, Constructor) {
     {
       // Testnet chain metadata.
 
-      polkadot_wallet_service->GetChainMetadata(
-          mojom::kPolkadotTestnet,
-          base::BindOnce(
-              [](base::RepeatingCallback<void()> quit_closure,
-                 base::expected<PolkadotChainMetadata, std::string> metadata) {
-                EXPECT_FALSE(metadata.has_value());
-                std::move(quit_closure).Run();
-              },
-              task_environment_.QuitClosure()));
-
-      task_environment_.RunUntilQuit();
+      ChainMetadataFuture future;
+      polkadot_wallet_service->GetChainMetadata(mojom::kPolkadotTestnet,
+                                                future.GetCallback());
+      EXPECT_FALSE(future.Take().has_value());
     }
 
     {
       // Mainnet chain metadata.
 
-      polkadot_wallet_service->GetChainMetadata(
-          mojom::kPolkadotMainnet,
-          base::BindOnce(
-              [](base::RepeatingCallback<void()> quit_closure,
-                 base::expected<PolkadotChainMetadata, std::string> metadata) {
-                EXPECT_FALSE(metadata.has_value());
-                std::move(quit_closure).Run();
-              },
-              task_environment_.QuitClosure()));
-
-      task_environment_.RunUntilQuit();
+      ChainMetadataFuture future;
+      polkadot_wallet_service->GetChainMetadata(mojom::kPolkadotMainnet,
+                                                future.GetCallback());
+      EXPECT_FALSE(future.Take().has_value());
     }
   }
 }
@@ -441,43 +414,33 @@ TEST_F(PolkadotWalletServiceUnitTest, ConcurrentChainNameFetches) {
       }));
 
   constexpr int kNumRequests = 5;
-  int pending_requests = kNumRequests;
-  for (int i = 0; i < kNumRequests; ++i) {
+  {
     // Testnet chain metadata.
-    polkadot_wallet_service->GetChainMetadata(
-        mojom::kPolkadotTestnet,
-        base::BindOnce(
-            [](base::RepeatingClosure quit_closure, int* num_reqs,
-               base::expected<PolkadotChainMetadata, std::string> metadata) {
-              EXPECT_TRUE(*num_reqs > 0);
-              EXPECT_TRUE(metadata.has_value());
-              VerifyTestnet(*metadata);
-              if (--*num_reqs == 0) {
-                std::move(quit_closure).Run();
-              }
-            },
-            task_environment_.QuitClosure(), &pending_requests));
+    std::array<ChainMetadataFuture, kNumRequests> futures;
+    for (auto& future : futures) {
+      polkadot_wallet_service->GetChainMetadata(mojom::kPolkadotTestnet,
+                                                future.GetCallback());
+    }
+    for (auto& future : futures) {
+      auto metadata = future.Take();
+      ASSERT_TRUE(metadata.has_value());
+      VerifyTestnet(*metadata);
+    }
   }
-  task_environment_.RunUntilQuit();
 
-  pending_requests = kNumRequests;
-  for (int i = 0; i < kNumRequests; ++i) {
+  {
     // Mainnet chain metadata.
-    polkadot_wallet_service->GetChainMetadata(
-        mojom::kPolkadotMainnet,
-        base::BindOnce(
-            [](base::RepeatingClosure quit_closure, int* num_reqs,
-               base::expected<PolkadotChainMetadata, std::string> metadata) {
-              EXPECT_TRUE(*num_reqs > 0);
-              EXPECT_TRUE(metadata.has_value());
-              VerifyMainnet(*metadata);
-              if (--*num_reqs == 0) {
-                std::move(quit_closure).Run();
-              }
-            },
-            task_environment_.QuitClosure(), &pending_requests));
+    std::array<ChainMetadataFuture, kNumRequests> futures;
+    for (auto& future : futures) {
+      polkadot_wallet_service->GetChainMetadata(mojom::kPolkadotMainnet,
+                                                future.GetCallback());
+    }
+    for (auto& future : futures) {
+      auto metadata = future.Take();
+      ASSERT_TRUE(metadata.has_value());
+      VerifyMainnet(*metadata);
+    }
   }
-  task_environment_.RunUntilQuit();
 }
 
 TEST_F(PolkadotWalletServiceUnitTest, GetCompatibleNetworks) {
@@ -570,7 +533,7 @@ TEST_F(PolkadotWalletServiceUnitTest, GetAddress) {
         future.GetCallback());
 
     auto [address, error] = future.Take();
-    EXPECT_TRUE(address.has_value());
+    ASSERT_TRUE(address.has_value());
     EXPECT_FALSE(error.has_value());
     EXPECT_EQ(*address, "1UC3h7uQVraXVhGhfPqmk6F7syCLrxMSVbJBuQqW7R8SHdK");
   }
@@ -599,7 +562,7 @@ TEST_F(PolkadotWalletServiceUnitTest, GetAddress) {
         future.GetCallback());
 
     auto [address, error] = future.Take();
-    EXPECT_TRUE(address.has_value());
+    ASSERT_TRUE(address.has_value());
     EXPECT_EQ(*address, "5CXtuMrqYib75xgkk2LqdbG6GFyYeZQDMzrp2cRUx2PcFzsA");
   }
 
@@ -1448,33 +1411,26 @@ TEST_F(PolkadotWalletServiceUnitTest, GetFeeEstimate) {
   polkadot_mock_rpc->AddReqResPairs();
   polkadot_mock_rpc->FinalizeSetup();
 
-  // We opt into using a manual RunLoop here because of the limitations around
-  // base::test::TestFuture and uint128_t.
-  base::RunLoop run_loop;
-  auto quit = run_loop.QuitClosure();
-
   std::string chain_id = mojom::kPolkadotTestnet;
 
   std::array<uint8_t, kPolkadotSubstrateAccountIdSize> recipient_pubkey = {};
   EXPECT_TRUE(base::HexStringToSpan(kBob, recipient_pubkey));
 
+  base::test::TestFuture<
+      base::expected<PolkadotWalletService::FeeEstimate, std::string>>
+      future;
   polkadot_wallet_service->GetFeeEstimate(
       chain_id, polkadot_testnet_account_->account_id->Clone(),
       std::variant<uint128_t, TransferAll>(uint128_t{1234}), std::nullopt,
-      recipient_pubkey,
-      base::BindLambdaForTesting(
-          [=](base::expected<PolkadotWalletService::FeeEstimate, std::string>
-                  fee_estimate) {
-            ASSERT_TRUE(fee_estimate.has_value());
-            EXPECT_EQ(fee_estimate->partial_fee, uint128_t{15937408476ull});
+      recipient_pubkey, future.GetCallback());
 
-            // The payload the user would be signing is generated even though
-            // this run only used a dummy signature.
-            EXPECT_FALSE(fee_estimate->signature_payload.empty());
-            quit.Run();
-          }));
+  auto fee_estimate = future.Take();
+  ASSERT_TRUE(fee_estimate.has_value());
+  EXPECT_EQ(fee_estimate->partial_fee, uint128_t{15937408476ull});
 
-  run_loop.Run();
+  // The payload the user would be signing is generated even though this run
+  // only used a dummy signature.
+  EXPECT_FALSE(fee_estimate->signature_payload.empty());
 }
 
 TEST_F(PolkadotWalletServiceUnitTest, GetFeeEstimate_NetworkFailure) {
@@ -1492,28 +1448,20 @@ TEST_F(PolkadotWalletServiceUnitTest, GetFeeEstimate_NetworkFailure) {
   polkadot_mock_rpc->AddReqResPairs();
   polkadot_mock_rpc->FinalizeSetup();
 
-  // We opt into using a manual RunLoop here because of the limitations around
-  // base::test::TestFuture and uint128_t.
-  base::RunLoop run_loop;
-  auto quit = run_loop.QuitClosure();
-
   std::string chain_id = mojom::kPolkadotTestnet;
 
   std::array<uint8_t, kPolkadotSubstrateAccountIdSize> recipient_pubkey = {};
   EXPECT_TRUE(base::HexStringToSpan(kBob, recipient_pubkey));
 
+  base::test::TestFuture<
+      base::expected<PolkadotWalletService::FeeEstimate, std::string>>
+      future;
   polkadot_wallet_service->GetFeeEstimate(
       chain_id, polkadot_testnet_account_->account_id->Clone(),
       std::variant<uint128_t, TransferAll>(uint128_t{1234}), std::nullopt,
-      recipient_pubkey,
-      base::BindLambdaForTesting(
-          [=](base::expected<PolkadotWalletService::FeeEstimate, std::string>
-                  fee_estimate) {
-            ASSERT_FALSE(fee_estimate.has_value());
-            quit.Run();
-          }));
+      recipient_pubkey, future.GetCallback());
 
-  run_loop.Run();
+  EXPECT_FALSE(future.Take().has_value());
 }
 
 TEST_F(PolkadotWalletServiceUnitTest, GetFeeEstimate_PaymentInfoFailure) {
@@ -1534,29 +1482,22 @@ TEST_F(PolkadotWalletServiceUnitTest, GetFeeEstimate_PaymentInfoFailure) {
   polkadot_mock_rpc->AddReqResPairs();
   polkadot_mock_rpc->FinalizeSetup();
 
-  // We opt into using a manual RunLoop here because of the limitations around
-  // base::test::TestFuture and uint128_t.
-  base::RunLoop run_loop;
-  auto quit = run_loop.QuitClosure();
-
   std::string chain_id = mojom::kPolkadotTestnet;
 
   std::array<uint8_t, kPolkadotSubstrateAccountIdSize> recipient_pubkey = {};
   EXPECT_TRUE(base::HexStringToSpan(kBob, recipient_pubkey));
 
+  base::test::TestFuture<
+      base::expected<PolkadotWalletService::FeeEstimate, std::string>>
+      future;
   polkadot_wallet_service->GetFeeEstimate(
       chain_id, polkadot_testnet_account_->account_id->Clone(),
       std::variant<uint128_t, TransferAll>(uint128_t{1234}), std::nullopt,
-      recipient_pubkey,
-      base::BindLambdaForTesting(
-          [=](base::expected<PolkadotWalletService::FeeEstimate, std::string>
-                  fee_estimate) {
-            ASSERT_FALSE(fee_estimate.has_value());
-            EXPECT_EQ(fee_estimate.error(), WalletInternalErrorMessage());
-            quit.Run();
-          }));
+      recipient_pubkey, future.GetCallback());
 
-  run_loop.Run();
+  auto fee_estimate = future.Take();
+  ASSERT_FALSE(fee_estimate.has_value());
+  EXPECT_EQ(fee_estimate.error(), WalletInternalErrorMessage());
 }
 
 TEST_F(PolkadotWalletServiceUnitTest, GetFeeEstimate_NullPaymentInfo) {
@@ -1577,29 +1518,22 @@ TEST_F(PolkadotWalletServiceUnitTest, GetFeeEstimate_NullPaymentInfo) {
   polkadot_mock_rpc->AddReqResPairs();
   polkadot_mock_rpc->FinalizeSetup();
 
-  // We opt into using a manual RunLoop here because of the limitations around
-  // base::test::TestFuture and uint128_t.
-  base::RunLoop run_loop;
-  auto quit = run_loop.QuitClosure();
-
   std::string chain_id = mojom::kPolkadotTestnet;
 
   std::array<uint8_t, kPolkadotSubstrateAccountIdSize> recipient_pubkey = {};
   EXPECT_TRUE(base::HexStringToSpan(kBob, recipient_pubkey));
 
+  base::test::TestFuture<
+      base::expected<PolkadotWalletService::FeeEstimate, std::string>>
+      future;
   polkadot_wallet_service->GetFeeEstimate(
       chain_id, polkadot_testnet_account_->account_id->Clone(),
       std::variant<uint128_t, TransferAll>(uint128_t{1234}), std::nullopt,
-      recipient_pubkey,
-      base::BindLambdaForTesting(
-          [=](base::expected<PolkadotWalletService::FeeEstimate, std::string>
-                  fee_estimate) {
-            ASSERT_FALSE(fee_estimate.has_value());
-            EXPECT_EQ(fee_estimate.error(), WalletParsingErrorMessage());
-            quit.Run();
-          }));
+      recipient_pubkey, future.GetCallback());
 
-  run_loop.Run();
+  auto fee_estimate = future.Take();
+  ASSERT_FALSE(fee_estimate.has_value());
+  EXPECT_EQ(fee_estimate.error(), WalletParsingErrorMessage());
 }
 
 TEST_F(PolkadotWalletServiceUnitTest, ChainIdFromGenesisHash_KnownChains) {
