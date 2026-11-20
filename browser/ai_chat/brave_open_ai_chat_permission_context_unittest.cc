@@ -7,8 +7,7 @@
 
 #include <memory>
 
-#include "base/run_loop.h"
-#include "base/test/bind.h"
+#include "base/test/test_future.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/permissions/permission_request_data.h"
@@ -38,21 +37,14 @@ class BraveOpenAIChatPermissionContextTest
     const PermissionRequestID id(
         web_contents()->GetPrimaryMainFrame()->GetGlobalId(),
         PermissionRequestID::RequestLocalId());
-    content::PermissionStatus status;
-    base::RunLoop run_loop;
     auto request_data = std::make_unique<PermissionRequestData>(
         blink::mojom::PermissionDescriptorPtr{}, id,
         /*user_gesture=*/true, url);
     request_data->request_type = RequestType::kBraveOpenAIChat;
-    permission_context->RequestPermission(
-        std::move(request_data),
-        base::BindLambdaForTesting([&](content::PermissionResult result) {
-          status = result.status;
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-
-    return status;
+    base::test::TestFuture<content::PermissionResult> future;
+    permission_context->RequestPermission(std::move(request_data),
+                                          future.GetCallback());
+    return future.Get().status;
   }
 
  protected:
