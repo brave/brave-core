@@ -65,7 +65,7 @@ public class SignMessageFragment extends WalletBottomSheetDialogFragment {
     private final Handler mHandler;
 
     @Nullable private SignMessageRequest mCurrentSignMessageRequest;
-    private boolean mUnicodeEscapeVersion;
+    private boolean mShowFormatted;
     private TextView mSignMessageText;
     private ImageView mAccountImage;
     private TextView mAccountName;
@@ -75,7 +75,8 @@ public class SignMessageFragment extends WalletBottomSheetDialogFragment {
     private TextView mWebSite;
     private LinearLayout mWarningContainer;
     private LinearLayout mNonAsciiWarningLayout;
-    private boolean mHasUnicodeWarning;
+    private TextView mFormattedToggle;
+    private boolean mHasHiddenCharacters;
     private SignStep mSignStep = SignStep.SIGN_TX;
 
     public SignMessageFragment() {
@@ -100,6 +101,7 @@ public class SignMessageFragment extends WalletBottomSheetDialogFragment {
         mWebSite = view.findViewById(R.id.domain);
         mWarningContainer = view.findViewById(R.id.sign_msg_warning_container);
         mNonAsciiWarningLayout = view.findViewById(R.id.non_ascii_warning_layout);
+        mFormattedToggle = view.findViewById(R.id.non_ascii_warning_text_link);
 
         TextView warningLearnMore = view.findViewById(R.id.sign_warning_learn_more);
         warningLearnMore.setOnClickListener(
@@ -159,7 +161,6 @@ public class SignMessageFragment extends WalletBottomSheetDialogFragment {
         mCurrentSignMessageRequest = request;
 
         // Extract message and set up UI.
-        mUnicodeEscapeVersion = false;
         final String message;
         final boolean isEip712;
         switch (request.signData.which()) {
@@ -184,28 +185,20 @@ public class SignMessageFragment extends WalletBottomSheetDialogFragment {
                 isEip712 = false;
         }
 
-        updateTextEthSign(
-                request.signData, mUnicodeEscapeVersion, assumeNonNull(message), isEip712);
-
-        mHasUnicodeWarning = Validations.hasUnicode(message);
-        if (mHasUnicodeWarning) {
-            View view = getView();
-            if (view != null) {
-                TextView warningLinkText = view.findViewById(R.id.non_ascii_warning_text_link);
-                warningLinkText.setOnClickListener(
-                        v -> {
-                            warningLinkText.setText(
-                                    mUnicodeEscapeVersion
-                                            ? getString(
-                                                    R.string.wallet_non_ascii_characters_original)
-                                            : getString(
-                                                    R.string.wallet_non_ascii_characters_ascii));
-                            mUnicodeEscapeVersion = !mUnicodeEscapeVersion;
-                            updateTextEthSign(
-                                    request.signData, mUnicodeEscapeVersion, message, isEip712);
-                        });
-            }
-        }
+        mHasHiddenCharacters =
+                Validations.hasHiddenCharacters(
+                        isEip712 ? request.signData.getEthSignTypedData().domainJson : null,
+                        message);
+        // Each request starts on the formatted view when it has hidden characters.
+        mShowFormatted = mHasHiddenCharacters;
+        updateFormattedToggleText();
+        updateTextEthSign(request.signData, mShowFormatted, assumeNonNull(message), isEip712);
+        mFormattedToggle.setOnClickListener(
+                v -> {
+                    mShowFormatted = !mShowFormatted;
+                    updateFormattedToggleText();
+                    updateTextEthSign(request.signData, mShowFormatted, message, isEip712);
+                });
 
         mSignStep = needsSignRiskWarning(request.signData) ? SignStep.SIGN_RISK : SignStep.SIGN_TX;
         updateWarningLayoutForCurrentStep();
@@ -244,7 +237,7 @@ public class SignMessageFragment extends WalletBottomSheetDialogFragment {
         } else {
             mWarningContainer.setVisibility(View.GONE);
             mSignMessageText.setVisibility(View.VISIBLE);
-            mNonAsciiWarningLayout.setVisibility(mHasUnicodeWarning ? View.VISIBLE : View.GONE);
+            mNonAsciiWarningLayout.setVisibility(mHasHiddenCharacters ? View.VISIBLE : View.GONE);
             mBtSign.setBackgroundTintList(
                     ColorStateList.valueOf(
                             ContextCompat.getColor(requireContext(), R.color.brave_action_color)));
@@ -286,17 +279,25 @@ public class SignMessageFragment extends WalletBottomSheetDialogFragment {
         mNetworkName.setText(network != null ? network.chainName : "");
     }
 
+    private void updateFormattedToggleText() {
+        mFormattedToggle.setText(
+                mShowFormatted
+                        ? R.string.wallet_non_ascii_characters_original
+                        : R.string.wallet_non_ascii_characters_ascii);
+    }
+
+    /** Display only: the request is always signed with the original message. */
     private void updateTextEthSign(
             final SignDataUnion signData,
-            final boolean unicodeEscape,
+            final boolean formatted,
             final String message,
             final boolean isEip712) {
         String escapedDomain = "";
         if (isEip712) {
             String domain = signData.getEthSignTypedData().domainJson;
-            escapedDomain = unicodeEscape ? Validations.unicodeEscape(domain) : domain;
+            escapedDomain = formatted ? Validations.unicodeEscape(domain) : domain;
         }
-        String escapedMessage = unicodeEscape ? Validations.unicodeEscape(message) : message;
+        String escapedMessage = formatted ? Validations.unicodeEscape(message) : message;
 
         Spanned domainPart =
                 escapedDomain.isEmpty()
@@ -304,13 +305,31 @@ public class SignMessageFragment extends WalletBottomSheetDialogFragment {
                         : AndroidUtils.formatHTML(
                                 getString(
                                         R.string.wallet_sign_message_details_domain_section,
-                                        Html.escapeHtml(escapedDomain)));
+                                        escapeHtmlKeepingLineBreaks(escapedDomain)));
         Spanned messagePart =
                 AndroidUtils.formatHTML(
                         getString(
                                 R.string.wallet_sign_message_details_message_section,
-                                Html.escapeHtml(escapedMessage)));
+                                escapeHtmlKeepingLineBreaks(escapedMessage)));
 
         mSignMessageText.setText(TextUtils.concat(domainPart, messagePart));
+    }
+
+    /**
+     * Html.fromHtml folds a line break into a space, which would hide the line breaks the
+     * formatted view marks. Keep each one as a {@code <br>}.
+     */
+    private static String escapeHtmlKeepingLineBreaks(final String text) {
+        String[] lines = text.split("\n", -1);
+        StringBuilder html = new StringBuilder();
+        for (int i = 0; i < lines.length; i++) {
+            if (i > 0) {
+                html.append("<br>");
+            }
+            // Html.fromHtml can't decode the &#0; that escapeHtml writes for a null byte and
+            // shows it as text. Drop it, as desktop's raw view does.
+            html.append(Html.escapeHtml(lines[i].replace("\0", "")));
+        }
+        return html.toString();
     }
 }
