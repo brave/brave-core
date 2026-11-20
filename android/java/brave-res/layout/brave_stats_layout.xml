@@ -40,8 +40,9 @@
             android:id="@+id/widget_more_option"
             android:layout_width="16dp"
             android:layout_height="16dp"
-            android:contentDescription="@string/visibility"
-            app:srcCompat="@drawable/ic_visibility_off"/>
+            android:contentDescription="@string/ntp_stats_menu_more_options"
+            app:srcCompat="@drawable/ic_more_vertical"
+            app:tint="@color/primitive_neutral_100"/>
 
     </LinearLayout>
 

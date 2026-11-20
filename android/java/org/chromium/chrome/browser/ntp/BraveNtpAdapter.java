@@ -11,11 +11,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.UnderlineSpan;
 import android.util.Pair;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -26,10 +28,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Log;
 import org.chromium.base.task.PostTask;
@@ -41,6 +45,7 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_news.CardBuilderFeedCard;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.model.BackgroundImage;
 import org.chromium.chrome.browser.ntp_background_images.model.NTPImage;
@@ -53,10 +58,18 @@ import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.chrome.browser.util.TabUtils;
+import org.chromium.components.browser_ui.widget.BrowserUiListMenuUtils;
+import org.chromium.components.browser_ui.widget.ListItemBuilder;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.content_public.browser.LoadUrlParams;
+import org.chromium.ui.listmenu.ListMenu;
+import org.chromium.ui.listmenu.ListMenuDelegate;
+import org.chromium.ui.listmenu.ListMenuHost;
+import org.chromium.ui.listmenu.ListMenuItemProperties;
+import org.chromium.ui.modelutil.MVCListAdapter;
 import org.chromium.ui.text.SpanApplier;
 import org.chromium.ui.text.SpanApplier.SpanInfo;
+import org.chromium.ui.widget.RectProvider;
 import org.chromium.url.Origin;
 
 import java.util.List;
@@ -83,6 +96,20 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private boolean mIsBraveStatsEnabled;
     private boolean mIsRecapBannerVisible;
     private int mRecyclerViewHeight;
+    // Screen coordinates of the last touch down, used to place the long-press menu.
+    private int mLastTouchX;
+    private int mLastTouchY;
+    private final RecyclerView.OnItemTouchListener mTouchPointRecorder =
+            new RecyclerView.SimpleOnItemTouchListener() {
+                @Override
+                public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+                    if (e.getActionMasked() == MotionEvent.ACTION_DOWN) {
+                        mLastTouchX = (int) e.getRawX();
+                        mLastTouchY = (int) e.getRawY();
+                    }
+                    return false;
+                }
+            };
     private int mStatsHeight;
     private int mTopSitesHeight;
     private int mNewContentHeight;
@@ -146,16 +173,22 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        recyclerView.addOnItemTouchListener(mTouchPointRecorder);
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+        recyclerView.removeOnItemTouchListener(mTouchPointRecorder);
+    }
+
+    @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof StatsViewHolder) {
             StatsViewHolder statsViewHolder = (StatsViewHolder) holder;
 
-            statsViewHolder.mHideStatsImg.setOnClickListener(
-                    view -> {
-                        ChromeSharedPreferences.getInstance()
-                                .writeBoolean(
-                                        BackgroundImagesPreferences.PREF_SHOW_BRAVE_STATS, false);
-                    });
+            statsViewHolder.mMoreOptionsImg.setOnClickListener(
+                    view -> showStatsMenu(statsViewHolder.mMoreOptionsImg, null));
             List<Pair<String, String>> statsPairs = BraveStatsUtil.getStatsPairs();
 
             statsViewHolder.mAdsBlockedCountTv.setText(statsPairs.get(0).first);
@@ -172,9 +205,12 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             int margin = dpToPx(mActivity, CARD_MARGIN_DP);
             layoutParams.setMargins(margin, margin, margin, 0);
             statsViewHolder.mNtpStatsLayout.setLayoutParams(layoutParams);
-            statsViewHolder.mNtpStatsLayout.setOnClickListener(
+            statsViewHolder.mNtpStatsLayout.setOnLongClickListener(
                     view -> {
-                        mOnBraveNtpListener.checkForBraveStats();
+                        showStatsMenu(
+                                statsViewHolder.mMoreOptionsImg,
+                                new Rect(mLastTouchX, mLastTouchY, mLastTouchX, mLastTouchY));
+                        return true;
                     });
 
             mStatsHeight = NTPImageUtil.getViewHeight(statsViewHolder.itemView) + margin;
@@ -730,10 +766,75 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         notifyItemRangeChanged(0, count);
     }
 
+    /**
+     * @param anchorRect Where to show the menu, in screen coordinates, or null to anchor it to
+     *     {@code anchor}.
+     */
+    private void showStatsMenu(View anchor, @Nullable Rect anchorRect) {
+        MVCListAdapter.ModelList menuModel = new MVCListAdapter.ModelList();
+        menuModel.add(
+                new ListItemBuilder()
+                        .withTitleRes(R.string.ntp_stats_menu_privacy_report)
+                        .withMenuId(R.id.ntp_stats_menu_privacy_report)
+                        .withStartIconRes(R.drawable.ic_shield_done)
+                        .build());
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_RECAP)) {
+            menuModel.add(
+                    new ListItemBuilder()
+                            .withTitleRes(R.string.ntp_stats_menu_launch_recap)
+                            .withMenuId(R.id.ntp_stats_menu_launch_recap)
+                            .withStartIconRes(R.drawable.ic_history)
+                            .build());
+        }
+        menuModel.add(
+                new ListItemBuilder()
+                        .withTitleRes(R.string.ntp_stats_menu_hide)
+                        .withMenuId(R.id.ntp_stats_menu_hide)
+                        .withStartIconRes(R.drawable.ic_eye_off)
+                        .build());
+
+        ListMenu menu =
+                BrowserUiListMenuUtils.getBasicListMenu(
+                        anchor.getContext(),
+                        menuModel,
+                        (model, view) -> {
+                            int id = model.get(ListMenuItemProperties.MENU_ITEM_ID);
+                            if (id == R.id.ntp_stats_menu_privacy_report) {
+                                mOnBraveNtpListener.checkForBraveStats();
+                            } else if (id == R.id.ntp_stats_menu_launch_recap) {
+                                TabUtils.openUrlInSameTab(BRAVE_RECAP_URL);
+                            } else if (id == R.id.ntp_stats_menu_hide) {
+                                ChromeSharedPreferences.getInstance()
+                                        .writeBoolean(
+                                                BackgroundImagesPreferences.PREF_SHOW_BRAVE_STATS,
+                                                false);
+                            }
+                        });
+        ListMenuHost menuHost = new ListMenuHost(anchor, null);
+        menuHost.setMenuMaxWidth(anchor.getResources().getDimensionPixelSize(R.dimen.menu_width));
+        menuHost.tryToFitLargestItem(true);
+        menuHost.setDelegate(
+                new ListMenuDelegate() {
+                    @Override
+                    public ListMenu getListMenu() {
+                        return menu;
+                    }
+
+                    @Override
+                    public RectProvider getRectProvider(View view) {
+                        return anchorRect != null
+                                ? new RectProvider(anchorRect)
+                                : ListMenuDelegate.super.getRectProvider(view);
+                    }
+                },
+                /* overrideOnClickListener= */ false);
+        menuHost.showMenu();
+    }
+
     public static class StatsViewHolder extends RecyclerView.ViewHolder {
         LinearLayout mNtpStatsLayout;
         LinearLayout mTitleLayout;
-        ImageView mHideStatsImg;
+        ImageView mMoreOptionsImg;
         TextView mAdsBlockedCountTv;
         TextView mAdsBlockedCountTextTv;
         TextView mDataSavedValueTv;
@@ -745,7 +846,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             super(itemView);
             this.mNtpStatsLayout = (LinearLayout) itemView.findViewById(R.id.ntp_stats_layout);
             this.mTitleLayout = (LinearLayout) itemView.findViewById(R.id.brave_stats_title_layout);
-            this.mHideStatsImg = (ImageView) itemView.findViewById(R.id.widget_more_option);
+            this.mMoreOptionsImg = (ImageView) itemView.findViewById(R.id.widget_more_option);
             this.mAdsBlockedCountTv =
                     (TextView) itemView.findViewById(R.id.brave_stats_text_ads_count);
             this.mAdsBlockedCountTextTv =
@@ -758,7 +859,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     (TextView) itemView.findViewById(R.id.brave_stats_text_time_count);
             this.mEstTimeSavedCountTextTv =
                     (TextView) itemView.findViewById(R.id.brave_stats_text_time_count_text);
-            BraveTouchUtils.ensureMinTouchTarget(this.mHideStatsImg);
+            BraveTouchUtils.ensureMinTouchTarget(this.mMoreOptionsImg);
         }
     }
 
