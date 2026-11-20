@@ -63,6 +63,12 @@ mounts also persist: reusing a container retains its agent or direct-key mode.
 Agent containers require the original socket and selected identity to remain
 available; changing SSH mounts requires a new container.
 
+The image entrypoint restores the Windows SDK's case-insensitive FUSE mount on
+every start when the cached SDK is present. It skips recovery during the initial
+image-build startup, before initialization hooks install the SDK. Startup does
+not sync or build sources. The FUSE device and capabilities are required when
+starting a container with a cached SDK, even for other targets.
+
 The image already configures remote execution in `/workspace/src/brave/.env`,
 with `use_remoteexec=true`, service `rbe.ba.brave.com:443`, and the mTLS paths
 under `/run/brave-rbe`. It also sets `SISO_CREDENTIAL_HELPER=mTLS`.

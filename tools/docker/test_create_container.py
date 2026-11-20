@@ -285,6 +285,9 @@ class AgentDetectionTests(unittest.TestCase):
             result, ("/run/host-services/ssh-auth.sock", "ssh-ed25519 AAAA")
         )
         commands = [call.args[0] for call in run.call_args_list]
+        self.assertEqual(
+            commands[0][commands[0].index("--entrypoint") + 1], "ssh-add"
+        )
         self.assertIn(
             "type=bind,source=/run/host-services/ssh-auth.sock,"
             "target=/run/brave-ssh-agent.sock,readonly",

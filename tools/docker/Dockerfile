@@ -40,6 +40,18 @@ ENV LANG=en_US.UTF-8 \
     RBE_tls_client_auth_key=/run/brave-rbe/engflow.key \
     SISO_CREDENTIAL_HELPER=mTLS
 
+COPY --chmod=755 <<'ENTRYPOINT' /usr/local/bin/brave-container-entrypoint
+#!/bin/bash
+set -euo pipefail
+sdk=/workspace/src/third_party/depot_tools/win_toolchain/vs_files
+# The bootstrap image has no SDK yet; init hooks create its first mount.
+if [[ -d "${sdk}.ciopfs" ]] && ! mountpoint -q "$sdk"; then
+  mkdir -p "$sdk"
+  /workspace/src/build/ciopfs -o use_ino "${sdk}.ciopfs" "$sdk"
+fi
+exec "$@"
+ENTRYPOINT
+
 COPY --chmod=755 <<'BUILD' /usr/local/bin/brave-build
 #!/bin/bash
 set -euo pipefail
@@ -77,6 +89,7 @@ quiet=false
 EOF
 CONFIG
 # The image launcher synchronizes and builds this stage in a credential-mounted container.
+ENTRYPOINT ["/usr/local/bin/brave-container-entrypoint"]
 CMD ["sleep", "infinity"]
 
 FROM checkout AS checkout-cached
