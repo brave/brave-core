@@ -850,7 +850,7 @@
     On-device speech recognition
   </message>
   <message name="IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_SUB_LABEL" desc="Description for the setting that selects Brave's on-device speech recognition model. The size is the approximate download size of the model. Choosing Off removes the model.">
-    Download a speech recognition model (about 700 MB) so sites can process speech on this device. Choose Off to remove the model.
+    Download a speech recognition model (about 700 MB) so sites can process speech on this device. Choose "Off" to remove the model.
   </message>
   <message name="IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_OFF" desc="Option of the on-device speech recognition setting that removes the speech recognition model">
     Off
