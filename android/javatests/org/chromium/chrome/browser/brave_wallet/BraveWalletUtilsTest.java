@@ -369,9 +369,20 @@ public class BraveWalletUtilsTest {
 
     @Test
     @SmallTest
-    public void validateHasUnicode() {
-        assertTrue(Validations.hasUnicode("Sign into \u202e EVIL"));
-        assertFalse(Validations.hasUnicode("Sign into LIVE"));
+    public void validateHasHiddenCharacters() {
+        assertTrue(Validations.hasHiddenCharacters("Sign into \u202e EVIL"));
+        assertTrue(Validations.hasHiddenCharacters("a\0b"));
+        assertTrue(Validations.hasHiddenCharacters("a\nb"));
+        assertTrue(Validations.hasHiddenCharacters("a\rb"));
+        assertTrue(Validations.hasHiddenCharacters("a\u000bb"));
+        assertTrue(Validations.hasHiddenCharacters("a\fb"));
+        assertTrue(Validations.hasHiddenCharacters("a\tb"));
+        assertTrue(Validations.hasHiddenCharacters("a\u001bb"));
+        assertTrue(Validations.hasHiddenCharacters("a\u007fb"));
+        assertTrue(Validations.hasHiddenCharacters("domain", null, "message\n"));
+        assertFalse(Validations.hasHiddenCharacters("Sign into LIVE"));
+        assertFalse(Validations.hasHiddenCharacters("Hello\\0world"));
+        assertFalse(Validations.hasHiddenCharacters(null, ""));
     }
 
     @Test
@@ -380,5 +391,15 @@ public class BraveWalletUtilsTest {
         assertEquals("Sign into \\u202e EVIL", Validations.unicodeEscape("Sign into \u202e EVIL"));
         assertEquals("Sign into \\u00ff EVIL", Validations.unicodeEscape("Sign into \u00ff EVIL"));
         assertEquals("Sign into \\u012e EVIL", Validations.unicodeEscape("Sign into \u012e EVIL"));
+        assertEquals("hello\\0world", Validations.unicodeEscape("hello\0world"));
+        assertEquals("hello\\n\nworld", Validations.unicodeEscape("hello\nworld"));
+        assertEquals("hello\\r\nworld", Validations.unicodeEscape("hello\rworld"));
+        assertEquals("hello\\v\nworld", Validations.unicodeEscape("hello\u000bworld"));
+        assertEquals("hello\\f\nworld", Validations.unicodeEscape("hello\fworld"));
+        assertEquals("hello\\u0009world", Validations.unicodeEscape("hello\tworld"));
+        assertEquals("hello\\u007fworld", Validations.unicodeEscape("hello\u007fworld"));
+        // A literal backslash is doubled so it can't pass for a marker.
+        assertEquals("hello\\\\0world", Validations.unicodeEscape("hello\\0world"));
+        assertEquals("Sign into LIVE", Validations.unicodeEscape("Sign into LIVE"));
     }
 }
