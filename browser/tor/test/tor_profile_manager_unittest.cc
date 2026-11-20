@@ -13,10 +13,13 @@
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/devtools/devtools_window.h"
 #include "chrome/browser/media/router/media_router_feature.h"
+#include "chrome/browser/permissions/permission_decision_auto_blocker_factory.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/testing_profile_manager.h"
+#include "components/content_settings/core/common/content_settings_types.h"
+#include "components/permissions/permission_decision_auto_blocker.h"
 #include "components/prefs/pref_service.h"
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
 #include "components/translate/core/browser/translate_pref_names.h"
@@ -25,6 +28,7 @@
 #include "content/public/test/web_contents_tester.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/public/common/peerconnection/webrtc_ip_handling_policy.h"
+#include "url/gurl.h"
 namespace {
 constexpr char kTestProfileName[] = "TestProfile";
 }  // namespace
@@ -99,4 +103,30 @@ TEST_F(TorProfileManagerUnitTest, ProfileForDevToolsWindow) {
   std::unique_ptr<content::WebContents> tor_web_contents =
       content::WebContentsTester::CreateTestWebContents(tor_profile, nullptr);
   EXPECT_EQ(tor_profile, GetProfileForDevToolsWindow(tor_web_contents.get()));
+}
+
+TEST_F(TorProfileManagerUnitTest, PermissionEmbargoNotInherited) {
+  const GURL url("https://example.com");
+  permissions::PermissionDecisionAutoBlocker* auto_blocker =
+      PermissionDecisionAutoBlockerFactory::GetForProfile(profile());
+  ASSERT_TRUE(auto_blocker);
+  for (int i = 0; i < 4; ++i) {
+    auto_blocker->RecordIgnoreAndEmbargo(url,
+                                         ContentSettingsType::NOTIFICATIONS,
+                                         /*ignored_prompt_was_quiet=*/false);
+  }
+  ASSERT_TRUE(
+      auto_blocker->IsEmbargoed(url, ContentSettingsType::NOTIFICATIONS));
+
+  Profile* tor_profile =
+      TorProfileManager::GetInstance().GetTorProfile(profile());
+  permissions::PermissionDecisionAutoBlocker* tor_auto_blocker =
+      PermissionDecisionAutoBlockerFactory::GetForProfile(tor_profile);
+  ASSERT_TRUE(tor_auto_blocker);
+  ASSERT_NE(tor_auto_blocker, auto_blocker);
+  EXPECT_FALSE(
+      tor_auto_blocker->IsEmbargoed(url, ContentSettingsType::NOTIFICATIONS));
+  EXPECT_EQ(
+      tor_auto_blocker->GetIgnoreCount(url, ContentSettingsType::NOTIFICATIONS),
+      0);
 }

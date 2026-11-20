@@ -370,6 +370,19 @@ void ContentSettingsRegistry::BraveInit() {
           WebsiteSettingsRegistry::PLATFORM_IOS,
       WebsiteSettingsInfo::DONT_INHERIT_IN_INCOGNITO);
 
+  // Permission embargoes recorded in a regular profile don't apply in its
+  // off-the-record profiles, including Tor.
+  website_settings_registry_->Unregister(
+      ContentSettingsType::PERMISSION_AUTOBLOCKER_DATA);
+  website_settings_registry_->Register(
+      ContentSettingsType::PERMISSION_AUTOBLOCKER_DATA,
+      "permission-autoblocking-data", base::Value(),
+      WebsiteSettingsInfo::UNSYNCABLE, WebsiteSettingsInfo::NOT_LOSSY,
+      WebsiteSettingsInfo::GENERIC_SINGLE_ORIGIN_SCOPE,
+      WebsiteSettingsRegistry::DESKTOP |
+          WebsiteSettingsRegistry::PLATFORM_ANDROID,
+      WebsiteSettingsInfo::DONT_INHERIT_IN_INCOGNITO);
+
   website_settings_registry_->Register(
       ContentSettingsType::BRAVE_COSMETIC_FILTERING,
       brave_shields::kCosmeticFiltering,
