@@ -177,18 +177,6 @@ SidebarService::SidebarService(
 
 SidebarService::~SidebarService() = default;
 
-void SidebarService::AddNote(const Notes& note) {
-  notes_.push_back(note);
-}
-
-void SidebarService::DeleteNote(const std::string& id) {
-  std::erase_if(notes_, [&id](const Notes& note) { return note.id == id; });
-}
-
-const std::vector<Notes>& SidebarService::GetNotes() const {
-  return notes_;
-}
-
 void SidebarService::MigrateSidebarShowOptions() {
   auto option =
       static_cast<ShowSidebarOption>(prefs_->GetInteger(kSidebarShowOption));
@@ -543,6 +531,28 @@ void SidebarService::RemoveObserver(Observer* observer) {
 
 void SidebarService::AddNote(const Notes& note) {
   notes_.push_back(note);
+  for (Observer& obs : observers_) {
+    obs.OnNoteAdded(note);
+  }
+  UpdateNotesToPrefStore();
+}
+
+void SidebarService::UpdateNote(const Notes& updated_note) {
+  const auto it =
+      std::find_if(notes_.begin(), notes_.end(),
+                   [&updated_note](const Notes& note) {
+                     return note.id == updated_note.id;
+                   });
+  if (it == notes_.end()) {
+    return;
+  }
+
+  it->title = updated_note.title;
+  it->content = updated_note.content;
+  it->timestamp = updated_note.timestamp;
+  for (Observer& obs : observers_) {
+    obs.OnNoteUpdated(*it);
+  }
   UpdateNotesToPrefStore();
 }
 
@@ -550,8 +560,15 @@ void SidebarService::DeleteNote(const std::string& id) {
   const size_t erased = std::erase_if(
       notes_, [&id](const Notes& note) { return note.id == id; });
   if (erased > 0) {
+    for (Observer& obs : observers_) {
+      obs.OnNoteDeleted(id);
+    }
     UpdateNotesToPrefStore();
   }
+}
+
+const std::vector<Notes>& SidebarService::GetNotes() const {
+  return notes_;
 }
 
 std::vector<SidebarItem> SidebarService::GetHiddenDefaultSidebarItems() const {

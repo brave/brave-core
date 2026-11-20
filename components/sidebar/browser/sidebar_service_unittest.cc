@@ -220,6 +220,7 @@ class MockSidebarServiceObserver : public SidebarService::Observer {
               (const SidebarItem& item, size_t from, size_t to),
               (override));
   MOCK_METHOD(void, OnNoteAdded, (const Notes& note), (override));
+  MOCK_METHOD(void, OnNoteUpdated, (const Notes& note), (override));
   MOCK_METHOD(void, OnNoteDeleted, (const std::string& id), (override));
 };
 
@@ -1535,6 +1536,59 @@ TEST_F(SidebarServiceTest, AddDeleteNotes) {
   service_->DeleteNote("note-1");
   testing::Mock::VerifyAndClearExpectations(&observer_);
   EXPECT_TRUE(service_->GetNotes().empty());
+}
+
+TEST_F(SidebarServiceTest, UpdateNotes) {
+  InitService();
+
+  Notes note;
+  note.id = "note-1";
+  note.title = "Original Title";
+  note.content = "Original content";
+  note.timestamp = 1700000000;
+  service_->AddNote(note);
+
+  ASSERT_EQ(1u, service_->GetNotes().size());
+
+  Notes missing_note;
+  missing_note.id = "non-existent";
+  missing_note.title = "Missing Title";
+  missing_note.content = "Missing content";
+  missing_note.timestamp = 1700000999;
+
+  EXPECT_CALL(observer_, OnNoteUpdated(testing::_)).Times(0);
+  service_->UpdateNote(missing_note);
+  testing::Mock::VerifyAndClearExpectations(&observer_);
+
+  ASSERT_EQ(1u, service_->GetNotes().size());
+  EXPECT_EQ("note-1", service_->GetNotes()[0].id);
+  EXPECT_EQ("Original Title", service_->GetNotes()[0].title);
+  EXPECT_EQ("Original content", service_->GetNotes()[0].content);
+  EXPECT_EQ(1700000000, service_->GetNotes()[0].timestamp);
+
+  Notes updated_note;
+  updated_note.id = "note-1";
+  updated_note.title = "Updated Title";
+  updated_note.content = "Updated content";
+  updated_note.timestamp = 1700001234;
+
+  EXPECT_CALL(observer_, OnNoteUpdated(testing::_)).Times(1);
+  service_->UpdateNote(updated_note);
+  testing::Mock::VerifyAndClearExpectations(&observer_);
+
+  ASSERT_EQ(1u, service_->GetNotes().size());
+  EXPECT_EQ("Updated Title", service_->GetNotes()[0].title);
+  EXPECT_EQ("Updated content", service_->GetNotes()[0].content);
+  EXPECT_EQ(1700001234, service_->GetNotes()[0].timestamp);
+
+  ResetService();
+  InitService();
+
+  ASSERT_EQ(1u, service_->GetNotes().size());
+  EXPECT_EQ("note-1", service_->GetNotes()[0].id);
+  EXPECT_EQ("Updated Title", service_->GetNotes()[0].title);
+  EXPECT_EQ("Updated content", service_->GetNotes()[0].content);
+  EXPECT_EQ(1700001234, service_->GetNotes()[0].timestamp);
 }
 
 TEST_F(SidebarServiceTest, NotesSavedToPrefs) {
