@@ -316,8 +316,8 @@ public class SignMessageFragment extends WalletBottomSheetDialogFragment {
     }
 
     /**
-     * Html.fromHtml folds a line break into a space, which would hide the line breaks the
-     * formatted view marks. Keep each one as a {@code <br>}.
+     * Html.fromHtml folds a line break into a space, which would hide the line breaks the formatted
+     * view marks. Keep each one as a {@code <br>}.
      */
     private static String escapeHtmlKeepingLineBreaks(final String text) {
         String[] lines = text.split("\n", -1);
