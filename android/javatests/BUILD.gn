@@ -8,12 +8,13 @@ import("//build/config/android/rules.gni")
 
 testonly = true
 
-java_group("brave_test_java_helper") {
+# Contain all source code that is used by tests in a different package.
+android_library("brave_test_java_helper") {
+  sources = [ "//chrome/android/javatests/src/org/chromium/chrome/browser/site_settings/SiteSettingsTestUtils.java" ]
   public_deps = [
     "//base:base_java",
     "//base:base_java_test_support",
     "//chrome/android:chrome_java",
-    "//chrome/android/javatests:chrome_test_java_helper",
     "//chrome/browser/browsing_data/android:java",
     "//chrome/browser/flags:java",
     "//chrome/browser/preferences:java",

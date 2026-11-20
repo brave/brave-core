@@ -1,5 +1,0 @@
-HTTP/1.1 200 OK
-Cache-Control: no-cache
-Content-Type: image/jpeg
-Content-Disposition: attachment; filename=fbmd_test_image.jpg
-Expires: Fri, 01 Jan 1990 00:00:00 GMT
