@@ -675,14 +675,25 @@ class JenkinsCi:
             return ()
         return (f'not in the job\'s {len(runs)} earlier runs',)
 
-    def rerun(self, build_url: str, *, wipe_workspace: bool = False) -> str:
-        """Queues the job of the run at `build_url` again, from scratch when
-        `wipe_workspace` is set (a PR job's `WIPE_WORKSPACE` parameter), and
-        says so."""
+    def rerun(
+        self,
+        build_url: str,
+        *,
+        wipe_workspace: bool = False,
+        remove_src_out: bool = False,
+    ) -> str:
+        """Queues the job of the run at `build_url` again, and says so: from
+        scratch when `wipe_workspace` is set (a PR job's `WIPE_WORKSPACE`
+        parameter), and without `src/out` when `remove_src_out` is (its
+        `RM_SRC_OUT` parameter)."""
         job_url = build_url.rstrip('/').rsplit('/', 1)[0] + '/'
         session = self._session()
         crumb = self._get_crumb(session, self._server_root((job_url,)))
-        params = {'WIPE_WORKSPACE': 'true'} if wipe_workspace else {}
+        params = {}
+        if wipe_workspace:
+            params['WIPE_WORKSPACE'] = 'true'
+        if remove_src_out:
+            params['RM_SRC_OUT'] = 'true'
         response = session.post(
             f'{job_url}buildWithParameters',
             params=params,

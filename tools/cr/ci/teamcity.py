@@ -83,6 +83,9 @@ _MESSAGES_PER_PAGE = 100
 _CLI_TIMEOUT = 120
 _FULL_LOG_TIMEOUT = 900
 
+# The workspace parameters a PR aggregate passes to its `*_Init` dependency.
+_INIT_PARAMETER = 'reverse.dep.*_Init.env.{}'
+
 
 class TeamCityError(RuntimeError):
     """A CLI call that failed or timed out, with what the CLI said."""
@@ -108,7 +111,11 @@ class TeamCityCi:
         self._run = run
 
     def _cli(
-        self, *args: str, write: bool = False, timeout: int = _CLI_TIMEOUT
+        self,
+        *args: str,
+        write: bool = False,
+        timeout: int = _CLI_TIMEOUT,
+        stdin: str | None = None,
     ) -> str:
         env = {**os.environ, 'NO_COLOR': '1', 'TEAMCITY_NO_UPDATE': '1'}
         if not write:
@@ -122,6 +129,7 @@ class TeamCityCi:
                 encoding='utf-8',
                 env=env,
                 timeout=timeout,
+                input=stdin,
             ).stdout
         except subprocess.TimeoutExpired as e:
             raise TeamCityError(
@@ -387,11 +395,69 @@ class TeamCityCi:
         )
         return log if timestamps else _TIMESTAMP.sub('', log)
 
-    def rerun(self, url: str) -> str:
+    def rerun(
+        self,
+        url: str,
+        *,
+        wipe_workspace: bool = False,
+        remove_src_out: bool = False,
+    ) -> str:
         """Queues the build at `url` again, with the same job, branch,
         revision and parameters, and returns the CLI's output.
 
         For an aggregate, TeamCity reuses the dependencies that succeeded,
         and reruns those that failed.
+
+        With `wipe_workspace` or `remove_src_out`, it queues a new run of the
+        same job, branch and revisions instead, setting the `new_workspace` or
+        `rm_src_out` parameter of its `*_Init` dependency, as the run dialog's
+        checkboxes do, and says so.
         """
-        return self._cli('run', 'restart', str(_build_id(url)), write=True)
+        build_id = _build_id(url)
+        cleanups = [
+            name
+            for name, wanted in (
+                ('new_workspace', wipe_workspace),
+                ('rm_src_out', remove_src_out),
+            )
+            if wanted
+        ]
+        if not cleanups:
+            return self._cli('run', 'restart', str(build_id), write=True)
+        build = self._api(
+            f'/app/rest/builds/id:{build_id}?fields=buildTypeId,branchName,'
+            'revisions(revision(version,vcsBranchName,vcs-root-instance(id)))'
+        )
+        body = {
+            'buildType': {'id': build['buildTypeId']},
+            'revisions': build.get('revisions') or {},
+            'properties': {
+                'property': [
+                    {'name': _INIT_PARAMETER.format(name), 'value': 'true'}
+                    for name in cleanups
+                ]
+            },
+        }
+        if 'branchName' in build:
+            body['branchName'] = build['branchName']
+        queued = json.loads(
+            self._cli(
+                'api',
+                '--raw',
+                '-X',
+                'POST',
+                '-H',
+                'Content-Type: application/json',
+                '-H',
+                'Accept: application/json',
+                '--input',
+                '-',
+                '/app/rest/buildQueue',
+                write=True,
+                stdin=json.dumps(body),
+            )
+        )
+        return (
+            f'Queued {build["buildTypeId"]} again with '
+            f'{" and ".join(cleanups)}: {queued.get("webUrl", "")}'
+        )
