@@ -16,7 +16,7 @@ from dataclasses import dataclass
 import post_process
 from PB.recipes.brave.isolates.archive import InputProperties
 from recipe_api import RecipeScriptApi
-from recipe_modules import cas, isolate, path
+from recipe_modules import cas, isolate, path, step
 from recipe_test_api import RecipeTestApi
 
 
@@ -24,6 +24,7 @@ from recipe_test_api import RecipeTestApi
 class DEPS(RecipeScriptApi):
     isolate: isolate.API
     path: path.API
+    step: step.API
 
 
 @dataclass
@@ -42,7 +43,11 @@ def RunSteps(api: DEPS, properties: InputProperties) -> None:
         if properties.src_dir
         else api.path.chromium_src
     )
-    api.isolate.isolate_tests(src, properties.build_dir, properties.targets)
+    isolates = api.isolate.isolate_tests(
+        src, properties.build_dir, properties.targets
+    )
+    if missing := [t for t in properties.targets if t not in isolates]:
+        raise api.step.StepFailure(f'not archived: {", ".join(missing)}')
 
 
 def GenTests(api: TEST_DEPS):
@@ -89,6 +94,15 @@ def GenTests(api: TEST_DEPS):
             ],
         ),
         api.post_process(post_process.StatusSuccess),
+    )
+    yield api.test(
+        'archive fails',
+        api.properties(build_dir='out/Release', targets=['brave_unit_tests']),
+        api.cas.configured(),
+        api.step_data('isolate tests.brave_unit_tests.mb isolate', retcode=1),
+        api.post_process(post_process.StatusFailure),
+        api.post_process(post_process.DropExpectation),
+        status='FAILURE',
     )
     yield api.test(
         'no targets',

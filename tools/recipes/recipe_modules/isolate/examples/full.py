@@ -32,6 +32,8 @@ def RunSteps(api: DEPS):
     isolates = api.isolate.isolate_tests(
         api.path.chromium_src, 'out/Release', ['base_unittests']
     )
+    if 'base_unittests' not in isolates:
+        return
     assert isolates['base_unittests'].cwd == 'out/Release'
     isolate_ = isolate.Isolate.from_json(isolates['base_unittests'].to_json())
     result = api.isolate.run('rerun', isolate_, ['--gtest_repeat=2'])
@@ -66,6 +68,16 @@ def GenTests(api: TEST_DEPS):
             ],
         ),
         api.post_process(post_process.StatusSuccess),
+    )
+    # A suite that cannot be archived is left out.
+    yield api.test(
+        'archive fails',
+        api.isolate.enabled(),
+        api.cas.configured(),
+        api.step_data('isolate tests.base_unittests.mb isolate', retcode=1),
+        api.post_process(post_process.DoesNotRun, 'rerun'),
+        api.post_process(post_process.StatusSuccess),
+        api.post_process(post_process.DropExpectation),
     )
     yield api.test(
         'disabled',

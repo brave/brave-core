@@ -72,7 +72,9 @@ class IsolateApi(RecipeApi):
         build_dir: str,
         targets: Sequence[str],
     ) -> dict[str, Isolate]:
-        """Archives each of *targets*, built in *build_dir*.
+        """Archives each of *targets*, built in *build_dir*. A suite that
+        cannot be archived is left out, and its step fails, but the others
+        are still archived.
 
         Args:
             src: The Chromium checkout.
@@ -80,14 +82,17 @@ class IsolateApi(RecipeApi):
             targets: The suites to archive.
 
         Returns:
-            Each suite's isolate, by its name. The `isolates` output property
-            holds the same.
+            Each archived suite's isolate, by its name. The `isolates` output
+            property holds the same.
         """
         isolates = {}
         with self.m.step.nest('isolate tests'):
             for target in targets:
                 with self.m.step.nest(target):
-                    isolates[target] = self._isolate(src, build_dir, target)
+                    try:
+                        isolates[target] = self._isolate(src, build_dir, target)
+                    except self.m.step.StepFailure:
+                        pass
             self.m.step('isolates', None).presentation.properties[
                 'isolates'
             ] = {name: i.to_json() for name, i in isolates.items()}

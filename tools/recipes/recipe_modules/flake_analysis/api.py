@@ -148,6 +148,19 @@ class FlakeAnalysisApi(RecipeApi):
         super().__init__()
         self._upstream_builders = properties.upstream_builders
 
+    def suites_to_rerun(self, test_run: TestRun) -> tuple[str, ...]:
+        """The suites in *test_run* that `analyse()` reruns: those with a
+        failure that did not pass on retry, and no more than
+        `MAX_RERUN_TESTS` of them."""
+        return tuple(
+            suite.name
+            for suite in test_run.suites
+            if suite.outcome is not None
+            and 0
+            < sum(not f.flaky for f in suite.outcome.failures)
+            <= MAX_RERUN_TESTS
+        )
+
     def analyse(
         self, test_run: TestRun, suites: Mapping[str, Rerunnable]
     ) -> Analysis:
