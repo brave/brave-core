@@ -246,6 +246,9 @@ TEST_F(BraveShieldsSettingsServiceTest, FingerprintMode) {
   // iOS does not support FingerprintMode::STRICT_MODE
 #if !BUILDFLAG(IS_IOS)
   // when kBraveShowStrictFingerprintingMode flag is disabled
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndDisableFeature(
+      brave_shields::features::kBraveShowStrictFingerprintingMode);
   brave_shields_settings()->SetFingerprintMode(FingerprintMode::STRICT_MODE,
                                                kTestUrl);
   // verify it returns FingerprintMode::STANDARD_MODE
@@ -257,7 +260,7 @@ TEST_F(BraveShieldsSettingsServiceTest, FingerprintMode) {
             brave_shields::ControlType::DEFAULT);
 
   // enable kBraveShowStrictFingerprintingMode flag
-  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.Reset();
   scoped_feature_list.InitAndEnableFeature(
       brave_shields::features::kBraveShowStrictFingerprintingMode);
   brave_shields_settings()->SetFingerprintMode(FingerprintMode::STRICT_MODE,
