@@ -26,7 +26,7 @@ bool WebClient::IsGlobalPrivacyControlEnabled(
   return false;
 }
 
-void WebClient::DidResetConfiguration(web::BrowserState* browser_state,
+void WebClient::DidResetConfiguration(web::WebState* web_state,
                                       WKWebViewConfiguration* configuration) {
   // Called when the underlying WKWebViewConfiguration is reset.
   // Will be handled in BraveWebClient

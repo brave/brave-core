@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Define `GetWebStateJavaScriptFeatures`, returning none.
+    regex:
+      re_pattern:
+        '(\nstd::vector<JavaScriptFeature\*>
+        WebClient::GetJavaScriptFeatures\(\n.*?\n\}\n)'
+      re_flags: [DOTALL]
+      replace: |
+        \1
+        std::vector<JavaScriptFeature*> WebClient::GetWebStateJavaScriptFeatures(
+            WebState* web_state) const {
+          return std::vector<JavaScriptFeature*>();
+        }

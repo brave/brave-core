@@ -1,24 +1,26 @@
 diff --git a/ios/web/common/web_view_creation_util.mm b/ios/web/common/web_view_creation_util.mm
-index 7cbfb42af2c7e90294a4be4996566af319aabadc..6c63fafa5d96c51cd22b41e81a1ddf90c547a1e4 100644
+index 7cbfb42af2c7e90294a4be4996566af319aabadc..b988bd61be2b095cd34b39a3e4d4bceb012097e9 100644
 --- a/ios/web/common/web_view_creation_util.mm
 +++ b/ios/web/common/web_view_creation_util.mm
-@@ -17,8 +17,7 @@ namespace web {
+@@ -17,8 +17,8 @@ namespace web {
  WKWebView* BuildWKWebView(CGRect frame, BrowserState* browser_state) {
    DCHECK(browser_state);
  
 -  WKWebViewConfigurationProvider& config_provider =
 -      WKWebViewConfigurationProvider::FromBrowserState(browser_state);
-+  WKWebViewConfigurationProvider config_provider(browser_state);
++  WKWebViewConfigurationProvider config_provider(browser_state,
++                                                 /*web_state=*/nullptr);
    return BuildWKWebView(frame, config_provider.GetWebViewConfiguration(),
                          browser_state, UserAgentType::MOBILE, nil, nil, nil);
  }
-@@ -26,8 +25,7 @@ WKWebView* BuildWKWebView(CGRect frame, BrowserState* browser_state) {
+@@ -26,8 +26,8 @@ WKWebView* BuildWKWebView(CGRect frame, BrowserState* browser_state) {
  WKWebView* BuildWKWebViewForQueries(BrowserState* browser_state) {
    DCHECK(browser_state);
  
 -  WKWebViewConfigurationProvider& config_provider =
 -      WKWebViewConfigurationProvider::FromBrowserState(browser_state);
-+  WKWebViewConfigurationProvider config_provider(browser_state);
++  WKWebViewConfigurationProvider config_provider(browser_state,
++                                                 /*web_state=*/nullptr);
    return BuildWKWebViewForQueries(config_provider.GetWebViewConfiguration(),
                                    browser_state);
  }

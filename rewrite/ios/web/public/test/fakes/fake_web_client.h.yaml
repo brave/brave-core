@@ -1,0 +1,40 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Override `GetWebStateJavaScriptFeatures`.
+    regex:
+      re_pattern:
+        '(\n([ ]*)std::vector<JavaScriptFeature\*>
+        GetJavaScriptFeatures\(\n\s*BrowserState\* browser_state\) const
+        override;\n)'
+      replace: |
+        \1\2std::vector<JavaScriptFeature*> GetWebStateJavaScriptFeatures(
+        \2    WebState* web_state) const override;
+
+  - description: Let tests set the features of a single WebState.
+    regex:
+      re_pattern:
+        '(\n([ ]*)void SetJavaScriptFeatures\(std::vector<JavaScriptFeature\*>
+        features\);\n)'
+      replace: |
+        \1
+        \2// Changes the Java Script Features of `web_state` for testing.
+        \2void SetWebStateJavaScriptFeatures(WebState* web_state,
+        \2                                   std::vector<JavaScriptFeature*> features);
+
+  - description: Store the features set per WebState.
+    regex:
+      re_pattern:
+        '(\n([ ]*)std::vector<JavaScriptFeature\*> java_script_features_;\n)'
+      replace: |
+        \1\2std::map<WebState*, std::vector<JavaScriptFeature*>>
+        \2    web_state_java_script_features_;
+
+  - description: Include the map of features per WebState.
+    regex:
+      re_pattern: '(\n#include <optional>\n)'
+      replace: |-
+        \n#include <map>\1

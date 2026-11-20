@@ -15,8 +15,9 @@ namespace web {
 namespace {
 
 // Adjusts `configuration` after `WKWebViewConfigurationProvider` resets it, for
-// settings Brave doesn't inherit from Chromium.
-void BraveDidResetConfiguration(BrowserState* browser_state,
+// settings Brave doesn't inherit from Chromium. `web_state` is null for a
+// provider building the configuration of a web view without a WebState.
+void BraveDidResetConfiguration(WebState* web_state,
                                 WKWebViewConfiguration* configuration) {
   // Restore WKWebView long press
   @try {
@@ -45,7 +46,9 @@ void BraveDidResetConfiguration(BrowserState* browser_state,
   // - We replace our custom HTTPS-only upgrade and can remove the assignment of
   //   `WKWebViewConfiguration.upgradeKnownHostsToHTTPS`
   //   https://github.com/brave/brave-browser/issues/53030
-  GetWebClient()->DidResetConfiguration(browser_state, configuration);
+  if (web_state) {
+    GetWebClient()->DidResetConfiguration(web_state, configuration);
+  }
 }
 
 }  // namespace

@@ -1,0 +1,16 @@
+diff --git a/ios/web/web_client.mm b/ios/web/web_client.mm
+index 202f0a0752fe78ac3a5293ff6488054063f42bfb..30b10db6893b97baaf4389621902f404e2eb535d 100644
+--- a/ios/web/web_client.mm
++++ b/ios/web/web_client.mm
+@@ -73,6 +73,11 @@ std::vector<JavaScriptFeature*> WebClient::GetJavaScriptFeatures(
+   return std::vector<JavaScriptFeature*>();
+ }
+ 
++std::vector<JavaScriptFeature*> WebClient::GetWebStateJavaScriptFeatures(
++    WebState* web_state) const {
++  return std::vector<JavaScriptFeature*>();
++}
++
+ void WebClient::PrepareErrorPage(WebState* web_state,
+                                  const GURL& url,
+                                  NSError* error,

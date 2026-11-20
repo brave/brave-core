@@ -36,7 +36,7 @@ class WebState;
                                          NSURLRequest* request);               \
   virtual bool IsGlobalPrivacyControlEnabled(                                  \
       web::BrowserState* browser_state);                                       \
-  virtual void DidResetConfiguration(web::BrowserState* browser_state,         \
+  virtual void DidResetConfiguration(web::WebState* web_state,                 \
                                      WKWebViewConfiguration* configuration);   \
   virtual bool IsBrowserLockdownModeEnabled
 #include <ios/web/public/web_client.h>  // IWYU pragma: export

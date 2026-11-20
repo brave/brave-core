@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Let the embedder provide JavaScriptFeatures for a single WebState.
+
+      Each WebState configures its own WKUserContentController, so the features
+      can differ between WebStates of the same BrowserState.
+    regex:
+      re_pattern:
+        '(\n(\s*)virtual std::vector<JavaScriptFeature\*>
+        GetJavaScriptFeatures\(\n\s*BrowserState\* browser_state\) const;\n)'
+      replace: |
+        \1
+        \2// Gives the embedder a chance to provide custom JavaScriptFeatures for
+        \2// `web_state` only, in addition to those of `GetJavaScriptFeatures`.
+        \2// Called when the scripts of the WebState's configuration are updated.
+        \2virtual std::vector<JavaScriptFeature*> GetWebStateJavaScriptFeatures(
+        \2    WebState* web_state) const;

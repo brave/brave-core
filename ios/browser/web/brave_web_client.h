@@ -63,7 +63,7 @@ class BraveWebClient : public ChromeWebClient {
                     base::OnceCallback<void(NSArray<NSURL*>*)> completion)
       const override API_AVAILABLE(ios(18.4));
 
-  void DidResetConfiguration(web::BrowserState* browser_state,
+  void DidResetConfiguration(web::WebState* web_state,
                              WKWebViewConfiguration* configuration) override;
   bool IsSmoothScrollingSupported() const override;
 

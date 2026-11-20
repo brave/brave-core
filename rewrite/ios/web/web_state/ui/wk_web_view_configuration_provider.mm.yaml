@@ -96,7 +96,8 @@ substitutions:
         rule_list_provider\)\n.*?\n\}\n'
       re_flags: [DOTALL]
       replace: |
-        \1      content_rule_list_applier_(std::make_unique<WKContentRuleListApplier>(
+        \1      web_state_(web_state),
+              content_rule_list_applier_(std::make_unique<WKContentRuleListApplier>(
                   WKWebViewSharedResourcesProvider::FromBrowserState(browser_state)
                       .GetContentRuleListRegistry())),
               java_script_feature_manager_(
@@ -255,7 +256,35 @@ substitutions:
       replace: |-
         \1
 
-          BraveDidResetConfiguration(browser_state_, configuration_);\2
+          BraveDidResetConfiguration(web_state_, configuration_);\2
+
+  - description: Take the WebState owning the provider.
+    regex:
+      re_pattern:
+        '(\nWKWebViewConfigurationProvider::WKWebViewConfigurationProvider\(\n)(\s*)BrowserState\*
+        browser_state\)\n(\s*): browser_state_\(browser_state\),\n'
+      replace: |
+        \1\2BrowserState* browser_state,
+        \2WebState* web_state)
+        \3: browser_state_(browser_state),
+
+  - description: |-
+      Configure the JavaScript features the embedder provides for the WebState.
+
+      They are configured after the BrowserState's ones. A provider without a
+      WebState only configures the BrowserState's features.
+    regex:
+      re_pattern:
+        '(\n(\s*)for \(JavaScriptFeature\* feature
+        :\n\s*GetWebClient\(\)->GetJavaScriptFeatures\(browser_state_\)\)
+        \{\n\s*features\.push_back\(feature\);\n\s*\}\n)'
+      replace: |
+        \1\2if (web_state_) {
+        \2  for (JavaScriptFeature* feature :
+        \2       GetWebClient()->GetWebStateJavaScriptFeatures(web_state_)) {
+        \2    features.push_back(feature);
+        \2  }
+        \2}
 
   - description: |-
       Derive the configuration from the BrowserState's external configuration

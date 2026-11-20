@@ -5,13 +5,21 @@
 
 source_set("unittests") {
   testonly = true
-  sources = [ "wk_web_view_shared_resources_provider_unittest.mm" ]
+  sources = [
+    "web_state_java_script_features_unittest.mm",
+    "wk_web_view_shared_resources_provider_unittest.mm",
+  ]
   deps = [
     "//base",
     "//base/test:test_support",
+    "//ios/web/common:web_view_creation_util",
+    "//ios/web/js_messaging:java_script_feature_manager_header",
     "//ios/web/public",
+    "//ios/web/public/js_messaging",
     "//ios/web/public/test",
+    "//ios/web/public/test:test_fixture",
     "//ios/web/public/test/fakes",
+    "//ios/web/web_state:web_state_impl_header",
     "//ios/web/web_state/ui:wk_web_view_configuration_provider",
     "//testing/gmock",
     "//testing/gtest",

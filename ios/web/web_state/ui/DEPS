@@ -5,6 +5,9 @@ include_rules = [
 
 specific_include_rules = {
   ".*_unittest\.mm": [
+    "+ios/web/common/web_view_creation_util.h",
+    "+ios/web/js_messaging/java_script_feature_manager.h",
+    "+ios/web/web_state/web_state_impl.h",
     "+third_party/ocmock",
   ],
 }

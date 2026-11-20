@@ -133,7 +133,10 @@ substitutions:
         // thread safe. Must be used only on the main thread.
         class WKWebViewConfigurationProvider {
          public:
-          explicit WKWebViewConfigurationProvider(BrowserState* browser_state);
+          // `web_state` is the WebState owning the provider. It is null for a provider
+          // building the configuration of a web view without a WebState.
+          WKWebViewConfigurationProvider(BrowserState* browser_state,
+                                         WebState* web_state);
           ~WKWebViewConfigurationProvider();
   - description: |-
       Allow resetting the configuration with one derived from another
@@ -194,6 +197,7 @@ substitutions:
       replace: |-
         \1class JavaScriptFeatureManager;
         class WebFramesManagerJavaScriptFeature;
+        class WebState;
         \2
 
   - description: Include what the members above need.
@@ -217,3 +221,14 @@ substitutions:
         browser_state\);\n'
       re_flags: [DOTALL]
       replace: "\n"
+
+  - description: |-
+      Keep the WebState owning the provider.
+
+      Its JavaScript features are configured in `UpdateScripts`. The provider
+      is owned by the WebState, so it can not outlive it.
+    add_after_line:
+      line: 'raw_ptr<BrowserState> browser_state_;'
+      code: |2-
+          // Null for a provider without a WebState.
+          raw_ptr<WebState> web_state_;

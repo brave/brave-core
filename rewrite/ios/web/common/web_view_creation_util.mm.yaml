@@ -18,4 +18,6 @@ substitutions:
       re_pattern:
         'WKWebViewConfigurationProvider& config_provider
         =\n\s*WKWebViewConfigurationProvider::FromBrowserState\(browser_state\);'
-      replace: 'WKWebViewConfigurationProvider config_provider(browser_state);'
+      replace: |-
+        WKWebViewConfigurationProvider config_provider(browser_state,
+                                                         /*web_state=*/nullptr);

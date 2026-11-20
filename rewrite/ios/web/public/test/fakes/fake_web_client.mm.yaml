@@ -17,3 +17,26 @@ substitutions:
       function_name: FakeWebClient::AddAdditionalSchemes
       code: |-
         schemes->standard_schemes.push_back(kChromeUIUntrustedScheme);
+
+  - description: |-
+      Return the features set for the WebState with
+      `SetWebStateJavaScriptFeatures`.
+    regex:
+      re_pattern: '(\nvoid FakeWebClient::SetJavaScriptFeatures\(\n.*?\n\}\n)'
+      re_flags: [DOTALL]
+      replace: |
+        \1
+        std::vector<JavaScriptFeature*> FakeWebClient::GetWebStateJavaScriptFeatures(
+            WebState* web_state) const {
+          auto it = web_state_java_script_features_.find(web_state);
+          if (it == web_state_java_script_features_.end()) {
+            return {};
+          }
+          return it->second;
+        }
+
+        void FakeWebClient::SetWebStateJavaScriptFeatures(
+            WebState* web_state,
+            std::vector<JavaScriptFeature*> features) {
+          web_state_java_script_features_[web_state] = std::move(features);
+        }

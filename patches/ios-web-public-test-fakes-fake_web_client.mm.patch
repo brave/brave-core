@@ -1,5 +1,5 @@
 diff --git a/ios/web/public/test/fakes/fake_web_client.mm b/ios/web/public/test/fakes/fake_web_client.mm
-index abbb3fc33c805f2e0ddf800fc708e391756f7a65..61e5b4f1b50c350ad1766b2c7f049149057fe2ee 100644
+index abbb3fc33c805f2e0ddf800fc708e391756f7a65..366f3c2d6648cabaf36e2ca03c23e708454c9149 100644
 --- a/ios/web/public/test/fakes/fake_web_client.mm
 +++ b/ios/web/public/test/fakes/fake_web_client.mm
 @@ -23,8 +23,11 @@ FakeWebClient::FakeWebClient() = default;
@@ -14,3 +14,25 @@ index abbb3fc33c805f2e0ddf800fc708e391756f7a65..61e5b4f1b50c350ad1766b2c7f049149
  }
  
  bool FakeWebClient::IsAppSpecificURL(const GURL& url) const {
+@@ -57,6 +60,21 @@ void FakeWebClient::SetJavaScriptFeatures(
+   java_script_features_ = features;
+ }
+ 
++std::vector<JavaScriptFeature*> FakeWebClient::GetWebStateJavaScriptFeatures(
++    WebState* web_state) const {
++  auto it = web_state_java_script_features_.find(web_state);
++  if (it == web_state_java_script_features_.end()) {
++    return {};
++  }
++  return it->second;
++}
++
++void FakeWebClient::SetWebStateJavaScriptFeatures(
++    WebState* web_state,
++    std::vector<JavaScriptFeature*> features) {
++  web_state_java_script_features_[web_state] = std::move(features);
++}
++
+ void FakeWebClient::PrepareErrorPage(
+     WebState* web_state,
+     const GURL& url,

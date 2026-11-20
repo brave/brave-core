@@ -365,10 +365,10 @@ void BraveWebClient::RunOpenPanel(
   NOTIMPLEMENTED();
 }
 
-void BraveWebClient::DidResetConfiguration(web::BrowserState* browser_state,
+void BraveWebClient::DidResetConfiguration(web::WebState* web_state,
                                            WKWebViewConfiguration* config) {
   if (BraveWebView.didResetConfiguration) {
-    auto* profile = ProfileIOS::FromBrowserState(browser_state);
+    auto* profile = ProfileIOS::FromBrowserState(web_state->GetBrowserState());
     ProfileBridgeImpl* profile_bridge =
         [[ProfileBridgeImpl alloc] initWithProfile:profile];
     BraveWebView.didResetConfiguration(profile_bridge, config);

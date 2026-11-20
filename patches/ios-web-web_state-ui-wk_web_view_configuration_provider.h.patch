@@ -1,8 +1,8 @@
 diff --git a/ios/web/web_state/ui/wk_web_view_configuration_provider.h b/ios/web/web_state/ui/wk_web_view_configuration_provider.h
-index 4f73d6e391318caa3fb217613bc8ed2551d18153..da5f85d74d09e463b35986e4a763709fd17df438 100644
+index 4f73d6e391318caa3fb217613bc8ed2551d18153..b9aad7d377782a967bbd086d742298837e8b533f 100644
 --- a/ios/web/web_state/ui/wk_web_view_configuration_provider.h
 +++ b/ios/web/web_state/ui/wk_web_view_configuration_provider.h
-@@ -8,51 +8,29 @@
+@@ -8,51 +8,33 @@
  #include <CoreFoundation/CoreFoundation.h>
  
  #include <memory>
@@ -28,6 +28,7 @@ index 4f73d6e391318caa3fb217613bc8ed2551d18153..da5f85d74d09e463b35986e4a763709f
 -class WKContentRuleListProvider;
 +class JavaScriptFeatureManager;
 +class WebFramesManagerJavaScriptFeature;
++class WebState;
 +class WKContentRuleListApplier;
  
 -// Keys for the static content rule lists managed by this provider.
@@ -57,12 +58,15 @@ index 4f73d6e391318caa3fb217613bc8ed2551d18153..da5f85d74d09e463b35986e4a763709f
 -  static void DeleteDataStorageForIdentifier(
 -      const base::Uuid& uuid,
 -      base::OnceCallback<void(NSError*)> callback);
-+  explicit WKWebViewConfigurationProvider(BrowserState* browser_state);
++  // `web_state` is the WebState owning the provider. It is null for a provider
++  // building the configuration of a web view without a WebState.
++  WKWebViewConfigurationProvider(BrowserState* browser_state,
++                                 WebState* web_state);
 +  ~WKWebViewConfigurationProvider();
  
    // Returns a WeakPtr to the current instance.
    base::WeakPtr<WKWebViewConfigurationProvider> AsWeakPtr();
-@@ -63,17 +41,10 @@ class WKWebViewConfigurationProvider : public base::SupportsUserData::Data {
+@@ -63,17 +45,10 @@ class WKWebViewConfigurationProvider : public base::SupportsUserData::Data {
    // make it work for //ios/web. If `configuration` is nil, a new
    // WKWebViewConfiguration object will be created and set.
    //
@@ -84,7 +88,7 @@ index 4f73d6e391318caa3fb217613bc8ed2551d18153..da5f85d74d09e463b35986e4a763709f
    void ResetWithWebViewConfiguration(WKWebViewConfiguration* configuration);
  
    // Returns an autoreleased shallow copy of WKWebViewConfiguration associated
-@@ -84,10 +55,6 @@ class WKWebViewConfigurationProvider : public base::SupportsUserData::Data {
+@@ -84,10 +59,6 @@ class WKWebViewConfigurationProvider : public base::SupportsUserData::Data {
    // Callers must not retain the returned object.
    WKWebViewConfiguration* GetWebViewConfiguration();
  
@@ -95,7 +99,7 @@ index 4f73d6e391318caa3fb217613bc8ed2551d18153..da5f85d74d09e463b35986e4a763709f
    // Recreates and re-adds all injected Javascript into the current
    // configuration. This will only affect WebStates that are loaded after a call
    // to this function. All current WebStates will keep their existing Javascript
-@@ -103,23 +70,12 @@ class WKWebViewConfigurationProvider : public base::SupportsUserData::Data {
+@@ -103,23 +74,12 @@ class WKWebViewConfigurationProvider : public base::SupportsUserData::Data {
    // the default webpage preferences of the configuration.
    void SetUniversalOptOutEnabled(bool enabled) API_AVAILABLE(ios(27));
  
@@ -122,7 +126,7 @@ index 4f73d6e391318caa3fb217613bc8ed2551d18153..da5f85d74d09e463b35986e4a763709f
    WKWebViewConfigurationProvider() = delete;
  
    // Mark copy-constructible and copy-assignable deleted.
-@@ -128,26 +84,16 @@ class WKWebViewConfigurationProvider : public base::SupportsUserData::Data {
+@@ -128,26 +88,18 @@ class WKWebViewConfigurationProvider : public base::SupportsUserData::Data {
    WKWebViewConfigurationProvider& operator=(
        const WKWebViewConfigurationProvider&) = delete;
  
@@ -146,6 +150,8 @@ index 4f73d6e391318caa3fb217613bc8ed2551d18153..da5f85d74d09e463b35986e4a763709f
 -  // where the web view configuration and data store are not originated from
 -  // //ios/web.
 -  bool is_data_store_originated_from_ios_web_ = true;
++  // Null for a provider without a WebState.
++  raw_ptr<WebState> web_state_;
 +  std::unique_ptr<WKContentRuleListApplier> content_rule_list_applier_;
 +  std::vector<std::unique_ptr<WebFramesManagerJavaScriptFeature>>
 +      web_frames_manager_features_;

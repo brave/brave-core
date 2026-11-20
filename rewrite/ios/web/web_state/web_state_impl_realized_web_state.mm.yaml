@@ -94,7 +94,8 @@ substitutions:
         WebStateImpl::RealizedWebState::GetWKWebViewConfigurationProvider() {
           if (!web_view_configuration_provider_) {
             web_view_configuration_provider_ =
-                std::make_unique<WKWebViewConfigurationProvider>(GetBrowserState());
+                std::make_unique<WKWebViewConfigurationProvider>(GetBrowserState(),
+                                                                 owner_);
           }
           return *web_view_configuration_provider_;
         }

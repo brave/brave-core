@@ -1,0 +1,41 @@
+diff --git a/ios/web/public/test/fakes/fake_web_client.h b/ios/web/public/test/fakes/fake_web_client.h
+index 2f85aacce5ebd0a3e0e3febdcab0a09457d12311..ed4254a23da6ba96377f126ca2032930fea9dd2d 100644
+--- a/ios/web/public/test/fakes/fake_web_client.h
++++ b/ios/web/public/test/fakes/fake_web_client.h
+@@ -7,6 +7,7 @@
+ 
+ #import <Foundation/Foundation.h>
+ 
++#include <map>
+ #include <optional>
+ #include <vector>
+ 
+@@ -39,6 +40,8 @@ class FakeWebClient : public web::WebClient {
+ 
+   std::vector<JavaScriptFeature*> GetJavaScriptFeatures(
+       BrowserState* browser_state) const override;
++  std::vector<JavaScriptFeature*> GetWebStateJavaScriptFeatures(
++      WebState* web_state) const override;
+ 
+   void PrepareErrorPage(WebState* web_state,
+                         const GURL& url,
+@@ -61,6 +64,10 @@ class FakeWebClient : public web::WebClient {
+   // Changes Java Script Features for testing.
+   void SetJavaScriptFeatures(std::vector<JavaScriptFeature*> features);
+ 
++  // Changes the Java Script Features of `web_state` for testing.
++  void SetWebStateJavaScriptFeatures(WebState* web_state,
++                                     std::vector<JavaScriptFeature*> features);
++
+   void SetDefaultUserAgent(UserAgentType type) { default_user_agent_ = type; }
+   void SetUniversalOptOutState(UniversalOptOutState state) {
+     universal_opt_out_state_ = state;
+@@ -70,6 +77,8 @@ class FakeWebClient : public web::WebClient {
+ 
+  private:
+   std::vector<JavaScriptFeature*> java_script_features_;
++  std::map<WebState*, std::vector<JavaScriptFeature*>>
++      web_state_java_script_features_;
+   UserAgentType default_user_agent_ = UserAgentType::MOBILE;
+   UniversalOptOutState universal_opt_out_state_ =
+       UniversalOptOutState::kNotEligible;
