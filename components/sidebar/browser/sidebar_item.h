@@ -121,6 +121,9 @@ struct SidebarItem {
   BuiltInItemType built_in_item_type = BuiltInItemType::kNone;
   std::u16string title;
   PanelType panel_type = PanelType::kNone;
+  // Only meaningful when is_web_panel_type(). Web panels load desktop by
+  // default; this requests the mobile user agent instead.
+  bool use_mobile_user_agent = false;
 };
 
 }  // namespace sidebar

@@ -278,6 +278,30 @@ void SidebarController::LoadAtTab(const GURL& url) {
   }
 }
 
+void SidebarController::OnItemUpdated(const SidebarItem& item,
+                                      const SidebarItemUpdate& update) {
+  if (update.panel_type_updated && web_panel_controller_ &&
+      web_panel_controller_->HasOpenPanel() &&
+      sidebar_model_->active_index() == update.index) {
+    // The open web panel's item just switched away from web-panel type (the
+    // only way panel_type_updated can fire while this item is the active,
+    // open panel). OnWebPanelStateChanged() won't catch this on its own: it
+    // only clears the active index when the panel itself closes, and it
+    // gates that on is_web_panel_type(), which this item no longer satisfies.
+    web_panel_controller_->CloseWebPanel();
+    sidebar_model_->SetActiveIndex(std::nullopt);
+  }
+
+  if (update.use_mobile_user_agent_updated && web_panel_controller_ &&
+      web_panel_controller_->HasOpenPanel() &&
+      sidebar_model_->active_index() == update.index) {
+    // The open web panel's user-agent choice just changed. Unlike the
+    // panel_type_updated case in this function, the panel stays open - it
+    // just needs to reload under the new user agent.
+    web_panel_controller_->ReapplyUserAgent(item);
+  }
+}
+
 void SidebarController::OnShowSidebarOptionChanged(
     SidebarService::ShowSidebarOption option) {
   // WebUI browser windows have no sidebar UI.
