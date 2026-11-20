@@ -67,7 +67,7 @@ overrides:
   # Security-related overrides.
   #
   # Scoped to Storybook's copy; webpack-dev-server already uses a patched 7.x.
-  '@storybook/builder-webpack5>webpack-dev-middleware': '7.4.5'
+  '@storybook/builder-webpack5>webpack-dev-middleware': '7.4.6'
   'axios': '1.20.0'
   'body-parser': '1.20.9'
   # Pinned per major line: consumers span all three and the fixes were backported.
