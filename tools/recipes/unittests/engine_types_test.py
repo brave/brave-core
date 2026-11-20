@@ -17,7 +17,7 @@ from engine_types import StepPresentation
 
 engine._ensure_protos()  # pylint: disable=protected-access
 # pylint: disable-next=import-error,wrong-import-order
-from PB.recipe_modules.brave.step.tests.output_properties import Artefact
+from PB.recipe_modules.brave.step.tests.output_properties import Artefact  # noqa: E402
 
 
 class StepPresentationTest(unittest.TestCase):
