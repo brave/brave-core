@@ -6,8 +6,11 @@
 """Integration tests for rebase_branch.py, running cmd.py as a subprocess
 against a FakeChromiumRepo."""
 
+import os
 import subprocess
 import unittest
+from pathlib import Path
+from unittest import mock
 
 import _boot  # noqa: F401
 from cmd_test import _Sandbox, _git
@@ -17,9 +20,31 @@ from exceptions import RebaseNeededException
 _SYNCED = '140.0.7000.0'
 _NEXT = '140.0.7001.0'
 
+_BRAVE_ROOT = Path(__file__).resolve().parents[3]
+
+FOO = 'chrome/browser/foo.cc'
+FOO_PLASTER = f'rewrite/{FOO}.yaml'
+FOO_PATCH = 'patches/chrome-browser-foo.cc.patch'
+
 
 class TestRebase(unittest.TestCase):
     def setUp(self) -> None:
+        # The rebase runs `git cr` after each commit. These make it this
+        # checkout's, run against the sandbox.
+        self.enterContext(
+            mock.patch.dict(
+                os.environ,
+                {
+                    'PATH': os.pathsep.join(
+                        [
+                            str(_BRAVE_ROOT / 'tools' / 'cr' / 'bootstrap'),
+                            os.environ['PATH'],
+                        ]
+                    ),
+                    'BRAVE_LAUNCHER_CHECKOUT_DIR': str(_BRAVE_ROOT),
+                },
+            )
+        )
         self._sandbox = self.enterContext(_Sandbox())
         self._sandbox.repo.add_tag(_SYNCED)
         self._sandbox.repo.update_brave_version(_SYNCED)
@@ -175,6 +200,52 @@ class TestRebase(unittest.TestCase):
 
         self.assertEqual(result.returncode, 1)
         self.assertIn(f'Sync Chromium to {_SYNCED}', result.stderr)
+
+    def test_amends_the_plaster_patches_of_each_commit(self) -> None:
+        repo = self._sandbox.repo
+        repo.write_and_stage_file(
+            FOO, '// foo.cc\n  ChromeThing thing;\n', repo.chromium
+        )
+        repo.commit('Add foo.cc', repo.chromium)
+        _git(
+            self._sandbox.root,
+            'checkout',
+            '-b',
+            'feature',
+            '--track',
+            self._base,
+        )
+        repo.write_and_stage_file(
+            FOO_PLASTER,
+            'substitutions:\n'
+            '  - description: Rewrite the thing brave owns\n'
+            '    regex:\n'
+            '      re_pattern: ChromeThing\n'
+            '      replace: BraveThing\n',
+            self._sandbox.root,
+        )
+        _git(self._sandbox.root, 'commit', '-m', 'Add the foo.cc plaster')
+        self._commit_file('feature.txt')
+        _git(self._sandbox.root, 'checkout', self._base)
+        self._commit_file('base.txt')
+        _git(self._sandbox.root, 'checkout', 'feature')
+
+        result = self._sandbox.run_gc(['rebase'])
+
+        self.assertEqual(
+            result.returncode, 0, msg=result.stdout + result.stderr
+        )
+        self.assertIn(
+            '+  BraveThing thing;',
+            _git(self._sandbox.root, 'show', f'HEAD^:{FOO_PATCH}').stdout,
+        )
+        self.assertEqual(
+            _git(
+                self._sandbox.root, 'log', '-1', '--format=%s', 'HEAD^'
+            ).stdout.strip(),
+            'Add the foo.cc plaster',
+        )
+        self.assertEqual(self._rev_parse('HEAD~2'), self._rev_parse(self._base))
 
     def test_continue_without_a_rebase_is_an_error(self) -> None:
         result = self._sandbox.run_gc(['rebase', '--continue'])
