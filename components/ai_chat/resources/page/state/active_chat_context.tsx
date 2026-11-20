@@ -173,6 +173,18 @@ export function ActiveChatProvider({
     setOpenThreadUuid(undefined)
   }, [selectedConversationId])
 
+  // Close an open thread panel when its thread is removed.
+  React.useEffect(
+    () =>
+      conversationAPI?.api.subscribeToOnConversationThreadRemoved(
+        (threadUuid) =>
+          setOpenThreadUuid((current) =>
+            current === threadUuid ? undefined : current,
+          ),
+      ),
+    [conversationAPI],
+  )
+
   // Only rebind the conversation when a new default is signalled in normal
   // sidebar mode. In global panel mode the conversation persists across tab
   // switches; the conversation_context effects handle content updates instead.

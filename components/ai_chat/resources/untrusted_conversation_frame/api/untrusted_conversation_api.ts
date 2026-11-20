@@ -248,6 +248,12 @@ export default function createUntrustedConversationApi(
             })
           },
 
+          onConversationThreadRemoved(threadUuid) {
+            api.getConversationThreads.update((old) =>
+              (old ?? []).filter((thread) => thread.uuid !== threadUuid),
+            )
+          },
+
           onToolUseEventOutput(entryUuid, toolUse) {
             const currentHistory =
               api.getConversationHistory.current(threadUuid)
