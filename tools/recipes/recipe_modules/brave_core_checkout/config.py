@@ -41,8 +41,8 @@ TARGET_ARCHS = HOST_ARCHS
 BUILD_CONFIGS = ('Release', 'Debug')
 
 # The only `.env` keys a build running as a builder writes: what has to stay
-# machine-local. Mirrors `BUILDER_DOTENV_KEYS` in
-# build/commands/lib/config.ts, which ignores any other with `--builder`.
+# machine-local. A subset of `BUILDER_DOTENV_KEYS` in
+# build/commands/lib/config.ts, which rejects any other with `--builder`.
 BUILDER_DOTENV_KEYS = frozenset(
     {
         'rbe_service',

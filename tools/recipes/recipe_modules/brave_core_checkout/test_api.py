@@ -66,6 +66,12 @@ class BraveCoreCheckoutTestApi(RecipeTestApi):
             }
         )
 
+    def secrets_dotenv(self, path: str) -> TestData:
+        """Give the builder's secrets through the module's properties."""
+        return self.properties(
+            **{'$brave_core_checkout': {'secrets_dotenv': path}}
+        )
+
     def disable_deprecated_dotenv(self) -> TestData:
         """Disable the deprecated `.env` mode through the module's
         properties."""

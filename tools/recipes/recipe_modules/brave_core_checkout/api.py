@@ -321,8 +321,22 @@ class BraveCoreCheckoutApi(RecipeApi):
         self._checkout_from_mirror(ref, mirror_dir)
         # Before `pnpm run sync`, which already needs the RBE settings.
         self._write_dotenv()
+        self._install_secrets()
         self._pnpm_sync()
         return self._root
+
+    def _install_secrets(self) -> None:
+        """Copy the `secrets_dotenv` file, if any, to the checkout's
+        `.internal/.env`, where `bots gen` reads the builder's secrets."""
+        if not self._properties.secrets_dotenv:
+            return
+        internal = self._root / '.internal'
+        self.m.file.ensure_directory('ensure .internal', internal, mode=0o700)
+        secrets = internal / '.env'
+        self.m.file.copy(
+            'install secrets', self._properties.secrets_dotenv, secrets
+        )
+        self.m.file.chmod('restrict secrets', secrets, 0o600)
 
     def _deploy_chromium(
         self, chromium_src: str | Path | None, mirror_dir: str, rev: str
