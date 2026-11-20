@@ -6,21 +6,45 @@
 #include "brave/components/tor/tor_control.h"
 
 #include <memory>
+#include <optional>
+#include <string>
+#include <string_view>
+#include <utility>
+#include <vector>
 
+#include "base/barrier_closure.h"
 #include "base/compiler_specific.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
+#include "base/memory/ref_counted.h"
 #include "base/run_loop.h"
-#include "base/strings/string_view_util.h"
-#include "base/test/bind.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/test/gmock_callback_support.h"
+#include "base/test/run_until.h"
+#include "base/test/test_future.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/test/browser_task_environment.h"
 #include "net/base/io_buffer.h"
+#include "net/base/ip_address.h"
+#include "net/base/ip_endpoint.h"
+#include "net/base/net_errors.h"
+#include "net/base/test_completion_callback.h"
+#include "net/log/net_log.h"
+#include "net/log/net_log_event_type.h"
+#include "net/log/net_log_source.h"
+#include "net/log/test_net_log.h"
+#include "net/log/test_net_log_util.h"
+#include "net/socket/stream_socket.h"
+#include "net/socket/tcp_server_socket.h"
+#include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace tor {
 namespace {
-class MockTorControlDelegate final : public TorControl::Delegate {
+class MockTorControlDelegate : public TorControl::Delegate {
  public:
   MOCK_METHOD0(OnTorControlReady, void());
   MOCK_METHOD1(OnTorControlClosed, void(bool));
@@ -39,6 +63,141 @@ class MockTorControlDelegate final : public TorControl::Delegate {
 
  private:
   base::WeakPtrFactory<tor::TorControl::Delegate> weak_ptr_factory_{this};
+};
+
+// Drives a TorControl through its real read path: TorControl connects to a
+// loopback TCPServerSocket owned by the test, which plays the Tor process.
+// What TorControl parsed is observed through the delegate.
+class TorControlReadTest : public testing::Test {
+ public:
+  TorControlReadTest()
+      : task_environment_(content::BrowserTaskEnvironment::IO_MAINLOOP),
+        io_task_runner_(content::GetIOThreadTaskRunner({})),
+        control_(new TorControl(delegate_.AsWeakPtr(), io_task_runner_),
+                 base::OnTaskRunnerDeleter(io_task_runner_)) {}
+
+  void SetUp() override {
+    server_ = std::make_unique<net::TCPServerSocket>(net::NetLog::Get(),
+                                                     net::NetLogSource());
+    ASSERT_EQ(net::OK, server_->Listen(
+                           net::IPEndPoint(net::IPAddress::IPv4Localhost(), 0),
+                           1, std::nullopt));
+    net::IPEndPoint address;
+    ASSERT_EQ(net::OK, server_->GetLocalAddress(&address));
+    net::RecordingNetLogObserver connections;
+    ASSERT_NO_FATAL_FAILURE(Handshake(address.port()));
+    for (const auto& entry :
+         connections.GetEntriesWithType(net::NetLogEventType::TCP_CONNECT)) {
+      const auto* peer = entry.params.FindString("remote_address");
+      if (peer && *peer == address.ToString()) {
+        control_socket_source_ = entry.source;
+        break;
+      }
+    }
+  }
+
+ protected:
+  // Connects, authenticates and subscribes to an event, so TorControl keeps
+  // reading after every command has been answered.
+  void Handshake(int port) {
+    base::RunLoop ready_loop;
+    base::RunLoop replies_loop;
+    // The mock keeps this closure beyond an early return from this function,
+    // so it is captured by value: copies share the barrier's ref-counted state.
+    base::RepeatingClosure replied =
+        base::BarrierClosure(4, replies_loop.QuitClosure());
+    EXPECT_CALL(delegate_, OnTorControlReady())
+        .WillOnce(base::test::RunClosure(ready_loop.QuitClosure()));
+    EXPECT_CALL(delegate_, OnTorRawEnd("250", "OK"))
+        .Times(4)
+        .WillRepeatedly([replied] { replied.Run(); });
+
+    control_->Start({0xAB, 0xCD}, port);
+    net::TestCompletionCallback accept_callback;
+    ASSERT_EQ(net::OK, accept_callback.GetResult(server_->Accept(
+                           &client_, accept_callback.callback())));
+
+    ASSERT_NO_FATAL_FAILURE(ExpectCommand("AUTHENTICATE ABCD"));
+    ASSERT_NO_FATAL_FAILURE(Send("250 OK\r\n"));
+    ready_loop.Run();
+    ASSERT_NO_FATAL_FAILURE(ExpectCommand("TAKEOWNERSHIP"));
+    ASSERT_NO_FATAL_FAILURE(Send("250 OK\r\n"));
+    ASSERT_NO_FATAL_FAILURE(
+        ExpectCommand("RESETCONF __OwningControllerProcess"));
+    ASSERT_NO_FATAL_FAILURE(Send("250 OK\r\n"));
+
+    base::test::TestFuture<bool> subscribed;
+    control_->Subscribe(TorControlEvent::NETWORK_LIVENESS,
+                        subscribed.GetCallback());
+    ASSERT_NO_FATAL_FAILURE(ExpectCommand("SETEVENTS NETWORK_LIVENESS"));
+    ASSERT_NO_FATAL_FAILURE(Send("250 OK\r\n"));
+    EXPECT_FALSE(subscribed.Get());
+    replies_loop.Run();
+    testing::Mock::VerifyAndClearExpectations(&delegate_);
+  }
+
+  // Reads one CRLF-terminated command TorControl wrote to the socket.
+  void ExpectCommand(std::string_view expected) {
+    while (pending_.find("\r\n") == std::string::npos) {
+      auto buffer = base::MakeRefCounted<net::IOBufferWithSize>(1024);
+      net::TestCompletionCallback callback;
+      int rv = callback.GetResult(
+          client_->Read(buffer.get(), buffer->size(), callback.callback()));
+      ASSERT_GT(rv, 0);
+      pending_.append(buffer->data(), static_cast<size_t>(rv));
+    }
+    size_t end = pending_.find("\r\n");
+    EXPECT_EQ(pending_.substr(0, end), expected);
+    pending_.erase(0, end + 2);
+  }
+
+  // Writes raw bytes to TorControl, as the Tor process would.
+  void Send(std::string_view data) {
+    auto buffer = base::MakeRefCounted<net::DrainableIOBuffer>(
+        base::MakeRefCounted<net::StringIOBuffer>(std::string(data)),
+        data.size());
+    while (buffer->BytesRemaining() > 0) {
+      net::TestCompletionCallback callback;
+      int rv = callback.GetResult(
+          client_->Write(buffer.get(), buffer->BytesRemaining(),
+                         callback.callback(), TRAFFIC_ANNOTATION_FOR_TESTS));
+      ASSERT_GT(rv, 0);
+      buffer->DidConsume(rv);
+    }
+  }
+
+  // Wait for the control socket to consume the whole chunk before sending
+  // the next one. A single write may arrive in several reads.
+  void SendAndWaitForRead(std::string_view chunk) {
+    ASSERT_TRUE(control_socket_source_.IsValid());
+    net::RecordingNetLogObserver reads;
+    ASSERT_NO_FATAL_FAILURE(Send(chunk));
+    ASSERT_TRUE(base::test::RunUntil([&] {
+      size_t bytes_read = 0;
+      for (const auto& entry : reads.GetEntriesForSourceWithType(
+               control_socket_source_,
+               net::NetLogEventType::SOCKET_BYTES_RECEIVED,
+               net::NetLogEventPhase::NONE)) {
+        bytes_read += net::GetIntegerValueFromParams(entry, "byte_count");
+      }
+      return bytes_read == chunk.size();
+    }));
+    // The socket logs a read just before invoking its callback. Wait for that
+    // callback and the delegate notifications it posts to the owner sequence.
+    base::test::TestFuture<void> processed;
+    io_task_runner_->PostTaskAndReply(FROM_HERE, base::DoNothing(),
+                                      processed.GetCallback());
+    ASSERT_TRUE(processed.Wait());
+  }
+
+  content::BrowserTaskEnvironment task_environment_;
+  scoped_refptr<base::SequencedTaskRunner> io_task_runner_;
+  testing::NiceMock<MockTorControlDelegate> delegate_;
+  std::unique_ptr<TorControl, base::OnTaskRunnerDeleter> control_;
+  std::unique_ptr<net::TCPServerSocket> server_;
+  std::unique_ptr<net::StreamSocket> client_;
+  net::NetLogSource control_socket_source_;
+  std::string pending_;
 };
 }  // namespace
 
@@ -119,65 +278,90 @@ TEST(TorControlTest, ParseKV) {
   }
 }
 
-TEST(TorControlTest, ReadDone) {
-  content::BrowserTaskEnvironment task_environment;
-  scoped_refptr<base::SequencedTaskRunner> io_task_runner =
-      content::GetIOThreadTaskRunner({});
-  MockTorControlDelegate delegate;
-  std::unique_ptr<TorControl> control =
-      std::make_unique<TorControl>(delegate.AsWeakPtr(), io_task_runner);
+// Lines split across several writes, including inside a CRLF-less line and
+// right after a CR, are each reported once and in order.
+TEST_F(TorControlReadTest, LinesSplitAcrossReads) {
+  auto calls = base::MakeRefCounted<base::RefCountedData<int>>(0);
+  auto count_call = [calls](const std::string&, const std::string&) {
+    ++calls->data;
+  };
+  {
+    testing::InSequence in_sequence;
+    EXPECT_CALL(delegate_, OnTorRawMid("250", "SOCKSPORT=9050"))
+        .WillOnce(count_call);
+    EXPECT_CALL(delegate_, OnTorRawEnd("250", "ORPORT=0")).WillOnce(count_call);
+    EXPECT_CALL(delegate_, OnTorRawEnd("250", "DONE")).WillOnce(count_call);
+  }
+
+  // Each Send() is read before the next one is written. Nothing is reported
+  // while the first line is still incomplete, including when its CR is in one
+  // read and its LF in the next.
+  ASSERT_NO_FATAL_FAILURE(SendAndWaitForRead("250-SOCKSP"));
+  EXPECT_EQ(calls->data, 0);
+  ASSERT_NO_FATAL_FAILURE(SendAndWaitForRead("ORT=9050\r"));
+  EXPECT_EQ(calls->data, 0);
+  ASSERT_NO_FATAL_FAILURE(SendAndWaitForRead("\n250 ORPORT=0\r\n2"));
+  EXPECT_EQ(calls->data, 2);
+  ASSERT_NO_FATAL_FAILURE(SendAndWaitForRead("50 DONE\r\n"));
+  EXPECT_EQ(calls->data, 3);
+}
+
+// More input than fits in TorControl's read buffer is delivered line by line
+// without losing, duplicating or corrupting any line, including an unfinished
+// line that is kept across the buffer being full.
+TEST_F(TorControlReadTest, InputLargerThanReadBuffer) {
+  constexpr int kLineCount = 600;
+  std::string input;
+  std::vector<std::string> expected_lines;
+  for (int i = 0; i < kLineCount; ++i) {
+    std::string line = absl::StrFormat("ITEM%03d=%s", i, std::string(20, 'x'));
+    input += "250-" + line + "\r\n";
+    expected_lines.push_back(std::move(line));
+  }
+  ASSERT_GT(input.size(), 4096u * 4);
+
+  std::vector<std::string> received_lines;
+  base::RunLoop all_mid_loop;
+  EXPECT_CALL(delegate_, OnTorRawMid("250", testing::_))
+      .Times(kLineCount)
+      .WillRepeatedly([&](const std::string& status, const std::string& line) {
+        received_lines.push_back(line);
+        if (received_lines.size() == expected_lines.size()) {
+          all_mid_loop.Quit();
+        }
+      });
+  base::RunLoop end_loop;
+  EXPECT_CALL(delegate_, OnTorRawEnd("250", "FINISHED"))
+      .WillOnce(base::test::RunClosure(end_loop.QuitClosure()));
+
+  ASSERT_NO_FATAL_FAILURE(Send(input + "250 FINI"));
+  all_mid_loop.Run();
+  EXPECT_EQ(received_lines, expected_lines);
+
+  ASSERT_NO_FATAL_FAILURE(Send("SHED\r\n"));
+  end_loop.Run();
+}
+
+// A line that does not fit in the read buffer closes the control connection.
+TEST_F(TorControlReadTest, LineTooLongClosesConnection) {
   base::RunLoop run_loop;
-  // The reply runs on the owner sequence after the IO task, so the delegate
-  // notifications the task posted to the owner sequence have already run.
-  io_task_runner->PostTaskAndReply(
-      FROM_HERE, base::BindLambdaForTesting([&control, &delegate] {
-        constexpr char test_str[] =
-            "250-SOCKSPORT=9050\r\n250 ORPORT=0\r\n250 OK";
-        control->reading_ = true;
-        // StartRead()
-        control->read_start_ = 0u;
-        control->async_events_[tor::TorControlEvent::NETWORK_LIVENESS] = 1;
-        control->readiobuf_ = base::MakeRefCounted<net::GrowableIOBuffer>();
-        control->readiobuf_->SetCapacity(sizeof test_str - 1);
-        UNSAFE_TODO(std::memcpy(control->readiobuf_->data(), test_str,
-                                sizeof test_str - 1));
+  EXPECT_CALL(delegate_, OnTorControlClosed(true))
+      .WillOnce(base::test::RunClosure(run_loop.QuitClosure()));
+  EXPECT_CALL(delegate_, OnTorRawMid(testing::_, testing::_)).Times(0);
+  EXPECT_CALL(delegate_, OnTorRawEnd(testing::_, testing::_)).Times(0);
 
-        // Not yet seen CRLF
-        // Read this time: 250-SOCKSP
-        // Read so far: 250-SOCKSP
-        control->ReadDone(10);
-        EXPECT_EQ(control->readiobuf_->offset(), 10);
-        EXPECT_EQ(control->read_start_, 0u);
+  ASSERT_NO_FATAL_FAILURE(Send(std::string(5000, 'a')));
+  run_loop.Run();
+}
 
-        // First CRLF
-        // Read this time: ORT=9050\r\n
-        // Read so far: 250-SOCKSPORT=9050\r\n
-        // ReadLine("250-SOCKSPORT=9050")
-        EXPECT_CALL(delegate, OnTorRawMid("250", "SOCKSPORT=9050")).Times(1);
-        control->ReadDone(10);
-        EXPECT_EQ(control->readiobuf_->offset(), 20);
-        EXPECT_EQ(control->read_start_, 20u);
+// A line feed that does not follow a carriage return closes the connection.
+TEST_F(TorControlReadTest, StrayLineFeedClosesConnection) {
+  base::RunLoop run_loop;
+  EXPECT_CALL(delegate_, OnTorControlClosed(true))
+      .WillOnce(base::test::RunClosure(run_loop.QuitClosure()));
+  EXPECT_CALL(delegate_, OnTorRawEnd(testing::_, testing::_)).Times(0);
 
-        // Second CRLF
-        // Read this time: 250 ORPORT=0\r\n2
-        // Read so far: 250 ORPORT=0\r\n2
-        // ReadLine("250 ORPORT=0")
-        EXPECT_CALL(delegate, OnTorRawEnd("250", "ORPORT=0")).Times(1);
-        control->ReadDone(15);
-        EXPECT_EQ(control->readiobuf_->offset(), 35);
-        EXPECT_EQ(control->read_start_, 34u);
-
-        // Buffer will be full
-        // Read this time: 50 OK
-        // Read so far: 250 OK
-        control->ReadDone(5);
-        EXPECT_EQ(control->readiobuf_->offset(), 6);
-        EXPECT_EQ(control->read_start_, 0u);
-        EXPECT_EQ(
-            base::as_string_view(control->readiobuf_->everything().first<6>()),
-            "250 OK");
-      }),
-      run_loop.QuitClosure());
+  ASSERT_NO_FATAL_FAILURE(Send("250 DONE\n"));
   run_loop.Run();
 }
 
@@ -244,19 +428,13 @@ TEST(TorControlTest, ReadLine) {
             EXPECT_TRUE(control->ReadLine("650 NETWORK_LIVENESS DOWN"));
             // Async skip
             EXPECT_TRUE(control->ReadLine("650-FAKEVENT BEGIN"));
-            ASSERT_TRUE(control->async_);
-            EXPECT_TRUE(control->async_->skip);
             EXPECT_TRUE(control->ReadLine("650-CONTINUE=FAKEVENT"));
             EXPECT_TRUE(control->ReadLine("650 END=FAKEVENT"));
-            EXPECT_FALSE(control->async_);
             // Normal multi async
             control->async_events_[TorControlEvent::CIRC] = 1;
             EXPECT_TRUE(control->ReadLine("650-CIRC 1000 EXTENDED"));
-            ASSERT_TRUE(control->async_);
-            EXPECT_FALSE(control->async_->skip);
             EXPECT_TRUE(control->ReadLine("650-EXTRAMAGIC=99"));
             EXPECT_TRUE(control->ReadLine("650 ANONYMITY=high"));
-            EXPECT_FALSE(control->async_);
           },
           std::move(control)),
       run_loop.QuitClosure());
