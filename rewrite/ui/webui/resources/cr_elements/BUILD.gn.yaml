@@ -10,3 +10,14 @@ substitutions:
       list_name: ts_deps
       literal: '[ "//brave/ui/webui/resources:build_ts" ]'
       conditional: '(!is_android && !is_ios) || enable_extensions_core'
+
+  - description: |-
+      Build `async_map_directive.ts` for chrome://extensions on Android.
+
+      Upstream builds it only where it builds chrome://extensions, which Brave
+      also builds on non-desktop Android.
+    add_literal_to_list:
+      target: build
+      list_name: ts_files
+      literal: '[ "async_map_directive.ts" ]'
+      conditional: 'is_android && !is_desktop_android && enable_extensions_core'
