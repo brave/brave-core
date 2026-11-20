@@ -5,6 +5,7 @@
 
 #include "base/command_line.h"
 #include "base/path_service.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -13,6 +14,7 @@
 #include "content/public/common/content_switches.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "third_party/blink/public/common/features.h"
 #include "url/gurl.h"
 
 namespace {
@@ -91,5 +93,23 @@ class WindowManagementEnabledTest : public WindowManagementBrowserTestBase {
 };
 
 IN_PROC_BROWSER_TEST_F(WindowManagementEnabledTest, IsExposedWhenFlagIsOn) {
+  EXPECT_EQ(kExpectedEnabled, Probe());
+}
+
+// The `brave://flags` entry toggles this base::Feature, which is copied into
+// the runtime flag when the renderer starts.
+class WindowManagementFeatureEnabledTest
+    : public WindowManagementBrowserTestBase {
+ public:
+  WindowManagementFeatureEnabledTest() {
+    feature_list_.InitAndEnableFeature(blink::features::kBraveWindowManagement);
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(WindowManagementFeatureEnabledTest,
+                       IsExposedWhenFeatureIsOn) {
   EXPECT_EQ(kExpectedEnabled, Probe());
 }

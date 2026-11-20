@@ -20,13 +20,16 @@ substitutions:
 
       Guards `Screen.isExtended`, `Screen.onchange`, `Window.getScreenDetails()`,
       `ScreenDetails` and `ScreenDetailed`, which expose the multi-screen
-      layout. It has no `status`, so it is off everywhere unless a test turns
-      it on with `--enable-blink-features=BraveWindowManagement`.
+      layout.
+
+      It has no `status`, so the generated `blink::features::kBraveWindowManagement`
+      is disabled by default and the flag stays off. The `brave://flags` entry
+      toggles that base::Feature, and `UpdateStatusFromBaseFeatures()` copies it
+      into the flag at renderer startup.
     regex:
       re_pattern: '(\n  data: \[(?:\n *//[^\n]*)*)'
       replace: |-
         \1
             {
               name: "BraveWindowManagement",
-              base_feature: "none",
             },
