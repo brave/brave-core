@@ -24,6 +24,7 @@ brave_browser_ui_webui_configs_deps = [
   "//brave/components/brave_vpn/common/buildflags",
   "//brave/components/containers/buildflags",
   "//brave/components/playlist/core/common/buildflags",
+  "//brave/components/psst/buildflags",
 ]
 
 if (enable_playlist_webui) {
