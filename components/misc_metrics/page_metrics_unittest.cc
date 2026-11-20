@@ -7,7 +7,9 @@
 
 #include <memory>
 
+#include "base/files/scoped_temp_dir.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/observer_list.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
@@ -16,20 +18,20 @@
 #include "brave/components/misc_metrics/default_browser_monitor.h"
 #include "brave/components/misc_metrics/media_session_metrics.h"
 #include "brave/components/p3a_utils/test_event_relay_observer.h"
-#include "chrome/browser/bookmarks/bookmark_model_factory.h"
-#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
-#include "chrome/browser/history/history_service_factory.h"
-#include "chrome/browser/search_engines/template_url_service_factory.h"
-#include "chrome/test/base/testing_profile_manager.h"
+#include "build/build_config.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/browser/bookmark_utils.h"
-#include "components/bookmarks/test/bookmark_test_helpers.h"
+#include "components/bookmarks/test/test_bookmark_client.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/history/core/browser/history_service.h"
-#include "components/keyed_service/core/service_access_type.h"
+#include "components/history/core/test/history_service_test_util.h"
 #include "components/prefs/testing_pref_service.h"
+#include "components/search_engines/search_engines_test_environment.h"
 #include "components/search_engines/template_url_service.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
 
 #if BUILDFLAG(IS_MAC)
 #include "base/mac/mac_util.h"
@@ -43,26 +45,22 @@ class PageMetricsUnitTest : public testing::Test {
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
   void SetUp() override {
-    TestingProfile::Builder builder;
-    builder.AddTestingFactory(HistoryServiceFactory::GetInstance(),
-                              HistoryServiceFactory::GetDefaultFactory());
-    builder.AddTestingFactory(BookmarkModelFactory::GetInstance(),
-                              BookmarkModelFactory::GetDefaultFactory());
-    builder.AddTestingFactory(
-        TemplateURLServiceFactory::GetInstance(),
-        base::BindRepeating(&TemplateURLServiceFactory::BuildInstanceFor));
+    profile_prefs_.registry()->RegisterBooleanPref(
+        brave_rewards::prefs::kEnabled, false);
+    profile_prefs_.registry()->RegisterStringPref(
+        brave_rewards::prefs::kExternalWalletType, "");
+    HostContentSettingsMap::RegisterProfilePrefs(profile_prefs_.registry());
+    host_content_settings_map_ = base::MakeRefCounted<HostContentSettingsMap>(
+        &profile_prefs_, false /* is_off_the_record */,
+        false /* store_last_modified */, false /* restore_session */,
+        false /* should_record_metrics */);
 
-    profile_ = builder.Build();
+    ASSERT_TRUE(history_dir_.CreateUniqueTempDir());
+    history_service_ =
+        history::CreateHistoryService(history_dir_.GetPath(), true);
+    ASSERT_TRUE(history_service_);
 
-    bookmark_model_ =
-        BookmarkModelFactory::GetForBrowserContext(profile_.get());
-    bookmarks::test::WaitForBookmarkModelToLoad(bookmark_model_);
-
-    history_service_ = HistoryServiceFactory::GetForProfile(
-        profile_.get(), ServiceAccessType::EXPLICIT_ACCESS);
-
-    TemplateURLService* template_url_service =
-        TemplateURLServiceFactory::GetForProfile(profile_.get());
+    bookmark_model_ = bookmarks::TestBookmarkClient::CreateModel();
 
     PageMetrics::RegisterPrefs(local_state_.registry());
     first_run_time_ = base::Time::Now();
@@ -78,11 +76,16 @@ class PageMetricsUnitTest : public testing::Test {
     task_environment_.FastForwardBy(base::Minutes(5));
 
     page_metrics_service_ = std::make_unique<PageMetrics>(
-        &local_state_, profile_->GetPrefs(),
-        HostContentSettingsMapFactory::GetForProfile(profile_.get()),
-        history_service_, bookmark_model_, default_browser_monitor_.get(),
-        &media_session_metrics_, template_url_service,
+        &local_state_, &profile_prefs_, host_content_settings_map_.get(),
+        history_service_.get(), bookmark_model_.get(),
+        default_browser_monitor_.get(), &media_session_metrics_,
+        search_engines_test_environment_.template_url_service(),
         base::BindLambdaForTesting([&]() { return first_run_time_; }));
+  }
+
+  void TearDown() override {
+    page_metrics_service_.reset();
+    host_content_settings_map_->ShutdownOnUIThread();
   }
 
   void SetMockedDefaultBrowserStatus(bool is_default) {
@@ -119,14 +122,17 @@ class PageMetricsUnitTest : public testing::Test {
 
   content::BrowserTaskEnvironment task_environment_;
   TestingPrefServiceSimple local_state_;
+  sync_preferences::TestingPrefServiceSyncable profile_prefs_;
   base::HistogramTester histogram_tester_;
   p3a_utils::TestEventRelayObserver relay_observer_;
-  std::unique_ptr<TestingProfile> profile_;
+  base::ScopedTempDir history_dir_;
+  search_engines::SearchEnginesTestEnvironment search_engines_test_environment_;
+  scoped_refptr<HostContentSettingsMap> host_content_settings_map_;
+  std::unique_ptr<history::HistoryService> history_service_;
+  std::unique_ptr<bookmarks::BookmarkModel> bookmark_model_;
   std::unique_ptr<DefaultBrowserMonitor> default_browser_monitor_;
   MockMediaSessionMetrics media_session_metrics_;
   std::unique_ptr<PageMetrics> page_metrics_service_;
-  raw_ptr<history::HistoryService> history_service_;
-  raw_ptr<bookmarks::BookmarkModel> bookmark_model_;
 
   base::Time first_run_time_;
   bool mocked_is_default_ = false;
@@ -220,7 +226,7 @@ TEST_F(PageMetricsUnitTest, PagesLoadedCount) {
   }
 #endif
   // Set up rewards status
-  profile_->GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, false);
+  profile_prefs_.SetBoolean(brave_rewards::prefs::kEnabled, false);
 
   task_environment_.FastForwardBy(base::Seconds(30));
 
@@ -250,7 +256,7 @@ TEST_F(PageMetricsUnitTest, PagesLoadedCount) {
   histogram_tester_.ExpectBucketCount(kPagesReloadedHistogramName, 1, 1);
 
   // Change to Rewards enabled
-  profile_->GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
+  profile_prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
 
   histogram_tester_.ExpectBucketCount(kPagesLoadedNonRewardsHistogramName,
                                       INT_MAX - 1, 1);
@@ -261,8 +267,7 @@ TEST_F(PageMetricsUnitTest, PagesLoadedCount) {
   histogram_tester_.ExpectBucketCount(kPagesReloadedHistogramName, 1, 3);
 
   // Change to Rewards with wallet
-  profile_->GetPrefs()->SetString(brave_rewards::prefs::kExternalWalletType,
-                                  "uphold");
+  profile_prefs_.SetString(brave_rewards::prefs::kExternalWalletType, "uphold");
 
   for (size_t i = 0; i < 30; i++) {
     page_metrics_service_->IncrementPagesLoadedCount(false, false);
@@ -288,16 +293,16 @@ TEST_F(PageMetricsUnitTest, PagesLoadedCount) {
 TEST_F(PageMetricsUnitTest, BookmarkCount) {
   task_environment_.FastForwardBy(base::Seconds(30));
   histogram_tester_.ExpectUniqueSample(kBookmarkCountHistogramName, 0, 1);
-  bookmarks::AddIfNotBookmarked(bookmark_model_, GURL("https://example.com"),
-                                u"title");
+  bookmarks::AddIfNotBookmarked(bookmark_model_.get(),
+                                GURL("https://example.com"), u"title");
 
   task_environment_.FastForwardBy(base::Minutes(30));
   histogram_tester_.ExpectBucketCount(kBookmarkCountHistogramName, 1, 1);
 
   for (int i = 0; i < 5; i++) {
     bookmarks::AddIfNotBookmarked(
-        bookmark_model_, GURL("https://example.com/" + base::NumberToString(i)),
-        u"title");
+        bookmark_model_.get(),
+        GURL("https://example.com/" + base::NumberToString(i)), u"title");
   }
 
   task_environment_.FastForwardBy(base::Minutes(30));
