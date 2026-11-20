@@ -2904,15 +2904,6 @@
 -PKIMetadataComponentChromeRootStoreUpdateTest.NewNetworkContextAfterUpdatingTrustAnchorIDs
 -PKIMetadataComponentChromeRootStoreUpdateTest.UpdateTrustAnchorIDs
 
-# These tests enable kReplaceSyncPromos* via ScopedFeatureList and assert
-# the sign-in-promo behavior that Brave unconditionally disables,
-# brave-browser#58511
--All/HistorySyncOptinHelperLaunchContextParamBrowserTest.*
--HistorySyncOptinHelperBrowserTest.CompletedFromAvatarPillAccessPoint
--HistorySyncOptinHelperFreBrowserTest.*
--HistorySyncOptinUIDialogPixelTest.InvokeUi_default/*
--HistorySyncOptinUIWindowPixelTest.InvokeUi_default/*
-
 # These tests expect avatar button promos, which Brave never computes.
 -AvatarToolbarButtonPromoBrowserTest.*
 -AvatarToolbarButtonPromoClickBrowserTest.*
