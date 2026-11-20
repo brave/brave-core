@@ -262,10 +262,15 @@ TEST_F(BraveReferralsServiceTest, AndroidFirstOpenSentImmediately) {
   EXPECT_EQ(pref_service_.GetString(kReferralAndroidGbraid), kTestGbraid);
 
   base::DictValue body = base::test::ParseJsonDict(conversion_request_body_);
+  ASSERT_TRUE(body.FindString("app_event_name"));
   EXPECT_EQ(*body.FindString("app_event_name"), "brave_first_open");
+  ASSERT_TRUE(body.FindString("gbraid"));
   EXPECT_EQ(*body.FindString("gbraid"), kTestGbraid);
+  ASSERT_TRUE(body.FindString("app_version"));
   EXPECT_FALSE(body.FindString("app_version")->empty());
+  ASSERT_TRUE(body.FindString("os_version"));
   EXPECT_FALSE(body.FindString("os_version")->empty());
+  ASSERT_TRUE(body.FindString("sdk_version"));
   EXPECT_FALSE(body.FindString("sdk_version")->empty());
 }
 
@@ -285,7 +290,9 @@ TEST_F(BraveReferralsServiceTest, AndroidFirstOpenThenSecondOpenOnNextRun) {
   EXPECT_TRUE(pref_service_.GetString(kReferralAndroidGbraid).empty());
 
   base::DictValue body = base::test::ParseJsonDict(conversion_request_body_);
+  ASSERT_TRUE(body.FindString("app_event_name"));
   EXPECT_EQ(*body.FindString("app_event_name"), "brave_second_open");
+  ASSERT_TRUE(body.FindString("gbraid"));
   EXPECT_EQ(*body.FindString("gbraid"), kTestGbraid);
 }
 
@@ -314,10 +321,15 @@ TEST_F(BraveReferralsServiceTest, AndroidConversionSentOnFollowingRun) {
   EXPECT_TRUE(pref_service_.GetString(kReferralAndroidGbraid).empty());
 
   base::DictValue body = base::test::ParseJsonDict(conversion_request_body_);
+  ASSERT_TRUE(body.FindString("app_event_name"));
   EXPECT_EQ(*body.FindString("app_event_name"), "brave_second_open");
+  ASSERT_TRUE(body.FindString("gbraid"));
   EXPECT_EQ(*body.FindString("gbraid"), kTestGbraid);
+  ASSERT_TRUE(body.FindString("app_version"));
   EXPECT_FALSE(body.FindString("app_version")->empty());
+  ASSERT_TRUE(body.FindString("os_version"));
   EXPECT_FALSE(body.FindString("os_version")->empty());
+  ASSERT_TRUE(body.FindString("sdk_version"));
   EXPECT_FALSE(body.FindString("sdk_version")->empty());
 }
 
