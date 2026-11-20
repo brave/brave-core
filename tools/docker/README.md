@@ -4,6 +4,15 @@
 Brave and dependencies for macOS x64, Windows x64, Linux x64, and Android arm64.
 The image includes ripgrep (`rg`) and ast-grep (`ast-grep`) for code searches.
 
+Node and pnpm versions come from `package.json` in the container's checkout,
+after the requested ref is selected. Setup chooses the minimum stable version in
+each supported exact, comparator, caret, or tilde range. `devEngines` takes
+precedence over legacy `engines`; an exact pnpm `packageManager` pin takes
+precedence over its engine range and must satisfy it. Missing or unsupported
+requirements fail rather than selecting a hardcoded version. The Ubuntu base
+does not include Node; the bootstrap build installs these tools after checkout.
+Matching installed versions are reused without downloading them again.
+
 For prerequisites, credentials, Docker selection, image tags, and recovery
 instructions, run from the brave-core checkout:
 
@@ -106,10 +115,12 @@ brave_git_email=$(git config user.email)
 
 The checkout initially contains the image's ref. If you select a different ref,
 synchronize all the platforms baked into the image so sync keeps their cached
-packages. Then build the desired platform and target:
+packages. First update Node and pnpm for that checkout, then build the desired
+platform and target:
 
 ```bash
 # Run after selecting a different ref inside the container.
+python3 tools/docker/create_container.py --setup-toolchain --name "$brave_container"
 "${brave_docker[@]}" exec --workdir /workspace/src/brave --env CI=true \
   "$brave_container" pnpm run sync \
   --target_os linux,ios,mac,win,android --target_arch x64,arm64

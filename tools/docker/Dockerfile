@@ -7,24 +7,19 @@
 
 # Shared Linux x64 checkout and build dependencies; refresh for new Chromium majors.
 # https://github.com/brave/brave-browser/wiki/Linux-Development-Environment
-FROM node:24-bookworm-slim AS node
-
 FROM ubuntu:24.04 AS checkout
 ARG DEBIAN_FRONTEND=noninteractive
 ARG BUILD_UID=1001
 ARG BUILD_GID=1001
-ARG PNPM_VERSION=11.11.0
 ARG AST_GREP_VERSION=0.51.3
 
-COPY --from=node /usr/local/ /usr/local/
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential ca-certificates curl file fuse lsb-release \
     openssh-client python3 python-is-python3 ripgrep software-properties-common sudo unzip xz-utils \
     && add-apt-repository --yes ppa:git-core/ppa \
     && apt-get update && apt-get install -y --no-install-recommends git \
     && git --version \
-    && dpkg --compare-versions "$(git --version | cut -d ' ' -f 3)" ge 2.46.0 \
-    && npm install --global "pnpm@${PNPM_VERSION}" "@ast-grep/cli@${AST_GREP_VERSION}"
+    && dpkg --compare-versions "$(git --version | cut -d ' ' -f 3)" ge 2.46.0
 
 RUN if ! getent group "${BUILD_GID}" >/dev/null; then \
       groupadd --gid "${BUILD_GID}" builder; \
@@ -78,6 +73,12 @@ RUN git clone https://github.com/brave/brave-core.git src/brave \
     && git -C src/brave checkout --detach "${BRAVE_HEAD}"
 
 WORKDIR /workspace/src/brave
+COPY create_container.py build_brave_image.py /usr/local/lib/brave-docker/
+USER root
+RUN python3 /usr/local/lib/brave-docker/create_container.py --install-toolchain \
+    && cd / \
+    && npm install --global --prefix /usr/local "@ast-grep/cli@${AST_GREP_VERSION}"
+USER builder
 RUN <<'CONFIG'
 cat > .env <<EOF
 use_remoteexec=true

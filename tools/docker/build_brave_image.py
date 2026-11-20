@@ -11,7 +11,7 @@ Requirements:
   and access to Brave's remote build service. The Docker daemon needs an x64
   Linux environment with /dev/fuse. The Windows SDK hook requires SYS_ADMIN
   and an unconfined AppArmor profile. Platform SDKs are fetched by the hooks.
-  Keep this script, Dockerfile, and .dockerignore together when copying them.
+  Keep this script, create_container.py, Dockerfile, and .dockerignore together.
 
 Builds and image tags:
   REF selects an exact brave-core branch or tag (default: master).
@@ -28,8 +28,8 @@ Credentials and Docker selection:
   BRAVE_RBE_KEY. Credentials are mounted read-only under /run/brave-rbe at
   runtime and excluded from the committed image. Host paths are resolved from
   the current user's home directory or environment overrides. The build
-  context allows only the Dockerfile; keep credential contents out of this
-  directory and the optional Git cache.
+  context allows only the Dockerfile and its tooling; keep credentials out of
+  this directory and the optional Git cache.
   Docker defaults to the executable on PATH; --docker selects another one.
   DOCKER_HOST and DOCKER_CONTEXT select the daemon using Docker's precedence.
   Credential files and any Git cache must be accessible to that daemon.
@@ -50,6 +50,8 @@ Container layout and further builds:
   then run /usr/local/bin/brave-build from /workspace/src/brave; arguments are
   forwarded to pnpm run build. /usr/local/bin/brave-linux-build --sync
   synchronizes the checkout. The default command keeps the container running.
+  Node and pnpm follow the checked-out package.json, selecting the minimum
+  supported stable versions before initialization rather than fixed image tags.
 
 Examples:
   python3 build_brave_image.py
@@ -265,6 +267,52 @@ def build_checkout(command, env, seed, head, git_cache_path=None):
     subprocess.run([*arguments, str(SUPPORT)], check=True, env=env)
 
 
+def configure_toolchain(docker, env, identifier):
+    """Install from the current container checkout, including older images."""
+    directory = "/usr/local/lib/brave-docker"
+    subprocess.run(
+        [
+            *docker,
+            "exec",
+            "--user",
+            "root",
+            identifier,
+            "mkdir",
+            "-p",
+            directory,
+        ],
+        check=True,
+        env=env,
+    )
+    for name in ("create_container.py", "build_brave_image.py"):
+        subprocess.run(
+            [
+                *docker,
+                "cp",
+                str(Path(__file__).with_name(name)),
+                f"{identifier}:{directory}/{name}",
+            ],
+            check=True,
+            env=env,
+        )
+    subprocess.run(
+        [
+            *docker,
+            "exec",
+            "--user",
+            "root",
+            "--workdir",
+            "/workspace/src/brave",
+            identifier,
+            "python3",
+            directory + "/create_container.py",
+            "--install-toolchain",
+        ],
+        check=True,
+        env=env,
+    )
+
+
 def build_image(ref="master", git_cache_path=None, *, docker_executable=None):
     """Sync and build a dedicated container, then publish and remove it."""
     if git_cache_path is not None:
@@ -379,7 +427,6 @@ if [ "$kind" = tag ]; then
 else
   git switch -C "$ref" "$commit"
 fi
-pnpm run init --target_os linux,ios,mac,win,android --target_arch x64,arm64
 test "$(git rev-parse HEAD)" = "$commit"
 '''
         subprocess.run(
@@ -392,6 +439,21 @@ test "$(git rev-parse HEAD)" = "$commit"
                 ref,
                 ref_type,
                 head,
+            ],
+            check=True,
+            env=env,
+        )
+        configure_toolchain(command, env, identifier)
+        subprocess.run(
+            [
+                *execute,
+                "pnpm",
+                "run",
+                "init",
+                "--target_os",
+                "linux,ios,mac,win,android",
+                "--target_arch",
+                "x64,arm64",
             ],
             check=True,
             env=env,

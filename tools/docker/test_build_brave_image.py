@@ -87,9 +87,14 @@ class ImageBuildTests(unittest.TestCase):
             }
         }
 
-    def test_builder_runs_when_only_it_and_the_dockerfile_are_copied(self):
+    def test_builder_runs_with_only_its_documented_support_files(self):
         with tempfile.TemporaryDirectory() as directory:
-            for name in ("build_brave_image.py", "Dockerfile"):
+            for name in (
+                "build_brave_image.py",
+                "create_container.py",
+                "Dockerfile",
+                ".dockerignore",
+            ):
                 shutil.copyfile(builder.SUPPORT / name, Path(directory) / name)
             result = subprocess.run(
                 [
@@ -163,6 +168,19 @@ class ImageBuildTests(unittest.TestCase):
         self,
     ):
         commands = self.run_build()
+        select = next(
+            command for command in commands if "prepare-image" in command
+        )
+        toolchain = next(
+            command for command in commands if "--install-toolchain" in command
+        )
+        initialize = next(
+            command
+            for command in commands
+            if "pnpm" in command and "init" in command
+        )
+        self.assertLess(commands.index(select), commands.index(toolchain))
+        self.assertLess(commands.index(toolchain), commands.index(initialize))
         installs = [
             command
             for command in commands
@@ -246,7 +264,12 @@ class ImageLoggingTests(unittest.TestCase):
         self.root = Path(self.enterContext(tempfile.TemporaryDirectory()))
         self.portable = self.root / "portable"
         self.portable.mkdir()
-        for name in ("build_brave_image.py", "Dockerfile"):
+        for name in (
+            "build_brave_image.py",
+            "create_container.py",
+            "Dockerfile",
+            ".dockerignore",
+        ):
             shutil.copyfile(builder.SUPPORT / name, self.portable / name)
         self.cwd = self.root / "working-directory"
         self.cwd.mkdir()

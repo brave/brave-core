@@ -367,6 +367,9 @@ class AgentDetectionTests(unittest.TestCase):
 
 class ContainerCreationTests(unittest.TestCase):
     def setUp(self):
+        self.toolchain = self.enterContext(
+            patch.object(container_tools, "configure_toolchain")
+        )
         self.image = {
             "Id": "image-id",
             "Config": {
