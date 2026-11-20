@@ -3,6 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <string>
+#include <string_view>
+
 #include "base/command_line.h"
 #include "base/strings/strcat.h"
 #include "base/values.h"
@@ -19,7 +22,7 @@
 #if BUILDFLAG(IS_ANDROID)
 #include "chrome/test/base/android/android_browser_test.h"
 #else
-#include "chrome/browser/devtools/devtools_window_testing.h"  // nogncheck
+#include "chrome/browser/devtools/devtools_window_testing.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #endif
 
@@ -235,5 +238,130 @@ IN_PROC_BROWSER_TEST_F(AdblockDevtoolsTest, AdblockTabRendersInfo) {
   EXPECT_THAT(text,
               testing::HasSubstr(
                   embedded_test_server()->GetURL("/resource.png").spec()));
+}
+
+class AdblockDevtoolsTabTest : public AdblockDevtoolsTest {
+ protected:
+  // Waits for the request whose URL ends with `url_suffix` to finish, then
+  // returns the rendered text of its Adblock tab.
+  std::string GetAdblockTabText(DevToolsWindow* window,
+                                std::string_view url_suffix,
+                                bool expect_adblock_info) {
+    static constexpr char kScript[] = R"(
+      (async () => {
+        const SDK = await self.runtime.loadLegacyModule('core/sdk/sdk.js');
+        const Logs = await self.runtime.loadLegacyModule('models/logs/logs.js');
+        const Network =
+            await self.runtime.loadLegacyModule('panels/network/network.js');
+        const adblockInfo = (r) => SDK.NetworkManager.NetworkManager
+            .forRequest(r).dispatcher.adblockInfoForId(r.requestId());
+        let request;
+        while (!request) {
+          request = Logs.NetworkLog.NetworkLog.instance().requests().find(
+              r => r.url().endsWith($1) && r.finished &&
+                   (!$2 || adblockInfo(r)));
+          await new Promise(resolve => setTimeout(resolve, 50));
+        }
+        const itemView = await Network.NetworkPanel.NetworkPanel.instance()
+            .selectAndActivateRequest(request, 'blocking');
+        const adblockView = itemView.tabView('blocking');
+        await adblockView.updateComplete;
+        return adblockView.contentElement.innerText.replace(/\s+/g, ' ')
+            .trim();
+      })()
+    )";
+    return content::EvalJs(
+               DevToolsWindowTesting::Get(window)->main_web_contents(),
+               content::JsReplace(kScript, url_suffix, expect_adblock_info))
+        .ExtractString();
+  }
+};
+
+class AdblockDevtoolsTabDebugModeTest : public AdblockDevtoolsTabTest {
+ public:
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    AdblockDevtoolsTabTest::SetUpCommandLine(command_line);
+    command_line->AppendSwitch(switches::kEnableAdblockDebugMode);
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(AdblockDevtoolsTabDebugModeTest, Blocked) {
+  UpdateCustomAdBlockInstanceWithRules("*resource.png");
+  NavigateToURL(embedded_test_server()->GetURL("/blocking.html"));
+  DevToolsWindow* window =
+      DevToolsWindowTesting::OpenDevToolsWindowSync(web_contents(), true);
+
+  ASSERT_EQ(true, EvalJs(web_contents(),
+                         "setExpectations(0, 1, 0, 0);"
+                         "addImage('resource.png')"));
+  const std::string text = GetAdblockTabText(window, "/resource.png", true);
+  EXPECT_THAT(text, testing::HasSubstr("Verdict Blocked"));
+  // The fixture defaults to aggressive mode.
+  EXPECT_THAT(text, testing::HasSubstr("Blocking mode Aggressive"));
+  EXPECT_THAT(text, testing::HasSubstr("Matched filter Rule *resource.png "
+                                       "Filter list User-defined custom "
+                                       "filters (source ID"));
+  EXPECT_THAT(text, testing::HasSubstr("Line 1"));
+  EXPECT_THAT(text, testing::Not(testing::HasSubstr("Matched exception")));
+
+  DevToolsWindowTesting::CloseDevToolsWindowSync(window);
+}
+
+IN_PROC_BROWSER_TEST_F(AdblockDevtoolsTabDebugModeTest, Exception) {
+  UpdateAdBlockInstanceWithRules(
+      "! Title: Test default filters\n*ad_banner.png");
+  UpdateCustomAdBlockInstanceWithRules("@@ad_banner.png");
+  NavigateToURL(embedded_test_server()->GetURL("/blocking.html"));
+  DevToolsWindow* window =
+      DevToolsWindowTesting::OpenDevToolsWindowSync(web_contents(), true);
+
+  ASSERT_EQ(true, EvalJs(web_contents(),
+                         "setExpectations(1, 0, 0, 0);"
+                         "addImage('ad_banner.png')"));
+  const std::string text = GetAdblockTabText(window, "/ad_banner.png", true);
+  EXPECT_THAT(text, testing::HasSubstr("Verdict Allowed by exception"));
+  EXPECT_THAT(text,
+              testing::HasSubstr("Matched filter Rule *ad_banner.png Filter "
+                                 "list Test default filters (source ID"));
+  EXPECT_THAT(text, testing::HasSubstr(
+                        "Matched exception Rule @@ad_banner.png Filter list "
+                        "User-defined custom filters (source ID"));
+
+  DevToolsWindowTesting::CloseDevToolsWindowSync(window);
+}
+
+IN_PROC_BROWSER_TEST_F(AdblockDevtoolsTabTest, RuleNeedsDebugMode) {
+  DisableAggressiveMode();
+  UpdateCustomAdBlockInstanceWithRules("*resource.png");
+  NavigateToURL(embedded_test_server()->GetURL("/blocking.html"));
+  DevToolsWindow* window =
+      DevToolsWindowTesting::OpenDevToolsWindowSync(web_contents(), true);
+
+  ASSERT_EQ(true, EvalJs(web_contents(),
+                         "setExpectations(0, 1, 0, 0);"
+                         "addImage('resource.png')"));
+  const std::string text = GetAdblockTabText(window, "/resource.png", true);
+  EXPECT_THAT(text, testing::HasSubstr("Verdict Blocked"));
+  EXPECT_THAT(text, testing::HasSubstr("Blocking mode Standard"));
+  EXPECT_THAT(text, testing::HasSubstr(
+                        "Matched rule Turn on Debug mode in "
+                        "brave://adblock-internals and restart the browser"));
+  EXPECT_THAT(text, testing::Not(testing::HasSubstr("Matched filter")));
+
+  DevToolsWindowTesting::CloseDevToolsWindowSync(window);
+}
+
+IN_PROC_BROWSER_TEST_F(AdblockDevtoolsTabTest, NoAdblockInfo) {
+  NavigateToURL(embedded_test_server()->GetURL("/blocking.html"));
+  DevToolsWindow* window =
+      DevToolsWindowTesting::OpenDevToolsWindowSync(web_contents(), true);
+
+  ASSERT_EQ(true, EvalJs(web_contents(),
+                         "setExpectations(1, 0, 0, 0);"
+                         "addImage('logo.png')"));
+  EXPECT_EQ(GetAdblockTabText(window, "/logo.png", false),
+            "No adblock rule blocked or allowed this request.");
+
+  DevToolsWindowTesting::CloseDevToolsWindowSync(window);
 }
 #endif  // !BUILDFLAG(IS_ANDROID)

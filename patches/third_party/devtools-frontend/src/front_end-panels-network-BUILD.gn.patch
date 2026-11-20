@@ -1,5 +1,5 @@
 diff --git a/front_end/panels/network/BUILD.gn b/front_end/panels/network/BUILD.gn
-index 4eb3374aedb8972fcf7ba91570a16df550caa1ba..6cd998d53e64485f070755a80271f515c63d71da 100644
+index 4eb3374aedb8972fcf7ba91570a16df550caa1ba..0a0fd9cef2508644729472c8dfb6b67f33329772 100644
 --- a/front_end/panels/network/BUILD.gn
 +++ b/front_end/panels/network/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -18,3 +18,11 @@ index 4eb3374aedb8972fcf7ba91570a16df550caa1ba..6cd998d53e64485f070755a80271f515
  
    ts_deps = [
      "../../core/common:bundle",
+@@ -115,6 +117,7 @@ devtools_ui_module("network") {
+     "./components:bundle",
+     "./forward:bundle",
+   ]
++  ts_deps += brave_devtools_front_end_panels_network_ts_deps
+   deps = [
+     ":css_files",
+     "../../ui/legacy/components/data_grid:css_files",

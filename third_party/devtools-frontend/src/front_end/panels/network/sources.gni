@@ -4,3 +4,5 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 brave_devtools_front_end_panels_network_sources = [ "//brave/third_party/devtools-frontend/src/front_end/panels/network/RequestAdblockView.ts" ]
+
+brave_devtools_front_end_panels_network_ts_deps = [ "//third_party/devtools-frontend/src/front_end/ui/components/report_view:bundle" ]
