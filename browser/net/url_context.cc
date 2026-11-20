@@ -164,7 +164,7 @@ url::Origin BraveRequestInfo::first_party_origin_for_adblock_rules() const {
                                                       : request_origin);
   }
   // The initiator may be a subframe, but the first party is the top frame (or
-  // its precursor), so prefer the top frame origin when there is one.
+  // its precursor), so use the top frame origin when there is one.
   if (top_frame_origin_) {
     return GetPrecursorOriginIfOpaque(*top_frame_origin_);
   }
