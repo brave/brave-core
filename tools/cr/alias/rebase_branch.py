@@ -20,10 +20,12 @@ from __future__ import annotations
 
 import argparse
 import subprocess
+import sys
 
 import _boot  # noqa: F401
 import repository
 from alias.base import UserValidationError
+from versioning import PACKAGE_FILE, Version, read_chromium_version_file
 
 
 def _resolve_to_ref(to_ref: str | None) -> str:
@@ -40,6 +42,39 @@ def _resolve_to_ref(to_ref: str | None) -> str:
             'git_cr: the current branch has no upstream. Pass --to-ref, or '
             'set one with `git branch --set-upstream-to`.'
         ) from e
+
+
+def _unsynced_chrome_tag(onto: str) -> Version | None:
+    """The chrome tag of `onto`, when Chromium is synced to another one."""
+    wanted = Version.from_git(onto)
+    if read_chromium_version_file() != wanted:
+        return wanted
+    return None
+
+
+def _require_chromium_synced(onto: str) -> None:
+    wanted = _unsynced_chrome_tag(onto)
+    if wanted is not None:
+        raise UserValidationError(
+            f'git_cr: Chromium is at {read_chromium_version_file()}, but the '
+            f'branch is rebased onto Chromium {wanted}. Sync Chromium to '
+            f'{wanted} first.'
+        )
+
+
+def _require_no_version_bumps(merge_base: str) -> None:
+    """Refuses a branch with a commit of its own that changes the chrome tag,
+    as Chromium stays synced to one version for the whole rebase."""
+    for commit in repository.brave.run_git(
+        'rev-list', f'{merge_base}..HEAD', '--', PACKAGE_FILE
+    ).split():
+        if Version.from_git(commit) != Version.from_git(f'{commit}~1'):
+            subject = repository.brave.get_commit_short_description(commit)
+            raise UserValidationError(
+                f'git_cr: {commit[:12]} ({subject}) changes the Chromium '
+                'version. `git cr rebase` only rebases branches that keep the '
+                'version of the branch they are rebased onto.'
+            )
 
 
 def cmd_rebase(args: list[str]) -> int:
@@ -80,17 +115,30 @@ def cmd_rebase(args: list[str]) -> int:
     import brockit
 
     rebase = brockit.Rebase(resume_command='git cr rebase')
+    to_ref = None
     try:
         if parsed.is_continuation or parsed.skip:
+            if repository.brave.is_rebase_in_progress():
+                onto = repository.brave.rebase_merge_dir() / 'onto'
+                _require_chromium_synced(onto.read_text().strip())
             rebase.run(is_continuation=parsed.is_continuation, skip=parsed.skip)
             return 0
         to_ref = _resolve_to_ref(parsed.to_ref)
+        merge_base = repository.brave.run_git('merge-base', to_ref, 'HEAD')
+        _require_no_version_bumps(merge_base)
         if parsed.dry_run:
             rebase.run(to_ref=to_ref, dry_run=True)
             return 0
-        merge_base = repository.brave.run_git('merge-base', to_ref, 'HEAD')
+        _require_chromium_synced(to_ref)
         rebase.run(from_ref=merge_base, to_ref=to_ref)
     except brockit.RebaseNeededException:
+        wanted = _unsynced_chrome_tag(to_ref)
+        if wanted is not None:
+            print(
+                f'git_cr: a rebase is needed, but sync Chromium to {wanted} '
+                'first.',
+                file=sys.stderr,
+            )
         return brockit.RebaseNeededException.EXIT_CODE
     except (
         brockit.InvalidInputException,

@@ -6,6 +6,7 @@
 """Integration tests for rebase_branch.py, running cmd.py as a subprocess
 against a FakeChromiumRepo."""
 
+import subprocess
 import unittest
 
 import _boot  # noqa: F401
@@ -13,10 +14,21 @@ from cmd_test import _Sandbox, _git
 from exceptions import RebaseNeededException
 
 
+_SYNCED = '140.0.7000.0'
+_NEXT = '140.0.7001.0'
+
+
 class TestRebase(unittest.TestCase):
     def setUp(self) -> None:
         self._sandbox = self.enterContext(_Sandbox())
+        self._sandbox.repo.add_tag(_SYNCED)
+        self._sandbox.repo.update_brave_version(_SYNCED)
         self._base = self._rev_parse('--abbrev-ref', 'HEAD')
+
+    def _bump_base(self, version: str) -> None:
+        _git(self._sandbox.root, 'checkout', self._base)
+        self._sandbox.repo.update_brave_version(version)
+        _git(self._sandbox.root, 'checkout', 'feature')
 
     def _rev_parse(self, *args: str) -> str:
         return _git(self._sandbox.root, 'rev-parse', *args).stdout.strip()
@@ -80,7 +92,8 @@ class TestRebase(unittest.TestCase):
 
         self.assertEqual(result.returncode, 0, msg=result.stderr)
 
-    def test_a_conflict_stop_says_to_continue_with_git_cr(self) -> None:
+    def _stop_on_a_conflict(self) -> subprocess.CompletedProcess:
+        """Starts a rebase whose only commit conflicts with the base."""
         _git(
             self._sandbox.root,
             'checkout',
@@ -99,11 +112,69 @@ class TestRebase(unittest.TestCase):
         _git(self._sandbox.root, 'checkout', 'feature')
 
         result = self._sandbox.run_gc(['rebase'])
-
         self.assertEqual(result.returncode, 1)
+        return result
+
+    def test_a_conflict_stop_says_to_continue_with_git_cr(self) -> None:
+        result = self._stop_on_a_conflict()
+
         self.assertRegex(
             result.stdout + result.stderr, r'git cr rebase\s+--continue'
         )
+
+    def test_chromium_not_synced_to_the_target_is_refused(self) -> None:
+        self._fork_feature('--track', self._base)
+        self._bump_base(_NEXT)
+        head = self._rev_parse('HEAD')
+
+        result = self._sandbox.run_gc(['rebase'])
+
+        self.assertEqual(result.returncode, 1)
+        self.assertIn(f'Sync Chromium to {_NEXT}', result.stderr)
+        self.assertEqual(self._rev_parse('HEAD'), head)
+
+    def test_chromium_synced_to_the_target_rebases(self) -> None:
+        self._fork_feature('--track', self._base)
+        self._bump_base(_NEXT)
+        self._sandbox.repo.add_tag(_NEXT)
+
+        result = self._sandbox.run_gc(['rebase'])
+
+        self.assertEqual(result.returncode, 0, msg=result.stderr)
+        self.assertEqual(self._rev_parse('HEAD^'), self._rev_parse(self._base))
+
+    def test_a_branch_changing_the_version_is_refused(self) -> None:
+        self._fork_feature('--track', self._base)
+        self._sandbox.repo.update_brave_version(_NEXT)
+        head = self._rev_parse('HEAD')
+
+        result = self._sandbox.run_gc(['rebase'])
+
+        self.assertEqual(result.returncode, 1)
+        self.assertIn('changes the Chromium version', result.stderr)
+        self.assertEqual(self._rev_parse('HEAD'), head)
+
+    def test_dry_run_with_chromium_not_synced_warns(self) -> None:
+        self._fork_feature('--track', self._base)
+        self._bump_base(_NEXT)
+
+        result = self._sandbox.run_gc(['rebase', '--dry-run'])
+
+        self.assertEqual(result.returncode, RebaseNeededException.EXIT_CODE)
+        self.assertIn(f'sync Chromium to {_NEXT} first', result.stderr)
+
+    def test_continue_rechecks_the_chromium_version(self) -> None:
+        self._stop_on_a_conflict()
+        self._sandbox.repo.add_tag(_NEXT)
+        (self._sandbox.root / 'clash.txt').write_text(
+            'fixed\n', encoding='utf-8'
+        )
+        _git(self._sandbox.root, 'add', 'clash.txt')
+
+        result = self._sandbox.run_gc(['rebase', '--continue'])
+
+        self.assertEqual(result.returncode, 1)
+        self.assertIn(f'Sync Chromium to {_SYNCED}', result.stderr)
 
     def test_continue_without_a_rebase_is_an_error(self) -> None:
         result = self._sandbox.run_gc(['rebase', '--continue'])
