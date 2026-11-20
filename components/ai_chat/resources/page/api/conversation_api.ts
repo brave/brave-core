@@ -204,6 +204,10 @@ export default function createConversationApi(
             })
           },
 
+          // This event is subscribable by the UI, so that an open thread panel
+          // can be closed when its thread is removed
+          onConversationThreadRemoved: (threadUuid) => {},
+
           // This event is subscribable by the UI
           onConversationDeleted: () => {},
         },

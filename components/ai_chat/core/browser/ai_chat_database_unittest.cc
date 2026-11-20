@@ -512,6 +512,84 @@ TEST_P(AIChatDatabaseTest, ConversationThreadEntries) {
   EXPECT_TRUE(deleted_conversation_data->threads.empty());
 }
 
+// Deleting an entry which is a thread's origin also deletes the thread row and
+// the thread's entries, transitively including their edits and owned rows.
+TEST_P(AIChatDatabaseTest, DeleteConversationEntryRemovesOriginatingThreads) {
+  const std::string uuid = "thread_cascade_delete";
+  mojom::ConversationPtr metadata = mojom::Conversation::New(
+      uuid, "thread cascade delete", base::Time::Now(), true, std::nullopt, 0,
+      0, false, std::vector<mojom::AssociatedContentPtr>());
+
+  // Two root question/answer pairs, with a thread branching off each answer.
+  auto root_history = CreateSampleChatHistory(2u);
+  ASSERT_TRUE(
+      db_->AddConversation(metadata->Clone(), {}, root_history[0]->Clone()));
+  for (size_t i = 1; i < root_history.size(); i++) {
+    ASSERT_TRUE(db_->AddConversationEntry(uuid, root_history[i]->Clone()));
+  }
+
+  const std::string thread_uuid = "thread_1";
+  const std::string other_thread_uuid = "thread_2";
+  ASSERT_TRUE(db_->AddConversationThread(mojom::Thread::New(
+      thread_uuid, uuid, root_history[1]->uuid.value(), 0, 0, 0)));
+  ASSERT_TRUE(db_->AddConversationThread(mojom::Thread::New(
+      other_thread_uuid, uuid, root_history[3]->uuid.value(), 0, 0, 0)));
+
+  // Each thread owns its own question/answer pair.
+  auto thread_entries = CreateSampleChatHistory(1u);
+  auto other_thread_entries = CreateSampleChatHistory(1u);
+  for (auto& entry : thread_entries) {
+    entry->thread_uuid = thread_uuid;
+    ASSERT_TRUE(db_->AddConversationEntry(uuid, entry->Clone()));
+  }
+  for (auto& entry : other_thread_entries) {
+    entry->thread_uuid = other_thread_uuid;
+    ASSERT_TRUE(db_->AddConversationEntry(uuid, entry->Clone()));
+  }
+
+  // Deleting the second answer removes its thread and that thread's entries,
+  // including their owned rows. The other thread is untouched.
+  ASSERT_TRUE(db_->DeleteConversationEntry(root_history[3]->uuid.value()));
+  ExpectNoChildRows(root_history[3]->uuid.value());
+  for (const auto& entry : other_thread_entries) {
+    ExpectNoChildRows(entry->uuid.value());
+  }
+  EXPECT_TRUE(db_->GetConversationThreadEntries(other_thread_uuid).empty());
+
+  // The other thread must be untouched: its metadata and entries (with their
+  // owned rows, including events) survive the delete.
+  auto surviving_thread_entries =
+      db_->GetConversationThreadEntries(thread_uuid);
+  ASSERT_EQ(surviving_thread_entries.size(), 2u);
+  EXPECT_EQ(surviving_thread_entries[0]->uuid, thread_entries[0]->uuid);
+  EXPECT_EQ(surviving_thread_entries[1]->uuid, thread_entries[1]->uuid);
+  ASSERT_TRUE(surviving_thread_entries[1]->events.has_value());
+  EXPECT_FALSE(surviving_thread_entries[1]->events->empty());
+
+  auto conversation_data = db_->GetConversationData(uuid);
+  ASSERT_TRUE(conversation_data);
+  ASSERT_EQ(conversation_data->threads.size(), 1u);
+  EXPECT_EQ(conversation_data->threads[0]->uuid, thread_uuid);
+  ASSERT_EQ(conversation_data->entries.size(), 3u);
+  for (const auto& entry : conversation_data->entries) {
+    EXPECT_NE(entry->uuid, root_history[3]->uuid);
+  }
+
+  // Deleting the first answer also removes its thread and its entries.
+  ASSERT_TRUE(db_->DeleteConversationEntry(root_history[1]->uuid.value()));
+  for (const auto& entry : thread_entries) {
+    ExpectNoChildRows(entry->uuid.value());
+  }
+  EXPECT_TRUE(db_->GetConversationThreadEntries(thread_uuid).empty());
+  conversation_data = db_->GetConversationData(uuid);
+  ASSERT_TRUE(conversation_data);
+  EXPECT_TRUE(conversation_data->threads.empty());
+  ASSERT_EQ(conversation_data->entries.size(), 2u);
+  for (const auto& entry : conversation_data->entries) {
+    EXPECT_NE(entry->uuid, root_history[1]->uuid);
+  }
+}
+
 TEST_P(AIChatDatabaseTest, WebSourcesEvent) {
   const std::string uuid = "first";
   const GURL page_url = GURL("https://example.com/page");
@@ -2069,6 +2147,53 @@ TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryKeepsWorkspaceContent) {
   data = db_->GetConversationData("conv");
   ASSERT_TRUE(data);
   EXPECT_TRUE(data->associated_content.empty());
+}
+
+// Threads which originate from a replaced entry are device-local data (sync
+// doesn't carry them), so they must survive the replace along with the
+// thread's entries.
+TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryKeepsOriginatingThreads) {
+  const std::string thread_uuid = "thread_1";
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-1";
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  entry->text = "Hello";
+  entry->created_time = base::Time::Now();
+
+  auto conversation = mojom::Conversation::New();
+  conversation->uuid = "conv";
+  ASSERT_TRUE(
+      db_->AddConversation(std::move(conversation), {}, entry->Clone()));
+
+  ASSERT_TRUE(db_->AddConversationThread(
+      mojom::Thread::New(thread_uuid, "conv", "entry-1", 0, 0, 0)));
+
+  auto thread_entries = CreateSampleChatHistory(1u);
+  for (auto& thread_entry : thread_entries) {
+    thread_entry->thread_uuid = thread_uuid;
+    ASSERT_TRUE(db_->AddConversationEntry("conv", thread_entry->Clone()));
+  }
+
+  // Replace the origin entry as sync would, with different text.
+  auto remote_entry = entry->Clone();
+  remote_entry->text = "Replaced";
+  ASSERT_TRUE(db_->ApplyRemoteEntry("conv", std::move(remote_entry), {}, {}));
+
+  auto data = db_->GetConversationData("conv");
+  ASSERT_TRUE(data);
+  ASSERT_EQ(data->threads.size(), 1u);
+  EXPECT_EQ(data->threads[0]->uuid, thread_uuid);
+  EXPECT_EQ(data->threads[0]->entry_count, 2u);
+  ASSERT_EQ(data->entries.size(), 1u);
+  EXPECT_EQ(data->entries[0]->child_thread_uuids,
+            std::vector<std::string>{thread_uuid});
+
+  auto persisted_thread_entries =
+      db_->GetConversationThreadEntries(thread_uuid);
+  ASSERT_EQ(persisted_thread_entries.size(), 2u);
+  EXPECT_EQ(persisted_thread_entries[0]->uuid, thread_entries[0]->uuid);
+  EXPECT_EQ(persisted_thread_entries[1]->uuid, thread_entries[1]->uuid);
 }
 
 TEST_F(AIChatDatabaseSyncTest, GetConversationUuidForEntry) {

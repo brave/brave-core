@@ -121,7 +121,8 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   virtual bool DeleteConversation(std::string_view conversation_uuid);
 
   // Deletes the conversation entry with the provided ID and all associated
-  // edits and events.
+  // edits and events, along with any threads originating from it and those
+  // threads' entries.
   virtual bool DeleteConversationEntry(
       std::string_view conversation_entry_uuid);
 
@@ -218,11 +219,13 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   bool CreateSchema();
 
   // Deletes a conversation entry, everything that belongs to it, and
-  // transitively each of its edits. With |keep_workspace_content|, the
-  // entry's Workspace associated content rows are left in place. Must be
-  // called within a transaction.
+  // transitively each of its edits. Also deletes each thread which originates
+  // from a deleted entry, along with all of its entries. With
+  // |keep_workspace_content_and_threads|, the entry's Workspace associated
+  // content rows and those threads are left in place, for callers which
+  // replace rather than remove an entry. Must be called within a transaction.
   bool DeleteEntryAndOwnedRows(std::string_view conversation_entry_uuid,
-                               bool keep_workspace_content);
+                               bool keep_workspace_content_and_threads);
 
   // The directory storing the database.
   const base::FilePath db_file_path_;
