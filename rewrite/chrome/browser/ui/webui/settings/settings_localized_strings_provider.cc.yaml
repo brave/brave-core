@@ -1,0 +1,95 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Explain the search engine choice with Brave's search explanation.
+    regex:
+      re_pattern: '\bIDS_SEARCH_ENGINE_CHOICE_SETTINGS_ENTRY_POINT_SUBTITLE\b'
+      replace: 'IDS_SETTINGS_NORMAL_PROFILE_SEARCH_EXPLANATION'
+
+  - description: |-
+      Title the profile editing entries with Brave's string.
+    count: 2 # editPerson and profileNameAndPicture.
+    regex:
+      re_pattern: '\bIDS_SETTINGS_CUSTOMIZE_PROFILE\b'
+      replace: 'IDS_SETTINGS_BRAVE_EDIT_PROFILE'
+
+  - description: |-
+      Describe Safe Browsing with Brave's strings.
+
+      Brave's Safe Browsing doesn't do what upstream's descriptions say it
+      does.
+    regex:
+      re_pattern: '\bIDS_SETTINGS_SAFEBROWSING_STANDARD_BULLET_TWO\b'
+      replace: 'IDS_SETTINGS_BRAVE_SAFEBROWSING_STANDARD_BULLET_TWO'
+
+  - description: |-
+      Describe Safe Browsing's off state with Brave's string.
+    regex:
+      re_pattern: '\bIDS_SETTINGS_SAFEBROWSING_NONE_DESC\b'
+      replace: 'IDS_SETTINGS_BRAVE_SAFEBROWSING_NONE_DESC'
+
+  - description: |-
+      Describe Safe Browsing's standard protection with Brave's string.
+    regex:
+      re_pattern: '\bIDS_SETTINGS_SAFEBROWSING_STANDARD_DESC\b'
+      replace: 'IDS_SETTINGS_BRAVE_SAFEBROWSING_STANDARD_DESC'
+
+  - description: |-
+      Label the diagnostic (crashes, hangs) reporting setting with Brave's
+      string.
+    regex:
+      re_pattern: '\bIDS_SETTINGS_ENABLE_LOGGING_PREF\b'
+      replace: 'IDS_BRAVE_DIAGNOSTIC_REPORTS_PREF'
+
+  - description: |-
+      Describe the diagnostic (crashes, hangs) reporting setting with Brave's
+      string.
+    regex:
+      re_pattern: '\bIDS_SETTINGS_ENABLE_LOGGING_PREF_DESC\b'
+      replace: 'IDS_BRAVE_DIAGNOSTIC_REPORTS_PREF_DESC'
+
+  - description: |-
+      Label the autofill sync type with Brave's string.
+    regex:
+      re_pattern: '\bIDS_SETTINGS_AUTOFILL_CHECKBOX_LABEL\b'
+      replace: 'IDS_SETTINGS_BRAVE_AUTOFILL_CHECKBOX_LABEL'
+
+  - description: |-
+      Label the apps sync type with Brave's string.
+    regex:
+      re_pattern: '\bIDS_SETTINGS_APPS_CHECKBOX_LABEL\b'
+      replace: 'IDS_SETTINGS_BRAVE_APPS_CHECKBOX_LABEL'
+
+  - description: |-
+      Label the passwords sync type with Brave's string.
+    regex:
+      re_pattern: '\bIDS_SETTINGS_PASSWORDS_AND_PASSKEYS_CHECKBOX_LABEL\b'
+      replace: 'IDS_SETTINGS_BRAVE_PASSWORDS_CHECKBOX_LABEL'
+
+  - description: |-
+      Label the left UI alignment with the appearance settings' string.
+    regex:
+      re_pattern: '\bIDS_SETTINGS_UI_FEATURE_ALIGN_LEFT\b'
+      replace: 'IDS_SETTINGS_APPEARANCE_SETTINGS_UI_FEATURE_ALIGN_LEFT'
+
+  - description: |-
+      Label the right UI alignment with the appearance settings' string.
+    regex:
+      re_pattern: '\bIDS_SETTINGS_UI_FEATURE_ALIGN_RIGHT\b'
+      replace: 'IDS_SETTINGS_APPEARANCE_SETTINGS_UI_FEATURE_ALIGN_RIGHT'
+
+  - description: |-
+      Label the third-party cookies row with Brave's block cookies string.
+    regex:
+      re_pattern: '\bIDS_SETTINGS_THIRD_PARTY_COOKIES_LINK_ROW_LABEL\b'
+      replace: 'IDS_SETTINGS_BRAVE_BLOCK_COOKIES_LINK_ROW_LABEL'
+
+  - description: |-
+      Add Brave's settings strings.
+    add_before_line:
+      line: 'html_source->UseStringsJs();'
+      code: '  BraveAddLocalizedStrings(html_source, profile);'
