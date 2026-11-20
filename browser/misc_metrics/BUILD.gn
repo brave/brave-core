@@ -194,7 +194,6 @@ source_set("unit_tests") {
     "doh_metrics_unittest.cc",
     "fingerprint_frequency_metrics_unittest.cc",
     "media_session_metrics_impl_unittest.cc",
-    "page_metrics_unittest.cc",
     "uptime_monitor_impl_unittest.cc",
   ]
 
