@@ -126,7 +126,6 @@ export function createMockUntrustedUIHandler(
     bindUntrustedUI: () => {},
     openSearchURL: () => {},
     openLearnMoreAboutBraveSearchWithLeo: () => {},
-    openURLFromResponse: () => {},
     openAIChatCustomizationSettings: () => {},
     addTabToThumbnailTracker: () => {},
     removeTabFromThumbnailTracker: () => {},

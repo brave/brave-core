@@ -103,17 +103,17 @@ test('AssistantResponse should include expandable sources', async () => {
       />
     </MockContext>,
   )
-  // There should be the first 4 source buttons + 1 expand button
-  let buttons = screen.getAllByRole('button')
-  expect(buttons).toHaveLength(5)
+  // There should be the first 4 source links + 1 expand button
+  expect(screen.getAllByRole('link')).toHaveLength(4)
+  expect(screen.getAllByRole('button')).toHaveLength(1)
   // The expand button should be visible
   const expandButton = document.querySelector<HTMLButtonElement>(
     'button[name="expand"]',
   )!
   await userEvent.click(expandButton)
-  // There should be all 8 source buttons (expand button removed)
-  buttons = screen.getAllByRole('button')
-  expect(buttons).toHaveLength(8)
+  // There should be all 8 source links (expand button removed)
+  expect(screen.getAllByRole('link')).toHaveLength(8)
+  expect(screen.queryAllByRole('button')).toHaveLength(0)
 })
 
 test('AssistantResponse should render memory tool events inline', async () => {
@@ -300,8 +300,7 @@ test('AssistantResponse should aggregate sources from multiple events', async ()
   )
 
   // All 4 sources from both events should be rendered
-  const buttons = screen.getAllByRole('button')
-  expect(buttons).toHaveLength(4)
+  expect(screen.getAllByRole('link')).toHaveLength(4)
 })
 
 test('AssistantResponse renders a search summary for a web search tool use event', () => {
