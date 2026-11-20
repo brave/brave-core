@@ -6,6 +6,7 @@
 #include "base/containers/extend.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/actions/command_id_to_action_id.h"
 
@@ -23,6 +24,28 @@ constexpr AcceleratorMapping kBraveAcceleratorMap[] = {
     // Ctrl+Alt+T (Cmd+Alt+T on Mac)
     {ui::VKEY_T, ui::EF_PLATFORM_ACCELERATOR | ui::EF_ALT_DOWN,
      IDC_NEW_SPLIT_TAB},
+#if BUILDFLAG(ENABLE_CONTAINERS)
+    // Ctrl+Shift+1..9 (Cmd+Shift+1..9 on Mac) — open a new tab in
+    // container 1..9
+    {ui::VKEY_1, ui::EF_PLATFORM_ACCELERATOR | ui::EF_SHIFT_DOWN,
+     IDC_NEW_TAB_IN_CONTAINER_1},
+    {ui::VKEY_2, ui::EF_PLATFORM_ACCELERATOR | ui::EF_SHIFT_DOWN,
+     IDC_NEW_TAB_IN_CONTAINER_2},
+    {ui::VKEY_3, ui::EF_PLATFORM_ACCELERATOR | ui::EF_SHIFT_DOWN,
+     IDC_NEW_TAB_IN_CONTAINER_3},
+    {ui::VKEY_4, ui::EF_PLATFORM_ACCELERATOR | ui::EF_SHIFT_DOWN,
+     IDC_NEW_TAB_IN_CONTAINER_4},
+    {ui::VKEY_5, ui::EF_PLATFORM_ACCELERATOR | ui::EF_SHIFT_DOWN,
+     IDC_NEW_TAB_IN_CONTAINER_5},
+    {ui::VKEY_6, ui::EF_PLATFORM_ACCELERATOR | ui::EF_SHIFT_DOWN,
+     IDC_NEW_TAB_IN_CONTAINER_6},
+    {ui::VKEY_7, ui::EF_PLATFORM_ACCELERATOR | ui::EF_SHIFT_DOWN,
+     IDC_NEW_TAB_IN_CONTAINER_7},
+    {ui::VKEY_8, ui::EF_PLATFORM_ACCELERATOR | ui::EF_SHIFT_DOWN,
+     IDC_NEW_TAB_IN_CONTAINER_8},
+    {ui::VKEY_9, ui::EF_PLATFORM_ACCELERATOR | ui::EF_SHIFT_DOWN,
+     IDC_NEW_TAB_IN_CONTAINER_9},
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 #if BUILDFLAG(IS_MAC)
     // Command-Option-N
     {ui::VKEY_N, ui::EF_ALT_DOWN | ui::EF_PLATFORM_ACCELERATOR,
