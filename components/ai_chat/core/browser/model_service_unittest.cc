@@ -158,6 +158,10 @@ class ModelServiceTest : public ::testing::Test {
   void TearDown() override { observer_.reset(); }
 
  protected:
+  // MigrateProfilePrefs() only migrates when kAIChat is enabled, so pin it
+  // rather than rely on its default. Declared first so it is initialized
+  // before the other members and destroyed last.
+  base::test::ScopedFeatureList ai_chat_feature_list_{features::kAIChat};
   TestingPrefServiceSimple pref_service_;
   std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_async_ =
       os_crypt_async::GetTestOSCryptAsyncForTesting(
@@ -559,7 +563,7 @@ TEST_F(ModelServiceTest, DeleteCustomModelsByEndpoint) {
       }));
 
   auto custom_models = GetService()->GetCustomModels();
-  EXPECT_EQ(custom_models.size(), 1u);
+  ASSERT_EQ(custom_models.size(), 1u);
   EXPECT_EQ(custom_models[0]->display_name, "Model 3");
   EXPECT_EQ(custom_models[0]->options->get_custom_model_options()->endpoint,
             endpoint2);
@@ -611,7 +615,7 @@ TEST_F(ModelServiceTest, DeleteCustomModelByNameAndEndpoint) {
       }));
 
   auto custom_models = GetService()->GetCustomModels();
-  EXPECT_EQ(custom_models.size(), 1u);
+  ASSERT_EQ(custom_models.size(), 1u);
   EXPECT_EQ(custom_models[0]->display_name, "Model 2");
   EXPECT_EQ(
       custom_models[0]->options->get_custom_model_options()->model_request_name,
@@ -723,7 +727,7 @@ TEST_F(ModelServiceTest, GetCustomModels) {
   // GetCustomModels should return only custom models
   {
     auto custom_models = GetService()->GetCustomModels();
-    EXPECT_EQ(custom_models.size(), 1u);
+    ASSERT_EQ(custom_models.size(), 1u);
     EXPECT_TRUE(custom_models[0]->options->is_custom_model_options());
   }
 
