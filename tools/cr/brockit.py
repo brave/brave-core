@@ -2380,7 +2380,7 @@ class Rebase(Task):
                 squash_minor_bumps=squash_minor_bumps,
                 exec_command=exec_command,
             )
-        self._continue(state, skip=skip)
+        self._continue(state, skip=skip, resuming=is_continuation or skip)
         self._report(state)
 
     def _dry_run(
@@ -2561,16 +2561,21 @@ class Rebase(Task):
 
         return RebaseState(squash_minor_bumps=squash_minor_bumps)
 
-    def _continue(self, state: RebaseState, *, skip: bool = False) -> None:
+    def _continue(
+        self, state: RebaseState, *, skip: bool = False, resuming: bool = False
+    ) -> None:
         """Continues the rebase in progress until git finishes it.
 
         Each stop is resolved as far as the rules go before continuing, with
         the same handling of commit messages the rebase started with. With
-        `skip`, the commit the rebase stopped on is skipped first.
+        `skip`, the commit the rebase stopped on is skipped first, or the
+        `exec` line it stopped on is dropped. When `resuming` a stop on a
+        failed `exec` line, `--continue` runs the line again.
 
-        Raises ActionNeededException when a stop has conflicts left, and
-        InvalidInputException when git stops for anything other than a
-        conflict. Either way, the rebase is left stopped for `--continue`.
+        Raises ActionNeededException when a stop has conflicts left or an
+        `exec` line failed, and InvalidInputException when git stops for
+        anything else. Either way, the rebase is left stopped for
+        `--continue`.
         """
         env = os.environ.copy()
         if state.squash_minor_bumps:
@@ -2578,10 +2583,17 @@ class Rebase(Task):
             # message, and so does a squash that stopped on a conflict.
             env.update(self._message_editor_env())
 
+        git_just_ran = not resuming
         if skip:
             self._drop_carry_of_stop()
             self._run_git_rebase('--skip', env)
+            git_just_ran = True
         while repository.brave.is_rebase_in_progress():
+            failed_exec = self._failed_exec()
+            if failed_exec is not None and git_just_ran:
+                state.save()
+                self._stop_on_failed_exec(failed_exec)
+            git_just_ran = True
             step = conflict_resolution.ConflictedStep.load()
             if step is None and self._settle_empty_stop():
                 self._run_git_rebase('--skip', env)
@@ -2682,6 +2694,10 @@ class Rebase(Task):
         `--empty=stop` makes: a `pick` whose own change is already on HEAD, or
         a `squash`/`fixup` that leaves HEAD changing nothing. A commit that
         was empty to begin with doesn't stop, and isn't one."""
+        # `_entries` leaves `exec` lines out, so the `pick` before a failed
+        # one would look like an empty stop.
+        if cls._failed_exec() is not None:
+            return None
         brave = repository.brave
         lines = [entry for _, entry in cls._entries('done')]
         if not lines:
@@ -2740,6 +2756,43 @@ class Rebase(Task):
             break
         terminal.log_task(f'{escape(last.out)} came out empty: dropped.')
         return True
+
+    @staticmethod
+    def _failed_exec() -> str | None:
+        """The command of the `exec` line the rebase stopped on, which failed,
+        or None for any other stop.
+
+        Git stops on an `exec` line only when its command fails, leaving it as
+        the last line done.
+        """
+        done = repository.brave.rebase_merge_dir() / 'done'
+        if not done.is_file():
+            return None
+        lines = [
+            line
+            for line in done.read_text(encoding='utf-8').splitlines()
+            if line.strip() and not line.lstrip().startswith('#')
+        ]
+        if not lines:
+            return None
+        command, _, rest = lines[-1].strip().partition(' ')
+        return rest if command in ('exec', 'x') else None
+
+    @staticmethod
+    def _stop_on_failed_exec(command: str) -> NoReturn:
+        """Stops the rebase on an `exec` line that failed."""
+        head = repository.brave.run_git('rev-parse', 'HEAD')
+        subject = repository.brave.get_commit_short_description('HEAD')
+        terminal.log_task(
+            f'[bold]The command run after {head[:12]} ({escape(subject)}) '
+            f'failed {ACTION_NEEDED_DECORATOR}:[/]\n'
+            f'    ✘ {escape(command)}'
+        )
+        raise ActionNeededException(
+            '👋 (Fix what the command reported, and then rerun '
+            '[italic]🚀Brockit![/] with [bold cyan]--continue[/], which runs '
+            'it again, or skip it with [bold cyan]--skip[/])'
+        )
 
     @staticmethod
     def _drop_carry_of_stop() -> None:
@@ -2829,7 +2882,8 @@ class Rebase(Task):
         """Runs `git rebase <action>`, until git finishes or stops the rebase.
 
         Raises InvalidInputException when git stops for anything other than a
-        conflict, or a commit that came out empty, which the caller resolves.
+        conflict, a commit that came out empty, or a failed `exec` line, which
+        the caller handles.
         """
         try:
             # `interactive=True`, as git may open an editor for the commit
@@ -2839,6 +2893,7 @@ class Rebase(Task):
             if (
                 conflict_resolution.ConflictedStep.load() is None
                 and cls._empty_stop() is None
+                and cls._failed_exec() is None
             ):
                 raise InvalidInputException(
                     'The rebase stopped without conflicts. Check '
