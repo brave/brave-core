@@ -24,7 +24,7 @@ BASE_FEATURE(kBraveYoutubeFullscreenVideoFitWorkaround,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 BASE_FEATURE(kBraveYoutubePlaylistMediaControlsWorkaround,
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace features
 }  // namespace preferences
