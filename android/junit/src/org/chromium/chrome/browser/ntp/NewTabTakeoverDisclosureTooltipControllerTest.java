@@ -82,8 +82,16 @@ public class NewTabTakeoverDisclosureTooltipControllerTest {
     }
 
     private NewTabTakeoverDisclosureTooltipController createController() {
+        return createController(/* shouldAutoDisplay= */ true);
+    }
+
+    private NewTabTakeoverDisclosureTooltipController createController(boolean shouldAutoDisplay) {
         return new NewTabTakeoverDisclosureTooltipController(
-                mRootView, mPrefService, () -> mIsRewardsEnabled, this::createTooltip);
+                mRootView,
+                mPrefService,
+                () -> mIsRewardsEnabled,
+                this::createTooltip,
+                shouldAutoDisplay);
     }
 
     private NewTabTakeoverDisclosureTooltip createTooltip(
@@ -175,6 +183,26 @@ public class NewTabTakeoverDisclosureTooltipControllerTest {
 
         assertEquals(0, mTooltips.size());
         assertEquals(REMAINING_DISPLAY_COUNT, mRemainingDisplayCount);
+    }
+
+    @Test
+    public void testDoNotAutoDisplayWhenCreatedWithoutAutoDisplay() {
+        mController = createController(/* shouldAutoDisplay= */ false);
+
+        layout();
+
+        assertEquals(0, mTooltips.size());
+        assertEquals(REMAINING_DISPLAY_COUNT, mRemainingDisplayCount);
+    }
+
+    @Test
+    public void testOpenTooltipWhenLabelIsClickedAfterControllerIsCreatedWithoutAutoDisplay() {
+        mController = createController(/* shouldAutoDisplay= */ false);
+
+        mController.onDisclosureLabelClicked(mDisclosureLabel);
+
+        assertEquals(1, mTooltips.size());
+        verify(getLastTooltip()).show();
     }
 
     @Test
