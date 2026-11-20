@@ -804,7 +804,7 @@ std::string BraveReferralsService::BuildConversionPayload(
 
   return result;
 }
-#endif
+#endif  // BUILDFLAG(IS_ANDROID)
 
 ///////////////////////////////////////////////////////////////////////////////
 
