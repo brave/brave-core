@@ -37,6 +37,12 @@ class ConnectionAPIImplSim : public SystemVPNConnectionAPIImplBase {
   bool IsConnectionChecked() const;
   void SetNetworkAvailableForTesting(bool value);
 
+  // Expose protected members of the base classes to tests.
+  using ConnectionAPIImpl::OnFetchHostnames;
+  using ConnectionAPIImpl::ResetHostname;
+  using ConnectionAPIImpl::SetLastConnectionError;
+  using SystemVPNConnectionAPIImplBase::OnGetProfileCredentials;
+
   void OnCreated(const std::string& name, bool success);
   void OnConnected(const std::string& name, bool success);
   void OnIsConnecting(const std::string& name);
