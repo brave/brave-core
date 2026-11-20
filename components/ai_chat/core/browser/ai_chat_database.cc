@@ -1598,7 +1598,8 @@ bool AIChatDatabase::DeleteConversation(std::string_view conversation_uuid) {
 
   for (const auto& entry_uuid : entry_uuids) {
     if (!DeleteEntryAndOwnedRows(entry_uuid,
-                                 /*keep_workspace_content=*/false)) {
+                                 /*keep_workspace_content_and_threads=*/
+                                 false)) {
       return false;
     }
   }
@@ -1657,7 +1658,7 @@ bool AIChatDatabase::DeleteConversationEntry(
   }
 
   if (!DeleteEntryAndOwnedRows(conversation_entry_uuid,
-                               /*keep_workspace_content=*/false)) {
+                               /*keep_workspace_content_and_threads=*/false)) {
     return false;
   }
 
@@ -1671,7 +1672,7 @@ bool AIChatDatabase::DeleteConversationEntry(
 
 bool AIChatDatabase::DeleteEntryAndOwnedRows(
     std::string_view conversation_entry_uuid,
-    bool keep_workspace_content) {
+    bool keep_workspace_content_and_threads) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   // An edit is a conversation_entry row of its own which owns its own child
@@ -1701,6 +1702,51 @@ bool AIChatDatabase::DeleteEntryAndOwnedRows(
       }
     }
 
+    // Threads originating from this entry are removed along with it, and so
+    // are their entries (which are processed through the same worklist, along
+    // with their own edits and owned rows). Thread uuids are collected before
+    // deleting so the statements aren't stepped while their rows are removed.
+    if (!keep_workspace_content_and_threads) {
+      static constexpr char kThreadUuidsQuery[] =
+          "SELECT uuid FROM thread WHERE origin_conversation_entry_uuid=?";
+      sql::Statement statement(GetDB().GetUniqueStatement(kThreadUuidsQuery));
+      CHECK(statement.is_valid());
+      statement.BindString(0, entry_uuid);
+      std::vector<std::string> thread_uuids;
+      while (statement.Step()) {
+        thread_uuids.push_back(statement.ColumnString(0));
+      }
+      if (!statement.Succeeded()) {
+        return false;
+      }
+
+      for (const std::string& thread_uuid : thread_uuids) {
+        static constexpr char kThreadEntryUuidsQuery[] =
+            "SELECT uuid FROM conversation_entry WHERE thread_uuid=?";
+        sql::Statement entry_statement(
+            GetDB().GetUniqueStatement(kThreadEntryUuidsQuery));
+        CHECK(entry_statement.is_valid());
+        entry_statement.BindString(0, thread_uuid);
+        while (entry_statement.Step()) {
+          pending.push_back(entry_statement.ColumnString(0));
+        }
+        if (!entry_statement.Succeeded()) {
+          return false;
+        }
+
+        static constexpr char kDeleteThreadQuery[] =
+            "DELETE FROM thread WHERE uuid=?";
+        sql::Statement delete_statement(
+            GetDB().GetUniqueStatement(kDeleteThreadQuery));
+        CHECK(delete_statement.is_valid());
+        delete_statement.BindString(0, thread_uuid);
+        if (!delete_statement.Run()) {
+          DVLOG(0) << "Failed to delete thread with uuid: " << thread_uuid;
+          return false;
+        }
+      }
+    }
+
     // associated_content is keyed by conversation_entry_uuid but is also
     // scoped by conversation, so it isn't one of kEntryEventTables.
     {
@@ -1710,7 +1756,7 @@ bool AIChatDatabase::DeleteEntryAndOwnedRows(
           "DELETE FROM associated_content WHERE conversation_entry_uuid=?"
           " AND content_type != 2";
       sql::Statement statement;
-      if (keep_workspace_content) {
+      if (keep_workspace_content_and_threads) {
         statement.Assign(GetDB().GetUniqueStatement(kDeleteNonWorkspaceQuery));
       } else {
         statement.Assign(GetDB().GetUniqueStatement(kDeleteAllQuery));
@@ -2212,9 +2258,10 @@ bool AIChatDatabase::ApplyRemoteEntry(
   // uploaded file, associated content and edit rows, then re-insert. Sync does
   // not carry edit revisions, so the only ones written back are those the
   // caller passes in |entry->edits|. Workspace content is device-local and
-  // never synced, so its rows stay attached to the re-inserted entry.
+  // never synced, so its rows stay attached to the re-inserted entry, as do
+  // threads originating from the entry.
   if (!DeleteEntryAndOwnedRows(*entry->uuid,
-                               /*keep_workspace_content=*/true)) {
+                               /*keep_workspace_content_and_threads=*/true)) {
     return false;
   }
   if (!AddConversationEntry(conversation_uuid, std::move(entry))) {

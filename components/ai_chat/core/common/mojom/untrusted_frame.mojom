@@ -133,6 +133,10 @@ interface UntrustedConversationUI {
   // Called when a thread's metadata is created or updated.
   OnConversationThreadUpdate(Thread thread);
 
+  // Called when a thread is removed, e.g. because the root conversation entry
+  // it originated from was removed.
+  OnConversationThreadRemoved(string thread_uuid);
+
   // Called when the associated content is changed - called when the untrusted
   // conversation frame is attached and when the content is changed.
   AssociatedContentChanged(array<AssociatedContent> associated_content);

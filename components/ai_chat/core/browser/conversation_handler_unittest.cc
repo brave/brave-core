@@ -204,6 +204,11 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
        const std::vector<mojom::ConversationCapability>& capabilities_enabled),
       (override));
 
+  MOCK_METHOD(void,
+              OnConversationThreadRemoved,
+              (const std::string&),
+              (override));
+
   MOCK_METHOD(void, OnConversationDeleted, (), (override));
 
  private:
@@ -1904,6 +1909,207 @@ TEST_F(ConversationHandlerUnitTest, RegenerateAnswer_Thread) {
   EXPECT_EQ(thread_entries[0]->model_key, new_model_key);
   EXPECT_EQ(thread_entries[1]->text, "regenerated answer");
   EXPECT_EQ(thread_entries[1]->model_key, new_model_key);
+}
+
+// Modifying a root human turn removes the turns after it, so any threads
+// originating from those turns are removed, and both the page and the
+// untrusted frames are notified. Threads on earlier entries are kept.
+TEST_F(ConversationHandlerUnitTest,
+       ModifyConversation_RemovesOriginatingThreads) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(features::kAIChatThreads);
+
+  conversation_handler_->MaybeUnlinkAssociatedContent();
+
+  SetupHistory({{"hello", false},
+                {"response", false},
+                {"third", false},
+                {"fourth", false}});
+  const auto& history = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(history.size(), 4u);
+
+  base::test::TestFuture<const std::optional<std::string>&> kept_future;
+  conversation_handler_->CreateConversationThread(history[1]->uuid.value(),
+                                                  kept_future.GetCallback());
+  const std::string kept_thread_uuid = kept_future.Take().value();
+  base::test::TestFuture<const std::optional<std::string>&> removed_future;
+  conversation_handler_->CreateConversationThread(history[3]->uuid.value(),
+                                                  removed_future.GetCallback());
+  const std::string removed_thread_uuid = removed_future.Take().value();
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  testing::NiceMock<MockConversationHandlerObserver> observer;
+  observer.Observe(conversation_handler_.get());
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  NiceMock<MockUntrustedConversationHandlerClient> untrusted_client(
+      conversation_handler_.get());
+
+  // Editing the second human turn removes it and everything after it, so only
+  // the thread on the last entry goes away.
+  EXPECT_CALL(client, OnConversationThreadRemoved(removed_thread_uuid))
+      .Times(1);
+  EXPECT_CALL(untrusted_client,
+              OnConversationThreadRemoved(removed_thread_uuid))
+      .Times(1);
+  EXPECT_CALL(client, OnConversationThreadRemoved(kept_thread_uuid)).Times(0);
+  EXPECT_CALL(untrusted_client, OnConversationThreadRemoved(kept_thread_uuid))
+      .Times(0);
+
+  EXPECT_CALL(observer, OnConversationEntryRemoved(conversation_handler_.get(),
+                                                   history[2]->uuid.value()))
+      .Times(1);
+  EXPECT_CALL(observer, OnConversationEntryRemoved(conversation_handler_.get(),
+                                                   history[3]->uuid.value()))
+      .Times(1);
+  EXPECT_CALL(observer,
+              OnConversationEntryAdded(conversation_handler_.get(), _, _))
+      .Times(2);
+
+  EXPECT_CALL(*engine,
+              GenerateAssistantResponse(_, LastTurnHasText("edited third"), _,
+                                        _, _, _, _, _))
+      .WillOnce(::testing::DoAll(
+          base::test::RunOnceCallback<6>(EngineConsumer::GenerationResultData(
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New("edited answer")),
+              kChatAutomaticModelKey /* model_key */)),
+          base::test::RunOnceCallback<7>(
+              base::ok(EngineConsumer::GenerationResultData(
+                  mojom::ConversationEntryEvent::NewCompletionEvent(
+                      mojom::CompletionEvent::New("")),
+                  kChatAutomaticModelKey /* model_key */)))));
+
+  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(testing::AtLeast(1));
+  base::RunLoop run_loop;
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .WillRepeatedly(
+          testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
+
+  conversation_handler_->ModifyConversation(
+      history[2]->uuid.value(), "edited third", std::nullopt, std::nullopt);
+  run_loop.Run();
+
+  client.FlushForTesting();
+  untrusted_client.FlushForTesting();
+
+  testing::Mock::VerifyAndClearExpectations(&client);
+  testing::Mock::VerifyAndClearExpectations(&untrusted_client);
+  testing::Mock::VerifyAndClearExpectations(&observer);
+
+  // The removed thread is gone in memory, and only the kept thread remains.
+  EXPECT_FALSE(
+      base::FindOrNull(conversation_handler_->threads_, removed_thread_uuid));
+  ASSERT_TRUE(
+      base::FindOrNull(conversation_handler_->threads_, kept_thread_uuid));
+
+  base::test::TestFuture<std::vector<mojom::ThreadPtr>> threads_future;
+  conversation_handler_->GetConversationThreads(threads_future.GetCallback());
+  auto threads = threads_future.Take();
+  ASSERT_EQ(threads.size(), 1u);
+  EXPECT_EQ(threads[0]->uuid, kept_thread_uuid);
+}
+
+// Regenerating a root answer removes the question and everything after it, so
+// any threads originating from those turns are removed, and both the page and
+// the untrusted frames are notified. Threads on earlier entries are kept.
+TEST_F(ConversationHandlerUnitTest,
+       RegenerateAnswer_RemovesOriginatingThreads) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(features::kAIChatThreads);
+
+  conversation_handler_->MaybeUnlinkAssociatedContent();
+
+  SetupHistory({{"hello", false},
+                {"response", false},
+                {"third", false},
+                {"fourth", false}});
+  const auto& history = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(history.size(), 4u);
+
+  base::test::TestFuture<const std::optional<std::string>&> kept_future;
+  conversation_handler_->CreateConversationThread(history[1]->uuid.value(),
+                                                  kept_future.GetCallback());
+  const std::string kept_thread_uuid = kept_future.Take().value();
+  base::test::TestFuture<const std::optional<std::string>&> removed_future;
+  conversation_handler_->CreateConversationThread(history[3]->uuid.value(),
+                                                  removed_future.GetCallback());
+  const std::string removed_thread_uuid = removed_future.Take().value();
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  testing::NiceMock<MockConversationHandlerObserver> observer;
+  observer.Observe(conversation_handler_.get());
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  NiceMock<MockUntrustedConversationHandlerClient> untrusted_client(
+      conversation_handler_.get());
+
+  // Regenerating the last answer removes its question and everything after it,
+  // so only the thread on the last entry goes away.
+  EXPECT_CALL(client, OnConversationThreadRemoved(removed_thread_uuid))
+      .Times(1);
+  EXPECT_CALL(untrusted_client,
+              OnConversationThreadRemoved(removed_thread_uuid))
+      .Times(1);
+  EXPECT_CALL(client, OnConversationThreadRemoved(kept_thread_uuid)).Times(0);
+  EXPECT_CALL(untrusted_client, OnConversationThreadRemoved(kept_thread_uuid))
+      .Times(0);
+
+  EXPECT_CALL(observer, OnConversationEntryRemoved(conversation_handler_.get(),
+                                                   history[2]->uuid.value()))
+      .Times(1);
+  EXPECT_CALL(observer, OnConversationEntryRemoved(conversation_handler_.get(),
+                                                   history[3]->uuid.value()))
+      .Times(1);
+  EXPECT_CALL(observer,
+              OnConversationEntryAdded(conversation_handler_.get(), _, _))
+      .Times(2);
+
+  const std::string new_model_key = "new_model_key";
+  EXPECT_CALL(*engine, GenerateAssistantResponse(_, LastTurnHasText("third"), _,
+                                                 _, _, _, _, _))
+      .WillOnce(::testing::DoAll(
+          base::test::RunOnceCallback<6>(EngineConsumer::GenerationResultData(
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New("regenerated answer")),
+              new_model_key)),
+          base::test::RunOnceCallback<7>(
+              base::ok(EngineConsumer::GenerationResultData(
+                  mojom::ConversationEntryEvent::NewCompletionEvent(
+                      mojom::CompletionEvent::New("")),
+                  new_model_key)))));
+
+  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(testing::AtLeast(1));
+  base::RunLoop run_loop;
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .WillRepeatedly(
+          testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
+
+  conversation_handler_->RegenerateAnswer(history[3]->uuid.value(),
+                                          new_model_key, std::nullopt);
+  run_loop.Run();
+
+  client.FlushForTesting();
+  untrusted_client.FlushForTesting();
+
+  testing::Mock::VerifyAndClearExpectations(&client);
+  testing::Mock::VerifyAndClearExpectations(&untrusted_client);
+  testing::Mock::VerifyAndClearExpectations(&observer);
+
+  EXPECT_FALSE(
+      base::FindOrNull(conversation_handler_->threads_, removed_thread_uuid));
+  ASSERT_TRUE(
+      base::FindOrNull(conversation_handler_->threads_, kept_thread_uuid));
+
+  base::test::TestFuture<std::vector<mojom::ThreadPtr>> threads_future;
+  conversation_handler_->GetConversationThreads(threads_future.GetCallback());
+  auto threads = threads_future.Take();
+  ASSERT_EQ(threads.size(), 1u);
+  EXPECT_EQ(threads[0]->uuid, kept_thread_uuid);
 }
 
 TEST_F(ConversationHandlerUnitTest, RateMessage_Thread) {
