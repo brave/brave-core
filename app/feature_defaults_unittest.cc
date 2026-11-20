@@ -242,7 +242,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
       &heap_profiling::kHeapProfilerReporting,
       &history::kOrganicRepeatableQueries,
-      &history_clusters::features::kOnDeviceClustering,
       &history_clusters::features::kOnDeviceClusteringKeywordFiltering,
       &history_clusters::internal::kHistoryClustersInternalsPage,
       &history_clusters::internal::kHistoryClustersNavigationContextClustering,
