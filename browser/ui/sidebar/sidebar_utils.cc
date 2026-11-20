@@ -203,6 +203,8 @@ SidePanelEntryId SidePanelIdFromSideBarItemType(BuiltInItemType type) {
     case BuiltInItemType::kWallet:
       return SidePanelEntryId::kWallet;
 #endif
+    case BuiltInItemType::kNotes:
+      return SidePanelEntryId::kNotes;
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
     case BuiltInItemType::kBraveTalk:
       break;
@@ -240,6 +242,8 @@ std::optional<BuiltInItemType> BuiltInItemTypeFromSidePanelId(
     case SidePanelEntryId::kBraveNews:
       return BuiltInItemType::kBraveNews;
 #endif
+    case SidePanelEntryId::kNotes:
+      return BuiltInItemType::kNotes;
     default:
       break;
   }
@@ -303,6 +307,9 @@ void SetLastUsedSidePanel(PrefService* prefs,
         type = BuiltInItemType::kBraveNews;
         break;
 #endif
+      case SidePanelEntryId::kNotes:
+        type = BuiltInItemType::kNotes;
+        break;
       default:
         break;
     }
@@ -346,6 +353,8 @@ bool IsDisabledItemForPrivate(SidebarItem::BuiltInItemType type) {
     case SidebarItem::BuiltInItemType::kBraveNews:
       return true;
 #endif
+    case SidebarItem::BuiltInItemType::kNotes:
+      return false;
     default:
       break;
   }
@@ -369,6 +378,8 @@ bool IsDisabledItemForGuest(SidebarItem::BuiltInItemType type) {
     case SidebarItem::BuiltInItemType::kBraveNews:
       return true;
 #endif
+    case SidebarItem::BuiltInItemType::kNotes:
+      return false;
     default:
       break;
   }

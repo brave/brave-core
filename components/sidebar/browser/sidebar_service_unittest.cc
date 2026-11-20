@@ -71,6 +71,7 @@ constexpr sidebar::SidebarItem::BuiltInItemType
 #if BUILDFLAG(ENABLE_PLAYLIST)
         sidebar::SidebarItem::BuiltInItemType::kPlaylist,
 #endif
+        sidebar::SidebarItem::BuiltInItemType::kNotes,
 };
 
 constexpr char sidebar_all_builtin_visible_json[] = R"({
@@ -1298,6 +1299,8 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAllBuiltInVisible) {
     items.push_back(SidebarItem::BuiltInItemType::kPlaylist);
   }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
+  expected_count++;
+  items.push_back(SidebarItem::BuiltInItemType::kNotes);
   LoadFromPrefsTest(std::move(sidebar), items, expected_count);
 }
 
@@ -1341,6 +1344,8 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsWalletBuiltInHidden) {
   }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
+  expected_count++;
+  items.push_back(SidebarItem::BuiltInItemType::kNotes);
   LoadFromPrefsTest(std::move(sidebar), items, expected_count);
 }
 
@@ -1388,6 +1393,8 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAIChatBuiltInNotListed) {
   }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
+  expected_count++;
+  items.push_back(SidebarItem::BuiltInItemType::kNotes);
   LoadFromPrefsTest(std::move(sidebar), items, expected_count);
 }
 
@@ -1503,6 +1510,19 @@ TEST_F(SidebarServiceWithWebPanelTest, BraveTalkPanelTypeTest) {
   EXPECT_TRUE(talk_iter->opens_in_panel());
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_TALK)
+
+TEST_F(SidebarServiceTest, NotesBuiltInItem) {
+  InitService();
+
+  const SidebarItem item =
+      service_->GetBuiltInItemForType(SidebarItem::BuiltInItemType::kNotes);
+
+  EXPECT_TRUE(item.IsValidItem());
+  EXPECT_TRUE(item.is_built_in_type());
+  EXPECT_TRUE(item.is_side_panel_type());
+  EXPECT_EQ(SidebarItem::BuiltInItemType::kNotes,
+            item.built_in_item_type);
+}
 
 TEST_F(SidebarServiceTest, AddDeleteNotes) {
   InitService();

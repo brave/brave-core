@@ -857,6 +857,10 @@ SidebarItem SidebarService::GetBuiltInItemForType(
       return SidebarItem();
     }
 #endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
+    case SidebarItem::BuiltInItemType::kNotes:
+      return SidebarItem::CreateBuiltInItem(
+          SidebarItem::BuiltInItemType::kNotes, u"Notes",
+          SidebarItem::PanelType::kSidePanel);
     case SidebarItem::BuiltInItemType::kNone:
       break;
   }
