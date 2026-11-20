@@ -212,6 +212,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   void SetContentAgentChosen(bool chosen) override;
   void RateMessage(bool is_liked,
                    const std::string& turn_uuid,
+                   const std::optional<std::string>& thread_uuid,
                    RateMessageCallback callback) override;
   void SendFeedback(const std::string& category,
                     const std::string& feedback,
@@ -281,7 +282,8 @@ class ConversationHandler : public mojom::ConversationHandler,
           callback) override;
   void SwitchToNonPremiumModel() override;
   void RegenerateAnswer(const std::string& turn_uuid,
-                        const std::string& model_key) override;
+                        const std::string& model_key,
+                        const std::optional<std::string>& thread_uuid) override;
   void GenerateQuestions() override;
   void RetryAPIRequest(const std::optional<std::string>& thread_uuid) override;
   void CreateConversationThread(
@@ -292,7 +294,8 @@ class ConversationHandler : public mojom::ConversationHandler,
   void ModifyConversation(
       const std::string& entry_uuid,
       const std::string& new_text,
-      const std::optional<std::string>& skill_shortcut) override;
+      const std::optional<std::string>& skill_shortcut,
+      const std::optional<std::string>& thread_uuid) override;
   void RespondToToolUseRequest(
       const std::string& entry_uuid,
       const std::string& tool_id,
@@ -444,6 +447,15 @@ class ConversationHandler : public mojom::ConversationHandler,
   FRIEND_TEST_ALL_PREFIXES(
       ConversationHandlerUnitTest,
       GetTools_MemoryToolFilteredForTemporaryConversations);
+  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
+                           ThreadHistory);
+  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
+                           ModifyConversation_Thread);
+  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
+                           ModifyConversation_ThreadAssistantEdit);
+  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
+                           RegenerateAnswer_Thread);
+  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest, RateMessage_Thread);
 
   struct ThreadContainer {
     explicit ThreadContainer(mojom::ThreadPtr thread);
@@ -494,6 +506,11 @@ class ConversationHandler : public mojom::ConversationHandler,
   // to.
   std::vector<mojom::ConversationTurnPtr>& GetMutableConversationHistory(
       std::optional<std::string_view> thread_uuid);
+
+  // Returns whether |thread_uuid| is unset (the root conversation) or an
+  // existing thread with the threads feature enabled.
+  bool MaybeCheckValidThread(
+      const std::optional<std::string>& thread_uuid) const;
 
   // When the current batch of tool use requests has been completed, we can
   // send the results to the engine and wait for the next response for the loop.
@@ -596,8 +613,7 @@ class ConversationHandler : public mojom::ConversationHandler,
       std::pair<raw_ptr<mojom::ToolUseEvent>, std::optional<std::string>>;
 
   // If |tool_id| is provided, finds the matching tool use event. Otherwise,
-  // finds the latest tool use event (pending or completed) across all
-  // histories.
+  // finds the latest pending tool use event across all histories.
   ToolUseEventAndThreadUUID FindLatestToolUseEvent(
       std::optional<std::string_view> tool_id = std::nullopt);
 

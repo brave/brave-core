@@ -42,6 +42,7 @@ export default function ContextActionsAssistant(
     conversationContext.parentUiFrame?.rateMessage(
       props.turnUuid,
       status === 'liked',
+      null,
     )
   }
 
@@ -70,6 +71,7 @@ export default function ContextActionsAssistant(
       conversationContext.conversationHandler?.regenerateAnswer(
         props.turnUuid,
         selectedModelKey,
+        null,
       )
     },
     [conversationContext, props.turnUuid],

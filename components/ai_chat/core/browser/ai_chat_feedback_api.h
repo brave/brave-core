@@ -9,7 +9,7 @@
 #include <optional>
 #include <string>
 
-#include "base/containers/span.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -36,7 +36,7 @@ class AIChatFeedbackAPI {
   virtual void SendRating(
       bool is_liked,
       bool is_premium,
-      const base::span<const mojom::ConversationTurnPtr>& history,
+      const EngineConsumer::ConversationHistoryView& history,
       const std::string& model_name,
       api_request_helper::APIRequestHelper::ResultCallback
           on_complete_callback);

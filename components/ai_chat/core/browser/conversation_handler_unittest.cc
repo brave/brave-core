@@ -16,6 +16,7 @@
 #include <variant>
 #include <vector>
 
+#include "base/containers/map_util.h"
 #include "base/files/file_path.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
@@ -218,7 +219,7 @@ class MockAIChatFeedbackAPI : public AIChatFeedbackAPI {
               SendRating,
               (bool is_liked,
                bool is_premium,
-               const base::span<const mojom::ConversationTurnPtr>& history,
+               const EngineConsumer::ConversationHistoryView& history,
                const std::string& model_name,
                api_request_helper::APIRequestHelper::ResultCallback callback),
               (override));
@@ -277,6 +278,34 @@ std::vector<mojom::ContentBlockPtr> CreateWebSourcesOutput(
                                          std::move(queries),
                                          std::vector<std::string>())));
   return output;
+}
+
+// Creates the [query, answer] entries for a thread, as they'd be loaded from
+// the service.
+std::vector<mojom::ConversationTurnPtr> CreateThreadEntries(
+    const std::string& thread_uuid) {
+  std::vector<mojom::ConversationTurnPtr> entries;
+  entries.push_back(mojom::ConversationTurn::New(
+      "thread-query", thread_uuid, mojom::CharacterType::HUMAN,
+      mojom::ActionType::QUERY, "thread query", std::nullopt /* prompt */,
+      std::nullopt /* selected_text */, std::nullopt /* events */,
+      base::Time::Now(), std::nullopt /* edits */,
+      std::nullopt /* uploaded_files */, nullptr /* skill */, false,
+      std::nullopt /* model_key */, nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */));
+  std::optional<std::vector<mojom::ConversationEntryEventPtr>> events =
+      std::vector<mojom::ConversationEntryEventPtr>();
+  events->push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+      mojom::CompletionEvent::New("thread answer")));
+  entries.push_back(mojom::ConversationTurn::New(
+      "thread-answer", thread_uuid, mojom::CharacterType::ASSISTANT,
+      mojom::ActionType::RESPONSE, "thread answer", std::nullopt /* prompt */,
+      std::nullopt /* selected_text */, std::move(events), base::Time::Now(),
+      std::nullopt /* edits */, std::nullopt /* uploaded_files */,
+      nullptr /* skill */, false, std::nullopt /* model_key */,
+      nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */));
+  return entries;
 }
 
 }  // namespace
@@ -471,6 +500,20 @@ class ConversationHandlerUnitTest : public testing::Test {
     ai_chat_service_->SetDatabaseForTesting(std::move(mock_db));
     thread_entries_db_installed_ = true;
     return db_future.Get();
+  }
+
+  // Creates a thread branched off the second entry of the root history, which
+  // must have exactly two entries. Returns the thread's uuid.
+  std::string CreateThreadOnSecondEntry() {
+    const auto& history = conversation_handler_->GetConversationHistory();
+    CHECK_EQ(history.size(), 2u);
+
+    base::test::TestFuture<const std::optional<std::string>&> thread_future;
+    conversation_handler_->CreateConversationThread(
+        history[1]->uuid.value(), thread_future.GetCallback());
+    std::optional<std::string> thread_uuid = thread_future.Take();
+    CHECK(thread_uuid.has_value());
+    return *thread_uuid;
   }
 
   mojom::ConversationStatePtr GetState() {
@@ -1245,6 +1288,8 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   EXPECT_EQ("workspace-content", restored.Get<1>());
 }
 
+// Note to agents performing code cleanup: Testing of internals is intended.
+// Please do not refactor to remove internal testing.
 TEST_F(ConversationHandlerUnitTest, ThreadHistory) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeature(features::kAIChatThreads);
@@ -1280,7 +1325,6 @@ TEST_F(ConversationHandlerUnitTest, ThreadHistory) {
   std::vector<std::unique_ptr<ToolProvider>> tool_providers;
   tool_providers.push_back(std::make_unique<NiceMock<MockToolProvider>>());
 
-  auto* db = InstallThreadEntriesDatabase();
   auto handler = std::make_unique<ConversationHandler>(
       conversation.get(), ai_chat_service_.get(), model_service_.get(),
       ai_chat_service_->GetCredentialManagerForTesting(),
@@ -1300,52 +1344,33 @@ TEST_F(ConversationHandlerUnitTest, ThreadHistory) {
   EXPECT_EQ(threads[0]->uuid, "thread-1");
   EXPECT_EQ(threads[0]->conversation_uuid, "uuid");
   EXPECT_EQ(threads[0]->origin_conversation_entry_uuid, "root-turn-2");
+  // Thread entries should NOT be loaded yet (lazy).
+  auto* container = base::FindOrNull(handler->threads_, "thread-1");
+  ASSERT_TRUE(container);
+  EXPECT_TRUE(container->entries.empty());
 
-  // Thread entries are loaded lazily: the database is only asked for them by
-  // the first request, and only once, so the second request below must be
-  // served from the cache. A strict mock fails on any earlier fetch.
-  // Let any database work queued by construction or metadata retrieval run
-  // while the strict mock still rejects every entry fetch.
-  base::test::TestFuture<void> db_barrier;
-  task_environment_.GetMainThreadTaskRunner()->PostTask(
-      FROM_HERE, db_barrier.GetCallback());
-  ASSERT_TRUE(db_barrier.Wait());
-  EXPECT_CALL(*db, GetConversationThreadEntries(std::string_view("thread-1")))
-      .WillOnce([]() {
-        std::vector<mojom::ConversationTurnPtr> thread_entries;
-        thread_entries.emplace_back(mojom::ConversationTurn::New(
-            "thread-entry-1", std::make_optional<std::string>("thread-1"),
-            mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-            "thread query", std::nullopt, std::nullopt, std::nullopt,
-            base::Time::Now(), std::nullopt, std::nullopt, nullptr, false,
-            std::nullopt, nullptr, std::vector<std::string>{}));
-        thread_entries.emplace_back(mojom::ConversationTurn::New(
-            "thread-entry-2", std::make_optional<std::string>("thread-1"),
-            mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-            "thread response", std::nullopt, std::nullopt, std::nullopt,
-            base::Time::Now(), std::nullopt, std::nullopt, nullptr, false,
-            std::nullopt, nullptr, std::vector<std::string>{}));
-        return thread_entries;
-      });
-
-  // Only the thread's own entries are returned.
+  // Deliver thread entries as if received from the service and verify only
+  // the thread's own entries are returned.
   base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>>
       received_future;
-  handler->GetConversationHistory("thread-1", received_future.GetCallback());
+  handler->OnConversationThreadHistoryReceived("thread-1",
+                                               received_future.GetCallback(),
+                                               CreateThreadEntries("thread-1"));
   auto received_entries = received_future.Take();
   ASSERT_EQ(received_entries.size(), 2u);
-  EXPECT_EQ(received_entries[0]->uuid, "thread-entry-1");
-  EXPECT_EQ(received_entries[1]->uuid, "thread-entry-2");
+  EXPECT_EQ(received_entries[0]->uuid, "thread-query");
+  EXPECT_EQ(received_entries[1]->uuid, "thread-answer");
+  EXPECT_EQ(container->entries.size(), 2u);
 
   // Subsequent requests should be served from the cache.
   base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>> future;
   handler->GetConversationHistory("thread-1", future.GetCallback());
   auto entries = future.Take();
   ASSERT_EQ(entries.size(), 2u);
-  EXPECT_EQ(entries[0]->uuid, "thread-entry-1");
+  EXPECT_EQ(entries[0]->uuid, "thread-query");
   EXPECT_EQ(entries[0]->text, "thread query");
-  EXPECT_EQ(entries[1]->uuid, "thread-entry-2");
-  EXPECT_EQ(entries[1]->text, "thread response");
+  EXPECT_EQ(entries[1]->uuid, "thread-answer");
+  EXPECT_EQ(entries[1]->text, "thread answer");
 
   // Unknown threads should return empty entries.
   base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>>
@@ -1353,7 +1378,6 @@ TEST_F(ConversationHandlerUnitTest, ThreadHistory) {
   handler->GetConversationHistory("unknown-thread",
                                   unknown_future.GetCallback());
   EXPECT_TRUE(unknown_future.Take().empty());
-  testing::Mock::VerifyAndClearExpectations(db);
 }
 
 TEST_F(ConversationHandlerUnitTest, CreateConversationThread_SubmitEntry) {
@@ -1610,6 +1634,294 @@ TEST_F(ConversationHandlerUnitTest, CreateConversationThread_MaxThreads) {
   auto threads = threads_future.Take();
   ASSERT_EQ(threads.size(), 1u);
   EXPECT_EQ(threads[0]->uuid, *thread_uuid);
+}
+
+TEST_F(ConversationHandlerUnitTest, ModifyConversation_Thread) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(features::kAIChatThreads);
+
+  conversation_handler_->MaybeUnlinkAssociatedContent();
+
+  SetupHistory({{"hello", false}, {"response", false}});
+  const std::string thread_uuid = CreateThreadOnSecondEntry();
+  base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>> seed_future;
+  conversation_handler_->OnConversationThreadHistoryReceived(
+      thread_uuid, seed_future.GetCallback(), CreateThreadEntries(thread_uuid));
+  EXPECT_EQ(seed_future.Take().size(), 2u);
+  const std::string thread_query_uuid = "thread-query";
+  const std::string thread_answer_uuid = "thread-answer";
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  testing::NiceMock<MockConversationHandlerObserver> observer;
+  observer.Observe(conversation_handler_.get());
+
+  // The engine should receive the root entries up to the origin entry followed
+  // by the edited thread entry.
+  EXPECT_CALL(*engine,
+              GenerateAssistantResponse(
+                  _,
+                  testing::AllOf(HistoryTextsAre(std::vector<std::string>{
+                                     "hello", "response", "thread query"}),
+                                 LastTurnHasText("edited query")),
+                  _, _, _, _, _, _))
+      .WillOnce(::testing::DoAll(
+          base::test::RunOnceCallback<6>(EngineConsumer::GenerationResultData(
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New("edited answer")),
+              kChatAutomaticModelKey /* model_key */)),
+          base::test::RunOnceCallback<7>(
+              base::ok(EngineConsumer::GenerationResultData(
+                  mojom::ConversationEntryEvent::NewCompletionEvent(
+                      mojom::CompletionEvent::New("")),
+                  kChatAutomaticModelKey /* model_key */)))));
+
+  // The edited entry and the entry after it are removed, then the edited entry
+  // and the new answer are added back.
+  EXPECT_CALL(observer, OnConversationEntryRemoved(conversation_handler_.get(),
+                                                   thread_query_uuid))
+      .Times(1);
+  EXPECT_CALL(observer, OnConversationEntryRemoved(conversation_handler_.get(),
+                                                   thread_answer_uuid))
+      .Times(1);
+  EXPECT_CALL(observer,
+              OnConversationEntryAdded(conversation_handler_.get(), _, _))
+      .Times(2);
+
+  conversation_handler_->ModifyConversation(thread_query_uuid, "edited query",
+                                            std::nullopt, thread_uuid);
+  testing::Mock::VerifyAndClearExpectations(&observer);
+
+  // The root history should be untouched by the edit.
+  EXPECT_EQ(conversation_handler_->GetConversationHistory().size(), 2u);
+  EXPECT_FALSE(conversation_handler_->GetConversationHistory()[0]->edits);
+
+  base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>>
+      thread_history_future;
+  conversation_handler_->GetConversationHistory(
+      thread_uuid, thread_history_future.GetCallback());
+  auto thread_entries = thread_history_future.Take();
+  ASSERT_EQ(thread_entries.size(), 2u);
+  EXPECT_EQ(thread_entries[0]->uuid, thread_query_uuid);
+  ASSERT_TRUE(thread_entries[0]->edits);
+  ASSERT_EQ(thread_entries[0]->edits->size(), 1u);
+  EXPECT_EQ(thread_entries[0]->edits->at(0)->text, "edited query");
+  EXPECT_EQ(thread_entries[1]->text, "edited answer");
+}
+
+TEST_F(ConversationHandlerUnitTest, ModifyConversation_ThreadAssistantEdit) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(features::kAIChatThreads);
+
+  SetupHistory({{"hello", false}, {"response", false}});
+  const std::string thread_uuid = CreateThreadOnSecondEntry();
+  base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>> seed_future;
+  conversation_handler_->OnConversationThreadHistoryReceived(
+      thread_uuid, seed_future.GetCallback(), CreateThreadEntries(thread_uuid));
+  EXPECT_EQ(seed_future.Take().size(), 2u);
+  const std::string thread_answer_uuid = "thread-answer";
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  // Editing an answer shouldn't submit anything to the engine.
+  EXPECT_CALL(*engine, GenerateAssistantResponse).Times(0);
+
+  conversation_handler_->ModifyConversation(
+      thread_answer_uuid, " edited answer ", std::nullopt, thread_uuid);
+
+  // The root history should be untouched by the edit.
+  EXPECT_EQ(conversation_handler_->GetConversationHistory().size(), 2u);
+
+  base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>>
+      thread_history_future;
+  conversation_handler_->GetConversationHistory(
+      thread_uuid, thread_history_future.GetCallback());
+  auto thread_entries = thread_history_future.Take();
+  ASSERT_EQ(thread_entries.size(), 2u);
+  ASSERT_TRUE(thread_entries[1]->edits);
+  ASSERT_EQ(thread_entries[1]->edits->size(), 1u);
+  EXPECT_EQ(thread_entries[1]->edits->at(0)->text, "edited answer");
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       ModifyConversationAndRegenerateAnswer_InvalidThread) {
+  {
+    base::test::ScopedFeatureList feature_list;
+    feature_list.InitAndEnableFeature(features::kAIChatThreads);
+
+    MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+        conversation_handler_->GetEngineForTesting());
+
+    SetupHistory({{"hello", false}, {"response", false}});
+
+    EXPECT_CALL(*engine, GenerateAssistantResponse).Times(0);
+
+    // An unknown thread uuid must be a no-op, not a crash.
+    conversation_handler_->ModifyConversation("turn-0", "edited", std::nullopt,
+                                              "unknown-thread");
+    conversation_handler_->RegenerateAnswer("turn-1", "model_key",
+                                            "unknown-thread");
+    EXPECT_EQ(conversation_handler_->GetConversationHistory().size(), 2u);
+    EXPECT_FALSE(conversation_handler_->GetConversationHistory()[0]->edits);
+  }
+
+  // With the threads feature disabled, any thread uuid is unusable.
+  {
+    base::test::ScopedFeatureList feature_list;
+    feature_list.InitAndDisableFeature(features::kAIChatThreads);
+
+    conversation_handler_->ModifyConversation("turn-0", "edited", std::nullopt,
+                                              "some-thread");
+    conversation_handler_->RegenerateAnswer("turn-1", "model_key",
+                                            "some-thread");
+    EXPECT_EQ(conversation_handler_->GetConversationHistory().size(), 2u);
+    EXPECT_FALSE(conversation_handler_->GetConversationHistory()[0]->edits);
+  }
+}
+
+TEST_F(ConversationHandlerUnitTest, RegenerateAnswer_Thread) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(features::kAIChatThreads);
+
+  conversation_handler_->MaybeUnlinkAssociatedContent();
+
+  SetupHistory({{"hello", false}, {"response", false}});
+  const std::string thread_uuid = CreateThreadOnSecondEntry();
+  base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>> seed_future;
+  conversation_handler_->OnConversationThreadHistoryReceived(
+      thread_uuid, seed_future.GetCallback(), CreateThreadEntries(thread_uuid));
+  EXPECT_EQ(seed_future.Take().size(), 2u);
+  const std::string thread_query_uuid = "thread-query";
+  const std::string thread_answer_uuid = "thread-answer";
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  const std::string new_model_key = "new_model_key";
+
+  testing::NiceMock<MockConversationHandlerObserver> observer;
+  observer.Observe(conversation_handler_.get());
+
+  // The engine should receive the root entries up to the origin entry followed
+  // by the thread's question.
+  EXPECT_CALL(*engine,
+              GenerateAssistantResponse(
+                  _,
+                  testing::AllOf(HistoryTextsAre(std::vector<std::string>{
+                                     "hello", "response", "thread query"}),
+                                 LastTurnHasText("thread query")),
+                  _, _, _, _, _, _))
+      .WillOnce(::testing::DoAll(
+          base::test::RunOnceCallback<6>(EngineConsumer::GenerationResultData(
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New("regenerated answer")),
+              new_model_key)),
+          base::test::RunOnceCallback<7>(
+              base::ok(EngineConsumer::GenerationResultData(
+                  mojom::ConversationEntryEvent::NewCompletionEvent(
+                      mojom::CompletionEvent::New("")),
+                  new_model_key)))));
+
+  EXPECT_CALL(observer, OnConversationEntryRemoved(conversation_handler_.get(),
+                                                   thread_query_uuid))
+      .Times(1);
+  EXPECT_CALL(observer, OnConversationEntryRemoved(conversation_handler_.get(),
+                                                   thread_answer_uuid))
+      .Times(1);
+  EXPECT_CALL(observer,
+              OnConversationEntryAdded(conversation_handler_.get(), _, _))
+      .Times(2);
+
+  conversation_handler_->RegenerateAnswer(thread_answer_uuid, new_model_key,
+                                          thread_uuid);
+  testing::Mock::VerifyAndClearExpectations(&observer);
+
+  // The root history should be untouched.
+  EXPECT_EQ(conversation_handler_->GetConversationHistory().size(), 2u);
+
+  base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>>
+      thread_history_future;
+  conversation_handler_->GetConversationHistory(
+      thread_uuid, thread_history_future.GetCallback());
+  auto thread_entries = thread_history_future.Take();
+  ASSERT_EQ(thread_entries.size(), 2u);
+  EXPECT_EQ(thread_entries[0]->uuid, thread_query_uuid);
+  ASSERT_TRUE(thread_entries[0]->model_key.has_value());
+  EXPECT_EQ(thread_entries[0]->model_key, new_model_key);
+  EXPECT_EQ(thread_entries[1]->text, "regenerated answer");
+  EXPECT_EQ(thread_entries[1]->model_key, new_model_key);
+}
+
+TEST_F(ConversationHandlerUnitTest, RateMessage_Thread) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(features::kAIChatThreads);
+
+  SetupHistory({{"hello", false}, {"response", false}});
+  const std::string thread_uuid = CreateThreadOnSecondEntry();
+  base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>> seed_future;
+  conversation_handler_->OnConversationThreadHistoryReceived(
+      thread_uuid, seed_future.GetCallback(), CreateThreadEntries(thread_uuid));
+  EXPECT_EQ(seed_future.Take().size(), 2u);
+  const std::string thread_answer_uuid = "thread-answer";
+
+  EXPECT_CALL(*mock_feedback_api_, SendRating(true, false, _, _, _))
+      .WillOnce(
+          [&](bool is_liked, bool is_premium,
+              const EngineConsumer::ConversationHistoryView& history_span,
+              const std::string& model_name,
+              api_request_helper::APIRequestHelper::ResultCallback callback) {
+            // The history should contain the root entries up to the origin
+            // entry, followed by the thread's entries up to the rated turn.
+            ASSERT_EQ(history_span.size(), 4u);
+            EXPECT_EQ(history_span[0]->text, "hello");
+            EXPECT_EQ(history_span[1]->text, "response");
+            EXPECT_EQ(history_span[2]->text, "thread query");
+            EXPECT_EQ(history_span[3]->uuid, thread_answer_uuid);
+            EXPECT_FALSE(model_name.empty());
+
+            base::DictValue response_dict;
+            response_dict.Set("id", "test-rating-123");
+            base::Value response(std::move(response_dict));
+
+            std::move(callback).Run(api_request_helper::APIRequestResult(
+                200, std::move(response), {}, net::OK, GURL()));
+          });
+
+  base::test::TestFuture<const std::optional<std::string>&> future_rating_id;
+  conversation_handler_->RateMessage(true, thread_answer_uuid, thread_uuid,
+                                     future_rating_id.GetCallback());
+  EXPECT_EQ(future_rating_id.Take(), "test-rating-123");
+}
+
+TEST_F(ConversationHandlerUnitTest, RateMessage_InvalidThread) {
+  SetupHistory({{"hello", false}, {"response", false}});
+
+  EXPECT_CALL(*mock_feedback_api_, SendRating).Times(0);
+
+  {
+    base::test::ScopedFeatureList feature_list;
+    feature_list.InitAndEnableFeature(features::kAIChatThreads);
+
+    // An unknown thread uuid must be rejected, even for a turn that exists in
+    // the root conversation.
+    base::test::TestFuture<const std::optional<std::string>&> unknown_future;
+    conversation_handler_->RateMessage(true, "turn-1", "unknown-thread",
+                                       unknown_future.GetCallback());
+    EXPECT_FALSE(unknown_future.Take().has_value());
+  }
+
+  // With the threads feature disabled, any thread uuid is unusable.
+  {
+    base::test::ScopedFeatureList feature_list;
+    feature_list.InitAndDisableFeature(features::kAIChatThreads);
+
+    base::test::TestFuture<const std::optional<std::string>&> disabled_future;
+    conversation_handler_->RateMessage(true, "turn-1", "some-thread",
+                                       disabled_future.GetCallback());
+    EXPECT_FALSE(disabled_future.Take().has_value());
+  }
 }
 
 TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_Delta) {
@@ -2280,7 +2592,7 @@ TEST_F(ConversationHandlerUnitTest, MAYBE_ModifyConversation) {
 
   // Make a first edit
   conversation_handler_->ModifyConversation(history[0]->uuid.value(), "prompt2",
-                                            std::nullopt);
+                                            std::nullopt, std::nullopt);
   testing::Mock::VerifyAndClearExpectations(&observer);
 
   // Create the entries events in the way we're expecting to look
@@ -2332,7 +2644,8 @@ TEST_F(ConversationHandlerUnitTest, MAYBE_ModifyConversation) {
                   kChatAutomaticModelKey /* model_key */)))));
 
   conversation_handler_->ModifyConversation(
-      conversation_history[0]->uuid.value(), "prompt3", std::nullopt);
+      conversation_history[0]->uuid.value(), "prompt3", std::nullopt,
+      std::nullopt);
 
   auto second_edit_expected_history = CloneHistory(first_edit_expected_history);
   auto second_edit = first_edit->Clone();
@@ -2357,7 +2670,8 @@ TEST_F(ConversationHandlerUnitTest, MAYBE_ModifyConversation) {
   EXPECT_CALL(*engine, GenerateAssistantResponse(_, _, _, _, _, _, _, _))
       .Times(0);
   conversation_handler_->ModifyConversation(
-      conversation_history[1]->uuid.value(), " answer2 ", std::nullopt);
+      conversation_history[1]->uuid.value(), " answer2 ", std::nullopt,
+      std::nullopt);
 
   auto third_edit_expected_history = CloneHistory(second_edit_expected_history);
 
@@ -2396,7 +2710,7 @@ TEST_F(ConversationHandlerUnitTest, UserActionsRejectedByFilterClosesPipe) {
   user_actions.set_disconnect_handler(disconnect_loop.QuitClosure());
 
   user_actions->ModifyConversation(history[1]->uuid.value(), "edited answer",
-                                   std::nullopt);
+                                   std::nullopt, std::nullopt);
   disconnect_loop.Run();
 
   EXPECT_EQ(filter_attempts, 1);
@@ -2412,7 +2726,7 @@ TEST_F(ConversationHandlerUnitTest, UserActionsWithoutFilterDispatches) {
       user_actions.BindNewPipeAndPassReceiver(), /*gesture_filter=*/nullptr);
 
   user_actions->ModifyConversation(history[1]->uuid.value(), "edited answer",
-                                   std::nullopt);
+                                   std::nullopt, std::nullopt);
   user_actions.FlushForTesting();
 
   const auto& edits = conversation_handler_->GetConversationHistory()[1]->edits;
@@ -2500,7 +2814,8 @@ TEST_F(ConversationHandlerUnitTest, RegenerateAnswer) {
       .Times(2);
 
   // Call RegenerateAnswer with the assistant turn UUID and new model key
-  conversation_handler_->RegenerateAnswer(assistant_turn_uuid, new_model_key);
+  conversation_handler_->RegenerateAnswer(assistant_turn_uuid, new_model_key,
+                                          std::nullopt);
 
   // Add a RunLoop to wait for async operations to complete
   base::RunLoop run_loop;
@@ -2557,11 +2872,13 @@ TEST_F(ConversationHandlerUnitTest, RegenerateAnswer_ErrorCases) {
 
   // Verify edge cases
   // Invalid UUID should not modify history
-  conversation_handler_->RegenerateAnswer("invalid_uuid", new_model_key);
+  conversation_handler_->RegenerateAnswer("invalid_uuid", new_model_key,
+                                          std::nullopt);
   EXPECT_EQ(conversation_handler_->GetConversationHistory(), history);
 
   // Can't regenerate a human entry
-  conversation_handler_->RegenerateAnswer(human_turn_uuid, new_model_key);
+  conversation_handler_->RegenerateAnswer(human_turn_uuid, new_model_key,
+                                          std::nullopt);
   EXPECT_EQ(conversation_handler_->GetConversationHistory(), history);
 
   // Test regenerating a conversation with just a single assistant entry
@@ -2579,7 +2896,8 @@ TEST_F(ConversationHandlerUnitTest, RegenerateAnswer_ErrorCases) {
 
   // Should not regenerate an assistant entry at position 0 (no human question
   // to use)
-  conversation_handler_->RegenerateAnswer("assistant_uuid", new_model_key);
+  conversation_handler_->RegenerateAnswer("assistant_uuid", new_model_key,
+                                          std::nullopt);
   EXPECT_EQ(conversation_handler_->GetConversationHistory(),
             single_entry_history);
 }
@@ -3550,8 +3868,7 @@ TEST_F(ConversationHandlerUnitTest, RateMessage) {
     EXPECT_CALL(*mock_feedback_api_, SendRating(true, false, _, *model_name, _))
         .WillOnce(
             [&](bool is_liked, bool is_premium,
-                const base::span<const mojom::ConversationTurnPtr>&
-                    history_span,
+                const EngineConsumer::ConversationHistoryView& history_span,
                 const std::string& model_name,
                 api_request_helper::APIRequestHelper::ResultCallback callback) {
               // Verify the history being sent contains the human and assistant
@@ -3574,7 +3891,7 @@ TEST_F(ConversationHandlerUnitTest, RateMessage) {
 
     // Call RateMessage
     base::test::TestFuture<const std::optional<std::string>&> future_rating_id;
-    conversation_handler_->RateMessage(true, assistant_turn_uuid,
+    conversation_handler_->RateMessage(true, assistant_turn_uuid, std::nullopt,
                                        future_rating_id.GetCallback());
     testing::Mock::VerifyAndClearExpectations(mock_feedback_api_.get());
 
@@ -3593,7 +3910,7 @@ TEST_F(ConversationHandlerUnitTest, RateMessage) {
 
     // Call RateMessage
     base::test::TestFuture<const std::optional<std::string>&> future_rating_id;
-    conversation_handler_->RateMessage(true, assistant_turn_uuid,
+    conversation_handler_->RateMessage(true, assistant_turn_uuid, std::nullopt,
                                        future_rating_id.GetCallback());
     testing::Mock::VerifyAndClearExpectations(mock_feedback_api_.get());
 
@@ -3612,8 +3929,7 @@ TEST_F(ConversationHandlerUnitTest, RateMessage) {
     EXPECT_CALL(*mock_feedback_api_, SendRating(true, false, _, *model_name, _))
         .WillOnce(
             [&](bool is_liked, bool is_premium,
-                const base::span<const mojom::ConversationTurnPtr>&
-                    history_span,
+                const EngineConsumer::ConversationHistoryView& history_span,
                 const std::string& model_name,
                 api_request_helper::APIRequestHelper::ResultCallback callback) {
               // Verify the history being sent contains the human and assistant
@@ -3636,7 +3952,7 @@ TEST_F(ConversationHandlerUnitTest, RateMessage) {
 
     // Call RateMessage with a like
     base::test::TestFuture<const std::optional<std::string>&> future_rating_id;
-    conversation_handler_->RateMessage(true, assistant_turn_uuid,
+    conversation_handler_->RateMessage(true, assistant_turn_uuid, std::nullopt,
                                        future_rating_id.GetCallback());
     testing::Mock::VerifyAndClearExpectations(mock_feedback_api_.get());
 
@@ -3649,8 +3965,7 @@ TEST_F(ConversationHandlerUnitTest, RateMessage) {
     EXPECT_CALL(*mock_feedback_api_, SendRating)
         .WillOnce(
             [&](bool is_liked, bool is_premium,
-                const base::span<const mojom::ConversationTurnPtr>&
-                    history_span,
+                const EngineConsumer::ConversationHistoryView& history_span,
                 const std::string& model_name,
                 api_request_helper::APIRequestHelper::ResultCallback callback) {
               // Return an error
@@ -3664,7 +3979,7 @@ TEST_F(ConversationHandlerUnitTest, RateMessage) {
 
     // Call RateMessage
     base::test::TestFuture<const std::optional<std::string>&> future_rating_id;
-    conversation_handler_->RateMessage(true, assistant_turn_uuid,
+    conversation_handler_->RateMessage(true, assistant_turn_uuid, std::nullopt,
                                        future_rating_id.GetCallback());
     testing::Mock::VerifyAndClearExpectations(mock_feedback_api_.get());
 
@@ -4341,7 +4656,8 @@ TEST_F(ConversationHandlerUnitTest,
                 complete(std::move(callback));
                 regenerate_run_loop.QuitWhenIdle();
               })));
-  conversation_handler_->RegenerateAnswer(tool_use_entry_uuid, "");
+  conversation_handler_->RegenerateAnswer(tool_use_entry_uuid, "",
+                                          std::nullopt);
   regenerate_run_loop.Run();
 
   associated_content = manager->GetAssociatedContent();
@@ -4400,7 +4716,8 @@ TEST_F(ConversationHandlerUnitTest,
                         std::nullopt)));
                 run_loop.QuitWhenIdle();
               })));
-  conversation_handler_->RegenerateAnswer(history[1]->uuid.value(), "");
+  conversation_handler_->RegenerateAnswer(history[1]->uuid.value(), "",
+                                          std::nullopt);
   run_loop.Run();
 
   associated_content = manager->GetAssociatedContent();
