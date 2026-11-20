@@ -866,6 +866,7 @@ source_set("unit_tests") {
   if (!is_ios) {
     # TODO(https://github.com/brave/brave-browser/issues/50734) Investigate why these tests fail on ios
     sources += [
+      "asset_discovery_manager_unittest.cc",
       "asset_ratio_response_parser_unittest.cc",
       "asset_ratio_service_unittest.cc",
       "bitcoin/bitcoin_hardware_keyring_unittest.cc",
@@ -925,6 +926,7 @@ source_set("unit_tests") {
     "//components/sync_preferences:test_support",
     "//components/update_client",
     "//net:test_support",
+    "//net/traffic_annotation:test_support",
     "//services/data_decoder/public/cpp:test_support",
     "//services/network:test_support",
     "//testing/gtest",
