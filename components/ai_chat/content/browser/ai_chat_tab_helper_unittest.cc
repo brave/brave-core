@@ -76,6 +76,7 @@ class AIChatTabHelperUnitTest : public content::RenderViewHostTestHarness {
   }
 
   void TearDown() override {
+    delegates_created_for_.clear();
     tab_contents_ = nullptr;
     replacement_contents_.clear();
     content::RenderViewHostTestHarness::TearDown();
@@ -85,7 +86,7 @@ class AIChatTabHelperUnitTest : public content::RenderViewHostTestHarness {
   AIChatTabHelper::PrintPreviewExtractionDelegateFactory
   RecordingDelegateFactory() {
     return base::BindRepeating(
-        [](std::vector<content::WebContents*>* created_for,
+        [](std::vector<raw_ptr<content::WebContents>>* created_for,
            content::WebContents* web_contents)
             -> std::unique_ptr<
                 AssociatedWebContentsContent::PrintPreviewExtractionDelegate> {
@@ -110,7 +111,7 @@ class AIChatTabHelperUnitTest : public content::RenderViewHostTestHarness {
 
  protected:
   tabs::MockTabInterface tab_;
-  std::vector<content::WebContents*> delegates_created_for_;
+  std::vector<raw_ptr<content::WebContents>> delegates_created_for_;
 
  private:
   raw_ptr<content::WebContents> tab_contents_ = nullptr;
