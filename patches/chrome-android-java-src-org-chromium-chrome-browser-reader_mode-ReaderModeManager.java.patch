@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/reader_mode/ReaderModeManager.java b/chrome/android/java/src/org/chromium/chrome/browser/reader_mode/ReaderModeManager.java
+index 33f15e417a03fbce308fbe41b0959eb8f293f25a..a55b860f5c48900600e445a2bd2a1b718dc9d698 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/reader_mode/ReaderModeManager.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/reader_mode/ReaderModeManager.java
+@@ -224,7 +224,7 @@ public class ReaderModeManager extends TabWebContentsUserData
+     // Used to keep track of the browser theme.
+     private final NightModeStateProvider mNightModeStateProvider;
+ 
+-    private ReaderModeManager(
++    ReaderModeManager(
+             Tab tab, Supplier<@Nullable MessageDispatcher> messageDispatcherSupplier) {
+         super(tab);
+         mTab = tab;
