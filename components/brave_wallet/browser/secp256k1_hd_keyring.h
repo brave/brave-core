@@ -12,7 +12,6 @@
 
 #include "base/containers/flat_map.h"
 #include "base/containers/span.h"
-#include "base/gtest_prod_util.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
@@ -36,8 +35,6 @@ class Secp256k1HDKeyring {
   std::vector<std::string> GetImportedAccountsForTesting() const;
 
  protected:
-  FRIEND_TEST_ALL_PREFIXES(EthereumKeyringUnitTest, SignMessage);
-
   virtual std::string GetAddressInternal(const HDKey& hd_key) const = 0;
   virtual std::unique_ptr<HDKey> DeriveAccount(uint32_t index) const = 0;
 
