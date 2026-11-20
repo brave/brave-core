@@ -19,7 +19,7 @@
 #include "base/path_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace brave_history_embeddings {
+namespace passage_embeddings {
 
 namespace {
 
@@ -172,4 +172,4 @@ TEST(LitertModelRunnerTest, RunRejectsTokensThatDoNotFillTheWindow) {
   EXPECT_FALSE(runner->Run(tokens).has_value());
 }
 
-}  // namespace brave_history_embeddings
+}  // namespace passage_embeddings

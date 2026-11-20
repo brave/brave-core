@@ -14,10 +14,8 @@ class File;
 }  // namespace base
 
 namespace passage_embeddings {
-class PassageEmbedderExecutor;
-}  // namespace passage_embeddings
 
-namespace brave_history_embeddings {
+class PassageEmbedderExecutor;
 
 namespace {
 
@@ -52,7 +50,7 @@ MaybeCreateLitertExecutor(base::File& embeddings_model_file,
                           int pad_id,
                           int num_threads);
 
-}  // namespace brave_history_embeddings
+}  // namespace passage_embeddings
 #endif  // !BUILDFLAG(IS_IOS)
 
 // Injected at the top of PassageEmbedderImpl::BuildExecutionTask so
@@ -64,17 +62,17 @@ MaybeCreateLitertExecutor(base::File& embeddings_model_file,
 // The patch must keep this after executor_.reset(): the executor being replaced
 // borrows the cached runner that MaybeCreateLitertExecutor may free.
 #if !BUILDFLAG(IS_IOS)
-#define BRAVE_PASSAGE_EMBEDDER_IMPL_BUILD_EXECUTION_TASK                   \
-  if (std::unique_ptr<PassageEmbedderExecutor> executor =                  \
-          brave_history_embeddings::MaybeCreateLitertExecutor(             \
-              embeddings_model_file_, sp_processor_->bos_id(),             \
-              sp_processor_->eos_id(), sp_processor_->pad_id(),            \
-              brave_history_embeddings::NumThreadsForPriority(             \
-                  current_priority_, user_initiated_priority_num_threads_, \
-                  urgent_priority_num_threads_,                            \
-                  passive_priority_num_threads_))) {                       \
-    executor_ = std::move(executor);                                       \
-    return true;                                                           \
+#define BRAVE_PASSAGE_EMBEDDER_IMPL_BUILD_EXECUTION_TASK                  \
+  if (std::unique_ptr<PassageEmbedderExecutor> executor =                 \
+          MaybeCreateLitertExecutor(                                      \
+              embeddings_model_file_, sp_processor_->bos_id(),            \
+              sp_processor_->eos_id(), sp_processor_->pad_id(),           \
+              NumThreadsForPriority(current_priority_,                    \
+                                    user_initiated_priority_num_threads_, \
+                                    urgent_priority_num_threads_,         \
+                                    passive_priority_num_threads_))) {    \
+    executor_ = std::move(executor);                                      \
+    return true;                                                          \
   }
 #else
 #define BRAVE_PASSAGE_EMBEDDER_IMPL_BUILD_EXECUTION_TASK
