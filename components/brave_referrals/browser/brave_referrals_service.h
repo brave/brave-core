@@ -126,6 +126,8 @@ class BraveReferralsService {
   void OnReadPromoCodeComplete(const std::string& promo_code);
 
 #if BUILDFLAG(IS_ANDROID)
+  enum class AndroidConversionEvent { kFirstOpen, kSecondOpen };
+
   void InitAndroidReferrer();
   // Reports a "first_open" conversion right away when a gbraid is captured,
   // and stashes the gbraid so MaybeReportAndroidConversion() can report
@@ -136,9 +138,9 @@ class BraveReferralsService {
   // most once.
   void MaybeReportAndroidConversion();
   void ReportAndroidConversion(const std::string& gbraid,
-                               const std::string& app_event_name);
+                               AndroidConversionEvent event);
   std::string BuildConversionPayload(const std::string& gbraid,
-                                     const std::string& app_event_name) const;
+                                     AndroidConversionEvent event) const;
   void OnConversionLoadComplete(
       scoped_refptr<net::HttpResponseHeaders> headers);
   android_brave_referrer::BraveReferrer android_brave_referrer_;

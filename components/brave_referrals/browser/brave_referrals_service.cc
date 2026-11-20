@@ -82,12 +82,6 @@ constexpr int kMaxReferralServerResponseSizeBytes = 1024 * 1024;
 // run.
 constexpr char kDefaultPromoCode[] = "BRV001";
 
-#if BUILDFLAG(IS_ANDROID)
-// Event names reported to the conversion endpoint.
-constexpr char kAndroidFirstOpenEventName[] = "brave_first_open";
-constexpr char kAndroidSecondOpenEventName[] = "brave_second_open";
-#endif
-
 namespace brave {
 
 namespace {
@@ -683,7 +677,7 @@ void BraveReferralsService::OnAndroidBraveReferrerReady(
     // Google Ads can only optimize towards second_open (or later events) if
     // it has already seen a first_open, so report it immediately instead of
     // waiting for the second_open call on the next run.
-    ReportAndroidConversion(gbraid, kAndroidFirstOpenEventName);
+    ReportAndroidConversion(gbraid, AndroidConversionEvent::kFirstOpen);
   }
   task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE, base::BindOnce(&ReadPromoCode, GetPromoCodeFileName()),
@@ -703,12 +697,12 @@ void BraveReferralsService::MaybeReportAndroidConversion() {
   pref_service_->ClearPref(kReferralAndroidGbraid);
   pref_service_->CommitPendingWrite();
 
-  ReportAndroidConversion(gbraid, kAndroidSecondOpenEventName);
+  ReportAndroidConversion(gbraid, AndroidConversionEvent::kSecondOpen);
 }
 
 void BraveReferralsService::ReportAndroidConversion(
     const std::string& gbraid,
-    const std::string& app_event_name) {
+    AndroidConversionEvent event) {
   DCheckCurrentlyOnUIThread();
 
   if (!pref_service_->GetBoolean(kStatsReportingEnabled)) {
@@ -748,7 +742,7 @@ void BraveReferralsService::ReportAndroidConversion(
         })");
 
   const GURL conversion_url(BuildConversionEndpoint(kBraveConversionPath));
-  const std::string payload = BuildConversionPayload(gbraid, app_event_name);
+  const std::string payload = BuildConversionPayload(gbraid, event);
 
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->method = "POST";
@@ -778,12 +772,22 @@ void BraveReferralsService::OnConversionLoadComplete(
 
 std::string BraveReferralsService::BuildConversionPayload(
     const std::string& gbraid,
-    const std::string& app_event_name) const {
+    AndroidConversionEvent event) const {
   int32_t os_major = 0;
   int32_t os_minor = 0;
   int32_t os_bugfix = 0;
   base::SysInfo::OperatingSystemVersionNumbers(&os_major, &os_minor,
                                                &os_bugfix);
+
+  std::string app_event_name;
+  switch (event) {
+    case AndroidConversionEvent::kFirstOpen:
+      app_event_name = "brave_first_open";
+      break;
+    case AndroidConversionEvent::kSecondOpen:
+      app_event_name = "brave_second_open";
+      break;
+  }
 
   base::DictValue root;
   root.Set("app_event_name", app_event_name);
