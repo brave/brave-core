@@ -24,8 +24,6 @@ export function createVpnStore() {
       countryIsoCode: '',
       regionPrecision: '',
       cities: [],
-      latitude: 0,
-      longitude: 0,
       serverCount: 0,
       isAutomatic: false,
       smartRoutingProxyState: 'none',
