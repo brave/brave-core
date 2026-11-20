@@ -133,7 +133,7 @@ DebounceNavigationThrottle::MaybeRedirect() {
 
   // Do not debounce view-source: navigations. The user explicitly typed
   // "view-source:" to inspect the page source; silently stripping it and
-  // rendering the destination would be unexpected and incorrect behavior.
+  // Do not debounce view-source: navigations.
   // See https://github.com/brave/brave-browser/issues/60349
   if (entry && entry->IsViewSourceMode()) {
     return NavigationThrottle::PROCEED;
