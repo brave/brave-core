@@ -43,9 +43,6 @@ class BraveWalletProviderDelegateBridge
       mojom::CoinType type,
       const std::vector<std::string>& accounts) override;
   bool IsPermissionDenied(mojom::CoinType type) override;
-  void AddSolanaConnectedAccount(const std::string& account) override;
-  void RemoveSolanaConnectedAccount(const std::string& account) override;
-  bool IsSolanaAccountConnected(const std::string& account) override;
 };
 
 }  // namespace brave_wallet

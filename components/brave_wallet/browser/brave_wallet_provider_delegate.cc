@@ -7,9 +7,6 @@
 
 namespace brave_wallet {
 
-bool BraveWalletProviderDelegate::IsSolanaAccountConnected(
-    const std::string& account) {
-  return false;
-}
+BraveWalletProviderDelegate::~BraveWalletProviderDelegate() = default;
 
 }  // namespace brave_wallet
