@@ -26,6 +26,7 @@ import io
 import json
 import os
 import re
+import shlex
 import subprocess
 import sys
 import tempfile
@@ -1945,6 +1946,30 @@ class RebaseExecuteTest(unittest.TestCase):
         )
         return self.repo._run_git_command(
             ['rev-parse', 'HEAD'], self.repo.brave
+        )
+
+    def test_exec_command_runs_after_each_commit_and_its_fixups(self):
+        scenario = self._seed_bump_branch()
+        self._commit_fixup()
+        self._commit_with_file('Another brave-only feature.')
+        with tempfile.TemporaryDirectory() as log_dir:
+            log = Path(log_dir) / 'exec.log'
+
+            brockit.Rebase().execute(
+                from_ref=scenario['v101'],
+                to_ref=scenario['v102'],
+                exec_command=(
+                    f'git log -1 --format=%s >> {shlex.quote(str(log))}'
+                ),
+            )
+
+            self.assertEqual(
+                log.read_text(encoding='utf-8').splitlines(),
+                ['Add brave-only feature.txt', 'Another brave-only feature.'],
+            )
+        self.assertEqual(
+            self._git_log_subjects(scenario['v102'] + '..HEAD'),
+            ['Add brave-only feature.txt', 'Another brave-only feature.'],
         )
 
     def test_squash_minor_bumps_with_stacked_fixup_commits(self):

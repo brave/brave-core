@@ -2318,6 +2318,7 @@ class Rebase(Task):
         recommit: bool = False,
         discard_regen_changes: bool = False,
         squash_minor_bumps: bool = False,
+        exec_command: str | None = None,
         dry_run: bool = False,
     ) -> None:
         """Rebases the current branch onto the provided ref.
@@ -2352,6 +2353,10 @@ class Rebase(Task):
             squash_minor_bumps:
                 Squashes each pinned group of commits (e.g. the minor bumps)
                 into one, keeping the group's last commit message.
+            exec_command:
+                A shell command git runs after each commit is applied, with
+                what folds into it, as `git rebase --exec` does. A command
+                that fails stops the rebase, and is run again on `--continue`.
             dry_run:
                 Rebases nothing, and raises `RebaseNeededException` if the
                 rebase would change the branch.
@@ -2373,6 +2378,7 @@ class Rebase(Task):
                 recommit=recommit,
                 discard_regen_changes=discard_regen_changes,
                 squash_minor_bumps=squash_minor_bumps,
+                exec_command=exec_command,
             )
         self._continue(state, skip=skip)
         self._report(state)
@@ -2429,6 +2435,7 @@ class Rebase(Task):
         recommit: bool,
         discard_regen_changes: bool,
         squash_minor_bumps: bool,
+        exec_command: str | None,
     ) -> RebaseState:
         """Starts the rebase, which runs until git finishes or stops it.
 
@@ -2509,6 +2516,14 @@ class Rebase(Task):
             # re-parses git's backslash-separated todo path and mangles it.
             env["GIT_SEQUENCE_EDITOR"] = 'true'
 
+        exec_args = []
+        if exec_command is not None:
+            exec_args = [
+                '--exec',
+                exec_command,
+                '--reschedule-failed-exec',
+            ]
+
         try:
             # `interactive=True` as we may need to open an editor if
             # `EditorRecoverableFailure` is raised, so we can capture the pipes.
@@ -2527,6 +2542,7 @@ class Rebase(Task):
                     # would have squashed into it from folding into the
                     # commit before.
                     '--empty=stop',
+                    *exec_args,
                     '--onto',
                     to_ref,
                     from_ref,
