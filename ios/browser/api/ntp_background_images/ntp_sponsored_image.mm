@@ -60,7 +60,7 @@
 
 - (instancetype)initWithCampaign:
     (const ntp_background_images::Campaign&)campaign {
-  auto campaignId = base::SysUTF8ToNSString(campaign.campaign_id);
+  auto campaignId = base::SysUTF8ToNSString(campaign.id);
   auto backgrounds =
       [[NSMutableArray<NTPSponsoredImageBackground*> alloc] init];
   for (const auto& creative : campaign.creatives) {

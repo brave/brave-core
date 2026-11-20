@@ -88,7 +88,9 @@ struct Campaign {
 
   [[nodiscard]] bool IsValid() const;
 
-  std::string campaign_id;
+  std::string id;
+  brave_ads::mojom::NewTabPageAdCampaignType type =
+      brave_ads::mojom::NewTabPageAdCampaignType::kUndefined;
   std::vector<Creative> creatives;
 };
 

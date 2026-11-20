@@ -21,6 +21,7 @@ mojom::DBRowInfoPtr BuildCreativeNotificationAdRow(
     const std::string& creative_instance_id,
     const std::string& creative_set_id,
     const std::string& campaign_id,
+    const std::string& campaign_type,
     const std::string& metric_type,
     base::Time start_at,
     base::Time end_at,
@@ -48,6 +49,8 @@ mojom::DBRowInfoPtr BuildCreativeNotificationAdRow(
       mojom::DBColumnValueUnion::NewStringValue(creative_set_id));
   mojom_db_row->column_values_union.push_back(
       mojom::DBColumnValueUnion::NewStringValue(campaign_id));
+  mojom_db_row->column_values_union.push_back(
+      mojom::DBColumnValueUnion::NewStringValue(campaign_type));
   mojom_db_row->column_values_union.push_back(
       mojom::DBColumnValueUnion::NewStringValue(metric_type));
   mojom_db_row->column_values_union.push_back(
@@ -104,9 +107,9 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableUtilTest,
   const base::Time end_at = base::Time::FromSecondsSinceUnixEpoch(2'000'000.0);
   mojom::DBRowInfoPtr mojom_db_row = BuildCreativeNotificationAdRow(
       "creative-instance-id-foo", "creative-set-id-foo", "campaign-id-foo",
-      "disabled", start_at, end_at, /*daily_cap=*/10, "advertiser-id-foo",
-      /*priority=*/5, /*per_day=*/1, /*per_week=*/7, /*per_month=*/42,
-      /*total_max=*/100, /*value=*/0.05, "segment-foo", "US",
+      "paid", "disabled", start_at, end_at, /*daily_cap=*/10,
+      "advertiser-id-foo", /*priority=*/5, /*per_day=*/1, /*per_week=*/7,
+      /*per_month=*/42, /*total_max=*/100, /*value=*/0.05, "segment-foo", "US",
       "https://example.com", "Ad Title Foo", "Ad body foo.",
       /*pass_through_rate=*/0.5, "0123456", /*start_minute=*/0,
       /*end_minute=*/1439);
@@ -119,6 +122,7 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableUtilTest,
   EXPECT_EQ("creative-instance-id-foo", creative_ad.creative_instance_id);
   EXPECT_EQ("creative-set-id-foo", creative_ad.creative_set_id);
   EXPECT_EQ("campaign-id-foo", creative_ad.campaign_id);
+  EXPECT_EQ(mojom::NewTabPageAdCampaignType::kPaid, creative_ad.campaign_type);
   EXPECT_EQ(mojom::NewTabPageAdMetricType::kDisabled, creative_ad.metric_type);
   EXPECT_EQ(start_at, creative_ad.start_at);
   EXPECT_EQ(end_at, creative_ad.end_at);
@@ -151,9 +155,9 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableUtilTest,
       base::Time::FromSecondsSinceUnixEpoch(1'000'000.0);
   const base::Time end_at = base::Time::FromSecondsSinceUnixEpoch(2'000'000.0);
   mojom::DBRowInfoPtr mojom_db_row = BuildCreativeNotificationAdRow(
-      "foo", "bar", "baz", /*metric_type=*/"", start_at, end_at, 1, "qux", 1, 1,
-      7, 42, 100, 0.01, "untargeted", "US", "https://foo.com", "title", "body",
-      1.0, "0123456", 0, 1439);
+      "foo", "bar", "baz", "paid", /*metric_type=*/"", start_at, end_at, 1,
+      "qux", 1, 1, 7, 42, 100, 0.01, "untargeted", "US", "https://foo.com",
+      "title", "body", 1.0, "0123456", 0, 1439);
 
   // Act
   const CreativeNotificationAdInfo creative_ad =
@@ -161,6 +165,26 @@ TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableUtilTest,
 
   // Assert
   EXPECT_EQ(mojom::NewTabPageAdMetricType::kUndefined, creative_ad.metric_type);
+}
+
+TEST_F(BraveAdsCreativeNotificationAdsDatabaseTableUtilTest,
+       MapUnknownCampaignTypeAsUndefined) {
+  // Arrange
+  const base::Time start_at =
+      base::Time::FromSecondsSinceUnixEpoch(1'000'000.0);
+  const base::Time end_at = base::Time::FromSecondsSinceUnixEpoch(2'000'000.0);
+  mojom::DBRowInfoPtr mojom_db_row = BuildCreativeNotificationAdRow(
+      "foo", "bar", "baz", /*campaign_type=*/"", "confirmation", start_at,
+      end_at, 1, "qux", 1, 1, 7, 42, 100, 0.01, "untargeted", "US",
+      "https://foo.com", "title", "body", 1.0, "0123456", 0, 1439);
+
+  // Act
+  const CreativeNotificationAdInfo creative_ad =
+      CreativeNotificationAdFromMojomRow(mojom_db_row);
+
+  // Assert
+  EXPECT_EQ(mojom::NewTabPageAdCampaignType::kUndefined,
+            creative_ad.campaign_type);
 }
 
 }  // namespace brave_ads::database::table

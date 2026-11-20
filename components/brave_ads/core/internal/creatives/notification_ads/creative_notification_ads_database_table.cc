@@ -44,6 +44,7 @@ void BindColumnTypes(const mojom::DBActionInfoPtr& mojom_db_action) {
       mojom::DBBindColumnType::kString,  // creative_instance_id
       mojom::DBBindColumnType::kString,  // creative_set_id
       mojom::DBBindColumnType::kString,  // campaign_id
+      mojom::DBBindColumnType::kString,  // campaign_type
       mojom::DBBindColumnType::kString,  // metric_type
       mojom::DBBindColumnType::kTime,    // start_at
       mojom::DBBindColumnType::kTime,    // end_at
@@ -240,6 +241,7 @@ void CreativeNotificationAds::GetForSegments(
             creative_notification_ad.creative_instance_id,
             creative_notification_ad.creative_set_id,
             creative_notification_ad.campaign_id,
+            campaigns.type,
             campaigns.metric_type,
             campaigns.start_at,
             campaigns.end_at,
@@ -300,6 +302,7 @@ void CreativeNotificationAds::GetForActiveCampaigns(
             creative_notification_ad.creative_instance_id,
             creative_notification_ad.creative_set_id,
             creative_notification_ad.campaign_id,
+            campaigns.type,
             campaigns.metric_type,
             campaigns.start_at,
             campaigns.end_at,
@@ -349,6 +352,7 @@ void CreativeNotificationAds::GetAll(
             creative_notification_ad.creative_instance_id,
             creative_notification_ad.creative_set_id,
             creative_notification_ad.campaign_id,
+            campaigns.type,
             campaigns.metric_type,
             campaigns.start_at,
             campaigns.end_at,

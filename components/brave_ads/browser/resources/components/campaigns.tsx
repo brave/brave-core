@@ -229,6 +229,10 @@ function CampaignCard({ adFormat, campaign }: {
           <span className={status.className}>{status.label}</span>
         </div>
         <div>
+          <span>Type</span>
+          <span>{campaign['Type']}</span>
+        </div>
+        <div>
           <span>Metric Type</span>
           <span>{campaign['Metric Type']}</span>
         </div>

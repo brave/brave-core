@@ -123,6 +123,7 @@ export interface Campaign {
   'Priority': number
   'Pass Through Rate': number
   'Metric Type': string
+  'Type': string
   'Start At': number
   'End At': number
   'Geo Targets': string[]
