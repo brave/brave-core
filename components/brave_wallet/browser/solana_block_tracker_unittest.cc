@@ -7,11 +7,13 @@
 
 #include <memory>
 #include <string>
+#include <tuple>
 
 #include "base/scoped_observation.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
@@ -76,23 +78,18 @@ class SolanaBlockTrackerUnitTest : public testing::Test {
                               mojom::SolanaProviderError expected_error,
                               const std::string& expected_error_message) {
     SCOPED_TRACE(testing::Message() << location.ToString());
-    base::RunLoop run_loop;
+    base::test::TestFuture<std::string, uint64_t, mojom::SolanaProviderError,
+                           std::string>
+        future;
     tracker_->GetLatestBlockhash(
         chain_id,
-        base::BindLambdaForTesting([&](const std::string& latest_blockhash,
-                                       uint64_t last_valid_block_height,
-                                       mojom::SolanaProviderError error,
-                                       const std::string& error_message) {
-          EXPECT_EQ(error_message, expected_error_message);
-          ASSERT_EQ(error, expected_error);
-          EXPECT_EQ(latest_blockhash, expected_latest_blockhash);
-          EXPECT_EQ(last_valid_block_height, expected_last_valid_block_height);
-          EXPECT_EQ(error, expected_error);
-          EXPECT_EQ(error_message, expected_error_message);
-          run_loop.Quit();
-        }),
+        future.GetCallback<const std::string&, uint64_t,
+                           mojom::SolanaProviderError, const std::string&>(),
         try_cached_value);
-    run_loop.Run();
+    EXPECT_EQ(future.Take(),
+              std::make_tuple(expected_latest_blockhash,
+                              expected_last_valid_block_height, expected_error,
+                              expected_error_message));
   }
 
  protected:
