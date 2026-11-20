@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from collections.abc import Iterator
 from dataclasses import dataclass, field
+import os
 from pathlib import Path
 import subprocess
 import tempfile
@@ -26,6 +27,16 @@ from obsolete import (
     TestFilters,
     TestIndex,
 )
+
+
+def _git_env() -> dict[str, str]:
+    """Isolates git from the user's config, e.g. `tag.gpgsign` opening an
+    editor that hangs the test."""
+    return {
+        **os.environ,
+        'GIT_CONFIG_GLOBAL': os.devnull,
+        'GIT_CONFIG_NOSYSTEM': '1',
+    }
 
 
 class FakeGit:
@@ -705,6 +716,7 @@ class RemovedNamesTest(unittest.TestCase):
                     ],
                     check=True,
                     capture_output=True,
+                    env=_git_env(),
                 )
 
             for repo in (chromium, brave):
@@ -812,6 +824,7 @@ class RemovedNamesTest(unittest.TestCase):
                     ],
                     check=True,
                     capture_output=True,
+                    env=_git_env(),
                 )
 
             for repo in (chromium, brave):
