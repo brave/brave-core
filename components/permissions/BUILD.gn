@@ -8,6 +8,7 @@ source_set("unit_tests") {
 
   sources = [
     "permission_expirations_unittest.cc",
+    "permission_lifetime_manager_unittest.cc",
     "permissions_client_unittest.cc",
   ]
 
@@ -23,6 +24,7 @@ source_set("unit_tests") {
     "//components/pref_registry",
     "//components/prefs",
     "//components/sync_preferences:test_support",
+    "//testing/gmock",
     "//testing/gtest",
     "//url",
   ]
