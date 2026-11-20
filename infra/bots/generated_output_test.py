@@ -177,6 +177,31 @@ class GeneratedBuilderTest(unittest.TestCase):
         self.assertIn('gclient_config.custom_deps" is not an object', problem)
         self.assertIn('gclient_config.custom_vars" is not an object', problem)
 
+    def test_siso_settings_are_checked(self):
+        properties_json = testing_support.properties('b')
+        for siso, problem in (
+            ([], '"$brave_siso" is not an object'),
+            ({'remote_jobs': 0}, '"$brave_siso.remote_jobs" is not a positive'),
+            ({'reapi_priority': '2'}, '"$brave_siso.reapi_priority" is not'),
+            ({'project': 1}, '"$brave_siso.project" is not'),
+        ):
+            with self.subTest(siso=siso):
+                write_builder(
+                    self.output_dir,
+                    'b',
+                    properties_json={**properties_json, '$brave_siso': siso},
+                )
+                self.assertIn(problem, self._problems()[0])
+        write_builder(
+            self.output_dir,
+            'b',
+            properties_json={
+                **properties_json,
+                '$brave_siso': {'remote_jobs': 1440, 'reapi_priority': 2},
+            },
+        )
+        self.assertEqual(self._problems(), [])
+
     def test_spec_without_gclient_config(self):
         write_builder(
             self.output_dir,

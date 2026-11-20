@@ -735,6 +735,8 @@ class Builder:
         execution_timeout_mins: int | None,
         channel: str | None,
         notifies: Sequence[str],
+        siso_remote_jobs: int | None,
+        siso_reapi_priority: int | None,
         builder_spec: BuilderSpec,
         targets: Targets,
     ) -> None:
@@ -756,11 +758,34 @@ class Builder:
         # Who to notify on a build result worth telling someone about.
         self.notifies = tuple(notifies)
 
+        # How many jobs siso runs remotely at once, as upstream's
+        # `siso_remote_jobs`; siso's own limit when None.
+        self.siso_remote_jobs = _positive_int(
+            name, 'siso_remote_jobs', siso_remote_jobs
+        )
+
+        # The remote execution priority of the builder's actions; the
+        # service's default when None.
+        self.siso_reapi_priority = _positive_int(
+            name, 'siso_reapi_priority', siso_reapi_priority
+        )
+
         # This builder's `builder_config.builder_spec()`.
         self.builder_spec = builder_spec
 
         # This builder's `targets()`.
         self.targets = targets
+
+
+def _positive_int(builder_name: str, field: str, value: Any) -> int | None:
+    if value is not None and (
+        not isinstance(value, int) or isinstance(value, bool) or value < 1
+    ):
+        raise ConfigError(
+            'builder %r: %s must be a positive integer, got %r'
+            % (builder_name, field, value)
+        )
+    return value
 
 
 class BuildersRegistry:
@@ -785,6 +810,8 @@ class BuildersRegistry:
             execution_timeout_mins=None,
             channel=None,
             notifies=(),
+            siso_remote_jobs=None,
+            siso_reapi_priority=None,
         )
 
         # Name -> registered builder.
@@ -834,6 +861,8 @@ class BuildersRegistry:
         execution_timeout_mins: int | None = _UNSET,
         channel: str | None = _UNSET,
         notifies: Sequence[str] = _UNSET,
+        siso_remote_jobs: int | None = _UNSET,
+        siso_reapi_priority: int | None = _UNSET,
     ) -> Builder:
         """Defines a builder.
 
@@ -844,8 +873,9 @@ class BuildersRegistry:
             gn_args: The config name, or `gn_args.config()` called without
                 `name`, describing this builder's GN args.
             targets: This builder's `targets()`.
-            builder_group, recipe, execution_timeout_mins, channel, notifies:
-                Fall back to `defaults` when omitted.
+            builder_group, recipe, execution_timeout_mins, channel, notifies,
+            siso_remote_jobs, siso_reapi_priority: Fall back to `defaults`
+                when omitted.
 
         Returns:
             The registered `Builder`.
@@ -869,6 +899,12 @@ class BuildersRegistry:
             ),
             channel=self.defaults.get('channel', channel),
             notifies=self.defaults.get('notifies', notifies),
+            siso_remote_jobs=self.defaults.get(
+                'siso_remote_jobs', siso_remote_jobs
+            ),
+            siso_reapi_priority=self.defaults.get(
+                'siso_reapi_priority', siso_reapi_priority
+            ),
             builder_spec=builder_spec,
             targets=targets,
         )

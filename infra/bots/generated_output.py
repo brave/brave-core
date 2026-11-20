@@ -94,6 +94,17 @@ def _properties(builder) -> dict:
         },
         'builder_group': builder.builder_group,
     }
+    # Upstream's `$build/siso`, with the fields Brave's builders set.
+    siso = {
+        key: value
+        for key, value in (
+            ('remote_jobs', builder.siso_remote_jobs),
+            ('reapi_priority', builder.siso_reapi_priority),
+        )
+        if value is not None
+    }
+    if siso:
+        properties['$brave_siso'] = siso
     if builder.recipe:
         properties['recipe'] = builder.recipe
     return properties
@@ -303,6 +314,18 @@ class GeneratedBuilder:
                 for field in ('custom_deps', 'custom_vars')
                 if not isinstance(gclient_config.get(field), dict)
             )
+            siso = properties.get('$brave_siso', {})
+            if not isinstance(siso, dict):
+                problems.append('"$brave_siso" is not an object')
+            else:
+                problems.extend(
+                    '"$brave_siso.%s" is not a positive integer' % field
+                    for field, value in sorted(siso.items())
+                    if field not in ('remote_jobs', 'reapi_priority')
+                    or not isinstance(value, int)
+                    or isinstance(value, bool)
+                    or value < 1
+                )
             return problems
 
         return find(self._read_json('properties.json', check))

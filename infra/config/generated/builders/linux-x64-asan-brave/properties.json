@@ -1,4 +1,7 @@
 {
+  "$brave_siso": {
+    "remote_jobs": 1440
+  },
   "$brave_tests_builder_config": {
     "builder_config": {
       "builder_db": {
