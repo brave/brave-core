@@ -16,7 +16,6 @@
 #include "ios/web/public/js_messaging/web_frame.h"
 #include "ios/web/public/js_messaging/web_frames_manager.h"
 #include "ios/web/public/web_state.h"
-#include "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
 
 namespace {
 constexpr char kCookieControlJavaScriptFeatureKeyName[] =
@@ -28,13 +27,7 @@ CookieControlJavaScriptFeature::CookieControlJavaScriptFeature(
     ProfileIOS* profile)
     : JavaScriptFeature(web::ContentWorld::kPageContentWorld,
                         /*feature_scripts=*/{}),
-      profile_(profile) {
-  prefs_change_registrar_.Init(profile_->GetPrefs());
-  prefs_change_registrar_.Add(
-      prefs::kBlockAllCookiesEnabled,
-      base::BindRepeating(&CookieControlJavaScriptFeature::OnPrefUpdated,
-                          base::Unretained(this)));
-}
+      profile_(profile) {}
 
 CookieControlJavaScriptFeature::~CookieControlJavaScriptFeature() = default;
 
@@ -53,13 +46,6 @@ CookieControlJavaScriptFeature::FromBrowserState(
                                base::WrapUnique(feature));
   }
   return feature;
-}
-
-void CookieControlJavaScriptFeature::OnPrefUpdated() {
-  // Feature scripts must be explicitly updated after this pref changes.
-  web::WKWebViewConfigurationProvider& config_provider =
-      web::WKWebViewConfigurationProvider::FromBrowserState(profile_);
-  config_provider.UpdateScripts();
 }
 
 std::vector<web::JavaScriptFeature::FeatureScript>

@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Build the configuration of a web view without a WebState from a
+      provider of its own.
+
+      The WKWebViewConfigurationProvider now belongs to a WebState, so a web
+      view without one gets its configuration from a provider used only to
+      build it. The web view keeps the data store, the scripts, the WebUI
+      scheme handler and the content rule lists of the configuration. Script
+      messages are not handled without a WebState anyway.
+    count: 2 # BuildWKWebView and BuildWKWebViewForQueries.
+    regex:
+      re_pattern:
+        'WKWebViewConfigurationProvider& config_provider
+        =\n\s*WKWebViewConfigurationProvider::FromBrowserState\(browser_state\);'
+      replace: 'WKWebViewConfigurationProvider config_provider(browser_state);'

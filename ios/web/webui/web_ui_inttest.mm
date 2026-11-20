@@ -50,9 +50,7 @@ class TestWebClient : public web::FakeWebClient {
  public:
   // FakeWebClient::AddAdditionalSchemes() already registers
   // kChromeUIUntrustedScheme (see chromium_src/ios/web/public/test/fakes/
-  // fake_web_client.mm); registering it again here would make
-  // WKWebViewConfigurationProvider set a duplicate URL scheme handler and
-  // throw.
+  // fake_web_client.mm), so it is not registered again here.
   bool IsAppSpecificURL(const GURL& url) const override {
     return FakeWebClient::IsAppSpecificURL(url) ||
            url.SchemeIs(kChromeUIUntrustedScheme);

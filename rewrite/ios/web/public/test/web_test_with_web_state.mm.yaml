@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Define `OverrideJavaScriptFeatures`, moved from WebTest.
+    regex:
+      re_pattern: '(\nvoid WebTestWithWebState::TearDown\(\) \{\n.*?\n\}\n)'
+      re_flags: [DOTALL]
+      replace: |
+        \1
+        void WebTestWithWebState::OverrideJavaScriptFeatures(
+            std::vector<JavaScriptFeature*> features) {
+          web::test::OverrideJavaScriptFeatures(web_state(), features);
+        }

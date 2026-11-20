@@ -1,18 +1,41 @@
 diff --git a/ios/web/web_state/web_state_impl_realized_web_state.h b/ios/web/web_state/web_state_impl_realized_web_state.h
-index 04543cf99a4103cf360c063728ebefffaea63dbb..117702f4a12abf306a9b905ff72b324efeec3169 100644
+index 04543cf99a4103cf360c063728ebefffaea63dbb..8cd10dc7c9df189f97aea6a53045c126f0ece44f 100644
 --- a/ios/web/web_state/web_state_impl_realized_web_state.h
 +++ b/ios/web/web_state/web_state_impl_realized_web_state.h
-@@ -255,6 +255,9 @@ class WebStateImpl::RealizedWebState final : public NavigationManagerDelegate {
+@@ -18,6 +18,7 @@ class WebStateStorage;
+ }  // namespace proto
+ 
+ class WebUIIOS;
++class WKWebViewConfigurationProvider;
+ 
+ // Internal implementation of a realized WebStateImpl.
+ //
+@@ -255,6 +256,13 @@ class WebStateImpl::RealizedWebState final : public NavigationManagerDelegate {
    void UpdateSSLStatusForCurrentNavigationItem() override;
    GURL GetCurrentURL() const override;
  
 +  WebUIIOS* GetMainFrameWebUI();
 +  size_t GetWebUICountForTesting();
 +
++  // Returns the WKWebViewConfigurationProvider of the WebState, creating it
++  // if needed.
++  WKWebViewConfigurationProvider& GetWKWebViewConfigurationProvider();
++
   private:
    // Class storing metadata needed while the navigation history restoration
    // is in progress. The instance is deleted when the restoration completes.
-@@ -307,7 +310,8 @@ class WebStateImpl::RealizedWebState final : public NavigationManagerDelegate {
+@@ -295,6 +303,10 @@ class WebStateImpl::RealizedWebState final : public NavigationManagerDelegate {
+   // Stores whether the web state is currently loading a page.
+   bool is_loading_ = false;
+ 
++  // The WKWebViewConfigurationProvider of the WebState. Lazily created.
++  std::unique_ptr<WKWebViewConfigurationProvider>
++      web_view_configuration_provider_;
++
+   // The CRWWebController that backs this object.
+   CRWWebController* web_controller_ = nil;
+ 
+@@ -307,7 +319,8 @@ class WebStateImpl::RealizedWebState final : public NavigationManagerDelegate {
  
    // `WebUIIOS` object for the current page if it is a WebUI page that
    // uses the web-based WebUI framework, or nullptr otherwise.

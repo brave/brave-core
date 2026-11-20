@@ -1,0 +1,16 @@
+diff --git a/ios/web/public/test/web_test.mm b/ios/web/public/test/web_test.mm
+index f523d6f7913c70f63f7760df82ce0918a9c3add6..3c55dc99ef1881c8ed89de7c5d7a65f8329e5da2 100644
+--- a/ios/web/public/test/web_test.mm
++++ b/ios/web/public/test/web_test.mm
+@@ -66,11 +66,6 @@ std::unique_ptr<BrowserState> WebTest::CreateBrowserState() {
+   return std::make_unique<FakeBrowserState>();
+ }
+ 
+-void WebTest::OverrideJavaScriptFeatures(
+-    std::vector<JavaScriptFeature*> features) {
+-  web::test::OverrideJavaScriptFeatures(GetBrowserState(), features);
+-}
+-
+ web::WebClient* WebTest::GetWebClient() {
+   return web_client_.Get();
+ }

@@ -110,3 +110,110 @@ substitutions:
       pattern: |
         #include "base/callback_list.h"
       replace: ''
+
+  - description: |-
+      Make the provider belong to a single WebState instead of the
+      BrowserState.
+
+      Each WebState gets its own WKWebViewConfiguration and
+      WKUserContentController, so JavaScript features can be configured per
+      WebState. The provider is owned by the WebState rather than being
+      BrowserState user data.
+    regex:
+      re_pattern:
+        '// A provider class associated with a single web::BrowserState object\.
+        Manages\n// the lifetime and performs setup of WKWebViewConfiguration
+        and instances\. Not\n// thread safe\. Must be used only on the main
+        thread\.\nclass WKWebViewConfigurationProvider : public
+        base::SupportsUserData::Data \{\n
+        public:\n\s*~WKWebViewConfigurationProvider\(\) override;'
+      replace: |-
+        // A provider class associated with a single web::WebState object. Manages
+        // the lifetime and performs setup of WKWebViewConfiguration and instances. Not
+        // thread safe. Must be used only on the main thread.
+        class WKWebViewConfigurationProvider {
+         public:
+          explicit WKWebViewConfigurationProvider(BrowserState* browser_state);
+          ~WKWebViewConfigurationProvider();
+  - description: |-
+      Allow resetting the configuration with one derived from another
+      //ios/web managed WKWebView.
+
+      The configuration WebKit passes when a page opens a new window shares the
+      opener's WKUserContentController. As each WebState now has its own
+      provider, the reset gives the new WebState a WKUserContentController of
+      its own.
+    regex:
+      re_pattern:
+        '\n(\s*)// WARNING: This method should NOT be used\n.*?This method is
+        mainly used by\n\s*//
+        WKWebViewConfigurationProvider::GetWebViewConfiguration\(\)\.\n'
+      re_flags: [DOTALL]
+      replace: |
+
+        \1// `configuration` may be shared with other WKWebViews (e.g. it is derived
+        \1// from the opener's configuration when window.open() is called in a
+        \1// //ios/web managed WKWebView), so this WebState gets its own
+        \1// WKUserContentController and WKPreferences.
+
+  - description: Expose the manager configuring the WebState's features.
+    add_to_public:
+      class_name: WKWebViewConfigurationProvider
+      code: |-
+        // Returns the JavaScriptFeatureManager configuring the features of this
+        // provider's configuration.
+        JavaScriptFeatureManager* GetJavaScriptFeatureManager();
+
+  - description: |-
+      Drop the private BrowserState constructor, as the WebState now creates
+      the provider.
+    regex:
+      re_pattern:
+        '\n\s*explicit WKWebViewConfigurationProvider\(BrowserState\*
+        browser_state\);\n(\s*WKWebViewConfigurationProvider\(\) = delete;)'
+      replace: '\n\1'
+
+  - description: |-
+      Own the JavaScriptFeatureManager and web frames manager features of the
+      WebState.
+
+      They configure scripts and message handlers on this provider's
+      WKUserContentController, which is no longer shared by the BrowserState.
+    add_after_line:
+      line:
+        'std::unique_ptr<WKContentRuleListApplier> content_rule_list_applier_;'
+      code: |2-
+          std::vector<std::unique_ptr<WebFramesManagerJavaScriptFeature>>
+              web_frames_manager_features_;
+          // Declared after the features its content worlds refer to.
+          std::unique_ptr<JavaScriptFeatureManager> java_script_feature_manager_;
+
+  - description: Forward declare the types owned by the provider.
+    regex:
+      re_pattern: '(class BrowserState;\n)(class WKContentRuleListApplier;\n)'
+      replace: |-
+        \1class JavaScriptFeatureManager;
+        class WebFramesManagerJavaScriptFeature;
+        \2
+
+  - description: Include what the members above need.
+    regex:
+      re_pattern: '(#include <memory>\n)'
+      replace: |
+        \1#include <vector>
+
+  - description: Drop the include of the removed BrowserState user data base.
+    regex:
+      pattern: |
+        #include "base/supports_user_data.h"
+      replace: ''
+
+  - description: |-
+      Drop `FromBrowserState`, as each WebState now has its own provider.
+    regex:
+      re_pattern:
+        '\n\s*// Returns a provider for the given `browser_state`\. Lazily
+        attaches one if it\n.*?FromBrowserState\(\n\s*web::BrowserState\*
+        browser_state\);\n'
+      re_flags: [DOTALL]
+      replace: "\n"

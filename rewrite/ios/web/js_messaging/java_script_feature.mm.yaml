@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Look up the content world of a feature through the frame's WebState.
+
+      Each WebState has its own JavaScriptFeatureManager, configured on its own
+      WKUserContentController. A frame without a WebState (e.g. a fake frame in
+      tests) has no content worlds, so JavaScript can not be run in it.
+    count: 5 # Every JavaScriptFeature API running JavaScript in a frame.
+    regex:
+      re_pattern:
+        '(\n\s*)JavaScriptFeatureManager\* feature_manager
+        =\n\s*JavaScriptFeatureManager::FromBrowserState\(web_frame->GetBrowserState\(\)\);'
+      replace: |-
+        \1WebState* web_state = web_frame->GetWebFrameInternal()->GetWebState();
+          if (!web_state) {
+            return false;
+          }
+          JavaScriptFeatureManager* feature_manager =
+              JavaScriptFeatureManager::FromWebState(web_state);

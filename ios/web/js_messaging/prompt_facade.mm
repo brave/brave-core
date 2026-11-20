@@ -17,7 +17,6 @@
 #include "base/values.h"
 #include "ios/web/js_messaging/java_script_content_world.h"
 #include "ios/web/js_messaging/java_script_feature_manager.h"
-#include "ios/web/public/browser_state.h"
 #include "ios/web/public/js_messaging/java_script_feature.h"
 #include "ios/web/public/js_messaging/script_message.h"
 #include "ios/web/public/web_state.h"
@@ -36,11 +35,10 @@ constexpr char kMessageKey[] = "message";
 // handler name. Unfortunately prompts cannot supply their current content world
 // so we must check all of them.
 const JavaScriptFeature* GetFeatureReplyingToPrompts(
-    web::BrowserState* browser_state,
+    web::WebState* web_state,
     const std::string& handler_name) {
   std::vector<JavaScriptContentWorld*> worlds =
-      JavaScriptFeatureManager::FromBrowserState(browser_state)
-          ->GetAllContentWorlds();
+      JavaScriptFeatureManager::FromWebState(web_state)->GetAllContentWorlds();
   for (JavaScriptContentWorld* world : worlds) {
     if (const JavaScriptFeature* found =
             world->GetFeatureReplyingToPrompts(handler_name)) {
@@ -80,9 +78,8 @@ bool PromptFacade::HandleJavaScriptPrompt(
   // `WeakPtr` of `JavaScriptFeature` which removes the `const`. Since our code
   // is non-escaping though we don't need to make a `WeakPtr` so must
   // `const_cast`
-  JavaScriptFeature* feature =
-      const_cast<JavaScriptFeature*>(GetFeatureReplyingToPrompts(
-          web_state_->GetBrowserState(), *handler_name));
+  JavaScriptFeature* feature = const_cast<JavaScriptFeature*>(
+      GetFeatureReplyingToPrompts(web_state_, *handler_name));
 
   if (!feature || !feature->ShouldHandleMessageFromOrigin(security_origin)) {
     return false;

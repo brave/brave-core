@@ -16,7 +16,6 @@ source_set("media") {
     "//components/prefs",
     "//ios/chrome/browser/shared/model/profile",
     "//ios/web/public",
-    "//ios/web/web_state/ui:wk_web_view_configuration_provider_header",
   ]
   public_deps = [
     "//base",

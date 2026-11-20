@@ -1,16 +1,16 @@
 diff --git a/ios/web/browser_state_utils.mm b/ios/web/browser_state_utils.mm
-index 14135c9603cbe1e9003db339bd99b440b92cdcd5..2b794265bbf83a01357a49106fac2503d0327531 100644
+index 14135c9603cbe1e9003db339bd99b440b92cdcd5..8ddd5e1142ce7f1eea17801779ae1736537b34c5 100644
 --- a/ios/web/browser_state_utils.mm
 +++ b/ios/web/browser_state_utils.mm
-@@ -6,6 +6,7 @@
+@@ -6,16 +6,16 @@
  
  #import <WebKit/WebKit.h>
  
 +#import "brave/ios/web/web_state/ui/wk_web_view_shared_resources_provider.h"
  #import "ios/web/public/browser_state.h"
- #import "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
+-#import "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
  
-@@ -13,9 +14,9 @@ namespace web {
+ namespace web {
  
  WKWebsiteDataStore* GetDataStoreForBrowserState(BrowserState* browser_state) {
    CHECK(browser_state);
@@ -23,7 +23,7 @@ index 14135c9603cbe1e9003db339bd99b440b92cdcd5..2b794265bbf83a01357a49106fac2503
    CHECK(data_store);
    return data_store;
  }
-@@ -23,7 +24,7 @@ WKWebsiteDataStore* GetDataStoreForBrowserState(BrowserState* browser_state) {
+@@ -23,17 +23,12 @@ WKWebsiteDataStore* GetDataStoreForBrowserState(BrowserState* browser_state) {
  void RemoveDataStorageForIdentifier(
      const base::Uuid& uuid,
      base::OnceCallback<void(NSError*)> callback) {
@@ -32,3 +32,13 @@ index 14135c9603cbe1e9003db339bd99b440b92cdcd5..2b794265bbf83a01357a49106fac2503
        uuid, std::move(callback));
  }
  
+ void SetUniversalOptOutEnabled(BrowserState* browser_state, bool enabled) {
+   CHECK(browser_state);
+-  if (@available(iOS 27, *)) {
+-    WKWebViewConfigurationProvider& provider =
+-        WKWebViewConfigurationProvider::FromBrowserState(browser_state);
+-    provider.SetUniversalOptOutEnabled(enabled);
+-  }
+ }
+ 
+ }  // namespace web

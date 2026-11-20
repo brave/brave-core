@@ -23,8 +23,7 @@
 #include "ios/web/public/js_messaging/content_world.h"
 #include "ios/web/public/js_messaging/java_script_feature.h"
 #include "ios/web/public/js_messaging/script_message.h"
-#include "ios/web/public/test/fakes/fake_web_state.h"
-#include "ios/web/public/test/web_test.h"
+#include "ios/web/public/test/web_test_with_web_state.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -93,28 +92,24 @@ std::string BuildPromptJSON(std::optional<std::string> handler,
 
 }  // namespace
 
-class PromptFacadeTest : public WebTest {
+class PromptFacadeTest : public WebTestWithWebState {
  protected:
   void SetUp() override {
-    WebTest::SetUp();
+    WebTestWithWebState::SetUp();
 
     feature_ =
         std::make_unique<TestPromptFeature>(ContentWorld::kPageContentWorld);
-    JavaScriptFeatureManager::FromBrowserState(GetBrowserState())
+    JavaScriptFeatureManager::FromWebState(web_state())
         ->ConfigureFeatures([[WKUserContentController alloc] init],
                             {feature_.get()});
 
-    web_state_ = std::make_unique<FakeWebState>();
-    web_state_->SetBrowserState(GetBrowserState());
-
-    handler_ = std::make_unique<web::PromptFacade>(web_state_.get());
+    handler_ = std::make_unique<web::PromptFacade>(web_state());
   }
 
   void TearDown() override {
     handler_.reset();
-    web_state_.reset();
     feature_.reset();
-    WebTest::TearDown();
+    WebTestWithWebState::TearDown();
   }
 
   // Dispatches `prompt` and returns the JSON-encoded reply if a feature handled
@@ -146,7 +141,6 @@ class PromptFacadeTest : public WebTest {
   }
 
   std::unique_ptr<TestPromptFeature> feature_;
-  std::unique_ptr<FakeWebState> web_state_;
   std::unique_ptr<PromptFacade> handler_;
 };
 
@@ -199,7 +193,7 @@ TEST_F(PromptFacadeTest, ValidPromptDispatchesToFeature) {
   EXPECT_EQ("\"hello\"", *result);
 
   ASSERT_NE(nullptr, feature_->last_message());
-  EXPECT_EQ(web_state_.get(), feature_->last_web_state());
+  EXPECT_EQ(web_state(), feature_->last_web_state());
   EXPECT_TRUE(feature_->last_message()->is_main_frame());
   EXPECT_FALSE(feature_->last_message()->is_user_interacting());
   ASSERT_TRUE(feature_->last_message()->request_url().has_value());

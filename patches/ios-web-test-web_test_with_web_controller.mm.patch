@@ -1,0 +1,14 @@
+diff --git a/ios/web/test/web_test_with_web_controller.mm b/ios/web/test/web_test_with_web_controller.mm
+index f9c7c89844b3b729e8c9f88b4edacdb1c2178af0..64b60f0f8b748421af607d9f6af7416ae61cafd2 100644
+--- a/ios/web/test/web_test_with_web_controller.mm
++++ b/ios/web/test/web_test_with_web_controller.mm
+@@ -26,7 +26,8 @@ void WebTestWithWebController::SetUp() {
+   // triggering a crash on navigation. In Chrome, this happens in
+   // `WKWebViewConfigurationProvider::UpdateScripts`, but that method is often
+   // not called for tests using this fixture class due to fake and mock classes.
+-  WKWebViewConfigurationProvider::FromBrowserState(GetBrowserState())
++  WebStateImpl::FromWebState(web_state())
++      ->GetWKWebViewConfigurationProvider()
+       .GetWebViewConfiguration();
+ }
+ 

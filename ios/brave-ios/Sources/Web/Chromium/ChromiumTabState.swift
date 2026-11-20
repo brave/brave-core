@@ -359,6 +359,11 @@ class ChromiumTabState: TabState, TabStateImpl {
       // Set the UI delegate again after restoring as the act of restoring resets a lot of
       // CWVWebView state including the JavaScript dialog presenter
       webView.uiDelegate = uiHandler
+      if !FeatureList.kUseProfileWebViewConfiguration.enabled, webView.internalWebView != nil {
+        // Restoring replaces the underlying web view along with its WKUserContentController, so
+        // content scripts and their message handlers have to be set up again.
+        didCreateWebView()
+      }
     } catch {
       Logger.module.error("Failed to restore web view with session data: \(error)")
       isRestoring = false

@@ -309,6 +309,8 @@ class TabBrowserData: NSObject, TabObserver {
 private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply {
   fileprivate var helpers = [String: TabContentScript]()
   weak var tab: (any TabState)?
+  /// The controller the helpers' message handlers are registered on
+  private weak var userContentController: WKUserContentController?
 
   func uninstall(from tab: some TabState) {
     helpers.forEach {
@@ -339,6 +341,13 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply
     forTab tab: some TabState,
     contentWorld: WKContentWorld
   ) {
+    let userContentController = tab.configuration?.userContentController
+    if userContentController !== self.userContentController {
+      // The web view was replaced (e.g. when restoring the tab) along with its
+      // WKUserContentController, so the helpers registered on the previous one are added again
+      helpers.removeAll()
+      self.userContentController = userContentController
+    }
     if let _ = helpers[name] {
       assertionFailure("Duplicate helper added: \(name)")
     }
@@ -348,7 +357,7 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply
     // If this helper handles script messages, then get the handler name and register it. The Tab
     // receives all messages and then dispatches them to the right TabHelper.
     let scriptMessageHandlerName = type(of: helper).messageHandlerName
-    tab.configuration?.userContentController.addScriptMessageHandler(
+    userContentController?.addScriptMessageHandler(
       self,
       contentWorld: contentWorld,
       name: scriptMessageHandlerName

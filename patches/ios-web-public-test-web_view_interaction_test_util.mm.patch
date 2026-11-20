@@ -1,0 +1,25 @@
+diff --git a/ios/web/public/test/web_view_interaction_test_util.mm b/ios/web/public/test/web_view_interaction_test_util.mm
+index f0600cddd54307988e6529d1be36d0903d636051..fb6f3807613afaeb285e5f1eda0553242f3a61b5 100644
+--- a/ios/web/public/test/web_view_interaction_test_util.mm
++++ b/ios/web/public/test/web_view_interaction_test_util.mm
+@@ -163,8 +163,7 @@ std::unique_ptr<base::Value> CallJavaScriptFunctionForFeature(
+   JavaScriptContentWorld* world = nullptr;
+   if (feature) {
+     JavaScriptFeatureManager* feature_manager =
+-        JavaScriptFeatureManager::FromBrowserState(
+-            web_state->GetBrowserState());
++        JavaScriptFeatureManager::FromWebState(web_state);
+     world = feature_manager->GetContentWorldForFeature(feature);
+     if (!world) {
+       DLOG(ERROR) << "JavaScript can not be called in a null content world."
+@@ -175,8 +174,8 @@ std::unique_ptr<base::Value> CallJavaScriptFunctionForFeature(
+     frame = static_cast<WebFrameImpl*>(
+         web_state->GetWebFramesManager(content_world)->GetMainWebFrame());
+   } else {
+-    world = JavaScriptFeatureManager::GetContentWorldForBrowserState(
+-        ContentWorld::kPageContentWorld, web_state->GetBrowserState());
++    world = JavaScriptFeatureManager::GetContentWorldForWebState(
++        ContentWorld::kPageContentWorld, web_state);
+     frame = static_cast<WebFrameImpl*>(
+         web_state->GetPageWorldWebFramesManager()->GetMainWebFrame());
+   }

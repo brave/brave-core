@@ -12,3 +12,44 @@ substitutions:
     regex:
       pattern: 'CRWWKUIHandler alloc'
       replace: 'BraveCRWWKUIHandler alloc'
+
+  - description: |-
+      Use the WKWebViewConfigurationProvider of the WebState.
+
+      Each WebState has its own WKWebViewConfiguration and
+      WKUserContentController, so JavaScript features can be configured per
+      WebState.
+    regex:
+      re_pattern:
+        '// Returns the WKWebViewConfigurationProvider associated with the
+        web\n// controller''s BrowserState\.\n(-
+        \(web::WKWebViewConfigurationProvider&\)webViewConfigurationProvider
+        \{\n).*?\n\}\n'
+      re_flags: [DOTALL]
+      replace: |
+        // Returns the WKWebViewConfigurationProvider of the web controller's
+        // WebState.
+        \1  return self.webStateImpl->GetWKWebViewConfigurationProvider();
+        }
+
+  - description: |-
+      Create the web view of a window opened by a page from the new WebState's
+      own configuration.
+
+      WebKit derives `configuration` from the opener's, sharing its
+      WKUserContentController. Resetting the new WebState's provider with it
+      gives the new WebState its own WKUserContentController, configured with
+      its own JavaScript features.
+    regex:
+      re_pattern:
+        'CRWWebController\* webController
+        =\n\s*web::WebStateImpl::FromWebState\(webState\)->GetWebController\(\);\n(\s*DCHECK\(!webController
+        \|\| webState->HasOpener\(\)\);\n)\n(\s*)\[webController
+        ensureWebViewCreatedWithConfiguration:configuration\];'
+      replace: |-
+        web::WebStateImpl* webStateImpl = web::WebStateImpl::FromWebState(webState);
+        \2CRWWebController* webController = webStateImpl->GetWebController();
+        \1
+        \2webStateImpl->GetWKWebViewConfigurationProvider()
+        \2    .ResetWithWebViewConfiguration(configuration);
+        \2[webController ensureWebViewCreated];

@@ -1,0 +1,29 @@
+diff --git a/ios/web/web_view_only/wk_web_view_configuration_util.mm b/ios/web/web_view_only/wk_web_view_configuration_util.mm
+index 86ac21fcd7e93558b241a8229dac0875dd9f0168..d587eabf8f633b12891feb6421de3ff7ecd79968 100644
+--- a/ios/web/web_view_only/wk_web_view_configuration_util.mm
++++ b/ios/web/web_view_only/wk_web_view_configuration_util.mm
+@@ -6,6 +6,7 @@
+ 
+ #import <WebKit/WebKit.h>
+ 
++#import "brave/ios/web/web_state/ui/wk_web_view_shared_resources_provider.h"
+ #import "ios/web/web_state/ui/crw_web_controller.h"
+ #import "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
+ #import "ios/web/web_state/web_state_impl.h"
+@@ -16,11 +17,14 @@ WKWebView* EnsureWebViewCreatedWithConfiguration(
+     WebState* web_state,
+     WKWebViewConfiguration* configuration) {
+   WebStateImpl* impl = WebStateImpl::FromWebState(web_state);
+-  BrowserState* browser_state = impl->GetBrowserState();
+   CRWWebController* web_controller = impl->GetWebController();
+ 
+   WKWebViewConfigurationProvider& provider =
+-      WKWebViewConfigurationProvider::FromBrowserState(browser_state);
++      impl->GetWKWebViewConfigurationProvider();
++  if (configuration) {
++    WKWebViewSharedResourcesProvider::FromBrowserState(impl->GetBrowserState())
++        .SetExternalConfiguration(configuration);
++  }
+   provider.ResetWithWebViewConfiguration(configuration);
+ 
+   // `web_controller` will get the `configuration` from the `provider` to create

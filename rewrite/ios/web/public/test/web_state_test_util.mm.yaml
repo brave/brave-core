@@ -1,0 +1,13 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Add the content rule list to the WebState's own configuration.
+
+      Each WebState has its own WKWebViewConfigurationProvider.
+    regex:
+      re_pattern: 'web::WKWebViewConfigurationProvider::FromBrowserState\(\n(\s*)web_state->GetBrowserState\(\)\);'
+      replace: 'web::WebStateImpl::FromWebState(web_state)\n\1->GetWKWebViewConfigurationProvider();'

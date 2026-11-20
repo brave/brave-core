@@ -32,8 +32,4 @@ void WebClient::DidResetConfiguration(web::BrowserState* browser_state,
   // Will be handled in BraveWebClient
 }
 
-bool WebClient::UseProfileWebViewConfigurationEnabled() {
-  return false;
-}
-
 }  // namespace web

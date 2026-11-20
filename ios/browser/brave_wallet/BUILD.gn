@@ -49,11 +49,11 @@ source_set("brave_wallet") {
     "//ios/chrome/browser/shared/model/profile",
     "//ios/chrome/browser/shared/model/profile:profile_keyed_service_factory",
     "//ios/components/webui:url_constants",
+    "//ios/web/common:web_view_creation_util",
     "//ios/web/public",
     "//ios/web/public/security",
     "//ios/web/public/thread",
     "//ios/web/public/webui",
-    "//ios/web/web_state/ui:wk_web_view_configuration_provider",
     "//mojo/public/cpp/bindings",
     "//services/network/public/cpp",
   ]

@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Drop the BrowserState, only used to update the scripts of its
+      configuration.
+
+      Each WebState now configures the scripts when its web view is created.
+    regex:
+      re_pattern:
+        '\n\s*// The browser state associated with this
+        feature\.\n\s*web::BrowserState\* browser_state_;\n'
+      replace: "\n"

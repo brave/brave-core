@@ -1,0 +1,34 @@
+diff --git a/ios/web_view/internal/js_messaging/web_view_scripts_java_script_feature.mm b/ios/web_view/internal/js_messaging/web_view_scripts_java_script_feature.mm
+index 94dca324add558c9c1d250250415017e89ea7d98..6679a7e0262c7aceafed6ff320506c55b88c509f 100644
+--- a/ios/web_view/internal/js_messaging/web_view_scripts_java_script_feature.mm
++++ b/ios/web_view/internal/js_messaging/web_view_scripts_java_script_feature.mm
+@@ -5,7 +5,6 @@
+ #import "ios/web_view/internal/js_messaging/web_view_scripts_java_script_feature.h"
+ 
+ #import "ios/web/public/browser_state.h"
+-#import "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
+ 
+ namespace {
+ 
+@@ -17,8 +16,7 @@ const char kWebViewScriptsJavaScriptFeatureKeyName[] =
+ WebViewScriptsJavaScriptFeature::WebViewScriptsJavaScriptFeature(
+     web::BrowserState* browser_state)
+     : web::JavaScriptFeature(web::ContentWorld::kPageContentWorld,
+-                             /*feature_scripts=*/{}),
+-      browser_state_(browser_state) {}
++                             /*feature_scripts=*/{}) {}
+ WebViewScriptsJavaScriptFeature::~WebViewScriptsJavaScriptFeature() = default;
+ 
+ // static
+@@ -47,11 +45,6 @@ void WebViewScriptsJavaScriptFeature::SetScripts(
+   main_frame_script_ = main_frame_script;
+   all_frames_script_doc_end_ = all_frames_script_doc_end;
+   main_frame_script_doc_end_ = main_frame_script_doc_end;
+-
+-  // Feature scripts must be explicitly updated after they change.
+-  web::WKWebViewConfigurationProvider& config_provider =
+-      web::WKWebViewConfigurationProvider::FromBrowserState(browser_state_);
+-  config_provider.UpdateScripts();
+ }
+ 
+ std::vector<WebViewScriptsJavaScriptFeature::FeatureScript>

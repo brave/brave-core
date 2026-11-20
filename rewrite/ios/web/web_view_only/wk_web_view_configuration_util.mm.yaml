@@ -1,0 +1,43 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Reset the configuration of the WebState's own
+      WKWebViewConfigurationProvider.
+
+      Each WebState has its own WKWebViewConfiguration, so the configuration
+      only applies to `web_state`, instead of every WebState of the
+      BrowserState.
+    regex:
+      re_pattern:
+        '\n\s*BrowserState\* browser_state =
+        impl->GetBrowserState\(\);\n(.*?)(\s*)WKWebViewConfigurationProvider::FromBrowserState\(browser_state\);'
+      re_flags: [DOTALL]
+      replace: '\n\1\2impl->GetWKWebViewConfigurationProvider();'
+
+  - description: |-
+      Derive the configuration of WebStates created without one from
+      `configuration`.
+
+      A WebState can create its web view before it is given a configuration,
+      e.g. when restoring its session, as it is created. A configuration not
+      originating from //ios/web is then still applied to it, like it was when
+      the BrowserState's WebStates shared a configuration.
+    regex:
+      re_pattern: '\n(\s*)(provider\.ResetWithWebViewConfiguration\(configuration\);\n)'
+      replace: |-
+
+        \1if (configuration) {
+        \1  WKWebViewSharedResourcesProvider::FromBrowserState(impl->GetBrowserState())
+        \1      .SetExternalConfiguration(configuration);
+        \1}
+        \1\2
+  - description: Include the provider of the BrowserState's shared resources.
+    add_before_line:
+      line: '#import "ios/web/web_state/ui/crw_web_controller.h"'
+      code:
+        '#import
+        "brave/ios/web/web_state/ui/wk_web_view_shared_resources_provider.h"'

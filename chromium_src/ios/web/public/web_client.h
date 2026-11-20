@@ -23,13 +23,10 @@ class WebState;
 // called from BraveCRWWKNavigationHandler
 // to allow us to implement a Brave specific features during web navigation
 //
-// `DidResetConfiguration` will be called from
-// `BraveWKWebViewConfigurationProvider` to allow us to do some post-reset setup
-// for Brave-specific configuration updates. This additional method will be
-// removed in the future
-//
-// `UseProfileWebViewConfigurationEnabled` returns whether or not web views
-// should use the profile's WKWebViewConfiguration
+// `DidResetConfiguration` will be called after
+// `WKWebViewConfigurationProvider::ResetWithWebViewConfiguration` to allow us
+// to do some post-reset setup for Brave-specific configuration updates. This
+// additional method will be removed in the future
 #define IsBrowserLockdownModeEnabled                                           \
   ShouldBlockJavaScript(web::WebState* web_state, NSURLRequest* request);      \
   virtual NSString* GetUserAgentForRequest(web::WebState* web_state,           \
@@ -41,7 +38,6 @@ class WebState;
       web::BrowserState* browser_state);                                       \
   virtual void DidResetConfiguration(web::BrowserState* browser_state,         \
                                      WKWebViewConfiguration* configuration);   \
-  virtual bool UseProfileWebViewConfigurationEnabled();                        \
   virtual bool IsBrowserLockdownModeEnabled
 #include <ios/web/public/web_client.h>  // IWYU pragma: export
 #undef IsBrowserLockdownModeEnabled

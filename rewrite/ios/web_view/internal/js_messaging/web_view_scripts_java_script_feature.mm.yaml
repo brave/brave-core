@@ -1,0 +1,32 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Stop updating the scripts of a BrowserState-wide configuration.
+
+      Each WebState now has its own WKWebViewConfigurationProvider, which
+      configures the scripts when its web view is created, so the scripts set
+      here only apply to WebStates created afterwards. Brave does not use
+      CWVUserContentController.
+    regex:
+      re_pattern:
+        '\n\n\s*// Feature scripts must be explicitly updated after they
+        change\.\n.*?config_provider\.UpdateScripts\(\);\n'
+      re_flags: [DOTALL]
+      replace: "\n"
+
+  - description: Drop the include only the scripts update used.
+    regex:
+      pattern: |
+        #import "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
+      replace: ''
+
+  - description: Drop the initialization of the removed BrowserState member.
+    regex:
+      re_pattern:
+        '(/\*feature_scripts=\*/\{\}\)),\n\s*browser_state_\(browser_state\)
+        \{\}'
+      replace: '\1 {}'

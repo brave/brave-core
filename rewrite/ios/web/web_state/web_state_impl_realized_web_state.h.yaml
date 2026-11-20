@@ -26,3 +26,33 @@ substitutions:
       replace: |-
         \1  // There is one per host.
           std::map<std::string, std::unique_ptr<WebUIIOS>, std::less<>> web_uis_;
+
+  - description: |-
+      Expose the WKWebViewConfigurationProvider of the WebState.
+
+      Each WebState has its own WKWebViewConfiguration and
+      WKUserContentController, so JavaScript features can be configured per
+      WebState.
+    add_to_public:
+      class_name: WebStateImpl::RealizedWebState
+      code: |-
+        // Returns the WKWebViewConfigurationProvider of the WebState, creating it
+        // if needed.
+        WKWebViewConfigurationProvider& GetWKWebViewConfigurationProvider();
+
+  - description: |-
+      Own the WKWebViewConfigurationProvider of the WebState.
+
+      Declared before `web_controller_`, so that it is destroyed after the
+      CRWWebController using it.
+    add_before_line:
+      line: '// The CRWWebController that backs this object.'
+      code: |2
+          // The WKWebViewConfigurationProvider of the WebState. Lazily created.
+          std::unique_ptr<WKWebViewConfigurationProvider>
+              web_view_configuration_provider_;
+
+  - description: Forward declare the provider owned by the WebState.
+    add_after_line:
+      line: 'class WebUIIOS;'
+      code: 'class WKWebViewConfigurationProvider;'

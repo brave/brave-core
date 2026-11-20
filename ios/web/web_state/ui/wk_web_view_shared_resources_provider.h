@@ -17,6 +17,7 @@
 #include "base/sequence_checker.h"
 #include "base/supports_user_data.h"
 
+@class WKWebViewConfiguration;
 @class WKWebsiteDataStore;
 
 namespace base {
@@ -67,13 +68,18 @@ class WKWebViewSharedResourcesProvider : public base::SupportsUserData::Data {
   WKWebsiteDataStore* GetWebsiteDataStore();
 
   // Replaces the data store with `data_store`, which comes from a
-  // WKWebViewConfiguration not originating from //ios/web. `data_store` must
-  // not be nil. Notifies the registered callbacks if the data store changes.
+  // WKWebViewConfiguration not originating from //ios/web. It is used by every
+  // WebState of the BrowserState created afterwards. `data_store` must not be
+  // nil. Notifies the registered callbacks if the data store changes.
   void SetExternalWebsiteDataStore(WKWebsiteDataStore* data_store);
 
-  // Drops the data store set by `SetExternalWebsiteDataStore`, if any, so that
-  // the //ios/web data store of the BrowserState is used again.
-  void ResetExternalWebsiteDataStore();
+  // Sets `configuration`, which does not originate from //ios/web, as the one
+  // WebStates of the BrowserState created afterwards derive their configuration
+  // from when they are not given one. `configuration` must not be nil.
+  void SetExternalConfiguration(WKWebViewConfiguration* configuration);
+
+  // Returns the configuration set by `SetExternalConfiguration`, or nil.
+  WKWebViewConfiguration* GetExternalConfiguration();
 
   // Registers `callback` to be invoked when the website data store is updated.
   base::CallbackListSubscription RegisterWebSiteDataStoreUpdatedCallback(
@@ -103,10 +109,7 @@ class WKWebViewSharedResourcesProvider : public base::SupportsUserData::Data {
 
   raw_ptr<BrowserState> browser_state_;
   WKWebsiteDataStore* website_data_store_ = nil;
-
-  // Whether `website_data_store_` originated from //ios/web, rather than a
-  // WKWebViewConfiguration passed to //ios/web from outside of it.
-  bool is_data_store_originated_from_ios_web_ = true;
+  WKWebViewConfiguration* external_configuration_ = nil;
 
   WebSiteDataStoreUpdatedCallbackList website_data_store_updated_callbacks_;
 

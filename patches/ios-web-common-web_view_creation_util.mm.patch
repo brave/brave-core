@@ -1,0 +1,24 @@
+diff --git a/ios/web/common/web_view_creation_util.mm b/ios/web/common/web_view_creation_util.mm
+index 7cbfb42af2c7e90294a4be4996566af319aabadc..6c63fafa5d96c51cd22b41e81a1ddf90c547a1e4 100644
+--- a/ios/web/common/web_view_creation_util.mm
++++ b/ios/web/common/web_view_creation_util.mm
+@@ -17,8 +17,7 @@ namespace web {
+ WKWebView* BuildWKWebView(CGRect frame, BrowserState* browser_state) {
+   DCHECK(browser_state);
+ 
+-  WKWebViewConfigurationProvider& config_provider =
+-      WKWebViewConfigurationProvider::FromBrowserState(browser_state);
++  WKWebViewConfigurationProvider config_provider(browser_state);
+   return BuildWKWebView(frame, config_provider.GetWebViewConfiguration(),
+                         browser_state, UserAgentType::MOBILE, nil, nil, nil);
+ }
+@@ -26,8 +25,7 @@ WKWebView* BuildWKWebView(CGRect frame, BrowserState* browser_state) {
+ WKWebView* BuildWKWebViewForQueries(BrowserState* browser_state) {
+   DCHECK(browser_state);
+ 
+-  WKWebViewConfigurationProvider& config_provider =
+-      WKWebViewConfigurationProvider::FromBrowserState(browser_state);
++  WKWebViewConfigurationProvider config_provider(browser_state);
+   return BuildWKWebViewForQueries(config_provider.GetWebViewConfiguration(),
+                                   browser_state);
+ }

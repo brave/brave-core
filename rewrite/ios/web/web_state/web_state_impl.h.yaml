@@ -17,6 +17,24 @@ substitutions:
         size_t GetWebUICountForTesting();
 
   - description: |-
+      Expose the WKWebViewConfigurationProvider of the WebState.
+
+      Each WebState has its own WKWebViewConfiguration and
+      WKUserContentController, so JavaScript features can be configured per
+      WebState.
+    add_after_line:
+      line: 'WebFramesManagerImpl& GetWebFramesManagerImpl(ContentWorld world);'
+      code: |2-
+
+          // Returns the WKWebViewConfigurationProvider of this WebState.
+          WKWebViewConfigurationProvider& GetWKWebViewConfigurationProvider();
+
+  - description: Forward declare the provider returned above.
+    add_after_line:
+      line: 'class WebTestWithWebStateImpl;'
+      code: 'class WKWebViewConfigurationProvider;'
+
+  - description: |-
       Forward declare the types the substitutions above use
 
       For the main frame WebUI accessor added above.

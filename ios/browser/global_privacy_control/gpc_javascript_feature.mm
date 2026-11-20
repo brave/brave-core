@@ -5,13 +5,13 @@
 
 #include "brave/ios/browser/global_privacy_control/gpc_javascript_feature.h"
 
+#include "base/functional/bind.h"
 #include "brave/components/global_privacy_control/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/web/public/browser_state.h"
 #include "ios/web/public/js_messaging/java_script_feature.h"
 #include "ios/web/public/js_messaging/web_frame.h"
-#include "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
 
 namespace {
 constexpr char kGPCJavaScriptFeatureKeyName[] = "gpc_java_script_feature";
@@ -21,13 +21,7 @@ constexpr char kScriptName[] = "gpc";
 GPCJavaScriptFeature::GPCJavaScriptFeature(ProfileIOS* profile)
     : JavaScriptFeature(web::ContentWorld::kPageContentWorld,
                         /*feature_scripts=*/{}),
-      profile_(profile) {
-  prefs_change_registrar_.Init(profile_->GetPrefs());
-  prefs_change_registrar_.Add(
-      global_privacy_control::kGlobalPrivacyControlEnabled,
-      base::BindRepeating(&GPCJavaScriptFeature::GPCPrefUpdated,
-                          base::Unretained(this)));
-}
+      profile_(profile) {}
 
 GPCJavaScriptFeature::~GPCJavaScriptFeature() = default;
 
@@ -45,13 +39,6 @@ GPCJavaScriptFeature* GPCJavaScriptFeature::FromBrowserState(
                                base::WrapUnique(feature));
   }
   return feature;
-}
-
-void GPCJavaScriptFeature::GPCPrefUpdated() {
-  // Feature scripts must be explicitly updated after this pref changes.
-  web::WKWebViewConfigurationProvider& config_provider =
-      web::WKWebViewConfigurationProvider::FromBrowserState(profile_);
-  config_provider.UpdateScripts();
 }
 
 std::vector<web::JavaScriptFeature::FeatureScript>

@@ -1,0 +1,14 @@
+diff --git a/ios/web_view/internal/js_messaging/web_view_scripts_java_script_feature.h b/ios/web_view/internal/js_messaging/web_view_scripts_java_script_feature.h
+index 1c5b7c73f1b5e58e58909de9df0b60b09e55ed2c..a4fa2af1fb3eb1e73f8d24ab057dd7d930f7feaa 100644
+--- a/ios/web_view/internal/js_messaging/web_view_scripts_java_script_feature.h
++++ b/ios/web_view/internal/js_messaging/web_view_scripts_java_script_feature.h
+@@ -39,9 +39,6 @@ class WebViewScriptsJavaScriptFeature : public base::SupportsUserData::Data,
+  private:
+   std::vector<FeatureScript> GetScripts() const override;
+ 
+-  // The browser state associated with this feature.
+-  web::BrowserState* browser_state_;
+-
+   std::optional<std::string> all_frames_script_;
+   std::optional<std::string> main_frame_script_;
+   std::optional<std::string> all_frames_script_doc_end_;

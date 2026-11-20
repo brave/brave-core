@@ -158,7 +158,6 @@ WKWebsiteDataStore* WKWebViewSharedResourcesProvider::GetWebsiteDataStore() {
   if (website_data_store_ == nil) {
     website_data_store_ = [WKWebsiteDataStore defaultDataStore];
   }
-  is_data_store_originated_from_ios_web_ = true;
 
   // Workaround to force the creation of the WKWebsiteDataStore.
   NSSet* data_types = [NSSet setWithObject:WKWebsiteDataTypeCookies];
@@ -175,7 +174,6 @@ void WKWebViewSharedResourcesProvider::SetExternalWebsiteDataStore(
     WKWebsiteDataStore* data_store) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(data_store);
-  is_data_store_originated_from_ios_web_ = false;
   if (website_data_store_ == data_store) {
     return;
   }
@@ -183,11 +181,19 @@ void WKWebViewSharedResourcesProvider::SetExternalWebsiteDataStore(
   website_data_store_updated_callbacks_.Notify(website_data_store_);
 }
 
-void WKWebViewSharedResourcesProvider::ResetExternalWebsiteDataStore() {
+void WKWebViewSharedResourcesProvider::SetExternalConfiguration(
+    WKWebViewConfiguration* configuration) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (website_data_store_ && !is_data_store_originated_from_ios_web_) {
-    website_data_store_ = nil;
-  }
+  CHECK(configuration);
+  // Copied, so later changes to `configuration` don't apply to the WebStates
+  // derived from it.
+  external_configuration_ = [configuration copy];
+}
+
+WKWebViewConfiguration*
+WKWebViewSharedResourcesProvider::GetExternalConfiguration() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  return external_configuration_;
 }
 
 base::CallbackListSubscription

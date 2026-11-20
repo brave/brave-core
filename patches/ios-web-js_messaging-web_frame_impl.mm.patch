@@ -1,5 +1,5 @@
 diff --git a/ios/web/js_messaging/web_frame_impl.mm b/ios/web/js_messaging/web_frame_impl.mm
-index cdfdc48cc8229f3ea4322b61d335ada10cc93667..d4e2833de778f5374090e7961eeb6d29dabaacb8 100644
+index cdfdc48cc8229f3ea4322b61d335ada10cc93667..67ca4944fcdc6f191f0e75d6ebafa2d3418ab383 100644
 --- a/ios/web/js_messaging/web_frame_impl.mm
 +++ b/ios/web/js_messaging/web_frame_impl.mm
 @@ -257,6 +257,11 @@ BrowserState* WebFrameImpl::GetBrowserState() {
@@ -7,8 +7,8 @@ index cdfdc48cc8229f3ea4322b61d335ada10cc93667..d4e2833de778f5374090e7961eeb6d29
  }
  
 +JavaScriptContentWorld* WebFrameImpl::ContentWorldForFrame() {
-+  return JavaScriptFeatureManager::GetContentWorldForBrowserState(
-+      content_world_, GetBrowserState());
++  return JavaScriptFeatureManager::GetContentWorldForWebState(
++      content_world_, GetWebState());
 +}
 +
  bool WebFrameImpl::CallJavaScriptFunctionInContentWorld(

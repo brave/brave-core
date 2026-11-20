@@ -1,5 +1,5 @@
 diff --git a/ios/web/web_state/ui/wk_web_view_configuration_provider.mm b/ios/web/web_state/ui/wk_web_view_configuration_provider.mm
-index 72bca8d629dde292de0bc64f2f9a0ae4335d5a3e..c47419b70577da9edb0a43252855b0345f5fda2a 100644
+index 72bca8d629dde292de0bc64f2f9a0ae4335d5a3e..fd8528302e891abab793e885e959b1cd87025d80 100644
 --- a/ios/web/web_state/ui/wk_web_view_configuration_provider.mm
 +++ b/ios/web/web_state/ui/wk_web_view_configuration_provider.mm
 @@ -21,6 +21,8 @@
@@ -11,7 +11,7 @@ index 72bca8d629dde292de0bc64f2f9a0ae4335d5a3e..c47419b70577da9edb0a43252855b034
  #import "components/safe_browsing/core/common/features.h"
  #import "ios/public/provider/web/cobalt_api.h"
  #import "ios/web/common/features.h"
-@@ -30,8 +32,6 @@
+@@ -30,75 +32,10 @@
  #import "ios/web/js_messaging/web_frames_manager_java_script_feature.h"
  #import "ios/web/public/browser_state.h"
  #import "ios/web/public/web_client.h"
@@ -20,10 +20,13 @@ index 72bca8d629dde292de0bc64f2f9a0ae4335d5a3e..c47419b70577da9edb0a43252855b034
  #import "ios/web/webui/crw_web_ui_scheme_handler.h"
  
  namespace web {
-@@ -42,18 +42,6 @@ namespace {
- constexpr char kWKWebViewConfigProviderKeyName[] =
-     "wk_web_view_config_provider";
  
+-namespace {
+-
+-// A key used to associate a WKWebViewConfigurationProvider with a BrowserState.
+-constexpr char kWKWebViewConfigProviderKeyName[] =
+-    "wk_web_view_config_provider";
+-
 -// Converts `uuid` to an NSUUID.
 -NSUUID* ToNSUUID(const base::Uuid& uuid) {
 -  DCHECK(uuid.is_valid());
@@ -36,13 +39,21 @@ index 72bca8d629dde292de0bc64f2f9a0ae4335d5a3e..c47419b70577da9edb0a43252855b034
 -  return nsuuid;
 -}
 -
- }  // namespace
- 
- // static
-@@ -69,36 +57,6 @@ WKWebViewConfigurationProvider::FromBrowserState(BrowserState* browser_state) {
-       browser_state->GetUserData(kWKWebViewConfigProviderKeyName)));
- }
- 
+-}  // namespace
+-
+-// static
+-WKWebViewConfigurationProvider&
+-WKWebViewConfigurationProvider::FromBrowserState(BrowserState* browser_state) {
+-  DCHECK(browser_state);
+-  if (!browser_state->GetUserData(kWKWebViewConfigProviderKeyName)) {
+-    browser_state->SetUserData(
+-        kWKWebViewConfigProviderKeyName,
+-        base::WrapUnique(new WKWebViewConfigurationProvider(browser_state)));
+-  }
+-  return *(static_cast<WKWebViewConfigurationProvider*>(
+-      browser_state->GetUserData(kWKWebViewConfigProviderKeyName)));
+-}
+-
 -// static
 -void WKWebViewConfigurationProvider::DeleteDataStorageForIdentifier(
 -    const base::Uuid& uuid,
@@ -76,7 +87,7 @@ index 72bca8d629dde292de0bc64f2f9a0ae4335d5a3e..c47419b70577da9edb0a43252855b034
  base::WeakPtr<WKWebViewConfigurationProvider>
  WKWebViewConfigurationProvider::AsWeakPtr() {
    DCHECK_CALLED_ON_VALID_SEQUENCE(_sequence_checker_);
-@@ -108,38 +66,14 @@ WKWebViewConfigurationProvider::AsWeakPtr() {
+@@ -108,38 +45,22 @@ WKWebViewConfigurationProvider::AsWeakPtr() {
  WKWebViewConfigurationProvider::WKWebViewConfigurationProvider(
      BrowserState* browser_state)
      : browser_state_(browser_state),
@@ -92,10 +103,17 @@ index 72bca8d629dde292de0bc64f2f9a0ae4335d5a3e..c47419b70577da9edb0a43252855b034
 -      content_rule_list_provider_(std::move(rule_list_provider)) {
 -  CHECK_IS_TEST();
 -  Initialize();
--}
 +      content_rule_list_applier_(std::make_unique<WKContentRuleListApplier>(
 +          WKWebViewSharedResourcesProvider::FromBrowserState(browser_state)
-+              .GetContentRuleListRegistry())) {}
++              .GetContentRuleListRegistry())),
++      java_script_feature_manager_(
++          std::make_unique<JavaScriptFeatureManager>()) {
++  for (ContentWorld world :
++       java_script_feature_manager_->GetAllContentWorldEnums()) {
++    web_frames_manager_features_.push_back(base::WrapUnique(
++        new WebFramesManagerJavaScriptFeature(world, browser_state)));
++  }
+ }
  
  WKWebViewConfigurationProvider::~WKWebViewConfigurationProvider() {
    DCHECK_CALLED_ON_VALID_SEQUENCE(_sequence_checker_);
@@ -118,8 +136,25 @@ index 72bca8d629dde292de0bc64f2f9a0ae4335d5a3e..c47419b70577da9edb0a43252855b034
  void WKWebViewConfigurationProvider::ResetWithWebViewConfiguration(
      WKWebViewConfiguration* configuration) {
    TRACE_EVENT("ui",
-@@ -155,24 +89,19 @@ void WKWebViewConfigurationProvider::ResetWithWebViewConfiguration(
+@@ -149,30 +70,32 @@ void WKWebViewConfigurationProvider::ResetWithWebViewConfiguration(
+     Purge();
+   }
+ 
++  if (!configuration) {
++    configuration =
++        WKWebViewSharedResourcesProvider::FromBrowserState(browser_state_)
++            .GetExternalConfiguration();
++  }
++
+   if (!configuration) {
+     configuration_ = [[WKWebViewConfiguration alloc] init];
+   } else {
      configuration_ = [configuration copy];
++    // `configuration` may be shared with other WKWebViews, so this WebState
++    // gets its own WKUserContentController and WKPreferences.
++    [configuration_
++        setUserContentController:[[WKUserContentController alloc] init]];
++    [configuration_ setPreferences:[[configuration_ preferences] copy]];
    }
  
 -  WKWebsiteDataStore* original_data_store = website_data_store_;
@@ -135,10 +170,6 @@ index 72bca8d629dde292de0bc64f2f9a0ae4335d5a3e..c47419b70577da9edb0a43252855b034
 -      website_data_store_ = nil;
 -    }
 -    [configuration_ setWebsiteDataStore:GetWebsiteDataStore()];
-+    // Drop the data store set from a configuration originated from
-+    // somewhere outside //ios/web, so that //ios/web managed WKWebViews use
-+    // the BrowserState's own data store.
-+    shared_resources_provider.ResetExternalWebsiteDataStore();
 +    [configuration_
 +        setWebsiteDataStore:shared_resources_provider.GetWebsiteDataStore()];
    } else {
@@ -153,8 +184,19 @@ index 72bca8d629dde292de0bc64f2f9a0ae4335d5a3e..c47419b70577da9edb0a43252855b034
    }
  
    [configuration_ setIgnoresViewportScaleLimits:YES];
-@@ -238,7 +167,7 @@ void WKWebViewConfigurationProvider::ResetWithWebViewConfiguration(
-                            forURLScheme:base::SysUTF8ToNSString(scheme)];
+@@ -234,11 +157,16 @@ void WKWebViewConfigurationProvider::ResetWithWebViewConfiguration(
+   GetWebClient()->AddAdditionalSchemes(&schemes);
+   GetWebClient()->GetAdditionalWebUISchemes(&(schemes.standard_schemes));
+   for (std::string scheme : schemes.standard_schemes) {
+-    [configuration_ setURLSchemeHandler:scheme_handler_
+-                           forURLScheme:base::SysUTF8ToNSString(scheme)];
++    NSString* url_scheme = base::SysUTF8ToNSString(scheme);
++    // A configuration derived from another //ios/web managed WKWebView
++    // already has the handlers.
++    if (![configuration_ urlSchemeHandlerForURLScheme:url_scheme]) {
++      [configuration_ setURLSchemeHandler:scheme_handler_
++                             forURLScheme:url_scheme];
++    }
    }
  
 -  content_rule_list_provider_->SetUserContentController(
@@ -162,7 +204,16 @@ index 72bca8d629dde292de0bc64f2f9a0ae4335d5a3e..c47419b70577da9edb0a43252855b034
        configuration_.userContentController);
  
    if (@available(iOS 27, *)) {
-@@ -287,47 +216,6 @@ void WKWebViewConfigurationProvider::SetUniversalOptOutEnabled(bool enabled) {
+@@ -263,6 +191,8 @@ void WKWebViewConfigurationProvider::ResetWithWebViewConfiguration(
+       SetUniversalOptOutEnabled(true);
+     }
+   }
++
++  BraveDidResetConfiguration(browser_state_, configuration_);
+ }
+ 
+ WKWebViewConfiguration*
+@@ -287,92 +217,49 @@ void WKWebViewConfigurationProvider::SetUniversalOptOutEnabled(bool enabled) {
  #endif
  }
  
@@ -210,14 +261,17 @@ index 72bca8d629dde292de0bc64f2f9a0ae4335d5a3e..c47419b70577da9edb0a43252855b034
  void WKWebViewConfigurationProvider::UpdateScripts() {
    TRACE_EVENT("ui", "WKWebViewConfigurationProvider::UpdateScripts");
    DCHECK_CALLED_ON_VALID_SEQUENCE(_sequence_checker_);
-@@ -335,22 +223,25 @@ void WKWebViewConfigurationProvider::UpdateScripts() {
+   [configuration_.userContentController removeAllUserScripts];
  
    JavaScriptFeatureManager* java_script_feature_manager =
-       JavaScriptFeatureManager::FromBrowserState(browser_state_);
+-      JavaScriptFeatureManager::FromBrowserState(browser_state_);
++      java_script_feature_manager_.get();
 +  WKUserContentController* user_content_controller =
 +      GetWebViewConfiguration().userContentController;
-+  auto web_frames_manager_features = WebFramesManagerJavaScriptFeature::
-+      AllContentWorldFeaturesFromBrowserState(browser_state_);
++  std::vector<WebFramesManagerJavaScriptFeature*> web_frames_manager_features;
++  for (const auto& feature : web_frames_manager_features_) {
++    web_frames_manager_features.push_back(feature.get());
++  }
  
    std::vector<JavaScriptFeature*> features;
    for (JavaScriptFeature* feature :
@@ -241,7 +295,17 @@ index 72bca8d629dde292de0bc64f2f9a0ae4335d5a3e..c47419b70577da9edb0a43252855b034
    for (WebFramesManagerJavaScriptFeature* feature :
         web_frames_manager_features) {
      feature->ConfigureHandlers(user_content_controller);
-@@ -362,17 +253,4 @@ void WKWebViewConfigurationProvider::Purge() {
+   }
+ }
+ 
++JavaScriptFeatureManager*
++WKWebViewConfigurationProvider::GetJavaScriptFeatureManager() {
++  DCHECK_CALLED_ON_VALID_SEQUENCE(_sequence_checker_);
++  return java_script_feature_manager_.get();
++}
++
+ void WKWebViewConfigurationProvider::Purge() {
+   DCHECK_CALLED_ON_VALID_SEQUENCE(_sequence_checker_);
    configuration_ = nil;
  }
  

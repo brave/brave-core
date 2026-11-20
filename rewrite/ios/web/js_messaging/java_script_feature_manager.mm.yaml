@@ -24,3 +24,80 @@ substitutions:
       replace: |-
         std::make_unique<JavaScriptContentWorld>(
               user_content_controller, \1);
+
+  - description: |-
+      Drop the BrowserState user data key.
+
+      The manager is owned by the WKWebViewConfigurationProvider of each
+      WebState instead.
+    regex:
+      re_pattern:
+        '\nnamespace \{\n\n// Key used to associate a JavaScriptFeatureManager
+        instances with a\n.*?\n\}  // namespace\n'
+      re_flags: [DOTALL]
+      replace: ''
+
+  - description: |-
+      Look up the manager from the WKWebViewConfigurationProvider of a
+      WebState, instead of the BrowserState's user data.
+    regex:
+      re_pattern:
+        'JavaScriptFeatureManager::JavaScriptFeatureManager\(BrowserState\*
+        browser_state\)\n\s*: browser_state_\(browser_state\)
+        \{\}\n(.*?\n)\nJavaScriptFeatureManager\*
+        JavaScriptFeatureManager::FromBrowserState\(\n.*?\n\}\n'
+      re_flags: [DOTALL]
+      replace: |
+        JavaScriptFeatureManager::JavaScriptFeatureManager() = default;
+        \1
+        // static
+        JavaScriptFeatureManager* JavaScriptFeatureManager::FromWebState(
+            WebState* web_state) {
+          CHECK(web_state);
+          return WebStateImpl::FromWebState(web_state)
+              ->GetWKWebViewConfigurationProvider()
+              .GetJavaScriptFeatureManager();
+        }
+
+  - description: Look up the content worlds of a WebState.
+    regex:
+      re_pattern:
+        'JavaScriptContentWorld\*\nJavaScriptFeatureManager::GetContentWorldForBrowserState\(\n(\s*)ContentWorld
+        content_world,\n\s*BrowserState\* browser_state\)
+        \{\n(\s*)DCHECK\(browser_state\);\n(.*?)JavaScriptFeatureManager\*
+        feature_manager = FromBrowserState\(browser_state\);'
+      re_flags: [DOTALL]
+      replace: |-
+        JavaScriptContentWorld* JavaScriptFeatureManager::GetContentWorldForWebState(
+        \1ContentWorld content_world,
+        \1WebState* web_state) {
+        \2CHECK(web_state);
+        \3JavaScriptFeatureManager* feature_manager = FromWebState(web_state);
+
+  - description: |-
+      Return no content world of a feature before the features are configured.
+
+      The content worlds are created by `ConfigureFeatures`, which runs once
+      the WebState's web view configuration is created.
+    preempt_function_impl:
+      function_name: JavaScriptFeatureManager::GetContentWorldForFeature
+      code: |-
+        if (!page_content_world_) {
+          return nullptr;
+        }
+
+  - description: Return no content worlds before the features are configured.
+    preempt_function_impl:
+      function_name: JavaScriptFeatureManager::GetAllContentWorlds
+      code: |-
+        if (!page_content_world_) {
+          return {};
+        }
+
+  - description: |-
+      Include the WebState's WKWebViewConfigurationProvider owning the manager.
+    add_after_line:
+      line: '#import "ios/web/public/js_messaging/java_script_feature_util.h"'
+      code: |-
+        #import "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
+        #import "ios/web/web_state/web_state_impl.h"

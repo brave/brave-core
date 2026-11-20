@@ -1,0 +1,39 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Drop `AllContentWorldFeaturesFromBrowserState`.
+
+      Each feature configures its message handlers on a single
+      WKUserContentController, so the features are now owned by the
+      WKWebViewConfigurationProvider of each WebState instead of being shared
+      by the BrowserState.
+    regex:
+      re_pattern:
+        '\n\s*// Returns a list of the `WebFramesManagerJavaScriptFeature`
+        instances
+        for\n.*?AllContentWorldFeaturesFromBrowserState\(BrowserState\*
+        browser_state\);\n'
+      re_flags: [DOTALL]
+      replace: "\n"
+
+  - description: |-
+      Drop the BrowserState-keyed `Container`.
+
+      The WKWebViewConfigurationProvider of each WebState owns one feature per
+      content world instead.
+    regex:
+      re_pattern:
+        '\n\s*// Container that stores the web frame manager feature for each
+        content world\..*?\n  \};\n'
+      re_flags: [DOTALL]
+      replace: ''
+
+  - description: |-
+      Let the WKWebViewConfigurationProvider create the features it owns.
+    add_friend:
+      class_name: WebFramesManagerJavaScriptFeature
+      friend_type: class WKWebViewConfigurationProvider

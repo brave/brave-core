@@ -1,8 +1,68 @@
 diff --git a/ios/web/js_messaging/java_script_feature_manager.mm b/ios/web/js_messaging/java_script_feature_manager.mm
-index 7069376ee19b1667242bf3bca5a87b4df1c01942..1f39fa26a6082c2555f4c2b26714ec671ff7d536 100644
+index 7069376ee19b1667242bf3bca5a87b4df1c01942..84e9d5f768039ff6ab3b0e4ea3167b8038083a69 100644
 --- a/ios/web/js_messaging/java_script_feature_manager.mm
 +++ b/ios/web/js_messaging/java_script_feature_manager.mm
-@@ -62,12 +62,13 @@ JavaScriptFeatureManager::GetContentWorldForBrowserState(
+@@ -12,45 +12,30 @@
+ #import "ios/web/public/browser_state.h"
+ #import "ios/web/public/js_messaging/java_script_feature.h"
+ #import "ios/web/public/js_messaging/java_script_feature_util.h"
+-
+-namespace {
+-
+-// Key used to associate a JavaScriptFeatureManager instances with a
+-// BrowserState.
+-const char kWebJavaScriptFeatureManagerKeyName[] =
+-    "web_java_script_feature_manager";
+-
+-}  // namespace
++#import "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
++#import "ios/web/web_state/web_state_impl.h"
+ 
+ namespace web {
+ 
+-JavaScriptFeatureManager::JavaScriptFeatureManager(BrowserState* browser_state)
+-    : browser_state_(browser_state) {}
++JavaScriptFeatureManager::JavaScriptFeatureManager() = default;
+ JavaScriptFeatureManager::~JavaScriptFeatureManager() {}
+ 
+-JavaScriptFeatureManager* JavaScriptFeatureManager::FromBrowserState(
+-    BrowserState* browser_state) {
+-  DCHECK(browser_state);
+-
+-  JavaScriptFeatureManager* feature_manager =
+-      static_cast<JavaScriptFeatureManager*>(
+-          browser_state->GetUserData(kWebJavaScriptFeatureManagerKeyName));
+-  if (!feature_manager) {
+-    feature_manager = new JavaScriptFeatureManager(browser_state);
+-    browser_state->SetUserData(kWebJavaScriptFeatureManagerKeyName,
+-                               base::WrapUnique(feature_manager));
+-  }
+-  return feature_manager;
++// static
++JavaScriptFeatureManager* JavaScriptFeatureManager::FromWebState(
++    WebState* web_state) {
++  CHECK(web_state);
++  return WebStateImpl::FromWebState(web_state)
++      ->GetWKWebViewConfigurationProvider()
++      .GetJavaScriptFeatureManager();
+ }
+ 
+-JavaScriptContentWorld*
+-JavaScriptFeatureManager::GetContentWorldForBrowserState(
++JavaScriptContentWorld* JavaScriptFeatureManager::GetContentWorldForWebState(
+     ContentWorld content_world,
+-    BrowserState* browser_state) {
+-  DCHECK(browser_state);
++    WebState* web_state) {
++  CHECK(web_state);
+   CHECK_NE(content_world, ContentWorld::kAllContentWorlds);
+ 
+-  JavaScriptFeatureManager* feature_manager = FromBrowserState(browser_state);
++  JavaScriptFeatureManager* feature_manager = FromWebState(web_state);
+   switch (content_world) {
+     case ContentWorld::kPageContentWorld:
+       return feature_manager->page_content_world_.get();
+@@ -62,12 +47,13 @@ JavaScriptFeatureManager::GetContentWorldForBrowserState(
  }
  
  void JavaScriptFeatureManager::ConfigureFeatures(
@@ -18,3 +78,23 @@ index 7069376ee19b1667242bf3bca5a87b4df1c01942..1f39fa26a6082c2555f4c2b26714ec67
  
    for (JavaScriptFeature* feature : features) {
      switch (feature->GetSupportedContentWorld()) {
+@@ -87,6 +73,9 @@ void JavaScriptFeatureManager::ConfigureFeatures(
+ 
+ JavaScriptContentWorld* JavaScriptFeatureManager::GetContentWorldForFeature(
+     JavaScriptFeature* feature) {
++  if (!page_content_world_) {
++    return nullptr;
++  }
+   if (isolated_world_->HasFeature(feature)) {
+     return isolated_world_.get();
+   }
+@@ -98,6 +87,9 @@ JavaScriptContentWorld* JavaScriptFeatureManager::GetContentWorldForFeature(
+ 
+ std::vector<JavaScriptContentWorld*>
+ JavaScriptFeatureManager::GetAllContentWorlds() {
++  if (!page_content_world_) {
++    return {};
++  }
+   return {isolated_world_.get(), page_content_world_.get()};
+ }
+ 

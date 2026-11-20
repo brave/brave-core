@@ -1,0 +1,20 @@
+diff --git a/ios/web/public/test/web_test_with_web_state.h b/ios/web/public/test/web_test_with_web_state.h
+index 6a7638fdbfc9f77c05710ee5c5e7a22461f7166d..0c2efffb6f18f818147b04b860e9ed4b6dc54a7e 100644
+--- a/ios/web/public/test/web_test_with_web_state.h
++++ b/ios/web/public/test/web_test_with_web_state.h
+@@ -38,6 +38,15 @@ class WebTestWithWebState : public WebTest {
+   void SetUp() override;
+   void TearDown() override;
+ 
++  // Manually overrides the built in JavaScriptFeatures and those from
++  // `GetWebClient()::GetJavaScriptFeatures()` for `web_state()`. This is
++  // intended to be used to replace an instance of a built in feature with
++  // one created by the test.
++  // NOTE: Do not call this when using a ChromeWebClient or
++  // `FakeWebClient::SetJavaScriptFeatures` as this will override those
++  // features.
++  void OverrideJavaScriptFeatures(std::vector<JavaScriptFeature*> features);
++
+   // Adds a pending item to the NavigationManager associated with the WebState.
+   void AddPendingItem(const GURL& url, ui::PageTransition transition);
+ 

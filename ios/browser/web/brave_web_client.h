@@ -65,7 +65,6 @@ class BraveWebClient : public ChromeWebClient {
 
   void DidResetConfiguration(web::BrowserState* browser_state,
                              WKWebViewConfiguration* configuration) override;
-  bool UseProfileWebViewConfigurationEnabled() override;
   bool IsSmoothScrollingSupported() const override;
 
  private:

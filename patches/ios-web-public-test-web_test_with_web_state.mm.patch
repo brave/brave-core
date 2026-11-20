@@ -1,0 +1,16 @@
+diff --git a/ios/web/public/test/web_test_with_web_state.mm b/ios/web/public/test/web_test_with_web_state.mm
+index 1a60bba4f941e673b671aab3b83189303555269e..977ab246dd66221211d6ae05fda0f98ae6151df8 100644
+--- a/ios/web/public/test/web_test_with_web_state.mm
++++ b/ios/web/public/test/web_test_with_web_state.mm
+@@ -58,6 +58,11 @@ void WebTestWithWebState::TearDown() {
+   WebTest::TearDown();
+ }
+ 
++void WebTestWithWebState::OverrideJavaScriptFeatures(
++    std::vector<JavaScriptFeature*> features) {
++  web::test::OverrideJavaScriptFeatures(web_state(), features);
++}
++
+ void WebTestWithWebState::AddPendingItem(const GURL& url,
+                                          ui::PageTransition transition) {
+   web::test::GetWebController(web_state())

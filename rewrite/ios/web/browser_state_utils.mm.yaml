@@ -29,3 +29,23 @@ substitutions:
     regex:
       pattern: 'WKWebViewConfigurationProvider::DeleteDataStorageForIdentifier('
       replace: 'WKWebViewSharedResourcesProvider::DeleteDataStorageForIdentifier('
+
+  - description: |-
+      Stop updating Universal Opt-Out on a BrowserState-wide configuration.
+
+      Each WebState has its own configuration, which enables Universal Opt-Out
+      when it is created if the BrowserState has it enabled. A change only
+      applies to WebStates created afterwards.
+    regex:
+      re_pattern:
+        '(void SetUniversalOptOutEnabled\(BrowserState\* browser_state, bool
+        enabled\) \{\n\s*CHECK\(browser_state\);\n).*?\n\}\n'
+      re_flags: [DOTALL]
+      replace: |
+        \1}
+
+  - description: Drop the include only Universal Opt-Out used.
+    regex:
+      pattern: |
+        #import "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
+      replace: ''

@@ -76,11 +76,16 @@ substitutions:
       replace: ''
 
   - description: |-
-      Construct a rule list applier for the shared content rule lists.
+      Construct a rule list applier for the shared content rule lists, and the
+      JavaScript features of the WebState.
 
       The rule lists used to be compiled by this provider. They are now compiled
       once per BrowserState by WKWebViewSharedResourcesProvider, including the
       static ones.
+
+      The JavaScriptFeatureManager and web frames manager features configure
+      this provider's WKUserContentController, so the provider owns them rather
+      than the BrowserState.
     regex:
       re_pattern:
         '(WKWebViewConfigurationProvider::WKWebViewConfigurationProvider\(\n\s*BrowserState\*
@@ -93,7 +98,15 @@ substitutions:
       replace: |
         \1      content_rule_list_applier_(std::make_unique<WKContentRuleListApplier>(
                   WKWebViewSharedResourcesProvider::FromBrowserState(browser_state)
-                      .GetContentRuleListRegistry())) {}
+                      .GetContentRuleListRegistry())),
+              java_script_feature_manager_(
+                  std::make_unique<JavaScriptFeatureManager>()) {
+          for (ContentWorld world :
+               java_script_feature_manager_->GetAllContentWorldEnums()) {
+            web_frames_manager_features_.push_back(base::WrapUnique(
+                new WebFramesManagerJavaScriptFeature(world, browser_state)));
+          }
+        }
 
   - description:
       Drop `Initialize`, as the shared provider compiles the static lists.
@@ -106,9 +119,10 @@ substitutions:
   - description: |-
       Take the website data store from the shared provider.
 
-      A configuration not originating from //ios/web still replaces the
-      BrowserState's data store, and a later //ios/web configuration restores
-      it.
+      A configuration not originating from //ios/web replaces the BrowserState's
+      data store, which WebStates created afterwards use as well. The data
+      store is not restored when a WebState resets its configuration without
+      one, as each WebState lazily does so when its web view is created.
     regex:
       re_pattern:
         '\n\s*WKWebsiteDataStore\* original_data_store =
@@ -122,10 +136,6 @@ substitutions:
         \1    WKWebViewSharedResourcesProvider::FromBrowserState(browser_state_);
         \1// Update the configuration's website data store.
         \1if (!configuration) {
-        \1  // Drop the data store set from a configuration originated from
-        \1  // somewhere outside //ios/web, so that //ios/web managed WKWebViews use
-        \1  // the BrowserState's own data store.
-        \1  shared_resources_provider.ResetExternalWebsiteDataStore();
         \1  [configuration_
         \1      setWebsiteDataStore:shared_resources_provider.GetWebsiteDataStore()];
         \1} else {
@@ -154,3 +164,113 @@ substitutions:
         \{\n.*?\nWKWebViewConfigurationProvider::RegisterWebSiteDataStoreUpdatedCallback\(.*?\n\}\n'
       re_flags: [DOTALL]
       replace: ''
+
+  - description: |-
+      Drop `FromBrowserState`, as each WebState now owns its provider.
+    regex:
+      re_pattern:
+        '\nnamespace \{\n\n// A key used to associate a
+        WKWebViewConfigurationProvider with a BrowserState\..*?\n\}  //
+        namespace\n\n//
+        static\nWKWebViewConfigurationProvider&\nWKWebViewConfigurationProvider::FromBrowserState\(.*?\n\}\n'
+      re_flags: [DOTALL]
+      replace: ''
+
+  - description: |-
+      Give this WebState its own WKUserContentController and WKPreferences.
+
+      A configuration passed in may be shared with other WKWebViews. WebKit
+      derives the configuration of a window opened by a page from the opener's,
+      sharing its WKUserContentController, and an embedder may reuse a
+      configuration for several web views. The scripts and preferences of each
+      WebState are configured independently.
+    regex:
+      re_pattern: '(\n(\s*)configuration_ = \[configuration copy\];\n)'
+      replace: |
+        \1\2// `configuration` may be shared with other WKWebViews, so this WebState
+        \2// gets its own WKUserContentController and WKPreferences.
+        \2[configuration_
+        \2    setUserContentController:[[WKUserContentController alloc] init]];
+        \2[configuration_ setPreferences:[[configuration_ preferences] copy]];
+
+  - description: |-
+      Keep the WebUI scheme handlers of a configuration derived from another
+      //ios/web managed WKWebView.
+
+      WebKit throws when a scheme already has a handler, which is the case for
+      the configuration of a window opened by a page, derived from the opener's.
+    regex:
+      re_pattern:
+        '(\n(\s*)for \(std::string scheme : schemes\.standard_schemes\)
+        \{\n)\s*\[configuration_
+        setURLSchemeHandler:scheme_handler_\n\s*forURLScheme:base::SysUTF8ToNSString\(scheme\)\];\n'
+      replace: |
+        \1\2  NSString* url_scheme = base::SysUTF8ToNSString(scheme);
+        \2  // A configuration derived from another //ios/web managed WKWebView
+        \2  // already has the handlers.
+        \2  if (![configuration_ urlSchemeHandlerForURLScheme:url_scheme]) {
+        \2    [configuration_ setURLSchemeHandler:scheme_handler_
+        \2                           forURLScheme:url_scheme];
+        \2  }
+
+  - description: Configure the features with the manager this provider owns.
+    regex:
+      pattern: 'JavaScriptFeatureManager::FromBrowserState(browser_state_);'
+      replace: 'java_script_feature_manager_.get();'
+
+  - description: Configure the web frames manager features this provider owns.
+    regex:
+      re_pattern:
+        'auto web_frames_manager_features =
+        WebFramesManagerJavaScriptFeature::\n(\s*)AllContentWorldFeaturesFromBrowserState\(browser_state_\);'
+      replace: |-
+        std::vector<WebFramesManagerJavaScriptFeature*> web_frames_manager_features;
+          for (const auto& feature : web_frames_manager_features_) {
+            web_frames_manager_features.push_back(feature.get());
+          }
+
+  - description: Define `GetJavaScriptFeatureManager`.
+    regex:
+      re_pattern: '(\nvoid WKWebViewConfigurationProvider::Purge\(\) \{\n)'
+      replace: |-
+
+        JavaScriptFeatureManager*
+        WKWebViewConfigurationProvider::GetJavaScriptFeatureManager() {
+          DCHECK_CALLED_ON_VALID_SEQUENCE(_sequence_checker_);
+          return java_script_feature_manager_.get();
+        }
+        \1
+
+  - description: |-
+      Apply Brave's adjustments to the configuration after a reset.
+
+      Brave restores some WebKit defaults Chromium overrides, and lets the
+      embedder finish setting up the configuration. `after_function_impl` can
+      not be used, as the Objective-C++ body is not parsed correctly.
+    regex:
+      re_pattern:
+        '(\nvoid
+        WKWebViewConfigurationProvider::ResetWithWebViewConfiguration\(.*?)(\n\}\n\nWKWebViewConfiguration\*\nWKWebViewConfigurationProvider::GetWebViewConfiguration\(\))'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+
+          BraveDidResetConfiguration(browser_state_, configuration_);\2
+
+  - description: |-
+      Derive the configuration from the BrowserState's external configuration
+      when not given one.
+
+      A WebState can create its web view before it is given a configuration
+      not originating from //ios/web, e.g. when restoring its session, as it is
+      created. Before each WebState had its own configuration, it got the
+      BrowserState's, which was the last external one.
+    regex:
+      re_pattern: '(\n(\s*)if \(configuration_\) \{\n\s*Purge\(\);\n\s*\}\n)'
+      replace: |
+        \1
+        \2if (!configuration) {
+        \2  configuration =
+        \2      WKWebViewSharedResourcesProvider::FromBrowserState(browser_state_)
+        \2          .GetExternalConfiguration();
+        \2}

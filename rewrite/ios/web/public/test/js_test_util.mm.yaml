@@ -10,3 +10,26 @@ substitutions:
       pattern: '->ConfigureFeatures(features);'
       replace:
         '->ConfigureFeatures(configuration.userContentController, features);'
+
+  - description: |-
+      Look up the content world of a feature through the WebState.
+
+      Each WebState has its own JavaScriptFeatureManager.
+    count: 2 # ExecuteJavaScriptForFeature and its variant returning a result.
+    regex:
+      pattern: 'JavaScriptFeatureManager::FromBrowserState(web_state->GetBrowserState());'
+      replace: 'JavaScriptFeatureManager::FromWebState(web_state);'
+
+  - description: |-
+      Override the features of a WebState's own configuration.
+
+      Each WebState has its own WKWebViewConfigurationProvider and
+      JavaScriptFeatureManager.
+    regex:
+      re_pattern:
+        'void OverrideJavaScriptFeatures\(web::BrowserState\*
+        browser_state,\n(.*?)WKWebViewConfigurationProvider::FromBrowserState\(browser_state\);(.*?)JavaScriptFeatureManager::FromBrowserState\(browser_state\)'
+      re_flags: [DOTALL]
+      replace:
+        'void OverrideJavaScriptFeatures(web::WebState*
+        web_state,\n\1WebStateImpl::FromWebState(web_state)\n          ->GetWKWebViewConfigurationProvider();\2JavaScriptFeatureManager::FromWebState(web_state)'

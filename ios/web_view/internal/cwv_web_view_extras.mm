@@ -25,9 +25,7 @@
 #include "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
 #include "ios/web/web_state/web_state_impl.h"
 #include "ios/web_view/internal/cwv_back_forward_list_item_internal.h"
-#include "ios/web_view/internal/cwv_web_view_configuration_internal.h"
 #include "ios/web_view/internal/cwv_web_view_internal.h"
-#include "ios/web_view/internal/web_view_browser_state.h"
 #include "ios/web_view/public/cwv_navigation_delegate.h"
 #include "net/base/apple/url_conversions.h"
 #include "net/base/filename_util.h"
@@ -124,10 +122,9 @@ const CWVUserAgentType CWVUserAgentTypeDesktop =
   // to call in-place of `-[WKUserContentController removeAllUserScripts]` until
   // all Brave JavaScript features are ported over to actual Chromium
   // JavascriptFeature types and added to BraveWebClient
-  web::WKWebViewConfigurationProvider& config_provider =
-      web::WKWebViewConfigurationProvider::FromBrowserState(
-          self.webState->GetBrowserState());
-  config_provider.UpdateScripts();
+  web::WebStateImpl::FromWebState(self.webState)
+      ->GetWKWebViewConfigurationProvider()
+      .UpdateScripts();
 }
 
 - (void)createPDFWithRect:(CGRect)rect
@@ -215,8 +212,7 @@ const CWVUserAgentType CWVUserAgentTypeDesktop =
     return;
   }
   web::WebFrameInternal* webFrame = mainFrame->GetWebFrameInternal();
-  auto worlds = web::JavaScriptFeatureManager::FromBrowserState(
-                    self.configuration.browserState)
+  auto worlds = web::JavaScriptFeatureManager::FromWebState(self.webState)
                     ->GetAllContentWorlds();
 
   auto jsContentWorld =

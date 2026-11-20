@@ -34,7 +34,6 @@
 #include "ios/web/public/navigation/navigation_manager.h"
 #include "ios/web/public/security/ssl_status.h"
 #include "ios/web/public/web_state.h"
-#include "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -216,31 +215,7 @@ CardanoProviderJavaScriptFeature::CardanoProviderJavaScriptFeature(
     ProfileIOS* profile)
     : JavaScriptFeature(web::ContentWorld::kPageContentWorld,
                         /*feature_scripts=*/{}),
-      profile_(profile) {
-  pref_change_registrar_.Init(profile->GetPrefs());
-  pref_change_registrar_.Add(
-      kDefaultCardanoWallet,
-      base::BindRepeating(
-          &CardanoProviderJavaScriptFeature::OnScriptGatingPrefChanged,
-          base::Unretained(this)));
-  // Creating or resetting a wallet flips whether the provider is injected.
-  is_wallet_created_ = IsWalletCreated(profile->GetPrefs());
-  pref_change_registrar_.Add(
-      kBraveWalletKeyrings,
-      base::BindRepeating(&CardanoProviderJavaScriptFeature::OnKeyringsChanged,
-                          base::Unretained(this)));
-}
-
-void CardanoProviderJavaScriptFeature::OnKeyringsChanged() {
-  // The keyrings pref is also written on every account add, rename and
-  // removal. Only rebuild the scripts when the created state actually changed.
-  bool is_wallet_created = IsWalletCreated(profile_->GetPrefs());
-  if (is_wallet_created == is_wallet_created_) {
-    return;
-  }
-  is_wallet_created_ = is_wallet_created;
-  OnScriptGatingPrefChanged();
-}
+      profile_(profile) {}
 
 CardanoProviderJavaScriptFeature::~CardanoProviderJavaScriptFeature() = default;
 
@@ -259,13 +234,6 @@ CardanoProviderJavaScriptFeature::FromBrowserState(
                                base::WrapUnique(feature));
   }
   return feature;
-}
-
-void CardanoProviderJavaScriptFeature::OnScriptGatingPrefChanged() {
-  // Feature scripts must be explicitly updated after this pref changes.
-  web::WKWebViewConfigurationProvider& config_provider =
-      web::WKWebViewConfigurationProvider::FromBrowserState(profile_);
-  config_provider.UpdateScripts();
 }
 
 std::vector<web::JavaScriptFeature::FeatureScript>

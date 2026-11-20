@@ -19,10 +19,10 @@
 #include "components/keyed_service/core/keyed_service.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
+#include "ios/web/common/web_view_creation_util.h"
 #include "ios/web/public/browser_state.h"
 #include "ios/web/public/thread/web_task_traits.h"
 #include "ios/web/public/thread/web_thread.h"
-#include "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 @interface WalletWebViewRunnerDelegate : NSObject <WKNavigationDelegate> {
@@ -84,11 +84,7 @@ class WalletWebViewRunner {
 
   void Clear(ProfileIOS* profile) {
     DCHECK_CURRENTLY_ON(web::WebThread::UI);
-    WKWebViewConfiguration* config =
-        web::WKWebViewConfigurationProvider::FromBrowserState(profile)
-            .GetWebViewConfiguration();
-    web_view_ = [[WKWebView alloc] initWithFrame:CGRectZero
-                                   configuration:config];
+    web_view_ = web::BuildWKWebView(CGRectZero, profile);
     delegate_ = [[WalletWebViewRunnerDelegate alloc]
         initWithCompletion:base::BindOnce(&WalletWebViewRunner::OnDone,
                                           weak_factory_.GetWeakPtr())];

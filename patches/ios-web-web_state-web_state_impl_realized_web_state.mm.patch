@@ -1,8 +1,16 @@
 diff --git a/ios/web/web_state/web_state_impl_realized_web_state.mm b/ios/web/web_state/web_state_impl_realized_web_state.mm
-index 02cb29f6b20753dbe13fd84ff8df2c0142fbe7c4..043631bd9d8b229eb0bb97f2fe411c9fe25a0c9b 100644
+index 02cb29f6b20753dbe13fd84ff8df2c0142fbe7c4..55fe480b747d72041279b7acfd0bef9b7332085b 100644
 --- a/ios/web/web_state/web_state_impl_realized_web_state.mm
 +++ b/ios/web/web_state/web_state_impl_realized_web_state.mm
-@@ -336,7 +336,7 @@ void WebStateImpl::RealizedWebState::OnNavigationFinished(
+@@ -47,6 +47,7 @@
+ #import "ios/web/web_state/policy_decision_state_tracker.h"
+ #import "ios/web/web_state/ui/crw_web_controller.h"
+ #import "ios/web/web_state/ui/crw_web_view_navigation_proxy.h"
++#import "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
+ #import "ios/web/webui/web_ui_ios_controller_factory_registry.h"
+ #import "ios/web/webui/web_ui_ios_impl.h"
+ #import "net/http/http_util.h"
+@@ -336,7 +337,7 @@ void WebStateImpl::RealizedWebState::OnNavigationFinished(
  
    // Clear provisional WebUI if the navigation was cancelled/failed, or if it
    // committed to a non-WebUI page.
@@ -11,7 +19,7 @@ index 02cb29f6b20753dbe13fd84ff8df2c0142fbe7c4..043631bd9d8b229eb0bb97f2fe411c9f
                    !web::GetWebClient()->IsAppSpecificURL(context->GetUrl()))) {
      ClearWebUI();
    }
-@@ -422,22 +422,22 @@ void WebStateImpl::RealizedWebState::OnFaviconUrlUpdated(
+@@ -422,22 +423,22 @@ void WebStateImpl::RealizedWebState::OnFaviconUrlUpdated(
  }
  
  void WebStateImpl::RealizedWebState::CreateWebUI(const GURL& url) {
@@ -43,7 +51,7 @@ index 02cb29f6b20753dbe13fd84ff8df2c0142fbe7c4..043631bd9d8b229eb0bb97f2fe411c9f
  }
  
  void WebStateImpl::RealizedWebState::HandleWebUIMessage(
-@@ -447,7 +447,10 @@ void WebStateImpl::RealizedWebState::HandleWebUIMessage(
+@@ -447,7 +448,10 @@ void WebStateImpl::RealizedWebState::HandleWebUIMessage(
    if (!HasWebUI()) {
      return;
    }
@@ -55,7 +63,31 @@ index 02cb29f6b20753dbe13fd84ff8df2c0142fbe7c4..043631bd9d8b229eb0bb97f2fe411c9f
  }
  
  void WebStateImpl::RealizedWebState::SetContentsMimeType(
-@@ -1138,7 +1141,7 @@ std::unique_ptr<WebUIIOS> WebStateImpl::RealizedWebState::CreateWebUIIOS(
+@@ -648,13 +652,22 @@ void WebStateImpl::RealizedWebState::OnProxyAuthChallenge(
+ 
+ void WebStateImpl::RealizedWebState::RetrieveExistingFrames() {
+   JavaScriptFeatureManager* feature_manager =
+-      JavaScriptFeatureManager::FromBrowserState(owner_->GetBrowserState());
++      GetWKWebViewConfigurationProvider().GetJavaScriptFeatureManager();
+   for (JavaScriptContentWorld* world : feature_manager->GetAllContentWorlds()) {
+     [web_controller_
+         retrieveExistingFramesInContentWorld:world->GetWKContentWorld()];
+   }
+ }
+ 
++WKWebViewConfigurationProvider&
++WebStateImpl::RealizedWebState::GetWKWebViewConfigurationProvider() {
++  if (!web_view_configuration_provider_) {
++    web_view_configuration_provider_ =
++        std::make_unique<WKWebViewConfigurationProvider>(GetBrowserState());
++  }
++  return *web_view_configuration_provider_;
++}
++
+ WebStateDelegate* WebStateImpl::RealizedWebState::GetDelegate() {
+   return delegate_;
+ }
+@@ -1138,7 +1151,7 @@ std::unique_ptr<WebUIIOS> WebStateImpl::RealizedWebState::CreateWebUIIOS(
    if (!factory) {
      return nullptr;
    }

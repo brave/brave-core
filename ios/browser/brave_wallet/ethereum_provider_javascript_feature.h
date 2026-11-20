@@ -13,7 +13,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/supports_user_data.h"
 #include "brave/ios/web/js_messaging/message_handler_token.h"
-#include "components/prefs/pref_change_registrar.h"
 #include "ios/web/public/js_messaging/java_script_feature.h"
 
 namespace web {
@@ -51,14 +50,9 @@ class EthereumProviderJavaScriptFeature : public web::JavaScriptFeature,
  private:
   explicit EthereumProviderJavaScriptFeature(ProfileIOS* profile);
 
-  void OnScriptGatingPrefChanged();
-  void OnKeyringsChanged();
-
   web::MessageHandlerToken token_;
   raw_ptr<ProfileIOS> profile_;
   std::string provider_bundle_js_;
-  bool is_wallet_created_ = false;
-  PrefChangeRegistrar pref_change_registrar_;
 };
 
 }  // namespace brave_wallet

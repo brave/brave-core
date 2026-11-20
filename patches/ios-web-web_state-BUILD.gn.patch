@@ -1,0 +1,12 @@
+diff --git a/ios/web/web_state/BUILD.gn b/ios/web/web_state/BUILD.gn
+index 6d74735462ff92308851ab984d6c29949f3d05b1..4e93bd8e82ab54e15f17601fe5eb5bb20b75e83d 100644
+--- a/ios/web/web_state/BUILD.gn
++++ b/ios/web/web_state/BUILD.gn
+@@ -31,6 +31,7 @@ source_set("web_state") {
+     "//ios/web/util",
+     "//ios/web/web_state/ui",
+     "//ios/web/web_state/ui:crw_web_view_navigation_proxy",
++    "//ios/web/web_state/ui:wk_web_view_configuration_provider",
+     "//ios/web/webui",
+     "//net",
+     "//ui/base/mojom",

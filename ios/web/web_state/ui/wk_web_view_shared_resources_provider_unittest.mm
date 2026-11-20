@@ -20,12 +20,26 @@
 #include "ios/web/public/test/fakes/fake_browser_state.h"
 #include "ios/web/public/test/fakes/fake_web_client.h"
 #include "ios/web/public/test/scoped_testing_web_client.h"
+#include "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "testing/gtest_mac.h"
 #include "testing/platform_test.h"
 #include "third_party/ocmock/OCMock/OCMock.h"
 #include "third_party/ocmock/gtest_support.h"
+
+// A URL scheme handler doing nothing.
+@interface TestURLSchemeHandler : NSObject <WKURLSchemeHandler>
+@end
+
+@implementation TestURLSchemeHandler
+- (void)webView:(WKWebView*)webView
+    startURLSchemeTask:(id<WKURLSchemeTask>)urlSchemeTask {
+}
+- (void)webView:(WKWebView*)webView
+    stopURLSchemeTask:(id<WKURLSchemeTask>)urlSchemeTask {
+}
+@end
 
 namespace web {
 
@@ -191,11 +205,6 @@ TEST_F(WKWebViewSharedResourcesProviderTest, WebSiteDataStoreUpdatedCallbacks) {
   provider.GetWebsiteDataStore();
   EXPECT_EQ(1, notification_count);
 
-  // Resetting the external data store without one set does nothing.
-  provider.ResetExternalWebsiteDataStore();
-  EXPECT_NSEQ(data_store, provider.GetWebsiteDataStore());
-  EXPECT_EQ(1, notification_count);
-
   // An external data store replaces it.
   WKWebsiteDataStore* external_data_store =
       WKWebsiteDataStore.nonPersistentDataStore;
@@ -208,11 +217,49 @@ TEST_F(WKWebViewSharedResourcesProviderTest, WebSiteDataStoreUpdatedCallbacks) {
   provider.SetExternalWebsiteDataStore(external_data_store);
   EXPECT_EQ(2, notification_count);
 
-  // Resetting it restores the BrowserState's own data store.
-  provider.ResetExternalWebsiteDataStore();
+  // Setting the BrowserState's own data store back notifies.
+  provider.SetExternalWebsiteDataStore(data_store);
   EXPECT_NSEQ(data_store, provider.GetWebsiteDataStore());
   EXPECT_NSEQ(data_store, recorded_data_store);
   EXPECT_EQ(3, notification_count);
+}
+
+// Tests that the external configuration is a copy of the one set.
+TEST_F(WKWebViewSharedResourcesProviderTest, ExternalConfiguration) {
+  FakeBrowserState browser_state(/*use_unique_storage_uuid=*/true);
+  WKWebViewSharedResourcesProvider& provider = GetProvider(&browser_state);
+  EXPECT_FALSE(provider.GetExternalConfiguration());
+
+  WKWebViewConfiguration* configuration = [[WKWebViewConfiguration alloc] init];
+  provider.SetExternalConfiguration(configuration);
+  WKWebViewConfiguration* external_configuration =
+      provider.GetExternalConfiguration();
+  ASSERT_TRUE(external_configuration);
+  EXPECT_NE(configuration, external_configuration);
+}
+
+// Tests that a configuration provider reset without a configuration derives it
+// from the external configuration, with a WKUserContentController of its own.
+TEST_F(WKWebViewSharedResourcesProviderTest,
+       ResetDerivesFromExternalConfiguration) {
+  FakeBrowserState browser_state(/*use_unique_storage_uuid=*/true);
+  WKWebViewConfiguration* external_configuration =
+      [[WKWebViewConfiguration alloc] init];
+  TestURLSchemeHandler* scheme_handler = [[TestURLSchemeHandler alloc] init];
+  [external_configuration setURLSchemeHandler:scheme_handler
+                                 forURLScheme:@"test-external"];
+  external_configuration.websiteDataStore =
+      GetProvider(&browser_state).GetWebsiteDataStore();
+  GetProvider(&browser_state).SetExternalConfiguration(external_configuration);
+
+  WKWebViewConfigurationProvider config_provider(&browser_state,
+                                                 /*web_state=*/nullptr);
+  WKWebViewConfiguration* configuration =
+      config_provider.GetWebViewConfiguration();
+  EXPECT_NSEQ(scheme_handler,
+              [configuration urlSchemeHandlerForURLScheme:@"test-external"]);
+  EXPECT_NSNE(external_configuration.userContentController,
+              configuration.userContentController);
 }
 
 // Tests that an applier installs the compiled lists on its controller, and

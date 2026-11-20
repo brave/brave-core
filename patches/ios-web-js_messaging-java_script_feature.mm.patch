@@ -1,0 +1,74 @@
+diff --git a/ios/web/js_messaging/java_script_feature.mm b/ios/web/js_messaging/java_script_feature.mm
+index 00ba750c8191f4d0fdcb90601cf974351bc2ea25..75155c1cf9a32f0fbca5d547dbda0021a7c57ced 100644
+--- a/ios/web/js_messaging/java_script_feature.mm
++++ b/ios/web/js_messaging/java_script_feature.mm
+@@ -337,8 +337,12 @@ bool JavaScriptFeature::CallJavaScriptFunction(
+     return false;
+   }
+ 
++  WebState* web_state = web_frame->GetWebFrameInternal()->GetWebState();
++  if (!web_state) {
++    return false;
++  }
+   JavaScriptFeatureManager* feature_manager =
+-      JavaScriptFeatureManager::FromBrowserState(web_frame->GetBrowserState());
++      JavaScriptFeatureManager::FromWebState(web_state);
+   DCHECK(feature_manager);
+ 
+   JavaScriptContentWorld* content_world =
+@@ -373,8 +377,12 @@ bool JavaScriptFeature::CallJavaScriptFunction(
+     return false;
+   }
+ 
++  WebState* web_state = web_frame->GetWebFrameInternal()->GetWebState();
++  if (!web_state) {
++    return false;
++  }
+   JavaScriptFeatureManager* feature_manager =
+-      JavaScriptFeatureManager::FromBrowserState(web_frame->GetBrowserState());
++      JavaScriptFeatureManager::FromWebState(web_state);
+   DCHECK(feature_manager);
+ 
+   JavaScriptContentWorld* content_world =
+@@ -434,8 +442,12 @@ bool JavaScriptFeature::ExecuteJavaScript(
+     return false;
+   }
+ 
++  WebState* web_state = web_frame->GetWebFrameInternal()->GetWebState();
++  if (!web_state) {
++    return false;
++  }
+   JavaScriptFeatureManager* feature_manager =
+-      JavaScriptFeatureManager::FromBrowserState(web_frame->GetBrowserState());
++      JavaScriptFeatureManager::FromWebState(web_state);
+   DCHECK(feature_manager);
+ 
+   JavaScriptContentWorld* content_world =
+@@ -469,8 +481,12 @@ bool JavaScriptFeature::CallAsyncJavaScriptFunction(
+     return false;
+   }
+ 
++  WebState* web_state = web_frame->GetWebFrameInternal()->GetWebState();
++  if (!web_state) {
++    return false;
++  }
+   JavaScriptFeatureManager* feature_manager =
+-      JavaScriptFeatureManager::FromBrowserState(web_frame->GetBrowserState());
++      JavaScriptFeatureManager::FromWebState(web_state);
+ 
+   JavaScriptContentWorld* content_world =
+       feature_manager->GetContentWorldForFeature(this);
+@@ -502,8 +518,12 @@ bool JavaScriptFeature::ExecuteAsyncJavaScript(
+     return false;
+   }
+ 
++  WebState* web_state = web_frame->GetWebFrameInternal()->GetWebState();
++  if (!web_state) {
++    return false;
++  }
+   JavaScriptFeatureManager* feature_manager =
+-      JavaScriptFeatureManager::FromBrowserState(web_frame->GetBrowserState());
++      JavaScriptFeatureManager::FromWebState(web_state);
+ 
+   JavaScriptContentWorld* content_world =
+       feature_manager->GetContentWorldForFeature(this);

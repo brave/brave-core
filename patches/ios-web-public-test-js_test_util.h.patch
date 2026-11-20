@@ -1,0 +1,13 @@
+diff --git a/ios/web/public/test/js_test_util.h b/ios/web/public/test/js_test_util.h
+index 9765ec78dc73569d224548d3c218f79c6c934410..08be64fda68675bbbf85d20db1def9c2abd21430 100644
+--- a/ios/web/public/test/js_test_util.h
++++ b/ios/web/public/test/js_test_util.h
+@@ -82,7 +82,7 @@ NSString* GetPageScript(NSString* script_file_name);
+ // NOTE: Do not call this when using a WebClient with features you rely on or
+ // `FakeWebClient::SetJavaScriptFeatures` as this will override those
+ // features.
+-void OverrideJavaScriptFeatures(web::BrowserState* browser_state,
++void OverrideJavaScriptFeatures(web::WebState* web_state,
+                                 std::vector<JavaScriptFeature*> features);
+ 
+ }  // namespace test

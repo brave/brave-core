@@ -1,0 +1,84 @@
+diff --git a/ios/web/js_messaging/web_frames_manager_java_script_feature.mm b/ios/web/js_messaging/web_frames_manager_java_script_feature.mm
+index 0a78dc4ecb9a39576944a0c6ffb89c54d782e873..0e70d424da975c732750b5ff0eace8cb2badda9a 100644
+--- a/ios/web/js_messaging/web_frames_manager_java_script_feature.mm
++++ b/ios/web/js_messaging/web_frames_manager_java_script_feature.mm
+@@ -21,9 +21,6 @@
+ namespace web {
+ 
+ namespace {
+-const char kWebFramesManagerJavaScriptFeatureContainerKeyName[] =
+-    "web_frames_manager_java_script_feature_container";
+-
+ const char kSetupFrameScriptName[] = "setup_frame";
+ const char kFrameListenersScriptName[] = "frame_listeners";
+ 
+@@ -34,45 +31,6 @@ NSString* const kFrameUnavailableScriptHandlerName = @"FrameBecameUnavailable";
+ 
+ }  // namespace
+ 
+-#pragma mark - WebFramesManagerJavaScriptFeature::Container
+-
+-// static
+-WebFramesManagerJavaScriptFeature::Container*
+-WebFramesManagerJavaScriptFeature::Container::FromBrowserState(
+-    BrowserState* browser_state) {
+-  DCHECK(browser_state);
+-
+-  WebFramesManagerJavaScriptFeature::Container* container =
+-      static_cast<WebFramesManagerJavaScriptFeature::Container*>(
+-          browser_state->GetUserData(
+-              kWebFramesManagerJavaScriptFeatureContainerKeyName));
+-  if (!container) {
+-    container = new WebFramesManagerJavaScriptFeature::Container(browser_state);
+-    browser_state->SetUserData(
+-        kWebFramesManagerJavaScriptFeatureContainerKeyName,
+-        base::WrapUnique(container));
+-  }
+-  return container;
+-}
+-
+-WebFramesManagerJavaScriptFeature::Container::Container(
+-    BrowserState* browser_state)
+-    : browser_state_(browser_state) {}
+-WebFramesManagerJavaScriptFeature::Container::~Container() = default;
+-
+-WebFramesManagerJavaScriptFeature*
+-WebFramesManagerJavaScriptFeature::Container::FeatureForContentWorld(
+-    ContentWorld content_world) {
+-  DCHECK_NE(content_world, ContentWorld::kAllContentWorlds);
+-
+-  auto& feature = features_[content_world];
+-  if (!feature) {
+-    feature = base::WrapUnique(
+-        new WebFramesManagerJavaScriptFeature(content_world, browser_state_));
+-  }
+-  return feature.get();
+-}
+-
+ #pragma mark - WebFramesManagerJavaScriptFeature
+ 
+ WebFramesManagerJavaScriptFeature::WebFramesManagerJavaScriptFeature(
+@@ -98,23 +56,6 @@ WebFramesManagerJavaScriptFeature::WebFramesManagerJavaScriptFeature(
+ WebFramesManagerJavaScriptFeature::~WebFramesManagerJavaScriptFeature() =
+     default;
+ 
+-// static
+-std::vector<WebFramesManagerJavaScriptFeature*>
+-WebFramesManagerJavaScriptFeature::AllContentWorldFeaturesFromBrowserState(
+-    BrowserState* browser_state) {
+-  JavaScriptFeatureManager* feature_manager =
+-      JavaScriptFeatureManager::FromBrowserState(browser_state);
+-
+-  std::vector<WebFramesManagerJavaScriptFeature*> features;
+-  for (ContentWorld world : feature_manager->GetAllContentWorldEnums()) {
+-    features.push_back(
+-        WebFramesManagerJavaScriptFeature::Container::FromBrowserState(
+-            browser_state)
+-            ->FeatureForContentWorld(world));
+-  }
+-  return features;
+-}
+-
+ void WebFramesManagerJavaScriptFeature::ConfigureHandlers(
+     WKUserContentController* user_content_controller) {
+   // Reset the old handlers first as handlers with the same name can not be

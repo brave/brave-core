@@ -20,3 +20,66 @@ substitutions:
         \1// and script message handlers.
         \2void ConfigureFeatures(WKUserContentController* user_content_controller,
         \1                       std::vector<JavaScriptFeature*> features);
+
+  - description: |-
+      Configure the features of a single WebState.
+
+      Each WebState has its own WKUserContentController, so the
+      JavaScriptFeatureManager is owned by the WebState's
+      WKWebViewConfigurationProvider instead of being BrowserState user data.
+    regex:
+      re_pattern:
+        '// Configures JavaScriptFeatures for `browser_state`\. (.*?)class
+        JavaScriptFeatureManager : public base::SupportsUserData::Data \{\n
+        public:\n  ~JavaScriptFeatureManager\(\) override;'
+      re_flags: [DOTALL]
+      replace: |-
+        // Configures JavaScriptFeatures for a WebState. \1class JavaScriptFeatureManager {
+         public:
+          JavaScriptFeatureManager();
+          ~JavaScriptFeatureManager();
+
+  - description: |-
+      Look up the JavaScriptFeatureManager and content worlds of a WebState.
+
+      They used to be shared by the BrowserState.
+    regex:
+      re_pattern:
+        '// Returns the JavaScriptFeatureManager associated with
+        `browser_state`\..*?GetContentWorldForBrowserState\(\n\s*ContentWorld
+        content_world,\n\s*BrowserState\* browser_state\);'
+      re_flags: [DOTALL]
+      replace: |-
+        // Returns the JavaScriptFeatureManager of `web_state`. `web_state` must
+          // not be null.
+          static JavaScriptFeatureManager* FromWebState(WebState* web_state);
+
+          // Returns the JavaScriptContentWorld for `content_world` of `web_state`,
+          // or null if the features of `web_state` are not configured yet.
+          // `web_state` must not be null.
+          static JavaScriptContentWorld* GetContentWorldForWebState(
+              ContentWorld content_world,
+              WebState* web_state);
+
+  - description: |-
+      Document that the content world of a feature is unknown until the
+      features are configured.
+    regex:
+      re_pattern:
+        '// Returns the content world associated with `feature` or null if the
+        feature\n(\s*)// has not be added to the associated `browser_state_`\.'
+      replace: |-
+        // Returns the content world associated with `feature` or null if the feature
+        \1// has not been configured.
+
+  - description: Drop the BrowserState the manager used to be keyed to.
+    regex:
+      re_pattern:
+        '\n\s*JavaScriptFeatureManager\(BrowserState\*
+        browser_state\);\n\n\s*raw_ptr<BrowserState> browser_state_;\n'
+      replace: ''
+
+  - description: Forward declare the WebState the manager is looked up from.
+    regex:
+      re_pattern: 'class BrowserState;\n(class JavaScriptFeature;\n)'
+      replace: '\1class WebState;\n'

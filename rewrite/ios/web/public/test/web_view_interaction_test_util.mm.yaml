@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Look up the content world of a feature through the WebState.
+
+      Each WebState has its own JavaScriptFeatureManager.
+    regex:
+      re_pattern: 'JavaScriptFeatureManager::FromBrowserState\(\n\s*web_state->GetBrowserState\(\)\);'
+      replace: 'JavaScriptFeatureManager::FromWebState(web_state);'
+
+  - description: Look up the page content world of the WebState.
+    regex:
+      re_pattern:
+        'JavaScriptFeatureManager::GetContentWorldForBrowserState\(\n(\s*)ContentWorld::kPageContentWorld,
+        web_state->GetBrowserState\(\)\);'
+      replace: |-
+        JavaScriptFeatureManager::GetContentWorldForWebState(
+        \1ContentWorld::kPageContentWorld, web_state);

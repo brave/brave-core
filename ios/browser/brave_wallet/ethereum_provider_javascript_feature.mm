@@ -33,7 +33,6 @@
 #include "ios/web/public/navigation/navigation_manager.h"
 #include "ios/web/public/security/ssl_status.h"
 #include "ios/web/public/web_state.h"
-#include "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "url/gurl.h"
@@ -141,34 +140,10 @@ EthereumProviderJavaScriptFeature::EthereumProviderJavaScriptFeature(
                         /*feature_scripts=*/{}),
       profile_(profile),
       provider_bundle_js_(LoadDataResource(
-          IDR_BRAVE_WALLET_SCRIPT_ETHEREUM_PROVIDER_SCRIPT_BUNDLE_JS)) {
-  pref_change_registrar_.Init(profile->GetPrefs());
-  pref_change_registrar_.Add(
-      kDefaultEthereumWallet,
-      base::BindRepeating(
-          &EthereumProviderJavaScriptFeature::OnScriptGatingPrefChanged,
-          base::Unretained(this)));
-  // Creating or resetting a wallet flips whether the provider is injected.
-  is_wallet_created_ = IsWalletCreated(profile->GetPrefs());
-  pref_change_registrar_.Add(
-      kBraveWalletKeyrings,
-      base::BindRepeating(&EthereumProviderJavaScriptFeature::OnKeyringsChanged,
-                          base::Unretained(this)));
-}
+          IDR_BRAVE_WALLET_SCRIPT_ETHEREUM_PROVIDER_SCRIPT_BUNDLE_JS)) {}
 
 EthereumProviderJavaScriptFeature::~EthereumProviderJavaScriptFeature() =
     default;
-
-void EthereumProviderJavaScriptFeature::OnKeyringsChanged() {
-  // The keyrings pref is also written on every account add, rename and
-  // removal. Only rebuild the scripts when the created state actually changed.
-  bool is_wallet_created = IsWalletCreated(profile_->GetPrefs());
-  if (is_wallet_created == is_wallet_created_) {
-    return;
-  }
-  is_wallet_created_ = is_wallet_created;
-  OnScriptGatingPrefChanged();
-}
 
 // static
 EthereumProviderJavaScriptFeature*
@@ -186,13 +161,6 @@ EthereumProviderJavaScriptFeature::FromBrowserState(
                                base::WrapUnique(feature));
   }
   return feature;
-}
-
-void EthereumProviderJavaScriptFeature::OnScriptGatingPrefChanged() {
-  // Feature scripts must be explicitly updated after this pref changes.
-  web::WKWebViewConfigurationProvider& config_provider =
-      web::WKWebViewConfigurationProvider::FromBrowserState(profile_);
-  config_provider.UpdateScripts();
 }
 
 std::vector<web::JavaScriptFeature::FeatureScript>

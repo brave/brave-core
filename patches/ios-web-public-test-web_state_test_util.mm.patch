@@ -1,0 +1,15 @@
+diff --git a/ios/web/public/test/web_state_test_util.mm b/ios/web/public/test/web_state_test_util.mm
+index 42423b3ef0d94abd5b9e66c8548eabe7a9cb540e..95b57679a007994f2fa71a98ae942f0e55f54874 100644
+--- a/ios/web/public/test/web_state_test_util.mm
++++ b/ios/web/public/test/web_state_test_util.mm
+@@ -141,8 +141,8 @@ bool LoadHtmlWithoutSubresources(NSString* html, web::WebState* web_state) {
+   }
+   DCHECK(content_rule_list);
+   web::WKWebViewConfigurationProvider& configuration_provider =
+-      web::WKWebViewConfigurationProvider::FromBrowserState(
+-          web_state->GetBrowserState());
++      web::WebStateImpl::FromWebState(web_state)
++          ->GetWKWebViewConfigurationProvider();
+   WKWebViewConfiguration* configuration =
+       configuration_provider.GetWebViewConfiguration();
+   [configuration.userContentController addContentRuleList:content_rule_list];

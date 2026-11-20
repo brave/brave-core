@@ -1,0 +1,17 @@
+diff --git a/ios/web/web_state/web_state_impl.mm b/ios/web/web_state/web_state_impl.mm
+index 0d977b000f9c0172d24b2d550f2e601aa1bd4b15..ccc6f24dd6839311fed33482aad18b2d55938370 100644
+--- a/ios/web/web_state/web_state_impl.mm
++++ b/ios/web/web_state/web_state_impl.mm
+@@ -252,6 +252,12 @@ WebFramesManagerImpl& WebStateImpl::GetWebFramesManagerImpl(
+   return *managers_[world].get();
+ }
+ 
++WKWebViewConfigurationProvider&
++WebStateImpl::GetWKWebViewConfigurationProvider() {
++  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
++  return RealizedState()->GetWKWebViewConfigurationProvider();
++}
++
+ SessionCertificatePolicyCacheImpl&
+ WebStateImpl::GetSessionCertificatePolicyCacheImpl() {
+   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);

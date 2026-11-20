@@ -1,0 +1,32 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Drop the BrowserState user data key of the removed `Container`.
+
+      The WKWebViewConfigurationProvider of each WebState owns the features.
+    regex:
+      re_pattern:
+        'const char kWebFramesManagerJavaScriptFeatureContainerKeyName\[\]
+        =\n[^;]*;\n\n'
+      replace: ''
+
+  - description: Drop the removed `Container`.
+    regex:
+      re_pattern:
+        '#pragma mark -
+        WebFramesManagerJavaScriptFeature::Container\n.*?(#pragma mark -
+        WebFramesManagerJavaScriptFeature\n)'
+      re_flags: [DOTALL]
+      replace: '\1'
+
+  - description: Drop the removed `AllContentWorldFeaturesFromBrowserState`.
+    regex:
+      re_pattern:
+        '//
+        static\nstd::vector<WebFramesManagerJavaScriptFeature\*>\nWebFramesManagerJavaScriptFeature::AllContentWorldFeaturesFromBrowserState\(.*?\n\}\n\n'
+      re_flags: [DOTALL]
+      replace: ''

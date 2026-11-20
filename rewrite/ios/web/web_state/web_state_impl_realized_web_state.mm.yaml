@@ -68,3 +68,39 @@ substitutions:
     regex:
       re_pattern: 'if \(web_ui_ && \('
       replace: 'if (HasWebUI() && ('
+
+  - description: |-
+      Retrieve the frames of the content worlds configured for this WebState.
+
+      Each WebState has its own JavaScriptFeatureManager, owned by its
+      WKWebViewConfigurationProvider.
+    regex:
+      pattern: |-
+        JavaScriptFeatureManager* feature_manager =
+              JavaScriptFeatureManager::FromBrowserState(owner_->GetBrowserState());
+      replace: |-
+        JavaScriptFeatureManager* feature_manager =
+              GetWKWebViewConfigurationProvider().GetJavaScriptFeatureManager();
+
+  - description: Define `GetWKWebViewConfigurationProvider`.
+    regex:
+      re_pattern:
+        '(\nvoid WebStateImpl::RealizedWebState::RetrieveExistingFrames\(\)
+        \{\n.*?\n\}\n)'
+      re_flags: [DOTALL]
+      replace: |
+        \1
+        WKWebViewConfigurationProvider&
+        WebStateImpl::RealizedWebState::GetWKWebViewConfigurationProvider() {
+          if (!web_view_configuration_provider_) {
+            web_view_configuration_provider_ =
+                std::make_unique<WKWebViewConfigurationProvider>(GetBrowserState());
+          }
+          return *web_view_configuration_provider_;
+        }
+
+  - description: Include the provider owned by the WebState.
+    add_after_line:
+      line: '#import "ios/web/web_state/ui/crw_web_view_navigation_proxy.h"'
+      code:
+        '#import "ios/web/web_state/ui/wk_web_view_configuration_provider.h"'

@@ -1,16 +1,18 @@
 diff --git a/ios/web/web_state/ui/wk_web_view_configuration_provider.h b/ios/web/web_state/ui/wk_web_view_configuration_provider.h
-index 4f73d6e391318caa3fb217613bc8ed2551d18153..657075b6ad13e86d8c3e544e9e9677dbfdf5d552 100644
+index 4f73d6e391318caa3fb217613bc8ed2551d18153..da5f85d74d09e463b35986e4a763709fd17df438 100644
 --- a/ios/web/web_state/ui/wk_web_view_configuration_provider.h
 +++ b/ios/web/web_state/ui/wk_web_view_configuration_provider.h
-@@ -9,38 +9,24 @@
+@@ -8,51 +8,29 @@
+ #include <CoreFoundation/CoreFoundation.h>
  
  #include <memory>
++#include <vector>
  
 -#include "base/callback_list.h"
  #include "base/memory/raw_ptr.h"
  #include "base/memory/weak_ptr.h"
  #include "base/sequence_checker.h"
- #include "base/supports_user_data.h"
+-#include "base/supports_user_data.h"
  
  @class CRWWebUISchemeHandler;
 -@class WKWebsiteDataStore;
@@ -24,38 +26,65 @@ index 4f73d6e391318caa3fb217613bc8ed2551d18153..657075b6ad13e86d8c3e544e9e9677db
  
  class BrowserState;
 -class WKContentRuleListProvider;
--
++class JavaScriptFeatureManager;
++class WebFramesManagerJavaScriptFeature;
++class WKContentRuleListApplier;
+ 
 -// Keys for the static content rule lists managed by this provider.
 -inline constexpr char kBlockLocalResourcesRuleListKey[] = "BlockLocalResources";
 -inline constexpr char kMixedContentUpgradeRuleListKey[] = "MixedContentUpgrade";
-+class WKContentRuleListApplier;
- 
- // A provider class associated with a single web::BrowserState object. Manages
+-
+-// A provider class associated with a single web::BrowserState object. Manages
++// A provider class associated with a single web::WebState object. Manages
  // the lifetime and performs setup of WKWebViewConfiguration and instances. Not
  // thread safe. Must be used only on the main thread.
- class WKWebViewConfigurationProvider : public base::SupportsUserData::Data {
+-class WKWebViewConfigurationProvider : public base::SupportsUserData::Data {
++class WKWebViewConfigurationProvider {
   public:
 -  // Callbacks invoked when a new WKWebViewConfiguration is created.
 -  using WebSiteDataStoreUpdatedCallbackList =
 -      base::RepeatingCallbackList<void(WKWebsiteDataStore*)>;
 -
-   ~WKWebViewConfigurationProvider() override;
- 
-   // Returns a provider for the given `browser_state`. Lazily attaches one if it
-@@ -48,12 +34,6 @@ class WKWebViewConfigurationProvider : public base::SupportsUserData::Data {
-   static web::WKWebViewConfigurationProvider& FromBrowserState(
-       web::BrowserState* browser_state);
- 
+-  ~WKWebViewConfigurationProvider() override;
+-
+-  // Returns a provider for the given `browser_state`. Lazily attaches one if it
+-  // does not exist. `browser_state` can not be null.
+-  static web::WKWebViewConfigurationProvider& FromBrowserState(
+-      web::BrowserState* browser_state);
+-
 -  // Delete the storage associated with uuid. This must only be called if no
 -  // storage is created for that identifier.
 -  static void DeleteDataStorageForIdentifier(
 -      const base::Uuid& uuid,
 -      base::OnceCallback<void(NSError*)> callback);
--
++  explicit WKWebViewConfigurationProvider(BrowserState* browser_state);
++  ~WKWebViewConfigurationProvider();
+ 
    // Returns a WeakPtr to the current instance.
    base::WeakPtr<WKWebViewConfigurationProvider> AsWeakPtr();
+@@ -63,17 +41,10 @@ class WKWebViewConfigurationProvider : public base::SupportsUserData::Data {
+   // make it work for //ios/web. If `configuration` is nil, a new
+   // WKWebViewConfiguration object will be created and set.
+   //
+-  // WARNING: This method should NOT be used
+-  // for any `configuration` that is originated from a //ios/web managed
+-  // WKWebView (e.g. you will get a WKWebViewConfiguration from a delegate
+-  // method when window.open() is called in a //ios/web managed WKWebView),
+-  // because such a `configuration` is based on the current //ios/web
+-  // configuration which has already been initialized with the Chrome's
+-  // configuration initialization logic when it was passed to a initializer of
+-  // //ios/web. Which means, this method should only be used for a newly created
+-  // `configuration` or a `configuration` originated from somewhere outside
+-  // //ios/web. This method is mainly used by
+-  // WKWebViewConfigurationProvider::GetWebViewConfiguration().
++  // `configuration` may be shared with other WKWebViews (e.g. it is derived
++  // from the opener's configuration when window.open() is called in a
++  // //ios/web managed WKWebView), so this WebState gets its own
++  // WKUserContentController and WKPreferences.
+   void ResetWithWebViewConfiguration(WKWebViewConfiguration* configuration);
  
-@@ -84,10 +64,6 @@ class WKWebViewConfigurationProvider : public base::SupportsUserData::Data {
+   // Returns an autoreleased shallow copy of WKWebViewConfiguration associated
+@@ -84,10 +55,6 @@ class WKWebViewConfigurationProvider : public base::SupportsUserData::Data {
    // Callers must not retain the returned object.
    WKWebViewConfiguration* GetWebViewConfiguration();
  
@@ -66,7 +95,7 @@ index 4f73d6e391318caa3fb217613bc8ed2551d18153..657075b6ad13e86d8c3e544e9e9677db
    // Recreates and re-adds all injected Javascript into the current
    // configuration. This will only affect WebStates that are loaded after a call
    // to this function. All current WebStates will keep their existing Javascript
-@@ -103,23 +79,9 @@ class WKWebViewConfigurationProvider : public base::SupportsUserData::Data {
+@@ -103,23 +70,12 @@ class WKWebViewConfigurationProvider : public base::SupportsUserData::Data {
    // the default webpage preferences of the configuration.
    void SetUniversalOptOutEnabled(bool enabled) API_AVAILABLE(ios(27));
  
@@ -78,10 +107,13 @@ index 4f73d6e391318caa3fb217613bc8ed2551d18153..657075b6ad13e86d8c3e544e9e9677db
 -  // this provider.
 -  base::CallbackListSubscription RegisterWebSiteDataStoreUpdatedCallback(
 -      WebSiteDataStoreUpdatedCallbackList::CallbackType callback);
--
++  // Returns the JavaScriptFeatureManager configuring the features of this
++  // provider's configuration.
++  JavaScriptFeatureManager* GetJavaScriptFeatureManager();
+ 
   private:
    friend class WKWebViewConfigurationProviderTest;
-   explicit WKWebViewConfigurationProvider(BrowserState* browser_state);
+-  explicit WKWebViewConfigurationProvider(BrowserState* browser_state);
 -  // Constructor that allows for injecting a custom rule list provider.
 -  // Used for testing.
 -  WKWebViewConfigurationProvider(
@@ -90,7 +122,7 @@ index 4f73d6e391318caa3fb217613bc8ed2551d18153..657075b6ad13e86d8c3e544e9e9677db
    WKWebViewConfigurationProvider() = delete;
  
    // Mark copy-constructible and copy-assignable deleted.
-@@ -128,26 +90,12 @@ class WKWebViewConfigurationProvider : public base::SupportsUserData::Data {
+@@ -128,26 +84,16 @@ class WKWebViewConfigurationProvider : public base::SupportsUserData::Data {
    WKWebViewConfigurationProvider& operator=(
        const WKWebViewConfigurationProvider&) = delete;
  
@@ -115,6 +147,10 @@ index 4f73d6e391318caa3fb217613bc8ed2551d18153..657075b6ad13e86d8c3e544e9e9677db
 -  // //ios/web.
 -  bool is_data_store_originated_from_ios_web_ = true;
 +  std::unique_ptr<WKContentRuleListApplier> content_rule_list_applier_;
++  std::vector<std::unique_ptr<WebFramesManagerJavaScriptFeature>>
++      web_frames_manager_features_;
++  // Declared after the features its content worlds refer to.
++  std::unique_ptr<JavaScriptFeatureManager> java_script_feature_manager_;
  
    // Weak pointer factory.
    base::WeakPtrFactory<WKWebViewConfigurationProvider> weak_ptr_factory_{this};

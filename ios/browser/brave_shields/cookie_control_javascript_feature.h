@@ -8,7 +8,6 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/supports_user_data.h"
-#include "components/prefs/pref_change_registrar.h"
 #include "ios/web/public/js_messaging/java_script_feature.h"
 
 namespace web {
@@ -30,10 +29,7 @@ class CookieControlJavaScriptFeature : public web::JavaScriptFeature,
       const override;
 
  private:
-  PrefChangeRegistrar prefs_change_registrar_;
   raw_ptr<ProfileIOS> profile_;
-
-  void OnPrefUpdated();
 
   explicit CookieControlJavaScriptFeature(ProfileIOS* profile);
 };

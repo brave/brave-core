@@ -1,12 +1,46 @@
 diff --git a/ios/web/public/test/js_test_util.mm b/ios/web/public/test/js_test_util.mm
-index 033c6a06d7b14d758b4016ca7da185ab5926071c..be1320e41788b74f2da32a1ca87ac3224ddd8333 100644
+index 033c6a06d7b14d758b4016ca7da185ab5926071c..6ec7ef7fbdf2537224056e46fc450e68931c29cb 100644
 --- a/ios/web/public/test/js_test_util.mm
 +++ b/ios/web/public/test/js_test_util.mm
-@@ -192,7 +192,7 @@ void OverrideJavaScriptFeatures(web::BrowserState* browser_state,
+@@ -116,7 +116,7 @@ void ExecuteJavaScriptForFeature(web::WebState* web_state,
+                                  NSString* script,
+                                  JavaScriptFeature* feature) {
+   JavaScriptFeatureManager* feature_manager =
+-      JavaScriptFeatureManager::FromBrowserState(web_state->GetBrowserState());
++      JavaScriptFeatureManager::FromWebState(web_state);
+   JavaScriptContentWorld* world =
+       feature_manager->GetContentWorldForFeature(feature);
+ 
+@@ -151,7 +151,7 @@ id ExecuteJavaScriptForFeatureAndReturnResult(web::WebState* web_state,
+                                               NSString* script,
+                                               JavaScriptFeature* feature) {
+   JavaScriptFeatureManager* feature_manager =
+-      JavaScriptFeatureManager::FromBrowserState(web_state->GetBrowserState());
++      JavaScriptFeatureManager::FromWebState(web_state);
+   JavaScriptContentWorld* world =
+       feature_manager->GetContentWorldForFeature(feature);
+ 
+@@ -180,10 +180,11 @@ NSString* GetPageScript(NSString* script_file_name) {
+   return web::GetPageScript(script_file_name);
+ }
+ 
+-void OverrideJavaScriptFeatures(web::BrowserState* browser_state,
++void OverrideJavaScriptFeatures(web::WebState* web_state,
+                                 std::vector<JavaScriptFeature*> features) {
+   WKWebViewConfigurationProvider& configuration_provider =
+-      WKWebViewConfigurationProvider::FromBrowserState(browser_state);
++      WebStateImpl::FromWebState(web_state)
++          ->GetWKWebViewConfigurationProvider();
+   WKWebViewConfiguration* configuration =
+       configuration_provider.GetWebViewConfiguration();
+   // User scripts must be removed because
+@@ -191,8 +192,8 @@ void OverrideJavaScriptFeatures(web::BrowserState* browser_state,
+   // handlers.
    [configuration.userContentController removeAllUserScripts];
  
-   JavaScriptFeatureManager::FromBrowserState(browser_state)
+-  JavaScriptFeatureManager::FromBrowserState(browser_state)
 -      ->ConfigureFeatures(features);
++  JavaScriptFeatureManager::FromWebState(web_state)
 +      ->ConfigureFeatures(configuration.userContentController, features);
  }
  

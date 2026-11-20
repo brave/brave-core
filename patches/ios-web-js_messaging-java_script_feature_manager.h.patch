@@ -1,10 +1,50 @@
 diff --git a/ios/web/js_messaging/java_script_feature_manager.h b/ios/web/js_messaging/java_script_feature_manager.h
-index 5e93a79073ee760b441291c800dec2c320facb10..e8bb9469d6b76baa4473260beea9444c62d08ab9 100644
+index 5e93a79073ee760b441291c800dec2c320facb10..77e19c8dfe70fb4dc7d52000ff468e2130b5d6c4 100644
 --- a/ios/web/js_messaging/java_script_feature_manager.h
 +++ b/ios/web/js_messaging/java_script_feature_manager.h
-@@ -42,10 +42,11 @@ class JavaScriptFeatureManager : public base::SupportsUserData::Data {
+@@ -15,40 +15,39 @@
+ 
+ namespace web {
+ 
+-class BrowserState;
+ class JavaScriptFeature;
++class WebState;
+ 
+-// Configures JavaScriptFeatures for `browser_state`. The features will be
++// Configures JavaScriptFeatures for a WebState. The features will be
+ // added to either `page_content_world_` or `isolated_world_` based on
+ // JavaScriptFeature::GetSupportedContentWorld().
+-class JavaScriptFeatureManager : public base::SupportsUserData::Data {
++class JavaScriptFeatureManager {
+  public:
+-  ~JavaScriptFeatureManager() override;
++  JavaScriptFeatureManager();
++  ~JavaScriptFeatureManager();
+ 
+   JavaScriptFeatureManager(const JavaScriptFeatureManager&) = delete;
+   JavaScriptFeatureManager& operator=(const JavaScriptFeatureManager&) = delete;
+ 
+-  // Returns the JavaScriptFeatureManager associated with `browser_state`.
+-  // If a JavaScriptFeatureManager does not already exist, one will be created
+-  // and associated with `browser_state`. `browser_state` must not be null.
+-  static JavaScriptFeatureManager* FromBrowserState(
+-      BrowserState* browser_state);
++  // Returns the JavaScriptFeatureManager of `web_state`. `web_state` must
++  // not be null.
++  static JavaScriptFeatureManager* FromWebState(WebState* web_state);
+ 
+-  // Returns the JavaScriptContentWorld for `content_world` associated
+-  // with `browser_state`. If a JavaScriptFeatureManager does not already exist,
+-  // one will be created and associated with `browser_state`. `browser_state`
+-  // must not be null.
+-  static JavaScriptContentWorld* GetContentWorldForBrowserState(
++  // Returns the JavaScriptContentWorld for `content_world` of `web_state`,
++  // or null if the features of `web_state` are not configured yet.
++  // `web_state` must not be null.
++  static JavaScriptContentWorld* GetContentWorldForWebState(
        ContentWorld content_world,
-       BrowserState* browser_state);
+-      BrowserState* browser_state);
++      WebState* web_state);
  
 -  // Configures `features` on `user_content_controller_` by adding user scripts
 +  // Configures `features` on `user_content_controller` by adding user scripts
@@ -15,4 +55,19 @@ index 5e93a79073ee760b441291c800dec2c320facb10..e8bb9469d6b76baa4473260beea9444c
 +                         std::vector<JavaScriptFeature*> features);
  
    // Returns the content world associated with `feature` or null if the feature
-   // has not be added to the associated `browser_state_`.
+-  // has not be added to the associated `browser_state_`.
++  // has not been configured.
+   JavaScriptContentWorld* GetContentWorldForFeature(JavaScriptFeature* feature);
+ 
+   // Returns a list of all the content worlds used by features.
+@@ -58,10 +57,6 @@ class JavaScriptFeatureManager : public base::SupportsUserData::Data {
+   std::vector<ContentWorld> GetAllContentWorldEnums();
+ 
+  private:
+-  JavaScriptFeatureManager(BrowserState* browser_state);
+-
+-  raw_ptr<BrowserState> browser_state_;
+-
+   // The content world shared with the page content JavaScript.
+   std::unique_ptr<JavaScriptContentWorld> page_content_world_;
+   // A content world isolated from the page content JavaScript for application
