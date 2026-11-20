@@ -162,6 +162,10 @@ def main() -> int:
             import alias.follow_renames
 
             return alias.follow_renames.cmd_follow_renames(rest)
+        if subcmd == 'rebase-feature-branch':
+            import alias.rebase_feature_branch
+
+            return alias.rebase_feature_branch.cmd_rebase_feature_branch(rest)
     except UserValidationError as e:
         print(e, file=sys.stderr)
         return 1
