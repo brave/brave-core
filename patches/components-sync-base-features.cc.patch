@@ -1,5 +1,5 @@
 diff --git a/components/sync/base/features.cc b/components/sync/base/features.cc
-index e4a5fc5f8e16ce6e8793e295da40fbbc640bb2ad..deaa8b2db8a5395424841163a9446b492b5054ee 100644
+index 134b76777595b55e7af29b3f547687d3881082ad..6d3985e7d58b1d31d336510ab41d7218fd94471e 100644
 --- a/components/sync/base/features.cc
 +++ b/components/sync/base/features.cc
 @@ -35,9 +35,7 @@ BASE_FEATURE(kSyncNotebook, base::FEATURE_DISABLED_BY_DEFAULT);
@@ -13,15 +13,7 @@ index e4a5fc5f8e16ce6e8793e295da40fbbc640bb2ad..deaa8b2db8a5395424841163a9446b49
  
  #if !BUILDFLAG(IS_CHROMEOS) && !BUILDFLAG(IS_IOS)
  BASE_FEATURE(kUnoPhase2FollowUp, base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -61,6 +59,7 @@ BASE_FEATURE(kSyncEnableContactInfoDataTypeForDasherUsers,
-              base::FEATURE_DISABLED_BY_DEFAULT);
- 
- bool IsReplaceSyncPromosWithSignInPromosEnabled() {
-+  if ((true)) return false;
-   return true;
- }
- 
-@@ -88,7 +87,7 @@ DEFINE_SYNC_AUTOFILL_AI_FEATURE(kSyncAccountSettings);
+@@ -84,7 +82,7 @@ DEFINE_SYNC_AUTOFILL_AI_FEATURE(kSyncAccountSettings);
  DEFINE_SYNC_AUTOFILL_AI_FEATURE(kSyncAutofillValuable);
  #endif
  
