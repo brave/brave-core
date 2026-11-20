@@ -1658,6 +1658,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
           FEATURE_VALUE_TYPE(blink::features::kBraveGlobalPrivacyControl),     \
       },                                                                       \
       {                                                                        \
+          "brave-window-management",                                           \
+          "Enable Window Management API",                                      \
+          "Expose Window.getScreenDetails(), Screen.isExtended and "           \
+          "Screen.onchange to websites. They reveal the screens attached "     \
+          "to your device, which can be used to fingerprint you.",             \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(blink::features::kBraveWindowManagement),         \
+      },                                                                       \
+      {                                                                        \
           "https-by-default",                                                  \
           "Use HTTPS by Default",                                              \
           "Attempt to connect to all websites using HTTPS before falling "     \
