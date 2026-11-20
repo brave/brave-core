@@ -1422,10 +1422,14 @@ void AIChatService::OnClientConnectionChanged(ConversationHandler* handler) {
     ai_chat_metrics_->RecordConversationUnload(
         handler->get_conversation_uuid());
   }
-  // A connected client, whichever path bound it, counts as viewing the
-  // conversation.
+  QueueMaybeUnloadConversation(handler);
+}
+
+void AIChatService::OnClientVisibilityChanged(ConversationHandler* handler) {
+  // A hidden client, such as the side panel of an inactive tab, keeps the
+  // conversation loaded but doesn't view it.
   const std::string& uuid = handler->get_conversation_uuid();
-  if (handler->IsAnyClientConnected()) {
+  if (handler->IsAnyClientVisible()) {
     auto it = conversation_generation_state_.find(uuid);
     if (it != conversation_generation_state_.end() &&
         it->second != mojom::ConversationGenerationState::kGenerating) {
@@ -1438,7 +1442,6 @@ void AIChatService::OnClientConnectionChanged(ConversationHandler* handler) {
         mojom::ConversationGenerationState::kAwaitingUserInput;
     NotifyConversationGenerationStateChanged();
   }
-  QueueMaybeUnloadConversation(handler);
 }
 
 void AIChatService::OnConversationTitleChanged(
@@ -1644,10 +1647,9 @@ void AIChatService::SetNotificationDelegate(
   notification_delegate_ = std::move(delegate);
 }
 
-bool AIChatService::IsConversationClientConnected(
-    const std::string& uuid) const {
+bool AIChatService::IsConversationViewed(const std::string& uuid) const {
   auto* handler = base::FindPtrOrNull(conversation_handlers_, uuid);
-  return handler && handler->IsAnyClientConnected();
+  return handler && handler->IsAnyClientVisible();
 }
 
 void AIChatService::MaybeMarkGenerationComplete(
@@ -1663,7 +1665,7 @@ void AIChatService::MaybeMarkGenerationComplete(
       (handler->IsRequestInProgress() || handler->IsToolUseInProgress())) {
     return;
   }
-  if (IsConversationClientConnected(conversation_uuid)) {
+  if (IsConversationViewed(conversation_uuid)) {
     conversation_generation_state_.erase(it);
     NotifyConversationGenerationStateChanged();
     return;

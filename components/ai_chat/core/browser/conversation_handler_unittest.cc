@@ -146,6 +146,12 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
   // dispatched - including when the point is that it sent nothing.
   void FlushForTesting() { conversation_ui_receiver_.FlushForTesting(); }
 
+  // Reports visibility as the WebUI does, waiting until it's handled.
+  void SetVisible(bool visible) {
+    conversation_handler_->SetClientVisible(visible);
+    conversation_handler_.FlushForTesting();
+  }
+
   MOCK_METHOD(void,
               OnConversationHistoryUpdate,
               (const mojom::ConversationTurnPtr),
@@ -9417,6 +9423,75 @@ TEST_F(ConversationHandlerUnitTest,
       std::nullopt, "plan", std::nullopt, std::nullopt, std::nullopt,
       /*supports_allow_session=*/false));
   EXPECT_TRUE(conversation_handler_->IsAwaitingUserInput());
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       ClientVisibility_NotifiesOnlyWhenFirstShownOrLastHidden) {
+  NiceMock<MockConversationHandlerObserver> observer;
+  observer.Observe(conversation_handler_.get());
+  ConversationHandler* handler = conversation_handler_.get();
+
+  // With no visible client, a new one counts as hidden until it reports.
+  NiceMock<MockConversationHandlerClient> side_panel(handler);
+  NiceMock<MockConversationHandlerClient> full_page(handler);
+  EXPECT_TRUE(handler->IsAnyClientConnected());
+  EXPECT_FALSE(handler->IsAnyClientVisible());
+
+  // Observers hear only when the first client shows or the last one hides.
+  EXPECT_CALL(observer, OnClientVisibilityChanged(handler)).Times(1);
+  side_panel.SetVisible(true);
+  full_page.SetVisible(true);
+  side_panel.SetVisible(false);
+  testing::Mock::VerifyAndClearExpectations(&observer);
+  EXPECT_TRUE(handler->IsAnyClientVisible());
+
+  EXPECT_CALL(observer, OnClientVisibilityChanged(handler)).Times(1);
+  full_page.SetVisible(false);
+  testing::Mock::VerifyAndClearExpectations(&observer);
+  EXPECT_FALSE(handler->IsAnyClientVisible());
+  EXPECT_TRUE(handler->IsAnyClientConnected());
+
+  // Disconnecting the last visible client hides the conversation too.
+  full_page.SetVisible(true);
+  EXPECT_CALL(observer, OnClientVisibilityChanged(handler)).Times(1);
+  full_page.Disconnect();
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return !handler->IsAnyClientVisible(); }));
+  testing::Mock::VerifyAndClearExpectations(&observer);
+
+  // A hidden client leaving changes nothing.
+  EXPECT_CALL(observer, OnClientVisibilityChanged).Times(0);
+  side_panel.Disconnect();
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return !handler->IsAnyClientConnected(); }));
+  testing::Mock::VerifyAndClearExpectations(&observer);
+}
+
+TEST_F(ConversationHandlerUnitTest, ClientVisibility_RebindStaysVisible) {
+  NiceMock<MockConversationHandlerObserver> observer;
+  observer.Observe(conversation_handler_.get());
+  ConversationHandler* handler = conversation_handler_.get();
+  auto old_binding =
+      std::make_unique<NiceMock<MockConversationHandlerClient>>(handler);
+  old_binding->SetVisible(true);
+
+  // A UI that rebinds closes its old binding, possibly before the new one's
+  // report arrives. The new one counts as visible until then.
+  EXPECT_CALL(observer, OnClientVisibilityChanged).Times(0);
+  NiceMock<MockConversationHandlerClient> new_binding(handler);
+  int connection_changes = 0;
+  ON_CALL(observer, OnClientConnectionChanged)
+      .WillByDefault([&](ConversationHandler*) { ++connection_changes; });
+  old_binding.reset();
+  // Both of the old binding's pipes have disconnected.
+  ASSERT_TRUE(base::test::RunUntil([&] { return connection_changes == 2; }));
+  EXPECT_TRUE(handler->IsAnyClientVisible());
+  testing::Mock::VerifyAndClearExpectations(&observer);
+
+  // Its own report still decides.
+  EXPECT_CALL(observer, OnClientVisibilityChanged(handler)).Times(1);
+  new_binding.SetVisible(false);
+  EXPECT_FALSE(handler->IsAnyClientVisible());
 }
 
 }  // namespace ai_chat

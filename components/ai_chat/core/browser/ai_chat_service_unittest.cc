@@ -172,6 +172,12 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
     conversation_ui_receiver_.reset();
   }
 
+  // Reports visibility as the WebUI does, waiting until it's handled.
+  void SetVisible(bool visible) {
+    conversation_handler_remote_->SetClientVisible(visible);
+    conversation_handler_remote_.FlushForTesting();
+  }
+
   MOCK_METHOD(void,
               OnConversationHistoryUpdate,
               (mojom::ConversationTurnPtr),
@@ -550,6 +556,15 @@ class AIChatServiceUnitTest : public testing::Test,
         std::make_unique<NiceMock<MockConversationHandlerClient>>(
             conversation_handler);
     EXPECT_TRUE(connected_future.Wait());
+    return client;
+  }
+
+  // A client whose UI is on screen, so it views the conversation. Clients from
+  // CreateConversationClient() haven't reported visibility, so count as hidden.
+  std::unique_ptr<MockConversationHandlerClient>
+  CreateVisibleConversationClient(ConversationHandler* conversation_handler) {
+    auto client = CreateConversationClient(conversation_handler);
+    client->SetVisible(true);
     return client;
   }
 
@@ -2013,7 +2028,7 @@ TEST_P(AIChatServiceUnitTest,
 
 TEST_P(AIChatServiceUnitTest, GenerationState_CompletionWhileViewed_StaysIdle) {
   ConversationHandler* handler = CreateConversation();
-  auto client = CreateConversationClient(handler);
+  auto client = CreateVisibleConversationClient(handler);
   auto resolve = StartGeneration(handler, *client_);
   ExpectGenerationIdle(*client_, handler->get_conversation_uuid(),
                        base::BindOnce(&CompleteGeneration, std::move(resolve)));
@@ -2102,7 +2117,7 @@ TEST_P(AIChatServiceUnitTest,
   // bypasses AIChatService::BindConversation.
   std::unique_ptr<MockConversationHandlerClient> client;
   ExpectGenerationIdle(*client_, uuid, base::BindLambdaForTesting([&] {
-    client = CreateConversationClient(handler);
+    client = CreateVisibleConversationClient(handler);
   }));
 }
 
@@ -2127,7 +2142,7 @@ TEST_P(AIChatServiceUnitTest, GenerationState_ViewingClearsAwaitingUserInput) {
 
   std::unique_ptr<MockConversationHandlerClient> client;
   ExpectGenerationIdle(*client_, uuid, base::BindLambdaForTesting([&] {
-    client = CreateConversationClient(handler);
+    client = CreateVisibleConversationClient(handler);
   }));
 }
 
@@ -2135,7 +2150,7 @@ TEST_P(AIChatServiceUnitTest,
        GenerationState_LeavingUnansweredChallengeFlagsAwaitingUserInput) {
   ConversationHandler* handler = CreateConversation();
   const std::string uuid = handler->get_conversation_uuid();
-  auto client = CreateConversationClient(handler);
+  auto client = CreateVisibleConversationClient(handler);
   auto resolve = StartGeneration(handler, *client_, ToolUseNeedingPermission());
   // Stopping on the challenge while open needs no indicator.
   ExpectGenerationIdle(*client_, uuid,
@@ -2168,7 +2183,7 @@ TEST_P(AIChatServiceUnitTest,
       base::BindOnce(&CompleteGeneration, std::move(resolve)));
   std::unique_ptr<MockConversationHandlerClient> client;
   ExpectGenerationIdle(*client_, uuid, base::BindLambdaForTesting([&] {
-    client = CreateConversationClient(handler);
+    client = CreateVisibleConversationClient(handler);
   }));
 
   // The approved tool runs without a generation request in progress.
@@ -2191,7 +2206,7 @@ TEST_P(AIChatServiceUnitTest, GenerationState_StoppedChallengeIsNotAwaiting) {
 
   // Stopping happens from an open conversation. A stopped task won't
   // continue, so leaving it doesn't flag it and it can unload.
-  auto client = CreateConversationClient(handler);
+  auto client = CreateVisibleConversationClient(handler);
   handler->StopTask();
   EXPECT_FALSE(handler->IsAwaitingUserInput());
   client.reset();
@@ -2260,7 +2275,7 @@ TEST_P(AIChatServiceUnitTest, GenerationState_AwaitingUserInputIsNotUnloaded) {
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
 }
 
-TEST_P(AIChatServiceUnitTest, GenerationState_BindClearsNotViewed) {
+TEST_P(AIChatServiceUnitTest, GenerationState_VisibleBindClearsNotViewed) {
   ConversationHandler* handler = CreateConversation();
   const std::string uuid = handler->get_conversation_uuid();
   auto resolve = StartGeneration(handler, *client_);
@@ -2268,12 +2283,14 @@ TEST_P(AIChatServiceUnitTest, GenerationState_BindClearsNotViewed) {
       *client_, uuid, mojom::ConversationGenerationState::kCompletedNotViewed,
       base::BindOnce(&CompleteGeneration, std::move(resolve)));
 
+  // The WebUI reports its visibility straight after binding.
   mojo::Remote<mojom::ConversationHandler> handler_remote;
   mojo::PendingReceiver<mojom::ConversationUI> ui_receiver;
   ExpectGenerationIdle(*client_, uuid, base::BindLambdaForTesting([&] {
     ai_chat_service_->BindConversation(
         uuid, handler_remote.BindNewPipeAndPassReceiver(),
         ui_receiver.InitWithNewPipeAndPassRemote());
+    handler_remote->SetClientVisible(true);
   }));
   // Binding finishes asynchronously; wait so it doesn't outlive the test.
   ASSERT_TRUE(
@@ -2382,7 +2399,7 @@ TEST_P(AIChatServiceUnitTest, Notification_NeedsApprovalOnToolRequest) {
   base::test::TestFuture<void> closed;
   EXPECT_CALL(*notifications, CloseCompletionNotification(uuid))
       .WillOnce(base::test::RunOnceClosure(closed.GetCallback()));
-  auto client = CreateConversationClient(handler);
+  auto client = CreateVisibleConversationClient(handler);
   ASSERT_TRUE(closed.Wait());
 }
 
@@ -2391,7 +2408,7 @@ TEST_P(AIChatServiceUnitTest, Notification_NotTriggeredWhenViewed) {
   EXPECT_CALL(*notifications, ShowCompletionNotification).Times(0);
 
   ConversationHandler* handler = CreateConversation();
-  auto client = CreateConversationClient(handler);
+  auto client = CreateVisibleConversationClient(handler);
   auto resolve = StartGeneration(handler, *client_);
   ExpectGenerationIdle(*client_, handler->get_conversation_uuid(),
                        base::BindOnce(&CompleteGeneration, std::move(resolve)));
@@ -2421,7 +2438,7 @@ TEST_P(AIChatServiceUnitTest, Notification_CloseWhenDisablingStorageDropsIt) {
   }));
 }
 
-TEST_P(AIChatServiceUnitTest, Notification_CloseOnBind) {
+TEST_P(AIChatServiceUnitTest, Notification_CloseOnVisibleBind) {
   auto* notifications = SetMockNotificationDelegate(*ai_chat_service_);
   ConversationHandler* handler = CreateConversation();
   const std::string uuid = handler->get_conversation_uuid();
@@ -2438,6 +2455,7 @@ TEST_P(AIChatServiceUnitTest, Notification_CloseOnBind) {
     ai_chat_service_->BindConversation(
         uuid, handler_remote.BindNewPipeAndPassReceiver(),
         ui_receiver.InitWithNewPipeAndPassRemote());
+    handler_remote->SetClientVisible(true);
   }));
   ASSERT_TRUE(
       base::test::RunUntil([&] { return handler->IsAnyClientConnected(); }));
@@ -2479,7 +2497,7 @@ TEST_P(AIChatServiceUnitTest, Notification_CloseOnDirectHandlerBind) {
   // Binding straight to the handler, as the tab-associated route does.
   std::unique_ptr<MockConversationHandlerClient> client;
   ExpectGenerationIdle(*client_, uuid, base::BindLambdaForTesting([&] {
-    client = CreateConversationClient(handler);
+    client = CreateVisibleConversationClient(handler);
   }));
 }
 
@@ -2517,6 +2535,105 @@ TEST_P(AIChatServiceUnitTest, Notification_CloseWhenGenerationRestarts) {
       base::BindLambdaForTesting([&] {
         ai_chat_service_->OnRequestInProgressChanged(handler, true);
       }));
+}
+
+TEST_P(AIChatServiceUnitTest, GenerationState_HiddenClientDoesNotView) {
+  auto* notifications = SetMockNotificationDelegate(*ai_chat_service_);
+  ConversationHandler* handler = CreateConversation();
+  const std::string uuid = handler->get_conversation_uuid();
+  EXPECT_CALL(*notifications, ShowCompletionNotification(uuid, _, false));
+  auto client = CreateVisibleConversationClient(handler);
+  auto resolve = StartGeneration(handler, *client_);
+
+  // e.g. the full page's tab is switched away from while it generates.
+  client->SetVisible(false);
+  ExpectGenerationState(
+      *client_, uuid, mojom::ConversationGenerationState::kCompletedNotViewed,
+      base::BindOnce(&CompleteGeneration, std::move(resolve)));
+
+  // The hidden client still keeps the conversation loaded.
+  task_environment_.FastForwardBy(base::Seconds(10));
+  EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
+}
+
+TEST_P(AIChatServiceUnitTest, GenerationState_HiddenBindKeepsNotViewed) {
+  auto* notifications = SetMockNotificationDelegate(*ai_chat_service_);
+  ConversationHandler* handler = CreateConversation();
+  const std::string uuid = handler->get_conversation_uuid();
+  EXPECT_CALL(*notifications, ShowCompletionNotification(uuid, _, false));
+  EXPECT_CALL(*notifications, CloseCompletionNotification).Times(0);
+  auto resolve = StartGeneration(handler, *client_);
+  ExpectGenerationState(
+      *client_, uuid, mojom::ConversationGenerationState::kCompletedNotViewed,
+      base::BindOnce(&CompleteGeneration, std::move(resolve)));
+
+  // e.g. the conversation is opened straight into a background tab. A client
+  // counts as hidden from binding until it reports otherwise.
+  EXPECT_CALL(*client_, OnConversationGenerationStateChanged).Times(0);
+  auto client = CreateConversationClient(handler);
+  client->SetVisible(false);
+
+  // Observer messages arrive in order, so once a later change arrives, any
+  // change for |uuid| would already have been delivered.
+  ConversationHandler* other = CreateConversation();
+  ExpectGenerationState(
+      *client_, other->get_conversation_uuid(),
+      mojom::ConversationGenerationState::kGenerating,
+      base::BindLambdaForTesting(
+          [&] { ai_chat_service_->OnRequestInProgressChanged(other, true); }));
+}
+
+TEST_P(AIChatServiceUnitTest,
+       GenerationState_ShowingHiddenClientClearsNotViewed) {
+  auto* notifications = SetMockNotificationDelegate(*ai_chat_service_);
+  ConversationHandler* handler = CreateConversation();
+  const std::string uuid = handler->get_conversation_uuid();
+  EXPECT_CALL(*notifications, ShowCompletionNotification(uuid, _, false));
+  EXPECT_CALL(*notifications, CloseCompletionNotification(uuid));
+  auto client = CreateConversationClient(handler);
+  client->SetVisible(false);
+  auto resolve = StartGeneration(handler, *client_);
+  ExpectGenerationState(
+      *client_, uuid, mojom::ConversationGenerationState::kCompletedNotViewed,
+      base::BindOnce(&CompleteGeneration, std::move(resolve)));
+
+  ExpectGenerationIdle(*client_, uuid, base::BindLambdaForTesting([&] {
+    client->SetVisible(true);
+  }));
+}
+
+TEST_P(AIChatServiceUnitTest,
+       GenerationState_AwaitingUserInput_WhenHiddenClientToolNeedsPermission) {
+  auto* notifications = SetMockNotificationDelegate(*ai_chat_service_);
+  EXPECT_CALL(*notifications,
+              ShowCompletionNotification(_, _, /*needs_approval=*/true));
+
+  // e.g. a tab's side panel while another tab is active.
+  ConversationHandler* handler = CreateConversation();
+  auto client = CreateConversationClient(handler);
+  client->SetVisible(false);
+  auto resolve = StartGeneration(handler, *client_, ToolUseNeedingPermission());
+  ExpectGenerationState(
+      *client_, handler->get_conversation_uuid(),
+      mojom::ConversationGenerationState::kAwaitingUserInput,
+      base::BindOnce(&CompleteGeneration, std::move(resolve)));
+}
+
+TEST_P(AIChatServiceUnitTest,
+       GenerationState_HidingUnansweredChallengeFlagsAwaitingUserInput) {
+  ConversationHandler* handler = CreateConversation();
+  const std::string uuid = handler->get_conversation_uuid();
+  auto client = CreateVisibleConversationClient(handler);
+  auto resolve = StartGeneration(handler, *client_, ToolUseNeedingPermission());
+  ExpectGenerationIdle(*client_, uuid,
+                       base::BindOnce(&CompleteGeneration, std::move(resolve)));
+
+  // Hiding it without answering the challenge, while it stays connected,
+  // flags it like leaving does.
+  ExpectGenerationState(
+      *client_, uuid, mojom::ConversationGenerationState::kAwaitingUserInput,
+      base::BindLambdaForTesting([&] { client->SetVisible(false); }));
+  EXPECT_TRUE(handler->IsAnyClientConnected());
 }
 
 }  // namespace ai_chat
