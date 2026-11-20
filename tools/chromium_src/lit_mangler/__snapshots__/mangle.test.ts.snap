@@ -2304,7 +2304,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
                <h3 class="description-header">
                  $i18n{columnHeadingWhenOn}
                </h3>
-@@ -87,43 +74,28 @@
+@@ -87,42 +74,24 @@
                  </li>
                </ul>
              </div>
@@ -2346,13 +2346,12 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -          pref-key="generated.safe_browsing" label="$i18n{safeBrowsingNone}"
 -          sub-label="$i18n{safeBrowsingNoneDesc}"
 -          indicator-aria-label="$i18n{controlledSettingPolicy}">
--      </settings-collapse-radio-button>
-         </settings-collapse-radio-button>
++      <settings-collapse-radio-button id="safeBrowsingDisabled" no-collapse="" name="\${SafeBrowsingSetting.DISABLED}" pref-key="generated.safe_browsing" label="$i18n{safeBrowsingNone}" sub-label="$i18n{safeBrowsingNoneDesc}" indicator-aria-label="$i18n{controlledSettingPolicy}">
+       </settings-collapse-radio-button>
      </settings-radio-group>
    </div>
    \${this.enableHttpsFirstModeNewSettings_ ? html\`
-     <div id="secureConnectionsSection">
-@@ -162,19 +134,12 @@
+@@ -162,19 +131,12 @@
    \` : ''}
    <div class="cr-row first">
      <h2 class="cr-title-text">$i18n{advancedPageTitle}</h2>
@@ -2374,7 +2373,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
      \${this.showSecureDnsSetting_ ? html\`
        <settings-secure-dns id="secureDnsSettingOld"></settings-secure-dns>
      \` : ''}
-@@ -183,21 +148,10 @@
+@@ -183,21 +145,10 @@
        html\`
      <settings-secure-dns class="hr" id="secureDnsSettingNew">
      </settings-secure-dns>
@@ -2398,7 +2397,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
    \${this.enableSecurityKeysSubpage_ ? html\`
      <cr-link-row id="securityKeysSubpageTrigger" class="hr"
          label="$i18n{securityKeysTitle}" sub-label="$i18n{securityKeysDesc}"
-@@ -205,19 +159,12 @@
+@@ -205,19 +156,12 @@
          role-description="$i18n{subpageArrowRoleDescription}">
      </cr-link-row>
    \` : ''}
