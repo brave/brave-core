@@ -15,6 +15,8 @@ public final class SessionTab: NSManagedObject, CRUD {
   @NSManaged private(set) public var isSelected: Bool
   @NSManaged public var lastUpdated: Date
   @NSManaged public var screenshotData: Data
+  /// Chromium `LocalTabID`. `0` is invalid. Stable for the life of the tab.
+  @NSManaged public internal(set) var syncTabId: Int32
   @NSManaged public var title: String
   @NSManaged public var url: URL?
   @NSManaged private(set) public var tabId: UUID
@@ -49,7 +51,8 @@ public final class SessionTab: NSManagedObject, CRUD {
     screenshotData: Data,
     title: String,
     url: URL?,
-    tabId: UUID = UUID()
+    tabId: UUID = UUID(),
+    syncTabId: Int32
   ) {
     guard let entity = Self.entity(context) else {
       fatalError("No such Entity: SessionTab")
@@ -75,6 +78,7 @@ public final class SessionTab: NSManagedObject, CRUD {
     self.title = title
     self.url = url
     self.tabId = tabId
+    self.syncTabId = syncTabId
   }
 }
 
@@ -275,8 +279,12 @@ extension SessionTab {
     tabId: UUID,
     title: String,
     tabURL: URL,
-    isPrivate: Bool
+    isPrivate: Bool,
+    syncTabId: Int32
   ) {
+    // A regular tab's id is a WebStateID, which is never 0. Private tabs are not synced.
+    guard isPrivate || syncTabId > 0 else { return }
+
     DataController.perform { context in
       guard !SessionTab.exists(tabId: tabId, in: context),
         let window = SessionWindow.from(windowId: windowId, in: context)
@@ -294,7 +302,8 @@ extension SessionTab {
         screenshotData: Data(),
         title: title,
         url: tabURL,
-        tabId: tabId
+        tabId: tabId,
+        syncTabId: syncTabId
       )
 
       do {
@@ -303,6 +312,20 @@ extension SessionTab {
         Logger.module.error(
           "performTask save error: \(error.localizedDescription, privacy: .public)"
         )
+      }
+    }
+  }
+
+  /// Writes a sync id onto regular tabs that still have none. An id already stored is left as it is.
+  public static func assignSyncTabIds(_ idsByTabId: [UUID: Int32]) {
+    DataController.perform { context in
+      for (tabId, syncTabId) in idsByTabId {
+        guard syncTabId > 0,
+          let sessionTab = SessionTab.from(tabId: tabId, in: context),
+          !sessionTab.isPrivate,
+          sessionTab.syncTabId == 0
+        else { continue }
+        sessionTab.syncTabId = syncTabId
       }
     }
   }
