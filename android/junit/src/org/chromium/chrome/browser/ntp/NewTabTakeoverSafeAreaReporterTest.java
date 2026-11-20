@@ -21,7 +21,7 @@ public class NewTabTakeoverSafeAreaReporterTest {
     @Test
     public void spansTheGapBetweenTheTopBorderAndTheBottomBorder() {
         assertEquals(
-                new RectF(16, 616, 1064, 1484),
+                new RectF(16, 616, 1064, 1500),
                 NewTabTakeoverSafeAreaReporter.calculateSafeArea(
                         /* safeAreaTop= */ 600,
                         /* safeAreaBottom= */ 1500,
@@ -53,7 +53,7 @@ public class NewTabTakeoverSafeAreaReporterTest {
                         /* viewportHeight= */ 1920,
                         /* density= */ 1f);
 
-        assertEquals(new RectF(16, 1484, 1064, 1484), safeArea);
+        assertEquals(new RectF(16, 1500, 1064, 1500), safeArea);
     }
 
     @Test
@@ -83,7 +83,7 @@ public class NewTabTakeoverSafeAreaReporterTest {
     @Test
     public void clampsTheTopBorderToTheViewportTop() {
         assertEquals(
-                new RectF(16, 0, 1064, 1484),
+                new RectF(16, 0, 1064, 1500),
                 NewTabTakeoverSafeAreaReporter.calculateSafeArea(
                         /* safeAreaTop= */ -200,
                         /* safeAreaBottom= */ 1500,
@@ -108,7 +108,7 @@ public class NewTabTakeoverSafeAreaReporterTest {
     @Test
     public void convertsViewPixelsToCssPixels() {
         assertEquals(
-                new RectF(16, 316, 524, 734),
+                new RectF(16, 316, 524, 750),
                 NewTabTakeoverSafeAreaReporter.calculateSafeArea(
                         /* safeAreaTop= */ 600,
                         /* safeAreaBottom= */ 1500,
@@ -127,13 +127,13 @@ public class NewTabTakeoverSafeAreaReporterTest {
         assertEquals(16f, safeArea.left, 0f);
         assertEquals(244.571f, safeArea.top, 0.001f);
         assertEquals(395.429f, safeArea.right, 0.001f);
-        assertEquals(555.429f, safeArea.bottom, 0.001f);
+        assertEquals(571.429f, safeArea.bottom, 0.001f);
     }
 
     @Test
     public void clampsLeftAndRightWhenWidthIsLessThanDoubleMargin() {
         assertEquals(
-                new RectF(4, 616, 4, 1484),
+                new RectF(4, 616, 4, 1500),
                 NewTabTakeoverSafeAreaReporter.calculateSafeArea(
                         /* safeAreaTop= */ 600,
                         /* safeAreaBottom= */ 1500,
@@ -145,7 +145,7 @@ public class NewTabTakeoverSafeAreaReporterTest {
     @Test
     public void clampsLeftAndRightWhenWidthIsLessThanMargin() {
         assertEquals(
-                new RectF(0, 616, 0, 1484),
+                new RectF(0, 616, 0, 1500),
                 NewTabTakeoverSafeAreaReporter.calculateSafeArea(
                         /* safeAreaTop= */ 600,
                         /* safeAreaBottom= */ 1500,
@@ -155,9 +155,9 @@ public class NewTabTakeoverSafeAreaReporterTest {
     }
 
     @Test
-    public void clampsTopAndBottomWhenHeightIsLessThanDoubleMargin() {
+    public void insetsOnlyTopWhenHeightIsBetweenMarginAndDoubleMargin() {
         assertEquals(
-                new RectF(16, 4, 1064, 4),
+                new RectF(16, 16, 1064, 20),
                 NewTabTakeoverSafeAreaReporter.calculateSafeArea(
                         /* safeAreaTop= */ 0,
                         /* safeAreaBottom= */ 20,
@@ -167,9 +167,9 @@ public class NewTabTakeoverSafeAreaReporterTest {
     }
 
     @Test
-    public void clampsTopAndBottomWhenHeightIsLessThanMargin() {
+    public void clampsTopWhenHeightIsLessThanMargin() {
         assertEquals(
-                new RectF(16, 0, 1064, 0),
+                new RectF(16, 10, 1064, 10),
                 NewTabTakeoverSafeAreaReporter.calculateSafeArea(
                         /* safeAreaTop= */ 0,
                         /* safeAreaBottom= */ 10,

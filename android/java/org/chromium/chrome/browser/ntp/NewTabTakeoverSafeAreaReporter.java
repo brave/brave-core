@@ -176,8 +176,7 @@ public class NewTabTakeoverSafeAreaReporter extends RecyclerView.OnScrollListene
         final float viewportWidthDp = viewportWidth / density;
         final float viewportHeightDp = viewportHeight / density;
 
-        final float bottom =
-                clamp(safeAreaBottom / density - SAFE_AREA_MARGIN_DP, 0, viewportHeightDp);
+        final float bottom = clamp(safeAreaBottom / density, 0, viewportHeightDp);
         final float top = clamp(safeAreaTop / density + SAFE_AREA_MARGIN_DP, 0, bottom);
 
         final float right = clamp(viewportWidthDp - SAFE_AREA_MARGIN_DP, 0, viewportWidthDp);
