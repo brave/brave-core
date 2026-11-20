@@ -157,6 +157,24 @@ extra things:
    `git apply --3way` against the Chromium tree so conflicts surface
    immediately.
 
+### `git cr amend-plaster-patches`
+
+Re-applies the plaster files (`rewrite/…/foo.h.yaml`) that the last commit adds
+or modifies, and amends their refreshed patches (`patches/…` and their
+`.patchinfo`) into that commit. It is the same as running `plaster apply` on
+those files and amending the result.
+
+```sh
+git cr amend-plaster-patches
+```
+
+The commit is left alone when its patches are already up to date. It can also
+run after each commit of a rebase:
+
+```sh
+git rebase --exec 'git cr amend-plaster-patches' <upstream>
+```
+
 ## Why the use of a git commit message hook
 
 Chromium rebases usually involve hundreds of fixes to Brave. These fixes are the
