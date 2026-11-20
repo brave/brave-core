@@ -31,6 +31,13 @@ REMOTETOOL_VERSION = 're_client_version:0.187.0.ad10b508-gomaip'
 DEFAULT_SERVICE = 'rbe.ba.brave.com:443'
 DEFAULT_INSTANCE = 'default'
 
+# How many uploads and downloads `remotetool` runs at once. Its default, 500,
+# leaves each too little of a slow link to finish in time.
+CAS_CONCURRENCY = 50
+
+# How often an upload is tried. A retry sends only what CAS does not have yet.
+UPLOAD_ATTEMPTS = 3
+
 
 class CasApi(RecipeApi):
     """Archives trees of files in a remote execution service's CAS, and
@@ -94,6 +101,8 @@ class CasApi(RecipeApi):
             self._cert,
             '--tls_client_auth_key',
             self._key,
+            '--cas_concurrency',
+            str(CAS_CONCURRENCY),
             '--operation',
             operation,
         ]
@@ -116,6 +125,9 @@ class CasApi(RecipeApi):
 
         Returns:
             The tree's digest, as `<hash>/<size>`.
+
+        Raises:
+            StepFailure: The upload failed `UPLOAD_ATTEMPTS` times.
         """
         with self.m.step.nest(step_name):
             stage = self.m.path.mkdtemp('cas')
@@ -134,17 +146,25 @@ class CasApi(RecipeApi):
                     self.m.json.input(list(paths)),
                 ],
             )
-            result = self.m.step(
-                'upload',
-                [
-                    *self._remotetool('upload_dir'),
-                    '--path',
-                    stage,
-                    '--json',
-                    self.m.json.output(),
-                ],
-                step_test_data=self.test_api.uploaded,
-            )
+            for _ in range(UPLOAD_ATTEMPTS):
+                result = self.m.step(
+                    'upload',
+                    [
+                        *self._remotetool('upload_dir'),
+                        '--path',
+                        stage,
+                        '--json',
+                        self.m.json.output(),
+                    ],
+                    check=False,
+                    step_test_data=self.test_api.uploaded,
+                )
+                if result.retcode == 0:
+                    break
+            else:
+                raise self.m.step.StepFailure(
+                    f'{step_name}: the upload failed {UPLOAD_ATTEMPTS} times'
+                )
         stats = result.json.output
         root_digest = stats['RootDigest']
         digest = f'{root_digest["Hash"]}/{root_digest["Size"]}'

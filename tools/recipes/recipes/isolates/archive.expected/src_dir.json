@@ -95,6 +95,8 @@
       "/certs/client.crt",
       "--tls_client_auth_key",
       "/certs/client.key",
+      "--cas_concurrency",
+      "50",
       "--operation",
       "upload_dir",
       "--path",

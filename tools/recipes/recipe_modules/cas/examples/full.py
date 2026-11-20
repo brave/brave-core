@@ -75,6 +75,31 @@ def GenTests(api: TEST_DEPS):
         ),
         api.post_process(post_process.StatusSuccess),
     )
+    # A retry sends only what the failed upload did not.
+    yield api.test(
+        'upload retried',
+        api.cas.configured(SERVICE),
+        api.step_data('archive foo_unittests.upload', retcode=1),
+        api.post_process(
+            post_process.MustRun, 'archive foo_unittests.upload (2)'
+        ),
+        api.post_process(
+            post_process.DoesNotRun, 'archive foo_unittests.upload (3)'
+        ),
+        api.post_process(post_process.StatusSuccess),
+        api.post_process(post_process.DropExpectation),
+    )
+    yield api.test(
+        'upload fails',
+        api.cas.configured(SERVICE),
+        api.step_data('archive foo_unittests.upload', retcode=1),
+        api.step_data('archive foo_unittests.upload (2)', retcode=1),
+        api.step_data('archive foo_unittests.upload (3)', retcode=1),
+        api.post_process(post_process.DoesNotRun, 'download foo_unittests'),
+        api.post_process(post_process.StatusFailure),
+        api.post_process(post_process.DropExpectation),
+        status='FAILURE',
+    )
     yield api.test(
         'no credentials',
         api.properties(**{'$cas': {'service': SERVICE}}),
