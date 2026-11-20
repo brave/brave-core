@@ -296,7 +296,8 @@ inline constexpr char16_t kIncognitoHelpCenterURL[] =
 // "Learn more" URL for the web app installation flow, linked from installation
 // dialog and options view.
 inline constexpr char kInstallDialogFlowLearnMoreURL[] =
-    "https://support.google.com/chrome/answer/9658361";
+    "https://support.brave.app/hc/en-us/articles/"
+    "39077114659597-How-do-I-install-and-use-Web-Apps-in-Brave";
 
 // The URL for the Help Center page about IP Protection.
 inline constexpr char kIpProtectionHelpCenterURL[] =
