@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+
 source_set("unit_tests") {
   testonly = true
 
@@ -45,6 +47,7 @@ source_set("content_unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
+    "//components/content_settings/core/browser",
     "//components/content_settings/core/common",
     "//components/permissions",
     "//components/permissions:test_support",
@@ -54,4 +57,9 @@ source_set("content_unit_tests") {
     "//third_party/blink/public/common",
     "//url",
   ]
+
+  if (enable_brave_wallet) {
+    sources += [ "contexts/brave_wallet_permission_context_unittest.cc" ]
+    deps += [ "//brave/components/brave_wallet/browser:permission_utils" ]
+  }
 }

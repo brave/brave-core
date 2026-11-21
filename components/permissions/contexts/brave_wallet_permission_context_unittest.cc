@@ -5,21 +5,25 @@
 
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 
+#include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
-#include "base/memory/ptr_util.h"
-#include "base/memory/scoped_refptr.h"
+#include "base/memory/raw_ptr.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
-#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
-#include "chrome/browser/permissions/permission_manager_factory.h"
-#include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/content_settings/core/common/content_settings.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "components/permissions/permission_manager.h"
 #include "components/permissions/permission_util.h"
+#include "components/permissions/test/test_permissions_client.h"
 #include "content/public/test/browser_task_environment.h"
+#include "content/public/test/test_browser_context.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/blink/public/common/permissions/permission_utils.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace permissions {
 
@@ -29,21 +33,32 @@ class BraveWalletPermissionContextUnitTest : public testing::Test {
   ~BraveWalletPermissionContextUnitTest() override = default;
 
   void SetUp() override {
-    map_ = HostContentSettingsMapFactory::GetForProfile(&profile_);
-    profile_.SetPermissionControllerDelegate(
-        base::WrapUnique(static_cast<PermissionManager*>(
-            PermissionManagerFactory::GetInstance()
-                ->BuildServiceInstanceForBrowserContext(browser_context())
-                .release())));
+    PermissionManager::PermissionContextMap permission_contexts;
+    for (ContentSettingsType type : {ContentSettingsType::BRAVE_ETHEREUM,
+                                     ContentSettingsType::BRAVE_SOLANA,
+                                     ContentSettingsType::BRAVE_CARDANO}) {
+      permission_contexts[type] =
+          std::make_unique<BraveWalletPermissionContext>(&browser_context_,
+                                                         type);
+    }
+    auto permission_manager = std::make_unique<PermissionManager>(
+        &browser_context_, std::move(permission_contexts));
+    permission_manager_ = permission_manager.get();
+    browser_context_.SetPermissionControllerDelegate(
+        std::move(permission_manager));
   }
 
   void TearDown() override {
-    profile_.SetPermissionControllerDelegate(nullptr);
+    permission_manager_->Shutdown();
+    permission_manager_ = nullptr;
+    browser_context_.SetPermissionControllerDelegate(nullptr);
   }
 
-  HostContentSettingsMap* map() { return map_.get(); }
+  HostContentSettingsMap* map() {
+    return client_.GetSettingsMap(&browser_context_);
+  }
 
-  content::BrowserContext* browser_context() { return &profile_; }
+  content::BrowserContext* browser_context() { return &browser_context_; }
   bool Matches(const GURL& url1, const GURL& url2) {
     return (url1.scheme() == url2.scheme()) && (url1.host() == url2.host()) &&
            ((url1.has_port() && url2.has_port()) ? url1.port() == url2.port()
@@ -52,8 +67,9 @@ class BraveWalletPermissionContextUnitTest : public testing::Test {
 
  private:
   content::BrowserTaskEnvironment browser_task_environment_;
-  TestingProfile profile_;
-  scoped_refptr<HostContentSettingsMap> map_;
+  content::TestBrowserContext browser_context_;
+  TestPermissionsClient client_;
+  raw_ptr<PermissionManager> permission_manager_ = nullptr;
 };
 
 TEST_F(BraveWalletPermissionContextUnitTest, AddPermission) {
