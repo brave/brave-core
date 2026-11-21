@@ -10,6 +10,8 @@
 
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
+#include "brave/browser/infobars/wayback_machine_infobar_delegate.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/page_action/wayback_machine_bubble_view.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
@@ -116,6 +118,10 @@ void WaybackMachinePageActionController::Init() {
         self->UpdatePageAction(tab->GetContents());
       },
       base::Unretained(this)));
+  will_deactivate_subscription_ = tab_->RegisterWillDeactivate(
+      base::IgnoreArgs<tabs::TabInterface*>(base::BindRepeating(
+          &WaybackMachinePageActionController::ResetAutoCheck,
+          base::Unretained(this))));
   will_discard_contents_subscription_ =
       tab_->RegisterWillDiscardContents(base::BindRepeating(
           [](WaybackMachinePageActionController* self, tabs::TabInterface*,
@@ -141,8 +147,28 @@ WaybackMachinePageActionController::GetBubbleViewForTesting() {
 void WaybackMachinePageActionController::OnWaybackStateChanged(
     WaybackState state) {
   UpdatePageAction(tab_->GetContents());
-  if (state == WaybackState::kNeedToCheck) {
-    MaybeAutoShowBubble();
+  switch (state) {
+    case WaybackState::kNeedToCheck:
+      if (auto* tab_helper = BraveWaybackMachineTabHelper::From(&tab_.get());
+          tab_helper && tab_helper->CanAutoCheck()) {
+        is_auto_checking_ = true;
+        tab_helper->FetchSnapshotInfo();
+      } else {
+        MaybeAutoShowBubble();
+      }
+      break;
+    case WaybackState::kFetching:
+      break;
+    case WaybackState::kFound:
+      if (std::exchange(is_auto_checking_, false)) {
+        MaybeShowInfoBar();
+      }
+      break;
+    case WaybackState::kInitial:
+    case WaybackState::kNotAvailable:
+    case WaybackState::kLoaded:
+      ResetAutoCheck();
+      break;
   }
 }
 
@@ -181,6 +207,7 @@ void WaybackMachinePageActionController::ShowBubble(actions::ActionItem* item,
   bubble_view->ShowForReason(user_gesture
                                  ? LocationBarBubbleDelegateView::USER_GESTURE
                                  : LocationBarBubbleDelegateView::AUTOMATIC);
+  ResetAutoCheck();
 }
 
 void WaybackMachinePageActionController::MaybeAutoShowBubble() {
@@ -213,9 +240,29 @@ void WaybackMachinePageActionController::MaybeAutoShowBubble() {
   ShowBubble(item, /*user_gesture=*/false);
 }
 
+void WaybackMachinePageActionController::MaybeShowInfoBar() {
+  if (!tab_->IsActivated()) {
+    return;
+  }
+  auto* tab_helper = BraveWaybackMachineTabHelper::From(&tab_.get());
+  if (!tab_helper || tab_helper->wayback_state() != WaybackState::kFound) {
+    return;
+  }
+  WaybackMachineInfoBarDelegate::Create(tab_->GetContents(),
+                                        *tab_helper->snapshot_info());
+}
+
+void WaybackMachinePageActionController::ResetAutoCheck() {
+  is_auto_checking_ = false;
+  if (content::WebContents* contents = tab_->GetContents()) {
+    WaybackMachineInfoBarDelegate::Remove(contents);
+  }
+}
+
 void WaybackMachinePageActionController::AttachToTabHelper(
     content::WebContents* contents) {
   wayback_state_changed_subscription_ = {};
+  ResetAutoCheck();
   if (!contents) {
     return;
   }

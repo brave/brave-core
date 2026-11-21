@@ -27,8 +27,9 @@ namespace page_actions {
 
 // Drives the Wayback Machine page action: shows an icon (badged if a snapshot
 // lookup finds nothing) when the current page looks like it might be available
-// on the Wayback Machine, and shows the Wayback Machine bubble when clicked or,
-// when enabled, automatically after a failed navigation.
+// on the Wayback Machine, runs automatic snapshot checks and shows a countdown
+// infobar when enabled, and shows the Wayback Machine bubble when clicked or
+// auto-shown.
 class WaybackMachinePageActionController {
  public:
   WaybackMachinePageActionController(
@@ -55,6 +56,8 @@ class WaybackMachinePageActionController {
   // away from the page.
   void ShowBubble(actions::ActionItem* item, bool user_gesture);
   void MaybeAutoShowBubble();
+  void MaybeShowInfoBar();
+  void ResetAutoCheck();
 
   // (Re-)registers for wayback-state updates on |contents|'
   // BraveWaybackMachineTabHelper, dropping any previous registration, since the
@@ -67,10 +70,12 @@ class WaybackMachinePageActionController {
   const raw_ref<page_actions::PageActionControllerImpl> page_action_controller_;
 
   base::CallbackListSubscription did_activate_subscription_;
+  base::CallbackListSubscription will_deactivate_subscription_;
   base::CallbackListSubscription will_discard_contents_subscription_;
   base::CallbackListSubscription wayback_state_changed_subscription_;
 
   views::ViewTracker bubble_tracker_;
+  bool is_auto_checking_ = false;
 };
 
 }  // namespace page_actions

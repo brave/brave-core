@@ -10,10 +10,13 @@
 #include "base/auto_reset.h"
 #include "base/check.h"
 #include "base/command_line.h"
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_utils.h"
+#include "brave/components/brave_wayback_machine/features.h"
 #include "brave/components/brave_wayback_machine/pref_names.h"
 #include "brave/components/constants/brave_switches.h"
+#include "components/prefs/pref_service.h"
 #include "components/tabs/public/tab_interface.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
@@ -21,7 +24,10 @@
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
+#include "net/base/ip_address.h"
+#include "net/base/ip_endpoint.h"
 #include "net/http/http_response_headers.h"
+#include "url/gurl.h"
 
 DEFINE_USER_DATA(BraveWaybackMachineTabHelper);
 
@@ -45,6 +51,7 @@ BraveWaybackMachineTabHelper::MaybeCreate(tabs::TabInterface& tab) {
 BraveWaybackMachineTabHelper::BraveWaybackMachineTabHelper(
     tabs::TabInterface& tab)
     : WebContentsObserver(tab.GetContents()),
+      tab_(tab),
       pref_service_(
           *user_prefs::UserPrefs::Get(tab.GetContents()->GetBrowserContext())),
       wayback_machine_url_fetcher_(
@@ -67,11 +74,36 @@ BraveWaybackMachineTabHelper::BraveWaybackMachineTabHelper(
 
 BraveWaybackMachineTabHelper::~BraveWaybackMachineTabHelper() = default;
 
+bool BraveWaybackMachineTabHelper::CanAutoCheck() const {
+  if (wayback_state_ != WaybackState::kNeedToCheck ||
+      !has_public_remote_endpoint_) {
+    return false;
+  }
+  if (!base::FeatureList::IsEnabled(
+          brave_wayback_machine::features::kWaybackMachineAutoCheck)) {
+    return false;
+  }
+  if (!wayback_enabled_.GetValue() ||
+      !pref_service_->GetBoolean(kBraveWaybackMachineAutoCheckEnabled)) {
+    return false;
+  }
+  if (!tab_->IsActivated()) {
+    return false;
+  }
+  content::WebContents* contents = web_contents();
+  if (!contents || contents->GetBrowserContext()->IsOffTheRecord()) {
+    return false;
+  }
+  const GURL& url = contents->GetLastCommittedURL();
+  return IsWaybackMachineEnabledFor(url) && !url.has_query() &&
+         !url.has_username() && !url.has_password();
+}
+
 void BraveWaybackMachineTabHelper::FetchSnapshotInfo() {
   CHECK(wayback_enabled_.GetValue());
   snapshot_info_.reset();
   SetWaybackState(WaybackState::kFetching);
-  wayback_machine_url_fetcher_.Fetch(web_contents()->GetVisibleURL());
+  wayback_machine_url_fetcher_.Fetch(web_contents()->GetLastCommittedURL());
 }
 
 void BraveWaybackMachineTabHelper::MaybeNavigateToSnapshot() {
@@ -82,6 +114,8 @@ void BraveWaybackMachineTabHelper::MaybeNavigateToSnapshot() {
   const GURL url = snapshot_info_->url;
   SetWaybackState(WaybackState::kLoaded);
 
+  // LoadURL() fires DidStartNavigation() synchronously before returning.
+  base::AutoReset<bool> loading_wayback_url(&loading_wayback_url_, true);
   if (auto navigation_handle = web_contents()->GetController().LoadURL(
           url, content::Referrer(), ui::PAGE_TRANSITION_LINK, std::string())) {
     wayback_url_navigation_id_ = navigation_handle->GetNavigationId();
@@ -92,6 +126,26 @@ base::CallbackListSubscription
 BraveWaybackMachineTabHelper::RegisterWaybackStateChangedCallback(
     WaybackStateChangedCallback callback) {
   return wayback_state_changed_callbacks_.Add(std::move(callback));
+}
+
+void BraveWaybackMachineTabHelper::DidStartNavigation(
+    content::NavigationHandle* navigation_handle) {
+  if (!navigation_handle->IsInPrimaryMainFrame() ||
+      navigation_handle->IsSameDocument()) {
+    return;
+  }
+
+  if (loading_wayback_url_) {
+    wayback_url_navigation_id_ = navigation_handle->GetNavigationId();
+    return;
+  }
+
+  if (wayback_url_navigation_id_ &&
+      wayback_url_navigation_id_ == navigation_handle->GetNavigationId()) {
+    return;
+  }
+
+  ResetState();
 }
 
 void BraveWaybackMachineTabHelper::DidFinishNavigation(
@@ -116,6 +170,10 @@ void BraveWaybackMachineTabHelper::DidFinishNavigation(
 
   ResetState();
 
+  if (!navigation_handle->HasCommitted()) {
+    return;
+  }
+
   if (!IsWaybackMachineEnabledFor(navigation_handle->GetURL())) {
     return;
   }
@@ -133,6 +191,10 @@ void BraveWaybackMachineTabHelper::DidFinishNavigation(
   }
 
   if (ShouldCheckWaybackMachine(header->response_code())) {
+    const net::IPAddress remote_address =
+        navigation_handle->GetSocketAddress().address();
+    has_public_remote_endpoint_ =
+        remote_address.IsValid() && remote_address.IsPubliclyRoutable();
     SetWaybackState(WaybackState::kNeedToCheck);
   }
 }
@@ -187,6 +249,7 @@ void BraveWaybackMachineTabHelper::OnWaybackEnabledChanged(
 void BraveWaybackMachineTabHelper::ResetState() {
   wayback_machine_url_fetcher_.Cancel();
   wayback_url_navigation_id_ = std::nullopt;
+  has_public_remote_endpoint_ = false;
   snapshot_info_.reset();
   SetWaybackState(WaybackState::kInitial);
 }
