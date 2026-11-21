@@ -17,6 +17,7 @@
 #include "base/json/json_writer.h"
 #include "base/path_service.h"
 #include "base/test/values_test_util.h"
+#include "base/threading/thread_restrictions.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_keyring.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -91,6 +92,13 @@ bool IsEmpty(
 }
 
 std::string ReadMetadataFixtureJsonImpl(std::string_view file_name) {
+  // Browser tests run their bodies under a `base::ScopedDisallowBlocking`, so
+  // reading a fixture off the UI thread trips a DCHECK there even though the
+  // same call is legal under a unit test's `TaskEnvironment`. Reading test data
+  // synchronously is the whole point of this helper, so allow it here rather
+  // than at each call site.
+  base::ScopedAllowBlockingForTesting allow_blocking;
+
   const auto fixture_path =
       base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT)
           .AppendASCII("brave")
