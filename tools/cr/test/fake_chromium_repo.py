@@ -103,6 +103,13 @@ class FakeChromiumRepo:
         # for.
         self.set_patched_repositories()
         self._run_git_command(['add', str(self.repositories_file)], self.brave)
+        # So does its `update_patches` exclusions file, which plaster reads.
+        # It excludes nothing here.
+        self.exclusions_file.parent.mkdir(parents=True, exist_ok=True)
+        self.exclusions_file.write_text(
+            '# No exclusions.\n', encoding='utf-8', newline='\n'
+        )
+        self._run_git_command(['add', str(self.exclusions_file)], self.brave)
         self._run_git_command(['commit', '--amend', '--no-edit'], self.brave)
 
         # `FakeChromiumRepo` will change the current directory to a mirro path
@@ -145,6 +152,11 @@ class FakeChromiumRepo:
     def repositories_file(self) -> Path:
         """The file listing every repository brave-core patches."""
         return self.brave_patches / '.repositories.cfg'
+
+    @property
+    def exclusions_file(self) -> Path:
+        """The paths `update_patches` writes no patch for."""
+        return self.brave / 'build' / 'update_patches_exclusions.cfg'
 
     def set_patched_repositories(self, *relative_paths: str) -> None:
         """Lists the repositories brave-core patches, `src` plus the given.

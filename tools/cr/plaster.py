@@ -61,6 +61,11 @@ PLASTER_EXTENSION = '.yaml'
 # The file listing every repository brave-core patches.
 REPOSITORIES_FILE = PATCHES_PATH / '.repositories.cfg'
 
+# The chromium paths `update_patches` writes no patch for.
+UPDATE_PATCHES_EXCLUSIONS_FILE = (
+    repository.brave.root / 'build' / 'update_patches_exclusions.cfg'
+)
+
 # A particular gitattributes file that is used to ensure we get deterministic
 # patch output across platforms and git versions.
 PLASTER_GITATTRIBUTES_PATH = Path(__file__).parent / 'plaster_gitattributes'
@@ -103,6 +108,66 @@ class RewritersSchemaError(PlasterError):
 
 class RepositoriesFileError(PlasterError):
     """Raised when `patches/.repositories.cfg` is missing or malformed."""
+
+
+class ExcludedPlasterError(PlasterError):
+    """Raised for plaster files whose source `update_patches` excludes.
+
+    `update_patches` writes no patch for an excluded path, so an unscoped run
+    deletes the patch such a plaster writes.
+    """
+
+
+class UpdatePatchesExclusions:
+    """The chromium paths `update_patches` writes no patch for.
+
+    Read from `build/update_patches_exclusions.cfg` as `exclusionsFilter()` in
+    `build/commands/lib/updatePatches.ts` reads it: each line is `+<pattern>`,
+    excluding the paths it matches, or `-<pattern>`, keeping them whichever `+`
+    line also matches. A pattern is a path, a `<prefix>*` or a `*<suffix>`.
+    """
+
+    # Process-wide instance, loaded once by `load`.
+    _instance: ClassVar[UpdatePatchesExclusions | None] = None
+
+    def __init__(self, content: str):
+        self._excluded: list[str] = []
+        self._kept: list[str] = []
+        for number, line in enumerate(content.splitlines(), 1):
+            entry = line.split('#', 1)[0].strip()
+            if not entry:
+                continue
+            sign, pattern = entry[0], entry[1:].strip()
+            if sign not in ('+', '-'):
+                raise PlasterError(
+                    f'{UPDATE_PATCHES_EXCLUSIONS_FILE.name} line {number} '
+                    f'must start with + or -: {entry}'
+                )
+            (self._excluded if sign == '+' else self._kept).append(pattern)
+
+    @classmethod
+    def load(cls) -> UpdatePatchesExclusions:
+        """Return the process-wide exclusions, reading the file once."""
+        if cls._instance is None:
+            cls._instance = cls(
+                UPDATE_PATCHES_EXCLUSIONS_FILE.read_text(encoding='utf-8')
+            )
+        return cls._instance
+
+    @staticmethod
+    def _matches(pattern: str, path: str) -> bool:
+        if pattern.startswith('*'):
+            return path.endswith(pattern[1:])
+        if pattern.endswith('*'):
+            return path.startswith(pattern[:-1])
+        return path == pattern
+
+    def excludes(self, path: PurePath) -> bool:
+        """Whether `update_patches` writes no patch for chromium's `path`."""
+        posix = path.as_posix()
+        return not any(
+            self._matches(pattern, posix) for pattern in self._kept
+        ) and any(self._matches(pattern, posix) for pattern in self._excluded)
 
 
 class Repositories:
@@ -6358,7 +6423,43 @@ def get_plaster_files(filepaths: list[str] | None = None) -> list[PlasterFile]:
     every plaster targets, returns all of them.
 
     If no file paths are provided, all plaster files are returned.
+
+    Raises:
+        ExcludedPlasterError: if any of them targets a chromium path
+            `update_patches` excludes.
     """
+    plaster_files = _select_plaster_files(filepaths)
+    _refuse_excluded_sources(plaster_files)
+    return plaster_files
+
+
+def _refuse_excluded_sources(plaster_files: list[PlasterFile]) -> None:
+    """Raises for the plaster files whose chromium source `update_patches`
+    excludes, all of them at once."""
+    exclusions = UpdatePatchesExclusions.load()
+    excluded = []
+    for plaster_file in plaster_files:
+        target = PlasterTarget.resolve(plaster_file.path)
+        if target.repository.is_chromium and exclusions.excludes(target.source):
+            excluded.append(
+                f'  {plaster_file.path.relative_to(repository.brave.root)}'
+                f' targets {target.source.as_posix()}'
+            )
+    if excluded:
+        raise ExcludedPlasterError(
+            f'{UPDATE_PATCHES_EXCLUSIONS_FILE.name} excludes the sources of '
+            'these plaster files, so update_patches would delete their '
+            'patches:\n'
+            + '\n'.join(excluded)
+            + '\nRemove the plaster file, or keep its source in patches with '
+            'a `-<path>` line.'
+        )
+
+
+def _select_plaster_files(
+    filepaths: list[str] | None = None,
+) -> list[PlasterFile]:
+    """The plaster files `get_plaster_files` returns, before any check."""
     if not filepaths:
         return PlasterFile.find_all()
 
