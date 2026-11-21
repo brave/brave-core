@@ -295,7 +295,7 @@ class BraveBrowserView : public BrowserView,
   void OnCompactModePrefChanged();
   void OnPreferenceChanged(const std::string& pref_name);
   void UpdateFocusModeState();
-  bool ShouldDisableFocusModeForActiveTab() const;
+  bool ShouldDisableFocusModeForActiveTab();
   bool HasVisiblePendingNavigation();
 
   // We need to observe BookmarkTabHelper to update the starred state of the
