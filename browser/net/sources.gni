@@ -86,6 +86,7 @@ brave_browser_net_deps = [
   "//brave/components/constants:brave_service_key_helper",
   "//brave/components/geolocation",
   "//brave/components/query_filter/browser",
+  "//brave/components/query_filter/common",
   "//brave/components/safebrowsing",
   "//brave/components/speech_to_text",
   "//brave/components/speech_to_text:buildflags",
