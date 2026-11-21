@@ -622,11 +622,8 @@ void SharedPinnedTabService::OnActiveTabChanged(
     return;
   }
 
-  if (pinned_tab_data_.at(active_index).contents_owner_model ==
-      tab_strip_model) {
-    // this pinned tab already has the shared contents.
-    DCHECK_EQ(pinned_tab_data_.at(active_index).shared_contents,
-              tab_strip_model->GetWebContentsAt(active_index));
+  auto* contents = tab_strip_model->GetWebContentsAt(active_index);
+  if (!IsDummyContents(contents)) {
     return;
   }
 
@@ -634,7 +631,7 @@ void SharedPinnedTabService::OnActiveTabChanged(
       FROM_HERE,
       base::BindOnce(
           &SharedPinnedTabService::MoveSharedWebContentsToActiveBrowser,
-          weak_ptr_factory_.GetWeakPtr(), active_index));
+          weak_ptr_factory_.GetWeakPtr(), contents->GetWeakPtr()));
 }
 
 void SharedPinnedTabService::OnTabUnpinned(
@@ -842,10 +839,28 @@ void SharedPinnedTabService::SynchronizeDeferredBrowser(
   SynchronizeNewBrowser(browser.get());
 }
 
-void SharedPinnedTabService::MoveSharedWebContentsToActiveBrowser(int index) {
-  if (!last_active_browser_) {
-    DVLOG(2)
-        << "Failed to attach contents to active browser: No active browser";
+void SharedPinnedTabService::MoveSharedWebContentsToActiveBrowser(
+    base::WeakPtr<content::WebContents> contents) {
+  if (!last_active_browser_ || !contents) {
+    return;
+  }
+
+  auto* model = last_active_browser_->GetTabStripModel();
+  const int index = model->active_index();
+  if (index == TabStripModel::kNoTab || !model->IsTabPinned(index) ||
+      model->GetWebContentsAt(index) != contents.get()) {
+    return;
+  }
+
+  if (std::ranges::contains(pending_unpin_models_, model)) {
+    // The shared list will catch up when the posted unpins run.
+    OnActiveTabChanged(model);
+    return;
+  }
+
+  auto* dummy = DummyContentsData::FromWebContents(contents.get());
+  if (!dummy || index >= static_cast<int>(pinned_tab_data_.size()) ||
+      pinned_tab_data_[index].shared_contents != dummy->shared_contents()) {
     return;
   }
 
