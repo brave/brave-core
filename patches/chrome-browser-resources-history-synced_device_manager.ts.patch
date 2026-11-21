@@ -1,15 +1,15 @@
 diff --git a/chrome/browser/resources/history/synced_device_manager.ts b/chrome/browser/resources/history/synced_device_manager.ts
-index 5f03089145413dfc187fac11da694a580b859912..7c41ee83a62778a1ae455d9cca66688736dc1043 100644
+index 55829229096fc0b73e419327c4d8bedfd9df4a22..3cc668cffcbd6c01d3bcaa9fc9f13b26f1d32845 100644
 --- a/chrome/browser/resources/history/synced_device_manager.ts
 +++ b/chrome/browser/resources/history/synced_device_manager.ts
-@@ -431,15 +431,6 @@ export class HistorySyncedDeviceManagerElement extends
+@@ -445,15 +445,6 @@ export class HistorySyncedDeviceManagerElement extends CrLitElement {
      }
  
      this.fire('history-view-changed');
 -
 -    // User signed out, syncing without tabs, or disabled sync in general =>
 -    // clear synced device list.
--    if (this.isSignInState_(HistorySignInState.SIGNED_OUT) ||
+-    if (this.isSignInState_(HistorySignInState.kSignedOut) ||
 -        this.isTabsSyncDisabled_()) {
 -      this.clearDisplayedSyncedDevices_();
 -      this.sessionList = null;

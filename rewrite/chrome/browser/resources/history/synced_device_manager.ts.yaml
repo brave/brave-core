@@ -12,7 +12,7 @@ substitutions:
     regex:
       re_pattern:
         '(onIdentityStateChanged_\(.*?)\n\s*//[^\n]*\n\s*//[^\n]*\n\s*if
-        \(this\.isSignInState_\(HistorySignInState\.SIGNED_OUT\)
+        \(this\.isSignInState_\(HistorySignInState\.kSignedOut\)
         \|\|\s*this\.isTabsSyncDisabled_\(\)\) \{.*?\n\s*return;\n\s*\}'
       re_flags: [DOTALL]
       replace: '\1'
