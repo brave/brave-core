@@ -274,13 +274,6 @@ class ResettableResizeArea : public views::ResizeArea {
 BEGIN_METADATA(ResettableResizeArea)
 END_METADATA
 
-TabStripPlacementCoordinator* GetPlacementCoordinator(
-    BrowserView* browser_view) {
-  CHECK(browser_view);
-  return BraveBrowserView::From(browser_view)
-      ->tab_strip_placement_coordinator();
-}
-
 }  // namespace
 
 BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
@@ -315,7 +308,7 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
   region_view_container_->SetLayoutManager(
       std::make_unique<views::FillLayout>());
 
-  auto* placement_coordinator = GetPlacementCoordinator(browser_view);
+  auto* placement_coordinator = TabStripPlacementCoordinator::From(browser_);
   CHECK(placement_coordinator);
   placement_coordinator->SetPlacement(TabStripPlacementKind::kVerticalTabStrip,
                                       region_view_container_.get());
@@ -429,7 +422,7 @@ BraveVerticalTabStripRegionView::~BraveVerticalTabStripRegionView() {
 
   // We need to move tab strip region to its original parent to avoid crash
   // during drag and drop session.
-  if (auto* coordinator = GetPlacementCoordinator(browser_view_)) {
+  if (auto* coordinator = TabStripPlacementCoordinator::From(browser_)) {
     coordinator->ClearPlacement(TabStripPlacementKind::kVerticalTabStrip);
   }
   UpdateLayout();
@@ -437,7 +430,7 @@ BraveVerticalTabStripRegionView::~BraveVerticalTabStripRegionView() {
 
 void BraveVerticalTabStripRegionView::AddedToWidget() {
   // Retry the placement, in case it was skipped while we weren't attached.
-  if (auto* coordinator = GetPlacementCoordinator(browser_view_)) {
+  if (auto* coordinator = TabStripPlacementCoordinator::From(browser_)) {
     coordinator->UpdatePlacement();
   }
 }
@@ -445,7 +438,7 @@ void BraveVerticalTabStripRegionView::AddedToWidget() {
 void BraveVerticalTabStripRegionView::RemovedFromWidget() {
   // Only clear the placement data here, no reparenting: Views may be
   // mid-iteration tearing down the tree at this point.
-  if (auto* coordinator = GetPlacementCoordinator(browser_view_)) {
+  if (auto* coordinator = TabStripPlacementCoordinator::From(browser_)) {
     coordinator->ClearPlacement(TabStripPlacementKind::kVerticalTabStrip);
   }
 }
@@ -738,7 +731,7 @@ void BraveVerticalTabStripRegionView::OnVerticalTabSideChanged() {
 }
 
 void BraveVerticalTabStripRegionView::UpdateLayout() {
-  if (auto* coordinator = GetPlacementCoordinator(browser_view_)) {
+  if (auto* coordinator = TabStripPlacementCoordinator::From(browser_)) {
     coordinator->UpdatePlacement();
   }
 

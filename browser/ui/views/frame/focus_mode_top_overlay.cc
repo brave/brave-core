@@ -10,9 +10,9 @@
 
 #include "base/check.h"
 #include "base/check_deref.h"
-#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/edge_reveal/edge_hover_detector.h"
 #include "brave/browser/ui/views/frame/tab_strip_placement_coordinator.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/top_container_view.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -36,12 +36,6 @@ gfx::Rect GetTopHotZone(const gfx::Rect& window_bounds) {
   gfx::Rect rect(window_bounds);
   rect.set_height(kHotZoneThickness);
   return rect;
-}
-
-TabStripPlacementCoordinator* GetTabStripCoordinator(
-    BrowserView& browser_view) {
-  return BraveBrowserView::From(&browser_view)
-      ->tab_strip_placement_coordinator();
 }
 
 // Captures the focused view on construction and re-focuses it on destruction,
@@ -106,7 +100,8 @@ void FocusModeTopOverlay::Activate() {
 
   // Register the focus mode tab strip placement and move the tab strip into
   // the top container.
-  auto* coordinator = GetTabStripCoordinator(browser_view_.get());
+  auto* coordinator =
+      TabStripPlacementCoordinator::From(browser_view_->browser());
   CHECK(coordinator);
   coordinator->SetPlacement(TabStripPlacementKind::kFocusMode, top_container,
                             0);
@@ -159,7 +154,8 @@ void FocusModeTopOverlay::Deactivate() {
   }
 
   // Restore tab strip placement.
-  if (auto* coordinator = GetTabStripCoordinator(browser_view_.get())) {
+  if (auto* coordinator =
+          TabStripPlacementCoordinator::From(browser_view_->browser())) {
     coordinator->ClearPlacement(TabStripPlacementKind::kFocusMode);
     coordinator->UpdatePlacement();
   }
