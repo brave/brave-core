@@ -390,8 +390,6 @@ source_set("ui") {
     sources += [
       "bookmark/bookmark_helper.cc",
       "bookmark/bookmark_helper.h",
-      "bookmark/brave_bookmark_prefs.cc",
-      "bookmark/brave_bookmark_prefs.h",
       "brave_browser_actions.cc",
       "brave_browser_actions.h",
       "brave_browser_command_controller.cc",
@@ -514,6 +512,7 @@ source_set("ui") {
       "//brave/browser/profiles:util",
       "//brave/browser/search_engines",
       "//brave/browser/sessions",
+      "//brave/browser/ui/bookmark:brave_bookmark_prefs",
       "//brave/browser/ui/omnibox:clean_link",
       "//brave/browser/ui/sidebar:sidebar_impl",
       "//brave/browser/ui/split_view",
