@@ -244,7 +244,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &history::kOrganicRepeatableQueries,
       &history_clusters::features::kOnDeviceClusteringKeywordFiltering,
       &history_clusters::internal::kHistoryClustersInternalsPage,
-      &history_clusters::internal::kHistoryClustersNavigationContextClustering,
       &history_clusters::internal::kJourneysImages,
       &history_clusters::internal::kOmniboxHistoryClusterProvider,
       &lens::features::kLensOverlay,
