@@ -1,0 +1,26 @@
+diff --git a/chrome/browser/ui/webui/settings/settings_clear_browsing_data_handler.cc b/chrome/browser/ui/webui/settings/settings_clear_browsing_data_handler.cc
+index 3bb00569eba90692825171cc00d4d4f4c2d908d3..52f6ec2cabccdc2798a29f6cfbd239e25a8bd13c 100644
+--- a/chrome/browser/ui/webui/settings/settings_clear_browsing_data_handler.cc
++++ b/chrome/browser/ui/webui/settings/settings_clear_browsing_data_handler.cc
+@@ -201,6 +201,11 @@ void ClearBrowsingDataHandler::HandleClearBrowsingData(
+     data_type_vector.push_back(*data_type);
+ 
+     switch (*data_type) {
++#if BUILDFLAG(ENABLE_AI_CHAT)
++      case BrowsingDataType::BRAVE_AI_CHAT:
++        remove_mask |= chrome_browsing_data_remover::DATA_TYPE_BRAVE_LEO_HISTORY;
++        break;
++#endif
+       case BrowsingDataType::HISTORY:
+         if (prefs->GetBoolean(prefs::kAllowDeletingBrowserHistory)) {
+           remove_mask |= chrome_browsing_data_remover::DATA_TYPE_HISTORY;
+@@ -265,6 +270,9 @@ void ClearBrowsingDataHandler::HandleClearBrowsingData(
+   UMA_HISTOGRAM_ENUMERATION(
+       "History.ClearBrowsingData.UserDeletedCookieOrCacheFromDialog", choice);
+ 
++#if BUILDFLAG(IS_WIN)
++  browsing_data::BraveRemoveJumplist(remove_mask, profile_);
++#endif
+   browsing_data::RecordDeleteBrowsingDataAction(
+       browsing_data::DeleteBrowsingDataAction::kClearBrowsingDataDialog);
+   settings_utils::MaybeNotifySettingsCustomEvent(
