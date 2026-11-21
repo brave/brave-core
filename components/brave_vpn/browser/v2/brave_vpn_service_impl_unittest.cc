@@ -88,6 +88,9 @@ class ConnectionStateRecorder : public mojom::ServiceObserver {
 
   const std::vector<mojom::ConnectionState>& states() const { return states_; }
 
+  const std::vector<bool>& auto_reconnect_states() const {
+    return auto_reconnect_states_;
+  }
   const std::vector<bool>& smart_proxy_routing_states() const {
     return smart_proxy_routing_states_;
   }
@@ -106,6 +109,9 @@ class ConnectionStateRecorder : public mojom::ServiceObserver {
       mojom::PurchasedState state,
       const std::optional<std::string>& description) override {}
   void OnSelectedRegionChanged(mojom::RegionPtr region) override {}
+  void OnAutoReconnectStateChanged(bool enabled) override {
+    auto_reconnect_states_.push_back(enabled);
+  }
   void OnSmartProxyRoutingStateChanged(bool enabled) override {
     smart_proxy_routing_states_.push_back(enabled);
   }
@@ -113,6 +119,7 @@ class ConnectionStateRecorder : public mojom::ServiceObserver {
 
  private:
   std::vector<mojom::ConnectionState> states_;
+  std::vector<bool> auto_reconnect_states_;
   std::vector<bool> smart_proxy_routing_states_;
   size_t agent_failures_ = 0;
   mojo::Receiver<mojom::ServiceObserver> receiver_{this};
@@ -933,6 +940,21 @@ TEST_F(BraveVpnServiceImplTest, AgentReportedSettingsLiveWithSession) {
 
   NotifyAgentDisconnected();
   ExpectAgentSettingsUnavailable();
+}
+
+TEST_F(BraveVpnServiceImplTest, AutoReconnectChangesNotifyObservers) {
+  CreateService();
+  ConnectionStateRecorder recorder;
+  recorder.Observe(service_.get());
+  NotifyAgentConnected();
+
+  ReportAgentAutoReconnectState(true);
+  ReportAgentAutoReconnectState(true);
+  ReportAgentAutoReconnectState(false);
+  recorder.FlushForTesting();
+
+  EXPECT_THAT(recorder.auto_reconnect_states(),
+              testing::ElementsAre(true, false));
 }
 
 TEST_F(BraveVpnServiceImplTest, SmartProxyRoutingChangesNotifyObservers) {

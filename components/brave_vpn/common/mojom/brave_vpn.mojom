@@ -33,6 +33,9 @@ interface ServiceObserver {
   OnSelectedRegionChanged(Region region);
 
   [EnableIfNot=is_android]
+  OnAutoReconnectStateChanged(bool enabled);
+
+  [EnableIfNot=is_android]
   OnSmartProxyRoutingStateChanged(bool enabled);
 
   OnPurchasedStateChanged(PurchasedState state, string? description);
