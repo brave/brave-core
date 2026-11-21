@@ -220,9 +220,10 @@ re_flags: [DOTALL]
 A `re_pattern` breaks this rule when it spells out `\n`, or two or more
 consecutive literal spaces, between tokens. Not violations:
 
-- A single literal space where it keeps the regex readable, e.g.
-  `enum class RequestType \{` (see
-  [Whitespace in matches](../plaster_dos_and_donts.md#whitespace-in-matches)).
+- A literal space, only when all of these hold: it materially improves the
+  regex's readability, it is a single space, the file is covered by a formatter
+  that enforces consistent spacing, and the space is very unlikely ever to
+  become a newline. E.g. `enum class RequestType \{`.
 - `\n` inside a character class meaning "the rest of the line", e.g. `[^\n]*`.
 - `\n` and indentation in `replace:`, which is the text being written out.
 
