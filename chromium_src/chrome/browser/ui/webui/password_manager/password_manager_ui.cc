@@ -10,34 +10,17 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "ui/webui/webui_util.h"
 
-#define SetupWebUIDataSource(...)                                       \
-  SetupWebUIDataSource(__VA_ARGS__);                                    \
-  source->AddResourcePath("images/password_manager_logo.svg",           \
-                          IDR_BRAVE_PASSWORD_MANAGER_LOGO);             \
-  source->AddLocalizedString("bravePasswordManagerFillLabel",           \
-                             IDS_BRAVE_PASSWORD_MANAGER_UI_FILL_LABEL); \
-  source->AddLocalizedString("bravePasswordManagerFillSubLabel",        \
-                             IDS_BRAVE_PASSWORD_MANAGER_UI_FILL_SUB_LABEL)
+namespace {
 
-#undef IDS_PASSWORD_MANAGER_UI_EMPTY_STATE_SYNCING_USERS
-#define IDS_PASSWORD_MANAGER_UI_EMPTY_STATE_SYNCING_USERS \
-  IDS_BRAVE_PASSWORD_MANAGER_UI_EMPTY_STATE_SIGNEDOUT_USERS
+void AddBravePasswordManagerSourceData(content::WebUIDataSource* source) {
+  source->AddResourcePath("images/password_manager_logo.svg",
+                          IDR_BRAVE_PASSWORD_MANAGER_LOGO);
+  source->AddLocalizedString("bravePasswordManagerFillLabel",
+                             IDS_BRAVE_PASSWORD_MANAGER_UI_FILL_LABEL);
+  source->AddLocalizedString("bravePasswordManagerFillSubLabel",
+                             IDS_BRAVE_PASSWORD_MANAGER_UI_FILL_SUB_LABEL);
+}
 
-#undef IDS_PASSWORD_MANAGER_UI_EMPTY_STATE_SIGNEDOUT_USERS
-#define IDS_PASSWORD_MANAGER_UI_EMPTY_STATE_SIGNEDOUT_USERS \
-  IDS_BRAVE_PASSWORD_MANAGER_UI_EMPTY_STATE_SIGNEDOUT_USERS
-
-#undef IDS_PASSWORD_MANAGER_UI_IMPORT_DESCRIPTION_SYNCING_USERS
-#define IDS_PASSWORD_MANAGER_UI_IMPORT_DESCRIPTION_SYNCING_USERS \
-  IDS_BRAVE_PASSWORD_MANAGER_UI_IMPORT_DESCRIPTION_SIGNEDOUT_USERS
-
-#undef IDS_PASSWORD_MANAGER_UI_IMPORT_DESCRIPTION_SIGNEDOUT_USERS
-#define IDS_PASSWORD_MANAGER_UI_IMPORT_DESCRIPTION_SIGNEDOUT_USERS \
-  IDS_BRAVE_PASSWORD_MANAGER_UI_IMPORT_DESCRIPTION_SIGNEDOUT_USERS
+}  // namespace
 
 #include <chrome/browser/ui/webui/password_manager/password_manager_ui.cc>
-#undef IDS_PASSWORD_MANAGER_UI_IMPORT_DESCRIPTION_SIGNEDOUT_USERS
-#undef IDS_PASSWORD_MANAGER_UI_IMPORT_DESCRIPTION_SYNCING_USERS
-#undef IDS_PASSWORD_MANAGER_UI_EMPTY_STATE_SIGNEDOUT_USERS
-#undef IDS_PASSWORD_MANAGER_UI_EMPTY_STATE_SYNCING_USERS
-#undef SetupWebUIDataSource
