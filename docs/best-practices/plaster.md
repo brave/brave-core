@@ -202,7 +202,9 @@ and calls for `re_pattern`.
 indentation to find its anchor. Match the layout between tokens with `\s*` or
 `\s+`.** Then upstream reformatting (clang-format, a wrapped statement, an added
 blank line, a changed indent) cannot break the match for a reason unrelated to
-the rewrite. This is the whitespace half of [PLSTR-004](#PLSTR-004).
+the rewrite. Layout between tokens is incidental detail, like the contents of a
+list the rewrite does not change: anchor on the tokens and wildcard the
+whitespace.
 
 ```yaml
 # ❌ WRONG - pins a newline, a two-space indent and the brace's column. A blank
