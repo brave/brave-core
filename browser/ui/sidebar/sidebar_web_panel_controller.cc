@@ -5,15 +5,52 @@
 
 #include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
 
+#include <memory>
+#include <string>
+#include <utility>
+
 #include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/navigator/browser_navigator.h"
+#include "chrome/browser/ui/navigator/browser_navigator_params.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "components/embedder_support/user_agent_utils.h"
+#include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/navigation_entry.h"
+#include "content/public/browser/web_contents.h"
+#include "third_party/blink/public/common/user_agent/user_agent_metadata.h"
 
 namespace sidebar {
+
+namespace {
+
+// Mirrors Chromium's own desktop "request mobile/tablet site" user-agent
+// construction (chrome/browser/ui/browser_commands.cc,
+// SetAndroidOsForTabletSite()), but for phone form factor rather than tablet.
+constexpr char kOsOverrideForMobileSite[] = "Linux; Android 13; Mobile";
+constexpr char kChPlatformOverrideForMobileSite[] = "Android";
+
+blink::UserAgentOverride BuildMobileUserAgentOverride() {
+  blink::UserAgentOverride ua_override;
+  const std::string product =
+      embedder_support::GetProductAndVersion() + " Mobile";
+  ua_override.ua_string_override =
+      embedder_support::BuildUserAgentFromOSAndProduct(kOsOverrideForMobileSite,
+                                                       product);
+  ua_override.ua_metadata_override = embedder_support::GetUserAgentMetadata();
+  ua_override.ua_metadata_override->mobile = true;
+  ua_override.ua_metadata_override->form_factors = {blink::kMobileFormFactor};
+  ua_override.ua_metadata_override->platform = kChPlatformOverrideForMobileSite;
+  ua_override.ua_metadata_override->platform_version = std::string();
+  return ua_override;
+}
+
+}  // namespace
 
 SidebarWebPanelController::SidebarWebPanelController(
     BrowserView& browser_view,
@@ -68,12 +105,75 @@ bool SidebarWebPanelController::HasPanelTab() const {
 
 void SidebarWebPanelController::OpenWebPanel(const SidebarItem& item,
                                              bool animate) {
-  panel_contents_ = chrome::AddAndReturnTabAt(
-      browser_view_->browser(), item.url, 0, false, std::nullopt, true);
+  NavigateParams nav_params(browser_view_->browser(), item.url,
+                            ui::PAGE_TRANSITION_TYPED);
+  nav_params.disposition = ui::mojom::WindowOpenDisposition::kNewBackgroundTab;
+  nav_params.tabstrip_index = 0;
+  nav_params.tabstrip_add_types = AddTabTypes::ADD_PINNED;
+
+  if (item.use_mobile_user_agent) {
+    content::WebContents::CreateParams create_params(
+        browser_view_->browser()->GetProfile());
+    std::unique_ptr<content::WebContents> web_contents =
+        content::WebContents::Create(create_params);
+    web_contents->SetUserAgentOverride(BuildMobileUserAgentOverride(),
+                                       /*override_in_new_tabs=*/false);
+
+    // Pre-create the WebContents so the mobile User-Agent override is applied
+    // before the initial navigation starts. Navigate() skips loading `url`
+    // when `contents_to_insert` is set, so start the load here.
+    content::NavigationController::LoadURLParams load_url_params(item.url);
+    load_url_params.transition_type = ui::PAGE_TRANSITION_TYPED;
+    load_url_params.override_user_agent =
+        content::NavigationController::UA_OVERRIDE_TRUE;
+    web_contents->GetController().LoadURLWithParams(load_url_params);
+    nav_params.contents_to_insert = std::move(web_contents);
+  }
+
+  Navigate(&nav_params);
+  panel_contents_ = nav_params.navigated_or_inserted_contents.get();
   panel_item_ = item;
   state_ = State::kOpen;
   GetMultiContentsView()->SetWebPanelContents(panel_contents_, animate);
   web_panel_state_changed_.Run();
+}
+
+void SidebarWebPanelController::ReapplyUserAgent(const SidebarItem& item) {
+  CHECK(panel_contents_);
+  panel_item_ = item;
+
+  content::NavigationController& controller = panel_contents_->GetController();
+  content::NavigationEntry* entry = controller.GetVisibleEntry();
+  if (!entry) {
+    return;
+  }
+
+  entry->SetIsOverridingUserAgent(item.use_mobile_user_agent);
+  panel_contents_->SetUserAgentOverride(item.use_mobile_user_agent
+                                            ? BuildMobileUserAgentOverride()
+                                            : blink::UserAgentOverride(),
+                                        /*override_in_new_tabs=*/false);
+
+  // For POST requests, use a normal Reload to preserve repost confirmation.
+  // Otherwise, load the original (pre-redirect) URL with an explicit UA
+  // override.
+  if (entry->GetHasPostData()) {
+    controller.Reload(content::ReloadType::NORMAL, /*check_for_repost=*/true);
+    return;
+  }
+
+  const GURL& target_url = entry->GetOriginalRequestURL().is_valid()
+                               ? entry->GetOriginalRequestURL()
+                               : entry->GetURL();
+  content::NavigationController::LoadURLParams load_url_params(target_url);
+  load_url_params.transition_type = ui::PAGE_TRANSITION_RELOAD;
+  load_url_params.should_replace_current_entry =
+      (entry == controller.GetLastCommittedEntry());
+  load_url_params.override_user_agent =
+      item.use_mobile_user_agent
+          ? content::NavigationController::UA_OVERRIDE_TRUE
+          : content::NavigationController::UA_OVERRIDE_FALSE;
+  controller.LoadURLWithParams(load_url_params);
 }
 
 void SidebarWebPanelController::CloseWebPanel(bool suppress_animations) {

@@ -132,17 +132,20 @@ TEST_F(SidebarModelTest, ItemsChangedTest) {
   // Update the "brave software" item w/ url change.
   SidebarItemUpdate expected_update{brave_item_index, false, true};
   EXPECT_CALL(observer_, OnItemUpdated(testing::_, expected_update)).Times(1);
-  service()->UpdateItem(GURL("https://www.brave.com/"),
-                        GURL("https://brave.com/"), u"brave software",
-                        u"brave software");
+  service()->UpdateItem(SidebarItem::CreateWebTabItem(
+                            GURL("https://www.brave.com/"), u"brave software"),
+                        SidebarItem::CreateWebTabItem(
+                            GURL("https://brave.com/"), u"brave software"));
   testing::Mock::VerifyAndClearExpectations(&observer_);
 
   // Update the same item w/o url change.
   expected_update.url_updated = false;
   expected_update.title_updated = true;
   EXPECT_CALL(observer_, OnItemUpdated(testing::_, expected_update)).Times(1);
-  service()->UpdateItem(GURL("https://brave.com/"), GURL("https://brave.com/"),
-                        u"brave software", u"brave");
+  service()->UpdateItem(
+      SidebarItem::CreateWebTabItem(GURL("https://brave.com/"),
+                                    u"brave software"),
+      SidebarItem::CreateWebTabItem(GURL("https://brave.com/"), u"brave"));
   testing::Mock::VerifyAndClearExpectations(&observer_);
 
   // Move item at 1 to at index 2.

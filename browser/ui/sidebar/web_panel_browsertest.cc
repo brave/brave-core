@@ -73,6 +73,8 @@
 #include "components/split_tabs/split_tab_visual_data.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/context_menu_params.h"
+#include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
@@ -699,6 +701,120 @@ IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest, WebPanelItemActiveStateTest) {
   controller()->ToggleSidebarPinning();
   ASSERT_TRUE(sidebar->IsSidebarVisible());
   EXPECT_EQ(views::InkDropState::ACTIVATED, ink_drop_state_at(index_b));
+}
+
+IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
+                       UpdateItemFromWebPanelToTabClosesOpenPanel) {
+  auto* service = SidebarServiceFactory::GetForProfile(browser()->GetProfile());
+
+  const GURL url(kTestWebPanelURL);
+  const std::u16string title(u"title");
+  OpenWebPanel(url);
+  const size_t index = model()->GetAllSidebarItems().size() - 1;
+  ASSERT_EQ(model()->active_index(), index);
+
+  // This is what the sidebar item's context menu's "Open in tab" entry does
+  // when toggled on an open web panel.
+  service->UpdateItem(SidebarItem::CreateWebPanelItem(url, title),
+                      SidebarItem::CreateWebTabItem(url, title));
+
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !web_panel_controller()->HasOpenPanel(); }));
+  EXPECT_FALSE(model()->active_index());
+}
+
+IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
+                       TogglingMobileUserAgentReloadsOpenPanelInPlace) {
+  auto* service = SidebarServiceFactory::GetForProfile(browser()->GetProfile());
+
+  const GURL url(kTestWebPanelURL);
+  const std::u16string title(u"title");
+  OpenWebPanel(url);
+  const size_t index = model()->GetAllSidebarItems().size() - 1;
+  ASSERT_EQ(model()->active_index(), index);
+
+  auto* panel_contents = tab_model()->GetTabAtIndex(0)->GetContents();
+  ASSERT_EQ(panel_contents, web_panel_controller()->panel_contents());
+
+  // Navigate within the panel, away from the item's original url.
+  const GURL navigated_url(kRegularTabURL);
+  ASSERT_TRUE(content::NavigateToURL(panel_contents, navigated_url));
+
+  auto new_item = SidebarItem::CreateWebPanelItem(url, title);
+  new_item.use_mobile_user_agent = true;
+  service->UpdateItem(SidebarItem::CreateWebPanelItem(url, title), new_item);
+
+  // The panel stays open, on the same WebContents - not recreated.
+  EXPECT_TRUE(web_panel_controller()->HasOpenPanel());
+  EXPECT_EQ(model()->active_index(), index);
+  EXPECT_EQ(panel_contents, tab_model()->GetTabAtIndex(0)->GetContents());
+  EXPECT_EQ(panel_contents, web_panel_controller()->panel_contents());
+
+  // The in-panel navigation survived the reload - it wasn't reset back to
+  // the item's original url.
+  ASSERT_TRUE(content::WaitForLoadStop(panel_contents));
+  EXPECT_EQ(navigated_url, panel_contents->GetLastCommittedURL());
+
+  auto* entry = panel_contents->GetController().GetLastCommittedEntry();
+  ASSERT_TRUE(entry);
+  EXPECT_TRUE(entry->GetIsOverridingUserAgent());
+}
+
+// Both the "Open in panel"/"Open in tab" and the "Show mobile version"/"Show
+// desktop version" menu entries are for user-added web items only.
+// is_web_panel_type() alone isn't enough to exclude built-ins - a built-in
+// item can be PanelType::kWebPanel too (e.g. Brave Talk) - so
+// IsCommandIdVisible() must additionally require is_web_type() for both.
+// Fabricate a built-in item that's also a web panel directly, rather than
+// relying on Brave Talk, so this test doesn't need
+// BUILDFLAG(ENABLE_BRAVE_TALK). The open-in-panel entry differs in that it must
+// also show for a plain web-tab item, since that's what switches it to a panel
+// in the first place.
+IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
+                       MenuEntriesExcludeBuiltInWebPanelItems) {
+  // To prevent item added bubble launching.
+  browser()->GetProfile()->GetPrefs()->SetInteger(
+      kSidebarItemAddedFeedbackBubbleShowCount, 3);
+
+  auto* service = SidebarServiceFactory::GetForProfile(browser()->GetProfile());
+  auto items_contents_view = GetSidebarItemsContentsView(controller());
+
+  // A real built-in item (kBookmarks) reused with a fabricated, otherwise
+  // impossible PanelType::kWebPanel + url combination - just enough to
+  // exercise the built-in exclusion without depending on Brave Talk. Added
+  // first: built-in items are inserted among the other built-ins rather than
+  // appended at the end, which would shift web_panel_index and web_tab_index
+  // if they were captured before this item is added.
+  const SidebarItem builtin_web_panel_item = SidebarItem::CreateBuiltInItem(
+      SidebarItem::BuiltInItemType::kBookmarks, u"fake built-in web panel",
+      SidebarItem::PanelType::kWebPanel,
+      GURL("https://builtin-web-panel.test/"));
+  service->AddItem(builtin_web_panel_item);
+  const auto builtin_index = model()->GetIndexOf(builtin_web_panel_item);
+  ASSERT_TRUE(builtin_index);
+  ASSERT_TRUE(
+      model()->GetAllSidebarItems()[*builtin_index].is_web_panel_type());
+
+  service->AddItem(
+      SidebarItem::CreateWebPanelItem(GURL(kTestWebPanelURL), u"title"));
+  const size_t web_panel_index = model()->GetAllSidebarItems().size() - 1;
+  service->AddItem(
+      SidebarItem::CreateWebTabItem(GURL(kRegularTabURL), u"title"));
+  const size_t web_tab_index = model()->GetAllSidebarItems().size() - 1;
+
+  EXPECT_TRUE(items_contents_view->IsOpenInPanelMenuEntryVisibleForTesting(
+      items_contents_view->children()[web_panel_index].get()));
+  EXPECT_TRUE(items_contents_view->IsOpenInPanelMenuEntryVisibleForTesting(
+      items_contents_view->children()[web_tab_index].get()));
+  EXPECT_FALSE(items_contents_view->IsOpenInPanelMenuEntryVisibleForTesting(
+      items_contents_view->children()[*builtin_index].get()));
+
+  EXPECT_TRUE(items_contents_view->IsMobileUserAgentMenuEntryVisibleForTesting(
+      items_contents_view->children()[web_panel_index].get()));
+  EXPECT_FALSE(items_contents_view->IsMobileUserAgentMenuEntryVisibleForTesting(
+      items_contents_view->children()[web_tab_index].get()));
+  EXPECT_FALSE(items_contents_view->IsMobileUserAgentMenuEntryVisibleForTesting(
+      items_contents_view->children()[*builtin_index].get()));
 }
 
 // The mini toolbar's close button has to dismiss the panel the same way the
