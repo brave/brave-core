@@ -1,5 +1,5 @@
 diff --git a/components/segmentation_platform/public/features.cc b/components/segmentation_platform/public/features.cc
-index 6c4e9140568df771bd9d3fb35d24298d3fbffce7..6e33aa078cc042c7005122260144d17496d80d8c 100644
+index 53f7f0d9a8b8ec21ed2ff17372d2b0f92988dd9c..eaaf8a164439c297c717f214bb2047a638c17889 100644
 --- a/components/segmentation_platform/public/features.cc
 +++ b/components/segmentation_platform/public/features.cc
 @@ -11,9 +11,9 @@

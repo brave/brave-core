@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/common/features.cc b/third_party/blink/common/features.cc
-index 33bead4d0c4254561d54eb99636124e0b351fb34..c57e3ba7df71dd743fad22985548625380c276c1 100644
+index 377eb992d9b82480a39cf63e39d09638dfccbf6e..15b18d34f014f9673c3113d9c2382b070e341fc7 100644
 --- a/third_party/blink/common/features.cc
 +++ b/third_party/blink/common/features.cc
 @@ -137,7 +137,7 @@ BASE_FEATURE(kAllowDatapipeDrainedAsBytesConsumerInBFCache,
@@ -11,7 +11,7 @@ index 33bead4d0c4254561d54eb99636124e0b351fb34..c57e3ba7df71dd743fad229855486253
  
  // A console warning is shown when the opaque url returned from Protected
  // Audience/selectUrl is used to navigate an iframe. Since fenced frames are not
-@@ -202,7 +202,7 @@ BASE_FEATURE_PARAM(std::string,
+@@ -196,7 +196,7 @@ BASE_FEATURE_PARAM(std::string,
  
  // Enable background resource fetch in Blink. See https://crbug.com/1379780 for
  // more details.
@@ -20,7 +20,7 @@ index 33bead4d0c4254561d54eb99636124e0b351fb34..c57e3ba7df71dd743fad229855486253
  BASE_FEATURE_PARAM(bool,
                     kBackgroundFontResponseProcessor,
                     &kBackgroundResourceFetch,
-@@ -677,7 +677,7 @@ BASE_FEATURE_PARAM(bool,
+@@ -673,7 +673,7 @@ BASE_FEATURE_PARAM(bool,
  // this feature does not automatically expose this element to the web, it only
  // allows the element to be enabled by the runtime enabled feature, for origin
  // trials.
@@ -29,7 +29,7 @@ index 33bead4d0c4254561d54eb99636124e0b351fb34..c57e3ba7df71dd743fad229855486253
  
  // Enable sending event-level reports through reportEvent() in cross-origin
  // subframes. This requires opt-in both from the cross-origin subframe that is
-@@ -1422,7 +1422,7 @@ BASE_FEATURE(kLowLatencyUsageSupportedForCanvas,
+@@ -1414,7 +1414,7 @@ BASE_FEATURE(kLowLatencyUsageSupportedForCanvas,
               base::FEATURE_ENABLED_BY_DEFAULT);
  #endif
  
@@ -38,7 +38,7 @@ index 33bead4d0c4254561d54eb99636124e0b351fb34..c57e3ba7df71dd743fad229855486253
               "AutoupgradeMixedContent",
               base::FEATURE_ENABLED_BY_DEFAULT);
  
-@@ -1734,8 +1734,8 @@ BASE_FEATURE_PARAM(base::TimeDelta,
+@@ -1720,8 +1720,8 @@ BASE_FEATURE_PARAM(base::TimeDelta,
                     &kPreloadingEagerHoverHeuristics,
                     "hover_dwell_time",
                     base::Milliseconds(10));
@@ -49,7 +49,7 @@ index 33bead4d0c4254561d54eb99636124e0b351fb34..c57e3ba7df71dd743fad229855486253
  BASE_FEATURE_PARAM(bool,
                     kPreloadingEagerViewportHeuristicsForDevToolsEmulation,
                     &kPreloadingEagerViewportHeuristics,
-@@ -1746,8 +1746,8 @@ BASE_FEATURE_PARAM(base::TimeDelta,
+@@ -1732,8 +1732,8 @@ BASE_FEATURE_PARAM(base::TimeDelta,
                     "viewport_present_time",
                     base::Milliseconds(50));
  
@@ -60,7 +60,7 @@ index 33bead4d0c4254561d54eb99636124e0b351fb34..c57e3ba7df71dd743fad229855486253
  BASE_FEATURE_PARAM(bool,
                     kPreloadingModerateViewportHeuristicsEnactCandidates,
                     &kPreloadingModerateViewportHeuristics,
-@@ -1809,7 +1809,7 @@ BASE_FEATURE(kLocalCompileHints, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -1795,7 +1795,7 @@ BASE_FEATURE(kLocalCompileHints, base::FEATURE_ENABLED_BY_DEFAULT);
  
  // Reduce the amount of information in the default 'referer' header for
  // cross-origin requests.
@@ -69,7 +69,7 @@ index 33bead4d0c4254561d54eb99636124e0b351fb34..c57e3ba7df71dd743fad229855486253
  
  // When disabled, cropTo() is rejected while other tracks share the source, as
  // it was before per-track cropping was supported.
-@@ -2223,7 +2223,7 @@ BASE_FEATURE(kThrottleFullscreenVideoActiveTab,
+@@ -2209,7 +2209,7 @@ BASE_FEATURE(kThrottleFullscreenVideoActiveTab,
  
  // Changes behavior of User-Agent Client Hints to send blank headers when the
  // User-Agent string is overridden, instead of disabling the headers altogether.

@@ -1,8 +1,8 @@
 diff --git a/extensions/browser/install_prompt_data.cc b/extensions/browser/install_prompt_data.cc
-index 1e847d908236b6a7bd8bc86337f69780a9c5e2d1..e93cf756d41c5f02008683500304c9b167af75a8 100644
+index e20e111c5f953a039f1973df61c64d660e4b7631..7662bc836e6400d4bf186a79998eb572abb66dc8 100644
 --- a/extensions/browser/install_prompt_data.cc
 +++ b/extensions/browser/install_prompt_data.cc
-@@ -75,7 +75,7 @@ std::u16string InstallPromptData::GetDialogTitle() const {
+@@ -132,7 +132,7 @@ std::u16string InstallPromptData::GetDialogTitle() const {
    int id = -1;
    switch (type_) {
      case INSTALL_PROMPT:

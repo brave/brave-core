@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/omnibox/java/res/layout/location_status.xml b/chrome/browser/ui/android/omnibox/java/res/layout/location_status.xml
-index 1045b792e760f6c1bcf80915d5d0765650150ad4..8b59ad3c2fc5b057dc3cbc953baa2b77e36ac718 100644
+index 1fd6e0b85c116d2520c96cde3287e40ca25748e0..834f5bf83ae36886617ddb0a6c7225cbb19f9b94 100644
 --- a/chrome/browser/ui/android/omnibox/java/res/layout/location_status.xml
 +++ b/chrome/browser/ui/android/omnibox/java/res/layout/location_status.xml
 @@ -24,7 +24,7 @@ found in the LICENSE file.
@@ -11,7 +11,7 @@ index 1045b792e760f6c1bcf80915d5d0765650150ad4..8b59ad3c2fc5b057dc3cbc953baa2b77
          android:id="@+id/location_bar_status"
          android:layout_width="wrap_content"
          android:layout_height="@dimen/location_bar_height"
-@@ -86,6 +86,6 @@ found in the LICENSE file.
+@@ -77,6 +77,6 @@ found in the LICENSE file.
              android:visibility="gone"
              android:focusable="false"/>
  

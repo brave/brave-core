@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab/tab_icon.cc b/chrome/browser/ui/views/tabs/tab/tab_icon.cc
-index 63c5e6a47e9387bb878d959e985d4d8931bede3d..755f8d1d6776e151f3c1f3c48e2da3e7db296373 100644
+index 88f2b39155a8d57656358a16d4e9084c15c798c7..4950edb7a5d6a2ca8855f8536cd6207403eff778 100644
 --- a/chrome/browser/ui/views/tabs/tab/tab_icon.cc
 +++ b/chrome/browser/ui/views/tabs/tab/tab_icon.cc
 @@ -306,7 +306,7 @@ void TabIcon::PaintAttentionIndicatorAndIcon(gfx::Canvas* canvas,

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/api/developer_private/extension_info_generator.cc b/chrome/browser/extensions/api/developer_private/extension_info_generator.cc
-index 71a1a3e558502b59b9a4438ac2eeac72e2c2f332..a18d21b08f8861aca7d93670854ed09569f8d9ec 100644
+index cf39476643b89683562598341f710fe849dba3bc..325aacde5d0f0ba49d754c78f843aaa9763422eb 100644
 --- a/chrome/browser/extensions/api/developer_private/extension_info_generator.cc
 +++ b/chrome/browser/extensions/api/developer_private/extension_info_generator.cc
 @@ -564,7 +564,7 @@ void ExtensionInfoGenerator::FillExtensionInfo(const Extension& extension,
@@ -11,7 +11,7 @@ index 71a1a3e558502b59b9a4438ac2eeac72e2c2f332..a18d21b08f8861aca7d93670854ed095
        break;
      case BitMapBlocklistState::BLOCKLISTED_SECURITY_VULNERABILITY:
        blocklist_text = IDS_EXTENSIONS_BLOCKLISTED_SECURITY_VULNERABILITY;
-@@ -747,6 +747,7 @@ void ExtensionInfoGenerator::FillExtensionInfo(const Extension& extension,
+@@ -750,6 +750,7 @@ void ExtensionInfoGenerator::FillExtensionInfo(const Extension& extension,
  #else
    info.incognito_access_pending_change = false;
  #endif
@@ -19,7 +19,7 @@ index 71a1a3e558502b59b9a4438ac2eeac72e2c2f332..a18d21b08f8861aca7d93670854ed095
  
    // User Scripts toggle.
    info.user_scripts_access.is_enabled =
-@@ -901,6 +902,7 @@ void ExtensionInfoGenerator::FillExtensionInfo(const Extension& extension,
+@@ -904,6 +905,7 @@ void ExtensionInfoGenerator::FillExtensionInfo(const Extension& extension,
    CHECK(mv2_handler);
    info.is_affected_by_mv2_deprecation =
        mv2_handler->IsExtensionAffected(extension);

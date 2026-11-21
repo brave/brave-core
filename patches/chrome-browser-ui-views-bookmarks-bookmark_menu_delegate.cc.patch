@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/bookmarks/bookmark_menu_delegate.cc b/chrome/browser/ui/views/bookmarks/bookmark_menu_delegate.cc
-index cc36829c8c9e8a0dbbb47506b6c015318bed1fcc..83177a70750a369387c273a2316b869a0ca1a860 100644
+index 20023209d5e4a8544629b60aec330425a2a97617..30f4adcbbc3cc682794df01679d325c953832867 100644
 --- a/chrome/browser/ui/views/bookmarks/bookmark_menu_delegate.cc
 +++ b/chrome/browser/ui/views/bookmarks/bookmark_menu_delegate.cc
 @@ -78,7 +78,7 @@ namespace {

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/sharing_hub/sharing_hub_features.cc b/chrome/browser/sharing_hub/sharing_hub_features.cc
-index 4ae3f73a0b9cdea299397b62919a55ff72db0607..7f979fc886e5b821b3a00837383eba0097438530 100644
+index f998e2b563a48a8c84aa91bb1cb911d9591ba936..aacb6ec3f914856c58c368da7b19d636ea0b8f3f 100644
 --- a/chrome/browser/sharing_hub/sharing_hub_features.cc
 +++ b/chrome/browser/sharing_hub/sharing_hub_features.cc
-@@ -66,7 +66,7 @@ bool HasPageAction(content::BrowserContext* context, bool is_popup_mode) {
+@@ -67,7 +67,7 @@ bool HasPageAction(content::BrowserContext* context, bool is_popup_mode) {
  #endif
  }
  

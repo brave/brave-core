@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/history/BUILD.gn b/chrome/browser/resources/history/BUILD.gn
-index e7a4758c135c28d4a4dd16f22df61a5de221f459..30f03261d5fd5652f71ef7fdd8f6ce8c20cb18c1 100644
+index 314f0b66e61068080622953bc42794d0f961fa08..3a0962ec61c794144f6b594a31999d4dc1d38b2d 100644
 --- a/chrome/browser/resources/history/BUILD.gn
 +++ b/chrome/browser/resources/history/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -20,7 +20,7 @@ index e7a4758c135c28d4a4dd16f22df61a5de221f459..30f03261d5fd5652f71ef7fdd8f6ce8c
    grd_prefix = "history"
  
    static_files = [
-@@ -50,6 +54,7 @@ build_webui("build") {
+@@ -49,6 +53,7 @@ build_webui("build") {
      "synced_device_manager.html.ts",
      "synced_device_manager.ts",
    ]
@@ -28,7 +28,7 @@ index e7a4758c135c28d4a4dd16f22df61a5de221f459..30f03261d5fd5652f71ef7fdd8f6ce8c
    if (is_android) {
      ts_files += [ "empty_state_illustration.html.ts" ]
    }
-@@ -76,6 +81,7 @@ build_webui("build") {
+@@ -75,6 +80,7 @@ build_webui("build") {
      "synced_device_card.css",
      "synced_device_manager.css",
    ]
@@ -36,7 +36,7 @@ index e7a4758c135c28d4a4dd16f22df61a5de221f459..30f03261d5fd5652f71ef7fdd8f6ce8c
    if (!is_chromeos) {
      css_files += [
        "history_cross_device_signin_promo.css",
-@@ -84,6 +90,7 @@ build_webui("build") {
+@@ -83,6 +89,7 @@ build_webui("build") {
    }
  
    icons_html_files = [ "shared_icons.html" ]
@@ -44,7 +44,7 @@ index e7a4758c135c28d4a4dd16f22df61a5de221f459..30f03261d5fd5652f71ef7fdd8f6ce8c
  
    if (is_chrome_branded) {
      icons_html_files += [ "internal/icons.html" ]
-@@ -113,4 +120,9 @@ build_webui("build") {
+@@ -112,4 +119,9 @@ build_webui("build") {
      optimize_webui_host = "history"
      optimize_webui_in_files = [ "history.js" ]
    }

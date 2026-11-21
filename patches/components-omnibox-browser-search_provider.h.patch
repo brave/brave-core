@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/search_provider.h b/components/omnibox/browser/search_provider.h
-index b8fbfb8fa2446a449c8b60db45dc266187c41864..7b4d501a1e19ca531413434849de434a18392f87 100644
+index 16bf8be944b2eeb1e0c1239a841f7f64432c44b1..2dedc6706c24fbeb09c273489b709faca7b63061 100644
 --- a/components/omnibox/browser/search_provider.h
 +++ b/components/omnibox/browser/search_provider.h
 @@ -207,7 +207,7 @@ class SearchProvider : public BaseSearchProvider,

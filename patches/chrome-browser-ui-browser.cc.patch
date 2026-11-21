@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
-index f5fdcc49b43d1b946fb248091f29bccc2554a5f3..33b589c53de0dfe0792b5966e6a15949fad7ad25 100644
+index 944e531bfadb7fe8b473b595e7f40a6e5da3c847..7072f03c6ffbfa08db40301d4df10f10df31e392 100644
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
-@@ -265,8 +265,8 @@ Browser::Browser(BrowserWindowCreateParams params)
+@@ -266,8 +266,8 @@ Browser::Browser(BrowserWindowCreateParams params)
        profile_(&*params.profile),
        window_(nullptr),
        tab_strip_model_delegate_(
@@ -13,7 +13,7 @@ index f5fdcc49b43d1b946fb248091f29bccc2554a5f3..33b589c53de0dfe0792b5966e6a15949
            tab_strip_model_delegate_.get(),
            profile_,
            // Tab groups are disabled for app browsers.
-@@ -612,6 +612,10 @@ void Browser::OnTabStripModelChanged(TabStripModel* tab_strip_model,
+@@ -613,6 +613,10 @@ void Browser::OnTabStripModelChanged(TabStripModel* tab_strip_model,
  }
  
  void Browser::TabStripEmpty() {
@@ -24,7 +24,7 @@ index f5fdcc49b43d1b946fb248091f29bccc2554a5f3..33b589c53de0dfe0792b5966e6a15949
    // A touch tab drag session may still be delivering OS touch events to this
    // window's native widget. Destroying it mid-gesture would strand the drag, so
    // let TabDragController take ownership of closing this browser once the drag
-@@ -673,6 +677,7 @@ void Browser::OnTabInsertedAt(WebContents* contents, int index) {
+@@ -674,6 +678,7 @@ void Browser::OnTabInsertedAt(WebContents* contents, int index) {
  
  void Browser::OnTabClosing(tabs::TabInterface* tab,
                             bool* had_active_modal_dialog) {
@@ -32,7 +32,7 @@ index f5fdcc49b43d1b946fb248091f29bccc2554a5f3..33b589c53de0dfe0792b5966e6a15949
    WebContents* contents = tab->GetContents();
    // When this function is called |contents| has been removed from the
    // TabStripModel. Some of the following code may trigger calling to the
-@@ -697,6 +702,8 @@ void Browser::OnTabClosing(tabs::TabInterface* tab,
+@@ -698,6 +703,8 @@ void Browser::OnTabClosing(tabs::TabInterface* tab,
    metrics_observer->WebContentsWillSoonBeDestroyed();
  
    ExclusiveAccessManager::From(this)->OnTabClosing(contents);

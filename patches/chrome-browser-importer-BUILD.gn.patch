@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/importer/BUILD.gn b/chrome/browser/importer/BUILD.gn
-index ed8e8bf048399ccab50b1f44498ef40dd73e8921..9ab4419e6fdba4305f4fe63050beee1e4ea7df2d 100644
+index 441d4cfe923dcb82645e79bd1154d921db8ac5d3..09637e795fd5855d31355cf6c7f06aad58685a6f 100644
 --- a/chrome/browser/importer/BUILD.gn
 +++ b/chrome/browser/importer/BUILD.gn
 @@ -2,6 +2,8 @@

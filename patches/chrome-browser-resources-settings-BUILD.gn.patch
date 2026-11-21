@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/BUILD.gn b/chrome/browser/resources/settings/BUILD.gn
-index a4a9648317049e5f4b74dd336cd634d028b32cdc..72acab6802323089f8a850bfc185e2637ecff93e 100644
+index 976ac2e3e066df46d0b9e2bb09106e2c2266e87b..fff81da495c8e68b3fd6d8bf587384e9dd1fafe6 100644
 --- a/chrome/browser/resources/settings/BUILD.gn
 +++ b/chrome/browser/resources/settings/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -21,7 +21,7 @@ index a4a9648317049e5f4b74dd336cd634d028b32cdc..72acab6802323089f8a850bfc185e263
    grd_prefix = "settings"
  
    static_files = [
-@@ -116,6 +121,7 @@ build_webui("build") {
+@@ -113,6 +118,7 @@ build_webui("build") {
      "site_settings/web_printing_page.ts",
      "site_settings/window_management_page.ts",
    ]
@@ -29,7 +29,7 @@ index a4a9648317049e5f4b74dd336cd634d028b32cdc..72acab6802323089f8a850bfc185e263
  
    if (enable_smart_card) {
      web_component_files += [ "site_settings/smart_card_readers_page.ts" ]
-@@ -516,6 +522,7 @@ build_webui("build") {
+@@ -519,6 +525,7 @@ build_webui("build") {
      "web_ui_listener_mixin.ts",
      "window_proxy.ts",
    ]
@@ -37,7 +37,7 @@ index a4a9648317049e5f4b74dd336cd634d028b32cdc..72acab6802323089f8a850bfc185e263
  
    if (is_chromeos) {
      ts_files += [
-@@ -794,6 +801,7 @@ build_webui("build") {
+@@ -802,6 +809,7 @@ build_webui("build") {
      "site_settings/zoom_levels.css",
      "system_page/system_page.css",
    ]
@@ -45,7 +45,7 @@ index a4a9648317049e5f4b74dd336cd634d028b32cdc..72acab6802323089f8a850bfc185e263
  
    if (is_chrome_branded) {
      css_files += [
-@@ -806,11 +814,13 @@ build_webui("build") {
+@@ -814,11 +822,13 @@ build_webui("build") {
      "//chrome/browser/ui/webui/settings/search/mojom:mojom_ts__generator",
      "//components/autofill/core/browser/data_model/autofill_ai:mojo_bindings_ts__generator",
    ]
@@ -59,7 +59,7 @@ index a4a9648317049e5f4b74dd336cd634d028b32cdc..72acab6802323089f8a850bfc185e263
    if (!is_chromeos) {
      mojo_files_deps +=
          [ "//chrome/browser/accessibility:mojo_bindings_ts__generator" ]
-@@ -830,6 +840,7 @@ build_webui("build") {
+@@ -838,6 +848,7 @@ build_webui("build") {
      "//tools/typescript/definitions/pending.d.ts",
      "//tools/typescript/definitions/settings_private.d.ts",
    ]
@@ -67,7 +67,7 @@ index a4a9648317049e5f4b74dd336cd634d028b32cdc..72acab6802323089f8a850bfc185e263
    if (is_chromeos) {
      ts_definitions +=
          [ "//tools/typescript/definitions/quick_unlock_private.d.ts" ]
-@@ -851,6 +862,7 @@ build_webui("build") {
+@@ -859,6 +870,7 @@ build_webui("build") {
      "//ui/webui/resources/js:build_ts",
      "//ui/webui/resources/mojo:build_ts",
    ]
@@ -75,7 +75,7 @@ index a4a9648317049e5f4b74dd336cd634d028b32cdc..72acab6802323089f8a850bfc185e263
  
    if (!is_chromeos) {
      ts_deps +=
-@@ -887,4 +899,9 @@ build_webui("build") {
+@@ -895,4 +907,9 @@ build_webui("build") {
                "$root_gen_dir/chrome/browser/resources/settings_shared/tsc",
                root_build_dir) ]
    }

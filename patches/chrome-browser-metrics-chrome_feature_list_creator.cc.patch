@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/metrics/chrome_feature_list_creator.cc b/chrome/browser/metrics/chrome_feature_list_creator.cc
-index dbf10a26eae44aa286126ac39aff016932b44b46..81746e2a67ae898a5266de238dabcf5683744ebc 100644
+index 5fa35d2db01e2dc97f4bf3aced7a712338fde786..3dd52fa181561f8085118dc0dd04410533cf8cbe 100644
 --- a/chrome/browser/metrics/chrome_feature_list_creator.cc
 +++ b/chrome/browser/metrics/chrome_feature_list_creator.cc
-@@ -316,5 +316,6 @@ void ChromeFeatureListCreator::SetupInitialPrefs() {
+@@ -338,5 +338,6 @@ void ChromeFeatureListCreator::SetupInitialPrefs() {
      initial_seed_->date = base::Time::Now();
      initial_seed_->is_gzip_compressed = true;
    }

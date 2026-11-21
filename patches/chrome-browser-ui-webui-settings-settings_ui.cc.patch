@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/settings/settings_ui.cc b/chrome/browser/ui/webui/settings/settings_ui.cc
-index 9e9823fdf492da2f42368b45b94ce0e73d19206c..1b0845f94135aa50a30c0d472a2e42ec537d801a 100644
+index cc1cb4e8c1cbe170de53a8fc425ad80062e477b9..078481b56bfbc98fc29fbe61e568217f8a4f3e5d 100644
 --- a/chrome/browser/ui/webui/settings/settings_ui.cc
 +++ b/chrome/browser/ui/webui/settings/settings_ui.cc
-@@ -304,7 +304,11 @@ SettingsUI::SettingsUI(content::WebUI* web_ui)
+@@ -303,7 +303,11 @@ SettingsUI::SettingsUI(content::WebUI* web_ui)
    AddSettingsPageUIHandler(std::make_unique<SearchEnginesHandler>(profile));
    AddSettingsPageUIHandler(
        std::make_unique<OmniboxEverywhereSettingsHandler>());

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/common/root_tab_collection_node.h b/chrome/browser/ui/views/tabs/common/root_tab_collection_node.h
-index 5df6ed5ca33e9c097eda69d2f72f6b9131ef570c..01abcad6fbc73412b66337e0b848771fd20e950b 100644
+index 5915bd7cf5c6833882c8796d330494ad776c0f06..c2791a48c05568bd3b8d9d300d52b6c5704771cd 100644
 --- a/chrome/browser/ui/views/tabs/common/root_tab_collection_node.h
 +++ b/chrome/browser/ui/views/tabs/common/root_tab_collection_node.h
-@@ -65,6 +65,8 @@ class RootTabCollectionNode : public TabCollectionNode,
+@@ -71,6 +71,8 @@ class RootTabCollectionNode : public TabCollectionNode,
    base::CallbackListSubscription RegisterOnActiveTabChangedCallback(
        ActiveTabChangedCallback callback);
  

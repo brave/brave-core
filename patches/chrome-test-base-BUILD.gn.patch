@@ -1,5 +1,5 @@
 diff --git a/chrome/test/base/BUILD.gn b/chrome/test/base/BUILD.gn
-index 11deaf380051676b3c679f8bf16448ae796008d1..7e3a677ce2bf63d1ae50968273ca73cdadee62d9 100644
+index d54ffc7c47ec00ab25df58550290216df971b883..6f0cb3ea47a0c965e3b23e0fa0e1e97822c2a9d3 100644
 --- a/chrome/test/base/BUILD.gn
 +++ b/chrome/test/base/BUILD.gn
 @@ -745,6 +745,7 @@ source_set("chrome_test_suite") {

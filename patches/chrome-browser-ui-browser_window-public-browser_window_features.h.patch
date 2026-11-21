@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_window/public/browser_window_features.h b/chrome/browser/ui/browser_window/public/browser_window_features.h
-index ec448d34ee93952fe670244ffe3c295f1874bf7a..d9335cec5f29b988c85299f018317c79e82d2a1e 100644
+index 9d25c9ca1470aa6331531887ccdfba9549129e26..f08a0d51e6f57b4a3a44f17e1fd35785759ad84d 100644
 --- a/chrome/browser/ui/browser_window/public/browser_window_features.h
 +++ b/chrome/browser/ui/browser_window/public/browser_window_features.h
 @@ -33,6 +33,9 @@

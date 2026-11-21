@@ -1,8 +1,8 @@
 diff --git a/components/permissions/android/BUILD.gn b/components/permissions/android/BUILD.gn
-index 94c41019bd87e2058c8bec4e83379d15b188539c..646c425a2167ce5dba1fa19216b429bfaaef0919 100644
+index 9834407830c6910556e3da9304198ce75e1e92e0..df1888999ab81c1f53876e501ace67ccadabcdfb 100644
 --- a/components/permissions/android/BUILD.gn
 +++ b/components/permissions/android/BUILD.gn
-@@ -187,6 +187,7 @@ android_library("java") {
+@@ -186,6 +186,7 @@ android_library("java") {
      "java/src/org/chromium/components/permissions/nfc/NfcSystemLevelPrompt.java",
      "java/src/org/chromium/components/permissions/nfc/NfcSystemLevelSetting.java",
    ]
@@ -10,7 +10,7 @@ index 94c41019bd87e2058c8bec4e83379d15b188539c..646c425a2167ce5dba1fa19216b429bf
    deps = [
      ":content_settings_enums_java",
      ":core_java",
-@@ -215,6 +216,7 @@ android_library("java") {
+@@ -214,6 +215,7 @@ android_library("java") {
      "//ui/android:ui_java",
      "//url:gurl_java",
    ]

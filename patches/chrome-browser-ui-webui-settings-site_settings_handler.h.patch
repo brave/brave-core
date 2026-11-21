@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_handler.h b/chrome/browser/ui/webui/settings/site_settings_handler.h
-index 39a1bd2a253adbd13d5cf10ae4419d297855b93b..f314abc433533a119bdbce11fac1c763ba606030 100644
+index 443ac5325bc47fd6bf66fc9f933661d753426d48..29415d874a636758bc24f2b4d21d6a4f261a7ac0 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_handler.h
 +++ b/chrome/browser/ui/webui/settings/site_settings_handler.h
-@@ -246,6 +246,7 @@ class SiteSettingsHandler
+@@ -251,6 +251,7 @@ class SiteSettingsHandler
    BrowsingDataModel* GetBrowsingDataModelForTesting();
  
   private:
@@ -10,7 +10,7 @@ index 39a1bd2a253adbd13d5cf10ae4419d297855b93b..f314abc433533a119bdbce11fac1c763
    friend class SiteSettingsHandlerBaseTest;
    friend class SiteSettingsHandlerInfobarTest;
    // TODO(crbug.com/40101962): Remove this friend class when the Persistent
-@@ -328,7 +329,7 @@ class SiteSettingsHandler
+@@ -333,7 +334,7 @@ class SiteSettingsHandler
    // to be removed when entries for |origins| are removed.
    // TODO(crbug.com/40205603): This function is a temporary hack while the
    // CookiesTreeModel is deprecated.

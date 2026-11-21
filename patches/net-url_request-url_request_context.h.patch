@@ -1,5 +1,5 @@
 diff --git a/net/url_request/url_request_context.h b/net/url_request/url_request_context.h
-index f1676812dabbade4be96e9d17ce74313c663e45e..0a22adf69157b33d16b6703d4c49b34806beaa57 100644
+index fed62b338f27a0de43e820b9159eec175e938ba3..d70a64315eaa50690a18230d8a98de3af04ed32f 100644
 --- a/net/url_request/url_request_context.h
 +++ b/net/url_request/url_request_context.h
 @@ -270,6 +270,22 @@ class NET_EXPORT URLRequestContext final {

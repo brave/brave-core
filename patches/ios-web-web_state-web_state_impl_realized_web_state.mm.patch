@@ -1,8 +1,8 @@
 diff --git a/ios/web/web_state/web_state_impl_realized_web_state.mm b/ios/web/web_state/web_state_impl_realized_web_state.mm
-index 02cb29f6b20753dbe13fd84ff8df2c0142fbe7c4..043631bd9d8b229eb0bb97f2fe411c9fe25a0c9b 100644
+index c17aeb449a8e46dfea81a643991ea1be7822ee06..05cba4544c42ca5c3fd624239a11ed1509d66377 100644
 --- a/ios/web/web_state/web_state_impl_realized_web_state.mm
 +++ b/ios/web/web_state/web_state_impl_realized_web_state.mm
-@@ -336,7 +336,7 @@ void WebStateImpl::RealizedWebState::OnNavigationFinished(
+@@ -339,7 +339,7 @@ void WebStateImpl::RealizedWebState::OnNavigationFinished(
  
    // Clear provisional WebUI if the navigation was cancelled/failed, or if it
    // committed to a non-WebUI page.
@@ -11,7 +11,7 @@ index 02cb29f6b20753dbe13fd84ff8df2c0142fbe7c4..043631bd9d8b229eb0bb97f2fe411c9f
                    !web::GetWebClient()->IsAppSpecificURL(context->GetUrl()))) {
      ClearWebUI();
    }
-@@ -422,22 +422,22 @@ void WebStateImpl::RealizedWebState::OnFaviconUrlUpdated(
+@@ -425,22 +425,22 @@ void WebStateImpl::RealizedWebState::OnFaviconUrlUpdated(
  }
  
  void WebStateImpl::RealizedWebState::CreateWebUI(const GURL& url) {
@@ -43,7 +43,7 @@ index 02cb29f6b20753dbe13fd84ff8df2c0142fbe7c4..043631bd9d8b229eb0bb97f2fe411c9f
  }
  
  void WebStateImpl::RealizedWebState::HandleWebUIMessage(
-@@ -447,7 +447,10 @@ void WebStateImpl::RealizedWebState::HandleWebUIMessage(
+@@ -450,7 +450,10 @@ void WebStateImpl::RealizedWebState::HandleWebUIMessage(
    if (!HasWebUI()) {
      return;
    }
@@ -55,7 +55,7 @@ index 02cb29f6b20753dbe13fd84ff8df2c0142fbe7c4..043631bd9d8b229eb0bb97f2fe411c9f
  }
  
  void WebStateImpl::RealizedWebState::SetContentsMimeType(
-@@ -1138,7 +1141,7 @@ std::unique_ptr<WebUIIOS> WebStateImpl::RealizedWebState::CreateWebUIIOS(
+@@ -1141,7 +1144,7 @@ std::unique_ptr<WebUIIOS> WebStateImpl::RealizedWebState::CreateWebUIIOS(
    if (!factory) {
      return nullptr;
    }

@@ -1,5 +1,5 @@
 diff --git a/components/search/ntp_features.cc b/components/search/ntp_features.cc
-index 94f68bf99641c3e59809661f3c0f6afe8761983f..2a2dfa919f3105df80a2ad0926225e50ef69f7b6 100644
+index ab04237d605823c07b02cd79dfa31d8c73b11c82..be4c09824459a6cdc4877a62526d32f559eb43bd 100644
 --- a/components/search/ntp_features.cc
 +++ b/components/search/ntp_features.cc
 @@ -18,17 +18,13 @@ namespace ntp_features {
@@ -58,7 +58,7 @@ index 94f68bf99641c3e59809661f3c0f6afe8761983f..2a2dfa919f3105df80a2ad0926225e50
  
  // If enabled, loads the experimental NTP component extension, which overrides
  // chrome://newtab.
-@@ -122,19 +110,15 @@ BASE_FEATURE(kNtpDummyModules, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -116,19 +104,15 @@ BASE_FEATURE(kNtpDummyModules, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // If enabled, Google Drive module will be shown.
  // This is a kill switch. Keep indefinitely.
@@ -81,7 +81,7 @@ index 94f68bf99641c3e59809661f3c0f6afe8761983f..2a2dfa919f3105df80a2ad0926225e50
  
  // If enabled, segmentation data will be collected to decide whether or not to
  // show the Drive module.
-@@ -162,7 +146,7 @@ BASE_FEATURE(kNtpModulesOrder, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -156,7 +140,7 @@ BASE_FEATURE(kNtpModulesOrder, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // Dummy feature to set param "NtpModulesMaxColumnCountParam".
  // This is used for an emergency Finch param. Keep indefinitely.
@@ -90,7 +90,7 @@ index 94f68bf99641c3e59809661f3c0f6afe8761983f..2a2dfa919f3105df80a2ad0926225e50
  
  // Dummy feature to set param "NtpModulesLoadedWithOtherModulesMaxInstanceCount"
  // This is used for an emergency Finch param. Keep indefinitely.
-@@ -334,7 +318,7 @@ BASE_FEATURE(kNtpShortcutsRedesign, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -328,7 +312,7 @@ BASE_FEATURE(kNtpShortcutsRedesign, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // If enabled, the bookmark bar may be auto-removed on the NTP and new
  // visibility settings are added.

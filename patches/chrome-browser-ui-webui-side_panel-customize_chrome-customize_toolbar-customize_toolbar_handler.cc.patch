@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.cc b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.cc
-index fad5216dfb822dccb72f2fcfedbe9bdae0a68bd8..e94ff09cf4bff1382b841ac78603b6d43922e260 100644
+index b4261c69afe569fe3f3107f0d8483ce1b3b48273..978580292b0468acb29e8769fff48a4aa6fd9263 100644
 --- a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.cc
 +++ b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.cc
-@@ -241,6 +241,7 @@ CustomizeToolbarHandler::CustomizeToolbarHandler(
+@@ -245,6 +245,7 @@ CustomizeToolbarHandler::CustomizeToolbarHandler(
        base::BindRepeating(&CustomizeToolbarHandler::OnActionPinnedChanged,
                            base::Unretained(this), kActionSplitTab,
                            prefs::kPinSplitTabButton));
@@ -10,7 +10,7 @@ index fad5216dfb822dccb72f2fcfedbe9bdae0a68bd8..e94ff09cf4bff1382b841ac78603b6d4
  }
  
  CustomizeToolbarHandler::~CustomizeToolbarHandler() = default;
-@@ -422,7 +423,11 @@ void CustomizeToolbarHandler::ListActions(ListActionsCallback callback) {
+@@ -428,7 +429,11 @@ void CustomizeToolbarHandler::ListActions(ListActionsCallback callback) {
    add_action(kActionShowChromeLabs,
               side_panel::customize_chrome::mojom::CategoryId::kTools);
  
@@ -23,7 +23,7 @@ index fad5216dfb822dccb72f2fcfedbe9bdae0a68bd8..e94ff09cf4bff1382b841ac78603b6d4
  }
  
  void CustomizeToolbarHandler::ListCategories(ListCategoriesCallback callback) {
-@@ -434,18 +439,24 @@ void CustomizeToolbarHandler::ListCategories(ListCategoriesCallback callback) {
+@@ -440,18 +445,24 @@ void CustomizeToolbarHandler::ListCategories(ListCategoriesCallback callback) {
    categories.push_back(side_panel::customize_chrome::mojom::Category::New(
        side_panel::customize_chrome::mojom::CategoryId::kYourChrome,
        l10n_util::GetStringUTF8(
@@ -50,7 +50,7 @@ index fad5216dfb822dccb72f2fcfedbe9bdae0a68bd8..e94ff09cf4bff1382b841ac78603b6d4
    const std::optional<actions::ActionId> chrome_action =
        ChromeActionForMojoAction(action_id);
    if (!chrome_action.has_value()) {
-@@ -479,10 +490,15 @@ void CustomizeToolbarHandler::PinAction(
+@@ -485,10 +496,15 @@ void CustomizeToolbarHandler::PinAction(
  
  void CustomizeToolbarHandler::GetIsCustomized(
      GetIsCustomizedCallback callback) {

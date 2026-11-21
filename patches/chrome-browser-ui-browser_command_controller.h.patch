@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_command_controller.h b/chrome/browser/ui/browser_command_controller.h
-index e2d518a2afdbb6b10dd391172f346febe4d3c8a8..de8e52f28bddc125f7c32e8f426b15abdc2e9554 100644
+index ceb71a8f5ef5e7ba269f1569db8b8f09c70b94e2..1f0a8796f633c19ee6e33e1321766ec0074abcfd 100644
 --- a/chrome/browser/ui/browser_command_controller.h
 +++ b/chrome/browser/ui/browser_command_controller.h
 @@ -131,6 +131,7 @@ class BrowserCommandController : public CommandUpdater,
@@ -10,7 +10,7 @@ index e2d518a2afdbb6b10dd391172f346febe4d3c8a8..de8e52f28bddc125f7c32e8f426b15ab
    // CommandUpdater:
    bool ExecuteCommandWithDispositionAndContext(
        int id,
-@@ -200,7 +201,7 @@ class BrowserCommandController : public CommandUpdater,
+@@ -205,7 +206,7 @@ class BrowserCommandController : public CommandUpdater,
  
    // Update commands whose state depends on the type of fullscreen mode the
    // window is in.

@@ -1,5 +1,5 @@
 diff --git a/components/gcm_driver/gcm_driver.h b/components/gcm_driver/gcm_driver.h
-index 2f5328444dd2e4af881396753ab06bbe5ed90404..7df637207f3bca8d987f2d40e0deac8c1e5ce3fb 100644
+index 00cc5355c88c25613fe66a08398c6a8ff8f09449..30a8baf2f66ad753b009f98432342438cdcc61c3 100644
 --- a/components/gcm_driver/gcm_driver.h
 +++ b/components/gcm_driver/gcm_driver.h
 @@ -251,6 +251,8 @@ class GCMDriver {

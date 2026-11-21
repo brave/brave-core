@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/speech/on_device_speech_recognition_util.cc b/chrome/browser/speech/on_device_speech_recognition_util.cc
-index 5da97d678cfaed72a08f5d16a7b203ded5e3d6bf..75e665a55fe06034c01960e7edb51fc889b8ac6f 100644
+index 9c4a6009d2831a67bf1719f8d264072b16da8ae5..524c8a9178c6d39b23c1f9c4cb15fc3e997cfaeb 100644
 --- a/chrome/browser/speech/on_device_speech_recognition_util.cc
 +++ b/chrome/browser/speech/on_device_speech_recognition_util.cc
-@@ -116,6 +116,7 @@ media::mojom::AvailabilityStatus GetOnDeviceSpeechRecognitionAvailabilityStatus(
+@@ -118,6 +118,7 @@ media::mojom::AvailabilityStatus GetOnDeviceSpeechRecognitionAvailabilityStatus(
      content::BrowserContext* context,
      std::string_view language,
      media::mojom::SpeechRecognitionQuality quality) {
@@ -10,7 +10,7 @@ index 5da97d678cfaed72a08f5d16a7b203ded5e3d6bf..75e665a55fe06034c01960e7edb51fc8
  #if BUILDFLAG(IS_ANDROID)
    return media::mojom::AvailabilityStatus::kUnavailable;
  #else
-@@ -141,6 +142,9 @@ void GetOnDeviceSpeechRecognitionAvailabilityStatusAsync(
+@@ -143,6 +144,9 @@ void GetOnDeviceSpeechRecognitionAvailabilityStatusAsync(
      std::string_view language,
      media::mojom::SpeechRecognitionQuality quality,
      base::OnceCallback<void(media::mojom::AvailabilityStatus)> callback) {

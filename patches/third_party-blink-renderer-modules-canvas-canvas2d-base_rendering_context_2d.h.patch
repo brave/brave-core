@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h
-index 9ad41c797abe7264f71be3ca2b812481665432fe..81f071a114e2867e12aadc0a46498c7f50952056 100644
+index 72a7312ca4b12af866be79e17164fc9ca9b69919..c52d16c434584f3eee233bf48d80244008a31f44 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h
-@@ -31,6 +31,7 @@
+@@ -33,6 +33,7 @@
  #include "third_party/blink/renderer/modules/canvas/canvas2d/canvas_path.h"
  #include "third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d_state.h"
  #include "third_party/blink/renderer/modules/modules_export.h"

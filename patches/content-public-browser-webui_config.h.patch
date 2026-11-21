@@ -1,8 +1,8 @@
 diff --git a/content/public/browser/webui_config.h b/content/public/browser/webui_config.h
-index 0e32041a05b114f8fc55c307116a954fd7447885..2b049bd21aca93904e5f0ba2194f9bd5d73caba5 100644
+index 2dd1a86c324d6d80eda1b70b87c29f2f54f31e76..3d42186fb0baab65945568f2aea90140934453c6 100644
 --- a/content/public/browser/webui_config.h
 +++ b/content/public/browser/webui_config.h
-@@ -84,6 +84,10 @@ class CONTENT_EXPORT WebUIConfig {
+@@ -107,6 +107,10 @@ class CONTENT_EXPORT WebUIConfig {
    // the WebUIController or resources will fail to load.
    virtual void RegisterURLDataSource(BrowserContext* browser_context) {}
  

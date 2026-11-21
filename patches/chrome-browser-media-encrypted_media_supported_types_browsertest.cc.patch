@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/media/encrypted_media_supported_types_browsertest.cc b/chrome/browser/media/encrypted_media_supported_types_browsertest.cc
-index 7670f3fc5dced263f3d70f9b05188654590cb88d..0f1c80284bfd323c0aa586f77097f1fb1aeeb125 100644
+index 51ec2d57464c31facb865718910069312fda603c..28db1ef99729b0987066df2ee0f8b30aab740e7a 100644
 --- a/chrome/browser/media/encrypted_media_supported_types_browsertest.cc
 +++ b/chrome/browser/media/encrypted_media_supported_types_browsertest.cc
 @@ -527,7 +527,11 @@ class EncryptedMediaSupportedTypesTest : public InProcessBrowserTest {

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.h b/chrome/browser/ui/views/location_bar/location_bar_view.h
-index 93970b803fdf179bd3de0e1f0ed9a6ca357a586d..2c17b82b8a505e14047c5da217c362cbf7438e5d 100644
+index ed670840a80e133a218ed12f8172de093c38891b..49d006e636bfac4dbe482c714fdc164f82c54b30 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.h
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.h
 @@ -133,11 +133,11 @@ class LocationBarView
@@ -38,7 +38,7 @@ index 93970b803fdf179bd3de0e1f0ed9a6ca357a586d..2c17b82b8a505e14047c5da217c362cb
    FRIEND_TEST_ALL_PREFIXES(SecurityIndicatorTest, CheckIndicatorText);
    FRIEND_TEST_ALL_PREFIXES(TouchLocationBarViewBrowserTest,
                             OmniboxViewViewsSize);
-@@ -353,7 +358,7 @@ class LocationBarView
+@@ -352,7 +357,7 @@ class LocationBarView
    int GetMinimumLeadingWidth() const;
  
    // Returns the amount of space required to the right of the omnibox text.
@@ -47,7 +47,7 @@ index 93970b803fdf179bd3de0e1f0ed9a6ca357a586d..2c17b82b8a505e14047c5da217c362cb
  
    // The LocationBarView bounds, without the ends which have a border radius.
    // E.g., if the LocationBarView was 50dip long, and the border radius was 2,
-@@ -361,7 +366,7 @@ class LocationBarView
+@@ -360,7 +365,7 @@ class LocationBarView
    gfx::Rect GetLocalBoundsWithoutEndcaps() const;
  
    // Updates the background on a theme change, or dropdown state change.
@@ -56,7 +56,7 @@ index 93970b803fdf179bd3de0e1f0ed9a6ca357a586d..2c17b82b8a505e14047c5da217c362cb
  
    // Updates the visibility state of the content setting icons to reflect what
    // is blocked or actively in use on the current page. Returns true if the
-@@ -490,7 +495,7 @@ class LocationBarView
+@@ -500,7 +505,7 @@ class LocationBarView
    void AnimationCanceled(const gfx::Animation* animation) override;
    void OnChildViewRemoved(View* observed_view, View* child) override;
  

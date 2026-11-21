@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/overlay/video_overlay_window_views.h b/chrome/browser/ui/views/overlay/video_overlay_window_views.h
-index 222a5167b5e719403268e672372acd809a043263..81a0f1b16c37c73192ff2fa4c60da86a4d32c490 100644
+index b3c0a61f6016f7f06de1755a311abd8b7a6fd11e..6204cc99cb8f954a190c43e933fdf98c3eddf778 100644
 --- a/chrome/browser/ui/views/overlay/video_overlay_window_views.h
 +++ b/chrome/browser/ui/views/overlay/video_overlay_window_views.h
-@@ -146,7 +146,7 @@ class VideoOverlayWindowViews : public content::VideoOverlayWindow,
+@@ -149,7 +149,7 @@ class VideoOverlayWindowViews : public content::VideoOverlayWindow,
    // AutoPipSettingOverlayView::Delegate:
    void OnAutoPipSettingOverlayViewHidden() override;
  
@@ -11,7 +11,7 @@ index 222a5167b5e719403268e672372acd809a043263..81a0f1b16c37c73192ff2fa4c60da86a
  #if BUILDFLAG(IS_CHROMEOS)
    // Gets the proper hit test component when the hit point is on the resize
    // handle in order to force a drag-to-resize.
-@@ -160,7 +160,7 @@ class VideoOverlayWindowViews : public content::VideoOverlayWindow,
+@@ -167,7 +167,7 @@ class VideoOverlayWindowViews : public content::VideoOverlayWindow,
  #endif
  
    // Called when the bounds of the controls should be updated.
@@ -20,7 +20,7 @@ index 222a5167b5e719403268e672372acd809a043263..81a0f1b16c37c73192ff2fa4c60da86a
  
    content::PictureInPictureWindowController* GetController() const;
    views::View* GetWindowBackgroundView() const;
-@@ -282,6 +282,7 @@ class VideoOverlayWindowViews : public content::VideoOverlayWindow,
+@@ -294,6 +294,7 @@ class VideoOverlayWindowViews : public content::VideoOverlayWindow,
        content::VideoPictureInPictureWindowController* controller);
  
   private:
@@ -28,7 +28,7 @@ index 222a5167b5e719403268e672372acd809a043263..81a0f1b16c37c73192ff2fa4c60da86a
    friend class VideoPictureInPictureWindowControllerBrowserTest;
  
    // Return the work area for the nearest display the widget is on.
-@@ -293,7 +294,7 @@ class VideoOverlayWindowViews : public content::VideoOverlayWindow,
+@@ -305,7 +306,7 @@ class VideoOverlayWindowViews : public content::VideoOverlayWindow,
    gfx::Rect CalculateAndUpdateWindowBounds();
  
    // Set up the views::Views that will be shown on the window.
@@ -37,7 +37,7 @@ index 222a5167b5e719403268e672372acd809a043263..81a0f1b16c37c73192ff2fa4c60da86a
  
    // Finish initialization by performing the steps that require the root View.
    void OnRootViewReady();
-@@ -397,7 +398,7 @@ class VideoOverlayWindowViews : public content::VideoOverlayWindow,
+@@ -409,7 +410,7 @@ class VideoOverlayWindowViews : public content::VideoOverlayWindow,
    //    * `MediaSession` routed frame exists
    //    * The `MediaSession` routed frame is the primary main frame
    //    * The origin URL has high media engagement or is a file

@@ -1,8 +1,8 @@
 diff --git a/src/objects/simd.cc b/src/objects/simd.cc
-index 3ef81df9f5edf5ecdd025bbd013fd639cb4e4d57..f2f6217222fee3a417e7642fe4ec4f6b5c163ee1 100644
+index 7d6518253c52bc52cfc008a287f5a77a64db814b..471586689f2e5348e79207c898db081929644919 100644
 --- a/src/objects/simd.cc
 +++ b/src/objects/simd.cc
-@@ -925,7 +925,7 @@ void Uint8ArrayToHexFastWithNeon(const char* bytes, uint8_t* output,
+@@ -959,7 +959,7 @@ void Uint8ArrayToHexFastWithNeon(const char* bytes, uint8_t* output,
  
  #ifdef V8_ENABLE_SIMD_SVE
  
@@ -11,7 +11,7 @@ index 3ef81df9f5edf5ecdd025bbd013fd639cb4e4d57..f2f6217222fee3a417e7642fe4ec4f6b
  
  #define TARGET_SME2 \
    __arm_locally_streaming __arm_new("zt0") __attribute__((target("sme2")))
-@@ -1050,7 +1050,7 @@ Tagged<Object> Uint8ArrayToHex(const char* bytes, size_t length,
+@@ -1084,7 +1084,7 @@ Tagged<Object> Uint8ArrayToHex(const char* bytes, size_t length,
  #ifdef V8_ENABLE_SIMD_SVE
      const uint8_t* const input = reinterpret_cast<const uint8_t*>(bytes);
  

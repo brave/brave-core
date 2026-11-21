@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab.cc b/chrome/browser/ui/views/tabs/tab.cc
-index ab27182daab34d130639b8ae3f3c9d5b7a7ed3f2..70c77762d83b1f86678149275c01b56ad8c5f1ea 100644
+index 85352d10bf7034a2dcce5fa5b1a596ae9a800a0c..4e3bcc092f85af68eef33bbe646f19d36c9dd46f 100644
 --- a/chrome/browser/ui/views/tabs/tab.cc
 +++ b/chrome/browser/ui/views/tabs/tab.cc
 @@ -518,6 +518,8 @@ void Tab::Layout(PassKey) {
@@ -11,7 +11,7 @@ index ab27182daab34d130639b8ae3f3c9d5b7a7ed3f2..70c77762d83b1f86678149275c01b56a
      if (center_icon_) {
        // When centering the favicon, the favicon is allowed to escape the normal
        // contents rect.
-@@ -622,6 +624,12 @@ void Tab::Layout(PassKey) {
+@@ -618,6 +620,12 @@ void Tab::Layout(PassKey) {
      int title_right = contents_rect.right();
      if (showing_alert_indicator_) {
        title_right = alert_indicator_button_->x() - after_title_padding;
@@ -24,7 +24,7 @@ index ab27182daab34d130639b8ae3f3c9d5b7a7ed3f2..70c77762d83b1f86678149275c01b56a
      } else if (showing_close_button_) {
        // Allow the title to overlay the close button's empty border padding.
        title_right = close_x - after_title_padding;
-@@ -798,7 +806,7 @@ void Tab::OnMouseReleased(const ui::MouseEvent& event) {
+@@ -797,7 +805,7 @@ void Tab::OnMouseReleased(const ui::MouseEvent& event) {
    // Close tab on middle click, but only if the button is released over the tab
    // (normal windows behavior is to discard presses of a UI element where the
    // releases happen off the element).
@@ -33,7 +33,7 @@ index ab27182daab34d130639b8ae3f3c9d5b7a7ed3f2..70c77762d83b1f86678149275c01b56a
      if (HitTestPoint(event.location())) {
        controller_->CloseTab(this, CloseTabSource::kFromMouse);
      } else if (closing_) {
-@@ -907,7 +915,7 @@ void Tab::OnGestureEvent(ui::GestureEvent* event) {
+@@ -906,7 +914,7 @@ void Tab::OnGestureEvent(ui::GestureEvent* event) {
  gfx::Size Tab::CalculatePreferredSize(
      const views::SizeBounds& available_size) const {
    return gfx::Size(GetTabSizeInfo().standard_width,
@@ -42,7 +42,7 @@ index ab27182daab34d130639b8ae3f3c9d5b7a7ed3f2..70c77762d83b1f86678149275c01b56a
  }
  
  void Tab::PaintChildren(const views::PaintInfo& info) {
-@@ -1308,7 +1316,7 @@ void Tab::UpdateIconVisibility() {
+@@ -1307,7 +1315,7 @@ void Tab::UpdateIconVisibility() {
    showing_icon_ = showing_alert_indicator_ = false;
    extra_alert_indicator_padding_ = false;
  

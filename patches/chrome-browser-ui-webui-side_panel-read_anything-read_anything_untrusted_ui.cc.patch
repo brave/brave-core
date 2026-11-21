@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/side_panel/read_anything/read_anything_untrusted_ui.cc b/chrome/browser/ui/webui/side_panel/read_anything/read_anything_untrusted_ui.cc
-index cecec10af308bf359d282ec1a5d3d32efb4b9d2a..07b5ed691d4748e1e3c0285e11db25737533eca0 100644
+index 9166d4ca733fac55ddff62877d397cd92a1bb4a4..1934178d2b5aae86852fdbc8cfa659bb05921832 100644
 --- a/chrome/browser/ui/webui/side_panel/read_anything/read_anything_untrusted_ui.cc
 +++ b/chrome/browser/ui/webui/side_panel/read_anything/read_anything_untrusted_ui.cc
-@@ -254,20 +254,20 @@ ReadAnythingUntrustedUI::ReadAnythingUntrustedUI(content::WebUI* web_ui)
+@@ -271,20 +271,20 @@ ReadAnythingUntrustedUI::ReadAnythingUntrustedUI(content::WebUI* web_ui)
    source->OverrideContentSecurityPolicy(
        network::mojom::CSPDirectiveName::ScriptSrc,
        "script-src 'self' chrome-untrusted://resources "

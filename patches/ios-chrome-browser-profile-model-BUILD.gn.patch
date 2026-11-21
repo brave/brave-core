@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/profile/model/BUILD.gn b/ios/chrome/browser/profile/model/BUILD.gn
-index 15cde370ba8b052a41ee7f1ae9ae74058b282936..bde9401b4a096c5708a57635cf3ec7ca649a710a 100644
+index 650167719823080348162154ce95490132812590..8958df94530e948f062e67a1b2068b10c581743d 100644
 --- a/ios/chrome/browser/profile/model/BUILD.gn
 +++ b/ios/chrome/browser/profile/model/BUILD.gn
 @@ -283,6 +283,7 @@ source_set("keyed_service_factories") {

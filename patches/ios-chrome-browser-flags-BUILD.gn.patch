@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/flags/BUILD.gn b/ios/chrome/browser/flags/BUILD.gn
-index 06844360b4519e27d32ff632068c9d303cf65ffe..7385d9fe7b66760c2bb0c0f907858db645a1e683 100644
+index f7b0f4c618c79ea39cff29c200483d0406a3da4e..7fe36f9089efd3bb8c8a1c2b81cf457d9b12b704 100644
 --- a/ios/chrome/browser/flags/BUILD.gn
 +++ b/ios/chrome/browser/flags/BUILD.gn
 @@ -2,6 +2,7 @@

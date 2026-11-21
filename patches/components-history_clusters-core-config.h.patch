@@ -1,5 +1,5 @@
 diff --git a/components/history_clusters/core/config.h b/components/history_clusters/core/config.h
-index 8a53746c798631954b3ec3e82983d46653c5c6b2..03df5f13d585266387a389fe810bff201267555c 100644
+index 21c255be6a0057d009eaf64f3e8737c0a148fedb..bdde5a3d7df80cab4f1517982b8482b57cc96a5b 100644
 --- a/components/history_clusters/core/config.h
 +++ b/components/history_clusters/core/config.h
 @@ -28,7 +28,7 @@ struct Config {

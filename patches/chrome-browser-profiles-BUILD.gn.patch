@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/BUILD.gn b/chrome/browser/profiles/BUILD.gn
-index b4ba2767a973db62482bdae5c46f6767d24df25b..28ba166bb25c65661913e3c8d03c27a0cf9a05b8 100644
+index 046a7380b9772837a9e07dc2343816550848b8c0..e52b52981047664b413adf46dc74e52a51d5371d 100644
 --- a/chrome/browser/profiles/BUILD.gn
 +++ b/chrome/browser/profiles/BUILD.gn
 @@ -549,7 +549,7 @@ source_set("profile_manager_impl") {

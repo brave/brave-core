@@ -1,8 +1,8 @@
 diff --git a/content/browser/devtools/protocol/network_handler.h b/content/browser/devtools/protocol/network_handler.h
-index fdc9a7e685aa942b98a79524d9859bc72e979757..fe1e1c513518e795dca6be15b5c19740363bc190 100644
+index b96e5e64505834cad98e4f5f83bfda61af31c923..446c3f192078b9f570bc170963fbb6c640df04cc 100644
 --- a/content/browser/devtools/protocol/network_handler.h
 +++ b/content/browser/devtools/protocol/network_handler.h
-@@ -386,6 +386,10 @@ class NetworkHandler : public DevToolsDomainHandler,
+@@ -388,6 +388,10 @@ class NetworkHandler : public DevToolsDomainHandler,
        const std::optional<base::UnguessableToken>& frame_token,
        base::TimeTicks timestamp);
  

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/profiles/profile.h b/chrome/browser/profiles/profile.h
-index 35231bc09b218d7a6c48aa05c5e16268fc47080b..99117d8268a8478ba73628e7b7fdf918742fbbd3 100644
+index 3c0a5fd371962883d466854a6c65302e648cddd9..19b93c22b4d69b04df2f46298422c704aef8b288 100644
 --- a/chrome/browser/profiles/profile.h
 +++ b/chrome/browser/profiles/profile.h
-@@ -142,7 +142,13 @@ class Profile : public content::BrowserContext {
+@@ -148,7 +148,13 @@ class Profile : public content::BrowserContext {
      std::string Serialize() const;
  #endif
  
@@ -16,7 +16,7 @@ index 35231bc09b218d7a6c48aa05c5e16268fc47080b..99117d8268a8478ba73628e7b7fdf918
      friend std::ostream& operator<<(std::ostream& out,
                                      const OTRProfileID& profile_id);
  
-@@ -525,6 +531,9 @@ class Profile : public content::BrowserContext {
+@@ -540,6 +546,9 @@ class Profile : public content::BrowserContext {
      lifecycle_state_ = lifecycle_state;
    }
  
