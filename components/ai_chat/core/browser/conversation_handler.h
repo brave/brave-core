@@ -403,7 +403,6 @@ class ConversationHandler : public mojom::ConversationHandler,
 
  private:
   friend class ::AIChatUIBrowserTest;
-  FRIEND_TEST_ALL_PREFIXES(AIChatServiceUnitTest, DeleteAssociatedWebContent);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
                            UpdateOrCreateLastAssistantEntry_Delta);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
