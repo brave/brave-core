@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Reject the `window-management` permission name unless
+      `BraveWindowManagement` is on.
+
+      IDL enum values can't be guarded by a runtime flag, so without this
+      `permissions.query()` would still reveal the API.
+    regex:
+      pattern: 'case V8PermissionName::Enum::kWindowManagement:'
+      replace: |-
+        case V8PermissionName::Enum::kWindowManagement:
+              if (!RuntimeEnabledFeatures::BraveWindowManagementEnabled()) {
+                exception_state.ThrowTypeError("Window Management is not enabled.");
+                return nullptr;
+              }
