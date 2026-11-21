@@ -5,12 +5,15 @@
 
 #include "brave/components/brave_wallet/browser/eth_data_parser.h"
 
+#include <algorithm>
 #include <optional>
+#include <string_view>
 #include <tuple>
 #include <utility>
 
 #include "base/check_op.h"
 #include "base/notreached.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/eth_abi_decoder.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
@@ -143,9 +146,11 @@ constexpr char kLiFiSwapAndStartBridgeTokensViaSymbiosis[] = "0x6e067161";
 constexpr char kLiFiStartBridgeTokensViaThorSwap[] = "0x2541ec57";
 constexpr char kLiFiSwapAndStartBridgeTokensViaThorSwap[] = "0xad673d88";
 
-// Squid function selectors
+// Squid function selectors, called on the SquidRouter proxy. Its
+// implementation is upgradable and differs per chain.
 // Ref:
-// https://etherscan.io/address/0x9c01172bdbed2eea06e4e18ad534bf651c9089ea#code#F1#L87
+// https://docs.squidrouter.com/additional-resources/contracts
+// https://etherscan.io/address/0xce16F69375520ab01377ce7B88f5BA8C48F8D666#code
 constexpr char kSquidFundAndRunMulticall[] = "0x58181a80";
 constexpr char kSquidExactInputSingle[] = "0x04e45aaf";
 constexpr char kSquidExactInputSingleV2[] = "0xbc651188";
@@ -526,13 +531,8 @@ std::optional<LiFiBridgeData> LiFiBridgeDataDecode(
   };
 }
 
-}  // namespace
-
-std::optional<std::tuple<mojom::TransactionType,    // tx_type
-                         std::vector<std::string>,  // tx_params
-                         std::vector<std::string>,  // tx_args
-                         mojom::SwapInfoPtr>>       // swap_info
-GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
+std::optional<DecodedTransaction> DecodeTransactionData(
+    const std::vector<uint8_t>& data) {
   if (data.empty() || data == std::vector<uint8_t>{0x0}) {
     return std::make_tuple(mojom::TransactionType::ETHSend,
                            std::vector<std::string>(),
@@ -1006,8 +1006,8 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
     //                      bytes callData,
     //                      bytes payload)[] calls)
     //
-    // Ref:
-    // https://etherscan.io/address/0x9c01172bdbed2eea06e4e18ad534bf651c9089ea#code#F1#L88
+    // Ref (SquidRouter implementation on Ethereum as of 2026-11):
+    // https://etherscan.io/address/0xd1373e7ffc30486079f7215b90c49c2251c0d8f8#code
     auto type = eth_abi::Tuple()
                     .AddTupleType(eth_abi::Address())
                     .AddTupleType(eth_abi::Uint(256))
@@ -1080,6 +1080,121 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
                            std::vector<std::string>(),
                            std::vector<std::string>(), nullptr);
   }
+}
+
+// CoW Protocol EthFlow, the target of createOrder() for native asset sells.
+// Same address on every chain CoW Protocol supports.
+// Ref:
+// https://github.com/cowprotocol/cow-sdk/blob/main/packages/config/src/chains/const/contracts.ts
+// https://docs.cow.fi/cow-protocol/reference/contracts/periphery
+constexpr char kCowSwapEthFlow[] = "0xbA3cB449bD2B4ADddBc894D8697F5170800EAdeC";
+// EthFlow on Ethereum before the 2025 redeploy, still receiving orders.
+// Ref: https://github.com/cowprotocol/ethflowcontract/commit/e1817b31
+constexpr char kCowSwapEthFlowLegacyMainnet[] =
+    "0x40A50cf069e992AA4536211B23F286eF88752187";
+
+// LiFi Diamond. zkSync Era uses a different address.
+// Ref:
+// https://github.com/lifinance/contracts/tree/main/deployments
+// https://li.quest/v1/chains (diamondAddress)
+constexpr char kLiFiDiamond[] = "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE";
+constexpr char kLiFiDiamondZkSync[] =
+    "0x341e94069f53234fE6DabeF707aD424830525715";
+
+// SquidRouter proxy.
+// Ref:
+// https://docs.squidrouter.com/additional-resources/contracts
+// https://v2.api.squidrouter.com/v2/chains (squidContracts.squidRouter)
+constexpr char kSquidRouter[] = "0xce16F69375520ab01377ce7B88f5BA8C48F8D666";
+
+struct SwapRouter {
+  mojom::SwapProvider provider;
+  std::string_view chain_id;
+  std::string_view address;
+};
+
+// Contracts that the swap calldata decoded by DecodeTransactionData() is meant
+// for. Calldata sent anywhere else is not a swap with that provider, whatever
+// it decodes to. Only chains where the provider currently serves routes are
+// listed.
+constexpr SwapRouter kTrustedSwapRouters[] = {
+    {mojom::SwapProvider::kCowSwap, mojom::kMainnetChainId, kCowSwapEthFlow},
+    {mojom::SwapProvider::kCowSwap, mojom::kMainnetChainId,
+     kCowSwapEthFlowLegacyMainnet},
+    {mojom::SwapProvider::kCowSwap, mojom::kGnosisChainId, kCowSwapEthFlow},
+    {mojom::SwapProvider::kCowSwap, mojom::kArbitrumMainnetChainId,
+     kCowSwapEthFlow},
+    {mojom::SwapProvider::kCowSwap, mojom::kBaseMainnetChainId,
+     kCowSwapEthFlow},
+    {mojom::SwapProvider::kCowSwap, mojom::kPolygonMainnetChainId,
+     kCowSwapEthFlow},
+    {mojom::SwapProvider::kCowSwap, mojom::kAvalancheMainnetChainId,
+     kCowSwapEthFlow},
+    {mojom::SwapProvider::kCowSwap, mojom::kBnbSmartChainMainnetChainId,
+     kCowSwapEthFlow},
+    {mojom::SwapProvider::kCowSwap, mojom::kLineaChainId, kCowSwapEthFlow},
+    {mojom::SwapProvider::kCowSwap, mojom::kSepoliaChainId, kCowSwapEthFlow},
+
+    {mojom::SwapProvider::kLiFi, mojom::kMainnetChainId, kLiFiDiamond},
+    {mojom::SwapProvider::kLiFi, mojom::kOptimismMainnetChainId, kLiFiDiamond},
+    {mojom::SwapProvider::kLiFi, mojom::kBnbSmartChainMainnetChainId,
+     kLiFiDiamond},
+    {mojom::SwapProvider::kLiFi, mojom::kAvalancheMainnetChainId, kLiFiDiamond},
+    {mojom::SwapProvider::kLiFi, mojom::kGnosisChainId, kLiFiDiamond},
+    {mojom::SwapProvider::kLiFi, mojom::kArbitrumMainnetChainId, kLiFiDiamond},
+    {mojom::SwapProvider::kLiFi, mojom::kPolygonMainnetChainId, kLiFiDiamond},
+    {mojom::SwapProvider::kLiFi, mojom::kBaseMainnetChainId, kLiFiDiamond},
+    {mojom::SwapProvider::kLiFi, mojom::kZkSyncEraChainId, kLiFiDiamondZkSync},
+
+    {mojom::SwapProvider::kSquid, mojom::kMainnetChainId, kSquidRouter},
+    {mojom::SwapProvider::kSquid, mojom::kArbitrumMainnetChainId, kSquidRouter},
+    {mojom::SwapProvider::kSquid, mojom::kAvalancheMainnetChainId,
+     kSquidRouter},
+    {mojom::SwapProvider::kSquid, mojom::kOptimismMainnetChainId, kSquidRouter},
+    {mojom::SwapProvider::kSquid, mojom::kPolygonMainnetChainId, kSquidRouter},
+    {mojom::SwapProvider::kSquid, mojom::kBaseMainnetChainId, kSquidRouter},
+    {mojom::SwapProvider::kSquid, mojom::kLineaChainId, kSquidRouter},
+    {mojom::SwapProvider::kSquid, mojom::kBnbSmartChainMainnetChainId,
+     kSquidRouter},
+    {mojom::SwapProvider::kSquid, mojom::kFantomMainnetChainId, kSquidRouter},
+    {mojom::SwapProvider::kSquid, mojom::kCeloMainnetChainId, kSquidRouter},
+    {mojom::SwapProvider::kSquid, mojom::kScrollChainId, kSquidRouter},
+    {mojom::SwapProvider::kSquid, mojom::kFilecoinEthereumMainnetChainId,
+     kSquidRouter},
+    {mojom::SwapProvider::kSquid, mojom::kImmutableZkEVMChainId, kSquidRouter},
+};
+
+bool IsTrustedSwapRouter(mojom::SwapProvider provider,
+                         std::string_view chain_id,
+                         std::string_view to) {
+  return std::ranges::any_of(kTrustedSwapRouters, [&](const SwapRouter& r) {
+    return r.provider == provider && r.chain_id == chain_id &&
+           base::EqualsCaseInsensitiveASCII(r.address, to);
+  });
+}
+
+}  // namespace
+
+std::optional<DecodedTransaction> GetTransactionInfoFromData(
+    std::string_view chain_id,
+    std::string_view to,
+    const std::vector<uint8_t>& data) {
+  auto tx_info = DecodeTransactionData(data);
+  if (!tx_info) {
+    return std::nullopt;
+  }
+
+  // Swap calldata only describes a swap when it is sent to that provider's
+  // router. Anything else is an arbitrary contract call, and must not get
+  // the swap confirmation UI built from attacker-controlled calldata.
+  const auto& swap_info = std::get<3>(*tx_info);
+  if (swap_info && !IsTrustedSwapRouter(swap_info->provider, chain_id, to)) {
+    return std::make_tuple(mojom::TransactionType::Other,
+                           std::vector<std::string>(),
+                           std::vector<std::string>(), nullptr);
+  }
+
+  return tx_info;
 }
 
 std::optional<std::string> GetFinalRecipient(

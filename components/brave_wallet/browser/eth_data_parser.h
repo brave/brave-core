@@ -8,6 +8,7 @@
 
 #include <optional>
 #include <string>
+#include <string_view>
 #include <tuple>
 #include <vector>
 
@@ -16,11 +17,18 @@
 
 namespace brave_wallet {
 
-std::optional<std::tuple<mojom::TransactionType,    // tx_type
-                         std::vector<std::string>,  // tx_params
-                         std::vector<std::string>,  // tx_args
-                         mojom::SwapInfoPtr>>       // swap_info
-GetTransactionInfoFromData(const std::vector<uint8_t>& data);
+using DecodedTransaction = std::tuple<mojom::TransactionType,    // tx_type
+                                      std::vector<std::string>,  // tx_params
+                                      std::vector<std::string>,  // tx_args
+                                      mojom::SwapInfoPtr>;       // swap_info
+
+// Classifies a transaction from its calldata. Swap calldata only yields
+// swap_info when |to| is a trusted router for that swap provider on
+// |chain_id|; otherwise the transaction is reported as Other.
+std::optional<DecodedTransaction> GetTransactionInfoFromData(
+    std::string_view chain_id,
+    std::string_view to,
+    const std::vector<uint8_t>& data);
 
 // Returns the address that ultimately receives the transferred value. Returns
 // nullopt for invalid data or other internal errors. The returned address can

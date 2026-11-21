@@ -7,15 +7,62 @@
 
 #include <optional>
 #include <string>
+#include <string_view>
+#include <tuple>
 #include <utility>
 #include <vector>
 
+#include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
 
 namespace {
+
+constexpr char kNotASwapRouter[] = "0x4988ec37b0ba5d90016b3af633c11da45f67cdf0";
+constexpr char kCowSwapEthFlow[] = "0xbA3cB449bD2B4ADddBc894D8697F5170800EAdeC";
+constexpr char kCowSwapEthFlowLegacyMainnet[] =
+    "0x40A50cf069e992AA4536211B23F286eF88752187";
+constexpr char kLiFiDiamond[] = "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE";
+constexpr char kLiFiDiamondZkSync[] =
+    "0x341e94069f53234fE6DabeF707aD424830525715";
+constexpr char kSquidRouter[] = "0xce16F69375520ab01377ce7B88f5BA8C48F8D666";
+
+// Decodes |data| as sent to a contract that is not a swap router.
+std::optional<DecodedTransaction> GetNonSwapTxInfo(
+    const std::vector<uint8_t>& data) {
+  return GetTransactionInfoFromData(mojom::kMainnetChainId, kNotASwapRouter,
+                                    data);
+}
+
+// Swap calldata sent to |to| on |chain_id| must be reported as a plain
+// contract call, without swap info.
+void ExpectNotSwap(std::string_view chain_id,
+                   std::string_view to,
+                   const std::vector<uint8_t>& data) {
+  SCOPED_TRACE(testing::Message()
+               << "chain_id: " << chain_id << ", to: " << to);
+  auto tx_info = GetTransactionInfoFromData(chain_id, to, data);
+  ASSERT_NE(tx_info, std::nullopt);
+  EXPECT_EQ(std::get<0>(*tx_info), mojom::TransactionType::Other);
+  EXPECT_TRUE(std::get<1>(*tx_info).empty());
+  EXPECT_TRUE(std::get<2>(*tx_info).empty());
+  EXPECT_FALSE(std::get<3>(*tx_info));
+}
+
+// Swap calldata sent to |to| on |chain_id| must be reported as a swap.
+void ExpectSwap(std::string_view chain_id,
+                std::string_view to,
+                const std::vector<uint8_t>& data) {
+  SCOPED_TRACE(testing::Message()
+               << "chain_id: " << chain_id << ", to: " << to);
+  auto tx_info = GetTransactionInfoFromData(chain_id, to, data);
+  ASSERT_NE(tx_info, std::nullopt);
+  EXPECT_EQ(std::get<0>(*tx_info), mojom::TransactionType::ETHSwap);
+  EXPECT_TRUE(std::get<3>(*tx_info));
+}
+
 void TestGetTransactionInfoFromData(
     const std::vector<uint8_t>& data,
     mojom::TransactionType expected_tx_type,
@@ -27,7 +74,7 @@ void TestGetTransactionInfoFromData(
   std::vector<std::string> tx_args;
   mojom::SwapInfoPtr swap_info;
 
-  auto result = GetTransactionInfoFromData(data);
+  auto result = GetNonSwapTxInfo(data);
   ASSERT_NE(result, std::nullopt);
   std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*result);
   ASSERT_EQ(tx_type, expected_tx_type);
@@ -58,7 +105,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataTransfer) {
       "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f"
       "0000000000000000000000000000000000000000000000003fffffffffffffff",
       &data));
-  auto tx_info = GetTransactionInfoFromData(data);
+  auto tx_info = GetNonSwapTxInfo(data);
   ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
   ASSERT_EQ(tx_type, mojom::TransactionType::ERC20Transfer);
@@ -76,18 +123,18 @@ TEST(EthDataParser, GetTransactionInfoFromDataTransfer) {
       "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f"
       "0000000000000000000000000000000000000000000000003fffffffffffff",
       &data));
-  EXPECT_FALSE(GetTransactionInfoFromData(data));
+  EXPECT_FALSE(GetNonSwapTxInfo(data));
 
   // KO: missing the entire last param
   ASSERT_TRUE(PrefixedHexStringToBytes(
       "0xa9059cbb"
       "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f",
       &data));
-  EXPECT_FALSE(GetTransactionInfoFromData(data));
+  EXPECT_FALSE(GetNonSwapTxInfo(data));
 
   // KO: no params
   ASSERT_TRUE(PrefixedHexStringToBytes("0xa9059cbb", &data));
-  EXPECT_FALSE(GetTransactionInfoFromData(data));
+  EXPECT_FALSE(GetNonSwapTxInfo(data));
 
   // OK: extra data
   ASSERT_TRUE(PrefixedHexStringToBytes(
@@ -96,7 +143,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataTransfer) {
       "0000000000000000000000000000000000000000000000003fffffffffffffff"
       "00",
       &data));
-  tx_info = GetTransactionInfoFromData(data);
+  tx_info = GetNonSwapTxInfo(data);
   ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
   ASSERT_EQ(tx_type, mojom::TransactionType::ERC20Transfer);
@@ -122,7 +169,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataApprove) {
       "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f"
       "0000000000000000000000000000000000000000000000003fffffffffffffff",
       &data));
-  auto tx_info = GetTransactionInfoFromData(data);
+  auto tx_info = GetNonSwapTxInfo(data);
   ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
   ASSERT_EQ(tx_type, mojom::TransactionType::ERC20Approve);
@@ -140,7 +187,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataApprove) {
       "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f"
       "0000000000000000000000000000000000000000000000003fffffffffffffff",
       &data));
-  tx_info = GetTransactionInfoFromData(data);
+  tx_info = GetNonSwapTxInfo(data);
   ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
   ASSERT_EQ(tx_type, mojom::TransactionType::ERC20Approve);
@@ -158,18 +205,18 @@ TEST(EthDataParser, GetTransactionInfoFromDataApprove) {
       "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f"
       "0000000000000000000000000000000000000000000000003fffffffffffff",
       &data));
-  EXPECT_FALSE(GetTransactionInfoFromData(data));
+  EXPECT_FALSE(GetNonSwapTxInfo(data));
 
   // KO: missing the entire last param
   ASSERT_TRUE(PrefixedHexStringToBytes(
       "0x095ea7b3"
       "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f",
       &data));
-  EXPECT_FALSE(GetTransactionInfoFromData(data));
+  EXPECT_FALSE(GetNonSwapTxInfo(data));
 
   // KO: no params
   ASSERT_TRUE(PrefixedHexStringToBytes("0x095ea7b3", &data));
-  EXPECT_FALSE(GetTransactionInfoFromData(data));
+  EXPECT_FALSE(GetNonSwapTxInfo(data));
 
   // OK: extra data
   ASSERT_TRUE(PrefixedHexStringToBytes(
@@ -178,7 +225,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataApprove) {
       "0000000000000000000000000000000000000000000000003fffffffffffffff"
       "00",
       &data));
-  tx_info = GetTransactionInfoFromData(data);
+  tx_info = GetNonSwapTxInfo(data);
   ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
   ASSERT_EQ(tx_type, mojom::TransactionType::ERC20Approve);
@@ -199,7 +246,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataETHSend) {
 
   std::vector<uint8_t> data;
   ASSERT_TRUE(PrefixedHexStringToBytes("0x0", &data));
-  auto tx_info = GetTransactionInfoFromData(data);
+  auto tx_info = GetNonSwapTxInfo(data);
   ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
 
@@ -208,7 +255,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataETHSend) {
   ASSERT_EQ(tx_params.size(), 0UL);
   ASSERT_EQ(tx_args.size(), 0UL);
 
-  tx_info = GetTransactionInfoFromData({});
+  tx_info = GetNonSwapTxInfo({});
   ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
   EXPECT_EQ(tx_type, mojom::TransactionType::ETHSend);
@@ -231,7 +278,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataERC721TransferFrom) {
       "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460a"
       "000000000000000000000000000000000000000000000000000000000000000f",
       &data));
-  auto tx_info = GetTransactionInfoFromData(data);
+  auto tx_info = GetNonSwapTxInfo(data);
   ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
   ASSERT_EQ(tx_type, mojom::TransactionType::ERC721TransferFrom);
@@ -252,7 +299,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataERC721TransferFrom) {
       "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460a"
       "000000000000000000000000000000000000000000000000000000000000000f",
       &data));
-  tx_info = GetTransactionInfoFromData(data);
+  tx_info = GetNonSwapTxInfo(data);
   ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
   ASSERT_EQ(tx_type, mojom::TransactionType::ERC721SafeTransferFrom);
@@ -273,7 +320,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataERC721TransferFrom) {
       "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460a"
       "00000000000000000000000000000000000000000000000000000000000000",
       &data));
-  EXPECT_FALSE(GetTransactionInfoFromData(data));
+  EXPECT_FALSE(GetNonSwapTxInfo(data));
 
   // KO: missing the entire last param
   ASSERT_TRUE(PrefixedHexStringToBytes(
@@ -281,11 +328,11 @@ TEST(EthDataParser, GetTransactionInfoFromDataERC721TransferFrom) {
       "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f"
       "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460a",
       &data));
-  EXPECT_FALSE(GetTransactionInfoFromData(data));
+  EXPECT_FALSE(GetNonSwapTxInfo(data));
 
   // KO: no params
   ASSERT_TRUE(PrefixedHexStringToBytes("0x23b872dd", &data));
-  EXPECT_FALSE(GetTransactionInfoFromData(data));
+  EXPECT_FALSE(GetNonSwapTxInfo(data));
 
   // OK: extra data
   ASSERT_TRUE(PrefixedHexStringToBytes(
@@ -295,7 +342,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataERC721TransferFrom) {
       "000000000000000000000000000000000000000000000000000000000000000f"
       "00",
       &data));
-  tx_info = GetTransactionInfoFromData(data);
+  tx_info = GetNonSwapTxInfo(data);
   ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
   ASSERT_EQ(tx_type, mojom::TransactionType::ERC721TransferFrom);
@@ -323,7 +370,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataERC721SetApprovalForAll) {
       "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f"
       "0000000000000000000000000000000000000000000000000000000000000001",
       &data));
-  auto tx_info = GetTransactionInfoFromData(data);
+  auto tx_info = GetNonSwapTxInfo(data);
   ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
   ASSERT_EQ(tx_type, mojom::TransactionType::ERC721SetApprovalForAll);
@@ -341,7 +388,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataERC721SetApprovalForAll) {
       "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f"
       "0000000000000000000000000000000000000000000000000000000000000000",
       &data));
-  tx_info = GetTransactionInfoFromData(data);
+  tx_info = GetNonSwapTxInfo(data);
   ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
   ASSERT_EQ(tx_type, mojom::TransactionType::ERC721SetApprovalForAll);
@@ -355,14 +402,14 @@ TEST(EthDataParser, GetTransactionInfoFromDataERC721SetApprovalForAll) {
       "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f"
       "0000000000000000000000000000000000000000000000000000000000000002",
       &data));
-  EXPECT_FALSE(GetTransactionInfoFromData(data));
+  EXPECT_FALSE(GetNonSwapTxInfo(data));
 
   // KO: missing the bool param.
   ASSERT_TRUE(PrefixedHexStringToBytes(
       "0xa22cb465"
       "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f",
       &data));
-  EXPECT_FALSE(GetTransactionInfoFromData(data));
+  EXPECT_FALSE(GetNonSwapTxInfo(data));
 }
 
 TEST(EthDataParser, GetTransactionInfoFromDataERC1155SafeTransferFrom) {
@@ -449,7 +496,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataERC1155SafeTransferFrom) {
       "0000000000000000000000000000000000000000000000000000000000000030"
       "0000000000000000000000000000000100000000000000000000000000000000",
       &data));
-  EXPECT_FALSE(GetTransactionInfoFromData(data));
+  EXPECT_FALSE(GetNonSwapTxInfo(data));
 
   // Invalid (missing length)
   ASSERT_TRUE(PrefixedHexStringToBytes(
@@ -461,7 +508,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataERC1155SafeTransferFrom) {
       "0000000000000000000000000000000000000000000000000000000000000001"
       "00000000000000000000000000000000000000000000000000000000000000a0",
       &data));
-  EXPECT_FALSE(GetTransactionInfoFromData(data));
+  EXPECT_FALSE(GetNonSwapTxInfo(data));
 
   // Invalid (incorrect offset)
   ASSERT_TRUE(PrefixedHexStringToBytes(
@@ -476,11 +523,11 @@ TEST(EthDataParser, GetTransactionInfoFromDataERC1155SafeTransferFrom) {
       /***************************** TAIL *****************************/
       "0000000000000000000000000000000000000000000000000000000000000000",
       &data));
-  EXPECT_FALSE(GetTransactionInfoFromData(data));
+  EXPECT_FALSE(GetNonSwapTxInfo(data));
 
   // Invalid (no params)
   ASSERT_TRUE(PrefixedHexStringToBytes("0xf242432a", &data));
-  EXPECT_FALSE(GetTransactionInfoFromData(data));
+  EXPECT_FALSE(GetNonSwapTxInfo(data));
 }
 
 TEST(EthDataParser, GetTransactionInfoFromDataOther) {
@@ -492,7 +539,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataOther) {
   std::vector<uint8_t> data;
 
   // No function hash
-  auto tx_info = GetTransactionInfoFromData(std::vector<uint8_t>{0x1});
+  auto tx_info = GetNonSwapTxInfo(std::vector<uint8_t>{0x1});
   ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
   EXPECT_EQ(tx_type, mojom::TransactionType::Other);
@@ -502,7 +549,7 @@ TEST(EthDataParser, GetTransactionInfoFromDataOther) {
       "0xaa0ffceb"
       "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f",
       &data));
-  tx_info = GetTransactionInfoFromData(data);
+  tx_info = GetNonSwapTxInfo(data);
   ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
   EXPECT_EQ(tx_type, mojom::TransactionType::Other);
@@ -553,7 +600,8 @@ TEST(EthDataParser, GetTransactionInfoFromDataCowOrderSellEth) {
       "000000000000000000000000000000000000000000000000000000000332b123",
       &data));
 
-  auto tx_info = GetTransactionInfoFromData(data);
+  auto tx_info =
+      GetTransactionInfoFromData(mojom::kGnosisChainId, kCowSwapEthFlow, data);
   ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
 
@@ -578,6 +626,23 @@ TEST(EthDataParser, GetTransactionInfoFromDataCowOrderSellEth) {
 
   EXPECT_EQ(swap_info->recipient, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
   EXPECT_EQ(swap_info->provider, mojom::SwapProvider::kCowSwap);
+
+  // Router addresses are compared case-insensitively.
+  ExpectSwap(mojom::kGnosisChainId, base::ToLowerASCII(kCowSwapEthFlow), data);
+
+  // The legacy EthFlow is only trusted on Ethereum.
+  ExpectSwap(mojom::kMainnetChainId, kCowSwapEthFlowLegacyMainnet, data);
+  ExpectNotSwap(mojom::kGnosisChainId, kCowSwapEthFlowLegacyMainnet, data);
+
+  // Not sent to EthFlow.
+  ExpectNotSwap(mojom::kGnosisChainId, kNotASwapRouter, data);
+  ExpectNotSwap(mojom::kGnosisChainId, "", data);
+
+  // EthFlow on a chain where CoW Protocol does not serve orders.
+  ExpectNotSwap(mojom::kOptimismMainnetChainId, kCowSwapEthFlow, data);
+
+  // Router of another swap provider.
+  ExpectNotSwap(mojom::kGnosisChainId, kLiFiDiamond, data);
 }
 
 TEST(EthDataParser, GetTransactionInfoFromFilForward) {
@@ -596,7 +661,7 @@ TEST(EthDataParser, GetTransactionInfoFromFilForward) {
                                "01d15cf6d7364d8b4dab9d90dc5699d1a78cf729c100000"
                                "00000000000000000",  // bytes content
                                &data));
-  auto tx_info = GetTransactionInfoFromData(data);
+  auto tx_info = GetNonSwapTxInfo(data);
   ASSERT_NE(tx_info, std::nullopt);
   std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
 
@@ -720,7 +785,8 @@ TEST(EthDataParser, GetTransactionInfoFromDataLiFiSwapTokensGeneric) {
       "3adf127000000000000000000000000000000000000000000000000000000000",
       &data));
 
-  auto tx_info = GetTransactionInfoFromData(data);
+  auto tx_info =
+      GetTransactionInfoFromData(mojom::kMainnetChainId, kLiFiDiamond, data);
   ASSERT_NE(tx_info, std::nullopt);
 
   std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
@@ -808,7 +874,8 @@ TEST(EthDataParser, GetTransactionInfoFromDataLiFiSwapTokensGeneric) {
       "9aa8417400000000000000000000000000000000000000000000000000000000",
       &data));
 
-  tx_info = GetTransactionInfoFromData(data);
+  tx_info =
+      GetTransactionInfoFromData(mojom::kMainnetChainId, kLiFiDiamond, data);
   ASSERT_NE(tx_info, std::nullopt);
 
   std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
@@ -831,6 +898,14 @@ TEST(EthDataParser, GetTransactionInfoFromDataLiFiSwapTokensGeneric) {
 
   EXPECT_EQ(swap_info->recipient, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
   EXPECT_EQ(swap_info->provider, mojom::SwapProvider::kLiFi);
+
+  // zkSync Era has its own Diamond address.
+  ExpectSwap(mojom::kZkSyncEraChainId, kLiFiDiamondZkSync, data);
+  ExpectNotSwap(mojom::kZkSyncEraChainId, kLiFiDiamond, data);
+  ExpectNotSwap(mojom::kMainnetChainId, kLiFiDiamondZkSync, data);
+
+  ExpectNotSwap(mojom::kMainnetChainId, kNotASwapRouter, data);
+  ExpectNotSwap(mojom::kMainnetChainId, kSquidRouter, data);
 }
 
 TEST(EthDataParser,
@@ -920,7 +995,8 @@ TEST(EthDataParser,
       "0000000000000000000000000000000000000000000000000000000000000000",
       &data));
 
-  auto tx_info = GetTransactionInfoFromData(data);
+  auto tx_info =
+      GetTransactionInfoFromData(mojom::kMainnetChainId, kLiFiDiamond, data);
   ASSERT_NE(tx_info, std::nullopt);
 
   std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
@@ -1027,7 +1103,8 @@ TEST(EthDataParser,
       "0000000000000000000000000000000000000000000000000000000000000000",
       &data));
 
-  auto tx_info = GetTransactionInfoFromData(data);
+  auto tx_info =
+      GetTransactionInfoFromData(mojom::kMainnetChainId, kLiFiDiamond, data);
   ASSERT_NE(tx_info, std::nullopt);
 
   std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
@@ -1137,7 +1214,8 @@ TEST(EthDataParser,
       "0000000000000000000000000000000000000000000000000000000000000000",
       &data));
 
-  auto tx_info = GetTransactionInfoFromData(data);
+  auto tx_info =
+      GetTransactionInfoFromData(mojom::kMainnetChainId, kLiFiDiamond, data);
   ASSERT_NE(tx_info, std::nullopt);
 
   std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
@@ -1309,7 +1387,8 @@ TEST(
       "0000000000000000000000000000000000000000000000000000000000000000",
       &data));
 
-  auto tx_info = GetTransactionInfoFromData(data);
+  auto tx_info =
+      GetTransactionInfoFromData(mojom::kMainnetChainId, kLiFiDiamond, data);
   ASSERT_NE(tx_info, std::nullopt);
 
   std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
@@ -1493,7 +1572,8 @@ TEST(EthDataParser,
       "3ccfd60b00000000000000000000000000000000000000000000000000000000",
       &data));
 
-  auto tx_info = GetTransactionInfoFromData(data);
+  auto tx_info =
+      GetTransactionInfoFromData(mojom::kMainnetChainId, kLiFiDiamond, data);
   ASSERT_NE(tx_info, std::nullopt);
 
   std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
@@ -1584,7 +1664,8 @@ TEST(EthDataParser,
       "6272617665000000000000000000000000000000000000000000000000000000",
       &data));
 
-  auto tx_info = GetTransactionInfoFromData(data);
+  auto tx_info =
+      GetTransactionInfoFromData(mojom::kMainnetChainId, kLiFiDiamond, data);
   ASSERT_NE(tx_info, std::nullopt);
 
   std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
@@ -1703,7 +1784,8 @@ TEST(EthDataParser, GetTransactionInfoFromDataLiFiStartBridgeTokensViaMayan) {
       "0000000000000000000000000000000000000000000000000000000000000000",
       &data));
 
-  auto tx_info = GetTransactionInfoFromData(data);
+  auto tx_info =
+      GetTransactionInfoFromData(mojom::kMainnetChainId, kLiFiDiamond, data);
   ASSERT_NE(tx_info, std::nullopt);
 
   std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
@@ -1895,7 +1977,8 @@ TEST(EthDataParser,
       "e8d8c74b6eb85b5c0c7de1143534b4af",
       &data));
 
-  auto tx_info = GetTransactionInfoFromData(data);
+  auto tx_info =
+      GetTransactionInfoFromData(mojom::kMainnetChainId, kSquidRouter, data);
   ASSERT_NE(tx_info, std::nullopt);
 
   std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
@@ -1918,6 +2001,12 @@ TEST(EthDataParser,
 
   EXPECT_EQ(swap_info->recipient, "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4");
   EXPECT_EQ(swap_info->provider, mojom::SwapProvider::kSquid);
+
+  // The SquidRouter proxy has no implementation on Blast.
+  ExpectNotSwap(mojom::kBlastMainnetChainId, kSquidRouter, data);
+
+  ExpectNotSwap(mojom::kMainnetChainId, kNotASwapRouter, data);
+  ExpectNotSwap(mojom::kMainnetChainId, kCowSwapEthFlow, data);
 }
 
 TEST(
@@ -2070,7 +2159,8 @@ TEST(
       "df041a3408ef8216821804ab8ebed608",
       &data));
 
-  auto tx_info = GetTransactionInfoFromData(data);
+  auto tx_info =
+      GetTransactionInfoFromData(mojom::kMainnetChainId, kSquidRouter, data);
   ASSERT_NE(tx_info, std::nullopt);
 
   std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
@@ -2326,7 +2416,8 @@ TEST(
       "9f2297047c81ae9316f31dea71638a36",
       &data));
 
-  auto tx_info = GetTransactionInfoFromData(data);
+  auto tx_info =
+      GetTransactionInfoFromData(mojom::kMainnetChainId, kSquidRouter, data);
   ASSERT_NE(tx_info, std::nullopt);
 
   std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
@@ -2379,7 +2470,8 @@ TEST(EthDataParser, SwapExactTokensForTokensEmptyRoutesTest) {
       "00000000000000000000000000000000000000000000000000000000",
       &data));
 
-  EXPECT_FALSE(GetTransactionInfoFromData(data));  // no crash.
+  EXPECT_FALSE(GetTransactionInfoFromData(mojom::kMainnetChainId, kSquidRouter,
+                                          data));  // no crash.
 }
 
 TEST(EthDataParser,
@@ -2513,7 +2605,8 @@ TEST(EthDataParser,
       "cc6400c8bcb752d810d096c08873ae48",
       &data));
 
-  auto tx_info = GetTransactionInfoFromData(data);
+  auto tx_info =
+      GetTransactionInfoFromData(mojom::kMainnetChainId, kSquidRouter, data);
   ASSERT_NE(tx_info, std::nullopt);
 
   std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
@@ -2753,7 +2846,8 @@ TEST(EthDataParser,
       "9d9cfc2dfc8fc0f9b038d3a284250391",
       &data));
 
-  auto tx_info = GetTransactionInfoFromData(data);
+  auto tx_info =
+      GetTransactionInfoFromData(mojom::kMainnetChainId, kSquidRouter, data);
   ASSERT_NE(tx_info, std::nullopt);
 
   std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);

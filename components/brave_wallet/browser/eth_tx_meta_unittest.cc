@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 
+#include <memory>
 #include <optional>
 #include <string>
 #include <vector>
@@ -439,6 +440,53 @@ TEST(EthTxMetaUnitTest, ToTransactionInfo_NativeValueOnTokenCalldata) {
               mojom::TransactionType::ETHFilForwarderTransfer);
     EXPECT_EQ(tx_info->effective_recipient, kFilRecipient);
   }
+}
+
+// Swap info is only derived from calldata sent to a trusted swap router.
+TEST(EthTxMetaUnitTest, ToTransactionInfo_SwapRequiresTrustedRouter) {
+  auto eth_account_id =
+      MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
+                    mojom::AccountKind::kDerived,
+                    "0x2f015c60e0be116b1f0cd534704db9c92118fb6a");
+
+  // CoW createOrder() selling 0.0001 ETH for 3000 USDC.
+  std::vector<uint8_t> data;
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0x322bba21"
+      "000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      "0000000000000000000000001111111111111111111111111111111111111111"
+      "00000000000000000000000000000000000000000000000000005af3107a4000"
+      "00000000000000000000000000000000000000000000000000000000b2d05e00"
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      "0000000000000000000000000000000000000000000000000000000000000000",
+      &data));
+
+  auto make_meta = [&](const std::string& to) {
+    return EthTxMeta(eth_account_id,
+                     std::make_unique<Eip1559Transaction>(
+                         *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
+                             mojom::TxData::New(mojom::kMainnetChainId, "0x09",
+                                                "0x4a817c800", "0x5208", to,
+                                                "0x4563918244f40000",  // 5 ETH
+                                                data),
+                             "0x1E", "0x32"))));
+  };
+
+  // CoW EthFlow.
+  auto ti = make_meta("0xbA3cB449bD2B4ADddBc894D8697F5170800EAdeC")
+                .ToTransactionInfo();
+  EXPECT_EQ(ti->tx_type, mojom::TransactionType::ETHSwap);
+  ASSERT_TRUE(ti->swap_info);
+  EXPECT_EQ(ti->swap_info->provider, mojom::SwapProvider::kCowSwap);
+
+  // Any other address.
+  ti = make_meta("0x4988ec37b0ba5d90016b3af633c11da45f67cdf0")
+           .ToTransactionInfo();
+  EXPECT_EQ(ti->tx_type, mojom::TransactionType::Other);
+  EXPECT_FALSE(ti->swap_info);
 }
 
 }  // namespace brave_wallet
