@@ -876,6 +876,7 @@ source_set("unit_tests") {
       "cardano/cardano_api_impl_unittest.cc",
       "cardano/cardano_provider_impl_unittest.cc",
       "cardano/cardano_rpc_unittest.cc",
+      "eth_allowance_manager_unittest.cc",
       "eth_block_tracker_unittest.cc",
       "eth_tx_manager_unittest.cc",
       "ethereum_keyring_unittest.cc",
