@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Import the Brave override resolver.
+    add_after_line:
+      line: "import path from 'node:path';"
+      code: |-
+        import {resolveOverride} from '../../../../../brave/chromium_src/third_party/devtools-frontend/src/scripts/build/devtools_plugin.js';
+
+  - description: |-
+      Resolve chromium_src overrides and //brave sources before falling back.
+
+      This is the final fallback of the esbuild resolver, after upstream's own
+      lookups have failed to find the file.
+    regex:
+      re_pattern: '(\n\s*)(return \{\s*path: res\.id,\s*\};\s*\};)'
+      replace: |-
+        \1const override = resolveOverride(root, res.id);
+            if (override) {
+              return {path: override};
+            }\1\2
