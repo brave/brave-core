@@ -16,7 +16,7 @@ copy("copy_nala_files") {
 source_set("nala_color_id") {
   sources = [ "$target_gen_dir/nala/nala_color_id.h" ]
 
-  deps = [ ":copy_nala_files" ]
+  public_deps = [ ":copy_nala_files" ]
 }
 
 source_set("brave_color_mixers") {
@@ -27,8 +27,8 @@ source_set("brave_color_mixers") {
     "brave_ref_color_mixer.h",
   ]
 
+  public_deps = [ ":copy_nala_files" ]
   deps = [
-    ":copy_nala_files",
     ":nala_color_id",
     "//ui/color",
     "//ui/color:color_headers",

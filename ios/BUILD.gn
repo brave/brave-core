@@ -254,8 +254,6 @@ ios_framework_bundle("brave_core_ios_framework") {
   deps = [
     ":brave_core_plist",
     ":brave_core_umbrella_header",
-    "//brave/components/brave_account/mojom:mojom_objc",
-    "//brave/components/resources:strings",
     "//brave/ios/app",
     "//brave/ios/browser/ui",
     "//brave/ios/components/constants",
@@ -263,14 +261,18 @@ ios_framework_bundle("brave_core_ios_framework") {
     "//ui/base",
   ]
 
-  deps += ads_public_deps
-  deps += ai_chat_component_public_deps
-  deps += brave_wallet_public_deps
-  deps += brave_shields_component_public_deps
-  deps += rewards_public_deps
-  deps += skus_public_deps
-  deps += credential_provider_public_deps
-  deps += webcompat_reporter_public_deps
+  public_deps = [
+    "//brave/components/brave_account/mojom:mojom_objc",
+    "//brave/components/resources:strings",
+  ]
+  public_deps += ads_public_deps
+  public_deps += ai_chat_component_public_deps
+  public_deps += brave_wallet_public_deps
+  public_deps += brave_shields_component_public_deps
+  public_deps += rewards_public_deps
+  public_deps += skus_public_deps
+  public_deps += credential_provider_public_deps
+  public_deps += webcompat_reporter_public_deps
 
   sources = brave_core_public_headers
   sources += ios_web_view_public_headers
