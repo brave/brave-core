@@ -13,6 +13,9 @@
 #include "components/tabs/public/tab_collection_types.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
+class TabStripModel;
+struct TabStripUserGestureDetails;
+
 namespace views {
 class View;
 }  // namespace views
@@ -71,6 +74,16 @@ void ExpandCollapsedTreeTabAncestors(tabs::TabInterface* tab);
 // Same as above but posts a task, so it's safe to call while the tab strip
 // model is notifying its observers.
 void ExpandCollapsedTreeTabAncestorsAsync(tabs::TabInterface* tab);
+
+// Activates the tab at |index|, like TabStripModel::ActivateTabAt(). On a
+// plain mouse click on a tree tab parent, the selection is also
+// expanded to its descendants, or collapsed back to the tab if they were
+// already all selected, so that dragging the parent moves its subtree. Called
+// by TabStripCollectionController::SelectTab().
+void ActivateTabAndSelectTreeTabSubtree(
+    TabStripModel* tab_strip_model,
+    int index,
+    const TabStripUserGestureDetails& detail);
 
 }  // namespace tree_tab_view_utils
 

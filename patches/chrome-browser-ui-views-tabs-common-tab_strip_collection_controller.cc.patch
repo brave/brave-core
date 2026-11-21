@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/views/tabs/common/tab_strip_collection_controller.cc b/chrome/browser/ui/views/tabs/common/tab_strip_collection_controller.cc
+index c1b99cfc4404ae34ac4326c03927e8e475926cfb..983158d3184ce41f2b9102c3d3d56a60cee35e8c 100644
+--- a/chrome/browser/ui/views/tabs/common/tab_strip_collection_controller.cc
++++ b/chrome/browser/ui/views/tabs/common/tab_strip_collection_controller.cc
+@@ -340,7 +340,8 @@ void TabStripCollectionController::SelectTab(
+         viz::PeakGpuMemoryTracker::Usage::CHANGE_TAB);
+   }
+ 
+-  model_->ActivateTabAt(tab_index.value(), gesture_detail);
++  tree_tab_view_utils::ActivateTabAndSelectTreeTabSubtree(
++    model_, tab_index.value(), gesture_detail);
+ 
+   if (tracker) {
+     if (views::Widget* post_activate_widget =
