@@ -11,8 +11,11 @@
 #include "base/feature_list.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/omnibox/browser/brave_search_provider.h"
+#include "brave/components/omnibox/browser/semantic_history_scope.h"
 #include "chrome/browser/ui/omnibox/omnibox_controller.h"
 #include "components/omnibox/browser/autocomplete_classifier.h"
+#include "components/omnibox/browser/autocomplete_controller.h"
+#include "components/omnibox/browser/omnibox_client.h"
 #include "components/vector_icons/vector_icons.h"
 
 #if BUILDFLAG(ENABLE_COMMANDER)
@@ -49,6 +52,22 @@ SetInputIsPastedFromClipboard(OmniboxController* omnibox_controller,
     }
   }
   return std::nullopt;
+}
+
+// Asks for a description rather than a word or two in the @history scope while
+// semantic history search is on.
+void MaybeUseSemanticHistoryPlaceholder(OmniboxController* omnibox_controller,
+                                        const std::u16string& keyword,
+                                        std::u16string& keyword_placeholder) {
+  AutocompleteController* autocomplete_controller =
+      omnibox_controller->autocomplete_controller();
+  if (IsSemanticHistoryScope(
+          keyword, omnibox_controller->client()->GetTemplateURLService(),
+          autocomplete_controller
+              ? autocomplete_controller->autocomplete_provider_client()
+              : nullptr)) {
+    keyword_placeholder = GetSemanticHistoryScopePlaceholder();
+  }
 }
 
 }  // namespace
