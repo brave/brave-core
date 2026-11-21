@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/containers/fixed_flat_map.h"
+#include "base/feature_list.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/net/dns/secure_dns_endpoints.h"
 #include "build/build_config.h"
@@ -15,7 +16,9 @@
 #include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/web_ui_data_source.h"
 #include "net/base/features.h"
+#include "ui/base/webui/web_ui_util.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/features.h"
@@ -40,15 +43,9 @@ bool ShouldReplaceSecureDNSDisabledDescription() {
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN) && BUILDFLAG(IS_WIN)
 
-#define AddSecureDnsStrings AddSecureDnsStrings_ChromiumImpl
+namespace {
 
-#include <chrome/browser/ui/webui/settings/shared_settings_localized_strings_provider.cc>
-
-#undef AddSecureDnsStrings
-namespace settings {
-
-void AddSecureDnsStrings(content::WebUIDataSource* html_source) {
-  AddSecureDnsStrings_ChromiumImpl(html_source);
+void BraveAddSecureDnsStrings(content::WebUIDataSource* html_source) {
   if (base::FeatureList::IsEnabled(net::features::kBraveFallbackDoHProvider)) {
     static const net::DohFallbackEndpointType endpoint =
         net::features::kBraveFallbackDoHProviderEndpoint.Get();
@@ -76,5 +73,6 @@ void AddSecureDnsStrings(content::WebUIDataSource* html_source) {
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN) && BUILDFLAG(IS_WIN)
 }
 
-}  // namespace settings
+}  // namespace
 
+#include <chrome/browser/ui/webui/settings/shared_settings_localized_strings_provider.cc>

@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Depend on what webui_contents_wrapper.h includes for the popup tracking
+      members (BrowserWindowInterface).
+    add_literal_to_list:
+      target: top_chrome
+      list_name: public_deps
+      literal: '[ "//chrome/browser/ui/browser_window" ]'
+      conditional: '!is_android'

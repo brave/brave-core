@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Force-enable MetricsReportingHandler declaration
+
+      The class is declared as if GOOGLE_CHROME_BRANDING was on, because Brave
+      code refers to it.
+    regex:
+      pattern:
+        '#if BUILDFLAG(GOOGLE_CHROME_BRANDING) && !BUILDFLAG(IS_CHROMEOS)'
+      replace:
+        '#if ((true /*BUILDFLAG(GOOGLE_CHROME_BRANDING)*/)) &&
+        !BUILDFLAG(IS_CHROMEOS)'
+    count: 1

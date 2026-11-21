@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/webui/print_preview/print_preview_ui.h b/chrome/browser/ui/webui/print_preview/print_preview_ui.h
+index df4bd4e0764041a49026d67a75382e275660803d..c5a77c7988bdc422b332d700e9bfd59d3610060d 100644
+--- a/chrome/browser/ui/webui/print_preview/print_preview_ui.h
++++ b/chrome/browser/ui/webui/print_preview/print_preview_ui.h
+@@ -218,6 +218,9 @@ class PrintPreviewUI : public ConstrainedWebDialogUI,
+   // OnJavascriptDisallowed().
+   void ClearPreviewUIId();
+ 
++  static base::flat_map<base::UnguessableToken, int>&
++  GetPrintPreviewUIRequestIdMap();
++
+  protected:
+   // Alternate constructor for tests
+   PrintPreviewUI(content::WebUI* web_ui,

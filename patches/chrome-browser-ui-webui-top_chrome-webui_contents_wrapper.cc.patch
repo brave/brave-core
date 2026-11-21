@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.cc b/chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.cc
+index 67ac9c76b0343010c607ab11dff01e9154543f1b..2e54779a02f6c5941d340deeede9eefcea29a744 100644
+--- a/chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.cc
++++ b/chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.cc
+@@ -267,6 +267,17 @@ content::WebContents* WebUIContentsWrapper::AddNewContents(
+     const blink::mojom::WindowFeatures& window_features,
+     bool user_gesture,
+     bool* was_blocked) {
++  if (browser_) {
++    auto* contents = chrome::AddWebContents(
++        browser_.get(), source, std::move(new_contents), target_url,
++        WindowOpenDisposition::kNewPopup, window_features,
++        NavigateParams::WindowAction::kShowWindow, user_gesture);
++    if (!contents) {
++      return nullptr;
++    }
++    tracked_popups_.push_back(contents->GetWeakPtr());
++    return contents;
++  }
+   return host_ ? host_->AddNewContents(source, std::move(new_contents),
+                                        target_url, disposition, window_features,
+                                        user_gesture, was_blocked)
