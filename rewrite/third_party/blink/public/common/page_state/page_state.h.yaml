@@ -1,0 +1,26 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: |-
+      Let Containers prefix and unprefix the top-level URL in PageState.
+
+      Blink restores a page from the URL stored in its PageState, so that URL
+      carries the same "containers+<uuid>:" prefix as the session's virtual
+      URL. See docs/containers/session_persistence.md.
+    add_to_public:
+      class_name: PageState
+      code: |-
+        #if BUILDFLAG(ENABLE_CONTAINERS)
+        PageState PrefixTopURL(const std::string& prefix) const;
+        PageState RemoveTopURLPrefix(size_t prefix_length) const;
+        #endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+  - description: Include what the substitution above uses.
+    add_include:
+      header:
+        - brave/components/containers/buildflags/buildflags.h

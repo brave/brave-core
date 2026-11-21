@@ -1,0 +1,33 @@
+diff --git a/content/browser/renderer_host/navigation_entry_impl.cc b/content/browser/renderer_host/navigation_entry_impl.cc
+index 084b53c19856a7dd6c45dae9037db596725bcbf3..03b0ee35440b3a4d496c5a42bce8d48d1a22780b 100644
+--- a/content/browser/renderer_host/navigation_entry_impl.cc
++++ b/content/browser/renderer_host/navigation_entry_impl.cc
+@@ -564,6 +564,8 @@ const Referrer& NavigationEntryImpl::GetReferrer() const {
+ }
+ 
+ void NavigationEntryImpl::SetVirtualURL(const GURL& url) {
++  DCHECK(!url.SchemeIs(kBraveUIScheme))
++      << "Virtual URL should not use brave:// scheme";
+   virtual_url_ = (url == GetURL()) ? GURL() : url;
+   cached_display_title_.clear();
+ }
+@@ -648,6 +650,7 @@ blink::PageState NavigationEntryImpl::GetPageState() const {
+ }
+ 
+ const std::u16string& NavigationEntryImpl::GetTitleForDisplay() const {
++  const std::u16string& display_title = [&]() -> const std::u16string& {
+   // Most pages have real titles. Don't even bother caching anything if this is
+   // the case.
+   if (!title_.empty()) {
+@@ -715,6 +718,11 @@ const std::u16string& NavigationEntryImpl::GetTitleForDisplay() const {
+ 
+   gfx::ElideString(title, blink::mojom::kMaxTitleChars, &cached_display_title_);
+   return cached_display_title_;
++  }();
++  if (title_.empty()) {
++    ReplaceChromeSchemeWithBraveForDisplay(cached_display_title_);
++  }
++  return display_title;
+ }
+ 
+ bool NavigationEntryImpl::IsViewSourceMode() const {

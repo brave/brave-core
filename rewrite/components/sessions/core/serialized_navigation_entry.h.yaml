@@ -1,0 +1,58 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: |-
+      Expose the Containers storage partition key and its virtual URL prefix.
+
+      These are runtime-only fields. When saving, the prefix is folded into the
+      virtual URL written to disk and sync via maybe_prefixed_virtual_url_spec().
+      When restoring, ContentSerializedNavigationDriver::Sanitize() parses the
+      prefix back out of the virtual URL. See docs/containers/session_persistence.md.
+    add_to_public:
+      class_name: SerializedNavigationEntry
+      code: |-
+        #if BUILDFLAG(ENABLE_CONTAINERS)
+        const std::optional<std::pair<std::string, std::string>>&
+        storage_partition_key() const {
+          return storage_partition_key_;
+        }
+        void set_storage_partition_key(
+            const std::pair<std::string, std::string>& key) {
+          storage_partition_key_ = key;
+        }
+        const std::string& virtual_url_prefix() const {
+          return virtual_url_prefix_;
+        }
+        void set_virtual_url_prefix(const std::string& url_prefix) {
+          virtual_url_prefix_ = url_prefix;
+        }
+        std::string maybe_prefixed_virtual_url_spec() const {
+          return base::StrCat({virtual_url_prefix_, virtual_url_.spec()});
+        }
+        #else
+        const std::string& maybe_prefixed_virtual_url_spec() const {
+          return virtual_url_.spec();
+        }
+        #endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+  - description: Hold the Containers storage partition key and its URL prefix.
+    add_to_protected:
+      class_name: SerializedNavigationEntry
+      code: |-
+        #if BUILDFLAG(ENABLE_CONTAINERS)
+        std::optional<std::pair<std::string, std::string>> storage_partition_key_;
+        std::string virtual_url_prefix_;
+        #endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+  - description: Include what the substitutions above use.
+    add_include:
+      header:
+        - <optional>
+        - <utility>
+        - base/strings/strcat.h
+        - brave/components/containers/buildflags/buildflags.h

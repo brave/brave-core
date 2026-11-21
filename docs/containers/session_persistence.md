@@ -67,7 +67,7 @@ NavigationEntry (in-memory)
     │
     ▼
 ContentSerializedNavigationBuilder::FromNavigationEntry()
-    │ Calls GetVirtualUrlPrefix() → "containers+550e8400-e29b-41d4-a716-446655440000:"
+    │ Calls StoragePartitionKeyToUrlPrefix() → "containers+550e8400-e29b-41d4-a716-446655440000:"
     │
     ├─> Sets storage_partition_key in SerializedNavigationEntry (runtime)
     ├─> Sets virtual_url_prefix in SerializedNavigationEntry (runtime)
@@ -161,6 +161,10 @@ is disabled.
 | Containers ON  | Containers ON  | Tab restores to same container ✓  |
 | Containers ON  | Containers OFF | URL remains encoded, page blank ✓ |
 | Containers OFF | Containers ON  | Normal tab, no container          |
+
+**Temporary containers**: Tabs in temporary containers are local-only and are
+never published to session sync (see
+`TabContentsSyncedTabDelegate::ShouldSync`).
 
 **Privacy**: Only the container name and icon are synced (as part of syncable
 prefs). The actual **storage data** (cookies, localStorage, etc.) in the

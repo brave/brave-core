@@ -1,0 +1,29 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: |-
+      Carry the storage partition key to restore a navigation entry into.
+
+      Chromium does not serialize the StoragePartitionConfig of an entry, and
+      on restore the NavigationEntry is created before its SiteInstance. The
+      key, a (partition_domain, partition_name) pair, lets Containers tabs be
+      saved and restored into their own storage partition. See
+      docs/containers/session_persistence.md.
+    add_to_public:
+      class_name: NavigationEntry
+      code: |-
+        virtual void SetStoragePartitionKeyToRestore(
+            std::pair<std::string, std::string> storage_partition_key) = 0;
+        virtual base::optional_ref<const std::pair<std::string, std::string>>
+        GetStoragePartitionKeyToRestore() = 0;
+
+  - description: Include what the substitution above uses.
+    add_include:
+      header:
+        - <utility>
+        - base/types/optional_ref.h
