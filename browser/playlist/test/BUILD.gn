@@ -72,9 +72,6 @@ source_set("unit_tests") {
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   sources = [
-    "mock_playlist_render_frame_observer_configurator.cc",
-    "mock_playlist_render_frame_observer_configurator.h",
-    "playlist_background_web_contents_helper_unittest.cc",
     "playlist_background_web_contents_unittest.cc",
     "playlist_unittest_base.cc",
     "playlist_unittest_base.h",
