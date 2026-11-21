@@ -131,10 +131,9 @@ class APIRequestHelper {
     void ParseJsonImpl(std::string json,
                        base::OnceCallback<void(ValueOrError)> callback);
 
-    // Run completion callback if there are no operations in progress.
-    // If Cancel is needed even if url or data operations are in progress,
-    // then call |APIRequestHelper::Cancel|.
-    void MaybeSendResult();
+    // Runs the completion callback with the loader's result, which deletes
+    // this handler. To stop without a result, call |APIRequestHelper::Cancel|.
+    void SendResult();
     void OnSSEValueReceived(ValueOrError result);
 
     // network::SimpleURLLoaderStreamConsumer implementation:
@@ -179,8 +178,6 @@ class APIRequestHelper {
     // Buffer for accumulating error response body chunks across OnDataReceived
     // calls. Parsed in OnComplete via MaybeParseErrorBody.
     std::string error_body_buffer_;
-
-    bool request_is_finished_ = false;
 
     const scoped_refptr<base::SequencedTaskRunner> task_runner_;
 

@@ -23,10 +23,9 @@ using ValueOrError = base::expected<base::Value, std::string>;
 // Parses a Server-Sent Events (SSE) byte stream delivered in arbitrary chunks.
 //
 // Callers feed chunks via Process(). Complete lines starting with "data: {"
-// are parsed as JSON asynchronously on |task_runner|. For each successfully
-// recognised event the |on_event| callback is invoked with the parsed value
-// (or an error). Callers can check IsDecoding() to determine whether async
-// parse operations are still in flight.
+// are parsed as JSON asynchronously on |task_runner|, which must be sequenced.
+// For each successfully recognised event the |on_event| callback is invoked
+// with the parsed value (or an error), in stream order.
 //
 // Bytes that arrive after the last line-ending in a chunk are kept in an
 // internal line buffer and prepended to the next chunk so lines split across
@@ -44,21 +43,25 @@ class SSEParser {
   // operations and synchronously advance the line buffer.
   void Process(std::string_view chunk);
 
-  // Clears the partial-line buffer (e.g. on retry or stream completion).
+  // Discards the partial-line buffer, and the events and
+  // RunAfterPendingEvents() callbacks still pending (e.g. on retry).
   void Clear();
 
-  // Returns true while there are JSON parse operations still in flight.
-  bool IsDecoding() const;
+  // Runs `callback` on the calling sequence after `on_event` has run for every
+  // event dispatched so far, e.g. to complete a request once its last event is
+  // delivered. Always asynchronous, and dropped if the parser is destroyed or
+  // cleared first.
+  void RunAfterPendingEvents(base::OnceClosure callback);
 
  private:
   void ProcessLine(std::string_view line);
   void OnJsonParsed(ValueOrError result);
+  void RunCallback(base::OnceClosure callback);
 
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   base::RepeatingCallback<void(ValueOrError)> on_event_;
 
   std::string line_buffer_;
-  size_t decoding_count_ = 0;
 
   base::WeakPtrFactory<SSEParser> weak_ptr_factory_{this};
 };

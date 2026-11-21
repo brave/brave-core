@@ -117,7 +117,7 @@ class ObliviousHttpAPIClient : public OAIAPIClient {
    private:
     void OnSSEEvent(api_request_helper::ValueOrError result);
     void OnNonStreamingBodyParsed(api_request_helper::ValueOrError value);
-    void MaybeCompleteRequest();
+    void CompleteRequest();
     void OnPipeDisconnected();
 
     scoped_refptr<base::SequencedTaskRunner> sequenced_task_runner_;
@@ -125,7 +125,6 @@ class ObliviousHttpAPIClient : public OAIAPIClient {
     ChunkCallback chunk_callback_;
     api_request_helper::SSEParser sse_parser_;
     bool on_completed_called_ = false;
-    bool is_non_streaming_body_decoding_ = false;
     int pending_outer_response_code_ = net::HTTP_OK;
     int pending_inner_response_code_ = 0;
     std::optional<base::Value> pending_parsed_body_;
