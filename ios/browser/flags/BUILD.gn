@@ -1,0 +1,34 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("sync_server_url") {
+  sources = [
+    "sync_server_url.cc",
+    "sync_server_url.h",
+  ]
+  deps = [
+    "//base",
+    "//brave/components/brave_sync:buildflags",
+    "//components/sync/base",
+    "//components/webui/flags",
+    "//net",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "sync_server_url_unittest.cc" ]
+  deps = [
+    ":sync_server_url",
+    "//base",
+    "//brave/components/brave_sync:buildflags",
+    "//components/prefs:test_support",
+    "//components/sync/base",
+    "//components/webui/flags",
+    "//ios/chrome/browser/flags",
+    "//testing/gtest",
+  ]
+}

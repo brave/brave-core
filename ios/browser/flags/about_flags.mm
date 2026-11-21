@@ -19,6 +19,7 @@
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/ios/browser/api/translate/features.h"
+#include "brave/ios/browser/flags/sync_server_url.h"
 #include "brave/ios/browser/most_visited_sites/features.h"
 #include "brave/ios/browser/playlist/features.h"
 #include "brave/ios/browser/saved_tab_groups/features.h"
@@ -43,6 +44,9 @@
 #endif
 
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
+
+constexpr const char* kBraveSyncServerRepository[] = {
+    "https://github.com/brave/go-sync"};
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 const flags_ui::FeatureEntry::FeatureParam
@@ -326,6 +330,19 @@ const flags_ui::FeatureEntry::FeatureVariation
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(                                                  \
               brave_sync::features::kBraveSyncDefaultPasswords),               \
+      },                                                                       \
+      {                                                                        \
+          brave_sync::kSyncServerUrlFlagName,                                    \
+          "Override Brave Sync server URL",                                    \
+          "Use a self-hosted Brave Sync server. Enter its base URL, such as "   \
+          "https://sync.example.com/v2. Use HTTPS or HTTP on loopback. An "     \
+          "empty or invalid URL uses the default server. Leave your Sync "     \
+          "chain before switching servers. Close and reopen Brave to apply "   \
+          "the change.",                                                       \
+          flags_ui::kOsIos,                                                    \
+          /* Apply the URL after startup crash keys are recorded. */           \
+          STRING_VALUE_TYPE("", ""),                                           \
+          kBraveSyncServerRepository,                                          \
       },                                                                       \
       {                                                                        \
           "brave-use-chromium-webviews-autofill",                              \

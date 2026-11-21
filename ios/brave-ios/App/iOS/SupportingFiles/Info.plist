@@ -76,6 +76,8 @@
 	<string>This lets you take and upload photos.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>This authenticates your access to Brave</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Brave uses your local network to connect to your self-hosted Sync server.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Websites you visit may request your location.</string>
 	<key>NSMicrophoneUsageDescription</key>
