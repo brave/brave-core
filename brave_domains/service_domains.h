@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/command_line.h"
+#include "url/gurl.h"
 
 namespace brave_domains {
 
@@ -33,6 +34,18 @@ enum ServicesEnvironment { DEV, STAGING, PROD };
 // 3. Default env override parameter
 // 4. Default env (production)
 std::string GetServicesDomain(
+    std::string prefix,
+    ServicesEnvironment env_value_default_override = PROD,
+    base::CommandLine* command_line = base::CommandLine::ForCurrentProcess());
+
+// Returns the origin URL for the services domain with the given prefix.
+//
+// If --origin-override-[prefix]=<url> is present and <url> is a valid http or
+// https URL, its origin is returned (any path, query or fragment is dropped).
+// This override takes precedence over all env switches.
+//
+// Otherwise, returns https://[GetServicesDomain(prefix, ...)].
+GURL GetServicesOrigin(
     std::string prefix,
     ServicesEnvironment env_value_default_override = PROD,
     base::CommandLine* command_line = base::CommandLine::ForCurrentProcess());
