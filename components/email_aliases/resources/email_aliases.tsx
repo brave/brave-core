@@ -76,6 +76,7 @@ export const EmailAliasesManagePage = ({
 
 export type EmailAliasesMountOptions = {
   onLoggedInChange: (loggedIn: boolean) => void
+  styleTarget?: HTMLElement | ShadowRoot
 }
 
 export const mount = (
@@ -84,6 +85,8 @@ export const mount = (
   options: EmailAliasesMountOptions,
 ) => {
   setIconBasePath('//resources/brave-icons')
+  const styleTarget =
+    options.styleTarget ?? (signInElem.getRootNode() as ShadowRoot)
 
   const emailAliasesService = EmailAliasesService.getRemote()
   const emailAliasesMetrics = EmailAliasesMetrics.getRemote()
@@ -100,7 +103,7 @@ export const mount = (
   const signInRoot = createRoot(signInElem)
   signInRoot.render(
     <StyleSheetManager
-      target={signInElem.getRootNode() as ShadowRoot}
+      target={styleTarget}
       shouldForwardProp={shouldForwardProp}
     >
       <SignInPage onLoggedInChange={options.onLoggedInChange} />
@@ -110,7 +113,7 @@ export const mount = (
   const manageRoot = createRoot(manageElem)
   manageRoot.render(
     <StyleSheetManager
-      target={manageElem.getRootNode() as ShadowRoot}
+      target={styleTarget}
       shouldForwardProp={shouldForwardProp}
     >
       <EmailAliasesManagePage

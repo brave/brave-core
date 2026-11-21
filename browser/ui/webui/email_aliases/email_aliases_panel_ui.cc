@@ -52,6 +52,7 @@ EmailAliasesPanelUI::EmailAliasesPanelUI(content::WebUI* web_ui)
 #endif
   webui::SetupWebUIDataSource(source, kEmailAliasesPanelResources,
                               IDR_EMAIL_ALIASES_PANEL_HTML);
+  source->AddLocalizedStrings(webui::kEmailAliasesStrings);
 }
 
 EmailAliasesPanelUI::~EmailAliasesPanelUI() = default;

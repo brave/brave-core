@@ -379,6 +379,9 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#if BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/webui/email_aliases/email_aliases_settings_ui_android.h"
+#endif
 #include "brave/browser/ui/webui/email_aliases/email_aliases_panel_ui.h"
 #include "brave/browser/ui/webui/email_aliases/email_aliases_promo_ui.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
@@ -900,6 +903,16 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
         .Add<brave_account::mojom::DialogController>()
         .Add<password_strength_meter::mojom::PasswordStrengthMeter>();
   }
+
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+  if (email_aliases::features::IsEmailAliasesEnabled()) {
+    registry.ForWebUI<EmailAliasesSettingsUIAndroid>()
+        .Add<brave_account::mojom::Authentication>()
+        .Add<brave_account::mojom::SettingsOpener>()
+        .Add<email_aliases::mojom::EmailAliasesService>()
+        .Add<email_aliases::mojom::EmailAliasesMetrics>();
+  }
+#endif
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(ENABLE_PSST)

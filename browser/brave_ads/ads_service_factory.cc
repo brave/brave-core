@@ -94,7 +94,7 @@ AdsServiceFactory::AdsServiceFactory()
 
 AdsServiceFactory::~AdsServiceFactory() = default;
 
-std::unique_ptr<AdsTooltipsDelegateImpl>
+std::unique_ptr<AdsTooltipsDelegate>
 AdsServiceFactory::CreateAdsTooltipsDelegate() const {
 #if BUILDFLAG(IS_ANDROID)
   return nullptr;
