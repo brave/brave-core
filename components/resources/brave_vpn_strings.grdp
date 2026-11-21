@@ -98,6 +98,14 @@
     Reconnect automatically
   </message>
 
+  <message name="IDS_BRAVE_VPN_ALLOW_LAN_TRAFFIC" desc="Label for a toggle that lets local network traffic bypass the VPN while connected" formatter_data="webui=Vpn">
+    Allow LAN traffic
+  </message>
+
+  <message name="IDS_BRAVE_VPN_ALLOW_LAN_TRAFFIC_DESC" desc="Label to toggle alow LAN traffic toggle desc" formatter_data="webui=Vpn">
+    Lets you reach devices on your home or office network, such as printers or shared folders.
+  </message>
+
   <message name="IDS_BRAVE_VPN_SMART_PROXY_ROUTING" desc="Label to toggle smart proxy routing" formatter_data="webui=Vpn">
     Smart proxy routing
   </message>
