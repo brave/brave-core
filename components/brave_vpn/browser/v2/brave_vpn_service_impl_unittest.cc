@@ -20,6 +20,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
+#include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -70,8 +71,7 @@ std::optional<base::DictValue> DecodePurchaseToken(const std::string& encoded) {
   if (!base::Base64Decode(encoded, &json)) {
     return std::nullopt;
   }
-  return base::JSONReader::ReadDict(json,
-                                    base::JSONParserOptions::JSON_PARSE_RFC);
+  return base::test::ParseJsonDict(json, base::JSON_PARSE_RFC);
 }
 #endif  // !BUILDFLAG(IS_ANDROID)
 
@@ -293,7 +293,7 @@ class BraveVpnServiceImplTest : public testing::Test {
     service_->SetConnectionStateForTesting(state);
   }
   mojom::ConnectionState connection_state() const {
-    return service_->connection_state_;
+    return service_->GetConnectionState();
   }
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
@@ -398,8 +398,8 @@ TEST_F(BraveVpnServiceImplTest, SafeDefaultsAfterShutdown) {
     const std::optional<base::DictValue> payload =
         DecodePurchaseToken(GetPurchaseToken());
     ASSERT_TRUE(payload);
-    EXPECT_THAT(payload->FindString("package"),
-                testing::Pointee(std::string(kTestPackage)));
+    EXPECT_THAT(*payload, base::test::DictionaryHasValue(
+                              "package", base::Value(kTestPackage)));
   }
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
@@ -415,15 +415,12 @@ TEST_F(BraveVpnServiceImplTest, PurchaseTokenFallsBackToReleaseDefaults) {
       DecodePurchaseToken(GetPurchaseToken());
   ASSERT_TRUE(payload);
 
-  EXPECT_THAT(payload->FindString("type"),
-              testing::Pointee(std::string("android")));
-  EXPECT_THAT(payload->FindString("raw_receipt"),
-              testing::Pointee(std::string()));
-  EXPECT_THAT(payload->FindString("package"),
-              testing::Pointee(std::string(kExpectedDefaultPackage)));
-  EXPECT_THAT(payload->FindString("subscription_id"),
-              testing::Pointee(std::string(kExpectedDefaultProductId)));
-  EXPECT_EQ(payload->size(), 4u);
+  base::DictValue expected;
+  expected.Set("type", "android");
+  expected.Set("raw_receipt", "");
+  expected.Set("package", kExpectedDefaultPackage);
+  expected.Set("subscription_id", kExpectedDefaultProductId);
+  EXPECT_EQ(*payload, expected);
 }
 
 TEST_F(BraveVpnServiceImplTest, PurchaseTokenReflectsPrefs) {
@@ -435,12 +432,13 @@ TEST_F(BraveVpnServiceImplTest, PurchaseTokenReflectsPrefs) {
         DecodePurchaseToken(GetPurchaseToken());
     ASSERT_TRUE(payload);
 
-    EXPECT_THAT(payload->FindString("package"),
-                testing::Pointee(std::string(kTestPackage)));
-    EXPECT_THAT(payload->FindString("raw_receipt"),
-                testing::Pointee(std::string()));
-    EXPECT_THAT(payload->FindString("subscription_id"),
-                testing::Pointee(std::string(kExpectedDefaultProductId)));
+    EXPECT_THAT(*payload, base::test::DictionaryHasValue(
+                              "package", base::Value(kTestPackage)));
+    EXPECT_THAT(*payload,
+                base::test::DictionaryHasValue("raw_receipt", base::Value("")));
+    EXPECT_THAT(*payload,
+                base::test::DictionaryHasValue(
+                    "subscription_id", base::Value(kExpectedDefaultProductId)));
   }
   profile_pref_service_.SetString(prefs::kBraveVPNPurchaseTokenAndroid,
                                   kTestPurchaseToken);
@@ -451,12 +449,12 @@ TEST_F(BraveVpnServiceImplTest, PurchaseTokenReflectsPrefs) {
         DecodePurchaseToken(GetPurchaseToken());
     ASSERT_TRUE(payload);
 
-    EXPECT_THAT(payload->FindString("raw_receipt"),
-                testing::Pointee(std::string(kTestPurchaseToken)));
-    EXPECT_THAT(payload->FindString("package"),
-                testing::Pointee(std::string(kTestPackage)));
-    EXPECT_THAT(payload->FindString("subscription_id"),
-                testing::Pointee(std::string(kTestProductId)));
+    EXPECT_THAT(*payload, base::test::DictionaryHasValue(
+                              "raw_receipt", base::Value(kTestPurchaseToken)));
+    EXPECT_THAT(*payload, base::test::DictionaryHasValue(
+                              "package", base::Value(kTestPackage)));
+    EXPECT_THAT(*payload, base::test::DictionaryHasValue(
+                              "subscription_id", base::Value(kTestProductId)));
   }
 }
 
@@ -518,7 +516,7 @@ TEST_F(BraveVpnServiceImplTest, AgentNotRunningLaunchesAgent) {
 
   NotifyAgentNotRunning();
 
-  EXPECT_EQ(launch_record_.launch_count(), 1u);
+  ASSERT_EQ(launch_record_.launch_count(), 1u);
   EXPECT_TRUE(launch_record_.failure_callbacks.back());
 }
 
