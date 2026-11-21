@@ -328,7 +328,7 @@ class SolanaProviderScriptHandler: TabContentScript {
         signatures: signatures
       )
     }
-    guard !params.isEmpty else {
+    guard !params.isEmpty, params.count == transactions.count else {
       return (nil, buildErrorJson(status: .invalidParams, errorMessage: "Invalid args"))
     }
     let (status, errorMessage, serializedTxs, versions) = await provider.signAllTransactions(
