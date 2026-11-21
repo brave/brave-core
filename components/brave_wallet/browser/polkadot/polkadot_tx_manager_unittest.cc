@@ -16,6 +16,9 @@
 #include "base/test/gmock_callback_support.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
+#include "base/test/values_test_util.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate_impl.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -37,6 +40,7 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
@@ -55,6 +59,10 @@ inline constexpr const char kBob[] =
 // https://polkadot.subscan.io/account/14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3
 inline constexpr const char kBobSS58[] =
     "14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3";
+
+// BOB's raw public key, as stored in the transaction's `recipient`.
+inline constexpr char kBobPublicKeyHex[] =
+    "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48";
 
 inline constexpr char kExpectedExtrinsic[] =
     "3502840014bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71e01"
@@ -247,16 +255,9 @@ class PolkadotTxManagerUnitTest : public testing::Test {
   }
 
   void UnlockWallet() {
-    keyring_service_->Unlock(
-        kTestWalletPassword,
-        base::BindOnce(
-            [](base::RepeatingClosure quit_closure, bool unlocked) {
-              EXPECT_TRUE(unlocked);
-              quit_closure.Run();
-            },
-            task_environment_.QuitClosure()));
-
-    task_environment_.RunUntilQuit();
+    base::test::TestFuture<bool> unlock_future;
+    keyring_service_->Unlock(kTestWalletPassword, unlock_future.GetCallback());
+    ASSERT_TRUE(unlock_future.Take());
 
     keyring_service_->polkadot_mainnet_keyring_->SetMockRndSeedForTesting();
     keyring_service_->polkadot_testnet_keyring_->SetMockRndSeedForTesting();
@@ -377,23 +378,24 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
 
     const auto& txs = tx_storage_ptr_->GetTxs();
     const auto* tx = txs.FindDict(tx_meta_id);
-    EXPECT_TRUE(tx);
+    ASSERT_TRUE(tx);
 
     const auto* polkadot_tx = tx->FindDict("tx");
+    ASSERT_TRUE(polkadot_tx);
 
-    EXPECT_EQ(
-        *polkadot_tx->FindString("recipient"),
-        R"(8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48)");
-    EXPECT_EQ(*polkadot_tx->FindString("amount"),
-              "d2040000000000000000000000000000");
-    EXPECT_EQ(*polkadot_tx->FindString("fee"),
-              "dc8df1b5030000000000000000000000");
-    EXPECT_EQ(*polkadot_tx->FindBool("transfer_all"), false);
-    EXPECT_EQ(*polkadot_tx->FindInt("ss58_prefix"), 0);
+    EXPECT_THAT(*polkadot_tx,
+                base::test::DictionaryHasValues(
+                    base::DictValue()
+                        .Set("recipient", kBobPublicKeyHex)
+                        .Set("amount", "d2040000000000000000000000000000")
+                        .Set("fee", "dc8df1b5030000000000000000000000")
+                        .Set("transfer_all", false)
+                        .Set("ss58_prefix", 0)));
 
+    const auto* fee_hex = polkadot_tx->FindString("fee");
+    ASSERT_TRUE(fee_hex);
     uint128_t fee = 0;
-    EXPECT_TRUE(base::HexStringToSpan(*polkadot_tx->FindString("fee"),
-                                      base::byte_span_from_ref(fee)));
+    EXPECT_TRUE(base::HexStringToSpan(*fee_hex, base::byte_span_from_ref(fee)));
 
     EXPECT_EQ(fee, 15937408476ull);
   }
@@ -420,23 +422,24 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
 
     const auto& txs = tx_storage_ptr_->GetTxs();
     const auto* tx = txs.FindDict(tx_meta_id);
-    EXPECT_TRUE(tx);
+    ASSERT_TRUE(tx);
 
     const auto* polkadot_tx = tx->FindDict("tx");
+    ASSERT_TRUE(polkadot_tx);
 
-    EXPECT_EQ(
-        *polkadot_tx->FindString("recipient"),
-        R"(8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48)");
-    EXPECT_EQ(*polkadot_tx->FindString("amount"),
-              "ffffffffffffffffffffffffffffffff");
-    EXPECT_EQ(*polkadot_tx->FindString("fee"),
-              "dc8df1b5030000000000000000000000");
-    EXPECT_EQ(*polkadot_tx->FindBool("transfer_all"), false);
-    EXPECT_EQ(*polkadot_tx->FindInt("ss58_prefix"), 0);
+    EXPECT_THAT(*polkadot_tx,
+                base::test::DictionaryHasValues(
+                    base::DictValue()
+                        .Set("recipient", kBobPublicKeyHex)
+                        .Set("amount", "ffffffffffffffffffffffffffffffff")
+                        .Set("fee", "dc8df1b5030000000000000000000000")
+                        .Set("transfer_all", false)
+                        .Set("ss58_prefix", 0)));
 
+    const auto* fee_hex = polkadot_tx->FindString("fee");
+    ASSERT_TRUE(fee_hex);
     uint128_t fee = 0;
-    EXPECT_TRUE(base::HexStringToSpan(*polkadot_tx->FindString("fee"),
-                                      base::byte_span_from_ref(fee)));
+    EXPECT_TRUE(base::HexStringToSpan(*fee_hex, base::byte_span_from_ref(fee)));
 
     EXPECT_EQ(fee, 15937408476ull);
   }
