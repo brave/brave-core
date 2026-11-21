@@ -1,0 +1,24 @@
+diff --git a/build/sanitizers/lsan_suppressions.cc b/build/sanitizers/lsan_suppressions.cc
+index 7293f464a5ec46d3ea4faddf815fdeaf3259e965..8e8f6fd351eb9e79f02e5b924f76e19ce5f34a28 100644
+--- a/build/sanitizers/lsan_suppressions.cc
++++ b/build/sanitizers/lsan_suppressions.cc
+@@ -110,6 +110,19 @@ char kLSanDefaultSuppressions[] =
+     "leak:cssmErrorString\n"
+ #endif
+ 
++    // ================ Brave ================
++
++    // https://github.com/brave/brave-browser/issues/52522
++    "leak:update_client::UpdateEngine\n"
++    "leak:update_client::TaskUpdate\n"
++
++    // https://github.com/brave/brave-browser/issues/52743
++    "leak:skus::initialize_sdk\n"
++
++    // Clipboard data can "leak" if the browser is closing whilst the
++    // clipboard data is processed. Also happens in Chromium test browsers.
++    "leak:ui::X11ClipboardOzone::RequestClipboardData\n"
++
+     // PLEASE READ ABOVE BEFORE ADDING NEW SUPPRESSIONS.
+ 
+     // End of suppressions.
