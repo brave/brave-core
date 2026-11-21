@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "base/check.h"
@@ -16,6 +17,7 @@
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/i18n/rtl.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
@@ -32,6 +34,8 @@
 #include "brave/browser/ui/views/toolbar/side_panel_button.h"
 #include "brave/browser/ui/views/workspaces/workspaces_bubble_controller.h"
 #include "brave/browser/workspaces/features.h"
+#include "brave/browser/workspaces/workspace_service.h"
+#include "brave/browser/workspaces/workspace_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -819,12 +823,42 @@ void BraveToolbarView::CreateWorkspaceButtonIfNeeded() {
       l10n_util::GetStringUTF16(IDS_ACCNAME_WORKSPACES_BUTTON));
   workspaces_button_->SetVisible(
       VerticalTabController::From(browser_)->ShouldShowBraveVerticalTabs());
+
+  if (auto* service =
+          WorkspaceServiceFactory::GetForProfile(browser_->GetProfile())) {
+    workspaces_changed_subscription_ = service->RegisterWorkspacesChanged(
+        base::BindRepeating(&BraveToolbarView::UpdateWorkspaceButtonLabel,
+                            base::Unretained(this)));
+  }
+  UpdateWorkspaceButtonLabel();
+}
+
+void BraveToolbarView::UpdateWorkspaceButtonLabel() {
+  if (!workspaces_button_) {
+    return;
+  }
+  auto* service =
+      WorkspaceServiceFactory::GetForProfile(browser_->GetProfile());
+  CHECK(service);
+  // An unmanaged window has no name, which clears the label back to the icon.
+  const std::optional<std::string> workspace_name =
+      service->GetWorkspaceNameForWindow(browser_->GetSessionID());
+  const std::u16string name =
+      workspace_name ? base::UTF8ToUTF16(*workspace_name) : std::u16string();
+  if (name == workspaces_button_->GetText()) {
+    return;
+  }
+  // ToolbarButton keeps SetText() to itself; SetHighlight() is how callers
+  // give it a label. Passing an empty string clears it back to the icon.
+  // Each call rebuilds the button's background and border, so it is worth
+  // skipping when nothing changed.
+  workspaces_button_->SetHighlight(name, /*highlight_color=*/std::nullopt);
 }
 
 void BraveToolbarView::OnWorkspacesButtonPressed() {
   auto* controller = WorkspacesBubbleController::From(browser_);
   CHECK(controller);
-  controller->ShowBubble(workspaces_button_, browser_->GetProfile());
+  controller->ShowBubble(workspaces_button_, browser_);
 }
 
 void BraveToolbarView::UpdateWorkspaceButtonVisibility() {

@@ -1133,13 +1133,13 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
       }))
 
 #if !BUILDFLAG(IS_ANDROID)
-#define BRAVE_WORKSPACE_FEATURE_ENTRY                            \
-  EXPAND_FEATURE_ENTRIES({                                       \
-      "brave-workspace",                                         \
-      "Brave Workspace",                                         \
-      "Save sets of windows and tabs into loadable workspaces.", \
-      kOsWin | kOsLinux | kOsMac,                                \
-      FEATURE_VALUE_TYPE(features::kWorkspaces),                 \
+#define BRAVE_WORKSPACE_FEATURE_ENTRY                    \
+  EXPAND_FEATURE_ENTRIES({                               \
+      "brave-workspace",                                 \
+      "Brave Workspace",                                 \
+      "Group tabs into distinct Workspaces by category", \
+      kOsWin | kOsLinux | kOsMac,                        \
+      FEATURE_VALUE_TYPE(features::kWorkspaces),         \
   })
 #else
 #define BRAVE_WORKSPACE_FEATURE_ENTRY
