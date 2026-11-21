@@ -1,0 +1,5 @@
+# Include only bootstrap tooling, never credentials or checkout contents.
+*
+!Dockerfile
+!create_container.py
+!build_brave_image.py
