@@ -13,6 +13,17 @@ import styles from './style.module.scss'
 export default function DeleteConversationModal() {
   // Context
   const aiChatContext = useAIChat()
+  const cancelButtonRef = React.useRef<HTMLElement>(null)
+  const isOpen = !!aiChatContext.deletingConversationId
+
+  // Start on Cancel so a stray keypress can't delete; Delete is one Tab away.
+  React.useEffect(() => {
+    if (!isOpen) {
+      return
+    }
+    const timeout = setTimeout(() => cancelButtonRef.current?.focus())
+    return () => clearTimeout(timeout)
+  }, [isOpen])
 
   // Computed
   const title =
@@ -23,7 +34,7 @@ export default function DeleteConversationModal() {
 
   return (
     <Dialog
-      isOpen={!!aiChatContext.deletingConversationId}
+      isOpen={isOpen}
       showClose
       onClose={() => aiChatContext.setDeletingConversationId(null)}
       className={styles.deleteConversationDialog}
@@ -44,6 +55,7 @@ export default function DeleteConversationModal() {
       >
         <div className={styles.buttonsWrapper}>
           <Button
+            ref={cancelButtonRef}
             kind='plain-faint'
             size='medium'
             onClick={() => aiChatContext.setDeletingConversationId(null)}
