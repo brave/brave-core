@@ -1205,5 +1205,64 @@ class RerunTest(unittest.TestCase):
         )
 
 
+def _failing_response(status: int, reason: str) -> MagicMock:
+    """A response whose `raise_for_status` raises as a real one with
+    `status` does."""
+    response = MagicMock(status_code=status, reason=reason)
+    response.raise_for_status.side_effect = jenkins.requests.HTTPError(
+        f'{status} {reason}', response=response
+    )
+    return response
+
+
+class UnreadableTest(unittest.TestCase):
+    """What the client says when Jenkins won't answer."""
+
+    def _session(self, response=None, error=None) -> MagicMock:
+        session = MagicMock()
+        if error is not None:
+            session.get.side_effect = error
+        else:
+            session.get.return_value = response
+            session.post.return_value = response
+        return session
+
+    def _call(self, session, method, *args):
+        with patch('ci.jenkins.requests.Session', return_value=session):
+            return getattr(jenkins.JenkinsCi('u', 't'), method)(*args)
+
+    def test_refused_credentials_name_the_config_file(self):
+        session = self._session(_failing_response(401, 'Unauthorized'))
+        for method in ('failed_builds', 'full_log', 'rerun'):
+            with self.subTest(method):
+                with self.assertRaisesRegex(
+                    jenkins.JenkinsCredentialsError,
+                    r'refused the credentials in .*\.jenkins\.json '
+                    r'\(401 Unauthorized.*expired or been revoked',
+                ):
+                    self._call(session, method, f'{_RUN}/')
+
+    def test_forbidden_is_a_credentials_problem_too(self):
+        session = self._session(_failing_response(403, 'Forbidden'))
+        with self.assertRaisesRegex(
+            jenkins.JenkinsCredentialsError, r'403 Forbidden.*permission'
+        ):
+            self._call(session, 'failed_builds', f'{_RUN}/')
+
+    def test_a_missing_build_says_its_status(self):
+        session = self._session(_failing_response(404, 'Not Found'))
+        with self.assertRaisesRegex(
+            jenkins.BadOutcomeException, r'wfapi/describe: HTTP 404 Not Found$'
+        ):
+            self._call(session, 'failed_builds', f'{_RUN}/')
+
+    def test_a_timeout_says_so(self):
+        session = self._session(error=jenkins.requests.Timeout('slow'))
+        with self.assertRaisesRegex(
+            jenkins.BadOutcomeException, r'wfapi/describe: timed out$'
+        ):
+            self._call(session, 'failed_builds', f'{_RUN}/')
+
+
 if __name__ == '__main__':
     unittest.main()

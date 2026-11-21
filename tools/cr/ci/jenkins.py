@@ -38,6 +38,40 @@ from terminal import console, terminal
 # pipelines. See `JenkinsCi.from_config` for the expected schema.
 JENKINS_CONFIG_FILE = Path.home() / '.jenkins.json'
 
+
+class JenkinsCredentialsError(BadOutcomeException):
+    """Jenkins refused the credentials in `JENKINS_CONFIG_FILE`."""
+
+
+def _why_unread(error: requests.RequestException, url: str) -> str:
+    """Why a request to `url` failed: its HTTP status, or a timeout.
+
+    Raises:
+        JenkinsCredentialsError: for a 401 or 403, which every other request
+            would get too.
+    """
+    response = getattr(error, 'response', None)
+    status = getattr(response, 'status_code', None)
+    if status == 401:
+        raise JenkinsCredentialsError(
+            f'Jenkins refused the credentials in {JENKINS_CONFIG_FILE} '
+            f'(401 Unauthorized for {url}): the API token has likely expired '
+            'or been revoked. Generate a new one from your user\'s Security '
+            'page on Jenkins, and update the file.'
+        ) from error
+    if status == 403:
+        raise JenkinsCredentialsError(
+            f'Jenkins denied the user in {JENKINS_CONFIG_FILE} access '
+            f'(403 Forbidden for {url}): the token may be wrong for the '
+            'username, or the user may lack permission for the job.'
+        ) from error
+    if isinstance(error, requests.Timeout):
+        return 'timed out'
+    if status is not None:
+        return f'HTTP {status} {getattr(response, "reason", "")}'.rstrip()
+    return str(error)
+
+
 # How often `--watch` polls Jenkins for pipeline progress.
 WATCH_POLL_INTERVAL_SECONDS = 8
 
@@ -378,14 +412,28 @@ class JenkinsCi:
         return True
 
     @staticmethod
-    def _get_json(session: requests.Session, url: str) -> dict | None:
-        """GETs `url` and returns the parsed JSON, or None on any failure."""
+    def _fetch_json(
+        session: requests.Session, url: str
+    ) -> tuple[dict | None, str]:
+        """GETs `url` and returns the parsed JSON, or None and why not.
+
+        Raises:
+            JenkinsCredentialsError: if Jenkins refuses the credentials.
+        """
         try:
             response = session.get(url, timeout=15)
             response.raise_for_status()
-            return response.json()
-        except (requests.RequestException, ValueError):
-            return None
+            return response.json(), ''
+        except requests.RequestException as e:
+            return None, _why_unread(e, url)
+        except ValueError:
+            return None, 'not JSON'
+
+    @staticmethod
+    def _get_json(session: requests.Session, url: str) -> dict | None:
+        """GETs `url` and returns the parsed JSON, or None on any failure
+        but Jenkins refusing the credentials, which it raises."""
+        return JenkinsCi._fetch_json(session, url)[0]
 
     def failed_builds(self, build_url: str) -> list[FailedBuild]:
         """What failed in the pipeline run at `build_url`: the first stage
@@ -396,9 +444,11 @@ class JenkinsCi:
         """
         url = build_url.rstrip('/') + '/'
         session = self._session()
-        describe = self._get_json(session, f'{url}wfapi/describe')
+        describe, why = self._fetch_json(session, f'{url}wfapi/describe')
         if describe is None:
-            raise BadOutcomeException(f'Could not read {url}wfapi/describe')
+            raise BadOutcomeException(
+                f'Could not read {url}wfapi/describe: {why}'
+            )
         stages = describe.get('stages') or []
         builds = []
         failed = next((s for s in stages if s.get('status') == 'FAILED'), None)
@@ -515,7 +565,8 @@ class JenkinsCi:
             response.raise_for_status()
         except requests.RequestException as e:
             raise BadOutcomeException(
-                f'Could not read {url}consoleText: {e}'
+                f'Could not read {url}consoleText: '
+                f'{_why_unread(e, f"{url}consoleText")}'
             ) from e
         text = _CONSOLE_NOTE.sub('', response.text)
         return text if timestamps else _TIMESTAMP.sub('', text)
@@ -700,7 +751,13 @@ class JenkinsCi:
             headers=crumb,
             timeout=30,
         )
-        response.raise_for_status()
+        try:
+            response.raise_for_status()
+        except requests.HTTPError as e:
+            raise BadOutcomeException(
+                f'Could not queue {job_url.rstrip("/")} again: '
+                f'{_why_unread(e, f"{job_url}buildWithParameters")}'
+            ) from e
         return f'Queued {job_url.rstrip("/")} again.'
 
     def _resolve_display_name(
