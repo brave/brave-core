@@ -148,5 +148,3 @@
 -SharedStorageLockManagerTransactionalBatchUpdateDisabledTest.*
 -StoragePartitionImplTest.AttributionManagerCreatedInIncognito
 -WebContentsImplTest.NavigateToViewSourceRendererDebugURL
--WebUILoadingUtilSendDataTest/WebUILoadingUtilSendDataTest.SendData/0
--WebUILoadingUtilSendDataTest/WebUILoadingUtilSendDataTest.SendData/1
