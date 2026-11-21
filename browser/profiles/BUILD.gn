@@ -3,6 +3,127 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
+import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//brave/components/local_ai/buildflags/buildflags.gni")
+import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
+import("//brave/components/request_otr/common/buildflags/buildflags.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
+import("//components/gcm_driver/config.gni")
+import("//extensions/buildflags/buildflags.gni")
+
+source_set("profiles") {
+  sources = [
+    "brave_profile_avatar_downloader.cc",
+    "brave_profile_avatar_downloader.h",
+    "brave_profile_manager.cc",
+    "brave_profile_manager.h",
+    "brave_renderer_updater.cc",
+    "brave_renderer_updater.h",
+    "brave_renderer_updater_factory.cc",
+    "brave_renderer_updater_factory.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/common:mojo_bindings",
+    "//brave/components/brave_wallet/common/buildflags",
+    "//chrome/browser/profiles:misc",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/profiles:profile_manager",
+    "//chrome/browser/profiles:profile_util",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//mojo/public/cpp/bindings",
+  ]
+
+  deps = [
+    ":util",
+    "//brave/browser/misc_metrics",
+    "//brave/browser/perf",
+    "//brave/browser/request_otr",
+    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/brave_ads/buildflags",
+    "//brave/components/brave_rewards/core/buildflags",
+    "//brave/components/brave_shields/content/browser",
+    "//brave/components/brave_shields/core/browser",
+    "//brave/components/brave_shields/core/common",
+    "//brave/components/constants",
+    "//brave/components/content_settings/core/common",
+    "//brave/components/de_amp/browser",
+    "//brave/components/de_amp/common",
+    "//brave/components/local_ai/buildflags",
+    "//brave/components/ntp_background_images/common",
+    "//brave/components/playlist/core/common/buildflags",
+    "//brave/components/request_otr/common/buildflags",
+    "//brave/components/tor/buildflags",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/content_settings:content_settings_factory",
+    "//chrome/browser/profiles",
+    "//chrome/browser/ssl",
+    "//chrome/browser/ui/webui:theme_source",
+    "//chrome/common",
+    "//components/bookmarks/common",
+    "//components/content_settings/core/browser",
+    "//components/gcm_driver:gcm_buildflags",
+    "//components/signin/public/base",
+    "//content/public/browser",
+    "//extensions/buildflags",
+    "//ipc",
+    "//net",
+    "//third_party/widevine/cdm:buildflags",
+    "//ui/gfx",
+  ]
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/core/common" ]
+  }
+
+  if (enable_brave_ads) {
+    deps += [
+      "//brave/browser/brave_ads",
+      "//brave/components/brave_ads/core/public:headers",
+      "//brave/components/ntp_background_images/browser",
+    ]
+  }
+
+  if (enable_brave_rewards) {
+    deps += [ "//brave/browser/brave_rewards" ]
+  }
+
+  if (enable_brave_wallet) {
+    deps += [
+      "//brave/browser/brave_wallet",
+      "//brave/components/brave_wallet/browser",
+      "//brave/components/brave_wallet/browser:pref_names",
+      "//brave/components/brave_wallet/common",
+      "//brave/components/brave_wallet/common:mojom",
+    ]
+  }
+
+  if (enable_extensions_core) {
+    deps += [ "//extensions/browser" ]
+  }
+
+  if (enable_local_ai) {
+    deps += [ "//brave/browser/history_embeddings:status" ]
+  }
+
+  if (enable_playlist) {
+    deps += [ "//brave/components/playlist/core/common" ]
+  }
+
+  if (!use_gcm_from_platform) {
+    deps += [ "//brave/browser/gcm_driver" ]
+  }
+
+  if (enable_tor) {
+    deps += [ "//brave/components/tor" ]
+  }
+}
+
 source_set("util") {
   sources = [
     "profile_util.cc",
