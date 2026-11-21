@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_JSON_RPC_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_JSON_RPC_SERVICE_H_
 
+#include <map>
 #include <memory>
 #include <optional>
 #include <string>
@@ -220,6 +221,10 @@ class JsonRpcService : public mojom::JsonRpcService {
 
   void EnsGetEthAddr(const std::string& domain,
                      EnsGetEthAddrCallback callback) override;
+  void EnsGetAddr(const std::string& domain,
+                  mojom::CoinType coin,
+                  const std::string& chain_id,
+                  EnsGetAddrCallback callback) override;
   void SnsGetSolAddr(const std::string& domain,
                      SnsGetSolAddrCallback callback) override;
 
@@ -616,6 +621,11 @@ class JsonRpcService : public mojom::JsonRpcService {
   void OnEnsGetEthAddrTaskDone(EnsResolverTask* task,
                                std::optional<EnsResolverTaskResult> task_result,
                                std::optional<EnsResolverTaskError> error);
+  void OnEnsGetAddrTaskDone(mojom::CoinType coin,
+                            uint32_t coin_type,
+                            EnsResolverTask* task,
+                            std::optional<EnsResolverTaskResult> task_result,
+                            std::optional<EnsResolverTaskError> error);
   void OnEnsGetContentHashTaskDone(
       EnsResolverTask* task,
       std::optional<EnsResolverTaskResult> task_result,
@@ -792,6 +802,10 @@ class JsonRpcService : public mojom::JsonRpcService {
   mojo::RemoteSet<mojom::JsonRpcServiceObserver> observers_;
 
   EnsResolverTaskContainer<EnsGetEthAddrCallback> ens_get_eth_addr_tasks_;
+  // Keyed by ENS coin type, so lookups of one name for different coins aren't
+  // merged.
+  std::map<uint32_t, EnsResolverTaskContainer<EnsGetAddrCallback>>
+      ens_get_addr_tasks_;
   EnsResolverTaskContainer<EnsGetContentHashCallback>
       ens_get_content_hash_tasks_;
 

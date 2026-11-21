@@ -145,6 +145,12 @@ export const addressEndpoints = ({
          * Only used by Unstoppable Domains
          */
         tokenId: string | null
+        /**
+         * Coin and network of the send. Required for ENS, which returns the
+         * address for this coin and network (ENSIP-9, ENSIP-11).
+         */
+        coin?: BraveWallet.CoinType
+        chainId?: string
       }
     >({
       queryFn: async (arg, { endpoint }, _extra, baseQuery) => {
@@ -158,8 +164,16 @@ export const addressEndpoints = ({
 
           // Ens
           if (endsWithAny(supportedENSExtensions, lowercaseURL)) {
+            if (arg.coin === undefined || !arg.chainId) {
+              throw new Error('ENS lookups need a coin and network')
+            }
+
             const { address, errorMessage, requireOffchainConsent } =
-              await api.jsonRpcService.ensGetEthAddr(lowercaseURL)
+              await api.jsonRpcService.ensGetAddr(
+                lowercaseURL,
+                arg.coin,
+                arg.chainId,
+              )
 
             if (errorMessage) {
               throw new Error(errorMessage)
