@@ -193,3 +193,38 @@ neighbouring tokens that are not changing — that is what reintroduces fragilit
 and calls for `re_pattern`.
 
 ---
+
+<a id="PLSTR-006"></a>
+
+## ✅ Don't Hard-Code Newlines or Indentation in `re_pattern`
+
+**A `re_pattern` must not depend on literal newlines (`\n`) or literal
+indentation to find its anchor. Match the layout between tokens with `\s*` or
+`\s+`.** Then upstream reformatting (clang-format, a wrapped statement, an added
+blank line, a changed indent) cannot break the match for a reason unrelated to
+the rewrite. This is the whitespace half of [PLSTR-004](#PLSTR-004).
+
+```yaml
+# ❌ WRONG - pins a newline, a two-space indent and the brace's column. A blank
+# line before the return, a different indent, or anything after the `}` breaks it.
+re_pattern: '(Foo::GetConfig\(.*?)(?=\n  return result;\n\}\n)'
+re_flags: [DOTALL]
+
+# ✅ CORRECT - anchors on the tokens and lets \s absorb the layout
+re_pattern: '(Foo::GetConfig\(.*?)(?=\s+return\s+result;\s*\})'
+re_flags: [DOTALL]
+```
+
+A `re_pattern` breaks this rule when it spells out `\n`, or two or more
+consecutive literal spaces, between tokens. Not violations:
+
+- A single literal space where it keeps the regex readable, e.g.
+  `enum class RequestType \{` (see
+  [Whitespace in matches](../plaster_dos_and_donts.md#whitespace-in-matches)).
+- `\n` inside a character class meaning "the rest of the line", e.g. `[^\n]*`.
+- `\n` and indentation in `replace:`, which is the text being written out.
+
+Other files under `rewrite/` that hard-code `\n` in `re_pattern` are not
+precedent: they are fragile in the same way. Do not copy them into new rewrites.
+
+---
