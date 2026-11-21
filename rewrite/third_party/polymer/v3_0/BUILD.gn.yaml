@@ -7,11 +7,12 @@ substitutions:
   - description: |-
       Build the ChromeOS-only Polymer elements on every desktop platform
 
-      Brave uses them outside ChromeOS too.
-    count: 3
+      Brave uses them outside ChromeOS too, so their sources, minified
+      resources, grdp entries, type definitions and visibility all follow.
+    count: 5
     regex:
-      pattern: if (is_chromeos) {
-      replace: if (!is_android) {
+      re_pattern: 'if \((optimize_webui && )?is_chromeos\) \{'
+      replace: 'if (\1!is_android) {'
 
   - description: Let the Brave WebUI targets use Polymer.
     add_literal_to_list:
