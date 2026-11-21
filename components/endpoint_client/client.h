@@ -139,6 +139,10 @@ class Client {
                                std::optional<std::string> response_body) {
     Response response;
     response.net_error = net_error;
+    if constexpr (base::is_instantiation<Response, WithHeaders>) {
+      response.headers = headers;
+    }
+
     if (net_error != net::OK || !headers) {
       return response;
     }
@@ -151,10 +155,6 @@ class Client {
       // Neither case reaches this point.
       response.body = Response::Deserialize(*response.status_code,
                                             CHECK_DEREF(response_body));
-    }
-
-    if constexpr (base::is_instantiation<Response, WithHeaders>) {
-      response.headers = std::move(headers);
     }
 
     return response;

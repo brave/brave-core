@@ -1370,7 +1370,7 @@ TEST(ClientTestMaxBodySize, DoesNotApplyToResponsesWithoutBodies) {
           .net_error = net::OK, .status_code = net::HTTP_OK}));
 }
 
-TEST(ClientTestResponseHeaders, NotSetWithoutStatusCode) {
+TEST(ClientTestResponseHeaders, SetEvenWithoutStatusCode) {
   base::test::TaskEnvironment task_environment;
   network::TestURLLoaderFactory test_url_loader_factory;
 
@@ -1393,10 +1393,12 @@ TEST(ClientTestResponseHeaders, NotSetWithoutStatusCode) {
   Client<JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint>::Send(
       test_url_loader_factory, std::move(request), future.GetCallback());
 
-  WithHeaders<JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Response>
-      expected_response;
-  expected_response.net_error = net::ERR_INSUFFICIENT_RESOURCES;
-  EXPECT_THAT(future.Take(), ResponseEq(expected_response));
+  auto response = future.Take();
+  EXPECT_EQ(response.net_error, net::ERR_INSUFFICIENT_RESOURCES);
+  EXPECT_FALSE(response.status_code);
+  EXPECT_FALSE(response.body);
+  ASSERT_TRUE(response.headers);
+  EXPECT_EQ(response.headers->response_code(), net::HTTP_OK);
 }
 
 TEST_P(ClientTestRetryOptions, Retry) {

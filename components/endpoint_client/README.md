@@ -275,8 +275,9 @@ Client<MyEndpoint>::Send(
     }));
 ```
 
-`response.headers` is set only when `response.status_code` is, i.e. on `net::OK`
-with response headers received.
+`response.headers` is set whenever response headers were received, even if the
+request then failed, e.g. midway through the body. `response.status_code` is
+still only set on `net::OK`, so check it, not `response.headers`, for success.
 
 ---
 
