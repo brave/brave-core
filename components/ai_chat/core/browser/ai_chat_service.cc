@@ -637,8 +637,9 @@ void AIChatService::OnDataDeletedForDisabledStorage(bool success) {
   bool generation_state_changed = false;
   for (auto it = conversations_.begin(); it != conversations_.end();) {
     if (!conversation_handlers_.contains(it->first)) {
-      generation_state_changed |=
-          conversation_generation_state_.erase(it->first) > 0;
+      if (conversation_generation_state_.erase(it->first) > 0) {
+        generation_state_changed = true;
+      }
       it = conversations_.erase(it);
     } else {
       ++it;
@@ -1614,6 +1615,20 @@ void AIChatService::NotifyConversationGenerationStateChanged() {
     remote->OnConversationGenerationStateChanged(
         conversation_generation_state_);
   }
+  base::EraseIf(notified_conversations_, [this](const std::string& uuid) {
+    const auto* state = base::FindOrNull(conversation_generation_state_, uuid);
+    if (state &&
+        *state == mojom::ConversationGenerationState::kCompletedNotViewed) {
+      return false;
+    }
+    notification_delegate_->CloseCompletionNotification(uuid);
+    return true;
+  });
+}
+
+void AIChatService::SetNotificationDelegate(
+    std::unique_ptr<NotificationDelegate> delegate) {
+  notification_delegate_ = std::move(delegate);
 }
 
 bool AIChatService::IsConversationClientConnected(
@@ -1637,10 +1652,24 @@ void AIChatService::MaybeMarkGenerationComplete(
   }
   if (IsConversationClientConnected(conversation_uuid)) {
     conversation_generation_state_.erase(it);
-  } else {
-    it->second = mojom::ConversationGenerationState::kCompletedNotViewed;
+    NotifyConversationGenerationStateChanged();
+    return;
   }
+  it->second = mojom::ConversationGenerationState::kCompletedNotViewed;
   NotifyConversationGenerationStateChanged();
+  ShowCompletionNotification(conversation_uuid);
+}
+
+void AIChatService::ShowCompletionNotification(const std::string& uuid) {
+  if (!notification_delegate_) {
+    return;
+  }
+  std::u16string title_u16;
+  if (auto* conversation = base::FindPtrOrNull(conversations_, uuid)) {
+    title_u16 = base::UTF8ToUTF16(conversation->title);
+  }
+  notified_conversations_.insert(uuid);
+  notification_delegate_->ShowCompletionNotification(uuid, title_u16);
 }
 
 void AIChatService::OpenConversationWithStagedEntries(
