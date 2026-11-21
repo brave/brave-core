@@ -89,7 +89,7 @@ public class BraveSyncAccountDeletedInformer {
                         () -> braveSnackbarManager.dismissSnackbars(controller));
             }
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "show " + e);
+            Log.e(TAG, "show", e);
         }
     }
 }

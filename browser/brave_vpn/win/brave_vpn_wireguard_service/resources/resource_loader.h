@@ -14,14 +14,17 @@ class FilePath;
 
 namespace brave_vpn {
 
+// Loads the service's strings for the locale `SelectLocale()` picks.
 void LoadLocaleResources();
 
-// The OS locale ICU reads, as a BCP 47 tag such as "en-US", "es-419" or
-// "zh-CN", the names of the locale paks.
-std::string GetSystemLocale();
+// The directory holding the service's locale paks: `Locales` next to
+// `assets_path`, or else in it.
+base::FilePath FindLocalesDir(const base::FilePath& assets_path);
 
-base::FilePath FindPakFilePath(const base::FilePath& assets_path,
-                               const std::string& locale);
+// Points `ui::DIR_LOCALES` at the paks under `assets_path`, and returns the
+// OS's preferred UI language that has one, or "en-US", as the browser picks
+// its locale. It becomes the default ICU locale too.
+std::string SelectLocale(const base::FilePath& assets_path);
 
 }  //  namespace brave_vpn
 

@@ -212,9 +212,10 @@ class BridgeRequest {
       image_decoder_ = std::make_unique<ImageDecoderImpl>();
     }
 
-    image_decoder_->DecodeImage(image_data, {}, /*data_decoder=*/nullptr,
-                                base::BindOnce(&BridgeRequest::OnCaptchaDecoded,
-                                               weak_factory_.GetWeakPtr()));
+    image_decoder_->DecodeImageFromString(
+        image_data, {}, /*data_decoder=*/nullptr,
+        base::BindOnce(&BridgeRequest::OnCaptchaDecoded,
+                       weak_factory_.GetWeakPtr()));
   }
 
   void OnCaptchaDecoded(const gfx::Image& image) {

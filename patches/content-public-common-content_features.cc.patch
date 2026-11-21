@@ -1,8 +1,8 @@
 diff --git a/content/public/common/content_features.cc b/content/public/common/content_features.cc
-index 12c055af6d850047a24e188dd15143cc16c2f1b6..d27232d15682f75133c1f1207f96310778c2ee52 100644
+index 94489add7340545ca36438933d91865c328050cf..6e319661f44ae5fa621c0e7b46fe5b27ec8c6cc8 100644
 --- a/content/public/common/content_features.cc
 +++ b/content/public/common/content_features.cc
-@@ -313,13 +313,8 @@ BASE_FEATURE(kDeviceBoundSessionTerminationEvictBackForwardCache,
+@@ -308,13 +308,8 @@ BASE_FEATURE(kDeviceBoundSessionTerminationEvictBackForwardCache,
  
  // Controls whether the Digital Goods API is enabled.
  // https://github.com/WICG/digital-goods/
@@ -18,7 +18,7 @@ index 12c055af6d850047a24e188dd15143cc16c2f1b6..d27232d15682f75133c1f1207f963107
  
  // Enables the BTM (Bounce Tracking Mitigation) feature.
  // On by default to allow for collecting metrics. All potentially dangerous
-@@ -422,7 +417,7 @@ BASE_FEATURE(kEnsureExistingRendererAlive, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -417,7 +412,7 @@ BASE_FEATURE(kEnsureExistingRendererAlive, base::FEATURE_DISABLED_BY_DEFAULT);
  // by the flag in RuntimeEnabledFeatures on the blink side. See also
  // the use of kSetOnlyIfOverridden in content/child/runtime_features.cc.
  // We enable it here by default to support use in origin trials.
@@ -27,7 +27,7 @@ index 12c055af6d850047a24e188dd15143cc16c2f1b6..d27232d15682f75133c1f1207f963107
  
  // Enables RPs to enhance autofill with federated accounts fetched by the FedCM
  // API.
-@@ -444,7 +439,7 @@ BASE_FEATURE(kFedCmDelegation, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -439,7 +434,7 @@ BASE_FEATURE(kFedCmDelegation, base::FEATURE_DISABLED_BY_DEFAULT);
  // flag in RuntimeEnabledFeatures on the blink side. See also the use of
  // kSetOnlyIfOverridden in content/child/runtime_features.cc. We enable it here
  // by default to support use in origin trials.
@@ -36,7 +36,7 @@ index 12c055af6d850047a24e188dd15143cc16c2f1b6..d27232d15682f75133c1f1207f963107
  
  // Enforce same-origin check for dedicated worker script URLs.
  // See https://crbug.com/496253755.
-@@ -532,11 +527,11 @@ BASE_FEATURE(kForwardMemoryPressureToBlinkIsolates,
+@@ -527,11 +522,11 @@ BASE_FEATURE(kForwardMemoryPressureToBlinkIsolates,
               base::FEATURE_ENABLED_BY_DEFAULT);
  
  // Enables the Digital Credential API.
@@ -69,7 +69,7 @@ index 12c055af6d850047a24e188dd15143cc16c2f1b6..d27232d15682f75133c1f1207f963107
  
  // When enabled, ProcessSelectionDeferringConditions will be run. This allows
  // the embedder to provide conditions that may delay the final process selection
-@@ -1132,7 +1127,7 @@ constexpr base::FeatureParam<double> kProcessPerSiteMainFrameTotalMemoryLimit{
+@@ -1142,7 +1137,7 @@ constexpr base::FeatureParam<double> kProcessPerSiteMainFrameTotalMemoryLimit{
  // it doesn't require a developer opt-in.
  //
  // crbug.com/1472634 for more details.
@@ -78,7 +78,7 @@ index 12c055af6d850047a24e188dd15143cc16c2f1b6..d27232d15682f75133c1f1207f963107
  
  // Improve ServiceWorkerAutoPreload coverage by using more accurate web request
  // proxy detection.
-@@ -1220,7 +1215,7 @@ BASE_FEATURE(kUserMediaCaptureOnFocus, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -1230,7 +1225,7 @@ BASE_FEATURE(kUserMediaCaptureOnFocus, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // This is intended as a kill switch for the WebOTP Service feature. To enable
  // this feature, the experimental web platform features flag should be set.
@@ -87,7 +87,7 @@ index 12c055af6d850047a24e188dd15143cc16c2f1b6..d27232d15682f75133c1f1207f963107
  
  // Trial to disable synchronous draw for synchronous compositor (ie Android
  // WebView).
-@@ -1641,7 +1636,13 @@ BASE_FEATURE(kIOThreadInteractiveThreadType, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -1651,7 +1646,13 @@ BASE_FEATURE(kIOThreadInteractiveThreadType, base::FEATURE_DISABLED_BY_DEFAULT);
  const base::FeatureParam<int> kNavigationCapturingIPHGuardrailStorageDuration{
      &kPwaNavigationCapturing, "link_capturing_guardrail_storage_duration", 30};
  

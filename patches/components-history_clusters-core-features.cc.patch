@@ -1,5 +1,5 @@
 diff --git a/components/history_clusters/core/features.cc b/components/history_clusters/core/features.cc
-index b623327cc1e43b27b251be61f50e4d0782abd6f2..7c2f6fb4e32513f3da774f7cef512d528e61bce1 100644
+index 649a8ca45d39d467c1cf9cb7d105b6f2a895cee8..c1061462f64740c14f10f8b52bb44056ec55798f 100644
 --- a/components/history_clusters/core/features.cc
 +++ b/components/history_clusters/core/features.cc
 @@ -13,12 +13,12 @@ namespace history_clusters {
@@ -17,14 +17,12 @@ index b623327cc1e43b27b251be61f50e4d0782abd6f2..7c2f6fb4e32513f3da774f7cef512d52
               "JourneysOmniboxHistoryClusterProvider",
               base::FEATURE_DISABLED_BY_DEFAULT);
  
-@@ -30,12 +30,12 @@ BASE_FEATURE(kUserVisibleDebug,
+@@ -30,10 +30,10 @@ BASE_FEATURE(kUserVisibleDebug,
               "JourneysUserVisibleDebug",
               base::FEATURE_DISABLED_BY_DEFAULT);
  
 -BASE_FEATURE(kHistoryClustersInternalsPage, base::FEATURE_DISABLED_BY_DEFAULT);
 +BASE_OVERRIDDEN_FEATURE(kHistoryClustersInternalsPage, base::FEATURE_DISABLED_BY_DEFAULT);
- 
- BASE_FEATURE(kHistoryClustersVisitDeduping, base::FEATURE_DISABLED_BY_DEFAULT);
  
 -BASE_FEATURE(kHistoryClustersNavigationContextClustering,
 -             base::FEATURE_ENABLED_BY_DEFAULT);

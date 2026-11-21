@@ -387,13 +387,15 @@ void BraveTabStripCollection::MoveTabsRecursive(
                                         retain_collection_types);
 }
 
-ScopedTab BraveTabStripCollection::RemoveTabAtIndexRecursive(size_t index) {
+ScopedTab BraveTabStripCollection::RemoveTab(TabInterface* tab,
+                                             bool remove_for_detach) {
   if (ShouldDelegate()) {
     auto notifications = ScopeUnwrappedNotifications();
-    return delegate_->RemoveTabAtIndexRecursive(index);
+    return delegate_->RemoveTabAtIndexRecursive(
+        GetIndexOfTabRecursive(tab).value());
   }
 
-  return TabStripCollection::RemoveTabAtIndexRecursive(index);
+  return TabStripCollection::RemoveTab(tab, remove_for_detach);
 }
 
 void BraveTabStripCollection::InsertTabCollectionAt(

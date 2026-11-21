@@ -9,6 +9,7 @@
 #include "chrome/browser/browser_features.h"
 #include "chrome/browser/devtools/features.h"
 #include "chrome/browser/glic/public/features.h"
+#include "chrome/browser/glic/public/provider_features.h"
 #include "chrome/browser/policy/policy_util.h"
 #include "chrome/browser/preloading/preloading_features.h"
 #include "chrome/browser/ttc/core/features.h"
@@ -19,7 +20,6 @@
 #include "components/autofill/core/common/autofill_debug_features.h"
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/autofill/core/common/autofill_payments_features.h"
-#include "components/browser_actuator/internal/transport/features.h"
 #include "components/browser_actuator/public/features.h"
 #include "components/commerce/core/commerce_feature_list.h"
 #include "components/compose/core/browser/compose_features.h"
@@ -61,6 +61,7 @@
 #include "components/signin/public/base/signin_switches.h"
 #include "components/site_token_provider/features.h"
 #include "components/skills/features.h"
+#include "components/stream_transport/internal/features.h"
 #include "components/subresource_filter/core/common/common_features.h"
 #include "components/sync/base/features.h"
 #include "components/user_education/common/user_education_features.h"
@@ -89,6 +90,7 @@
 #include "chrome/browser/child_module/features.h"
 #include "chrome/browser/default_browser/default_browser_features.h"
 #include "chrome/browser/enterprise/data_protection/data_protection_features.h"
+#include "chrome/browser/password_manager/password_change/features.h"
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"
 #include "chrome/browser/ui/toasts/toast_features.h"
 #include "chrome/browser/ui/views/desktop_capture/desktop_media_picker_views.h"
@@ -136,6 +138,8 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &attribution_reporting::features::kConversionMeasurement,
       &autofill::features::kAutofillAiServerModel,
       &autofill::features::kAutofillAiWithDataSchema,
+      &autofill::features::kAutofillAmbientAutofill,
+      &autofill::features::kAutofillAmbientAutofillSuppression,
       &autofill::features::kAutofillEnableAmountExtraction,
       &autofill::features::kAutofillEnableBuyNowPayLater,
       &autofill::features::debug::kAutofillServerCommunication,
@@ -145,7 +149,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kPreloadingEagerViewportHeuristics,
       &blink::features::kPreloadingModerateViewportHeuristics,
       &browser_actuator::kBrowserActuator,
-      &browser_actuator::transport::kBrowserActuatorProtoStreamTransport,
 #if !BUILDFLAG(IS_ANDROID)
       &child_module::features::kDynamicPatching,
 #endif
@@ -159,7 +162,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &commerce::kShoppingList,
       &commerce::kShoppingPDPMetrics,
       &commerce::kRetailCoupons,
-      &compose::features::kEnableCompose,
+      &compose::features::kComposeEligible,
       &contextual_tasks::kContextualTasks,
       &contextual_tasks::kContextualTasksCookiePrefetch,
       &critical_actions::features::kCriticalActionHistory,
@@ -239,7 +242,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
       &heap_profiling::kHeapProfilerReporting,
       &history::kOrganicRepeatableQueries,
-      &history_clusters::features::kOnDeviceClustering,
       &history_clusters::features::kOnDeviceClusteringKeywordFiltering,
       &history_clusters::internal::kHistoryClustersInternalsPage,
       &history_clusters::internal::kHistoryClustersNavigationContextClustering,
@@ -285,6 +287,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &optimization_guide::features::kOptimizationGuideModelExecution,
       &optimization_guide::features::kOptimizationHints,
       &passage_embeddings::kPassageEmbedder,
+#if !BUILDFLAG(IS_ANDROID)
+      &password_change::features::kPasswordChangeWithPrivateInferenceLoginCheck,
+#endif
       &password_manager::features::
           kPasswordManagerOnDeviceEncryptionMetricsReporter,
       &permissions::features::kCpssUseTfliteSignatureRunner,
@@ -308,15 +313,16 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &segmentation_platform::features::kSegmentationPlatformFeature,
       &segmentation_platform::features::kSegmentationPlatformTimeDelaySampling,
       &site_token_provider::features::kSiteTokenProviderEnabled,
+      &stream_transport::kBrowserActuatorProtoStreamTransport,
       &subresource_filter::kAdTagging,
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
       &switches::kFirstRunDesktopRefresh,
 #endif
 #if BUILDFLAG(IS_ANDROID)
-      &switches::kProfileDiscOnAllPages,
       &switches::kSigninLevelUpButton,
 #endif
       &switches::kSyncEnableBookmarksInTransportMode,
+      &syncer::kSyncAutofillEntitySuppression,
       &syncer::kSyncAutofillValuableMetadata,
       &ttc::kTtc,
       &webapps::features::kWebAppsEnableMLModelForPromotion,

@@ -70,14 +70,19 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
 
   content::WebContents* GetActiveWebContents() override {
 #if BUILDFLAG(IS_ANDROID)
-    auto tab_models = TabModelList::models();
-    auto iter = std::ranges::find_if(
-        tab_models, [](const auto& model) { return model->IsActiveModel(); });
-    if (iter == tab_models.end()) {
+    TabModel* active_model = nullptr;
+    TabModelList::ForEachAll([&](TabModel* model) {
+      if (!model->IsActiveModel()) {
+        return true;
+      }
+      active_model = model;
+      return false;
+    });
+    if (!active_model) {
       return nullptr;
     }
 
-    auto* active_contents = (*iter)->GetActiveWebContents();
+    auto* active_contents = active_model->GetActiveWebContents();
     DCHECK(active_contents);
     DCHECK_EQ(active_contents->GetBrowserContext(), profile_.get());
     return active_contents;

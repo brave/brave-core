@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.h b/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.h
+index 0ffc300767d53bf88b0a9d02ac756c8f8767f65e..be9a9d0d68d537942cca9910e1cb7bf1f34a6e31 100644
+--- a/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.h
++++ b/chrome/browser/ui/views/download/bubble/download_toolbar_ui_controller.h
+@@ -8,6 +8,7 @@
+ #include <optional>
+ #include <string>
+ 
++#include "base/callback_list.h"
+ #include "base/memory/raw_ptr.h"
+ #include "base/scoped_observation.h"
+ #include "base/timer/timer.h"
+@@ -138,6 +139,9 @@ class DownloadToolbarUIController
+   bool IsProgressRingInDormantStateForTesting();
+   views::ImageView* GetImageBadgeForTesting();
+ 
++ protected:
++  base::CallbackListSubscription brave_download_button_shown_subscription_;
++
+  private:
+   // Closes the bubble when it detects an event such as a mouse click, escape
+   // key press, etc., which indicates the user's intent to close the bubble.

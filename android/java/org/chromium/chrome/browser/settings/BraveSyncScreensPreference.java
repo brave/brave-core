@@ -406,17 +406,20 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             if (null == getActivity()) {
                 return;
             }
-            final String messageFinal = (null == message || message.isEmpty())
-                    ? getResources().getString(R.string.sync_device_failure)
-                    : message;
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    showEndDialog(messageFinal, () -> {});
-                }
-            });
+            final String messageFinal =
+                    (null == message || message.isEmpty())
+                            ? getResources().getString(R.string.sync_device_failure)
+                            : message;
+            getActivity()
+                    .runOnUiThread(
+                            new Runnable() {
+                                @Override
+                                public void run() {
+                                    showEndDialog(messageFinal, () -> {});
+                                }
+                            });
         } catch (Exception exc) {
-            Log.e(TAG, "onSyncError exception: " + exc);
+            Log.e(TAG, "onSyncError exception", exc);
         }
     }
 
@@ -998,9 +1001,9 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                     LocalDateTime.ofEpochSecond(notAfterSecondsSinceUnixEpoch, 0, ZoneOffset.UTC);
             return notAfterTime;
         } catch (JSONException e) {
-            Log.e(TAG, "generateNewQrCode JSONException error " + e);
+            Log.e(TAG, "generateNewQrCode JSONException error", e);
         } catch (IllegalStateException e) {
-            Log.e(TAG, "generateNewQrCode IllegalStateException error " + e);
+            Log.e(TAG, "generateNewQrCode IllegalStateException error", e);
         }
         return null;
     }
@@ -1183,7 +1186,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             return false;
         }
         if (barcode.length() != 64) {
-            Log.e(TAG, "Wrong barcode data length " + barcode.length() + " instead of 64");
+            Log.e(TAG, "Wrong barcode data length %s instead of 64", barcode.length());
             return false;
         }
         String seedWords = getBraveSyncWorker().getWordsFromSeedHex(barcode);

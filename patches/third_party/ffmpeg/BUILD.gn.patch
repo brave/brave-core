@@ -1,8 +1,8 @@
 diff --git a/BUILD.gn b/BUILD.gn
-index a00ce51d43a5c3353fd3cebee6bc9d06a37ab0cc..91190c25c5788659e649ee29224c091bc4c059e1 100644
+index d4a3c8f219d6756c213c06bb03967adcdc551e9d..5388f97b2799ea3a9761c11536d155b387e2142d 100644
 --- a/BUILD.gn
 +++ b/BUILD.gn
-@@ -249,6 +249,7 @@ target(link_target_type, "ffmpeg_internal") {
+@@ -258,6 +258,7 @@ target(link_target_type, "ffmpeg_internal") {
      platform_config_root,
      ".",
    ]

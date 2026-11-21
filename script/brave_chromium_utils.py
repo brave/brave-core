@@ -8,8 +8,13 @@ import functools
 import json
 import os.path
 import sys
+import zipimport
 
 from typing import Any, Dict, Optional
+
+# Where `//build/create_pyz.py` bundles the `//brave/chromium_src` overrides of
+# the modules a `.pyz` archive holds, by their checkout-relative paths.
+PYZ_CHROMIUM_SRC_DIR = '_brave_chromium_src'
 
 
 def get_additional_extensions():
@@ -111,8 +116,31 @@ def inline_chromium_src_override(
             '__file__ is not set to inline from //brave/chromium_src. '
             'Use inline_file() with full path instead.'
         )
+    loader = _globals.get('__loader__')
+    if isinstance(loader, zipimport.zipimporter):
+        _inline_pyz_chromium_src_override(loader, orig_file, _globals, _locals)
+        return
     chromium_src_override = get_chromium_src_override(orig_file)
     inline_file(chromium_src_override, _globals, _locals)
+
+
+def _inline_pyz_chromium_src_override(
+    loader: zipimport.zipimporter,
+    orig_file: str,
+    _globals: Dict[str, Any],
+    _locals: Dict[str, Any],
+) -> None:
+    """Inline the override that the module's `.pyz` archive bundles, as neither
+    the module's source nor its override need be on disk (e.g. on RBE)."""
+    src_path = os.path.relpath(os.path.abspath(orig_file), get_src_dir())
+    assert not src_path.startswith('..'), (orig_file, get_src_dir())
+    source = loader.get_data(
+        os.path.join(loader.archive, PYZ_CHROMIUM_SRC_DIR, src_path)
+    )
+    override_path = wspath(f'//brave/chromium_src/{src_path}')
+    code = compile(source, override_path, 'exec')
+    # pylint: disable=exec-used
+    exec(code, _globals, _locals)
 
 
 def get_webui_overriden_file_name(file_name):

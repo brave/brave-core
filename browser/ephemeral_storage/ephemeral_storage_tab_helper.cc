@@ -5,6 +5,8 @@
 
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 
+#include <algorithm>
+
 #include "base/feature_list.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
@@ -47,22 +49,21 @@ TabModel* AddTabModelObserver(WebContents* web_contents,
     return nullptr;
   }
 
-  for (TabModel* tab_model : TabModelList::models()) {
-    if (tab_model->GetProfile() != current_profile) {
-      continue;
-    }
+  TabModel* observed_tab_model = nullptr;
+  TabModelList::ForEach(current_profile, [&](TabModel* tab_model) {
     const size_t tab_count = tab_model->GetTabCount();
     for (size_t index = 0; index < tab_count; index++) {
-      auto* tab = tab_model->GetTabAt(index);
-      if (!tab) {
+      if (!tab_model->GetTabAt(index)) {
         continue;
       }
       tab_model->AddObserver(tab_helper);
-      return tab_model;
+      observed_tab_model = tab_model;
+      return false;
     }
-  }
+    return true;
+  });
 
-  return nullptr;
+  return observed_tab_model;
 }
 
 void RemoveTabModelObserver(TabModel* tab_model,
@@ -72,11 +73,8 @@ void RemoveTabModelObserver(TabModel* tab_model,
   }
   // Verify TabModel is still valid (not destroyed) before using it.
   // This protects against dangling pointers during browser shutdown.
-  for (TabModel* model : TabModelList::models()) {
-    if (model == tab_model) {
-      tab_model->RemoveObserver(tab_helper);
-      return;
-    }
+  if (TabModelList::Contains(tab_model)) {
+    tab_model->RemoveObserver(tab_helper);
   }
 }
 
@@ -245,8 +243,13 @@ void EphemeralStorageTabHelper::UpdateShieldsState(const GURL& url) {
 }
 
 #if BUILDFLAG(IS_ANDROID)
-void EphemeralStorageTabHelper::WillCloseTab(TabAndroid* tab) {
-  if (!tab || tab->web_contents() != web_contents()) {
+void EphemeralStorageTabHelper::WillCloseTabs(
+    const std::vector<TabAndroid*>& tabs,
+    bool is_all_tabs,
+    bool allow_undo) {
+  if (!std::ranges::any_of(tabs, [this](TabAndroid* tab) {
+        return tab && tab->web_contents() == web_contents();
+      })) {
     return;
   }
   // Reset TLDEphemeralLifetime when a tab closes, since on Android

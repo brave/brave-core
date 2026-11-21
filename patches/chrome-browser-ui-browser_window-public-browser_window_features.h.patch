@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/ui/browser_window/public/browser_window_features.h b/chrome/browser/ui/browser_window/public/browser_window_features.h
-index 2cc7c9a27c45943afb7e981672cb13f71af29c36..bc6850fbf53522cd5a20fd996f919ccae45e60e5 100644
+index 9d25c9ca1470aa6331531887ccdfba9549129e26..f08a0d51e6f57b4a3a44f17e1fd35785759ad84d 100644
 --- a/chrome/browser/ui/browser_window/public/browser_window_features.h
 +++ b/chrome/browser/ui/browser_window/public/browser_window_features.h
-@@ -31,6 +31,9 @@
- #include "extensions/buildflags/buildflags.h"
+@@ -33,6 +33,9 @@
+ #include "services/on_device_model/public/cpp/buildflags.h"
  #include "ui/base/unowned_user_data/user_data_factory.h"
  
 +class FocusModeController;
@@ -12,7 +12,7 @@ index 2cc7c9a27c45943afb7e981672cb13f71af29c36..bc6850fbf53522cd5a20fd996f919cca
  class ActorBorderViewController;
  class ActorUiWindowController;
  class AvatarToolbarIphController;
-@@ -301,7 +304,12 @@ class BrowserWindowFeatures {
+@@ -307,7 +310,12 @@ class BrowserWindowFeatures {
    static ui::UserDataFactoryWithOwner<BrowserWindowInterface>&
    GetUserDataFactoryForTesting();
  

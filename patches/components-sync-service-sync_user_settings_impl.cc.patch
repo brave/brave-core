@@ -1,8 +1,8 @@
 diff --git a/components/sync/service/sync_user_settings_impl.cc b/components/sync/service/sync_user_settings_impl.cc
-index 98febb8531761a3f9afdf159e246acb587454502..f1f5e333d7ba9d4b6e4b7ce83a217bdd11e75941 100644
+index c257fdee42c306b122ee92f4e7a6851cc2217a12..28df36de561f05ae783114c377a83b15502e0c1c 100644
 --- a/components/sync/service/sync_user_settings_impl.cc
 +++ b/components/sync/service/sync_user_settings_impl.cc
-@@ -389,6 +389,7 @@ DataTypeSet SyncUserSettingsImpl::GetPreferredDataTypes() const {
+@@ -395,6 +395,7 @@ DataTypeSet SyncUserSettingsImpl::GetPreferredDataTypes() const {
    if (prefs_->IsLocalSyncEnabled()) {
      types.RetainAll(LocalSyncSupportedTypes());
    }

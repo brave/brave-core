@@ -1,5 +1,5 @@
 diff --git a/components/policy/BUILD.gn b/components/policy/BUILD.gn
-index f724bf914a934de95d71eda0c17cc475b51a2eae..979acd7968e50c57d97a9f88bd5f7d94056a8b2b 100644
+index 40ac1d804724cc1811366790917294041cc6dd17..a4813834b13dbc955a54ade762b7ee8cf7521497 100644
 --- a/components/policy/BUILD.gn
 +++ b/components/policy/BUILD.gn
 @@ -2,6 +2,7 @@

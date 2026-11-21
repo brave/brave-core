@@ -7,7 +7,6 @@
 
 #include <algorithm>
 #include <iterator>
-#include <memory>
 #include <optional>
 #include <queue>
 #include <string>
@@ -158,12 +157,11 @@ void DistillPageText(
     }
   }
 
-  auto snapshotter = render_frame->CreateAXTreeSnapshotter(
-      ui::AXMode::kWebContents | ui::AXMode::kHTML |
-      ui::AXMode::kExtendedProperties);
   ui::AXTreeUpdate snapshot;
-  snapshotter->Snapshot(
-      /* max_nodes= */ 9000, /* timeout= */ base::Seconds(4), &snapshot);
+  render_frame->GetWebFrame()->GetDocument().SnapshotAccessibilityTree(
+      /*max_nodes=*/9000, /*timeout=*/base::Seconds(4), &snapshot,
+      ui::AXMode::kWebContents | ui::AXMode::kHTML |
+          ui::AXMode::kExtendedProperties);
   ui::AXTree tree(snapshot);
 
   std::vector<const ui::AXNode*> content_root_nodes;

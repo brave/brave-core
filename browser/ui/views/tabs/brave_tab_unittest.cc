@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 
 #include <algorithm>
+#include <vector>
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -15,6 +16,7 @@
 #include "brave/components/tabs/public/tree_tab_node_id.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
@@ -29,13 +31,18 @@
 #include "components/tabs/public/mock_tab_interface.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/skia/include/core/SkBitmap.h"
 #include "third_party/skia/include/core/SkPath.h"
 #include "third_party/skia/include/core/SkRegion.h"
+#include "ui/color/color_provider.h"
+#include "ui/display/screen.h"
+#include "ui/gfx/canvas.h"
 #include "ui/gfx/color_utils.h"
 #include "ui/gfx/favicon_size.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/skia_conversions.h"
+#include "ui/gfx/geometry/vector2d.h"
 #include "ui/views/bubble/bubble_border.h"
 #include "ui/views/test/views_test_utils.h"
 
@@ -220,6 +227,43 @@ TEST_F(BraveTabTest, PinnedTabWidthMatchesBraveLayoutWhenHorizontalUpdateOn) {
       tabs::GetHorizontalTabHeight() + tabs::kHorizontalTabInset * 2;
   EXPECT_EQ(expected, tab_style->GetPinnedWidth(/*is_split=*/false));
   EXPECT_EQ(expected, tab_style->GetPinnedWidth(/*is_split=*/true));
+}
+
+// With kBraveHorizontalTabsUpdate on, the trailing separator of the last tab
+// is painted at Brave's separator bounds, on the tab's rightmost column, not
+// at upstream's position further in.
+TEST_F(BraveTabTest, SeparatorPaintedAtBraveBoundsWhenHorizontalUpdateOn) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(tabs::kBraveHorizontalTabsUpdate);
+
+  FakeTabSlotController tab_slot_controller;
+  auto widget = CreateTestWidget(views::Widget::InitParams::CLIENT_OWNS_WIDGET);
+  auto* tab = widget->SetContentsView(
+      std::make_unique<BraveTab>(tabs::TabHandle(1), &tab_slot_controller));
+  constexpr gfx::Size kTabSize(200, 40);
+  // A hovered tab paints no separator, and `IsMouseHovered()` follows the real
+  // cursor on macOS, so keep the tab clear of it.
+  const gfx::Point cursor = display::Screen::Get()->GetCursorScreenPoint();
+  widget->SetBounds(gfx::Rect(cursor + gfx::Vector2d(1, 1), kTabSize));
+  tab->SetBoundsRect(gfx::Rect(kTabSize));
+  views::test::RunScheduledLayout(tab);
+
+  gfx::Canvas canvas(kTabSize, /*image_scale=*/1.0f, /*is_opaque=*/false);
+  tab->tab_style_views()->PaintTab(&canvas);
+  const SkBitmap bitmap = canvas.GetBitmap();
+
+  const int separator_x =
+      kTabSize.width() - TabStyle::Get()->GetSeparatorSize().width();
+  const SkColor separator_color = widget->GetColorProvider()->GetColor(
+      widget->ShouldPaintAsActive() ? kColorTabDividerFrameActive
+                                    : kColorTabDividerFrameInactive);
+  std::vector<int> separator_columns;
+  for (int x = 0; x < kTabSize.width(); ++x) {
+    if (bitmap.getColor(x, kTabSize.height() / 2) == separator_color) {
+      separator_columns.push_back(x);
+    }
+  }
+  EXPECT_THAT(separator_columns, testing::ElementsAre(separator_x));
 }
 
 TEST_F(BraveTabTest, ShouldAlwaysHideTabCloseButton) {

@@ -147,7 +147,7 @@ public class BrowsingModeBottomToolbarCoordinator {
                             }
                             activity.addOrEditBookmark(tab);
                         } catch (BraveActivity.BraveActivityNotFoundException e) {
-                            Log.e(TAG, "BookmarkButton click " + e);
+                            Log.e(TAG, "BookmarkButton click", e);
                         }
                     };
             mBookmarkButton.setOnClickListener(bookmarkClickHandler);
@@ -213,6 +213,7 @@ public class BrowsingModeBottomToolbarCoordinator {
             mBraveHomeButton.onTintChanged(
                     mThemeColorProvider.getTint(),
                     mThemeColorProvider.getTint(),
+                    mThemeColorProvider.getUnfocusedAlpha(),
                     mThemeColorProvider.getBrandedColorScheme());
         }
 
@@ -221,6 +222,7 @@ public class BrowsingModeBottomToolbarCoordinator {
         mSearchAccelerator.onTintChanged(
                 mThemeColorProvider.getTint(),
                 mThemeColorProvider.getTint(),
+                mThemeColorProvider.getUnfocusedAlpha(),
                 mThemeColorProvider.getBrandedColorScheme());
 
         if (BottomToolbarVariationManager.isTabSwitcherOnBottomControls()) {
@@ -235,12 +237,14 @@ public class BrowsingModeBottomToolbarCoordinator {
         mBookmarkButton.onTintChanged(
                 mThemeColorProvider.getTint(),
                 mThemeColorProvider.getTint(),
+                mThemeColorProvider.getUnfocusedAlpha(),
                 mThemeColorProvider.getBrandedColorScheme());
 
         mThemeColorProvider.addTintObserver(mMenuButton);
         mMenuButton.onTintChanged(
                 mThemeColorProvider.getTint(),
                 mThemeColorProvider.getTint(),
+                mThemeColorProvider.getUnfocusedAlpha(),
                 mThemeColorProvider.getBrandedColorScheme());
 
         new OneShotCallback<>(

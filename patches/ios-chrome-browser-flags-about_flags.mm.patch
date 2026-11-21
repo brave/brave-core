@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
-index 36c19cc396dc21991dd96ef48aaa0e540acb74f7..910e4707d58feb962c4d78b88f4ad79a9da97e76 100644
+index 07412299f3772e94220508a200461849e5590b78..e9ad0de9475774fbf8d0f74b7c73cc88c1e44098 100644
 --- a/ios/chrome/browser/flags/about_flags.mm
 +++ b/ios/chrome/browser/flags/about_flags.mm
-@@ -1553,6 +1553,7 @@ constexpr FeatureEntry::FeatureVariation
+@@ -1549,6 +1549,7 @@ constexpr FeatureEntry::FeatureVariation
  //
  // When adding a new choice, add it to the end of the list.
  constexpr auto kFeatureEntries = std::to_array<flags_ui::FeatureEntry>({

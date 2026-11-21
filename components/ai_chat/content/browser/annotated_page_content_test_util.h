@@ -47,6 +47,7 @@ class ContentNodeBuilder {
   ContentNodeBuilder& AsText(const std::string& text);
   ContentNodeBuilder& AsHeading(const std::string& text);
   ContentNodeBuilder& AsParagraph();
+  ContentNodeBuilder& AsLabel();
   ContentNodeBuilder& AsAnchor(const std::string& url, const std::string& text);
   ContentNodeBuilder& AsForm(const std::string& name);
   ContentNodeBuilder& AsFormControl(const std::string& name,

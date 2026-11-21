@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/metrics/chrome_metrics_service_accessor.h b/chrome/browser/metrics/chrome_metrics_service_accessor.h
+index 8efd14233b7c60a69d6f1b995d31cbc5be32f3d7..e6149b464933757c19b63f5f62575dfc2e2ec7c6 100644
+--- a/chrome/browser/metrics/chrome_metrics_service_accessor.h
++++ b/chrome/browser/metrics/chrome_metrics_service_accessor.h
+@@ -136,6 +136,7 @@ class ChromeMetricsServiceAccessor : public metrics::MetricsServiceAccessor {
+   static void SetMetricsAndCrashReportingForTesting(const bool* value);
+ 
+  private:
++  friend class ChromeBrowserFieldTrials_ChromiumImpl;
+   friend class ::CrashesDOMHandler;
+   friend class ChromeBrowserFieldTrials;
+   // For ClangPGO.

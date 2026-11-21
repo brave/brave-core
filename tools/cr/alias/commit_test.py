@@ -495,6 +495,29 @@ class TestCulpritLinks(unittest.TestCase):
             + (['--culprit-in-range'] if in_range else [])
         )
 
+    def test_cr_branch_tag_comes_first_then_tagged_in_order(self) -> None:
+        """The order doesn't follow the hook's string hashing."""
+        self._cr_branch()
+        for seed in range(8):
+            with self.subTest(seed=seed):
+                self._sandbox.stage_change(f'{seed}\n')
+                result = self._sandbox.run_gc(
+                    [
+                        'commit',
+                        '--tagged=WIP,Android,WIP,cr158',
+                        '-m',
+                        'Change',
+                    ],
+                    env={'PYTHONHASHSEED': str(seed)},
+                )
+                self.assertEqual(
+                    result.returncode, 0, msg=f'stderr: {result.stderr}'
+                )
+                self.assertEqual(
+                    self._sandbox.last_commit_message().splitlines()[0],
+                    '[cr158][WIP][Android] Change',
+                )
+
     def test_cr_branch_accepts_a_culprit_in_its_range(self) -> None:
         commits = self._cr_branch()
         for name in ('in_range', 'new'):

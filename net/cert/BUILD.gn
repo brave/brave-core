@@ -40,5 +40,5 @@ action("root_cert_list_generated") {
 
 source_set("root_cert_list") {
   sources = get_target_outputs(":root_cert_list_generated")
-  deps = [ ":root_cert_list_generated" ]
+  public_deps = [ ":root_cert_list_generated" ]
 }

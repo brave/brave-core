@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/glic/public/provider_features.cc b/chrome/browser/glic/public/provider_features.cc
+index c2214054d526e0bc4a02e96ddef54ebc1de7efe6..49259ed56f3a129c47c811507bea934c4ec37229 100644
+--- a/chrome/browser/glic/public/provider_features.cc
++++ b/chrome/browser/glic/public/provider_features.cc
+@@ -72,13 +72,8 @@ PopulateSelectionInlineCueFeatureParams(const base::Feature& feature) {
+   return params;
+ }
+ 
+-BASE_FEATURE(kGlicTextSelectionContextMenu,
+-#if BUILDFLAG(IS_ANDROID)
+-             base::FEATURE_DISABLED_BY_DEFAULT
+-#else
+-             base::FEATURE_ENABLED_BY_DEFAULT
+-#endif
+-);
++BASE_OVERRIDDEN_FEATURE(kGlicTextSelectionContextMenu,
++base::FEATURE_DISABLED_BY_DEFAULT);
+ glic::GlicTextSelectionContextMenuFeatureParams
+ PopulateTextSelectionContextMenuFeatureParams(const base::Feature& feature) {
+   glic::GlicTextSelectionContextMenuFeatureParams params;

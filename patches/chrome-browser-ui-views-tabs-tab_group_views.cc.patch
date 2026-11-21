@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_group_views.cc b/chrome/browser/ui/views/tabs/tab_group_views.cc
-index 77bd8f19328b6f91fa68909c50162d38ce84af00..6f535be9679564d454f870affad8b9c1955aefbc 100644
+index 75ec56aa5c7c9f2084da4a932addc3e7c81e27b1..d5d0b8c3a2144be36a20085edbdf0e496473b539 100644
 --- a/chrome/browser/ui/views/tabs/tab_group_views.cc
 +++ b/chrome/browser/ui/views/tabs/tab_group_views.cc
 @@ -31,15 +31,15 @@ TabGroupViews::TabGroupViews(views::View* container_view,
@@ -22,10 +22,10 @@ index 77bd8f19328b6f91fa68909c50162d38ce84af00..6f535be9679564d454f870affad8b9c1
    highlight_->SetVisible(false);
  }
  
-@@ -157,6 +157,11 @@ TabGroupViews::GetLeadingTrailingDraggedGroupViews() const {
+@@ -161,6 +161,11 @@ TabGroupViews::GetLeadingTrailingDraggedGroupViews() const {
  std::tuple<views::View*, views::View*>
  TabGroupViews::GetLeadingTrailingGroupViews(
-     std::vector<raw_ptr<views::View, VectorExperimental>> children) const {
+     std::vector<raw_ptr<views::View, DanglingUntriaged>> children) const {
 +  if (auto vertical_tabs_views =
 +          GetBraveVerticalTabsLeadingTrailingGroupViews(
 +              *tab_slot_controller_, group_, children)) {

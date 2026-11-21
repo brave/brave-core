@@ -1,8 +1,8 @@
 diff --git a/tools/gritsettings/BUILD.gn b/tools/gritsettings/BUILD.gn
-index 33f20b3044c0176a7784f1fcead7b1e008ad9457..797cc5972a655b16386cdd79824fab95773d8c22 100644
+index ff908666b1bfde8f77284a524bd70d5faca8968b..d5c011618cd4f551ff6ad2f9c8e7360ac66e1505 100644
 --- a/tools/gritsettings/BUILD.gn
 +++ b/tools/gritsettings/BUILD.gn
-@@ -2,6 +2,7 @@
+@@ -2,16 +2,19 @@
  # Use of this source code is governed by a BSD-style license that can be
  # found in the LICENSE file.
  
@@ -10,11 +10,12 @@ index 33f20b3044c0176a7784f1fcead7b1e008ad9457..797cc5972a655b16386cdd79824fab95
  import("//build/config/compute_inputs_for_analyze.gni")
  import("//build/config/python.gni")
  import("//tools/grit/grit_rule.gni")
-@@ -11,8 +12,10 @@ action_with_pydeps("default_resource_ids") {
+ 
+ python_action("default_resource_ids") {
++  deps = brave_tools_gritsettings_deps
+   python_binary = "//tools/grit"
    inputs = [ "resource_ids.spec" ]
    outputs = [ grit_resource_id_file ]
-   deps = [ "//tools/grit:grit_sources" ]
-+  deps += brave_tools_gritsettings_deps
    depfile = "$target_gen_dir/$target_name.d"
    _rebased_input = rebase_path(inputs[0], root_build_dir)
 +  _rebased_input = filtered_resource_id_file_path

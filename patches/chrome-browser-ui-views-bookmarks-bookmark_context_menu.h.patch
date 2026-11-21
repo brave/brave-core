@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/bookmarks/bookmark_context_menu.h b/chrome/browser/ui/views/bookmarks/bookmark_context_menu.h
-index 9eccce7d56080d7b59116482e850e906cfd9d44e..fb650b2bd36dc304ec0371ea10746cb14f54de63 100644
+index 5780e7e63cba0b9505359713ef4fed2b000865b5..ae07bc41a39640feaf2ee3db2491cda3ca783bf0 100644
 --- a/chrome/browser/ui/views/bookmarks/bookmark_context_menu.h
 +++ b/chrome/browser/ui/views/bookmarks/bookmark_context_menu.h
 @@ -92,7 +92,7 @@ class BookmarkContextMenu : public BookmarkContextMenuControllerDelegate,

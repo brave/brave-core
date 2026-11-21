@@ -83,6 +83,9 @@ _MESSAGES_PER_PAGE = 100
 _CLI_TIMEOUT = 120
 _FULL_LOG_TIMEOUT = 900
 
+# The workspace parameters a PR aggregate passes to its `*_Init` dependency.
+_INIT_PARAMETER = 'reverse.dep.*_Init.env.{}'
+
 
 class TeamCityError(RuntimeError):
     """A CLI call that failed or timed out, with what the CLI said."""
@@ -108,7 +111,11 @@ class TeamCityCi:
         self._run = run
 
     def _cli(
-        self, *args: str, write: bool = False, timeout: int = _CLI_TIMEOUT
+        self,
+        *args: str,
+        write: bool = False,
+        timeout: int = _CLI_TIMEOUT,
+        stdin: str | None = None,
     ) -> str:
         env = {**os.environ, 'NO_COLOR': '1', 'TEAMCITY_NO_UPDATE': '1'}
         if not write:
@@ -122,6 +129,7 @@ class TeamCityCi:
                 encoding='utf-8',
                 env=env,
                 timeout=timeout,
+                input=stdin,
             ).stdout
         except subprocess.TimeoutExpired as e:
             raise TeamCityError(
@@ -214,33 +222,46 @@ class TeamCityCi:
         the aggregate itself when it has no failed dependencies.
 
         A build that failed only because one it depends on did is left out:
-        the one it depends on says why.
+        the one it depends on says why. Builds that failed to start count
+        too. When none is left, the aggregate itself is reported, with its
+        own status and problems.
         """
         aggregate = _build_id(url)
         fields = (
-            'id,buildTypeId,branchName,statusText,webUrl,'
+            'id,buildTypeId,branchName,statusText,webUrl,failedToStart,'
             'snapshot-dependencies(build(id,buildTypeId,status,state,webUrl))'
         )
+        # Without `defaultFilter:false`, builds that failed to start are left
+        # out, and a chain that never started lists none.
         builds = self._api(
             '/app/rest/builds?locator=snapshotDependency:'
-            f'(to:(id:{aggregate}),includeInitial:false),status:FAILURE'
-            f'&fields=build({fields})'
+            f'(to:(id:{aggregate}),includeInitial:false),status:FAILURE,'
+            f'defaultFilter:false&fields=build({fields})'
         ).get('build', [])
-        if not builds:
-            builds = [
-                self._api(f'/app/rest/builds/id:{aggregate}?fields={fields}')
-            ]
-        found = (self._failed_build(build) for build in builds)
-        return [build for build in found if build is not None]
+        found = [
+            failed
+            for failed in (self._failed_build(build) for build in builds)
+            if failed is not None
+        ]
+        if found:
+            return found
+        build = self._api(f'/app/rest/builds/id:{aggregate}?fields={fields}')
+        return [self._failed_build(build, keep_dependency_problems=True)]
 
-    def _failed_build(self, build: dict) -> FailedBuild | None:
+    def _failed_build(
+        self, build: dict, *, keep_dependency_problems: bool = False
+    ) -> FailedBuild | None:
         teamcity_id = build['id']
         problems = self._api(
             f'/app/rest/problemOccurrences?locator=build:(id:{teamcity_id}),'
             'count:100&fields=problemOccurrence(type,details)'
         ).get('problemOccurrence', [])
         types = [problem.get('type', '') for problem in problems]
-        if types and all('SNAPSHOT_DEPENDENCY' in kind for kind in types):
+        if (
+            not keep_dependency_problems
+            and types
+            and all('SNAPSHOT_DEPENDENCY' in kind for kind in types)
+        ):
             return None
         # Failed tests are a problem of their own, listed as tests instead.
         step_problems = tuple(
@@ -251,7 +272,12 @@ class TeamCityCi:
         branch = build.get('branchName', '')
         tests = self._failed_tests(teamcity_id, branch)
         log_tail = ''
-        if step_problems:
+        # An aggregate's dependency problems have no step log of its own.
+        if any(
+            not kind.startswith('TC_FAILED_TESTS')
+            and 'SNAPSHOT_DEPENDENCY' not in kind
+            for kind in types
+        ):
             try:
                 log_tail = self._failed_step_log(teamcity_id)
             except (TeamCityError, ValueError, KeyError) as e:
@@ -272,6 +298,7 @@ class TeamCityCi:
             log_tail=log_tail,
             dependencies=tuple(_dependency(d) for d in dependencies),
             previous=previous,
+            failed_to_start=build.get('failedToStart', False),
         )
 
     def _previous(self, teamcity_id: int, job: str, branch: str) -> str:
@@ -387,11 +414,69 @@ class TeamCityCi:
         )
         return log if timestamps else _TIMESTAMP.sub('', log)
 
-    def rerun(self, url: str) -> str:
+    def rerun(
+        self,
+        url: str,
+        *,
+        wipe_workspace: bool = False,
+        remove_src_out: bool = False,
+    ) -> str:
         """Queues the build at `url` again, with the same job, branch,
         revision and parameters, and returns the CLI's output.
 
         For an aggregate, TeamCity reuses the dependencies that succeeded,
         and reruns those that failed.
+
+        With `wipe_workspace` or `remove_src_out`, it queues a new run of the
+        same job, branch and revisions instead, setting the `new_workspace` or
+        `rm_src_out` parameter of its `*_Init` dependency, as the run dialog's
+        checkboxes do, and says so.
         """
-        return self._cli('run', 'restart', str(_build_id(url)), write=True)
+        build_id = _build_id(url)
+        cleanups = [
+            name
+            for name, wanted in (
+                ('new_workspace', wipe_workspace),
+                ('rm_src_out', remove_src_out),
+            )
+            if wanted
+        ]
+        if not cleanups:
+            return self._cli('run', 'restart', str(build_id), write=True)
+        build = self._api(
+            f'/app/rest/builds/id:{build_id}?fields=buildTypeId,branchName,'
+            'revisions(revision(version,vcsBranchName,vcs-root-instance(id)))'
+        )
+        body = {
+            'buildType': {'id': build['buildTypeId']},
+            'revisions': build.get('revisions') or {},
+            'properties': {
+                'property': [
+                    {'name': _INIT_PARAMETER.format(name), 'value': 'true'}
+                    for name in cleanups
+                ]
+            },
+        }
+        if 'branchName' in build:
+            body['branchName'] = build['branchName']
+        queued = json.loads(
+            self._cli(
+                'api',
+                '--raw',
+                '-X',
+                'POST',
+                '-H',
+                'Content-Type: application/json',
+                '-H',
+                'Accept: application/json',
+                '--input',
+                '-',
+                '/app/rest/buildQueue',
+                write=True,
+                stdin=json.dumps(body),
+            )
+        )
+        return (
+            f'Queued {build["buildTypeId"]} again with '
+            f'{" and ".join(cleanups)}: {queued.get("webUrl", "")}'
+        )

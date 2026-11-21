@@ -1,5 +1,5 @@
 diff --git a/third_party/polymer/v3_0/BUILD.gn b/third_party/polymer/v3_0/BUILD.gn
-index 7defa0ff4496a6b0185bf80efb3b78fb389f993e..b64bccce3c30620191e7b8acbc9e49fa5091532a 100644
+index 2ad70879d716fd5d4b9ef58e5f424d14700643a1..fee0e073f467d6e8e105ca111918e6920bbe8f15 100644
 --- a/third_party/polymer/v3_0/BUILD.gn
 +++ b/third_party/polymer/v3_0/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,16 +10,34 @@ index 7defa0ff4496a6b0185bf80efb3b78fb389f993e..b64bccce3c30620191e7b8acbc9e49fa
  import("//chrome/common/features.gni")
  import("//tools/typescript/ts_library.gni")
  import("//ui/webui/resources/tools/generate_code_cache.gni")
-@@ -18,7 +19,7 @@ js_files = [
-   "iron-scroll-target-behavior/iron-scroll-target-behavior.js",
- ]
+@@ -11,7 +12,7 @@ import("//ui/webui/webui_features.gni")
+ 
+ assert(!is_android && !is_ios)
  
 -if (is_chromeos) {
 +if (!is_android) {
-   js_files += [
+   js_files = [
      "iron-a11y-announcer/iron-a11y-announcer.js",
      "iron-a11y-keys/iron-a11y-keys.js",
-@@ -132,8 +133,9 @@ ts_library("library") {
+@@ -61,7 +62,7 @@ if (is_chromeos) {
+   ]
+ }
+ 
+-if (optimize_webui && is_chromeos) {
++if (optimize_webui && !is_android) {
+   minify_js("build_min_js") {
+     in_files = js_files
+     in_folder = "./components-chromium/"
+@@ -75,7 +76,7 @@ generate_grd("build_grdp") {
+   input_files = [ "polymer/polymer_bundled.min.js" ]
+   input_files_base_dir = rebase_path("./components-chromium/", "//")
+ 
+-  if (is_chromeos) {
++  if (!is_android) {
+     if (optimize_webui) {
+       deps = [ ":build_min_js" ]
+       manifest_files = filter_include(get_target_outputs(":build_min_js"),
+@@ -127,8 +128,9 @@ ts_library("library") {
      "//chrome/test/data/webui/settings:build_ts",
      "//ui/webui/resources/cr_elements:build_ts",
    ]
@@ -30,7 +48,7 @@ index 7defa0ff4496a6b0185bf80efb3b78fb389f993e..b64bccce3c30620191e7b8acbc9e49fa
      visibility += [
        "//ash/webui/*",
        "//chrome/browser/resources/ash/*",
-@@ -204,7 +206,7 @@ ts_library("library") {
+@@ -194,7 +196,7 @@ ts_library("library") {
      "components-chromium/polymer/polymer-legacy.d.ts",
    ]
  

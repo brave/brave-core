@@ -21,8 +21,15 @@
 -GeicEnablingTest.DefaultState
 
 # Brave doesn't ship Glic: `GlicGlobalEnabling::IsEnabledByGlobalCriteria()`
-# always fails, so these tests, which expect Glic enabled once `kGlic` is, fail.
+# always fails, so these tests, which expect Glic enabled once `kGlic` is, or
+# invoke it from Skills, fail.
 -*Glic*
+-SkillsUiTabControllerV2Test.SendPrompt_*Conversation*
+
+# These tests fail because we disable the kPersonalContext feature, which
+# prevents PersonalContextService from being created, and LaunchpadService
+# depends on it.
+-LaunchpadServiceFactoryTest.CreatesServiceWithFlagEnabled
 
 # These tests won't work without TPM hardware
 -TPMMetricsProviderTest.GetMetricsFullName
@@ -30,6 +37,7 @@
 
 # These tests fail because of the following CHECK in identity_test_utils.cc:
 # identity_manager->AreRefreshTokensLoaded()
+-ActionAppMenuManagerTest.OtherDeviceTabsSubmenu*
 -All/AppMenuModelSigninPromoTest.SignedIn/*
 -All/CanOfferSigninWithSigninToSyncFeatureTest.*
 -All/ContextualCueingHelperResponseCodeTest.Committed404Page/*
@@ -58,6 +66,7 @@
 -SigninUiUtilTest.*
 -SkillsUiTabController*Test.*_CallsInvoke*
 -SkillsUiTabController*Test.InvokeSkill_*
+-SkillsUiTabController*Test.ShowDialog_*
 -TabStripActionContainerActivityHubTest.*
 -TabStripActionContainerTest.Glic*
 -TabStripActionContainerTest.SeparatorVisibilityFollowsGlicButton
@@ -124,6 +133,10 @@
 # prepopulated search engines
 -TemplateURLServiceTest.TemplateURLCountsOnStartupHistogram
 
+# This test fails because the default search engine is Brave instead of Google,
+# so Context Hub builds no search URLs for its references.
+-ContextHubServiceTest.GenerateFirstPartyAutoTodos_SearchQueryReferences
+
 # These tests crash because pinned_toolbar_actions_container_ in
 # BraveToolbarView is set to nullptr
 -PinnedToolbarActionsContainerTest.*
@@ -176,17 +189,20 @@
 -AIWriterTest.*
 -AIWriterWithFeatureConfigTest.*
 -ActorSitePolicyTest.*
+-All/AISummarizerSpeedPreferenceParamsTest.*/*
 -All/ChangePasswordFormFinderTest.*/*
 -All/IndigoPageActionControllerGeicTest.*/*
 -All/IndigoPageActionControllerTest.*/*
+-All/PasswordChangeDelegateImplTest.*
 -ChangePasswordFormFinderTest.*
 -ChromeComposeClientTest.*
 -ComposeEnablingTest.*
 -ComposePopupAutofillDriverTest.*
 -ContentAnnotatorServiceFactoryTest.CreatesServiceWithFlagEnabled
 -ContentAnnotatorTabHelperTest.PropagatesLanguageEvent
+-ContextHubPageHandlerFaviconColorTest.*
 -ContextHubPageHandlerTest.*
--ContextHubPageHandlerTopicsExportTest.GenerateTopicsFeedbackBundle
+-ContextHubPageHandlerTopicsExportTest.*
 -ContextHubServiceFactoryTest.CreatesDatabaseStorageWhenMemoryBanksDisabled
 -ContextHubServiceFactoryTest.CreatesServiceWithDatabaseMemoryBankWhenFlagEnabled
 -ContextHubServiceFactoryTest.CreatesServiceWithFlagEnabled
@@ -203,6 +219,7 @@
 -DictationPageEligibilityTest.NoHintStatus
 -DictationPageEligibilityTest.RegistersOptimizationTypeOnInit
 -DictationPageEligibilityTest.SkipsRegistrationWhileDisabledByPolicy
+-DictationPageEligibilityTest.WebUIUrlAllowsPageContext
 -DigitalIdentityLowRiskOriginsTest.*
 -ExecutionEngineUrlGatingTest.AllowIfDecisionUnknown
 -ExecutionEngineUrlGatingTest.AllowIfNotBlocked
@@ -225,17 +242,33 @@
 -LoginStateCheckerTest.*
 -ModelQualityLogsUploaderTest.TotalFlowTimeIsRecorded
 -NotificationContentDetectionServiceFactoryTest.DisabledForAndroidArmAndLowEndDevices
--PasswordChangeDelegateImplTest.*
 -PersistentNotificationHandlerWithNotificationContentDetectionAndLoggingTest.ReportNotificationAsSafe
 -PersistentNotificationHandlerWithNotificationContentDetectionAndLoggingTest.ReportUnwarnedNotificationAsSpam
 -PersistentNotificationHandlerWithNotificationContentDetectionAndLoggingTest.ReportWarnedNotificationAsSpam
 -QuickAnswersToolTest.*
+-ReadAloudServiceMediaSessionTest.*
+-ReadAloudServiceTest.*
 -TtcMesClientTest.DiscardsAudioChunkWithPartialTrailingSample
 -TtcMesClientTest.ForwardsEmptyAudioChunk
 -TtcMesClientTest.ForwardsServerError
 -TtcMesClientTest.ForwardsWellFormedAudioChunkAsSamples
 -TtcMesClientTest.ReportsOutOfRangeServerErrorAsUnknown
+-VoicePreviewControllerTest.*
 -WallpaperSearchHandlerTest.*
+
+# These tests fail because we disable kOptimizationGuideModelExecution, so
+# ModelSubscriber::CanCreateSession() always reports the on-device model as
+# unavailable.
+-ContextHubServiceEmbeddingsTest.DeleteEntries_DropsInFlightImageCaptionJob
+-ContextHubServiceEmbeddingsTest.SaveImage_EmptyMetadataWithOnDeviceCaption_StoresCaptionPassageEmbedding
+-ContextHubServiceEmbeddingsTest.SaveImage_ModelBecomesPendingAssetsDuringFetch_FallsBackWithoutBlockingQueue
+-ContextHubServiceEmbeddingsTest.SaveImage_WithOnDeviceCaption_StoresCombinedPassageEmbedding
+-ContextHubServiceEmbeddingsTest.UpdateImageAnnotations_DuringImageCaptionJob_DropsStaleCaptionResult
+-ImageCaptionJobTest.*
+
+# This test fails because we disable blink::features::kTranslationAPI, and it
+# asserts that the feature is enabled by default.
+-TranslationManagerImplBindingTest.BindingNotAllowedWhenFeatureUsesDefault
 
 # These tests fail because we don't use upstream's material colors.
 -MaterialNewTabPageColorMixerTest.*
@@ -245,8 +278,9 @@
 # returns true whenever ThemeService::GetIsBaseline() is true (we replace the
 # baseline palette with grayscale), so key.user_color_source resolves to
 # kGrayscale instead of the kBaseline the tests expect for the non-system,
-# non-device-theme cases, and DevTools' userColorSource is "baseline-grayscale"
-# instead of "baseline-default".
+# non-device-theme cases, DevTools' userColorSource is "baseline-grayscale"
+# instead of "baseline-default", and the theme source tests' assertion that the
+# baseline theme isn't grayscale fails.
 -ColorProviderTest.SystemThemeUsesNativeUserColor/Dark
 -ColorProviderTest.SystemThemeUsesNativeUserColor/DarkCacheThemePrefs
 -ColorProviderTest.SystemThemeUsesNativeUserColor/DarkHighContrast
@@ -265,6 +299,8 @@
 -DevToolsUIBindingsThemeTest.OffTheRecordBindingsNotifyOriginalProfileThemeChanges
 -DevToolsUIBindingsThemeTest.OnThemeChangedDirectCallSendsSource
 -DevToolsUIBindingsThemeTest.ThemeServiceTransitionsNotifyColorThemeChanged
+-ThemeColorsSourceManagerTest.PopulateLocalResourceLoaderConfig_BaselineAndGrayscaleOmitUserColorSource
+-WebUISourcesTest.ThemeSourceServesColorsCssAcrossSchemesAndThemes
 
 # These tests fail because we disable kFirstPartySets.
 -DefaultFirstPartySetsPolicyServiceTest.*
@@ -471,9 +507,9 @@
 -All/ClientSideDetectionHostOnlyESBTest.TestPreClassificationCheckOnlyESBClassification/*
 -All/ClientSideDetectionHostSkipImageClassificationScoringTest.*/*
 -All/ClientSideDetectionServiceTest.*/*
--All/LastDownloadFinderTest.AddProfileAfterStarting/1
--All/LastDownloadFinderTest.NonBinaryOnly/1
--All/LastDownloadFinderTest.SimpleEndToEnd/1
+-LastDownloadFinderTest.AddProfileAfterStarting
+-LastDownloadFinderTest.NonBinaryOnly
+-LastDownloadFinderTest.SimpleEndToEnd
 -All/SiteFamiliarityUtilsJsOptimizerParameterizedTest.DefaultBehavior/EsbFeatureEnabled_EsbUser
 -AntiVirusMetricsProviderTest.CallAsyncInit*/*
 -BundledSettingsMetricsProviderUnitTest.EnhancedBundle_SafeBrowsingMetrics
@@ -484,6 +520,16 @@
 -ChromePingManagerFactoryTest.ShouldFetchAccessTokenForReport_Yes
 -ChromePingManagerFactoryTest.ShouldSendPersistedReport_Yes
 -ChromeTailoredSecurityServiceTest.*
+-ClientSideDetectionHostCopyFromSurfaceTest.EmbeddingCaptureSupersedesParkedClassification
+-ClientSideDetectionHostCopyFromSurfaceTest.FailuresUseUpgradedRequestTypeForEnhancedProtection
+-ClientSideDetectionHostCopyFromSurfaceTest.HigherTierRequestSupersedesParkedImageEmbeddingCapture
+-ClientSideDetectionHostCopyFromSurfaceTest.LowerTierTriggerBlockedWhileEmbeddingCapturePending
+-ClientSideDetectionHostCopyFromSurfaceTest.NewRequestCancelsPendingClassification
+-ClientSideDetectionHostCopyFromSurfaceTest.NewRequestCancelsRunningClassifier
+-ClientSideDetectionHostCopyFromSurfaceTest.PhishyClassificationReusesCaptureForImageEmbedding
+-ClientSideDetectionHostCopyFromSurfaceTest.RenderProcessGoneResetsBrowserSideClassificationState
+-ClientSideDetectionHostCopyFromSurfaceTest.SkippedClassificationCapturesForImageEmbedding
+-ClientSideDetectionHostCopyFromSurfaceTest.SkippedScoringPreemptsRunningClassifier
 -ClientSideDetectionHostCreditCardFormTest.*
 -ClientSideDetectionHostKeyboardLockUniformImageDelayTest.*
 -ClientSideDetectionHostNewObserversForceRequestTest.*
@@ -501,6 +547,7 @@
 -EnhancedProtectionDownloadTest.*
 -ExtensionDataCollectionTest.*
 -ExtensionTelemetryServiceIsolatedModeTest.IsNeverEnabledForESB
+-ExtensionTelemetryServiceIsolatedModeTest.KeepsParentProfilePersistedReports
 -ExternalAppRedirectCheckingTest.ShouldReportExternalAppRedirect
 -GeminiAntiscamProtectionServiceFactoryTest.*
 -GeminiAntiscamProtectionServiceTest.*
@@ -519,11 +566,13 @@
 -PhishyInteractionTrackerTest.CheckPhishyUserInteractionClientReport
 -SafeBrowsingPrefChangeHandlerTest.ToastSuppressedForTailoredSecurityChange
 -SafeBrowsingResultTest.GetState_EnabledEnhanced
+-SafeBrowsingServiceAntiPhishingTelemetryTest.SendPhishyInteractionsReport_Success
 -SafeBrowsingServiceEnhancedSecurityBundleMigrationTest.*
 -SafeBrowsingServiceTest.TestMinAllowedTimeForReferrerChains
 -SafeBrowsingServiceTest.TestMinAllowedTimeForReferrerChains_EsbEnabledOnStartup
 -SafeBrowsingServiceTest.WhenUserIsInEPNormallyReturnsFalse
 -SafetyHubHandlerTest.HandleGetSafeBrowsingCardData_EnabledEnhanced
+-SendNotificationsAcceptedTest.SendReportForAllowlistedURL
 -SiteFamiliarityProcessSelectionDeferringConditionTest.FamiliarityHeuristic_EsbConfigurable*
 -SiteFamiliarityUtilsJsOptimizerTest.IsV8OptimizerBlockingDryRun
 -SuspiciousSiteControllerDesktopTest.*
@@ -532,10 +581,15 @@
 -ContextualTasksUiTest.AccountInfo_WebSignedInWithFullName
 -ContextualTasksUiTest.GetContextualTasksLoadTimeData_IsSignedInReflectsCookieAndBrowserState
 -ContextualTasksUiTest.SignedInAccountCount_MultipleWebAccounts
+-NewTabPageUtilTest.RecordsHasCredentialsWithCookieAccount
 -SupervisedUserGoogleAuthNavigationThrottleTest.NavigationForPendingSignedInSupervisedUsers
 -SupervisedUserGoogleAuthNavigationThrottleTest.NavigationForPendingSignedInSupervisedUsersAllowsYouTubeInfrastructureInSubframes
 -SupervisedUserGoogleAuthNavigationThrottleTest.NavigationForValidSignedinSupervisedUsers
 -SupervisedUserURLFilterExtensionsTest.ChromeWebstoreURLsAreAlwaysAllowed
+
+# This test fails because we give off-the-record profiles their own
+# IdentityManager.
+-NewTabPageUtilTest.NullIdentityManagerHandledSafely
 
 # These tests dcheck because we modify the download bubble behavior with regards
 # to dangerous downloads.
@@ -562,9 +616,12 @@
 -ChangePasswordFormFillingSubmissionHelperTest.*
 -ChromeHintsManagerFetchingTest.HintsFetched_*
 -FindsTabHelperTest.TestSRPBackNavigationThresholdMet
--PasswordChangeDelegateImplTest.MetricsReportedFlowCanceledDuringSignInCheck
--PasswordChangeDelegateImplTest.PasswordChangeFormNotFound
 -PasswordChangeSubmissionVerifierTest.*
+
+# This test fails because we disable
+# password_change::features::kPasswordChangeWithPrivateInferenceLoginCheck,
+# without which the automated password change pref is ignored.
+-ChromePasswordChangeServiceTest.PasswordChangeDisabledByUserPref
 
 # This test fails because we remove description and 3p cookies toggle from the
 # Page Info cookies view.
@@ -633,6 +690,7 @@
 -StorageAccessGrantPermissionContextAPIWithFirstPartySetsFeatureDisabledTest.*
 -StorageAccessGrantPermissionContextAPIWithFirstPartySetsTest.ImplicitGrant_AutograntedWithinFPS*
 -StorageAccessGrantPermissionContextAPIWithImplicitGrantsTest.*
+-StorageAccessGrantPermissionContextPrivateInsightsTest.*
 -StorageAccessGrantPermissionContextTest.*
 
 # This test fails because our badge doesn't match the upstream badge
@@ -640,7 +698,7 @@
 
 # These tests time out because the CreateProfile method calls
 # mock_time_task_runner_->FastForwardUntilNoTasksRemain() which never returns.
--All/IncidentReportingServiceTest.*
+-IncidentReportingServiceTest.*
 
 # This test times out because TaskEnvironment::FastForwardBy never returns.
 -GlicActivityListBubbleControllerOsNotificationTest.ShowBubble_InactiveBrowserWindow_DoesNotShowBubble
@@ -808,6 +866,8 @@
 -WebRtcLogUploaderTest.*
 -WebRtcLoggingControllerTest.ManagedProfileWithUnsetPolicy
 -WebRtcLoggingControllerTest.UnmanagedProfileWithUnsetPolicy
+-WebRtcLoggingControllerTest.UploadLog_NoLocalCopyDoesNotTouchLogList
+-WebRtcLoggingControllerTest.UploadLog_ReportIdValidationAndMaxLength
 
 # The following tests use Chromium's list of "starter pack engines", which
 # includes entries not supported by Brave (i.e. "@gemini").
@@ -927,8 +987,7 @@
 -OmniboxEditModelPopupTest.AiModeButtonClick*
 -OmniboxEditModelPopupTest.AimPopup*
 -OmniboxPopupHandlerTest.*
--OmniboxPopupViewFullWebUITest.BlurOmniboxBlursInOrderAndCloses
--OmniboxPopupViewFullWebUITest.BlurOmniboxKeepsPopupOpenForDraft
+-OmniboxPopupViewFullWebUITest.*
 -SecurityChipStateHelperTest.ExecutePasteAndGoUsesClientPageClassification
 -SmartTabSharingTest.QueryAutocomplete_*
 -WebuiOmniboxHandlerTabScopingTest.AddTabContext_ContextMenuDoesNotSetInvocationSource
@@ -986,6 +1045,13 @@
 # the icon is shown, which these tests don't expect.
 -ContentSettingImageModelTest.SensorAccessPermissionsChanged
 -ContentSettingImageModelTest.SensorAccessed
+
+# These tests fail because we block motion sensors by default
+# (brave/brave-browser#4789), so the default SENSORS setting is never ALLOW or
+# ASK.
+-HostContentSettingsMapTest.SensorsAskByDefault
+-HostContentSettingsMapTest.SensorsAskByDefaultRequiresAllowAskBlockPermissionModel
+-HostContentSettingsMapTest.SensorsDefaultSettingIsAllow
 
 # This test crashes because we disable blink::features::kFencedFrames.
 # AppendFencedFrame() still constructs a fenced frame via test-only APIs, but
@@ -1050,6 +1116,17 @@
 # match.
 -ActionAppMenuTest.HeaderAndMenuItemBorderLayout
 
+# These tests fail because they expect Chrome's app menu search placeholder,
+# which reads "Search Brave features and actions" with Brave's strings.
+-ActionAppMenuWithSearchTest.SearchBarEnabledWithFeatureFlag
+-AppMenuSearchBarViewTest.InitialProperties
+
+# This test fails because Brave's page actions, added by the plasters in
+# rewrite/chrome/browser/ui/page_action/action_ids.h.yaml and
+# page_action_properties_provider.cc.yaml, have no PageActionType variant in
+# upstream's page/histograms.xml.
+-PageActionPropertiesProviderTest.HistogramNamesMatchVariants
+
 # These tests expect a LoadingPredictor, which never exists now that
 # IsLoadingPredictorEnabled() always returns false.
 -All/NoStatePrefetchFallbackToPreconnectTest.LinkRelPrerender/*
@@ -1085,15 +1162,23 @@
 # this harness doesn't create.
 -ChromeWebContentsViewDelegateViewsClipboardTest.*
 
+# These tests expect search suggestions on by default, but we default
+# prefs::kSearchSuggestEnabled to false, so no suggest request is sent.
+-All/SearchProviderDebouncingTest.*/*
+
 # These tests fail because they expect "Google Password Manager" to appear in
 # the subtitle, but instead "Brave Password Manager" appears there
+-RemoteActorCredentialSharingActorBrandingTest.PlumbsActorBrandingAndAgentParameters/GeminiDefault
 -RemoteActorCredentialSharingImplTest.SearchOriginPlumbsSearchBrandingAndAgentParameters
 -RemoteActorSelectionDialogControllerTest.Properties*
 -RemoteActorSelectionDialogControllerTest.SetActorNameAndLearnMoreUrlOverrideDefaults
 
 # This test fails because we default omnibox::kAIModeSettings to -1 (AI Mode
 # disallowed), and it asserts the upstream default.
+-RemoteActorCredentialSharingActorBrandingTest.PlumbsActorBrandingAndAgentParameters/SearchDefault
+-RemoteActorCredentialSharingActorBrandingTest.PlumbsActorBrandingAndAgentParameters/SearchWithFinchJsonOverrides
 -RemoteActorCredentialSharingImplTest.SearchManagedProfileWithSparkDisabled_AllowedWhenAimAllowed
+-RemoteActorCredentialSharingPolicyMatrixTest.EnforcesEnterprisePolicy/SearchManagedProfileWithSparkDisabled_AllowedWhenAimAllowed
 
 # These tests fail because of mismatch in location bar height (32 vs 34)
 -OmniboxPopupUITest.FullWebUIOmniboxLayoutHelperStandardMode
@@ -1107,6 +1192,10 @@
 # This test fails because we disable kSegmentationPlatformFeature
 -SegmentationPlatformServiceFactoryTest.TestTipsNotificationsRanker
 
+# This test fails because Brave's GCM driver doesn't start until the user
+# enables GCM, so the InstanceID it expects to reload was never stored.
+-ExtensionGCMAppHandlerTest.RemoveInstanceIDOnExtensionUnload
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.EveryFlagHasMetadata
@@ -1114,7 +1203,7 @@
 -AccessCodeCastSinkServiceFactoryTest.PrefEnabledReturnsValidService
 -ActivityLogTest.LogPrerender
 -All/ChromeLabs*Test.*
--All/ProfileResetterTestForSnapshots.CheckSnapshots*/*
+-ProfileResetterTestForSnapshots.CheckSnapshots
 -All/ProfileResetterTestWithIgnoreSearchProviderOverrides.ResetDefaultSearchEngineNonOrganic/1
 -All/TabStripTest.TabCloseButtonVisibility/*
 -All/WebstorePrivateBeginInstallWithManifest3FrictionDialogTest.*

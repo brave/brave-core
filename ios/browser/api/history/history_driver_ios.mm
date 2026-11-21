@@ -7,14 +7,19 @@
 
 #import <utility>
 
+#import "base/check.h"
 #import "components/browsing_data/core/history_notice_utils.h"
+#import "components/history/core/common/pref_names.h"
+#import "components/prefs/pref_service.h"
 #import "ios/chrome/browser/history/model/history_utils.h"
 
 using history::BrowsingHistoryService;
 
 #pragma mark - HistoryDriverIOS
 
-HistoryDriverIOS::HistoryDriverIOS() = default;
+HistoryDriverIOS::HistoryDriverIOS(PrefService* prefs) : prefs_(prefs) {
+  CHECK(prefs_);
+}
 
 HistoryDriverIOS::~HistoryDriverIOS() = default;
 
@@ -50,7 +55,7 @@ void HistoryDriverIOS::HasOtherFormsOfBrowsingHistory(bool has_other_forms,
 }
 
 bool HistoryDriverIOS::AllowHistoryDeletions() {
-  return true;
+  return prefs_->GetBoolean(prefs::kAllowDeletingBrowserHistory);
 }
 
 bool HistoryDriverIOS::ShouldHideWebHistoryUrl(const GURL& url) {

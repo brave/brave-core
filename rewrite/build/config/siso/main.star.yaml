@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Load the Brave siso config after the upstream ones.'
+    regex:
+      re_pattern: '((?:^load\(.*\n)+)'
+      re_flags: [MULTILINE]
+      replace: |
+        \1load("./brave_siso_config.star", "brave_siso_config")
+
+  - description: |-
+      Let the Brave siso config adjust the step config and handlers.
+
+      It runs last in `init()`, once every upstream handler is registered.
+    add_before_line:
+      line: 'return module('
+      code:
+        '    brave_siso_config.configure(ctx, step_config, filegroups, handlers)'

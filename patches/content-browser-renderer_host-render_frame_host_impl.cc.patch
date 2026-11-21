@@ -1,8 +1,8 @@
 diff --git a/content/browser/renderer_host/render_frame_host_impl.cc b/content/browser/renderer_host/render_frame_host_impl.cc
-index c88b43e50fe7d23bd356ae46855787be50db2bb9..4bd1eb5e7c5f1d357fecd1e71bc6322a804bff91 100644
+index 075e07b513533f78d6f0f1bafb97fc2dec3ba325..6122d43df47ad3ad94401359c65f3419a191e494 100644
 --- a/content/browser/renderer_host/render_frame_host_impl.cc
 +++ b/content/browser/renderer_host/render_frame_host_impl.cc
-@@ -5970,6 +5970,7 @@ net::IsolationInfo RenderFrameHostImpl::ComputeIsolationInfoInternal(
+@@ -5962,6 +5962,7 @@ net::IsolationInfo RenderFrameHostImpl::ComputeIsolationInfoInternal(
      candidate_site_for_cookies = net::SiteForCookies(top_frame_site);
    }
  
@@ -10,7 +10,7 @@ index c88b43e50fe7d23bd356ae46855787be50db2bb9..4bd1eb5e7c5f1d357fecd1e71bc6322a
    std::optional<base::UnguessableToken> nonce =
        ComputeNonce(is_credentialless, fenced_frame_nonce_for_navigation);
    return net::IsolationInfo::Create(
-@@ -5981,6 +5982,7 @@ net::IsolationInfo RenderFrameHostImpl::ComputeIsolationInfoInternal(
+@@ -5973,6 +5974,7 @@ net::IsolationInfo RenderFrameHostImpl::ComputeIsolationInfoInternal(
  std::optional<base::UnguessableToken> RenderFrameHostImpl::ComputeNonce(
      bool is_credentialless,
      std::optional<base::UnguessableToken> fenced_frame_nonce_for_navigation) {
@@ -18,7 +18,7 @@ index c88b43e50fe7d23bd356ae46855787be50db2bb9..4bd1eb5e7c5f1d357fecd1e71bc6322a
    // If it's a credentialless frame tree, use its nonce even if it's within a
    // fenced frame tree to maintain the guarantee that a credentialless frame
    // tree has a unique nonce.
-@@ -11062,6 +11064,7 @@ void RenderFrameHostImpl::CreateNewWindow(
+@@ -11044,6 +11046,7 @@ void RenderFrameHostImpl::CreateNewWindow(
          dom_storage_context, params->session_storage_namespace_id);
    }
  

@@ -84,11 +84,14 @@ constexpr NetworkTrafficAnnotationTag kTorProxyTrafficAnnotation =
         policy_exception_justification: "Not implemented."
       })");
 
-static base::NoDestructor<std::map<ProxyResolutionService*, TorProxyMap>>
-    g_tor_proxy_map;
+std::map<ProxyResolutionService*, TorProxyMap>& GetTorProxyMaps() {
+  static base::NoDestructor<std::map<ProxyResolutionService*, TorProxyMap>>
+      tor_proxy_maps;
+  return *tor_proxy_maps;
+}
 
 TorProxyMap* GetTorProxyMap(ProxyResolutionService* service) {
-  return &(g_tor_proxy_map.get()->operator[](service));
+  return &GetTorProxyMaps()[service];
 }
 
 bool IsTorProxyConfig(const ProxyConfigWithAnnotation& config) {
@@ -97,10 +100,10 @@ bool IsTorProxyConfig(const ProxyConfigWithAnnotation& config) {
   // empty TorProxyMap (all entries have expired)
   // we do this here because the other methods are only called when
   // IsTorProxy is true so the last entry will never be deleted
-  for (auto it = g_tor_proxy_map.get()->cbegin();
-       it != g_tor_proxy_map.get()->cend();) {
+  auto& tor_proxy_maps = GetTorProxyMaps();
+  for (auto it = tor_proxy_maps.cbegin(); it != tor_proxy_maps.cend();) {
     if (it->second.size() == 0) {
-      g_tor_proxy_map->erase(it++);
+      tor_proxy_maps.erase(it++);
     } else {
       ++it;
     }
@@ -235,7 +238,7 @@ void ProxyConfigServiceTor::SetProxyAuthorization(
 // static
 void ProxyConfigServiceTor::ClearProxyAuthorization(
     ProxyResolutionService* service) {
-  g_tor_proxy_map->erase(service);
+  GetTorProxyMaps().erase(service);
 }
 
 void ProxyConfigServiceTor::AddObserver(Observer* observer) {

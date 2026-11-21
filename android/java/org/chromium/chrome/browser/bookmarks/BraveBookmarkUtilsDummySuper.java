@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.bookmarks;
 
 import android.app.Activity;
+import android.view.View;
 
 import org.chromium.base.Callback;
 import org.chromium.build.annotations.NullMarked;
@@ -40,7 +41,8 @@ class BraveBookmarkUtilsDummySuper extends BookmarkUtils {
             boolean fromExplicitTrackUi,
             BookmarkManagerOpener bookmarkManagerOpener,
             PriceDropNotificationManager priceDropNotificationManager,
-            boolean isBookmarkBarVisible) {
+            boolean isBookmarkBarVisible,
+            @Nullable View anchorView) {
         assert false : "This class usage should be removed via bytecode modification!";
     }
 }

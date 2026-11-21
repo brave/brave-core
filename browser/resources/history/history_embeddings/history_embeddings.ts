@@ -81,7 +81,7 @@ export class BraveHistoryEmbeddingsElement extends BraveHistoryEmbeddingsElement
   protected accessor loadingResults_ = false
   private loadingStateMinimumMs_ = LOADING_STATE_MINIMUM_MS
   protected accessor searchResult_: SearchResult | null = null
-  protected accessor searchResultDirty_: boolean = false
+  private accessor searchResultDirty_: boolean = false
   protected accessor webuiRoundedIconsEnabled_: boolean =
     loadTimeData.getBoolean('webuiRoundedIconsEnabled')
   private searchTimestamp_: number = 0

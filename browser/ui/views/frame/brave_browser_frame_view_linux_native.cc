@@ -137,6 +137,11 @@ void BraveBrowserFrameViewLinuxNative::Layout(PassKey) {
       ->UpdateHorizontalPadding();
 }
 
+bool BraveBrowserFrameViewLinuxNative::ShouldShowBraveVerticalTabs() const {
+  return VerticalTabController::From(GetBrowserView()->browser())
+      ->ShouldShowBraveVerticalTabs();
+}
+
 // Unfortunately, BrowserFrameViewLinux(Native) doesn't declare metadata.
 // OpaqueBrowserFrameView is the nearest ancestor.
 BEGIN_METADATA(BraveBrowserFrameViewLinuxNative)

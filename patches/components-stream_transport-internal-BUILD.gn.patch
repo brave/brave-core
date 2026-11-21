@@ -1,0 +1,12 @@
+diff --git a/components/stream_transport/internal/BUILD.gn b/components/stream_transport/internal/BUILD.gn
+index 521cfd6773df264363d9f1c53dbd42755147b507..69eeaeb0603d7df93e64bc21cfbfd38251086291 100644
+--- a/components/stream_transport/internal/BUILD.gn
++++ b/components/stream_transport/internal/BUILD.gn
+@@ -34,6 +34,7 @@ source_set("features") {
+     "//components/stream_transport/internal:*",
+     "//components/stream_transport/internal/upstream_message_client:*",
+   ]
++  visibility += [ "//brave/app:unit_tests" ]
+ }
+ 
+ source_set("probe_payload") {

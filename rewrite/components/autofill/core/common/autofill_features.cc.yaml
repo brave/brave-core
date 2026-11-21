@@ -21,3 +21,26 @@ substitutions:
       replace:
         'BASE_OVERRIDDEN_FEATURE(kAutofillAiWithDataSchema,
         base::FEATURE_DISABLED_BY_DEFAULT);'
+
+  - description: |-
+      Ship kAutofillAmbientAutofill disabled.
+
+      Upstream enables it in the US, where Brave derives the variations country
+      from the locale. It adds a Shopping settings card and the personal
+      context plumbing, which Brave does not offer.
+    regex:
+      re_pattern: 'BASE_FEATURE_WITH_COUNTRY_RESTRICTIONS\(kAutofillAmbientAutofill,\s*base::FEATURE_ENABLED_FOR_COUNTRIES,\s*"us"\);'
+      replace:
+        'BASE_OVERRIDDEN_FEATURE(kAutofillAmbientAutofill,
+        base::FEATURE_DISABLED_BY_DEFAULT);'
+
+  - description: |-
+      Ship kAutofillAmbientAutofillSuppression disabled.
+
+      This feature makes PersonalContextEntityMetadataManagerFactory build the
+      service behind the AUTOFILL_ENTITY_SUPPRESSION sync type.
+    regex:
+      re_pattern: 'BASE_FEATURE_WITH_COUNTRY_RESTRICTIONS\(kAutofillAmbientAutofillSuppression,\s*base::FEATURE_ENABLED_FOR_COUNTRIES,\s*"us"\);'
+      replace:
+        'BASE_OVERRIDDEN_FEATURE(kAutofillAmbientAutofillSuppression,
+        base::FEATURE_DISABLED_BY_DEFAULT);'

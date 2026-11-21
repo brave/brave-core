@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_strip.cc b/chrome/browser/ui/views/tabs/tab_strip.cc
-index 14badf5d9370bfae3fc608b7f5fbfe1d91f82731..cf0e49b224660cc48fcf146dc229f81d60d05c23 100644
+index 098d98ceae77816c79dec0ab6023ff10536652b6..850b08a18d068d9ff0e7f4ae2241db1d9747cb53 100644
 --- a/chrome/browser/ui/views/tabs/tab_strip.cc
 +++ b/chrome/browser/ui/views/tabs/tab_strip.cc
 @@ -123,9 +123,9 @@ ui::mojom::DragEventSource EventSourceFromEvent(const ui::LocatedEvent& event) {
@@ -67,7 +67,7 @@ index 14badf5d9370bfae3fc608b7f5fbfe1d91f82731..cf0e49b224660cc48fcf146dc229f81d
          tab_data.is_pinned ? TabPinned::kPinned : TabPinned::kUnpinned);
      tabs_params.push_back(std::move(param));
    }
-@@ -1573,7 +1585,7 @@ void TabStrip::SetSelection(const ui::ListSelectionModel& new_selection) {
+@@ -1599,7 +1611,7 @@ void TabStrip::SetSelection(const ui::ListSelectionModel& new_selection) {
        const tab_groups::TabGroupId new_group = selected_tab->group().value();
        // If the tab that is about to be selected is in a collapsed group,
        // automatically expand the group.

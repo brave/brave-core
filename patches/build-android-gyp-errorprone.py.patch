@@ -1,5 +1,5 @@
 diff --git a/build/android/gyp/errorprone.py b/build/android/gyp/errorprone.py
-index bfe27498135fc3ee37d966bd7810ec0f8d35a4cd..d30e0cc0a1a7a3e9d21160f157842b714d8b87fe 100755
+index 70e656daa589ff13658b24c4eb2b2017f8aef76d..4361b68f65a50108a214b209aa6d755b0cbbd638 100755
 --- a/build/android/gyp/errorprone.py
 +++ b/build/android/gyp/errorprone.py
 @@ -113,6 +113,8 @@ TESTONLY_ERRORPRONE_WARNINGS = [

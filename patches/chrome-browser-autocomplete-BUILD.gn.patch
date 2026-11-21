@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/autocomplete/BUILD.gn b/chrome/browser/autocomplete/BUILD.gn
-index 82744f193d513f22192820dae0776877ac1105e2..3b229486c5510c9836bcea64e07ed7a22f0f8737 100644
+index 1a41eda8b3b9b5eebfa676d5a81f8664458fda76..03f108c504c195a5e4b5ccef6954d242463fd076 100644
 --- a/chrome/browser/autocomplete/BUILD.gn
 +++ b/chrome/browser/autocomplete/BUILD.gn
 @@ -2,6 +2,7 @@

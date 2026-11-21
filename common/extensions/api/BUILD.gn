@@ -11,7 +11,7 @@ import("//tools/json_schema_compiler/json_schema_api.gni")
 
 json_features("api_features") {
   feature_type = "APIFeature"
-  method_name = "AddBraveAPIFeatures"
+  method_name = "GetBraveAPIFeatures"
   sources = [ "_api_features.json" ]
 
   if (enable_brave_talk) {
@@ -21,13 +21,13 @@ json_features("api_features") {
 
 json_features("manifest_features") {
   feature_type = "ManifestFeature"
-  method_name = "AddBraveManifestFeatures"
+  method_name = "GetBraveManifestFeatures"
   sources = [ "_manifest_features.json" ]
 }
 
 json_features("behavior_features") {
   feature_type = "BehaviorFeature"
-  method_name = "AddBraveBehaviorFeatures"
+  method_name = "GetBraveBehaviorFeatures"
   sources = [ "_behavior_features.json" ]
 }
 

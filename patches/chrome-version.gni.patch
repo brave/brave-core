@@ -1,5 +1,5 @@
 diff --git a/chrome/version.gni b/chrome/version.gni
-index e058a1b0d02e84b5fc97294d2dd957cd6b11f646..2ffea59ea350f4f977537b3195e048139124cad6 100644
+index f84460cf10a9937d7dddab39122566be2bd981fe..33165f888a21df0898619243347465088ac8e47d 100644
 --- a/chrome/version.gni
 +++ b/chrome/version.gni
 @@ -17,6 +17,8 @@
@@ -11,7 +11,7 @@ index e058a1b0d02e84b5fc97294d2dd957cd6b11f646..2ffea59ea350f4f977537b3195e04813
  _version_dictionary_template = "full = \"@MAJOR@.@MINOR@.@BUILD@.@PATCH@\" " +
                                 "major = \"@MAJOR@\" minor = \"@MINOR@\" " +
                                 "build = \"@BUILD@\" patch = \"@PATCH@\" "
-@@ -229,7 +231,7 @@ if (is_mac) {
+@@ -239,7 +241,7 @@ if (is_mac) {
                             "webview_auto_64_32_high_version_code",
                           ])
  

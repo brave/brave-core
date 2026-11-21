@@ -14,6 +14,9 @@ namespace {
 
 network::mojom::URLResponseHeadPtr UseContentLengthFromHeaders(
     network::mojom::URLResponseHeadPtr headers) {
+  if (!headers->headers) {
+    return headers;
+  }
   // GetContentLength() now returns a base::ByteSize, which is always
   // non-negative, so a positive check is all that's needed.
   if (auto content_length = headers->headers->GetContentLength();

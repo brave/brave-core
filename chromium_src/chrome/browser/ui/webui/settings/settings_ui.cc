@@ -15,8 +15,6 @@
 
 #if BUILDFLAG(IS_WIN) && BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/webui/settings/brave_settings_secure_dns_handler.h"
-
-#define SecureDnsHandler BraveSecureDnsHandler
 #endif  // BUILDFLAG(IS_WIN) && BUILDFLAG(ENABLE_BRAVE_VPN)
 
 #define SiteSettingsHandler BraveSiteSettingsHandler
@@ -30,6 +28,3 @@
 #undef SearchEnginesHandler
 #undef ImportDataHandler
 #undef SiteSettingsHandler
-#if BUILDFLAG(IS_WIN) && BUILDFLAG(ENABLE_BRAVE_VPN)
-#undef SecureDnsHandler
-#endif  // BUILDFLAG(IS_WIN) && BUILDFLAG(ENABLE_BRAVE_VPN)

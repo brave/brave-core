@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/tabs/tab_strip_model_observer.h b/chrome/browser/ui/tabs/tab_strip_model_observer.h
-index ae2c93fcc9bd6fd505ae309a752251457cbdaeb4..954833009c283ef7a01b88424eb96688421f4089 100644
+index 072e8f1cc94f648e2aee9c1f18622f7f55994e55..61c266df0869694f29ebc5da48f7e0fbd0631991 100644
 --- a/chrome/browser/ui/tabs/tab_strip_model_observer.h
 +++ b/chrome/browser/ui/tabs/tab_strip_model_observer.h
-@@ -635,6 +635,8 @@ class TabStripModelObserver {
+@@ -652,6 +652,8 @@ class TabStripModelObserver {
    void StoppedObserving(ModelPasskey, TabStripModel* model);
    void ModelDestroyed(ModelPasskey, TabStripModel* model);
  

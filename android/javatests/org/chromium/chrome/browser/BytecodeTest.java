@@ -139,6 +139,7 @@ import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.HomeSurfaceTracker;
+import org.chromium.chrome.browser.tasks.tab_management.TabSwitcherBackPressHandlerManager;
 import org.chromium.chrome.browser.tasks.tab_management.vertical_tabs.VerticalTabsActionDelegate;
 import org.chromium.chrome.browser.theme.BottomUiThemeColorProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
@@ -160,6 +161,7 @@ import org.chromium.chrome.browser.toolbar.top.ToolbarActionModeCallback;
 import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
 import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
 import org.chromium.chrome.browser.toolbar.top.tab_strip.TabStripTransitionCoordinator.TabStripTransitionHandler;
+import org.chromium.chrome.browser.ttc.TtcEntryPoint;
 import org.chromium.chrome.browser.ui.actions.ActionRegistry;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuBlocker;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
@@ -696,7 +698,8 @@ public class BytecodeTest {
                         boolean.class,
                         BookmarkManagerOpener.class,
                         PriceDropNotificationManager.class,
-                        boolean.class));
+                        boolean.class,
+                        View.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/components/permissions/PermissionDialogModelFactory",
@@ -1581,6 +1584,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/tasks/tab_management/TabGroupUiCoordinator",
                         "org/chromium/chrome/browser/tasks/tab_management/BraveTabGroupUiCoordinator", // presubmit: ignore-long-line
                         Activity.class,
+                        WindowAndroid.class,
                         ViewGroup.class,
                         BrowserControlsStateProvider.class,
                         ScrimManager.class,
@@ -2039,6 +2043,7 @@ public class BytecodeTest {
                         SettableMonotonicObservableSupplier.class,
                         TopInsetProvider.class,
                         OneshotSupplierImpl.class,
+                        OneshotSupplierImpl.class,
                         int.class,
                         Supplier.class,
                         AppMenuDelegate.class,
@@ -2050,6 +2055,7 @@ public class BytecodeTest {
                         Callback.class,
                         boolean.class,
                         BackPressManager.class,
+                        TabSwitcherBackPressHandlerManager.class,
                         Bundle.class,
                         PersistableBundle.class,
                         MultiInstanceManager.class,
@@ -2383,7 +2389,8 @@ public class BytecodeTest {
                         Supplier.class,
                         BrowserControlsVisibilityManager.class,
                         NonNullObservableSupplier.class,
-                        NonNullObservableSupplier.class));
+                        NonNullObservableSupplier.class,
+                        TtcEntryPoint.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/SwipeRefreshHandler",

@@ -169,6 +169,23 @@ TEST_F(PageContentBlocksTest, ConvertParagraphNode) {
   EXPECT_CONTAINS(content, "</paragraph>");
 }
 
+TEST_F(PageContentBlocksTest, ConvertLabelNode) {
+  auto label =
+      ContentNodeBuilder()
+          .AsLabel()
+          .WithChildren({ContentNodeBuilder().AsText("Email").Build(),
+                         ContentNodeBuilder().AsText("address").Build()})
+          .Build();
+  auto page = CreatePageWithContent(label);
+  auto result = ConvertAnnotatedPageContentToBlocks(page);
+  auto content = GetContentText(result);
+
+  EXPECT_CONTAINS(content, "<label>");
+  EXPECT_CONTAINS(content, "<text>Email</text>");
+  EXPECT_CONTAINS(content, "<text>address</text>");
+  EXPECT_CONTAINS(content, "</label>");
+}
+
 TEST_F(PageContentBlocksTest, ConvertAnchorNode) {
   auto anchor = ContentNodeBuilder()
                     .AsAnchor("https://example.com", "Click here")

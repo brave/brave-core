@@ -15,10 +15,7 @@ import {
   PrefService,
   SyncBrowserProxyImpl,
 } from 'chrome://password-manager/password_manager.js'
-import type {
-  PrefToggleButtonElement,
-  SettingsSectionElement,
-} from 'chrome://password-manager/password_manager.js'
+import type {PrefToggleButtonElement} from 'chrome://password-manager/password_manager.js'
 import {assertEquals, assertFalse, assertTrue} from 'chrome://webui-test/chai_assert.js'
 import {flushTasks} from 'chrome://webui-test/polymer_test_util.js'
 import {TestOpenWindowProxy} from 'chrome://webui-test/test_open_window_proxy.js'
@@ -30,6 +27,8 @@ import {TestPasswordManagerProxy} from './test_password_manager_proxy.js'
 import {TestPrefsBrowserProxy} from './test_prefs_browser_proxy.js'
 import {TestSyncBrowserProxy} from './test_sync_browser_proxy.js'
 import {makePasswordManagerPrefs} from './test_util.js'
+
+type SettingsSectionElement = HTMLElementTagNameMap['settings-section']
 
 const FILL_ENABLED_PREF = 'brave.password_manager.fill_enabled'
 

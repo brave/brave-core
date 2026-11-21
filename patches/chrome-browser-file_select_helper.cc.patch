@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/file_select_helper.cc b/chrome/browser/file_select_helper.cc
-index a4371ce077f7ad5f1d7b28d03720e22e27ab7983..11121e6bdb0d6bf838cd86ba38c8bbd14f597f6e 100644
+index 64b6ee15772e13db046688ba26d12a2012a57d4d..f0348239592b3f924ebf599f80da3a794aeaf79f 100644
 --- a/chrome/browser/file_select_helper.cc
 +++ b/chrome/browser/file_select_helper.cc
 @@ -538,6 +538,11 @@ void FileSelectHelper::ContentAnalysisCompletionCallback(

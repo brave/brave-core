@@ -12,4 +12,7 @@
   <message name="IDS_ACTION_SYNONYMS_OPEN_GUEST_PROFILE" is_accessibility_with_no_ui="true" desc="Comma-separated list of search terms (other than the title 'Open Guest profile') that users might type in the Brave menu search bar to find the 'Open Guest profile' action. Do not translate the list 1:1; list the terms users typing in the target language might search for, delimited by commas.">
     private, anonymous, temporary, share, computer, friend
   </message>
+  <message name="IDS_ACTION_SYNONYMS_NEW_INCOGNITO_WINDOW" is_accessibility_with_no_ui="true" desc="Comma-separated list of search terms (other than the title 'New Private window') that users might type in the Brave menu search bar to find the 'New Private window' action, which opens a private browsing window that does not save history, cookies, or site data. Do not translate the list 1:1; list the terms users typing in the target language might search for, delimited by commas.">
+    private, anonymous, stealth, secret, safety, tracking protection, cookies, clear, cache, open private window
+  </message>
   </grit-part>

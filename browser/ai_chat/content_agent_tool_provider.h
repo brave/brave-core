@@ -18,6 +18,7 @@
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/actor/actor_keyed_service.h"
 #include "chrome/browser/actor/actor_task.h"
+#include "chrome/browser/actor/tools/tool_result.h"
 #include "components/optimization_guide/content/browser/page_content_proto_provider.h"
 
 namespace actor::ui {
@@ -87,7 +88,7 @@ class ContentAgentToolProvider : public ToolProvider,
                       actor::mojom::ActionResultPtr result);
   void OnActionsFinished(
       Tool::UseToolCallback callback,
-      std::vector<actor::ActionResultWithLatencyInfo> action_results,
+      std::vector<actor::ToolResultWithLatencyInfo> action_results,
       actor::TabObservationStrategy observation_strategy);
   void ReceivedAnnotatedPageContent(
       Tool::UseToolCallback callback,

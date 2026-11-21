@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Match the Python flags Brave's `script_executable` passes
+
+      Brave's `//.gn` drops `-E` so that GN actions read `PYTHONPATH`, and the
+      Siso rules built on this prefix must match those actions' commands.
+    regex:
+      pattern:
+        '__python_bin = "../../third_party/cpython3/host/bin/python3 -ES"'
+      replace: '__python_bin = "../../third_party/cpython3/host/bin/python3 -S"'

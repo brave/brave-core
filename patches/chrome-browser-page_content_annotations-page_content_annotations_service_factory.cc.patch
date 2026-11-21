@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/page_content_annotations/page_content_annotations_service_factory.cc b/chrome/browser/page_content_annotations/page_content_annotations_service_factory.cc
+index 41ca1d5c347af2b3009b2523003b86f84e94de11..a490bb63b185fbd308d0c7cf8acde9896a29cd92 100644
+--- a/chrome/browser/page_content_annotations/page_content_annotations_service_factory.cc
++++ b/chrome/browser/page_content_annotations/page_content_annotations_service_factory.cc
+@@ -75,7 +75,7 @@ bool ShouldEnablePageContentAnnotations(Profile* profile) {
+     return false;
+   }
+   return page_content_annotations::features::
+-      ShouldEnablePageContentAnnotations();
++      ShouldEnablePageContentAnnotations_Brave();
+ }
+ 
+ }  // namespace

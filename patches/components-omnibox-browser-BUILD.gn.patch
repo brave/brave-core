@@ -1,8 +1,8 @@
 diff --git a/components/omnibox/browser/BUILD.gn b/components/omnibox/browser/BUILD.gn
-index e47e1694fda0eb961ddb64079aa2d98a12a85133..8e453a60660cb018e2e4496a4a358ab0d8474cbc 100644
+index 10db97e32193d040caaf61c513d74ed685e48ca3..8b3917ef3c481431428fe5ab43f2e655f89819e1 100644
 --- a/components/omnibox/browser/BUILD.gn
 +++ b/components/omnibox/browser/BUILD.gn
-@@ -382,6 +382,7 @@ static_library("browser") {
+@@ -384,6 +384,7 @@ static_library("browser") {
      "zero_suggest_verbatim_match_provider.cc",
      "zero_suggest_verbatim_match_provider.h",
    ]
@@ -10,7 +10,7 @@ index e47e1694fda0eb961ddb64079aa2d98a12a85133..8e453a60660cb018e2e4496a4a358ab0
  
    public_deps = [
      ":aim_eligibility_service_features",
-@@ -409,6 +410,7 @@ static_library("browser") {
+@@ -411,6 +412,7 @@ static_library("browser") {
      "//third_party/tflite_support:tflite_support_proto",
      "//url",
    ]
@@ -18,9 +18,9 @@ index e47e1694fda0eb961ddb64079aa2d98a12a85133..8e453a60660cb018e2e4496a4a358ab0
  
    deps = [
      "//build:android_buildflags",
-@@ -455,6 +457,7 @@ static_library("browser") {
-     "//ui/base",
+@@ -458,6 +460,7 @@ static_library("browser") {
      "//ui/gfx",
+     "//ui/webui:buildflags",
    ]
 +  deps += brave_components_omnibox_browser_deps
  

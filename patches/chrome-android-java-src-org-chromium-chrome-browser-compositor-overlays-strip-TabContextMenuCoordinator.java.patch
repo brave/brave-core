@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/compositor/overlays/strip/TabContextMenuCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/compositor/overlays/strip/TabContextMenuCoordinator.java
-index 8e32367d5ec265a3d8b5415586e6de58ad3bd190..99e4eac762d7eeda2f290bf16bd4221e1d758b76 100644
+index 1ea08f921af7cc79f2547fecc27e071edd66dc5b..b85032c10403a4857522575f8f20ff79131a9b5c 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/compositor/overlays/strip/TabContextMenuCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/compositor/overlays/strip/TabContextMenuCoordinator.java
 @@ -187,7 +187,7 @@ public class TabContextMenuCoordinator extends TabStripReorderingHelper<AnchorIn

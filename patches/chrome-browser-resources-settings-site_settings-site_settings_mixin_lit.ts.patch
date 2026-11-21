@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/settings/site_settings/site_settings_mixin_lit.ts b/chrome/browser/resources/settings/site_settings/site_settings_mixin_lit.ts
+index 974b0d62a604490c500159a7b84abc141251a99a..46a9055f2c0eb161bb28996cb5c9494a9cc1fcba 100644
+--- a/chrome/browser/resources/settings/site_settings/site_settings_mixin_lit.ts
++++ b/chrome/browser/resources/settings/site_settings/site_settings_mixin_lit.ts
+@@ -130,6 +130,7 @@ export const SiteSettingsMixinLit = dedupingMixin(
+             description: exception.description,
+             enforcement: enforcement,
+             controlledBy: controlledBy,
++            braveCookieType: exception.braveCookieType,
+           };
+         }
+       }

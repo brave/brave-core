@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.ts b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
-index 9a9f2cae6f969f3f2dc67ff7b1babde0d6e4f9ec..9a47ac053ddb5c36710347112db097095cb3c852 100644
+index 2a8d4d22c4292f7df12f26c607e006722e1c8bfd..9fd91cb8dd7b44ed7b764a4498ec7a59f300966f 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.ts
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
-@@ -59,8 +59,10 @@ import {getHtml} from './personalization_options.html.js';
+@@ -59,8 +59,10 @@ import {PrivacyPageBrowserProxyImpl} from './privacy_page_browser_proxy.js';
  
  export interface SettingsPersonalizationOptionsElement {
    $: {
@@ -23,15 +23,41 @@ index 9a9f2cae6f969f3f2dc67ff7b1babde0d6e4f9ec..9a47ac053ddb5c36710347112db09709
        metricsReporting_: {type: Object},
  
        showRestart_: {type: Boolean},
-@@ -123,7 +125,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -123,27 +125,27 @@ export class SettingsPersonalizationOptionsElement extends
  
    accessor syncStatus: SyncStatus = {statusAction: StatusAction.NO_ACTION};
  
 -  // <if expr="_google_chrome and not is_chromeos">
+-  protected accessor metricsReporting_: MetricsReporting|undefined;
+-  protected accessor showRestart_: boolean = false;
 +  // <if expr="not is_chromeos">
-   protected accessor metricsReporting_: MetricsReporting|undefined;
-   protected accessor showRestart_: boolean = false;
++  private accessor metricsReporting_: MetricsReporting|undefined;
++  private accessor showRestart_: boolean = false;
    // </if>
+ 
+   protected accessor showSearchAggregatorSuggest_: boolean =
+       loadTimeData.getBoolean('showSearchAggregatorSuggest');
+ 
+-  protected accessor showSignoutDialog_: boolean = false;
++  private accessor showSignoutDialog_: boolean = false;
+   // <if expr="_google_chrome">
+   protected accessor shouldUseMetricsConsentRestructure_: boolean =
+       loadTimeData.getBoolean('shouldUseMetricsConsentRestructure');
+   // </if>
+ 
+   // <if expr="not is_chromeos">
+-  protected accessor syncFirstSetupInProgress_: boolean = false;
++  private accessor syncFirstSetupInProgress_: boolean = false;
+ 
+-  protected accessor signinAvailable_: boolean =
++  private accessor signinAvailable_: boolean =
+       loadTimeData.getBoolean('signinAvailable');
+ 
+-  protected accessor chromeSigninUserChoiceInfo_: ChromeSigninUserChoiceInfo|
++  private accessor chromeSigninUserChoiceInfo_: ChromeSigninUserChoiceInfo|
+       undefined;
+   // </if>
+ 
 @@ -175,14 +177,14 @@ export class SettingsPersonalizationOptionsElement extends
    override firstUpdated(changedProperties: PropertyValues<this>) {
      super.firstUpdated(changedProperties);
@@ -61,7 +87,7 @@ index 9a9f2cae6f969f3f2dc67ff7b1babde0d6e4f9ec..9a47ac053ddb5c36710347112db09709
    }
  
    // <if expr="not is_chromeos">
-@@ -218,7 +222,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -215,7 +219,7 @@ export class SettingsPersonalizationOptionsElement extends
      return loadTimeData.getStringF('priceEmailNotificationsPrefDesc', username);
    }
  
@@ -70,7 +96,7 @@ index 9a9f2cae6f969f3f2dc67ff7b1babde0d6e4f9ec..9a47ac053ddb5c36710347112db09709
    protected onMetricsReportingChange_(e: Event) {
      const target = e.target as CrToggleElement;
      this.browserProxy_.setMetricsReportingEnabled(target.checked);
-@@ -289,7 +293,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -284,7 +288,7 @@ export class SettingsPersonalizationOptionsElement extends
      if (this.shadowRoot
              .querySelector<SettingsSignoutDialogElement>(
                  'settings-signout-dialog')!.wasConfirmed()) {
@@ -79,7 +105,7 @@ index 9a9f2cae6f969f3f2dc67ff7b1babde0d6e4f9ec..9a47ac053ddb5c36710347112db09709
        this.$.signinAllowedToggle.checked = false;
        this.$.signinAllowedToggle.sendPrefChange();
        this.$.toast.show();
-@@ -298,7 +302,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -293,7 +297,7 @@ export class SettingsPersonalizationOptionsElement extends
      this.showSignoutDialog_ = false;
    }
  
@@ -88,7 +114,7 @@ index 9a9f2cae6f969f3f2dc67ff7b1babde0d6e4f9ec..9a47ac053ddb5c36710347112db09709
    protected onSigninAllowedSettingsBooleanControlChange_() {
      if (this.syncStatus.signedInState === SignedInState.SYNCING &&
          !this.$.signinAllowedToggle.checked) {
-@@ -310,12 +314,16 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -305,12 +309,16 @@ export class SettingsPersonalizationOptionsElement extends
        this.$.toast.show();
      }
    }

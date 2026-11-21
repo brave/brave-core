@@ -31,6 +31,6 @@ substitutions:
   - description: |-
       Use the fully-rounded separator radius for both separator draws.
     regex:
-      re_pattern: 'tab_style\(\)->GetSeparatorCornerRadius\(\) \* scale'
+      re_pattern: 'TabStyle::Get\(\)->GetSeparatorCornerRadius\(\) \* scale'
       replace: 'separator_radius'
     count: 2

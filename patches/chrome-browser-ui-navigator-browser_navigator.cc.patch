@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/navigator/browser_navigator.cc b/chrome/browser/ui/navigator/browser_navigator.cc
-index 3dd21b8a25d8f5153d21d6cfe3bfbb9968b258f5..c17bb22b3a00479393893b1c33171061821c6048 100644
+index 54b20f69e9a970f98240643529d1d00bfb5d938b..005d45799fc60f3eb23e73808cfeb2051057be54 100644
 --- a/chrome/browser/ui/navigator/browser_navigator.cc
 +++ b/chrome/browser/ui/navigator/browser_navigator.cc
 @@ -219,6 +219,7 @@ bool ShouldForceCaptivePortalSigninIntoCurrentTab(
@@ -23,7 +23,7 @@ index 3dd21b8a25d8f5153d21d6cfe3bfbb9968b258f5..c17bb22b3a00479393893b1c33171061
  
    WebContents::CreateParams create_params(
        params.browser->GetProfile(), initial_site_instance_for_new_contents);
-@@ -1013,6 +1018,9 @@ base::WeakPtr<content::NavigationHandle> NavigateImpl(
+@@ -1009,6 +1014,9 @@ base::WeakPtr<content::NavigationHandle> NavigateImpl(
           params->user_gesture)) {
        tab_to_insert->set_opener(
            tabs::TabInterface::MaybeGetFromContents(params->source_contents));
@@ -33,7 +33,7 @@ index 3dd21b8a25d8f5153d21d6cfe3bfbb9968b258f5..c17bb22b3a00479393893b1c33171061
      }
    }
  
-@@ -1052,6 +1060,9 @@ base::WeakPtr<content::NavigationHandle> NavigateImpl(
+@@ -1048,6 +1056,9 @@ base::WeakPtr<content::NavigationHandle> NavigateImpl(
               params->user_gesture)) {
            tab_to_insert->set_opener(tabs::TabInterface::MaybeGetFromContents(
                params->source_contents));

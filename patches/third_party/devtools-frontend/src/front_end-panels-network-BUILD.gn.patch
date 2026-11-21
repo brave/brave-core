@@ -1,5 +1,5 @@
 diff --git a/front_end/panels/network/BUILD.gn b/front_end/panels/network/BUILD.gn
-index 4eb3374aedb8972fcf7ba91570a16df550caa1ba..6cd998d53e64485f070755a80271f515c63d71da 100644
+index 107df3ddbba25f3d88fa4b3256461f3221564ab4..184d1c2b42235cdc70561925b85c44fa49ad8d67 100644
 --- a/front_end/panels/network/BUILD.gn
 +++ b/front_end/panels/network/BUILD.gn
 @@ -2,6 +2,7 @@

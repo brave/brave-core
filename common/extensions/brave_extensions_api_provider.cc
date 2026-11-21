@@ -20,22 +20,21 @@ namespace extensions {
 BraveExtensionsAPIProvider::BraveExtensionsAPIProvider() = default;
 BraveExtensionsAPIProvider::~BraveExtensionsAPIProvider() = default;
 
-void BraveExtensionsAPIProvider::AddAPIFeatures(FeatureProvider* provider) {
-  AddBraveAPIFeatures(provider);
+StaticFeatureTable BraveExtensionsAPIProvider::GetAPIFeatures() const {
+  return GetBraveAPIFeatures();
 }
 
-void BraveExtensionsAPIProvider::AddManifestFeatures(
-    FeatureProvider* provider) {
-  AddBraveManifestFeatures(provider);
+StaticFeatureTable BraveExtensionsAPIProvider::GetManifestFeatures() const {
+  return GetBraveManifestFeatures();
 }
 
-void BraveExtensionsAPIProvider::AddPermissionFeatures(
-    FeatureProvider* provider) {
+StaticFeatureTable BraveExtensionsAPIProvider::GetPermissionFeatures() const {
+  return {};
 }
 
-void BraveExtensionsAPIProvider::AddBehaviorFeatures(
-    FeatureProvider* provider) {
+StaticFeatureTable BraveExtensionsAPIProvider::GetBehaviorFeatures() const {
   // No brave-specific behavior features.
+  return {};
 }
 
 void BraveExtensionsAPIProvider::AddAPIJSONSources(

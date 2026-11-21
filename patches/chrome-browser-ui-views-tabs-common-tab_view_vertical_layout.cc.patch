@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/common/tab_view_vertical_layout.cc b/chrome/browser/ui/views/tabs/common/tab_view_vertical_layout.cc
-index d2b935e0c80a1a82d08b4da25496f5b0b5360773..dd2df94b48141c6ad5e57d2add8cf740b15d6f54 100644
+index c7ce1bb79b8f1eabdde3fc1691f80960a63663d2..7f364079d38dde67062a5155770463815535587d 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_view_vertical_layout.cc
 +++ b/chrome/browser/ui/views/tabs/common/tab_view_vertical_layout.cc
 @@ -27,6 +27,7 @@ TabViewVerticalLayout::TabViewVerticalLayout() = default;
@@ -24,8 +24,8 @@ index d2b935e0c80a1a82d08b4da25496f5b0b5360773..dd2df94b48141c6ad5e57d2add8cf740
 +  }
  }
  
- views::ProposedLayout TabViewVerticalLayout::CalculateProposedLayout(
-@@ -144,6 +153,13 @@ gfx::Rect TabViewVerticalLayout::GetChildBounds(const gfx::Rect& container,
+ gfx::Size TabViewVerticalLayout::GetPreferredSize(
+@@ -157,6 +166,13 @@ gfx::Rect TabViewVerticalLayout::GetChildBounds(const gfx::Rect& container,
  
  bool TabViewVerticalLayout::IsChildVisible(const views::View* child_view,
                                             const int width) const {

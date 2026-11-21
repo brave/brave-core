@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/startup/brave_obsolete_system_infobar_delegate.h"
 #include "build/build_config.h"
+#include "chrome/browser/infobars/infobar_features.h"
 #include "chrome/browser/ui/session_crashed_bubble.h"
 #include "chrome/browser/ui/startup/google_api_keys_infobar_delegate.h"
 #include "components/infobars/content/content_infobar_manager.h"
@@ -20,6 +21,21 @@ class BraveGoogleKeysInfoBarDelegate {
   }
 };
 
+namespace {
+
+// Upstream shows these two through the centralized infobar framework, which
+// skips our delegates above, so we keep them on the legacy path.
+bool IsBraveLegacyStartupInfoBar(
+    infobars::InfoBarDelegate::InfoBarIdentifier id) {
+  return id == infobars::InfoBarDelegate::GOOGLE_API_KEYS_INFOBAR_DELEGATE ||
+         id == infobars::InfoBarDelegate::OBSOLETE_SYSTEM_INFOBAR_DELEGATE;
+}
+
+}  // namespace
+
+#define IsInfoBarMigrated(id) \
+  IsInfoBarMigrated(id) && !IsBraveLegacyStartupInfoBar(id)
+
 #define GoogleApiKeysInfoBarDelegate BraveGoogleKeysInfoBarDelegate
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
@@ -33,3 +49,4 @@ class BraveGoogleKeysInfoBarDelegate {
 #endif
 
 #undef GoogleApiKeysInfoBarDelegate
+#undef IsInfoBarMigrated

@@ -1,8 +1,8 @@
 diff --git a/content/public/browser/webui_config_map.cc b/content/public/browser/webui_config_map.cc
-index 1ea7d0262f50d4e69acba8037951ed36fc3307f3..66f8b1b421192d6717221936b09319536465c59b 100644
+index ac1fc639527c752ce67986836d89418d720a002e..84793e11a0b5394d6ace07ba0dfc2c194147fd19 100644
 --- a/content/public/browser/webui_config_map.cc
 +++ b/content/public/browser/webui_config_map.cc
-@@ -100,6 +100,9 @@ WebUIConfig* WebUIConfigMap::GetConfig(BrowserContext* browser_context,
+@@ -139,6 +139,9 @@ WebUIConfig* WebUIConfigMap::GetRegisteredConfig(const GURL& url) const {
    }
  
    auto origin_and_config = configs_map_.find(url::Origin::Create(url));

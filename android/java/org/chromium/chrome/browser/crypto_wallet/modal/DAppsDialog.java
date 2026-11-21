@@ -117,7 +117,7 @@ public class DAppsDialog extends Dialog implements ConnectionErrorHandler {
             BraveActivity activity = BraveActivity.getBraveActivity();
             activity.openBraveWallet(true, false, false);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "openWallet " + e);
+            Log.e(TAG, "openWallet", e);
         }
     }
 

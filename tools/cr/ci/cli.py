@@ -19,11 +19,12 @@ Subcommands:
         build, `--failed-step` writes only the end of the step that failed,
         or each failed test's whole output when only tests failed, read
         without downloading the whole log.
-    rerun URL [--wipe-workspace]
+    rerun URL [--wipe-workspace] [--remove-src-out]
         Queues the build at URL (a check's link) again. For TeamCity, an
         aggregate reruns its failed dependencies; for GitHub Actions, the job
-        reruns with the jobs that depend on it. `--wipe-workspace` is for
-        Jenkins only.
+        reruns with the jobs that depend on it. On Jenkins and TeamCity,
+        `--wipe-workspace` starts from a fresh workspace (TeamCity's
+        `new_workspace`), and `--remove-src-out` removes `src/out` first.
 
 Jenkins reads `~/.jenkins.json`; TeamCity goes through the `teamcity` CLI and
 its login; GitHub Actions goes through `gh` and its login.
@@ -69,7 +70,13 @@ def _cmd_log(args: argparse.Namespace) -> int:
 
 
 def _cmd_rerun(args: argparse.Namespace) -> int:
-    print(systems.rerun(args.url, wipe_workspace=args.wipe_workspace))
+    print(
+        systems.rerun(
+            args.url,
+            wipe_workspace=args.wipe_workspace,
+            remove_src_out=args.remove_src_out,
+        )
+    )
     return 0
 
 
@@ -109,6 +116,7 @@ def main() -> int:
     rerun = subparsers.add_parser('rerun', help='Queue a build again.')
     rerun.add_argument('url')
     rerun.add_argument('--wipe-workspace', action='store_true')
+    rerun.add_argument('--remove-src-out', action='store_true')
     rerun.set_defaults(func=_cmd_rerun)
     args = parser.parse_args()
     try:

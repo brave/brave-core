@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/exclusive_access/browser_view_exclusive_access_context.cc b/chrome/browser/ui/exclusive_access/browser_view_exclusive_access_context.cc
+index e61cc605a118de1dba05a1758de08569f6e78db2..faa8c96b47d4c443c446bed208e8f52843b069e5 100644
+--- a/chrome/browser/ui/exclusive_access/browser_view_exclusive_access_context.cc
++++ b/chrome/browser/ui/exclusive_access/browser_view_exclusive_access_context.cc
+@@ -118,6 +118,9 @@ void BrowserViewExclusiveAccessContext::ExitFullscreen() {
+ void BrowserViewExclusiveAccessContext::UpdateExclusiveAccessBubble(
+     const ExclusiveAccessBubbleParams& params,
+     ExclusiveAccessBubbleHideCallback first_hide_callback) {
++  if (ShouldHideFullscreenReminder(params, GetProfile())) {
++    return;
++  }
+   // Whether we should remove the bubble if it exists, or not show the bubble.
+   // TODO(jamescook): Figure out what to do with mouse-lock.
+   bool should_close_bubble = false;

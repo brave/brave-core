@@ -121,7 +121,7 @@ public class BraveSyncDevices {
         try {
             JSONObject result = new JSONObject(json);
             JSONArray devices = result.getJSONArray("devices");
-            Log.i(TAG, "getSyncDeviceList devices length is " + devices.length());
+            Log.i(TAG, "getSyncDeviceList devices length is %s", devices.length());
             for (int i = 0; i < devices.length(); i++) {
                 SyncDeviceInfo deviceInfo = new SyncDeviceInfo();
                 JSONObject device = devices.getJSONObject(i);
@@ -135,9 +135,9 @@ public class BraveSyncDevices {
                 deviceList.add(deviceInfo);
             }
         } catch (JSONException e) {
-            Log.e(TAG, "getSyncDeviceList JSONException error " + e);
+            Log.e(TAG, "getSyncDeviceList JSONException error", e);
         } catch (IllegalStateException e) {
-            Log.e(TAG, "getSyncDeviceList IllegalStateException error " + e);
+            Log.e(TAG, "getSyncDeviceList IllegalStateException error", e);
         }
         return deviceList;
     }

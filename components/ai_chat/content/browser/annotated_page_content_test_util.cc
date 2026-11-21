@@ -222,6 +222,12 @@ ContentNodeBuilder& ContentNodeBuilder::AsParagraph() {
   return *this;
 }
 
+ContentNodeBuilder& ContentNodeBuilder::AsLabel() {
+  node_.mutable_content_attributes()->set_attribute_type(
+      optimization_guide::proto::CONTENT_ATTRIBUTE_LABEL);
+  return *this;
+}
+
 ContentNodeBuilder& ContentNodeBuilder::AsAnchor(const std::string& url,
                                                  const std::string& text) {
   node_.mutable_content_attributes()->set_attribute_type(

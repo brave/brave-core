@@ -122,10 +122,10 @@ substitutions:
       replace: |-
         if (tab_interface->GetParentCollection()->type() ==
                   tabs::TabCollection::Type::TREE_NODE &&
-              contents_data_->ShouldDetachAsTreeSubtreeRoot(GetTabAtIndex(index),
+              contents_data_->ShouldDetachAsTreeSubtreeRoot(tab_interface,
                                                             tab_interfaces)) {
                 owned_tabs_and_collections.emplace_back(DetachTreeTabNodeForInsertion(
-                    GetTabAtIndex(index), tab_interfaces));
+                    tab_interface, tab_interfaces));
                 continue;
               }
               \1

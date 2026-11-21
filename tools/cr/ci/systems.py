@@ -78,14 +78,21 @@ def failed_step_log(url: str) -> str:
     return client.failed_step_log(url)
 
 
-def rerun(url: str, *, wipe_workspace: bool = False) -> str:
+def rerun(
+    url: str, *, wipe_workspace: bool = False, remove_src_out: bool = False
+) -> str:
     """Queues the build at `url` again, and says so. For TeamCity, an
     aggregate reruns its failed dependencies; for GitHub Actions, the job
-    reruns with the jobs that depend on it. Only Jenkins can wipe the
-    workspace first."""
+    reruns with the jobs that depend on it. Jenkins and TeamCity can wipe
+    the workspace, or remove `src/out`, first."""
     client = _for(url)
-    if isinstance(client, JenkinsCi):
-        return client.rerun(url, wipe_workspace=wipe_workspace)
-    if wipe_workspace:
-        raise Unsupported('--wipe-workspace is for Jenkins only.')
+    if isinstance(client, (JenkinsCi, TeamCityCi)):
+        return client.rerun(
+            url, wipe_workspace=wipe_workspace, remove_src_out=remove_src_out
+        )
+    if wipe_workspace or remove_src_out:
+        raise Unsupported(
+            '--wipe-workspace and --remove-src-out are for Jenkins and '
+            'TeamCity only.'
+        )
     return client.rerun(url)

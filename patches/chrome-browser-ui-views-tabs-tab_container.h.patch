@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_container.h b/chrome/browser/ui/views/tabs/tab_container.h
-index 680123d02ab04507f134a1017829e6135e2d3b58..90e5a0bfd76795068cdce4af4730c2bd2ff3f2d3 100644
+index f4f02707288cb1fa6b2413ff421ed168d6154e4d..77a1b69e44d8334358214bb7ff1c81dd15591227 100644
 --- a/chrome/browser/ui/views/tabs/tab_container.h
 +++ b/chrome/browser/ui/views/tabs/tab_container.h
-@@ -80,12 +80,12 @@ class TabContainer : public views::View,
+@@ -81,12 +81,12 @@ class TabContainer : public views::View,
        base::RepeatingCallback<int()> available_width_callback);
  
    // Handle model changes.
@@ -20,7 +20,7 @@ index 680123d02ab04507f134a1017829e6135e2d3b58..90e5a0bfd76795068cdce4af4730c2bd
                      std::optional<size_t> new_active_index);
  
    // Removes the tab at `model_index` from the TabContainer's data structures so
-@@ -108,7 +108,7 @@ class TabContainer : public views::View,
+@@ -109,7 +109,7 @@ class TabContainer : public views::View,
    // action to create the `group`.
    void OnGroupEditorOpened(const tab_groups::TabGroupId& group);
    void OnGroupMoved(const tab_groups::TabGroupId& group);
@@ -29,7 +29,7 @@ index 680123d02ab04507f134a1017829e6135e2d3b58..90e5a0bfd76795068cdce4af4730c2bd
    void OnGroupVisualsChanged(const tab_groups::TabGroupId& group,
                               const tab_groups::TabGroupVisualData* old_visuals,
                               const tab_groups::TabGroupVisualData* new_visuals);
-@@ -116,13 +116,13 @@ class TabContainer : public views::View,
+@@ -117,13 +117,13 @@ class TabContainer : public views::View,
                        bool is_collapsing,
                        ToggleTabGroupCollapsedStateOrigin origin);
    void OnGroupClosed(const tab_groups::TabGroupId& group);
@@ -47,7 +47,7 @@ index 680123d02ab04507f134a1017829e6135e2d3b58..90e5a0bfd76795068cdce4af4730c2bd
  
    std::optional<int> GetModelIndexOf(const TabSlotView* slot_view) const;
    Tab* GetTabAtModelIndex(int index) const;
-@@ -147,21 +147,21 @@ class TabContainer : public views::View,
+@@ -148,21 +148,21 @@ class TabContainer : public views::View,
    // Animation stuff. Will be public until fully moved down into TabContainer.
  
    // Called whenever a tab or group header animation has progressed.
@@ -73,7 +73,7 @@ index 680123d02ab04507f134a1017829e6135e2d3b58..90e5a0bfd76795068cdce4af4730c2bd
  
    // Returns true if any tabs are being animated by this TabContainer.
    bool IsAnimating() const;
-@@ -170,7 +170,7 @@ class TabContainer : public views::View,
+@@ -171,7 +171,7 @@ class TabContainer : public views::View,
    void CancelAnimation();
  
    // Stops any ongoing animations and forces a layout.
@@ -82,7 +82,7 @@ index 680123d02ab04507f134a1017829e6135e2d3b58..90e5a0bfd76795068cdce4af4730c2bd
  
    // Returns the total width available for the TabContainer's use.
    int GetAvailableWidthForTabContainer() const;
-@@ -178,13 +178,13 @@ class TabContainer : public views::View,
+@@ -179,13 +179,13 @@ class TabContainer : public views::View,
    // See `in_tab_close_` for details on tab closing mode. `source` is the input
    // method used to enter tab closing mode, which determines how it is exited
    // due to user inactivity.
@@ -98,7 +98,7 @@ index 680123d02ab04507f134a1017829e6135e2d3b58..90e5a0bfd76795068cdce4af4730c2bd
  
    bool InTabClose();
  
-@@ -244,6 +244,7 @@ class TabContainer : public views::View,
+@@ -245,6 +245,7 @@ class TabContainer : public views::View,
    void UpdateZOrderCacheForTesting();
  
   private:
@@ -106,7 +106,7 @@ index 680123d02ab04507f134a1017829e6135e2d3b58..90e5a0bfd76795068cdce4af4730c2bd
    FRIEND_TEST_ALL_PREFIXES(TabContainerTest, GetChildIndexForSlotView);
    FRIEND_TEST_ALL_PREFIXES(TabContainerTest,
                             GetChildIndexForSlotViewWithGroups);
-@@ -266,7 +267,7 @@ class TabContainer : public views::View,
+@@ -267,7 +268,7 @@ class TabContainer : public views::View,
    // Generates and sets the ideal bounds for each of the tabs. Note: Does not
    // animate the tabs to those bounds so callers can use this information for
    // other purposes - see AnimateToIdealBounds.
@@ -115,16 +115,16 @@ index 680123d02ab04507f134a1017829e6135e2d3b58..90e5a0bfd76795068cdce4af4730c2bd
  
    // Teleports the tabs to their ideal bounds.
    // NOTE: this does *not* invoke UpdateIdealBounds, it uses the bounds
-@@ -279,7 +280,7 @@ class TabContainer : public views::View,
-   int CalculateAvailableWidthForTabs() const;
- 
-   // Invoked from `AddTab` after the newly created tab has been inserted.
+@@ -282,7 +283,7 @@ class TabContainer : public views::View,
+   // Invoked from `AddTabs` after the newly created tab has been inserted. Sets
+   // the bounds the tab animates in from; the animation itself is started by
+   // AnimateToIdealBounds().
 -  void StartInsertTabAnimation(int model_index);
 +  virtual void StartInsertTabAnimation(int model_index);
  
-   void StartRemoveTabAnimation(Tab* tab, int former_model_index);
- 
-@@ -291,7 +292,7 @@ class TabContainer : public views::View,
+   // Starts AnimateToIdealBounds() from a posted task, unless one is already
+   // pending, so that tabs inserted by separate model changes within one task
+@@ -305,7 +306,7 @@ class TabContainer : public views::View,
        int former_model_index) const;
  
    // Computes the bounds that `tab` should animate towards as it closes.
@@ -133,7 +133,7 @@ index 680123d02ab04507f134a1017829e6135e2d3b58..90e5a0bfd76795068cdce4af4730c2bd
                                           int former_model_index) const;
  
    // Returns the largest x-value this TabContainer should contain, based on the
-@@ -309,7 +310,7 @@ class TabContainer : public views::View,
+@@ -323,7 +324,7 @@ class TabContainer : public views::View,
  
    // Updates `override_available_width_for_tabs_`, if necessary, to account for
    // the removal of the tab at `model_index`.
@@ -142,7 +142,7 @@ index 680123d02ab04507f134a1017829e6135e2d3b58..90e5a0bfd76795068cdce4af4730c2bd
  
    // Returns whether `tab` is visible, accounting for tab group focusing and
    // collapsed groups.
-@@ -352,7 +353,7 @@ class TabContainer : public views::View,
+@@ -366,7 +367,7 @@ class TabContainer : public views::View,
  
    // Returns true if the specified point in TabStrip coords is within the
    // hit-test region of the specified Tab.
@@ -151,7 +151,7 @@ index 680123d02ab04507f134a1017829e6135e2d3b58..90e5a0bfd76795068cdce4af4730c2bd
  
    // For a given point, finds a tab that is hit by the point. If the point hits
    // an area on which two tabs are overlapping, the tab is selected as follows:
-@@ -366,7 +367,7 @@ class TabContainer : public views::View,
+@@ -380,7 +381,7 @@ class TabContainer : public views::View,
    // (for example, if currently the strip has the last tab selected, and
    // changing that to the first tab would cause `tab` to be pushed over enough
    // to clip).

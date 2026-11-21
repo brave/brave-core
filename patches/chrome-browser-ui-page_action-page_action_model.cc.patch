@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/page_action/page_action_model.cc b/chrome/browser/ui/page_action/page_action_model.cc
-index 18d3fc15bef8819ddf1797f647331bf4c78fcdd7..af291006a1e32166c682b7577bafe6b326fd8ca8 100644
+index 299d62be616f42b17155d5070b95c3fac61c3df9..a4de8e5928f15bdc9e5f0dc78860a73d54e051a7 100644
 --- a/chrome/browser/ui/page_action/page_action_model.cc
 +++ b/chrome/browser/ui/page_action/page_action_model.cc
-@@ -16,19 +16,19 @@ namespace {
+@@ -18,19 +18,19 @@ namespace {
  using ::actions::ActionItem;
  }  // namespace
  
@@ -26,8 +26,17 @@ index 18d3fc15bef8819ddf1797f647331bf4c78fcdd7..af291006a1e32166c682b7577bafe6b3
    if (show_requested_ == requested) {
      return;
    }
-@@ -36,7 +36,7 @@ void PageActionModel::SetShowRequested(PageActionPassKey, bool requested) {
+@@ -38,7 +38,7 @@ void PageActionModel::SetShowRequested(PageActionPassKey, bool requested) {
    NotifyChange(Property::kShowRequested);
+ }
+ 
+-void PageActionModel::SetVisibilityConfig(
++void PageActionModel_ChromiumImpl::SetVisibilityConfig(
+     PageActionPassKey,
+     const PageActionVisibilityConfig& config) {
+   // Re-showing an already-visible action must not replay its enter animation.
+@@ -52,7 +52,7 @@ void PageActionModel::SetVisibilityConfig(
+   NotifyChange(Property::kVisibilityConfig);
  }
  
 -void PageActionModel::SetShouldShowSuggestionChip(PageActionPassKey,
@@ -35,7 +44,7 @@ index 18d3fc15bef8819ddf1797f647331bf4c78fcdd7..af291006a1e32166c682b7577bafe6b3
                                                    bool show) {
    did_show_chip_ = false;
    if (should_show_suggestion_chip_ == show) {
-@@ -46,7 +46,7 @@ void PageActionModel::SetShouldShowSuggestionChip(PageActionPassKey,
+@@ -62,7 +62,7 @@ void PageActionModel::SetShouldShowSuggestionChip(PageActionPassKey,
    NotifyChange(Property::kShouldShowSuggestionChip);
  }
  
@@ -43,8 +52,8 @@ index 18d3fc15bef8819ddf1797f647331bf4c78fcdd7..af291006a1e32166c682b7577bafe6b3
 +void PageActionModel_ChromiumImpl::SetSuggestionChipConfig(
      PageActionPassKey,
      const SuggestionChipConfig& config) {
-   if (should_animate_ == config.should_animate &&
-@@ -58,7 +58,7 @@ void PageActionModel::SetSuggestionChipConfig(
+   if (should_animate_chip_ == config.should_animate &&
+@@ -74,7 +74,7 @@ void PageActionModel::SetSuggestionChipConfig(
    NotifyChange(Property::kSuggestionChipConfig);
  }
  
@@ -53,7 +62,7 @@ index 18d3fc15bef8819ddf1797f647331bf4c78fcdd7..af291006a1e32166c682b7577bafe6b3
    if (is_tab_active_ == is_active) {
      return;
    }
-@@ -66,7 +66,7 @@ void PageActionModel::SetTabActive(PageActionPassKey, bool is_active) {
+@@ -85,7 +85,7 @@ void PageActionModel::SetTabActive(PageActionPassKey, bool is_active) {
    NotifyChange(Property::kTabActive);
  }
  
@@ -62,7 +71,7 @@ index 18d3fc15bef8819ddf1797f647331bf4c78fcdd7..af291006a1e32166c682b7577bafe6b3
                                         bool has_pinned_icon) {
    if (has_pinned_icon_ == has_pinned_icon) {
      return;
-@@ -75,7 +75,7 @@ void PageActionModel::SetHasPinnedIcon(PageActionPassKey,
+@@ -94,7 +94,7 @@ void PageActionModel::SetHasPinnedIcon(PageActionPassKey,
    NotifyChange(Property::kHasPinnedIcon);
  }
  
@@ -71,17 +80,32 @@ index 18d3fc15bef8819ddf1797f647331bf4c78fcdd7..af291006a1e32166c682b7577bafe6b3
                                                const ActionItem* action_item) {
    bool model_changed = false;
  
-@@ -109,7 +109,7 @@ void PageActionModel::SetActionItemProperties(PageActionPassKey,
+@@ -128,66 +128,66 @@ void PageActionModel::SetActionItemProperties(PageActionPassKey,
    }
+ }
+ 
+-bool PageActionModel::IsRequestedVisible() const {
++bool PageActionModel_ChromiumImpl::IsRequestedVisible() const {
+   return action_item_enabled_ && action_item_visible_ && show_requested_ &&
+          !has_pinned_icon_;
  }
  
 -bool PageActionModel::GetVisible() const {
 +bool PageActionModel_ChromiumImpl::GetVisible() const {
-   const bool hidden_by_omnibox =
-       is_suppressed_by_omnibox_ && !is_exempt_from_omnibox_suppression_;
+   return is_tab_active_ && !IsAffectedByOmniboxSuppression() &&
+          IsRequestedVisible();
+ }
  
-@@ -117,46 +117,46 @@ bool PageActionModel::GetVisible() const {
-          action_item_visible_ && show_requested_ && !has_pinned_icon_;
+-bool PageActionModel::GetShouldAnimateVisibilityOut() const {
++bool PageActionModel_ChromiumImpl::GetShouldAnimateVisibilityOut() const {
+   return features::IsPageActionsElevatedToolbarEnabled() && is_tab_active_ &&
+          should_animate_visibility_ && !IsAffectedByOmniboxSuppression();
+ }
+ 
+-bool PageActionModel::GetShouldAnimateVisibilityIn() const {
++bool PageActionModel_ChromiumImpl::GetShouldAnimateVisibilityIn() const {
+   return features::IsPageActionsElevatedToolbarEnabled() &&
+          should_animate_visibility_ && !did_animate_visibility_;
  }
  
 -bool PageActionModel::IsChipShowing() const {
@@ -96,13 +120,13 @@ index 18d3fc15bef8819ddf1797f647331bf4c78fcdd7..af291006a1e32166c682b7577bafe6b3
  
 -bool PageActionModel::GetShouldAnimateChipOut() const {
 +bool PageActionModel_ChromiumImpl::GetShouldAnimateChipOut() const {
-   return should_animate_;
+   return should_animate_chip_;
  }
  
 -bool PageActionModel::GetShouldAnimateChipIn() const {
 +bool PageActionModel_ChromiumImpl::GetShouldAnimateChipIn() const {
    // Only animate in if the chip was not shown yet.
-   return should_animate_ && !did_show_chip_;
+   return should_animate_chip_ && !did_show_chip_;
  }
  
 -bool PageActionModel::GetShouldAnimateImage() const {
@@ -137,7 +161,7 @@ index 18d3fc15bef8819ddf1797f647331bf4c78fcdd7..af291006a1e32166c682b7577bafe6b3
    const std::u16string& from_name_or_text =
        override_accessible_name_.has_value() ? override_accessible_name_.value()
                                              : text_;
-@@ -165,24 +165,24 @@ const std::u16string& PageActionModel::GetAccessibleName() const {
+@@ -196,24 +196,24 @@ const std::u16string& PageActionModel::GetAccessibleName() const {
    return from_name_or_text.empty() ? GetTooltipText() : from_name_or_text;
  }
  
@@ -167,7 +191,7 @@ index 18d3fc15bef8819ddf1797f647331bf4c78fcdd7..af291006a1e32166c682b7577bafe6b3
      PageActionPassKey,
      const std::optional<std::u16string>& override_text) {
    if (override_text_ == override_text) {
-@@ -192,7 +192,7 @@ void PageActionModel::SetOverrideText(
+@@ -223,7 +223,7 @@ void PageActionModel::SetOverrideText(
    NotifyChange(Property::kOverrideText);
  }
  
@@ -176,7 +200,7 @@ index 18d3fc15bef8819ddf1797f647331bf4c78fcdd7..af291006a1e32166c682b7577bafe6b3
      PageActionPassKey,
      const std::optional<std::u16string>& override_accessible_name) {
    if (override_accessible_name_ == override_accessible_name) {
-@@ -202,7 +202,7 @@ void PageActionModel::SetOverrideAccessibleName(
+@@ -233,7 +233,7 @@ void PageActionModel::SetOverrideAccessibleName(
    NotifyChange(Property::kOverrideAccessibleName);
  }
  
@@ -185,7 +209,7 @@ index 18d3fc15bef8819ddf1797f647331bf4c78fcdd7..af291006a1e32166c682b7577bafe6b3
      PageActionPassKey,
      const std::optional<ui::ImageModel>& override_image,
      PageActionColorSource color_source,
-@@ -218,7 +218,7 @@ void PageActionModel::SetOverrideImage(
+@@ -249,7 +249,7 @@ void PageActionModel::SetOverrideImage(
    NotifyChange(Property::kOverrideImage);
  }
  
@@ -194,7 +218,7 @@ index 18d3fc15bef8819ddf1797f647331bf4c78fcdd7..af291006a1e32166c682b7577bafe6b3
      PageActionPassKey,
      const std::optional<std::u16string>& override_tooltip) {
    if (override_tooltip_ == override_tooltip) {
-@@ -228,7 +228,7 @@ void PageActionModel::SetOverrideTooltip(
+@@ -259,7 +259,7 @@ void PageActionModel::SetOverrideTooltip(
    NotifyChange(Property::kOverrideTooltip);
  }
  
@@ -203,7 +227,7 @@ index 18d3fc15bef8819ddf1797f647331bf4c78fcdd7..af291006a1e32166c682b7577bafe6b3
                                                 bool is_suppressed) {
    if (is_suppressed_by_omnibox_ == is_suppressed) {
      return;
-@@ -237,7 +237,7 @@ void PageActionModel::SetIsSuppressedByOmnibox(PageActionPassKey,
+@@ -278,7 +278,7 @@ void PageActionModel::SetIsSuppressedByOmnibox(PageActionPassKey,
    NotifyChange(Property::kIsSuppressedByOmnibox);
  }
  
@@ -212,7 +236,7 @@ index 18d3fc15bef8819ddf1797f647331bf4c78fcdd7..af291006a1e32166c682b7577bafe6b3
                                                        bool is_exempt) {
    if (is_exempt_from_omnibox_suppression_ == is_exempt) {
      return;
-@@ -246,11 +246,11 @@ void PageActionModel::SetExemptFromOmniboxSuppression(PageActionPassKey,
+@@ -287,11 +287,11 @@ void PageActionModel::SetExemptFromOmniboxSuppression(PageActionPassKey,
    NotifyChange(Property::kExemptFromOmniboxSuppression);
  }
  
@@ -226,7 +250,7 @@ index 18d3fc15bef8819ddf1797f647331bf4c78fcdd7..af291006a1e32166c682b7577bafe6b3
                                         bool is_chip_showing) {
    did_show_chip_ |= is_chip_showing;
    if (is_chip_showing_ == is_chip_showing) {
-@@ -261,7 +261,7 @@ void PageActionModel::SetIsChipShowing(PageActionPassKey,
+@@ -302,7 +302,7 @@ void PageActionModel::SetIsChipShowing(PageActionPassKey,
    NotifyChange(Property::kIsChipShowing);
  }
  
@@ -235,7 +259,7 @@ index 18d3fc15bef8819ddf1797f647331bf4c78fcdd7..af291006a1e32166c682b7577bafe6b3
    if (action_active_ == is_active) {
      return;
    }
-@@ -270,7 +270,7 @@ void PageActionModel::SetActionActive(PageActionPassKey, bool is_active) {
+@@ -311,7 +311,7 @@ void PageActionModel::SetActionActive(PageActionPassKey, bool is_active) {
    NotifyChange(Property::kActionActive);
  }
  
@@ -244,7 +268,7 @@ index 18d3fc15bef8819ddf1797f647331bf4c78fcdd7..af291006a1e32166c682b7577bafe6b3
                                          PageActionAnimationStyle style) {
    if (animation_style_ == style) {
      return;
-@@ -279,7 +279,7 @@ void PageActionModel::SetAnimationStyle(PageActionPassKey,
+@@ -320,7 +320,7 @@ void PageActionModel::SetAnimationStyle(PageActionPassKey,
    NotifyChange(Property::kAnimationStyle);
  }
  
@@ -253,7 +277,7 @@ index 18d3fc15bef8819ddf1797f647331bf4c78fcdd7..af291006a1e32166c682b7577bafe6b3
      PageActionPassKey,
      const std::optional<ui::ImageModel>& image) {
    if (trailing_image_ == image) {
-@@ -289,7 +289,7 @@ void PageActionModel::SetTrailingImage(
+@@ -330,7 +330,7 @@ void PageActionModel::SetTrailingImage(
    NotifyChange(Property::kTrailingImage);
  }
  
@@ -262,7 +286,7 @@ index 18d3fc15bef8819ddf1797f647331bf4c78fcdd7..af291006a1e32166c682b7577bafe6b3
    if (show_trailing_icon_ == show) {
      return;
    }
-@@ -297,15 +297,15 @@ void PageActionModel::SetShowTrailingIcon(PageActionPassKey, bool show) {
+@@ -338,15 +338,15 @@ void PageActionModel::SetShowTrailingIcon(PageActionPassKey, bool show) {
    NotifyChange(Property::kShowTrailingIcon);
  }
  
@@ -278,10 +302,10 @@ index 18d3fc15bef8819ddf1797f647331bf4c78fcdd7..af291006a1e32166c682b7577bafe6b3
  
 -void PageActionModel::NotifyChange(Property property) {
 +void PageActionModel_ChromiumImpl::NotifyChange(Property property) {
-   // Crash if the same property is modified again during notification, as this
-   // would cause an infinite loop (A notifies -> observer sets A -> notifies
-   // -> ...).
-@@ -324,11 +324,11 @@ void PageActionModel::NotifyChange(Property property) {
+   // Re-arm the enter animation once the action is hidden for a non-temporary
+   // reason (ignoring tab switches and omnibox suppression).
+   if (!IsRequestedVisible()) {
+@@ -371,11 +371,11 @@ void PageActionModel::NotifyChange(Property property) {
    notified_properties_.Remove(property);
  }
  
@@ -295,7 +319,7 @@ index 18d3fc15bef8819ddf1797f647331bf4c78fcdd7..af291006a1e32166c682b7577bafe6b3
                                                     bool show) {
    if (should_show_anchored_message_ == show) {
      return;
-@@ -337,7 +337,7 @@ void PageActionModel::SetShouldShowAnchoredMessage(PageActionPassKey,
+@@ -384,7 +384,7 @@ void PageActionModel::SetShouldShowAnchoredMessage(PageActionPassKey,
    NotifyChange(Property::kShouldShowAnchoredMessage);
  }
  
@@ -304,7 +328,7 @@ index 18d3fc15bef8819ddf1797f647331bf4c78fcdd7..af291006a1e32166c682b7577bafe6b3
      PageActionPassKey,
      const std::u16string& anchored_message) {
    if (anchored_message_text_ == anchored_message) {
-@@ -347,7 +347,7 @@ void PageActionModel::SetAnchoredMessageText(
+@@ -394,7 +394,7 @@ void PageActionModel::SetAnchoredMessageText(
    NotifyChange(Property::kAnchoredMessageText);
  }
  
@@ -313,7 +337,7 @@ index 18d3fc15bef8819ddf1797f647331bf4c78fcdd7..af291006a1e32166c682b7577bafe6b3
      PageActionPassKey,
      const AnchoredMessageActionIconType action_icon_type,
      std::unique_ptr<ui::SimpleMenuModel> model) {
-@@ -358,14 +358,14 @@ void PageActionModel::SetAnchoredMessageAction(
+@@ -405,14 +405,14 @@ void PageActionModel::SetAnchoredMessageAction(
    NotifyChange(Property::kAnchoredMessageActionIcon);
  }
  
@@ -330,7 +354,7 @@ index 18d3fc15bef8819ddf1797f647331bf4c78fcdd7..af291006a1e32166c682b7577bafe6b3
      PageActionPassKey,
      std::optional<AnchoredMessageExpandableContent> expandable_content) {
    if (expandable_content_ == expandable_content) {
-@@ -375,15 +375,15 @@ void PageActionModel::SetAnchoredMessageExpandableContent(
+@@ -422,15 +422,15 @@ void PageActionModel::SetAnchoredMessageExpandableContent(
    NotifyChange(Property::kAnchoredMessageExpandableContent);
  }
  
@@ -349,13 +373,18 @@ index 18d3fc15bef8819ddf1797f647331bf4c78fcdd7..af291006a1e32166c682b7577bafe6b3
      PageActionPassKey,
      bool is_anchored_message_showing) {
    if (is_anchored_message_showing_ == is_anchored_message_showing) {
-@@ -393,46 +393,46 @@ void PageActionModel::SetIsAnchoredMessageShowing(
+@@ -440,50 +440,50 @@ void PageActionModel::SetIsAnchoredMessageShowing(
    NotifyChange(Property::kIsAnchoredMessageShowing);
  }
  
 -void PageActionModel::SetDidAnimateImage(PageActionPassKey pass_key) {
 +void PageActionModel_ChromiumImpl::SetDidAnimateImage(PageActionPassKey pass_key) {
    did_animate_image_ = true;
+ }
+ 
+-void PageActionModel::SetDidAnimateVisibility(PageActionPassKey pass_key) {
++void PageActionModel_ChromiumImpl::SetDidAnimateVisibility(PageActionPassKey pass_key) {
+   did_animate_visibility_ = true;
  }
  
 -const std::u16string& PageActionModel::GetAnchoredMessageText() const {
@@ -406,7 +435,7 @@ index 18d3fc15bef8819ddf1797f647331bf4c78fcdd7..af291006a1e32166c682b7577bafe6b3
      PageActionPassKey,
      std::optional<ui::ColorId> override_background_color_id) {
    if (override_background_color_id_ == override_background_color_id) {
-@@ -442,12 +442,12 @@ void PageActionModel::SetOverrideBackgroundColorId(
+@@ -493,12 +493,12 @@ void PageActionModel::SetOverrideBackgroundColorId(
    NotifyChange(Property::kOverrideBackgroundColor);
  }
  
@@ -421,7 +450,7 @@ index 18d3fc15bef8819ddf1797f647331bf4c78fcdd7..af291006a1e32166c682b7577bafe6b3
      PageActionPassKey,
      std::optional<ui::ColorId> override_foreground_color_id) {
    if (override_foreground_color_id_ == override_foreground_color_id) {
-@@ -457,7 +457,7 @@ void PageActionModel::SetOverrideForegroundColorId(
+@@ -508,7 +508,7 @@ void PageActionModel::SetOverrideForegroundColorId(
    NotifyChange(Property::kOverrideForegroundColor);
  }
  

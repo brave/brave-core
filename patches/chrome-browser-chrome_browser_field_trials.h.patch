@@ -1,0 +1,24 @@
+diff --git a/chrome/browser/chrome_browser_field_trials.h b/chrome/browser/chrome_browser_field_trials.h
+index f6b6f36dd3c0dde0f0afcc856686405a64089376..e7a5bcb148b69ce7546bcf3cbd7605fbe13c3ebe 100644
+--- a/chrome/browser/chrome_browser_field_trials.h
++++ b/chrome/browser/chrome_browser_field_trials.h
+@@ -18,14 +18,14 @@ namespace base {
+ class FeatureList;
+ }
+ 
+-class ChromeBrowserFieldTrials : public variations::PlatformFieldTrials {
++class ChromeBrowserFieldTrials_ChromiumImpl : public variations::PlatformFieldTrials {
+  public:
+-  explicit ChromeBrowserFieldTrials(PrefService* local_state);
++  explicit ChromeBrowserFieldTrials_ChromiumImpl(PrefService* local_state);
+ 
+-  ChromeBrowserFieldTrials(const ChromeBrowserFieldTrials&) = delete;
+-  ChromeBrowserFieldTrials& operator=(const ChromeBrowserFieldTrials&) = delete;
++  ChromeBrowserFieldTrials_ChromiumImpl(const ChromeBrowserFieldTrials_ChromiumImpl&) = delete;
++  ChromeBrowserFieldTrials_ChromiumImpl& operator=(const ChromeBrowserFieldTrials_ChromiumImpl&) = delete;
+ 
+-  ~ChromeBrowserFieldTrials() override;
++  ~ChromeBrowserFieldTrials_ChromiumImpl() override;
+ 
+   // variations::PlatformFieldTrials:
+   void SetUpClientSideFieldTrials(

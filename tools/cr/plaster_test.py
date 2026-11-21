@@ -1715,6 +1715,35 @@ class RewriterFormsTest(unittest.TestCase):
                 '      method_name: Foo\n',
             )
 
+    # The overloads upstream's HorizontalTabStyleViews declares (cr160).
+    _STATIC_OVERLOADS = (
+        'class C {\n'
+        ' public:\n'
+        '  static void PaintSeparators(gfx::Canvas* canvas,\n'
+        '                              const gfx::Rect& bounds);\n'
+        ' protected:\n'
+        '  void PaintSeparators(gfx::Canvas* canvas) const;\n'
+        '};\n'
+    )
+
+    def test_make_virtual_skips_static_overloads(self):
+        result = self._apply(
+            'static_overload.h',
+            self._STATIC_OVERLOADS,
+            'substitutions:\n'
+            '  - description: the static overload is no change\n'
+            '    make_virtual:\n'
+            '      class_name: C\n'
+            '      method_name: PaintSeparators\n',
+        )
+        self.assertEqual(
+            result,
+            self._STATIC_OVERLOADS.replace(
+                '  void PaintSeparators(gfx::Canvas* canvas) const;',
+                '  virtual void PaintSeparators(gfx::Canvas* canvas) const;',
+            ),
+        )
+
     def test_make_virtual_skips_defined_function_template_overload(self):
         # Real-world overload set: a plain overload plus a function-template
         # overload (constrained with `requires`) that forwards to it. `virtual`
@@ -13175,6 +13204,112 @@ class PlasterForPatchTest(unittest.TestCase):
         ):
             with self.subTest(path=path):
                 self.assertIsNone(plaster.plaster_for_patch(PurePath(path)))
+
+
+class UpdatePatchesExclusionsTest(unittest.TestCase):
+    """Tests for reading `build/update_patches_exclusions.cfg`."""
+
+    def test_a_plus_line_excludes_by_path_prefix_or_suffix(self):
+        exclusions = plaster.UpdatePatchesExclusions(
+            '+chrome/VERSION\n+chrome/app/theme/default/*\n+*.png\n'
+        )
+        self.assertTrue(exclusions.excludes(PurePath('chrome/VERSION')))
+        self.assertTrue(
+            exclusions.excludes(PurePath('chrome/app/theme/default/x.svg'))
+        )
+        self.assertTrue(exclusions.excludes(PurePath('ui/icon.png')))
+        self.assertFalse(exclusions.excludes(PurePath('chrome/VERSION.txt')))
+        self.assertFalse(exclusions.excludes(PurePath('chrome/browser/a.cc')))
+
+    def test_a_minus_line_keeps_a_path_wherever_the_plus_line_is(self):
+        lines = ['-chrome/app/theme/theme_resources.grd', '+*.grd']
+        for content in ('\n'.join(lines), '\n'.join(reversed(lines))):
+            exclusions = plaster.UpdatePatchesExclusions(content)
+            self.assertFalse(
+                exclusions.excludes(
+                    PurePath('chrome/app/theme/theme_resources.grd')
+                )
+            )
+            self.assertTrue(
+                exclusions.excludes(PurePath('chrome/app/chromium_strings.grd'))
+            )
+
+    def test_comments_and_blank_lines_are_ignored(self):
+        exclusions = plaster.UpdatePatchesExclusions(
+            '# A comment\n\n+*.xtb  # trailing comment\n   \n'
+        )
+        self.assertTrue(exclusions.excludes(PurePath('a/x.xtb')))
+        self.assertFalse(exclusions.excludes(PurePath('a/x.grd')))
+
+    def test_a_line_without_a_sign_is_refused(self):
+        with self.assertRaisesRegex(
+            plaster.PlasterError, 'line 2 must start with \\+ or -: \\*.svg'
+        ):
+            plaster.UpdatePatchesExclusions('+*.png\n*.svg\n')
+
+    def test_reads_braves_exclusions_file(self):
+        exclusions = plaster.UpdatePatchesExclusions(
+            (
+                BRAVE_ROOT_FROM_FILE / 'build' / 'update_patches_exclusions.cfg'
+            ).read_text(encoding='utf-8')
+        )
+        self.assertFalse(
+            exclusions.excludes(
+                PurePath('chrome/app/theme/theme_resources.grd')
+            )
+        )
+        self.assertTrue(
+            exclusions.excludes(PurePath('chrome/app/chromium_strings.grd'))
+        )
+
+
+class ExcludedPlasterTest(unittest.TestCase):
+    """Tests for refusing plaster files on paths update_patches excludes."""
+
+    def setUp(self):
+        self.fake_chromium_src = FakeChromiumRepo()
+        self.fake_chromium_src.setup()
+        self.addCleanup(self.fake_chromium_src.cleanup)
+        _forget_loaded_repositories(self)
+        self.fake_chromium_src.set_patched_repositories('v8')
+        plaster.UpdatePatchesExclusions._instance = (
+            plaster.UpdatePatchesExclusions('+*.grd\n-chrome/app/keep.grd\n')
+        )
+        self.addCleanup(
+            setattr, plaster.UpdatePatchesExclusions, '_instance', None
+        )
+
+    def _write_plaster(self, source: str) -> Path:
+        plaster_path = plaster.PLASTER_FILES_PATH / f'{source}.yaml'
+        plaster_path.parent.mkdir(parents=True, exist_ok=True)
+        plaster_path.write_text('substitutions: []\n')
+        return plaster_path
+
+    def test_refuses_every_plaster_on_an_excluded_path(self):
+        self._write_plaster('chrome/app/foo.grd')
+        self._write_plaster('ui/bar.grd')
+        with self.assertRaises(plaster.ExcludedPlasterError) as raised:
+            plaster.get_plaster_files()
+        message = str(raised.exception)
+        self.assertIn('targets chrome/app/foo.grd', message)
+        self.assertIn('targets ui/bar.grd', message)
+
+    def test_refuses_a_plaster_passed_by_path(self):
+        self._write_plaster('chrome/app/foo.grd')
+        with self.assertRaises(plaster.ExcludedPlasterError):
+            plaster.get_plaster_files(['rewrite/chrome/app/foo.grd.yaml'])
+
+    def test_accepts_a_plaster_on_a_kept_path(self):
+        plaster_path = self._write_plaster('chrome/app/keep.grd')
+        self.assertEqual(
+            [p.path for p in plaster.get_plaster_files()], [plaster_path]
+        )
+
+    def test_the_exclusions_only_apply_to_chromium(self):
+        plaster_path = self._write_plaster('v8/src/strings.grd')
+        self.assertEqual(
+            [p.path for p in plaster.get_plaster_files()], [plaster_path]
+        )
 
 
 class SubrepositoryPlasterTest(unittest.TestCase):

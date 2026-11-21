@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/chrome_runtime_mutable_features.cc b/chrome/browser/chrome_runtime_mutable_features.cc
+index 8f9e486e7af7824d5c7f09c0afa24c58112673c7..09b32fc8c19c1d8252d689d5572b74a6dfc7080f 100644
+--- a/chrome/browser/chrome_runtime_mutable_features.cc
++++ b/chrome/browser/chrome_runtime_mutable_features.cc
+@@ -20,7 +20,7 @@
+ #include "chrome/browser/flags/android/chrome_feature_list.h"
+ #endif  // BUILDFLAG(IS_ANDROID)
+ 
+-void ChromeBrowserFieldTrials::EnableRuntimeMutableFeatures(
++void ChromeBrowserFieldTrials_ChromiumImpl::EnableRuntimeMutableFeatures(
+     base::FeatureList* feature_list) {
+   variations::PlatformFieldTrials::EnableRuntimeMutableFeatures(feature_list);
+ 

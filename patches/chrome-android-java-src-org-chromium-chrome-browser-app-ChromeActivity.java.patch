@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
-index f86cf7a03b8923663eea8a275ddc60133846c3fd..4a9e55e29e21b1c4de2880368672958907d4268e 100644
+index a2726a2d1ac90206b26ee053b284f6c8af540b53..13dfd9da175ebfebc283067cd49a2e9f0cf34470 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
-@@ -741,7 +741,7 @@ public abstract class ChromeActivity extends AsyncInitializationActivity
+@@ -740,7 +740,7 @@ public abstract class ChromeActivity extends AsyncInitializationActivity
              var modalDialogManager = getModalDialogManager();
              assert modalDialogManager != null;
              SnackbarManager snackbarManager =
@@ -11,7 +11,7 @@ index f86cf7a03b8923663eea8a275ddc60133846c3fd..4a9e55e29e21b1c4de28803686729589
                              this,
                              mBottomContainer,
                              windowAndroid,
-@@ -3652,6 +3652,7 @@ public abstract class ChromeActivity extends AsyncInitializationActivity
+@@ -3705,6 +3705,7 @@ public abstract class ChromeActivity extends AsyncInitializationActivity
       */
      public void onExitVr() {}
  

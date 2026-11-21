@@ -49,6 +49,7 @@ import org.chromium.chrome.browser.tab_ui.TabContentManager;
 import org.chromium.chrome.browser.tab_ui.TabSwitcher;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.tasks.tab_management.TabSwitcherBackPressHandlerManager;
 import org.chromium.chrome.browser.tasks.tab_management.vertical_tabs.VerticalTabsActionDelegate;
 import org.chromium.chrome.browser.toolbar.ToolbarHairlineView;
 import org.chromium.chrome.browser.toolbar.ToolbarIntentMetadata;
@@ -120,6 +121,7 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             SettableMonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier,
             TopInsetProvider topInsetProvider,
             OneshotSupplierImpl<SystemBarColorHelper> systemBarColorHelperSupplier,
+            OneshotSupplierImpl<SystemBarColorHelper> topScalpColorHelperSupplier,
             @ActivityType int activityType,
             Supplier<Boolean> isInOverviewModeSupplier,
             AppMenuDelegate appMenuDelegate,
@@ -132,6 +134,7 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             Callback<Tab> sendToBackground,
             boolean initializeUiWithIncognitoColors,
             BackPressManager backPressManager,
+            TabSwitcherBackPressHandlerManager dragHandlerManager,
             @Nullable Bundle savedInstanceState,
             @Nullable PersistableBundle persistentState,
             @Nullable MultiInstanceManager multiInstanceManager,
@@ -179,6 +182,7 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 edgeToEdgeSupplier,
                 topInsetProvider,
                 systemBarColorHelperSupplier,
+                topScalpColorHelperSupplier,
                 activityType,
                 isInOverviewModeSupplier,
                 appMenuDelegate,
@@ -190,6 +194,7 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 sendToBackground,
                 initializeUiWithIncognitoColors,
                 backPressManager,
+                dragHandlerManager,
                 savedInstanceState,
                 persistentState,
                 multiInstanceManager,

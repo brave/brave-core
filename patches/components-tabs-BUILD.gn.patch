@@ -1,8 +1,8 @@
 diff --git a/components/tabs/BUILD.gn b/components/tabs/BUILD.gn
-index 7cc92188261c0c85272ddeb665f724f9fda36e49..f8f4b6eaab60d563fe85bfec716c55999939a688 100644
+index 2863c9bdbd51a04f83401e5b76455404c09e037c..6945e7e5870091bf2d2fa56ee68e91adcb239670 100644
 --- a/components/tabs/BUILD.gn
 +++ b/components/tabs/BUILD.gn
-@@ -46,6 +46,7 @@ source_set("public") {
+@@ -47,6 +47,7 @@ source_set("public") {
      "//components/tab_groups",
      "//content/public/browser",
    ]

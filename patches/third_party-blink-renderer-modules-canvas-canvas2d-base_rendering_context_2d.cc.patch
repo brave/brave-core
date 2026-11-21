@@ -1,28 +1,17 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
-index 95fa446219588ce7f39e0e14e85007d566c09362..9f3fa3e8426f5889cca0375a95dfd44f572e69ca 100644
+index 774197367795c08a71a48bca3a73bb5bcbde57e0..95800943955d107c3e6f10d25f9efd1d2926cc0a 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
-@@ -1358,6 +1358,7 @@ ImageData* BaseRenderingContext2D::getImageData(
- perfetto::EventContext GetEventContext();
- 
- ImageData* BaseRenderingContext2D::getImageDataInternal(
-+    BRAVE_GET_IMAGE_DATA_PARAMS
-     int sx,
-     int sy,
-     int sw,
-@@ -1518,6 +1519,7 @@ ImageData* BaseRenderingContext2D::getImageDataInternal(
-       DCHECK(!bounds.intersect(SkIRect::MakeXYWH(sx, sy, sw, sh)));
-     }
-   }
-+  BRAVE_GET_IMAGE_DATA
- 
-   return image_data;
- }
-@@ -2262,6 +2264,7 @@ ShapedText* BaseRenderingContext2D::shapeText(const String& text) {
+@@ -2411,6 +2411,12 @@ ShapedText* BaseRenderingContext2D::shapeText(const String& text) {
        return MakeGarbageCollected<ShapedText>();
      }
  
-+    BRAVE_BASE_RENDERING_CONTEXT_2D_MEASURE_TEXT
++    if (brave::IsStrictFingerprintingEnabled(
++            GetTopExecutionContext(),
++            ContentSettingsType::BRAVE_WEBCOMPAT_LANGUAGE)) {
++      return MakeGarbageCollected<ShapedText>();
++    }
++
      canvas->GetDocument().UpdateStyleAndLayoutTreeForElement(
          canvas, DocumentUpdateReason::kCanvas);
    }

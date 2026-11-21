@@ -89,6 +89,7 @@ class BraveTabStripModel : public TabStripModel {
   bool IsOnlyActiveTabAndTreeDescendantsSelected();
 
   // TabStripModel:
+  using TabStripModel::DetachTabsAndCollectionsForInsertion;
   std::vector<std::variant<std::unique_ptr<DetachedTab>,
                            std::unique_ptr<DetachedTabCollection>>>
   DetachTabsAndCollectionsForInsertion(

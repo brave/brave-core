@@ -8,11 +8,7 @@
 #include "build/build_config.h"
 #include "extensions/buildflags/buildflags.h"
 
-#define ChromeBrowserFieldTrials ChromeBrowserFieldTrialsChromium
-
 #include <chrome/browser/chrome_browser_field_trials.cc>
-
-#undef ChromeBrowserFieldTrials
 
 #if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
 // Implemented in
@@ -30,7 +26,7 @@ void ChromeBrowserFieldTrials::SetUpClientSideFieldTrials(
 
 void ChromeBrowserFieldTrials::RegisterFeatureOverrides(
     base::FeatureList* feature_list) {
-  ChromeBrowserFieldTrialsChromium::RegisterFeatureOverrides(feature_list);
+  ChromeBrowserFieldTrials_ChromiumImpl::RegisterFeatureOverrides(feature_list);
 
 #if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
   BraveRegisterFeatureOverrides(feature_list);

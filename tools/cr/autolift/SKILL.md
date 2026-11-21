@@ -172,18 +172,22 @@ commit body and in the report. Then carry on.
   changes, one renamed upstream), and
   `git commit -m 'Remove dead upstream tests from filters.'` for entries whose
   tests upstream deleted. No culprit or tags; say why each entry is needed in
-  the filter file's comment above it. Entries in `test/filters/` (not
-  `generated/`) are grouped by reason: a group is one comment giving the reason,
-  then its entries, with a blank line before the next group. Add an entry to the
-  group whose comment gives its reason, widening the comment if needed ("This
-  test" becomes "These tests"); with no such group, start a new one at a blank
-  line between groups. Never put a comment between a group's entries: it splits
-  the group, and the entries above it lose their reason. Nor add one under
-  "Tests below this point have not been diagnosed": find its reason first. The
-  exception is an entry added or removed because of a browser change in the same
-  commit (a fix that makes a filtered test pass again, a Brave change that makes
-  an upstream test fail by design): it stays in that change's commit, or its
-  fixup, so the two land and revert together.
+  the filter file's comment above it. When that reason is a Brave bug rather
+  than something Brave changes on purpose (cr160: an override missing a null
+  check upstream added), a small fix in Brave's code may serve better than the
+  entry; a filter is still the right call when a fix isn't a reasonable path.
+  Entries in `test/filters/` (not `generated/`) are grouped by reason: a group
+  is one comment giving the reason, then its entries, with a blank line before
+  the next group. Add an entry to the group whose comment gives its reason,
+  widening the comment if needed ("This test" becomes "These tests"); with no
+  such group, start a new one at a blank line between groups. Never put a
+  comment between a group's entries: it splits the group, and the entries above
+  it lose their reason. Nor add one under "Tests below this point have not been
+  diagnosed": find its reason first. The exception is an entry added or removed
+  because of a browser change in the same commit (a fix that makes a filtered
+  test pass again, a Brave change that makes an upstream test fail by design):
+  it stays in that change's commit, or its fixup, so the two land and revert
+  together.
 - A plastered patch regenerated from its unchanged yaml (`plaster apply <yaml>`
   putting a stale `.patch` back as the yaml makes it), at any step of a lift or
   an autofix run, is committed with the subject of the latest "Apply-fixed 🩹
@@ -685,7 +689,10 @@ rule. Recipes for what it leaves:
   change. A plain `fixup!` written on top of a later branch commit touching the
   same files (cr159: the Gerrit upload recipe's) is requeued after that commit
   the same way, then dropped from its first place with `brockit rebase --skip`;
-  check that the tip's files match the pre-rebase tip's.
+  check that the tip's files match the pre-rebase tip's. Don't requeue an
+  `amend!`: it would reword the later commit. Resolve its step to the hunks it
+  adds itself (cr160: a `site-list` test suite beside one a later commit adds),
+  and the later commit's conflict to `origin/cr<N>`'s version.
 - **A `fixup!` or later commit of a pinned group that conflicts in a file a
   later branch commit outside the group also changes** (cr159:
   `Disable failing upstream tests.` ahead of

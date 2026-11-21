@@ -833,6 +833,8 @@ class PrepareFlowTest(unittest.TestCase):
         command=autolift._cmd_prepare,
         branch: int | Exception | None = None,
         to_squash: bool | None = False,
+        stuck: tuple[str, ...] = (),
+        master: str = '156.0.8078.74',
     ):
         calls = []
         remotes = {f'cr{milestone}': remote_exists}
@@ -868,7 +870,7 @@ class PrepareFlowTest(unittest.TestCase):
         brave.is_rebase_in_progress.return_value = False
         brave.run_git.side_effect = run_git
         versions = {
-            'origin/master': autolift.Version('156.0.8078.74'),
+            'origin/master': autolift.Version(master),
             'origin/cr157': autolift.Version('157.0.8103.15'),
             'HEAD': autolift.Version('158.0.8127.2'),
         }
@@ -909,6 +911,9 @@ class PrepareFlowTest(unittest.TestCase):
             mock.patch.object(
                 autolift, 'left_to_squash', return_value=to_squash
             ) as squash,
+            mock.patch.object(
+                autolift, 'unsquashable_fixups', return_value=list(stuck)
+            ),
             mock.patch.object(
                 autolift,
                 'milestone_branch',
@@ -1099,6 +1104,30 @@ class PrepareFlowTest(unittest.TestCase):
             encoding='utf-8'
         )
         self.assertIn('left to squash, so it is rebased', report)
+
+    def test_a_fixup_of_a_cr_base_commit_belongs_there(self):
+        self._no_lift(base_commits=0, stuck=('abc1234 fixup! [cr157] Fix',))
+        report = (self.run_root / 'cr158' / 'report.md').read_text(
+            encoding='utf-8'
+        )
+        self.assertIn(
+            '1 fixup(s) on cr158 target commits only origin/cr157', report
+        )
+        self.assertIn('it belongs on origin/cr157', report)
+        self.assertIn('`abc1234 fixup! [cr157] Fix`', report)
+        self.assertNotIn('commit of its own', report)
+
+    def test_a_fixup_of_a_master_commit_becomes_its_own(self):
+        self._no_lift(
+            base_commits=0,
+            master='157.0.8103.40',
+            stuck=('abc1234 fixup! [cr157] Fix',),
+        )
+        report = (self.run_root / 'cr158' / 'report.md').read_text(
+            encoding='utf-8'
+        )
+        self.assertIn('target commits only origin/master', report)
+        self.assertIn('reword each into a commit of its own', report)
 
     def test_a_failed_squash_check_says_so(self):
         result, _, _, _ = self._no_lift(base_commits=0, to_squash=None)
@@ -1481,6 +1510,81 @@ class PrepareFlowTest(unittest.TestCase):
     def test_new_milestone_is_not_synced(self):
         _, _, run, _ = self._run(159, remote_exists=False, checkout='1.0.0.0')
         run.assert_not_called()
+
+
+class SquashCheckTest(unittest.TestCase):
+    """What the rebase of the commits after `branch_start()` squashes."""
+
+    def setUp(self):
+        self.dir = Path(
+            self.enterContext(tempfile.TemporaryDirectory())  # pylint: disable=consider-using-with
+        )
+        self._git('init', '-q', '-b', 'master')
+        self._git('config', 'user.email', 'a@b.c')
+        self._git('config', 'user.name', 'A')
+        self._commit('[cr157] Base commit')
+        self.start = self._git('rev-parse', 'HEAD')
+        brave = mock.MagicMock(root=self.dir)
+        brave.run_git.side_effect = lambda *args, **_: self._git(*args)
+        self.enterContext(
+            mock.patch.object(autolift.repository, 'brave', brave)
+        )
+        self.enterContext(
+            mock.patch.object(autolift, 'branch_start', return_value=self.start)
+        )
+
+    def _git(self, *args: str) -> str:
+        return subprocess.run(
+            ['git', '-C', str(self.dir), *args],
+            check=True,
+            env=_git_env(),
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+
+    def _commit(self, subject: str) -> str:
+        self._git('commit', '-q', '--allow-empty', '-m', subject)
+        return self._git('rev-parse', 'HEAD')
+
+    def test_lists_fixups_whose_target_the_rebase_doesnt_replay(self):
+        own = self._commit('[cr158] Own change')
+        self._commit('fixup! [cr158] Own change')
+        stuck = self._commit('fixup! [cr157] Base commit')
+        self._commit(f'amend! {own[:10]}')
+        self._commit('fixup! fixup! [cr157] Base')
+        self.assertEqual(
+            [
+                line.split(' ', 1)[0]
+                for line in autolift.unsquashable_fixups('b')
+            ],
+            [stuck[:11], self._git('rev-parse', '--short=11', 'HEAD')],
+        )
+
+    def test_a_fixup_of_a_later_commit_counts_as_stuck(self):
+        """Autosquash only moves a fixup below its target, never above."""
+        fixup = self._commit('fixup! [cr158] Later change')
+        self._commit('[cr158] Later change')
+        self.assertEqual(
+            autolift.unsquashable_fixups('b'),
+            [f'{fixup[:11]} fixup! [cr158] Later change'],
+        )
+
+    def test_the_dry_run_replays_from_the_branch_start(self):
+        real_run = subprocess.run
+        commands = []
+
+        def run(command, *args, **kwargs):
+            if command[0] != autolift._BROCKIT:
+                return real_run(command, *args, **kwargs)  # pylint: disable=subprocess-run-check
+            commands.append(command)
+            return subprocess.CompletedProcess(command, 0)
+
+        with mock.patch.object(autolift.subprocess, 'run', side_effect=run):
+            self.assertFalse(autolift.left_to_squash('origin/cr157'))
+        self.assertEqual(len(commands), 1)
+        command = commands[0]
+        self.assertIn(f'--from-ref={self.start}', command)
+        self.assertIn(f'--to-ref={self.start}', command)
 
 
 class ReviewListTest(unittest.TestCase):

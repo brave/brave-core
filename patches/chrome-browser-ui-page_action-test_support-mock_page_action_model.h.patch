@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/page_action/test_support/mock_page_action_model.h b/chrome/browser/ui/page_action/test_support/mock_page_action_model.h
-index c52869952985e71ae6a84641bca854714da386ce..230c3cb057a74538b5c75cb6161a85a477c60b30 100644
+index 43678155a4fd9404d2d951771723a9215e701e98..e029f094d4a610f92b364c41804763c4bfe7a285 100644
 --- a/chrome/browser/ui/page_action/test_support/mock_page_action_model.h
 +++ b/chrome/browser/ui/page_action/test_support/mock_page_action_model.h
-@@ -200,6 +200,43 @@ class MockPageActionModel : public PageActionModelInterface {
+@@ -207,6 +207,43 @@ class MockPageActionModel : public PageActionModelInterface {
                (PageActionPassKey, bool show),
                (override));
    MOCK_METHOD(bool, IsEphemeral, (), (const, override));

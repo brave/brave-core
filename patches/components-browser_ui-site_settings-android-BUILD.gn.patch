@@ -1,8 +1,8 @@
 diff --git a/components/browser_ui/site_settings/android/BUILD.gn b/components/browser_ui/site_settings/android/BUILD.gn
-index d831092dd6aa944fa1a6094cc2f62e094d519876..6be95944dfead0e18efc0028f5e1876b3fb8820d 100644
+index 0cffab4031da7af71164f7bfd681cb33d4995912..7e86887e3d7f3486eda717a4903e1099430b1664 100644
 --- a/components/browser_ui/site_settings/android/BUILD.gn
 +++ b/components/browser_ui/site_settings/android/BUILD.gn
-@@ -111,6 +111,7 @@ android_library("java") {
+@@ -110,6 +110,7 @@ android_library("java") {
      "java/src/org/chromium/components/browser_ui/site_settings/WebsitePreferenceBridge.java",
      "java/src/org/chromium/components/browser_ui/site_settings/WebsiteRowPreference.java",
    ]
@@ -10,7 +10,7 @@ index d831092dd6aa944fa1a6094cc2f62e094d519876..6be95944dfead0e18efc0028f5e1876b
  
    resources_package = "org.chromium.components.browser_ui.site_settings"
    deps = [
-@@ -156,6 +157,7 @@ android_library("java") {
+@@ -154,6 +155,7 @@ android_library("java") {
      "//ui/android:ui_utils_java",
      "//url:gurl_java",
    ]

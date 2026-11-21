@@ -1213,9 +1213,6 @@
       <message name="IDS_EDUCATIONAL_TIP_DEFAULT_BROWSER_DESCRIPTION" desc="Description of the default browser section in the educational tip module on NTP.">
         You can use Brave any time you tap links in messages, documents and other apps
       </message>
-      <message name="IDS_SETUP_LIST_DEFAULT_BROWSER_PROMO_BUTTON" desc="Text on the clickable button for the default browser promo in the setup list that invites users to set Brave as their default browser.">
-        Set default
-      </message>
       <message name="IDS_EDUCATIONAL_TIP_TAB_GROUP_TITLE" desc="Title of the tab group promo in the educational tip module on NTP.">
         Tidy up with tab groups
       </message>
@@ -1281,6 +1278,15 @@
       </message>
       <message name="IDS_EDUCATIONAL_TIP_HISTORY_SYNC_BUTTON_LETS_GO" desc="Text on the clickable button on the history sync promo that invites users to turn on history sync in the educational tip module on NTP.">
         Let’s go
+      </message>
+      <message name="IDS_EDUCATIONAL_TIP_TIPS_NOTIFICATIONS_TITLE" desc="Title of the tips notifications promo that invites users to turn on tips notifications in the educational tip module on NTP.">
+        Get Brave tips notifications
+      </message>
+      <message name="IDS_EDUCATIONAL_TIP_TIPS_NOTIFICATIONS_DESCRIPTION" desc="Description of the tips notifications promo that invites users to turn on tips notifications in the educational tip module on NTP.">
+        Turn on notifications for useful tips to help you get the best of Brave
+      </message>
+      <message name="IDS_EDUCATIONAL_TIP_TIPS_NOTIFICATIONS_BUTTON" desc="Text on the clickable button on the tips notifications promo that invites users to turn on tips notifications in the educational tip module on NTP.">
+        Notify me
       </message>
 
       <!-- Sign in promo strings -->

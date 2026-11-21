@@ -8,8 +8,10 @@ import { mockRegionList } from './region-list'
 
 const doNothing = () => {}
 
-const loadingState = new PurchasedInfo();
-loadingState.state = BraveVPN.PurchasedState.LOADING;
+const loadingState: PurchasedInfo = {
+  state: BraveVPN.PurchasedState.LOADING,
+  description: null,
+}
 
 BraveVPN.setPanelBrowserApiForTesting({
   pageCallbackRouter: {

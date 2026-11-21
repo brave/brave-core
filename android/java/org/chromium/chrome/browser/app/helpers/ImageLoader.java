@@ -53,6 +53,7 @@ import org.chromium.components.image_fetcher.ImageFetcherConfig;
 import org.chromium.components.image_fetcher.ImageFetcherFactory;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.net.NetId;
+import org.chromium.net.NetworkTrafficAnnotationTag;
 import org.chromium.url.GURL;
 
 import java.io.IOException;
@@ -69,6 +70,22 @@ import java.util.regex.Pattern;
 public class ImageLoader {
     private static final String TAG = "ImageLoader";
     private static final String UNUSED_CLIENT_NAME = "unused";
+    private static final NetworkTrafficAnnotationTag TRAFFIC_ANNOTATION =
+            NetworkTrafficAnnotationTag.createComplete(
+                    "brave_wallet_image_loader",
+                    "semantics {"
+                            + "  sender: 'Brave Wallet'"
+                            + "  description: 'Downloads the token, NFT and dApp images that"
+                            + " Brave Wallet shows.'"
+                            + "  trigger: 'A Brave Wallet screen shows an image hosted on the"
+                            + " web.'"
+                            + "  data: 'The URL of the image.'"
+                            + "  destination: OTHER"
+                            + "}"
+                            + "policy {"
+                            + "  cookies_allowed: NO"
+                            + "  policy_exception_justification: 'Not implemented.'"
+                            + "}");
     private static final String BASE64_ENCODING_PATTERN =
             "^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$";
     private static final String ATT_VALUE_1000_PX = "1000px";
@@ -158,7 +175,7 @@ public class ImageLoader {
                             ImageFetcherConfig.NETWORK_ONLY, profile.getProfileKey());
             if (isGif(url)) {
                 imageFetcher.fetchGif(
-                        Params.create(new GURL(url), UNUSED_CLIENT_NAME),
+                        Params.create(new GURL(url), UNUSED_CLIENT_NAME, TRAFFIC_ANNOTATION),
                         (ImageDataFetchResult gifImage) -> {
                             ImageFetcherFacade imageFetcherFacade =
                                     new ImageFetcherFacade(gifImage.imageData);
@@ -173,7 +190,7 @@ public class ImageLoader {
                         });
             } else {
                 imageFetcher.fetchImage(
-                        Params.create(new GURL(url), UNUSED_CLIENT_NAME),
+                        Params.create(new GURL(url), UNUSED_CLIENT_NAME, TRAFFIC_ANNOTATION),
                         bitmap -> {
                             BitmapDrawable bitmapDrawable = new BitmapDrawable(resources, bitmap);
                             ImageFetcherFacade imageFetcherFacade =

@@ -278,7 +278,7 @@ public class BraveWalletPanel implements DialogInterface {
                 activity.openBraveConnectedSitesSettings();
                 dismiss();
             } catch (BraveActivity.BraveActivityNotFoundException e) {
-                Log.e(TAG, "handleMenuItemClick action_connected_sites " + e);
+                Log.e(TAG, "handleMenuItemClick action_connected_sites", e);
             }
         } else if (item.getItemId() == R.id.action_settings) {
             try {
@@ -286,7 +286,7 @@ public class BraveWalletPanel implements DialogInterface {
                 activity.openBraveWalletSettings();
                 dismiss();
             } catch (BraveActivity.BraveActivityNotFoundException e) {
-                Log.e(TAG, "handleMenuItemClick action_settings " + e);
+                Log.e(TAG, "handleMenuItemClick action_settings", e);
             }
         } else if (item.getItemId() == R.id.action_view_on_block_explorer) {
             try {
@@ -298,7 +298,7 @@ public class BraveWalletPanel implements DialogInterface {
                         mSelectedNetwork);
                 dismiss();
             } catch (BraveActivity.BraveActivityNotFoundException e) {
-                Log.e(TAG, "handleMenuItemClick action_view_on_block_explorer " + e);
+                Log.e(TAG, "handleMenuItemClick action_view_on_block_explorer", e);
             }
         } else if (item.getItemId() == R.id.action_help_center) {
             WalletUtils.openWalletHelpCenter(mContext);
@@ -488,7 +488,7 @@ public class BraveWalletPanel implements DialogInterface {
                         intent.setAction(Intent.ACTION_VIEW);
                         activity.startActivity(intent);
                     } catch (BraveActivity.BraveActivityNotFoundException e) {
-                        Log.e(TAG, "setUpViews AccountChangeAnchor click " + e);
+                        Log.e(TAG, "setUpViews AccountChangeAnchor click", e);
                     }
                 });
         mBtnSelectedNetwork.setOnLongClickListener(
@@ -509,7 +509,7 @@ public class BraveWalletPanel implements DialogInterface {
                     activity.openBraveWalletDAppsActivity(
                             BraveWalletDAppsActivity.ActivityType.CONNECT_ACCOUNT);
                 } catch (BraveActivity.BraveActivityNotFoundException e) {
-                    Log.e(TAG, "ConnectedAccountClick click " + e);
+                    Log.e(TAG, "ConnectedAccountClick click", e);
                 }
             };
 

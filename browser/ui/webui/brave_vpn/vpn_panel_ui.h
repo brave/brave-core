@@ -36,6 +36,8 @@ class VPNPanelUI : public ui::UntrustedWebUIController,
   // interface passing the pending receiver that will be internally bound.
   void BindInterface(
       mojo::PendingReceiver<brave_vpn::mojom::PanelHandlerFactory> receiver);
+  void BindInterface(
+      mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver);
 
   // From TopChromeWebUIController
   void set_embedder(base::WeakPtr<Embedder> embedder) { embedder_ = embedder; }
@@ -45,11 +47,9 @@ class VPNPanelUI : public ui::UntrustedWebUIController,
 
  private:
   // brave_vpn::mojom::PanelHandlerFactory:
-  void CreatePanelHandler(
-      mojo::PendingRemote<brave_vpn::mojom::Page> page,
-      mojo::PendingReceiver<brave_vpn::mojom::PanelHandler> panel_receiver,
-      mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler>
-          vpn_service_receiver) override;
+  void CreatePanelHandler(mojo::PendingRemote<brave_vpn::mojom::Page> page,
+                          mojo::PendingReceiver<brave_vpn::mojom::PanelHandler>
+                              panel_receiver) override;
 
   std::unique_ptr<VPNPanelHandler> panel_handler_;
 

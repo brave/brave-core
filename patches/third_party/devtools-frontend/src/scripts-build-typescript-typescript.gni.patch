@@ -1,8 +1,8 @@
 diff --git a/scripts/build/typescript/typescript.gni b/scripts/build/typescript/typescript.gni
-index 872f4e1f70809ff5ce69ef0af1795165b10699fe..3f85968f619223cce3887988d2284be4f497d184 100644
+index 05a2f2d143cf88fad9000f9c07d54117d8b0d51b..a890801a06dbab395cd6fb32ddd22bf39f0c4ee3 100644
 --- a/scripts/build/typescript/typescript.gni
 +++ b/scripts/build/typescript/typescript.gni
-@@ -129,6 +129,26 @@ template("ts_library") {
+@@ -135,6 +135,26 @@ template("ts_library") {
      _all_sources += invoker.additional_type_definitions
    }
  
@@ -29,7 +29,7 @@ index 872f4e1f70809ff5ce69ef0af1795165b10699fe..3f85968f619223cce3887988d2284be4
    _ts_references = []
    _ts_deps = []
    _sources_deps = []
-@@ -222,7 +242,7 @@ template("ts_library") {
+@@ -228,7 +248,7 @@ template("ts_library") {
                                    "*.d.mts",
                                    "*.d.cts",
                                  ])
@@ -38,7 +38,7 @@ index 872f4e1f70809ff5ce69ef0af1795165b10699fe..3f85968f619223cce3887988d2284be4
                                      [
                                        "*.d.ts",
                                        "*.d.mts",
-@@ -260,7 +280,7 @@ template("ts_library") {
+@@ -266,7 +286,7 @@ template("ts_library") {
    if (!_no_js_emit) {
      _js_outputs = []
    }
@@ -47,7 +47,7 @@ index 872f4e1f70809ff5ce69ef0af1795165b10699fe..3f85968f619223cce3887988d2284be4
      _ext = get_path_info(src, "extension")
      _rel_name = rebase_path(src, _rootdir)
      _rel_dir = get_path_info(_rel_name, "dir")
-@@ -312,7 +332,7 @@ template("ts_library") {
+@@ -321,7 +341,7 @@ template("ts_library") {
            rebase_path(target_gen_dir, root_build_dir),
            "--rootDir",
            rebase_path(_rootdir, root_build_dir),

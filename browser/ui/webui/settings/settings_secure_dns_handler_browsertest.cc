@@ -16,6 +16,8 @@
 #include <ranges>
 
 #include "base/test/run_until.h"
+#include "base/test/scoped_feature_list.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/net/secure_dns_config.h"
@@ -36,6 +38,9 @@
 
 #if BUILDFLAG(IS_WIN)
 #include "base/win/win_util.h"
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/common/features.h"
+#endif
 #endif
 
 namespace settings {
@@ -86,7 +91,8 @@ class BraveSecureDnsHandlerTest : public InProcessBrowserTest {
   // change. Returns false if the message was invalid or not found.
   bool GetLastSettingsChangedMessage(std::string* out_secure_dns_mode,
                                      std::string* out_doh_config,
-                                     int* out_management_mode) {
+                                     int* out_management_mode,
+                                     bool* out_show_options) {
     for (const std::unique_ptr<content::TestWebUI::CallData>& data :
          std::views::reverse(web_ui_.call_data())) {
       if (data->function_name() != "cr.webUIListenerCallback" ||
@@ -120,6 +126,13 @@ class BraveSecureDnsHandlerTest : public InProcessBrowserTest {
         return false;
       }
       *out_management_mode = *management_mode;
+
+      // Get whether the provider options are shown.
+      std::optional<bool> show_options = dict->FindBool("showOptions");
+      if (!show_options.has_value()) {
+        return false;
+      }
+      *out_show_options = *show_options;
 
       return true;
     }
@@ -166,8 +179,9 @@ IN_PROC_BROWSER_TEST_F(BraveSecureDnsHandlerTest, OtherPoliciesSet) {
   std::string secure_dns_mode;
   std::string doh_config;
   int management_mode;
+  bool show_options;
   EXPECT_TRUE(GetLastSettingsChangedMessage(&secure_dns_mode, &doh_config,
-                                            &management_mode));
+                                            &management_mode, &show_options));
 
   // This directly tests the override.
   EXPECT_FALSE(SystemNetworkContextManager::GetStubResolverConfigReader()
@@ -177,6 +191,33 @@ IN_PROC_BROWSER_TEST_F(BraveSecureDnsHandlerTest, OtherPoliciesSet) {
   EXPECT_EQ(SecureDnsConfig::kModeSecure, secure_dns_mode);
   EXPECT_EQ(static_cast<int>(SecureDnsConfig::ManagementMode::kNoOverride),
             management_mode);
+  EXPECT_TRUE(show_options);
 }
+
+#if BUILDFLAG(IS_WIN) && BUILDFLAG(ENABLE_BRAVE_VPN)
+// While Brave VPN is connected we lock the secure DNS setting, so the provider
+// options must stay hidden: choosing a provider would stop us from applying the
+// VPN's DoH config.
+IN_PROC_BROWSER_TEST_F(BraveSecureDnsHandlerTest, ProviderOptionsHiddenForVpn) {
+  base::test::ScopedFeatureList feature_list(
+      brave_vpn::features::kBraveVPNDnsProtection);
+  PrefService* local_state = g_browser_process->local_state();
+  local_state->SetString(prefs::kBraveVpnDnsConfig,
+                         "https://vpn-dns.example/dns-query");
+  local_state->SetString(prefs::kDnsOverHttpsMode,
+                         SecureDnsConfig::kModeAutomatic);
+
+  std::string secure_dns_mode;
+  std::string doh_config;
+  int management_mode;
+  bool show_options;
+  ASSERT_TRUE(GetLastSettingsChangedMessage(&secure_dns_mode, &doh_config,
+                                            &management_mode, &show_options));
+  EXPECT_EQ(SecureDnsConfig::kModeSecure, secure_dns_mode);
+  EXPECT_EQ(static_cast<int>(SecureDnsConfig::ManagementMode::kDisabledManaged),
+            management_mode);
+  EXPECT_FALSE(show_options);
+}
+#endif  // BUILDFLAG(IS_WIN) && BUILDFLAG(ENABLE_BRAVE_VPN)
 
 }  // namespace settings

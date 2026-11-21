@@ -13,16 +13,13 @@
 
 #include "base/logging.h"
 #include "base/memory/ref_counted.h"
-#include "base/metrics/histogram_functions.h"
 #include "base/process/launch.h"
 #include "base/process/process_handle.h"
 #include "base/synchronization/waitable_event.h"
-#include "base/system/sys_info.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/threading/platform_thread.h"
 #include "base/time/time.h"
-#include "base/timer/elapsed_timer.h"
 #include "base/trace_event/trace_event.h"
 #include "build/branding_buildflags.h"
 #include "chrome/install_static/install_util.h"
@@ -96,7 +93,6 @@ void CreateAndMarshalProcessLauncher(
 // without a timeout.
 Microsoft::WRL::ComPtr<IUnknown> CreateProcessLauncher() {
   constexpr int kDefaultTimeoutIncrementSeconds = 15;
-  constexpr base::TimeDelta kMaxTimeAfterSystemStartup = base::Seconds(150);
 
   auto result = base::MakeRefCounted<CreateProcessLauncherResult>();
   if (base::ThreadPool::CreateCOMSTATaskRunner(
@@ -110,15 +106,7 @@ Microsoft::WRL::ComPtr<IUnknown> CreateProcessLauncher() {
             .value_or(base::Value(kDefaultTimeoutIncrementSeconds))
             .GetIfInt()
             .value_or(kDefaultTimeoutIncrementSeconds));
-    const base::ElapsedTimer timer;
-    const bool is_at_startup =
-        base::SysInfo::Uptime() <= kMaxTimeAfterSystemStartup;
     if (!result->completion_event.TimedWait(timeout)) {
-      base::UmaHistogramMediumTimes(
-          is_at_startup
-              ? "Startup.CreateProcessLauncher2.TimedWaitFailedAtStartup"
-              : "Startup.CreateProcessLauncher2.TimedWaitFailed",
-          timer.Elapsed());
       creation_timeout.Set(base::Value(static_cast<int>(timeout.InSeconds()) +
                                        kDefaultTimeoutIncrementSeconds));
       TRACE_EVENT_INSTANT0(
@@ -131,11 +119,6 @@ Microsoft::WRL::ComPtr<IUnknown> CreateProcessLauncher() {
     if (!result->stream) {
       return {};
     }
-    base::UmaHistogramMediumTimes(
-        is_at_startup
-            ? "Startup.CreateProcessLauncher2.TimedWaitSucceededAtStartup"
-            : "Startup.CreateProcessLauncher2.TimedWaitSucceeded",
-        timer.Elapsed());
 
     Microsoft::WRL::ComPtr<IUnknown> unknown;
     const HRESULT hr =

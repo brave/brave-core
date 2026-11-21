@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/page_action/page_action_controller.h b/chrome/browser/ui/page_action/page_action_controller.h
-index 335462d98c01ca86f90821cc49fa33fa1dcabd49..038ed7a5019a8574d298a6784eeb3537a27b760f 100644
+index 2984ee93830ace4e2fb4602cb08f96e947933f61..529f9df6bcc2e13efc354da8988f7e56d96e4288 100644
 --- a/chrome/browser/ui/page_action/page_action_controller.h
 +++ b/chrome/browser/ui/page_action/page_action_controller.h
-@@ -394,10 +394,10 @@ class PageActionController {
+@@ -410,10 +410,10 @@ class PageActionController {
    virtual void DecrementActivityCounter(actions::ActionId action_id) = 0;
  };
  
@@ -15,7 +15,7 @@ index 335462d98c01ca86f90821cc49fa33fa1dcabd49..038ed7a5019a8574d298a6784eeb3537
        tabs::TabInterface& tab_interface,
        const std::vector<actions::ActionId>& action_ids,
        const PageActionPropertiesProviderInterface& properties_provider,
-@@ -405,9 +405,9 @@ class PageActionControllerImpl : public PageActionController,
+@@ -421,9 +421,9 @@ class PageActionControllerImpl : public PageActionController,
        PageActionModelFactory* page_action_model_factory = nullptr,
        PageActionMetricsRecorderFactory* page_action_metrics_recorder_factory =
            nullptr);
@@ -28,7 +28,7 @@ index 335462d98c01ca86f90821cc49fa33fa1dcabd49..038ed7a5019a8574d298a6784eeb3537
  
    // PageActionController:
    void Show(actions::ActionId action_id) override;
-@@ -486,6 +486,7 @@ class PageActionControllerImpl : public PageActionController,
+@@ -504,6 +504,7 @@ class PageActionControllerImpl : public PageActionController,
    void OnActionsChanged() override;
  
   private:
@@ -36,7 +36,7 @@ index 335462d98c01ca86f90821cc49fa33fa1dcabd49..038ed7a5019a8574d298a6784eeb3537
    using PageActionModelsMap =
        std::map<actions::ActionId, std::unique_ptr<PageActionModelInterface>>;
  
-@@ -518,7 +519,7 @@ class PageActionControllerImpl : public PageActionController,
+@@ -540,7 +541,7 @@ class PageActionControllerImpl : public PageActionController,
    void ActionItemChanged(const actions::ActionItem* action_item);
    void PinnedActionsModelChanged();
  
@@ -45,7 +45,7 @@ index 335462d98c01ca86f90821cc49fa33fa1dcabd49..038ed7a5019a8574d298a6784eeb3537
        actions::ActionId action_id,
        bool is_ephemeral);
  
-@@ -581,7 +582,7 @@ class PageActionControllerImpl : public PageActionController,
+@@ -603,7 +604,7 @@ class PageActionControllerImpl : public PageActionController,
  
    ui::ScopedUnownedUserData<PageActionController> scoped_unowned_user_data_;
  

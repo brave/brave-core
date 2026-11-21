@@ -20,11 +20,12 @@
 
 namespace {
 
-blink::WebWindowFeatures MaybeFarbleWindowFeatures(
-    const blink::String& feature_string,
+blink::WebWindowFeatures FarbleWindowFeatures(
+    blink::WebWindowFeatures window_features,
     blink::LocalDOMWindow* dom_window) {
-  blink::WebWindowFeatures window_features =
-      GetWindowFeaturesFromString_ChromiumImpl(feature_string, dom_window);
+  if (!dom_window) {
+    return window_features;
+  }
   blink::ExecutionContext* context = dom_window->GetExecutionContext();
   if (brave::BlockScreenFingerprinting(context)) {
     if (window_features.x_set) {
@@ -51,13 +52,25 @@ blink::WebWindowFeatures MaybeFarbleWindowFeatures(
 
 }  // namespace
 
-#define GetWindowFeaturesFromString                                \
-  GetWindowFeaturesFromString(const blink::String& feature_string, \
-                              LocalDOMWindow* dom_window) {        \
-    return MaybeFarbleWindowFeatures(feature_string, dom_window);  \
-  }                                                                \
+#define GetWindowFeaturesFromString                                           \
+  GetWindowFeaturesFromString(const blink::String& feature_string,            \
+                              LocalDOMWindow* dom_window) {                   \
+    return FarbleWindowFeatures(                                              \
+        GetWindowFeaturesFromString_ChromiumImpl(feature_string, dom_window), \
+        dom_window);                                                          \
+  }                                                                           \
   WebWindowFeatures GetWindowFeaturesFromString_ChromiumImpl
+
+#define GetWindowFeaturesFromAttribute                                       \
+  GetWindowFeaturesFromAttribute(const blink::String& feature_string,        \
+                                 LocalDOMWindow* dom_window) {               \
+    return FarbleWindowFeatures(GetWindowFeaturesFromAttribute_ChromiumImpl( \
+                                    feature_string, dom_window),             \
+                                dom_window);                                 \
+  }                                                                          \
+  WebWindowFeatures GetWindowFeaturesFromAttribute_ChromiumImpl
 
 #include <third_party/blink/renderer/core/page/create_window.cc>
 
+#undef GetWindowFeaturesFromAttribute
 #undef GetWindowFeaturesFromString

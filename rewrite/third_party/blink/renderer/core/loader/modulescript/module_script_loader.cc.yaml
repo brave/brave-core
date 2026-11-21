@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Tag module script fetches with their initiator for Page Graph.
+
+      Runs once `FetchInternal()` has set the initiator info, before the fetch
+      is scheduled.
+    add_before_line:
+      line: 'async_task_context_.Schedule('
+      code: |
+        #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
+          if (CoreProbeSink::HasAgentsGlobal(CoreProbeSink::kPageGraph)) {
+            options.initiator_info.dom_node_id =
+                module_request.Options().GetDOMNodeId();
+            options.initiator_info.parent_script_id =
+                module_request.Options().GetParentScriptId();
+          }
+        #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
+  - description: Include what the substitution above uses.
+    add_include:
+      header:
+        - brave/components/brave_page_graph/common/buildflags.h
+        - third_party/blink/renderer/core/probe/core_probes.h

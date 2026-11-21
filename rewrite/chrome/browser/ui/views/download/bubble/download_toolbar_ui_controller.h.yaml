@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Include what the member below needs.
+    add_include:
+      header:
+        - base/callback_list.h
+
+  - description: |-
+      Hold Brave's subscription to the download button being shown.
+
+      Brave updates the icon whenever the button shows, as a newly shown button
+      doesn't have Brave's insecure download icon yet.
+    add_to_protected:
+      class_name: DownloadToolbarUIController
+      code:
+        'base::CallbackListSubscription
+        brave_download_button_shown_subscription_;'

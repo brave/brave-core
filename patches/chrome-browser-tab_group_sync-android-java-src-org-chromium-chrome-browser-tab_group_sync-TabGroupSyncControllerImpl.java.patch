@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/tab_group_sync/android/java/src/org/chromium/chrome/browser/tab_group_sync/TabGroupSyncControllerImpl.java b/chrome/browser/tab_group_sync/android/java/src/org/chromium/chrome/browser/tab_group_sync/TabGroupSyncControllerImpl.java
-index 3167294cb77d25af93ce09a940c6ea107c855099..32532b529459d5be4a01467f21c45a049c00c9ef 100644
+index 96a0ab1d7b032bcd57df9f0f2f4aeb4eaaa4fe74..5a669638dcd23e463c93a1cf6c80769da83ef072 100644
 --- a/chrome/browser/tab_group_sync/android/java/src/org/chromium/chrome/browser/tab_group_sync/TabGroupSyncControllerImpl.java
 +++ b/chrome/browser/tab_group_sync/android/java/src/org/chromium/chrome/browser/tab_group_sync/TabGroupSyncControllerImpl.java
 @@ -29,7 +29,7 @@ import java.util.function.Supplier;

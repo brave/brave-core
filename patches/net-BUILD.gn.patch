@@ -1,8 +1,8 @@
 diff --git a/net/BUILD.gn b/net/BUILD.gn
-index 67db0dea153d1b0344de2f2b6b1a663f207ea136..1b5ff26f9db7f09eca6ba52d21ea5535b891ce6f 100644
+index 81c0e082dfa765cbd27b91a2a94865a42df7baa6..3c6081273593c831a2d48f06e02e6e0381f4745f 100644
 --- a/net/BUILD.gn
 +++ b/net/BUILD.gn
-@@ -1253,6 +1253,7 @@ component("net") {
+@@ -1312,6 +1312,7 @@ component("net") {
      "url_request/websocket_handshake_userdata_key.cc",
      "url_request/websocket_handshake_userdata_key.h",
    ]
@@ -10,8 +10,8 @@ index 67db0dea153d1b0344de2f2b6b1a663f207ea136..1b5ff26f9db7f09eca6ba52d21ea5535
  
    if (is_posix || is_fuchsia) {
      sources += [ "base/net_errors_posix.cc" ]
-@@ -1281,6 +1282,7 @@ component("net") {
-     "//third_party/rust/sfv/v0_15/wrapper",
+@@ -1340,6 +1341,7 @@ component("net") {
+     "//third_party/rust/sfv/v0_16/wrapper",
      "//third_party/simdutf",
    ]
 +  deps += brave_net_deps

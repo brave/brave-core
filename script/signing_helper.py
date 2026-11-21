@@ -93,21 +93,13 @@ def BraveModifyPartsForSigning(parts, config):
         parts['sparkle-framework'].options = full_hardened_runtime_options
 
     # Overwrite to avoid TeamID mismatch with widevine dylib. Library
-    # validation has to be off in every variant of the main helper, including
-    # the aperitif one, because that is where the CDM gets loaded.
+    # validation has to be off in the main helper because that is where the
+    # CDM gets loaded. Every helper links libaperitif.dylib via
+    # @executable_path, and dyld refuses @ path expansion in a restricted
+    # process unless library validation is on, so it must not be signed with
+    # `restrict` (the hardened runtime already ignores DYLD_* variables).
     parts['helper-app'].entitlements = 'helper-entitlements.plist'
     parts['helper-app'].options = (
-        CodeSignOptions.RESTRICT
-        | CodeSignOptions.KILL
-        | CodeSignOptions.HARDENED_RUNTIME
-    )
-
-    # The aperitif helper links libaperitif.dylib via @executable_path. dyld
-    # refuses @ path expansion in a restricted process unless library
-    # validation is on, so without library validation it must not be signed
-    # with `restrict` (the hardened runtime already ignores DYLD_* variables).
-    parts['helper-aperitif-app'].entitlements = 'helper-entitlements.plist'
-    parts['helper-aperitif-app'].options = (
         CodeSignOptions.KILL | CodeSignOptions.HARDENED_RUNTIME
     )
 

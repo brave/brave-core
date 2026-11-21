@@ -1,5 +1,5 @@
 diff --git a/components/history/core/browser/features.cc b/components/history/core/browser/features.cc
-index 6fa34ac465af25a2d4cfec1754c1e36473324303..bd4de36506d9f886035242693438af0917a10bda 100644
+index 50f86d7ae0c45141f924174af9e3a45a1f0d7996..bc60b39f1f7e59d028374b949924204330f2143b 100644
 --- a/components/history/core/browser/features.cc
 +++ b/components/history/core/browser/features.cc
 @@ -26,7 +26,7 @@ constexpr int kMaxNumRepeatableQueriesDefaultValue =

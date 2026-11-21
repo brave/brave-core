@@ -1,0 +1,12 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Keep `braveCookieType` on expanded exceptions, so `site-list-entry` can
+      disable the reset button of Shields and Google sign-in cookie exceptions.
+    regex:
+      re_pattern: '(controlledBy: controlledBy,\n)'
+      replace: '\1            braveCookieType: exception.braveCookieType,\n'

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/chrome_browser_main.cc b/chrome/browser/chrome_browser_main.cc
-index 41b28743dfe526afd45efe1dda643e3750b28a11..18631f5522d63a419fac83bf5a05749f7d767521 100644
+index 7b2ff4654f40a4210506b44bb8be26f9c9c76eae..4653b54ef457b1282c44d1249932aa40e0848b98 100644
 --- a/chrome/browser/chrome_browser_main.cc
 +++ b/chrome/browser/chrome_browser_main.cc
 @@ -388,6 +388,9 @@ constexpr base::FilePath::CharType kHistoryEmbeddingsDatabaseName[] =
@@ -12,7 +12,7 @@ index 41b28743dfe526afd45efe1dda643e3750b28a11..18631f5522d63a419fac83bf5a05749f
    base::FilePath db_path = profile_path.Append(kHistoryEmbeddingsDatabaseName);
    if (base::PathExists(db_path)) {
      sql::Database::Delete(db_path);
-@@ -1084,6 +1087,7 @@ void ChromeBrowserMainParts::ToolkitInitialized() {
+@@ -1085,6 +1088,7 @@ void ChromeBrowserMainParts::ToolkitInitialized() {
  
  #if BUILDFLAG(IS_MAC) && BUILDFLAG(ENABLE_UPDATER)
  void PromptUpdaterPromotion() {

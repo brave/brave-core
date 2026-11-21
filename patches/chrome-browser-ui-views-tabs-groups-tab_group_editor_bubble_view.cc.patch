@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/groups/tab_group_editor_bubble_view.cc b/chrome/browser/ui/views/tabs/groups/tab_group_editor_bubble_view.cc
-index b24396612f146a7abd58d98e13155fa97fddaa6e..753ed7ab28a14ba5c87be38c9733e9f132692718 100644
+index b3a27bc8465ccaf0b1ffa70042c5abc83017c630..d04f22d75713f631a5d89467161fd657833c9804 100644
 --- a/chrome/browser/ui/views/tabs/groups/tab_group_editor_bubble_view.cc
 +++ b/chrome/browser/ui/views/tabs/groups/tab_group_editor_bubble_view.cc
-@@ -135,7 +135,7 @@ constexpr int kSeparatorPadding = 8;
+@@ -132,7 +132,7 @@ constexpr int kSeparatorPadding = 8;
  constexpr int kDialogWidth = 240;
  // The maximum number of times we will show the footer section with the learn
  // more link.

@@ -99,6 +99,20 @@ substitutions:
         return size;
 
   - description: |
+      Lay the page action out at the model's override height.
+
+      The parent usually asks the view to stretch, so the size bounds it passes
+      are replaced with ones at the override height, which
+      GetBraveSizeBounds() (in the chromium_src override) returns only while
+      they differ.
+    preempt_function_impl:
+      function_name: PageActionView::CalculateProposedLayout
+      code: |-
+        if (auto bounds = GetBraveSizeBounds(*this, size_bounds)) {
+          return CalculateProposedLayout(*bounds);
+        }
+
+  - description: |
       Refresh Brave's model-driven visual state after activating a
       controller.
     after_function_impl:

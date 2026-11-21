@@ -245,7 +245,7 @@ public class BraveOriginPreferences extends BravePreferenceFragment
                 policyValue,
                 (success) -> {
                     if (!success) {
-                        Log.e(TAG, "Failed to set policy value for " + policyKey);
+                        Log.e(TAG, "Failed to set policy value for %s", policyKey);
                     }
                     showRestartSnackbar();
                 });
@@ -703,7 +703,7 @@ public class BraveOriginPreferences extends BravePreferenceFragment
                         policyValue,
                         (success) -> {
                             if (!success) {
-                                Log.e(TAG, "Failed to reset policy value for " + policyKey);
+                                Log.e(TAG, "Failed to reset policy value for %s", policyKey);
                             }
                         });
             }

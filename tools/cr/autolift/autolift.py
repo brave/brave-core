@@ -154,6 +154,7 @@ import pinned_commits  # noqa: E402  -- after _boot
 import repository  # noqa: E402  -- after _boot
 from versioning import (  # noqa: E402  -- after _boot
     Version,
+    branch_start,
     load_package_file,
     previous_version_commit,
     read_chromium_version_file,
@@ -718,16 +719,18 @@ def not_worth_a_run(
 def left_to_squash(base: str) -> bool | None:
     """Whether HEAD has commits `brockit rebase --squash-minor-bumps` would
     squash (fixups, repeated pinned subjects, minor bumps), whatever the
-    base did since: by the dry run of a rebase onto the branch's own fork
-    point. None when the dry run fails."""
+    base did since: by the dry run of a rebase of the commits the real
+    rebase replays, from `branch_start()`, onto where they start. None when
+    the dry run fails."""
     brave = repository.brave
-    fork = brave.run_git('merge-base', base, 'HEAD')
+    start = brave.run_git('rev-parse', branch_start('HEAD', base))
     returncode = subprocess.run(
         [
             _BROCKIT,
             'rebase',
             '--squash-minor-bumps',
-            f'--to-ref={fork}',
+            f'--from-ref={start}',
+            f'--to-ref={start}',
             '--dry-run',
         ],
         cwd=brave.root,
@@ -737,6 +740,37 @@ def left_to_squash(base: str) -> bool | None:
     if returncode not in (0, _REBASE_NEEDED):
         return None
     return returncode == _REBASE_NEEDED
+
+
+_SQUASH_MARKER = re.compile(r'^(?:(?:fixup|amend|squash)! )+')
+
+
+def unsquashable_fixups(base: str) -> list[str]:
+    """The `fixup!`, `amend!` and `squash!` commits the rebase onto `base`
+    replays whose target isn't one of the commits it replays, so no rebase
+    squashes them: a base commit, typically, which the branch can't rewrite.
+    Matched as git's autosquash matches them, by subject prefix or hash."""
+    brave = repository.brave
+    start = brave.run_git('rev-parse', branch_start('HEAD', base))
+    commits = [
+        line.split(' ', 1)
+        for line in brave.run_git(
+            'log', '--reverse', '--format=%H %s', f'{start}..HEAD'
+        ).splitlines()
+    ]
+    stuck = []
+    for index, (sha, subject) in enumerate(commits):
+        marker = _SQUASH_MARKER.match(subject)
+        if not marker:
+            continue
+        target = subject[marker.end() :]
+        if not any(
+            other.startswith(target) or other_sha.startswith(target)
+            for other_sha, other in commits[:index]
+            if not _SQUASH_MARKER.match(other)
+        ):
+            stuck.append(f'{sha[:11]} {subject}')
+    return stuck
 
 
 def _since_rebase(base: str, head: str = 'HEAD') -> timedelta:
@@ -1155,6 +1189,20 @@ class RunPlan:
             self.summary += (
                 f'\n- `brockit rebase --dry-run` failed, so whether '
                 f'{self.branch} has commits left to squash is unknown.'
+            )
+        stuck = unsquashable_fixups(self.base)
+        if stuck:
+            # A `cr<N>` base's commits are rewritten by its own runs, so a
+            # fixup of one belongs there; master's and a channel's aren't.
+            action = (
+                f'it belongs on {self.base}, whose commit it fixes'
+                if re.fullmatch(r'(?:origin/)?cr\d+', self.base)
+                else 'reword each into a commit of its own'
+            )
+            self.summary += (
+                f'\n- {len(stuck)} fixup(s) on {self.branch} target commits '
+                f'only {self.base} has, so no rebase squashes them: '
+                f'{action}.\n' + ''.join(f'  - `{line}`\n' for line in stuck)
             )
         return not_worth_a_run(
             lifts,

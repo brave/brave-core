@@ -9,10 +9,6 @@ import {css} from '//resources/lit/v3_0/lit.rollup.js'
 import {SettingsSectionElement} from '../settings_page/settings_section.js'
 
 injectStyle(SettingsSectionElement, css`
-  :host-context(settings-section:first-of-type) #header:has(.title:empty) {
-    display: none;
-  }
-
   #header .title {
     margin-top: calc(var(--cr-section-vertical-margin) - var(--leo-spacing-xl)) !important;
     font-size: var(--leo-typography-heading-h4-font-size) !important;

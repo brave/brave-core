@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Pass the `ScriptState` to `toDataURL()`.
+
+      Brave's overload farbles the canvas data with the script's execution
+      context, which is valid even when the canvas' own isn't.
+    regex:
+      re_pattern:
+        '\[(MeasureAs=CanvasToDataURL, RaisesException\] DOMString toDataURL\()'
+      replace: '[CallWith=ScriptState, \1'

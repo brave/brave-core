@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/android/selection/chrome_selection_dropdown_menu_delegate.cc b/chrome/browser/android/selection/chrome_selection_dropdown_menu_delegate.cc
-index 152de7b2a65cdc1b9efa90e52bca39380c33fd23..f255f27ae4cd6c0c163ac7b82e53db2527f5c715 100644
+index 7cb0bb1cfcfdcf66c8f690fec1a2ed4414d99807..802e256d804974530595c8ac80f5a7f55746e1ae 100644
 --- a/chrome/browser/android/selection/chrome_selection_dropdown_menu_delegate.cc
 +++ b/chrome/browser/android/selection/chrome_selection_dropdown_menu_delegate.cc
 @@ -41,7 +41,7 @@
@@ -11,7 +11,7 @@ index 152de7b2a65cdc1b9efa90e52bca39380c33fd23..f255f27ae4cd6c0c163ac7b82e53db25
  #include "chrome/browser/extensions/extension_menu_model_android.h"
  #endif
  
-@@ -67,7 +67,7 @@ constexpr int kPrintMenuItemOrderReadOnly = 65;
+@@ -63,7 +63,7 @@ constexpr int kPrintMenuItemOrderReadOnly = 65;
  constexpr int kPrintMenuItemOrderEditable = 120;
  #endif
  
@@ -20,7 +20,7 @@ index 152de7b2a65cdc1b9efa90e52bca39380c33fd23..f255f27ae4cd6c0c163ac7b82e53db25
  // The display order for extension items in the selection dropdown menu.
  // Placed after alternative and Share items (order > Menu.CATEGORY_ALTERNATIVE +
  // 1).
-@@ -78,14 +78,14 @@ constexpr int kExtensionMenuItemOrder = 300000;
+@@ -74,14 +74,14 @@ constexpr int kExtensionMenuItemOrder = 300000;
  // menu. Positioned at the absolute end of the selection dropdown menu.
  constexpr int kInspectElementItemOrder = 1000000;
  
@@ -37,7 +37,7 @@ index 152de7b2a65cdc1b9efa90e52bca39380c33fd23..f255f27ae4cd6c0c163ac7b82e53db25
      ,
                                           public ui::SimpleMenuModel::Delegate
  #endif
-@@ -93,7 +93,7 @@ class ChromeSelectionDropdownMenuModel : public BaseSelectionDropdownMenuModel
+@@ -89,7 +89,7 @@ class ChromeSelectionDropdownMenuModel : public BaseSelectionDropdownMenuModel
   public:
    ChromeSelectionDropdownMenuModel(content::RenderFrameHost& render_frame_host,
                                     const content::ContextMenuParams& params)
@@ -46,7 +46,7 @@ index 152de7b2a65cdc1b9efa90e52bca39380c33fd23..f255f27ae4cd6c0c163ac7b82e53db25
        : BaseSelectionDropdownMenuModel(render_frame_host, params),
  #else
        : BaseSelectionDropdownMenuModel(this),
-@@ -137,7 +137,7 @@ class ChromeSelectionDropdownMenuModel : public BaseSelectionDropdownMenuModel
+@@ -130,7 +130,7 @@ class ChromeSelectionDropdownMenuModel : public BaseSelectionDropdownMenuModel
          IDC_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PASSWORDS_SELECT_PASSWORD) {
        return kSelectPasswordMenuItemOrder;
      }
@@ -55,7 +55,7 @@ index 152de7b2a65cdc1b9efa90e52bca39380c33fd23..f255f27ae4cd6c0c163ac7b82e53db25
      int base_order = BaseSelectionDropdownMenuModel::GetDisplayOrderAt(index);
      if (base_order >= 0) {
        return base_order;
-@@ -204,7 +204,7 @@ class ChromeSelectionDropdownMenuModel : public BaseSelectionDropdownMenuModel
+@@ -189,7 +189,7 @@ class ChromeSelectionDropdownMenuModel : public BaseSelectionDropdownMenuModel
        return;
      }
  
@@ -64,7 +64,7 @@ index 152de7b2a65cdc1b9efa90e52bca39380c33fd23..f255f27ae4cd6c0c163ac7b82e53db25
      BaseSelectionDropdownMenuModel::ExecuteCommand(command_id, event_flags);
  #endif
    }
-@@ -233,7 +233,7 @@ class ChromeSelectionDropdownMenuModel : public BaseSelectionDropdownMenuModel
+@@ -215,7 +215,7 @@ class ChromeSelectionDropdownMenuModel : public BaseSelectionDropdownMenuModel
        return false;
      }
  
@@ -73,7 +73,7 @@ index 152de7b2a65cdc1b9efa90e52bca39380c33fd23..f255f27ae4cd6c0c163ac7b82e53db25
      return BaseSelectionDropdownMenuModel::IsCommandIdChecked(command_id);
  #else
      return false;
-@@ -268,7 +268,7 @@ class ChromeSelectionDropdownMenuModel : public BaseSelectionDropdownMenuModel
+@@ -247,7 +247,7 @@ class ChromeSelectionDropdownMenuModel : public BaseSelectionDropdownMenuModel
        return true;
      }
  
@@ -82,7 +82,7 @@ index 152de7b2a65cdc1b9efa90e52bca39380c33fd23..f255f27ae4cd6c0c163ac7b82e53db25
      return BaseSelectionDropdownMenuModel::IsCommandIdEnabled(command_id);
  #else
      return false;
-@@ -279,7 +279,7 @@ class ChromeSelectionDropdownMenuModel : public BaseSelectionDropdownMenuModel
+@@ -258,7 +258,7 @@ class ChromeSelectionDropdownMenuModel : public BaseSelectionDropdownMenuModel
      if (IsChromeOwnedCommand(command_id)) {
        return true;
      }
@@ -91,7 +91,7 @@ index 152de7b2a65cdc1b9efa90e52bca39380c33fd23..f255f27ae4cd6c0c163ac7b82e53db25
      return BaseSelectionDropdownMenuModel::IsCommandIdVisible(command_id);
  #else
      return false;
-@@ -314,7 +314,7 @@ ChromeSelectionDropdownMenuDelegate::GetSelectionPopupExtraItems(
+@@ -293,7 +293,7 @@ ChromeSelectionDropdownMenuDelegate::GetSelectionPopupExtraItems(
    }
  #endif
  

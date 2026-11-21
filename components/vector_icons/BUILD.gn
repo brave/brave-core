@@ -172,8 +172,8 @@ static_library("vector_icons") {
 
   defines = [ "BRAVE_COMPONENTS_VECTOR_ICONS_IMPL" ]
 
+  public_deps = [ ":brave_components_vector_icons" ]
   deps = [
-    ":brave_components_vector_icons",
     "//base",
     "//skia",
     "//ui/gfx",
