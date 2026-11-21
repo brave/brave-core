@@ -45,6 +45,7 @@ import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarBehavior;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarButtonController;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarButtonVariant;
 import org.chromium.chrome.browser.toolbar.adaptive.OptionalNewTabButtonController;
+import org.chromium.chrome.browser.ttc.TtcEntryPoint;
 
 import java.util.Arrays;
 import java.util.function.Supplier;
@@ -53,6 +54,7 @@ import java.util.function.Supplier;
 @RunWith(BaseRobolectricTestRunner.class)
 public class BraveTabbedAdaptiveToolbarBehaviorTest {
     @Mock private GlicButtonDelegate mGlicButtonDelegate;
+    @Mock private TtcEntryPoint mTtcEntryPoint;
 
     private BraveTabbedAdaptiveToolbarBehavior mBehavior;
 
@@ -89,7 +91,8 @@ public class BraveTabbedAdaptiveToolbarBehaviorTest {
                         () -> null,
                         Mockito.mock(BrowserControlsVisibilityManager.class),
                         ObservableSuppliers.alwaysFalse(),
-                        ObservableSuppliers.alwaysFalse());
+                        ObservableSuppliers.alwaysFalse(),
+                        mTtcEntryPoint);
     }
 
     @After

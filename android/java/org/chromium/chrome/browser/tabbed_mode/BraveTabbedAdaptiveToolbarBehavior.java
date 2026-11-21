@@ -31,6 +31,7 @@ import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarBehavior;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarButtonController;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarButtonVariant;
 import org.chromium.chrome.browser.toolbar.adaptive.OptionalNewTabButtonController;
+import org.chromium.chrome.browser.ttc.TtcEntryPoint;
 import org.chromium.chrome.browser.ui.bottombar.BottomBarConfigUtils;
 import org.chromium.chrome.browser.ui.browser_window.ChromeAndroidTask;
 import org.chromium.components.feature_engagement.Tracker;
@@ -77,7 +78,8 @@ public class BraveTabbedAdaptiveToolbarBehavior extends TabbedAdaptiveToolbarBeh
             Supplier<@Nullable ChromeAndroidTask> chromeAndroidTaskSupplier,
             BrowserControlsVisibilityManager browserControlsVisibilityManager,
             NonNullObservableSupplier<Boolean> isVerticalTabsActiveSupplier,
-            NonNullObservableSupplier<Boolean> isGlicPinnedSupplier) {
+            NonNullObservableSupplier<Boolean> isGlicPinnedSupplier,
+            TtcEntryPoint ttcEntryPoint) {
         super(
                 activity,
                 activityLifecycleDispatcher,
@@ -93,7 +95,8 @@ public class BraveTabbedAdaptiveToolbarBehavior extends TabbedAdaptiveToolbarBeh
                 chromeAndroidTaskSupplier,
                 browserControlsVisibilityManager,
                 isVerticalTabsActiveSupplier,
-                isGlicPinnedSupplier);
+                isGlicPinnedSupplier,
+                ttcEntryPoint);
         mActivity = activity;
         mActivityLifecycleDispatcher = activityLifecycleDispatcher;
         mTabCreatorManagerSupplier = tabCreatorManagerSupplier;
