@@ -26,7 +26,7 @@
     Ask <ph name="ENGINE">$1<ex>AI Mode</ex></ph>
   </message>
 
-  <message name="IDS_CONTEXTUAL_SEARCH_OPEN_LENS_ACTION_LABEL" desc="Label text for the action match that opens lens.">
+  <message name="IDS_CONTEXTUAL_SEARCH_OPEN_LENS_ACTION_LABEL" desc="Label text for the action match that opens lens. Also used for the 'Ask Brave about this page' context menu and app menu items on Desktop Android." formatter_data="android_java">
     Ask Brave about this page
   </message>
   <message name="IDS_CONTEXTUAL_SEARCH_OPEN_LENS_ACTION_LABEL_ALT" desc="Alternative label text for the action match that opens lens.">
@@ -457,7 +457,7 @@
     Ask about a tab
   </message>
   <message name="IDS_FUSEBOX_ATTACHMENT_BUTTON_IPH" desc="Text displayed in the in-product help bubble pointing to the (+) button in the Omnibox." formatter_data="android_java">
-    Add a tab or image to enhance your search
+    Add tabs, photos, and more to enhance your search
   </message>
 
   <!-- Accessibility labels for autocomplete match types.

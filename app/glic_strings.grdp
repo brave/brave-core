@@ -154,6 +154,27 @@
   <message name="IDS_GLIC_RELAUNCH_REQUIRED_GEIC_TO_OTHER_GEIC_BODY" desc="Body text on the notice shown in the Gemini Enterprise side panel when an administrator has changed the Gemini Enterprise configuration and Brave must be relaunched to apply the change.">
     Your organization has updated policies and requires you to relaunch Brave to continue using Gemini Enterprise in Brave
   </message>
+  <message name="IDS_GLIC_PROVIDER_SWITCH_NOTICE_GEMINI_TO_GEIC_HEADER" desc="Headline on the notice shown in the Gemini side panel after an administrator configured Gemini Enterprise and Brave switched to it." translateable="false">
+    You're now browsing with Gemini Enterprise
+  </message>
+  <message name="IDS_GLIC_PROVIDER_SWITCH_NOTICE_GEMINI_TO_GEIC_BODY" desc="Body text on the notice shown in the Gemini side panel after an administrator configured Gemini Enterprise and Brave switched to it." translateable="false">
+    Your organization set up Gemini Enterprise in Brave. Ask Gemini about anything as you browse, and get answers grounded in files and services across your organization.
+  </message>
+  <message name="IDS_GLIC_PROVIDER_SWITCH_NOTICE_GEIC_TO_GEMINI_HEADER" desc="Headline on the notice shown in the Gemini side panel after an administrator turned off Gemini Enterprise and Brave switched to Gemini in Brave." translateable="false">
+    Gemini Enterprise is no longer available
+  </message>
+  <message name="IDS_GLIC_PROVIDER_SWITCH_NOTICE_GEIC_TO_GEMINI_BODY" desc="Body text on the notice shown in the Gemini side panel after an administrator turned off Gemini Enterprise and Brave switched to Gemini in Brave." translateable="false">
+    Your organization turned off Gemini Enterprise in Brave. You can continue using Gemini in Brave, but it will no longer find or reference information managed by your organization. Your chat history may not carry over.
+  </message>
+  <message name="IDS_GLIC_PROVIDER_SWITCH_NOTICE_GEIC_TO_OTHER_GEIC_HEADER" desc="Headline on the notice shown in the Gemini side panel after an administrator changed the Gemini Enterprise configuration and Brave applied it." translateable="false">
+    Gemini Enterprise was updated
+  </message>
+  <message name="IDS_GLIC_PROVIDER_SWITCH_NOTICE_GEIC_TO_OTHER_GEIC_BODY" desc="Body text on the notice shown in the Gemini side panel after an administrator changed the Gemini Enterprise configuration and Brave applied it." translateable="false">
+    Your organization updated its policies for Gemini Enterprise in Brave. Your chat history may not carry over.
+  </message>
+  <message name="IDS_GLIC_PROVIDER_SWITCH_NOTICE_ACTION_BUTTON" desc="Button label on the notice shown in the Gemini side panel after Brave switched provider for the user. Dismisses the notice and loads the new provider." translateable="false">
+    Continue
+  </message>
 
   <message name="IDS_GLIC_MANAGED_BY_ORGANIZATION" desc="Text shown when the feature is managed by the organization but not disabled." formatter_data="android_java">
     Managed by your organization
@@ -571,6 +592,9 @@
   <message name="IDS_GLIC_BUTTON_ENTRYPOINT_ASK_ABOUT_THIS_PAGE_LABEL" desc="Label on the button used to open Gemini in Brave.">
     Ask about this page?
   </message>
+  <message name="IDS_GLIC_TOOLBAR_ASK_ABOUT_THIS_LABEL" desc="Label and tooltip for the toolbar action that lets the user select part of the page and ask about it with Smart Selection.">
+    Ask about this
+  </message>
   <message name="IDS_GLIC_SELECTION_AUTO_SEND_PROMPT_TELL_ME" desc="Default prompt text sent to Gemini when auto-send prompt is enabled on text selection.">
     Tell me about this
   </message>
@@ -719,6 +743,25 @@
   <message name="IDS_GLIC_HOTKEY_G" desc="G key text" translateable="false" formatter_data="android_java">
     G
   </message>
+  <!-- Drive Picker tab labels -->
+  <message name="IDS_GLIC_DRIVE_PICKER_RECENT_TAB_LABEL" desc="Label for the Recent tab in the Google Drive file picker opened from Gemini in Brave.">
+    Recent
+  </message>
+  <message name="IDS_GLIC_DRIVE_PICKER_MY_DRIVE_TAB_LABEL" desc="Label for the My Drive tab in the Google Drive file picker opened from Gemini in Brave.">
+    My Drive
+  </message>
+  <message name="IDS_GLIC_DRIVE_PICKER_SHARED_DRIVES_TAB_LABEL" desc="Label for the Shared drives tab in the Google Drive file picker opened from Gemini in Brave. Shown between the My Drive and Shared with me tabs for accounts that have shared drives; not visible in the screenshot.">
+    Shared drives
+  </message>
+  <message name="IDS_GLIC_DRIVE_PICKER_SHARED_WITH_ME_TAB_LABEL" desc="Label for the Shared with me tab in the Google Drive file picker opened from Gemini in Brave.">
+    Shared with me
+  </message>
+  <message name="IDS_GLIC_DRIVE_PICKER_STARRED_TAB_LABEL" desc="Label for the Starred tab in the Google Drive file picker opened from Gemini in Brave.">
+    Starred
+  </message>
+  <message name="IDS_GLIC_WHATS_NEW_QUIZZES_PROMPT" desc="Prompt to be sent to Gemini through the Gemini in Brave side panel asking to generate a quiz about the current page.">
+    Create a simple 5 question quiz on this page
+  </message>
   <if expr="is_android">
     <message name="IDS_GLIC_FRE_DIALOG_TITLE" desc="Headline of the dialog that asks the user to turn on Gemini in Brave the first time they open it." formatter_data="android_java">
       Ask anything, right where you are, with Gemini in Brave
@@ -735,8 +778,7 @@
     <message name="IDS_GLIC_FRE_DIALOG_ENTERPRISE_DESCRIPTION_BOLD" desc="Description in the Gemini in Brave opt-in dialog for enterprise users explaining that their organization's data is private and secure, with bold lead-in." formatter_data="android_java">
       <ph name="BEGIN_BOLD_1">&lt;b1&gt;</ph>Tabs are shared for more relevant answers.<ph name="END_BOLD_1">&lt;/b1&gt;</ph> Brave uses the content and URL of shared tabs. Your current tab is shared in new chats. You can change this setting anytime. <ph name="BEGIN_BOLD_2">&lt;b2&gt;</ph>Your organization’s data is private and secure.<ph name="END_BOLD_2">&lt;/b2&gt;</ph> It won’t be used to improve generative AI models.
     </message>
-    <!-- TODO(crbug.com/585286375): Remove translateable="false" and add screenshot. -->
-    <message name="IDS_GLIC_FRE_DIALOG_ENTERPRISE_DESCRIPTION_BOLD_V2" desc="Description in the Gemini in Brave opt-in dialog for enterprise users explaining that their organization's data is private and secure, with bold lead-in." translateable="false" formatter_data="android_java">
+    <message name="IDS_GLIC_FRE_DIALOG_ENTERPRISE_DESCRIPTION_BOLD_V2" desc="Description in the Gemini in Brave opt-in dialog for enterprise users explaining that their organization's data is private and secure, with bold lead-in." formatter_data="android_java">
       <ph name="BEGIN_BOLD_1">&lt;b1&gt;</ph>Tabs are shared for more relevant answers.<ph name="END_BOLD_1">&lt;/b1&gt;</ph> Brave uses the content and URL of shared tabs. Your current tab is shared in new chats. You can change this setting anytime. <ph name="BEGIN_BOLD_2">&lt;b2&gt;</ph>Your organization’s data is private and secure.<ph name="END_BOLD_2">&lt;/b2&gt;</ph> It won’t be used to train generative AI models.
     </message>
     <message name="IDS_GLIC_FRE_DIALOG_ACCEPT" desc="Button in the Gemini in Brave opt-in dialog. Turns on Gemini in Brave and opens it. [CHAR_LIMIT=32]" formatter_data="android_java">

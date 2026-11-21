@@ -62,4 +62,8 @@
   <if expr="is_android">
     </if>
 
+  <if expr="is_ios">
+    </if>
+  <if expr="not is_ios">
+    </if>
   </grit-part>
