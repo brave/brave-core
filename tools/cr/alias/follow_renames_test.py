@@ -300,6 +300,85 @@ class ShadowFileTest(_Base):
         self.assertTrue((chromium_src / 'foo.html.ts.lit_mangler.ts').exists())
         self.assertFalse((chromium_src / 'foo.html.lit_mangler.ts').exists())
 
+    def _check_in_template(self, rel: str) -> str:
+        """Deletes `rel` and adds a `rel.ts` git doesn't pair with it, as
+        upstream checking in a Lit template does. Returns the commit."""
+        self._repo.delete_file(rel, self._chromium)
+        self._repo.write_and_stage_file(
+            f'{rel}.ts',
+            'import {html} from "//resources/lit/v3_0/lit.rollup.js";\n'
+            'export function getHtml() {\n'
+            '  return html`<cr-toolbar id="toolbar"></cr-toolbar>`;\n'
+            '}\n',
+            self._chromium,
+        )
+        return self._repo.commit(f'Check in {rel}.ts', self._chromium)
+
+    def test_mangler_follows_a_checked_in_template(self) -> None:
+        """A template upstream checks in moves its mangler, though git sees
+        no rename."""
+        before = self._chromium_head()
+        self._chromium_commit('A/side_bar.html', '<div id="menu"></div>\n')
+        self._brave_commit(
+            'chromium_src/A/side_bar.html.lit_mangler.ts', '// mangler\n'
+        )
+        self._check_in_template('A/side_bar.html')
+        self.assertEqual(
+            '',
+            self._repo._run_git_command(
+                [
+                    'show',
+                    '--diff-filter=R',
+                    '--name-status',
+                    '--format=',
+                    'HEAD',
+                ],
+                self._chromium,
+            ),
+        )
+
+        cmd_follow_renames([f'{before}..HEAD'])
+
+        chromium_src = self._brave / 'chromium_src' / 'A'
+        self.assertTrue(
+            (chromium_src / 'side_bar.html.ts.lit_mangler.ts').exists()
+        )
+        self.assertFalse(
+            (chromium_src / 'side_bar.html.lit_mangler.ts').exists()
+        )
+        staged = self._repo._run_git_command(
+            ['diff', '--cached', '--name-status', '-M'], self._brave
+        )
+        self.assertIn('side_bar.html.ts.lit_mangler.ts', staged)
+
+    def test_mangler_stays_while_its_template_is_there(self) -> None:
+        """A mangled `.html` upstream still has keeps its mangler, even
+        beside a `.html.ts`."""
+        self._chromium_commit('A/item.html', '<div></div>\n')
+        before = self._chromium_commit('A/item.html.ts', '// generated\n')
+        self._brave_commit('chromium_src/A/item.html.lit_mangler.ts', '// m\n')
+
+        cmd_follow_renames([f'{before}..HEAD'])
+
+        self.assertTrue(
+            (self._brave / 'chromium_src/A/item.html.lit_mangler.ts').exists()
+        )
+
+    def test_mangler_of_a_deleted_template_stays(self) -> None:
+        """With no `.html.ts` to take over, the mangler stays where the
+        snapshot test reports it."""
+        before = self._chromium_head()
+        self._chromium_commit('A/gone.html', '<div></div>\n')
+        self._brave_commit('chromium_src/A/gone.html.lit_mangler.ts', '// m\n')
+        self._repo.delete_file('A/gone.html', self._chromium)
+        self._repo.commit('Delete gone.html', self._chromium)
+
+        cmd_follow_renames([f'{before}..HEAD'])
+
+        self.assertTrue(
+            (self._brave / 'chromium_src/A/gone.html.lit_mangler.ts').exists()
+        )
+
     def test_no_shadow_file_is_noop(self) -> None:
         """Chromium rename with no matching shadow file does not raise."""
         before = self._chromium_head()
