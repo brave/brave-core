@@ -22,15 +22,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-import org.jni_zero.CalledByNative;
 import org.jni_zero.NativeMethods;
 
-import org.chromium.base.Callback;
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.OriginInfo;
-import org.chromium.brave_wallet.mojom.PermissionLifetimeOption;
 import org.chromium.build.annotations.MonotonicNonNull;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
@@ -164,7 +161,15 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
     }
 
     private void updateWebsite(Tab tab) {
-        mOriginInfo = Utils.getOriginInfo(tab.getUrl());
+        // The last committed URL, not tab.getUrl(): the visible URL already names
+        // a pending navigation's site, while permissions belong to the committed
+        // page, as in desktop's WalletPanelHandler::GetActivePanelOrigin.
+        WebContents webContents = tab.getWebContents();
+        mOriginInfo =
+                Utils.getOriginInfo(
+                        webContents != null
+                                ? webContents.getLastCommittedUrl()
+                                : GURL.emptyGURL());
         mWebSite.setText(Utils.geteTldSpanned(mOriginInfo));
     }
 
@@ -247,59 +252,22 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
         return mSelectedAccount;
     }
 
-    /**
-     * Data passed from ConnectAccountFragment to BraveDappPermissionPromptDialog for pending
-     * connect account requests
-     */
-    public static class ConnectAccountPendingData {
-        ConnectAccountPendingData(String accountAddress, int permissionLifetimeOption) {
-            this.accountAddress = accountAddress;
-            this.permissionLifetimeOption = permissionLifetimeOption;
-        }
-
-        public String accountAddress;
-        public int permissionLifetimeOption;
-    }
-
-    @Nullable private static ConnectAccountPendingData sConnectAccountPendingData;
-
-    private static void setConnectAccountPendingData(final String accountAddress) {
-        sConnectAccountPendingData =
-                new ConnectAccountPendingData(accountAddress, PermissionLifetimeOption.FOREVER);
-    }
-
-    @Nullable
-    public static ConnectAccountPendingData getAndResetConnectAccountPendingData() {
-        if (sConnectAccountPendingData == null) {
-            return null;
-        }
-        ConnectAccountPendingData connectAccountPendingDataCopy = sConnectAccountPendingData;
-        sConnectAccountPendingData = null;
-        return connectAccountPendingDataCopy;
-    }
-
     @Override
     public void connectAccount(final AccountInfo account) {
         Tab tab = BraveRewardsHelper.currentActiveChromeTabbedActivityTab();
         if (tab != null && tab.getWebContents() != null) {
-            // Static data for BraveDappPermissionPromptDialog.show
-            setConnectAccountPendingData(account.address);
-            ConnectAccountFragmentJni.get()
+            if (!ConnectAccountFragmentJni.get()
                     .connectAccount(
                             account.address,
                             account.accountId.coin,
-                            tab.getWebContents(),
-                            success -> {
-                                if (!success) {
-                                    return;
-                                }
-                                if (CoinType.SOL != account.accountId.coin) {
-                                    getKeyringService()
-                                            .setSelectedAccount(
-                                                    account.accountId, setSuccess -> {});
-                                }
-                                updateAccounts();
-                            });
+                            mOriginInfo.originSpec,
+                            tab.getWebContents())) {
+                return;
+            }
+            if (CoinType.SOL != account.accountId.coin) {
+                getKeyringService().setSelectedAccount(account.accountId, setSuccess -> {});
+            }
+            updateAccounts();
         }
     }
 
@@ -351,17 +319,12 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
         return GURL.emptyGURL();
     }
 
-    @CalledByNative
-    private static void onConnectAccountDone(Callback<Boolean> callback, Boolean result) {
-        callback.onResult(result);
-    }
-
     @NativeMethods
     interface Natives {
-        void connectAccount(
+        boolean connectAccount(
                 String accountAddress,
                 int accountIdCoin,
-                WebContents webContents,
-                Callback<Boolean> callback);
+                String originSpec,
+                WebContents webContents);
     }
 }
