@@ -234,7 +234,7 @@ export default function createAIChatApi(
           // TODO(https://github.com/brave/brave-browser/issues/52540): rename
           // in mojom to `OnConversationEntriesFrameHeightChanged`, etc.
           childHeightChanged(height) {},
-          rateMessage(turnUuid, isLiked) {},
+          rateMessage(turnUuid, isLiked, threadUuid) {},
           dragStart() {},
           // <if expr="is_ios">
           dismissMenus() {},
