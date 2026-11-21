@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Collapsed URL chip: shown while the bottom toolbar is scrolled away
+     (see BraveCollapsedUrlChipMediator). Display-only, non-navigational. -->
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/brave_collapsed_url_chip_text"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|center_horizontal"
+    android:layout_marginBottom="@dimen/brave_collapsed_url_chip_margin_bottom"
+    android:layout_marginHorizontal="@dimen/brave_collapsed_url_chip_margin_horizontal"
+    android:background="@drawable/brave_collapsed_url_chip_background"
+    android:ellipsize="end"
+    android:gravity="center"
+    android:maxWidth="@dimen/brave_collapsed_url_chip_max_width"
+    android:minHeight="@dimen/brave_collapsed_url_chip_height"
+    android:paddingHorizontal="@dimen/brave_collapsed_url_chip_padding_horizontal"
+    android:singleLine="true"
+    android:textColor="@color/brave_collapsed_url_chip_text"
+    android:textSize="@dimen/brave_collapsed_url_chip_text_size"
+    android:visibility="gone" />
