@@ -26,10 +26,12 @@
 #include "base/task/thread_pool/thread_pool_instance.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "brave/components/local_ai/core/background_web_contents.h"
+#include "brave/components/local_ai/core/features.h"
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "brave/components/local_ai/core/on_device_speech_recognition.mojom.h"
 #include "chrome/browser/profiles/profile.h"
@@ -63,6 +65,7 @@ class FakeSpeechRecognitionFactory
             InitCallback callback) override {
     ++init_count_;
     last_tokens_ = std::string(base::as_string_view(base::span(files->tokens)));
+    last_model_ = files->model;
     if (on_call_) {
       on_call_.Run();
     }
@@ -91,6 +94,10 @@ class FakeSpeechRecognitionFactory
   // The tokens file of the last model loaded, which the fixture fills with the
   // model's directory name.
   const std::string& last_tokens() const { return last_tokens_; }
+  // The model that the controller said the last files are.
+  std::optional<local_ai::OnDeviceSpeechModel> last_model() const {
+    return last_model_;
+  }
   // The language of each stream, in order.
   const std::vector<std::string>& languages() const { return languages_; }
 
@@ -105,6 +112,7 @@ class FakeSpeechRecognitionFactory
   int init_count_ = 0;
   int created_asr_stream_count_ = 0;
   std::string last_tokens_;
+  std::optional<local_ai::OnDeviceSpeechModel> last_model_;
   std::vector<std::string> languages_;
   base::RepeatingClosure on_call_;
   mojo::Receiver<local_ai::mojom::SpeechRecognitionFactory> receiver_{this};
@@ -234,6 +242,15 @@ class OnDeviceSpeechRecognitionControllerTest : public testing::Test {
       state->SetInstallDir(model, base::FilePath());
       return;
     }
+    // The registrars keep at most one model on disk. Thus `model` replaces the
+    // model on disk before it.
+    for (local_ai::OnDeviceSpeechModel other :
+         {local_ai::OnDeviceSpeechModel::kEnglish,
+          local_ai::OnDeviceSpeechModel::kMultilingual}) {
+      if (other != model) {
+        state->SetInstallDir(other, base::FilePath());
+      }
+    }
     state->SetInstallDir(model, temp_dir_.GetPath());
     base::FilePath model_dir = state->GetModelDir(model);
     ASSERT_TRUE(base::CreateDirectory(model_dir));
@@ -316,6 +333,7 @@ class OnDeviceSpeechRecognitionControllerTest : public testing::Test {
     RegisterFactoryWith(factory);
     WaitForCreatedAsrStreams(factory, 1);
     EXPECT_EQ(local_ai::GetModelDirName(model), factory.last_tokens());
+    EXPECT_EQ(model, factory.last_model());
     EXPECT_THAT(factory.languages(), testing::ElementsAre(language));
   }
 
@@ -345,6 +363,12 @@ class OnDeviceSpeechRecognitionControllerTest : public testing::Test {
     EXPECT_TRUE(disconnected.Wait());
   }
 
+  // Initialized before the task environment starts its threads. The models
+  // count as on disk only while Brave can offer them.
+  base::test::ScopedFeatureList feature_list_{
+      local_ai::kBraveOnDeviceSpeechRecognition};
+  base::test::ScopedFeatureList multilingual_feature_list_{
+      local_ai::kBraveOnDeviceSpeechMultilingual};
   content::BrowserTaskEnvironment task_environment_;
   // Optional so that a test can destroy it, which is what fires
   // `OnProfileManagerDestroying`.
@@ -387,6 +411,8 @@ TEST_F(OnDeviceSpeechRecognitionControllerTest,
   RegisterFactory();
   WaitForCreatedAsrStreams(fake_factory_, 2);
   EXPECT_EQ(1, fake_factory_.init_count());
+  EXPECT_EQ(local_ai::OnDeviceSpeechModel::kEnglish,
+            fake_factory_.last_model());
   EXPECT_EQ(2, fake_factory_.created_asr_stream_count());
 
   // A session started on the now-ready worker is forwarded immediately, with
@@ -407,7 +433,8 @@ TEST_F(OnDeviceSpeechRecognitionControllerTest,
 }
 
 // While another session is connected, a session for the other model is
-// refused, and the worker keeps its model.
+// refused. The worker keeps its model, and gets no stream for the refused
+// session.
 TEST_F(OnDeviceSpeechRecognitionControllerTest,
        SessionForTheOtherModelIsRefusedWhileAnotherIsConnected) {
   Session english = DriveToReady();
@@ -416,12 +443,19 @@ TEST_F(OnDeviceSpeechRecognitionControllerTest,
   Session multilingual = StartSession("es-ES");
   WaitForDisconnect(multilingual.input);
   EXPECT_EQ(0, bwc_destroyed_count_);
+  EXPECT_THAT(fake_factory_.languages(), testing::ElementsAre("en-US"));
+}
 
-  // The worker still serves English: the next English session goes to it.
-  Session english_again = StartSession("en-GB");
-  WaitForCreatedAsrStreams(fake_factory_, 2);
-  EXPECT_THAT(fake_factory_.languages(),
-              testing::ElementsAre("en-US", "en-US"));
+// An English session uses the multilingual model when it is the model on disk,
+// and the worker gets the tag of the English locale.
+TEST_F(OnDeviceSpeechRecognitionControllerTest,
+       EnglishSessionUsesTheMultilingualModelOnDisk) {
+  SetInstalled(true, local_ai::OnDeviceSpeechModel::kMultilingual);
+  Session s = StartSession("en-GB");
+  // The session has a model, so it starts a worker.
+  ASSERT_EQ(1, bwc_created_count_);
+  ExpectNewWorker(fake_factory_, local_ai::OnDeviceSpeechModel::kMultilingual,
+                  "en-US");
 }
 
 // Once the sessions of the first model ended, a session for the other model
@@ -453,7 +487,6 @@ TEST_F(OnDeviceSpeechRecognitionControllerTest,
 TEST_F(OnDeviceSpeechRecognitionControllerTest,
        SessionForTheOtherModelStopsTheWorkerBeforeTheReadResult) {
   SetInstalled(true);
-  SetInstalled(true, local_ai::OnDeviceSpeechModel::kMultilingual);
 
   // Worker 1 starts. The English session ends before worker 1 is ready.
   Session english = StartSession();
@@ -466,6 +499,9 @@ TEST_F(OnDeviceSpeechRecognitionControllerTest,
   // a loop can run the English `OnOrtFilesRead()`. Thus it calls the controller
   // directly.
   controller_->RegisterFactory(fake_factory_.BindRemote());
+  // The multilingual model arrives. It also serves English, so it arrives only
+  // now, after worker 1 started with the English model.
+  SetInstalled(true, local_ai::OnDeviceSpeechModel::kMultilingual);
 
   // Start the Spanish session directly, not with StartSession(). It is the only
   // connected session, so Start() stops worker 1, and StopWorker() makes the

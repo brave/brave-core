@@ -12,6 +12,7 @@
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "brave/components/local_ai/core/on_device_speech_models_component_installer.h"
+#include "brave/components/local_ai/core/on_device_speech_recognition.mojom-shared.h"
 #include "brave/components/local_ai/core/utils.h"
 #include "chrome/browser/browser_process.h"
 #include "components/soda/constants.h"

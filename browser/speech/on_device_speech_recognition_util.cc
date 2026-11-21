@@ -13,6 +13,7 @@
 #include "base/i18n/language_tag.h"
 #include "base/i18n/tag_converters.h"
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
+#include "brave/components/local_ai/core/on_device_speech_recognition.mojom-shared.h"
 #include "brave/components/local_ai/core/utils.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"

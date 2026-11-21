@@ -32,6 +32,7 @@
 #include "brave/components/brave_component_updater/browser/mock_on_demand_updater.h"
 #include "brave/components/local_ai/core/features.h"
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
+#include "brave/components/local_ai/core/on_device_speech_recognition.mojom-shared.h"
 #include "brave/components/local_ai/core/pref_names.h"
 #include "brave/components/local_ai/core/utils.h"
 #include "components/component_updater/component_updater_paths.h"

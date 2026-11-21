@@ -18,6 +18,7 @@
 #include "brave/components/local_ai/core/features.h"
 #include "brave/components/local_ai/core/on_device_speech_models_component_installer.h"
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
+#include "brave/components/local_ai/core/on_device_speech_recognition.mojom-shared.h"
 #include "brave/components/local_ai/core/pref_names.h"
 #include "brave/components/local_ai/core/utils.h"
 #include "chrome/test/base/testing_browser_process.h"

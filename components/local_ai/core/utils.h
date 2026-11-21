@@ -8,6 +8,7 @@
 
 #include <optional>
 
+#include "brave/components/local_ai/core/on_device_speech_recognition.mojom-forward.h"
 #include "mojo/public/cpp/base/big_buffer.h"
 
 class PrefService;
@@ -18,11 +19,18 @@ class FilePath;
 
 namespace local_ai {
 
-enum class OnDeviceSpeechModel;
+using OnDeviceSpeechModel = mojom::OnDeviceSpeechModel;
+struct OnDeviceSpeechLocale;
 
 // Whether Brave's feature and the Local AI master switch both allow on-device
 // speech recognition. A null `local_state` reads as the switch's default, on.
 bool CanOfferOnDeviceSpeech(const PrefService* local_state);
+
+// Whether Brave can offer `model`. True when `CanOfferOnDeviceSpeech` is true
+// and, for the multilingual model, `kBraveOnDeviceSpeechMultilingual` is
+// enabled. A null `local_state` reads as the switch's default, on.
+bool CanOfferOnDeviceSpeechModel(const PrefService* local_state,
+                                 OnDeviceSpeechModel model);
 
 // The model that the user enabled (`prefs::kOnDeviceSpeechModel`), or
 // std::nullopt when the user enabled none. A null `local_state` reads as none.
@@ -33,11 +41,15 @@ std::optional<OnDeviceSpeechModel> GetEnabledOnDeviceSpeechModel(
 void EnableOnDeviceSpeechModel(PrefService& local_state,
                                OnDeviceSpeechModel model);
 
-// Whether `model` is to be on disk. True when `CanOfferOnDeviceSpeech` is true,
-// `kBraveOnDeviceSpeechMultilingual` is enabled for the multilingual model, and
-// the user enabled `model`. A null `local_state` reads as not enabled.
+// Whether `model` is to be on disk. True when `CanOfferOnDeviceSpeechModel` is
+// true for `model` and the user enabled `model`. A null `local_state` reads as
+// not enabled.
 bool ShouldInstallOnDeviceSpeechModel(const PrefService* local_state,
                                       OnDeviceSpeechModel model);
+
+// The model on disk, when it transcribes `locale`. Otherwise std::nullopt.
+std::optional<OnDeviceSpeechModel> GetInstalledOnDeviceSpeechModel(
+    const OnDeviceSpeechLocale& locale);
 
 // Reads a file directly into BigBuffer storage. For files >64KB BigBuffer
 // uses shared memory. Returns std::nullopt if the file can't be opened, is

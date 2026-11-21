@@ -189,16 +189,18 @@ void OnDeviceSpeechRecognitionController::Start(
   if (!locale) {
     return;
   }
-  const local_ai::OnDeviceSpeechModel model = locale->model;
-  if (!local_ai::OnDeviceSpeechModelsState::GetInstance()->IsModelInstalled(
-          model)) {
+  // The model on disk that serves the locale, such as the multilingual model
+  // for en-US.
+  const std::optional<local_ai::OnDeviceSpeechModel> model =
+      local_ai::GetInstalledOnDeviceSpeechModel(*locale);
+  if (!model) {
     return;
   }
   // The worker knows only the locales' tags, so it gets "de-DE" for a page's
   // "de-AT".
   options->language = std::string(locale->tag);
 
-  if (state_ != State::kIdle && model != model_) {
+  if (state_ != State::kIdle && *model != model_) {
     // The worker holds the other model, and another connected session can
     // still need it. Reject this session: its dropped pipes surface to the
     // engine as a recognition failure. The size includes this session.
@@ -210,7 +212,7 @@ void OnDeviceSpeechRecognitionController::Start(
     StopWorker();
   }
   if (state_ == State::kIdle) {
-    model_ = model;
+    model_ = *model;
   }
 
   // Worker is ready, forward session to worker.
@@ -347,6 +349,10 @@ void OnDeviceSpeechRecognitionController::OnOrtFilesRead(
     TearDown();
     return;
   }
+
+  // The multilingual model also transcribes en-US, so the language of a stream
+  // does not tell the worker which model it holds.
+  files->model = model_;
 
   // Defensive deref guard, consistent with ForwardSession(). The weak binding
   // (dropped by StopWorker()) means this reply does not run after teardown, so
