@@ -112,4 +112,14 @@ TEST_F(RewardsPromotionUtilTest, UnBlindCredsCredsNotCorrect) {
             "Failed to verify and unblind batch DLEQ proof");
 }
 
+TEST_F(RewardsPromotionUtilTest, UnBlindCredsSignedCredNotString) {
+  auto creds = GetCredsBatch();
+  creds.signed_creds = "[1]";
+
+  auto unblinded_encoded_tokens = UnBlindCreds(std::move(creds));
+
+  EXPECT_FALSE(unblinded_encoded_tokens.has_value());
+  EXPECT_EQ(unblinded_encoded_tokens.error(), "Signed cred is not a string");
+}
+
 }  // namespace brave_rewards::internal::credential
