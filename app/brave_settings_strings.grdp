@@ -858,6 +858,9 @@
   <message name="IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_ENGLISH" desc="Option of the on-device speech recognition setting that downloads the model that recognizes only English speech">
     English
   </message>
+  <message name="IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_MULTILINGUAL" desc="Option of the on-device speech recognition setting that downloads the multilingual model, which recognizes English and other languages">
+    English and other languages
+  </message>
   <!-- History retention -->
   <message name="IDS_SETTINGS_HISTORY_RETENTION_LABEL" desc="Label for the setting that controls how long browsing history is retained">
     Local history retention
