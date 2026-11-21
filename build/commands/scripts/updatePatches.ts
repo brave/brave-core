@@ -14,49 +14,12 @@ import {
   type PatchedRepository,
   splitSourcePath,
 } from '../lib/repositories.ts'
-import updatePatches from '../lib/updatePatches.ts'
+import updatePatches, { exclusionsFilter } from '../lib/updatePatches.ts'
 
 type PathFilter = (file: string) => boolean
 
 function loadChromiumPathFilter(filePath: string): PathFilter {
-  const configLines = fs
-    .readFileSync(filePath, 'utf-8')
-    .split('\n')
-    .map((line) => (line.split('#')[0] ?? '').trim()) // Removing comments.
-    .filter((line) => line.length > 0)
-
-  const prefixes: string[] = []
-  const suffixes: string[] = []
-  const exactMatches = new Set<string>()
-
-  // This should be revisited in the future once `path.matchesGlob` is stable
-  // and available in node to use, as this current implementation is a bit
-  // naive.
-  for (const line of configLines) {
-    if (line.startsWith('*')) {
-      suffixes.push(line.slice(1))
-    } else if (line.endsWith('*')) {
-      prefixes.push(line.slice(0, -1))
-    } else {
-      exactMatches.add(line)
-    }
-  }
-
-  return (s) => {
-    if (s.length === 0) {
-      return false
-    }
-    if (exactMatches.has(s)) {
-      return false
-    }
-    if (prefixes.some((prefix) => s.startsWith(prefix))) {
-      return false
-    }
-    if (suffixes.some((suffix) => s.endsWith(suffix))) {
-      return false
-    }
-    return true
-  }
+  return exclusionsFilter(fs.readFileSync(filePath, 'utf-8'))
 }
 
 // Extension of plaster files under `rewrite/`. Keep in sync with
