@@ -13,6 +13,8 @@
 #include "base/check.h"
 #include "base/feature_list.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/time/default_tick_clock.h"
+#include "base/time/tick_clock.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
@@ -39,6 +41,7 @@
 #include "extensions/buildflags/buildflags.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
+#include "third_party/blink/public/common/frame/user_activation_state.h"
 #include "url/origin.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
@@ -81,6 +84,7 @@ BraveShieldsWebContentsObserver::BraveShieldsWebContentsObserver(
     : WebContentsObserver(web_contents),
       content::WebContentsUserData<BraveShieldsWebContentsObserver>(
           *web_contents),
+      tick_clock_(base::DefaultTickClock::GetInstance()),
       receivers_(web_contents, this) {}
 
 bool BraveShieldsWebContentsObserver::IsBlockedSubresource(
@@ -236,6 +240,25 @@ void BraveShieldsWebContentsObserver::OnJavaScriptAllowedOnce(
 #endif
 }
 
+void BraveShieldsWebContentsObserver::OnLinkPressed(const GURL& url) {
+  last_pressed_link_ = url;
+  last_pressed_link_time_ = tick_clock_->NowTicks();
+}
+
+bool BraveShieldsWebContentsObserver::IsPressedLink(const GURL& url) const {
+  // A window can only open within this long of the click that caused it, so an
+  // older click can't be what opened it.
+  return last_pressed_link_.is_valid() &&
+         last_pressed_link_.EqualsIgnoringRef(url) &&
+         tick_clock_->NowTicks() - last_pressed_link_time_ <=
+             blink::kActivationLifespan;
+}
+
+void BraveShieldsWebContentsObserver::SetTickClockForTesting(
+    const base::TickClock* tick_clock) {
+  tick_clock_ = tick_clock;
+}
+
 void BraveShieldsWebContentsObserver::OnWebcompatFeatureInvoked(
     ContentSettingsType webcompat_settings_type) {
 #if !BUILDFLAG(IS_ANDROID)
@@ -290,6 +313,10 @@ void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
       // we only reset the counter for blocked URLs, not the one for scripts.
       blocked_url_paths_.clear();
     }
+  }
+
+  if (navigation_handle->IsInPrimaryMainFrame()) {
+    last_pressed_link_ = GURL();
   }
 
   SendShieldsSettings(navigation_handle);

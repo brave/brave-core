@@ -12,12 +12,19 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/memory/raw_ptr.h"
 #include "base/synchronization/lock.h"
+#include "base/time/time.h"
 #include "brave/components/brave_shields/core/common/brave_shields.mojom.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "content/public/browser/render_frame_host_receiver_set.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
+#include "url/gurl.h"
+
+namespace base {
+class TickClock;
+}
 
 namespace content {
 class WebContents;
@@ -63,6 +70,10 @@ class BraveShieldsWebContentsObserver
   void AllowScriptsOnce(const std::vector<std::string>& origins);
   void BlockAllowedScripts(const std::vector<std::string>& origins);
   bool IsBlockedSubresource(const std::string& subresource);
+  // Whether `url` is the last link the user pressed in this tab, pressed
+  // recently enough to be what opened a window.
+  bool IsPressedLink(const GURL& url) const;
+  void SetTickClockForTesting(const base::TickClock* tick_clock);
   void AddBlockedSubresource(const std::string& subresource);
 
  protected:
@@ -75,6 +86,7 @@ class BraveShieldsWebContentsObserver
   void OnJavaScriptAllowedOnce(const std::u16string& details) override;
   void OnWebcompatFeatureInvoked(
       ContentSettingsType webcompat_settings_type) override;
+  void OnLinkPressed(const GURL& url) override;
 
  private:
   friend class content::WebContentsUserData<BraveShieldsWebContentsObserver>;
@@ -99,6 +111,9 @@ class BraveShieldsWebContentsObserver
   // We keep a set of the current page's blocked URLs in case the page
   // continually tries to load the same blocked URLs.
   std::set<std::string> blocked_url_paths_;
+  GURL last_pressed_link_;
+  base::TimeTicks last_pressed_link_time_;
+  raw_ptr<const base::TickClock> tick_clock_;
 
   content::RenderFrameHostReceiverSet<brave_shields::mojom::BraveShieldsHost>
       receivers_;

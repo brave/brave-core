@@ -27,6 +27,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_search/backup_results_navigation_throttle.h"
 #include "brave/browser/brave_search/backup_results_service_factory.h"
+#include "brave/browser/brave_shields/ad_block_popup_navigation_throttle.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/brave_stats/first_run_util.h"
@@ -1712,6 +1713,9 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
   auto* host_content_settings_map =
       HostContentSettingsMapFactory::GetForProfile(context);
   if (host_content_settings_map) {
+    brave_shields::AdBlockPopupNavigationThrottle::MaybeCreateAndAdd(
+        registry, g_brave_browser_process->ad_block_service(),
+        host_content_settings_map);
     brave_shields::DomainBlockNavigationThrottle::MaybeCreateAndAdd(
         registry, g_brave_browser_process->ad_block_service(),
         g_brave_browser_process->ad_block_service()->custom_filters_provider(),

@@ -53,6 +53,8 @@ std::string_view RequestTypeToString(
       return "ping";
     case AdBlockRequestType::kOther:
       return "other";
+    case AdBlockRequestType::kPopup:
+      return "popup";
     case AdBlockRequestType::kUnknown:
       return "";
   }
