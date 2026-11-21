@@ -157,6 +157,47 @@ extra things:
    `git apply --3way` against the Chromium tree so conflicts surface
    immediately.
 
+### `git cr rebase`
+
+Rebases a feature branch onto its upstream (or `--to-ref`) after that branch
+takes a Chromium update. It rebases from the merge-base, as `git rebase` does,
+with `brockit rebase`'s conflict handling:
+
+- Conflicts brockit has a fixed answer for are resolved as the rebase goes. Any
+  other conflict stops the rebase.
+- After each commit is applied, `git cr amend-plaster-patches` refreshes its
+  plaster patches against the Chromium checkout.
+
+```sh
+git cr rebase                     # onto the current branch's upstream
+git cr rebase --to-ref origin/master
+git cr rebase --continue          # once the conflicts are resolved and staged
+git cr rebase --skip              # drop the commit the rebase stopped on
+git cr rebase --dry-run           # exit with an error if a rebase is needed
+```
+
+Chromium must be synced to the version the target branch pins, and the feature
+branch must not change that version itself. Both are checked before the rebase
+starts, and the version again on `--continue` and `--skip`.
+
+### `git cr amend-plaster-patches`
+
+Re-applies the plaster files (`rewrite/…/foo.h.yaml`) that the last commit adds
+or modifies, and amends their refreshed patches (`patches/…` and their
+`.patchinfo`) into that commit. It is the same as running `plaster apply` on
+those files and amending the result.
+
+```sh
+git cr amend-plaster-patches
+```
+
+The commit is left alone when its patches are already up to date. It can also
+run after each commit of a rebase:
+
+```sh
+git rebase --exec 'git cr amend-plaster-patches' <upstream>
+```
+
 ## Why the use of a git commit message hook
 
 Chromium rebases usually involve hundreds of fixes to Brave. These fixes are the

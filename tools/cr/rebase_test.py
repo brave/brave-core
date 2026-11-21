@@ -26,6 +26,7 @@ import io
 import json
 import os
 import re
+import shlex
 import subprocess
 import sys
 import tempfile
@@ -1945,6 +1946,93 @@ class RebaseExecuteTest(unittest.TestCase):
         )
         return self.repo._run_git_command(
             ['rev-parse', 'HEAD'], self.repo.brave
+        )
+
+    def test_exec_command_runs_after_each_commit_and_its_fixups(self):
+        scenario = self._seed_bump_branch()
+        self._commit_fixup()
+        self._commit_with_file('Another brave-only feature.')
+        with tempfile.TemporaryDirectory() as log_dir:
+            log = Path(log_dir) / 'exec.log'
+
+            brockit.Rebase().execute(
+                from_ref=scenario['v101'],
+                to_ref=scenario['v102'],
+                exec_command=(
+                    f'git log -1 --format=%s >> {shlex.quote(str(log))}'
+                ),
+            )
+
+            self.assertEqual(
+                log.read_text(encoding='utf-8').splitlines(),
+                ['Add brave-only feature.txt', 'Another brave-only feature.'],
+            )
+        self.assertEqual(
+            self._git_log_subjects(scenario['v102'] + '..HEAD'),
+            ['Add brave-only feature.txt', 'Another brave-only feature.'],
+        )
+
+    def _rebase_with_failing_exec(self, scenario: dict, blocker: Path):
+        """Rebases with an exec command that fails while `blocker` exists,
+        expecting the rebase to stop on it."""
+        with self.assertRaises(brockit.ActionNeededException):
+            brockit.Rebase().execute(
+                from_ref=scenario['v101'],
+                to_ref=scenario['v102'],
+                exec_command=f'test ! -e {shlex.quote(str(blocker))}',
+            )
+        self.assertTrue(repository.brave.is_rebase_in_progress())
+
+    def test_failed_exec_command_stops_the_rebase(self):
+        scenario = self._seed_bump_branch()
+        self._commit_with_file('Another brave-only feature.')
+        with tempfile.TemporaryDirectory() as tmp:
+            blocker = Path(tmp) / 'blocker'
+            blocker.touch()
+
+            self._rebase_with_failing_exec(scenario, blocker)
+
+        self.assertEqual(
+            self._git_log_subjects(scenario['v102'] + '..HEAD'),
+            ['Add brave-only feature.txt'],
+        )
+        todo = repository.brave.rebase_merge_dir() / 'git-rebase-todo'
+        self.assertTrue(
+            todo.read_text(encoding='utf-8').startswith('exec test ! -e ')
+        )
+
+    def test_continue_reruns_a_failed_exec_command(self):
+        scenario = self._seed_bump_branch()
+        self._commit_with_file('Another brave-only feature.')
+        with tempfile.TemporaryDirectory() as tmp:
+            blocker = Path(tmp) / 'blocker'
+            blocker.touch()
+            self._rebase_with_failing_exec(scenario, blocker)
+
+            with self.assertRaises(brockit.ActionNeededException):
+                brockit.Rebase().execute(is_continuation=True)
+            blocker.unlink()
+            brockit.Rebase().execute(is_continuation=True)
+
+        self.assertFalse(repository.brave.is_rebase_in_progress())
+        self.assertEqual(
+            self._git_log_subjects(scenario['v102'] + '..HEAD'),
+            ['Add brave-only feature.txt', 'Another brave-only feature.'],
+        )
+
+    def test_skip_drops_a_failed_exec_command(self):
+        scenario = self._seed_bump_branch()
+        with tempfile.TemporaryDirectory() as tmp:
+            blocker = Path(tmp) / 'blocker'
+            blocker.touch()
+            self._rebase_with_failing_exec(scenario, blocker)
+
+            brockit.Rebase().execute(skip=True)
+
+        self.assertFalse(repository.brave.is_rebase_in_progress())
+        self.assertEqual(
+            self._git_log_subjects(scenario['v102'] + '..HEAD'),
+            ['Add brave-only feature.txt'],
         )
 
     def test_squash_minor_bumps_with_stacked_fixup_commits(self):

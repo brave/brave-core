@@ -6,11 +6,16 @@
 """git_cr — brave-core git helper.
 
 Subcommands:
+  - amend-plaster-patches
+                    Re-apply the plasters HEAD adds or modifies, and amend
+                    their patches into HEAD.
   - commit          Commit with brave-core hook flags.
   - follow-renames  Repair brave-core artefacts after upstream Chromium
                     renames.
   - mv              Move a file/directory in brave-core and repair every
                     downstream artefact.
+  - rebase          Rebase a feature branch onto a Chromium update, resolving
+                    brockit's known conflicts and refreshing plaster patches.
   - install-hook    Install the commit-msg hook from
                     tools/cr/alias/commit-msg.py.
   - setup-alias     Register the `git cr` alias in the local .git/config.
@@ -162,6 +167,14 @@ def main() -> int:
             import alias.follow_renames
 
             return alias.follow_renames.cmd_follow_renames(rest)
+        if subcmd == 'amend-plaster-patches':
+            import alias.amend_plaster_patches
+
+            return alias.amend_plaster_patches.cmd_amend_plaster_patches(rest)
+        if subcmd == 'rebase':
+            import alias.rebase_branch
+
+            return alias.rebase_branch.cmd_rebase(rest)
     except UserValidationError as e:
         print(e, file=sys.stderr)
         return 1
