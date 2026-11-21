@@ -1,9 +1,21 @@
 {
   "compile": [
-    "brave:all"
+    "brave",
+    "base_unittests",
+    "net_unittests",
+    "services_unittests",
+    "unit_tests",
+    "content_unittests",
+    "components_unittests",
+    "browser_tests"
   ],
   "tests": [
-    "chromium_unit_tests",
+    "base_unittests",
+    "net_unittests",
+    "services_unittests",
+    "unit_tests",
+    "content_unittests",
+    "components_unittests",
     "browser_tests"
   ]
 }

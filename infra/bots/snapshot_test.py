@@ -30,6 +30,7 @@ import snapshot
 import testing_support
 from lib.config import (
     BuildersRegistry,
+    TargetsRegistry,
     ConfigError,
     GnArgsRegistry,
     builder_config,
@@ -40,7 +41,14 @@ def _make_registries():
     gn_args_registry = GnArgsRegistry()
     gn_args_registry.config(name='linux', args={'target_os': 'linux'})
     gn_args_registry.config(name='x64', args={'target_cpu': 'x64'})
-    builders_registry = BuildersRegistry(gn_args_registry)
+    targets_registry = TargetsRegistry()
+    targets_registry.binaries.console_test_launcher(
+        name='a_test', label='//a:a_test'
+    )
+    targets_registry.tests.gtest_test(name='a_test', args=['--a'])
+    targets_registry.compile_target(name='chrome', label='//chrome:chrome')
+    targets_registry.mixin(name='b', args=['--b'])
+    builders_registry = BuildersRegistry(gn_args_registry, targets_registry)
     builders_registry.builder(
         name='test-builder',
         builder_group='brave.test',
@@ -62,15 +70,17 @@ def _make_registries():
         gn_args=gn_args_registry.config(
             configs=['linux', 'x64'], args={'is_asan': True}
         ),
-        targets=builders_registry.targets(
-            compile=['brave:all'], tests=['a_test']
+        targets=targets_registry.bundle(
+            targets=['a_test'],
+            additional_compile_targets=['chrome'],
+            mixins=['b'],
         ),
     )
     return builders_registry, gn_args_registry
 
 
 class ComputeFreshOutputTest(unittest.TestCase):
-    def test_produces_four_files_per_builder(self):
+    def test_produces_five_files_per_builder(self):
         builders_registry, gn_args_registry = _make_registries()
         fresh = snapshot.compute_fresh_output(
             builders_registry, gn_args_registry
@@ -82,6 +92,7 @@ class ComputeFreshOutputTest(unittest.TestCase):
                 'test-builder/properties.json',
                 'test-builder/sync.json',
                 'test-builder/targets.json',
+                'test-builder/targets/brave.test.json',
             },
         )
 
@@ -97,7 +108,9 @@ class ComputeFreshOutputTest(unittest.TestCase):
 
     def test_spec_disagreeing_with_gn_args_is_an_error(self):
         gn_args_registry = GnArgsRegistry()
-        builders_registry = BuildersRegistry(gn_args_registry)
+        builders_registry = BuildersRegistry(
+            gn_args_registry, TargetsRegistry()
+        )
         builders_registry.builder(
             name='mismatched',
             builder_group='brave.test',
@@ -110,7 +123,7 @@ class ComputeFreshOutputTest(unittest.TestCase):
             gn_args=gn_args_registry.config(
                 args={'target_os': 'linux', 'target_cpu': 'x64'}
             ),
-            targets=builders_registry.targets(compile=[], tests=[]),
+            targets=TargetsRegistry().bundle(),
         )
         with self.assertRaisesRegex(ConfigError, 'does not match'):
             snapshot.compute_fresh_output(builders_registry, gn_args_registry)
@@ -164,7 +177,9 @@ class ComputeFreshOutputTest(unittest.TestCase):
 
     def test_properties_json_needs_a_builder_group(self):
         gn_args_registry = GnArgsRegistry()
-        builders_registry = BuildersRegistry(gn_args_registry)
+        builders_registry = BuildersRegistry(
+            gn_args_registry, TargetsRegistry()
+        )
         builders_registry.builder(
             name='ungrouped',
             builder_spec=builder_config.builder_spec(
@@ -176,7 +191,7 @@ class ComputeFreshOutputTest(unittest.TestCase):
             gn_args=gn_args_registry.config(
                 args={'target_os': 'linux', 'target_cpu': 'x64'}
             ),
-            targets=builders_registry.targets(compile=[], tests=[]),
+            targets=TargetsRegistry().bundle(),
         )
         with self.assertRaisesRegex(ConfigError, 'builder_group must be set'):
             snapshot.compute_fresh_output(builders_registry, gn_args_registry)
@@ -193,7 +208,7 @@ class ComputeFreshOutputTest(unittest.TestCase):
                 ),
             ),
             gn_args=gn_args_registry.config(configs=['linux', 'x64']),
-            targets=builders_registry.targets(compile=[], tests=[]),
+            targets=TargetsRegistry().bundle(),
         )
         fresh = snapshot.compute_fresh_output(
             builders_registry, gn_args_registry
@@ -217,13 +232,31 @@ class ComputeFreshOutputTest(unittest.TestCase):
         self.assertEqual(
             json.loads(fresh['test-builder/targets.json']),
             {
-                'compile': ['brave:all'],
+                'compile': ['chrome', 'a_test'],
                 'tests': ['a_test'],
+            },
+        )
+        # The test's arguments, then its bundle's mixin's.
+        self.assertEqual(
+            json.loads(fresh['test-builder/targets/brave.test.json']),
+            {
+                'test-builder': {
+                    'additional_compile_targets': ['chrome'],
+                    'gtest_tests': [
+                        {
+                            'name': 'a_test',
+                            'test': 'a_test',
+                            'args': ['--a', '--b'],
+                        }
+                    ],
+                }
             },
         )
 
     def test_no_builders_means_no_output(self):
-        builders_registry = BuildersRegistry(GnArgsRegistry())
+        builders_registry = BuildersRegistry(
+            GnArgsRegistry(), TargetsRegistry()
+        )
         self.assertEqual(
             snapshot.compute_fresh_output(builders_registry, GnArgsRegistry()),
             {},
@@ -250,6 +283,7 @@ class WriteSnapshotTest(unittest.TestCase):
                     'test-builder/properties.json',
                     'test-builder/sync.json',
                     'test-builder/targets.json',
+                    'test-builder/targets/brave.test.json',
                 ],
             )
             self.assertEqual(
@@ -278,6 +312,7 @@ class WriteSnapshotTest(unittest.TestCase):
                     'test-builder/properties.json',
                     'test-builder/sync.json',
                     'test-builder/targets.json',
+                    'test-builder/targets/brave.test.json',
                 ],
             )
 

@@ -47,6 +47,7 @@ class CmdDescribeTest(unittest.TestCase):
                     'builder_spec': testing_support.BUILDER_SPEC,
                     'sync': testing_support.SYNC,
                     'targets': testing_support.TARGETS,
+                    'targets_spec': testing_support.TARGETS_SPEC,
                 }
             },
         )

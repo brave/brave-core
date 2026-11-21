@@ -151,7 +151,22 @@ def render(builder, gn_args_registry) -> dict[str, str]:
                 'tests': list(builder.targets.tests),
             }
         ),
+        f'targets/{builder.builder_group}.json': _dump(
+            {builder.name: _targets_spec(builder.targets)}
+        ),
     }
+
+
+def _targets_spec(targets) -> dict:
+    """A builder's entry in its group's targets spec,
+    `targets/<builder_group>.json`."""
+    spec = {}
+    if targets.additional_compile_targets:
+        spec['additional_compile_targets'] = list(
+            targets.additional_compile_targets
+        )
+    spec['gtest_tests'] = [dict(test) for test in targets.gtest_tests]
+    return spec
 
 
 @dataclasses.dataclass(frozen=True)
@@ -167,6 +182,9 @@ class GeneratedOutput:
     sync: dict
     # `targets.json`: what the builder compiles and tests.
     targets: dict
+    # Its entry in `targets/<builder_group>.json`: its tests, with their
+    # arguments.
+    targets_spec: dict
 
 
 def _is_list_of_strings(value: Any) -> bool:
@@ -192,6 +210,7 @@ class GeneratedBuilder:
             builder_spec=self._read_builder_spec(),
             sync=self._read_sync(),
             targets=self._read_targets(),
+            targets_spec=self._read_targets_spec(),
         )
 
     def problems(self) -> list[str]:
@@ -206,6 +225,7 @@ class GeneratedBuilder:
             self._read_builder_spec,
             self._read_sync,
             self._read_targets,
+            self._read_targets_spec,
         ):
             try:
                 read()
@@ -357,6 +377,44 @@ class GeneratedBuilder:
             ]
 
         return self._read_json('targets.json', check)
+
+    def _read_targets_spec(self) -> dict:
+        targets_dir = gen_paths.BUILDERS_OUTPUT_DIR / self.name / 'targets'
+        files = sorted(targets_dir.glob('*.json'))
+        if len(files) != 1:
+            raise BotsError(
+                '%s: expected one <builder_group>.json, found %d'
+                % (targets_dir, len(files))
+            )
+
+        def check(spec_file: dict) -> list[str]:
+            spec = spec_file.get(self.name)
+            if not isinstance(spec, dict):
+                return ['has no entry for %r' % self.name]
+            problems = []
+            if 'additional_compile_targets' in spec and not _is_list_of_strings(
+                spec['additional_compile_targets']
+            ):
+                problems.append(
+                    '"additional_compile_targets" is not a list of strings'
+                )
+            tests = spec.get('gtest_tests')
+            if not isinstance(tests, list):
+                return problems + ['"gtest_tests" is not a list']
+            for index, test in enumerate(tests):
+                if not (
+                    isinstance(test, dict)
+                    and isinstance(test.get('name'), str)
+                    and isinstance(test.get('test'), str)
+                    and _is_list_of_strings(test.get('args', []))
+                ):
+                    problems.append(
+                        '"gtest_tests"[%d] needs a "name" and a "test", and '
+                        'its "args" must be strings' % index
+                    )
+            return problems
+
+        return self._read_json('targets/' + files[0].name, check)[self.name]
 
 
 def _error_with_available_builders(
