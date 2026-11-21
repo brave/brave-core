@@ -9,6 +9,17 @@
 #include "components/password_manager/core/browser/affiliation/affiliated_match_helper.h"
 #include "components/password_manager/core/browser/password_store/login_database.h"
 #include "components/password_manager/core/browser/password_store/password_store_built_in_backend.h"
+#include "components/password_manager/core/browser/password_store/password_store_interface.h"
+#include "components/sync/model/wipe_model_upon_sync_disabled_behavior.h"
+
+namespace brave_password_manager {
+
+// Implemented in
+// //brave/browser/password_manager/android:wipe_model_upon_sync_disabled_behavior.
+syncer::WipeModelUponSyncDisabledBehavior GetWipeModelUponSyncDisabledBehavior(
+    password_manager::IsAccountStore is_account_store);
+
+}  // namespace brave_password_manager
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #define CreatePasswordStoreBackend CreatePasswordStoreBackend_ChromiumImpl
@@ -28,9 +39,9 @@ CreatePasswordStoreBackend(
   std::unique_ptr<password_manager::LoginDatabase> login_db(
       password_manager::CreateLoginDatabase(is_account_store,
                                             login_db_directory, prefs));
-  auto behavior = is_account_store
-                      ? syncer::WipeModelUponSyncDisabledBehavior::kAlways
-                      : syncer::WipeModelUponSyncDisabledBehavior::kNever;
+  const syncer::WipeModelUponSyncDisabledBehavior behavior =
+      brave_password_manager::GetWipeModelUponSyncDisabledBehavior(
+          is_account_store);
   CHECK(affiliation_service);
   auto affiliated_match_helper =
       std::make_unique<password_manager::AffiliatedMatchHelper>(
