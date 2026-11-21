@@ -37,6 +37,12 @@ Credentials and Docker selection:
   retained containers keep their current cache.
 
 Failure recovery and output:
+  Concurrent invocations for the same daemon/container under the same host
+  user are rejected by a standard-library flock. It is held from inspection
+  through publication and cleanup, and released on exit or process death.
+  Lock files remain in ~/.cache/brave/image-locks; their presence does not
+  indicate ownership. Retained containers with active Docker exec sessions
+  cannot be resumed until that work finishes, even if its launcher has exited.
   Failed builds retain their container for inspection. Rerunning the same REF
   resumes at its original commit, even if the branch has advanced. Successful
   builds remove only that image-build container.
@@ -60,7 +66,9 @@ Examples:
 """
 
 import argparse
-from contextlib import redirect_stderr, redirect_stdout
+from contextlib import contextmanager, redirect_stderr, redirect_stdout
+import errno
+import fcntl
 import hashlib
 import json
 import os
@@ -81,6 +89,30 @@ PLATFORMS = (
     ("android", "arm64"),
 )
 IMAGE_FORMAT = "6"
+
+
+@contextmanager
+def image_lock(command, env, name):
+    """Hold local ownership without relying on a removable sentinel file."""
+    daemon = subprocess.check_output(
+        [*command, "info", "--format", "{{.ID}}"], text=True, env=env
+    ).strip()
+    if not daemon:
+        raise RuntimeError("Cannot determine the Docker daemon's lock identity")
+    identity = hashlib.sha256((daemon + "\0" + name).encode()).hexdigest()
+    directory = Path.home() / ".cache/brave/image-locks"
+    directory.mkdir(mode=0o700, parents=True, exist_ok=True)
+    # Keep the inode: unlinking lets another invocation lock a different file.
+    with (directory / (identity + ".lock")).open("a", encoding="utf-8") as lock:
+        try:
+            fcntl.flock(lock.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError as error:
+            if error.errno not in (errno.EACCES, errno.EAGAIN):
+                raise
+            raise RuntimeError(
+                f"Image build already running for {name} on this Docker daemon"
+            ) from None
+        yield
 
 
 def docker_binary(executable=None):
@@ -315,14 +347,6 @@ def configure_toolchain(docker, env, identifier):
 
 def build_image(ref="master", git_cache_path=None, *, docker_executable=None):
     """Sync and build a dedicated container, then publish and remove it."""
-    if git_cache_path is not None:
-        git_cache_path = Path(git_cache_path).expanduser().resolve(strict=True)
-        if not git_cache_path.is_dir():
-            raise RuntimeError(
-                f"Git cache path is not a directory: {git_cache_path}"
-            )
-    ref_type, head = resolve_reference(ref)
-    certificate, key = credentials()
     docker, env = docker_connection(docker_executable)
     context = subprocess.check_output(
         [docker, "context", "show"], text=True, env=env
@@ -333,11 +357,39 @@ def build_image(ref="master", git_cache_path=None, *, docker_executable=None):
         else ["--context", context]
     )
     command = [docker, *endpoint]
+    # Pin inspection to the same daemon even if the default context changes.
+    if endpoint[0] == "--host":
+        env.pop("DOCKER_CONTEXT", None)
+        env["DOCKER_HOST"] = endpoint[1]
+    else:
+        env.pop("DOCKER_HOST", None)
+        env["DOCKER_CONTEXT"] = endpoint[1]
+    name = "brave-image-" + hashlib.sha256(ref.encode()).hexdigest()[:16]
+    with image_lock(command, env, name):
+        _build_image(command, env, ref, git_cache_path)
+
+
+def _build_image(command, env, ref, git_cache_path):
+    """Run the image lifecycle while the caller holds exclusive ownership."""
+    if git_cache_path is not None:
+        git_cache_path = Path(git_cache_path).expanduser().resolve(strict=True)
+        if not git_cache_path.is_dir():
+            raise RuntimeError(
+                f"Git cache path is not a directory: {git_cache_path}"
+            )
+    ref_type, head = resolve_reference(ref)
+    certificate, key = credentials()
+    docker = command[0]
     identity = hashlib.sha256(ref.encode()).hexdigest()[:16]
     name = f"brave-image-{identity}"
     seed = f"brave-linux-build:checkout-{identity}"
     container = inspect(docker, env, "container", name)
     if container is not None:
+        if container.get("ExecIDs"):
+            raise RuntimeError(
+                f"Image container {name} has active Docker exec sessions; "
+                "wait for that work to finish before retrying"
+            )
         labels = container["Config"].get("Labels") or {}
         if labels.get("io.brave.checkout.format") != IMAGE_FORMAT:
             raise RuntimeError(

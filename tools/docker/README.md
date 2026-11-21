@@ -20,6 +20,15 @@ instructions, run from the brave-core checkout:
 python3 tools/docker/build_brave_image.py --help
 ```
 
+The image builder uses Python's standard-library `fcntl.flock` to reject a
+second invocation for the same Docker daemon and image-build container under the
+same host user. Ownership covers inspection through publication and cleanup. The
+OS releases the lock when the process exits or crashes; files in
+`~/.cache/brave/image-locks` remain and must not be removed to unlock a build.
+On recovery, a retained container with active Docker exec sessions is left alone
+until that work finishes. This also covers work surviving its launcher. Separate
+hosts or host users do not share this local lock.
+
 ## Create a development container
 
 Use the exact image tag printed by the image builder:

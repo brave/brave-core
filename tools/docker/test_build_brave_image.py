@@ -6,6 +6,7 @@
 """Verify the portable image builder and the Dockerfile's runtime command."""
 
 import contextlib
+import hashlib
 import io
 import json
 import os
@@ -77,6 +78,13 @@ class DockerSelectionTests(unittest.TestCase):
 
 
 class ImageBuildTests(unittest.TestCase):
+    def setUp(self):
+        self.root = Path(tempfile.mkdtemp()).resolve()
+        self.addCleanup(shutil.rmtree, self.root)
+        self.enterContext(
+            patch.object(builder.Path, "home", return_value=self.root)
+        )
+
     def image(self):
         return {
             "Config": {
@@ -128,7 +136,20 @@ class ImageBuildTests(unittest.TestCase):
         container = {"Id": "image-container", "State": {"Running": True}}
         commands = []
 
+        def assert_owned():
+            name = "brave-image-" + hashlib.sha256(b"master").hexdigest()[:16]
+            with self.assertRaisesRegex(RuntimeError, "already running"):
+                with builder.image_lock(["docker"], {}, name):
+                    self.fail("Image lifecycle ran without exclusive ownership")
+
+        objects = iter([None, self.image(), container])
+
+        def inspect(*_args):
+            assert_owned()
+            return next(objects)
+
         def run(command, **kwargs):
+            assert_owned()
             commands.append(command)
             if failure and "/usr/local/bin/brave-build" in command:
                 raise subprocess.CalledProcessError(7, command)
@@ -146,9 +167,7 @@ class ImageBuildTests(unittest.TestCase):
                 "docker_connection",
                 return_value=("docker", {"DOCKER_HOST": "tcp://builder:2375"}),
             ),
-            patch.object(
-                builder, "inspect", side_effect=[None, self.image(), container]
-            ),
+            patch.object(builder, "inspect", side_effect=inspect),
             patch.object(builder, "verify_checkout"),
             patch.object(
                 builder.subprocess, "check_output", return_value="default\n"
@@ -255,6 +274,34 @@ class ImageBuildTests(unittest.TestCase):
             patch.object(builder.subprocess, "run") as run,
         ):
             with self.assertRaisesRegex(RuntimeError, "retained for migration"):
+                builder.build_image("master")
+        run.assert_not_called()
+
+    def test_surviving_exec_stops_recovery_before_modifying_container(self):
+        container = {
+            "Id": "retained-container",
+            "ExecIDs": ["surviving-exec"],
+            "State": {"Running": True},
+        }
+        with (
+            patch.object(
+                builder, "resolve_reference", return_value=("branch", "commit")
+            ),
+            patch.object(
+                builder, "credentials", return_value=("/host/cert", "/host/key")
+            ),
+            patch.object(
+                builder, "docker_connection", return_value=("docker", {})
+            ),
+            patch.object(builder, "inspect", return_value=container),
+            patch.object(
+                builder.subprocess, "check_output", return_value="daemon\n"
+            ),
+            patch.object(builder.subprocess, "run") as run,
+        ):
+            with self.assertRaisesRegex(
+                RuntimeError, "active Docker exec sessions"
+            ):
                 builder.build_image("master")
         run.assert_not_called()
 
