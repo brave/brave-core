@@ -62,7 +62,6 @@ brave_java_resources = [
   "java/res/drawable-xxxhdpi/plus.png",
   "java/res/drawable/ic_timer.xml",
   "java/res/drawable/tab_selector.xml",
-  "java/res/layout/location_status_incognito_badge.xml",
   "java/res/values-night/brave_colors.xml",
   "java/res/values-sw600dp/brave_dimens.xml",
   "java/res/values/brave_colors.xml",
