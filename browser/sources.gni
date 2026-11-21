@@ -675,18 +675,12 @@ if (is_android) {
     brave_chrome_browser_deps += [ "//brave/browser/brave_ads/android" ]
   }
 } else {
-  brave_chrome_browser_sources += [
-    "//brave/browser/profile_resetter/brave_profile_resetter.cc",
-    "//brave/browser/profile_resetter/brave_profile_resetter.h",
-  ]
-
   brave_chrome_browser_deps += [
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser/importer",
     "//brave/browser/p3a",
     "//brave/components/brave_search_conversion",
     "//brave/components/time_period_storage",
-    "//chrome/browser/profile_resetter",
     "//chrome/browser/ui/color:mixers",
     "//components/infobars/content",
   ]

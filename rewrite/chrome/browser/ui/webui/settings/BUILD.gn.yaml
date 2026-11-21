@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Add the deps the Brave settings overrides need.
+
+      The `reset_settings_handler.cc` override includes
+      `brave_profile_resetter.h`.
+    insert_into_list:
+      target: impl
+      list_name: deps
+      values:
+        - //brave/browser/profile_resetter
