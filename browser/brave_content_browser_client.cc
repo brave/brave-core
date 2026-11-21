@@ -38,6 +38,8 @@
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
 #include "brave/browser/net/brave_proxying_web_socket.h"
 #include "brave/browser/net/features.h"
+#include "brave/browser/net/storage_partition_proxy_service.h"
+#include "brave/browser/net/storage_partition_proxy_service_factory.h"
 #include "brave/browser/new_tab/new_tab_shows_navigation_throttle.h"
 #include "brave/browser/profiles/brave_renderer_updater.h"
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
@@ -137,6 +139,7 @@
 #include "content/public/browser/service_worker_version_base_info.h"
 #include "content/public/browser/site_instance.h"
 #include "content/public/browser/storage_partition.h"
+#include "content/public/browser/storage_partition_config.h"
 #include "content/public/browser/weak_document_ptr.h"
 #include "content/public/browser/web_ui_browser_interface_broker_registry.h"
 #include "content/public/browser/web_ui_controller_interface_binder.h"
@@ -582,6 +585,28 @@ bool ShouldBlockOnionRequest(content::BrowserContext* browser_context,
   }
 #endif
   return false;
+}
+
+// Returns the config of the loaded partition at `relative_partition_path`.
+// Content adds a partition to its map before creating its network context.
+content::StoragePartitionConfig GetLoadedStoragePartitionConfig(
+    content::BrowserContext* context,
+    bool in_memory,
+    const base::FilePath& relative_partition_path) {
+  CHECK(context);
+  const base::FilePath path =
+      context->GetPath().Append(relative_partition_path);
+  std::optional<content::StoragePartitionConfig> partition_config;
+  context->ForEachLoadedStoragePartition(
+      [&](content::StoragePartition* partition) {
+        if (!partition_config && partition->GetPath() == path &&
+            partition->GetConfig().in_memory() == in_memory) {
+          partition_config = partition->GetConfig();
+        }
+      });
+  // Proxy overrides must not be skipped silently.
+  CHECK(partition_config);
+  return *partition_config;
 }
 
 }  // namespace
@@ -1464,6 +1489,13 @@ void BraveContentBrowserClient::ConfigureNetworkContextParams(
   ChromeContentBrowserClient::ConfigureNetworkContextParams(
       context, in_memory, relative_partition_path, network_context_params,
       cert_verifier_creation_params);
+  if (auto* service = brave::StoragePartitionProxyServiceFactory::GetForProfile(
+          Profile::FromBrowserContext(context))) {
+    service->ConfigureNetworkContextParams(
+        GetLoadedStoragePartitionConfig(context, in_memory,
+                                        relative_partition_path),
+        network_context_params);
+  }
   // .onion may only be resolved in Tor profiles, where it goes through the
   // Tor proxy.
   network_context_params->tor_mode = context->IsTor()
