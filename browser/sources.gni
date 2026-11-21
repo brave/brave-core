@@ -438,6 +438,15 @@ if (!is_android) {
 }
 
 if (!is_android) {
+  # Gestures: right-button drag gestures over page content. Desktop
+  # (Views/Aura) only.
+  brave_chrome_browser_deps += [
+    "//brave/components/gestures/core/browser",
+    "//brave/components/gestures/core/common:features",
+  ]
+}
+
+if (!is_android) {
   # Already included on android by upstream
 
   brave_chrome_browser_deps += [

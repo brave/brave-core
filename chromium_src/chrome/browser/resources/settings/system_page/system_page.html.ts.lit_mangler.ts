@@ -6,12 +6,14 @@
 import { mangle } from 'lit_mangler'
 
 // Adds a "Shortcuts" link row (hidden unless keyboard shortcut customization
-// is supported) and trailing tab/window/fullscreen behavior toggles. These
+// is supported), a "Gestures" link row (hidden unless the gestures feature
+// is enabled), and trailing tab/window/fullscreen behavior toggles. These
 // used to be added via a RegisterPolymerTemplateModifications override
 // (browser/resources/settings/br/system_page.ts) before settings-system-page
 // was migrated to Lit; that mechanism only works on Polymer elements, so it
-// silently stopped applying. onShortcutsClick_ and shortcutsSupported_ are
-// supplied by the companion chromium_src/.../system_page.ts override.
+// silently stopped applying. onShortcutsClick_, shortcutsSupported_, and
+// gesturesFeatureEnabled_ are supplied by the companion
+// chromium_src/.../system_page.ts override.
 mangle((root) => {
   const section = root.querySelector('settings-section')
   if (!section) {
@@ -31,7 +33,14 @@ mangle((root) => {
         label="$i18n{braveShortcutsPage}"
         role-description="$i18n{subpageArrowRoleDescription}"
         @click="\${this.onShortcutsClick_}">
-     </cr-link-row>`)
+     </cr-link-row>
+     <cr-link-row id="gesturesButton" class="hr"
+        ?hidden="\${!this.gesturesFeatureEnabled_}"
+        label="$i18n{braveGesturesPage}"
+        role-description="$i18n{subpageArrowRoleDescription}"
+        @click="\${this.onGesturesClick_}">
+     </cr-link-row>
+     <div class="hr"></div>`)
 
   // Note: browser.confirm_to_quit isn't registered as a pref outside of mac
   // (see chrome/browser/ui/cocoa/confirm_quit.cc), so the toggle for it must

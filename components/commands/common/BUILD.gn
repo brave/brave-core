@@ -31,6 +31,9 @@ mojom_component("mojom") {
   output_prefix = "brave_commands_mojom"
   macro_prefix = "BRAVE_COMMANDS_MOJOM"
 
+  generate_legacy_js_bindings = true
+  webui_module_path = "/"
+
   sources = [ "commands.mojom" ]
   public_deps = [ "//mojo/public/mojom/base" ]
 }

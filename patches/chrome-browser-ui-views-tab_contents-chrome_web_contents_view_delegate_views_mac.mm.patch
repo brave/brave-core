@@ -1,0 +1,29 @@
+diff --git a/chrome/browser/ui/views/tab_contents/chrome_web_contents_view_delegate_views_mac.mm b/chrome/browser/ui/views/tab_contents/chrome_web_contents_view_delegate_views_mac.mm
+index 564c8c000c5be649a59bfc845fc8158bd6534240..4b50f31dd4f11f3c49e6875842c62e59f30b4f77 100644
+--- a/chrome/browser/ui/views/tab_contents/chrome_web_contents_view_delegate_views_mac.mm
++++ b/chrome/browser/ui/views/tab_contents/chrome_web_contents_view_delegate_views_mac.mm
+@@ -12,6 +12,8 @@
+ #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
+ #include "chrome/browser/ui/cocoa/renderer_context_menu/render_view_context_menu_mac_cocoa.h"
+ #include "chrome/browser/ui/cocoa/renderer_context_menu/render_view_context_menu_mac_remote_cocoa.h"
++#include "brave/browser/ui/views/renderer_context_menu/brave_render_view_context_menu_mac_cocoa.h"
++#include "brave/browser/ui/views/renderer_context_menu/brave_render_view_context_menu_mac_remote_cocoa.h"
+ #include "chrome/browser/ui/cocoa/tab_contents/web_drag_bookmark_handler_mac.h"
+ #include "chrome/browser/ui/sad_tab_helper.h"
+ #include "chrome/browser/ui/tab_contents/chrome_web_contents_menu_helper.h"
+@@ -176,13 +178,13 @@ ChromeWebContentsViewDelegateViewsMac::BuildMenu(
+     const content::ContextMenuParams& params) {
+   std::unique_ptr<RenderViewContextMenuMac> menu;
+   if (remote_cocoa::IsWindowRemote(GetNativeWindow())) {
+-    menu = std::make_unique<RenderViewContextMenuMacRemoteCocoa>(
++    menu = std::make_unique<BraveRenderViewContextMenuMacRemoteCocoa>(
+         render_frame_host, params, is_paste_enabled_,
+         is_paste_and_match_style_enabled_, GetActiveRenderWidgetHostView());
+   } else {
+     gfx::NativeView parent_view =
+         GetActiveRenderWidgetHostView()->GetNativeView();
+-    menu = std::make_unique<RenderViewContextMenuMacCocoa>(
++    menu = std::make_unique<BraveRenderViewContextMenuMacCocoa>(
+         render_frame_host, params, is_paste_enabled_,
+         is_paste_and_match_style_enabled_, parent_view.GetNativeNSView());
+   }
