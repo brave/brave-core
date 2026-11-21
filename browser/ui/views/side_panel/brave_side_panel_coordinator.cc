@@ -17,6 +17,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/types/to_address.h"
+#include "brave/browser/ui/views/side_panel/notes/notes_side_panel_web_view.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
@@ -107,6 +108,11 @@ BraveSidePanelCoordinator::BraveSidePanelCoordinator(
         base::NullCallback()));
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
+  global_registry->Register(std::make_unique<SidePanelEntry>(
+      SidePanelEntry::Key(SidePanelEntry::Id::kNotes),
+      base::BindRepeating(&NotesSidePanelWebView::CreateView,
+                          browser->GetProfile()),
+      base::NullCallback()));
 }
 
 BraveSidePanelCoordinator::~BraveSidePanelCoordinator() = default;

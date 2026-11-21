@@ -147,6 +147,13 @@ source_set("ui") {
     "//ui/base/unowned_user_data",
   ]
 
+  if (!is_android) {
+    deps += [
+      "//brave/browser/ui/webui:notes_mojom",
+      "//brave/browser/ui/webui:notes_panel",
+    ]
+  }
+
   if (toolkit_views) {
     deps += [
       "//brave/browser/translate",

@@ -9,6 +9,7 @@
 namespace sidebar {
 
 inline constexpr char kSidebarItems[] = "brave.sidebar.sidebar_items";
+inline constexpr char kSidebarNotes[] = "brave.sidebar.sidebar_notes";
 inline constexpr char kSidebarHiddenBuiltInItems[] =
     "brave.sidebar.hidden_built_in_items";
 inline constexpr char kSidebarShowOption[] =

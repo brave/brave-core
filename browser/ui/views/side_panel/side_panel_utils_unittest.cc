@@ -13,6 +13,7 @@ namespace brave {
 TEST(SidePanelUtilsTest, ShouldShowSidePanelHeaderOnlyForBraveEntries) {
   EXPECT_TRUE(ShouldShowSidePanelHeader(SidePanelEntryId::kReadingList));
   EXPECT_TRUE(ShouldShowSidePanelHeader(SidePanelEntryId::kBookmarks));
+  EXPECT_TRUE(ShouldShowSidePanelHeader(SidePanelEntryId::kNotes));
   EXPECT_FALSE(ShouldShowSidePanelHeader(SidePanelEntryId::kCustomizeChrome));
 }
 

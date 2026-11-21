@@ -21,7 +21,8 @@ namespace brave {
 bool ShouldShowSidePanelHeader(SidePanelEntryId id) {
   return id == SidePanelEntryId::kReadingList ||
          id == SidePanelEntryId::kBookmarks ||
-         id == SidePanelEntryId::kReadAnything;
+         id == SidePanelEntryId::kReadAnything ||
+         id == SidePanelEntryId::kNotes;
 }
 
 int GetPanelOuterEdgeMargin(BrowserView* browser_view) {

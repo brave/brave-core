@@ -69,6 +69,9 @@ std::u16string GetEntryTitle(SidePanelEntry::Id id) {
     case SidePanelEntry::Id::kReadAnything:
       message_id = IDS_READING_MODE_TITLE;
       break;
+    case SidePanelEntry::Id::kNotes:
+      message_id = IDS_SIDEBAR_NOTES_PANEL_HEADER_TITLE;
+      break;
     default:
       return std::u16string();
   }

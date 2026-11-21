@@ -71,6 +71,7 @@ constexpr sidebar::SidebarItem::BuiltInItemType
 #if BUILDFLAG(ENABLE_PLAYLIST)
         sidebar::SidebarItem::BuiltInItemType::kPlaylist,
 #endif
+        sidebar::SidebarItem::BuiltInItemType::kNotes,
 };
 
 constexpr char sidebar_all_builtin_visible_json[] = R"({
@@ -219,6 +220,9 @@ class MockSidebarServiceObserver : public SidebarService::Observer {
               OnItemMoved,
               (const SidebarItem& item, size_t from, size_t to),
               (override));
+  MOCK_METHOD(void, OnNoteAdded, (const Notes& note), (override));
+  MOCK_METHOD(void, OnNoteUpdated, (const Notes& note), (override));
+  MOCK_METHOD(void, OnNoteDeleted, (const std::string& id), (override));
 };
 
 class SidebarServiceTest : public testing::Test {
@@ -1295,6 +1299,8 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAllBuiltInVisible) {
     items.push_back(SidebarItem::BuiltInItemType::kPlaylist);
   }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
+  expected_count++;
+  items.push_back(SidebarItem::BuiltInItemType::kNotes);
   LoadFromPrefsTest(std::move(sidebar), items, expected_count);
 }
 
@@ -1338,6 +1344,8 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsWalletBuiltInHidden) {
   }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
+  expected_count++;
+  items.push_back(SidebarItem::BuiltInItemType::kNotes);
   LoadFromPrefsTest(std::move(sidebar), items, expected_count);
 }
 
@@ -1385,6 +1393,8 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAIChatBuiltInNotListed) {
   }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
+  expected_count++;
+  items.push_back(SidebarItem::BuiltInItemType::kNotes);
   LoadFromPrefsTest(std::move(sidebar), items, expected_count);
 }
 
@@ -1500,5 +1510,148 @@ TEST_F(SidebarServiceWithWebPanelTest, BraveTalkPanelTypeTest) {
   EXPECT_TRUE(talk_iter->opens_in_panel());
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_TALK)
+
+TEST_F(SidebarServiceTest, NotesBuiltInItem) {
+  InitService();
+
+  const SidebarItem item =
+      service_->GetBuiltInItemForType(SidebarItem::BuiltInItemType::kNotes);
+
+  EXPECT_TRUE(item.IsValidItem());
+  EXPECT_TRUE(item.is_built_in_type());
+  EXPECT_TRUE(item.is_side_panel_type());
+  EXPECT_EQ(SidebarItem::BuiltInItemType::kNotes,
+            item.built_in_item_type);
+}
+
+TEST_F(SidebarServiceTest, AddDeleteNotes) {
+  InitService();
+  EXPECT_TRUE(service_->GetNotes().empty());
+
+  Notes note1;
+  note1.id = "note-1";
+  note1.title = "First Note";
+  note1.content = "Hello Brave Sidebar";
+  note1.timestamp = 1700000000;
+
+  EXPECT_CALL(observer_, OnNoteAdded(testing::Field(&Notes::id, "note-1")))
+      .Times(1);
+  service_->AddNote(note1);
+  testing::Mock::VerifyAndClearExpectations(&observer_);
+
+  ASSERT_EQ(1u, service_->GetNotes().size());
+  EXPECT_EQ("note-1", service_->GetNotes()[0].id);
+  EXPECT_EQ("First Note", service_->GetNotes()[0].title);
+  EXPECT_EQ("Hello Brave Sidebar", service_->GetNotes()[0].content);
+  EXPECT_EQ(1700000000, service_->GetNotes()[0].timestamp);
+
+  // Deleting a non-existent ID should not notify observers or alter state.
+  EXPECT_CALL(observer_, OnNoteDeleted(testing::_)).Times(0);
+  service_->DeleteNote("non-existent");
+  testing::Mock::VerifyAndClearExpectations(&observer_);
+  EXPECT_EQ(1u, service_->GetNotes().size());
+
+  // Deleting an existing ID removes the note and notifies observers.
+  EXPECT_CALL(observer_, OnNoteDeleted("note-1")).Times(1);
+  service_->DeleteNote("note-1");
+  testing::Mock::VerifyAndClearExpectations(&observer_);
+  EXPECT_TRUE(service_->GetNotes().empty());
+}
+
+TEST_F(SidebarServiceTest, UpdateNotes) {
+  InitService();
+
+  Notes note;
+  note.id = "note-1";
+  note.title = "Original Title";
+  note.content = "Original content";
+  note.timestamp = 1700000000;
+  service_->AddNote(note);
+
+  ASSERT_EQ(1u, service_->GetNotes().size());
+
+  Notes missing_note;
+  missing_note.id = "non-existent";
+  missing_note.title = "Missing Title";
+  missing_note.content = "Missing content";
+  missing_note.timestamp = 1700000999;
+
+  EXPECT_CALL(observer_, OnNoteUpdated(testing::_)).Times(0);
+  service_->UpdateNote(missing_note);
+  testing::Mock::VerifyAndClearExpectations(&observer_);
+
+  ASSERT_EQ(1u, service_->GetNotes().size());
+  EXPECT_EQ("note-1", service_->GetNotes()[0].id);
+  EXPECT_EQ("Original Title", service_->GetNotes()[0].title);
+  EXPECT_EQ("Original content", service_->GetNotes()[0].content);
+  EXPECT_EQ(1700000000, service_->GetNotes()[0].timestamp);
+
+  Notes updated_note;
+  updated_note.id = "note-1";
+  updated_note.title = "Updated Title";
+  updated_note.content = "Updated content";
+  updated_note.timestamp = 1700001234;
+
+  EXPECT_CALL(observer_, OnNoteUpdated(testing::_)).Times(1);
+  service_->UpdateNote(updated_note);
+  testing::Mock::VerifyAndClearExpectations(&observer_);
+
+  ASSERT_EQ(1u, service_->GetNotes().size());
+  EXPECT_EQ("Updated Title", service_->GetNotes()[0].title);
+  EXPECT_EQ("Updated content", service_->GetNotes()[0].content);
+  EXPECT_EQ(1700001234, service_->GetNotes()[0].timestamp);
+
+  ResetService();
+  InitService();
+
+  ASSERT_EQ(1u, service_->GetNotes().size());
+  EXPECT_EQ("note-1", service_->GetNotes()[0].id);
+  EXPECT_EQ("Updated Title", service_->GetNotes()[0].title);
+  EXPECT_EQ("Updated content", service_->GetNotes()[0].content);
+  EXPECT_EQ(1700001234, service_->GetNotes()[0].timestamp);
+}
+
+TEST_F(SidebarServiceTest, NotesSavedToPrefs) {
+  InitService();
+
+  Notes note1;
+  note1.id = "note-1";
+  note1.title = "Persistent Title";
+  note1.content = "Saved across restarts";
+  note1.timestamp = 1700000123;
+
+  Notes note2;
+  note2.id = "note-2";
+  note2.title = "Second Note";
+  note2.content = "More content";
+  note2.timestamp = 1700000456;
+
+  service_->AddNote(note1);
+  service_->AddNote(note2);
+  ASSERT_EQ(2u, service_->GetNotes().size());
+
+  // Simulate browser restart by recreating SidebarService with the same prefs.
+  ResetService();
+  InitService();
+
+  ASSERT_EQ(2u, service_->GetNotes().size());
+  EXPECT_EQ("note-1", service_->GetNotes()[0].id);
+  EXPECT_EQ("Persistent Title", service_->GetNotes()[0].title);
+  EXPECT_EQ("Saved across restarts", service_->GetNotes()[0].content);
+  EXPECT_EQ(1700000123, service_->GetNotes()[0].timestamp);
+
+  EXPECT_EQ("note-2", service_->GetNotes()[1].id);
+  EXPECT_EQ("Second Note", service_->GetNotes()[1].title);
+  EXPECT_EQ("More content", service_->GetNotes()[1].content);
+  EXPECT_EQ(1700000456, service_->GetNotes()[1].timestamp);
+
+  // Delete one note and verify the deletion persists across restart.
+  service_->DeleteNote("note-1");
+  ResetService();
+  InitService();
+
+  ASSERT_EQ(1u, service_->GetNotes().size());
+  EXPECT_EQ("note-2", service_->GetNotes()[0].id);
+}
 
 }  // namespace sidebar
