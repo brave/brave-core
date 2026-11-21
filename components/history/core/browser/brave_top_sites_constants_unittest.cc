@@ -5,13 +5,31 @@
 
 #include "build/build_config.h"
 #include "components/history/core/browser/top_sites_constants.h"
+#include "components/ntp_tiles/constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-static_assert(BUILDFLAG(IS_ANDROID), "Android-only test");
+#if BUILDFLAG(IS_ANDROID)
 
 // Verify Brave's Android override of kTopSitesNumber (15 tiles: 4x4 - 1 for
 // the plus button). The non-Android value (12) is covered by
-// BraveNewTabUITest.ConstantsTest in brave_new_tab_ui_unittest.cc.
+// DesktopConstantsTest.
 TEST(BraveTopSitesConstantsTest, AndroidTopSitesNumberIsOverridden) {
   EXPECT_EQ(15u, history::kTopSitesNumber);
 }
+
+#else
+
+TEST(BraveTopSitesConstantsTest, DesktopConstantsTest) {
+  // Make sure history/ntp_tiles module has proper constants for our NTP
+  // requirements.
+  constexpr size_t kBraveMaxNumMostVisited = 12;
+  constexpr size_t kBraveMaxNumCustomLinks = 120;
+  constexpr size_t kTopSitesNumber = history::kTopSitesNumber;
+
+  EXPECT_EQ(kBraveMaxNumMostVisited, kTopSitesNumber);
+  EXPECT_EQ(kBraveMaxNumCustomLinks, ntp_tiles::kMaxNumCustomLinks);
+  EXPECT_EQ(kBraveMaxNumMostVisited, ntp_tiles::kMaxNumMostVisited);
+  EXPECT_EQ(static_cast<int>(kBraveMaxNumMostVisited), ntp_tiles::kMaxNumTiles);
+}
+
+#endif  // BUILDFLAG(IS_ANDROID)
