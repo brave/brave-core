@@ -2148,11 +2148,6 @@
 # non-committed open window.
 -SessionServiceBrowserTest.CommittedPendingCloseCountedAsOpenMetric
 
-# This test crashes because our ContentSettingsManagerImpl::
-# AllowEphemeralStorageAccess override dereferences cookie_settings_ without
-# the null check upstream added for browser contexts without cookie settings.
--InitialWebUIUnboundStartupPrerenderBrowserTest.StartupWindowAdoptsStartupSpare
-
 # This test fails because we show brave://welcome page on first run
 -StartupBrowserCreatorTriggeredResetFirstRunTest.TestTriggeredResetDoesNotShowWithFirstRunURLs
 
@@ -2546,7 +2541,6 @@
 -All/WebUIToolbarWebViewPermissionBrowserTest.PermissionChipE2E/*
 -IncognitoClearBrowsingDataDialogWebUIAvatarOverflowTest.*
 -InitialWebUIUnboundPrerenderBrowserTest.*
--InitialWebUIUnboundStartupPrerenderBrowserTest.*
 -SearchAIModeSignInPromoControllerWebUIAvatarOverflowBrowserTest.*
 -SigninViewControllerWebUIAvatarOverflowBrowserTest.*
 -WebUIAppMenuBrowserTest.AppMenuState
