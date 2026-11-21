@@ -6,13 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SIDE_PANEL_BOOKMARKS_BOOKMARKS_SIDE_PANEL_UI_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SIDE_PANEL_BOOKMARKS_BOOKMARKS_SIDE_PANEL_UI_H_
 
-#define BookmarksSidePanelUI BookmarksSidePanelUI_ChromiumImpl
-#define BookmarksSidePanelUIConfig BookmarksSidePanelUIConfig_Unused
-
 #include <chrome/browser/ui/webui/side_panel/bookmarks/bookmarks_side_panel_ui.h>  // IWYU pragma: export
-
-#undef BookmarksSidePanelUIConfig
-#undef BookmarksSidePanelUI
 
 class BookmarksSidePanelUI : public BookmarksSidePanelUI_ChromiumImpl {
  public:

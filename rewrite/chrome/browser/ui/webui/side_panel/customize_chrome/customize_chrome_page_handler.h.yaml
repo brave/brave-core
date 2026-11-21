@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Rename CustomizeChromePageHandler so Brave can subclass it.
+
+      The chromium_src shadow header defines a Brave CustomizeChromePageHandler
+      deriving from CustomizeChromePageHandler_ChromiumImpl.
+    rename_class:
+      class_name: CustomizeChromePageHandler
+      rename: CustomizeChromePageHandler_ChromiumImpl
+
+  - description: |-
+      Let the Brave CustomizeChromePageHandler access private members.
+
+      The Brave subclass uses private members such as profile_ and page_.
+      The name is qualified with `::` because an unqualified
+      CustomizeChromePageHandler resolves to the injected-class-name of the
+      mojom base class instead of the Brave subclass.
+    add_friend:
+      class_name: CustomizeChromePageHandler_ChromiumImpl
+      friend_type: class ::CustomizeChromePageHandler

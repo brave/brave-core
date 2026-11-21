@@ -1,0 +1,31 @@
+diff --git a/chrome/browser/ui/webui/side_panel/bookmarks/bookmarks_page_handler.h b/chrome/browser/ui/webui/side_panel/bookmarks/bookmarks_page_handler.h
+index 7db382d831c142219a9f79ce606e574aa86bd27f..bbd452e060fc5064ce969cc93404f570bb626f07 100644
+--- a/chrome/browser/ui/webui/side_panel/bookmarks/bookmarks_page_handler.h
++++ b/chrome/browser/ui/webui/side_panel/bookmarks/bookmarks_page_handler.h
+@@ -15,7 +15,7 @@
+ #include "mojo/public/cpp/bindings/receiver.h"
+ #include "mojo/public/cpp/bindings/remote.h"
+ 
+-class BookmarksSidePanelUI;
++class BookmarksSidePanelUI_ChromiumImpl;
+ class BookmarkMergedSurfaceService;
+ class BrowserWindowInterface;
+ 
+@@ -30,7 +30,7 @@ class BookmarksPageHandler : public side_panel::mojom::BookmarksPageHandler,
+   explicit BookmarksPageHandler(
+       mojo::PendingReceiver<side_panel::mojom::BookmarksPageHandler> receiver,
+       mojo::PendingRemote<side_panel::mojom::BookmarksPage> page,
+-      BookmarksSidePanelUI* bookmarks_ui,
++      BookmarksSidePanelUI_ChromiumImpl* bookmarks_ui,
+       content::WebUI* web_ui);
+   BookmarksPageHandler(const BookmarksPageHandler&) = delete;
+   BookmarksPageHandler& operator=(const BookmarksPageHandler&) = delete;
+@@ -133,7 +133,7 @@ class BookmarksPageHandler : public side_panel::mojom::BookmarksPageHandler,
+   mojo::Receiver<side_panel::mojom::BookmarksPageHandler> receiver_;
+   mojo::Remote<side_panel::mojom::BookmarksPage> page_;
+   const raw_ptr<content::WebUI> web_ui_;
+-  raw_ptr<BookmarksSidePanelUI> bookmarks_ui_ = nullptr;
++  raw_ptr<BookmarksSidePanelUI_ChromiumImpl> bookmarks_ui_ = nullptr;
+   raw_ptr<BookmarkMergedSurfaceService> bookmark_merged_surface_ = nullptr;
+   raw_ptr<BrowserWindowInterface> browser_window_interface_ = nullptr;
+ 
