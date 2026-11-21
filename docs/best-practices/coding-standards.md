@@ -1596,3 +1596,75 @@ if (!entry_was_found) {
 ```
 
 ---
+
+<a id="CS-075"></a>
+
+## ✅ Resolve Shields Settings to the Site Responsible for the Content
+
+**Use the closest non-opaque origin in the relevant origin’s ancestry.** The
+setting’s `content_settings::WebsiteSettingsInfo::ScopingType` determines the
+relevant origin. `TOP_ORIGIN_ONLY_SCOPE`, used by Shields, ads, and referrers,
+is keyed on the top-level document. `REQUESTING_ORIGIN_ONLY_SCOPE` and
+`REQUESTING_SCHEMEFUL_SITE_ONLY_SCOPE` are keyed on the requesting frame or
+resource. `REQUESTING_ORIGIN_WITH_TOP_ORIGIN_EXCEPTIONS_SCOPE`, used by cookies,
+`REQUESTING_AND_TOP_SCHEMEFUL_SITE_SCOPE`, and
+`REQUESTING_ORIGIN_AND_TOP_SCHEMEFUL_SITE_SCOPE` are keyed on both; resolve each
+origin independently. `GENERIC_SINGLE_ORIGIN_SCOPE` doesn’t define which origin
+it uses, so follow the setting type’s documentation. If an origin is non-opaque,
+use its site. If it’s opaque, use its precursor’s site. If there’s no precursor,
+use default settings.
+
+A precursor is the non-opaque origin from which an opaque origin was derived. If
+one opaque origin is derived from another, it carries forward the same
+precursor, if there is one. Retrieve it with
+`url::Origin::GetTupleOrPrecursorTupleIfOpaque()`, which returns the origin’s
+own tuple when it is non-opaque. The returned `url::SchemeHostPort` is invalid
+when there is no precursor.
+
+A Shields settings origin is used only to choose settings. It MUST NOT change
+the document's security origin, and it MUST NOT be used to grant access or
+permissions.
+
+**Examples**
+
+- **Cross-site iframe:** `a.com` embeds a `b.com` iframe, which loads a script.
+  - ✅ Use `a.com` for `TOP_ORIGIN_ONLY_SCOPE` settings of the script request.
+  - ❌ Use `b.com` because the iframe initiated the request.
+- **`about:blank` popup:** `a.com` calls `window.open('about:blank')`. The popup
+  inherits the `a.com` origin.
+  - ✅ Use `a.com` for `TOP_ORIGIN_ONLY_SCOPE` settings in the popup.
+  - ❌ Use defaults, or skip Shields, because the URL is `about:blank`.
+- **`data:` iframe:** `a.com` embeds a `data:` iframe. Its opaque origin has an
+  `a.com` precursor.
+  - ✅ Use `a.com` for the iframe’s requesting origin.
+  - ❌ Use defaults because the iframe’s origin is opaque.
+- **Sandboxed iframe:** `a.com` embeds a sandboxed `b.com` iframe whose opaque
+  origin has a `b.com` precursor.
+  - ✅ Use `a.com` for `TOP_ORIGIN_ONLY_SCOPE` settings. For the iframe’s
+    cookies (`REQUESTING_ORIGIN_WITH_TOP_ORIGIN_EXCEPTIONS_SCOPE`), use `b.com`
+    as the requesting origin and `a.com` as the top origin.
+  - ❌ Walk up to `a.com` for the iframe’s requesting origin because its origin
+    is opaque.
+- **Sandboxed top-level page:** an HTTPS page on `a.com` is itself sandboxed.
+  Its opaque top-level origin has an `a.com` precursor.
+  - ✅ Use `a.com` for `TOP_ORIGIN_ONLY_SCOPE` settings, including for
+    subrequests.
+  - ❌ Use defaults just because the top-level origin is opaque.
+- **Typed `data:` URL:** the user types a `data:` URL that embeds `b.com`. The
+  top-level origin has no precursor.
+  - ✅ Use defaults for `TOP_ORIGIN_ONLY_SCOPE` settings, including when the
+    iframe makes a request.
+  - ❌ Use `b.com` for `TOP_ORIGIN_ONLY_SCOPE` settings because it initiated the
+    request.
+
+Main-frame status (`is_outermost_main_frame`,
+`net::IsolationInfo::RequestType::kMainFrame`, etc.) only identifies the
+top-level document. NEVER treat it as proof that the request or document URL is
+the settings origin; resolve that URL's origin as described above. NEVER use
+`blink::mojom::ResourceType::kMainFrame` to detect a main-frame request:
+WebSocket requests default to it, and navigations fetched by a service worker
+keep it. NEVER use a raw document URL or a non-HTTP(S) scheme as proof of which
+settings apply, and NEVER treat opaque origins alone as a reason to bypass
+Shields.
+
+---

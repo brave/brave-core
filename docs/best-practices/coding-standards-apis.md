@@ -617,9 +617,13 @@ void Process(base::optional_ref<const std::string> value);
 
 ## ✅ Short-Circuit on Non-HTTP(S) URLs
 
-**In URL processing code (shields, debouncing, content settings), add an early
-return for non-HTTP/HTTPS URLs.** This prevents wasting time on irrelevant
-schemes and avoids edge cases.
+**When processing the resource or navigation URL itself (for example, debouncing
+or stripping tracking parameters), add an early return for non-HTTP/HTTPS
+URLs.** This prevents wasting time on irrelevant schemes and avoids edge cases.
+
+For Shields content-settings lookups, first resolve the responsible site (see
+[CS-075](coding-standards.md#CS-075)). NEVER short-circuit that lookup solely
+because the document URL uses a non-HTTP(S) scheme.
 
 ```cpp
 // ✅ CORRECT - early exit
