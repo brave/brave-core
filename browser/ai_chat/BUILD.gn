@@ -479,6 +479,8 @@ source_set("browser_tests") {
       "//services/screen_ai/public/cpp:utilities",
       "//ui/accessibility:ax_base",
       "//ui/accessibility:ax_features_mojo",
+      "//ui/base/clipboard",
+      "//ui/base/clipboard:clipboard_test_support",
     ]
 
     if (enable_local_ai) {
