@@ -61,6 +61,7 @@ BraveProxyingWebSocket<T>* BraveProxyingWebSocket<T>::ProxyWebSocket(
     content::BrowserContext* browser_context,
     content::GlobalRenderFrameHostToken render_frame_token,
     const url::Origin& initiator_origin,
+    const net::IsolationInfo& isolation_info,
     content::ContentBrowserClient::WebSocketFactory factory,
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
@@ -69,7 +70,7 @@ BraveProxyingWebSocket<T>* BraveProxyingWebSocket<T>::ProxyWebSocket(
 
   return ResourceContextData<T>::CreateProxyingWebSocket(
       std::move(factory), url, site_for_cookies, user_agent, browser_context,
-      render_frame_token, initiator_origin);
+      render_frame_token, initiator_origin, isolation_info);
 }
 
 template <>

@@ -111,6 +111,7 @@ source_set("unit_tests") {
     ":features",
     "//base/test:test_support",
     "//brave/browser:browser_process",
+    "//brave/browser/brave_shields",
     "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_rewards/core",

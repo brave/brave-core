@@ -5,12 +5,16 @@
 
 #include "brave/browser/net/url_context.h"
 
+#include "brave/browser/brave_shields/shields_settings_origin.h"
+#include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/content_browser_client.h"
 #include "content/public/browser/global_routing_id.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/test/browser_task_environment.h"
+#include "content/public/test/navigation_simulator.h"
 #include "net/base/isolation_info.h"
 #include "net/cookies/site_for_cookies.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -162,23 +166,36 @@ TEST_F(BraveRequestInfoTest,
   EXPECT_TRUE(ctx->network_anonymization_key().IsEmpty());
 }
 
-TEST_F(BraveRequestInfoTest, WorkerWebSocketFallsBackToInitiatorTabOrigin) {
+TEST_F(BraveRequestInfoTest, FramelessRequestIgnoresInitiatorForTabOrigin) {
   TestingProfile profile;
-  const url::Origin initiator =
-      url::Origin::Create(GURL("https://worker-initiator.example"));
   network::ResourceRequest request;
-  request.url = GURL("wss://tracker.example/socket");
-  request.request_initiator = initiator;
+  request.url = GURL("wss://socket.example/socket");
+  request.request_initiator =
+      url::Origin::Create(GURL("https://initiator.example"));
   ASSERT_FALSE(request.trusted_params);
 
   auto ctx = BraveRequestInfo::MakeCTX(
       request, content::GlobalRenderFrameHostToken(), 1, &profile,
       /*old_ctx=*/nullptr);
 
-  ASSERT_TRUE(ctx->request_initiator());
-  EXPECT_EQ(initiator, *ctx->request_initiator());
-  EXPECT_EQ(initiator.GetURL(), ctx->tab_origin());
+  EXPECT_TRUE(ctx->tab_origin().is_empty());
   EXPECT_FALSE(ctx->top_frame_origin());
+}
+
+TEST_F(BraveRequestInfoTest, FramelessRequestWithOpaqueTopFrameHasNoTabOrigin) {
+  TestingProfile profile;
+  network::ResourceRequest request;
+  request.url = GURL("wss://socket.example/socket");
+  request.request_initiator =
+      url::Origin::Create(GURL("https://initiator.example"));
+  request.trusted_params = network::ResourceRequest::TrustedParams();
+  request.trusted_params->isolation_info = MakeIsolationInfo(url::Origin());
+
+  auto ctx = BraveRequestInfo::MakeCTX(
+      request, content::GlobalRenderFrameHostToken(), 1, &profile,
+      /*old_ctx=*/nullptr);
+
+  EXPECT_TRUE(ctx->tab_origin().is_empty());
 }
 
 // Opaque top frame origins are kept as is, so their precursor is not lost.
@@ -346,6 +363,56 @@ TEST_F(BraveRequestInfoTest,
     ctx.set_resource_type(blink::mojom::ResourceType::kMainFrame);
     EXPECT_TRUE(ctx.first_party_origin_for_adblock_rules().opaque());
   }
+
+class BraveRequestInfoFrameTest : public ChromeRenderViewHostTestHarness {
+ protected:
+  // Commits `url` and stores `value` as the page's Shields settings origin.
+  void CommitWithValue(const GURL& url, const url::Origin& value) {
+    content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                               url);
+    if (brave_shields::ShieldsSettingsOrigin::GetForCurrentDocument(
+            main_rfh())) {
+      brave_shields::ShieldsSettingsOrigin::DeleteForCurrentDocument(
+          main_rfh());
+    }
+    brave_shields::ShieldsSettingsOrigin::CreateForCurrentDocument(main_rfh(),
+                                                                   value);
+  }
+
+  std::unique_ptr<BraveRequestInfo> MakeCTXForMainFrame(
+      const url::Origin& top_frame_origin) {
+    network::ResourceRequest request;
+    request.url = GURL("https://request.example/fetch");
+    request.trusted_params = network::ResourceRequest::TrustedParams();
+    request.trusted_params->isolation_info =
+        MakeIsolationInfo(top_frame_origin);
+    return BraveRequestInfo::MakeCTX(request, main_rfh()->GetGlobalFrameToken(),
+                                     1, profile(), /*old_ctx=*/nullptr);
+  }
+};
+
+TEST_F(BraveRequestInfoFrameTest, NonOpaqueTopFrameOriginIsTabOrigin) {
+  const url::Origin top_frame_origin =
+      url::Origin::Create(GURL("https://top-frame.example"));
+  CommitWithValue(GURL("https://page.example/"),
+                  url::Origin::Create(GURL("https://stored.example")));
+
+  EXPECT_EQ(top_frame_origin.GetURL(),
+            MakeCTXForMainFrame(top_frame_origin)->tab_origin());
+}
+
+TEST_F(BraveRequestInfoFrameTest, OpaqueTopFrameUsesStoredPageValue) {
+  const url::Origin stored =
+      url::Origin::Create(GURL("https://stored.example"));
+  CommitWithValue(GURL("https://page.example/"), stored);
+
+  EXPECT_EQ(stored.GetURL(), MakeCTXForMainFrame(url::Origin())->tab_origin());
+}
+
+TEST_F(BraveRequestInfoFrameTest, OpaqueStoredPageValueHasNoTabOrigin) {
+  CommitWithValue(GURL("https://page.example/"), url::Origin());
+
+  EXPECT_TRUE(MakeCTXForMainFrame(url::Origin())->tab_origin().is_empty());
 }
 
 }  // namespace

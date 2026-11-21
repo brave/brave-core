@@ -11,6 +11,7 @@
 
 #include "base/notreached.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
+#include "brave/browser/brave_shields/shields_settings_origin.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -539,20 +540,7 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
     // given that this is always empty for subresources.
     ctx->set_network_anonymization_key(
         isolation_info->network_anonymization_key());
-    ctx->set_tab_origin(
-        isolation_info->top_frame_origin().value_or(url::Origin()).GetURL());
     ctx->set_top_frame_origin(isolation_info->top_frame_origin());
-  }
-  // TODO(iefremov): We still need this for WebSockets, currently
-  // |AddChannelRequest| provides only old-fashioned |site_for_cookies|.
-  // (See |BraveProxyingWebSocket|).
-  if (ctx->tab_origin().is_empty()) {
-    content::WebContents* contents = content::WebContents::FromRenderFrameHost(
-        content::RenderFrameHost::FromFrameToken(ctx->render_frame_token()));
-    if (contents) {
-      ctx->set_tab_origin(
-          url::Origin::Create(contents->GetLastCommittedURL()).GetURL());
-    }
   }
   if (!ctx->top_frame_origin()) {
     if (auto* render_frame_host = content::RenderFrameHost::FromFrameToken(
@@ -561,11 +549,19 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
           render_frame_host->GetOutermostMainFrame()->GetLastCommittedOrigin());
     }
   }
-  // Shared and service worker WebSockets have no frame, so fall back to the
-  // initiator origin for Shields settings.
-  if (ctx->tab_origin().is_empty() && ctx->request_initiator()) {
-    ctx->set_tab_origin(ctx->request_initiator()->GetURL());
+  // Shields settings use the top frame origin. When it is opaque, the page
+  // stores the origin to use instead. Frameless workers have no page, so they
+  // get the default settings.
+  url::Origin settings_origin;
+  if (isolation_info && isolation_info->top_frame_origin() &&
+      !isolation_info->top_frame_origin()->opaque()) {
+    settings_origin = *isolation_info->top_frame_origin();
+  } else if (auto* render_frame_host = content::RenderFrameHost::FromFrameToken(
+                 ctx->render_frame_token())) {
+    settings_origin =
+        brave_shields::ShieldsSettingsOrigin::GetForFrame(render_frame_host);
   }
+  ctx->set_tab_origin(settings_origin.GetURL());
 
   if (old_ctx) {
     ctx->set_internal_redirect(old_ctx->internal_redirect());
