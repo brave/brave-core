@@ -197,7 +197,21 @@ self.addEventListener('fetch', (event) => {
     return
   }
 
-  const filePath = url.pathname.slice(1)
+  // The viewer escapes each path segment (see filePathToUrlPath), as does the
+  // browser for a relative URL inside a displayed file.
+  let filePath: string
+  try {
+    filePath = decodeURIComponent(url.pathname.slice(1))
+  } catch {
+    event.respondWith(
+      new Response('Malformed file path', {
+        status: 400,
+        statusText: 'Bad Request',
+        headers: { 'Content-Type': 'text/plain' },
+      }),
+    )
+    return
+  }
   if (!filePath) {
     return
   }
