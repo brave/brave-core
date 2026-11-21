@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Initialize brave://history's data source through BraveHistoryUIInitializer.
+
+      BraveHistoryUIInitializer is defined in the chromium_src shadow. It runs
+      ManagedUIHandler::Initialize() and then adds what the
+      brave-history-embeddings element needs. The upstream constructor calls
+      ManagedUIHandler::Initialize() exactly once, at a point where the data
+      source has been created and is in scope.
+    rename_class:
+      class_name: ManagedUIHandler
+      rename: BraveHistoryUIInitializer

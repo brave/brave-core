@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/webui/version/BUILD.gn b/chrome/browser/ui/webui/version/BUILD.gn
+index fed01e41d5074aea05d0b7870f208635ec1a0246..7f4c4e66ba7d8a5e820dd59ad62f4db81a963c0e 100644
+--- a/chrome/browser/ui/webui/version/BUILD.gn
++++ b/chrome/browser/ui/webui/version/BUILD.gn
+@@ -18,6 +18,7 @@ source_set("version") {
+   ]
+   deps = [
+     "//base",
++    "//brave/components/version_info",
+     "//chrome/browser:browser_process",
+     "//chrome/browser/profiles:profile",
+     "//chrome/common",

@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/ui/webui/crashes/crashes_ui.cc b/chrome/browser/ui/webui/crashes/crashes_ui.cc
+index 95c5ea1100fb3fe06121adeae041647341d05126..6e70d1a774bbe9c2275035ad169323bd96d96901 100644
+--- a/chrome/browser/ui/webui/crashes/crashes_ui.cc
++++ b/chrome/browser/ui/webui/crashes/crashes_ui.cc
+@@ -16,6 +16,7 @@
+ #include "base/system/sys_info.h"
+ #include "base/values.h"
+ #include "base/version_info/version_info.h"
++#include "brave/components/version_info/version_info.h"
+ #include "build/build_config.h"
+ #include "chrome/browser/crash_upload_list/crash_upload_list.h"
+ #include "chrome/browser/metrics/chrome_metrics_service_accessor.h"
+@@ -219,7 +220,7 @@ void CrashesDOMHandler::UpdateUI() {
+   result.Set("dynamicBackend", system_crash_reporter);
+   result.Set("manualUploads", allow_manual_uploads);
+   result.Set("crashes", std::move(crash_list));
+-  result.Set("version", version_info::GetVersionNumber());
++  result.Set("version", version_info::GetBraveVersionNumberForDisplay());
+   result.Set("os", base::SysInfo::OperatingSystemName() + " " +
+                        base::SysInfo::OperatingSystemVersion());
+   result.Set("isGoogleAccount", is_internal);
