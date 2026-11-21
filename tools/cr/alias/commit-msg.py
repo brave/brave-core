@@ -606,7 +606,8 @@ def main():
         commit_message, kept_trailers = split_trailers(commit_message)
         gerrit_trailer = None
 
-    tags = set()
+    # The branch's tags come first, then those passed in, in the order given.
+    tags: list[str] = []
     # Checking for chromium upgrade branches
     cr_branch_pattern = r"^cr\d+$"
     if re.fullmatch(cr_branch_pattern, branch_name):
@@ -614,16 +615,17 @@ def main():
         if not any(
             suffix in first_line for suffix in PREFIXES_FOR_UPGRADE_COMMITS
         ):
-            tags.add(branch_name)
+            tags.append(branch_name)
     elif '+' in branch_name:
         # This is the simple case where `canary+fix-failure` produces a
         # [canary] tag.
-        tags.update(branch_name.split('+')[:-1])
+        tags.extend(branch_name.split('+')[:-1])
 
     # Checking for tags passed in via the environment variable tags
     tags_env = os.getenv("tags")
     if tags_env:
-        tags.update(tags_env.split(','))
+        tags.extend(tags_env.split(','))
+    tags = list(dict.fromkeys(tags))
 
     # Making sure we are not re-inserting tags that are already in the commit
     # message, nor putting any in front of a `fixup!` that autosquash matches.
