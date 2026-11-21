@@ -603,7 +603,8 @@ TabManagementTool::GetPermissionChallengeImplications(
   // model can't tell ahead of time whether titles and URLs will be enough.
   // One challenge covers both, so the user is asked once.
   if (!CanReadPageContent()) {
-    return std::nullopt;
+    return l10n_util::GetStringUTF8(
+        IDS_CHAT_UI_TOOL_TAB_MANAGEMENT_PERMISSION_IMPLICATIONS_MARKDOWN);
   }
   return PageContentChallengeImplications();
 }

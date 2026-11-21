@@ -106,18 +106,35 @@ TEST_F(HistorySearchToolTest, RequiresUserInteractionBeforeHandling) {
   mojom::ToolUseEvent event(tool->Name().data(), "1", "{}", std::nullopt,
                             std::nullopt, nullptr, false);
   // Before permission is granted: returns a PermissionChallenge so the
-  // user can confirm that history results may be sent to Brave AI. The
-  // user-facing wording lives in `get_tool_permission_implications.tsx`,
-  // so the challenge itself just needs to be a non-null sentinel here.
+  // user can confirm that history results may be sent to Brave AI.
   auto result = tool->RequiresUserInteractionBeforeHandling(event);
   ASSERT_TRUE(std::holds_alternative<mojom::PermissionChallengePtr>(result));
-  EXPECT_TRUE(std::get<mojom::PermissionChallengePtr>(result));
+  const auto& challenge = std::get<mojom::PermissionChallengePtr>(result);
+  ASSERT_TRUE(challenge);
+  EXPECT_THAT(challenge->implications,
+              testing::Optional(testing::HasSubstr(
+                  "The search runs locally on your device")));
+  EXPECT_EQ(challenge->implications,
+            tool->GetPermissionChallengeImplications(event));
 
   // After permission is granted: no further interaction needed.
   tool->UserPermissionGranted("1", *mojom::PermissionChallenge::New());
   result = tool->RequiresUserInteractionBeforeHandling(event);
   ASSERT_TRUE(std::holds_alternative<bool>(result));
   EXPECT_FALSE(std::get<bool>(result));
+}
+
+TEST_F(HistorySearchToolTest, PermissionImplicationsForAlignmentChecks) {
+  EnableFeature();
+  auto tool = CreateTool();
+  mojom::ToolUseEvent event(tool->Name().data(), "1", "{}", std::nullopt,
+                            std::nullopt, nullptr, false);
+
+  EXPECT_THAT(tool->GetPermissionChallengeImplications(event),
+              testing::Optional(testing::AllOf(
+                  testing::HasSubstr("The search runs locally on your device"),
+                  testing::HasSubstr("Only the matching pages' titles, URLs"),
+                  testing::HasSubstr("part of this conversation."))));
 }
 
 TEST_F(HistorySearchToolTest, InvalidInputProducesError) {
