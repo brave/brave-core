@@ -67,6 +67,8 @@ public protocol TabDelegate: AnyObject {
   ) -> (any TabState)?
   func tab(_ tab: some TabState, shouldBlockJavaScriptForRequest request: URLRequest) -> Bool
   func tab(_ tab: some TabState, shouldBlockUniversalLinksForRequest request: URLRequest) -> Bool
+  /// Returns a replacement request to use for a main frame navigation's main resource load
+  func tab(_ tab: some TabState, alternateRequestFor request: URLRequest) -> URLRequest?
   func tab(_ tab: some TabState, buildEditMenuWithBuilder builder: any UIMenuBuilder)
   func tab(_ tab: some TabState, defaultUserAgentTypeForURL url: URL) -> UserAgentType
   func tab(
@@ -163,6 +165,10 @@ extension TabDelegate {
   public func tab(_ tab: some TabState, shouldBlockJavaScriptForRequest request: URLRequest) -> Bool
   {
     return false
+  }
+
+  public func tab(_ tab: some TabState, alternateRequestFor request: URLRequest) -> URLRequest? {
+    return nil
   }
 
   public func tab(

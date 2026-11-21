@@ -26,6 +26,11 @@ bool WebClient::IsGlobalPrivacyControlEnabled(
   return false;
 }
 
+NSURLRequest* WebClient::GetAlternateRequest(web::WebState* web_state,
+                                             NSURLRequest* request) {
+  return nil;
+}
+
 void WebClient::DidResetConfiguration(web::BrowserState* browser_state,
                                       WKWebViewConfiguration* configuration) {
   // Called when the underlying WKWebViewConfiguration is reset.
