@@ -10,10 +10,8 @@
 #include <utility>
 
 #include "base/files/scoped_temp_dir.h"
-#include "base/run_loop.h"
 #include "base/scoped_observation.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
@@ -23,6 +21,7 @@
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
+#include "brave/components/brave_wallet/browser/tx_meta.h"
 #include "brave/components/brave_wallet/browser/tx_storage.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -89,17 +88,11 @@ class TxStateManagerUnitTest : public testing::Test {
     }
   }
 
-  std::optional<base::Value> GetTxs() {
-    base::RunLoop run_loop;
-    std::optional<base::Value> value_out;
-    tx_storage_->store_->Get(
-        "transactions",
-        base::BindLambdaForTesting([&](std::optional<base::Value> value) {
-          value_out = std::move(value);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-    return value_out;
+  // Stores `dict` as the transaction "001" the way a previous version could
+  // have persisted it and reads it back via the public API.
+  std::unique_ptr<TxMeta> StoreAndGetTx(base::DictValue dict) {
+    tx_storage_->CreateScopedTxsUpdate()->Set("001", std::move(dict));
+    return tx_state_manager_->GetTx("001");
   }
 
   base::test::TaskEnvironment task_environment_;
@@ -119,54 +112,54 @@ TEST_F(TxStateManagerUnitTest, ConvertFromAddress) {
   EthTxMeta meta(eth_account_id_, std::make_unique<EthTransaction>());
   meta.set_id("001");
   meta.set_chain_id(mojom::kMainnetChainId);
-  EXPECT_FALSE(GetTxs());
+  EXPECT_TRUE(tx_storage_->GetTxs().empty());
   ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
-  EXPECT_TRUE(GetTxs());
+  ASSERT_EQ(tx_storage_->GetTxs().size(), 1u);
 
-  auto txs = GetTxs();
-  ASSERT_TRUE(txs);
-  const base::DictValue* value = txs->GetDict().FindDict("001");
+  const base::DictValue* value = tx_storage_->GetTxs().FindDict("001");
   ASSERT_TRUE(value);
 
   // Transaction is stored with account id.
-  EXPECT_FALSE(value->FindString("from"));
-  EXPECT_EQ(*value->FindString("from_account_id"), eth_account_id_->unique_key);
-  auto meta_from_value = tx_state_manager_->ValueToTxMeta(*value);
+  EXPECT_FALSE(value->contains("from"));
+  EXPECT_THAT(*value,
+              base::test::DictionaryHasValue(
+                  "from_account_id", base::Value(eth_account_id_->unique_key)));
+  auto meta_from_value = tx_state_manager_->GetTx("001");
   ASSERT_TRUE(meta_from_value);
-  EXPECT_EQ(eth_account_id_,
-            static_cast<EthTxMeta*>(meta_from_value.get())->from());
+  EXPECT_EQ(eth_account_id_, meta_from_value->from());
 
-  // Make a transaction clone.
-  auto legacy_value = value->Clone();
+  // Make a transaction clone. Storing a modified tx replaces the stored dict,
+  // so `value` must not be used after this point.
+  const base::DictValue stored_value = value->Clone();
+  auto legacy_value = stored_value.Clone();
 
   // Can't convert to meta if has neither from_account_id nor from fields.
   legacy_value.Remove("from_account_id");
-  EXPECT_FALSE(tx_state_manager_->ValueToTxMeta(legacy_value));
+  EXPECT_FALSE(StoreAndGetTx(legacy_value.Clone()));
 
   // Can't convert to meta if has unknown address.
   legacy_value.Set("from", "0x3535353535353535353535353535353535353535");
-  EXPECT_FALSE(tx_state_manager_->ValueToTxMeta(legacy_value));
+  EXPECT_FALSE(StoreAndGetTx(legacy_value.Clone()));
 
   // Convert to meta if has a known address.
   legacy_value.Set("from", eth_account_id_->address);
-  EXPECT_TRUE(tx_state_manager_->ValueToTxMeta(legacy_value));
-  EXPECT_EQ(eth_account_id_,
-            tx_state_manager_->ValueToTxMeta(legacy_value)->from());
+  auto legacy_meta = StoreAndGetTx(legacy_value.Clone());
+  ASSERT_TRUE(legacy_meta);
+  EXPECT_EQ(eth_account_id_, legacy_meta->from());
 
   for (const char* origin_spec :
        {"chrome://wallet", "chrome://wallet/", "brave://wallet/"}) {
     SCOPED_TRACE(origin_spec);
-    auto legacy_wallet_tx = value->Clone();
+    auto legacy_wallet_tx = stored_value.Clone();
     legacy_wallet_tx.Set("origin", origin_spec);
-    auto legacy_wallet_meta =
-        tx_state_manager_->ValueToTxMeta(legacy_wallet_tx);
+    auto legacy_wallet_meta = StoreAndGetTx(std::move(legacy_wallet_tx));
     ASSERT_TRUE(legacy_wallet_meta);
     EXPECT_FALSE(legacy_wallet_meta->dapp_origin());
   }
 
-  auto unsupported_origin_tx = value->Clone();
+  auto unsupported_origin_tx = stored_value.Clone();
   unsupported_origin_tx.Set("origin", "chrome://settings/");
-  EXPECT_FALSE(tx_state_manager_->ValueToTxMeta(unsupported_origin_tx));
+  EXPECT_FALSE(StoreAndGetTx(std::move(unsupported_origin_tx)));
 }
 
 TEST_F(TxStateManagerUnitTest, TxOperations) {
@@ -174,17 +167,12 @@ TEST_F(TxStateManagerUnitTest, TxOperations) {
   tx->set_chain_id(*HexValueToUint256(mojom::kMainnetChainId));
   EthTxMeta meta(eth_account_id_, std::move(tx));
   meta.set_id("001");
-  EXPECT_FALSE(GetTxs());
+  EXPECT_TRUE(tx_storage_->GetTxs().empty());
   // Add
   ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
-  EXPECT_TRUE(GetTxs());
+  EXPECT_EQ(tx_storage_->GetTxs().size(), 1u);
   {
-    auto txs = GetTxs();
-    ASSERT_TRUE(txs);
-    const auto& dict = txs->GetDict();
-    const base::DictValue* value = dict.FindDict("001");
-    ASSERT_TRUE(value);
-    auto meta_from_value = tx_state_manager_->ValueToTxMeta(*value);
+    auto meta_from_value = tx_state_manager_->GetTx("001");
     ASSERT_NE(meta_from_value, nullptr);
     EXPECT_EQ(*static_cast<EthTxMeta*>(meta_from_value.get()), meta);
   }
@@ -193,12 +181,7 @@ TEST_F(TxStateManagerUnitTest, TxOperations) {
   // Update
   ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
   {
-    auto txs = GetTxs();
-    ASSERT_TRUE(txs);
-    const auto& dict = txs->GetDict();
-    const base::DictValue* value = dict.FindDict("001");
-    ASSERT_TRUE(value);
-    auto meta_from_value = tx_state_manager_->ValueToTxMeta(*value);
+    auto meta_from_value = tx_state_manager_->GetTx("001");
     ASSERT_NE(meta_from_value, nullptr);
     EXPECT_EQ(meta_from_value->tx_hash(), meta.tx_hash());
   }
@@ -207,12 +190,7 @@ TEST_F(TxStateManagerUnitTest, TxOperations) {
   meta.set_tx_hash("0xabff");
   // Add another one
   ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
-  {
-    auto txs = GetTxs();
-    ASSERT_TRUE(txs);
-    const auto& dict = txs->GetDict();
-    EXPECT_EQ(dict.size(), 2u);
-  }
+  EXPECT_EQ(tx_storage_->GetTxs().size(), 2u);
 
   // Get
   {
@@ -233,12 +211,7 @@ TEST_F(TxStateManagerUnitTest, TxOperations) {
 
   // Delete
   ASSERT_TRUE(tx_state_manager_->DeleteTx("001"));
-  {
-    auto txs = GetTxs();
-    ASSERT_TRUE(txs);
-    const auto& dict = txs->GetDict();
-    EXPECT_EQ(dict.size(), 1u);
-  }
+  EXPECT_EQ(tx_storage_->GetTxs().size(), 1u);
 }
 
 TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
