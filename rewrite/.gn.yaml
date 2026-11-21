@@ -24,3 +24,15 @@ substitutions:
       literal: brave_check_includes_strict_exceptions
       import: //brave/build/strict_deps_failures_brave.gni
       assume_defined: true
+
+  - description: |-
+      Let GN actions read `PYTHONPATH`
+
+      Brave's `chromium_src` Python overrides import `brave_chromium_utils`
+      from `brave/script`, which Brave's build puts on `PYTHONPATH`, locally
+      and through the remote wrapper. Site packages stay disabled.
+    regex:
+      re_pattern:
+        '(script_executable =
+        \[\s*"//third_party/cpython3/host/bin/python3",\s*)"-ES",'
+      replace: '\1"-S",'

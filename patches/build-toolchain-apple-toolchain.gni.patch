@@ -1,0 +1,13 @@
+diff --git a/build/toolchain/apple/toolchain.gni b/build/toolchain/apple/toolchain.gni
+index 5633426a0a4d41f0617404e44e33ecf7ff883816..83185fb19158db383b48f7fc4e8bce5ded7f0274 100644
+--- a/build/toolchain/apple/toolchain.gni
++++ b/build/toolchain/apple/toolchain.gni
+@@ -211,7 +211,7 @@ template("single_apple_toolchain") {
+                       root_build_dir) + " --target-os=" + target_os
+ 
+       # LINT.IfChange(coverage_wrapper)
+-      coverage_wrapper = "$python_path -ES ${_coverage_wrapper} "
++      coverage_wrapper = "$python_path -S ${_coverage_wrapper} "
+ 
+       # LINT.ThenChange(//build/config/siso/platform.star:python_bin)
+     }
