@@ -27,17 +27,20 @@
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "mojo/public/cpp/system/data_pipe.h"
+#include "net/base/auth.h"
 #include "net/base/ip_address.h"
 #include "net/base/ip_endpoint.h"
 #include "net/base/net_errors.h"
 #include "net/cert/cert_status_flags.h"
 #include "net/http/http_request_headers.h"
+#include "net/http/http_response_headers.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/mojom/network_context.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "services/network/public/mojom/websocket.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
+#include "url/scheme_host_port.h"
 
 namespace {
 
@@ -246,6 +249,52 @@ TEST_F(BraveProxyingWebSocketTest,
   // The network-service handshake has not completed yet, so the downstream
   // handshake client must not see OnConnectionEstablished before response
   // header processing has run.
+}
+
+TEST_F(BraveProxyingWebSocketTest,
+       AuthRequiredWithoutDownstreamAuthHandlerReturnsNoCredentials) {
+  TestHandshakeClient downstream_handshake_client;
+  mojo::Remote<network::mojom::WebSocketAuthenticationHandler>
+      proxy_auth_handler;
+  base::test::TestFuture<const std::optional<net::AuthCredentials>&>
+      credentials;
+
+  auto proxy = CreateProxy(base::BindLambdaForTesting(
+      [&](const GURL& url,
+          std::vector<network::mojom::HttpHeaderPtr> additional_headers,
+          mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
+              handshake_client,
+          mojo::PendingRemote<network::mojom::WebSocketAuthenticationHandler>
+              auth_handler,
+          mojo::PendingRemote<network::mojom::TrustedHeaderClient>
+              trusted_header_client) {
+        ASSERT_TRUE(auth_handler);
+        proxy_handshake_client_.Bind(std::move(handshake_client));
+        proxy_auth_handler.Bind(std::move(auth_handler));
+
+        net::AuthChallengeInfo auth_info;
+        auth_info.challenger =
+            url::SchemeHostPort(GURL("https://example.test"));
+        auth_info.scheme = "basic";
+        auth_info.realm = "test";
+        proxy_auth_handler->OnAuthRequired(
+            auth_info,
+            net::HttpResponseHeaders::TryToCreate(
+                "HTTP/1.1 401 Unauthorized\r\n\r\n"),
+            net::IPEndPoint(net::IPAddress::IPv4Localhost(), 443),
+            credentials.GetCallback());
+      }));
+
+  // No downstream auth handler, as when Chrome installs no proxy of its own.
+  auto proxy_factory = proxy->CreateWebSocketFactory();
+  std::move(proxy_factory)
+      .Run(GURL("wss://example.test/socket"),
+           /*additional_headers=*/{},
+           downstream_handshake_client.CreateRemote(),
+           /*auth_handler=*/mojo::NullRemote(),
+           /*trusted_header_client=*/mojo::NullRemote());
+
+  EXPECT_FALSE(credentials.Get().has_value());
 }
 
 }  // namespace
