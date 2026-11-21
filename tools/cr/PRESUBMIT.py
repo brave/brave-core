@@ -80,4 +80,6 @@ def CheckTests(input_api, output_api):
                         message=output_api.PresubmitError,
                     )
                 )
-    return input_api.RunTestsWithProgress('CheckTests', tests, groups=groups)
+    return input_api.RunTestsWithProgress(
+        'CheckTests', tests, groups=groups, clean_git_env=True
+    )
