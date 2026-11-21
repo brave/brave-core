@@ -29,6 +29,9 @@ export interface BuilderSpec {
   }
   // What the build tooling takes from the builder rather than `.env`; each
   // is false when the spec leaves it out.
+  // TODO(http://brave.dev/b/56449): Each of these is a leak in the build
+  // abstraction: a Brave setting the build tooling acts on outside GN, which
+  // GN should decide from the builder's args instead.
   brave_config?:
     | {
         is_brave_release_build?: boolean | undefined
@@ -41,9 +44,14 @@ export interface BuilderSpec {
 export interface Builder {
   name: string
   spec: BuilderSpec
-  // TODO(http://brave.dev/b/56449): GN's `target_os` and `target_cpu`, the
-  // only GN args read from the builder's `gn-args.json`, until `init`/`sync`
-  // no longer need a target to build for.
+  // TODO(http://brave.dev/b/56449): The same abstraction leak: GN's
+  // `target_os` and `target_cpu`, read from the builder's `gn-args.json`
+  // until `init`/`sync` no longer need a target to build for.
   buildTarget: { targetOS: string; targetArch: string }
+  // TODO(http://brave.dev/b/56449): An abstraction leak: `build/commands`
+  // reading a GN arg's value is an antipattern. GN's `is_brave_origin_branded`
+  // is read from `gn-args.json` only because the build tooling still copies
+  // the branding files in outside GN.
+  isBraveOriginBranded: boolean
   targets: { compile: string[]; tests: string[] }
 }
