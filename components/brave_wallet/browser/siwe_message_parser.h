@@ -50,6 +50,10 @@ class SIWEMessageParser {
   // valid result.
   mojom::SIWEMessagePtr Parse(const std::string& message);
 
+  // True if `message` carries the ERC-4361 header line
+  // "<domain> wants you to sign in with your Ethereum account:".
+  static bool HasSIWEHeader(std::string_view message);
+
  private:
   friend class SIWEMessageParserTest;
 
