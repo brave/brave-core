@@ -1569,7 +1569,8 @@ class CxxMakeVirtualRewriter(_AstGrepRewriter):
         - `method_name` — the method's name. Quote a destructor
           (`'~Foo'`), since a leading `~` is YAML null.
 
-        Each overload sharing the name is one change, so an overloaded method
+        Static declarations can't be virtual, and are never changed. Each
+        other overload sharing the name is one change, so an overloaded method
         needs a matching `count`.
 
         Example:
