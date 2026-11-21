@@ -197,13 +197,24 @@ class TabManager: NSObject {
       return nil
     }
 
-    return tabsForCurrentMode.firstIndex(where: { $0 === selectedTab })
+    return tabsForTabBar.firstIndex(where: { $0 === selectedTab })
   }
 
   // What the users sees displayed based on current private browsing mode
   var tabsForCurrentMode: [any TabState] {
     let isPrivate = privateBrowsingManager.isPrivateBrowsing
     return tabs(isPrivate: isPrivate)
+  }
+
+  /// Tabs listed in the tab bar. The selected tab's group replaces the full list
+  var tabsForTabBar: [any TabState] {
+    guard isTabGroupsEnabled,
+      let selectedTab,
+      let group = tabGroup(for: selectedTab)
+    else {
+      return tabsForCurrentMode
+    }
+    return tabs(in: group)
   }
 
   var openedWebsitesCount: Int {
