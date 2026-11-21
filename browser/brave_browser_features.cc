@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_browser_features.h"
 
+#include "brave/components/v8/buildflags/buildflags.h"
 #include "build/build_config.h"
 
 namespace features {

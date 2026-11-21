@@ -10,7 +10,6 @@
 
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
-#include "brave/components/v8/buildflags/buildflags.h"
 
 namespace features {
 
@@ -22,9 +21,7 @@ BASE_DECLARE_FEATURE(kBraveOverrideDownloadDangerLevel);
 BASE_DECLARE_FEATURE(kBraveRoundedCornersByDefault);
 BASE_DECLARE_FEATURE(kBraveDayZeroExperiment);
 BASE_DECLARE_FEATURE(kBraveEnableShieldsForWebSocketsFromWorkers);
-#if BUILDFLAG(BRAVE_V8_ENABLE_DRUMBRAKE)
 BASE_DECLARE_FEATURE(kBraveWebAssemblyJitless);
-#endif  // BUILDFLAG(BRAVE_V8_ENABLE_DRUMBRAKE)
 BASE_DECLARE_FEATURE(kBraveV8JitlessMode);
 #if BUILDFLAG(IS_ANDROID)
 BASE_DECLARE_FEATURE(kBraveAndroidDynamicColorsByDefault);
