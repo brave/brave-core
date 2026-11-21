@@ -1,0 +1,40 @@
+[
+  {
+    "cmd": [
+      "git",
+      "clone",
+      "--depth",
+      "1",
+      "https://chromium.googlesource.com/chromium/tools/depot_tools",
+      "[WORKSPACE]/b/src/third_party/depot_tools"
+    ],
+    "name": "clone depot_tools"
+  },
+  {
+    "cmd": [
+      "gclient"
+    ],
+    "name": "verify gclient"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/cipd",
+      "ensure",
+      "-root",
+      "[WORKSPACE]/cipd/infra_rbe_client/re_client_version_0.187.0.ad10b508-gomaip",
+      "-ensure-file",
+      "infra/rbe/client/${platform} re_client_version:0.187.0.ad10b508-gomaip\n"
+    ],
+    "name": "install infra/rbe/client/${platform}"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/cipd/infra_rbe_client/re_client_version_0.187.0.ad10b508-gomaip/remotetool",
+      "--help"
+    ],
+    "name": "use remotetool"
+  },
+  {
+    "name": "$result"
+  }
+]
