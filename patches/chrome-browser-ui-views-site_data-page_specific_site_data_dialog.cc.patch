@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/site_data/page_specific_site_data_dialog.cc b/chrome/browser/ui/views/site_data/page_specific_site_data_dialog.cc
+index 63e6a1fb03fcdffcfe40cbcad25fee316de2f535..2f12b306b5a6ab21fd534a2d1ed4d80ce14dc761 100644
+--- a/chrome/browser/ui/views/site_data/page_specific_site_data_dialog.cc
++++ b/chrome/browser/ui/views/site_data/page_specific_site_data_dialog.cc
+@@ -305,6 +305,8 @@ class PageSpecificSiteDataDialogModelDelegate : public ui::DialogModelDelegate {
+ 
+     browsing_data::RecordDeleteBrowsingDataAction(
+         browsing_data::DeleteBrowsingDataAction::kCookiesInUseDialog);
++    browsing_data::BraveRemoveNonModelDataForOrigin(host_content_settings_map_,
++                                                    origin.GetURL());
+   }
+ 
+   void SetContentException(const url::Origin& origin, ContentSetting setting) {
