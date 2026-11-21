@@ -12,11 +12,11 @@
 #include <utility>
 #include <vector>
 
-#include "base/json/json_reader.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/run_loop.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
+#include "base/test/test_future.h"
+#include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -41,11 +41,13 @@
 #include "content/public/test/test_web_ui.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 
 using brave_wallet::mojom::CoinType;
 using testing::Contains;
+using testing::ElementsAre;
 using testing::Eq;
 using testing::Not;
 
@@ -242,11 +244,11 @@ TEST(TestBraveWalletHandler, AddChain) {
   args.Append(brave_wallet::NetworkInfoToValue(chain1));
   handler.SetEthChainIdInterceptor(brave_wallet::GetActiveEndpointUrl(chain1),
                                    "0x999");
-  base::RunLoop loop;
-  handler.SetChainCallbackForTesting(loop.QuitClosure());
+  base::test::TestFuture<void> future;
+  handler.SetChainCallbackForTesting(future.GetCallback());
   handler.AddChain(args);
-  loop.Run();
-  EXPECT_EQ(handler.GetAllEthCustomChains().size(), 1u);
+  ASSERT_TRUE(future.Wait());
+  ASSERT_EQ(handler.GetAllEthCustomChains().size(), 1u);
   EXPECT_EQ(handler.GetAllEthCustomChains()[0], chain1.Clone());
 
   EXPECT_THAT(brave_wallet::GetAllUserAssets(handler.prefs()),
@@ -281,10 +283,10 @@ TEST(TestBraveWalletHandler, AddChainWrongNetwork) {
   args.Append(brave_wallet::NetworkInfoToValue(chain1));
   handler.SetEthChainIdInterceptor(brave_wallet::GetActiveEndpointUrl(chain1),
                                    "0x11");
-  base::RunLoop loop;
-  handler.SetChainCallbackForTesting(loop.QuitClosure());
+  base::test::TestFuture<void> future;
+  handler.SetChainCallbackForTesting(future.GetCallback());
   handler.AddChain(args);
-  loop.Run();
+  ASSERT_TRUE(future.Wait());
   const auto& data = *handler.web_ui()->call_data()[0];
   ASSERT_TRUE(data.arg1()->is_string());
   EXPECT_EQ(data.arg1()->GetString(), "id");
@@ -416,25 +418,17 @@ TEST(TestBraveWalletHandler, GetWeb3ProviderList) {
   std::string json_result = data.arg3()->GetString();
   EXPECT_FALSE(json_result.empty());
 
-  std::optional<base::Value> parsed_json =
-      base::JSONReader::Read(json_result, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
-  ASSERT_TRUE(parsed_json.has_value());
-  ASSERT_TRUE(parsed_json->is_list());
-
-  const base::ListValue& provider_list = parsed_json->GetList();
-  ASSERT_EQ(provider_list.size(), 3u);
-
-  ASSERT_TRUE(provider_list[0].is_dict());
-  EXPECT_EQ(
-      provider_list[0].GetDict().FindInt("value"),
-      static_cast<int>(
-          brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension));
-
-  ASSERT_TRUE(provider_list[1].is_dict());
-  EXPECT_EQ(provider_list[1].GetDict().FindInt("value"),
-            static_cast<int>(brave_wallet::mojom::DefaultWallet::BraveWallet));
-
-  ASSERT_TRUE(provider_list[2].is_dict());
-  EXPECT_EQ(provider_list[2].GetDict().FindInt("value"),
-            static_cast<int>(brave_wallet::mojom::DefaultWallet::None));
+  using brave_wallet::mojom::DefaultWallet;
+  base::ListValue provider_list = base::test::ParseJsonList(json_result);
+  EXPECT_THAT(
+      provider_list,
+      ElementsAre(
+          base::test::DictionaryHasValue(
+              "value", base::Value(static_cast<int>(
+                           DefaultWallet::BraveWalletPreferExtension))),
+          base::test::DictionaryHasValue(
+              "value",
+              base::Value(static_cast<int>(DefaultWallet::BraveWallet))),
+          base::test::DictionaryHasValue(
+              "value", base::Value(static_cast<int>(DefaultWallet::None)))));
 }
