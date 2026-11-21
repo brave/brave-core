@@ -1,0 +1,18 @@
+diff --git a/chrome/browser/webauthn/chrome_authenticator_request_delegate.cc b/chrome/browser/webauthn/chrome_authenticator_request_delegate.cc
+index 0c2fe5124a1c2470ceb06e6572ba7b5c8f8d9838..b2a4a6eb92a9141e2b44d592bea24f4216a7ad6f 100644
+--- a/chrome/browser/webauthn/chrome_authenticator_request_delegate.cc
++++ b/chrome/browser/webauthn/chrome_authenticator_request_delegate.cc
+@@ -780,6 +780,13 @@ void ChromeAuthenticatorRequestDelegate::ConfigureDiscoveries(
+     }));
+   }
+ 
++  if (auto off_the_record_factory =
++          BraveMaybeGetOffTheRecordCableNetworkContextFactory(
++              render_frame_host_id_)) {
++    discovery_factory->set_network_context_factory(
++        std::move(*off_the_record_factory));
++  }
++
+ #if BUILDFLAG(IS_MAC)
+   ConfigureNSWindow(discovery_factory);
+ #endif

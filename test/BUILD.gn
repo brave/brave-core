@@ -1563,6 +1563,7 @@ test("brave_browser_tests") {
       "//brave/browser/ui/views/toolbar:screenshot",
       "//brave/browser/ui/views/workspaces:browser_tests",
       "//brave/browser/url_sanitizer",
+      "//brave/browser/webauthn:browser_tests",
       "//brave/components/containers/buildflags",
       "//brave/components/sidebar/browser",
       "//brave/test/views/snapshot",

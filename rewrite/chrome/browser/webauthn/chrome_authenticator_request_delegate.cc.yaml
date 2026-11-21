@@ -1,0 +1,29 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Open an off-the-record profile's caBLE tunnel on its own network context.
+
+      Upstream opens every profile's caBLE tunnel on the system network
+      context, so in a Private or Tor window the connection to the tunnel
+      server would leave that profile's network context, and in a Tor window
+      bypass Tor. BraveMaybeGetOffTheRecordCableNetworkContextFactory, declared
+      in the chromium_src override, returns a factory for an off-the-record
+      frame's storage partition, which replaces the system one, and nullopt
+      for regular profiles, which keep upstream's factory.
+    regex:
+      re_pattern:
+        '(  if \(SystemNetworkContextManager::GetInstance\(\)\) \{\n    // caBLE
+        and the enclave depend on the network context factory\..*?\n  \}\n)'
+      re_flags: [DOTALL]
+      replace: |
+        \1
+          if (auto off_the_record_factory =
+                  BraveMaybeGetOffTheRecordCableNetworkContextFactory(
+                      render_frame_host_id_)) {
+            discovery_factory->set_network_context_factory(
+                std::move(*off_the_record_factory));
+          }
