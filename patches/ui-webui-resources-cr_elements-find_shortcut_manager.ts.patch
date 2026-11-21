@@ -1,0 +1,12 @@
+diff --git a/ui/webui/resources/cr_elements/find_shortcut_manager.ts b/ui/webui/resources/cr_elements/find_shortcut_manager.ts
+index 9ffc9b1401eb285c4291c578e2770c6fa54b445c..6c9cf46b3985d5e08f11a2934aeaacf5a98de9ca 100644
+--- a/ui/webui/resources/cr_elements/find_shortcut_manager.ts
++++ b/ui/webui/resources/cr_elements/find_shortcut_manager.ts
+@@ -47,6 +47,7 @@ export const FindShortcutManager = (() => {
+     const element = e.composedPath()[0] as Element;
+     if (!shortcutCtrlF.matchesEvent(e) &&
+         (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA' ||
++         !!element.getAttribute('contenteditable') ||
+          !shortcutSlash.matchesEvent(e))) {
+       return;
+     }

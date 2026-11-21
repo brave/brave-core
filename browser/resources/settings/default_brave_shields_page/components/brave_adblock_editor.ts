@@ -11,6 +11,10 @@ import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bu
 
 import {BaseMixin} from '../../base_mixin.js'
 
+// Side-effect import: registers the <brave-code-editor> element served from
+// chrome://resources/brave/codemirror.bundle.js.
+import '//resources/brave/codemirror.bundle.js'
+
 import {getTemplate} from './brave_adblock_editor.html.js'
 
 const AdBlockFiltersEditorBase = PrefServiceObserverMixin(I18nMixin(BaseMixin(PolymerElement)))
@@ -46,8 +50,8 @@ class AdBlockFiltersEditor extends AdBlockFiltersEditorBase {
     super.ready()
   }
 
-  handleInputChange_(e: Event) {
-    this.value = (e.target as HTMLInputElement).value
+  handleCodeChange_(e: CustomEvent<{value: string}>) {
+    this.value = e.detail.value
   }
 
   handleSave_() {
