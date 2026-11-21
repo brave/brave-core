@@ -196,38 +196,41 @@ and calls for `re_pattern`.
 
 <a id="PLSTR-006"></a>
 
-## ✅ Don't Hard-Code Newlines or Indentation in `re_pattern`
+## ❌ Never Pin Exact Line Layout in `re_pattern`
 
-**A `re_pattern` must not depend on literal newlines (`\n`) or literal
-indentation to find its anchor. Match the layout between tokens with `\s*` or
-`\s+`.** Then upstream reformatting (clang-format, a wrapped statement, an added
-blank line, a changed indent) cannot break the match for a reason unrelated to
-the rewrite. Layout between tokens is incidental detail, like the contents of a
-list the rewrite does not change: anchor on the tokens and wildcard the
-whitespace.
+**A `re_pattern` MUST NOT pin an exact newline or the indentation after it to
+find its anchor. NEVER write `\n` followed by literal spaces or tabs, and NEVER
+use a bare `\n` (nothing flexible beside it) as the only thing between two
+tokens. Match the layout with `\s*` or `\s+`.** Upstream reformatting
+(clang-format, a wrapped statement, a changed indent, a trailing comment after
+the closing brace) then does not break the match for layout reasons.
 
 ```yaml
-# ❌ WRONG - pins a newline, a two-space indent and the brace's column. A blank
-# line before the return, a different indent, or anything after the `}` breaks it.
+# ❌ WRONG - `\n  ` pins a newline and a two-space indent, and `;\n\}\n` allows
+# nothing between the return and the closing brace, or right after it. Another
+# indent, a blank line before the `}`, or `}  // namespace` stops it matching
+# here, and `.*?` can then run on into a later function.
 re_pattern: '(Foo::GetConfig\(.*?)(?=\n  return result;\n\}\n)'
 re_flags: [DOTALL]
 
-# ✅ CORRECT - anchors on the tokens and lets \s absorb the layout
-re_pattern: '(Foo::GetConfig\(.*?)(?=\s+return\s+result;\s*\})'
-re_flags: [DOTALL]
+# ✅ CORRECT - tokens anchor the match and `\s` absorbs the layout. `^\}` with
+# MULTILINE ends the match before the function's final `return result;`, not at
+# an inner `if (...) { return result; }`.
+re_pattern: '(Foo::GetConfig\(.*?)(?=\s+return\s+result;\s+^\})'
+re_flags: [DOTALL, MULTILINE]
 ```
 
-A `re_pattern` breaks this rule when it spells out `\n`, or two or more
-consecutive literal spaces, between tokens. Not violations:
+Not violations:
 
-- A literal space, only when all of these hold: it materially improves the
-  regex's readability, it is a single space, the file is covered by a formatter
-  that enforces consistent spacing, and the space is very unlikely ever to
-  become a newline. E.g. `enum class RequestType \{`.
+- `\n` inside a flexible whitespace run, e.g. `\n\s*switch`.
+- `^` and `$` line anchors with `MULTILINE`, including a column-0 `^\}` that
+  closes an out-of-line function definition.
 - `\n` inside a character class meaning "the rest of the line", e.g. `[^\n]*`.
 - `\n` and indentation in `replace:`, which is the text being written out.
+- A literal space between two tokens on one line, e.g.
+  `enum class RequestType \{`.
 
-Other files under `rewrite/` that hard-code `\n` in `re_pattern` are not
-precedent: they are fragile in the same way. Do not copy them into new rewrites.
+That other rewrites in the tree already pin exact line layout is not a reason to
+add another. It MUST NOT be cited as precedent for a new one.
 
 ---
