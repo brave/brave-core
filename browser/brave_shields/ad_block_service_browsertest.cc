@@ -8,6 +8,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -139,6 +140,69 @@ void WaitForSelectorBlocked(const content::ToRenderFrameHost& target,
   ASSERT_TRUE(
       EvalJs(target, content::JsReplace(kTemplate, selector)).ExtractBool());
 }
+
+// Appends an iframe loading `url` to `parent` and waits for it to load.
+void AddFrame(const content::ToRenderFrameHost& parent, const GURL& url) {
+  ASSERT_TRUE(ExecJs(parent, content::JsReplace(R"(
+    new Promise(resolve => {
+      const frame = document.createElement('iframe');
+      frame.onload = () => resolve(true);
+      frame.src = $1;
+      document.body.appendChild(frame);
+    }))",
+                                                url)));
+}
+
+// Appends an iframe loading `url` to `parent` with the given `sandbox`
+// attribute and waits for it to load.
+void AddSandboxedFrame(const content::ToRenderFrameHost& parent,
+                       const GURL& url,
+                       const std::string& sandbox) {
+  ASSERT_TRUE(ExecJs(parent, content::JsReplace(R"(
+    new Promise(resolve => {
+      const frame = document.createElement('iframe');
+      frame.sandbox = $2;
+      frame.onload = () => resolve(true);
+      frame.src = $1;
+      document.body.appendChild(frame);
+    }))",
+                                                url, sandbox)));
+}
+
+// Adds a subframe loading csp_rules.html from `host` to the main frame of
+// `contents`, and expects a `$csp` rule to have blocked its inline script only
+// if `blocked` is true.
+void ExpectCspRuleBlockedFrame(net::EmbeddedTestServer* server,
+                               content::WebContents* contents,
+                               std::string_view host,
+                               bool blocked) {
+  content::RenderFrameHost* main_frame = contents->GetPrimaryMainFrame();
+  size_t index = 0;
+  while (content::ChildFrameAt(main_frame, index)) {
+    ++index;
+  }
+  ASSERT_NO_FATAL_FAILURE(
+      AddFrame(main_frame, server->GetURL(host, "/csp_rules.html")));
+  content::RenderFrameHost* frame = content::ChildFrameAt(main_frame, index);
+  ASSERT_TRUE(frame);
+  ASSERT_EQ(host, frame->GetLastCommittedOrigin()
+                      .GetTupleOrPrecursorTupleIfOpaque()
+                      .host());
+  ASSERT_TRUE(ExecJs(frame, "window.allLoaded"));
+  EXPECT_EQ(true, EvalJs(frame, "!!window.loadedNonceScript"));
+  EXPECT_EQ(!blocked, EvalJs(frame, "!!window.loadedUnsafeInlineScript"));
+}
+
+// Calls `window.open(url)` from `opener` and returns the popup once it loads.
+content::WebContents* OpenPopup(const content::ToRenderFrameHost& opener,
+                                const std::string& url) {
+  content::WebContentsAddedObserver popup_observer;
+  EXPECT_TRUE(ExecJs(opener, content::JsReplace("window.open($1)", url)));
+  content::WebContents* popup = popup_observer.GetWebContents();
+  EXPECT_TRUE(content::WaitForLoadStop(popup));
+  return popup;
+}
+
 }  // namespace
 
 AdBlockServiceTest::AdBlockServiceTest()
@@ -2098,8 +2162,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRule) {
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
-// Main-frame documents always use the request URL as first_party_origin
-// (unless the initiator is opaque), so they are first-party for `$csp`.
+// Main-frame documents use the request URL as first_party_origin unless
+// `url::Origin::Create(request_url).opaque()`, in which case the initiator is
+// used.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleThirdPartyLogic) {
   // Applied to third-party only.
   UpdateAdBlockInstanceWithRules(
@@ -2120,8 +2185,9 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleThirdPartyLogic) {
   }
 
   {
-    // Cross-origin renderer navigation (from about:blank). Document is
-    // third-party relative the opaque origin, so the rule matches.
+    // Renderer navigation from about:blank. The main frame ignores the
+    // initiator because `url::Origin::Create(request_url).opaque()` is false,
+    // so the request URL is used and the rule does not match.
     NavigateToURL(GURL("about:blank"));
     const GURL url =
         embedded_test_server()->GetURL("example.com", "/csp_rules.html");
@@ -2130,7 +2196,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleThirdPartyLogic) {
 
     ASSERT_TRUE(ExecJs(contents, "window.allLoaded"));
     EXPECT_EQ(true, EvalJs(contents, "!!window.loadedNonceScript"));
-    EXPECT_EQ(false, EvalJs(contents, "!!window.loadedUnsafeInlineScript"));
+    EXPECT_EQ(true, EvalJs(contents, "!!window.loadedUnsafeInlineScript"));
   }
 
   {
@@ -2147,6 +2213,349 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleThirdPartyLogic) {
     EXPECT_EQ(true, EvalJs(contents, "!!window.loadedNonceScript"));
     EXPECT_EQ(true, EvalJs(contents, "!!window.loadedUnsafeInlineScript"));
   }
+}
+
+// Frames loaded by an about:blank popup opened from a.com have a.com as their
+// initiator, so they use a.com as first party.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleAboutBlankPopup) {
+  // Applied to third-party only.
+  UpdateAdBlockInstanceWithRules(
+      "||example.com^$third-party,csp=script-src 'nonce-abcdef' "
+      "'unsafe-eval' 'self'");
+  const GURL url =
+      embedded_test_server()->GetURL("example.com", "/csp_rules.html");
+
+  auto open_about_blank_popup = [&]() {
+    NavigateToURL(embedded_test_server()->GetURL("a.com", "/simple.html"));
+    content::WebContentsAddedObserver popup_observer;
+    EXPECT_TRUE(ExecJs(web_contents(), "window.open('about:blank')"));
+    content::WebContents* popup = popup_observer.GetWebContents();
+    EXPECT_TRUE(content::WaitForLoadStop(popup));
+    EXPECT_EQ("a.com",
+              popup->GetPrimaryMainFrame()->GetLastCommittedOrigin().host());
+    return popup;
+  };
+
+  {
+    // Subframe of the popup. The first party is a.com, so the rule matches.
+    content::WebContents* popup = open_about_blank_popup();
+    ASSERT_TRUE(ExecJs(popup, content::JsReplace(R"(
+      new Promise(resolve => {
+        const frame = document.createElement('iframe');
+        frame.onload = () => resolve(true);
+        frame.src = $1;
+        document.body.appendChild(frame);
+      }))",
+                                                 url)));
+    content::RenderFrameHost* frame =
+        content::ChildFrameAt(popup->GetPrimaryMainFrame(), 0);
+    ASSERT_TRUE(frame);
+
+    ASSERT_TRUE(ExecJs(frame, "window.allLoaded"));
+    EXPECT_EQ(true, EvalJs(frame, "!!window.loadedNonceScript"));
+    EXPECT_EQ(false, EvalJs(frame, "!!window.loadedUnsafeInlineScript"));
+  }
+
+  {
+    // Popup navigated to example.com.
+    // `url::Origin::Create(request_url).opaque()` is false, so the request URL
+    // is used and the rule does not match.
+    content::WebContents* popup = open_about_blank_popup();
+    ASSERT_TRUE(content::NavigateToURLFromRenderer(popup, url));
+
+    ASSERT_TRUE(ExecJs(popup, "window.allLoaded"));
+    EXPECT_EQ(true, EvalJs(popup, "!!window.loadedNonceScript"));
+    EXPECT_EQ(true, EvalJs(popup, "!!window.loadedUnsafeInlineScript"));
+  }
+}
+
+// An about:blank popup opened by a sandboxed b.com iframe in a.com has an
+// opaque origin derived from b.com, so its frames use b.com as first party, not
+// the opener's top frame.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       CspRuleSandboxedIframeAboutBlankPopup) {
+  // Applied to third-party only.
+  UpdateAdBlockInstanceWithRules(
+      "||a.com^$third-party,csp=script-src 'nonce-abcdef' 'unsafe-eval' "
+      "'self'\n"
+      "||b.com^$third-party,csp=script-src 'nonce-abcdef' 'unsafe-eval' "
+      "'self'");
+
+  NavigateToURL(embedded_test_server()->GetURL("a.com", "/simple.html"));
+  ASSERT_NO_FATAL_FAILURE(AddSandboxedFrame(
+      web_contents(), embedded_test_server()->GetURL("b.com", "/simple.html"),
+      "allow-scripts allow-popups"));
+  content::RenderFrameHost* sandboxed_frame =
+      content::ChildFrameAt(web_contents(), 0);
+  ASSERT_TRUE(sandboxed_frame);
+
+  content::WebContents* popup = OpenPopup(sandboxed_frame, "about:blank");
+  const url::Origin& popup_origin =
+      popup->GetPrimaryMainFrame()->GetLastCommittedOrigin();
+  ASSERT_TRUE(popup_origin.opaque());
+  ASSERT_EQ("b.com", popup_origin.GetTupleOrPrecursorTupleIfOpaque().host());
+
+  ASSERT_NO_FATAL_FAILURE(ExpectCspRuleBlockedFrame(
+      embedded_test_server(), popup, "a.com", /*blocked=*/true));
+  ASSERT_NO_FATAL_FAILURE(ExpectCspRuleBlockedFrame(
+      embedded_test_server(), popup, "b.com", /*blocked=*/false));
+}
+
+// A c.com popup opened by a sandboxed b.com iframe in a.com stays sandboxed, so
+// it has an opaque origin derived from c.com and its frames use c.com as first
+// party, not the opener's top frame.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       CspRuleSandboxedIframeCrossSitePopup) {
+  // Applied to third-party only.
+  UpdateAdBlockInstanceWithRules(
+      "||a.com^$third-party,csp=script-src 'nonce-abcdef' 'unsafe-eval' "
+      "'self'\n"
+      "||c.com^$third-party,csp=script-src 'nonce-abcdef' 'unsafe-eval' "
+      "'self'");
+
+  NavigateToURL(embedded_test_server()->GetURL("a.com", "/simple.html"));
+  ASSERT_NO_FATAL_FAILURE(AddSandboxedFrame(
+      web_contents(), embedded_test_server()->GetURL("b.com", "/simple.html"),
+      "allow-scripts allow-popups"));
+  content::RenderFrameHost* sandboxed_frame =
+      content::ChildFrameAt(web_contents(), 0);
+  ASSERT_TRUE(sandboxed_frame);
+
+  content::WebContents* popup =
+      OpenPopup(sandboxed_frame,
+                embedded_test_server()->GetURL("c.com", "/simple.html").spec());
+  const url::Origin& popup_origin =
+      popup->GetPrimaryMainFrame()->GetLastCommittedOrigin();
+  ASSERT_TRUE(popup_origin.opaque());
+  ASSERT_EQ("c.com", popup_origin.GetTupleOrPrecursorTupleIfOpaque().host());
+
+  ASSERT_NO_FATAL_FAILURE(ExpectCspRuleBlockedFrame(
+      embedded_test_server(), popup, "a.com", /*blocked=*/true));
+  ASSERT_NO_FATAL_FAILURE(ExpectCspRuleBlockedFrame(
+      embedded_test_server(), popup, "c.com", /*blocked=*/false));
+}
+
+// An about:blank popup opened by a b.com iframe in a.com inherits the b.com
+// origin, so its frames use b.com as first party, not the opener's top frame.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleIframeAboutBlankPopup) {
+  // Applied to third-party only.
+  UpdateAdBlockInstanceWithRules(
+      "||a.com^$third-party,csp=script-src 'nonce-abcdef' 'unsafe-eval' "
+      "'self'\n"
+      "||b.com^$third-party,csp=script-src 'nonce-abcdef' 'unsafe-eval' "
+      "'self'");
+
+  NavigateToURL(embedded_test_server()->GetURL("a.com", "/simple.html"));
+  ASSERT_NO_FATAL_FAILURE(AddFrame(
+      web_contents(), embedded_test_server()->GetURL("b.com", "/simple.html")));
+  content::RenderFrameHost* iframe = content::ChildFrameAt(web_contents(), 0);
+  ASSERT_TRUE(iframe);
+
+  content::WebContents* popup = OpenPopup(iframe, "about:blank");
+  const url::Origin& popup_origin =
+      popup->GetPrimaryMainFrame()->GetLastCommittedOrigin();
+  ASSERT_FALSE(popup_origin.opaque());
+  ASSERT_EQ("b.com", popup_origin.host());
+
+  ASSERT_NO_FATAL_FAILURE(ExpectCspRuleBlockedFrame(
+      embedded_test_server(), popup, "a.com", /*blocked=*/true));
+  ASSERT_NO_FATAL_FAILURE(ExpectCspRuleBlockedFrame(
+      embedded_test_server(), popup, "b.com", /*blocked=*/false));
+}
+
+// Shields ignores sandboxing: frames loaded by a sandboxed document use the
+// origin the sandboxed document's opaque origin was derived from as first
+// party.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleSandboxedInitiator) {
+  // Applied to third-party only.
+  UpdateAdBlockInstanceWithRules(
+      "||example.com^$third-party,csp=script-src 'nonce-abcdef' "
+      "'unsafe-eval' 'self'");
+
+  auto add_sandboxed_frame = [](const content::ToRenderFrameHost& parent,
+                                const std::string& src) {
+    ASSERT_TRUE(ExecJs(parent, content::JsReplace(R"(
+      new Promise(resolve => {
+        const frame = document.createElement('iframe');
+        frame.sandbox = 'allow-scripts';
+        frame.onload = () => resolve(true);
+        frame.src = $1;
+        document.body.appendChild(frame);
+      }))",
+                                                  src)));
+  };
+
+  const GURL url =
+      embedded_test_server()->GetURL("example.com", "/csp_rules.html");
+
+  {
+    // example.com document served with `Content-Security-Policy: sandbox`.
+    // Its subframe on example.com is first-party, so the rule does not match.
+    NavigateToURL(embedded_test_server()->GetURL(
+        "example.com", "/csp_sandboxed_main_frame.html"));
+    content::RenderFrameHost* main_frame =
+        web_contents()->GetPrimaryMainFrame();
+    ASSERT_TRUE(main_frame->GetLastCommittedOrigin().opaque());
+
+    ASSERT_NO_FATAL_FAILURE(AddFrame(main_frame, url));
+    content::RenderFrameHost* frame = content::ChildFrameAt(main_frame, 0);
+    ASSERT_TRUE(frame);
+    ASSERT_TRUE(ExecJs(frame, "window.allLoaded"));
+    EXPECT_EQ(true, EvalJs(frame, "!!window.loadedNonceScript"));
+    EXPECT_EQ(true, EvalJs(frame, "!!window.loadedUnsafeInlineScript"));
+  }
+
+  {
+    // a.com document served with `Content-Security-Policy: sandbox`. Its
+    // subframe on example.com is third-party, so the rule matches.
+    NavigateToURL(embedded_test_server()->GetURL(
+        "a.com", "/csp_sandboxed_main_frame.html"));
+    content::RenderFrameHost* main_frame =
+        web_contents()->GetPrimaryMainFrame();
+    ASSERT_TRUE(main_frame->GetLastCommittedOrigin().opaque());
+
+    ASSERT_NO_FATAL_FAILURE(AddFrame(main_frame, url));
+    content::RenderFrameHost* frame = content::ChildFrameAt(main_frame, 0);
+    ASSERT_TRUE(frame);
+    ASSERT_TRUE(ExecJs(frame, "window.allLoaded"));
+    EXPECT_EQ(true, EvalJs(frame, "!!window.loadedNonceScript"));
+    EXPECT_EQ(false, EvalJs(frame, "!!window.loadedUnsafeInlineScript"));
+  }
+
+  {
+    // Sandboxed about:blank iframe on example.com. It inherits an opaque
+    // origin derived from example.com, so its example.com subframe is
+    // first-party and the rule does not match.
+    NavigateToURL(
+        embedded_test_server()->GetURL("example.com", "/simple.html"));
+    add_sandboxed_frame(web_contents(), "about:blank");
+    content::RenderFrameHost* sandboxed_frame =
+        content::ChildFrameAt(web_contents(), 0);
+    ASSERT_TRUE(sandboxed_frame);
+    ASSERT_TRUE(sandboxed_frame->GetLastCommittedOrigin().opaque());
+
+    ASSERT_NO_FATAL_FAILURE(AddFrame(sandboxed_frame, url));
+    content::RenderFrameHost* frame = content::ChildFrameAt(sandboxed_frame, 0);
+    ASSERT_TRUE(frame);
+    ASSERT_TRUE(ExecJs(frame, "window.allLoaded"));
+    EXPECT_EQ(true, EvalJs(frame, "!!window.loadedNonceScript"));
+    EXPECT_EQ(true, EvalJs(frame, "!!window.loadedUnsafeInlineScript"));
+  }
+
+  {
+    // Sandboxed about:blank iframe on a.com. Its example.com subframe is
+    // third-party, so the rule matches.
+    NavigateToURL(embedded_test_server()->GetURL("a.com", "/simple.html"));
+    add_sandboxed_frame(web_contents(), "about:blank");
+    content::RenderFrameHost* sandboxed_frame =
+        content::ChildFrameAt(web_contents(), 0);
+    ASSERT_TRUE(sandboxed_frame);
+    ASSERT_TRUE(sandboxed_frame->GetLastCommittedOrigin().opaque());
+
+    ASSERT_NO_FATAL_FAILURE(AddFrame(sandboxed_frame, url));
+    content::RenderFrameHost* frame = content::ChildFrameAt(sandboxed_frame, 0);
+    ASSERT_TRUE(frame);
+    ASSERT_TRUE(ExecJs(frame, "window.allLoaded"));
+    EXPECT_EQ(true, EvalJs(frame, "!!window.loadedNonceScript"));
+    EXPECT_EQ(false, EvalJs(frame, "!!window.loadedUnsafeInlineScript"));
+  }
+
+  {
+    // Sandboxed iframe loading a document from example.com, embedded in
+    // example.com. Its own subframe on example.com is first-party.
+    NavigateToURL(
+        embedded_test_server()->GetURL("example.com", "/simple.html"));
+    add_sandboxed_frame(web_contents(), "/simple.html");
+    content::RenderFrameHost* sandboxed_frame =
+        content::ChildFrameAt(web_contents(), 0);
+    ASSERT_TRUE(sandboxed_frame);
+    ASSERT_TRUE(sandboxed_frame->GetLastCommittedOrigin().opaque());
+
+    ASSERT_NO_FATAL_FAILURE(AddFrame(sandboxed_frame, url));
+    content::RenderFrameHost* frame = content::ChildFrameAt(sandboxed_frame, 0);
+    ASSERT_TRUE(frame);
+    ASSERT_TRUE(ExecJs(frame, "window.allLoaded"));
+    EXPECT_EQ(true, EvalJs(frame, "!!window.loadedNonceScript"));
+    EXPECT_EQ(true, EvalJs(frame, "!!window.loadedUnsafeInlineScript"));
+  }
+}
+
+// Subframes use the top frame origin as first party, not the frame that
+// loaded them.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleNestedFrameUsesTopFrame) {
+  // Applied to third-party only.
+  UpdateAdBlockInstanceWithRules(
+      "||example.com^$third-party,csp=script-src 'nonce-abcdef' "
+      "'unsafe-eval' 'self'");
+
+  const GURL url =
+      embedded_test_server()->GetURL("example.com", "/csp_rules.html");
+
+  {
+    // example.com frame nested in an example.com frame on a.com. The nested
+    // frame is third-party to a.com, so the rule matches.
+    NavigateToURL(embedded_test_server()->GetURL("a.com", "/simple.html"));
+    ASSERT_NO_FATAL_FAILURE(AddFrame(web_contents(), url));
+    content::RenderFrameHost* outer_frame =
+        content::ChildFrameAt(web_contents(), 0);
+    ASSERT_TRUE(outer_frame);
+    ASSERT_NO_FATAL_FAILURE(AddFrame(outer_frame, url));
+    content::RenderFrameHost* frame = content::ChildFrameAt(outer_frame, 0);
+    ASSERT_TRUE(frame);
+    ASSERT_TRUE(ExecJs(frame, "window.allLoaded"));
+    EXPECT_EQ(true, EvalJs(frame, "!!window.loadedNonceScript"));
+    EXPECT_EQ(false, EvalJs(frame, "!!window.loadedUnsafeInlineScript"));
+  }
+
+  {
+    // example.com frame nested in an a.com frame on example.com. The nested
+    // frame is first-party to example.com, so the rule does not match.
+    NavigateToURL(
+        embedded_test_server()->GetURL("example.com", "/simple.html"));
+    ASSERT_NO_FATAL_FAILURE(
+        AddFrame(web_contents(),
+                 embedded_test_server()->GetURL("a.com", "/simple.html")));
+    content::RenderFrameHost* outer_frame =
+        content::ChildFrameAt(web_contents(), 0);
+    ASSERT_TRUE(outer_frame);
+    ASSERT_NO_FATAL_FAILURE(AddFrame(outer_frame, url));
+    content::RenderFrameHost* frame = content::ChildFrameAt(outer_frame, 0);
+    ASSERT_TRUE(frame);
+    ASSERT_TRUE(ExecJs(frame, "window.allLoaded"));
+    EXPECT_EQ(true, EvalJs(frame, "!!window.loadedNonceScript"));
+    EXPECT_EQ(true, EvalJs(frame, "!!window.loadedUnsafeInlineScript"));
+  }
+}
+
+// A browser-initiated data: page has an opaque origin without a precursor, so
+// its frames use an opaque first party and not the frame that loaded them.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CspRuleOpaqueTopFrame) {
+  // Applied to third-party only.
+  UpdateAdBlockInstanceWithRules(
+      "||example.com^$third-party,csp=script-src 'nonce-abcdef' "
+      "'unsafe-eval' 'self'");
+
+  const GURL url =
+      embedded_test_server()->GetURL("example.com", "/csp_rules.html");
+
+  NavigateToURL(GURL("data:text/html,<body></body>"));
+  content::RenderFrameHost* main_frame = web_contents()->GetPrimaryMainFrame();
+  ASSERT_TRUE(main_frame->GetLastCommittedOrigin().opaque());
+  ASSERT_FALSE(main_frame->GetLastCommittedOrigin()
+                   .GetTupleOrPrecursorTupleIfOpaque()
+                   .IsValid());
+
+  // example.com frame nested in an example.com frame. The nested frame is
+  // third-party to the opaque top frame, so the rule matches.
+  ASSERT_NO_FATAL_FAILURE(AddFrame(main_frame, url));
+  content::RenderFrameHost* outer_frame = content::ChildFrameAt(main_frame, 0);
+  ASSERT_TRUE(outer_frame);
+  ASSERT_NO_FATAL_FAILURE(AddFrame(outer_frame, url));
+  content::RenderFrameHost* frame = content::ChildFrameAt(outer_frame, 0);
+  ASSERT_TRUE(frame);
+  ASSERT_TRUE(ExecJs(frame, "window.allLoaded"));
+  EXPECT_EQ(true, EvalJs(frame, "!!window.loadedNonceScript"));
+  EXPECT_EQ(false, EvalJs(frame, "!!window.loadedUnsafeInlineScript"));
 }
 
 // Verify that Content Security Policies from multiple `$csp` rules are
