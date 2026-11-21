@@ -141,7 +141,8 @@
         # for a bodyless method, a declaration for a bodyless con/destructor,
         # or a function_definition for one defined inline.
         #
-        # Templated functions are guaranteed to be skipped.
+        # Templated functions are guaranteed to be skipped, and so are static
+        # ones, which can't be virtual either.
         "cxx.find_class_method_decl": {
             "template": """\
 any:
@@ -153,6 +154,10 @@ any:
           inside:
             kind: template_declaration
             stopBy: end
+not:
+  has:
+    kind: storage_class_specifier
+    regex: ^static$
 has:
   kind: function_declarator
   stopBy: end

@@ -1715,6 +1715,35 @@ class RewriterFormsTest(unittest.TestCase):
                 '      method_name: Foo\n',
             )
 
+    # The overloads upstream's HorizontalTabStyleViews declares (cr160).
+    _STATIC_OVERLOADS = (
+        'class C {\n'
+        ' public:\n'
+        '  static void PaintSeparators(gfx::Canvas* canvas,\n'
+        '                              const gfx::Rect& bounds);\n'
+        ' protected:\n'
+        '  void PaintSeparators(gfx::Canvas* canvas) const;\n'
+        '};\n'
+    )
+
+    def test_make_virtual_skips_static_overloads(self):
+        result = self._apply(
+            'static_overload.h',
+            self._STATIC_OVERLOADS,
+            'substitutions:\n'
+            '  - description: the static overload is no change\n'
+            '    make_virtual:\n'
+            '      class_name: C\n'
+            '      method_name: PaintSeparators\n',
+        )
+        self.assertEqual(
+            result,
+            self._STATIC_OVERLOADS.replace(
+                '  void PaintSeparators(gfx::Canvas* canvas) const;',
+                '  virtual void PaintSeparators(gfx::Canvas* canvas) const;',
+            ),
+        )
+
     def test_make_virtual_skips_defined_function_template_overload(self):
         # Real-world overload set: a plain overload plus a function-template
         # overload (constrained with `requires`) that forwards to it. `virtual`
