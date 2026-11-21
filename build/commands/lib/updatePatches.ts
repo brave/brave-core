@@ -284,4 +284,55 @@ async function updatePatches(
   return outdatedPlasterPaths
 }
 
+/**
+ * A matcher for one exclusions pattern: a path, a `<prefix>*` or a
+ * `*<suffix>`.
+ */
+function exclusionPatternMatcher(pattern: string): PathFilter {
+  if (pattern.startsWith('*')) {
+    const suffix = pattern.slice(1)
+    return (s) => s.endsWith(suffix)
+  }
+  if (pattern.endsWith('*')) {
+    const prefix = pattern.slice(0, -1)
+    return (s) => s.startsWith(prefix)
+  }
+  return (s) => s === pattern
+}
+
+/**
+ * Builds the path filter of an exclusions file's contents. Each line is
+ * `+<pattern>`, excluding the paths it matches from patches, or
+ * `-<pattern>`, keeping the paths it matches in them whichever `+` line also
+ * matches. `#` starts a comment.
+ *
+ * @returns Whether a path gets a patch.
+ */
+export function exclusionsFilter(contents: string): PathFilter {
+  const excluded: PathFilter[] = []
+  const kept: PathFilter[] = []
+  for (const [index, line] of contents.split('\n').entries()) {
+    const entry = (line.split('#')[0] ?? '').trim()
+    if (entry.length === 0) {
+      continue
+    }
+    const sign = entry[0]
+    if (sign !== '+' && sign !== '-') {
+      throw new Error(
+        `Exclusions line ${index + 1} must start with + or -: ${entry}`,
+      )
+    }
+    const matcher = exclusionPatternMatcher(entry.slice(1).trim())
+    if (sign === '+') {
+      excluded.push(matcher)
+    } else {
+      kept.push(matcher)
+    }
+  }
+  return (s) =>
+    s.length > 0
+    && (kept.some((matches) => matches(s))
+      || !excluded.some((matches) => matches(s)))
+}
+
 export default updatePatches
