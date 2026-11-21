@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Verify legacy seed signatures with Brave's public key
+
+      Brave's variations server signs seeds with its own ECDSA P-256 key, in
+      place of Google's `kPublicKey`.
+    regex:
+      re_pattern: '(crypto::sign::Verify\(crypto::sign::SignatureKind::ECDSA_SHA256,\s*)\*public_key,'
+      replace: '\1PublicKeyWrapper::GetPublicKey(*public_key),'
+
+  - description: |-
+      Reject hybrid post-quantum seed signatures
+
+      The pinned hybrid keys are Google's, and Brave's server has no hybrid
+      key, so a hybrid-signed seed is never Brave's. Accepting one would also
+      distrust the legacy key that Brave's seeds are signed with.
+    preempt_function_impl:
+      function_name: VerifyHybridSeedSignature
+      return_if: '!PublicKeyWrapper::AcceptsHybridSignatures()'
+      return_value: 'VerifySignatureResult::kInvalidSeedSignature'
