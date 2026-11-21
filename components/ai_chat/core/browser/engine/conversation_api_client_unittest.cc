@@ -15,6 +15,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
@@ -282,16 +283,6 @@ class ConversationAPIClientUnitTest : public testing::Test {
   }
 
   void TearDown() override {}
-
-  // Returns a pair of system_language and selected_langauge
-  // The system language is the OS locale.
-  // The system language is the browser language
-  std::string GetSystemLanguage(const base::DictValue& body) {
-    const std::string* system_language = body.FindString("system_language");
-    // The system language should always be present
-    EXPECT_TRUE(system_language != nullptr);
-    return *system_language;
-  }
 
  protected:
   base::test::TaskEnvironment task_environment_;
@@ -657,10 +648,9 @@ TEST_F(ConversationAPIClientUnitTest, PerformRequest_PremiumHeaders) {
         EXPECT_EQ(net::HttpRequestHeaders::kPostMethod, method);
 
         // Verify premium Cookie header is present
-        EXPECT_TRUE(headers.contains("Cookie"));
-        const auto& cookie = headers.at("Cookie");
-        EXPECT_EQ(cookie,
-                  "__Secure-sku#brave-leo-premium=" + expected_credential);
+        EXPECT_THAT(headers, testing::Contains(testing::Pair(
+                                 "Cookie", "__Secure-sku#brave-leo-premium=" +
+                                               expected_credential)));
 
         // Verify other headers still present
         EXPECT_TRUE(headers.contains("x-brave-key"));
@@ -672,27 +662,26 @@ TEST_F(ConversationAPIClientUnitTest, PerformRequest_PremiumHeaders) {
         EXPECT_TRUE(!body_dict.empty());
 
         // Verify body contains the system language
-        auto system_language = GetSystemLanguage(body_dict);
-        EXPECT_EQ(system_language, expected_system_language);
+        EXPECT_THAT(body_dict, base::test::DictionaryHasValue(
+                                   "system_language",
+                                   base::Value(expected_system_language)));
 
         // Verify body contains the brave_capability list.
-        const base::ListValue* capability_list =
-            body_dict.FindList("brave_capability");
-        EXPECT_TRUE(capability_list);
-        if (capability_list) {
-          EXPECT_EQ(*capability_list,
-                    base::ListValue().Append("deep_research"));
-        }
+        EXPECT_THAT(
+            body_dict,
+            base::test::DictionaryHasValue(
+                "brave_capability",
+                base::Value(base::ListValue().Append("deep_research"))));
 
         // Verify body contains the stream
-        std::optional<bool> stream = body_dict.FindBool("stream");
-        EXPECT_TRUE(stream);
-        EXPECT_TRUE(*stream);
+        EXPECT_THAT(body_dict, base::test::DictionaryHasValue(
+                                   "stream", base::Value(true)));
 
         // Verify messages content matches expected
-        const base::ListValue* messages_list = body_dict.FindList("messages");
-        EXPECT_TRUE(messages_list);
-        EXPECT_EQ(*messages_list, expected_messages_json);
+        EXPECT_THAT(
+            body_dict,
+            base::test::DictionaryHasValue(
+                "messages", base::Value(expected_messages_json.Clone())));
 
         // Simulate streaming chunk
         auto chunk_dict = base::test::ParseJsonDict(R"({
@@ -735,8 +724,8 @@ TEST_F(ConversationAPIClientUnitTest, PerformRequest_PremiumHeaders) {
   EXPECT_CALL(mock_callbacks, OnCompleted(_))
       .WillOnce([&](EngineConsumer::GenerationResult result) {
         ASSERT_TRUE(result.has_value());
-        EXPECT_TRUE(result->event);
-        EXPECT_TRUE(result->event->is_completion_event());
+        ASSERT_TRUE(result->event);
+        ASSERT_TRUE(result->event->is_completion_event());
         EXPECT_EQ(result->event->get_completion_event()->completion,
                   expected_completion_response);
         EXPECT_FALSE(result->is_near_verified.has_value());
@@ -801,27 +790,24 @@ TEST_F(ConversationAPIClientUnitTest, PerformRequest_NonPremium) {
         EXPECT_TRUE(!dict.empty());
 
         // Verify body contains the system language
-        auto system_language = GetSystemLanguage(dict);
-        EXPECT_EQ(system_language, expected_system_language);
+        EXPECT_THAT(dict, base::test::DictionaryHasValue(
+                              "system_language",
+                              base::Value(expected_system_language)));
 
         // Verify body contains the brave_capability list
-        const base::ListValue* capability_list =
-            dict.FindList("brave_capability");
-        EXPECT_TRUE(capability_list);
-        if (capability_list) {
-          EXPECT_EQ(capability_list->size(), 1u);
-          EXPECT_TRUE(capability_list->contains("content_agent"));
-        }
+        EXPECT_THAT(
+            dict, base::test::DictionaryHasValue(
+                      "brave_capability",
+                      base::Value(base::ListValue().Append("content_agent"))));
 
         // Verify body contains the stream
-        std::optional<bool> stream = dict.FindBool("stream");
-        EXPECT_TRUE(stream.has_value());
-        EXPECT_TRUE(*stream);
+        EXPECT_THAT(
+            dict, base::test::DictionaryHasValue("stream", base::Value(true)));
 
         // Verify messages content matches expected
-        const base::ListValue* messages_list = dict.FindList("messages");
-        EXPECT_TRUE(messages_list);
-        EXPECT_EQ(*messages_list, expected_messages_json);
+        EXPECT_THAT(
+            dict, base::test::DictionaryHasValue(
+                      "messages", base::Value(expected_messages_json.Clone())));
 
         // Simulate streaming chunk
         auto chunk_dict = base::test::ParseJsonDict(R"({
@@ -861,8 +847,8 @@ TEST_F(ConversationAPIClientUnitTest, PerformRequest_NonPremium) {
   EXPECT_CALL(mock_callbacks, OnCompleted(_))
       .WillOnce([&](EngineConsumer::GenerationResult result) {
         ASSERT_TRUE(result.has_value());
-        EXPECT_TRUE(result->event);
-        EXPECT_TRUE(result->event->is_completion_event());
+        ASSERT_TRUE(result->event);
+        ASSERT_TRUE(result->event->is_completion_event());
         EXPECT_EQ(result->event->get_completion_event()->completion,
                   expected_completion_response);
       });
@@ -1258,14 +1244,13 @@ TEST_F(ConversationAPIClientUnitTest, PerformRequest_NonStreaming) {
 
             // Verify body has stream: false
             auto dict = base::test::ParseJsonDict(body);
-            std::optional<bool> stream = dict.FindBool("stream");
-            EXPECT_TRUE(stream.has_value());
-            EXPECT_FALSE(*stream);
+            EXPECT_THAT(dict, base::test::DictionaryHasValue(
+                                  "stream", base::Value(false)));
 
             // Verify messages content matches expected
-            const base::ListValue* messages_list = dict.FindList("messages");
-            EXPECT_TRUE(messages_list);
-            EXPECT_EQ(*messages_list, expected_messages_json);
+            EXPECT_THAT(dict, base::test::DictionaryHasValue(
+                                  "messages",
+                                  base::Value(expected_messages_json.Clone())));
 
             // Simulate non-streaming completion
             auto completion_dict = base::test::ParseJsonDict(R"({
@@ -1286,8 +1271,8 @@ TEST_F(ConversationAPIClientUnitTest, PerformRequest_NonStreaming) {
   EXPECT_CALL(mock_callbacks, OnCompleted(_))
       .WillOnce([&](EngineConsumer::GenerationResult result) {
         ASSERT_TRUE(result.has_value());
-        EXPECT_TRUE(result->event);
-        EXPECT_TRUE(result->event->is_completion_event());
+        ASSERT_TRUE(result->event);
+        ASSERT_TRUE(result->event->is_completion_event());
         EXPECT_EQ(result->event->get_completion_event()->completion,
                   expected_completion_response);
       });
@@ -1326,9 +1311,8 @@ TEST_F(ConversationAPIClientUnitTest,
                     const api_request_helper::APIRequestOptions& options) {
         // Verify the model name was overridden in the request
         auto dict = base::test::ParseJsonDict(body);
-        const std::string* model = dict.FindString("model");
-        EXPECT_TRUE(model);
-        EXPECT_EQ(*model, override_model_name);
+        EXPECT_THAT(dict, base::test::DictionaryHasValue(
+                              "model", base::Value(override_model_name)));
 
         // Simulate streaming chunk
         auto chunk_dict = base::test::ParseJsonDict(R"({
@@ -1410,9 +1394,8 @@ TEST_F(ConversationAPIClientUnitTest,
                   response_conversion_callback) {
             // Verify the model name was overridden in the request
             auto dict = base::test::ParseJsonDict(body);
-            const std::string* model = dict.FindString("model");
-            EXPECT_TRUE(model);
-            EXPECT_EQ(*model, override_model_name);
+            EXPECT_THAT(dict, base::test::DictionaryHasValue(
+                                  "model", base::Value(override_model_name)));
 
             // Create a response with both completion and model information
             auto response_dict = base::test::ParseJsonDict(R"({
@@ -1505,8 +1488,7 @@ TEST_F(ConversationAPIClientUnitTest, PerformRequest_NEARVerification) {
   EXPECT_CALL(mock_callbacks, OnCompleted(_))
       .WillOnce([](EngineConsumer::GenerationResult result) {
         ASSERT_TRUE(result.has_value());
-        EXPECT_TRUE(result->is_near_verified.has_value());
-        EXPECT_TRUE(result->is_near_verified.value());
+        EXPECT_THAT(result->is_near_verified, testing::Optional(true));
       });
 
   client_->PerformRequest(
@@ -2263,8 +2245,7 @@ TEST_F(ConversationAPIClientUnitTest, ErrorParsing_SSE) {
 TEST_F(ConversationAPIClientUnitTest, ErrorParsing_NonSSE) {
   MockAPIRequestHelper* mock_request_helper =
       client_->GetMockAPIRequestHelper();
-  testing::StrictMock<MockCallbacks> mock_callbacks;
-  base::RunLoop run_loop;
+  base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
   EXPECT_CALL(*mock_request_helper, Request(_, _, _, _, _, _, _, _))
       .WillOnce(
@@ -2284,22 +2265,16 @@ TEST_F(ConversationAPIClientUnitTest, ErrorParsing_NonSSE) {
             return Ticket();
           });
 
-  EXPECT_CALL(mock_callbacks, OnCompleted(_))
-      .WillOnce([&](EngineConsumer::GenerationResult result) {
-        ASSERT_FALSE(result.has_value());
-        EXPECT_EQ(result.error().api_error, mojom::APIError::RateLimitReached);
-        ASSERT_TRUE(result.error().details);
-        EXPECT_EQ(result.error().details->status_code, 429);
-        EXPECT_EQ(result.error().details->error_type, "5678");
-        run_loop.Quit();
-      });
-
   client_->PerformRequest(GetMockMessagesAndExpectedMessagesJson().first,
                           std::nullopt, std::nullopt, {}, base::NullCallback(),
-                          base::BindOnce(&MockCallbacks::OnCompleted,
-                                         base::Unretained(&mock_callbacks)));
+                          future.GetCallback());
 
-  run_loop.Run();
+  auto result = future.Take();
+  ASSERT_FALSE(result.has_value());
+  EXPECT_EQ(result.error().api_error, mojom::APIError::RateLimitReached);
+  ASSERT_TRUE(result.error().details);
+  EXPECT_EQ(result.error().details->status_code, 429);
+  EXPECT_EQ(result.error().details->error_type, "5678");
 }
 
 }  // namespace ai_chat
