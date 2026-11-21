@@ -208,6 +208,35 @@ class GeneratedBuilderTest(unittest.TestCase):
         )
         self.assertEqual(self._problems(), [])
 
+    def test_reads_the_targets_spec(self):
+        write_builder(self.output_dir, 'b')
+        self.assertEqual(
+            self._read().targets_spec, testing_support.TARGETS_SPEC
+        )
+
+    def test_targets_spec_must_be_one_file(self):
+        write_builder(self.output_dir, 'b', omit=('targets/brave.test.json',))
+        self.assertIn(
+            'expected one <builder_group>.json, found 0', self._problems()[0]
+        )
+
+    def test_targets_spec_is_checked(self):
+        for spec, problem in (
+            ({'gtest_tests': {}}, '"gtest_tests" is not a list'),
+            ({'gtest_tests': [{'name': 'a'}]}, '"gtest_tests"[0] needs'),
+            (
+                {'gtest_tests': [{'name': 'a', 'test': 'a', 'args': [1]}]},
+                '"gtest_tests"[0] needs',
+            ),
+            (
+                {'additional_compile_targets': 'x', 'gtest_tests': []},
+                '"additional_compile_targets" is not a list',
+            ),
+        ):
+            with self.subTest(problem=problem):
+                write_builder(self.output_dir, 'b', targets_spec=spec)
+                self.assertIn(problem, self._problems()[0])
+
     def test_spec_without_gclient_config(self):
         write_builder(
             self.output_dir,

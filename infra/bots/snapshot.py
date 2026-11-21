@@ -18,11 +18,16 @@ import generated_output
 
 
 def _load_config() -> None:
-    """Imports gn_args.py and all builders/*.py."""
+    """Imports gn_args.py, all targets/*.py and all builders/*.py."""
     config_dir = str(gen_paths.CONFIG_DIR)
     if config_dir not in sys.path:
         sys.path.insert(0, config_dir)
     importlib.import_module('gn_args')
+    import targets as targets_package
+
+    # Before the builders, which name the bundles these declare.
+    for module_info in pkgutil.iter_modules(targets_package.__path__):
+        importlib.import_module('targets.' + module_info.name)
     import builders as builders_package
 
     for module_info in pkgutil.iter_modules(builders_package.__path__):
