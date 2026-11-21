@@ -12,15 +12,18 @@
 
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -142,7 +145,7 @@ class OAIAPIUnitTest : public testing::Test {
 TEST_F(OAIAPIUnitTest, PerformRequest) {
   mojom::CustomModelOptionsPtr model_options = mojom::CustomModelOptions::New(
       "test_api_key", 0, 0, 0, "test_system_prompt", GURL("https://test.com"),
-      "test_model");
+      "test_model", false);
 
   std::string server_chunk =
       R"({"id":"chatcmpl-123","object":"chat.completion.chunk","created":1694268190,"model":"gpt-3.5-turbo-0125", "system_fingerprint": "fp_44709d6fcb", "choices":[{"index":0,"delta":{"role":"assistant","content":"It was played in Arlington, Texas."},"logprobs":null,"finish_reason":null}]})";
@@ -234,7 +237,7 @@ TEST_F(OAIAPIUnitTest, PerformRequest) {
 TEST_F(OAIAPIUnitTest, PerformRequest_WithStopSequences) {
   mojom::CustomModelOptionsPtr model_options = mojom::CustomModelOptions::New(
       "test_api_key", 0, 0, 0, "test_system_prompt", GURL("https://test.com"),
-      "test_model");
+      "test_model", false);
 
   std::vector<std::string> stop_sequences = {"/title", "END"};
 
@@ -289,7 +292,7 @@ TEST_F(OAIAPIUnitTest, PerformRequest_WithStopSequences) {
 TEST_F(OAIAPIUnitTest, PerformRequest_WithEmptyStopSequences) {
   mojom::CustomModelOptionsPtr model_options = mojom::CustomModelOptions::New(
       "test_api_key", 0, 0, 0, "test_system_prompt", GURL("https://test.com"),
-      "test_model");
+      "test_model", false);
 
   std::vector<std::string> empty_stop_sequences = {};
 
@@ -336,6 +339,82 @@ TEST_F(OAIAPIUnitTest, PerformRequest_WithEmptyStopSequences) {
       empty_stop_sequences);
 
   run_loop.Run();
+}
+
+TEST_F(OAIAPIUnitTest, UnavailableStoredKeyDoesNotSendRequest) {
+  auto options = mojom::CustomModelOptions::New();
+  options->model_request_name = "test-model";
+  options->endpoint = GURL("https://example.com/v1/chat/completions");
+  options->api_key_unavailable = true;
+  auto model = mojom::ModelOptions::NewCustomModelOptions(std::move(options));
+  MockCallbacks callbacks;
+  EXPECT_CALL(*client_->GetMockAPIRequestHelper(),
+              Request(_, _, _, _, _, _, _, _))
+      .Times(0);
+  EXPECT_CALL(*client_->GetMockAPIRequestHelper(),
+              RequestSSE(_, _, _, _, _, _, _, _))
+      .Times(0);
+  EXPECT_CALL(callbacks, OnCompleted(_)).WillOnce([](GenerationResult result) {
+    ASSERT_FALSE(result.has_value());
+    EXPECT_EQ(result.error().api_error, mojom::APIError::InternalError);
+  });
+
+  client_->PerformRequest(*model, {}, std::nullopt, base::NullCallback(),
+                          base::BindOnce(&MockCallbacks::OnCompleted,
+                                         base::Unretained(&callbacks)));
+}
+
+TEST_F(OAIAPIUnitTest, UnavailableStoredKeyDoesNotSendStreamingRequest) {
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      features::kAIChat, {{features::kAIChatSSE.name, "true"}});
+  ASSERT_TRUE(features::kAIChatSSE.Get());
+  auto options = mojom::CustomModelOptions::New();
+  options->model_request_name = "test-model";
+  options->endpoint = GURL("https://example.com/v1/chat/completions");
+  options->api_key_unavailable = true;
+  auto model = mojom::ModelOptions::NewCustomModelOptions(std::move(options));
+  MockCallbacks callbacks;
+  EXPECT_CALL(*client_->GetMockAPIRequestHelper(),
+              Request(_, _, _, _, _, _, _, _))
+      .Times(0);
+  EXPECT_CALL(*client_->GetMockAPIRequestHelper(),
+              RequestSSE(_, _, _, _, _, _, _, _))
+      .Times(0);
+  EXPECT_CALL(callbacks, OnDataReceived(_)).Times(0);
+  EXPECT_CALL(callbacks, OnCompleted(_)).WillOnce([](GenerationResult result) {
+    ASSERT_FALSE(result.has_value());
+    EXPECT_EQ(result.error().api_error, mojom::APIError::InternalError);
+  });
+  client_->PerformRequest(*model, {}, std::nullopt,
+                          base::BindRepeating(&MockCallbacks::OnDataReceived,
+                                              base::Unretained(&callbacks)),
+                          base::BindOnce(&MockCallbacks::OnCompleted,
+                                         base::Unretained(&callbacks)));
+}
+
+TEST_F(OAIAPIUnitTest, IntentionallyEmptyKeyCanSendRequest) {
+  auto options = mojom::CustomModelOptions::New();
+  options->model_request_name = "test-model";
+  options->endpoint = GURL("https://example.com/v1/chat/completions");
+  auto model = mojom::ModelOptions::NewCustomModelOptions(std::move(options));
+  EXPECT_CALL(*client_->GetMockAPIRequestHelper(),
+              RequestSSE(_, _, _, _, _, _, _, _))
+      .Times(0);
+  EXPECT_CALL(*client_->GetMockAPIRequestHelper(),
+              Request(_, _, _, _, _, _, _, _))
+      .WillOnce(
+          [](const std::string&, const GURL&, const std::string&,
+             const std::string&, ResultCallback,
+             const base::flat_map<std::string, std::string>& headers,
+             const api_request_helper::APIRequestOptions&,
+             api_request_helper::APIRequestHelper::ResponseConversionCallback) {
+            EXPECT_FALSE(headers.contains("Authorization"));
+            return Ticket();
+          });
+
+  client_->PerformRequest(*model, {}, std::nullopt, base::NullCallback(),
+                          base::DoNothing());
 }
 
 TEST_F(OAIAPIUnitTest, SerializeOAIMessages) {
@@ -666,7 +745,7 @@ TEST_P(OAIAPIInvalidResponseTest,
        InvalidResponse_NoCallbacksTriggeredOrEmptyCompletion) {
   mojom::CustomModelOptionsPtr model_options = mojom::CustomModelOptions::New(
       "test_api_key", 0, 0, 0, "test_system_prompt", GURL("https://test.com"),
-      "test_model");
+      "test_model", false);
 
   const std::string invalid_server_response = GetParam();
 
@@ -728,7 +807,7 @@ TEST_F(OAIAPIUnitTest, PerformRequest_WithToolUseResponse) {
   // see tests for `ParseToolCallsFromOAIResponse`.
   mojom::CustomModelOptionsPtr model_options = mojom::CustomModelOptions::New(
       "test_api_key", 0, 0, 0, "test_system_prompt", GURL("https://test.com"),
-      "test_model");
+      "test_model", false);
 
   MockAPIRequestHelper* mock_request_helper =
       client_->GetMockAPIRequestHelper();

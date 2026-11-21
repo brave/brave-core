@@ -28,6 +28,7 @@ struct CustomModelForm: View {
     var serverEndpoint: String = ""
     var contextSize: Int?
     var apiKey: String?
+    var apiKeyUnavailable: Bool = false
     var systemPrompt: String?
     var visionSupport: Bool = false
     var supportsTools: Bool = false
@@ -55,6 +56,9 @@ struct CustomModelForm: View {
     case invalidContextSize
     /// The server endpoint inputted is valid only if the user enables the private IPs feature flag
     case urlValidAsPrivateEndpoint
+    case encryptionFailed
+    case decryptionFailed
+    case saveFailed
 
     var localizedDescription: String {
       switch self {
@@ -64,6 +68,12 @@ struct CustomModelForm: View {
         return Strings.AIChat.customModelFormInvalidContextSizeErrorMessage
       case .urlValidAsPrivateEndpoint:
         return Strings.AIChat.customModelFormPrivateEndpointErrorMessage
+      case .encryptionFailed:
+        return Strings.AIChat.customModelFormEncryptionErrorMessage
+      case .decryptionFailed:
+        return Strings.AIChat.customModelFormDecryptionErrorMessage
+      case .saveFailed:
+        return Strings.AIChat.customModelFormSaveErrorMessage
       }
     }
 
@@ -72,8 +82,11 @@ struct CustomModelForm: View {
       case .invalidUrl: self = .invalidUrl
       case .invalidContextSize: self = .invalidContextSize
       case .urlValidAsPrivateEndpoint: self = .urlValidAsPrivateEndpoint
+      case .encryptionFailed: self = .encryptionFailed
+      case .decryptionFailed: self = .decryptionFailed
+      case .invalidModelIndex: self = .saveFailed
       case .success: return nil
-      @unknown default: return nil
+      @unknown default: self = .saveFailed
       }
     }
   }
@@ -256,7 +269,11 @@ struct CustomModelForm: View {
           data.serverEndpoint = customOptions.endpoint.absoluteString
           data.systemPrompt = customOptions.modelSystemPrompt
           data.apiKey = customOptions.apiKey
+          data.apiKeyUnavailable = customOptions.apiKeyUnavailable
           data.contextSize = Int(customOptions.contextSize)
+          if customOptions.apiKeyUnavailable {
+            validationError = .decryptionFailed
+          }
         }
       }
     }
@@ -319,7 +336,8 @@ struct CustomModelForm: View {
         longConversationWarningCharacterLimit: 0,
         modelSystemPrompt: data.systemPrompt,
         endpoint: endpointURL,
-        apiKey: data.apiKey ?? ""
+        apiKey: data.apiKey ?? "",
+        apiKeyUnavailable: data.apiKeyUnavailable
       )
     )
     let result: AiChat.OperationResult
@@ -428,7 +446,8 @@ extension AiChat.Model {
           longConversationWarningCharacterLimit: 0,
           modelSystemPrompt: "Custom System Prompt",
           endpoint: URL(string: "http://localhost:11434/v1/chat/completions")!,
-          apiKey: ""
+          apiKey: "",
+          apiKeyUnavailable: false
         )
       ),
       key: "custom:model",

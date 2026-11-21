@@ -152,6 +152,7 @@ describe('ModelSelector', () => {
           modelRequestName: 'Custom Model Request',
           contextSize: 3,
           apiKey: '',
+          apiKeyUnavailable: false,
           modelSystemPrompt: '',
           longConversationWarningCharacterLimit: 1,
           maxAssociatedContentLength: 2,

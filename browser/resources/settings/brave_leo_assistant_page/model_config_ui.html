@@ -23,7 +23,8 @@
     align-items: center;
   }
 
-  .required {
+  .required,
+  .api-key-error {
     color: var(--leo-color-systemfeedback-error-text);
     font: var(--leo-font-small-regular);
   }
@@ -175,11 +176,14 @@
         <span>$i18n{braveLeoAssistantInputModelApiKey}</span>
       </div>
       <leo-input
+        id="apiKeyInput"
         auto-validate
         type="text"
         value="[[apiKey]]"
+        show-errors="[[isApiKeyInvalid]]"
         on-change="onModelApiKeyChange_"
       >
+        <div slot="errors" role="alert" class="api-key-error">[[apiKeyErrorMessage]]</div>
       </leo-input>
       <div class="helper-text">
         $i18n{braveLeoAssistantInputModelApiKeyTooltipInfo}
@@ -234,6 +238,9 @@
       </div>
     </div>
 
+    <template is="dom-if" if="[[saveErrorMessage]]">
+      <leo-alert type="error" role="alert">[[saveErrorMessage]]</leo-alert>
+    </template>
     <div class="actions-container">
       <leo-button
         isDisabled$="[[!saveEnabled_(label, modelRequestName, endpointUrl, isUrlInvalid)]]"
