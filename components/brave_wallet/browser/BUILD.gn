@@ -872,6 +872,7 @@ source_set("unit_tests") {
       "asset_ratio_service_unittest.cc",
       "bitcoin/bitcoin_hardware_keyring_unittest.cc",
       "blockchain_registry_unittest.cc",
+      "brave_wallet_service_unittest.cc",
       "brave_wallet_utils_unittest.cc",
       "cardano/cardano_api_impl_unittest.cc",
       "cardano/cardano_provider_impl_unittest.cc",

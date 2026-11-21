@@ -190,7 +190,7 @@ if (!is_android) {
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "brave_wallet_service_unittest.cc" ]
+  sources = [ "brave_wallet_service_delegate_impl_unittest.cc" ]
   deps = [
     "//base/test:test_support",
     "//brave/browser/brave_wallet",

@@ -14,22 +14,19 @@
 #include "base/containers/to_vector.h"
 #include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
-#include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
-#include "base/scoped_observation.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "base/types/expected.h"
 #include "base/values.h"
-#include "brave/browser/brave_wallet/brave_wallet_service_delegate_base.h"
-#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
@@ -50,21 +47,12 @@
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
-#include "brave/components/brave_wallet/common/web_ui_constants.h"
-#include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "build/build_config.h"
-#include "chrome/browser/permissions/permission_manager_factory.h"
-#include "chrome/browser/prefs/browser_prefs.h"
-#include "chrome/test/base/testing_profile.h"
 #include "components/grit/brave_components_strings.h"
-#include "components/permissions/permission_manager.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/prefs/testing_pref_service.h"
-#include "components/regional_capabilities/regional_capabilities_prefs.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "content/public/browser/storage_partition.h"
-#include "content/public/test/browser_task_environment.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -73,15 +61,9 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
-#include "third_party/blink/public/common/storage_key/storage_key.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
 
-#if BUILDFLAG(IS_MAC)
-#include "base/mac/mac_util.h"
-#endif
-
-using content::StoragePartition;
 using testing::Contains;
 using testing::ElementsAre;
 using testing::Eq;
@@ -203,27 +185,11 @@ std::string AbiEncodeString(std::string_view value) {
   return encoded;
 }
 
-class MockDataRemovalObserver : public StoragePartition::DataRemovalObserver {
- public:
-  explicit MockDataRemovalObserver(StoragePartition* partition) {
-    observation_.Observe(partition);
-  }
-
-  MOCK_METHOD4(OnStorageKeyDataCleared,
-               void(uint32_t,
-                    content::StoragePartition::StorageKeyMatcherFunction,
-                    base::Time,
-                    base::Time));
-
- private:
-  base::ScopedObservation<StoragePartition,
-                          StoragePartition::DataRemovalObserver>
-      observation_{this};
-};
-
 }  // namespace
 
 namespace brave_wallet {
+
+namespace {
 
 void GetErrorCodeMessage(base::Value formed_response,
                          mojom::ProviderError* error,
@@ -338,6 +304,8 @@ class MockBraveWalletServiceDelegate : public TestBraveWalletServiceDelegate {
                const std::string& tx_id,
                const GURL& tx_url),
               (override));
+  MOCK_METHOD(void, ClearWalletUIStoragePartition, (), (override));
+  MOCK_METHOD(void, ResetAllPermissions, (), (override));
 };
 
 // Returns a fixed result from GetImportInfoFromExternalWallet().
@@ -358,6 +326,8 @@ class ImportInfoTestDelegate : public TestBraveWalletServiceDelegate {
   base::expected<ImportInfo, ImportError> info_;
 };
 
+}  // namespace
+
 class BraveWalletServiceUnitTest : public testing::Test {
  public:
   BraveWalletServiceUnitTest()
@@ -376,6 +346,8 @@ class BraveWalletServiceUnitTest : public testing::Test {
         {});
 
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
+    brave_wallet::RegisterProfilePrefs(prefs_.registry());
+    brave_wallet::RegisterProfilePrefsForMigration(prefs_.registry());
 
 #if BUILDFLAG(IS_ANDROID)
     task_environment_.AdvanceClock(base::Days(2));
@@ -389,32 +361,9 @@ class BraveWalletServiceUnitTest : public testing::Test {
     histogram_tester_ = std::make_unique<base::HistogramTester>();
     bitcoin_test_rpc_server_ = std::make_unique<BitcoinTestRpcServer>();
 
-    TestingProfile::Builder builder;
-    auto prefs =
-        std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
-    RegisterUserProfilePrefs(prefs->registry());
-    builder.SetPrefService(std::move(prefs));
-    auto scoped_disable_autolock =
-        BraveWalletServiceDelegateBase::GetScopedDisableAutolockForTesting();
-    builder.AddTestingFactory(
-        brave_wallet::BraveWalletServiceFactory::GetInstance(),
-        base::BindRepeating(
-            [](scoped_refptr<network::SharedURLLoaderFactory>
-                   shared_url_loader_factory,
-               TestingPrefServiceSimple* local_state,
-               content::BrowserContext* context)
-                -> std::unique_ptr<KeyedService> {
-              auto* profile = Profile::FromBrowserContext(context);
-              return std::make_unique<BraveWalletService>(
-                  shared_url_loader_factory,
-                  BraveWalletServiceDelegate::Create(profile),
-                  profile->GetPrefs(), local_state);
-            },
-            url_loader_factory_.GetSafeWeakWrapper(), &local_state_));
-    profile_ = builder.Build();
-    service_ = brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
-        profile_.get());
-    ASSERT_TRUE(service_.get());
+    service_ = std::make_unique<BraveWalletService>(
+        url_loader_factory_.GetSafeWeakWrapper(),
+        TestBraveWalletServiceDelegate::Create(), GetPrefs(), GetLocalState());
     network_manager_ = service_->network_manager();
     json_rpc_service_ = service_->json_rpc_service();
     keyring_service_ = service_->keyring_service();
@@ -424,12 +373,6 @@ class BraveWalletServiceUnitTest : public testing::Test {
     tx_service_ = service_->tx_service();
     observer_ = std::make_unique<TestBraveWalletServiceObserver>();
     service_->AddObserver(observer_->GetReceiver());
-
-    profile_->SetPermissionControllerDelegate(
-        base::WrapUnique(static_cast<permissions::PermissionManager*>(
-            PermissionManagerFactory::GetInstance()
-                ->BuildServiceInstanceForBrowserContext(profile_.get())
-                .release())));
 
     auto* registry = BlockchainRegistry::GetInstance();
     TokenListMap token_list_map;
@@ -514,10 +457,6 @@ class BraveWalletServiceUnitTest : public testing::Test {
         mojom::ZCashTokenType::kNone);
   }
 
-  void TearDown() override {
-    profile_->SetPermissionControllerDelegate(nullptr);
-  }
-
   mojom::BlockchainTokenPtr GetToken1() { return token1_.Clone(); }
   mojom::BlockchainTokenPtr GetToken2() { return token2_.Clone(); }
   mojom::BlockchainTokenPtr GetErc721Token() { return erc721_token_.Clone(); }
@@ -525,7 +464,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
   mojom::BlockchainTokenPtr GetBatToken() { return bat_token_.Clone(); }
   mojom::BlockchainTokenPtr GetSolToken() { return sol_token_.Clone(); }
 
-  PrefService* GetPrefs() { return profile_->GetPrefs(); }
+  PrefService* GetPrefs() { return &prefs_; }
   GURL GetNetwork(const std::string& chain_id, mojom::CoinType coin) {
     return network_manager_->GetNetworkURL(chain_id, coin);
   }
@@ -879,12 +818,12 @@ class BraveWalletServiceUnitTest : public testing::Test {
     return service_->tx_service_observer_receiver_;
   }
 
-  content::BrowserTaskEnvironment task_environment_;
+  base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
   TestingPrefServiceSimple local_state_;
-  std::unique_ptr<TestingProfile> profile_;
+  sync_preferences::TestingPrefServiceSyncable prefs_;
   std::unique_ptr<base::HistogramTester> histogram_tester_;
-  raw_ptr<BraveWalletService> service_ = nullptr;
+  std::unique_ptr<BraveWalletService> service_;
   raw_ptr<NetworkManager> network_manager_ = nullptr;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_;
@@ -2412,7 +2351,7 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
             true, false, false, mojom::SPLTokenProgram::kUnsupported, false,
             false, "USDC", 6, true, "", "", chain_id, mojom::CoinType::ETH,
             mojom::ZCashTokenType::kNone);
-    ASSERT_TRUE(service_->AddUserAssetInternal(usdc_from_user_assets.Clone()));
+    ASSERT_TRUE(AddUserAsset(usdc_from_user_assets.Clone()));
 
     mojom::BlockchainTokenPtr usdc_from_request = mojom::BlockchainToken::New(
         "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USDC", "", false, true,
@@ -2447,8 +2386,7 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
     // but is not visible. Token should be in user
     // asset list and is visible, and the data should be the same as the one in
     // the user asset list.
-    ASSERT_TRUE(
-        service_->SetUserAssetVisible(usdc_from_user_assets.Clone(), false));
+    ASSERT_TRUE(SetUserAssetVisible(usdc_from_user_assets.Clone(), false));
     token = get_user_asset(chain_id, usdc_from_user_assets->contract_address);
     AddSuggestToken(usdc_from_request.Clone(), token.Clone(), true);
     token = get_user_asset(chain_id, usdc_from_user_assets->contract_address);
@@ -2457,7 +2395,7 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
     // Case 4: Suggested token exists in BlockchainRegistry but not in user
     // asset list. Token should be in user asset list and is visible, and the
     // data should be the same as the one in BlockchainRegistry.
-    ASSERT_TRUE(service_->RemoveUserAsset(usdc_from_user_assets.Clone()));
+    ASSERT_TRUE(RemoveUserAsset(usdc_from_user_assets.Clone()));
     AddSuggestToken(usdc_from_request.Clone(),
                     usdc_from_blockchain_registry.Clone(), true);
     token = get_user_asset(chain_id,
@@ -2470,7 +2408,7 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
             false, true, false, false, mojom::SPLTokenProgram::kUnsupported,
             false, false, "USDT", 6, true, "", "", chain_id,
             mojom::CoinType::ETH, mojom::ZCashTokenType::kNone);
-    ASSERT_TRUE(service_->AddUserAssetInternal(usdt_from_user_assets.Clone()));
+    ASSERT_TRUE(AddUserAsset(usdt_from_user_assets.Clone()));
 
     mojom::BlockchainTokenPtr usdt_from_request = mojom::BlockchainToken::New(
         "0xdAC17F958D2ee523a2206206994597C13D831ec7", "USDT", "", false, true,
@@ -2491,8 +2429,7 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
     // does not exist in BlockchainRegistry. Token should be in user asset list
     // and is visible, and the data should be the same as the one in user asset
     // list.
-    ASSERT_TRUE(
-        service_->SetUserAssetVisible(usdt_from_user_assets.Clone(), false));
+    ASSERT_TRUE(SetUserAssetVisible(usdt_from_user_assets.Clone(), false));
     token = get_user_asset(chain_id, usdt_from_user_assets->contract_address);
     AddSuggestToken(usdt_from_request.Clone(), token.Clone(), true);
     token = get_user_asset(chain_id, usdt_from_user_assets->contract_address);
@@ -2516,7 +2453,7 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
         false, false, mojom::SPLTokenProgram::kUnsupported, false, false, "BRB",
         6, true, "", "", chain_id, mojom::CoinType::ETH,
         mojom::ZCashTokenType::kNone);
-    ASSERT_FALSE(service_->RemoveUserAsset(brb_from_request.Clone()));
+    ASSERT_FALSE(RemoveUserAsset(brb_from_request.Clone()));
     AddSuggestToken(brb_from_request.Clone(), brb_from_request.Clone(), false);
     token = get_user_asset(chain_id, brb_from_request->contract_address);
     EXPECT_FALSE(token);
@@ -2615,114 +2552,23 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
       mojom::ZCashTokenType::kNone);
   AddSuggestToken(custom_token.Clone(), custom_token.Clone(), true);
 
-#if !BUILDFLAG(IS_ANDROID)
-  auto* partition = profile_->GetDefaultStoragePartition();
-  MockDataRemovalObserver observer(partition);
-  const auto page_storage_key_callback_valid =
-      [&](StoragePartition::StorageKeyMatcherFunction callback) {
-        return callback.Run(blink::StorageKey::CreateFirstParty(
-            url::Origin::Create(GURL(kBraveUIWalletURL))));
-      };
-  const auto panel_storage_key_callback_valid =
-      [&](StoragePartition::StorageKeyMatcherFunction callback) {
-        return callback.Run(blink::StorageKey::CreateFirstParty(
-            url::Origin::Create(GURL(kBraveUIWalletPanelURL))));
-      };
-
-  EXPECT_CALL(observer, OnStorageKeyDataCleared(
-                            StoragePartition::REMOVE_DATA_MASK_ALL,
-                            testing::Truly(page_storage_key_callback_valid),
-                            base::Time(), base::Time::Max()));
-  EXPECT_CALL(observer, OnStorageKeyDataCleared(
-                            StoragePartition::REMOVE_DATA_MASK_ALL,
-                            testing::Truly(panel_storage_key_callback_valid),
-                            base::Time(), base::Time::Max()));
-#endif
-
-  const std::string eth_addr = "0x407637cC04893DA7FA4A7C0B58884F82d69eD448";
-  const std::string sol_addr = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
-  const std::string ada_addr =
-      "Ae2tdPwUPEZFSi1cTyL1ZL6bgixhc2vSy5heg6Zg9uP7PpumkAJ82Qprt8b";
-
-  auto origin = url::Origin::Create(GURL(kBraveUrl));
-  auto* delegate = service_->GetDelegateForTesting();
-  ASSERT_TRUE(delegate);
-
-  ASSERT_TRUE(permissions::BraveWalletPermissionContext::AddPermission(
-      blink::PermissionType::BRAVE_ETHEREUM, profile_.get(), origin, eth_addr));
-  ASSERT_TRUE(permissions::BraveWalletPermissionContext::AddPermission(
-      blink::PermissionType::BRAVE_SOLANA, profile_.get(), origin, sol_addr));
-  ASSERT_TRUE(permissions::BraveWalletPermissionContext::AddPermission(
-      blink::PermissionType::BRAVE_CARDANO, profile_.get(), origin, ada_addr));
-
-  ASSERT_TRUE(delegate->HasPermission(mojom::CoinType::ETH, origin, eth_addr));
-  ASSERT_TRUE(delegate->HasPermission(mojom::CoinType::SOL, origin, sol_addr));
-  ASSERT_TRUE(delegate->HasPermission(mojom::CoinType::ADA, origin, ada_addr));
+  // Permissions and the wallet WebUI storage partition are owned by the
+  // delegate; the browser-layer BraveWalletServiceDelegateImpl test checks
+  // their effects. Here only verify that the service asks the delegate.
+  auto delegate =
+      std::make_unique<testing::NiceMock<MockBraveWalletServiceDelegate>>();
+  auto* delegate_ptr = delegate.get();
+  service_->SetDelegateForTesting(std::move(delegate));
+  EXPECT_CALL(*delegate_ptr, ClearWalletUIStoragePartition).Times(1);
+  EXPECT_CALL(*delegate_ptr, ResetAllPermissions).Times(1);
 
   service_->Reset();
 
-  EXPECT_FALSE(delegate->HasPermission(mojom::CoinType::ETH, origin, eth_addr));
-  EXPECT_FALSE(delegate->HasPermission(mojom::CoinType::SOL, origin, sol_addr));
-  EXPECT_FALSE(delegate->HasPermission(mojom::CoinType::ADA, origin, ada_addr));
-
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(delegate_ptr));
   EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletUserAssetsList));
   EXPECT_FALSE(GetPrefs()->HasPrefPath(kDefaultBaseCurrency));
   EXPECT_TRUE(GetPendingSignMessageRequests().empty());
   EXPECT_TRUE(GetPendingAddSuggestTokenRequests().empty());
-
-#if !BUILDFLAG(IS_ANDROID)
-  // The observer is notified when ClearDataForOrigin starts, and the service
-  // passes no completion callback. Drain the thread pool so QuotaManager has
-  // closed its database before the profile directory is deleted. Windows
-  // cannot delete files that are still open.
-  task_environment_.RunUntilIdle();
-  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
-#endif
-}
-
-TEST_F(BraveWalletServiceUnitTest,
-       RecoverWalletClearsImportedAccountPermissions) {
-  SetupWallet();
-
-  base::test::TestFuture<mojom::AccountInfoPtr> import_future;
-  keyring_service_->ImportEthereumAccount(
-      "Imported",
-      "d118a12a1e3b595d7d9e5599370df4ddc58d246a3ae4a795597e50eb6a32afb5",
-      import_future.GetCallback());
-  auto imported_account = import_future.Take();
-  ASSERT_TRUE(imported_account);
-
-  auto derived_account = GetAccountUtils().EnsureEthAccount(0);
-  const auto origin = url::Origin::Create(GURL(kBraveUrl));
-  const auto imported_account_permission =
-      GetAccountPermissionIdentifier(imported_account->account_id);
-  const auto derived_account_permission =
-      GetAccountPermissionIdentifier(derived_account->account_id);
-
-  ASSERT_TRUE(permissions::BraveWalletPermissionContext::AddPermission(
-      blink::PermissionType::BRAVE_ETHEREUM, profile_.get(), origin,
-      imported_account_permission));
-  ASSERT_TRUE(permissions::BraveWalletPermissionContext::AddPermission(
-      blink::PermissionType::BRAVE_ETHEREUM, profile_.get(), origin,
-      derived_account_permission));
-
-  auto* delegate = service_->GetDelegateForTesting();
-  ASSERT_TRUE(delegate);
-  ASSERT_TRUE(delegate->HasPermission(mojom::CoinType::ETH, origin,
-                                      imported_account_permission));
-  ASSERT_TRUE(delegate->HasPermission(mojom::CoinType::ETH, origin,
-                                      derived_account_permission));
-
-  keyring_service_->Lock();
-  base::test::TestFuture<mojom::RecoverWalletResult> recover_future;
-  keyring_service_->RecoverWallet(kMnemonicDivideCruise, "new password", false,
-                                  true, recover_future.GetCallback());
-  EXPECT_EQ(recover_future.Get(), mojom::RecoverWalletResult::kSuccess);
-
-  EXPECT_FALSE(delegate->HasPermission(mojom::CoinType::ETH, origin,
-                                       imported_account_permission));
-  EXPECT_TRUE(delegate->HasPermission(mojom::CoinType::ETH, origin,
-                                      derived_account_permission));
 }
 
 TEST_F(BraveWalletServiceUnitTest, GetNftDiscoveryEnabled) {
@@ -3049,27 +2895,6 @@ TEST_F(BraveWalletServiceUnitTest, GenerateReceiveAddress_Btc) {
   EXPECT_EQ(error, std::nullopt);
 }
 
-TEST_F(BraveWalletServiceUnitTest, HasPermissionSync) {
-  SetupWallet();
-
-  auto account_id_1 = GetAccountUtils().EnsureEthAccount(0)->account_id.Clone();
-  auto account_id_2 = GetAccountUtils().EnsureEthAccount(1)->account_id.Clone();
-
-  // First account addr
-  const std::string eth_addr = GetAccountUtils().EthAccount(0)->address;
-  auto origin = url::Origin::Create(GURL(kBraveUrl));
-  auto* delegate = service_->GetDelegateForTesting();
-  ASSERT_TRUE(delegate);
-
-  ASSERT_TRUE(permissions::BraveWalletPermissionContext::AddPermission(
-      blink::PermissionType::BRAVE_ETHEREUM, profile_.get(), origin, eth_addr));
-
-  EXPECT_TRUE(service_->HasPermissionSync(origin, account_id_1));
-  EXPECT_FALSE(service_->HasPermissionSync(origin, account_id_2));
-  EXPECT_FALSE(service_->HasPermissionSync(
-      url::Origin::Create(GURL("https://brave.org")), account_id_1));
-}
-
 TEST_F(BraveWalletServiceUnitTest, GetNetworkForAccountOnActiveOrigin) {
   SetupWallet();
 
@@ -3182,8 +3007,8 @@ TEST_F(BraveWalletServiceUnitTest, AutolockIsDisabledInTests) {
   auto delegate = std::make_unique<TestBraveWalletServiceDelegate>();
   delegate->set_enable_autolock(true);
   auto another_wallet_service = std::make_unique<BraveWalletService>(
-      url_loader_factory_.GetSafeWeakWrapper(), std::move(delegate),
-      profile_->GetPrefs(), &local_state_);
+      url_loader_factory_.GetSafeWeakWrapper(), std::move(delegate), GetPrefs(),
+      &local_state_);
   SetupWallet(another_wallet_service->keyring_service());
 
   // Wallet is locked after some period.
