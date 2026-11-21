@@ -45,13 +45,6 @@ class EthAllowanceManager {
 
  private:
   friend class EthAllowanceManagerUnitTest;
-  FRIEND_TEST_ALL_PREFIXES(EthAllowanceManagerUnitTest, LoadCachedAllowances);
-  FRIEND_TEST_ALL_PREFIXES(EthAllowanceManagerUnitTest,
-                           CouldNotLoadCachedAllowancesPrefsEmpty);
-  FRIEND_TEST_ALL_PREFIXES(EthAllowanceManagerUnitTest,
-                           CouldNotLoadCachedAllowancesByAddress);
-  FRIEND_TEST_ALL_PREFIXES(EthAllowanceManagerUnitTest,
-                           CouldNotLoadCachedAllowancesIncorrectCacheData);
   FRIEND_TEST_ALL_PREFIXES(EthAllowanceManagerUnitTest,
                            BreakAllowanceDiscoveringIfTokenListEmpty);
   FRIEND_TEST_ALL_PREFIXES(EthAllowanceManagerUnitTest, AllowancesLoading);
