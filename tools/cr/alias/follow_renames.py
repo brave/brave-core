@@ -119,6 +119,15 @@ def cmd_follow_renames(args: list[str]) -> int:
         _repair_patch_files(old_chromium, new_chromium, parsed.no_git)
     moved += _follow_moved_packages(renames, parsed.no_git)
 
+    templates = _checked_in_templates()
+    for html, html_ts in templates:
+        moved += _move_mangler(html, html_ts, parsed.no_git)
+    if templates:
+        console.log(
+            f'[bold green]✔[/] {len(templates)} mangler(s) of checked-in '
+            'template(s) moved'
+        )
+
     if changed is not None:
         _run_format(changed.since())
 
@@ -259,6 +268,55 @@ def _collapse_renames(renames: list[_RenamePair]) -> list[_RenamePair]:
     return list(net.items())
 
 
+def _mangler_for(chromium_path: Path) -> Path:
+    """The `.lit_mangler.ts` that mangles `chromium_path`."""
+    return (
+        repository.brave.root
+        / 'chromium_src'
+        / f'{chromium_path}.lit_mangler.ts'
+    )
+
+
+def _move_mangler(
+    old_chromium: Path, new_chromium: Path, no_git: bool
+) -> list[Path]:
+    """Moves the `.lit_mangler.ts` of `old_chromium` to `new_chromium`'s, and
+    returns it at its new path, or nothing if there is none."""
+    old_mangler = _mangler_for(old_chromium)
+    if not old_mangler.exists():
+        return []
+    new_mangler = _mangler_for(new_chromium)
+    new_mangler.parent.mkdir(parents=True, exist_ok=True)
+    if no_git:
+        old_mangler.rename(new_mangler)
+    else:
+        terminal.run_git('mv', str(old_mangler), str(new_mangler))
+    return [new_mangler]
+
+
+def _checked_in_templates() -> list[_RenamePair]:
+    """The templates Brave mangles that upstream has since checked in.
+
+    Once upstream checks in `<name>.html.ts`, the template it used to generate
+    from `<name>.html`, Brave's mangler of `<name>.html` has to mangle the
+    `.html.ts` instead. The upstream commit deletes one and adds the other,
+    which git rarely pairs as a rename, the content changing too much. So this
+    reads Chromium's tree as it is: a mangled `<name>.html` that is gone, with
+    a `<name>.html.ts` beside it.
+    """
+    chromium_src = repository.brave.root / 'chromium_src'
+    templates = []
+    for mangler in sorted(chromium_src.rglob('*.html.lit_mangler.ts')):
+        html = mangler.relative_to(chromium_src).with_suffix('').with_suffix('')
+        html_ts = html.with_name(f'{html.name}.ts')
+        if (
+            not (repository.chromium.root / html).exists()
+            and (repository.chromium.root / html_ts).exists()
+        ):
+            templates.append((html, html_ts))
+    return templates
+
+
 def _repair_chromium_src(
     old_chromium: Path, new_chromium: Path, no_git: bool
 ) -> list[Path]:
@@ -270,24 +328,7 @@ def _repair_chromium_src(
     regenerates the include guard (.h files only). A `.lit_mangler.ts` for the
     old file moves along with it.
     """
-    moved = []
-    old_mangler = (
-        repository.brave.root
-        / 'chromium_src'
-        / f'{old_chromium}.lit_mangler.ts'
-    )
-    if old_mangler.exists():
-        new_mangler = (
-            repository.brave.root
-            / 'chromium_src'
-            / f'{new_chromium}.lit_mangler.ts'
-        )
-        new_mangler.parent.mkdir(parents=True, exist_ok=True)
-        if no_git:
-            old_mangler.rename(new_mangler)
-        else:
-            terminal.run_git('mv', str(old_mangler), str(new_mangler))
-        moved.append(new_mangler)
+    moved = _move_mangler(old_chromium, new_chromium, no_git)
 
     old_shadow = repository.brave.root / 'chromium_src' / old_chromium
     if not old_shadow.exists():
