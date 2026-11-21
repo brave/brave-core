@@ -1,0 +1,29 @@
+diff --git a/chrome/browser/image_fetcher/image_fetcher_service_factory.cc b/chrome/browser/image_fetcher/image_fetcher_service_factory.cc
+index 4843c360004ce598db3b50a4eee6ed5b3f2fa5a8..45a36643a27931553aaa522f17152463b5056207 100644
+--- a/chrome/browser/image_fetcher/image_fetcher_service_factory.cc
++++ b/chrome/browser/image_fetcher/image_fetcher_service_factory.cc
+@@ -104,18 +104,20 @@ ImageFetcherServiceFactory::BuildServiceInstanceFor(
+       std::make_unique<image_fetcher::ImageMetadataStoreLevelDB>(
+           profile_key->GetProtoDatabaseProvider(), cache_path, task_runner,
+           clock);
+-  auto data_store = std::make_unique<image_fetcher::ImageDataStoreDisk>(
+-      cache_path, task_runner);
++  auto data_store = MaybeReplaceDataStore(
++      key, std::make_unique<image_fetcher::ImageDataStoreDisk>(
++      cache_path, task_runner));
+ 
+   scoped_refptr<image_fetcher::ImageCache> image_cache =
+       base::MakeRefCounted<image_fetcher::ImageCache>(
+           std::move(data_store), std::move(metadata_store),
+           profile_key->GetPrefs(), clock, task_runner);
+ 
+-  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory;
++  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory =
++      MaybeGetOffTheRecordFactory(key);
+   // Network is null for some tests, may be removable after
+   // https://crbug.com/40634772.
+-  if (SystemNetworkContextManager::GetInstance()) {
++  if (!url_loader_factory && SystemNetworkContextManager::GetInstance()) {
+     url_loader_factory =
+         SystemNetworkContextManager::GetInstance()->GetSharedURLLoaderFactory();
+   }
