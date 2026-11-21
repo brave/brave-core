@@ -1,5 +1,5 @@
 diff --git a/.gn b/.gn
-index d8e367dbdfd63d4bc4d4e02a8f1ecdbfafa6fcd4..fe8f8f2a68069534129f484b877cc7a866f118cc 100644
+index 431f006528bfe6dfddd6b250de8c0b7667695cd3..d86b2feae6bd41d6ec4dca627ebbdedbfda256ca 100644
 --- a/.gn
 +++ b/.gn
 @@ -2,11 +2,14 @@
@@ -17,7 +17,16 @@ index d8e367dbdfd63d4bc4d4e02a8f1ecdbfafa6fcd4..fe8f8f2a68069534129f484b877cc7a8
  
  # The location of the build configuration file.
  buildconfig = "//build/config/BUILDCONFIG.gn"
-@@ -502,3 +505,4 @@ expand_directory_allowlist =
+@@ -17,7 +20,7 @@ buildconfig = "//build/config/BUILDCONFIG.gn"
+ # LINT.IfChange(script_executable)
+ script_executable = [
+   "//third_party/cpython3/host/bin/python3",
+-  "-ES",
++  "-S",
+ ]
+ 
+ # LINT.ThenChange(//build/config/siso/platform.star:python_bin)
+@@ -511,3 +514,4 @@ expand_directory_allowlist =
  allow_circular_includes_from_allowlist =
      allow_circular_includes_from_untriaged + project_bedrock_circular_includes +
      []

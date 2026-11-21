@@ -1,0 +1,13 @@
+diff --git a/build/toolchain/gcc_toolchain.gni b/build/toolchain/gcc_toolchain.gni
+index fd68d8b18cbdb6ea1c8e488b8b9f4830c8d48cba..675dddc62170d1897c55f70bc57479e01e1fa217 100644
+--- a/build/toolchain/gcc_toolchain.gni
++++ b/build/toolchain/gcc_toolchain.gni
+@@ -215,7 +215,7 @@ template("single_gcc_toolchain") {
+       }
+ 
+       # LINT.IfChange(coverage_wrapper)
+-      coverage_wrapper = "$python_path -ES ${_coverage_wrapper} "
++      coverage_wrapper = "$python_path -S ${_coverage_wrapper} "
+ 
+       # LINT.ThenChange(//build/config/siso/platform.star:python_bin)
+     }
