@@ -73,6 +73,7 @@
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
 #include "chrome/test/base/ui_test_utils.h"
 #endif
@@ -1641,6 +1642,345 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SandboxedIframeRequestsBlocked) {
                          "setExpectations(0, 0, 0, 1);"
                          "xhr('adbanner.js')"));
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+}
+
+// Tests for the origin whose Shields settings apply to a request.
+class AdBlockServiceSettingsOriginTest : public AdBlockServiceTest {
+ protected:
+  // Opens an about:blank popup from a sandboxed b.com frame in an a.com page.
+  // The popup's origin is opaque, derived from b.com.
+  content::WebContents* OpenPopupFromSandboxedFrame(
+      const std::string& features) {
+    NavigateToURL(embedded_test_server()->GetURL("a.com", kAdBlockTestPage));
+    EXPECT_TRUE(
+        ExecJs(web_contents(),
+               content::JsReplace(
+                   "addFrame($1, 'allow-scripts allow-popups')",
+                   embedded_test_server()->GetURL("b.com", kAdBlockTestPage))));
+    content::RenderFrameHost* frame = ChildFrameAt(web_contents(), 0);
+    EXPECT_TRUE(frame && frame->GetLastCommittedOrigin().opaque());
+
+    content::WebContentsAddedObserver popup_observer;
+    EXPECT_TRUE(ExecJs(
+        frame, content::JsReplace("window.open('about:blank', '_blank', $1)",
+                                  features)));
+    content::WebContents* popup = popup_observer.GetWebContents();
+    EXPECT_TRUE(content::WaitForLoadStop(popup));
+    const url::Origin& origin =
+        popup->GetPrimaryMainFrame()->GetLastCommittedOrigin();
+    EXPECT_TRUE(origin.opaque());
+    EXPECT_EQ("b.com", origin.GetTupleOrPrecursorTupleIfOpaque().host());
+    return popup;
+  }
+
+  // Adds an iframe loading `url` to the main frame of `contents` and returns
+  // it.
+  content::RenderFrameHost* AddFrameTo(content::WebContents* contents,
+                                       const GURL& url) {
+    EXPECT_TRUE(ExecJs(contents, content::JsReplace(R"(
+      new Promise(resolve => {
+        const frame = document.createElement('iframe');
+        frame.onload = () => resolve(true);
+        frame.src = $1;
+        document.body.appendChild(frame);
+      }))",
+                                                    url)));
+    return ChildFrameAt(contents, 0);
+  }
+
+  // Opens a popup as `OpenPopupFromSandboxedFrame()` does and returns a c.com
+  // frame in it. The popup's initial empty document makes requests through
+  // the loader factory of the frame that opened it, so its own requests do not
+  // show which page the popup belongs to; a frame in it does.
+  content::RenderFrameHost* AddFrameToPopupFromSandboxedFrame(
+      const std::string& features) {
+    content::WebContents* popup = OpenPopupFromSandboxedFrame(features);
+    return AddFrameTo(popup,
+                      embedded_test_server()->GetURL("c.com", "/simple.html"));
+  }
+
+  // Returns whether a shared worker in `target` can open a WebSocket to
+  // `url`.
+  bool CanConnectSharedWorkerWebSocket(const content::ToRenderFrameHost& target,
+                                       const GURL& url) {
+    return EvalJs(target, content::JsReplace(R"(
+      new Promise((resolve, reject) => {
+        const worker = new SharedWorker('./shared_worker_websocket.js',
+                                        'websocket-' + Math.random());
+        worker.port.onmessage = event => resolve(event.data);
+        worker.onerror = () => reject(new Error('SharedWorker failed'));
+        worker.port.postMessage($1);
+      }))",
+                                             url))
+        .ExtractBool();
+  }
+
+  // Returns whether `target` can fetch `url`.
+  bool CanFetch(const content::ToRenderFrameHost& target, const GURL& url) {
+    return EvalJs(target, content::JsReplace(
+                              "fetch($1, {mode: 'no-cors'}).then(() => true, "
+                              "() => false)",
+                              url))
+        .ExtractBool();
+  }
+
+  // Adds an iframe loading `url` to the main frame and returns it.
+  content::RenderFrameHost* AddFrame(const GURL& url) {
+    return AddFrameTo(web_contents(), url);
+  }
+
+  void SetAds(brave_shields::ControlType type, const GURL& url) {
+    brave_shields::SetAdControlType(content_settings(), type, url);
+  }
+};
+
+// See crbug.com/1372291.
+#if BUILDFLAG(IS_ANDROID)
+#define MAYBE_SharedWorkerWebSocketUsesTopFrameSettings \
+  DISABLED_SharedWorkerWebSocketUsesTopFrameSettings
+#define MAYBE_SharedWorkerWebSocketInOpaqueTopFrameUsesDefaultSettings \
+  DISABLED_SharedWorkerWebSocketInOpaqueTopFrameUsesDefaultSettings
+#else
+#define MAYBE_SharedWorkerWebSocketUsesTopFrameSettings \
+  SharedWorkerWebSocketUsesTopFrameSettings
+#define MAYBE_SharedWorkerWebSocketInOpaqueTopFrameUsesDefaultSettings \
+  SharedWorkerWebSocketInOpaqueTopFrameUsesDefaultSettings
+#endif
+
+// A popup with an opaque origin uses the settings of the page that opened it,
+// and not those of the frame that opened it.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
+                       OpaquePopupUsesOpenerPageSettings) {
+  UpdateAdBlockInstanceWithRules("adbanner.js");
+  const GURL ad_url = embedded_test_server()->GetURL("c.com", "/adbanner.js");
+  SetAds(brave_shields::ControlType::ALLOW,
+         embedded_test_server()->GetURL("a.com", "/"));
+
+  content::RenderFrameHost* frame = AddFrameToPopupFromSandboxedFrame("");
+  ASSERT_TRUE(frame);
+  EXPECT_TRUE(CanFetch(frame, ad_url));
+
+  // Positive control: with ads blocked for the opener page, the ad is blocked.
+  SetAds(brave_shields::ControlType::BLOCK,
+         embedded_test_server()->GetURL("a.com", "/"));
+  EXPECT_FALSE(CanFetch(frame, ad_url));
+}
+
+// Same as OpaquePopupUsesOpenerPageSettings, for a popup opened with
+// `noopener`.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
+                       OpaqueNoopenerPopupUsesOpenerPageSettings) {
+  UpdateAdBlockInstanceWithRules("adbanner.js");
+  const GURL ad_url = embedded_test_server()->GetURL("c.com", "/adbanner.js");
+  SetAds(brave_shields::ControlType::ALLOW,
+         embedded_test_server()->GetURL("a.com", "/"));
+
+  content::RenderFrameHost* frame =
+      AddFrameToPopupFromSandboxedFrame("noopener");
+  ASSERT_TRUE(frame);
+  EXPECT_TRUE(CanFetch(frame, ad_url));
+
+  // Positive control: with ads blocked for the opener page, the ad is blocked.
+  SetAds(brave_shields::ControlType::BLOCK,
+         embedded_test_server()->GetURL("a.com", "/"));
+  EXPECT_FALSE(CanFetch(frame, ad_url));
+}
+
+// A popup keeps the settings origin it was opened with when its opener
+// navigates elsewhere.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
+                       OpaquePopupKeepsSettingsAfterOpenerNavigates) {
+  UpdateAdBlockInstanceWithRules("adbanner.js");
+  const GURL ad_url = embedded_test_server()->GetURL("c.com", "/adbanner.js");
+  SetAds(brave_shields::ControlType::ALLOW,
+         embedded_test_server()->GetURL("a.com", "/"));
+
+  content::WebContents* opener = web_contents();
+  content::RenderFrameHost* frame = AddFrameToPopupFromSandboxedFrame("");
+  ASSERT_TRUE(frame);
+  ASSERT_TRUE(CanFetch(frame, ad_url));
+
+  ASSERT_TRUE(content::NavigateToURL(
+      opener, embedded_test_server()->GetURL("d.com", "/simple.html")));
+  EXPECT_TRUE(CanFetch(frame, ad_url));
+
+  // Positive control: with ads allowed for the opener's new page instead, the
+  // ad is blocked.
+  SetAds(brave_shields::ControlType::BLOCK,
+         embedded_test_server()->GetURL("a.com", "/"));
+  SetAds(brave_shields::ControlType::ALLOW,
+         embedded_test_server()->GetURL("d.com", "/"));
+  EXPECT_FALSE(CanFetch(frame, ad_url));
+}
+
+#if !BUILDFLAG(IS_ANDROID)
+// A tab opened from the context menu of a sandboxed frame uses the settings of
+// the page the frame is in.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
+                       ContextMenuTabFromSandboxedFrameUsesPageSettings) {
+  UpdateAdBlockInstanceWithRules("adbanner.js");
+  const GURL ad_url = embedded_test_server()->GetURL("c.com", "/adbanner.js");
+  SetAds(brave_shields::ControlType::ALLOW,
+         embedded_test_server()->GetURL("a.com", "/"));
+
+  NavigateToURL(embedded_test_server()->GetURL("a.com", kAdBlockTestPage));
+  ASSERT_TRUE(
+      ExecJs(web_contents(),
+             content::JsReplace(
+                 "addFrame($1, 'allow-scripts allow-popups')",
+                 embedded_test_server()->GetURL("b.com", kAdBlockTestPage))));
+  content::RenderFrameHost* frame = ChildFrameAt(web_contents(), 0);
+  ASSERT_TRUE(frame);
+  ASSERT_TRUE(frame->GetLastCommittedOrigin().opaque());
+
+  content::WebContentsAddedObserver tab_observer;
+  content::ContextMenuParams params;
+  params.page_url = web_contents()->GetLastCommittedURL();
+  params.frame_url = frame->GetLastCommittedURL();
+  params.link_url = GURL("about:blank");
+  TestRenderViewContextMenu menu(*frame, params);
+  menu.Init();
+  menu.ExecuteCommand(IDC_CONTENT_CONTEXT_OPENLINKNEWTAB, 0);
+  content::WebContents* tab = tab_observer.GetWebContents();
+  ASSERT_TRUE(content::WaitForLoadStop(tab));
+  ASSERT_TRUE(tab->GetPrimaryMainFrame()->GetLastCommittedOrigin().opaque());
+
+  EXPECT_TRUE(CanFetch(tab, ad_url));
+
+  // Positive control: with ads blocked for the page, the ad is blocked.
+  SetAds(brave_shields::ControlType::BLOCK,
+         embedded_test_server()->GetURL("a.com", "/"));
+  EXPECT_FALSE(CanFetch(tab, ad_url));
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
+
+// Frames in a browser-initiated data: page use the default settings, and not
+// those of the frame, or of the page the tab showed before.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
+                       BrowserInitiatedOpaqueTopFrameUsesDefaultSettings) {
+  UpdateAdBlockInstanceWithRules("adbanner.js");
+  const GURL ad_url = embedded_test_server()->GetURL("c.com", "/adbanner.js");
+  const GURL frame_url =
+      embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
+
+  NavigateToURL(embedded_test_server()->GetURL("a.com", "/simple.html"));
+  NavigateToURL(GURL("data:text/html,<body></body>"));
+  ASSERT_TRUE(
+      web_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin().opaque());
+  content::RenderFrameHost* frame = AddFrame(frame_url);
+  ASSERT_TRUE(frame);
+
+  // Positive control: with the default settings changed, the ad is allowed.
+  SetAds(brave_shields::ControlType::ALLOW, GURL());
+  EXPECT_TRUE(CanFetch(frame, ad_url));
+  SetAds(brave_shields::ControlType::BLOCK, GURL());
+
+  SetAds(brave_shields::ControlType::ALLOW,
+         embedded_test_server()->GetURL("a.com", "/"));
+  SetAds(brave_shields::ControlType::ALLOW, frame_url);
+  EXPECT_FALSE(CanFetch(frame, ad_url));
+}
+
+// A popup that the user navigates to a data: URL uses the default settings,
+// and not those of its opener.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
+                       BrowserInitiatedOpaquePopupUsesDefaultSettings) {
+  UpdateAdBlockInstanceWithRules("adbanner.js");
+  const GURL ad_url = embedded_test_server()->GetURL("c.com", "/adbanner.js");
+
+  NavigateToURL(embedded_test_server()->GetURL("a.com", "/simple.html"));
+  content::WebContentsAddedObserver popup_observer;
+  ASSERT_TRUE(ExecJs(web_contents(), "window.open('/simple.html')"));
+  content::WebContents* popup = popup_observer.GetWebContents();
+  ASSERT_TRUE(content::WaitForLoadStop(popup));
+  ASSERT_TRUE(content::NavigateToURL(popup, GURL("data:text/html,<body>")));
+  ASSERT_TRUE(popup->GetPrimaryMainFrame()->GetLastCommittedOrigin().opaque());
+
+  // Positive control: with the default settings changed, the ad is allowed.
+  SetAds(brave_shields::ControlType::ALLOW, GURL());
+  EXPECT_TRUE(CanFetch(popup, ad_url));
+  SetAds(brave_shields::ControlType::BLOCK, GURL());
+
+  SetAds(brave_shields::ControlType::ALLOW,
+         embedded_test_server()->GetURL("a.com", "/"));
+  EXPECT_FALSE(CanFetch(popup, ad_url));
+}
+
+// A shared worker created by a frame in a data: page uses the default
+// settings, and not those of the frame that created it.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
+                       SharedWorkerInOpaqueTopFrameUsesDefaultSettings) {
+  UpdateAdBlockInstanceWithRules("adbanner.js");
+  const GURL ad_url = embedded_test_server()->GetURL("c.com", "/adbanner.js");
+  const GURL frame_url =
+      embedded_test_server()->GetURL("b.com", kAdBlockTestPage);
+
+  NavigateToURL(GURL("data:text/html,<body></body>"));
+  content::RenderFrameHost* frame = AddFrame(frame_url);
+  ASSERT_TRUE(frame);
+
+  // Positive control: with the default settings changed, the ad is allowed.
+  SetAds(brave_shields::ControlType::ALLOW, GURL());
+  EXPECT_EQ(true, EvalJs(frame, content::JsReplace("checkSharedWorkerFetch($1)",
+                                                   ad_url)));
+  SetAds(brave_shields::ControlType::BLOCK, GURL());
+
+  SetAds(brave_shields::ControlType::ALLOW, frame_url);
+  EXPECT_EQ(false, EvalJs(frame, content::JsReplace(
+                                     "checkSharedWorkerFetch($1)", ad_url)));
+}
+
+// A shared worker's WebSocket uses the settings of the top frame, and not
+// those of the frame that created the worker.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceSettingsOriginTest,
+                       MAYBE_SharedWorkerWebSocketUsesTopFrameSettings) {
+  UpdateAdBlockInstanceWithRules("*$websocket");
+  net::EmbeddedTestServer ws_server(net::EmbeddedTestServer::TYPE_HTTPS);
+  net::test_server::InstallDefaultWebSocketHandlers(&ws_server);
+  ASSERT_TRUE(ws_server.Start());
+  const GURL ws_url =
+      net::test_server::GetWebSocketURL(ws_server, "/echo-with-no-extension");
+  const GURL frame_url = https_server_.GetURL("b.com", kAdBlockTestPage);
+
+  NavigateToURL(https_server_.GetURL("a.com", kAdBlockTestPage));
+  content::RenderFrameHost* frame = AddFrame(frame_url);
+  ASSERT_TRUE(frame);
+
+  SetAds(brave_shields::ControlType::ALLOW, https_server_.GetURL("a.com", "/"));
+  EXPECT_TRUE(CanConnectSharedWorkerWebSocket(frame, ws_url));
+
+  // Positive control: with ads allowed for the frame instead, the WebSocket is
+  // blocked.
+  SetAds(brave_shields::ControlType::BLOCK, https_server_.GetURL("a.com", "/"));
+  SetAds(brave_shields::ControlType::ALLOW, frame_url);
+  EXPECT_FALSE(CanConnectSharedWorkerWebSocket(frame, ws_url));
+}
+
+// A shared worker's WebSocket in a data: page uses the default settings, and
+// not those of the frame that created the worker.
+IN_PROC_BROWSER_TEST_F(
+    AdBlockServiceSettingsOriginTest,
+    MAYBE_SharedWorkerWebSocketInOpaqueTopFrameUsesDefaultSettings) {
+  UpdateAdBlockInstanceWithRules("*$websocket");
+  net::EmbeddedTestServer ws_server(net::EmbeddedTestServer::TYPE_HTTPS);
+  net::test_server::InstallDefaultWebSocketHandlers(&ws_server);
+  ASSERT_TRUE(ws_server.Start());
+  const GURL ws_url =
+      net::test_server::GetWebSocketURL(ws_server, "/echo-with-no-extension");
+  const GURL frame_url = https_server_.GetURL("b.com", kAdBlockTestPage);
+
+  NavigateToURL(GURL("data:text/html,<body></body>"));
+  content::RenderFrameHost* frame = AddFrame(frame_url);
+  ASSERT_TRUE(frame);
+
+  // Positive control: with the default settings changed, the WebSocket
+  // connects.
+  SetAds(brave_shields::ControlType::ALLOW, GURL());
+  EXPECT_TRUE(CanConnectSharedWorkerWebSocket(frame, ws_url));
+  SetAds(brave_shields::ControlType::BLOCK, GURL());
+
+  SetAds(brave_shields::ControlType::ALLOW, frame_url);
+  EXPECT_FALSE(CanConnectSharedWorkerWebSocket(frame, ws_url));
 }
 
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,

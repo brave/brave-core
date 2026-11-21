@@ -23,6 +23,7 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "net/base/isolation_info.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/mojom/network_context.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
@@ -63,6 +64,7 @@ class BraveProxyingWebSocket
       content::BrowserContext* browser_context,
       content::GlobalRenderFrameHostToken render_frame_token,
       const url::Origin& initiator_origin,
+      const net::IsolationInfo& isolation_info,
       content::ContentBrowserClient::WebSocketFactory factory,
       const GURL& url,
       const net::SiteForCookies& site_for_cookies,

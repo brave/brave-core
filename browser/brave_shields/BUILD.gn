@@ -14,6 +14,7 @@ source_set("brave_shields") {
     "brave_shields_tab_helper.h",
     "brave_shields_web_contents_observer.h",
     "filter_list_service_factory.h",
+    "shields_settings_origin.h",
   ]
 
   public_deps = [
@@ -44,6 +45,7 @@ source_set("brave_shields_impl") {
     "brave_shields_tab_helper.cc",
     "brave_shields_web_contents_observer.cc",
     "filter_list_service_factory.cc",
+    "shields_settings_origin.cc",
   ]
 
   public_deps = [ ":brave_shields" ]
@@ -140,6 +142,7 @@ source_set("unit_tests") {
     sources += [
       "brave_shields_tab_helper_unittest.cc",
       "brave_shields_util_profiles_unittest.cc",
+      "shields_settings_origin_unittest.cc",
     ]
 
     deps += [
@@ -150,6 +153,8 @@ source_set("unit_tests") {
       "//components/favicon/content",
       "//components/favicon/core/test:test_support",
       "//components/tabs:test_support",
+      "//content/test:test_support",
+      "//net",
     ]
   }
 }
