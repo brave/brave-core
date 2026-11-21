@@ -35,9 +35,11 @@
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/data_decoder/public/cpp/decode_image.h"
 #include "services/data_decoder/public/mojom/image_decoder.mojom.h"
+#include "services/network/public/cpp/ip_address_space_util.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "services/network/public/mojom/url_loader_factory.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "skia/ext/skia_utils_ios.h"
 #include "third_party/skia/include/core/SkBitmap.h"
@@ -210,6 +212,15 @@ void SanitizedImageSource::StartDataRequest(
     return;
   }
 
+  std::optional<network::mojom::IPAddressSpace> address_space =
+      network::GetAddressSpaceFromUrl(image_url);
+  if (address_space &&
+      (*address_space == network::mojom::IPAddressSpace::kLoopback ||
+       *address_space == network::mojom::IPAddressSpace::kLocal)) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
   request_attributes.image_url = image_url;
 
   // Download the image body.
@@ -304,6 +315,9 @@ void SanitizedImageSource::StartImageDownload(
   auto loader =
       network::SimpleURLLoader::Create(std::move(request), traffic_annotation);
   auto* loader_ptr = loader.get();
+  loader_ptr->SetURLLoaderFactoryOptions(
+      network::mojom::kURLLoadOptionBlockLocalRequest |
+      network::mojom::kURLLoadOptionBlockAllCookies);
   loader_ptr->DownloadToString(
       url_loader_factory_.get(),
       base::BindOnce(&SanitizedImageSource::OnImageLoaded,
@@ -329,7 +343,6 @@ void SanitizedImageSource::OnImageLoaded(
     std::optional<std::string> body) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  // Brave:
   if (pcdn_domain_.empty()) {
     pcdn_domain_ = brave_domains::GetServicesDomain("pcdn");
   }

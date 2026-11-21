@@ -7,7 +7,11 @@
 
 #include "base/check_op.h"
 #import "brave/ios/browser/svg/svg_image.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "services/network/public/cpp/cross_thread_pending_shared_url_loader_factory.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "services/network/public/mojom/url_loader_factory.mojom.h"
 #include "skia/ext/skia_utils_ios.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/gfx/image/image.h"
@@ -16,10 +20,55 @@
 #error "This file requires ARC support."
 #endif
 
+namespace {
+
+// Injects local-network and cookie blocking options into every URLLoader
+// created through the wrapped factory, covering loaders that upstream image
+// fetching code creates internally.
+class LocalNetworkBlockingURLLoaderFactory
+    : public network::SharedURLLoaderFactory {
+ public:
+  explicit LocalNetworkBlockingURLLoaderFactory(
+      scoped_refptr<network::SharedURLLoaderFactory> factory)
+      : factory_(std::move(factory)) {}
+
+  void CreateLoaderAndStart(
+      mojo::PendingReceiver<network::mojom::URLLoader> loader,
+      int32_t request_id,
+      uint32_t options,
+      const network::ResourceRequest& request,
+      mojo::PendingRemote<network::mojom::URLLoaderClient> client,
+      const net::MutableNetworkTrafficAnnotationTag& traffic_annotation)
+      override {
+    options |= network::mojom::kURLLoadOptionBlockLocalRequest |
+               network::mojom::kURLLoadOptionBlockAllCookies;
+    factory_->CreateLoaderAndStart(std::move(loader), request_id, options,
+                                   request, std::move(client),
+                                   traffic_annotation);
+  }
+
+  void Clone(mojo::PendingReceiver<network::mojom::URLLoaderFactory> receiver)
+      override {
+    factory_->Clone(std::move(receiver));
+  }
+
+  std::unique_ptr<network::PendingSharedURLLoaderFactory> Clone() override {
+    return network::CrossThreadPendingSharedURLLoaderFactory::Create(this);
+  }
+
+ private:
+  ~LocalNetworkBlockingURLLoaderFactory() override = default;
+
+  scoped_refptr<network::SharedURLLoaderFactory> factory_;
+};
+
+}  // namespace
+
 namespace brave {
 ImageDownloader::ImageDownloader(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : image_fetcher_(url_loader_factory) {}
+    : image_fetcher_(base::MakeRefCounted<LocalNetworkBlockingURLLoaderFactory>(
+          url_loader_factory)) {}
 
 ImageDownloader::~ImageDownloader() {}
 

@@ -33,6 +33,7 @@ test("ios_brave_unit_tests") {
     # This unit test cant be moved to components due to Android Java inclusions
     "//brave/components/brave_referrals/browser:unit_tests",
     "//brave/ios/browser/api/ads:unit_tests",
+    "//brave/ios/browser/api/web_image:unit_tests",
     "//brave/ios/browser/brave_ads:unit_tests",
     "//brave/ios/browser/brave_shields:unit_tests",
     "//brave/ios/browser/brave_shields/cosmetic_filtering:unit_tests",
