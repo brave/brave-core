@@ -129,6 +129,11 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
        const std::vector<mojom::ConversationCapability>& capabilities_enabled),
       (override));
 
+  MOCK_METHOD(void,
+              OnConversationThreadRemoved,
+              (const std::string&),
+              (override));
+
   MOCK_METHOD(void, OnConversationDeleted, (), (override));
 
  private:

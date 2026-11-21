@@ -460,7 +460,11 @@ class ConversationHandler : public mojom::ConversationHandler,
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
                            ModifyConversation_ThreadAssistantEdit);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
+                           ModifyConversation_RemovesOriginatingThreads);
+  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
                            RegenerateAnswer_Thread);
+  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
+                           RegenerateAnswer_RemovesOriginatingThreads);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest, RateMessage_Thread);
 
   struct ThreadContainer {
@@ -595,16 +599,17 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnConversationDeleted();
   void OnHistoryUpdate(mojom::ConversationTurnPtr entry);
   void OnConversationThreadUpdate(const mojom::Thread& thread);
+  void OnConversationThreadRemoved(const std::string& thread_uuid);
   void OnToolUseEventOutput(mojom::ConversationTurn* entry,
                             mojom::ToolUseEvent* tool_use);
   void OnConversationEntryAdded(mojom::ConversationTurnPtr& entry);
   void OnConversationEntryRemoved(std::optional<std::string> turn_id);
-  // Removes content associated with any of the assistant entries in |turns|,
-  // which are about to be removed. Only content a tool added during an
-  // assistant entry is associated with one, so it goes with the entry, letting
-  // a regenerated answer add it again. Content associated with human entries is
-  // kept, as those entries are resubmitted.
-  void RemoveContentAssociatedWithAssistantEntries(
+  // Removes content and threads associated with any of the assistant entries
+  // in |turns|, which are about to be removed. Only content a tool added
+  // during an assistant entry is associated with one, so it goes with the
+  // entry, letting a regenerated answer add it again. Content associated with
+  // human entries is kept, as those entries are resubmitted.
+  void RemoveItemsAssociatedWithEntries(
       base::span<const mojom::ConversationTurnPtr> turns);
   void OnSuggestedQuestionsChanged();
   void OnClientConnectionChanged();
