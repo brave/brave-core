@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index f63925b5f1d0bc7c02aced180318d0e8484c5ddb..dbe621c12c44d7c91227ca78864f3f9946daae02 100644
+index f63925b5f1d0bc7c02aced180318d0e8484c5ddb..3542e6c7b028bb7932b86d849284123a7b1baa74 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 @@ -502,6 +502,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -10,6 +10,15 @@ index f63925b5f1d0bc7c02aced180318d0e8484c5ddb..dbe621c12c44d7c91227ca78864f3f99
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -584,7 +585,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+                                 true);
+   registry->RegisterBooleanPref(
+       translate::prefs::kOfferTranslateEnabled, true,
+-      user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
++      user_prefs::PrefRegistrySyncable::NO_REGISTRATION_FLAGS);
+   registry->RegisterBooleanPref(
+       prefs::kTrackPricesOnTabsEnabled, true,
+       user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
 @@ -941,6 +942,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    // Deprecated 11/2026.
    registry->RegisterBooleanPref(

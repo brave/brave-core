@@ -547,6 +547,23 @@ extension Strings {
         comment:
           "Information Text underneath the toggles for enable/disable different sync types for the device"
       )
+    public static let preferencesSyncTypeTitle =
+      NSLocalizedString(
+        "sync.preferencesSyncTypeTitle",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Settings",
+        comment: "Title for the toggle that enables syncing browser settings between devices"
+      )
+    public static let preferencesSyncTypeInformationText =
+      NSLocalizedString(
+        "sync.preferencesSyncTypeInformationText",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Only some settings are synced when Settings is enabled.",
+        comment:
+          "Information Text explaining that not every browser setting is synced when the Settings sync type is enabled"
+      )
     public static let settingsTitle =
       NSLocalizedString(
         "sync.settingsTitle",

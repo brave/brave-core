@@ -195,6 +195,11 @@ extension Preferences {
       key: "chromium.sync.openTabsEnabled",
       default: false
     )
+    /// The sync type preferences (settings) enabled for the device in sync chain
+    public static let syncPreferencesEnabled = Option<Bool>(
+      key: "chromium.sync.syncPreferencesEnabled",
+      default: false
+    )
     /// Node Id for last bookmark folder
     public static let lastBookmarksFolderNodeId = Option<Int?>(
       key: "chromium.last.bookmark.folder.node.id",
