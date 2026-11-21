@@ -8,6 +8,8 @@
 
 #include "base/functional/bind.h"
 #include "base/location.h"
+#include "base/synchronization/lock.h"
+#include "base/thread_annotations.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
@@ -19,6 +21,7 @@
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
+#include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_manager.h"
@@ -29,15 +32,19 @@
 namespace {
 
 constexpr char kHelperPage[] = "/background_fetch/background_fetch.html";
-constexpr char kFetchedResource[] = "/background_fetch/types_of_cheese.txt";
+constexpr char kFetchedResource[] =
+    "/background_fetch/types_of_cheese_cors.txt";
+constexpr char kPageSite[] = "a.test";
+constexpr char kFetchedSite[] = "b.test";
 constexpr char kPermissionDenied[] =
     "TypeError - This origin does not have permission to start a fetch.";
 
 }  // namespace
 
-// Off-the-record profiles must not run Background Fetch: their downloads leave
-// without the initiator's isolation info, so they would carry the fetched
-// site's first-party cookies.
+// Background Fetch downloads in off-the-record profiles leave without the
+// initiating page's isolation info. Private windows must still keep the
+// fetched site's cookies out of them, and Tor windows must not run Background
+// Fetch at all, since its Origin header would reveal a .onion page.
 class BackgroundFetchOffTheRecordBrowserTest : public InProcessBrowserTest {
  public:
   BackgroundFetchOffTheRecordBrowserTest()
@@ -47,7 +54,7 @@ class BackgroundFetchOffTheRecordBrowserTest : public InProcessBrowserTest {
     InProcessBrowserTest::SetUpOnMainThread();
     host_resolver()->AddRule("*", "127.0.0.1");
     https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
-    https_server_.ServeFilesFromSourceDirectory(GetChromeTestDataDir());
+    https_server_.AddDefaultHandlers(GetChromeTestDataDir());
     https_server_.RegisterRequestMonitor(base::BindRepeating(
         &BackgroundFetchOffTheRecordBrowserTest::RecordRequest,
         base::Unretained(this)));
@@ -64,46 +71,79 @@ class BackgroundFetchOffTheRecordBrowserTest : public InProcessBrowserTest {
 #endif  // BUILDFLAG(ENABLE_TOR)
 
  protected:
+  // Sets a SameSite=None cookie on the fetched site in `browser_window`, as a
+  // first-party visit would.
+  void SetFetchedSiteCookie(BrowserWindowInterface* browser_window) {
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(
+        browser_window,
+        https_server_.GetURL(kFetchedSite,
+                             "/set-cookie?id=1;SameSite=None;Secure")));
+  }
+
   // Registers the helper page's service worker in `browser_window`, then
-  // starts a Background Fetch and returns the page's result.
+  // starts a Background Fetch of a resource on the fetched site and returns
+  // the page's result.
   std::string StartBackgroundFetch(
       BrowserWindowInterface* browser_window,
       base::Location location = base::Location::Current()) {
     SCOPED_TRACE(location.ToString());
     EXPECT_TRUE(ui_test_utils::NavigateToURL(
-        browser_window, https_server_.GetURL("a.test", kHelperPage)));
+        browser_window, https_server_.GetURL(kPageSite, kHelperPage)));
     content::WebContents* web_contents =
         browser_window->GetTabStripModel()->GetActiveWebContents();
     EXPECT_EQ("ok - service worker registered",
               content::EvalJs(web_contents, "RegisterServiceWorker()"));
-    return content::EvalJs(web_contents, "StartSingleFileDownload()")
+    return content::EvalJs(
+               web_contents,
+               content::JsReplace(
+                   "StartFetchFromWindowWithUrl($1)",
+                   https_server_.GetURL(kFetchedSite, kFetchedResource)))
         .ExtractString();
   }
 
   int fetched_resource_count() const { return fetched_resource_count_; }
 
+  GURL FetchedSiteURL() const {
+    return https_server_.GetURL(kFetchedSite, "/");
+  }
+
+  // The Cookie header of the last request for the fetched resource.
+  std::string last_fetched_resource_cookie() {
+    base::AutoLock auto_lock(lock_);
+    return last_fetched_resource_cookie_;
+  }
+
  private:
   void RecordRequest(const net::test_server::HttpRequest& request) {
-    if (request.GetURL().path() == kFetchedResource) {
-      ++fetched_resource_count_;
+    if (request.GetURL().path() != kFetchedResource) {
+      return;
     }
+    const auto cookie = request.headers.find("Cookie");
+    base::AutoLock auto_lock(lock_);
+    last_fetched_resource_cookie_ =
+        cookie == request.headers.end() ? "" : cookie->second;
+    ++fetched_resource_count_;
   }
 
   std::atomic<int> fetched_resource_count_ = 0;
+  base::Lock lock_;
+  std::string last_fetched_resource_cookie_ GUARDED_BY(lock_);
   // Declared after the state its monitor uses, so the server shuts down
   // before that state is destroyed.
   net::EmbeddedTestServer https_server_;
 };
 
 IN_PROC_BROWSER_TEST_F(BackgroundFetchOffTheRecordBrowserTest,
-                       PrivateWindowDeniesBackgroundFetch) {
+                       PrivateWindowFetchOmitsFetchedSiteCookies) {
   BrowserWindowInterface* private_browser = CreateIncognitoBrowser();
   ASSERT_TRUE(private_browser->GetProfile()->IsOffTheRecord());
-  EXPECT_EQ(kPermissionDenied, StartBackgroundFetch(private_browser));
-  EXPECT_EQ(0, fetched_resource_count());
+  ASSERT_NO_FATAL_FAILURE(SetFetchedSiteCookie(private_browser));
+  ASSERT_EQ("id=1", content::GetCookies(private_browser->GetProfile(),
+                                        FetchedSiteURL()));
 
-  // Control: a regular window may start the same fetch.
-  EXPECT_EQ("ok", StartBackgroundFetch(browser()));
+  EXPECT_EQ("backgroundfetchsuccess", StartBackgroundFetch(private_browser));
+  EXPECT_EQ(1, fetched_resource_count());
+  EXPECT_EQ("", last_fetched_resource_cookie());
 }
 
 #if BUILDFLAG(ENABLE_TOR)
