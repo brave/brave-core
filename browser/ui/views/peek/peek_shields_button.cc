@@ -1,0 +1,58 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/ui/views/peek/peek_shields_button.h"
+
+#include <utility>
+
+#include "brave/browser/ui/views/brave_actions/brave_shields_action_controller.h"
+#include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
+#include "components/grit/brave_components_strings.h"
+#include "content/public/browser/web_contents.h"
+#include "ui/base/l10n/l10n_util.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/gfx/geometry/insets.h"
+#include "ui/gfx/geometry/size.h"
+#include "ui/views/border.h"
+
+namespace {
+
+constexpr int kIconSize = 16;
+constexpr gfx::Size kButtonSize(24, 24);
+
+}  // namespace
+
+PeekShieldsButton::PeekShieldsButton(PrefService& prefs,
+                                     views::Button::PressedCallback callback)
+    : LabelButton(std::move(callback), std::u16string()), prefs_(prefs) {
+  SetAccessibleName(l10n_util::GetStringUTF16(IDS_BRAVE_SHIELDS));
+  SetTooltipText(l10n_util::GetStringUTF16(IDS_BRAVE_SHIELDS));
+  SetHorizontalAlignment(gfx::ALIGN_CENTER);
+  SetPreferredSize(kButtonSize);
+  SetBorder(views::CreateEmptyBorder(gfx::Insets()));
+  // Highlights like the main toolbar's buttons.
+  ConfigureInkDrop(this);
+}
+
+PeekShieldsButton::~PeekShieldsButton() = default;
+
+void PeekShieldsButton::SetWebContents(content::WebContents* contents) {
+  web_contents_ = contents ? contents->GetWeakPtr() : nullptr;
+  UpdateImage();
+}
+
+void PeekShieldsButton::UpdateImage() {
+  SetImageModel(views::Button::STATE_NORMAL,
+                BraveShieldsActionController::GetImageModelForWebContents(
+                    web_contents_.get(), *prefs_, kButtonSize, kIconSize));
+}
+
+void PeekShieldsButton::OnThemeChanged() {
+  LabelButton::OnThemeChanged();
+  UpdateImage();
+}
+
+BEGIN_METADATA(PeekShieldsButton)
+END_METADATA
