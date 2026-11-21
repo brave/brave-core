@@ -7,12 +7,14 @@
 
 #include <string>
 #include <string_view>
+#include <utility>
 
 #include "base/check.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/strings/strcat.h"
+#include "brave/browser/ui/webui/ai_chat/leo_workspace_page_handler.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -220,6 +222,14 @@ LeoWorkspaceUI::LeoWorkspaceUI(content::WebUI* web_ui, const GURL& url)
 }
 
 LeoWorkspaceUI::~LeoWorkspaceUI() = default;
+
+void LeoWorkspaceUI::BindInterface(
+    mojo::PendingReceiver<mojom::LeoWorkspaceHandler> receiver) {
+  page_handler_ =
+      std::make_unique<LeoWorkspacePageHandler>(web_ui(), std::move(receiver));
+}
+
+WEB_UI_CONTROLLER_TYPE_IMPL(LeoWorkspaceUI)
 
 LeoWorkspaceViewUI::LeoWorkspaceViewUI(content::WebUI* web_ui, const GURL& url)
     : ui::UntrustedWebUIController(web_ui) {

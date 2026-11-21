@@ -19,6 +19,10 @@ import { readFile, zipWorkspace } from './file_ops'
 
 export const kReadFileRequest = 'READ_FILE'
 export const kReadFileResponse = 'READ_FILE_RESULT'
+// Sent by the viewer to the workspace once the file it was asked to display
+// has loaded (or couldn't be), so the workspace knows when it can be printed.
+export const kFileDisplayed = 'FILE_DISPLAYED'
+export const kFileDisplayFailed = 'FILE_DISPLAY_FAILED'
 
 interface ReadFileResponse {
   type: typeof kReadFileResponse
