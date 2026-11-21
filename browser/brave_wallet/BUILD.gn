@@ -191,8 +191,6 @@ if (!is_android) {
 source_set("unit_tests") {
   testonly = true
   sources = [
-    "asset_discovery_manager_unittest.cc",
-    "asset_discovery_task_unittest.cc",
     "brave_wallet_service_unittest.cc",
     "eth_allowance_manager_unittest.cc",
   ]

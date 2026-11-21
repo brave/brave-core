@@ -63,9 +63,12 @@ class AssetDiscoveryManager : public KeyringServiceObserverBase {
 
   size_t GetQueueSizeForTesting() { return queue_.size(); }
 
+  void SetAutoDiscoveryEnabledForTesting(bool enabled) {
+    auto_discovery_enabled_ = enabled;
+  }
+
  private:
   friend class AssetDiscoveryManagerUnitTest;
-  friend class AssetDiscoveryTaskUnitTest;
   FRIEND_TEST_ALL_PREFIXES(AssetDiscoveryManagerUnitTest,
                            GetFungibleSupportedChains);
   FRIEND_TEST_ALL_PREFIXES(AssetDiscoveryManagerUnitTest,

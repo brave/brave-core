@@ -136,7 +136,12 @@ class EphemeralStorageServiceTest : public testing::Test {
   };
 
   EphemeralStorageServiceTest()
-      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {
+    // Pin the keepalive tests rely on rather than the feature's default.
+    keepalive_feature_list_.InitAndEnableFeatureWithParameters(
+        net::features::kBraveEphemeralStorageKeepAlive,
+        {{"BraveEphemeralStorageKeepAliveTimeInSeconds", "30"}});
+  }
   ~EphemeralStorageServiceTest() override = default;
 
   void SetUp() override {
@@ -195,6 +200,7 @@ class EphemeralStorageServiceTest : public testing::Test {
   }
 
  protected:
+  base::test::ScopedFeatureList keepalive_feature_list_;
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<TestingProfile> profile_;
   testing::StrictMock<MockObserver> mock_observer_;

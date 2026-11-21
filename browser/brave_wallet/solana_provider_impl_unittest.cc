@@ -115,9 +115,10 @@ class MockEventsListener : public mojom::SolanaEventsListener {
   }
 
   // For expectations with Times(0). There is no completion signal for an event
-  // that must not happen, so drain the queue to let any stray event arrive.
+  // that must not happen, so flush the pipe to deliver any event the provider
+  // already sent.
   void VerifyNoEvents() {
-    base::RunLoop().RunUntilIdle();
+    observer_receiver_.FlushForTesting();
     testing::Mock::VerifyAndClearExpectations(this);
   }
 

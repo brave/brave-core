@@ -10,4 +10,5 @@ include_rules = [
   "+components/prefs",
   "+components/search_engines",
   "+components/security_interstitials",
+  "+components/sync_preferences",
 ]

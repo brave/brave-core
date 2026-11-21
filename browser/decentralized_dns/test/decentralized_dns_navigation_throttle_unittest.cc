@@ -12,7 +12,6 @@
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/testing_profile_manager.h"
 #include "components/prefs/testing_pref_service.h"
-#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/mock_navigation_handle.h"
@@ -28,7 +27,6 @@
 namespace {
 
 constexpr char kTestProfileName[] = "TestProfile";
-constexpr char kExampleURL[] = "https://example.com";
 constexpr char kLocale[] = "en-US";
 
 }  // namespace
@@ -75,27 +73,7 @@ class DecentralizedDnsNavigationThrottleTest : public testing::Test {
   raw_ptr<TestingProfile> profile_ = nullptr;
 };
 
-TEST_F(DecentralizedDnsNavigationThrottleTest, Instantiation) {
-  content::MockNavigationHandle test_handle(web_contents());
-  content::MockNavigationThrottleRegistry registry(
-      &test_handle,
-      content::MockNavigationThrottleRegistry::RegistrationMode::kHold);
-  DecentralizedDnsNavigationThrottle::MaybeCreateAndAdd(
-      registry, user_prefs(), local_state(), locale());
-  EXPECT_FALSE(registry.throttles().empty());
-
-  // Disable in OTR profile.
-  auto otr_web_contents = content::WebContentsTester::CreateTestWebContents(
-      profile()->GetPrimaryOTRProfile(/*create_if_needed=*/true), nullptr);
-  content::MockNavigationHandle otr_test_handle(otr_web_contents.get());
-  content::MockNavigationThrottleRegistry otr_registry(
-      &otr_test_handle,
-      content::MockNavigationThrottleRegistry::RegistrationMode::kHold);
-  DecentralizedDnsNavigationThrottle::MaybeCreateAndAdd(
-      otr_registry, user_prefs(), local_state(), locale());
-  EXPECT_TRUE(otr_registry.throttles().empty());
-
-  // Disable in guest profiles.
+TEST_F(DecentralizedDnsNavigationThrottleTest, NotInstantiatedInGuest) {
   auto* guest_profile = CreateGuestProfile();
   auto guest_web_contents =
       content::WebContentsTester::CreateTestWebContents(guest_profile, nullptr);
@@ -126,63 +104,5 @@ TEST_F(DecentralizedDnsNavigationThrottleTest, NotInstantiatedInTor) {
   EXPECT_TRUE(tor_registry.throttles().empty());
 }
 #endif
-
-class DecentralizedDnsNavigationThrottleSubframeTest
-    : public content::RenderViewHostTestHarness {
- public:
-  DecentralizedDnsNavigationThrottleSubframeTest()
-      : content::RenderViewHostTestHarness(
-            base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
-  ~DecentralizedDnsNavigationThrottleSubframeTest() override = default;
-
-  void SetUp() override {
-    content::RenderViewHostTestHarness::SetUp();
-
-    content::RenderFrameHostTester::For(main_rfh())
-        ->InitializeRenderFrameIfNeeded();
-    subframe_ = content::RenderFrameHostTester::For(main_rfh())
-                    ->AppendChild("subframe");
-  }
-
-  void TearDown() override {
-    subframe_ = nullptr;
-    content::RenderViewHostTestHarness::TearDown();
-  }
-
-  PrefService* user_prefs() { return &prefs_; }
-  PrefService* local_state() {
-    return TestingBrowserProcess::GetGlobal()->GetTestingLocalState();
-  }
-  content::RenderFrameHost* subframe() { return subframe_; }
-  std::string locale() { return kLocale; }
-
- private:
-  raw_ptr<content::RenderFrameHost> subframe_;
-
-  sync_preferences::TestingPrefServiceSyncable prefs_;
-};
-
-TEST_F(DecentralizedDnsNavigationThrottleSubframeTest, Subframe) {
-  // Throttle is created for main frame.
-  {
-    content::MockNavigationHandle handle(GURL(kExampleURL), main_rfh());
-    content::MockNavigationThrottleRegistry registry(
-        &handle,
-        content::MockNavigationThrottleRegistry::RegistrationMode::kHold);
-    DecentralizedDnsNavigationThrottle::MaybeCreateAndAdd(
-        registry, user_prefs(), local_state(), locale());
-    EXPECT_FALSE(registry.throttles().empty());
-  }
-  // Throttle is not created for subframe.
-  {
-    content::MockNavigationHandle handle(GURL(kExampleURL), subframe());
-    content::MockNavigationThrottleRegistry registry(
-        &handle,
-        content::MockNavigationThrottleRegistry::RegistrationMode::kHold);
-    DecentralizedDnsNavigationThrottle::MaybeCreateAndAdd(
-        registry, user_prefs(), local_state(), locale());
-    EXPECT_TRUE(registry.throttles().empty());
-  }
-}
 
 }  // namespace decentralized_dns

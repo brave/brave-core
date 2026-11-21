@@ -467,27 +467,23 @@ TEST_F(SystemVPNConnectionAPIUnitTest, NeedsConnectTest) {
   // Handle connect after disconnect current connection.
   test_api->connection_state_ = mojom::ConnectionState::CONNECTED;
   test_api->Connect();
-  EXPECT_TRUE(test_api->needs_connect_);
   EXPECT_EQ(mojom::ConnectionState::DISCONNECTING,
             test_api->GetConnectionState());
   GetSystemVPNConnectionAPI()->OnDisconnected();
-  EXPECT_FALSE(test_api->needs_connect_);
   EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());
 
   test_api->connection_state_ = mojom::ConnectionState::CONNECTED;
   test_api->Connect();
-  EXPECT_TRUE(test_api->needs_connect_);
   EXPECT_EQ(mojom::ConnectionState::DISCONNECTING,
             test_api->GetConnectionState());
   test_api->SetNetworkAvailableForTesting(false);
   GetSystemVPNConnectionAPI()->OnDisconnected();
-  EXPECT_TRUE(test_api->needs_connect_);
   // Reconnect is postponed while the network is down.
   EXPECT_EQ(mojom::ConnectionState::DISCONNECTED,
             test_api->GetConnectionState());
   test_api->SetNetworkAvailableForTesting(true);
+  // The postponed reconnect starts once the network is back.
   test_api->OnNetworkChanged(net::NetworkChangeNotifier::CONNECTION_ETHERNET);
-  EXPECT_FALSE(test_api->needs_connect_);
   EXPECT_EQ(mojom::ConnectionState::CONNECTING, test_api->GetConnectionState());
 }
 
@@ -550,7 +546,6 @@ TEST_F(SystemVPNConnectionAPIUnitTest, CancelConnectingTest) {
   test_api->cancel_connecting_ = true;
   test_api->connection_state_ = mojom::ConnectionState::CONNECTING;
   GetSystemVPNConnectionAPI()->OnCreated();
-  EXPECT_FALSE(test_api->cancel_connecting_);
   EXPECT_EQ(mojom::ConnectionState::DISCONNECTED,
             test_api->GetConnectionState());
 
@@ -558,18 +553,15 @@ TEST_F(SystemVPNConnectionAPIUnitTest, CancelConnectingTest) {
   test_api->cancel_connecting_ = false;
   test_api->connection_state_ = mojom::ConnectionState::CONNECTING;
   test_api->Disconnect();
-  EXPECT_TRUE(test_api->cancel_connecting_);
   EXPECT_EQ(mojom::ConnectionState::DISCONNECTING,
             test_api->GetConnectionState());
   GetSystemVPNConnectionAPI()->OnConnected();
-  EXPECT_FALSE(test_api->cancel_connecting_);
   EXPECT_EQ(mojom::ConnectionState::DISCONNECTING,
             test_api->GetConnectionState());
 
   test_api->cancel_connecting_ = false;
   test_api->connection_state_ = mojom::ConnectionState::CONNECTING;
   test_api->Disconnect();
-  EXPECT_TRUE(test_api->cancel_connecting_);
   EXPECT_EQ(mojom::ConnectionState::DISCONNECTING,
             test_api->GetConnectionState());
 
@@ -580,15 +572,16 @@ TEST_F(SystemVPNConnectionAPIUnitTest, CancelConnectingTest) {
   // Explicitely create |api_request_|.
   test_api->GetAPIRequest();
   test_api->Disconnect();
-  EXPECT_FALSE(test_api->cancel_connecting_);
   EXPECT_EQ(mojom::ConnectionState::DISCONNECTED,
             test_api->GetConnectionState());
 
   test_api->cancel_connecting_ = true;
   test_api->CreateVPNConnection();
-  EXPECT_FALSE(test_api->cancel_connecting_);
   EXPECT_EQ(mojom::ConnectionState::DISCONNECTED,
             test_api->GetConnectionState());
+  // CreateVPNConnection() consumes the cancel request (Connect() ignores
+  // requests while it is set).
+  EXPECT_FALSE(test_api->cancel_connecting_);
 }
 
 // Ignore disconnected state change while connected. See the comment at

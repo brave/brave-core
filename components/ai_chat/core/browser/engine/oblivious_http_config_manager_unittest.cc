@@ -12,9 +12,9 @@
 
 #include "base/base64.h"
 #include "base/json/values_util.h"
-#include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -66,13 +66,11 @@ class ObliviousHttpConfigManagerUnitTest : public testing::Test {
         TRAFFIC_ANNOTATION_FOR_TESTS, nullptr);
     mock_helper_ = mock.get();
     manager_->SetAPIRequestHelperForTesting(std::move(mock));
-
-    run_loop_ = std::make_unique<base::RunLoop>();
   }
 
   void SetUpMock(api_request_helper::APIRequestResult result) {
     EXPECT_CALL(*mock_helper_, Request(_, _, _, _, _, _, _, _))
-        .WillOnce([this, result = std::move(result)](
+        .WillOnce([result = std::move(result)](
                       const std::string&, const GURL& url, const std::string&,
                       const std::string&,
                       api_request_helper::APIRequestHelper::ResultCallback
@@ -85,20 +83,16 @@ class ObliviousHttpConfigManagerUnitTest : public testing::Test {
                           "v1/models/%s/ohttp_config", kTestModel)) !=
                       std::string::npos);
           std::move(result_callback).Run(std::move(result));
-          run_loop_->Quit();
           return api_request_helper::APIRequestHelper::Ticket();
         });
   }
 
   void RequestKeyConfig(const std::string& model_name = kTestModel) {
-    manager_->RequestKeyConfig(
-        model_name,
-        base::BindLambdaForTesting(
-            [this](
-                std::optional<ObliviousHttpConfigManager::KeyConfigResult> r) {
-              key_config_result_ = std::move(r);
-            }));
-    run_loop_->Run();
+    base::test::TestFuture<
+        std::optional<ObliviousHttpConfigManager::KeyConfigResult>>
+        future;
+    manager_->RequestKeyConfig(model_name, future.GetCallback());
+    key_config_result_ = future.Take();
   }
 
   void SeedPrefEntry(const std::string& model_name, bool expired) {
@@ -119,7 +113,6 @@ class ObliviousHttpConfigManagerUnitTest : public testing::Test {
   std::unique_ptr<ObliviousHttpConfigManager> manager_;
   raw_ptr<testing::NiceMock<api_request_helper::MockAPIRequestHelper>>
       mock_helper_;
-  std::unique_ptr<base::RunLoop> run_loop_;
   std::optional<ObliviousHttpConfigManager::KeyConfigResult> key_config_result_;
 };
 

@@ -1,13 +1,17 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/components/permissions/permission_lifetime_manager.h"
 
+#include <memory>
+#include <string>
 #include <string_view>
+#include <vector>
 
 #include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/stl_util.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
@@ -17,9 +21,7 @@
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/permissions/permission_lifetime_pref_names.h"
-#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
-#include "chrome/test/base/testing_browser_process.h"
-#include "chrome/test/base/testing_profile.h"
+#include "build/build_config.h"
 #include "components/content_settings/core/browser/content_settings_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/browser/website_settings_info.h"
@@ -29,7 +31,6 @@
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -130,20 +131,25 @@ class MockPermissionOriginLifetimeMonitor
 class PermissionLifetimeManagerTest : public testing::Test {
  public:
   PermissionLifetimeManagerTest()
-      : browser_task_environment_(
-            base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
   PermissionLifetimeManagerTest(const PermissionLifetimeManagerTest&) = delete;
   PermissionLifetimeManagerTest& operator=(
       const PermissionLifetimeManagerTest&) = delete;
 
   void SetUp() override {
-    host_content_settings_map_ =
-        HostContentSettingsMapFactory::GetForProfile(&profile_);
+    PermissionLifetimeManager::RegisterProfilePrefs(prefs_.registry());
+    HostContentSettingsMap::RegisterProfilePrefs(prefs_.registry());
+    host_content_settings_map_ = base::MakeRefCounted<HostContentSettingsMap>(
+        &prefs_, /*is_off_the_record=*/false, /*store_last_modified=*/false,
+        /*restore_session=*/false, /*should_record_metrics=*/false);
   }
 
-  void TearDown() override { manager_.reset(); }
+  void TearDown() override {
+    manager_.reset();
+    host_content_settings_map_->ShutdownOnUIThread();
+  }
 
-  PrefService* prefs() { return profile_.GetPrefs(); }
+  PrefService* prefs() { return &prefs_; }
 
   virtual std::unique_ptr<PermissionOriginLifetimeMonitor>
   GetPermissionOriginLifetimeMonitor() {
@@ -239,9 +245,9 @@ class PermissionLifetimeManagerTest : public testing::Test {
   const base::TimeDelta kLifetime{base::Seconds(5)};
   const base::TimeDelta kOneSecond{base::Seconds(1)};
 
-  content::BrowserTaskEnvironment browser_task_environment_;
-  TestingProfile profile_;
-  raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
+  base::test::TaskEnvironment task_environment_;
+  sync_preferences::TestingPrefServiceSyncable prefs_;
+  scoped_refptr<HostContentSettingsMap> host_content_settings_map_;
   std::unique_ptr<PermissionLifetimeManager> manager_;
 };
 
@@ -263,7 +269,7 @@ TEST_F(PermissionLifetimeManagerTest, SetAndResetAfterExpiration) {
     ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
                          content_setting);
     // Forward time a little, setting still should be intact.
-    browser_task_environment_.FastForwardBy(kOneSecond);
+    task_environment_.FastForwardBy(kOneSecond);
     ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
                          content_setting);
 
@@ -277,8 +283,7 @@ TEST_F(PermissionLifetimeManagerTest, SetAndResetAfterExpiration) {
          kOrigin.spec(), base::NumberToString(content_setting)});
 
     // Forward time, this should trigger a setting reset to default state.
-    browser_task_environment_.FastForwardBy(*request->GetLifetime() -
-                                            kOneSecond);
+    task_environment_.FastForwardBy(*request->GetLifetime() - kOneSecond);
     ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
                          ContentSetting::CONTENT_SETTING_DEFAULT);
 
@@ -297,7 +302,7 @@ TEST_F(PermissionLifetimeManagerTest, DifferentTypePermissions) {
                                PermissionDecision::kAllow);
   EXPECT_TRUE(timer().IsRunning());
 
-  browser_task_environment_.FastForwardBy(kOneSecond);
+  task_environment_.FastForwardBy(kOneSecond);
 
   auto request2(CreateRequestAndAllowContentSetting(
       kOrigin2, ContentSettingsType::MEDIASTREAM_MIC, kLifetime));
@@ -318,7 +323,7 @@ TEST_F(PermissionLifetimeManagerTest, DifferentTypePermissions) {
        kOrigin2.spec()});
 
   // Forward time, this should trigger a first setting reset to default state.
-  browser_task_environment_.FastForwardBy(*request->GetLifetime() - kOneSecond);
+  task_environment_.FastForwardBy(*request->GetLifetime() - kOneSecond);
   ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
                        ContentSetting::CONTENT_SETTING_DEFAULT);
   ExpectContentSetting(FROM_HERE, kOrigin2,
@@ -331,7 +336,7 @@ TEST_F(PermissionLifetimeManagerTest, DifferentTypePermissions) {
                                 .InMicroseconds()),
        kOrigin2.spec()});
 
-  browser_task_environment_.FastForwardBy(kOneSecond);
+  task_environment_.FastForwardBy(kOneSecond);
   ExpectContentSetting(FROM_HERE, kOrigin2,
                        ContentSettingsType::MEDIASTREAM_MIC,
                        ContentSetting::CONTENT_SETTING_DEFAULT);
@@ -350,7 +355,7 @@ TEST_F(PermissionLifetimeManagerTest, TwoPermissionsSameTime) {
                                PermissionDecision::kAllow);
   EXPECT_TRUE(timer().IsRunning());
 
-  browser_task_environment_.FastForwardBy(kOneSecond);
+  task_environment_.FastForwardBy(kOneSecond);
   auto request2(CreateRequestAndAllowContentSetting(
       kOrigin2, ContentSettingsType::NOTIFICATIONS, kLifetime - kOneSecond));
   const base::Time expected_expiration_time2 =
@@ -368,7 +373,7 @@ TEST_F(PermissionLifetimeManagerTest, TwoPermissionsSameTime) {
        kOrigin.spec(), kOrigin2.spec()});
 
   // Forward time, this should trigger a setting reset to default state.
-  browser_task_environment_.FastForwardBy(*request->GetLifetime() - kOneSecond);
+  task_environment_.FastForwardBy(*request->GetLifetime() - kOneSecond);
   ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
                        ContentSetting::CONTENT_SETTING_DEFAULT);
   ExpectContentSetting(FROM_HERE, kOrigin2, ContentSettingsType::NOTIFICATIONS,
@@ -417,13 +422,13 @@ TEST_F(PermissionLifetimeManagerTest, TwoPermissionsBigTimeDifference) {
        kOrigin.spec()});
 
   // Forward time, this should trigger a setting reset to default state.
-  browser_task_environment_.FastForwardBy(*request2->GetLifetime());
+  task_environment_.FastForwardBy(*request2->GetLifetime());
   ExpectContentSetting(FROM_HERE, kOrigin2, ContentSettingsType::NOTIFICATIONS,
                        ContentSetting::CONTENT_SETTING_DEFAULT);
   ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
                        ContentSetting::CONTENT_SETTING_ALLOW);
 
-  browser_task_environment_.FastForwardBy(*request->GetLifetime());
+  task_environment_.FastForwardBy(*request->GetLifetime());
   ExpectContentSetting(FROM_HERE, kOrigin2, ContentSettingsType::NOTIFICATIONS,
                        ContentSetting::CONTENT_SETTING_DEFAULT);
 
@@ -451,7 +456,7 @@ TEST_F(PermissionLifetimeManagerTest, RestoreAfterRestart) {
   ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
                        ContentSetting::CONTENT_SETTING_ALLOW);
   // Forward time a little, setting still should be intact.
-  browser_task_environment_.FastForwardBy(kOneSecond);
+  task_environment_.FastForwardBy(kOneSecond);
   ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
                        ContentSetting::CONTENT_SETTING_ALLOW);
 
@@ -464,7 +469,7 @@ TEST_F(PermissionLifetimeManagerTest, RestoreAfterRestart) {
        kOrigin.spec()});
 
   // Forward time, this should trigger a setting reset to default state.
-  browser_task_environment_.FastForwardBy(*request->GetLifetime() - kOneSecond);
+  task_environment_.FastForwardBy(*request->GetLifetime() - kOneSecond);
   ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
                        ContentSetting::CONTENT_SETTING_DEFAULT);
 
@@ -481,7 +486,7 @@ TEST_F(PermissionLifetimeManagerTest, ExpiredRestoreAfterRestart) {
   EXPECT_TRUE(timer().IsRunning());
 
   ResetManager();
-  browser_task_environment_.FastForwardBy(kLifetime);
+  task_environment_.FastForwardBy(kLifetime);
 
   // This will create a new PermissionLifetimeManager instance.
   ASSERT_TRUE(manager());
@@ -516,7 +521,7 @@ TEST_F(PermissionLifetimeManagerTest, PartiallyExpiredRestoreAfterRestart) {
                                PermissionDecision::kAllow);
 
   ResetManager();
-  browser_task_environment_.FastForwardBy(kLifetime);
+  task_environment_.FastForwardBy(kLifetime);
   // This will create a new PermissionLifetimeManager instance.
   ASSERT_TRUE(manager());
   // Timer should be running.
@@ -535,7 +540,7 @@ TEST_F(PermissionLifetimeManagerTest, PartiallyExpiredRestoreAfterRestart) {
   ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
                        ContentSetting::CONTENT_SETTING_ALLOW);
 
-  browser_task_environment_.FastForwardBy(*request->GetLifetime());
+  task_environment_.FastForwardBy(*request->GetLifetime());
   ExpectContentSetting(FROM_HERE, kOrigin2, ContentSettingsType::NOTIFICATIONS,
                        ContentSetting::CONTENT_SETTING_DEFAULT);
 
@@ -579,7 +584,7 @@ TEST_F(PermissionLifetimeManagerTest, ClearAllExpiredAfterRestart) {
                                PermissionDecision::kAllow);
 
   ResetManager();
-  browser_task_environment_.FastForwardBy(kLifetime);
+  task_environment_.FastForwardBy(kLifetime);
   // This will create a new PermissionLifetimeManager instance.
   ASSERT_TRUE(manager());
   // Timer should not be running.
@@ -725,7 +730,7 @@ TEST_F(PermissionLifetimeManagerWithOriginMonitorTest,
        kOrigin.spec(), std::string(kOrigin2.host()),
        std::string(kOrigin2.spec())});
 
-  browser_task_environment_.FastForwardBy(*request->GetLifetime());
+  task_environment_.FastForwardBy(*request->GetLifetime());
   ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
                        ContentSetting::CONTENT_SETTING_DEFAULT);
   ExpectContentSetting(FROM_HERE, kOrigin2, ContentSettingsType::NOTIFICATIONS,

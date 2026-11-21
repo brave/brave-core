@@ -122,7 +122,6 @@ class ViewCounterService : public KeyedService,
                            CannotShowBackgroundImagesIfMalformed);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest,
                            CannotShowBackgroundImagesIfOptedOut);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, PrefsWithModelTest);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, GetCurrentWallpaper);
 
   void OnPreferenceChanged(const std::string& pref_name);

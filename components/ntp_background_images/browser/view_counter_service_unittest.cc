@@ -39,6 +39,7 @@
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
@@ -303,8 +304,8 @@ class ViewCounterServiceTest : public testing::Test {
     for (int i = 0; i < GetInitialCountToNewTabTakeoverWallpaper(); ++i) {
       const auto wallpaper =
           GetCurrentWallpaperForDisplay(/*allow_sponsored_content=*/true);
-      EXPECT_TRUE(wallpaper);
-      EXPECT_TRUE(wallpaper->FindBool(kIsBackgroundKey));
+      EXPECT_THAT(wallpaper, testing::Optional(base::test::DictionaryHasValue(
+                                 kIsBackgroundKey, base::Value(true))));
 
       view_counter_service_->RegisterPageView();
     }
@@ -418,19 +419,34 @@ TEST_F(ViewCounterServiceTest, IsActiveOptedIn) {
 }
 
 TEST_F(ViewCounterServiceTest, PrefsWithModelTest) {
-  EXPECT_EQ(features::kInitialCountToNewTabTakeoverWallpaper.Get() - 1,
-            view_counter_service_->model_
-                .count_to_new_tab_takeover_wallpaper_for_testing());
-  EXPECT_TRUE(view_counter_service_->model_.show_wallpaper_for_testing());
-  EXPECT_TRUE(view_counter_service_->model_
-                  .show_new_tab_takeover_wallpaper_for_testing());
+  SetNewTabTakeoverVisibility(true);
+  InstallBackgroundImagesData();
+  // Notifies the service, which refreshes its model from the prefs and data.
+  background_images_service_->OnGetSponsoredComponentJsonData(
+      kSponsoredImageCampaignsJson);
 
+  // A new tab takeover is requested exactly once, when the initial count is
+  // reached. No ad is served, so the background wallpaper is the fallback.
+  EXPECT_CALL(ads_service_mock_, MaybeServeNewTabPageAd)
+      .WillOnce(base::test::RunOnceCallback<0>(
+          brave_ads::mojom::NewTabPageAdInfoPtr()));
+  EXPECT_THAT(CycleThroughPageViewsAndMaybeGetNewTabTakeoverWallpaper(),
+              testing::Optional(base::test::DictionaryHasValue(
+                  kIsBackgroundKey, base::Value(true))));
+  testing::Mock::VerifyAndClearExpectations(&ads_service_mock_);
+
+  // Once opted out, only background wallpapers are shown.
   SetNewTabTakeoverVisibility(false);
-  EXPECT_FALSE(view_counter_service_->model_
-                   .show_new_tab_takeover_wallpaper_for_testing());
-
-  SetBackgroundImagesVisibility(false);
-  EXPECT_FALSE(view_counter_service_->model_.show_wallpaper_for_testing());
+  EXPECT_CALL(ads_service_mock_, MaybeServeNewTabPageAd).Times(0);
+  const int page_view_count =
+      features::kInitialCountToNewTabTakeoverWallpaper.Get() +
+      features::kCountToNewTabTakeoverWallpaper.Get();
+  for (int i = 0; i < page_view_count; ++i) {
+    view_counter_service_->RegisterPageView();
+    EXPECT_THAT(GetCurrentWallpaperForDisplay(/*allow_sponsored_content=*/true),
+                testing::Optional(base::test::DictionaryHasValue(
+                    kIsBackgroundKey, base::Value(true))));
+  }
 }
 
 TEST_F(ViewCounterServiceTest, ActiveInitiallyOptedIn) {

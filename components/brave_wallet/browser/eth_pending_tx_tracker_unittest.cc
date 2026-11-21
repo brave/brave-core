@@ -91,29 +91,40 @@ class EthPendingTxTrackerUnitTest : public testing::Test {
   mojom::AccountIdPtr eth_account_id_other_;
 };
 
-TEST_F(EthPendingTxTrackerUnitTest, IsNonceTaken) {
+TEST_F(EthPendingTxTrackerUnitTest, DropsPendingTxWhenNonceTaken) {
   EthNonceTracker nonce_tracker(tx_state_manager_.get(), json_rpc_service());
   EthPendingTxTracker pending_tx_tracker(tx_state_manager_.get(),
                                          json_rpc_service(), &nonce_tracker);
 
   EthTxMeta meta(eth_account_id_, std::make_unique<EthTransaction>());
-  meta.set_id(TxMeta::GenerateMetaID());
   meta.set_chain_id(mojom::kMainnetChainId);
   meta.tx()->set_nonce(uint256_t(123));
-
-  EXPECT_FALSE(pending_tx_tracker.IsNonceTaken(meta));
-
-  EthTxMeta meta_in_state(meta.from(), std::make_unique<EthTransaction>());
-  meta_in_state.set_id(TxMeta::GenerateMetaID());
-  meta_in_state.set_chain_id(meta.chain_id());
-  meta_in_state.set_status(mojom::TransactionStatus::Confirmed);
-  meta_in_state.tx()->set_nonce(meta.tx()->nonce());
-  ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta_in_state));
-
-  EXPECT_TRUE(pending_tx_tracker.IsNonceTaken(meta));
-
+  meta.set_id("mainnet_confirmed");
+  meta.set_status(mojom::TransactionStatus::Confirmed);
+  ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
+  meta.set_id("mainnet_pending");
+  meta.set_status(mojom::TransactionStatus::Submitted);
+  ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
+  meta.set_id("sepolia_pending");
   meta.set_chain_id(mojom::kSepoliaChainId);
-  EXPECT_FALSE(pending_tx_tracker.IsNonceTaken(meta));
+  ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
+
+  // The pending tx shares its nonce with a confirmed tx on the same chain, so
+  // it is dropped without querying the network.
+  std::set<std::string> pending_chain_ids;
+  EXPECT_TRUE(pending_tx_tracker.UpdatePendingTransactions(
+      mojom::kMainnetChainId, &pending_chain_ids));
+  EXPECT_TRUE(pending_chain_ids.empty());
+  EXPECT_EQ(tx_state_manager_->GetTx("mainnet_pending"), nullptr);
+  EXPECT_NE(tx_state_manager_->GetTx("mainnet_confirmed"), nullptr);
+
+  // The confirmed tx on another chain does not take the nonce.
+  EXPECT_TRUE(pending_tx_tracker.UpdatePendingTransactions(
+      mojom::kSepoliaChainId, &pending_chain_ids));
+  EXPECT_EQ(pending_chain_ids, std::set<std::string>{mojom::kSepoliaChainId});
+  ASSERT_NE(tx_state_manager_->GetTx("sepolia_pending"), nullptr);
+  EXPECT_EQ(tx_state_manager_->GetTx("sepolia_pending")->status(),
+            mojom::TransactionStatus::Submitted);
 }
 
 TEST_F(EthPendingTxTrackerUnitTest, ShouldTxDropped) {
@@ -142,20 +153,6 @@ TEST_F(EthPendingTxTrackerUnitTest, ShouldTxDropped) {
   EXPECT_TRUE(pending_tx_tracker.ShouldTxDropped(meta));
   EXPECT_FALSE(
       pending_tx_tracker.dropped_blocks_counter_.contains(meta.tx_hash()));
-}
-
-TEST_F(EthPendingTxTrackerUnitTest, DropTransaction) {
-  EthNonceTracker nonce_tracker(tx_state_manager_.get(), json_rpc_service());
-  EthPendingTxTracker pending_tx_tracker(tx_state_manager_.get(),
-                                         json_rpc_service(), &nonce_tracker);
-  EthTxMeta meta(eth_account_id_, std::make_unique<EthTransaction>());
-  meta.set_id("001");
-  meta.set_chain_id(mojom::kMainnetChainId);
-  meta.set_status(mojom::TransactionStatus::Submitted);
-  ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
-
-  pending_tx_tracker.DropTransaction(&meta);
-  EXPECT_EQ(tx_state_manager_->GetTx("001"), nullptr);
 }
 
 TEST_F(EthPendingTxTrackerUnitTest, UpdatePendingTransactions) {

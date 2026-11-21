@@ -110,7 +110,7 @@ source_set("unit_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [ "permission_lifetime_manager_unittest.cc" ]
+  sources = []
 
   deps = [
     "//base/test:test_support",

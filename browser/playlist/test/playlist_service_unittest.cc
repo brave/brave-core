@@ -511,6 +511,7 @@ TEST_F(PlaylistServiceUnitTest, CreateAndRemovePlaylist) {
     service->CreatePlaylist(
         new_playlist->Clone(),
         base::BindLambdaForTesting([&](mojom::PlaylistPtr new_list) {
+          ASSERT_TRUE(new_list->id.has_value());
           new_playlist->id = *new_list->id;
         }));
     WaitUntil(base::BindLambdaForTesting([&]() { return called; }));
@@ -527,7 +528,7 @@ TEST_F(PlaylistServiceUnitTest, CreateAndRemovePlaylist) {
             playlists, [&](const mojom::PlaylistPtr& playlist) {
               return new_playlist->id == playlist->id;
             });
-        EXPECT_NE(iter, playlists.end());
+        ASSERT_NE(iter, playlists.end());
 
         // Remove the new playlist
         bool called = false;
@@ -595,6 +596,7 @@ TEST_F(PlaylistServiceUnitTest, RemoveAndRestoreLocalData) {
   // Remove local media file. Thumbnail shouldn't be removed
   service->GetAllPlaylistItems(base::BindLambdaForTesting(
       [&](std::vector<mojom::PlaylistItemPtr> items) {
+        ASSERT_EQ(1UL, items.size());
         const auto& item = items.front();
         // Store the item's local file path first
         base::FilePath media_path;
@@ -610,7 +612,7 @@ TEST_F(PlaylistServiceUnitTest, RemoveAndRestoreLocalData) {
   service->GetAllPlaylistItems(base::BindLambdaForTesting(
       [&](std::vector<mojom::PlaylistItemPtr> items) {
         // Verify if RemoveLocalDataForItem() worked.
-        EXPECT_EQ(1UL, items.size());
+        ASSERT_EQ(1UL, items.size());
         const auto& item = items.front();
         EXPECT_FALSE(item->cached);
         EXPECT_EQ(item->media_source, item->media_path);
@@ -627,7 +629,7 @@ TEST_F(PlaylistServiceUnitTest, RemoveAndRestoreLocalData) {
   // Restore local media for the item.
   service->GetAllPlaylistItems(base::BindLambdaForTesting(
       [&](std::vector<mojom::PlaylistItemPtr> items) {
-        EXPECT_EQ(1UL, items.size());
+        ASSERT_EQ(1UL, items.size());
 
         const auto& item = items.front();
         service->RecoverLocalDataForItem(
@@ -654,6 +656,7 @@ TEST_F(PlaylistServiceUnitTest, RemoveAndRestoreLocalData) {
 
   service->GetAllPlaylistItems(base::BindLambdaForTesting(
       [&](std::vector<mojom::PlaylistItemPtr> items) {
+        ASSERT_EQ(1UL, items.size());
         const auto& item = items.front();
         EXPECT_NE(item->media_source, item->media_path);
       }));
@@ -719,7 +722,7 @@ TEST_F(PlaylistServiceUnitTest, AddItemsToList) {
         kDefaultPlaylistID, {item_ids.begin(), item_ids.end()}));
 
     default_playlist = GetPlaylist(kDefaultPlaylistID);
-    EXPECT_TRUE(default_playlist);
+    ASSERT_TRUE(default_playlist);
     base::flat_set<std::string> stored_ids;
     std::ranges::transform(default_playlist->items,
                            std::inserter(stored_ids, stored_ids.end()),
@@ -833,7 +836,7 @@ TEST_F(PlaylistServiceUnitTest, MoveItem) {
                                   PlaylistItemId(id)));
   }
   playlist = GetPlaylist(another_playlist_id);
-  EXPECT_TRUE(playlist);
+  ASSERT_TRUE(playlist);
   base::flat_set<std::string> stored_ids;
   std::ranges::transform(playlist->items,
                          std::inserter(stored_ids, stored_ids.end()),
@@ -849,7 +852,7 @@ TEST_F(PlaylistServiceUnitTest, MoveItem) {
   }
 
   playlist = GetPlaylist(kDefaultPlaylistID);
-  EXPECT_TRUE(playlist);
+  ASSERT_TRUE(playlist);
   EXPECT_TRUE(playlist->items.empty());
 
   // Try moving items to non-existing playlist. Then it should fail and the
@@ -860,7 +863,7 @@ TEST_F(PlaylistServiceUnitTest, MoveItem) {
                                    PlaylistItemId(id)));
   }
   playlist = GetPlaylist(another_playlist_id);
-  EXPECT_TRUE(playlist);
+  ASSERT_TRUE(playlist);
   stored_ids.clear();
   std::ranges::transform(playlist->items,
                          std::inserter(stored_ids, stored_ids.end()),
@@ -918,6 +921,7 @@ TEST_F(PlaylistServiceUnitTest, DefaultSaveTargetListID) {
       base::BindLambdaForTesting([&](mojom::PlaylistPtr new_list) {
         another_playlist.id = new_list->id;
       }));
+  ASSERT_TRUE(another_playlist.id.has_value());
 
   prefs->SetString(kPlaylistDefaultSaveTargetListID, *another_playlist.id);
   EXPECT_EQ(*another_playlist.id, service->GetDefaultSaveTargetListID());
@@ -1327,8 +1331,10 @@ TEST_F(PlaylistServiceUnitTest, PlaylistOrderSync) {
   std::string new_id;
   playlist_service()->CreatePlaylist(
       mojom::Playlist::New(),
-      base::BindLambdaForTesting(
-          [&](mojom::PlaylistPtr playlist) { new_id = *playlist->id; }));
+      base::BindLambdaForTesting([&](mojom::PlaylistPtr playlist) {
+        ASSERT_TRUE(playlist->id.has_value());
+        new_id = *playlist->id;
+      }));
 
   EXPECT_TRUE(std::ranges::contains(prefs()->GetList(kPlaylistOrderPref),
                                     base::Value(new_id)));
@@ -1349,6 +1355,7 @@ TEST_F(PlaylistServiceUnitTest, ReorderPlaylist) {
     playlist_service()->CreatePlaylist(
         std::move(playlist),
         base::BindLambdaForTesting([&](mojom::PlaylistPtr playlist) {
+          ASSERT_TRUE(playlist->id.has_value());
           ids.push_back(*playlist->id);
         }));
   }
