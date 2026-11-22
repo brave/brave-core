@@ -138,10 +138,14 @@ template("brave_extra_paks") {
     }
 
     if (enable_extensions) {
-      sources += [ "$root_gen_dir/brave/components/brave_extension/brave_extension_resources.pak" ]
+      sources += [
+        "$root_gen_dir/brave/common/extensions/api/brave_api_resources.pak",
+        "$root_gen_dir/brave/components/brave_extension/brave_extension_resources.pak",
+      ]
 
       deps += [
         "//brave/common/extensions/api",
+        "//brave/common/extensions/api:resources",
         "//brave/components/brave_extension:resources",
       ]
     }
