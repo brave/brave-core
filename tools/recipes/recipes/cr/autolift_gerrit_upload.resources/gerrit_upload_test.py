@@ -53,6 +53,19 @@ class ChainProblemsTest(unittest.TestCase):
         )
 
 
+class PushTipsTest(unittest.TestCase):
+    def _tips(self, count: int) -> list[str]:
+        commits = [ChainCommit(str(n), str(n), ()) for n in range(count)]
+        with mock.patch.object(gerrit_upload, 'PUSH_BATCH_SIZE', 2):
+            return [c.sha for c in gerrit_upload.push_tips(commits)]
+
+    def test_each_batch_ends_at_a_tip_and_the_last_at_the_head(self):
+        self.assertEqual(self._tips(5), ['1', '3', '4'])
+        self.assertEqual(self._tips(4), ['1', '3'])
+        self.assertEqual(self._tips(1), ['0'])
+        self.assertEqual(self._tips(0), [])
+
+
 class GerritTest(unittest.TestCase):
     def test_ssh_command_quotes_its_arguments(self):
         gerrit = gerrit_upload.Gerrit(
@@ -360,6 +373,27 @@ class UploadTest(unittest.TestCase):
             ccs=('cdesouza', 'erogul'),
         )
         self.assertIn('-o cc=cdesouza -o cc=erogul', text)
+
+    def test_pushes_the_chain_in_batches_oldest_first(self):
+        self._mirror_master(self.base)
+        with (
+            mock.patch.object(gerrit_upload, 'PUSH_BATCH_SIZE', 1),
+            mock.patch.object(
+                gerrit_upload, '_git', wraps=gerrit_upload._git
+            ) as git,
+        ):
+            status, text = self._upload(_FakeGerrit(str(self.gerrit_dir)))
+
+        self.assertEqual(status, 0, msg=text)
+        self.assertEqual(
+            [
+                call.args[-1]
+                for call in git.call_args_list
+                if call.args[1] == 'push'
+            ],
+            [f'{sha}:refs/for/master' for sha in self.chain],
+        )
+        self.assertEqual(self._gerrit_ref('refs/for/master'), self.chain[-1])
 
     def test_reports_the_cls_the_push_creates(self):
         """Those whose Change-Id Gerrit had no CL of, in any state."""

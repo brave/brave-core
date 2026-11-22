@@ -18,12 +18,13 @@ has already: in its `master`, or as `cr<N-1>`'s own chain. The upload:
    chain;
 3. restores the abandoned CLs, of any topic, whose Change-Id is in the chain,
    as Gerrit takes no new patch sets on them;
-4. pushes `<head>` to `refs/for/master`, with topic `cr<N>` and the `--cc`
-   users CC'd on its CLs. Gerrit skips the
-   commits it has as patch sets already, so the base's CLs stay as they are,
-   and only the chain's new or changed commits become new CLs or patch sets. A
-   commit that keeps the Change-Id of another chain's CL, as a cherry-pick
-   does, updates that CL, which moves to topic `cr<N>` with it;
+4. pushes the chain to `refs/for/master`, with topic `cr<N>` and the `--cc`
+   users CC'd on its CLs, a batch of commits at a time, oldest first: Gerrit
+   rejects a push it can't validate within its `receive.timeout`. Gerrit skips
+   the commits it has as patch sets already, so the base's CLs stay as they
+   are, and only the chain's new or changed commits become new CLs or patch
+   sets. A commit that keeps the Change-Id of another chain's CL, as a
+   cherry-pick does, updates that CL, which moves to topic `cr<N>` with it;
 5. abandons the open CLs of the topic whose Change-Id left the chain. A CL that
    moved to another chain is in that chain's topic by then;
 6. with `--json-output`, writes the links of the CLs the push created, whose
@@ -52,6 +53,10 @@ TARGET = 'master'
 
 # Change-Ids per query: each adds a `change:` term to the command line.
 CHANGE_IDS_PER_QUERY = 50
+
+# Commits per push, so Gerrit validates each push within its 4-minute
+# `receive.timeout`.
+PUSH_BATCH_SIZE = 25
 
 
 @dataclass(frozen=True)
@@ -268,6 +273,15 @@ class Gerrit:
         return output.split()[0] if output else None
 
 
+def push_tips(commits: list[ChainCommit]) -> list[ChainCommit]:
+    """The commits to push, oldest first, each taking the chain up to it
+    `PUSH_BATCH_SIZE` commits further than the one before."""
+    tips = commits[PUSH_BATCH_SIZE - 1 :: PUSH_BATCH_SIZE]
+    if commits and (not tips or tips[-1] != commits[-1]):
+        tips.append(commits[-1])
+    return tips
+
+
 def _on_gerrit(cwd: Path, gerrit: Gerrit, sha: str) -> bool:
     """Whether Gerrit has `sha`: in its `master`, which may be ahead of the
     checkout's, or as a patch set."""
@@ -337,26 +351,31 @@ def upload(
         if not dry_run:
             gerrit.restore(change, f'The commit is on {branch}.')
 
-    refspec = f'{head_sha}:refs/for/{TARGET}'
-    push = ['-o', f'topic={branch}', '-o', 'notify=NONE']
+    options = ['-o', f'topic={branch}', '-o', 'notify=NONE']
     for cc in ccs:
-        push += ['-o', f'cc={cc}']
-    push.append(refspec)
-    if dry_run:
-        log(f'Would run `git push {gerrit.url} {shlex.join(push)}`.')
-        for commit in new:
-            log(f'Would create a CL for {_name(commit)}.')
-    else:
-        log(f'Pushing the chain to refs/for/{TARGET}.')
+        options += ['-o', f'cc={cc}']
+    tips = push_tips(commits)
+    for n, tip in enumerate(tips, start=1):
+        push = [*options, f'{tip.sha}:refs/for/{TARGET}']
+        if dry_run:
+            log(f'Would run `git push {gerrit.url} {shlex.join(push)}`.')
+            continue
+        log(
+            f'Pushing the chain up to {_name(tip)} to refs/for/{TARGET} '
+            f'({n}/{len(tips)}).'
+        )
         try:
             _git(cwd, 'push', gerrit.url, *push)
         except subprocess.CalledProcessError as e:
             if 'no new changes' not in e.stderr:
                 log(f'The push to Gerrit failed:\n{e.stderr.strip()}')
                 return 1
-            log('Gerrit has every patch set already.')
-        if created is not None:
-            created.extend(new)
+            log('Gerrit has every patch set of this batch already.')
+    if dry_run:
+        for commit in new:
+            log(f'Would create a CL for {_name(commit)}.')
+    elif created is not None:
+        created.extend(new)
 
     for change in open_changes:
         if change.change_id not in chain_ids:
