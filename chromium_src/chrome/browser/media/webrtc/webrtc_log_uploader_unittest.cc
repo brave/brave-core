@@ -15,6 +15,7 @@
 #include "base/functional/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/test_future.h"
+#include "build/build_config.h"
 #include "chrome/browser/media/webrtc/webrtc_log_buffer.h"
 
 #include <chrome/browser/media/webrtc/webrtc_log_uploader_unittest.cc>
@@ -182,10 +183,30 @@ TEST_F(WebRtcLogUploaderDisabledTest,
   EXPECT_FALSE(base::PathExists(incoming));
   EXPECT_FALSE(base::PathExists(paths.directory));
 
-  ASSERT_TRUE(
-      base::test::RunUntil([&] { return uploader_->ApplyForStartLogging(); }));
+  EXPECT_TRUE(uploader_->ApplyForStartLogging());
   EXPECT_FALSE(uploader_->ApplyForStartLogging());
 }
+
+#if BUILDFLAG(IS_POSIX)
+TEST_F(WebRtcLogUploaderDisabledTest,
+       StoppedLogKeepsRtpDumpsInASymlinkedDirectory) {
+  const base::FilePath target = temp_dir_.GetPath().AppendASCII("target");
+  ASSERT_TRUE(base::CreateDirectory(target));
+  ASSERT_TRUE(base::WriteFile(target.AppendASCII("recv"), "incoming"));
+  const base::FilePath link = temp_dir_.GetPath().AppendASCII("link");
+  ASSERT_TRUE(base::CreateSymbolicLink(target, link));
+  ASSERT_TRUE(uploader_->ApplyForStartLogging());
+
+  UploadDoneFuture future;
+  WebRtcLogUploader::UploadDoneData upload_done_data;
+  upload_done_data.paths.incoming_rtp_dump = link.AppendASCII("recv");
+  upload_done_data.callback = future.GetCallback();
+  StopLogging(std::move(upload_done_data));
+  ASSERT_TRUE(future.Wait());
+
+  EXPECT_TRUE(base::PathExists(target.AppendASCII("recv")));
+}
+#endif  // BUILDFLAG(IS_POSIX)
 
 TEST_F(WebRtcLogUploaderDisabledTest, DiscardedLogGivesItsSlotBack) {
   ASSERT_GT(ExhaustLogSlots(), 0);
