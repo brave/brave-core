@@ -133,6 +133,15 @@ bool BraveTabStripModel::IsOnlyActiveTabAndTreeDescendantsSelected() {
   return selected_indices == expected_indices;
 }
 
+void BraveTabStripModel::SetTreeTabSubtreeSelectedOnPress(
+    tabs::TabHandle handle) {
+  tree_tab_subtree_selected_on_press_ = handle;
+}
+
+std::optional<tabs::TabHandle>
+BraveTabStripModel::TakeTreeTabSubtreeSelectedOnPress() {
+  return std::exchange(tree_tab_subtree_selected_on_press_, std::nullopt);
+}
 void BraveTabStripModel::CycleToNextMRUTab(TabStripUserGestureDetails detail) {
   SelectMRUTab(TabRelativeDirection::kNext, detail);
 }
