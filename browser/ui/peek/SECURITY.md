@@ -43,7 +43,8 @@ matches the iOS Quick Views review.
   `url_formatter::FormatUrlForSecurityDisplay(GetVisibleURL())`, the same
   formatting used for security-sensitive URL display elsewhere. The page title
   is shown next to it and is page-controlled; the host is the authoritative
-  part.
+  part, so the title shrinks first and a long title can't push the host out.
+  Test: `LongTitleKeepsHostVisible`.
 - Only the content area below the toolbar is dimmed; the real omnibox stays
   visible and keeps showing the tab the user is on.
 - Escape closes Peek before the page receives the key, so a page can't keep the
@@ -83,6 +84,9 @@ Tests: `HttpPageIsNotMarkedSecure`, `HttpsPageIsMarkedSecure`,
   `CheckMediaAccessPermission` returns false while in Peek.
 - Brave Wallet: requests that would open the wallet panel or account creation
   move Peek to a tab first (`brave_wallet_provider_delegate_impl_helper.cc`).
+  A hidden Peek becomes a background tab, which opens neither: account creation
+  would otherwise open or focus the wallet page, e.g. over the user's new tab
+  page.
 - Permissions the site was already granted need no prompt, so they work in Peek
   as they would in a tab, and the omnibox indicators (e.g. location in use)
   belong to the active tab, not Peek. Camera and microphone are the exception
@@ -90,7 +94,7 @@ Tests: `HttpPageIsNotMarkedSecure`, `HttpsPageIsMarkedSecure`,
   question in [SPEC.md](SPEC.md).
 
 Tests: `PermissionRequestMovesToTab`, `WalletPanelMovesToTab`,
-`WalletAccountCreationMovesToTab`.
+`WalletAccountCreationMovesToTab`, `HiddenPeekWalletAccountCreationOpensNothing`.
 
 ### Downloads
 
@@ -142,11 +146,10 @@ Tests: `PopupWithoutGestureIsBlocked`, `NewTabWithoutGestureIsBlocked`,
 - Tab-modal dialogs (HTTP auth, print, and anything else using
   `WebContentsModalDialogManager`) move Peek to a tab before the dialog is
   shown.
-- The cookies and site data dialog from page info is opened through
-  `TabDialogs`, which only tabs have. The chromium_src override of
-  `ChromePageInfoDelegate::OpenCookiesDialog` asks Peek to move to a tab, after
-  the page info bubble (which belongs to the Peek card) returns, and the dialog
-  is shown there.
+- The cookies and site data dialog from page info is tab-modal. The
+  chromium_src override of `ChromePageInfoDelegate::OpenCookiesDialog` asks
+  Peek to move to a tab, after the page info bubble (which belongs to the Peek
+  card) returns, and the dialog is shown there.
 - JavaScript dialogs (`alert`, `confirm`, `prompt`, `beforeunload`) are
   suppressed in Peek, because the Peek delegate has no
   `JavaScriptDialogManager`.
@@ -239,8 +242,14 @@ and the `peek_utils` unit tests.
 - Other windows: a window's Peek can only be opened from its own tabs. Test:
   `CannotOpenFromAnotherWindow`.
 - Private and Tor windows: Peek uses the window's profile, so it is off the
-  record (and proxied through Tor in Tor windows). Peek adds no prefs or on-disk
-  state of its own. Test: `IncognitoPeekStaysOffTheRecord`.
+  record (and proxied through Tor in Tor windows). Test:
+  `IncognitoPeekStaysOffTheRecord`.
+- Prefs: Peek's only state is the card size, `brave.peek.card_width_ratio` and
+  `brave.peek.card_height_ratio`, stored as fractions of the contents area when
+  the user resizes the card. In private and Tor windows they're written to the
+  off-the-record profile's in-memory pref overlay (they aren't on the incognito
+  persistent allowlist), so nothing is written to disk and the regular
+  profile's size is read until the window sets its own.
 - History: pages loaded in Peek are recorded like any other visit, so they're
   cleared with history. Peek attaches the history tab helper itself, except in
   private and Tor windows.
@@ -320,7 +329,8 @@ dependencies, cryptography, and similar) are omitted.
 - Private and Tor mode: no state written to disk, no leak into the regular
   profile, Tor windows' Peek uses the Tor profile and its network context.
 - No new Mojo interfaces, renderer-exposed APIs, schemes, `window.*` injections,
-  prefs, network requests or hostnames.
+  network requests or hostnames. The only new prefs are the card size (see
+  "Prefs" above).
 - Same-site vs same-origin: Peek's checks are scheme-based (http(s)); site
   permissions keep working per origin since they move to the tab.
 - Clipboard: Peek doesn't write to the clipboard.

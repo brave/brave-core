@@ -32,11 +32,16 @@ constexpr auto kAccountCreationCoinName =
          {brave_wallet::mojom::CoinType::DOT, "Polkadot"}});
 
 // The wallet UI is attached to a tab. A page in Peek is moved into one first,
-// so the user can see which site the request comes from.
-void MaybeMoveOutOfPeek(content::WebContents* web_contents) {
-  if (auto* peek_controller = PeekController::FromPeekContents(web_contents)) {
-    peek_controller->OpenAsTab(*web_contents);
+// so the user can see which site the request comes from. Returns false if the
+// Peek was hidden, so it's now a background tab, which must not open wallet UI.
+bool MaybeMoveOutOfPeek(content::WebContents* web_contents) {
+  auto* peek_controller = PeekController::FromPeekContents(web_contents);
+  if (!peek_controller) {
+    return true;
   }
+  peek_controller->OpenAsTab(*web_contents);
+  auto* tab = tabs::TabInterface::MaybeGetFromContents(web_contents);
+  return tab && tab->IsActivated();
 }
 
 }  // namespace
@@ -73,7 +78,9 @@ void ShowAccountCreation(content::WebContents* web_contents,
   }
 
   if (web_contents) {
-    MaybeMoveOutOfPeek(web_contents);
+    if (!MaybeMoveOutOfPeek(web_contents)) {
+      return;
+    }
     BrowserWindowInterface* browser =
         GlobalBrowserCollection::GetInstance()->FindBrowserWithTab(
             web_contents);

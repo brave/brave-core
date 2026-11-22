@@ -263,7 +263,8 @@ against the toolbar and page, so the divider uses subtle.
 The card is sized from the contents area, so it follows window resizes and split
 view. The 24 px minimum inset keeps a visible backdrop on small windows. The
 toolbar keeps the buttons at a fixed size. When the card is narrow or the title
-is long, the host elides first, then the title.
+is long, the title elides first, then the host, which is the authoritative
+origin.
 
 ### Platform differences
 
@@ -339,7 +340,9 @@ Screenshots are added to the PR. Nala tokens above stand in for color values.
   `BraveBrowserCommandController` asks `PeekController::HandleCommand()` before
   running a command; it handles close tab and `peek::IsPageCommand()` commands
   while Peek has focus (a key from the page, or the Peek widget is active), as
-  tasks, since the key's event handlers are still running.
+  tasks, since the key's event handlers are still running. `BraveBrowserView`
+  also asks it before ignoring close tab on a shared pinned tab, so Ctrl+W
+  closes a Peek opened from one.
 - `PeekController::Open(source, params)` returns false unless the source is a
   tab in this window and the params pass `CanOpenInPeek` (http(s) target,
   non-opaque http(s) initiator, and the initiator's navigation state).

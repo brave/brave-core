@@ -196,12 +196,13 @@ PeekView::PeekView(Delegate& delegate, BrowserWindowInterface& browser)
   title_->SetHorizontalAlignment(gfx::ALIGN_LEFT);
   title_->SetElideBehavior(gfx::ELIDE_TAIL);
   title_->SetAutoColorReadabilityEnabled(false);
-  // Labels shrink first; the title keeps its space ahead of the host.
+  // Labels shrink first, the page-controlled title before the host, which is
+  // the only trustworthy origin shown for the Peek page.
   title_->SetProperty(
       views::kFlexBehaviorKey,
       views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
                                views::MaximumFlexSizeRule::kPreferred)
-          .WithOrder(1));
+          .WithOrder(2));
 
   host_ = toolbar->AddChildView(std::make_unique<views::Label>(
       std::u16string(), views::style::CONTEXT_LABEL,
@@ -215,7 +216,7 @@ PeekView::PeekView(Delegate& delegate, BrowserWindowInterface& browser)
       views::kFlexBehaviorKey,
       views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
                                views::MaximumFlexSizeRule::kPreferred)
-          .WithOrder(2));
+          .WithOrder(1));
 
   // Pushes the buttons to the trailing edge.
   auto* spacer = toolbar->AddChildView(std::make_unique<views::View>());

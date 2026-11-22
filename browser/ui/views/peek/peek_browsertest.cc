@@ -23,6 +23,7 @@
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/ui/peek/peek_features.h"
 #include "brave/browser/ui/peek/public/peek_controller.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/peek/peek_controller_impl.h"
 #include "brave/browser/ui/views/peek/peek_shields_button.h"
@@ -38,6 +39,7 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/navigator/browser_navigator.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/split_tab_metrics.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -56,6 +58,7 @@
 #include "components/security_interstitials/content/security_interstitial_tab_helper.h"
 #include "components/security_state/core/security_state.h"
 #include "components/split_tabs/split_tab_visual_data.h"
+#include "components/tab_groups/tab_group_id.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/context_menu_params.h"
@@ -99,6 +102,7 @@
 #include "ui/shell_dialogs/fake_select_file_dialog.h"
 #include "ui/shell_dialogs/select_file_dialog.h"
 #include "ui/views/controls/button/image_button.h"
+#include "ui/views/controls/label.h"
 #include "ui/views/focus/focus_manager.h"
 #include "ui/views/test/button_test_api.h"
 #include "ui/views/test/views_test_utils.h"
@@ -154,6 +158,20 @@ class NavigationInitiatorObserver : public content::WebContentsObserver {
   bool is_renderer_initiated_ = false;
   std::optional<url::Origin> initiator_origin_;
 };
+
+#if !BUILDFLAG(IS_MAC)
+input::NativeWebKeyboardEvent CreateCtrlWEvent() {
+  input::NativeWebKeyboardEvent event(
+      blink::WebInputEvent::Type::kRawKeyDown,
+      blink::WebInputEvent::kControlKey,
+      blink::WebInputEvent::GetStaticTimeStampForTests());
+  event.windows_key_code = ui::VKEY_W;
+  event.dom_key = ui::DomKey::FromCharacter('w');
+  event.dom_code = static_cast<int>(ui::DomCode::US_W);
+  event.skip_if_unhandled = false;
+  return event;
+}
+#endif  // !BUILDFLAG(IS_MAC)
 
 }  // namespace
 
@@ -493,19 +511,45 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, CloseTabKeyClosesPeek) {
   // Handed to Peek's delegate as a key the page didn't handle. It isn't sent
   // through the page: a hidden renderer, e.g. in an occluded window on the
   // bots, never sends unhandled keys back.
-  input::NativeWebKeyboardEvent event(
-      blink::WebInputEvent::Type::kRawKeyDown,
-      blink::WebInputEvent::kControlKey,
-      blink::WebInputEvent::GetStaticTimeStampForTests());
-  event.windows_key_code = ui::VKEY_W;
-  event.dom_key = ui::DomKey::FromCharacter('w');
-  event.dom_code = static_cast<int>(ui::DomCode::US_W);
-  event.skip_if_unhandled = false;
+  const input::NativeWebKeyboardEvent event = CreateCtrlWEvent();
   content::WebContents* contents = peek_contents();
   EXPECT_TRUE(contents->GetDelegate()->HandleKeyboardEvent(contents, event));
   WaitForPeekClosed();
   EXPECT_EQ(1, tab_strip_model()->count());
   EXPECT_EQ(source, active_contents());
+}
+
+class PeekSharedPinnedTabsBrowserTest : public PeekBrowserTest {
+ public:
+  PeekSharedPinnedTabsBrowserTest() {
+    shared_pinned_tabs_features_.InitAndEnableFeature(
+        tabs::kBraveSharedPinnedTabs);
+  }
+
+  void SetUpOnMainThread() override {
+    PeekBrowserTest::SetUpOnMainThread();
+    browser()->GetProfile()->GetPrefs()->SetBoolean(
+        brave_tabs::kSharedPinnedTab, true);
+  }
+
+ private:
+  base::test::ScopedFeatureList shared_pinned_tabs_features_;
+};
+
+// The window ignores Ctrl+W on a shared pinned tab, but in Peek it means Peek.
+IN_PROC_BROWSER_TEST_F(PeekSharedPinnedTabsBrowserTest,
+                       CloseTabKeyClosesPeekFromPinnedTab) {
+  content::WebContents* source = active_contents();
+  tab_strip_model()->SetTabPinned(0, true);
+  OpenPeek(GetURL("b.com", "/title2.html"));
+
+  const input::NativeWebKeyboardEvent event = CreateCtrlWEvent();
+  content::WebContents* contents = peek_contents();
+  EXPECT_TRUE(contents->GetDelegate()->HandleKeyboardEvent(contents, event));
+  WaitForPeekClosed();
+  EXPECT_EQ(1, tab_strip_model()->count());
+  EXPECT_EQ(source, active_contents());
+  EXPECT_TRUE(tab_strip_model()->IsTabPinned(0));
 }
 #endif  // !BUILDFLAG(IS_MAC)
 
@@ -581,6 +625,44 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, OpenInSplitViewSplitsWithSourceTab) {
   ASSERT_TRUE(tab->IsSplit());
   EXPECT_EQ(tab->GetSplit(),
             tabs::TabInterface::GetFromContents(source)->GetSplit());
+}
+
+// The source tab is the split's pivot, so the Peek page joins its pinned state.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, OpenInSplitViewFromPinnedTab) {
+  content::WebContents* source = active_contents();
+  tab_strip_model()->SetTabPinned(0, true);
+  AddTab();
+  tab_strip_model()->ActivateTabAt(0);
+  OpenPeek(GetURL("b.com", "/title2.html"));
+  content::WebContents* contents = peek_contents();
+
+  controller()->OpenInSplitView();
+  EXPECT_EQ(contents, active_contents());
+  tabs::TabInterface* tab = tab_strip_model()->GetActiveTab();
+  ASSERT_TRUE(tab->IsSplit());
+  EXPECT_EQ(tab->GetSplit(),
+            tabs::TabInterface::GetFromContents(source)->GetSplit());
+  EXPECT_TRUE(tab->IsPinned());
+  EXPECT_EQ(3, tab_strip_model()->count());
+}
+
+// The source tab is the split's pivot, so the Peek page joins its group.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, OpenInSplitViewFromGroupedTab) {
+  content::WebContents* source = active_contents();
+  AddTab();
+  tab_strip_model()->ActivateTabAt(0);
+  const tab_groups::TabGroupId group = tab_strip_model()->AddToNewGroup({0});
+  OpenPeek(GetURL("b.com", "/title2.html"));
+  content::WebContents* contents = peek_contents();
+
+  controller()->OpenInSplitView();
+  EXPECT_EQ(contents, active_contents());
+  tabs::TabInterface* tab = tab_strip_model()->GetActiveTab();
+  ASSERT_TRUE(tab->IsSplit());
+  EXPECT_EQ(tab->GetSplit(),
+            tabs::TabInterface::GetFromContents(source)->GetSplit());
+  EXPECT_EQ(group, tab->GetGroup());
+  EXPECT_EQ(3, tab_strip_model()->count());
 }
 
 // Joining the source tab's split would replace one of its tabs.
@@ -717,8 +799,7 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, SiteInfoButtonShowsPageInfoForPeek) {
   EXPECT_EQ(peek_contents(), bubble->web_contents());
 }
 
-// The cookies dialog is tab-modal and `TabDialogs` only exists for tabs, so
-// Peek moves to a tab and shows it there.
+// The cookies dialog is tab-modal, so Peek moves to a tab and shows it there.
 IN_PROC_BROWSER_TEST_F(PeekBrowserTest,
                        PageInfoCookiesDialogMovesToTabAndShowsDialog) {
   OpenPeek(GetURL("b.com", "/title2.html"));
@@ -794,6 +875,26 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, WalletAccountCreationMovesToTab) {
             tab_strip_model()->GetIndexOfWebContents(contents));
   EXPECT_EQ(url, contents->GetLastCommittedURL());
 }
+
+// A hidden Peek becomes a background tab, which must not open the wallet over
+// the tab the user is on.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest,
+                       HiddenPeekWalletAccountCreationOpensNothing) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server_.GetURL("a.test", "/title1.html")));
+  OpenPeek(https_server_.GetURL("b.test", "/title1.html"));
+  content::WebContents* contents = peek_contents();
+  content::WebContents* other = AddTab();
+  const GURL other_url = other->GetLastCommittedURL();
+
+  brave_wallet::ShowAccountCreation(contents,
+                                    brave_wallet::mojom::CoinType::SOL);
+
+  EXPECT_EQ(1, tab_strip_model()->GetIndexOfWebContents(contents));
+  EXPECT_EQ(3, tab_strip_model()->count());
+  EXPECT_EQ(other, active_contents());
+  EXPECT_EQ(other_url, other->GetLastCommittedURL());
+}
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 IN_PROC_BROWSER_TEST_F(PeekBrowserTest, OpenGrowsCard) {
@@ -828,6 +929,28 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, CardIsAttachedToToolbar) {
   PeekView* peek_view = controller()->peek_view_for_testing();
   views::test::RunScheduledLayout(peek_view);
   EXPECT_EQ(0, peek_view->card_for_testing()->y());
+}
+
+// The title is page-controlled and the host is the real origin, so a long
+// title shrinks before the host does.
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, LongTitleKeepsHostVisible) {
+  OpenPeek(GetURL("b.com", "/title2.html"));
+  const std::u16string long_title(1000, u'x');
+  ASSERT_TRUE(content::ExecJs(
+      peek_contents(),
+      content::JsReplace("document.title = $1;", std::string(1000, 'x'))));
+
+  PeekView* peek_view = controller()->peek_view_for_testing();
+  views::Label* title = peek_view->title_for_testing();
+  views::Label* host = peek_view->host_for_testing();
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return title->GetText() == long_title; }));
+  views::test::RunScheduledLayout(peek_view);
+
+  EXPECT_EQ(host->GetPreferredSize().width(), host->width());
+  EXPECT_GT(title->GetPreferredSize().width(), title->width());
+  EXPECT_TRUE(peek_view->close_button_for_testing()->IsDrawn());
+  EXPECT_GT(peek_view->close_button_for_testing()->width(), 0);
 }
 
 // Drags from `from` to `to` in `peek_view`'s coordinates with the left button.

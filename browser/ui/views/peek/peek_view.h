@@ -106,6 +106,8 @@ class PeekView : public views::View, public views::AnimationDelegateViews {
     return site_info_button_;
   }
   PeekShieldsButton* shields_button_for_testing() { return shields_button_; }
+  views::Label* title_for_testing() { return title_; }
+  views::Label* host_for_testing() { return host_; }
 
   // views::View:
   void Layout(PassKey) override;

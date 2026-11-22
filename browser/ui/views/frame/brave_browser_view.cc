@@ -25,6 +25,7 @@
 #include "brave/browser/ui/focus_mode/focus_mode_features.h"
 #include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/page_info/features.h"
+#include "brave/browser/ui/peek/public/peek_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -984,6 +985,12 @@ bool BraveBrowserView::AcceleratorPressed(const ui::Accelerator& accelerator) {
           brave_tabs::kSharedPinnedTab)) {
     if (int command_id; FindCommandIdForAccelerator(accelerator, &command_id) &&
                         command_id == IDC_CLOSE_TAB) {
+      // A focused Peek takes Close tab for itself, which leaves the pinned
+      // tab under it alone.
+      if (auto* peek_controller = PeekController::From(browser());
+          peek_controller && peek_controller->HandleCommand(command_id)) {
+        return true;
+      }
       auto* tab_strip_model = browser()->tab_strip_model();
       if (tab_strip_model->IsTabPinned(tab_strip_model->active_index())) {
         // Ignore CLOSE TAB command via accelerator if the tab is shared/dummy
