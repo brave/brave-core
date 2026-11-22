@@ -138,15 +138,15 @@ BraveTabStripModel* GetBraveTabStripModel(tabs::TabInterface* tab) {
 }
 
 // Adds the tabs at |descendant_indices| to the current selection.
-void SelectTreeTabDescendants(BraveTabStripModel* model,
+void SelectTreeTabDescendants(BraveTabStripModel& model,
                               const std::vector<int>& descendant_indices) {
   std::unordered_set<tabs::TabInterface*> descendants;
   for (int descendant_index : descendant_indices) {
-    descendants.insert(model->GetTabAtIndex(descendant_index));
+    descendants.insert(model.GetTabAtIndex(descendant_index));
   }
-  tabs::TabStripModelSelectionState new_selection = model->selection_model();
+  tabs::TabStripModelSelectionState new_selection = model.selection_model();
   new_selection.AppendTabsToSelection(descendants);
-  model->SetSelectionFromModel(std::move(new_selection));
+  model.SetSelectionFromModel(std::move(new_selection));
 }
 
 }  // namespace
@@ -254,10 +254,10 @@ void ExpandCollapsedTreeTabAncestorsAsync(tabs::TabInterface* tab) {
 }
 
 void ActivateTabAndSelectTreeTabSubtree(
-    TabStripModel* tab_strip_model,
+    TabStripModel& tab_strip_model,
     int index,
     const TabStripUserGestureDetails& detail) {
-  auto* model = static_cast<BraveTabStripModel*>(tab_strip_model);
+  auto* model = static_cast<BraveTabStripModel*>(&tab_strip_model);
   if (!model->tree_model()) {
     model->ActivateTabAt(index, detail);
     return;
@@ -300,7 +300,7 @@ void ActivateTabAndSelectTreeTabSubtree(
     return;
   }
 
-  SelectTreeTabDescendants(model, descendant_indices);
+  SelectTreeTabDescendants(*model, descendant_indices);
   if (is_press) {
     model->SetTreeTabSubtreeSelectedOnPress(tab->GetHandle());
   }

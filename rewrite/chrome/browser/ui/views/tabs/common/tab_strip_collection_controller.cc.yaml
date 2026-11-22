@@ -16,4 +16,4 @@ substitutions:
       pattern: model_->ActivateTabAt(tab_index.value(), gesture_detail);
       replace: |-
         tree_tab_view_utils::ActivateTabAndSelectTreeTabSubtree(
-            model_, tab_index.value(), gesture_detail);
+            *model_, tab_index.value(), gesture_detail);

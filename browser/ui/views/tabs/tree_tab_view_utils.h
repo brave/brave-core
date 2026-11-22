@@ -81,7 +81,7 @@ void ExpandCollapsedTreeTabAncestorsAsync(tabs::TabInterface* tab);
 // already all selected, so that dragging the parent moves its subtree. Called
 // by TabStripCollectionController::SelectTab().
 void ActivateTabAndSelectTreeTabSubtree(
-    TabStripModel* tab_strip_model,
+    TabStripModel& tab_strip_model,
     int index,
     const TabStripUserGestureDetails& detail);
 

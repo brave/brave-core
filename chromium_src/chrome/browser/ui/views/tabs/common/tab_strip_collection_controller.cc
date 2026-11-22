@@ -12,7 +12,7 @@ struct TabStripUserGestureDetails;
 // so that this upstream target doesn't depend on Brave targets.
 namespace tree_tab_view_utils {
 void ActivateTabAndSelectTreeTabSubtree(
-    TabStripModel* tab_strip_model,
+    TabStripModel& tab_strip_model,
     int index,
     const TabStripUserGestureDetails& detail);
 }  // namespace tree_tab_view_utils
