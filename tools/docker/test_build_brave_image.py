@@ -77,6 +77,43 @@ class DockerSelectionTests(unittest.TestCase):
         )
 
 
+class PlatformSelectionTests(unittest.TestCase):
+    def test_no_platform_or_history_defaults_to_linux_x64(self):
+        self.assertEqual(builder.selected_platforms(), [("linux", "x64")])
+        self.assertEqual(
+            builder.selected_platforms(None, {}), [("linux", "x64")]
+        )
+
+    def test_explicit_platforms_override_history(self):
+        self.assertEqual(
+            builder.selected_platforms(
+                [("win", "x64"), ("android", "arm64"), ("win", "x64")],
+                {"last_platforms": [["linux", "x64"]]},
+            ),
+            [("win", "x64"), ("android", "arm64")],
+        )
+
+    def test_saved_platforms_are_reused(self):
+        self.assertEqual(
+            builder.selected_platforms(
+                None, {"last_platforms": [["win", "x64"]]}
+            ),
+            [("win", "x64")],
+        )
+        self.assertEqual(
+            builder.selected_platforms(
+                None,
+                {
+                    "last_build": {
+                        "target_os": "android",
+                        "target_arch": "arm64",
+                    }
+                },
+            ),
+            [("android", "arm64")],
+        )
+
+
 class ImageBuildTests(unittest.TestCase):
     def setUp(self):
         self.root = Path(tempfile.mkdtemp()).resolve()

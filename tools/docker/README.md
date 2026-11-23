@@ -149,6 +149,11 @@ python3 tools/docker/create_container.py --setup-toolchain --name "$brave_contai
 Static build when Component is selected. The image's default command keeps the
 container running between `exec` calls.
 
+For callers preparing development builds, `selected_platforms()` in
+`build_brave_image.py` defaults to Linux x64 when no requested or saved platform
+is available. Explicit selections take precedence, followed by the last build's
+platforms.
+
 ## Verify the tooling
 
 Run the tooling tests without Docker or remote build credentials:

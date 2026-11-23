@@ -91,6 +91,22 @@ PLATFORMS = (
 IMAGE_FORMAT = "6"
 
 
+def selected_platforms(requested=None, previous=None):
+    """Use requested or saved development platforms, defaulting to Linux x64."""
+    previous = previous or {}
+    selections = requested or previous.get("last_platforms")
+    if not selections and previous.get("last_build"):
+        last = previous["last_build"]
+        selections = [(last.get("target_os"), last.get("target_arch"))]
+    if not selections:
+        selections = [("linux", "x64")]
+    if any(len(pair) != 2 or not all(pair) for pair in selections):
+        raise RuntimeError(
+            "Invalid platform selection; supply --target_platform OS-ARCH"
+        )
+    return list(dict.fromkeys(tuple(pair) for pair in selections))
+
+
 @contextmanager
 def image_lock(command, env, name):
     """Hold local ownership without relying on a removable sentinel file."""
