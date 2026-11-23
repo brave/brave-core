@@ -79,9 +79,8 @@ std::optional<sync_pb::AIChatConversationSpecifics> BuildCommittableEntry(
 }
 
 // Returns the modified time to send with a local record. A failed read sends
-// none, so the record counts as the oldest and can't overwrite another device's
-// copy that has a time.
-base::Time TimeToSend(const std::optional<base::Time>& modified_time) {
+// none, which means the oldest, as for a record whose time was never recorded.
+base::Time TimeToSend(std::optional<base::Time> modified_time) {
   return modified_time.value_or(base::Time());
 }
 
