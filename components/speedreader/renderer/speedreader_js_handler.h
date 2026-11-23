@@ -9,11 +9,14 @@
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "gin/wrappable.h"
+#include "v8/include/cppgc/prefinalizer.h"
 
 namespace speedreader {
 
 class SpeedreaderJSHandler final : public gin::Wrappable<SpeedreaderJSHandler>,
                                    public content::RenderFrameObserver {
+  CPPGC_USING_PRE_FINALIZER(SpeedreaderJSHandler, Dispose);
+
  public:
   static constexpr gin::WrapperInfo kWrapperInfo = {{gin::kEmbedderNativeGin},
                                                     gin::SpeedreaderBindings};
@@ -22,6 +25,9 @@ class SpeedreaderJSHandler final : public gin::Wrappable<SpeedreaderJSHandler>,
   ~SpeedreaderJSHandler() final;
   SpeedreaderJSHandler(const SpeedreaderJSHandler&) = delete;
   SpeedreaderJSHandler& operator=(const SpeedreaderJSHandler&) = delete;
+
+  // Stops observing the frame before the GC frees this object.
+  void Dispose();
 
   static void Install(content::RenderFrame* render_frame,
                       v8::Local<v8::Context> context);
