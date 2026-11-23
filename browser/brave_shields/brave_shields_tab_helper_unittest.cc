@@ -118,6 +118,13 @@ TEST_F(BraveShieldsTabHelperUnitTest,
 
 TEST_F(BraveShieldsTabHelperUnitTest,
        DontTriggerOnRepeatedReloadsDetectedWhenLocaleNotSupported) {
+  feature_list_.InitAndEnableFeatureWithParameters(
+      features::kAdblockOnlyMode,
+      {
+          {features::kAdblockOnlyModePromptAfterPageReloadsMin.name, "1"},
+          {features::kAdblockOnlyModePromptAfterPageReloadsMax.name, "2"},
+          {features::kAdblockOnlyModePromptAfterPageReloadsInterval.name, "1s"},
+      });
   SetApplicationLocale("fr-FR");
 
   EXPECT_CALL(*observer_, OnRepeatedReloadsDetected).Times(0);
@@ -282,13 +289,13 @@ TEST_F(BraveShieldsTabHelperUnitTest,
 
 TEST_F(BraveShieldsTabHelperUnitTest,
        DontShowShieldsDisabledAdBlockOnlyModePromptWhenLocaleNotSupported) {
+  feature_list_.InitAndEnableFeatureWithParameters(
+      features::kAdblockOnlyMode,
+      {
+          {features::kAdblockOnlyModePromptAfterShieldsDisabledCount.name, "2"},
+      });
   SetApplicationLocale("fr-FR");
 
-  // Default value of
-  // `features::kAdblockOnlyModePromptAfterShieldsDisabledCount` is 5.
-  brave_shields_tab_helper_->SetBraveShieldsEnabled(false);
-  brave_shields_tab_helper_->SetBraveShieldsEnabled(false);
-  brave_shields_tab_helper_->SetBraveShieldsEnabled(false);
   brave_shields_tab_helper_->SetBraveShieldsEnabled(false);
   brave_shields_tab_helper_->SetBraveShieldsEnabled(false);
 

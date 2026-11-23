@@ -11,7 +11,6 @@
 #include "base/test/test_future.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/browser/ntp_background/constants.h"
-#include "brave/browser/ntp_background/custom_background_file_manager.h"
 #include "brave/browser/ntp_background/ntp_background_prefs.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -88,8 +87,9 @@ TEST_F(BraveNTPCustomBackgroundServiceDelegateUnitTest, MigrationSuccess) {
   {
     base::ScopedAllowBlockingForTesting allow_blocking_call;
     EXPECT_TRUE(base::PathExists(
-        service_delegate()
-            .file_manager_->GetCustomBackgroundDirectory()
+        profile()
+            .GetPath()
+            .AppendASCII(ntp_background_images::kSanitizedImageDirName)
             .AppendASCII(
                 ntp_background_images::kSanitizedImageFileNameDeprecated)));
   }

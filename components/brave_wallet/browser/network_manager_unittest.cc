@@ -244,7 +244,7 @@ TEST_F(NetworkManagerUnitTest, CustomChainsExist) {
   // returned
   std::vector<std::string> existing_chains =
       network_manager()->CustomChainsExist(chains, mojom::CoinType::ETH);
-  EXPECT_EQ(existing_chains.size(), 2u);
+  ASSERT_EQ(existing_chains.size(), 2u);
   EXPECT_EQ(existing_chains[0], chain1.chain_id);
   EXPECT_EQ(existing_chains[1], chain2.chain_id);
   EXPECT_EQ(std::find(existing_chains.begin(), existing_chains.end(),
@@ -255,7 +255,8 @@ TEST_F(NetworkManagerUnitTest, CustomChainsExist) {
 TEST_F(NetworkManagerUnitTest, GetAllChainsTest) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeatures(
-      {features::kBraveWalletZCashFeature, features::kBraveWalletCardanoFeature,
+      {features::kBraveWalletBitcoinFeature, features::kBraveWalletZCashFeature,
+       features::kBraveWalletCardanoFeature,
        features::kBraveWalletPolkadotFeature},
       {});
 
@@ -284,19 +285,21 @@ TEST_F(NetworkManagerUnitTest, GetAllChainsTest) {
   auto known_chains = NetworkManager::GetAllKnownChains(mojom::CoinType::ETH);
   auto custom_chains =
       network_manager()->GetAllCustomChains(mojom::CoinType::ETH);
+  ASSERT_EQ(custom_chains.size(), 2u);
   EXPECT_EQ(*custom_chains[0], chain1);
   EXPECT_EQ(*custom_chains[1], chain2);
 
   // Custom Polygon chain takes place of known one.
   // Custom unknown chain becomes last.
   auto expected_chains = std::move(known_chains);
+  ASSERT_GT(expected_chains.size(), 2u);
   EXPECT_EQ(expected_chains[2]->chain_id, mojom::kPolygonMainnetChainId);
   expected_chains[2] = chain1.Clone();
   expected_chains.push_back(chain2.Clone());
 
   auto all_chains = get_all_chains_for_coin(mojom::CoinType::ETH);
 
-  EXPECT_EQ(expected_chains.size(), all_chains.size());
+  ASSERT_EQ(expected_chains.size(), all_chains.size());
   for (size_t i = 0; i < all_chains.size(); i++) {
     ASSERT_TRUE(all_chains.at(i).Equals(expected_chains.at(i)));
     EXPECT_THAT(all_chains.at(i)->supported_keyrings,
@@ -751,13 +754,13 @@ TEST_F(NetworkManagerUnitTest, Eip1559Chain) {
 
   network_manager()->SetEip1559ForCustomChain(custom_chain_id, true);
   EXPECT_TRUE(network_manager()->IsEip1559Chain(custom_chain_id));
-  EXPECT_EQ(*dict().FindBool(custom_chain_id), true);
+  EXPECT_EQ(dict().FindBool(custom_chain_id), true);
 
   network_manager()->SetEip1559ForCustomChain(
       base::ToUpperASCII(custom_chain_id), false);
   EXPECT_FALSE(
       network_manager()->IsEip1559Chain(base::ToUpperASCII(custom_chain_id)));
-  EXPECT_EQ(*dict().FindBool(custom_chain_id), false);
+  EXPECT_EQ(dict().FindBool(custom_chain_id), false);
 
   network_manager()->SetEip1559ForCustomChain(custom_chain_id, std::nullopt);
   EXPECT_FALSE(network_manager()->IsEip1559Chain(custom_chain_id));
@@ -768,7 +771,7 @@ TEST_F(NetworkManagerUnitTest, Eip1559Chain) {
                                               false);
   EXPECT_FALSE(
       network_manager()->IsEip1559Chain(mojom::kPolygonMainnetChainId));
-  EXPECT_EQ(*dict().FindBool(mojom::kPolygonMainnetChainId), false);
+  EXPECT_EQ(dict().FindBool(mojom::kPolygonMainnetChainId), false);
 
   network_manager()->SetEip1559ForCustomChain(mojom::kPolygonMainnetChainId,
                                               std::nullopt);

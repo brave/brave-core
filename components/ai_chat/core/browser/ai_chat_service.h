@@ -21,11 +21,11 @@
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
-#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_multi_source_observation.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/threading/sequence_bound.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
@@ -316,6 +316,12 @@ class AIChatService : public KeyedService,
   void SetDatabaseForTesting(base::SequenceBound<AIChatDatabase> db) {
     ai_chat_db_ = std::move(db);
   }
+  bool HasDatabaseForTesting() const { return !ai_chat_db_.is_null(); }
+  // Null until storage has been initialized.
+  scoped_refptr<base::SequencedTaskRunner> GetDatabaseTaskRunnerForTesting()
+      const {
+    return db_task_runner_;
+  }
 
   void SetWorkspaceContentRestorer(
       base::RepeatingCallback<
@@ -325,10 +331,6 @@ class AIChatService : public KeyedService,
   }
 
  private:
-  friend class AIChatServiceUnitTest;
-  FRIEND_TEST_ALL_PREFIXES(AIChatServiceUnitTest,
-                           CreateTabOrganizationEngineIfNeeded_InvalidModelKey);
-
   // Key is uuid
   using ConversationMap =
       std::map<std::string, mojom::ConversationPtr, std::less<>>;

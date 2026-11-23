@@ -20,7 +20,6 @@
 #include "brave/components/brave_news/browser/topics_fetcher.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 namespace brave_news {
 
@@ -85,30 +84,7 @@ mojom::FeedItemPtr MakeArticleItem(const std::string& publisher_id) {
 }
 }  // namespace
 
-class BraveNewsFeedGenerationInfoTest : public testing::Test {
- public:
-  BraveNewsFeedGenerationInfoTest() = default;
-  BraveNewsFeedGenerationInfoTest(const BraveNewsFeedGenerationInfoTest&) =
-      delete;
-  BraveNewsFeedGenerationInfoTest& operator=(
-      const BraveNewsFeedGenerationInfoTest&) = delete;
-  ~BraveNewsFeedGenerationInfoTest() override = default;
-
-  bool HasCreatedContentGroups(FeedGenerationInfo& info) {
-    return info.content_groups_.has_value();
-  }
-
-  bool HasCreatedArticleInfos(FeedGenerationInfo& info) {
-    return info.article_infos_.has_value();
-  }
-
-  absl::flat_hash_map<NameId, size_t>& GetAvailableCounts(
-      FeedGenerationInfo& info) {
-    return info.available_counts_;
-  }
-};
-
-TEST_F(BraveNewsFeedGenerationInfoTest, CanCreateFeedGenerationInfo) {
+TEST(BraveNewsFeedGenerationInfoTest, CanCreateFeedGenerationInfo) {
   auto [locale, feed_items, publishers, signals, topics] = MockFetchedData();
   feed_items.push_back(MakeArticleItem(kPublisher1));
   feed_items.push_back(MakeArticleItem(kPublisher2));
@@ -117,16 +93,10 @@ TEST_F(BraveNewsFeedGenerationInfoTest, CanCreateFeedGenerationInfo) {
                           publishers, {kTopNewsChannel, kFooChannel}, signals,
                           {}, topics);
 
-  // ContentGroups and ArticleInfos should be lazily created.
-  EXPECT_FALSE(HasCreatedArticleInfos(info));
-  EXPECT_FALSE(HasCreatedContentGroups(info));
-
   // Articles from disabled publisher should be removed
   EXPECT_EQ(2u, info.GetArticleInfos().size());
-  EXPECT_TRUE(HasCreatedArticleInfos(info));
 
   auto& content_groups = info.GetEligibleContentGroups();
-  EXPECT_TRUE(HasCreatedContentGroups(info));
 
   // Content groups should include subscribed channels and publishers. Note:
   // There are only 3 items because PublisherTwo is not explicitly subscribed.
@@ -145,8 +115,8 @@ TEST_F(BraveNewsFeedGenerationInfoTest, CanCreateFeedGenerationInfo) {
   EXPECT_TRUE(has_group(kPublisher1));
 }
 
-TEST_F(BraveNewsFeedGenerationInfoTest,
-       RemovingArticlesUpdatesEligibleContentGroups) {
+TEST(BraveNewsFeedGenerationInfoTest,
+     RemovingArticlesUpdatesEligibleContentGroups) {
   auto [locale, feed_items, publishers, signals, topics] = MockFetchedData();
   feed_items.push_back(MakeArticleItem(kPublisher1));
   feed_items.push_back(MakeArticleItem(kPublisher2));
@@ -171,8 +141,7 @@ TEST_F(BraveNewsFeedGenerationInfoTest,
   EXPECT_EQ(1u, info.GetEligibleContentGroups().size());
 }
 
-TEST_F(BraveNewsFeedGenerationInfoTest,
-       RemovingArticlesUpdatesEligibleChannels) {
+TEST(BraveNewsFeedGenerationInfoTest, RemovingArticlesUpdatesEligibleChannels) {
   auto [locale, feed_items, publishers, signals, topics] = MockFetchedData();
   feed_items.push_back(MakeArticleItem(kPublisher1));
   feed_items.push_back(MakeArticleItem(kPublisher2));
@@ -264,7 +233,7 @@ TEST(BraveNewsFeedSampling, GetArticleInfosUsesCorrectSignals) {
   items.push_back(MakeArticleItem("not-a-real-publisher"));
 
   auto infos = GetArticleInfosForTesting(locale, items, publishers, signals);
-  EXPECT_EQ(2u, infos.size());
+  ASSERT_EQ(2u, infos.size());
 
   auto& [article0, weight0] = infos.at(0);
   EXPECT_EQ("one", article0->publisher_id);

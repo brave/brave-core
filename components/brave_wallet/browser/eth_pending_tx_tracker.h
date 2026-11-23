@@ -12,7 +12,6 @@
 #include <string>
 
 #include "base/containers/flat_map.h"
-#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
@@ -39,10 +38,6 @@ class EthPendingTxTracker {
   void Reset();
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(EthPendingTxTrackerUnitTest, IsNonceTaken);
-  FRIEND_TEST_ALL_PREFIXES(EthPendingTxTrackerUnitTest, ShouldTxDropped);
-  FRIEND_TEST_ALL_PREFIXES(EthPendingTxTrackerUnitTest, DropTransaction);
-
   void OnGetTxReceipt(const std::string& meta_id,
                       TransactionReceipt receipt,
                       mojom::ProviderError error,

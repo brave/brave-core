@@ -29,8 +29,10 @@ namespace history_embeddings {
 
 // The setting is captured at profile setup, so each test picks the value the
 // embedding services would have been built with before building `profile_`.
-// `feature_list_` is a member so the feature is already on by then — otherwise
-// the status would read off for two reasons at once.
+// The feature lists are members so the features are already on by then —
+// otherwise the status would read off for two reasons at once. AI Chat is
+// pinned on too, as it decides whether the send page content pref is
+// registered at all.
 class BraveHistoryEmbeddingsStatusTest : public testing::Test {
  protected:
   void BuildProfileWithSetting(bool enabled) {
@@ -80,6 +82,10 @@ class BraveHistoryEmbeddingsStatusTest : public testing::Test {
 
   bool seed_send_page_content_ = false;
   base::test::ScopedFeatureList feature_list_{kHistoryEmbeddings};
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  base::test::ScopedFeatureList ai_chat_feature_list_{
+      ai_chat::features::kAIChat};
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<TestingProfile> profile_;
 };

@@ -398,6 +398,7 @@ bool BlockchainRegistry::IsEmptyForTesting() {
 void BlockchainRegistry::ResetForTesting() {
   coingecko_ids_map_.clear();
   token_list_map_.clear();
+  chain_list_.clear();
   restricted_addresses_.clear();
   polkadot_rpc_urls_.clear();
   receivers_.Clear();
