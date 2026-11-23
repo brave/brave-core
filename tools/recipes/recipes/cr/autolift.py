@@ -198,11 +198,13 @@ def RunSteps(
 ) -> result_pb.RawResult | None:
     tag = properties.chromium_version
     # A new run syncs its tooling with the newest branch, which a resumed run
-    # has done already. A channel bump's tooling comes from the newest branch
-    # as it is.
+    # has done already. A channel bump's tooling comes from master, or the
+    # milestone's branch when given, as it is.
     newest = None
     branches: set[int] = set()
-    if not properties.resume or not (properties.milestone or tag):
+    if not (properties.milestone or tag) or (
+        not properties.resume and properties.milestone
+    ):
         branches = _branch_milestones(api)
         newest = max(branches)
     milestone = properties.milestone or newest
@@ -218,6 +220,8 @@ def RunSteps(
     else:
         api.brave_core_checkout.set_brave_core_ref(
             _checkout_ref(milestone, branches)
+            if milestone
+            else 'refs/heads/master'
         )
         # Deprecated: the `.env` for the builds, with RBE when the module's
         # `use_remoteexec` property asks for it.
@@ -592,17 +596,19 @@ def GenTests(api: TEST_DEPS):
         api.post_process(post_process.DropExpectation),
     )
 
-    # A channel bump runs from the newest branch's tooling, as it is, with
-    # its own run directory.
+    # A channel bump runs from master's tooling, as it is, with its own run
+    # directory.
     yield api.test(
         'channel bump',
         new_run(
             api.properties(chromium_version='157.0.8103.38'),
+            api.post_process(post_process.DoesNotRun, 'find latest cr branch'),
             api.post_process(
                 post_process.StepCommandContains,
                 'brave-core checkout branch',
-                ['checkout', '--force', '-B', 'cr159'],
+                ['checkout', '--force', '-B', 'master'],
             ),
+            api.post_process(post_process.MustRun, 'pnpm run sync'),
             advised(AUTOLIFT, 'advise', '157.0.8103.38'),
             api.post_process(post_process.DoesNotRun, 'sync tooling'),
             api.post_process(

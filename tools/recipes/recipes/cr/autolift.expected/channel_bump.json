@@ -2,16 +2,6 @@
   {
     "cmd": [
       "git",
-      "ls-remote",
-      "--heads",
-      "https://github.com/brave/brave-core.git",
-      "refs/heads/cr*"
-    ],
-    "name": "find latest cr branch"
-  },
-  {
-    "cmd": [
-      "git",
       "clone",
       "--depth",
       "1",
@@ -180,7 +170,7 @@
       "git",
       "checkout",
       "--force",
-      "origin/cr159",
+      "origin/master",
       "--"
     ],
     "cwd": "[WORKSPACE]/b/src/brave",
@@ -204,7 +194,7 @@
       "checkout",
       "--force",
       "-B",
-      "cr159"
+      "master"
     ],
     "cwd": "[WORKSPACE]/b/src/brave",
     "name": "brave-core checkout branch"

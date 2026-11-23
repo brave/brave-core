@@ -26,7 +26,7 @@ message InputProperties {
   // A Chromium tag (e.g. `157.0.8103.38`) to bump Brave's release channels
   // on its milestone M<N> to: a `cr<N>.x` (off master) or
   // `cr<N>.x-on-<channel>` branch and pull request for each. The tooling comes
-  // from `cr<milestone>` (the latest when unset), without syncing it with the
+  // from `cr<milestone>` (master when unset), without syncing it with the
   // newer branches.
   string chromium_version = 4;
 }
