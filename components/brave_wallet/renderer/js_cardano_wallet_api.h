@@ -18,6 +18,7 @@
 #include "gin/wrappable.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "v8/include/cppgc/prefinalizer.h"
 
 namespace brave_wallet {
 
@@ -31,6 +32,9 @@ v8::Local<v8::Value> ConvertError(
 // cardano.brave.enable() is called.
 class JSCardanoWalletApi final : public gin::Wrappable<JSCardanoWalletApi>,
                                  public content::RenderFrameObserver {
+  // Stops observing the frame before the GC frees this object.
+  CPPGC_USING_PRE_FINALIZER(JSCardanoWalletApi, Cleanup);
+
  public:
   JSCardanoWalletApi(mojo::Remote<mojom::CardanoApi> remote,
                      base::PassKey<class JSCardanoProvider> pass_key,

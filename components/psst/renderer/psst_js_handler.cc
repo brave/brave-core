@@ -142,6 +142,10 @@ PsstJSHandler::PsstJSHandler(content::RenderFrame* render_frame)
 
 PsstJSHandler::~PsstJSHandler() = default;
 
+void PsstJSHandler::Dispose() {
+  RenderFrameObserver::Dispose();
+}
+
 // static
 // The script-facing contract is documented in the "Script logging" section of
 // brave/components/psst/README.md.
