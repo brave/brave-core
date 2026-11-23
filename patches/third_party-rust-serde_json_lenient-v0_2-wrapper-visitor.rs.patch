@@ -1,5 +1,5 @@
 diff --git a/third_party/rust/serde_json_lenient/v0_2/wrapper/visitor.rs b/third_party/rust/serde_json_lenient/v0_2/wrapper/visitor.rs
-index f8624792c5ee491eeb975337523f4d8c119f44ab..f59ba62a0b4327fedd37ba884577f3b210592ace 100644
+index 62168e9569acdc84d8fb04f2e799b72155ce5828..42dade7ae377b6ba826dd607ef595c479d868cde 100644
 --- a/third_party/rust/serde_json_lenient/v0_2/wrapper/visitor.rs
 +++ b/third_party/rust/serde_json_lenient/v0_2/wrapper/visitor.rs
 @@ -3,6 +3,7 @@
@@ -10,7 +10,7 @@ index f8624792c5ee491eeb975337523f4d8c119f44ab..f59ba62a0b4327fedd37ba884577f3b2
  use serde::de::{DeserializeSeed, Deserializer, Error, MapAccess, SeqAccess, Visitor};
  use std::borrow::Cow;
  use std::convert::TryFrom;
-@@ -75,15 +76,17 @@ impl<'de> DeserializeSeed<'de> for CowStrVisitor {
+@@ -79,10 +80,11 @@ impl<'de> DeserializeSeed<'de> for CowStrVisitor {
  pub struct ValueVisitor<'c, 'k> {
      aggregate: DeserializationTarget<'c, 'k>,
      recursion_depth_check: RecursionDepthCheck,
@@ -20,8 +20,10 @@ index f8624792c5ee491eeb975337523f4d8c119f44ab..f59ba62a0b4327fedd37ba884577f3b2
  impl<'c, 'k> ValueVisitor<'c, 'k> {
 -    pub fn new(target: DeserializationTarget<'c, 'k>, max_depth: usize) -> Self {
 +    pub fn new(target: DeserializationTarget<'c, 'k>, max_depth: usize, allow_64bit_numbers: bool) -> Self {
+         assert!(max_depth > 0);
+         assert!(max_depth <= MAX_DEPTH);
          Self {
-             aggregate: target,
+@@ -90,6 +92,7 @@ impl<'c, 'k> ValueVisitor<'c, 'k> {
              // The `max_depth` includes the top level of the JSON input, which is where parsing
              // starts. We subtract 1 to count the top level now.
              recursion_depth_check: RecursionDepthCheck(max_depth - 1),
@@ -29,7 +31,7 @@ index f8624792c5ee491eeb975337523f4d8c119f44ab..f59ba62a0b4327fedd37ba884577f3b2
          }
      }
  }
-@@ -122,7 +125,11 @@ impl<'de> Visitor<'de> for ValueVisitor<'_, '_> {
+@@ -128,7 +131,11 @@ impl<'de> Visitor<'de> for ValueVisitor<'_, '_> {
          // JSONReaderTest.LargerIntIsLossy for a related test.
          match i32::try_from(value) {
              Ok(value) => self.visit_i32(value),
@@ -42,7 +44,7 @@ index f8624792c5ee491eeb975337523f4d8c119f44ab..f59ba62a0b4327fedd37ba884577f3b2
          }
      }
  
-@@ -130,7 +137,11 @@ impl<'de> Visitor<'de> for ValueVisitor<'_, '_> {
+@@ -136,7 +143,11 @@ impl<'de> Visitor<'de> for ValueVisitor<'_, '_> {
          // See visit_i64 comment.
          match i32::try_from(value) {
              Ok(value) => self.visit_i32(value),
@@ -55,7 +57,7 @@ index f8624792c5ee491eeb975337523f4d8c119f44ab..f59ba62a0b4327fedd37ba884577f3b2
          }
      }
  
-@@ -178,6 +189,7 @@ impl<'de> Visitor<'de> for ValueVisitor<'_, '_> {
+@@ -184,6 +195,7 @@ impl<'de> Visitor<'de> for ValueVisitor<'_, '_> {
              access.next_value_seed(ValueVisitor {
                  aggregate: DeserializationTarget::Dict { ctx: inner_ctx.as_mut(), key },
                  recursion_depth_check,
@@ -63,7 +65,7 @@ index f8624792c5ee491eeb975337523f4d8c119f44ab..f59ba62a0b4327fedd37ba884577f3b2
              })?;
          }
          Ok(())
-@@ -199,6 +211,7 @@ impl<'de> Visitor<'de> for ValueVisitor<'_, '_> {
+@@ -205,6 +217,7 @@ impl<'de> Visitor<'de> for ValueVisitor<'_, '_> {
              .next_element_seed(ValueVisitor {
                  aggregate: DeserializationTarget::List { ctx: inner_ctx.as_mut() },
                  recursion_depth_check,

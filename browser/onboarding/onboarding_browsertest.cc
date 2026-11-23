@@ -10,6 +10,7 @@
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
+#include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
@@ -18,8 +19,11 @@
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/onboarding/onboarding_tab_helper.h"
 #include "brave/browser/onboarding/pref_names.h"
+#include "brave/browser/ui/views/brave_help_bubble/shields_help_bubble_controller.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/chrome_constants.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -31,7 +35,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
-#include "ui/base/window_open_disposition.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "url/gurl.h"
 
 class OnboardingBrowserTest : public InProcessBrowserTest {
@@ -64,6 +68,9 @@ class OnboardingBrowserTest : public InProcessBrowserTest {
   void TearDownOnMainThread() override {
     can_highlight_callback_reset_.reset();
     did_stop_loading_callback_reset_.reset();
+    // The tabs close after this, and would leave the sets dangling.
+    can_highlight_contents_.clear();
+    did_stop_loading_contents_.clear();
     InProcessBrowserTest::TearDownOnMainThread();
   }
 
@@ -77,7 +84,7 @@ class OnboardingBrowserTest : public InProcessBrowserTest {
   // again with a same-document navigation, which keeps the blocked count.
   // Returns once the tab's helper has considered the highlight for that load.
   void LoadPageWithBlockedAd(
-      WindowOpenDisposition disposition,
+      ui::mojom::WindowOpenDisposition disposition,
       base::Location location = base::Location::Current()) {
     SCOPED_TRACE(location.ToString());
     const GURL url = embedded_test_server()->GetURL("/title1.html");
@@ -104,6 +111,23 @@ class OnboardingBrowserTest : public InProcessBrowserTest {
         [&] { return did_stop_loading_contents_.contains(contents); }));
   }
 
+  // The highlight is the preference being set.
+  void LoadPageWithBlockedAdAndWaitForHighlight() {
+    base::test::TestFuture<void> highlight_future;
+    PrefChangeRegistrar registrar;
+    registrar.Init(g_browser_process->local_state());
+    registrar.Add(onboarding::prefs::kLastShieldsIconHighlightTime,
+                  base::BindLambdaForTesting([&] {
+                    if (!highlight_future.IsReady()) {
+                      highlight_future.SetValue();
+                    }
+                  }));
+
+    ASSERT_NO_FATAL_FAILURE(LoadPageWithBlockedAd(
+        ui::mojom::WindowOpenDisposition::kNewForegroundTab));
+    ASSERT_TRUE(highlight_future.Wait());
+  }
+
   void OnCanHighlight(content::WebContents* contents) {
     can_highlight_contents_.insert(contents);
   }
@@ -114,10 +138,10 @@ class OnboardingBrowserTest : public InProcessBrowserTest {
 
  private:
   // Tabs, by contents, whose helper completed its first-run check.
-  std::set<content::WebContents*> can_highlight_contents_;
+  std::set<raw_ptr<content::WebContents>> can_highlight_contents_;
   // Tabs, by contents, whose helper considered the highlight when loading
   // stopped.
-  std::set<content::WebContents*> did_stop_loading_contents_;
+  std::set<raw_ptr<content::WebContents>> did_stop_loading_contents_;
   std::optional<base::AutoReset<OnboardingTabHelper::WebContentsCallback>>
       can_highlight_callback_reset_;
   std::optional<base::AutoReset<OnboardingTabHelper::WebContentsCallback>>
@@ -126,29 +150,26 @@ class OnboardingBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(OnboardingBrowserTest, HighlightsShieldsInActiveTab) {
   ASSERT_TRUE(GetLastHighlightTime().is_null());
-
-  // The highlight is the preference being set.
-  base::test::TestFuture<void> highlight_future;
-  PrefChangeRegistrar registrar;
-  registrar.Init(g_browser_process->local_state());
-  registrar.Add(onboarding::prefs::kLastShieldsIconHighlightTime,
-                base::BindLambdaForTesting([&] {
-                  if (!highlight_future.IsReady()) {
-                    highlight_future.SetValue();
-                  }
-                }));
-
-  ASSERT_NO_FATAL_FAILURE(
-      LoadPageWithBlockedAd(WindowOpenDisposition::kNewForegroundTab));
-
-  ASSERT_TRUE(highlight_future.Wait());
+  ASSERT_NO_FATAL_FAILURE(LoadPageWithBlockedAdAndWaitForHighlight());
   EXPECT_FALSE(GetLastHighlightTime().is_null());
 }
 
 IN_PROC_BROWSER_TEST_F(OnboardingBrowserTest,
+                       HidesHighlightWhenAnotherTabIsActivated) {
+  ASSERT_NO_FATAL_FAILURE(LoadPageWithBlockedAdAndWaitForHighlight());
+  auto& controller = *ShieldsHelpBubbleController::From(browser());
+  EXPECT_TRUE(controller.IsShowingForTesting());
+
+  // The bubble starts closing at once. Checking without waiting keeps its 15
+  // second auto-close timer from passing the test on its own.
+  browser()->GetTabStripModel()->ActivateTabAt(0);
+  EXPECT_FALSE(controller.IsShowingForTesting());
+}
+
+IN_PROC_BROWSER_TEST_F(OnboardingBrowserTest,
                        DoesNotHighlightShieldsInBackgroundTab) {
-  ASSERT_NO_FATAL_FAILURE(
-      LoadPageWithBlockedAd(WindowOpenDisposition::kNewBackgroundTab));
+  ASSERT_NO_FATAL_FAILURE(LoadPageWithBlockedAd(
+      ui::mojom::WindowOpenDisposition::kNewBackgroundTab));
 
   EXPECT_TRUE(GetLastHighlightTime().is_null());
 }

@@ -18,6 +18,7 @@
 #include "chrome/browser/ui/views/web_apps/frame_toolbar/web_app_frame_toolbar_utils.h"
 #include "components/prefs/pref_service.h"
 #include "components/remote_cocoa/common/native_widget_ns_window_host.mojom.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 
 BraveBrowserNativeWidgetMac::BraveBrowserNativeWidgetMac(
     BrowserWidget* browser_widget,
@@ -84,7 +85,7 @@ void BraveBrowserNativeWidgetMac::ValidateUserInterfaceItem(
 
 bool BraveBrowserNativeWidgetMac::ExecuteCommand(
     int32_t command,
-    WindowOpenDisposition window_open_disposition,
+    ui::mojom::WindowOpenDisposition window_open_disposition,
     bool is_before_first_responder) {
   if (base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs)) {
     // is_before_first_responder tells whether or not the app/window was in

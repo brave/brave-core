@@ -13,9 +13,10 @@ export const StyledWrapper = styled(Column)`
   background-color: ${leo.color.page.background};
 `
 
-export const Card = styled(Column)`
+export const Card = styled(Column)<{ noTopRadius?: boolean }>`
   background-color: ${leo.color.container.background};
-  border-radius: ${leo.radius.xl};
+  border-radius: ${({ noTopRadius }) =>
+    noTopRadius ? `0px 0px ${leo.radius.xl} ${leo.radius.xl}` : leo.radius.xl};
   box-shadow: ${leo.effect.elevation['01']};
   overflow: hidden;
 `
@@ -29,4 +30,9 @@ export const InfoBox = styled(Column)`
 export const Title = styled(Text)`
   font: ${leo.font.heading.h4};
   letter-spacing: ${leo.typography.letterSpacing.large};
+`
+
+export const AlertWrapper = styled(Column)`
+  --leo-alert-padding: ${leo.spacing['l']};
+  background-color: ${leo.color.systemfeedback.errorBackground};
 `

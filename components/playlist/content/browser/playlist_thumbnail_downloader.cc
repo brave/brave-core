@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/files/file_util.h"
 #include "base/logging.h"
 #include "base/task/thread_pool.h"
@@ -59,6 +60,7 @@ void PlaylistThumbnailDownloader::DownloadThumbnail(
   CancelDownloadRequest(id);
 
   if (pause_download_for_testing_) {
+    CHECK_IS_TEST();
     url_loader_map_[id] = {};
     return;
   }
@@ -80,6 +82,7 @@ void PlaylistThumbnailDownloader::DownloadThumbnail(
   CancelDownloadRequest(id);
 
   if (pause_download_for_testing_) {
+    CHECK_IS_TEST();
     url_loader_map_[id] = {};
     return;
   }

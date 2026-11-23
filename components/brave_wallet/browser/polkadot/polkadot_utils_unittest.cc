@@ -59,7 +59,7 @@ TEST(PolkadotUtils, DestinationAddressParsing) {
     auto parsed = ParsePolkadotAccount(
         R"(0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48)",
         0);
-    EXPECT_FALSE(parsed.has_value());
+    ASSERT_FALSE(parsed.has_value());
     EXPECT_EQ(parsed.error(),
               mojom::PolkadotValidationStatus::kInvalidAddressFormat);
   }
@@ -68,14 +68,14 @@ TEST(PolkadotUtils, DestinationAddressParsing) {
   {
     auto parsed = ParsePolkadotAccount(
         "FoQJpPyadYccjavVdTWxpxU7rUEaYhfLCPwXgkfD6Zat9QP", 42);
-    EXPECT_FALSE(parsed.has_value());
+    ASSERT_FALSE(parsed.has_value());
     EXPECT_EQ(parsed.error(), mojom::PolkadotValidationStatus::kInvalidPrefix);
   }
 
   {
     auto parsed = ParsePolkadotAccount(
         "FoQJpPyadYccjavVdTWxpxU7rUEaYhfLCPwXgkfD6Zat9QP", 0);
-    EXPECT_FALSE(parsed.has_value());
+    ASSERT_FALSE(parsed.has_value());
     EXPECT_EQ(parsed.error(), mojom::PolkadotValidationStatus::kInvalidPrefix);
   }
 
@@ -83,7 +83,7 @@ TEST(PolkadotUtils, DestinationAddressParsing) {
   {
     auto parsed = ParsePolkadotAccount(
         "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty694ty", 42);
-    EXPECT_FALSE(parsed.has_value());
+    ASSERT_FALSE(parsed.has_value());
     EXPECT_EQ(parsed.error(),
               mojom::PolkadotValidationStatus::kInvalidAddressFormat);
   }
@@ -92,14 +92,14 @@ TEST(PolkadotUtils, DestinationAddressParsing) {
   {
     auto parsed = ParsePolkadotAccount(
         "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694t", 42);
-    EXPECT_FALSE(parsed.has_value());
+    ASSERT_FALSE(parsed.has_value());
     EXPECT_EQ(parsed.error(),
               mojom::PolkadotValidationStatus::kInvalidAddressFormat);
   }
 
   {
     auto parsed = ParsePolkadotAccount("", 0);
-    EXPECT_FALSE(parsed.has_value());
+    ASSERT_FALSE(parsed.has_value());
     EXPECT_EQ(parsed.error(),
               mojom::PolkadotValidationStatus::kInvalidAddressFormat);
   }
@@ -107,7 +107,7 @@ TEST(PolkadotUtils, DestinationAddressParsing) {
   // Random nonsense.
   {
     auto parsed = ParsePolkadotAccount("random string full of random words", 0);
-    EXPECT_FALSE(parsed.has_value());
+    ASSERT_FALSE(parsed.has_value());
     EXPECT_EQ(parsed.error(),
               mojom::PolkadotValidationStatus::kInvalidAddressFormat);
   }
@@ -167,6 +167,7 @@ TEST(PolkadotUtils, EncodePrivateKeyForExport) {
 
     auto private_key_0 = EncodePrivateKeyForExport(pkcs8, *address, kPassword,
                                                    salt_bytes, nonce_bytes);
+    ASSERT_TRUE(private_key_0.has_value());
     auto json_value =
         base::test::ParseJsonDict(*private_key_0, base::JSON_PARSE_RFC);
     constexpr const char kExpectedJson[] =
@@ -185,6 +186,7 @@ TEST(PolkadotUtils, EncodePrivateKeyForExport) {
 
     auto private_key_1 = EncodePrivateKeyForExport(pkcs8, *address, kPassword,
                                                    salt_bytes, nonce_bytes);
+    ASSERT_TRUE(private_key_1.has_value());
     auto json_value_1 =
         base::test::ParseJsonDict(*private_key_1, base::JSON_PARSE_RFC);
     constexpr const char kExpectedJsonAccount1[] =
@@ -227,6 +229,7 @@ TEST(PolkadotUtils, EncodePrivateKeyForExport_Testnet) {
 
     auto private_key_0 = EncodePrivateKeyForExport(pkcs8, *address, kPassword,
                                                    salt_bytes, nonce_bytes);
+    ASSERT_TRUE(private_key_0.has_value());
     auto json_value =
         base::test::ParseJsonDict(*private_key_0, base::JSON_PARSE_RFC);
     constexpr const char kExpectedJson[] =
@@ -245,6 +248,7 @@ TEST(PolkadotUtils, EncodePrivateKeyForExport_Testnet) {
 
     auto private_key_1 = EncodePrivateKeyForExport(pkcs8, *address, kPassword,
                                                    salt_bytes, nonce_bytes);
+    ASSERT_TRUE(private_key_1.has_value());
     auto json_value_1 =
         base::test::ParseJsonDict(*private_key_1, base::JSON_PARSE_RFC);
     constexpr const char kExpectedJsonAccount1[] =

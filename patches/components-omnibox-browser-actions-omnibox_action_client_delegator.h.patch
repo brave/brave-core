@@ -1,8 +1,25 @@
 diff --git a/components/omnibox/browser/actions/omnibox_action_client_delegator.h b/components/omnibox/browser/actions/omnibox_action_client_delegator.h
-index bcbbff3b3e1cfb87c25a0047c196d4784ca9d2ab..121bf6b66eedbeecba7950926564805e5d660c63 100644
+index bcbbff3b3e1cfb87c25a0047c196d4784ca9d2ab..8ca68b20140cf451072c7f6d7e251eb5c56c1407 100644
 --- a/components/omnibox/browser/actions/omnibox_action_client_delegator.h
 +++ b/components/omnibox/browser/actions/omnibox_action_client_delegator.h
-@@ -22,6 +22,15 @@ class OmniboxActionClientDelegator : public OmniboxAction::Client {
+@@ -8,10 +8,16 @@
+ #include <string>
+ 
+ #include "base/memory/raw_ptr.h"
++#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
++#include "brave/components/commander/common/buildflags/buildflags.h"
+ #include "components/omnibox/browser/actions/omnibox_action.h"
+ #include "components/omnibox/browser/autocomplete_match_type.h"
+ #include "url/gurl.h"
+ 
++#if BUILDFLAG(ENABLE_COMMANDER)
++#include "brave/components/commander/browser/commander_frontend_delegate.h"
++#endif  // BUILDFLAG(ENABLE_COMMANDER)
++
+ // A delegator implementation of `OmniboxAction::Client` that forwards all calls
+ // to another `OmniboxAction::Client` instance (`delegate_`).
+ class OmniboxActionClientDelegator : public OmniboxAction::Client {
+@@ -22,6 +28,15 @@ class OmniboxActionClientDelegator : public OmniboxAction::Client {
        delete;
    ~OmniboxActionClientDelegator() override;
  

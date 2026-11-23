@@ -93,8 +93,8 @@ if (is_android) {
   }
 
   robolectric_library(
-      "brave_junit_tests_org.chromium.chrome.browser.undo_tab_close_snackbar") {
-    sources = [ "src/org/chromium/chrome/browser/undo_tab_close_snackbar/BraveUndoBarControllerTest.java" ]
+      "brave_junit_tests_org.chromium.chrome.browser.tab_ui.undo_tab_close_snackbar") {
+    sources = [ "src/org/chromium/chrome/browser/tab_ui/undo_tab_close_snackbar/BraveUndoBarControllerTest.java" ]
 
     deps = [
       "//base:base_java",
@@ -103,6 +103,8 @@ if (is_android) {
       "//chrome/android:chrome_java",
       "//chrome/android/junit:chrome_junit_tests_helper",
       "//chrome/browser/preferences:java",
+      "//chrome/browser/tab:java",
+      "//chrome/browser/tab_ui/android:java",
       "//chrome/browser/tabmodel:java",
       "//chrome/browser/ui/messages/android:java",
     ]
@@ -123,6 +125,7 @@ if (is_android) {
         "src/org/chromium/chrome/browser/crypto_wallet/ApproveTxBottomSheetDialogFragmentTest.java",
         "src/org/chromium/chrome/browser/crypto_wallet/TwoLineItemBottomSheetFragmentTest.java",
         "src/org/chromium/chrome/browser/crypto_wallet/WalletBottomSheetDialogFragmentTest.java",
+        "src/org/chromium/chrome/browser/crypto_wallet/permission/BravePermissionAccountsListAdapterTest.java",
         "src/org/chromium/chrome/browser/crypto_wallet/util/TransactionUtilsTest.java",
       ]
 
@@ -230,9 +233,10 @@ if (is_android) {
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser.ntp") {
     resources_package = "org.chromium.chrome.browser.ntp"
     sources = [
-      "src/org/chromium/chrome/browser/ntp/BraveNewTabTakeoverInfobarTest.java",
+      "src/org/chromium/chrome/browser/ntp/BraveNtpAdapterNewTabTakeoverDisclosureTest.java",
       "src/org/chromium/chrome/browser/ntp/BraveNtpAdapterTopSitesToggleTest.java",
       "src/org/chromium/chrome/browser/ntp/BraveNtpTopSitesModeUnitTest.java",
+      "src/org/chromium/chrome/browser/ntp/NewTabTakeoverDisclosureTooltipControllerTest.java",
       "src/org/chromium/chrome/browser/ntp/NewTabTakeoverSafeAreaReporterTest.java",
     ]
 
@@ -249,6 +253,20 @@ if (is_android) {
       "//components/user_prefs/android:java",
       "//content/public/android:content_java",
       "//ui/android:ui_java",
+    ]
+  }
+
+  robolectric_library("brave_junit_tests_org.chromium.chrome.browser.omaha") {
+    sources = [
+      "src/org/chromium/chrome/browser/omaha/BraveUpdateStatusHelperTest.java",
+    ]
+
+    deps = [
+      "//base:base_java",
+      "//base:base_junit_test_support",
+      "//brave/browser/omaha/android:java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/omaha/android:java",
     ]
   }
 
@@ -328,6 +346,7 @@ if (is_android) {
     deps = [
       "//chrome/android/junit:chrome_junit_tests_helper",
       "//chrome/browser/ui/android/omnibox:java",
+      "//chrome/browser/ui/android/theme:java",
     ]
   }
 
@@ -448,8 +467,10 @@ if (is_android) {
     sources = [ "src/org/chromium/chrome/browser/fullscreen/BraveFullscreenHtmlApiHandlerBaseTest.java" ]
 
     deps = [
+      "//brave/browser/media/android:java",
       "//chrome/android/junit:chrome_junit_tests_helper",
       "//chrome/browser/fullscreen/android:java",
+      "//content/public/android:content_java",
     ]
   }
 
@@ -465,10 +486,7 @@ if (is_android) {
 
   robolectric_library(
       "brave_junit_tests_org.chromium.chrome.browser.ui.messages.snackbar") {
-    sources = [
-      "src/org/chromium/chrome/browser/ui/messages/snackbar/BraveSnackbarManagerNewTabTakeoverTest.java",
-      "src/org/chromium/chrome/browser/ui/messages/snackbar/BraveSnackbarViewTest.java",
-    ]
+    sources = [ "src/org/chromium/chrome/browser/ui/messages/snackbar/BraveSnackbarViewTest.java" ]
 
     deps = [
       ":brave_multiwindow_junit_test_utils",
@@ -484,6 +502,7 @@ if (is_android) {
     ]
 
     deps = [
+      "//brave/browser/media/android:java",
       "//brave/components/browser_ui/media/android:java",
       "//chrome/android/junit:chrome_junit_tests_helper",
       "//chrome/browser/fullscreen/android:java",

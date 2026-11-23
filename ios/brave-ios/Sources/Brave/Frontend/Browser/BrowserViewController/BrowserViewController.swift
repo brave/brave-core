@@ -2642,7 +2642,7 @@ extension BrowserViewController: WalletTabHelperDelegate {
       profile = profile.offTheRecordProfile
     }
     if let cryptoStore = self.walletStore?.cryptoStore
-      ?? CryptoStore.from(ipfsApi: profileController.ipfsAPI, profile: profile)
+      ?? CryptoStore.from(profile: profile)
     {
       cryptoStore.rejectAllPendingWebpageRequests()
     }
@@ -2688,7 +2688,7 @@ extension BrowserViewController: WalletTabHelperDelegate {
     }
     guard
       let cryptoStore = self.walletStore?.cryptoStore
-        ?? CryptoStore.from(ipfsApi: profileController.ipfsAPI, profile: profile)
+        ?? CryptoStore.from(profile: profile)
     else {
       return false
     }
@@ -3282,7 +3282,7 @@ extension BrowserViewController: UIScreenshotServiceDelegate {
     rect.origin.y = scrollView.contentSize.height - rect.height - scrollView.contentOffset.y
 
     do {
-      let data = try await tab.createFullPagePDF()
+      let data = try await tab.createPDF(rect: .null)
       return (data, 0, data != nil ? rect : .zero)
     } catch {
       return (nil, 0, .zero)

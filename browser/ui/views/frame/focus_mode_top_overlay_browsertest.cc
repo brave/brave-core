@@ -8,6 +8,7 @@
 #include "base/files/file_path.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/time/time.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/focus_mode/focus_mode_features.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -24,6 +25,8 @@
 #include "chrome/browser/ui/views/frame/browser_widget.h"
 #include "chrome/browser/ui/views/frame/top_container_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
+#include "chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h"
+#include "chrome/browser/ui/views/tabs/tab.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "chrome/test/base/chrome_test_path_utils.h"
@@ -31,6 +34,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -38,6 +42,10 @@
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "ui/base/hit_test.h"
+#include "ui/base/window_open_disposition.h"
+#include "ui/events/event.h"
+#include "ui/events/event_utils.h"
+#include "ui/events/types/event_type.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/gfx/geometry/rect.h"
@@ -284,6 +292,120 @@ IN_PROC_BROWSER_TEST_F(FocusModeTopOverlayBrowserTest,
   ASSERT_TRUE(active_web_contents()->GetLastCommittedURL().SchemeIsBlob());
   EXPECT_TRUE(WaitForOverlayActive(false));
   EXPECT_EQ(top_container->parent(), browser_view());
+}
+
+IN_PROC_BROWSER_TEST_F(FocusModeTopOverlayBrowserTest,
+                       PendingNavigationDoesNotDeactivateOverlay) {
+  auto* overlay = browser_view()->focus_mode_top_overlay();
+  ASSERT_TRUE(overlay);
+  auto* top_container = browser_view()->top_container();
+  ASSERT_TRUE(top_container);
+
+  focus_mode_controller()->SetEnabled(true);
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server_.GetURL("/empty.html")));
+  ASSERT_TRUE(WaitForOverlayActive(true));
+  ASSERT_EQ(top_container->parent(), overlay);
+
+  {
+    const GURL next_https_url = https_server_.GetURL("/title1.html");
+    content::TestNavigationManager navigation(active_web_contents(),
+                                              next_https_url);
+    ui_test_utils::NavigateToURLWithDisposition(
+        browser(), next_https_url, WindowOpenDisposition::kCurrentTab,
+        ui_test_utils::BROWSER_TEST_NO_WAIT);
+    ASSERT_TRUE(navigation.WaitForRequestStart());
+    ASSERT_TRUE(active_web_contents()->GetController().GetPendingEntry());
+    EXPECT_TRUE(overlay->active());
+    EXPECT_EQ(top_container->parent(), overlay);
+    ASSERT_TRUE(navigation.WaitForNavigationFinished());
+    EXPECT_TRUE(overlay->active());
+    EXPECT_EQ(top_container->parent(), overlay);
+  }
+
+  {
+    const GURL insecure_url =
+        embedded_test_server()->GetURL("insecure.test", "/empty.html");
+    content::TestNavigationManager navigation(active_web_contents(),
+                                              insecure_url);
+    ui_test_utils::NavigateToURLWithDisposition(
+        browser(), insecure_url, WindowOpenDisposition::kCurrentTab,
+        ui_test_utils::BROWSER_TEST_NO_WAIT);
+    ASSERT_TRUE(navigation.WaitForRequestStart());
+    ASSERT_TRUE(active_web_contents()->GetController().GetPendingEntry());
+    EXPECT_TRUE(overlay->active());
+    EXPECT_EQ(top_container->parent(), overlay);
+    ASSERT_TRUE(navigation.WaitForNavigationFinished());
+    EXPECT_TRUE(WaitForOverlayActive(false));
+    EXPECT_EQ(top_container->parent(), browser_view());
+  }
+
+  {
+    const GURL secure_url = https_server_.GetURL("/empty.html");
+    content::TestNavigationManager navigation(active_web_contents(),
+                                              secure_url);
+    ui_test_utils::NavigateToURLWithDisposition(
+        browser(), secure_url, WindowOpenDisposition::kCurrentTab,
+        ui_test_utils::BROWSER_TEST_NO_WAIT);
+    ASSERT_TRUE(navigation.WaitForRequestStart());
+    ASSERT_TRUE(active_web_contents()->GetController().GetPendingEntry());
+    EXPECT_FALSE(overlay->active());
+    EXPECT_EQ(top_container->parent(), browser_view());
+    ASSERT_TRUE(navigation.WaitForNavigationFinished());
+    EXPECT_TRUE(WaitForOverlayActive(true));
+    EXPECT_EQ(top_container->parent(), overlay);
+  }
+}
+
+// Clicking a tab whose page deactivates the overlay reparents the tab strip
+// mid-press. The release must still reach the tab so that the tab drag
+// controller started by the press is torn down.
+IN_PROC_BROWSER_TEST_F(FocusModeTopOverlayBrowserTest,
+                       TabClickThatDeactivatesOverlayEndsDrag) {
+  auto* overlay = browser_view()->focus_mode_top_overlay();
+  ASSERT_TRUE(overlay);
+  auto* tab_strip = browser_view()->horizontal_tab_strip_for_testing();
+  ASSERT_TRUE(tab_strip);
+  views::View* const default_parent =
+      browser_view()->tab_strip_view()->parent();
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server_.GetURL("/empty.html")));
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), embedded_test_server()->GetURL("insecure.test", "/empty.html"),
+      WindowOpenDisposition::kNewBackgroundTab,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  ASSERT_EQ(browser()->tab_strip_model()->active_index(), 0);
+
+  focus_mode_controller()->SetEnabled(true);
+  ASSERT_TRUE(WaitForOverlayActive(true));
+  overlay->RevealTemporarily(base::Minutes(1));
+  ASSERT_TRUE(WaitForOverlayRevealed());
+  tab_strip->StopAnimating();
+  RunScheduledLayouts();
+
+  Tab* insecure_tab = tab_strip->tab_at(1);
+  ASSERT_TRUE(insecure_tab);
+  ASSERT_TRUE(insecure_tab->IsDrawn());
+  gfx::Point point = insecure_tab->GetLocalBounds().CenterPoint();
+  views::View::ConvertPointToWidget(insecure_tab, &point);
+  views::Widget* widget = browser_view()->GetWidget();
+
+  ui::MouseEvent press(ui::EventType::kMousePressed, point, point,
+                       ui::EventTimeForNow(), ui::EF_LEFT_MOUSE_BUTTON,
+                       ui::EF_LEFT_MOUSE_BUTTON);
+  widget->OnMouseEvent(&press);
+  ASSERT_EQ(browser()->tab_strip_model()->active_index(), 1);
+  ASSERT_FALSE(overlay->active());
+  ASSERT_EQ(browser_view()->tab_strip_view()->parent(), default_parent);
+  ASSERT_TRUE(TabDragController::IsActive());
+
+  ui::MouseEvent release(ui::EventType::kMouseReleased, point, point,
+                         ui::EventTimeForNow(), ui::EF_LEFT_MOUSE_BUTTON,
+                         ui::EF_LEFT_MOUSE_BUTTON);
+  widget->OnMouseEvent(&release);
+  EXPECT_FALSE(TabDragController::IsActive());
 }
 
 IN_PROC_BROWSER_TEST_F(FocusModeTopOverlayBrowserTest,

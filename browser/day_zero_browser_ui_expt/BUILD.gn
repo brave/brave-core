@@ -3,21 +3,51 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-assert(is_win)
+assert(is_win || is_android)
 
-source_set("unit_tests") {
-  testonly = true
+source_set("day_zero_browser_ui_expt") {
+  sources = [
+    "day_zero_browser_ui_expt_manager.cc",
+    "day_zero_browser_ui_expt_manager.h",
+    "pref_names.h",
+  ]
 
-  sources = [ "day_zero_browser_ui_expt_unittest.cc" ]
+  public_deps = [
+    "//base",
+    "//chrome/browser/profiles:profile_manager",
+    "//components/prefs",
+  ]
 
   deps = [
-    "//base",
+    "//brave/browser:brave_browser_features",
+    "//brave/browser/brave_stats:first_run_util",
     "//brave/components/p3a",
-    "//chrome/test:test_support",
-    "//chrome/test/base:testing_browser_process",
-    "//components/prefs",
-    "//content/test:test_support",
-    "//testing/gmock",
-    "//testing/gtest",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/profiles:profile",
   ]
+
+  if (is_android) {
+    deps += [ "//brave/build/android:jni_headers" ]
+  }
+}
+
+if (is_win) {
+  source_set("unit_tests") {
+    testonly = true
+
+    sources = [ "day_zero_browser_ui_expt_unittest.cc" ]
+
+    deps = [
+      ":day_zero_browser_ui_expt",
+      "//base",
+      "//brave/browser:brave_browser_features",
+      "//brave/components/p3a",
+      "//chrome/test:test_support",
+      "//chrome/test/base:testing_browser_process",
+      "//components/prefs",
+      "//content/test:test_support",
+      "//testing/gmock",
+      "//testing/gtest",
+    ]
+  }
 }

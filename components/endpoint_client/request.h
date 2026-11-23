@@ -6,26 +6,15 @@
 #ifndef BRAVE_COMPONENTS_ENDPOINT_CLIENT_REQUEST_H_
 #define BRAVE_COMPONENTS_ENDPOINT_CLIENT_REQUEST_H_
 
-#include <optional>
 #include <string>
 #include <string_view>
 
-#include "base/values.h"
 #include "brave/components/endpoint_client/is_request_body.h"
 #include "brave/components/endpoint_client/request_options.h"
+#include "brave/components/endpoint_client/serialize_body.h"
 #include "net/http/http_request_headers.h"
 
-namespace google::protobuf {
-class MessageLite;
-}  // namespace google::protobuf
-
 namespace endpoint_client::internal {
-
-std::optional<std::string> SerializeJSONRequestBody(
-    const base::DictValue& request_body);
-
-std::optional<std::string> SerializeProtobufRequestBody(
-    const google::protobuf::MessageLite& request_body);
 
 // HTTP methods
 enum class Method {
@@ -41,12 +30,18 @@ enum class Method {
   kTrack
 };
 
-// A request binds a request body type to a specific HTTP method and
-// provides access to the method, Content-Type, and serialized body.
-template <IsRequestBody RequestBody, Method M>
-struct Request : RequestOptions {
-  using Body = RequestBody;
+constexpr bool MethodAllowsBody(Method method) {
+  return method != Method::kGet && method != Method::kHead;
+}
 
+template <Method M, typename...>
+struct Request {
+  static_assert(false, "Request<> takes at most one body type!");
+};
+
+// A request without a body has a fixed HTTP method and provides access to it.
+template <Method M>
+struct Request<M> : RequestOptions {
   static constexpr std::string_view Method() {
     if constexpr (M == Method::kConnect) {
       return net::HttpRequestHeaders::kConnectMethod;
@@ -72,12 +67,27 @@ struct Request : RequestOptions {
       static_assert(false, "Unhandled Method enumerator!");
     }
   }
+};
+
+template <Method M, typename T>
+struct Request<M, T> {
+  static_assert(false,
+                "MethodAllowsBody(M) must be true, and T must satisfy "
+                "IsRequestBody!");
+};
+
+// A request with a body extends the request without a body with a request body
+// type, and provides access to the Content-Type and serialized body.
+template <Method M, IsRequestBody RequestBody>
+  requires(MethodAllowsBody(M))
+struct Request<M, RequestBody> : Request<M> {
+  using Body = RequestBody;
 
   static constexpr std::string_view ContentType() {
     return ContentType<Body>();
   }
 
-  std::optional<std::string> Serialize() const { return Serialize(body); }
+  std::string Serialize() const { return SerializeBody(body); }
 
   Body body;
 
@@ -92,20 +102,6 @@ struct Request : RequestOptions {
   template <IsProtobufRequestBody>
   static constexpr std::string_view ContentType() {
     return "application/protobuf";
-  }
-
-  // Serializes a JSON request body to a JSON string.
-  // Returns std::nullopt if the request body produces an empty dictionary.
-  static std::optional<std::string> Serialize(
-      const IsJSONRequestBody auto& request_body) {
-    return SerializeJSONRequestBody(request_body.ToValue());
-  }
-
-  // Serializes a Protobuf request body to a binary string.
-  // Returns std::nullopt if the request body is empty (ByteSizeLong() == 0).
-  static std::optional<std::string> Serialize(
-      const IsProtobufRequestBody auto& request_body) {
-    return SerializeProtobufRequestBody(request_body);
   }
 };
 

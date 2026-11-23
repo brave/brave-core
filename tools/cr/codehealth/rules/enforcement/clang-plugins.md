@@ -16,4 +16,7 @@ checks are off in official builds, so a release build doesn't catch them.
 `build/config/raw_ptr_plugin_config.yaml`; where it's heading is in
 `tools/clang/raw_ptr_plugin/PluginConfig.h` `Default()`. For each candidate
 commit, read the flags or paths it adds, and grep Brave's sources under the
-paths they now cover for the pattern the check rejects.
+paths they now cover for the pattern the check rejects. A container entry
+matches the field's template name: it reaches aliases of the container, not
+classes derived from it (M160, 8157.1: `flat_tree` covers `flat_set`, not
+`flat_map`).

@@ -29,6 +29,9 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
       r.IMPORT_DATA.isNavigableDialog = true
       r.IMPORT_DATA.section = 'getStarted'
     }
+    if (loadTimeData.getBoolean('isBraveAccountEnabled')) {
+      r.BRAVE_ACCOUNT = r.GET_STARTED.createChild('/braveAccount')
+    }
   }
   if (pageVisibility.origin) {
     r.ORIGIN = r.BASIC.createSection('/origin', 'origin')

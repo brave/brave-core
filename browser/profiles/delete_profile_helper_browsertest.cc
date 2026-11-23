@@ -7,8 +7,7 @@
 
 #include "base/files/file_path.h"
 #include "base/functional/callback_helpers.h"
-#include "base/run_loop.h"
-#include "base/test/bind.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_sync/test/test_sync_code.h"
 #include "brave/components/sync/service/brave_sync_service_impl.h"
 #include "chrome/browser/browser_process.h"
@@ -68,14 +67,13 @@ IN_PROC_BROWSER_TEST_F(DeleteProfileHelperBrowserTest,
   ASSERT_TRUE(seed.has_value());
   EXPECT_THAT(seed.value(), Not(IsEmpty()));
 
-  base::RunLoop loop;
+  base::test::TestFuture<Profile*> deleted_future;
   profile_manager->GetDeleteProfileHelper().MaybeScheduleProfileForDeletion(
-      profile_path_to_delete,
-      base::BindLambdaForTesting([&loop](Profile* profile) { loop.Quit(); }),
+      profile_path_to_delete, deleted_future.GetCallback(),
       ProfileMetrics::DELETE_PROFILE_PRIMARY_ACCOUNT_NOT_ALLOWED);
 
   keep_alive_added_waiter.Wait();
-  loop.Run();
+  ASSERT_TRUE(deleted_future.Wait());
 
   // Ensure that we've invoked BraveSyncServiceImpl::StopAndClear() from
   // DisableSyncForProfileDeletion at delete_profile_helper.cc, so

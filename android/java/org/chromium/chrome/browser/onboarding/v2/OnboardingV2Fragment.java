@@ -207,6 +207,10 @@ public class OnboardingV2Fragment extends Fragment {
         }
     }
 
+    static int getPageCount() {
+        return sHeaders.size();
+    }
+
     public void setPosition(int position) {
         this.mPosition = position;
     }
@@ -219,17 +223,13 @@ public class OnboardingV2Fragment extends Fragment {
         this.isFromStats = isFromStats;
     }
 
-	private void updateActionText() {
-		if (mAction != null) {
-			if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
-				mAction.setText(mContext.getResources().getString(R.string.next));
-				if (mIndicator4 != null)
-					mIndicator4.setVisibility(View.GONE);
-			} else {
-				mAction.setText(mContext.getResources().getString(R.string.turn_on_privacy_stats));
-				if (mIndicator4 != null)
-					mIndicator4.setVisibility(View.VISIBLE);
-			}
-		}
-	}
+    private void updateActionText() {
+        if (mAction != null) {
+            if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+                mAction.setText(mContext.getResources().getString(R.string.next));
+            } else {
+                mAction.setText(mContext.getResources().getString(R.string.turn_on_privacy_stats));
+            }
+        }
+    }
 }

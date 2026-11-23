@@ -951,6 +951,11 @@
 <translation id="4362717653795263052">Відновити основні криптогаманці</translation>
 <translation id="3038077262567136741">Уведіть свою відновлювальну фразу, щоб відновити обліковий запис криптогаманця Brave.</translation>
 <translation id="955918646509748368">Уведена відновлювальна фраза недійсна.</translation>
+<translation id="7496330898672236908">Ця секретна фраза відновлення не відповідає вашому гаманцю. Перевірте фразу й спробуйте ще раз.</translation>
+<translation id="3798792138617904098">Видалити імпортовані облікові записи?</translation>
+<translation id="2960631345291747230">Імпортовані облікові записи не захищені резервною копією вашої секретної фрази відновлення. Їх буде видалено з Brave Wallet, і ви можете назавжди втратити доступ до коштів на них, якщо не зберегли резервні копії їхніх приватних ключів.</translation>
+<translation id="8898583604592472741">Видалити облікові записи</translation>
+<translation id="1577629163207045190">Введіть «<ph name="CONFIRMATION_PHRASE"/>» для підтвердження.</translation>
 <translation id="8107437138787377150">Уставте відновлювальну фразу з буфера обміну</translation>
 <translation id="4811736040444856406">Показати відновлювальну фразу</translation>
 <translation id="4359319875297001084">Імпортування з попередніх криптогаманців Brave?</translation>
@@ -2247,13 +2252,12 @@
 <translation id="3934503473603661122">Привіт, я — Лео, вбудований AI-асистент від Brave. Я працюю на базі Grok 4.7 — передової моделі логічного мислення від xAI на Amazon Bedrock. Grok 4.7 обслуговується через безпечну інфраструктуру AWS від Brave.<ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">Привіт, я — Лео, вбудований AI-асистент від Brave. Я працюю на базі GPT Luna — швидкої моделі з низькою затримкою від OpenAI на Amazon Bedrock. GPT Luna обслуговується через безпечну інфраструктуру AWS від Brave.<ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">Привіт, я — Лео, вбудований AI-асистент від Brave. Я працюю на базі GPT 5.6 Terra — збалансованої продакшн-моделі від OpenAI на Amazon Bedrock Mantle. GPT 5.6 Terra обслуговується через безпечну інфраструктуру AWS від Brave.<ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">Привіт, я — Лео, вбудований AI-асистент від Brave. Я працюю на базі моделі Mistral Large, створеної компанією Mistral для ефективної роботи й широкого спектра застосування. Brave розміщує Mistral Large на власній безпечній інфраструктурі.<ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">Привіт, я — Лео, вбудований AI-асистент від Brave. Працюю на моделі Claude Haiku від Anthropic, яка оптимізована для діалогів та обробки тексту. Brave розміщує її через власну інфраструктуру.<ph name="LINK_BEFORE"/>Дізнатися більше<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">Привіт, я — Лео, вбудований AI-асистент від Brave. Я працюю на базі моделі Qwen 3.8 Flash Next, створеної компанією Alibaba Cloud для ефективної роботи й широкого спектра застосування. Brave розміщує Qwen 3.8 Flash Next на власній безпечній інфраструктурі.<ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">Привіт, я — Лео, вбудований AI-асистент від Brave. Я працюю на базі моделі Deepseek V3.2, створеної компанією Deepseek для ефективної роботи й широкого спектра застосування. Brave розміщує Deepseek V3.2 на власній безпечній інфраструктурі.<ph name="LINK_BEFORE"/>Дізнатися більше<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">Привіт, я — Лео, AI-асистент від Brave. Я працюю на базі моделі GLM 5.3, створеної компанією Z.ai для ефективної роботи й широкого спектра застосування. Brave розміщує GLM 5.3 на власній безпечній інфраструктурі.<ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Привіт, я — Лео, вбудований AI-асистент від Brave. Працюю на моделі Claude Opus від Anthropic, яка оптимізована для діалогів та обробки тексту. Brave розміщує її через власну інфраструктуру.<ph name="LINK_BEFORE"/>Дізнатися більше<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Привіт, я — Лео, вбудований AI-асистент від Brave. Я працюю на базі моделі GLM-4-7-Flash, створеної компанією Zhipu AI для ефективної роботи й застосування в багатьох сценаріях використання. Brave розміщує GLM-4-7-Flash на власній безпечній інфраструктурі.<ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">Привіт, я — Лео, вбудований AI-асистент від Brave. Я працюю на базі моделі Kimi K2.5, створеної компанією Moonshot AI для ефективної роботи й застосування в багатьох сценаріях використання. Brave розміщує Kimi K2.5 на власній безпечній інфраструктурі.<ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">Привіт, я — Лео, вбудований AI-асистент від Brave. Я працюю на базі моделі Nemotron Nano 3 30B, створеної компанією NVIDIA для ефективної роботи й широкого спектра застосування. Brave розміщує Nemotron Nano 3 30B на власній безпечній інфраструктурі.<ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">Привіт, я — Лео, вбудований AI-асистент від Brave. Я працюю на базі моделі Brave Ocelot, створеної компанією Brave для підсумовування веб-сторінок. Brave розміщує Brave Ocelot на власній безпечній інфраструктурі.<ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Преміум</translation>
 <translation id="5807427080183870259">Локальний</translation>
@@ -2394,8 +2398,8 @@
 <translation id="7465032796278724624">Конфіденційність із підтвердженням на базі NEAR AI TEE</translation>
 <translation id="8782867266498869301">Модель змінюється динамічно для використання найкращої для завдання</translation>
 <translation id="7348809809749151120">Швидко • Пошук</translation>
+<translation id="7711013627639951065">Швидкість • Пошук • Зір • Інструменти</translation>
 <translation id="3213834013136637671">Пошук • Зір</translation>
-<translation id="2793458212460902934">Швидко • Пошук • Інструменти</translation>
 <translation id="5276681919620506371">Пошук • Інструменти</translation>
 <translation id="7434375176361995333">Підсумки • Швидко</translation>
 <translation id="3965507912994218570">Налаштування Leo</translation>
@@ -2468,6 +2472,8 @@
 <translation id="6287023598025162715">Нова розмова</translation>
 <translation id="7230502562132448519">Фільтрувати розмови</translation>
 <translation id="821070843380699990">Спробуйте інший запит</translation>
+<translation id="241415280196701326">Нещодавні робочі області</translation>
+<translation id="5388053981690151266">Нова розмова в цій робочій області</translation>
 <translation id="7097822247923237815">Тимчасовий чат</translation>
 <translation id="7481750859362986254">Цей чат не буде збережений у вашій історії і не буде використовувати жодних налаштувань чи спогадів Leo.</translation>
 <translation id="4238305333951712482">Пам'ять оновлено: <ph name="MEMORY_CONTENT"/></translation>
@@ -2493,6 +2499,7 @@
 <translation id="5103625298494362646">Режим перегляду з AI працює з моделями, що підтримують інструменти. Несумісні моделі приховано зі списку.</translation>
 <translation id="3397808797783614750">Надання AI доступу до перегляду сайтів замість вас може призвести до небажаних і навіть шкідливих наслідків для вашої конфіденційності, фінансів і комунікацій. <ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Попередження безпеки</translation>
+<translation id="717245811623757038">Запит на дозвіл використання інструмента</translation>
 <translation id="6077070599873946984">Brave AI запитує доступ до: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI хоче виконати **<ph name="TOOL_NAME"/>** на **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Операцію виявлено як потенційно не відповідну до вашого запиту:</translation>

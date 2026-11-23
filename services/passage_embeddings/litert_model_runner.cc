@@ -19,7 +19,7 @@
 #include "third_party/litert/src/litert/cc/litert_tensor_buffer.h"
 #include "third_party/litert/src/litert/cc/options/litert_cpu_options.h"
 
-namespace brave_history_embeddings {
+namespace passage_embeddings {
 
 LitertModelRunner::LitertModelRunner() = default;
 
@@ -175,4 +175,4 @@ std::optional<std::vector<float>> LitertModelRunner::Run(
   return embedding;
 }
 
-}  // namespace brave_history_embeddings
+}  // namespace passage_embeddings

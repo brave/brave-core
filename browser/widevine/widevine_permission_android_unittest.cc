@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/memory/raw_ptr.h"
+#include "base/test/run_until.h"
 #include "brave/browser/widevine/brave_drm_tab_helper.h"
 #include "brave/browser/widevine/widevine_permission_request.h"
 #include "brave/browser/widevine/widevine_utils.h"
@@ -86,7 +87,6 @@ class WidevinePermissionAndroidTest : public ChromeRenderViewHostTestHarness {
     prompt_factory_ =
         std::make_unique<permissions::MockPermissionPromptFactory>(
             permission_request_manager_);
-    base::RunLoop().RunUntilIdle();
   }
 
   void TearDown() override {
@@ -122,7 +122,9 @@ TEST_F(WidevinePermissionAndroidTest, BraveDrmTabHelperTest) {
   EXPECT_FALSE(brave_drm_tab_helper()->ShouldShowWidevineOptIn());
 
   SimulateWidevineKeySystemAccessRequest();
-  base::RunLoop().RunUntilIdle();
+  // PermissionRequestManager shows the prompt from a posted task.
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return prompt_factory()->is_visible(); }));
   EXPECT_TRUE(brave_drm_tab_helper()->ShouldShowWidevineOptIn());
 
   EXPECT_EQ(prompt_factory()->show_count(), 1);
@@ -133,7 +135,6 @@ TEST_F(WidevinePermissionAndroidTest, BraveDrmTabHelperTest) {
   SimulateNavigation();
   EXPECT_FALSE(brave_drm_tab_helper()->ShouldShowWidevineOptIn());
   SimulateWidevineKeySystemAccessRequest();
-  base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(brave_drm_tab_helper()->ShouldShowWidevineOptIn());
 
   // Dont ask again
@@ -164,9 +165,8 @@ TEST_F(WidevinePermissionAndroidTest, WidevinePermissionRequestTest) {
 
   // Accept
   SimulateWidevineKeySystemAccessRequest();
-  base::RunLoop().RunUntilIdle();
-
-  ASSERT_TRUE(prompt_factory()->is_visible());
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return prompt_factory()->is_visible(); }));
   manager->Accept(/*prompt_options=*/std::monostate());
   EXPECT_TRUE(local_state()->GetBoolean(kWidevineEnabled));
 
@@ -174,18 +174,16 @@ TEST_F(WidevinePermissionAndroidTest, WidevinePermissionRequestTest) {
   local_state()->SetBoolean(kWidevineEnabled, false);
   SimulateNavigation();
   SimulateWidevineKeySystemAccessRequest();
-  base::RunLoop().RunUntilIdle();
-
-  ASSERT_TRUE(prompt_factory()->is_visible());
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return prompt_factory()->is_visible(); }));
   manager->Deny(/*prompt_options=*/std::monostate());
   EXPECT_FALSE(local_state()->GetBoolean(kWidevineEnabled));
 
   // Cancel
   SimulateNavigation();
   SimulateWidevineKeySystemAccessRequest();
-  base::RunLoop().RunUntilIdle();
-
-  ASSERT_TRUE(prompt_factory()->is_visible());
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return prompt_factory()->is_visible(); }));
   manager->Dismiss(/*prompt_options=*/std::monostate());
   EXPECT_FALSE(local_state()->GetBoolean(kWidevineEnabled));
 }

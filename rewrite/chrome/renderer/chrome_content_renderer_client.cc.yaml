@@ -14,8 +14,8 @@ substitutions:
       Prevents unnecessary js console logs spam.
     regex:
       pattern:
-        'new dom_distiller::DistillabilityAgent(render_frame, DCHECK_IS_ON())'
-      replace: 'new dom_distiller::DistillabilityAgent(render_frame, false)'
+        'new web_distiller::DistillabilityAgent(render_frame, DCHECK_IS_ON())'
+      replace: 'new web_distiller::DistillabilityAgent(render_frame, false)'
 
   - description: |-
       Give ~ChromeContentRendererClient() a real body to preempt.
@@ -55,3 +55,9 @@ substitutions:
       function_name: ChromeContentRendererClient::~ChromeContentRendererClient
       code: |
         chrome_observer_.release();
+
+  - description: |-
+      Include what the substitutions above use
+    add_include:
+      header:
+        - brave/components/content_settings/renderer/brave_content_settings_agent_impl.h

@@ -98,6 +98,7 @@ source_set("widevine_permission_android_unittest") {
   deps = [
     ":widevine",
     "//base",
+    "//base/test:test_support",
     "//brave/common",
     "//chrome/browser",
     "//chrome/browser/profiles:profile",
@@ -141,6 +142,7 @@ source_set("browser_tests") {
   if (toolkit_views) {
     sources += [ "widevine_permission_request_browsertest.cc" ]
     deps += [
+      "//brave/app:brave_generated_resources_grit",
       "//brave/browser/ui",
       "//brave/browser/widevine",
       "//brave/components/tor/buildflags",
@@ -155,6 +157,7 @@ source_set("browser_tests") {
       "//components/permissions",
       "//components/prefs",
       "//components/update_client",
+      "//ui/base",
       "//ui/views",
       "//url",
     ]

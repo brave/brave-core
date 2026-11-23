@@ -5,41 +5,18 @@
 
 substitutions:
   - description: |-
-      Round the group header chip like a Brave horizontal tab.
-    preempt_function_impl:
-      function_name: TabGroupStyle::GetChipCornerRadius
-      code: |-
-        if (tabs::HorizontalTabsUpdateEnabled() &&
-            orientation == TabStripOrientation::kHorizontal) {
-          return tabs::kTabBorderRadius;
-        }
-
-  - description: |-
       Start the group header chip where a Brave horizontal tab's contents do.
-    preempt_function_impl:
+    after_function_impl:
       function_name: TabGroupStyle::GetTitleChipOffset
+      result_var: offset
       code: |-
         if (tabs::HorizontalTabsUpdateEnabled()) {
-          return gfx::Point(tabs::kHorizontalTabInset,
-                            tabs::GetHorizontalTabVerticalSpacing());
+          offset.set_x(tabs::kHorizontalTabInset);
         }
+        return offset;
 
   - description: |-
-      Pad the group header chip's text as Brave's horizontal tabs do.
-    preempt_function_impl:
-      function_name: TabGroupStyle::GetInsetsForHeaderChip
-      code: |-
-        if (tabs::HorizontalTabsUpdateEnabled() &&
-            orientation == TabStripOrientation::kHorizontal) {
-          return gfx::Insets::VH(tabs::GetTabGroupTitleVerticalInset(),
-                                 tabs::GetTabGroupTitleHorizontalInset());
-        }
-
-  - description: |-
-      Fit the group header chip to the height of a Brave horizontal tab.
-    preempt_function_impl:
-      function_name: TabGroupStyle::GetEmptyChipSize
-      code: |-
-        if (tabs::HorizontalTabsUpdateEnabled()) {
-          return tabs::GetHorizontalTabHeight();
-        }
+      Include what the substitution above uses
+    add_include:
+      header:
+        - chrome/browser/ui/tabs/features.h

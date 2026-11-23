@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6229752134959014186">Pelajari lebih lanjut tentang Widevine</translation>
+<translation id="3318169548229684688">Unduh model pengenalan ucapan (<ph name="DOWNLOAD_SIZE"/>) untuk memproses ucapan di perangkat ini</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> meminta Anda untuk</translation>
 <translation id="3218385319396786393">Putar otomatis pada laman ini diblokir</translation>
 <translation id="4988333904713528597">Selalu izinkan putar otomatis di <ph name="HOST"/></translation>
@@ -610,6 +611,8 @@ Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="3540231253392253941">Gunakan layanan Google untuk pesan push</translation>
 <translation id="2224032129673914306">Penelusuran riwayat semantik</translation>
 <translation id="6045998903985162478">Indeks halaman yang Anda kunjungi sehingga Anda dapat menemukannya dengan mudah di riwayat, tab yang terbuka, dan Leo.</translation>
+<translation id="3962946446120925966">Pengenalan ucapan di perangkat</translation>
+<translation id="6408242130028978631">Unduh model pengenalan ucapan (<ph name="DOWNLOAD_SIZE"/>) agar situs dapat memproses ucapan di perangkat ini. Nonaktifkan untuk menghapus model.</translation>
 <translation id="5813105074916486721">Retensi riwayat lokal</translation>
 <translation id="5671611745062206644">Berapa lama Brave menyimpan riwayat penjelajahan Anda secara lokal</translation>
 <translation id="7184510058087008090">1 day</translation>

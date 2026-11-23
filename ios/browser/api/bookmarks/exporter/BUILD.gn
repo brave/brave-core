@@ -19,6 +19,7 @@ source_set("exporter") {
   deps = [
     "//base",
     "//brave/ios/browser/api/bookmarks",
+    "//brave/ios/browser/api/profile",
     "//components/bookmarks/browser",
     "//components/favicon/core",
     "//components/favicon_base",

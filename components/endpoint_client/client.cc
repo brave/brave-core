@@ -28,6 +28,13 @@ void OnBodyAsString(OnResponseCallback on_response_callback,
            std::move(response_body));
 }
 
+void OnHeadersOnly(OnResponseCallback on_response_callback,
+                   network::SimpleURLLoader* simple_url_loader,
+                   scoped_refptr<net::HttpResponseHeaders> headers) {
+  std::move(on_response_callback)
+      .Run(simple_url_loader->NetError(), std::move(headers), std::nullopt);
+}
+
 }  // namespace
 
 std::unique_ptr<network::SimpleURLLoader> StartSimpleURLLoader(
@@ -39,6 +46,7 @@ std::unique_ptr<network::SimpleURLLoader> StartSimpleURLLoader(
     std::string_view content_type,
     RequestOptions options,
     RequestCancelability cancelability,
+    bool download_headers_only,
     OnResponseCallback on_response_callback) {
   if (!options.network_traffic_annotation_tag.is_valid()) {
     CHECK_IS_TEST() << "Client<> requires a valid network traffic annotation "
@@ -78,20 +86,24 @@ std::unique_ptr<network::SimpleURLLoader> StartSimpleURLLoader(
   // runs, since only the loader runs the callback.
   // Non-cancelable: `base::Owned<>()` transfers ownership to the callback;
   // the loader is deleted when the callback is.
-  auto body_as_string_callback =
-      cancelability == RequestCancelability::kCancelable
-          ? base::BindOnce(OnBodyAsString, std::move(on_response_callback),
-                           base::Unretained(simple_url_loader_ptr))
-          : base::BindOnce(OnBodyAsString, std::move(on_response_callback),
-                           base::Owned(std::move(simple_url_loader)));
+  auto bind_on_complete = [&](auto on_complete) {
+    return cancelability == RequestCancelability::kCancelable
+               ? base::BindOnce(on_complete, std::move(on_response_callback),
+                                base::Unretained(simple_url_loader_ptr))
+               : base::BindOnce(on_complete, std::move(on_response_callback),
+                                base::Owned(std::move(simple_url_loader)));
+  };
 
-  if (options.max_body_size) {
+  if (download_headers_only) {
+    simple_url_loader_ptr->DownloadHeadersOnly(&url_loader_factory,
+                                               bind_on_complete(OnHeadersOnly));
+  } else if (options.max_body_size) {
     simple_url_loader_ptr->DownloadToString(&url_loader_factory,
-                                            std::move(body_as_string_callback),
+                                            bind_on_complete(OnBodyAsString),
                                             *options.max_body_size);
   } else {
     simple_url_loader_ptr->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-        &url_loader_factory, std::move(body_as_string_callback));
+        &url_loader_factory, bind_on_complete(OnBodyAsString));
   }
 
   return simple_url_loader;

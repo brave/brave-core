@@ -132,6 +132,12 @@ class HttpsUpgradeBrowserTest : public PlatformBrowserTest {
     HttpsUpgradesInterceptor::SetHttpPortForTesting(http_server()->port());
   }
 
+  void TearDownOnMainThread() override {
+    HttpsUpgradesInterceptor::SetHttpsPortForTesting(0);
+    HttpsUpgradesInterceptor::SetHttpPortForTesting(0);
+    PlatformBrowserTest::TearDownOnMainThread();
+  }
+
   void SetUpCommandLine(base::CommandLine* command_line) override {
     PlatformBrowserTest::SetUpCommandLine(command_line);
     mock_cert_verifier_.SetUpCommandLine(command_line);

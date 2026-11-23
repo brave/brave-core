@@ -5,9 +5,7 @@
 
 #include "brave/browser/brave_wallet/external_wallets_importer.h"
 
-#include <utility>
-
-#include "base/test/bind.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "chrome/test/base/testing_profile.h"
@@ -78,25 +76,14 @@ class ExternalWalletsImporterUnitTest : public testing::Test {
       const std::string& json_str) {
     auto json = base::test::ParseJsonDict(json_str,
                                           base::JSON_PARSE_CHROMIUM_EXTENSIONS);
-    base::expected<ImportInfo, ImportError> out_info;
+    ExternalWalletsImporter importer(mojom::ExternalWalletType::MetaMask,
+                                     browser_context());
 
-    {
-      ExternalWalletsImporter importer(mojom::ExternalWalletType::MetaMask,
-                                       browser_context());
+    importer.SetStorageDataForTesting(json.Clone());
 
-      importer.SetStorageDataForTesting(json.Clone());
-
-      base::RunLoop run_loop;
-      importer.GetImportInfo(
-          password, base::BindLambdaForTesting(
-                        [&](base::expected<ImportInfo, ImportError> info) {
-                          out_info = std::move(info);
-                          run_loop.Quit();
-                        }));
-      run_loop.Run();
-    }
-
-    return out_info;
+    base::test::TestFuture<base::expected<ImportInfo, ImportError>> future;
+    importer.GetImportInfo(password, future.GetCallback());
+    return future.Take();
   }
 
   void SimulateIsExternalWalletInitialized(const std::string& json_str,

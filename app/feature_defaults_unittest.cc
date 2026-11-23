@@ -9,7 +9,6 @@
 #include "chrome/browser/browser_features.h"
 #include "chrome/browser/devtools/features.h"
 #include "chrome/browser/glic/public/features.h"
-#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/policy/policy_util.h"
 #include "chrome/browser/preloading/preloading_features.h"
 #include "chrome/browser/ttc/core/features.h"
@@ -32,7 +31,6 @@
 #include "components/history/core/browser/features.h"
 #include "components/history_clusters/core/features.h"
 #include "components/history_clusters/core/on_device_clustering_features.h"
-#include "components/history_embeddings/core/history_embeddings_features.h"
 #include "components/lens/lens_features.h"
 #include "components/manta/features.h"
 #include "components/metrics/metrics_features.h"
@@ -202,8 +200,8 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kDevToolsUseGcaApi,
       &features::kDigitalGoodsApi,
       &features::kEmailVerificationProtocol,
-      &features::kEnterpriseReleaseNotes,
       &features::kFedCm,
+      &features::kGeic,
       &features::kGlicTextSelectionContextMenu,
       &features::kHttpsFirstBalancedMode,
       &features::kIndigo,
@@ -247,9 +245,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &history_clusters::internal::kHistoryClustersNavigationContextClustering,
       &history_clusters::internal::kJourneysImages,
       &history_clusters::internal::kOmniboxHistoryClusterProvider,
-      &history_embeddings::kHistoryEmbeddings,
-      &history_embeddings::kHistoryEmbeddingsAnswers,
-      &history_embeddings::kLaunchedHistoryEmbeddings,
       &lens::features::kLensOverlay,
       &lens::features::kLensOverlayOmniboxEntryPoint,
       &lens::features::kLensStandalone,
@@ -261,6 +256,8 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &net::features::kEnableWebTransportDraft07,
       &net::features::kTLSTrustAnchorIDs,
       &network::features::kBrowsingTopics,
+      &network::features::kCacheSharingForPervasiveResources,
+      &network::features::kPervasiveSharedDictionaries,
       &network_time::kNetworkTimeServiceQuerying,
       &ntp_features::kCustomizeChromeSidePanelExtensionsCard,
       &ntp_features::kCustomizeChromeWallpaperSearch,
@@ -279,6 +276,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if BUILDFLAG(IS_ANDROID)
       &omnibox::kOmniboxMobileParityUpdateV2,
 #endif
+      &omnibox::kPlatformAgnosticXGeo,
       &omnibox::kRichAutocompletion,
       &omnibox::kStarterPackExpansion,
       &one_time_tokens::features::kGmailOtpRetrievalService,
@@ -287,6 +285,8 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &optimization_guide::features::kOptimizationGuideModelExecution,
       &optimization_guide::features::kOptimizationHints,
       &passage_embeddings::kPassageEmbedder,
+      &password_manager::features::
+          kPasswordManagerOnDeviceEncryptionMetricsReporter,
       &permissions::features::kCpssUseTfliteSignatureRunner,
       &permissions::features::kPermissionsPromptSurvey,
       &permissions::features::kPermissionPredictionsV2,
@@ -361,7 +361,9 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
 TEST(FeatureDefaultsTest, DisabledBlinkRuntimeEnabledFeatures) {
   // Please, keep alphabetized.
   const base::Feature* disabled_features[] = {
-      &blink::features::kAdInterestGroupAPI,
+      &blink::features::kAIDecisionModelAPI,
+      &blink::features::kAIDecisionModelAPIForWorkers,
+      &blink::features::kAIEmbeddingsAPI,
       &blink::features::kAIProofreadingAPI,
       &blink::features::kAIPromptAPI,
       &blink::features::kAIPromptAPIMultimodalInput,
@@ -371,12 +373,13 @@ TEST(FeatureDefaultsTest, DisabledBlinkRuntimeEnabledFeatures) {
       &blink::features::kControlledFrame,
       &blink::features::kExtensionScriptTagging,
       &blink::features::kFencedFramesRuntime,
-      &blink::features::kFledge,
+      &blink::features::kInstallElement,
       &blink::features::kLanguageDetectionAPI,
-      &blink::features::kParakeet,
       &blink::features::kPrerender2,
+      &blink::features::kProfilerAPI,
       &blink::features::kTranslationAPI,
       &blink::features::kUserMediaElement,
+      &blink::features::kWebAppInstallation,
   };
 
   for (const auto* feature : disabled_features) {
@@ -387,7 +390,9 @@ TEST(FeatureDefaultsTest, DisabledBlinkRuntimeEnabledFeatures) {
 TEST(FeatureDefaultsTest, EnabledBlinkRuntimeEnabledFeatures) {
   // Please, keep alphabetized.
   const base::Feature* enabled_features[] = {
+      &blink::features::kApproximateGeolocationPermissionAccuracyMode,
       &blink::features::kReduceUserAgentMinorVersion,
+      &blink::features::kWebMCP,
   };
 
   for (const auto* feature : enabled_features) {

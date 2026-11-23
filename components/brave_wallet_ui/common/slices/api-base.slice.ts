@@ -69,8 +69,6 @@ export function createWalletApiBase() {
       'IsPrivateWindow',
       'PendingAddChainRequests',
       'PendingSwitchChainRequests',
-      'PendingDecryptRequest',
-      'PendingEncryptRequest',
       'PendingSignSolTransactionsRequests',
       'PendingSignCardanoTransactionRequests',
       'PinnableNftIds',

@@ -5,15 +5,13 @@
 
 #include "brave/browser/ntp_background/custom_background_file_manager.h"
 
-#include <utility>
-
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/location.h"
 #include "base/logging.h"
 #include "base/path_service.h"
-#include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/browser/ntp_background/constants.h"
 #include "brave/components/constants/brave_paths.h"
@@ -50,12 +48,9 @@ class CustomBackgroundFileManagerBrowserTest : public InProcessBrowserTest {
         base::CopyFile(test_data_dir.Append(
                            FILE_PATH_LITERAL("ntp_background/background.jpg")),
                        profile()->GetPath().AppendASCII(kTestImageName)));
-
-    run_loop_ = std::make_unique<base::RunLoop>();
   }
 
   void TearDownOnMainThread() override {
-    run_loop_.reset();
     file_manager_.reset();
     InProcessBrowserTest::TearDownOnMainThread();
   }
@@ -97,13 +92,8 @@ class CustomBackgroundFileManagerBrowserTest : public InProcessBrowserTest {
 
   CustomBackgroundFileManager& custom_file_manager() { return *file_manager_; }
 
-  void Wait() { run_loop_->Run(); }
-  base::OnceClosure run_loop_quit_closure() { return run_loop_->QuitClosure(); }
-
  private:
   std::unique_ptr<CustomBackgroundFileManager> file_manager_;
-
-  std::unique_ptr<base::RunLoop> run_loop_;
 };
 
 IN_PROC_BROWSER_TEST_F(CustomBackgroundFileManagerBrowserTest,
@@ -115,12 +105,9 @@ IN_PROC_BROWSER_TEST_F(CustomBackgroundFileManagerBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(CustomBackgroundFileManagerBrowserTest,
                        MoveImageToCustomBackgroundDir) {
-  auto check_result = base::BindOnce([](bool result) {
-                        EXPECT_TRUE(result);
-                      }).Then(run_loop_quit_closure());
-
-  custom_file_manager().MoveImage(test_file(), std::move(check_result));
-  Wait();
+  base::test::TestFuture<bool> future;
+  custom_file_manager().MoveImage(test_file(), future.GetCallback());
+  EXPECT_TRUE(future.Get());
 
   base::ScopedAllowBlockingForTesting allow_blocking_call;
   EXPECT_TRUE(base::PathExists(
@@ -131,12 +118,10 @@ IN_PROC_BROWSER_TEST_F(CustomBackgroundFileManagerBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(CustomBackgroundFileManagerBrowserTest,
                        SaveImageToCustomBackgroundDir) {
-  auto check_result = base::BindOnce([](const base::FilePath& path) {
-                        EXPECT_FALSE(path.empty());
-                      }).Then(run_loop_quit_closure());
-
-  custom_file_manager().SaveImage(test_file(), std::move(check_result));
-  Wait();
+  base::test::TestFuture<base::FilePath> future;
+  custom_file_manager().SaveImage(test_file(),
+                                  future.GetCallback<const base::FilePath&>());
+  EXPECT_FALSE(future.Get().empty());
 
   base::ScopedAllowBlockingForTesting allow_blocking_call;
   EXPECT_TRUE(base::PathExists(
@@ -156,12 +141,10 @@ IN_PROC_BROWSER_TEST_F(CustomBackgroundFileManagerBrowserTest,
   CreateHighResolutionTestImage(&image_path);
   ASSERT_TRUE(base::PathExists(image_path));
 
-  auto check_result = base::BindOnce([](const base::FilePath& path) {
-                        EXPECT_FALSE(path.empty());
-                      }).Then(run_loop_quit_closure());
-
-  custom_file_manager().SaveImage(image_path, std::move(check_result));
-  Wait();
+  base::test::TestFuture<base::FilePath> future;
+  custom_file_manager().SaveImage(image_path,
+                                  future.GetCallback<const base::FilePath&>());
+  EXPECT_FALSE(future.Get().empty());
 
   EXPECT_TRUE(base::PathExists(
       custom_file_manager().GetCustomBackgroundDirectory().AppendASCII(
@@ -171,7 +154,6 @@ IN_PROC_BROWSER_TEST_F(CustomBackgroundFileManagerBrowserTest,
 IN_PROC_BROWSER_TEST_F(CustomBackgroundFileManagerBrowserTest,
                        SaveImageMultipleTimes) {
   for (int i = 0; i < 3; i++) {
-    base::RunLoop run_loop;
     base::FilePath expected_path =
         custom_file_manager().GetCustomBackgroundDirectory().AppendASCII(
             kTestImageName);
@@ -180,16 +162,10 @@ IN_PROC_BROWSER_TEST_F(CustomBackgroundFileManagerBrowserTest,
           expected_path.InsertBeforeExtensionASCII(absl::StrFormat("-%d", i));
     }
 
-    auto check_res =
-        base::BindOnce(
-            [](base::FilePath expected_path, const base::FilePath& path) {
-              EXPECT_EQ(expected_path, path);
-            },
-            expected_path)
-            .Then(run_loop.QuitClosure());
-
-    custom_file_manager().SaveImage(test_file(), std::move(check_res));
-    run_loop.Run();
+    base::test::TestFuture<base::FilePath> future;
+    custom_file_manager().SaveImage(
+        test_file(), future.GetCallback<const base::FilePath&>());
+    EXPECT_EQ(expected_path, future.Get());
 
     base::ScopedAllowBlockingForTesting allow_blocking_call;
     EXPECT_TRUE(base::PathExists(expected_path));

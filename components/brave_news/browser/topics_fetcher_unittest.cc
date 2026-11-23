@@ -238,7 +238,7 @@ TEST_F(BraveNewsTopicsFetcherTest, TopicsAreJoinedAndParsedCorrectly) {
   auto topics = GetTopics();
 
   // Note: Topics with no articles are filtered out.
-  EXPECT_EQ(2u, topics.size());
+  ASSERT_EQ(2u, topics.size());
 
   auto& [israel, israel_articles] = topics[0];
   EXPECT_EQ(
@@ -259,7 +259,7 @@ TEST_F(BraveNewsTopicsFetcherTest, TopicsAreJoinedAndParsedCorrectly) {
 
   auto& [afghanistan, afghanistan_articles] = topics[1];
   EXPECT_EQ("Afghanistan earthquake", afghanistan.claude_title_short);
-  EXPECT_EQ(1u, afghanistan_articles.size());
+  ASSERT_EQ(1u, afghanistan_articles.size());
   auto& afghanistan_article = afghanistan_articles[0];
   EXPECT_EQ("320 feared dead after earthquakes in Afghanistan",
             afghanistan_article.title);

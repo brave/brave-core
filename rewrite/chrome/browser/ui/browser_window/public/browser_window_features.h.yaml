@@ -27,3 +27,10 @@ substitutions:
       code: |-
         std::unique_ptr<FocusModeController> brave_focus_mode_controller_;
         std::unique_ptr<VerticalTabController> brave_vertical_tab_controller_;
+
+  - description: |-
+      Forward declare the types the substitutions above use
+    add_after_includes:
+      code: |-
+        class FocusModeController;
+        class VerticalTabController;

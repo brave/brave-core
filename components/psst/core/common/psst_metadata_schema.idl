@@ -23,4 +23,11 @@ namespace psst {
         // List of UIDs to which the user has applied privacy settings
         DOMString[] uids_to_perform;
     };
+
+    // Psst metadata with additional diagnostic details
+    dictionary PsstWebsiteSettingsExtended {
+        long infobar_shown_counter;
+        long infobar_decline_counter;
+        PsstWebsiteSettings[] website_settings;
+    };
 };

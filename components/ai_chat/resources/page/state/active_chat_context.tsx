@@ -111,19 +111,18 @@ export function ActiveChatProvider({
         }
       },
       createNewConversation: () => {
-        // Special case mainConversation - manually bind a new conversation as we might
-        // not be able to change the URL.
-        if (isMainConversation) {
-          setConversationAPI(BindConversation.newConversation(aiChat.api))
+        // Bind here rather than relying on navigation to "/": the main
+        // conversation might not be able to change the URL, and "/" keeps a
+        // conversation that was new when bound once it's gone from the list,
+        // as a deleted one is.
+        setConversationAPI(BindConversation.newConversation(aiChat.api))
 
-          // Note: On tab-associated conversations, we shouldn't navigate to "/" because then we wouldn't be looking at
-          // the tab-associated conversation!
-          if (selectedConversationId === tabAssociatedChatId) {
-            return
-          }
+        // Note: On tab-associated conversations, we shouldn't navigate to "/" because then we wouldn't be looking at
+        // the tab-associated conversation!
+        if (selectedConversationId === tabAssociatedChatId) {
+          return
         }
 
-        // Otherwise, navigate to "/"
         updateSelectedConversation('')
       },
       createNewConversationWithWorkspace: (workspaceUrl: Url) => {
@@ -159,6 +158,17 @@ export function ActiveChatProvider({
       )
     }
   }, [selectedConversationId, aiChat.api])
+
+  // A deleted conversation can't be used any more, so start a new one. The
+  // non-existent chat check below skips the main conversation, which isn't
+  // selected by its id.
+  React.useEffect(
+    () =>
+      conversationAPI?.api.subscribeToOnConversationDeleted(() =>
+        details.createNewConversation(),
+      ),
+    [conversationAPI, details],
+  )
 
   const conversations = aiChat.api.useGetConversations().data
 

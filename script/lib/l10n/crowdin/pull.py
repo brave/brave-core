@@ -13,7 +13,6 @@ import lxml.etree  # pylint: disable=import-error
 
 from lib.l10n.grd_utils import (
     get_grd_strings,
-    get_override_file_path,
     get_xtb_files,
 )
 from lib.l10n.crowdin.common import (

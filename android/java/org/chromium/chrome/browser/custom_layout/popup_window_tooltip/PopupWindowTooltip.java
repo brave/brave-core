@@ -247,6 +247,7 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
 
         mArrowView = new ImageView(mContext);
         mArrowView.setImageDrawable(mArrowColorDrawable);
+        mArrowView.setElevation(mContentView.getElevation());
         LinearLayout.LayoutParams arrowLayoutParams;
 
         if (mArrowDirection == ArrowColorDrawable.TOP
@@ -304,6 +305,15 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
 
     public boolean isShowing() {
         return mPopupWindow != null && mPopupWindow.isShowing();
+    }
+
+    public void updateLocation() {
+        PopupWindow popup = mPopupWindow;
+        if (popup == null || mDismissed || !popup.isShowing()) {
+            return;
+        }
+        PointF location = calculePopupLocation();
+        popup.update((int) location.x, (int) location.y, popup.getWidth(), popup.getHeight());
     }
 
     @SuppressWarnings("unchecked")

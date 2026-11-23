@@ -40,7 +40,6 @@ source_set("unit_tests") {
   sources = [
     "//brave/browser/net/decentralized_dns_network_delegate_helper_unittest.cc",
     "decentralized_dns_navigation_throttle_unittest.cc",
-    "utils_unittest.cc",
   ]
 
   deps = [

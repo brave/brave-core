@@ -77,7 +77,6 @@ class SettingsViewController: TableViewController {
   private let keyringStore: KeyringStore?
   private let cryptoStore: CryptoStore?
   private let windowProtection: WindowProtection?
-  private let ipfsAPI: IpfsAPI
   private let altIconsModel = AltIconsModel()
 
   private let featureSectionUUID: UUID = .init()
@@ -116,7 +115,6 @@ class SettingsViewController: TableViewController {
     self.attributionManager = attributionManager
     self.keyringStore = keyringStore
     self.cryptoStore = cryptoStore
-    self.ipfsAPI = braveCore.ipfsAPI
 
     super.init(style: .insetGrouped)
 
@@ -1178,7 +1176,8 @@ class SettingsViewController: TableViewController {
         Row(
           text: Strings.Autofill.managePasswordsTitle,
           selection: { [unowned self] in
-            if let autofillDataManager = braveCore.defaultWebViewConfiguration.autofillDataManager {
+            let configuration = BraveWebViewConfiguration(profile: braveCore.profile)
+            if let autofillDataManager = configuration.autofillDataManager {
               let viewModel = ManagePasswordsViewModel(autofillDataManager: autofillDataManager)
               let controller = UIHostingController(
                 rootView:

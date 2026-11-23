@@ -20,4 +20,5 @@ export const {
   navigateTo,
   showConnectToSite,
   setHardwareWalletInteractionError,
+  setHardwareWalletOperation,
 } = PanelSliceActions

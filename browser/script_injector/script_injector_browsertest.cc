@@ -5,9 +5,10 @@
 
 #include <string>
 
+#include "base/functional/bind.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/test/bind.h"
 #include "base/test/mock_callback.h"
+#include "base/test/test_future.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
@@ -103,11 +104,7 @@ class ScriptInjectorBrowserTest : public PlatformBrowserTest {
 
 // TESTS
 IN_PROC_BROWSER_TEST_F(ScriptInjectorBrowserTest, InjectScriptAwaitPromise) {
-  base::RunLoop run_loop;
-  auto callback = base::BindLambdaForTesting([&](base::Value value) {
-    EXPECT_TRUE(value.GetBool());
-    run_loop.Quit();
-  });
+  base::test::TestFuture<base::Value> future;
   auto script = absl::StrFormat(kScript, "true");
   const GURL url = https_server_.GetURL("a.com", "/");
   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
@@ -115,32 +112,30 @@ IN_PROC_BROWSER_TEST_F(ScriptInjectorBrowserTest, InjectScriptAwaitPromise) {
   remote->RequestAsyncExecuteScript(
       ISOLATED_WORLD_ID_BRAVE_INTERNAL, base::UTF8ToUTF16(std::string(script)),
       blink::mojom::UserActivationOption::kDoNotActivate,
-      blink::mojom::PromiseResultOption::kAwait, std::move(callback));
+      blink::mojom::PromiseResultOption::kAwait, future.GetCallback());
   // Wait until the callback is called.
-  run_loop.Run();
+  base::Value value = future.Take();
+  EXPECT_TRUE(value.GetBool());
   std::u16string expected_title(u"test");
   content::TitleWatcher watcher(web_contents(), expected_title);
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 }
 
 IN_PROC_BROWSER_TEST_F(ScriptInjectorBrowserTest, InjectedScriptReturnsDict) {
-  base::RunLoop run_loop;
+  base::test::TestFuture<base::Value> future;
   const GURL url = https_server_.GetURL("a.com", "/");
-  auto cb = base::BindLambdaForTesting([&](base::Value value) {
-    EXPECT_TRUE(value.is_dict());
-    const base::DictValue& dict = value.GetDict();
-    auto val = dict.FindBool("ok");
-    EXPECT_TRUE(*val);
-    run_loop.Quit();
-  });
   auto script = absl::StrFormat(kScript, "{ok: true}");
   ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
   auto remote = GetRemote(web_contents()->GetPrimaryMainFrame());
   remote->RequestAsyncExecuteScript(
       ISOLATED_WORLD_ID_BRAVE_INTERNAL, base::UTF8ToUTF16(std::string(script)),
       blink::mojom::UserActivationOption::kDoNotActivate,
-      blink::mojom::PromiseResultOption::kAwait, std::move(cb));
-  run_loop.Run();
+      blink::mojom::PromiseResultOption::kAwait, future.GetCallback());
+  base::Value value = future.Take();
+  EXPECT_TRUE(value.is_dict());
+  const base::DictValue& dict = value.GetDict();
+  auto val = dict.FindBool("ok");
+  EXPECT_TRUE(*val);
   std::u16string expected_title(u"test");
   content::TitleWatcher watcher(web_contents(), expected_title);
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());

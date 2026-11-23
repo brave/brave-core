@@ -6,6 +6,7 @@
 # based on //chrome/browser/ui/webui/whats_new/BUILD.gn
 
 import("//brave/components/brave_education/buildflags.gni")
+import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
@@ -54,6 +55,10 @@ source_set("brave_education") {
     "//ui/webui",
   ]
 
+  if (enable_brave_rewards) {
+    deps += [ "//brave/browser/ui/brave_rewards" ]
+  }
+
   if (enable_brave_vpn) {
     deps += [ "//brave/browser/ui/brave_vpn" ]
   }
@@ -74,7 +79,10 @@ source_set("brave_education") {
 source_set("browser_tests") {
   testonly = true
 
-  sources = [ "brave_education_page_ui_browsertest.cc" ]
+  sources = [
+    "brave_education_page_ui_browsertest.cc",
+    "brave_education_page_ui_mocha_browsertest.cc",
+  ]
 
   deps = [
     ":brave_education",

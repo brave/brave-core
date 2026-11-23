@@ -51,6 +51,7 @@
 .
 Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6229752134959014186">Widevine hakkında daha fazla bilgi edinin</translation>
+<translation id="3318169548229684688">Bu cihazda konuşmayı işlemek için bir konuşma tanıma modeli (<ph name="DOWNLOAD_SIZE"/>) indirme</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> sizden şunu istiyor:</translation>
 <translation id="3218385319396786393">Bu sayfada otomatik oynatma engellenmiş</translation>
 <translation id="4988333904713528597"><ph name="HOST"/> her zaman otomatik oynatmaya izin ver</translation>
@@ -611,6 +612,8 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="3540231253392253941">Anında mesajlaşma için Google hizmetlerini kullanın</translation>
 <translation id="2224032129673914306">Anlamsal geçmiş araması</translation>
 <translation id="6045998903985162478">Ziyaret ettiğiniz sayfaları dizine ekleyin; böylece bunları geçmişte, açık sekmelerde ve Leo'da kolayca bulabilirsiniz.</translation>
+<translation id="3962946446120925966">Cihaz üzerinde konuşma tanıma</translation>
+<translation id="6408242130028978631">Sitelerin konuşmayı bu cihazda işleyebilmesi için bir konuşma tanıma modeli (<ph name="DOWNLOAD_SIZE"/>) indirin. Modeli kaldırmak için bunu kapatın.</translation>
 <translation id="5813105074916486721">Yerel geçmiş saklama</translation>
 <translation id="5671611745062206644">Brave'in tarama geçmişinizi yerel olarak ne kadar süre sakladığı</translation>
 <translation id="7184510058087008090">1 gün</translation>

@@ -29,9 +29,6 @@ class SignMessageRequestStore: ObservableObject {
 
   /// Current request index
   @Published var requestIndex: Int = 0
-  /// A map between request index and a boolean value indicates this request message needs pilcrow formating/
-  /// Key is the request id. This property is assigned by the view, because we need the view height to determine.
-  @Published var needPilcrowFormatted: [Int32: Bool] = [:]
   /// A map between request index and a boolean value indicates this request message is displayed as
   /// its original content. Key is the request id.
   @Published var showOrignalMessage: [Int32: Bool] = [:]
@@ -72,10 +69,7 @@ class SignMessageRequestStore: ObservableObject {
       // setup default values
       for request in requests {
         if showOrignalMessage[request.id] == nil {
-          showOrignalMessage[request.id] = true
-        }
-        if needPilcrowFormatted[request.id] == nil {
-          needPilcrowFormatted[request.id] = false
+          showOrignalMessage[request.id] = false
         }
       }
 
@@ -190,7 +184,7 @@ class SignMessageRequestStore: ObservableObject {
       {
         // if we have not previously assigned a `showOriginalMessage`
         // value for the next request, assign it the default value now.
-        showOrignalMessage[nextRequestId] = true
+        showOrignalMessage[nextRequestId] = false
       }
       requestIndex = requestIndex + 1
     } else {

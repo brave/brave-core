@@ -117,6 +117,7 @@ source_set("unit_tests") {
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/l10n/common:test_support",
     "//brave/components/resources:strings_grit",
+    "//brave/components/skus/common",
     "//brave/components/speedreader/common/buildflags",
     "//brave/components/vector_icons",
     "//chrome/browser/sharing_hub",

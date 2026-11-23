@@ -1,0 +1,24 @@
+diff --git a/components/omnibox/browser/autocomplete_provider_client.h b/components/omnibox/browser/autocomplete_provider_client.h
+index b5e09fac90c4d6d5e32eea749e6545df5bb5c058..7964a57f832a2124c3ac4cc2573bb019601882d4 100644
+--- a/components/omnibox/browser/autocomplete_provider_client.h
++++ b/components/omnibox/browser/autocomplete_provider_client.h
+@@ -80,6 +80,10 @@ namespace tab_groups {
+ class TabGroupSyncService;
+ }
+ 
++namespace history_embeddings {
++class HistoryEmbeddingsSearch;
++}  // namespace history_embeddings
++
+ class TemplateURLService;
+ 
+ class AutocompleteProviderClient : public OmniboxAction::Client {
+@@ -299,6 +303,8 @@ class AutocompleteProviderClient : public OmniboxAction::Client {
+   void OpenCoBrowsePanel() override;
+   bool ShouldOpenComposeboxForAskG() const override;
+   void OpenComposeboxForAskG() override;
++  virtual history_embeddings::HistoryEmbeddingsSearch*
++  GetBraveHistoryEmbeddingsSearch();
+ };
+ 
+ #endif  // COMPONENTS_OMNIBOX_BROWSER_AUTOCOMPLETE_PROVIDER_CLIENT_H_

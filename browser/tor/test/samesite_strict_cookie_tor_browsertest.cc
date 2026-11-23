@@ -109,6 +109,12 @@ class SameSiteStrictCookieTorBrowserTest : public InProcessBrowserTest {
     tor::TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(true);
   }
 
+  void TearDownOnMainThread() override {
+    tor::TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(false);
+    net::ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(false);
+    InProcessBrowserTest::TearDownOnMainThread();
+  }
+
  protected:
   std::unique_ptr<net::test_server::EmbeddedTestServer> https_server_;
   std::unique_ptr<net::test_server::EmbeddedTestServer> onion_server_;

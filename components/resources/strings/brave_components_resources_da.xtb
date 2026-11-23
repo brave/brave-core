@@ -950,6 +950,11 @@
 <translation id="4362717653795263052">Gendan primære crypto-konti</translation>
 <translation id="3038077262567136741">Indtast din gendannelsessætning for at gendanne din Brave Wallet med kryptovaluta.</translation>
 <translation id="955918646509748368">Ugyldig gendannelsessætning.</translation>
+<translation id="7496330898672236908">Denne gendannelsessætning matcher ikke din tegnebog. Kontrollér sætningen, og prøv igen.</translation>
+<translation id="3798792138617904098">Fjern importerede konti?</translation>
+<translation id="2960631345291747230">Importerede konti er ikke sikkerhedskopieret af din gendannelsessætning. De fjernes fra Brave Wallet, og du kan miste adgangen til deres midler permanent, medmindre du har sikkerhedskopieret deres private nøgler.</translation>
+<translation id="8898583604592472741">Fjern konti</translation>
+<translation id="1577629163207045190">Skriv "<ph name="CONFIRMATION_PHRASE"/>" for at bekræfte.</translation>
 <translation id="8107437138787377150">Indsæt gendannelsessætning fra udklipsholderen</translation>
 <translation id="4811736040444856406">Vis gendannelsessætning</translation>
 <translation id="4359319875297001084">Importér fra legacy Brave crypto-wallets?</translation>
@@ -2244,13 +2249,12 @@
 <translation id="3934503473603661122">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af Grok 4.7, xAI's banebrydende ræsonneringsmodel på Amazon Bedrock. Grok 4.7 leveres via Braves sikre AWS-infrastruktur.<ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
 <translation id="8983215701788462580">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af GPT Luna, OpenAI's hurtige model med lav latenstid på Amazon Bedrock. GPT Luna leveres via Braves sikre AWS-infrastruktur.<ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af GPT 5.6 Terra, OpenAI's afbalancerede produktionsmodel på Amazon Bedrock Mantle. GPT 5.6 Terra leveres via Braves sikre AWS-infrastruktur.<ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
-<translation id="5037359072717016032">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af Mistral Large, en model skabt af Mistral til at være effektiv og anvendelig i mange forskellige sammenhænge. Mistral Large hostes af Brave via vores egen sikre infrastruktur.<ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
+<translation id="3789772321824682783">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af Claude Haiku, en model skabt af Anthropic til at udføre samtale- og tekstbehandlingsopgaver. Claude Haiku hostes af Brave via vores egen sikre infrastruktur.<ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af Qwen 3.8 Flash Next, en model skabt af Alibaba Cloud til at være effektiv og anvendelig i mange forskellige sammenhænge. Qwen 3.8 Flash Next hostes af Brave via vores egen sikre infrastruktur.<ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
-<translation id="8720758690351028307">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af Deepseek V3.2, en model skabt af Deepseek til at være effektiv og anvendelig i mange forskellige sammenhænge. Deepseek V3.2 hostes af Brave via vores egen sikre infrastruktur.<ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
+<translation id="4193502496998779919">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af GLM 5.3, en model skabt af Z.ai til at være effektiv og anvendelig i mange forskellige sammenhænge. GLM 5.3 hostes af Brave via vores egen sikre infrastruktur.<ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af Claude Opus, en model skabt af Anthropic til at udføre samtale- og tekstbehandlingsopgaver. Claude Opus hostes af Brave via vores egen sikre infrastruktur.<ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af GLM-4-7-Flash, en model skabt af Zhipu AI til at være effektiv og anvendelig i mange forskellige sammenhænge. GLM-4-7-Flash hostes af Brave via vores egen sikre infrastruktur.<ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
 <translation id="6983410749026920122">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af Kimi K2.5, en model skabt af Moonshot AI til at være effektiv og anvendelig i mange forskellige sammenhænge. Kimi K2.5 hostes af Brave via vores egen sikre infrastruktur.<ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
-<translation id="3484076625906498634">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af Nemotron Nano 3 30B, en model skabt af NVIDIA til at være effektiv og anvendelig i mange forskellige sammenhænge. Nemotron Nano 3 30B hostes af Brave via vores egen sikre infrastruktur.<ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
 <translation id="2965634373697869601">Hej, jeg hedder Leo. Jeg er en AI-assistent fra Brave. Jeg er drevet af Brave Ocelot, en model skabt af Brave til at opsummere websider. Brave Ocelot hostes af Brave via vores egen sikre infrastruktur.<ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="5807427080183870259">Lokal</translation>
@@ -2390,8 +2394,8 @@
 <translation id="7465032796278724624">Verificeret privat med NEAR AI TEE</translation>
 <translation id="8782867266498869301">Modellen ændrer sig dynamisk for at bruge den bedste til opgaven</translation>
 <translation id="7348809809749151120">Hurtig • Søg</translation>
+<translation id="7711013627639951065">Hurtig • Søg • Billede • Værktøjer</translation>
 <translation id="3213834013136637671">Søg • Billede</translation>
-<translation id="2793458212460902934">Hurtig • Søg • Værktøjer</translation>
 <translation id="5276681919620506371">Søg • Værktøjer</translation>
 <translation id="7434375176361995333">Sammenfattelser • Hurtig</translation>
 <translation id="3965507912994218570">Leo-indstillinger</translation>
@@ -2464,6 +2468,8 @@
 <translation id="6287023598025162715">Ny samtale</translation>
 <translation id="7230502562132448519">Filtrer samtaler</translation>
 <translation id="821070843380699990">Prøv en anden forespørgsel</translation>
+<translation id="241415280196701326">Seneste arbejdsområder</translation>
+<translation id="5388053981690151266">Ny samtale i dette arbejdsområde</translation>
 <translation id="7097822247923237815">Midlertidig chat</translation>
 <translation id="7481750859362986254">Denne chat vil ikke blive gemt i din historik eller bruge nogen af Leos tilpasninger eller minder.</translation>
 <translation id="4238305333951712482">Hukommelse opdateret: <ph name="MEMORY_CONTENT"/></translation>
@@ -2489,6 +2495,7 @@
 <translation id="5103625298494362646">AI browsing tilstand virker med modeller, der understøtter værktøjer. Ikke-kompatible modeller er skjult fra denne liste.</translation>
 <translation id="3397808797783614750">At tillade AI at browse automatisk for dig kan medføre skadelige, utilsigtede konsekvenser for dit privatliv, dine økonomiske forhold og dine onlinekommunikationer. <ph name="LINK_BEFORE"/>Få mere at vide<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Sikkerhedsadvarsel</translation>
+<translation id="717245811623757038">Anmodning om værktøjstilladelse</translation>
 <translation id="6077070599873946984">Brave AI har brug for din tilladelse til: <ph name="TOOL_LABEL"/></translation>
 <translation id="908175046303050847">Brave AI vil gerne udføre **<ph name="TOOL_NAME"/>** på **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Handlingen blev identificeret som potentielt ikke i overensstemmelse med din anmodning:</translation>

@@ -1,0 +1,42 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      browser_window_interface.h's owning target isn't is_desktop_android-
+      gated, so nogncheck was never actually needed, and the header is
+      available on all Android, not just desktop Android. Guard on
+      IS_ANDROID instead of IS_DESKTOP_ANDROID so the comment matches
+      reality (this file is Android-only already, so this is effectively
+      unconditional; kept as a flag rather than removed outright to
+      document why the header is safe to include here).
+    regex:
+      re_pattern:
+        '// "chrome/browser/ui/browser_window" is available on desktop Android,
+        but not\s*// other Android builds\.\s*#if
+        BUILDFLAG\(IS_DESKTOP_ANDROID\)\s*#include
+        "chrome/browser/ui/browser_window/public/browser_window_interface\.h"\s*//\s*nogncheck\s*#endif'
+      replace: |-
+        // browser_window_interface.h is available on all Android.
+        #if BUILDFLAG(IS_ANDROID)
+        #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+        #endif
+
+  - description: |-
+      Guard TestTabModel::AssociateWithBrowserWindow on IS_ANDROID instead of
+      IS_DESKTOP_ANDROID, matching the companion .h declaration: this is
+      about BrowserWindowInterface's availability (all Android), not about
+      which flag happens to compile its only caller
+      (windowing/internal's extensions unit test).
+    regex:
+      re_pattern:
+        '#if BUILDFLAG\(IS_DESKTOP_ANDROID\)\s*(void
+        TestTabModel::AssociateWithBrowserWindow\(BrowserWindowInterface\*
+        browser\) \{.*?\})\s*#endif'
+      re_flags: [DOTALL]
+      replace: |-
+        #if BUILDFLAG(IS_ANDROID)
+        \1
+        #endif

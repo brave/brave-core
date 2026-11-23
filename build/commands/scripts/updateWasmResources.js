@@ -6,8 +6,14 @@
 import config from '../lib/config.ts'
 import path from 'node:path'
 import util from '../lib/util.ts'
+import { program } from '../lib/program.ts'
 
-const args = [
-  path.join(config.srcDir, 'brave', 'third_party', 'wasm', 'update.py'),
-]
-util.run('vpython3', args, config.defaultOptions)
+program
+  .description('Update the wasm resources in brave/third_party/wasm')
+  .action(() => {
+    const args = [
+      path.join(config.srcDir, 'brave', 'third_party', 'wasm', 'update.py'),
+    ]
+    util.run('vpython3', args, config.defaultOptions)
+  })
+  .parse()

@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Use Brave's GetTabSpinningColor() instead of GetCascadingAccentColor().
+
+      No rewriter replaces a call to a free function with another, so this uses
+      a literal regex. GetTabSpinningColor() is defined in the chromium_src
+      override before the upstream include.
+    regex:
+      pattern: GetCascadingAccentColor
+      replace: GetTabSpinningColor
+    count: 2

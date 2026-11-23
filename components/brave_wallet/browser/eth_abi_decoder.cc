@@ -8,10 +8,10 @@
 #include <limits>
 #include <memory>
 #include <optional>
+#include <string>
 #include <utility>
 
 #include "base/containers/span.h"
-#include "base/containers/span_reader.h"
 #include "base/memory/raw_span.h"
 #include "base/notreached.h"
 #include "base/strings/strcat.h"
@@ -54,7 +54,6 @@ namespace {
 constexpr size_t kWordSize = 32;
 constexpr size_t kAddressSize = 20;
 
-using ByteArray = std::vector<uint8_t>;
 using ByteView = base::span<const uint8_t>;
 
 template <typename T>
@@ -448,65 +447,6 @@ std::optional<DecoderResult<base::Value>> GetArrayFromData(
 }
 
 }  // namespace
-
-// UniswapEncodedPathDecode parses a Uniswap-encoded path and return a vector
-// of addresses representing each hop involved in the swap.
-//
-// Single-hop swap: Token1 → Token2
-// Multi-hop swap: Token1 → Token2 → WETH → Token3
-//
-// Each encoded hop contains a 3-byte pool fee, which is associated with the
-// address that follows. It is excluded from the result of this function.
-//
-// ┌──────────┬──────────┬──────────┬─────┐
-// │ address  │ pool fee │ address  │     │
-// │          │          │          │ ... │
-// │ 20 bytes │ 3 bytes  │ 20 bytes │     │
-// └──────────┴──────────┴──────────┴─────┘
-std::optional<std::vector<std::string>> UniswapEncodedPathDecode(
-    const std::string& encoded_path) {
-  ByteArray data;
-  if (!PrefixedHexStringToBytes(encoded_path, &data)) {
-    return std::nullopt;
-  }
-  std::vector<std::string> path;
-
-  auto reader = base::SpanReader(base::as_byte_span(data));
-
-  // The path should be long enough to encode a single-hop swap.
-  // 43 = 20(address) + 3(fee) + 20(address)
-  if (reader.remaining() < 43) {
-    return std::nullopt;
-  }
-
-  // Parse first hop address.
-  path.push_back(base::StrCat({"0x", base::HexEncodeLower(*reader.Read(20u))}));
-
-  while (true) {
-    if (!reader.remaining()) {
-      break;
-    }
-
-    // Parse the pool fee, and ignore.
-    if (!reader.Skip(3u)) {
-      return std::nullopt;
-    }
-
-    // Parse next hop.
-    if (auto address = reader.Read(20u)) {
-      path.push_back(base::StrCat({"0x", base::HexEncodeLower(*address)}));
-    } else {
-      return std::nullopt;
-    }
-  }
-
-  // Require a minimum of 2 addresses for a single-hop swap.
-  if (path.size() < 2) {
-    return std::nullopt;
-  }
-
-  return path;
-}
 
 std::optional<base::ListValue> ABIDecode(const eth_abi::Type& type,
                                          base::span<const uint8_t> input) {

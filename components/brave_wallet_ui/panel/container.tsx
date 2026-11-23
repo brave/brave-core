@@ -24,12 +24,6 @@ import {
 import {
   AddSuggestedTokenPanel, //
 } from '../components/extension/add_suggested_token_panel/add_suggested_token_panel'
-import {
-  ProvidePublicEncryptionKeyPanel, //
-} from '../components/extension/public_encryption_key_panels/provide_public_encryption_key_panel'
-import {
-  DecryptMessageRequestPanel, //
-} from '../components/extension/public_encryption_key_panels/decrypt_message_request_panel'
 import { ConnectWithSiteWrapper } from '../stories/style'
 import { PanelWrapper } from './panel_wrapper/panel_wrapper'
 import { FullScreenWrapper } from '../page/screens/page-screen.styles'
@@ -46,8 +40,6 @@ import { UISelectors, WalletSelectors } from '../common/selectors'
 import { PanelSelectors } from './selectors'
 import {
   useGetPendingAddChainRequestQuery,
-  useGetPendingDecryptRequestQuery,
-  useGetPendingGetEncryptionPublicKeyRequestQuery,
   useGetPendingSignMessageErrorsQuery,
   useGetPendingSignMessageRequestsQuery,
   useGetPendingSwitchChainRequestQuery,
@@ -114,11 +106,6 @@ function Container() {
   const { accounts } = useAccountsQuery()
   const { data: addChainRequest } = useGetPendingAddChainRequestQuery()
   const { data: switchChainRequest } = useGetPendingSwitchChainRequestQuery()
-  const { data: decryptRequest } = useGetPendingDecryptRequestQuery()
-  const {
-    data: getEncryptionPublicKeyRequest,
-    isLoading: isLoadingPendingPublicKeyRequest,
-  } = useGetPendingGetEncryptionPublicKeyRequestQuery()
   const {
     data: signSolTransactionsRequests,
     isLoading: isLoadingSignSolTransactionsRequests,
@@ -143,7 +130,6 @@ function Container() {
   // computed
   const isLoadingPendingActions =
     isLoadingPendingTransactions
-    || isLoadingPendingPublicKeyRequest
     || isLoadingSignSolTransactionsRequests
     || isLoadingSignCardanoTransactionRequests
     || isLoadingSignMessageData
@@ -243,24 +229,6 @@ function Container() {
       return (
         <PanelWrapper>
           <SignInWithEthereum data={signMessageData[0]} />
-        </PanelWrapper>
-      )
-    }
-
-    if (getEncryptionPublicKeyRequest) {
-      return (
-        <PanelWrapper>
-          <ProvidePublicEncryptionKeyPanel
-            payload={getEncryptionPublicKeyRequest}
-          />
-        </PanelWrapper>
-      )
-    }
-
-    if (decryptRequest) {
-      return (
-        <PanelWrapper>
-          <DecryptMessageRequestPanel payload={decryptRequest} />
         </PanelWrapper>
       )
     }

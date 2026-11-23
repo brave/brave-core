@@ -13,8 +13,8 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/ad_block_browser_test_helper.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
-#include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
-#include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/core/browser/ad_block_custom_filters_provider.h"
+#include "brave/components/brave_shields/core/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/constants/brave_paths.h"
 #include "build/build_config.h"
@@ -37,6 +37,7 @@
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "net/dns/mock_host_resolver.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "url/gurl.h"
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -297,7 +298,7 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
   EXPECT_TRUE(WaitForLoadStop(GetWebContents()));
   EXPECT_GT(brave_shields_web_contents_observer()->block_javascript_count(), 0);
   auto blocked_list = GetBlockedJsList();
-  EXPECT_EQ(blocked_list.size(), 3u);
+  ASSERT_EQ(blocked_list.size(), 3u);
 
   // Allow One Script
   brave_shields_web_contents_observer()->AllowScriptsOnce(
@@ -309,7 +310,7 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
   EXPECT_EQ(GetAllowedJsList().size(), 1u);
 
   blocked_list.pop_back();
-  EXPECT_EQ(blocked_list.size(), 2u);
+  ASSERT_EQ(blocked_list.size(), 2u);
 
   // Allow Second Script
   brave_shields_web_contents_observer()->AllowScriptsOnce(
@@ -513,7 +514,7 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsTabHelperBrowserTest,
                        FollowsDiscardedContents) {
   const GURL url = embedded_test_server()->GetURL("a.com", "/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::kNewBackgroundTab,
+      browser(), url, ui::mojom::WindowOpenDisposition::kNewBackgroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   TabStripModel* const tab_strip_model = browser()->tab_strip_model();
   const int index = tab_strip_model->count() - 1;

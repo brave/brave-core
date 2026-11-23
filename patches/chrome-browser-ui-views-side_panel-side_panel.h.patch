@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/side_panel/side_panel.h b/chrome/browser/ui/views/side_panel/side_panel.h
+index e491e24c75c1b8c9c9c4433fb3f7bbbe29f91614..0b1c5a1aa73eec1d03850c72568a6194d73cd33f 100644
+--- a/chrome/browser/ui/views/side_panel/side_panel.h
++++ b/chrome/browser/ui/views/side_panel/side_panel.h
+@@ -130,6 +130,8 @@ class SidePanel : public views::AccessiblePaneView,
+   void SetClipToVisibleArea(
+       const std::optional<gfx::Rect>& clip_to_visible_area);
+ 
++  void UpdateBorder();
++
+  private:
+   // Returns whether programmatic content width overrides are currently allowed
+   // (i.e. when the side panel is open or opening and not being manually resized

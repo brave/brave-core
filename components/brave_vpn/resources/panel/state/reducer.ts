@@ -14,6 +14,7 @@ type RootState = {
   isSelectingRegion: boolean
   expired: boolean
   outOfCredentials: boolean
+  autoReconnectEnabled: boolean
   smartProxyRoutingEnabled: boolean
   isReconnectingToAgent: boolean
   connectionStatus: ConnectionState
@@ -29,6 +30,7 @@ const defaultState: RootState = {
   isSelectingRegion: (window.location.pathname === '/select'),
   expired: false,
   outOfCredentials: false,
+  autoReconnectEnabled: false,
   smartProxyRoutingEnabled: false,
   isReconnectingToAgent: false,
   connectionStatus: ConnectionState.DISCONNECTED,
@@ -108,6 +110,13 @@ reducer.on(Actions.connectionStateChanged, (state, payload): RootState => {
     hasError: payload.connectionStatus === ConnectionState.CONNECTED ? false : state.hasError,
     connectionStatus: payload.connectionStatus,
     isReconnectingToAgent: false
+  }
+})
+
+reducer.on(Actions.autoReconnectStateChanged, (state, payload): RootState => {
+  return {
+    ...state,
+    autoReconnectEnabled: payload
   }
 })
 

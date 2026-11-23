@@ -33,6 +33,9 @@ interface ServiceObserver {
   OnSelectedRegionChanged(Region region);
 
   [EnableIfNot=is_android]
+  OnAutoReconnectStateChanged(bool enabled);
+
+  [EnableIfNot=is_android]
   OnSmartProxyRoutingStateChanged(bool enabled);
 
   OnPurchasedStateChanged(PurchasedState state, string? description);
@@ -165,8 +168,7 @@ struct PurchasedInfo {
 };
 
 // Make sure updating BraveVpnService properly when member is added to Region
-// struct. Ex, IsValidRegion() or IsValidRegionValue(). It should also check
-// new member.
+// struct. Ex, IsValidRegionValue(). It should also check new member.
 struct Region {
   string name;
   string name_pretty;
@@ -175,8 +177,6 @@ struct Region {
   string country_iso_code;
   string region_precision;
   array<Region> cities;
-  double latitude;
-  double longitude;
   int32 server_count;
   bool is_automatic;
   string smart_routing_proxy_state;

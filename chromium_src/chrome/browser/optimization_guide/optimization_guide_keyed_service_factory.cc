@@ -10,14 +10,22 @@
 // itself is safe to use because Brave blocks remote fetching via
 // IsUserPermittedToFetchFromRemoteOptimizationGuide returning false.
 
-#include "components/history_embeddings/core/history_embeddings_features.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "components/optimization_guide/core/optimization_guide_features.h"
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/components/history_embeddings/core/history_embeddings_features.h"
+#endif
 
 namespace optimization_guide::features {
 
 bool IsOptimizationHintsEnabled_Brave() {
-  return IsOptimizationHintsEnabled() ||
-         base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings);
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  if (base::FeatureList::IsEnabled(history_embeddings::kHistoryEmbeddings)) {
+    return true;
+  }
+#endif
+  return IsOptimizationHintsEnabled();
 }
 
 }  // namespace optimization_guide::features

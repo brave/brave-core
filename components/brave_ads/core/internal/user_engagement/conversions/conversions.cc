@@ -8,6 +8,8 @@
 #include <ranges>
 
 #include "base/check.h"
+#include "base/containers/flat_map.h"
+#include "base/containers/map_util.h"
 #include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "base/trace_event/trace_event.h"
@@ -48,24 +50,27 @@ void Conversions::RemoveObserver(ConversionsObserver* const observer) {
   observers_.RemoveObserver(observer);
 }
 
-void Conversions::MaybeConvert(const std::vector<GURL>& redirect_chain) {
+void Conversions::MaybeConvert(int32_t tab_id,
+                               const std::vector<GURL>& redirect_chain) {
   CHECK(!redirect_chain.empty());
 
   BLOG(1, "Checking for campaign conversions");
 
-  GetCampaignConversions(redirect_chain);
+  GetCampaignConversions(tab_id, redirect_chain);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 void Conversions::GetCampaignConversions(
+    int32_t tab_id,
     const std::vector<GURL>& redirect_chain) {
   campaign_conversions_database_table_.GetUnexpired(
       base::BindOnce(&Conversions::GetCampaignConversionsCallback,
-                     weak_factory_.GetWeakPtr(), redirect_chain));
+                     weak_factory_.GetWeakPtr(), tab_id, redirect_chain));
 }
 
 void Conversions::GetCampaignConversionsCallback(
+    int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     bool success,
     const CampaignConversionList& campaign_conversions) {
@@ -77,20 +82,22 @@ void Conversions::GetCampaignConversionsCallback(
     return BLOG(1, "There are no campaign conversions");
   }
 
-  GetAdEvents(redirect_chain, campaign_conversions);
+  GetAdEvents(tab_id, redirect_chain, campaign_conversions);
 }
 
 void Conversions::GetAdEvents(
+    int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     const CampaignConversionList& campaign_conversions) {
   ad_events_database_table_.GetUnexpired(
       kAdEventsTimeWindow.Get(),
       base::BindOnce(&Conversions::GetAdEventsCallback,
-                     weak_factory_.GetWeakPtr(), redirect_chain,
+                     weak_factory_.GetWeakPtr(), tab_id, redirect_chain,
                      campaign_conversions));
 }
 
 void Conversions::GetAdEventsCallback(
+    int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     const CampaignConversionList& campaign_conversions,
     bool success,
@@ -99,10 +106,11 @@ void Conversions::GetAdEventsCallback(
     return BLOG(0, "Failed to get ad events");
   }
 
-  CheckForConversions(redirect_chain, campaign_conversions, ad_events);
+  CheckForConversions(tab_id, redirect_chain, campaign_conversions, ad_events);
 }
 
 void Conversions::CheckForConversions(
+    int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     const CampaignConversionList& campaign_conversions,
     const AdEventList& ad_events) {
@@ -112,6 +120,14 @@ void Conversions::CheckForConversions(
 
   const CampaignConversionList matching_campaign_conversions =
       GetMatchingCampaignConversions(campaign_conversions, redirect_chain);
+
+  CampaignConversionBucketMap campaign_conversion_buckets =
+      SortCampaignConversionsIntoBuckets(matching_campaign_conversions);
+
+  // Must run even when nothing matches, as navigating to an unrelated page
+  // is exactly when a tab's stale attempted ad events need pruning.
+  PruneAttemptedAdEventKeysForTab(tab_id, campaign_conversion_buckets);
+
   if (matching_campaign_conversions.empty()) {
     return BLOG(1, "There are no matching campaign conversions");
   }
@@ -120,9 +136,6 @@ void Conversions::CheckForConversions(
       GetCampaignConversionCounts(ad_events);
 
   const size_t campaign_conversion_cap = kCampaignConversionCap.Get();
-
-  CampaignConversionBucketMap campaign_conversion_buckets =
-      SortCampaignConversionsIntoBuckets(matching_campaign_conversions);
 
   FilterCampaignConversionBucketsThatExceedTheCap(campaign_conversion_counts,
                                                   campaign_conversion_cap,
@@ -167,18 +180,27 @@ void Conversions::CheckForConversions(
       continue;
     }
 
-    Convert(ad_event);
+    // Skip this ad event if it already converted since the tab last
+    // matched the pattern, so a refresh cannot inflate the count.
+    const AttemptedAdEventKey ad_event_key = BuildAttemptedAdEventKey(ad_event);
+    const auto [_, did_insert] =
+        attempted_ad_event_keys_by_tab_id_[tab_id][campaign_id].insert(
+            ad_event_key);
+    if (did_insert) {
+      Convert(tab_id, ad_event, ad_event_key);
 
-    did_convert = true;
+      did_convert = true;
 
-    // Have we exceeded the limit for campaign conversions?
-    ++campaign_conversion_counts[campaign_id];
-
-    if (did_convert) {
-      // Remove the bucket for this campaign so that we deduplicate
-      // conversions for the remainder of the ad events.
-      campaign_conversion_buckets.erase(campaign_id);
+      // Track the conversion count for this campaign so later checks can
+      // enforce the cap.
+      ++campaign_conversion_counts[campaign_id];
     }
+
+    // Remove the bucket for this campaign now that its most recent
+    // qualifying ad event has been resolved, whether newly converted or
+    // already attempted, so last-touch attribution deduplicates the
+    // remainder of the ad events.
+    campaign_conversion_buckets.erase(campaign_id);
   }
 
   if (!did_convert) {
@@ -186,16 +208,59 @@ void Conversions::CheckForConversions(
   }
 }
 
-void Conversions::Convert(const AdEventInfo& ad_event) {
-  RecordAdEvent(RebuildAdEvent(ad_event, mojom::ConfirmationType::kConversion,
-                               /*created_at=*/base::Time::Now()),
-                base::BindOnce(&Conversions::ConvertCallback,
-                               weak_factory_.GetWeakPtr(), ad_event));
+void Conversions::PruneAttemptedAdEventKeysForTab(
+    int32_t tab_id,
+    const CampaignConversionBucketMap& campaign_conversion_buckets) {
+  auto* const ad_event_keys_by_campaign_id =
+      base::FindOrNull(attempted_ad_event_keys_by_tab_id_, tab_id);
+  if (!ad_event_keys_by_campaign_id) {
+    return;
+  }
+
+  base::EraseIf(
+      *ad_event_keys_by_campaign_id,
+      [&campaign_conversion_buckets](const auto& attempted_ad_event_keys) {
+        const auto& [campaign_id, ad_event_keys] = attempted_ad_event_keys;
+        return !campaign_conversion_buckets.contains(campaign_id);
+      });
 }
 
-void Conversions::ConvertCallback(const AdEventInfo& ad_event, bool success) {
+base::flat_set<AttemptedAdEventKey>* Conversions::FindAttemptedAdEventKeys(
+    int32_t tab_id,
+    const std::string& campaign_id) {
+  auto* const ad_event_keys_by_campaign_id =
+      base::FindOrNull(attempted_ad_event_keys_by_tab_id_, tab_id);
+  if (!ad_event_keys_by_campaign_id) {
+    return nullptr;
+  }
+
+  return base::FindOrNull(*ad_event_keys_by_campaign_id, campaign_id);
+}
+
+void Conversions::Convert(int32_t tab_id,
+                          const AdEventInfo& ad_event,
+                          const AttemptedAdEventKey& ad_event_key) {
+  RecordAdEvent(
+      RebuildAdEvent(ad_event, mojom::ConfirmationType::kConversion,
+                     /*created_at=*/base::Time::Now()),
+      base::BindOnce(&Conversions::ConvertCallback, weak_factory_.GetWeakPtr(),
+                     tab_id, ad_event, ad_event_key));
+}
+
+void Conversions::ConvertCallback(int32_t tab_id,
+                                  const AdEventInfo& ad_event,
+                                  const AttemptedAdEventKey& ad_event_key,
+                                  bool success) {
   if (!success) {
     BLOG(0, "Failed to record ad conversion event");
+
+    // Remove the attempt so this ad event can be retried, without
+    // resurrecting state for a tab that has since closed.
+    if (auto* const ad_event_keys =
+            FindAttemptedAdEventKeys(tab_id, ad_event.campaign_id)) {
+      ad_event_keys->erase(ad_event_key);
+    }
+
     return NotifyFailedToConvertAd(ad_event.creative_instance_id);
   }
 
@@ -214,7 +279,13 @@ void Conversions::NotifyFailedToConvertAd(
 }
 
 void Conversions::OnTabDidChange(const TabInfo& tab) {
-  MaybeConvert(tab.redirect_chain);
+  // `TabManager` only calls this for a genuine new navigation, never a
+  // reload, back/forward, or restored tab, so those can never reconvert.
+  MaybeConvert(tab.id, tab.redirect_chain);
+}
+
+void Conversions::OnDidCloseTab(int32_t tab_id) {
+  attempted_ad_event_keys_by_tab_id_.erase(tab_id);
 }
 
 }  // namespace brave_ads

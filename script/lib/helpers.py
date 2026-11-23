@@ -6,9 +6,7 @@
 from __future__ import print_function
 from builtins import range
 import os
-import sys
-import urllib.request
-from .config import get_raw_version, get_env_var
+from .config import get_raw_version
 
 BRAVE_REPO = "brave/brave-browser"
 BRAVE_CORE_REPO = "brave/brave-core"

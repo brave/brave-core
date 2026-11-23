@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/search_engines/android/java/src/org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter.java b/chrome/browser/search_engines/android/java/src/org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter.java
-index fa020af6dadadd6426708e13065eee3da8955654..4aebfd1fce6b8fd2b1f1673d51235156182255df 100644
+index 9e735ec5fe04017f122e8dee80121da325cb886f..619b30d8c5b5c3e14b199b5a484632b0604cb1db 100644
 --- a/chrome/browser/search_engines/android/java/src/org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter.java
 +++ b/chrome/browser/search_engines/android/java/src/org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter.java
 @@ -69,7 +69,7 @@ public class SearchEngineAdapter extends BaseAdapter

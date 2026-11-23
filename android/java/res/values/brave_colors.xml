@@ -68,15 +68,19 @@
     <color name="modern_blue_300">#FF7654</color>
     <color name="dialog_bg_color_dark_baseline">@color/toolbar_background_primary_dark</color>
     <color name="default_text_color_on_accent1_dark">@color/primitive_neutral_0</color>
-    <color name="gm3_baseline_surface_tint_light">#948989</color>
-    <color name="gm3_baseline_surface_tint_dark">#F7F9FC</color>
-    <!-- Chromium's value is blue-tinted (#F8FAFD); point it at the Nala equivalent so surfaces
-         using ?attr/colorSurfaceContainerLow stay on the design system when dynamic colors are
+    <color name="gm3_baseline_surface_tint_light">@color/primitive_primary_40</color>
+    <color name="gm3_baseline_surface_tint_dark">@color/primitive_primary_80</color>
+    <!-- Chromium's values are blue-tinted; point them at Nala's surface containers so surfaces
+         using ?attr/colorSurfaceContainer* stay on the design system when dynamic colors are
          off, and follow the wallpaper when they are on. -->
     <color name="gm3_baseline_surface_container_low_light">@color/primitive_neutral_98</color>
-    <color name="gm3_baseline_surface_container_light">#F3F1F1</color>
-    <color name="gm3_baseline_surface_container_high_light">#F2F0F0</color>
-    <color name="gm3_baseline_surface_container_highest_light">#F0EEEE</color>
+    <color name="gm3_baseline_surface_container_light">@color/primitive_neutral_95</color>
+    <color name="gm3_baseline_surface_container_high_light">@color/primitive_neutral_92</color>
+    <color name="gm3_baseline_surface_container_highest_light">@color/primitive_neutral_90</color>
+    <color name="gm3_baseline_surface_container_low_dark">@color/primitive_neutral_10</color>
+    <color name="gm3_baseline_surface_container_dark">@color/primitive_neutral_12</color>
+    <color name="gm3_baseline_surface_container_high_dark">@color/primitive_neutral_17</color>
+    <color name="gm3_baseline_surface_container_highest_dark">@color/primitive_neutral_22</color>
 
     <!-- Day/Night brave wallet colors -->
     <color name="brave_wallet_onboarding_item_background_color">#687485</color>

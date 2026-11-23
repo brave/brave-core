@@ -35,10 +35,11 @@ class BraveCoreCheckoutTestApi(RecipeTestApi):
     def chromium_mirror_populated(
         self, mirror_dir: str = _CHROMIUM_MIRROR_DIR
     ) -> TestData:
-        """Seed the Chromium mirror lookup `ensure_checkout` makes, the second
-        `git cache exists`, after the brave-core one."""
+        """Seed the Chromium mirror `ensure_checkout` populates, after the
+        brave-core one."""
         return self.step_data(
-            'git cache exists (2)', stdout=self.m.raw_io.output_text(mirror_dir)
+            'git cache populate exists (after) (2)',
+            stdout=self.m.raw_io.output_text(mirror_dir),
         )
 
     def package_json(self, chromium_tag: str = _CHROMIUM_TAG) -> str:
@@ -63,6 +64,19 @@ class BraveCoreCheckoutTestApi(RecipeTestApi):
                     'siso_cache_dir': siso_cache_dir,
                 }
             }
+        )
+
+    def secrets_dotenv(self, path: str) -> TestData:
+        """Give the builder's secrets through the module's properties."""
+        return self.properties(
+            **{'$brave_core_checkout': {'secrets_dotenv': path}}
+        )
+
+    def disable_deprecated_dotenv(self) -> TestData:
+        """Disable the deprecated `.env` mode through the module's
+        properties."""
+        return self.properties(
+            **{'$brave_core_checkout': {'disable_deprecated_dotenv': True}}
         )
 
     def brave_core_ref(self, ref: str) -> TestData:
@@ -91,7 +105,8 @@ class BraveCoreCheckoutTestApi(RecipeTestApi):
         return self.m.env.set('GIT_CACHE_PATH', path) + self.m.path.dirs(path)
 
     def git_cache_populated(self, mirror_dir: str = _MIRROR_DIR) -> TestData:
-        """Seed `checkout`'s `git cache exists` lookup of the mirror dir."""
+        """Seed the mirror `checkout` populates as *mirror_dir*."""
         return self.step_data(
-            'git cache exists', stdout=self.m.raw_io.output_text(mirror_dir)
+            'git cache populate exists (after)',
+            stdout=self.m.raw_io.output_text(mirror_dir),
         )

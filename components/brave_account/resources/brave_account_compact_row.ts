@@ -10,11 +10,17 @@ import {
   PropertyValues,
 } from '//resources/lit/v3_0/lit.rollup.js'
 
-import { AccountState } from './brave_account.mojom-webui.js'
+import { AccountState, SettingsPage } from './brave_account.mojom-webui.js'
 import { BraveAccountCompactRowBrowserProxy } from './brave_account_compact_row_browser_proxy.js'
 import { BraveAccountSettingsStrings } from './brave_components_webui_strings.js'
 import { getCss } from './brave_account_compact_row.css.js'
 import { getHtml } from './brave_account_compact_row.html.js'
+
+export function isLoggedOutWithoutVerification(
+  state: AccountState | null | undefined,
+) {
+  return !!state?.loggedOut && !state.loggedOut.verification
+}
 
 // A row for pages that are not where the account is managed: it only links to
 // the account section, which owns the full account UI. Every account state is
@@ -36,12 +42,14 @@ export class BraveAccountCompactRowElement extends CrLitElement {
     return {
       actionRequired: { type: Boolean, state: true },
       description: { type: String, state: true },
+      page: { type: Number, state: true },
       state: { type: Object, state: true },
     }
   }
 
   protected accessor actionRequired = false
   protected accessor description = ''
+  protected accessor page = SettingsPage.kBraveAccount
   protected accessor state: AccountState | undefined = undefined
 
   private browserProxy!: BraveAccountCompactRowBrowserProxy
@@ -78,7 +86,18 @@ export class BraveAccountCompactRowElement extends CrLitElement {
           ?? this.state?.loggedOut?.verification,
       )
       this.description = this.getDescription()
+      this.page = this.getPage()
     }
+  }
+
+  private getPage() {
+    // <if expr="not is_android and not is_ios">
+    if (isLoggedOutWithoutVerification(this.state)) {
+      return SettingsPage.kGetStarted
+    }
+    // </if>
+
+    return SettingsPage.kBraveAccount
   }
 
   private getDescription() {

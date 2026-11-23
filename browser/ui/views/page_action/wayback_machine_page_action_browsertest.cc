@@ -61,7 +61,17 @@ constexpr char kSnapshotURL[] =
 }  // namespace
 
 class WaybackMachinePageActionBrowserTest : public InProcessBrowserTest {
+ public:
+  WaybackMachinePageActionBrowserTest()
+      : WaybackMachinePageActionBrowserTest(/*auto_show_bubble=*/false) {}
+
  protected:
+  explicit WaybackMachinePageActionBrowserTest(bool auto_show_bubble) {
+    feature_list_.InitWithFeatureState(
+        brave_wayback_machine::features::kWaybackMachineAutoShowBubble,
+        auto_show_bubble);
+  }
+
   BraveWaybackMachineTabHelper* GetTabHelper() {
     return BraveWaybackMachineTabHelper::From(
         tabs::TabInterface::MaybeGetFromContents(
@@ -128,9 +138,27 @@ class WaybackMachinePageActionBrowserTest : public InProcessBrowserTest {
                   IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_SORRY_HEADER_TEXT));
     ASSERT_NE(bubble->GetOkButton(), nullptr);
     EXPECT_TRUE(bubble->GetOkButton()->GetEnabled());
+    EXPECT_EQ(bubble->GetOkButton()->GetText(),
+              l10n_util::GetStringUTF16(
+                  IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_CHECK_BUTTON_TEXT));
     EXPECT_NE(bubble->GetCancelButton(), nullptr);
     ASSERT_NE(bubble->GetExtraView(), nullptr);
     EXPECT_TRUE(bubble->GetExtraView()->GetVisible());
+    ExpectLoading(bubble, false);
+  }
+
+  void ExpectFoundUI(WaybackMachineBubbleView* bubble) {
+    EXPECT_EQ(bubble->GetWindowTitle(),
+              l10n_util::GetStringUTF16(
+                  IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_SORRY_HEADER_TEXT));
+    ASSERT_NE(bubble->GetOkButton(), nullptr);
+    EXPECT_TRUE(bubble->GetOkButton()->GetEnabled());
+    EXPECT_EQ(bubble->GetOkButton()->GetText(),
+              l10n_util::GetStringUTF16(
+                  IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_LOAD_BUTTON_TEXT));
+    EXPECT_NE(bubble->GetCancelButton(), nullptr);
+    ASSERT_NE(bubble->GetExtraView(), nullptr);
+    EXPECT_FALSE(bubble->GetExtraView()->GetVisible());
     ExpectLoading(bubble, false);
   }
 
@@ -155,6 +183,9 @@ class WaybackMachinePageActionBrowserTest : public InProcessBrowserTest {
     EXPECT_FALSE(bubble->GetExtraView()->GetVisible());
     ExpectLoading(bubble, false);
   }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(WaybackMachinePageActionBrowserTest, BubbleLaunchTest) {
@@ -246,6 +277,13 @@ IN_PROC_BROWSER_TEST_F(WaybackMachinePageActionBrowserTest, UpdatesWhileOpen) {
   {
     SCOPED_TRACE("kFetching");
     ExpectFetchingUI(bubble);
+  }
+
+  SetWaybackState(WaybackState::kFound);
+  ASSERT_EQ(GetBubbleView(), bubble);
+  {
+    SCOPED_TRACE("kFound");
+    ExpectFoundUI(bubble);
   }
 
   SetWaybackState(WaybackState::kNotAvailable);
@@ -386,13 +424,53 @@ IN_PROC_BROWSER_TEST_F(WaybackMachinePageActionBrowserTest,
   EXPECT_TRUE(base::test::RunUntil([&] { return !GetBubbleView(); }));
 }
 
+IN_PROC_BROWSER_TEST_F(WaybackMachinePageActionBrowserTest,
+                       OpensInFoundStateAndNavigatesOnAccept) {
+  content::URLLoaderInterceptor interceptor(base::BindRepeating(
+      [](content::URLLoaderInterceptor::RequestParams* params) {
+        const GURL& url = params->url_request.url;
+        if (url.host() == GURL(kWaybackQueryURL).host()) {
+          content::URLLoaderInterceptor::WriteResponse(
+              "HTTP/1.1 200 OK\nContent-Type: application/json\n\n",
+              base::StrCat({R"({"archived_snapshots":{"closest":{"url":")",
+                            kSnapshotURL, R"("}}})"}),
+              params->client.get());
+          return true;
+        }
+        if (url == GURL(kSnapshotURL)) {
+          content::URLLoaderInterceptor::WriteResponse(
+              "HTTP/1.1 200 OK\nContent-Type: text/html\n\n",
+              "<html>Snapshot</html>", params->client.get());
+          return true;
+        }
+        return false;
+      }));
+
+  GetTabHelper()->FetchSnapshotInfo();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return GetTabHelper()->wayback_state() == WaybackState::kFound; }));
+  EXPECT_TRUE(GetIcon().GetVisible());
+  EXPECT_EQ(GetBubbleView(), nullptr);
+
+  WaybackMachineBubbleView* bubble = ClickIconAndGetBubble();
+  ASSERT_NE(bubble, nullptr);
+  ExpectFoundUI(bubble);
+
+  bubble->GetDialogClientView()->ResetViewShownTimeStampForTesting();
+  content::TestNavigationObserver observer{GURL(kSnapshotURL)};
+  observer.WatchExistingWebContents();
+  ClickButton(bubble->GetOkButton());
+  observer.Wait();
+
+  EXPECT_EQ(GetTabHelper()->wayback_state(), WaybackState::kLoaded);
+  EXPECT_TRUE(base::test::RunUntil([&] { return !GetBubbleView(); }));
+}
+
 class WaybackMachineAutoShowBubbleBrowserTest
     : public WaybackMachinePageActionBrowserTest {
  public:
-  WaybackMachineAutoShowBubbleBrowserTest() {
-    feature_list_.InitAndEnableFeature(
-        brave_wayback_machine::features::kWaybackMachineAutoShowBubble);
-  }
+  WaybackMachineAutoShowBubbleBrowserTest()
+      : WaybackMachinePageActionBrowserTest(/*auto_show_bubble=*/true) {}
 
  protected:
   void CloseBubble() {
@@ -405,9 +483,6 @@ class WaybackMachineAutoShowBubbleBrowserTest
     waiter.Wait();
     EXPECT_EQ(GetBubbleView(), nullptr);
   }
-
- private:
-  base::test::ScopedFeatureList feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(WaybackMachineAutoShowBubbleBrowserTest,

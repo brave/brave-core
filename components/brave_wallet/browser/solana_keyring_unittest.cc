@@ -32,10 +32,12 @@ bool IsAddressAllowed(const std::string&) {
 }  // namespace
 
 TEST(SolanaKeyringUnitTest, ConstructRootHDKey) {
-  SolanaKeyring keyring(*MnemonicToSeed(kMnemonicScarePiece),
-                        base::BindRepeating(IsAddressAllowed));
+  auto seed = MnemonicToSeed(kMnemonicScarePiece);
+  ASSERT_TRUE(seed);
+  auto root = SolanaKeyring::ConstructRootHDKey(*seed);
+  ASSERT_TRUE(root);
 
-  EXPECT_EQ(keyring.root_->GetBase58EncodedKeypair(),
+  EXPECT_EQ(root->GetBase58EncodedKeypair(),
             "XUPar98T8X5HyvSw4pKk2cFi2zCMxzNcm8CJoQgDa3CjFpFKQic2cAFJhvaMgQCAQj"
             "Rs4sHHjiTqhAZ8F3tVR8D");
 }
@@ -94,8 +96,9 @@ TEST(SolanaKeyringUnitTest, SignMessage) {
   SolanaKeyring keyring(*MnemonicToSeed(kMnemonicScarePiece),
                         base::BindRepeating(IsAddressAllowed));
 
-  auto address = *keyring.AddNewHDAccount(0);
-  EXPECT_EQ(address, "8J7fu34oNJSKXcauNQMXRdKAHY7zQ7rEaQng8xtQNpSu");
+  auto address = keyring.AddNewHDAccount(0);
+  ASSERT_TRUE(address);
+  EXPECT_EQ(*address, "8J7fu34oNJSKXcauNQMXRdKAHY7zQ7rEaQng8xtQNpSu");
 
   // Message: Hello Brave
   const std::vector<uint8_t> message = {72, 101, 108, 108, 111, 32,
@@ -106,7 +109,7 @@ TEST(SolanaKeyringUnitTest, SignMessage) {
       58,  102, 213, 60,  21,  217, 236, 188, 90,  75,  120, 116, 130,
       104, 20,  185, 45,  50,  115, 244, 223, 167, 114, 6,   225, 189,
       103, 51,  156, 215, 22,  207, 130, 197, 57,  39,  186, 12};
-  auto signature = keyring.SignMessage(address, message);
+  auto signature = keyring.SignMessage(*address, message);
   EXPECT_EQ(signature, expected_signature);
 }
 

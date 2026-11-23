@@ -9,14 +9,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import androidx.annotation.ColorInt;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -55,10 +54,6 @@ import org.chromium.ui.base.TestActivity;
     ChromeFeatureList.ANDROID_BOTTOM_BAR,
     ChromeFeatureList.CROSS_DEVICE_PREF_TRACKER_EXTRA_LOGS
 })
-// TODO(https://github.com/brave/brave-browser/issues/59632): Remove mocking of Views/Activities.
-// Tests fake findViewById() results and getGlobalVisibleRect() of toolbar buttons, which real Views
-// would only provide after inflating and laying out the whole toolbar hierarchy.
-@SuppressWarnings("DoNotMock")
 public class BraveNewBackgroundTabAnimationDataUnitTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
@@ -68,15 +63,11 @@ public class BraveNewBackgroundTabAnimationDataUnitTest {
 
     @Mock private ToolbarManager mToolbarManager;
     @Mock private Tab mTab;
-    @Mock private View mAnimationHostView;
-    @Mock private View mToolbarContainer;
-    @Mock private View mToolbarTabSwitcherButton;
-    @Mock private View mBottomToolbar;
-    @Mock private View mBottomTabSwitcherButton;
 
     private BraveNewBackgroundTabAnimationData mData;
     private Activity mActivity;
 
+    private static final int TOOLBAR_HEIGHT = 56;
     private static final int BOTTOM_BUTTON_LEFT = 0;
     private static final int BOTTOM_BUTTON_TOP = 1800;
     private static final int BOTTOM_BUTTON_RIGHT = 100;
@@ -97,41 +88,37 @@ public class BraveNewBackgroundTabAnimationDataUnitTest {
     }
 
     private void onActivity(Activity activity) {
-        when(mAnimationHostView.getContext()).thenReturn(activity);
-        when(mAnimationHostView.findViewById(R.id.toolbar)).thenReturn(mToolbarContainer);
-        when(mToolbarContainer.findViewById(R.id.tab_switcher_button))
-                .thenReturn(mToolbarTabSwitcherButton);
+        // Kept detached from the window so the activity's small default display does not clip the
+        // bottom button; getRootView() then resolves to the host itself.
+        FrameLayout animationHostView = new FrameLayout(activity);
 
-        // Top toolbar button is GONE: getGlobalVisibleRect returns false, rect stays empty.
-        when(mToolbarTabSwitcherButton.getGlobalVisibleRect(any(Rect.class))).thenReturn(false);
+        FrameLayout toolbarContainer = new FrameLayout(activity);
+        toolbarContainer.setId(R.id.toolbar);
+        // Top toolbar button is GONE and never laid out, so its rect stays empty.
+        View toolbarTabSwitcherButton = new View(activity);
+        toolbarTabSwitcherButton.setId(R.id.tab_switcher_button);
+        toolbarTabSwitcherButton.setVisibility(View.GONE);
+        toolbarContainer.addView(toolbarTabSwitcherButton);
+        animationHostView.addView(toolbarContainer);
 
-        // The following stubs are only exercised when Brave bottom controls are enabled;
-        // mark lenient to suppress unused-stub hints in the disabled-controls test.
-        // getRootView() returns itself so our code can call
-        // mBraveAnimationHostView.getRootView().findViewById(R.id.bottom_toolbar).
-        lenient().when(mAnimationHostView.getRootView()).thenReturn(mAnimationHostView);
-        lenient()
-                .when(mAnimationHostView.findViewById(R.id.bottom_toolbar))
-                .thenReturn(mBottomToolbar);
-        lenient()
-                .when(mBottomToolbar.findViewById(R.id.bottom_tab_switcher_button))
-                .thenReturn(mBottomTabSwitcherButton);
+        FrameLayout bottomToolbar = new FrameLayout(activity);
+        bottomToolbar.setId(R.id.bottom_toolbar);
+        View bottomTabSwitcherButton = new View(activity);
+        bottomTabSwitcherButton.setId(R.id.bottom_tab_switcher_button);
+        bottomToolbar.addView(bottomTabSwitcherButton);
+        animationHostView.addView(bottomToolbar);
 
-        // Bottom toolbar button is visible with known bounds.
-        lenient()
-                .when(mBottomTabSwitcherButton.getGlobalVisibleRect(any(Rect.class)))
-                .thenAnswer(
-                        invocation -> {
-                            Rect r = invocation.getArgument(0);
-                            r.set(
-                                    BOTTOM_BUTTON_LEFT,
-                                    BOTTOM_BUTTON_TOP,
-                                    BOTTOM_BUTTON_RIGHT,
-                                    BOTTOM_BUTTON_BOTTOM);
-                            return true;
-                        });
+        animationHostView.layout(0, 0, BOTTOM_BUTTON_RIGHT, BOTTOM_BUTTON_BOTTOM);
+        toolbarContainer.layout(0, 0, BOTTOM_BUTTON_RIGHT, TOOLBAR_HEIGHT);
+        bottomToolbar.layout(
+                BOTTOM_BUTTON_LEFT, BOTTOM_BUTTON_TOP, BOTTOM_BUTTON_RIGHT, BOTTOM_BUTTON_BOTTOM);
+        bottomTabSwitcherButton.layout(
+                0,
+                0,
+                BOTTOM_BUTTON_RIGHT - BOTTOM_BUTTON_LEFT,
+                BOTTOM_BUTTON_BOTTOM - BOTTOM_BUTTON_TOP);
 
-        mData = new BraveNewBackgroundTabAnimationData(mAnimationHostView, mToolbarManager);
+        mData = new BraveNewBackgroundTabAnimationData(animationHostView, mToolbarManager);
         mActivity = activity;
     }
 

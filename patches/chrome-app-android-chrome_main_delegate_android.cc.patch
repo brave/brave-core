@@ -1,8 +1,16 @@
 diff --git a/chrome/app/android/chrome_main_delegate_android.cc b/chrome/app/android/chrome_main_delegate_android.cc
-index 8d3548d5d2ca7bb48aa2e4cbc72501b7b674acb7..f53c3880b770dd768da17d9b077ee4b3f5455284 100644
+index 8d3548d5d2ca7bb48aa2e4cbc72501b7b674acb7..24aacf2a70f57bffd01d23e2ef5f52a2d4c909a5 100644
 --- a/chrome/app/android/chrome_main_delegate_android.cc
 +++ b/chrome/app/android/chrome_main_delegate_android.cc
-@@ -51,11 +51,11 @@ std::optional<int> ChromeMainDelegateAndroid::BasicStartupComplete() {
+@@ -14,6 +14,7 @@
+ #include "base/logging.h"
+ #include "base/sampling_heap_profiler/poisson_allocation_sampler.h"
+ #include "base/trace_event/trace_event.h"
++#include "brave/app/brave_main_delegate.h"
+ #include "chrome/browser/android/chrome_startup_flags.h"
+ #include "chrome/browser/android/metrics/uma_utils.h"
+ #include "chrome/browser/chrome_content_browser_client.h"
+@@ -51,11 +52,11 @@ std::optional<int> ChromeMainDelegateAndroid::BasicStartupComplete() {
    base::android::PreFreezeBackgroundMemoryTrimmer::SetDelegate(
        std::make_unique<ChromePreFreezeDelegate>());
  

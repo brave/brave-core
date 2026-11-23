@@ -9,57 +9,45 @@ from __future__ import annotations
 import argparse
 import dataclasses
 import importlib
-import json
 from pathlib import Path
 import pkgutil
 import sys
 
 import gen_paths
+import generated_output
 
 
 def _load_config() -> None:
-    """Imports gn_args.py and all builders/*.py."""
+    """Imports gn_args.py, all targets/*.py and all builders/*.py."""
     config_dir = str(gen_paths.CONFIG_DIR)
     if config_dir not in sys.path:
         sys.path.insert(0, config_dir)
     importlib.import_module('gn_args')
+    import targets as targets_package
+
+    # Before the builders, which name the bundles these declare.
+    for module_info in pkgutil.iter_modules(targets_package.__path__):
+        importlib.import_module('targets.' + module_info.name)
     import builders as builders_package
 
     for module_info in pkgutil.iter_modules(builders_package.__path__):
         importlib.import_module('builders.' + module_info.name)
 
 
-def _dump(data) -> str:
-    return json.dumps(data, indent=2, sort_keys=True) + '\n'
-
-
 def compute_fresh_output(builders_registry, gn_args_registry) -> dict[str, str]:
     """Returns `{relative_path: content}` for every registered builder.
 
     Raises:
-        ConfigError: a builder's spec disagrees with its GN args.
+        ConfigError: a builder cannot be rendered (see
+            `generated_output.render()`).
     """
-    from lib.config import check_builder_spec
-
-    output = {}
-    for builder in builders_registry.all():
-        resolved = gn_args_registry.resolve(builder.name)
-        check_builder_spec(builder, resolved['gn_args'])
-        output[f'{builder.name}/gn-args.json'] = _dump(resolved)
-        gclient_config = builder.builder_spec.gclient_config
-        output[f'{builder.name}/sync.json'] = _dump(
-            {
-                'target_os': list(gclient_config.target_os),
-                'target_cpu': list(gclient_config.target_cpu),
-            }
-        )
-        output[f'{builder.name}/targets.json'] = _dump(
-            {
-                'compile': list(builder.targets.compile),
-                'tests': list(builder.targets.tests),
-            }
-        )
-    return output
+    return {
+        f'{builder.name}/{filename}': content
+        for builder in builders_registry.all()
+        for filename, content in generated_output.render(
+            builder, gn_args_registry
+        ).items()
+    }
 
 
 @dataclasses.dataclass(frozen=True)

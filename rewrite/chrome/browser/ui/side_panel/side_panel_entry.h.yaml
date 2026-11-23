@@ -10,3 +10,9 @@ substitutions:
     regex:
       pattern: 'static constexpr int kSidePanelDefaultContentWidth = 360;'
       replace: 'static constexpr int kSidePanelDefaultContentWidth = 400;'
+
+  - description: 'Expose whether an observer is registered on the entry.'
+    add_to_public:
+      class_name: SidePanelEntry
+      code: |-
+        bool IsBeingObservedBy(SidePanelEntryObserver* observer);

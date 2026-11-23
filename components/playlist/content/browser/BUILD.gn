@@ -74,3 +74,55 @@ static_library("browser") {
     "//url",
   ]
 }
+
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "mock_playlist_service_observer.cc",
+    "mock_playlist_service_observer.h",
+  ]
+
+  deps = [
+    "//brave/components/playlist/core/common/mojom",
+    "//mojo/public/cpp/bindings",
+    "//testing/gmock",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "mime_util_unittest.cc",
+    "mock_playlist_render_frame_observer_configurator.cc",
+    "mock_playlist_render_frame_observer_configurator.h",
+    "playlist_background_web_contents_helper_unittest.cc",
+    "playlist_background_web_contents_unittest.cc",
+    "playlist_media_file_downloader_unittest.cc",
+    "playlist_media_handler_unittest.cc",
+    "playlist_p3a_unittest.cc",
+    "playlist_service_unittest.cc",
+    "playlist_unittest_base.cc",
+    "playlist_unittest_base.h",
+  ]
+
+  deps = [
+    ":browser",
+    ":test_support",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/playlist/core/common",
+    "//components/download/public/common:public",
+    "//components/prefs:test_support",
+    "//components/sync_preferences:test_support",
+    "//components/user_prefs",
+    "//content/test:test_support",
+    "//mojo/public/cpp/bindings",
+    "//net:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//url",
+  ]
+}

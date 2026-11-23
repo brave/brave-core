@@ -5,11 +5,11 @@
 
 #include "brave/components/endpoint_client/is_endpoint.h"
 
+#include <optional>
 #include <string>
 
 #include "base/strings/strcat.h"
-#include "brave/components/endpoint_client/json_test_endpoint_bodies.h"
-#include "brave/components/endpoint_client/protobuf_test_endpoint_bodies.pb.h"
+#include "base/values.h"
 #include "brave/components/endpoint_client/request_types.h"
 #include "brave/components/endpoint_client/response.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -20,217 +20,122 @@ namespace endpoint_client {
 namespace {
 
 struct InvalidRequest {};
+
+using ValidRequest = Get;
+
 struct InvalidResponse {};
 
-using ValidJSONRequest = Post<JSONRequestBody>;
-using ValidJSONResponse = Response<JSONSuccessBody, JSONErrorBody>;
-
-using ValidProtobufRequest = Post<ProtobufRequestBody>;
-using ValidProtobufResponse = Response<ProtobufSuccessBody, ProtobufErrorBody>;
-
-enum class TypeAliasState {
-  kAbsent,
-  kPresentInvalidJSON,
-  kPresentValidJSON,
-  kPresentInvalidProtobuf,
-  kPresentValidProtobuf
+struct ValidResponseBody {
+  static std::optional<ValidResponseBody> FromValue(const base::Value&);
 };
 
-enum class FunctionState { kAbsent, kPresentInvalid, kPresentValid };
+using ValidResponse = Response<ValidResponseBody, ValidResponseBody>;
 
-template <TypeAliasState>
+enum class State { kAbsent, kPresentInvalid, kPresentValid };
+
+template <State>
 struct MaybeRequest {};
 
 template <>
-struct MaybeRequest<TypeAliasState::kPresentInvalidJSON> {
+struct MaybeRequest<State::kPresentInvalid> {
   using Request = InvalidRequest;
 };
 
 template <>
-struct MaybeRequest<TypeAliasState::kPresentValidJSON> {
-  using Request = ValidJSONRequest;
+struct MaybeRequest<State::kPresentValid> {
+  using Request = ValidRequest;
 };
 
-template <>
-struct MaybeRequest<TypeAliasState::kPresentInvalidProtobuf> {
-  using Request = InvalidRequest;
-};
-
-template <>
-struct MaybeRequest<TypeAliasState::kPresentValidProtobuf> {
-  using Request = ValidProtobufRequest;
-};
-
-template <TypeAliasState>
+template <State>
 struct MaybeResponse {};
 
 template <>
-struct MaybeResponse<TypeAliasState::kPresentInvalidJSON> {
+struct MaybeResponse<State::kPresentInvalid> {
   using Response = InvalidResponse;
 };
 
 template <>
-struct MaybeResponse<TypeAliasState::kPresentValidJSON> {
-  using Response = ValidJSONResponse;
+struct MaybeResponse<State::kPresentValid> {
+  using Response = ValidResponse;
 };
 
-template <>
-struct MaybeResponse<TypeAliasState::kPresentInvalidProtobuf> {
-  using Response = InvalidResponse;
-};
-
-template <>
-struct MaybeResponse<TypeAliasState::kPresentValidProtobuf> {
-  using Response = ValidProtobufResponse;
-};
-
-template <FunctionState>
+template <State>
 struct MaybeURL {};
 
 template <>
-struct MaybeURL<FunctionState::kPresentInvalid> {
+struct MaybeURL<State::kPresentInvalid> {
   static std::string URL();
 };
 
 template <>
-struct MaybeURL<FunctionState::kPresentValid> {
+struct MaybeURL<State::kPresentValid> {
   static GURL URL();
 };
 
-template <TypeAliasState RequestState,
-          TypeAliasState ResponseState,
-          FunctionState URLState>
+template <State RequestState, State ResponseState, State URLState>
 struct IsEndpointTestCase : MaybeRequest<RequestState>,
                             MaybeResponse<ResponseState>,
                             MaybeURL<URLState> {
-  static constexpr TypeAliasState kRequestState = RequestState;
-  static constexpr TypeAliasState kResponseState = ResponseState;
-  static constexpr FunctionState kURLState = URLState;
+  static constexpr State kRequestState = RequestState;
+  static constexpr State kResponseState = ResponseState;
+  static constexpr State kURLState = URLState;
   static constexpr bool kSatisfiesConcept =
-      ((RequestState == TypeAliasState::kPresentValidJSON &&
-        ResponseState == TypeAliasState::kPresentValidJSON) ||
-       (RequestState == TypeAliasState::kPresentValidProtobuf &&
-        ResponseState == TypeAliasState::kPresentValidProtobuf)) &&
-      URLState == FunctionState::kPresentValid;
+      RequestState == State::kPresentValid &&
+      ResponseState == State::kPresentValid && URLState == State::kPresentValid;
 };
 
 // clang-format off
-// Test cases: 5 request states x 5 response states x 3 URL states = 75 tests
+// Test cases: 3 request states x 3 response states x 3 URL states = 27 tests
 using IsEndpointTestCases = testing::Types<
-    IsEndpointTestCase<TypeAliasState::kAbsent, TypeAliasState::kAbsent, FunctionState::kAbsent>,
-    IsEndpointTestCase<TypeAliasState::kAbsent, TypeAliasState::kAbsent, FunctionState::kPresentInvalid>,
-    IsEndpointTestCase<TypeAliasState::kAbsent, TypeAliasState::kAbsent, FunctionState::kPresentValid>,
-    IsEndpointTestCase<TypeAliasState::kAbsent, TypeAliasState::kPresentInvalidJSON, FunctionState::kAbsent>,
-    IsEndpointTestCase<TypeAliasState::kAbsent, TypeAliasState::kPresentInvalidJSON, FunctionState::kPresentInvalid>,
-    IsEndpointTestCase<TypeAliasState::kAbsent, TypeAliasState::kPresentInvalidJSON, FunctionState::kPresentValid>,
-    IsEndpointTestCase<TypeAliasState::kAbsent, TypeAliasState::kPresentValidJSON, FunctionState::kAbsent>,
-    IsEndpointTestCase<TypeAliasState::kAbsent, TypeAliasState::kPresentValidJSON, FunctionState::kPresentInvalid>,
-    IsEndpointTestCase<TypeAliasState::kAbsent, TypeAliasState::kPresentValidJSON, FunctionState::kPresentValid>,
-    IsEndpointTestCase<TypeAliasState::kAbsent, TypeAliasState::kPresentInvalidProtobuf, FunctionState::kAbsent>,
-    IsEndpointTestCase<TypeAliasState::kAbsent, TypeAliasState::kPresentInvalidProtobuf, FunctionState::kPresentInvalid>,
-    IsEndpointTestCase<TypeAliasState::kAbsent, TypeAliasState::kPresentInvalidProtobuf, FunctionState::kPresentValid>,
-    IsEndpointTestCase<TypeAliasState::kAbsent, TypeAliasState::kPresentValidProtobuf, FunctionState::kAbsent>,
-    IsEndpointTestCase<TypeAliasState::kAbsent, TypeAliasState::kPresentValidProtobuf, FunctionState::kPresentInvalid>,
-    IsEndpointTestCase<TypeAliasState::kAbsent, TypeAliasState::kPresentValidProtobuf, FunctionState::kPresentValid>,
-    IsEndpointTestCase<TypeAliasState::kPresentInvalidJSON, TypeAliasState::kAbsent, FunctionState::kAbsent>,
-    IsEndpointTestCase<TypeAliasState::kPresentInvalidJSON, TypeAliasState::kAbsent, FunctionState::kPresentInvalid>,
-    IsEndpointTestCase<TypeAliasState::kPresentInvalidJSON, TypeAliasState::kAbsent, FunctionState::kPresentValid>,
-    IsEndpointTestCase<TypeAliasState::kPresentInvalidJSON, TypeAliasState::kPresentInvalidJSON, FunctionState::kAbsent>,
-    IsEndpointTestCase<TypeAliasState::kPresentInvalidJSON, TypeAliasState::kPresentInvalidJSON, FunctionState::kPresentInvalid>,
-    IsEndpointTestCase<TypeAliasState::kPresentInvalidJSON, TypeAliasState::kPresentInvalidJSON, FunctionState::kPresentValid>,
-    IsEndpointTestCase<TypeAliasState::kPresentInvalidJSON, TypeAliasState::kPresentValidJSON, FunctionState::kAbsent>,
-    IsEndpointTestCase<TypeAliasState::kPresentInvalidJSON, TypeAliasState::kPresentValidJSON, FunctionState::kPresentInvalid>,
-    IsEndpointTestCase<TypeAliasState::kPresentInvalidJSON, TypeAliasState::kPresentValidJSON, FunctionState::kPresentValid>,
-    IsEndpointTestCase<TypeAliasState::kPresentInvalidJSON, TypeAliasState::kPresentInvalidProtobuf, FunctionState::kAbsent>,
-    IsEndpointTestCase<TypeAliasState::kPresentInvalidJSON, TypeAliasState::kPresentInvalidProtobuf, FunctionState::kPresentInvalid>,
-    IsEndpointTestCase<TypeAliasState::kPresentInvalidJSON, TypeAliasState::kPresentInvalidProtobuf, FunctionState::kPresentValid>,
-    IsEndpointTestCase<TypeAliasState::kPresentInvalidJSON, TypeAliasState::kPresentValidProtobuf, FunctionState::kAbsent>,
-    IsEndpointTestCase<TypeAliasState::kPresentInvalidJSON, TypeAliasState::kPresentValidProtobuf, FunctionState::kPresentInvalid>,
-    IsEndpointTestCase<TypeAliasState::kPresentInvalidJSON, TypeAliasState::kPresentValidProtobuf, FunctionState::kPresentValid>,
-    IsEndpointTestCase<TypeAliasState::kPresentValidJSON, TypeAliasState::kAbsent, FunctionState::kAbsent>,
-    IsEndpointTestCase<TypeAliasState::kPresentValidJSON, TypeAliasState::kAbsent, FunctionState::kPresentInvalid>,
-    IsEndpointTestCase<TypeAliasState::kPresentValidJSON, TypeAliasState::kAbsent, FunctionState::kPresentValid>,
-    IsEndpointTestCase<TypeAliasState::kPresentValidJSON, TypeAliasState::kPresentInvalidJSON, FunctionState::kAbsent>,
-    IsEndpointTestCase<TypeAliasState::kPresentValidJSON, TypeAliasState::kPresentInvalidJSON, FunctionState::kPresentInvalid>,
-    IsEndpointTestCase<TypeAliasState::kPresentValidJSON, TypeAliasState::kPresentInvalidJSON, FunctionState::kPresentValid>,
-    IsEndpointTestCase<TypeAliasState::kPresentValidJSON, TypeAliasState::kPresentValidJSON, FunctionState::kAbsent>,
-    IsEndpointTestCase<TypeAliasState::kPresentValidJSON, TypeAliasState::kPresentValidJSON, FunctionState::kPresentInvalid>,
-    IsEndpointTestCase<TypeAliasState::kPresentValidJSON, TypeAliasState::kPresentValidJSON, FunctionState::kPresentValid>,
-    IsEndpointTestCase<TypeAliasState::kPresentValidJSON, TypeAliasState::kPresentInvalidProtobuf, FunctionState::kAbsent>,
-    IsEndpointTestCase<TypeAliasState::kPresentValidJSON, TypeAliasState::kPresentInvalidProtobuf, FunctionState::kPresentInvalid>,
-    IsEndpointTestCase<TypeAliasState::kPresentValidJSON, TypeAliasState::kPresentInvalidProtobuf, FunctionState::kPresentValid>,
-    IsEndpointTestCase<TypeAliasState::kPresentValidJSON, TypeAliasState::kPresentValidProtobuf, FunctionState::kAbsent>,
-    IsEndpointTestCase<TypeAliasState::kPresentValidJSON, TypeAliasState::kPresentValidProtobuf, FunctionState::kPresentInvalid>,
-    IsEndpointTestCase<TypeAliasState::kPresentValidJSON, TypeAliasState::kPresentValidProtobuf, FunctionState::kPresentValid>,
-    IsEndpointTestCase<TypeAliasState::kPresentInvalidProtobuf, TypeAliasState::kAbsent, FunctionState::kAbsent>,
-    IsEndpointTestCase<TypeAliasState::kPresentInvalidProtobuf, TypeAliasState::kAbsent, FunctionState::kPresentInvalid>,
-    IsEndpointTestCase<TypeAliasState::kPresentInvalidProtobuf, TypeAliasState::kAbsent, FunctionState::kPresentValid>,
-    IsEndpointTestCase<TypeAliasState::kPresentInvalidProtobuf, TypeAliasState::kPresentInvalidJSON, FunctionState::kAbsent>,
-    IsEndpointTestCase<TypeAliasState::kPresentInvalidProtobuf, TypeAliasState::kPresentInvalidJSON, FunctionState::kPresentInvalid>,
-    IsEndpointTestCase<TypeAliasState::kPresentInvalidProtobuf, TypeAliasState::kPresentInvalidJSON, FunctionState::kPresentValid>,
-    IsEndpointTestCase<TypeAliasState::kPresentInvalidProtobuf, TypeAliasState::kPresentValidJSON, FunctionState::kAbsent>,
-    IsEndpointTestCase<TypeAliasState::kPresentInvalidProtobuf, TypeAliasState::kPresentValidJSON, FunctionState::kPresentInvalid>,
-    IsEndpointTestCase<TypeAliasState::kPresentInvalidProtobuf, TypeAliasState::kPresentValidJSON, FunctionState::kPresentValid>,
-    IsEndpointTestCase<TypeAliasState::kPresentInvalidProtobuf, TypeAliasState::kPresentInvalidProtobuf, FunctionState::kAbsent>,
-    IsEndpointTestCase<TypeAliasState::kPresentInvalidProtobuf, TypeAliasState::kPresentInvalidProtobuf, FunctionState::kPresentInvalid>,
-    IsEndpointTestCase<TypeAliasState::kPresentInvalidProtobuf, TypeAliasState::kPresentInvalidProtobuf, FunctionState::kPresentValid>,
-    IsEndpointTestCase<TypeAliasState::kPresentInvalidProtobuf, TypeAliasState::kPresentValidProtobuf, FunctionState::kAbsent>,
-    IsEndpointTestCase<TypeAliasState::kPresentInvalidProtobuf, TypeAliasState::kPresentValidProtobuf, FunctionState::kPresentInvalid>,
-    IsEndpointTestCase<TypeAliasState::kPresentInvalidProtobuf, TypeAliasState::kPresentValidProtobuf, FunctionState::kPresentValid>,
-    IsEndpointTestCase<TypeAliasState::kPresentValidProtobuf, TypeAliasState::kAbsent, FunctionState::kAbsent>,
-    IsEndpointTestCase<TypeAliasState::kPresentValidProtobuf, TypeAliasState::kAbsent, FunctionState::kPresentInvalid>,
-    IsEndpointTestCase<TypeAliasState::kPresentValidProtobuf, TypeAliasState::kAbsent, FunctionState::kPresentValid>,
-    IsEndpointTestCase<TypeAliasState::kPresentValidProtobuf, TypeAliasState::kPresentInvalidJSON, FunctionState::kAbsent>,
-    IsEndpointTestCase<TypeAliasState::kPresentValidProtobuf, TypeAliasState::kPresentInvalidJSON, FunctionState::kPresentInvalid>,
-    IsEndpointTestCase<TypeAliasState::kPresentValidProtobuf, TypeAliasState::kPresentInvalidJSON, FunctionState::kPresentValid>,
-    IsEndpointTestCase<TypeAliasState::kPresentValidProtobuf, TypeAliasState::kPresentValidJSON, FunctionState::kAbsent>,
-    IsEndpointTestCase<TypeAliasState::kPresentValidProtobuf, TypeAliasState::kPresentValidJSON, FunctionState::kPresentInvalid>,
-    IsEndpointTestCase<TypeAliasState::kPresentValidProtobuf, TypeAliasState::kPresentValidJSON, FunctionState::kPresentValid>,
-    IsEndpointTestCase<TypeAliasState::kPresentValidProtobuf, TypeAliasState::kPresentInvalidProtobuf, FunctionState::kAbsent>,
-    IsEndpointTestCase<TypeAliasState::kPresentValidProtobuf, TypeAliasState::kPresentInvalidProtobuf, FunctionState::kPresentInvalid>,
-    IsEndpointTestCase<TypeAliasState::kPresentValidProtobuf, TypeAliasState::kPresentInvalidProtobuf, FunctionState::kPresentValid>,
-    IsEndpointTestCase<TypeAliasState::kPresentValidProtobuf, TypeAliasState::kPresentValidProtobuf, FunctionState::kAbsent>,
-    IsEndpointTestCase<TypeAliasState::kPresentValidProtobuf, TypeAliasState::kPresentValidProtobuf, FunctionState::kPresentInvalid>,
-    IsEndpointTestCase<TypeAliasState::kPresentValidProtobuf, TypeAliasState::kPresentValidProtobuf, FunctionState::kPresentValid>
+    IsEndpointTestCase<State::kAbsent, State::kAbsent, State::kAbsent>,
+    IsEndpointTestCase<State::kAbsent, State::kAbsent, State::kPresentInvalid>,
+    IsEndpointTestCase<State::kAbsent, State::kAbsent, State::kPresentValid>,
+    IsEndpointTestCase<State::kAbsent, State::kPresentInvalid, State::kAbsent>,
+    IsEndpointTestCase<State::kAbsent, State::kPresentInvalid, State::kPresentInvalid>,
+    IsEndpointTestCase<State::kAbsent, State::kPresentInvalid, State::kPresentValid>,
+    IsEndpointTestCase<State::kAbsent, State::kPresentValid, State::kAbsent>,
+    IsEndpointTestCase<State::kAbsent, State::kPresentValid, State::kPresentInvalid>,
+    IsEndpointTestCase<State::kAbsent, State::kPresentValid, State::kPresentValid>,
+    IsEndpointTestCase<State::kPresentInvalid, State::kAbsent, State::kAbsent>,
+    IsEndpointTestCase<State::kPresentInvalid, State::kAbsent, State::kPresentInvalid>,
+    IsEndpointTestCase<State::kPresentInvalid, State::kAbsent, State::kPresentValid>,
+    IsEndpointTestCase<State::kPresentInvalid, State::kPresentInvalid, State::kAbsent>,
+    IsEndpointTestCase<State::kPresentInvalid, State::kPresentInvalid, State::kPresentInvalid>,
+    IsEndpointTestCase<State::kPresentInvalid, State::kPresentInvalid, State::kPresentValid>,
+    IsEndpointTestCase<State::kPresentInvalid, State::kPresentValid, State::kAbsent>,
+    IsEndpointTestCase<State::kPresentInvalid, State::kPresentValid, State::kPresentInvalid>,
+    IsEndpointTestCase<State::kPresentInvalid, State::kPresentValid, State::kPresentValid>,
+    IsEndpointTestCase<State::kPresentValid, State::kAbsent, State::kAbsent>,
+    IsEndpointTestCase<State::kPresentValid, State::kAbsent, State::kPresentInvalid>,
+    IsEndpointTestCase<State::kPresentValid, State::kAbsent, State::kPresentValid>,
+    IsEndpointTestCase<State::kPresentValid, State::kPresentInvalid, State::kAbsent>,
+    IsEndpointTestCase<State::kPresentValid, State::kPresentInvalid, State::kPresentInvalid>,
+    IsEndpointTestCase<State::kPresentValid, State::kPresentInvalid, State::kPresentValid>,
+    IsEndpointTestCase<State::kPresentValid, State::kPresentValid, State::kAbsent>,
+    IsEndpointTestCase<State::kPresentValid, State::kPresentValid, State::kPresentInvalid>,
+    IsEndpointTestCase<State::kPresentValid, State::kPresentValid, State::kPresentValid>
 >;
 // clang-format on
 
 struct IsEndpointTestCaseName {
   template <typename IsEndpointTestCase>
   static std::string GetName(int) {
-    auto type_alias_state_to_string = [](TypeAliasState state) {
+    auto state_to_string = [](State state) {
       switch (state) {
-        case TypeAliasState::kAbsent:
+        case State::kAbsent:
           return "Absent";
-        case TypeAliasState::kPresentInvalidJSON:
-          return "InvalidJSON";
-        case TypeAliasState::kPresentValidJSON:
-          return "ValidJSON";
-        case TypeAliasState::kPresentInvalidProtobuf:
-          return "InvalidProtobuf";
-        case TypeAliasState::kPresentValidProtobuf:
-          return "ValidProtobuf";
-      }
-    };
-
-    auto function_state_to_string = [](FunctionState state) {
-      switch (state) {
-        case FunctionState::kAbsent:
-          return "Absent";
-        case FunctionState::kPresentInvalid:
+        case State::kPresentInvalid:
           return "Invalid";
-        case FunctionState::kPresentValid:
+        case State::kPresentValid:
           return "Valid";
       }
     };
 
     return base::StrCat(
-        {"Request_",
-         type_alias_state_to_string(IsEndpointTestCase::kRequestState),
-         "_Response_",
-         type_alias_state_to_string(IsEndpointTestCase::kResponseState),
-         "_URL_", function_state_to_string(IsEndpointTestCase::kURLState),
-         "_does", (IsEndpointTestCase::kSatisfiesConcept ? "" : "_not")});
+        {"Request_", state_to_string(IsEndpointTestCase::kRequestState),
+         "_Response_", state_to_string(IsEndpointTestCase::kResponseState),
+         "_URL_", state_to_string(IsEndpointTestCase::kURLState), "_does",
+         (IsEndpointTestCase::kSatisfiesConcept ? "" : "_not")});
   }
 };
 

@@ -24,13 +24,13 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/color/color_provider.h"
+#include "ui/color/color_provider_key.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/font_list.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/image/image_skia_operations.h"
 #include "ui/gfx/paint_vector_icon.h"
-#include "ui/native_theme/native_theme.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/button/image_button.h"
@@ -41,6 +41,7 @@
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/layout/fill_layout.h"
 #include "ui/views/layout/flex_layout.h"
+#include "ui/views/widget/widget.h"
 
 namespace {
 
@@ -128,9 +129,8 @@ class WebDiscoveryInfoBarContentViewBackground : public views::Background {
     canvas->DrawImageInt(
         gfx::ImageSkiaOperations::CreateResizedImage(
             *rb.GetImageSkiaNamed(
-                ui::NativeTheme::GetInstanceForNativeUi()
-                            ->preferred_color_scheme() ==
-                        ui::NativeTheme::PreferredColorScheme::kDark
+                view->GetWidget()->GetColorMode() ==
+                        ui::ColorProviderKey::ColorMode::kDark
                     ? IDR_BRAVE_WEB_DISCOVERY_INFOBAR_BG_GRAPHIC_DARK
                     : IDR_BRAVE_WEB_DISCOVERY_INFOBAR_BG_GRAPHIC),
             skia::ImageOperations::RESIZE_BEST, view->size()),

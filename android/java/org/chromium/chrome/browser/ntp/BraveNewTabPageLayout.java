@@ -44,6 +44,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import com.bumptech.glide.Glide;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
@@ -62,6 +63,7 @@ import org.chromium.build.annotations.Initializer;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_news.BraveNewsControllerFactory;
 import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
@@ -71,6 +73,7 @@ import org.chromium.chrome.browser.brave_news.models.FeedItemCard;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindowTooltip;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.model.NTPImage;
 import org.chromium.chrome.browser.ntp_background_images.model.SponsoredTab;
@@ -141,7 +144,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     private @Nullable Bitmap mSponsoredLogo;
     private @Nullable Wallpaper mWallpaper;
 
-    private @Nullable BraveNewTabTakeoverInfobar mNewTabTakeoverInfobar;
+    private @Nullable NewTabTakeoverDisclosureTooltipController mDisclosureTooltipController;
 
     private @Nullable PopupWindowTooltip mTopSitesTooltip;
     private boolean mTopSitesTooltipScrolledAway;
@@ -291,6 +294,12 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     private void setTopSitesTooltipDismissed() {
         ChromeSharedPreferences.getInstance()
                 .writeBoolean(BravePreferenceKeys.BRAVE_NTP_TOP_SITES_TOOLTIP_DISMISSED, true);
+    }
+
+    private static boolean shouldDisplayRecapBanner() {
+        return ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_RECAP)
+                && !ChromeSharedPreferences.getInstance()
+                        .readBoolean(BravePreferenceKeys.BRAVE_NTP_RECAP_BANNER_DISMISSED, false);
     }
 
     private void maybeShowTopSitesTooltip() {
@@ -459,13 +468,29 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
         if (mNtpAdapter == null) {
             if (mActivity != null && !mActivity.isDestroyed() && !mActivity.isFinishing()) {
-                mNtpAdapter = new BraveNtpAdapter(mActivity, this, Glide.with(mActivity),
-                        mNewsItemsFeedCard, mBraveNewsController, mMvTilesContainerLayout,
-                        mNtpImageGlobal, mSponsoredTab, mWallpaper, mSponsoredLogo,
-                        mNTPBackgroundImagesBridge, false, mRecyclerView.getHeight(),
-                        mIsTopSitesEnabled, mIsBraveStatsEnabled, mIsDisplayNewsFeed,
-                        mIsDisplayNewsOptin);
-
+                mNtpAdapter =
+                        new BraveNtpAdapter(
+                                mActivity,
+                                this,
+                                Glide.with(mActivity),
+                                mNewsItemsFeedCard,
+                                mBraveNewsController,
+                                mMvTilesContainerLayout,
+                                mNtpImageGlobal,
+                                mSponsoredTab,
+                                mWallpaper,
+                                mSponsoredLogo,
+                                mNTPBackgroundImagesBridge,
+                                false,
+                                mRecyclerView.getHeight(),
+                                mIsTopSitesEnabled,
+                                mIsBraveStatsEnabled,
+                                mIsDisplayNewsFeed,
+                                mIsDisplayNewsOptin);
+                if (mDisclosureTooltipController != null) {
+                    mNtpAdapter.setNewTabTakeoverDisclosureVisible(true);
+                }
+                mNtpAdapter.setRecapBannerVisible(shouldDisplayRecapBanner());
                 mRecyclerView.setAdapter(mNtpAdapter);
 
                 if (mRecyclerView.getItemAnimator() != null) {
@@ -480,10 +505,33 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
             mNtpAdapter.setRecyclerViewHeight(mRecyclerView.getHeight());
             mNtpAdapter.setTopSitesEnabled(mIsTopSitesEnabled);
             mNtpAdapter.setBraveStatsEnabled(mIsBraveStatsEnabled);
+            mNtpAdapter.setRecapBannerVisible(shouldDisplayRecapBanner());
             mNtpAdapter.setDisplayNewsFeed(mIsDisplayNewsFeed);
         }
 
         if (mNtpAdapter == null) return;
+
+        // The height read above can be stale, e.g. when the activity is recreated behind Settings
+        // for a bottom bar toggle, and it sets how far down the news feed starts.
+        mRecyclerView.addOnLayoutChangeListener(
+                (View view,
+                        int left,
+                        int top,
+                        int right,
+                        int bottom,
+                        int oldLeft,
+                        int oldTop,
+                        int oldRight,
+                        int oldBottom) -> {
+                    int newHeight = bottom - top;
+                    if (newHeight <= 0 || newHeight == oldBottom - oldTop) return;
+                    view.post(
+                            () -> {
+                                if (mNtpAdapter != null) {
+                                    mNtpAdapter.setRecyclerViewHeight(newHeight);
+                                }
+                            });
+                });
 
         if (mIsDisplayNewsFeed) {
             try {
@@ -730,6 +778,9 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                         // jumps like keepPosition()'s scrollToPositionWithOffset() never enter
                         // the dragging state, so they correctly don't trigger this.
                         if (newState != RecyclerView.SCROLL_STATE_DRAGGING) return;
+                        if (mDisclosureTooltipController != null) {
+                            mDisclosureTooltipController.dismiss();
+                        }
                         mTopSitesTooltipScrolledAway = true;
                         if (mTopSitesTooltip != null && mTopSitesTooltip.isShowing()) {
                             mTopSitesTooltip.fadeOutAndDismiss(TOOLTIP_FADE_OUT_DURATION_MS);
@@ -860,6 +911,12 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                         // tooltip's anchor view - dismiss since PopupWindowTooltip can't reposition
                         // itself once shown.
                         dismissTopSitesTooltip();
+                    } else if (TextUtils.equals(
+                            key, BravePreferenceKeys.BRAVE_NTP_RECAP_BANNER_DISMISSED)) {
+                        assertNonNull(mNtpAdapter);
+                        mNtpAdapter.setRecapBannerVisible(shouldDisplayRecapBanner());
+                        // Shares the stats row's slot, see above.
+                        dismissTopSitesTooltip();
                     }
                 };
     }
@@ -884,6 +941,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
                     .getViewTreeObserver()
                     .removeOnGlobalLayoutListener(mTopSitesTooltipCheckListener);
             mTopSitesTooltipCheckListener = null;
+        }
+
+        if (mDisclosureTooltipController != null) {
+            mDisclosureTooltipController.dismiss();
         }
 
         if (mWorkerTask != null && mWorkerTask.getStatus() == AsyncTask.Status.RUNNING) {
@@ -935,6 +996,11 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+
+        if (mDisclosureTooltipController != null) {
+            mDisclosureTooltipController.dismiss();
+        }
+
         if (mActivity != null && (mActivity.isFinishing() || mActivity.isDestroyed())) {
             return;
         }
@@ -1270,14 +1336,34 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
             }
         }
 
-        assertNonNull(mProfile);
-        if (wasWallpaperShown
-                && mNtpImageGlobal instanceof Wallpaper
-                && getTab() != null
-                && mNewTabTakeoverInfobar == null) {
-            mNewTabTakeoverInfobar = new BraveNewTabTakeoverInfobar(mProfile);
-            mNewTabTakeoverInfobar.maybeDisplayAndIncrementCounter(mActivity, getTab());
+        updateNewTabTakeoverDisclosure(wasWallpaperShown);
+    }
+
+    private void updateNewTabTakeoverDisclosure(boolean wasWallpaperShown) {
+        boolean isNewTabTakeoverShown = wasWallpaperShown && mNtpImageGlobal instanceof Wallpaper;
+        if (mNtpAdapter != null) {
+            mNtpAdapter.setNewTabTakeoverDisclosureVisible(isNewTabTakeoverShown);
         }
+        if (isNewTabTakeoverShown && mDisclosureTooltipController == null) {
+            assertNonNull(mProfile);
+            mDisclosureTooltipController =
+                    new NewTabTakeoverDisclosureTooltipController(
+                            this,
+                            UserPrefs.get(mProfile),
+                            BraveRewardsHelper::isRewardsEnabled,
+                            NewTabTakeoverDisclosureTooltip::new);
+        } else if (!isNewTabTakeoverShown && mDisclosureTooltipController != null) {
+            mDisclosureTooltipController.dismiss();
+            mDisclosureTooltipController = null;
+        }
+    }
+
+    @Override
+    public void onDisclosureLabelClicked(View disclosureLabel) {
+        if (mDisclosureTooltipController == null) {
+            return;
+        }
+        mDisclosureTooltipController.onDisclosureLabelClicked(disclosureLabel);
     }
 
     private void setupSponsoredBackgroundContent(Wallpaper wallpaper) {

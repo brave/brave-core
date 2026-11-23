@@ -11,7 +11,7 @@ substitutions:
       class_name: TabHoverCardBubbleView::TabCardView
       friend_type: class BraveTabCardView
 
-  - description: |
+  - description: |-
       Replace std::make_unique<TabCardView> with a factory method.
 
       The factory method will be overriden in chromium_src to create
@@ -27,3 +27,12 @@ substitutions:
     make_virtual:
       class_name: TabHoverCardBubbleView::TabCardView
       method_name: UpdateContent
+
+  - description: |
+      Rename the class so the Brave subclass can reuse the name.
+
+      The Brave TabHoverCardBubbleView subclass is defined in the
+      chromium_src override of this file.
+    rename_class:
+      class_name: TabHoverCardBubbleView
+      rename: TabHoverCardBubbleView_ChromiumImpl

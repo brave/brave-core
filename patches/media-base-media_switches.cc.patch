@@ -1,8 +1,8 @@
 diff --git a/media/base/media_switches.cc b/media/base/media_switches.cc
-index 62544ade4c610eaefbe94aee96a45428b517b523..5cf3e70882025cab2c7151360f6aabb97c28d5ac 100644
+index 3a2ad4dfa570a917daf7eeebbcb88581e451a008..da38bc5823274d129533ea57450a813a82893342 100644
 --- a/media/base/media_switches.cc
 +++ b/media/base/media_switches.cc
-@@ -396,7 +396,7 @@ BASE_FEATURE(kAutoPictureInPictureSurveys, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -411,7 +411,7 @@ BASE_FEATURE(kAutoPictureInPictureSurveys, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // Allows media to autoplay without a user gesture if the site has been
  // granted microphone or camera permissions.
@@ -11,7 +11,7 @@ index 62544ade4c610eaefbe94aee96a45428b517b523..5cf3e70882025cab2c7151360f6aabb9
  
  // Whether we should show a setting to disable autoplay policy.
  BASE_FEATURE(kAutoplayDisableSettings, base::FEATURE_DISABLED_BY_DEFAULT);
-@@ -564,7 +564,7 @@ BASE_FEATURE(kDocumentPictureInPictureReparenting,
+@@ -557,7 +557,7 @@ BASE_FEATURE(kDocumentPictureInPictureReparenting,
  BASE_FEATURE(kEnableRtcpReporting, base::FEATURE_ENABLED_BY_DEFAULT);
  
  // Enables user control over muting tab audio from the tab strip.
@@ -20,7 +20,7 @@ index 62544ade4c610eaefbe94aee96a45428b517b523..5cf3e70882025cab2c7151360f6aabb9
  
  // Enables tracking the occlusion of HW secure encrypted video elements.
  // The HW secure check is OS agnostic, but this switch is currently only
-@@ -634,8 +634,8 @@ BASE_FEATURE(kForceSoftwareForRtcLowResolutions,
+@@ -627,8 +627,8 @@ BASE_FEATURE(kForceSoftwareForRtcLowResolutions,
  //
  // TODO(crbug.com/420406085): Remove after January 2028.
  // Keep this flag around at least until that date.
@@ -31,7 +31,7 @@ index 62544ade4c610eaefbe94aee96a45428b517b523..5cf3e70882025cab2c7151360f6aabb9
  
  // Auto-dismiss global media controls.
  BASE_FEATURE(kGlobalMediaControlsAutoDismiss, base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -741,7 +741,7 @@ BASE_FEATURE(kInternalMediaSession,
+@@ -734,7 +734,7 @@ BASE_FEATURE(kInternalMediaSession,
  );
  
  // Enables the Live Caption feature on supported devices.

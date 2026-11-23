@@ -181,12 +181,34 @@ export interface WalletState {
   isCardStackUiEnabled: boolean
 }
 
+/**
+ * The one operation that opened the hardware panel. Device retries may
+ * re-submit only this operation, never another pending queue entry.
+ */
+export type HardwareWalletOperation =
+  | {
+      type: 'signMessage'
+      id: number
+      accountUniqueKey: string
+    }
+  | {
+      type: 'signSolTransactions'
+      id: number
+      accountUniqueKey: string
+    }
+  | {
+      type: 'transaction'
+      id: string
+      accountUniqueKey: string
+    }
+
 export interface PanelState {
   hasInitialized: boolean
   connectToSiteOrigin: BraveWallet.OriginInfo
   selectedPanel: PanelTypes
   connectingAccounts: string[]
   hardwareWalletCode?: HardwareWalletResponseCodeType
+  hardwareWalletOperation?: HardwareWalletOperation
 }
 
 export interface PageState {

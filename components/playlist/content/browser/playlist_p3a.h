@@ -10,6 +10,7 @@
 #include "base/time/time.h"
 #include "base/timer/wall_clock_timer.h"
 
+class PrefRegistrySimple;
 class PrefService;
 
 namespace playlist {
@@ -30,6 +31,8 @@ class PlaylistP3A {
   ~PlaylistP3A();
   PlaylistP3A(const PlaylistP3A&) = delete;
   PlaylistP3A& operator=(PlaylistP3A&) = delete;
+
+  static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
   void ReportNewUsage();
 

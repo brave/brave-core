@@ -30,6 +30,10 @@ SpeedreaderJSHandler::SpeedreaderJSHandler(content::RenderFrame* render_frame)
 
 SpeedreaderJSHandler::~SpeedreaderJSHandler() = default;
 
+void SpeedreaderJSHandler::Dispose() {
+  RenderFrameObserver::Dispose();
+}
+
 void SpeedreaderJSHandler::OnDestruct() {
 }
 

@@ -537,22 +537,12 @@ inline constexpr char kComposeLearnMorePageURL[] = "https://support.brave.app/";
 inline constexpr char kComposeLearnMorePageManagedURL[] =
     "https://support.brave.app/";
 
-// The URL for the "Learn more" links for pages related to History search.
-// TODO(crbug.com/328300718): Update help article URL.
-inline constexpr char kHistorySearchLearnMorePageURL[] =
-    "https://support.brave.app/";
-
 // The URL for the "Learn more about shortcuts" page for Glic.
 inline constexpr char kGlicKeyboardShortcutLearnMoreURL[] =
     "https://support.brave.app/";
 
 // The URL for the "Learn more about shortcuts" page for Glic for managed users.
 inline constexpr char kGlicKeyboardShortcutLearnMoreManagedURL[] =
-    "https://support.brave.app/";
-
-// The URL for the "Learn more" links for pages related to History search for
-// managed users.
-inline constexpr char kHistorySearchLearnMorePageManagedURL[] =
     "https://support.brave.app/";
 
 // The URL for the Settings page to enable history search.

@@ -68,7 +68,7 @@
 "restoreButton" = "Wiederherstellen";
 
 /* A toggle label for Brave Rewards feature */
-"rewardsLabel" = "Rewards";
+"rewardsLabel" = "Belohnungen";
 
 /* A toggle label for statistics reporting feature */
 "statisticsReportingLabel" = "Statistikberichte";

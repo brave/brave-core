@@ -18,14 +18,10 @@ import org.robolectric.annotation.Config;
 
 import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
-import org.chromium.brave_wallet.mojom.BraveWalletService.GetPendingDecryptRequests_Response;
-import org.chromium.brave_wallet.mojom.BraveWalletService.GetPendingGetEncryptionPublicKeyRequests_Response;
 import org.chromium.brave_wallet.mojom.BraveWalletService.GetPendingSignSolTransactionsRequests_Response;
 import org.chromium.brave_wallet.mojom.CardanoSignData;
-import org.chromium.brave_wallet.mojom.DecryptRequest;
 import org.chromium.brave_wallet.mojom.EthSignTypedData;
 import org.chromium.brave_wallet.mojom.EthStandardSignData;
-import org.chromium.brave_wallet.mojom.GetEncryptionPublicKeyRequest;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.SignDataUnion;
 import org.chromium.brave_wallet.mojom.SignMessageRequest;
@@ -85,18 +81,6 @@ public class DappsModelTest {
     }
 
     @Test
-    public void processPublicEncryptionKey_reportsWhetherRequestsRemain() {
-        assertTrue(processPublicEncryptionKey(new GetEncryptionPublicKeyRequest[1]));
-        assertFalse(processPublicEncryptionKey(new GetEncryptionPublicKeyRequest[0]));
-    }
-
-    @Test
-    public void processDecryptRequest_reportsWhetherRequestsRemain() {
-        assertTrue(processDecryptRequest(new DecryptRequest[1]));
-        assertFalse(processDecryptRequest(new DecryptRequest[0]));
-    }
-
-    @Test
     public void notifySignSolTransactionsRequestProcessed_reportsWhetherRequestsRemain() {
         assertTrue(notifySignSolTransactionsRequestProcessed(new SignSolTransactionsRequest[1]));
         assertFalse(notifySignSolTransactionsRequestProcessed(new SignSolTransactionsRequest[0]));
@@ -106,37 +90,6 @@ public class DappsModelTest {
         SignMessageRequest request = new SignMessageRequest();
         request.signData = signData;
         return DappsModel.getSignMessagePanel(request);
-    }
-
-    private static Boolean processPublicEncryptionKey(GetEncryptionPublicKeyRequest[] pending) {
-        BraveWalletService service = mock(BraveWalletService.class);
-        doAnswer(
-                        invocation -> {
-                            GetPendingGetEncryptionPublicKeyRequests_Response callback =
-                                    invocation.getArgument(0);
-                            callback.call(pending);
-                            return null;
-                        })
-                .when(service)
-                .getPendingGetEncryptionPublicKeyRequests(any());
-        AtomicReference<Boolean> hasMoreRequests = new AtomicReference<>();
-        newModel(service).processPublicEncryptionKey("id", true, hasMoreRequests::set);
-        return hasMoreRequests.get();
-    }
-
-    private static Boolean processDecryptRequest(DecryptRequest[] pending) {
-        BraveWalletService service = mock(BraveWalletService.class);
-        doAnswer(
-                        invocation -> {
-                            GetPendingDecryptRequests_Response callback = invocation.getArgument(0);
-                            callback.call(pending);
-                            return null;
-                        })
-                .when(service)
-                .getPendingDecryptRequests(any());
-        AtomicReference<Boolean> hasMoreRequests = new AtomicReference<>();
-        newModel(service).processDecryptRequest("id", true, hasMoreRequests::set);
-        return hasMoreRequests.get();
     }
 
     private static Boolean notifySignSolTransactionsRequestProcessed(

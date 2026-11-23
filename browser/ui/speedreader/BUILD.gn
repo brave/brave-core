@@ -9,6 +9,7 @@ assert(enable_speedreader)
 
 source_set("speedreader") {
   sources = [
+    "reader_mode_toolbars.h",
     "speedreader_bubble_view.h",
     "speedreader_tab_helper.cc",
     "speedreader_tab_helper.h",
@@ -17,7 +18,7 @@ source_set("speedreader") {
   public_deps = [
     "//brave/browser/speedreader",
     "//chrome/browser/ui/tabs:tabs_public",
-    "//components/dom_distiller/content/browser",
+    "//components/web_distiller/content/browser",
     "//ui/base/unowned_user_data",
   ]
 
@@ -27,10 +28,6 @@ source_set("speedreader") {
     "//chrome/common",
     "//components/tabs:public",
   ]
-
-  if (!is_android) {
-    deps += [ "//brave/browser/ui:brave_browser_window_header" ]
-  }
 
   if (is_android) {
     sources += [ "android/speedreader_utils.cc" ]

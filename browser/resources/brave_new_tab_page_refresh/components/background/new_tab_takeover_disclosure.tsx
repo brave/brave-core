@@ -36,6 +36,7 @@ export function NewTabTakeoverDisclosure(props: Props) {
   const tooltipShowTimer = React.useRef<number | undefined>(undefined)
   const autoDisplayTimer = React.useRef<number | undefined>(undefined)
   const tooltipContentId = React.useId()
+  const tooltipContainerRef = React.useRef<HTMLDivElement>(null)
 
   React.useEffect(() => {
     return () => window.clearTimeout(tooltipShowTimer.current)
@@ -45,15 +46,29 @@ export function NewTabTakeoverDisclosure(props: Props) {
     if (!tooltipVisible) {
       return
     }
+    function hideTooltip() {
+      window.clearTimeout(tooltipShowTimer.current)
+      window.clearTimeout(autoDisplayTimer.current)
+      setTooltipVisible(false)
+    }
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === 'Escape') {
-        window.clearTimeout(tooltipShowTimer.current)
-        window.clearTimeout(autoDisplayTimer.current)
-        setTooltipVisible(false)
+        hideTooltip()
+      }
+    }
+    function onPointerDown(event: PointerEvent) {
+      if (!tooltipContainerRef.current?.contains(event.target as Node)) {
+        hideTooltip()
       }
     }
     document.addEventListener('keydown', onKeyDown)
-    return () => document.removeEventListener('keydown', onKeyDown)
+    document.addEventListener('pointerdown', onPointerDown)
+    window.addEventListener('blur', hideTooltip)
+    return () => {
+      document.removeEventListener('keydown', onKeyDown)
+      document.removeEventListener('pointerdown', onPointerDown)
+      window.removeEventListener('blur', hideTooltip)
+    }
   }, [tooltipVisible])
 
   React.useEffect(() => {
@@ -96,7 +111,10 @@ export function NewTabTakeoverDisclosure(props: Props) {
   }
 
   return (
-    <div data-css-scope={style.scope}>
+    <div
+      ref={tooltipContainerRef}
+      data-css-scope={style.scope}
+    >
       <Tooltip
         mode='default'
         placement='top'
@@ -118,7 +136,11 @@ export function NewTabTakeoverDisclosure(props: Props) {
           onMouseEnter={scheduleShowTooltip}
           onMouseLeave={cancelScheduledShow}
           onClick={() => setTooltipVisible(true)}
-          onFocus={() => setTooltipVisible(true)}
+          onFocus={(event) => {
+            if (event.currentTarget.matches(':focus-visible')) {
+              setTooltipVisible(true)
+            }
+          }}
           onBlur={() => setTooltipVisible(false)}
         >
           {getString(S.NEW_TAB_TAKEOVER_DISCLOSURE_LABEL)}
@@ -132,7 +154,6 @@ export function NewTabTakeoverDisclosure(props: Props) {
             $1: (content) => (
               <Link
                 url={learnMoreURL}
-                openInNewTab
                 onFocus={() => setTooltipVisible(true)}
                 onBlur={() => setTooltipVisible(false)}
                 onClick={() =>

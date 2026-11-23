@@ -16,7 +16,11 @@ substitutions:
       replace: "  addBraveRoutes(r);\n  return r as unknown as SettingsRoutes;"
 
   - description: |
-      Send guests to Brave's get-started route instead of upstream's.
+      Make Brave's get-started route the top level route for non-guests.
+
+      Brave has no People section; its profile and import routes live under
+      `GET_STARTED`.
     regex:
-      pattern: return routes.PEOPLE;
-      replace: return routes.GET_STARTED;
+      re_pattern: '(function getTopLevelRoute\(\).*?)routes\.PEOPLE;'
+      re_flags: [DOTALL]
+      replace: '\1routes.GET_STARTED;'

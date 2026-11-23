@@ -40,7 +40,9 @@ TEST(PartitionedHostStateMapTest, WithoutPartitionHash) {
   EXPECT_EQ(map.size(), 2u);
 
   EXPECT_EQ(map.find(HashHost("key1")), map.begin());
+  ASSERT_NE(map.find(HashHost("key1")), map.end());
   EXPECT_EQ(map.find(HashHost("key1"))->second, "1");
+  ASSERT_NE(map.find(HashHost("key2")), map.end());
   EXPECT_EQ(map.find(HashHost("key2"))->second, "2");
   EXPECT_EQ(map.find(HashHost("key3")), map.end());
 
@@ -87,7 +89,9 @@ TEST(PartitionedHostStateMapTest, ValidPartitionHash) {
   map[HashHost("key2")] = "12";
   EXPECT_EQ(map.size(), 2u);
 
+  ASSERT_NE(map.find(HashHost("key1")), map.end());
   EXPECT_EQ(map.find(HashHost("key1"))->second, "11");
+  ASSERT_NE(map.find(HashHost("key2")), map.end());
   EXPECT_EQ(map.find(HashHost("key2"))->second, "12");
   EXPECT_EQ(map.find(HashHost("key3")), map.end());
 
@@ -108,7 +112,9 @@ TEST(PartitionedHostStateMapTest, MultiplePartitions) {
     map[HashHost("key1")] = "11";
     map[HashHost("key2")] = "12";
     EXPECT_EQ(map.size(), 2u);
+    ASSERT_NE(map.find(HashHost("key1")), map.end());
     EXPECT_EQ(map.find(HashHost("key1"))->second, "11");
+    ASSERT_NE(map.find(HashHost("key2")), map.end());
     EXPECT_EQ(map.find(HashHost("key2"))->second, "12");
     EXPECT_EQ(map.find(HashHost("key3")), map.end());
   }
@@ -120,7 +126,9 @@ TEST(PartitionedHostStateMapTest, MultiplePartitions) {
     map[HashHost("key2")] = "22";
     EXPECT_EQ(map.size(), 4u);
 
+    ASSERT_NE(map.find(HashHost("key1")), map.end());
     EXPECT_EQ(map.find(HashHost("key1"))->second, "21");
+    ASSERT_NE(map.find(HashHost("key2")), map.end());
     EXPECT_EQ(map.find(HashHost("key2"))->second, "22");
     EXPECT_EQ(map.find(HashHost("key3")), map.end());
 
@@ -147,6 +155,7 @@ TEST(PartitionedHostStateMapTest, MultiplePartitions) {
     auto auto_reset_partition_hash =
         map.SetScopedPartitionHash(HashHost("partition1"));
     EXPECT_EQ(map.find(HashHost("key1")), map.end());
+    ASSERT_NE(map.find(HashHost("key2")), map.end());
     EXPECT_EQ(map.find(HashHost("key2"))->second, "12");
   }
 }

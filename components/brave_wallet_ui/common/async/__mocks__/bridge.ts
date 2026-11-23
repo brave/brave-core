@@ -50,6 +50,7 @@ import {
 } from '../../../stories/mock-data/mock-asset-options'
 import {
   mockETHSwapTransaction,
+  mockETHTokenSwapWithNativeValueTransaction,
   mockETHNativeTokenSendTransaction,
   mockFilSendTransaction,
   mockTransactionInfo,
@@ -64,8 +65,6 @@ import { mockUniswapOriginInfo } from '../../../stories/mock-data/mock-origin-in
 import { WalletApiDataOverrides } from '../../../constants/testing_types'
 import {
   mockAddChainRequest,
-  mockDecryptRequest,
-  mockGetEncryptionPublicKeyRequest,
   mockSignMessageError,
   mockSignMessageRequest,
   mockSwitchChainRequest,
@@ -192,6 +191,7 @@ export class MockedWalletApiProxy {
     deserializeTransaction(mockedErc20ApprovalTransaction),
     deserializeTransaction(mockETHNativeTokenSendTransaction),
     mockETHSwapTransaction,
+    mockETHTokenSwapWithNativeValueTransaction,
   ]
 
   // name service lookups
@@ -202,16 +202,12 @@ export class MockedWalletApiProxy {
     mockSwitchChainRequest,
   ]
 
-  private pendingDecryptRequests: BraveWallet.DecryptRequest[] = [
-    mockDecryptRequest,
-  ]
-
-  private pendingEncryptionPublicKeyRequests = [
-    mockGetEncryptionPublicKeyRequest,
-  ]
-
   private signSolTransactionsRequests =
     [] as BraveWallet.SignSolTransactionsRequest[]
+
+  signMessageRequests: BraveWallet.SignMessageRequest[] = [
+    mockSignMessageRequest,
+  ]
 
   private signCardanoTransactionRequests =
     [] as BraveWallet.SignCardanoTransactionRequest[]
@@ -244,6 +240,8 @@ export class MockedWalletApiProxy {
     this.signCardanoTransactionRequests =
       overrides.signCardanoTransactionRequests
       ?? this.signCardanoTransactionRequests
+    this.signMessageRequests =
+      overrides.signMessageRequests ?? this.signMessageRequests
     this.isWalletCreated = overrides.isWalletCreated ?? this.isWalletCreated
   }
 
@@ -370,27 +368,6 @@ export class MockedWalletApiProxy {
       )
       return { success: true }
     },
-    getPendingDecryptRequests: async () => {
-      return {
-        requests: this.pendingDecryptRequests,
-      }
-    },
-    notifyDecryptRequestProcessed: (requestId, approved) => {
-      this.pendingDecryptRequests = this.pendingDecryptRequests.filter(
-        (req) => req.requestId !== requestId,
-      )
-    },
-    getPendingGetEncryptionPublicKeyRequests: async () => {
-      return {
-        requests: this.pendingEncryptionPublicKeyRequests,
-      }
-    },
-    notifyGetPublicKeyRequestProcessed: (requestId, approved) => {
-      this.pendingEncryptionPublicKeyRequests =
-        this.pendingEncryptionPublicKeyRequests.filter(
-          (req) => req.requestId !== requestId,
-        )
-    },
     getPendingSignSolTransactionsRequests: async () => {
       return {
         requests: this.signSolTransactionsRequests,
@@ -412,7 +389,7 @@ export class MockedWalletApiProxy {
     },
     getPendingSignMessageRequests: async () => {
       return {
-        requests: [mockSignMessageRequest],
+        requests: this.signMessageRequests,
       }
     },
     getPendingSignMessageErrors: async () => {

@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TileRenderer.java b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TileRenderer.java
-index 57326eff8e354d569434406b4d1058c9b0674856..4fe3a7d855e14c59b969420b97718ab3fea4cd46 100644
+index 0828a59faaa8e76a70208c4d49fc060eb822b65e..c0ea7fac1ef94b5e6fe89ba3afe54066774edc7d 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TileRenderer.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/TileRenderer.java
-@@ -329,6 +329,10 @@ public class TileRenderer {
+@@ -334,6 +334,10 @@ public class TileRenderer {
      }
  
      boolean shouldShowAddNewButton(List<Tile> sectionTiles) {
@@ -13,7 +13,7 @@ index 57326eff8e354d569434406b4d1058c9b0674856..4fe3a7d855e14c59b969420b97718ab3
          if (sectionTiles.isEmpty()) {
              // Still show the Add Custom Link Button, even if no suggestions exist. We might make
              // this configurable.
-@@ -374,6 +378,11 @@ public class TileRenderer {
+@@ -378,6 +382,11 @@ public class TileRenderer {
          tileView.setOnKeyListener(
                  (View view, int keyCode, KeyEvent event) ->
                          TileUtils.isCustomTileSwapKeyCombo(keyCode, event));

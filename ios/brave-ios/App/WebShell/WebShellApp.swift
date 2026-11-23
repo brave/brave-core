@@ -19,7 +19,7 @@ struct WebShellApp: App {
   var body: some Scene {
     WindowGroup {
       if let profileController {
-        ContentView(configuration: profileController.defaultWebViewConfiguration)
+        ContentView(configuration: BraveWebViewConfiguration(profile: profileController.profile))
       } else {
         Color.clear
           .onAppear {

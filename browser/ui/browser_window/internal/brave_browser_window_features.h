@@ -21,10 +21,11 @@ class BeforeUnloadIgnoreController;
 class BraveNonClientHitTestHelper;
 class BraveShieldsUIContentsCache;
 class BraveVPNController;
-class BrowserView;
 class BrowserWindowInterface;
 class ClosingLastTabController;
 class PlaylistSidePanelCoordinator;
+class ShieldsHelpBubbleController;
+class TabCyclingController;
 class TreeTabSessionManager;
 class WindowClosingConfirmController;
 class WorkspacesBubbleController;
@@ -57,7 +58,6 @@ class BraveBrowserWindowFeatures {
 
   void Init();
   void InitPostWindowConstruction();
-  void InitPostBrowserViewConstruction(BrowserView* browser_view);
   void TearDownPreBrowserWindowDestruction();
 
  private:
@@ -100,6 +100,10 @@ class BraveBrowserWindowFeatures {
       brave_non_client_hit_test_helper_;
 
   std::unique_ptr<TreeTabSessionManager> tree_tab_session_manager_;
+
+  std::unique_ptr<TabCyclingController> tab_cycling_controller_;
+
+  std::unique_ptr<ShieldsHelpBubbleController> shields_help_bubble_controller_;
 
   std::unique_ptr<screenshot::ScreenshotController> screenshot_controller_;
 

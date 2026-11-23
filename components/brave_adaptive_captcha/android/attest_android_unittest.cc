@@ -58,6 +58,10 @@ class AttestAndroidTest : public testing::Test {
         }));
   }
 
+  ~AttestAndroidTest() override {
+    ServerUtil::GetInstance()->SetServerHostForTesting("");
+  }
+
  protected:
   base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory test_url_loader_factory_;

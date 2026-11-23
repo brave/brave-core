@@ -621,7 +621,6 @@ extension BrowserViewController {
     proposedCredential credential: URLCredential?
   ) async -> URLCredential? {
     let host = protectionSpace.host
-    let origin = "\(host):\(protectionSpace.port)"
 
     // The challenge may come from a background tab, so ensure it's the one visible.
     tabManager.selectTab(tab)
@@ -648,14 +647,6 @@ extension BrowserViewController {
         credential: credential,
         protectionSpace: protectionSpace
       ).credentials
-
-      if BasicAuthCredentialsManager.validDomains.contains(host) {
-        BasicAuthCredentialsManager.setCredential(
-          origin: origin,
-          credential: resolvedCredential
-        )
-      }
-
       return resolvedCredential
     } catch {
       return nil

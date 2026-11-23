@@ -16,6 +16,7 @@
 #include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/location.h"
 #include "base/no_destructor.h"
 #include "base/test/bind.h"
@@ -27,6 +28,7 @@
 #include "base/types/is_instantiation.h"
 #include "brave/components/endpoint_client/is_endpoint.h"
 #include "brave/components/endpoint_client/is_request.h"
+#include "brave/components/endpoint_client/is_request_body.h"
 #include "brave/components/endpoint_client/is_response.h"
 #include "brave/components/endpoint_client/is_response_body.h"
 #include "brave/components/endpoint_client/json_test_endpoint_bodies.h"
@@ -66,18 +68,71 @@ struct TestEndpoint {
   static GURL URL() { return GURL("https://example.com/api/query"); }
 };
 
-// Request: POST https://example.com/api/query { "request": "abc" }
-// Success: { "success": "ok" }
-// Error:   { "error": "nope" }
-using JSONEndpoint = TestEndpoint<Post<JSONRequestBody>,
-                                  Response<JSONSuccessBody, JSONErrorBody>>;
+// Request: POST https://example.com/api/query { "request": "request" }
+// Success: { "success": "success" }
+// Error:   { "error": "error" }
+using JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint =
+    TestEndpoint<Post<JSONNonEmptyRequestBody>,
+                 Response<JSONSuccessBody, JSONErrorBody>>;
 
-// Request: POST https://example.com/api/query \x0A\x03abc
-// Success: \x0A\x02ok
-// Error:   \x0A\x04nope
-using ProtobufEndpoint =
-    TestEndpoint<Post<ProtobufRequestBody>,
+// Request: POST https://example.com/api/query {}
+// Success: { "success": "success" }
+// Error:   { "error": "error" }
+using JSONEmptyRequestBodyJSONResponseBodiesEndpoint =
+    TestEndpoint<Post<JSONEmptyRequestBody>,
+                 Response<JSONSuccessBody, JSONErrorBody>>;
+
+// Request: POST https://example.com/api/query (no body)
+// Success: { "success": "success" }
+// Error:   { "error": "error" }
+using RequestWithoutBodyJSONResponseBodiesEndpoint =
+    TestEndpoint<Post<>, Response<JSONSuccessBody, JSONErrorBody>>;
+
+// Request: POST https://example.com/api/query \x0A\x07request
+// Success: \x0A\x07success
+// Error:   \x0A\x05error
+using ProtobufNonEmptyRequestBodyProtobufResponseBodiesEndpoint =
+    TestEndpoint<Post<ProtobufNonEmptyRequestBody>,
                  Response<ProtobufSuccessBody, ProtobufErrorBody>>;
+
+// Request: POST https://example.com/api/query (zero bytes)
+// Success: \x0A\x07success
+// Error:   \x0A\x05error
+using ProtobufEmptyRequestBodyProtobufResponseBodiesEndpoint =
+    TestEndpoint<Post<ProtobufEmptyRequestBody>,
+                 Response<ProtobufSuccessBody, ProtobufErrorBody>>;
+
+// Request: POST https://example.com/api/query (no body)
+// Success: \x0A\x07success
+// Error:   \x0A\x05error
+using RequestWithoutBodyProtobufResponseBodiesEndpoint =
+    TestEndpoint<Post<>, Response<ProtobufSuccessBody, ProtobufErrorBody>>;
+
+// Request: POST https://example.com/api/query { "request": "request" }
+// Success: \x0A\x07success
+// Error:   \x0A\x05error
+using JSONNonEmptyRequestBodyProtobufResponseBodiesEndpoint =
+    TestEndpoint<Post<JSONNonEmptyRequestBody>,
+                 Response<ProtobufSuccessBody, ProtobufErrorBody>>;
+
+// Request: POST https://example.com/api/query \x0A\x07request
+// Success: { "success": "success" }
+// Error:   { "error": "error" }
+using ProtobufNonEmptyRequestBodyJSONResponseBodiesEndpoint =
+    TestEndpoint<Post<ProtobufNonEmptyRequestBody>,
+                 Response<JSONSuccessBody, JSONErrorBody>>;
+
+// Request: POST https://example.com/api/query (no body)
+// Success: \x0A\x07success
+// Error:   { "error": "error" }
+using RequestWithoutBodyProtobufSuccessJSONErrorBodiesEndpoint =
+    TestEndpoint<Post<>, Response<ProtobufSuccessBody, JSONErrorBody>>;
+
+// Request: POST https://example.com/api/query (no body)
+// Success: not parsed
+// Error:   not parsed
+using RequestWithoutBodyResponseWithoutBodiesEndpoint =
+    TestEndpoint<Post<>, Response<>>;
 
 template <typename Response>
   requires internal::IsResponse<internal::MaybeStripWithHeaders<Response>>
@@ -124,6 +179,12 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
  private:
   using TestCase = TestCase<Response>;
 
+  static constexpr bool kIsRequestWithoutBody =
+      internal::IsRequestWithoutBody<typename Endpoint::Request>;
+
+  static constexpr bool kIsResponseWithoutBodies =
+      internal::IsResponseWithoutBodies<typename Endpoint::Response>;
+
   enum class BodyCase { kEmpty, kMalformed, kUnexpected, kValid };
 
   static const TestCase* NetError() {
@@ -154,8 +215,7 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
         .test_name = "success_empty_response",
         .net_error = net::OK,
         .status_code = net::HTTP_OK,
-        .body = MakeBody<typename Endpoint::Response::SuccessBody>(
-            BodyCase::kEmpty),
+        .body = MakeSuccessBody(BodyCase::kEmpty),
         .response = MakeResponse(net::OK, net::HTTP_OK, BodyCase::kEmpty),
     });
     return kSuccessEmptyResponse.get();
@@ -166,8 +226,7 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
         .test_name = "success_malformed_response",
         .net_error = net::OK,
         .status_code = net::HTTP_OK,
-        .body = MakeBody<typename Endpoint::Response::SuccessBody>(
-            BodyCase::kMalformed),
+        .body = MakeSuccessBody(BodyCase::kMalformed),
         .response = MakeResponse(net::OK, net::HTTP_OK, BodyCase::kMalformed),
     });
     return kSuccessMalformedResponse.get();
@@ -178,8 +237,7 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
         .test_name = "success_unexpected_response",
         .net_error = net::OK,
         .status_code = net::HTTP_OK,
-        .body = MakeBody<typename Endpoint::Response::SuccessBody>(
-            BodyCase::kUnexpected),
+        .body = MakeSuccessBody(BodyCase::kUnexpected),
         .response = MakeResponse(net::OK, net::HTTP_OK, BodyCase::kUnexpected),
     });
     return kSuccessUnexpectedResponse.get();
@@ -190,8 +248,7 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
         .test_name = "success_valid_response",
         .net_error = net::OK,
         .status_code = net::HTTP_OK,
-        .body = MakeBody<typename Endpoint::Response::SuccessBody>(
-            BodyCase::kValid),
+        .body = MakeSuccessBody(BodyCase::kValid),
         .response = MakeResponse(net::OK, net::HTTP_OK, BodyCase::kValid),
     });
     return kSuccessValidResponse.get();
@@ -202,8 +259,7 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
         .test_name = "error_empty_response",
         .net_error = net::OK,
         .status_code = net::HTTP_BAD_REQUEST,
-        .body =
-            MakeBody<typename Endpoint::Response::ErrorBody>(BodyCase::kEmpty),
+        .body = MakeErrorBody(BodyCase::kEmpty),
         .response =
             MakeResponse(net::OK, net::HTTP_BAD_REQUEST, BodyCase::kEmpty),
     });
@@ -215,8 +271,7 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
         .test_name = "error_malformed_response",
         .net_error = net::OK,
         .status_code = net::HTTP_BAD_REQUEST,
-        .body = MakeBody<typename Endpoint::Response::ErrorBody>(
-            BodyCase::kMalformed),
+        .body = MakeErrorBody(BodyCase::kMalformed),
         .response =
             MakeResponse(net::OK, net::HTTP_BAD_REQUEST, BodyCase::kMalformed),
     });
@@ -228,8 +283,7 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
         .test_name = "error_unexpected_response",
         .net_error = net::OK,
         .status_code = net::HTTP_BAD_REQUEST,
-        .body = MakeBody<typename Endpoint::Response::ErrorBody>(
-            BodyCase::kUnexpected),
+        .body = MakeErrorBody(BodyCase::kUnexpected),
         .response =
             MakeResponse(net::OK, net::HTTP_BAD_REQUEST, BodyCase::kUnexpected),
     });
@@ -241,31 +295,42 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
         .test_name = "error_valid_response",
         .net_error = net::OK,
         .status_code = net::HTTP_BAD_REQUEST,
-        .body =
-            MakeBody<typename Endpoint::Response::ErrorBody>(BodyCase::kValid),
+        .body = MakeErrorBody(BodyCase::kValid),
         .response =
             MakeResponse(net::OK, net::HTTP_BAD_REQUEST, BodyCase::kValid),
     });
     return kErrorValidResponse.get();
   }
 
-  template <std::same_as<JSONRequestBody> RequestBody>
+  template <std::same_as<JSONNonEmptyRequestBody> RequestBody>
   static RequestBody MakeRequestBody() {
     RequestBody request_body;
     request_body.request = "request";
     return request_body;
   }
 
-  template <std::same_as<ProtobufRequestBody> RequestBody>
+  template <std::same_as<JSONEmptyRequestBody> RequestBody>
+  static RequestBody MakeRequestBody() {
+    return RequestBody();
+  }
+
+  template <std::same_as<ProtobufNonEmptyRequestBody> RequestBody>
   static RequestBody MakeRequestBody() {
     RequestBody request_body;
     request_body.set_request("request");
     return request_body;
   }
 
+  template <std::same_as<ProtobufEmptyRequestBody> RequestBody>
+  static RequestBody MakeRequestBody() {
+    return RequestBody();
+  }
+
   static Request MakeRequest() {
     Request request;
-    request.body = MakeRequestBody<typename Endpoint::Request::Body>();
+    if constexpr (!kIsRequestWithoutBody) {
+      request.body = MakeRequestBody<typename Endpoint::Request::Body>();
+    }
 
     if constexpr (base::is_instantiation<Request, WithHeaders>) {
       SetBearerToken(request, "12345");
@@ -336,16 +401,19 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
     response.status_code = status_code;
 
     if (net_error == net::OK && status_code) {
-      if (network::IsSuccessfulStatus(*status_code)) {  // 2xx
-        response.body =
-            MakeResponseBody<typename Endpoint::Response::SuccessBody>(
-                body_case);
-      } else {  // non-2xx
-        response.body =
-            MakeResponseBody<typename Endpoint::Response::ErrorBody>(body_case)
-                .transform([](auto error_body) {
-                  return base::unexpected(std::move(error_body));
-                });
+      if constexpr (!kIsResponseWithoutBodies) {
+        if (network::IsSuccessfulStatus(*status_code)) {  // 2xx
+          response.body =
+              MakeResponseBody<typename Endpoint::Response::SuccessBody>(
+                  body_case);
+        } else {  // non-2xx
+          response.body =
+              MakeResponseBody<typename Endpoint::Response::ErrorBody>(
+                  body_case)
+                  .transform([](auto error_body) {
+                    return base::unexpected(std::move(error_body));
+                  });
+        }
       }
 
       if constexpr (base::is_instantiation<Response, WithHeaders>) {
@@ -359,6 +427,28 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
     }
 
     return response;
+  }
+
+  // The response body served for endpoints whose Response<> has no bodies. Its
+  // content doesn't matter: such responses never parse a body, so any bytes
+  // must be ignored, and the tests check that only the status reaches the
+  // response.
+  static constexpr char kIgnoredBody[] = "ignored";
+
+  static std::string MakeSuccessBody(BodyCase body_case) {
+    if constexpr (kIsResponseWithoutBodies) {
+      return kIgnoredBody;
+    } else {
+      return MakeBody<typename Endpoint::Response::SuccessBody>(body_case);
+    }
+  }
+
+  static std::string MakeErrorBody(BodyCase body_case) {
+    if constexpr (kIsResponseWithoutBodies) {
+      return kIgnoredBody;
+    } else {
+      return MakeBody<typename Endpoint::Response::ErrorBody>(body_case);
+    }
   }
 
   template <internal::IsJSONResponseBody ResponseBody>
@@ -414,13 +504,13 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
     }
   }
 
-  template <std::same_as<JSONRequestBody> RequestBody>
+  template <internal::IsJSONRequestBody RequestBody>
   RequestBody RequestBodyFrom(std::string_view bytes) {
     return CHECK_DEREF(RequestBody::FromValue(
         CHECK_DEREF(base::JSONReader::Read(bytes, base::JSON_PARSE_RFC))));
   }
 
-  template <std::same_as<ProtobufRequestBody> RequestBody>
+  template <internal::IsProtobufRequestBody RequestBody>
   RequestBody RequestBodyFrom(std::string_view bytes) {
     RequestBody body;
     CHECK(body.ParseFromString(bytes));
@@ -430,15 +520,23 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
   void Interceptor(const network::ResourceRequest& resource_request) {
     EXPECT_EQ(resource_request.url, Endpoint::URL());
     EXPECT_EQ(resource_request.method, Request::Method());
-    EXPECT_EQ(resource_request.headers.GetHeader(
-                  net::HttpRequestHeaders::kContentType),
-              Request::ContentType());
     EXPECT_FALSE(resource_request.SavesCookies());
     EXPECT_EQ(resource_request.redirect_mode,
               network::mojom::RedirectMode::kError);
-    EXPECT_THAT(RequestBodyFrom<typename Endpoint::Request::Body>(
-                    network::GetUploadData(resource_request)),
-                internal::BodyEq(MakeRequest().body));
+
+    if constexpr (kIsRequestWithoutBody) {
+      EXPECT_FALSE(resource_request.headers.HasHeader(
+          net::HttpRequestHeaders::kContentType));
+      EXPECT_FALSE(resource_request.request_body);
+    } else {
+      EXPECT_EQ(resource_request.headers.GetHeader(
+                    net::HttpRequestHeaders::kContentType),
+                Request::ContentType());
+      EXPECT_TRUE(resource_request.request_body);
+      EXPECT_THAT(RequestBodyFrom<typename Endpoint::Request::Body>(
+                      network::GetUploadData(resource_request)),
+                  internal::BodyEq(MakeRequest().body));
+    }
 
     if constexpr (base::is_instantiation<Request, WithHeaders>) {
       EXPECT_EQ(resource_request.headers.GetHeader(
@@ -463,32 +561,189 @@ class ClientTest : public testing::TestWithParam<const TestCase<Response>*> {
   network::TestURLLoaderFactory test_url_loader_factory_;
 };
 
-using ClientTestJSONPlainRequest =
-    ClientTest<JSONEndpoint, JSONEndpoint::Request, JSONEndpoint::Response>;
+using ClientTestJSONNonEmptyRequestBodyJSONResponseBodiesNoHeaders =
+    ClientTest<JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint,
+               JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Request,
+               JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Response>;
 
-using ClientTestJSONRequestWithHeaders =
-    ClientTest<JSONEndpoint,
-               WithHeaders<JSONEndpoint::Request>,
-               JSONEndpoint::Response>;
+using ClientTestJSONNonEmptyRequestBodyJSONResponseBodiesRequestWithHeaders =
+    ClientTest<
+        JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint,
+        WithHeaders<JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Request>,
+        JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Response>;
 
-using ClientTestJSONResponseWithHeaders =
-    ClientTest<JSONEndpoint,
-               JSONEndpoint::Request,
-               WithHeaders<JSONEndpoint::Response>>;
+using ClientTestJSONNonEmptyRequestBodyJSONResponseBodiesResponseWithHeaders =
+    ClientTest<
+        JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint,
+        JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Request,
+        WithHeaders<
+            JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Response>>;
 
-using ClientTestProtobufPlainRequest = ClientTest<ProtobufEndpoint,
-                                                  ProtobufEndpoint::Request,
-                                                  ProtobufEndpoint::Response>;
+using ClientTestJSONEmptyRequestBodyJSONResponseBodiesNoHeaders =
+    ClientTest<JSONEmptyRequestBodyJSONResponseBodiesEndpoint,
+               JSONEmptyRequestBodyJSONResponseBodiesEndpoint::Request,
+               JSONEmptyRequestBodyJSONResponseBodiesEndpoint::Response>;
 
-using ClientTestProtobufRequestWithHeaders =
-    ClientTest<ProtobufEndpoint,
-               WithHeaders<ProtobufEndpoint::Request>,
-               ProtobufEndpoint::Response>;
+using ClientTestJSONEmptyRequestBodyJSONResponseBodiesRequestWithHeaders =
+    ClientTest<
+        JSONEmptyRequestBodyJSONResponseBodiesEndpoint,
+        WithHeaders<JSONEmptyRequestBodyJSONResponseBodiesEndpoint::Request>,
+        JSONEmptyRequestBodyJSONResponseBodiesEndpoint::Response>;
 
-using ClientTestProtobufResponseWithHeaders =
-    ClientTest<ProtobufEndpoint,
-               ProtobufEndpoint::Request,
-               WithHeaders<ProtobufEndpoint::Response>>;
+using ClientTestJSONEmptyRequestBodyJSONResponseBodiesResponseWithHeaders =
+    ClientTest<
+        JSONEmptyRequestBodyJSONResponseBodiesEndpoint,
+        JSONEmptyRequestBodyJSONResponseBodiesEndpoint::Request,
+        WithHeaders<JSONEmptyRequestBodyJSONResponseBodiesEndpoint::Response>>;
+
+using ClientTestRequestWithoutBodyJSONResponseBodiesNoHeaders =
+    ClientTest<RequestWithoutBodyJSONResponseBodiesEndpoint,
+               RequestWithoutBodyJSONResponseBodiesEndpoint::Request,
+               RequestWithoutBodyJSONResponseBodiesEndpoint::Response>;
+
+using ClientTestRequestWithoutBodyJSONResponseBodiesRequestWithHeaders =
+    ClientTest<
+        RequestWithoutBodyJSONResponseBodiesEndpoint,
+        WithHeaders<RequestWithoutBodyJSONResponseBodiesEndpoint::Request>,
+        RequestWithoutBodyJSONResponseBodiesEndpoint::Response>;
+
+using ClientTestRequestWithoutBodyJSONResponseBodiesResponseWithHeaders =
+    ClientTest<
+        RequestWithoutBodyJSONResponseBodiesEndpoint,
+        RequestWithoutBodyJSONResponseBodiesEndpoint::Request,
+        WithHeaders<RequestWithoutBodyJSONResponseBodiesEndpoint::Response>>;
+
+using ClientTestProtobufNonEmptyRequestBodyProtobufResponseBodiesNoHeaders =
+    ClientTest<
+        ProtobufNonEmptyRequestBodyProtobufResponseBodiesEndpoint,
+        ProtobufNonEmptyRequestBodyProtobufResponseBodiesEndpoint::Request,
+        ProtobufNonEmptyRequestBodyProtobufResponseBodiesEndpoint::Response>;
+
+using ClientTestProtobufNonEmptyRequestBodyProtobufResponseBodiesRequestWithHeaders =
+    ClientTest<
+        ProtobufNonEmptyRequestBodyProtobufResponseBodiesEndpoint,
+        WithHeaders<
+            ProtobufNonEmptyRequestBodyProtobufResponseBodiesEndpoint::Request>,
+        ProtobufNonEmptyRequestBodyProtobufResponseBodiesEndpoint::Response>;
+
+using ClientTestProtobufNonEmptyRequestBodyProtobufResponseBodiesResponseWithHeaders =
+    ClientTest<
+        ProtobufNonEmptyRequestBodyProtobufResponseBodiesEndpoint,
+        ProtobufNonEmptyRequestBodyProtobufResponseBodiesEndpoint::Request,
+        WithHeaders<ProtobufNonEmptyRequestBodyProtobufResponseBodiesEndpoint::
+                        Response>>;
+
+using ClientTestProtobufEmptyRequestBodyProtobufResponseBodiesNoHeaders =
+    ClientTest<
+        ProtobufEmptyRequestBodyProtobufResponseBodiesEndpoint,
+        ProtobufEmptyRequestBodyProtobufResponseBodiesEndpoint::Request,
+        ProtobufEmptyRequestBodyProtobufResponseBodiesEndpoint::Response>;
+
+using ClientTestProtobufEmptyRequestBodyProtobufResponseBodiesRequestWithHeaders =
+    ClientTest<
+        ProtobufEmptyRequestBodyProtobufResponseBodiesEndpoint,
+        WithHeaders<
+            ProtobufEmptyRequestBodyProtobufResponseBodiesEndpoint::Request>,
+        ProtobufEmptyRequestBodyProtobufResponseBodiesEndpoint::Response>;
+
+using ClientTestProtobufEmptyRequestBodyProtobufResponseBodiesResponseWithHeaders =
+    ClientTest<
+        ProtobufEmptyRequestBodyProtobufResponseBodiesEndpoint,
+        ProtobufEmptyRequestBodyProtobufResponseBodiesEndpoint::Request,
+        WithHeaders<
+            ProtobufEmptyRequestBodyProtobufResponseBodiesEndpoint::Response>>;
+
+using ClientTestRequestWithoutBodyProtobufResponseBodiesNoHeaders =
+    ClientTest<RequestWithoutBodyProtobufResponseBodiesEndpoint,
+               RequestWithoutBodyProtobufResponseBodiesEndpoint::Request,
+               RequestWithoutBodyProtobufResponseBodiesEndpoint::Response>;
+
+using ClientTestRequestWithoutBodyProtobufResponseBodiesRequestWithHeaders =
+    ClientTest<
+        RequestWithoutBodyProtobufResponseBodiesEndpoint,
+        WithHeaders<RequestWithoutBodyProtobufResponseBodiesEndpoint::Request>,
+        RequestWithoutBodyProtobufResponseBodiesEndpoint::Response>;
+
+using ClientTestRequestWithoutBodyProtobufResponseBodiesResponseWithHeaders =
+    ClientTest<RequestWithoutBodyProtobufResponseBodiesEndpoint,
+               RequestWithoutBodyProtobufResponseBodiesEndpoint::Request,
+               WithHeaders<
+                   RequestWithoutBodyProtobufResponseBodiesEndpoint::Response>>;
+
+using ClientTestJSONNonEmptyRequestBodyProtobufResponseBodiesNoHeaders =
+    ClientTest<JSONNonEmptyRequestBodyProtobufResponseBodiesEndpoint,
+               JSONNonEmptyRequestBodyProtobufResponseBodiesEndpoint::Request,
+               JSONNonEmptyRequestBodyProtobufResponseBodiesEndpoint::Response>;
+
+using ClientTestJSONNonEmptyRequestBodyProtobufResponseBodiesRequestWithHeaders =
+    ClientTest<
+        JSONNonEmptyRequestBodyProtobufResponseBodiesEndpoint,
+        WithHeaders<
+            JSONNonEmptyRequestBodyProtobufResponseBodiesEndpoint::Request>,
+        JSONNonEmptyRequestBodyProtobufResponseBodiesEndpoint::Response>;
+
+using ClientTestJSONNonEmptyRequestBodyProtobufResponseBodiesResponseWithHeaders =
+    ClientTest<
+        JSONNonEmptyRequestBodyProtobufResponseBodiesEndpoint,
+        JSONNonEmptyRequestBodyProtobufResponseBodiesEndpoint::Request,
+        WithHeaders<
+            JSONNonEmptyRequestBodyProtobufResponseBodiesEndpoint::Response>>;
+
+using ClientTestProtobufNonEmptyRequestBodyJSONResponseBodiesNoHeaders =
+    ClientTest<ProtobufNonEmptyRequestBodyJSONResponseBodiesEndpoint,
+               ProtobufNonEmptyRequestBodyJSONResponseBodiesEndpoint::Request,
+               ProtobufNonEmptyRequestBodyJSONResponseBodiesEndpoint::Response>;
+
+using ClientTestProtobufNonEmptyRequestBodyJSONResponseBodiesRequestWithHeaders =
+    ClientTest<
+        ProtobufNonEmptyRequestBodyJSONResponseBodiesEndpoint,
+        WithHeaders<
+            ProtobufNonEmptyRequestBodyJSONResponseBodiesEndpoint::Request>,
+        ProtobufNonEmptyRequestBodyJSONResponseBodiesEndpoint::Response>;
+
+using ClientTestProtobufNonEmptyRequestBodyJSONResponseBodiesResponseWithHeaders =
+    ClientTest<
+        ProtobufNonEmptyRequestBodyJSONResponseBodiesEndpoint,
+        ProtobufNonEmptyRequestBodyJSONResponseBodiesEndpoint::Request,
+        WithHeaders<
+            ProtobufNonEmptyRequestBodyJSONResponseBodiesEndpoint::Response>>;
+
+using ClientTestRequestWithoutBodyProtobufSuccessJSONErrorBodiesNoHeaders =
+    ClientTest<
+        RequestWithoutBodyProtobufSuccessJSONErrorBodiesEndpoint,
+        RequestWithoutBodyProtobufSuccessJSONErrorBodiesEndpoint::Request,
+        RequestWithoutBodyProtobufSuccessJSONErrorBodiesEndpoint::Response>;
+
+using ClientTestRequestWithoutBodyProtobufSuccessJSONErrorBodiesRequestWithHeaders =
+    ClientTest<
+        RequestWithoutBodyProtobufSuccessJSONErrorBodiesEndpoint,
+        WithHeaders<
+            RequestWithoutBodyProtobufSuccessJSONErrorBodiesEndpoint::Request>,
+        RequestWithoutBodyProtobufSuccessJSONErrorBodiesEndpoint::Response>;
+
+using ClientTestRequestWithoutBodyProtobufSuccessJSONErrorBodiesResponseWithHeaders =
+    ClientTest<
+        RequestWithoutBodyProtobufSuccessJSONErrorBodiesEndpoint,
+        RequestWithoutBodyProtobufSuccessJSONErrorBodiesEndpoint::Request,
+        WithHeaders<RequestWithoutBodyProtobufSuccessJSONErrorBodiesEndpoint::
+                        Response>>;
+
+using ClientTestRequestWithoutBodyResponseWithoutBodiesNoHeaders =
+    ClientTest<RequestWithoutBodyResponseWithoutBodiesEndpoint,
+               RequestWithoutBodyResponseWithoutBodiesEndpoint::Request,
+               RequestWithoutBodyResponseWithoutBodiesEndpoint::Response>;
+
+using ClientTestRequestWithoutBodyResponseWithoutBodiesRequestWithHeaders =
+    ClientTest<
+        RequestWithoutBodyResponseWithoutBodiesEndpoint,
+        WithHeaders<RequestWithoutBodyResponseWithoutBodiesEndpoint::Request>,
+        RequestWithoutBodyResponseWithoutBodiesEndpoint::Response>;
+
+using ClientTestRequestWithoutBodyResponseWithoutBodiesResponseWithHeaders =
+    ClientTest<
+        RequestWithoutBodyResponseWithoutBodiesEndpoint,
+        RequestWithoutBodyResponseWithoutBodiesEndpoint::Request,
+        WithHeaders<RequestWithoutBodyResponseWithoutBodiesEndpoint::Response>>;
 
 class ClientTestCancelableRequest : public testing::Test {
  protected:
@@ -520,78 +775,419 @@ class ClientTestRetryOptions
 
 }  // namespace
 
-TEST_P(ClientTestJSONPlainRequest, Send) {
-  RunTestCase();
-}
-
-INSTANTIATE_TEST_SUITE_P(JSONPlainRequest,
-                         ClientTestJSONPlainRequest,
-                         ClientTestJSONPlainRequest::GenerateTestCases(),
-                         ClientTestJSONPlainRequest::kNameGenerator);
-
-TEST_P(ClientTestJSONRequestWithHeaders, Send) {
-  RunTestCase();
-}
-
-INSTANTIATE_TEST_SUITE_P(JSONRequestWithHeaders,
-                         ClientTestJSONRequestWithHeaders,
-                         ClientTestJSONRequestWithHeaders::GenerateTestCases(),
-                         ClientTestJSONRequestWithHeaders::kNameGenerator);
-
-TEST_P(ClientTestJSONResponseWithHeaders, Send) {
-  RunTestCase();
-}
-
-INSTANTIATE_TEST_SUITE_P(JSONResponseWithHeaders,
-                         ClientTestJSONResponseWithHeaders,
-                         ClientTestJSONResponseWithHeaders::GenerateTestCases(),
-                         ClientTestJSONResponseWithHeaders::kNameGenerator);
-
-TEST_P(ClientTestProtobufPlainRequest, Send) {
-  RunTestCase();
-}
-
-INSTANTIATE_TEST_SUITE_P(ProtobufPlainRequest,
-                         ClientTestProtobufPlainRequest,
-                         ClientTestProtobufPlainRequest::GenerateTestCases(),
-                         ClientTestProtobufPlainRequest::kNameGenerator);
-
-TEST_P(ClientTestProtobufRequestWithHeaders, Send) {
+TEST_P(ClientTestJSONNonEmptyRequestBodyJSONResponseBodiesNoHeaders, Send) {
   RunTestCase();
 }
 
 INSTANTIATE_TEST_SUITE_P(
-    ProtobufRequestWithHeaders,
-    ClientTestProtobufRequestWithHeaders,
-    ClientTestProtobufRequestWithHeaders::GenerateTestCases(),
-    ClientTestProtobufRequestWithHeaders::kNameGenerator);
+    JSONNonEmptyRequestBodyJSONResponseBodiesNoHeaders,
+    ClientTestJSONNonEmptyRequestBodyJSONResponseBodiesNoHeaders,
+    ClientTestJSONNonEmptyRequestBodyJSONResponseBodiesNoHeaders::
+        GenerateTestCases(),
+    ClientTestJSONNonEmptyRequestBodyJSONResponseBodiesNoHeaders::
+        kNameGenerator);
 
-TEST_P(ClientTestProtobufResponseWithHeaders, Send) {
+TEST_P(ClientTestJSONNonEmptyRequestBodyJSONResponseBodiesRequestWithHeaders,
+       Send) {
   RunTestCase();
 }
 
 INSTANTIATE_TEST_SUITE_P(
-    ProtobufResponseWithHeaders,
-    ClientTestProtobufResponseWithHeaders,
-    ClientTestProtobufResponseWithHeaders::GenerateTestCases(),
-    ClientTestProtobufResponseWithHeaders::kNameGenerator);
+    JSONNonEmptyRequestBodyJSONResponseBodiesRequestWithHeaders,
+    ClientTestJSONNonEmptyRequestBodyJSONResponseBodiesRequestWithHeaders,
+    ClientTestJSONNonEmptyRequestBodyJSONResponseBodiesRequestWithHeaders::
+        GenerateTestCases(),
+    ClientTestJSONNonEmptyRequestBodyJSONResponseBodiesRequestWithHeaders::
+        kNameGenerator);
+
+TEST_P(ClientTestJSONNonEmptyRequestBodyJSONResponseBodiesResponseWithHeaders,
+       Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    JSONNonEmptyRequestBodyJSONResponseBodiesResponseWithHeaders,
+    ClientTestJSONNonEmptyRequestBodyJSONResponseBodiesResponseWithHeaders,
+    ClientTestJSONNonEmptyRequestBodyJSONResponseBodiesResponseWithHeaders::
+        GenerateTestCases(),
+    ClientTestJSONNonEmptyRequestBodyJSONResponseBodiesResponseWithHeaders::
+        kNameGenerator);
+
+TEST_P(ClientTestJSONEmptyRequestBodyJSONResponseBodiesNoHeaders, Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    JSONEmptyRequestBodyJSONResponseBodiesNoHeaders,
+    ClientTestJSONEmptyRequestBodyJSONResponseBodiesNoHeaders,
+    ClientTestJSONEmptyRequestBodyJSONResponseBodiesNoHeaders::
+        GenerateTestCases(),
+    ClientTestJSONEmptyRequestBodyJSONResponseBodiesNoHeaders::kNameGenerator);
+
+TEST_P(ClientTestJSONEmptyRequestBodyJSONResponseBodiesRequestWithHeaders,
+       Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    JSONEmptyRequestBodyJSONResponseBodiesRequestWithHeaders,
+    ClientTestJSONEmptyRequestBodyJSONResponseBodiesRequestWithHeaders,
+    ClientTestJSONEmptyRequestBodyJSONResponseBodiesRequestWithHeaders::
+        GenerateTestCases(),
+    ClientTestJSONEmptyRequestBodyJSONResponseBodiesRequestWithHeaders::
+        kNameGenerator);
+
+TEST_P(ClientTestJSONEmptyRequestBodyJSONResponseBodiesResponseWithHeaders,
+       Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    JSONEmptyRequestBodyJSONResponseBodiesResponseWithHeaders,
+    ClientTestJSONEmptyRequestBodyJSONResponseBodiesResponseWithHeaders,
+    ClientTestJSONEmptyRequestBodyJSONResponseBodiesResponseWithHeaders::
+        GenerateTestCases(),
+    ClientTestJSONEmptyRequestBodyJSONResponseBodiesResponseWithHeaders::
+        kNameGenerator);
+
+TEST_P(ClientTestRequestWithoutBodyJSONResponseBodiesNoHeaders, Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    RequestWithoutBodyJSONResponseBodiesNoHeaders,
+    ClientTestRequestWithoutBodyJSONResponseBodiesNoHeaders,
+    ClientTestRequestWithoutBodyJSONResponseBodiesNoHeaders::
+        GenerateTestCases(),
+    ClientTestRequestWithoutBodyJSONResponseBodiesNoHeaders::kNameGenerator);
+
+TEST_P(ClientTestRequestWithoutBodyJSONResponseBodiesRequestWithHeaders, Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    RequestWithoutBodyJSONResponseBodiesRequestWithHeaders,
+    ClientTestRequestWithoutBodyJSONResponseBodiesRequestWithHeaders,
+    ClientTestRequestWithoutBodyJSONResponseBodiesRequestWithHeaders::
+        GenerateTestCases(),
+    ClientTestRequestWithoutBodyJSONResponseBodiesRequestWithHeaders::
+        kNameGenerator);
+
+TEST_P(ClientTestRequestWithoutBodyJSONResponseBodiesResponseWithHeaders,
+       Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    RequestWithoutBodyJSONResponseBodiesResponseWithHeaders,
+    ClientTestRequestWithoutBodyJSONResponseBodiesResponseWithHeaders,
+    ClientTestRequestWithoutBodyJSONResponseBodiesResponseWithHeaders::
+        GenerateTestCases(),
+    ClientTestRequestWithoutBodyJSONResponseBodiesResponseWithHeaders::
+        kNameGenerator);
+
+TEST_P(ClientTestProtobufNonEmptyRequestBodyProtobufResponseBodiesNoHeaders,
+       Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    ProtobufNonEmptyRequestBodyProtobufResponseBodiesNoHeaders,
+    ClientTestProtobufNonEmptyRequestBodyProtobufResponseBodiesNoHeaders,
+    ClientTestProtobufNonEmptyRequestBodyProtobufResponseBodiesNoHeaders::
+        GenerateTestCases(),
+    ClientTestProtobufNonEmptyRequestBodyProtobufResponseBodiesNoHeaders::
+        kNameGenerator);
+
+TEST_P(
+    ClientTestProtobufNonEmptyRequestBodyProtobufResponseBodiesRequestWithHeaders,
+    Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    ProtobufNonEmptyRequestBodyProtobufResponseBodiesRequestWithHeaders,
+    ClientTestProtobufNonEmptyRequestBodyProtobufResponseBodiesRequestWithHeaders,
+    ClientTestProtobufNonEmptyRequestBodyProtobufResponseBodiesRequestWithHeaders::
+        GenerateTestCases(),
+    ClientTestProtobufNonEmptyRequestBodyProtobufResponseBodiesRequestWithHeaders::
+        kNameGenerator);
+
+TEST_P(
+    ClientTestProtobufNonEmptyRequestBodyProtobufResponseBodiesResponseWithHeaders,
+    Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    ProtobufNonEmptyRequestBodyProtobufResponseBodiesResponseWithHeaders,
+    ClientTestProtobufNonEmptyRequestBodyProtobufResponseBodiesResponseWithHeaders,
+    ClientTestProtobufNonEmptyRequestBodyProtobufResponseBodiesResponseWithHeaders::
+        GenerateTestCases(),
+    ClientTestProtobufNonEmptyRequestBodyProtobufResponseBodiesResponseWithHeaders::
+        kNameGenerator);
+
+TEST_P(ClientTestProtobufEmptyRequestBodyProtobufResponseBodiesNoHeaders,
+       Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    ProtobufEmptyRequestBodyProtobufResponseBodiesNoHeaders,
+    ClientTestProtobufEmptyRequestBodyProtobufResponseBodiesNoHeaders,
+    ClientTestProtobufEmptyRequestBodyProtobufResponseBodiesNoHeaders::
+        GenerateTestCases(),
+    ClientTestProtobufEmptyRequestBodyProtobufResponseBodiesNoHeaders::
+        kNameGenerator);
+
+TEST_P(
+    ClientTestProtobufEmptyRequestBodyProtobufResponseBodiesRequestWithHeaders,
+    Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    ProtobufEmptyRequestBodyProtobufResponseBodiesRequestWithHeaders,
+    ClientTestProtobufEmptyRequestBodyProtobufResponseBodiesRequestWithHeaders,
+    ClientTestProtobufEmptyRequestBodyProtobufResponseBodiesRequestWithHeaders::
+        GenerateTestCases(),
+    ClientTestProtobufEmptyRequestBodyProtobufResponseBodiesRequestWithHeaders::
+        kNameGenerator);
+
+TEST_P(
+    ClientTestProtobufEmptyRequestBodyProtobufResponseBodiesResponseWithHeaders,
+    Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    ProtobufEmptyRequestBodyProtobufResponseBodiesResponseWithHeaders,
+    ClientTestProtobufEmptyRequestBodyProtobufResponseBodiesResponseWithHeaders,
+    ClientTestProtobufEmptyRequestBodyProtobufResponseBodiesResponseWithHeaders::
+        GenerateTestCases(),
+    ClientTestProtobufEmptyRequestBodyProtobufResponseBodiesResponseWithHeaders::
+        kNameGenerator);
+
+TEST_P(ClientTestRequestWithoutBodyProtobufResponseBodiesNoHeaders, Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    RequestWithoutBodyProtobufResponseBodiesNoHeaders,
+    ClientTestRequestWithoutBodyProtobufResponseBodiesNoHeaders,
+    ClientTestRequestWithoutBodyProtobufResponseBodiesNoHeaders::
+        GenerateTestCases(),
+    ClientTestRequestWithoutBodyProtobufResponseBodiesNoHeaders::
+        kNameGenerator);
+
+TEST_P(ClientTestRequestWithoutBodyProtobufResponseBodiesRequestWithHeaders,
+       Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    RequestWithoutBodyProtobufResponseBodiesRequestWithHeaders,
+    ClientTestRequestWithoutBodyProtobufResponseBodiesRequestWithHeaders,
+    ClientTestRequestWithoutBodyProtobufResponseBodiesRequestWithHeaders::
+        GenerateTestCases(),
+    ClientTestRequestWithoutBodyProtobufResponseBodiesRequestWithHeaders::
+        kNameGenerator);
+
+TEST_P(ClientTestRequestWithoutBodyProtobufResponseBodiesResponseWithHeaders,
+       Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    RequestWithoutBodyProtobufResponseBodiesResponseWithHeaders,
+    ClientTestRequestWithoutBodyProtobufResponseBodiesResponseWithHeaders,
+    ClientTestRequestWithoutBodyProtobufResponseBodiesResponseWithHeaders::
+        GenerateTestCases(),
+    ClientTestRequestWithoutBodyProtobufResponseBodiesResponseWithHeaders::
+        kNameGenerator);
+
+TEST_P(ClientTestJSONNonEmptyRequestBodyProtobufResponseBodiesNoHeaders, Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    JSONNonEmptyRequestBodyProtobufResponseBodiesNoHeaders,
+    ClientTestJSONNonEmptyRequestBodyProtobufResponseBodiesNoHeaders,
+    ClientTestJSONNonEmptyRequestBodyProtobufResponseBodiesNoHeaders::
+        GenerateTestCases(),
+    ClientTestJSONNonEmptyRequestBodyProtobufResponseBodiesNoHeaders::
+        kNameGenerator);
+
+TEST_P(
+    ClientTestJSONNonEmptyRequestBodyProtobufResponseBodiesRequestWithHeaders,
+    Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    JSONNonEmptyRequestBodyProtobufResponseBodiesRequestWithHeaders,
+    ClientTestJSONNonEmptyRequestBodyProtobufResponseBodiesRequestWithHeaders,
+    ClientTestJSONNonEmptyRequestBodyProtobufResponseBodiesRequestWithHeaders::
+        GenerateTestCases(),
+    ClientTestJSONNonEmptyRequestBodyProtobufResponseBodiesRequestWithHeaders::
+        kNameGenerator);
+
+TEST_P(
+    ClientTestJSONNonEmptyRequestBodyProtobufResponseBodiesResponseWithHeaders,
+    Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    JSONNonEmptyRequestBodyProtobufResponseBodiesResponseWithHeaders,
+    ClientTestJSONNonEmptyRequestBodyProtobufResponseBodiesResponseWithHeaders,
+    ClientTestJSONNonEmptyRequestBodyProtobufResponseBodiesResponseWithHeaders::
+        GenerateTestCases(),
+    ClientTestJSONNonEmptyRequestBodyProtobufResponseBodiesResponseWithHeaders::
+        kNameGenerator);
+
+TEST_P(ClientTestProtobufNonEmptyRequestBodyJSONResponseBodiesNoHeaders, Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    ProtobufNonEmptyRequestBodyJSONResponseBodiesNoHeaders,
+    ClientTestProtobufNonEmptyRequestBodyJSONResponseBodiesNoHeaders,
+    ClientTestProtobufNonEmptyRequestBodyJSONResponseBodiesNoHeaders::
+        GenerateTestCases(),
+    ClientTestProtobufNonEmptyRequestBodyJSONResponseBodiesNoHeaders::
+        kNameGenerator);
+
+TEST_P(
+    ClientTestProtobufNonEmptyRequestBodyJSONResponseBodiesRequestWithHeaders,
+    Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    ProtobufNonEmptyRequestBodyJSONResponseBodiesRequestWithHeaders,
+    ClientTestProtobufNonEmptyRequestBodyJSONResponseBodiesRequestWithHeaders,
+    ClientTestProtobufNonEmptyRequestBodyJSONResponseBodiesRequestWithHeaders::
+        GenerateTestCases(),
+    ClientTestProtobufNonEmptyRequestBodyJSONResponseBodiesRequestWithHeaders::
+        kNameGenerator);
+
+TEST_P(
+    ClientTestProtobufNonEmptyRequestBodyJSONResponseBodiesResponseWithHeaders,
+    Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    ProtobufNonEmptyRequestBodyJSONResponseBodiesResponseWithHeaders,
+    ClientTestProtobufNonEmptyRequestBodyJSONResponseBodiesResponseWithHeaders,
+    ClientTestProtobufNonEmptyRequestBodyJSONResponseBodiesResponseWithHeaders::
+        GenerateTestCases(),
+    ClientTestProtobufNonEmptyRequestBodyJSONResponseBodiesResponseWithHeaders::
+        kNameGenerator);
+
+TEST_P(ClientTestRequestWithoutBodyProtobufSuccessJSONErrorBodiesNoHeaders,
+       Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    RequestWithoutBodyProtobufSuccessJSONErrorBodiesNoHeaders,
+    ClientTestRequestWithoutBodyProtobufSuccessJSONErrorBodiesNoHeaders,
+    ClientTestRequestWithoutBodyProtobufSuccessJSONErrorBodiesNoHeaders::
+        GenerateTestCases(),
+    ClientTestRequestWithoutBodyProtobufSuccessJSONErrorBodiesNoHeaders::
+        kNameGenerator);
+
+TEST_P(
+    ClientTestRequestWithoutBodyProtobufSuccessJSONErrorBodiesRequestWithHeaders,
+    Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    RequestWithoutBodyProtobufSuccessJSONErrorBodiesRequestWithHeaders,
+    ClientTestRequestWithoutBodyProtobufSuccessJSONErrorBodiesRequestWithHeaders,
+    ClientTestRequestWithoutBodyProtobufSuccessJSONErrorBodiesRequestWithHeaders::
+        GenerateTestCases(),
+    ClientTestRequestWithoutBodyProtobufSuccessJSONErrorBodiesRequestWithHeaders::
+        kNameGenerator);
+
+TEST_P(
+    ClientTestRequestWithoutBodyProtobufSuccessJSONErrorBodiesResponseWithHeaders,
+    Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    RequestWithoutBodyProtobufSuccessJSONErrorBodiesResponseWithHeaders,
+    ClientTestRequestWithoutBodyProtobufSuccessJSONErrorBodiesResponseWithHeaders,
+    ClientTestRequestWithoutBodyProtobufSuccessJSONErrorBodiesResponseWithHeaders::
+        GenerateTestCases(),
+    ClientTestRequestWithoutBodyProtobufSuccessJSONErrorBodiesResponseWithHeaders::
+        kNameGenerator);
+
+TEST_P(ClientTestRequestWithoutBodyResponseWithoutBodiesNoHeaders, Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    RequestWithoutBodyResponseWithoutBodiesNoHeaders,
+    ClientTestRequestWithoutBodyResponseWithoutBodiesNoHeaders,
+    ClientTestRequestWithoutBodyResponseWithoutBodiesNoHeaders::
+        GenerateTestCases(),
+    ClientTestRequestWithoutBodyResponseWithoutBodiesNoHeaders::kNameGenerator);
+
+TEST_P(ClientTestRequestWithoutBodyResponseWithoutBodiesRequestWithHeaders,
+       Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    RequestWithoutBodyResponseWithoutBodiesRequestWithHeaders,
+    ClientTestRequestWithoutBodyResponseWithoutBodiesRequestWithHeaders,
+    ClientTestRequestWithoutBodyResponseWithoutBodiesRequestWithHeaders::
+        GenerateTestCases(),
+    ClientTestRequestWithoutBodyResponseWithoutBodiesRequestWithHeaders::
+        kNameGenerator);
+
+TEST_P(ClientTestRequestWithoutBodyResponseWithoutBodiesResponseWithHeaders,
+       Send) {
+  RunTestCase();
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    RequestWithoutBodyResponseWithoutBodiesResponseWithHeaders,
+    ClientTestRequestWithoutBodyResponseWithoutBodiesResponseWithHeaders,
+    ClientTestRequestWithoutBodyResponseWithoutBodiesResponseWithHeaders::
+        GenerateTestCases(),
+    ClientTestRequestWithoutBodyResponseWithoutBodiesResponseWithHeaders::
+        kNameGenerator);
 
 TEST_F(ClientTestCancelableRequest, ResetPreventsCallback) {
-  MockResponseFor<JSONEndpoint>(
+  MockResponseFor<JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint>(
       test_url_loader_factory_,
       {.net_error = net::OK, .status_code = net::HTTP_OK});
 
-  base::test::TestFuture<JSONEndpoint::Response> cancelled_future;
+  base::test::TestFuture<
+      JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Response>
+      cancelled_future;
   RequestHandle request_handle =
-      Client<JSONEndpoint>::Send<RequestCancelability::kCancelable>(
-          test_url_loader_factory_, JSONEndpoint::Request(),
+      Client<JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint>::Send<
+          RequestCancelability::kCancelable>(
+          test_url_loader_factory_,
+          JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Request(),
           cancelled_future.GetCallback());
 
   // Sent after the cancelled request, so once this one completes, the cancelled
   // one would have too.
-  base::test::TestFuture<JSONEndpoint::Response> future;
-  Client<JSONEndpoint>::Send(test_url_loader_factory_, JSONEndpoint::Request(),
-                             future.GetCallback());
+  base::test::TestFuture<
+      JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Response>
+      future;
+  Client<JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint>::Send(
+      test_url_loader_factory_,
+      JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Request(),
+      future.GetCallback());
 
   request_handle.reset();
 
@@ -599,18 +1195,45 @@ TEST_F(ClientTestCancelableRequest, ResetPreventsCallback) {
   EXPECT_FALSE(cancelled_future.IsReady());
 }
 
-TEST_F(ClientTestCancelableRequest, ResetInsideCallbackIsSafe) {
-  MockResponseFor<JSONEndpoint>(
+TEST_F(ClientTestCancelableRequest,
+       ResetInsideCallbackIsSafeForResponsesWithBodies) {
+  MockResponseFor<RequestWithoutBodyJSONResponseBodiesEndpoint>(
       test_url_loader_factory_,
       {.net_error = net::OK, .status_code = net::HTTP_OK});
 
   base::test::TestFuture<void> future;
   RequestHandle request_handle =
-      Client<JSONEndpoint>::Send<RequestCancelability::kCancelable>(
-          test_url_loader_factory_, JSONEndpoint::Request(),
+      Client<RequestWithoutBodyJSONResponseBodiesEndpoint>::Send<
+          RequestCancelability::kCancelable>(
+          test_url_loader_factory_,
+          RequestWithoutBodyJSONResponseBodiesEndpoint::Request(),
           base::BindLambdaForTesting(
-              [&request_handle,
-               done = future.GetCallback()](JSONEndpoint::Response) mutable {
+              [&request_handle, done = future.GetCallback()](
+                  RequestWithoutBodyJSONResponseBodiesEndpoint::
+                      Response) mutable {
+                request_handle.reset();
+                std::move(done).Run();
+              }));
+
+  ASSERT_TRUE(future.Wait());
+}
+
+TEST_F(ClientTestCancelableRequest,
+       ResetInsideCallbackIsSafeForResponsesWithoutBodies) {
+  MockResponseFor<RequestWithoutBodyResponseWithoutBodiesEndpoint>(
+      test_url_loader_factory_,
+      {.net_error = net::OK, .status_code = net::HTTP_OK});
+
+  base::test::TestFuture<void> future;
+  RequestHandle request_handle =
+      Client<RequestWithoutBodyResponseWithoutBodiesEndpoint>::Send<
+          RequestCancelability::kCancelable>(
+          test_url_loader_factory_,
+          RequestWithoutBodyResponseWithoutBodiesEndpoint::Request(),
+          base::BindLambdaForTesting(
+              [&request_handle, done = future.GetCallback()](
+                  RequestWithoutBodyResponseWithoutBodiesEndpoint::
+                      Response) mutable {
                 request_handle.reset();
                 std::move(done).Run();
               }));
@@ -619,14 +1242,18 @@ TEST_F(ClientTestCancelableRequest, ResetInsideCallbackIsSafe) {
 }
 
 TEST_F(ClientTestCancelableRequest, ResetAfterCompletionIsNoOp) {
-  MockResponseFor<JSONEndpoint>(
+  MockResponseFor<JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint>(
       test_url_loader_factory_,
       {.net_error = net::OK, .status_code = net::HTTP_OK});
 
-  base::test::TestFuture<JSONEndpoint::Response> future;
+  base::test::TestFuture<
+      JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Response>
+      future;
   RequestHandle request_handle =
-      Client<JSONEndpoint>::Send<RequestCancelability::kCancelable>(
-          test_url_loader_factory_, JSONEndpoint::Request(),
+      Client<JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint>::Send<
+          RequestCancelability::kCancelable>(
+          test_url_loader_factory_,
+          JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Request(),
           future.GetCallback());
 
   ASSERT_TRUE(future.Wait());
@@ -634,10 +1261,14 @@ TEST_F(ClientTestCancelableRequest, ResetAfterCompletionIsNoOp) {
 }
 
 TEST_F(ClientTestCancelableRequestDeathTest, ResetOnAnotherSequenceCrashes) {
-  base::test::TestFuture<JSONEndpoint::Response> future;
+  base::test::TestFuture<
+      JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Response>
+      future;
   RequestHandle request_handle =
-      Client<JSONEndpoint>::Send<RequestCancelability::kCancelable>(
-          test_url_loader_factory_, JSONEndpoint::Request(),
+      Client<JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint>::Send<
+          RequestCancelability::kCancelable>(
+          test_url_loader_factory_,
+          JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Request(),
           future.GetCallback());
 
   EXPECT_CHECK_DEATH({
@@ -654,15 +1285,16 @@ TEST(ClientTestUrlReplacements, OverridesReachTheOutgoingRequest) {
   base::test::TaskEnvironment task_environment;
   network::TestURLLoaderFactory test_url_loader_factory;
 
-  // JSONEndpoint::URL() is https://example.com/api/query; the request's
-  // url_replacements override the host, path, and query.
+  // JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::URL() is
+  // https://example.com/api/query; the request's url_replacements override the
+  // host, path, and query.
   UrlReplacements url_replacements;
   url_replacements.SetHost("host.example.com")
       .SetPath("/path/to/resource")
       .SetQuery("key=value");
 
   // Serve a response at the overridden URL so the request can complete.
-  MockResponseFor<JSONEndpoint>(
+  MockResponseFor<JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint>(
       test_url_loader_factory,
       {.net_error = net::OK, .status_code = net::HTTP_OK}, url_replacements);
 
@@ -674,12 +1306,14 @@ TEST(ClientTestUrlReplacements, OverridesReachTheOutgoingRequest) {
                   GURL("https://host.example.com/path/to/resource?key=value"));
       }));
 
-  JSONEndpoint::Request request;
+  JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Request request;
   request.url_replacements = std::move(url_replacements);
 
-  base::test::TestFuture<JSONEndpoint::Response> future;
-  Client<JSONEndpoint>::Send(test_url_loader_factory, std::move(request),
-                             future.GetCallback());
+  base::test::TestFuture<
+      JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Response>
+      future;
+  Client<JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint>::Send(
+      test_url_loader_factory, std::move(request), future.GetCallback());
   // Wait() only resolves once the request completed, which requires the
   // interceptor to have run - so the EXPECT_EQ above is guaranteed to have been
   // reached.
@@ -690,38 +1324,77 @@ TEST(ClientTestMaxBodySize, ExceedingItFailsWithInsufficientResources) {
   base::test::TaskEnvironment task_environment;
   network::TestURLLoaderFactory test_url_loader_factory;
 
-  MockResponseFor<JSONEndpoint>(
+  MockResponseFor<JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint>(
       test_url_loader_factory,
-      {.net_error = net::OK, .status_code = net::HTTP_OK});
+      {.net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
+         JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Response::
+             SuccessBody body;
+         body.success = "success";
+         return body;
+       }()});
 
-  JSONEndpoint::Request request;
+  JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Request request;
   request.max_body_size = 1;
 
-  base::test::TestFuture<JSONEndpoint::Response> future;
-  Client<JSONEndpoint>::Send(test_url_loader_factory, std::move(request),
-                             future.GetCallback());
+  base::test::TestFuture<
+      JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Response>
+      future;
+  Client<JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint>::Send(
+      test_url_loader_factory, std::move(request), future.GetCallback());
 
-  JSONEndpoint::Response expected_response;
+  JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Response expected_response;
   expected_response.net_error = net::ERR_INSUFFICIENT_RESOURCES;
   EXPECT_THAT(future.Take(), ResponseEq(expected_response));
+}
+
+TEST(ClientTestMaxBodySize, DoesNotApplyToResponsesWithoutBodies) {
+  base::test::TaskEnvironment task_environment;
+  network::TestURLLoaderFactory test_url_loader_factory;
+
+  test_url_loader_factory.AddResponse(
+      RequestWithoutBodyResponseWithoutBodiesEndpoint::URL().spec(),
+      "longer than max_body_size", net::HTTP_OK);
+
+  RequestWithoutBodyResponseWithoutBodiesEndpoint::Request request;
+  request.max_body_size = 1;
+
+  base::test::TestFuture<
+      RequestWithoutBodyResponseWithoutBodiesEndpoint::Response>
+      future;
+  Client<RequestWithoutBodyResponseWithoutBodiesEndpoint>::Send(
+      test_url_loader_factory, std::move(request), future.GetCallback());
+
+  EXPECT_THAT(
+      future.Take(),
+      ResponseEq(RequestWithoutBodyResponseWithoutBodiesEndpoint::Response{
+          .net_error = net::OK, .status_code = net::HTTP_OK}));
 }
 
 TEST(ClientTestResponseHeaders, NotSetWithoutStatusCode) {
   base::test::TaskEnvironment task_environment;
   network::TestURLLoaderFactory test_url_loader_factory;
 
-  MockResponseFor<JSONEndpoint>(
+  MockResponseFor<JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint>(
       test_url_loader_factory,
-      {.net_error = net::OK, .status_code = net::HTTP_OK});
+      {.net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
+         JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Response::
+             SuccessBody body;
+         body.success = "success";
+         return body;
+       }()});
 
-  JSONEndpoint::Request request;
+  JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Request request;
+  // Fails the request after the response headers have been received.
   request.max_body_size = 1;
 
-  base::test::TestFuture<WithHeaders<JSONEndpoint::Response>> future;
-  Client<JSONEndpoint>::Send(test_url_loader_factory, std::move(request),
-                             future.GetCallback());
+  base::test::TestFuture<
+      WithHeaders<JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Response>>
+      future;
+  Client<JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint>::Send(
+      test_url_loader_factory, std::move(request), future.GetCallback());
 
-  WithHeaders<JSONEndpoint::Response> expected_response;
+  WithHeaders<JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Response>
+      expected_response;
   expected_response.net_error = net::ERR_INSUFFICIENT_RESOURCES;
   EXPECT_THAT(future.Take(), ResponseEq(expected_response));
 }
@@ -731,7 +1404,7 @@ TEST_P(ClientTestRetryOptions, Retry) {
 
   // Always respond with 5xx so every attempt is retried until max_retries is
   // exhausted, then count how many times the request was actually issued.
-  MockResponseFor<JSONEndpoint>(
+  MockResponseFor<JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint>(
       test_url_loader_factory_,
       {.net_error = net::OK, .status_code = net::HTTP_INTERNAL_SERVER_ERROR});
 
@@ -739,12 +1412,14 @@ TEST_P(ClientTestRetryOptions, Retry) {
   test_url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
       [&](const network::ResourceRequest&) { ++num_requests; }));
 
-  JSONEndpoint::Request request;
+  JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Request request;
   request.retry_options = test_case.retry_options;
 
-  base::test::TestFuture<JSONEndpoint::Response> future;
-  Client<JSONEndpoint>::Send(test_url_loader_factory_, std::move(request),
-                             future.GetCallback());
+  base::test::TestFuture<
+      JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint::Response>
+      future;
+  Client<JSONNonEmptyRequestBodyJSONResponseBodiesEndpoint>::Send(
+      test_url_loader_factory_, std::move(request), future.GetCallback());
   ASSERT_TRUE(future.Wait());
 
   EXPECT_EQ(num_requests, test_case.expected_num_requests);

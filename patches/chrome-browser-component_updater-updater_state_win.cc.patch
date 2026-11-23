@@ -1,8 +1,15 @@
 diff --git a/chrome/browser/component_updater/updater_state_win.cc b/chrome/browser/component_updater/updater_state_win.cc
-index 523dec8edfedcdb27b5abed3ff82e5cf946b641f..a04923b8817d4e7df3768c3314251dc3fe3210b7 100644
+index 523dec8edfedcdb27b5abed3ff82e5cf946b641f..9bfd8ac74ceffd15a8bfce958e240f9a47dca704 100644
 --- a/chrome/browser/component_updater/updater_state_win.cc
 +++ b/chrome/browser/component_updater/updater_state_win.cc
-@@ -19,21 +19,26 @@ namespace {
+@@ -13,27 +13,33 @@
+ #include "base/win/registry.h"
+ #include "base/win/win_util.h"
+ #include "base/win/windows_types.h"
++#include "brave/components/brave_origin/buildflags/buildflags.h"
+ 
+ namespace component_updater {
+ namespace {
  
  // Google Update group policy settings.
  constexpr wchar_t kGoogleUpdatePoliciesKey[] =

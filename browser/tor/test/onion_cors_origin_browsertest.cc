@@ -114,6 +114,12 @@ class OnionCorsOriginBrowserTest : public InProcessBrowserTest {
     tor::TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(true);
   }
 
+  void TearDownOnMainThread() override {
+    tor::TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(false);
+    net::ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(false);
+    InProcessBrowserTest::TearDownOnMainThread();
+  }
+
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
     mock_cert_verifier_.SetUpCommandLine(command_line);

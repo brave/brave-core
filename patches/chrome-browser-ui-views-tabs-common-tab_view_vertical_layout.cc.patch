@@ -1,0 +1,41 @@
+diff --git a/chrome/browser/ui/views/tabs/common/tab_view_vertical_layout.cc b/chrome/browser/ui/views/tabs/common/tab_view_vertical_layout.cc
+index d2b935e0c80a1a82d08b4da25496f5b0b5360773..dd2df94b48141c6ad5e57d2add8cf740b15d6f54 100644
+--- a/chrome/browser/ui/views/tabs/common/tab_view_vertical_layout.cc
++++ b/chrome/browser/ui/views/tabs/common/tab_view_vertical_layout.cc
+@@ -27,6 +27,7 @@ TabViewVerticalLayout::TabViewVerticalLayout() = default;
+ TabViewVerticalLayout::~TabViewVerticalLayout() = default;
+ 
+ void TabViewVerticalLayout::OnInstalled(views::View* host) {
++  [&]() -> void {
+   TabView::LayoutManager::OnInstalled(host);
+   tab_children_configs_ = {
+       TabChildConfig(TabView().close_button_, kIconDesignWidth, kDefaultPadding,
+@@ -43,6 +44,14 @@ void TabViewVerticalLayout::OnInstalled(views::View* host) {
+       TabChildConfig(TabView().title_, kTitleMinWidth, kDefaultPadding,
+                      /*align_leading=*/true,
+                      /*expand=*/true)};
++  }();
++  if (TabView().tree_toggle_button_) {
++    tab_children_configs_.insert(
++        tab_children_configs_.begin(),
++        TabChildConfig(TabView().tree_toggle_button_, kIconDesignWidth,
++                       kDefaultPadding, /*align_leading=*/false,
++                       /*expand=*/false));
++  }
+ }
+ 
+ views::ProposedLayout TabViewVerticalLayout::CalculateProposedLayout(
+@@ -144,6 +153,13 @@ gfx::Rect TabViewVerticalLayout::GetChildBounds(const gfx::Rect& container,
+ 
+ bool TabViewVerticalLayout::IsChildVisible(const views::View* child_view,
+                                            const int width) const {
++  if (child_view == TabView().tree_toggle_button_) {
++    return TabView().ShouldShowTreeToggleButton();
++  }
++  if (child_view == TabView().close_button_ &&
++      TabView().ShouldShowTreeToggleButton()) {
++    return false;
++  }
+   if (child_view == TabView().title_) {
+     // Pinned titles should be visible in the expand on hover state when the
+     // width is sufficient to show the title.

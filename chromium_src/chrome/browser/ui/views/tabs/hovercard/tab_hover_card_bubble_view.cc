@@ -22,9 +22,7 @@
 #include "ui/views/layout/layout_types.h"
 #include "ui/views/view_class_properties.h"
 
-#define TabHoverCardBubbleView TabHoverCardBubbleView_ChromiumImpl
 #include <chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.cc>
-#undef TabHoverCardBubbleView
 
 // BraveTabCardView ------------------------------------------------------------
 class BraveTabCardView

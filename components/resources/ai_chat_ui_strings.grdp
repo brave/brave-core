@@ -825,6 +825,9 @@
   <message name="IDS_CHAT_UI_WORKSPACE_FILE_LIGHTBOX_DOWNLOAD_BUTTON_LABEL" desc="Button label in the workspace file viewer to download every file in the workspace as a zip archive" formatter_data="webui=AiChat">
     Download all files
   </message>
+  <message name="IDS_CHAT_UI_WORKSPACE_FILE_EXPAND_BUTTON_LABEL" desc="Button label on a workspace file shown inline in the conversation, which opens the file in a larger viewer" formatter_data="webui=AiChat">
+    Expand
+  </message>
   <message name="IDS_AI_CHAT_CURRENT_TAB_CONTENTS_BUTTON_LABEL" desc="The button label for current tab contents" formatter_data="webui=AiChat">
     Current tab contents
   </message>
@@ -869,6 +872,12 @@
   </message>
   <message name="IDS_AI_CHAT_CONVERSATION_LIST_NEW_CONVERSATION_IN_WORKSPACE" desc="Tooltip and accessible label for a button on a workspace (a local folder attached to conversations) in the conversation list, which starts a new conversation with that workspace attached" formatter_data="webui=AiChat">
     New conversation in this workspace
+  </message>
+  <message name="IDS_AI_CHAT_CONVERSATION_LIST_GENERATING" desc="Accessibility label and tooltip for a conversation that is currently generating a response in the background" formatter_data="webui=AiChat">
+    Generating
+  </message>
+  <message name="IDS_AI_CHAT_CONVERSATION_LIST_RESPONSE_READY" desc="Accessibility label and tooltip for the dot shown on a conversation whose response finished generating while it wasn't open, and that hasn't been opened since" formatter_data="webui=AiChat">
+    Response ready
   </message>
   <message name="IDS_AI_CHAT_TEMPORARY_CHAT_LABEL" desc="Label for the temporary chat toggle in the feature menu" formatter_data="webui=AiChat">
     Temporary chat

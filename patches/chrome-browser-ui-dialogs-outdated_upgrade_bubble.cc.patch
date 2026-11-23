@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/dialogs/outdated_upgrade_bubble.cc b/chrome/browser/ui/dialogs/outdated_upgrade_bubble.cc
-index c7c44cb65e86dd648a8fdfec934b4a941cf712d3..cccd1b89fb40ffdca85a8ac97bd259dc2b7f7d86 100644
+index 8451b3cf2ba3479210c715de4050c2e578463fd5..418090960b7dcaa93c5fb8b19f206d52cd537d14 100644
 --- a/chrome/browser/ui/dialogs/outdated_upgrade_bubble.cc
 +++ b/chrome/browser/ui/dialogs/outdated_upgrade_bubble.cc
 @@ -104,8 +104,7 @@ void ShowOutdatedUpgradeBubble(BrowserWindowInterface* browser,

@@ -186,14 +186,14 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test,
   eligible_ads_->GetForUserModel(user_model, test_future_1.GetCallback());
   const CreativeNotificationAdList first_served_creative_ads =
       test_future_1.Take();
-  EXPECT_THAT(first_served_creative_ads, ::testing::SizeIs(1));
+  ASSERT_THAT(first_served_creative_ads, ::testing::SizeIs(1));
   SimulateServeAd(first_served_creative_ads);
 
   base::test::TestFuture<CreativeNotificationAdList> test_future_2;
   eligible_ads_->GetForUserModel(user_model, test_future_2.GetCallback());
   const CreativeNotificationAdList second_served_creative_ads =
       test_future_2.Take();
-  EXPECT_THAT(second_served_creative_ads, ::testing::SizeIs(1));
+  ASSERT_THAT(second_served_creative_ads, ::testing::SizeIs(1));
   SimulateServeAd(second_served_creative_ads);
 
   ASSERT_NE(first_served_creative_ads, second_served_creative_ads);
@@ -342,14 +342,14 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test,
   eligible_ads_->GetForUserModel(user_model, test_future_1.GetCallback());
   const CreativeNotificationAdList first_served_creative_ads =
       test_future_1.Take();
-  EXPECT_THAT(first_served_creative_ads, ::testing::SizeIs(1));
+  ASSERT_THAT(first_served_creative_ads, ::testing::SizeIs(1));
   SimulateServeAd(first_served_creative_ads);
 
   base::test::TestFuture<CreativeNotificationAdList> test_future_2;
   eligible_ads_->GetForUserModel(user_model, test_future_2.GetCallback());
   const CreativeNotificationAdList second_served_creative_ads =
       test_future_2.Take();
-  EXPECT_THAT(second_served_creative_ads, ::testing::SizeIs(1));
+  ASSERT_THAT(second_served_creative_ads, ::testing::SizeIs(1));
   ASSERT_NE(first_served_creative_ads, second_served_creative_ads);
   SimulateServeAd(second_served_creative_ads);
 
@@ -644,7 +644,7 @@ TEST_F(
     eligible_ads_->GetForUserModel(user_model, test_future.GetCallback());
     const CreativeNotificationAdList lower_priority_served_creative_ads =
         test_future.Take();
-    EXPECT_THAT(lower_priority_served_creative_ads, ::testing::SizeIs(1));
+    ASSERT_THAT(lower_priority_served_creative_ads, ::testing::SizeIs(1));
     SimulateServeAd(lower_priority_served_creative_ads);
   }
 
@@ -741,7 +741,7 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test,
     base::test::TestFuture<CreativeNotificationAdList> test_future;
     eligible_ads_->GetForUserModel(user_model, test_future.GetCallback());
     const CreativeNotificationAdList creative_ads = test_future.Take();
-    EXPECT_THAT(creative_ads,
+    ASSERT_THAT(creative_ads,
                 ::testing::AllOf(::testing::SizeIs(1),
                                  ::testing::Not(::testing::AnyOf(
                                      ::testing::Contains(creative_ad_3),
@@ -784,7 +784,7 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test,
     base::test::TestFuture<CreativeNotificationAdList> test_future;
     eligible_ads_->GetForUserModel(user_model, test_future.GetCallback());
     const CreativeNotificationAdList creative_ads = test_future.Take();
-    EXPECT_THAT(creative_ads,
+    ASSERT_THAT(creative_ads,
                 ::testing::AllOf(::testing::SizeIs(1),
                                  ::testing::Not(::testing::AnyOf(
                                      ::testing::Contains(creative_ad_3),
@@ -815,7 +815,7 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test,
     base::test::TestFuture<CreativeNotificationAdList> test_future;
     eligible_ads_->GetForUserModel(user_model, test_future.GetCallback());
     serve8_creative_ads = test_future.Take();
-    EXPECT_THAT(serve8_creative_ads,
+    ASSERT_THAT(serve8_creative_ads,
                 ::testing::AllOf(::testing::SizeIs(1),
                                  ::testing::Not(::testing::AnyOf(
                                      ::testing::Contains(creative_ad_3),
@@ -832,7 +832,7 @@ TEST_F(BraveAdsEligibleNotificationAdsV2Test,
     base::test::TestFuture<CreativeNotificationAdList> test_future;
     eligible_ads_->GetForUserModel(user_model, test_future.GetCallback());
     const CreativeNotificationAdList creative_ads = test_future.Take();
-    EXPECT_THAT(creative_ads,
+    ASSERT_THAT(creative_ads,
                 ::testing::AllOf(::testing::SizeIs(1),
                                  ::testing::Not(::testing::AnyOf(
                                      ::testing::Contains(creative_ad_3),

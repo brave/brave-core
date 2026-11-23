@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import type { Builder } from './builder.ts'
+import type { Builder } from './builderTypes.ts'
 
 // The `init`/`sync` options the targets are chosen from. `builder` is the
 // loaded `Builder` when `--builder` is given.

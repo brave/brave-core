@@ -61,6 +61,7 @@
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 
 namespace email_aliases {
 
@@ -155,6 +156,7 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
 
   ~EmailAliasesBrowserTestBase() override {
     BraveSettingsUI::ShouldExposeElementsForTesting() = false;
+    EmailAliasesController::DisableAutoCloseBubbleForTesting(false);
   }
 
   void SetUpBrowserContextKeyedServices(
@@ -253,7 +255,7 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
 
   content::WebContents* Navigate(const GURL& url) {
     ui_test_utils::NavigateToURLWithDisposition(
-        browser(), url, WindowOpenDisposition::kCurrentTab,
+        browser(), url, ui::mojom::WindowOpenDisposition::kCurrentTab,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
     return ActiveWebContents();
   }

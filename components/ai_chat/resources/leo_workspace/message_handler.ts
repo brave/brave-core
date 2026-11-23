@@ -40,6 +40,14 @@ export function viewOrigin(origin: string): string {
     : ''
 }
 
+// chrome-untrusted://view.<uuid>.leo-workspace -> chrome-untrusted://<uuid>.leo-workspace
+export function workspaceOrigin(viewerOrigin: string): string {
+  const viewPrefix = `${kScheme}view.`
+  return viewerOrigin.startsWith(viewPrefix)
+    ? viewerOrigin.replace(viewPrefix, kScheme)
+    : ''
+}
+
 // Waits for the directory handle, with a timeout so a request doesn't hang
 // forever when the workspace never gets a folder.
 function awaitRoot(

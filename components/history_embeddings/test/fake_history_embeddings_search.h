@@ -13,9 +13,9 @@
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
+#include "brave/components/history_embeddings/core/history_embeddings_search.h"
+#include "brave/components/history_embeddings/core/vector_database.h"
 #include "components/history/core/browser/history_types.h"
-#include "components/history_embeddings/core/history_embeddings_search.h"
-#include "components/history_embeddings/core/vector_database.h"
 
 class GURL;
 
@@ -63,7 +63,6 @@ class FakeHistoryEmbeddingsSearch
     return last_time_range_start_;
   }
   size_t last_count() const { return last_count_; }
-  bool last_skip_answering() const { return last_skip_answering_; }
   const std::vector<history::URLID>& last_url_id_filter() const {
     return last_url_id_filter_;
   }
@@ -74,7 +73,6 @@ class FakeHistoryEmbeddingsSearch
       std::string query,
       std::optional<base::Time> time_range_start,
       size_t count,
-      bool skip_answering,
       std::vector<history::URLID> url_id_filter,
       history_embeddings::SearchResultCallback callback) override;
 
@@ -83,7 +81,6 @@ class FakeHistoryEmbeddingsSearch
   std::string last_query_;
   std::optional<base::Time> last_time_range_start_;
   size_t last_count_ = 0;
-  bool last_skip_answering_ = false;
   std::vector<history::URLID> last_url_id_filter_;
   base::WeakPtrFactory<FakeHistoryEmbeddingsSearch> weak_ptr_factory_{this};
 };

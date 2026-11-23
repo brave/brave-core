@@ -31,6 +31,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
+#include "brave/components/extension_malware_blocklist/common/features.h"
 #include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
@@ -44,10 +45,10 @@
 #include "brave/ui/webui/custom_profile_image/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/media/router/media_router_feature.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/pref_names.h"
+#include "chrome/common/url_constants.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/grit/branded_strings.h"
 #include "chrome/grit/generated_resources.h"
@@ -73,9 +74,9 @@
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
 #include "brave/browser/history_embeddings/brave_history_embeddings_status.h"
+#include "brave/browser/history_embeddings/history_embeddings_utils.h"
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "brave/components/local_ai/core/utils.h"
-#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "ui/base/text/bytes_formatting.h"
 #endif
 
@@ -227,6 +228,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_SITE_SETTINGS_BRAVE_OPEN_AI_CHAT_BLOCK},
 
       {"braveGetStartedTitle", IDS_SETTINGS_BRAVE_GET_STARTED_TITLE},
+      {"braveCustomizeBraveTitle", IDS_SETTINGS_BRAVE_CUSTOMIZE_BRAVE_TITLE},
       {"braveOriginTitle", IDS_SETTINGS_BRAVE_ORIGIN_TITLE},
       {"braveOriginSectionAdsTitle",
        IDS_SETTINGS_BRAVE_ORIGIN_ADS_SECTION_TITLE},
@@ -503,6 +505,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"standardHttpsUpgrade", IDS_SETTINGS_STANDARD_HTTPS_UPGRADE},
       {"disabledHttpsUpgrade", IDS_SETTINGS_DISABLED_HTTPS_UPGRADE},
       {"strictHttpsUpgrade", IDS_SETTINGS_STRICT_HTTPS_UPGRADE},
+      {"braveSafeBrowsingExtensionMalwareBlocklistDesc",
+       IDS_SETTINGS_BRAVE_SAFEBROWSING_STANDARD_EXTENSION_MALWARE_BLOCKLIST_DESC},
       {"webRTCPolicyLabel", IDS_SETTINGS_WEBRTC_POLICY_LABEL},
       {"webRTCPolicySubLabel", IDS_SETTINGS_WEBRTC_POLICY_SUB_LABEL},
       {"webRTCDefault", IDS_SETTINGS_WEBRTC_POLICY_DEFAULT},
@@ -1156,6 +1160,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   html_source->AddString("googleLoginLearnMoreURL", kGoogleLoginLearnMoreURL);
   html_source->AddString("deAmpLearnMoreURL", kDeAmpLearnMoreUrl);
   html_source->AddString("debounceLearnMoreURL", kDebounceLearnMoreUrl);
+  html_source->AddString("braveSafeBrowsingLearnMoreURL",
+                         chrome::kSafeBrowsingHelpCenterURL);
   html_source->AddString("enableNftDiscoveryLearnMoreURL",
                          kEnableNftDiscoveryLearnMoreUrl);
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -1197,9 +1203,13 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
 
   // The Local AI master switch lives in local state and only takes effect on
   // relaunch, so the page reads it once here rather than binding a pref.
+#if BUILDFLAG(ENABLE_LOCAL_AI)
   html_source->AddBoolean(
       "isHistoryEmbeddingsFeatureEnabled",
       history_embeddings::IsHistoryEmbeddingsFeatureEnabled());
+#else
+  html_source->AddBoolean("isHistoryEmbeddingsFeatureEnabled", false);
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
   html_source->AddString("braveLeoAssistantTabOrganizationDesc",
                          l10n_util::GetStringFUTF16(
@@ -1398,6 +1408,11 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isHttpsByDefaultEnabled",
       base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault));
+
+  html_source->AddBoolean(
+      "isExtensionMalwareBlocklistEnabled",
+      base::FeatureList::IsEnabled(
+          extension_malware_blocklist::features::kExtensionMalwareBlocklist));
 
   html_source->AddBoolean(
       "showStrictFingerprintingMode",

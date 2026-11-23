@@ -43,6 +43,7 @@ class NavigationToolTest : public ContentAgentToolBaseTest {
     EXPECT_EQ(navigate_action.tab_id(), test_tab_handle_.raw_value());
     EXPECT_EQ(navigate_action.url(), expected_gurl.spec());
 
+    ASSERT_TRUE(tool_request);
     auto* navigate_request =
         static_cast<actor::NavigateToolRequest*>(tool_request.get());
     EXPECT_EQ(navigate_request->AssociatedOriginGrant(),

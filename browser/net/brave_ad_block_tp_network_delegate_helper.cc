@@ -16,6 +16,7 @@
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
@@ -24,9 +25,10 @@
 #include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/net/url_context.h"
-#include "brave/components/brave_shields/content/browser/ad_block_engine_wrapper.h"
 #include "brave/components/brave_shields/content/browser/ad_block_pref_service.h"
-#include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/content/browser/ad_block_request_type_util.h"
+#include "brave/components/brave_shields/core/browser/ad_block_engine_wrapper.h"
+#include "brave/components/brave_shields/core/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/url_constants.h"
@@ -36,9 +38,7 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
-#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/storage_partition.h"
-#include "content/public/browser/web_contents.h"
 #include "content/public/common/url_constants.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/dns/public/dns_query_type.h"
@@ -58,6 +58,7 @@ ToAdblockFilterRuleInfo(const adblock::FilterRuleInfo* info) {
   result.raw_line = std::string(info->raw_line);
   result.source_index = info->source_index;
   result.line_number = info->line_number;
+  result.source_title = std::string(info->list_title);
 
   return result;
 }
@@ -119,6 +120,7 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
   AdblockCnameResolveHostClient(
       const ResponseCallback& next_callback,
       T<BraveRequestInfo> ctx,
+      base::WeakPtr<content::BrowserContext> browser_context,
       EngineFlags previous_result) {
     DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
     cb_ = base::BindOnce(&UseCnameResult<T>, std::move(next_callback), ctx,
@@ -150,9 +152,7 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
           network_anonymization_key, std::move(optional_parameters),
           receiver_.BindNewPipeAndPassRemote());
     } else {
-      auto* web_contents = content::WebContents::FromRenderFrameHost(
-          content::RenderFrameHost::FromFrameToken(ctx->render_frame_token()));
-      if (!web_contents) {
+      if (!browser_context || browser_context->ShutdownStarted()) {
         elapsed_timer_ = {};
         this->OnComplete(net::ERR_FAILED, net::ResolveErrorInfo(),
                          net::AddressList(),
@@ -161,9 +161,7 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
       }
 
       network::mojom::NetworkContext* network_context =
-          web_contents->GetBrowserContext()
-              ->GetDefaultStoragePartition()
-              ->GetNetworkContext();
+          browser_context->GetDefaultStoragePartition()->GetNetworkContext();
 
       network_context->ResolveHost(
           network::mojom::HostResolverHost::NewHostPortPair(
@@ -232,7 +230,8 @@ ShouldBlockRequestResult ShouldBlockRequestOnTaskRunner(
 
   SCOPED_UMA_HISTOGRAM_TIMER("Brave.Adblock.ShouldBlockRequest");
   auto adblock_result = engine_wrapper->ShouldStartRequest(
-      url_to_check, input.resource_type, input.request_initiator, input.method,
+      url_to_check, brave_shields::ToAdBlockRequestType(input.resource_type),
+      input.request_initiator, input.method,
       input.aggressive_blocking || force_aggressive,
       previous_result.did_match_rule, previous_result.did_match_exception,
       previous_result.did_match_important);
@@ -294,10 +293,12 @@ ShouldBlockRequestResult ShouldBlockRequestOnTaskRunner(
 }
 
 template <template <typename> class T>
-void OnShouldBlockRequestResult(bool then_check_uncloaked,
-                                const ResponseCallback& next_callback,
-                                T<BraveRequestInfo> ctx,
-                                ShouldBlockRequestResult result) {
+void OnShouldBlockRequestResult(
+    bool then_check_uncloaked,
+    const ResponseCallback& next_callback,
+    T<BraveRequestInfo> ctx,
+    base::WeakPtr<content::BrowserContext> browser_context,
+    ShouldBlockRequestResult result) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (!ctx) {
     next_callback.Run();
@@ -315,6 +316,7 @@ void OnShouldBlockRequestResult(bool then_check_uncloaked,
   } else if (then_check_uncloaked) {
     // This will be deleted by `AdblockCnameResolveHostClient::OnComplete`.
     new AdblockCnameResolveHostClient<T>(std::move(next_callback), ctx,
+                                         std::move(browser_context),
                                          result.engine_flags);
     return;
   }
@@ -352,7 +354,7 @@ void UseCnameResult(const ResponseCallback& next_callback,
         base::BindOnce(&ShouldBlockRequestOnTaskRunner, std::move(input),
                        previous_result, std::move(canonical_url)),
         base::BindOnce(&OnShouldBlockRequestResult<T>, false, next_callback,
-                       ctx));
+                       ctx, base::WeakPtr<content::BrowserContext>()));
   } else {
     next_callback.Run();
   }
@@ -436,6 +438,11 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
     should_check_uncloaked = false;
   }
 
+  // Taken before the hop to the ad-block thread, since `ctx` may outlive the
+  // browser context.
+  base::WeakPtr<content::BrowserContext> browser_context =
+      should_check_uncloaked ? ctx->browser_context()->GetWeakPtr() : nullptr;
+
   ShouldBlockRequestParams input{
       *ctx->request_initiator(),  ctx->request_url(), ctx->resource_type(),
       ctx->aggressive_blocking(), ctx->method(),      ctx->render_frame_token(),
@@ -445,7 +452,7 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
       base::BindOnce(&ShouldBlockRequestOnTaskRunner, std::move(input),
                      EngineFlags(), std::nullopt),
       base::BindOnce(&OnShouldBlockRequestResult<T>, should_check_uncloaked,
-                     next_callback, ctx));
+                     next_callback, ctx, std::move(browser_context)));
 }
 
 template <template <typename> class T>

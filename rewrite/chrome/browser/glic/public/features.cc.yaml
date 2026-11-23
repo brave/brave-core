@@ -4,6 +4,10 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
+  - description: 'Ship kGeic disabled.'
+    set_feature_flag_default_state:
+      feature_name: kGeic
+      value: base::FEATURE_DISABLED_BY_DEFAULT
   - description: 'Ship kGlicTextSelectionContextMenu disabled.'
     set_feature_flag_default_state:
       feature_name: kGlicTextSelectionContextMenu

@@ -136,18 +136,17 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
           EXPECT_EQ(report->details, "details");
           EXPECT_EQ(report->contact, contact);
 
-          EXPECT_TRUE(report->ad_block_components_version);
-          EXPECT_FALSE(report->ad_block_components_version->empty());
+          ASSERT_TRUE(report->ad_block_components_version);
+          ASSERT_FALSE(report->ad_block_components_version->empty());
 
           const auto& component = report->ad_block_components_version->front();
           EXPECT_EQ(component->id, "id");
           EXPECT_EQ(component->name, "name");
           EXPECT_EQ(component->version, "version");
 
-          EXPECT_TRUE(report->screenshot_png);
+          ASSERT_TRUE(report->screenshot_png);
           EXPECT_EQ(report->screenshot_png.value(), screenshot);
-          EXPECT_EQ(report->webcompat_reporter_errors.value(),
-                    webcompat_errors);
+          EXPECT_EQ(report->webcompat_reporter_errors, webcompat_errors);
         });
     EXPECT_CALL(*delegate_, GetChannelName).Times(0);
     EXPECT_CALL(*delegate_, GetAdblockFilterListNames).Times(0);
@@ -232,11 +231,11 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportWithNoPropsOverride) {
         EXPECT_TRUE(report->brave_version.has_value());
         EXPECT_EQ(report->brave_version,
                   version_info::GetBraveVersionWithoutChromiumMajorVersion());
-        EXPECT_TRUE(report->ad_block_components_version);
-        EXPECT_EQ(report->ad_block_components_version->size(), 1u);
+        ASSERT_TRUE(report->ad_block_components_version);
+        ASSERT_EQ(report->ad_block_components_version->size(), 1u);
         EXPECT_EQ(report->ad_block_components_version->front()->id,
                   "adcocjohghhfpidemphmcmlmhnfgikei");
-        EXPECT_TRUE(report->ad_block_list_names.has_value());
+        ASSERT_TRUE(report->ad_block_list_names.has_value());
         EXPECT_EQ(base::JoinString(get_adblock_list_names_ret_value, ","),
                   report->ad_block_list_names.value());
 
@@ -246,10 +245,9 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportWithNoPropsOverride) {
         EXPECT_FALSE(report->category);
         EXPECT_FALSE(report->details);
         EXPECT_FALSE(report->contact);
-        EXPECT_EQ(report->cookie_policy.value(), kCookiePolicyMockedValue);
-        EXPECT_EQ(report->block_scripts.value(),
-                  kGetScriptBlockingFlagMockedValue);
-        EXPECT_EQ(report->adblock_only_mode_enabled.value(),
+        EXPECT_EQ(report->cookie_policy, kCookiePolicyMockedValue);
+        EXPECT_EQ(report->block_scripts, kGetScriptBlockingFlagMockedValue);
+        EXPECT_EQ(report->adblock_only_mode_enabled,
                   kAdblockOnlyModeEnabledMockedValue);
         EXPECT_FALSE(report->fp_block_setting);
         EXPECT_FALSE(report->ad_block_setting);

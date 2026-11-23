@@ -10,6 +10,7 @@
 #include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
@@ -22,6 +23,7 @@
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/constants/brave_paths.h"
@@ -140,7 +142,15 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
  public:
   AIChatRenderViewContextMenuBrowserTest()
       : ai_engine_(std::make_unique<MockEngineConsumer>()),
-        https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
+        https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
+    // Pin features so the tests don't depend on their compiled-in defaults.
+    scoped_feature_list_.InitWithFeaturesAndParameters(
+        {{ai_chat::features::kAIChat,
+          {{ai_chat::features::kAIChatSSE.name, "true"}}},
+         {ai_chat::features::kContextMenuRewriteInPlace, {}},
+         {ai_chat::features::kAIChatGlobalSidePanelEverywhere, {}}},
+        {});
+  }
 
   ~AIChatRenderViewContextMenuBrowserTest() override = default;
 
@@ -338,6 +348,7 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
   }
 
  private:
+  base::test::ScopedFeatureList scoped_feature_list_;
   std::unique_ptr<MockEngineConsumer> ai_engine_;
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServer https_server_;

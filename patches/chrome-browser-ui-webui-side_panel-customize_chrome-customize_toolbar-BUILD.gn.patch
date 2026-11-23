@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/BUILD.gn b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/BUILD.gn
-index 9588da9ed1fdcfd96b81ce8c12fdf153f2123ff7..5702d740424a387ee40b90b425d97fe8f9c02a50 100644
+index a26a2ca263cd2b9a5246ef363a1bc3fcb1cf741e..bc79dc63eef43dcbf792fc1a08e40ed678de410e 100644
 --- a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/BUILD.gn
 +++ b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/BUILD.gn
 @@ -15,6 +15,7 @@ source_set("customize_toolbar") {

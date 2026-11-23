@@ -6,17 +6,22 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_CONVERSIONS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_CONVERSIONS_H_
 
+#include <cstdint>
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_map.h"
+#include "base/containers/flat_set.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_util.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/attempted_ad_event_key.h"
 
 class GURL;
 
@@ -38,37 +43,68 @@ class Conversions final : public TabManagerObserver {
   void AddObserver(ConversionsObserver* observer);
   void RemoveObserver(ConversionsObserver* observer);
 
-  // Examine potential view-through or click-through conversions by matching
-  // URL patterns in the redirect chain against known campaign conversions.
-  void MaybeConvert(const std::vector<GURL>& redirect_chain);
+  // Examine potential view-through or click-through conversions by matching URL
+  // patterns in the redirect chain; an ad event converts at most once per
+  // tab_id until that tab navigates away from the matching URL or closes.
+  void MaybeConvert(int32_t tab_id, const std::vector<GURL>& redirect_chain);
 
  private:
-  void GetCampaignConversions(const std::vector<GURL>& redirect_chain);
+  void GetCampaignConversions(int32_t tab_id,
+                              const std::vector<GURL>& redirect_chain);
   void GetCampaignConversionsCallback(
+      int32_t tab_id,
       const std::vector<GURL>& redirect_chain,
       bool success,
       const CampaignConversionList& campaign_conversions);
 
-  void GetAdEvents(const std::vector<GURL>& redirect_chain,
+  void GetAdEvents(int32_t tab_id,
+                   const std::vector<GURL>& redirect_chain,
                    const CampaignConversionList& campaign_conversions);
-  void GetAdEventsCallback(const std::vector<GURL>& redirect_chain,
+  void GetAdEventsCallback(int32_t tab_id,
+                           const std::vector<GURL>& redirect_chain,
                            const CampaignConversionList& campaign_conversions,
                            bool success,
                            const AdEventList& ad_events);
 
-  void CheckForConversions(const std::vector<GURL>& redirect_chain,
+  void CheckForConversions(int32_t tab_id,
+                           const std::vector<GURL>& redirect_chain,
                            const CampaignConversionList& campaign_conversions,
                            const AdEventList& ad_events);
-  void Convert(const AdEventInfo& ad_event);
-  void ConvertCallback(const AdEventInfo& ad_event, bool success);
+
+  // Prunes attempted ad events for campaigns the tab no longer matches, so
+  // a later, distinct purchase under the same ad event can convert again.
+  void PruneAttemptedAdEventKeysForTab(
+      int32_t tab_id,
+      const CampaignConversionBucketMap& campaign_conversion_buckets);
+
+  base::flat_set<AttemptedAdEventKey>* FindAttemptedAdEventKeys(
+      int32_t tab_id,
+      const std::string& campaign_id);
+
+  void Convert(int32_t tab_id,
+               const AdEventInfo& ad_event,
+               const AttemptedAdEventKey& ad_event_key);
+  void ConvertCallback(int32_t tab_id,
+                       const AdEventInfo& ad_event,
+                       const AttemptedAdEventKey& ad_event_key,
+                       bool success);
 
   void NotifyDidConvertAd(const ConversionInfo& conversion);
   void NotifyFailedToConvertAd(const std::string& creative_instance_id);
 
   // TabManagerObserver:
   void OnTabDidChange(const TabInfo& tab) override;
+  void OnDidCloseTab(int32_t tab_id) override;
 
   base::ObserverList<ConversionsObserver> observers_;
+
+  // Per tab and campaign, ad events already converted since the tab last
+  // matched the conversion URL pattern, so repeat matches cannot reconvert.
+  base::flat_map<
+      /*tab_id*/ int32_t,
+      base::flat_map</*campaign_id*/ std::string,
+                     base::flat_set<AttemptedAdEventKey>>>
+      attempted_ad_event_keys_by_tab_id_;
 
   const database::table::CampaignConversions
       campaign_conversions_database_table_;

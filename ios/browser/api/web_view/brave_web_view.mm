@@ -33,6 +33,8 @@
 #include "brave/ios/browser/brave_search/brave_search_make_default_tab_helper.h"
 #include "brave/ios/browser/brave_search/brave_search_make_default_tab_helper_bridge.h"
 #include "brave/ios/browser/brave_shields/cosmetic_filtering/cosmetic_filtering_tab_helper.h"
+#include "brave/ios/browser/brave_shields/element_picker/element_picker_javascript_feature.h"
+#include "brave/ios/browser/brave_shields/element_picker/element_picker_tab_helper.h"
 #include "brave/ios/browser/brave_shields/protection_stats_tab_helper.h"
 #include "brave/ios/browser/brave_shields/protection_stats_tab_helper_bridge.h"
 #include "brave/ios/browser/brave_shields/request_blocking/request_blocking_tab_helper.h"
@@ -104,6 +106,7 @@
 #include "net/base/apple/url_conversions.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_status_code.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
 #include "brave/ios/browser/brave_talk/brave_talk_tab_helper.h"
@@ -301,6 +304,8 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
     requestBlockingTabHelperBridge;
 @property(nonatomic, weak) id<CosmeticFilteringTabHelperBridge>
     cosmeticFilteringTabHelperBridge;
+@property(nonatomic, weak) id<ElementPickerTabHelperBridge>
+    elementPickerTabHelperBridge;
 @property(nonatomic, weak) id<ScriptletsTabHelperBridge>
     scriptletsTabHelperBridge;
 @property(nonatomic, weak) id<BraveWalletProviderDelegate>
@@ -494,6 +499,12 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
     CosmeticFilteringTabHelper::FromWebState(self.webState)
         ->SetBridge(self.cosmeticFilteringTabHelperBridge);
 
+    if (!profile->IsOffTheRecord()) {
+      ElementPickerTabHelper::CreateForWebState(self.webState);
+      ElementPickerTabHelper::FromWebState(self.webState)
+          ->SetBridge(self.elementPickerTabHelperBridge);
+    }
+
     ScriptletsTabHelper::CreateForWebState(self.webState);
     ScriptletsTabHelper::FromWebState(self.webState)
         ->SetBridge(self.scriptletsTabHelperBridge);
@@ -627,8 +638,9 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   // requested disposition, so handle the new tab dispositions here to match
   // Chrome.
   const bool inBackground =
-      params.disposition == WindowOpenDisposition::kNewBackgroundTab;
-  if ((params.disposition == WindowOpenDisposition::kNewForegroundTab ||
+      params.disposition == ui::mojom::WindowOpenDisposition::kNewBackgroundTab;
+  if ((params.disposition ==
+           ui::mojom::WindowOpenDisposition::kNewForegroundTab ||
        inBackground) &&
       [self.UIDelegate
           respondsToSelector:
@@ -1004,6 +1016,23 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
           CosmeticFilteringTabHelper::FromWebState(self.webState)) {
     tab_helper->SetBridge(bridge);
   }
+}
+
+@end
+
+@implementation BraveWebView (ElementPicker)
+
+- (void)setElementPickerTabHelperBridge:
+    (id<ElementPickerTabHelperBridge>)bridge {
+  _elementPickerTabHelperBridge = bridge;
+  if (ElementPickerTabHelper* tab_helper =
+          ElementPickerTabHelper::FromWebState(self.webState)) {
+    tab_helper->SetBridge(bridge);
+  }
+}
+
+- (void)showElementPicker {
+  ElementPickerJavaScriptFeature::GetInstance()->ShowPicker(self.webState);
 }
 
 @end

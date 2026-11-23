@@ -29,6 +29,7 @@
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
@@ -60,16 +61,17 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/webui/webui_util.h"
 #include "url/url_constants.h"
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/browser/history_embeddings/history_embeddings_service_factory.h"
+#include "brave/browser/history_embeddings/history_embeddings_utils.h"
 #include "brave/browser/history_embeddings/open_tab_search.h"
+#include "brave/components/history_embeddings/content/history_embeddings_service.h"
+#include "brave/components/history_embeddings/core/history_embeddings_search.h"
 #include "chrome/browser/history/history_service_factory.h"
-#include "chrome/browser/history_embeddings/history_embeddings_service_factory.h"
-#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
-#include "components/history_embeddings/content/history_embeddings_service.h"
-#include "components/history_embeddings/core/history_embeddings_search.h"
 #include "components/keyed_service/core/service_access_type.h"
 #endif
 
@@ -158,13 +160,6 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
                  base::EscapeQueryParamValue(search_query, true)));
   }
 
-  void OpenURLFromResponse(const GURL& url) override {
-    if (!url.is_valid() || !url.SchemeIs(url::kHttpsScheme)) {
-      return;
-    }
-    OpenURL(url);
-  }
-
   void GoPremium() override { OpenURL(GURL(ai_chat::kLeoGoPremiumUrl)); }
 
   void RefreshPremiumSession() override {
@@ -190,7 +185,8 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
       return;
     }
     auto* embeddings_search =
-        HistoryEmbeddingsServiceFactory::GetForProfile(profile);
+        history_embeddings::HistoryEmbeddingsServiceFactory::GetForProfile(
+            profile);
     auto* history_service = HistoryServiceFactory::GetForProfile(
         profile, ServiceAccessType::EXPLICIT_ACCESS);
     if (!embeddings_search || !history_service) {
@@ -410,10 +406,10 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
 #if !BUILDFLAG(IS_ANDROID)
     BrowserWindowInterface* browser =
         ai_chat::GetBrowserForWebContents(web_ui_->GetWebContents());
-    browser->OpenURL(
-        {url, content::Referrer(), WindowOpenDisposition::kNewForegroundTab,
-         ui::PAGE_TRANSITION_LINK, false},
-        /*navigation_handle_callback=*/{});
+    browser->OpenURL({url, content::Referrer(),
+                      ui::mojom::WindowOpenDisposition::kNewForegroundTab,
+                      ui::PAGE_TRANSITION_LINK, false},
+                     /*navigation_handle_callback=*/{});
 #else
     // We handle open link different on Android as we need to close the chat
     // window because it's always full screen
@@ -520,10 +516,19 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
         base::StrCat({" ", ai_chat::features::kRichSearchWidgetsOrigin.Get(),
                       "/embed.html"});
   }
+  // `::workspace[path]{inline}` directives embed the workspace's file viewer
+  // in the conversation. Workspaces live at
+  // chrome-untrusted://<uuid>.leo-workspace origins.
+  std::string workspace_url;
+  if (base::FeatureList::IsEnabled(ai_chat::features::kAIChatWorkspaceTools)) {
+    workspace_url = base::StrCat({" ", content::kChromeUIUntrustedScheme,
+                                  url::kStandardSchemeSeparator, "*.",
+                                  ai_chat::kAIChatLeoWorkspaceUIHost});
+  }
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
       base::StrCat({"frame-src ", kAIChatChartDisplayUIURL,
-                    rich_search_widgets_url, ";"}));
+                    rich_search_widgets_url, workspace_url, ";"}));
 
   // If the feature is not enabled don't specify an origin for loading the rich
   // search widgets.

@@ -1,0 +1,21 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #import=./action_menu-chromium.css.js
+ * #scheme=relative
+ * #include=action-menu-chromium
+ * #css_wrapper_metadata_end */
+
+cr-icon {
+  --iron-icon-height: var(--icon-size);
+  --iron-icon-width: var(--icon-size);
+}
+
+.toggle-row .start-icon {
+  --iron-icon-height: 16px;
+  --iron-icon-width: 16px;
+}

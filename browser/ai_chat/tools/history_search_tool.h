@@ -16,7 +16,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
-#include "components/history_embeddings/core/history_embeddings_search.h"
+#include "brave/components/history_embeddings/core/history_embeddings_search.h"
 
 class Profile;
 
@@ -69,8 +69,8 @@ class HistorySearchTool : public Tool {
   void SetSearchForTesting(history_embeddings::HistoryEmbeddingsSearch* search);
 
  private:
-  // SearchResultCallback is a RepeatingCallback but with `skip_answering=true`
-  // it's expected to fire once. `callback` is heap-allocated and owned by the
+  // SearchResultCallback is a RepeatingCallback but is expected to fire
+  // once. `callback` is heap-allocated and owned by the
   // bound closure; the first invocation moves it out and runs the
   // UseToolCallback, any further invocations are no-ops.
   void OnSearchResult(UseToolCallback* callback,

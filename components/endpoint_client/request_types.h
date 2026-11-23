@@ -11,35 +11,34 @@
 
 namespace endpoint_client {
 
-template <internal::IsRequestBody T>
-using Connect = internal::Request<T, internal::Method::kConnect>;
+// GET and HEAD requests don't take a body: RFC 9110 gives a body no defined
+// meaning for them, and `SimpleURLLoader` `DCHECK`s against attaching one.
+using Get = internal::Request<internal::Method::kGet>;
+using Head = internal::Request<internal::Method::kHead>;
 
-template <internal::IsRequestBody T>
-using Delete = internal::Request<T, internal::Method::kDelete>;
+template <internal::IsRequestBody... RequestBody>
+using Connect = internal::Request<internal::Method::kConnect, RequestBody...>;
 
-template <internal::IsRequestBody T>
-using Get = internal::Request<T, internal::Method::kGet>;
+template <internal::IsRequestBody... RequestBody>
+using Delete = internal::Request<internal::Method::kDelete, RequestBody...>;
 
-template <internal::IsRequestBody T>
-using Head = internal::Request<T, internal::Method::kHead>;
+template <internal::IsRequestBody... RequestBody>
+using Options = internal::Request<internal::Method::kOptions, RequestBody...>;
 
-template <internal::IsRequestBody T>
-using Options = internal::Request<T, internal::Method::kOptions>;
+template <internal::IsRequestBody... RequestBody>
+using Patch = internal::Request<internal::Method::kPatch, RequestBody...>;
 
-template <internal::IsRequestBody T>
-using Patch = internal::Request<T, internal::Method::kPatch>;
+template <internal::IsRequestBody... RequestBody>
+using Post = internal::Request<internal::Method::kPost, RequestBody...>;
 
-template <internal::IsRequestBody T>
-using Post = internal::Request<T, internal::Method::kPost>;
+template <internal::IsRequestBody... RequestBody>
+using Put = internal::Request<internal::Method::kPut, RequestBody...>;
 
-template <internal::IsRequestBody T>
-using Put = internal::Request<T, internal::Method::kPut>;
+template <internal::IsRequestBody... RequestBody>
+using Trace = internal::Request<internal::Method::kTrace, RequestBody...>;
 
-template <internal::IsRequestBody T>
-using Trace = internal::Request<T, internal::Method::kTrace>;
-
-template <internal::IsRequestBody T>
-using Track = internal::Request<T, internal::Method::kTrack>;
+template <internal::IsRequestBody... RequestBody>
+using Track = internal::Request<internal::Method::kTrack, RequestBody...>;
 
 }  // namespace endpoint_client
 

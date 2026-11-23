@@ -6,6 +6,7 @@
 #include "brave/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/list_action_modifiers.h"
 
 #include <utility>
+#include <vector>
 
 #include "base/containers/fixed_flat_set.h"
 #include "base/test/scoped_feature_list.h"
@@ -44,12 +45,15 @@
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/vpn_utils.h"
+#include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
+#include "brave/components/skus/common/features.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
@@ -78,6 +82,20 @@ MATCHER_P(EqId, id, "") {
 
 class ListActionModifiersUnitTest : public testing::Test {
  protected:
+  ListActionModifiersUnitTest() {
+    // Pin features the tests assume are on instead of relying on defaults.
+    std::vector<base::test::FeatureRef> enabled{
+        screenshot::features::kBraveScreenshot};
+#if BUILDFLAG(ENABLE_AI_CHAT)
+    enabled.push_back(ai_chat::features::kAIChat);
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+    enabled.push_back(brave_vpn::features::kBraveVPN);
+    enabled.push_back(skus::features::kSkusFeature);
+#endif
+    feature_list_.InitWithFeatures(enabled, {});
+  }
+
   static constexpr auto kUnsupportedChromiumActions =
       base::MakeFixedFlatSet<ActionId>({
           ActionId::kShowPaymentMethods,
@@ -136,6 +154,7 @@ class ListActionModifiersUnitTest : public testing::Test {
 
   void TearDown() override { web_contents_ = nullptr; }
 
+  base::test::ScopedFeatureList feature_list_;
   brave_l10n::test::ScopedDefaultLocale scoped_locale_{"en_US"};
   content::BrowserTaskEnvironment task_environment_;
   TestingProfile testing_profile_;
@@ -285,7 +304,7 @@ TEST_F(
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 TEST_F(ListActionModifiersUnitTest,
        ApplyBraveSpecificModifications_VPNShouldNotBeAddedWhenDisabled) {
-  // VPN should be added by default(VPN enabled by default)
+  // VPN should be added while enabled.
   ASSERT_TRUE(brave_vpn::IsBraveVPNEnabled(web_contents_->GetBrowserContext()));
   auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
       web_contents_.get(), GetBasicActions());
@@ -314,7 +333,7 @@ TEST_F(ListActionModifiersUnitTest,
 
 TEST_F(ListActionModifiersUnitTest,
        ApplyBraveSpecificModifications_AIChatShouldNotBeAddedWhenDisabled) {
-  // AI Chat should be added by default(AI Chat enabled by default)
+  // AI Chat should be added while enabled.
   ASSERT_TRUE(ai_chat::IsAIChatEnabled(prefs()));
   auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
       web_contents_.get(), GetBasicActions());
@@ -399,7 +418,6 @@ TEST_F(ListActionModifiersUnitTest,
 
 TEST_F(ListActionModifiersUnitTest,
        ApplyBraveSpecificModifications_ScreenshotNotAddedWhenFeatureDisabled) {
-  // Feature is enabled by default.
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndDisableFeature(screenshot::features::kBraveScreenshot);
   ASSERT_FALSE(screenshot::features::IsScreenshotEnabled());
@@ -451,8 +469,6 @@ TEST_F(
 
 TEST_F(ListActionModifiersUnitTest,
        ApplyBraveSpecificModifications_ComprehensiveOrderTest) {
-  base::test::ScopedFeatureList feature_list(
-      screenshot::features::kBraveScreenshot);
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   ASSERT_TRUE(brave_vpn::IsBraveVPNEnabled(web_contents_->GetBrowserContext()));
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)

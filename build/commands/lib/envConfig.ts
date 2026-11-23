@@ -18,6 +18,11 @@ import * as Log from './log.ts'
  *   1. Variables from .env files (highest priority)
  *   2. Package configuration from package.json
  *   3. Default values provided by caller (lowest priority)
+ *
+ * With `allowedDotenvKeys`, as `--builder` has, reading a value neither one of
+ * them nor package.json provides throws, so that no caller falls back to its
+ * default instead. Other .env keys may be present, as long as nothing reads
+ * them.
  */
 export default class EnvConfig {
   // Directory containing package.json and .env files.
@@ -26,16 +31,26 @@ export default class EnvConfig {
   #packageJson: Record<string, any>
   // Raw variables from .env files.
   #dotenvConfig: NodeJS.Dict<string>
+  // The only .env variables read, if restricted.
+  #allowedDotenvKeys: readonly string[] | undefined
 
   /**
    * Creates a new EnvConfig instance and loads all configuration files.
    *
    * @param configDir - Directory containing package.json and .env files
+   * @param dotenvConfig - The variables from .env files, read from them if not
+   *     given
+   * @param allowedDotenvKeys - The only .env variables read, if any
    */
-  constructor(configDir: string) {
+  constructor(
+    configDir: string,
+    dotenvConfig: NodeJS.Dict<string> = EnvConfig.#loadDotenvConfig(configDir),
+    allowedDotenvKeys?: readonly string[],
+  ) {
     this.#configDir = configDir
     this.#packageJson = EnvConfig.#loadPackageJson(configDir)
-    this.#dotenvConfig = EnvConfig.#loadDotenvConfig(configDir)
+    this.#dotenvConfig = dotenvConfig
+    this.#allowedDotenvKeys = allowedDotenvKeys
   }
 
   /**
@@ -141,6 +156,7 @@ export default class EnvConfig {
    * Returns a merged object from .env files and package.json.
    */
   getMergedObject(keyPath: string[]): Record<string, any> {
+    this.#checkReadable(keyPath)
     const keyJoined = EnvConfig.#joinKeyPath(keyPath)
 
     const dotenvConfigValue = EnvConfig.#convertToValueType(
@@ -220,10 +236,41 @@ export default class EnvConfig {
    * Returns a typed config value if present in any source.
    */
   #getOfType(keyPath: string[], expectedValueType: ConfigValueType): any {
+    this.#checkReadable(keyPath)
     const value = this.#get(keyPath)
     if (value !== undefined) {
       return EnvConfig.#convertToValueType(value, expectedValueType, keyPath)
     }
+  }
+
+  /**
+   * Throws unless `keyPath` is one of `allowedDotenvKeys` or package.json provides
+   * it. A key under an object package.json sets, such as
+   * `projects.chrome.revision`, counts as provided even when unset there.
+   */
+  #checkReadable(keyPath: string[]): void {
+    if (!this.#allowedDotenvKeys) {
+      return
+    }
+    const keyJoined = EnvConfig.#joinKeyPath(keyPath)
+    if (this.#allowedDotenvKeys.includes(keyJoined)) {
+      return
+    }
+    for (let length = keyPath.length; length > 0; length--) {
+      const value = this.#get(keyPath.slice(0, length), 'package')
+      if (
+        length === keyPath.length
+          ? value !== undefined
+          : EnvConfig.#getValueType(value) === 'Object'
+      ) {
+        return
+      }
+    }
+    throw new Error(
+      `${keyJoined} is read, but with --builder only `
+        + `${this.#allowedDotenvKeys.join(', ')} are read from .env, `
+        + 'and package.json does not provide it.',
+    )
   }
 
   /**

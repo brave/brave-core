@@ -7,7 +7,8 @@
 
 A `chromium_src` override's `#define Foo BraveFoo` rewrites every `Foo` in the
 upstream file it wraps. The count of `Foo` in the pristine upstream file (and,
-for a header, its `.cc`) at each tag stands for that reach: a different count
+for a header that doesn't `#undef` it, its `.cc`) at each tag stands for that
+reach: a different count
 means the define rewrites different code, and 0 at the new tag means it now
 matches nothing. Tokens that reach nothing at both tags are listed too, unless
 they are Brave's helpers (used by the override or a Brave file it includes, or
@@ -104,12 +105,19 @@ class DefineReach:
                     words.update(cls._WORD.findall(line))
         return words
 
-    @staticmethod
-    def count(token: str, texts: list[str | None]) -> int:
-        """How often `token` occurs as a word in `texts`, missing ones left
-        out."""
+    # Comments and string literals, which the preprocessor doesn't rewrite.
+    _UNREACHED = re.compile(
+        r'//[^\n]*|/\*.*?\*/|"(?:\\.|[^"\\\n])*"|\'(?:\\.|[^\'\\\n])*\'', re.S
+    )
+
+    @classmethod
+    def count(cls, token: str, texts: list[str | None]) -> int:
+        """How often `token` occurs as a word in the code of `texts`, missing
+        ones left out."""
         word = re.compile(rf'\b{re.escape(token)}\b')
-        return sum(len(word.findall(t)) for t in texts if t)
+        return sum(
+            len(word.findall(cls._UNREACHED.sub(' ', t))) for t in texts if t
+        )
 
     @staticmethod
     def upstream_files(override: str) -> list[str]:
@@ -120,9 +128,31 @@ class DefineReach:
             files += [f'{stem}.cc', f'{stem}.mm']
         return files
 
+    @staticmethod
+    def undefined(token: str, text: str) -> bool:
+        """Whether `text` `#undef`s `token`, so that a header's define stops
+        before the `.cc` that includes it."""
+        return bool(re.search(rf'#\s*undef\s+{re.escape(token)}\b', text))
+
     def run(self) -> list[Reach]:
         """The defines whose reach changed, or that reach nothing; dead ones
-        first."""
+        first. Raises `LookupError` for a tag the checkout lacks, which would
+        otherwise read as every file missing."""
+        for tag in (self._old, self._new):
+            if subprocess.run(
+                [
+                    'git',
+                    '-C',
+                    str(repository.chromium.root),
+                    'rev-parse',
+                    '--verify',
+                    '--quiet',
+                    f'{tag}^{{commit}}',
+                ],
+                capture_output=True,
+                check=False,
+            ).returncode:
+                raise LookupError(f'{tag} is not in the Chromium checkout')
         brave = repository.brave.root
         chromium_src = brave / 'chromium_src'
         overrides = {}
@@ -134,7 +164,10 @@ class DefineReach:
                     for name in self._BRAVE_INCLUDE.findall(text)
                     if (brave / name).is_file()
                 ]
-                tokens = self.defines(text, included)
+                tokens = [
+                    (token, helper, self.undefined(token, text))
+                    for token, helper in self.defines(text, included)
+                ]
                 if tokens:
                     # Git wants `/` in `tag:path`, also on Windows.
                     overrides[path.relative_to(chromium_src).as_posix()] = (
@@ -162,12 +195,14 @@ class DefineReach:
             new = [texts[(self._new, f)] for f in files]
             if not any(old) and not any(new):
                 continue  # A Brave-only file.
-            for token, helper in tokens:
+            for token, helper, undefined in tokens:
+                # Only the override's own file, when it ends the define.
+                reached = 1 if undefined else len(files)
                 reach = Reach(
                     override,
                     token,
-                    self.count(token, old),
-                    self.count(token, new),
+                    self.count(token, old[:reached]),
+                    self.count(token, new[:reached]),
                 )
                 if reach.old != reach.new or (
                     reach.new == 0 and not helper and token not in patched
@@ -208,7 +243,11 @@ def main() -> int:
     old, _, new = args.range.partition('..')
     if not old or not new:
         parser.error('expected OLD..NEW')
-    changed = DefineReach(old, new).run()
+    try:
+        changed = DefineReach(old, new).run()
+    except LookupError as e:
+        print(f'error: {e}', file=sys.stderr)
+        return 1
     print(f'old -> new token  override ({len(changed)} changed; 0 = dead)')
     for reach in changed:
         print(reach)

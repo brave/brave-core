@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_CONVERSIONS_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ENGAGEMENT_CONVERSIONS_CONVERSIONS_UTIL_H_
 
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/attempted_ad_event_key.h"
+
 namespace base {
 class TimeDelta;
 }  // namespace base
@@ -18,6 +20,8 @@ bool IsAllowedToConvertAdEvent(const AdEventInfo& ad_event);
 
 bool DidAdEventOccurWithinObservationWindow(const AdEventInfo& ad_event,
                                             base::TimeDelta observation_window);
+
+AttemptedAdEventKey BuildAttemptedAdEventKey(const AdEventInfo& ad_event);
 
 }  // namespace brave_ads
 

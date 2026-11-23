@@ -4,8 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
-import("//brave/components/brave_education/buildflags.gni")
-import("//brave/components/brave_news/common/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/email_aliases/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
@@ -13,45 +11,23 @@ import("//build/config/ui.gni")
 
 brave_ui_allow_circular_includes_from = []
 
-if (enable_ai_chat) {
-  brave_ui_allow_circular_includes_from +=
-      [ "//brave/browser/ui/webui/ai_chat" ]
-}
-
 if (!is_android) {
   brave_ui_allow_circular_includes_from += [
     "//brave/browser/ui/browser_window/internal",
-    "//brave/browser/ui/webui/brave_new_tab_page_refresh",
     "//brave/browser/ui/webui/brave_welcome_page",
-    "//brave/browser/ui/webui/side_panel/customize_chrome",
   ]
-  if (enable_brave_education) {
-    brave_ui_allow_circular_includes_from +=
-        [ "//brave/browser/ui/webui/brave_education" ]
-  }
-  if (enable_brave_news) {
-    brave_ui_allow_circular_includes_from +=
-        [ "//brave/browser/ui/webui/brave_news_internals" ]
-  }
 }
 if (toolkit_views) {
   brave_ui_allow_circular_includes_from += [
     "//brave/browser/ui/tabs:tab_menu",
     "//brave/browser/ui/sidebar:sidebar_impl",
-    "//brave/browser/ui/split_view",
     "//brave/browser/ui/views/frame",
     "//brave/browser/ui/views/frame:frame_impl",
     "//brave/browser/ui/views/frame/split_view",
     "//brave/browser/ui/views/frame/vertical_tabs",
     "//brave/browser/ui/views/location_bar",
-    "//brave/browser/ui/views/page_info",
     "//brave/browser/ui/views/side_panel:side_panel_impl",
   ]
-
-  if (enable_ai_chat) {
-    brave_ui_allow_circular_includes_from +=
-        [ "//brave/browser/ui/views/side_panel/ai_chat" ]
-  }
 
   if (enable_containers) {
     brave_ui_allow_circular_includes_from += [ "//brave/browser/ui/containers" ]
@@ -59,8 +35,6 @@ if (toolkit_views) {
 }
 
 if (enable_email_aliases) {
-  brave_ui_allow_circular_includes_from += [
-    "//brave/browser/ui/email_aliases",
-    "//brave/browser/ui/webui/email_aliases",
-  ]
+  brave_ui_allow_circular_includes_from +=
+      [ "//brave/browser/ui/webui/email_aliases" ]
 }

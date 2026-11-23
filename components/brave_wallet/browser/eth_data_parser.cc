@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/check_op.h"
+#include "base/notreached.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/eth_abi_decoder.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
@@ -24,22 +25,13 @@ constexpr char kERC20TransferSelector[] = "0xa9059cbb";
 constexpr char kERC20ApproveSelector[] = "0x095ea7b3";
 constexpr char kERC721TransferFromSelector[] = "0x23b872dd";
 constexpr char kERC721SafeTransferFromSelector[] = "0x42842e0e";
+constexpr char kERC721SetApprovalForAllSelector[] = "0xa22cb465";
 constexpr char kERC1155SafeTransferFromSelector[] = "0xf242432a";
 constexpr char kFilForwarderTransferSelector[] =
     "0xd948d468";  // forward(bytes)
 
 // CowSwap function selectors
 constexpr char kCowOrderSellEthSelector[] = "0x322bba21";
-
-// 0x function selectors
-constexpr char kSellEthForTokenToUniswapV3Selector[] = "0x3598d8ab";
-constexpr char kSellTokenForEthToUniswapV3Selector[] = "0x803ba26d";
-constexpr char kSellTokenForTokenToUniswapV3Selector[] = "0x6af479b2";
-constexpr char kSellToUniswapSelector[] = "0xd9627aa4";
-constexpr char kTransformERC20Selector[] = "0x415565b0";
-constexpr char kFillOtcOrderForEthSelector[] = "0xa578efaf";
-constexpr char kFillOtcOrderWithEthSelector[] = "0x706394d5";
-constexpr char kFillOtcOrderSelector[] = "0xdac748d4";
 
 // LiFi uses the zero address to represent the native EVM asset.
 constexpr char kLiFiNativeEVMAssetContractAddress[] =
@@ -642,339 +634,23 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
                                  decoded.value()[1].GetString(),
                                  decoded.value()[2].GetString()},
         nullptr);
-  } else if (selector == kSellEthForTokenToUniswapV3Selector) {
-    // Function:
-    // sellEthForTokenToUniswapV3(bytes encodedPath,
-    //                            uint256 minBuyAmount,
-    //                            address recipient)
-    //
-    // Ref:
-    // https://github.com/0xProject/protocol/blob/b46eeadc64485288add5940a210e1a7d0bcb5481/contracts/zero-ex/contracts/src/features/interfaces/IUniswapV3Feature.sol#L29-L41
-    auto type = eth_abi::Tuple()
-                    .AddTupleType(eth_abi::Bytes())
-                    .AddTupleType(eth_abi::Uint(256))
-                    .AddTupleType(eth_abi::Address())
-                    .build();
-    auto decoded_calldata = ABIDecode(type, calldata);
-    if (!decoded_calldata) {
-      return std::nullopt;
-    }
-
-    auto decoded_path =
-        UniswapEncodedPathDecode(decoded_calldata.value()[0].GetString());
-    if (!decoded_path) {
-      return std::nullopt;
-    }
-
-    if (decoded_path->size() < 2) {
-      return std::nullopt;
-    }
-
-    auto from_asset = decoded_path->front();
-    auto to_asset = decoded_path->back();
-
-    auto swap_info = mojom::SwapInfo::New();
-    swap_info->source_coin = mojom::CoinType::ETH;
-    // source_chain_id and destination_chain_id are filled by caller.
-    swap_info->source_chain_id = "";
-    swap_info->source_token_address = kNativeEVMAssetContractAddress;
-    swap_info->source_amount = "";  // asset is ETH, amount is txn value
-    swap_info->destination_coin = mojom::CoinType::ETH;
-    swap_info->destination_chain_id = "";
-    swap_info->destination_token_address = to_asset;
-    swap_info->destination_amount = "";
-    swap_info->destination_amount_min = decoded_calldata.value()[1].GetString();
-    swap_info->recipient =
-        TransformEoaAddress(decoded_calldata.value()[2].GetString());
-    swap_info->provider = mojom::SwapProvider::kZeroEx;
-
-    return std::make_tuple(mojom::TransactionType::ETHSwap,
-                           std::vector<std::string>{},
-                           std::vector<std::string>{}, std::move(swap_info));
-  } else if (selector == kSellTokenForEthToUniswapV3Selector ||
-             selector == kSellTokenForTokenToUniswapV3Selector) {
-    // Function: 0x803ba26d
-    // sellTokenForEthToUniswapV3(bytes encodedPath,
-    //                            uint256 sellAmount,
-    //                            uint256 minBuyAmount,
-    //                            address recipient)
-    //
-    // Ref:
-    // https://github.com/0xProject/protocol/blob/b46eeadc64485288add5940a210e1a7d0bcb5481/contracts/zero-ex/contracts/src/features/interfaces/IUniswapV3Feature.sol#L43-L56
-    //
-    //
-    // Function: 0x6af479b2
-    // sellTokenForTokenToUniswapV3(bytes encodedPath,
-    //                              uint256 sellAmount,
-    //                              uint256 minBuyAmount,
-    //                              address recipient)
-    //
-    // Ref:
-    // https://github.com/0xProject/protocol/blob/b46eeadc64485288add5940a210e1a7d0bcb5481/contracts/zero-ex/contracts/src/features/interfaces/IUniswapV3Feature.sol#L58-L71
-    auto type = eth_abi::Tuple()
-                    .AddTupleType(eth_abi::Bytes())
-                    .AddTupleType(eth_abi::Uint(256))
-                    .AddTupleType(eth_abi::Uint(256))
-                    .AddTupleType(eth_abi::Address())
-                    .build();
-    auto decoded_calldata = ABIDecode(type, calldata);
-    if (!decoded_calldata) {
-      return std::nullopt;
-    }
-
-    auto decoded_path =
-        UniswapEncodedPathDecode(decoded_calldata.value()[0].GetString());
-    if (!decoded_path) {
-      return std::nullopt;
-    }
-
-    if (decoded_path->size() < 2) {
-      return std::nullopt;
-    }
-
-    auto from_asset = decoded_path->front();
-    auto to_asset = decoded_path->back();
-
-    auto swap_info = mojom::SwapInfo::New();
-    // source_chain_id and destination_chain_id are filled by caller.
-    swap_info->source_coin = mojom::CoinType::ETH;
-    swap_info->source_chain_id = "";
-    swap_info->source_token_address = from_asset;
-    swap_info->source_amount = decoded_calldata.value()[1].GetString();
-    swap_info->destination_coin = mojom::CoinType::ETH;
-    swap_info->destination_chain_id = "";
-    swap_info->destination_token_address = to_asset;
-    swap_info->destination_amount = "";
-    swap_info->destination_amount_min = decoded_calldata.value()[2].GetString();
-    swap_info->recipient =
-        TransformEoaAddress(decoded_calldata.value()[3].GetString());
-    swap_info->provider = mojom::SwapProvider::kZeroEx;
-
-    return std::make_tuple(mojom::TransactionType::ETHSwap,
-                           std::vector<std::string>{},
-                           std::vector<std::string>{}, std::move(swap_info));
-  } else if (selector == kSellToUniswapSelector) {
-    // Function:
-    // sellToUniswap(address[] tokens,
-    //               uint256 sellAmount,
-    //               uint256 minBuyAmount,
-    //               bool isSushi)
-    //
-    // Ref:
-    // https://github.com/0xProject/protocol/blob/8d6f6e76e053f7b065d3315ddb31d2c35caddca7/contracts/zero-ex/contracts/src/features/UniswapFeature.sol#L93-L104
-    auto type =
-        eth_abi::Tuple()
-            .AddTupleType(
-                eth_abi::Array().SetArrayType(eth_abi::Address()).build())
-            .AddTupleType(eth_abi::Uint(256))
-            .AddTupleType(eth_abi::Uint(256))
-            .AddTupleType(eth_abi::Bool())
-            .build();
-    auto decoded_calldata = ABIDecode(type, calldata);
-    if (!decoded_calldata) {
-      return std::nullopt;
-    }
-
-    if (decoded_calldata.value()[0].GetList().size() < 2) {
-      return std::nullopt;
-    }
-
-    auto& from_asset = decoded_calldata.value()[0].GetList().front();
-    if (!from_asset.is_string()) {
-      return std::nullopt;
-    }
-
-    auto& to_asset = decoded_calldata.value()[0].GetList().back();
-    if (!to_asset.is_string()) {
-      return std::nullopt;
-    }
-
-    auto swap_info = mojom::SwapInfo::New();
-    // source_chain_id and destination_chain_id are filled by caller.
-    swap_info->source_coin = mojom::CoinType::ETH;
-    swap_info->source_chain_id = "";
-    swap_info->source_token_address = from_asset.GetString();
-    swap_info->source_amount = decoded_calldata.value()[1].GetString();
-    swap_info->destination_coin = mojom::CoinType::ETH;
-    swap_info->destination_chain_id = "";
-    swap_info->destination_token_address = to_asset.GetString();
-    swap_info->destination_amount = "";
-    swap_info->destination_amount_min = decoded_calldata.value()[2].GetString();
-    swap_info->recipient = "";  // unknown receiver
-    swap_info->provider = mojom::SwapProvider::kZeroEx;
-
-    return std::make_tuple(mojom::TransactionType::ETHSwap,
-                           std::vector<std::string>{},
-                           std::vector<std::string>{}, std::move(swap_info));
-  } else if (selector == kTransformERC20Selector) {
-    // Function:
-    // transformERC20(address inputToken,
-    //                address outputToken,
-    //                uint256 inputTokenAmount,
-    //                uint256 minOutputTokenAmount,
-    //                (uint32,bytes)[] transformations)
-    //
-    // Ref:
-    // https://github.com/0xProject/protocol/blob/b46eeadc64485288add5940a210e1a7d0bcb5481/contracts/zero-ex/contracts/src/features/interfaces/ITransformERC20Feature.sol#L113-L134
-    auto type =
-        eth_abi::Tuple()
-            .AddTupleType(eth_abi::Address())
-            .AddTupleType(eth_abi::Address())
-            .AddTupleType(eth_abi::Uint(256))
-            .AddTupleType(eth_abi::Uint(256))
-            .AddTupleType(eth_abi::Array()
-                              .SetArrayType(eth_abi::Tuple()
-                                                .AddTupleType(eth_abi::Uint(32))
-                                                .AddTupleType(eth_abi::Bytes())
-                                                .build())
-                              .build())
-            .build();
-    auto decoded_calldata = ABIDecode(type, calldata);
-    if (!decoded_calldata) {
-      return std::nullopt;
-    }
-
-    auto swap_info = mojom::SwapInfo::New();
-    // source_chain_id and destination_chain_id are filled by caller.
-    swap_info->source_coin = mojom::CoinType::ETH;
-    swap_info->source_chain_id = "";
-    swap_info->source_token_address = decoded_calldata.value()[0].GetString();
-    swap_info->source_amount = decoded_calldata.value()[2].GetString();
-    swap_info->destination_coin = mojom::CoinType::ETH;
-    swap_info->destination_chain_id = "";
-    swap_info->destination_token_address =
-        decoded_calldata.value()[1].GetString();
-    swap_info->destination_amount = "";
-    swap_info->destination_amount_min = decoded_calldata.value()[3].GetString();
-    swap_info->recipient = "";  // unknown receiver
-    swap_info->provider = mojom::SwapProvider::kZeroEx;
-
-    return std::make_tuple(mojom::TransactionType::ETHSwap,
-                           std::vector<std::string>{},
-                           std::vector<std::string>{}, std::move(swap_info));
-  } else if (selector == kFillOtcOrderForEthSelector ||
-             selector == kFillOtcOrderWithEthSelector ||
-             selector == kFillOtcOrderSelector) {
-    // The following block handles decoding of calldata for 0x OTC orders.
-    // These orders are filled by professional market makers using the RFQ-T
-    // system by 0x.
-
-    // TXN: token → ETH
-    // Function:
-    // fillOtcOrderForEth((address buyToken,
-    //                     address sellToken,
-    //                     uint128 buyAmount,
-    //                     uint128 sellAmount,
-    //                     address maker,
-    //                     address taker,
-    //                     address txOrigin,
-    //                     uint256 expiryAndNonce),
-    //                    (uint8 signatureType,
-    //                     uint8 v,
-    //                     bytes32 r,
-    //                     bytes32 s),
-    //                    uint128 takerTokenFillAmount)
-    //
-    // Ref:
-    // https://github.com/0xProject/protocol/blob/bcbfbfa16c2ec98e64cd1f2f2f55a134baf3dbf6/contracts/zero-ex/contracts/src/features/OtcOrdersFeature.sol#L109-L113
-
-    // TXN: ETH → token
-    // Function:
-    // fillOtcOrderWithEth((address buyToken,
-    //                      address sellToken,
-    //                      uint128 buyAmount,
-    //                      uint128 sellAmount,
-    //                      address maker,
-    //                      address taker,
-    //                      address txOrigin,
-    //                      uint256 expiryAndNonce),
-    //                     (uint8 signatureType,
-    //                      uint8 v,
-    //                      bytes32 r,
-    //                      bytes32 s))
-    //
-    // Ref:
-    // https://github.com/0xProject/protocol/blob/bcbfbfa16c2ec98e64cd1f2f2f55a134baf3dbf6/contracts/zero-ex/contracts/src/features/OtcOrdersFeature.sol#L139-L148
-
-    // TXN: token → token
-    // Function:
-    // fillOtcOrder((address buyToken,
-    //               address sellToken,
-    //               uint128 buyAmount,
-    //               uint128 sellAmount,
-    //               address maker,
-    //               address taker,
-    //               address txOrigin,
-    //               uint256 expiryAndNonce),
-    //              (uint8 signatureType,
-    //               uint8 v,
-    //               bytes32 r,
-    //               bytes32 s),
-    //              uint128 takerTokenFillAmount)
-    //
-    // Ref:
-    // https://github.com/0xProject/protocol/blob/bcbfbfa16c2ec98e64cd1f2f2f55a134baf3dbf6/contracts/zero-ex/contracts/src/features/OtcOrdersFeature.sol#L68C6-L79
-
-    // NOTE: tuples with static types can be flattened for easier decoding.
-    // For example, fillOtcOrder() takes three arguments, the first two being
-    // tuples. However, we can also consider this function to be taking 13
-    // arguments.
-    //
-    // For the purpose of parsing transaction data corresponding to ETHSwap, we
-    // are only interested in the first four fields. Ignore the rest of the
-    // arguments as extraneous data.
+  } else if (selector == kERC721SetApprovalForAllSelector) {
     auto type = eth_abi::Tuple()
                     .AddTupleType(eth_abi::Address())
-                    .AddTupleType(eth_abi::Address())
-                    .AddTupleType(eth_abi::Uint(128))
-                    .AddTupleType(eth_abi::Uint(128))
+                    .AddTupleType(eth_abi::Bool())
                     .build();
-    auto decoded_calldata = ABIDecode(type, calldata);
-    if (!decoded_calldata) {
+    auto decoded = ABIDecode(type, calldata);
+    if (!decoded) {
       return std::nullopt;
     }
 
-    std::vector<std::string> tx_args;
-    auto swap_info = mojom::SwapInfo::New();
-
-    if (selector == kFillOtcOrderForEthSelector) {
-      // The output of the swap is actually WETH but fillOtcOrderForEth()
-      // automatically unwraps it to ETH. The buyToken is therefore the
-      // 0x native asset contract.
-      swap_info->source_token_address = decoded_calldata.value()[1].GetString();
-      swap_info->destination_token_address = kNativeEVMAssetContractAddress;
-    } else if (selector == kFillOtcOrderWithEthSelector) {
-      // The input of the swap is actually ETH but fillOtcOrderWithEth()
-      // automatically wraps it to WETH. The sellToken is therefore the 0x
-      // native asset contract.
-      //
-      // Clients are free to use the sellAmount extracted from calldata or
-      // the value field of the swap transaction. The latter is more reliable
-      // since OTC trades may include protocol fees payable in ETH that get
-      // added to the sellAmount.
-      swap_info->source_token_address = kNativeEVMAssetContractAddress;
-      swap_info->destination_token_address =
-          decoded_calldata.value()[0].GetString();
-    } else if (selector == kFillOtcOrderSelector) {
-      swap_info->source_token_address = decoded_calldata.value()[1].GetString();
-      swap_info->destination_token_address =
-          decoded_calldata.value()[0].GetString();
-    }
-
-    // source_chain_id and destination_chain_id are filled by caller.
-    swap_info->source_coin = mojom::CoinType::ETH;
-    swap_info->source_chain_id = "";
-    swap_info->source_amount = decoded_calldata.value()[3].GetString();
-    swap_info->destination_coin = mojom::CoinType::ETH;
-    swap_info->destination_chain_id = "";
-    swap_info->destination_amount = "";
-    swap_info->destination_amount_min = decoded_calldata.value()[2].GetString();
-    swap_info->recipient = "";  // unknown receiver
-    swap_info->provider = mojom::SwapProvider::kZeroEx;
-
-    return std::make_tuple(mojom::TransactionType::ETHSwap,
-                           std::vector<std::string>{},
-                           std::vector<std::string>{}, std::move(swap_info));
+    return std::make_tuple(
+        mojom::TransactionType::ERC721SetApprovalForAll,
+        std::vector<std::string>{"address",  // operator
+                                 "bool"},    // approved
+        std::vector<std::string>{decoded.value()[0].GetString(),
+                                 decoded.value()[1].GetBool() ? "0x1" : "0x0"},
+        nullptr);
   } else if (selector == kCowOrderSellEthSelector) {
     // The following block handles decoding of calldata for CoW swap orders,
     // when the sell asset is the native asset (ETH, XDAI, etc).
@@ -1453,6 +1129,34 @@ std::optional<std::string> GetFinalRecipient(
   }
 
   return base_to;
+}
+
+bool IsNonPayableTokenTransactionType(mojom::TransactionType tx_type) {
+  switch (tx_type) {
+    case mojom::TransactionType::ERC20Transfer:
+    case mojom::TransactionType::ERC20Approve:
+    case mojom::TransactionType::ERC721TransferFrom:
+    case mojom::TransactionType::ERC721SafeTransferFrom:
+    case mojom::TransactionType::ERC721SetApprovalForAll:
+    case mojom::TransactionType::ERC1155SafeTransferFrom:
+      return true;
+    case mojom::TransactionType::ETHSend:
+    case mojom::TransactionType::ETHSwap:
+    case mojom::TransactionType::ETHFilForwarderTransfer:
+    case mojom::TransactionType::Other:
+    case mojom::TransactionType::SolanaSystemTransfer:
+    case mojom::TransactionType::SolanaSPLTokenTransfer:
+    case mojom::TransactionType::
+        SolanaSPLTokenTransferWithAssociatedTokenAccountCreation:
+    case mojom::TransactionType::SolanaDappSignAndSendTransaction:
+    case mojom::TransactionType::SolanaDappSignTransaction:
+    case mojom::TransactionType::SolanaSwap:
+    case mojom::TransactionType::SolanaCompressedNftTransfer:
+    case mojom::TransactionType::CardanoSendLovelace:
+    case mojom::TransactionType::CardanoSendToken:
+      return false;
+  }
+  NOTREACHED();
 }
 
 }  // namespace brave_wallet

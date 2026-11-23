@@ -92,12 +92,14 @@ TEST_F(GetWalletTest, ServerOkNotLinked) {
         }
       )";
   auto result = SendRequest(std::move(response));
+  ASSERT_TRUE(result.has_value());
   EXPECT_EQ(result.value().wallet_provider, "");
   EXPECT_EQ(result.value().provider_id, "");
   EXPECT_FALSE(result.value().linked);
   EXPECT_FALSE(result.value().self_custody_available.empty());
-  EXPECT_TRUE(*result.value().self_custody_available.FindBool("solana"));
-  EXPECT_TRUE(*result.value().self_custody_available.FindBool("unrecongnized"));
+  EXPECT_EQ(result.value().self_custody_available.FindBool("solana"), true);
+  EXPECT_EQ(result.value().self_custody_available.FindBool("unrecongnized"),
+            true);
   EXPECT_FALSE(result.value().self_custody_available.FindBool("invalid"));
 }
 
@@ -122,6 +124,7 @@ TEST_F(GetWalletTest, ServerOKCurrentlyDisconnected) {
         }
       )";
   auto result = SendRequest(std::move(response));
+  ASSERT_TRUE(result.has_value());
   EXPECT_EQ(result.value().wallet_provider, constant::kWalletUphold);
   EXPECT_EQ(result.value().provider_id, "");
   EXPECT_FALSE(result.value().linked);
@@ -148,6 +151,7 @@ TEST_F(GetWalletTest, ServerOkFullyLinked) {
         }
       )";
   auto result = SendRequest(std::move(response));
+  ASSERT_TRUE(result.has_value());
   EXPECT_EQ(result.value().wallet_provider, constant::kWalletUphold);
   EXPECT_EQ(result.value().provider_id, "962ef3b8-bc12-4619-a349-c8083931b795");
   EXPECT_TRUE(result.value().linked);

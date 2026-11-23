@@ -8,7 +8,7 @@
 
 #include "chrome/browser/ui/views/tabs/dragging/dragging_tabs_session.h"
 
-class DraggingTabsSession : public DraggingTabsSessionChromium {
+class DraggingTabsSession : public DraggingTabsSession_ChromiumImpl {
  public:
   explicit DraggingTabsSession(
       DragSessionData drag_data,

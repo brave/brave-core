@@ -74,7 +74,6 @@ class TopSitesTileSource: NSObject {
 
     super.init()
 
-    frc.fetchRequest.fetchLimit = Self.maxNumberOfTiles
     frc.delegate = self
     do {
       try frc.performFetch()

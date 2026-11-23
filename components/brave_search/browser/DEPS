@@ -6,7 +6,7 @@ include_rules = [
 ]
 
 specific_include_rules = {
-  "brave_search_default_host_unittest\.cc": [
+  "brave_search_default_host_unittest\\.cc": [
     "+brave/components/l10n/common/test/scoped_default_locale.h",
   ],
 }

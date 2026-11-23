@@ -4,13 +4,59 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
+  - description: |
+      Rename the upstream class so Brave can replace it with its own
+      DraggingTabsSession.
+
+      The Brave class is declared in the chromium_src override of this header.
+    count: 0 # Every use of the class name.
+    rename_class:
+      class_name: DraggingTabsSession
+      rename: DraggingTabsSession_ChromiumImpl
+
   - description:
       'Remove final keyword from DraggingTabsSession to allow subclassing'
     drop_final:
-      class_name: DraggingTabsSession
+      class_name: DraggingTabsSession_ChromiumImpl
 
   - description:
       'Make the DraggingTabsSession destructor virtual to allow subclassing'
     make_virtual:
-      class_name: DraggingTabsSession
-      method_name: '~DraggingTabsSession'
+      class_name: DraggingTabsSession_ChromiumImpl
+      method_name: '~DraggingTabsSession_ChromiumImpl'
+
+  - description: |
+      Let the Brave version call the private methods it overrides and
+      GetPassKey().
+
+      DraggingTabsSessionBrave is an alias to the Brave class, declared in the
+      chromium_src override of this header.
+    add_friend:
+      class_name: DraggingTabsSession_ChromiumImpl
+      friend_type: DraggingTabsSessionBrave
+
+  - description: |
+      Provide GetPassKey() so the Brave version of DraggingTabsSession can call
+      TabStripModel's methods with the passkey.
+
+      The method is defined in the chromium_src override of
+      dragging_tabs_session.cc.
+    add_to_protected:
+      class_name: DraggingTabsSession_ChromiumImpl
+      code: base::PassKey<DraggingTabsSession_ChromiumImpl> GetPassKey();
+
+  - description: Make MoveAttached() virtual to override it in Brave.
+    make_virtual:
+      class_name: DraggingTabsSession_ChromiumImpl
+      method_name: MoveAttached
+
+  - description: Make GetAttachedDragPoint() virtual to override it in Brave.
+    make_virtual:
+      class_name: DraggingTabsSession_ChromiumImpl
+      method_name: GetAttachedDragPoint
+
+  - description:
+      Make CalculateGroupForDraggedTabs() virtual to override it in Brave.
+    make_virtual:
+      class_name: DraggingTabsSession_ChromiumImpl
+      method_name: CalculateGroupForDraggedTabs

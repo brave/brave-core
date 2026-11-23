@@ -377,6 +377,47 @@ describe('createFile', () => {
   })
 })
 
+describe('writeBinaryFile', () => {
+  const kBytes = new Uint8Array([0, 0xff, 0x25, 0x50])
+
+  it('creates a file with the given bytes', async () => {
+    const root = createFakeWorkspace()
+    expect(await ops.writeBinaryFile(root, 'out/a.pdf', kBytes)).toBe(
+      'Created out/a.pdf (4 bytes)',
+    )
+    expect(snapshotFakeWorkspace(root)).toEqual({ 'out/a.pdf': kBytes })
+  })
+
+  it('overwrites an existing file', async () => {
+    const root = createFakeWorkspace({ 'a.pdf': 'old contents' })
+    expect(await ops.writeBinaryFile(root, 'a.pdf', kBytes)).toBe(
+      'Overwrote a.pdf (4 bytes)',
+    )
+    expect(snapshotFakeWorkspace(root)).toEqual({ 'a.pdf': kBytes })
+  })
+
+  it('rejects a path that escapes the workspace', async () => {
+    const root = createFakeWorkspace()
+    await expect(ops.writeBinaryFile(root, '../a.pdf', kBytes)).rejects.toThrow(
+      'path escapes the workspace root',
+    )
+  })
+})
+
+describe('normalizePath', () => {
+  it('drops empty and . segments', () => {
+    expect(ops.normalizePath('./a//b/./c.html')).toBe('a/b/c.html')
+    expect(ops.normalizePath('/a/')).toBe('a')
+    expect(ops.normalizePath('')).toBe('')
+  })
+
+  it('rejects a path that escapes the workspace', () => {
+    expect(() => ops.normalizePath('a/../../b')).toThrow(
+      'path escapes the workspace root',
+    )
+  })
+})
+
 describe('appendFile', () => {
   it('appends to an existing file', async () => {
     const root = createFakeWorkspace({ 'a.txt': 'one\n' })

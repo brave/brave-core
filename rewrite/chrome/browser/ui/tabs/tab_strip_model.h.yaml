@@ -10,13 +10,13 @@ substitutions:
       method_name: '~TabStripModel'
 
   - description: |
-      Rename `DraggingTabsSession` to `DraggingTabsSessionChromium`.
+      Rename `DraggingTabsSession` to `DraggingTabsSession_ChromiumImpl`.
 
       This avoids a name collision with Brave's `DraggingTabsSession` class.
     count: 0
     rename_class:
       class_name: DraggingTabsSession
-      rename: DraggingTabsSessionChromium
+      rename: DraggingTabsSession_ChromiumImpl
 
   - description: Let the Brave subclass reach private members.
     add_friend:

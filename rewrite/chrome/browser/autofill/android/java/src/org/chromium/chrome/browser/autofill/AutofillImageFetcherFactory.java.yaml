@@ -1,0 +1,39 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Import the image fetcher factory for the fallback fetcher.
+    regex:
+      re_pattern: '(import org\.chromium\.chrome\.browser\.profiles\.Profile;)'
+      replace: |-
+        \1
+        import org.chromium.components.image_fetcher.ImageFetcherConfig;
+        import org.chromium.components.image_fetcher.ImageFetcherFactory;
+
+  - description: |
+      The native AutofillImageFetcher is disabled. Upstream UI expects a
+      non-null fetcher, so hand out a cache-only one. Prefetches only come
+      from native, so it never fetches anything.
+    regex:
+      pattern:
+        'return AutofillImageFetcherFactoryJni.get().getForProfile(profile);'
+      replace: |-
+        if (sBraveFetcher == null) {
+                    sBraveFetcher =
+                            new AutofillImageFetcher(
+                                    ImageFetcherFactory.createImageFetcher(
+                                            ImageFetcherConfig.DISK_CACHE_ONLY,
+                                            profile.getOriginalProfile().getProfileKey()));
+                }
+                return sBraveFetcher;
+
+  - description: Hold the cache-only fetcher.
+    regex:
+      re_pattern:
+        '(private @Nullable static AutofillImageFetcher
+        sAutofillImageFetcherForTesting;)'
+      replace: |-
+        \1
+            private @Nullable static AutofillImageFetcher sBraveFetcher;

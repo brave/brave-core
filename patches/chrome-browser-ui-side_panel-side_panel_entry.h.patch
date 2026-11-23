@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/side_panel/side_panel_entry.h b/chrome/browser/ui/side_panel/side_panel_entry.h
-index ac8c0d36663e7c5b5a5171f875cf34844fd7ebad..e4a0063c57dd1fe467b13ff66c05afa23a4524e6 100644
+index ac8c0d36663e7c5b5a5171f875cf34844fd7ebad..cd9febdfbc225d3fab8664ff9f997e6912effa41 100644
 --- a/chrome/browser/ui/side_panel/side_panel_entry.h
 +++ b/chrome/browser/ui/side_panel/side_panel_entry.h
 @@ -33,7 +33,7 @@ enum class SidePanelEntryHideReason;
@@ -11,3 +11,12 @@ index ac8c0d36663e7c5b5a5171f875cf34844fd7ebad..e4a0063c57dd1fe467b13ff66c05afa2
    using CreateContentCallback =
        base::RepeatingCallback<SidePanelNativeView(SidePanelEntryScope&)>;
    using Id = SidePanelEntryId;
+@@ -153,6 +153,8 @@ class SidePanelEntry final : public ui::PropertyHandler {
+     default_content_width_ = width;
+   }
+ 
++  bool IsBeingObservedBy(SidePanelEntryObserver* observer);
++
+  private:
+   const SidePanelType type_;
+   const Key key_;

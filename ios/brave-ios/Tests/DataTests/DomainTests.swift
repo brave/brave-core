@@ -292,6 +292,59 @@ class DomainTests: CoreDataTestCase {
     XCTAssertFalse(cardanoDappDomain.walletPermissions(for: .ada, account: walletCardanoAccount))
   }
 
+  @MainActor func testWalletDappPermissionsAreOriginScoped() {
+    let apex = URL(string: "https://uniswap.org")!
+    let www = URL(string: "https://www.uniswap.org")!
+    let m = URL(string: "https://m.uniswap.org")!
+    let mobile = URL(string: "https://mobile.uniswap.org")!
+    let insecure = URL(string: "http://uniswap.org")!
+    let context = DataController.viewContext
+
+    Domain.setWalletPermissions(
+      forUrl: apex,
+      coin: .eth,
+      accounts: [walletEthAccount],
+      grant: true,
+      context: .existing(context)
+    )
+
+    XCTAssertEqual(Domain.walletPermissions(forUrl: apex, coin: .eth), [walletEthAccount])
+    // `www.`/`m.`/`mobile.` and a differing scheme are all distinct origins
+    // and must not inherit the grant.
+    XCTAssertNil(Domain.walletPermissions(forUrl: www, coin: .eth))
+    XCTAssertNil(Domain.walletPermissions(forUrl: m, coin: .eth))
+    XCTAssertNil(Domain.walletPermissions(forUrl: mobile, coin: .eth))
+    XCTAssertNil(Domain.walletPermissions(forUrl: insecure, coin: .eth))
+
+    // A grant on a subdomain must not leak back to the apex.
+    Domain.setWalletPermissions(
+      forUrl: www,
+      coin: .eth,
+      accounts: [walletEthAccount2],
+      grant: true,
+      context: .existing(context)
+    )
+    XCTAssertEqual(Domain.walletPermissions(forUrl: www, coin: .eth), [walletEthAccount2])
+    XCTAssertEqual(Domain.walletPermissions(forUrl: apex, coin: .eth), [walletEthAccount])
+    XCTAssertNil(Domain.walletPermissions(forUrl: m, coin: .eth))
+    XCTAssertNil(Domain.walletPermissions(forUrl: mobile, coin: .eth))
+    XCTAssertNil(Domain.walletPermissions(forUrl: insecure, coin: .eth))
+  }
+
+  @MainActor func testWalletDappPermissionKeyIgnoresPathAndQuery() {
+    let page = URL(string: "https://app.uniswap.org/swap?chain=mainnet#quote")!
+    let origin = URL(string: "https://app.uniswap.org")!
+    let context = DataController.viewContext
+
+    Domain.setWalletPermissions(
+      forUrl: page,
+      coin: .eth,
+      accounts: [walletEthAccount],
+      grant: true,
+      context: .existing(context)
+    )
+    XCTAssertEqual(Domain.walletPermissions(forUrl: origin, coin: .eth), [walletEthAccount])
+  }
 }
 
 extension Domain {

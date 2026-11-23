@@ -10,6 +10,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "chrome/browser/ui/tab_modal_confirm_dialog_delegate.h"
+#include "ui/base/mojom/window_open_disposition.mojom-forward.h"
 
 namespace content {
 class WebContents;
@@ -36,7 +37,7 @@ class FullDiskAccessConfirmDialogDelegate
   std::u16string GetLinkText() const override;
   std::u16string GetAcceptButtonTitle() override;
   void OnAccepted() override;
-  void OnLinkClicked(WindowOpenDisposition disposition) override;
+  void OnLinkClicked(ui::mojom::WindowOpenDisposition disposition) override;
 
   raw_ptr<BrowserWindowInterface> browser_;
 };

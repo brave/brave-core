@@ -102,7 +102,6 @@ TEST_F(ZCashAutoSyncManagerTest, InitialSync) {
   EXPECT_FALSE(zcash_auto_sync_manager().IsStarted());
   zcash_auto_sync_manager().Start();
   EXPECT_TRUE(zcash_auto_sync_manager().IsStarted());
-  task_environment().RunUntilIdle();
 }
 
 TEST_F(ZCashAutoSyncManagerTest, TimerHit) {
@@ -120,9 +119,7 @@ TEST_F(ZCashAutoSyncManagerTest, TimerHit) {
   EXPECT_FALSE(zcash_auto_sync_manager().IsStarted());
   zcash_auto_sync_manager().Start();
   EXPECT_TRUE(zcash_auto_sync_manager().IsStarted());
-  task_environment().RunUntilIdle();
-  task_environment().AdvanceClock(base::Minutes(10));
-  task_environment().RunUntilIdle();
+  task_environment().FastForwardBy(kZCashAutoSyncRefreshInterval);
 }
 
 }  // namespace brave_wallet

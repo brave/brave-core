@@ -32,6 +32,7 @@
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
@@ -68,6 +69,38 @@ std::string NonWriteableScriptProperty(const std::string& property) {
          !(window.ethereum.%s === "brave");)",
       property, property);
 }
+
+// Resolves with the provider's chain id once it equals `chain_id`. The check
+// and the listener registration run in one JS task, so a change cannot slip
+// between them. The event arguments are used because the provider updates its
+// cached chainId after firing the events. `connect` is needed too: until the
+// provider's first chain id lookup returns, chainId is empty, and that lookup
+// may already see the new chain, which fires `connect` and suppresses the
+// following `chainChanged`.
+std::string WaitForChainIdScript(const std::string& provider,
+                                 const std::string& chain_id) {
+  return absl::StrFormat(
+      R"(new Promise((resolve) => {
+           const expected = '%s';
+           const provider = window.%s;
+           if (provider.chainId === expected) {
+             resolve(expected);
+             return;
+           }
+           provider.on('chainChanged', (id) => {
+             if (id === expected) {
+               resolve(id);
+             }
+           });
+           provider.on('connect', (info) => {
+             if (info.chainId === expected) {
+               resolve(info.chainId);
+             }
+           });
+         }))",
+      chain_id, provider);
+}
+
 std::string NonWriteableScriptMethod(const std::string& provider,
                                      const std::string& method) {
   return absl::StrFormat(
@@ -129,7 +162,7 @@ class JSEthereumProviderBrowserTest : public InProcessBrowserTest {
   }
 
   void ReloadAndWaitForLoadStop() {
-    chrome::Reload(browser(), WindowOpenDisposition::kCurrentTab);
+    chrome::Reload(browser(), ui::mojom::WindowOpenDisposition::kCurrentTab);
     ASSERT_TRUE(content::WaitForLoadStop(web_contents()));
   }
 
@@ -524,13 +557,16 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, OnlyWriteOwnProperty) {
 
   const std::string get_chain_id = "window.ethereum.chainId";
 
-  ASSERT_EQ(content::EvalJs(primary_main_frame(), get_chain_id).ExtractString(),
+  ASSERT_EQ(content::EvalJs(primary_main_frame(),
+                            WaitForChainIdScript("ethereum", "0x1")),
             "0x1");
 
-  GetJsonRpcService()->SetNetwork(
-      "0xaa36a7", brave_wallet::mojom::CoinType::ETH, std::nullopt);
-  // Needed so ChainChangedEvent observers run
-  base::RunLoop().RunUntilIdle();
+  ASSERT_TRUE(GetJsonRpcService()->SetNetwork(
+      "0xaa36a7", brave_wallet::mojom::CoinType::ETH, std::nullopt));
+  // The chain change reaches the renderer asynchronously, so wait for it.
+  ASSERT_EQ(content::EvalJs(primary_main_frame(),
+                            WaitForChainIdScript("ethereum", "0xaa36a7")),
+            "0xaa36a7");
   EXPECT_EQ(content::EvalJs(primary_main_frame(), get_chain_id).ExtractString(),
             "0xaa36a7");
 
@@ -544,10 +580,14 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, OnlyWriteOwnProperty) {
                 .ExtractString(),
             "0x89");
 
-  GetJsonRpcService()->SetNetwork("0x4", brave_wallet::mojom::CoinType::ETH,
-                                  std::nullopt);
-  // Needed so ChainChangedEvent observers run
-  base::RunLoop().RunUntilIdle();
+  // 0x1 is used because 0x4 is not a known chain.
+  ASSERT_TRUE(GetJsonRpcService()->SetNetwork(
+      "0x1", brave_wallet::mojom::CoinType::ETH, std::nullopt));
+  // Wait for the Brave provider to receive the chain change, then check that
+  // the overwritten window.ethereum was left alone.
+  ASSERT_EQ(content::EvalJs(primary_main_frame(),
+                            WaitForChainIdScript("braveEthereum", "0x1")),
+            "0x1");
   EXPECT_EQ(content::EvalJs(primary_main_frame(), get_chain_id).ExtractString(),
             "0x89");
 }

@@ -282,7 +282,7 @@ def main():
     if options.clear:
         try:
             shutil.rmtree(options.symbols_dir)
-        except:  # pylint: disable=bare-except
+        except OSError:
             pass
 
     parser = gn_helpers.GNValueParser(options.binary)

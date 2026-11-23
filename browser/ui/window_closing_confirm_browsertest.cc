@@ -6,6 +6,7 @@
 #include "base/byte_size.h"
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/run_loop.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/window_closing_confirm/window_closing_confirm_controller.h"
@@ -33,6 +34,7 @@
 #include "content/public/test/download_test_observer.h"
 #include "content/public/test/test_download_http_response.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/views/widget/widget_observer.h"
 
 namespace {
@@ -71,6 +73,8 @@ class WindowClosingConfirmBrowserTest : public InProcessBrowserTest,
 
   void TearDownOnMainThread() override {
     WindowClosingConfirmController::SuppressDialogForTesting(true);
+    WindowClosingConfirmDialogView::SetCreationCallbackForTesting(
+        base::NullCallback());
 
     InProcessBrowserTest::TearDownOnMainThread();
   }
@@ -190,7 +194,7 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest, TestWithTwoNTPTabs) {
   // Two tabs. Need to ask browser closing.
   ui_test_utils::NavigateToURLWithDisposition(
       browser_window, GURL(url::kAboutBlankURL),
-      WindowOpenDisposition::kNewForegroundTab,
+      ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   EXPECT_TRUE(ShouldAskBeforeClosing(browser_window));
 
@@ -210,7 +214,7 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest, TestWithQuit) {
   BrowserWindowInterface* browser_window = browser();
   ui_test_utils::NavigateToURLWithDisposition(
       browser_window, GURL(url::kAboutBlankURL),
-      WindowOpenDisposition::kNewForegroundTab,
+      ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   // Should ask closing.
   EXPECT_TRUE(ShouldAskBeforeClosing(browser_window));
@@ -227,7 +231,7 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest,
   // Make two tabs.
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL(url::kAboutBlankURL),
-      WindowOpenDisposition::kNewForegroundTab,
+      ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   // Should ask closing for this browser window as this has more than one tab.
   EXPECT_TRUE(ShouldAskBeforeClosing(browser()));
@@ -249,7 +253,7 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest,
       browser_window, embedded_test_server()->GetURL("/beforeunload.html"))));
   ui_test_utils::NavigateToURLWithDisposition(
       browser_window, GURL(url::kAboutBlankURL),
-      WindowOpenDisposition::kNewForegroundTab,
+      ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   PrepareForBeforeUnloadDialog(browser_window);
@@ -284,7 +288,7 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest,
       browser(), embedded_test_server()->GetURL("/beforeunload.html")));
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL(url::kAboutBlankURL),
-      WindowOpenDisposition::kNewForegroundTab,
+      ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   PrepareForBeforeUnloadDialog(browser());
   EXPECT_FALSE(BrowserCloseManager::BrowserClosingStarted());
@@ -349,7 +353,7 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest,
   // Make browser has two tabs.
   ui_test_utils::NavigateToURLWithDisposition(
       browser_window, GURL(url::kAboutBlankURL),
-      WindowOpenDisposition::kNewForegroundTab,
+      ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   std::unique_ptr<content::DownloadTestObserver> progress_waiter(
@@ -357,7 +361,7 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest,
 
   // Start downloading a file, wait for it to be created.
   ui_test_utils::NavigateToURLWithDisposition(
-      browser_window, url, WindowOpenDisposition::kCurrentTab,
+      browser_window, url, ui::mojom::WindowOpenDisposition::kCurrentTab,
       ui_test_utils::BROWSER_TEST_NO_WAIT);
   progress_waiter->WaitForFinished();
 

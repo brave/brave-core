@@ -20,7 +20,7 @@ import {
   EmailAliasesServiceObserverReceiver,
   EmailAliasesPromoHandlerInterface,
   EmailAliasesPromoHandler,
-} from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+} from 'gen/brave/components/email_aliases/email_aliases.mojom-webui.js'
 import Col from './content/styles/Col'
 import Row from './content/styles/Row'
 import NytIcon from './content/assets/nyt-logo.svg'

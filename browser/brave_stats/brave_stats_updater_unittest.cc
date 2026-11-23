@@ -23,7 +23,6 @@
 #include "brave/browser/serp_metrics/serp_metrics_all_profiles_aggregator_mock.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
-#include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/misc_metrics/general_browser_usage.h"
 #include "brave/components/serp_metrics/pref_names.h"
@@ -88,7 +87,11 @@ class BraveStatsUpdaterTest : public testing::Test {
     brave_stats::BraveStatsUpdaterParams::SetFirstRunForTest(true);
   }
 
-  void TearDown() override { brave_stats_updater_ = nullptr; }
+  void TearDown() override {
+    brave_stats_updater_ = nullptr;
+    brave_stats::BraveStatsUpdaterParams::SetFirstRunForTest(false);
+    SetCurrentTimeForTest(base::Time());
+  }
 
   PrefService* GetLocalState() { return &testing_local_state_; }
   PrefRegistrySimple* GetLocalStateRegistry() {
@@ -500,112 +503,6 @@ TEST_F(BraveStatsUpdaterTest, HasCorrectWeekOfInstallation) {
     EXPECT_EQ(brave_stats_updater_params.GetWeekOfInstallationParam(),
               "2019-03-25");
   }
-}
-
-TEST_F(BraveStatsUpdaterTest, GetIsoWeekNumber) {
-  base::Time::Exploded exploded;
-  exploded.hour = 0;
-  exploded.minute = 0;
-  exploded.second = 0;
-  exploded.millisecond = 0;
-  exploded.day_of_week = 1;
-  exploded.day_of_month = 29;
-  exploded.month = 7;
-  exploded.year = 2019;
-
-  base::Time time;
-  EXPECT_TRUE(base::Time::FromLocalExploded(exploded, &time));
-  EXPECT_EQ(brave_stats::GetIsoWeekNumber(time), 31);
-
-  exploded.day_of_month = 30;
-  exploded.month = 9;
-
-  EXPECT_TRUE(base::Time::FromLocalExploded(exploded, &time));
-  EXPECT_EQ(brave_stats::GetIsoWeekNumber(time), 40);
-
-  exploded.day_of_month = 1;
-  exploded.month = 9;
-  exploded.day_of_week = 0;
-
-  EXPECT_TRUE(base::Time::FromLocalExploded(exploded, &time));
-  EXPECT_EQ(brave_stats::GetIsoWeekNumber(time), 35);
-}
-
-TEST_F(BraveStatsUpdaterTest, UsageBitstringDaily) {
-  base::Time last_reported_use;
-  base::Time last_use;
-
-  EXPECT_TRUE(base::Time::FromString("2020-03-31", &last_use));
-  EXPECT_TRUE(base::Time::FromString("2020-03-30", &last_reported_use));
-
-  brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), kToday, kThisWeek, kThisMonth);
-
-  EXPECT_EQ(0b001, brave_stats::UsageBitfieldFromTimestamp(last_use,
-                                                           last_reported_use));
-}
-
-TEST_F(BraveStatsUpdaterTest, UsageBitstringWeekly) {
-  base::Time last_reported_use;
-  base::Time last_use;
-
-  EXPECT_TRUE(base::Time::FromString("2020-03-31", &last_use));
-  EXPECT_TRUE(base::Time::FromString("2020-03-26", &last_reported_use));
-
-  brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), kToday, kThisWeek, kThisMonth);
-
-  EXPECT_EQ(0b011, brave_stats::UsageBitfieldFromTimestamp(last_use,
-                                                           last_reported_use));
-}
-
-TEST_F(BraveStatsUpdaterTest, UsageBitstringMonthlySameWeek) {
-  base::Time last_reported_use;
-  base::Time last_use;
-
-  EXPECT_TRUE(base::Time::FromString("2020-07-01", &last_use));
-  EXPECT_TRUE(base::Time::FromString("2020-06-30", &last_reported_use));
-
-  brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), kToday, kThisWeek, kThisMonth);
-  EXPECT_EQ(0b101, brave_stats::UsageBitfieldFromTimestamp(last_use,
-                                                           last_reported_use));
-}
-
-TEST_F(BraveStatsUpdaterTest, UsageBitstringMonthlyDiffWeek) {
-  base::Time last_reported_use;
-  base::Time last_use;
-
-  EXPECT_TRUE(base::Time::FromString("2020-03-01", &last_use));
-  EXPECT_TRUE(base::Time::FromString("2020-02-15", &last_reported_use));
-
-  brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), kToday, kThisWeek, kThisMonth);
-  EXPECT_EQ(0b111, brave_stats::UsageBitfieldFromTimestamp(last_use,
-                                                           last_reported_use));
-}
-
-TEST_F(BraveStatsUpdaterTest, UsageBitstringInactive) {
-  base::Time last_reported_use;
-  base::Time last_use;
-
-  EXPECT_TRUE(base::Time::FromString("2020-03-31", &last_use));
-  EXPECT_TRUE(base::Time::FromString("2020-03-31", &last_reported_use));
-
-  brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), kToday, kThisWeek, kThisMonth);
-  EXPECT_EQ(0b000, brave_stats::UsageBitfieldFromTimestamp(last_use,
-                                                           last_reported_use));
-}
-
-TEST_F(BraveStatsUpdaterTest, UsageBitstringNeverUsed) {
-  base::Time last_reported_use;
-  base::Time last_use;
-
-  brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), kToday, kThisWeek, kThisMonth);
-  EXPECT_EQ(0b000, brave_stats::UsageBitfieldFromTimestamp(last_use,
-                                                           last_reported_use));
 }
 
 TEST_F(BraveStatsUpdaterTest, UsagePingRequest) {

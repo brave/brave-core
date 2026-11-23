@@ -26,11 +26,11 @@
 #include "ui/views/view_utils.h"
 
 #if BUILDFLAG(IS_LINUX)
-#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/shell_integration_linux.h"
-#include "chrome/browser/ui/browser_init_state.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
-#include "chrome/browser/ui/browser_window/public/create_browser_window.h"
+#include "chrome/browser/ui/views/frame/browser_native_widget_aura_linux.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/browser_widget.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/picture_in_picture_window_controller.h"
 #endif  // BUILDFLAG(IS_LINUX)
@@ -53,29 +53,25 @@ BraveVideoOverlayWindowViews::~BraveVideoOverlayWindowViews() = default;
 // match the window to the browser's (or the source web app's) .desktop entry.
 // Upstream leaves these unset, so the window ends up with neither.
 void BraveVideoOverlayWindowViews::Init(views::Widget::InitParams params) {
-  // Default to the browser's identity, matching what
-  // BrowserNativeWidgetAuraLinux::GetWidgetParams() sets for browser windows.
   params.wm_class_name = shell_integration_linux::GetProgramClassName();
   params.wm_class_class = shell_integration_linux::GetProgramClassClass();
   params.wayland_app_id = params.wm_class_class;
 
-  // Videos from an installed web app window carry the app's identity instead,
-  // like the Windows taskbar-id handling in VideoOverlayWindowViews::Create().
+  // A video from a browser window takes that window's identity: its web app's,
+  // or its profile's desktop entry, like the Windows taskbar-id handling in
+  // VideoOverlayWindowViews::Create().
   auto* tab = tabs::TabInterface::MaybeGetFromContents(
       GetController()->GetWebContents());
   if (auto* browser = tab ? tab->GetBrowserWindowInterface() : nullptr) {
-    const auto type = browser->GetType();
-    if (type == BrowserWindowInterface::Type::TYPE_APP ||
-        type == BrowserWindowInterface::Type::TYPE_APP_POPUP) {
-      const auto& app_name =
-          BrowserInitState::From(browser)->create_params().app_name;
-      params.wm_class_name =
-          shell_integration_linux::GetWMClassFromAppName(app_name);
-      if (Profile* profile = browser->GetProfile()) {
-        params.wayland_app_id = shell_integration_linux::GetXdgAppIdForWebApp(
-            app_name, profile->GetPath());
-      }
-    }
+    const BrowserNativeWidgetAuraLinux::WindowClass window_class =
+        static_cast<BrowserNativeWidgetAuraLinux*>(
+            BrowserView::GetBrowserViewForBrowser(browser)
+                ->browser_widget()
+                ->browser_native_widget())
+            ->GetWindowClass();
+    params.wm_class_name = window_class.wm_class_name;
+    params.wm_class_class = window_class.wm_class_class;
+    params.wayland_app_id = window_class.wayland_app_id;
   }
 
   views::Widget::Init(std::move(params));

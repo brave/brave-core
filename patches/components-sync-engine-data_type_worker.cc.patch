@@ -1,0 +1,25 @@
+diff --git a/components/sync/engine/data_type_worker.cc b/components/sync/engine/data_type_worker.cc
+index a02fa2b33ba35551f24310cbad1938a01e38795c..93da624983917ac9a4abed6c072fdcd4408b8d37 100644
+--- a/components/sync/engine/data_type_worker.cc
++++ b/components/sync/engine/data_type_worker.cc
+@@ -28,6 +28,7 @@
+ #include "base/time/time.h"
+ #include "base/trace_event/memory_usage_estimator.h"
+ #include "base/uuid.h"
++#include "brave/components/sync/engine/brave_commit_encryption_check.h"
+ #include "components/autofill/core/browser/webdata/payments/payments_sync_util.h"
+ #include "components/sync/base/client_tag_hash.h"
+ #include "components/sync/base/data_type.h"
+@@ -972,6 +973,12 @@ std::unique_ptr<CommitContribution> DataTypeWorker::GetContribution(
+          (data_type_state_.encryption_key_name() ==
+           cryptographer_->GetPrimaryEncryptionKeyName()));
+ 
++  if (DropUnencryptedCommitRequests(type_, passphrase_type_, &response) > 0) {
++    ReportDroppedUnencryptedCommits(type_);
++  }
++  if (response.empty()) {
++    return nullptr;
++  }
+   return std::make_unique<CommitContributionImpl>(
+       type_, data_type_state_.type_context(), std::move(response),
+       base::BindOnce(&DataTypeWorker::OnCommitResponse,

@@ -248,7 +248,7 @@ public class WindowProtection {
           UIView.animate(
             withDuration: 0.1,
             animations: { [self] in
-              lockedViewController.view.alpha = 0.0
+              self.lockedViewController.view.alpha = 0.0
             },
             completion: { [self] _ in
               isVisible = false

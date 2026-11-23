@@ -6,16 +6,21 @@
 #include "brave/components/web_discovery/browser/credential_manager.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/base64.h"
+#include "base/containers/flat_set.h"
 #include "base/files/file_util.h"
+#include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_writer.h"
 #include "base/path_service.h"
-#include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/web_discovery/browser/pref_names.h"
@@ -90,6 +95,22 @@ class WebDiscoveryCredentialManagerTest : public testing::Test {
     credential_manager_->UseFixedSeedForTesting();
   }
 
+  // Calls JoinGroups() and waits until all three credentials are stored.
+  void JoinGroupsAndWait() {
+    credential_manager_->JoinGroups();
+    ASSERT_TRUE(base::test::RunUntil([&]() {
+      return profile_prefs_.GetDict(kAnonymousCredentialsDict).size() == 3u;
+    }));
+  }
+
+  std::optional<std::vector<uint8_t>> SignAndWait(
+      const std::vector<uint8_t>& message,
+      const std::vector<uint8_t>& basename) {
+    base::test::TestFuture<std::optional<std::vector<uint8_t>>> future;
+    credential_manager_->Sign(message, basename, future.GetCallback());
+    return future.Get();
+  }
+
   void HandleRequest(const network::ResourceRequest& request) {
     url_loader_factory_.ClearResponses();
     std::string response;
@@ -129,8 +150,7 @@ class WebDiscoveryCredentialManagerTest : public testing::Test {
 };
 
 TEST_F(WebDiscoveryCredentialManagerTest, JoinGroups) {
-  credential_manager_->JoinGroups();
-  task_environment_.RunUntilIdle();
+  ASSERT_NO_FATAL_FAILURE(JoinGroupsAndWait());
 
   EXPECT_EQ(join_requests_made_, 3u);
   join_requests_made_ = 0;
@@ -144,8 +164,7 @@ TEST_F(WebDiscoveryCredentialManagerTest, JoinGroups) {
 }
 
 TEST_F(WebDiscoveryCredentialManagerTest, LoadKeysFromStorage) {
-  credential_manager_->JoinGroups();
-  task_environment_.RunUntilIdle();
+  ASSERT_NO_FATAL_FAILURE(JoinGroupsAndWait());
 
   EXPECT_EQ(join_requests_made_, 3u);
   join_requests_made_ = 0;
@@ -162,37 +181,22 @@ TEST_F(WebDiscoveryCredentialManagerTest, LoadKeysFromStorage) {
 TEST_F(WebDiscoveryCredentialManagerTest, Sign) {
   std::vector<uint8_t> message({0, 1, 2, 3, 4});
   std::vector<uint8_t> basename({5, 6, 7, 8, 9});
-  credential_manager_->Sign(
-      message, basename,
-      base::BindLambdaForTesting(
-          [&](const std::optional<std::vector<uint8_t>> signature) {
-            EXPECT_FALSE(signature);
-          }));
-  task_environment_.RunUntilIdle();
+  // No credentials yet.
+  EXPECT_FALSE(SignAndWait(message, basename));
 
-  credential_manager_->JoinGroups();
-  task_environment_.RunUntilIdle();
+  ASSERT_NO_FATAL_FAILURE(JoinGroupsAndWait());
 
   base::flat_set<std::vector<uint8_t>> signatures;
   for (size_t i = 0; i < 3; i++) {
-    credential_manager_->Sign(
-        message, basename,
-        base::BindLambdaForTesting(
-            [&](const std::optional<std::vector<uint8_t>> signature) {
-              ASSERT_TRUE(signature);
-              EXPECT_FALSE(signature->empty());
-              EXPECT_FALSE(signatures.contains(*signature));
-              signatures.insert(*signature);
-            }));
+    auto signature = SignAndWait(message, basename);
+    ASSERT_TRUE(signature);
+    EXPECT_FALSE(signature->empty());
+    EXPECT_FALSE(signatures.contains(*signature));
+    signatures.insert(*signature);
     task_environment_.FastForwardBy(base::Days(1));
   }
-  credential_manager_->Sign(
-      message, basename,
-      base::BindLambdaForTesting(
-          [&](const std::optional<std::vector<uint8_t>> signature) {
-            EXPECT_FALSE(signature);
-          }));
-  task_environment_.RunUntilIdle();
+  // Credentials have expired.
+  EXPECT_FALSE(SignAndWait(message, basename));
 }
 
 }  // namespace web_discovery

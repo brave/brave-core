@@ -19,6 +19,7 @@
 #include "brave/browser/ui/commander/commander_service_factory.h"
 #include "brave/components/commander/common/constants.h"
 #include "brave/components/commander/common/features.h"
+#include "brave/components/containers/core/common/features.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/location_bar/location_bar.h"
@@ -29,21 +30,21 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/test/browser_test.h"
-#include "content/public/test/test_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "ui/base/l10n/l10n_util.h"
 
 class CommanderServiceBrowserTest : public InProcessBrowserTest {
  public:
   CommanderServiceBrowserTest() {
-    features_.InitAndEnableFeature(features::kBraveCommander);
+    features_.InitWithFeatures(
+        /*enabled_features=*/{features::kBraveCommander},
+        /*disabled_features=*/{containers::features::kContainers});
   }
 
   ~CommanderServiceBrowserTest() override = default;
   void SetUp() override { InProcessBrowserTest::SetUp(); }
   void TearDownOnMainThread() override {
     commander()->Hide();
-    content::RunAllTasksUntilIdle();
     WaitUntil(base::BindLambdaForTesting(
         [this] { return !commander()->IsShowing(); }));
   }
@@ -109,7 +110,6 @@ IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest, CanHideCommander) {
       base::BindLambdaForTesting([&]() { return commander()->IsShowing(); }));
 
   commander()->Hide();
-  content::RunAllTasksUntilIdle();
   WaitUntil(
       base::BindLambdaForTesting([&]() { return !commander()->IsShowing(); }));
 }

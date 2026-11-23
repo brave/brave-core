@@ -12,6 +12,7 @@ import { ActiveChatContext } from '../../state/active_chat_context'
 import { clearAllDataForTesting } from '$web-common/api'
 import ConversationsList from './index'
 import * as Mojom from '../../../common/mojom'
+import { ConversationGenerationState as CG } from '../../../common/mojom'
 
 const mockConversations: Mojom.Conversation[] = [
   {
@@ -103,6 +104,44 @@ function renderWithConversations(
       <ConversationsList />
     </MockContext>,
   )
+}
+
+// Renders |list| with |activeUuid| bound and the given generation states, and
+// waits for the conversations to show.
+async function renderWithGeneration(
+  activeUuid: string,
+  generationStates: { [uuid: string]: Mojom.ConversationGenerationState },
+  list: React.ReactNode = <ConversationsList />,
+) {
+  await renderConversationsList(
+    <MockContext
+      service={{
+        getConversations: () =>
+          Promise.resolve({ conversations: mockConversations }),
+      }}
+      initialState={{
+        serviceState: { isStoragePrefEnabled: true },
+        conversationState: { conversationUuid: activeUuid },
+        conversationGenerationState: generationStates,
+      }}
+    >
+      {list}
+    </MockContext>,
+  )
+  await waitFor(() => {
+    expect(screen.getByText('How to use TypeScript')).toBeInTheDocument()
+  })
+}
+
+async function expectIndicators(generating: number, completed: number) {
+  await waitFor(() => {
+    expect(document.querySelectorAll('.generatingIndicator').length).toBe(
+      generating,
+    )
+    expect(document.querySelectorAll('.completedIndicator').length).toBe(
+      completed,
+    )
+  })
 }
 
 describe('ConversationsList', () => {
@@ -551,6 +590,108 @@ describe('ConversationsList', () => {
           screen.queryByTestId('recent-workspaces'),
         ).not.toBeInTheDocument()
       })
+    })
+  })
+
+  describe('Generation indicators', () => {
+    it('shows ProgressRing when generating and not active', async () => {
+      await renderWithGeneration('uuid-2', { 'uuid-1': CG.kGenerating })
+      await expectIndicators(1, 0)
+    })
+
+    it('hides ProgressRing when generating but active', async () => {
+      await renderWithGeneration('uuid-1', { 'uuid-1': CG.kGenerating })
+      await expectIndicators(0, 0)
+    })
+
+    it('shows completed dot when completedNotViewed and not active', async () => {
+      await renderWithGeneration('uuid-2', {
+        'uuid-1': CG.kCompletedNotViewed,
+      })
+      await expectIndicators(0, 1)
+    })
+
+    it('hides completed dot when completedNotViewed but active', async () => {
+      await renderWithGeneration('uuid-1', {
+        'uuid-1': CG.kCompletedNotViewed,
+      })
+      await expectIndicators(0, 0)
+    })
+
+    it('shows nothing when idle (no entry)', async () => {
+      await renderWithGeneration('uuid-99', {})
+      await expectIndicators(0, 0)
+    })
+
+    it('shows each conversation its own indicator', async () => {
+      await renderWithGeneration('other', {
+        'uuid-1': CG.kGenerating,
+        'uuid-3': CG.kCompletedNotViewed,
+      })
+      await expectIndicators(1, 1)
+    })
+
+    it('keeps the states it was sent while the list is closed', async () => {
+      jest.useFakeTimers()
+      try {
+        function OpenLater() {
+          const [isOpen, setIsOpen] = React.useState(false)
+          return isOpen ? (
+            <ConversationsList />
+          ) : (
+            <button onClick={() => setIsOpen(true)}>open list</button>
+          )
+        }
+        await renderConversationsList(
+          <MockContext
+            service={{
+              getConversations: () =>
+                Promise.resolve({ conversations: mockConversations }),
+            }}
+            initialState={{
+              serviceState: { isStoragePrefEnabled: true },
+              conversationState: { conversationUuid: 'uuid-2' },
+              conversationGenerationState: { 'uuid-1': CG.kCompletedNotViewed },
+            }}
+          >
+            <OpenLater />
+          </MockContext>,
+        )
+        // Long past the query cache's default garbage collection time.
+        await act(async () => {
+          jest.advanceTimersByTime(60 * 60 * 1000)
+        })
+        await act(async () => {
+          screen.getByText('open list').click()
+        })
+        await expectIndicators(0, 1)
+      } finally {
+        jest.useRealTimers()
+      }
+    })
+
+    it('treats the bound conversation as active on the tab route', async () => {
+      await renderWithGeneration(
+        'uuid-1',
+        { 'uuid-1': CG.kGenerating },
+        <ActiveChatContext.Provider
+          value={{
+            api: undefined!,
+            selectedConversationId: 'tab',
+            updateSelectedConversationId: () => {},
+            createNewConversation: () => {},
+            createNewConversationWithWorkspace: () => {},
+            isMainConversation: false,
+            openMainConversation: () => {},
+          }}
+        >
+          <ConversationsList />
+        </ActiveChatContext.Provider>,
+      )
+      await waitFor(() => {
+        expect(document.querySelectorAll('.navItemActive').length).toBe(1)
+      })
+      await expectIndicators(0, 0)
     })
   })
 })

@@ -21,18 +21,19 @@ DraggingTabsSession::DraggingTabsSession(
     TabDragPositioningDelegate& drag_position_delegate,
     bool initial_move,
     gfx::Point point_in_screen)
-    : DraggingTabsSessionChromium(drag_data,
-                                  attached_context,
-                                  drag_position_delegate,
-                                  initial_move,
-                                  point_in_screen) {}
+    : DraggingTabsSession_ChromiumImpl(drag_data,
+                                       attached_context,
+                                       drag_position_delegate,
+                                       initial_move,
+                                       point_in_screen) {}
 
 DraggingTabsSession::~DraggingTabsSession() {}
 
 gfx::Point DraggingTabsSession::GetAttachedDragPoint(
     gfx::Point point_in_screen) {
   if (!is_showing_vertical_tabs_) {
-    return DraggingTabsSessionChromium::GetAttachedDragPoint(point_in_screen);
+    return DraggingTabsSession_ChromiumImpl::GetAttachedDragPoint(
+        point_in_screen);
   }
 
   gfx::Point tab_loc(point_in_screen);
@@ -46,7 +47,7 @@ gfx::Point DraggingTabsSession::GetAttachedDragPoint(
 }
 
 void DraggingTabsSession::MoveAttached(gfx::Point point_in_screen) {
-  DraggingTabsSessionChromium::MoveAttached(point_in_screen);
+  DraggingTabsSession_ChromiumImpl::MoveAttached(point_in_screen);
   if (!is_showing_vertical_tabs_) {
     return;
   }
@@ -61,7 +62,8 @@ void DraggingTabsSession::MoveAttached(gfx::Point point_in_screen) {
 std::optional<tab_groups::TabGroupId>
 DraggingTabsSession::CalculateGroupForDraggedTabs(int to_index) {
   if (!is_showing_vertical_tabs_) {
-    return DraggingTabsSessionChromium::CalculateGroupForDraggedTabs(to_index);
+    return DraggingTabsSession_ChromiumImpl::CalculateGroupForDraggedTabs(
+        to_index);
   }
 
   TabStripModel* attached_model = attached_context_->GetTabStripModel();

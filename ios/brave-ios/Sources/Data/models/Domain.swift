@@ -157,7 +157,9 @@ public final class Domain: NSManagedObject, CRUD {
   }
 
   public class func walletPermissions(forUrl url: URL, coin: BraveWallet.CoinType) -> [String]? {
-    let domain = getOrCreateInternal(url, saveStrategy: .persistentStore)
+    guard let key = walletPermissionKey(for: url),
+      let domain = Domain.first(where: NSPredicate(format: "url == %@", key))
+    else { return nil }
     switch coin {
     case .eth:
       return domain.wallet_permittedAccounts?.split(separator: ",").map(String.init)
@@ -273,9 +275,10 @@ extension Domain {
   class func getOrCreateInternal(
     _ url: URL,
     context: NSManagedObjectContext = DataController.viewContext,
-    saveStrategy: SaveStrategy
+    saveStrategy: SaveStrategy,
+    key: String? = nil
   ) -> Domain {
-    let domainString = url.domainURL.absoluteString
+    let domainString = key ?? url.domainURL.absoluteString
     if let domain = Domain.first(
       where: NSPredicate(format: "url == %@", domainString),
       context: context
@@ -346,6 +349,14 @@ extension Domain {
 
   // MARK: Wallet
 
+  /// The storage key for wallet dApp permissions: the exact origin.
+  ///
+  /// `url.domainURL` strips `www.`/`m.`/`mobile.`, which would let distinct origins
+  /// share account permissions. Nil for opaque origins, which can never hold permissions.
+  private static func walletPermissionKey(for url: URL) -> String? {
+    URLOrigin(url: url).serialized
+  }
+
   class func setWalletPermissions(
     forUrl url: URL,
     coin: BraveWallet.CoinType,
@@ -353,13 +364,15 @@ extension Domain {
     grant: Bool,
     context: WriteContext = .new(inMemory: false)
   ) {
+    guard let key = walletPermissionKey(for: url) else { return }
     DataController.perform(context: context) { context in
       for account in accounts {
         // Not saving here, save happens in `perform` method.
         let domain = Domain.getOrCreateInternal(
           url,
           context: context,
-          saveStrategy: .persistentStore
+          saveStrategy: .persistentStore,
+          key: key
         )
         domain.setWalletDappPermission(
           for: coin,

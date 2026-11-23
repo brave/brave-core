@@ -65,8 +65,6 @@ class BitcoinTxManagerUnitTest : public testing::Test {
 
     GetAccountUtils().CreateWallet(kMnemonicDivideCruise, "brave");
 
-    task_environment_.RunUntilIdle();
-
     bitcoin_test_rpc_server_->SetUpBitcoinRpc(kMnemonicDivideCruise, 0);
   }
 

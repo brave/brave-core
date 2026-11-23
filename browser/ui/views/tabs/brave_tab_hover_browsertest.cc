@@ -18,6 +18,7 @@
 #include "chrome/browser/ui/thumbnails/thumbnail_tab_helper.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/tabs/hovercard/hover_card_update_type.h"
 #include "chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.h"
 #include "chrome/browser/ui/views/tabs/hovercard/tab_hover_card_controller.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
@@ -40,11 +41,15 @@ class BraveTabHoverTest : public InProcessBrowserTest {
   BraveTabHoverTest()
       : animation_mode_reset_(gfx::AnimationTestApi::SetRichAnimationRenderMode(
             gfx::Animation::RichAnimationRenderMode::FORCE_DISABLED)) {
-    TabHoverCardController::disable_animations_for_testing_ = true;
+    TabHoverCardController::set_disable_animations_for_testing(true);
   }
 
   BraveTabHoverTest(const BraveTabHoverTest&) = delete;
   BraveTabHoverTest& operator=(const BraveTabHoverTest&) = delete;
+
+  ~BraveTabHoverTest() override {
+    TabHoverCardController::set_disable_animations_for_testing(false);
+  }
 
   content::WebContents* contents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
@@ -75,12 +80,23 @@ class BraveTabHoverTest : public InProcessBrowserTest {
     // GetFocusManager()->SetFocusedView(tab) is flakey, and fails semi
     // regularly. Thus, we have to trigger the hover directly.
     horizontal_tab_strip_for_testing()->UpdateHoverCard(
-        tab, TabSlotController::HoverCardUpdateType::kHover);
+        tab, HoverCardUpdateType::kHover);
   }
 
  private:
   std::unique_ptr<base::AutoReset<gfx::Animation::RichAnimationRenderMode>>
       animation_mode_reset_;
+};
+
+// Pins kTabHoverCardImages off so tests don't depend on its default.
+class BraveTabHoverTestWithChromeFlagDisabled : public BraveTabHoverTest {
+ public:
+  BraveTabHoverTestWithChromeFlagDisabled() {
+    features_.InitAndDisableFeature(features::kTabHoverCardImages);
+  }
+
+ private:
+  base::test::ScopedFeatureList features_;
 };
 
 // The ThumbnailTabHelper needs to be attached in all |TabHoverModes| so that
@@ -140,7 +156,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest, ThumbnailHelperIsAlwaysAttached) {
 #else
 #define MAYBE_HoverModesAreCorrectlyConfigured HoverModesAreCorrectlyConfigured
 #endif
-IN_PROC_BROWSER_TEST_F(BraveTabHoverTest,
+IN_PROC_BROWSER_TEST_F(BraveTabHoverTestWithChromeFlagDisabled,
                        MAYBE_HoverModesAreCorrectlyConfigured) {
   // In Card mode, the widget should become visible but the thumbnail should not
   // be created.

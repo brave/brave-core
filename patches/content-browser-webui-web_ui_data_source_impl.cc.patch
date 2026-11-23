@@ -1,8 +1,8 @@
 diff --git a/content/browser/webui/web_ui_data_source_impl.cc b/content/browser/webui/web_ui_data_source_impl.cc
-index ec001ac21c5f20825458e13bbc10129a558813c9..d5adde59823ae287de989f83c41888e433ec3d04 100644
+index b250500d53d1f36881a81fe5b266cd55d74bb0d6..c8753d8a676ac5d528ffc1a5646ca239fa9bf265 100644
 --- a/content/browser/webui/web_ui_data_source_impl.cc
 +++ b/content/browser/webui/web_ui_data_source_impl.cc
-@@ -361,7 +361,7 @@ void WebUIDataSourceImpl::OverrideContentSecurityPolicy(
+@@ -362,7 +362,7 @@ void WebUIDataSourceImpl::OverrideContentSecurityPolicy(
      network::mojom::CSPDirectiveName directive,
      const std::string& value) {
    CHECK(!resources_frozen_);

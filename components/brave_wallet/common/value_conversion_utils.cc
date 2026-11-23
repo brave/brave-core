@@ -19,6 +19,7 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/net/base/url_util.h"
 #include "url/origin.h"
@@ -181,6 +182,14 @@ mojom::NetworkInfoPtr ParseEip3085Payload(const base::Value& value) {
   }
 
   chain.coin = mojom::CoinType::ETH;
+
+  // A chain ID of 0 makes legacy transactions unprotected (no EIP-155 replay
+  // protection), so it must never be accepted.
+  uint256_t chain_id_uint = 0;
+  if (!HexValueToUint256(chain.chain_id, &chain_id_uint) ||
+      chain_id_uint == 0) {
+    return nullptr;
+  }
 
   const base::DictValue* params_dict = value.GetIfDict();
   if (!params_dict) {
@@ -392,8 +401,7 @@ mojom::BlockchainTokenPtr ValueToBlockchainToken(const base::DictValue& value) {
   } else {
     // Back-compat with schema that stored a bool `is_shielded`.
     // true → kOrchard; false + ZEC → kTransparent; non-ZEC → kNone.
-    // Shielded tokens are never persisted, so a legacy `true` is only
-    // defensive.
+    // That bool was not used to store shielded tokens.
     if (value.FindBool("is_shielded").value_or(false)) {
       token_ptr->zcash_token_type = mojom::ZCashTokenType::kOrchard;
     } else if (token_ptr->coin == mojom::CoinType::ZEC) {

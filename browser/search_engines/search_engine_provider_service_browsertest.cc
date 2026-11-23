@@ -8,6 +8,7 @@
 
 #include "base/check.h"
 #include "base/path_service.h"
+#include "base/test/run_until.h"
 #include "brave/browser/profile_resetter/brave_profile_resetter.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/profiles/profile_util.h"
@@ -134,8 +135,11 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
 
   // Need to wait as
   // PrivateWindowSearchEngineProviderServiceBase::Initialize() is
-  // run as posted task.
-  base::RunLoop().RunUntilIdle();
+  // run as posted task. It sets kDefaultSearchProviderByExtension.
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return incognito_profile->GetPrefs()->HasPrefPath(
+        prefs::kDefaultSearchProviderByExtension);
+  }));
 
   auto* service = TemplateURLServiceFactory::GetForProfile(profile);
   EXPECT_TRUE(VerifyTemplateURLServiceLoad(service));
@@ -212,8 +216,12 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   Profile* tor_profile = tor_browser->GetProfile();
   EXPECT_TRUE(tor_profile->IsTor());
 
-  // Wait for the search provider to initialize.
-  base::RunLoop().RunUntilIdle();
+  // Wait for the search provider to initialize. Initialize() sets
+  // kDefaultSearchProviderByExtension.
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return tor_profile->GetPrefs()->HasPrefPath(
+        prefs::kDefaultSearchProviderByExtension);
+  }));
 
   const int default_provider_id =
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE_TOR;
@@ -436,8 +444,11 @@ IN_PROC_BROWSER_TEST_F(ExtensionBrowserTest,
 
   // Need to wait as
   // PrivateWindowSearchEngineProviderServiceBase::Initialize() is
-  // run as posted task.
-  base::RunLoop().RunUntilIdle();
+  // run as posted task. It sets kDefaultSearchProviderByExtension.
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return incognito_profile->GetPrefs()->HasPrefPath(
+        prefs::kDefaultSearchProviderByExtension);
+  }));
 
   auto* incognito_url_service =
       TemplateURLServiceFactory::GetForProfile(incognito_profile);

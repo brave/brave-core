@@ -71,8 +71,8 @@ import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.tab_group_sync.TabGroupSyncServiceFactory;
 import org.chromium.chrome.browser.tab_ui.TabContentManager;
 import org.chromium.chrome.browser.tab_ui.TabModelDotInfo;
+import org.chromium.chrome.browser.tab_ui.undo_tab_close_snackbar.UndoBarThrottle;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
-import org.chromium.chrome.browser.tabmodel.TabClosureParams;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.tab_management.GroupWindowChecker;
@@ -106,7 +106,6 @@ import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.edge_to_edge.TopInsetProvider;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
-import org.chromium.chrome.browser.undo_tab_close_snackbar.UndoBarThrottle;
 import org.chromium.components.browser_ui.accessibility.PageZoomManager;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
@@ -498,15 +497,19 @@ public class BraveToolbarManager extends ToolbarManager
                             return readAloud != null && readAloud.isRestoringPlayer();
                         });
         if (mInitializedWithNative) {
-            Runnable closeAllTabsAction =
-                    () -> {
-                        mTabModelSelector
-                                .getModel(mIncognitoStateProvider.isIncognitoSelected())
-                                .getTabRemover()
-                                .closeTabs(TabClosureParams.closeAllTabs().build(), false);
-                    };
-
             assert (mActivity instanceof ChromeActivity);
+            Runnable closeAllTabsAction =
+                    () ->
+                            ((ChromeActivity) mActivity)
+                                    .getMenuOrKeyboardActionController()
+                                    .onMenuOrKeyboardAction(
+                                            mIncognitoStateProvider.isIncognitoSelected()
+                                                    ? R.id.close_all_incognito_tabs_menu_id
+                                                    : R.id.close_all_tabs_menu_id,
+                                            false,
+                                            /* menuItemData= */ null,
+                                            /* triggeringMotion= */ null);
+
             OnClickListener wrappedNewTabClickHandler =
                     v -> {
                         recordNewTabClick();

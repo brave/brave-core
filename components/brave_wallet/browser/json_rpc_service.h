@@ -416,6 +416,10 @@ class JsonRpcService : public mojom::JsonRpcService {
       mojom::EthereumProvider::RequestCallback callback,
       base::Value id);
 
+  bool HasPendingRpcRequestsForTesting() const {
+    return api_request_helper_->HasPendingRequestsForTesting();  // IN-TEST
+  }
+
   void SetAPIRequestHelperForTesting(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 

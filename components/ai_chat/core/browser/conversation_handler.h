@@ -184,6 +184,8 @@ class ConversationHandler : public mojom::ConversationHandler,
   bool IsAnyClientConnected();
   bool HasAnyHistory();
   bool IsRequestInProgress();
+  // Whether a tool use loop is running, between generation requests.
+  bool IsToolUseInProgress() const;
 
   const mojom::Model& GetCurrentModel();
   const std::vector<mojom::ConversationTurnPtr>& GetConversationHistory() const;
@@ -206,8 +208,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   void GetContentTools(const std::string& content_uuid,
                        GetContentToolsCallback callback) override;
   void SetContentToolPermission(const std::string& content_uuid,
-                                const std::string& tool_name,
-                                mojom::ToolPermission permission) override;
+                                mojom::ToolInfoPtr tool) override;
   void SetContentAgentChosen(bool chosen) override;
   void RateMessage(bool is_liked,
                    const std::string& turn_uuid,
@@ -402,7 +403,6 @@ class ConversationHandler : public mojom::ConversationHandler,
 
  private:
   friend class ::AIChatUIBrowserTest;
-  FRIEND_TEST_ALL_PREFIXES(AIChatServiceUnitTest, DeleteAssociatedWebContent);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
                            UpdateOrCreateLastAssistantEntry_Delta);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
@@ -444,13 +444,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   FRIEND_TEST_ALL_PREFIXES(
       ConversationHandlerUnitTest,
       GetTools_MemoryToolFilteredForTemporaryConversations);
-  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest, ThreadHistory);
-  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
-                           CreateConversationThread_SubmitEntry);
-  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
-                           CreateConversationThread_EmptyExistingThread);
-  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
-                           CreateConversationThread_MaxThreads);
 
   struct ThreadContainer {
     explicit ThreadContainer(mojom::ThreadPtr thread);

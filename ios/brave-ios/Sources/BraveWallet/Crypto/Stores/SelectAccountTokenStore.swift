@@ -93,7 +93,6 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
   private let assetRatioService: BraveWalletAssetRatioService
   private let bitcoinWalletService: BraveWalletBitcoinWalletService
   private let zcashWalletService: BraveWalletZCashWalletService
-  private let ipfsApi: IpfsAPI
   private let assetManager: WalletUserAssetManagerType
   private var walletServiceObserver: WalletServiceObserver?
 
@@ -109,7 +108,6 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
     assetRatioService: BraveWalletAssetRatioService,
     bitcoinWalletService: BraveWalletBitcoinWalletService,
     zcashWalletService: BraveWalletZCashWalletService,
-    ipfsApi: IpfsAPI,
     userAssetManager: WalletUserAssetManagerType,
     query: String? = nil
   ) {
@@ -120,7 +118,6 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
     self.assetRatioService = assetRatioService
     self.bitcoinWalletService = bitcoinWalletService
     self.zcashWalletService = zcashWalletService
-    self.ipfsApi = ipfsApi
     self.assetManager = userAssetManager
     self.query = query ?? ""
 
@@ -373,10 +370,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
   func fetchNFTMetadata(for userVisibleNFTs: [BraveWallet.BlockchainToken]) {
     guard !userVisibleNFTs.isEmpty else { return }
     Task { @MainActor in
-      let allMetadata = await rpcService.fetchNFTMetadata(
-        tokens: userVisibleNFTs,
-        ipfsApi: ipfsApi
-      )
+      let allMetadata = await rpcService.fetchNFTMetadata(tokens: userVisibleNFTs)
       self.metadataCache.merge(with: allMetadata)
       self.updateAccountSections()
     }

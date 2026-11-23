@@ -5,14 +5,12 @@
 
 #include "brave/browser/ntp_background/brave_ntp_custom_background_service_delegate.h"
 
-#include <utility>
-
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/path_service.h"
+#include "base/test/test_future.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/browser/ntp_background/constants.h"
-#include "brave/browser/ntp_background/custom_background_file_manager.h"
 #include "brave/browser/ntp_background/ntp_background_prefs.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -82,18 +80,16 @@ TEST_F(BraveNTPCustomBackgroundServiceDelegateUnitTest, MigrationSuccess) {
 
   EXPECT_TRUE(service_delegate().ShouldMigrateCustomImagePref());
 
-  base::RunLoop run_loop;
-  auto check_migration = base::BindOnce([](bool result) {
-                           EXPECT_TRUE(result);
-                         }).Then(run_loop.QuitClosure());
-  service_delegate().MigrateCustomImage(std::move(check_migration));
-  run_loop.Run();
+  base::test::TestFuture<bool> future;
+  service_delegate().MigrateCustomImage(future.GetCallback());
+  EXPECT_TRUE(future.Get());
 
   {
     base::ScopedAllowBlockingForTesting allow_blocking_call;
     EXPECT_TRUE(base::PathExists(
-        service_delegate()
-            .file_manager_->GetCustomBackgroundDirectory()
+        profile()
+            .GetPath()
+            .AppendASCII(ntp_background_images::kSanitizedImageDirName)
             .AppendASCII(
                 ntp_background_images::kSanitizedImageFileNameDeprecated)));
   }
@@ -115,12 +111,9 @@ TEST_F(BraveNTPCustomBackgroundServiceDelegateUnitTest, MigrationFail) {
 
   EXPECT_TRUE(service_delegate().ShouldMigrateCustomImagePref());
 
-  base::RunLoop run_loop;
-  auto check_migration = base::BindOnce([](bool result) {
-                           EXPECT_FALSE(result);
-                         }).Then(run_loop.QuitClosure());
-  service_delegate().MigrateCustomImage(std::move(check_migration));
-  run_loop.Run();
+  base::test::TestFuture<bool> future;
+  service_delegate().MigrateCustomImage(future.GetCallback());
+  EXPECT_FALSE(future.Get());
 
   // When failed, should be reset to default.
   EXPECT_TRUE(ntp_prefs.IsBraveType());

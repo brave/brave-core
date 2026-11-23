@@ -1,0 +1,90 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_BROWSER_UI_VIEWS_TABS_TREE_TAB_VIEW_UTILS_H_
+#define BRAVE_BROWSER_UI_VIEWS_TABS_TREE_TAB_VIEW_UTILS_H_
+
+#include <functional>
+#include <string>
+#include <vector>
+
+#include "components/tabs/public/tab_collection_types.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
+
+class TabStripModel;
+struct TabStripUserGestureDetails;
+
+namespace views {
+class View;
+}  // namespace views
+
+// Hooks for showing tree tabs in Chromium's tab strip views
+// (TabCollectionNode based, used by Chromium's vertical tabs). The chromium_src
+// overrides of those views forward-declare these instead of including this
+// header, so keep the signatures in sync with them.
+//
+// Tree tab node collections are unwrapped in the view model: their children
+// take their place, so that the view hierarchy keeps the shape Chromium's views
+// expect, i.e. UNPINNED contains tabs, groups and splits only, and groups and
+// splits are as they are. The tree hierarchy is then expressed by indentation.
+// TabCollectionNode and RootTabCollectionNode don't know about tree tabs: they
+// read the hierarchy through GetUnwrappedChildren(), and
+// BraveTabStripCollection notifies them of the changes of the unwrapped
+// hierarchy.
+namespace tree_tab_view_utils {
+
+// Returns the children of |collection| with tree tab node collections
+// unwrapped, recursively. The result is in tab strip model order.
+std::vector<std::reference_wrapper<const tabs::Child>> GetUnwrappedChildren(
+    const tabs::TabCollection& collection);
+
+// Returns the indentation for |view| (a TabView, TabGroupView or SplitTabView)
+// based on its tree tab level. |available_width| is the width |view| would
+// have without indentation. |offset_per_level_by_tree_height| caches the
+// indentation per level by tree height. Callers should share it across the
+// views they lay out with the same |available_width|.
+int GetTreeTabIndent(
+    const views::View* view,
+    int available_width,
+    absl::flat_hash_map<int, int>& offset_per_level_by_tree_height);
+
+// Returns true if |view| (a TabView, TabGroupView or SplitTabView) is hidden
+// because one of its tree tab ancestors is collapsed.
+bool IsInCollapsedTreeTabNode(const views::View* view);
+
+// Returns true if |tab| is directly wrapped by a tree tab node that has
+// descendants.
+bool HasTreeTabDescendants(const tabs::TabInterface* tab);
+
+// Returns true if |tab| is directly wrapped by a collapsed tree tab node.
+bool IsTreeTabNodeCollapsed(const tabs::TabInterface* tab);
+
+// Returns the tooltip and accessible name of the toggle button that collapses
+// or expands |tab|'s tree tab node.
+std::u16string GetTreeTabToggleButtonLabel(const tabs::TabInterface* tab);
+
+// Collapses or expands the tree tab node directly wrapping |tab|.
+void ToggleTreeTabNodeCollapsed(tabs::TabInterface* tab);
+
+// Expands the collapsed tree tab ancestors of |tab| so that it's visible.
+void ExpandCollapsedTreeTabAncestors(tabs::TabInterface* tab);
+
+// Same as above but posts a task, so it's safe to call while the tab strip
+// model is notifying its observers.
+void ExpandCollapsedTreeTabAncestorsAsync(tabs::TabInterface* tab);
+
+// Activates the tab at |index|, like TabStripModel::ActivateTabAt(). On a
+// plain mouse click on a tree tab parent, the selection is also
+// expanded to its descendants, or collapsed back to the tab if they were
+// already all selected, so that dragging the parent moves its subtree. Called
+// by TabStripCollectionController::SelectTab().
+void ActivateTabAndSelectTreeTabSubtree(
+    TabStripModel& tab_strip_model,
+    int index,
+    const TabStripUserGestureDetails& detail);
+
+}  // namespace tree_tab_view_utils
+
+#endif  // BRAVE_BROWSER_UI_VIEWS_TABS_TREE_TAB_VIEW_UTILS_H_

@@ -31,6 +31,38 @@ namespace brave_ads {
 
 namespace {
 
+std::string ToString(mojom::NewTabPageAdCampaignType mojom_campaign_type) {
+  switch (mojom_campaign_type) {
+    case mojom::NewTabPageAdCampaignType::kUndefined:
+      return "Undefined";
+    case mojom::NewTabPageAdCampaignType::kFree:
+      return "Free";
+    case mojom::NewTabPageAdCampaignType::kPaid:
+      return "Paid";
+    case mojom::NewTabPageAdCampaignType::kBarter:
+      return "Barter";
+    case mojom::NewTabPageAdCampaignType::kMakeGood:
+      return "Make Good";
+    case mojom::NewTabPageAdCampaignType::kHouse:
+      return "House";
+    case mojom::NewTabPageAdCampaignType::kCause:
+      return "Cause";
+    case mojom::NewTabPageAdCampaignType::kFixed:
+      return "Fixed";
+    case mojom::NewTabPageAdCampaignType::kTrial:
+      return "Trial";
+    case mojom::NewTabPageAdCampaignType::kPreemptive:
+      return "Preemptive";
+    case mojom::NewTabPageAdCampaignType::kAffiliate:
+      return "Affiliate";
+    case mojom::NewTabPageAdCampaignType::kSurvey:
+      return "Survey";
+    case mojom::NewTabPageAdCampaignType::kProduct:
+      return "Product";
+  }
+  NOTREACHED();
+}
+
 std::string ToString(mojom::NewTabPageAdMetricType mojom_metric_type) {
   switch (mojom_metric_type) {
     case mojom::NewTabPageAdMetricType::kUndefined:
@@ -140,6 +172,7 @@ struct CampaignInfo {
   int daily_cap = 0;
   int priority = 0;
   double pass_through_rate = 0.0;
+  std::string campaign_type;
   std::string metric_type;
   // Ordered by key rather than `absl::flat_hash_map` so the UI's rendered
   // order is stable across repeated loads of the same underlying data.
@@ -245,6 +278,7 @@ void BuildCampaigns(GetCampaignsDiagnosticsCallback callback,
     campaign.daily_cap = creative_ad.daily_cap;
     campaign.priority = creative_ad.priority;
     campaign.pass_through_rate = creative_ad.pass_through_rate;
+    campaign.campaign_type = ToString(creative_ad.campaign_type);
     campaign.metric_type = ToString(creative_ad.metric_type);
     campaign.geo_targets.insert(creative_ad.geo_targets.cbegin(),
                                 creative_ad.geo_targets.cend());
@@ -352,6 +386,7 @@ void BuildCampaigns(GetCampaignsDiagnosticsCallback callback,
         base::DictValue()
             .Set("Advertiser ID", campaign.advertiser_id)
             .Set("Campaign ID", campaign_id)
+            .Set("Type", campaign.campaign_type)
             .Set("Daily Cap", campaign.daily_cap)
             .Set("Daily Cap Served",
                  CountServedImpressions(campaign_timestamps, base::Days(1)))

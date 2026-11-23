@@ -102,17 +102,6 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <View
-                        android:id="@+id/v_dapps_panel_sol_connection_status"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:layout_centerHorizontal="true"
-                        android:shape="ring"
-                        android:layout_marginStart="8dp"
-                        android:layout_gravity="center"
-                        android:visibility="visible"
-                        android:background="@drawable/rounded_dot_error_status" />
-
                     <android.widget.Button
                         android:id="@+id/sp_dapps_panel_state"
                         android:layout_width="wrap_content"

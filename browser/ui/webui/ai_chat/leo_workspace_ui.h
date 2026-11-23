@@ -55,7 +55,8 @@ class LeoWorkspaceUI : public ui::UntrustedWebUIController {
 };
 
 // The document a workspace is allowed to frame to display its contents, served
-// from chrome-untrusted://view.<guid>.leo-workspace. Nothing frames it yet.
+// from chrome-untrusted://view.<guid>.leo-workspace. Only its workspace frames
+// it, whether hidden or shown in AI Chat's lightbox or conversation frame.
 // Being a different origin from the workspace it belongs to, it has none of
 // that workspace's File System Access grants, storage or WebMCP, and no other
 // page may frame it. Anything it needs has to cross the frame boundary.

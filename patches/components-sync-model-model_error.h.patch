@@ -1,8 +1,8 @@
 diff --git a/components/sync/model/model_error.h b/components/sync/model/model_error.h
-index fbe4ed43eb7887acae8012289253cea614cb00e5..74412397b88cfcd928c2b8aa8b2e056459bf960f 100644
+index ce30805fab035ec2d0e203d7e62ef6947fa884c6..e76921a3977683d820e16bfa0085a6beac3e2e25 100644
 --- a/components/sync/model/model_error.h
 +++ b/components/sync/model/model_error.h
-@@ -204,7 +204,8 @@ class ModelError {
+@@ -205,7 +205,8 @@ class ModelError {
      kJourneysFailedToLoadMetadata = 194,
      kJourneysDatabaseError = 195,
      kAutofillEntitySuppressionEncryptionUnavailable = 196,

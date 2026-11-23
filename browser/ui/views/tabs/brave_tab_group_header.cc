@@ -5,29 +5,25 @@
 
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 
-#include <optional>
+#include <algorithm>
 
 #include "base/check.h"
-#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
-#include "chrome/browser/ui/tabs/tab_group_model.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "chrome/browser/ui/tabs/tab_style.h"
-#include "chrome/browser/ui/views/tabs/common/tab_group_style.h"
 #include "chrome/browser/ui/views/tabs/tab_group_style_views.h"
 #include "chrome/browser/ui/views/tabs/tab_group_underline.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
 #include "third_party/skia/include/core/SkPath.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/color_utils.h"
-#include "ui/views/background.h"
 #include "ui/views/bubble/bubble_border.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
+#include "ui/views/controls/image_view.h"
 #include "ui/views/controls/label.h"
+#include "ui/views/layout/layout_types.h"
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_delegate.h"
 
@@ -54,27 +50,10 @@ void BraveTabGroupHeader::AddedToWidget() {
 
 void BraveTabGroupHeader::VisualsChanged() {
   TabGroupHeader::VisualsChanged();
+  upstream_title_chip_width_ = title_chip_->width();
 
   if (!tabs::HorizontalTabsUpdateEnabled() && !ShouldShowVerticalTabs()) {
     return;
-  }
-
-  title_->SetEnabledColor(GetGroupColor());
-  title_->SetSubpixelRenderingEnabled(false);
-
-  if (!ShouldShowVerticalTabs()) {
-    title_->SetLineHeight(tabs::kTabGroupLineHeight);
-  }
-
-  auto font_list = title_->font_list();
-  title_->SetFontList(font_list.DeriveWithWeight(gfx::Font::Weight::MEDIUM)
-                          .DeriveWithSizeDelta(13 - font_list.GetFontSize()));
-
-  if (auto chip_background_color = GetChipBackgroundColor()) {
-    title_chip_->SetBackground(views::CreateRoundedRectBackground(
-        *chip_background_color, TabGroupStyle::GetChipCornerRadius()));
-  } else {
-    title_chip_->SetBackground(nullptr);
   }
 
   if (ShouldShowVerticalTabs()) {
@@ -89,7 +68,7 @@ void BraveTabGroupHeader::VisualsChanged() {
 
   if (ShouldShowHeaderIcon()) {
     sync_icon_->SetImage(ui::ImageModel::FromVectorIcon(
-        kLeoProductSyncIcon, SkColorSetA(GetGroupColor(), 0.6 * 255),
+        kLeoProductSyncIcon, color_utils::GetColorWithMaxContrast(color_),
         group_style_->GetSyncIconWidth()));
   }
 }
@@ -115,55 +94,37 @@ bool BraveTabGroupHeader::ShouldShowVerticalTabs() const {
 }
 
 void BraveTabGroupHeader::LayoutTitleChipForVerticalTabs() {
-  auto title_bounds = GetContentsBounds();
-  title_bounds.Inset(gfx::Insets(kPaddingForGroup));
-  title_chip_->SetBoundsRect(title_bounds);
+  auto available_bounds = GetContentsBounds();
+  available_bounds.Inset(gfx::Insets(kPaddingForGroup));
 
-  // |title_| is a child view of |title_chip_| and there could be |sync_icon_|
-  // before |title_|. Expand |title_|'s width to fill the chip, and set its
-  // height to the chip height so the label centers text vertically.
-  title_->SetBounds(title_->x(), 0, title_bounds.width() - title_->x(),
-                    title_bounds.height());
-}
-
-SkColor BraveTabGroupHeader::GetGroupColor() const {
-  auto group_id = group().value();
-
-  auto model_contains_group = [&]() {
-    if (auto* browser = tab_slot_controller_->GetBrowserWindowInterface()) {
-      return browser->GetTabStripModel()->group_model()->ContainsTabGroup(
-          group_id);
-    }
-    return false;
-  };
-
-  if (!model_contains_group()) {
-    // Can happen in unit tests or in tear-down.
-    return gfx::kPlaceholderColor;
+  if (group_title_.empty()) {
+    title_chip_->SetBounds(
+        available_bounds.x(), available_bounds.y(),
+        std::max(upstream_title_chip_width_, available_bounds.height()),
+        available_bounds.height());
+    return;
   }
 
-  return tab_slot_controller_->GetPaintedGroupColor(
-      tab_slot_controller_->GetGroupColorId(group_id));
-}
+  // Upstream caps the title at half a horizontal tab's width. Let it grow to
+  // its full width instead, limited by the space available in the row. Space
+  // around |title_| (insets, |sync_icon_|, |attention_indicator_|) is kept.
+  const int trailing_space = title_chip_->width() - title_->bounds().right();
+  const int title_width = std::clamp(
+      title_->GetPreferredSize(views::SizeBounds()).width(), 0,
+      std::max(0, available_bounds.width() - title_->x() - trailing_space));
 
-std::optional<SkColor> BraveTabGroupHeader::GetChipBackgroundColor() const {
-  if (ShouldShowVerticalTabs()) {
-    return {};
+  if (attention_indicator_->GetVisible()) {
+    attention_indicator_->SetX(attention_indicator_->x() + title_width -
+                               title_->width());
   }
 
-  auto* color_provider = GetColorProvider();
-  if (!color_provider) {
-    return {};
-  }
+  title_chip_->SetBounds(available_bounds.x(), available_bounds.y(),
+                         title_->x() + title_width + trailing_space,
+                         available_bounds.height());
 
-  SkColor blend_background = TabStyle::Get()->GetTabBackgroundColor(
-      TabStyle::TabSelectionState::kInactive, /*hovered=*/false,
-      GetWidget()->ShouldPaintAsActive(), color_provider);
-
-  SkAlpha alpha =
-      SkColorGetA(color_provider->GetColor(kColorTabGroupBackgroundAlpha));
-
-  return color_utils::AlphaBlend(GetGroupColor(), blend_background, alpha);
+  // Set |title_|'s height to the chip height so the label centers text
+  // vertically.
+  title_->SetBounds(title_->x(), 0, title_width, available_bounds.height());
 }
 
 TabNestingInfo BraveTabGroupHeader::GetTabNestingInfo() const {

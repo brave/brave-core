@@ -10,3 +10,8 @@ substitutions:
       replace:
         'void RegisterWidevineCdmComponent(ComponentUpdateService* cus,
         base::OnceClosure callback = base::OnceClosure());'
+
+  - description: Include what the substitution above uses
+    add_include:
+      header:
+        - base/functional/callback.h

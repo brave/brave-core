@@ -298,6 +298,15 @@ class SimulationStepRunner:
         self.recorded_steps.append(record)
         return retcode
 
+    def record_output_properties(
+        self, name: str, properties: dict[str, Any]
+    ) -> None:
+        """Note the output properties the step named *name* exported."""
+        for record in reversed(self.recorded_steps):
+            if record['name'] == name:
+                record['output_properties'] = properties
+                return
+
 
 class TestContext:
     """Run-global simulated state, seeded onto every module in test mode."""
@@ -377,7 +386,9 @@ def stabilize(value: str) -> str:
 
 
 def build_steps(
-    runner: SimulationStepRunner, failure: dict | None
+    runner: SimulationStepRunner,
+    failure: dict | None,
+    summary_markdown: str = '',
 ) -> dict[str, dict]:
     """Assemble the ordered `{name: step}` map (+ `$result`) for post-process.
 
@@ -385,7 +396,8 @@ def build_steps(
     see the same tokenized commands. `failure` is `None` for a successful run,
     otherwise it is the terminal result's `failure` payload. A non-infra failure
     carries an inner `{'failure': {}}`, which an infra failure does not. Any
-    machine paths in its `humanReason` are stabilized too.
+    machine paths in its `humanReason` are stabilized too. A successful run's
+    `summary_markdown`, if it has one, is recorded as `summaryMarkdown`.
     """
     steps: dict[str, dict] = {}
     for step in runner.recorded_steps:
@@ -410,6 +422,8 @@ def build_steps(
                 }
         if 'retcode' in step:
             entry['retcode'] = step['retcode']
+        if 'output_properties' in step:
+            entry['output_properties'] = step['output_properties']
         steps[step['name']] = entry
 
     result: dict[str, Any] = {'name': pp.RESULT_STEP}
@@ -420,6 +434,8 @@ def build_steps(
                 'humanReason': stabilize(failure['humanReason']),
             }
         result['failure'] = failure
+    elif summary_markdown:
+        result['summaryMarkdown'] = summary_markdown
     steps[pp.RESULT_STEP] = result
     return steps
 

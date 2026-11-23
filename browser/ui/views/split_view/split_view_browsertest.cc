@@ -21,6 +21,7 @@
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view_mini_toolbar.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/search/search.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
@@ -40,7 +41,6 @@
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
-#include "chrome/browser/ui/webui/ntp/new_tab_ui.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -64,6 +64,7 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "third_party/skia/include/core/SkPath.h"
 #include "third_party/skia/include/core/SkRegion.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/compositor/layer.h"
 #include "ui/events/base_event_utils.h"
 #include "ui/events/event.h"
@@ -619,20 +620,20 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, MiniToolbarStyleTest) {
   NewSplitTab();
 
   auto* mini_toolbar = active_mini_toolbar();
-  auto* menu_button = mini_toolbar->close_button_for_testing();
+  auto* close_button = mini_toolbar->close_button_for_testing();
 
   mini_toolbar->SetStyle(ToolbarStyle::kSplit);
   mini_toolbar->UpdateState(/*is_active*/ true, /*is_highlighted*/ false);
-  EXPECT_TRUE(menu_button->GetVisible());
+  EXPECT_TRUE(close_button->GetVisible());
 
-  // The menu button acts on the split, so it is offered only by a split.
   mini_toolbar->SetStyle(ToolbarStyle::kWebPanel);
   mini_toolbar->UpdateState(/*is_active*/ true, /*is_highlighted*/ false);
-  EXPECT_FALSE(menu_button->GetVisible());
+  EXPECT_TRUE(close_button->GetVisible());
 
+  // A standalone contents area is the whole tab, so it isn't closable here.
   mini_toolbar->SetStyle(ToolbarStyle::kStandalone);
   mini_toolbar->UpdateState(/*is_active*/ true, /*is_highlighted*/ false);
-  EXPECT_FALSE(menu_button->GetVisible());
+  EXPECT_FALSE(close_button->GetVisible());
 }
 
 class SplitViewWithRoundedCornersTest : public SplitViewBrowserTest {
@@ -893,8 +894,10 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, BookmarksBarVisibilityTest) {
 
   // Wait newly created tab to get its valid url via GetLastCommittedURL().
   EXPECT_TRUE(content::WaitForLoadStop(GetWebContentsAt(1)));
-  EXPECT_FALSE(NewTabUI::IsNewTab(GetWebContentsAt(0)->GetLastCommittedURL()));
-  EXPECT_TRUE(NewTabUI::IsNewTab(GetWebContentsAt(1)->GetLastCommittedURL()));
+  EXPECT_FALSE(
+      search::IsNewTabOrigin(GetWebContentsAt(0)->GetLastCommittedURL()));
+  EXPECT_TRUE(
+      search::IsNewTabOrigin(GetWebContentsAt(1)->GetLastCommittedURL()));
   EXPECT_EQ(1, tab_strip_model->active_index());
   EXPECT_EQ(BookmarkBar::HIDDEN,
             BookmarkBarController::From(browser())->bookmark_bar_state());
@@ -1034,7 +1037,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewReloadTest) {
     LoadObserver observer_0(GetWebContentsAt(0));
     LoadObserver observer_1(GetWebContentsAt(1));
 
-    chrome::Reload(browser(), WindowOpenDisposition::kCurrentTab);
+    chrome::Reload(browser(), ui::mojom::WindowOpenDisposition::kCurrentTab);
     content::WaitForLoadStop(GetWebContentsAt(0));
     content::WaitForLoadStop(GetWebContentsAt(1));
 
@@ -1055,7 +1058,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewReloadTest) {
     LoadObserver observer_1(GetWebContentsAt(1));
     LoadObserver observer_2(GetWebContentsAt(2));
 
-    chrome::Reload(browser(), WindowOpenDisposition::kCurrentTab);
+    chrome::Reload(browser(), ui::mojom::WindowOpenDisposition::kCurrentTab);
     content::WaitForLoadStop(GetWebContentsAt(0));
     content::WaitForLoadStop(GetWebContentsAt(1));
     content::WaitForLoadStop(GetWebContentsAt(2));
@@ -1072,7 +1075,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewReloadTest) {
     LoadObserver observer_1(GetWebContentsAt(1));
     LoadObserver observer_2(GetWebContentsAt(2));
 
-    chrome::Reload(browser(), WindowOpenDisposition::kCurrentTab);
+    chrome::Reload(browser(), ui::mojom::WindowOpenDisposition::kCurrentTab);
     content::WaitForLoadStop(GetWebContentsAt(0));
     content::WaitForLoadStop(GetWebContentsAt(1));
     content::WaitForLoadStop(GetWebContentsAt(2));
@@ -1091,7 +1094,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewReloadTest) {
     LoadObserver observer_1(GetWebContentsAt(1));
     LoadObserver observer_2(GetWebContentsAt(2));
 
-    chrome::Reload(browser(), WindowOpenDisposition::kCurrentTab);
+    chrome::Reload(browser(), ui::mojom::WindowOpenDisposition::kCurrentTab);
     content::WaitForLoadStop(GetWebContentsAt(0));
     content::WaitForLoadStop(GetWebContentsAt(1));
     content::WaitForLoadStop(GetWebContentsAt(2));

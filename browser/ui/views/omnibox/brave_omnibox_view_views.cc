@@ -12,6 +12,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/omnibox/clean_link_utils.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/navigator/browser_navigator.h"
@@ -26,7 +27,7 @@
 #include "components/search_engines/template_url_service.h"
 #include "ui/base/clipboard/clipboard.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
-#include "ui/base/window_open_disposition.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/gfx/text_elider.h"
 
 namespace {
@@ -54,27 +55,11 @@ BraveOmniboxViewViews::BraveOmniboxViewViews(bool popup_window_mode,
 BraveOmniboxViewViews::~BraveOmniboxViewViews() = default;
 
 std::optional<GURL> BraveOmniboxViewViews::GetURLToCopy() {
-  GURL url;
-  bool write_url = false;
-  auto selected_text = std::u16string(GetSelectedText());
-  controller()->edit_model()->AdjustTextForCopy(
-      GetSelectedRange().GetMin(), &selected_text, &url, &write_url);
-  if (!write_url) {
-    return std::nullopt;
-  }
-  return url;
+  return brave::GetSelectedURLForCleanLink(*this, *controller()->edit_model());
 }
 
 bool BraveOmniboxViewViews::SelectedTextIsURL() {
   return GetURLToCopy().has_value();
-}
-
-void BraveOmniboxViewViews::CleanAndCopySelectedURL() {
-  auto url_to_copy = GetURLToCopy();
-  if (!url_to_copy.has_value()) {
-    return;
-  }
-  CopySanitizedURL(url_to_copy.value());
 }
 
 void BraveOmniboxViewViews::CopySanitizedURL(const GURL& url) {
@@ -184,7 +169,7 @@ void BraveOmniboxViewViews::OnClipboardTextForPasteAndSearchRetrieved(
 
   NavigateParams params(location_bar_view_->browser(), url,
                         ui::PAGE_TRANSITION_GENERATED);
-  params.disposition = WindowOpenDisposition::kCurrentTab;
+  params.disposition = ui::mojom::WindowOpenDisposition::kCurrentTab;
   Navigate(&params);
 }
 

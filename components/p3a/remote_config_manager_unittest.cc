@@ -109,15 +109,10 @@ TEST_F(P3ARemoteConfigManagerTest, LoadRemoteConfig) {
   EXPECT_TRUE(uptime_config->disable_country_strip);
   EXPECT_TRUE(uptime_config->record_activation_date);
   ASSERT_TRUE(uptime_config->attributes.has_value());
-  EXPECT_EQ(
-      (*uptime_config->attributes)[0].value_or(MetricAttribute::kMaxValue),
-      MetricAttribute::kVersion);
-  EXPECT_EQ(
-      (*uptime_config->attributes)[1].value_or(MetricAttribute::kMaxValue),
-      MetricAttribute::kPlatform);
-  EXPECT_EQ(
-      uptime_config->append_attributes[0].value_or(MetricAttribute::kMaxValue),
-      MetricAttribute::kDateOfInstall);
+  EXPECT_EQ((*uptime_config->attributes)[0], MetricAttribute::kVersion);
+  EXPECT_EQ((*uptime_config->attributes)[1], MetricAttribute::kPlatform);
+  EXPECT_EQ(uptime_config->append_attributes[0],
+            MetricAttribute::kDateOfInstall);
   ASSERT_TRUE(uptime_config->activation_metric_name.has_value());
   EXPECT_EQ(uptime_config->activation_metric_name.value(),
             "Brave.Core.LastUsage");
@@ -141,15 +136,9 @@ TEST_F(P3ARemoteConfigManagerTest, LoadRemoteConfig) {
   EXPECT_FALSE(rewards_config->ephemeral);
   EXPECT_FALSE(rewards_config->nebula);
   ASSERT_TRUE(rewards_config->attributes.has_value());
-  EXPECT_EQ(
-      (*rewards_config->attributes)[0].value_or(MetricAttribute::kMaxValue),
-      MetricAttribute::kAnswerIndex);
-  EXPECT_EQ(
-      (*rewards_config->attributes)[1].value_or(MetricAttribute::kMaxValue),
-      MetricAttribute::kChannel);
-  EXPECT_EQ(
-      (*rewards_config->attributes)[2].value_or(MetricAttribute::kMaxValue),
-      MetricAttribute::kDateOfInstall);
+  EXPECT_EQ((*rewards_config->attributes)[0], MetricAttribute::kAnswerIndex);
+  EXPECT_EQ((*rewards_config->attributes)[1], MetricAttribute::kChannel);
+  EXPECT_EQ((*rewards_config->attributes)[2], MetricAttribute::kDateOfInstall);
 
   const auto* unmodified_config =
       remote_config_manager_->GetRemoteMetricConfig("Brave.UnmodifiedMetric");

@@ -678,13 +678,13 @@
 
 -keep class org.chromium.chrome.browser.BraveApplicationImplBase
 
--keep class org.chromium.chrome.browser.dom_distiller.ReaderModeManager {
+-keep class org.chromium.chrome.browser.reader_mode.ReaderModeManager {
     *** mTab;
     <init>(...);
     *** shouldUseReaderModeMessages(...);
 }
 
--keep class org.chromium.chrome.browser.dom_distiller.BraveReaderModeManager {
+-keep class org.chromium.chrome.browser.reader_mode.BraveReaderModeManager {
     <init>(...);
     *** shouldUseReaderModeMessages(...);
 }
@@ -720,10 +720,6 @@
 
 -keep class org.chromium.chrome.browser.BraveAppHooks {
     public <init>(...);
-}
-
--keep class org.chromium.chrome.browser.tab.TabBrowserControlsConstraintsHelper {
-    *** getObservableConstraints(...);
 }
 
 -keep class org.chromium.components.cached_flags.CachedFlag {
@@ -945,9 +941,13 @@
 
 -keep class org.chromium.chrome.browser.omnibox.suggestions.editurl.BraveEditUrlSuggestionProcessorBase
 
--keep class org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesLayout
+-keep class org.chromium.chrome.browser.suggestions.tile.MostVisitedTilesLayout {
+    *** triggerCustomizationIph(...);
+}
 
--keep class org.chromium.chrome.browser.suggestions.tile.BraveMostVisitedTilesLayoutBase
+-keep class org.chromium.chrome.browser.suggestions.tile.BraveMostVisitedTilesLayoutBase {
+    *** triggerCustomizationIph(...);
+}
 
 -keep class org.chromium.chrome.browser.hub.HubManagerImpl {
     public <init>(...);

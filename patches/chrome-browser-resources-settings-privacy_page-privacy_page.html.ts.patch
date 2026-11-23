@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.html.ts b/chrome/browser/resources/settings/privacy_page/privacy_page.html.ts
+index 6ab1a26f1e7f8bea124d882afcc27ea934c75b5e..9ed0bfae0b29a53e711de67b7d2c4e38282579de 100644
+--- a/chrome/browser/resources/settings/privacy_page/privacy_page.html.ts
++++ b/chrome/browser/resources/settings/privacy_page/privacy_page.html.ts
+@@ -19,6 +19,7 @@ export function getHtml(this: SettingsPrivacyPageElement) {
+         @close="${this.onPrivacyGuideDialogClose_}">
+     </settings-privacy-guide-dialog>
+   ` : ''}
++  <settings-personalization-options></settings-personalization-options>
+   <cr-link-row id="clearBrowsingData" start-icon="cr:delete"
+       label="$i18n{clearBrowsingData}"
+       sub-label="$i18n{clearBrowsingDataDescription}"

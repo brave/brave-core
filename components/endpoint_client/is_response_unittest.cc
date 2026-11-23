@@ -5,8 +5,10 @@
 
 #include "brave/components/endpoint_client/is_response.h"
 
-#include "brave/components/endpoint_client/json_test_endpoint_bodies.h"
-#include "brave/components/endpoint_client/protobuf_test_endpoint_bodies.pb.h"
+#include <optional>
+#include <type_traits>
+
+#include "base/values.h"
 #include "brave/components/endpoint_client/response.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -14,20 +16,35 @@ namespace endpoint_client::internal {
 
 namespace {
 
-template <typename T, bool SatisfiesConcept>
+// Test cases take their type as a value (`kType<T>`), not as a type template
+// argument. Registering typed tests makes gtest call
+// `MakeAndRegisterTestInfo()` unqualified, and argument-dependent lookup then
+// instantiates the type template arguments of the test cases. For the types
+// `Response<>` rejects, that would trigger their `static_assert`. ADL ignores
+// non-type template arguments.
+template <typename T>
+inline constexpr std::type_identity<T> kType{};
+
+struct ValidResponseBody {
+  static std::optional<ValidResponseBody> FromValue(const base::Value&);
+};
+
+template <auto TypeIdentity, bool SatisfiesConcept>
 struct IsResponseTestCase {
-  using Type = T;
+  using Type = typename decltype(TypeIdentity)::type;
   static constexpr bool kSatisfiesConcept = SatisfiesConcept;
 };
 
 using IsResponseTestCases = testing::Types<
-    IsResponseTestCase<void*, false>,
-    IsResponseTestCase<volatile int, false>,
-    IsResponseTestCase<JSONSuccessBody, false>,
-    IsResponseTestCase<Response<JSONSuccessBody, JSONErrorBody>, true>,
-    IsResponseTestCase<ProtobufSuccessBody, false>,
-    IsResponseTestCase<Response<ProtobufSuccessBody, ProtobufErrorBody>, true>,
-    IsResponseTestCase<Response<JSONSuccessBody, ProtobufErrorBody>, false>>;
+    IsResponseTestCase<kType<void*>, false>,
+    IsResponseTestCase<kType<volatile int>, false>,
+    IsResponseTestCase<kType<ValidResponseBody>, false>,
+    IsResponseTestCase<kType<Response<>>, true>,
+    IsResponseTestCase<kType<Response<ValidResponseBody, ValidResponseBody>>,
+                       true>,
+    IsResponseTestCase<kType<Response<ValidResponseBody>>, false>,
+    IsResponseTestCase<kType<Response<ValidResponseBody, int>>, false>,
+    IsResponseTestCase<kType<Response<int, ValidResponseBody>>, false>>;
 
 template <typename>
 struct IsResponseTest : testing::Test {};

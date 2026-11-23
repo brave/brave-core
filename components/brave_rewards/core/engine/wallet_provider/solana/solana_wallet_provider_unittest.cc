@@ -5,9 +5,11 @@
 
 #include "brave/components/brave_rewards/core/engine/wallet_provider/solana/solana_wallet_provider.h"
 
+#include <algorithm>
 #include <string>
 #include <utility>
 
+#include "base/test/run_until.h"
 #include "brave/components/brave_rewards/core/engine/test/rewards_engine_test.h"
 #include "brave/components/brave_rewards/core/engine/util/environment_config.h"
 #include "brave/components/brave_rewards/core/engine/util/rewards_prefs.h"
@@ -79,7 +81,10 @@ TEST_F(RewardsSolanaWalletProviderTest, LinkingSuccess) {
       mojom::UrlMethod::GET, std::move(get_wallet_response));
 
   engine().Get<SolanaWalletProvider>().PollWalletStatus();
-  task_environment().RunUntilIdle();
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return std::ranges::contains(client().GetObserverEventsForTesting(),
+                                 "external-wallet-connected");
+  }));
 
   auto external_wallet =
       WaitFor<mojom::ExternalWalletPtr>([this](auto callback) {

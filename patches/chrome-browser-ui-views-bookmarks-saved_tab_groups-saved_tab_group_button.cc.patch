@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_button.cc b/chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_button.cc
-index 9593ea1fc4e364be1b6a558523d288fc90d36ea6..bb11101761ca6a27888b664d93ecd1d31574cd75 100644
+index bf486a6e980aead5cf6dec209b320018c001996c..66aeda48da5447ce7c6d72b477f69ff6e692fb34 100644
 --- a/chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_button.cc
 +++ b/chrome/browser/ui/views/bookmarks/saved_tab_groups/saved_tab_group_button.cc
-@@ -260,7 +260,7 @@ void SavedTabGroupButton::UpdateButtonLayout() {
+@@ -261,7 +261,7 @@ void SavedTabGroupButton::UpdateButtonLayout() {
                        features::IsRoundedIconsEnabled() ? kGroupCustomIcon
                                                          : kPeopleGroupOldIcon,
                        GetSavedTabGroupForegroundColorId(tab_group_color_id_),

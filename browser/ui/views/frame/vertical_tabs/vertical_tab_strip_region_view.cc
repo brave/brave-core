@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/check_deref.h"
 #include "base/check_op.h"
 #include "base/command_line.h"
 #include "base/dcheck_is_on.h"
@@ -273,13 +274,6 @@ class ResettableResizeArea : public views::ResizeArea {
 BEGIN_METADATA(ResettableResizeArea)
 END_METADATA
 
-TabStripPlacementCoordinator* GetPlacementCoordinator(
-    BrowserView* browser_view) {
-  CHECK(browser_view);
-  return BraveBrowserView::From(browser_view)
-      ->tab_strip_placement_coordinator();
-}
-
 }  // namespace
 
 BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
@@ -314,7 +308,7 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
   region_view_container_->SetLayoutManager(
       std::make_unique<views::FillLayout>());
 
-  auto* placement_coordinator = GetPlacementCoordinator(browser_view);
+  auto* placement_coordinator = TabStripPlacementCoordinator::From(browser_);
   CHECK(placement_coordinator);
   placement_coordinator->SetPlacement(TabStripPlacementKind::kVerticalTabStrip,
                                       region_view_container_.get());
@@ -398,6 +392,11 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
   if (auto* focus_mode_controller = FocusModeController::From(browser_)) {
     focus_mode_observation_.Observe(focus_mode_controller);
   }
+  fullscreen_subscription_ =
+      CHECK_DEREF(VerticalTabController::From(browser_))
+          .RegisterOnFullscreenStateChanged(base::BindRepeating(
+              &BraveVerticalTabStripRegionView::OnFullscreenStateChanged,
+              base::Unretained(this)));
   UpdateFloatingStateForBrowserMode();
 
   // Subscribe browser closing event, so we can dispose of the context menu.
@@ -423,7 +422,7 @@ BraveVerticalTabStripRegionView::~BraveVerticalTabStripRegionView() {
 
   // We need to move tab strip region to its original parent to avoid crash
   // during drag and drop session.
-  if (auto* coordinator = GetPlacementCoordinator(browser_view_)) {
+  if (auto* coordinator = TabStripPlacementCoordinator::From(browser_)) {
     coordinator->ClearPlacement(TabStripPlacementKind::kVerticalTabStrip);
   }
   UpdateLayout();
@@ -431,7 +430,7 @@ BraveVerticalTabStripRegionView::~BraveVerticalTabStripRegionView() {
 
 void BraveVerticalTabStripRegionView::AddedToWidget() {
   // Retry the placement, in case it was skipped while we weren't attached.
-  if (auto* coordinator = GetPlacementCoordinator(browser_view_)) {
+  if (auto* coordinator = TabStripPlacementCoordinator::From(browser_)) {
     coordinator->UpdatePlacement();
   }
 }
@@ -439,7 +438,7 @@ void BraveVerticalTabStripRegionView::AddedToWidget() {
 void BraveVerticalTabStripRegionView::RemovedFromWidget() {
   // Only clear the placement data here, no reparenting: Views may be
   // mid-iteration tearing down the tree at this point.
-  if (auto* coordinator = GetPlacementCoordinator(browser_view_)) {
+  if (auto* coordinator = TabStripPlacementCoordinator::From(browser_)) {
     coordinator->ClearPlacement(TabStripPlacementKind::kVerticalTabStrip);
   }
 }
@@ -482,22 +481,6 @@ void BraveVerticalTabStripRegionView::OnFullscreenStateChanged() {
 
 void BraveVerticalTabStripRegionView::OnFocusModeToggled(bool enabled) {
   UpdateFloatingStateForBrowserMode();
-}
-
-void BraveVerticalTabStripRegionView::ListenFullscreenChanges() {
-  auto* fullscreen_controller = GetFullscreenController();
-  DCHECK(fullscreen_controller);
-  // Observe changes to fullscreen state.
-  fullscreen_subscription_ =
-      ExclusiveAccessManager::From(browser_view_->browser())
-          ->fullscreen_controller()
-          ->RegisterOnFullscreenStateChanged(base::BindRepeating(
-              &BraveVerticalTabStripRegionView::OnFullscreenStateChanged,
-              base::Unretained(this)));
-}
-
-void BraveVerticalTabStripRegionView::StopListeningFullscreenChanges() {
-  fullscreen_subscription_ = {};
 }
 
 FullscreenController* BraveVerticalTabStripRegionView::GetFullscreenController()
@@ -748,7 +731,7 @@ void BraveVerticalTabStripRegionView::OnVerticalTabSideChanged() {
 }
 
 void BraveVerticalTabStripRegionView::UpdateLayout() {
-  if (auto* coordinator = GetPlacementCoordinator(browser_view_)) {
+  if (auto* coordinator = TabStripPlacementCoordinator::From(browser_)) {
     coordinator->UpdatePlacement();
   }
 
@@ -793,6 +776,10 @@ void BraveVerticalTabStripRegionView::OnMouseExited(
 
 void BraveVerticalTabStripRegionView::OnMouseEntered(
     const ui::MouseEvent& event) {
+  // An enter event can arrive for a cursor no longer over the strip.
+  if (!IsMouseHovered()) {
+    return;
+  }
   OnMouseEntered();
 }
 
@@ -1206,11 +1193,6 @@ void BraveVerticalTabStripRegionView::UpdateFloatingStateForBrowserMode() {
 }
 
 void BraveVerticalTabStripRegionView::ScheduleFloatingModeTimer() {
-  if (mouse_events_for_test_) {
-    SetState(State::kFloating);
-    return;
-  }
-
   if (mouse_enter_timer_.IsRunning()) {
     return;
   }

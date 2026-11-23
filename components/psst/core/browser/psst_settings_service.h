@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
@@ -27,6 +28,9 @@ class PsstSettingsService : public KeyedService {
   class PrefObserver : public base::CheckedObserver {
    public:
     virtual void OnPsstEnableChange(bool new_value) {}
+    virtual void OnPsstPrefsChange(
+        const base::flat_map<std::string, PsstWebsiteSettingsExtended>&
+            psst_websites_settings) {}
 
    protected:
     ~PrefObserver() override = default;
@@ -53,8 +57,29 @@ class PsstSettingsService : public KeyedService {
       const url::Origin& origin,
       std::string_view user_id);
 
+  base::flat_map<std::string, PsstWebsiteSettingsExtended>
+  GetAllPsstWebsitesSettings();
+
   void SetPsstWebsiteSettings(const url::Origin& origin,
                               PsstWebsiteSettings psst_metadata);
+
+  // Returns the number of times the PSST infobar has been shown for
+  // `origin`.
+  int GetInfobarShownCount(const url::Origin& origin);
+
+  // Returns the number of times the PSST infobar has been declined
+  // for `origin`.
+  int GetInfobarDeclinedCount(const url::Origin& origin);
+
+  // Records that the PSST infobar was shown for `origin`. No-op unless `origin`
+  // is https. The count is persisted in the origin's BRAVE_PSST website
+  // setting.
+  void IncrementInfobarShownCount(const url::Origin& origin);
+
+  // Records that the PSST infobar was declined for `origin`. No-op unless
+  // `origin` is https. The count is persisted in the origin's BRAVE_PSST
+  // website setting.
+  void IncrementInfobarDeclineCount(const url::Origin& origin);
 
   bool IsPsstEnabled() const;
   void SetPsstEnabled(bool enabled);

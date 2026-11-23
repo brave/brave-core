@@ -17,7 +17,6 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "brave/components/query_filter/browser/query_filter_data.h"
-#include "brave/components/query_filter/common/features.h"
 #include "brave/components/query_filter/common/internal/schema_utils.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/re2/src/re2/re2.h"
@@ -177,11 +176,6 @@ std::optional<GURL> MaybeApplyQueryStringFilter(
                  net::registry_controlled_domains::
                      INCLUDE_PRIVATE_REGISTRIES)) {
     // Same-site requests are exempted.
-    return std::nullopt;
-  }
-
-  if (!base::FeatureList::IsEnabled(
-          query_filter::features::kQueryFilterComponent)) {
     return std::nullopt;
   }
 

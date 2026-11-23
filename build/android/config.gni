@@ -41,9 +41,11 @@ brave_chrome_java_deps = [
   "//brave/browser/customize_menu/android:java",
   "//brave/browser/download/android:java",
   "//brave/browser/first_run/android:java",
+  "//brave/browser/media/android:java",
   "//brave/browser/notifications/android:brave_java",
   "//brave/browser/notifications/android:java",
   "//brave/browser/ntp_customization:java",
+  "//brave/browser/omaha/android:java",
   "//brave/browser/password_entry_edit:public_java",
   "//brave/browser/quick_search_engines/android:java",
   "//brave/browser/safe_browsing/android/java/src/org/chromium/chrome/browser/safe_browsing/settings:java",
@@ -119,6 +121,8 @@ brave_chrome_all_java_deps = [
   "//brave/browser/password_entry_edit/android/internal:java",
   "//brave/browser/ui/android/brave_account:java",
 ]
+
+brave_browser_ui_extensions_java_sources = [ "//brave/chrome/browser/ui/android/extensions/java/src/org/chromium/chrome/browser/ui/extensions/BraveExtensionUiBackendUtil.java" ]
 
 brave_chrome_java_srcjar_deps = [
   "//brave/android:brave_android_java_enums_srcjar",

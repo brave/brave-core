@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { AliasItem } from '../content/email_aliases_item'
-import { Alias } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+import { Alias } from 'gen/brave/components/email_aliases/email_aliases.mojom-webui.js'
 
 // Mock the callback functions
 const mockOnEdit = jest.fn()

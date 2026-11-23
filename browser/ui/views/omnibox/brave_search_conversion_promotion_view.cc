@@ -37,6 +37,7 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/image_model.h"
 #include "ui/base/resource/resource_bundle.h"
+#include "ui/color/color_provider_key.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/skia_conversions.h"
@@ -55,6 +56,7 @@
 #include "ui/views/controls/label.h"
 #include "ui/views/layout/fill_layout.h"
 #include "ui/views/layout/flex_layout.h"
+#include "ui/views/widget/widget.h"
 
 using brave_search_conversion::ConversionType;
 using brave_search_conversion::SetDismissed;
@@ -670,8 +672,7 @@ std::optional<int> BraveSearchConversionPromotionView::GetBackgroundGraphic()
   }
 
   const bool use_dark =
-      ui::NativeTheme::GetInstanceForNativeUi()->preferred_color_scheme() ==
-      ui::NativeTheme::PreferredColorScheme::kDark;
+      GetWidget()->GetColorMode() == ui::ColorProviderKey::ColorMode::kDark;
   if (!UseDDG()) {
     return use_dark ? IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC_DARK
                     : IDR_BRAVE_SEARCH_CONVERSION_BANNER_GRAPHIC;

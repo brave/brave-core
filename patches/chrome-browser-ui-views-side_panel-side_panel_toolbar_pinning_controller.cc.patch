@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/views/side_panel/side_panel_toolbar_pinning_controller.cc b/chrome/browser/ui/views/side_panel/side_panel_toolbar_pinning_controller.cc
+index a86f5b13a3bcc0bc930c9dfa170136a9a70d9ce9..7ede1849a50dac5812c4d098a9c9a40922655320 100644
+--- a/chrome/browser/ui/views/side_panel/side_panel_toolbar_pinning_controller.cc
++++ b/chrome/browser/ui/views/side_panel/side_panel_toolbar_pinning_controller.cc
+@@ -175,6 +175,9 @@ bool SidePanelToolbarPinningController::ShouldShowActiveInToolbar(
+ void SidePanelToolbarPinningController::UpdateActiveState(
+     SidePanelEntryKey key,
+     bool show_active_in_toolbar) {
++  if (auto* toolbar_button_provider = ToolbarButtonProvider::From(&*browser_);
++      !toolbar_button_provider ||
++      !toolbar_button_provider->GetPinnedToolbarActions()) return;
+   auto* const toolbar_container =
+       ToolbarButtonProvider::From(&*browser_)->GetPinnedToolbarActions();
+   CHECK(toolbar_container);

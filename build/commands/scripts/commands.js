@@ -6,7 +6,8 @@
 // Check environment before doing anything.
 import '../lib/checkEnvironment.js'
 
-import { program, Option } from 'commander'
+import { Option } from 'commander'
+import { program } from '../lib/program.ts'
 import path from 'node:path'
 import fs from 'fs-extra'
 import config from '../lib/config.ts'
@@ -104,7 +105,7 @@ program
 
     config.update(options)
     // ignore use_no_gn_gen when updating the symlink
-    delete config.use_no_gn_gen
+    config.use_no_gn_gen = undefined
     const currentLink = options.symlink_dir
     if (!currentLink) {
       console.error('Symlink directory is required')

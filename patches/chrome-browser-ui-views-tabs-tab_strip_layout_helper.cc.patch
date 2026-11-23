@@ -1,0 +1,18 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_strip_layout_helper.cc b/chrome/browser/ui/views/tabs/tab_strip_layout_helper.cc
+index 79f3ac07f2f1831df5cadf3b9bf359d30703c684..04d0bc2b91d1ee5c0dc3f026a5be8961d30a4428 100644
+--- a/chrome/browser/ui/views/tabs/tab_strip_layout_helper.cc
++++ b/chrome/browser/ui/views/tabs/tab_strip_layout_helper.cc
+@@ -280,6 +280,13 @@ TabStripLayoutHelper::CalculateIdealBounds(std::optional<int> available_width) {
+     tab_widths.emplace_back(state, size_info);
+   }
+ 
++  if (use_vertical_tabs_) {
++    FillGroupInfo(tab_widths);
++    FillNestingInfo(tab_widths);
++    return tabs::CalculateVerticalTabBounds(
++        tab_widths, available_width,
++        GetBraveTabStrip()->ShouldShowPinnedTabsInGrid());
++  }
+   return CalculateTabBounds(tab_widths, available_width);
+ }
+ 

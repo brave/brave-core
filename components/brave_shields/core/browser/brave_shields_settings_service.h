@@ -59,6 +59,7 @@ class BraveShieldsSettingsService : public KeyedService {
 #if !BUILDFLAG(IS_IOS)
   bool GetForgetFirstPartyStorageEnabled(const GURL& url);
   void SetForgetFirstPartyStorageEnabled(bool is_enabled, const GURL& url);
+  void ResetForgetFirstPartyStorageEnabled(const GURL& url);
 #endif
 
   void SetDefaultAutoShredMode(mojom::AutoShredMode mode);
@@ -90,6 +91,8 @@ class BraveShieldsSettingsService : public KeyedService {
   // is enabled.
   base::Token GetFarblingToken(const GURL& url,
                                base::span<const uint8_t> additional_entropy);
+
+  bool IsQueryFilteringEnabled(const GURL& url);
 
  private:
   const raw_ref<HostContentSettingsMap>

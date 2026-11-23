@@ -19,9 +19,11 @@
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "url/gurl.h"
 
 #if BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/infobars/confirm_infobar_creation_allowlist.h"
 #include "chrome/browser/infobars/confirm_infobar_creator.h"
 #else  // BUILDFLAG(IS_ANDROID)
 #include "brave/browser/infobars/brave_confirm_infobar_creator.h"
@@ -33,16 +35,6 @@ namespace {
 
 constexpr std::string_view kLearnMoreUrl =
     "https://search.brave.com/help/conversion-reporting";
-
-std::unique_ptr<infobars::InfoBar> CreateSearchResultAdClickedInfoBar() {
-#if BUILDFLAG(IS_ANDROID)
-  return CreateConfirmInfoBar(
-      std::make_unique<CreativeSearchResultAdClickedInfoBarDelegate>());
-#else   // BUILDFLAG(IS_ANDROID)
-  return CreateBraveConfirmInfoBar(
-      std::make_unique<CreativeSearchResultAdClickedInfoBarDelegate>());
-#endif  // BUILDFLAG(IS_ANDROID)
-}
 
 }  // namespace
 
@@ -61,7 +53,14 @@ void CreativeSearchResultAdClickedInfoBarDelegate::Create(
   infobars::ContentInfoBarManager* infobar_manager =
       infobars::ContentInfoBarManager::FromWebContents(web_contents);
   if (infobar_manager) {
-    infobar_manager->AddInfoBar(CreateSearchResultAdClickedInfoBar());
+#if BUILDFLAG(IS_ANDROID)
+    infobar_manager->AddInfoBar(CreateConfirmInfoBar(
+        ConfirmInfoBarCreationAllowlist::GetPassKeyForMigration(),
+        std::make_unique<CreativeSearchResultAdClickedInfoBarDelegate>()));
+#else   // BUILDFLAG(IS_ANDROID)
+    infobar_manager->AddInfoBar(CreateBraveConfirmInfoBar(
+        std::make_unique<CreativeSearchResultAdClickedInfoBarDelegate>()));
+#endif  // BUILDFLAG(IS_ANDROID)
   }
 }
 
@@ -117,7 +116,7 @@ bool CreativeSearchResultAdClickedInfoBarDelegate::ShouldExpire(
 }
 
 bool CreativeSearchResultAdClickedInfoBarDelegate::LinkClicked(
-    WindowOpenDisposition disposition) {
+    ui::mojom::WindowOpenDisposition disposition) {
   ConfirmInfoBarDelegate::LinkClicked(disposition);
   // Return true to immediately close the infobar.
   return true;

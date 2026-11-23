@@ -15,7 +15,6 @@
 #include "brave/browser/net/url_context.h"
 #include "brave/components/constants/network_constants.h"
 #include "brave/components/query_filter/browser/test_support/query_filter_test_helper.h"
-#include "brave/components/query_filter/common/features.h"
 #include "brave/components/query_filter/common/pref_names.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -57,8 +56,7 @@ class BraveSiteHacksNetworkDelegateHelperTest : public testing::Test {
         typename PtrStrategy::template Ptr<brave::BraveRequestInfo>,
         base::WeakPtr<brave::BraveRequestInfo>>;
     scoped_feature_list_.InitWithFeatureStates(
-        {{features::kBraveRequestInfoUniquePtr, enable_flag},
-         {query_filter::features::kQueryFilterComponent, true}});
+        {{features::kBraveRequestInfoUniquePtr, enable_flag}});
     testing_filter_rules_.emplace();
   }
 
@@ -432,23 +430,4 @@ TYPED_TEST(BraveSiteHacksNetworkDelegateHelperTest,
 
   // new_url should not be set because Brave Shields is disabled
   EXPECT_TRUE(brave_request_info->new_url_spec().empty());
-}
-
-TYPED_TEST(BraveSiteHacksNetworkDelegateHelperTest,
-           QueryParametersFilteringPreferenceIsNotManagedByPolicy) {
-  this->GetPrefs()->SetBoolean(
-      query_filter::kTrackingQueryParametersFilteringEnabled, false);
-
-  auto brave_request_info =
-      this->MakeRequest(GURL("https://example.com/?fbclid=1"));
-  brave_request_info->set_request_initiator(
-      url::Origin::Create(GURL("https://example.net")));
-  brave_request_info->set_method("GET");
-  int rc = brave::OnBeforeURLRequest_SiteHacksWork(ResponseCallback(),
-                                                   brave_request_info);
-  EXPECT_EQ(rc, net::OK);
-
-  // new_url should be set because the query parameters filtering remains
-  // enabled by default since the pref is not managed by policy
-  EXPECT_EQ(brave_request_info->new_url_spec(), "https://example.com/");
 }

@@ -7,15 +7,10 @@
 
 #include <memory>
 #include <string>
-#include <utility>
 
-#include "base/check.h"
 #include "base/command_line.h"
 #include "base/containers/span.h"
 #include "base/files/file_path.h"
-#include "base/memory/ref_counted_memory.h"
-#include "base/run_loop.h"
-#include "base/strings/string_view_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service_waiter.h"
 #include "brave/components/ntp_background_images/browser/sponsored_content/test/ntp_sponsored_content_source_test_util.h"
@@ -56,29 +51,6 @@ class NTPStaticNewTabTakeoverSourceTest : public testing::Test {
     return url_data_source_.get();
   }
 
-  std::string StartDataRequest(const GURL& url) {
-    CHECK(url_data_source_);
-
-    std::string data;
-    content::WebContents::Getter wc_getter;
-
-    base::RunLoop run_loop;
-    url_data_source_->StartDataRequest(
-        url, wc_getter,
-        base::BindOnce(
-            [](std::string* data, base::OnceClosure quit_closure,
-               scoped_refptr<base::RefCountedMemory> bytes) {
-              if (bytes) {
-                *data = base::as_string_view(*bytes);
-              }
-              std::move(quit_closure).Run();
-            },
-            base::Unretained(&data), run_loop.QuitClosure()));
-    run_loop.Run();
-
-    return data;
-  }
-
  private:
   void SimulateDeprecatedOnSponsoredContentDidUpdate() {
     base::CommandLine::ForCurrentProcess()->AppendSwitchPath(
@@ -98,27 +70,34 @@ class NTPStaticNewTabTakeoverSourceTest : public testing::Test {
 
 TEST_F(NTPStaticNewTabTakeoverSourceTest, StartDataRequest) {
   EXPECT_THAT(
-      StartDataRequest(GURL(
-          R"(chrome://branded-wallpaper/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/background.jpg)")),
+      test::StartDataRequest(
+          url_data_source(),
+          GURL(
+              R"(chrome://branded-wallpaper/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/background.jpg)")),
       ::testing::Not(::testing::IsEmpty()));
 }
 
 TEST_F(NTPStaticNewTabTakeoverSourceTest,
        DoNotStartDataRequestIfContentIsReferencingParentDirectory) {
   EXPECT_THAT(
-      StartDataRequest(GURL(
-          R"(chrome://branded-wallpaper/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/../restricted.jpg)")),
+      test::StartDataRequest(
+          url_data_source(),
+          GURL(
+              R"(chrome://branded-wallpaper/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/../restricted.jpg)")),
       ::testing::IsEmpty());
-  EXPECT_THAT(
-      StartDataRequest(GURL(R"(chrome://branded-wallpaper/restricted.jpg)")),
-      ::testing::IsEmpty());
+  EXPECT_THAT(test::StartDataRequest(
+                  url_data_source(),
+                  GURL(R"(chrome://branded-wallpaper/restricted.jpg)")),
+              ::testing::IsEmpty());
 }
 
 TEST_F(NTPStaticNewTabTakeoverSourceTest,
        DoNotStartDataRequestIfContentIsFromAnotherCampaign) {
   EXPECT_THAT(
-      StartDataRequest(GURL(
-          R"(chrome://branded-wallpaper/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/../3b36d1b7-5c9b-4625-9227-7c8e9fe6e0b4/background.jpg)")),
+      test::StartDataRequest(
+          url_data_source(),
+          GURL(
+              R"(chrome://branded-wallpaper/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/../3b36d1b7-5c9b-4625-9227-7c8e9fe6e0b4/background.jpg)")),
       ::testing::IsEmpty());
 }
 
@@ -127,12 +106,16 @@ TEST_F(NTPStaticNewTabTakeoverSourceTest,
 TEST_F(NTPStaticNewTabTakeoverSourceTest,
        DoNotStartDataRequestIfContentDoesNotExist) {
   EXPECT_THAT(
-      StartDataRequest(GURL(
-          R"(chrome://branded-wallpaper/non-existent-creative/background.jpg)")),
+      test::StartDataRequest(
+          url_data_source(),
+          GURL(
+              R"(chrome://branded-wallpaper/non-existent-creative/background.jpg)")),
       ::testing::IsEmpty());
   EXPECT_THAT(
-      StartDataRequest(GURL(
-          R"(chrome://branded-wallpaper/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/non-existent.jpg)")),
+      test::StartDataRequest(
+          url_data_source(),
+          GURL(
+              R"(chrome://branded-wallpaper/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/non-existent.jpg)")),
       ::testing::IsEmpty());
 }
 #endif  // defined(OFFICIAL_BUILD) && !DCHECK_IS_ON()

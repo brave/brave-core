@@ -1,7 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="be">
-<translation id="1003222766972176318">Напамін: захаваная прапанова даступная</translation>
 <translation id="1008557486741366299">Не зараз</translation>
 <translation id="100957008357583611">Выкарыстоўваць даныя пра ваша месцазнаходжанне?</translation>
 <translation id="1010200102790553230">Загрузіць старонку пазней</translation>
@@ -52,6 +51,7 @@
 <translation id="1080116354587839789">Дапасаваць да шырыні старонкі</translation>
 <translation id="1081061862829655580">Латок 19</translation>
 <translation id="1082026381988252344">Прагортка і маштабаванне змесціва абагуленай укладкі</translation>
+<translation id="1083351079082239441">Праглядзець асноўныя дзеянні, якія сэрвіс Gemini выконваў падчас прагляду сайтаў для вас</translation>
 <translation id="108859316315249327">Паўтарыць спробу</translation>
 <translation id="1089439967362294234">Змяніць пароль</translation>
 <translation id="1090629319939036170">Меню VR</translation>
@@ -95,7 +95,6 @@
 <translation id="1165174597379888365">Наведваецца старонка</translation>
 <translation id="7108524493226474140">{COUNT,plural, =0{Сайтаў няма}=1{З 1 сайта (вы застаняцеся ва Уліковым запісе Brave)}one{З # сайта (вы застаняцеся ва Уліковым запісе Brave)}few{З # сайтаў (вы застаняцеся ва Уліковым запісе Brave)}many{З # сайтаў (вы застаняцеся ва Уліковым запісе Brave)}other{З # сайта (вы застаняцеся ва Уліковым запісе Brave)}}</translation>
 <translation id="1167877250265821930">Не ўдалося спампаваць пакет: <ph name="LANGUAGE"/></translation>
-<translation id="1171306609584863516">Спраўджана (<ph name="IDP_ORIGIN"/>)</translation>
 <translation id="1174644974616730562">Канверт Chinese № 1</translation>
 <translation id="1174723505405632867">Дазволіць сайту <ph name="EMBEDDED_URL"/> выкарыстоўваць файлы cookie і даныя сайта <ph name="TOP_LEVEL_URL"/>?
 
@@ -117,6 +116,7 @@
 <translation id="1195558154361252544">Апавяшчэнні аўтаматычна блакіруюцца для ўсіх сайтаў, акрамя тых, якім вы далі дазвол іх паказваць</translation>
 <translation id="1197088940767939838">Аранжавы</translation>
 <translation id="1198412233443148072">Карыстальнік (<ph name="MEMBER_FIRST_NAME"/>) выдаліў укладку "<ph name="WEBSITE_TITLE"/>"</translation>
+<translation id="119944043368869598">Выдаліць усё</translation>
 <translation id="1201402288615127009">Далей</translation>
 <translation id="1201895884277373915">Іншае з гэтага сайта</translation>
 <translation id="1204184165594298176">{0,plural, =1{Файл не можа быць скапіраваны па прычыне блакіроўкі}one{<ph name="FILE_COUNT"/> файл не можа быць скапіраваны па прычыне блакіроўкі}few{<ph name="FILE_COUNT"/> файлы не могуць быць скапіраваны па прычыне блакіроўкі}many{<ph name="FILE_COUNT"/> файлаў не могуць быць скапіраваны па прычыне блакіроўкі}other{<ph name="FILE_COUNT"/> файла не могуць быць скапіраваны па прычыне блакіроўкі}}</translation>
@@ -237,6 +237,7 @@
 <translation id="3057197202055415269">На сайце, які вы спрабавалі наведаць, дзейнічаюць зламыснікі. Яны могуць падманам прымусіць вас усталяваць праграмнае забеспячэнне ці раскрыць вашы даныя, напрыклад паролі, нумар тэлефона ці нумары крэдытных картак. Brave настойліва рэкамендуе вярнуцца на бяспечную старонку. <ph name="BEGIN_LEARN_MORE_LINK"/>Даведацца больш пра гэта папярэджанне<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="1397342126322860141">Бяспечнае дадаванне пасведчання асобы ў Brave Кашалёк</translation>
 <translation id="1398743098754840707">Дададзеныя сюды сайты не будуць выкарыстоўвацца ў якасці крыніц для адказаў, нават калі ўкладкі з імі адкрыты. Калі сайт, які вы дадаяце, ужо выкарыстоўваецца ў ланцужку, можа прайсці да 30 хвілін, пакуль ланцужок перастане спасылацца на яго.</translation>
+<translation id="1403359480263156644">Імя ўладальніка карткі абноўлена</translation>
 <translation id="1405567553485452995">Светла-зялёны</translation>
 <translation id="1406370515365284486">Вашы спосабы аплаты захаваюцца</translation>
 <translation id="1406500794671479665">Ідзе спраўджанне...</translation>
@@ -538,6 +539,7 @@
 <translation id="1913037223029790376">Выкарыстайце код CVC гэтай віртуальнай карткі</translation>
 <translation id="191374271204266022">Скапіраваць як JSON</translation>
 <translation id="1914326953223720820">Сэрвіс распакоўвання архіваў</translation>
+<translation id="1915335901851260370">Не ўдалося захаваць імя ўладальніка карткі</translation>
 <translation id="1919367280705858090">Дапамога пры асобных паведамленнях аб памылцы</translation>
 <translation id="1919526244108283799">400 x 600 мм</translation>
 <translation id="192020519938775529">{COUNT,plural, =0{Няма}=1{1 сайт}one{# сайт}few{# сайты}many{# сайтаў}other{# сайта}}</translation>
@@ -579,6 +581,7 @@
 <translation id="1988881251331415125">Калі напісанне правільнае, <ph name="BEGIN_LINK"/>паспрабуйце запусціць дыягностыку падключэнняў<ph name="END_LINK"/>.</translation>
 <translation id="1991370806334788445">Паспрабуйце дазволіць староннія файлы cookie – гэта знізіць вашу абароненасць падчас прагляду вэб-сайтаў, але павысіць імавернасць таго, што функцыі сайта будуць працаваць карэктна.</translation>
 <translation id="1992331125980284532">JIS B3</translation>
+<translation id="1996557034791506430">Выдаліць дазвол?</translation>
 <translation id="1997484222658892567">Сайт <ph name="URL"/> запытвае дазволу захоўваць вялікі аб’ём даных на лакальным камп’ютары</translation>
 <translation id="1997774360448418989">Лёгкая папера</translation>
 <translation id="2001146170449793414">{COUNT,plural, =1{і яшчэ 1}one{і яшчэ #}few{і яшчэ #}many{і яшчэ #}other{і яшчэ #}}</translation>
@@ -614,7 +617,6 @@
 <translation id="2059166748188874810">Муніцыпальная акруга</translation>
 <translation id="2059202684901022309">22 x 34 цалі</translation>
 <translation id="2063929825539050431">Каб хутка адправіць гэту старонку на іншую прыладу, націсніце і ўтрымлівайце адрасны радок</translation>
-<translation id="2064691555167957331">{COUNT,plural, =1{1 прапанова}one{# прапанова}few{# прапановы}many{# прапаноў}other{# прапановы}}</translation>
 <translation id="2066969741541525119">Ваша арганізацыя заблакіравала сайт, які вы збіраліся адкрыць</translation>
 <translation id="2071156619270205202">Гэтай картцы нельга прысвоіць нумар віртуальнай карткі.</translation>
 <translation id="2071852865256799872">Вашым браўзерам кіруе ваша арганізацыя, а профілем – <ph name="PROFILE_DOMAIN"/></translation>
@@ -655,6 +657,7 @@
 <translation id="2118132148597630479">Канверт C5</translation>
 <translation id="2119505898009119320">Каму выдадзена: <ph name="ORGANIZATION"/> [<ph name="JURISDICTION"/>]</translation>
 <translation id="2119867082804433120">Дзірка знізу справа</translation>
+<translation id="7981967357122559040">Ігнаруецца, бо воблачнае кіраванне браўзерам Brave адключана.</translation>
 <translation id="2122214041802369259">Высокая цана</translation>
 <translation id="2122719317867821810">Гэта палітыка працуе належным чынам, але перавызначае канфліктуючае значэнне, зададзенае з іншай крыніцы.</translation>
 <translation id="2124081665399116863">Абнавіце даныя аўтамабіля ў Brave Кашальку</translation>
@@ -684,6 +687,7 @@
 <translation id="2155260325161282517">5 x 7 цаляў</translation>
 <translation id="8044375818484186220">Захаваныя адрасы можна выкарыстоўваць у розных прадуктах Brave. Існуючы працоўны адрас не зменіцца. Новы адрас будзе захаваны ў вашым Уліковым запісе Brave: <ph name="ACCOUNT"/>.</translation>
 <translation id="2157640075051554492">Апавяшчэнні пра змяненне цэн</translation>
+<translation id="2158964559178498011">Аўтазапаўненне працуе ў большай колькасці месцаў – двойчы націсніце Ctrl, каб знайсці і запоўніць інфармацыю</translation>
 <translation id="2161656808144014275">Тэкст</translation>
 <translation id="2162435186600002085">Лагатып асноўнага загалоўка</translation>
 <translation id="2162535140284745414">Атрымлівайце прапановы ў рэальным часе, якія дапамогуць знаходзіць новыя спосабы прагляду з дапамогай штучнага інтэлекту.</translation>
@@ -707,7 +711,6 @@
 <translation id="2188375229972301266">Некалькі дзірак знізу</translation>
 <translation id="218940509700321686">Раздзеленыя коскамі значэнні</translation>
 <translation id="2190094353033916816">Гэта палітыка мае розныя значэнні, прымененыя на ўзроўні прылады і карыстальніка. Палітыка працуе належным чынам.</translation>
-<translation id="219061769324072544">Крэдытная,Картка,Дэбетовая</translation>
 <translation id="2191980191135734720">На наступным кроку разблакіруйце экран. Звычайна гэта можна зрабіць з дапамогай адбітка пальца. Вы таксама можаце <ph name="LINK_TEXT"/>.</translation>
 <translation id="2194856509914051091">Інфармацыя для разгляду</translation>
 <translation id="2195729137168608510">Ахова электроннай пошты</translation>
@@ -895,6 +898,7 @@
 <translation id="2498091847651709837">Сканіраваць новую картку</translation>
 <translation id="2501270939904835585">Сацініраваны этыкетачны матэрыял</translation>
 <translation id="2501278716633472235">Назад</translation>
+<translation id="250307989715832083">Дадаць подпіс</translation>
 <translation id="250346157641628208">Папера для струменнага друку</translation>
 <translation id="2505063700931618106">Даныя карткі захаваны</translation>
 <translation id="2505268675989099013">Абараніць уліковы запіс</translation>
@@ -902,6 +906,7 @@
 <translation id="251033673027346551">Каб кіраваць <ph name="BEGIN_LINK"/>наладамі даных і прыватнасці<ph name="END_LINK"/>, перайдзіце ў Brave Кашалёк.</translation>
 <translation id="2512101340618156538">Забаронена (стандартна)</translation>
 <translation id="3233967599412104589">Кнопка "Зрабіць Brave стандартным браўзерам". Каб зрабіць Brave стандартным браўзерам сістэмы ў наладах iOS, націсніце Увод</translation>
+<translation id="4720335700993112610">На старонцы <ph name="BEGIN_LINK_GMA"/>myactivity.google.com<ph name="END_LINK_GMA"/> можа захоўвацца гісторыя прагляду сайтаў іншымі спосабамі, звязаная з вашым Уліковым запісам Brave, напрыклад аўтаматычны прагляді сайтаў у <ph name="BEGIN_LINK_GAA"/>гісторыі дзеянняў у праграмах Gemini<ph name="END_LINK_GAA"/></translation>
 <translation id="2515629240566999685">Праверыць сігнал там, дзе вы знаходзіцеся.</translation>
 <translation id="2518584823165598232">Гэта картка недаступная. Звярніцеся да пастаўшчыка карткі.</translation>
 <translation id="2521385132275182522">Скаба знізу справа</translation>
@@ -1065,6 +1070,7 @@
 <translation id="2807052079800581569">Размяшчэнне відарыса па восі Y</translation>
 <translation id="2808278141522721006">Уключыць або выключыць Windows Hello можна ў раздзеле "<ph name="SETTINGS"/>"</translation>
 <translation id="2820957248982571256">Ідзе пошук...</translation>
+<translation id="282457273878278063">Кіраваць кантактнай інфармацыяй</translation>
 <translation id="2824775600643448204">Адрасны радок і панэль пошуку</translation>
 <translation id="2826760142808435982">Падключэнне зашыфравана і аўтэнтыфікавана з дапамогай <ph name="CIPHER"/>, механізм абмену ключамі – <ph name="KX"/>.</translation>
 <translation id="2828797285817981634">Выкарыстанне датчыкаў руху зараз дазволена</translation>
@@ -1108,6 +1114,7 @@
 <translation id="7165817952874613339">Налады Brave Кашалька прымяняюцца да інфармацыі, захаванай з Brave</translation>
 <translation id="2911973620368911614">Ідэнтыфікатар карыстальніка ўліковага запісу задання</translation>
 <translation id="2915068235268646559">Час збою: <ph name="CRASH_TIME"/></translation>
+<translation id="291568339791418558">Усе прылады</translation>
 <translation id="2916038427272391327">Закрыйце іншыя праграмы.</translation>
 <translation id="2917630513638801879">Блакітны 1</translation>
 <translation id="2922350208395188000">Немагчыма праверыць сертыфікат сервера.</translation>
@@ -1179,6 +1186,7 @@
 <translation id="3030331669969285614">Гэтыя эксперыментальныя параметры блакіруюць крытычнае змяненне або аднаўляюць старую версію. Тэрмін іх дзеяння абмежаваны.</translation>
 <translation id="5877261609750575671">Ваш хатні адрас можа быць карысным пры выкананні задач у сэрвісах Brave, у прыватнасці для большай рэлевантнасці вынікаў пошуку ці пры складанні маршрутаў у Brave Картах. Змяніць ці выдаліць адрас можна ва <ph name="BEGIN_LINK"/>Уліковым запісе Brave (<ph name="ACCOUNT"/>)<ph name="END_LINK"/>.</translation>
 <translation id="3033777742142108756">Выкарыстанне датчыкаў руху і святла зараз дазволена</translation>
+<translation id="2503604114553969437">Brave Пошук у Brave</translation>
 <translation id="3034526003882782781">Змяненне маштабу і прагортванне дазволены</translation>
 <translation id="3037177537145227281">Цана адсочваецца</translation>
 <translation id="3037605927509011580">Якая неспадзяванка!</translation>
@@ -1339,6 +1347,7 @@
 <translation id="3282085321714087552">Ваша арганізацыя (<ph name="ENROLLMENT_DOMAIN"/>) адправіла на наступныя вэб-сайты пэўныя звесткі (напрыклад, налады або палітыкі).</translation>
 <translation id="3286372614333682499">кніжная</translation>
 <translation id="3287510313208355388">Спампаваць пры падключэнні да інтэрнэту</translation>
+<translation id="3288416906300127968">Перайсці ў чат з Gemini</translation>
 <translation id="3289578402369490638">З іншых крам у інтэрнэце</translation>
 <translation id="3293642807462928945">Даведацца больш пра палітыку "<ph name="POLICY_NAME"/>"</translation>
 <translation id="5894665462526421022">Праглядаць свае паролі і кіраваць імі ў наладах Brave</translation>
@@ -1358,6 +1367,7 @@
 <translation id="3324687287337751929">4 x 6 цаляў</translation>
 <translation id="3325568918769906282">па ўбыванні</translation>
 <translation id="3325662270238538525">Інфармацыя пра доступ да файлаў і іх змяненне, у тым ліку назвы файлаў, лічбавыя адбіткі змесціва файлаў, крыніцы спампавання, а таксама метаданыя</translation>
+<translation id="3326857361043236066">Асноўныя дзеянні Gemini пры праглядзе</translation>
 <translation id="3329013043687509092">Насычанасць</translation>
 <translation id="3333762389743153920">Нумар не падыходзіць для віртуальнай карткі</translation>
 <translation id="3338095232262050444">Бяспечны сайт</translation>
@@ -1437,7 +1447,6 @@
 <translation id="3478033058537426179">Па групах</translation>
 <translation id="3479552764303398839">Не зараз</translation>
 <translation id="3481315707647070701">Візуалізуйце і рэдагуйце</translation>
-<translation id="3484861421501147767">Напамін: захаваны прома-код даступны</translation>
 <translation id="3569096371291033687">Пацвердзіце сваю асобу, каб выкарыстоўваць паролі і іншыя даныя, якія захоўваюцца ў вашым Уліковы запісе Brave</translation>
 <translation id="3487845404393360112">Латок 4</translation>
 <translation id="3493881266323043047">Тэрмін дзеяння</translation>
@@ -1570,7 +1579,6 @@
 <translation id="3693516565203081475">Выберыце спосаб аплаты</translation>
 <translation id="3698353241727597930">У адпаведнасці з наладамі адміністратара <ph name="FILES"/> будуць захоўвацца на <ph name="CLOUD_STORAGE"/> пад кіраваннем вашай арганізацыі. Пры выдаленні гэтыя файлы могуць адсочвацца, правярацца і захоўвацца.</translation>
 <translation id="974818914962304978">Кнопка "Стварыць сайт". Каб хутка стварыць новы сайт з дапамогай Brave Сайтаў, націсніце яе.</translation>
-<translation id="3698708128812719147">Двойчы націсніце Ctrl на любой вэб-старонцы, каб знайсці і запоўніць дадатковую інфармацыю</translation>
 <translation id="3700094625653511150">Каб схаваць параметры аплаты ў растэрміноўку, адкрыйце <ph name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_FOOTNOTE_HIDE_OPTION_PAYMENT_SETTINGS_LINK_TEXT"/></translation>
 <translation id="3700966190175650601">Вы выкарыстоўваеце адбітак пальца для ўводу пароляў</translation>
 <translation id="3701427423622901115">Скідванне пацверджана.</translation>
@@ -1627,7 +1635,6 @@
 <translation id="3769584711865378220">Сайт <ph name="URL"/> хоча змяніць доступ да месцазнаходжання з прыблізнага на дакладнае</translation>
 <translation id="3772211998634047851">Папера для дакументаў</translation>
 <translation id="8247912309816231326"><ph name="CREATE_GOOGLE_KEEP_NOTE_FOCUSED_FRIENDLY_MATCH_TEXT"/>. Каб хутка стварыць новую нататку ў Brave Keep, націсніце Tab, затым Enter</translation>
-<translation id="5647245195700278791">Уліковы запіс Pix будзе прывязаны да ўліковага запісу "<ph name="ACCOUNT_EMAIL"/>". Каб выключыць выяўленне кода Pix, перайдзіце ў <ph name="BEGIN_LINK1"/>налады Кашалька<ph name="END_LINK1"/>.</translation>
 <translation id="3780694243617746492">Выхадны латок</translation>
 <translation id="3783418713923659662">Mastercard</translation>
 <translation id="3784372983762739446">Прылады Bluetooth</translation>
@@ -1793,6 +1800,7 @@
 <translation id="4067774859633143413">Каб выйсці з поўнаэкраннага рэжыму і паглядзець спампоўку, націсніце і ўтрымлівайце |<ph name="ACCELERATOR"/>|</translation>
 <translation id="4067947977115446013">Дадайце сапраўдны адрас</translation>
 <translation id="4072486802667267160">Адбылася памылка апрацоўкi вашага заказу. Паўтарыце спробу.</translation>
+<translation id="4073293290376142777">Увайсці?</translation>
 <translation id="4073376909608563327">Не ўдалося выкарыстаць функцыю разблакіроўкі прылады</translation>
 <translation id="4073797364926776829">Праглядзець картку</translation>
 <translation id="4075732493274867456">Кліент і сервер не падтрымліваюць агульную версію пратакола SLL або набор шыфраў.</translation>
@@ -1825,6 +1833,7 @@
 <translation id="4107047499377819067">Пачалося ўсталяванне фонавых сэрвісаў VPN. Гэты працэс можа заняць некалькі хвілін.</translation>
 <translation id="4110642094637545339">Лагатыпы Google Pay і AfterPay</translation>
 <translation id="4110652170750985508">Праверце плацеж</translation>
+<translation id="411071007970303441">Усе карыстальнікі</translation>
 <translation id="4112140312785995938">Перайсці назад</translation>
 <translation id="270198531912208609">Захаваць гэту картку ў вашым Уліковым запісе Brave і на гэтай прыладзе?</translation>
 <translation id="4114146879518089587">Перайсці на сайт</translation>
@@ -1836,7 +1845,6 @@
 <translation id="4121428309786185360">Заканчэнне тэрміну дзеяння:</translation>
 <translation id="4123572138124678573">Тры дзіркі знізу</translation>
 <translation id="412601465078863288">Час чакання запампоўвання перавышаны</translation>
-<translation id="4129401438321186435">{COUNT,plural, =1{яшчэ 1 фрагмент даных}one{яшчэ # фрагмент даных}few{яшчэ # фрагменты даных}many{яшчэ # фрагментаў даных}other{яшчэ # фрагмента даных}}</translation>
 <translation id="4129810348470013900">Адбылася памылка. Праверце падключэнне да інтэрнэту і паўтарыце спробу.</translation>
 <translation id="4130226655945681476">Праверыць сеткавыя кабелі, мадэм і маршрутызатар</translation>
 <translation id="4132448310531350254">У спісе "<ph name="POLICY_IDS_LIST"/>" праграм зададзена некалькі апрацоўшчыкаў для файлаў з пашырэннем "<ph name="FILE_EXTENSION"/>".</translation>
@@ -1872,7 +1880,6 @@
 <translation id="4185037616931963178">Бяспечнае змяненне нумара перагляду</translation>
 <translation id="4186035307311647330">Перастаць адсочваць цану</translation>
 <translation id="4191334393248735295">Даўжыня</translation>
-<translation id="4192770747482479191">Двойчы націсніце ⌘ на любой вэб-старонцы, каб знайсці і запоўніць дадатковую інфармацыю</translation>
 <translation id="9150836098508392713">Кнопка "Паказаць парады адносна Brave". Каб азнаёміцца з функцыямі браўзера Brave, націсніце яе.</translation>
 <translation id="4195643157523330669">Адкрыць у новай укладцы</translation>
 <translation id="4196861286325780578">&amp;Узнавіць перамяшчэнне</translation>
@@ -1890,6 +1897,7 @@
 <translation id="4218327733815631046">Пакінуць прыблізнае месцазнаходжанне</translation>
 <translation id="4219596572397833317">Праглядайце гісторыю цэн і іншую інфармацыю, каб рабіць куплі больш свядома.</translation>
 <translation id="4220128509585149162">Збоі</translation>
+<translation id="4220745762102459826">і іншыя даныя</translation>
 <translation id="1426112902089905810">&lt;h4&gt;Крок 1. Увайдзіце на партал&lt;/h4&gt;
     &lt;p&gt;Каб скарыстаць сетку Wi-Fi у грамадскім месцы (напрыклад, у кавярні ці аэрапорце), спачатку падключыцеся да яе. Каб убачыць старонку ўваходу, трэба адкрыць старонку з прэфіксам &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
     &lt;ol&gt;
@@ -1990,6 +1998,7 @@
 <translation id="4333561522337981382">Кіраваць вокнамі на ўсіх дысплэях</translation>
 <translation id="4333854382783149454">PKCS #1 SHA-1 з шыфраваннем RSA</translation>
 <translation id="4336913590841287350">Гэтыя правілы пакуль не падтрымліваюцца ў якасці палітыкі для карыстальнікаў у iOS.</translation>
+<translation id="1509594448174161374">У гісторыі Brave можна паглядзець асноўныя дзеянні, якія сэрвіс Gemini выконваў падчас прагляду сайтаў для вас</translation>
 <translation id="5792122559159836842">Гэта рэклама выкарыстоўвала занадта многа рэсурсаў прылады, таму Brave выдаліў яе.</translation>
 <translation id="4340810192899866471">Імпартаваць з файла JSON</translation>
 <translation id="6116812392674177288">Не ўстаноўлена, што гэты камп’ютар знаходзіцца пад карпаратыўным кіраваннем, таму палітыка дазваляе аўтаматычна ўсталёўваць толькі пашырэнні з Brave Webstore. URL-адрас абнаўлення ў Brave Webstore: <ph name="CWS_UPDATE_URL"/>.</translation>
@@ -2081,6 +2090,7 @@
 <translation id="4510703642214459906">Месца правядзення</translation>
 <translation id="4892470328555495647">Карткі і адрасы паходзяць з Brave і вашага Уліковага запісу Brave (<ph name="ACCOUNT_EMAIL"/>). Кіраваць імі можна ў <ph name="BEGIN_LINK"/>Наладах<ph name="END_LINK"/>.</translation>
 <translation id="451601984112574365">Зялёны 3</translation>
+<translation id="4519245852815730903">Вам трэба будзе даць дазвол для кожнага адраса электроннай пошты асобна.</translation>
 <translation id="4520048001084013693">Спампоўванне гэтага файла забаронена адміністратарам</translation>
 <translation id="4521157617044179198"><ph name="WIDTH"/> × <ph name="HEIGHT"/> мм (<ph name="ORIENTATION"/>)</translation>
 <translation id="4521280267704259211">Канверт Monarch</translation>
@@ -2160,6 +2170,7 @@
 <translation id="4678379207584374453"><ph name="BEGIN_LINK"/>Даведацца больш<ph name="END_LINK"/></translation>
 <translation id="4682496302933121474">Перакласці старонку?</translation>
 <translation id="468314109939257734">Паглядзець нумар сваёй віртуальнай карткі</translation>
+<translation id="4684818564800397688">Аўтазапаўненне працуе ў большай колькасці месцаў – двойчы націсніце ⌘, каб знайсці і запоўніць інфармацыю</translation>
 <translation id="4686942373615810936">Створана толькі што</translation>
 <translation id="4690205240253392065">Выберыце аператара аплаты ў растэрміноўку</translation>
 <translation id="556965402266718712">Кнопка "Закрыць вокны ў рэжыме інкогніта". Каб закрыць усе адкрытыя вокны ў рэжыме інкогніта, націсніце яе.</translation>
@@ -2186,7 +2197,6 @@
 <translation id="4725766358270333890">Ідзе запампоўванне файлаў (<ph name="COUNT"/>) у Microsoft OneDrive</translation>
 <translation id="4726672564094551039">Перазагрузіць палітыкі</translation>
 <translation id="4728558894243024398">Платформа</translation>
-<translation id="4730773064303503917">Адпраўляйце пераводы праз Pix сябрам і кампаніям з дапамогай Кашалька</translation>
 <translation id="4730977633786878901">Водгукі</translation>
 <translation id="4731638775147756694">Гэта праграма заблакіравана адміністратарам</translation>
 <translation id="4732860731866514038">Спампоўваецца моўны пакет для наступнай мовы: <ph name="LANGUAGE"/>… <ph name="PERCENT"/>%</translation>
@@ -2261,6 +2271,7 @@
 <translation id="483241715238664915">Уключыць папярэджанні</translation>
 <translation id="4833567658337394628">Устаўляць не рэкамендуецца</translation>
 <translation id="246176083348620700">Праглядзець гісторыю Brave</translation>
+<translation id="4842085418602350953">Наступны раз аплачвайце праз Pix без пераключэння паміж праграмамі</translation>
 <translation id="4842365697443353018">Каб выкарыстаць варыянт аплаты ў растэрміноўку, ачысціце форму</translation>
 <translation id="484462545196658690">Аўтаматычна</translation>
 <translation id="4844937814014739139">Прагортванне і змяненне маштабу абагуленых укладак</translation>
@@ -2348,6 +2359,7 @@
 <translation id="4969341057194253438">Выдаліць запіс</translation>
 <translation id="4973922308112707173">Дзве дзіркі зверху</translation>
 <translation id="4976702386844183910">Апошняе наведванне: <ph name="DATE"/></translation>
+<translation id="4982928820514634045">Перайсці да кантактнай інфармацыі</translation>
 <translation id="498323057460789381">Памылка праверкі схемы: <ph name="ERROR"/></translation>
 <translation id="4984088539114770594">Выкарыстоўваць мікрафон?</translation>
 <translation id="4989542687859782284">Недаступна</translation>
@@ -2357,6 +2369,7 @@
 <translation id="4994095017621319069">1 група ўкладак больш не даступная</translation>
 <translation id="4995474875135717171">Зменены:</translation>
 <translation id="4995749490935861684"><ph name="CUSTOMIZE_SEARCH_ENGINES_FOCUSED_FRIENDLY_MATCH_TEXT"/>. Каб кіраваць пошукам па сайце і стандартнай пошукавай сістэмай, націсніце Tab, затым Enter</translation>
+<translation id="4996709766489151157">Запоўнена кантактная інфармацыя</translation>
 <translation id="4998950033665438990">Аднабаковы гафрыраваны кардон</translation>
 <translation id="2033688757301422080">Рэжым AI у Brave Пошуку</translation>
 <translation id="5001338033791319371">Каб выйсці з поўнаэкраннага рэжыму і паглядзець спампоўку, правядзіце зверху ўніз і націсніце кнопку "Назад"</translation>
@@ -2376,6 +2389,7 @@
 <translation id="2013297594801702701">Вы можаце выкарыстоўваць захаваныя адрасы ў розных прадуктах Brave. Гэты адрас будзе захаваны ў вашым Уліковым запісе Brave (<ph name="USER_EMAIL"/>).</translation>
 <translation id="5019819206251569004">датчыкі руху і святла</translation>
 <translation id="5019952743397118625">Дзейнічае палітыка <ph name="EXTENSION_DEVELOPER_MODE_SETTINGS_POLICY_NAME"/>. <ph name="DEVELOPER_TOOLS_AVAILABILITY_POLICY_NAME"/> не кантралюе даступнасць рэжыму распрацоўшчыка на старонцы пашырэнняў.</translation>
+<translation id="502075697789439404">Спампаваны файл</translation>
 <translation id="6910167971652631325">Калі вы прымаеце або ігнаруеце прапанову, Brave будзе адаптавацца і паказваць толькі тое, што адпавядае вашым інтарэсам</translation>
 <translation id="5021500396464456616">Звяжыцеся з карыстальнікам, які адправіў спасылку</translation>
 <translation id="6516968977334148048">Адсочвайце цэны з Brave</translation>
@@ -2398,6 +2412,7 @@
 <translation id="5052488928733955073">Не ўдаецца запоўніць інфармацыю. Праверце падключэнне.</translation>
 <translation id="5053116470141135293">Пры аплаце гэтай карткай будзе ўказвацца нумар віртуальнай карткі, каб абараніць вашы рэальныя даныя. Кіраваць гэтай наладай можна ў Brave Кашальку. <ph name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="5056425809654826431">{NUM_FILES,plural, =1{Каб адправіць гэты файл з дапамогай функцыі "Абагульванне паблізу", вызваліце месца на прыладзе (<ph name="DISK_SPACE_SIZE"/>)}one{Каб адправіць гэтыя файлы з дапамогай функцыі "Абагульванне паблізу", вызваліце месца на прыладзе (<ph name="DISK_SPACE_SIZE"/>)}few{Каб адправіць гэтыя файлы з дапамогай функцыі "Абагульванне паблізу", вызваліце месца на прыладзе (<ph name="DISK_SPACE_SIZE"/>)}many{Каб адправіць гэтыя файлы з дапамогай функцыі "Абагульванне паблізу", вызваліце месца на прыладзе (<ph name="DISK_SPACE_SIZE"/>)}other{Каб адправіць гэтыя файлы з дапамогай функцыі "Абагульванне паблізу", вызваліце месца на прыладзе (<ph name="DISK_SPACE_SIZE"/>)}}</translation>
+<translation id="5056587122125565772">Стварыць відарыс</translation>
 <translation id="505757197798929356">Укажыце, па якой прычыне вы хочаце адкрыць файл (абавязкова)</translation>
 <translation id="5058282932481719070">даведацца больш пра палепшанае аўтазапаўненне ў наладах</translation>
 <translation id="5061227663725596739">Вы мелі на ўвазе "<ph name="LOOKALIKE_DOMAIN"/>"?</translation>
@@ -2435,6 +2450,7 @@
 <translation id="5115232566827194440">Перавызначэнне для абмежаванага гасцявога сеанса пад кіраваннем</translation>
 <translation id="5115563688576182185">(64-бітная версія)</translation>
 <translation id="5116015291385561204">Каб выкарыстоўваць функцыю аўтаматычнага запаўнення канфідэнцыяльнай інфармацыі, вам трэба спраўдзіць сваю асобу</translation>
+<translation id="2995025030822668865">Brave Пошук на бакавой панэлі</translation>
 <translation id="5122786942953798871">Канверт з баваўнянай паперы</translation>
 <translation id="5123063207673082822">Выхадныя</translation>
 <translation id="5124797626438336458">Экран памылкі куплі ў растэрміноўку адкрыты на палову вышыні.</translation>
@@ -2844,6 +2860,7 @@
 <translation id="5794065675298686371">Уключыце апавяшчэнні для адсочвання цэн</translation>
 <translation id="5794093550048860249">Нумар для адсочвання</translation>
 <translation id="7504725958983465699">Уключыце <ph name="BEGIN_LINK"/>разумныя функцыі ў іншых прадуктах Brave<ph name="LINK_END"/></translation>
+<translation id="5797916798049571144">Яно захавана разам з данымі карткі і будзе аўтаматычна ўстаўляцца пры аплаце</translation>
 <translation id="5797984091151707075">Заблакіравана ў адпаведнасці з палітыкай адміністратара</translation>
 <translation id="5804241973901381774">Дазволы</translation>
 <translation id="5806871454498484178">Змяненне маштабу і прагортванне заблакіраваны</translation>
@@ -2867,6 +2884,7 @@
 <translation id="5843987376989109187">Гэта мова пакуль што не падтрымліваецца.
     <ph name="BEGIN_LINK"/>Даведацца больш<ph name="END_LINK"/></translation>
 <translation id="5848445080378515710">Пасля таго як вы прагледзіце заказ, трэба будзе ўвайсці ва ўліковы запіс сэрвісу "<ph name="BNPL_ISSUER_NAME"/>" або стварыць новы, калі ў вас яго няма. Гэты ўліковы запіс будзе аўтаматычна прывязаны ў Brave Кашальку.</translation>
+<translation id="737051168359496611">Уліковы запіс Pix будзе прывязаны да ўліковага запісу <ph name="ACCOUNT_EMAIL"/>. Каб выключыць выяўленне кода Pix, перайдзіце ў <ph name="BEGIN_LINK1"/>налады Brave<ph name="END_LINK1"/>.</translation>
 <translation id="5851548754964597211">Спіс укладак</translation>
 <translation id="5851868085455377790">Выдавец</translation>
 <translation id="5852909432155870672">RA4</translation>
@@ -2917,6 +2935,7 @@
 <translation id="5927279462592128805">Microsoft Word</translation>
 <translation id="5930147475897662863">Каб выкарыстоўваць дапамогу з напісаннем, уключыце гэту наладу</translation>
 <translation id="5932224571077948991">Сайт паказвае назойлівую рэкламу або рэкламу, якая ўводзіць у зман</translation>
+<translation id="5933647156166686601">Праглядзець гісторыю дзеянняў у Gemini</translation>
 <translation id="5937560539988385583">Старонка перакладзена</translation>
 <translation id="5938153366081463283">Дадаць віртуальную картку</translation>
 <translation id="5938793338444039872">Troy</translation>
@@ -2994,6 +3013,7 @@
 <translation id="6051221802930200923">Вы не можаце адкрыць вэб-сайт <ph name="SITE"/>, бо ён выкарыстоўвае механізм замацоўвання сертыфікатаў. Сеткавыя памылкі і атакі звычайна маюць часовы характар. Хутчэй за ўсё, праз некаторы час вэб-сайт будзе працаваць зноў.</translation>
 <translation id="6051898664905071243">Колькасць старонак:</translation>
 <translation id="605237284704429106">Запаўненне нумара IBAN</translation>
+<translation id="6052557981901634648">Скласці план</translation>
 <translation id="3284406940349582552">Вы можаце выкарыстоўваць захаваныя адрасы ў розных прадуктах Brave. Гэты адрас захоўваецца ў вашым Уліковым запісе Brave (<ph name="ACCOUNT"/>).</translation>
 <translation id="6055392876709372977">PKCS #1 SHA-256 з шыфраваннем RSA</translation>
 <translation id="6055982527635883756">Канверт з матэрыялу архіўнай якасці</translation>
@@ -3167,6 +3187,7 @@
 <translation id="6342069812937806050">Толькі што</translation>
 <translation id="4707994291265138354">Гэта папярэджанне паказана вам, бо гэты сайт не падтрымлівае HTTPS і ў вас уключаны рэжым інкогніта. <ph name="LEARN_MORE"/></translation>
 <translation id="634500758737709758">Маршруты</translation>
+<translation id="6345664705388712774">Дадаць відарысы ў пошукавы запыт</translation>
 <translation id="6348220984832452017">Дзеючыя варыянты</translation>
 <translation id="6349101878882523185">Усталяваць праграму "<ph name="APP_NAME"/>"</translation>
 <translation id="6350739641326887427">Плаціце без капіравання і ўстаўкі кода Pix. <ph name="BEGIN_LINK1"/>Даведацца, як гэта працуе<ph name="END_LINK1"/></translation>
@@ -3193,7 +3214,6 @@
 <translation id="638289054711715023">Тэрмаўсадачная плёнка</translation>
 <translation id="6383221683286411806">На сайце, на які вы збіраецеся перайсці, магчыма спагнанне сродкаў.</translation>
 <translation id="6384448607821972818">Паказаны пароль для аднаўлення</translation>
-<translation id="6386120369904791316">{COUNT,plural, =1{яшчэ 1 прапанова}one{яшчэ # прапанова}few{яшчэ # прапановы}many{яшчэ # прапаноў}other{яшчэ # прапановы}}</translation>
 <translation id="6386565501269869892">Канверт You 4</translation>
 <translation id="6387645831795005740">Зламыснікі часам імітуюць сайты, уносячы невялікія, амаль непрыкметныя змяненні ў URL-адрас.</translation>
 <translation id="6389470377220713856">Імя на картцы</translation>
@@ -3388,6 +3408,7 @@
 <translation id="6721164594124191969">Глянцавы этыкетачны матэрыял</translation>
 <translation id="6726832600570791992">(32-bit emulated)</translation>
 <translation id="6727094998759448074">SRA4</translation>
+<translation id="672853333773293432">Выкананы ўваход ва ўліковы запіс</translation>
 <translation id="6732087373923685049">камера</translation>
 <translation id="6738516213925468394">Даныя былі зашыфраваны з дапамогай <ph name="BEGIN_LINK"/>фразы-пароля для сінхранізацыі<ph name="END_LINK"/> <ph name="TIME"/>. Увядзіце яе, каб пачаць сінхранізацыю.</translation>
 <translation id="6740851646645036700">Вы дасягнулі часовага ліміту на дапамогу з напісаннем. Паўтарыце спробу пазней.</translation>
@@ -3402,6 +3423,7 @@
 <translation id="3557432974914530754">Прапанова выдалена з Brave</translation>
 <translation id="6757797048963528358">Прылада перайшла ў рэжым сну.</translation>
 <translation id="6758934187792712102">Сайт "<ph name="URL"/>" запытвае дазвол на выкарыстанне датчыкаў руху і святла</translation>
+<translation id="3829555700225710632">Перайсці ў Менеджар пароляў Brave</translation>
 <translation id="6770747695101757579">Баваўняная папера</translation>
 <translation id="3576010969994131987">Каб выкарыстоўваць YouTube, увайдзі ва Уліковы запіс Brave</translation>
 <translation id="6775759552199460396">JIS B2</translation>
@@ -3428,6 +3450,7 @@
 <translation id="6808579246645021886">Абагуленыя ўкладкі і файлы</translation>
 <translation id="681021252041861472">Абавязковае поле</translation>
 <translation id="6810899417690483278">Ідэнтыфікатар наладжвання</translation>
+<translation id="6815861164669871832">Задаць пытанне пра ўкладку</translation>
 <translation id="681631578600400068">Захавайце вадзіцельскае пасведчанне</translation>
 <translation id="6817217109584391709">JavaScript</translation>
 <translation id="6820143000046097424">паслядоўныя парты</translation>
@@ -3442,6 +3465,7 @@
 <translation id="6834757537110528125">Гэты сайт не падтрымлівае абароненае падключэнне</translation>
 <translation id="6841864657731852591">Цыліндр глыбокага друку</translation>
 <translation id="6842196666980060516">184 x 260 мм</translation>
+<translation id="6843919992766261684">У далейшым сэрвіс "<ph name="ISSUER"/>" перастане аўтаматычна пацвярджаць гэты адрас электроннай пошты</translation>
 <translation id="6844746916504777213">Ніколі не абагульваць гэтыя сайты</translation>
 <translation id="6844998850832008753">Гэтым разам адсочванне рухаў рук дазволена</translation>
 <translation id="976643339176907534">Кнопка "Кіраваць наладамі бяспекі". Каб кіраваць параметрамі Бяспечнага прагляду і выконваць іншыя дзеянні праз налады Brave, націсніце яе.</translation>
@@ -3449,6 +3473,7 @@
 <translation id="6852204201400771460">Перазагрузіць праграму?</translation>
 <translation id="6854691830678097752">Каб ажыццяўляць аплату хутчэй, захавайце гэты код CVC ва ўліковым запісе (<ph name="ACCOUNT_EMAIL"/>)</translation>
 <translation id="6858034839887287663">A2x4</translation>
+<translation id="6858341433205161172"><ph name="DEVICE_NAME"/> (гэты браўзер)</translation>
 <translation id="6860888819347870819">Сайт можа запытваць дазвол на адкрыццё акон у рэжыме "відарыс у відарысе"</translation>
 <translation id="6864189428899665393">267 x 389 мм</translation>
 <translation id="6865412394715372076">Гэту картку спраўдзіць пакуль што не ўдаецца</translation>
@@ -3500,6 +3525,7 @@
 <translation id="6936976777388162184">Гэта прылада пастаўляецца ў пакеце з іншай ліцэнзіяй, таму яе нельга зарэгістраваць па ліцэнзіі Kiosk &amp; Signage Upgrade.</translation>
 <translation id="6942444979237658241">Каментарыі – <ph name="GROUP_NAME"/></translation>
 <translation id="6944692733090228304">Вы ўвялі пароль на сайце, які не знаходзіцца пад кіраваннем арганізацыі <ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/>. Каб абараніць свой уліковы запіс, не выкарыстоўвайце пароль на іншых прыладах і сайтах.</translation>
+<translation id="6945116087771548601">Перайсці да спамповак</translation>
 <translation id="6948051842255602737">Гульня скончана, ваш рэзультат: <ph name="SCORE"/>.</translation>
 <translation id="4203796512947064623">Пры ажыццяўленні купляў у Brave вы можаце дадаць у якасці спосабу аплаты Pix</translation>
 <translation id="6948701128805548767">Выберыце адрас, каб убачыць спосабы і ўмовы атрымання</translation>
@@ -3568,6 +3594,7 @@
 <translation id="7048095965575426564">European Fanfold</translation>
 <translation id="7050187094878475250">Вы спрабавалі трапіць звярнуцца да дамена <ph name="DOMAIN"/>, але сервер выдаў сертыфікат, чый тэрмін дзеяння занадта доўгі, каб быць надзейным.</translation>
 <translation id="7053983685419859001">Заблакіраваць</translation>
+<translation id="7054563057916451424"><ph name="DESTINATION"/>, адкрыецца ў новай укладцы</translation>
 <translation id="7054717457611655239">З гэтага моманту захоўвайце файлы ў воблаку "<ph name="CLOUD_PROVIDER"/>".</translation>
 <translation id="7057567173736333354">Апішыце відарыс</translation>
 <translation id="7058163556978339998">Браўзер <ph name="BROWSER"/> спраўдзіў, што выдаўцом сертыфіката гэтага сайта з’яўляецца <ph name="ISSUER"/>.</translation>
@@ -3589,6 +3616,7 @@
 <translation id="7083258188081898530">Латок 9</translation>
 <translation id="70846382339153529">Тэкставы дакумент у фармаце OpenDocument</translation>
 <translation id="7086090958708083563">Запампоўка запытана карыстальнікам</translation>
+<translation id="7087807086191250928">Gemini можа рабіць памылкі. Каб праглядзець зыходную крыніцу і ўпэўніцца ў дакладнасці інфармацыі, націсніце і ўтрымлівайце прапанову.</translation>
 <translation id="7089745480771070611">Адкрыецца на бакавой панэлі</translation>
 <translation id="7090698782953528257">Дапамажы мне пабудаваць графік функцыі, каб візуалізаваць матэматычнае ўраўненне і ўбачыць форму крывой</translation>
 <translation id="7092087596499105699">Ваш адміністратар наладзіў падключэнне праз бяспечны шлюз, каб абараніць доступ да прыватных вэб-праграм вашай арганізацыі. Для спраўджання доступу могуць выкарыстоўвацца даныя з вашага працоўнага профілю.</translation>
@@ -3610,7 +3638,6 @@
 <translation id="7120588595737538743">спампоўкі і здымкі экрана</translation>
 <translation id="7124354851782353862">Увядзіце код CVC</translation>
 <translation id="7129409597930077180">Адпраўка на гэты адрас немагчымая. Выберыце іншы адрас.</translation>
-<translation id="7129809579943936035"><ph name="VALUE_PROP"/> <ph name="DETAILS"/></translation>
 <translation id="7130775116821607281">Запампоўванне забаронена</translation>
 <translation id="7132939140423847331">Ваш адміністратар забараніў капіраванне гэтых даных.</translation>
 <translation id="7134653428559514680">Не рэкамендуецца абагульваць змесціва з гэтага сайта</translation>
@@ -3797,6 +3824,7 @@
 <translation id="7425037327577270384">Дапамога з напісаннем</translation>
 <translation id="7426745633088095666">Абагуленыя ўкладкі</translation>
 <translation id="7429429656042611765">Executive</translation>
+<translation id="7430649113830485349">Праглядзець асноўныя дзеянні</translation>
 <translation id="288933326661929857">Пацвердзіце сваю асобу, каб запоўніць плацежную інфармацыю ў Brave.</translation>
 <translation id="7437289804838430631">Дадаць кантактную інфармацыю</translation>
 <translation id="7441627299479586546">Няправільны суб’ект палітыкі</translation>
@@ -3924,6 +3952,7 @@
 <translation id="6386821459680628976">Выдаліць крэдытную картку з браўзера Brave?</translation>
 <translation id="7637586430889951925">{COUNT,plural, =0{Няма}=1{1 пароль ва ўліковым запісе (для даменаў <ph name="DOMAIN_LIST"/>)}one{# пароль ва ўліковым запісе (для даменаў <ph name="DOMAIN_LIST"/>)}few{# паролі ва ўліковым запісе (для даменаў <ph name="DOMAIN_LIST"/>)}many{# пароляў ва ўліковым запісе (для даменаў <ph name="DOMAIN_LIST"/>)}other{# пароля ва ўліковым запісе (для даменаў <ph name="DOMAIN_LIST"/>)}}</translation>
 <translation id="7638605456503525968">Паслядоўныя парты</translation>
+<translation id="7644100755247241229">Адпраўляйце пераводы праз Pix сябрам і кампаніям з дапамогай Brave Кашалька</translation>
 <translation id="8275603180424408640">Выкарыстаны вамі пароль трапіў у спіс узламаных даных. Рэкамендуем змяніць яго зараз жа ў Менеджары пароляў Brave.</translation>
 <translation id="7647206758853451655">Якасць друку</translation>
 <translation id="7648133459447652947">Каб паказаць курсор, змяніце праграмы, перазагрузіце старонку ці вярніцеся на папярэднюю</translation>
@@ -3938,6 +3967,7 @@
 <translation id="7658239707568436148">Скасаваць</translation>
 <translation id="7659327900411729175">Канверт Kaku 8</translation>
 <translation id="766014026101194726">{0,plural, =1{Запампоўванне гэтага файла забаронена адміністратарам}one{Запампоўванне # файла забаронена адміністратарам}few{Запампоўванне # файлаў забаронена адміністратарам}many{Запампоўванне # файлаў забаронена адміністратарам}other{Запампоўванне # файла забаронена адміністратарам}}</translation>
+<translation id="7660909719765799166">Перайсці да ўваходу ва ўліковы запіс</translation>
 <translation id="7661440329832413796">Дапамажы мне навучыцца праграмаваць на Python</translation>
 <translation id="7662298039739062396">Налада кантралюецца пашырэннем</translation>
 <translation id="7662911501613893058">Карыстальнік <ph name="USER_DISPLAY_NAME"/> пакінуў групу</translation>
@@ -3953,6 +3983,7 @@
 <translation id="7675756033024037212">Змяненне маштабу і прагортванне забаронены</translation>
 <translation id="7676643023259824263">Пошук тэксту з буфера абмену: "<ph name="TEXT"/>"</translation>
 <translation id="7676840398262504532">Ваша арганізацыя кантралюе капіраванне</translation>
+<translation id="767806704757698045">Працуе толькі на сайтах, якія падтрымліваюць гэту функцыю</translation>
 <translation id="7678730592635586336">Зняць відэа яшчэ раз</translation>
 <translation id="7679287273775285018">Аплата праз eWallet</translation>
 <translation id="4628681623692678085">Азнаёміцца з гісторыяй прагляду сайтаў або кіраваць ёй у наладах Brave</translation>
@@ -4012,6 +4043,7 @@
 <translation id="7765158879357617694">Перамясціць</translation>
 <translation id="7766518757692125295">Край</translation>
 <translation id="776749070095465053">Тканіна</translation>
+<translation id="7770247511810814330">Выдаленне дазволу</translation>
 <translation id="7772659560036894129">Назвы прадуктаў</translation>
 <translation id="7773005668374414287">У тым жа парадку, рабочым бокам уверх</translation>
 <translation id="7779418012194492374">Адклікаць доступ да прылады "<ph name="DEVICE_NAME"/>"</translation>
@@ -4026,6 +4058,7 @@
 <translation id="7791543448312431591">Дадаць</translation>
 <translation id="7798389633136518089">Не прымяняецца, паколькі палітыка не вызначана з воблака.</translation>
 <translation id="7800304661137206267">Падключэнне зашыфравана з дапамогай <ph name="CIPHER"/>, для аўтэнтыфікацыі паведамленняў выкарыстоўваецца <ph name="MAC"/>, механізм абмену ключамі – <ph name="KX"/>.</translation>
+<translation id="780228007282527248">Дадайце ўкладку або відарыс, каб палепшыць пошук</translation>
 <translation id="7802523362929240268">Сайт надзейны</translation>
 <translation id="7802989406998618639">Увядзіце <ph name="NUMBER_OF_DIGITS"/>-значны код бяспекі на <ph name="SIDE_OF_CARD"/>, каб банк мог спраўдзіць вашу асобу</translation>
 <translation id="780301667611848630">Не, дзякуй</translation>
@@ -4072,6 +4105,7 @@
 <translation id="7885670691503039914">Пры зніжэнні цаны на любым з сайтаў вы будзеце атрымліваць абвесткі па электроннай пошце. Гэта старонка будзе захоўвацца ў папцы "<ph name="LAST_BOOKMARKS_FOLDER"/>".</translation>
 <translation id="7887683347370398519">Праверце код CVC і паўтарыце спробу</translation>
 <translation id="7887885240995164102">Уключыць рэжым "Відарыс у відарысе"</translation>
+<translation id="7888219259712865185">Правайдары электроннай пошты, такія як google.com, могуць пацвярджаць ваш адрас электроннай пошты, каб вам не трэба было правяраць паштовую скрыню</translation>
 <translation id="7888367499748383555">Без камісій, гадавая працэнтная стаўка складае 0% (пры адпаведнасці патрабаванням)</translation>
 <translation id="7888575728750733395">Намер візуалізацыі раздрукоўкі</translation>
 <translation id="7890748547282909375">Каб захаваць здымак экрана, увайдзіце ў Microsoft OneDrive</translation>
@@ -4121,7 +4155,6 @@
 <translation id="7961015016161918242">Ніколі</translation>
 <translation id="7961493403319780137">Даведацца больш пра гэту функцыю – аўтазапаўненне кодаў спраўджання з Gmail</translation>
 <translation id="7962467575542381659">Машына платформы</translation>
-<translation id="5335890850142030688">Brave больш не будзе аўтаматычна пацвярджаць гэты адрас электроннай пошты на сайтах, якія падтрымліваюцца.</translation>
 <translation id="7966803981046576691">Тып уліковага запісу задання</translation>
 <translation id="7967973398323409409">Інфармацыю, якую вы ўводзіце з дапамогай аўтазапаўнення, ніхто не бачыць</translation>
 <translation id="79682505114836835">Значэнне <ph name="VALUE"/> не з’яўляецца правільным шаснаццатковым кодам колеру.</translation>
@@ -4247,10 +4280,12 @@
 <translation id="8199437620497683918">Глянцавы аптычны дыск</translation>
 <translation id="8202097416529803614">Зводка па заказе</translation>
 <translation id="8202370299023114387">Канфлікт</translation>
+<translation id="912225951896594871">Панэль Brave Пошуку</translation>
 <translation id="8208363704094329105">300 x 400 мм</translation>
 <translation id="8208629719488976364">Змесціва старонак, якія вы друкуеце, а таксама інфармацыя аб прынтары перасылаюцца для аналізу ў Google Cloud або староннія сэрвісы. У прыватнасці, гэтыя даныя могуць быць правераны на наяўнасць канфідэнцыяльных даных або адпраўлены на захоўванне ў адпаведнасці з палітыкамі кампаніі і іх зможа пабачыць адміністратар.</translation>
 <translation id="8210490490377416373">Выбраць назву правіл</translation>
 <translation id="8211406090763984747">Падключэнне бяспечнае</translation>
+<translation id="8213803874191593803">{NUM_SOURCES,plural, =1{і яшчэ 1 крыніца}one{і яшчэ # крыніца}few{і яшчэ # крыніцы}many{і яшчэ # крыніц}other{і яшчэ # крыніцы}}</translation>
 <translation id="8213853114485953510">JIS Exec</translation>
 <translation id="8216640997712497593">14 x 18 цаляў</translation>
 <translation id="8218327578424803826">Прызначанае месцазнаходжанне:</translation>
@@ -4315,6 +4350,7 @@
 <translation id="8298399736867690281">Картка захавана толькі на гэтай прыладзе</translation>
 <translation id="8300302621078931927">Бяспечнае захаванне пасведчання асобы ў Brave Кашальку</translation>
 <translation id="8301894345671534559">Увядзіце код</translation>
+<translation id="830342764194666561">Зменены налады сайта</translation>
 <translation id="830498451218851433">Згіб напалову</translation>
 <translation id="830868413617744215">Бэта-версія</translation>
 <translation id="8310477433309274098">Без камісій, з гадавой працэнтнай стаўкай 0%</translation>
@@ -4355,6 +4391,7 @@
 <translation id="8371841335382565017">Паказаць спіс прылад для трансляцыі</translation>
 <translation id="8371889962595521444">Карыстальніцкія каранёвыя сертыфікаты</translation>
 <translation id="8374636051559112948">Вар’іруецца</translation>
+<translation id="2790916299775928255">Бакавая панэль Brave Пошуку</translation>
 <translation id="8377507422902936905">Заказы</translation>
 <translation id="837840316697671463">Калі вы не можаце знайсці файл на прыладзе, пашукайце яго ў воблаку "<ph name="CLOUD_PROVIDER"/>".</translation>
 <translation id="8378714024927312812">Пад кіраваннем вашай арганізацыі</translation>
@@ -4401,7 +4438,6 @@
 <translation id="8446884382197647889">Даведацца больш</translation>
 <translation id="8449036207308062757">Кіраванне сховішчам</translation>
 <translation id="8449155699563577224">17 x 24 цалі</translation>
-<translation id="8449513475775663994">Выдаліць спраўджаны адрас электроннай пошты?</translation>
 <translation id="8449836157089738489">Адкрыць усе ў новай групе ўкладак</translation>
 <translation id="8451518040456311377">Захоўваць і запаўняць даныя пасведчанняў асобы</translation>
 <translation id="1785963607001474601">Ваш адміністратар можа аддалена змяняць налады профілю і браўзера, аналізаваць інфармацыю пра браўзер з дапамогай справаздач і выконваць іншыя неабходныя задачы. Сама прылада таксама можа быць пад знешнім кіраваннем.  <ph name="BEGIN_LINK"/>Даведацца больш<ph name="END_LINK"/></translation>
@@ -4449,6 +4485,7 @@
 <translation id="8542617028204211143">SRA0</translation>
 <translation id="907470742420136113">Brave спрабуе замяніць налады запаўнення спосабаў аплаты.</translation>
 <translation id="8544303911974837265">Поліэстр</translation>
+<translation id="8545237556624168656">Каб выкарыстоўваць гэту функцыю, трэба ўвайсці ва ўліковы запіс электроннай пошты.</translation>
 <translation id="854548366864113872">Дарагі варыянт</translation>
 <translation id="854583198371106098"><ph name="ATTRIBUTE_VALUE"/>  <ph name="BEGIN_NEW"/>Новае<ph name="END_NEW"/></translation>
 <translation id="8546254312340305428">Укажыце, па якой прычыне вы хочаце запампаваць файл (абавязкова)</translation>
@@ -4467,6 +4504,7 @@
 <translation id="8577192028579836704">Звычайна для ўсіх варыянтаў: <ph name="TYPICAL_PRICE"/></translation>
 <translation id="8577348305244205642">Віртуальная картка недаступная</translation>
 <translation id="8579000896558714521">Перавызначэнне клавіятуры</translation>
+<translation id="531351359448899534">Выкананы ўваход з дапамогай сэрвісу Brave, напрыклад Менеджара пароляў</translation>
 <translation id="8581064022803799721">Гэта старонка захоўваецца ў папцы "<ph name="LAST_BOOKMARKS_FOLDER"/>".</translation>
 <translation id="858637041960032120">Дадайце нумар тэлефона</translation>
 <translation id="8587100480629037893">Адсочванне рухаў рук забаронена</translation>
@@ -4556,6 +4594,7 @@
 <translation id="8759274551635299824">Тэрмін дзеяння гэтай карткі скончыўся</translation>
 <translation id="87601671197631245">Гэты сайт выкарыстоўвае ўстарэлую канфігурацыю бяспекі, таму звесткі пра вас (напрыклад, паролі, паведамленні або нумары крэдытных картак) пры іх адпраўцы на гэты сайт могуць быць раскрыты.</translation>
 <translation id="8762871163452985706">Стварэнне анатацыі адроблена</translation>
+<translation id="8762944800272172913">Не ўдалося адкрыць чат з Gemini</translation>
 <translation id="8763676559028782284">{COUNT,plural, =1{Адпраўлена спасылка з прылады "<ph name="DEVICE_NAME"/>"}one{Адпраўлена # спасылка з прылады "<ph name="DEVICE_NAME"/>"}few{Адпраўлена # спасылкі з прылады "<ph name="DEVICE_NAME"/>"}many{Адпраўлена # спасылак з прылады "<ph name="DEVICE_NAME"/>"}other{Адпраўлена # спасылкі з прылады "<ph name="DEVICE_NAME"/>"}}</translation>
 <translation id="8763927697961133303">Прылада USB</translation>
 <translation id="7736544743887840328">Закрыць усе адкрытыя вокны ў рэжыме інкогніта</translation>
@@ -4792,7 +4831,6 @@
 <translation id="9168814207360376865">Дазволіць сайтам правяраць, ці ёсць у вас захаваныя спосабы аплаты</translation>
 <translation id="9169931577761441333">Дадайце праграму "<ph name="APP_NAME"/>" на галоўны экран</translation>
 <translation id="9170848237812810038">&amp;Адрабіць</translation>
-<translation id="9170906125144697215">Плаціце з дапамогай Pix без пераключэння паміж праграмамі</translation>
 <translation id="9171296965991013597">Выйсці з праграмы?</translation>
 <translation id="9173282814238175921">Адзіны дакумент, новы аркуш</translation>
 <translation id="9173995187295789444">Ідзе пошук прылад Bluetooth...</translation>

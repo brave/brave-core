@@ -22,6 +22,7 @@ CreativeAdInfo BuildCreativeAd(bool use_random_uuids) {
   creative_ad.campaign_id = RandomUuidOr(use_random_uuids, kCampaignId);
   creative_ad.advertiser_id = RandomUuidOr(use_random_uuids, kAdvertiserId);
 
+  creative_ad.campaign_type = mojom::NewTabPageAdCampaignType::kPaid;
   creative_ad.metric_type = mojom::NewTabPageAdMetricType::kConfirmation;
 
   creative_ad.start_at = DistantPast();

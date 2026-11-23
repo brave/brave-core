@@ -264,7 +264,6 @@ class SelectAccountTokenStoreTests: XCTestCase {
       assetRatioService: assetRatioService,
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
-      ipfsApi: TestIpfsAPI(),
       userAssetManager: mockAssetManager
     )
 

@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Let the BraveTabHoverCardController and tests reach private members.
+    add_friend:
+      class_name: TabHoverCardController
+      friend_type:
+        - class BraveTabHoverCardController
+        - class BraveTabHoverTest
+
+  - description: Let the Brave subclass override CreateHoverCard.
+    make_virtual:
+      class_name: TabHoverCardController
+      method_name: CreateHoverCard
+
+  - description:
+      Let the Brave subclass override OnHovercardImagesEnabledChanged.
+    make_virtual:
+      class_name: TabHoverCardController
+      method_name: OnHovercardImagesEnabledChanged

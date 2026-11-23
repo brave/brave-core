@@ -73,7 +73,7 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
-#include "ui/base/window_open_disposition.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
 
@@ -104,6 +104,8 @@ constexpr char kSinglePageApplicationWebpage[] =
     "/brave_ads/single_page_application.html";
 constexpr char kSinglePageApplicationClickSelector[] =
     "[data-navigation-type='same_document']";
+constexpr char kSinglePageApplicationSameDocumentPath[] =
+    "/brave_ads/same_document";
 
 constexpr char kAutoplayVideoWebpage[] = "/brave_ads/autoplay_video.html";
 constexpr char kVideoWebpage[] = "/brave_ads/video.html";
@@ -497,6 +499,35 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
   EXPECT_TRUE(WaitForActiveWebContentsToLoad());
 }
 
+IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
+                       NotifyTabDidChangeForSameDocumentNavigation) {
+  // Arrange
+  EXPECT_CALL(
+      GetAdsServiceMock(),
+      NotifyTabDidChange(
+          TabId(), RedirectChainExpectation(kSinglePageApplicationWebpage),
+          /*is_new_navigation=*/true, /*is_restoring=*/false,
+          /*is_visible=*/::testing::_))
+      .Times(::testing::AtLeast(1));
+  NavigateToRelativeURL(kSinglePageApplicationWebpage,
+                        /*has_user_gesture=*/true);
+  ::testing::Mock::VerifyAndClearExpectations(&GetAdsServiceMock());
+
+  // Act & Assert
+  EXPECT_CALL(
+      GetAdsServiceMock(),
+      NotifyTabDidChange(
+          TabId(),
+          RedirectChainExpectation(kSinglePageApplicationSameDocumentPath),
+          /*is_new_navigation=*/true, /*is_restoring=*/false,
+          /*is_visible=*/::testing::_))
+      .Times(::testing::AtLeast(1));
+  SimulateClick(kSinglePageApplicationClickSelector,
+                /*has_user_gesture=*/true);
+
+  EXPECT_TRUE(WaitForActiveWebContentsToLoad());
+}
+
 IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest, NotifyTabDidLoad) {
   EXPECT_CALL(GetAdsServiceMock(), NotifyTabDidLoad(TabId(), net::HTTP_OK));
   NavigateToRelativeURL(kMultiPageApplicationWebpage,
@@ -864,7 +895,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest, NotifyDidCloseTab) {
 IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest, NotifyDidCloseTabWhenDiscarded) {
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL(url::kAboutBlankURL),
-      WindowOpenDisposition::kNewBackgroundTab,
+      ui::mojom::WindowOpenDisposition::kNewBackgroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   TabStripModel* const tab_strip_model = browser()->GetTabStripModel();
   content::WebContents* const web_contents =

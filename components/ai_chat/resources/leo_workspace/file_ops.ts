@@ -29,6 +29,12 @@ function splitPath(rel: string): string[] {
   return parts
 }
 
+// |rel| with empty and '.' segments removed, e.g. './a//b' -> 'a/b'. Throws
+// for a path that would escape the workspace.
+export function normalizePath(rel: string): string {
+  return splitPath(rel).join('/')
+}
+
 function basename(rel: string): string {
   const parts = splitPath(rel)
   return parts.length ? parts[parts.length - 1] : ''
@@ -104,10 +110,10 @@ async function readText(
   return (await readFile(root, rel)).text()
 }
 
-async function writeText(
+async function writeContents(
   root: FileSystemDirectoryHandle,
   rel: string,
-  content: string,
+  content: string | Uint8Array<ArrayBuffer>,
 ): Promise<void> {
   const fh = await getFile(root, rel, true)
   const writable = await fh.createWritable()
@@ -319,8 +325,19 @@ export async function appendFile(
 ): Promise<string> {
   const existed = await fileExists(root, path)
   const previous = existed ? await readText(root, path) : ''
-  await writeText(root, path, previous + content)
+  await writeContents(root, path, previous + content)
   return `Appended ${content.length} bytes to ${path}`
+}
+
+// Writes binary |data| to |path|, creating or overwriting it.
+export async function writeBinaryFile(
+  root: FileSystemDirectoryHandle,
+  path: string,
+  data: Uint8Array<ArrayBuffer>,
+): Promise<string> {
+  const existed = await fileExists(root, path)
+  await writeContents(root, path, data)
+  return `${existed ? 'Overwrote' : 'Created'} ${path} (${data.byteLength} bytes)`
 }
 
 export async function createFile(
@@ -331,7 +348,7 @@ export async function createFile(
   // Matches the text-editor `create` semantics: creates the file, overwriting
   // it if it already exists.
   const existed = await fileExists(root, path)
-  await writeText(root, path, fileText)
+  await writeContents(root, path, fileText)
   return `${existed ? 'Overwrote' : 'Created'} ${path} (${fileText.length} bytes)`
 }
 
@@ -351,7 +368,7 @@ export async function strReplace(
   }
   const updated =
     text.slice(0, first) + newStr + text.slice(first + oldStr.length)
-  await writeText(root, path, updated)
+  await writeContents(root, path, updated)
   return `Replaced text in ${path}`
 }
 
@@ -366,6 +383,6 @@ export async function insert(
   const at = Math.max(0, Math.min(insertLine, lines.length))
   const inserted = newStr.split('\n')
   lines.splice(at, 0, ...inserted)
-  await writeText(root, path, lines.join('\n'))
+  await writeContents(root, path, lines.join('\n'))
   return `Inserted ${inserted.length} line(s) into ${path} after line ${at}`
 }

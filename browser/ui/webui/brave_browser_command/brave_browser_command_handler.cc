@@ -15,6 +15,7 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
@@ -124,7 +125,7 @@ void BraveBrowserCommandHandler::ExecuteCommand(
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
     case brave_browser_command::mojom::Command::kOpenWalletOnboarding:
       delegate_->OpenURL(GURL(kBraveUIWalletURL),
-                         WindowOpenDisposition::kNewForegroundTab);
+                         ui::mojom::WindowOpenDisposition::kNewForegroundTab);
       break;
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
     case brave_browser_command::mojom::Command::kOpenRewardsOnboarding:

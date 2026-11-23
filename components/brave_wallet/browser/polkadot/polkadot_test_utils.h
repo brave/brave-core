@@ -147,6 +147,10 @@ struct PolkadotMockRpc {
   // ensures that the configured request-response mapping is used.
   void FinalizeSetup();
 
+  // Number of JSON-RPC requests with the given `method` that the interceptor
+  // has served since construction.
+  size_t GetRequestCount(std::string_view method) const;
+
  private:
   void AddRuntimeVersionReqRes(std::string_view params_json,
                                uint32_t spec_version);
@@ -199,6 +203,7 @@ struct PolkadotMockRpc {
   base::flat_map<std::string, PolkadotBlock> block_map_;
   std::string bad_block_map_key_;
   base::flat_map<std::string, std::string> events_map_;
+  base::flat_map<std::string, size_t> request_counts_;
 
   bool use_invalid_metadata_ = false;
   bool use_invalid_finalized_block_hash_ = false;

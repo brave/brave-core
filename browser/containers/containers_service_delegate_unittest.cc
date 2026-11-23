@@ -115,11 +115,8 @@ class ContainersServiceDelegateTest : public testing::Test {
   ContainersServiceDelegateTest() = default;
 
  protected:
-  void SetUp() override {
-    feature_list_.InitAndEnableFeature(features::kContainers);
-  }
-
-  base::test::ScopedFeatureList feature_list_;
+  // Declared first: pinned before `profile_` builds ContainersServiceFactory.
+  base::test::ScopedFeatureList feature_list_{features::kContainers};
   content::BrowserTaskEnvironment task_environment_;
   TestingProfile profile_;
   TabRestoreTestHarness tab_restore_;
@@ -264,7 +261,6 @@ class ContainersServiceDelegateSessionServiceTest
     : public ContainersServiceDelegateTest {
  protected:
   void SetUp() override {
-    ContainersServiceDelegateTest::SetUp();
     session_service_ = std::make_unique<SessionService>(&profile_);
     session_helper_.SetService(session_service_.get());
     session_helper_.SetSavingEnabled(true);

@@ -10,6 +10,7 @@
 #include <optional>
 #include <string_view>
 #include <utility>
+#include <vector>
 
 #include "base/check.h"
 #include "base/test/metrics/histogram_tester.h"
@@ -223,7 +224,18 @@ class MockSidebarServiceObserver : public SidebarService::Observer {
 
 class SidebarServiceTest : public testing::Test {
  public:
-  SidebarServiceTest() = default;
+  SidebarServiceTest() {
+    // Pin the flags that gate built-in items so expectations don't depend on
+    // their compiled-in defaults.
+    std::vector<base::test::FeatureRef> enabled_features;
+#if BUILDFLAG(ENABLE_AI_CHAT)
+    enabled_features.push_back(ai_chat::features::kAIChat);
+#endif
+#if BUILDFLAG(ENABLE_PLAYLIST)
+    enabled_features.push_back(playlist::features::kPlaylist);
+#endif
+    feature_list_.InitWithFeatures(enabled_features, {});
+  }
 
   ~SidebarServiceTest() override = default;
 
@@ -266,23 +278,10 @@ class SidebarServiceTest : public testing::Test {
   PrefService* GetPrefs() { return &prefs_; }
 
   size_t GetDefaultItemCount() const {
-    auto item_count =
-        std::size(kDefaultBuiltInItemTypesForTest) - 1 /* for history*/;
-#if BUILDFLAG(ENABLE_PLAYLIST)
-    if (!base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
-      item_count -= 1;
-    }
-#endif
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
-    if (!ai_chat::features::IsAIChatEnabled()) {
-      item_count -= 1;
-    }
-#endif
-
-    return item_count;
+    return std::size(kDefaultBuiltInItemTypesForTest) - 1 /* for history*/;
   }
 
+  base::test::ScopedFeatureList feature_list_;
   TestingPrefServiceSimple prefs_;
   NiceMock<MockSidebarServiceObserver> observer_;
   std::unique_ptr<SidebarService> service_;
@@ -294,7 +293,7 @@ TEST_F(SidebarServiceTest, AddRemoveItems) {
 
   // Check the default items count.
   const auto default_item_count = GetDefaultItemCount();
-  EXPECT_EQ(default_item_count, service_->items().size());
+  ASSERT_EQ(default_item_count, service_->items().size());
   EXPECT_EQ(0UL, service_->GetHiddenDefaultSidebarItems().size());
 
   // Cache 1st item to compare after removing.
@@ -507,7 +506,7 @@ TEST_F(SidebarServiceTest, MoveItemSavedToPrefs) {
   SidebarItem new_item = SidebarItem::CreateWebTabItem(
       GURL("https://www.brave.com/"), u"brave software");
   service_->AddItem(new_item);
-  EXPECT_EQ(expected_item_count, service_->items().size());
+  ASSERT_EQ(expected_item_count, service_->items().size());
 
   // Move item at 0 to index 2.
   SidebarItem item = service_->items()[0];
@@ -518,7 +517,7 @@ TEST_F(SidebarServiceTest, MoveItemSavedToPrefs) {
 
   ResetService();
   InitService();
-  EXPECT_EQ(expected_item_count, service_->items().size());
+  ASSERT_EQ(expected_item_count, service_->items().size());
   EXPECT_EQ(url, service_->items()[2].url);
 }
 
@@ -606,20 +605,6 @@ TEST_F(SidebarServiceTest, NewDefaultItemAdded) {
           return false;
         }
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
-        if (!ai_chat::features::IsAIChatEnabled() &&
-            built_in_type == SidebarItem::BuiltInItemType::kChatUI) {
-          return false;
-        }
-#endif
-
-#if BUILDFLAG(ENABLE_PLAYLIST)
-        if (!base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
-            built_in_type == SidebarItem::BuiltInItemType::kPlaylist) {
-          return false;
-        }
-#endif  // BUILDFLAG(ENABLE_PLAYLIST)
-
         return true;
       });
 
@@ -688,7 +673,7 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsSomeHidden) {
   auto talk_iter =
       std::ranges::find(items, SidebarItem::BuiltInItemType::kBraveTalk,
                         &SidebarItem::built_in_item_type);
-  EXPECT_NE(talk_iter, items.end());
+  ASSERT_NE(talk_iter, items.end());
   EXPECT_TRUE(std::ranges::contains(items,
                                     SidebarItem::BuiltInItemType::kReadingList,
                                     &SidebarItem::built_in_item_type));
@@ -837,11 +822,16 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoType) {
   // Verify migration
   auto& items = prefs_.GetList(kSidebarItems);
   for (const auto& item : items) {
-    const auto item_type = static_cast<SidebarItem::Type>(
-        *item.GetDict().FindInt(kSidebarItemTypeKey));
+    const std::optional<int> type_value =
+        item.GetDict().FindInt(kSidebarItemTypeKey);
+    ASSERT_TRUE(type_value.has_value());
+    const auto item_type = static_cast<SidebarItem::Type>(*type_value);
     if (item_type == SidebarItem::Type::kTypeBuiltIn) {
-      const auto built_in_type = static_cast<SidebarItem::BuiltInItemType>(
-          *item.GetDict().FindInt(kSidebarItemBuiltInItemTypeKey));
+      const std::optional<int> built_in_type_value =
+          item.GetDict().FindInt(kSidebarItemBuiltInItemTypeKey);
+      ASSERT_TRUE(built_in_type_value.has_value());
+      const auto built_in_type =
+          static_cast<SidebarItem::BuiltInItemType>(*built_in_type_value);
       EXPECT_NE(built_in_type, SidebarItem::BuiltInItemType::kNone);
     }
   }
@@ -893,7 +883,7 @@ TEST_F(SidebarServiceTest, HidesBuiltInItemsViaService) {
     }
     bookmark_item_index++;
   }
-  EXPECT_TRUE(found);
+  ASSERT_TRUE(found);
   // Update service to hide bookmarks item
   service_->RemoveItemAt(bookmark_item_index);
 
@@ -929,19 +919,15 @@ TEST_F(SidebarServiceTest, BuiltInItemUpdateTestWithBuiltInItemTypeKey) {
   // Brave Talk and Reading list.
   auto expected_count = 2UL;
 #if BUILDFLAG(ENABLE_PLAYLIST)
-  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
-    expected_count += 1;
-  }
+  expected_count += 1;
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  if (ai_chat::features::IsAIChatEnabled()) {
-    expected_count += 1;
-  }
+  expected_count += 1;
 #endif
 
   // Check service has updated built-in item. Previously url was deprecated.xxx.
-  EXPECT_EQ(expected_count, service_->items().size());
+  ASSERT_EQ(expected_count, service_->items().size());
   EXPECT_EQ(GURL(kBraveTalkURL), service_->items()[0].url);
 
   // Simulate re-launch and check service has still updated items.
@@ -950,7 +936,7 @@ TEST_F(SidebarServiceTest, BuiltInItemUpdateTestWithBuiltInItemTypeKey) {
   InitService();
 
   // Check service has updated built-in item. Previously url was deprecated.xxx.
-  EXPECT_EQ(expected_count, service_->items().size());
+  ASSERT_EQ(expected_count, service_->items().size());
   EXPECT_EQ(GURL(kBraveTalkURL), service_->items()[0].url);
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_TALK)
@@ -1179,13 +1165,6 @@ class SidebarServiceOrderingTest : public SidebarServiceTest {
 
   ~SidebarServiceOrderingTest() override = default;
 
-  void SetUp() override {
-    SidebarServiceTest::SetUp();
-#if BUILDFLAG(ENABLE_AI_CHAT)
-    scoped_feature_list_.InitAndEnableFeature(ai_chat::features::kAIChat);
-#endif
-  }
-
   bool ValidateBuiltInTypesOrdering(
       const std::vector<SidebarItem::BuiltInItemType>& defined_order) {
     size_t srv_items_index = 0, dbt_index = 0;
@@ -1214,7 +1193,7 @@ class SidebarServiceOrderingTest : public SidebarServiceTest {
       const std::vector<SidebarItem::BuiltInItemType>& defined_order,
       const size_t expected_items_loaded) {
     GetPrefs()->Set(kSidebarItems,
-                    std::move(sidebar_prefs.Find("sidebar_items")->Clone()));
+                    sidebar_prefs.Find("sidebar_items")->Clone());
 
     InitService();
 
@@ -1222,9 +1201,6 @@ class SidebarServiceOrderingTest : public SidebarServiceTest {
     EXPECT_TRUE(ValidateBuiltInTypesOrdering(defined_order))
         << "Wrong order detected";
   }
-
- private:
-  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 TEST_F(SidebarServiceOrderingTest, BuiltInItemsDefaultOrder) {
@@ -1290,10 +1266,8 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAllBuiltInVisible) {
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
-    expected_count++;
-    items.push_back(SidebarItem::BuiltInItemType::kPlaylist);
-  }
+  expected_count++;
+  items.push_back(SidebarItem::BuiltInItemType::kPlaylist);
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
   LoadFromPrefsTest(std::move(sidebar), items, expected_count);
 }
@@ -1332,10 +1306,8 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsWalletBuiltInHidden) {
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
-    expected_count++;
-    items.push_back(SidebarItem::BuiltInItemType::kPlaylist);
-  }
+  expected_count++;
+  items.push_back(SidebarItem::BuiltInItemType::kPlaylist);
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
   LoadFromPrefsTest(std::move(sidebar), items, expected_count);
@@ -1379,10 +1351,8 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAIChatBuiltInNotListed) {
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
-    expected_count++;
-    items.push_back(SidebarItem::BuiltInItemType::kPlaylist);
-  }
+  expected_count++;
+  items.push_back(SidebarItem::BuiltInItemType::kPlaylist);
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
   LoadFromPrefsTest(std::move(sidebar), items, expected_count);

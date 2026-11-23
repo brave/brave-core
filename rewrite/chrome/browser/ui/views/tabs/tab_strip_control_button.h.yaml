@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Rename the class so the Brave subclass can reuse the name.
+
+      The Brave TabStripControlButton subclass is declared in the chromium_src
+      override of this header.
+    rename_class:
+      class_name: TabStripControlButton
+      rename: TabStripControlButton_ChromiumImpl

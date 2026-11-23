@@ -43,8 +43,8 @@
 #include "net/dns/mock_host_resolver.h"
 #include "services/network/public/cpp/ip_address_space_overrides_test_utils.h"
 #include "services/network/public/mojom/ip_address_space.mojom.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "ui/base/page_transition_types.h"
-#include "ui/base/window_open_disposition.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -243,7 +243,7 @@ IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, NonExistingFeedsAreRemoved) {
     WaitForFeedsChanged waiter(tab_helper, 1);
 
     ui_test_utils::NavigateToURLWithDisposition(
-        browser(), rss_page_url, WindowOpenDisposition::kCurrentTab,
+        browser(), rss_page_url, ui::mojom::WindowOpenDisposition::kCurrentTab,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
     auto result = waiter.WaitForFeeds();
 
@@ -280,7 +280,7 @@ IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, FeedsAreFoundWhenTheyExist) {
     WaitForFeedsChanged waiter(tab_helper, 1);
 
     ui_test_utils::NavigateToURLWithDisposition(
-        browser(), rss_page_url, WindowOpenDisposition::kCurrentTab,
+        browser(), rss_page_url, ui::mojom::WindowOpenDisposition::kCurrentTab,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
     auto result = waiter.WaitForFeeds();
 
@@ -310,14 +310,19 @@ IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, FeedsAreNotFoundWhenNotOptedIn) {
   auto* tab_helper = BraveNewsTabHelper::From(
       tabs::TabInterface::MaybeGetFromContents(contents()));
 
+  // We can't use WaitForFeedsChanged here because empty results are never
+  // notified. Wait on the tab helper's own signal, raised when it finishes (or
+  // skips) detection for the page. The page does have feeds, so a broken opt-in
+  // gate would issue a fetch.
+  base::test::TestFuture<bool> detection_future;
+  tab_helper->SetDetectionFinishedCallbackForTesting(
+      detection_future.GetCallback());
+
   ui_test_utils::NavigateToURLWithDisposition(
-      browser(), rss_page_url, WindowOpenDisposition::kCurrentTab,
+      browser(), rss_page_url, ui::mojom::WindowOpenDisposition::kCurrentTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
-  // We run until idle here rather than using the Waiter because we want the
-  // load to complete before notifying, and we don't notify empty results.
-  base::RunLoop().RunUntilIdle();
-
+  EXPECT_FALSE(detection_future.Get()) << "Feed detection ran while opted out";
   ASSERT_EQ(0u, tab_helper->GetAvailableFeedUrls().size());
 }
 

@@ -33,4 +33,6 @@ mojom("mojom") {
   ]
 
   public_deps = [ "//mojo/public/mojom/base" ]
+
+  webui_module_path = "/brave/components/speedreader/common"
 }

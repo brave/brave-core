@@ -8,8 +8,8 @@
 #include "base/path_service.h"
 #include "base/scoped_observation.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_content_browser_client.h"
@@ -164,21 +164,16 @@ class RequestOTRBrowserTestBase : public BaseLocalDataFilesBrowserTest {
         HistoryServiceFactory::GetForProfile(
             browser()->GetProfile(), ServiceAccessType::IMPLICIT_ACCESS);
     CHECK(history_service);
-    int history_count = 0;
-    base::RunLoop loop;
+    base::test::TestFuture<history::HistoryCountResult> future;
     base::CancelableTaskTracker task_tracker;
     history_service->GetHistoryCount(
         /*begin_time=*/base::Time::UnixEpoch(),
         /*end_time=*/base::Time::Now(),
-        history::VisitQuery404sPolicy::kInclude404s,
-        base::BindLambdaForTesting([&](history::HistoryCountResult result) {
-          ASSERT_TRUE(result.success);
-          history_count = result.count;
-          loop.Quit();
-        }),
+        history::VisitQuery404sPolicy::kInclude404s, future.GetCallback(),
         &task_tracker);
-    loop.Run();
-    return history_count;
+    const history::HistoryCountResult& result = future.Get();
+    EXPECT_TRUE(result.success);
+    return result.count;
   }
 
  private:

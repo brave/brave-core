@@ -4,12 +4,14 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """The `brave.sanitisers` builder group: the Linux ASan builders."""
 
-from lib.config import builder_config, builders, gn_args
+from lib.config import builder_config, builders, gn_args, targets
 
 builders.defaults.set(
     builder_group='brave.sanitisers',
+    recipe='brave_builder',
     execution_timeout_mins=270,
     channel='nightly',
+    siso_remote_jobs=1440,
     notifies=[
         'browser-sanitizers-bot',
     ],
@@ -37,15 +39,18 @@ builders.builder(
             'x64',
         ]
     ),
-    targets=builders.targets(
-        compile=[
-            'brave:all',
-        ],
-        tests=[
-            'brave_all_unit_tests',
+    targets=targets.bundle(
+        targets=[
+            'brave_all_unit_tests_linux',
             'brave_browser_tests',
             'brave_interactive_ui_tests',
             'brave_network_audit_tests',
+        ],
+        additional_compile_targets=[
+            'brave',
+        ],
+        mixins=[
+            'asan_no_odr_violation_detection',
         ],
     ),
 )
@@ -72,13 +77,16 @@ builders.builder(
             'x64',
         ]
     ),
-    targets=builders.targets(
-        compile=[
-            'brave:all',
-        ],
-        tests=[
-            'chromium_unit_tests',
+    targets=targets.bundle(
+        targets=[
+            'chromium_unit_tests_linux',
             'browser_tests',
+        ],
+        additional_compile_targets=[
+            'brave',
+        ],
+        mixins=[
+            'asan_no_odr_violation_detection',
         ],
     ),
 )

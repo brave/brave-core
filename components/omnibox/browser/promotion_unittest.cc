@@ -217,6 +217,8 @@ TEST_F(OmniboxPromotionTest, PromotionEntrySortTest) {
                                                 brave_search_conversion_match));
 
   feature_list_banner.Reset();
+  feature_list_banner.InitAndDisableFeature(
+      brave_search_conversion::features::kOmniboxBanner);
 
   // Check promotion match is not added when feature is off.
   controller->Start(input);

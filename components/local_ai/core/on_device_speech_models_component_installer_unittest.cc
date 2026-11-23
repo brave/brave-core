@@ -986,7 +986,7 @@ TEST_P(OnDeviceSpeechModelsComponentInstallerUnitTest,
     SendEvent(update_client::ComponentState::kUpdateError,
               ComponentIdOf(other_model()));
     SendEvent(update_client::ComponentState::kDownloading, ComponentId());
-    EXPECT_NE(nullptr, cus_observer_);
+    ASSERT_NE(nullptr, cus_observer_);
 
     SendEvent(update_state, ComponentId());
     EXPECT_FALSE(future.Get());

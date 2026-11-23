@@ -259,7 +259,7 @@ TEST_F(ZCashCompleteTransactionTaskV6Test, GetLightdInfoError) {
       });
 
   auto result = RunTask(MakeShieldedV6Transaction(account_id()));
-  EXPECT_FALSE(result.has_value());
+  ASSERT_FALSE(result.has_value());
   EXPECT_EQ(result.error(), InternalErrorString());
 }
 
@@ -272,7 +272,7 @@ TEST_F(ZCashCompleteTransactionTaskV6Test, InvalidConsensusBranchId) {
       });
 
   auto result = RunTask(MakeShieldedV6Transaction(account_id()));
-  EXPECT_FALSE(result.has_value());
+  ASSERT_FALSE(result.has_value());
   EXPECT_EQ(result.error(), InternalErrorString());
 }
 
@@ -285,7 +285,7 @@ TEST_F(ZCashCompleteTransactionTaskV6Test, GetLatestBlockError) {
       });
 
   auto result = RunTask(MakeShieldedV6Transaction(account_id()));
-  EXPECT_FALSE(result.has_value());
+  ASSERT_FALSE(result.has_value());
   EXPECT_EQ(result.error(), InternalErrorString());
 }
 
@@ -300,7 +300,7 @@ TEST_F(ZCashCompleteTransactionTaskV6Test, WitnessCalculateError) {
       });
 
   auto result = RunTask(MakeShieldedV6Transaction(account_id()));
-  EXPECT_FALSE(result.has_value());
+  ASSERT_FALSE(result.has_value());
   EXPECT_EQ(result.error(), InternalErrorString());
 }
 
@@ -314,7 +314,7 @@ TEST_F(ZCashCompleteTransactionTaskV6Test, GetTreeStateError) {
       });
 
   auto result = RunTask(MakeShieldedV6Transaction(account_id()));
-  EXPECT_FALSE(result.has_value());
+  ASSERT_FALSE(result.has_value());
   EXPECT_EQ(result.error(), InternalErrorString());
 }
 
@@ -327,13 +327,13 @@ TEST_F(ZCashCompleteTransactionTaskV6Test, InvalidTreeStateHex) {
       });
 
   auto result = RunTask(MakeShieldedV6Transaction(account_id()));
-  EXPECT_FALSE(result.has_value());
+  ASSERT_FALSE(result.has_value());
   EXPECT_EQ(result.error(), InternalErrorString());
 }
 
 TEST_F(ZCashCompleteTransactionTaskV6NoShieldedTest, MissingOrchardKeys) {
   auto result = RunTask(MakeShieldedV6Transaction(account_id()));
-  EXPECT_FALSE(result.has_value());
+  ASSERT_FALSE(result.has_value());
   EXPECT_EQ(result.error(), InternalErrorString());
 }
 
@@ -348,7 +348,7 @@ TEST_F(ZCashCompleteTransactionTaskV6Test, OrchardBundleCreationFailed) {
   // Inputs returned by the witness mock do not include merkle paths, so bundle
   // creation fails once FVK/SK are resolved.
   auto result = RunTask(MakeShieldedV6Transaction(account_id()));
-  EXPECT_FALSE(result.has_value());
+  ASSERT_FALSE(result.has_value());
   EXPECT_EQ(result.error(), InternalErrorString());
 }
 
@@ -357,7 +357,7 @@ TEST_F(ZCashCompleteTransactionTaskV6Test, AnchorNotSelected) {
   tx.v6_part().legacy_orchard.anchor_block_height.reset();
 
   auto result = RunTask(tx);
-  EXPECT_FALSE(result.has_value());
+  ASSERT_FALSE(result.has_value());
   EXPECT_EQ(result.error(), "Anchor not selected");
 }
 

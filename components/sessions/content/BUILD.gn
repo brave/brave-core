@@ -3,6 +3,36 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/containers/buildflags/buildflags.gni")
+
+source_set("chromium_impl") {
+  visibility = [ "//components/sessions" ]
+
+  sources = [
+    "content_serialized_navigation_builder.cc",
+    "content_serialized_navigation_driver.cc",
+  ]
+
+  configs += [ "//components/sessions:implementation" ]
+
+  deps = [
+    "//base",
+    "//brave/components/containers/buildflags",
+    "//components/sessions:shared",
+    "//content/public/browser",
+    "//content/public/common",
+    "//third_party/blink/public/common",
+    "//url",
+  ]
+
+  if (enable_containers) {
+    deps += [
+      "//brave/components/containers/content/browser",
+      "//brave/components/containers/core/common",
+    ]
+  }
+}
+
 source_set("unit_tests") {
   testonly = true
   sources = [ "brave_content_serialized_navigation_driver_unittest.cc" ]

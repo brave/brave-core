@@ -742,6 +742,15 @@
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "Continuar a %@ (no seguro)";
 
+/* Button to exclude a topsite url from the most visited list */
+"ExcludeMostVisitedSite" = "Quitar";
+
+/* Message for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertMessage" = "Este sitio no aparecerá en tu lista de Más visitados, pero no se eliminará de tu historial.";
+
+/* Title for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertTitle" = "¿Eliminar de Más visitados?";
+
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ lanzará una aplicación externa";
 
@@ -864,6 +873,9 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Datos no válidos en la solicitud de pago";
+
+/* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
+"JavaScriptDialogEmbeddedPageTitle" = "Una página incrustada en esta página";
 
 /* History tableview section header */
 "LastMonth" = "El mes pasado";
@@ -2482,6 +2494,18 @@
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "Los anuncios se bloquearán cuando veas los vídeos de este sitio web.";
 
+/* Title for the Brave Wallet shortcut. Brave Wallet is the name of a product and should not be translated */
+"shortcut.braveWallet" = "Cartera de Brave";
+
+/* Title for the private tab shortcut. */
+"shortcut.privateTab" = "Pestaña privada";
+
+/* Title for the QR Code shortcut. */
+"shortcut.qrCode" = "Código QR";
+
+/* Title for the Search shortcut. */
+"shortcut.search" = "Búsqueda";
+
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Nueva pestaña privada";
 
@@ -2555,7 +2579,7 @@
 "shortcuts.activityTypeOpenPlaylistSuggestedPhrase" = "Abrir lista de reproducción";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenPlaylistTitle" = "Abrir lista de reproducción";
+"shortcuts.activityTypeOpenPlaylistTitle" = "Abrir Playlist";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeOpenSyncedTabsDescription" = "Abrir las pestañas de Brave abiertas en otros dispositivos";
@@ -2630,7 +2654,7 @@
 "shortcuts.shortcutSettingsOpenPlaylistDescription" = "Utiliza los accesos directos para abrir Playlist con el asistente de voz Siri";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsOpenPlaylistTitle" = "Abrir lista de reproducción";
+"shortcuts.shortcutSettingsOpenPlaylistTitle" = "Abrir Playlist";
 
 /* Description of Open Tabs from Other Devices Shortcut in Settings Screen */
 "shortcuts.shortcutSettingsOpenSyncedTabsDescription" = "Utiliza los accesos directos para abrir las pestañas de otros dispositivos con el asistente de voz Siri";
@@ -3206,7 +3230,7 @@
 "TabTraySingleTabPositionFormatVoiceOverText" = "Pestaña %1$@ de %2$@";
 
 /* No comment provided by engineer. */
-"TermsOfService" = "Condiciones de servicio";
+"TermsOfService" = "Condiciones de uso";
 
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Términos de uso";

@@ -21,13 +21,14 @@ class BaseLocalDataFilesBrowserTest : public extensions::ExtensionBrowserTest {
   void PreRunTestOnMainThread() override;
 
  protected:
-  virtual void WaitForService();
   void GetTestDataDir(base::FilePath* test_data_dir);
   void MaybeInitEmbeddedTestServer();
   void MaybeSetUpEmbeddedTestServerOnMainThread();
   bool InstallMockExtension();
 
   // Descendant classes must override these
+  // Waits until the component installer has processed OnComponentReady().
+  virtual void WaitForService() = 0;
   virtual const char* test_data_directory() = 0;
   virtual const char* embedded_test_server_directory() = 0;
   virtual brave_component_updater::LocalDataFilesObserver* service() = 0;

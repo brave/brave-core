@@ -243,6 +243,11 @@ public class BraveStoreSDK: AppStoreSDK {
   }
 
   /// The current store environment
+  @diagnose(
+    DeprecatedDeclaration,
+    as: ignored,
+    reason: "GuardianConnect SDK still uses legacy receipts"
+  )
   public var environment: BraveStoreEnvironment {
     if AppConstants.buildChannel == .release {
       return .production

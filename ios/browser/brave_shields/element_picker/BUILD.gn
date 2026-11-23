@@ -9,9 +9,16 @@ source_set("element_picker") {
   sources = [
     "element_picker_javascript_feature.h",
     "element_picker_javascript_feature.mm",
+    "element_picker_localized_texts.h",
+    "element_picker_localized_texts.mm",
+    "element_picker_tab_helper.h",
+    "element_picker_tab_helper.mm",
+    "element_picker_tab_helper_bridge.h",
   ]
+  frameworks = [ "Foundation.framework" ]
   deps = [
     ":element_picker_js",
+    "//net",
     "//url",
   ]
   public_deps = [

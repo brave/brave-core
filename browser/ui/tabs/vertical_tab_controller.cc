@@ -5,11 +5,15 @@
 
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 
+#include <utility>
+
 #include "base/command_line.h"
+#include "base/functional/bind.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/public/switches.h"
 #include "build/build_config.h"
+#include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -129,4 +133,22 @@ bool VerticalTabController::ShouldShowVerticalTabToggleButton() const {
   }
 
   return prefs_->GetBoolean(brave_tabs::kVerticalTabsShowToggleButton);
+}
+
+void VerticalTabController::ListenFullscreenChanges(
+    FullscreenController& fullscreen_controller) {
+  fullscreen_subscription_ =
+      fullscreen_controller.RegisterOnFullscreenStateChanged(
+          base::BindRepeating(&VerticalTabController::OnFullscreenStateChanged,
+                              base::Unretained(this)));
+}
+
+base::CallbackListSubscription
+VerticalTabController::RegisterOnFullscreenStateChanged(
+    base::RepeatingClosure callback) {
+  return fullscreen_state_changed_callbacks_.Add(std::move(callback));
+}
+
+void VerticalTabController::OnFullscreenStateChanged() {
+  fullscreen_state_changed_callbacks_.Notify();
 }

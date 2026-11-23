@@ -119,6 +119,12 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
     tor::TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(true);
   }
 
+  void TearDownOnMainThread() override {
+    tor::TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(false);
+    net::ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(false);
+    InProcessBrowserTest::TearDownOnMainThread();
+  }
+
   net::EmbeddedTestServer* test_server() { return test_https_server_.get(); }
   net::EmbeddedTestServer* test_http_server() {
     return test_http_server_.get();

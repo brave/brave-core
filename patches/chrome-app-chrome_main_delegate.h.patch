@@ -1,8 +1,16 @@
 diff --git a/chrome/app/chrome_main_delegate.h b/chrome/app/chrome_main_delegate.h
-index 5fc1e70bb354e7cdf871c7f32f6fde51c80d57c7..ecca99506e773e3c1e2fd4938664954964472625 100644
+index 5fc1e70bb354e7cdf871c7f32f6fde51c80d57c7..6845431a093a9b9026b9ca89dd1e80770969573e 100644
 --- a/chrome/app/chrome_main_delegate.h
 +++ b/chrome/app/chrome_main_delegate.h
-@@ -114,7 +114,7 @@ class ChromeMainDelegate : public content::ContentMainDelegate {
+@@ -12,6 +12,7 @@
+ 
+ #include "base/containers/span.h"
+ #include "base/time/time.h"
++#include "brave/common/brave_content_client.h"
+ #include "build/build_config.h"
+ #include "chrome/app/startup_timestamps.h"
+ #include "chrome/common/chrome_content_client.h"
+@@ -114,7 +115,7 @@ class ChromeMainDelegate : public content::ContentMainDelegate {
  #endif  // !defined(BUILDING_CHROME_RENDERER)
    std::unique_ptr<tracing::TracingSamplerProfiler> tracing_sampler_profiler_;
  

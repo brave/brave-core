@@ -72,7 +72,7 @@ TEST_F(ConfiguredProxyResolutionServiceTest, TorProxy) {
       url, std::string(), network_anonymization_key,
       handles::kInvalidNetworkHandle, &info, callback.callback(), &request,
       NetLogWithSource::Make(NetLogSourceType::NONE), DEFAULT_PRIORITY);
-  EXPECT_THAT(rv, IsOk());
+  ASSERT_THAT(rv, IsOk());
 
   ProxyServer server = info.proxy_chain().GetProxyServer(/*chain_index=*/0);
   HostPortPair host_port = server.host_port_pair();

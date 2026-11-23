@@ -111,6 +111,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
   private var cancellables: Set<AnyCancellable> = []
 
+  /// A control widget shortcut that arrived before this window had a browser to open it in.
+  private var pendingControlWidgetShortcut: WidgetShortcut?
+
   func scene(
     _ scene: UIScene,
     willConnectTo session: UISceneSession,
@@ -475,11 +478,8 @@ extension SceneDelegate {
       handleCustomUserActivityActions(sceneState.windowScene, userActivity: currentActivity)
     }
 
-    if #available(iOS 26.0, *) {
-      handleControlWidgetIntentIfNeeded(
-        sceneState.connectionOptions.appIntent,
-        browserViewController: browserViewController
-      )
+    if #available(iOS 26.0, *), let intent = sceneState.connectionOptions.appIntent {
+      openControlWidgetShortcut(for: intent, in: browserViewController)
     }
 
     if sceneState.windowScene.activationState == .foregroundActive {
@@ -503,22 +503,21 @@ extension SceneDelegate {
   }
 
   @available(iOS 26.0, *)
-  private func handleControlWidgetIntentIfNeeded(
-    _ appIntent: (any UISceneAppIntent)?,
-    browserViewController: BrowserViewController
+  private func openControlWidgetShortcut(
+    for appIntent: any UISceneAppIntent,
+    in browserViewController: BrowserViewController
   ) {
-    let shortcut: WidgetShortcut?
-    if appIntent is OpenAskBraveControlIntent {
-      shortcut = .askBrave
-    } else if appIntent is OpenBraveSearchControlIntent {
-      shortcut = .search
-    } else if let intent = appIntent as? OpenControlWidgetShortcutIntent {
-      shortcut = intent.shortcut
-    } else {
-      shortcut = nil
+    let shortcut: WidgetShortcut? =
+      switch appIntent {
+      // The static controls carry no parameter, so the intent type alone identifies the shortcut.
+      case is OpenBraveSearchControlIntent: .search
+      case is OpenAskBraveControlIntent: .askBrave
+      case let intent as OpenControlWidgetShortcutIntent: intent.shortcutOption.widgetShortcut
+      default: nil
+      }
+    if let shortcut {
+      browserViewController.handleNavigationPath(path: .widgetShortcutURL(shortcut))
     }
-    guard let shortcut else { return }
-    browserViewController.handleNavigationPath(path: .widgetShortcutURL(shortcut))
   }
 
   private func sendDAUPingIfNeeded() {
@@ -940,10 +939,8 @@ extension SceneDelegate {
 @available(iOS 26.0, *)
 extension SceneDelegate: AppIntentSceneDelegate {
   func scene(_ scene: UIScene, willPerformAppIntent appIntent: any UISceneAppIntent) {
-    guard let windowScene = scene as? UIWindowScene,
-      let browserViewController = windowScene.browserViewController
-    else { return }
-    handleControlWidgetIntentIfNeeded(appIntent, browserViewController: browserViewController)
+    guard let bvc = (scene as? UIWindowScene)?.browserViewController else { return }
+    openControlWidgetShortcut(for: appIntent, in: bvc)
   }
 }
 

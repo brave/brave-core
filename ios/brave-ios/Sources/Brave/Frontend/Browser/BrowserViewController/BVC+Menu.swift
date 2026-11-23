@@ -42,10 +42,7 @@ extension BrowserViewController {
 
     var cryptoStore: CryptoStore? = walletStore?.cryptoStore
     if cryptoStore == nil {
-      cryptoStore = CryptoStore.from(
-        ipfsApi: profileController.ipfsAPI,
-        profile: profile
-      )
+      cryptoStore = CryptoStore.from(profile: profile)
     }
 
     let vc = SettingsViewController(
@@ -477,6 +474,8 @@ extension BrowserViewController {
         let vc = BookmarksViewController(
           folder: bookmarkManager.lastVisitedFolder(),
           bookmarkManager: bookmarkManager,
+          bookmarkImporter: BookmarkImporterFactory.get(profile: profileController.profile),
+          bookmarkExporter: .init(profile: profileController.profile),
           isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
         )
         vc.toolbarUrlActionsDelegate = self

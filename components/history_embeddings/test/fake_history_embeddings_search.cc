@@ -11,7 +11,7 @@
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/task/sequenced_task_runner.h"
-#include "components/history_embeddings/core/vector_database.h"
+#include "brave/components/history_embeddings/core/vector_database.h"
 #include "url/gurl.h"
 
 namespace ai_chat {
@@ -46,13 +46,11 @@ history_embeddings::SearchResult FakeHistoryEmbeddingsSearch::Search(
     std::string query,
     std::optional<base::Time> time_range_start,
     size_t count,
-    bool skip_answering,
     std::vector<history::URLID> url_id_filter,
     history_embeddings::SearchResultCallback callback) {
   last_query_ = query;
   last_time_range_start_ = time_range_start;
   last_count_ = count;
-  last_skip_answering_ = skip_answering;
   last_url_id_filter_ = url_id_filter;
 
   history_embeddings::SearchResult result;

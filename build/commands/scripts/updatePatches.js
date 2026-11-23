@@ -56,10 +56,6 @@ function loadChromiumPathFilter(filePath) {
   }
 }
 
-const chromiumPathFilter = loadChromiumPathFilter(
-  path.join(config.braveCoreDir, 'build', 'update_patches_exclusions.cfg'),
-)
-
 // Extension of plaster files under `rewrite/`. Keep in sync with
 // `PLASTER_EXTENSION` in tools/cr/plaster.py.
 const plasterExtension = '.yaml'
@@ -106,6 +102,9 @@ export default async function RunCommand(filePaths, options) {
   config.update(options)
 
   const repositories = getPatchedRepositories()
+  const chromiumPathFilter = loadChromiumPathFilter(
+    path.join(config.braveCoreDir, 'build', 'update_patches_exclusions.cfg'),
+  )
 
   // Plaster is passed a filter per repository it supports, since a plaster
   // file's patch has to be left to plaster wherever that patch lives.

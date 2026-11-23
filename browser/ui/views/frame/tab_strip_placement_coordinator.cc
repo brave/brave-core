@@ -8,14 +8,26 @@
 #include "base/check_deref.h"
 #include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "ui/views/view.h"
+
+DEFINE_USER_DATA(TabStripPlacementCoordinator);
+
+// static
+TabStripPlacementCoordinator* TabStripPlacementCoordinator::From(
+    BrowserWindowInterface* browser) {
+  return Get(CHECK_DEREF(browser).GetUnownedUserDataHost());
+}
 
 TabStripPlacementCoordinator::TabStripPlacementCoordinator(
     base::PassKey<BraveBrowserView>,
     BrowserWindowInterface* browser_window_interface,
     views::View* tab_strip_region_view)
     : browser_window_interface_(CHECK_DEREF(browser_window_interface)),
-      tab_strip_region_view_(CHECK_DEREF(tab_strip_region_view)) {
+      tab_strip_region_view_(CHECK_DEREF(tab_strip_region_view)),
+      scoped_unowned_user_data_(
+          browser_window_interface->GetUnownedUserDataHost(),
+          *this) {
   auto* original_parent = tab_strip_region_view_->parent();
   CHECK(original_parent);
 
@@ -83,13 +95,6 @@ void TabStripPlacementCoordinator::UpdatePlacement() {
   }
 
   if (parent != tab_strip_region_view_->parent()) {
-    // The following remove-then-add sequence is required in order to trigger
-    // AddedToWidget in BraveTabStrip, which calls SetAvailableWidthCallback as
-    // appropriate for the current tab strip orientation.
-    if (tab_strip_region_view_->parent()) {
-      tab_strip_region_view_->parent()->RemoveChildView(
-          base::to_address(tab_strip_region_view_));
-    }
     size_t max_index = parent->children().size();
     size_t add_at = std::min(placement.index.value_or(max_index), max_index);
     parent->AddChildViewAt(base::to_address(tab_strip_region_view_), add_at);

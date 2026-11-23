@@ -14,6 +14,8 @@
 namespace brave_ads {
 
 struct CreativeCampaignInfo final {
+  mojom::NewTabPageAdCampaignType campaign_type =
+      mojom::NewTabPageAdCampaignType::kUndefined;
   mojom::NewTabPageAdMetricType metric_type =
       mojom::NewTabPageAdMetricType::kUndefined;
   base::Time start_at;

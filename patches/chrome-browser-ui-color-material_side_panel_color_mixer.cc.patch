@@ -1,8 +1,16 @@
 diff --git a/chrome/browser/ui/color/material_side_panel_color_mixer.cc b/chrome/browser/ui/color/material_side_panel_color_mixer.cc
-index 7bba63d4edffde8cfea56ae5489c21c458a596f8..2820038dd9945fc38b2da323c5584a5d68f08790 100644
+index 7bba63d4edffde8cfea56ae5489c21c458a596f8..ea8425d668f9e4a1193094c65c3a79e5bc798c68 100644
 --- a/chrome/browser/ui/color/material_side_panel_color_mixer.cc
 +++ b/chrome/browser/ui/color/material_side_panel_color_mixer.cc
-@@ -13,6 +13,7 @@
+@@ -4,6 +4,7 @@
+ 
+ #include "chrome/browser/ui/color/material_side_panel_color_mixer.h"
+ 
++#include "brave/browser/ui/color/brave_material_side_panel_color_mixer.h"
+ #include "chrome/browser/ui/color/chrome_color_id.h"
+ #include "chrome/browser/ui/color/chrome_color_provider_utils.h"
+ #include "ui/color/color_id.h"
+@@ -13,6 +14,7 @@
  
  void AddMaterialSidePanelColorMixer(ui::ColorProvider* provider,
                                      const ui::ColorProviderKey& key) {
@@ -10,7 +18,7 @@ index 7bba63d4edffde8cfea56ae5489c21c458a596f8..2820038dd9945fc38b2da323c5584a5d
    ui::ColorMixer& mixer = provider->AddMixer();
    mixer[kColorSidePanelContentBackground] = {ui::kColorSysBaseContainer};
    mixer[kColorSidePanelComboboxEntryIcon] = {ui::kColorSysPrimary};
-@@ -143,4 +144,8 @@ void AddMaterialSidePanelColorMixer(ui::ColorProvider* provider,
+@@ -143,4 +145,8 @@ void AddMaterialSidePanelColorMixer(ui::ColorProvider* provider,
    mixer[kColorSidePanelHeaderButtonIcon] = {ui::kColorSysOnSurfaceSubtle};
    mixer[kColorSidePanelHeaderButtonIconDisabled] = {ui::kColorSysStateDisabled};
    mixer[kColorSidePanelResizeAreaHandle] = {ui::kColorSysOnSurfaceSubtle};

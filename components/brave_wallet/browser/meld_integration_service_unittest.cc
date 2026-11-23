@@ -73,8 +73,8 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
           url_loader_factory_.ClearResponses();
           auto header =
               request.headers.GetHeader(brave_wallet::kMeldRpcVersionHeader);
-          EXPECT_TRUE(header);
-          EXPECT_FALSE(header->empty());
+          EXPECT_THAT(header,
+                      testing::Optional(testing::Not(testing::IsEmpty())));
 
           if (expected_request) {
             EXPECT_THAT(request.request_body->elements()
@@ -223,10 +223,9 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
   Errors errors;
 
   const auto url = MeldIntegrationService::GetServiceProviderURL();
-  EXPECT_EQ(url.path(), "/service-providers");
+  EXPECT_EQ(url.path(), "/network-partner/supported/partners");
   EXPECT_THAT(net::UrlSearchParams(url).params(),
-              ElementsAre(Pair("accountFilter", "false"),
-                          Pair("statuses", "LIVE,RECENTLY_ADDED")));
+              ElementsAre(Pair("category", "CRYPTO_ONRAMP")));
   std::tie(sps, errors) = TestGetServiceProvider(R"([
   {
     "serviceProvider": "BANXA",
@@ -235,12 +234,16 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
     "categories": [
       "CRYPTO_ONRAMP"
     ],
-    "categoryStatuses": {
-      "CRYPTO_ONRAMP": "LIVE"
-    },
-    "websiteUrl": "http://www.banxa.com",
-    "logos": {
-      "darkShort": "https://images-serviceprovider.meld.io/BANXA/short_logo_dark.png",
+    "capabilities": [
+      {
+        "category": "CRYPTO_ONRAMP",
+        "domains": ["PAYMENT"],
+        "status": "LIVE"
+      }
+    ],
+    "url": "https://www.banxa.com",
+    "logo": {
+      "darkShort": "https://cdn.meld.io/images-serviceprovider/BANXA/short_logo_dark.png",
       "lightShort": null
     }
   },
@@ -251,21 +254,25 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
     "categories": [
       "CRYPTO_ONRAMP"
     ],
-    "categoryStatuses": {
-      "CRYPTO_ONRAMP": "LIVE"
-    },
-    "websiteUrl": "https://www.blockchain.com",
-    "logos": null
+    "capabilities": [
+      {
+        "category": "CRYPTO_ONRAMP",
+        "domains": ["PAYMENT"],
+        "status": "LIVE"
+      }
+    ],
+    "url": "https://www.blockchain.com",
+    "logo": null
   }])");
   EXPECT_FALSE(errors.has_value());
   ASSERT_TRUE(sps);
 
   std::vector<mojom::MeldServiceProviderPtr> expected;
   expected.push_back(mojom::MeldServiceProvider::New(
-      "Banxa", "BANXA", "LIVE", "http://www.banxa.com",
+      "Banxa", "BANXA", "LIVE", "https://www.banxa.com",
       std::vector<std::string>{"CRYPTO_ONRAMP"},
       base::flat_map<std::string, std::string>{{"CRYPTO_ONRAMP", "LIVE"}},
-      "https://images-serviceprovider.meld.io/BANXA/short_logo_dark.png",
+      "https://cdn.meld.io/images-serviceprovider/BANXA/short_logo_dark.png",
       std::nullopt));
   expected.push_back(mojom::MeldServiceProvider::New(
       "Blockchain.com", "BLOCKCHAINDOTCOM", "LIVE",
@@ -279,11 +286,14 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
     "categories": [
       "CRYPTO_ONRAMP"
     ],
-    "categoryStatuses": {
-      "CRYPTO_ONRAMP": "LIVE"
-    }
+    "capabilities": [
+      {
+        "category": "CRYPTO_ONRAMP",
+        "status": "LIVE"
+      }
+    ]
   }])");
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>{
                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
 
@@ -294,17 +304,17 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
     "timestamp": "2024-04-24T18:55:09.327818Z"
   })",
                                                  net::HTTP_UNAUTHORIZED);
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>{"invalid profile or secret"});
 
   std::tie(sps, errors) = TestGetServiceProvider("some wrone data");
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>{
                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
 
   std::tie(sps, errors) =
       TestGetServiceProvider("some wrone data", net::HTTP_REQUEST_TIMEOUT);
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>{
                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
 
@@ -319,7 +329,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
     "timestamp": "2024-04-05T07:54:01.318455Z"
   })",
                                                  net::HTTP_BAD_REQUEST);
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>(
                          {"[sourceAmount] must not be null",
                           "[sourceCurrencyCode] must not be blank"}));
@@ -396,7 +406,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
   std::tie(quotes, errors) = TestGetCryptoQuotes(
       "some wrong data", "US", "USD", "BTC", 50, "btc account address", "VISA",
       kRequest, net::HTTP_REQUEST_TIMEOUT);
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>{
                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
 
@@ -426,7 +436,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
     "error": "error description"
   })",
       "US", "USD", "BTC", 50, "btc account address", "VISA", kRequest);
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>{"error description"});
   EXPECT_FALSE(quotes);
 
@@ -443,7 +453,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
   })",
                           "US", "USD", "BTC", 50, "btc account address", "VISA",
                           kRequest, net::HTTP_BAD_REQUEST);
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>(
                          {"[sourceAmount] must not be null",
                           "[sourceCurrencyCode] must not be blank"}));
@@ -456,7 +466,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
   })",
                           "US", "USD", "BTC", 50, "btc account address", "VISA",
                           kRequest, net::HTTP_BAD_REQUEST);
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors,
             std::vector<std::string>({"No Valid Quote Combinations Found For "
                                       "Provided Quote Request."}));
@@ -517,7 +527,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
 
   std::tie(payment_methods, errors) = TestGetPaymentMethods(
       "some wrong data", "US", "USD", net::HTTP_REQUEST_TIMEOUT);
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>{
                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
 
@@ -533,7 +543,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
     "timestamp": "2024-04-05T07:54:01.318455Z"
   })",
                             "US", "USD", net::HTTP_BAD_REQUEST);
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>(
                          {"[sourceAmount] must not be null",
                           "[sourceCurrencyCode] must not be blank"}));
@@ -576,7 +586,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
 
   std::tie(fiat_currencies, errors) =
       TestGetFiatCurrencies("some wrong data", net::HTTP_REQUEST_TIMEOUT);
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>{
                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
 
@@ -592,7 +602,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
     "timestamp": "2024-04-05T07:54:01.318455Z"
   })",
                             net::HTTP_BAD_REQUEST);
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>(
                          {"[sourceAmount] must not be null",
                           "[sourceCurrencyCode] must not be blank"}));
@@ -644,7 +654,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
 
   std::tie(crypto_currencies, errors) =
       TestGetCryptoCurrencies("some wrong data", net::HTTP_REQUEST_TIMEOUT);
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>{
                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
 
@@ -660,7 +670,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
     "timestamp": "2024-04-05T07:54:01.318455Z"
   })",
                               net::HTTP_BAD_REQUEST);
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>(
                          {"[sourceAmount] must not be null",
                           "[sourceCurrencyCode] must not be blank"}));
@@ -694,13 +704,13 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
   EXPECT_EQ(*countries, expected);
 
   std::tie(countries, errors) = TestGetCountries("some wrong data");
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>{
                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
 
   std::tie(countries, errors) =
       TestGetCountries("some wrong data", net::HTTP_REQUEST_TIMEOUT);
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>{
                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
 
@@ -715,7 +725,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
     "timestamp": "2024-04-05T07:54:01.318455Z"
   })",
                                                  net::HTTP_BAD_REQUEST);
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>(
                          {"[sourceAmount] must not be null",
                           "[sourceCurrencyCode] must not be blank"}));
@@ -798,27 +808,27 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoBuyWidgetCreate) {
   "token": "token-val"
 })",
       session_data.Clone(), nullptr, kRequestWithoutCustomer);
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>{
                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
 
   std::tie(crypto_widget, errors) =
       TestCryptoBuyWidgetCreate("some wrong data", session_data.Clone(),
                                 nullptr, kRequestWithoutCustomer);
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>{
                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
 
   std::tie(crypto_widget, errors) = TestCryptoBuyWidgetCreate(
       "some wrong data", session_data.Clone(), nullptr, kRequestWithoutCustomer,
       net::HTTP_REQUEST_TIMEOUT);
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>{
                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
 
   std::tie(crypto_widget, errors) =
       TestCryptoBuyWidgetCreate("", nullptr, nullptr, std::nullopt);
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>{l10n_util::GetStringUTF8(
                          IDS_WALLET_REQUEST_PROCESSING_ERROR)});
 
@@ -835,7 +845,7 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoBuyWidgetCreate) {
   })",
       session_data.Clone(), nullptr, kRequestWithoutCustomer,
       net::HTTP_BAD_REQUEST);
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>(
                          {"[sourceAmount] must not be null",
                           "[sourceCurrencyCode] must not be blank"}));
@@ -936,27 +946,27 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoSellWidgetCreate) {
   "token": "token-val"
 })",
       session_data.Clone(), nullptr, kRequestWithoutCustomer);
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>{
                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
 
   std::tie(crypto_widget, errors) =
       TestCryptoSellWidgetCreate("some wrong data", session_data.Clone(),
                                  nullptr, kRequestWithoutCustomer);
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>{
                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
 
   std::tie(crypto_widget, errors) = TestCryptoSellWidgetCreate(
       "some wrong data", session_data.Clone(), nullptr, kRequestWithoutCustomer,
       net::HTTP_REQUEST_TIMEOUT);
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>{
                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
 
   std::tie(crypto_widget, errors) =
       TestCryptoSellWidgetCreate("", nullptr, nullptr, std::nullopt);
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>{l10n_util::GetStringUTF8(
                          IDS_WALLET_REQUEST_PROCESSING_ERROR)});
 
@@ -975,7 +985,7 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoSellWidgetCreate) {
       mojom::CryptoWidgetCustomerData::New(nullptr, std::nullopt, std::nullopt,
                                            "external_session_id"),
       kRequestWithExternalSessionId, net::HTTP_BAD_REQUEST);
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>(
                          {"[sourceAmount] must not be null",
                           "[sourceCurrencyCode] must not be blank"}));
@@ -1053,27 +1063,27 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoTransferWidgetCreate) {
   "token": "token-val"
 })",
       session_data.Clone(), nullptr, kRequestWithoutCustomer);
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>{
                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
 
   std::tie(crypto_widget, errors) =
       TestCryptoTransferWidgetCreate("some wrong data", session_data.Clone(),
                                      nullptr, kRequestWithoutCustomer);
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>{
                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
 
   std::tie(crypto_widget, errors) = TestCryptoTransferWidgetCreate(
       "some wrong data", session_data.Clone(), nullptr, kRequestWithoutCustomer,
       net::HTTP_REQUEST_TIMEOUT);
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>{
                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
 
   std::tie(crypto_widget, errors) =
       TestCryptoTransferWidgetCreate("", nullptr, nullptr, std::nullopt);
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>{l10n_util::GetStringUTF8(
                          IDS_WALLET_REQUEST_PROCESSING_ERROR)});
 
@@ -1090,7 +1100,7 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoTransferWidgetCreate) {
   })",
       session_data.Clone(), customer_data.Clone(), kRequestWithCustomer,
       net::HTTP_BAD_REQUEST);
-  EXPECT_TRUE(errors.has_value());
+  ASSERT_TRUE(errors.has_value());
   EXPECT_EQ(*errors, std::vector<std::string>(
                          {"[sourceAmount] must not be null",
                           "[sourceCurrencyCode] must not be blank"}));

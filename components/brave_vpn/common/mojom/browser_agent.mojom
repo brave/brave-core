@@ -22,6 +22,7 @@ enum VpnConnectionState {
   kConnected,
   kDisconnecting,
   kConnecting,
+  kWaitingRetry,
   kConnectFailed,
   kInternalError,
 };
@@ -103,6 +104,9 @@ interface BrowserHostProvider {
 
 // Agent browser-facing real API surface, owns the VPN related functionality
 // passed to the authenticated browsers.
+// Setter methods apply the settings and report them through the corresponding
+// BrowserEndpoint's On*StateChanged. They don't refuse, except for settings
+// that report themselves unavailable.
 interface BrowserHost {
   // Starts connecting the VPN.
   Connect();

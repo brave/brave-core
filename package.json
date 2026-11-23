@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.101.43",
+  "version": "1.102.32",
   "description": "Brave browser for Android, iOS, Linux, macOS, and Windows",
   "main": "index.js",
   "type": "module",
@@ -65,12 +65,12 @@
   "devEngines": {
     "runtime": {
       "name": "node",
-      "version": ">=24.16.0 <27.0.0",
+      "version": ">=26.13.1 <27.0.0",
       "onFail": "error"
     },
     "packageManager": {
       "name": "pnpm",
-      "version": ">=11.11.0",
+      "version": ">=11.28.11",
       "onFail": "error"
     }
   },
@@ -79,7 +79,7 @@
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "158.0.8127.22",
+        "tag": "159.0.8154.18",
         "repository": {
           "url": "https://chromium.googlesource.com/chromium/src.git"
         },

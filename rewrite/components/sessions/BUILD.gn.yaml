@@ -22,3 +22,14 @@ substitutions:
       list_name: public_deps
       literal: brave_components_sessions_shared_public_deps
       import: //brave/components/sessions/sources.gni
+
+  - description: |
+      Let Brave's sessions implementation hooks use the shared sources.
+
+      The hooks are linked into the `sessions` component, so they can't depend
+      on it and depend on `shared` directly instead.
+    add_literal_to_list:
+      target: shared
+      list_name: visibility
+      literal: brave_components_sessions_shared_visibility
+      import: //brave/components/sessions/sources.gni

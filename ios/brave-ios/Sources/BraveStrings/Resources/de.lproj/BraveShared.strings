@@ -77,7 +77,7 @@
 "autofill.managePasswords.deleteCredentialConfirmMessage" = "Dadurch werden die gespeicherten Passwörter für %@ aus Ihrer Synchronisierung der Blockchain und Ihrem Gerät entfernt.";
 
 /* Prompt title when deleting passwords */
-"autofill.managePasswords.deleteCredentialsAlertTitle" = "Bist du sicher?";
+"autofill.managePasswords.deleteCredentialsAlertTitle" = "Sind Sie sicher?";
 
 /* Label for the button used to delete the current login. */
 "autofill.managePasswords.deleteManagePasswordButtonTitle" = "Löschen";
@@ -742,6 +742,15 @@
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "Weiter zu %@ (unsicher)";
 
+/* Button to exclude a topsite url from the most visited list */
+"ExcludeMostVisitedSite" = "Entfernen";
+
+/* Message for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertMessage" = "Diese Website wird nicht in deiner Liste der meistbesuchten Websites angezeigt, aber sie wird nicht aus deinem Verlauf entfernt.";
+
+/* Title for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertTitle" = "Aus „Meistbesucht“ entfernen?";
+
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ startet eine externe Applikation";
 
@@ -864,6 +873,9 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Ungültige Angaben in Zahlungsanforderung";
+
+/* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
+"JavaScriptDialogEmbeddedPageTitle" = "Eine eingebettete Seite auf dieser Seite";
 
 /* History tableview section header */
 "LastMonth" = "Letzter Monat";
@@ -1139,7 +1151,7 @@
 "OBRewardsDetail" = "Wenn du dich für private Brave Ads entscheidest, werden Publisher und Content Creators unterstützt, wann immer du eine Anzeige öffnen.";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegion" = "Verdiene Token und belohne die Erstellenden für großartige Inhalte, während du surfst.";
+"OBRewardsDetailInAdRegion" = "Verdiene Token und belohne die Creators für großartige Inhalte, während du surfst.";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsPrivacyPolicyDetailLink" = "Datenschutzerklärung";
@@ -1556,7 +1568,7 @@
 "playList.reopenButtonTitle" = "Erneut öffnen";
 
 /* Title for load resources error alert */
-"playList.sorryAlertTitle" = "Sorry";
+"playList.sorryAlertTitle" = "Entschuldigung";
 
 /* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
 "playList.toastAddedToPlaylistTitle" = "In Playlist anzeigen";
@@ -1721,7 +1733,7 @@
 "privacyHub.settingsSlearDataTitle" = "Shields-Daten löschen";
 
 /* This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields' */
-"privacyHub.shieldsLabel" = "Schutz";
+"privacyHub.shieldsLabel" = "Shields";
 
 /* Text of a callout that tells the user they shields tracking data is disabled. The %@ placeholder will name the setting that needs to be enabled */
 "privacyHub.trackingDisabledCalloutBody" = "Aktiviere %@, um hier Daten anzuzeigen.";
@@ -2481,6 +2493,18 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "Während des Abspielens von Videos auf dieser Website wurden Anzeigen blockiert.";
+
+/* Title for the Brave Wallet shortcut. Brave Wallet is the name of a product and should not be translated */
+"shortcut.braveWallet" = "Brave-Wallet";
+
+/* Title for the private tab shortcut. */
+"shortcut.privateTab" = "Privater Tab";
+
+/* Title for the QR Code shortcut. */
+"shortcut.qrCode" = "QR-Code";
+
+/* Title for the Search shortcut. */
+"shortcut.search" = "Suchen";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "Neuer privater Tab";

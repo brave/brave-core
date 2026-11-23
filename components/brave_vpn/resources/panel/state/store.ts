@@ -25,6 +25,10 @@ const observer = {
     store.dispatch(Actions.selectedRegionChanged({ region }))
   },
 
+  onAutoReconnectStateChanged: (enabled: boolean) => {
+    store.dispatch(Actions.autoReconnectStateChanged(enabled))
+  },
+
   onSmartProxyRoutingStateChanged: (enabled: boolean) => {
     store.dispatch(Actions.smartProxyRoutingStateChanged(enabled))
   },

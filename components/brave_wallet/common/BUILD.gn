@@ -129,6 +129,7 @@ mojom("mojom") {
     "ledger_bridge.mojom",
     "meld_integration.mojom",
     "mojom/brave_wallet_common.mojom",
+    "polkadot_bridge.mojom",
   ]
   public_deps = [
     "//mojo/public/mojom/base",
@@ -197,7 +198,6 @@ rust_static_library("rust_lib") {
     "//brave/components/brave_wallet/browser/zcash/rust:*",
     "//brave/components/brave_wallet/common",
   ]
-  crate_name = "brave_wallet"
   crate_root = "lib.rs"
   allow_unsafe = true
   sources = [ "lib.rs" ]

@@ -9,9 +9,9 @@
 
 #include "base/functional/callback_helpers.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "base/values.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/net/features.h"
@@ -365,9 +365,10 @@ TYPED_TEST(DecentralizedDnsNetworkDelegateHelperTest,
                        .spec();
 
   // No redirect for failed requests.
+  base::test::TestFuture<void> failed_future;
   EXPECT_EQ(net::ERR_IO_PENDING,
             OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
-                base::DoNothing(), brave_request_info));
+                failed_future.GetRepeatingCallback(), brave_request_info));
   this->test_url_loader_factory().SimulateResponseForPendingRequest(
       polygon_spec,
       brave_wallet::MakeJsonRpcStringArrayResponse(
@@ -383,13 +384,14 @@ TYPED_TEST(DecentralizedDnsNetworkDelegateHelperTest,
       brave_wallet::MakeJsonRpcStringArrayResponse(
           {"", "", "", "", "", "https://brave.com"}),
       net::HTTP_REQUEST_TIMEOUT);
-  this->task_environment_.RunUntilIdle();
+  ASSERT_TRUE(failed_future.Wait());
   EXPECT_TRUE(brave_request_info->new_url_spec().empty());
 
   // Polygon result.
+  base::test::TestFuture<void> polygon_future;
   EXPECT_EQ(net::ERR_IO_PENDING,
             OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
-                base::DoNothing(), brave_request_info));
+                polygon_future.GetRepeatingCallback(), brave_request_info));
   this->test_url_loader_factory().SimulateResponseForPendingRequest(
       polygon_spec,
       brave_wallet::MakeJsonRpcStringArrayResponse(
@@ -406,13 +408,14 @@ TYPED_TEST(DecentralizedDnsNetworkDelegateHelperTest,
           {"QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR", "", "", "", "",
            ""}),
       net::HTTP_OK);
-  this->task_environment_.RunUntilIdle();
+  ASSERT_TRUE(polygon_future.Wait());
   EXPECT_EQ(brave_request_info->new_url_spec(), "https://brave.com/");
 
   // Base result.
+  base::test::TestFuture<void> base_future;
   EXPECT_EQ(net::ERR_IO_PENDING,
             OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
-                base::DoNothing(), brave_request_info));
+                base_future.GetRepeatingCallback(), brave_request_info));
   this->test_url_loader_factory().SimulateResponseForPendingRequest(
       polygon_spec,
       brave_wallet::MakeJsonRpcStringArrayResponse({"", "", "", "", "", ""}),
@@ -428,13 +431,14 @@ TYPED_TEST(DecentralizedDnsNetworkDelegateHelperTest,
           {"QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR", "", "", "", "",
            ""}),
       net::HTTP_OK);
-  this->task_environment_.RunUntilIdle();
+  ASSERT_TRUE(base_future.Wait());
   EXPECT_EQ(brave_request_info->new_url_spec(), "https://brave.com/base");
 
   // Eth result.
+  base::test::TestFuture<void> eth_future;
   EXPECT_EQ(net::ERR_IO_PENDING,
             OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
-                base::DoNothing(), brave_request_info));
+                eth_future.GetRepeatingCallback(), brave_request_info));
   this->test_url_loader_factory().SimulateResponseForPendingRequest(
       polygon_spec,
       brave_wallet::MakeJsonRpcStringArrayResponse({"", "", "", "", "", ""}),
@@ -449,7 +453,7 @@ TYPED_TEST(DecentralizedDnsNetworkDelegateHelperTest,
           {"QmbWqxBEKC3P8tqsKc98xmWNzrzDtRLMiMPL8wBuTGsMnR", "", "", "", "",
            ""}),
       net::HTTP_OK);
-  this->task_environment_.RunUntilIdle();
+  ASSERT_TRUE(eth_future.Wait());
   EXPECT_EQ(brave_request_info->new_url_spec(),
             "https://"
             "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi.ipfs."
@@ -524,10 +528,14 @@ TYPED_TEST(DecentralizedDnsNetworkDelegateHelperTest, EnsRedirectWork) {
       "e0160eec32d7875c19c5ac7c03bc1f306dc260080d621454bc5f631e7310a70000000000"
       "000000000000000000000000000000000000000000";
 
-  auto content_hash = *brave_wallet::eth_abi::ExtractBytesFromTuple(
-      *brave_wallet::PrefixedHexStringToBytes(content_hash_encoded_string), 0);
+  auto encoded_bytes =
+      brave_wallet::PrefixedHexStringToBytes(content_hash_encoded_string);
+  ASSERT_TRUE(encoded_bytes);
+  auto invalid_content_hash =
+      brave_wallet::eth_abi::ExtractBytesFromTuple(*encoded_bytes, 0);
+  ASSERT_TRUE(invalid_content_hash);
   OnBeforeURLRequest_EnsRedirectWork(
-      base::DoNothing(), brave_request_info, content_hash, false,
+      base::DoNothing(), brave_request_info, *invalid_content_hash, false,
       brave_wallet::mojom::ProviderError::kSuccess, "");
   EXPECT_TRUE(brave_request_info->new_url_spec().empty());
 
@@ -538,10 +546,14 @@ TYPED_TEST(DecentralizedDnsNetworkDelegateHelperTest, EnsRedirectWork) {
       "e0160eec32d7875c19c5ac7c03bc1f306dc260080d621454bc5f631e7310a70000000000"
       "000000000000000000000000000000000000000000";
 
-  content_hash = *brave_wallet::eth_abi::ExtractBytesFromTuple(
-      *brave_wallet::PrefixedHexStringToBytes(content_hash_encoded_string), 0);
+  encoded_bytes =
+      brave_wallet::PrefixedHexStringToBytes(content_hash_encoded_string);
+  ASSERT_TRUE(encoded_bytes);
+  auto valid_content_hash =
+      brave_wallet::eth_abi::ExtractBytesFromTuple(*encoded_bytes, 0);
+  ASSERT_TRUE(valid_content_hash);
   OnBeforeURLRequest_EnsRedirectWork(
-      base::DoNothing(), brave_request_info, content_hash, false,
+      base::DoNothing(), brave_request_info, *valid_content_hash, false,
       brave_wallet::mojom::ProviderError::kSuccess, "");
   EXPECT_EQ(brave_request_info->new_url_spec(),
             "https://"

@@ -742,6 +742,15 @@
 /* Button label to temporarily continue to the site from the certificate error page */
 "ErrorPagesProceedAnywayButton" = "انتقل إلى %@ (غير آمن)";
 
+/* Button to exclude a topsite url from the most visited list */
+"ExcludeMostVisitedSite" = "احذف";
+
+/* Message for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertMessage" = "لن يظهر هذا الموقع في قائمة الأكثر زيارة، لكن لن تتم إزالته من سجلك.";
+
+/* Title for the alert shown before excluding a site from the most visited list */
+"ExcludeMostVisitedSiteAlertTitle" = "إزالة من الأكثر زيارة؟";
+
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ سيطلق تطبيقًا خارجيًا";
 
@@ -864,6 +873,9 @@
 
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "تفاصيل غير صالحة في طلب الدفع";
+
+/* Title of a JavaScript alert, confirm, or prompt dialog shown by an embedded frame that has no displayable origin, such as a sandboxed iframe */
+"JavaScriptDialogEmbeddedPageTitle" = "صفحة مضمنة في هذه الصفحة";
 
 /* History tableview section header */
 "LastMonth" = "الشهر الماضي";
@@ -2481,6 +2493,18 @@
 
 /* Title for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockTitle" = "يتم حظر الإعلانات أثناء مشاهدة مقاطع الفيديو على هذا الموقع.";
+
+/* Title for the Brave Wallet shortcut. Brave Wallet is the name of a product and should not be translated */
+"shortcut.braveWallet" = "محفظة Brave";
+
+/* Title for the private tab shortcut. */
+"shortcut.privateTab" = "علامة تبويب خاصة";
+
+/* Title for the QR Code shortcut. */
+"shortcut.qrCode" = "رمز الاستجابة السريعة";
+
+/* Title for the Search shortcut. */
+"shortcut.search" = "بحث";
 
 /* Quick Action for 3D-Touch on the Application Icon */
 "ShortcutItemTitleNewPrivateTab" = "علامة تبويب خاصة جديدة";

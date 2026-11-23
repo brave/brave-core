@@ -5,6 +5,7 @@
 
 #include "brave/components/p3a/message_manager.h"
 
+#include <iterator>
 #include <memory>
 #include <optional>
 #include <string_view>
@@ -13,6 +14,7 @@
 #include "base/i18n/time_formatting.h"
 #include "base/json/values_util.h"
 #include "base/notreached.h"
+#include "base/run_loop.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
@@ -28,6 +30,7 @@
 #include "brave/components/p3a/p3a_service.h"
 #include "brave/components/p3a/pref_names.h"
 #include "brave/components/p3a/star_randomness_test_util.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
@@ -153,6 +156,8 @@ class P3AMessageManagerTest : public testing::Test,
                   interceptor_status_code_from_randomness_);
 
               points_requests_made_[log_type]++;
+            } else {
+              NOTREACHED() << "Unhandled request: " << request.url.spec();
             }
             url_loader_factory_.AddResponse(
                 request.url.spec(), response,
@@ -171,8 +176,10 @@ class P3AMessageManagerTest : public testing::Test,
             EXPECT_EQ(p3a_constellation_sent_messages_[*log_type].find(message),
                       p3a_constellation_sent_messages_[*log_type].end());
             p3a_constellation_sent_messages_[*log_type].insert(message);
+            url_loader_factory_.AddResponse(request.url.spec(), response);
+            return;
           }
-          url_loader_factory_.AddResponse(request.url.spec(), response);
+          NOTREACHED() << "Unhandled request: " << request.url.spec();
         }));
 
     CreateAndStartManager();
@@ -186,7 +193,27 @@ class P3AMessageManagerTest : public testing::Test,
 
     message_manager_->Start(shared_url_loader_factory_);
 
-    task_environment_.RunUntilIdle();
+    // Wait for the startup randomness server info requests to complete; the
+    // info is persisted for every log type (or was already cached, in which
+    // case there is nothing to wait for). This waits on the pref write rather
+    // than on idleness, since idling under MOCK_TIME can advance the clock past
+    // the epoch the fake server reports.
+    auto info_ready = [&] {
+      return local_state_->GetDict(kRandomnessMetaDictPrefName).size() ==
+             std::size(kAllMetricLogTypes);
+    };
+    if (!info_ready()) {
+      base::RunLoop run_loop;
+      PrefChangeRegistrar registrar;
+      registrar.Init(local_state_.get());
+      registrar.Add(kRandomnessMetaDictPrefName,
+                    base::BindLambdaForTesting([&] {
+                      if (info_ready()) {
+                        run_loop.Quit();
+                      }
+                    }));
+      run_loop.Run();
+    }
   }
 
   void ResetInterceptorStores() {

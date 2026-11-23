@@ -19,7 +19,9 @@ vpython3 tools/recipes/engine.py toolchains/rust/package_rust \
 
 The recipe name is a `/`-separated path under `recipes/`. `--properties` is a
 JSON object decoded into the recipe's `PROPERTIES` message (see
-[Properties](#properties)).
+[Properties](#properties)); `--properties-file` reads the same object from a
+file, or from stdin given `-`. `--output` and `--output-result-json` write what
+the recipe produced (see [Results and output properties](#results)).
 
 To run straight from a pipeline without a checkout, `engine_bootstrap.py`
 shallow-clones the engine from brave-core and forwards to `engine.py`:
@@ -131,10 +133,10 @@ def RunSteps(api, env_properties):               # ENV_PROPERTIES only
 ```
 
 `PROPERTIES` is populated by taking the input property JSON object (from
-`--properties`), removing all keys beginning with `$`, and decoding the rest as
-JSONPB into the `PROPERTIES` message. Keys beginning with `$` are reserved: a
-`$<module>` key carries that module's own properties (see
-[Per-module properties](#per-module-properties)).
+`--properties` or `--properties-file`), removing all keys beginning with `$`,
+and decoding the rest as JSONPB into the `PROPERTIES` message. Keys beginning
+with `$` are reserved: a `$<module>` key carries that module's own properties
+(see [Per-module properties](#per-module-properties)).
 
 `ENV_PROPERTIES` is populated by taking the current environment variables,
 capitalizing all keys (`key.upper()`), and decoding that into the
@@ -464,8 +466,7 @@ def GenTests(api):
 ```
 
 The `check=False` is what makes reacting to a retcode possible at all: by
-default any non-zero exit raises `subprocess.CalledProcessError` and the recipe
-is over.
+default any non-zero exit raises `api.step.StepFailure` and the recipe is over.
 
 See how `result` carries the outcome of the step that just ran? What you get
 back is a `step_data.StepData`, and these members are always there:
@@ -474,6 +475,8 @@ back is a `step_data.StepData`, and these members are always there:
 - **`retcode`** -- pretty much what you think.
 - **`stdout`** / **`stderr`** -- the result of the step's `stdout`/`stderr`
   placeholder, or `None` when the step didn't redirect that handle (see below).
+- **`presentation`** -- where the step exports output properties (see
+  [Results and output properties](#results)).
 
 This is pretty neat... but it turns out retcodes are a miserable way to
 communicate anything more than "did it work". `api.json.output()` to the rescue:
@@ -713,6 +716,103 @@ placeholder. The `file` module is a worked example of using them: reading a file
 is a step that copies it _into_ an output placeholder, and writing one is a step
 that copies _from_ an input placeholder.
 
+## <a name="results"></a>Results and output properties
+
+A recipe produces two things for whatever runs it: a _result_, saying how it
+went, and _output properties_, the structured data it exports. Together they
+make up the final build.
+
+### The result
+
+`RunSteps` returning `None` is a `SUCCESS`. To set the status and summary
+itself, a recipe returns a `RawResult`:
+
+```python
+from PB.recipe_engine import result as result_pb
+
+def RunSteps(api: DEPS) -> result_pb.RawResult:
+    ...
+    return result_pb.RawResult(
+        status=result_pb.FAILURE,
+        summary_markdown=f'{failed} of {total} tests failed',
+    )
+```
+
+A `StepFailure` escaping `RunSteps`, whether raised by a failing step or by the
+recipe itself (`raise api.step.StepFailure('reason')`), is a `FAILURE` with its
+reason as the summary. Any other exception is an `INFRA_FAILURE`. The summary is
+limited to 4000 bytes.
+
+### Output properties
+
+A step exports output properties through its presentation. Each key is a
+top-level key of the build's output properties, and the step finalised last wins
+a key; a step is finalised when the next step in its greenlet starts, or when
+the nest or greenlet it ran in ends. They are write-only: once finalised,
+changes are ignored, and a recipe cannot read back what it exported.
+
+A value is anything JSON-serialisable, or a protobuf message, exported in its
+JSONPB form. A message keeps the property typed end to end: a recipe that
+declares a field of the same message type in its `PROPERTIES` reads the value
+back as that message.
+
+```proto
+// recipe_modules/artefacts/artefacts.proto
+syntax = "proto3";
+package recipe_modules.brave.artefacts;
+
+message Artefact {
+  string url = 1;
+  string sha256 = 2;
+}
+```
+
+```python
+# recipes/build.py, the producer
+def RunSteps(api: DEPS) -> None:
+    result = api.step('upload', [...])
+    result.presentation.properties['got_revision'] = revision
+    result.presentation.properties['artefact'] = Artefact(url=url, sha256=digest)
+```
+
+```proto
+// recipes/test.proto, the consumer
+syntax = "proto3";
+package recipes.brave.test;
+
+import "recipe_modules/brave/artefacts/artefacts.proto";
+
+message InputProperties {
+  string got_revision = 1;
+  recipe_modules.brave.artefacts.Artefact artefact = 2;
+}
+```
+
+Keep output properties small; large outputs belong in storage, with only their
+URL or digest exported.
+
+### Handing over between pipeline stages
+
+`--output <path>` writes the final build: its status, summary and output
+properties. The extension picks the encoding (`.json`, `.pb` or `.textpb`).
+`--output-result-json <path>` writes the legacy result instead. The exit code is
+0 only when the recipe succeeded.
+
+One stage's output properties become the next stage's input, so in a Jenkins
+pipeline running a different recipe in each stage:
+
+```sh
+# Stage 1
+vpython3 tools/recipes/engine.py build --output build.json
+jq .output.properties build.json > build_properties.json
+
+# Stage 2
+vpython3 tools/recipes/engine.py test --properties-file build_properties.json
+```
+
+Here the second recipe's `PROPERTIES` receives `got_revision` and `artefact`
+from the first.
+
 ## Testing
 
 Recipes and recipe modules are tested by _simulation_: a recipe declares
@@ -783,21 +883,28 @@ values of its sub-expressions (AST-introspected), and fails the test. A check
 may also return a filtered `steps` mapping to narrow the written expectation.
 The available checks:
 
-| Check                 | Arguments             | Passes when                                                                        |
-| --------------------- | --------------------- | ---------------------------------------------------------------------------------- |
-| `MustRun`             | `step_name...`        | every named step ran                                                               |
-| `DoesNotRun`          | `step_name...`        | none of the named steps ran                                                        |
-| `MustRunRE`           | `pattern`             | some step name matches the regex                                                   |
-| `DoesNotRunRE`        | `pattern...`          | no step name matches any regex                                                     |
-| `StepCommandContains` | `step_name, args`     | the step ran and its command contains `args` as an in-order subsequence            |
-| `StepCommandRE`       | `step_name, patterns` | the step ran, each `patterns[i]` fully matches `cmd[i]`, with no surplus of either |
-| `StepSuccess`         | `step_name`           | the step ran with retcode `0`                                                      |
-| `StepFailure`         | `step_name`           | the step ran with a non-zero retcode                                               |
-| `StatusSuccess`       | _(none)_              | the run succeeded (`$result` has no `failure`)                                     |
-| `StatusFailure`       | _(none)_              | the run had a non-infra failure (a checked step failed)                            |
-| `StatusException`     | _(none)_              | the run had an infra failure (the recipe raised)                                   |
-| `StatusAnyFailure`    | _(none)_              | the run failed, infra or non-infra                                                 |
-| `DropExpectation`     | _(none)_              | always; suppresses writing this test's expectation file                            |
+| Check                     | Arguments             | Passes when                                                                        |
+| ------------------------- | --------------------- | ---------------------------------------------------------------------------------- |
+| `MustRun`                 | `step_name...`        | every named step ran                                                               |
+| `DoesNotRun`              | `step_name...`        | none of the named steps ran                                                        |
+| `MustRunRE`               | `pattern`             | some step name matches the regex                                                   |
+| `DoesNotRunRE`            | `pattern...`          | no step name matches any regex                                                     |
+| `StepCommandContains`     | `step_name, args`     | the step ran and its command contains `args` as an in-order subsequence            |
+| `StepCommandRE`           | `step_name, patterns` | the step ran, each `patterns[i]` fully matches `cmd[i]`, with no surplus of either |
+| `StepSuccess`             | `step_name`           | the step ran with retcode `0`                                                      |
+| `StepFailure`             | `step_name`           | the step ran with a non-zero retcode                                               |
+| `StatusSuccess`           | _(none)_              | the run succeeded (`$result` has no `failure`)                                     |
+| `StatusFailure`           | _(none)_              | the run had a non-infra failure (a `StepFailure` or a `FAILURE` result)            |
+| `StatusException`         | _(none)_              | the run had an infra failure (any other exception, or an `INFRA_FAILURE` result)   |
+| `StatusAnyFailure`        | _(none)_              | the run failed, infra or non-infra                                                 |
+| `SummaryMarkdown`         | `summary`             | the run's summary (or failure reason) equals `summary`                             |
+| `SummaryMarkdownRE`       | `pattern`             | the run's summary (or failure reason) matches the regex                            |
+| `PropertyEquals`          | `key, value`          | the output property `key` equals `value`                                           |
+| `PropertyMatchesRE`       | `key, pattern`        | the output property `key` is a string matching the regex                           |
+| `PropertyMatchesCallable` | `key, matcher`        | `matcher(check, value)` passes for the output property `key`                       |
+| `PropertiesContain`       | `key`                 | the run exported the output property `key`                                         |
+| `PropertiesDoNotContain`  | `key`                 | the run did not export the output property `key`                                   |
+| `DropExpectation`         | _(none)_              | always; suppresses writing this test's expectation file                            |
 
 `DropExpectation` is filter-only (it writes/keeps no golden), and should be
 considered for cases where there are too many permutations.

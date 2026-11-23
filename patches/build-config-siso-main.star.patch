@@ -1,8 +1,8 @@
 diff --git a/build/config/siso/main.star b/build/config/siso/main.star
-index b17b1f8cdf55ce18c00885c30167ade3ab4b2154..8bf38883fe8799b851089381fda5a236e89dee57 100644
+index 6bc080f0b3059664bc750ddffe4011ccf5dc0377..a589138ea1f22a99f86700f9a19f584d9f6613bc 100644
 --- a/build/config/siso/main.star
 +++ b/build/config/siso/main.star
-@@ -24,6 +24,7 @@ load("./rust.star", "rust")
+@@ -23,6 +23,7 @@ load("./rust.star", "rust")
  load("./simple.star", "simple")
  load("./typescript_all.star", "typescript_all")
  load("./windows.star", chromium_windows = "chromium")
@@ -10,8 +10,8 @@ index b17b1f8cdf55ce18c00885c30167ade3ab4b2154..8bf38883fe8799b851089381fda5a236
  
  def __setup_python(ctx, step_config):
      for rule in step_config["rules"]:
-@@ -162,6 +163,7 @@ def init(ctx):
-     handlers.update(reclient.handlers)
+@@ -128,6 +129,7 @@ def init(ctx):
+     handlers.update(simple.handlers)
      handlers.update(typescript_all.handlers)
  
 +    brave_siso_config.configure(ctx, step_config, filegroups, handlers)

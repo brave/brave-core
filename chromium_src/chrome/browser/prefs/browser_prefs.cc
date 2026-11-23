@@ -19,7 +19,7 @@
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_search/browser/backup_results_metrics.h"
 #include "brave/components/brave_search_conversion/p3a.h"
-#include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/core/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -33,6 +33,7 @@
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/p3a/metric_log_store.h"
 #include "brave/components/p3a/rotation_scheduler.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/common/pref_names.h"
@@ -105,6 +106,10 @@ void MaybeApplyVerticalTabMigrationTestingOverride(PrefService* prefs);
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/speedreader_pref_migration.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PSST)
+#include "brave/components/psst/core/browser/pref_names.h"
 #endif
 
 #if !BUILDFLAG(ENABLE_EXTENSIONS)
@@ -288,6 +293,13 @@ void MigrateObsoleteBraveProfilePrefsAfterChromium(
 #if !BUILDFLAG(IS_ANDROID)
   brave::MigrateBookmarkState(profile_prefs);
 #endif
+
+  // Added 2026-11
+#if BUILDFLAG(ENABLE_PSST)
+  profile_prefs->ClearPref(psst::prefs::kPsstInfobarShownCounter);
+  profile_prefs->ClearPref(psst::prefs::kPsstInfobarDeclineCounter);
+#endif
+
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }
 

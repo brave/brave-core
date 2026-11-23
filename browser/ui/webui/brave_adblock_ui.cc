@@ -16,16 +16,17 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_adblock/resources/grit/brave_adblock_generated_map.h"
-#include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
-#include "brave/components/brave_shields/content/browser/ad_block_service.h"
-#include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
-#include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager_observer.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
+#include "brave/components/brave_shields/core/browser/ad_block_custom_filters_provider.h"
+#include "brave/components/brave_shields/core/browser/ad_block_service.h"
+#include "brave/components/brave_shields/core/browser/ad_block_subscription_service_manager.h"
+#include "brave/components/brave_shields/core/browser/ad_block_subscription_service_manager_observer.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_ui_message_handler.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/android/tab_web_contents_delegate_android.h"  // nogncheck crbug.com/40147906
@@ -288,9 +289,10 @@ void AdblockDOMHandler::HandleViewSubscriptionSource(
 #if BUILDFLAG(IS_ANDROID)
   web_ui()->GetWebContents()->GetDelegate()->OpenURLFromTab(
       web_ui()->GetWebContents(),
-      content::OpenURLParams(file_url, content::Referrer(),
-                             WindowOpenDisposition::kNewForegroundTab,
-                             ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false),
+      content::OpenURLParams(
+          file_url, content::Referrer(),
+          ui::mojom::WindowOpenDisposition::kNewForegroundTab,
+          ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false),
       /*navigation_handle_callback=*/{});
 #else
   auto* browser = GlobalBrowserCollection::GetInstance()->FindBrowserWithTab(

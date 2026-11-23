@@ -173,16 +173,10 @@ extension BraveCertificateUtils {
 }
 
 public enum BraveCertificateUtilError: LocalizedError {
-  case noCertificatesProvided
-  case cannotCreateServerTrust
   case trustEvaluationFailed
 
   public var errorDescription: String? {
     switch self {
-    case .noCertificatesProvided:
-      return "Cannot Create Server Trust - No Certificates Provided"
-    case .cannotCreateServerTrust:
-      return "Cannot Create Server Trust"
     case .trustEvaluationFailed:
       return "Trust Evaluation Failed"
     }
@@ -194,31 +188,6 @@ extension BraveCertificateUtils {
     label: "com.brave.cert-utils-evaluation-queue",
     qos: .userInitiated
   )
-
-  public static func createServerTrust(
-    _ certificates: [SecCertificate],
-    for host: String?
-  ) throws -> SecTrust {
-    if certificates.isEmpty {
-      throw BraveCertificateUtilError.noCertificatesProvided
-    }
-
-    var serverTrust: SecTrust?
-    let policies = [
-      SecPolicyCreateBasicX509(),
-      SecPolicyCreateSSL(true, host as CFString?),
-    ]
-
-    let status = SecTrustCreateWithCertificates(
-      certificates as AnyObject,
-      policies as AnyObject,
-      &serverTrust
-    )
-    guard status == errSecSuccess else {
-      throw BraveCertificateUtilError.cannotCreateServerTrust
-    }
-    return serverTrust!
-  }
 
   /// Verifies ServerTrust using Apple's APIs which validates also the X509 Certificate against the System Trusts
   public static func evaluateTrust(_ trust: SecTrust, for host: String?) async throws {
@@ -240,15 +209,5 @@ extension BraveCertificateUtils {
         }
       }
     }
-  }
-
-  /// Verifies ServerTrust using Brave-Core which verifies only SSL Pinning Status
-  // @concurrent: certificate verification is synchronous
-  @concurrent public static func verifyTrust(
-    _ trust: SecTrust,
-    host: String,
-    port: Int
-  ) async -> Int {
-    return Int(BraveCertificateUtility.verifyTrust(trust, host: host, port: port))
   }
 }

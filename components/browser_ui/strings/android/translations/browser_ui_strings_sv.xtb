@@ -181,9 +181,7 @@
 <translation id="2710883118091822664">Logga in för att fortsätta smidigt på alla dina enheter</translation>
 <translation id="2713106313042589954">Stäng av kameran</translation>
 <translation id="2717722538473713889">E-postadresser</translation>
-<translation id="8181634240306014548">Starta Brave med adressfältet i fokus för att minska starttiden på mindre avancerade enheter.</translation>
 <translation id="2750481671343847896">Webbplatser får visa inloggningsmeddelanden från identitetstjänster.</translation>
-<translation id="2787357173144933081">Snabbstarta adressfältet</translation>
 <translation id="2789132527330338807">Webbplatser får begära tillstånd att skapa en 3D-karta över dina omgivningar eller registrera kamerans position</translation>
 <translation id="2790501146643349491">När detta är aktiverat kan nyligen stängda webbplatser fortsätta att skicka och ta emot data. När detta är inaktiverat får webbplatser som nyligen stängts inte skicka eller ta emot data.</translation>
 <translation id="2795716239552913152">Åtkomst till enhetens plats brukar kunna behövas för relevanta funktioner eller information som lokala nyheter eller affärer i närheten</translation>
@@ -291,7 +289,6 @@
 <translation id="9046306654872718870">Anpassa Brave med egna färger och bilder på startsidan</translation>
 <translation id="389521680295183045">Webbplatser kan begära tillstånd att få veta om du använder enheten aktivt</translation>
 <translation id="3895926599014793903">Tvinga aktivering av zoom</translation>
-<translation id="3905475044299942653">Stoppa många aviseringar</translation>
 <translation id="3922092564198021702">Öppna Inställningar på telefonen</translation>
 <translation id="3924858949939391676">Visa länkar när läsläget är aktiverat</translation>
 <translation id="3933121352599513978">Komprimera oönskade begäranden (rekommenderas)</translation>
@@ -385,7 +382,6 @@
 <translation id="4936863036653376783">Du hittar dina grupper i avsnittet Flikgrupper på alla dina enheter</translation>
 <translation id="4945443401464700059"><ph name="SITE"/> har blockerats från att använda dina uppgifter på</translation>
 <translation id="4953688446973710931">När detta är aktiverat kan webbplatser be om att ladda ned flera filer automatiskt. När detta är inaktiverat får webbplatser inte ladda ned flera filer automatiskt.</translation>
-<translation id="4962975101802056554">Återkalla alla behörigheter för enheten</translation>
 <translation id="4972737347717125191">Webbplatser får begära tillstånd att använda VR-enheter och VR-data</translation>
 <translation id="1275242979020712923">Ark på nedre delen av skärmen för Brave-färger</translation>
 <translation id="497421865427891073">Fortsätt</translation>
@@ -525,6 +521,7 @@
 <translation id="6439114592976064011">Blockera webbplatser från att använda VR-enheter och VR-data</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="6452138246455930388">Prissänkning på den öppna fliken, från <ph name="OLD_PRICE"/> till <ph name="NEW_PRICE"/>, <ph name="PRODUCT_NAME"/>, <ph name="DOMAIN_NAME"/></translation>
+<translation id="6495608040096939405">Återkalla enhetsbehörighet för <ph name="NAME"/></translation>
 <translation id="6500423977866688905">Begär mobilvy när fönstret är smalt</translation>
 <translation id="6527303717912515753">Dela</translation>
 <translation id="6530703012083415527">När detta är aktiverat kan webbplatser använda popup-fönster och omdirigeringar. När detta är inaktiverat får webbplatser inte använda popup-fönster och omdirigeringar.</translation>
@@ -590,6 +587,7 @@
 <translation id="7188508872042490670">Webbplatsdata på enheten</translation>
 <translation id="7201549776650881587">När du gör detta raderas all data och alla cookies som lagras av alla underordnade webbplatser för <ph name="ORIGIN"/> eller tillhörande app på startskärmen</translation>
 <translation id="7219254577985949841">Vill du radera webbplatsdata?</translation>
+<translation id="7225256190577194089">Återkalla alla behörigheter för enheten <ph name="DEVICE_NAME"/></translation>
 <translation id="723171743924126238">Välj bilder</translation>
 <translation id="7243246278722455312">Ark på nedre delen av skärmen för att anpassa sidan ny flik</translation>
 <translation id="7243308994586599757">Alternativ visas nära skärmens nedre kant</translation>
@@ -702,7 +700,6 @@ Avancerat skydd styr följande Brave-inställningar:</translation>
 <translation id="8428213095426709021">Inställningar</translation>
 <translation id="8441146129660941386">Sök bakåt</translation>
 <translation id="8444433999583714703">Om du vill ge <ph name="APP_NAME"/> åtkomst till din plats måste du även aktivera plats i <ph name="BEGIN_LINK"/>Android-inställningarna<ph name="END_LINK"/>.</translation>
-<translation id="8447861592752582886">Återkalla enhetsbehörighet</translation>
 <translation id="8463843545738141778">Inställningen är inaktiverad eftersom du har aktiverat Avancerat skydd i Android-inställningarna.</translation>
 <translation id="8467359479529706065">Arket på nedre delen av skärmen för utseende på sidan Ny flik har öppnats över halva skärmen</translation>
 <translation id="8471525937465764768">Åtkomst till USB-enheter brukar kunna behövas för funktioner som att skriva ut dokument eller spara filer på en lagringsenhet</translation>

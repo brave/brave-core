@@ -1,0 +1,103 @@
+[
+  {
+    "cmd": [
+      "gh",
+      "api",
+      "--paginate",
+      "--jq",
+      ".[]",
+      "repos/brave/test/labels?per_page=100"
+    ],
+    "name": "list labels (brave/test)"
+  },
+  {
+    "cmd": [
+      "gh",
+      "api",
+      "--method",
+      "POST",
+      "repos/brave/test/labels",
+      "--input",
+      "{\n  \"color\": \"ededed\",\n  \"description\": \"\",\n  \"name\": \"ci-concern\"\n}"
+    ],
+    "name": "create label ci-concern (brave/test)"
+  },
+  {
+    "cmd": [
+      "gh",
+      "api",
+      "--paginate",
+      "--jq",
+      ".[]",
+      "repos/brave/test/issues?state=all&labels=bot%2Ftype%2Fasan&per_page=100"
+    ],
+    "name": "list bot/type/asan issues (brave/test)"
+  },
+  {
+    "cmd": [
+      "echo",
+      "closed",
+      "completed",
+      "bot/type/asan"
+    ],
+    "name": "found #7"
+  },
+  {
+    "cmd": [
+      "gh",
+      "api",
+      "--method",
+      "PATCH",
+      "repos/brave/test/issues/7",
+      "--input",
+      "{\n  \"state\": \"open\",\n  \"state_reason\": \"reopened\"\n}"
+    ],
+    "name": "reopen issue #7 (brave/test)"
+  },
+  {
+    "cmd": [
+      "gh",
+      "api",
+      "--method",
+      "POST",
+      "repos/brave/test/issues/7/comments",
+      "--input",
+      "{\n  \"body\": \"Seen again.\"\n}"
+    ],
+    "name": "comment on issue #7 (brave/test)"
+  },
+  {
+    "cmd": [
+      "gh",
+      "api",
+      "--method",
+      "POST",
+      "repos/brave/test/issues/7/labels",
+      "--input",
+      "{\n  \"labels\": [\n    \"ci-concern\"\n  ]\n}"
+    ],
+    "name": "label issue #7 (brave/test)"
+  },
+  {
+    "cmd": [
+      "gh",
+      "api",
+      "--method",
+      "POST",
+      "repos/brave/test/issues",
+      "--input",
+      "{\n  \"assignees\": [\n    \"someone\"\n  ],\n  \"body\": \"Found.\",\n  \"labels\": [\n    \"bot/type/asan\"\n  ],\n  \"title\": \"ASan finding\"\n}"
+    ],
+    "name": "create issue (brave/test)"
+  },
+  {
+    "cmd": [
+      "echo",
+      "https://github.com/brave/test/issues/1"
+    ],
+    "name": "created"
+  },
+  {
+    "name": "$result"
+  }
+]

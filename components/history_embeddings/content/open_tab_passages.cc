@@ -17,9 +17,9 @@
 #include "base/location.h"
 #include "base/strings/string_util.h"
 #include "base/task/sequenced_task_runner.h"
+#include "brave/components/history_embeddings/content/history_embeddings_service.h"
+#include "brave/components/history_embeddings/core/vector_database.h"
 #include "components/history/core/browser/history_service.h"
-#include "components/history_embeddings/content/history_embeddings_service.h"
-#include "components/history_embeddings/core/vector_database.h"
 #include "url/gurl.h"
 
 namespace history_embeddings {

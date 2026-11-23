@@ -18,21 +18,22 @@ namespace brave_ads::database::table {
 
 namespace {
 
-// Column layout (indices 0-24):
+// Column layout (indices 0-25):
 //  0: creative_instance_id    1: creative_set_id     2: campaign_id
-//  3: metric_type             4: start_at            5: end_at
-//  6: daily_cap               7: advertiser_id       8: priority
-//  9: per_day                10: per_week           11: per_month
-// 12: total_max              13: value              14: condition_matchers
-// 15: segment                16: geo_target         17: target_url
-// 18: wallpaper_type         19: company_name       20: alt
-// 21: pass_through_rate
-// 22: daypart.days_of_week   23: daypart.start_minute
-// 24: daypart.end_minute
+//  3: campaign_type           4: metric_type         5: start_at
+//  6: end_at                  7: daily_cap           8: advertiser_id
+//  9: priority               10: per_day            11: per_week
+// 12: per_month              13: total_max          14: value
+// 15: condition_matchers     16: segment             17: geo_target
+// 18: target_url             19: wallpaper_type     20: company_name
+// 21: alt                   22: pass_through_rate
+// 23: daypart.days_of_week  24: daypart.start_minute
+// 25: daypart.end_minute
 mojom::DBRowInfoPtr BuildCreativeNewTabPageAdRow(
     const std::string& creative_instance_id,
     const std::string& creative_set_id,
     const std::string& campaign_id,
+    const std::string& campaign_type,
     const std::string& metric_type,
     base::Time start_at,
     base::Time end_at,
@@ -62,6 +63,8 @@ mojom::DBRowInfoPtr BuildCreativeNewTabPageAdRow(
       mojom::DBColumnValueUnion::NewStringValue(creative_set_id));
   mojom_db_row->column_values_union.push_back(
       mojom::DBColumnValueUnion::NewStringValue(campaign_id));
+  mojom_db_row->column_values_union.push_back(
+      mojom::DBColumnValueUnion::NewStringValue(campaign_type));
   mojom_db_row->column_values_union.push_back(
       mojom::DBColumnValueUnion::NewStringValue(metric_type));
   mojom_db_row->column_values_union.push_back(
@@ -122,12 +125,12 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableUtilTest,
   const base::Time end_at = base::Time::FromSecondsSinceUnixEpoch(2'000'000.0);
   mojom::DBRowInfoPtr mojom_db_row = BuildCreativeNewTabPageAdRow(
       "creative-instance-id-foo", "creative-set-id-foo", "campaign-id-foo",
-      "confirmation", start_at, end_at, /*daily_cap=*/20, "advertiser-id-foo",
-      /*priority=*/10, /*per_day=*/1, /*per_week=*/7, /*per_month=*/42,
-      /*total_max=*/100, /*value=*/0.05, /*condition_matchers=*/"",
-      "segment-foo", "US", "https://example.com", "image", "Brave Company",
-      "Alt text foo.", /*pass_through_rate=*/1.0, "0123456",
-      /*start_minute=*/0, /*end_minute=*/1439);
+      "paid", "confirmation", start_at, end_at, /*daily_cap=*/20,
+      "advertiser-id-foo", /*priority=*/10, /*per_day=*/1, /*per_week=*/7,
+      /*per_month=*/42, /*total_max=*/100, /*value=*/0.05,
+      /*condition_matchers=*/"", "segment-foo", "US", "https://example.com",
+      "image", "Brave Company", "Alt text foo.", /*pass_through_rate=*/1.0,
+      "0123456", /*start_minute=*/0, /*end_minute=*/1439);
 
   // Act
   const CreativeNewTabPageAdInfo creative_ad =
@@ -137,6 +140,7 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableUtilTest,
   EXPECT_EQ("creative-instance-id-foo", creative_ad.creative_instance_id);
   EXPECT_EQ("creative-set-id-foo", creative_ad.creative_set_id);
   EXPECT_EQ("campaign-id-foo", creative_ad.campaign_id);
+  EXPECT_EQ(mojom::NewTabPageAdCampaignType::kPaid, creative_ad.campaign_type);
   EXPECT_EQ(mojom::NewTabPageAdMetricType::kConfirmation,
             creative_ad.metric_type);
   EXPECT_EQ(start_at, creative_ad.start_at);
@@ -172,8 +176,8 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableUtilTest,
       base::Time::FromSecondsSinceUnixEpoch(1'000'000.0);
   const base::Time end_at = base::Time::FromSecondsSinceUnixEpoch(2'000'000.0);
   mojom::DBRowInfoPtr mojom_db_row = BuildCreativeNewTabPageAdRow(
-      "foo", "bar", "baz", "disabled", start_at, end_at, 1, "qux", 1, 1, 7, 42,
-      100, 0.01, "", "untargeted", "US", "https://foo.com", "richMedia",
+      "foo", "bar", "baz", "paid", "disabled", start_at, end_at, 1, "qux", 1, 1,
+      7, 42, 100, 0.01, "", "untargeted", "US", "https://foo.com", "richMedia",
       "company", "alt", 0.5, "0123456", 0, 1439);
 
   // Act
@@ -183,6 +187,26 @@ TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableUtilTest,
   // Assert
   EXPECT_EQ(CreativeNewTabPageAdWallpaperType::kRichMedia,
             creative_ad.wallpaper_type);
+}
+
+TEST_F(BraveAdsCreativeNewTabPageAdsDatabaseTableUtilTest,
+       MapUnknownCampaignTypeAsUndefined) {
+  // Arrange
+  const base::Time start_at =
+      base::Time::FromSecondsSinceUnixEpoch(1'000'000.0);
+  const base::Time end_at = base::Time::FromSecondsSinceUnixEpoch(2'000'000.0);
+  mojom::DBRowInfoPtr mojom_db_row = BuildCreativeNewTabPageAdRow(
+      "foo", "bar", "baz", /*campaign_type=*/"", "confirmation", start_at,
+      end_at, 1, "qux", 1, 1, 7, 42, 100, 0.01, "", "untargeted", "US",
+      "https://foo.com", "image", "company", "alt", 0.5, "0123456", 0, 1439);
+
+  // Act
+  const CreativeNewTabPageAdInfo creative_ad =
+      CreativeNewTabPageAdFromMojomRow(mojom_db_row);
+
+  // Assert
+  EXPECT_EQ(mojom::NewTabPageAdCampaignType::kUndefined,
+            creative_ad.campaign_type);
 }
 
 }  // namespace brave_ads::database::table

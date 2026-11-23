@@ -34,7 +34,7 @@ BraveTalkLauncherJavaScriptFeature::BraveTalkLauncherJavaScriptFeature()
               FeatureScript::ReinjectionBehavior::kReinjectOnDocumentRecreation,
               FeatureScript::PlaceholderReplacementsCallback(),
               web::OriginFilter::kBraveTalk)},
-          /*dependent_feature=*/{},
+          /*dependent_features=*/{},
           web::OriginFilter::kBraveTalk) {}
 
 BraveTalkLauncherJavaScriptFeature::~BraveTalkLauncherJavaScriptFeature() =

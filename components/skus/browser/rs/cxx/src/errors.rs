@@ -5,7 +5,7 @@
 
 use std::error::Error;
 
-use crate::ffi;
+use crate::{ffi, skus};
 
 impl ffi::SkusResult {
     pub fn new(code: ffi::SkusResultCode, msg: &str) -> Self {

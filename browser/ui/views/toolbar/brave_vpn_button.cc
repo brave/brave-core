@@ -38,6 +38,7 @@
 #include "ui/views/background.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/highlight_path_generator.h"
+#include "ui/views/view_class_properties.h"
 
 using ConnectionState = brave_vpn::mojom::ConnectionState;
 using PurchasedState = brave_vpn::mojom::PurchasedState;
@@ -165,6 +166,8 @@ class BraveVPNBadgeImageSource : public brave::BraveIconWithBadgeImageSource {
 
 }  // namespace
 
+DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(BraveVPNButton, kBraveVPNButtonElementId);
+
 BraveVPNButton::BraveVPNButton(BrowserWindowInterface* browser)
     : ToolbarButton(base::BindRepeating(&BraveVPNButton::OnButtonPressed,
                                         base::Unretained(this)),
@@ -176,6 +179,7 @@ BraveVPNButton::BraveVPNButton(BrowserWindowInterface* browser)
       service_(brave_vpn::BraveVpnServiceFactory::GetForProfile(
           browser_->GetProfile())) {
   CHECK(service_);
+  SetProperty(views::kElementIdentifierKey, kBraveVPNButtonElementId);
   UpdateButtonState();
   Observe(service_);
 

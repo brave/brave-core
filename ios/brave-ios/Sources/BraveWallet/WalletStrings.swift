@@ -2198,22 +2198,6 @@ extension Strings {
       comment:
         "The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen."
     )
-    public static let editSiteConnectionAccountActionTrust = NSLocalizedString(
-      "wallet.editSiteConnectionAccountActionTrust",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Trust",
-      comment:
-        "The title of the button for users to click so that they grant wallet account permission for the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen."
-    )
-    public static let editSiteConnectionAccountActionRevoke = NSLocalizedString(
-      "wallet.editSiteConnectionAccountActionRevoke",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Revoke",
-      comment:
-        "The title of the button for users to click so that they remove wallet account permission from the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen"
-    )
     public static let walletPanelConnected = NSLocalizedString(
       "wallet.walletPanelConnected",
       tableName: "BraveWallet",
@@ -2245,79 +2229,6 @@ extension Strings {
       value: "Blocked",
       comment:
         "The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently blocking all the accesses to the solana provider APIs."
-    )
-    public static let getEncryptionPublicKeyRequestTitle = NSLocalizedString(
-      "wallet.getEncryptionPublicKeyRequestTitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Public Encryption Key Request",
-      comment:
-        "A title of the view shown over a dapps website that requests the users public encryption key."
-    )
-    public static let getEncryptionPublicKeyRequestSubtitle = NSLocalizedString(
-      "wallet.getEncryptionPublicKeyRequestSubtitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "A DApp is requesting your public encryption key",
-      comment:
-        "A subtitle of the view shown over a dapps website that requests the users public encryption key."
-    )
-    public static let getEncryptionPublicKeyRequestMessage = NSLocalizedString(
-      "wallet.getEncryptionPublicKeyRequestMessage",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value:
-        "is requesting your wallet's public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.",
-      comment:
-        "The text shown beside the URL origin of a get public encryption key request from a dapp site. Ex 'https://brave.com is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.'"
-    )
-    public static let getEncryptionPublicKeyRequestApprove = NSLocalizedString(
-      "wallet.getEncryptionPublicKeyRequestApprove",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Provide",
-      comment:
-        "The title of the button to approve a encryption public key request from a dapps website."
-    )
-    public static let decryptRequestTitle = NSLocalizedString(
-      "wallet.decryptRequestTitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Decrypt Request",
-      comment:
-        "A title of the view shown over a dapps website that requests the user decrypt a message."
-    )
-    public static let decryptRequestSubtitle = NSLocalizedString(
-      "wallet.decryptRequestSubtitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "This DApp would like to read this message to complete your request",
-      comment:
-        "A subtitle of the view shown over a dapps website that requests the user decrypt a message."
-    )
-    public static let decryptRequestApprove = NSLocalizedString(
-      "wallet.decryptRequestApprove",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Allow",
-      comment: "The title of the button to approve a decrypt request from a dapps website."
-    )
-    public static let decryptRequestReveal = NSLocalizedString(
-      "wallet.decryptRequestReveal",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Reveal",
-      comment:
-        "The title of the button to show the message of a decrypt request from a dapps website."
-    )
-    public static let decryptMessageScreenshotDetectedMessage = NSLocalizedString(
-      "wallet.decryptMessageScreenshotDetectedMessage",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value:
-        "Warning: A screenshot of your message may get backed up to a cloud file service, and be readable by any application with photos access. Brave recommends that you not save this screenshot, and delete it as soon as possible.",
-      comment:
-        "The message displayed when the user takes a screenshot of their dapp decrypt request."
     )
     public static let coinTypeEthereum = NSLocalizedString(
       "wallet.coinTypeEthereum",
@@ -2894,21 +2805,13 @@ extension Strings {
       comment:
         "The title on top of a separater, and the transaction details will be displayed below the separater."
     )
-    public static let signMessageRequestUnknownUnicodeWarning = NSLocalizedString(
-      "wallet.signMessageRequestUnknownUnicodeWarning",
+    public static let signMessageUnexpectedCharactersWarning = NSLocalizedString(
+      "wallet.signMessageUnexpectedCharactersWarning",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Non-ASCII characters detected!",
+      value: "Unexpected characters detected",
       comment:
-        "A warning message to tell users that the sign request message contains non-ascii characters."
-    )
-    public static let signMessageConsecutiveNewlineWarning = NSLocalizedString(
-      "wallet.signMessageConsecutiveNewlineWarning",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Consecutive newline characters detected!",
-      comment:
-        "A warning message to tell users that the sign request message contains consecutive new-line characters."
+        "A warning message to tell users that the sign request message contains null bytes, newlines, or non-ascii characters."
     )
     public static let signMessageShowUnknownUnicode = NSLocalizedString(
       "wallet.signMessageShowUnknownUnicode",
@@ -3634,6 +3537,14 @@ extension Strings {
       comment:
         "Blockchain function name for Solana Sign DApp transactions."
     )
+    public static let txFunctionTypeERC721SetApprovalForAllTransaction = NSLocalizedString(
+      "wallet.txFunctionTypeERC721SetApprovalForAllTransaction",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Set Approval for All",
+      comment:
+        "Blockchain function name for ERC721 Set Approval for All transactions."
+    )
     public static let txStatusSending = NSLocalizedString(
       "wallet.txStatusSending",
       tableName: "BraveWallet",
@@ -3914,6 +3825,55 @@ extension Strings {
       bundle: .module,
       value: "Continue with %lld Networks",
       comment: "The title of the continue button in onboarding network selection screen. '%lld' refers to a number (for example \"Continue with 8 Networks\")"
+    )
+    public static let erc721SetApprovalForAllWarningTitle = NSLocalizedString(
+      "wallet.erc721SetApprovalForAllWarningTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Set approval for all",
+      comment: "The title of a warning banner for ERC721 Set approval for all Transaction that will be displayed in pending tx panel."
+    )
+    public static let erc721SetApprovalForAllWarningDescription = NSLocalizedString(
+      "wallet.erc721SetApprovalForAllWarningDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "This lets the spender below transfer every NFT you own in this collection. This includes any NFTs you receive later.",
+      comment: "The description of a warning banner for ERC721 Set approval for all Transaction that will be displayed in pending tx panel."
+    )
+    public static let erc721SetApprovalForAllConfirmationWarningTitle = NSLocalizedString(
+      "wallet.erc721SetApprovalForAllConfirmationWarningTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Give this site access to all your NFTs?",
+      comment: "The title of a warning/confirmation step for ERC721 Set approval for all Transaction after user confirms in previous pending tx panel."
+    )
+    public static let erc721SetApprovalForAllConfirmationWarningDescription = NSLocalizedString(
+      "wallet.erc721SetApprovalForAllConfirmationWarningDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "You're about to let **%@** transfer every **NFT** in this wallet, including any you receive later.",
+      comment: "The description of a warning/confirmation step for ERC721 Set approval for all Transaction after user confirms in previous pending tx panel."
+    )
+    public static let erc721SetApprovalForAllCancelButtonTitle = NSLocalizedString(
+      "wallet.erc721SetApprovalForAllCancelButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Cancel transaction",
+      comment: "The button title in warning/confirmation step for ERC721 Set approval for all Transaction for user to cancel this transaction."
+    )
+    public static let erc721SetApprovalForAllConfirmButtonTitle = NSLocalizedString(
+      "wallet.erc721SetApprovalForAllConfirmButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Confirm anyway",
+      comment: "The button title in warning/confirmation step for ERC721 Set approval for all Transaction for user to confirm this transaction."
+    )
+    public static let erc721SetApprovalForAllNavTitle = NSLocalizedString(
+      "wallet.erc721SetApprovalForAllNavTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Warning",
+      comment: "The navigation title in warning/confirmation step for ERC721 Set approval for all Transaction for user to confirm/cancel this transaction."
     )
   }
 }

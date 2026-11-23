@@ -496,6 +496,9 @@
   <message name="IDS_AUTOFILL_ONE_TIME_PASSWORD_VOICE_OVER_A11Y_LABEL" desc="Voice over label for the one time password field.">
     Verification code: <ph name="OTP">$1<ex>123456</ex></ph>
   </message>
+  <message name="IDS_AUTOFILL_GMAIL_ONE_TIME_PASSWORD_VOICE_OVER_A11Y_LABEL" is_accessibility_with_no_ui="true" desc="Voice over label for a one-time password verification code retrieved from Gmail. $1 is the OTP verification code (e.g. 123456), and $2 is the sender email address (e.g. login@service.com).">
+    Verification code: <ph name="OTP">$1<ex>123456</ex></ph> from <ph name="EMAIL">$2<ex>login@service.com</ex></ph>
+  </message>
   <message name="IDS_AUTOFILL_A11Y_ANNOUNCE_FILLED_ONE_TIME_PASSWORD" desc="Accessibility announcement for when a one time password is autofilled.">
     Autofilled code
   </message>
@@ -999,6 +1002,14 @@
      =1 {+ 1 other source}
      other {+ # other sources}}
   </message>
+  <if expr="not is_android and not is_ios">
+    <message name="IDS_AUTOFILL_AI_SOURCE_ATTRIBUTION_LINK_A11Y_LABEL" is_accessibility_with_no_ui="true" desc="Accessibility label for a numbered source citation link in the Autofill AI source attribution row in the desktop popup. $1 is the source application name and $2 is the 1-based index of the source within that application.">
+      <ph name="APP_NAME">$1<ex>Gmail</ex></ph> source <ph name="SOURCE_INDEX">$2<ex>1</ex></ph>
+    </message>
+    <message name="IDS_AUTOFILL_AI_SOURCE_ATTRIBUTION_A11Y_INSTRUCTIONS" is_accessibility_with_no_ui="true" desc="Accessibility instructions for navigating the citation links in the Autofill AI source attribution row in the desktop popup using left or right arrow keys.">
+      Use left or right arrow keys to navigate the source links.
+    </message>
+  </if>
   <message name="IDS_AUTOFILL_AI_SOURCE_APP_PHOTOS" desc="App name for Google Photos." formatter_data="android_java">
     Photos
   </message>
@@ -1453,18 +1464,6 @@
   </message>
 
   <!-- Iph -->
-  <message name="IDS_AUTOFILL_AI_OPT_IN_IPH_TITLE" desc="The title of a promotional bubble that is likely the user's first engagement with enhanced autofill. Many users are familiar with Brave Autofill and use it to automatically fill in things like passwords and credit cards. This service promoted on this screen frames the new service as the autofill that users are familiar with but better, because it's powered by AI and can do more for you.">
-    Autofill just got better
-  </message>
-  <message name="IDS_AUTOFILL_AI_OPT_IN_IPH_BODY" desc="The body text in a promotional bubble that appears beneath the title: “Autofill just got better”. * “Turn on”: This new feature is opt in, so we want to encourage users to click “Go to settings” and turn the feature on. “enhanced autofill” is what we're calling this new feature. We want users to associate the new feature with the familiar autofill functionality they're already used to but want to convey how it's different (AI). * “automatically” should feel valuable to users as the autofill service is making tasks for them simpler. * “more fields”: the existing autofill functionality in Brave covers things like passwords, credit cards, and building addresses. With this new service, we can also cover 1) passports, 2) vehicles, and 3) driver's licenses.">
-    Turn on enhanced autofill to automatically fill more fields
-  </message>
-  <message name="IDS_AUTOFILL_AI_OPT_IN_IPH_TURN_ON" desc="The right of two buttons that’s the user’s path learning more and turning on enhanced autofill. This button label should pair with the title (in other words, assume the user doesn’t read the body text. Does the title and primary button label make sense together)?">
-    Turn on
-  </message>
-  <message name="IDS_AUTOFILL_AI_OPT_IN_IPH_MAYBE_LATER" desc="The left of two buttons that’s essentially the user’s path to not learning more or turning on enhanced autofill. “Maybe later” conveys that the user won’t do it now but that they’ll have the choice to do it later. Localizer has existing translations of this button label.">
-    Maybe later
-  </message>
   <message name="IDS_AUTOFILL_AI_VALUABLES_IPH_TITLE" desc="IPH toast for a suggestion item with an item from Google Wallet.">
     Now you can autofill more info from Google Wallet
   </message>
@@ -1485,8 +1484,17 @@
   <message name="IDS_AUTOFILL_AI_UPDATE_ENTITY_TO_WALLET_DIALOG_SUBTITLE" desc="A description that appears beneath the Update title prompt asking users whether they want to update their data stored in Google Wallet. For example, the user previously saved information related to their passport. Now, the user is filling out a new form either with additional details associated with the passport or with different values than what was previously saved. The interface shows new or modified values at the top with blue dots to indicate they’re new. Existing information associated with the passport that isn’t changing appears at the bottom without blue dots. Depending on the form and what Brave recognizes, there might be just one or several pieces of data updated at this moment. This is a similar moment to updating a password or credit card with Brave.">
     Your info is saved in <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE">$1<ex>Google Wallet</ex></ph> for <ph name="ACCOUNT">$2<ex>alexpark@gmail.com</ex></ph>
   </message>
-  <message name="IDS_AUTOFILL_AI_SAVE_ENTITY_TO_WALLET_DIALOG_SUBTITLE_NEW" desc="A description that appears beneath the Save title prompt asking users whether they want to save their data to Google Wallet. This sentence essentially defines Autofill in Brave. We prompt the user to save their information with Google Wallet with the promise that Brave can then help the user fill out forms across devices more quickly using their saved info.">
+  <message name="IDS_AUTOFILL_AI_SAVE_ENTITY_TO_WALLET_DIALOG_SUBTITLE_NEW" desc="A description that appears beneath the Save title prompt asking users whether they want to save their public pass data to Google Wallet. Public passes is the product name for non-sensitive data such as Vehicle, Flight Reservation, Order, and Shipment. This sentence essentially defines Autofill in Brave. We prompt the user to save their information with Google Wallet with the promise that Brave can then help the user fill out forms across devices more quickly using their saved info.">
     Save your info in <ph name="GOOGLE_WALLET_TITLE_1">$1<ex>Google Wallet</ex></ph> and get things done faster, like filling forms across Brave products. You can <ph name="MANAGE_INFO_LINK">$2<ex>manage your info</ex></ph> in <ph name="GOOGLE_WALLET_TITLE_2">$3<ex>Google Wallet</ex></ph> for <ph name="ACCOUNT">$4<ex>alexpark@gmail.com</ex></ph>.
+  </message>
+  <message name="IDS_AUTOFILL_AI_SAVE_ENTITY_TO_WALLET_DIALOG_SUBTITLE_PRIVATE_PASS" desc="A description that appears beneath the Save title prompt asking users whether they want to save their private pass data to Google Wallet. Private passes is the product name for sensitive data such as Passport, Driver's License, ID card, Known Traveler Number, and Redress Number. It informs the user that saving to Google Wallet helps fill forms across Brave products, links to private pass settings to control how the info is used across Brave, and links to the Privacy Policy.">
+    Save your info in <ph name="GOOGLE_WALLET_TITLE">$1<ex>Google Wallet</ex></ph> and get things done faster, like filling forms across Brave products. You can control <ph name="HOW_INFO_IS_USED_LINK">$2<ex>how this info is used across Brave</ex></ph> in your private pass settings for <ph name="ACCOUNT">$3<ex>alexpark@gmail.com</ex></ph>. <ph name="PRIVACY_POLICY_LINK">$4<ex>Privacy Policy</ex></ph>
+  </message>
+  <message name="IDS_AUTOFILL_HOW_THIS_INFO_IS_USED_ACROSS_GOOGLE_LINK" desc="Clickable link text that replaces HOW_INFO_IS_USED_LINK inside the middle of the sentence: 'Save your info in Google Wallet and get things done faster, like filling forms across Brave products. You can control HOW_INFO_IS_USED_LINK in your private pass settings for alexpark@gmail.com. Privacy Policy'. Because this phrase appears mid-sentence after 'You can control', do not capitalize the first word or add trailing punctuation, and ensure it fits grammatically into the surrounding sentence.">
+    how this info is used across Brave
+  </message>
+  <message name="IDS_AUTOFILL_PRIVACY_POLICY_LINK" desc="Clickable link text to the Brave Privacy Policy that replaces PRIVACY_POLICY_LINK at the end of the notice: 'Save your info in Google Wallet and get things done faster, like filling forms across Brave products. You can control how this info is used across Brave in your private pass settings for alexpark@gmail.com. PRIVACY_POLICY_LINK'. Because it stands as a separate phrase after a period, keep standard capitalization for 'Privacy Policy' and do not add a trailing period.">
+    Privacy Policy
   </message>
   <!-- Prompt strings used on Desktop -->
   <if expr="not is_android">
@@ -1893,7 +1901,7 @@
     <message name="IDS_AUTOFILL_AI_SAVE_OR_UPDATE_LOCAL_ENTITY_SOURCE_NOTICE" desc="A description that appears beneath the entity details notifying the user that their data is going to be stored locally on device." formatter_data="android_java">
       Your info is saved to your device
     </message>
-    <message name="IDS_AUTOFILL_AI_SAVE_OR_UPDATE_ENTITY_IN_WALLET_SOURCE_NOTICE" desc="A description that appears beneath the entity details notifying the user that their data is going to be stored in Google Wallet." formatter_data="android_java">
+    <message name="IDS_AUTOFILL_AI_SAVE_ENTITY_IN_WALLET_SOURCE_NOTICE" desc="A description that appears beneath the entity details notifying the user that their data is going to be stored in Google Wallet." formatter_data="android_java">
       Save your info in <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE_1">$1<ex>Google Wallet</ex></ph> and get things done faster, like filling forms across Brave products. You can <ph name="BEGIN_LINK">&lt;link&gt;</ph>manage your info<ph name="END_LINK">&lt;/link&gt;</ph> in <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE_2">$2<ex>Google Wallet</ex></ph> for <ph name="ACCOUNT">$3<ex>alexpark@gmail.com</ex></ph>
     </message>
     <message name="IDS_AUTOFILL_AI_SAVE_OR_UPDATE_ENTITY_NEW_ATTRIBUTE_ACCESSIBILITY_NAME" desc="Used in entity update dialogs, as the accessible names for rows with new attributes" formatter_data="android_java">
@@ -2000,20 +2008,6 @@ You can remove this suggestion from Brave. Your original source won't be deleted
     </message>
   </if>
 
-  <!-- FFR Dialog -->
-  <!-- TODO: crbug.com/440488776 - Remove FFR strings once default availability is launched. -->
-  <message name="IDS_AUTOFILL_AI_FFR_WHEN_ON_TITLE" desc="A sub title that highlights the benefits of using ‘enhanced autofill’. ‘More fields’ is referring to values in online forms. The user can fill more fields faster because ‘enhanced autofill’ supports more data types than standard autofill, including passports, driver’s licenses, and vehicles.">
-    Fill more fields faster
-  </message>
-  <message name="IDS_AUTOFILL_AI_FFR_WHEN_ON_DESCRIPTION" desc="Body text beneath the “Fill more fields faster” sub title. This conveys the value of using ‘enhanced autofill’.">
-    Enhanced autofill understands forms better and can autofill them faster for you
-  </message>
-  <message name="IDS_AUTOFILL_AI_FFR_CONSIDER_DESCRIPTION" desc="Body text beneath the “Things to consider” sub title. This describes to users things they might want to weigh before using this feature. Ideally, we lead with ‘To offer suggestions’, because it redefines the value of ‘enhanced autofill’ and offers a rationale for the data use that immediately follows. The data used includes 1) the URL of a page visited and 2) the content of that page. Both are shared from Brave to a Brave service that generates autofill suggestions. Inludes a placeholder for a learn more link, $1 = IDS_AUTOFILL_AI_FFR_CONSIDER_LEARN_MORE">
-    To offer suggestions and improve this feature, the page’s URL and content are shared with Brave. Change your mind anytime and <ph name="LEARN_MORE">$1<ex>learn more about enhanced autofill in settings</ex></ph>.
-  </message>
-  <message name="IDS_AUTOFILL_AI_FFR_CONSIDER_LEARN_MORE" desc="Link for the enhanced autofill settings page to learn more about this feature.">
-    learn more about enhanced autofill in settings
-  </message>
   <message name="IDS_SETTINGS_AUTOFILL_AI_AUTHENTICATION_TOGGLE_TITLE" desc="The title of the toggle shown in the settings page that allows managing the authentication requirement before seeings smarter form understanding settings sensitive fields, such as passport number and national id card number." formatter_data="android_java">
     Verify it’s you to autofill sensitive info
   </message>

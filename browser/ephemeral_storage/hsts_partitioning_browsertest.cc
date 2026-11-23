@@ -6,7 +6,7 @@
 #include "base/path_service.h"
 #include "base/strings/pattern.h"
 #include "base/strings/strcat.h"
-#include "base/test/bind.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -25,6 +25,7 @@
 #include "services/network/public/mojom/network_context.mojom.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "ui/base/mojom/window_open_disposition.mojom.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 #include "url/url_constants.h"
@@ -145,26 +146,20 @@ class HSTSPartitioningBrowserTestBase : public InProcessBrowserTest {
   void NetworkContextAddHSTS(const std::string& host) {
     content::StoragePartition* partition =
         browser()->GetProfile()->GetDefaultStoragePartition();
-    base::RunLoop run_loop;
+    base::test::TestFuture<void> future;
     partition->GetNetworkContext()->AddHSTS(
-        host, base::Time::Now() + base::Days(1), false, run_loop.QuitClosure());
-    run_loop.Run();
+        host, base::Time::Now() + base::Days(1), false, future.GetCallback());
+    ASSERT_TRUE(future.Wait());
   }
 
   bool NetworkContextIsHSTSActiveForHostWithTopLevelNav(const std::string& host,
                                                         bool is_top_level_nav) {
     content::StoragePartition* partition =
         browser()->GetProfile()->GetDefaultStoragePartition();
-    base::RunLoop run_loop;
-    bool result = false;
-    partition->GetNetworkContext()->IsHSTSActiveForHost(
-        host, is_top_level_nav,
-        base::BindLambdaForTesting([&run_loop, &result](bool is_hsts_active) {
-          result = is_hsts_active;
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-    return result;
+    base::test::TestFuture<bool> future;
+    partition->GetNetworkContext()->IsHSTSActiveForHost(host, is_top_level_nav,
+                                                        future.GetCallback());
+    return future.Get();
   }
 
   bool NetworkContextIsHSTSActiveForHost(const std::string& host) {
@@ -184,31 +179,18 @@ class HSTSPartitioningBrowserTestBase : public InProcessBrowserTest {
   base::DictValue NetworkContextGetHSTSState(const std::string& host) {
     content::StoragePartition* partition =
         browser()->GetProfile()->GetDefaultStoragePartition();
-    base::RunLoop run_loop;
-    base::DictValue result;
-    partition->GetNetworkContext()->GetHSTSState(
-        host, base::BindLambdaForTesting(
-                  [&run_loop, &result](base::DictValue sts_state) {
-                    result = std::move(sts_state);
-                    run_loop.Quit();
-                  }));
-    run_loop.Run();
-    return result;
+    base::test::TestFuture<base::DictValue> future;
+    partition->GetNetworkContext()->GetHSTSState(host, future.GetCallback());
+    return future.Take();
   }
 
   bool NetworkContextDeleteDynamicDataForHost(const std::string& host) {
     content::StoragePartition* partition =
         browser()->GetProfile()->GetDefaultStoragePartition();
-    base::RunLoop run_loop;
-    bool result = false;
+    base::test::TestFuture<bool> future;
     partition->GetNetworkContext()->DeleteDynamicDataForHost(
-        host,
-        base::BindLambdaForTesting([&run_loop, &result](bool is_hsts_active) {
-          result = is_hsts_active;
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-    return result;
+        host, future.GetCallback());
+    return future.Get();
   }
 
  protected:
@@ -282,7 +264,7 @@ IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest, HSTSIsPartitioned) {
   // Load b.com in another tab and expect HSTS is not applied.
   GURL b_com_url("http://b.com/iframe.html");
   auto* b_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), b_com_url, WindowOpenDisposition::kNewForegroundTab,
+      browser(), b_com_url, ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_TRUE(b_com_rfh);
   EXPECT_EQ(b_com_rfh->GetLastCommittedURL(), b_com_url);
@@ -324,7 +306,8 @@ IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest,
   // Load sub.a.com, expect b.com HSTS state is applied.
   GURL sub_a_com_url("http://sub.a.com/simple.html");
   auto* sub_a_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), sub_a_com_url, WindowOpenDisposition::kNewForegroundTab,
+      browser(), sub_a_com_url,
+      ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_TRUE(sub_a_com_rfh);
 
@@ -347,7 +330,7 @@ IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest,
 
   // Load a.com in another tab, expect HSTS is applied.
   auto* a_com_rfh2 = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), a_com_url, WindowOpenDisposition::kNewForegroundTab,
+      browser(), a_com_url, ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_TRUE(a_com_rfh2);
   EXPECT_TRUE(a_com_rfh2->GetLastCommittedURL().SchemeIsCryptographic());
@@ -370,7 +353,7 @@ IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest, HSTSIsCleared) {
   // Load b.com in another tab and expect c.com HSTS is not applied.
   GURL b_com_url("http://b.com/simple.html");
   auto* b_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), b_com_url, WindowOpenDisposition::kNewForegroundTab,
+      browser(), b_com_url, ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_TRUE(b_com_rfh);
   EXPECT_EQ(b_com_rfh->GetLastCommittedURL(), b_com_url);
@@ -435,7 +418,7 @@ IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest,
 
   // Load a.com in another tab, expect HSTS is applied.
   auto* a_com_rfh2 = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), a_com_url, WindowOpenDisposition::kNewForegroundTab,
+      browser(), a_com_url, ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_TRUE(a_com_rfh2);
   EXPECT_TRUE(a_com_rfh2->GetLastCommittedURL().SchemeIsCryptographic());
@@ -479,7 +462,7 @@ IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest,
 
   GURL a_com_url("http://a.com/simple.html");
   auto* a_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), a_com_url, WindowOpenDisposition::kNewForegroundTab,
+      browser(), a_com_url, ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_TRUE(a_com_rfh);
   EXPECT_TRUE(a_com_rfh->GetLastCommittedURL().SchemeIsCryptographic());
@@ -512,7 +495,7 @@ IN_PROC_BROWSER_TEST_F(HSTSPartitioningEnabledBrowserTest, NetworkContextAPI) {
 
   GURL b_com_url("http://b.com/iframe.html");
   auto* b_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), b_com_url, WindowOpenDisposition::kNewForegroundTab,
+      browser(), b_com_url, ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_TRUE(b_com_rfh);
   EXPECT_EQ(b_com_rfh->GetLastCommittedURL(), b_com_url);
@@ -656,7 +639,7 @@ IN_PROC_BROWSER_TEST_F(HSTSPartitioningDisabledBrowserTest,
   // Load b.com in another tab and expect HSTS is applied.
   GURL b_com_url("http://b.com/simple.html");
   auto* b_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), b_com_url, WindowOpenDisposition::kNewForegroundTab,
+      browser(), b_com_url, ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_TRUE(b_com_rfh);
   EXPECT_TRUE(b_com_rfh->GetLastCommittedURL().SchemeIsCryptographic());
@@ -664,7 +647,7 @@ IN_PROC_BROWSER_TEST_F(HSTSPartitioningDisabledBrowserTest,
   // Load b.com in another tab and expect HSTS is applied.
   GURL c_com_url("http://c.com/simple.html");
   auto* c_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), c_com_url, WindowOpenDisposition::kNewForegroundTab,
+      browser(), c_com_url, ui::mojom::WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_TRUE(c_com_rfh);
   EXPECT_TRUE(c_com_rfh->GetLastCommittedURL().SchemeIsCryptographic());

@@ -1,48 +1,30 @@
 diff --git a/chrome/browser/ui/views/tabs/common/tab_group_style.cc b/chrome/browser/ui/views/tabs/common/tab_group_style.cc
-index 9edd4733056efa86f83583f2b47a99d40e4dbd59..9529683b9ebe385a8daec8d5f9fbee5c80dffffd 100644
+index d1da139046c12d61ab53de2dc643eee450759d32..11d63c996a87d55b375c84383b415913fe32c3f1 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_group_style.cc
 +++ b/chrome/browser/ui/views/tabs/common/tab_group_style.cc
-@@ -36,6 +36,10 @@ int TabGroupStyle::GetTabGroupOverlapAdjustment() {
+@@ -8,6 +8,7 @@
  
- // static
- int TabGroupStyle::GetChipCornerRadius(TabStripOrientation orientation) {
-+  if (tabs::HorizontalTabsUpdateEnabled() &&
-+      orientation == TabStripOrientation::kHorizontal) {
-+    return tabs::kTabBorderRadius;
-+  }
-   return orientation == TabStripOrientation::kHorizontal
-              ? kCornerRadius
-              : kVerticalCornerRadius;
-@@ -50,6 +54,9 @@ int TabGroupStyle::GetFocusedChipCornerRadius(TabStripOrientation orientation) {
- 
- // static
- int TabGroupStyle::GetEmptyChipSize() {
-+  if (tabs::HorizontalTabsUpdateEnabled()) {
-+    return tabs::GetHorizontalTabHeight();
-+  }
-   return kEmptyChipSize;
- }
- 
-@@ -60,6 +67,10 @@ int TabGroupStyle::GetFocusedChipHeight() {
+ #include "base/i18n/rtl.h"
+ #include "chrome/browser/ui/layout_constants.h"
++#include "chrome/browser/ui/tabs/features.h"
+ #include "chrome/browser/ui/tabs/tab_style.h"
+ #include "chrome/browser/ui/views/tabs/shared/tab_strip_types.h"
+ #include "ui/gfx/animation/tween.h"
+@@ -108,11 +109,17 @@ int TabGroupStyle::GetFocusedChipHeight() {
  
  // static
  gfx::Point TabGroupStyle::GetTitleChipOffset(std::optional<int> chip_height) {
-+  if (tabs::HorizontalTabsUpdateEnabled()) {
-+    return gfx::Point(tabs::kHorizontalTabInset,
-+                      tabs::GetHorizontalTabVerticalSpacing());
-+  }
++  gfx::Point offset = [&]() -> gfx::Point {
    const int total_space =
        GetLayoutConstant(LayoutConstant::kTabStripHeight) -
        chip_height.value_or(GetEmptyChipSize()) -
-@@ -70,6 +81,11 @@ gfx::Point TabGroupStyle::GetTitleChipOffset(std::optional<int> chip_height) {
- // static
- gfx::Insets TabGroupStyle::GetInsetsForHeaderChip(
-     TabStripOrientation orientation) {
-+  if (tabs::HorizontalTabsUpdateEnabled() &&
-+      orientation == TabStripOrientation::kHorizontal) {
-+    return gfx::Insets::VH(tabs::GetTabGroupTitleVerticalInset(),
-+                           tabs::GetTabGroupTitleHorizontalInset());
+       GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap);
+   return gfx::Point(GetLeadingGroupHeaderPadding(), total_space / 2);
++  }();
++  if (tabs::HorizontalTabsUpdateEnabled()) {
++    offset.set_x(tabs::kHorizontalTabInset);
 +  }
-   return orientation == TabStripOrientation::kHorizontal
-              ? gfx::Insets::VH(kHeaderChipVerticalInset, kCornerRadius)
-              : gfx::Insets::VH(0, kVerticalHeaderChipHorizontalInset);
++  return offset;
+ }
+ 
+ // static

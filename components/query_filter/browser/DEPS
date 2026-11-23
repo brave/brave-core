@@ -1,11 +1,17 @@
 include_rules = [
+  "+brave/components/brave_shields/core/browser",
   "+components/component_updater",
+  "+components/content_settings/core/browser",
+  "+components/prefs",
+  "+components/sync_preferences",
   "+components/update_client",
+  "+services/network/public/cpp",
+  "+third_party/blink/public/common",
   "+third_party/re2/src/re2/re2.h",
 ]
 
 specific_include_rules = {
-  ".*test\.cc": [
+  ".*test\\.cc": [
     "+content/public/test",
     "+components/update_client",
   ],

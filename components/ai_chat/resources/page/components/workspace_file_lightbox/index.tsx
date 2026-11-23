@@ -8,6 +8,11 @@ import Button from '@brave/nala/react/button'
 import Dialog from '@brave/nala/react/dialog'
 import Icon from '@brave/nala/react/icon'
 import { getLocale } from '$web-common/locale'
+import {
+  buildViewerUrl,
+  getFilename,
+  getWorkspaceOrigin,
+} from '../../../common/workspace_url'
 import { requestWorkspaceZip } from '../../../leo_workspace/download'
 import styles from './style.module.scss'
 
@@ -31,40 +36,6 @@ interface Props {
 
 const DIALOG_WIDTH = 800
 const DIALOG_HEIGHT = 600
-
-/**
- * Extracts just the filename from a path (e.g., "src/foo/bar.ts" -> "bar.ts")
- */
-function getFilename(path: string): string {
-  const parts = path.split('/')
-  return parts[parts.length - 1] || path
-}
-
-/**
- * Maps the workspace URL to the origin of the workspace page.
- * Workspace URL: workspace://<uuid>
- * Origin: chrome-untrusted://<uuid>.leo-workspace
- */
-function getWorkspaceOrigin(workspaceUrl: string): string {
-  try {
-    const url = new URL(workspaceUrl)
-    if (url.protocol !== 'workspace:' || !url.hostname) {
-      return ''
-    }
-    return `chrome-untrusted://${url.hostname}.leo-workspace`
-  } catch {
-    return ''
-  }
-}
-
-/**
- * Builds the iframe URL from the workspace origin and file path.
- * The workspace page handles the #file= fragment to display the file.
- * Iframe URL: chrome-untrusted://<uuid>.leo-workspace/#file=<path>
- */
-function buildViewerUrl(workspaceOrigin: string, filePath: string): string {
-  return `${workspaceOrigin}/#file=${encodeURIComponent(filePath)}`
-}
 
 const MAX_DOWNLOAD_NAME_LENGTH = 100
 

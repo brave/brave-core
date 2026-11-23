@@ -6,12 +6,17 @@
 #ifndef BRAVE_BROWSER_PSST_PSST_INFOBAR_DELEGATE_H_
 #define BRAVE_BROWSER_PSST_PSST_INFOBAR_DELEGATE_H_
 
+#include <memory>
+
 #include "base/functional/callback.h"
-#include "components/infobars/core/confirm_infobar_delegate.h"
+#include "brave/components/infobars/core/brave_confirm_infobar_delegate.h"
+#include "build/build_config.h"
+#include "ui/base/models/image_model.h"
+#include "url/gurl.h"
 
 namespace psst {
 
-class PsstInfoBarDelegate : public ConfirmInfoBarDelegate {
+class PsstInfoBarDelegate : public BraveConfirmInfoBarDelegate {
  public:
   using AcceptCallback = base::OnceCallback<void(const bool is_accepted)>;
 
@@ -41,9 +46,11 @@ class PsstInfoBarDelegate : public ConfirmInfoBarDelegate {
 
   // ConfirmInfoBarDelegate overrides:
   infobars::InfoBarDelegate::InfoBarIdentifier GetIdentifier() const override;
+  ui::ImageModel GetIcon() const override;
   std::u16string GetMessageText() const override;
   int GetButtons() const override;
   std::u16string GetButtonLabel(InfoBarButton button) const override;
+  GURL GetLinkURL() const override;
 
   AcceptCallback on_accept_callback_;
 };

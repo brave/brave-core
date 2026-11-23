@@ -24,12 +24,16 @@ class PageActionTestObserver : public PageActionModelObserver {
   bool visible() const { return visible_; }
   const std::u16string& text() const { return text_; }
   const std::u16string& tooltip_text() const { return tooltip_text_; }
+  bool should_show_suggestion_chip() const {
+    return should_show_suggestion_chip_;
+  }
   int model_change_count() const { return model_change_count_; }
 
  private:
   bool visible_ = false;
   std::u16string text_;
   std::u16string tooltip_text_;
+  bool should_show_suggestion_chip_ = false;
   int model_change_count_ = 0;
 };
 

@@ -13,7 +13,6 @@
 
 #include "base/containers/flat_map.h"
 #include "base/files/file_path.h"
-#include "base/gtest_prod_util.h"
 #include "base/memory/ref_counted_memory.h"
 #include "base/memory/scoped_refptr.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -72,9 +71,11 @@ class PlaylistThumbnailDownloader {
 
   bool has_download_requests() const { return url_loader_map_.size(); }
 
- private:
-  FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, ResetAll);
+  void SetPauseDownloadForTesting(bool paused) {
+    pause_download_for_testing_ = paused;
+  }
 
+ private:
   using URLLoaderMap =
       base::flat_map<std::string, std::unique_ptr<network::SimpleURLLoader>>;
 

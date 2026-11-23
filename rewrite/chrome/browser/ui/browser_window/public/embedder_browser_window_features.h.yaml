@@ -10,3 +10,9 @@ substitutions:
       code: |-
         std::unique_ptr<BraveBrowserWindowFeatures>
             brave_browser_window_features_;
+
+  - description: |-
+      Forward declare the types the substitutions above use
+    add_after_includes:
+      code: |-
+        class BraveBrowserWindowFeatures;

@@ -1,5 +1,5 @@
 diff --git a/services/network/public/cpp/header_util.cc b/services/network/public/cpp/header_util.cc
-index b9036384c05f20be5d438a6bad485228f69d6ee7..dd3fb417652f6d8f62553727d9401eaac430c590 100644
+index a0e997c2d1f199f08656e370aa7acdccc57763f4..406ed511e71bc898f55d6c2c7e496e3f719f6e96 100644
 --- a/services/network/public/cpp/header_util.cc
 +++ b/services/network/public/cpp/header_util.cc
 @@ -145,6 +145,7 @@ bool ContainsForbiddenSecurityHeader(net::HttpRequestHeaders& headers,

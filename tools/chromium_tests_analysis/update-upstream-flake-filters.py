@@ -71,6 +71,7 @@ from gevent import monkey
 monkey.patch_all()
 
 # pylint: disable=wrong-import-position
+# ruff: noqa: E402
 import argparse
 import os
 import sys

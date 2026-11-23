@@ -21,7 +21,6 @@ extension WalletStore {
       txService: MockTxService(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
       solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
-      ipfsApi: TestIpfsAPI(),
       bitcoinWalletService: BraveWallet.TestBitcoinWalletService(),
       zcashWalletService: BraveWallet.TestZCashWalletService(),
       cardanoWalletService: BraveWallet.TestCardanoWalletService()
@@ -40,7 +39,6 @@ extension CryptoStore {
       txService: MockTxService(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
       solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
-      ipfsApi: TestIpfsAPI(),
       bitcoinWalletService: BraveWallet.TestBitcoinWalletService.previewBitcoinWalletService,
       zcashWalletService: BraveWallet.TestZCashWalletService.previewZCashWalletService,
       cardanoWalletService: BraveWallet.TestCardanoWalletService.previewCardanoWalletService
@@ -119,7 +117,6 @@ extension AccountActivityStore {
       txService: MockTxService(),
       blockchainRegistry: MockBlockchainRegistry(),
       solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
-      ipfsApi: TestIpfsAPI(),
       bitcoinWalletService: BraveWallet.TestBitcoinWalletService.previewBitcoinWalletService,
       zcashWalletService: BraveWallet.TestZCashWalletService.previewZCashWalletService,
       userAssetManager: TestableWalletUserAssetManager()
@@ -145,7 +142,6 @@ extension TransactionConfirmationStore {
       bitcoinWalletService: BraveWallet.TestBitcoinWalletService.previewBitcoinWalletService,
       zcashWalletService: BraveWallet.TestZCashWalletService.previewZCashWalletService,
       cardanoWalletService: BraveWallet.TestCardanoWalletService.previewCardanoWalletService,
-      ipfsApi: TestIpfsAPI(),
       userAssetManager: TestableWalletUserAssetManager()
     )
   }
@@ -172,7 +168,6 @@ extension SettingsStore {
       walletService: MockBraveWalletService(),
       rpcService: MockJsonRpcService(),
       txService: MockTxService(),
-      ipfsApi: TestIpfsAPI(),
       keychain: TestableKeychain()
     )
   }
@@ -193,7 +188,6 @@ extension TransactionsActivityStore {
     blockchainRegistry: MockBlockchainRegistry(),
     txService: MockTxService(),
     solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
-    ipfsApi: TestIpfsAPI(),
     userAssetManager: TestableWalletUserAssetManager()
   )
 }

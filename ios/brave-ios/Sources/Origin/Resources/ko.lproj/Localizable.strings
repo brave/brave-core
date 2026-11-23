@@ -68,7 +68,7 @@
 "restoreButton" = "복구";
 
 /* A toggle label for Brave Rewards feature */
-"rewardsLabel" = "리워드";
+"rewardsLabel" = "Rewards";
 
 /* A toggle label for statistics reporting feature */
 "statisticsReportingLabel" = "통계 보고";

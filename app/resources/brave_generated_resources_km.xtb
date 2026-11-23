@@ -50,6 +50,7 @@
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
 Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6229752134959014186">ស្វែង​យល់​បន្ថែម​អំពី Widevine</translation>
+<translation id="3318169548229684688">ទាញយកម៉ូដែលសម្គាល់សំឡេង (<ph name="DOWNLOAD_SIZE"/>) ដើម្បីដំណើរការសំឡេងនៅលើឧបករណ៍នេះ</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> កំពុងស្នើរសុំអ្នក</translation>
 <translation id="3218385319396786393">Autoplay ត្រូវបានបិទនៅលើទំព័រនេះ</translation>
 <translation id="4988333904713528597">អនុញ្ញាតអោយ Autoplay នៅលើ <ph name="HOST"/></translation>
@@ -609,6 +610,8 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3540231253392253941">ប្រើសេវាកម្ម Google សម្រាប់ការpushសារ</translation>
 <translation id="2224032129673914306">ការស្វែងរកប្រវត្តិតាមន័យ</translation>
 <translation id="6045998903985162478">ធ្វើលិបិក្រមទំព័រដែលអ្នកចូលមើល ដើម្បីឱ្យអ្នកអាចស្វែងរកវាបានយ៉ាងងាយស្រួលនៅក្នុងប្រវត្តិ ផ្ទាំងដែលបើក និង Leo។</translation>
+<translation id="3962946446120925966">ការស្គាល់សំឡេងនៅលើឧបករណ៍</translation>
+<translation id="6408242130028978631">ទាញយកម៉ូដែលស្គាល់សំឡេង (<ph name="DOWNLOAD_SIZE"/>) ដើម្បីឱ្យគេហទំព័រអាចដំណើរការសំឡេងនៅលើឧបករណ៍នេះ។ បិទការកំណត់នេះដើម្បីលុបម៉ូដែលចេញ។</translation>
 <translation id="5813105074916486721">ការរក្សាទុកប្រវត្តិនៅមូលដ្ឋាន</translation>
 <translation id="5671611745062206644">រយៈពេលដែល Brave ផ្ទុកប្រវត្តិការរុករករបស់អ្នកនៅមូលដ្ឋាន</translation>
 <translation id="7184510058087008090">1 ថ្ងៃ</translation>

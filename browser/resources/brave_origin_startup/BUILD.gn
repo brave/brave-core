@@ -25,7 +25,7 @@ transpile_web_ui("js_resources") {
   resource_name = resource_name
 
   deps = [
-    "//brave/components/brave_origin/mojom:mojom_js",
+    "//brave/components/brave_origin/mojom:mojom_ts__generator",
     "//brave/components/resources:strings",
   ]
 }

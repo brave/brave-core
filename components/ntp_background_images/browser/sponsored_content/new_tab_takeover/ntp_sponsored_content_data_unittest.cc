@@ -42,6 +42,7 @@ constexpr char kTestSponsoredImagesCampaign[] = R"(
         {
           "version": 1,
           "campaignId": "65933e82-6b21-440b-9956-c0f675ca7435",
+          "type": "paid",
           "creativeSets": [
             {
               "creativeSetId": "6690ad47-d0af-4dbb-a2dd-c7a678b2b83b",
@@ -194,7 +195,8 @@ TEST(NTPSponsoredContentDataTest, ParseSponsoredImageCampaign) {
   EXPECT_THAT(
       sponsored_content_data.campaigns,
       testing::ElementsAre(testing::FieldsAre(
-          /*campaign_id=*/"65933e82-6b21-440b-9956-c0f675ca7435",
+          /*id=*/"65933e82-6b21-440b-9956-c0f675ca7435",
+          /*type=*/brave_ads::mojom::NewTabPageAdCampaignType::kPaid,
           /*creatives=*/
           testing::ElementsAre(testing::FieldsAre(
               WallpaperType::kStaticNewTabTakeover,
@@ -216,6 +218,37 @@ TEST(NTPSponsoredContentDataTest, ParseSponsoredImageCampaign) {
                   /*alt_text=*/"Some content",
                   /*destination_url=*/"https://basicattentiontoken.org",
                   /*company_name=*/"Image NTT Creative"))))));
+}
+
+TEST(NTPSponsoredContentDataTest,
+     ParseSponsoredImageCampaignWithoutTypeFieldDefaultsToPaid) {
+  base::DictValue dict =
+      base::test::ParseJsonDict(kTestSponsoredImagesCampaign);
+  CHECK_DEREF(dict.FindList("campaigns"))[0].GetDict().Remove("type");
+
+  base::FilePath installed_dir(FILE_PATH_LITERAL("ntp_sponsored_content_data"));
+  NTPSponsoredContentData sponsored_content_data(dict, installed_dir);
+  EXPECT_TRUE(sponsored_content_data.IsValid());
+
+  ASSERT_THAT(sponsored_content_data.campaigns, testing::SizeIs(1));
+  EXPECT_EQ(sponsored_content_data.campaigns[0].type,
+            brave_ads::mojom::NewTabPageAdCampaignType::kPaid);
+}
+
+TEST(NTPSponsoredContentDataTest,
+     ParseSponsoredImageCampaignWithUnknownTypeFieldDefaultsToPaid) {
+  base::DictValue dict =
+      base::test::ParseJsonDict(kTestSponsoredImagesCampaign);
+  CHECK_DEREF(dict.FindList("campaigns"))
+  [0].GetDict().Set("type", "unknown_type");
+
+  base::FilePath installed_dir(FILE_PATH_LITERAL("ntp_sponsored_content_data"));
+  NTPSponsoredContentData sponsored_content_data(dict, installed_dir);
+  EXPECT_TRUE(sponsored_content_data.IsValid());
+
+  ASSERT_THAT(sponsored_content_data.campaigns, testing::SizeIs(1));
+  EXPECT_EQ(sponsored_content_data.campaigns[0].type,
+            brave_ads::mojom::NewTabPageAdCampaignType::kPaid);
 }
 
 TEST(NTPSponsoredContentDataTest,

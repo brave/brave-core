@@ -28,6 +28,7 @@ import org.chromium.base.test.util.Features.DisableFeatures;
 import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.base.test.util.MinAndroidSdkLevel;
 import org.chromium.base.test.util.Restriction;
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.appearance.settings.AppearanceSettingsFragment;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.homepage.settings.BraveHomepageSettings;
@@ -75,10 +76,10 @@ public class BraveAppearancePreferencesTest {
             AppearancePreferences.PREF_BRAVE_CUSTOMIZE_MENU,
             AppearanceSettingsFragment.PREF_TOOLBAR_SHORTCUT,
             AppearancePreferences.PREF_ADDRESS_BAR,
-            AppearanceSettingsFragment.PREF_HOMEPAGE,
             // These two share an order value and are mutually exclusive, so one is always null.
             BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY,
             AppearanceSettingsFragment.PREF_BOTTOM_BAR_SWITCH,
+            AppearanceSettingsFragment.PREF_HOMEPAGE,
             AppearancePreferences.PREF_ENABLE_MULTI_WINDOWS,
             AppearancePreferences.PREF_GENERAL_SECTION,
             AppearancePreferences.PREF_BRAVE_NIGHT_MODE_ENABLED,
@@ -146,6 +147,9 @@ public class BraveAppearancePreferencesTest {
                         AppearanceSettingsFragment.PREF_BOTTOM_BAR_SWITCH);
         Assert.assertNotNull(enableBottomBar);
         assertTrue(enableBottomBar.isVisible());
+        Assert.assertEquals(
+                mAppearancePreferences.getString(R.string.brave_bottom_bar_setting_title),
+                enableBottomBar.getTitle().toString());
         Assert.assertNull(
                 mAppearancePreferences.findPreference(
                         BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY));

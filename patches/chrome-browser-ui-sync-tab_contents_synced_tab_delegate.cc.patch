@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/sync/tab_contents_synced_tab_delegate.cc b/chrome/browser/ui/sync/tab_contents_synced_tab_delegate.cc
+index d77a8e4e57fb764999f7fce34a910c0a4082d6be..28a16bd7d820ebbdda9ed4aa99b1c6cca9c116e0 100644
+--- a/chrome/browser/ui/sync/tab_contents_synced_tab_delegate.cc
++++ b/chrome/browser/ui/sync/tab_contents_synced_tab_delegate.cc
+@@ -130,6 +130,9 @@ TabContentsSyncedTabDelegate::GetBlockedNavigations() const {
+ 
+ bool TabContentsSyncedTabDelegate::ShouldSync(
+     sync_sessions::SyncSessionsClient* sessions_client) {
++  if (auto brave_should_sync = BraveShouldSyncTab(web_contents())) {
++    return *brave_should_sync;
++  }
+   if (sessions_client->GetSyncedWindowDelegatesGetter()->FindById(
+           GetWindowId()) == nullptr) {
+     return false;

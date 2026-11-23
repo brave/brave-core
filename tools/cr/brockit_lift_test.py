@@ -136,6 +136,11 @@ GNRT_FILE = 'third_party/rust/chromium_crates_io/BUILD.gn'
 # The name of the continuation file a paused lift leaves in the brave root.
 VERSION_UPGRADE_NAME = '.version_upgrade'
 
+# What a lift stopped on a recoverable `update_patches` failure prints last.
+RERUN_WITH_CONTINUE = (
+    '👋 (Address the error above, and then rerun 🚀Brockit! with --continue)'
+)
+
 # The plaster file for `FOO`, used by the tests covering apply-fixed patches.
 FOO_PLASTER = f'rewrite/{FOO}.yaml'
 FOO_PLASTER_BODY = """substitutions:
@@ -1347,6 +1352,7 @@ class LiftConflictResolutionTest(LiftTestCase):
             run,
             'Staged files detected after running update_patches.',
             'some_file.txt',
+            RERUN_WITH_CONTINUE,
         )
 
     def test_continue_with_a_bigger_patch_is_rejected(self):
@@ -1375,6 +1381,7 @@ class LiftConflictResolutionTest(LiftTestCase):
             'hunks, and are expected to be submitted separately as fixes with '
             'Chromium culprits:',
             f'* {FOO_PATCH}: 1 hunks before, 2 hunks after',
+            RERUN_WITH_CONTINUE,
         )
 
     def test_conflict_in_a_dependency_is_reported_and_resolved(self):
@@ -1484,6 +1491,7 @@ class LiftDeletedSourceTest(LiftTestCase):
             run,
             'Deleted patches detected. These should be committed as their '
             f'own changes:\n{BAR_PATCH}',
+            RERUN_WITH_CONTINUE,
         )
 
     def test_continue_after_committing_the_deletion_finishes(self):
@@ -1567,6 +1575,7 @@ class LiftRenamedSourceTest(LiftTestCase):
             'Untracked patch files detected. These should be committed as '
             'their own changes:',
             self.RENAMED_PATCH,
+            RERUN_WITH_CONTINUE,
         )
 
     def test_continue_after_carrying_the_patch_over_finishes(self):

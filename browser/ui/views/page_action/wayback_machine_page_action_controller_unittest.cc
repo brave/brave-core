@@ -39,7 +39,7 @@ class WaybackMachinePageActionControllerTest : public testing::Test {
             kActionShowWaybackMachine,
             PageActionProperties{
                 .histogram_name = "WaybackMachine",
-                .type = brave::kWaybackMachineActionIconType,
+                .type = PageActionIconType::kBraveWaybackMachine,
             },
         }}) {}
 
@@ -135,6 +135,12 @@ TEST_F(WaybackMachinePageActionControllerTest, VisibleWhenNeedToCheck) {
 
 TEST_F(WaybackMachinePageActionControllerTest, VisibleWhenFetching) {
   tab_helper()->SetWaybackStateForTesting(WaybackState::kFetching);
+
+  EXPECT_TRUE(observer().visible());
+}
+
+TEST_F(WaybackMachinePageActionControllerTest, VisibleWhenFound) {
+  tab_helper()->SetWaybackStateForTesting(WaybackState::kFound);
 
   EXPECT_TRUE(observer().visible());
 }

@@ -113,10 +113,6 @@ class ZCashShieldSyncService {
  private:
   FRIEND_TEST_ALL_PREFIXES(ZCashShieldSyncServiceTest, ScanBlocks);
   FRIEND_TEST_ALL_PREFIXES(ZCashShieldSyncServiceTest,
-                           ReorgEvent_ChainTipAfter);
-  FRIEND_TEST_ALL_PREFIXES(ZCashShieldSyncServiceTest,
-                           ReorgEvent_ChainTipBelow);
-  FRIEND_TEST_ALL_PREFIXES(ZCashShieldSyncServiceTest,
                            ScanBlocks_IronwoodEnabled);
   FRIEND_TEST_ALL_PREFIXES(ZCashShieldSyncServiceTest,
                            ScanBlocks_IronwoodDisabled);
@@ -124,7 +120,7 @@ class ZCashShieldSyncService {
                            GetSpendableBalance_IncludesIronwoodNotes);
   FRIEND_TEST_ALL_PREFIXES(ZCashShieldSyncServiceTest,
                            GetSpendableBalance_IronwoodDisabled);
-  FRIEND_TEST_ALL_PREFIXES(ZCashShieldSyncServiceTest,
+  FRIEND_TEST_ALL_PREFIXES(ZCashShieldSyncServiceDeathTest,
                            GetSpendableBalance_IronwoodMissingBundle);
 
   void SetOrchardBlockScannerProxyForTesting(

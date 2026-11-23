@@ -10,7 +10,8 @@
   class="cr-row first"
   pref-key="[[verticalTabsEnabledPrefKey_]]"
   label="$i18n{appearanceSettingsTabsUseVerticalTabs}"
-  disabled="[[!verticalTabsToggleEnabled_]]">
+  no-set-pref
+  on-settings-boolean-control-change="onVerticalTabsToggleChange_">
 </settings-toggle-button>
 <template
   is="dom-if"

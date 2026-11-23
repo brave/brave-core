@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/side_panel/side_panel_ui_base.h b/chrome/browser/ui/side_panel/side_panel_ui_base.h
+index b1d33cf8f4f15b28925371b8a27404ea182bc7eb..1f0d9432bc0deb46de783eafa95b332cf93357a9 100644
+--- a/chrome/browser/ui/side_panel/side_panel_ui_base.h
++++ b/chrome/browser/ui/side_panel/side_panel_ui_base.h
+@@ -165,6 +165,7 @@ class SidePanelUIBase : public SidePanelUI {
+   SidePanelEntryWaiter* waiter() const;
+ 
+  private:
++  friend class BraveSidePanelCoordinator;
+   const raw_ptr<BrowserWindowInterface> browser_;
+   std::unique_ptr<PanelData> panel_data_;
+   ui::ScopedUnownedUserData<SidePanelUI> scoped_unowned_user_data_;

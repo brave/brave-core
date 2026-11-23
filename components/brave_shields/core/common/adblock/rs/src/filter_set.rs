@@ -9,7 +9,10 @@ use cxx::CxxVector;
 use crate::ffi::{AddFilterListResult, AddedFiltersRecord};
 use crate::result::InternalError;
 
-pub struct FilterSet(pub(crate) InnerFilterSet);
+pub struct FilterSet {
+    pub(crate) inner: InnerFilterSet,
+    pub(crate) debug: bool,
+}
 
 impl Default for Box<FilterSet> {
     fn default() -> Self {
@@ -18,7 +21,7 @@ impl Default for Box<FilterSet> {
 }
 
 pub fn new_filter_set(debug: bool) -> Box<FilterSet> {
-    Box::new(FilterSet(InnerFilterSet::new(debug)))
+    Box::new(FilterSet { inner: InnerFilterSet::new(debug), debug })
 }
 
 impl FilterSet {
@@ -33,7 +36,7 @@ impl FilterSet {
     ) -> AddFilterListResult {
         || -> Result<AddedFiltersRecord, InternalError> {
             Ok(self
-                .0
+                .inner
                 .add_filter_list(
                     std::str::from_utf8(rules.as_slice())?.to_string(),
                     ParseOptions {

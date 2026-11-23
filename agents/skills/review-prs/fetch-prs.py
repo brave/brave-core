@@ -35,7 +35,7 @@ from datetime import datetime, timedelta, timezone
 _script_dir = os.path.dirname(os.path.abspath(__file__))
 _repo_dir = os.path.normpath(os.path.join(_script_dir, "..", "..", ".."))
 sys.path.insert(0, os.path.join(_script_dir, "scripts"))
-from lib.file_lock import locked_json_update
+from lib.file_lock import locked_json_update  # noqa: E402
 
 PR_REPO = "brave/brave-core"
 

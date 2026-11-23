@@ -20,10 +20,14 @@
    component id.
 4. In `brave/brave-core-crx-packager`
    ([Example](https://github.com/brave/brave-core-crx-packager/pull/1048)):
-   1. Add a script to download the file to `pacakge.json`.
+   1. Add a script to download the file to `package.json`.
    2. Create a script to build the package and manifest and add it to the
       `package.json`.
-5. In `brave/devops` ([Example](https://github.com/brave/devops/issues/13229)):
-   1. Open an issue to create a Jenkins job to publish the crx-package.
-6. Once the package is published, test it in your local development of Brave to
+5. Get a security review in
+   [`brave/reviews`](https://github.com/brave/reviews/issues) covering the
+   component, the packaging script and the data.
+6. In `brave/devops` ([Example](https://github.com/brave/devops/issues/13229)):
+   1. Open an issue to create a Jenkins job to publish the crx-package, linking
+      the passed security review.
+7. Once the package is published, test it in your local development of Brave to
    be sure it's downloaded and consumed as expected.

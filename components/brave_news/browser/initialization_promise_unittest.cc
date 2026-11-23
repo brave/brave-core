@@ -11,8 +11,8 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
-#include "base/run_loop.h"
 #include "base/test/bind.h"
+#include "base/test/test_future.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
@@ -76,9 +76,9 @@ class BraveNewsInitializationPromiseTest : public testing::Test {
 
  protected:
   std::string InitializeAndGetLocale() {
-    base::RunLoop loop;
-    initialization_promise_->OnceInitialized(loop.QuitClosure());
-    loop.Run();
+    base::test::TestFuture<void> future;
+    initialization_promise_->OnceInitialized(future.GetCallback());
+    EXPECT_TRUE(future.Wait());
 
     auto channels = pref_manager_->GetSubscriptions().channels();
     if (channels.empty()) {

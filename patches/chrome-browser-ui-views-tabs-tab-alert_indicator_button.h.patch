@@ -1,0 +1,51 @@
+diff --git a/chrome/browser/ui/views/tabs/tab/alert_indicator_button.h b/chrome/browser/ui/views/tabs/tab/alert_indicator_button.h
+index 52560fbc5c5dac3403c69eef75411b82b7596ad7..08cf2a9eb1f4078ea3a777606a143f4d674227ae 100644
+--- a/chrome/browser/ui/views/tabs/tab/alert_indicator_button.h
++++ b/chrome/browser/ui/views/tabs/tab/alert_indicator_button.h
+@@ -37,9 +37,9 @@ enum class TabAlert;
+ // button functionality is enabled and begins handling mouse events.  Otherwise,
+ // this view behaves like an image and all mouse events will be handled by the
+ // parent tab.
+-class AlertIndicatorButton : public views::ImageButton,
++class AlertIndicatorButtonBase : public views::ImageButton,
+                              public views::ViewTargeterDelegate {
+-  METADATA_HEADER(AlertIndicatorButton, views::ImageButton)
++  METADATA_HEADER(AlertIndicatorButtonBase, views::ImageButton)
+ 
+  public:
+   // An interface for the parent tab of the alert indicator.
+@@ -59,12 +59,13 @@ class AlertIndicatorButton : public views::ImageButton,
+ 
+     // Called when the alert indicator has changed states.
+     virtual void AlertStateChanged() = 0;
++    virtual bool IsTabMuteIndicatorNotClickable() = 0;
+   };
+ 
+-  explicit AlertIndicatorButton(Delegate* delegate);
+-  AlertIndicatorButton(const AlertIndicatorButton&) = delete;
+-  AlertIndicatorButton& operator=(const AlertIndicatorButton&) = delete;
+-  ~AlertIndicatorButton() override;
++  explicit AlertIndicatorButtonBase(Delegate* delegate);
++  AlertIndicatorButtonBase(const AlertIndicatorButtonBase&) = delete;
++  AlertIndicatorButtonBase& operator=(const AlertIndicatorButtonBase&) = delete;
++  ~AlertIndicatorButtonBase() override;
+ 
+   // Returns the current TabAlert except, while the indicator image is
+   // fading out, returns the prior TabAlert.
+@@ -80,7 +81,7 @@ class AlertIndicatorButton : public views::ImageButton,
+   // muting. This should be called whenever the active/inactive state of a tab
+   // has changed. Internally, this gets called in TransitionToAlertState(),
+   // OnBoundsChanged(), and in VisibilityChanged().
+-  void UpdateEnabledForMuteToggle();
++  virtual void UpdateEnabledForMuteToggle();
+ 
+   // Called when the parent tab's button color changes.  Determines whether
+   // ResetImages() needs to be called.
+@@ -123,6 +124,7 @@ class AlertIndicatorButton : public views::ImageButton,
+   gfx::ImageSkia GetImageToPaint() override;
+ 
+  private:
++  friend AlertIndicatorButton_BraveImpl;
+   friend class TabContentsTest;
+   friend class TabTest;
+   friend class TabViewTestBase;

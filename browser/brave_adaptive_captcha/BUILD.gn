@@ -23,10 +23,10 @@ source_set("impl") {
 
   if (enable_brave_rewards) {
     deps += [ "//brave/browser/brave_rewards" ]
-  }
 
-  if (!is_android) {
-    deps += [ "//brave/browser/ui" ]
+    if (!is_android) {
+      deps += [ "//brave/browser/ui/brave_rewards" ]
+    }
   }
 }
 

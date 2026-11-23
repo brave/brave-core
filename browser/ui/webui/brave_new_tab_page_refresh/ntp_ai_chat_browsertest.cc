@@ -6,6 +6,7 @@
 #include <string>
 
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
@@ -160,7 +161,7 @@ class NTPAIChatBrowserTest : public InProcessBrowserTest {
  public:
   NTPAIChatBrowserTest() {
     scoped_feature_list_.InitWithFeatures(
-        {ai_chat::features::kAIChat,
+        {features::kBraveNewTabPageRefreshEnabled, ai_chat::features::kAIChat,
          ai_chat::features::kShowAIChatInputOnNewTabPage},
         {});
   }
@@ -286,7 +287,7 @@ class NTPAIChatDisabledBrowserTest : public InProcessBrowserTest {
   NTPAIChatDisabledBrowserTest() {
     // Enable AI Chat but disable the NTP input feature
     scoped_feature_list_.InitWithFeatures(
-        {ai_chat::features::kAIChat},
+        {features::kBraveNewTabPageRefreshEnabled, ai_chat::features::kAIChat},
         {ai_chat::features::kShowAIChatInputOnNewTabPage});
   }
 
@@ -327,7 +328,7 @@ class NTPAIChatPrefDisabledBrowserTest : public InProcessBrowserTest {
  public:
   NTPAIChatPrefDisabledBrowserTest() {
     scoped_feature_list_.InitWithFeatures(
-        {ai_chat::features::kAIChat,
+        {features::kBraveNewTabPageRefreshEnabled, ai_chat::features::kAIChat,
          ai_chat::features::kShowAIChatInputOnNewTabPage},
         {});
   }

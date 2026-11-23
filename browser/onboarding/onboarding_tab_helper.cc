@@ -17,7 +17,7 @@
 #include "base/task/thread_pool.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/onboarding/pref_names.h"
-#include "brave/browser/ui/brave_browser_window.h"
+#include "brave/browser/ui/views/brave_help_bubble/shields_help_bubble_controller.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
@@ -208,10 +208,10 @@ bool OnboardingTabHelper::CanHighlightBraveShields() {
 
 void OnboardingTabHelper::ShowBraveHelpBubbleView() {
   BrowserWindowInterface* browser = tab().GetBrowserWindowInterface();
-  auto* brave_browser_window =
-      browser ? BraveBrowserWindow::FromBrowser(browser) : nullptr;
-  if (!brave_browser_window || !brave_browser_window->ShowBraveHelpBubbleView(
-                                   GetTextForOnboardingShieldsBubble())) {
+  // WebUI browser windows have no Shields icon to point to.
+  auto* controller =
+      browser ? ShieldsHelpBubbleController::From(browser) : nullptr;
+  if (!controller || !controller->Show(GetTextForOnboardingShieldsBubble())) {
     return;
   }
 

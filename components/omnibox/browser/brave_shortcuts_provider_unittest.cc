@@ -90,7 +90,6 @@ class BraveShortcutsProviderTest : public testing::Test {
     provider_ = nullptr;
     history::BlockUntilHistoryProcessesPendingRequests(
         client_.GetHistoryService());
-    task_environment_.RunUntilIdle();
   }
 
   PrefService* prefs() { return client_.GetPrefs(); }

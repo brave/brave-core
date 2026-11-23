@@ -16,7 +16,7 @@
 #include <variant>
 #include <vector>
 
-#include "base/containers/map_util.h"
+#include "base/files/file_path.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
@@ -33,8 +33,10 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
+#include "base/threading/sequence_bound.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
@@ -252,6 +254,20 @@ class RejectAllFilter : public mojo::MessageFilter {
   raw_ptr<int> attempts_;
 };
 
+// A database whose only stubbed query is the lazy load of a thread's entries.
+class MockThreadEntriesDatabase : public AIChatDatabase {
+ public:
+  MockThreadEntriesDatabase()
+      : AIChatDatabase(base::FilePath(),
+                       os_crypt_async::GetTestEncryptorForTesting()) {}
+  ~MockThreadEntriesDatabase() override = default;
+
+  MOCK_METHOD(std::vector<mojom::ConversationTurnPtr>,
+              GetConversationThreadEntries,
+              (std::string_view),
+              (override));
+};
+
 std::vector<mojom::ContentBlockPtr> CreateWebSourcesOutput(
     size_t num_sources,
     std::vector<std::string> queries) {
@@ -345,6 +361,22 @@ class ConversationHandlerUnitTest : public testing::Test {
     }
   }
 
+  void TearDown() override {
+    if (!thread_entries_db_installed_) {
+      return;
+    }
+    // The mock database lives on the main thread and is destroyed by a task
+    // posted when the service releases it; wait for that so gmock does not
+    // report it as leaked.
+    mock_tool_provider_ = nullptr;
+    conversation_handler_.reset();
+    ai_chat_service_.reset();
+    base::test::TestFuture<void> flushed;
+    task_environment_.GetMainThreadTaskRunner()->PostTaskAndReply(
+        FROM_HERE, base::DoNothing(), flushed.GetCallback());
+    ASSERT_TRUE(flushed.Wait());
+  }
+
   // Rebuilds the handler so it picks up AIChatService state the test has
   // changed. The capability set is built in the constructor, which in
   // production always runs after the service has been configured.
@@ -425,6 +457,22 @@ class ConversationHandlerUnitTest : public testing::Test {
     return expected_history;
   }
 
+  // Replaces the service's database with a strict mock and returns it. It
+  // lives on the main thread, owned by the service.
+  MockThreadEntriesDatabase* InstallThreadEntriesDatabase() {
+    auto mock_db =
+        base::SequenceBound<testing::StrictMock<MockThreadEntriesDatabase>>(
+            task_environment_.GetMainThreadTaskRunner());
+    base::test::TestFuture<MockThreadEntriesDatabase*> db_future;
+    mock_db.PostTaskWithThisObject(base::BindLambdaForTesting(
+        [&](testing::StrictMock<MockThreadEntriesDatabase>* db) {
+          db_future.SetValue(db);
+        }));
+    ai_chat_service_->SetDatabaseForTesting(std::move(mock_db));
+    thread_entries_db_installed_ = true;
+    return db_future.Get();
+  }
+
   mojom::ConversationStatePtr GetState() {
     base::test::TestFuture<mojom::ConversationStatePtr> state_future;
     conversation_handler_->GetState(state_future.GetCallback());
@@ -466,6 +514,7 @@ class ConversationHandlerUnitTest : public testing::Test {
   bool has_associated_content_ = true;
 
  private:
+  bool thread_entries_db_installed_ = false;
   base::ScopedTempDir temp_directory_;
 };
 
@@ -560,7 +609,6 @@ TEST_F(ConversationHandlerUnitTest, State) {
   for (bool should_send_content : {false, true}) {
     SCOPED_TRACE(testing::Message()
                  << "should_send_content: " << should_send_content);
-    base::RunLoop run_loop;
     if (!should_send_content) {
       conversation_handler_->associated_content_manager()->ClearContent();
     } else {
@@ -571,19 +619,14 @@ TEST_F(ConversationHandlerUnitTest, State) {
                   ->HasAssociatedContent(),
               should_send_content);
     EXPECT_FALSE(conversation_handler_->HasAnyHistory());
-    conversation_handler_->GetState(
-        base::BindLambdaForTesting([&](mojom::ConversationStatePtr state) {
-          EXPECT_EQ(state->conversation_uuid, "uuid");
-          EXPECT_FALSE(state->is_request_in_progress);
-          EXPECT_EQ(state->all_models.size(),
-                    model_service_->GetModels().size());
-          EXPECT_EQ(state->current_model_key,
-                    model_service_->GetDefaultModelKey());
-          EXPECT_NE(state->associated_content.empty(), should_send_content);
-          EXPECT_EQ(state->error, mojom::APIError::None);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    mojom::ConversationStatePtr state = GetState();
+    ASSERT_TRUE(state);
+    EXPECT_EQ(state->conversation_uuid, "uuid");
+    EXPECT_FALSE(state->is_request_in_progress);
+    EXPECT_EQ(state->all_models.size(), model_service_->GetModels().size());
+    EXPECT_EQ(state->current_model_key, model_service_->GetDefaultModelKey());
+    EXPECT_NE(state->associated_content.empty(), should_send_content);
+    EXPECT_EQ(state->error, mojom::APIError::None);
 
     auto entries_state =
         conversation_handler_->GetStateForConversationEntriesForTesting();
@@ -662,6 +705,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
       std::nullopt /* model_key */, nullptr /* near_verification_status */,
       std::vector<std::string>{} /* child_thread_uuids */));
 
+  base::RunLoop request_complete_loop;
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
   // Human, AI entries and content event for AI response.
@@ -671,8 +715,11 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
   EXPECT_CALL(client,
               OnConversationHistoryUpdate(TurnEq(expected_history[1].get())))
       .Times(2);
-  // Fired from OnEngineCompletionComplete.
-  EXPECT_CALL(client, OnAPIRequestInProgress(false)).Times(testing::AtLeast(1));
+  // Fired from OnEngineCompletionComplete, after all history updates.
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .Times(testing::AtLeast(1))
+      .WillRepeatedly(testing::InvokeWithoutArgs(&request_complete_loop,
+                                                 &base::RunLoop::Quit));
   // Ensure everything is sanitized
   EXPECT_CALL(*engine, SanitizeInput(StrEq(selected_text)));
   EXPECT_CALL(*engine, SanitizeInput(StrEq(expected_turn_text)));
@@ -683,7 +730,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText) {
   conversation_handler_->SubmitSelectedText(
       selected_text, mojom::ActionType::SUMMARIZE_SELECTED_TEXT);
 
-  task_environment_.RunUntilIdle();
+  request_complete_loop.Run();
   testing::Mock::VerifyAndClearExpectations(&client);
   testing::Mock::VerifyAndClearExpectations(associated_content_.get());
   // article_text_ and suggestions_ should be cleared when page content is
@@ -746,6 +793,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithNEARVerification) {
       std::nullopt /* model_key */, mojom::NEARVerificationStatus::New(true),
       std::vector<std::string>{} /* child_thread_uuids */));
 
+  base::RunLoop request_complete_loop;
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
   EXPECT_CALL(client, OnConversationHistoryUpdate(
@@ -754,14 +802,17 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithNEARVerification) {
   EXPECT_CALL(client,
               OnConversationHistoryUpdate(TurnEq(expected_history[1].get())))
       .Times(3);
-  EXPECT_CALL(client, OnAPIRequestInProgress(false)).Times(testing::AtLeast(1));
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .Times(testing::AtLeast(1))
+      .WillRepeatedly(testing::InvokeWithoutArgs(&request_complete_loop,
+                                                 &base::RunLoop::Quit));
   EXPECT_CALL(*engine, SanitizeInput(StrEq(selected_text)));
   EXPECT_CALL(*engine, SanitizeInput(StrEq(expected_turn_text)));
 
   conversation_handler_->SubmitSelectedText(
       selected_text, mojom::ActionType::SUMMARIZE_SELECTED_TEXT);
 
-  task_environment_.RunUntilIdle();
+  request_complete_loop.Run();
   testing::Mock::VerifyAndClearExpectations(&client);
 
   EXPECT_TRUE(conversation_handler_->HasAnyHistory());
@@ -824,6 +875,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
       std::nullopt /* model_key */, nullptr /* near_verification_status */,
       std::vector<std::string>{} /* child_thread_uuids */));
 
+  base::RunLoop request_complete_loop;
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
   // Human and AI entries, and content event for AI response.
@@ -833,8 +885,11 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
   EXPECT_CALL(client,
               OnConversationHistoryUpdate(TurnEq(expected_history[1].get())))
       .Times(2);
-  // Fired from OnEngineCompletionComplete.
-  EXPECT_CALL(client, OnAPIRequestInProgress(false)).Times(testing::AtLeast(1));
+  // Fired from OnEngineCompletionComplete, after all history updates.
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .Times(testing::AtLeast(1))
+      .WillRepeatedly(testing::InvokeWithoutArgs(&request_complete_loop,
+                                                 &base::RunLoop::Quit));
   // Ensure everything is sanitized.
   EXPECT_CALL(*engine, SanitizeInput(StrEq(selected_text)));
   EXPECT_CALL(*engine, SanitizeInput(StrEq(expected_turn_text)));
@@ -844,7 +899,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
   conversation_handler_->SubmitSelectedText(
       selected_text, mojom::ActionType::SUMMARIZE_SELECTED_TEXT);
 
-  task_environment_.RunUntilIdle();
+  request_complete_loop.Run();
   testing::Mock::VerifyAndClearExpectations(&client);
 
   // associated info should be unchanged
@@ -857,7 +912,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
   // Should not be any LLM-generated suggested questions yet because they
   // weren't asked for
   const auto& questions = conversation_handler_->GetSuggestedQuestionsForTest();
-  EXPECT_EQ(1u, questions.size());
+  ASSERT_EQ(1u, questions.size());
   EXPECT_EQ(questions[0].title, "Summarize this page");
 
   const auto& history = conversation_handler_->GetConversationHistory();
@@ -894,7 +949,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   WaitForAssociatedContentFetch(conversation->associated_content_manager());
   auto cached_content =
       conversation->associated_content_manager()->GetCachedContents();
-  EXPECT_EQ(cached_content.size(), 2u);
+  ASSERT_EQ(cached_content.size(), 2u);
   EXPECT_EQ(cached_content[0].get().content, "Content 1");
   EXPECT_EQ(cached_content[1].get().content, "Content 2");
 }
@@ -925,7 +980,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   WaitForAssociatedContentFetch(conversation->associated_content_manager());
   auto cached_content =
       conversation->associated_content_manager()->GetCachedContents();
-  EXPECT_EQ(cached_content.size(), 1u);
+  ASSERT_EQ(cached_content.size(), 1u);
   EXPECT_EQ(cached_content[0].get().content, "Content 1");
 }
 
@@ -965,7 +1020,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
       conversation_handler_->associated_content_manager());
   auto cached_content =
       conversation_handler_->associated_content_manager()->GetCachedContents();
-  EXPECT_EQ(cached_content.size(), 2u);
+  ASSERT_EQ(cached_content.size(), 2u);
   EXPECT_EQ(cached_content[0].get().content, "Content 1");
   EXPECT_EQ(cached_content[1].get().content, "Content 2");
 
@@ -983,7 +1038,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
       conversation_handler_->associated_content_manager());
   cached_content =
       conversation_handler_->associated_content_manager()->GetCachedContents();
-  EXPECT_EQ(cached_content.size(), 1u);
+  ASSERT_EQ(cached_content.size(), 1u);
   EXPECT_EQ(cached_content[0].get().content, "Content 2");
 }
 
@@ -995,7 +1050,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
 
   conversation_handler_->associated_content_manager()->AddContent(
       &associated_content1);
-  EXPECT_EQ(conversation_handler_->associated_content_manager()
+  ASSERT_EQ(conversation_handler_->associated_content_manager()
                 ->GetAssociatedContent()
                 .size(),
             1u);
@@ -1004,6 +1059,10 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
 
   WaitForAssociatedContentFetch(
       conversation_handler_->associated_content_manager());
+  ASSERT_EQ(conversation_handler_->associated_content_manager()
+                ->GetCachedContents()
+                .size(),
+            1u);
   EXPECT_EQ(conversation_handler_->associated_content_manager()
                 ->GetCachedContents()[0]
                 .get()
@@ -1099,7 +1158,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
       conversation_handler_->associated_content_manager());
   auto cached_content =
       conversation_handler_->associated_content_manager()->GetCachedContents();
-  EXPECT_EQ(cached_content.size(), 2u);
+  ASSERT_EQ(cached_content.size(), 2u);
   EXPECT_EQ(cached_content[0].get().content, "Content 1");
   EXPECT_EQ(cached_content[1].get().content, "Content 2");
 
@@ -1111,7 +1170,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
       conversation_handler_->associated_content_manager());
   cached_content =
       conversation_handler_->associated_content_manager()->GetCachedContents();
-  EXPECT_EQ(cached_content.size(), 2u);
+  ASSERT_EQ(cached_content.size(), 2u);
   EXPECT_EQ(cached_content[0].get().content, "Content 1");
   EXPECT_EQ(cached_content[1].get().content, "Content 2");
 
@@ -1124,7 +1183,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
       conversation_handler_->associated_content_manager());
   cached_content =
       conversation_handler_->associated_content_manager()->GetCachedContents();
-  EXPECT_EQ(cached_content.size(), 2u);
+  ASSERT_EQ(cached_content.size(), 2u);
   EXPECT_EQ(cached_content[0].get().content, "Content 1");
   EXPECT_EQ(cached_content[1].get().content, "Content 2");
 }
@@ -1154,7 +1213,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
             2u);
   auto cached_content =
       conversation_handler_->associated_content_manager()->GetCachedContents();
-  EXPECT_EQ(cached_content.size(), 2u);
+  ASSERT_EQ(cached_content.size(), 2u);
   EXPECT_EQ(cached_content[0].get().content, "The content of one");
   EXPECT_EQ(cached_content[1].get().content, "The content of two");
 }
@@ -1221,6 +1280,7 @@ TEST_F(ConversationHandlerUnitTest, ThreadHistory) {
   std::vector<std::unique_ptr<ToolProvider>> tool_providers;
   tool_providers.push_back(std::make_unique<NiceMock<MockToolProvider>>());
 
+  auto* db = InstallThreadEntriesDatabase();
   auto handler = std::make_unique<ConversationHandler>(
       conversation.get(), ai_chat_service_.get(), model_service_.get(),
       ai_chat_service_->GetCredentialManagerForTesting(),
@@ -1240,36 +1300,42 @@ TEST_F(ConversationHandlerUnitTest, ThreadHistory) {
   EXPECT_EQ(threads[0]->uuid, "thread-1");
   EXPECT_EQ(threads[0]->conversation_uuid, "uuid");
   EXPECT_EQ(threads[0]->origin_conversation_entry_uuid, "root-turn-2");
-  // Thread entries should NOT be loaded yet (lazy).
-  auto* container = base::FindOrNull(handler->threads_, "thread-1");
-  ASSERT_TRUE(container);
-  EXPECT_TRUE(container->entries.empty());
 
-  // Deliver thread entries as if received from the service and verify only
-  // the thread's own entries are returned.
-  std::vector<mojom::ConversationTurnPtr> thread_entries;
-  thread_entries.emplace_back(mojom::ConversationTurn::New(
-      "thread-entry-1", std::make_optional<std::string>("thread-1"),
-      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY, "thread query",
-      std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
-      std::nullopt, nullptr, false, std::nullopt, nullptr,
-      std::vector<std::string>{}));
-  thread_entries.emplace_back(mojom::ConversationTurn::New(
-      "thread-entry-2", std::make_optional<std::string>("thread-1"),
-      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
-      "thread response", std::nullopt, std::nullopt, std::nullopt,
-      base::Time::Now(), std::nullopt, std::nullopt, nullptr, false,
-      std::nullopt, nullptr, std::vector<std::string>{}));
+  // Thread entries are loaded lazily: the database is only asked for them by
+  // the first request, and only once, so the second request below must be
+  // served from the cache. A strict mock fails on any earlier fetch.
+  // Let any database work queued by construction or metadata retrieval run
+  // while the strict mock still rejects every entry fetch.
+  base::test::TestFuture<void> db_barrier;
+  task_environment_.GetMainThreadTaskRunner()->PostTask(
+      FROM_HERE, db_barrier.GetCallback());
+  ASSERT_TRUE(db_barrier.Wait());
+  EXPECT_CALL(*db, GetConversationThreadEntries(std::string_view("thread-1")))
+      .WillOnce([]() {
+        std::vector<mojom::ConversationTurnPtr> thread_entries;
+        thread_entries.emplace_back(mojom::ConversationTurn::New(
+            "thread-entry-1", std::make_optional<std::string>("thread-1"),
+            mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+            "thread query", std::nullopt, std::nullopt, std::nullopt,
+            base::Time::Now(), std::nullopt, std::nullopt, nullptr, false,
+            std::nullopt, nullptr, std::vector<std::string>{}));
+        thread_entries.emplace_back(mojom::ConversationTurn::New(
+            "thread-entry-2", std::make_optional<std::string>("thread-1"),
+            mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+            "thread response", std::nullopt, std::nullopt, std::nullopt,
+            base::Time::Now(), std::nullopt, std::nullopt, nullptr, false,
+            std::nullopt, nullptr, std::vector<std::string>{}));
+        return thread_entries;
+      });
 
+  // Only the thread's own entries are returned.
   base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>>
       received_future;
-  handler->OnConversationThreadHistoryReceived(
-      "thread-1", received_future.GetCallback(), std::move(thread_entries));
+  handler->GetConversationHistory("thread-1", received_future.GetCallback());
   auto received_entries = received_future.Take();
   ASSERT_EQ(received_entries.size(), 2u);
   EXPECT_EQ(received_entries[0]->uuid, "thread-entry-1");
   EXPECT_EQ(received_entries[1]->uuid, "thread-entry-2");
-  EXPECT_EQ(container->entries.size(), 2u);
 
   // Subsequent requests should be served from the cache.
   base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>> future;
@@ -1287,6 +1353,7 @@ TEST_F(ConversationHandlerUnitTest, ThreadHistory) {
   handler->GetConversationHistory("unknown-thread",
                                   unknown_future.GetCallback());
   EXPECT_TRUE(unknown_future.Take().empty());
+  testing::Mock::VerifyAndClearExpectations(db);
 }
 
 TEST_F(ConversationHandlerUnitTest, CreateConversationThread_SubmitEntry) {
@@ -1316,20 +1383,13 @@ TEST_F(ConversationHandlerUnitTest, CreateConversationThread_SubmitEntry) {
   EXPECT_EQ(root_history[1]->child_thread_uuids[0], *thread_uuid);
 
   // Thread metadata should be populated immediately, with no entries yet.
-  auto* container =
-      base::FindOrNull(conversation_handler_->threads_, *thread_uuid);
-  ASSERT_TRUE(container);
-  EXPECT_EQ(container->thread->conversation_uuid, "uuid");
-  EXPECT_EQ(container->thread->origin_conversation_entry_uuid,
-            origin_entry_uuid);
-  EXPECT_EQ(container->thread->entry_count, 0u);
-  EXPECT_TRUE(container->entries.empty());
-
   base::test::TestFuture<std::vector<mojom::ThreadPtr>> threads_future;
   conversation_handler_->GetConversationThreads(threads_future.GetCallback());
   auto threads = threads_future.Take();
   ASSERT_EQ(threads.size(), 1u);
   EXPECT_EQ(threads[0]->uuid, *thread_uuid);
+  EXPECT_EQ(threads[0]->conversation_uuid, "uuid");
+  EXPECT_EQ(threads[0]->origin_conversation_entry_uuid, origin_entry_uuid);
   EXPECT_EQ(threads[0]->entry_count, 0u);
 
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
@@ -1382,20 +1442,8 @@ TEST_F(ConversationHandlerUnitTest, CreateConversationThread_SubmitEntry) {
   // The root history should be unchanged by the thread submission.
   EXPECT_EQ(conversation_handler_->GetConversationHistory().size(), 3u);
 
-  // The thread should now contain the human entry and the assistant response,
-  // and its metadata should count both entries.
-  container = base::FindOrNull(conversation_handler_->threads_, *thread_uuid);
-  ASSERT_TRUE(container);
-  EXPECT_EQ(container->thread->entry_count, 2u);
-  ASSERT_EQ(container->entries.size(), 2u);
-  EXPECT_EQ(container->entries[0]->text, "thread query");
-  EXPECT_EQ(container->entries[0]->character_type, mojom::CharacterType::HUMAN);
-  EXPECT_EQ(container->entries[0]->thread_uuid, thread_uuid);
-  EXPECT_EQ(container->entries[1]->text, "thread response");
-  EXPECT_EQ(container->entries[1]->character_type,
-            mojom::CharacterType::ASSISTANT);
-
-  // The thread history for the UI should only contain the thread's entries.
+  // The thread history for the UI should only contain the thread's entries:
+  // the human entry and the assistant response.
   base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>>
       history_future;
   conversation_handler_->GetConversationHistory(*thread_uuid,
@@ -1403,8 +1451,12 @@ TEST_F(ConversationHandlerUnitTest, CreateConversationThread_SubmitEntry) {
   auto entries = history_future.Take();
   ASSERT_EQ(entries.size(), 2u);
   EXPECT_EQ(entries[0]->text, "thread query");
+  EXPECT_EQ(entries[0]->character_type, mojom::CharacterType::HUMAN);
+  EXPECT_EQ(entries[0]->thread_uuid, thread_uuid);
   EXPECT_EQ(entries[1]->text, "thread response");
+  EXPECT_EQ(entries[1]->character_type, mojom::CharacterType::ASSISTANT);
 
+  // The thread's metadata should count both entries.
   conversation_handler_->GetConversationThreads(threads_future.GetCallback());
   threads = threads_future.Take();
   ASSERT_EQ(threads.size(), 1u);
@@ -1417,6 +1469,7 @@ TEST_F(ConversationHandlerUnitTest, CreateConversationThread_FeatureDisabled) {
   feature_list.InitAndDisableFeature(features::kAIChatThreads);
 
   SetupHistory({{"hello", false}, {"response", false}});
+  ASSERT_EQ(conversation_handler_->GetConversationHistory().size(), 2u);
   const std::string origin_entry_uuid =
       conversation_handler_->GetConversationHistory()[1]->uuid.value();
 
@@ -1437,6 +1490,7 @@ TEST_F(ConversationHandlerUnitTest,
   feature_list.InitAndEnableFeature(features::kAIChatThreads);
 
   SetupHistory({{"hello", false}, {"response", false}});
+  ASSERT_EQ(conversation_handler_->GetConversationHistory().size(), 2u);
 
   base::test::TestFuture<const std::optional<std::string>&> future;
   conversation_handler_->CreateConversationThread("non-existent-uuid",
@@ -1456,6 +1510,7 @@ TEST_F(ConversationHandlerUnitTest,
       features::kAIChatThreads, {{"max_threads_per_origin_entry", "3"}});
 
   SetupHistory({{"hello", false}, {"response", false}});
+  ASSERT_EQ(conversation_handler_->GetConversationHistory().size(), 2u);
   const std::string origin_entry_uuid =
       conversation_handler_->GetConversationHistory()[1]->uuid.value();
 
@@ -1469,10 +1524,12 @@ TEST_F(ConversationHandlerUnitTest,
                 ->child_thread_uuids.size(),
             1u);
 
-  auto* container =
-      base::FindOrNull(conversation_handler_->threads_, *thread_uuid);
-  ASSERT_TRUE(container);
-  EXPECT_EQ(container->thread->entry_count, 0u);
+  base::test::TestFuture<std::vector<mojom::ThreadPtr>> empty_threads_future;
+  conversation_handler_->GetConversationThreads(
+      empty_threads_future.GetCallback());
+  auto empty_threads = empty_threads_future.Take();
+  ASSERT_EQ(empty_threads.size(), 1u);
+  EXPECT_EQ(empty_threads[0]->entry_count, 0u);
 
   // Attempting to create another thread while the existing one is still empty
   // should fail.
@@ -1496,7 +1553,9 @@ TEST_F(ConversationHandlerUnitTest, CreateConversationThread_MaxThreads) {
   feature_list.InitAndEnableFeatureWithParameters(
       features::kAIChatThreads, {{"max_threads_per_origin_entry", "1"}});
 
+  conversation_handler_->associated_content_manager()->ClearContent();
   SetupHistory({{"hello", false}, {"response", false}});
+  ASSERT_EQ(conversation_handler_->GetConversationHistory().size(), 2u);
   const std::string origin_entry_uuid =
       conversation_handler_->GetConversationHistory()[1]->uuid.value();
 
@@ -1506,17 +1565,36 @@ TEST_F(ConversationHandlerUnitTest, CreateConversationThread_MaxThreads) {
   std::optional<std::string> thread_uuid = first_future.Take();
   ASSERT_TRUE(thread_uuid.has_value());
 
-  // Add an entry to the thread so it is no longer empty.
-  conversation_handler_->AddToConversationHistory(mojom::ConversationTurn::New(
-      std::nullopt, thread_uuid, mojom::CharacterType::HUMAN,
-      mojom::ActionType::QUERY, "thread query", std::nullopt, std::nullopt,
-      std::nullopt, base::Time::Now(), std::nullopt, std::nullopt, nullptr,
-      false, std::nullopt, nullptr, std::vector<std::string>{}));
+  // Submit an entry on the thread so it is no longer empty. The engine answers
+  // immediately, so the thread ends up with the human entry and the response.
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(::testing::DoAll(
+          base::test::RunOnceCallback<6>(EngineConsumer::GenerationResultData(
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New("thread response")),
+              std::nullopt /* model_key */)),
+          base::test::RunOnceCallback<7>(
+              base::ok(EngineConsumer::GenerationResultData(
+                  mojom::ConversationEntryEvent::NewCompletionEvent(
+                      mojom::CompletionEvent::New("")),
+                  std::nullopt /* model_key */)))));
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(testing::AtLeast(1));
+  base::RunLoop loop;
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit));
+  conversation_handler_->SubmitHumanConversationEntry(
+      "thread query", std::nullopt, thread_uuid);
+  loop.Run();
 
-  auto* container =
-      base::FindOrNull(conversation_handler_->threads_, *thread_uuid);
-  ASSERT_TRUE(container);
-  EXPECT_EQ(container->thread->entry_count, 1u);
+  base::test::TestFuture<std::vector<mojom::ThreadPtr>> filled_threads_future;
+  conversation_handler_->GetConversationThreads(
+      filled_threads_future.GetCallback());
+  auto filled_threads = filled_threads_future.Take();
+  ASSERT_EQ(filled_threads.size(), 1u);
+  EXPECT_EQ(filled_threads[0]->entry_count, 2u);
 
   // Creating another thread should fail since the max has been reached.
   base::test::TestFuture<const std::optional<std::string>&> second_future;
@@ -1554,13 +1632,13 @@ TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_Delta) {
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
-    EXPECT_EQ(history.size(), 1u);
+    ASSERT_EQ(history.size(), 1u);
 
     EXPECT_EQ(history.back()->text, "This");
     auto& events = history.back()->events;
-    EXPECT_EQ(events->size(), 1u);
+    ASSERT_EQ(events->size(), 1u);
 
-    EXPECT_TRUE(events->at(0)->is_completion_event());
+    ASSERT_TRUE(events->at(0)->is_completion_event());
     EXPECT_EQ(events->at(0)->get_completion_event()->completion, "This");
   }
   {
@@ -1573,13 +1651,13 @@ TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_Delta) {
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
-    EXPECT_EQ(history.size(), 1u);
+    ASSERT_EQ(history.size(), 1u);
 
     EXPECT_EQ(history.back()->text, "This is ");
     auto& events = history.back()->events;
-    EXPECT_EQ(events->size(), 1u);
+    ASSERT_EQ(events->size(), 1u);
 
-    EXPECT_TRUE(events->at(0)->is_completion_event());
+    ASSERT_TRUE(events->at(0)->is_completion_event());
     EXPECT_EQ(events->at(0)->get_completion_event()->completion, "This is ");
   }
   {
@@ -1592,13 +1670,13 @@ TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_Delta) {
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
-    EXPECT_EQ(history.size(), 1u);
+    ASSERT_EQ(history.size(), 1u);
 
     EXPECT_EQ(history.back()->text, "This is successful.");
     auto& events = history.back()->events;
-    EXPECT_EQ(events->size(), 1u);
+    ASSERT_EQ(events->size(), 1u);
 
-    EXPECT_TRUE(events->at(0)->is_completion_event());
+    ASSERT_TRUE(events->at(0)->is_completion_event());
     EXPECT_EQ(events->at(0)->get_completion_event()->completion,
               "This is successful.");
   }
@@ -1624,9 +1702,9 @@ TEST_F(ConversationHandlerUnitTest,
                                                             std::move(result));
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
-    EXPECT_EQ(history.size(), 1u);
+    ASSERT_EQ(history.size(), 1u);
     auto& events = history.back()->events;
-    EXPECT_EQ(events->size(), 1u);
+    ASSERT_EQ(events->size(), 1u);
   }
   {
     // Leading space on the first message should be removed
@@ -1639,13 +1717,13 @@ TEST_F(ConversationHandlerUnitTest,
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
-    EXPECT_EQ(history.size(), 1u);
+    ASSERT_EQ(history.size(), 1u);
 
     EXPECT_EQ(history.back()->text, "This is");
     auto& events = history.back()->events;
-    EXPECT_EQ(events->size(), 2u);
+    ASSERT_EQ(events->size(), 2u);
 
-    EXPECT_TRUE(events->at(1)->is_completion_event());
+    ASSERT_TRUE(events->at(1)->is_completion_event());
     EXPECT_EQ(events->at(1)->get_completion_event()->completion, "This is");
   }
   {
@@ -1659,13 +1737,13 @@ TEST_F(ConversationHandlerUnitTest,
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
-    EXPECT_EQ(history.size(), 1u);
+    ASSERT_EQ(history.size(), 1u);
 
     EXPECT_EQ(history.back()->text, "This is successful.");
     auto& events = history.back()->events;
-    EXPECT_EQ(events->size(), 2u);
+    ASSERT_EQ(events->size(), 2u);
 
-    EXPECT_TRUE(events->at(1)->is_completion_event());
+    ASSERT_TRUE(events->at(1)->is_completion_event());
     EXPECT_EQ(events->at(1)->get_completion_event()->completion,
               "This is successful.");
   }
@@ -1691,13 +1769,13 @@ TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_NotDelta) {
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
-    EXPECT_EQ(history.size(), 1u);
+    ASSERT_EQ(history.size(), 1u);
 
     EXPECT_EQ(history.back()->text, "This");
     auto& events = history.back()->events;
-    EXPECT_EQ(events->size(), 1u);
+    ASSERT_EQ(events->size(), 1u);
 
-    EXPECT_TRUE(events->at(0)->is_completion_event());
+    ASSERT_TRUE(events->at(0)->is_completion_event());
     EXPECT_EQ(events->at(0)->get_completion_event()->completion, "This");
   }
   {
@@ -1711,13 +1789,13 @@ TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_NotDelta) {
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
-    EXPECT_EQ(history.size(), 1u);
+    ASSERT_EQ(history.size(), 1u);
 
     EXPECT_EQ(history.back()->text, "This is ");
     auto& events = history.back()->events;
-    EXPECT_EQ(events->size(), 1u);
+    ASSERT_EQ(events->size(), 1u);
 
-    EXPECT_TRUE(events->at(0)->is_completion_event());
+    ASSERT_TRUE(events->at(0)->is_completion_event());
     EXPECT_EQ(events->at(0)->get_completion_event()->completion, "This is ");
   }
   {
@@ -1730,13 +1808,13 @@ TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_NotDelta) {
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
-    EXPECT_EQ(history.size(), 1u);
+    ASSERT_EQ(history.size(), 1u);
 
     EXPECT_EQ(history.back()->text, "This is successful.");
     auto& events = history.back()->events;
-    EXPECT_EQ(events->size(), 1u);
+    ASSERT_EQ(events->size(), 1u);
 
-    EXPECT_TRUE(events->at(0)->is_completion_event());
+    ASSERT_TRUE(events->at(0)->is_completion_event());
     EXPECT_EQ(events->at(0)->get_completion_event()->completion,
               "This is successful.");
   }
@@ -1762,9 +1840,9 @@ TEST_F(ConversationHandlerUnitTest,
                                                             std::move(result));
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
-    EXPECT_EQ(history.size(), 1u);
+    ASSERT_EQ(history.size(), 1u);
     auto& events = history.back()->events;
-    EXPECT_EQ(events->size(), 1u);
+    ASSERT_EQ(events->size(), 1u);
   }
   {
     // Leading space should be removed for every partial message
@@ -1777,13 +1855,13 @@ TEST_F(ConversationHandlerUnitTest,
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
-    EXPECT_EQ(history.size(), 1u);
+    ASSERT_EQ(history.size(), 1u);
 
     EXPECT_EQ(history.back()->text, "This is ");
     auto& events = history.back()->events;
-    EXPECT_EQ(events->size(), 2u);
+    ASSERT_EQ(events->size(), 2u);
 
-    EXPECT_TRUE(events->at(1)->is_completion_event());
+    ASSERT_TRUE(events->at(1)->is_completion_event());
     EXPECT_EQ(events->at(1)->get_completion_event()->completion, "This is ");
   }
   {
@@ -1796,13 +1874,13 @@ TEST_F(ConversationHandlerUnitTest,
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
-    EXPECT_EQ(history.size(), 1u);
+    ASSERT_EQ(history.size(), 1u);
 
     EXPECT_EQ(history.back()->text, "This is successful.");
     auto& events = history.back()->events;
-    EXPECT_EQ(events->size(), 2u);
+    ASSERT_EQ(events->size(), 2u);
 
-    EXPECT_TRUE(events->at(1)->is_completion_event());
+    ASSERT_TRUE(events->at(1)->is_completion_event());
     EXPECT_EQ(events->at(1)->get_completion_event()->completion,
               "This is successful.");
   }
@@ -1832,8 +1910,8 @@ TEST_F(ConversationHandlerUnitTest,
         conversation_handler_->GetConversationHistory();
     ASSERT_EQ(history.size(), 1u);
     auto& events = history.back()->events;
-    EXPECT_EQ(events->size(), 1u);
-    EXPECT_TRUE(events->at(0)->is_completion_event());
+    ASSERT_EQ(events->size(), 1u);
+    ASSERT_TRUE(events->at(0)->is_completion_event());
     EXPECT_EQ(events->at(0)->get_completion_event()->completion, "This is");
   }
   {
@@ -1849,7 +1927,7 @@ TEST_F(ConversationHandlerUnitTest,
         conversation_handler_->GetConversationHistory();
     ASSERT_EQ(history.size(), 1u);
     auto& events = history.back()->events;
-    EXPECT_EQ(events->size(), 2u);
+    ASSERT_EQ(events->size(), 2u);
   }
   {
     // Second completion delta arriving after the inline search event. It must
@@ -1871,7 +1949,7 @@ TEST_F(ConversationHandlerUnitTest,
     // Still only two events: the merged completion and the inline search event,
     // with the completion kept ahead of the inline search.
     ASSERT_EQ(events->size(), 2u);
-    EXPECT_TRUE(events->at(0)->is_completion_event());
+    ASSERT_TRUE(events->at(0)->is_completion_event());
     EXPECT_EQ(events->at(0)->get_completion_event()->completion,
               "This is successful.");
     EXPECT_TRUE(events->at(1)->is_inline_search_event());
@@ -1900,7 +1978,7 @@ TEST_F(ConversationHandlerUnitTest,
         conversation_handler_->GetConversationHistory();
     ASSERT_EQ(history.size(), 1u);
     auto& events = history.back()->events;
-    EXPECT_EQ(events->size(), 1u);
+    ASSERT_EQ(events->size(), 1u);
     EXPECT_EQ(events->at(0)->get_completion_event()->completion, "This is");
   }
   {
@@ -1933,7 +2011,7 @@ TEST_F(ConversationHandlerUnitTest,
     EXPECT_EQ(history.back()->text, "This is successful.");
     auto& events = history.back()->events;
     ASSERT_EQ(events->size(), 2u);
-    EXPECT_TRUE(events->at(0)->is_completion_event());
+    ASSERT_TRUE(events->at(0)->is_completion_event());
     EXPECT_EQ(events->at(0)->get_completion_event()->completion,
               "This is successful.");
     EXPECT_TRUE(events->at(1)->is_inline_search_event());
@@ -1983,11 +2061,11 @@ TEST_F(ConversationHandlerUnitTest,
     auto& events = history.back()->events;
     // Two separate completion events on either side of the tool use event.
     ASSERT_EQ(events->size(), 3u);
-    EXPECT_TRUE(events->at(0)->is_completion_event());
+    ASSERT_TRUE(events->at(0)->is_completion_event());
     EXPECT_EQ(events->at(0)->get_completion_event()->completion,
               "Let me check the weather.");
     EXPECT_TRUE(events->at(1)->is_tool_use_event());
-    EXPECT_TRUE(events->at(2)->is_completion_event());
+    ASSERT_TRUE(events->at(2)->is_completion_event());
     EXPECT_EQ(events->at(2)->get_completion_event()->completion,
               "It is sunny.");
   }
@@ -2043,7 +2121,7 @@ TEST_F(ConversationHandlerUnitTest,
     auto& events = history.back()->events;
     // Single completion event kept ahead of the two non-splitting events.
     ASSERT_EQ(events->size(), 3u);
-    EXPECT_TRUE(events->at(0)->is_completion_event());
+    ASSERT_TRUE(events->at(0)->is_completion_event());
     EXPECT_EQ(events->at(0)->get_completion_event()->completion,
               "This is successful.");
     EXPECT_TRUE(events->at(1)->is_search_status_event());
@@ -2095,7 +2173,7 @@ TEST_F(ConversationHandlerUnitTest,
     auto& events = history.back()->events;
     // Tool use event kept ahead of the inline search event, args accumulated.
     ASSERT_EQ(events->size(), 2u);
-    EXPECT_TRUE(events->at(0)->is_tool_use_event());
+    ASSERT_TRUE(events->at(0)->is_tool_use_event());
     EXPECT_EQ(events->at(0)->get_tool_use_event()->arguments_json,
               "{\"query\":\"bars\"}");
     EXPECT_TRUE(events->at(1)->is_inline_search_event());
@@ -2145,10 +2223,10 @@ TEST_F(ConversationHandlerUnitTest,
     auto& events = history.back()->events;
     // Two separate tool use events on either side of the completion event.
     ASSERT_EQ(events->size(), 3u);
-    EXPECT_TRUE(events->at(0)->is_tool_use_event());
+    ASSERT_TRUE(events->at(0)->is_tool_use_event());
     EXPECT_EQ(events->at(0)->get_tool_use_event()->id, "tool_id_1");
     EXPECT_TRUE(events->at(1)->is_completion_event());
-    EXPECT_TRUE(events->at(2)->is_tool_use_event());
+    ASSERT_TRUE(events->at(2)->is_tool_use_event());
     EXPECT_EQ(events->at(2)->get_tool_use_event()->id, "tool_id_2");
   }
 }
@@ -2226,12 +2304,15 @@ TEST_F(ConversationHandlerUnitTest, MAYBE_ModifyConversation) {
   // Verify the first entry still has original details
   const auto& conversation_history =
       conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(conversation_history.size(), 2u);
 
   ExpectConversationHistoryEquals(FROM_HERE, conversation_history,
                                   first_edit_expected_history, false);
   // Create time shouldn't be changed
   EXPECT_EQ(conversation_history[0]->created_time, history[0]->created_time);
 
+  ASSERT_TRUE(conversation_history[0]->edits.has_value());
+  ASSERT_EQ(conversation_history[0]->edits->size(), 1u);
   auto created_time2 = conversation_history[0]->edits->at(0)->created_time;
   // New edit should have a different created time
   EXPECT_NE(created_time2, history[0]->created_time);
@@ -2263,6 +2344,8 @@ TEST_F(ConversationHandlerUnitTest, MAYBE_ModifyConversation) {
   // Create time shouldn't be changed
   EXPECT_EQ(conversation_history[0]->created_time, history[0]->created_time);
   // New edit should have a different create time
+  ASSERT_TRUE(conversation_history[0]->edits.has_value());
+  ASSERT_EQ(conversation_history[0]->edits->size(), 2u);
   EXPECT_EQ(conversation_history[0]->edits->at(0)->created_time, created_time2);
   EXPECT_NE(conversation_history[0]->edits->at(1)->created_time,
             conversation_history[0]->created_time);
@@ -2292,6 +2375,8 @@ TEST_F(ConversationHandlerUnitTest, MAYBE_ModifyConversation) {
                                   third_edit_expected_history, false);
 
   // Edit time should be set differently
+  ASSERT_TRUE(conversation_history[1]->edits.has_value());
+  ASSERT_EQ(conversation_history[1]->edits->size(), 1u);
   EXPECT_NE(conversation_history[1]->edits->at(0)->created_time,
             conversation_history[1]->created_time);
 }
@@ -2433,13 +2518,15 @@ TEST_F(ConversationHandlerUnitTest, RegenerateAnswer) {
 
   // Verify the conversation has only 2 entries now (original question + new
   // answer)
-  EXPECT_EQ(conversation_history.size(), 2u);
+  ASSERT_EQ(conversation_history.size(), 2u);
 
   // Verify the human entry model_key was set correctly
-  EXPECT_EQ(conversation_history[0]->model_key.value_or(""), new_model_key);
+  ASSERT_TRUE(conversation_history[0]->model_key.has_value());
+  EXPECT_EQ(*conversation_history[0]->model_key, new_model_key);
 
   // Verify the assistant entry has the new model_key
-  EXPECT_EQ(conversation_history[1]->model_key.value(), new_model_key);
+  ASSERT_TRUE(conversation_history[1]->model_key.has_value());
+  EXPECT_EQ(*conversation_history[1]->model_key, new_model_key);
 
   // Verify the answer content
   EXPECT_EQ(conversation_history[1]->text, "regenerated answer");
@@ -2523,7 +2610,7 @@ TEST_F(ConversationHandlerUnitTest,
         EXPECT_FALSE(site_info.empty());
       }));
 
-  task_environment_.RunUntilIdle();
+  client.FlushForTesting();
   testing::Mock::VerifyAndClearExpectations(associated_content_.get());
   testing::Mock::VerifyAndClearExpectations(&observer);
   testing::Mock::VerifyAndClearExpectations(&client);
@@ -2567,7 +2654,7 @@ TEST_F(ConversationHandlerUnitTest,
 
   conversation_handler_->associated_content_manager()->ClearContent();
 
-  task_environment_.RunUntilIdle();
+  client.FlushForTesting();
   testing::Mock::VerifyAndClearExpectations(&client);
   testing::Mock::VerifyAndClearExpectations(associated_content_.get());
 
@@ -2594,7 +2681,7 @@ TEST_F(ConversationHandlerUnitTest,
         EXPECT_FALSE(site_info.empty());
       }));
 
-  task_environment_.RunUntilIdle();
+  client.FlushForTesting();
   testing::Mock::VerifyAndClearExpectations(associated_content_.get());
   testing::Mock::VerifyAndClearExpectations(&observer);
   testing::Mock::VerifyAndClearExpectations(&client);
@@ -2666,6 +2753,12 @@ TEST_F(ConversationHandlerUnitTest,
                   std::nullopt /* model_key */)))));
 
   EXPECT_CALL(observer, OnConversationEntryAdded).Times(6);
+  base::RunLoop request_complete_loop;
+  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(testing::AnyNumber());
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .WillOnce(testing::InvokeWithoutArgs(&request_complete_loop,
+                                           &base::RunLoop::Quit))
+      .WillRepeatedly(testing::Return());
   EXPECT_CALL(client, OnConversationHistoryUpdate(
                           TurnEq(mojom::ConversationTurnPtr().get())))
       .Times(testing::AtLeast(1));
@@ -2684,7 +2777,7 @@ TEST_F(ConversationHandlerUnitTest,
 
   conversation_handler_->SubmitHumanConversationEntry("query3", std::nullopt);
 
-  task_environment_.RunUntilIdle();
+  request_complete_loop.Run();
   testing::Mock::VerifyAndClearExpectations(&client);
   testing::Mock::VerifyAndClearExpectations(&observer);
   testing::Mock::VerifyAndClearExpectations(associated_content_.get());
@@ -2703,7 +2796,7 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_CALL(client, OnConversationHistoryUpdate(_)).Times(0);
   EXPECT_TRUE(conversation_handler_->IsAnyClientConnected());
 
-  task_environment_.RunUntilIdle();
+  client.FlushForTesting();
   testing::Mock::VerifyAndClearExpectations(conversation_handler_.get());
   testing::Mock::VerifyAndClearExpectations(&client);
 
@@ -2743,7 +2836,7 @@ TEST_F(
   SetAssociatedContentStagedEntries(/*empty=*/false, /*multi=*/true);
 
   conversation_handler_->MaybeFetchOrClearContentStagedConversation();
-  task_environment_.RunUntilIdle();
+  client.FlushForTesting();
 
   testing::Mock::VerifyAndClearExpectations(associated_content_.get());
   testing::Mock::VerifyAndClearExpectations(&client);
@@ -2771,14 +2864,12 @@ TEST_F(ConversationHandlerUnitTest,
   std::vector<SearchQuerySummary> entries = {{"query", "summary"},
                                              {"query2", "summary2"}};
   conversation_handler_->OnGetStagedEntriesFromContent(entries);
-  task_environment_.RunUntilIdle();
   EXPECT_EQ(conversation_handler_->GetConversationHistory().size(), 0u);
 
   // No staged entries if should_send_page_contents_ is false.
   conversation_handler_->SetRequestInProgressForTesting(false);
   conversation_handler_->MaybeUnlinkAssociatedContent();
   conversation_handler_->OnGetStagedEntriesFromContent(entries);
-  task_environment_.RunUntilIdle();
   EXPECT_EQ(conversation_handler_->GetConversationHistory().size(), 0u);
 }
 
@@ -2805,7 +2896,7 @@ TEST_F(ConversationHandlerUnitTest, OnGetStagedEntriesFromContent) {
   std::vector<SearchQuerySummary> entries = {{"query", "summary"},
                                              {"query2", "summary2"}};
   conversation_handler_->OnGetStagedEntriesFromContent(entries);
-  task_environment_.RunUntilIdle();
+  client.FlushForTesting();
   testing::Mock::VerifyAndClearExpectations(&client);
 
   auto& history = conversation_handler_->GetConversationHistory();
@@ -2838,7 +2929,7 @@ TEST_F(ConversationHandlerUnitTest,
         EXPECT_FALSE(site_info.empty());
       }));
 
-  task_environment_.RunUntilIdle();
+  client.FlushForTesting();
   testing::Mock::VerifyAndClearExpectations(conversation_handler_.get());
 
   EXPECT_FALSE(conversation_handler_->GetConversationHistory().empty());
@@ -2861,7 +2952,7 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_CALL(client, OnConversationHistoryUpdate(_)).Times(0);
   EXPECT_TRUE(conversation_handler_->IsAnyClientConnected());
 
-  task_environment_.RunUntilIdle();
+  client.FlushForTesting();
   testing::Mock::VerifyAndClearExpectations(conversation_handler_.get());
   testing::Mock::VerifyAndClearExpectations(&client);
 
@@ -2982,7 +3073,7 @@ TEST_F(ConversationHandlerUnitTest, UploadFile) {
   testing::Mock::VerifyAndClearExpectations(&client);
   // verify image in history
   auto& last_entry = conversation_handler_->GetConversationHistory().back();
-  EXPECT_TRUE(last_entry->uploaded_files);
+  ASSERT_TRUE(last_entry->uploaded_files);
   const auto& files = last_entry->uploaded_files.value();
   for (size_t i = 0; i < files.size(); ++i) {
     EXPECT_EQ(files[i]->filename, uploaded_files[i]->filename);
@@ -3004,7 +3095,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   EXPECT_CALL(client, OnConversationHistoryUpdate(_)).Times(0);
   EXPECT_TRUE(conversation_handler_->IsAnyClientConnected());
 
-  task_environment_.RunUntilIdle();
+  client.FlushForTesting();
   testing::Mock::VerifyAndClearExpectations(conversation_handler_.get());
   testing::Mock::VerifyAndClearExpectations(&client);
 
@@ -3022,24 +3113,19 @@ TEST_F(ConversationHandlerUnitTest,
   conversation_handler_->associated_content_manager()->AddContent(
       associated_content_.get());
 
-  task_environment_.RunUntilIdle();
-  testing::Mock::VerifyAndClearExpectations(associated_content_.get());
-
   EXPECT_TRUE(conversation_handler_->GetConversationHistory().empty());
 
   // Verify that fetch happens when first client connects
   EXPECT_CALL(*associated_content_, GetStagedEntriesFromContent).Times(1);
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
-  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(associated_content_.get());
 
   // Verify that fetch happens when another client connects.
   client.Disconnect();
-  task_environment_.RunUntilIdle();
-  EXPECT_FALSE(conversation_handler_->IsAnyClientConnected());
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return !conversation_handler_->IsAnyClientConnected(); }));
   EXPECT_CALL(*associated_content_, GetStagedEntriesFromContent).Times(1);
   NiceMock<MockConversationHandlerClient> client2(conversation_handler_.get());
-  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(associated_content_.get());
 }
 
@@ -3091,6 +3177,7 @@ TEST_F(ConversationHandlerUnitTest, GenerateQuestions) {
                          mojom::SuggestionGenerationStatus::IsGenerating)))))
       .Times(testing::AtLeast(1))
       .InSequence(entries_status_sequence);
+  base::RunLoop questions_generated_loop;
   EXPECT_CALL(
       entries_observer,
       OnEntriesUIStateChanged(testing::Pointee(testing::AllOf(
@@ -3099,10 +3186,15 @@ TEST_F(ConversationHandlerUnitTest, GenerateQuestions) {
           testing::Field(&mojom::ConversationEntriesState::suggestion_status,
                          mojom::SuggestionGenerationStatus::HasGenerated)))))
       .Times(testing::AtLeast(1))
-      .InSequence(entries_status_sequence);
+      .InSequence(entries_status_sequence)
+      .WillRepeatedly(testing::InvokeWithoutArgs(&questions_generated_loop,
+                                                 &base::RunLoop::Quit));
 
   conversation_handler_->GenerateQuestions();
-  task_environment_.RunUntilIdle();
+  questions_generated_loop.Run();
+  // The loop quits on the untrusted pipe; flush the trusted one so its
+  // expectations (iOS) have been dispatched before verifying.
+  client.FlushForTesting();
   testing::Mock::VerifyAndClearExpectations(&client);
   testing::Mock::VerifyAndClearExpectations(associated_content_.get());
   testing::Mock::VerifyAndClearExpectations(engine);
@@ -3114,10 +3206,10 @@ TEST_F(ConversationHandlerUnitTest,
   associated_content_->SetTextContent("Content");
   associated_content_->SetIsVideo(true);
 
-  base::RunLoop loop1;
+  base::test::TestFuture<void> content_future1;
   conversation_handler_->associated_content_manager()->GetContent(
-      loop1.QuitClosure());
-  loop1.Run();
+      content_future1.GetCallback());
+  ASSERT_TRUE(content_future1.Wait());
 
   conversation_handler_->OnAssociatedContentUpdated();
 
@@ -3132,10 +3224,10 @@ TEST_F(ConversationHandlerUnitTest,
 
   associated_content_->SetIsVideo(false);
 
-  base::RunLoop loop2;
+  base::test::TestFuture<void> content_future2;
   conversation_handler_->associated_content_manager()->GetContent(
-      loop2.QuitClosure());
-  loop2.Run();
+      content_future2.GetCallback());
+  ASSERT_TRUE(content_future2.Wait());
   conversation_handler_->OnAssociatedContentUpdated();
 
   const auto& suggestions2 =
@@ -3217,7 +3309,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSuggestion) {
 
   const auto& suggestions1 =
       conversation_handler_->GetSuggestedQuestionsForTest();
-  EXPECT_EQ(5u, suggestions1.size());
+  ASSERT_EQ(5u, suggestions1.size());
 
   conversation_handler_->SubmitSuggestion("Question 2?");
 
@@ -3233,7 +3325,7 @@ TEST_F(ConversationHandlerUnitTest, SubmitSuggestion) {
 
   // Generated conversation entry should have suggestion action type
   auto& history = conversation_handler_->GetConversationHistory();
-  EXPECT_EQ(1u, history.size());
+  ASSERT_EQ(1u, history.size());
   EXPECT_EQ(mojom::ActionType::SUGGESTION, history[0]->action_type);
 }
 
@@ -3253,10 +3345,9 @@ TEST_F(ConversationHandlerUnitTest, GenerateQuestions_DisableSendPageContent) {
 
   NiceMock<MockUntrustedConversationHandlerClient> client(
       conversation_handler_.get());
-  testing::Sequence s;
   EXPECT_CALL(client, OnEntriesUIStateChanged).Times(0);
   conversation_handler_->GenerateQuestions();
-  task_environment_.RunUntilIdle();
+  client.FlushForTesting();
   testing::Mock::VerifyAndClearExpectations(&client);
   testing::Mock::VerifyAndClearExpectations(associated_content_.get());
   testing::Mock::VerifyAndClearExpectations(engine);
@@ -3270,10 +3361,9 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, GenerateQuestions) {
 
   NiceMock<MockUntrustedConversationHandlerClient> client(
       conversation_handler_.get());
-  testing::Sequence s;
   EXPECT_CALL(client, OnEntriesUIStateChanged).Times(0);
   conversation_handler_->GenerateQuestions();
-  task_environment_.RunUntilIdle();
+  client.FlushForTesting();
   testing::Mock::VerifyAndClearExpectations(&client);
   testing::Mock::VerifyAndClearExpectations(engine);
 }
@@ -3284,7 +3374,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   // starter suggestions.
   const auto& suggestions1 =
       conversation_handler_->GetSuggestedQuestionsForTest();
-  EXPECT_EQ(4u, suggestions1.size());
+  ASSERT_EQ(4u, suggestions1.size());
 
   auto submitted_suggestion = suggestions1[1].title;
 
@@ -3296,7 +3386,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   EXPECT_EQ(0u, suggestions2.size());
 
   auto& history = conversation_handler_->GetConversationHistory();
-  EXPECT_EQ(1u, history.size());
+  ASSERT_EQ(1u, history.size());
   auto& history_entry = history[0];
 
   // Generated conversation entry should have conversation starter action type
@@ -3620,12 +3710,13 @@ TEST_F(ConversationHandlerUnitTest,
 
   // Verify the conversation history doens't have an extra entry
   const auto& current_history = conversation_handler_->GetConversationHistory();
-  EXPECT_EQ(current_history.size(), 2u);
+  ASSERT_EQ(current_history.size(), 2u);
   EXPECT_EQ(current_history[0]->character_type, mojom::CharacterType::HUMAN);
   EXPECT_EQ(current_history[1]->character_type,
             mojom::CharacterType::ASSISTANT);
   EXPECT_EQ(current_history[0]->text, "Test question");
   EXPECT_EQ(current_history[1]->text, "");
+  ASSERT_TRUE(current_history[1]->events.has_value());
   EXPECT_EQ(current_history[1]->events.value().size(), 0u);
 
   EXPECT_EQ(conversation_handler_->current_error(),
@@ -3728,13 +3819,14 @@ TEST_F(ConversationHandlerUnitTest,
   // 2. Assistant response with tool use event
   // 3. Assistant response with no new entry
   const auto& current_history = conversation_handler_->GetConversationHistory();
-  EXPECT_EQ(current_history.size(), 3u);
+  ASSERT_EQ(current_history.size(), 3u);
   EXPECT_EQ(current_history[0]->character_type, mojom::CharacterType::HUMAN);
   EXPECT_EQ(current_history[1]->character_type,
             mojom::CharacterType::ASSISTANT);
   EXPECT_EQ(current_history[0]->text, "Test question");
+  ASSERT_TRUE(current_history[1]->events.has_value());
   auto& response_events = current_history[1]->events.value();
-  EXPECT_EQ(response_events.size(), 2u);
+  ASSERT_EQ(response_events.size(), 2u);
   EXPECT_EQ(response_events[0]->get_completion_event()->completion,
             "Ok, going to check...");
   EXPECT_EQ(response_events[1]->get_tool_use_event()->tool_name,
@@ -3773,7 +3865,7 @@ TEST_F(ConversationHandlerUnitTest, GetTools_FiltersUnsupportedTools) {
   });
 
   auto tools = conversation_handler_->GetToolsForTesting();
-  EXPECT_EQ(tools.size(), 1u);
+  ASSERT_EQ(tools.size(), 1u);
   EXPECT_EQ(tools[0]->Name(), "supported");
 }
 
@@ -3851,21 +3943,21 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_PartialEventsGetCombined) {
   // Verify the conversation history
   const std::vector<mojom::ConversationTurnPtr>& history =
       conversation_handler_->GetConversationHistory();
-  EXPECT_EQ(history.size(), 2u);
+  ASSERT_EQ(history.size(), 2u);
 
   auto& assistant_entry = history.back();
   ASSERT_TRUE(assistant_entry->events.has_value());
   auto& events = assistant_entry->events.value();
-  EXPECT_EQ(events.size(), 2u);  // combined event + separate event
+  ASSERT_EQ(events.size(), 2u);  // combined event + separate event
 
   // First event should have combined arguments
-  EXPECT_TRUE(events[0]->is_tool_use_event());
+  ASSERT_TRUE(events[0]->is_tool_use_event());
   EXPECT_EQ(events[0]->get_tool_use_event()->tool_name, "test_tool");
   EXPECT_EQ(events[0]->get_tool_use_event()->arguments_json,
             "{\"param\":\"value\"}");
 
   // Second event should be separate
-  EXPECT_TRUE(events[1]->is_tool_use_event());
+  ASSERT_TRUE(events[1]->is_tool_use_event());
   EXPECT_EQ(events[1]->get_tool_use_event()->tool_name, "test_tool2");
   EXPECT_EQ(events[1]->get_tool_use_event()->arguments_json,
             "{\"other\":true}");
@@ -4012,10 +4104,10 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_CorrectToolCalled) {
   ASSERT_TRUE(assistant_entry->events.has_value());
   auto& events = assistant_entry->events.value();
   ASSERT_EQ(events.size(), 2u);
-  EXPECT_TRUE(events[1]->is_tool_use_event());
+  ASSERT_TRUE(events[1]->is_tool_use_event());
   auto& tool_event = events[1]->get_tool_use_event();
-  EXPECT_TRUE(tool_event->output.has_value());
-  EXPECT_EQ(tool_event->output->size(), 1u);
+  ASSERT_TRUE(tool_event->output.has_value());
+  ASSERT_EQ(tool_event->output->size(), 1u);
   EXPECT_MOJOM_EQ(
       tool_event->output->at(0),
       mojom::ContentBlock::NewTextContentBlock(
@@ -4555,7 +4647,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
 
   const auto& history = conversation_handler_->GetConversationHistory();
   // human entry + assistant entry with tool + assistant entry with response
-  EXPECT_EQ(history.size(), 3u);
+  ASSERT_EQ(history.size(), 3u);
 
   // Check the final response
   EXPECT_EQ(history.back()->text, "Based on the weather data, it's 72F");
@@ -4565,23 +4657,23 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolsCalled) {
   ASSERT_TRUE(assistant_entry->events.has_value());
   auto& events = assistant_entry->events.value();
   ASSERT_EQ(events.size(), 2u);
-  EXPECT_TRUE(events[0]->is_tool_use_event());
+  ASSERT_TRUE(events[0]->is_tool_use_event());
   auto& tool_event = events[0]->get_tool_use_event();
-  EXPECT_TRUE(events[1]->is_tool_use_event());
+  ASSERT_TRUE(events[1]->is_tool_use_event());
   auto& tool_event2 = events[1]->get_tool_use_event();
-  EXPECT_TRUE(tool_event->output.has_value());
+  ASSERT_TRUE(tool_event->output.has_value());
   EXPECT_EQ(tool_event->tool_name, "test_tool");
   EXPECT_EQ(tool_event->id, "tool_id_1");
   EXPECT_EQ(tool_event->arguments_json, "{\"location\":\"NYC\"}");
-  EXPECT_EQ(tool_event->output->size(), 1u);
+  ASSERT_EQ(tool_event->output->size(), 1u);
   EXPECT_MOJOM_EQ(tool_event->output->at(0),
                   mojom::ContentBlock::NewTextContentBlock(
                       mojom::TextContentBlock::New("Result from tool1")));
-  EXPECT_TRUE(tool_event2->output.has_value());
+  ASSERT_TRUE(tool_event2->output.has_value());
   EXPECT_EQ(tool_event2->tool_name, "test_tool2");
   EXPECT_EQ(tool_event2->id, "tool_id_2");
   EXPECT_EQ(tool_event2->arguments_json, "{\"input1\":\"val1\"}");
-  EXPECT_EQ(tool_event2->output->size(), 1u);
+  ASSERT_EQ(tool_event2->output->size(), 1u);
   EXPECT_MOJOM_EQ(tool_event2->output->at(0),
                   mojom::ContentBlock::NewTextContentBlock(
                       mojom::TextContentBlock::New("Result from tool2")));
@@ -4795,7 +4887,7 @@ TEST_F(ConversationHandlerUnitTest,
   ASSERT_TRUE(assistant_before->events.has_value());
   auto& events_before = assistant_before->events.value();
   ASSERT_EQ(events_before.size(), 1u);
-  EXPECT_TRUE(events_before[0]->is_tool_use_event());
+  ASSERT_TRUE(events_before[0]->is_tool_use_event());
   EXPECT_FALSE(events_before[0]->get_tool_use_event()->output.has_value());
 
   // Submit a new human entry which should cancel the pending tool use event
@@ -4806,7 +4898,7 @@ TEST_F(ConversationHandlerUnitTest,
   // Verify the pending tool use event was removed
   const auto& history_after = conversation_handler_->GetConversationHistory();
   // original human + assistant (with tools removed) + new human + new assistant
-  EXPECT_EQ(history_after.size(), 4u);
+  ASSERT_EQ(history_after.size(), 4u);
 
   // Check that the first assistant entry no longer has the pending tool use
   // event
@@ -5229,14 +5321,14 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
   const auto& history = conversation_handler_->GetConversationHistory();
   // human + assistant with tool1 + assistant with tool2 + assistant with final
   // response
-  EXPECT_EQ(history.size(), 4u);
+  ASSERT_EQ(history.size(), 4u);
 
   auto& assistant_with_tool1 = history[1];
   ASSERT_TRUE(assistant_with_tool1->events.has_value());
   auto& events = assistant_with_tool1->events.value();
   ASSERT_EQ(events.size(), 1u);
-  EXPECT_TRUE(events[0]->is_tool_use_event());
-  EXPECT_TRUE(events[0]->get_tool_use_event()->output.has_value());
+  ASSERT_TRUE(events[0]->is_tool_use_event());
+  ASSERT_TRUE(events[0]->get_tool_use_event()->output.has_value());
   EXPECT_EQ(events[0]->get_tool_use_event()->tool_name, "tool1");
   EXPECT_EQ(events[0]->get_tool_use_event()->id, "tool_id_1");
   EXPECT_EQ(events[0]->get_tool_use_event()->arguments_json,
@@ -5250,8 +5342,8 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_MultipleToolIterations) {
   ASSERT_TRUE(assistant_with_tool2->events.has_value());
   auto& events2 = assistant_with_tool2->events.value();
   ASSERT_EQ(events2.size(), 1u);
-  EXPECT_TRUE(events2[0]->is_tool_use_event());
-  EXPECT_TRUE(events2[0]->get_tool_use_event()->output.has_value());
+  ASSERT_TRUE(events2[0]->is_tool_use_event());
+  ASSERT_TRUE(events2[0]->get_tool_use_event()->output.has_value());
   EXPECT_EQ(events2[0]->get_tool_use_event()->tool_name, "tool2");
   EXPECT_EQ(events2[0]->get_tool_use_event()->id, "tool_id_2");
   EXPECT_EQ(events2[0]->get_tool_use_event()->arguments_json,
@@ -5429,7 +5521,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_OnContentTaskStarted) {
   conversation_handler_->SubmitHumanConversationEntry(".", std::nullopt);
   run_loop.Run();
 
-  EXPECT_EQ(1u, conversation_handler_->get_task_tab_ids().size());
+  ASSERT_EQ(1u, conversation_handler_->get_task_tab_ids().size());
   EXPECT_EQ(test_tab_id, *conversation_handler_->get_task_tab_ids().begin());
 }
 
@@ -5502,8 +5594,8 @@ TEST_P(ConversationHandlerUnitTest_AutoScreenshot,
   const auto& history = conversation_handler_->GetConversationHistory();
   ASSERT_EQ(history.size(), 2u);        // Human turn + assistant turn
   const auto& human_turn = history[0];  // Human turn (index 0)
-  EXPECT_TRUE(human_turn->uploaded_files.has_value());
-  EXPECT_EQ(human_turn->uploaded_files->size(), 2u);
+  ASSERT_TRUE(human_turn->uploaded_files.has_value());
+  ASSERT_EQ(human_turn->uploaded_files->size(), 2u);
 
   // Verify that the files are screenshots
   for (const auto& file : *human_turn->uploaded_files) {
@@ -5719,7 +5811,7 @@ TEST_F(ConversationHandlerUnitTest, ScreenshotsOnlyOfContentWithoutText) {
   const auto& history = conversation_handler_->GetConversationHistory();
   ASSERT_EQ(history.size(), 2u);
   ASSERT_TRUE(history[0]->uploaded_files);
-  EXPECT_EQ(history[0]->uploaded_files->size(), 1u);
+  ASSERT_EQ(history[0]->uploaded_files->size(), 1u);
 
   testing::Mock::VerifyAndClearExpectations(associated_content_.get());
   testing::Mock::VerifyAndClearExpectations(&other_content);
@@ -5771,7 +5863,7 @@ TEST_F(ConversationHandlerUnitTest, NoScreenshotsAgainOfScreenshottedContent) {
   const auto& history = conversation_handler_->GetConversationHistory();
   ASSERT_EQ(history.size(), 6u);
   ASSERT_TRUE(history[0]->uploaded_files);
-  EXPECT_EQ(history[0]->uploaded_files->size(), 1u);
+  ASSERT_EQ(history[0]->uploaded_files->size(), 1u);
   EXPECT_FALSE(history[2]->uploaded_files);
   EXPECT_FALSE(history[4]->uploaded_files);
 
@@ -5826,7 +5918,7 @@ TEST_F(ConversationHandlerUnitTest, ScreenshotsJoinEachContentsEntry) {
   const auto& history = conversation_handler_->GetConversationHistory();
   ASSERT_EQ(history.size(), 4u);
   ASSERT_TRUE(history[0]->uploaded_files);
-  EXPECT_EQ(history[0]->uploaded_files->size(), 1u);
+  ASSERT_EQ(history[0]->uploaded_files->size(), 1u);
   ASSERT_TRUE(history[2]->uploaded_files);
   EXPECT_EQ(history[2]->uploaded_files->size(), 2u);
 
@@ -5911,8 +6003,8 @@ TEST_F(ConversationHandlerUnitTest, ScreenshotsAppendToExistingFiles) {
   const auto& new_history = conversation_handler_->GetConversationHistory();
   ASSERT_EQ(new_history.size(), 2u);        // Human turn + assistant turn
   const auto& human_turn = new_history[0];  // Human turn (index 0)
-  EXPECT_TRUE(human_turn->uploaded_files.has_value());
-  EXPECT_EQ(human_turn->uploaded_files->size(), 3u);  // 2 images + 1 screenshot
+  ASSERT_TRUE(human_turn->uploaded_files.has_value());
+  ASSERT_EQ(human_turn->uploaded_files->size(), 3u);  // 2 images + 1 screenshot
 
   // Verify that the first two files are images and the last is a screenshot
   EXPECT_EQ((*human_turn->uploaded_files)[0]->type,
@@ -5978,8 +6070,8 @@ TEST_F(ConversationHandlerUnitTest, VisionModelSwitchOnScreenshots) {
   ASSERT_EQ(history.size(), 1u);        // Only human turn (assistant turn won't
                                         // complete due to model switch)
   const auto& human_turn = history[0];  // Human turn (index 0)
-  EXPECT_TRUE(human_turn->uploaded_files.has_value());
-  EXPECT_EQ(human_turn->uploaded_files->size(), 1u);
+  ASSERT_TRUE(human_turn->uploaded_files.has_value());
+  ASSERT_EQ(human_turn->uploaded_files->size(), 1u);
   EXPECT_EQ((*human_turn->uploaded_files)[0]->type,
             mojom::UploadedFileType::kScreenshot);
   EXPECT_TRUE(conversation_handler_->GetCurrentModel().vision_support);
@@ -6340,8 +6432,8 @@ TEST_F(ConversationHandlerUnitTest,
   const auto& history = conversation_handler_->GetConversationHistory();
   ASSERT_EQ(history.size(), 2u);        // Human turn + assistant turn
   const auto& human_turn = history[0];  // Human turn (index 0)
-  EXPECT_TRUE(human_turn->uploaded_files.has_value());
-  EXPECT_EQ(human_turn->uploaded_files->size(), mojom::MAX_IMAGES);
+  ASSERT_TRUE(human_turn->uploaded_files.has_value());
+  ASSERT_EQ(human_turn->uploaded_files->size(), mojom::MAX_IMAGES);
 
   // Verify all uploaded files are screenshots and in correct order
   for (size_t i = 0; i < human_turn->uploaded_files->size(); ++i) {
@@ -6419,8 +6511,8 @@ TEST_F(ConversationHandlerUnitTest,
   const auto& history = conversation_handler_->GetConversationHistory();
   ASSERT_EQ(history.size(), 2u);        // Human turn + assistant turn
   const auto& human_turn = history[0];  // Human turn (index 0)
-  EXPECT_TRUE(human_turn->uploaded_files.has_value());
-  EXPECT_EQ(human_turn->uploaded_files->size(), total_screenshots);
+  ASSERT_TRUE(human_turn->uploaded_files.has_value());
+  ASSERT_EQ(human_turn->uploaded_files->size(), total_screenshots);
 
   // Verify all uploaded files are screenshots and in correct order
   for (size_t i = 0; i < human_turn->uploaded_files->size(); ++i) {
@@ -6482,7 +6574,7 @@ TEST_F(ConversationHandlerUnitTest,
 
   // Verify the percentage is still the same and no UI update was triggered
   auto entries_state = conversation_handler_->GetStateForConversationEntries();
-  EXPECT_TRUE(entries_state->visual_content_used_percentage.has_value());
+  ASSERT_TRUE(entries_state->visual_content_used_percentage.has_value());
   EXPECT_EQ(entries_state->visual_content_used_percentage.value(), 66u);
 }
 
@@ -6592,7 +6684,7 @@ TEST_F(ConversationHandlerUnitTest,
 
   // Verify conversation has 2 turns (human + assistant)
   const auto& history = conversation_handler_->GetConversationHistory();
-  EXPECT_EQ(history.size(), 2u);
+  ASSERT_EQ(history.size(), 2u);
   EXPECT_EQ(history[0]->character_type, mojom::CharacterType::HUMAN);
   EXPECT_EQ(history[1]->character_type, mojom::CharacterType::ASSISTANT);
 }
@@ -6855,7 +6947,7 @@ TEST_F(ConversationHandlerUnitTest,
 
   // Verify error is set and conversation has only human entry
   const auto& history = conversation_handler_->GetConversationHistory();
-  EXPECT_EQ(history.size(), 1u);
+  ASSERT_EQ(history.size(), 1u);
   EXPECT_EQ(history[0]->character_type, mojom::CharacterType::HUMAN);
   EXPECT_EQ(conversation_handler_->current_error(),
             mojom::APIError::ConnectionIssue);
@@ -7140,7 +7232,7 @@ TEST_F(ConversationHandlerUnitTest,
 
   // Verify conversation history contains skill data
   const auto& history = conversation_handler_->GetConversationHistory();
-  EXPECT_EQ(history.size(), 2u);
+  ASSERT_EQ(history.size(), 2u);
   EXPECT_EQ(history[0]->text, "/playlist 2000");
   ASSERT_TRUE(history[0]->skill);
   EXPECT_EQ(history[0]->skill->shortcut, "playlist");
@@ -7184,7 +7276,7 @@ TEST_F(ConversationHandlerUnitTest,
 
   // Verify conversation history created but without skill data
   const auto& history = conversation_handler_->GetConversationHistory();
-  EXPECT_EQ(history.size(), 2u);
+  ASSERT_EQ(history.size(), 2u);
 
   // Human entry should NOT have skill data (invalid ID was ignored)
   EXPECT_FALSE(history[0]->skill);
@@ -7393,13 +7485,13 @@ TEST_P(ConversationHandlerSkillImageUploadTest, ResolvesModelAndPlumbsImage) {
               test_params.expects_vision_model_switch_request
           ? 1u
           : 2u;
-  EXPECT_EQ(history.size(), expected_size);
+  ASSERT_EQ(history.size(), expected_size);
   EXPECT_EQ(history[0]->text, "/describe photo");
   ASSERT_TRUE(history[0]->skill);
   EXPECT_EQ(history[0]->skill->shortcut, "describe");
   EXPECT_EQ(history[0]->skill->prompt, "Describe what you see in this image");
   ASSERT_TRUE(history[0]->uploaded_files);
-  EXPECT_EQ(history[0]->uploaded_files->size(), 1u);
+  ASSERT_EQ(history[0]->uploaded_files->size(), 1u);
   EXPECT_EQ(history[0]->uploaded_files->at(0)->type,
             mojom::UploadedFileType::kImage);
 }
@@ -7496,13 +7588,13 @@ TEST_F(ConversationHandlerUnitTest,
 
   // Verify conversation history contains both skill data and uploaded files
   const auto& history = conversation_handler_->GetConversationHistory();
-  EXPECT_EQ(history.size(), 2u);
+  ASSERT_EQ(history.size(), 2u);
   EXPECT_EQ(history[0]->text, "/summarize report");
   ASSERT_TRUE(history[0]->skill);
   EXPECT_EQ(history[0]->skill->shortcut, "summarize");
   EXPECT_EQ(history[0]->skill->prompt, "Summarize the attached document");
   ASSERT_TRUE(history[0]->uploaded_files);
-  EXPECT_EQ(history[0]->uploaded_files->size(), 1u);
+  ASSERT_EQ(history[0]->uploaded_files->size(), 1u);
   EXPECT_EQ(history[0]->uploaded_files->at(0)->type,
             mojom::UploadedFileType::kPdf);
 }
@@ -7586,7 +7678,7 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge) {
   ASSERT_TRUE(assistant_entry->events.has_value());
   auto& events = assistant_entry->events.value();
   ASSERT_EQ(events.size(), 2u);
-  EXPECT_TRUE(events[0]->is_tool_use_event());
+  ASSERT_TRUE(events[0]->is_tool_use_event());
   auto& tool_event = events[0]->get_tool_use_event();
   EXPECT_FALSE(tool_event->output.has_value());  // No output yet
   ASSERT_TRUE(tool_event->permission_challenge);
@@ -7635,6 +7727,7 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge) {
 
   // Verify both tools were executed and have outputs
   const auto& history_after = conversation_handler_->GetConversationHistory();
+  ASSERT_GE(history_after.size(), 2u);
   auto& assistant_entry_after = history_after[1];
   ASSERT_TRUE(assistant_entry_after->events.has_value());
   auto& events_after = assistant_entry_after->events.value();
@@ -7721,7 +7814,7 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge_ToolReturnsChallenge) {
   ASSERT_TRUE(assistant_entry->events.has_value());
   auto& events = assistant_entry->events.value();
   ASSERT_EQ(events.size(), 1u);
-  EXPECT_TRUE(events[0]->is_tool_use_event());
+  ASSERT_TRUE(events[0]->is_tool_use_event());
   auto& tool_event = events[0]->get_tool_use_event();
   EXPECT_FALSE(tool_event->output.has_value());  // No output yet
   ASSERT_TRUE(tool_event->permission_challenge);
@@ -7809,11 +7902,12 @@ TEST_F(ConversationHandlerUnitTest,
       "tool_id_1", mojom::PermissionChallengeDecision::kDeny);
 
   // The denial is recorded as output, and the challenge is kept for the UI.
-  auto* denied_tool_event = conversation_handler_->GetConversationHistory()
-                                .back()
-                                ->events.value()[0]
-                                ->get_tool_use_event()
-                                .get();
+  const auto& denied_history = conversation_handler_->GetConversationHistory();
+  ASSERT_FALSE(denied_history.empty());
+  ASSERT_TRUE(denied_history.back()->events.has_value());
+  ASSERT_FALSE(denied_history.back()->events->empty());
+  auto* denied_tool_event =
+      denied_history.back()->events.value()[0]->get_tool_use_event().get();
   ASSERT_TRUE(denied_tool_event->output.has_value());
   EXPECT_TRUE(denied_tool_event->permission_challenge);
 
@@ -8092,9 +8186,11 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge_UserDeniesPermission) {
 
   // Verify first tool has denial output, second tool was not processed
   const auto& history_after = conversation_handler_->GetConversationHistory();
+  ASSERT_GE(history_after.size(), 2u);
   auto& assistant_after = history_after[1];
   ASSERT_TRUE(assistant_after->events.has_value());
   auto& events_after = assistant_after->events.value();
+  ASSERT_EQ(events_after.size(), 2u);
   // First tool should have denial output
   ASSERT_TRUE(events_after[0]->get_tool_use_event()->output.has_value());
   auto& output = events_after[0]->get_tool_use_event()->output.value();
@@ -8175,8 +8271,12 @@ TEST_F(ConversationHandlerUnitTest,
   // Verify Gate 1: Server permission challenge is present
   const auto& history_after_gate1 =
       conversation_handler_->GetConversationHistory();
+  ASSERT_FALSE(history_after_gate1.empty());
+  ASSERT_TRUE(history_after_gate1.back()->events.has_value());
+  ASSERT_FALSE(history_after_gate1.back()->events->empty());
   auto* tool_event_gate1 =
       history_after_gate1.back()->events.value()[0]->get_tool_use_event().get();
+  ASSERT_TRUE(tool_event_gate1->permission_challenge);
   EXPECT_EQ(tool_event_gate1->permission_challenge->assessment,
             "Server-side: This tool use needs alignment check");
 
@@ -8190,8 +8290,12 @@ TEST_F(ConversationHandlerUnitTest,
   // Verify Gate 2: Client permission challenge is now present
   const auto& history_after_gate2 =
       conversation_handler_->GetConversationHistory();
+  ASSERT_FALSE(history_after_gate2.empty());
+  ASSERT_TRUE(history_after_gate2.back()->events.has_value());
+  ASSERT_FALSE(history_after_gate2.back()->events->empty());
   auto* tool_event_gate2 =
       history_after_gate2.back()->events.value()[0]->get_tool_use_event().get();
+  ASSERT_TRUE(tool_event_gate2->permission_challenge);
   EXPECT_EQ(tool_event_gate2->permission_challenge->plan,
             "Client-side: This tool needs to access your tabs");
   EXPECT_FALSE(tool_event_gate2->output.has_value());
@@ -8219,6 +8323,7 @@ TEST_F(ConversationHandlerUnitTest,
 
   // Verify tool executed and both permission challenges are cleared
   const auto& final_history = conversation_handler_->GetConversationHistory();
+  ASSERT_GE(final_history.size(), 2u);
   auto& final_assistant = final_history[1];
   ASSERT_TRUE(final_assistant->events.has_value());
   auto& final_events = final_assistant->events.value();
@@ -8300,6 +8405,9 @@ TEST_F(ConversationHandlerUnitTest,
   loop.Run();
 
   const auto& history = conversation_handler_->GetConversationHistory();
+  ASSERT_FALSE(history.empty());
+  ASSERT_TRUE(history.back()->events.has_value());
+  ASSERT_FALSE(history.back()->events->empty());
   auto* tool_event =
       history.back()->events.value()[0]->get_tool_use_event().get();
   ASSERT_TRUE(tool_event->permission_challenge);
@@ -8369,6 +8477,9 @@ TEST_F(ConversationHandlerUnitTest,
   loop.Run();
 
   const auto& history = conversation_handler_->GetConversationHistory();
+  ASSERT_FALSE(history.empty());
+  ASSERT_TRUE(history.back()->events.has_value());
+  ASSERT_FALSE(history.back()->events->empty());
   auto* tool_event =
       history.back()->events.value()[0]->get_tool_use_event().get();
   ASSERT_TRUE(tool_event->permission_challenge);
@@ -8452,7 +8563,7 @@ TEST_F(ConversationHandlerUnitTest, OnTaskStateChanged_Paused) {
   ASSERT_TRUE(assistant_entry->events.has_value());
   auto& events = assistant_entry->events.value();
   ASSERT_EQ(events.size(), 1u);
-  EXPECT_TRUE(events[0]->is_tool_use_event());
+  ASSERT_TRUE(events[0]->is_tool_use_event());
   auto& tool_event = events[0]->get_tool_use_event();
   EXPECT_FALSE(tool_event->output.has_value());
 }
@@ -8513,6 +8624,8 @@ TEST_F(ConversationHandlerUnitTest, OnTaskStateChanged_Resumed) {
   // Verify tool was not called yet
   const auto& history_paused = conversation_handler_->GetConversationHistory();
   ASSERT_EQ(history_paused.size(), 2u);
+  ASSERT_TRUE(history_paused.back()->events.has_value());
+  ASSERT_FALSE(history_paused.back()->events->empty());
   EXPECT_FALSE(history_paused.back()
                    ->events.value()[0]
                    ->get_tool_use_event()
@@ -8563,11 +8676,13 @@ TEST_F(ConversationHandlerUnitTest, OnTaskStateChanged_Resumed) {
 
   // Verify tool was executed and final response was generated
   const auto& history_final = conversation_handler_->GetConversationHistory();
-  EXPECT_EQ(history_final.size(), 3u);
+  ASSERT_EQ(history_final.size(), 3u);
   EXPECT_EQ(history_final.back()->text, "Final response");
 
   // Verify tool output exists
   auto& tool_entry = history_final[1];
+  ASSERT_TRUE(tool_entry->events.has_value());
+  ASSERT_FALSE(tool_entry->events->empty());
   ASSERT_TRUE(
       tool_entry->events.value()[0]->get_tool_use_event()->output.has_value());
 }
@@ -8687,7 +8802,7 @@ TEST_F(ConversationHandlerUnitTest,
 
   // Verify both tools were executed exactly once and final response generated
   const auto& history = conversation_handler_->GetConversationHistory();
-  EXPECT_EQ(history.size(), 3u);
+  ASSERT_EQ(history.size(), 3u);
   EXPECT_EQ(history.back()->text, "Final response");
 
   // Verify both tools have output
@@ -8754,6 +8869,7 @@ TEST_F(ConversationHandlerUnitTest, StopTask) {
   ASSERT_EQ(history_paused.size(), 2u);
   auto& assistant_entry_paused = history_paused.back();
   ASSERT_TRUE(assistant_entry_paused->events.has_value());
+  ASSERT_FALSE(assistant_entry_paused->events->empty());
   EXPECT_FALSE(assistant_entry_paused->events.value()[0]
                    ->get_tool_use_event()
                    ->output.has_value());
@@ -8771,7 +8887,6 @@ TEST_F(ConversationHandlerUnitTest, StopTask) {
   mock_tool_provider_->SetIsPausedByUser(false);
   conversation_handler_->PauseTask();
   conversation_handler_->ResumeTask();
-  task_environment_.RunUntilIdle();
   EXPECT_EQ(GetState()->tool_use_task_state, mojom::TaskState::kStopped);
 
   // Verify tool still has no output and was never executed
@@ -8779,6 +8894,7 @@ TEST_F(ConversationHandlerUnitTest, StopTask) {
   ASSERT_EQ(history_stopped.size(), 2u);
   auto& assistant_entry_stopped = history_stopped.back();
   ASSERT_TRUE(assistant_entry_stopped->events.has_value());
+  ASSERT_FALSE(assistant_entry_stopped->events->empty());
   EXPECT_FALSE(assistant_entry_stopped->events.value()[0]
                    ->get_tool_use_event()
                    ->output.has_value());

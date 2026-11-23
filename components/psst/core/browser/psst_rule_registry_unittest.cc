@@ -15,6 +15,7 @@
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "brave/components/psst/core/browser/matched_rule.h"
 #include "brave/components/psst/core/browser/psst_rule_registry_impl.h"
 #include "brave/components/psst/core/common/features.h"
@@ -54,8 +55,8 @@ class PsstRuleRegistryUnitTest : public testing::Test {
     scoped_feature_list_.InitAndEnableFeature(features::kEnablePsst);
   }
 
-  using LoadRulesTestCallback = base::MockCallback<base::OnceCallback<
-      void(const std::string& data, const std::vector<PsstRule>& rules)>>;
+  using LoadRulesTestFuture =
+      base::test::TestFuture<std::string, std::vector<PsstRule>>;
   using CheckIfMatchTestCallback = base::MockCallback<
       base::OnceCallback<void(std::unique_ptr<MatchedRule>)>>;
   using NoMatchedRulesTestCallback = base::MockCallback<base::OnceClosure>;
@@ -80,48 +81,38 @@ class PsstRuleRegistryUnitTest : public testing::Test {
 
 TEST_F(PsstRuleRegistryUnitTest, LoadConcreteRule) {
   {
-    LoadRulesTestCallback mock_callback;
-    base::RunLoop run_loop;
-    EXPECT_CALL(mock_callback, Run)
-        .Times(1)
-        .WillOnce([&](const std::string& data,
-                      const std::vector<PsstRule>& rules) {
-          EXPECT_EQ(rules.size(), kTestPsstRulesCount);
-          EXPECT_EQ(data,
-                    ReadFile(GetTestDataDirBase().Append(
-                        base::FilePath::FromUTF8Unsafe(kPsstJsonFileName))));
-          run_loop.Quit();
-        });
+    LoadRulesTestFuture load_future;
+    psst_rule_registry().LoadRules(
+        GetTestDataDirBase(),
+        load_future
+            .GetCallback<const std::string&, const std::vector<PsstRule>&>());
 
-    psst_rule_registry().LoadRules(GetTestDataDirBase(), mock_callback.Get());
-    run_loop.Run();
+    EXPECT_EQ(load_future.Get<1>().size(), kTestPsstRulesCount);
+    EXPECT_EQ(load_future.Get<0>(),
+              ReadFile(GetTestDataDirBase().Append(
+                  base::FilePath::FromUTF8Unsafe(kPsstJsonFileName))));
   }
 
   const auto scripts_path =
       GetScriptsTestDataDir().Append(base::FilePath::FromUTF8Unsafe("a"));
 
-  base::RunLoop run_loop;
-  CheckIfMatchTestCallback mock_callback;
+  base::test::TestFuture<std::unique_ptr<MatchedRule>> match_future;
   NoMatchedRulesTestCallback no_matched_rules_mock_calback;
-  EXPECT_CALL(mock_callback, Run)
-      .Times(1)
-      .WillOnce([&](std::unique_ptr<MatchedRule> matched_rule) {
-        ASSERT_TRUE(matched_rule);
-        EXPECT_EQ(matched_rule->name(), "a");
-        EXPECT_EQ(matched_rule->user_script(),
-                  ReadFile(scripts_path.Append(
-                      base::FilePath::FromUTF8Unsafe(kPsstUserScriptName))));
-        EXPECT_EQ(matched_rule->policy_script(),
-                  ReadFile(scripts_path.Append(
-                      base::FilePath::FromUTF8Unsafe(kPsstPolicyScriptName))));
-        run_loop.Quit();
-      });
   EXPECT_CALL(no_matched_rules_mock_calback, Run).Times(0);
 
-  psst_rule_registry().CheckIfMatch(GURL("https://a.test"), mock_callback.Get(),
+  psst_rule_registry().CheckIfMatch(GURL("https://a.test"),
+                                    match_future.GetCallback(),
                                     no_matched_rules_mock_calback.Get());
 
-  run_loop.Run();
+  std::unique_ptr<MatchedRule> matched_rule = match_future.Take();
+  ASSERT_TRUE(matched_rule);
+  EXPECT_EQ(matched_rule->name(), "a");
+  EXPECT_EQ(matched_rule->user_script(),
+            ReadFile(scripts_path.Append(
+                base::FilePath::FromUTF8Unsafe(kPsstUserScriptName))));
+  EXPECT_EQ(matched_rule->policy_script(),
+            ReadFile(scripts_path.Append(
+                base::FilePath::FromUTF8Unsafe(kPsstPolicyScriptName))));
 }
 
 TEST_F(PsstRuleRegistryUnitTest, CheckIfMatchWithNoRulesLoaded) {
@@ -135,132 +126,90 @@ TEST_F(PsstRuleRegistryUnitTest, CheckIfMatchWithNoRulesLoaded) {
 }
 
 TEST_F(PsstRuleRegistryUnitTest, RulesLoading) {
-  LoadRulesTestCallback mock_callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(mock_callback, Run)
-      .Times(1)
-      .WillOnce(
-          [&](const std::string& data, const std::vector<PsstRule>& rules) {
-            EXPECT_EQ(rules.size(), kTestPsstRulesCount);
-            EXPECT_EQ(data,
-                      ReadFile(GetTestDataDirBase().Append(
-                          base::FilePath::FromUTF8Unsafe(kPsstJsonFileName))));
-            run_loop.Quit();
-          });
+  LoadRulesTestFuture future;
+  psst_rule_registry().LoadRules(
+      GetTestDataDirBase(),
+      future.GetCallback<const std::string&, const std::vector<PsstRule>&>());
 
-  psst_rule_registry().LoadRules(GetTestDataDirBase(), mock_callback.Get());
-  run_loop.Run();
+  EXPECT_EQ(future.Get<1>().size(), kTestPsstRulesCount);
+  EXPECT_EQ(future.Get<0>(),
+            ReadFile(GetTestDataDirBase().Append(
+                base::FilePath::FromUTF8Unsafe(kPsstJsonFileName))));
 }
 
 TEST_F(PsstRuleRegistryUnitTest, RulesLoadingEmptyPath) {
-  LoadRulesTestCallback mock_callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(mock_callback, Run)
-      .Times(1)
-      .WillOnce(
-          [&](const std::string& data, const std::vector<PsstRule>& rules) {
-            EXPECT_TRUE(rules.empty());
-            EXPECT_TRUE(data.empty());
-            run_loop.Quit();
-          });
+  LoadRulesTestFuture future;
+  psst_rule_registry().LoadRules(
+      base::FilePath(FILE_PATH_LITERAL("")),
+      future.GetCallback<const std::string&, const std::vector<PsstRule>&>());
 
-  psst_rule_registry().LoadRules(base::FilePath(FILE_PATH_LITERAL("")),
-                                 mock_callback.Get());
-  run_loop.Run();
+  EXPECT_TRUE(future.Get<1>().empty());
+  EXPECT_TRUE(future.Get<0>().empty());
 }
 
 TEST_F(PsstRuleRegistryUnitTest, RulesLoadingBrokenRulesFile) {
-  LoadRulesTestCallback mock_callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(mock_callback, Run)
-      .Times(1)
-      .WillOnce(
-          [&](const std::string& data, const std::vector<PsstRule>& rules) {
-            EXPECT_TRUE(rules.empty());
-            EXPECT_EQ(data,
-                      ReadFile(GetBrokenTestDataDirBase().Append(
-                          base::FilePath::FromUTF8Unsafe(kPsstJsonFileName))));
-            run_loop.Quit();
-          });
+  LoadRulesTestFuture future;
+  psst_rule_registry().LoadRules(
+      GetBrokenTestDataDirBase(),
+      future.GetCallback<const std::string&, const std::vector<PsstRule>&>());
 
-  psst_rule_registry().LoadRules(GetBrokenTestDataDirBase(),
-                                 mock_callback.Get());
-  run_loop.Run();
+  EXPECT_TRUE(future.Get<1>().empty());
+  EXPECT_EQ(future.Get<0>(),
+            ReadFile(GetBrokenTestDataDirBase().Append(
+                base::FilePath::FromUTF8Unsafe(kPsstJsonFileName))));
 }
 
 TEST_F(PsstRuleRegistryUnitTest, RulesLoadingNonExistingPath) {
   const auto non_existing_path =
       base::FilePath(FILE_PATH_LITERAL("non-existing-path"));
-  LoadRulesTestCallback mock_callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(mock_callback, Run)
-      .Times(1)
-      .WillOnce(
-          [&](const std::string& data, const std::vector<PsstRule>& rules) {
-            EXPECT_TRUE(rules.empty());
-            EXPECT_TRUE(data.empty());
-            run_loop.Quit();
-          });
+  LoadRulesTestFuture future;
+  psst_rule_registry().LoadRules(
+      non_existing_path,
+      future.GetCallback<const std::string&, const std::vector<PsstRule>&>());
 
-  psst_rule_registry().LoadRules(non_existing_path, mock_callback.Get());
-  run_loop.Run();
+  EXPECT_TRUE(future.Get<1>().empty());
+  EXPECT_TRUE(future.Get<0>().empty());
 }
 
 TEST_F(PsstRuleRegistryUnitTest, RuleReferencesToNotExistedPath) {
   {
-    LoadRulesTestCallback mock_callback;
-    base::RunLoop run_loop;
-    EXPECT_CALL(mock_callback, Run)
-        .Times(1)
-        .WillOnce([&](const std::string& data,
-                      const std::vector<PsstRule>& rules) {
-          EXPECT_EQ(rules.size(), kTestPsstRulesCount);
-          EXPECT_EQ(data,
-                    ReadFile(GetTestDataDirBase().Append(
-                        base::FilePath::FromUTF8Unsafe(kPsstJsonFileName))));
-          run_loop.Quit();
-        });
+    LoadRulesTestFuture load_future;
+    psst_rule_registry().LoadRules(
+        GetTestDataDirBase(),
+        load_future
+            .GetCallback<const std::string&, const std::vector<PsstRule>&>());
 
-    psst_rule_registry().LoadRules(GetTestDataDirBase(), mock_callback.Get());
-    run_loop.Run();
+    EXPECT_EQ(load_future.Get<1>().size(), kTestPsstRulesCount);
+    EXPECT_EQ(load_future.Get<0>(),
+              ReadFile(GetTestDataDirBase().Append(
+                  base::FilePath::FromUTF8Unsafe(kPsstJsonFileName))));
   }
 
-  base::RunLoop run_loop;
-  CheckIfMatchTestCallback mock_callback;
+  base::test::TestFuture<std::unique_ptr<MatchedRule>> match_future;
   NoMatchedRulesTestCallback no_matched_rules_mock_calback;
   EXPECT_CALL(no_matched_rules_mock_calback, Run).Times(0);
-  EXPECT_CALL(mock_callback, Run)
-      .Times(1)
-      .WillOnce([&](std::unique_ptr<MatchedRule> matched_rule) {
-        // Rule has not been loaded correctly(wrong scripts path), so it should
-        // not be matched.
-        ASSERT_FALSE(matched_rule);
-        run_loop.Quit();
-      });
 
   psst_rule_registry().CheckIfMatch(GURL("https://url.test"),
-                                    mock_callback.Get(),
+                                    match_future.GetCallback(),
                                     no_matched_rules_mock_calback.Get());
-  run_loop.Run();
+
+  // Rule has not been loaded correctly(wrong scripts path), so it should
+  // not be matched.
+  ASSERT_FALSE(match_future.Take());
 }
 
 TEST_F(PsstRuleRegistryUnitTest, DoNotMatchRuleIfNotExists) {
   {
-    LoadRulesTestCallback mock_callback;
-    base::RunLoop run_loop;
-    EXPECT_CALL(mock_callback, Run)
-        .Times(1)
-        .WillOnce([&](const std::string& data,
-                      const std::vector<PsstRule>& rules) {
-          EXPECT_EQ(rules.size(), kTestPsstRulesCount);
-          EXPECT_EQ(data,
-                    ReadFile(GetTestDataDirBase().Append(
-                        base::FilePath::FromUTF8Unsafe(kPsstJsonFileName))));
-          run_loop.Quit();
-        });
+    LoadRulesTestFuture load_future;
+    psst_rule_registry().LoadRules(
+        GetTestDataDirBase(),
+        load_future
+            .GetCallback<const std::string&, const std::vector<PsstRule>&>());
 
-    psst_rule_registry().LoadRules(GetTestDataDirBase(), mock_callback.Get());
-    run_loop.Run();
+    EXPECT_EQ(load_future.Get<1>().size(), kTestPsstRulesCount);
+    EXPECT_EQ(load_future.Get<0>(),
+              ReadFile(GetTestDataDirBase().Append(
+                  base::FilePath::FromUTF8Unsafe(kPsstJsonFileName))));
   }
 
   CheckIfMatchTestCallback mock_callback;

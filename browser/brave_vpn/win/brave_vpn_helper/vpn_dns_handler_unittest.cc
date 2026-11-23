@@ -9,7 +9,6 @@
 
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
-#include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_helper/brave_vpn_dns_delegate.h"
@@ -86,7 +85,6 @@ TEST_F(VpnDnsHandlerTest, Disconnected) {
   handler.SetConnectionResultForTesting(
       ras::CheckConnectionResult::DISCONNECTED);
   handler.StartMonitoring();
-  base::RunLoop().RunUntilIdle();
   FastForwardBy(base::Seconds(1));
   EXPECT_TRUE(callback_called);
 }
@@ -98,7 +96,6 @@ TEST_F(VpnDnsHandlerTest, ConnectingFailed) {
   EXPECT_FALSE(handler.IsActive());
   handler.SetConnectionResultForTesting(ras::CheckConnectionResult::CONNECTING);
   handler.StartMonitoring();
-  base::RunLoop().RunUntilIdle();
   EXPECT_FALSE(handler.IsActive());
   handler.SetConnectionResultForTesting(
       ras::CheckConnectionResult::DISCONNECTED);
@@ -120,7 +117,6 @@ TEST_F(VpnDnsHandlerTest, ConnectingSuccessFailedToSetFilters) {
   EXPECT_FALSE(handler.IsActive());
   handler.SetConnectionResultForTesting(ras::CheckConnectionResult::CONNECTING);
   handler.StartMonitoring();
-  base::RunLoop().RunUntilIdle();
 
   handler.SetConnectionResultForTesting(ras::CheckConnectionResult::CONNECTED);
   handler.SetPlatformFiltersResultForTesting(false);
@@ -144,7 +140,6 @@ TEST_F(VpnDnsHandlerTest, ConnectingSuccessFiltersInstalled) {
   EXPECT_EQ(handler.GetEventHandle(), nullptr);
   handler.SetConnectionResultForTesting(ras::CheckConnectionResult::CONNECTING);
   handler.StartMonitoring();
-  base::RunLoop().RunUntilIdle();
   EXPECT_NE(handler.GetEventHandle(), nullptr);
   handler.SetConnectionResultForTesting(ras::CheckConnectionResult::CONNECTED);
   handler.SetPlatformFiltersResultForTesting(true);
@@ -180,7 +175,6 @@ TEST_F(VpnDnsHandlerTest, Connected) {
   // Connected.
   handler.SetConnectionResultForTesting(ras::CheckConnectionResult::CONNECTED);
   handler.StartMonitoring();
-  base::RunLoop().RunUntilIdle();
   // Set filters immediately as vpn is connected.
   EXPECT_TRUE(handler.IsActive());
   EXPECT_FALSE(callback_called);
@@ -235,7 +229,6 @@ TEST_F(VpnDnsHandlerTest, CheckDisconnectedState) {
   handler.SetConnectionResultForTesting(
       ras::CheckConnectionResult::DISCONNECTED);
   handler.UpdateFiltersState();
-  base::RunLoop().RunUntilIdle();
   // Remove filters
   EXPECT_FALSE(handler.IsActive());
   FastForwardBy(base::Seconds(1));
@@ -254,7 +247,6 @@ TEST_F(VpnDnsHandlerTest, DisconnectAndReconnectRightAfterBySignal) {
   handler.SetConnectionResultForTesting(
       ras::CheckConnectionResult::DISCONNECTED);
   handler.UpdateFiltersState();
-  base::RunLoop().RunUntilIdle();
   // Filters removed
   EXPECT_FALSE(handler.IsActive());
   EXPECT_TRUE(handler.IsExitTimerRunningForTesting());
@@ -285,7 +277,6 @@ TEST_F(VpnDnsHandlerTest, DisconnectAndReconnectRightAfterByPolling) {
   handler.SetConnectionResultForTesting(
       ras::CheckConnectionResult::DISCONNECTED);
   handler.UpdateFiltersState();
-  base::RunLoop().RunUntilIdle();
   // Filters removed
   EXPECT_FALSE(handler.IsActive());
   EXPECT_TRUE(handler.IsExitTimerRunningForTesting());

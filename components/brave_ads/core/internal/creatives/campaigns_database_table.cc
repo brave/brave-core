@@ -45,6 +45,8 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
   int32_t index = 0;
   for (const auto& [campaign_id, campaign] : campaigns) {
     BindColumnString(mojom_db_action, index++, campaign_id);
+    BindColumnString(mojom_db_action, index++,
+                     ToString(campaign.campaign_type));
     BindColumnString(mojom_db_action, index++, ToString(campaign.metric_type));
     BindColumnTime(mojom_db_action, index++, campaign.start_at);
     BindColumnTime(mojom_db_action, index++, campaign.end_at);
@@ -72,6 +74,7 @@ std::string BuildInsertSql(
       R"(
           INSERT INTO $1 (
             id,
+            type,
             metric_type,
             start_at,
             end_at,
@@ -80,7 +83,7 @@ std::string BuildInsertSql(
             priority,
             ptr
           ) VALUES $2)",
-      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/8, row_count)},
+      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/9, row_count)},
       nullptr);
 }
 
@@ -114,10 +117,10 @@ void Campaigns::Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
 
   for (const auto& creative_ad : creative_ads) {
     campaigns[creative_ad.campaign_id] = {
-        creative_ad.metric_type,      creative_ad.start_at,
-        creative_ad.end_at,           creative_ad.daily_cap,
-        creative_ad.advertiser_id,    creative_ad.priority,
-        creative_ad.pass_through_rate};
+        creative_ad.campaign_type, creative_ad.metric_type,
+        creative_ad.start_at,      creative_ad.end_at,
+        creative_ad.daily_cap,     creative_ad.advertiser_id,
+        creative_ad.priority,      creative_ad.pass_through_rate};
 
     geo_targets[creative_ad.campaign_id] = creative_ad.geo_targets;
 
@@ -160,6 +163,7 @@ void Campaigns::Create(
   Execute(mojom_db_transaction, R"(
       CREATE TABLE campaigns (
         id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
+        type TEXT NOT NULL DEFAULT '',
         metric_type TEXT NOT NULL DEFAULT 'confirmation',
         start_at TIMESTAMP NOT NULL,
         end_at TIMESTAMP NOT NULL,
@@ -177,6 +181,11 @@ void Campaigns::Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
   switch (to_version) {
     case 52: {
       MigrateToV52(mojom_db_transaction);
+      break;
+    }
+
+    case 62: {
+      MigrateToV62(mojom_db_transaction);
       break;
     }
 
@@ -213,6 +222,38 @@ void Campaigns::MigrateToV52(
   const std::vector<std::string> columns = {
       "id",       "start_at", "end_at", "daily_cap", "advertiser_id",
       "priority", "ptr"};
+
+  CopyTableColumns(mojom_db_transaction, "campaigns", "campaigns_temp", columns,
+                   /*should_drop=*/true);
+
+  RenameTable(mojom_db_transaction, "campaigns_temp", "campaigns");
+}
+
+void Campaigns::MigrateToV62(
+    const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
+  CHECK(mojom_db_transaction);
+
+  // Create a temporary table:
+  //   - with a new `type` column defaulting to empty (undefined), which will
+  //     be corrected when the new tab page ads are updated.
+  Execute(mojom_db_transaction, R"(
+      CREATE TABLE campaigns_temp (
+        id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
+        type TEXT NOT NULL DEFAULT '',
+        metric_type TEXT NOT NULL DEFAULT 'confirmation',
+        start_at TIMESTAMP NOT NULL,
+        end_at TIMESTAMP NOT NULL,
+        daily_cap INTEGER DEFAULT 0 NOT NULL,
+        advertiser_id TEXT NOT NULL,
+        priority INTEGER NOT NULL DEFAULT 0,
+        ptr DOUBLE NOT NULL DEFAULT 1
+      ))");
+
+  // Copy legacy columns to the temporary table, drop the legacy table and
+  // rename the temporary table.
+  const std::vector<std::string> columns = {
+      "id",        "metric_type",   "start_at", "end_at",
+      "daily_cap", "advertiser_id", "priority", "ptr"};
 
   CopyTableColumns(mojom_db_transaction, "campaigns", "campaigns_temp", columns,
                    /*should_drop=*/true);
