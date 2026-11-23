@@ -123,20 +123,19 @@ void ObliviousHttpAPIClient::InnerClient::OnCompleted(
           response->get_inner_response()->response_code;
       const std::string& body = response->get_inner_response()->response_body;
       if (!body.empty()) {
-        on_completed_called_ = true;
-        // Parsed on the SSE parser's sequenced runner, so the completion also
-        // follows every streamed event still being parsed.
+        // Parsed on the SSE parser's sequenced runner, so the body is set
+        // before the completion below runs.
         api_request_helper::ParseJsonInWorkerTaskRunner(
             body, sequenced_task_runner_.get(),
             base::BindOnce(&InnerClient::OnNonStreamingBodyParsed,
                            weak_ptr_factory_.GetWeakPtr()));
-        return;
       }
       break;
     }
   }
   on_completed_called_ = true;
-  // Completes once the streamed events still being parsed are delivered.
+  // Completes once the body and the streamed events still being parsed are
+  // delivered.
   sse_parser_.RunAfterPendingEvents(base::BindOnce(
       &InnerClient::CompleteRequest, weak_ptr_factory_.GetWeakPtr()));
 }
@@ -158,7 +157,6 @@ void ObliviousHttpAPIClient::InnerClient::OnNonStreamingBodyParsed(
   if (value.has_value()) {
     pending_parsed_body_ = std::move(*value);
   }
-  CompleteRequest();
 }
 
 void ObliviousHttpAPIClient::InnerClient::CompleteRequest() {
