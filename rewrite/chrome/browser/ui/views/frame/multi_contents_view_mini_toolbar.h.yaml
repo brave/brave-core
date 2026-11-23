@@ -17,19 +17,14 @@ substitutions:
       method_name: UpdateContents
 
   - description: |-
-      Add Brave helpers and friends to MultiContentsViewMiniToolbar
+      Add a Brave icon helper to MultiContentsViewMiniToolbar
 
-      Both static methods are defined in
-      brave_multi_contents_view_mini_toolbar.cc to avoid a brave dependency
-      here.
+      It is defined in brave_multi_contents_view_mini_toolbar.cc to avoid a
+      brave dependency here.
     add_to_public:
       class_name: MultiContentsViewMiniToolbar
       code: |-
         static const gfx::VectorIcon& GetMoreVerticalIcon();
-        static std::unique_ptr<SplitTabMenuModel> CreateBraveSplitTabMenuModel(
-            TabStripModel* tab_strip_model,
-            SplitTabMenuModel::MenuSource source,
-            int split_tab_index);
 
   - description: |-
       Add friend class for BraveMultiContentsViewMiniToolbar
