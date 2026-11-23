@@ -548,7 +548,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/ntp_customization/NtpCustomizationUtils",
-                        "isNtpThemeCustomizationEnabled",
+                        "isNtpThemeCustomizationEnabledByPolicy",
                         MethodModifier.STATIC,
                         boolean.class));
         Assert.assertTrue(

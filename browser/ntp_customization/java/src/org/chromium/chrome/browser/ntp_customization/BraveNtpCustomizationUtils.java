@@ -17,10 +17,10 @@ public class BraveNtpCustomizationUtils {
     private static final String TAG = "BraveNtpCustomizationUtils";
 
     /**
-     * Replace NtpCustomizationUtils.isNtpThemeCustomizationEnabled (no-arg). Brave uses its own NTP
+     * Replace NtpCustomizationUtils.isNtpThemeCustomizationEnabledByPolicy. Brave uses its own NTP
      * background system and does not participate in Chromium's NTP theme customization.
      */
-    public static boolean isNtpThemeCustomizationEnabled() {
+    public static boolean isNtpThemeCustomizationEnabledByPolicy() {
         return false;
     }
 

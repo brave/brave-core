@@ -13,12 +13,18 @@ public class BraveNtpCustomizationUtilsClassAdapter extends BraveClassVisitor {
     static String sBraveNtpCustomizationUtilsClassName =
             "org/chromium/chrome/browser/ntp_customization/BraveNtpCustomizationUtils";
     static String sMethodIsNtpThemeCustomizationEnabled = "isNtpThemeCustomizationEnabled";
+    static String sMethodIsNtpThemeCustomizationEnabledByPolicy =
+            "isNtpThemeCustomizationEnabledByPolicy";
 
     public BraveNtpCustomizationUtilsClassAdapter(ClassVisitor visitor) {
         super(visitor);
         changeMethodOwner(
                 sNtpCustomizationUtilsClassName,
                 sMethodIsNtpThemeCustomizationEnabled,
+                sBraveNtpCustomizationUtilsClassName);
+        changeMethodOwner(
+                sNtpCustomizationUtilsClassName,
+                sMethodIsNtpThemeCustomizationEnabledByPolicy,
                 sBraveNtpCustomizationUtilsClassName);
     }
 }

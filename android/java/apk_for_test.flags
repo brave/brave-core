@@ -116,10 +116,12 @@
 
 -keep class org.chromium.chrome.browser.ntp_customization.NtpCustomizationUtils {
     *** isNtpThemeCustomizationEnabled(...);
+    *** isNtpThemeCustomizationEnabledByPolicy(...);
 }
 
 -keep class org.chromium.chrome.browser.ntp_customization.BraveNtpCustomizationUtils {
     *** isNtpThemeCustomizationEnabled(...);
+    *** isNtpThemeCustomizationEnabledByPolicy(...);
 }
 
 -keep class org.chromium.chrome.browser.ntp_customization.theme.NtpCustomizationPromoManager {
