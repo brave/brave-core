@@ -20,6 +20,8 @@ class SharedPinnedTabServiceBrowserTest : public InProcessBrowserTest {
   ~SharedPinnedTabServiceBrowserTest() override;
 
   BrowserWindowInterface* CreateNewBrowser();
+  // Closes |browser| on teardown.
+  void TrackBrowser(BrowserWindowInterface* browser);
   SharedPinnedTabService* GetForBrowser(BrowserWindowInterface* browser);
 
   void WaitUntil(base::RepeatingCallback<bool()> condition);

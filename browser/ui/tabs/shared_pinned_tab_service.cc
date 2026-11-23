@@ -807,28 +807,54 @@ void SharedPinnedTabService::SynchronizeNewBrowser(
     return;
   }
 
-  // Add shared pinned tabs to |browser| first.
+  // Add shared pinned tabs that |browser| is missing. |browser| may already
+  // hold some of them: e.g. on session restore each shared contents comes back
+  // in the window that last owned it, and OnTabAdded() starts tracking it
+  // there before this browser is activated. Those must be kept in place, not
+  // treated as new pinned tabs, or every restore duplicates them.
   LOCK_REENTRANCE(model);
 
   for (auto i = 0u; i < pinned_tab_data_.size(); i++) {
+    if (static_cast<int>(i) < model->IndexOfFirstNonPinnedTab() &&
+        IsTrackedContentsFor(model->GetWebContentsAt(i),
+                             pinned_tab_data_[i].shared_contents)) {
+      continue;
+    }
     model->InsertWebContentsAt(
         i, CreateDummyWebContents(pinned_tab_data_[i].shared_contents),
         ADD_PINNED | ADD_FORCE_INDEX);
   }
 
-  if (new_pinned_tabs.empty()) {
-    return;
-  }
-
-  DVLOG(2) << __FUNCTION__ << " Append new shared pinned tabs";
-  // If the |browser| has pinned tabs out of sync, append them to other browsers
+  // Any remaining pinned tabs are new to us. Append them to other browsers.
   const auto offset = pinned_tab_data_.size();
-  for (auto i = 0u; i < new_pinned_tabs.size(); i++) {
-    SharedContentsData::CreateForWebContents(
-        new_pinned_tabs.at(i).shared_contents);
-    pinned_tab_data_.push_back(std::move(new_pinned_tabs.at(i)));
-    SynchronizeNewPinnedTab(offset + i);
+  for (int i = offset; i < model->IndexOfFirstNonPinnedTab(); i++) {
+    auto* contents = model->GetWebContentsAt(i);
+    if (IsSharedContents(contents) || IsDummyContents(contents)) {
+      // Already tracked but out of order; adding it again would duplicate it.
+      DVLOG(1) << __FUNCTION__ << " Unexpected tracked pinned tab at " << i;
+      break;
+    }
+
+    DVLOG(2) << __FUNCTION__ << " Append new shared pinned tab";
+    SharedContentsData::CreateForWebContents(contents);
+    pinned_tab_data_.push_back(
+        {.renderer_data =
+             tabs::TabData::FromTabInterface(model->GetTabAtIndex(i)),
+         .shared_contents = contents,
+         .contents_owner_model = model});
+    SynchronizeNewPinnedTab(i);
   }
+}
+
+bool SharedPinnedTabService::IsTrackedContentsFor(
+    content::WebContents* contents,
+    content::WebContents* shared_contents) const {
+  if (contents == shared_contents) {
+    return true;
+  }
+  auto* dummy_contents_data = DummyContentsData::FromWebContents(contents);
+  return dummy_contents_data &&
+         dummy_contents_data->shared_contents() == shared_contents;
 }
 
 void SharedPinnedTabService::SynchronizeDeferredBrowser(
