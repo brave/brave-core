@@ -21,6 +21,7 @@
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/last_unidle_time_diagnostic_entry_util.h"
 #include "brave/components/brave_ads/core/internal/settings/test/settings_test_util.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 // pnpm test brave_unit_tests --filter=BraveAds.*
@@ -215,17 +216,11 @@ TEST_F(BraveAdsDiagnosticManagerTest,
       diagnostics->FindList("permissionRulesEntries");
   ASSERT_TRUE(permission_rules_entries);
 
-  bool found_catalog_permission_entry = false;
-  for (const base::Value& entry : *permission_rules_entries) {
-    const std::string* const name = entry.GetDict().FindString("name");
-    if (name && *name == "Catalog permission") {
-      found_catalog_permission_entry = true;
-
-      // Assert
-      EXPECT_EQ("true", *entry.GetDict().FindString("value"));
-    }
-  }
-  ASSERT_TRUE(found_catalog_permission_entry);
+  // Assert
+  EXPECT_THAT(
+      *permission_rules_entries,
+      ::testing::Contains(base::test::IsJson(
+          R"JSON({"name": "Catalog permission", "value": "true"})JSON")));
 }
 
 TEST_F(BraveAdsDiagnosticManagerTest, GetConditionMatchers) {
