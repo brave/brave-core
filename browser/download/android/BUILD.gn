@@ -32,18 +32,25 @@ generate_jni("jni_headers") {
 android_library("javatests") {
   testonly = true
 
-  sources = [ "javatests/src/org/chromium/chrome/browser/download/BraveDownloadImageMetadataStripperTest.java" ]
+  sources = [
+    "//chrome/android/javatests/src/org/chromium/chrome/browser/download/DownloadTestHelper.java",
+    "//chrome/android/javatests/src/org/chromium/chrome/browser/download/DownloadTestRule.java",
+    "javatests/src/org/chromium/chrome/browser/download/BraveDownloadImageMetadataStripperTest.java",
+  ]
 
   deps = [
     "//base:base_java",
     "//base:base_java_test_support",
     "//chrome/android:chrome_java",
-    "//chrome/android/javatests:chrome_test_java_helper",
+    "//chrome/browser/download/android:java",
     "//chrome/browser/flags:java",
+    "//chrome/browser/profiles/android:java",
     "//chrome/browser/tab:java",
     "//chrome/test/android:chrome_java_integration_test_support",
     "//chrome/test/android:chrome_java_test_support_common",
     "//chrome/test/android:chrome_java_transit",
+    "//components/download/internal/common:internal_java",
+    "//components/offline_items_collection/core:core_java",
     "//content/public/test/android:content_java_test_support",
     "//net/android:net_java_test_support",
     "//third_party/androidx:androidx_test_runner_java",
