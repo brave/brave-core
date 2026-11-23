@@ -79,12 +79,6 @@ void SidebarWebPanelController::OpenWebPanel(const SidebarItem& item,
 
 void SidebarWebPanelController::CloseWebPanel(bool suppress_animations) {
   if (suppress_animations) {
-    // HasPanelTab(), not HasOpenPanel(): a panel already animating closed still
-    // occupies the space being taken over.
-    if (!HasPanelTab()) {
-      return;
-    }
-
     state_ = State::kClosing;
 
     // The side panel takes this space in the same frame, so the panel has to be
