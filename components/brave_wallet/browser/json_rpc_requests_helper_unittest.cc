@@ -7,7 +7,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-using base::test::ParseJson;
+using base::test::ParseJsonDict;
 
 namespace brave_wallet {
 
@@ -31,7 +31,7 @@ TEST(JsonRpcRequestsHelperUnitTest, EncodeAnkrGetAccountBalancesParams) {
     })");
 
   // OK: non-empty blockchains
-  EXPECT_EQ(encoded_params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(ParseJsonDict(encoded_params), ParseJsonDict(expected_params));
 
   // OK: empty blockchains
   encoded_params = EncodeAnkrGetAccountBalancesParams("mockAddress", {});
@@ -46,6 +46,6 @@ TEST(JsonRpcRequestsHelperUnitTest, EncodeAnkrGetAccountBalancesParams) {
         "blockchains": []
       }
     })";
-  EXPECT_EQ(encoded_params, GetJSON(ParseJson(expected_params)));
+  EXPECT_EQ(ParseJsonDict(encoded_params), ParseJsonDict(expected_params));
 }
 }  // namespace brave_wallet
