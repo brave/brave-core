@@ -7,13 +7,15 @@
 A caller hands `JenkinsCi.trigger` one or more fully-qualified job URLs plus
 the build parameters, and optionally asks to watch the pipelines to completion
 with a live-updating table. `JenkinsCi.failed_builds` reads a finished run's
-failed stages and tests, and `JenkinsCi.rerun` queues its job again.
+failed stages and tests, `JenkinsCi.rerun` queues its job again, and
+`JenkinsCi.builds` lists a job's recent runs.
 """
 
 from __future__ import annotations
 
 import contextlib
 from dataclasses import dataclass
+import datetime
 import html
 import json
 from pathlib import Path
@@ -134,6 +136,29 @@ def _format_duration(millis) -> str:
     if minutes:
         return f'{minutes}m{seconds:02d}s'
     return f'{seconds}s'
+
+
+@dataclass(frozen=True)
+class JobBuild:
+    """A run of a job: its number, link, result (empty while it runs), when
+    it started, and how long it took (0 while it runs)."""
+
+    number: int
+    url: str
+    result: str
+    started: datetime.datetime
+    millis: int
+
+    @property
+    def duration(self) -> str:
+        return _format_duration(self.millis)
+
+
+def _job_url(url: str) -> str:
+    """The job of `url`, which is a job's or one of its runs' link."""
+    path = url.rstrip('/')
+    last = path.rsplit('/', 1)[-1]
+    return (path.rsplit('/', 1)[0] if last.isdigit() else path) + '/'
 
 
 @dataclass
@@ -691,6 +716,30 @@ class JenkinsCi:
         )
         response.raise_for_status()
         return f'Queued {job_url.rstrip("/")} again.'
+
+    def builds(self, url: str, count: int) -> list[JobBuild]:
+        """The newest `count` runs of the job at `url` (the job's link or a
+        run's), newest first."""
+        job_url = _job_url(url)
+        job = self._get_json(
+            self._session(),
+            f'{job_url}api/json?tree=allBuilds[number,url,result,timestamp,'
+            f'duration]{{0,{count}}}',
+        )
+        if job is None:
+            raise BadOutcomeException(f'Could not read the runs of {job_url}')
+        return [
+            JobBuild(
+                number=build['number'],
+                url=build.get('url') or f'{job_url}{build["number"]}/',
+                result=build.get('result') or '',
+                started=datetime.datetime.fromtimestamp(
+                    build.get('timestamp', 0) / 1000, datetime.timezone.utc
+                ),
+                millis=build.get('duration') or 0,
+            )
+            for build in job.get('allBuilds') or []
+        ]
 
     def _resolve_display_name(
         self, session: requests.Session, job: _WatchedJob

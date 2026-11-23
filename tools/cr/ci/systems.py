@@ -2,7 +2,8 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Builds on Brave's CI systems, by URL: what failed, the log, a rerun.
+"""Builds on Brave's CI systems, by URL: what failed, the log, a rerun, and
+a job's recent runs.
 
 A URL is a check's link, or a build a report lists. Each system's client is
 made once, on first use.
@@ -15,7 +16,7 @@ import urllib.parse
 
 from ci.actions import ActionsCi
 from ci.failures import FailedBuild
-from ci.jenkins import JenkinsCi
+from ci.jenkins import JenkinsCi, JobBuild
 from ci.teamcity import TeamCityCi
 
 _JENKINS_HOST = 'ci.brave.com'
@@ -76,6 +77,15 @@ def failed_step_log(url: str) -> str:
     if not isinstance(client, TeamCityCi):
         raise Unsupported('--failed-step is for TeamCity only.')
     return client.failed_step_log(url)
+
+
+def builds(url: str, count: int) -> list[JobBuild]:
+    """The newest `count` runs of the job at `url` (the job's link or a
+    run's), newest first. Jenkins only."""
+    client = _for(url)
+    if not isinstance(client, JenkinsCi):
+        raise Unsupported('Listing a job\'s runs is for Jenkins only.')
+    return client.builds(url, count)
 
 
 def rerun(url: str, *, wipe_workspace: bool = False) -> str:

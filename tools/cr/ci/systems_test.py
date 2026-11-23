@@ -75,6 +75,13 @@ class DispatchTest(unittest.TestCase):
         systems.rerun(_TEAMCITY)
         self.teamcity.rerun.assert_called_once_with(_TEAMCITY)
 
+    def test_only_jenkins_lists_a_job_s_runs(self):
+        self.jenkins.builds.return_value = ['run']
+        self.assertEqual(systems.builds(_JENKINS, 5), ['run'])
+        self.jenkins.builds.assert_called_once_with(_JENKINS, 5)
+        with self.assertRaisesRegex(systems.Unsupported, 'Jenkins only'):
+            systems.builds(_TEAMCITY, 5)
+
 
 if __name__ == '__main__':
     unittest.main()
