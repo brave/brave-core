@@ -10,7 +10,6 @@
 #include <string>
 
 #include "base/containers/queue.h"
-#include "base/gtest_prod_util.h"
 #include "base/types/expected.h"
 #include "brave/components/playlist/content/browser/playlist_media_file_downloader.h"
 #include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
@@ -90,9 +89,11 @@ class PlaylistMediaFileDownloadManager
 
   bool has_download_requests() const { return !!current_job_; }
 
- private:
-  FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, ResetAll);
+  void SetPauseDownloadForTesting(bool paused) {
+    pause_download_for_testing_ = paused;
+  }
 
+ private:
   // PlaylistMediaFileDownloader::Delegate overrides:
   void OnMediaFileDownloadProgressed(const std::string& id,
                                      int64_t total_bytes,

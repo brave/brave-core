@@ -82,19 +82,6 @@ class ConnectionAPIImpl
   const raw_ref<BraveVPNConnectionManager> manager_;  // owner
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(SystemVPNConnectionAPIUnitTest, NeedsConnectTest);
-  FRIEND_TEST_ALL_PREFIXES(SystemVPNConnectionAPIUnitTest, HostnamesTest);
-  FRIEND_TEST_ALL_PREFIXES(SystemVPNConnectionAPIUnitTest, ConnectionInfoTest);
-  FRIEND_TEST_ALL_PREFIXES(SystemVPNConnectionAPIUnitTest,
-                           CancelConnectingTest);
-  FRIEND_TEST_ALL_PREFIXES(SystemVPNConnectionAPIUnitTest,
-                           IgnoreDisconnectedStateWhileConnecting);
-  FRIEND_TEST_ALL_PREFIXES(SystemVPNConnectionAPIUnitTest,
-                           ClearLastConnectionErrorWhenNewConnectionStart);
-  FRIEND_TEST_ALL_PREFIXES(SystemVPNConnectionAPIUnitTest,
-                           CreateOSVPNEntryWithValidInfoWhenConnectTest);
-  FRIEND_TEST_ALL_PREFIXES(SystemVPNConnectionAPIUnitTest,
-                           CreateOSVPNEntryWithInvalidInfoTest);
   FRIEND_TEST_ALL_PREFIXES(BraveVPNWireguardConnectionAPIUnitTest,
                            SetSelectedRegion);
 

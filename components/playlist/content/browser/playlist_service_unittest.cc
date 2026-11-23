@@ -1,7 +1,7 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/playlist/content/browser/playlist_service.h"
 
@@ -9,36 +9,31 @@
 
 #include "base/check.h"
 #include "base/files/file_util.h"
-#include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback_helpers.h"
-#include "base/gtest_prod_util.h"
 #include "base/run_loop.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "base/threading/thread_restrictions.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
-#include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/browser/playlist/test/mock_playlist_service_observer.h"
 #include "brave/components/playlist/content/browser/media_detector_component_manager.h"
+#include "brave/components/playlist/content/browser/mock_playlist_service_observer.h"
 #include "brave/components/playlist/content/browser/playlist_constants.h"
+#include "brave/components/playlist/content/browser/playlist_p3a.h"
 #include "brave/components/playlist/content/browser/type_converter.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
 #include "brave/components/playlist/core/common/pref_names.h"
-#include "chrome/browser/prefs/browser_prefs.h"
-#include "chrome/test/base/testing_profile.h"
 #include "components/download/public/common/download_task_runner.h"
-#include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/prefs/testing_pref_service.h"
-#include "components/sync_preferences/pref_service_mock_factory.h"
-#include "components/sync_preferences/pref_service_syncable.h"
-#include "content/public/browser/browser_task_traits.h"
-#include "content/public/browser/browser_thread.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/test/browser_task_environment.h"
+#include "content/public/test/test_browser_context.h"
 #include "content/public/test/test_host_resolver.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
@@ -71,8 +66,8 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
 
 }  // namespace
 
-// We don't usually wrap tests in namespaces from chrome layer, but we need this
-// for FRIEND_TEST_ALL_PREFIXES declaration. Without this, the macro requires
+// We don't usually wrap tests in namespaces, but we need this for
+// FRIEND_TEST_ALL_PREFIXES declaration. Without this, the macro requires
 // tests in global space to be visible.
 namespace playlist {
 
@@ -91,7 +86,7 @@ class PlaylistServiceUnitTest : public testing::Test {
 
   net::EmbeddedTestServer* https_server() { return https_server_.get(); }
 
-  PrefService* prefs() { return profile_->GetPrefs(); }
+  PrefService* prefs() { return &prefs_; }
 
   void WaitUntil(base::RepeatingCallback<bool()> condition) {
     if (condition.Run()) {
@@ -163,39 +158,21 @@ class PlaylistServiceUnitTest : public testing::Test {
     host_resolver_ = std::make_unique<content::TestHostResolver>();
     host_resolver_->host_resolver()->AddRule("*", "127.0.0.1");
 
-    auto registry = base::MakeRefCounted<user_prefs::PrefRegistrySyncable>();
-    // Before initializing prefs, make sure that PlaylistServiceFactory
-    // is instantiated.
-    PlaylistServiceFactory::GetInstance();
-    RegisterUserProfilePrefs(registry.get());
-
-    PlaylistServiceFactory::RegisterLocalStatePrefs(local_state_.registry());
-
-    temp_dir_ = std::make_unique<base::ScopedTempDir>();
-    ASSERT_TRUE(temp_dir_->CreateUniqueTempDir());
-
-    sync_preferences::PrefServiceMockFactory factory;
-    auto pref_service = factory.CreateSyncable(registry.get());
-    auto* pref_service_ptr = pref_service.get();
-
-    auto builder = TestingProfile::Builder();
-    builder.SetPrefService(std::move(pref_service));
-    builder.SetPath(temp_dir_->GetPath());
-    profile_ = builder.Build();
+    PlaylistService::RegisterProfilePrefs(prefs_.registry());
+    PlaylistP3A::RegisterLocalStatePrefs(local_state_.registry());
+    user_prefs::UserPrefs::Set(&browser_context_, &prefs_);
 
     DCHECK(!download::GetIOTaskRunner());
     // Sets the same IO task runner as TestProfile::GetIOTaskRunner() uses.
     download::SetIOTaskRunner(
         base::SingleThreadTaskRunner::GetCurrentDefault());
 
-    ASSERT_EQ(pref_service_ptr, profile_->GetPrefs());
-
     detector_manager_ =
         std::make_unique<MediaDetectorComponentManager>(nullptr);
     detector_manager_->SetUseLocalScript();
-    service_ = std::make_unique<PlaylistService>(profile_.get(), &local_state_,
-                                                 detector_manager_.get(),
-                                                 nullptr, base::Time::Now());
+    service_ = std::make_unique<PlaylistService>(
+        &browser_context_, &local_state_, detector_manager_.get(), nullptr,
+        base::Time::Now());
 
     // Set up embedded test server to handle fake responses.
     https_server_ = std::make_unique<net::EmbeddedTestServer>(
@@ -208,8 +185,6 @@ class PlaylistServiceUnitTest : public testing::Test {
     https_server_.reset();
     service_.reset();
     detector_manager_.reset();
-    profile_.reset();
-    temp_dir_.reset();
 
     download::ClearIOTaskRunnerForTesting();
 
@@ -224,10 +199,9 @@ class PlaylistServiceUnitTest : public testing::Test {
       content::BrowserTaskEnvironment::IO_MAINLOOP};
 
   TestingPrefServiceSimple local_state_;
-  std::unique_ptr<TestingProfile> profile_;
+  sync_preferences::TestingPrefServiceSyncable prefs_;
+  content::TestBrowserContext browser_context_;
   std::unique_ptr<PlaylistService> service_;
-
-  std::unique_ptr<base::ScopedTempDir> temp_dir_;
 
   std::unique_ptr<base::RunLoop> run_loop_;
   base::test::ScopedFeatureList scoped_feature_list_;
@@ -511,6 +485,7 @@ TEST_F(PlaylistServiceUnitTest, CreateAndRemovePlaylist) {
     service->CreatePlaylist(
         new_playlist->Clone(),
         base::BindLambdaForTesting([&](mojom::PlaylistPtr new_list) {
+          ASSERT_TRUE(new_list->id.has_value());
           new_playlist->id = *new_list->id;
         }));
     WaitUntil(base::BindLambdaForTesting([&]() { return called; }));
@@ -527,7 +502,7 @@ TEST_F(PlaylistServiceUnitTest, CreateAndRemovePlaylist) {
             playlists, [&](const mojom::PlaylistPtr& playlist) {
               return new_playlist->id == playlist->id;
             });
-        EXPECT_NE(iter, playlists.end());
+        ASSERT_NE(iter, playlists.end());
 
         // Remove the new playlist
         bool called = false;
@@ -595,6 +570,7 @@ TEST_F(PlaylistServiceUnitTest, RemoveAndRestoreLocalData) {
   // Remove local media file. Thumbnail shouldn't be removed
   service->GetAllPlaylistItems(base::BindLambdaForTesting(
       [&](std::vector<mojom::PlaylistItemPtr> items) {
+        ASSERT_EQ(1UL, items.size());
         const auto& item = items.front();
         // Store the item's local file path first
         base::FilePath media_path;
@@ -610,7 +586,7 @@ TEST_F(PlaylistServiceUnitTest, RemoveAndRestoreLocalData) {
   service->GetAllPlaylistItems(base::BindLambdaForTesting(
       [&](std::vector<mojom::PlaylistItemPtr> items) {
         // Verify if RemoveLocalDataForItem() worked.
-        EXPECT_EQ(1UL, items.size());
+        ASSERT_EQ(1UL, items.size());
         const auto& item = items.front();
         EXPECT_FALSE(item->cached);
         EXPECT_EQ(item->media_source, item->media_path);
@@ -627,7 +603,7 @@ TEST_F(PlaylistServiceUnitTest, RemoveAndRestoreLocalData) {
   // Restore local media for the item.
   service->GetAllPlaylistItems(base::BindLambdaForTesting(
       [&](std::vector<mojom::PlaylistItemPtr> items) {
-        EXPECT_EQ(1UL, items.size());
+        ASSERT_EQ(1UL, items.size());
 
         const auto& item = items.front();
         service->RecoverLocalDataForItem(
@@ -654,6 +630,7 @@ TEST_F(PlaylistServiceUnitTest, RemoveAndRestoreLocalData) {
 
   service->GetAllPlaylistItems(base::BindLambdaForTesting(
       [&](std::vector<mojom::PlaylistItemPtr> items) {
+        ASSERT_EQ(1UL, items.size());
         const auto& item = items.front();
         EXPECT_NE(item->media_source, item->media_path);
       }));
@@ -719,7 +696,7 @@ TEST_F(PlaylistServiceUnitTest, AddItemsToList) {
         kDefaultPlaylistID, {item_ids.begin(), item_ids.end()}));
 
     default_playlist = GetPlaylist(kDefaultPlaylistID);
-    EXPECT_TRUE(default_playlist);
+    ASSERT_TRUE(default_playlist);
     base::flat_set<std::string> stored_ids;
     std::ranges::transform(default_playlist->items,
                            std::inserter(stored_ids, stored_ids.end()),
@@ -833,7 +810,7 @@ TEST_F(PlaylistServiceUnitTest, MoveItem) {
                                   PlaylistItemId(id)));
   }
   playlist = GetPlaylist(another_playlist_id);
-  EXPECT_TRUE(playlist);
+  ASSERT_TRUE(playlist);
   base::flat_set<std::string> stored_ids;
   std::ranges::transform(playlist->items,
                          std::inserter(stored_ids, stored_ids.end()),
@@ -849,7 +826,7 @@ TEST_F(PlaylistServiceUnitTest, MoveItem) {
   }
 
   playlist = GetPlaylist(kDefaultPlaylistID);
-  EXPECT_TRUE(playlist);
+  ASSERT_TRUE(playlist);
   EXPECT_TRUE(playlist->items.empty());
 
   // Try moving items to non-existing playlist. Then it should fail and the
@@ -860,7 +837,7 @@ TEST_F(PlaylistServiceUnitTest, MoveItem) {
                                    PlaylistItemId(id)));
   }
   playlist = GetPlaylist(another_playlist_id);
-  EXPECT_TRUE(playlist);
+  ASSERT_TRUE(playlist);
   stored_ids.clear();
   std::ranges::transform(playlist->items,
                          std::inserter(stored_ids, stored_ids.end()),
@@ -918,6 +895,7 @@ TEST_F(PlaylistServiceUnitTest, DefaultSaveTargetListID) {
       base::BindLambdaForTesting([&](mojom::PlaylistPtr new_list) {
         another_playlist.id = new_list->id;
       }));
+  ASSERT_TRUE(another_playlist.id.has_value());
 
   prefs->SetString(kPlaylistDefaultSaveTargetListID, *another_playlist.id);
   EXPECT_EQ(*another_playlist.id, service->GetDefaultSaveTargetListID());
@@ -1111,8 +1089,7 @@ TEST_F(PlaylistServiceUnitTest, RemoveItemFromPlaylist) {
 TEST_F(PlaylistServiceUnitTest, ResetAll) {
   // Pre-condition: data and preferences are changed
   auto* service = playlist_service();
-  service->thumbnail_downloader_->pause_download_for_testing_ = true;
-  service->media_file_download_manager_->pause_download_for_testing_ = true;
+  service->SetDownloadsPausedForTesting(true);
 
   std::string another_playlist_id;
   service->CreatePlaylist(
@@ -1143,8 +1120,8 @@ TEST_F(PlaylistServiceUnitTest, ResetAll) {
       base::BindLambdaForTesting([](mojom::PlaylistPtr playlist) {
         ASSERT_EQ(playlist->items.size(), 0u);
       }));
-  service->AddMediaFilesFromItems(kDefaultPlaylistID, /* cache = */ true,
-                                  base::NullCallback(), std::move(items));
+  service->AddMediaFiles(std::move(items), kDefaultPlaylistID,
+                         /* can_cache = */ true, base::NullCallback());
   service->GetPlaylist(
       kDefaultPlaylistID,
       base::BindLambdaForTesting([](mojom::PlaylistPtr playlist) {
@@ -1163,25 +1140,43 @@ TEST_F(PlaylistServiceUnitTest, ResetAll) {
       base::BindLambdaForTesting([](mojom::PlaylistPtr playlist) {
         ASSERT_EQ(playlist->items.size(), 0u);
       }));
-  service->AddMediaFilesFromItems(another_playlist_id, false /* no caching */,
-                                  base::NullCallback(), std::move(items));
+  service->AddMediaFiles(std::move(items), another_playlist_id,
+                         /* can_cache = */ false, base::NullCallback());
   service->GetPlaylist(
       another_playlist_id,
       base::BindLambdaForTesting([](mojom::PlaylistPtr playlist) {
         ASSERT_EQ(playlist->items.size(), 5u);
       }));
 
-  WaitUntil(base::BindLambdaForTesting([&]() {
-    return service->thumbnail_downloader_->has_download_requests();
-  }));
-  WaitUntil(base::BindLambdaForTesting([&]() {
-    return service->media_file_download_manager_->has_download_requests();
-  }));
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return service->HasPendingThumbnailDownloadsForTesting(); }));
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return service->HasPendingMediaFileDownloadsForTesting(); }));
 
   auto* prefs = this->prefs();
   prefs->SetString(kPlaylistDefaultSaveTargetListID, another_playlist_id);
   prefs->SetBoolean(kPlaylistCacheByDefault, false);
-  ASSERT_EQ(service->GetDefaultSaveTargetListID(), another_playlist_id);
+
+  // Items added without a playlist id go to the default save target, so the
+  // service must be using |another_playlist_id| before ResetAll().
+  {
+    auto save_target_item = prototype_item.Clone();
+    save_target_item->id = base::Token::CreateRandom().ToString();
+    save_target_item->media_source = GURL("https://media.src/save-target");
+    std::vector<mojom::PlaylistItemPtr> save_target_items;
+    save_target_items.push_back(std::move(save_target_item));
+    base::test::TestFuture<std::vector<mojom::PlaylistItemPtr>> added;
+    service->AddMediaFiles(std::move(save_target_items), std::string(),
+                           /* can_cache = */ false, added.GetCallback());
+    auto& added_items = added.Get();
+    ASSERT_EQ(added_items.size(), 1u);
+    EXPECT_THAT(added_items[0]->parents,
+                ::testing::ElementsAre(another_playlist_id));
+  }
+
+  // All playlist data lives under the parent of each item's directory.
+  const base::FilePath base_dir =
+      service->GetPlaylistItemDirPath("any-id").DirName();
 
   // Wait until something is written on disk. Even when we don't cache media,
   // directories for each items should be created.
@@ -1189,14 +1184,14 @@ TEST_F(PlaylistServiceUnitTest, ResetAll) {
       [](base::FilePath base_path) {
         return !base::IsDirectoryEmpty(base_path);
       },
-      service->base_dir_));
+      base_dir));
 
   // Call the method -----------------------------------------------------------
   service->ResetAll();
 
   // Check if ResetAll() drops all on-going downloads
-  EXPECT_FALSE(service->thumbnail_downloader_->has_download_requests());
-  EXPECT_FALSE(service->media_file_download_manager_->has_download_requests());
+  EXPECT_FALSE(service->HasPendingThumbnailDownloadsForTesting());
+  EXPECT_FALSE(service->HasPendingMediaFileDownloadsForTesting());
 
   // Check if ResetAll() clears all data ---------------------------------------
   EXPECT_TRUE(prefs->GetDict(kPlaylistItemsPref).empty());
@@ -1217,15 +1212,15 @@ TEST_F(PlaylistServiceUnitTest, ResetAll) {
   EXPECT_EQ(0u, prefs->GetDict(kPlaylistItemsPref).size());
 
   // Check if data on disk is removed.
-  WaitUntil(base::BindRepeating(&base::IsDirectoryEmpty, service->base_dir_));
+  WaitUntil(base::BindRepeating(&base::IsDirectoryEmpty, base_dir));
 
   // Adding item should work after resetting.
   auto item = prototype_item.Clone();
   item->id = base::Token::CreateRandom().ToString();
   items.clear();
   items.push_back(item.Clone());
-  service->AddMediaFilesFromItems(kDefaultPlaylistID, false /* no caching */,
-                                  base::NullCallback(), std::move(items));
+  service->AddMediaFiles(std::move(items), kDefaultPlaylistID,
+                         /* can_cache = */ false, base::NullCallback());
 
   WaitUntil(base::BindRepeating(
       [](base::FilePath item_path) {
@@ -1327,8 +1322,10 @@ TEST_F(PlaylistServiceUnitTest, PlaylistOrderSync) {
   std::string new_id;
   playlist_service()->CreatePlaylist(
       mojom::Playlist::New(),
-      base::BindLambdaForTesting(
-          [&](mojom::PlaylistPtr playlist) { new_id = *playlist->id; }));
+      base::BindLambdaForTesting([&](mojom::PlaylistPtr playlist) {
+        ASSERT_TRUE(playlist->id.has_value());
+        new_id = *playlist->id;
+      }));
 
   EXPECT_TRUE(std::ranges::contains(prefs()->GetList(kPlaylistOrderPref),
                                     base::Value(new_id)));
@@ -1345,12 +1342,13 @@ TEST_F(PlaylistServiceUnitTest, ReorderPlaylist) {
   // pre-condition: Prepare
   std::vector<std::string> ids;
   for (int i = 0; i < 5; i++) {
-    auto playlist = mojom::Playlist::New();
-    playlist_service()->CreatePlaylist(
-        std::move(playlist),
-        base::BindLambdaForTesting([&](mojom::PlaylistPtr playlist) {
-          ids.push_back(*playlist->id);
-        }));
+    base::test::TestFuture<mojom::PlaylistPtr> created;
+    playlist_service()->CreatePlaylist(mojom::Playlist::New(),
+                                       created.GetCallback());
+    auto playlist = created.Take();
+    ASSERT_TRUE(playlist);
+    ASSERT_TRUE(playlist->id);
+    ids.push_back(*playlist->id);
   }
 
   auto CheckOrder = [&](const std::vector<std::string>& expected_orders) {

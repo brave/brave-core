@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_is_test.h"
 #include "base/logging.h"
 #include "base/task/sequenced_task_runner.h"
 
@@ -85,12 +86,15 @@ void PlaylistMediaFileDownloadManager::TryStartingDownloadTask() {
 
   DCHECK(current_job_->item);
 
-  if (!pause_download_for_testing_) {
-    VLOG(2) << __func__ << ": " << current_job_->item->name;
-    media_file_downloader_->DownloadMediaFileForPlaylistItem(
-        current_job_->item,
-        delegate_->GetMediaPathForPlaylistItemItem(current_job_->item->id));
+  if (pause_download_for_testing_) {
+    CHECK_IS_TEST();
+    return;
   }
+
+  VLOG(2) << __func__ << ": " << current_job_->item->name;
+  media_file_downloader_->DownloadMediaFileForPlaylistItem(
+      current_job_->item,
+      delegate_->GetMediaPathForPlaylistItemItem(current_job_->item->id));
 }
 
 std::unique_ptr<PlaylistMediaFileDownloadManager::DownloadJob>

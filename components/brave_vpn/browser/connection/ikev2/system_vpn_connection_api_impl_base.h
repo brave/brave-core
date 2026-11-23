@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/gtest_prod_util.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_info.h"
 #include "brave/components/brave_vpn/browser/connection/connection_api_impl.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
@@ -34,19 +33,13 @@ class SystemVPNConnectionAPIImplBase : public ConnectionAPIImpl {
       net::NetworkChangeNotifier::ConnectionType type) override;
   Type type() const override;
 
- protected:
-  friend class SystemVPNConnectionAPIUnitTest;
-  FRIEND_TEST_ALL_PREFIXES(SystemVPNConnectionAPIUnitTest, NeedsConnectTest);
-  FRIEND_TEST_ALL_PREFIXES(SystemVPNConnectionAPIUnitTest, ConnectionInfoTest);
-  FRIEND_TEST_ALL_PREFIXES(SystemVPNConnectionAPIUnitTest,
-                           CancelConnectingTest);
-  FRIEND_TEST_ALL_PREFIXES(SystemVPNConnectionAPIUnitTest,
-                           ClearLastConnectionErrorWhenNewConnectionStart);
-  FRIEND_TEST_ALL_PREFIXES(SystemVPNConnectionAPIUnitTest,
-                           CreateOSVPNEntryWithValidInfoWhenConnectTest);
-  FRIEND_TEST_ALL_PREFIXES(SystemVPNConnectionAPIUnitTest,
-                           CreateOSVPNEntryWithInvalidInfoTest);
+  // Returns cached connection info.
+  const BraveVPNConnectionInfo& GetConnectionInfoForTesting() const {
+    return connection_info_;
+  }
+  void SetPreventCreationForTesting(bool value);
 
+ protected:
   // Subclass should add platform dependent impls.
   virtual void CreateVPNConnectionImpl(const BraveVPNConnectionInfo& info) = 0;
   virtual void ConnectImpl(const std::string& name) = 0;
@@ -63,15 +56,13 @@ class SystemVPNConnectionAPIImplBase : public ConnectionAPIImpl {
   void OnDisconnected();
   void OnIsDisconnecting();
   bool MaybeReconnect();
+  void OnGetProfileCredentials(const std::string& profile_credential,
+                               bool success);
 
  private:
   bool IsInProgress() const;
   void ResetConnectionInfo();
   void CreateVPNConnection();
-  void OnGetProfileCredentials(const std::string& profile_credential,
-                               bool success);
-
-  void SetPreventCreationForTesting(bool value);
 
   bool cancel_connecting_ = false;
   bool needs_connect_ = false;

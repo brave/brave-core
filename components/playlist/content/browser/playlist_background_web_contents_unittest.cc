@@ -9,10 +9,10 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/browser/playlist/test/playlist_unittest_base.h"
 #include "brave/components/playlist/content/browser/playlist_background_web_contentses.h"
 #include "brave/components/playlist/content/browser/playlist_media_handler.h"
+#include "brave/components/playlist/content/browser/playlist_service.h"
+#include "brave/components/playlist/content/browser/playlist_unittest_base.h"
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
 #include "brave/components/playlist/core/common/playlist_render_frame_observer_helper.h"
@@ -53,9 +53,8 @@ TEST_P(PlaylistBackgroundWebContentsTest, ExtractPlaylistItemsInTheBackground) {
       .Times(1)
       .WillOnce([&run_loop] { run_loop.Quit(); });
 
-  PlaylistBackgroundWebContentses background_web_contentses(
-      browser_context(),
-      PlaylistServiceFactory::GetForBrowserContext(browser_context()));
+  PlaylistBackgroundWebContentses background_web_contentses(browser_context(),
+                                                            playlist_service());
   background_web_contentses.Add(GURL("https://example.com"), callback.Get(),
                                 base::Seconds(3));
 
@@ -77,9 +76,8 @@ INSTANTIATE_TEST_SUITE_P(Playlist,
 TEST_F(PlaylistBackgroundWebContentsTest, UserAgentOverride) {
   base::test::ScopedFeatureList scoped_feature_list(features::kPlaylistFakeUA);
 
-  PlaylistBackgroundWebContentses background_web_contentses(
-      browser_context(),
-      PlaylistServiceFactory::GetForBrowserContext(browser_context()));
+  PlaylistBackgroundWebContentses background_web_contentses(browser_context(),
+                                                            playlist_service());
   background_web_contentses.Add(GURL("https://example.com"), base::DoNothing());
 
   const auto ua_string_override = background_web_contentses.web_contents()

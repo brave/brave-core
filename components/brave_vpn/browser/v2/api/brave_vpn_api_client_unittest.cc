@@ -16,7 +16,9 @@
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
+#include "base/test/values_test_util.h"
 #include "base/types/expected.h"
+#include "base/values.h"
 #include "brave/components/brave_vpn/browser/v2/api/device_endpoints.h"
 #include "brave/components/brave_vpn/browser/v2/api/error_body.h"
 #include "brave/components/brave_vpn/browser/v2/api/purchase_endpoints.h"
@@ -31,6 +33,7 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/public/mojom/fetch_api.mojom.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
@@ -611,10 +614,9 @@ TEST_F(BraveVpnApiClientRequestBodyTest,
                               kTestHostname, kTestClientId, kTestApiAuthToken);
 
   ASSERT_TRUE(sent_body.has_value());
-  const auto parsed =
-      base::JSONReader::ReadDict(*sent_body, base::JSON_PARSE_RFC);
-  ASSERT_TRUE(parsed);
-  EXPECT_EQ(*parsed->FindString("multihop-exit-region"), "disabled");
+  EXPECT_THAT(base::test::ParseJsonDict(*sent_body, base::JSON_PARSE_RFC),
+              base::test::DictionaryHasValue("multihop-exit-region",
+                                             base::Value("disabled")));
 }
 
 }  // namespace brave_vpn::v2
