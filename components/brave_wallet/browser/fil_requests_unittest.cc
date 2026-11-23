@@ -97,10 +97,15 @@ TEST(FilRequestUnitTest, estimateGas_WhenSendToFEVM) {
 }
 
 TEST(FilRequestUnitTest, getChainHead) {
-  EXPECT_EQ(fil::getChainHead(),
-            "{\"id\":1,\"jsonrpc\":\"2.0\",\"method\":\"Filecoin.ChainHead\","
-            "\"params\":[]}");
+  EXPECT_EQ(base::test::ParseJson(fil::getChainHead()),
+            base::test::ParseJson(R"({
+                "id": 1,
+                "jsonrpc": "2.0",
+                "method": "Filecoin.ChainHead",
+                "params": []
+              })"));
 }
+
 TEST(FilRequestUnitTest, getStateSearchMsgLimited) {
   EXPECT_EQ(fil::getStateSearchMsgLimited("cid", UINT64_MAX),
             "{\"id\":1,\"jsonrpc\":\"2.0\",\"method\":\"Filecoin."
