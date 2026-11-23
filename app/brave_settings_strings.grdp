@@ -276,7 +276,10 @@
     Use scrollable tab strip
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_SHARED_PINNED_TAB" desc="The label name of a toggle button for Shared Pinned Tab feature">
-    Show pinned tabs in all windows
+    Shared pinned tabs
+  </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_SHARED_PINNED_TAB_SUBLABEL" desc="The sub-label of a toggle button for Shared Pinned Tab feature">
+    Pinned tabs will be shared across all windows in the same profile
   </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_BOOKMARKS_BUTTON" desc="The label for whether the bookmarks button should be shown or not">
     Show bookmarks button
