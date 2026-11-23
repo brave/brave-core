@@ -51,6 +51,10 @@ class LuciAnalysisError(Exception):
     """Raised when a LUCI Analysis API request fails."""
 
 
+class LuciAnalysisForbidden(LuciAnalysisError):
+    """Raised on a 403, e.g. for a project that isn't readable anonymously."""
+
+
 # -- Time ----------------------------------------------------------------
 
 
@@ -517,7 +521,7 @@ class Request:
             if status == 200:
                 return raw
             if status == 403:
-                raise LuciAnalysisError(
+                raise LuciAnalysisForbidden(
                     "403 Forbidden from LUCI Analysis API. The API may"
                     " require authentication for this query."
                 )
