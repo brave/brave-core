@@ -286,3 +286,9 @@ resources are located in:
 This dialog is responsible for displaying a list of tasks the PSST feature
 intends to apply, along with the progress and status for each task and the
 overall global progress.
+
+That directory holds two separate apps: the consent dialog above
+(`brave_psst_dialog.tsx` + `components/`) and the `brave://psst-internals`
+diagnostics page (`psst_internals.tsx` + `internals/`), which renders the log
+timeline described under [Script logging](#script-logging). The script side of
+that API is installed by `components/psst/renderer/`.

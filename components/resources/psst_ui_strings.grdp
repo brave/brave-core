@@ -42,4 +42,121 @@
     <message name="IDS_PSST_REPORT_DIALOG_SENT_MESSAGE" formatter_data="webui=Psst" desc="Confirmation message shown after the PSST failed steps report has been sent">
         Thanks for letting Brave's developers know that there's something wrong with this site. We'll do our best to fix it!
     </message>
+    <message name="IDS_PSST_INTERNALS_PAGE_TITLE" formatter_data="webui=Psst" translateable="false" desc="Title of the PSST internals diagnostics page">
+        PSST Internals
+    </message>
+    <message name="IDS_PSST_INTERNALS_WEBSITE_SETTINGS_TITLE" formatter_data="webui=Psst" translateable="false" desc="Heading for the website settings section of the PSST internals page">
+        Website Settings
+    </message>
+    <message name="IDS_PSST_INTERNALS_WEBSITE_SETTINGS_DESCRIPTION" formatter_data="webui=Psst" translateable="false" desc="Description of the website settings section of the PSST internals page">
+        Per-site consent decisions, user identifiers, and infobar interactions that Brave stores to drive the Privacy Settings Tuning flow. This data persists across browser restarts.
+    </message>
+    <message name="IDS_PSST_INTERNALS_LOG_ENTRIES_TITLE" formatter_data="webui=Psst" translateable="false" desc="Heading for the log entries section of the PSST internals page">
+        Log Entries
+    </message>
+    <message name="IDS_PSST_INTERNALS_LOG_ENTRIES_DESCRIPTION" formatter_data="webui=Psst" translateable="false" desc="Description of the log entries section of the PSST internals page">
+        Diagnostic entries emitted while the Privacy Settings Tuning flow runs. Brave keeps these in memory only and clears them when the browser exits.
+    </message>
+    <message name="IDS_PSST_INTERNALS_FILTER_MESSAGES_PLACEHOLDER" formatter_data="webui=Psst" translateable="false" desc="Placeholder text for the log message filter input on the PSST internals page">
+        Filter messages
+    </message>
+    <message name="IDS_PSST_INTERNALS_MIN_LEVEL_LABEL" formatter_data="webui=Psst" translateable="false" desc="Label for the minimum log level filter dropdown on the PSST internals page">
+        Min level
+    </message>
+    <message name="IDS_PSST_INTERNALS_ALL_LEVELS_OPTION" formatter_data="webui=Psst" translateable="false" desc="Option to show log entries of all levels, on the PSST internals page">
+        All levels
+    </message>
+    <message name="IDS_PSST_INTERNALS_LEVEL_AND_ABOVE" formatter_data="webui=Psst" translateable="false" desc="Dropdown option describing a minimum log level filter, on the PSST internals page">
+        <ph name="LEVEL_NAME">$1</ph> and above
+    </message>
+    <message name="IDS_PSST_INTERNALS_SOURCE_LABEL" formatter_data="webui=Psst" translateable="false" desc="Label for the log source, used both as a filter dropdown label and a table column header on the PSST internals page">
+        Source
+    </message>
+    <message name="IDS_PSST_INTERNALS_ALL_SOURCES_OPTION" formatter_data="webui=Psst" translateable="false" desc="Option to show log entries from all sources, on the PSST internals page">
+        All sources
+    </message>
+    <message name="IDS_PSST_INTERNALS_COPY_BUTTON" formatter_data="webui=Psst" translateable="false" desc="Button to copy the filtered log entries to the clipboard, on the PSST internals page">
+        Copy
+    </message>
+    <message name="IDS_PSST_INTERNALS_CLEAR_BUTTON" formatter_data="webui=Psst" translateable="false" desc="Button to clear the log entries, on the PSST internals page">
+        Clear
+    </message>
+    <message name="IDS_PSST_INTERNALS_FOLLOW_TOGGLE_LABEL" formatter_data="webui=Psst" translateable="false" desc="Label for the toggle that keeps the newest log entry in view, on the PSST internals page">
+        Follow
+    </message>
+    <message name="IDS_PSST_INTERNALS_SHOWING_ENTRIES_COUNT" formatter_data="webui=Psst" translateable="false" desc="Count of filtered versus total log entries shown, on the PSST internals page">
+        Showing <ph name="FILTERED_COUNT">$1</ph> of <ph name="TOTAL_COUNT">$2</ph> entries
+    </message>
+    <message name="IDS_PSST_INTERNALS_TABLE_HEADER_TIME" formatter_data="webui=Psst" translateable="false" desc="Column header for the log entry timestamp, on the PSST internals page">
+        Time
+    </message>
+    <message name="IDS_PSST_INTERNALS_TABLE_HEADER_LEVEL" formatter_data="webui=Psst" translateable="false" desc="Column header for the log entry level, on the PSST internals page">
+        Level
+    </message>
+    <message name="IDS_PSST_INTERNALS_TABLE_HEADER_TAB" formatter_data="webui=Psst" translateable="false" desc="Column header for the browser tab ID, on the PSST internals page">
+        Tab
+    </message>
+    <message name="IDS_PSST_INTERNALS_TABLE_HEADER_SITE" formatter_data="webui=Psst" translateable="false" desc="Column header for the site, shared by the log and website settings tables on the PSST internals page">
+        Site
+    </message>
+    <message name="IDS_PSST_INTERNALS_TABLE_HEADER_MESSAGE" formatter_data="webui=Psst" translateable="false" desc="Column header for the log entry message, on the PSST internals page">
+        Message
+    </message>
+    <message name="IDS_PSST_INTERNALS_LOG_TABLE_EMPTY" formatter_data="webui=Psst" translateable="false" desc="Message shown when there are no log entries, on the PSST internals page">
+        No entries. Run a PSST flow on a supported site.
+    </message>
+    <message name="IDS_PSST_INTERNALS_LOG_DATA_LABEL" formatter_data="webui=Psst" translateable="false" desc="Label for the collapsible extra data payload attached to a log entry, on the PSST internals page">
+        data
+    </message>
+    <message name="IDS_PSST_INTERNALS_TABLE_HEADER_INFOBAR_SHOWN_COUNT" formatter_data="webui=Psst" translateable="false" desc="Column header for the number of times the PSST infobar was shown for a site, on the PSST internals page">
+        Infobar shown
+    </message>
+    <message name="IDS_PSST_INTERNALS_TABLE_HEADER_INFOBAR_DECLINE_COUNT" formatter_data="webui=Psst" translateable="false" desc="Column header for the number of times the PSST infobar was declined for a site, on the PSST internals page">
+        Infobar declined
+    </message>
+    <message name="IDS_PSST_INTERNALS_TABLE_HEADER_CONSENT" formatter_data="webui=Psst" translateable="false" desc="Column header for the consent status, on the PSST internals page">
+        Consent
+    </message>
+    <message name="IDS_PSST_INTERNALS_TABLE_HEADER_SCRIPT_VERSION" formatter_data="webui=Psst" translateable="false" desc="Column header for the script version, on the PSST internals page">
+        Script version
+    </message>
+    <message name="IDS_PSST_INTERNALS_TABLE_HEADER_USER_ID" formatter_data="webui=Psst" translateable="false" desc="Column header for the stored user identifier, on the PSST internals page">
+        User ID
+    </message>
+    <message name="IDS_PSST_INTERNALS_TABLE_HEADER_UIDS_PERFORMED" formatter_data="webui=Psst" translateable="false" desc="Column header for the list of performed privacy tuning items, on the PSST internals page">
+        UIDs performed
+    </message>
+    <message name="IDS_PSST_INTERNALS_WEBSITE_SETTINGS_TABLE_EMPTY" formatter_data="webui=Psst" translateable="false" desc="Message shown when there are no per-site website settings, on the PSST internals page">
+        No per-site PSST settings recorded.
+    </message>
+    <message name="IDS_PSST_INTERNALS_CONSENT_STATUS_NONE" formatter_data="webui=Psst" translateable="false" desc="Name of the 'none' consent status, on the PSST internals page">
+        none
+    </message>
+    <message name="IDS_PSST_INTERNALS_CONSENT_STATUS_ASK" formatter_data="webui=Psst" translateable="false" desc="Name of the 'ask' consent status, on the PSST internals page">
+        ask
+    </message>
+    <message name="IDS_PSST_INTERNALS_CONSENT_STATUS_ALLOW" formatter_data="webui=Psst" translateable="false" desc="Name of the 'allow' consent status, on the PSST internals page">
+        allow
+    </message>
+    <message name="IDS_PSST_INTERNALS_CONSENT_STATUS_BLOCK" formatter_data="webui=Psst" translateable="false" desc="Name of the 'block' consent status, on the PSST internals page">
+        block
+    </message>
+    <message name="IDS_PSST_INTERNALS_LEVEL_DEBUG" formatter_data="webui=Psst" translateable="false" desc="Name of the 'debug' log level, on the PSST internals page">
+        debug
+    </message>
+    <message name="IDS_PSST_INTERNALS_LEVEL_INFO" formatter_data="webui=Psst" translateable="false" desc="Name of the 'info' log level, on the PSST internals page">
+        info
+    </message>
+    <message name="IDS_PSST_INTERNALS_LEVEL_WARN" formatter_data="webui=Psst" translateable="false" desc="Name of the 'warn' log level, on the PSST internals page">
+        warn
+    </message>
+    <message name="IDS_PSST_INTERNALS_LEVEL_ERROR" formatter_data="webui=Psst" translateable="false" desc="Name of the 'error' log level, on the PSST internals page">
+        error
+    </message>
+    <message name="IDS_PSST_INTERNALS_SOURCE_NATIVE" formatter_data="webui=Psst" translateable="false" desc="Name of the 'native' log source, on the PSST internals page">
+        native
+    </message>
+    <message name="IDS_PSST_INTERNALS_SOURCE_SCRIPT" formatter_data="webui=Psst" translateable="false" desc="Name of the 'script' log source, on the PSST internals page">
+        script
+    </message>
 </grit-part>
