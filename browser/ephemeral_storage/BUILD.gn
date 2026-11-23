@@ -134,4 +134,14 @@ source_set("unit_tests") {
     "//testing/gtest",
     "//url",
   ]
+
+  if (is_android) {
+    sources += [ "ephemeral_storage_tab_helper_unittest.cc" ]
+
+    deps += [
+      "//chrome/browser/android:tabs_public",
+      "//chrome/browser/ui/android/tab_model",
+      "//chrome/browser/ui/android/tab_model:test_support",
+    ]
+  }
 }
