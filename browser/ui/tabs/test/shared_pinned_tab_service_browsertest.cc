@@ -40,6 +40,7 @@
 #include "components/sessions/core/serialized_navigation_entry.h"
 #include "components/sessions/core/serialized_user_agent_override.h"
 #include "components/tabs/public/tab_alert.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/test/browser_test.h"
@@ -234,7 +235,8 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTreeTabServiceBrowserTest,
   ASSERT_EQ(2, other_model->count());
 
   // The context-menu command moves the tab through a detached tree node.
-  model->ExecuteContextMenuCommand(0, TabStripModel::CommandTogglePinned);
+  model->ExecuteContextMenuCommand(model->GetTabAtIndex(0)->GetHandle(),
+                                   TabStripModel::CommandTogglePinned);
   EXPECT_EQ(contents, model->GetWebContentsAt(0));
   EXPECT_FALSE(model->IsTabPinned(0));
 
@@ -265,7 +267,8 @@ IN_PROC_BROWSER_TEST_F(
 
   // Unpinning defers the service's handling to a posted task. Activate the
   // browser before that task runs, as a late window activation can.
-  model->ExecuteContextMenuCommand(0, TabStripModel::CommandTogglePinned);
+  model->ExecuteContextMenuCommand(model->GetTabAtIndex(0)->GetHandle(),
+                                   TabStripModel::CommandTogglePinned);
   ASSERT_FALSE(model->IsTabPinned(0));
   service->OnBrowserActivated(browser());
   EXPECT_EQ(1, model->count());

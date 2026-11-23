@@ -68,6 +68,7 @@ source_set("browser_tests") {
       "//components/sessions",
       "//components/tab_groups",
       "//components/tabs:enum",
+      "//components/tabs:public",
       "//net:test_support",
       "//ui/base",
       "//url",
