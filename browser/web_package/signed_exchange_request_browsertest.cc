@@ -11,10 +11,10 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/synchronization/lock.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_window.h"
-#include "chrome/test/base/in_process_browser_test.h"
-#include "chrome/test/base/ui_test_utils.h"
+#include "chrome/test/base/chrome_test_utils.h"
+#include "chrome/test/base/platform_browser_test.h"
 #include "content/public/browser/frame_accept_header.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
@@ -25,7 +25,7 @@ constexpr char kDefaultAcceptHeaderValue[] = "*/*";
 
 }  // namespace
 
-class SignedExchangeRequestBrowserTest : public InProcessBrowserTest {
+class SignedExchangeRequestBrowserTest : public PlatformBrowserTest {
  public:
   using self = SignedExchangeRequestBrowserTest;
   SignedExchangeRequestBrowserTest()
@@ -35,9 +35,10 @@ class SignedExchangeRequestBrowserTest : public InProcessBrowserTest {
  protected:
   void NavigateAndWaitForTitle(const GURL& url, std::string_view title) {
     std::u16string expected_title = base::ASCIIToUTF16(title);
-    content::TitleWatcher title_watcher(
-        browser()->tab_strip_model()->GetActiveWebContents(), expected_title);
-    EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+    content::WebContents* contents =
+        chrome_test_utils::GetActiveWebContents(this);
+    content::TitleWatcher title_watcher(contents, expected_title);
+    EXPECT_TRUE(content::NavigateToURL(contents, url));
     EXPECT_EQ(expected_title, title_watcher.WaitAndGetTitle());
   }
 
@@ -50,7 +51,7 @@ class SignedExchangeRequestBrowserTest : public InProcessBrowserTest {
     https_server_.RegisterRequestMonitor(
         base::BindRepeating(&self::MonitorRequest, base::Unretained(this)));
     ASSERT_TRUE(https_server_.Start());
-    InProcessBrowserTest::SetUp();
+    PlatformBrowserTest::SetUp();
   }
 
   static std::unique_ptr<net::test_server::HttpResponse>
@@ -109,11 +110,11 @@ class SignedExchangeRequestBrowserTest : public InProcessBrowserTest {
   void CheckAcceptHeader(const GURL& url, bool is_navigation) {
     const auto accept_header = GetInterceptedAcceptHeader(url);
     ASSERT_TRUE(accept_header);
-    EXPECT_EQ(*accept_header,
-              is_navigation
-                  ? content::FrameAcceptHeaderValue(
-                        /*allow_sxg_responses=*/false, browser()->GetProfile())
-                  : std::string(kDefaultAcceptHeaderValue));
+    EXPECT_EQ(*accept_header, is_navigation
+                                  ? content::FrameAcceptHeaderValue(
+                                        /*allow_sxg_responses=*/false,
+                                        chrome_test_utils::GetProfile(this))
+                                  : std::string(kDefaultAcceptHeaderValue));
   }
 
   std::optional<std::string> GetInterceptedAcceptHeader(const GURL& url) const {
