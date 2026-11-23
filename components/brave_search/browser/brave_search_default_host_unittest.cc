@@ -161,6 +161,12 @@ TEST_F(BraveSearchDefaultHostTest, DisallowsAfterMaxTimesAsked) {
 #if !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 TEST_F(BraveSearchDefaultHostTest, CanSetDefaultAlwaysTestWithSearchPromotion) {
   base::test::ScopedFeatureList feature_list;
+  // Promotion features are explicitly disabled so the test doesn't depend on
+  // their default state.
+  feature_list.InitWithFeatures(
+      {}, {brave_search_conversion::features::kOmniboxBanner,
+           brave_search_conversion::features::kOmniboxDDGBanner,
+           brave_search_conversion::features::kNTP});
 
   brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_US"};
 
@@ -187,9 +193,12 @@ TEST_F(BraveSearchDefaultHostTest, CanSetDefaultAlwaysTestWithSearchPromotion) {
   host->GetCanSetDefaultSearchProvider(third.Get());
   host->GetCanSetDefaultSearchProvider(fourth.Get());
 
-  feature_list.InitAndEnableFeatureWithParameters(
-      brave_search_conversion::features::kOmniboxBanner,
-      {{brave_search_conversion::features::kBannerTypeParamName, "type_C"}});
+  feature_list.Reset();
+  feature_list.InitWithFeaturesAndParameters(
+      {{brave_search_conversion::features::kOmniboxBanner,
+        {{brave_search_conversion::features::kBannerTypeParamName, "type_C"}}}},
+      {brave_search_conversion::features::kOmniboxDDGBanner,
+       brave_search_conversion::features::kNTP});
   host->SetCanAlwaysSetDefault();
 
   // Can set after calling SetCanAlwaysSetDefault() with omnibox banner
@@ -198,6 +207,10 @@ TEST_F(BraveSearchDefaultHostTest, CanSetDefaultAlwaysTestWithSearchPromotion) {
   host->GetCanSetDefaultSearchProvider(fifth.Get());
 
   feature_list.Reset();
+  feature_list.InitWithFeatures(
+      {}, {brave_search_conversion::features::kOmniboxBanner,
+           brave_search_conversion::features::kOmniboxDDGBanner,
+           brave_search_conversion::features::kNTP});
   host->SetCanAlwaysSetDefault();
 
   // Can't set if promotion feature is disabled.
@@ -205,7 +218,10 @@ TEST_F(BraveSearchDefaultHostTest, CanSetDefaultAlwaysTestWithSearchPromotion) {
   host->GetCanSetDefaultSearchProvider(sixth.Get());
 
   feature_list.Reset();
-  feature_list.InitAndEnableFeature(brave_search_conversion::features::kNTP);
+  feature_list.InitWithFeatures(
+      {brave_search_conversion::features::kNTP},
+      {brave_search_conversion::features::kOmniboxBanner,
+       brave_search_conversion::features::kOmniboxDDGBanner});
   host->SetCanAlwaysSetDefault();
 
   // Can set if ntp promotion feature is enabled.

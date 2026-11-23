@@ -239,6 +239,8 @@ class APIRequestHelper {
   void Cancel(const Ticket& ticket);
   void CancelAll();
 
+  bool HasPendingRequestsForTesting() const { return !url_loaders_.empty(); }
+
   void SetUrlLoaderFactoryForTesting(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 

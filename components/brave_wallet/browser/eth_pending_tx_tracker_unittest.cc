@@ -8,12 +8,14 @@
 #include <memory>
 #include <set>
 #include <string>
+#include <string_view>
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/strings/strcat.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/task_environment.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
@@ -33,9 +35,34 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "services/network/test/test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
+
+namespace {
+
+constexpr char kTxHash[] =
+    "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238";
+
+constexpr char kFailedReceiptResponse[] = R"({
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "transactionHash": "0xb903",
+    "transactionIndex": "0x1",
+    "blockNumber": "0xb",
+    "blockHash": "0xc6ef",
+    "cumulativeGasUsed": "0x33bc",
+    "gasUsed": "0x4dc",
+    "contractAddress": "0xb60e8dd61c5d32be8058bb8eb970870f07233155",
+    "logs": [],
+    "logsBloom": "0x00...0",
+    "status": "0x0"
+  }
+})";
+
+}  // namespace
 
 class EthPendingTxTrackerUnitTest : public testing::Test {
  public:
@@ -75,6 +102,52 @@ class EthPendingTxTrackerUnitTest : public testing::Test {
     return &url_loader_factory_;
   }
 
+  // Answers eth_getTransactionReceipt with a failed receipt and
+  // eth_getTransactionCount with `network_nonce_hex`, counting both requests.
+  void InterceptRpcRequests(const std::string& network_nonce_hex) {
+    test_url_loader_factory()->SetInterceptor(base::BindLambdaForTesting(
+        [&, network_nonce_hex](const network::ResourceRequest& request) {
+          base::DictValue body =
+              base::test::ParseJsonDict(network::GetUploadData(request));
+          const std::string* method = body.FindString("method");
+          ASSERT_TRUE(method);
+          if (*method == "eth_getTransactionReceipt") {
+            ++receipt_requests_;
+            test_url_loader_factory()->AddResponse(request.url.spec(),
+                                                   kFailedReceiptResponse);
+          } else if (*method == "eth_getTransactionCount") {
+            ++nonce_requests_;
+            test_url_loader_factory()->AddResponse(
+                request.url.spec(),
+                base::StrCat({R"({"jsonrpc":"2.0","id":1,"result":")",
+                              network_nonce_hex, R"("})"}));
+          } else {
+            FAIL() << "Unexpected method: " << *method;
+          }
+        }));
+  }
+
+  void AddSubmittedTx(const std::string& id, uint64_t nonce) {
+    EthTxMeta meta(eth_account_id_, std::make_unique<EthTransaction>());
+    meta.set_id(id);
+    meta.set_chain_id(mojom::kMainnetChainId);
+    meta.set_tx_hash(kTxHash);
+    meta.tx()->set_nonce(uint256_t(nonce));
+    meta.set_status(mojom::TransactionStatus::Submitted);
+    ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
+  }
+
+  void UpdateMainnetAndWaitForReplies(EthPendingTxTracker& tracker) {
+    std::set<std::string> pending_chain_ids;
+    ASSERT_TRUE(tracker.UpdatePendingTransactions(mojom::kMainnetChainId,
+                                                  &pending_chain_ids));
+    // Receipt handlers may start another RPC for the network nonce. Both
+    // callbacks run on this sequence before it can observe zero requests.
+    ASSERT_TRUE(base::test::RunUntil([&] {
+      return !json_rpc_service()->HasPendingRpcRequestsForTesting();
+    }));
+  }
+
  private:
   base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
@@ -89,73 +162,83 @@ class EthPendingTxTrackerUnitTest : public testing::Test {
   std::unique_ptr<EthTxStateManager> tx_state_manager_;
   mojom::AccountIdPtr eth_account_id_;
   mojom::AccountIdPtr eth_account_id_other_;
+  int receipt_requests_ = 0;
+  int nonce_requests_ = 0;
 };
 
-TEST_F(EthPendingTxTrackerUnitTest, IsNonceTaken) {
+TEST_F(EthPendingTxTrackerUnitTest, DropsPendingTxWhenNonceTaken) {
   EthNonceTracker nonce_tracker(tx_state_manager_.get(), json_rpc_service());
   EthPendingTxTracker pending_tx_tracker(tx_state_manager_.get(),
                                          json_rpc_service(), &nonce_tracker);
 
   EthTxMeta meta(eth_account_id_, std::make_unique<EthTransaction>());
-  meta.set_id(TxMeta::GenerateMetaID());
   meta.set_chain_id(mojom::kMainnetChainId);
   meta.tx()->set_nonce(uint256_t(123));
-
-  EXPECT_FALSE(pending_tx_tracker.IsNonceTaken(meta));
-
-  EthTxMeta meta_in_state(meta.from(), std::make_unique<EthTransaction>());
-  meta_in_state.set_id(TxMeta::GenerateMetaID());
-  meta_in_state.set_chain_id(meta.chain_id());
-  meta_in_state.set_status(mojom::TransactionStatus::Confirmed);
-  meta_in_state.tx()->set_nonce(meta.tx()->nonce());
-  ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta_in_state));
-
-  EXPECT_TRUE(pending_tx_tracker.IsNonceTaken(meta));
-
-  meta.set_chain_id(mojom::kSepoliaChainId);
-  EXPECT_FALSE(pending_tx_tracker.IsNonceTaken(meta));
-}
-
-TEST_F(EthPendingTxTrackerUnitTest, ShouldTxDropped) {
-  std::string addr = eth_account_id_->address;
-  EthNonceTracker nonce_tracker(tx_state_manager_.get(), json_rpc_service());
-  EthPendingTxTracker pending_tx_tracker(tx_state_manager_.get(),
-                                         json_rpc_service(), &nonce_tracker);
-  pending_tx_tracker.network_nonce_map_[addr][mojom::kMainnetChainId] =
-      uint256_t(3);
-
-  EthTxMeta meta(eth_account_id_, std::make_unique<EthTransaction>());
-  meta.set_id(TxMeta::GenerateMetaID());
-  meta.set_chain_id(mojom::kMainnetChainId);
-  meta.set_tx_hash(
-      "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238");
-  meta.tx()->set_nonce(uint256_t(1));
-  EXPECT_TRUE(pending_tx_tracker.ShouldTxDropped(meta));
-  EXPECT_FALSE(pending_tx_tracker.network_nonce_map_.contains(addr));
-
-  meta.tx()->set_nonce(uint256_t(4));
-  EXPECT_FALSE(pending_tx_tracker.ShouldTxDropped(meta));
-  EXPECT_FALSE(pending_tx_tracker.ShouldTxDropped(meta));
-  EXPECT_FALSE(pending_tx_tracker.ShouldTxDropped(meta));
-  // drop
-  EXPECT_EQ(pending_tx_tracker.dropped_blocks_counter_[meta.tx_hash()], 3);
-  EXPECT_TRUE(pending_tx_tracker.ShouldTxDropped(meta));
-  EXPECT_FALSE(
-      pending_tx_tracker.dropped_blocks_counter_.contains(meta.tx_hash()));
-}
-
-TEST_F(EthPendingTxTrackerUnitTest, DropTransaction) {
-  EthNonceTracker nonce_tracker(tx_state_manager_.get(), json_rpc_service());
-  EthPendingTxTracker pending_tx_tracker(tx_state_manager_.get(),
-                                         json_rpc_service(), &nonce_tracker);
-  EthTxMeta meta(eth_account_id_, std::make_unique<EthTransaction>());
-  meta.set_id("001");
-  meta.set_chain_id(mojom::kMainnetChainId);
+  meta.set_id("mainnet_confirmed");
+  meta.set_status(mojom::TransactionStatus::Confirmed);
+  ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
+  meta.set_id("mainnet_pending");
   meta.set_status(mojom::TransactionStatus::Submitted);
   ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
+  meta.set_id("sepolia_pending");
+  meta.set_chain_id(mojom::kSepoliaChainId);
+  ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
 
-  pending_tx_tracker.DropTransaction(&meta);
-  EXPECT_EQ(tx_state_manager_->GetTx("001"), nullptr);
+  // The pending tx shares its nonce with a confirmed tx on the same chain, so
+  // it is dropped without querying the network.
+  std::set<std::string> pending_chain_ids;
+  EXPECT_TRUE(pending_tx_tracker.UpdatePendingTransactions(
+      mojom::kMainnetChainId, &pending_chain_ids));
+  EXPECT_TRUE(pending_chain_ids.empty());
+  EXPECT_EQ(tx_state_manager_->GetTx("mainnet_pending"), nullptr);
+  EXPECT_NE(tx_state_manager_->GetTx("mainnet_confirmed"), nullptr);
+
+  // The confirmed tx on another chain does not take the nonce.
+  EXPECT_TRUE(pending_tx_tracker.UpdatePendingTransactions(
+      mojom::kSepoliaChainId, &pending_chain_ids));
+  EXPECT_EQ(pending_chain_ids, std::set<std::string>{mojom::kSepoliaChainId});
+  ASSERT_NE(tx_state_manager_->GetTx("sepolia_pending"), nullptr);
+  EXPECT_EQ(tx_state_manager_->GetTx("sepolia_pending")->status(),
+            mojom::TransactionStatus::Submitted);
+}
+
+TEST_F(EthPendingTxTrackerUnitTest, DropsFailedTxBelowNetworkNonce) {
+  InterceptRpcRequests("0x3");
+  EthNonceTracker nonce_tracker(tx_state_manager_.get(), json_rpc_service());
+  EthPendingTxTracker pending_tx_tracker(tx_state_manager_.get(),
+                                         json_rpc_service(), &nonce_tracker);
+  AddSubmittedTx("pending", 1);
+
+  ASSERT_NO_FATAL_FAILURE(UpdateMainnetAndWaitForReplies(pending_tx_tracker));
+  ASSERT_EQ(receipt_requests_, 1);
+  ASSERT_EQ(nonce_requests_, 1);
+  ASSERT_NE(tx_state_manager_->GetTx("pending"), nullptr);
+
+  // The second failed receipt sees that the cached network nonce is higher.
+  ASSERT_NO_FATAL_FAILURE(UpdateMainnetAndWaitForReplies(pending_tx_tracker));
+  EXPECT_EQ(tx_state_manager_->GetTx("pending"), nullptr);
+  EXPECT_EQ(receipt_requests_, 2);
+  EXPECT_EQ(nonce_requests_, 1);
+}
+
+TEST_F(EthPendingTxTrackerUnitTest, DropsFailedTxAfterFourthFailedReceipt) {
+  InterceptRpcRequests("0x3");
+  EthNonceTracker nonce_tracker(tx_state_manager_.get(), json_rpc_service());
+  EthPendingTxTracker pending_tx_tracker(tx_state_manager_.get(),
+                                         json_rpc_service(), &nonce_tracker);
+  // The tx nonce (4) is never below the network nonce (3).
+  AddSubmittedTx("pending", 4);
+
+  for (int poll = 1; poll <= 3; ++poll) {
+    SCOPED_TRACE(poll);
+    ASSERT_NO_FATAL_FAILURE(UpdateMainnetAndWaitForReplies(pending_tx_tracker));
+    ASSERT_EQ(receipt_requests_, poll);
+    ASSERT_NE(tx_state_manager_->GetTx("pending"), nullptr);
+  }
+
+  ASSERT_NO_FATAL_FAILURE(UpdateMainnetAndWaitForReplies(pending_tx_tracker));
+  EXPECT_EQ(receipt_requests_, 4);
+  EXPECT_EQ(tx_state_manager_->GetTx("pending"), nullptr);
 }
 
 TEST_F(EthPendingTxTrackerUnitTest, UpdatePendingTransactions) {

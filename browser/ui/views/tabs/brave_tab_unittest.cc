@@ -308,8 +308,10 @@ TEST_F(BraveTabTest, CanCloseTabViaMiddleButtonClick) {
 // See: UpdateIconVisibility() in brave_tab.cc
 TEST_F(BraveTabTest,
        PinnedTabIconCenteredWhenFloatingFromCompletelyHiddenMode) {
-  // kBraveVerticalTabHideCompletely is FEATURE_ENABLED_BY_DEFAULT, so
-  // kVerticalTabsHideCompletelyWhenCollapsed is already registered.
+  // Must be enabled before the profile is created so that
+  // kVerticalTabsHideCompletelyWhenCollapsed gets registered.
+  base::test::ScopedFeatureList feature_list{
+      tabs::kBraveVerticalTabHideCompletely};
   TestingProfile profile;
   profile.GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
   profile.GetPrefs()->SetBoolean(

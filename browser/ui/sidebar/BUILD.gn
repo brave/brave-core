@@ -284,6 +284,7 @@ source_set("unit_tests") {
     ":sidebar",
     ":sidebar_impl",
     "//base",
+    "//base/test:test_support",
     "//brave/common",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_origin/buildflags",
@@ -297,6 +298,10 @@ source_set("unit_tests") {
     "//testing/gmock",
     "//testing/gtest",
   ]
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/core/common" ]
+  }
 
   if (enable_playlist) {
     deps += [ "//brave/components/playlist/core/common" ]

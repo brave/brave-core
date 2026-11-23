@@ -13,7 +13,6 @@
 
 #include "base/containers/flat_map.h"
 #include "base/containers/span.h"
-#include "base/gtest_prod_util.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_ed25519.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
@@ -63,8 +62,6 @@ class SolanaKeyring {
   std::vector<std::string> GetImportedAccountsForTesting() const;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(SolanaKeyringUnitTest, ConstructRootHDKey);
-
   std::string GetAddressInternal(const HDKeyEd25519& hd_key) const;
   std::unique_ptr<HDKeyEd25519> DeriveAccount(uint32_t index) const;
   HDKeyEd25519* GetHDKeyFromAddress(const std::string& address);
