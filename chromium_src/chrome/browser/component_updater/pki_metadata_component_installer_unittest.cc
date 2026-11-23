@@ -10,8 +10,9 @@ namespace component_updater {
 #if BUILDFLAG(CHROME_KEY_PINNING_SUPPORTED)
 TEST_F(PKIMetadataComponentInstallerKeyPinningTest,
        InstallComponentUpdatesPinningIsDisabled) {
-  // Initialize the network service.
+  // Initialize the network service and CertVerifierServiceFactory.
   content::GetNetworkService();
+  content::GetCertVerifierServiceFactory();
   task_environment_.RunUntilIdle();
   WriteKPConfigToFile();
   // Brave ignores the update, but must still reply so observers are notified.
@@ -30,6 +31,17 @@ TEST_F(PKIMetadataComponentInstallerKeyPinningTest,
       network_service->host_pins();
   EXPECT_EQ(pinsets.size(), 0u);
   EXPECT_EQ(host_pins.size(), 0u);
+
+  // Nor does the cert verifier, which would enforce them. Its compiled-in pins
+  // are Brave's, so only the component's host is checked.
+  cert_verifier::CertVerifierServiceFactoryImpl* cert_verifier_service_factory =
+      content::GetCertVerifierServiceFactoryForTesting();
+  ASSERT_TRUE(cert_verifier_service_factory);
+  const net::CertVerifyProc::ImplParams& impl_params =
+      cert_verifier_service_factory->get_impl_params();
+  ASSERT_TRUE(impl_params.key_pinning_state);
+  EXPECT_FALSE(
+      impl_params.key_pinning_state->HasPublicKeyPins(kPinsetHostName));
 }
 #endif  // BUILDFLAG(CHROME_KEY_PINNING_SUPPORTED)
 

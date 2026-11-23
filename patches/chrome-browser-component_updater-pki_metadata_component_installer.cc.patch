@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/component_updater/pki_metadata_component_installer.cc b/chrome/browser/component_updater/pki_metadata_component_installer.cc
+index ca3a1d8745edbd112b321aed22a45b39d5ba7fae..026fc4ebaf6f40397293845041a397c7f6db58b5 100644
+--- a/chrome/browser/component_updater/pki_metadata_component_installer.cc
++++ b/chrome/browser/component_updater/pki_metadata_component_installer.cc
+@@ -886,6 +886,10 @@ void PKIMetadataComponentInstallerService::ProcessKeyPinsListOnUI(
+     bool network_service_only,
+     cert_verifier::mojom::PKIMetadataUpdate& cert_verifier_update,
+     base::OnceClosure done_callback) {
++  if ((true)) {
++    std::move(done_callback).Run();
++    return;
++  }
+   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+   base::ScopedClosureRunner scoped_done(std::move(done_callback));
+   if (kp_config_bytes.empty()) {
