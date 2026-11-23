@@ -8,7 +8,6 @@ use core_foundation::date::CFDate;
 use core_foundation::{declare_TCFType, impl_TCFType};
 use core_foundation_sys::base::{Boolean, CFIndex};
 
-use security_framework_sys::base::{errSecNotTrusted, errSecTrustSettingDeny};
 use security_framework_sys::trust::*;
 use std::ptr;
 
@@ -191,7 +190,6 @@ impl SecTrust {
     }
 
     /// Attaches signed certificate timestamp data to this trust object.
-    #[cfg(any(feature = "OSX_10_14", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     pub fn set_signed_certificate_timestamps<I: Iterator<Item = impl AsRef<[u8]>>>(
         &mut self,
         scts: I,
@@ -226,52 +224,31 @@ impl SecTrust {
     /// Evaluates trust. Requires macOS 10.14 (checked at runtime) or iOS,
     /// otherwise it just calls `evaluate()`.
     pub fn evaluate_with_error(&self) -> Result<(), CFError> {
-        // Here, we statically know the symbol is available.
-        #[cfg(any(feature = "OSX_10_14", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
-        let fnptr = Some(SecTrustEvaluateWithError);
-
-        // On older platforms, we try to look it up dynamically.
-        #[cfg(not(any(feature = "OSX_10_14", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos")))]
-        let fnptr = {
-            // SAFETY: The C-string is correct.
-            let fnptr = unsafe { libc::dlsym(libc::RTLD_DEFAULT, b"SecTrustEvaluateWithError\0".as_ptr().cast()) };
-            // SAFETY: The function pointer either has the given signature, or
-            // is NULL when the symbol is not available - which is valid to
-            // transmute to `Option<fn()>`, see:
-            // https://doc.rust-lang.org/std/option/index.html#representation
-            unsafe {
-                core::mem::transmute::<
-                    *const std::os::raw::c_void,
-                    Option<unsafe extern "C" fn(SecTrustRef, *mut CFErrorRef) -> bool>,
-                >(fnptr)
-            }
-        };
-
-        // Try to use `SecTrustEvaluateWithError` if available.
-        if let Some(fnptr) = fnptr {
-            let mut error: CFErrorRef = ::std::ptr::null_mut();
-            // SAFETY: The given pointers are valid.
-            let result = unsafe { fnptr(self.0, &mut error) };
-            if !result {
-                assert!(!error.is_null());
-                // SAFETY: `SecTrustEvaluateWithError` expects us to release
-                // the error.
-                let error = unsafe { CFError::wrap_under_create_rule(error) };
-                return Err(error);
-            }
-            Ok(())
-        } else {
-            // Otherwise, fall back to SecTrustEvaluate. This has the same
-            // semantics, though error codes are worse.
-            #[allow(deprecated)]
-            let code = match self.evaluate() {
-                Ok(res) if res.success() => return Ok(()),
-                Ok(TrustResult::DENY) => errSecTrustSettingDeny,
-                Ok(_) => errSecNotTrusted,
-                Err(err) => err.code(),
-            };
-            Err(cferror_from_osstatus(code))
+        let mut error: CFErrorRef = ::std::ptr::null_mut();
+        let result = unsafe { SecTrustEvaluateWithError(self.0, &mut error) };
+        if !result {
+            assert!(!error.is_null());
+            // SAFETY: `SecTrustEvaluateWithError` expects us to release
+            // the error.
+            let error = unsafe { CFError::wrap_under_create_rule(error) };
+            return Err(error);
         }
+        Ok(())
+    }
+
+    /// Gets the whole evaluated certificate chain.
+    ///
+    /// Note: evaluate must first be called on the `SecTrust`.
+    #[cfg(any(feature = "macos-12", not(target_os = "macos")))]
+    pub fn chain(&self) -> Vec<SecCertificate> {
+        let array = unsafe { SecTrustCopyCertificateChain(self.0) };
+
+        if array.is_null() {
+            return vec![];
+        }
+
+        let array = unsafe { CFArray::<SecCertificate>::wrap_under_create_rule(array) };
+        array.into_iter().map(|c| c.clone()).collect()
     }
 
     /// Returns the number of certificates in an evaluated certificate chain.
@@ -279,6 +256,7 @@ impl SecTrust {
     /// Note: evaluate must first be called on the `SecTrust`.
     #[inline(always)]
     #[must_use]
+    #[deprecated(note = "deprecated by Apple, use chain(), enable macos-12 feature")]
     // FIXME: this should have been usize. Don't expose CFIndex in Rust APIs.
     pub fn certificate_count(&self) -> CFIndex {
         unsafe { SecTrustGetCertificateCount(self.0) }
@@ -287,7 +265,7 @@ impl SecTrust {
     /// Returns a specific certificate from the certificate chain used to evaluate trust.
     ///
     /// Note: evaluate must first be called on the `SecTrust`.
-    #[deprecated(note = "deprecated by Apple")]
+    #[deprecated(note = "deprecated by Apple, use chain(), enable macos-12 feature")]
     #[must_use]
     pub fn certificate_at_index(&self, ix: CFIndex) -> Option<SecCertificate> {
         #[allow(deprecated)]
@@ -299,18 +277,6 @@ impl SecTrust {
                 Some(SecCertificate::wrap_under_get_rule(certificate.cast()))
             }
         }
-    }
-}
-
-extern "C" {
-    fn CFErrorCreate(allocator: core_foundation_sys::base::CFAllocatorRef, domain: core_foundation_sys::string::CFStringRef, code: CFIndex, userInfo: core_foundation_sys::dictionary::CFDictionaryRef) -> CFErrorRef;
-}
-
-fn cferror_from_osstatus(code: core_foundation_sys::base::OSStatus) -> CFError {
-    unsafe {
-        let error = CFErrorCreate(ptr::null_mut(), core_foundation_sys::error::kCFErrorDomainOSStatus, code as _, ptr::null_mut());
-        assert!(!error.is_null());
-        CFError::wrap_under_create_rule(error)
     }
 }
 
@@ -347,7 +313,8 @@ mod test {
         trust.evaluate().unwrap();
 
         let count = trust.certificate_count();
-        assert_eq!(count, 1);
+        // 1 (self-signed) or 2 (CA-signed, macOS builds chain)
+        assert!(count >= 1);
 
         let cert_bytes = trust.certificate_at_index(0).unwrap().to_der();
         assert_eq!(cert_bytes, certificate().to_der());
@@ -362,7 +329,8 @@ mod test {
         assert!(trust.evaluate_with_error().is_err());
 
         let count = trust.certificate_count();
-        assert_eq!(count, 1);
+        // 1 (self-signed) or 2 (CA-signed, macOS builds chain)
+        assert!(count >= 1);
 
         let cert_bytes = trust.certificate_at_index(0).unwrap().to_der();
         assert_eq!(cert_bytes, certificate().to_der());
@@ -376,11 +344,11 @@ mod test {
 
         let trust = SecTrust::create_with_certificates(std::slice::from_ref(&cert), std::slice::from_ref(&ssl_policy)).unwrap();
         trust.evaluate().unwrap();
-        assert!(trust.certificate_at_index(1).is_none());
+        assert!(trust.certificate_at_index(10).is_none());
 
         let trust = SecTrust::create_with_certificates(&[cert], &[ssl_policy]).unwrap();
         assert!(trust.evaluate_with_error().is_err());
-        assert!(trust.certificate_at_index(1).is_none());
+        assert!(trust.certificate_at_index(10).is_none());
     }
 
     #[test]

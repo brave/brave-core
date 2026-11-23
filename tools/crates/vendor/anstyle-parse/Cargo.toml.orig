@@ -1,6 +1,6 @@
 [package]
 name = "anstyle-parse"
-version = "0.2.7"
+version = "1.0.0"
 description = "Parse ANSI Style Escapes"
 categories = ["command-line-interface"]
 keywords = ["ansi", "terminal", "color", "vte"]
@@ -24,8 +24,8 @@ pre-release-replacements = [
 ]
 
 [dependencies]
-arrayvec = { version = "0.7.2", default-features = false, optional = true }
-utf8parse = { version = "0.2.1", optional = true }
+arrayvec = { version = "0.7.6", default-features = false, optional = true }
+utf8parse = { version = "0.2.2", optional = true }
 
 [features]
 default = ["utf8"]
@@ -33,11 +33,11 @@ core = ["dep:arrayvec"]
 utf8 = ["dep:utf8parse"]
 
 [dev-dependencies]
-codegenrs = { version = "3.0.1", default-features = false }
-divan = "0.1.14"
-proptest = "1.4.0"
-snapbox = "0.6.5"
-vte_generate_state_changes = { version = "0.1.1" }
+codegenrs = { version = "3.0.0", default-features = false }
+divan = "0.1.16"
+proptest = "1.7.0"
+snapbox = "0.6.23"
+vte_generate_state_changes = { version = "0.1.2" }
 
 [[bench]]
 name = "parse"

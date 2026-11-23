@@ -1,7 +1,6 @@
 [package]
 name = "hermit-abi"
-version = "0.5.2"
-authors = ["Stefan Lankes"]
+version = "0.5.3"
 license = "MIT OR Apache-2.0"
 edition = "2021"
 description = "Hermit system calls definitions."

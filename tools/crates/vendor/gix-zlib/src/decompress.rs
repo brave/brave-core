@@ -1,0 +1,71 @@
+//! Implementations for [`Decompress`](crate::Decompress).
+
+use gix_error::{ErrorExt, ResourceExhaustionKind, message};
+use gix_error::{Result, resource_exhaustion};
+use zlib_rs::InflateError;
+
+use crate::{Decompress, FlushDecompress, Status};
+
+impl Default for Decompress {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+impl Decompress {
+    /// The amount of bytes consumed from the input so far.
+    pub fn total_in(&self) -> u64 {
+        self.0.total_in()
+    }
+
+    /// The amount of decompressed bytes that have been written to the output thus far.
+    pub fn total_out(&self) -> u64 {
+        self.0.total_out()
+    }
+
+    /// Create a new instance. Note that it allocates in various ways and thus should be re-used.
+    pub fn new() -> Self {
+        let config = zlib_rs::InflateConfig::default();
+        let header = true;
+        let inner = zlib_rs::Inflate::new(header, config.window_bits as u8);
+        Self(inner)
+    }
+
+    /// Reset the state to allow handling a new stream.
+    pub fn reset(&mut self) {
+        self.0.reset(true);
+    }
+
+    /// The message describing the last error that occurred in [`Self::decompress()`], if available.
+    pub fn error_message(&self) -> Option<&'static str> {
+        self.0.error_message()
+    }
+
+    /// Decompress `input` and write all decompressed bytes into `output`, with `flush` defining some details about this.
+    pub fn decompress(&mut self, input: &[u8], output: &mut [u8], flush: FlushDecompress) -> Result<Status> {
+        let inflate_flush = match flush {
+            FlushDecompress::None => zlib_rs::InflateFlush::NoFlush,
+            FlushDecompress::Sync => zlib_rs::InflateFlush::SyncFlush,
+            FlushDecompress::Finish => zlib_rs::InflateFlush::Finish,
+        };
+
+        let status = self
+            .0
+            .decompress(input, output, inflate_flush)
+            .map_err(|err| match err {
+                InflateError::NeedDict { .. } => {
+                    gix_error::validation("Decompressing this input requires a dictionary").raise_erased()
+                }
+                InflateError::StreamError => message("stream error").raise_erased(),
+                InflateError::DataError => gix_error::corruption("Invalid input data").raise_erased(),
+                InflateError::MemError => {
+                    resource_exhaustion(ResourceExhaustionKind::AllocationFailure, "Not enough memory").raise_erased()
+                }
+            })?;
+        match status {
+            zlib_rs::Status::Ok => Ok(Status::Ok),
+            zlib_rs::Status::BufError => Ok(Status::BufError),
+            zlib_rs::Status::StreamEnd => Ok(Status::StreamEnd),
+        }
+    }
+}

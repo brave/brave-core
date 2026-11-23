@@ -28,7 +28,8 @@
 //!
 //! ## `#![no_std]` Support
 //!
-//! Requires the `alloc` nightly feature. Disable the on-by-default `"std"` feature:
+//! This crate supports `no_std` environments that have access to the `alloc`
+//! crate. Disable the on-by-default `"std"` feature:
 //!
 //! ```toml
 //! [dependencies.id-arena]
@@ -102,7 +103,6 @@
 #![deny(missing_docs)]
 // In no-std mode, use the alloc crate to get `Vec`.
 #![no_std]
-#![cfg_attr(not(feature = "std"), feature(alloc))]
 
 use core::cmp::Ordering;
 use core::fmt;
@@ -111,7 +111,7 @@ use core::iter;
 use core::marker::PhantomData;
 use core::ops;
 use core::slice;
-use core::sync::atomic::{self, AtomicUsize, ATOMIC_USIZE_INIT};
+use core::sync::atomic::{self, AtomicUsize};
 
 #[cfg(not(feature = "std"))]
 extern crate alloc;
@@ -126,7 +126,7 @@ use std::vec::{self, Vec};
 #[cfg(feature = "rayon")]
 mod rayon;
 #[cfg(feature = "rayon")]
-pub use rayon::*;
+pub use crate::rayon::*;
 
 /// A trait representing the implementation behavior of an arena and how
 /// identifiers are represented.
@@ -165,10 +165,10 @@ pub trait ArenaBehavior {
     fn new_id(arena_id: u32, index: usize) -> Self::Id;
 
     /// Get the given identifier's index.
-    fn index(Self::Id) -> usize;
+    fn index(id: Self::Id) -> usize;
 
     /// Get the given identifier's arena id.
-    fn arena_id(Self::Id) -> u32;
+    fn arena_id(id: Self::Id) -> u32;
 
     /// Construct a new arena identifier.
     ///
@@ -180,7 +180,7 @@ pub trait ArenaBehavior {
     /// To make identifiers with the same index from different arenas compare
     /// true for equality, return the same `u32` on every invocation.
     fn new_arena_id() -> u32 {
-        static ARENA_COUNTER: AtomicUsize = ATOMIC_USIZE_INIT;
+        static ARENA_COUNTER: AtomicUsize = AtomicUsize::new(0);
         ARENA_COUNTER.fetch_add(1, atomic::Ordering::SeqCst) as u32
     }
 }

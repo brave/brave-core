@@ -28,13 +28,20 @@ extern crate serde;
 #[cfg(not(feature="std"))]
 extern crate core as std;
 
+#[cfg(not(target_pointer_width = "16"))]
 pub(crate) type LenUint = u32;
+
+#[cfg(target_pointer_width = "16")]
+pub(crate) type LenUint = u16;
 
 macro_rules! assert_capacity_limit {
     ($cap:expr) => {
         if std::mem::size_of::<usize>() > std::mem::size_of::<LenUint>() {
             if $cap > LenUint::MAX as usize {
-                panic!("ArrayVec: largest supported capacity is u32::MAX")
+                #[cfg(not(target_pointer_width = "16"))]
+                panic!("ArrayVec: largest supported capacity is u32::MAX");
+                #[cfg(target_pointer_width = "16")]
+                panic!("ArrayVec: largest supported capacity is u16::MAX");
             }
         }
     }

@@ -3,8 +3,8 @@ use std::{borrow::Cow, cell::RefCell, env, io};
 use log::{LevelFilter, Log, Metadata, Record, SetLoggerError};
 
 use crate::fmt;
-use crate::fmt::writer::{self, Writer};
 use crate::fmt::{FormatFn, Formatter};
+use crate::writer::{self, Writer};
 
 /// The default name for the environment variable to read filters from.
 pub const DEFAULT_FILTER_ENV: &str = "RUST_LOG";
@@ -69,7 +69,7 @@ impl Builder {
     /// [`write_style`]: #method.write_style
     /// [`from_env`]: #method.from_env
     /// [`from_default_env`]: #method.from_default_env
-    pub fn new() -> Builder {
+    pub fn new() -> Self {
         Default::default()
     }
 
@@ -105,7 +105,7 @@ impl Builder {
     where
         E: Into<Env<'a>>,
     {
-        let mut builder = Builder::new();
+        let mut builder = Self::new();
         builder.parse_env(env);
         builder
     }
@@ -999,7 +999,8 @@ mod tests {
 
     #[test]
     fn env_get_filter_reads_from_var_if_set() {
-        env::set_var("env_get_filter_reads_from_var_if_set", "from var");
+        // SAFETY: In rust-only tests, no C code to race with
+        unsafe { env::set_var("env_get_filter_reads_from_var_if_set", "from var") };
 
         let env = Env::new().filter_or("env_get_filter_reads_from_var_if_set", "from default");
 
@@ -1008,7 +1009,8 @@ mod tests {
 
     #[test]
     fn env_get_filter_reads_from_default_if_var_not_set() {
-        env::remove_var("env_get_filter_reads_from_default_if_var_not_set");
+        // SAFETY: In rust-only tests, no C code to race with
+        unsafe { env::remove_var("env_get_filter_reads_from_default_if_var_not_set") };
 
         let env = Env::new().filter_or(
             "env_get_filter_reads_from_default_if_var_not_set",
@@ -1020,7 +1022,8 @@ mod tests {
 
     #[test]
     fn env_get_write_style_reads_from_var_if_set() {
-        env::set_var("env_get_write_style_reads_from_var_if_set", "from var");
+        // SAFETY: In rust-only tests, no C code to race with
+        unsafe { env::set_var("env_get_write_style_reads_from_var_if_set", "from var") };
 
         let env =
             Env::new().write_style_or("env_get_write_style_reads_from_var_if_set", "from default");
@@ -1030,7 +1033,8 @@ mod tests {
 
     #[test]
     fn env_get_write_style_reads_from_default_if_var_not_set() {
-        env::remove_var("env_get_write_style_reads_from_default_if_var_not_set");
+        // SAFETY: In rust-only tests, no C code to race with
+        unsafe { env::remove_var("env_get_write_style_reads_from_default_if_var_not_set") };
 
         let env = Env::new().write_style_or(
             "env_get_write_style_reads_from_default_if_var_not_set",
@@ -1042,10 +1046,13 @@ mod tests {
 
     #[test]
     fn builder_parse_env_overrides_existing_filters() {
-        env::set_var(
-            "builder_parse_default_env_overrides_existing_filters",
-            "debug",
-        );
+        // SAFETY: In rust-only tests, no C code to race with
+        unsafe {
+            env::set_var(
+                "builder_parse_default_env_overrides_existing_filters",
+                "debug",
+            );
+        };
         let env = Env::new().filter("builder_parse_default_env_overrides_existing_filters");
 
         let mut builder = Builder::new();

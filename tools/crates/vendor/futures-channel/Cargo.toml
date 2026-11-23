@@ -11,10 +11,11 @@
 
 [package]
 edition = "2018"
-rust-version = "1.56"
+rust-version = "1.71"
 name = "futures-channel"
-version = "0.3.31"
+version = "0.3.34"
 build = false
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false
@@ -33,6 +34,17 @@ rustdoc-args = [
     "--cfg",
     "docsrs",
 ]
+
+[features]
+alloc = ["futures-core/alloc"]
+cfg-target-has-atomic = []
+default = ["std"]
+sink = ["futures-sink"]
+std = [
+    "alloc",
+    "futures-core/std",
+]
+unstable = []
 
 [lib]
 name = "futures_channel"
@@ -63,26 +75,15 @@ name = "sync_mpsc"
 path = "benches/sync_mpsc.rs"
 
 [dependencies.futures-core]
-version = "0.3.31"
+version = "0.3.34"
 default-features = false
 
 [dependencies.futures-sink]
-version = "0.3.31"
+version = "0.3.34"
 optional = true
 default-features = false
 
 [dev-dependencies]
-
-[features]
-alloc = ["futures-core/alloc"]
-cfg-target-has-atomic = []
-default = ["std"]
-sink = ["futures-sink"]
-std = [
-    "alloc",
-    "futures-core/std",
-]
-unstable = []
 
 [lints.rust]
 missing_debug_implementations = "warn"

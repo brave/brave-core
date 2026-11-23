@@ -22,12 +22,15 @@
 #[cfg(feature = "alloc")]
 use alloc::borrow::ToOwned;
 use core::fmt;
-use core::num::NonZeroUsize;
 
+#[cfg(feature = "binary")]
+use crate::binary::bits::Bits;
 use crate::stream::AsBStr;
 use crate::stream::Stream;
 #[allow(unused_imports)] // Here for intra-doc links
 use crate::Parser;
+
+pub use crate::stream::Needed;
 
 /// By default, the error type (`E`) is [`ContextError`].
 ///
@@ -50,48 +53,6 @@ pub type ModalResult<O, E = ContextError> = Result<O, ErrMode<E>>;
 
 #[cfg(test)]
 pub(crate) type TestResult<I, O> = ModalResult<O, InputError<I>>;
-
-/// Contains information on needed data if a parser returned `Incomplete`
-///
-/// <div class="warning">
-///
-/// **Note:** This is only possible for `Stream` that are [partial][`crate::stream::StreamIsPartial`],
-/// like [`Partial`][crate::Partial].
-///
-/// </div>
-#[derive(Debug, PartialEq, Eq, Clone, Copy)]
-pub enum Needed {
-    /// Needs more data, but we do not know how much
-    Unknown,
-    /// Contains a lower bound on the buffer offset needed to finish parsing
-    ///
-    /// For byte/`&str` streams, this translates to bytes
-    Size(NonZeroUsize),
-}
-
-impl Needed {
-    /// Creates `Needed` instance, returns `Needed::Unknown` if the argument is zero
-    pub fn new(s: usize) -> Self {
-        match NonZeroUsize::new(s) {
-            Some(sz) => Needed::Size(sz),
-            None => Needed::Unknown,
-        }
-    }
-
-    /// Indicates if we know how many bytes we need
-    pub fn is_known(&self) -> bool {
-        *self != Needed::Unknown
-    }
-
-    /// Maps a `Needed` to `Needed` by applying a function to a contained `Size` value.
-    #[inline]
-    pub fn map<F: Fn(NonZeroUsize) -> usize>(self, f: F) -> Needed {
-        match self {
-            Needed::Unknown => Needed::Unknown,
-            Needed::Size(n) => Needed::new(f(n)),
-        }
-    }
-}
 
 /// Add parse error state to [`ParserError`]s
 ///
@@ -132,13 +93,13 @@ impl<E> ErrMode<E> {
     /// Tests if the result is Incomplete
     #[inline]
     pub fn is_incomplete(&self) -> bool {
-        matches!(self, ErrMode::Incomplete(_))
+        matches!(self, Self::Incomplete(_))
     }
 
     /// Prevent backtracking, bubbling the error up to the top
     pub fn cut(self) -> Self {
         match self {
-            ErrMode::Backtrack(e) => ErrMode::Cut(e),
+            Self::Backtrack(e) => Self::Cut(e),
             rest => rest,
         }
     }
@@ -146,7 +107,7 @@ impl<E> ErrMode<E> {
     /// Enable backtracking support
     pub fn backtrack(self) -> Self {
         match self {
-            ErrMode::Cut(e) => ErrMode::Backtrack(e),
+            Self::Cut(e) => Self::Backtrack(e),
             rest => rest,
         }
     }
@@ -157,9 +118,9 @@ impl<E> ErrMode<E> {
         F: FnOnce(E) -> E2,
     {
         match self {
-            ErrMode::Incomplete(n) => ErrMode::Incomplete(n),
-            ErrMode::Cut(t) => ErrMode::Cut(f(t)),
-            ErrMode::Backtrack(t) => ErrMode::Backtrack(f(t)),
+            Self::Incomplete(n) => ErrMode::Incomplete(n),
+            Self::Cut(t) => ErrMode::Cut(f(t)),
+            Self::Backtrack(t) => ErrMode::Backtrack(f(t)),
         }
     }
 
@@ -177,8 +138,8 @@ impl<E> ErrMode<E> {
     #[inline(always)]
     pub fn into_inner(self) -> Result<E, Self> {
         match self {
-            ErrMode::Backtrack(e) | ErrMode::Cut(e) => Ok(e),
-            err @ ErrMode::Incomplete(_) => Err(err),
+            Self::Backtrack(e) | Self::Cut(e) => Ok(e),
+            err @ Self::Incomplete(_) => Err(err),
         }
     }
 }
@@ -188,7 +149,7 @@ impl<I: Stream, E: ParserError<I>> ParserError<I> for ErrMode<E> {
 
     #[inline(always)]
     fn from_input(input: &I) -> Self {
-        ErrMode::Backtrack(E::from_input(input))
+        Self::Backtrack(E::from_input(input))
     }
 
     #[inline(always)]
@@ -196,52 +157,52 @@ impl<I: Stream, E: ParserError<I>> ParserError<I> for ErrMode<E> {
     where
         I: core::fmt::Debug,
     {
-        ErrMode::Cut(E::assert(input, message))
+        Self::Cut(E::assert(input, message))
     }
 
     #[inline(always)]
     fn incomplete(_input: &I, needed: Needed) -> Self {
-        ErrMode::Incomplete(needed)
+        Self::Incomplete(needed)
     }
 
     #[inline]
     fn append(self, input: &I, token_start: &<I as Stream>::Checkpoint) -> Self {
         match self {
-            ErrMode::Backtrack(e) => ErrMode::Backtrack(e.append(input, token_start)),
+            Self::Backtrack(e) => Self::Backtrack(e.append(input, token_start)),
             e => e,
         }
     }
 
     fn or(self, other: Self) -> Self {
         match (self, other) {
-            (ErrMode::Backtrack(e), ErrMode::Backtrack(o)) => ErrMode::Backtrack(e.or(o)),
-            (ErrMode::Incomplete(e), _) | (_, ErrMode::Incomplete(e)) => ErrMode::Incomplete(e),
-            (ErrMode::Cut(e), _) | (_, ErrMode::Cut(e)) => ErrMode::Cut(e),
+            (Self::Backtrack(e), Self::Backtrack(o)) => Self::Backtrack(e.or(o)),
+            (Self::Incomplete(e), _) | (_, Self::Incomplete(e)) => Self::Incomplete(e),
+            (Self::Cut(e), _) | (_, Self::Cut(e)) => Self::Cut(e),
         }
     }
 
     #[inline(always)]
     fn is_backtrack(&self) -> bool {
-        matches!(self, ErrMode::Backtrack(_))
+        matches!(self, Self::Backtrack(_))
     }
 
     #[inline(always)]
     fn into_inner(self) -> Result<Self::Inner, Self> {
         match self {
-            ErrMode::Backtrack(e) | ErrMode::Cut(e) => Ok(e),
-            err @ ErrMode::Incomplete(_) => Err(err),
+            Self::Backtrack(e) | Self::Cut(e) => Ok(e),
+            err @ Self::Incomplete(_) => Err(err),
         }
     }
 
     #[inline(always)]
     fn is_incomplete(&self) -> bool {
-        matches!(self, ErrMode::Incomplete(_))
+        matches!(self, Self::Incomplete(_))
     }
 
     #[inline(always)]
     fn needed(&self) -> Option<Needed> {
         match self {
-            ErrMode::Incomplete(needed) => Some(*needed),
+            Self::Incomplete(needed) => Some(*needed),
             _ => None,
         }
     }
@@ -273,7 +234,7 @@ where
 {
     #[inline(always)]
     fn from_external_error(input: &I, e: EXT) -> Self {
-        ErrMode::Backtrack(E::from_external_error(input, e))
+        Self::Backtrack(E::from_external_error(input, e))
     }
 }
 
@@ -307,9 +268,9 @@ impl<T: Clone> ErrMode<InputError<T>> {
         F: FnOnce(T) -> U,
     {
         match self {
-            ErrMode::Incomplete(n) => ErrMode::Incomplete(n),
-            ErrMode::Cut(InputError { input }) => ErrMode::Cut(InputError { input: f(input) }),
-            ErrMode::Backtrack(InputError { input }) => {
+            Self::Incomplete(n) => ErrMode::Incomplete(n),
+            Self::Cut(InputError { input }) => ErrMode::Cut(InputError { input: f(input) }),
+            Self::Backtrack(InputError { input }) => {
                 ErrMode::Backtrack(InputError { input: f(input) })
             }
         }
@@ -324,10 +285,10 @@ where
 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            ErrMode::Incomplete(Needed::Size(u)) => write!(f, "Parsing requires {u} more data"),
-            ErrMode::Incomplete(Needed::Unknown) => write!(f, "Parsing requires more data"),
-            ErrMode::Cut(c) => write!(f, "Parsing Failure: {c:?}"),
-            ErrMode::Backtrack(c) => write!(f, "Parsing Error: {c:?}"),
+            Self::Incomplete(Needed::Size(u)) => write!(f, "Parsing requires {u} more data"),
+            Self::Incomplete(Needed::Unknown) => write!(f, "Parsing requires more data"),
+            Self::Cut(c) => write!(f, "Parsing Failure: {c:?}"),
+            Self::Backtrack(c) => write!(f, "Parsing Error: {c:?}"),
         }
     }
 }
@@ -555,20 +516,6 @@ impl<I: Clone, E> FromExternalError<I, E> for InputError<I> {
     }
 }
 
-impl<I: Clone> ErrorConvert<InputError<(I, usize)>> for InputError<I> {
-    #[inline]
-    fn convert(self) -> InputError<(I, usize)> {
-        self.map_input(|i| (i, 0))
-    }
-}
-
-impl<I: Clone> ErrorConvert<InputError<I>> for InputError<(I, usize)> {
-    #[inline]
-    fn convert(self) -> InputError<I> {
-        self.map_input(|(i, _o)| i)
-    }
-}
-
 /// The Display implementation allows the `std::error::Error` implementation
 impl<I: Clone + fmt::Display> fmt::Display for InputError<I> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -623,9 +570,9 @@ impl<I, E> FromExternalError<I, E> for EmptyError {
     }
 }
 
-impl ErrorConvert<EmptyError> for EmptyError {
+impl ErrorConvert<Self> for EmptyError {
     #[inline(always)]
-    fn convert(self) -> EmptyError {
+    fn convert(self) -> Self {
         self
     }
 }
@@ -884,9 +831,9 @@ impl core::fmt::Display for ContextError<StrContext> {
     }
 }
 
-impl<C> ErrorConvert<ContextError<C>> for ContextError<C> {
+impl<C> ErrorConvert<Self> for ContextError<C> {
     #[inline]
-    fn convert(self) -> ContextError<C> {
+    fn convert(self) -> Self {
         self
     }
 }
@@ -1011,11 +958,11 @@ impl<I, C> TreeError<I, C> {
     /// Translate the input type
     pub fn map_input<I2, O: Clone + Fn(I) -> I2>(self, op: O) -> TreeError<I2, C> {
         match self {
-            TreeError::Base(base) => TreeError::Base(TreeErrorBase {
+            Self::Base(base) => TreeError::Base(TreeErrorBase {
                 input: op(base.input),
                 cause: base.cause,
             }),
-            TreeError::Stack { base, stack } => {
+            Self::Stack { base, stack } => {
                 let base = Box::new(base.map_input(op.clone()));
                 let stack = stack
                     .into_iter()
@@ -1034,7 +981,7 @@ impl<I, C> TreeError<I, C> {
                     .collect();
                 TreeError::Stack { base, stack }
             }
-            TreeError::Alt(alt) => {
+            Self::Alt(alt) => {
                 TreeError::Alt(alt.into_iter().map(|e| e.map_input(op.clone())).collect())
             }
         }
@@ -1042,11 +989,11 @@ impl<I, C> TreeError<I, C> {
 
     fn append_frame(self, frame: TreeErrorFrame<I, C>) -> Self {
         match self {
-            TreeError::Stack { base, mut stack } => {
+            Self::Stack { base, mut stack } => {
                 stack.push(frame);
-                TreeError::Stack { base, stack }
+                Self::Stack { base, stack }
             }
-            base => TreeError::Stack {
+            base => Self::Stack {
                 base: Box::new(base),
                 stack: vec![frame],
             },
@@ -1062,7 +1009,7 @@ where
     type Inner = Self;
 
     fn from_input(input: &I) -> Self {
-        TreeError::Base(TreeErrorBase {
+        Self::Base(TreeErrorBase {
             input: input.clone(),
             cause: None,
         })
@@ -1077,19 +1024,19 @@ where
 
     fn or(self, other: Self) -> Self {
         match (self, other) {
-            (TreeError::Alt(mut first), TreeError::Alt(second)) => {
+            (Self::Alt(mut first), Self::Alt(second)) => {
                 // Just in case an implementation does a divide-and-conquer algorithm
                 //
                 // To prevent mixing `alt`s at different levels, parsers should
                 // `alt_err.append(input)`.
                 first.extend(second);
-                TreeError::Alt(first)
+                Self::Alt(first)
             }
-            (TreeError::Alt(mut alt), new) | (new, TreeError::Alt(mut alt)) => {
+            (Self::Alt(mut alt), new) | (new, Self::Alt(mut alt)) => {
                 alt.push(new);
-                TreeError::Alt(alt)
+                Self::Alt(alt)
             }
-            (first, second) => TreeError::Alt(vec![first, second]),
+            (first, second) => Self::Alt(vec![first, second]),
         }
     }
 
@@ -1132,13 +1079,32 @@ where
     I: Clone,
 {
     fn from_external_error(input: &I, e: E) -> Self {
-        TreeError::Base(TreeErrorBase {
+        Self::Base(TreeErrorBase {
             input: input.clone(),
             cause: Some(Box::new(e)),
         })
     }
 }
 
+#[cfg(feature = "std")]
+#[cfg(feature = "binary")]
+impl<I, C> ErrorConvert<TreeError<Bits<I>, C>> for TreeError<I, C> {
+    #[inline]
+    fn convert(self) -> TreeError<Bits<I>, C> {
+        self.map_input(|i| Bits(i, 0))
+    }
+}
+
+#[cfg(feature = "std")]
+#[cfg(feature = "binary")]
+impl<I, C> ErrorConvert<TreeError<I, C>> for TreeError<Bits<I>, C> {
+    #[inline]
+    fn convert(self) -> TreeError<I, C> {
+        self.map_input(|Bits(i, _o)| i)
+    }
+}
+
+/// deprecated since 1.0.2
 #[cfg(feature = "std")]
 impl<I, C> ErrorConvert<TreeError<(I, usize), C>> for TreeError<I, C> {
     #[inline]
@@ -1147,6 +1113,7 @@ impl<I, C> ErrorConvert<TreeError<(I, usize), C>> for TreeError<I, C> {
     }
 }
 
+/// deprecated since 1.0.2
 #[cfg(feature = "std")]
 impl<I, C> ErrorConvert<TreeError<I, C>> for TreeError<(I, usize), C> {
     #[inline]
@@ -1164,10 +1131,10 @@ where
     fn write(&self, f: &mut fmt::Formatter<'_>, indent: usize) -> fmt::Result {
         let child_indent = indent + 2;
         match self {
-            TreeError::Base(base) => {
+            Self::Base(base) => {
                 writeln!(f, "{:indent$}{base}", "")?;
             }
-            TreeError::Stack { base, stack } => {
+            Self::Stack { base, stack } => {
                 base.write(f, indent)?;
                 for (level, frame) in stack.iter().enumerate() {
                     match frame {
@@ -1180,7 +1147,7 @@ where
                     }
                 }
             }
-            TreeError::Alt(alt) => {
+            Self::Alt(alt) => {
                 writeln!(f, "{:indent$}during one of:", "")?;
                 for child in alt {
                     child.write(f, child_indent)?;

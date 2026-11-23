@@ -1,11 +1,11 @@
 use core::num::NonZeroUsize;
 
-use crate::error::Needed;
 use crate::stream::AsBStr;
 use crate::stream::Checkpoint;
 use crate::stream::Compare;
 use crate::stream::CompareResult;
 use crate::stream::FindSlice;
+use crate::stream::Needed;
 use crate::stream::Offset;
 #[cfg(feature = "unstable-recover")]
 #[cfg(feature = "std")]
@@ -142,9 +142,8 @@ impl<'i> Stream for &'i BStr {
         *self = checkpoint.inner;
     }
 
-    #[inline(always)]
-    fn raw(&self) -> &dyn core::fmt::Debug {
-        self
+    fn trace(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        write!(f, "{self:#?}")
     }
 }
 
@@ -280,56 +279,56 @@ impl ops::Index<usize> for BStr {
 }
 
 impl ops::Index<ops::RangeFull> for BStr {
-    type Output = BStr;
+    type Output = Self;
 
     #[inline]
-    fn index(&self, _: ops::RangeFull) -> &BStr {
+    fn index(&self, _: ops::RangeFull) -> &Self {
         self
     }
 }
 
 impl ops::Index<ops::Range<usize>> for BStr {
-    type Output = BStr;
+    type Output = Self;
 
     #[inline]
-    fn index(&self, r: ops::Range<usize>) -> &BStr {
-        BStr::new(&self.as_bytes()[r.start..r.end])
+    fn index(&self, r: ops::Range<usize>) -> &Self {
+        Self::new(&self.as_bytes()[r.start..r.end])
     }
 }
 
 impl ops::Index<ops::RangeInclusive<usize>> for BStr {
-    type Output = BStr;
+    type Output = Self;
 
     #[inline]
-    fn index(&self, r: ops::RangeInclusive<usize>) -> &BStr {
-        BStr::new(&self.as_bytes()[*r.start()..=*r.end()])
+    fn index(&self, r: ops::RangeInclusive<usize>) -> &Self {
+        Self::new(&self.as_bytes()[*r.start()..=*r.end()])
     }
 }
 
 impl ops::Index<ops::RangeFrom<usize>> for BStr {
-    type Output = BStr;
+    type Output = Self;
 
     #[inline]
-    fn index(&self, r: ops::RangeFrom<usize>) -> &BStr {
-        BStr::new(&self.as_bytes()[r.start..])
+    fn index(&self, r: ops::RangeFrom<usize>) -> &Self {
+        Self::new(&self.as_bytes()[r.start..])
     }
 }
 
 impl ops::Index<ops::RangeTo<usize>> for BStr {
-    type Output = BStr;
+    type Output = Self;
 
     #[inline]
-    fn index(&self, r: ops::RangeTo<usize>) -> &BStr {
-        BStr::new(&self.as_bytes()[..r.end])
+    fn index(&self, r: ops::RangeTo<usize>) -> &Self {
+        Self::new(&self.as_bytes()[..r.end])
     }
 }
 
 impl ops::Index<ops::RangeToInclusive<usize>> for BStr {
-    type Output = BStr;
+    type Output = Self;
 
     #[inline]
-    fn index(&self, r: ops::RangeToInclusive<usize>) -> &BStr {
-        BStr::new(&self.as_bytes()[..=r.end])
+    fn index(&self, r: ops::RangeToInclusive<usize>) -> &Self {
+        Self::new(&self.as_bytes()[..=r.end])
     }
 }
 
@@ -401,9 +400,9 @@ impl<'a> From<&'a str> for &'a BStr {
 
 impl Eq for BStr {}
 
-impl PartialEq<BStr> for BStr {
+impl PartialEq<Self> for BStr {
     #[inline]
-    fn eq(&self, other: &BStr) -> bool {
+    fn eq(&self, other: &Self) -> bool {
         self.as_bytes() == other.as_bytes()
     }
 }
@@ -415,14 +414,14 @@ impl_partial_eq!(BStr, &'a str);
 
 impl PartialOrd for BStr {
     #[inline]
-    fn partial_cmp(&self, other: &BStr) -> Option<Ordering> {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         Some(self.cmp(other))
     }
 }
 
 impl Ord for BStr {
     #[inline]
-    fn cmp(&self, other: &BStr) -> Ordering {
+    fn cmp(&self, other: &Self) -> Ordering {
         Ord::cmp(self.as_bytes(), other.as_bytes())
     }
 }

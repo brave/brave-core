@@ -271,6 +271,16 @@ fn kv_ident() {
 
 #[test]
 #[cfg(feature = "kv")]
+fn kv_static_keys() {
+    assert_eq!(Some("cat_1"), log::__log_key!(cat_1).to_static_str());
+    assert_eq!(Some("cat_1"), log::__log_key!("cat_1").to_static_str());
+
+    let cat_1 = "chashu".to_string();
+    assert_eq!(None, log::__log_key!(cat_1.as_str()).to_static_str());
+}
+
+#[test]
+#[cfg(feature = "kv")]
 fn kv_expr_context() {
     match "chashu" {
         cat_1 => {
@@ -413,6 +423,27 @@ fn logger_expr() {
         let logger = Logger;
         logger
     }, "hello");
+}
+
+#[cfg(all(feature = "std", feature = "kv"))]
+#[test]
+fn kv_net() {
+    use std::{
+        net::{IpAddr, Ipv4Addr, Ipv6Addr, SocketAddr, SocketAddrV4, SocketAddrV6},
+        str::FromStr,
+    };
+
+    all_log_macros!(
+        a = Ipv4Addr::new(192, 168, 10, 100),
+        b = Ipv6Addr::from_str("f33c::1").unwrap(),
+        c = IpAddr::V4(Ipv4Addr::new(192, 168, 10, 100)),
+        d = IpAddr::V6(Ipv6Addr::from_str("f33c::1").unwrap()),
+        e = SocketAddrV4::new(Ipv4Addr::new(192, 168, 10, 100), 12345),
+        f = SocketAddrV6::new(Ipv6Addr::from_str("f33c::1").unwrap(), 12345, 0, 0),
+        g = SocketAddr::V4(SocketAddrV4::new(Ipv4Addr::new(192, 168, 10, 100), 12345)),
+        h = SocketAddr::V6(SocketAddrV6::new(Ipv6Addr::from_str("f33c::1").unwrap(), 12345, 0, 0));
+        "hello world"
+    );
 }
 
 /// Some and None (from Option) are used in the macros.

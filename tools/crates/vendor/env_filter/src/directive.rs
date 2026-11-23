@@ -1,3 +1,5 @@
+use alloc::string::String;
+
 use log::Level;
 use log::LevelFilter;
 

@@ -202,17 +202,24 @@ fn fields_from_ast<'a>(
     container_default: &attr::Default,
     private: &Ident,
 ) -> Vec<Field<'a>> {
-    fields
-        .iter()
-        .enumerate()
-        .map(|(i, field)| Field {
+    let mut dst_fields = Vec::with_capacity(fields.len());
+    for field in fields {
+        dst_fields.push(Field {
             member: match &field.ident {
                 Some(ident) => syn::Member::Named(ident.clone()),
-                None => syn::Member::Unnamed(i.into()),
+                None => syn::Member::Unnamed(dst_fields.len().into()),
             },
-            attrs: attr::Field::from_ast(cx, i, field, attrs, container_default, private),
+            attrs: attr::Field::from_ast(
+                cx,
+                dst_fields.len(),
+                field,
+                attrs,
+                container_default,
+                private,
+            ),
             ty: &field.ty,
             original: field,
-        })
-        .collect()
+        });
+    }
+    dst_fields
 }

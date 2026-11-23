@@ -36,7 +36,7 @@ impl Vector for Impl {
 #[inline]
 #[cfg(any(miri, not(target_arch = "aarch64")))]
 fn multiply_64_as_32_and_add(lhs: u64, rhs: u64, acc: u64) -> u64 {
-    use super::IntoU64;
+    use crate::IntoU64 as _;
 
     let lhs = (lhs as u32).into_u64();
     let rhs = (rhs as u32).into_u64();
@@ -62,7 +62,7 @@ fn multiply_64_as_32_and_add(lhs: u64, rhs: u64, acc: u64) -> u64 {
             acc = in(reg) acc,
             res = out(reg) res,
             options(pure, nomem, nostack),
-        )
+        );
     }
 
     res

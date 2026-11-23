@@ -1,4 +1,4 @@
-#![allow(clippy::unnecessary_literal_bound)]
+#![expect(clippy::unnecessary_literal_bound)]
 #![allow(missing_docs)]
 
 /// The `author` top-level section.
@@ -25,6 +25,11 @@ mod clone;
 #[derive(Copy, Clone, Default)]
 pub struct Committer;
 mod committer;
+
+/// The `commit` top-level section.
+#[derive(Copy, Clone, Default)]
+pub struct Commit;
+pub mod commit;
 
 /// The `core` top-level section.
 #[derive(Copy, Clone, Default)]
@@ -58,6 +63,11 @@ pub mod fetch;
 pub struct Gitoxide;
 pub mod gitoxide;
 
+/// The `gpg` top-level section.
+#[derive(Copy, Clone, Default)]
+pub struct Gpg;
+pub mod gpg;
+
 /// The `http` top-level section.
 #[derive(Copy, Clone, Default)]
 pub struct Http;
@@ -80,6 +90,11 @@ mod mailmap;
 #[derive(Copy, Clone, Default)]
 pub struct Merge;
 mod merge;
+
+/// The `notes` top-level section.
+#[derive(Copy, Clone, Default)]
+pub struct Notes;
+pub mod notes;
 
 /// The `pack` top-level section.
 #[derive(Copy, Clone, Default)]
@@ -127,3 +142,8 @@ mod user;
 #[derive(Copy, Clone, Default)]
 pub struct Url;
 mod url;
+
+/// The `worktree` top-level section.
+#[derive(Copy, Clone, Default)]
+pub struct Worktree;
+mod worktree;

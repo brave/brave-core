@@ -1,17 +1,8 @@
 //! Encoding utilities
+use gix_error::validation;
 use std::io::{self, Write};
 
-use bstr::{BString, ByteSlice};
-
-/// An error returned when object encoding fails.
-#[derive(Debug, thiserror::Error)]
-#[allow(missing_docs)]
-pub enum Error {
-    #[error("Newlines are not allowed in header values: {value:?}")]
-    NewlineInHeaderValue { value: BString },
-    #[error("Header values must not be empty")]
-    EmptyValue,
-}
+use bstr::ByteSlice;
 
 macro_rules! check {
     ($e: expr) => {
@@ -26,12 +17,6 @@ pub fn loose_header(kind: crate::Kind, size: u64) -> smallvec::SmallVec<[u8; 28]
     check!(v.write_all(itoa::Buffer::new().format(size).as_bytes()));
     check!(v.write_all(b"\0"));
     v
-}
-
-impl From<Error> for io::Error {
-    fn from(other: Error) -> io::Error {
-        io::Error::other(other)
-    }
 }
 
 pub(crate) fn header_field_multi_line(name: &[u8], value: &[u8], out: &mut dyn io::Write) -> io::Result<()> {
@@ -80,12 +65,16 @@ pub(crate) fn trusted_header_id(
     out.write_all(NL)
 }
 
+/// Serialize a header field. Values containing newlines are retained as `input` bytes in the I/O error.
+/// After [wrapping](gix_error::Error::from_error()), inspect them with [metadata](gix_error::Error::metadata()).
 pub(crate) fn header_field(name: &[u8], value: &[u8], out: &mut dyn io::Write) -> io::Result<()> {
     if value.is_empty() {
-        return Err(Error::EmptyValue.into());
+        return Err(io::Error::other(validation("Header values must not be empty")));
     }
-    if value.find(NL).is_some() {
-        return Err(Error::NewlineInHeaderValue { value: value.into() }.into());
+    if value.contains_str(NL) {
+        return Err(io::Error::other(
+            validation("Newlines are not allowed in header values").with_input(value),
+        ));
     }
     trusted_header_field(name, value, out)
 }

@@ -1,3 +1,8 @@
+#![expect(
+    clippy::disallowed_types,
+    reason = "the hash maps are only used in tests -- adding a dependency on `rustc_hash` to avoid that is not justified"
+)]
+
 use std::sync::Arc;
 
 #[cfg(not(miri))]
@@ -8,10 +13,8 @@ use smol_str::{SmolStr, SmolStrBuilder};
 #[test]
 #[cfg(target_pointer_width = "64")]
 fn smol_str_is_smol() {
-    assert_eq!(
-        ::std::mem::size_of::<SmolStr>(),
-        ::std::mem::size_of::<String>(),
-    );
+    assert_eq!(::std::mem::size_of::<SmolStr>(), ::std::mem::size_of::<String>(),);
+    assert_eq!(::std::mem::size_of::<Option<SmolStr>>(), ::std::mem::size_of::<SmolStr>(),);
 }
 
 #[test]
@@ -334,6 +337,29 @@ fn test_builder_push() {
     assert_eq!("a".repeat(24), s);
 }
 
+#[test]
+fn test_from_char() {
+    // ASCII char
+    let s: SmolStr = 'a'.into();
+    assert_eq!(s, "a");
+    assert!(!s.is_heap_allocated());
+
+    // Multi-byte char (2 bytes)
+    let s: SmolStr = SmolStr::from('ñ');
+    assert_eq!(s, "ñ");
+    assert!(!s.is_heap_allocated());
+
+    // 3-byte char
+    let s: SmolStr = '€'.into();
+    assert_eq!(s, "€");
+    assert!(!s.is_heap_allocated());
+
+    // 4-byte char (emoji)
+    let s: SmolStr = '🦀'.into();
+    assert_eq!(s, "🦀");
+    assert!(!s.is_heap_allocated());
+}
+
 #[cfg(test)]
 mod test_str_ext {
     use smol_str::StrExt;
@@ -341,10 +367,7 @@ mod test_str_ext {
     #[test]
     fn large() {
         let lowercase = "aaaaaaAAAAAaaaaaaaaaaaaaaaaaaaaaAAAAaaaaaaaaaaaaaa".to_lowercase_smolstr();
-        assert_eq!(
-            lowercase,
-            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-        );
+        assert_eq!(lowercase, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         assert!(lowercase.is_heap_allocated());
     }
 
@@ -398,7 +421,7 @@ mod test_str_ext {
     }
 }
 
-#[cfg(feature = "borsh")]
+#[cfg(all(feature = "borsh", feature = "std"))]
 mod borsh_tests {
     use borsh::BorshDeserialize;
     use smol_str::{SmolStr, ToSmolStr};
@@ -424,11 +447,10 @@ mod borsh_tests {
     }
     #[test]
     fn borsh_non_utf8_stack() {
-        let invalid_utf8: Vec<u8> = vec![0xF0, 0x9F, 0x8F]; // Incomplete UTF-8 sequence
+        let invalid_utf8: &[u8] = &[0xF0, 0x9F, 0x8F]; // Incomplete UTF-8 sequence
 
-        let wrong_utf8 = SmolStr::from(unsafe { String::from_utf8_unchecked(invalid_utf8) });
         let mut buffer = Vec::new();
-        borsh::BorshSerialize::serialize(&wrong_utf8, &mut buffer).unwrap();
+        borsh::BorshSerialize::serialize(invalid_utf8, &mut buffer).unwrap();
         let mut cursor = Cursor::new(buffer);
         let result = SmolStr::deserialize_reader(&mut cursor);
         assert!(result.is_err());
@@ -436,14 +458,13 @@ mod borsh_tests {
 
     #[test]
     fn borsh_non_utf8_heap() {
-        let invalid_utf8: Vec<u8> = vec![
+        let invalid_utf8: &[u8] = &[
             0xC1, 0x8A, 0x5F, 0xE2, 0x3A, 0x9E, 0x3B, 0xAA, 0x01, 0x08, 0x6F, 0x2F, 0xC0, 0x32,
             0xAB, 0xE1, 0x9A, 0x2F, 0x4A, 0x3F, 0x25, 0x0D, 0x8A, 0x2A, 0x19, 0x11, 0xF0, 0x7F,
             0x0E, 0x80,
         ];
-        let wrong_utf8 = SmolStr::from(unsafe { String::from_utf8_unchecked(invalid_utf8) });
         let mut buffer = Vec::new();
-        borsh::BorshSerialize::serialize(&wrong_utf8, &mut buffer).unwrap();
+        borsh::BorshSerialize::serialize(invalid_utf8, &mut buffer).unwrap();
         let mut cursor = Cursor::new(buffer);
         let result = SmolStr::deserialize_reader(&mut cursor);
         assert!(result.is_err());

@@ -14,8 +14,8 @@
  */
 
 use crate::{
-    types::CoreTypeId, BinaryReaderError, FuncType, GlobalType, HeapType, MemoryType, RefType,
-    SubType, TableType, ValType, WasmFeatures,
+    Error, FuncType, GlobalType, HeapType, MemoryType, RefType, SubType, TableType, ValType,
+    WasmFeatures, types::CoreTypeId,
 };
 
 /// Types that qualify as Wasm validation database.
@@ -50,14 +50,14 @@ pub trait WasmModuleResources {
     /// The sub type must be canonicalized.
     fn sub_type_at(&self, type_index: u32) -> Option<&SubType>;
 
-    /// Returns the type id associated with the given function
-    /// index.
+    /// Returns the `SubType` associated with the given core type id.
+    fn sub_type_at_id(&self, id: CoreTypeId) -> &SubType;
+
+    /// Returns the type ID associated with the given function index.
     fn type_id_of_function(&self, func_idx: u32) -> Option<CoreTypeId>;
 
-    /// Returns the `FuncType` associated with the given function index.
-    ///
-    /// The function type must be canonicalized.
-    fn type_of_function(&self, func_idx: u32) -> Option<&FuncType>;
+    /// Returns the type index associated with the given function index.
+    fn type_index_of_function(&self, func_index: u32) -> Option<u32>;
 
     /// Returns the element type at the given index.
     ///
@@ -66,6 +66,13 @@ pub trait WasmModuleResources {
 
     /// Is `a` a subtype of `b`?
     fn is_subtype(&self, a: ValType, b: ValType) -> bool;
+
+    /// Is the given reference type `shared`?
+    ///
+    /// While abstract heap types do carry along a `shared` flag, concrete heap
+    /// types do not. This function resolves those concrete heap types to
+    /// determine `shared`-ness.
+    fn is_shared(&self, ty: RefType) -> bool;
 
     /// Check and canonicalize a value type.
     ///
@@ -77,10 +84,8 @@ pub trait WasmModuleResources {
         t: &mut ValType,
         features: &WasmFeatures,
         offset: usize,
-    ) -> Result<(), BinaryReaderError> {
-        features
-            .check_value_type(*t)
-            .map_err(|s| BinaryReaderError::new(s, offset))?;
+    ) -> Result<(), Error> {
+        features.check_value_type(*t, offset)?;
         match t {
             ValType::Ref(r) => self.check_ref_type(r, offset),
             ValType::I32 | ValType::I64 | ValType::F32 | ValType::F64 | ValType::V128 => Ok(()),
@@ -88,11 +93,7 @@ pub trait WasmModuleResources {
     }
 
     /// Check and canonicalize a reference type.
-    fn check_ref_type(
-        &self,
-        ref_type: &mut RefType,
-        offset: usize,
-    ) -> Result<(), BinaryReaderError> {
+    fn check_ref_type(&self, ref_type: &mut RefType, offset: usize) -> Result<(), Error> {
         let is_nullable = ref_type.is_nullable();
         let mut heap_ty = ref_type.heap_type();
         self.check_heap_type(&mut heap_ty, offset)?;
@@ -104,11 +105,7 @@ pub trait WasmModuleResources {
     /// canonical form.
     ///
     /// Similar to `check_value_type` but for heap types.
-    fn check_heap_type(
-        &self,
-        heap_type: &mut HeapType,
-        offset: usize,
-    ) -> Result<(), BinaryReaderError>;
+    fn check_heap_type(&self, heap_type: &mut HeapType, offset: usize) -> Result<(), Error>;
 
     /// Get the top type for the given heap type.
     fn top_type(&self, heap_type: &HeapType) -> HeapType;
@@ -122,6 +119,9 @@ pub trait WasmModuleResources {
     /// Returns whether the function index is referenced in the module anywhere
     /// outside of the start/function sections.
     fn is_function_referenced(&self, idx: u32) -> bool;
+
+    /// Returns whether the function defined with the exact type.
+    fn has_function_exact_type(&self, idx: u32) -> bool;
 }
 
 impl<T> WasmModuleResources for &'_ T
@@ -143,13 +143,16 @@ where
     fn sub_type_at(&self, at: u32) -> Option<&SubType> {
         T::sub_type_at(self, at)
     }
+    fn sub_type_at_id(&self, at: CoreTypeId) -> &SubType {
+        T::sub_type_at_id(self, at)
+    }
     fn type_id_of_function(&self, func_idx: u32) -> Option<CoreTypeId> {
         T::type_id_of_function(self, func_idx)
     }
-    fn type_of_function(&self, func_idx: u32) -> Option<&FuncType> {
-        T::type_of_function(self, func_idx)
+    fn type_index_of_function(&self, func_idx: u32) -> Option<u32> {
+        T::type_index_of_function(self, func_idx)
     }
-    fn check_heap_type(&self, t: &mut HeapType, offset: usize) -> Result<(), BinaryReaderError> {
+    fn check_heap_type(&self, t: &mut HeapType, offset: usize) -> Result<(), Error> {
         T::check_heap_type(self, t, offset)
     }
     fn top_type(&self, heap_type: &HeapType) -> HeapType {
@@ -161,6 +164,9 @@ where
     fn is_subtype(&self, a: ValType, b: ValType) -> bool {
         T::is_subtype(self, a, b)
     }
+    fn is_shared(&self, ty: RefType) -> bool {
+        T::is_shared(self, ty)
+    }
     fn element_count(&self) -> u32 {
         T::element_count(self)
     }
@@ -169,6 +175,9 @@ where
     }
     fn is_function_referenced(&self, idx: u32) -> bool {
         T::is_function_referenced(self, idx)
+    }
+    fn has_function_exact_type(&self, idx: u32) -> bool {
+        T::has_function_exact_type(self, idx)
     }
 }
 
@@ -196,15 +205,19 @@ where
         T::sub_type_at(self, type_idx)
     }
 
+    fn sub_type_at_id(&self, id: CoreTypeId) -> &SubType {
+        T::sub_type_at_id(self, id)
+    }
+
     fn type_id_of_function(&self, func_idx: u32) -> Option<CoreTypeId> {
         T::type_id_of_function(self, func_idx)
     }
 
-    fn type_of_function(&self, func_idx: u32) -> Option<&FuncType> {
-        T::type_of_function(self, func_idx)
+    fn type_index_of_function(&self, func_idx: u32) -> Option<u32> {
+        T::type_index_of_function(self, func_idx)
     }
 
-    fn check_heap_type(&self, t: &mut HeapType, offset: usize) -> Result<(), BinaryReaderError> {
+    fn check_heap_type(&self, t: &mut HeapType, offset: usize) -> Result<(), Error> {
         T::check_heap_type(self, t, offset)
     }
 
@@ -220,6 +233,10 @@ where
         T::is_subtype(self, a, b)
     }
 
+    fn is_shared(&self, ty: RefType) -> bool {
+        T::is_shared(self, ty)
+    }
+
     fn element_count(&self) -> u32 {
         T::element_count(self)
     }
@@ -230,5 +247,9 @@ where
 
     fn is_function_referenced(&self, idx: u32) -> bool {
         T::is_function_referenced(self, idx)
+    }
+
+    fn has_function_exact_type(&self, idx: u32) -> bool {
+        T::has_function_exact_type(self, idx)
     }
 }

@@ -1,7 +1,7 @@
 //! Integrity Impact to the Subsequent System (MSI)
 
 use crate::{
-    Error, Result,
+    Error,
     v4::metric::{Metric, MetricType},
 };
 use alloc::borrow::ToOwned;
@@ -20,11 +20,12 @@ use core::{fmt, str::FromStr};
 /// > system (e.g. due to insufficient logging).
 /// > The resulting score is greatest when the consequence to the system is
 /// > highest.
-#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+#[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
 pub enum ModifiedIntegrityImpactToTheSubsequentSystem {
     /// Not Defined (X)
     ///
     /// > The metric has not been evaluated.
+    #[default]
     NotDefined,
 
     /// Negligible (N)
@@ -54,22 +55,16 @@ pub enum ModifiedIntegrityImpactToTheSubsequentSystem {
     Safety,
 }
 
-impl Default for ModifiedIntegrityImpactToTheSubsequentSystem {
-    fn default() -> Self {
-        Self::NotDefined
-    }
-}
-
 impl Metric for ModifiedIntegrityImpactToTheSubsequentSystem {
     const TYPE: MetricType = MetricType::MSI;
 
     fn as_str(self) -> &'static str {
         match self {
-            ModifiedIntegrityImpactToTheSubsequentSystem::NotDefined => "X",
-            ModifiedIntegrityImpactToTheSubsequentSystem::Negligible => "N",
-            ModifiedIntegrityImpactToTheSubsequentSystem::Low => "L",
-            ModifiedIntegrityImpactToTheSubsequentSystem::High => "H",
-            ModifiedIntegrityImpactToTheSubsequentSystem::Safety => "S",
+            Self::NotDefined => "X",
+            Self::Negligible => "N",
+            Self::Low => "L",
+            Self::High => "H",
+            Self::Safety => "S",
         }
     }
 }
@@ -83,13 +78,13 @@ impl fmt::Display for ModifiedIntegrityImpactToTheSubsequentSystem {
 impl FromStr for ModifiedIntegrityImpactToTheSubsequentSystem {
     type Err = Error;
 
-    fn from_str(s: &str) -> Result<Self> {
+    fn from_str(s: &str) -> Result<Self, Error> {
         match s {
-            "X" => Ok(ModifiedIntegrityImpactToTheSubsequentSystem::NotDefined),
-            "N" => Ok(ModifiedIntegrityImpactToTheSubsequentSystem::Negligible),
-            "L" => Ok(ModifiedIntegrityImpactToTheSubsequentSystem::Low),
-            "H" => Ok(ModifiedIntegrityImpactToTheSubsequentSystem::High),
-            "S" => Ok(ModifiedIntegrityImpactToTheSubsequentSystem::Safety),
+            "X" => Ok(Self::NotDefined),
+            "N" => Ok(Self::Negligible),
+            "L" => Ok(Self::Low),
+            "H" => Ok(Self::High),
+            "S" => Ok(Self::Safety),
             _ => Err(Error::InvalidMetricV4 {
                 metric_type: Self::TYPE,
                 value: s.to_owned(),

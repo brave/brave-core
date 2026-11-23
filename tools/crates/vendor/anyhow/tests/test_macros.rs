@@ -6,6 +6,7 @@
     clippy::match_single_binding,
     clippy::needless_pass_by_value,
     clippy::shadow_unrelated,
+    clippy::uninlined_format_args,
     clippy::wildcard_imports
 )]
 
@@ -93,4 +94,18 @@ fn test_temporaries() {
 fn test_brace_escape() {
     let err = anyhow!("unterminated ${{..}} expression");
     assert_eq!("unterminated ${..} expression", err.to_string());
+}
+
+#[test]
+fn test_ensure_without_prelude() {
+    #[no_implicit_prelude]
+    mod m {
+        pub fn f(a: i32) -> ::anyhow::Result<()> {
+            ::anyhow::ensure!(a == 1);
+            ::anyhow::Ok(())
+        }
+    }
+
+    assert!(m::f(1).is_ok());
+    assert!(m::f(2).is_err());
 }

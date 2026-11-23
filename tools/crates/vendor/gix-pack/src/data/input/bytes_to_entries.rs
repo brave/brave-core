@@ -1,7 +1,9 @@
+use gix_error::{Error, Result};
 use std::{fs, io};
 
-use gix_features::zlib::Decompress;
+use gix_error::{ErrorExt, ResultExt, bail, message};
 use gix_hash::{Hasher, ObjectId};
+use gix_zlib::stream::inflate;
 
 use crate::data::input;
 
@@ -10,7 +12,7 @@ use crate::data::input;
 /// The iterator used as part of [`Bundle::write_to_directory(…)`][crate::Bundle::write_to_directory()].
 pub struct BytesToEntriesIter<BR> {
     read: BR,
-    decompressor: Decompress,
+    measure: inflate::Measure,
     offset: u64,
     had_error: bool,
     version: crate::data::Version,
@@ -50,21 +52,16 @@ where
         mode: input::Mode,
         compressed: input::EntryDataMode,
         object_hash: gix_hash::Kind,
-    ) -> Result<BytesToEntriesIter<BR>, input::Error> {
-        let mut header_data = [0u8; 12];
-        read.read_exact(&mut header_data).map_err(gix_hash::io::Error::from)?;
+    ) -> Result<BytesToEntriesIter<BR>> {
+        let mut header_data = [0u8; crate::data::header::SIZE];
+        read.read_exact(&mut header_data).map_err(io_error)?;
 
         let (version, num_objects) = crate::data::header::decode(&header_data)?;
-        assert_eq!(
-            version,
-            crate::data::Version::V2,
-            "let's stop here if we see undocumented pack formats"
-        );
         Ok(BytesToEntriesIter {
             read,
-            decompressor: Decompress::new(),
+            measure: inflate::Measure::default(),
             compressed,
-            offset: 12,
+            offset: crate::data::header::SIZE as u64,
             had_error: false,
             version,
             objects_left: num_objects,
@@ -80,7 +77,7 @@ where
         })
     }
 
-    fn next_inner(&mut self) -> Result<input::Entry, input::Error> {
+    fn next_inner(&mut self) -> Result<input::Entry> {
         self.objects_left -= 1; // even an error counts as objects
 
         // Read header
@@ -97,36 +94,34 @@ where
             }
             None => crate::data::Entry::from_read(&mut self.read, self.offset, self.hash_len),
         }
-        .map_err(gix_hash::io::Error::from)?;
+        .map_err(io_error)?;
 
         // Decompress object to learn its compressed bytes
         let compressed_buf = self.compressed_buf.take().unwrap_or_else(|| Vec::with_capacity(4096));
-        self.decompressor.reset();
-        let mut decompressed_reader = DecompressRead {
-            inner: read_and_pass_to(
-                &mut self.read,
-                if self.compressed.keep() {
-                    Vec::with_capacity(entry.decompressed_size as usize)
-                } else {
-                    compressed_buf
-                },
-            ),
-            decompressor: &mut self.decompressor,
-        };
+        let mut compressed_reader = read_and_pass_to(
+            &mut self.read,
+            if self.compressed.keep() {
+                // This buffer stores compressed bytes. The decompressed size is unrelated to the compressed byte
+                // count and is declared by pack data, so using it as capacity could cause excessive allocation.
+                // It's notable that `decompressed_size` is also untrusted.
+                Vec::new()
+            } else {
+                compressed_buf
+            },
+        );
 
-        let bytes_copied = io::copy(&mut decompressed_reader, &mut io::sink()).map_err(gix_hash::io::Error::from)?;
+        let (bytes_copied, compressed_size) = self.measure.read(&mut compressed_reader).map_err(io_error)?;
         if bytes_copied != entry.decompressed_size {
-            return Err(input::Error::IncompletePack {
-                actual: bytes_copied,
-                expected: entry.decompressed_size,
-            });
+            bail!(gix_error::corruption(format!(
+                "pack is incomplete: it was decompressed into {bytes_copied} bytes but {} bytes where expected.",
+                entry.decompressed_size
+            )));
         }
 
         let pack_offset = self.offset;
-        let compressed_size = decompressed_reader.decompressor.total_in();
         self.offset += entry.header_size() as u64 + compressed_size;
 
-        let mut compressed = decompressed_reader.inner.write;
+        let mut compressed = compressed_reader.write;
         debug_assert_eq!(
             compressed_size,
             compressed.len() as u64,
@@ -141,9 +136,11 @@ where
             let header_len = entry
                 .header
                 .write_to(bytes_copied, &mut header_buf.as_mut())
-                .map_err(gix_hash::io::Error::from)?;
-            let state = gix_features::hash::crc32_update(0, &header_buf[..header_len]);
-            Some(gix_features::hash::crc32_update(state, &compressed))
+                .map_err(io_error)?;
+            let mut crc32 = crc32fast::Hasher::new();
+            crc32.update(&header_buf[..header_len]);
+            crc32.update(&compressed);
+            Some(crc32.finalize())
         } else {
             None
         };
@@ -170,27 +167,29 @@ where
         })
     }
 
-    fn try_read_trailer(&mut self) -> Result<Option<ObjectId>, input::Error> {
+    fn try_read_trailer(&mut self) -> Result<Option<ObjectId>> {
         Ok(if self.objects_left == 0 {
             let mut id = gix_hash::ObjectId::null(self.object_hash);
-            if let Err(err) = self.read.read_exact(id.as_mut_slice()) {
-                if self.mode != input::Mode::Restore {
-                    return Err(input::Error::Io(err.into()));
-                }
+            if let Err(err) = self.read.read_exact(id.as_mut_slice())
+                && self.mode != input::Mode::Restore
+            {
+                return Err(io_error(err));
             }
 
             if let Some(hash) = self.hash.take() {
-                let actual_id = hash.try_finalize().map_err(gix_hash::io::Error::from)?;
+                let actual_id = hash.try_finalize().map_err(hash_io_error)?;
                 if self.mode == input::Mode::Restore {
                     id = actual_id;
                 } else {
-                    actual_id.verify(&id)?;
+                    actual_id
+                        .verify(&id)
+                        .or_raise(|| message("Failed to verify pack checksum in trailer"))?;
                 }
             }
             Some(id)
         } else if self.mode == input::Mode::Restore {
             let hash = self.hash.clone().expect("in restore mode a hash is set");
-            Some(hash.try_finalize().map_err(gix_hash::io::Error::from)?)
+            Some(hash.try_finalize().map_err(hash_io_error)?)
         } else {
             None
         })
@@ -205,7 +204,7 @@ impl<R> Iterator for BytesToEntriesIter<R>
 where
     R: io::BufRead,
 {
-    type Item = Result<input::Entry, input::Error>;
+    type Item = Result<input::Entry>;
 
     fn next(&mut self) -> Option<Self::Item> {
         if self.had_error || self.objects_left == 0 {
@@ -269,11 +268,13 @@ where
     }
 }
 
-impl crate::data::File {
+impl<T> crate::data::File<T>
+where
+    T: crate::FileData,
+{
     /// Returns an iterator over [`Entries`][crate::data::input::Entry], without making use of the memory mapping.
-    pub fn streaming_iter(&self) -> Result<BytesToEntriesIter<impl io::BufRead>, input::Error> {
-        let reader =
-            io::BufReader::with_capacity(4096 * 8, fs::File::open(&self.path).map_err(gix_hash::io::Error::from)?);
+    pub fn streaming_iter(&self) -> Result<BytesToEntriesIter<impl io::BufRead>> {
+        let reader = io::BufReader::with_capacity(4096 * 8, fs::File::open(&self.path).map_err(io_error)?);
         BytesToEntriesIter::new_from_header(
             reader,
             input::Mode::Verify,
@@ -283,21 +284,12 @@ impl crate::data::File {
     }
 }
 
-/// The boxed variant is faster for what we do (moving the decompressor in and out a lot)
-pub struct DecompressRead<'a, R> {
-    /// The reader from which bytes should be decompressed.
-    pub inner: R,
-    /// The decompressor doing all the work.
-    pub decompressor: &'a mut Decompress,
+fn io_error(err: io::Error) -> Error {
+    err.and_raise(message("An IO operation failed while streaming an entry"))
 }
 
-impl<R> io::Read for DecompressRead<'_, R>
-where
-    R: io::BufRead,
-{
-    fn read(&mut self, into: &mut [u8]) -> io::Result<usize> {
-        gix_features::zlib::stream::inflate::read(&mut self.inner, self.decompressor, into)
-    }
+fn hash_io_error(err: Error) -> Error {
+    err.and_raise(message("An IO operation failed while streaming an entry"))
 }
 
 /// A utility to automatically generate a hash while writing into an inner writer.

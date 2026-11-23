@@ -5,21 +5,78 @@ use crate::Unit;
 #[inline(always)]
 pub(super) fn find(haystack: &[u8]) -> Option<(Unit, usize)> {
     match haystack {
-        &[b'm', b'i', b'l', b'l', b'i', b's', b'e', b'c', b'o', b'n', b'd', b's', ..] => {
-            Some((Unit::Millisecond, 12))
-        }
-        &[b'm', b'i', b'c', b'r', b'o', b's', b'e', b'c', b'o', b'n', b'd', b's', ..] => {
-            Some((Unit::Microsecond, 12))
-        }
-        &[b'n', b'a', b'n', b'o', b's', b'e', b'c', b'o', b'n', b'd', b's', ..] => {
-            Some((Unit::Nanosecond, 11))
-        }
-        &[b'm', b'i', b'l', b'l', b'i', b's', b'e', b'c', b'o', b'n', b'd', ..] => {
-            Some((Unit::Millisecond, 11))
-        }
-        &[b'm', b'i', b'c', b'r', b'o', b's', b'e', b'c', b'o', b'n', b'd', ..] => {
-            Some((Unit::Microsecond, 11))
-        }
+        &[
+            b'm',
+            b'i',
+            b'l',
+            b'l',
+            b'i',
+            b's',
+            b'e',
+            b'c',
+            b'o',
+            b'n',
+            b'd',
+            b's',
+            ..,
+        ] => Some((Unit::Millisecond, 12)),
+        &[
+            b'm',
+            b'i',
+            b'c',
+            b'r',
+            b'o',
+            b's',
+            b'e',
+            b'c',
+            b'o',
+            b'n',
+            b'd',
+            b's',
+            ..,
+        ] => Some((Unit::Microsecond, 12)),
+        &[
+            b'n',
+            b'a',
+            b'n',
+            b'o',
+            b's',
+            b'e',
+            b'c',
+            b'o',
+            b'n',
+            b'd',
+            b's',
+            ..,
+        ] => Some((Unit::Nanosecond, 11)),
+        &[
+            b'm',
+            b'i',
+            b'l',
+            b'l',
+            b'i',
+            b's',
+            b'e',
+            b'c',
+            b'o',
+            b'n',
+            b'd',
+            ..,
+        ] => Some((Unit::Millisecond, 11)),
+        &[
+            b'm',
+            b'i',
+            b'c',
+            b'r',
+            b'o',
+            b's',
+            b'e',
+            b'c',
+            b'o',
+            b'n',
+            b'd',
+            ..,
+        ] => Some((Unit::Microsecond, 11)),
         &[b'n', b'a', b'n', b'o', b's', b'e', b'c', b'o', b'n', b'd', ..] => {
             Some((Unit::Nanosecond, 10))
         }

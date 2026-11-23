@@ -21,7 +21,6 @@
 //! });
 //! ```
 use std::error::Error;
-use std::future::Future;
 use std::net::{Ipv4Addr, Ipv6Addr, SocketAddr, SocketAddrV4, SocketAddrV6, ToSocketAddrs};
 use std::pin::Pin;
 use std::str::FromStr;
@@ -251,7 +250,6 @@ impl Iterator for SocketAddrs {
 }
 
 mod sealed {
-    use std::future::Future;
     use std::task::{self, Poll};
 
     use super::{Name, SocketAddr};
@@ -291,14 +289,13 @@ pub(super) async fn resolve<R>(resolver: &mut R, name: Name) -> Result<R::Addrs,
 where
     R: Resolve,
 {
-    crate::common::future::poll_fn(|cx| resolver.poll_ready(cx)).await?;
+    std::future::poll_fn(|cx| resolver.poll_ready(cx)).await?;
     resolver.resolve(name).await
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::net::{Ipv4Addr, Ipv6Addr};
 
     #[test]
     fn test_ip_addrs_split_by_preference() {

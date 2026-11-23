@@ -12,7 +12,7 @@
 [package]
 edition = "2021"
 name = "libredox"
-version = "0.1.11"
+version = "0.1.25"
 authors = ["4lDO2 <4lDO2@protonmail.com>"]
 build = false
 exclude = ["target"]
@@ -27,14 +27,24 @@ license = "MIT"
 repository = "https://gitlab.redox-os.org/redox-os/libredox.git"
 
 [features]
-call = []
+base = ["libc"]
+call = ["base"]
 default = [
+    "base",
     "call",
     "std",
     "redox_syscall",
+    "protocol",
+    "numa",
 ]
 mkns = ["ioslice"]
-std = []
+numa = ["redox_syscall"]
+protocol = [
+    "plain",
+    "bitflags",
+    "redox_syscall",
+]
+std = ["base"]
 
 [lib]
 name = "libredox"
@@ -42,6 +52,7 @@ path = "src/lib.rs"
 
 [dependencies.bitflags]
 version = "2"
+optional = true
 
 [dependencies.ioslice]
 version = "0.6"
@@ -49,7 +60,12 @@ optional = true
 
 [dependencies.libc]
 version = "0.2"
+optional = true
+
+[dependencies.plain]
+version = "0.2"
+optional = true
 
 [dependencies.redox_syscall]
-version = "0.6.0"
+version = "0.9.2"
 optional = true

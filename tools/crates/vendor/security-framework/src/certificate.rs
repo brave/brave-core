@@ -16,15 +16,11 @@ use std::ptr;
 
 use crate::base::{Error, Result};
 use crate::cvt;
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 use crate::key;
 #[cfg(target_os = "macos")]
 use crate::os::macos::keychain::SecKeychain;
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 use core_foundation::base::FromVoid;
-#[cfg(any(feature = "OSX_10_13", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 use core_foundation::error::{CFError, CFErrorRef};
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 use core_foundation::number::CFNumber;
 use security_framework_sys::item::kSecValueRef;
 
@@ -104,7 +100,6 @@ impl SecCertificate {
         }
     }
 
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     /// Returns DER encoded X.509 distinguished name of the certificate issuer.
     #[must_use]
     pub fn issuer(&self) -> Vec<u8> {
@@ -114,7 +109,6 @@ impl SecCertificate {
         }
     }
 
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     /// Returns DER encoded X.509 distinguished name of the certificate subject.
     #[must_use]
     pub fn subject(&self) -> Vec<u8> {
@@ -124,7 +118,6 @@ impl SecCertificate {
         }
     }
 
-    #[cfg(any(feature = "OSX_10_13", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     /// Returns DER encoded serial number of the certificate.
     pub fn serial_number_bytes(&self) -> Result<Vec<u8>, CFError> {
         unsafe {
@@ -138,7 +131,6 @@ impl SecCertificate {
         }
     }
 
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     /// Returns DER encoded subjectPublicKeyInfo of certificate if available. This can be used
     /// for certificate pinning.
     pub fn public_key_info_der(&self) -> Result<Option<Vec<u8>>> {
@@ -148,7 +140,6 @@ impl SecCertificate {
         Ok(self.pk_to_der(public_key))
     }
 
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     #[must_use]
     #[allow(clippy::unused_self)]
     #[allow(clippy::needless_pass_by_value)]
@@ -173,7 +164,6 @@ impl SecCertificate {
         Some(out)
     }
 
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     /// Get public key from certificate
     pub fn public_key(&self) -> Result<key::SecKey> {
         use crate::policy::SecPolicy;
@@ -204,7 +194,6 @@ impl SecCertificate {
     }
 }
 
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 fn get_asn1_header_bytes(pkt: CFString, ksz: u32) -> Option<&'static [u8]> {
     use security_framework_sys::item::{kSecAttrKeyTypeECSECPrimeRandom, kSecAttrKeyTypeRSA};
 
@@ -223,25 +212,21 @@ fn get_asn1_header_bytes(pkt: CFString, ksz: u32) -> Option<&'static [u8]> {
     None
 }
 
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 const RSA_2048_ASN1_HEADER: [u8; 24] = [
     0x30, 0x82, 0x01, 0x22, 0x30, 0x0d, 0x06, 0x09, 0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01, 0x01,
     0x01, 0x05, 0x00, 0x03, 0x82, 0x01, 0x0f, 0x00,
 ];
 
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 const RSA_4096_ASN1_HEADER: [u8; 24] = [
     0x30, 0x82, 0x02, 0x22, 0x30, 0x0d, 0x06, 0x09, 0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01, 0x01,
     0x01, 0x05, 0x00, 0x03, 0x82, 0x02, 0x0f, 0x00,
 ];
 
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 const EC_DSA_SECP_256_R1_ASN1_HEADER: [u8; 26] = [
     0x30, 0x59, 0x30, 0x13, 0x06, 0x07, 0x2a, 0x86, 0x48, 0xce, 0x3d, 0x02, 0x01, 0x06, 0x08, 0x2a,
     0x86, 0x48, 0xce, 0x3d, 0x03, 0x01, 0x07, 0x03, 0x42, 0x00,
 ];
 
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 const EC_DSA_SECP_384_R1_ASN1_HEADER: [u8; 23] = [
     0x30, 0x76, 0x30, 0x10, 0x06, 0x07, 0x2a, 0x86, 0x48, 0xce, 0x3d, 0x02, 0x01, 0x06, 0x05, 0x2b,
     0x81, 0x04, 0x00, 0x22, 0x03, 0x62, 0x00,
@@ -250,7 +235,6 @@ const EC_DSA_SECP_384_R1_ASN1_HEADER: [u8; 23] = [
 #[cfg(test)]
 mod test {
     use crate::test::certificate;
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     use x509_parser::prelude::*;
 
     #[test]
@@ -266,27 +250,25 @@ mod test {
     }
 
     #[test]
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     fn issuer() {
         let cert = certificate();
         let issuer = cert.issuer();
         let (_, name) = X509Name::from_der(&issuer).unwrap();
         let name_str = name.to_string_with_registry(oid_registry()).unwrap();
         assert_eq!(
-            "C=US, ST=CALIFORNIA, L=PALO ALTO, O=FOOBAR LLC, OU=DEV LAND, CN=FOOBAR.COM",
+            "C=US, ST=California, L=Palo Alto, O=Foobar LLC, OU=Dev Land, CN=foobar.com",
             name_str
         );
     }
 
     #[test]
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     fn subject() {
         let cert = certificate();
         let subject = cert.subject();
         let (_, name) = X509Name::from_der(&subject).unwrap();
         let name_str = name.to_string_with_registry(oid_registry()).unwrap();
         assert_eq!(
-            "C=US, ST=CALIFORNIA, L=PALO ALTO, O=FOOBAR LLC, OU=DEV LAND, CN=FOOBAR.COM",
+            "C=US, ST=California, L=Palo Alto, O=Foobar LLC, OU=Dev Land, CN=foobar.com",
             name_str
         );
     }

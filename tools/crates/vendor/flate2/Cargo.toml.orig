@@ -1,7 +1,7 @@
 [package]
 name = "flate2"
 authors = ["Alex Crichton <alex@alexcrichton.com>", "Josh Triplett <josh@joshtriplett.org>"]
-version = "1.1.5"
+version = "1.1.11"
 edition = "2018"
 license = "MIT OR Apache-2.0"
 readme = "README.md"
@@ -21,32 +21,107 @@ exclude = [".*"]
 [dependencies]
 libz-sys = { version = "1.1.20", optional = true, default-features = false }
 libz-ng-sys = { version = "1.1.16", optional = true }
-# this matches the default features, but we don't want to depend on the default features staying the same
-libz-rs-sys = { version = "0.5.1", optional = true, default-features = false, features = ["std", "rust-allocator"] }
-cloudflare-zlib-sys = { version = "0.3.6", optional = true }
-miniz_oxide = { version = "0.8.5", optional = true, default-features = false, features = ["with-alloc", "simd"] }
-crc32fast = "1.2.0"
-
-[target.'cfg(all(target_arch = "wasm32", not(target_os = "emscripten")))'.dependencies]
-miniz_oxide = { version = "0.8.5", default-features = false, features = ["with-alloc", "simd"] }
+zlib-rs = { version = "0.6.7", optional = true, default-features = false, features = ["rust-allocator"] }
+## This implementation uses only safe Rust code and doesn't require a C compiler.
+## It provides good performance for most use cases while being completely portable.
+miniz_oxide = { version = "0.9.0", optional = true, features = ["simd"] }
+crc32fast = { version = "1.2.0", default-features = false, optional = true }
+document-features = { version = "0.2", optional = true }
 
 [dev-dependencies]
+futures = { version = "0.3", default-features = false }
 rand = "0.9"
 quickcheck = { version = "1.0", default-features = false }
 
 [features]
-default = ["rust_backend"]
-any_zlib = ["any_impl"] # note: this is not a real user-facing feature
-any_impl = [] # note: this is not a real user-facing feature
-zlib = ["any_zlib", "libz-sys"]
-zlib-default = ["any_zlib", "libz-sys/default"]
-zlib-ng-compat = ["zlib", "libz-sys/zlib-ng"]
-zlib-ng = ["any_zlib", "libz-ng-sys"]
-zlib-rs = ["any_zlib", "libz-rs-sys"]
-cloudflare_zlib = ["any_zlib", "cloudflare-zlib-sys"]
+## The default backend using pure Rust implementation via miniz_oxide.
+## This provides a safe, portable compression implementation without requiring a C compiler.
+default = ["rust_backend", "runtime_detection"]
+
+## Allows runtime feature detection on supported CPU architectures.
+runtime_detection = ["zlib-rs?/std", "crc32fast?/std"]
+
+#! ### User-Facing Backend Features
+#! Choose one of these features to select the compression backend.
+#! Only one backend should be enabled at a time, or else one will see an unstable order which is currently
+#! `zlib-ng`, `zlib-rs`, `miniz_oxide` and which may change at any time.
+
+## Use the pure Rust `miniz_oxide` backend (default).
+## This implementation uses only safe Rust code and doesn't require a C compiler.
+## It provides good performance for most use cases while being completely portable.
+##
+## Note that this feature at some point may be switched to use `zlib-rs` instead.
 rust_backend = ["miniz_oxide", "any_impl"]
-miniz-sys = ["rust_backend"] # For backwards compatibility
+
+## Use the zlib-rs backend, a pure Rust rewrite of zlib.
+## This is the fastest backend overall, providing excellent performance with some `unsafe` code.
+## It does not require a C compiler but uses `unsafe` Rust for optimization.
+zlib-rs = ["any_zlib", "dep:zlib-rs"] # zlib-rs uses its own crc32 implementation.
+
+## Use the pure Rust `miniz_oxide` backend.
+miniz_oxide = ["any_impl", "dep:miniz_oxide", "dep:crc32fast"]
+
+## Use the system's installed zlib library.
+## This is useful when you need compatibility with other C code that uses zlib,
+## or when you want to use the system-provided zlib for consistency.
+zlib = ["any_c_zlib", "libz-sys", "dep:crc32fast"]
+
+## Use the system's installed zlib library with default features enabled.
+## Similar to `zlib` but enables additional features from libz-sys.
+zlib-default = ["any_c_zlib", "libz-sys/default", "dep:crc32fast"]
+
+## Use zlib-ng in zlib-compat mode via libz-sys.
+## This provides zlib-ng's performance improvements while maintaining compatibility.
+## Note: If any crate in your dependency graph uses stock zlib, you'll get stock zlib instead.
+## For guaranteed zlib-ng, use the `zlib-ng` feature.
+## When using this feature, if any crate in your dependency graph explicitly requests stock zlib,
+## or uses libz-sys directly without `default-features = false`, you'll get stock zlib rather than zlib-ng.
+## See [the libz-sys README](https://github.com/rust-lang/libz-sys/blob/main/README.md) for details.
+## To avoid that, use the `"zlib-ng"` feature instead.
+
+zlib-ng-compat = ["zlib", "libz-sys/zlib-ng", "dep:crc32fast"]
+
+## Use the high-performance zlib-ng library directly.
+## This typically provides better performance than stock zlib and works even when
+## other dependencies use zlib. Requires a C compiler.
+zlib-ng = ["any_c_zlib", "libz-ng-sys", "dep:crc32fast"]
+
+## Cloudflare-zlib is no longer supported.
+## Falls back to `libz-sys`, but we recommend switching to `zlib-rs` instead.
+cloudflare_zlib = ["zlib"]
+
+## Deprecated alias for `rust_backend`, provided for backwards compatibility.
+## Use `rust_backend` instead.
+miniz-sys = ["rust_backend"]
+
+#! ### Internal Features
+#! These features are used internally for backend selection and should not be enabled directly by users.
+#! They are documented here to aid with maintenance.
+
+## **Internal:** Marker feature indicating that any zlib-based C backend is enabled.
+## This is automatically enabled by `zlib-rs`, `zlib`, `zlib-ng`, and `zlib-ng-compat`.
+## Do not enable this feature directly; instead, choose a specific backend feature.
+any_zlib = ["any_impl"]
+
+## **Internal:** Marker feature indicating that any C based fully zlib compatible backend is enabled.
+## This is automatically enabled by `zlib`, `zlib-ng`, and `zlib-ng-compat`.
+## Do not enable this feature directly; instead, choose a specific backend feature.
+any_c_zlib = ["any_zlib"]
+
+## **Internal:** Marker feature indicating that any compression backend is enabled.
+## This is automatically enabled by all backend features to ensure at least one implementation is available.
+## Do not enable this feature directly; instead, choose a specific backend feature.
+any_impl = []
 
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = ["--cfg", "docsrs"]
+
+[lints.rust.unexpected_cfgs]
+level = "warn"
+priority = 0
+check-cfg = [
+    ## Enables `no_std` support by using `core::error` and `alloc::io`.
+    ## Requires at least nightly 2026-07-19.
+    "cfg(flate2_unstable_nightly_alloc_io)",
+]

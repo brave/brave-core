@@ -1,21 +1,8 @@
+use gix_error::Result;
 use std::{path::Path, sync::atomic::AtomicBool};
 
-use gix_features::progress::Progress;
-
-///
-pub mod checksum {
-    /// Returned by various methods to verify the checksum of a memory mapped file that might also exist on disk.
-    #[derive(thiserror::Error, Debug)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error("Interrupted by user")]
-        Interrupted,
-        #[error("Failed to hash data")]
-        Hasher(#[from] gix_hash::hasher::Error),
-        #[error(transparent)]
-        Verify(#[from] gix_hash::verify::Error),
-    }
-}
+use gix_error::{Class, ClassificationMarker, ResultExt, bail};
+use gix_utils::progress::Progress;
 
 /// Returns the `index` at which the following `index + 1` value is not an increment over the value at `index`.
 pub fn fan(data: &[u32]) -> Option<usize> {
@@ -25,8 +12,7 @@ pub fn fan(data: &[u32]) -> Option<usize> {
 }
 
 /// Calculate the hash of the given kind by trying to read the file from disk at `data_path` or falling back on the mapped content in `data`.
-/// `Ok(expected)` or [`checksum::Error::Verify`] is returned if the hash matches or mismatches.
-/// If the [`checksum::Error::Interrupted`] is returned, the operation was interrupted.
+/// `Ok(expected)` is returned if the hash matches, otherwise the error is classified as corruption.
 pub fn checksum_on_disk_or_mmap(
     data_path: &Path,
     data: &[u8],
@@ -34,7 +20,7 @@ pub fn checksum_on_disk_or_mmap(
     object_hash: gix_hash::Kind,
     progress: &mut dyn Progress,
     should_interrupt: &AtomicBool,
-) -> Result<gix_hash::ObjectId, checksum::Error> {
+) -> Result<gix_hash::ObjectId> {
     let data_len_without_trailer = data.len() - object_hash.len_in_bytes();
     let actual = match gix_hash::bytes_of_file(
         data_path,
@@ -44,20 +30,25 @@ pub fn checksum_on_disk_or_mmap(
         should_interrupt,
     ) {
         Ok(id) => id,
-        Err(gix_hash::io::Error::Io(err)) if err.kind() == std::io::ErrorKind::Interrupted => {
-            return Err(checksum::Error::Interrupted);
-        }
-        Err(gix_hash::io::Error::Io(_io_err)) => {
-            let start = std::time::Instant::now();
-            let mut hasher = gix_hash::hasher(object_hash);
-            hasher.update(&data[..data_len_without_trailer]);
-            progress.inc_by(data_len_without_trailer);
-            progress.show_throughput(start);
-            hasher.try_finalize()?
-        }
-        Err(gix_hash::io::Error::Hasher(err)) => return Err(checksum::Error::Hasher(err)),
+        Err(err) if err.is_cancelled() => return Err(err),
+        Err(err) => match err.downcast_any_ref::<std::io::Error>().map(std::io::Error::kind) {
+            Some(std::io::ErrorKind::Interrupted) => {
+                bail!(ClassificationMarker::with_source(Class::Retryable, err));
+            }
+            Some(_) => {
+                let start = std::time::Instant::now();
+                let mut hasher = gix_hash::hasher(object_hash);
+                hasher.update(&data[..data_len_without_trailer]);
+                progress.inc_by(data_len_without_trailer);
+                progress.show_throughput(start);
+                hasher.try_finalize()?
+            }
+            None => return Err(err),
+        },
     };
 
-    actual.verify(&expected)?;
+    actual
+        .verify(&expected)
+        .or_raise(|| gix_error::corruption("Failed to verify pack file checksum"))?;
     Ok(actual)
 }

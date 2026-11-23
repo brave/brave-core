@@ -28,6 +28,71 @@ Released YYYY-MM-DD.
 
 --------------------------------------------------------------------------------
 
+## 3.20.4
+
+Released 2026-11-13.
+
+### Security
+
+* Fixed allocating zero-sized types on multiple threads triggering undefined
+  behavior.
+  [GHSA-j7wg-xg3h-2pr6](https://github.com/fitzgen/bumpalo/security/advisories/GHSA-j7wg-xg3h-2pr6)
+
+--------------------------------------------------------------------------------
+
+## 3.20.3
+
+Released 2026-05-22.
+
+### Fixed
+
+* Fixed the `try_alloc_slice_fill_with`, `alloc_slice_try_fill_with`,
+  `alloc_slice_fill_with` methods to properly rewind the bump pointer on
+  allocation, initialization, and panic failure and avoid wasting bump capacity.
+* Fixed a drop bug in `bumpalo::collections::vec::DrainFilter` (used by `retain`
+  and `retain_mut`) when the predicate panics.
+
+--------------------------------------------------------------------------------
+
+## 3.20.2
+
+Released 2026-02-19.
+
+### Fixed
+
+* Restored `Send` and `Sync` implementations for `Box<T>` for `T: ?Sized` types
+  as well.
+
+--------------------------------------------------------------------------------
+
+## 3.20.1
+
+Released 2026-02-18.
+
+### Fixed
+
+* Restored `Send` and `Sync` implementations for `Box<T>` when `T: Send` and `T:
+  Sync` respectively.
+
+--------------------------------------------------------------------------------
+
+## 3.20.0
+
+Released 2026-02-18.
+
+### Added
+
+* Added the `bumpalo::collections::Vec::pop_if` method.
+
+### Fixed
+
+* Fixed a bug in the `bumpalo::collections::String::retain` method in the face
+  of panics.
+* Made `bumpalo::collections::Box<T>` covariant with `T` (just like
+  `std::boxed::Box<T>`).
+
+--------------------------------------------------------------------------------
+
 ## 3.19.1
 
 Released 2025-12-16.

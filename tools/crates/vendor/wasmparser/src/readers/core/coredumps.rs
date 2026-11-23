@@ -1,5 +1,5 @@
-use crate::prelude::*;
 use crate::{BinaryReader, FromReader, Result};
+use crate::{Ieee32, Ieee64, prelude::*};
 
 /// The data portion of a custom section representing a core dump. Per the
 /// tool-conventions repo, this section just specifies the executable name that
@@ -9,10 +9,10 @@ use crate::{BinaryReader, FromReader, Result};
 /// # Examples
 ///
 /// ```
-/// use wasmparser::{BinaryReader, CoreDumpSection, FromReader, Result, WasmFeatures};
+/// use wasmparser::{BinaryReader, CoreDumpSection, FromReader, Result};
 /// let data: &[u8] = &[0x00, 0x09, 0x74, 0x65, 0x73, 0x74, 0x2e, 0x77, 0x61,
 ///      0x73, 0x6d];
-/// let mut reader = BinaryReader::new(data, 0, WasmFeatures::all());
+/// let mut reader = BinaryReader::new(data, 0);
 /// let core = CoreDumpSection::new(reader).unwrap();
 /// assert!(core.name == "test.wasm")
 /// ```
@@ -29,7 +29,7 @@ impl<'a> CoreDumpSection<'a> {
         if reader.read_u8()? != 0 {
             bail!(pos, "invalid start byte for core dump name");
         }
-        let name = reader.read_string()?;
+        let name = reader.read_unlimited_string()?;
         if !reader.eof() {
             bail!(
                 reader.original_position(),
@@ -46,9 +46,9 @@ impl<'a> CoreDumpSection<'a> {
 /// # Example
 ///
 /// ```
-/// use wasmparser::{BinaryReader, CoreDumpModulesSection, FromReader, Result, WasmFeatures};
+/// use wasmparser::{BinaryReader, CoreDumpModulesSection, FromReader, Result};
 /// let data: &[u8] = &[0x01, 0x00, 0x04, 0x74, 0x65, 0x73, 0x74];
-/// let reader = BinaryReader::new(data, 0, WasmFeatures::all());
+/// let reader = BinaryReader::new(data, 0);
 /// let modules_section = CoreDumpModulesSection::new(reader).unwrap();
 /// assert!(modules_section.modules[0] == "test")
 /// ```
@@ -69,7 +69,7 @@ impl<'a> CoreDumpModulesSection<'a> {
             if reader.read_u8()? != 0 {
                 bail!(pos, "invalid start byte for coremodule");
             }
-            modules.push(reader.read_string()?);
+            modules.push(reader.read_unlimited_string()?);
         }
         if !reader.eof() {
             bail!(
@@ -151,11 +151,11 @@ impl<'a> FromReader<'a> for CoreDumpInstance {
 /// # Examples
 ///
 /// ```
-/// use wasmparser::{BinaryReader, CoreDumpStackSection, FromReader, WasmFeatures};
+/// use wasmparser::{BinaryReader, CoreDumpStackSection, FromReader};
 ///
 /// let data: &[u8] = &[0x00, 0x04, 0x6d, 0x61, 0x69, 0x6e, 0x01, 0x00, 0x04,
 ///     0x2a, 0x33, 0x01, 0x7f, 0x01, 0x01, 0x7f, 0x02];
-/// let reader = BinaryReader::new(data, 0, WasmFeatures::all());
+/// let reader = BinaryReader::new(data, 0);
 /// let corestack = CoreDumpStackSection::new(reader).unwrap();
 /// assert!(corestack.name == "main");
 /// assert!(corestack.frames.len() == 1);
@@ -181,7 +181,7 @@ impl<'a> CoreDumpStackSection<'a> {
         if reader.read_u8()? != 0 {
             bail!(pos, "invalid start byte for core dump stack name");
         }
-        let name = reader.read_string()?;
+        let name = reader.read_unlimited_string()?;
         let mut frames = vec![];
         for _ in 0..reader.read_var_u32()? {
             frames.push(CoreDumpStackFrame::from_reader(&mut reader)?);
@@ -254,9 +254,9 @@ pub enum CoreDumpValue {
     /// An i64 value
     I64(i64),
     /// An f32 value
-    F32(f32),
+    F32(Ieee32),
     /// An f64 value
-    F64(f64),
+    F64(Ieee64),
 }
 
 impl<'a> FromReader<'a> for CoreDumpValue {
@@ -266,12 +266,8 @@ impl<'a> FromReader<'a> for CoreDumpValue {
             0x01 => Ok(CoreDumpValue::Missing),
             0x7F => Ok(CoreDumpValue::I32(reader.read_var_i32()?)),
             0x7E => Ok(CoreDumpValue::I64(reader.read_var_i64()?)),
-            0x7D => Ok(CoreDumpValue::F32(f32::from_bits(
-                reader.read_f32()?.bits(),
-            ))),
-            0x7C => Ok(CoreDumpValue::F64(f64::from_bits(
-                reader.read_f64()?.bits(),
-            ))),
+            0x7D => Ok(CoreDumpValue::F32(reader.read_f32()?)),
+            0x7C => Ok(CoreDumpValue::F64(reader.read_f64()?)),
             _ => bail!(pos, "invalid CoreDumpValue type"),
         }
     }

@@ -4,37 +4,67 @@ lints.workspace = true
 name = "gix-trace"
 description = "A crate to provide minimal `tracing` support that can be turned off to zero cost"
 repository = "https://github.com/GitoxideLabs/gitoxide"
-version = "0.1.16"
+version = "0.3.2"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
 license = "MIT OR Apache-2.0"
-edition = "2021"
-rust-version = "1.82"
-include = ["src/**/*", "LICENSE-*"]
-
-[lib]
-doctest = false
-test = false
+edition = "2024"
+rust-version = "1.88"
+include = ["/src/**/*", "/LICENSE-*"]
 
 [features]
 
-## Note that there is no default feature, as the application is supposed to opt-in via `gix-features` or using this crate directly.
+## There is no default feature: applications opt in through `gix` or this crate directly.
 default = []
 
-## Implement `tracing` with `tracing-core`, which provides applications with valuable performance details if they opt-in to it.
+## Implement `tracing` with the `tracing` crate, which provides applications with valuable performance details if they opt-in to it.
 ##
 ## Note that this may have overhead as well, thus instrumentations should be used stategically, only providing coarse tracing by default and adding details
 ## only where needed while marking them with the appropriate level.
-tracing = ["dep:tracing-core"]
+tracing = ["dep:tracing"]
 
 ## If enabled, detailed tracing is also emitted, which can greatly increase insights but at a cost.
 tracing-detail = []
 
+## Collect spans and events into trees and process or print completed trees synchronously.
+forest = ["tracing", "dep:tracing-subscriber", "dep:gix-error", "dep:smallvec"]
+
+## Colorize the forest's pretty-printed output with ANSI escape sequences.
+forest-ansi = ["forest", "dep:nu-ansi-term"]
+
+## Measure user and kernel CPU time in forest spans on Linux, macOS, FreeBSD, and OpenBSD.
+## Sampling adds overhead on span entry and exit. Other platforms report CPU time as unavailable.
+forest-cpu-time = ["forest", "dep:libc"]
 
 [dependencies]
-tracing-core = { version = "0.1.35", optional = true }
+gix-error = { version = "^0.5.3", path = "../gix-error", optional = true }
+
+tracing = { version = "0.1.44", optional = true, default-features = false, features = ["std"] }
+tracing-subscriber = { version = "0.3.22", optional = true, default-features = false, features = ["fmt"] }
+smallvec = { version = "1.15.1", optional = true, features = ["write"] }
+nu-ansi-term = { version = "0.50.3", optional = true }
 
 document-features = { version = "0.2.0", optional = true }
+
+[target.'cfg(unix)'.dependencies]
+libc = { version = "0.2.186", optional = true, default-features = false }
+
+[dev-dependencies]
+tracing-subscriber = { version = "0.3.22", default-features = false, features = ["env-filter"] }
 
 [package.metadata.docs.rs]
 all-features = true
 features = ["document-features"]
+
+[package.metadata.qa]
+tests = [
+    # Cover tracing modes and both forest renderers independently of workspace feature unification.
+    { args = ["--no-default-features"] },
+    { args = ["--no-default-features", "--features", "tracing"] },
+    { args = ["--no-default-features", "--features", "tracing,tracing-detail"] },
+    { args = ["--no-default-features", "--features", "forest"] },
+    { args = ["--all-features"] },
+]
+doctests = [
+    { args = ["--no-default-features", "--features", "forest"] },
+    { args = ["--no-default-features", "--features", "forest-ansi,tracing-detail"] },
+]

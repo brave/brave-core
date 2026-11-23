@@ -1227,6 +1227,11 @@ impl PikeVM {
         input: &Input<'_>,
         slots: &mut [Option<NonMaxUsize>],
     ) -> Option<HalfMatch> {
+        // The caller may provide more slots than the NFA has. Ignore the
+        // excess so that each row in the slot table stays within its bounds.
+        let slots_len =
+            core::cmp::min(slots.len(), self.nfa.group_info().slot_len());
+        let slots = &mut slots[..slots_len];
         cache.setup_search(slots.len());
         if input.is_done() {
             return None;
@@ -1238,7 +1243,7 @@ impl PikeVM {
         // length that fits into isize, and so this assert should always pass.
         // But we put it here to make our assumption explicit.
         assert!(
-            input.haystack().len() < core::usize::MAX,
+            input.haystack().len() < usize::MAX,
             "byte slice lengths must be less than usize MAX",
         );
         instrument!(|c| c.reset(&self.nfa));
@@ -1413,7 +1418,7 @@ impl PikeVM {
             return;
         }
         assert!(
-            input.haystack().len() < core::usize::MAX,
+            input.haystack().len() < usize::MAX,
             "byte slice lengths must be less than usize MAX",
         );
         instrument!(|c| c.reset(&self.nfa));

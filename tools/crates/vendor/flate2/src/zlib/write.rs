@@ -1,5 +1,5 @@
-use std::io;
-use std::io::prelude::*;
+use crate::io;
+use crate::io::{Read, Write};
 
 use crate::zio;
 use crate::{Compress, Decompress};
@@ -59,8 +59,18 @@ impl<W: Write> ZlibEncoder<W> {
 
     /// Acquires a mutable reference to the underlying writer.
     ///
-    /// Note that mutating the output/input state of the stream may corrupt this
-    /// object, so care must be taken when using this method.
+    /// The underlying writer may be mutated or replaced as long as this
+    /// preserves the bytes and ordering of the logical output stream.
+    /// Concatenate output from each writer to reconstruct the complete stream.
+    ///
+    /// Replacing the writer does not require [`flush`](Write::flush). Call it
+    /// first when all input accepted so far must be decodable without output
+    /// from later writes. This inserts a sync-flush point and changes the output
+    /// bitstream. This is useful before applying [`std::mem::take`] to
+    /// [`get_mut`](Self::get_mut) when forwarding the stream incrementally.
+    ///
+    /// To start a new stream, use [`reset`](Self::reset); replacing the writer
+    /// does not reset this encoder.
     pub fn get_mut(&mut self) -> &mut W {
         self.inner.get_mut()
     }
@@ -89,13 +99,9 @@ impl<W: Write> ZlibEncoder<W> {
     /// Attempt to finish this output stream, writing out final chunks of data.
     ///
     /// Note that this function can only be used once data has finished being
-    /// written to the output stream. After this function is called then further
-    /// calls to `write` may result in a panic.
-    ///
-    /// # Panics
-    ///
-    /// Attempts to write data to this stream may result in a panic after this
-    /// function is called.
+    /// written to the output stream. Once this function returns `Ok(())`, further
+    /// calls to `write` return `Ok(0)` or an error. Call [`reset`](Self::reset) to
+    /// start a new stream.
     ///
     /// # Errors
     ///
@@ -129,8 +135,8 @@ impl<W: Write> ZlibEncoder<W> {
     ///
     /// This will flush the underlying data stream and then return the contained
     /// writer if the flush succeeded.
-    /// The compressed stream will not closed but only flushed. This
-    /// means that obtained byte array can by extended by another deflated
+    /// The compressed stream will not be closed but only flushed. This
+    /// means that obtained byte array can be extended by another deflated
     /// stream. To close the stream add the two bytes 0x3 and 0x0.
     ///
     /// # Errors
@@ -248,8 +254,17 @@ impl<W: Write> ZlibDecoder<W> {
 
     /// Acquires a mutable reference to the underlying writer.
     ///
-    /// Note that mutating the output/input state of the stream may corrupt this
-    /// object, so care must be taken when using this method.
+    /// The underlying writer may be mutated or replaced as long as this
+    /// preserves the bytes and ordering of the logical output stream.
+    /// Concatenate output from each writer to reconstruct the complete stream.
+    ///
+    /// Replacing the writer does not require [`flush`](Write::flush). Call it
+    /// first to write all decompressed output currently available to the
+    /// current writer. This is useful before applying [`std::mem::take`] to
+    /// [`get_mut`](Self::get_mut) when forwarding output incrementally.
+    ///
+    /// To start a new stream, use [`reset`](Self::reset); replacing the writer
+    /// does not reset this decoder.
     pub fn get_mut(&mut self) -> &mut W {
         self.inner.get_mut()
     }
@@ -264,10 +279,10 @@ impl<W: Write> ZlibDecoder<W> {
     ///
     /// # Errors
     ///
-    /// This function will perform I/O to complete this stream, and any I/O
+    /// This function will perform I/O to write any pending output, and any I/O
     /// errors which occur will be returned from this function.
     pub fn reset(&mut self, w: W) -> io::Result<W> {
-        self.inner.finish()?;
+        self.inner.drain()?;
         self.inner.data = Decompress::new(true);
         Ok(self.inner.replace(w))
     }
@@ -345,6 +360,9 @@ impl<W: Read + Write> Read for ZlibDecoder<W> {
 
 #[cfg(test)]
 mod tests {
+    use alloc::string::String;
+    use alloc::vec::Vec;
+
     use super::*;
     use crate::Compression;
 

@@ -3,14 +3,14 @@
 /*
 Run-time CPU feature detection on AArch64 Linux/Android/FreeBSD/NetBSD/OpenBSD by parsing system registers.
 
-As of nightly-2024-09-07, is_aarch64_feature_detected doesn't support run-time detection on NetBSD.
-https://github.com/rust-lang/stdarch/blob/d9466edb4c53cece8686ee6e17b028436ddf4151/crates/std_detect/src/detect/mod.rs
+As of Rust 1.94, is_aarch64_feature_detected doesn't support run-time detection on NetBSD.
+https://github.com/rust-lang/rust/blob/1.94.0/library/std_detect/src/detect/mod.rs
 Run-time detection on OpenBSD by is_aarch64_feature_detected is supported on Rust 1.70+.
 https://github.com/rust-lang/stdarch/pull/1374
 
 Refs:
 - https://developer.arm.com/documentation/ddi0601/2025-06/AArch64-Registers
-- https://github.com/torvalds/linux/blob/v6.16/Documentation/arch/arm64/cpu-feature-registers.rst
+- https://github.com/torvalds/linux/blob/v6.19/Documentation/arch/arm64/cpu-feature-registers.rst
 - https://github.com/rust-lang/stdarch/blob/a0c30f3e3c75adcd6ee7efc94014ebcead61c507/crates/std_detect/src/detect/os/aarch64.rs
 
 Supported platforms:
@@ -31,10 +31,10 @@ For now, this module is only used on NetBSD/OpenBSD.
 
 On Linux/Android/FreeBSD, we use auxv.rs and this module is test-only because:
 - On Linux/Android, this approach requires a higher kernel version than Rust supports,
-  and also does not work with qemu-user (as of 7.2) and Valgrind (as of 3.24).
+  and also does not work with qemu-user (as of QEMU 7.2) and Valgrind (as of Valgrind 3.24).
   (Looking into HWCAP_CPUID in auxvec, it appears that Valgrind is setting it
   to false correctly, but qemu-user is setting it to true.)
-  - qemu-user issue seem to be fixed as of 9.2.
+  - qemu-user issue seem to be fixed as of QEMU 9.2.
 - On FreeBSD, this approach does not work on FreeBSD 12 on QEMU (confirmed on
   FreeBSD 12.{2,3,4}), and we got SIGILL (worked on FreeBSD 13 and 14).
 */
@@ -51,7 +51,8 @@ struct AA64Reg {
 }
 
 #[cold]
-fn _detect(info: &mut CpuInfo) {
+#[must_use]
+fn _detect(mut info: CpuInfo) -> CpuInfo {
     let AA64Reg {
         aa64isar0,
         aa64isar1,
@@ -92,6 +93,15 @@ fn _detect(info: &mut CpuInfo) {
             info.set(CpuInfoFlag::rcpc2);
         }
     }
+    // LS64, bits [63:60]
+    // > FEAT_LS64 implements the functionality identified by 0b0001.
+    // > FEAT_LS64_V implements the functionality identified by 0b0010.
+    // > FEAT_LS64_ACCDATA implements the functionality identified by 0b0011.
+    // > FEAT_LS64WB implements the functionality identified by 0b0100.
+    #[cfg(test)]
+    if extract(aa64isar1, 63, 60) >= 0b0100 {
+        info.set(CpuInfoFlag::ls64wb);
+    }
     // ID_AA64ISAR3_EL1, AArch64 Instruction Set Attribute Register 3
     // https://developer.arm.com/documentation/ddi0601/2025-06/AArch64-Registers/ID-AA64ISAR3-EL1--AArch64-Instruction-Set-Attribute-Register-3
     // LSFE, bits [19:16]
@@ -108,6 +118,7 @@ fn _detect(info: &mut CpuInfo) {
     if extract(aa64mmfr2, 35, 32) >= 0b0001 {
         info.set(CpuInfoFlag::lse2);
     }
+    info
 }
 
 fn extract(x: u64, high: usize, low: usize) -> u64 {
@@ -189,7 +200,7 @@ mod imp {
 
         sys_struct!({
             // Defined in machine/armreg.h.
-            // https://github.com/NetBSD/src/blob/432a1357026b10c184d8a0ddb683008a23cc7cd9/sys/arch/aarch64/include/armreg.h#L1863
+            // https://github.com/NetBSD/src/blob/121914f187d0f46c2ce43f00531d2c500d8e81e5/sys/arch/aarch64/include/armreg.h#L1863
             pub(crate) struct aarch64_sysctl_cpu_id {
                 // NetBSD 9.0+
                 // https://github.com/NetBSD/src/commit/0e9d25528729f7fea53e78275d1bc5039dfe8ffb
@@ -221,7 +232,7 @@ mod imp {
             extern "C" {
                 // Defined in sys/sysctl.h.
                 // https://man.netbsd.org/sysctl.3
-                // https://github.com/NetBSD/src/blob/432a1357026b10c184d8a0ddb683008a23cc7cd9/sys/sys/sysctl.h
+                // https://github.com/NetBSD/src/blob/121914f187d0f46c2ce43f00531d2c500d8e81e5/sys/sys/sysctl.h
                 pub(crate) fn sysctlbyname(
                     name: *const c_char,
                     old_p: *mut c_void,
@@ -301,11 +312,11 @@ mod imp {
 
         sys_const!({
             // Defined in sys/sysctl.h.
-            // https://github.com/openbsd/src/blob/ed8f5e8d82ace15e4cefca2c82941b15cb1a7830/sys/sys/sysctl.h#L82
+            // https://github.com/openbsd/src/blob/d2e81eb18e50973c87ae2c9c2ba348ff3ff89cf9/sys/sys/sysctl.h
             pub(crate) const CTL_MACHDEP: c_int = 7;
 
             // Defined in machine/cpu.h.
-            // https://github.com/openbsd/src/blob/ed8f5e8d82ace15e4cefca2c82941b15cb1a7830/sys/arch/arm64/include/cpu.h#L25-L40
+            // https://github.com/openbsd/src/blob/d2e81eb18e50973c87ae2c9c2ba348ff3ff89cf9/sys/arch/arm64/include/cpu.h
             // OpenBSD 7.1+
             // https://github.com/openbsd/src/commit/d335af936b9d7dd9cf655cae1ce19560c45de6c8
             pub(crate) const CPU_ID_AA64ISAR0: c_int = 2;
@@ -321,7 +332,7 @@ mod imp {
             extern "C" {
                 // Defined in sys/sysctl.h.
                 // https://man.openbsd.org/sysctl.2
-                // https://github.com/openbsd/src/blob/ed8f5e8d82ace15e4cefca2c82941b15cb1a7830/sys/sys/sysctl.h
+                // https://github.com/openbsd/src/blob/d2e81eb18e50973c87ae2c9c2ba348ff3ff89cf9/sys/sys/sysctl.h
                 pub(crate) fn sysctl(
                     name: *const c_int,
                     name_len: c_uint,
@@ -356,7 +367,7 @@ mod imp {
         #[allow(clippy::cast_possible_truncation)]
         let mib_len = mib.len() as ffi::c_uint;
         // SAFETY:
-        // - `mib.len()` does not exceed the size of `mib`.
+        // - `mib_len` does not exceed the size of `mib`.
         // - `out_len` does not exceed the size of `out`.
         // - `sysctl` is thread-safe.
         let res = unsafe {
@@ -369,6 +380,7 @@ mod imp {
                 0,
             )
         };
+        // OpenBSD sysctl returns -1 on failure.
         if res == -1 {
             return None;
         }
@@ -423,6 +435,12 @@ mod tests {
         } else {
             assert_eq!(lrcpc, 0b0000);
         }
+        let ls64 = extract(aa64isar1, 63, 60);
+        if detect().ls64wb() {
+            assert_eq!(ls64, 0b0100);
+        } else {
+            assert!(ls64 < 0b0100, "{}", ls64);
+        }
         let lsfe = extract(aa64isar3, 19, 16);
         if detect().lsfe() {
             assert_eq!(lsfe, 0b0001);
@@ -437,140 +455,6 @@ mod tests {
         }
     }
 
-    #[allow(clippy::cast_possible_wrap)]
-    #[cfg(target_os = "netbsd")]
-    #[test]
-    fn test_alternative() {
-        use crate::utils::ffi::*;
-        use imp::ffi;
-        #[cfg(not(portable_atomic_no_asm))]
-        use std::arch::asm;
-        use std::{mem, ptr, vec, vec::Vec};
-        use test_helper::sys;
-
-        // Call syscall using asm instead of libc.
-        // Note that NetBSD does not guarantee the stability of raw syscall as
-        // much as Linux does (It may actually be stable enough, though: https://lists.llvm.org/pipermail/llvm-dev/2019-June/133393.html).
-        //
-        // This is currently used only for testing.
-        fn sysctl_cpu_id_no_libc(name: &[&[u8]]) -> Result<AA64Reg, c_int> {
-            // https://github.com/golang/go/blob/go1.25.0/src/syscall/asm_netbsd_arm64.s
-            #[inline]
-            unsafe fn sysctl(
-                name: *const c_int,
-                name_len: c_uint,
-                old_p: *mut c_void,
-                old_len_p: *mut c_size_t,
-                new_p: *const c_void,
-                new_len: c_size_t,
-            ) -> Result<c_int, c_int> {
-                // SAFETY: the caller must uphold the safety contract.
-                unsafe {
-                    let mut n = sys::SYS___sysctl as u64;
-                    let r: i64;
-                    asm!(
-                        "svc 0",
-                        "b.cc 2f",
-                        "mov x17, x0",
-                        "mov x0, #-1",
-                        "2:",
-                        inout("x17") n,
-                        inout("x0") ptr_reg!(name) => r,
-                        inout("x1") name_len as u64 => _,
-                        in("x2") ptr_reg!(old_p),
-                        in("x3") ptr_reg!(old_len_p),
-                        in("x4") ptr_reg!(new_p),
-                        in("x5") new_len as u64,
-                        // Do not use `preserves_flags` because AArch64 NetBSD syscall modifies the condition flags.
-                        options(nostack),
-                    );
-                    #[allow(clippy::cast_possible_truncation)]
-                    if r as c_int == -1 { Err(n as c_int) } else { Ok(r as c_int) }
-                }
-            }
-
-            // https://github.com/golang/sys/blob/v0.35.0/cpu/cpu_netbsd_arm64.go
-            fn sysctl_nodes(mib: &mut Vec<i32>) -> Result<Vec<sys::sysctlnode>, i32> {
-                mib.push(sys::CTL_QUERY);
-                let mut q_node = sys::sysctlnode {
-                    sysctl_flags: sys::SYSCTL_VERS_1,
-                    ..unsafe { mem::zeroed() }
-                };
-                let qp = (&mut q_node as *mut sys::sysctlnode).cast::<ffi::c_void>();
-                let sz = mem::size_of::<sys::sysctlnode>();
-                let mut olen = 0;
-                #[allow(clippy::cast_possible_truncation)]
-                let mib_len = mib.len() as c_uint;
-                unsafe {
-                    sysctl(mib.as_ptr(), mib_len, ptr::null_mut(), &mut olen, qp, sz)?;
-                }
-
-                let mut nodes = Vec::<sys::sysctlnode>::with_capacity(olen / sz);
-                let np = nodes.as_mut_ptr().cast::<ffi::c_void>();
-                unsafe {
-                    sysctl(mib.as_ptr(), mib_len, np, &mut olen, qp, sz)?;
-                    nodes.set_len(olen / sz);
-                }
-
-                mib.pop(); // pop CTL_QUERY
-                Ok(nodes)
-            }
-            fn name_to_mib(parts: &[&[u8]]) -> Result<Vec<i32>, i32> {
-                let mut mib = vec![];
-                for (part_no, &part) in parts.iter().enumerate() {
-                    let nodes = sysctl_nodes(&mut mib)?;
-                    for node in nodes {
-                        let mut n = vec![];
-                        for b in node.sysctl_name {
-                            if b != 0 {
-                                n.push(b);
-                            }
-                        }
-                        if n == part {
-                            mib.push(node.sysctl_num);
-                            break;
-                        }
-                    }
-                    if mib.len() != part_no + 1 {
-                        return Err(0);
-                    }
-                }
-
-                Ok(mib)
-            }
-
-            const OUT_LEN: ffi::c_size_t =
-                mem::size_of::<ffi::aarch64_sysctl_cpu_id>() as ffi::c_size_t;
-
-            let mib = name_to_mib(name)?;
-
-            let mut buf: ffi::aarch64_sysctl_cpu_id = unsafe { mem::zeroed() };
-            let mut out_len = OUT_LEN;
-            #[allow(clippy::cast_possible_truncation)]
-            let mib_len = mib.len() as c_uint;
-            unsafe {
-                sysctl(
-                    mib.as_ptr(),
-                    mib_len,
-                    (&mut buf as *mut ffi::aarch64_sysctl_cpu_id).cast::<ffi::c_void>(),
-                    &mut out_len,
-                    ptr::null_mut(),
-                    0,
-                )?;
-            }
-            Ok(AA64Reg {
-                aa64isar0: buf.ac_aa64isar0,
-                aa64isar1: buf.ac_aa64isar1,
-                aa64isar3: 0,
-                aa64mmfr2: buf.ac_aa64mmfr2,
-            })
-        }
-
-        assert_eq!(
-            imp::sysctl_cpu_id(c!("machdep.cpu0.cpu_id")).unwrap(),
-            sysctl_cpu_id_no_libc(&[b"machdep", b"cpu0", b"cpu_id"]).unwrap()
-        );
-    }
     #[cfg(target_os = "openbsd")]
     #[test]
     fn test_alternative() {

@@ -12,12 +12,10 @@
 use super::{Error, SampleBorrow, SampleUniform, UniformSampler};
 use crate::distr::float::IntoFloat;
 use crate::distr::utils::{BoolAsSIMD, FloatAsSIMD, FloatSIMDUtils, IntAsSIMD};
-use crate::Rng;
+use crate::{Rng, RngExt};
 
 #[cfg(feature = "simd_support")]
 use core::simd::prelude::*;
-// #[cfg(feature = "simd_support")]
-// use core::simd::{LaneCount, SupportedLaneCount};
 
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
@@ -59,6 +57,9 @@ macro_rules! uniform_float_impl {
             /// Construct, reducing `scale` as required to ensure that rounding
             /// can never yield values greater than `high`.
             ///
+            /// Requirements: `low` and `high` must be finite with `low <= high`.
+            /// `scale` must be non-negative, may be positive infinity but must not be NaN.
+            ///
             /// Note: though it may be tempting to use a variant of this method
             /// to ensure that samples from `[low, high)` are always strictly
             /// less than `high`, this approach may be very slow where
@@ -68,11 +69,11 @@ macro_rules! uniform_float_impl {
                 let max_rand = <$ty>::splat(1.0 as $f_scalar - $f_scalar::EPSILON);
 
                 loop {
-                    let mask = (scale * max_rand + low).gt_mask(high);
-                    if !mask.any() {
+                    let mask = (scale * max_rand + low).le_mask(high);
+                    if mask.all() {
                         break;
                     }
-                    scale = scale.decrease_masked(mask);
+                    scale = scale.decrease_masked(!mask);
                 }
 
                 debug_assert!(<$ty>::splat(0.0).all_le(scale));
@@ -128,11 +129,13 @@ macro_rules! uniform_float_impl {
                     return Err(Error::EmptyRange);
                 }
 
-                let max_rand = <$ty>::splat(1.0 as $f_scalar - $f_scalar::EPSILON);
-                let scale = (high - low) / max_rand;
-                if !scale.all_finite() {
+                let range = high - low;
+                if !range.all_finite() {
                     return Err(Error::NonFinite);
                 }
+
+                let max_rand = <$ty>::splat(1.0 as $f_scalar - $f_scalar::EPSILON);
+                let scale = range / max_rand;
 
                 Ok(Self::new_bounded(low, high, scale))
             }
@@ -218,7 +221,7 @@ uniform_float_impl! { feature = "simd_support", f64x8, u64x8, f64, u64, 64 - 52 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::distr::{utils::FloatSIMDScalarUtils, Uniform};
+    use crate::distr::{Uniform, utils::FloatSIMDScalarUtils};
     use crate::test::{const_rng, step_rng};
 
     #[test]
@@ -240,6 +243,8 @@ mod tests {
                     (-<$f_scalar>::from_bits(7), -0.0),
                     (0.1 * $f_scalar::MAX, $f_scalar::MAX),
                     (-$f_scalar::MAX * 0.2, $f_scalar::MAX * 0.7),
+                    (0.0, $f_scalar::MAX),
+                    (-$f_scalar::MAX, 0.0),
                 ];
                 for &(low_scalar, high_scalar) in v.iter() {
                     for lane in 0..<$ty>::LEN {
@@ -362,6 +367,10 @@ mod tests {
     #[test]
     fn test_float_overflow() {
         assert_eq!(Uniform::try_from(f64::MIN..f64::MAX), Err(Error::NonFinite));
+        assert_eq!(
+            Uniform::try_from(f64::MIN..=f64::MAX),
+            Err(Error::NonFinite)
+        );
     }
 
     #[test]

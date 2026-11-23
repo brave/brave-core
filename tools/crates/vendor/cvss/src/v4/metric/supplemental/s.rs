@@ -1,7 +1,7 @@
 //! Safety (S)
 
 use crate::{
-    Error, Result,
+    Error,
     v4::metric::{Metric, MetricType},
 };
 use alloc::borrow::ToOwned;
@@ -19,11 +19,12 @@ use core::{fmt, str::FromStr};
 /// > may have Safety impact which can be represented in the Supplemental
 /// > Metrics group. Lack of a Safety metric value being supplied does NOT mean
 /// > that there may not be any Safety-related impacts.
-#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+#[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
 pub enum Safety {
     /// Not Defined (X)
     ///
     /// > The metric has not been evaluated.
+    #[default]
     NotDefined,
 
     /// Present (P)
@@ -39,20 +40,14 @@ pub enum Safety {
     Negligible,
 }
 
-impl Default for Safety {
-    fn default() -> Self {
-        Self::NotDefined
-    }
-}
-
 impl Metric for Safety {
     const TYPE: MetricType = MetricType::S;
 
     fn as_str(self) -> &'static str {
         match self {
-            Safety::NotDefined => "X",
-            Safety::Present => "P",
-            Safety::Negligible => "N",
+            Self::NotDefined => "X",
+            Self::Present => "P",
+            Self::Negligible => "N",
         }
     }
 }
@@ -66,11 +61,11 @@ impl fmt::Display for Safety {
 impl FromStr for Safety {
     type Err = Error;
 
-    fn from_str(s: &str) -> Result<Self> {
+    fn from_str(s: &str) -> Result<Self, Error> {
         match s {
-            "X" => Ok(Safety::NotDefined),
-            "P" => Ok(Safety::Present),
-            "N" => Ok(Safety::Negligible),
+            "X" => Ok(Self::NotDefined),
+            "P" => Ok(Self::Present),
+            "N" => Ok(Self::Negligible),
             _ => Err(Error::InvalidMetricV4 {
                 metric_type: Self::TYPE,
                 value: s.to_owned(),

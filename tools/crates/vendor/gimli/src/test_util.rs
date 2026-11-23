@@ -1,12 +1,13 @@
 #![allow(missing_docs)]
 
 use crate::Format;
-use test_assembler::{Label, Section};
+use test_assembler::{Label, LabelMaker, Section};
 
 pub trait GimliSectionMethods {
     fn sleb(self, val: i64) -> Self;
     fn uleb(self, val: u64) -> Self;
     fn initial_length(self, format: Format, length: &Label, start: &Label) -> Self;
+    fn set_initial_length(self, length: &Label, start: &Label) -> Self;
     fn word(self, size: u8, val: u64) -> Self;
     fn word_label(self, size: u8, val: &Label) -> Self;
 }
@@ -33,6 +34,13 @@ impl GimliSectionMethods for Section {
             Format::Dwarf32 => self.D32(length).mark(start),
             Format::Dwarf64 => self.D32(0xffff_ffff).D64(length).mark(start),
         }
+    }
+
+    fn set_initial_length(self, length: &Label, start: &Label) -> Self {
+        let end = Label::new();
+        let result = self.mark(&end);
+        length.set_const((&end - start) as u64);
+        result
     }
 
     fn word(self, size: u8, val: u64) -> Self {

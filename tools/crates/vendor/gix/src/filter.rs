@@ -1,88 +1,17 @@
 //! lower-level access to filters which are applied to create working tree checkouts or to 'clean' working tree contents for storage in git.
-use std::borrow::Cow;
-
+use crate::error::{ErrorExt, ResultExt, bail, message};
 pub use gix_filter as plumbing;
 use gix_object::Find;
 
 use crate::{
+    Error, Repository, Result,
     bstr::BStr,
     config::{
         cache::util::{ApplyLeniency, ApplyLeniencyDefaultValue},
         tree::Core,
     },
     prelude::ObjectIdExt,
-    Repository,
 };
-
-///
-pub mod pipeline {
-    ///
-    pub mod options {
-        use crate::{bstr::BString, config};
-
-        /// The error returned by [Pipeline::options()](crate::filter::Pipeline::options()).
-        #[derive(Debug, thiserror::Error)]
-        #[allow(missing_docs)]
-        pub enum Error {
-            #[error(transparent)]
-            CheckRoundTripEncodings(#[from] config::encoding::Error),
-            #[error(transparent)]
-            SafeCrlf(#[from] config::key::GenericErrorWithValue),
-            #[error("Could not interpret 'filter.{name}.required' configuration")]
-            Driver {
-                name: BString,
-                source: gix_config::value::Error,
-            },
-            #[error(transparent)]
-            CommandContext(#[from] config::command_context::Error),
-        }
-    }
-
-    ///
-    pub mod convert_to_git {
-        /// The error returned by [Pipeline::convert_to_git()](crate::filter::Pipeline::convert_to_git()).
-        #[derive(Debug, thiserror::Error)]
-        #[allow(missing_docs)]
-        pub enum Error {
-            #[error("Failed to prime attributes to the path at which the data resides")]
-            WorktreeCacheAtPath(#[from] std::io::Error),
-            #[error(transparent)]
-            Convert(#[from] gix_filter::pipeline::convert::to_git::Error),
-        }
-    }
-
-    ///
-    pub mod convert_to_worktree {
-        /// The error returned by [Pipeline::convert_to_worktree()](crate::filter::Pipeline::convert_to_worktree()).
-        #[derive(Debug, thiserror::Error)]
-        #[allow(missing_docs)]
-        pub enum Error {
-            #[error("Failed to prime attributes to the path at which the data resides")]
-            WorktreeCacheAtPath(#[from] std::io::Error),
-            #[error(transparent)]
-            Convert(#[from] gix_filter::pipeline::convert::to_worktree::Error),
-        }
-    }
-
-    ///
-    pub mod worktree_file_to_object {
-        use std::path::PathBuf;
-
-        /// The error returned by [Pipeline::worktree_file_to_object()](crate::filter::Pipeline::worktree_file_to_object()).
-        #[derive(Debug, thiserror::Error)]
-        #[allow(missing_docs)]
-        pub enum Error {
-            #[error("Cannot add worktree files in bare repositories")]
-            MissingWorktree,
-            #[error("Failed to perform IO for object creation for '{}'", path.display())]
-            IO { source: std::io::Error, path: PathBuf },
-            #[error(transparent)]
-            WriteBlob(#[from] crate::object::write::Error),
-            #[error(transparent)]
-            ConvertToGit(#[from] crate::filter::pipeline::convert_to_git::Error),
-        }
-    }
-}
 
 /// A git pipeline for transforming data *to-git* and *to-worktree*, based
 /// [on git configuration and attributes](https://git-scm.com/docs/gitattributes).
@@ -97,7 +26,7 @@ pub struct Pipeline<'repo> {
 /// Lifecycle
 impl<'repo> Pipeline<'repo> {
     /// Extract options from `repo` that are needed to properly drive a standard git filter pipeline.
-    pub fn options(repo: &'repo Repository) -> Result<gix_filter::pipeline::Options, pipeline::options::Error> {
+    pub fn options(repo: &'repo Repository) -> Result<gix_filter::pipeline::Options> {
         let config = &repo.config.resolved;
         let encodings =
             Core::CHECK_ROUND_TRIP_ENCODING.try_into_encodings(config.string("core.checkRoundtripEncoding"))?;
@@ -127,14 +56,13 @@ impl<'repo> Pipeline<'repo> {
             eol_config: gix_filter::eol::Configuration { auto_crlf, eol },
             encodings_with_roundtrip_check: encodings,
             crlf_roundtrip_check: safe_crlf,
-            object_hash: repo.object_hash(),
         })
     }
 
     /// Create a new instance by extracting all necessary information and configuration from a `repo` along with `cache` for accessing
     /// attributes. The `index` is used for some filters which may access it under very specific circumstances.
-    pub fn new(repo: &'repo Repository, cache: gix_worktree::Stack) -> Result<Self, pipeline::options::Error> {
-        let pipeline = gix_filter::Pipeline::new(repo.command_context()?, Self::options(repo)?);
+    pub fn new(repo: &'repo Repository, cache: gix_worktree::Stack) -> Result<Self> {
+        let pipeline = gix_filter::Pipeline::new(repo.command_context()?, repo.object_hash(), Self::options(repo)?);
         Ok(Pipeline {
             inner: pipeline,
             cache,
@@ -160,20 +88,23 @@ impl Pipeline<'_> {
         src: R,
         rela_path: &std::path::Path,
         index: &gix_index::State,
-    ) -> Result<gix_filter::pipeline::convert::ToGitOutcome<'_, R>, pipeline::convert_to_git::Error>
+    ) -> Result<gix_filter::pipeline::convert::ToGitOutcome<'_, R>>
     where
         R: std::io::Read,
     {
-        let entry = self.cache.at_path(rela_path, None, &self.repo.objects)?;
-        Ok(self.inner.convert_to_git(
+        let entry = self
+            .cache
+            .at_path(rela_path, None, &self.repo.objects)
+            .or_raise(|| message("Failed to prime attributes to the path at which the data resides"))?;
+        self.inner.convert_to_git(
             src,
             rela_path,
             &mut |_, attrs| {
                 entry.matching_attributes(attrs);
             },
-            &mut |buf| -> Result<_, gix_object::find::Error> {
+            &mut |buf| -> Result<_> {
                 let entry = match index
-                    .entry_by_path(gix_path::to_unix_separators_on_windows(gix_path::into_bstr(rela_path)).as_ref())
+                    .entry_by_path(gix_path::to_unix_separators_on_windows(gix_path::into_bstr(rela_path)?).as_ref())
                 {
                     None => return Ok(None),
                     Some(entry) => entry,
@@ -181,32 +112,32 @@ impl Pipeline<'_> {
                 let obj = self.repo.objects.try_find(&entry.id, buf)?;
                 Ok(obj.filter(|obj| obj.kind == gix_object::Kind::Blob).map(|_| ()))
             },
-        )?)
+        )
     }
 
     /// Convert a `src` buffer located at `rela_path` (in the index) from what's in `git` to the worktree representation.
     /// This method will obtain all attributes and configuration necessary to know exactly which filters to apply.
     /// Note that the return-type implements [`std::io::Read`].
     ///
-    /// Use `can_delay` to tell driver processes that they may delay the return of data. Doing this will require the caller to specifically
+    /// Use `options` to control unavailable worktree encodings and whether driver processes may delay the return of data. Allowing delayed
+    /// processing will require the caller to specifically
     /// handle delayed files by keeping state and using [`Self::into_parts()`] to get access to the driver state to follow the delayed-files
     /// protocol. For simplicity, most will want to disallow delayed processing.
     pub fn convert_to_worktree<'input>(
         &mut self,
         src: &'input [u8],
         rela_path: &BStr,
-        can_delay: gix_filter::driver::apply::Delay,
-    ) -> Result<gix_filter::pipeline::convert::ToWorktreeOutcome<'input, '_>, pipeline::convert_to_worktree::Error>
-    {
-        let entry = self.cache.at_entry(rela_path, None, &self.repo.objects)?;
-        Ok(self.inner.convert_to_worktree(
+        options: gix_filter::pipeline::convert::to_worktree::Options,
+    ) -> Result<gix_filter::pipeline::convert::ToWorktreeOutcome<'input, '_>> {
+        let entry = self.cache.at_entry(rela_path, None, &self.repo.objects).or_error()?;
+        self.inner.convert_to_worktree(
             src,
             rela_path,
             &mut |_, attrs| {
                 entry.matching_attributes(attrs);
             },
-            can_delay,
-        )?)
+            options,
+        )
     }
 
     /// Add the worktree file at `rela_path` to the object database and return its `(id, entry, symlink_metadata)` for use in a tree or in the index, for instance.
@@ -222,15 +153,12 @@ impl Pipeline<'_> {
         &mut self,
         rela_path: &BStr,
         index: &gix_index::State,
-    ) -> Result<
-        Option<(gix_hash::ObjectId, gix_object::tree::EntryKind, std::fs::Metadata)>,
-        pipeline::worktree_file_to_object::Error,
-    > {
-        use pipeline::worktree_file_to_object::Error;
-
-        let rela_path_as_path = gix_path::from_bstr(rela_path);
+    ) -> Result<Option<(gix_hash::ObjectId, gix_object::tree::EntryKind, std::fs::Metadata)>> {
+        let rela_path_as_path = gix_path::from_bstr(rela_path)?;
         let repo = self.repo;
-        let worktree_dir = repo.workdir().ok_or(Error::MissingWorktree)?;
+        let worktree_dir = repo
+            .workdir()
+            .ok_or_else(|| Error::from_error(message("Cannot add worktree files in bare repositories")))?;
         let path = worktree_dir.join(&rela_path_as_path);
         let md = match std::fs::symlink_metadata(&path) {
             Ok(md) => md,
@@ -238,18 +166,23 @@ impl Pipeline<'_> {
                 if gix_fs::io_err::is_not_found(err.kind(), err.raw_os_error()) {
                     return Ok(None);
                 } else {
-                    return Err(Error::IO { source: err, path });
+                    bail!(err.and_raise(message!(
+                        "Failed to perform IO for object creation for \"{}\"",
+                        path.display()
+                    )));
                 }
             }
         };
         let (id, kind) = if md.is_symlink() {
-            let target = std::fs::read_link(&path).map_err(|source| Error::IO { source, path })?;
-            let id = repo.write_blob(gix_path::into_bstr(target).as_ref())?;
+            let target = std::fs::read_link(&path)
+                .or_raise(|| message!("Failed to perform IO for object creation for \"{}\"", path.display()))?;
+            let id = repo.write_blob(gix_path::into_bstr(target)?.as_ref())?;
             (id, gix_object::tree::EntryKind::Link)
         } else if md.is_file() {
             use gix_filter::pipeline::convert::ToGitOutcome;
 
-            let file = std::fs::File::open(&path).map_err(|source| Error::IO { source, path })?;
+            let file = std::fs::File::open(&path)
+                .or_raise(|| message!("Failed to perform IO for object creation for \"{}\"", path.display()))?;
             let file_for_git = self.convert_to_git(file, rela_path_as_path.as_ref(), index)?;
             let id = match file_for_git {
                 ToGitOutcome::Unchanged(mut file) => repo.write_blob_stream(&mut file)?,
@@ -289,32 +222,46 @@ impl Pipeline<'_> {
 }
 
 /// Obtain a list of all configured driver, but ignore those in sections that we don't trust enough.
-fn extract_drivers(repo: &Repository) -> Result<Vec<gix_filter::Driver>, pipeline::options::Error> {
-    repo.config
+fn extract_drivers(repo: &Repository) -> Result<Vec<gix_filter::Driver>> {
+    let mut drivers = Vec::<gix_filter::Driver>::new();
+    for section in repo
+        .config
         .resolved
         .sections_by_name("filter")
         .into_iter()
         .flatten()
-        .filter(|s| repo.filter_config_section()(s.meta()))
-        .filter_map(|s| {
-            s.header().subsection_name().map(|name| {
-                Ok(gix_filter::Driver {
+        .filter(|section| repo.filter_config_section()(section.meta()))
+    {
+        let Some(name) = section.header().subsection_name() else {
+            continue;
+        };
+        let driver = match drivers.iter_mut().find(|driver| driver.name == name) {
+            Some(driver) => driver,
+            None => {
+                drivers.push(gix_filter::Driver {
                     name: name.to_owned(),
-                    clean: s.value("clean").map(Cow::into_owned),
-                    smudge: s.value("smudge").map(Cow::into_owned),
-                    process: s.value("process").map(Cow::into_owned),
-                    required: s
-                        .value("required")
-                        .map(|value| gix_config::Boolean::try_from(value.as_ref()))
-                        .transpose()
-                        .map_err(|err| pipeline::options::Error::Driver {
-                            name: name.to_owned(),
-                            source: err,
-                        })?
-                        .unwrap_or_default()
-                        .into(),
-                })
-            })
-        })
-        .collect::<Result<Vec<_>, pipeline::options::Error>>()
+                    clean: None,
+                    smudge: None,
+                    process: None,
+                    required: false,
+                });
+                drivers.last_mut().expect("the driver was just added")
+            }
+        };
+        if let Some(value) = section.value("clean") {
+            driver.clean = Some(value);
+        }
+        if let Some(value) = section.value("smudge") {
+            driver.smudge = Some(value);
+        }
+        if let Some(value) = section.value("process") {
+            driver.process = Some(value);
+        }
+        if let Some(value) = section.value("required") {
+            driver.required = gix_config::Boolean::try_from(BStr::new(&value))
+                .or_raise(|| message!("Could not interpret 'filter.{name}.required' configuration"))?
+                .into();
+        }
+    }
+    Ok(drivers)
 }

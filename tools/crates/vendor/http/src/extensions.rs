@@ -33,8 +33,8 @@ impl Hasher for IdHasher {
 /// extra data derived from the underlying protocol.
 #[derive(Clone, Default)]
 pub struct Extensions {
-    // If extensions are never used, no need to carry around an empty HashMap.
-    // That's 3 words. Instead, this is only 1 word.
+    // Extensions might never be used and carrying an empty HashMap around is
+    // inefficient (because it's 3 words). This is only 1 word instead.
     map: Option<Box<AnyMap>>,
 }
 

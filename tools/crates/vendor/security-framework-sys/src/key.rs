@@ -2,34 +2,24 @@ use core_foundation_sys::base::CFTypeID;
 use core_foundation_sys::data::CFDataRef;
 use core_foundation_sys::dictionary::CFDictionaryRef;
 use core_foundation_sys::error::CFErrorRef;
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 use core_foundation_sys::string::CFStringRef;
 
 use crate::base::SecKeyRef;
 
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 pub type SecKeyAlgorithm = CFStringRef;
 
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 pub type SecKeyOperationType = u32;
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 pub const kSecKeyOperationTypeSign: SecKeyOperationType = 0;
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 pub const kSecKeyOperationTypeVerify: SecKeyOperationType = 1;
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 pub const kSecKeyOperationTypeEncrypt: SecKeyOperationType = 2;
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 pub const kSecKeyOperationTypeDecrypt: SecKeyOperationType = 3;
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 pub const kSecKeyOperationTypeKeyExchange: SecKeyOperationType = 4;
 
 extern "C" {
     pub fn SecKeyGetTypeID() -> CFTypeID;
 
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     pub fn SecKeyCreateRandomKey(parameters: CFDictionaryRef, error: *mut CFErrorRef) -> SecKeyRef;
 
-    #[cfg(any(feature = "OSX_10_13", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     pub fn SecKeyCreateWithData(
         keyData: CFDataRef,
         attributes: CFDictionaryRef,
@@ -37,20 +27,21 @@ extern "C" {
     ) -> SecKeyRef;
 
     #[cfg(target_os = "macos")]
+    #[deprecated(note = "Deprecated by Apple. There's no replacement for symmetric keys")]
     pub fn SecKeyCreateFromData(
         parameters: CFDictionaryRef,
         keyData: CFDataRef,
         error: *mut CFErrorRef,
     ) -> SecKeyRef;
 
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
+
     pub fn SecKeyCopyExternalRepresentation(key: SecKeyRef, error: *mut CFErrorRef) -> CFDataRef;
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
+
     pub fn SecKeyCopyAttributes(key: SecKeyRef) -> CFDictionaryRef;
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
+
     pub fn SecKeyCopyPublicKey(key: SecKeyRef) -> SecKeyRef;
 
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
+
     pub fn SecKeyCreateSignature(
         key: SecKeyRef,
         algorithm: SecKeyAlgorithm,
@@ -58,7 +49,7 @@ extern "C" {
         error: *mut CFErrorRef,
     ) -> CFDataRef;
 
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
+
     pub fn SecKeyVerifySignature(
         key: SecKeyRef,
         algorithm: SecKeyAlgorithm,
@@ -67,7 +58,7 @@ extern "C" {
         error: *mut CFErrorRef,
     ) -> core_foundation_sys::base::Boolean;
 
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
+
     pub fn SecKeyCreateEncryptedData(
         key: SecKeyRef,
         algorithm: SecKeyAlgorithm,
@@ -75,7 +66,7 @@ extern "C" {
         error: *mut CFErrorRef,
     ) -> CFDataRef;
 
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
+
     pub fn SecKeyCreateDecryptedData(
         key: SecKeyRef,
         algorithm: SecKeyAlgorithm,
@@ -83,14 +74,14 @@ extern "C" {
         error: *mut CFErrorRef,
     ) -> CFDataRef;
 
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
+
     pub fn SecKeyIsAlgorithmSupported(
         key: SecKeyRef,
         operation: SecKeyOperationType,
         algorithm: SecKeyAlgorithm,
     ) -> core_foundation_sys::base::Boolean;
 
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
+
     pub fn SecKeyCopyKeyExchangeResult(
         privateKey: SecKeyRef,
         algorithm: SecKeyAlgorithm,
@@ -100,7 +91,6 @@ extern "C" {
     ) -> CFDataRef;
 }
 
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 macro_rules! names {
     ($( $(# $meta:literal )* $i:ident => $x:ident),*) => {
         extern "C" {
@@ -123,7 +113,6 @@ macro_rules! names {
     }
 }
 
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 names! {
     ECIESEncryptionStandardX963SHA1AESGCM => kSecKeyAlgorithmECIESEncryptionStandardX963SHA1AESGCM,
     ECIESEncryptionStandardX963SHA224AESGCM => kSecKeyAlgorithmECIESEncryptionStandardX963SHA224AESGCM,
@@ -141,11 +130,11 @@ names! {
     ECIESEncryptionCofactorVariableIVX963SHA384AESGCM => kSecKeyAlgorithmECIESEncryptionCofactorVariableIVX963SHA384AESGCM,
     ECIESEncryptionCofactorVariableIVX963SHA512AESGCM => kSecKeyAlgorithmECIESEncryptionCofactorVariableIVX963SHA512AESGCM,
 
-    #"OSX_10_13" ECIESEncryptionCofactorX963SHA1AESGCM => kSecKeyAlgorithmECIESEncryptionCofactorX963SHA1AESGCM,
-    #"OSX_10_13" ECIESEncryptionCofactorX963SHA224AESGCM => kSecKeyAlgorithmECIESEncryptionCofactorX963SHA224AESGCM,
-    #"OSX_10_13" ECIESEncryptionCofactorX963SHA256AESGCM => kSecKeyAlgorithmECIESEncryptionCofactorX963SHA256AESGCM,
-    #"OSX_10_13" ECIESEncryptionCofactorX963SHA384AESGCM => kSecKeyAlgorithmECIESEncryptionCofactorX963SHA384AESGCM,
-    #"OSX_10_13" ECIESEncryptionCofactorX963SHA512AESGCM => kSecKeyAlgorithmECIESEncryptionCofactorX963SHA512AESGCM,
+    ECIESEncryptionCofactorX963SHA1AESGCM => kSecKeyAlgorithmECIESEncryptionCofactorX963SHA1AESGCM,
+    ECIESEncryptionCofactorX963SHA224AESGCM => kSecKeyAlgorithmECIESEncryptionCofactorX963SHA224AESGCM,
+    ECIESEncryptionCofactorX963SHA256AESGCM => kSecKeyAlgorithmECIESEncryptionCofactorX963SHA256AESGCM,
+    ECIESEncryptionCofactorX963SHA384AESGCM => kSecKeyAlgorithmECIESEncryptionCofactorX963SHA384AESGCM,
+    ECIESEncryptionCofactorX963SHA512AESGCM => kSecKeyAlgorithmECIESEncryptionCofactorX963SHA512AESGCM,
 
     ECDSASignatureRFC4754 => kSecKeyAlgorithmECDSASignatureRFC4754,
 

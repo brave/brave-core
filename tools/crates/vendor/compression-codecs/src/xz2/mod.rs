@@ -24,13 +24,14 @@ fn process_stream(
     let previous_out = stream.total_out() as usize;
 
     // Safety: We **trust** liblzma to not write uninitialized bytes into the buffer
-    let res = stream.process_uninit(input.unwritten(), unsafe { output.unwritten_mut() }, action);
+    let status =
+        stream.process_uninit(input.unwritten(), unsafe { output.unwritten_mut() }, action)?;
 
     input.advance(stream.total_in() as usize - previous_in);
     // Safety: We **trust** liblzma to write bytes into the buffer properly
     unsafe { output.assume_init_and_advance(stream.total_out() as usize - previous_out) };
 
-    match res? {
+    match status {
         Status::Ok => Ok(false),
         Status::StreamEnd => Ok(true),
         Status::GetCheck => Err(io::Error::other("Unexpected lzma integrity check")),

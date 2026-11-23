@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: BSD-2-Clause OR Apache-2.0 OR MIT
+//
 // Copyright 2024 The Fuchsia Authors
 //
 // Licensed under the 2-Clause BSD License <LICENSE-BSD or
@@ -88,10 +90,19 @@ fn main() {
         // once they're no longer needed.
         println!("cargo:rustc-check-cfg=cfg(doc_cfg)");
         println!("cargo:rustc-check-cfg=cfg(kani)");
+        println!("cargo:rustc-check-cfg=cfg(kani_slow)");
         println!(
             "cargo:rustc-check-cfg=cfg(__ZEROCOPY_INTERNAL_USE_ONLY_NIGHTLY_FEATURES_IN_TESTS)"
         );
+        println!(
+            "cargo:rustc-check-cfg=cfg(__ZEROCOPY_INTERNAL_USE_ONLY_TOOLCHAIN, values(\"msrv\", \"stable\", \"nightly\"))"
+        );
+        println!("cargo:rustc-check-cfg=cfg(__ZEROCOPY_INTERNAL_USE_ONLY_DEV_MODE)");
         println!("cargo:rustc-check-cfg=cfg(coverage_nightly)");
+        println!("cargo:rustc-check-cfg=cfg(zerocopy_inline_always)");
+        println!("cargo:rustc-check-cfg=cfg(zerocopy_unstable_ptr)");
+        println!("cargo:rustc-check-cfg=cfg(zerocopy_unstable_linux)");
+        println!("cargo:rustc-check-cfg=cfg(no_fp_fmt_parse)");
     }
 
     for version_cfg in version_cfgs {

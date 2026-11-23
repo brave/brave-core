@@ -234,6 +234,24 @@ macro_rules! io_test_cases {
 
                     #[test]
                     #[ntest::timeout(1000)]
+                    fn corrupt_second_member() {
+                        let first = sync::compress(&[1, 2, 3, 4, 5, 6]);
+                        let mut second = sync::compress(&[0; 2048]);
+                        let corrupt = second.len() - 2;
+                        second[corrupt] ^= 0xff;
+                        let compressed = [first, second].join(&[][..]);
+
+                        let input = InputStream::new(vec![compressed]);
+                        let result = std::panic::catch_unwind(|| {
+                            let mut decoder = bufread::Decoder::new(bufread::from(&input));
+                            decoder.multiple_members(true);
+                            read::to_vec(decoder)
+                        });
+                        assert!(result.is_err());
+                    }
+
+                    #[test]
+                    #[ntest::timeout(1000)]
                     fn truncated() {
                         let compressed = sync::compress(&[1, 2, 3, 4, 5, 6]);
 

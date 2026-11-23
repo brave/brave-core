@@ -69,7 +69,9 @@
 //! in use, the debt is erased.
 //!
 //! The writer pays all the existing debts, therefore the reader have the full Arc with ref count at
-//! that time. The reader is made aware the debt was paid and decrements the reference count.
+//! that time. The writer pays only confirmed debts and unconfirmed debts taken on its own storage,
+//! as an unconfirmed debt may name a reused address. The reader is made aware the debt was paid
+//! and decrements the reference count.
 //!
 //! # Memory orders
 //!

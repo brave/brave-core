@@ -6,9 +6,8 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use rand_core::impls::{fill_bytes_via_next, next_u64_via_u32};
-use rand_core::le::read_u32_into;
-use rand_core::{RngCore, SeedableRng};
+use core::convert::Infallible;
+use rand_core::{SeedableRng, TryRng, utils};
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 
@@ -33,10 +32,9 @@ impl SeedableRng for Xoshiro128PlusPlus {
     /// mapped to a different seed.
     #[inline]
     fn from_seed(seed: [u8; 16]) -> Xoshiro128PlusPlus {
-        let mut state = [0; 4];
-        read_u32_into(&seed, &mut state);
+        let state = utils::read_words(&seed);
         // Check for zero on aligned integers for better code generation.
-        // Furtermore, seed_from_u64(0) will expand to a constant when optimized.
+        // Furthermore, seed_from_u64(0) will expand to a constant when optimized.
         if state.iter().all(|&x| x == 0) {
             return Self::seed_from_u64(0);
         }
@@ -66,9 +64,11 @@ impl SeedableRng for Xoshiro128PlusPlus {
     }
 }
 
-impl RngCore for Xoshiro128PlusPlus {
+impl TryRng for Xoshiro128PlusPlus {
+    type Error = Infallible;
+
     #[inline]
-    fn next_u32(&mut self) -> u32 {
+    fn try_next_u32(&mut self) -> Result<u32, Infallible> {
         let res = self.s[0]
             .wrapping_add(self.s[3])
             .rotate_left(7)
@@ -85,24 +85,24 @@ impl RngCore for Xoshiro128PlusPlus {
 
         self.s[3] = self.s[3].rotate_left(11);
 
-        res
+        Ok(res)
     }
 
     #[inline]
-    fn next_u64(&mut self) -> u64 {
-        next_u64_via_u32(self)
+    fn try_next_u64(&mut self) -> Result<u64, Infallible> {
+        utils::next_u64_via_u32(self)
     }
 
     #[inline]
-    fn fill_bytes(&mut self, dst: &mut [u8]) {
-        fill_bytes_via_next(self, dst)
+    fn try_fill_bytes(&mut self, dst: &mut [u8]) -> Result<(), Infallible> {
+        utils::fill_bytes_via_next_word(dst, || self.try_next_u32())
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::Xoshiro128PlusPlus;
-    use rand_core::{RngCore, SeedableRng};
+    use rand_core::{Rng, SeedableRng};
 
     #[test]
     fn reference() {

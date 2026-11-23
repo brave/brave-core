@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-use crate::{BinaryReader, BinaryReaderError, ConstExpr, FromReader, Result, SectionLimited};
+use crate::{BinaryReader, ConstExpr, Error, FromReader, Result, SectionLimited};
 use core::ops::Range;
 
 /// Represents a data segment in a core WebAssembly module.
@@ -77,16 +77,14 @@ impl<'a> FromReader<'a> for Data<'a> {
                 }
             }
             _ => {
-                return Err(BinaryReaderError::new(
+                return Err(Error::new(
                     "invalid flags byte in data segment",
                     segment_start,
                 ));
             }
         };
 
-        let data = reader.read_reader(
-            "unexpected end of section or function: data segment extends past end of the section",
-        )?;
+        let data = reader.read_reader()?;
         Ok(Data {
             kind,
             data: data.remaining_buffer(),

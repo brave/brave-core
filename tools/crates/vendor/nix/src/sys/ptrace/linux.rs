@@ -504,7 +504,7 @@ fn ptrace_get_data<T>(request: Request, pid: Pid) -> Result<T> {
         libc::ptrace(
             request as RequestType,
             libc::pid_t::from(pid),
-            ptr::null_mut::<T>(),
+            std::mem::size_of::<T>(),
             data.as_mut_ptr(),
         )
     };

@@ -3,11 +3,9 @@ use crate::{Blob, ObjectDetached};
 ///
 #[cfg(feature = "blob-diff")]
 pub mod diff {
-    use std::ops::Range;
-
     use gix_diff::blob::platform::prepare_diff::Operation;
 
-    use crate::bstr::ByteSlice;
+    use crate::{Result, bstr::ByteSlice};
 
     /// A platform to keep temporary information to perform line diffs on modified blobs.
     ///
@@ -17,27 +15,8 @@ pub mod diff {
     }
 
     ///
-    pub mod init {
-        /// The error returned by [`object::tree::diff::Change::diff`](crate::object::tree::diff::Change::diff()).
-        pub type Error = gix_diff::blob::platform::set_resource::Error;
-    }
-
-    ///
     pub mod lines {
         use crate::bstr::BStr;
-
-        /// The error returned by [Platform::lines()](super::Platform::lines()).
-        #[derive(Debug, thiserror::Error)]
-        #[allow(missing_docs)]
-        pub enum Error<E>
-        where
-            E: std::error::Error + Send + Sync + 'static,
-        {
-            #[error(transparent)]
-            ProcessHunk(E),
-            #[error(transparent)]
-            PrepareDiff(#[from] gix_diff::blob::platform::prepare_diff::Error),
-        }
 
         /// A change to a hunk of lines.
         pub enum Change<'a, 'data> {
@@ -66,14 +45,12 @@ pub mod diff {
         /// The diffing algorithm is determined by the `diff.algorithm` configuration, or individual diff drivers.
         /// Note that `process_hunk` is not called if one of the involved resources are binary, but that can be determined
         /// by introspecting the outcome.
-        // TODO: more tests (only tested insertion right now)
-        pub fn lines<FnH, E>(
+        pub fn lines<FnH>(
             &mut self,
             mut process_hunk: FnH,
-        ) -> Result<gix_diff::blob::platform::prepare_diff::Outcome<'_>, lines::Error<E>>
+        ) -> Result<gix_diff::blob::platform::prepare_diff::Outcome<'_>>
         where
-            FnH: FnMut(lines::Change<'_, '_>) -> Result<(), E>,
-            E: std::error::Error + Send + Sync + 'static,
+            FnH: FnMut(lines::Change<'_, '_>) -> Result,
         {
             self.resource_cache.options.skip_internal_diff_if_external_is_configured = false;
 
@@ -81,13 +58,16 @@ pub mod diff {
             match prep.operation {
                 Operation::InternalDiff { algorithm } => {
                     let input = prep.interned_input();
+                    let diff = gix_diff::blob::diff_with_slider_heuristics(algorithm, &input);
                     let mut err = None;
                     let mut lines = Vec::new();
 
-                    gix_diff::blob::diff(algorithm, &input, |before: Range<u32>, after: Range<u32>| {
+                    for hunk in diff.hunks() {
                         if err.is_some() {
-                            return;
+                            break;
                         }
+                        let before = hunk.before;
+                        let after = hunk.after;
                         lines.clear();
                         lines.extend(
                             input.before[before.start as usize..before.end as usize]
@@ -113,10 +93,10 @@ pub mod diff {
                             })
                             .err();
                         }
-                    });
+                    }
 
                     if let Some(err) = err {
-                        return Err(lines::Error::ProcessHunk(err));
+                        return Err(err);
                     }
                 }
                 Operation::ExternalCommand { .. } => {
@@ -129,17 +109,21 @@ pub mod diff {
 
         /// Count the amount of removed and inserted lines efficiently.
         /// Note that nothing will happen if one of the inputs is binary, and `None` will be returned.
-        pub fn line_counts(
-            &mut self,
-        ) -> Result<Option<gix_diff::blob::sink::Counter<()>>, gix_diff::blob::platform::prepare_diff::Error> {
+        pub fn line_counts(&mut self) -> Result<Option<gix_diff::blob::DiffLineStats>> {
             self.resource_cache.options.skip_internal_diff_if_external_is_configured = false;
 
             let prep = self.resource_cache.prepare_diff()?;
             match prep.operation {
                 Operation::InternalDiff { algorithm } => {
-                    let tokens = prep.interned_input();
-                    let counter = gix_diff::blob::diff(algorithm, &tokens, gix_diff::blob::sink::Counter::default());
-                    Ok(Some(counter))
+                    let input = prep.interned_input();
+                    let diff = gix_diff::blob::Diff::compute(algorithm, &input);
+                    Ok(Some(gix_diff::blob::DiffLineStats {
+                        removals: diff.count_removals(),
+                        insertions: diff.count_additions(),
+                        before: input.before.len(),
+                        after: input.after.len(),
+                        similarity: 0.0,
+                    }))
                 }
                 Operation::ExternalCommand { .. } => {
                     unreachable!("we disabled that")

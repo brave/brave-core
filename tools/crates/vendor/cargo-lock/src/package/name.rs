@@ -28,7 +28,7 @@ impl fmt::Display for Name {
 }
 
 impl From<Name> for String {
-    fn from(name: Name) -> String {
+    fn from(name: Name) -> Self {
         name.0
     }
 }
@@ -38,6 +38,6 @@ impl FromStr for Name {
 
     fn from_str(s: &str) -> Result<Self, Error> {
         // TODO(tarcieri): ensure name is valid
-        Ok(Name(s.into()))
+        Ok(Self(s.into()))
     }
 }

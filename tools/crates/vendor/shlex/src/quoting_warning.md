@@ -30,8 +30,8 @@ Finally, there are some [solved issues](#solved-issues).
 ## Nul bytes
 
 For non-interactive shells, the most problematic input is nul bytes (bytes with value 0).  The
-non-deprecated functions all default to returning [`QuoteError::Nul`] when encountering them, but
-the deprecated [`quote`] and [`join`] functions leave them as-is.
+convenience functions all default to returning [`QuoteError::Nul`] when encountering them, but
+[`Quoter::allow_nul`] or [`bytes::Quoter::allow_nul`] can be used to leave them as-is.
 
 In Unix, nul bytes can't appear in command arguments, environment variables, or filenames.  It's
 not a question of proper quoting; they just can't be used at all.  This is a consequence of Unix's
@@ -42,13 +42,13 @@ Even when they do, it's pretty much useless or even dangerous, since you can't p
 external commands.
 
 In some cases, you might fail to pass the nul byte to the shell in the first place.  For example,
-the following code uses [`join`] to tunnel a command over an SSH connection:
+the following code uses [`Quoter::join`] to tunnel a command over an SSH connection:
 
 ```rust
 std::process::Command::new("ssh")
     .arg("myhost")
     .arg("--")
-    .arg(join(my_cmd_args))
+    .arg(Quoter::new().allow_nul(true).join(my_cmd_args).unwrap())
 ```
 
 If any argument in `my_cmd_args` contains a nul byte, then `join(my_cmd_args)` will contain a nul
@@ -242,13 +242,13 @@ Numeric escapes would solve this as well.
 
 # Solved issues
 
-## Solved: Past vulnerability (GHSA-r7qv-8r2h-pg27 / RUSTSEC-2024-XXX)
+## Solved: Past vulnerability (GHSA-r7qv-8r2h-pg27 / RUSTSEC-2024-0006)
 
 Versions of this crate before 1.3.0 did not quote `{`, `}`, and `\xa0`.
 
 See:
-- <https://github.com/advisories/GHSA-r7qv-8r2h-pg27>
-- (TODO: Add Rustsec link)
+- <https://github.com/comex/rust-shlex/security/advisories/GHSA-r7qv-8r2h-pg27>
+- <https://rustsec.org/advisories/RUSTSEC-2024-0006.html>
 
 ## Solved: `!` and `^`
 
@@ -360,6 +360,6 @@ separator.  Treatment as a word separator only happens for `b"\xa0"` alone, whic
 */
 
 // `use` declarations to make auto links work:
-use ::{quote, join, Shlex, Quoter, QuoteError};
+use crate::{bytes, Shlex, Quoter, QuoteError};
 
 // TODO: add more about copy-paste and human readability.

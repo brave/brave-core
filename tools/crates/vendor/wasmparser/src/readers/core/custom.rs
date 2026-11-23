@@ -52,6 +52,7 @@ impl<'a> CustomSectionReader<'a> {
     pub fn as_known(&self) -> KnownCustom<'a> {
         match self.name() {
             "name" => KnownCustom::Name(crate::NameSectionReader::new(self.reader.shrink())),
+            #[cfg(feature = "component-model")]
             "component-name" => KnownCustom::ComponentName(crate::ComponentNameSectionReader::new(
                 self.reader.shrink(),
             )),
@@ -97,12 +98,22 @@ impl<'a> CustomSectionReader<'a> {
             _ => KnownCustom::Unknown,
         }
     }
+
+    /// Get a binary reader over the data in the custom section
+    pub fn data_reader(&self) -> BinaryReader<'a> {
+        self.reader.shrink()
+    }
 }
 
 /// Return value of [`CustomSectionReader::as_known`].
+///
+/// Note that this is `#[non_exhaustive]` because depending on crate features
+/// this enumeration will different entries.
 #[allow(missing_docs)]
+#[non_exhaustive]
 pub enum KnownCustom<'a> {
     Name(crate::NameSectionReader<'a>),
+    #[cfg(feature = "component-model")]
     ComponentName(crate::ComponentNameSectionReader<'a>),
     BranchHints(crate::BranchHintSectionReader<'a>),
     Producers(crate::ProducersSectionReader<'a>),

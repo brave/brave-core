@@ -1,3 +1,15 @@
+# Version 0.8.23
+
+- Fix SB violation when `ShardedLockWriteGuard` is leaked. (#1294)
+- Improve compatibility with ThreadSanitizer. (#1308)
+- Update MSRV policy to support 1 year instead of 6 months to meet rayon's MSRV policy. (#1284)
+
+# Version 0.8.22
+
+- Make `AtomicCell::{as_ptr,into_inner}` const. (#1237)
+- Make `CachePadded` `repr(C)`. (#1270)
+- Optimize `WaitGroup`. (#1195)
+
 # Version 0.8.21
 
 - Improve implementation of `CachePadded`. (#1152)

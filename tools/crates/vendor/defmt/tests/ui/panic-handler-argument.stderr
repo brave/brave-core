@@ -1,0 +1,5 @@
+error: function must have signature `fn() -> !`
+ --> $DIR/panic-handler-argument.rs:5:4
+  |
+5 | fn foo(x: bool) -> ! { info!("{:?}", x); loop {} }
+  |    ^^^

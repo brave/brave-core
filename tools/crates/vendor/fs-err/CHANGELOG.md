@@ -1,5 +1,25 @@
 # fs-err Changelog
 
+## 3.3.2
+
+* Reword errors for `metadata` and `symlink_metadata` ([#95](https://github.com/andrewhickman/fs-err/pull/95))
+* Error messages from functions with two paths now wrap those paths in backticks. Previously, single-path errors (such as `read_to_string`) wrapped a path in backticks, but functions using two paths, such as `rename`, did not. Now all paths shown are wrapped in backticks. ([#94](https://github.com/andrewhickman/fs-err/pull/94))
+
+## 3.3.1
+
+* Fix `debug_tokio` feature so it works as documented. ([#92](https://github.com/andrewhickman/fs-err/issues/92))
+
+## 3.3.0
+
+* Cleanup rustdoc links to make them clickable in rust-analyzer ([#88](https://github.com/andrewhickman/fs-err/pull/88))
+* Add wrappers for several `os::unix::fs` functions ([#87](https://github.com/andrewhickman/fs-err/pull/87)):
+  * `std::os::unix::fs::FileExt::read_exact_at`
+  * `std::os::unix::fs::FileExt::write_all_at`
+  * `std::os::unix::fs::chroot`
+  * `std::os::unix::fs::chown`
+  * `std::os::unix::fs::lchown`
+* Replace '/' operator in SPDX license expression with 'OR' for readability ([#86](https://github.com/andrewhickman/fs-err/pull/86))
+
 ## 3.2.2
 
 * Add wrappers for `File::set_modified` and `File::set_times` ([#84](https://github.com/andrewhickman/fs-err/pull/84))

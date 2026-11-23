@@ -1,16 +1,12 @@
 use gix_diff::tree;
 
-use crate::{bstr::BStr, Id, Tree};
+use crate::{Id, Result, Tree, bstr::BStr};
 
 /// Returned by the `for_each` function to control flow.
-#[derive(Default, Clone, Copy, PartialOrd, PartialEq, Ord, Eq, Hash)]
-pub enum Action {
-    /// Continue the traversal of changes.
-    #[default]
-    Continue,
-    /// Stop the traversal of changes and stop calling this function.
-    Cancel,
-}
+///
+/// Use [`std::ops::ControlFlow::Continue`] to continue the traversal of changes.
+/// Use [`std::ops::ControlFlow::Break`] to stop the traversal of changes and stop calling this function.
+pub type Action = std::ops::ControlFlow<()>;
 
 pub use gix_diff::tree_with_rewrites::Change as ChangeDetached;
 
@@ -128,9 +124,8 @@ impl<'repo> Tree<'repo> {
     /// Note that if a clone with `--filter=blob=none` was created, rename tracking may fail as it might
     /// try to access blobs to compute a similarity metric. Thus, it's more compatible to turn rewrite tracking off
     /// using [`Options::track_rewrites()`](crate::diff::Options::track_rewrites()).
-    #[allow(clippy::result_large_err)]
     #[doc(alias = "diff_tree_to_tree", alias = "git2")]
-    pub fn changes<'a>(&'a self) -> Result<Platform<'a, 'repo>, crate::diff::options::init::Error> {
+    pub fn changes<'a>(&'a self) -> Result<Platform<'a, 'repo>> {
         Ok(Platform {
             state: Default::default(),
             lhs: self,
@@ -169,19 +164,6 @@ pub struct Stats {
     pub files_changed: u64,
 }
 
-///
-pub mod stats {
-    /// The error returned by [`stats()`](super::Platform::stats()).
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error(transparent)]
-        CreateResourceCache(#[from] crate::repository::diff_resource_cache::Error),
-        #[error(transparent)]
-        ForEachChange(#[from] crate::object::tree::diff::for_each::Error),
-    }
-}
-
 /// Convenience
 impl Platform<'_, '_> {
     /// Calculate statistics about the lines of the diff between our current and the `other` tree.
@@ -192,7 +174,7 @@ impl Platform<'_, '_> {
     /// rename tracking, an operation that doesn't affect the statistics currently.
     /// As diffed resources aren't cached, if highly repetitive blobs are expected, performance
     /// may be diminished. In real-world scenarios where blobs are mostly unique, that's not an issue though.
-    pub fn stats(&mut self, other: &Tree<'_>) -> Result<Stats, stats::Error> {
+    pub fn stats(&mut self, other: &Tree<'_>) -> Result<Stats> {
         // let (mut number_of_files, mut lines_added, mut lines_removed) = (0, 0, 0);
         let mut resource_cache = self.lhs.repo.diff_resource_cache_for_tree_diff()?;
 
@@ -210,7 +192,7 @@ impl Platform<'_, '_> {
             }
 
             resource_cache.clear_resource_cache_keep_allocation();
-            Ok::<_, std::convert::Infallible>(Action::Continue)
+            Ok(std::ops::ControlFlow::Continue(()))
         })?;
 
         Ok(Stats {

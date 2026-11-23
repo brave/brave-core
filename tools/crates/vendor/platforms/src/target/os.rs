@@ -1,10 +1,11 @@
 //! Operating systems
 
-use crate::error::Error;
 use core::{fmt, str::FromStr};
 
 #[cfg(feature = "serde")]
 use serde::{de, de::Error as DeError, ser, Deserialize, Serialize};
+
+use crate::error::Error;
 
 /// `target_os`: Operating system of the target.
 ///
@@ -12,7 +13,7 @@ use serde::{de, de::Error as DeError, ser, Deserialize, Serialize};
 /// of the platform target triple, though it is not identical.
 #[derive(Copy, Clone, Debug, Eq, Hash, PartialEq, PartialOrd, Ord)]
 #[non_exhaustive]
-pub enum OS {
+pub enum Os {
     /// `aix`
     Aix,
 
@@ -46,6 +47,9 @@ pub enum OS {
     /// `haiku`: Haiku, an open source BeOS clone
     Haiku,
 
+    /// `helenos`
+    HelenOS,
+
     /// `hermit`: HermitCore is a novel unikernel operating system targeting a scalable and predictable runtime behavior for HPC and cloud environments
     Hermit,
 
@@ -54,6 +58,9 @@ pub enum OS {
 
     /// `hurd`
     Hurd,
+
+    /// `hyperlight`
+    Hyperlight,
 
     /// `illumos`: illumos is a partly free and open-source Unix operating system based on OpenSolaris
     IllumOS,
@@ -95,17 +102,32 @@ pub enum OS {
     /// `openbsd`: The OpenBSD operating system
     OpenBSD,
 
+    /// `ps3`
+    Ps3,
+
     /// `psp`
     Psp,
 
     /// `psx`
     Psx,
 
+    /// `qnx`
+    Qnx,
+
+    /// `qtee`
+    Qtee,
+
+    /// `qurt`
+    Qurt,
+
     /// `redox`: Redox, a Unix-like OS written in Rust
     Redox,
 
     /// `rtems`
     Rtems,
+
+    /// `serenity`
+    Serenity,
 
     /// `solaris`: Oracle's (formerly Sun) Solaris operating system
     Solaris,
@@ -156,114 +178,128 @@ pub enum OS {
     Zkvm,
 }
 
-impl OS {
-    /// String representing this `OS` which matches `#[cfg(target_os)]`
+impl Os {
+    /// String representing this `Os` which matches `#[cfg(target_os)]`
     pub fn as_str(self) -> &'static str {
         match self {
-            OS::Aix => "aix",
-            OS::Amdhsa => "amdhsa",
-            OS::Android => "android",
-            OS::Cuda => "cuda",
-            OS::Cygwin => "cygwin",
-            OS::Dragonfly => "dragonfly",
-            OS::Emscripten => "emscripten",
-            OS::Espidf => "espidf",
-            OS::FreeBSD => "freebsd",
-            OS::Fuchsia => "fuchsia",
-            OS::Haiku => "haiku",
-            OS::Hermit => "hermit",
-            OS::Horizon => "horizon",
-            OS::Hurd => "hurd",
-            OS::IllumOS => "illumos",
-            OS::iOS => "ios",
-            OS::L4re => "l4re",
-            OS::Linux => "linux",
-            OS::Lynxos178 => "lynxos178",
-            OS::MacOS => "macos",
-            OS::Managarm => "managarm",
-            OS::Motor => "motor",
-            OS::NetBSD => "netbsd",
-            OS::None => "none",
-            OS::Nto => "nto",
-            OS::Nuttx => "nuttx",
-            OS::OpenBSD => "openbsd",
-            OS::Psp => "psp",
-            OS::Psx => "psx",
-            OS::Redox => "redox",
-            OS::Rtems => "rtems",
-            OS::Solaris => "solaris",
-            OS::SolidAsp3 => "solid_asp3",
-            OS::TeeOS => "teeos",
-            OS::Trusty => "trusty",
-            OS::TvOS => "tvos",
-            OS::Uefi => "uefi",
-            OS::Unknown => "unknown",
-            OS::VexOS => "vexos",
-            OS::VisionOS => "visionos",
-            OS::Vita => "vita",
-            OS::VxWorks => "vxworks",
-            OS::Wasi => "wasi",
-            OS::WatchOS => "watchos",
-            OS::Windows => "windows",
-            OS::Xous => "xous",
-            OS::Zkvm => "zkvm",
+            Self::Aix => "aix",
+            Self::Amdhsa => "amdhsa",
+            Self::Android => "android",
+            Self::Cuda => "cuda",
+            Self::Cygwin => "cygwin",
+            Self::Dragonfly => "dragonfly",
+            Self::Emscripten => "emscripten",
+            Self::Espidf => "espidf",
+            Self::FreeBSD => "freebsd",
+            Self::Fuchsia => "fuchsia",
+            Self::Haiku => "haiku",
+            Self::HelenOS => "helenos",
+            Self::Hermit => "hermit",
+            Self::Horizon => "horizon",
+            Self::Hurd => "hurd",
+            Self::Hyperlight => "hyperlight",
+            Self::IllumOS => "illumos",
+            Self::iOS => "ios",
+            Self::L4re => "l4re",
+            Self::Linux => "linux",
+            Self::Lynxos178 => "lynxos178",
+            Self::MacOS => "macos",
+            Self::Managarm => "managarm",
+            Self::Motor => "motor",
+            Self::NetBSD => "netbsd",
+            Self::None => "none",
+            Self::Nto => "nto",
+            Self::Nuttx => "nuttx",
+            Self::OpenBSD => "openbsd",
+            Self::Ps3 => "ps3",
+            Self::Psp => "psp",
+            Self::Psx => "psx",
+            Self::Qnx => "qnx",
+            Self::Qtee => "qtee",
+            Self::Qurt => "qurt",
+            Self::Redox => "redox",
+            Self::Rtems => "rtems",
+            Self::Serenity => "serenity",
+            Self::Solaris => "solaris",
+            Self::SolidAsp3 => "solid_asp3",
+            Self::TeeOS => "teeos",
+            Self::Trusty => "trusty",
+            Self::TvOS => "tvos",
+            Self::Uefi => "uefi",
+            Self::Unknown => "unknown",
+            Self::VexOS => "vexos",
+            Self::VisionOS => "visionos",
+            Self::Vita => "vita",
+            Self::VxWorks => "vxworks",
+            Self::Wasi => "wasi",
+            Self::WatchOS => "watchos",
+            Self::Windows => "windows",
+            Self::Xous => "xous",
+            Self::Zkvm => "zkvm",
         }
     }
 }
 
-impl FromStr for OS {
+impl FromStr for Os {
     type Err = Error;
 
-    /// Create a new `OS` from the given string
+    /// Create a new `Os` from the given string
     fn from_str(name: &str) -> Result<Self, Self::Err> {
         let result = match name {
-            "aix" => OS::Aix,
-            "amdhsa" => OS::Amdhsa,
-            "android" => OS::Android,
-            "cuda" => OS::Cuda,
-            "cygwin" => OS::Cygwin,
-            "dragonfly" => OS::Dragonfly,
-            "emscripten" => OS::Emscripten,
-            "espidf" => OS::Espidf,
-            "freebsd" => OS::FreeBSD,
-            "fuchsia" => OS::Fuchsia,
-            "haiku" => OS::Haiku,
-            "hermit" => OS::Hermit,
-            "horizon" => OS::Horizon,
-            "hurd" => OS::Hurd,
-            "illumos" => OS::IllumOS,
-            "ios" => OS::iOS,
-            "l4re" => OS::L4re,
-            "linux" => OS::Linux,
-            "lynxos178" => OS::Lynxos178,
-            "macos" => OS::MacOS,
-            "managarm" => OS::Managarm,
-            "motor" => OS::Motor,
-            "netbsd" => OS::NetBSD,
-            "none" => OS::None,
-            "nto" => OS::Nto,
-            "nuttx" => OS::Nuttx,
-            "openbsd" => OS::OpenBSD,
-            "psp" => OS::Psp,
-            "psx" => OS::Psx,
-            "redox" => OS::Redox,
-            "rtems" => OS::Rtems,
-            "solaris" => OS::Solaris,
-            "solid_asp3" => OS::SolidAsp3,
-            "teeos" => OS::TeeOS,
-            "trusty" => OS::Trusty,
-            "tvos" => OS::TvOS,
-            "uefi" => OS::Uefi,
-            "unknown" => OS::Unknown,
-            "vexos" => OS::VexOS,
-            "visionos" => OS::VisionOS,
-            "vita" => OS::Vita,
-            "vxworks" => OS::VxWorks,
-            "wasi" => OS::Wasi,
-            "watchos" => OS::WatchOS,
-            "windows" => OS::Windows,
-            "xous" => OS::Xous,
-            "zkvm" => OS::Zkvm,
+            "aix" => Self::Aix,
+            "amdhsa" => Self::Amdhsa,
+            "android" => Self::Android,
+            "cuda" => Self::Cuda,
+            "cygwin" => Self::Cygwin,
+            "dragonfly" => Self::Dragonfly,
+            "emscripten" => Self::Emscripten,
+            "espidf" => Self::Espidf,
+            "freebsd" => Self::FreeBSD,
+            "fuchsia" => Self::Fuchsia,
+            "haiku" => Self::Haiku,
+            "helenos" => Self::HelenOS,
+            "hermit" => Self::Hermit,
+            "horizon" => Self::Horizon,
+            "hurd" => Self::Hurd,
+            "hyperlight" => Self::Hyperlight,
+            "illumos" => Self::IllumOS,
+            "ios" => Self::iOS,
+            "l4re" => Self::L4re,
+            "linux" => Self::Linux,
+            "lynxos178" => Self::Lynxos178,
+            "macos" => Self::MacOS,
+            "managarm" => Self::Managarm,
+            "motor" => Self::Motor,
+            "netbsd" => Self::NetBSD,
+            "none" => Self::None,
+            "nto" => Self::Nto,
+            "nuttx" => Self::Nuttx,
+            "openbsd" => Self::OpenBSD,
+            "ps3" => Self::Ps3,
+            "psp" => Self::Psp,
+            "psx" => Self::Psx,
+            "qnx" => Self::Qnx,
+            "qtee" => Self::Qtee,
+            "qurt" => Self::Qurt,
+            "redox" => Self::Redox,
+            "rtems" => Self::Rtems,
+            "serenity" => Self::Serenity,
+            "solaris" => Self::Solaris,
+            "solid_asp3" => Self::SolidAsp3,
+            "teeos" => Self::TeeOS,
+            "trusty" => Self::Trusty,
+            "tvos" => Self::TvOS,
+            "uefi" => Self::Uefi,
+            "unknown" => Self::Unknown,
+            "vexos" => Self::VexOS,
+            "visionos" => Self::VisionOS,
+            "vita" => Self::Vita,
+            "vxworks" => Self::VxWorks,
+            "wasi" => Self::Wasi,
+            "watchos" => Self::WatchOS,
+            "windows" => Self::Windows,
+            "xous" => Self::Xous,
+            "zkvm" => Self::Zkvm,
             _ => return Err(Error),
         };
 
@@ -271,21 +307,21 @@ impl FromStr for OS {
     }
 }
 
-impl fmt::Display for OS {
+impl fmt::Display for Os {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(self.as_str())
     }
 }
 
 #[cfg(feature = "serde")]
-impl Serialize for OS {
+impl Serialize for Os {
     fn serialize<S: ser::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
         serializer.serialize_str(self.as_str())
     }
 }
 
 #[cfg(all(feature = "serde", feature = "std"))]
-impl<'de> Deserialize<'de> for OS {
+impl<'de> Deserialize<'de> for Os {
     fn deserialize<D: de::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
         let string = std::string::String::deserialize(deserializer)?;
         string.parse().map_err(|_| {

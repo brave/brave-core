@@ -1,6 +1,6 @@
 [package]
 name = "quinn"
-version = "0.11.9"
+version = "0.11.12"
 license.workspace = true
 repository.workspace = true
 description = "Versatile QUIC transport protocol implementation"
@@ -46,6 +46,11 @@ rustls-log = ["rustls?/logging"]
 # Enable qlog support
 qlog = ["proto/qlog"]
 
+# Internal (PRIVATE!) features used to aid testing.
+# Don't rely on these whatsoever. They may disappear at any time.
+
+__rustls-post-quantum-test =  ["rustls/prefer-post-quantum", "rustls-aws-lc-rs", "proto/__rustls-post-quantum-test"]
+
 [dependencies]
 async-io = { workspace = true, optional = true }
 async-std = { workspace = true, optional = true }
@@ -54,7 +59,7 @@ bytes = { workspace = true }
 futures-io = { workspace = true, optional = true }
 rustc-hash = { workspace = true }
 pin-project-lite = { workspace = true }
-proto = { package = "quinn-proto", path = "../quinn-proto", version = "0.11.12", default-features = false }
+proto = { package = "quinn-proto", path = "../quinn-proto", version = "0.11.18", default-features = false }
 rustls = { workspace = true, optional = true }
 smol = { workspace = true, optional = true }
 thiserror = { workspace = true }
@@ -75,7 +80,6 @@ bencher = { workspace = true }
 directories-next = { workspace = true }
 rand = { workspace = true }
 rcgen = { workspace = true }
-rustls-pemfile = { workspace = true }
 clap = { workspace = true }
 tokio = { workspace = true, features = ["rt", "rt-multi-thread", "time", "macros"] }
 tracing-subscriber = { workspace = true }
@@ -104,6 +108,10 @@ required-features = ["rustls-ring"]
 [[example]]
 name = "connection"
 required-features = ["rustls-ring"]
+
+[[test]]
+name = "post_quantum"
+required-features = ["__rustls-post-quantum-test"]
 
 [[bench]]
 name = "bench"

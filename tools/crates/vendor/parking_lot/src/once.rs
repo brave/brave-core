@@ -1,16 +1,10 @@
-// Copyright 2016 Amanieu d'Antras
-//
-// Licensed under the Apache License, Version 2.0, <LICENSE-APACHE or
-// http://apache.org/licenses/LICENSE-2.0> or the MIT license <LICENSE-MIT or
-// http://opensource.org/licenses/MIT>, at your option. This file may not be
-// copied, modified, or distributed except according to those terms.
-
-use crate::util::UncheckedOptionExt;
 use core::{
     fmt, mem,
-    sync::atomic::{fence, AtomicU8, Ordering},
+    sync::atomic::{AtomicU8, Ordering, fence},
 };
-use parking_lot_core::{self, SpinWait, DEFAULT_PARK_TOKEN, DEFAULT_UNPARK_TOKEN};
+use parking_lot_core::{self, DEFAULT_PARK_TOKEN, DEFAULT_UNPARK_TOKEN, SpinWait};
+
+use crate::deadlock;
 
 const DONE_BIT: u8 = 1;
 const POISON_BIT: u8 = 2;
@@ -20,7 +14,7 @@ const PARKED_BIT: u8 = 8;
 /// Current state of a `Once`.
 #[derive(Copy, Clone, Eq, PartialEq, Debug)]
 pub enum OnceState {
-    /// A closure has not been executed yet
+    /// A closure has not been executed yet.
     New,
 
     /// A closure was executed but panicked.
@@ -34,20 +28,62 @@ pub enum OnceState {
 }
 
 impl OnceState {
-    /// Returns whether the associated `Once` has been poisoned.
+    /// Returns `true` if this is the [`Poisoned`](OnceState::Poisoned) state.
+    /// When a state is passed to [`Once::call_once_force`], this indicates that
+    /// the [`Once`] was poisoned before the closure was invoked.
     ///
-    /// Once an initialization routine for a `Once` has panicked it will forever
-    /// indicate to future forced initialization routines that it is poisoned.
+    /// # Examples
+    ///
+    /// A poisoned [`Once`]:
+    ///
+    /// ```
+    /// use parking_lot::Once;
+    /// use std::thread;
+    ///
+    /// static INIT: Once = Once::new();
+    ///
+    /// let handle = thread::spawn(|| {
+    ///     INIT.call_once(|| panic!());
+    /// });
+    /// assert!(handle.join().is_err());
+    ///
+    /// INIT.call_once_force(|state| {
+    ///     assert!(state.is_poisoned());
+    /// });
+    /// ```
+    ///
+    /// An unpoisoned [`Once`]:
+    ///
+    /// ```
+    /// use parking_lot::Once;
+    ///
+    /// static INIT: Once = Once::new();
+    ///
+    /// INIT.call_once_force(|state| {
+    ///     assert!(!state.is_poisoned());
+    /// });
+    /// ```
     #[inline]
-    pub fn poisoned(self) -> bool {
+    pub const fn is_poisoned(self) -> bool {
         matches!(self, OnceState::Poisoned)
     }
 
-    /// Returns whether the associated `Once` has successfully executed a
-    /// closure.
+    /// Alias for [`is_poisoned`](Self::is_poisoned).
     #[inline]
-    pub fn done(self) -> bool {
+    pub const fn poisoned(self) -> bool {
+        self.is_poisoned()
+    }
+
+    /// Returns `true` if this is the [`Done`](OnceState::Done) state.
+    #[inline]
+    pub const fn is_completed(self) -> bool {
         matches!(self, OnceState::Done)
+    }
+
+    /// Alias for [`is_completed`](Self::is_completed).
+    #[inline]
+    pub const fn done(self) -> bool {
+        self.is_completed()
     }
 }
 
@@ -55,13 +91,8 @@ impl OnceState {
 /// initialization. Useful for one-time initialization for globals, FFI or
 /// related functionality.
 ///
-/// # Differences from the standard library `Once`
-///
-/// - Only requires 1 byte of space, instead of 1 word.
-/// - Not required to be `'static`.
-/// - Relaxed memory barriers in the fast path, which can significantly improve
-///   performance on some architectures.
-/// - Efficient handling of micro-contention using adaptive spinning.
+/// When the initialization produces a value, [`std::sync::OnceLock`] is often
+/// more convenient.
 ///
 /// # Examples
 ///
@@ -83,7 +114,31 @@ impl Once {
         Once(AtomicU8::new(0))
     }
 
-    /// Returns the current state of this `Once`.
+    /// Creates a new `Once` value that is already in the completed state.
+    ///
+    /// A `Once` created this way will never invoke a closure passed to
+    /// [`call_once`](Self::call_once) or [`call_once_force`](Self::call_once_force),
+    /// and its [`state`](Self::state) will always be [`OnceState::Done`].
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use parking_lot::{Once, OnceState};
+    ///
+    /// static INIT: Once = Once::new_completed();
+    /// assert_eq!(INIT.state(), OnceState::Done);
+    ///
+    /// // The closure is never executed.
+    /// INIT.call_once(|| unreachable!());
+    /// ```
+    #[inline]
+    pub const fn new_completed() -> Once {
+        Once(AtomicU8::new(DONE_BIT))
+    }
+
+    /// Returns a snapshot of the current state of this `Once`.
+    ///
+    /// The state may change immediately after this function returns.
     #[inline]
     pub fn state(&self) -> OnceState {
         let state = self.0.load(Ordering::Acquire);
@@ -98,6 +153,100 @@ impl Once {
         }
     }
 
+    /// Returns `true` if this `Once` is in the completed state.
+    ///
+    /// A `Once` becomes completed when an initialization closure finishes
+    /// successfully, or when it is created with
+    /// [`new_completed`](Self::new_completed). This method returns `false` if
+    /// initialization has not started, is still in progress, or the `Once` is
+    /// poisoned.
+    ///
+    /// A `false` result may be stale. For example, initialization may complete
+    /// between the state being read and this function returning.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use parking_lot::Once;
+    ///
+    /// static INIT: Once = Once::new();
+    ///
+    /// assert!(!INIT.is_completed());
+    /// INIT.call_once(|| {
+    ///     assert!(!INIT.is_completed());
+    /// });
+    /// assert!(INIT.is_completed());
+    /// assert!(Once::new_completed().is_completed());
+    /// ```
+    ///
+    /// A poisoned [`Once`] has not completed successfully:
+    ///
+    /// ```
+    /// use parking_lot::Once;
+    /// use std::thread;
+    ///
+    /// static INIT: Once = Once::new();
+    ///
+    /// let handle = thread::spawn(|| {
+    ///     INIT.call_once(|| panic!());
+    /// });
+    /// assert!(handle.join().is_err());
+    /// assert!(!INIT.is_completed());
+    /// ```
+    #[inline]
+    pub fn is_completed(&self) -> bool {
+        self.0.load(Ordering::Acquire) & DONE_BIT != 0
+    }
+
+    /// Blocks the current thread until initialization has completed.
+    ///
+    /// Calling this method from an initialization closure for the same `Once`
+    /// may panic or deadlock.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use parking_lot::Once;
+    /// use std::thread;
+    ///
+    /// static READY: Once = Once::new();
+    ///
+    /// let thread = thread::spawn(|| {
+    ///     READY.wait();
+    ///     println!("everything is ready");
+    /// });
+    ///
+    /// READY.call_once(|| println!("performing setup"));
+    /// thread.join().unwrap();
+    /// ```
+    ///
+    /// # Panics
+    ///
+    /// If this `Once` has been poisoned because an initialization closure has
+    /// panicked, this method will also panic. Use
+    /// [`wait_force`](Self::wait_force) if this behavior is not desired.
+    #[inline]
+    pub fn wait(&self) {
+        if !self.is_completed() {
+            self.wait_slow(false);
+        }
+    }
+
+    /// Blocks the current thread until initialization has completed, ignoring
+    /// poisoning.
+    ///
+    /// If this `Once` has been poisoned, this function blocks until it becomes
+    /// completed, unlike [`Once::wait`], which panics in this case.
+    ///
+    /// Calling this method from an initialization closure for the same `Once`
+    /// may panic or deadlock.
+    #[inline]
+    pub fn wait_force(&self) {
+        if !self.is_completed() {
+            self.wait_slow(true);
+        }
+    }
+
     /// Performs an initialization routine once and only once. The given closure
     /// will be executed if this is the first time `call_once` has been called,
     /// and otherwise the routine will *not* be invoked.
@@ -105,12 +254,16 @@ impl Once {
     /// This method will block the calling thread if another initialization
     /// routine is currently running.
     ///
-    /// When this function returns, it is guaranteed that some initialization
-    /// has run and completed (it may not be the closure specified). It is also
-    /// guaranteed that any memory writes performed by the executed closure can
-    /// be reliably observed by other threads at this point (there is a
-    /// happens-before relation between the closure and code executing after the
-    /// return).
+    /// When this function returns, the `Once` is in the completed state. Unless
+    /// it was created with [`new_completed`](Self::new_completed), some
+    /// initialization has run and completed, though it might not be the closure
+    /// specified. Any memory writes performed by the executed closure can be
+    /// reliably observed after this function returns; there is a happens-before
+    /// relation between the closure and code executing after the return.
+    ///
+    /// If the given closure recursively invokes `call_once` on the same `Once`
+    /// instance, the exact behavior is not specified: allowed outcomes are a
+    /// panic or a deadlock.
     ///
     /// # Examples
     ///
@@ -143,7 +296,7 @@ impl Once {
     ///
     /// # Panics
     ///
-    /// The closure `f` will only be executed once if this is called
+    /// The closure `f` will only be executed once even if this is called
     /// concurrently amongst many threads. If that closure panics, however, then
     /// it will *poison* this `Once` instance, causing all future invocations of
     /// `call_once` to also panic.
@@ -157,18 +310,57 @@ impl Once {
         }
 
         let mut f = Some(f);
-        self.call_once_slow(false, &mut |_| unsafe { f.take().unchecked_unwrap()() });
+        self.call_once_slow(false, &mut |_| {
+            let f = f.take();
+            unsafe { f.unwrap_unchecked()() }
+        });
     }
 
-    /// Performs the same function as `call_once` except ignores poisoning.
+    /// Performs the same function as [`call_once`](Self::call_once) except it
+    /// ignores poisoning.
     ///
-    /// If this `Once` has been poisoned (some initialization panicked) then
-    /// this function will continue to attempt to call initialization functions
-    /// until one of them doesn't panic.
+    /// Unlike [`call_once`](Self::call_once), if this `Once` has been poisoned
+    /// by a previous initialization panic, this function will still invoke the
+    /// closure `f` instead of immediately panicking. If `f` panics, the `Once`
+    /// remains poisoned. If `f` does not panic, the `Once` is no longer
+    /// poisoned and all future calls to `call_once` or `call_once_force` are
+    /// no-ops.
     ///
-    /// The closure `f` is yielded a structure which can be used to query the
-    /// state of this `Once` (whether initialization has previously panicked or
-    /// not).
+    /// The closure `f` is passed a [`OnceState`] which can be used to query the
+    /// poison status of this `Once`.
+    ///
+    /// If the given closure recursively invokes `call_once` or
+    /// `call_once_force` on the same `Once` instance, the exact behavior is not
+    /// specified: allowed outcomes are a panic or a deadlock.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use parking_lot::Once;
+    /// use std::thread;
+    ///
+    /// static INIT: Once = Once::new();
+    ///
+    /// // Poison the once.
+    /// let handle = thread::spawn(|| {
+    ///     INIT.call_once(|| panic!());
+    /// });
+    /// assert!(handle.join().is_err());
+    ///
+    /// // Poisoning propagates.
+    /// let handle = thread::spawn(|| {
+    ///     INIT.call_once(|| {});
+    /// });
+    /// assert!(handle.join().is_err());
+    ///
+    /// // call_once_force still runs and clears the poisoned state.
+    /// INIT.call_once_force(|state| {
+    ///     assert!(state.is_poisoned());
+    /// });
+    ///
+    /// // Once initialization succeeds, future calls are no-ops.
+    /// INIT.call_once(|| {});
+    /// ```
     #[inline]
     pub fn call_once_force<F>(&self, f: F)
     where
@@ -179,9 +371,81 @@ impl Once {
         }
 
         let mut f = Some(f);
-        self.call_once_slow(true, &mut |state| unsafe {
-            f.take().unchecked_unwrap()(state)
+        self.call_once_slow(true, &mut |state| {
+            let f = f.take();
+            unsafe { f.unwrap_unchecked()(state) }
         });
+    }
+
+    #[cold]
+    fn wait_slow(&self, ignore_poison: bool) {
+        let mut spinwait = SpinWait::new();
+        let mut state = self.0.load(Ordering::Relaxed);
+        loop {
+            if state & DONE_BIT != 0 {
+                // Synchronize with the initialization routine.
+                fence(Ordering::Acquire);
+                return;
+            }
+
+            if state & POISON_BIT != 0 && !ignore_poison {
+                fence(Ordering::Acquire);
+                panic!("Once instance has previously been poisoned");
+            }
+
+            // Only spin while an initialization routine is actively running.
+            if state & LOCKED_BIT != 0 && state & PARKED_BIT == 0 && spinwait.spin() {
+                state = self.0.load(Ordering::Relaxed);
+                continue;
+            }
+
+            // Register that a thread may be parked. `try_update` rechecks the
+            // terminal states on every retry so we cannot miss completion or
+            // poisoning while setting PARKED_BIT.
+            match self
+                .0
+                .try_update(Ordering::Relaxed, Ordering::Relaxed, |state| {
+                    if state & DONE_BIT != 0 || (state & POISON_BIT != 0 && !ignore_poison) {
+                        None
+                    } else {
+                        Some(state | PARKED_BIT)
+                    }
+                }) {
+                Ok(_) => {}
+                Err(x) => {
+                    state = x;
+                    continue;
+                }
+            }
+
+            let addr = core::ptr::from_ref(self).addr();
+            let validate = || {
+                let state = self.0.load(Ordering::Relaxed);
+                state & PARKED_BIT != 0
+                    && state & DONE_BIT == 0
+                    && (ignore_poison || state & POISON_BIT == 0)
+            };
+            let before_sleep = || {};
+            let timed_out = |_, _| unreachable!();
+            // SAFETY:
+            // * `addr` is an address we control.
+            // * `validate` does not panic or call into `parking_lot`.
+            // * `before_sleep` does not call `park` or panic.
+            // * `timed_out` cannot be called because no timeout is specified.
+            unsafe {
+                parking_lot_core::park(
+                    addr,
+                    validate,
+                    before_sleep,
+                    timed_out,
+                    DEFAULT_PARK_TOKEN,
+                    None,
+                );
+            }
+
+            spinwait.reset();
+            state = self.0.load(Ordering::Relaxed);
+        }
     }
 
     // This is a non-generic function to reduce the monomorphization cost of
@@ -238,21 +502,21 @@ impl Once {
             }
 
             // Set the parked bit
-            if state & PARKED_BIT == 0 {
-                if let Err(x) = self.0.compare_exchange_weak(
+            if state & PARKED_BIT == 0
+                && let Err(x) = self.0.compare_exchange_weak(
                     state,
                     state | PARKED_BIT,
                     Ordering::Relaxed,
                     Ordering::Relaxed,
-                ) {
-                    state = x;
-                    continue;
-                }
+                )
+            {
+                state = x;
+                continue;
             }
 
             // Park our thread until we are woken up by the thread that owns the
             // lock.
-            let addr = self as *const _ as usize;
+            let addr = core::ptr::from_ref(self).addr();
             let validate = || self.0.load(Ordering::Relaxed) == LOCKED_BIT | PARKED_BIT;
             let before_sleep = || {};
             let timed_out = |_, _| unreachable!();
@@ -275,11 +539,13 @@ impl Once {
         struct PanicGuard<'a>(&'a Once);
         impl<'a> Drop for PanicGuard<'a> {
             fn drop(&mut self) {
-                // Mark the state as poisoned, unlock it and unpark all threads.
+                // Stop recording ownership, mark the state as poisoned,
+                // unlock it and unpark all threads.
                 let once = self.0;
+                unsafe { deadlock::release_resource(core::ptr::from_ref(once).addr()) };
                 let state = once.0.swap(POISON_BIT, Ordering::Release);
                 if state & PARKED_BIT != 0 {
-                    let addr = once as *const _ as usize;
+                    let addr = core::ptr::from_ref(once).addr();
                     unsafe {
                         parking_lot_core::unpark_all(addr, DEFAULT_UNPARK_TOKEN);
                     }
@@ -287,8 +553,9 @@ impl Once {
             }
         }
 
-        // At this point we have the lock, so run the closure. Make sure we
-        // properly clean up if the closure panicks.
+        // At this point we have the lock, so record its ownership and run the
+        // closure. Make sure we properly clean up if the closure panics.
+        unsafe { deadlock::acquire_resource(core::ptr::from_ref(self).addr()) };
         let guard = PanicGuard(self);
         let once_state = if state & POISON_BIT != 0 {
             OnceState::Poisoned
@@ -296,12 +563,13 @@ impl Once {
             OnceState::New
         };
         f(once_state);
+        unsafe { deadlock::release_resource(core::ptr::from_ref(self).addr()) };
         mem::forget(guard);
 
         // Now unlock the state, set the done bit and unpark all threads
         let state = self.0.swap(DONE_BIT, Ordering::Release);
         if state & PARKED_BIT != 0 {
-            let addr = self as *const _ as usize;
+            let addr = core::ptr::from_ref(self).addr();
             unsafe {
                 parking_lot_core::unpark_all(addr, DEFAULT_UNPARK_TOKEN);
             }
@@ -326,8 +594,11 @@ impl fmt::Debug for Once {
 
 #[cfg(test)]
 mod tests {
+    use super::PARKED_BIT;
     use crate::Once;
     use std::panic;
+    use std::sync::Arc;
+    use std::sync::atomic::{AtomicUsize, Ordering};
     use std::sync::mpsc::channel;
     use std::thread;
 
@@ -339,6 +610,51 @@ mod tests {
         assert_eq!(a, 1);
         O.call_once(|| a += 1);
         assert_eq!(a, 1);
+    }
+
+    #[test]
+    fn wait_for_initialization() {
+        let once = Arc::new(Once::new());
+        let value = Arc::new(AtomicUsize::new(0));
+        let waiter = {
+            let once = Arc::clone(&once);
+            let value = Arc::clone(&value);
+            thread::spawn(move || {
+                once.wait();
+                assert_eq!(value.load(Ordering::Relaxed), 1);
+            })
+        };
+
+        while once.0.load(Ordering::Relaxed) & PARKED_BIT == 0 {
+            thread::yield_now();
+        }
+        once.call_once(|| value.store(1, Ordering::Relaxed));
+        waiter.join().unwrap();
+        assert!(once.is_completed());
+    }
+
+    #[test]
+    fn wait_propagates_poison() {
+        let once = Once::new();
+        assert!(panic::catch_unwind(|| once.call_once(|| panic!())).is_err());
+        assert!(panic::catch_unwind(|| once.wait()).is_err());
+    }
+
+    #[test]
+    fn wait_force_ignores_poison() {
+        let once = Arc::new(Once::new());
+        assert!(panic::catch_unwind(|| once.call_once(|| panic!())).is_err());
+
+        let waiter = {
+            let once = Arc::clone(&once);
+            thread::spawn(move || once.wait_force())
+        };
+        while once.0.load(Ordering::Relaxed) & PARKED_BIT == 0 {
+            thread::yield_now();
+        }
+        once.call_once_force(|state| assert!(state.is_poisoned()));
+        waiter.join().unwrap();
+        assert!(once.is_completed());
     }
 
     #[test]
@@ -448,5 +764,29 @@ mod tests {
         static O: Once = Once::new();
 
         assert_eq!(format!("{:?}", O), "Once { state: New }");
+    }
+
+    #[test]
+    fn new_completed_is_done() {
+        use crate::OnceState;
+
+        static O: Once = Once::new_completed();
+        assert_eq!(O.state(), OnceState::Done);
+        assert!(O.state().done());
+        assert!(!O.state().poisoned());
+
+        let mut called = false;
+        O.call_once(|| called = true);
+        assert!(!called);
+        assert_eq!(O.state(), OnceState::Done);
+    }
+
+    #[test]
+    fn new_default_is_new() {
+        // Sanity check that the default constructor is unchanged.
+        static O: Once = Once::new();
+        let mut called = false;
+        O.call_once(|| called = true);
+        assert!(called);
     }
 }

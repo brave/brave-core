@@ -1,0 +1,43 @@
+lints.workspace = true
+
+[package]
+name = "gix-zlib"
+description = "Zlib-rs streaming compression and decompression utilities used by gitoxide"
+repository = "https://github.com/GitoxideLabs/gitoxide"
+version = "0.4.1"
+authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
+license = "MIT OR Apache-2.0"
+edition = "2024"
+rust-version = "1.88"
+include = ["/src/**/*", "/LICENSE-*"]
+
+[lib]
+doctest = false
+test = false
+
+[features]
+serde = ["dep:serde"]
+## Decompress zlib streams held in memory, find where streamed ones end, and compress with
+## [`sirocco`](https://docs.rs/sirocco), which is faster than `zlib-rs` at both.
+## `zlib-rs` still handles the standalone `Decompress` and `Compress` APIs.
+## This requires Rust 1.89 or newer.
+sirocco = ["dep:sirocco"]
+
+[dependencies]
+gix-error = { version = "^0.5.3", path = "../gix-error" }
+zlib-rs = "0.6.2"
+sirocco = { version = "0.3.1", optional = true }
+serde = { version = "1.0.114", optional = true, default-features = false, features = ["derive"] }
+
+[dev-dependencies]
+insta = "1.46.3"
+bstr = { version = "1.12.0", default-features = false }
+
+[package.metadata.qa]
+# Stream tests also read packed object fixtures from gix-odb.
+extra-inputs = ["gix-odb/tests/fixtures"]
+tests = [
+    # Exercise both zlib backends independently of workspace feature unification.
+    { args = [] },
+    { args = ["--features", "sirocco"] },
+]

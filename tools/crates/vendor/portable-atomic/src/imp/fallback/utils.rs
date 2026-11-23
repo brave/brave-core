@@ -89,6 +89,7 @@ use core::ops;
     )),
     repr(align(64))
 )]
+#[repr(C)]
 pub(crate) struct CachePadded<T> {
     value: T,
 }
@@ -109,7 +110,7 @@ impl<T> ops::Deref for CachePadded<T> {
     }
 }
 
-// Adapted from https://github.com/crossbeam-rs/crossbeam/blob/crossbeam-utils-0.8.7/crossbeam-utils/src/backoff.rs.
+// Adapted from https://github.com/crossbeam-rs/crossbeam/blob/crossbeam-utils-0.8.21/crossbeam-utils/src/backoff.rs.
 // Adjusted to reduce spinning.
 /// Performs exponential backoff in spin loops.
 pub(crate) struct Backoff {

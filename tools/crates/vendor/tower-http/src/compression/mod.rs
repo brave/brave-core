@@ -29,7 +29,7 @@
 //!     let stream = stream.map_ok(Frame::data);
 //!     // Convert the `Stream` into a `Body`.
 //!     let body = StreamBody::new(stream);
-//!     // Erase the type because its very hard to name in the function signature.
+//!     // Erase the type because it's very hard to name in the function signature.
 //!     let body = body.boxed_unsync();
 //!     // Create response.
 //!     Ok(Response::new(body))
@@ -308,7 +308,7 @@ mod tests {
                 let mut guard = self.0.write().unwrap();
                 let should_compress = *guard % 2 != 0;
                 *guard += 1;
-                dbg!(should_compress)
+                should_compress
             }
         }
 
@@ -371,6 +371,31 @@ mod tests {
             ));
             res.headers_mut()
                 .insert(CONTENT_TYPE, "image/svg+xml".parse().unwrap());
+            Ok(res)
+        }
+
+        let svc = Compression::new(service_fn(handle));
+
+        let res = svc
+            .oneshot(
+                Request::builder()
+                    .header(ACCEPT_ENCODING, "gzip")
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(res.headers()[CONTENT_ENCODING], "gzip");
+    }
+
+    #[tokio::test]
+    async fn does_compress_grpc_web() {
+        async fn handle(_req: Request<Body>) -> Result<Response<Body>, Infallible> {
+            let mut res = Response::new(Body::from(
+                "a".repeat((SizeAbove::DEFAULT_MIN_SIZE * 2) as usize),
+            ));
+            res.headers_mut()
+                .insert(CONTENT_TYPE, "application/grpc-web+proto".parse().unwrap());
             Ok(res)
         }
 

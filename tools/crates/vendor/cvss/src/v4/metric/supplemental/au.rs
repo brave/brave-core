@@ -1,7 +1,7 @@
 //! Automatable (AU)
 
 use crate::{
-    Error, Result,
+    Error,
     v4::metric::{Metric, MetricType},
 };
 use alloc::borrow::ToOwned;
@@ -16,11 +16,12 @@ use core::{fmt, str::FromStr};
 /// > multiple targets?” based on steps 1-4 of the kill chain [Hutchins et al.,
 /// > 2011]. These steps are reconnaissance, weaponization, delivery, and
 /// > exploitation.
-#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+#[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
 pub enum Automatable {
     /// Not Defined (X)
     ///
     /// > The metric has not been evaluated.
+    #[default]
     NotDefined,
 
     /// Yes (Y)
@@ -38,20 +39,14 @@ pub enum Automatable {
     No,
 }
 
-impl Default for Automatable {
-    fn default() -> Self {
-        Self::NotDefined
-    }
-}
-
 impl Metric for Automatable {
     const TYPE: MetricType = MetricType::AU;
 
     fn as_str(self) -> &'static str {
         match self {
-            Automatable::NotDefined => "X",
-            Automatable::Yes => "Y",
-            Automatable::No => "N",
+            Self::NotDefined => "X",
+            Self::Yes => "Y",
+            Self::No => "N",
         }
     }
 }
@@ -65,11 +60,11 @@ impl fmt::Display for Automatable {
 impl FromStr for Automatable {
     type Err = Error;
 
-    fn from_str(s: &str) -> Result<Self> {
+    fn from_str(s: &str) -> Result<Self, Error> {
         match s {
-            "X" => Ok(Automatable::NotDefined),
-            "Y" => Ok(Automatable::Yes),
-            "N" => Ok(Automatable::No),
+            "X" => Ok(Self::NotDefined),
+            "Y" => Ok(Self::Yes),
+            "N" => Ok(Self::No),
             _ => Err(Error::InvalidMetricV4 {
                 metric_type: Self::TYPE,
                 value: s.to_owned(),

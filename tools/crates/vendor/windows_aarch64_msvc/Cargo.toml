@@ -11,18 +11,17 @@
 
 [package]
 edition = "2021"
-rust-version = "1.60"
+rust-version = "1.56"
 name = "windows_aarch64_msvc"
-version = "0.53.1"
+version = "0.52.6"
+authors = ["Microsoft"]
 build = "build.rs"
-autolib = false
 autobins = false
 autoexamples = false
 autotests = false
 autobenches = false
 description = "Import lib for Windows"
-readme = "readme.md"
-categories = ["os::windows-apis"]
+readme = false
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/microsoft/windows-rs"
 
@@ -33,11 +32,3 @@ targets = []
 [lib]
 name = "windows_aarch64_msvc"
 path = "src/lib.rs"
-
-[lints.rust]
-missing_unsafe_on_extern = "warn"
-
-[lints.rust.unexpected_cfgs]
-level = "warn"
-priority = 0
-check-cfg = ["cfg(windows_raw_dylib, windows_slim_errors)"]

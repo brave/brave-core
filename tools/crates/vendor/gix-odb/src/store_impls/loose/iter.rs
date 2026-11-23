@@ -1,14 +1,12 @@
-use gix_features::fs;
-
 use crate::store_impls::loose;
 
 /// Returned by [`loose::Store::iter()`]
-pub type Error = gix_features::fs::walkdir::Error;
+pub type Error = gix_fs::walkdir::Error;
 
 impl loose::Iter {
     fn path_to_id(
         &self,
-        res: Result<fs::walkdir::DirEntry, fs::walkdir::Error>,
+        res: Result<gix_fs::walkdir::DirEntry, gix_fs::walkdir::Error>,
     ) -> Option<Result<gix_hash::ObjectId, Error>> {
         use std::path::Component::Normal;
 
@@ -17,19 +15,19 @@ impl loose::Iter {
                 let p = e.path();
                 let mut ci = p.components();
                 let (c2, c1) = (ci.next_back(), ci.next_back());
-                if let (Some(Normal(c1)), Some(Normal(c2))) = (c1, c2) {
-                    if c1.len() == 2 && c2.len() == self.hash_hex_len - 2 {
-                        if let (Some(c1), Some(c2)) = (c1.to_str(), c2.to_str()) {
-                            let mut buf = gix_hash::Kind::hex_buf();
-                            {
-                                let (first_byte, rest) = buf[..self.hash_hex_len].split_at_mut(2);
-                                first_byte.copy_from_slice(c1.as_bytes());
-                                rest.copy_from_slice(c2.as_bytes());
-                            }
-                            if let Ok(b) = gix_hash::ObjectId::from_hex(&buf[..self.hash_hex_len]) {
-                                return Some(Ok(b));
-                            }
-                        }
+                if let (Some(Normal(c1)), Some(Normal(c2))) = (c1, c2)
+                    && c1.len() == 2
+                    && c2.len() == self.hash_hex_len - 2
+                    && let (Some(c1), Some(c2)) = (c1.to_str(), c2.to_str())
+                {
+                    let mut buf = gix_hash::Kind::hex_buf();
+                    {
+                        let (first_byte, rest) = buf[..self.hash_hex_len].split_at_mut(2);
+                        first_byte.copy_from_slice(c1.as_bytes());
+                        rest.copy_from_slice(c2.as_bytes());
+                    }
+                    if let Ok(b) = gix_hash::ObjectId::from_hex(&buf[..self.hash_hex_len]) {
+                        return Some(Ok(b));
                     }
                 }
             }
@@ -65,17 +63,11 @@ impl loose::Store {
     /// needed if iterators need to be implemented by hand in the absence of generators.
     pub fn iter(&self) -> loose::Iter {
         loose::Iter {
-            inner: fs::walkdir_new(
-                &self.path,
-                fs::walkdir::Parallelism::ThreadPoolPerTraversal {
-                    thread_name: "gix_odb::loose::Store::iter: fs-walk",
-                },
-                false,
-            )
-            .min_depth(2)
-            .max_depth(3)
-            .follow_links(false)
-            .into_iter(),
+            inner: gix_fs::walkdir_new(&self.path, false)
+                .min_depth(2)
+                .max_depth(3)
+                .follow_links(false)
+                .into_iter(),
             hash_hex_len: self.object_hash.len_in_hex(),
         }
     }

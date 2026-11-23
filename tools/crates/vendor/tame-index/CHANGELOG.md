@@ -9,6 +9,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
+## [0.26.3] - 2026-04-27
+### Changed
+- [PR#111](https://github.com/EmbarkStudios/tame-index/pull/111) removed the dependency on `home`.
+
+## [0.26.2] - 2026-04-10
+### Changed
+- [PR#108](https://github.com/EmbarkStudios/tame-index/pull/108) updated crates.
+
+## [0.26.1] - 2026-03-17
+### Fixed
+- [PR#106](https://github.com/EmbarkStudios/tame-index/pull/106) added the [`pubtime`](https://blog.rust-lang.org/inside-rust/2026/01/07/this-development-cycle-in-cargo-1.93/#pubtime) field, the RFC3339 timestamp when the crate was published to its source registry.
+
+## [0.26.0] - 2026-01-07
+### Removed
+- [PR#103](https://github.com/EmbarkStudios/tame-index/pull/103) removed the `gix` based support for fetching and accessing git registry indices, resolving [#98](https://github.com/EmbarkStudios/tame-index/issues/98). Those who need to access them can use older versions of this crate, [crates-index](https://github.com/frewsxcv/rust-crates-index), or roll their own.
+
+### Changed
+- [PR#104](https://github.com/EmbarkStudios/tame-index/pull/104) updated `reqwest` to 0.13. Due to the changes in `reqwest:0.13.0` related to TLS, `tame-index` no longer provides TLS related feature flags, leaving it completely up to the user to properly configure TLS on the client before passing it. See [tls.rs](examples/tls.rs) for an example of how one can configure a client.
+
+## [0.25.0] - 2025-11-23
+### Changed
+- [PR#97](https://github.com/EmbarkStudios/tame-index/pull/97) updated gix -> 0.75.
+
 ## [0.24.1] - 2025-10-23
 ### Changed
 - [a6abdbb](https://github.com/EmbarkStudios/tame-index/commit/a6abdbbf0c2550402a2e8a61af5ebe5a9e1e050d) updated toml-span -> 0.6.
@@ -290,7 +313,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial crate squat
 
 <!-- next-url -->
-[Unreleased]: https://github.com/EmbarkStudios/tame-index/compare/0.24.1...HEAD
+[Unreleased]: https://github.com/EmbarkStudios/tame-index/compare/0.26.3...HEAD
+[0.26.3]: https://github.com/EmbarkStudios/tame-index/compare/0.26.2...0.26.3
+[0.26.2]: https://github.com/EmbarkStudios/tame-index/compare/0.26.1...0.26.2
+[0.26.1]: https://github.com/EmbarkStudios/tame-index/compare/0.26.0...0.26.1
+[0.26.0]: https://github.com/EmbarkStudios/tame-index/compare/0.25.0...0.26.0
+[0.25.0]: https://github.com/EmbarkStudios/tame-index/compare/0.24.1...0.25.0
 [0.24.1]: https://github.com/EmbarkStudios/tame-index/compare/0.24.0...0.24.1
 [0.24.0]: https://github.com/EmbarkStudios/tame-index/compare/0.23.1...0.24.0
 [0.23.1]: https://github.com/EmbarkStudios/tame-index/compare/0.23.0...0.23.1

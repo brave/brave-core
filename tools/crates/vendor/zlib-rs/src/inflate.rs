@@ -20,7 +20,7 @@ use crate::{
     adler32::adler32,
     c_api::{gz_header, z_checksum, z_size, z_stream, Z_DEFLATED},
     inflate::writer::Writer,
-    Code, InflateFlush, ReturnCode, DEF_WBITS, MAX_WBITS, MIN_WBITS,
+    traceln, Code, InflateFlush, ReturnCode, DEF_WBITS, MAX_WBITS, MIN_WBITS,
 };
 
 use crate::crc32::{crc32, Crc32Fold};
@@ -152,8 +152,24 @@ impl<'a> InflateStream<'a> {
 
 const MAX_BITS: u8 = 15; // maximum number of bits in a code
 const MAX_DIST_EXTRA_BITS: u8 = 13; // maximum number of extra distance bits
-                                    //
-pub fn uncompress_slice<'a>(
+
+/// Decompresses `input` into the provided `output` buffer.
+///
+/// Returns a subslice of `output` containing the decompressed bytes and a
+/// [`ReturnCode`] indicating the result of the operation. Returns [`ReturnCode::BufError`] if
+/// there is insufficient output space.
+///
+/// # Example
+///
+/// ```
+/// # use zlib_rs::*;
+/// # fn foo(compressed: &[u8]) {
+/// let mut buffer = [0u8; 1024];
+/// let (decompressed, rc) = decompress_slice(&mut buffer, compressed, InflateConfig::default());
+/// assert_eq!(rc, ReturnCode::Ok);
+/// # }
+/// ```
+pub fn decompress_slice<'a>(
     output: &'a mut [u8],
     input: &[u8],
     config: InflateConfig,
@@ -663,7 +679,7 @@ impl State<'_> {
                         } else if here.op & 32 != 0 {
                             // end of block
 
-                            // eprintln!("inflate:         end of block");
+                            traceln!("inflate:         end of block");
 
                             self.back = usize::MAX;
                             mode = Mode::Type;
@@ -691,8 +707,7 @@ impl State<'_> {
                         // NOTE: this branch must be kept in sync with its counterpart in `dispatch`
                         if writer.is_full() {
                             restore!();
-                            #[cfg(all(test, feature = "std"))]
-                            eprintln!("Ok: writer is full ({} bytes)", self.writer.capacity());
+                            traceln!("Ok: writer is full ({} bytes)", self.writer.capacity());
                             return ControlFlow::Break(ReturnCode::Ok);
                         }
 
@@ -718,7 +733,7 @@ impl State<'_> {
                             self.back += extra;
                         }
 
-                        // eprintln!("inflate: length {}", state.length);
+                        traceln!("inflate: length {}", self.length);
 
                         self.was = self.length;
 
@@ -803,7 +818,7 @@ impl State<'_> {
                             );
                         }
 
-                        // eprintln!("inflate: distance {}", state.offset);
+                        traceln!("inflate: distance {}", self.offset);
 
                         break 'top Mode::Match;
                     }
@@ -811,8 +826,7 @@ impl State<'_> {
                         // NOTE: this branch must be kept in sync with its counterpart in `dispatch`
                         if writer.is_full() {
                             restore!();
-                            #[cfg(all(feature = "std", test))]
-                            eprintln!(
+                            traceln!(
                                 "BufError: writer is full ({} bytes)",
                                 self.writer.capacity()
                             );
@@ -1277,21 +1291,20 @@ impl State<'_> {
                         }
 
                         need_bits!(self, 3);
-                        // self.last = self.bit_reader.bits(1) != 0;
-                        self.flags
-                            .update(Flags::IS_LAST_BLOCK, self.bit_reader.bits(1) != 0);
+                        let last = self.bit_reader.bits(1) != 0;
+                        self.flags.update(Flags::IS_LAST_BLOCK, last);
                         self.bit_reader.drop_bits(1);
 
                         match self.bit_reader.bits(2) {
                             0b00 => {
-                                // eprintln!("inflate:     stored block (last = {last})");
+                                traceln!("inflate:     stored block (last = {last})");
 
                                 self.bit_reader.drop_bits(2);
 
                                 break 'blk Mode::Stored;
                             }
                             0b01 => {
-                                // eprintln!("inflate:     fixed codes block (last = {last})");
+                                traceln!("inflate:     fixed codes block (last = {last})");
 
                                 self.len_table = Table {
                                     codes: Codes::Fixed,
@@ -1314,14 +1327,14 @@ impl State<'_> {
                                 }
                             }
                             0b10 => {
-                                // eprintln!("inflate:     dynamic codes block (last = {last})");
+                                traceln!("inflate:     dynamic codes block (last = {last})");
 
                                 self.bit_reader.drop_bits(2);
 
                                 break 'blk Mode::Table;
                             }
                             0b11 => {
-                                // eprintln!("inflate:     invalid block type");
+                                traceln!("inflate:     invalid block type");
 
                                 self.bit_reader.drop_bits(2);
 
@@ -1341,7 +1354,7 @@ impl State<'_> {
 
                         let hold = self.bit_reader.bits(32) as u32;
 
-                        // eprintln!("hold {hold:#x}");
+                        traceln!("hold {hold:#x}");
 
                         if hold as u16 != !((hold >> 16) as u16) {
                             mode = Mode::Bad;
@@ -1349,7 +1362,7 @@ impl State<'_> {
                         }
 
                         self.length = hold as usize & 0xFFFF;
-                        // eprintln!("inflate:     stored length {}", state.length);
+                        traceln!("inflate:     stored length {}", self.length);
 
                         self.bit_reader.init_bits();
 
@@ -1439,7 +1452,7 @@ impl State<'_> {
                             self.back += extra;
                         }
 
-                        // eprintln!("inflate: length {}", state.length);
+                        traceln!("inflate: length {}", self.length);
 
                         self.was = self.length;
 
@@ -1448,8 +1461,7 @@ impl State<'_> {
                     Mode::Lit => {
                         // NOTE: this branch must be kept in sync with its counterpart in `len_and_friends`
                         if self.writer.is_full() {
-                            #[cfg(all(test, feature = "std"))]
-                            eprintln!("Ok: writer is full ({} bytes)", self.writer.capacity());
+                            traceln!("Ok: writer is full ({} bytes)", self.writer.capacity());
                             break 'label self.inflate_leave(ReturnCode::Ok);
                         }
 
@@ -1521,7 +1533,7 @@ impl State<'_> {
                             break 'label self.bad("invalid distance code too far back\0");
                         }
 
-                        // eprintln!("inflate: distance {}", state.offset);
+                        traceln!("inflate: distance {}", self.offset);
 
                         break 'blk Mode::Match;
                     }
@@ -1530,8 +1542,7 @@ impl State<'_> {
 
                         'match_: loop {
                             if self.writer.is_full() {
-                                #[cfg(all(feature = "std", test))]
-                                eprintln!(
+                                traceln!(
                                     "BufError: writer is full ({} bytes)",
                                     self.writer.capacity()
                                 );
@@ -1630,8 +1641,7 @@ impl State<'_> {
 
                         let InflateTable::Success { root, used } = inflate_table(
                             CodeType::Codes,
-                            &self.lens,
-                            19,
+                            &self.lens[..19],
                             &mut self.codes_codes,
                             7,
                             &mut self.work,
@@ -1729,8 +1739,7 @@ impl State<'_> {
 
                         let InflateTable::Success { root, used } = inflate_table(
                             CodeType::Lens,
-                            &self.lens,
-                            self.nlen,
+                            &self.lens[..self.nlen],
                             &mut self.len_codes,
                             10,
                             &mut self.work,
@@ -1745,8 +1754,7 @@ impl State<'_> {
 
                         let InflateTable::Success { root, used } = inflate_table(
                             CodeType::Dists,
-                            &self.lens[self.nlen..],
-                            self.ndist,
+                            &self.lens[self.nlen..][..self.ndist],
                             &mut self.dist_codes,
                             9,
                             &mut self.work,
@@ -2173,24 +2181,29 @@ impl InflateAllocOffsets {
     fn new() -> Self {
         use core::mem::size_of;
 
-        // 64B padding for SIMD operations
+        // 64B padding for SIMD operations. This allows unaligned operations (up to 512-bit) to run
+        // off the end of the object without issue.
         const WINDOW_PAD_SIZE: usize = 64;
 
+        // 64B alignment of individual items in the alloc.
+        // Note that changing this also requires changes in 'init' and 'copy'.
+        const ALIGN_SIZE: usize = 64;
         let mut curr_size = 0usize;
 
         /* Define sizes */
-        let window_size = (1 << MAX_WBITS) + WINDOW_PAD_SIZE;
         let state_size = size_of::<State>();
+        let window_size = (1 << MAX_WBITS) + WINDOW_PAD_SIZE;
 
         /* Calculate relative buffer positions and paddings */
-        let window_pos = curr_size.next_multiple_of(WINDOW_PAD_SIZE);
-        curr_size += window_pos + window_size;
+        let state_pos = curr_size.next_multiple_of(ALIGN_SIZE);
+        curr_size = state_pos + state_size;
 
-        let state_pos = curr_size.next_multiple_of(64);
-        curr_size += state_pos + state_size;
+        let window_pos = curr_size.next_multiple_of(ALIGN_SIZE);
+        curr_size = window_pos + window_size;
 
-        /* Add 64-1 or 4096-1 to allow window alignment, and round size of buffer up to multiple of 64 */
-        let total_size = (curr_size + (WINDOW_PAD_SIZE - 1)).next_multiple_of(64);
+        /* Add ALIGN_SIZE-1 to allow alignment (done in the 'init' and 'copy' functions), and round
+         * size of buffer up to next multiple of ALIGN_SIZE */
+        let total_size = (curr_size + (ALIGN_SIZE - 1)).next_multiple_of(ALIGN_SIZE);
 
         Self {
             total_size,
@@ -2200,6 +2213,9 @@ impl InflateAllocOffsets {
     }
 }
 
+/// Configuration for decompresssion.
+///
+/// Used with [`decompress_slice`].
 #[derive(Debug, Clone, Copy, Hash, PartialEq, Eq)]
 pub struct InflateConfig {
     pub window_bits: i32,
@@ -2300,8 +2316,7 @@ pub fn reset_with_config(stream: &mut InflateStream, config: InflateConfig) -> R
     }
 
     if window_bits != 0 && !(MIN_WBITS..=MAX_WBITS).contains(&window_bits) {
-        #[cfg(feature = "std")]
-        eprintln!("invalid windowBits");
+        traceln!("invalid windowBits");
         return ReturnCode::StreamError;
     }
 
@@ -2360,7 +2375,7 @@ pub fn codes_used(stream: &InflateStream) -> usize {
 
 pub unsafe fn inflate(stream: &mut InflateStream, flush: InflateFlush) -> ReturnCode {
     if stream.next_out.is_null() || (stream.next_in.is_null() && stream.avail_in != 0) {
-        return ReturnCode::StreamError as _;
+        return ReturnCode::StreamError;
     }
 
     let state = &mut stream.state;
@@ -2389,7 +2404,7 @@ pub unsafe fn inflate(stream: &mut InflateStream, flush: InflateFlush) -> Return
     let out_written = state.out_available - (state.writer.capacity() - state.writer.len());
 
     stream.total_in += in_read as z_size;
-    state.total += out_written;
+    state.total = state.total.wrapping_add(out_written);
     stream.total_out = state.total as _;
 
     stream.avail_in = state.bit_reader.bytes_remaining() as u32;
@@ -2432,12 +2447,12 @@ pub unsafe fn inflate(stream: &mut InflateStream, flush: InflateFlush) -> Return
 
     stream.data_type = state.decoding_state();
 
-    if ((in_read == 0 && out_written == 0) || flush == InflateFlush::Finish as _)
-        && err == (ReturnCode::Ok as _)
+    if ((in_read == 0 && out_written == 0) || flush == InflateFlush::Finish)
+        && err == ReturnCode::Ok
     {
-        ReturnCode::BufError as _
+        ReturnCode::BufError
     } else {
-        err as _
+        err
     }
 }
 
@@ -2713,7 +2728,7 @@ mod tests {
 
         let config = InflateConfig { window_bits: 15 };
 
-        let (_decompressed, err) = uncompress_slice(&mut output, &input, config);
+        let (_decompressed, err) = decompress_slice(&mut output, &input, config);
         assert_eq!(err, ReturnCode::DataError);
     }
 }

@@ -1,6 +1,6 @@
 [package]
 name = "deflate64"
-version = "0.1.10"
+version = "0.1.12"
 edition = "2021"
 
 license = "MIT"
@@ -18,9 +18,21 @@ exclude = [
     "test-assets/**",
 ]
 
+[features]
+default = []
+checkpoint = []
+
 [dependencies]
 
 [dev-dependencies]
 bytemuck = { version = "1.13.1", features = ["derive"] }
 proptest = "1.2.0"
 tempfile = "3.7.1"
+
+[[bench]]
+name = "inflate"
+harness = false
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]

@@ -1,6 +1,6 @@
 use crate::{
     config,
-    config::tree::{keys, Gitoxide, Key, Section},
+    config::tree::{Gitoxide, Key, Section, keys},
 };
 
 impl Gitoxide {
@@ -33,6 +33,16 @@ impl Gitoxide {
     pub const USER_AGENT: keys::Any = keys::Any::new("userAgent", &config::Tree::GITOXIDE).with_note(
         "The user agent presented on the git protocol layer, serving as fallback for when no `http.userAgent` is set",
     );
+
+    /// The `gitoxide.term` key. Mainly used for supporting building an editor command, Git style.
+    pub const TERM: keys::Any = keys::Any::new("term", &config::Tree::GITOXIDE).with_environment_override("TERM");
+    /// The `gitoxide.visual` key. Mainly used for supporting building an editor command, Git style.
+    pub const VISUAL: keys::Program =
+        keys::Program::new_program("visual", &config::Tree::GITOXIDE).with_environment_override("VISUAL");
+    /// The `gitoxide.editor` key. Mainly used for supporting building an editor command, Git style.
+    pub const EDITOR: keys::Program =
+        keys::Program::new_program("editor", &config::Tree::GITOXIDE).with_environment_override("EDITOR");
+
     /// The `gitoxide.tracePacket` Key.
     pub const TRACE_PACKET: keys::Boolean = keys::Boolean::new_boolean("tracePacket", &config::Tree::GITOXIDE)
         .with_environment_override("GIT_TRACE_PACKET");
@@ -47,7 +57,14 @@ impl Section for Gitoxide {
     }
 
     fn keys(&self) -> &[&dyn Key] {
-        &[&Self::USER_AGENT, &Self::TRACE_PACKET, &Self::PARSE_PRECIOUS]
+        &[
+            &Self::USER_AGENT,
+            &Self::TERM,
+            &Self::VISUAL,
+            &Self::EDITOR,
+            &Self::TRACE_PACKET,
+            &Self::PARSE_PRECIOUS,
+        ]
     }
 
     fn sub_sections(&self) -> &[&dyn Section] {
@@ -69,26 +86,32 @@ impl Section for Gitoxide {
 }
 
 mod subsections {
-    use crate::config::{
-        tree::{http, keys, Gitoxide, Key, Section},
-        Tree,
+    use crate::{
+        Result,
+        bstr::ByteSlice,
+        config::{
+            Tree,
+            tree::{Gitoxide, Key, Section, http, keys},
+        },
     };
 
     /// The `Core` sub-section.
     #[derive(Copy, Clone, Default)]
     pub struct Core;
 
-    /// The `gitoxide.allow.protocolFromUser` key.
+    /// The `gitoxide.core.refsNamespace` key.
     pub type RefsNamespace = keys::Any<super::validate::RefsNamespace>;
+    /// A path to an alternate index file.
+    pub type IndexFile = keys::Any<super::validate::NonEmptyPath>;
 
     impl RefsNamespace {
         /// Derive the negotiation algorithm identified by `name`, case-sensitively.
-        pub fn try_into_refs_namespace(
-            &'static self,
-            name: std::borrow::Cow<'_, crate::bstr::BStr>,
-        ) -> Result<gix_ref::Namespace, crate::config::refs_namespace::Error> {
-            gix_ref::namespace::expand(name.as_ref())
-                .map_err(|err| crate::config::key::Error::from_value(self, name.into_owned()).with_source(err))
+        pub fn try_into_refs_namespace(&'static self, name: impl gix_utils::AsBStr) -> Result<gix_ref::Namespace> {
+            use gix_error::ResultExt;
+
+            let name = name.as_bstr();
+            gix_ref::namespace::expand(name.as_bstr())
+                .or_raise(|| crate::config::key::error_with_value(self, "Invalid reference namespace", name))
         }
     }
 
@@ -112,9 +135,23 @@ mod subsections {
 
         /// The `gitoxide.core.shallowFile` key.
         pub const SHALLOW_FILE: keys::Path = keys::Path::new_path("shallowFile", &Gitoxide::CORE)
+            .with_default(b"shallow")
             .with_environment_override("GIT_SHALLOW_FILE")
             .with_deviation(
                 "relative file paths will always be made relative to the git-common-dir, whereas `git` keeps them as is.",
+            );
+
+        /// The `gitoxide.core.indexFile` key, which selects an alternate index file.
+        ///
+        /// `GIT_INDEX_FILE` is mapped to this key when environment overrides are enabled and takes precedence over
+        /// configured values. Relative configured paths use the private Git directory; relative `GIT_INDEX_FILE`
+        /// values use the current directory captured when opening. The selected path is always made absolute,
+        /// without canonicalization or requiring the file to exist. An empty value is invalid.
+        pub const INDEX_FILE: IndexFile =
+            keys::Any::new_with_validate("indexFile", &Gitoxide::CORE, super::validate::NonEmptyPath)
+            .with_environment_override("GIT_INDEX_FILE")
+            .with_deviation(
+                "Git has no configuration key for an alternate index. Relative configured paths use the private Git directory. Relative GIT_INDEX_FILE values are anchored to the current directory captured when opening, whereas Git keeps them relative to the process's current directory on each use.",
             );
 
         /// The `gitoxide.core.filterProcessDelay` key (default `true`).
@@ -133,6 +170,16 @@ mod subsections {
                 .with_environment_override("GIX_EXTERNAL_COMMAND_STDERR");
 
         /// The `gitoxide.core.refsNamespace` key.
+        ///
+        /// It selects the reference namespace used when opening or reloading a repository. Namespaces let multiple
+        /// logical repositories share the same object database without exposing or overwriting each other's branches
+        /// and tags. For example, in namespace `foo`, the logical reference `refs/heads/main` is read from and written
+        /// to `refs/namespaces/foo/refs/heads/main`, with the namespace hidden from returned reference names.
+        ///
+        /// Only reference access is scoped; the object database, configuration, and worktree remain shared. If unset,
+        /// references are accessed without a namespace. When repository-local environment variables are permitted,
+        /// `GIT_NAMESPACE` overrides this key and accepts the same syntax. Slash-separated values form nested
+        /// namespaces, so `foo/bar` expands to `refs/namespaces/foo/refs/namespaces/bar/`.
         pub const REFS_NAMESPACE: RefsNamespace =
             keys::Any::new_with_validate("refsNamespace", &Gitoxide::CORE, super::validate::RefsNamespace)
                 .with_environment_override("GIT_NAMESPACE");
@@ -149,6 +196,7 @@ mod subsections {
                 &Self::USE_NSEC,
                 &Self::USE_STDEV,
                 &Self::SHALLOW_FILE,
+                &Self::INDEX_FILE,
                 &Self::PROTECT_WINDOWS,
                 &Self::FILTER_PROCESS_DELAY,
                 &Self::EXTERNAL_COMMAND_STDERR,
@@ -266,16 +314,16 @@ mod subsections {
     pub struct Allow;
 
     /// The `gitoxide.allow.protocolFromUser` key.
-    pub type ProtocolFromUser = keys::Any<super::validate::ProtocolFromUser>;
+    pub type ProtocolFromUser = keys::Boolean;
 
     impl Allow {
+        /// The `gitoxide.allow.protocol` key, mapped from `GIT_ALLOW_PROTOCOL`.
+        pub const PROTOCOL: keys::Any =
+            keys::Any::new("protocol", &Gitoxide::ALLOW).with_environment_override("GIT_ALLOW_PROTOCOL");
         /// The `gitoxide.allow.protocolFromUser` key.
-        pub const PROTOCOL_FROM_USER: ProtocolFromUser = ProtocolFromUser::new_with_validate(
-            "protocolFromUser",
-            &Gitoxide::ALLOW,
-            super::validate::ProtocolFromUser,
-        )
-        .with_environment_override("GIT_PROTOCOL_FROM_USER");
+        pub const PROTOCOL_FROM_USER: ProtocolFromUser =
+            ProtocolFromUser::new_boolean("protocolFromUser", &Gitoxide::ALLOW)
+                .with_environment_override("GIT_PROTOCOL_FROM_USER");
     }
 
     impl Section for Allow {
@@ -284,7 +332,7 @@ mod subsections {
         }
 
         fn keys(&self) -> &[&dyn Key] {
-            &[&Self::PROTOCOL_FROM_USER]
+            &[&Self::PROTOCOL, &Self::PROTOCOL_FROM_USER]
         }
 
         fn parent(&self) -> Option<&dyn Section> {
@@ -297,12 +345,10 @@ mod subsections {
     pub struct Author;
 
     impl Author {
-        /// The `gitoxide.author.nameFallback` key.
-        pub const NAME_FALLBACK: keys::Any =
-            keys::Any::new("nameFallback", &Gitoxide::AUTHOR).with_environment_override("GIT_AUTHOR_NAME");
-        /// The `gitoxide.author.emailFallback` key.
-        pub const EMAIL_FALLBACK: keys::Any =
-            keys::Any::new("emailFallback", &Gitoxide::AUTHOR).with_environment_override("GIT_AUTHOR_EMAIL");
+        /// The `gitoxide.author.nameFallback` key, used after `author.name` and `user.name`.
+        pub const NAME_FALLBACK: keys::Any = keys::Any::new("nameFallback", &Gitoxide::AUTHOR);
+        /// The `gitoxide.author.emailFallback` key, used after `author.email` and `user.email`.
+        pub const EMAIL_FALLBACK: keys::Any = keys::Any::new("emailFallback", &Gitoxide::AUTHOR);
     }
 
     impl Section for Author {
@@ -324,7 +370,9 @@ mod subsections {
     pub struct User;
 
     impl User {
-        /// The `gitoxide.user.emailFallback` key.
+        /// The `gitoxide.user.emailFallback` key, populated from `EMAIL`.
+        ///
+        /// It is tried after `user.email` and before author- or committer-specific fallbacks.
         pub const EMAIL_FALLBACK: keys::Any =
             keys::Any::new("emailFallback", &Gitoxide::USER).with_environment_override("EMAIL");
     }
@@ -429,11 +477,34 @@ mod subsections {
             keys::UnsignedInteger::new_unsigned_integer("cacheLimit", &Gitoxide::OBJECTS)
                 .with_note("If unset or 0, there is no object cache")
                 .with_environment_override("GIX_OBJECT_CACHE_MEMORY");
+        /// The `gitoxide.objects.allocLimit` key.
+        ///
+        /// Implemented for:
+        /// - packed object decoding in `gix-pack::data::File`
+        /// - delta-tree packed object traversal in `gix-pack::index`
+        /// - multi-pack-index name decoding in `gix-pack::multi_index::File`
+        /// - direct packed-object inflation in `gix-odb`
+        pub const ALLOC_LIMIT: keys::UnsignedInteger =
+            keys::UnsignedInteger::new_unsigned_integer("allocLimit", &Gitoxide::OBJECTS)
+                .with_environment_override("GIT_ALLOC_LIMIT")
+                .with_note("The maximum size of a single allocation caused by user-controlled on-disk object data. In fact, it's used for all untrusted data that causes allocations.");
+        /// The default `allocLimitIfReducedTrust` in bytes applied when a repository is opened with reduced trust
+        /// and no explicit [`ALLOC_LIMIT`][Self::ALLOC_LIMIT] exists.
+        pub const ALLOC_LIMIT_IF_REDUCED_TRUST_DEFAULT: usize = 16 * 1024 * 1024;
+        /// The `gitoxide.objects.allocLimitIfReducedTrust` key.
+        ///
+        /// If set, repositories opened with reduced trust receive [`ALLOC_LIMIT`][Self::ALLOC_LIMIT] set to this value
+        /// when no explicit allocation limit exists. A value of `0` disables this fallback.
+        pub const ALLOC_LIMIT_IF_REDUCED_TRUST: keys::UnsignedInteger =
+            keys::UnsignedInteger::new_unsigned_integer("allocLimitIfReducedTrust", &Gitoxide::OBJECTS).with_note(
+                "The default allocation limit used for reduced-trust repositories when no explicit allocLimit is configured; set to 0 to disable it",
+            );
         /// The `gitoxide.objects.noReplace` key.
         pub const NO_REPLACE: keys::Boolean = keys::Boolean::new_boolean("noReplace", &Gitoxide::OBJECTS);
         /// The `gitoxide.objects.replaceRefBase` key.
-        pub const REPLACE_REF_BASE: keys::Any =
-            keys::Any::new("replaceRefBase", &Gitoxide::OBJECTS).with_environment_override("GIT_REPLACE_REF_BASE");
+        pub const REPLACE_REF_BASE: keys::Any = keys::Any::new("replaceRefBase", &Gitoxide::OBJECTS)
+            .with_default(b"refs/replace/")
+            .with_environment_override("GIT_REPLACE_REF_BASE");
     }
 
     impl Section for Objects {
@@ -442,7 +513,12 @@ mod subsections {
         }
 
         fn keys(&self) -> &[&dyn Key] {
-            &[&Self::CACHE_LIMIT, &Self::REPLACE_REF_BASE]
+            &[
+                &Self::CACHE_LIMIT,
+                &Self::ALLOC_LIMIT,
+                &Self::ALLOC_LIMIT_IF_REDUCED_TRUST,
+                &Self::REPLACE_REF_BASE,
+            ]
         }
 
         fn parent(&self) -> Option<&dyn Section> {
@@ -456,11 +532,13 @@ mod subsections {
 
     impl Committer {
         /// The `gitoxide.committer.nameFallback` key.
-        pub const NAME_FALLBACK: keys::Any =
-            keys::Any::new("nameFallback", &Gitoxide::COMMITTER).with_environment_override("GIT_COMMITTER_NAME");
+        ///
+        /// It is tried after `committer.name` and `user.name`.
+        pub const NAME_FALLBACK: keys::Any = keys::Any::new("nameFallback", &Gitoxide::COMMITTER);
         /// The `gitoxide.committer.emailFallback` key.
-        pub const EMAIL_FALLBACK: keys::Any =
-            keys::Any::new("emailFallback", &Gitoxide::COMMITTER).with_environment_override("GIT_COMMITTER_EMAIL");
+        ///
+        /// It is tried after `committer.email` and `user.email`.
+        pub const EMAIL_FALLBACK: keys::Any = keys::Any::new("emailFallback", &Gitoxide::COMMITTER);
     }
 
     impl Section for Committer {
@@ -538,24 +616,26 @@ mod subsections {
 pub use subsections::{Allow, Author, Commit, Committer, Core, Credentials, Http, Https, Objects, Pathspec, Ssh, User};
 
 pub mod validate {
-    use std::error::Error;
+    use gix_error::bail;
 
-    use crate::{bstr::BStr, config::tree::keys::Validate};
+    use crate::{Result, bstr::BStr, config::tree::keys::Validate};
 
-    pub struct ProtocolFromUser;
-    impl Validate for ProtocolFromUser {
-        fn validate(&self, value: &BStr) -> Result<(), Box<dyn Error + Send + Sync + 'static>> {
-            if value != "1" {
-                return Err("GIT_PROTOCOL_FROM_USER is either unset or as the value '1'".into());
-            }
+    #[derive(Clone, Copy)]
+    pub struct RefsNamespace;
+    impl Validate for RefsNamespace {
+        fn validate(&self, value: &BStr) -> Result {
+            super::Core::REFS_NAMESPACE.try_into_refs_namespace(value)?;
             Ok(())
         }
     }
 
-    pub struct RefsNamespace;
-    impl Validate for RefsNamespace {
-        fn validate(&self, value: &BStr) -> Result<(), Box<dyn Error + Send + Sync + 'static>> {
-            super::Core::REFS_NAMESPACE.try_into_refs_namespace(value.into())?;
+    #[derive(Clone, Copy)]
+    pub struct NonEmptyPath;
+    impl Validate for NonEmptyPath {
+        fn validate(&self, value: &BStr) -> Result {
+            if value.is_empty() {
+                bail!(gix_error::validation("index file path must not be empty"));
+            }
             Ok(())
         }
     }

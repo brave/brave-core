@@ -1,4 +1,4 @@
-use crate::runtime::task::{Header, RawTask};
+use crate::runtime::task::{AbortHandle, Header, RawTask};
 
 use std::fmt;
 use std::future::Future;
@@ -22,11 +22,15 @@ cfg_rt! {
     /// This `struct` is created by the [`task::spawn`] and [`task::spawn_blocking`]
     /// functions.
     ///
+    /// It is guaranteed that the destructor of the spawned task has finished
+    /// before task completion is observed via `JoinHandle` `await`,
+    /// [`JoinHandle::is_finished`] or [`AbortHandle::is_finished`].
+    ///
     /// # Cancel safety
     ///
-    /// The `&mut JoinHandle<T>` type is cancel safe. If it is used as the event
-    /// in a `tokio::select!` statement and some other branch completes first,
-    /// then it is guaranteed that the output of the task is not lost.
+    /// Awaiting a `&mut JoinHandle<T>` is cancel safe. If it is used as a
+    /// branch in `tokio::select!` and another branch completes first, then it
+    /// is guaranteed that the output of the task is not lost.
     ///
     /// If a `JoinHandle` is dropped, then the task continues running in the
     /// background and its return value is lost.
@@ -300,9 +304,9 @@ impl<T> JoinHandle<T> {
     /// ```
     /// [cancelled]: method@super::error::JoinError::is_cancelled
     #[must_use = "abort handles do nothing unless `.abort` is called"]
-    pub fn abort_handle(&self) -> super::AbortHandle {
+    pub fn abort_handle(&self) -> AbortHandle {
         self.raw.ref_inc();
-        super::AbortHandle::new(self.raw)
+        AbortHandle::new(self.raw)
     }
 
     /// Returns a [task ID] that uniquely identifies this task relative to other
@@ -339,8 +343,7 @@ impl<T> Future for JoinHandle<T> {
         //
         // The type of `T` must match the task's output type.
         unsafe {
-            self.raw
-                .try_read_output(&mut ret as *mut _ as *mut (), cx.waker());
+            self.raw.try_read_output(&mut ret, cx.waker());
         }
 
         if ret.is_ready() {

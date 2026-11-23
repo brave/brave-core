@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
 /*!
-<!-- tidy:crate-doc:start -->
+<!-- Note: Document from sync-markdown-to-rustdoc:start through sync-markdown-to-rustdoc:end
+     is synchronized from README.md. Any changes to that range are not preserved. -->
+<!-- tidy:sync-markdown-to-rustdoc:start -->
+
 A lightweight version of [pin-project] written with declarative macros.
 
 ## Usage
@@ -18,7 +21,7 @@ pin-project-lite = "0.2"
 [`pin_project!`] macro creates a projection type covering all the fields of
 struct.
 
-```rust
+```
 use std::pin::Pin;
 
 use pin_project_lite::pin_project;
@@ -43,7 +46,7 @@ impl<T, U> Struct<T, U> {
 To use [`pin_project!`] on enums, you need to name the projection type
 returned from the method.
 
-```rust
+```
 use std::pin::Pin;
 
 use pin_project_lite::pin_project;
@@ -108,7 +111,7 @@ pin-project supports this.
 [pin-project]: https://github.com/taiki-e/pin-project
 [unsafe-unpin]: https://docs.rs/pin-project/latest/pin_project/attr.pin_project.html#unsafeunpin
 
-<!-- tidy:crate-doc:end -->
+<!-- tidy:sync-markdown-to-rustdoc:end -->
 
 [not-unpin-lite]: pin_project#unpin
 */
@@ -116,10 +119,12 @@ pin-project supports this.
 #![no_std]
 #![doc(test(
     no_crate_inject,
-    attr(
-        deny(warnings, rust_2018_idioms, single_use_lifetimes),
-        allow(dead_code, unused_variables)
-    )
+    attr(allow(
+        dead_code,
+        unused_variables,
+        clippy::undocumented_unsafe_blocks,
+        clippy::unused_trait_names,
+    ))
 ))]
 // #![warn(unsafe_op_in_unsafe_fn)] // requires Rust 1.52
 #![warn(
@@ -130,9 +135,9 @@ pin-project supports this.
     clippy::exhaustive_enums,
     clippy::exhaustive_structs,
     clippy::impl_trait_in_params,
-    // clippy::missing_inline_in_public_items,
     clippy::std_instead_of_alloc,
     clippy::std_instead_of_core,
+    // clippy::missing_inline_in_public_items,
 )]
 
 /// A macro that creates a projection type covering all the fields of struct.
@@ -330,14 +335,13 @@ pin-project supports this.
 ///
 /// # Pinned Drop
 ///
-/// In order to correctly implement pin projections, a type’s [`Drop`] impl must not move out of any
-/// structurally pinned fields. Unfortunately, [`Drop::drop`] takes `&mut Self`, not `Pin<&mut
-/// Self>`.
+/// In order to correctly implement pin projections, a type's [`Drop`] impl must not move out of any
+/// structurally pinned fields. Unfortunately, [`Drop::drop`] takes `&mut Self`, not `Pin<&mut Self>`.
 ///
 /// To implement [`Drop`] for type that has pin, add an `impl PinnedDrop` block at the end of the
 /// [`pin_project`] macro block. PinnedDrop has the following interface:
 ///
-/// ```rust
+/// ```
 /// # use std::pin::Pin;
 /// trait PinnedDrop {
 ///     fn drop(this: Pin<&mut Self>);
@@ -352,7 +356,7 @@ pin-project supports this.
 ///
 /// `PinnedDrop::drop` will never be called more than once, just like [`Drop::drop`].
 ///
-/// ```rust
+/// ```
 /// use pin_project_lite::pin_project;
 ///
 /// pin_project! {
@@ -596,6 +600,8 @@ macro_rules! __pin_project_constant {
             // Note:
             // - Lint-based tricks aren't perfect, but they're much better than nothing:
             //   https://github.com/taiki-e/pin-project-lite/issues/26
+            //   Since Rust 1.69, unaligned_references is a hard error, so this issue only
+            //   affects projects that using only very old compilers.
             //
             // - Enable both unaligned_references and safe_packed_borrows lints
             //   because unaligned_references lint does not exist in older compilers:
@@ -1329,7 +1335,7 @@ macro_rules! __pin_project_make_drop_impl {
             $(#[$drop_fn_attrs])*
             fn drop(&mut self) {
                 // Implementing `__DropInner::__drop_inner` is safe, but calling it is not safe.
-                // This is because destructors can be called multiple times in safe code and
+                // This is because if calling it is safe destructors can be called multiple times in safe code and
                 // [double dropping is unsound](https://github.com/rust-lang/rust/pull/62360).
                 //
                 // `__drop_inner` is defined as a safe method, but this is fine since
@@ -1386,7 +1392,7 @@ macro_rules! __pin_project_make_drop_impl {
         // This will result in a compilation error, which is exactly what we want.
         trait MustNotImplDrop {}
         #[allow(clippy::drop_bounds, drop_bounds)]
-        impl<T: $crate::__private::Drop> MustNotImplDrop for T {}
+        impl<T: ?$crate::__private::Sized + $crate::__private::Drop> MustNotImplDrop for T {}
         impl<$($impl_generics)*> MustNotImplDrop for $ident <$($ty_generics)*>
         $(where
             $($where_clause)*)?
@@ -1694,7 +1700,7 @@ pub mod __private {
     use core::mem::ManuallyDrop;
     #[doc(hidden)]
     pub use core::{
-        marker::{PhantomData, PhantomPinned, Unpin},
+        marker::{PhantomData, PhantomPinned, Sized, Unpin},
         ops::Drop,
         pin::Pin,
         ptr,

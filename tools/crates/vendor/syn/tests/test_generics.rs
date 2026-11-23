@@ -68,7 +68,6 @@ fn test_split_for_impl() {
                             ident: "a",
                         },
                     ],
-                    eq_token: Some,
                     default: Some(Type::Tuple),
                 }),
             ],
@@ -87,6 +86,7 @@ fn test_split_for_impl() {
                         },
                         bounds: [
                             TypeParamBound::Trait(TraitBound {
+                                modifiers: TraitBoundModifiers,
                                 path: Path {
                                     segments: [
                                         PathSegment {
@@ -151,6 +151,7 @@ fn test_type_param_bound() {
     let tokens = quote!(Debug);
     snapshot!(tokens as TypeParamBound, @r#"
     TypeParamBound::Trait(TraitBound {
+        modifiers: TraitBoundModifiers,
         path: Path {
             segments: [
                 PathSegment {
@@ -164,7 +165,8 @@ fn test_type_param_bound() {
     let tokens = quote!(?Sized);
     snapshot!(tokens as TypeParamBound, @r#"
     TypeParamBound::Trait(TraitBound {
-        modifier: TraitBoundModifier::Maybe,
+        modifiers: TraitBoundModifiers,
+        maybe: Some,
         path: Path {
             segments: [
                 PathSegment {
@@ -187,6 +189,7 @@ fn test_type_param_bound() {
                 }),
             ],
         }),
+        modifiers: TraitBoundModifiers,
         path: Path {
             segments: [
                 PathSegment {
@@ -227,7 +230,9 @@ fn test_fn_precedence_in_where_clause() {
     snapshot!(input as ItemFn, @r#"
     ItemFn {
         vis: Visibility::Inherited,
+        modifiers: FnModifiers,
         sig: Signature {
+            safety: Safety::Default,
             ident: "f",
             generics: Generics {
                 lt_token: Some,
@@ -251,6 +256,7 @@ fn test_fn_precedence_in_where_clause() {
                             },
                             bounds: [
                                 TypeParamBound::Trait(TraitBound {
+                                    modifiers: TraitBoundModifiers,
                                     path: Path {
                                         segments: [
                                             PathSegment {
@@ -274,6 +280,7 @@ fn test_fn_precedence_in_where_clause() {
                                 }),
                                 Token![+],
                                 TypeParamBound::Trait(TraitBound {
+                                    modifiers: TraitBoundModifiers,
                                     path: Path {
                                         segments: [
                                             PathSegment {
@@ -342,4 +349,15 @@ fn no_opaque_drop() {
             );
             lifetime
         });
+}
+
+#[test]
+fn type_param_with_colon_and_no_bounds() {
+    let tokens = quote!(T:);
+    snapshot!(tokens as GenericParam, @r#"
+    GenericParam::Type(TypeParam {
+        ident: "T",
+        colon_token: Some,
+    })
+    "#);
 }

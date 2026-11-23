@@ -1,7 +1,7 @@
 //! Exploit Maturity (E)
 
 use crate::{
-    Error, Result,
+    Error,
     v4::metric::{Metric, MetricType},
 };
 use alloc::borrow::ToOwned;
@@ -37,7 +37,7 @@ use core::{fmt, str::FromStr};
 /// > multiple sources of threat intelligence as many are not comprehensive.
 /// > This information should be updated as frequently as possible and its
 /// > application to CVSS assessment should be automated.
-#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+#[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
 pub enum ExploitMaturity {
     /// Not Defined (X)
     ///
@@ -45,6 +45,7 @@ pub enum ExploitMaturity {
     /// > Maturity characteristics. This is the default value and is equivalent
     /// > to Attacked (A) for the purposes of the calculation of the score by
     /// > assuming the worst case.
+    #[default]
     NotDefined,
     /// Unreported (U)
     ///
@@ -73,21 +74,15 @@ pub enum ExploitMaturity {
     Attacked,
 }
 
-impl Default for ExploitMaturity {
-    fn default() -> Self {
-        Self::NotDefined
-    }
-}
-
 impl Metric for ExploitMaturity {
     const TYPE: MetricType = MetricType::E;
 
     fn as_str(self) -> &'static str {
         match self {
-            ExploitMaturity::NotDefined => "X",
-            ExploitMaturity::Attacked => "A",
-            ExploitMaturity::ProofOfConcept => "P",
-            ExploitMaturity::Unreported => "U",
+            Self::NotDefined => "X",
+            Self::Attacked => "A",
+            Self::ProofOfConcept => "P",
+            Self::Unreported => "U",
         }
     }
 }
@@ -101,12 +96,12 @@ impl fmt::Display for ExploitMaturity {
 impl FromStr for ExploitMaturity {
     type Err = Error;
 
-    fn from_str(s: &str) -> Result<Self> {
+    fn from_str(s: &str) -> Result<Self, Error> {
         match s {
-            "X" => Ok(ExploitMaturity::NotDefined),
-            "A" => Ok(ExploitMaturity::Attacked),
-            "P" => Ok(ExploitMaturity::ProofOfConcept),
-            "U" => Ok(ExploitMaturity::Unreported),
+            "X" => Ok(Self::NotDefined),
+            "A" => Ok(Self::Attacked),
+            "P" => Ok(Self::ProofOfConcept),
+            "U" => Ok(Self::Unreported),
             _ => Err(Error::InvalidMetricV4 {
                 metric_type: Self::TYPE,
                 value: s.to_owned(),
@@ -125,27 +120,22 @@ pub(crate) mod merge {
     use alloc::borrow::ToOwned;
     use core::str::FromStr;
 
-    #[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+    #[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
     pub(crate) enum MergedExploitMaturity {
+        #[default]
         Attacked,
         ProofOfConcept,
         Unreported,
     }
 
-    impl Default for MergedExploitMaturity {
-        fn default() -> Self {
-            Self::Attacked
-        }
-    }
-
     impl FromStr for MergedExploitMaturity {
         type Err = Error;
 
-        fn from_str(s: &str) -> Result<Self> {
+        fn from_str(s: &str) -> Result<Self, Error> {
             match s {
-                "A" => Ok(MergedExploitMaturity::Attacked),
-                "P" => Ok(MergedExploitMaturity::ProofOfConcept),
-                "U" => Ok(MergedExploitMaturity::Unreported),
+                "A" => Ok(Self::Attacked),
+                "P" => Ok(Self::ProofOfConcept),
+                "U" => Ok(Self::Unreported),
                 _ => Err(Error::InvalidMetricV4 {
                     metric_type: MetricType::E,
                     value: s.to_owned(),

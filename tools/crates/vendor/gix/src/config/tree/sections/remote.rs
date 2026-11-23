@@ -1,6 +1,6 @@
 use crate::{
     config,
-    config::tree::{http, keys, Key, Remote, Section, SubSectionRequirement},
+    config::tree::{Key, Remote, Section, SubSectionRequirement, http, keys},
 };
 
 const NAME_PARAMETER: Option<SubSectionRequirement> = Some(SubSectionRequirement::Parameter("name"));
@@ -56,14 +56,9 @@ impl Section for Remote {
 pub type TagOpt = keys::Any<validate::TagOpt>;
 
 mod tag_opts {
-    use std::borrow::Cow;
+    use gix_error::bail;
 
-    use crate::{
-        bstr::{BStr, ByteSlice},
-        config,
-        config::tree::remote::TagOpt,
-        remote,
-    };
+    use crate::{Result, bstr::ByteSlice, config, config::tree::remote::TagOpt, remote};
 
     impl TagOpt {
         /// Try to interpret `value` as tag option.
@@ -73,28 +68,31 @@ mod tag_opts {
         /// It's heavily biased towards the git command-line unfortunately, and the only
         /// value of its kind. Maybe in future more values will be supported which are less
         /// about passing them to a sub-process.
-        pub fn try_into_tag_opt(
-            &'static self,
-            value: Cow<'_, BStr>,
-        ) -> Result<remote::fetch::Tags, config::key::GenericErrorWithValue> {
-            Ok(match value.as_ref().as_bytes() {
+        pub fn try_into_tag_opt(&'static self, value: impl gix_utils::AsBStr) -> Result<remote::fetch::Tags> {
+            let value = value.as_bstr();
+            Ok(match value.as_bstr().as_bytes() {
                 b"--tags" => remote::fetch::Tags::All,
                 b"--no-tags" => remote::fetch::Tags::None,
-                _ => return Err(config::key::GenericErrorWithValue::from_value(self, value.into_owned())),
+                _ => {
+                    bail!(config::key::error_with_value(
+                        self,
+                        "Invalid configuration value",
+                        value,
+                    ));
+                }
             })
         }
     }
 }
 
 pub mod validate {
-    use std::{borrow::Cow, error::Error};
 
-    use crate::{bstr::BStr, config::tree::keys::Validate};
+    use crate::{Result, bstr::BStr, config::tree::keys::Validate};
 
     pub struct TagOpt;
     impl Validate for TagOpt {
-        fn validate(&self, value: &BStr) -> Result<(), Box<dyn Error + Send + Sync + 'static>> {
-            super::Remote::TAG_OPT.try_into_tag_opt(Cow::Borrowed(value))?;
+        fn validate(&self, value: &BStr) -> Result {
+            super::Remote::TAG_OPT.try_into_tag_opt(value)?;
             Ok(())
         }
     }

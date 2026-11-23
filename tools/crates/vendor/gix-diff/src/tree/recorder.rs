@@ -4,7 +4,7 @@ use gix_object::{
     tree,
 };
 
-use crate::tree::{visit, visit::Relation, Recorder, Visit};
+use crate::tree::{Recorder, Visit, visit, visit::Relation};
 
 /// Describe how to track the location of a change.
 #[derive(Debug, Clone, Copy, Eq, PartialEq)]
@@ -20,7 +20,7 @@ pub enum Location {
 /// A Change as observed by a call to [`visit(…)`](Visit::visit()), enhanced with the path affected by the change.
 /// Its similar to [`visit::Change`] but includes the path that changed.
 #[derive(Clone, Debug, PartialEq, Eq)]
-#[allow(missing_docs)]
+#[expect(missing_docs)]
 pub enum Change {
     Addition {
         entry_mode: tree::EntryMode,
@@ -174,6 +174,6 @@ impl Visit for Recorder {
                 path: self.path_clone(),
             },
         });
-        visit::Action::Continue
+        std::ops::ControlFlow::Continue(())
     }
 }

@@ -1,0 +1,15 @@
+[format.rules]
+indent-width = 4
+key-quote-style = "single"
+
+[[schemas]]
+toml-version = "v1.0.0"
+path = "tombi://www.schemastore.org/cargo.json"
+include = ["Cargo.toml"]
+
+# Keep the hand-written order of the root tables in Cargo.toml files; tombi
+# 1.11 changed the order its bundled Cargo schema enforces. Keys inside each
+# table (e.g. dependencies) are still sorted by the schema.
+[[schemas.overrides]]
+targets = [""]
+format.rules.table-keys-order.enabled = false

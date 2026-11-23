@@ -88,10 +88,10 @@ impl<'de> serde_core::Deserializer<'de> for ValueDeserializer<'de> {
     where
         V: serde_core::de::Visitor<'de>,
     {
-        let span = self.span.clone();
+        let span = self.span;
         match self.input {
             DeValue::String(DeString::Owned(v)) => visitor.visit_string(v),
-            DeValue::String(DeString::Borrowed(v)) => visitor.visit_str(v),
+            DeValue::String(DeString::Borrowed(v)) => visitor.visit_borrowed_str(v),
             DeValue::Integer(v) => {
                 if let Some(v) = v.to_i64() {
                     visitor.visit_i64(v)
@@ -228,7 +228,7 @@ impl<'de> serde_core::Deserializer<'de> for ValueDeserializer<'de> {
     where
         V: serde_core::de::Visitor<'de>,
     {
-        let span = self.span.clone();
+        let span = self.span;
         match self.input {
             DeValue::String(v) => visitor.visit_enum(v.into_deserializer()),
             DeValue::Table(v) => {

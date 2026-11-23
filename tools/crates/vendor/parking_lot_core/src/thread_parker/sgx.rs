@@ -1,10 +1,3 @@
-// Copyright 2016 Amanieu d'Antras
-//
-// Licensed under the Apache License, Version 2.0, <LICENSE-APACHE or
-// http://apache.org/licenses/LICENSE-2.0> or the MIT license <LICENSE-MIT or
-// http://opensource.org/licenses/MIT>, at your option. This file may not be
-// copied, modified, or distributed except according to those terms.
-
 use core::sync::atomic::{AtomicBool, Ordering};
 use std::io::ErrorKind;
 use std::time::Instant;
@@ -14,7 +7,7 @@ use std::{
         thread::current as current_tcs,
         usercalls::{
             self,
-            raw::{Tcs, EV_UNPARK, WAIT_INDEFINITE},
+            raw::{EV_UNPARK, Tcs, WAIT_INDEFINITE},
         },
     },
     thread,
@@ -52,26 +45,29 @@ impl super::ThreadParkerT for ThreadParker {
     #[inline]
     unsafe fn park(&self) {
         while self.parked.load(Ordering::Acquire) {
-            let result = usercalls::wait(EV_UNPARK, WAIT_INDEFINITE);
-            debug_assert_eq!(result.expect("wait returned error") & EV_UNPARK, EV_UNPARK);
+            let events = usercalls::wait(EV_UNPARK, WAIT_INDEFINITE)
+                .expect("wait returned an unexpected error");
+            assert_eq!(events & EV_UNPARK, EV_UNPARK);
         }
     }
 
     #[inline]
     unsafe fn park_until(&self, timeout: Instant) -> bool {
         while self.parked.load(Ordering::Acquire) {
-            let remaining = match timeout.checked_duration_since(Instant::now()) {
-                Some(remaining) => remaining,
-                None => {
-                    return false;
-                }
-            };
-            let remaining_nanos = u128::min(remaining.as_nanos(), WAIT_INDEFINITE as u128 - 1) as u64;
+            let now = Instant::now();
+            if timeout <= now {
+                return false;
+            }
+            let remaining = timeout - now;
+            let remaining_nanos =
+                u128::min(remaining.as_nanos(), WAIT_INDEFINITE as u128 - 1) as u64;
 
-            if let Err(e) = usercalls::wait(EV_UNPARK, remaining_nanos) {
-                if e.kind() == ErrorKind::TimedOut || e.kind() == ErrorKind::WouldBlock {
-                    return false;
-                }
+            match usercalls::wait(EV_UNPARK, remaining_nanos) {
+                Ok(_) => {}
+                Err(error)
+                    if error.kind() == ErrorKind::TimedOut
+                        || error.kind() == ErrorKind::WouldBlock => {}
+                Err(error) => panic!("wait returned an unexpected error: {error}"),
             }
         }
         true
@@ -79,9 +75,13 @@ impl super::ThreadParkerT for ThreadParker {
 
     #[inline]
     unsafe fn unpark_lock(&self) -> UnparkHandle {
+        // The target may destroy the parker as soon as the store below is
+        // observed, so construct the handle first.
+        let handle = UnparkHandle(self.tcs);
+
         // We don't need to lock anything, just clear the state
         self.parked.store(false, Ordering::Release);
-        UnparkHandle(self.tcs)
+        handle
     }
 }
 
@@ -91,14 +91,12 @@ impl super::UnparkHandleT for UnparkHandle {
     #[inline]
     unsafe fn unpark(self) {
         let result = usercalls::send(EV_UNPARK, Some(self.0));
-        if cfg!(debug_assertions) {
-            if let Err(error) = result {
-                // `InvalidInput` may be returned if the thread we send to has
-                // already been unparked and exited.
-                if error.kind() != io::ErrorKind::InvalidInput {
-                    panic!("send returned an unexpected error: {:?}", error);
-                }
-            }
+        if let Err(error) = result
+            // `InvalidInput` may be returned if the thread we send to has
+            // already been unparked and exited.
+            && error.kind() != io::ErrorKind::InvalidInput
+        {
+            panic!("send returned an unexpected error: {error:?}");
         }
     }
 }

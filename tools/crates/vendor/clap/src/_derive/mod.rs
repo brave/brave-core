@@ -81,9 +81,7 @@
 //!     Variant1,
 //! }
 //!
-//! fn main() {
-//!     let cli = Cli::parse();
-//! }
+//! let cli = Cli::parse();
 //! ```
 //!
 //! Traits:
@@ -163,6 +161,20 @@
 //!   - When not present: [Doc comment](#doc-comments) if there is a blank line, else nothing
 //!   - When present without a value: [Doc comment](#doc-comments)
 //! - `verbatim_doc_comment`: Minimizes pre-processing when converting doc comments to [`about`][crate::Command::about] / [`long_about`][crate::Command::long_about]
+//! - `defer = <bool_literal>`: Delay argument construction for an enum's subcommands with
+//!   [`Command::defer`][crate::Command::defer]. Available on [`Parser`][crate::Parser] and
+//!   [`Subcommand`][crate::Subcommand] enum containers.
+//!   - When not present: `false`, or `true` with the `unstable-v5` feature.
+//!   - Subcommand names and attributes on the variants are applied eagerly, so their descriptions
+//!     are available in the parent's help. Arguments and groups in named variants, and the entire
+//!     [`Args::augment_args`][crate::Args::augment_args] call for newtype variants, are deferred.
+//!   - Put metadata needed by the parent's help on the enum variants. Metadata from an `Args`
+//!     container or its flattened fields is applied when the subcommand is built, and can then
+//!     override metadata on the variant.
+//!   - Flattened and nested `Subcommand` enums use their own `defer` setting. The setting is not
+//!     inherited by those enums and does not defer their registration in the parent.
+//!   - Call [`Command::build`][crate::Command::build] before inspecting deferred arguments or
+//!     nested commands. Parsing builds the selected commands automatically.
 //! - `next_display_order`: [`Command::next_display_order`][crate::Command::next_display_order]
 //! - `next_help_heading`: [`Command::next_help_heading`][crate::Command::next_help_heading]
 //!   - When `flatten`ing [`Args`][crate::Args], this is scoped to just the args in this struct and any struct `flatten`ed into it
@@ -522,6 +534,7 @@
 //!   [`Command::debug_assert`][crate::Command::debug_assert] in a test
 //!   ([example][_tutorial#testing])
 //! - Always remember to [document](#doc-comments) args and commands with `#![deny(missing_docs)]`
+//!   or `#[deny(clippy::missing_docs_in_private_items)]`
 
 // Point people here that search for attributes that don't exist in the derive (a subset of magic
 // attributes)

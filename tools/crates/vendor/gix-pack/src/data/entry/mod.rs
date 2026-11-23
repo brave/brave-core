@@ -30,18 +30,41 @@ impl Location {
 
 /// Access
 impl Entry {
+    /// Compute the pack offset to the base entry of the object represented by this entry, or
+    /// return `None` if the distance would underflow or is invalid.
+    pub fn checked_base_pack_offset(&self, distance: u64) -> Option<data::Offset> {
+        Header::verified_base_pack_offset(self.pack_offset(), distance)
+    }
+
     /// Compute the pack offset to the base entry of the object represented by this entry.
+    ///
+    /// # Panics
+    ///
+    /// Panics if the `distance` will cause an underflow or is invalid.
     pub fn base_pack_offset(&self, distance: u64) -> data::Offset {
-        let pack_offset = self.data_offset - self.header_size() as u64;
-        pack_offset.checked_sub(distance).expect("in-bound distance of deltas")
+        self.checked_base_pack_offset(distance)
+            .expect("in-bound distance of deltas")
     }
     /// The pack offset at which this entry starts
     pub fn pack_offset(&self) -> data::Offset {
         self.data_offset - self.header_size() as u64
     }
-    /// The amount of bytes used to describe this entry in the pack. The header starts at [`Self::pack_offset()`]
+    /// The amount of bytes used to describe this entry in the pack.
+    ///
+    /// For entries decoded from pack data this returns the actual encoded header length, including
+    /// non-canonical overlong size encodings accepted by Git. This is the length to use for offset
+    /// reconstruction because the header starts at [`Self::pack_offset()`] and the compressed data
+    /// starts at [`Entry::data_offset`].
+    ///
+    /// If [`Entry::encoded_header_size`] is `0`, the actual encoded length is unknown and this falls
+    /// back to [`Header::size()`], which computes the canonical serialized length from the decoded
+    /// header and decompressed size.
     pub fn header_size(&self) -> usize {
-        self.header.size(self.decompressed_size)
+        if self.encoded_header_size == 0 {
+            self.header.size(self.decompressed_size)
+        } else {
+            self.encoded_header_size.into()
+        }
     }
 }
 

@@ -1,3 +1,105 @@
+# 0.7.20 (October 9th, 2026)
+
+The MSRV is increased to 1.85.
+
+### Added
+
+- codec: support byte slices in `LengthDelimitedCodec` ([#8355])
+- io: add `get_ref`, `get_mut`, and `get_pin_mut` to `InspectReader` and `InspectWriter` ([#8486])
+
+### Changed
+
+- codec: optimize buffer reserve for `LengthDelimitedCodec::encode` ([#8333])
+- task: use `LocalRuntime` in `LocalPoolHandle` ([#7852])
+
+### Fixed
+
+- codec: clamp runtime frame length to field width ([#8275])
+- io: handle empty vectored writes in `simplex` ([#8353])
+- io: retry on `Interrupted` in `read_exact_arc` and `write_all_vectored` ([#8460])
+- io: stop polling `StreamReader` after EOF ([#8332])
+- sync: notify `CancellationToken` descendants after releasing locks ([#8556])
+- time: return the earliest key from `DelayQueue::peek` ([#8402])
+- time: wake `DelayQueue` when cleared ([#8320])
+
+### Documented
+
+- codec: fix broken `length_delimited` builder doc examples ([#8350])
+
+[#7852]: https://github.com/tokio-rs/tokio/pull/7852
+[#8275]: https://github.com/tokio-rs/tokio/pull/8275
+[#8320]: https://github.com/tokio-rs/tokio/pull/8320
+[#8332]: https://github.com/tokio-rs/tokio/pull/8332
+[#8333]: https://github.com/tokio-rs/tokio/pull/8333
+[#8350]: https://github.com/tokio-rs/tokio/pull/8350
+[#8353]: https://github.com/tokio-rs/tokio/pull/8353
+[#8355]: https://github.com/tokio-rs/tokio/pull/8355
+[#8402]: https://github.com/tokio-rs/tokio/pull/8402
+[#8460]: https://github.com/tokio-rs/tokio/pull/8460
+[#8486]: https://github.com/tokio-rs/tokio/pull/8486
+[#8556]: https://github.com/tokio-rs/tokio/pull/8556
+
+# 0.7.19 (July 21st, 2026)
+
+### Added
+
+- io: add `write_all_vectored` ([#7768], [#8159])
+- sync: add `DropGuard::token` for cancellation tokens ([#8226])
+- sync: implement `PartialEq` and `Eq` for `CancellationToken` ([#8110])
+- task: add `AbortOnDrop` ([#7855])
+- task: add `JoinMap::try_join_next` ([#8099])
+
+### Changed
+
+- codec: use `libc::memchr` for `LinesCodec` delimiter scan ([#8141])
+
+### Fixed
+
+- codec: fix `is_readable` when buffer is not empty ([#7912])
+- task: avoid replacing the `JoinQueue` waker in `try_join_next` ([#8279])
+- time: wake `DelayQueue` after resetting to expired ([#8274])
+
+### Documented
+
+- codec: document `UdpFramed` decoder errors ([#8248])
+
+[#7768]: https://github.com/tokio-rs/tokio/pull/7768
+[#7855]: https://github.com/tokio-rs/tokio/pull/7855
+[#7912]: https://github.com/tokio-rs/tokio/pull/7912
+[#8099]: https://github.com/tokio-rs/tokio/pull/8099
+[#8110]: https://github.com/tokio-rs/tokio/pull/8110
+[#8141]: https://github.com/tokio-rs/tokio/pull/8141
+[#8159]: https://github.com/tokio-rs/tokio/pull/8159
+[#8226]: https://github.com/tokio-rs/tokio/pull/8226
+[#8248]: https://github.com/tokio-rs/tokio/pull/8248
+[#8274]: https://github.com/tokio-rs/tokio/pull/8274
+[#8279]: https://github.com/tokio-rs/tokio/pull/8279
+
+# 0.7.18 (January 4th, 2026)
+
+### Added
+
+- io: add `tokio_util::io::simplex` ([#7565])
+
+### Changed
+
+- task: remove unnecessary trait bounds on the `Debug` implementation for `JoinQueue` and `AbortOnDropHandle` ([#7720])
+
+### Fixed
+
+- deps: bump `tokio` to `1.44.0` ([#7733])
+
+### Documented
+
+- io: document the default capacity of the `ReaderStream` ([#7147])
+- sync: fix a typo in the docs of `PollSender::is_closed` ([#7737])
+
+[#7147]: https://github.com/tokio-rs/tokio/pull/7147
+[#7565]: https://github.com/tokio-rs/tokio/pull/7565
+[#7720]: https://github.com/tokio-rs/tokio/pull/7720
+[#7733]: https://github.com/tokio-rs/tokio/pull/7733
+[#7737]: https://github.com/tokio-rs/tokio/pull/7737
+
 # 0.7.17 (November 2nd, 2025)
 
 The MSRV is increased to 1.71.

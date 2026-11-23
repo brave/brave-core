@@ -1,14 +1,13 @@
 use std::{
     path::{Path, PathBuf},
     sync::{
-        atomic::{AtomicU16, AtomicU32, AtomicUsize, Ordering},
         Arc,
+        atomic::{AtomicU16, AtomicU32, AtomicUsize, Ordering},
     },
     time::SystemTime,
 };
 
 use arc_swap::ArcSwap;
-use gix_features::hash;
 
 /// An id to refer to an index file or a multipack index file
 pub type IndexId = usize;
@@ -111,8 +110,10 @@ impl SlotMapIndex {
     pub(crate) fn state_id(self: &Arc<SlotMapIndex>) -> StateId {
         // We let the loaded indices take part despite not being part of our own snapshot.
         // This is to account for indices being loaded in parallel without actually changing the snapshot itself.
-        let hash = hash::crc32(&(Arc::as_ptr(self) as usize).to_be_bytes());
-        hash::crc32_update(hash, &self.loaded_indices.load(Ordering::SeqCst).to_be_bytes())
+        let mut hash = crc32fast::Hasher::new();
+        hash.update(&(Arc::as_ptr(self) as usize).to_be_bytes());
+        hash.update(&self.loaded_indices.load(Ordering::SeqCst).to_be_bytes());
+        hash.finalize()
     }
 
     pub(crate) fn marker(self: &Arc<SlotMapIndex>) -> SlotIndexMarker {
@@ -174,7 +175,8 @@ impl<T: Clone> OnDiskFile<T> {
                     Ok(())
                 }
                 Err(err) => {
-                    // TODO: Should be provide more information? We don't even know what exactly failed right now, degenerating information.
+                    // TODO(odb-parallelism): only NotFound should become Missing; retain other failures
+                    // across shared handles and retry after file changes, using the branch's failure cache.
                     self.state = Missing;
                     Err(err)
                 }
@@ -311,24 +313,22 @@ impl IndexAndPacks {
         }
     }
 
-    pub(crate) fn load_index(&mut self, object_hash: gix_hash::Kind) -> std::io::Result<()> {
+    pub(crate) fn load_index(
+        &mut self,
+        object_hash: gix_hash::Kind,
+        alloc_limit_bytes: Option<usize>,
+    ) -> std::io::Result<()> {
         match self {
             IndexAndPacks::Index(bundle) => bundle.index.load_strict(|path| {
                 gix_pack::index::File::at(path, object_hash)
                     .map(Arc::new)
-                    .map_err(|err| match err {
-                        gix_pack::index::init::Error::Io { source, .. } => source,
-                        err => std::io::Error::other(err),
-                    })
+                    .map_err(super::error_to_io)
             }),
             IndexAndPacks::MultiIndex(bundle) => {
                 bundle.multi_index.load_strict(|path| {
-                    gix_pack::multi_index::File::at(path)
+                    gix_pack::multi_index::File::at(path, alloc_limit_bytes)
                         .map(Arc::new)
-                        .map_err(|err| match err {
-                            gix_pack::multi_index::init::Error::Io { source, .. } => source,
-                            err => std::io::Error::other(err),
-                        })
+                        .map_err(super::error_to_io)
                 })?;
                 if let Some(multi_index) = bundle.multi_index.loaded() {
                     bundle.data = Self::index_names_to_pack_paths(multi_index);
@@ -370,7 +370,7 @@ impl IndexAndPacks {
         multi_index: &gix_pack::multi_index::File,
     ) -> Vec<OnDiskFile<Arc<gix_pack::data::File>>> {
         let parent_dir = multi_index.path().parent().expect("parent present");
-        let data = multi_index
+        multi_index
             .index_names()
             .iter()
             .map(|idx| OnDiskFile {
@@ -378,8 +378,7 @@ impl IndexAndPacks {
                 state: OnDiskFileState::Unloaded,
                 mtime: SystemTime::UNIX_EPOCH,
             })
-            .collect();
-        data
+            .collect()
     }
 }
 

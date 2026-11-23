@@ -31,7 +31,7 @@ checksum = "8901269c6307e8d93993578286ac0edf7f195079ffff5ebdeea6a59ffb7e36bc"
 
 [[package]]
 name = "arc-swap"
-version = "1.8.0"
+version = "1.9.5"
 dependencies = [
  "adaptive-barrier",
  "criterion",

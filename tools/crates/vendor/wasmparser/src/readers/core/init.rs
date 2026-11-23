@@ -22,9 +22,17 @@ pub struct ConstExpr<'a> {
     reader: BinaryReader<'a>,
 }
 
+impl PartialEq for ConstExpr<'_> {
+    fn eq(&self, other: &Self) -> bool {
+        self.reader.remaining_buffer() == other.reader.remaining_buffer()
+    }
+}
+
+impl Eq for ConstExpr<'_> {}
+
 impl<'a> ConstExpr<'a> {
     /// Constructs a new `ConstExpr` from the given data and offset.
-    pub fn new(reader: BinaryReader<'a>) -> ConstExpr {
+    pub fn new(reader: BinaryReader<'a>) -> ConstExpr<'a> {
         ConstExpr { reader }
     }
 
@@ -33,7 +41,7 @@ impl<'a> ConstExpr<'a> {
         self.reader.clone()
     }
 
-    /// Gets an operators reader for the initialization expression.
+    /// Gets an operators parser for the initialization expression.
     pub fn get_operators_reader(&self) -> OperatorsReader<'a> {
         OperatorsReader::new(self.get_binary_reader())
     }
@@ -42,7 +50,12 @@ impl<'a> ConstExpr<'a> {
 impl<'a> FromReader<'a> for ConstExpr<'a> {
     fn from_reader(reader: &mut BinaryReader<'a>) -> Result<Self> {
         // FIXME(#188) ideally shouldn't need to skip here
-        let reader = reader.skip(|r| r.skip_const_expr())?;
+        let reader = reader.skip(|reader| {
+            let mut ops = OperatorsReader::new(reader.clone());
+            ops.skip_const_expr()?;
+            *reader = ops.get_binary_reader();
+            Ok(())
+        })?;
         Ok(ConstExpr { reader })
     }
 }

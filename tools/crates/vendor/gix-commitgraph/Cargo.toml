@@ -10,18 +10,18 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.82"
+edition = "2024"
+rust-version = "1.88"
 name = "gix-commitgraph"
-version = "0.30.1"
+version = "0.42.0"
 authors = [
     "Conor Davis <gitoxide@conor.fastmail.fm>",
     "Sebastian Thiel <sebastian.thiel@icloud.com>",
 ]
 build = false
 include = [
-    "src/**/*",
-    "LICENSE-*",
+    "/src/**/*",
+    "/LICENSE-*",
 ]
 autolib = false
 autobins = false
@@ -33,10 +33,17 @@ documentation = "https://git-scm.com/docs/commit-graph"
 readme = false
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/GitoxideLabs/gitoxide"
+resolver = "2"
 
 [package.metadata.docs.rs]
 all-features = true
-features = ["document-features"]
+features = [
+    "sha1",
+    "document-features",
+]
+
+[package.metadata.cargo-machete]
+ignored = ["bstr"]
 
 [features]
 serde = [
@@ -44,6 +51,8 @@ serde = [
     "gix-hash/serde",
     "bstr/serde",
 ]
+sha1 = ["gix-hash/sha1"]
+sha256 = ["gix-hash/sha256"]
 
 [lib]
 name = "gix_commitgraph"
@@ -60,13 +69,19 @@ version = "0.2.0"
 optional = true
 
 [dependencies.gix-chunk]
-version = "^0.4.12"
+version = "^0.10.1"
+
+[dependencies.gix-error]
+version = "^0.5.2"
 
 [dependencies.gix-hash]
-version = "^0.20.1"
+version = "^0.28.1"
 
 [dependencies.memmap2]
-version = "0.9.7"
+version = "0.9.11"
+
+[dependencies.nonempty]
+version = "0.12.0"
 
 [dependencies.serde]
 version = "1.0.114"
@@ -74,12 +89,11 @@ features = ["derive"]
 optional = true
 default-features = false
 
-[dependencies.thiserror]
-version = "2.0.17"
-
-[dev-dependencies]
+[dev-dependencies.insta]
+version = "1.46.3"
 
 [lints.clippy]
+assert_is_empty = "allow"
 bool_to_int_with_if = "allow"
 borrow_as_ptr = "allow"
 cast_lossless = "allow"
@@ -98,7 +112,6 @@ explicit_into_iter_loop = "allow"
 explicit_iter_loop = "allow"
 filter_map_next = "allow"
 fn_params_excessive_bools = "allow"
-from_iter_instead_of_collect = "allow"
 if_not_else = "allow"
 ignored_unit_patterns = "allow"
 implicit_clone = "allow"

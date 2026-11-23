@@ -59,6 +59,21 @@ pub trait Endianity: Debug + Default + Clone + Copy + PartialEq + Eq {
         }
     }
 
+    /// Reads an unsigned 128 bit integer from `buf`.
+    ///
+    /// # Panics
+    ///
+    /// Panics when `buf.len() < 16`.
+    #[inline]
+    fn read_u128(self, buf: &[u8]) -> u128 {
+        let bytes: &[u8; 16] = buf[..16].try_into().unwrap();
+        if self.is_big_endian() {
+            u128::from_be_bytes(*bytes)
+        } else {
+            u128::from_le_bytes(*bytes)
+        }
+    }
+
     /// Read an unsigned n-bytes integer u64.
     ///
     /// # Panics
@@ -168,6 +183,21 @@ pub trait Endianity: Debug + Default + Clone + Copy + PartialEq + Eq {
             n.to_le_bytes()
         };
         buf[..8].copy_from_slice(&bytes);
+    }
+
+    /// Writes an unsigned 128 bit integer `n` to `buf`.
+    ///
+    /// # Panics
+    ///
+    /// Panics when `buf.len() < 16`.
+    #[inline]
+    fn write_u128(self, buf: &mut [u8], n: u128) {
+        let bytes = if self.is_big_endian() {
+            n.to_be_bytes()
+        } else {
+            n.to_le_bytes()
+        };
+        buf[..16].copy_from_slice(&bytes);
     }
 }
 

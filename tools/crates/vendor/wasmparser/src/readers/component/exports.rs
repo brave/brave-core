@@ -1,4 +1,6 @@
-use crate::{BinaryReader, ComponentTypeRef, FromReader, Result, SectionLimited};
+use crate::{
+    BinaryReader, ComponentExternName, ComponentTypeRef, FromReader, Result, SectionLimited,
+};
 
 /// Represents the kind of an external items of a WebAssembly component.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -31,7 +33,7 @@ impl ComponentExternalKind {
                         x,
                         "component external kind",
                         offset + 1,
-                    ))
+                    ));
                 }
             },
             0x01 => ComponentExternalKind::Func,
@@ -44,7 +46,7 @@ impl ComponentExternalKind {
                     x,
                     "component external kind",
                     offset,
-                ))
+                ));
             }
         })
     }
@@ -64,10 +66,10 @@ impl ComponentExternalKind {
 }
 
 /// Represents an export in a WebAssembly component.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 pub struct ComponentExport<'a> {
     /// The name of the exported item.
-    pub name: ComponentExportName<'a>,
+    pub name: ComponentExternName<'a>,
     /// The kind of the export.
     pub kind: ComponentExternalKind,
     /// The index of the exported item.
@@ -93,7 +95,7 @@ impl<'a> FromReader<'a> for ComponentExport<'a> {
                         other,
                         "optional component export type",
                         reader.original_position() - 1,
-                    ))
+                    ));
                 }
             },
         })
@@ -111,25 +113,5 @@ impl<'a> FromReader<'a> for ComponentExternalKind {
         };
 
         ComponentExternalKind::from_bytes(byte1, byte2, offset)
-    }
-}
-
-/// Represents the name of a component export.
-#[derive(Debug, Copy, Clone)]
-#[allow(missing_docs)]
-pub struct ComponentExportName<'a>(pub &'a str);
-
-impl<'a> FromReader<'a> for ComponentExportName<'a> {
-    fn from_reader(reader: &mut BinaryReader<'a>) -> Result<Self> {
-        match reader.read_u8()? {
-            0x00 => {}
-            // Historically export names used a discriminator byte of 0x01 to
-            // indicate an "interface" of the form `a:b/c` but nowadays that's
-            // inferred from string syntax. Ignore 0-vs-1 to continue to parse
-            // older binaries. Eventually this will go away.
-            0x01 => {}
-            x => return reader.invalid_leading_byte(x, "export name"),
-        }
-        Ok(ComponentExportName(reader.read_string()?))
     }
 }

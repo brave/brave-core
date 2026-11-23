@@ -85,6 +85,9 @@
 /// better with users having multiple SemVer-incompatible versions of your
 /// library in the same binary.
 ///
+/// If the name is auto-generated, the class will also be allowed to be used
+/// across multiple shared dynamic libraries in the same process.
+///
 ///
 /// ### `#[ivars = ...]` (optional)
 ///
@@ -556,12 +559,30 @@ macro_rules! __define_class_inner {
         // Anonymous block to hide the shared statics
         $($attr_impl)*
         const _: () = {
+            // Add #[export_name] here to ensure that all class names are
+            // unique, at least within the resulting linker invocation (though
+            // not across dylibs). The Objective-C runtime will ensure this as
+            // well, but this will allow ensuring it at link time.
+            #[export_name = $crate::__macro_helpers::concat!(
+                "__CLASS_",
+                $crate::__define_class_name!($class, $($name)*),
+            )]
             static __OBJC2_CLASS: $crate::__macro_helpers::SyncUnsafeCell<
                 $crate::__macro_helpers::MaybeUninit<&'static $crate::runtime::AnyClass>
             > = $crate::__macro_helpers::SyncUnsafeCell::new($crate::__macro_helpers::MaybeUninit::uninit());
+
+            #[export_name = $crate::__macro_helpers::concat!(
+                "__IVAR_OFFSET_",
+                $crate::__define_class_name!($class, $($name)*),
+            )]
             static __OBJC2_IVAR_OFFSET: $crate::__macro_helpers::SyncUnsafeCell<
                 $crate::__macro_helpers::MaybeUninit<$crate::__macro_helpers::isize>
             > = $crate::__macro_helpers::SyncUnsafeCell::new($crate::__macro_helpers::MaybeUninit::uninit());
+
+            #[export_name = $crate::__macro_helpers::concat!(
+                "__DROP_FLAG_OFFSET_",
+                $crate::__define_class_name!($class, $($name)*),
+            )]
             static __OBJC2_DROP_FLAG_OFFSET: $crate::__macro_helpers::SyncUnsafeCell<
                 $crate::__macro_helpers::MaybeUninit<$crate::__macro_helpers::isize>
             > = $crate::__macro_helpers::SyncUnsafeCell::new($crate::__macro_helpers::MaybeUninit::uninit());
@@ -580,36 +601,35 @@ macro_rules! __define_class_inner {
                     (<<Self as $crate::ClassType>::Super as $crate::ClassType>::ThreadKind)
                 };
 
-                const NAME: &'static $crate::__macro_helpers::str = $crate::__fallback_if_not_set! {
-                    ($($name)*)
-                    (
-                        $crate::__macro_helpers::concat!(
-                            // Module path includes crate name when in library.
-                            $crate::__macro_helpers::module_path!(),
-                            "::",
-                            $crate::__macro_helpers::stringify!($class),
-                            $crate::__macro_helpers::env!("CARGO_PKG_VERSION"),
-                        )
-                    )
-                };
+                const NAME: &'static $crate::__macro_helpers::str = $crate::__define_class_name!($class, $($name)*);
 
                 fn class() -> &'static $crate::runtime::AnyClass {
                     let _ = <Self as $crate::__macro_helpers::ValidThreadKind<Self::ThreadKind>>::check;
                     let _ = <Self as $crate::__macro_helpers::MainThreadOnlyDoesNotImplSendSync<_>>::check;
 
+                    const C_NAME: &'static $crate::__macro_helpers::CStr = $crate::__macro_helpers::class_c_name(
+                        $crate::__macro_helpers::concat!($crate::__define_class_name!($class, $($name)*), "\0")
+                    );
+
                     // TODO: Use `std::sync::OnceLock`
+                    #[export_name = $crate::__macro_helpers::concat!(
+                        "__REGISTER_CLASS_",
+                        $crate::__define_class_name!($class, $($name)*),
+                    )]
                     static REGISTER_CLASS: $crate::__macro_helpers::Once = $crate::__macro_helpers::Once::new();
 
                     REGISTER_CLASS.call_once(|| {
-                        let mut __objc2_builder = $crate::__macro_helpers::ClassBuilderHelper::<Self>::new();
-
-                        // Implement protocols and methods
-                        $crate::__define_class_register_impls! {
-                            (__objc2_builder)
-                            $($impls)*
-                        }
-
-                        let (__objc2_cls, __objc2_ivar_offset, __objc2_drop_flag_offset) = __objc2_builder.register();
+                        let (__objc2_cls, __objc2_ivar_offset, __objc2_drop_flag_offset) = $crate::__macro_helpers::define_class::<Self>(
+                            C_NAME,
+                            $crate::__define_class_name_is_auto_generated!($($name)*),
+                            |mut __objc2_builder| {
+                                // Implement protocols and methods
+                                $crate::__define_class_register_impls! {
+                                    (__objc2_builder)
+                                    $($impls)*
+                                }
+                            }
+                        );
 
                         // SAFETY: Modification is ensured by `Once` to happen
                         // before any access to the variables.
@@ -839,6 +859,36 @@ macro_rules! __select_ivars {
     () => {
         // Default ivars to unit
         ()
+    };
+}
+
+#[doc(hidden)]
+#[macro_export]
+macro_rules! __define_class_name_is_auto_generated {
+    ($name:expr) => {
+        false
+    };
+    () => {
+        // If no custom name is specified.
+        true
+    };
+}
+
+#[doc(hidden)]
+#[macro_export]
+macro_rules! __define_class_name {
+    ($class:ident, $($name:tt)+) => {
+        $($name)+
+    };
+    ($class:ident,) => {
+        // The user didn't specify a name; generate a reasonable one.
+        $crate::__macro_helpers::concat!(
+            // Module path includes crate name when in library.
+            $crate::__macro_helpers::module_path!(),
+            "::",
+            $crate::__macro_helpers::stringify!($class),
+            $crate::__macro_helpers::env!("CARGO_PKG_VERSION"),
+        )
     };
 }
 

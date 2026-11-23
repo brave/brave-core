@@ -8,7 +8,7 @@ use std::{
 
 use crc::Crc;
 use quinn::{ConnectionError, ReadError, StoppedError, TransportConfig, WriteError};
-use rand::{self, RngCore};
+use rand::{self, Rng};
 use rustls::pki_types::{CertificateDer, PrivatePkcs8KeyDer};
 use tokio::runtime::Builder;
 
@@ -19,12 +19,10 @@ struct Shared {
 #[test]
 #[ignore]
 fn connect_n_nodes_to_1_and_send_1mb_data() {
-    tracing::subscriber::set_global_default(
-        tracing_subscriber::FmtSubscriber::builder()
-            .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
-            .finish(),
-    )
-    .unwrap();
+    let _ = tracing_subscriber::FmtSubscriber::builder()
+        .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
+        .with_test_writer()
+        .try_init();
 
     let runtime = Builder::new_current_thread().enable_all().build().unwrap();
     let _guard = runtime.enter();

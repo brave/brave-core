@@ -20,76 +20,76 @@ pub const SET_KEYBOARD_LAYOUT_EVENT_GUID: crate::base::Guid = crate::base::Guid:
     &[0x5a, 0x7a, 0x9b, 0xc2, 0x32, 0xdf],
 );
 
-pub type ProtocolNewPackageList = eficall! {fn(
+pub type ProtocolNewPackageList = unsafe extern "efiapi" fn(
     *const Protocol,
     *const crate::hii::PackageListHeader,
     crate::base::Handle,
     *mut crate::hii::Handle,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolRemovePackageList = eficall! {fn(
+pub type ProtocolRemovePackageList = unsafe extern "efiapi" fn(
     *const Protocol,
     crate::hii::Handle,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolUpdatePackageList = eficall! {fn(
+pub type ProtocolUpdatePackageList = unsafe extern "efiapi" fn(
     *const Protocol,
     crate::hii::Handle,
     *const crate::hii::PackageListHeader,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolListPackageLists = eficall! {fn(
+pub type ProtocolListPackageLists = unsafe extern "efiapi" fn(
     *const Protocol,
     u8,
     *const crate::base::Guid,
     *mut usize,
     *mut crate::hii::Handle,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolExportPackageLists = eficall! {fn(
+pub type ProtocolExportPackageLists = unsafe extern "efiapi" fn(
     *const Protocol,
     crate::hii::Handle,
     *mut usize,
     *mut crate::hii::PackageListHeader,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolRegisterPackageNotify = eficall! {fn(
+pub type ProtocolRegisterPackageNotify = unsafe extern "efiapi" fn(
     *const Protocol,
     u8,
     *const crate::base::Guid,
     Notify,
     NotifyType,
     *mut crate::base::Handle,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolUnregisterPackageNotify = eficall! {fn(
+pub type ProtocolUnregisterPackageNotify = unsafe extern "efiapi" fn(
     *const Protocol,
     crate::base::Handle,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolFindKeyboardLayouts = eficall! {fn(
+pub type ProtocolFindKeyboardLayouts = unsafe extern "efiapi" fn(
     *const Protocol,
     *mut u16,
     *mut crate::base::Guid,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolGetKeyboardLayout = eficall! {fn(
+pub type ProtocolGetKeyboardLayout = unsafe extern "efiapi" fn(
     *const Protocol,
     *const crate::base::Guid,
     *mut u16,
     *mut KeyboardLayout,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolSetKeyboardLayout = eficall! {fn(
+pub type ProtocolSetKeyboardLayout = unsafe extern "efiapi" fn(
     *const Protocol,
     *mut crate::base::Guid,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolGetPackageListHandle = eficall! {fn(
+pub type ProtocolGetPackageListHandle = unsafe extern "efiapi" fn(
     *const Protocol,
     crate::hii::Handle,
     *mut crate::base::Handle,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
 #[repr(C)]
 pub struct Protocol {
@@ -283,13 +283,13 @@ pub const LEFT_LOGO_MODIFIER: u16 = 0x0027;
 pub const RIGHT_LOGO_MODIFIER: u16 = 0x0028;
 pub const MENU_MODIFIER: u16 = 0x0029;
 
-pub type Notify = eficall! {fn(
+pub type Notify = unsafe extern "efiapi" fn(
     u8,
     *const crate::base::Guid,
     *const crate::hii::PackageHeader,
     crate::hii::Handle,
     NotifyType,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
 pub type NotifyType = usize;
 

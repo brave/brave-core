@@ -1,4 +1,4 @@
-use core::ffi::c_uint;
+use core::{ffi::c_uint, mem::MaybeUninit};
 
 use crate::deflate::DeflateConfig;
 use crate::inflate::InflateConfig;
@@ -67,43 +67,70 @@ impl InflateError {
 }
 
 /// The state that is used to decompress an input.
-pub struct Inflate(crate::inflate::InflateStream<'static>);
+pub struct Inflate {
+    inner: crate::inflate::InflateStream<'static>,
+    total_in: u64,
+    total_out: u64,
+}
 
 impl Inflate {
     /// The amount of bytes consumed from the input so far.
     pub fn total_in(&self) -> u64 {
-        #[allow(clippy::useless_conversion)]
-        u64::from(self.0.total_in)
+        self.total_in
     }
 
     /// The amount of decompressed bytes that have been written to the output thus far.
     pub fn total_out(&self) -> u64 {
-        #[allow(clippy::useless_conversion)]
-        u64::from(self.0.total_out)
+        self.total_out
     }
 
     /// The error message if the previous operation failed.
     pub fn error_message(&self) -> Option<&'static str> {
-        if self.0.msg.is_null() {
+        if self.inner.msg.is_null() {
             None
         } else {
-            unsafe { core::ffi::CStr::from_ptr(self.0.msg).to_str() }.ok()
+            unsafe { core::ffi::CStr::from_ptr(self.inner.msg).to_str() }.ok()
         }
     }
 
-    /// Create a new instance. Note that it allocates in various ways and thus should be re-used.
+    /// Create a new instance. This function allocates, and so it is recommended to re-use this
+    /// state when possible, using [`Inflate::reset`] as needed.
     ///
-    /// The `window_bits` must be in the range `8..=15`, with `15` being most common.
-    pub fn new(zlib_header: bool, window_bits: u8) -> Self {
+    /// This function will:
+    ///
+    /// - decode a raw deflate stream when `expect_header = false` and `window_bits` is in the
+    ///   range `8..=15`
+    /// - decode a zlib header followed by a deflate stream when `expect_header = true` and
+    ///   `window_bits` is in the range `8..=15`
+    /// - decode a gzip header followed by a deflate stream when `expect_header = true` and
+    ///   `window_bits` is in the range `16 + 8..=16 + 15`
+    /// - decode either a zlib or a gzip header, followed by a deflate stream when
+    ///   `expect_header = true` and `window_bits` is in the range `32 + 8..=32 + 15`
+    ///
+    /// `window_bits` can also be 0 to request that inflate use the window size in the
+    /// zlib header of the compressed stream when using zlib.
+    ///
+    /// Note that when deflating a value of `window_bits = 8` is silently converted to
+    /// `window_bits = 9` in most zlib implementations, and hence should be inflated using
+    /// `window_bits = 9`.
+    ///
+    /// # Panics
+    ///
+    /// This function may panic when the `window_bits` and `expect_header` have values not listed above.
+    pub fn new(expect_header: bool, window_bits: u8) -> Self {
         let config = InflateConfig {
-            window_bits: if zlib_header {
+            window_bits: if expect_header {
                 i32::from(window_bits)
             } else {
                 -i32::from(window_bits)
             },
         };
 
-        Self(crate::inflate::InflateStream::new(config))
+        Self {
+            inner: crate::inflate::InflateStream::new(config),
+            total_in: 0,
+            total_out: 0,
+        }
     }
 
     /// Reset the state to allow handling a new stream.
@@ -114,32 +141,59 @@ impl Inflate {
             config.window_bits = -config.window_bits;
         }
 
-        crate::inflate::reset_with_config(&mut self.0, config);
+        self.total_in = 0;
+        self.total_out = 0;
+
+        crate::inflate::reset_with_config(&mut self.inner, config);
     }
 
-    /// Decompress `input` and write all decompressed bytes into `output`, with `flush` defining some details about this.
+    /// Decompress `input` and write all decompressed bytes into `output`,
+    /// with `flush` defining some details about this.
     pub fn decompress(
         &mut self,
         input: &[u8],
         output: &mut [u8],
         flush: InflateFlush,
     ) -> Result<Status, InflateError> {
+        self.decompress_uninit(
+            input,
+            unsafe { &mut *(output as *mut _ as *mut [MaybeUninit<u8>]) },
+            flush,
+        )
+    }
+
+    /// Decompress `input` and write all decompressed bytes into a potentially uninitialized `output`,
+    /// with `flush` defining some details about this.
+    pub fn decompress_uninit(
+        &mut self,
+        input: &[u8],
+        output: &mut [MaybeUninit<u8>],
+        flush: InflateFlush,
+    ) -> Result<Status, InflateError> {
         // Limit the length of the input and output to the maximum value of a c_uint. For larger
         // inputs, this will either complete or signal that more input and output is needed. The
         // caller should be able to handle this regardless.
-        self.0.avail_in = Ord::min(input.len(), c_uint::MAX as usize) as c_uint;
-        self.0.avail_out = Ord::min(output.len(), c_uint::MAX as usize) as c_uint;
+        self.inner.avail_in = Ord::min(input.len(), c_uint::MAX as usize) as c_uint;
+        self.inner.avail_out = Ord::min(output.len(), c_uint::MAX as usize) as c_uint;
 
         // This cast_mut is unfortunate, that is just how the types are.
-        self.0.next_in = input.as_ptr().cast_mut();
-        self.0.next_out = output.as_mut_ptr();
+        self.inner.next_in = input.as_ptr().cast_mut();
+        self.inner.next_out = output.as_mut_ptr().cast();
+
+        let start_in = self.inner.next_in;
+        let start_out = self.inner.next_out;
 
         // SAFETY: the inflate state was properly initialized.
-        match unsafe { crate::inflate::inflate(&mut self.0, flush) } {
+        let ret = unsafe { crate::inflate::inflate(&mut self.inner, flush) };
+
+        self.total_in += (self.inner.next_in as usize - start_in as usize) as u64;
+        self.total_out += (self.inner.next_out as usize - start_out as usize) as u64;
+
+        match ret {
             ReturnCode::Ok => Ok(Status::Ok),
             ReturnCode::StreamEnd => Ok(Status::StreamEnd),
             ReturnCode::NeedDict => Err(InflateError::NeedDict {
-                dict_id: self.0.adler as u32,
+                dict_id: self.inner.adler as u32,
             }),
             ReturnCode::ErrNo => unreachable!("the rust API does not use files"),
             ReturnCode::StreamError => Err(InflateError::StreamError),
@@ -151,8 +205,8 @@ impl Inflate {
     }
 
     pub fn set_dictionary(&mut self, dictionary: &[u8]) -> Result<u32, InflateError> {
-        match crate::inflate::set_dictionary(&mut self.0, dictionary) {
-            ReturnCode::Ok => Ok(self.0.adler as u32),
+        match crate::inflate::set_dictionary(&mut self.inner, dictionary) {
+            ReturnCode::Ok => Ok(self.inner.adler as u32),
             ReturnCode::StreamError => Err(InflateError::StreamError),
             ReturnCode::DataError => Err(InflateError::DataError),
             other => unreachable!("set_dictionary does not return {other:?}"),
@@ -162,7 +216,7 @@ impl Inflate {
 
 impl Drop for Inflate {
     fn drop(&mut self) {
-        let _ = crate::inflate::end(&mut self.0);
+        let _ = crate::inflate::end(&mut self.inner);
     }
 }
 
@@ -211,27 +265,29 @@ impl From<ReturnCode> for Result<Status, DeflateError> {
 }
 
 /// The state that is used to compress an input.
-pub struct Deflate(crate::deflate::DeflateStream<'static>);
+pub struct Deflate {
+    inner: crate::deflate::DeflateStream<'static>,
+    total_in: u64,
+    total_out: u64,
+}
 
 impl Deflate {
     /// The number of bytes that were read from the input.
     pub fn total_in(&self) -> u64 {
-        #[allow(clippy::useless_conversion)]
-        u64::from(self.0.total_in)
+        self.total_in
     }
 
     /// The number of compressed bytes that were written to the output.
     pub fn total_out(&self) -> u64 {
-        #[allow(clippy::useless_conversion)]
-        u64::from(self.0.total_out)
+        self.total_out
     }
 
     /// The error message if the previous operation failed.
     pub fn error_message(&self) -> Option<&'static str> {
-        if self.0.msg.is_null() {
+        if self.inner.msg.is_null() {
             None
         } else {
-            unsafe { core::ffi::CStr::from_ptr(self.0.msg).to_str() }.ok()
+            unsafe { core::ffi::CStr::from_ptr(self.inner.msg).to_str() }.ok()
         }
     }
 
@@ -249,40 +305,88 @@ impl Deflate {
             ..DeflateConfig::default()
         };
 
-        Self(crate::deflate::DeflateStream::new(config))
+        Self::new_with_config(config)
+    }
+
+    /// Create a new instance with the provided [`DeflateConfig`].
+    ///
+    /// In most cases it is recommended to use the standard [`Deflate::new`] constructor unless
+    /// tweaking `mem_level` or `strategy` is desired.
+    ///
+    /// This allocates, so should be done with care.
+    pub fn new_with_config(config: DeflateConfig) -> Self {
+        Self {
+            inner: crate::deflate::DeflateStream::new(config),
+            total_in: 0,
+            total_out: 0,
+        }
     }
 
     /// Prepare the instance for a new stream.
     pub fn reset(&mut self) {
-        crate::deflate::reset(&mut self.0);
+        self.total_in = 0;
+        self.total_out = 0;
+
+        crate::deflate::reset(&mut self.inner);
     }
 
-    /// Compress `input` and write compressed bytes to `output`, with `flush` controlling additional characteristics.
+    /// Compress `input` and write compressed bytes to `output`,
+    /// with `flush` controlling additional characteristics.
     pub fn compress(
         &mut self,
         input: &[u8],
         output: &mut [u8],
         flush: DeflateFlush,
     ) -> Result<Status, DeflateError> {
+        self.compress_uninit(
+            input,
+            unsafe { &mut *(output as *mut _ as *mut [MaybeUninit<u8>]) },
+            flush,
+        )
+    }
+
+    /// Compress `input` and write compressed bytes to a potentially uninitialized `output`,
+    /// with `flush` controlling additional characteristics.
+    pub fn compress_uninit(
+        &mut self,
+        input: &[u8],
+        output: &mut [MaybeUninit<u8>],
+        flush: DeflateFlush,
+    ) -> Result<Status, DeflateError> {
         // Limit the length of the input and output to the maximum value of a c_uint. For larger
         // inputs, this will either complete or signal that more input and output is needed. The
         // caller should be able to handle this regardless.
-        self.0.avail_in = Ord::min(input.len(), c_uint::MAX as usize) as c_uint;
-        self.0.avail_out = Ord::min(output.len(), c_uint::MAX as usize) as c_uint;
+        self.inner.avail_in = Ord::min(input.len(), c_uint::MAX as usize) as c_uint;
+        self.inner.avail_out = Ord::min(output.len(), c_uint::MAX as usize) as c_uint;
 
         // This cast_mut is unfortunate, that is just how the types are.
-        self.0.next_in = input.as_ptr().cast_mut();
-        self.0.next_out = output.as_mut_ptr();
+        self.inner.next_in = input.as_ptr().cast_mut();
+        self.inner.next_out = output.as_mut_ptr().cast();
 
-        crate::deflate::deflate(&mut self.0, flush).into()
+        let start_in = self.inner.next_in;
+        let start_out = self.inner.next_out;
+
+        let ret = crate::deflate::deflate(&mut self.inner, flush).into();
+
+        self.total_in += (self.inner.next_in as usize - start_in as usize) as u64;
+        self.total_out += (self.inner.next_out as usize - start_out as usize) as u64;
+
+        // Clear these pointers so there can be no use after free.
+        self.inner.next_in = core::ptr::null_mut();
+        self.inner.next_out = core::ptr::null_mut();
+
+        self.inner.avail_in = 0;
+        self.inner.avail_out = 0;
+
+        ret
     }
 
     /// Specifies the compression dictionary to use.
     ///
     /// Returns the Adler-32 checksum of the dictionary.
     pub fn set_dictionary(&mut self, dictionary: &[u8]) -> Result<u32, DeflateError> {
-        match crate::deflate::set_dictionary(&mut self.0, dictionary) {
-            ReturnCode::Ok => Ok(self.0.adler as u32),
+        match crate::deflate::set_dictionary(&mut self.inner, dictionary) {
+            ReturnCode::Ok => Ok(self.inner.adler as u32),
             ReturnCode::StreamError => Err(DeflateError::StreamError),
             other => unreachable!("set_dictionary does not return {other:?}"),
         }
@@ -299,7 +403,14 @@ impl Deflate {
     /// compression level. Flushing the stream before calling this method
     /// ensures that the function will succeed on the first call.
     pub fn set_level(&mut self, level: i32) -> Result<Status, DeflateError> {
-        match crate::deflate::params(&mut self.0, level, Default::default()) {
+        // Clear these pointers so there can be no use after free.
+        self.inner.next_in = core::ptr::null_mut();
+        self.inner.next_out = core::ptr::null_mut();
+
+        self.inner.avail_in = 0;
+        self.inner.avail_out = 0;
+
+        match crate::deflate::params(&mut self.inner, level, Default::default()) {
             ReturnCode::Ok => Ok(Status::Ok),
             ReturnCode::StreamError => Err(DeflateError::StreamError),
             ReturnCode::BufError => Ok(Status::BufError),
@@ -310,6 +421,6 @@ impl Deflate {
 
 impl Drop for Deflate {
     fn drop(&mut self) {
-        let _ = crate::deflate::end(&mut self.0);
+        let _ = crate::deflate::end(&mut self.inner);
     }
 }

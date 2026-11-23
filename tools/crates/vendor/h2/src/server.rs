@@ -258,6 +258,11 @@ pub struct Builder {
     ///
     /// When this gets exceeded, we issue GOAWAYs.
     local_max_error_reset_streams: Option<usize>,
+
+    /// connection-level budget for DATA framing overhead.
+    ///
+    /// When this gets exhausted, we issue a GOAWAY with `ENHANCE_YOUR_CALM`.
+    data_frame_budget: proto::DataFrameBudget,
 }
 
 /// Send a response back to the client
@@ -454,7 +459,8 @@ where
     /// [`FlowControl`] instances, no `WINDOW_UPDATE` frames will be sent
     /// out until the number of "in flight" bytes drops below `size`.
     ///
-    /// The default value is 65,535.
+    /// The default value is 65,535. The automatic small-DATA-frame budget is
+    /// updated to match this target.
     ///
     /// See [`FlowControl`] documentation for more details.
     ///
@@ -655,8 +661,8 @@ impl Builder {
             settings: Settings::default(),
             initial_target_connection_window_size: None,
             max_send_buffer_size: proto::DEFAULT_MAX_SEND_BUFFER_SIZE,
-
             local_max_error_reset_streams: Some(proto::DEFAULT_LOCAL_RESET_COUNT_MAX),
+            data_frame_budget: proto::DataFrameBudget::Auto,
         }
     }
 
@@ -797,6 +803,18 @@ impl Builder {
     /// ```
     pub fn max_header_list_size(&mut self, max: u32) -> &mut Self {
         self.settings.set_max_header_list_size(Some(max));
+        self
+    }
+
+    /// Sets the header table size.
+    ///
+    /// This setting informs the peer of the maximum size of the header compression
+    /// table used to encode header blocks, in octets. The encoder may select any value
+    /// equal to or less than the header table size specified by the sender.
+    ///
+    /// The default value is 4,096.
+    pub fn header_table_size(&mut self, size: u32) -> &mut Self {
+        self.settings.set_header_table_size(Some(size));
         self
     }
 
@@ -1028,6 +1046,29 @@ impl Builder {
         self
     }
 
+    /// Sets a connection-level budget for limiting memory overhead from
+    /// received small DATA frames.
+    ///
+    /// HTTP/2 flow control accounts for DATA payload bytes, but not the
+    /// additional memory required to buffer each DATA frame. An excessive
+    /// number of small frames may therefore consume disproportionate memory.
+    ///
+    /// Small DATA frames consume this budget. The budget is restored when
+    /// buffered frames are consumed by the application, while sufficiently
+    /// large frames may also restore budget. Empty DATA frames are limited
+    /// separately and do not consume this budget.
+    ///
+    /// When this budget is exhausted, the connection is closed with
+    /// `ENHANCE_YOUR_CALM`.
+    ///
+    /// By default, the budget is half the target connection window, with a
+    /// minimum of 25,600 bytes. Changing the target window at runtime also
+    /// updates the permitted framing overhead.
+    pub fn data_frame_budget(&mut self, budget: usize) -> &mut Self {
+        self.data_frame_budget = proto::DataFrameBudget::Configured(budget);
+        self
+    }
+
     /// Creates a new configured HTTP/2 server backed by `io`.
     ///
     /// It is expected that `io` already be in an appropriate state to commence
@@ -1102,6 +1143,109 @@ impl Default for Builder {
 // ===== impl SendResponse =====
 
 impl<B: Buf> SendResponse<B> {
+    /// Send an interim informational response (1xx status codes)
+    ///
+    /// This method can be called multiple times before calling `send_response()`
+    /// to send the final response. Only 1xx status codes are allowed.
+    ///
+    /// Interim informational responses are used to provide early feedback to the client
+    /// before the final response is ready. Common examples include:
+    /// - 100 Continue: Indicates the client should continue with the request
+    /// - 103 Early Hints: Provides early hints about resources to preload
+    ///
+    /// # Arguments
+    /// * `response` - HTTP response with 1xx status code and headers
+    ///
+    /// # Returns
+    /// * `Ok(())` - Interim Informational response sent successfully
+    /// * `Err(Error)` - Failed to send (invalid status code, connection error, etc.)
+    ///
+    /// # Examples
+    /// ```rust
+    /// use h2::server;
+    /// use http::{Response, StatusCode};
+    ///
+    /// # async fn example(mut send_response: h2::server::SendResponse<bytes::Bytes>) -> Result<(), h2::Error> {
+    /// // Send 100 Continue before processing request body
+    /// let continue_response = Response::builder()
+    ///     .status(StatusCode::CONTINUE)
+    ///     .body(())
+    ///     .unwrap();
+    /// send_response.send_informational(continue_response)?;
+    ///
+    /// // Later send the final response
+    /// let final_response = Response::builder()
+    ///     .status(StatusCode::OK)
+    ///     .body(())
+    ///     .unwrap();
+    /// let _stream = send_response.send_response(final_response, false)?;
+    /// # Ok(())
+    /// # }
+    /// ```
+    ///
+    /// # Errors
+    /// This method will return an error if:
+    /// - The response status code is not in the 1xx range
+    /// - The final response has already been sent
+    /// - There is a connection-level error
+    pub fn send_informational(&mut self, response: Response<()>) -> Result<(), crate::Error> {
+        let stream_id = self.inner.stream_id();
+        let status = response.status();
+
+        tracing::trace!(
+            "send_informational called with status: {} on stream: {:?}",
+            status,
+            stream_id
+        );
+
+        // Validate that this is an informational response (1xx status code)
+        if !response.status().is_informational() {
+            tracing::trace!(
+                "invalid informational status code: {} on stream: {:?}",
+                status,
+                stream_id
+            );
+            return Err(crate::Error::from(
+                UserError::InvalidInformationalStatusCode,
+            ));
+        }
+
+        tracing::trace!(
+            "converting informational response to HEADERS frame without END_STREAM flag for stream: {:?}",
+            stream_id
+        );
+
+        let frame = Peer::convert_send_message(
+            stream_id, response, false, // NOT end_of_stream for informational responses
+        );
+
+        tracing::trace!(
+            "sending interim informational headers frame for stream: {:?}",
+            stream_id
+        );
+
+        // Use the proper H2 streams API for sending interim informational headers
+        // This bypasses the normal response flow and allows multiple informational responses
+        let result = self
+            .inner
+            .send_informational_headers(frame)
+            .map_err(Into::into);
+
+        match &result {
+            Ok(()) => tracing::trace!(
+                "Successfully sent informational headers for stream: {:?}",
+                stream_id
+            ),
+            Err(e) => tracing::trace!(
+                "Failed to send informational headers for stream: {:?}: {:?}",
+                stream_id,
+                e
+            ),
+        }
+
+        result
+    }
+
     /// Send a response to a client request.
     ///
     /// On success, a [`SendStream`] instance is returned. This instance can be
@@ -1390,6 +1534,7 @@ where
                                 .builder
                                 .local_max_error_reset_streams,
                             settings: self.builder.settings.clone(),
+                            data_frame_budget: self.builder.data_frame_budget,
                         },
                     );
 

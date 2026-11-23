@@ -1,7 +1,40 @@
 //! [Read](read()) and [write](write()) shallow files, while performing typical operations on them.
-#![deny(missing_docs, rust_2018_idioms)]
+//!
+//! ## Examples
+//!
+//! ```
+//! # fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+//! let first = gix_hash::ObjectId::from_hex(b"1111111111111111111111111111111111111111")?;
+//! let second = gix_hash::ObjectId::from_hex(b"2222222222222222222222222222222222222222")?;
+//! # let dir = tempfile::tempdir()?;
+//! # let shallow_file = dir.path().join("shallow");
+//! # std::fs::write(&shallow_file, format!("{first}\n"))?;
+//!
+//! let shallow = gix_shallow::read(&shallow_file)
+//!     ?
+//!     .expect("a shallow boundary");
+//! let lock = gix_lock::File::acquire_to_update_resource(
+//!     &shallow_file,
+//!     gix_lock::acquire::Fail::Immediately,
+//!     None,
+//!     0,
+//! )
+//! ?;
+//! gix_shallow::write(lock, Some(shallow), &[gix_shallow::Update::Shallow(second)])
+//!     ?;
+//!
+//! let ids = gix_shallow::read(&shallow_file)
+//!     ?
+//!     .expect("a shallow boundary")
+//!     .into_iter()
+//!     .collect::<Vec<_>>();
+//! assert_eq!(ids, vec![first, second]);
+//! # Ok(()) }
+//! ```
+#![deny(missing_docs)]
 #![forbid(unsafe_code)]
 
+use gix_error::Result;
 /// An instruction on how to
 #[derive(PartialEq, Eq, Debug, Hash, Ord, PartialOrd, Clone, Copy)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -17,33 +50,35 @@ pub enum Update {
 /// The list of shallow commits represents the shallow boundary, beyond which we are lacking all (parent) commits.
 /// Note that the list is never empty, as `Ok(None)` is returned in that case indicating the repository
 /// isn't a shallow clone.
-pub fn read(shallow_file: &std::path::Path) -> Result<Option<Vec<gix_hash::ObjectId>>, read::Error> {
+pub fn read(shallow_file: &std::path::Path) -> Result<Option<nonempty::NonEmpty<gix_hash::ObjectId>>> {
     use bstr::ByteSlice;
+    use gix_error::{ErrorExt, ResultExt, bail, message};
     let buf = match std::fs::read(shallow_file) {
         Ok(buf) => buf,
         Err(err) if err.kind() == std::io::ErrorKind::NotFound => return Ok(None),
-        Err(err) => return Err(err.into()),
+        Err(err) => {
+            bail!(err.and_raise(message("Could not open shallow file for reading")));
+        }
     };
 
     let mut commits = buf
         .lines()
         .map(gix_hash::ObjectId::from_hex)
-        .collect::<Result<Vec<_>, _>>()?;
+        .collect::<std::result::Result<Vec<_>, _>>()
+        .or_raise(|| gix_error::corruption("Could not decode a line in shallow file as hex-encoded object hash"))?;
 
     commits.sort();
-    if commits.is_empty() {
-        Ok(None)
-    } else {
-        Ok(Some(commits))
-    }
+    Ok(nonempty::NonEmpty::from_vec(commits))
 }
 
 ///
 pub mod write {
     pub(crate) mod function {
+        use gix_error::Result;
         use std::io::Write;
 
-        use super::Error;
+        use gix_error::{ErrorExt, ResultExt, bail, message};
+
         use crate::Update;
 
         /// Write the [previously obtained](crate::read()) (possibly non-existing) `shallow_commits` to the shallow `file`
@@ -56,10 +91,10 @@ pub mod write {
         /// Git also prunes the set of shallow commits while writing, we don't until we support some sort of pruning.
         pub fn write(
             mut file: gix_lock::File,
-            shallow_commits: Option<Vec<gix_hash::ObjectId>>,
+            shallow_commits: Option<nonempty::NonEmpty<gix_hash::ObjectId>>,
             updates: &[Update],
-        ) -> Result<(), Error> {
-            let mut shallow_commits = shallow_commits.unwrap_or_default();
+        ) -> Result {
+            let mut shallow_commits = shallow_commits.map(Vec::from).unwrap_or_default();
             for update in updates {
                 match update {
                     Update::Shallow(id) => {
@@ -69,55 +104,29 @@ pub mod write {
                 }
             }
             if shallow_commits.is_empty() {
-                std::fs::remove_file(file.resource_path())?;
+                if let Err(err) = std::fs::remove_file(file.resource_path())
+                    && err.kind() != std::io::ErrorKind::NotFound
+                {
+                    bail!(err.and_raise(message("Could not remove an empty shallow file")));
+                }
                 drop(file);
                 return Ok(());
             }
-
-            if shallow_commits.is_empty() {
-                if let Err(err) = std::fs::remove_file(file.resource_path()) {
-                    if err.kind() != std::io::ErrorKind::NotFound {
-                        return Err(err.into());
-                    }
-                }
-            } else {
-                shallow_commits.sort();
-                let mut buf = Vec::<u8>::new();
-                for commit in shallow_commits {
-                    commit.write_hex_to(&mut buf).map_err(Error::Io)?;
-                    buf.push(b'\n');
-                }
-                file.write_all(&buf).map_err(Error::Io)?;
-                file.flush()?;
+            shallow_commits.sort();
+            let mut buf = Vec::<u8>::new();
+            for commit in shallow_commits {
+                commit
+                    .write_hex_to(&mut buf)
+                    .or_raise(|| message("Failed to write object id to shallow file"))?;
+                buf.push(b'\n');
             }
-            file.commit()?;
+            file.write_all(&buf)
+                .or_raise(|| message("Failed to write object id to shallow file"))?;
+            file.flush()
+                .or_raise(|| message("Failed to write object id to shallow file"))?;
+            file.commit().or_raise(|| message("Could not commit shallow file"))?;
             Ok(())
         }
     }
-
-    /// The error returned by [`write()`](crate::write()).
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error(transparent)]
-        Commit(#[from] gix_lock::commit::Error<gix_lock::File>),
-        #[error("Could not remove an empty shallow file")]
-        RemoveEmpty(#[from] std::io::Error),
-        #[error("Failed to write object id to shallow file")]
-        Io(std::io::Error),
-    }
 }
 pub use write::function::write;
-
-///
-pub mod read {
-    /// The error returned by [`read`](crate::read()).
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error("Could not open shallow file for reading")]
-        Io(#[from] std::io::Error),
-        #[error("Could not decode a line in shallow file as hex-encoded object hash")]
-        DecodeHash(#[from] gix_hash::decode::Error),
-    }
-}

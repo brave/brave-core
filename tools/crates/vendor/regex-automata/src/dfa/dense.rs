@@ -3659,7 +3659,7 @@ impl<T: AsRef<[u32]>> TransitionTable<T> {
     fn as_ref(&self) -> TransitionTable<&'_ [u32]> {
         TransitionTable {
             table: self.table.as_ref(),
-            classes: self.classes.clone(),
+            classes: self.classes,
             stride2: self.stride2,
         }
     }
@@ -3669,7 +3669,7 @@ impl<T: AsRef<[u32]>> TransitionTable<T> {
     fn to_owned(&self) -> TransitionTable<alloc::vec::Vec<u32>> {
         TransitionTable {
             table: self.table.as_ref().to_vec(),
-            classes: self.classes.clone(),
+            classes: self.classes,
             stride2: self.stride2,
         }
     }
@@ -4175,6 +4175,11 @@ impl<T: AsRef<[u32]>> StartTable<T> {
             if !tt.is_valid(id) {
                 return Err(DeserializeError::generic(
                     "found invalid starting state ID",
+                ));
+            }
+            if dfa.special.is_match_state(id) {
+                return Err(DeserializeError::generic(
+                    "start states cannot be match states",
                 ));
             }
         }
@@ -5256,5 +5261,43 @@ mod tests {
         };
         let (buf, _) = dfa.to_bytes_native_endian();
         DFA::from_bytes(&buf).unwrap_err();
+    }
+
+    // A starting state can never be a match state, since all matches are
+    // delayed by one byte. The search routines rely on this and assert it,
+    // so `from_bytes` must reject a serialized DFA whose start table points
+    // at a match state. The sparse DFA already rejected this; the dense DFA
+    // did not, so searching with such a DFA tripped the assertion in
+    // `dfa::search::init_fwd`.
+    #[test]
+    fn regression_start_state_not_match() {
+        let mut dfa = DFA::new("abc").unwrap();
+        let min_match = dfa.special.min_match;
+        for id in dfa.st.table_mut() {
+            *id = min_match;
+        }
+        let (buf, _) = dfa.to_bytes_native_endian();
+        DFA::from_bytes(&buf).unwrap_err();
+    }
+
+    // The quit set is consulted directly when computing a start state from a
+    // look-behind byte, so it has to survive a serialization round trip. The
+    // high half of the set (bytes 0x80-0xFF) used to be read from the same
+    // offset as the low half, so a deserialized DFA built with the Unicode
+    // word boundary heuristic did not report a quit error here.
+    #[test]
+    fn roundtrip_quitset() {
+        let dfa = DFA::builder()
+            .configure(DFA::config().unicode_word_boundary(true))
+            .build(r"\bfoo")
+            .unwrap();
+        let (buf, _) = dfa.to_bytes_native_endian();
+        let (dfa2, _) = DFA::from_bytes(&buf).unwrap();
+
+        let input = Input::new("éfoo").range(2..);
+        let expected = MatchError::quit(0xA9, 1);
+        assert_eq!(Err(expected.clone()), dfa.try_search_fwd(&input));
+        assert_eq!(Err(expected), dfa2.try_search_fwd(&input));
+        assert_eq!(dfa.quitset(), dfa2.quitset());
     }
 }

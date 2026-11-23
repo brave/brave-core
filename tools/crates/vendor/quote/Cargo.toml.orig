@@ -1,16 +1,16 @@
 [package]
 name = "quote"
-version = "1.0.42"
+version = "1.0.47"
 authors = ["David Tolnay <dtolnay@gmail.com>"]
 autobenches = false
 categories = ["development-tools::procedural-macro-helpers"]
 description = "Quasi-quoting macro quote!(...)"
 documentation = "https://docs.rs/quote/"
-edition = "2018"
+edition = "2021"
 keywords = ["macros", "syn"]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/dtolnay/quote"
-rust-version = "1.68"
+rust-version = "1.71"
 
 [dependencies]
 proc-macro2 = { version = "1.0.80", default-features = false }

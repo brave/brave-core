@@ -384,6 +384,7 @@ impl<'a> Tokenizer<'a> {
                     Some((_, 'n')) => val.push('\n'),
                     Some((_, 'r')) => val.push('\r'),
                     Some((_, 't')) => val.push('\t'),
+                    Some((_, 'e')) => val.push('\u{1b}'), // TOML 1.1: escape character
                     Some((i, c @ ('u' | 'U'))) => {
                         let c = if c == 'u' {
                             me.hex::<4>(start, i)
@@ -391,6 +392,10 @@ impl<'a> Tokenizer<'a> {
                             me.hex::<8>(start, i)
                         };
                         val.push(c?);
+                    }
+                    Some((i, 'x')) => {
+                        // TOML 1.1: \xHH for codepoints < 255
+                        val.push(me.hex::<2>(start, i)?);
                     }
                     Some((i, c @ (' ' | '\t' | '\n'))) if multi => {
                         if c != '\n' {

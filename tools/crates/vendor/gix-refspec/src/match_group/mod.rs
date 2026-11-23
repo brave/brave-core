@@ -1,23 +1,23 @@
 use std::collections::BTreeSet;
 
-use crate::{parse::Operation, types::Mode, MatchGroup, RefSpecRef};
+use crate::{MatchGroup, RefSpecRef, parse::Operation, types::Mode};
 
 pub(crate) mod types;
-pub use types::{match_lhs, match_rhs, Item, Mapping, Source, SourceRef};
+pub use types::{Item, Mapping, Source, SourceRef, match_lhs, match_rhs};
 
 ///
 pub mod validate;
 
 /// Initialization
 impl<'a> MatchGroup<'a> {
-    /// Take all the fetch ref specs from `specs` get a match group ready.
+    /// Create a match group from all fetch refspecs in `specs`, ignoring push refspecs.
     pub fn from_fetch_specs(specs: impl IntoIterator<Item = RefSpecRef<'a>>) -> Self {
         MatchGroup {
             specs: specs.into_iter().filter(|s| s.op == Operation::Fetch).collect(),
         }
     }
 
-    /// Take all the push ref specs from `specs` get a match group ready.
+    /// Create a match group from all push refspecs in `specs`, ignoring fetch refspecs.
     pub fn from_push_specs(specs: impl IntoIterator<Item = RefSpecRef<'a>>) -> Self {
         MatchGroup {
             specs: specs.into_iter().filter(|s| s.op == Operation::Push).collect(),
@@ -32,7 +32,7 @@ impl<'spec> MatchGroup<'spec> {
     /// i.e. *left side of refspecs is mapped to their right side*.
     /// *Note that this method is correct only for fetch-specs*, even though it also *works for push-specs*.
     ///
-    /// Object names are never mapped and always returned as match.
+    /// Object IDs are emitted directly without being matched against `items`.
     ///
     /// Note that negative matches are not part of the return value, so they are not observable but will be used to remove mappings.
     // TODO: figure out how to deal with push-specs, probably when push is being implemented.
@@ -114,9 +114,18 @@ impl<'spec> MatchGroup<'spec> {
         }
     }
 
-    /// Match all `items` against all *fetch* specs present in this group, returning deduplicated mappings from destination to source.
+    /// Match all `items` against the right-hand side of all *fetch* specs present in this group,
+    /// returning deduplicated mappings from destination to source.
     /// `items` are expected to be tracking references in the local clone, which will be matched and reverse-mapped to obtain their remote counterparts,
     /// i.e. *right side of refspecs is mapped to their left side*.
+    ///
+    /// Matching and substitution are literal, apart from glob captures: destinations aren't expanded as partial
+    /// names or matched against object IDs, and sources retain their parsed spelling. Thus a mapping's `lhs`
+    /// can be an abbreviated name, `HEAD`, or a hexadecimal object ID, not necessarily a full reference name.
+    ///
+    /// Even though this method starts by matching `items` against the right-hand side of positive refspecs,
+    /// negative fetch refspecs still exclude refs by their left-hand/source side. For that reason, once a
+    /// mapping has been reverse-mapped to its source ref, negative refspecs are applied to the mapping's `lhs`.
     /// *Note that this method is correct only for fetch-specs*, even though it also *works for push-specs*.
     ///
     /// Note that negative matches are not part of the return value, so they are not observable but will be used to remove mappings.
@@ -132,7 +141,7 @@ impl<'spec> MatchGroup<'spec> {
                 out.push(mapping);
             }
         };
-        let mut matchers: Vec<Matcher<'_>> = self.specs.iter().copied().map(Matcher::from).collect();
+        let mut matchers: Vec<Matcher<'_>> = self.specs.iter().copied().map(Matcher::for_reverse_mapping).collect();
 
         let mut has_negation = false;
         for (spec_index, (spec, matcher)) in self.specs.iter().zip(matchers.iter_mut()).enumerate() {
@@ -164,7 +173,7 @@ impl<'spec> MatchGroup<'spec> {
                     SourceRef::ObjectId(_) => true,
                     SourceRef::FullName(name) => {
                         !matcher
-                            .matches_rhs(Item {
+                            .matches_lhs(Item {
                                 full_ref_name: name.as_ref(),
                                 target: &null_id,
                                 object: None,

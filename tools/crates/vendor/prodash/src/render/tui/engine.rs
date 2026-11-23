@@ -7,8 +7,8 @@ use futures_lite::StreamExt;
 use tui::layout::Rect;
 
 use crate::{
-    render::tui::{draw, ticker},
     Root, Throughput, WeakRoot,
+    render::tui::{draw, ticker},
 };
 
 /// Configure the terminal user interface
@@ -94,8 +94,8 @@ compile_error!("Please set the 'render-tui-crossterm' feature when using the 're
 
 use crosstermion::crossterm::event::{KeyCode, KeyEventKind, KeyModifiers};
 use crosstermion::{
-    input::{key_input_stream, Key},
-    terminal::{tui::new_terminal, AlternateRawScreen},
+    input::{Key, key_input_stream},
+    terminal::{AlternateRawScreen, tui::new_terminal},
 };
 
 /// An event to be sent in the [`tui::render_with_input(…events)`](./fn.render_with_input.html) stream.
@@ -122,7 +122,7 @@ pub enum Event {
 /// Returns a future that draws the terminal user interface indefinitely.
 ///
 /// * `progress` is the progress tree whose information to visualize.
-///    It will usually be changing constantly while the TUI holds it.
+///   It will usually be changing constantly while the TUI holds it.
 /// * `options` are configuring the TUI.
 /// * `events` is a stream of `Event`s which manipulate the TUI while it is running
 ///

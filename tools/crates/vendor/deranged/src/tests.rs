@@ -1,8 +1,8 @@
 extern crate std;
 
 use core::hash::Hash;
-use std::format;
 use std::prelude::rust_2021::*;
+use std::{format, panic};
 
 use crate::{
     IntErrorKind, OptionRangedI128, OptionRangedI16, OptionRangedI32, OptionRangedI64,
@@ -22,6 +22,36 @@ fn test_ranged_conversion() {
 
     // the following fails to compile because the source range is wider than the destination range
     // let _ : RangedI8<-4, 4> = RangedI16::<-5, 5>::new_static::<3>().into();
+}
+
+#[test]
+fn optional_cross_range_equality() {
+    let none = OptionRangedU8::<0, 10>::None;
+    let some_max = OptionRangedU8::<5, { u8::MAX }>::Some(RangedU8::<5, { u8::MAX }>::MAX);
+    assert_ne!(none, some_max);
+    assert_eq!(none.partial_cmp(&some_max), Some(core::cmp::Ordering::Less));
+
+    let other_none = OptionRangedU8::<5, 10>::None;
+    assert_eq!(none, other_none);
+    assert_eq!(
+        none.partial_cmp(&other_none),
+        Some(core::cmp::Ordering::Equal)
+    );
+}
+
+#[cfg(feature = "quickcheck")]
+#[test]
+fn quickcheck_full_width_ranges() {
+    let mut generator = quickcheck::Gen::new(100);
+
+    for _ in 0..100 {
+        let _: RangedU8<0, 255> = quickcheck::Arbitrary::arbitrary(&mut generator);
+        let _: RangedI8<{ i8::MIN }, { i8::MAX }> =
+            quickcheck::Arbitrary::arbitrary(&mut generator);
+        let _: RangedU128<0, { u128::MAX }> = quickcheck::Arbitrary::arbitrary(&mut generator);
+        let _: RangedI128<{ i128::MIN }, { i128::MAX }> =
+            quickcheck::Arbitrary::arbitrary(&mut generator);
+    }
 }
 
 macro_rules! if_signed {
@@ -497,6 +527,18 @@ macro_rules! tests {
         }
 
         #[test]
+        fn overflowing_add() {$(
+            assert_eq!($t::<5, 10>::MAX.overflowing_add(0), ($t::<5, 10>::MAX, false));
+            assert_eq!($t::<5, 10>::MAX.overflowing_add(1), ($t::<5, 10>::MIN, true));
+        )*}
+
+        #[test]
+        fn overflowing_sub() {$(
+            assert_eq!($t::<5, 10>::MIN.overflowing_sub(0), ($t::<5, 10>::MIN, false));
+            assert_eq!($t::<5, 10>::MIN.overflowing_sub(1), ($t::<5, 10>::MAX, true));
+        )*}
+
+        #[test]
         fn saturating_sub() {$(
             assert_eq!($t::<5, 10>::MIN.saturating_sub(0), $t::<5, 10>::MIN);
             assert_eq!($t::<5, 10>::MIN.saturating_sub(1), $t::<5, 10>::MIN);
@@ -651,12 +693,29 @@ macro_rules! tests {
             let val = $opt::<5, 10>::None;
             let serialized = serde_json::to_string(&val)?;
             assert_eq!(serialized, "null");
+            let deserialized: $opt<5, 10> = serde_json::from_str(&serialized)?;
+            assert_eq!(deserialized, val);
 
             assert!(serde_json::from_str::<$opt<5, 10>>("").is_err());
             assert!(serde_json::from_str::<$opt<5, 10>>("4").is_err());
             assert!(serde_json::from_str::<$opt<5, 10>>("11").is_err());
             )*
             Ok(())
+        }
+
+        #[cfg(feature = "serde")]
+        #[test]
+        fn serde_option_tokens() {
+            use serde_test2::{assert_tokens, Token};
+
+            assert_tokens(
+                &OptionRangedU8::<5, 10>::Some(RangedU8::<5, 10>::MAX),
+                &[Token::Some, Token::U8(10)],
+            );
+            assert_tokens(
+                &OptionRangedU8::<5, 10>::None,
+                &[Token::None],
+            );
         }
 
         #[cfg(feature = "rand08")]
@@ -681,6 +740,20 @@ macro_rules! tests {
             assert!(rand_val <= $t::<5, 10>::MAX);
 
             let rand: $opt<5, 10> = rand09::random();
+            if let Some(rand) = rand.get() {
+                assert!(rand >= $t::<5, 10>::MIN);
+                assert!(rand <= $t::<5, 10>::MAX);
+            }
+        )*}
+
+        #[cfg(feature = "rand010")]
+        #[test]
+        fn rand010() {$(
+            let rand_val: $t<5, 10> = rand010::random();
+            assert!(rand_val >= $t::<5, 10>::MIN);
+            assert!(rand_val <= $t::<5, 10>::MAX);
+
+            let rand: $opt<5, 10> = rand010::random();
             if let Some(rand) = rand.get() {
                 assert!(rand >= $t::<5, 10>::MIN);
                 assert!(rand <= $t::<5, 10>::MAX);

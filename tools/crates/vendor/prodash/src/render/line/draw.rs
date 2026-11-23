@@ -1,5 +1,5 @@
 use std::{
-    collections::{hash_map::DefaultHasher, VecDeque},
+    collections::{VecDeque, hash_map::DefaultHasher},
     hash::{Hash, Hasher},
     io,
     ops::RangeInclusive,
@@ -7,15 +7,16 @@ use std::{
 };
 
 use crosstermion::{
-    ansi_term::{ANSIString, ANSIStrings, Color, Style},
     color,
+    nu_ansi_term::{AnsiString, AnsiStrings, Color, Style},
 };
 use unicode_width::UnicodeWidthStr;
 
 use crate::{
+    Root, Throughput,
     messages::{Message, MessageCopyState, MessageLevel},
     progress::{self, Value},
-    unit, Root, Throughput,
+    unit,
 };
 
 #[derive(Default)]
@@ -80,7 +81,7 @@ fn messages(
             Failure => Color::Red,
         }
     }
-    let mut tokens: Vec<ANSIString<'_>> = Vec::with_capacity(6);
+    let mut tokens: Vec<AnsiString<'_>> = Vec::with_capacity(6);
     let mut current_maximum = state.message_origin_size.iter().max().cloned().unwrap_or(0);
     for Message {
         time,
@@ -119,7 +120,7 @@ fn messages(
         tokens.push(" ".into());
         tokens.push(brush.style(color.bold()).paint(message));
         let message_block_count = block_count_sans_ansi_codes(&tokens);
-        write!(out, "{}", ANSIStrings(tokens.as_slice()))?;
+        write!(out, "{}", AnsiStrings(tokens.as_slice()))?;
 
         if blocks_drawn_during_previous_tick > message_block_count {
             newline_with_overdraw(out, &tokens, blocks_drawn_during_previous_tick)?;
@@ -132,7 +133,7 @@ fn messages(
 
 pub fn all(out: &mut impl io::Write, show_progress: bool, state: &mut State, config: &Options) -> io::Result<()> {
     if !config.keep_running_if_progress_is_empty && state.tree.is_empty() {
-        return Err(io::Error::new(io::ErrorKind::Other, "stop as progress is empty"));
+        return Err(io::Error::other("stop as progress is empty"));
     }
     messages(
         out,
@@ -158,7 +159,7 @@ pub fn all(out: &mut impl io::Write, show_progress: bool, state: &mut State, con
         if state.blocks_per_line.len() < lines_to_be_drawn {
             state.blocks_per_line.resize(lines_to_be_drawn, 0);
         }
-        let mut tokens: Vec<ANSIString<'_>> = Vec::with_capacity(4);
+        let mut tokens: Vec<AnsiString<'_>> = Vec::with_capacity(4);
         let mut max_midpoint = 0;
         for ((key, value), ref mut blocks_in_last_iteration) in state
             .tree
@@ -181,7 +182,7 @@ pub fn all(out: &mut impl io::Write, show_progress: bool, state: &mut State, con
                 )
                 .unwrap_or(0),
             );
-            write!(out, "{}", ANSIStrings(tokens.as_slice()))?;
+            write!(out, "{}", AnsiStrings(tokens.as_slice()))?;
 
             **blocks_in_last_iteration = newline_with_overdraw(out, &tokens, **blocks_in_last_iteration)?;
         }
@@ -208,7 +209,7 @@ pub fn all(out: &mut impl io::Write, show_progress: bool, state: &mut State, con
 /// Must be called directly after `tokens` were drawn, without newline. Takes care of adding the newline.
 fn newline_with_overdraw(
     out: &mut impl io::Write,
-    tokens: &[ANSIString<'_>],
+    tokens: &[AnsiString<'_>],
     blocks_in_last_iteration: u16,
 ) -> io::Result<u16> {
     let current_block_count = block_count_sans_ansi_codes(tokens);
@@ -226,11 +227,11 @@ fn newline_with_overdraw(
     Ok(current_block_count)
 }
 
-fn block_count_sans_ansi_codes(strings: &[ANSIString<'_>]) -> u16 {
-    strings.iter().map(|s| s.width() as u16).sum()
+fn block_count_sans_ansi_codes(strings: &[AnsiString<'_>]) -> u16 {
+    strings.iter().map(|s| s.as_str().width() as u16).sum()
 }
 
-fn draw_progress_bar(p: &Value, style: Style, mut blocks_available: u16, colored: bool, buf: &mut Vec<ANSIString<'_>>) {
+fn draw_progress_bar(p: &Value, style: Style, mut blocks_available: u16, colored: bool, buf: &mut Vec<AnsiString<'_>>) {
     let mut brush = color::Brush::new(colored);
     let styled_brush = brush.style(style);
 
@@ -269,11 +270,7 @@ fn progress_style(p: &Value) -> Style {
     use crate::progress::State::*;
     match p.state {
         Running => if let Some(fraction) = p.fraction() {
-            if fraction > 0.8 {
-                Color::Green
-            } else {
-                Color::Yellow
-            }
+            if fraction > 0.8 { Color::Green } else { Color::Yellow }
         } else {
             Color::White
         }
@@ -290,7 +287,7 @@ fn format_progress<'a>(
     colored: bool,
     midpoint: Option<u16>,
     throughput: Option<unit::display::Throughput>,
-    buf: &mut Vec<ANSIString<'a>>,
+    buf: &mut Vec<AnsiString<'a>>,
 ) -> Option<u16> {
     let mut brush = color::Brush::new(colored);
     buf.clear();

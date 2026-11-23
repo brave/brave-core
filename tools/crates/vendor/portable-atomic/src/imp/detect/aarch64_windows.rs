@@ -29,6 +29,8 @@ mod ffi {
         pub(crate) const [Win32::System::Threading]
             PF_ARM_V83_LRCPC_INSTRUCTIONS_AVAILABLE: PROCESSOR_FEATURE_ID = 45;
     });
+    // TODO: put in sys_const! once windows-sys updated.
+    pub(crate) const PF_ARM_LSE2_AVAILABLE: PROCESSOR_FEATURE_ID = 62;
 
     sys_fn!({
         extern "system" {
@@ -41,7 +43,8 @@ mod ffi {
 }
 
 #[cold]
-fn _detect(info: &mut CpuInfo) {
+#[must_use]
+fn _detect(mut info: CpuInfo) -> CpuInfo {
     macro_rules! check {
         ($flag:ident, $bit:ident) => {
             // SAFETY: calling IsProcessorFeaturePresent is safe, and FALSE is also
@@ -52,6 +55,8 @@ fn _detect(info: &mut CpuInfo) {
         };
     }
     check!(lse, PF_ARM_V81_ATOMIC_INSTRUCTIONS_AVAILABLE);
+    check!(lse2, PF_ARM_LSE2_AVAILABLE);
     #[cfg(test)]
     check!(rcpc, PF_ARM_V83_LRCPC_INSTRUCTIONS_AVAILABLE);
+    info
 }

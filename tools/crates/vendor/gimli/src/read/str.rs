@@ -1,10 +1,10 @@
+use crate::Format;
 use crate::common::{
     DebugLineStrOffset, DebugStrOffset, DebugStrOffsetsBase, DebugStrOffsetsIndex, DwarfFileType,
     Encoding, SectionId,
 };
 use crate::endianity::Endianity;
-use crate::read::{EndianSlice, Reader, ReaderOffset, Result, Section};
-use crate::Format;
+use crate::read::{EndianSlice, Error, Reader, ReaderOffset, Result, Section};
 
 /// The `DebugStr` struct represents the DWARF strings
 /// found in the `.debug_str` section.
@@ -118,7 +118,11 @@ impl<R: Reader> DebugStrOffsets<R> {
         let input = &mut self.section.clone();
         input.skip(base.0)?;
         input.skip(R::Offset::from_u64(
-            index.0.into_u64() * u64::from(format.word_size()),
+            index
+                .0
+                .into_u64()
+                .checked_mul(u64::from(format.word_size()))
+                .ok_or(Error::UnsupportedOffset)?,
         )?)?;
         input.read_offset(format).map(DebugStrOffset)
     }
@@ -250,8 +254,8 @@ impl<R> From<R> for DebugLineStr<R> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::test_util::GimliSectionMethods;
     use crate::LittleEndian;
+    use crate::test_util::GimliSectionMethods;
     use test_assembler::{Endian, Label, LabelMaker, Section};
 
     #[test]
@@ -287,5 +291,19 @@ mod tests {
                 Ok(DebugStrOffset(1019))
             );
         }
+    }
+
+    #[test]
+    #[cfg(target_pointer_width = "64")]
+    fn test_get_str_offset_index_overflow() {
+        // `index * word_size` must not overflow; it should be reported as an
+        // unsupported offset instead.
+        let buf = [0u8; 64];
+        let debug_str_offsets = DebugStrOffsets::from(EndianSlice::new(&buf, LittleEndian));
+        let index = DebugStrOffsetsIndex(0x4000_0000_0000_0000usize);
+        assert_eq!(
+            debug_str_offsets.get_str_offset(Format::Dwarf64, DebugStrOffsetsBase(0), index),
+            Err(Error::UnsupportedOffset)
+        );
     }
 }

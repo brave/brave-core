@@ -13,8 +13,7 @@
 edition = "2024"
 rust-version = "1.85"
 name = "cvss"
-version = "2.2.0"
-authors = ["Tony Arcieri <bascule@gmail.com>"]
+version = "3.0.0"
 build = false
 autolib = false
 autobins = false
@@ -24,8 +23,7 @@ autobenches = false
 description = "Common Vulnerability Scoring System parser/serializer"
 readme = "README.md"
 keywords = [
-    "cvssv3",
-    "cvssv4",
+    "cvss",
     "security",
     "advisory",
     "vulnerability",
@@ -45,10 +43,12 @@ rustdoc-args = [
 [features]
 default = [
     "std",
+    "v2",
     "v3",
     "v4",
 ]
 std = []
+v2 = []
 v3 = []
 v4 = []
 
@@ -59,6 +59,10 @@ path = "src/lib.rs"
 [[test]]
 name = "base"
 path = "tests/base.rs"
+
+[[test]]
+name = "redhat-v2"
+path = "tests/redhat-v2.rs"
 
 [[test]]
 name = "redhat-v3"
@@ -75,3 +79,19 @@ path = "tests/uncovered-v4.rs"
 [dependencies.serde]
 version = "1"
 optional = true
+
+[lints.clippy]
+cloned_instead_of_copied = "warn"
+manual_let_else = "warn"
+or_fun_call = "warn"
+upper_case_acronyms = "warn"
+use_self = "warn"
+
+[lints.rust]
+elided_lifetimes_in_paths = "warn"
+trivial_numeric_casts = "warn"
+unnameable_types = "warn"
+unreachable_pub = "warn"
+unused_extern_crates = "warn"
+unused_import_braces = "warn"
+unused_qualifications = "warn"

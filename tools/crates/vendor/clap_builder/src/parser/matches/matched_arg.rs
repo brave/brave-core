@@ -5,12 +5,12 @@ use std::{
     slice::Iter,
 };
 
+use crate::INTERNAL_ERROR_MSG;
 use crate::builder::ArgPredicate;
 use crate::parser::ValueSource;
-use crate::util::eq_ignore_case;
 use crate::util::AnyValue;
 use crate::util::AnyValueId;
-use crate::INTERNAL_ERROR_MSG;
+use crate::util::eq_ignore_case;
 
 #[derive(Debug, Clone)]
 pub(crate) struct MatchedArg {
@@ -178,8 +178,8 @@ impl MatchedArg {
 }
 
 impl PartialEq for MatchedArg {
-    fn eq(&self, other: &MatchedArg) -> bool {
-        let MatchedArg {
+    fn eq(&self, other: &Self) -> bool {
+        let Self {
             source: self_source,
             indices: self_indices,
             type_id: self_type_id,
@@ -187,7 +187,7 @@ impl PartialEq for MatchedArg {
             raw_vals: self_raw_vals,
             ignore_case: self_ignore_case,
         } = self;
-        let MatchedArg {
+        let Self {
             source: other_source,
             indices: other_indices,
             type_id: other_type_id,

@@ -435,7 +435,7 @@ impl CorsLayer {
     /// In contrast to the other headers, this one has a non-empty default of
     /// [`preflight_request_headers()`].
     ///
-    /// You only need to set this is you want to remove some of these defaults,
+    /// You only need to set this if you want to remove some of these defaults,
     /// or if you use a closure for one of the other headers and want to add a
     /// vary header accordingly.
     ///

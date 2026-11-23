@@ -154,9 +154,9 @@ pub struct Time {
     /// Minute: 0 to 59
     pub minute: u8,
     /// Second: 0 to {58, 59, 60} (based on leap second rules)
-    pub second: u8,
+    pub second: Option<u8>,
     /// Nanosecond: 0 to `999_999_999`
-    pub nanosecond: u32,
+    pub nanosecond: Option<u32>,
 }
 
 /// A parsed TOML time offset
@@ -256,10 +256,20 @@ impl fmt::Display for Date {
 #[cfg(feature = "alloc")]
 impl fmt::Display for Time {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{:02}:{:02}:{:02}", self.hour, self.minute, self.second)?;
-        if self.nanosecond != 0 {
-            let s = alloc::format!("{:09}", self.nanosecond);
-            write!(f, ".{}", s.trim_end_matches('0'))?;
+        write!(f, "{:02}:{:02}", self.hour, self.minute)?;
+        if let Some(second) = self
+            .second
+            .or_else(|| self.nanosecond.is_some().then_some(0))
+        {
+            write!(f, ":{second:02}")?;
+        }
+        if let Some(nanosecond) = self.nanosecond {
+            let s = alloc::format!("{nanosecond:09}");
+            let mut s = s.trim_end_matches('0');
+            if s.is_empty() {
+                s = "0";
+            }
+            write!(f, ".{s}")?;
         }
         Ok(())
     }
@@ -512,8 +522,8 @@ impl FromStr for Datetime {
                     .map_err(|_err| DatetimeParseError::new())?,
                 second: second
                     .map(|t| t.raw.parse().map_err(|_err| DatetimeParseError::new()))
-                    .unwrap_or(Ok(0))?,
-                nanosecond: nanosecond.map(|t| s_to_nanoseconds(t.raw)).unwrap_or(0),
+                    .transpose()?,
+                nanosecond: nanosecond.map(|t| s_to_nanoseconds(t.raw)),
             };
 
             if time.hour > 23 {
@@ -527,12 +537,12 @@ impl FromStr for Datetime {
                     .expected("minute between 00 and 59"));
             }
             // 00-58, 00-59, 00-60 based on leap second rules
-            if time.second > 60 {
+            if time.second.unwrap_or(0) > 60 {
                 return Err(DatetimeParseError::new()
                     .what("time")
                     .expected("second between 00 and 60"));
             }
-            if time.nanosecond > 999_999_999 {
+            if time.nanosecond.unwrap_or(0) > 999_999_999 {
                 return Err(DatetimeParseError::new()
                     .what("time")
                     .expected("nanoseconds overflowed"));
@@ -765,10 +775,7 @@ impl fmt::Display for DatetimeParseError {
     }
 }
 
-#[cfg(feature = "std")]
-impl std::error::Error for DatetimeParseError {}
-#[cfg(all(not(feature = "std"), feature = "serde"))]
-impl serde_core::de::StdError for DatetimeParseError {}
+impl core::error::Error for DatetimeParseError {}
 
 #[cfg(feature = "serde")]
 #[cfg(feature = "alloc")]

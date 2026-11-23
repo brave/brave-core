@@ -26,6 +26,8 @@ pub(crate) mod root {
         pub const CLONE: sections::Clone = sections::Clone;
         /// The `committer` section.
         pub const COMMITTER: sections::Committer = sections::Committer;
+        /// The `commit` section.
+        pub const COMMIT: sections::Commit = sections::Commit;
         /// The `core` section.
         pub const CORE: sections::Core = sections::Core;
         /// The `credential` section.
@@ -39,6 +41,8 @@ pub(crate) mod root {
         pub const FETCH: sections::Fetch = sections::Fetch;
         /// The `gitoxide` section.
         pub const GITOXIDE: sections::Gitoxide = sections::Gitoxide;
+        /// The `gpg` section.
+        pub const GPG: sections::Gpg = sections::Gpg;
         /// The `http` section.
         pub const HTTP: sections::Http = sections::Http;
         /// The `index` section.
@@ -49,6 +53,8 @@ pub(crate) mod root {
         pub const MAILMAP: sections::Mailmap = sections::Mailmap;
         /// The `merge` section.
         pub const MERGE: sections::Merge = sections::Merge;
+        /// The `notes` section.
+        pub const NOTES: sections::Notes = sections::Notes;
         /// The `pack` section.
         pub const PACK: sections::Pack = sections::Pack;
         /// The `protocol` section.
@@ -68,6 +74,8 @@ pub(crate) mod root {
         pub const USER: sections::User = sections::User;
         /// The `url` section.
         pub const URL: sections::Url = sections::Url;
+        /// The `worktree` section.
+        pub const WORKTREE: sections::Worktree = sections::Worktree;
 
         /// List all available sections.
         pub fn sections(&self) -> &[&dyn Section] {
@@ -77,6 +85,7 @@ pub(crate) mod root {
                 &Self::CHECKOUT,
                 &Self::CLONE,
                 &Self::COMMITTER,
+                &Self::COMMIT,
                 &Self::CORE,
                 &Self::CREDENTIAL,
                 #[cfg(feature = "blob-diff")]
@@ -84,11 +93,13 @@ pub(crate) mod root {
                 &Self::EXTENSIONS,
                 &Self::FETCH,
                 &Self::GITOXIDE,
+                &Self::GPG,
                 &Self::HTTP,
                 &Self::INDEX,
                 &Self::INIT,
                 &Self::MAILMAP,
                 &Self::MERGE,
+                &Self::NOTES,
                 &Self::PACK,
                 &Self::PROTOCOL,
                 &Self::PUSH,
@@ -99,6 +110,7 @@ pub(crate) mod root {
                 &Self::STATUS,
                 &Self::USER,
                 &Self::URL,
+                &Self::WORKTREE,
             ]
         }
     }
@@ -106,44 +118,17 @@ pub(crate) mod root {
 
 mod sections;
 pub use sections::{
-    branch, checkout, core, credential, extensions, fetch, gitoxide, http, index, protocol, push, remote, ssh, Author,
-    Branch, Checkout, Clone, Committer, Core, Credential, Extensions, Fetch, Gitoxide, Http, Index, Init, Mailmap,
-    Merge, Pack, Protocol, Push, Remote, Safe, Ssh, Url, User,
+    Author, Branch, Checkout, Clone, Commit, Committer, Core, Credential, Extensions, Fetch, Gitoxide, Gpg, Http,
+    Index, Init, Mailmap, Merge, Notes, Pack, Protocol, Push, Remote, Safe, Ssh, Url, User, Worktree, branch, checkout,
+    commit, core, credential, extensions, fetch, gitoxide, gpg, http, index, notes, protocol, push, remote, ssh,
 };
 #[cfg(feature = "blob-diff")]
-pub use sections::{diff, Diff};
+pub use sections::{Diff, diff};
 #[cfg(feature = "status")]
-pub use sections::{status, Status};
+pub use sections::{Status, status};
 
 /// Generic value implementations for static instantiation.
 pub mod keys;
-
-///
-pub mod key {
-    ///
-    pub mod validate {
-        /// The error returned by [`Key::validate()`][crate::config::tree::Key::validate()].
-        #[derive(Debug, thiserror::Error)]
-        #[error(transparent)]
-        #[allow(missing_docs)]
-        pub struct Error {
-            #[from]
-            source: Box<dyn std::error::Error + Send + Sync + 'static>,
-        }
-    }
-    ///
-    pub mod validate_assignment {
-        /// The error returned by [`Key::validated_assignment`*()][crate::config::tree::Key::validated_assignment_fmt()].
-        #[derive(Debug, thiserror::Error)]
-        #[allow(missing_docs)]
-        pub enum Error {
-            #[error("Failed to validate the value to be assigned to this key")]
-            Validate(#[from] super::validate::Error),
-            #[error("{message}")]
-            Name { message: String },
-        }
-    }
-}
 
 mod traits;
 pub use traits::{Key, Link, Note, Section, SubSectionRequirement};

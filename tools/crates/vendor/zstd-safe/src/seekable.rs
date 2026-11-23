@@ -6,9 +6,21 @@
 use core::{marker::PhantomData, ptr::NonNull};
 
 use crate::{
-    parse_code, ptr_mut, ptr_void, CompressionLevel, InBuffer, OutBuffer,
-    SafeResult, WriteBuf, SEEKABLE_FRAMEINDEX_TOOLARGE,
+    parse_code, ptr_mut, ptr_void, CompressionLevel, ErrorCode, InBuffer,
+    OutBuffer, Poison, SafeResult, WriteBuf, SEEKABLE_FRAMEINDEX_TOOLARGE,
 };
+
+/// The error code zstd itself uses for a context that should have been
+/// initialized first (`-ZSTD_error_init_missing` as a `size_t`).
+const INIT_MISSING_ERROR: ErrorCode =
+    (zstd_sys::ZSTD_ErrorCode::ZSTD_error_init_missing as usize)
+        .wrapping_neg();
+
+/// The error code zstd itself returns for a frame index past the last frame
+/// (`-ZSTD_error_frameIndex_tooLarge` as a `size_t`).
+const FRAMEINDEX_TOOLARGE_ERROR: ErrorCode =
+    (zstd_sys::ZSTD_ErrorCode::ZSTD_error_frameIndex_tooLarge as usize)
+        .wrapping_neg();
 
 /// Indicates that the passed frame index is too large.
 ///
@@ -114,7 +126,8 @@ impl SeekableCStream {
                 ptr_mut(&mut input),
             )
         };
-        parse_code(code)
+        let res = output.check(parse_code(code));
+        input.check(res)
     }
 
     /// Wraps the `ZSTD_seekable_endFrame()` function.
@@ -132,7 +145,7 @@ impl SeekableCStream {
                 ptr_mut(&mut output),
             )
         };
-        parse_code(code)
+        output.check(parse_code(code))
     }
 
     /// Wraps the `ZSTD_seekable_endStream()` function.
@@ -155,7 +168,7 @@ impl SeekableCStream {
                 ptr_mut(&mut output),
             )
         };
-        parse_code(code)
+        output.check(parse_code(code))
     }
 }
 
@@ -241,7 +254,7 @@ impl FrameLog {
                 ptr_mut(&mut output),
             )
         };
-        parse_code(code)
+        output.check(parse_code(code))
     }
 }
 
@@ -257,7 +270,16 @@ impl Drop for FrameLog {
 /// A seekable decompression object.
 ///
 /// The lifetime references the potential buffer that holds the data of this seekable.
-pub struct Seekable<'a>(NonNull<zstd_sys::ZSTD_seekable>, PhantomData<&'a ()>);
+///
+/// It needs to be initialized, with `init_buff()` or `init_advanced()`, before it can be used.
+// zstd only allocates the seek table when an initialization succeeds, and then
+// reads it without checking that it is there. So this starts out poisoned, and
+// stays so until an initialization succeeds.
+pub struct Seekable<'a>(
+    NonNull<zstd_sys::ZSTD_seekable>,
+    PhantomData<&'a ()>,
+    Poison,
+);
 
 unsafe impl Send for Seekable<'_> {}
 unsafe impl Sync for Seekable<'_> {}
@@ -277,6 +299,7 @@ impl<'a> Seekable<'a> {
         Some(Seekable(
             NonNull::new(unsafe { zstd_sys::ZSTD_seekable_create() })?,
             PhantomData,
+            Poison(Some(INIT_MISSING_ERROR)),
         ))
     }
 
@@ -305,7 +328,10 @@ impl<'a> Seekable<'a> {
             )
         };
 
-        parse_code(code)
+        // Only the last initialization counts: a failed one has already
+        // replaced the source, whatever seek table was there before.
+        self.2.clear();
+        self.2.record(parse_code(code))
     }
 
     /// Decompresses the length of `dst` at decompressed offset `offset`.
@@ -315,22 +341,64 @@ impl<'a> Seekable<'a> {
     /// range of data, it will efficiently retain the decompressor object and avoid
     /// redecompressing frame prefixes.
     ///
-    /// Returns the number of bytes decompressed, or an error code.
+    /// Returns the number of bytes decompressed, or an error code. This is less than the length
+    /// of `dst` if the data ends first, and `0` if `offset` is at or past the end of the data.
     pub fn decompress<C: WriteBuf + ?Sized>(
         &mut self,
         dst: &mut C,
         offset: u64,
     ) -> SafeResult {
+        self.2.guard()?;
+        // `ZSTD_seekable_decompress()` does cut the length down to what is left
+        // of the data, but with unchecked arithmetic: for an `offset` past the
+        // end it wraps around and either claims to have written bytes it did
+        // not write (possibly far more than `dst` can hold), or never returns.
+        // So only ever ask it for a range that lies within the data.
+        let remaining = self.decompressed_size().saturating_sub(offset);
         unsafe {
             dst.write_from(|buffer, capacity| {
+                if remaining == 0 {
+                    return Ok(0);
+                }
                 parse_code(zstd_sys::ZSTD_seekable_decompress(
                     self.0.as_ptr(),
                     buffer,
-                    capacity,
+                    // No more than `capacity`, so this fits a `usize`.
+                    remaining.min(capacity as u64) as usize,
                     offset,
                 ))
             })
         }
+    }
+
+    /// Get the decompressed size of all the frames together, i.e. the end of
+    /// the data as the seek table describes it.
+    ///
+    /// Returns `0` if the seekable is not initialized.
+    fn decompressed_size(&self) -> u64 {
+        let last_frame = match self.num_frames().checked_sub(1) {
+            Some(last_frame) => last_frame,
+            None => return 0,
+        };
+
+        // Safety: Just FFI. `last_frame` is in range, so neither is an error.
+        let offset = unsafe {
+            zstd_sys::ZSTD_seekable_getFrameDecompressedOffset(
+                self.0.as_ptr(),
+                last_frame,
+            )
+        };
+        let size = unsafe {
+            zstd_sys::ZSTD_seekable_getFrameDecompressedSize(
+                self.0.as_ptr(),
+                last_frame,
+            )
+        };
+
+        // The seek table stores cumulative offsets in wrapping `u64`
+        // arithmetic, so this gives exactly the end-of-stream value zstd
+        // compares against, even for a table whose sizes do not add up.
+        offset.wrapping_add(size as u64)
     }
 
     /// Decompresses the frame with index `frame_index` into `dst`.
@@ -341,6 +409,7 @@ impl<'a> Seekable<'a> {
         dst: &mut C,
         frame_index: u32,
     ) -> SafeResult {
+        self.2.guard()?;
         unsafe {
             dst.write_from(|buffer, capacity| {
                 parse_code(zstd_sys::ZSTD_seekable_decompressFrame(
@@ -420,6 +489,12 @@ impl<'a> Seekable<'a> {
     ///
     /// Returns an error if `frame_index` is out of range.
     pub fn frame_decompressed_size(&self, frame_index: u32) -> SafeResult {
+        self.2.guard()?;
+        // zstd only rejects `frame_index > num_frames()`, and reads past the
+        // end of the seek table for `frame_index == num_frames()`.
+        if frame_index >= self.num_frames() {
+            return Err(FRAMEINDEX_TOOLARGE_ERROR);
+        }
         let code = unsafe {
             zstd_sys::ZSTD_seekable_getFrameDecompressedSize(
                 self.0.as_ptr(),
@@ -431,7 +506,12 @@ impl<'a> Seekable<'a> {
     }
 
     /// Get the frame at the given offset.
+    ///
+    /// Returns `0` if the seekable is not initialized.
     pub fn offset_to_frame_index(&self, offset: u64) -> u32 {
+        if self.2.guard().is_err() {
+            return 0;
+        }
         unsafe {
             zstd_sys::ZSTD_seekable_offsetToFrameIndex(self.0.as_ptr(), offset)
         }
@@ -450,9 +530,30 @@ impl<'a> Drop for Seekable<'a> {
 #[cfg(feature = "std")]
 pub struct AdvancedSeekable<'a, F> {
     inner: Seekable<'a>,
-    // We can't use Box<F> since it'd break rust aliasing rules when calling
+    // We can't use a Box since it'd break rust aliasing rules when calling
     // advanced_read/advanced_seek through the C code.
-    src: *mut F,
+    src: *mut AdvancedSource<F>,
+    // The context that `init_advanced()` pointed at `src`. `DerefMut` lets
+    // safe code swap `inner` for another `Seekable`, so `drop()` compares it
+    // against this before freeing `src`.
+    // See https://github.com/gyscos/zstd-rs/issues/366.
+    ctx: NonNull<zstd_sys::ZSTD_seekable>,
+}
+
+/// What `advanced_read` and `advanced_seek` receive as `opaque`.
+#[cfg(feature = "std")]
+struct AdvancedSource<F> {
+    src: std::boxed::Box<F>,
+    // A panic from `src`, held here until the C code has returned.
+    panic: Option<std::boxed::Box<dyn core::any::Any + Send>>,
+}
+
+// `panic` is always `None` outside of the C calls: it should not prevent an
+// `AdvancedSeekable` from being `UnwindSafe`, which is still up to `F`.
+#[cfg(feature = "std")]
+impl<F> std::panic::RefUnwindSafe for AdvancedSource<F> where
+    F: std::panic::RefUnwindSafe
+{
 }
 
 #[cfg(feature = "std")]
@@ -469,6 +570,9 @@ impl<'a, F> core::ops::Deref for AdvancedSeekable<'a, F> {
     }
 }
 
+/// Calling `decompress()` or `decompress_frame()` through this, rather than on
+/// the `AdvancedSeekable` itself, still reports a panic from the source as an
+/// error, but does not propagate it.
 #[cfg(feature = "std")]
 impl<'a, F> core::ops::DerefMut for AdvancedSeekable<'a, F> {
     fn deref_mut(&mut self) -> &mut Self::Target {
@@ -477,11 +581,83 @@ impl<'a, F> core::ops::DerefMut for AdvancedSeekable<'a, F> {
 }
 
 #[cfg(feature = "std")]
+impl<'a, F> AdvancedSeekable<'a, F> {
+    /// Decompresses the data at `offset` into `dst`.
+    ///
+    /// See [`Seekable::decompress()`].
+    pub fn decompress<C: WriteBuf + ?Sized>(
+        &mut self,
+        dst: &mut C,
+        offset: u64,
+    ) -> SafeResult {
+        self.forget_panic();
+        let result = self.inner.decompress(dst, offset);
+        self.resume_panic();
+        result
+    }
+
+    /// Decompresses the frame with index `frame_index` into `dst`.
+    ///
+    /// See [`Seekable::decompress_frame()`].
+    pub fn decompress_frame<C: WriteBuf + ?Sized>(
+        &mut self,
+        dst: &mut C,
+        frame_index: u32,
+    ) -> SafeResult {
+        self.forget_panic();
+        let result = self.inner.decompress_frame(dst, frame_index);
+        self.resume_panic();
+        result
+    }
+
+    /// Drops a panic left over from a call made through `DerefMut`, which was
+    /// reported as an error then, so it doesn't resurface from this call.
+    fn forget_panic(&mut self) {
+        if self.owns_src() {
+            // Safety: see `resume_panic()`.
+            unsafe { (*self.src).panic = None };
+        }
+    }
+
+    /// Whether the context that calls back into `src` is still `inner`.
+    ///
+    /// If it was swapped out through `DerefMut`, it may be in use elsewhere,
+    /// even on another thread, so `src` must be left alone.
+    fn owns_src(&self) -> bool {
+        self.inner.0 == self.ctx
+    }
+
+    /// Resumes a panic caught in `advanced_read` or `advanced_seek`.
+    ///
+    /// To be called after every C call that may use these callbacks.
+    fn resume_panic(&mut self) {
+        if !self.owns_src() {
+            return;
+        }
+        // Safety: `src` is valid until drop, and only the callbacks access it;
+        // none is running, since the C code has returned, and no other context
+        // calls into it (see `owns_src()`).
+        if let Some(panic) = unsafe { (*self.src).panic.take() } {
+            std::panic::resume_unwind(panic);
+        }
+    }
+}
+
+#[cfg(feature = "std")]
 impl<'a, F> Drop for AdvancedSeekable<'a, F> {
     fn drop(&mut self) {
         use std::boxed::Box;
-        // this drops the box
-        let _: Box<F> = unsafe { Box::from_raw(self.src) };
+        // `DerefMut` hands out a `&mut Seekable`, so safe code may have
+        // swapped the context that calls back into `src` out of `inner`; it
+        // would then still be alive somewhere else. Only free `src` if that
+        // context is still ours, and leak it otherwise: a leak is safe, a
+        // use-after-free is not. Two live contexts never share an address, so
+        // finding it in `inner` means nothing else can call into `src`.
+        if self.owns_src() {
+            // Safety: `src` comes from `Box::into_raw` in `init_advanced()`,
+            // and the only context that knows it is about to be freed.
+            let _: Box<AdvancedSource<F>> = unsafe { Box::from_raw(self.src) };
+        }
     }
 }
 
@@ -491,6 +667,9 @@ impl<'a> Seekable<'a> {
     /// Initializes this seekable without having the complete compressed data in memory,
     /// but seeks and reads `src` as required. Use this function if you are looking for
     /// an alternative to the `ZSTD_seekable_initFile()` function.
+    ///
+    /// If `src` panics, here or in a later decompression, the operation fails and the
+    /// panic is then propagated to the caller.
     #[cfg(feature = "std")]
     #[cfg_attr(feature = "doc-cfg", doc(cfg(feature = "std")))]
     pub fn init_advanced<F>(
@@ -500,25 +679,77 @@ impl<'a> Seekable<'a> {
     where
         F: std::io::Read + std::io::Seek,
     {
-        let opaque = std::boxed::Box::into_raw(src) as *mut F;
+        let opaque =
+            std::boxed::Box::into_raw(std::boxed::Box::new(AdvancedSource {
+                src,
+                panic: None,
+            }));
         let custom_file = zstd_sys::ZSTD_seekable_customFile {
             opaque: opaque as *mut core::ffi::c_void,
             read: Some(advanced_read::<F>),
             seek: Some(advanced_seek::<F>),
         };
+        // This owns `opaque` from here on: if the initialization fails or
+        // panics, dropping it takes the box back rather than leaking it (and
+        // whatever `F` holds, like a file descriptor).
+        let mut seekable = AdvancedSeekable {
+            ctx: self.0,
+            inner: self,
+            src: opaque,
+        };
         // Safety: Just FFI
         let code = unsafe {
-            zstd_sys::ZSTD_seekable_initAdvanced(self.0.as_ptr(), custom_file)
+            zstd_sys::ZSTD_seekable_initAdvanced(
+                seekable.inner.0.as_ptr(),
+                custom_file,
+            )
         };
+        seekable.resume_panic();
 
         if crate::is_error(code) {
             return Err(code);
         }
 
-        Ok(AdvancedSeekable {
-            inner: self,
-            src: opaque,
-        })
+        seekable.inner.2.clear();
+        Ok(seekable)
+    }
+}
+
+/// Calls `f` on the source behind `opaque`, on behalf of a C callback.
+///
+/// A panic cannot unwind out of an `extern "C"` function: it aborts the whole
+/// process, and was undefined behaviour before Rust 1.81. So it is caught
+/// here, reported to zstd as a failure, and resumed by
+/// `AdvancedSeekable::resume_panic()` once the C code has returned.
+///
+/// Only the first panic is kept: one may still be pending, from a call made
+/// through `DerefMut` or from an earlier callback in the same call, and any
+/// later one is leaked. Dropping a payload runs arbitrary code, which could
+/// panic too, and nothing may unwind from here.
+///
+/// Returns a non-negative value in case of success, and a negative value in case of failure.
+#[cfg(feature = "std")]
+unsafe fn advanced_call<F, T>(
+    opaque: *mut core::ffi::c_void,
+    f: impl FnOnce(&mut F) -> std::io::Result<T>,
+) -> ::core::ffi::c_int {
+    use std::panic::{catch_unwind, AssertUnwindSafe};
+
+    // Safety: `init_advanced()` ensures that `opaque` points to an `AdvancedSource<F>`
+    let source = &mut *opaque.cast::<AdvancedSource<F>>();
+    let src = &mut *source.src;
+    // The result is also dropped in there, in case this panics.
+    match catch_unwind(AssertUnwindSafe(|| f(src).is_ok())) {
+        Ok(true) => 0,
+        Ok(false) => -1,
+        Err(panic) => {
+            if source.panic.is_none() {
+                source.panic = Some(panic);
+            } else {
+                core::mem::forget(panic);
+            }
+            -1
+        }
     }
 }
 
@@ -541,12 +772,12 @@ unsafe extern "C" fn advanced_seek<S: std::io::Seek>(
     const SEEK_CUR: i32 = 1;
     const SEEK_END: i32 = 2;
 
-    // Safety: The trait boundaries in `init_advanced()` ensure that `opaque` points to an S
-    let seeker: &mut S = std::mem::transmute(opaque);
     let pos = match origin {
         SEEK_SET => {
-            let Ok(offset) = u64::try_from(offset) else {
-                return -1;
+            // `let .. else` would read better, but it needs Rust 1.65.
+            let offset = match u64::try_from(offset) {
+                Ok(offset) => offset,
+                Err(_) => return -1,
             };
             SeekFrom::Start(offset)
         }
@@ -556,11 +787,8 @@ unsafe extern "C" fn advanced_seek<S: std::io::Seek>(
         _ => return -1,
     };
 
-    if seeker.seek(pos).is_err() {
-        return -1;
-    }
-
-    0
+    // Safety: The trait boundaries in `init_advanced()` ensure that the source is an S
+    advanced_call(opaque, |seeker: &mut S| seeker.seek(pos))
 }
 
 /// Reads exactly `n` bytes into `buffer`.
@@ -572,15 +800,10 @@ unsafe extern "C" fn advanced_read<R: std::io::Read>(
     buffer: *mut core::ffi::c_void,
     n: usize,
 ) -> ::core::ffi::c_int {
-    // Safety: The trait boundaries in `init_advanced()` ensure that `opaque` points to a R
-    let reader: &mut R = std::mem::transmute(opaque);
     // Safety: zstd ensures the buffer is allocated and safe to use
-    let mut buf = std::slice::from_raw_parts_mut(buffer as *mut u8, n);
-    if reader.read_exact(&mut buf).is_err() {
-        return -1;
-    }
-
-    0
+    let buf = std::slice::from_raw_parts_mut(buffer as *mut u8, n);
+    // Safety: The trait boundaries in `init_advanced()` ensure that the source is a R
+    advanced_call(opaque, |reader: &mut R| reader.read_exact(buf))
 }
 
 /// Indicates that the seek table could not be created.
@@ -684,6 +907,10 @@ impl SeekTable {
     ///
     /// Returns an error if `frame_index` is out of range.
     pub fn frame_decompressed_size(&self, frame_index: u32) -> SafeResult {
+        // See `Seekable::frame_decompressed_size()`.
+        if frame_index >= self.num_frames() {
+            return Err(FRAMEINDEX_TOOLARGE_ERROR);
+        }
         // Safety: Just FFI
         let code = unsafe {
             zstd_sys::ZSTD_seekTable_getFrameDecompressedSize(

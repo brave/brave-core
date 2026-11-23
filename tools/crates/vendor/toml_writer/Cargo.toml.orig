@@ -1,6 +1,6 @@
 [package]
 name = "toml_writer"
-version = "1.0.6+spec-1.1.0"
+version = "1.2.0+spec-1.1.0"
 description = """
 A low-level interface for writing out TOML
 """
@@ -22,7 +22,7 @@ pre-release-replacements = [
   {file="CHANGELOG.md", search="\\.\\.\\.HEAD", replace="...{{tag_name}}", exactly=1},
   {file="CHANGELOG.md", search="ReleaseDate", replace="{{date}}", min=1},
   {file="CHANGELOG.md", search="<!-- next-header -->", replace="<!-- next-header -->\n## [Unreleased] - ReleaseDate\n", exactly=1},
-  {file="CHANGELOG.md", search="<!-- next-url -->", replace="<!-- next-url -->\n[Unreleased]: https://github.com/toml-rs/toml/compare/{{tag_name}}...HEAD", exactly=1},
+  {file="CHANGELOG.md", search="<!-- next-url -->", replace="<!-- next-url -->\n[Unreleased]: {{repository}}/compare/{{tag_name}}...HEAD", exactly=1},
 ]
 
 [features]
@@ -33,8 +33,8 @@ alloc = []
 [dependencies]
 
 [dev-dependencies]
-proptest = "1.7.0"
-snapbox = "0.6.21"
+proptest = "1.10.0"
+snapbox = "1.1.0"
 toml_old = { version = "0.5.11", package = "toml" }
 
 [lints]

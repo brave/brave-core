@@ -41,7 +41,7 @@ impl Serialize for SarifLog {
 /// A run represents a single invocation of an analysis tool
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
-pub struct Run {
+pub(crate) struct Run {
     /// Tool information for this run
     tool: Tool,
     /// Array of results (findings) from the analysis
@@ -154,7 +154,7 @@ impl ReportingDescriptor {
             .as_ref()
             .map(|cvss| format!("{:.1}", cvss.score()));
 
-        ReportingDescriptor {
+        Self {
             id: metadata.id.to_string(),
             name: metadata.id.to_string(),
             short_description: MultiformatMessageString {
@@ -213,7 +213,7 @@ impl ReportingDescriptor {
             _ => ("unknown", "Unknown warning type"),
         };
 
-        ReportingDescriptor {
+        Self {
             id: name.to_string(),
             name: name.to_string(),
             short_description: MultiformatMessageString {
@@ -278,7 +278,7 @@ enum ReportingLevel {
 /// Message with optional markdown
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
-pub struct MultiformatMessageString {
+pub(crate) struct MultiformatMessageString {
     /// Plain text message
     text: String,
     /// Optional markdown-formatted message
@@ -289,7 +289,7 @@ pub struct MultiformatMessageString {
 /// A result (finding/alert)
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
-pub struct SarifResult {
+pub(crate) struct SarifResult {
     /// ID of the rule that was violated
     rule_id: String,
     /// Message describing the result
@@ -310,7 +310,7 @@ impl SarifResult {
             vuln.advisory.id, vuln.package.name, vuln.package.version
         );
 
-        SarifResult {
+        Self {
             rule_id: vuln.advisory.id.to_string(),
             message: Message {
                 text: format!(
@@ -360,7 +360,7 @@ impl SarifResult {
             warning.package.name, warning.package.version
         );
 
-        SarifResult {
+        Self {
             rule_id,
             message: Message { text: message_text },
             level: ResultLevel::Warning,

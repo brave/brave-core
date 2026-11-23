@@ -129,7 +129,13 @@ pub struct Iter<'a, T> {
 /// yielded more than once if it has more than one associated value.
 #[derive(Debug)]
 pub struct IterMut<'a, T> {
-    map: *mut HeaderMap<T>,
+    // Raw access avoids reborrowing the whole `HeaderMap` on every `next()`,
+    // which would invalidate previously yielded `&mut T`s.
+    entries: *mut Bucket<T>,
+    entries_len: usize,
+    // This points at the original `HeaderMap::extra_values` allocation for the
+    // lifetime of the iterator.
+    extra_values: *mut ExtraValue<T>,
     entry: usize,
     cursor: Option<Cursor>,
     lt: PhantomData<&'a mut HeaderMap<T>>,
@@ -234,7 +240,11 @@ pub struct ValueIter<'a, T> {
 /// A mutable iterator of all values associated with a single header name.
 #[derive(Debug)]
 pub struct ValueIterMut<'a, T> {
-    map: *mut HeaderMap<T>,
+    // Raw access avoids reborrowing the whole `HeaderMap` on every step.
+    entries: *mut Bucket<T>,
+    // This points at the original `HeaderMap::extra_values` allocation for the
+    // lifetime of the iterator.
+    extra_values: *mut ExtraValue<T>,
     index: usize,
     front: Option<Cursor>,
     back: Option<Cursor>,
@@ -371,7 +381,7 @@ const FORWARD_SHIFT_THRESHOLD: usize = 512;
 // If growing the hash map would cause the load factor to drop bellow this
 // threshold, then instead of growing, the headermap is switched to the red
 // danger state and safe hashing is used instead.
-const LOAD_FACTOR_THRESHOLD: f32 = 0.2;
+const LOAD_FACTOR_THRESHOLD: usize = 5;
 
 // Macro used to iterate the hash table starting at a given point, looping when
 // the end is hit.
@@ -951,7 +961,9 @@ impl<T> HeaderMap<T> {
     /// ```
     pub fn iter_mut(&mut self) -> IterMut<'_, T> {
         IterMut {
-            map: self as *mut _,
+            entries: self.entries.as_mut_ptr(),
+            entries_len: self.entries.len(),
+            extra_values: self.extra_values.as_mut_ptr(),
             entry: 0,
             cursor: self.entries.first().map(|_| Cursor::Head),
             lt: PhantomData,
@@ -1129,7 +1141,8 @@ impl<T> HeaderMap<T> {
         };
 
         ValueIterMut {
-            map: self as *mut _,
+            entries: self.entries.as_mut_ptr(),
+            extra_values: self.extra_values.as_mut_ptr(),
             index: idx,
             front: Some(Head),
             back: Some(back),
@@ -1739,9 +1752,10 @@ impl<T> HeaderMap<T> {
         let len = self.entries.len();
 
         if self.danger.is_yellow() {
-            let load_factor = self.entries.len() as f32 / self.indices.len() as f32;
-
-            if load_factor >= LOAD_FACTOR_THRESHOLD {
+            // Overflow is not a concern here: entries.len() is bounded by
+            // MAX_SIZE (2^15) and LOAD_FACTOR_THRESHOLD is 5, so the product
+            // fits comfortably within a usize.
+            if self.entries.len() * LOAD_FACTOR_THRESHOLD >= self.indices.len() {
                 // Transition back to green danger level
                 self.danger.set_green();
 
@@ -2132,11 +2146,15 @@ impl<T> Extend<(Option<HeaderName>, T)> for HeaderMap<T> {
         // Reserve the entire hint lower bound if the map is empty.
         // Otherwise reserve half the hint (rounded up), so the map
         // will only resize twice in the worst case.
-        let reserve = if self.is_empty() {
+        let hint = if self.is_empty() {
             iter.size_hint().0
         } else {
             (iter.size_hint().0 + 1) / 2
         };
+
+        // Clamp the hint so an over-estimate cannot overflow `reserve`.
+        let max_reserve = usable_capacity(MAX_SIZE).saturating_sub(self.entries.len());
+        let reserve = hint.min(max_reserve);
 
         self.reserve(reserve);
 
@@ -2188,11 +2206,15 @@ impl<T> Extend<(HeaderName, T)> for HeaderMap<T> {
         // will only resize twice in the worst case.
         let iter = iter.into_iter();
 
-        let reserve = if self.is_empty() {
+        let hint = if self.is_empty() {
             iter.size_hint().0
         } else {
             (iter.size_hint().0 + 1) / 2
         };
+
+        // Clamp the hint so an over-estimate cannot overflow `reserve`.
+        let max_reserve = usable_capacity(MAX_SIZE).saturating_sub(self.entries.len());
+        let reserve = hint.min(max_reserve);
 
         self.reserve(reserve);
 
@@ -2354,11 +2376,11 @@ unsafe impl<'a, T: Sync> Send for Iter<'a, T> {}
 // ===== impl IterMut =====
 
 impl<'a, T> IterMut<'a, T> {
-    fn next_unsafe(&mut self) -> Option<(&'a HeaderName, *mut T)> {
+    fn next_unsafe(&mut self) -> Option<(*const HeaderName, *mut T)> {
         use self::Cursor::*;
 
         if self.cursor.is_none() {
-            if (self.entry + 1) >= unsafe { &*self.map }.entries.len() {
+            if (self.entry + 1) >= self.entries_len {
                 return None;
             }
 
@@ -2366,22 +2388,46 @@ impl<'a, T> IterMut<'a, T> {
             self.cursor = Some(Cursor::Head);
         }
 
-        let entry = &mut unsafe { &mut *self.map }.entries[self.entry];
+        // SAFETY: `self.entry < self.entries_len`, and the iterator has
+        // exclusive access to the underlying map for `'a`, so the `entries`
+        // allocation remains valid for the lifetime of the iterator.
+        let entry = unsafe { self.entries.add(self.entry) };
 
         match self.cursor.unwrap() {
             Head => {
-                self.cursor = entry.links.map(|l| Values(l.next));
-                Some((&entry.key, &mut entry.value as *mut _))
+                // SAFETY: `entry` points at a live bucket in `entries`.
+                self.cursor = unsafe { (*entry).links }.map(|l| Values(l.next));
+                // SAFETY: `entry` points at a live bucket, and the iterator only
+                // yields each slot at most once, so materializing these field
+                // pointers does not alias another yielded `&mut T`.
+                Some(unsafe {
+                    (
+                        ptr::addr_of!((*entry).key),
+                        ptr::addr_of_mut!((*entry).value),
+                    )
+                })
             }
             Values(idx) => {
-                let extra = &mut unsafe { &mut (*self.map) }.extra_values[idx];
+                // SAFETY: `idx` comes from the `links` chain stored in a live
+                // bucket / extra value, so it points at a live `extra_values`
+                // slot for the duration of iteration.
+                let extra = unsafe { self.extra_values.add(idx) };
 
-                match extra.next {
+                // SAFETY: `extra` points at a live extra value.
+                match unsafe { (*extra).next } {
                     Link::Entry(_) => self.cursor = None,
                     Link::Extra(i) => self.cursor = Some(Values(i)),
                 }
 
-                Some((&entry.key, &mut extra.value as *mut _))
+                // SAFETY: `entry` and `extra` both point at live elements in the
+                // map backing storage, and the iterator only yields each value
+                // slot at most once.
+                Some(unsafe {
+                    (
+                        ptr::addr_of!((*entry).key),
+                        ptr::addr_of_mut!((*extra).value),
+                    )
+                })
             }
         }
     }
@@ -2392,14 +2438,13 @@ impl<'a, T> Iterator for IterMut<'a, T> {
 
     fn next(&mut self) -> Option<Self::Item> {
         self.next_unsafe()
-            .map(|(key, ptr)| (key, unsafe { &mut *ptr }))
+            .map(|(key, ptr)| (unsafe { &*key }, unsafe { &mut *ptr }))
     }
 
     fn size_hint(&self) -> (usize, Option<usize>) {
-        let map = unsafe { &*self.map };
-        debug_assert!(map.entries.len() >= self.entry);
+        debug_assert!(self.entries_len >= self.entry);
 
-        let lower = map.entries.len() - self.entry;
+        let lower = self.entries_len - self.entry;
         // We could pessimistically guess at the upper bound, saying
         // that its lower + map.extra_values.len(). That could be
         // way over though, such as if we're near the end, and have
@@ -3014,7 +3059,9 @@ impl<'a, T: 'a> Iterator for ValueIterMut<'a, T> {
     fn next(&mut self) -> Option<Self::Item> {
         use self::Cursor::*;
 
-        let entry = &mut unsafe { &mut *self.map }.entries[self.index];
+        // SAFETY: `self.index` was created from a live occupied entry and stays
+        // fixed for the lifetime of this iterator.
+        let entry = unsafe { self.entries.add(self.index) };
 
         match self.front {
             Some(Head) => {
@@ -3023,7 +3070,8 @@ impl<'a, T: 'a> Iterator for ValueIterMut<'a, T> {
                     self.back = None;
                 } else {
                     // Update the iterator state
-                    match entry.links {
+                    // SAFETY: `entry` points at a live bucket in `entries`.
+                    match unsafe { (*entry).links } {
                         Some(links) => {
                             self.front = Some(Values(links.next));
                         }
@@ -3031,22 +3079,29 @@ impl<'a, T: 'a> Iterator for ValueIterMut<'a, T> {
                     }
                 }
 
-                Some(&mut entry.value)
+                // SAFETY: `entry` points at a live bucket, and `front`/`back`
+                // ensure this value slot is yielded at most once.
+                Some(unsafe { &mut *ptr::addr_of_mut!((*entry).value) })
             }
             Some(Values(idx)) => {
-                let extra = &mut unsafe { &mut *self.map }.extra_values[idx];
+                // SAFETY: `idx` comes from the live linked list rooted at
+                // `self.index`, so it refers to a live extra value slot.
+                let extra = unsafe { self.extra_values.add(idx) };
 
                 if self.front == self.back {
                     self.front = None;
                     self.back = None;
                 } else {
-                    match extra.next {
+                    // SAFETY: `extra` points at a live extra value.
+                    match unsafe { (*extra).next } {
                         Link::Entry(_) => self.front = None,
                         Link::Extra(i) => self.front = Some(Values(i)),
                     }
                 }
 
-                Some(&mut extra.value)
+                // SAFETY: `extra` points at a live extra value, and
+                // `front`/`back` ensure this value slot is yielded at most once.
+                Some(unsafe { &mut *ptr::addr_of_mut!((*extra).value) })
             }
             None => None,
         }
@@ -3057,28 +3112,37 @@ impl<'a, T: 'a> DoubleEndedIterator for ValueIterMut<'a, T> {
     fn next_back(&mut self) -> Option<Self::Item> {
         use self::Cursor::*;
 
-        let entry = &mut unsafe { &mut *self.map }.entries[self.index];
+        // SAFETY: `self.index` was created from a live occupied entry and stays
+        // fixed for the lifetime of this iterator.
+        let entry = unsafe { self.entries.add(self.index) };
 
         match self.back {
             Some(Head) => {
                 self.front = None;
                 self.back = None;
-                Some(&mut entry.value)
+                // SAFETY: `entry` points at a live bucket, and `front`/`back`
+                // ensure this value slot is yielded at most once.
+                Some(unsafe { &mut *ptr::addr_of_mut!((*entry).value) })
             }
             Some(Values(idx)) => {
-                let extra = &mut unsafe { &mut *self.map }.extra_values[idx];
+                // SAFETY: `idx` comes from the live linked list rooted at
+                // `self.index`, so it refers to a live extra value slot.
+                let extra = unsafe { self.extra_values.add(idx) };
 
                 if self.front == self.back {
                     self.front = None;
                     self.back = None;
                 } else {
-                    match extra.prev {
+                    // SAFETY: `extra` points at a live extra value.
+                    match unsafe { (*extra).prev } {
                         Link::Entry(_) => self.back = Some(Head),
                         Link::Extra(idx) => self.back = Some(Values(idx)),
                     }
                 }
 
-                Some(&mut extra.value)
+                // SAFETY: `extra` points at a live extra value, and
+                // `front`/`back` ensure this value slot is yielded at most once.
+                Some(unsafe { &mut *ptr::addr_of_mut!((*extra).value) })
             }
             None => None,
         }
@@ -3131,13 +3195,20 @@ impl<T> FusedIterator for IntoIter<T> {}
 
 impl<T> Drop for IntoIter<T> {
     fn drop(&mut self) {
-        // Ensure the iterator is consumed
-        for _ in self.by_ref() {}
+        struct Guard<'a, T>(&'a mut IntoIter<T>);
 
-        // All the values have already been yielded out.
-        unsafe {
-            self.extra_values.set_len(0);
+        impl<'a, T> Drop for Guard<'a, T> {
+            fn drop(&mut self) {
+                unsafe {
+                    self.0.extra_values.set_len(0);
+                }
+            }
         }
+
+        let guard = Guard(self);
+
+        // Ensure the iterator is consumed
+        for _ in guard.0.by_ref() {}
     }
 }
 
@@ -3650,6 +3721,7 @@ fn probe_distance(mask: Size, hash: HashValue, current: usize) -> usize {
     current.wrapping_sub(desired_pos(mask, hash)) & mask as usize
 }
 
+#[inline]
 fn hash_elem_using<K>(danger: &Danger, k: &K) -> HashValue
 where
     K: Hash + ?Sized,
@@ -3693,7 +3765,7 @@ impl std::hash::Hasher for FnvHasher {
     fn write(&mut self, bytes: &[u8]) {
         let mut hash = self.0;
         for &b in bytes {
-            hash = hash ^ (b as u64);
+            hash ^= b as u64;
             hash = hash.wrapping_mul(0x100000001b3);
         }
         self.0 = hash;
@@ -3758,7 +3830,7 @@ mod into_header_name {
 
     impl IntoHeaderName for HeaderName {}
 
-    impl<'a> Sealed for &'a HeaderName {
+    impl Sealed for &HeaderName {
         #[inline]
         fn try_insert<T>(
             self,
@@ -3778,7 +3850,7 @@ mod into_header_name {
         }
     }
 
-    impl<'a> IntoHeaderName for &'a HeaderName {}
+    impl IntoHeaderName for &HeaderName {}
 
     impl Sealed for &'static str {
         #[inline]
@@ -3868,7 +3940,7 @@ mod as_header_name {
 
     impl AsHeaderName for HeaderName {}
 
-    impl<'a> Sealed for &'a HeaderName {
+    impl Sealed for &HeaderName {
         #[inline]
         fn try_entry<T>(self, map: &mut HeaderMap<T>) -> Result<Entry<'_, T>, TryEntryError> {
             Ok(map.try_entry2(self)?)
@@ -3884,9 +3956,9 @@ mod as_header_name {
         }
     }
 
-    impl<'a> AsHeaderName for &'a HeaderName {}
+    impl AsHeaderName for &HeaderName {}
 
-    impl<'a> Sealed for &'a str {
+    impl Sealed for &str {
         #[inline]
         fn try_entry<T>(self, map: &mut HeaderMap<T>) -> Result<Entry<'_, T>, TryEntryError> {
             Ok(HdrName::from_bytes(self.as_bytes(), move |hdr| {
@@ -3904,7 +3976,7 @@ mod as_header_name {
         }
     }
 
-    impl<'a> AsHeaderName for &'a str {}
+    impl AsHeaderName for &str {}
 
     impl Sealed for String {
         #[inline]
@@ -3924,7 +3996,7 @@ mod as_header_name {
 
     impl AsHeaderName for String {}
 
-    impl<'a> Sealed for &'a String {
+    impl Sealed for &String {
         #[inline]
         fn try_entry<T>(self, map: &mut HeaderMap<T>) -> Result<Entry<'_, T>, TryEntryError> {
             self.as_str().try_entry(map)
@@ -3940,7 +4012,7 @@ mod as_header_name {
         }
     }
 
-    impl<'a> AsHeaderName for &'a String {}
+    impl AsHeaderName for &String {}
 }
 
 #[test]

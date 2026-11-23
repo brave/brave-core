@@ -166,6 +166,11 @@ pub struct ClientConfig {
     /// If empty, no ALPN extension is sent.
     pub alpn_protocols: Vec<Vec<u8>>,
 
+    /// Whether to check the selected ALPN was offered.
+    ///
+    /// The default is true.
+    pub check_selected_alpn: bool,
+
     /// How and when the client can resume a previous session.
     ///
     /// # Sharing `resumption` between `ClientConfig`s
@@ -224,7 +229,8 @@ pub struct ClientConfig {
     /// If set to `true`, requires the server to support the extended
     /// master secret extraction method defined in [RFC 7627].
     ///
-    /// The default is `true` if the `fips` crate feature is enabled,
+    /// The default is `true` if the configured [`CryptoProvider`] is
+    /// FIPS-compliant (i.e., [`CryptoProvider::fips()`] returns `true`),
     /// `false` otherwise.
     ///
     /// It must be set to `true` to meet FIPS requirement mentioned in section
@@ -281,6 +287,22 @@ pub struct ClientConfig {
 
     /// How to offer Encrypted Client Hello (ECH). The default is to not offer ECH.
     pub(super) ech_mode: Option<EchMode>,
+
+    /// Request a specific number of TLS 1.3 session tickets via [RFC 9149].
+    ///
+    /// Set to `None` to disable sending the extension (the default).
+    ///
+    /// [RFC 9149]: https://datatracker.ietf.org/doc/html/rfc9149
+    pub send_ticket_request: Option<TicketRequest>,
+}
+
+/// Desired session ticket counts for the RFC 9149 `ticket_request` extension.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct TicketRequest {
+    /// Tickets desired when the server negotiates a new connection.
+    pub new_session_count: u8,
+    /// Tickets desired when the server resumes using a presented ticket.
+    pub resumption_count: u8,
 }
 
 impl ClientConfig {
@@ -398,19 +420,20 @@ impl ClientConfig {
     }
 
     pub(super) fn needs_key_share(&self) -> bool {
-        self.supports_version(ProtocolVersion::TLSv1_3)
+        self.supports_version(ProtocolVersion::TLSv1_3, Protocol::Tcp)
     }
 
     /// We support a given TLS version if it's quoted in the configured
     /// versions *and* at least one ciphersuite for this version is
     /// also configured.
-    pub(crate) fn supports_version(&self, v: ProtocolVersion) -> bool {
+    pub(crate) fn supports_version(&self, v: ProtocolVersion, protocol: Protocol) -> bool {
         self.versions.contains(v)
             && self
                 .provider
                 .cipher_suites
                 .iter()
                 .any(|cs| cs.version().version == v)
+            && protocol.supports_version(v)
     }
 
     #[cfg(feature = "std")]
@@ -421,12 +444,16 @@ impl ClientConfig {
             .any(|cs| cs.usable_for_protocol(proto))
     }
 
-    pub(super) fn find_cipher_suite(&self, suite: CipherSuite) -> Option<SupportedCipherSuite> {
+    pub(super) fn find_cipher_suite(
+        &self,
+        suite: CipherSuite,
+        protocol: Protocol,
+    ) -> Option<SupportedCipherSuite> {
         self.provider
             .cipher_suites
             .iter()
             .copied()
-            .find(|&scs| scs.suite() == suite)
+            .find(|&scs| scs.suite() == suite && scs.usable_for_protocol(protocol))
     }
 
     pub(super) fn find_kx_group(

@@ -2,6 +2,8 @@
 #![allow(bad_style)]
 #![allow(clippy::redundant_clone)]
 
+#[cfg(feature = "bin-proto")]
+use bin_proto::{BigEndian, BitDecodeExt, BitEncodeExt, Tag, Untagged};
 #[cfg(feature = "serde")]
 use serde_test::{assert_tokens, Token};
 use std::iter::FromIterator;
@@ -21,7 +23,7 @@ fn TinyVec_swap_remove() {
   assert_eq!(tv.swap_remove(0), 3);
   assert_eq!(&tv[..], &[2][..]);
   assert_eq!(tv.swap_remove(0), 2);
-  assert_eq!(&tv[..], &[][..]);
+  assert_eq!(&tv[..], &[][..] as &[i32]);
 }
 
 #[test]
@@ -31,6 +33,22 @@ fn TinyVec_capacity() {
   tv.move_to_the_heap();
   tv.extend_from_slice(&[1, 2, 3, 4]);
   assert_eq!(tv.capacity(), 4);
+
+  let tv = TinyVec::<[i32; 10]>::with_capacity(5);
+  assert!(tv.is_inline());
+  assert!(tv.capacity() >= 5);
+
+  let tv = TinyVec::<[i32; 10]>::with_capacity(20);
+  assert!(tv.is_heap());
+  assert!(tv.capacity() >= 20);
+
+  let tv = TinyVec::<[i32; 10]>::with_initial_len(5);
+  assert!(tv.is_inline());
+  assert_eq!(tv.len(), 5);
+
+  let tv = TinyVec::<[i32; 10]>::with_initial_len(20);
+  assert!(tv.is_heap());
+  assert_eq!(tv.len(), 20);
 }
 
 #[test]
@@ -476,6 +494,69 @@ fn TinyVec_borsh_de_heap() {
   assert_eq!(tv, des);
 }
 
+#[cfg(feature = "borsh")]
+#[test]
+fn TinyVec_borsh_de_hostile_length_no_abort() {
+  // A tiny buffer that claims an enormous element count but supplies no
+  // elements. Before the cautious-capacity fix this drove
+  // `with_capacity(huge)` and aborted the process; now the eager reservation
+  // is bounded and decoding simply fails on the missing element bytes.
+  let huge: u64 = 1u64 << 60;
+  let mut buffer = Vec::new();
+  buffer.extend_from_slice(&huge.to_le_bytes());
+  let des: Result<TinyVec<[u32; 4]>, _> = borsh::from_slice(&buffer);
+  assert!(des.is_err());
+}
+
+#[cfg(feature = "bin-proto")]
+#[test]
+fn TinyVec_bin_proto_encode_untagged() {
+  let mut values = TinyVec::<[u8; 2]>::new();
+  values.push(0x12);
+  values.push(0x34);
+  values.push(0x56);
+  let mut data = [0u8; 16];
+  let n_bytes = values
+    .encode_bytes_ctx_buf(BigEndian, &mut (), Untagged, &mut data)
+    .unwrap() as usize;
+  assert_eq!(&[0x12, 0x34, 0x56], &data[0..n_bytes]);
+}
+
+#[cfg(feature = "bin-proto")]
+#[test]
+fn TinyVec_bin_proto_decode_tagged() {
+  let (decoded, read_bits) = TinyVec::<[u8; 2]>::decode_bytes_ctx(
+    &[0x12, 0x34, 0x56, 0x78],
+    BigEndian,
+    &mut (),
+    Tag(3usize),
+  )
+  .unwrap();
+  let mut expected = TinyVec::<[u8; 2]>::new();
+  expected.push(0x12);
+  expected.push(0x34);
+  expected.push(0x56);
+  assert_eq!(24, read_bits);
+  assert_eq!(expected, decoded);
+}
+
+#[cfg(feature = "bin-proto")]
+#[test]
+fn TinyVec_bin_proto_decode_untagged() {
+  let decoded = TinyVec::<[u8; 2]>::decode_all_bytes_ctx(
+    &[0x12, 0x34, 0x56],
+    BigEndian,
+    &mut (),
+    Untagged,
+  )
+  .unwrap();
+  let mut expected = TinyVec::<[u8; 2]>::new();
+  expected.push(0x12);
+  expected.push(0x34);
+  expected.push(0x56);
+  assert_eq!(expected, decoded);
+}
+
 #[test]
 fn TinyVec_pretty_debug() {
   let tv: TinyVec<[i32; 6]> = tiny_vec![1, 2, 3];
@@ -498,4 +579,26 @@ fn TinyVec_std_io_write() {
   tv.write_all(b"bar").ok();
   assert!(tv.is_heap());
   assert_eq!(tv, tiny_vec![b'f', b'o', b'o', b'b', b'a', b'r']);
+}
+
+#[cfg(feature = "alloc")]
+#[test]
+fn TinyVec_array_like_debug() {
+  #[derive(Debug, Default, Copy, Clone)]
+  struct S {
+    x: u8,
+    y: u8,
+  }
+
+  use core::fmt::Write;
+
+  let mut ar: [S; 2] = [S { x: 1, y: 2 }, S { x: 3, y: 4 }];
+  let mut buf_ar = alloc::string::String::new();
+  write!(&mut buf_ar, "{ar:#?}");
+
+  let av: TinyVec<[S; 2]> = TinyVec::from(ar);
+  let mut buf_av = alloc::string::String::new();
+  write!(&mut buf_av, "{av:#?}");
+
+  assert_eq!(buf_av, buf_ar)
 }

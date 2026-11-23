@@ -1,7 +1,33 @@
 //! Low-level access to reading and writing chunk file based formats.
 //!
 //! See the [git documentation](https://github.com/git/git/blob/seen/Documentation/technical/chunk-format.txt) for details.
-#![deny(missing_docs, rust_2018_idioms, unsafe_code)]
+//!
+//! ## Examples
+//!
+//! ```
+//! # fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+//! use std::io::Write;
+//!
+//! let mut index = gix_chunk::file::Index::for_writing();
+//! index.plan_chunk(*b"OIDF", 4);
+//! index.plan_chunk(*b"DATA", 3);
+//!
+//! let mut out = index.into_write(Vec::new(), 0)?;
+//! while let Some(kind) = out.next_chunk() {
+//!     match kind {
+//!         [b'O', b'I', b'D', b'F'] => out.write_all(b"abcd")?,
+//!         [b'D', b'A', b'T', b'A'] => out.write_all(b"xyz")?,
+//!         _ => unreachable!("planned chunks are known"),
+//!     }
+//! }
+//!
+//! let data = out.into_inner();
+//! let decoded = gix_chunk::file::Index::from_bytes(&data, 0, 2)?;
+//! assert_eq!(decoded.data_by_id(&data, *b"OIDF")?, b"abcd");
+//! assert_eq!(decoded.data_by_id(&data, *b"DATA")?, b"xyz");
+//! # Ok(()) }
+//! ```
+#![deny(missing_docs, unsafe_code)]
 
 /// An identifier to describe the kind of chunk, unique within a chunk file, typically in ASCII
 pub type Id = [u8; 4];

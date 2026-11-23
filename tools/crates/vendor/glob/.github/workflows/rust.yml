@@ -20,33 +20,28 @@ jobs:
         channel:
           - stable
           - nightly
-          - 1.63.0 # MSRV of test dependencies
+          - 1.85.0 # MSRV of test dependencies
         os:
-          - macos-13 # x86 MacOS
-          - macos-15 # Arm MacOS
+          - macos-26
+          - macos-26-intel
           - windows-2025
-          - ubuntu-24.04
+          - ubuntu-26.04
         include:
           - channel: beta
-            os: ubuntu-24.04
+            os: ubuntu-26.04
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
-
-    - name: Update rust
-      run: |
-        rustup default ${{ matrix.channel }}
-        rustup update --no-self-update
-
+      uses: actions/checkout@v7
+    - run: rustup default ${{ matrix.channel }} && rustup update --no-self-update
     - run: cargo test --all
 
   clippy:
     name: Clippy
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
 
     - name: Update rust
       run: |
@@ -58,17 +53,22 @@ jobs:
 
   msrv:
     name: Check building with the MSRV
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
+    env:
+      RUSTFLAGS: "" # No need to check warnings on old MSRV, clear `-Dwarnings`
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
-
-    - name: Update rust
-      run: |
-        rustup default 1.63.0
-        rustup update --no-self-update
-
-    - run: cargo build
+      uses: actions/checkout@v7
+    - run: |
+        msrv="$(
+          cargo metadata --format-version 1 |
+          jq -r --arg CRATE_NAME glob '.packages | map(select((.name == $CRATE_NAME) and (.id | startswith("path+file")))) | first | .rust_version'
+        )"
+        echo "MSRV: $msrv"
+        echo "MSRV=$msrv" >> "$GITHUB_ENV"
+    - name: Install Rust
+      run: rustup update "$MSRV" --no-self-update && rustup default "$MSRV"
+    - run: cargo build -p glob
 
   rustfmt:
     name: Rustfmt

@@ -11,10 +11,18 @@
 
 [package]
 edition = "2021"
+rust-version = "1.65"
 name = "xattr"
-version = "1.6.1"
+version = "1.7.0"
 authors = ["Steven Allen <steven@stebalien.com>"]
 build = false
+include = [
+    "README.md",
+    "LICENSE-*",
+    "Cargo.toml",
+    "src/**/*.rs",
+    "tests/**/*.rs",
+]
 autolib = false
 autobins = false
 autoexamples = false
@@ -47,7 +55,7 @@ path = "tests/main.rs"
 version = "3"
 
 [target.'cfg(any(target_os = "android", target_os = "linux", target_os = "macos", target_os = "hurd"))'.dependencies.rustix]
-version = "1.0.0"
+version = "1.1.6"
 features = [
     "fs",
     "std",

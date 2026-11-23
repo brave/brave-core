@@ -3,14 +3,76 @@
 //! These definitions are independent of read/write support, although we do implement
 //! some traits useful for those.
 //!
-//! This module is based heavily on "winnt.h" (10.0.17763.0).
+//! This module is based heavily on "winnt.h" (10.0.28000.0).
 
 #![allow(missing_docs)]
 
 use core::convert::TryInto;
 
-use crate::endian::{I32Bytes, LittleEndian as LE, U16Bytes, U32Bytes, I32, U16, U32, U64};
+#[cfg(feature = "names")]
+use crate::constants::{ConstantNames, FlagNames};
+use crate::endian::{I32, LittleEndian as LE, U16, U32, U64};
 use crate::pod::Pod;
+
+/// Platform-specific constant names for a PE/COFF file.
+///
+/// Returned by [`names`] and [`machine_names`].
+#[cfg(feature = "names")]
+#[derive(Debug)]
+#[non_exhaustive]
+pub struct Names {
+    /// Values for `ImageRelocation::typ`.
+    pub rel: &'static FlagNames<RelocationType>,
+    /// Values for the type in an `ImageBaseRelocation` block.
+    pub rel_based: &'static ConstantNames<BaseRelocationType>,
+}
+
+/// Return the platform independent names for constants.
+#[cfg(feature = "names")]
+pub const fn names() -> &'static Names {
+    Base::names()
+}
+
+/// Return the platform specific names for constants.
+///
+/// Note that these also include the values returned by [`names`].
+#[cfg(feature = "names")]
+pub const fn machine_names(machine: Machine) -> &'static Names {
+    match machine {
+        IMAGE_FILE_MACHINE_I386 => I386::names(),
+        IMAGE_FILE_MACHINE_MIPS16 | IMAGE_FILE_MACHINE_MIPSFPU | IMAGE_FILE_MACHINE_MIPSFPU16 => {
+            Mips::names()
+        }
+        IMAGE_FILE_MACHINE_ALPHA | IMAGE_FILE_MACHINE_ALPHA64 => Alpha::names(),
+        IMAGE_FILE_MACHINE_POWERPC
+        | IMAGE_FILE_MACHINE_POWERPCFP
+        | IMAGE_FILE_MACHINE_POWERPCBE => Ppc::names(),
+        IMAGE_FILE_MACHINE_SH3
+        | IMAGE_FILE_MACHINE_SH3DSP
+        | IMAGE_FILE_MACHINE_SH3E
+        | IMAGE_FILE_MACHINE_SH4
+        | IMAGE_FILE_MACHINE_SH5 => Sh::names(),
+        IMAGE_FILE_MACHINE_ARM => Arm::names(),
+        IMAGE_FILE_MACHINE_AM33 => Am::names(),
+        IMAGE_FILE_MACHINE_ARM64 => Arm64::names(),
+        IMAGE_FILE_MACHINE_AMD64 => Amd64::names(),
+        IMAGE_FILE_MACHINE_IA64 => Ia64::names(),
+        IMAGE_FILE_MACHINE_CEF => Cef::names(),
+        IMAGE_FILE_MACHINE_CEE => Cee::names(),
+        IMAGE_FILE_MACHINE_M32R => M32r::names(),
+        IMAGE_FILE_MACHINE_EBC => Ebc::names(),
+        IMAGE_FILE_MACHINE_RISCV32 | IMAGE_FILE_MACHINE_RISCV64 | IMAGE_FILE_MACHINE_RISCV128 => {
+            Riscv::names()
+        }
+        _ => Base::names(),
+    }
+}
+
+names! {
+    struct Base;
+    flags rel: RelocationType = {};
+    consts rel_based = NAMES_REL_BASED;
+}
 
 /// MZ
 pub const IMAGE_DOS_SIGNATURE: u16 = 0x5A4D;
@@ -261,119 +323,133 @@ pub struct MaskedRichHeaderEntry {
 #[derive(Debug, Clone, Copy)]
 #[repr(C)]
 pub struct ImageFileHeader {
-    pub machine: U16<LE>,
+    pub machine: U16<LE, Machine>,
     pub number_of_sections: U16<LE>,
     pub time_date_stamp: U32<LE>,
     pub pointer_to_symbol_table: U32<LE>,
     pub number_of_symbols: U32<LE>,
     pub size_of_optional_header: U16<LE>,
-    pub characteristics: U16<LE>,
+    pub characteristics: U16<LE, FileFlags>,
 }
 
 pub const IMAGE_SIZEOF_FILE_HEADER: usize = 20;
 
-/// Relocation info stripped from file.
-pub const IMAGE_FILE_RELOCS_STRIPPED: u16 = 0x0001;
-/// File is executable  (i.e. no unresolved external references).
-pub const IMAGE_FILE_EXECUTABLE_IMAGE: u16 = 0x0002;
-/// Line numbers stripped from file.
-pub const IMAGE_FILE_LINE_NUMS_STRIPPED: u16 = 0x0004;
-/// Local symbols stripped from file.
-pub const IMAGE_FILE_LOCAL_SYMS_STRIPPED: u16 = 0x0008;
-/// Aggressively trim working set
-pub const IMAGE_FILE_AGGRESIVE_WS_TRIM: u16 = 0x0010;
-/// App can handle >2gb addresses
-pub const IMAGE_FILE_LARGE_ADDRESS_AWARE: u16 = 0x0020;
-/// Bytes of machine word are reversed.
-pub const IMAGE_FILE_BYTES_REVERSED_LO: u16 = 0x0080;
-/// 32 bit word machine.
-pub const IMAGE_FILE_32BIT_MACHINE: u16 = 0x0100;
-/// Debugging info stripped from file in .DBG file
-pub const IMAGE_FILE_DEBUG_STRIPPED: u16 = 0x0200;
-/// If Image is on removable media, copy and run from the swap file.
-pub const IMAGE_FILE_REMOVABLE_RUN_FROM_SWAP: u16 = 0x0400;
-/// If Image is on Net, copy and run from the swap file.
-pub const IMAGE_FILE_NET_RUN_FROM_SWAP: u16 = 0x0800;
-/// System File.
-pub const IMAGE_FILE_SYSTEM: u16 = 0x1000;
-/// File is a DLL.
-pub const IMAGE_FILE_DLL: u16 = 0x2000;
-/// File should only be run on a UP machine
-pub const IMAGE_FILE_UP_SYSTEM_ONLY: u16 = 0x4000;
-/// Bytes of machine word are reversed.
-pub const IMAGE_FILE_BYTES_REVERSED_HI: u16 = 0x8000;
+newtype!(
+    /// Values for `ImageFileHeader::characteristics`.
+    struct FileFlags(u16);
+);
 
-pub const IMAGE_FILE_MACHINE_UNKNOWN: u16 = 0;
-/// Useful for indicating we want to interact with the host and not a WoW guest.
-pub const IMAGE_FILE_MACHINE_TARGET_HOST: u16 = 0x0001;
-/// Intel 386.
-pub const IMAGE_FILE_MACHINE_I386: u16 = 0x014c;
-/// MIPS little-endian, 0x160 big-endian
-pub const IMAGE_FILE_MACHINE_R3000: u16 = 0x0162;
-/// MIPS little-endian
-pub const IMAGE_FILE_MACHINE_R4000: u16 = 0x0166;
-/// MIPS little-endian
-pub const IMAGE_FILE_MACHINE_R10000: u16 = 0x0168;
-/// MIPS little-endian WCE v2
-pub const IMAGE_FILE_MACHINE_WCEMIPSV2: u16 = 0x0169;
-/// Alpha_AXP
-pub const IMAGE_FILE_MACHINE_ALPHA: u16 = 0x0184;
-/// SH3 little-endian
-pub const IMAGE_FILE_MACHINE_SH3: u16 = 0x01a2;
-pub const IMAGE_FILE_MACHINE_SH3DSP: u16 = 0x01a3;
-/// SH3E little-endian
-pub const IMAGE_FILE_MACHINE_SH3E: u16 = 0x01a4;
-/// SH4 little-endian
-pub const IMAGE_FILE_MACHINE_SH4: u16 = 0x01a6;
-/// SH5
-pub const IMAGE_FILE_MACHINE_SH5: u16 = 0x01a8;
-/// ARM Little-Endian
-pub const IMAGE_FILE_MACHINE_ARM: u16 = 0x01c0;
-/// ARM Thumb/Thumb-2 Little-Endian
-pub const IMAGE_FILE_MACHINE_THUMB: u16 = 0x01c2;
-/// ARM Thumb-2 Little-Endian
-pub const IMAGE_FILE_MACHINE_ARMNT: u16 = 0x01c4;
-pub const IMAGE_FILE_MACHINE_AM33: u16 = 0x01d3;
-/// IBM PowerPC Little-Endian
-pub const IMAGE_FILE_MACHINE_POWERPC: u16 = 0x01F0;
-pub const IMAGE_FILE_MACHINE_POWERPCFP: u16 = 0x01f1;
-/// IBM PowerPC Big-Endian
-pub const IMAGE_FILE_MACHINE_POWERPCBE: u16 = 0x01f2;
-/// Intel 64
-pub const IMAGE_FILE_MACHINE_IA64: u16 = 0x0200;
-/// MIPS
-pub const IMAGE_FILE_MACHINE_MIPS16: u16 = 0x0266;
-/// ALPHA64
-pub const IMAGE_FILE_MACHINE_ALPHA64: u16 = 0x0284;
-/// MIPS
-pub const IMAGE_FILE_MACHINE_MIPSFPU: u16 = 0x0366;
-/// MIPS
-pub const IMAGE_FILE_MACHINE_MIPSFPU16: u16 = 0x0466;
-pub const IMAGE_FILE_MACHINE_AXP64: u16 = IMAGE_FILE_MACHINE_ALPHA64;
-/// Infineon
-pub const IMAGE_FILE_MACHINE_TRICORE: u16 = 0x0520;
-pub const IMAGE_FILE_MACHINE_CEF: u16 = 0x0CEF;
-/// EFI Byte Code
-pub const IMAGE_FILE_MACHINE_EBC: u16 = 0x0EBC;
-/// AMD64 (K8)
-pub const IMAGE_FILE_MACHINE_AMD64: u16 = 0x8664;
-/// M32R little-endian
-pub const IMAGE_FILE_MACHINE_M32R: u16 = 0x9041;
-/// ARM64 Little-Endian
-pub const IMAGE_FILE_MACHINE_ARM64: u16 = 0xAA64;
-/// ARM64EC ("Emulation Compatible")
-pub const IMAGE_FILE_MACHINE_ARM64EC: u16 = 0xA641;
-pub const IMAGE_FILE_MACHINE_CEE: u16 = 0xC0EE;
-/// RISCV32
-pub const IMAGE_FILE_MACHINE_RISCV32: u16 = 0x5032;
-/// RISCV64
-pub const IMAGE_FILE_MACHINE_RISCV64: u16 = 0x5064;
-/// RISCV128
-pub const IMAGE_FILE_MACHINE_RISCV128: u16 = 0x5128;
-/// ARM64X (Mixed ARM64 and ARM64EC)
-pub const IMAGE_FILE_MACHINE_ARM64X: u16 = 0xA64E;
-/// CHPE x86 ("Compiled Hybrid Portable Executable")
-pub const IMAGE_FILE_MACHINE_CHPE_X86: u16 = 0x3A64;
+newtype_flag_names!(NAMES_FILE_FLAGS: FileFlags(u16) = {
+    /// Relocation info stripped from file.
+    IMAGE_FILE_RELOCS_STRIPPED = 0x0001,
+    /// File is executable  (i.e. no unresolved external references).
+    IMAGE_FILE_EXECUTABLE_IMAGE = 0x0002,
+    /// Line numbers stripped from file.
+    IMAGE_FILE_LINE_NUMS_STRIPPED = 0x0004,
+    /// Local symbols stripped from file.
+    IMAGE_FILE_LOCAL_SYMS_STRIPPED = 0x0008,
+    /// Aggressively trim working set
+    IMAGE_FILE_AGGRESIVE_WS_TRIM = 0x0010,
+    /// App can handle >2gb addresses
+    IMAGE_FILE_LARGE_ADDRESS_AWARE = 0x0020,
+    /// Bytes of machine word are reversed.
+    IMAGE_FILE_BYTES_REVERSED_LO = 0x0080,
+    /// 32 bit word machine.
+    IMAGE_FILE_32BIT_MACHINE = 0x0100,
+    /// Debugging info stripped from file in .DBG file
+    IMAGE_FILE_DEBUG_STRIPPED = 0x0200,
+    /// If Image is on removable media, copy and run from the swap file.
+    IMAGE_FILE_REMOVABLE_RUN_FROM_SWAP = 0x0400,
+    /// If Image is on Net, copy and run from the swap file.
+    IMAGE_FILE_NET_RUN_FROM_SWAP = 0x0800,
+    /// System File.
+    IMAGE_FILE_SYSTEM = 0x1000,
+    /// File is a DLL.
+    IMAGE_FILE_DLL = 0x2000,
+    /// File should only be run on a UP machine
+    IMAGE_FILE_UP_SYSTEM_ONLY = 0x4000,
+    /// Bytes of machine word are reversed.
+    IMAGE_FILE_BYTES_REVERSED_HI = 0x8000,
+});
+
+newtype!(
+    /// Values for the `machine` field in file headers.
+    struct Machine(u16);
+);
+
+newtype_constant_names!(NAMES_MACHINE: Machine(u16) = {
+    IMAGE_FILE_MACHINE_UNKNOWN = 0,
+    /// Useful for indicating we want to interact with the host and not a WoW guest.
+    IMAGE_FILE_MACHINE_TARGET_HOST = 0x0001,
+    /// Intel 386.
+    IMAGE_FILE_MACHINE_I386 = 0x014c,
+    /// MIPS little-endian, 0x160 big-endian
+    IMAGE_FILE_MACHINE_R3000 = 0x0162,
+    /// MIPS little-endian
+    IMAGE_FILE_MACHINE_R4000 = 0x0166,
+    /// MIPS little-endian
+    IMAGE_FILE_MACHINE_R10000 = 0x0168,
+    /// MIPS little-endian WCE v2
+    IMAGE_FILE_MACHINE_WCEMIPSV2 = 0x0169,
+    /// Alpha_AXP
+    IMAGE_FILE_MACHINE_ALPHA = 0x0184,
+    /// SH3 little-endian
+    IMAGE_FILE_MACHINE_SH3 = 0x01a2,
+    IMAGE_FILE_MACHINE_SH3DSP = 0x01a3,
+    /// SH3E little-endian
+    IMAGE_FILE_MACHINE_SH3E = 0x01a4,
+    /// SH4 little-endian
+    IMAGE_FILE_MACHINE_SH4 = 0x01a6,
+    /// SH5
+    IMAGE_FILE_MACHINE_SH5 = 0x01a8,
+    /// ARM Little-Endian
+    IMAGE_FILE_MACHINE_ARM = 0x01c0,
+    /// ARM Thumb/Thumb-2 Little-Endian
+    IMAGE_FILE_MACHINE_THUMB = 0x01c2,
+    /// ARM Thumb-2 Little-Endian
+    IMAGE_FILE_MACHINE_ARMNT = 0x01c4,
+    IMAGE_FILE_MACHINE_AM33 = 0x01d3,
+    /// IBM PowerPC Little-Endian
+    IMAGE_FILE_MACHINE_POWERPC = 0x01F0,
+    IMAGE_FILE_MACHINE_POWERPCFP = 0x01f1,
+    /// IBM PowerPC Big-Endian
+    IMAGE_FILE_MACHINE_POWERPCBE = 0x01f2,
+    /// Intel 64
+    IMAGE_FILE_MACHINE_IA64 = 0x0200,
+    /// MIPS
+    IMAGE_FILE_MACHINE_MIPS16 = 0x0266,
+    /// ALPHA64
+    IMAGE_FILE_MACHINE_ALPHA64 = 0x0284,
+    /// MIPS
+    IMAGE_FILE_MACHINE_MIPSFPU = 0x0366,
+    /// MIPS
+    IMAGE_FILE_MACHINE_MIPSFPU16 = 0x0466,
+    IMAGE_FILE_MACHINE_AXP64 = IMAGE_FILE_MACHINE_ALPHA64.0,
+    /// Infineon
+    IMAGE_FILE_MACHINE_TRICORE = 0x0520,
+    IMAGE_FILE_MACHINE_CEF = 0x0CEF,
+    /// EFI Byte Code
+    IMAGE_FILE_MACHINE_EBC = 0x0EBC,
+    /// AMD64 (K8)
+    IMAGE_FILE_MACHINE_AMD64 = 0x8664,
+    /// M32R little-endian
+    IMAGE_FILE_MACHINE_M32R = 0x9041,
+    /// ARM64 Little-Endian
+    IMAGE_FILE_MACHINE_ARM64 = 0xAA64,
+    /// ARM64EC ("Emulation Compatible")
+    IMAGE_FILE_MACHINE_ARM64EC = 0xA641,
+    IMAGE_FILE_MACHINE_CEE = 0xC0EE,
+    /// RISCV32
+    IMAGE_FILE_MACHINE_RISCV32 = 0x5032,
+    /// RISCV64
+    IMAGE_FILE_MACHINE_RISCV64 = 0x5064,
+    /// RISCV128
+    IMAGE_FILE_MACHINE_RISCV128 = 0x5128,
+    /// ARM64X (Mixed ARM64 and ARM64EC)
+    IMAGE_FILE_MACHINE_ARM64X = 0xA64E,
+    /// CHPE x86 ("Compiled Hybrid Portable Executable")
+    IMAGE_FILE_MACHINE_CHPE_X86 = 0x3A64,
+});
 
 //
 // Directory format.
@@ -420,8 +496,8 @@ pub struct ImageOptionalHeader32 {
     pub size_of_image: U32<LE>,
     pub size_of_headers: U32<LE>,
     pub check_sum: U32<LE>,
-    pub subsystem: U16<LE>,
-    pub dll_characteristics: U16<LE>,
+    pub subsystem: U16<LE, Subsystem>,
+    pub dll_characteristics: U16<LE, DllFlags>,
     pub size_of_stack_reserve: U32<LE>,
     pub size_of_stack_commit: U32<LE>,
     pub size_of_heap_reserve: U32<LE>,
@@ -473,8 +549,8 @@ pub struct ImageOptionalHeader64 {
     pub size_of_image: U32<LE>,
     pub size_of_headers: U32<LE>,
     pub check_sum: U32<LE>,
-    pub subsystem: U16<LE>,
-    pub dll_characteristics: U16<LE>,
+    pub subsystem: U16<LE, Subsystem>,
+    pub dll_characteristics: U16<LE, DllFlags>,
     pub size_of_stack_reserve: U64<LE>,
     pub size_of_stack_commit: U64<LE>,
     pub size_of_heap_reserve: U64<LE>,
@@ -511,93 +587,104 @@ pub struct ImageRomHeaders {
     pub optional_header: ImageRomOptionalHeader,
 }
 
-// Values for `ImageOptionalHeader*::subsystem`.
+newtype!(
+    /// Values for `ImageOptionalHeader*::subsystem`.
+    struct Subsystem(u16);
+);
 
-/// Unknown subsystem.
-pub const IMAGE_SUBSYSTEM_UNKNOWN: u16 = 0;
-/// Image doesn't require a subsystem.
-pub const IMAGE_SUBSYSTEM_NATIVE: u16 = 1;
-/// Image runs in the Windows GUI subsystem.
-pub const IMAGE_SUBSYSTEM_WINDOWS_GUI: u16 = 2;
-/// Image runs in the Windows character subsystem.
-pub const IMAGE_SUBSYSTEM_WINDOWS_CUI: u16 = 3;
-/// image runs in the OS/2 character subsystem.
-pub const IMAGE_SUBSYSTEM_OS2_CUI: u16 = 5;
-/// image runs in the Posix character subsystem.
-pub const IMAGE_SUBSYSTEM_POSIX_CUI: u16 = 7;
-/// image is a native Win9x driver.
-pub const IMAGE_SUBSYSTEM_NATIVE_WINDOWS: u16 = 8;
-/// Image runs in the Windows CE subsystem.
-pub const IMAGE_SUBSYSTEM_WINDOWS_CE_GUI: u16 = 9;
-pub const IMAGE_SUBSYSTEM_EFI_APPLICATION: u16 = 10;
-pub const IMAGE_SUBSYSTEM_EFI_BOOT_SERVICE_DRIVER: u16 = 11;
-pub const IMAGE_SUBSYSTEM_EFI_RUNTIME_DRIVER: u16 = 12;
-pub const IMAGE_SUBSYSTEM_EFI_ROM: u16 = 13;
-pub const IMAGE_SUBSYSTEM_XBOX: u16 = 14;
-pub const IMAGE_SUBSYSTEM_WINDOWS_BOOT_APPLICATION: u16 = 16;
-pub const IMAGE_SUBSYSTEM_XBOX_CODE_CATALOG: u16 = 17;
+newtype_constant_names!(NAMES_SUBSYSTEM: Subsystem(u16) = {
+    /// Unknown subsystem.
+    IMAGE_SUBSYSTEM_UNKNOWN = 0,
+    /// Image doesn't require a subsystem.
+    IMAGE_SUBSYSTEM_NATIVE = 1,
+    /// Image runs in the Windows GUI subsystem.
+    IMAGE_SUBSYSTEM_WINDOWS_GUI = 2,
+    /// Image runs in the Windows character subsystem.
+    IMAGE_SUBSYSTEM_WINDOWS_CUI = 3,
+    /// image runs in the OS/2 character subsystem.
+    IMAGE_SUBSYSTEM_OS2_CUI = 5,
+    /// image runs in the Posix character subsystem.
+    IMAGE_SUBSYSTEM_POSIX_CUI = 7,
+    /// image is a native Win9x driver.
+    IMAGE_SUBSYSTEM_NATIVE_WINDOWS = 8,
+    /// Image runs in the Windows CE subsystem.
+    IMAGE_SUBSYSTEM_WINDOWS_CE_GUI = 9,
+    IMAGE_SUBSYSTEM_EFI_APPLICATION = 10,
+    IMAGE_SUBSYSTEM_EFI_BOOT_SERVICE_DRIVER = 11,
+    IMAGE_SUBSYSTEM_EFI_RUNTIME_DRIVER = 12,
+    IMAGE_SUBSYSTEM_EFI_ROM = 13,
+    IMAGE_SUBSYSTEM_XBOX = 14,
+    IMAGE_SUBSYSTEM_WINDOWS_BOOT_APPLICATION = 16,
+    IMAGE_SUBSYSTEM_XBOX_CODE_CATALOG = 17,
+});
 
-// Values for `ImageOptionalHeader*::dll_characteristics`.
+newtype!(
+    /// Values for `ImageOptionalHeader*::dll_characteristics`.
+    struct DllFlags(u16);
+);
 
-//      IMAGE_LIBRARY_PROCESS_INIT            0x0001     // Reserved.
-//      IMAGE_LIBRARY_PROCESS_TERM            0x0002     // Reserved.
-//      IMAGE_LIBRARY_THREAD_INIT             0x0004     // Reserved.
-//      IMAGE_LIBRARY_THREAD_TERM             0x0008     // Reserved.
-/// Image can handle a high entropy 64-bit virtual address space.
-pub const IMAGE_DLLCHARACTERISTICS_HIGH_ENTROPY_VA: u16 = 0x0020;
-/// DLL can move.
-pub const IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE: u16 = 0x0040;
-/// Code Integrity Image
-pub const IMAGE_DLLCHARACTERISTICS_FORCE_INTEGRITY: u16 = 0x0080;
-/// Image is NX compatible
-pub const IMAGE_DLLCHARACTERISTICS_NX_COMPAT: u16 = 0x0100;
-/// Image understands isolation and doesn't want it
-pub const IMAGE_DLLCHARACTERISTICS_NO_ISOLATION: u16 = 0x0200;
-/// Image does not use SEH.  No SE handler may reside in this image
-pub const IMAGE_DLLCHARACTERISTICS_NO_SEH: u16 = 0x0400;
-/// Do not bind this image.
-pub const IMAGE_DLLCHARACTERISTICS_NO_BIND: u16 = 0x0800;
-/// Image should execute in an AppContainer
-pub const IMAGE_DLLCHARACTERISTICS_APPCONTAINER: u16 = 0x1000;
-/// Driver uses WDM model
-pub const IMAGE_DLLCHARACTERISTICS_WDM_DRIVER: u16 = 0x2000;
-/// Image supports Control Flow Guard.
-pub const IMAGE_DLLCHARACTERISTICS_GUARD_CF: u16 = 0x4000;
-pub const IMAGE_DLLCHARACTERISTICS_TERMINAL_SERVER_AWARE: u16 = 0x8000;
+newtype_flag_names!(NAMES_DLL_FLAGS: DllFlags(u16) = {
+    //      IMAGE_LIBRARY_PROCESS_INIT            0x0001     // Reserved.
+    //      IMAGE_LIBRARY_PROCESS_TERM            0x0002     // Reserved.
+    //      IMAGE_LIBRARY_THREAD_INIT             0x0004     // Reserved.
+    //      IMAGE_LIBRARY_THREAD_TERM             0x0008     // Reserved.
+    /// Image can handle a high entropy 64-bit virtual address space.
+    IMAGE_DLLCHARACTERISTICS_HIGH_ENTROPY_VA = 0x0020,
+    /// DLL can move.
+    IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE = 0x0040,
+    /// Code Integrity Image
+    IMAGE_DLLCHARACTERISTICS_FORCE_INTEGRITY = 0x0080,
+    /// Image is NX compatible
+    IMAGE_DLLCHARACTERISTICS_NX_COMPAT = 0x0100,
+    /// Image understands isolation and doesn't want it
+    IMAGE_DLLCHARACTERISTICS_NO_ISOLATION = 0x0200,
+    /// Image does not use SEH.  No SE handler may reside in this image
+    IMAGE_DLLCHARACTERISTICS_NO_SEH = 0x0400,
+    /// Do not bind this image.
+    IMAGE_DLLCHARACTERISTICS_NO_BIND = 0x0800,
+    /// Image should execute in an AppContainer
+    IMAGE_DLLCHARACTERISTICS_APPCONTAINER = 0x1000,
+    /// Driver uses WDM model
+    IMAGE_DLLCHARACTERISTICS_WDM_DRIVER = 0x2000,
+    /// Image supports Control Flow Guard.
+    IMAGE_DLLCHARACTERISTICS_GUARD_CF = 0x4000,
+    IMAGE_DLLCHARACTERISTICS_TERMINAL_SERVER_AWARE = 0x8000,
+});
 
-// Indices for `ImageOptionalHeader*::data_directory`.
-
-/// Export Directory
-pub const IMAGE_DIRECTORY_ENTRY_EXPORT: usize = 0;
-/// Import Directory
-pub const IMAGE_DIRECTORY_ENTRY_IMPORT: usize = 1;
-/// Resource Directory
-pub const IMAGE_DIRECTORY_ENTRY_RESOURCE: usize = 2;
-/// Exception Directory
-pub const IMAGE_DIRECTORY_ENTRY_EXCEPTION: usize = 3;
-/// Security Directory
-pub const IMAGE_DIRECTORY_ENTRY_SECURITY: usize = 4;
-/// Base Relocation Table
-pub const IMAGE_DIRECTORY_ENTRY_BASERELOC: usize = 5;
-/// Debug Directory
-pub const IMAGE_DIRECTORY_ENTRY_DEBUG: usize = 6;
-//      IMAGE_DIRECTORY_ENTRY_COPYRIGHT       7   // (X86 usage)
-/// Architecture Specific Data
-pub const IMAGE_DIRECTORY_ENTRY_ARCHITECTURE: usize = 7;
-/// RVA of GP
-pub const IMAGE_DIRECTORY_ENTRY_GLOBALPTR: usize = 8;
-/// TLS Directory
-pub const IMAGE_DIRECTORY_ENTRY_TLS: usize = 9;
-/// Load Configuration Directory
-pub const IMAGE_DIRECTORY_ENTRY_LOAD_CONFIG: usize = 10;
-/// Bound Import Directory in headers
-pub const IMAGE_DIRECTORY_ENTRY_BOUND_IMPORT: usize = 11;
-/// Import Address Table
-pub const IMAGE_DIRECTORY_ENTRY_IAT: usize = 12;
-/// Delay Load Import Descriptors
-pub const IMAGE_DIRECTORY_ENTRY_DELAY_IMPORT: usize = 13;
-/// COM Runtime descriptor
-pub const IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR: usize = 14;
+constant_names!(
+/// Indices for `ImageOptionalHeader*::data_directory`.
+pub NAMES_DIRECTORY_ENTRY: usize = {
+    /// Export Directory
+    IMAGE_DIRECTORY_ENTRY_EXPORT = 0,
+    /// Import Directory
+    IMAGE_DIRECTORY_ENTRY_IMPORT = 1,
+    /// Resource Directory
+    IMAGE_DIRECTORY_ENTRY_RESOURCE = 2,
+    /// Exception Directory
+    IMAGE_DIRECTORY_ENTRY_EXCEPTION = 3,
+    /// Security Directory
+    IMAGE_DIRECTORY_ENTRY_SECURITY = 4,
+    /// Base Relocation Table
+    IMAGE_DIRECTORY_ENTRY_BASERELOC = 5,
+    /// Debug Directory
+    IMAGE_DIRECTORY_ENTRY_DEBUG = 6,
+    /// Architecture Specific Data
+    IMAGE_DIRECTORY_ENTRY_ARCHITECTURE = 7,
+    /// RVA of GP
+    IMAGE_DIRECTORY_ENTRY_GLOBALPTR = 8,
+    /// TLS Directory
+    IMAGE_DIRECTORY_ENTRY_TLS = 9,
+    /// Load Configuration Directory
+    IMAGE_DIRECTORY_ENTRY_LOAD_CONFIG = 10,
+    /// Bound Import Directory in headers
+    IMAGE_DIRECTORY_ENTRY_BOUND_IMPORT = 11,
+    /// Import Address Table
+    IMAGE_DIRECTORY_ENTRY_IAT = 12,
+    /// Delay Load Import Descriptors
+    IMAGE_DIRECTORY_ENTRY_DELAY_IMPORT = 13,
+    /// COM Runtime descriptor
+    IMAGE_DIRECTORY_ENTRY_COM_DESCRIPTOR = 14,
+});
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(C)]
@@ -632,12 +719,12 @@ pub use Guid as ClsId;
 #[repr(C)]
 pub struct AnonObjectHeader {
     /// Must be IMAGE_FILE_MACHINE_UNKNOWN
-    pub sig1: U16<LE>,
+    pub sig1: U16<LE, Machine>,
     /// Must be 0xffff
     pub sig2: U16<LE>,
     /// >= 1 (implies the ClsId field is present)
     pub version: U16<LE>,
-    pub machine: U16<LE>,
+    pub machine: U16<LE, Machine>,
     pub time_date_stamp: U32<LE>,
     /// Used to invoke CoCreateInstance
     pub class_id: ClsId,
@@ -649,12 +736,12 @@ pub struct AnonObjectHeader {
 #[repr(C)]
 pub struct AnonObjectHeaderV2 {
     /// Must be IMAGE_FILE_MACHINE_UNKNOWN
-    pub sig1: U16<LE>,
+    pub sig1: U16<LE, Machine>,
     /// Must be 0xffff
     pub sig2: U16<LE>,
     /// >= 2 (implies the Flags field is present - otherwise V1)
     pub version: U16<LE>,
-    pub machine: U16<LE>,
+    pub machine: U16<LE, Machine>,
     pub time_date_stamp: U32<LE>,
     /// Used to invoke CoCreateInstance
     pub class_id: ClsId,
@@ -678,13 +765,13 @@ pub const ANON_OBJECT_HEADER_BIGOBJ_CLASS_ID: ClsId = ClsId([
 pub struct AnonObjectHeaderBigobj {
     /* same as ANON_OBJECT_HEADER_V2 */
     /// Must be IMAGE_FILE_MACHINE_UNKNOWN
-    pub sig1: U16<LE>,
+    pub sig1: U16<LE, Machine>,
     /// Must be 0xffff
     pub sig2: U16<LE>,
     /// >= 2 (implies the Flags field is present)
     pub version: U16<LE>,
     /// Actual machine - IMAGE_FILE_MACHINE_xxx
-    pub machine: U16<LE>,
+    pub machine: U16<LE, Machine>,
     pub time_date_stamp: U32<LE>,
     /// Must be `ANON_OBJECT_HEADER_BIGOBJ_CLASS_ID`.
     pub class_id: ClsId,
@@ -722,84 +809,104 @@ pub struct ImageSectionHeader {
     pub pointer_to_linenumbers: U32<LE>,
     pub number_of_relocations: U16<LE>,
     pub number_of_linenumbers: U16<LE>,
-    pub characteristics: U32<LE>,
+    pub characteristics: U32<LE, SectionFlags>,
 }
 
 pub const IMAGE_SIZEOF_SECTION_HEADER: usize = 40;
 
-// Values for `ImageSectionHeader::characteristics`.
+newtype!(
+    /// Values for `ImageSectionHeader::characteristics`.
+    struct SectionFlags(u32);
+);
 
-//      IMAGE_SCN_TYPE_REG                   0x00000000  // Reserved.
-//      IMAGE_SCN_TYPE_DSECT                 0x00000001  // Reserved.
-//      IMAGE_SCN_TYPE_NOLOAD                0x00000002  // Reserved.
-//      IMAGE_SCN_TYPE_GROUP                 0x00000004  // Reserved.
-/// Reserved.
-pub const IMAGE_SCN_TYPE_NO_PAD: u32 = 0x0000_0008;
-//      IMAGE_SCN_TYPE_COPY                  0x00000010  // Reserved.
+impl SectionFlags {
+    /// Return the alignment.
+    pub fn align(self) -> SectionFlags {
+        SectionFlags(self.0 & IMAGE_SCN_ALIGN_MASK)
+    }
 
-/// Section contains code.
-pub const IMAGE_SCN_CNT_CODE: u32 = 0x0000_0020;
-/// Section contains initialized data.
-pub const IMAGE_SCN_CNT_INITIALIZED_DATA: u32 = 0x0000_0040;
-/// Section contains uninitialized data.
-pub const IMAGE_SCN_CNT_UNINITIALIZED_DATA: u32 = 0x0000_0080;
+    /// Replace the alignment.
+    pub fn with_align(self, align: SectionFlags) -> SectionFlags {
+        SectionFlags(self.0 & !IMAGE_SCN_ALIGN_MASK | align.0 & IMAGE_SCN_ALIGN_MASK)
+    }
+}
 
-/// Reserved.
-pub const IMAGE_SCN_LNK_OTHER: u32 = 0x0000_0100;
-/// Section contains comments or some other type of information.
-pub const IMAGE_SCN_LNK_INFO: u32 = 0x0000_0200;
-//      IMAGE_SCN_TYPE_OVER                  0x00000400  // Reserved.
-/// Section contents will not become part of image.
-pub const IMAGE_SCN_LNK_REMOVE: u32 = 0x0000_0800;
-/// Section contents comdat.
-pub const IMAGE_SCN_LNK_COMDAT: u32 = 0x0000_1000;
-//                                           0x00002000  // Reserved.
-//      IMAGE_SCN_MEM_PROTECTED - Obsolete   0x00004000
-/// Reset speculative exceptions handling bits in the TLB entries for this section.
-pub const IMAGE_SCN_NO_DEFER_SPEC_EXC: u32 = 0x0000_4000;
-/// Section content can be accessed relative to GP
-pub const IMAGE_SCN_GPREL: u32 = 0x0000_8000;
-pub const IMAGE_SCN_MEM_FARDATA: u32 = 0x0000_8000;
-//      IMAGE_SCN_MEM_SYSHEAP  - Obsolete    0x00010000
-pub const IMAGE_SCN_MEM_PURGEABLE: u32 = 0x0002_0000;
-pub const IMAGE_SCN_MEM_16BIT: u32 = 0x0002_0000;
-pub const IMAGE_SCN_MEM_LOCKED: u32 = 0x0004_0000;
-pub const IMAGE_SCN_MEM_PRELOAD: u32 = 0x0008_0000;
+newtype_flag_names!(NAMES_SCN_FLAGS: SectionFlags(u32) = {
+    //      IMAGE_SCN_TYPE_REG                   0x00000000  // Reserved.
+    //      IMAGE_SCN_TYPE_DSECT                 0x00000001  // Reserved.
+    //      IMAGE_SCN_TYPE_NOLOAD                0x00000002  // Reserved.
+    //      IMAGE_SCN_TYPE_GROUP                 0x00000004  // Reserved.
+    /// Reserved.
+    IMAGE_SCN_TYPE_NO_PAD = 0x0000_0008,
+    //      IMAGE_SCN_TYPE_COPY                  0x00000010  // Reserved.
 
-pub const IMAGE_SCN_ALIGN_1BYTES: u32 = 0x0010_0000;
-pub const IMAGE_SCN_ALIGN_2BYTES: u32 = 0x0020_0000;
-pub const IMAGE_SCN_ALIGN_4BYTES: u32 = 0x0030_0000;
-pub const IMAGE_SCN_ALIGN_8BYTES: u32 = 0x0040_0000;
-/// Default alignment if no others are specified.
-pub const IMAGE_SCN_ALIGN_16BYTES: u32 = 0x0050_0000;
-pub const IMAGE_SCN_ALIGN_32BYTES: u32 = 0x0060_0000;
-pub const IMAGE_SCN_ALIGN_64BYTES: u32 = 0x0070_0000;
-pub const IMAGE_SCN_ALIGN_128BYTES: u32 = 0x0080_0000;
-pub const IMAGE_SCN_ALIGN_256BYTES: u32 = 0x0090_0000;
-pub const IMAGE_SCN_ALIGN_512BYTES: u32 = 0x00A0_0000;
-pub const IMAGE_SCN_ALIGN_1024BYTES: u32 = 0x00B0_0000;
-pub const IMAGE_SCN_ALIGN_2048BYTES: u32 = 0x00C0_0000;
-pub const IMAGE_SCN_ALIGN_4096BYTES: u32 = 0x00D0_0000;
-pub const IMAGE_SCN_ALIGN_8192BYTES: u32 = 0x00E0_0000;
-// Unused                                    0x00F0_0000
-pub const IMAGE_SCN_ALIGN_MASK: u32 = 0x00F0_0000;
+    /// Section contains code.
+    IMAGE_SCN_CNT_CODE = 0x0000_0020,
+    /// Section contains initialized data.
+    IMAGE_SCN_CNT_INITIALIZED_DATA = 0x0000_0040,
+    /// Section contains uninitialized data.
+    IMAGE_SCN_CNT_UNINITIALIZED_DATA = 0x0000_0080,
 
-/// Section contains extended relocations.
-pub const IMAGE_SCN_LNK_NRELOC_OVFL: u32 = 0x0100_0000;
-/// Section can be discarded.
-pub const IMAGE_SCN_MEM_DISCARDABLE: u32 = 0x0200_0000;
-/// Section is not cacheable.
-pub const IMAGE_SCN_MEM_NOT_CACHED: u32 = 0x0400_0000;
-/// Section is not pageable.
-pub const IMAGE_SCN_MEM_NOT_PAGED: u32 = 0x0800_0000;
-/// Section is shareable.
-pub const IMAGE_SCN_MEM_SHARED: u32 = 0x1000_0000;
-/// Section is executable.
-pub const IMAGE_SCN_MEM_EXECUTE: u32 = 0x2000_0000;
-/// Section is readable.
-pub const IMAGE_SCN_MEM_READ: u32 = 0x4000_0000;
-/// Section is writeable.
-pub const IMAGE_SCN_MEM_WRITE: u32 = 0x8000_0000;
+    /// Reserved.
+    IMAGE_SCN_LNK_OTHER = 0x0000_0100,
+    /// Section contains comments or some other type of information.
+    IMAGE_SCN_LNK_INFO = 0x0000_0200,
+    //      IMAGE_SCN_TYPE_OVER                  0x00000400  // Reserved.
+    /// Section contents will not become part of image.
+    IMAGE_SCN_LNK_REMOVE = 0x0000_0800,
+    /// Section contents comdat.
+    IMAGE_SCN_LNK_COMDAT = 0x0000_1000,
+    //                                           0x00002000  // Reserved.
+    //      IMAGE_SCN_MEM_PROTECTED - Obsolete   0x00004000
+    /// Reset speculative exceptions handling bits in the TLB entries for this section.
+    IMAGE_SCN_NO_DEFER_SPEC_EXC = 0x0000_4000,
+    /// Section content can be accessed relative to GP
+    IMAGE_SCN_GPREL = 0x0000_8000,
+    IMAGE_SCN_MEM_FARDATA = 0x0000_8000,
+    //      IMAGE_SCN_MEM_SYSHEAP  - Obsolete    0x00010000
+    IMAGE_SCN_MEM_PURGEABLE = 0x0002_0000,
+    IMAGE_SCN_MEM_16BIT = 0x0002_0000,
+    IMAGE_SCN_MEM_LOCKED = 0x0004_0000,
+    IMAGE_SCN_MEM_PRELOAD = 0x0008_0000,
+
+    IMAGE_SCN_ALIGN_MASK = 0x00F0_0000 => NAMES_SCN_ALIGN,
+
+    /// Section contains extended relocations.
+    IMAGE_SCN_LNK_NRELOC_OVFL = 0x0100_0000,
+    /// Section can be discarded.
+    IMAGE_SCN_MEM_DISCARDABLE = 0x0200_0000,
+    /// Section is not cacheable.
+    IMAGE_SCN_MEM_NOT_CACHED = 0x0400_0000,
+    /// Section is not pageable.
+    IMAGE_SCN_MEM_NOT_PAGED = 0x0800_0000,
+    /// Section is shareable.
+    IMAGE_SCN_MEM_SHARED = 0x1000_0000,
+    /// Section is executable.
+    IMAGE_SCN_MEM_EXECUTE = 0x2000_0000,
+    /// Section is readable.
+    IMAGE_SCN_MEM_READ = 0x4000_0000,
+    /// Section is writeable.
+    IMAGE_SCN_MEM_WRITE = 0x8000_0000,
+});
+
+constant_names!(NAMES_SCN_ALIGN: SectionFlags(u32) = {
+    IMAGE_SCN_ALIGN_1BYTES = 0x0010_0000,
+    IMAGE_SCN_ALIGN_2BYTES = 0x0020_0000,
+    IMAGE_SCN_ALIGN_4BYTES = 0x0030_0000,
+    IMAGE_SCN_ALIGN_8BYTES = 0x0040_0000,
+    /// Default alignment if no others are specified.
+    IMAGE_SCN_ALIGN_16BYTES = 0x0050_0000,
+    IMAGE_SCN_ALIGN_32BYTES = 0x0060_0000,
+    IMAGE_SCN_ALIGN_64BYTES = 0x0070_0000,
+    IMAGE_SCN_ALIGN_128BYTES = 0x0080_0000,
+    IMAGE_SCN_ALIGN_256BYTES = 0x0090_0000,
+    IMAGE_SCN_ALIGN_512BYTES = 0x00A0_0000,
+    IMAGE_SCN_ALIGN_1024BYTES = 0x00B0_0000,
+    IMAGE_SCN_ALIGN_2048BYTES = 0x00C0_0000,
+    IMAGE_SCN_ALIGN_4096BYTES = 0x00D0_0000,
+    IMAGE_SCN_ALIGN_8192BYTES = 0x00E0_0000,
+    // Unused                                    0x00F0_0000
+});
 
 //
 // TLS Characteristic Flags
@@ -811,16 +918,15 @@ pub const IMAGE_SCN_SCALE_INDEX: u32 = 0x0000_0001;
 // Symbol format.
 //
 
-// This struct has alignment 1.
 #[derive(Debug, Clone, Copy)]
 #[repr(C)]
 pub struct ImageSymbol {
     /// If first 4 bytes are 0, then second 4 bytes are offset into string table.
     pub name: [u8; 8],
-    pub value: U32Bytes<LE>,
-    pub section_number: U16Bytes<LE>,
-    pub typ: U16Bytes<LE>,
-    pub storage_class: u8,
+    pub value: U32<LE>,
+    pub section_number: U16<LE>,
+    pub typ: U16<LE, SymbolType>,
+    pub storage_class: SymbolClass,
     pub number_of_aux_symbols: u8,
 }
 
@@ -830,16 +936,15 @@ pub const IMAGE_SIZEOF_SYMBOL: usize = 18;
 #[repr(C)]
 pub struct ImageSymbolBytes(pub [u8; IMAGE_SIZEOF_SYMBOL]);
 
-// This struct has alignment 1.
 #[derive(Debug, Clone, Copy)]
 #[repr(C)]
 pub struct ImageSymbolEx {
     /// If first 4 bytes are 0, then second 4 bytes are offset into string table.
     pub name: [u8; 8],
-    pub value: U32Bytes<LE>,
-    pub section_number: I32Bytes<LE>,
-    pub typ: U16Bytes<LE>,
-    pub storage_class: u8,
+    pub value: U32<LE>,
+    pub section_number: I32<LE, SymbolSection>,
+    pub typ: U16<LE, SymbolType>,
+    pub storage_class: SymbolClass,
     pub number_of_aux_symbols: u8,
 }
 
@@ -849,90 +954,181 @@ pub const IMAGE_SIZEOF_SYMBOL_EX: usize = 20;
 #[repr(C)]
 pub struct ImageSymbolExBytes(pub [u8; IMAGE_SIZEOF_SYMBOL_EX]);
 
-// Values for `ImageSymbol::section_number`.
-//
+newtype!(
+    /// Values for `ImageSymbol::section_number` and `ImageSymbolEx::section_number`.
+    struct SymbolSection(i32);
+);
+
+impl SymbolSection {
+    /// Return true if this is a reserved value.
+    pub fn is_reserved(self) -> bool {
+        self.0 <= 0
+    }
+
+    /// Return the 1-based section index, or `None` if this is a reserved value.
+    pub fn index(self) -> Option<u32> {
+        if self.0 > 0 {
+            Some(self.0 as u32)
+        } else {
+            None
+        }
+    }
+}
+
 // Symbols have a section number of the section in which they are
 // defined. Otherwise, section numbers have the following meanings:
+newtype_constant_names!(NAMES_IMAGE_SYM: SymbolSection(i32) = {
+    /// Symbol is undefined or is common.
+    IMAGE_SYM_UNDEFINED = 0,
+    /// Symbol is an absolute value.
+    IMAGE_SYM_ABSOLUTE = -1,
+    /// Symbol is a special debug item.
+    IMAGE_SYM_DEBUG = -2,
+});
 
-/// Symbol is undefined or is common.
-pub const IMAGE_SYM_UNDEFINED: i32 = 0;
-/// Symbol is an absolute value.
-pub const IMAGE_SYM_ABSOLUTE: i32 = -1;
-/// Symbol is a special debug item.
-pub const IMAGE_SYM_DEBUG: i32 = -2;
 /// Values 0xFF00-0xFFFF are special
 pub const IMAGE_SYM_SECTION_MAX: u16 = 0xFEFF;
 pub const IMAGE_SYM_SECTION_MAX_EX: u32 = 0x7fff_ffff;
 
-// Values for `ImageSymbol::typ` (basic component).
+newtype!(
+    /// Values for `ImageSymbol::typ`.
+    struct SymbolType(u16);
+);
+
+impl SymbolType {
+    /// Construct a symbol type from base and derived types.
+    ///
+    /// You should generally never need to call this. In practice, only
+    /// a couple of symbol types are used. Instead, use `SymbolType(0)`
+    /// or `IMAGE_SYM_DTYPE_FUNCTION.into()`.
+    pub fn new(base_type: SymbolBaseType, derived_type: SymbolDerivedType) -> Self {
+        SymbolType(SymbolType::from(base_type).0 | SymbolType::from(derived_type).0)
+    }
+
+    /// Return the base type component.
+    pub fn base_type(self) -> SymbolBaseType {
+        SymbolBaseType(self.0 & N_BTMASK)
+    }
+
+    /// Return the derived type component.
+    pub fn derived_type(self) -> SymbolDerivedType {
+        SymbolDerivedType((self.0 & N_TMASK) >> N_BTSHFT)
+    }
+}
+
+newtype_flag_names!(NAMES_SYMBOL_TYPE: SymbolType(u16) = {
+    _ = N_BTMASK => NAMES_IMAGE_SYM_TYPE,
+    _ = N_TMASK => NAMES_IMAGE_SYM_DTYPE,
+    IMAGE_SYM_TYPE_PCODE = 0x8000,
+});
+
+newtype!(
+    /// Values for `ImageSymbol::typ` (basic component).
+    struct SymbolBaseType(u16);
+);
+
+impl From<SymbolBaseType> for SymbolType {
+    fn from(base: SymbolBaseType) -> Self {
+        SymbolType(base.0 & N_BTMASK)
+    }
+}
+
+impl From<SymbolType> for SymbolBaseType {
+    fn from(value: SymbolType) -> Self {
+        value.base_type()
+    }
+}
 
 /// no type.
-pub const IMAGE_SYM_TYPE_NULL: u16 = 0x0000;
-pub const IMAGE_SYM_TYPE_VOID: u16 = 0x0001;
-/// type character.
-pub const IMAGE_SYM_TYPE_CHAR: u16 = 0x0002;
-/// type short integer.
-pub const IMAGE_SYM_TYPE_SHORT: u16 = 0x0003;
-pub const IMAGE_SYM_TYPE_INT: u16 = 0x0004;
-pub const IMAGE_SYM_TYPE_LONG: u16 = 0x0005;
-pub const IMAGE_SYM_TYPE_FLOAT: u16 = 0x0006;
-pub const IMAGE_SYM_TYPE_DOUBLE: u16 = 0x0007;
-pub const IMAGE_SYM_TYPE_STRUCT: u16 = 0x0008;
-pub const IMAGE_SYM_TYPE_UNION: u16 = 0x0009;
-/// enumeration.
-pub const IMAGE_SYM_TYPE_ENUM: u16 = 0x000A;
-/// member of enumeration.
-pub const IMAGE_SYM_TYPE_MOE: u16 = 0x000B;
-pub const IMAGE_SYM_TYPE_BYTE: u16 = 0x000C;
-pub const IMAGE_SYM_TYPE_WORD: u16 = 0x000D;
-pub const IMAGE_SYM_TYPE_UINT: u16 = 0x000E;
-pub const IMAGE_SYM_TYPE_DWORD: u16 = 0x000F;
-pub const IMAGE_SYM_TYPE_PCODE: u16 = 0x8000;
+pub const IMAGE_SYM_TYPE_NULL: SymbolBaseType = SymbolBaseType(0);
 
-// Values for `ImageSymbol::typ` (derived component).
+newtype_constant_names!(NAMES_IMAGE_SYM_TYPE: SymbolBaseType(u16) = {
+    IMAGE_SYM_TYPE_VOID = 0x0001,
+    /// type character.
+    IMAGE_SYM_TYPE_CHAR = 0x0002,
+    /// type short integer.
+    IMAGE_SYM_TYPE_SHORT = 0x0003,
+    IMAGE_SYM_TYPE_INT = 0x0004,
+    IMAGE_SYM_TYPE_LONG = 0x0005,
+    IMAGE_SYM_TYPE_FLOAT = 0x0006,
+    IMAGE_SYM_TYPE_DOUBLE = 0x0007,
+    IMAGE_SYM_TYPE_STRUCT = 0x0008,
+    IMAGE_SYM_TYPE_UNION = 0x0009,
+    /// enumeration.
+    IMAGE_SYM_TYPE_ENUM = 0x000A,
+    /// member of enumeration.
+    IMAGE_SYM_TYPE_MOE = 0x000B,
+    IMAGE_SYM_TYPE_BYTE = 0x000C,
+    IMAGE_SYM_TYPE_WORD = 0x000D,
+    IMAGE_SYM_TYPE_UINT = 0x000E,
+    IMAGE_SYM_TYPE_DWORD = 0x000F,
+});
+
+newtype!(
+    /// Values for `ImageSymbol::typ` (derived component).
+    struct SymbolDerivedType(u16);
+);
+
+impl From<SymbolDerivedType> for SymbolType {
+    fn from(derived: SymbolDerivedType) -> Self {
+        SymbolType((derived.0 << N_BTSHFT) & N_TMASK)
+    }
+}
+
+impl From<SymbolType> for SymbolDerivedType {
+    fn from(value: SymbolType) -> Self {
+        value.derived_type()
+    }
+}
 
 /// no derived type.
-pub const IMAGE_SYM_DTYPE_NULL: u16 = 0;
-/// pointer.
-pub const IMAGE_SYM_DTYPE_POINTER: u16 = 1;
-/// function.
-pub const IMAGE_SYM_DTYPE_FUNCTION: u16 = 2;
-/// array.
-pub const IMAGE_SYM_DTYPE_ARRAY: u16 = 3;
+pub const IMAGE_SYM_DTYPE_NULL: SymbolDerivedType = SymbolDerivedType(0);
 
-// Values for `ImageSymbol::storage_class`.
-pub const IMAGE_SYM_CLASS_END_OF_FUNCTION: u8 = 0xff;
-pub const IMAGE_SYM_CLASS_NULL: u8 = 0x00;
-pub const IMAGE_SYM_CLASS_AUTOMATIC: u8 = 0x01;
-pub const IMAGE_SYM_CLASS_EXTERNAL: u8 = 0x02;
-pub const IMAGE_SYM_CLASS_STATIC: u8 = 0x03;
-pub const IMAGE_SYM_CLASS_REGISTER: u8 = 0x04;
-pub const IMAGE_SYM_CLASS_EXTERNAL_DEF: u8 = 0x05;
-pub const IMAGE_SYM_CLASS_LABEL: u8 = 0x06;
-pub const IMAGE_SYM_CLASS_UNDEFINED_LABEL: u8 = 0x07;
-pub const IMAGE_SYM_CLASS_MEMBER_OF_STRUCT: u8 = 0x08;
-pub const IMAGE_SYM_CLASS_ARGUMENT: u8 = 0x09;
-pub const IMAGE_SYM_CLASS_STRUCT_TAG: u8 = 0x0A;
-pub const IMAGE_SYM_CLASS_MEMBER_OF_UNION: u8 = 0x0B;
-pub const IMAGE_SYM_CLASS_UNION_TAG: u8 = 0x0C;
-pub const IMAGE_SYM_CLASS_TYPE_DEFINITION: u8 = 0x0D;
-pub const IMAGE_SYM_CLASS_UNDEFINED_STATIC: u8 = 0x0E;
-pub const IMAGE_SYM_CLASS_ENUM_TAG: u8 = 0x0F;
-pub const IMAGE_SYM_CLASS_MEMBER_OF_ENUM: u8 = 0x10;
-pub const IMAGE_SYM_CLASS_REGISTER_PARAM: u8 = 0x11;
-pub const IMAGE_SYM_CLASS_BIT_FIELD: u8 = 0x12;
+newtype_constant_names!(NAMES_IMAGE_SYM_DTYPE: SymbolDerivedType(u16) = {
+    /// pointer.
+    IMAGE_SYM_DTYPE_POINTER = 1,
+    /// function.
+    IMAGE_SYM_DTYPE_FUNCTION = 2,
+    /// array.
+    IMAGE_SYM_DTYPE_ARRAY = 3,
+});
 
-pub const IMAGE_SYM_CLASS_FAR_EXTERNAL: u8 = 0x44;
+newtype!(
+    /// Values for `ImageSymbol::storage_class`.
+    #[repr(transparent)]
+    struct SymbolClass(u8);
+);
 
-pub const IMAGE_SYM_CLASS_BLOCK: u8 = 0x64;
-pub const IMAGE_SYM_CLASS_FUNCTION: u8 = 0x65;
-pub const IMAGE_SYM_CLASS_END_OF_STRUCT: u8 = 0x66;
-pub const IMAGE_SYM_CLASS_FILE: u8 = 0x67;
-// new
-pub const IMAGE_SYM_CLASS_SECTION: u8 = 0x68;
-pub const IMAGE_SYM_CLASS_WEAK_EXTERNAL: u8 = 0x69;
-
-pub const IMAGE_SYM_CLASS_CLR_TOKEN: u8 = 0x6B;
+newtype_constant_names!(NAMES_IMAGE_SYM_CLASS: SymbolClass(u8) = {
+    IMAGE_SYM_CLASS_END_OF_FUNCTION = 0xff,
+    IMAGE_SYM_CLASS_NULL = 0x00,
+    IMAGE_SYM_CLASS_AUTOMATIC = 0x01,
+    IMAGE_SYM_CLASS_EXTERNAL = 0x02,
+    IMAGE_SYM_CLASS_STATIC = 0x03,
+    IMAGE_SYM_CLASS_REGISTER = 0x04,
+    IMAGE_SYM_CLASS_EXTERNAL_DEF = 0x05,
+    IMAGE_SYM_CLASS_LABEL = 0x06,
+    IMAGE_SYM_CLASS_UNDEFINED_LABEL = 0x07,
+    IMAGE_SYM_CLASS_MEMBER_OF_STRUCT = 0x08,
+    IMAGE_SYM_CLASS_ARGUMENT = 0x09,
+    IMAGE_SYM_CLASS_STRUCT_TAG = 0x0A,
+    IMAGE_SYM_CLASS_MEMBER_OF_UNION = 0x0B,
+    IMAGE_SYM_CLASS_UNION_TAG = 0x0C,
+    IMAGE_SYM_CLASS_TYPE_DEFINITION = 0x0D,
+    IMAGE_SYM_CLASS_UNDEFINED_STATIC = 0x0E,
+    IMAGE_SYM_CLASS_ENUM_TAG = 0x0F,
+    IMAGE_SYM_CLASS_MEMBER_OF_ENUM = 0x10,
+    IMAGE_SYM_CLASS_REGISTER_PARAM = 0x11,
+    IMAGE_SYM_CLASS_BIT_FIELD = 0x12,
+    IMAGE_SYM_CLASS_FAR_EXTERNAL = 0x44,
+    IMAGE_SYM_CLASS_BLOCK = 0x64,
+    IMAGE_SYM_CLASS_FUNCTION = 0x65,
+    IMAGE_SYM_CLASS_END_OF_STRUCT = 0x66,
+    IMAGE_SYM_CLASS_FILE = 0x67,
+    IMAGE_SYM_CLASS_SECTION = 0x68,
+    IMAGE_SYM_CLASS_WEAK_EXTERNAL = 0x69,
+    IMAGE_SYM_CLASS_CLR_TOKEN = 0x6B,
+});
 
 // type packing constants
 
@@ -950,7 +1146,6 @@ pub const IMAGE_SYM_DTYPE_SHIFT: usize = N_BTSHFT;
 //
 
 // Used for both ImageSymbol and ImageSymbolEx (with padding).
-// This struct has alignment 1.
 #[derive(Debug, Clone, Copy)]
 #[repr(C)]
 pub struct ImageAuxSymbolTokenDef {
@@ -958,7 +1153,7 @@ pub struct ImageAuxSymbolTokenDef {
     pub aux_type: u8,
     /// Must be 0
     pub reserved1: u8,
-    pub symbol_table_index: U32Bytes<LE>,
+    pub symbol_table_index: U32<LE>,
     /// Must be 0
     pub reserved2: [u8; 12],
 }
@@ -966,14 +1161,13 @@ pub struct ImageAuxSymbolTokenDef {
 pub const IMAGE_AUX_SYMBOL_TYPE_TOKEN_DEF: u16 = 1;
 
 /// Auxiliary symbol format 1: function definitions.
-// This struct has alignment 1.
 #[derive(Debug, Clone, Copy)]
 #[repr(C)]
 pub struct ImageAuxSymbolFunction {
-    pub tag_index: U32Bytes<LE>,
-    pub total_size: U32Bytes<LE>,
-    pub pointer_to_linenumber: U32Bytes<LE>,
-    pub pointer_to_next_function: U32Bytes<LE>,
+    pub tag_index: U32<LE>,
+    pub total_size: U32<LE>,
+    pub pointer_to_linenumber: U32<LE>,
+    pub pointer_to_next_function: U32<LE>,
     pub unused: [u8; 2],
 }
 
@@ -984,9 +1178,9 @@ pub struct ImageAuxSymbolFunction {
 pub struct ImageAuxSymbolFunctionBeginEnd {
     pub unused1: [u8; 4],
     /// declaration line number
-    pub linenumber: U16Bytes<LE>,
+    pub linenumber: U16<LE>,
     pub unused2: [u8; 6],
-    pub pointer_to_next_function: U32Bytes<LE>,
+    pub pointer_to_next_function: U32<LE>,
     pub unused3: [u8; 2],
 }
 
@@ -998,8 +1192,8 @@ pub struct ImageAuxSymbolFunctionBeginEnd {
 #[repr(C)]
 pub struct ImageAuxSymbolWeak {
     /// the weak extern default symbol index
-    pub weak_default_sym_index: U32Bytes<LE>,
-    pub weak_search_type: U32Bytes<LE>,
+    pub weak_default_sym_index: U32<LE>,
+    pub weak_search_type: U32<LE, WeakExternSearch>,
 }
 
 /// Auxiliary symbol format 5: sections.
@@ -1010,20 +1204,20 @@ pub struct ImageAuxSymbolWeak {
 #[repr(C)]
 pub struct ImageAuxSymbolSection {
     /// section length
-    pub length: U32Bytes<LE>,
+    pub length: U32<LE>,
     /// number of relocation entries
-    pub number_of_relocations: U16Bytes<LE>,
+    pub number_of_relocations: U16<LE>,
     /// number of line numbers
-    pub number_of_linenumbers: U16Bytes<LE>,
+    pub number_of_linenumbers: U16<LE>,
     /// checksum for communal
-    pub check_sum: U32Bytes<LE>,
+    pub check_sum: U32<LE>,
     /// section number to associate with
-    pub number: U16Bytes<LE>,
+    pub number: U16<LE>,
     /// communal selection type
-    pub selection: u8,
+    pub selection: ComdatSelection,
     pub reserved: u8,
     /// high bits of the section number
-    pub high_number: U16Bytes<LE>,
+    pub high_number: U16<LE>,
 }
 
 // Used for both ImageSymbol and ImageSymbolEx (both with padding).
@@ -1031,25 +1225,40 @@ pub struct ImageAuxSymbolSection {
 #[derive(Debug, Clone, Copy)]
 #[repr(C)]
 pub struct ImageAuxSymbolCrc {
-    pub crc: U32Bytes<LE>,
+    pub crc: U32<LE>,
 }
 
 //
 // Communal selection types.
 //
 
-pub const IMAGE_COMDAT_SELECT_NODUPLICATES: u8 = 1;
-pub const IMAGE_COMDAT_SELECT_ANY: u8 = 2;
-pub const IMAGE_COMDAT_SELECT_SAME_SIZE: u8 = 3;
-pub const IMAGE_COMDAT_SELECT_EXACT_MATCH: u8 = 4;
-pub const IMAGE_COMDAT_SELECT_ASSOCIATIVE: u8 = 5;
-pub const IMAGE_COMDAT_SELECT_LARGEST: u8 = 6;
-pub const IMAGE_COMDAT_SELECT_NEWEST: u8 = 7;
+newtype!(
+    /// Values for `ImageAuxSymbolSection::selection`.
+    #[repr(transparent)]
+    struct ComdatSelection(u8);
+);
 
-pub const IMAGE_WEAK_EXTERN_SEARCH_NOLIBRARY: u32 = 1;
-pub const IMAGE_WEAK_EXTERN_SEARCH_LIBRARY: u32 = 2;
-pub const IMAGE_WEAK_EXTERN_SEARCH_ALIAS: u32 = 3;
-pub const IMAGE_WEAK_EXTERN_ANTI_DEPENDENCY: u32 = 4;
+newtype_constant_names!(NAMES_IMAGE_COMDAT_SELECT: ComdatSelection(u8) = {
+    IMAGE_COMDAT_SELECT_NODUPLICATES = 1,
+    IMAGE_COMDAT_SELECT_ANY = 2,
+    IMAGE_COMDAT_SELECT_SAME_SIZE = 3,
+    IMAGE_COMDAT_SELECT_EXACT_MATCH = 4,
+    IMAGE_COMDAT_SELECT_ASSOCIATIVE = 5,
+    IMAGE_COMDAT_SELECT_LARGEST = 6,
+    IMAGE_COMDAT_SELECT_NEWEST = 7,
+});
+
+newtype!(
+    /// Values for `ImageAuxSymbolWeak::weak_search_type`.
+    struct WeakExternSearch(u32);
+);
+
+newtype_constant_names!(NAMES_IMAGE_WEAK_EXTERN: WeakExternSearch(u32) = {
+    IMAGE_WEAK_EXTERN_SEARCH_NOLIBRARY = 1,
+    IMAGE_WEAK_EXTERN_SEARCH_LIBRARY = 2,
+    IMAGE_WEAK_EXTERN_SEARCH_ALIAS = 3,
+    IMAGE_WEAK_EXTERN_ANTI_DEPENDENCY = 4,
+});
 
 //
 // Relocation format.
@@ -1060,484 +1269,658 @@ pub const IMAGE_WEAK_EXTERN_ANTI_DEPENDENCY: u32 = 4;
 #[repr(C)]
 pub struct ImageRelocation {
     /// Also `RelocCount` when IMAGE_SCN_LNK_NRELOC_OVFL is set
-    pub virtual_address: U32Bytes<LE>,
-    pub symbol_table_index: U32Bytes<LE>,
-    pub typ: U16Bytes<LE>,
+    pub virtual_address: U32<LE>,
+    pub symbol_table_index: U32<LE>,
+    pub typ: U16<LE, RelocationType>,
+}
+
+newtype!(
+    /// Values for `ImageRelocation::typ`.
+    struct RelocationType(u16);
+);
+
+newtype_flag_names!(RelocationType(u16) = {});
+
+impl RelocationType {
+    /// Return the type subfield for a PPC relocation.
+    pub fn ppc_type(self) -> Self {
+        RelocationType(self.0 & IMAGE_REL_PPC_TYPEMASK)
+    }
+
+    /// Return the type subfield for a SH relocation.
+    pub fn sh_type(self) -> Self {
+        self.without(IMAGE_REL_SH_NOMODE)
+    }
 }
 
 //
 // I386 relocation types.
 //
-/// Reference is absolute, no relocation is necessary
-pub const IMAGE_REL_I386_ABSOLUTE: u16 = 0x0000;
-/// Direct 16-bit reference to the symbols virtual address
-pub const IMAGE_REL_I386_DIR16: u16 = 0x0001;
-/// PC-relative 16-bit reference to the symbols virtual address
-pub const IMAGE_REL_I386_REL16: u16 = 0x0002;
-/// Direct 32-bit reference to the symbols virtual address
-pub const IMAGE_REL_I386_DIR32: u16 = 0x0006;
-/// Direct 32-bit reference to the symbols virtual address, base not included
-pub const IMAGE_REL_I386_DIR32NB: u16 = 0x0007;
-/// Direct 16-bit reference to the segment-selector bits of a 32-bit virtual address
-pub const IMAGE_REL_I386_SEG12: u16 = 0x0009;
-pub const IMAGE_REL_I386_SECTION: u16 = 0x000A;
-pub const IMAGE_REL_I386_SECREL: u16 = 0x000B;
-/// clr token
-pub const IMAGE_REL_I386_TOKEN: u16 = 0x000C;
-/// 7 bit offset from base of section containing target
-pub const IMAGE_REL_I386_SECREL7: u16 = 0x000D;
-/// PC-relative 32-bit reference to the symbols virtual address
-pub const IMAGE_REL_I386_REL32: u16 = 0x0014;
+names! {
+    struct I386(Base);
+    flags rel: RelocationType(u16) = {
+        _ = !0 => NAMES_IMAGE_REL_I386,
+    };
+}
+
+constant_names!(
+/// Values for `ImageRelocation::typ` on I386.
+pub NAMES_IMAGE_REL_I386: RelocationType(u16) = {
+    /// Reference is absolute, no relocation is necessary
+    IMAGE_REL_I386_ABSOLUTE = 0x0000,
+    /// Direct 16-bit reference to the symbols virtual address
+    IMAGE_REL_I386_DIR16 = 0x0001,
+    /// PC-relative 16-bit reference to the symbols virtual address
+    IMAGE_REL_I386_REL16 = 0x0002,
+    /// Direct 32-bit reference to the symbols virtual address
+    IMAGE_REL_I386_DIR32 = 0x0006,
+    /// Direct 32-bit reference to the symbols virtual address, base not included
+    IMAGE_REL_I386_DIR32NB = 0x0007,
+    /// Direct 16-bit reference to the segment-selector bits of a 32-bit virtual address
+    IMAGE_REL_I386_SEG12 = 0x0009,
+    IMAGE_REL_I386_SECTION = 0x000A,
+    IMAGE_REL_I386_SECREL = 0x000B,
+    /// clr token
+    IMAGE_REL_I386_TOKEN = 0x000C,
+    /// 7 bit offset from base of section containing target
+    IMAGE_REL_I386_SECREL7 = 0x000D,
+    /// PC-relative 32-bit reference to the symbols virtual address
+    IMAGE_REL_I386_REL32 = 0x0014,
+});
 
 //
 // MIPS relocation types.
 //
-/// Reference is absolute, no relocation is necessary
-pub const IMAGE_REL_MIPS_ABSOLUTE: u16 = 0x0000;
-pub const IMAGE_REL_MIPS_REFHALF: u16 = 0x0001;
-pub const IMAGE_REL_MIPS_REFWORD: u16 = 0x0002;
-pub const IMAGE_REL_MIPS_JMPADDR: u16 = 0x0003;
-pub const IMAGE_REL_MIPS_REFHI: u16 = 0x0004;
-pub const IMAGE_REL_MIPS_REFLO: u16 = 0x0005;
-pub const IMAGE_REL_MIPS_GPREL: u16 = 0x0006;
-pub const IMAGE_REL_MIPS_LITERAL: u16 = 0x0007;
-pub const IMAGE_REL_MIPS_SECTION: u16 = 0x000A;
-pub const IMAGE_REL_MIPS_SECREL: u16 = 0x000B;
-/// Low 16-bit section relative reference (used for >32k TLS)
-pub const IMAGE_REL_MIPS_SECRELLO: u16 = 0x000C;
-/// High 16-bit section relative reference (used for >32k TLS)
-pub const IMAGE_REL_MIPS_SECRELHI: u16 = 0x000D;
-/// clr token
-pub const IMAGE_REL_MIPS_TOKEN: u16 = 0x000E;
-pub const IMAGE_REL_MIPS_JMPADDR16: u16 = 0x0010;
-pub const IMAGE_REL_MIPS_REFWORDNB: u16 = 0x0022;
-pub const IMAGE_REL_MIPS_PAIR: u16 = 0x0025;
+names! {
+    struct Mips(Base);
+    flags rel: RelocationType(u16) = {
+        _ = !0 => NAMES_IMAGE_REL_MIPS,
+    };
+    consts rel_based = NAMES_REL_BASED_MIPS;
+}
+
+constant_names!(
+/// Values for `ImageRelocation::typ` on MIPS.
+pub NAMES_IMAGE_REL_MIPS: RelocationType(u16) = {
+    /// Reference is absolute, no relocation is necessary
+    IMAGE_REL_MIPS_ABSOLUTE = 0x0000,
+    IMAGE_REL_MIPS_REFHALF = 0x0001,
+    IMAGE_REL_MIPS_REFWORD = 0x0002,
+    IMAGE_REL_MIPS_JMPADDR = 0x0003,
+    IMAGE_REL_MIPS_REFHI = 0x0004,
+    IMAGE_REL_MIPS_REFLO = 0x0005,
+    IMAGE_REL_MIPS_GPREL = 0x0006,
+    IMAGE_REL_MIPS_LITERAL = 0x0007,
+    IMAGE_REL_MIPS_SECTION = 0x000A,
+    IMAGE_REL_MIPS_SECREL = 0x000B,
+    /// Low 16-bit section relative reference (used for >32k TLS)
+    IMAGE_REL_MIPS_SECRELLO = 0x000C,
+    /// High 16-bit section relative reference (used for >32k TLS)
+    IMAGE_REL_MIPS_SECRELHI = 0x000D,
+    /// clr token
+    IMAGE_REL_MIPS_TOKEN = 0x000E,
+    IMAGE_REL_MIPS_JMPADDR16 = 0x0010,
+    IMAGE_REL_MIPS_REFWORDNB = 0x0022,
+    IMAGE_REL_MIPS_PAIR = 0x0025,
+});
 
 //
 // Alpha Relocation types.
 //
-pub const IMAGE_REL_ALPHA_ABSOLUTE: u16 = 0x0000;
-pub const IMAGE_REL_ALPHA_REFLONG: u16 = 0x0001;
-pub const IMAGE_REL_ALPHA_REFQUAD: u16 = 0x0002;
-pub const IMAGE_REL_ALPHA_GPREL32: u16 = 0x0003;
-pub const IMAGE_REL_ALPHA_LITERAL: u16 = 0x0004;
-pub const IMAGE_REL_ALPHA_LITUSE: u16 = 0x0005;
-pub const IMAGE_REL_ALPHA_GPDISP: u16 = 0x0006;
-pub const IMAGE_REL_ALPHA_BRADDR: u16 = 0x0007;
-pub const IMAGE_REL_ALPHA_HINT: u16 = 0x0008;
-pub const IMAGE_REL_ALPHA_INLINE_REFLONG: u16 = 0x0009;
-pub const IMAGE_REL_ALPHA_REFHI: u16 = 0x000A;
-pub const IMAGE_REL_ALPHA_REFLO: u16 = 0x000B;
-pub const IMAGE_REL_ALPHA_PAIR: u16 = 0x000C;
-pub const IMAGE_REL_ALPHA_MATCH: u16 = 0x000D;
-pub const IMAGE_REL_ALPHA_SECTION: u16 = 0x000E;
-pub const IMAGE_REL_ALPHA_SECREL: u16 = 0x000F;
-pub const IMAGE_REL_ALPHA_REFLONGNB: u16 = 0x0010;
-/// Low 16-bit section relative reference
-pub const IMAGE_REL_ALPHA_SECRELLO: u16 = 0x0011;
-/// High 16-bit section relative reference
-pub const IMAGE_REL_ALPHA_SECRELHI: u16 = 0x0012;
-/// High 16 bits of 48 bit reference
-pub const IMAGE_REL_ALPHA_REFQ3: u16 = 0x0013;
-/// Middle 16 bits of 48 bit reference
-pub const IMAGE_REL_ALPHA_REFQ2: u16 = 0x0014;
-/// Low 16 bits of 48 bit reference
-pub const IMAGE_REL_ALPHA_REFQ1: u16 = 0x0015;
-/// Low 16-bit GP relative reference
-pub const IMAGE_REL_ALPHA_GPRELLO: u16 = 0x0016;
-/// High 16-bit GP relative reference
-pub const IMAGE_REL_ALPHA_GPRELHI: u16 = 0x0017;
+names! {
+    struct Alpha(Base);
+    flags rel: RelocationType(u16) = {
+        _ = !0 => NAMES_IMAGE_REL_ALPHA,
+    };
+}
+
+constant_names!(
+/// Values for `ImageRelocation::typ` on Alpha.
+pub NAMES_IMAGE_REL_ALPHA: RelocationType(u16) = {
+    IMAGE_REL_ALPHA_ABSOLUTE = 0x0000,
+    IMAGE_REL_ALPHA_REFLONG = 0x0001,
+    IMAGE_REL_ALPHA_REFQUAD = 0x0002,
+    IMAGE_REL_ALPHA_GPREL32 = 0x0003,
+    IMAGE_REL_ALPHA_LITERAL = 0x0004,
+    IMAGE_REL_ALPHA_LITUSE = 0x0005,
+    IMAGE_REL_ALPHA_GPDISP = 0x0006,
+    IMAGE_REL_ALPHA_BRADDR = 0x0007,
+    IMAGE_REL_ALPHA_HINT = 0x0008,
+    IMAGE_REL_ALPHA_INLINE_REFLONG = 0x0009,
+    IMAGE_REL_ALPHA_REFHI = 0x000A,
+    IMAGE_REL_ALPHA_REFLO = 0x000B,
+    IMAGE_REL_ALPHA_PAIR = 0x000C,
+    IMAGE_REL_ALPHA_MATCH = 0x000D,
+    IMAGE_REL_ALPHA_SECTION = 0x000E,
+    IMAGE_REL_ALPHA_SECREL = 0x000F,
+    IMAGE_REL_ALPHA_REFLONGNB = 0x0010,
+    /// Low 16-bit section relative reference
+    IMAGE_REL_ALPHA_SECRELLO = 0x0011,
+    /// High 16-bit section relative reference
+    IMAGE_REL_ALPHA_SECRELHI = 0x0012,
+    /// High 16 bits of 48 bit reference
+    IMAGE_REL_ALPHA_REFQ3 = 0x0013,
+    /// Middle 16 bits of 48 bit reference
+    IMAGE_REL_ALPHA_REFQ2 = 0x0014,
+    /// Low 16 bits of 48 bit reference
+    IMAGE_REL_ALPHA_REFQ1 = 0x0015,
+    /// Low 16-bit GP relative reference
+    IMAGE_REL_ALPHA_GPRELLO = 0x0016,
+    /// High 16-bit GP relative reference
+    IMAGE_REL_ALPHA_GPRELHI = 0x0017,
+});
 
 //
 // IBM PowerPC relocation types.
 //
-/// NOP
-pub const IMAGE_REL_PPC_ABSOLUTE: u16 = 0x0000;
-/// 64-bit address
-pub const IMAGE_REL_PPC_ADDR64: u16 = 0x0001;
-/// 32-bit address
-pub const IMAGE_REL_PPC_ADDR32: u16 = 0x0002;
-/// 26-bit address, shifted left 2 (branch absolute)
-pub const IMAGE_REL_PPC_ADDR24: u16 = 0x0003;
-/// 16-bit address
-pub const IMAGE_REL_PPC_ADDR16: u16 = 0x0004;
-/// 16-bit address, shifted left 2 (load doubleword)
-pub const IMAGE_REL_PPC_ADDR14: u16 = 0x0005;
-/// 26-bit PC-relative offset, shifted left 2 (branch relative)
-pub const IMAGE_REL_PPC_REL24: u16 = 0x0006;
-/// 16-bit PC-relative offset, shifted left 2 (br cond relative)
-pub const IMAGE_REL_PPC_REL14: u16 = 0x0007;
-/// 16-bit offset from TOC base
-pub const IMAGE_REL_PPC_TOCREL16: u16 = 0x0008;
-/// 16-bit offset from TOC base, shifted left 2 (load doubleword)
-pub const IMAGE_REL_PPC_TOCREL14: u16 = 0x0009;
+names! {
+    struct Ppc(Base);
+    flags rel: RelocationType(u16) = {
+        IMAGE_REL_PPC_TYPEMASK = 0x00FF => NAMES_IMAGE_REL_PPC,
+        /// subtract reloc value rather than adding it
+        IMAGE_REL_PPC_NEG = 0x0100,
+        /// fix branch prediction bit to predict branch taken
+        IMAGE_REL_PPC_BRTAKEN = 0x0200,
+        /// fix branch prediction bit to predict branch not taken
+        IMAGE_REL_PPC_BRNTAKEN = 0x0400,
+        /// toc slot defined in file (or, data in toc)
+        IMAGE_REL_PPC_TOCDEFN = 0x0800,
+    };
+}
 
-/// 32-bit addr w/o image base
-pub const IMAGE_REL_PPC_ADDR32NB: u16 = 0x000A;
-/// va of containing section (as in an image sectionhdr)
-pub const IMAGE_REL_PPC_SECREL: u16 = 0x000B;
-/// sectionheader number
-pub const IMAGE_REL_PPC_SECTION: u16 = 0x000C;
-/// substitute TOC restore instruction iff symbol is glue code
-pub const IMAGE_REL_PPC_IFGLUE: u16 = 0x000D;
-/// symbol is glue code; virtual address is TOC restore instruction
-pub const IMAGE_REL_PPC_IMGLUE: u16 = 0x000E;
-/// va of containing section (limited to 16 bits)
-pub const IMAGE_REL_PPC_SECREL16: u16 = 0x000F;
-pub const IMAGE_REL_PPC_REFHI: u16 = 0x0010;
-pub const IMAGE_REL_PPC_REFLO: u16 = 0x0011;
-pub const IMAGE_REL_PPC_PAIR: u16 = 0x0012;
-/// Low 16-bit section relative reference (used for >32k TLS)
-pub const IMAGE_REL_PPC_SECRELLO: u16 = 0x0013;
-/// High 16-bit section relative reference (used for >32k TLS)
-pub const IMAGE_REL_PPC_SECRELHI: u16 = 0x0014;
-pub const IMAGE_REL_PPC_GPREL: u16 = 0x0015;
-/// clr token
-pub const IMAGE_REL_PPC_TOKEN: u16 = 0x0016;
+constant_names!(
+/// Values for `ImageRelocation::typ` on PowerPC.
+pub NAMES_IMAGE_REL_PPC: RelocationType(u16) = {
+    /// NOP
+    IMAGE_REL_PPC_ABSOLUTE = 0x0000,
+    /// 64-bit address
+    IMAGE_REL_PPC_ADDR64 = 0x0001,
+    /// 32-bit address
+    IMAGE_REL_PPC_ADDR32 = 0x0002,
+    /// 26-bit address, shifted left 2 (branch absolute)
+    IMAGE_REL_PPC_ADDR24 = 0x0003,
+    /// 16-bit address
+    IMAGE_REL_PPC_ADDR16 = 0x0004,
+    /// 16-bit address, shifted left 2 (load doubleword)
+    IMAGE_REL_PPC_ADDR14 = 0x0005,
+    /// 26-bit PC-relative offset, shifted left 2 (branch relative)
+    IMAGE_REL_PPC_REL24 = 0x0006,
+    /// 16-bit PC-relative offset, shifted left 2 (br cond relative)
+    IMAGE_REL_PPC_REL14 = 0x0007,
+    /// 16-bit offset from TOC base
+    IMAGE_REL_PPC_TOCREL16 = 0x0008,
+    /// 16-bit offset from TOC base, shifted left 2 (load doubleword)
+    IMAGE_REL_PPC_TOCREL14 = 0x0009,
 
-/// mask to isolate above values in IMAGE_RELOCATION.Type
-pub const IMAGE_REL_PPC_TYPEMASK: u16 = 0x00FF;
-
-// Flag bits in `ImageRelocation::typ`.
-
-/// subtract reloc value rather than adding it
-pub const IMAGE_REL_PPC_NEG: u16 = 0x0100;
-/// fix branch prediction bit to predict branch taken
-pub const IMAGE_REL_PPC_BRTAKEN: u16 = 0x0200;
-/// fix branch prediction bit to predict branch not taken
-pub const IMAGE_REL_PPC_BRNTAKEN: u16 = 0x0400;
-/// toc slot defined in file (or, data in toc)
-pub const IMAGE_REL_PPC_TOCDEFN: u16 = 0x0800;
+    /// 32-bit addr w/o image base
+    IMAGE_REL_PPC_ADDR32NB = 0x000A,
+    /// va of containing section (as in an image sectionhdr)
+    IMAGE_REL_PPC_SECREL = 0x000B,
+    /// sectionheader number
+    IMAGE_REL_PPC_SECTION = 0x000C,
+    /// substitute TOC restore instruction iff symbol is glue code
+    IMAGE_REL_PPC_IFGLUE = 0x000D,
+    /// symbol is glue code; virtual address is TOC restore instruction
+    IMAGE_REL_PPC_IMGLUE = 0x000E,
+    /// va of containing section (limited to 16 bits)
+    IMAGE_REL_PPC_SECREL16 = 0x000F,
+    IMAGE_REL_PPC_REFHI = 0x0010,
+    IMAGE_REL_PPC_REFLO = 0x0011,
+    IMAGE_REL_PPC_PAIR = 0x0012,
+    /// Low 16-bit section relative reference (used for >32k TLS)
+    IMAGE_REL_PPC_SECRELLO = 0x0013,
+    /// High 16-bit section relative reference (used for >32k TLS)
+    IMAGE_REL_PPC_SECRELHI = 0x0014,
+    IMAGE_REL_PPC_GPREL = 0x0015,
+    /// clr token
+    IMAGE_REL_PPC_TOKEN = 0x0016,
+});
 
 //
 // Hitachi SH3 relocation types.
 //
-/// No relocation
-pub const IMAGE_REL_SH3_ABSOLUTE: u16 = 0x0000;
-/// 16 bit direct
-pub const IMAGE_REL_SH3_DIRECT16: u16 = 0x0001;
-/// 32 bit direct
-pub const IMAGE_REL_SH3_DIRECT32: u16 = 0x0002;
-/// 8 bit direct, -128..255
-pub const IMAGE_REL_SH3_DIRECT8: u16 = 0x0003;
-/// 8 bit direct .W (0 ext.)
-pub const IMAGE_REL_SH3_DIRECT8_WORD: u16 = 0x0004;
-/// 8 bit direct .L (0 ext.)
-pub const IMAGE_REL_SH3_DIRECT8_LONG: u16 = 0x0005;
-/// 4 bit direct (0 ext.)
-pub const IMAGE_REL_SH3_DIRECT4: u16 = 0x0006;
-/// 4 bit direct .W (0 ext.)
-pub const IMAGE_REL_SH3_DIRECT4_WORD: u16 = 0x0007;
-/// 4 bit direct .L (0 ext.)
-pub const IMAGE_REL_SH3_DIRECT4_LONG: u16 = 0x0008;
-/// 8 bit PC relative .W
-pub const IMAGE_REL_SH3_PCREL8_WORD: u16 = 0x0009;
-/// 8 bit PC relative .L
-pub const IMAGE_REL_SH3_PCREL8_LONG: u16 = 0x000A;
-/// 12 LSB PC relative .W
-pub const IMAGE_REL_SH3_PCREL12_WORD: u16 = 0x000B;
-/// Start of EXE section
-pub const IMAGE_REL_SH3_STARTOF_SECTION: u16 = 0x000C;
-/// Size of EXE section
-pub const IMAGE_REL_SH3_SIZEOF_SECTION: u16 = 0x000D;
-/// Section table index
-pub const IMAGE_REL_SH3_SECTION: u16 = 0x000E;
-/// Offset within section
-pub const IMAGE_REL_SH3_SECREL: u16 = 0x000F;
-/// 32 bit direct not based
-pub const IMAGE_REL_SH3_DIRECT32_NB: u16 = 0x0010;
-/// GP-relative addressing
-pub const IMAGE_REL_SH3_GPREL4_LONG: u16 = 0x0011;
-/// clr token
-pub const IMAGE_REL_SH3_TOKEN: u16 = 0x0012;
-/// Offset from current instruction in longwords
-/// if not NOMODE, insert the inverse of the low bit at bit 32 to select PTA/PTB
-pub const IMAGE_REL_SHM_PCRELPT: u16 = 0x0013;
-/// Low bits of 32-bit address
-pub const IMAGE_REL_SHM_REFLO: u16 = 0x0014;
-/// High bits of 32-bit address
-pub const IMAGE_REL_SHM_REFHALF: u16 = 0x0015;
-/// Low bits of relative reference
-pub const IMAGE_REL_SHM_RELLO: u16 = 0x0016;
-/// High bits of relative reference
-pub const IMAGE_REL_SHM_RELHALF: u16 = 0x0017;
-/// offset operand for relocation
-pub const IMAGE_REL_SHM_PAIR: u16 = 0x0018;
+names! {
+    struct Sh(Base);
+    flags rel: RelocationType(u16) = {
+        _ = !IMAGE_REL_SH_NOMODE.0 => NAMES_IMAGE_REL_SH,
+        /// relocation ignores section mode
+        IMAGE_REL_SH_NOMODE = 0x8000,
+    };
+}
 
-/// relocation ignores section mode
-pub const IMAGE_REL_SH_NOMODE: u16 = 0x8000;
+constant_names!(
+/// Values for `ImageRelocation::typ` on SH3.
+pub NAMES_IMAGE_REL_SH: RelocationType(u16) = {
+    /// No relocation
+    IMAGE_REL_SH3_ABSOLUTE = 0x0000,
+    /// 16 bit direct
+    IMAGE_REL_SH3_DIRECT16 = 0x0001,
+    /// 32 bit direct
+    IMAGE_REL_SH3_DIRECT32 = 0x0002,
+    /// 8 bit direct, -128..255
+    IMAGE_REL_SH3_DIRECT8 = 0x0003,
+    /// 8 bit direct .W (0 ext.)
+    IMAGE_REL_SH3_DIRECT8_WORD = 0x0004,
+    /// 8 bit direct .L (0 ext.)
+    IMAGE_REL_SH3_DIRECT8_LONG = 0x0005,
+    /// 4 bit direct (0 ext.)
+    IMAGE_REL_SH3_DIRECT4 = 0x0006,
+    /// 4 bit direct .W (0 ext.)
+    IMAGE_REL_SH3_DIRECT4_WORD = 0x0007,
+    /// 4 bit direct .L (0 ext.)
+    IMAGE_REL_SH3_DIRECT4_LONG = 0x0008,
+    /// 8 bit PC relative .W
+    IMAGE_REL_SH3_PCREL8_WORD = 0x0009,
+    /// 8 bit PC relative .L
+    IMAGE_REL_SH3_PCREL8_LONG = 0x000A,
+    /// 12 LSB PC relative .W
+    IMAGE_REL_SH3_PCREL12_WORD = 0x000B,
+    /// Start of EXE section
+    IMAGE_REL_SH3_STARTOF_SECTION = 0x000C,
+    /// Size of EXE section
+    IMAGE_REL_SH3_SIZEOF_SECTION = 0x000D,
+    /// Section table index
+    IMAGE_REL_SH3_SECTION = 0x000E,
+    /// Offset within section
+    IMAGE_REL_SH3_SECREL = 0x000F,
+    /// 32 bit direct not based
+    IMAGE_REL_SH3_DIRECT32_NB = 0x0010,
+    /// GP-relative addressing
+    IMAGE_REL_SH3_GPREL4_LONG = 0x0011,
+    /// clr token
+    IMAGE_REL_SH3_TOKEN = 0x0012,
+    /// Offset from current instruction in longwords
+    /// if not NOMODE, insert the inverse of the low bit at bit 32 to select PTA/PTB
+    IMAGE_REL_SHM_PCRELPT = 0x0013,
+    /// Low bits of 32-bit address
+    IMAGE_REL_SHM_REFLO = 0x0014,
+    /// High bits of 32-bit address
+    IMAGE_REL_SHM_REFHALF = 0x0015,
+    /// Low bits of relative reference
+    IMAGE_REL_SHM_RELLO = 0x0016,
+    /// High bits of relative reference
+    IMAGE_REL_SHM_RELHALF = 0x0017,
+    /// offset operand for relocation
+    IMAGE_REL_SHM_PAIR = 0x0018,
+});
 
-/// No relocation required
-pub const IMAGE_REL_ARM_ABSOLUTE: u16 = 0x0000;
-/// 32 bit address
-pub const IMAGE_REL_ARM_ADDR32: u16 = 0x0001;
-/// 32 bit address w/o image base
-pub const IMAGE_REL_ARM_ADDR32NB: u16 = 0x0002;
-/// 24 bit offset << 2 & sign ext.
-pub const IMAGE_REL_ARM_BRANCH24: u16 = 0x0003;
-/// Thumb: 2 11 bit offsets
-pub const IMAGE_REL_ARM_BRANCH11: u16 = 0x0004;
-/// clr token
-pub const IMAGE_REL_ARM_TOKEN: u16 = 0x0005;
-/// GP-relative addressing (ARM)
-pub const IMAGE_REL_ARM_GPREL12: u16 = 0x0006;
-/// GP-relative addressing (Thumb)
-pub const IMAGE_REL_ARM_GPREL7: u16 = 0x0007;
-pub const IMAGE_REL_ARM_BLX24: u16 = 0x0008;
-pub const IMAGE_REL_ARM_BLX11: u16 = 0x0009;
-/// 32-bit relative address from byte following reloc
-pub const IMAGE_REL_ARM_REL32: u16 = 0x000A;
-/// Section table index
-pub const IMAGE_REL_ARM_SECTION: u16 = 0x000E;
-/// Offset within section
-pub const IMAGE_REL_ARM_SECREL: u16 = 0x000F;
-/// ARM: MOVW/MOVT
-pub const IMAGE_REL_ARM_MOV32A: u16 = 0x0010;
-/// ARM: MOVW/MOVT (deprecated)
-pub const IMAGE_REL_ARM_MOV32: u16 = 0x0010;
-/// Thumb: MOVW/MOVT
-pub const IMAGE_REL_ARM_MOV32T: u16 = 0x0011;
-/// Thumb: MOVW/MOVT (deprecated)
-pub const IMAGE_REL_THUMB_MOV32: u16 = 0x0011;
-/// Thumb: 32-bit conditional B
-pub const IMAGE_REL_ARM_BRANCH20T: u16 = 0x0012;
-/// Thumb: 32-bit conditional B (deprecated)
-pub const IMAGE_REL_THUMB_BRANCH20: u16 = 0x0012;
-/// Thumb: 32-bit B or BL
-pub const IMAGE_REL_ARM_BRANCH24T: u16 = 0x0014;
-/// Thumb: 32-bit B or BL (deprecated)
-pub const IMAGE_REL_THUMB_BRANCH24: u16 = 0x0014;
-/// Thumb: BLX immediate
-pub const IMAGE_REL_ARM_BLX23T: u16 = 0x0015;
-/// Thumb: BLX immediate (deprecated)
-pub const IMAGE_REL_THUMB_BLX23: u16 = 0x0015;
+names! {
+    struct Arm(Base);
+    flags rel: RelocationType(u16) = {
+        _ = !0 => NAMES_IMAGE_REL_ARM,
+    };
+    consts rel_based = NAMES_REL_BASED_ARM;
+}
 
-pub const IMAGE_REL_AM_ABSOLUTE: u16 = 0x0000;
-pub const IMAGE_REL_AM_ADDR32: u16 = 0x0001;
-pub const IMAGE_REL_AM_ADDR32NB: u16 = 0x0002;
-pub const IMAGE_REL_AM_CALL32: u16 = 0x0003;
-pub const IMAGE_REL_AM_FUNCINFO: u16 = 0x0004;
-pub const IMAGE_REL_AM_REL32_1: u16 = 0x0005;
-pub const IMAGE_REL_AM_REL32_2: u16 = 0x0006;
-pub const IMAGE_REL_AM_SECREL: u16 = 0x0007;
-pub const IMAGE_REL_AM_SECTION: u16 = 0x0008;
-pub const IMAGE_REL_AM_TOKEN: u16 = 0x0009;
+constant_names!(
+/// Values for `ImageRelocation::typ` on ARM.
+pub NAMES_IMAGE_REL_ARM: RelocationType(u16) = {
+    /// No relocation required
+    IMAGE_REL_ARM_ABSOLUTE = 0x0000,
+    /// 32 bit address
+    IMAGE_REL_ARM_ADDR32 = 0x0001,
+    /// 32 bit address w/o image base
+    IMAGE_REL_ARM_ADDR32NB = 0x0002,
+    /// 24 bit offset << 2 & sign ext.
+    IMAGE_REL_ARM_BRANCH24 = 0x0003,
+    /// Thumb: 2 11 bit offsets
+    IMAGE_REL_ARM_BRANCH11 = 0x0004,
+    /// clr token
+    IMAGE_REL_ARM_TOKEN = 0x0005,
+    /// GP-relative addressing (ARM)
+    IMAGE_REL_ARM_GPREL12 = 0x0006,
+    /// GP-relative addressing (Thumb)
+    IMAGE_REL_ARM_GPREL7 = 0x0007,
+    IMAGE_REL_ARM_BLX24 = 0x0008,
+    IMAGE_REL_ARM_BLX11 = 0x0009,
+    /// 32-bit relative address from byte following reloc
+    IMAGE_REL_ARM_REL32 = 0x000A,
+    /// Section table index
+    IMAGE_REL_ARM_SECTION = 0x000E,
+    /// Offset within section
+    IMAGE_REL_ARM_SECREL = 0x000F,
+    /// ARM: MOVW/MOVT
+    IMAGE_REL_ARM_MOV32A = 0x0010,
+    /// ARM: MOVW/MOVT (deprecated)
+    IMAGE_REL_ARM_MOV32 = 0x0010,
+    /// Thumb: MOVW/MOVT
+    IMAGE_REL_ARM_MOV32T = 0x0011,
+    /// Thumb: MOVW/MOVT (deprecated)
+    IMAGE_REL_THUMB_MOV32 = 0x0011,
+    /// Thumb: 32-bit conditional B
+    IMAGE_REL_ARM_BRANCH20T = 0x0012,
+    /// Thumb: 32-bit conditional B (deprecated)
+    IMAGE_REL_THUMB_BRANCH20 = 0x0012,
+    /// Thumb: 32-bit B or BL
+    IMAGE_REL_ARM_BRANCH24T = 0x0014,
+    /// Thumb: 32-bit B or BL (deprecated)
+    IMAGE_REL_THUMB_BRANCH24 = 0x0014,
+    /// Thumb: BLX immediate
+    IMAGE_REL_ARM_BLX23T = 0x0015,
+    /// Thumb: BLX immediate (deprecated)
+    IMAGE_REL_THUMB_BLX23 = 0x0015,
+});
+
+names! {
+    struct Am(Base);
+    flags rel: RelocationType(u16) = {
+        _ = !0 => NAMES_IMAGE_REL_AM,
+    };
+}
+
+constant_names!(
+/// Values for `ImageRelocation::typ` on AM33.
+pub NAMES_IMAGE_REL_AM: RelocationType(u16) = {
+    IMAGE_REL_AM_ABSOLUTE = 0x0000,
+    IMAGE_REL_AM_ADDR32 = 0x0001,
+    IMAGE_REL_AM_ADDR32NB = 0x0002,
+    IMAGE_REL_AM_CALL32 = 0x0003,
+    IMAGE_REL_AM_FUNCINFO = 0x0004,
+    IMAGE_REL_AM_REL32_1 = 0x0005,
+    IMAGE_REL_AM_REL32_2 = 0x0006,
+    IMAGE_REL_AM_SECREL = 0x0007,
+    IMAGE_REL_AM_SECTION = 0x0008,
+    IMAGE_REL_AM_TOKEN = 0x0009,
+});
 
 //
 // ARM64 relocations types.
 //
 
-/// No relocation required
-pub const IMAGE_REL_ARM64_ABSOLUTE: u16 = 0x0000;
-/// 32 bit address. Review! do we need it?
-pub const IMAGE_REL_ARM64_ADDR32: u16 = 0x0001;
-/// 32 bit address w/o image base (RVA: for Data/PData/XData)
-pub const IMAGE_REL_ARM64_ADDR32NB: u16 = 0x0002;
-/// 26 bit offset << 2 & sign ext. for B & BL
-pub const IMAGE_REL_ARM64_BRANCH26: u16 = 0x0003;
-/// ADRP
-pub const IMAGE_REL_ARM64_PAGEBASE_REL21: u16 = 0x0004;
-/// ADR
-pub const IMAGE_REL_ARM64_REL21: u16 = 0x0005;
-/// ADD/ADDS (immediate) with zero shift, for page offset
-pub const IMAGE_REL_ARM64_PAGEOFFSET_12A: u16 = 0x0006;
-/// LDR (indexed, unsigned immediate), for page offset
-pub const IMAGE_REL_ARM64_PAGEOFFSET_12L: u16 = 0x0007;
-/// Offset within section
-pub const IMAGE_REL_ARM64_SECREL: u16 = 0x0008;
-/// ADD/ADDS (immediate) with zero shift, for bit 0:11 of section offset
-pub const IMAGE_REL_ARM64_SECREL_LOW12A: u16 = 0x0009;
-/// ADD/ADDS (immediate) with zero shift, for bit 12:23 of section offset
-pub const IMAGE_REL_ARM64_SECREL_HIGH12A: u16 = 0x000A;
-/// LDR (indexed, unsigned immediate), for bit 0:11 of section offset
-pub const IMAGE_REL_ARM64_SECREL_LOW12L: u16 = 0x000B;
-pub const IMAGE_REL_ARM64_TOKEN: u16 = 0x000C;
-/// Section table index
-pub const IMAGE_REL_ARM64_SECTION: u16 = 0x000D;
-/// 64 bit address
-pub const IMAGE_REL_ARM64_ADDR64: u16 = 0x000E;
-/// 19 bit offset << 2 & sign ext. for conditional B
-pub const IMAGE_REL_ARM64_BRANCH19: u16 = 0x000F;
-/// TBZ/TBNZ
-pub const IMAGE_REL_ARM64_BRANCH14: u16 = 0x0010;
-/// 32-bit relative address from byte following reloc
-pub const IMAGE_REL_ARM64_REL32: u16 = 0x0011;
+names! {
+    struct Arm64(Base);
+    flags rel: RelocationType(u16) = {
+        _ = !0 => NAMES_IMAGE_REL_ARM64,
+    };
+}
+
+constant_names!(
+/// Values for `ImageRelocation::typ` on ARM64.
+pub NAMES_IMAGE_REL_ARM64: RelocationType(u16) = {
+    /// No relocation required
+    IMAGE_REL_ARM64_ABSOLUTE = 0x0000,
+    /// 32 bit address. Review! do we need it?
+    IMAGE_REL_ARM64_ADDR32 = 0x0001,
+    /// 32 bit address w/o image base (RVA: for Data/PData/XData)
+    IMAGE_REL_ARM64_ADDR32NB = 0x0002,
+    /// 26 bit offset << 2 & sign ext. for B & BL
+    IMAGE_REL_ARM64_BRANCH26 = 0x0003,
+    /// ADRP
+    IMAGE_REL_ARM64_PAGEBASE_REL21 = 0x0004,
+    /// ADR
+    IMAGE_REL_ARM64_REL21 = 0x0005,
+    /// ADD/ADDS (immediate) with zero shift, for page offset
+    IMAGE_REL_ARM64_PAGEOFFSET_12A = 0x0006,
+    /// LDR (indexed, unsigned immediate), for page offset
+    IMAGE_REL_ARM64_PAGEOFFSET_12L = 0x0007,
+    /// Offset within section
+    IMAGE_REL_ARM64_SECREL = 0x0008,
+    /// ADD/ADDS (immediate) with zero shift, for bit 0:11 of section offset
+    IMAGE_REL_ARM64_SECREL_LOW12A = 0x0009,
+    /// ADD/ADDS (immediate) with zero shift, for bit 12:23 of section offset
+    IMAGE_REL_ARM64_SECREL_HIGH12A = 0x000A,
+    /// LDR (indexed, unsigned immediate), for bit 0:11 of section offset
+    IMAGE_REL_ARM64_SECREL_LOW12L = 0x000B,
+    IMAGE_REL_ARM64_TOKEN = 0x000C,
+    /// Section table index
+    IMAGE_REL_ARM64_SECTION = 0x000D,
+    /// 64 bit address
+    IMAGE_REL_ARM64_ADDR64 = 0x000E,
+    /// 19 bit offset << 2 & sign ext. for conditional B
+    IMAGE_REL_ARM64_BRANCH19 = 0x000F,
+    /// TBZ/TBNZ
+    IMAGE_REL_ARM64_BRANCH14 = 0x0010,
+    /// 32-bit relative address from byte following reloc
+    IMAGE_REL_ARM64_REL32 = 0x0011,
+});
 
 //
 // x64 relocations
 //
-/// Reference is absolute, no relocation is necessary
-pub const IMAGE_REL_AMD64_ABSOLUTE: u16 = 0x0000;
-/// 64-bit address (VA).
-pub const IMAGE_REL_AMD64_ADDR64: u16 = 0x0001;
-/// 32-bit address (VA).
-pub const IMAGE_REL_AMD64_ADDR32: u16 = 0x0002;
-/// 32-bit address w/o image base (RVA).
-pub const IMAGE_REL_AMD64_ADDR32NB: u16 = 0x0003;
-/// 32-bit relative address from byte following reloc
-pub const IMAGE_REL_AMD64_REL32: u16 = 0x0004;
-/// 32-bit relative address from byte distance 1 from reloc
-pub const IMAGE_REL_AMD64_REL32_1: u16 = 0x0005;
-/// 32-bit relative address from byte distance 2 from reloc
-pub const IMAGE_REL_AMD64_REL32_2: u16 = 0x0006;
-/// 32-bit relative address from byte distance 3 from reloc
-pub const IMAGE_REL_AMD64_REL32_3: u16 = 0x0007;
-/// 32-bit relative address from byte distance 4 from reloc
-pub const IMAGE_REL_AMD64_REL32_4: u16 = 0x0008;
-/// 32-bit relative address from byte distance 5 from reloc
-pub const IMAGE_REL_AMD64_REL32_5: u16 = 0x0009;
-/// Section index
-pub const IMAGE_REL_AMD64_SECTION: u16 = 0x000A;
-/// 32 bit offset from base of section containing target
-pub const IMAGE_REL_AMD64_SECREL: u16 = 0x000B;
-/// 7 bit unsigned offset from base of section containing target
-pub const IMAGE_REL_AMD64_SECREL7: u16 = 0x000C;
-/// 32 bit metadata token
-pub const IMAGE_REL_AMD64_TOKEN: u16 = 0x000D;
-/// 32 bit signed span-dependent value emitted into object
-pub const IMAGE_REL_AMD64_SREL32: u16 = 0x000E;
-pub const IMAGE_REL_AMD64_PAIR: u16 = 0x000F;
-/// 32 bit signed span-dependent value applied at link time
-pub const IMAGE_REL_AMD64_SSPAN32: u16 = 0x0010;
-pub const IMAGE_REL_AMD64_EHANDLER: u16 = 0x0011;
-/// Indirect branch to an import
-pub const IMAGE_REL_AMD64_IMPORT_BR: u16 = 0x0012;
-/// Indirect call to an import
-pub const IMAGE_REL_AMD64_IMPORT_CALL: u16 = 0x0013;
-/// Indirect branch to a CFG check
-pub const IMAGE_REL_AMD64_CFG_BR: u16 = 0x0014;
-/// Indirect branch to a CFG check, with REX.W prefix
-pub const IMAGE_REL_AMD64_CFG_BR_REX: u16 = 0x0015;
-/// Indirect call to a CFG check
-pub const IMAGE_REL_AMD64_CFG_CALL: u16 = 0x0016;
-/// Indirect branch to a target in RAX (no CFG)
-pub const IMAGE_REL_AMD64_INDIR_BR: u16 = 0x0017;
-/// Indirect branch to a target in RAX, with REX.W prefix (no CFG)
-pub const IMAGE_REL_AMD64_INDIR_BR_REX: u16 = 0x0018;
-/// Indirect call to a target in RAX (no CFG)
-pub const IMAGE_REL_AMD64_INDIR_CALL: u16 = 0x0019;
-/// Indirect branch for a switch table using Reg 0 (RAX)
-pub const IMAGE_REL_AMD64_INDIR_BR_SWITCHTABLE_FIRST: u16 = 0x0020;
-/// Indirect branch for a switch table using Reg 15 (R15)
-pub const IMAGE_REL_AMD64_INDIR_BR_SWITCHTABLE_LAST: u16 = 0x002F;
+names! {
+    struct Amd64(Base);
+    flags rel: RelocationType(u16) = {
+        _ = !0 => NAMES_IMAGE_REL_AMD64,
+    };
+}
+
+constant_names!(
+/// Values for `ImageRelocation::typ` on x64.
+pub NAMES_IMAGE_REL_AMD64: RelocationType(u16) = {
+    /// Reference is absolute, no relocation is necessary
+    IMAGE_REL_AMD64_ABSOLUTE = 0x0000,
+    /// 64-bit address (VA).
+    IMAGE_REL_AMD64_ADDR64 = 0x0001,
+    /// 32-bit address (VA).
+    IMAGE_REL_AMD64_ADDR32 = 0x0002,
+    /// 32-bit address w/o image base (RVA).
+    IMAGE_REL_AMD64_ADDR32NB = 0x0003,
+    /// 32-bit relative address from byte following reloc
+    IMAGE_REL_AMD64_REL32 = 0x0004,
+    /// 32-bit relative address from byte distance 1 from reloc
+    IMAGE_REL_AMD64_REL32_1 = 0x0005,
+    /// 32-bit relative address from byte distance 2 from reloc
+    IMAGE_REL_AMD64_REL32_2 = 0x0006,
+    /// 32-bit relative address from byte distance 3 from reloc
+    IMAGE_REL_AMD64_REL32_3 = 0x0007,
+    /// 32-bit relative address from byte distance 4 from reloc
+    IMAGE_REL_AMD64_REL32_4 = 0x0008,
+    /// 32-bit relative address from byte distance 5 from reloc
+    IMAGE_REL_AMD64_REL32_5 = 0x0009,
+    /// Section index
+    IMAGE_REL_AMD64_SECTION = 0x000A,
+    /// 32 bit offset from base of section containing target
+    IMAGE_REL_AMD64_SECREL = 0x000B,
+    /// 7 bit unsigned offset from base of section containing target
+    IMAGE_REL_AMD64_SECREL7 = 0x000C,
+    /// 32 bit metadata token
+    IMAGE_REL_AMD64_TOKEN = 0x000D,
+    /// 32 bit signed span-dependent value emitted into object
+    IMAGE_REL_AMD64_SREL32 = 0x000E,
+    IMAGE_REL_AMD64_PAIR = 0x000F,
+    /// 32 bit signed span-dependent value applied at link time
+    IMAGE_REL_AMD64_SSPAN32 = 0x0010,
+    IMAGE_REL_AMD64_EHANDLER = 0x0011,
+    /// Indirect branch to an import
+    IMAGE_REL_AMD64_IMPORT_BR = 0x0012,
+    /// Indirect call to an import
+    IMAGE_REL_AMD64_IMPORT_CALL = 0x0013,
+    /// Indirect branch to a CFG check
+    IMAGE_REL_AMD64_CFG_BR = 0x0014,
+    /// Indirect branch to a CFG check, with REX.W prefix
+    IMAGE_REL_AMD64_CFG_BR_REX = 0x0015,
+    /// Indirect call to a CFG check
+    IMAGE_REL_AMD64_CFG_CALL = 0x0016,
+    /// Indirect branch to a target in RAX (no CFG)
+    IMAGE_REL_AMD64_INDIR_BR = 0x0017,
+    /// Indirect branch to a target in RAX, with REX.W prefix (no CFG)
+    IMAGE_REL_AMD64_INDIR_BR_REX = 0x0018,
+    /// Indirect call to a target in RAX (no CFG)
+    IMAGE_REL_AMD64_INDIR_CALL = 0x0019,
+    /// Indirect branch for a switch table using Reg 0 (RAX)
+    IMAGE_REL_AMD64_INDIR_BR_SWITCHTABLE_FIRST = 0x0020,
+    /// Indirect branch for a switch table using Reg 15 (R15)
+    IMAGE_REL_AMD64_INDIR_BR_SWITCHTABLE_LAST = 0x002F,
+});
 
 //
 // IA64 relocation types.
 //
-pub const IMAGE_REL_IA64_ABSOLUTE: u16 = 0x0000;
-pub const IMAGE_REL_IA64_IMM14: u16 = 0x0001;
-pub const IMAGE_REL_IA64_IMM22: u16 = 0x0002;
-pub const IMAGE_REL_IA64_IMM64: u16 = 0x0003;
-pub const IMAGE_REL_IA64_DIR32: u16 = 0x0004;
-pub const IMAGE_REL_IA64_DIR64: u16 = 0x0005;
-pub const IMAGE_REL_IA64_PCREL21B: u16 = 0x0006;
-pub const IMAGE_REL_IA64_PCREL21M: u16 = 0x0007;
-pub const IMAGE_REL_IA64_PCREL21F: u16 = 0x0008;
-pub const IMAGE_REL_IA64_GPREL22: u16 = 0x0009;
-pub const IMAGE_REL_IA64_LTOFF22: u16 = 0x000A;
-pub const IMAGE_REL_IA64_SECTION: u16 = 0x000B;
-pub const IMAGE_REL_IA64_SECREL22: u16 = 0x000C;
-pub const IMAGE_REL_IA64_SECREL64I: u16 = 0x000D;
-pub const IMAGE_REL_IA64_SECREL32: u16 = 0x000E;
-//
-pub const IMAGE_REL_IA64_DIR32NB: u16 = 0x0010;
-pub const IMAGE_REL_IA64_SREL14: u16 = 0x0011;
-pub const IMAGE_REL_IA64_SREL22: u16 = 0x0012;
-pub const IMAGE_REL_IA64_SREL32: u16 = 0x0013;
-pub const IMAGE_REL_IA64_UREL32: u16 = 0x0014;
-/// This is always a BRL and never converted
-pub const IMAGE_REL_IA64_PCREL60X: u16 = 0x0015;
-/// If possible, convert to MBB bundle with NOP.B in slot 1
-pub const IMAGE_REL_IA64_PCREL60B: u16 = 0x0016;
-/// If possible, convert to MFB bundle with NOP.F in slot 1
-pub const IMAGE_REL_IA64_PCREL60F: u16 = 0x0017;
-/// If possible, convert to MIB bundle with NOP.I in slot 1
-pub const IMAGE_REL_IA64_PCREL60I: u16 = 0x0018;
-/// If possible, convert to MMB bundle with NOP.M in slot 1
-pub const IMAGE_REL_IA64_PCREL60M: u16 = 0x0019;
-pub const IMAGE_REL_IA64_IMMGPREL64: u16 = 0x001A;
-/// clr token
-pub const IMAGE_REL_IA64_TOKEN: u16 = 0x001B;
-pub const IMAGE_REL_IA64_GPREL32: u16 = 0x001C;
-pub const IMAGE_REL_IA64_ADDEND: u16 = 0x001F;
+names! {
+    struct Ia64(Base);
+    flags rel: RelocationType(u16) = {
+        _ = !0 => NAMES_IMAGE_REL_IA64,
+    };
+    consts rel_based = NAMES_REL_BASED_IA64;
+}
+
+constant_names!(
+/// Values for `ImageRelocation::typ` on IA64.
+pub NAMES_IMAGE_REL_IA64: RelocationType(u16) = {
+    IMAGE_REL_IA64_ABSOLUTE = 0x0000,
+    IMAGE_REL_IA64_IMM14 = 0x0001,
+    IMAGE_REL_IA64_IMM22 = 0x0002,
+    IMAGE_REL_IA64_IMM64 = 0x0003,
+    IMAGE_REL_IA64_DIR32 = 0x0004,
+    IMAGE_REL_IA64_DIR64 = 0x0005,
+    IMAGE_REL_IA64_PCREL21B = 0x0006,
+    IMAGE_REL_IA64_PCREL21M = 0x0007,
+    IMAGE_REL_IA64_PCREL21F = 0x0008,
+    IMAGE_REL_IA64_GPREL22 = 0x0009,
+    IMAGE_REL_IA64_LTOFF22 = 0x000A,
+    IMAGE_REL_IA64_SECTION = 0x000B,
+    IMAGE_REL_IA64_SECREL22 = 0x000C,
+    IMAGE_REL_IA64_SECREL64I = 0x000D,
+    IMAGE_REL_IA64_SECREL32 = 0x000E,
+    //
+    IMAGE_REL_IA64_DIR32NB = 0x0010,
+    IMAGE_REL_IA64_SREL14 = 0x0011,
+    IMAGE_REL_IA64_SREL22 = 0x0012,
+    IMAGE_REL_IA64_SREL32 = 0x0013,
+    IMAGE_REL_IA64_UREL32 = 0x0014,
+    /// This is always a BRL and never converted
+    IMAGE_REL_IA64_PCREL60X = 0x0015,
+    /// If possible, convert to MBB bundle with NOP.B in slot 1
+    IMAGE_REL_IA64_PCREL60B = 0x0016,
+    /// If possible, convert to MFB bundle with NOP.F in slot 1
+    IMAGE_REL_IA64_PCREL60F = 0x0017,
+    /// If possible, convert to MIB bundle with NOP.I in slot 1
+    IMAGE_REL_IA64_PCREL60I = 0x0018,
+    /// If possible, convert to MMB bundle with NOP.M in slot 1
+    IMAGE_REL_IA64_PCREL60M = 0x0019,
+    IMAGE_REL_IA64_IMMGPREL64 = 0x001A,
+    /// clr token
+    IMAGE_REL_IA64_TOKEN = 0x001B,
+    IMAGE_REL_IA64_GPREL32 = 0x001C,
+    IMAGE_REL_IA64_ADDEND = 0x001F,
+});
 
 //
 // CEF relocation types.
 //
-/// Reference is absolute, no relocation is necessary
-pub const IMAGE_REL_CEF_ABSOLUTE: u16 = 0x0000;
-/// 32-bit address (VA).
-pub const IMAGE_REL_CEF_ADDR32: u16 = 0x0001;
-/// 64-bit address (VA).
-pub const IMAGE_REL_CEF_ADDR64: u16 = 0x0002;
-/// 32-bit address w/o image base (RVA).
-pub const IMAGE_REL_CEF_ADDR32NB: u16 = 0x0003;
-/// Section index
-pub const IMAGE_REL_CEF_SECTION: u16 = 0x0004;
-/// 32 bit offset from base of section containing target
-pub const IMAGE_REL_CEF_SECREL: u16 = 0x0005;
-/// 32 bit metadata token
-pub const IMAGE_REL_CEF_TOKEN: u16 = 0x0006;
+names! {
+    struct Cef(Base);
+    flags rel: RelocationType(u16) = {
+        _ = !0 => NAMES_IMAGE_REL_CEF,
+    };
+}
+
+constant_names!(
+/// Values for `ImageRelocation::typ` on CEF.
+pub NAMES_IMAGE_REL_CEF: RelocationType(u16) = {
+    /// Reference is absolute, no relocation is necessary
+    IMAGE_REL_CEF_ABSOLUTE = 0x0000,
+    /// 32-bit address (VA).
+    IMAGE_REL_CEF_ADDR32 = 0x0001,
+    /// 64-bit address (VA).
+    IMAGE_REL_CEF_ADDR64 = 0x0002,
+    /// 32-bit address w/o image base (RVA).
+    IMAGE_REL_CEF_ADDR32NB = 0x0003,
+    /// Section index
+    IMAGE_REL_CEF_SECTION = 0x0004,
+    /// 32 bit offset from base of section containing target
+    IMAGE_REL_CEF_SECREL = 0x0005,
+    /// 32 bit metadata token
+    IMAGE_REL_CEF_TOKEN = 0x0006,
+});
 
 //
 // clr relocation types.
 //
-/// Reference is absolute, no relocation is necessary
-pub const IMAGE_REL_CEE_ABSOLUTE: u16 = 0x0000;
-/// 32-bit address (VA).
-pub const IMAGE_REL_CEE_ADDR32: u16 = 0x0001;
-/// 64-bit address (VA).
-pub const IMAGE_REL_CEE_ADDR64: u16 = 0x0002;
-/// 32-bit address w/o image base (RVA).
-pub const IMAGE_REL_CEE_ADDR32NB: u16 = 0x0003;
-/// Section index
-pub const IMAGE_REL_CEE_SECTION: u16 = 0x0004;
-/// 32 bit offset from base of section containing target
-pub const IMAGE_REL_CEE_SECREL: u16 = 0x0005;
-/// 32 bit metadata token
-pub const IMAGE_REL_CEE_TOKEN: u16 = 0x0006;
+names! {
+    struct Cee(Base);
+    flags rel: RelocationType(u16) = {
+        _ = !0 => NAMES_IMAGE_REL_CEE,
+    };
+}
 
-/// No relocation required
-pub const IMAGE_REL_M32R_ABSOLUTE: u16 = 0x0000;
-/// 32 bit address
-pub const IMAGE_REL_M32R_ADDR32: u16 = 0x0001;
-/// 32 bit address w/o image base
-pub const IMAGE_REL_M32R_ADDR32NB: u16 = 0x0002;
-/// 24 bit address
-pub const IMAGE_REL_M32R_ADDR24: u16 = 0x0003;
-/// GP relative addressing
-pub const IMAGE_REL_M32R_GPREL16: u16 = 0x0004;
-/// 24 bit offset << 2 & sign ext.
-pub const IMAGE_REL_M32R_PCREL24: u16 = 0x0005;
-/// 16 bit offset << 2 & sign ext.
-pub const IMAGE_REL_M32R_PCREL16: u16 = 0x0006;
-/// 8 bit offset << 2 & sign ext.
-pub const IMAGE_REL_M32R_PCREL8: u16 = 0x0007;
-/// 16 MSBs
-pub const IMAGE_REL_M32R_REFHALF: u16 = 0x0008;
-/// 16 MSBs; adj for LSB sign ext.
-pub const IMAGE_REL_M32R_REFHI: u16 = 0x0009;
-/// 16 LSBs
-pub const IMAGE_REL_M32R_REFLO: u16 = 0x000A;
-/// Link HI and LO
-pub const IMAGE_REL_M32R_PAIR: u16 = 0x000B;
-/// Section table index
-pub const IMAGE_REL_M32R_SECTION: u16 = 0x000C;
-/// 32 bit section relative reference
-pub const IMAGE_REL_M32R_SECREL32: u16 = 0x000D;
-/// clr token
-pub const IMAGE_REL_M32R_TOKEN: u16 = 0x000E;
+constant_names!(
+/// Values for `ImageRelocation::typ` on CLR.
+pub NAMES_IMAGE_REL_CEE: RelocationType(u16) = {
+    /// Reference is absolute, no relocation is necessary
+    IMAGE_REL_CEE_ABSOLUTE = 0x0000,
+    /// 32-bit address (VA).
+    IMAGE_REL_CEE_ADDR32 = 0x0001,
+    /// 64-bit address (VA).
+    IMAGE_REL_CEE_ADDR64 = 0x0002,
+    /// 32-bit address w/o image base (RVA).
+    IMAGE_REL_CEE_ADDR32NB = 0x0003,
+    /// Section index
+    IMAGE_REL_CEE_SECTION = 0x0004,
+    /// 32 bit offset from base of section containing target
+    IMAGE_REL_CEE_SECREL = 0x0005,
+    /// 32 bit metadata token
+    IMAGE_REL_CEE_TOKEN = 0x0006,
+});
 
-/// No relocation required
-pub const IMAGE_REL_EBC_ABSOLUTE: u16 = 0x0000;
-/// 32 bit address w/o image base
-pub const IMAGE_REL_EBC_ADDR32NB: u16 = 0x0001;
-/// 32-bit relative address from byte following reloc
-pub const IMAGE_REL_EBC_REL32: u16 = 0x0002;
-/// Section table index
-pub const IMAGE_REL_EBC_SECTION: u16 = 0x0003;
-/// Offset within section
-pub const IMAGE_REL_EBC_SECREL: u16 = 0x0004;
+names! {
+    struct M32r(Base);
+    flags rel: RelocationType(u16) = {
+        _ = !0 => NAMES_IMAGE_REL_M32R,
+    };
+}
+
+constant_names!(
+/// Values for `ImageRelocation::typ` on M32R.
+pub NAMES_IMAGE_REL_M32R: RelocationType(u16) = {
+    /// No relocation required
+    IMAGE_REL_M32R_ABSOLUTE = 0x0000,
+    /// 32 bit address
+    IMAGE_REL_M32R_ADDR32 = 0x0001,
+    /// 32 bit address w/o image base
+    IMAGE_REL_M32R_ADDR32NB = 0x0002,
+    /// 24 bit address
+    IMAGE_REL_M32R_ADDR24 = 0x0003,
+    /// GP relative addressing
+    IMAGE_REL_M32R_GPREL16 = 0x0004,
+    /// 24 bit offset << 2 & sign ext.
+    IMAGE_REL_M32R_PCREL24 = 0x0005,
+    /// 16 bit offset << 2 & sign ext.
+    IMAGE_REL_M32R_PCREL16 = 0x0006,
+    /// 8 bit offset << 2 & sign ext.
+    IMAGE_REL_M32R_PCREL8 = 0x0007,
+    /// 16 MSBs
+    IMAGE_REL_M32R_REFHALF = 0x0008,
+    /// 16 MSBs; adj for LSB sign ext.
+    IMAGE_REL_M32R_REFHI = 0x0009,
+    /// 16 LSBs
+    IMAGE_REL_M32R_REFLO = 0x000A,
+    /// Link HI and LO
+    IMAGE_REL_M32R_PAIR = 0x000B,
+    /// Section table index
+    IMAGE_REL_M32R_SECTION = 0x000C,
+    /// 32 bit section relative reference
+    IMAGE_REL_M32R_SECREL32 = 0x000D,
+    /// clr token
+    IMAGE_REL_M32R_TOKEN = 0x000E,
+});
+
+names! {
+    struct Ebc(Base);
+    flags rel: RelocationType(u16) = {
+        _ = !0 => NAMES_IMAGE_REL_EBC,
+    };
+}
+
+constant_names!(
+/// Values for `ImageRelocation::typ` on EBC.
+pub NAMES_IMAGE_REL_EBC: RelocationType(u16) = {
+    /// No relocation required
+    IMAGE_REL_EBC_ABSOLUTE = 0x0000,
+    /// 32 bit address w/o image base
+    IMAGE_REL_EBC_ADDR32NB = 0x0001,
+    /// 32-bit relative address from byte following reloc
+    IMAGE_REL_EBC_REL32 = 0x0002,
+    /// Section table index
+    IMAGE_REL_EBC_SECTION = 0x0003,
+    /// Offset within section
+    IMAGE_REL_EBC_SECREL = 0x0004,
+});
+
+names! {
+    struct Riscv(Base);
+    consts rel_based = NAMES_REL_BASED_RISCV;
+}
 
 /*
 // TODO?
@@ -1721,9 +2104,9 @@ pub const X3_EMPTY_INST_VAL_POS_X: u16 = 0;
 pub struct ImageLinenumber {
     /// Symbol table index of function name if Linenumber is 0.
     /// Otherwise virtual address of line number.
-    pub symbol_table_index_or_virtual_address: U32Bytes<LE>,
+    pub symbol_table_index_or_virtual_address: U32<LE>,
     /// Line number.
-    pub linenumber: U16Bytes<LE>,
+    pub linenumber: U16<LE>,
 }
 
 //
@@ -1742,33 +2125,56 @@ pub struct ImageBaseRelocation {
 // Based relocation types.
 //
 
-pub const IMAGE_REL_BASED_ABSOLUTE: u16 = 0;
-pub const IMAGE_REL_BASED_HIGH: u16 = 1;
-pub const IMAGE_REL_BASED_LOW: u16 = 2;
-pub const IMAGE_REL_BASED_HIGHLOW: u16 = 3;
-pub const IMAGE_REL_BASED_HIGHADJ: u16 = 4;
-pub const IMAGE_REL_BASED_MACHINE_SPECIFIC_5: u16 = 5;
-pub const IMAGE_REL_BASED_RESERVED: u16 = 6;
-pub const IMAGE_REL_BASED_MACHINE_SPECIFIC_7: u16 = 7;
-pub const IMAGE_REL_BASED_MACHINE_SPECIFIC_8: u16 = 8;
-pub const IMAGE_REL_BASED_MACHINE_SPECIFIC_9: u16 = 9;
-pub const IMAGE_REL_BASED_DIR64: u16 = 10;
+newtype!(
+    /// Values for `ImageBaseRelocation` `type_offset` entries.
+    struct BaseRelocationType(u16);
+);
+
+newtype_constant_names!(NAMES_REL_BASED: BaseRelocationType(u16) = {
+    IMAGE_REL_BASED_ABSOLUTE = 0,
+    IMAGE_REL_BASED_HIGH = 1,
+    IMAGE_REL_BASED_LOW = 2,
+    IMAGE_REL_BASED_HIGHLOW = 3,
+    IMAGE_REL_BASED_HIGHADJ = 4,
+    IMAGE_REL_BASED_MACHINE_SPECIFIC_5 = 5,
+    IMAGE_REL_BASED_RESERVED = 6,
+    IMAGE_REL_BASED_MACHINE_SPECIFIC_7 = 7,
+    IMAGE_REL_BASED_MACHINE_SPECIFIC_8 = 8,
+    IMAGE_REL_BASED_MACHINE_SPECIFIC_9 = 9,
+    IMAGE_REL_BASED_DIR64 = 10,
+});
 
 //
 // Platform-specific based relocation types.
 //
 
-pub const IMAGE_REL_BASED_IA64_IMM64: u16 = 9;
+constant_names!(
+/// Values for `ImageBaseRelocation` `type_offset` entries on IA64.
+pub NAMES_REL_BASED_IA64: BaseRelocationType(u16) = NAMES_REL_BASED + {
+    IMAGE_REL_BASED_IA64_IMM64 = 9,
+});
 
-pub const IMAGE_REL_BASED_MIPS_JMPADDR: u16 = 5;
-pub const IMAGE_REL_BASED_MIPS_JMPADDR16: u16 = 9;
+constant_names!(
+/// Values for `ImageBaseRelocation` `type_offset` entries on MIPS.
+pub NAMES_REL_BASED_MIPS: BaseRelocationType(u16) = NAMES_REL_BASED + {
+    IMAGE_REL_BASED_MIPS_JMPADDR = 5,
+    IMAGE_REL_BASED_MIPS_JMPADDR16 = 9,
+});
 
-pub const IMAGE_REL_BASED_ARM_MOV32: u16 = 5;
-pub const IMAGE_REL_BASED_THUMB_MOV32: u16 = 7;
+constant_names!(
+/// Values for `ImageBaseRelocation` `type_offset` entries on ARM.
+pub NAMES_REL_BASED_ARM: BaseRelocationType(u16) = NAMES_REL_BASED + {
+    IMAGE_REL_BASED_ARM_MOV32 = 5,
+    IMAGE_REL_BASED_THUMB_MOV32 = 7,
+});
 
-pub const IMAGE_REL_BASED_RISCV_HIGH20: u16 = 5;
-pub const IMAGE_REL_BASED_RISCV_LOW12I: u16 = 7;
-pub const IMAGE_REL_BASED_RISCV_LOW12S: u16 = 8;
+constant_names!(
+/// Values for `ImageBaseRelocation` `type_offset` entries on RISC-V.
+pub NAMES_REL_BASED_RISCV: BaseRelocationType(u16) = NAMES_REL_BASED + {
+    IMAGE_REL_BASED_RISCV_HIGH20 = 5,
+    IMAGE_REL_BASED_RISCV_LOW12I = 7,
+    IMAGE_REL_BASED_RISCV_LOW12S = 8,
+});
 
 //
 // Archive format.
@@ -1918,17 +2324,17 @@ pub struct ImageTlsDirectory32 {
 pub struct ImageImportDescriptor {
     /// RVA to original unbound IAT (`ImageThunkData32`/`ImageThunkData64`)
     /// 0 for terminating null import descriptor
-    pub original_first_thunk: U32Bytes<LE>,
+    pub original_first_thunk: U32<LE>,
     /// 0 if not bound,
     /// -1 if bound, and real date\time stamp
     ///     in IMAGE_DIRECTORY_ENTRY_BOUND_IMPORT (new BIND)
     /// O.W. date/time stamp of DLL bound to (Old BIND)
-    pub time_date_stamp: U32Bytes<LE>,
+    pub time_date_stamp: U32<LE>,
     /// -1 if no forwarders
-    pub forwarder_chain: U32Bytes<LE>,
-    pub name: U32Bytes<LE>,
+    pub forwarder_chain: U32<LE>,
+    pub name: U32<LE>,
     /// RVA to IAT (if bound this IAT has actual addresses)
-    pub first_thunk: U32Bytes<LE>,
+    pub first_thunk: U32<LE>,
 }
 
 impl ImageImportDescriptor {
@@ -2001,7 +2407,7 @@ impl ImageDelayloadDescriptor {
 }
 
 /// Delay load version 2 flag for `ImageDelayloadDescriptor::attributes`.
-pub const IMAGE_DELAYLOAD_RVA_BASED: u32 = 0x8000_0000;
+pub const IMAGE_DELAYLOAD_RVA_BASED: u32 = 0x1;
 
 //
 // Resource Format.
@@ -2100,48 +2506,56 @@ pub struct ImageResourceDataEntry {
 
 // Resource type: https://docs.microsoft.com/en-us/windows/win32/menurc/resource-types
 
-/// ID for: Hardware-dependent cursor resource.
-pub const RT_CURSOR: u16 = 1;
-/// ID for: Bitmap resource.
-pub const RT_BITMAP: u16 = 2;
-/// ID for: Hardware-dependent icon resource.
-pub const RT_ICON: u16 = 3;
-/// ID for: Menu resource.
-pub const RT_MENU: u16 = 4;
-/// ID for: Dialog box.
-pub const RT_DIALOG: u16 = 5;
-/// ID for: String-table entry.
-pub const RT_STRING: u16 = 6;
-/// ID for: Font directory resource.
-pub const RT_FONTDIR: u16 = 7;
-/// ID for: Font resource.
-pub const RT_FONT: u16 = 8;
-/// ID for: Accelerator table.
-pub const RT_ACCELERATOR: u16 = 9;
-/// ID for: Application-defined resource (raw data).
-pub const RT_RCDATA: u16 = 10;
-/// ID for: Message-table entry.
-pub const RT_MESSAGETABLE: u16 = 11;
-/// ID for: Hardware-independent cursor resource.
-pub const RT_GROUP_CURSOR: u16 = 12;
-/// ID for: Hardware-independent icon resource.
-pub const RT_GROUP_ICON: u16 = 14;
-/// ID for: Version resource.
-pub const RT_VERSION: u16 = 16;
-/// ID for: Allows a resource editing tool to associate a string with an .rc file.
-pub const RT_DLGINCLUDE: u16 = 17;
-/// ID for: Plug and Play resource.
-pub const RT_PLUGPLAY: u16 = 19;
-/// ID for: VXD.
-pub const RT_VXD: u16 = 20;
-/// ID for: Animated cursor.
-pub const RT_ANICURSOR: u16 = 21;
-/// ID for: Animated icon.
-pub const RT_ANIICON: u16 = 22;
-/// ID for: HTML resource.
-pub const RT_HTML: u16 = 23;
-/// ID for: Side-by-Side Assembly Manifest.
-pub const RT_MANIFEST: u16 = 24;
+/// Values for resource types.
+///
+/// These are used in `ImageResourceDirectoryEntry::name_or_id` at level 0 of the tree.
+#[cfg(feature = "names")]
+pub const NAMES_RT: &ConstantNames<u16> = &_NAMES_RT;
+
+constant_names!(_NAMES_RT: u16 = {
+    /// ID for: Hardware-dependent cursor resource.
+    RT_CURSOR = 1,
+    /// ID for: Bitmap resource.
+    RT_BITMAP = 2,
+    /// ID for: Hardware-dependent icon resource.
+    RT_ICON = 3,
+    /// ID for: Menu resource.
+    RT_MENU = 4,
+    /// ID for: Dialog box.
+    RT_DIALOG = 5,
+    /// ID for: String-table entry.
+    RT_STRING = 6,
+    /// ID for: Font directory resource.
+    RT_FONTDIR = 7,
+    /// ID for: Font resource.
+    RT_FONT = 8,
+    /// ID for: Accelerator table.
+    RT_ACCELERATOR = 9,
+    /// ID for: Application-defined resource (raw data).
+    RT_RCDATA = 10,
+    /// ID for: Message-table entry.
+    RT_MESSAGETABLE = 11,
+    /// ID for: Hardware-independent cursor resource.
+    RT_GROUP_CURSOR = 12,
+    /// ID for: Hardware-independent icon resource.
+    RT_GROUP_ICON = 14,
+    /// ID for: Version resource.
+    RT_VERSION = 16,
+    /// ID for: Allows a resource editing tool to associate a string with an .rc file.
+    RT_DLGINCLUDE = 17,
+    /// ID for: Plug and Play resource.
+    RT_PLUGPLAY = 19,
+    /// ID for: VXD.
+    RT_VXD = 20,
+    /// ID for: Animated cursor.
+    RT_ANICURSOR = 21,
+    /// ID for: Animated icon.
+    RT_ANIICON = 22,
+    /// ID for: HTML resource.
+    RT_HTML = 23,
+    /// ID for: Side-by-Side Assembly Manifest.
+    RT_MANIFEST = 24,
+});
 
 //
 // Code Integrity in loadconfig (CI)
@@ -2178,7 +2592,7 @@ pub struct ImageDynamicRelocationTable {
 #[derive(Debug, Clone, Copy)]
 #[repr(C)]
 pub struct ImageDynamicRelocation32 {
-    pub symbol: U32<LE>,
+    pub symbol: U32<LE, DynamicRelocationSymbol>,
     pub base_reloc_size: U32<LE>,
     // BaseRelocations: [ImageBaseRelocation; 0],
 }
@@ -2186,7 +2600,7 @@ pub struct ImageDynamicRelocation32 {
 #[derive(Debug, Clone, Copy)]
 #[repr(C)]
 pub struct ImageDynamicRelocation64 {
-    pub symbol: U64<LE>,
+    pub symbol: U64<LE, DynamicRelocationSymbol>,
     pub base_reloc_size: U32<LE>,
     // BaseRelocations: [ImageBaseRelocation; 0],
 }
@@ -2196,7 +2610,7 @@ pub struct ImageDynamicRelocation64 {
 pub struct ImageDynamicRelocation32V2 {
     pub header_size: U32<LE>,
     pub fixup_info_size: U32<LE>,
-    pub symbol: U32<LE>,
+    pub symbol: U32<LE, DynamicRelocationSymbol>,
     pub symbol_group: U32<LE>,
     pub flags: U32<LE>,
     // ...     variable length header fields
@@ -2208,7 +2622,7 @@ pub struct ImageDynamicRelocation32V2 {
 pub struct ImageDynamicRelocation64V2 {
     pub header_size: U32<LE>,
     pub fixup_info_size: U32<LE>,
-    pub symbol: U64<LE>,
+    pub symbol: U64<LE, DynamicRelocationSymbol>,
     pub symbol_group: U32<LE>,
     pub flags: U32<LE>,
     // ...     variable length header fields
@@ -2218,12 +2632,22 @@ pub struct ImageDynamicRelocation64V2 {
 //
 // Defined symbolic dynamic relocation entries.
 //
+newtype!(
+    /// Values for `ImageDynamicRelocation*::symbol`.
+    ///
+    /// Small values have special meaning. Other values are RVAs.
+    struct DynamicRelocationSymbol(u64);
+);
 
-pub const IMAGE_DYNAMIC_RELOCATION_GUARD_RF_PROLOGUE: u32 = 0x0000_0001;
-pub const IMAGE_DYNAMIC_RELOCATION_GUARD_RF_EPILOGUE: u32 = 0x0000_0002;
-pub const IMAGE_DYNAMIC_RELOCATION_GUARD_IMPORT_CONTROL_TRANSFER: u32 = 0x0000_0003;
-pub const IMAGE_DYNAMIC_RELOCATION_GUARD_INDIR_CONTROL_TRANSFER: u32 = 0x0000_0004;
-pub const IMAGE_DYNAMIC_RELOCATION_GUARD_SWITCHTABLE_BRANCH: u32 = 0x0000_0005;
+newtype_constant_names!(NAMES_DYNAMIC_RELOCATION: DynamicRelocationSymbol(u64) = {
+    IMAGE_DYNAMIC_RELOCATION_GUARD_RF_PROLOGUE = 0x0000_0001,
+    IMAGE_DYNAMIC_RELOCATION_GUARD_RF_EPILOGUE = 0x0000_0002,
+    IMAGE_DYNAMIC_RELOCATION_GUARD_IMPORT_CONTROL_TRANSFER = 0x0000_0003,
+    IMAGE_DYNAMIC_RELOCATION_GUARD_INDIR_CONTROL_TRANSFER = 0x0000_0004,
+    IMAGE_DYNAMIC_RELOCATION_GUARD_SWITCHTABLE_BRANCH = 0x0000_0005,
+    IMAGE_DYNAMIC_RELOCATION_FUNCTION_OVERRIDE = 0x0000_0007,
+    IMAGE_DYNAMIC_RELOCATION_ARM64_KERNEL_IMPORT_CALL_TRANSFER = 0x0000_0008,
+});
 
 // This struct has alignment 1.
 #[derive(Debug, Clone, Copy)]
@@ -2237,17 +2661,16 @@ pub struct ImagePrologueDynamicRelocationHeader {
 #[derive(Debug, Clone, Copy)]
 #[repr(C)]
 pub struct ImageEpilogueDynamicRelocationHeader {
-    pub epilogue_count: U32Bytes<LE>,
+    pub epilogue_count: U32<LE>,
     pub epilogue_byte_count: u8,
     pub branch_descriptor_element_size: u8,
-    pub branch_descriptor_count: U16Bytes<LE>,
+    pub branch_descriptor_count: U16<LE>,
     // pub branch_descriptors[...],
     // pub branch_descriptor_bit_map[...],
 }
 
 /*
 // TODO? bitfields
-// TODO: unaligned?
 #[derive(Debug, Clone, Copy)]
 #[repr(C)]
 pub struct ImageImportControlTransferDynamicRelocation {
@@ -2256,7 +2679,19 @@ pub struct ImageImportControlTransferDynamicRelocation {
     DWORD       IATIndex           : 19;
 }
 
-// TODO: unaligned?
+// On ARM64, an optimized imported function uses the following data structure
+// insted of a `ImageImportControlTransferDynamicRelocation`.
+#[derive(Debug, Clone, Copy)]
+#[repr(C)]
+pub struct ImageImportControlTransferArm64Relocation {
+    DWORD PageRelativeOffset : 10;  // Offset to the call instruction shifted right by 2 (4-byte aligned instruction)
+    DWORD IndirectCall       :  1;  // 0 if target instruction is a BR, 1 if BLR.
+    DWORD RegisterIndex      :  5;  // Register index used for the indirect call/jump.
+    DWORD ImportType         :  1;  // 0 if this refers to a static import, 1 for delayload import
+    DWORD IATIndex           : 15;  // IAT index of the corresponding import.
+                                    // 0x7FFF is a special value indicating no index.
+}
+
 #[derive(Debug, Clone, Copy)]
 #[repr(C)]
 pub struct ImageIndirControlTransferDynamicRelocation {
@@ -2267,13 +2702,78 @@ pub struct ImageIndirControlTransferDynamicRelocation {
     WORD        Reserved           : 1;
 }
 
-// TODO: unaligned?
 #[derive(Debug, Clone, Copy)]
 #[repr(C)]
 pub struct ImageSwitchtableBranchDynamicRelocation {
     WORD        PageRelativeOffset : 12;
     WORD        RegisterNumber     : 4;
 }
+
+#[derive(Debug, Clone, Copy)]
+#[repr(C)]
+pub struct ImageFunctionOverrideHeader {
+    pub func_override_size: U32<LE>,
+
+    // FuncOverrideSize bytes in size
+    // pub func_override_info: [ImageFunctionOverrideDynamicRelocation; 0],
+
+    // BDD region, size in bytes: DVRTEntrySize - sizeof(IMAGE_FUNCTION_OVERRIDE_HEADER) - FuncOverrideSize
+    // pub bdd_info: ImageBddInfo,
+}
+
+#[derive(Debug, Clone, Copy)]
+#[repr(C)]
+pub struct ImageFunctionOverrideDynamicRelocation {
+    /// RVA of original function
+    pub original_rva: U32<LE>,
+    /// Offset into the BDD region
+    pub bdd_offset: U32<LE>,
+    /// Size in bytes taken by RVAs. Must be multiple of sizeof(DWORD).
+    pub rva_size: U32<LE>,
+    /// Size in bytes taken by BaseRelocs
+    pub base_reloc_size: U32<LE>,
+
+    // Array containing overriding func RVAs.
+    // pub rvas: [U32<LE>; rva_size / sizeof(DWORD)],
+
+    // Base relocations (RVA + Size + TO)
+    //  Padded with extra TOs for 4B alignment
+    // BaseRelocSize size in bytes
+    // pub base_relocs: [ImageBaseRelocation; 0],
+}
+
+#[derive(Debug, Clone, Copy)]
+#[repr(C)]
+pub struct ImageBddInfo {
+    // decides the semantics of serialized BDD
+    pub version: U32<LE>,
+    pub bdd_size: U32<LE>,
+    // bdd_size size in bytes.
+    //pub bdd_nodes: [ImageBddDynamicRelocation; 0],
+}
+
+#[derive(Debug, Clone, Copy)]
+#[repr(C)]
+pub struct ImageBddDynamicRelocation {
+    /// Index of FALSE edge in BDD array
+    pub left: U16<LE>,
+    /// Index of TRUE edge in BDD array
+    pub right: U16<LE>,
+    /// Either FeatureNumber or Index into RVAs array
+    pub value: U32<LE>,
+}
+
+// Function override relocation types in DVRT records.
+
+constant_names!(NAMES_FUNCTION_OVERRIDE: FunctionOverride() = {
+    IMAGE_FUNCTION_OVERRIDE_INVALID = 0,
+    // 32-bit relative address from byte following reloc
+    IMAGE_FUNCTION_OVERRIDE_X64_REL32 = 1,
+    // 26 bit offset << 2 & sign ext. for B & BL
+    IMAGE_FUNCTION_OVERRIDE_ARM64_BRANCH26 = 2,
+    IMAGE_FUNCTION_OVERRIDE_ARM64_THUNK = 3,
+});
+
 */
 
 //
@@ -2314,7 +2814,7 @@ pub struct ImageLoadConfigDirectory32 {
     /// VA
     pub guard_cf_function_table: U32<LE>,
     pub guard_cf_function_count: U32<LE>,
-    pub guard_flags: U32<LE>,
+    pub guard_flags: U32<LE, GuardFlags>,
     pub code_integrity: ImageLoadConfigCodeIntegrity,
     /// VA
     pub guard_address_taken_iat_entry_table: U32<LE>,
@@ -2376,7 +2876,7 @@ pub struct ImageLoadConfigDirectory64 {
     /// VA
     pub guard_cf_function_table: U64<LE>,
     pub guard_cf_function_count: U64<LE>,
-    pub guard_flags: U32<LE>,
+    pub guard_flags: U32<LE, GuardFlags>,
     pub code_integrity: ImageLoadConfigCodeIntegrity,
     /// VA
     pub guard_address_taken_iat_entry_table: U64<LE>,
@@ -2405,6 +2905,13 @@ pub struct ImageLoadConfigDirectory64 {
     pub volatile_metadata_pointer: U64<LE>,
 }
 
+/*
+flag_names!(NAMES_HOT_PATCH_INFO_FLAG: HotPatchInfoFlags(u32) = {
+    IMAGE_HOT_PATCH_INFO_FLAG_PATCHORDERCRITICAL = 0x0000_0001,
+    IMAGE_HOT_PATCH_INFO_FLAG_HOTSWAP = 0x0000_0002,
+});
+*/
+
 #[derive(Debug, Clone, Copy)]
 #[repr(C)]
 pub struct ImageHotPatchInfo {
@@ -2417,13 +2924,17 @@ pub struct ImageHotPatchInfo {
     pub buffer_offset: U32<LE>,
     /// Version 3 and later
     pub extra_patch_size: U32<LE>,
+    // Version 4 and later
+    //pub min_sequence_number: U32<LE>,
+    // Version 4 and later
+    //pub flags: U32<LE, HotPatchInfoFlags>,
 }
 
 #[derive(Debug, Clone, Copy)]
 #[repr(C)]
 pub struct ImageHotPatchBase {
     pub sequence_number: U32<LE>,
-    pub flags: U32<LE>,
+    pub flags: U32<LE, HotPatchBaseFlags>,
     pub original_time_date_stamp: U32<LE>,
     pub original_check_sum: U32<LE>,
     pub code_integrity_info: U32<LE>,
@@ -2433,6 +2944,17 @@ pub struct ImageHotPatchBase {
     pub buffer_offset: U32<LE>,
 }
 
+/*
+#[derive(Debug, Clone, Copy)]
+#[repr(C)]
+pub struct ImageHotPatchMachine {
+        DWORD _x86     :  1;
+        DWORD Amd64    :  1;
+        DWORD Arm64    :  1;
+        DWORD Amd64EC  :  1;
+}
+*/
+
 #[derive(Debug, Clone, Copy)]
 #[repr(C)]
 pub struct ImageHotPatchHashes {
@@ -2440,54 +2962,177 @@ pub struct ImageHotPatchHashes {
     pub sha1: [u8; 20],
 }
 
-pub const IMAGE_HOT_PATCH_BASE_OBLIGATORY: u32 = 0x0000_0001;
-pub const IMAGE_HOT_PATCH_BASE_CAN_ROLL_BACK: u32 = 0x0000_0002;
+newtype!(
+    /// Values for `ImageHotPatchBase::flags`.
+    struct HotPatchBaseFlags(u32);
+);
 
-pub const IMAGE_HOT_PATCH_CHUNK_INVERSE: u32 = 0x8000_0000;
-pub const IMAGE_HOT_PATCH_CHUNK_OBLIGATORY: u32 = 0x4000_0000;
+newtype_flag_names!(NAMES_HOT_PATCH_BASE: HotPatchBaseFlags(u32) = {
+    IMAGE_HOT_PATCH_BASE_OBLIGATORY = 0x0000_0001,
+    IMAGE_HOT_PATCH_BASE_CAN_ROLL_BACK = 0x0000_0002,
+
+    IMAGE_HOT_PATCH_BASE_MACHINE_I386 = 0x0000_0004,
+    IMAGE_HOT_PATCH_BASE_MACHINE_ARM64 = 0x0000_0008,
+    IMAGE_HOT_PATCH_BASE_MACHINE_AMD64 = 0x0000_0010,
+});
+
+newtype!(
+    struct HotPatchChunkFlags(u32);
+);
+
+// TODO: convenience methods for subfields
+
+newtype_flag_names!(NAMES_HOT_PATCH_CHUNK: HotPatchChunkFlags(u32) = {
+    IMAGE_HOT_PATCH_CHUNK_INVERSE = 0x8000_0000,
+    IMAGE_HOT_PATCH_CHUNK_OBLIGATORY = 0x4000_0000,
+    _ = IMAGE_HOT_PATCH_CHUNK_TYPE => NAMES_HOT_PATCH_CHUNK_TYPE,
+});
+
 pub const IMAGE_HOT_PATCH_CHUNK_RESERVED: u32 = 0x3FF0_3000;
 pub const IMAGE_HOT_PATCH_CHUNK_TYPE: u32 = 0x000F_C000;
 pub const IMAGE_HOT_PATCH_CHUNK_SOURCE_RVA: u32 = 0x0000_8000;
 pub const IMAGE_HOT_PATCH_CHUNK_TARGET_RVA: u32 = 0x0000_4000;
 pub const IMAGE_HOT_PATCH_CHUNK_SIZE: u32 = 0x0000_0FFF;
 
-pub const IMAGE_HOT_PATCH_NONE: u32 = 0x0000_0000;
-pub const IMAGE_HOT_PATCH_FUNCTION: u32 = 0x0001_C000;
-pub const IMAGE_HOT_PATCH_ABSOLUTE: u32 = 0x0002_C000;
-pub const IMAGE_HOT_PATCH_REL32: u32 = 0x0003_C000;
-pub const IMAGE_HOT_PATCH_CALL_TARGET: u32 = 0x0004_4000;
-pub const IMAGE_HOT_PATCH_INDIRECT: u32 = 0x0005_C000;
-pub const IMAGE_HOT_PATCH_NO_CALL_TARGET: u32 = 0x0006_4000;
-pub const IMAGE_HOT_PATCH_DYNAMIC_VALUE: u32 = 0x0007_8000;
+constant_names!(NAMES_HOT_PATCH_CHUNK_TYPE: HotPatchChunkFlags(u32) = {
+    IMAGE_HOT_PATCH_NONE = 0x0000_0000,
+    IMAGE_HOT_PATCH_FUNCTION = 0x0001_C000,
+    IMAGE_HOT_PATCH_ABSOLUTE = 0x0002_C000,
+    IMAGE_HOT_PATCH_REL32 = 0x0003_C000,
+    IMAGE_HOT_PATCH_CALL_TARGET = 0x0004_4000,
+    IMAGE_HOT_PATCH_INDIRECT = 0x0005_C000,
+    IMAGE_HOT_PATCH_NO_CALL_TARGET = 0x0006_4000,
+    IMAGE_HOT_PATCH_DYNAMIC_VALUE = 0x0007_8000,
+});
 
-/// Module performs control flow integrity checks using system-supplied support
-pub const IMAGE_GUARD_CF_INSTRUMENTED: u32 = 0x0000_0100;
-/// Module performs control flow and write integrity checks
-pub const IMAGE_GUARD_CFW_INSTRUMENTED: u32 = 0x0000_0200;
-/// Module contains valid control flow target metadata
-pub const IMAGE_GUARD_CF_FUNCTION_TABLE_PRESENT: u32 = 0x0000_0400;
-/// Module does not make use of the /GS security cookie
-pub const IMAGE_GUARD_SECURITY_COOKIE_UNUSED: u32 = 0x0000_0800;
-/// Module supports read only delay load IAT
-pub const IMAGE_GUARD_PROTECT_DELAYLOAD_IAT: u32 = 0x0000_1000;
-/// Delayload import table in its own .didat section (with nothing else in it) that can be freely reprotected
-pub const IMAGE_GUARD_DELAYLOAD_IAT_IN_ITS_OWN_SECTION: u32 = 0x0000_2000;
-/// Module contains suppressed export information.
-///
-/// This also infers that the address taken taken IAT table is also present in the load config.
-pub const IMAGE_GUARD_CF_EXPORT_SUPPRESSION_INFO_PRESENT: u32 = 0x0000_4000;
-/// Module enables suppression of exports
-pub const IMAGE_GUARD_CF_ENABLE_EXPORT_SUPPRESSION: u32 = 0x0000_8000;
-/// Module contains longjmp target information
-pub const IMAGE_GUARD_CF_LONGJUMP_TABLE_PRESENT: u32 = 0x0001_0000;
-/// Module contains return flow instrumentation and metadata
-pub const IMAGE_GUARD_RF_INSTRUMENTED: u32 = 0x0002_0000;
-/// Module requests that the OS enable return flow protection
-pub const IMAGE_GUARD_RF_ENABLE: u32 = 0x0004_0000;
-/// Module requests that the OS enable return flow protection in strict mode
-pub const IMAGE_GUARD_RF_STRICT: u32 = 0x0008_0000;
-/// Module was built with retpoline support
-pub const IMAGE_GUARD_RETPOLINE_PRESENT: u32 = 0x0010_0000;
+//
+// Hot-Swap Image Info
+//
+
+/*
+pub const IMAGE_HOTSWAP_ENDPOINT_TABLE_SECTION: &str = ".shsept";
+
+constant_names!(NAMES_ENDPOINT_RETURN_TYPE: HotswapArm64EndpointInfoCcReturn(u32) = {
+    EndpointReturnTypeNone = 0,
+    EndpointReturnTypeX0,
+    EndpointReturnTypeX0_X1,
+    EndpointReturnTypeX0_X2,
+    EndpointReturnTypeX0_X3,
+    EndpointReturnTypeQ0,
+    EndpointReturnTypeQ0_Q1,
+    EndpointReturnTypeQ0_Q2,
+    EndpointReturnTypeQ0_Q3,
+    EndpointReturnTypeX8
+});
+
+constant_names!(NAMES_ENDPOINT_PARAM_REG: HotswapX64EndpointInfoCcReg(u32) = {
+    EndpointParamRegNone = 0x00,
+    EndpointParamRegRAX = 0x01,
+    EndpointParamRegRCX = 0x02,
+    EndpointParamRegRDX = 0x03,
+    EndpointParamRegR8 = 0x09,
+    EndpointParamRegR9 = 0x0A,
+    EndpointParamRegXMM0 = 0xC8,
+    EndpointParamRegXMM1 = 0xC9,
+    EndpointParamRegXMM2 = 0xCA,
+    EndpointParamRegXMM3 = 0xCB,
+});
+
+
+#[derive(Debug, Clone, Copy)]
+#[repr(C)]
+pub struct ImageHotswapEndpointInfoHeaderCommon {
+    pub version: U32<LE>,
+    pub size: U32<LE>,
+}
+
+#[derive(Debug, Clone, Copy)]
+#[repr(C)]
+pub struct ImageHotswapEndpointInfoEntryCommon {
+    // Size of this current entry structure.
+    pub size: U32<LE>,
+    // RVA of the endpoint within the image.
+    pub rva: U32<LE>,
+    pub name_size: U32<LE>,
+    pub name_offset: U32<LE>,
+}
+
+pub const IMAGE_HOTSWAP_ENDPOINT_INFO_V2: u32 = 2;
+
+#[derive(Debug, Clone, Copy)]
+#[repr(C)]
+pub struct ImageHotswapX64EndpointInfoEntryV2 {
+    pub common: ImageHotswapEndpointInfoEntryCommon,
+    pub arg_regs: [U32<LE, HotswapX64EndpointInfoCcReg>; 4],
+    pub arg_stack_size: U32<LE>,
+    pub ret_reg: U32<LE, HotswapX64EndpointInfoCcReg>,
+    // name: [u8; 0],
+}
+
+#[derive(Debug, Clone, Copy)]
+#[repr(C)]
+pub struct ImageHotswapArm64EndpointInfoEntryV2 {
+    pub common: ImageHotswapEndpointInfoEntryCommon,
+    pub int_args: U32<LE>,
+    pub float_args: U32<LE>,
+    pub arg_stack_size: U32<LE>,
+    pub return_type: U32<LE, HotswapArm64EndpointInfoCcReturn>,
+    // name: [u8; 0],
+}
+
+#[derive(Debug, Clone, Copy)]
+#[repr(C)]
+pub struct ImageHotswapEndpointInfoHeaderV2 {
+    pub common: ImageHotswapEndpointInfoHeaderCommon,
+    pub count: U32<LE>,
+}
+*/
+
+newtype!(
+    /// Values for `ImageLoadConfigDirectory*::guard_flags`.
+    struct GuardFlags(u32);
+);
+
+newtype_flag_names!(NAMES_GUARD: GuardFlags(u32) = {
+    /// Module performs control flow integrity checks using system-supplied support
+    IMAGE_GUARD_CF_INSTRUMENTED = 0x0000_0100,
+    /// Module performs control flow and write integrity checks
+    IMAGE_GUARD_CFW_INSTRUMENTED = 0x0000_0200,
+    /// Module contains valid control flow target metadata
+    IMAGE_GUARD_CF_FUNCTION_TABLE_PRESENT = 0x0000_0400,
+    /// Module does not make use of the /GS security cookie
+    IMAGE_GUARD_SECURITY_COOKIE_UNUSED = 0x0000_0800,
+    /// Module supports read only delay load IAT
+    IMAGE_GUARD_PROTECT_DELAYLOAD_IAT = 0x0000_1000,
+    /// Delayload import table in its own .didat section (with nothing else in it) that can be freely reprotected
+    IMAGE_GUARD_DELAYLOAD_IAT_IN_ITS_OWN_SECTION = 0x0000_2000,
+    /// Module contains suppressed export information.
+    ///
+    /// This also infers that the address taken taken IAT table is also present in the load config.
+    IMAGE_GUARD_CF_EXPORT_SUPPRESSION_INFO_PRESENT = 0x0000_4000,
+    /// Module enables suppression of exports
+    IMAGE_GUARD_CF_ENABLE_EXPORT_SUPPRESSION = 0x0000_8000,
+    /// Module contains longjmp target information
+    IMAGE_GUARD_CF_LONGJUMP_TABLE_PRESENT = 0x0001_0000,
+    /// Module contains return flow instrumentation and metadata
+    IMAGE_GUARD_RF_INSTRUMENTED = 0x0002_0000,
+    /// Module requests that the OS enable return flow protection
+    IMAGE_GUARD_RF_ENABLE = 0x0004_0000,
+    /// Module requests that the OS enable return flow protection in strict mode
+    IMAGE_GUARD_RF_STRICT = 0x0008_0000,
+    /// Module was built with retpoline support
+    IMAGE_GUARD_RETPOLINE_PRESENT = 0x0010_0000,
+    // Was EHCont flag on VB (20H1)
+    // DO_NOT_USE = 0x00200000,
+    /// Module contains EH continuation target information
+    IMAGE_GUARD_EH_CONTINUATION_TABLE_PRESENT = 0x0040_0000,
+    /// Module was built with xfg (deprecated)
+    IMAGE_GUARD_XFG_ENABLED = 0x0080_0000,
+    /// Module has CastGuard instrumentation present
+    IMAGE_GUARD_CASTGUARD_PRESENT = 0x0100_0000,
+    /// Module has Guarded Memcpy instrumentation present
+    IMAGE_GUARD_MEMCPY_PRESENT = 0x0200_0000,
+});
 
 /// Stride of Guard CF function table encoded in these bits (additional count of bytes per element)
 pub const IMAGE_GUARD_CF_FUNCTION_TABLE_SIZE_MASK: u32 = 0xF000_0000;
@@ -2498,10 +3143,19 @@ pub const IMAGE_GUARD_CF_FUNCTION_TABLE_SIZE_SHIFT: u32 = 28;
 // GFIDS table entry flags.
 //
 
-/// The containing GFID entry is suppressed
-pub const IMAGE_GUARD_FLAG_FID_SUPPRESSED: u16 = 0x01;
-/// The containing GFID entry is export suppressed
-pub const IMAGE_GUARD_FLAG_EXPORT_SUPPRESSED: u16 = 0x02;
+newtype!(
+    /// Values for flags in the Guard CF function table entries.
+    struct GuardFunctionFlags(u16);
+);
+
+newtype_flag_names!(NAMES_GUARD_FLAG: GuardFunctionFlags(u16) = {
+    /// The containing GFID entry is suppressed
+    IMAGE_GUARD_FLAG_FID_SUPPRESSED = 0x01,
+    /// The containing GFID entry is export suppressed
+    IMAGE_GUARD_FLAG_EXPORT_SUPPRESSED = 0x02,
+    IMAGE_GUARD_FLAG_FID_LANGEXCPTHANDLER = 0x04,
+    IMAGE_GUARD_FLAG_FID_XFG = 0x08,
+});
 
 //
 // WIN CE Exception table format
@@ -2537,7 +3191,68 @@ pub struct ImageArmRuntimeFunctionEntry {
 pub struct ImageArm64RuntimeFunctionEntry {
     pub begin_address: U32<LE>,
     pub unwind_data: U32<LE>,
+    /* unwind_data bits:
+            DWORD Flag : 2;
+            DWORD FunctionLength : 11;
+            DWORD RegF : 3;
+            DWORD RegI : 4;
+            DWORD H : 1;
+            DWORD CR : 2;
+            DWORD FrameSize : 9;
+    */
 }
+
+/*
+constant_names!(ARM64_FNPDATA_FLAGS = {
+    PdataRefToFullXdata = 0,
+    PdataPackedUnwindFunction = 1,
+    PdataPackedUnwindFragment = 2,
+});
+
+constant_names!(ARM64_FNPDATA_CR = {
+    PdataCrUnchained = 0,
+    PdataCrUnchainedSavedLr = 1,
+    PdataCrChainedWithPac = 2,
+    PdataCrChained = 3,
+});
+
+#[derive(Debug, Clone, Copy)]
+#[repr(C)]
+pub struct ImageArm64RuntimeFunctionEntryXdata {
+    pub header_data: U32<LE>,
+/* header_data bits:
+        DWORD FunctionLength : 18;      // in words (2 bytes)
+        DWORD Version : 2;
+        DWORD ExceptionDataPresent : 1;
+        DWORD EpilogInHeader : 1;
+        DWORD EpilogCount : 5;          // number of epilogs or byte index of the first unwind code for the one only epilog
+        DWORD CodeWords : 5;            // number of dwords with unwind codes
+*/
+}
+
+#[derive(Debug, Clone, Copy)]
+#[repr(C)]
+pub struct ImageArm64RuntimeFunctionEntryXdataExtended {
+    pub extended_header_data: U32<LE>,
+/* extended_header_data bits:
+    struct {
+        DWORD ExtendedEpilogCount : 16;
+        DWORD ExtendedCodeWords : 8;
+    } DUMMYSTRUCTNAME;
+*/
+}
+
+#[derive(Debug, Clone, Copy)]
+#[repr(C)]
+pub struct ImageArm64RuntimeFunctionEntryXdataEpilogScope {
+    pub epilog_scope_data: U32<LE>,
+/* epilog_scope_data bits:
+        DWORD EpilogStartOffset : 18;   // offset in bytes, divided by 4, of the epilog relative to the start of the function.
+        DWORD Res0: 4;
+        DWORD EpilogStartIndex : 10;    // byte index of the first unwind code that describes this epilog.
+*/
+}
+*/
 
 #[derive(Debug, Clone, Copy)]
 #[repr(C)]
@@ -2579,7 +3294,7 @@ pub const IMAGE_ENCLAVE_SHORT_ID_LENGTH: usize = 16;
 pub struct ImageEnclaveConfig32 {
     pub size: U32<LE>,
     pub minimum_required_config_size: U32<LE>,
-    pub policy_flags: U32<LE>,
+    pub policy_flags: U32<LE, EnclavePolicyFlags>,
     pub number_of_imports: U32<LE>,
     pub import_list: U32<LE>,
     pub import_entry_size: U32<LE>,
@@ -2589,7 +3304,7 @@ pub struct ImageEnclaveConfig32 {
     pub security_version: U32<LE>,
     pub enclave_size: U32<LE>,
     pub number_of_threads: U32<LE>,
-    pub enclave_flags: U32<LE>,
+    pub enclave_flags: U32<LE, EnclaveFlags>,
 }
 
 #[derive(Debug, Clone, Copy)]
@@ -2597,7 +3312,7 @@ pub struct ImageEnclaveConfig32 {
 pub struct ImageEnclaveConfig64 {
     pub size: U32<LE>,
     pub minimum_required_config_size: U32<LE>,
-    pub policy_flags: U32<LE>,
+    pub policy_flags: U32<LE, EnclavePolicyFlags>,
     pub number_of_imports: U32<LE>,
     pub import_list: U32<LE>,
     pub import_entry_size: U32<LE>,
@@ -2607,19 +3322,30 @@ pub struct ImageEnclaveConfig64 {
     pub security_version: U32<LE>,
     pub enclave_size: U64<LE>,
     pub number_of_threads: U32<LE>,
-    pub enclave_flags: U32<LE>,
+    pub enclave_flags: U32<LE, EnclaveFlags>,
 }
 
 //pub const IMAGE_ENCLAVE_MINIMUM_CONFIG_SIZE: usize = FIELD_OFFSET(IMAGE_ENCLAVE_CONFIG, EnclaveFlags);
 
-pub const IMAGE_ENCLAVE_POLICY_DEBUGGABLE: u32 = 0x0000_0001;
+newtype!(
+    struct EnclavePolicyFlags(u32);
+);
+newtype_flag_names!(NAMES_IMAGE_ENCLAVE_POLICY: EnclavePolicyFlags(u32) = {
+    IMAGE_ENCLAVE_POLICY_DEBUGGABLE = 0x0000_0001,
+    IMAGE_ENCLAVE_POLICY_STRICT_MEMORY = 0x0000_0002,
+});
 
-pub const IMAGE_ENCLAVE_FLAG_PRIMARY_IMAGE: u32 = 0x0000_0001;
+newtype!(
+    struct EnclaveFlags(u32);
+);
+newtype_flag_names!(NAMES_IMAGE_ENCLAVE_FLAG: EnclaveFlags(u32) = {
+    IMAGE_ENCLAVE_FLAG_PRIMARY_IMAGE = 0x0000_0001,
+});
 
 #[derive(Debug, Clone, Copy)]
 #[repr(C)]
 pub struct ImageEnclaveImport {
-    pub match_type: U32<LE>,
+    pub match_type: U32<LE, EnclaveImportMatchType>,
     pub minimum_security_version: U32<LE>,
     pub unique_or_author_id: [u8; IMAGE_ENCLAVE_LONG_ID_LENGTH],
     pub family_id: [u8; IMAGE_ENCLAVE_SHORT_ID_LENGTH],
@@ -2628,11 +3354,17 @@ pub struct ImageEnclaveImport {
     pub reserved: U32<LE>,
 }
 
-pub const IMAGE_ENCLAVE_IMPORT_MATCH_NONE: u32 = 0x0000_0000;
-pub const IMAGE_ENCLAVE_IMPORT_MATCH_UNIQUE_ID: u32 = 0x0000_0001;
-pub const IMAGE_ENCLAVE_IMPORT_MATCH_AUTHOR_ID: u32 = 0x0000_0002;
-pub const IMAGE_ENCLAVE_IMPORT_MATCH_FAMILY_ID: u32 = 0x0000_0003;
-pub const IMAGE_ENCLAVE_IMPORT_MATCH_IMAGE_ID: u32 = 0x0000_0004;
+newtype!(
+    /// Values for `ImageEnclaveImport::match_type`.
+    struct EnclaveImportMatchType(u32);
+);
+newtype_constant_names!(NAMES_ENCLAVE_IMPORT_MATCH: EnclaveImportMatchType(u32) = {
+    IMAGE_ENCLAVE_IMPORT_MATCH_NONE = 0x0000_0000,
+    IMAGE_ENCLAVE_IMPORT_MATCH_UNIQUE_ID = 0x0000_0001,
+    IMAGE_ENCLAVE_IMPORT_MATCH_AUTHOR_ID = 0x0000_0002,
+    IMAGE_ENCLAVE_IMPORT_MATCH_FAMILY_ID = 0x0000_0003,
+    IMAGE_ENCLAVE_IMPORT_MATCH_IMAGE_ID = 0x0000_0004,
+});
 
 //
 // Debug Format
@@ -2645,29 +3377,54 @@ pub struct ImageDebugDirectory {
     pub time_date_stamp: U32<LE>,
     pub major_version: U16<LE>,
     pub minor_version: U16<LE>,
-    pub typ: U32<LE>,
+    pub typ: U32<LE, DebugType>,
     pub size_of_data: U32<LE>,
     pub address_of_raw_data: U32<LE>,
     pub pointer_to_raw_data: U32<LE>,
 }
 
-pub const IMAGE_DEBUG_TYPE_UNKNOWN: u32 = 0;
-pub const IMAGE_DEBUG_TYPE_COFF: u32 = 1;
-pub const IMAGE_DEBUG_TYPE_CODEVIEW: u32 = 2;
-pub const IMAGE_DEBUG_TYPE_FPO: u32 = 3;
-pub const IMAGE_DEBUG_TYPE_MISC: u32 = 4;
-pub const IMAGE_DEBUG_TYPE_EXCEPTION: u32 = 5;
-pub const IMAGE_DEBUG_TYPE_FIXUP: u32 = 6;
-pub const IMAGE_DEBUG_TYPE_OMAP_TO_SRC: u32 = 7;
-pub const IMAGE_DEBUG_TYPE_OMAP_FROM_SRC: u32 = 8;
-pub const IMAGE_DEBUG_TYPE_BORLAND: u32 = 9;
-pub const IMAGE_DEBUG_TYPE_RESERVED10: u32 = 10;
-pub const IMAGE_DEBUG_TYPE_CLSID: u32 = 11;
-pub const IMAGE_DEBUG_TYPE_VC_FEATURE: u32 = 12;
-pub const IMAGE_DEBUG_TYPE_POGO: u32 = 13;
-pub const IMAGE_DEBUG_TYPE_ILTCG: u32 = 14;
-pub const IMAGE_DEBUG_TYPE_MPX: u32 = 15;
-pub const IMAGE_DEBUG_TYPE_REPRO: u32 = 16;
+newtype!(
+    /// Values for `ImageDebugDirectory::typ`.
+    struct DebugType(u32);
+);
+
+newtype_constant_names!(NAMES_DEBUG_TYPE: DebugType(u32) = {
+    IMAGE_DEBUG_TYPE_UNKNOWN = 0,
+    IMAGE_DEBUG_TYPE_COFF = 1,
+    IMAGE_DEBUG_TYPE_CODEVIEW = 2,
+    IMAGE_DEBUG_TYPE_FPO = 3,
+    IMAGE_DEBUG_TYPE_MISC = 4,
+    IMAGE_DEBUG_TYPE_EXCEPTION = 5,
+    IMAGE_DEBUG_TYPE_FIXUP = 6,
+    IMAGE_DEBUG_TYPE_OMAP_TO_SRC = 7,
+    IMAGE_DEBUG_TYPE_OMAP_FROM_SRC = 8,
+    IMAGE_DEBUG_TYPE_BORLAND = 9,
+    IMAGE_DEBUG_TYPE_BBT = IMAGE_DEBUG_TYPE_RESERVED10.0,
+    IMAGE_DEBUG_TYPE_RESERVED10 = 10,
+    IMAGE_DEBUG_TYPE_CLSID = 11,
+    IMAGE_DEBUG_TYPE_VC_FEATURE = 12,
+    IMAGE_DEBUG_TYPE_POGO = 13,
+    IMAGE_DEBUG_TYPE_ILTCG = 14,
+    IMAGE_DEBUG_TYPE_MPX = 15,
+    IMAGE_DEBUG_TYPE_REPRO = 16,
+    IMAGE_DEBUG_TYPE_SPGO = 18,
+    IMAGE_DEBUG_TYPE_EX_DLLCHARACTERISTICS = 20,
+});
+
+/*
+flag_names!(NAMES_DLLCHARACTERISTICS_EX: DllFlagsEx() = {
+    IMAGE_DLLCHARACTERISTICS_EX_CET_COMPAT = 0x01,
+    IMAGE_DLLCHARACTERISTICS_EX_CET_COMPAT_STRICT_MODE = 0x02,
+    IMAGE_DLLCHARACTERISTICS_EX_CET_SET_CONTEXT_IP_VALIDATION_RELAXED_MODE = 0x04,
+    IMAGE_DLLCHARACTERISTICS_EX_CET_DYNAMIC_APIS_ALLOW_IN_PROC = 0x08,
+    // Reserved for CET policy *downgrade* only!
+    IMAGE_DLLCHARACTERISTICS_EX_CET_RESERVED_1 = 0x10,
+    // Reserved for CET policy *downgrade* only!
+    IMAGE_DLLCHARACTERISTICS_EX_CET_RESERVED_2 = 0x20,
+    IMAGE_DLLCHARACTERISTICS_EX_FORWARD_CFI_COMPAT = 0x40,
+    IMAGE_DLLCHARACTERISTICS_EX_HOTPATCH_COMPATIBLE = 0x80,
+});
+*/
 
 #[derive(Debug, Clone, Copy)]
 #[repr(C)]
@@ -2682,10 +3439,16 @@ pub struct ImageCoffSymbolsHeader {
     pub rva_to_last_byte_of_data: U32<LE>,
 }
 
-pub const FRAME_FPO: u16 = 0;
-pub const FRAME_TRAP: u16 = 1;
-pub const FRAME_TSS: u16 = 2;
-pub const FRAME_NONFPO: u16 = 3;
+newtype!(
+    /// Values for `FpoData::cbFrame`.
+    struct FrameType(u8);
+);
+newtype_constant_names!(NAMES_FRAME: FrameType(u8) = {
+    FRAME_FPO = 0,
+    FRAME_TRAP = 1,
+    FRAME_TSS = 2,
+    FRAME_NONFPO = 3,
+});
 
 /*
 // TODO? bitfields
@@ -2779,7 +3542,7 @@ pub struct ImageFunctionEntry64 {
 pub struct ImageSeparateDebugHeader {
     pub signature: U16<LE>,
     pub flags: U16<LE>,
-    pub machine: U16<LE>,
+    pub machine: U16<LE, Machine>,
     pub characteristics: U16<LE>,
     pub time_date_stamp: U32<LE>,
     pub check_sum: U32<LE>,
@@ -2798,7 +3561,7 @@ pub struct NonPagedDebugInfo {
     pub signature: U16<LE>,
     pub flags: U16<LE>,
     pub size: U32<LE>,
-    pub machine: U16<LE>,
+    pub machine: U16<LE, Machine>,
     pub characteristics: U16<LE>,
     pub time_date_stamp: U32<LE>,
     pub check_sum: U32<LE>,
@@ -2862,11 +3625,11 @@ pub const IMPORT_OBJECT_HDR_SIG2: u16 = 0xffff;
 #[repr(C)]
 pub struct ImportObjectHeader {
     /// Must be IMAGE_FILE_MACHINE_UNKNOWN
-    pub sig1: U16<LE>,
+    pub sig1: U16<LE, Machine>,
     /// Must be IMPORT_OBJECT_HDR_SIG2.
     pub sig2: U16<LE>,
     pub version: U16<LE>,
-    pub machine: U16<LE>,
+    pub machine: U16<LE, Machine>,
     /// Time/date stamp
     pub time_date_stamp: U32<LE>,
     /// particularly useful for incremental links
@@ -2878,36 +3641,110 @@ pub struct ImportObjectHeader {
     // WORD    Type : 2;
     // WORD    NameType : 3;
     // WORD    Reserved : 11;
-    pub name_type: U16<LE>,
+    pub name_type: U16<LE, ImportObjectFlags>,
+}
+
+newtype!(
+    /// Values for `ImportObjectHeader::name_type`.
+    struct ImportObjectFlags(u16);
+);
+
+newtype_flag_names!(NAMES_IMPORT_OBJECT: ImportObjectFlags(u16) = {
+    _ = IMPORT_OBJECT_TYPE_MASK << IMPORT_OBJECT_TYPE_SHIFT => NAMES_IMPORT_OBJECT_TYPE,
+    _ = IMPORT_OBJECT_NAME_MASK << IMPORT_OBJECT_NAME_SHIFT => NAMES_IMPORT_OBJECT_NAME,
+});
+
+impl ImportObjectFlags {
+    /// Construct the flags from its subfields.
+    pub fn new(import_type: ImportObjectType, name_type: ImportObjectNameType) -> Self {
+        ImportObjectFlags(
+            ImportObjectFlags::from(import_type).0 | ImportObjectFlags::from(name_type).0,
+        )
+    }
+
+    /// Return the import type field.
+    pub fn import_type(self) -> ImportObjectType {
+        ImportObjectType(self.0 & IMPORT_OBJECT_TYPE_MASK)
+    }
+
+    /// Return the name type field.
+    pub fn name_type(self) -> ImportObjectNameType {
+        ImportObjectNameType((self.0 >> IMPORT_OBJECT_NAME_SHIFT) & IMPORT_OBJECT_NAME_MASK)
+    }
+}
+
+newtype!(
+    /// Values for the import type subfield of `ImportObjectHeader::name_type`.
+    struct ImportObjectType(u16);
+);
+
+impl From<ImportObjectType> for ImportObjectFlags {
+    fn from(import_type: ImportObjectType) -> Self {
+        ImportObjectFlags(import_type.0 & IMPORT_OBJECT_TYPE_MASK)
+    }
+}
+
+impl From<ImportObjectFlags> for ImportObjectType {
+    fn from(value: ImportObjectFlags) -> Self {
+        value.import_type()
+    }
 }
 
 pub const IMPORT_OBJECT_TYPE_MASK: u16 = 0b11;
 pub const IMPORT_OBJECT_TYPE_SHIFT: u16 = 0;
-pub const IMPORT_OBJECT_CODE: u16 = 0;
-pub const IMPORT_OBJECT_DATA: u16 = 1;
-pub const IMPORT_OBJECT_CONST: u16 = 2;
+
+newtype_constant_names!(NAMES_IMPORT_OBJECT_TYPE: ImportObjectType(u16) = {
+    IMPORT_OBJECT_CODE = 0,
+    IMPORT_OBJECT_DATA = 1,
+    IMPORT_OBJECT_CONST = 2,
+});
+
+newtype!(
+    /// Values for the name type subfield of `ImportObjectHeader::name_type`.
+    struct ImportObjectNameType(u16);
+);
+
+impl From<ImportObjectNameType> for ImportObjectFlags {
+    fn from(name_type: ImportObjectNameType) -> Self {
+        ImportObjectFlags((name_type.0 & IMPORT_OBJECT_NAME_MASK) << IMPORT_OBJECT_NAME_SHIFT)
+    }
+}
+
+impl From<ImportObjectFlags> for ImportObjectNameType {
+    fn from(value: ImportObjectFlags) -> Self {
+        value.name_type()
+    }
+}
 
 pub const IMPORT_OBJECT_NAME_MASK: u16 = 0b111;
 pub const IMPORT_OBJECT_NAME_SHIFT: u16 = 2;
-/// Import by ordinal
-pub const IMPORT_OBJECT_ORDINAL: u16 = 0;
-/// Import name == public symbol name.
-pub const IMPORT_OBJECT_NAME: u16 = 1;
-/// Import name == public symbol name skipping leading ?, @, or optionally _.
-pub const IMPORT_OBJECT_NAME_NO_PREFIX: u16 = 2;
-/// Import name == public symbol name skipping leading ?, @, or optionally _ and truncating at first @.
-pub const IMPORT_OBJECT_NAME_UNDECORATE: u16 = 3;
-/// Import name == a name is explicitly provided after the DLL name.
-pub const IMPORT_OBJECT_NAME_EXPORTAS: u16 = 4;
 
-// COM+ Header entry point flags.
-pub const COMIMAGE_FLAGS_ILONLY: u32 = 0x0000_0001;
-pub const COMIMAGE_FLAGS_32BITREQUIRED: u32 = 0x0000_0002;
-pub const COMIMAGE_FLAGS_IL_LIBRARY: u32 = 0x0000_0004;
-pub const COMIMAGE_FLAGS_STRONGNAMESIGNED: u32 = 0x0000_0008;
-pub const COMIMAGE_FLAGS_NATIVE_ENTRYPOINT: u32 = 0x0000_0010;
-pub const COMIMAGE_FLAGS_TRACKDEBUGDATA: u32 = 0x0001_0000;
-pub const COMIMAGE_FLAGS_32BITPREFERRED: u32 = 0x0002_0000;
+newtype_constant_names!(NAMES_IMPORT_OBJECT_NAME: ImportObjectNameType(u16) = {
+    /// Import by ordinal
+    IMPORT_OBJECT_ORDINAL = 0,
+    /// Import name == public symbol name.
+    IMPORT_OBJECT_NAME = 1,
+    /// Import name == public symbol name skipping leading ?, @, or optionally _.
+    IMPORT_OBJECT_NAME_NO_PREFIX = 2,
+    /// Import name == public symbol name skipping leading ?, @, or optionally _ and truncating at first @.
+    IMPORT_OBJECT_NAME_UNDECORATE = 3,
+    /// Import name == a name is explicitly provided after the DLL name.
+    IMPORT_OBJECT_NAME_EXPORTAS = 4,
+});
+
+newtype!(
+    /// Values for `ImageCor20Header::flags`.
+    struct CorFlags(u32);
+);
+newtype_flag_names!(NAMES_COMIMAGE_FLAGS: CorFlags(u32) = {
+    COMIMAGE_FLAGS_ILONLY = 0x0000_0001,
+    COMIMAGE_FLAGS_32BITREQUIRED = 0x0000_0002,
+    COMIMAGE_FLAGS_IL_LIBRARY = 0x0000_0004,
+    COMIMAGE_FLAGS_STRONGNAMESIGNED = 0x0000_0008,
+    COMIMAGE_FLAGS_NATIVE_ENTRYPOINT = 0x0000_0010,
+    COMIMAGE_FLAGS_TRACKDEBUGDATA = 0x0001_0000,
+    COMIMAGE_FLAGS_32BITPREFERRED = 0x0002_0000,
+});
 
 // Version flags for image.
 pub const COR_VERSION_MAJOR_V2: u16 = 2;
@@ -2926,16 +3763,21 @@ pub const IMAGE_COR_MIH_EHRVA: u16 = 0x02;
 pub const IMAGE_COR_MIH_BASICBLOCK: u16 = 0x08;
 
 // V-table constants
-/// V-table slots are 32-bits in size.
-pub const COR_VTABLE_32BIT: u16 = 0x01;
-/// V-table slots are 64-bits in size.
-pub const COR_VTABLE_64BIT: u16 = 0x02;
-/// If set, transition from unmanaged.
-pub const COR_VTABLE_FROM_UNMANAGED: u16 = 0x04;
-/// If set, transition from unmanaged with keeping the current appdomain.
-pub const COR_VTABLE_FROM_UNMANAGED_RETAIN_APPDOMAIN: u16 = 0x08;
-/// Call most derived method described by
-pub const COR_VTABLE_CALL_MOST_DERIVED: u16 = 0x10;
+newtype!(
+    struct CorVtableFlags(u16);
+);
+newtype_flag_names!(NAMES_COR_VTABLE: CorVtableFlags(u16) = {
+    /// V-table slots are 32-bits in size.
+    COR_VTABLE_32BIT = 0x01,
+    /// V-table slots are 64-bits in size.
+    COR_VTABLE_64BIT = 0x02,
+    /// If set, transition from unmanaged.
+    COR_VTABLE_FROM_UNMANAGED = 0x04,
+    /// If set, transition from unmanaged with keeping the current appdomain.
+    COR_VTABLE_FROM_UNMANAGED_RETAIN_APPDOMAIN = 0x08,
+    /// Call most derived method described by
+    COR_VTABLE_CALL_MOST_DERIVED = 0x10,
+});
 
 // EATJ constants
 /// Size of a jump thunk reserved range.
@@ -2956,7 +3798,7 @@ pub struct ImageCor20Header {
 
     // Symbol table and startup information
     pub meta_data: ImageDataDirectory,
-    pub flags: U32<LE>,
+    pub flags: U32<LE, CorFlags>,
 
     // If COMIMAGE_FLAGS_NATIVE_ENTRYPOINT is not set, EntryPointToken represents a managed entrypoint.
     // If COMIMAGE_FLAGS_NATIVE_ENTRYPOINT is set, EntryPointRVA represents an RVA to a native entrypoint.
@@ -3030,16 +3872,30 @@ unsafe_impl_pod!(
     ImagePrologueDynamicRelocationHeader,
     ImageEpilogueDynamicRelocationHeader,
     //ImageImportControlTransferDynamicRelocation,
+    //ImageImportControlTransferArm64Relocation,
     //ImageIndirControlTransferDynamicRelocation,
     //ImageSwitchtableBranchDynamicRelocation,
+    //ImageFunctionOverrideHeader,
+    //ImageFunctionOverrideDynamicRelocation,
+    //ImageBddInfo,
+    //ImageBddDynamicRelocation,
     ImageLoadConfigDirectory32,
     ImageLoadConfigDirectory64,
     ImageHotPatchInfo,
     ImageHotPatchBase,
+    //ImageHotPatchMachine,
     ImageHotPatchHashes,
+    //ImageHotswapEndpointInfoHeaderCommon,
+    //ImageHotswapEndpointInfoEntryCommon,
+    //ImageHotswapX64EndpointInfoEntryV2,
+    //ImageHotswapArm64EndpointInfoEntryV2,
+    //ImageHotswapEndpointInfoHeaderV2,
     //ImageCeRuntimeFunctionEntry,
     ImageArmRuntimeFunctionEntry,
     ImageArm64RuntimeFunctionEntry,
+    //ImageArm64RuntimeFunctionEntryXdata,
+    //ImageArm64RuntimeFunctionEntryXdataExtended,
+    //ImageArm64RuntimeFunctionEntryXdataEpilogScope,
     ImageAlpha64RuntimeFunctionEntry,
     ImageAlphaRuntimeFunctionEntry,
     ImageRuntimeFunctionEntry,

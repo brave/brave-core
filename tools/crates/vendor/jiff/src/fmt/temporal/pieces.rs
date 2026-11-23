@@ -1,9 +1,9 @@
 use crate::{
+    Timestamp, ZonedDateTime,
     civil::{Date, DateTime, Time},
     error::Error,
     tz::{Offset, TimeZone, TimeZoneDatabase},
     util::borrow::StringCow,
-    Timestamp, Zoned,
 };
 
 /// A low level representation of a parsed Temporal ISO 8601 datetime string.
@@ -45,8 +45,8 @@ use crate::{
 /// * `From<(Timestamp, Offset)>` creates a `Pieces` from a [`Timestamp`] and
 /// an [`Offset`]. The [`Date`] and [`Time`] are determined via
 /// `offset.to_datetime(timestamp)`. The time zone annotation is left empty.
-/// * `From<&Zoned>` creates a `Pieces` from a [`Zoned`]. This populates all
-/// fields of a `Pieces`.
+/// * `From<&ZonedDateTime>` creates a `Pieces` from a [`ZonedDateTime`]. This
+/// populates all fields of a `Pieces`.
 ///
 /// A `Pieces` can be converted to a Temporal ISO 8601 string via its `Display`
 /// trait implementation.
@@ -132,34 +132,36 @@ use crate::{
 /// This exemplifies that `Pieces` is a mostly "dumb" type that passes
 /// through the data it contains, even if it doesn't make sense.
 ///
-/// # Case study: how to parse `2025-01-03T17:28-05` into `Zoned`
+/// # Case study: how to parse `2025-01-03T17:28-05` into `ZonedDateTime`
 ///
 /// One thing in particular that `Pieces` enables callers to do is side-step
 /// some of the stricter requirements placed on the higher level parsing
-/// functions (such as `Zoned`'s `FromStr` trait implementation). For example,
-/// parsing a datetime string into a `Zoned` _requires_ that the string contain
-/// a time zone annotation. Namely, parsing `2025-01-03T17:28-05` into a
-/// `Zoned` will fail:
+/// functions (such as `ZonedDateTime`'s `FromStr` trait implementation). For
+/// example, parsing a datetime string into a `ZonedDateTime` _requires_ that
+/// the string contain a time zone annotation. Namely, parsing
+/// `2025-01-03T17:28-05` into a `ZonedDateTime` will fail:
 ///
 /// ```
-/// use jiff::Zoned;
+/// use jiff::ZonedDateTime;
 ///
 /// assert_eq!(
-///     "2025-01-03T17:28-05".parse::<Zoned>().unwrap_err().to_string(),
-///     "failed to find time zone in square brackets in \
-///      \"2025-01-03T17:28-05\", which is required for \
-///      parsing a zoned instant",
+///     "2025-01-03T17:28-05"
+///         .parse::<ZonedDateTime>()
+///         .unwrap_err()
+///         .to_string(),
+///     "failed to find time zone annotation in square brackets, \
+///      which is required for parsing a zoned datetime",
 /// );
 /// ```
 ///
-/// The above fails because an RFC 3339 timestamp only contains an offset,
-/// not a time zone, and thus the resulting `Zoned` could never do time zone
-/// aware arithmetic.
+/// The above fails because an RFC 3339 timestamp only contains an offset, not
+/// a time zone, and thus the resulting `ZonedDateTime` could never do time
+/// zone aware arithmetic.
 ///
 /// However, in some cases, you might want to bypass these protections and
-/// creat a `Zoned` value with a fixed offset time zone anyway. For example,
-/// perhaps your use cases don't need time zone aware arithmetic, but want to
-/// preserve the offset anyway. This can be accomplished with `Pieces`:
+/// creat a `ZonedDateTime` value with a fixed offset time zone anyway. For
+/// example, perhaps your use cases don't need time zone aware arithmetic, but
+/// want to preserve the offset anyway. This can be accomplished with `Pieces`:
 ///
 /// ```
 /// use jiff::{fmt::temporal::Pieces, tz::TimeZone};
@@ -174,7 +176,7 @@ use crate::{
 ///     );
 ///     return Err(msg.into());
 /// };
-/// let zdt = TimeZone::fixed(offset).to_zoned(dt)?;
+/// let zdt = TimeZone::fixed(offset).to_zoned_datetime(dt)?;
 /// assert_eq!(zdt.to_string(), "2025-01-03T17:28:00-05:00[-05:00]");
 ///
 /// # Ok::<(), Box<dyn std::error::Error>>(())
@@ -183,7 +185,7 @@ use crate::{
 /// One problem with the above code snippet is that it completely ignores if
 /// a time zone annotation is present. If it is, it probably makes sense to use
 /// it, but "fall back" to a fixed offset time zone if it isn't (which the
-/// higher level `Zoned` parsing function won't do for you):
+/// higher level `ZonedDateTime` parsing function won't do for you):
 ///
 /// ```
 /// use jiff::{fmt::temporal::Pieces, tz::TimeZone};
@@ -211,7 +213,7 @@ use crate::{
 /// // this uses automatic "compatible" disambiguation in the case of
 /// // discontinuities. Of course, this is all moot if `TimeZone` is
 /// // fixed. The above code handles the case where it isn't!
-/// let zdt = tz.to_zoned(dt)?;
+/// let zdt = tz.to_zoned_datetime(dt)?;
 /// assert_eq!(zdt.to_string(), "2025-01-02T15:13:00-05:00[-05:00]");
 ///
 /// # Ok::<(), Box<dyn std::error::Error>>(())
@@ -221,10 +223,10 @@ use crate::{
 /// a `TimeZone` derived from that over the offset present.
 ///
 /// However, this still doesn't quite capture what happens when parsing into a
-/// `Zoned` value. In particular, parsing into a `Zoned` is _also_ doing offset
-/// conflict resolution for you. An offset conflict occurs when there is a
-/// mismatch between the offset in an RFC 3339 timestamp and the time zone in
-/// an RFC 9557 time zone annotation.
+/// `ZonedDateTime` value. In particular, parsing into a `ZonedDateTime` is
+/// _also_ doing offset conflict resolution for you. An offset conflict occurs
+/// when there is a mismatch between the offset in an RFC 3339 timestamp and
+/// the time zone in an RFC 9557 time zone annotation.
 ///
 /// For example, `2024-06-14T17:30-05[America/New_York]` has a mismatch
 /// since the date is in daylight saving time, but the offset, `-05`, is the
@@ -241,25 +243,20 @@ use crate::{
 /// use jiff::{fmt::temporal::Pieces, tz::{OffsetConflict, TimeZone}};
 ///
 /// let timestamp = "2024-06-14T17:30-05[America/New_York]";
-/// // The default for conflict resolution when parsing into a `Zoned` is
-/// // actually `Reject`, but we use `AlwaysOffset` here to show a different
+/// // The default for conflict resolution when parsing into a `ZonedDateTime`
+/// // is actually `Reject`, but we use `AlwaysOffset` here to show a different
 /// // strategy. You'll want to pick the conflict resolution that suits your
-/// // needs. The `Reject` strategy is what you should pick if you aren't
-/// // sure.
+/// // needs. The `Reject` strategy is what you should pick if you aren't sure.
 /// let conflict_resolution = OffsetConflict::AlwaysOffset;
 ///
 /// let pieces = Pieces::parse(timestamp)?;
 /// let time = pieces.time().unwrap_or_else(jiff::civil::Time::midnight);
 /// let dt = pieces.date().to_datetime(time);
 /// let ambiguous_zdt = match pieces.to_time_zone()? {
-///     Some(tz) => {
-///         match pieces.to_numeric_offset() {
-///             None => tz.into_ambiguous_zoned(dt),
-///             Some(offset) => {
-///                 conflict_resolution.resolve(dt, offset, tz)?
-///             }
-///         }
-///     }
+///     Some(tz) => match pieces.to_numeric_offset() {
+///         None => tz.into_ambiguous_zoned_datetime(dt),
+///         Some(offset) => conflict_resolution.resolve(dt, offset, tz)?,
+///     },
 ///     None => {
 ///         let Some(offset) = pieces.to_numeric_offset() else {
 ///             let msg = format!(
@@ -271,7 +268,7 @@ use crate::{
 ///         };
 ///         // Won't even be ambiguous, but gets us the same
 ///         // type as the branch above.
-///         TimeZone::fixed(offset).into_ambiguous_zoned(dt)
+///         TimeZone::fixed(offset).into_ambiguous_zoned_datetime(dt)
 ///     }
 /// };
 /// // We do compatible disambiguation here like we do in the previous
@@ -288,9 +285,9 @@ use crate::{
 /// # Ok::<(), Box<dyn std::error::Error>>(())
 /// ```
 ///
-/// The above has effectively completely rebuilt the higher level `Zoned`
-/// parsing routine, but with a fallback to a fixed time zone when a time zone
-/// annotation is not present.
+/// The above has effectively completely rebuilt the higher level
+/// `ZonedDateTime` parsing routine, but with a fallback to a fixed time zone
+/// when a time zone annotation is not present.
 ///
 /// # Case study: inferring the time zone of RFC 3339 timestamps
 ///
@@ -301,8 +298,8 @@ use crate::{
 /// * You have out-of-band information, possibly contextual, that indicates
 /// the timestamps have to come from a fixed set of time zones.
 /// * The time zones have different standard offsets.
-/// * You have a specific desire or need to use a [`Zoned`] value for its
-/// ergonomics and time zone aware handling. After all, in this case, you
+/// * You have a specific desire or need to use a [`ZonedDateTime`] value for
+/// its ergonomics and time zone aware handling. After all, in this case, you
 /// believe the timestamps to actually be generated from a specific time zone,
 /// but the interchange format doesn't support carrying that information. Or
 /// the source data simply omits it.
@@ -311,7 +308,7 @@ use crate::{
 ///
 /// A `Pieces` can help you accomplish this because it gives you access to each
 /// component of a parsed datetime, and thus lets you implement arbitrary logic
-/// for how to translate that into a `Zoned`. In this case, there is
+/// for how to translate that into a `ZonedDateTime`. In this case, there is
 /// contextual information that Jiff can't possibly know about.
 ///
 /// The general approach we take here is to make use of
@@ -330,7 +327,11 @@ use crate::{
 /// offset time zone if it isn't.
 ///
 /// ```
-/// use jiff::{fmt::temporal::Pieces, tz::{OffsetConflict, TimeZone}, Zoned};
+/// use jiff::{
+///     ZonedDateTime,
+///     fmt::temporal::Pieces,
+///     tz::{OffsetConflict, TimeZone},
+/// };
 ///
 /// // The time zones we're allowed to choose from.
 /// let tzs = &[
@@ -339,8 +340,8 @@ use crate::{
 /// ];
 ///
 /// // Here's our data that lacks time zones. The task is to assign a time zone
-/// // from `tzs` to each below and convert it to a `Zoned`. If we fail on any
-/// // one, then we substitute `None`.
+/// // from `tzs` to each below and convert it to a `ZonedDateTime`. If we fail
+/// // on any one, then we substitute `None`.
 /// let data = &[
 ///     "2024-01-13T10:33-05",
 ///     "2024-01-25T12:15-06",
@@ -350,7 +351,7 @@ use crate::{
 ///     "2024-11-03T01:30-05",
 /// ];
 /// // Our answers.
-/// let mut zdts: Vec<Option<Zoned>> = vec![];
+/// let mut zdts: Vec<Option<ZonedDateTime>> = vec![];
 /// for string in data {
 ///     // Parse and gather up the data that we can from the input.
 ///     // In this case, that's a civil datetime and an offset from UTC.
@@ -369,7 +370,7 @@ use crate::{
 ///         let Ok(ambiguous_zdt) = result else { continue };
 ///         // This can never fail because we used the "reject" conflict
 ///         // resolution strategy. It will never return an ambiguous
-///         // `Zoned` since we always have a valid offset that does
+///         // `ZonedDateTime` since we always have a valid offset that does
 ///         // disambiguation for us.
 ///         let zdt = ambiguous_zdt.unambiguous().unwrap();
 ///         candidates.push(zdt);
@@ -413,6 +414,7 @@ use crate::{
 ///
 /// [infer-time-zone]: https://github.com/BurntSushi/jiff/discussions/181#discussioncomment-11729435
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct Pieces<'n> {
     date: Date,
     time: Option<Time>,
@@ -429,18 +431,21 @@ impl<'n> Pieces<'n> {
     /// Note that the `Pieces` returned is parameterized by the lifetime of
     /// `input`. This is because it might borrow a sub-slice of `input` for
     /// a time zone annotation name. For example,
-    /// `Canada/Yukon` in `2025-01-03T16:42-07[Canada/Yukon]`.
+    /// `America/Whitehorse` in `2025-01-03T16:42-07[America/Whitehorse]`.
     ///
     /// # Example
     ///
     /// ```
     /// use jiff::{civil, fmt::temporal::Pieces, tz::TimeZone};
     ///
-    /// let pieces = Pieces::parse("2025-01-03T16:42[Canada/Yukon]")?;
+    /// let pieces = Pieces::parse("2025-01-03T16:42[America/Whitehorse]")?;
     /// assert_eq!(pieces.date(), civil::date(2025, 1, 3));
     /// assert_eq!(pieces.time(), Some(civil::time(16, 42, 0, 0)));
     /// assert_eq!(pieces.to_numeric_offset(), None);
-    /// assert_eq!(pieces.to_time_zone()?, Some(TimeZone::get("Canada/Yukon")?));
+    /// assert_eq!(
+    ///     pieces.to_time_zone()?,
+    ///     Some(TimeZone::get("America/Whitehorse")?),
+    /// );
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
     /// ```
@@ -482,7 +487,7 @@ impl<'n> Pieces<'n> {
     /// # Example
     ///
     /// ```
-    /// use jiff::{civil, fmt::temporal::Pieces, Zoned};
+    /// use jiff::{ZonedDateTime, civil, fmt::temporal::Pieces};
     ///
     /// let pieces = Pieces::parse("2025-01-03T14:49:01")?;
     /// assert_eq!(pieces.date(), civil::date(2025, 1, 3));
@@ -494,10 +499,10 @@ impl<'n> Pieces<'n> {
     /// // Parsing into pieces just gives us the component parts, so no time:
     /// assert_eq!(pieces.time(), None);
     ///
-    /// // But if this uses higher level routines to parse into a `Zoned`,
-    /// // then we can see that the missing time implies the first instant
-    /// // of the day:
-    /// let zdt: Zoned = "2015-10-18[America/Sao_Paulo]".parse()?;
+    /// // But if this uses higher level routines to parse into a
+    /// // `ZonedDateTime`, then we can see that the missing time implies the
+    /// // first instant of the day:
+    /// let zdt: ZonedDateTime = "2015-10-18[America/Sao_Paulo]".parse()?;
     /// assert_eq!(zdt.time(), jiff::civil::time(1, 0, 0, 0));
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
@@ -562,7 +567,7 @@ impl<'n> Pieces<'n> {
     ///
     /// A time zone annotation is optional. The higher level
     /// [`DateTimeParser`](crate::fmt::temporal::DateTimeParser)
-    /// requires a time zone annotation when parsing into a [`Zoned`].
+    /// requires a time zone annotation when parsing into a [`ZonedDateTime`].
     ///
     /// A time zone annotation is either an offset, or more commonly, an IANA
     /// time zone identifier.
@@ -852,25 +857,26 @@ impl<'n> Pieces<'n> {
     /// ```
     ///
     /// This works because the resulting strings are valid. In particular, when
-    /// one parses a `2025-01-03[Africa/Cairo]` into a `Zoned`, it results in a
-    /// time component of midnight automatically (or more precisely, the first
-    /// instead of the corresponding day):
+    /// one parses a `2025-01-03[Africa/Cairo]` into a `ZonedDateTime`, it
+    /// results in a time component of midnight automatically (or more
+    /// precisely, the first instead of the corresponding day):
     ///
     /// ```
-    /// use jiff::{civil::Time, Zoned};
+    /// use jiff::{ZonedDateTime, civil::Time};
     ///
-    /// let zdt: Zoned = "2025-01-03[Africa/Cairo]".parse()?;
+    /// let zdt: ZonedDateTime = "2025-01-03[Africa/Cairo]".parse()?;
     /// assert_eq!(zdt.time(), Time::midnight());
     ///
     /// // tricksy tricksy, the first instant of 2015-10-18 in Sao Paulo is
     /// // not midnight!
-    /// let zdt: Zoned = "2015-10-18[America/Sao_Paulo]".parse()?;
+    /// let zdt: ZonedDateTime = "2015-10-18[America/Sao_Paulo]".parse()?;
     /// assert_eq!(zdt.time(), jiff::civil::time(1, 0, 0, 0));
     /// // This happens because midnight didn't appear on the clocks in
     /// // Sao Paulo on 2015-10-18. So if you try to parse a datetime with
     /// // midnight, automatic disambiguation kicks in and chooses the time
     /// // after the gap automatically:
-    /// let zdt: Zoned = "2015-10-18T00:00:00[America/Sao_Paulo]".parse()?;
+    /// let zdt: ZonedDateTime =
+    ///     "2015-10-18T00:00:00[America/Sao_Paulo]".parse()?;
     /// assert_eq!(zdt.time(), jiff::civil::time(1, 0, 0, 0));
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
@@ -1089,9 +1095,9 @@ impl From<(Timestamp, Offset)> for Pieces<'static> {
     }
 }
 
-impl<'a> From<&'a Zoned> for Pieces<'a> {
+impl<'a> From<&'a ZonedDateTime> for Pieces<'a> {
     #[inline]
-    fn from(zdt: &'a Zoned) -> Pieces<'a> {
+    fn from(zdt: &'a ZonedDateTime) -> Pieces<'a> {
         let mut pieces =
             Pieces::from(zdt.datetime()).with_offset(zdt.offset());
         if let Some(name) = zdt.time_zone().iana_name() {
@@ -1175,6 +1181,7 @@ impl<'n> core::fmt::Display for Pieces<'n> {
 ///
 /// [RFC 9557]: https://www.rfc-editor.org/rfc/rfc9557.html
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[non_exhaustive]
 pub enum PiecesOffset {
     /// The "Zulu" offset, corresponding to UTC in a context where the offset
@@ -1282,6 +1289,7 @@ impl From<PiecesNumericOffset> for PiecesOffset {
 ///
 /// [RFC 9557]: https://www.rfc-editor.org/rfc/rfc9557
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct PiecesNumericOffset {
     offset: Offset,
     is_negative: bool,
@@ -1407,9 +1415,9 @@ impl From<Offset> for PiecesNumericOffset {
 ///
 /// A time zone annotation is either a time zone name (typically an IANA time
 /// zone identifier) like `America/New_York`, or an offset like `-05:00`. This
-/// is normally an implementation detail of parsing into a [`Zoned`], but the
-/// raw annotation can be accessed via [`Pieces::time_zone_annotation`] after
-/// parsing into a [`Pieces`].
+/// is normally an implementation detail of parsing into a [`ZonedDateTime`],
+/// but the raw annotation can be accessed via [`Pieces::time_zone_annotation`]
+/// after parsing into a [`Pieces`].
 ///
 /// The lifetime parameter refers to the lifetime of the time zone
 /// name. The lifetime is static when the time zone annotation is
@@ -1449,6 +1457,7 @@ impl From<Offset> for PiecesNumericOffset {
 ///
 /// [RFC 9557]: https://www.rfc-editor.org/rfc/rfc9557.html
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct TimeZoneAnnotation<'n> {
     pub(crate) kind: TimeZoneAnnotationKind<'n>,
     /// Whether the annotation is marked as "critical," i.e., with a
@@ -1538,11 +1547,11 @@ impl<'n> TimeZoneAnnotation<'n> {
     /// ```
     /// use jiff::{fmt::temporal::Pieces, tz::TimeZone};
     ///
-    /// let pieces = Pieces::parse("2025-01-02T16:47-05[Australia/Tasmania]")?;
+    /// let pieces = Pieces::parse("2025-01-02T16:47-05[Australia/Hobart]")?;
     /// let ann = pieces.time_zone_annotation().unwrap();
     /// assert_eq!(
     ///     ann.to_time_zone().unwrap(),
-    ///     TimeZone::get("Australia/Tasmania").unwrap(),
+    ///     TimeZone::get("Australia/Hobart").unwrap(),
     /// );
     ///
     /// let pieces = Pieces::parse("2025-01-02T16:47-05[Australia/Bluey]")?;
@@ -1575,11 +1584,11 @@ impl<'n> TimeZoneAnnotation<'n> {
     /// ```
     /// use jiff::{fmt::temporal::Pieces, tz::TimeZone};
     ///
-    /// let pieces = Pieces::parse("2025-01-02T16:47-05[Australia/Tasmania]")?;
+    /// let pieces = Pieces::parse("2025-01-02T16:47-05[Australia/Hobart]")?;
     /// let ann = pieces.time_zone_annotation().unwrap();
     /// assert_eq!(
     ///     ann.to_time_zone_with(jiff::tz::db()).unwrap(),
-    ///     TimeZone::get("Australia/Tasmania").unwrap(),
+    ///     TimeZone::get("Australia/Hobart").unwrap(),
     /// );
     ///
     /// # Ok::<(), Box<dyn std::error::Error>>(())
@@ -1642,6 +1651,7 @@ impl From<Offset> for TimeZoneAnnotation<'static> {
 ///
 /// [RFC 9557]: https://www.rfc-editor.org/rfc/rfc9557.html
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 #[non_exhaustive]
 pub enum TimeZoneAnnotationKind<'n> {
     /// The time zone annotation is a name, usually an IANA time zone
@@ -1695,6 +1705,7 @@ impl From<Offset> for TimeZoneAnnotationKind<'static> {
 /// but callers can also construct one via this type's `From<&str>` trait
 /// implementation if necessary.
 #[derive(Clone, Debug, Eq, Hash, PartialEq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct TimeZoneAnnotationName<'n> {
     name: StringCow<'n>,
 }

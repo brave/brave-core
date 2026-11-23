@@ -1,0 +1,29 @@
+[package]
+name = "jni-macros"
+version = "0.22.4"
+description = "Procedural macros for the jni crate"
+keywords = ["jni", "java", "jvm", "android", "ndk"]
+categories = ["api-bindings", "development-tools::procedural-macro-helpers"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/jni-rs/jni-rs"
+edition = "2024"
+include = ["build.rs", "src/**", "examples/**"]
+
+[lib]
+proc-macro = true
+doctest = false
+
+[build-dependencies]
+rustc_version = "0.4"
+
+[dependencies]
+syn = { version = "2.0", features = ["full"] }
+quote = "1.0"
+proc-macro2 = "1.0"
+simd_cesu8 = "1.0.1"
+
+[dev-dependencies]
+javac.workspace = true
+rusty-fork.workspace = true
+trybuild = "1"
+thiserror = "2"

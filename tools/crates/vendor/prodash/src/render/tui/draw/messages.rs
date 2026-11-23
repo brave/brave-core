@@ -11,8 +11,8 @@ use unicode_width::UnicodeWidthStr;
 
 use crate::{
     messages::{Message, MessageLevel},
-    render::tui::utils::{block_width, draw_text_with_ellipsis_nowrap, rect, sanitize_offset, VERTICAL_LINE},
-    time::{format_time_for_messages, DATE_TIME_HMS},
+    render::tui::utils::{VERTICAL_LINE, block_width, draw_text_with_ellipsis_nowrap, rect, sanitize_offset},
+    time::{DATE_TIME_HMS, format_time_for_messages},
 };
 
 pub fn pane(messages: &[Message], bound: Rect, overflow_bound: Rect, offset: &mut u16, buf: &mut Buffer) {

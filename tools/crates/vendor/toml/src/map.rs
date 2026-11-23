@@ -15,7 +15,7 @@
 //! [`IndexMap`]: https://docs.rs/indexmap
 
 #[cfg(not(feature = "preserve_order"))]
-use alloc::collections::{btree_map, BTreeMap};
+use alloc::collections::{BTreeMap, btree_map};
 use core::borrow::Borrow;
 use core::fmt::{self, Debug};
 use core::hash::Hash;

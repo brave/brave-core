@@ -1,20 +1,13 @@
-// Copyright 2016 Amanieu d'Antras
-//
-// Licensed under the Apache License, Version 2.0, <LICENSE-APACHE or
-// http://apache.org/licenses/LICENSE-2.0> or the MIT license <LICENSE-MIT or
-// http://opensource.org/licenses/MIT>, at your option. This file may not be
-// copied, modified, or distributed except according to those terms.
-
 use crate::{deadlock, util};
 use core::{
     sync::atomic::{AtomicU8, Ordering},
     time::Duration,
 };
 use lock_api::RawMutex as RawMutex_;
-use parking_lot_core::{self, ParkResult, SpinWait, UnparkResult, UnparkToken, DEFAULT_PARK_TOKEN};
+use parking_lot_core::{self, DEFAULT_PARK_TOKEN, ParkResult, SpinWait, UnparkResult, UnparkToken};
 use std::time::Instant;
 
-// UnparkToken used to indicate that that the target thread should attempt to
+// UnparkToken used to indicate that the target thread should attempt to
 // lock the mutex again as soon as it is unparked.
 pub(crate) const TOKEN_NORMAL: UnparkToken = UnparkToken(0);
 
@@ -41,11 +34,11 @@ pub struct RawMutex {
     ///     0      |     1      | The mutex is locked by exactly one thread. No other thread is
     ///            |            | waiting for it.
     /// -----------+------------+------------------------------------------------------------------
-    ///     1      |     0      | The mutex is not locked. One or more thread is parked or about to
-    ///            |            | park. At least one of the parked threads are just about to be
+    ///     1      |     0      | The mutex is not locked. One or more threads are parked or about to
+    ///            |            | park. At least one of the parked threads is just about to be
     ///            |            | unparked, or a thread heading for parking might abort the park.
     /// -----------+------------+------------------------------------------------------------------
-    ///     1      |     1      | The mutex is locked by exactly one thread. One or more thread is
+    ///     1      |     1      | The mutex is locked by exactly one thread. One or more threads are
     ///            |            | parked or about to park, waiting for the lock to become available.
     ///            |            | In this state, PARKED_BIT is only ever cleared when a bucket lock
     ///            |            | is held (i.e. in a parking_lot_core callback). This ensures that
@@ -60,53 +53,38 @@ unsafe impl lock_api::RawMutex for RawMutex {
         state: AtomicU8::new(0),
     };
 
-    type GuardMarker = crate::GuardMarker;
+    type Guard = crate::GuardMarker;
 
     #[inline]
-    fn lock(&self) {
-        if self
+    fn lock(&self) -> Self::Guard {
+        let guard = if self
             .state
             .compare_exchange_weak(0, LOCKED_BIT, Ordering::Acquire, Ordering::Relaxed)
             .is_err()
         {
-            self.lock_slow(None);
-        }
-        unsafe { deadlock::acquire_resource(self as *const _ as usize) };
+            self.lock_slow(None).unwrap()
+        } else {
+            Self::Guard::new()
+        };
+        unsafe { deadlock::acquire_resource(core::ptr::from_ref(self).addr()) };
+        guard
     }
 
     #[inline]
-    fn try_lock(&self) -> bool {
-        let mut state = self.state.load(Ordering::Relaxed);
-        loop {
-            if state & LOCKED_BIT != 0 {
-                return false;
-            }
-            match self.state.compare_exchange_weak(
-                state,
-                state | LOCKED_BIT,
-                Ordering::Acquire,
-                Ordering::Relaxed,
-            ) {
-                Ok(_) => {
-                    unsafe { deadlock::acquire_resource(self as *const _ as usize) };
-                    return true;
-                }
-                Err(x) => state = x,
-            }
-        }
+    fn try_lock(&self) -> Option<Self::Guard> {
+        self.state
+            .try_update(Ordering::Acquire, Ordering::Relaxed, |state| {
+                (state & LOCKED_BIT == 0).then_some(state | LOCKED_BIT)
+            })
+            .ok()?;
+        unsafe { deadlock::acquire_resource(core::ptr::from_ref(self).addr()) };
+        Some(Self::Guard::new())
     }
 
     #[inline]
-    unsafe fn unlock(&self) {
-        deadlock::release_resource(self as *const _ as usize);
-        if self
-            .state
-            .compare_exchange(LOCKED_BIT, 0, Ordering::Release, Ordering::Relaxed)
-            .is_ok()
-        {
-            return;
-        }
-        self.unlock_slow(false);
+    unsafe fn unlock(&self, _guard: Self::Guard) {
+        unsafe { deadlock::release_resource(core::ptr::from_ref(self).addr()) };
+        unsafe { self.unlock_inner() };
     }
 
     #[inline]
@@ -118,20 +96,19 @@ unsafe impl lock_api::RawMutex for RawMutex {
 
 unsafe impl lock_api::RawMutexFair for RawMutex {
     #[inline]
-    unsafe fn unlock_fair(&self) {
-        deadlock::release_resource(self as *const _ as usize);
+    unsafe fn unlock_fair(&self, _guard: Self::Guard) {
+        unsafe { deadlock::release_resource(core::ptr::from_ref(self).addr()) };
         if self
             .state
             .compare_exchange(LOCKED_BIT, 0, Ordering::Release, Ordering::Relaxed)
-            .is_ok()
+            .is_err()
         {
-            return;
+            self.unlock_fair_slow();
         }
-        self.unlock_slow(true);
     }
 
     #[inline]
-    unsafe fn bump(&self) {
+    unsafe fn bump(&self, _guard: &mut Self::Guard) {
         if self.state.load(Ordering::Relaxed) & PARKED_BIT != 0 {
             self.bump_slow();
         }
@@ -143,60 +120,59 @@ unsafe impl lock_api::RawMutexTimed for RawMutex {
     type Instant = Instant;
 
     #[inline]
-    fn try_lock_until(&self, timeout: Instant) -> bool {
-        let result = if self
+    fn try_lock_until(&self, timeout: Instant) -> Option<Self::Guard> {
+        let guard = if self
             .state
             .compare_exchange_weak(0, LOCKED_BIT, Ordering::Acquire, Ordering::Relaxed)
             .is_ok()
         {
-            true
+            Self::Guard::new()
         } else {
-            self.lock_slow(Some(timeout))
+            self.lock_slow(Some(timeout))?
         };
-        if result {
-            unsafe { deadlock::acquire_resource(self as *const _ as usize) };
-        }
-        result
+        unsafe { deadlock::acquire_resource(core::ptr::from_ref(self).addr()) };
+        Some(guard)
     }
 
     #[inline]
-    fn try_lock_for(&self, timeout: Duration) -> bool {
-        let result = if self
+    fn try_lock_for(&self, timeout: Duration) -> Option<Self::Guard> {
+        let guard = if self
             .state
             .compare_exchange_weak(0, LOCKED_BIT, Ordering::Acquire, Ordering::Relaxed)
             .is_ok()
         {
-            true
+            Self::Guard::new()
         } else {
-            self.lock_slow(util::to_deadline(timeout))
+            self.lock_slow(util::to_deadline(timeout))?
         };
-        if result {
-            unsafe { deadlock::acquire_resource(self as *const _ as usize) };
-        }
-        result
+        unsafe { deadlock::acquire_resource(core::ptr::from_ref(self).addr()) };
+        Some(guard)
     }
 }
 
 impl RawMutex {
+    /// Unlocks the mutex without updating the deadlock detector.
+    ///
+    /// # Safety
+    ///
+    /// The caller must own the mutex.
+    #[inline]
+    pub(crate) unsafe fn unlock_inner(&self) {
+        let state = self.state.fetch_sub(LOCKED_BIT, Ordering::Release);
+        if state & PARKED_BIT != 0 {
+            self.unlock_slow();
+        }
+    }
+
     // Used by Condvar when requeuing threads to us, must be called while
     // holding the queue lock.
     #[inline]
     pub(crate) fn mark_parked_if_locked(&self) -> bool {
-        let mut state = self.state.load(Ordering::Relaxed);
-        loop {
-            if state & LOCKED_BIT == 0 {
-                return false;
-            }
-            match self.state.compare_exchange_weak(
-                state,
-                state | PARKED_BIT,
-                Ordering::Relaxed,
-                Ordering::Relaxed,
-            ) {
-                Ok(_) => return true,
-                Err(x) => state = x,
-            }
-        }
+        self.state
+            .try_update(Ordering::Relaxed, Ordering::Relaxed, |state| {
+                (state & LOCKED_BIT != 0).then_some(state | PARKED_BIT)
+            })
+            .is_ok()
     }
 
     // Used by Condvar when requeuing threads to us, must be called while
@@ -207,7 +183,7 @@ impl RawMutex {
     }
 
     #[cold]
-    fn lock_slow(&self, timeout: Option<Instant>) -> bool {
+    fn lock_slow(&self, timeout: Option<Instant>) -> Option<crate::GuardMarker> {
         let mut spinwait = SpinWait::new();
         let mut state = self.state.load(Ordering::Relaxed);
         loop {
@@ -219,7 +195,7 @@ impl RawMutex {
                     Ordering::Acquire,
                     Ordering::Relaxed,
                 ) {
-                    Ok(_) => return true,
+                    Ok(_) => return Some(crate::GuardMarker::new()),
                     Err(x) => state = x,
                 }
                 continue;
@@ -232,20 +208,20 @@ impl RawMutex {
             }
 
             // Set the parked bit
-            if state & PARKED_BIT == 0 {
-                if let Err(x) = self.state.compare_exchange_weak(
+            if state & PARKED_BIT == 0
+                && let Err(x) = self.state.compare_exchange_weak(
                     state,
                     state | PARKED_BIT,
                     Ordering::Relaxed,
                     Ordering::Relaxed,
-                ) {
-                    state = x;
-                    continue;
-                }
+                )
+            {
+                state = x;
+                continue;
             }
 
             // Park our thread until we are woken up by an unlock
-            let addr = self as *const _ as usize;
+            let addr = core::ptr::from_ref(self).addr();
             let validate = || self.state.load(Ordering::Relaxed) == LOCKED_BIT | PARKED_BIT;
             let before_sleep = || {};
             let timed_out = |_, was_last_thread| {
@@ -270,7 +246,7 @@ impl RawMutex {
             } {
                 // The thread that unparked us passed the lock on to us
                 // directly without unlocking it.
-                ParkResult::Unparked(TOKEN_HANDOFF) => return true,
+                ParkResult::Unparked(TOKEN_HANDOFF) => return Some(crate::GuardMarker::new()),
 
                 // We were unparked normally, try acquiring the lock again
                 ParkResult::Unparked(_) => (),
@@ -279,7 +255,7 @@ impl RawMutex {
                 ParkResult::Invalid => (),
 
                 // Timeout expired
-                ParkResult::TimedOut => return false,
+                ParkResult::TimedOut => return None,
             }
 
             // Loop back and try locking again
@@ -289,14 +265,33 @@ impl RawMutex {
     }
 
     #[cold]
-    fn unlock_slow(&self, force_fair: bool) {
+    fn unlock_slow(&self) {
+        let addr = core::ptr::from_ref(self).addr();
+        let callback = |result: UnparkResult| {
+            // Ownership has already been released. Preserve LOCKED_BIT since
+            // another thread may have acquired the mutex in the meantime.
+            if !result.have_more_threads {
+                self.state.fetch_and(!PARKED_BIT, Ordering::Relaxed);
+            }
+            TOKEN_NORMAL
+        };
+        // SAFETY:
+        //   * `addr` is an address we control.
+        //   * `callback` does not panic or call into any function of `parking_lot`.
+        unsafe {
+            parking_lot_core::unpark_one(addr, callback);
+        }
+    }
+
+    #[cold]
+    fn unlock_fair_slow(&self) {
         // Unpark one thread and leave the parked bit set if there might
         // still be parked threads on this address.
-        let addr = self as *const _ as usize;
+        let addr = core::ptr::from_ref(self).addr();
         let callback = |result: UnparkResult| {
             // If we are using a fair unlock then we should keep the
             // mutex locked and hand it off to the unparked thread.
-            if result.unparked_threads != 0 && (force_fair || result.be_fair) {
+            if result.unparked_threads != 0 {
                 // Clear the parked bit if there are no more parked
                 // threads.
                 if !result.have_more_threads {
@@ -324,8 +319,8 @@ impl RawMutex {
 
     #[cold]
     fn bump_slow(&self) {
-        unsafe { deadlock::release_resource(self as *const _ as usize) };
-        self.unlock_slow(true);
+        unsafe { deadlock::release_resource(core::ptr::from_ref(self).addr()) };
+        self.unlock_fair_slow();
         self.lock();
     }
 }

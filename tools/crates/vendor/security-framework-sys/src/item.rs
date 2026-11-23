@@ -32,27 +32,29 @@ extern "C" {
     pub static kSecPrivateKeyAttrs: CFStringRef;
     pub static kSecPublicKeyAttrs: CFStringRef;
 
+    pub static kSecAttrCanEncrypt: CFStringRef;
+    pub static kSecAttrCanDecrypt: CFStringRef;
+    pub static kSecAttrCanDerive: CFStringRef;
+    pub static kSecAttrCanWrap: CFStringRef;
+    pub static kSecAttrCanUnwrap: CFStringRef;
+    pub static kSecAttrCanSign: CFStringRef;
+    pub static kSecAttrCanVerify: CFStringRef;
+
     pub static kSecAttrKeyClass: CFStringRef;
     pub static kSecAttrKeyClassPublic: CFStringRef;
     pub static kSecAttrKeyClassPrivate: CFStringRef;
     pub static kSecAttrKeyClassSymmetric: CFStringRef;
 
+    #[cfg(target_os = "macos")]
     pub static kSecUseKeychain: CFStringRef;
     #[cfg(any(feature = "OSX_10_15", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     pub static kSecUseDataProtectionKeychain: CFStringRef;
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     pub static kSecAttrTokenID: CFStringRef;
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     pub static kSecAttrTokenIDSecureEnclave: CFStringRef;
-    #[cfg(any(feature = "OSX_10_13", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     pub static kSecUseAuthenticationContext: CFStringRef;
-    #[cfg(any(feature = "OSX_10_11", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     pub static kSecUseAuthenticationUI: CFStringRef;
-    #[cfg(any(feature = "OSX_10_11", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     pub static kSecUseAuthenticationUISkip: CFStringRef;
-    #[cfg(any(feature = "OSX_10_9", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     pub static kSecAttrSynchronizable: CFStringRef;
-    #[cfg(any(feature = "OSX_10_9", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     pub static kSecAttrSynchronizableAny: CFStringRef;
 
     pub static kSecAttrKeySizeInBits: CFStringRef;
@@ -73,14 +75,13 @@ extern "C" {
     pub static kSecAttrKeyTypeRC2: CFStringRef;
     #[cfg(target_os = "macos")]
     pub static kSecAttrKeyTypeCAST: CFStringRef;
+    #[deprecated(note = "Deprecated by Apple")]
     pub static kSecAttrKeyTypeEC: CFStringRef;
 
     pub static kSecAttrAccessGroup: CFStringRef;
     pub static kSecAttrAccessGroupToken: CFStringRef;
 
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     pub static kSecKeyKeyExchangeParameterRequestedSize: CFStringRef;
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     pub static kSecKeyKeyExchangeParameterSharedInfo: CFStringRef;
 
     pub static kSecAttrAuthenticationType: CFStringRef;

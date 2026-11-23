@@ -1,6 +1,6 @@
 use crate::{
     config,
-    config::tree::{keys, Key, Pack, Section},
+    config::tree::{Key, Pack, Section, keys},
 };
 
 impl Pack {
@@ -12,26 +12,35 @@ impl Pack {
     /// The `pack.indexVersion` key.
     pub const INDEX_VERSION: IndexVersion =
         IndexVersion::new_with_validate("indexVersion", &config::Tree::PACK, validate::IndexVersion);
+
+    /// The `pack.compression` key.
+    pub const COMPRESSION: keys::Compression = keys::Compression::new_compression("compression", &config::Tree::PACK);
 }
 
 /// The `pack.indexVersion` key.
 pub type IndexVersion = keys::Any<validate::IndexVersion>;
 
 mod index_version {
-    use crate::{config, config::tree::sections::pack::IndexVersion};
+    use gix_error::{ResultExt, bail};
+
+    use crate::{Result, config, config::tree::sections::pack::IndexVersion};
 
     impl IndexVersion {
         /// Try to interpret an integer value as index version.
         pub fn try_into_index_version(
             &'static self,
-            value: Result<i64, gix_config::value::Error>,
-        ) -> Result<gix_pack::index::Version, config::key::GenericError> {
-            let value = value.map_err(|err| config::key::GenericError::from(self).with_source(err))?;
-            Ok(match value {
+            value: Result<Option<i64>>,
+        ) -> Result<Option<gix_pack::index::Version>> {
+            let Some(value) = value.or_raise(|| config::key::error(self, "Invalid pack index version"))? else {
+                return Ok(None);
+            };
+            Ok(Some(match value {
                 1 => gix_pack::index::Version::V1,
                 2 => gix_pack::index::Version::V2,
-                _ => return Err(config::key::GenericError::from(self)),
-            })
+                _ => {
+                    bail!(config::key::error_with_value(self, "Invalid pack index version", value));
+                }
+            }))
         }
     }
 }
@@ -42,22 +51,19 @@ impl Section for Pack {
     }
 
     fn keys(&self) -> &[&dyn Key] {
-        &[&Self::THREADS, &Self::INDEX_VERSION]
+        &[&Self::THREADS, &Self::INDEX_VERSION, &Self::COMPRESSION]
     }
 }
 
 mod validate {
-    use crate::{bstr::BStr, config::tree::keys};
+    use crate::{Result, bstr::BStr, config::tree::keys};
 
+    #[derive(Clone, Copy)]
     pub struct IndexVersion;
     impl keys::Validate for IndexVersion {
-        fn validate(&self, value: &BStr) -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>> {
-            super::Pack::INDEX_VERSION.try_into_index_version(gix_config::Integer::try_from(value).and_then(
-                |int| {
-                    int.to_decimal()
-                        .ok_or_else(|| gix_config::value::Error::new("integer out of range", value))
-                },
-            ))?;
+        fn validate(&self, value: &BStr) -> Result {
+            super::Pack::INDEX_VERSION
+                .try_into_index_version(gix_config::Integer::from_bytes::<i64>(value).map(Some))?;
             Ok(())
         }
     }

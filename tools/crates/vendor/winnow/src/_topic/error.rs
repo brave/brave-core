@@ -33,12 +33,12 @@
 //!```
 
 #![allow(unused_imports)]
+use crate::_tutorial::chapter_7;
 use crate::combinator::cut_err;
+use crate::error::AddContext;
 use crate::error::ContextError;
 use crate::error::ErrorConvert;
-use crate::error::StrContext;
-use crate::Parser;
-use crate::_tutorial::chapter_7;
-use crate::error::AddContext;
 use crate::error::FromExternalError;
 use crate::error::ParserError;
+use crate::error::StrContext;
+use crate::Parser;

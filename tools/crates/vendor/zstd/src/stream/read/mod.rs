@@ -166,6 +166,19 @@ impl<R: BufRead> Encoder<'static, R> {
 }
 
 impl<'a, R: BufRead> Encoder<'a, R> {
+    /// Creates a new encoder which employs the provided context for serialization.
+    pub fn with_context(
+        reader: R,
+        context: &'a mut zstd_safe::CCtx<'static>,
+    ) -> Self {
+        Self {
+            reader: zio::Reader::new(
+                reader,
+                raw::Encoder::with_context(context),
+            ),
+        }
+    }
+
     /// Creates a new encoder, using an existing `EncoderDictionary`.
     ///
     /// The dictionary must be the same as the one used during compression.

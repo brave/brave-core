@@ -10,10 +10,10 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.81.0"
+edition = "2024"
+rust-version = "1.88.0"
 name = "time-core"
-version = "0.1.6"
+version = "0.1.9"
 authors = [
     "Jacob Pratt <open-source@jhpratt.dev>",
     "Time contributors",
@@ -37,13 +37,16 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/time-rs/time"
 
 [package.metadata.docs.rs]
+all-features = true
+targets = ["x86_64-unknown-linux-gnu"]
 rustdoc-args = ["--generate-link-to-definition"]
+
+[features]
+large-dates = []
 
 [lib]
 name = "time_core"
 path = "src/lib.rs"
-
-[dependencies]
 
 [lints.clippy]
 alloc-instead-of-core = "deny"

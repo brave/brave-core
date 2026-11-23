@@ -13,7 +13,7 @@
 edition = "2018"
 rust-version = "1.64"
 name = "zstd"
-version = "0.13.3"
+version = "0.13.5"
 authors = ["Alexandre Bury <alexandre.bury@gmail.com>"]
 build = false
 exclude = [
@@ -37,7 +37,7 @@ categories = [
     "compression",
     "api-bindings",
 ]
-license = "MIT"
+license = "BSD-3-Clause"
 repository = "https://github.com/gyscos/zstd-rs"
 
 [package.metadata.docs.rs]
@@ -106,7 +106,7 @@ name = "issue_182"
 path = "tests/issue_182.rs"
 
 [dependencies.zstd-safe]
-version = "7.1.0"
+version = "7.4.1"
 features = ["std"]
 default-features = false
 

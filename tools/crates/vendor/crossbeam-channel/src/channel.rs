@@ -103,6 +103,9 @@ pub fn unbounded<T>() -> (Sender<T>, Receiver<T>) {
 /// thread::sleep(Duration::from_secs(1));
 /// assert_eq!(r.recv(), Ok(1));
 /// ```
+/// # Panics
+///
+/// Panics if `cap` is too large to initialize the bounded channel.
 pub fn bounded<T>(cap: usize) -> (Sender<T>, Receiver<T>) {
     if cap == 0 {
         let (s, r) = counter::new(flavors::zero::Channel::new());
@@ -262,7 +265,7 @@ pub fn at(when: Instant) -> Receiver<Instant> {
 ///     recv(timeout) -> _ => println!("timed out"),
 /// }
 /// ```
-pub fn never<T>() -> Receiver<T> {
+pub const fn never<T>() -> Receiver<T> {
     Receiver {
         flavor: ReceiverFlavor::Never(flavors::never::Channel::new()),
     }
@@ -448,7 +451,8 @@ impl<T> Sender<T> {
     ///
     /// If the channel is full and not disconnected, this call will block until the send operation
     /// can proceed or the operation times out. If the channel becomes disconnected, this call will
-    /// wake up and return an error. The returned error contains the original message.
+    /// wake up and return an error. The returned error contains the original message. If the
+    /// channel is not full and the timeout has already elapsed, the message will still be sent.
     ///
     /// If called on a zero-capacity channel, this method will wait for a receive operation to
     /// appear on the other side of the channel.
@@ -492,7 +496,9 @@ impl<T> Sender<T> {
     ///
     /// If the channel is full and not disconnected, this call will block until the send operation
     /// can proceed or the operation times out. If the channel becomes disconnected, this call will
-    /// wake up and return an error. The returned error contains the original message.
+    /// wake up and return an error. The returned error contains the original message. If the
+    /// channel is not full and the deadline has already been reached, the message will still be
+    /// sent.
     ///
     /// If called on a zero-capacity channel, this method will wait for a receive operation to
     /// appear on the other side of the channel.
@@ -841,7 +847,8 @@ impl<T> Receiver<T> {
     ///
     /// If the channel is empty and not disconnected, this call will block until the receive
     /// operation can proceed or the operation times out. If the channel is empty and becomes
-    /// disconnected, this call will wake up and return an error.
+    /// disconnected, this call will wake up and return an error. If the channel is non-empty
+    /// and the timeout has already elapsed, the next message in the channel will be returned.
     ///
     /// If called on a zero-capacity channel, this method will wait for a send operation to appear
     /// on the other side of the channel.
@@ -885,7 +892,9 @@ impl<T> Receiver<T> {
     ///
     /// If the channel is empty and not disconnected, this call will block until the receive
     /// operation can proceed or the operation times out. If the channel is empty and becomes
-    /// disconnected, this call will wake up and return an error.
+    /// disconnected, this call will wake up and return an error. If the channel is non-empty
+    /// and the deadline has already been reached, the next message in the channel will be
+    /// returned.
     ///
     /// If called on a zero-capacity channel, this method will wait for a send operation to appear
     /// on the other side of the channel.

@@ -16,11 +16,11 @@ use winnow::{
 #[derive(Debug, Clone)]
 pub(crate) enum Expr {
     Value(i64),
-    Add(Box<Expr>, Box<Expr>),
-    Sub(Box<Expr>, Box<Expr>),
-    Mul(Box<Expr>, Box<Expr>),
-    Div(Box<Expr>, Box<Expr>),
-    Paren(Box<Expr>),
+    Add(Box<Self>, Box<Self>),
+    Sub(Box<Self>, Box<Self>),
+    Mul(Box<Self>, Box<Self>),
+    Div(Box<Self>, Box<Self>),
+    Paren(Box<Self>),
 }
 
 impl Expr {

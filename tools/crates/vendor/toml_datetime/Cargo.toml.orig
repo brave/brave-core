@@ -1,6 +1,6 @@
 [package]
 name = "toml_datetime"
-version = "0.7.5+spec-1.1.0"
+version = "1.1.3+spec-1.1.0"
 description = "A TOML-compatible datetime type"
 categories = ["encoding", "parser-implementations", "parsing", "config"]
 keywords = ["encoding", "toml", "no_std"]
@@ -20,7 +20,7 @@ pre-release-replacements = [
   {file="CHANGELOG.md", search="\\.\\.\\.HEAD", replace="...{{tag_name}}", exactly=1},
   {file="CHANGELOG.md", search="ReleaseDate", replace="{{date}}", min=1},
   {file="CHANGELOG.md", search="<!-- next-header -->", replace="<!-- next-header -->\n## [Unreleased] - ReleaseDate\n", exactly=1},
-  {file="CHANGELOG.md", search="<!-- next-url -->", replace="<!-- next-url -->\n[Unreleased]: https://github.com/toml-rs/toml/compare/{{tag_name}}...HEAD", exactly=1},
+  {file="CHANGELOG.md", search="<!-- next-url -->", replace="<!-- next-url -->\n[Unreleased]: {{repository}}/compare/{{tag_name}}...HEAD", exactly=1},
 ]
 
 [features]
@@ -30,10 +30,10 @@ std = ["alloc", "serde_core?/std"]
 serde = ["dep:serde_core"]
 
 [dependencies]
-serde_core = { version = "1.0.225", default-features = false, optional = true }
+serde_core = { version = "1.0.228", default-features = false, optional = true }
 
 [lints]
 workspace = true
 
 [dev-dependencies]
-snapbox = "0.6.21"
+snapbox = "1.1.0"

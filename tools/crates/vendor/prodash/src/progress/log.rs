@@ -1,15 +1,15 @@
 use std::{
     sync::{
-        atomic::{AtomicBool, Ordering},
         Arc,
+        atomic::{AtomicBool, Ordering},
     },
     time::Duration,
 };
 
 use crate::{
+    Count, NestedProgress, Progress, Unit,
     messages::MessageLevel,
     progress::{Id, Step, StepShared},
-    Count, NestedProgress, Progress, Unit,
 };
 
 /// A [`NestedProgress`] implementation which displays progress as it happens without the use of a renderer.

@@ -14,6 +14,16 @@
 //! [`BTreeMap`]: alloc::collections::BTreeMap
 //! [`BTreeSet`]: alloc::collections::BTreeSet
 
+// Which collections will be used feature matrix:
+//
+// `hash-collections` | `prefer-btree-collections` |      usage
+// ------------------ | -------------------------- | -------------------
+//            false   |                    false   |      btree
+//             true   |                    false   |      hash
+//            false   |                     true   |      btree
+//             true   |                     true   |      btree
+
+#[cfg(feature = "hash-collections")]
 pub mod hash;
 pub mod index_map;
 pub mod index_set;

@@ -30,6 +30,24 @@ fn struct_with_named_fields() {
     assert_eq!((3, Some(3)), <Rgb as Arbitrary>::size_hint(0));
 }
 
+#[derive(Copy, Clone, Debug, Eq, PartialEq, Arbitrary)]
+#[allow(non_camel_case_types)]
+struct r#struct {
+    pub r#fn: u8,
+    pub r#struct: u8,
+    pub r#let: u8,
+}
+
+#[test]
+fn struct_with_raw_named_fields() {
+    let r#struct: r#struct = arbitrary_from(&[4, 5, 6]);
+    assert_eq!(r#struct.r#fn, 4);
+    assert_eq!(r#struct.r#struct, 5);
+    assert_eq!(r#struct.r#let, 6);
+
+    assert_eq!((3, Some(3)), <r#struct as Arbitrary>::size_hint(0));
+}
+
 #[derive(Copy, Clone, Debug, Arbitrary)]
 struct MyTupleStruct(u8, bool);
 

@@ -31,7 +31,11 @@ impl<R: Reader> DebugAddr<R> {
         let input = &mut self.section.clone();
         input.skip(base.0)?;
         input.skip(R::Offset::from_u64(
-            index.0.into_u64() * u64::from(address_size),
+            index
+                .0
+                .into_u64()
+                .checked_mul(u64::from(address_size))
+                .ok_or(Error::UnsupportedOffset)?,
         )?)?;
         input.read_address(address_size)
     }
@@ -115,6 +119,14 @@ impl<R: Reader> fallible_iterator::FallibleIterator for AddrHeaderIter<R> {
     }
 }
 
+impl<R: Reader> Iterator for AddrHeaderIter<R> {
+    type Item = Result<AddrHeader<R>>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        AddrHeaderIter::next(self).transpose()
+    }
+}
+
 /// A header for a set of entries in the `.debug_addr` section.
 ///
 /// These entries all belong to a single unit.
@@ -148,7 +160,7 @@ where
         let address_size = rest.read_address_size()?;
         let segment_size = rest.read_u8()?;
         if segment_size != 0 {
-            return Err(Error::UnsupportedSegmentSize);
+            return Err(Error::UnsupportedSegmentSize(segment_size));
         }
 
         // unit_length + version + address_size + segment_size
@@ -210,9 +222,6 @@ where
 }
 
 /// An iterator over the addresses from a `.debug_addr` section.
-///
-/// Can be [used with
-/// `FallibleIterator`](./index.html#using-with-fallibleiterator).
 #[derive(Debug, Clone)]
 pub struct AddrEntryIter<R: Reader> {
     input: R,
@@ -248,6 +257,14 @@ impl<R: Reader> fallible_iterator::FallibleIterator for AddrEntryIter<R> {
 
     fn next(&mut self) -> ::core::result::Result<Option<Self::Item>, Self::Error> {
         AddrEntryIter::next(self)
+    }
+}
+
+impl<R: Reader> Iterator for AddrEntryIter<R> {
+    type Item = Result<u64>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        AddrEntryIter::next(self).transpose()
     }
 }
 
@@ -295,6 +312,20 @@ mod tests {
                 );
             }
         }
+    }
+
+    #[test]
+    #[cfg(target_pointer_width = "64")]
+    fn test_get_address_index_overflow() {
+        // `index * address_size` must not overflow; it should be reported as an
+        // unsupported offset instead.
+        let buf = [0u8; 64];
+        let debug_addr = DebugAddr::from(EndianSlice::new(&buf, LittleEndian));
+        let index = DebugAddrIndex(0x2000_0000_0000_0000usize);
+        assert_eq!(
+            debug_addr.get_address(8, DebugAddrBase(0), index),
+            Err(Error::UnsupportedOffset)
+        );
     }
 
     #[test]

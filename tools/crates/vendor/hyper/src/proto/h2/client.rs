@@ -74,8 +74,10 @@ pub(crate) struct Config {
     pub(crate) max_concurrent_reset_streams: Option<usize>,
     pub(crate) max_send_buffer_size: usize,
     pub(crate) max_pending_accept_reset_streams: Option<usize>,
+    pub(crate) max_local_error_reset_streams: Option<usize>,
     pub(crate) header_table_size: Option<u32>,
     pub(crate) max_concurrent_streams: Option<u32>,
+    pub(crate) reset_stream_duration: Option<Duration>,
 }
 
 impl Default for Config {
@@ -93,8 +95,10 @@ impl Default for Config {
             max_concurrent_reset_streams: None,
             max_send_buffer_size: DEFAULT_MAX_SEND_BUF_SIZE,
             max_pending_accept_reset_streams: None,
+            max_local_error_reset_streams: Some(1024),
             header_table_size: None,
             max_concurrent_streams: None,
+            reset_stream_duration: None,
         }
     }
 }
@@ -107,6 +111,7 @@ fn new_builder(config: &Config) -> Builder {
         .initial_connection_window_size(config.initial_conn_window_size)
         .max_header_list_size(config.max_header_list_size)
         .max_send_buffer_size(config.max_send_buffer_size)
+        .max_local_error_reset_streams(config.max_local_error_reset_streams)
         .enable_push(false);
     if let Some(max) = config.max_frame_size {
         builder.max_frame_size(max);
@@ -122,6 +127,9 @@ fn new_builder(config: &Config) -> Builder {
     }
     if let Some(max) = config.max_concurrent_streams {
         builder.max_concurrent_streams(max);
+    }
+    if let Some(dur) = config.reset_stream_duration {
+        builder.reset_stream_duration(dur);
     }
     builder
 }
@@ -439,6 +447,12 @@ where
     pub(crate) fn is_extended_connect_protocol_enabled(&self) -> bool {
         self.h2_tx.is_extended_connect_protocol_enabled()
     }
+    pub(crate) fn current_max_send_streams(&self) -> usize {
+        self.h2_tx.current_max_send_streams()
+    }
+    pub(crate) fn current_max_recv_streams(&self) -> usize {
+        self.h2_tx.current_max_recv_streams()
+    }
 }
 
 pin_project! {
@@ -452,6 +466,7 @@ pin_project! {
         conn_drop_ref: Option<Sender<Infallible>>,
         #[pin]
         ping: Option<Recorder>,
+        cancel_rx: Option<oneshot::Receiver<()>>,
     }
 }
 
@@ -465,6 +480,26 @@ where
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> std::task::Poll<Self::Output> {
         let mut this = self.project();
 
+        // Check if the client cancelled the request (e.g. dropped the
+        // response future due to a timeout). If so, reset the h2 stream
+        // so that a RST_STREAM is sent and flow-control capacity is freed.
+        let cancel_result = this.cancel_rx.as_mut().map(|rx| Pin::new(rx).poll(cx));
+        match cancel_result {
+            Some(Poll::Ready(Ok(()))) => {
+                debug!("client request body send cancelled, resetting stream");
+                this.pipe.as_mut().send_reset(h2::Reason::CANCEL);
+                drop(this.conn_drop_ref.take().expect("Future polled twice"));
+                drop(this.ping.take().expect("Future polled twice"));
+                return Poll::Ready(());
+            }
+            Some(Poll::Ready(Err(_))) => {
+                // Sender dropped without cancelling (normal response or error).
+                // Stop polling the receiver.
+                *this.cancel_rx = None;
+            }
+            Some(Poll::Pending) | None => {}
+        }
+
         match Pin::new(&mut this.pipe).poll(cx) {
             Poll::Ready(result) => {
                 if let Err(_e) = result {
@@ -475,7 +510,7 @@ where
                 return Poll::Ready(());
             }
             Poll::Pending => (),
-        };
+        }
         Poll::Pending
     }
 }
@@ -490,6 +525,10 @@ where
 {
     fn poll_pipe(&mut self, f: FutCtx<B>, cx: &mut Context<'_>) {
         let ping = self.ping.clone();
+
+        // A one-shot channel so that send_task can tell pipe_task to
+        // reset the stream when the client cancels the request.
+        let (cancel_tx, cancel_rx) = oneshot::channel::<()>();
 
         let send_stream = if !f.is_connect {
             if !f.eos {
@@ -510,6 +549,7 @@ where
                             pipe,
                             conn_drop_ref: Some(conn_drop_ref),
                             ping: Some(ping),
+                            cancel_rx: Some(cancel_rx),
                         };
                         // Clear send task
                         self.executor
@@ -530,6 +570,7 @@ where
                     ping: Some(ping),
                     send_stream: Some(send_stream),
                     exec: self.executor.clone(),
+                    cancel_tx: Some(cancel_tx),
                 },
                 call_back: Some(f.cb),
             },
@@ -549,6 +590,16 @@ pin_project! {
         #[pin]
         send_stream: Option<Option<SendStream<SendBuf<<B as Body>::Data>>>>,
         exec: E,
+        cancel_tx: Option<oneshot::Sender<()>>,
+    }
+}
+
+impl<B: Body + 'static, E> ResponseFutMap<B, E> {
+    /// Signal the `pipe_task` to reset the stream (e.g. on client cancellation).
+    pub(crate) fn cancel(self: Pin<&mut Self>) {
+        if let Some(cancel_tx) = self.project().cancel_tx.take() {
+            let _ = cancel_tx.send(());
+        }
     }
 }
 
@@ -637,7 +688,7 @@ where
                         Poll::Ready(Err(crate::Error::new_h2(err)))
                     };
                 }
-            };
+            }
 
             // If we were waiting on pending open
             // continue where we left off.
@@ -655,7 +706,7 @@ where
                     }
                     let (head, body) = req.into_parts();
                     let mut req = ::http::Request::from_parts(head, ());
-                    super::strip_connection_headers(req.headers_mut(), true);
+                    super::strip_connection_headers(req.headers_mut(), super::MessageKind::Request);
                     if let Some(len) = body.size_hint().exact() {
                         if len != 0 || headers::method_has_defined_payload_semantics(req.method()) {
                             headers::set_content_length_if_missing(req.headers_mut(), len);
@@ -721,7 +772,6 @@ where
                         }
                     }
                     self.poll_pipe(f, cx);
-                    continue;
                 }
 
                 Poll::Ready(None) => {

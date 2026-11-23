@@ -1,6 +1,6 @@
 [package]
 name = "jiff-static"
-version = "0.2.16"  #:version
+version = "1.0.2"  #:version
 authors = ["Andrew Gallant <jamslam@gmail.com>"]
 license = "Unlicense OR MIT"
 homepage = "https://github.com/BurntSushi/jiff/tree/master/crates/jiff-static"
@@ -10,9 +10,9 @@ description = "Create static TimeZone values for Jiff (useful in core-only envir
 categories = ["date-and-time"]
 keywords = ["date", "time", "static", "zone", "iana"]
 workspace = "../.."
-edition = "2021"
-rust-version = "1.70"
 include = ["/src/**/*.rs", "COPYING", "LICENSE-MIT", "UNLICENSE"]
+edition.workspace = true
+rust-version.workspace = true
 
 [lib]
 name = "jiff_static"
@@ -36,7 +36,8 @@ tz-fat = []
 perf-inline = []
 
 [dependencies]
-jiff-tzdb = { version = "0.1.4", path = "../jiff-tzdb", optional = true }
+jcore = { package = "jiff-core", version = "1.0.1", path = "../jiff-core" }
+jiff-tzdb = { version = "1.0.0", path = "../jiff-tzdb", optional = true }
 proc-macro2 = "1.0.93"
 quote = "1.0.38"
-syn = "2.0.98"
+syn = "3.0.3"

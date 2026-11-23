@@ -5,5 +5,8 @@
 
 mod object;
 
+mod encoder;
+pub use encoder::*;
+
 mod writer;
 pub use writer::*;

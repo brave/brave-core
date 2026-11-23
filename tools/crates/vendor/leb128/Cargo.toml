@@ -12,19 +12,55 @@
 [package]
 edition = "2018"
 name = "leb128"
-version = "0.2.5"
-authors = ["Nick Fitzgerald <fitzgen@gmail.com>", "Philip Craig <philipjcraig@gmail.com>"]
-exclude = ["/.travis.yml", "/.coveralls.yml", "/format"]
-description = "Read and write DWARF's \"Little Endian Base 128\" (LEB128) variable length integer encoding."
+version = "0.2.7"
+authors = [
+    "Nick Fitzgerald <fitzgen@gmail.com>",
+    "Philip Craig <philipjcraig@gmail.com>",
+]
+build = false
+exclude = [
+    "/.travis.yml",
+    "/.coveralls.yml",
+    "/format",
+]
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
+description = """Read and write DWARF's "Little Endian Base 128" (LEB128) variable length integer encoding."""
 documentation = "https://docs.rs/leb128"
-readme = "./README.md"
-keywords = ["LEB128", "DWARF", "variable", "length", "encoding"]
-license = "Apache-2.0/MIT"
+readme = "README.md"
+keywords = [
+    "LEB128",
+    "DWARF",
+    "variable",
+    "length",
+    "encoding",
+]
+license = "MIT OR Apache-2.0"
 repository = "https://github.com/gimli-rs/leb128"
-
-[dependencies]
-[dev-dependencies.quickcheck]
-version = "0.8.0"
 
 [features]
 nightly = []
+
+[lib]
+name = "leb128"
+path = "src/lib.rs"
+
+[[bin]]
+name = "leb128-repl"
+path = "src/bin/leb128-repl.rs"
+
+[[test]]
+name = "quickchecks"
+path = "tests/quickchecks.rs"
+
+[[bench]]
+name = "bench"
+path = "benches/bench.rs"
+
+[dependencies]
+
+[dev-dependencies.quickcheck]
+version = "1.1"

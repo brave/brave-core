@@ -101,7 +101,7 @@ impl EventFd {
     }
 }
 impl AsFd for EventFd {
-    fn as_fd(&self) -> BorrowedFd {
+    fn as_fd(&self) -> BorrowedFd<'_> {
         self.0.as_fd()
     }
 }

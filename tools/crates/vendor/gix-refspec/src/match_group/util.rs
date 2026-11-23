@@ -3,21 +3,35 @@ use std::{borrow::Cow, ops::Range};
 use bstr::{BStr, BString, ByteSlice, ByteVec};
 use gix_hash::ObjectId;
 
-use crate::{match_group::Item, RefSpecRef};
+use crate::{RefSpecRef, match_group::Item, types::Mode};
 
 /// A type keeping enough information about a ref-spec to be able to efficiently match it against multiple matcher items.
+#[derive(Debug)]
 pub struct Matcher<'a> {
     pub(crate) lhs: Option<Needle<'a>>,
     pub(crate) rhs: Option<Needle<'a>>,
 }
 
 impl<'a> Matcher<'a> {
+    pub(crate) fn for_reverse_mapping(spec: RefSpecRef<'a>) -> Self {
+        fn literal_or_glob(name: &BStr) -> Needle<'_> {
+            match name.find_byte(b'*') {
+                Some(asterisk_pos) => Needle::Glob { name, asterisk_pos },
+                None => Needle::FullName(name),
+            }
+        }
+        Matcher {
+            lhs: spec.src.map(literal_or_glob),
+            rhs: spec.dst.map(literal_or_glob),
+        }
+    }
+
     /// Match the lefthand-side `item` against this spec and return `(true, Some<rhs>)` to gain the other,
     /// transformed righthand-side of the match as configured by the refspec.
     /// Or return `(true, None)` if there was no `rhs` but the `item` matched.
     /// Lastly, return `(false, None)` if `item` didn't match at all.
     ///
-    /// This may involve resolving a glob with an allocation, as the destination is built using the matching portion of a glob.
+    /// This may allocate when constructing a destination from the portion matched by a ref pattern.
     pub fn matches_lhs(&self, item: Item<'_>) -> (bool, Option<Cow<'a, BStr>>) {
         match (self.lhs, self.rhs) {
             (Some(lhs), None) => (lhs.matches(item).is_match(), None),
@@ -31,7 +45,7 @@ impl<'a> Matcher<'a> {
     /// Or return `(true, None)` if there was no `lhs` but the `item` matched.
     /// Lastly, return `(false, None)` if `item` didn't match at all.
     ///
-    /// This may involve resolving a glob with an allocation, as the destination is built using the matching portion of a glob.
+    /// This may allocate when constructing a source from the portion matched by a ref pattern.
     pub fn matches_rhs(&self, item: Item<'_>) -> (bool, Option<Cow<'a, BStr>>) {
         match (self.lhs, self.rhs) {
             (None, Some(rhs)) => (rhs.matches(item).is_match(), None),
@@ -96,7 +110,7 @@ impl<'a> Needle<'a> {
                     _ => {}
                 }
                 let tail = &name[*asterisk_pos + 1..];
-                if !item.full_ref_name.ends_with(tail) {
+                if item.full_ref_name.len() < *asterisk_pos + tail.len() || !item.full_ref_name.ends_with(tail) {
                     return Match::None;
                 }
                 let end = item.full_ref_name.len() - tail.len();
@@ -169,7 +183,13 @@ impl<'a> From<&'a BStr> for Needle<'a> {
 impl<'a> From<RefSpecRef<'a>> for Matcher<'a> {
     fn from(v: RefSpecRef<'a>) -> Self {
         Matcher {
-            lhs: v.src.map(Into::into),
+            lhs: v.src.map(|src| {
+                if v.mode == Mode::Negative && src.find_byte(b'*').is_none() {
+                    Needle::FullName(src)
+                } else {
+                    src.into()
+                }
+            }),
             rhs: v.dst.map(Into::into),
         }
     }

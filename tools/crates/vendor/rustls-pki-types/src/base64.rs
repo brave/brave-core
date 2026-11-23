@@ -504,11 +504,11 @@ fn u8_less_than(a: u8, b: u8) -> u8 {
 /// Returns 0xff if a == b, 0 otherwise.
 const fn u8_equals(a: u8, b: u8) -> u8 {
     let diff = a ^ b;
-    u8_nonzero(diff)
+    u8_is_zero(diff)
 }
 
-/// Returns 0xff if a != 0, 0 otherwise.
-const fn u8_nonzero(x: u8) -> u8 {
+/// Returns 0xff if x == 0, 0 otherwise.
+const fn u8_is_zero(x: u8) -> u8 {
     u8_broadcast8(!x & x.wrapping_sub(1))
 }
 
@@ -532,6 +532,8 @@ const fn u8_broadcast16(x: u16) -> u8 {
 
 #[cfg(all(test, feature = "alloc"))]
 mod tests {
+    use alloc::vec::Vec;
+
     use super::*;
 
     #[test]
@@ -660,7 +662,7 @@ mod tests {
             }
         }
 
-        fn u8_nonzero_model(x: u8) -> u8 {
+        fn u8_is_zero_model(x: u8) -> u8 {
             match x {
                 0 => 0xff,
                 _ => 0x00,
@@ -683,7 +685,7 @@ mod tests {
 
         for x in u8::MIN..=u8::MAX {
             assert_eq!(u8_broadcast8(x), u8_broadcast8_model(x));
-            assert_eq!(u8_nonzero(x), u8_nonzero_model(x));
+            assert_eq!(u8_is_zero(x), u8_is_zero_model(x));
             assert_eq!(CodePoint::decode_secret(x), CodePoint::decode_public(x));
 
             for y in u8::MIN..=u8::MAX {
@@ -725,7 +727,7 @@ mod tests {
     }
 
     #[track_caller]
-    fn decode(input: &[u8]) -> alloc::vec::Vec<u8> {
+    fn decode(input: &[u8]) -> Vec<u8> {
         let length = decoded_length(input.len());
 
         let mut v = alloc::vec![0u8; length];

@@ -1,4 +1,23 @@
+//! Definitions for QNX Software Development Platform
+//!
+//! This module applies to:
+//!
+//! * `aarch64-unknown-nto-qnx700`
+//! * `aarch64-unknown-nto-qnx710`
+//! * `aarch64-unknown-nto-qnx710_iosock`
+//! * `aarch64-unknown-qnx`
+//! * `i686-pc-nto-qnx700`
+//! * `x86_64-pc-nto-qnx710`
+//! * `x86_64-pc-nto-qnx710_iosock`
+//! * `x86_64-pc-qnx`
+//!
+//! There are sub-modules for the target architecture, and sub-modules for the
+//! kind of networking library used. QNX SDP 7.0 uses `io-pkt`, QNX SDP 8.0
+//! uses `io-sock`, and QNX SDP 7.1 comes with both (so you can pick).
+
 use crate::prelude::*;
+
+// QNX definitions of common UNIX things
 
 pub type clock_t = u32;
 
@@ -62,6 +81,8 @@ pub type posix_spawnattr_t = crate::uintptr_t;
 
 pub type pthread_mutex_t = crate::sync_t;
 pub type pthread_mutexattr_t = crate::_sync_attr;
+#[cfg(target_os = "qnx")]
+pub type pthread_rwlock_t = crate::sync_t;
 pub type pthread_cond_t = crate::sync_t;
 pub type pthread_condattr_t = crate::_sync_attr;
 pub type pthread_rwlockattr_t = crate::_sync_attr;
@@ -73,14 +94,14 @@ pub type sem_t = sync_t;
 pub type nl_item = c_int;
 
 extern_ty! {
-    pub enum timezone {}
+    pub type timezone;
 }
 
 s! {
     pub struct dirent_extra {
         pub d_datalen: u16,
         pub d_type: u16,
-        pub d_reserved: u32,
+        d_reserved: Padding<u32>,
     }
 
     pub struct stat {
@@ -90,9 +111,9 @@ s! {
         pub st_rdev: crate::dev_t,
         pub st_uid: crate::uid_t,
         pub st_gid: crate::gid_t,
-        pub __old_st_mtime: crate::_Time32t,
-        pub __old_st_atime: crate::_Time32t,
-        pub __old_st_ctime: crate::_Time32t,
+        __old_st_mtime: crate::_Time32t,
+        __old_st_atime: crate::_Time32t,
+        __old_st_ctime: crate::_Time32t,
         pub st_mode: mode_t,
         pub st_nlink: crate::nlink_t,
         pub st_blocksize: crate::blksize_t,
@@ -109,33 +130,10 @@ s! {
         pub imr_interface: in_addr,
     }
 
-    #[cfg_attr(any(target_env = "nto71", target_env = "nto70"), repr(packed))]
-    pub struct in_addr {
-        pub s_addr: crate::in_addr_t,
-    }
-
     pub struct sockaddr {
         pub sa_len: u8,
         pub sa_family: sa_family_t,
         pub sa_data: [c_char; 14],
-    }
-
-    #[cfg(not(target_env = "nto71_iosock"))]
-    pub struct sockaddr_in {
-        pub sin_len: u8,
-        pub sin_family: sa_family_t,
-        pub sin_port: crate::in_port_t,
-        pub sin_addr: crate::in_addr,
-        pub sin_zero: [i8; 8],
-    }
-
-    #[cfg(target_env = "nto71_iosock")]
-    pub struct sockaddr_in {
-        pub sin_len: u8,
-        pub sin_family: sa_family_t,
-        pub sin_port: crate::in_port_t,
-        pub sin_addr: crate::in_addr,
-        pub sin_zero: [c_char; 8],
     }
 
     pub struct sockaddr_in6 {
@@ -182,14 +180,14 @@ s! {
     pub struct sched_param {
         pub sched_priority: c_int,
         pub sched_curpriority: c_int,
-        pub reserved: [c_int; 10],
+        reserved: Padding<[c_int; 10]>,
     }
 
     #[repr(align(8))]
     pub struct __sched_param {
         pub __sched_priority: c_int,
         pub __sched_curpriority: c_int,
-        pub reserved: [c_int; 10],
+        reserved: Padding<[c_int; 10]>,
     }
 
     pub struct Dl_info {
@@ -236,14 +234,7 @@ s! {
         pub _Yes: *mut c_char,
         pub _Nostr: *mut c_char,
         pub _Yesstr: *mut c_char,
-        pub _Reserved: [*mut c_char; 8],
-    }
-
-    // Does not exist in io-sock
-    #[cfg(not(target_env = "nto71_iosock"))]
-    pub struct in_pktinfo {
-        pub ipi_addr: crate::in_addr,
-        pub ipi_ifindex: c_uint,
+        _Reserved: Padding<[*mut c_char; 8]>,
     }
 
     pub struct ifaddrs {
@@ -260,27 +251,6 @@ s! {
         pub arp_pa: crate::sockaddr,
         pub arp_ha: crate::sockaddr,
         pub arp_flags: c_int,
-    }
-
-    #[cfg_attr(any(target_env = "nto71", target_env = "nto70"), repr(packed))]
-    pub struct arphdr {
-        pub ar_hrd: u16,
-        pub ar_pro: u16,
-        pub ar_hln: u8,
-        pub ar_pln: u8,
-        pub ar_op: u16,
-    }
-
-    #[cfg(not(target_env = "nto71_iosock"))]
-    pub struct mmsghdr {
-        pub msg_hdr: crate::msghdr,
-        pub msg_len: c_uint,
-    }
-
-    #[cfg(target_env = "nto71_iosock")]
-    pub struct mmsghdr {
-        pub msg_hdr: crate::msghdr,
-        pub msg_len: ssize_t,
     }
 
     #[repr(align(8))]
@@ -314,7 +284,7 @@ s! {
         pub gl_pathv: *mut *mut c_char,
         pub gl_offs: size_t,
         pub gl_flags: c_int,
-        pub gl_errfunc: extern "C" fn(*const c_char, c_int) -> c_int,
+        pub gl_errfunc: Option<unsafe extern "C" fn(*const c_char, c_int) -> c_int>,
 
         __unused1: Padding<*mut c_void>,
         __unused2: Padding<*mut c_void>,
@@ -490,6 +460,7 @@ s! {
         pub c_ospeed: crate::speed_t,
     }
 
+    #[cfg(target_os = "nto")]
     pub struct mallinfo {
         pub arena: c_int,
         pub ordblks: c_int,
@@ -501,6 +472,20 @@ s! {
         pub uordblks: c_int,
         pub fordblks: c_int,
         pub keepcost: c_int,
+    }
+
+    #[cfg(target_os = "qnx")]
+    pub struct mallinfo {
+        pub arena: size_t,
+        pub ordblks: size_t,
+        pub smblks: size_t,
+        pub hblks: size_t,
+        pub hblkhd: size_t,
+        pub usmblks: size_t,
+        pub fsmblks: size_t,
+        pub uordblks: size_t,
+        pub fordblks: size_t,
+        pub keepcost: size_t,
     }
 
     pub struct flock {
@@ -526,7 +511,7 @@ s! {
         pub f_basetype: [c_char; 16],
         pub f_flag: c_ulong,
         pub f_namemax: c_ulong,
-        f_filler: [c_uint; 21],
+        f_filler: Padding<[c_uint; 21]>,
     }
 
     pub struct aiocb {
@@ -563,7 +548,7 @@ s! {
         pub mode: mode_t,
         pub seq: c_uint,
         pub key: crate::key_t,
-        _reserved: [c_int; 4],
+        _reserved: Padding<[c_int; 4]>,
     }
 
     pub struct regex_t {
@@ -574,6 +559,7 @@ s! {
     }
 
     // FIXME(1.0): This should not implement `PartialEq`
+    #[cfg(target_os = "nto")]
     #[allow(unpredictable_function_pointer_comparisons)]
     pub struct _thread_attr {
         pub __flags: c_int,
@@ -584,7 +570,22 @@ s! {
         pub __param: crate::__sched_param,
         pub __guardsize: c_uint,
         pub __prealloc: c_uint,
-        __spare: [c_int; 2],
+        __spare: Padding<[c_int; 2]>,
+    }
+
+    // FIXME(1.0): This should not implement `PartialEq`
+    #[cfg(target_os = "qnx")]
+    #[allow(unpredictable_function_pointer_comparisons)]
+    pub struct _thread_attr {
+        pub __flags: c_int,
+        pub __stacksize: size_t,
+        pub __stackaddr: *mut c_void,
+        __reserved0: Padding<crate::uintptr_t>,
+        pub __policy: c_int,
+        pub __param: crate::__sched_param,
+        pub __guardsize: c_uint,
+        pub __prealloc: c_uint,
+        __reserved1: Padding<crate::uintptr_t>,
     }
 
     pub struct _sync_attr {
@@ -610,20 +611,6 @@ s! {
         pub bf_insns: *mut crate::bpf_insn,
     }
 
-    #[cfg(not(target_env = "nto71_iosock"))]
-    pub struct bpf_stat {
-        pub bs_recv: u64,
-        pub bs_drop: u64,
-        pub bs_capt: u64,
-        bs_padding: [u64; 13],
-    }
-
-    #[cfg(target_env = "nto71_iosock")]
-    pub struct bpf_stat {
-        pub bs_recv: c_uint,
-        pub bs_drop: c_uint,
-    }
-
     pub struct bpf_version {
         pub bv_major: c_ushort,
         pub bv_minor: c_ushort,
@@ -646,14 +633,6 @@ s! {
     pub struct bpf_dltlist {
         pub bfl_len: c_uint,
         pub bfl_list: *mut c_uint,
-    }
-
-    // Does not exist in io-sock
-    #[cfg(not(target_env = "nto71_iosock"))]
-    pub struct unpcbid {
-        pub unp_pid: crate::pid_t,
-        pub unp_euid: crate::uid_t,
-        pub unp_egid: crate::gid_t,
     }
 
     pub struct dl_phdr_info {
@@ -694,9 +673,9 @@ s! {
 
     pub struct sigevent {
         pub sigev_notify: c_int,
-        pub __padding1: c_int,
+        __padding1: Padding<c_int>,
         pub sigev_signo: c_int, // union
-        pub __padding2: c_int,
+        __padding2: Padding<c_int>,
         pub sigev_value: crate::sigval,
         __sigev_un2: usize, // union
     }
@@ -709,7 +688,10 @@ s! {
     }
 
     pub struct sigset_t {
+        #[cfg(target_os = "nto")]
         __val: [u32; 2],
+        #[cfg(target_os = "qnx")] // different alignment
+        __val: u64,
     }
 
     pub struct mq_attr {
@@ -719,30 +701,6 @@ s! {
         pub mq_curmsgs: c_long,
         pub mq_sendwait: c_long,
         pub mq_recvwait: c_long,
-    }
-
-    #[cfg(not(target_env = "nto71_iosock"))]
-    pub struct sockaddr_dl {
-        pub sdl_len: c_uchar,
-        pub sdl_family: crate::sa_family_t,
-        pub sdl_index: u16,
-        pub sdl_type: c_uchar,
-        pub sdl_nlen: c_uchar,
-        pub sdl_alen: c_uchar,
-        pub sdl_slen: c_uchar,
-        pub sdl_data: [c_char; 12],
-    }
-
-    #[cfg(target_env = "nto71_iosock")]
-    pub struct sockaddr_dl {
-        pub sdl_len: c_uchar,
-        pub sdl_family: c_uchar,
-        pub sdl_index: c_ushort,
-        pub sdl_type: c_uchar,
-        pub sdl_nlen: c_uchar,
-        pub sdl_alen: c_uchar,
-        pub sdl_slen: c_uchar,
-        pub sdl_data: [c_char; 46],
     }
 }
 
@@ -780,10 +738,14 @@ s_no_extra_traits! {
 
     #[repr(align(4))]
     pub struct pthread_barrier_t {
-        // union
+        #[cfg(target_os = "qnx")]
+        __pad: Padding<[u8; 8]>, // union
+        #[cfg(target_os = "nto")]
         __pad: Padding<[u8; 28]>, // union
     }
 
+    // `target_os = "qnx"` is handled by a `type` alias
+    #[cfg(target_os = "nto")]
     pub struct pthread_rwlock_t {
         pub __active: c_int,
         pub __blockedwriters: c_int,
@@ -794,6 +756,23 @@ s_no_extra_traits! {
         pub __wcond: crate::pthread_cond_t, // union
         pub __owner: c_uint,
         pub __spare: c_uint,
+    }
+
+    // There is no canonical definition of c_longdouble in Rust. For both AArch64 and x86_64,
+    // however, the size and alignment properties are that of the gcc __int128 which corresponds (at
+    // least on rustc 1.78+ with LLVM 18, see
+    // https://blog.rust-lang.org/2024/03/30/i128-layout-update/) to i128. Use this instead until we
+    // get native f128 support.
+    //
+    // The definition was taken from the definition of the _Maxalignt struct in the QNX SDK.
+    // However, on QNX SDP 7, there is a different definition of std::max_align_t (the C++ version of
+    // this type). In practice, this doesn't make a difference for the _alignment_ properties of the
+    // type - however, it changes the size, so using in in any other form than the zero-sized array
+    // form would be bogus and it would potentially change the size of the data type. On QNX SDP 8, this
+    // got fixed and both C and C++ are using the same definition.
+    pub struct max_align_t {
+        _ll: c_longlong,
+        _ld: i128,
     }
 }
 
@@ -876,122 +855,6 @@ pub const MS_SYNC: c_int = 2;
 
 pub const SCM_RIGHTS: c_int = 0x01;
 pub const SCM_TIMESTAMP: c_int = 0x02;
-cfg_if! {
-    if #[cfg(not(target_env = "nto71_iosock"))] {
-        pub const SCM_CREDS: c_int = 0x04;
-        pub const IFF_NOTRAILERS: c_int = 0x00000020;
-        pub const AF_INET6: c_int = 24;
-        pub const AF_BLUETOOTH: c_int = 31;
-        pub const pseudo_AF_KEY: c_int = 29;
-        pub const MSG_NOSIGNAL: c_int = 0x0800;
-        pub const MSG_WAITFORONE: c_int = 0x2000;
-        pub const IP_IPSEC_POLICY_COMPAT: c_int = 22;
-        pub const IP_PKTINFO: c_int = 25;
-        pub const IPPROTO_DIVERT: c_int = 259;
-        pub const IPV6_IPSEC_POLICY_COMPAT: c_int = 28;
-        pub const TCP_KEEPALIVE: c_int = 0x04;
-        pub const ARPHRD_ARCNET: u16 = 7;
-        pub const SO_BINDTODEVICE: c_int = 0x0800;
-        pub const EAI_NODATA: c_int = 7;
-        pub const IPTOS_ECN_NOT_ECT: u8 = 0x00;
-        pub const RTF_BROADCAST: u32 = 0x80000;
-        pub const UDP_ENCAP: c_int = 100;
-        pub const HW_IOSTATS: c_int = 9;
-        pub const HW_MACHINE_ARCH: c_int = 10;
-        pub const HW_ALIGNBYTES: c_int = 11;
-        pub const HW_CNMAGIC: c_int = 12;
-        pub const HW_PHYSMEM64: c_int = 13;
-        pub const HW_USERMEM64: c_int = 14;
-        pub const HW_IOSTATNAMES: c_int = 15;
-        pub const HW_MAXID: c_int = 15;
-        pub const CTL_UNSPEC: c_int = 0;
-        pub const CTL_QNX: c_int = 9;
-        pub const CTL_PROC: c_int = 10;
-        pub const CTL_VENDOR: c_int = 11;
-        pub const CTL_EMUL: c_int = 12;
-        pub const CTL_SECURITY: c_int = 13;
-        pub const CTL_MAXID: c_int = 14;
-        pub const AF_ARP: c_int = 28;
-        pub const AF_IEEE80211: c_int = 32;
-        pub const AF_NATM: c_int = 27;
-        pub const AF_NS: c_int = 6;
-        pub const BIOCGDLTLIST: c_int = -1072676233;
-        pub const BIOCGETIF: c_int = 1083196011;
-        pub const BIOCGSEESENT: c_int = 1074020984;
-        pub const BIOCGSTATS: c_int = 1082147439;
-        pub const BIOCSDLT: c_int = -2147204490;
-        pub const BIOCSETIF: c_int = -2138029460;
-        pub const BIOCSSEESENT: c_int = -2147204487;
-        pub const FIONSPACE: c_int = 1074030200;
-        pub const FIONWRITE: c_int = 1074030201;
-        pub const IFF_ACCEPTRTADV: c_int = 0x40000000;
-        pub const IFF_IP6FORWARDING: c_int = 0x20000000;
-        pub const IFF_SHIM: c_int = 0x80000000;
-        pub const KERN_ARND: c_int = 81;
-        pub const KERN_IOV_MAX: c_int = 38;
-        pub const KERN_LOGSIGEXIT: c_int = 46;
-        pub const KERN_MAXID: c_int = 83;
-        pub const KERN_PROC_ARGS: c_int = 48;
-        pub const KERN_PROC_ENV: c_int = 3;
-        pub const KERN_PROC_GID: c_int = 7;
-        pub const KERN_PROC_RGID: c_int = 8;
-        pub const LOCAL_CONNWAIT: c_int = 0x0002;
-        pub const LOCAL_CREDS: c_int = 0x0001;
-        pub const LOCAL_PEEREID: c_int = 0x0003;
-        pub const MSG_NOTIFICATION: c_int = 0x0400;
-        pub const NET_RT_IFLIST: c_int = 4;
-        pub const NI_NUMERICSCOPE: c_int = 0x00000040;
-        pub const PF_ARP: c_int = 28;
-        pub const PF_NATM: c_int = 27;
-        pub const pseudo_AF_HDRCMPLT: c_int = 30;
-        pub const SIOCGIFADDR: c_int = -1064277727;
-        pub const SO_FIB: c_int = 0x100a;
-        pub const SO_TXPRIO: c_int = 0x100b;
-        pub const SO_SETFIB: c_int = 0x100a;
-        pub const SO_VLANPRIO: c_int = 0x100c;
-        pub const USER_ATEXIT_MAX: c_int = 21;
-        pub const USER_MAXID: c_int = 22;
-        pub const SO_OVERFLOWED: c_int = 0x1009;
-    } else {
-        pub const SCM_CREDS: c_int = 0x03;
-        pub const AF_INET6: c_int = 28;
-        pub const AF_BLUETOOTH: c_int = 36;
-        pub const pseudo_AF_KEY: c_int = 27;
-        pub const MSG_NOSIGNAL: c_int = 0x20000;
-        pub const MSG_WAITFORONE: c_int = 0x00080000;
-        pub const IPPROTO_DIVERT: c_int = 258;
-        pub const RTF_BROADCAST: u32 = 0x400000;
-        pub const UDP_ENCAP: c_int = 1;
-        pub const HW_MACHINE_ARCH: c_int = 11;
-        pub const AF_ARP: c_int = 35;
-        pub const AF_IEEE80211: c_int = 37;
-        pub const AF_NATM: c_int = 29;
-        pub const BIOCGDLTLIST: c_ulong = 0xffffffffc0104279;
-        pub const BIOCGETIF: c_int = 0x4020426b;
-        pub const BIOCGSEESENT: c_int = 0x40044276;
-        pub const BIOCGSTATS: c_int = 0x4008426f;
-        pub const BIOCSDLT: c_int = 0x80044278;
-        pub const BIOCSETIF: c_int = 0x8020426c;
-        pub const BIOCSSEESENT: c_int = 0x80044277;
-        pub const KERN_ARND: c_int = 37;
-        pub const KERN_IOV_MAX: c_int = 35;
-        pub const KERN_LOGSIGEXIT: c_int = 34;
-        pub const KERN_PROC_ARGS: c_int = 7;
-        pub const KERN_PROC_ENV: c_int = 35;
-        pub const KERN_PROC_GID: c_int = 11;
-        pub const KERN_PROC_RGID: c_int = 10;
-        pub const LOCAL_CONNWAIT: c_int = 4;
-        pub const LOCAL_CREDS: c_int = 2;
-        pub const MSG_NOTIFICATION: c_int = 0x00002000;
-        pub const NET_RT_IFLIST: c_int = 3;
-        pub const NI_NUMERICSCOPE: c_int = 0x00000020;
-        pub const PF_ARP: c_int = AF_ARP;
-        pub const PF_NATM: c_int = AF_NATM;
-        pub const pseudo_AF_HDRCMPLT: c_int = 31;
-        pub const SIOCGIFADDR: c_int = 0xc0206921;
-        pub const SO_SETFIB: c_int = 0x1014;
-    }
-}
 
 pub const MAP_TYPE: c_int = 0x3;
 
@@ -1127,6 +990,8 @@ pub const LOCK_UN: c_int = 0x8;
 pub const SS_ONSTACK: c_int = 1;
 pub const SS_DISABLE: c_int = 2;
 
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const PATH_MAX: c_int = 1024;
 
 pub const UIO_MAXIOV: c_int = 1024;
@@ -1223,7 +1088,7 @@ pub const POLLRDBAND: c_short = 0x0004;
 pub const IPTOS_LOWDELAY: u8 = 0x10;
 pub const IPTOS_THROUGHPUT: u8 = 0x08;
 pub const IPTOS_RELIABILITY: u8 = 0x04;
-pub const IPTOS_MINCOST: u8 = 0x02;
+pub const IPTOS_MINCOST: u8 = if cfg!(target_os = "nto") { 0x02 } else { 0x00 };
 
 pub const IPTOS_PREC_NETCONTROL: u8 = 0xe0;
 pub const IPTOS_PREC_INTERNETCONTROL: u8 = 0xc0;
@@ -1393,11 +1258,27 @@ pub const IN_MOVE_SELF: u32 = 0x00000800;
 pub const IN_UNMOUNT: u32 = 0x00002000;
 pub const IN_Q_OVERFLOW: u32 = 0x00004000;
 pub const IN_IGNORED: u32 = 0x00008000;
-pub const IN_ONLYDIR: u32 = 0x01000000;
-pub const IN_DONT_FOLLOW: u32 = 0x02000000;
+pub const IN_ONLYDIR: u32 = if cfg!(target_os = "nto") {
+    0x01000000
+} else {
+    0x00400000
+};
+pub const IN_DONT_FOLLOW: u32 = if cfg!(target_os = "nto") {
+    0x02000000
+} else {
+    0x00100000
+};
 
-pub const IN_ISDIR: u32 = 0x40000000;
-pub const IN_ONESHOT: u32 = 0x80000000;
+pub const IN_ISDIR: u32 = if cfg!(target_os = "nto") {
+    0x40000000
+} else {
+    0x00010000
+};
+pub const IN_ONESHOT: u32 = if cfg!(target_os = "nto") {
+    0x80000000
+} else {
+    0x00800000
+};
 
 pub const REG_EXTENDED: c_int = 0o0001;
 pub const REG_ICASE: c_int = 0o0002;
@@ -1831,9 +1712,10 @@ pub const ENOTSUP: c_int = 48;
 pub const BUFSIZ: c_uint = 1024;
 pub const TMP_MAX: c_uint = 26 * 26 * 26;
 pub const FOPEN_MAX: c_uint = 16;
-pub const FILENAME_MAX: c_uint = 255;
+pub const FILENAME_MAX: c_uint = if cfg!(target_os = "nto") { 255 } else { 1024 };
 
 pub const NI_MAXHOST: crate::socklen_t = 1025;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const M_KEEP: c_int = 4;
 pub const REG_STARTEND: c_int = 0o00004;
 pub const VEOF: usize = 4;
@@ -1875,6 +1757,8 @@ pub const SOCK_CLOEXEC: c_int = 0x10000000;
 pub const SA_SIGINFO: c_int = 0x0002;
 pub const SA_NOCLDWAIT: c_int = 0x0020;
 pub const SA_NODEFER: c_int = 0x0010;
+#[cfg(target_os = "qnx")] // QNX8 only
+pub const SA_ONSTACK: c_int = 0x0008;
 pub const SA_RESETHAND: c_int = 0x0004;
 pub const SA_NOCLDSTOP: c_int = 0x0001;
 
@@ -2169,6 +2053,7 @@ pub const KERN_PROF: c_int = 16;
 pub const KERN_SAVED_IDS: c_int = 20;
 pub const KERN_SECURELVL: c_int = 9;
 pub const KERN_VERSION: c_int = 4;
+#[cfg(target_os = "nto")] // removed in QNX8
 pub const KERN_VNODE: c_int = 13;
 
 pub const LC_ALL: c_int = 63;
@@ -2180,8 +2065,11 @@ pub const LC_NUMERIC: c_int = 8;
 pub const LC_TIME: c_int = 16;
 
 pub const MAP_STACK: c_int = 0x00001000;
+#[cfg(target_os = "nto")] // private (`/devs/sys/*.h`) in QNX8
 pub const MNT_NOEXEC: c_int = 0x02;
+#[cfg(target_os = "nto")] // private (`/devs/sys/*.h`) in QNX8
 pub const MNT_NOSUID: c_int = 0x04;
+#[cfg(target_os = "nto")] // private (`/devs/sys/*.h`) in QNX8
 pub const MNT_RDONLY: c_int = 0x01;
 
 pub const NET_RT_DUMP: c_int = 1;
@@ -2248,11 +2136,11 @@ pub const RLIMIT_RSS: c_int = 6;
 pub const RLIMIT_STACK: c_int = 3;
 pub const RLIMIT_VMEM: c_int = 6;
 #[deprecated(since = "0.2.64", note = "Not stable across OS versions")]
-pub const RLIM_NLIMITS: c_int = 14;
+pub const RLIM_NLIMITS: c_int = if cfg!(target_os = "nto") { 14 } else { 19 };
 
 pub const SCHED_ADJTOHEAD: c_int = 5;
 pub const SCHED_ADJTOTAIL: c_int = 6;
-pub const SCHED_MAXPOLICY: c_int = 7;
+pub const SCHED_MAXPOLICY: c_int = if cfg!(target_os = "nto") { 7 } else { 9 };
 pub const SCHED_SETPRIO: c_int = 7;
 pub const SCHED_SPORADIC: c_int = 4;
 
@@ -2261,8 +2149,8 @@ pub const SIGCLD: c_int = SIGCHLD;
 pub const SIGDEADLK: c_int = 7;
 pub const SIGEMT: c_int = 7;
 pub const SIGEV_NONE: c_int = 0;
-pub const SIGEV_SIGNAL: c_int = 129;
-pub const SIGEV_THREAD: c_int = 135;
+pub const SIGEV_SIGNAL: c_int = if cfg!(target_os = "nto") { 129 } else { 1 };
+pub const SIGEV_THREAD: c_int = if cfg!(target_os = "nto") { 135 } else { 7 };
 pub const SO_USELOOPBACK: c_int = 0x0040;
 pub const _SS_ALIGNSIZE: usize = size_of::<i64>();
 pub const _SS_MAXSIZE: usize = 128;
@@ -2314,14 +2202,39 @@ pub const TIOCSTOP: c_int = 29807;
 pub const TIOCSWINSZ: c_int = -2146929561;
 
 pub const USER_CS_PATH: c_int = 1;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const USER_BC_BASE_MAX: c_int = 2;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const USER_BC_DIM_MAX: c_int = 3;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const USER_BC_SCALE_MAX: c_int = 4;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const USER_BC_STRING_MAX: c_int = 5;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const USER_COLL_WEIGHTS_MAX: c_int = 6;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const USER_EXPR_NEST_MAX: c_int = 7;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const USER_LINE_MAX: c_int = 8;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const USER_RE_DUP_MAX: c_int = 9;
+
 pub const USER_POSIX2_VERSION: c_int = 10;
 pub const USER_POSIX2_C_BIND: c_int = 11;
 pub const USER_POSIX2_C_DEV: c_int = 12;
@@ -2361,7 +2274,11 @@ pub const PTHREAD_CREATE_DETACHED: c_int = 0x01;
 pub const PTHREAD_MUTEX_ERRORCHECK: c_int = 1;
 pub const PTHREAD_MUTEX_RECURSIVE: c_int = 2;
 pub const PTHREAD_MUTEX_NORMAL: c_int = 3;
-pub const PTHREAD_STACK_MIN: size_t = 256;
+pub const PTHREAD_STACK_MIN: size_t = if cfg!(target_os = "nto") {
+    256
+} else {
+    4 * 1024
+};
 pub const PTHREAD_MUTEX_DEFAULT: c_int = 0;
 pub const PTHREAD_MUTEX_STALLED: c_int = 0x00;
 pub const PTHREAD_MUTEX_ROBUST: c_int = 0x10;
@@ -2370,14 +2287,26 @@ pub const PTHREAD_PROCESS_SHARED: c_int = 0x01;
 
 pub const PTHREAD_KEYS_MAX: usize = 128;
 
+#[cfg(not(any(target_env = "nto71", target_env = "nto71_iosock", target_os = "qnx")))]
 pub const PTHREAD_MUTEX_INITIALIZER: pthread_mutex_t = pthread_mutex_t {
     __u: 0x80000000,
     __owner: 0xffffffff,
+};
+#[cfg(any(target_env = "nto71", target_env = "nto71_iosock"))]
+pub const PTHREAD_MUTEX_INITIALIZER: pthread_mutex_t = pthread_mutex_t {
+    __u: 0x82000000,
+    __owner: 0,
+};
+#[cfg(target_os = "qnx")]
+pub const PTHREAD_MUTEX_INITIALIZER: pthread_mutex_t = pthread_mutex_t {
+    __u: 0x80000000,
+    __owner: 0,
 };
 pub const PTHREAD_COND_INITIALIZER: pthread_cond_t = pthread_cond_t {
     __u: CLOCK_REALTIME as u32,
     __owner: 0xfffffffb,
 };
+#[cfg(target_os = "nto")]
 pub const PTHREAD_RWLOCK_INITIALIZER: pthread_rwlock_t = pthread_rwlock_t {
     __active: 0,
     __blockedwriters: 0,
@@ -2389,6 +2318,8 @@ pub const PTHREAD_RWLOCK_INITIALIZER: pthread_rwlock_t = pthread_rwlock_t {
     __owner: -2i32 as c_uint,
     __spare: 0,
 };
+#[cfg(target_os = "qnx")]
+pub const PTHREAD_RWLOCK_INITIALIZER: pthread_rwlock_t = pthread_rwlock_t { __u: 0, __owner: 0 };
 
 const fn _CMSG_ALIGN(len: usize) -> usize {
     len + size_of::<usize>() - 1 & !(size_of::<usize>() - 1)
@@ -2399,70 +2330,75 @@ const fn _ALIGN(p: usize, b: usize) -> usize {
 }
 
 f! {
-    pub fn CMSG_FIRSTHDR(mhdr: *const msghdr) -> *mut cmsghdr {
+    pub unsafe fn CMSG_FIRSTHDR(mhdr: *const msghdr) -> *mut cmsghdr {
         if (*mhdr).msg_controllen as usize >= size_of::<cmsghdr>() {
-            (*mhdr).msg_control as *mut cmsghdr
+            (*mhdr).msg_control.cast()
         } else {
-            core::ptr::null_mut::<cmsghdr>()
+            ptr::null_mut()
         }
     }
 
-    pub fn CMSG_NXTHDR(mhdr: *const crate::msghdr, cmsg: *const cmsghdr) -> *mut cmsghdr {
+    pub unsafe fn CMSG_NXTHDR(mhdr: *const crate::msghdr, cmsg: *const cmsghdr) -> *mut cmsghdr {
         let msg = _CMSG_ALIGN((*cmsg).cmsg_len as usize);
         let next = cmsg as usize + msg + _CMSG_ALIGN(size_of::<cmsghdr>());
         if next > (*mhdr).msg_control as usize + (*mhdr).msg_controllen as usize {
-            core::ptr::null_mut::<cmsghdr>()
+            ptr::null_mut()
         } else {
             (cmsg as usize + msg) as *mut cmsghdr
         }
     }
 
-    pub fn CMSG_DATA(cmsg: *const cmsghdr) -> *mut c_uchar {
+    pub unsafe fn CMSG_DATA(cmsg: *const cmsghdr) -> *mut c_uchar {
         (cmsg as *mut c_uchar).offset(_CMSG_ALIGN(size_of::<cmsghdr>()) as isize)
     }
 
-    pub const fn CMSG_LEN(length: c_uint) -> c_uint {
+    pub const unsafe fn CMSG_LEN(length: c_uint) -> c_uint {
         _CMSG_ALIGN(size_of::<cmsghdr>()) as c_uint + length
     }
 
-    pub const fn CMSG_SPACE(length: c_uint) -> c_uint {
+    pub const unsafe fn CMSG_SPACE(length: c_uint) -> c_uint {
         (_CMSG_ALIGN(size_of::<cmsghdr>()) + _CMSG_ALIGN(length as usize)) as c_uint
     }
 
-    pub fn FD_CLR(fd: c_int, set: *mut fd_set) -> () {
+    pub unsafe fn FD_CLR(fd: c_int, set: *mut fd_set) -> () {
         let fd = fd as usize;
         let size = size_of_val(&(*set).fds_bits[0]) * 8;
-        (*set).fds_bits[fd / size] &= !(1 << (fd % size));
-        return;
+        let Some(slot) = (*set).fds_bits.get_mut(fd / size) else {
+            panic!("fd {fd} out of range: valid fds are 0..FD_SETSIZE (0..{FD_SETSIZE})");
+        };
+        *slot &= !(1 << (fd % size));
     }
 
-    pub fn FD_ISSET(fd: c_int, set: *const fd_set) -> bool {
+    pub unsafe fn FD_ISSET(fd: c_int, set: *const fd_set) -> bool {
         let fd = fd as usize;
         let size = size_of_val(&(*set).fds_bits[0]) * 8;
-        return ((*set).fds_bits[fd / size] & (1 << (fd % size))) != 0;
+        let Some(slot) = (*set).fds_bits.get(fd / size) else {
+            panic!("fd {fd} out of range: valid fds are 0..FD_SETSIZE (0..{FD_SETSIZE})");
+        };
+        (*slot & (1 << (fd % size))) != 0
     }
 
-    pub fn FD_SET(fd: c_int, set: *mut fd_set) -> () {
+    pub unsafe fn FD_SET(fd: c_int, set: *mut fd_set) -> () {
         let fd = fd as usize;
         let size = size_of_val(&(*set).fds_bits[0]) * 8;
-        (*set).fds_bits[fd / size] |= 1 << (fd % size);
-        return;
+        let Some(slot) = (*set).fds_bits.get_mut(fd / size) else {
+            panic!("fd {fd} out of range: valid fds are 0..FD_SETSIZE (0..{FD_SETSIZE})");
+        };
+        *slot |= 1 << (fd % size);
     }
 
-    pub fn FD_ZERO(set: *mut fd_set) -> () {
-        for slot in (*set).fds_bits.iter_mut() {
-            *slot = 0;
-        }
+    pub unsafe fn FD_ZERO(set: *mut fd_set) -> () {
+        (*set).fds_bits.fill(0);
     }
 
-    pub fn _DEXTRA_FIRST(_d: *const dirent) -> *mut crate::dirent_extra {
+    pub unsafe fn _DEXTRA_FIRST(_d: *const dirent) -> *mut crate::dirent_extra {
         let _f = &((*(_d)).d_name) as *const _;
         let _s = _d as usize;
 
         _ALIGN(_s + _f as usize - _s + (*_d).d_namelen as usize + 1, 8) as *mut crate::dirent_extra
     }
 
-    pub fn _DEXTRA_VALID(_x: *const crate::dirent_extra, _d: *const dirent) -> bool {
+    pub unsafe fn _DEXTRA_VALID(_x: *const crate::dirent_extra, _d: *const dirent) -> bool {
         let sz = _x as usize - _d as usize + size_of::<crate::dirent_extra>();
         let rsz = (*_d).d_reclen as usize;
 
@@ -2473,102 +2409,64 @@ f! {
         }
     }
 
-    pub fn _DEXTRA_NEXT(_x: *const crate::dirent_extra) -> *mut crate::dirent_extra {
+    pub unsafe fn _DEXTRA_NEXT(_x: *const crate::dirent_extra) -> *mut crate::dirent_extra {
         _ALIGN(
             _x as usize + size_of::<crate::dirent_extra>() + (*_x).d_datalen as usize,
             8,
         ) as *mut crate::dirent_extra
     }
 
-    pub fn SOCKCREDSIZE(ngrps: usize) -> usize {
+    pub unsafe fn SOCKCREDSIZE(ngrps: usize) -> usize {
         let ngrps = if ngrps > 0 { ngrps - 1 } else { 0 };
         size_of::<sockcred>() + size_of::<crate::gid_t>() * ngrps
     }
-}
 
-safe_f! {
-    pub const fn WIFSTOPPED(status: c_int) -> bool {
+    pub const safe fn WIFSTOPPED(status: c_int) -> bool {
         (status & 0xff) == 0x7f
     }
 
-    pub const fn WSTOPSIG(status: c_int) -> c_int {
+    pub const safe fn WSTOPSIG(status: c_int) -> c_int {
         (status >> 8) & 0xff
     }
 
-    pub const fn WIFCONTINUED(status: c_int) -> bool {
+    pub const safe fn WIFCONTINUED(status: c_int) -> bool {
         status == 0xffff
     }
 
-    pub const fn WIFSIGNALED(status: c_int) -> bool {
+    pub const safe fn WIFSIGNALED(status: c_int) -> bool {
         ((status & 0x7f) + 1) as i8 >= 2
     }
 
-    pub const fn WTERMSIG(status: c_int) -> c_int {
+    pub const safe fn WTERMSIG(status: c_int) -> c_int {
         status & 0x7f
     }
 
-    pub const fn WIFEXITED(status: c_int) -> bool {
+    pub const safe fn WIFEXITED(status: c_int) -> bool {
         (status & 0x7f) == 0
     }
 
-    pub const fn WEXITSTATUS(status: c_int) -> c_int {
+    pub const safe fn WEXITSTATUS(status: c_int) -> c_int {
         (status >> 8) & 0xff
     }
 
-    pub const fn WCOREDUMP(status: c_int) -> bool {
+    pub const safe fn WCOREDUMP(status: c_int) -> bool {
         (status & 0x80) != 0
     }
 
-    pub const fn IPTOS_ECN(x: u8) -> u8 {
+    pub const safe fn IPTOS_ECN(x: u8) -> u8 {
         x & crate::IPTOS_ECN_MASK
     }
 
-    pub const fn makedev(major: c_uint, minor: c_uint) -> crate::dev_t {
+    pub const safe fn makedev(major: c_uint, minor: c_uint) -> crate::dev_t {
         ((major << 10) | (minor)) as crate::dev_t
     }
 
-    pub const fn major(dev: crate::dev_t) -> c_uint {
+    pub const safe fn major(dev: crate::dev_t) -> c_uint {
         ((dev as c_uint) >> 10) & 0x3f
     }
 
-    pub const fn minor(dev: crate::dev_t) -> c_uint {
+    pub const safe fn minor(dev: crate::dev_t) -> c_uint {
         (dev as c_uint) & 0x3ff
-    }
-}
-
-cfg_if! {
-    if #[cfg(not(target_env = "nto71_iosock"))] {
-        extern "C" {
-            pub fn sendmmsg(
-                sockfd: c_int,
-                msgvec: *mut crate::mmsghdr,
-                vlen: c_uint,
-                flags: c_uint,
-            ) -> c_int;
-            pub fn recvmmsg(
-                sockfd: c_int,
-                msgvec: *mut crate::mmsghdr,
-                vlen: c_uint,
-                flags: c_uint,
-                timeout: *mut crate::timespec,
-            ) -> c_int;
-        }
-    } else {
-        extern "C" {
-            pub fn sendmmsg(
-                sockfd: c_int,
-                msgvec: *mut crate::mmsghdr,
-                vlen: size_t,
-                flags: c_int,
-            ) -> ssize_t;
-            pub fn recvmmsg(
-                sockfd: c_int,
-                msgvec: *mut crate::mmsghdr,
-                vlen: size_t,
-                flags: c_int,
-                timeout: *const crate::timespec,
-            ) -> ssize_t;
-        }
     }
 }
 
@@ -2577,6 +2475,8 @@ cfg_if! {
 // In QNX <=7.0, libregex functions were included in libc itself.
 #[link(name = "socket")]
 #[cfg_attr(not(target_env = "nto70"), link(name = "regex"))]
+// `inotify_*` functions are provided by `fsnotify` on QNX 8.0
+#[cfg_attr(target_os = "qnx", link(name = "fsnotify"))]
 extern "C" {
     pub fn sem_destroy(sem: *mut sem_t) -> c_int;
     pub fn sem_init(sem: *mut sem_t, pshared: c_int, value: c_uint) -> c_int;
@@ -3005,12 +2905,12 @@ extern "C" {
     pub fn pthread_setname_np(thread: crate::pthread_t, name: *const c_char) -> c_int;
 
     pub fn sysctl(
-        _: *const c_int,
-        _: c_uint,
-        _: *mut c_void,
-        _: *mut size_t,
-        _: *const c_void,
-        _: size_t,
+        name: *const c_int,
+        namelen: c_uint,
+        oldp: *mut c_void,
+        oldlenp: *mut size_t,
+        newp: *const c_void,
+        newlen: size_t,
     ) -> c_int;
 
     pub fn getrlimit(resource: c_int, rlim: *mut crate::rlimit) -> c_int;
@@ -3123,7 +3023,7 @@ pub unsafe fn atexit(cb: extern "C" fn()) -> c_int {
         static __dso_handle: *mut c_void;
         pub fn __cxa_atexit(cb: extern "C" fn(), __arg: *mut c_void, __dso: *mut c_void) -> c_int;
     }
-    __cxa_atexit(cb, 0 as *mut c_void, __dso_handle)
+    __cxa_atexit(cb, ptr::null_mut(), __dso_handle)
 }
 
 impl siginfo_t {
@@ -3133,7 +3033,7 @@ impl siginfo_t {
             _pad: Padding<[u8; 32]>,
             si_addr: *mut c_void,
         }
-        (*(self as *const siginfo_t as *const siginfo_si_addr)).si_addr
+        (*(self as *const siginfo_t).cast::<siginfo_si_addr>()).si_addr
     }
 
     pub unsafe fn si_value(&self) -> crate::sigval {
@@ -3142,7 +3042,7 @@ impl siginfo_t {
             _pad: Padding<[u8; 32]>,
             si_value: crate::sigval,
         }
-        (*(self as *const siginfo_t as *const siginfo_si_value)).si_value
+        (*(self as *const siginfo_t).cast::<siginfo_si_value>()).si_value
     }
 
     pub unsafe fn si_pid(&self) -> crate::pid_t {
@@ -3151,7 +3051,7 @@ impl siginfo_t {
             _pad: Padding<[u8; 16]>,
             si_pid: crate::pid_t,
         }
-        (*(self as *const siginfo_t as *const siginfo_si_pid)).si_pid
+        (*(self as *const siginfo_t).cast::<siginfo_si_pid>()).si_pid
     }
 
     pub unsafe fn si_uid(&self) -> crate::uid_t {
@@ -3160,7 +3060,7 @@ impl siginfo_t {
             _pad: Padding<[u8; 24]>,
             si_uid: crate::uid_t,
         }
-        (*(self as *const siginfo_t as *const siginfo_si_uid)).si_uid
+        (*(self as *const siginfo_t).cast::<siginfo_si_uid>()).si_uid
     }
 
     pub unsafe fn si_status(&self) -> c_int {
@@ -3169,21 +3069,30 @@ impl siginfo_t {
             _pad: Padding<[u8; 28]>,
             si_status: c_int,
         }
-        (*(self as *const siginfo_t as *const siginfo_si_status)).si_status
+        (*(self as *const siginfo_t).cast::<siginfo_si_status>()).si_status
     }
 }
 
+// Things that are QNX specific
+
+mod neutrino;
+pub use self::neutrino::*;
+
+// Things that are architecture specific
+
+mod arch;
+pub use self::arch::*;
+
+// Things that are network-stack specific
+
 cfg_if! {
-    if #[cfg(target_arch = "x86_64")] {
-        mod x86_64;
-        pub use self::x86_64::*;
-    } else if #[cfg(target_arch = "aarch64")] {
-        mod aarch64;
-        pub use self::aarch64::*;
+    if #[cfg(any(target_env = "nto70", target_env = "nto71"))] {
+        mod io_pkt;
+        pub use self::io_pkt::*;
+    } else if #[cfg(any(target_env = "nto71_iosock", target_os = "qnx"))] {
+        mod io_sock;
+        pub use self::io_sock::*;
     } else {
         panic!("Unsupported arch");
     }
 }
-
-mod neutrino;
-pub use self::neutrino::*;

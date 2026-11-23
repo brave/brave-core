@@ -1,9 +1,11 @@
 #[cfg(feature = "parsing")]
 use crate::lookahead;
+#[cfg(feature = "parsing")]
+use crate::parse::{ParseStream, Result};
+use core::cmp::Ordering;
+use core::fmt::{self, Display};
+use core::hash::{Hash, Hasher};
 use proc_macro2::{Ident, Span};
-use std::cmp::Ordering;
-use std::fmt::{self, Display};
-use std::hash::{Hash, Hasher};
 
 /// A Rust lifetime: `'a`.
 ///
@@ -36,24 +38,29 @@ impl Lifetime {
     /// # }
     /// ```
     pub fn new(symbol: &str, span: Span) -> Self {
-        if !symbol.starts_with('\'') {
-            panic!(
+        let ident = match symbol.strip_prefix('\'') {
+            Some(ident) => ident,
+            None => panic!(
                 "lifetime name must start with apostrophe as in \"'a\", got {:?}",
-                symbol
-            );
-        }
+                symbol,
+            ),
+        };
 
-        if symbol == "'" {
+        let unraw = ident.strip_prefix("r#");
+        let validate = unraw.unwrap_or(ident);
+        if validate.is_empty() {
             panic!("lifetime name must not be empty");
         }
-
-        if !crate::ident::xid_ok(&symbol[1..]) {
+        if !crate::ident::xid_ok(validate) {
             panic!("{:?} is not a valid lifetime name", symbol);
         }
 
         Lifetime {
             apostrophe: span,
-            ident: Ident::new(&symbol[1..], span),
+            ident: match unraw {
+                Some(unraw) => Ident::new_raw(unraw, span),
+                None => Ident::new(ident, span),
+            },
         }
     }
 
@@ -66,6 +73,15 @@ impl Lifetime {
     pub fn set_span(&mut self, span: Span) {
         self.apostrophe = span;
         self.ident.set_span(span);
+    }
+
+    #[cfg(feature = "parsing")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "parsing")))]
+    pub fn parse_any(input: ParseStream) -> Result<Self> {
+        input.step(|cursor| match cursor.lifetime() {
+            Some((lifetime, rest)) => Ok((lifetime, rest)),
+            None => Err(cursor.error("expected lifetime")),
+        })
     }
 }
 
@@ -123,17 +139,39 @@ pub_if_not_doc! {
 #[cfg(feature = "parsing")]
 pub(crate) mod parsing {
     use crate::error::Result;
+    use crate::ident;
     use crate::lifetime::Lifetime;
     use crate::parse::{Parse, ParseStream};
+    use alloc::string::ToString;
 
     #[cfg_attr(docsrs, doc(cfg(feature = "parsing")))]
     impl Parse for Lifetime {
         fn parse(input: ParseStream) -> Result<Self> {
             input.step(|cursor| {
-                cursor
-                    .lifetime()
-                    .ok_or_else(|| cursor.error("expected lifetime"))
+                if let Some((lifetime, rest)) = cursor.lifetime() {
+                    let repr = lifetime.ident.to_string();
+                    if ident::parsing::accept_as_ident(&repr) || repr == "static" || repr == "_" {
+                        Ok((lifetime, rest))
+                    } else {
+                        Err(cursor
+                            .error(format_args!("unexpected keyword lifetime \"{}\"", lifetime)))
+                    }
+                } else {
+                    Err(cursor.error("expected lifetime"))
+                }
             })
+        }
+    }
+
+    impl Lifetime {
+        #[cfg(any(feature = "full", feature = "derive"))]
+        pub(crate) fn parse_optional_any(input: ParseStream) -> Option<Self> {
+            input
+                .step(|cursor| match cursor.lifetime() {
+                    Some((lifetime, rest)) => Ok((Some(lifetime), rest)),
+                    None => Ok((None, *cursor)),
+                })
+                .unwrap()
         }
     }
 }

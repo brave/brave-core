@@ -61,7 +61,7 @@ use private::Sealed;
 ///
 /// Implementer safety:
 ///
-/// 1. `into_raw` transfers ownership of the values referenced by StableDeref to the caller,
+/// 1. `into_raw` transfers ownership of the values referenced by [`StableDeref`] to the caller,
 ///    if there is ownership to transfer
 /// 2. `drop_raw` returns ownership back to the impl, if there is ownership to transfer
 ///
@@ -156,13 +156,12 @@ unsafe impl<T> CartablePointerLike for Box<T> {
 
     #[inline]
     fn into_raw(self) -> NonNull<T> {
-        // Safety: `Box::into_raw` says: "The pointer will be properly aligned and non-null."
-        unsafe { NonNull::new_unchecked(Box::into_raw(self)) }
+        NonNull::from(Box::leak(self))
     }
     #[inline]
     unsafe fn drop_raw(pointer: NonNull<T>) {
         // Safety: per the method's precondition, `pointer` is dereferenceable and was returned by
-        // `Self::into_raw`, i.e. by `Box::into_raw`. In this circumstances, calling
+        // `Self::into_raw`, i.e. by `Box::leak`. In this circumstances, calling
         // `Box::from_raw` is safe.
         let _box = unsafe { Box::from_raw(pointer.as_ptr()) };
 
@@ -284,8 +283,8 @@ where
     ///
     /// # Invariants
     ///
-    /// 1. Must be either `SENTINEL_PTR` or created from `CartablePointerLike::into_raw`
-    /// 2. If non-sentinel, must _always_ be for a valid SelectedRc
+    /// 1. Must be either `SENTINEL_PTR` or created from [`CartablePointerLike::into_raw`]
+    /// 2. If non-sentinel, must _always_ be for a valid `SelectedRc`
     inner: NonNull<C::Raw>,
     _cartable: PhantomData<C>,
 }
@@ -370,16 +369,15 @@ unsafe impl<C> CloneableCart for CartableOptionPointer<C> where
 }
 
 // Safety: logically an Option<C>. Has same bounds as Option<C>
-unsafe impl<C> Send for CartableOptionPointer<C> where C: Sync + CartablePointerLike {}
+unsafe impl<C> Send for CartableOptionPointer<C> where C: Send + CartablePointerLike {}
 
 // Safety: logically an Option<C>. Has same bounds as Option<C>
-unsafe impl<C> Sync for CartableOptionPointer<C> where C: Send + CartablePointerLike {}
+unsafe impl<C> Sync for CartableOptionPointer<C> where C: Sync + CartablePointerLike {}
 
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::Yoke;
-    use core::mem::size_of;
 
     const SAMPLE_BYTES: &[u8] = b"abCDEfg";
     const W: usize = size_of::<usize>();
@@ -441,5 +439,34 @@ mod tests {
             assert_eq!(start, DROP_INVOCATIONS.with(Cell::get));
         }
         assert_eq!(start + 1, DROP_INVOCATIONS.with(Cell::get));
+    }
+
+    // Miri test for CartableOptionPointer Send/Sync soundness.
+    //
+    // Verifies that a CartableOptionPointer wrapping a Send + !Sync cart can be
+    // safely sent to another thread and dropped, which compiles under the corrected
+    // bounds but would fail under the old (backwards) bounds.
+    #[test]
+    fn test_send_drops_on_another_thread() {
+        use std::marker::PhantomData;
+
+        // ThreadDrop is Send but !Sync
+        struct ThreadDrop {
+            _not_sync: PhantomData<Cell<i32>>,
+        }
+
+        let yoke = Yoke::<usize, Box<ThreadDrop>>::attach_to_cart(
+            Box::new(ThreadDrop {
+                _not_sync: PhantomData,
+            }),
+            |_| 0,
+        )
+        .wrap_cart_in_option()
+        .convert_cart_into_option_pointer();
+
+        // This requires CartableOptionPointer to be Send.
+        // It is Send because Box<ThreadDrop> is Send.
+        // It would NOT be Send under the old bounds because Box<ThreadDrop> is !Sync.
+        std::thread::spawn(move || drop(yoke)).join().unwrap();
     }
 }

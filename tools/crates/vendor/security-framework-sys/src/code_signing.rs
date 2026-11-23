@@ -1,5 +1,4 @@
-use core_foundation_sys::base::CFTypeID;
-use core_foundation_sys::base::OSStatus;
+use core_foundation_sys::base::{CFTypeID, OSStatus};
 use core_foundation_sys::dictionary::CFDictionaryRef;
 use core_foundation_sys::string::CFStringRef;
 use core_foundation_sys::url::CFURLRef;
@@ -17,8 +16,7 @@ pub type SecCSFlags = u32;
 pub const kSecCSCheckAllArchitectures: SecCSFlags = 1 << 0;
 pub const kSecCSDoNotValidateExecutable: SecCSFlags = 1 << 1;
 pub const kSecCSDoNotValidateResources: SecCSFlags = 1 << 2;
-pub const kSecCSBasicValidateOnly: SecCSFlags =
-    kSecCSDoNotValidateExecutable | kSecCSDoNotValidateResources;
+pub const kSecCSBasicValidateOnly: SecCSFlags = kSecCSDoNotValidateExecutable | kSecCSDoNotValidateResources;
 pub const kSecCSCheckNestedCode: SecCSFlags = 1 << 3;
 pub const kSecCSStrictValidate: SecCSFlags = 1 << 4;
 pub const kSecCSFullReport: SecCSFlags = 1 << 5;

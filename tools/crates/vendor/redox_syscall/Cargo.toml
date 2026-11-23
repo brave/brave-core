@@ -12,7 +12,7 @@
 [package]
 edition = "2021"
 name = "redox_syscall"
-version = "0.6.0"
+version = "0.9.5"
 authors = ["Jeremy Soller <jackpot51@gmail.com>"]
 build = false
 autolib = false
@@ -24,7 +24,8 @@ description = "A Rust library to access raw Redox system calls"
 documentation = "https://docs.rs/redox_syscall"
 readme = "README.md"
 license = "MIT"
-repository = "https://gitlab.redox-os.org/redox-os/syscall"
+repository = "https://gitlab.redox-os.org/redox-os/kernel"
+resolver = "3"
 
 [features]
 default = ["userspace"]

@@ -1,9 +1,11 @@
 //! Core auditing functionality
 
+use crate::config::DatabaseConfig;
 use crate::{
     config::AuditConfig, error::display_err_with_source, prelude::*, presenter::Presenter,
 };
-use rustsec::{Error, ErrorKind, Lockfile, Warning, WarningKind, registry, report};
+use rustsec::registry::CachedIndex;
+use rustsec::{Error, ErrorKind, Lockfile, Warning, WarningKind, report};
 
 use rustsec::binary_scanning::BinaryFormat;
 
@@ -17,82 +19,42 @@ use std::{
 // TODO: make configurable
 const DEFAULT_LOCK_TIMEOUT: Duration = Duration::from_secs(5 * 60);
 
+#[cfg(feature = "binary-scanning")]
+const DEFAULT_MAX_BINARY_SIZE: u64 = 100 * 1024 * 1024; // 100MB
+
 /// Security vulnerability auditor
 pub struct Auditor {
     /// RustSec Advisory Database
     database: rustsec::Database,
 
     /// Crates.io registry index
-    registry_index: Option<registry::CachedIndex>,
+    registry_index: Option<CachedIndex>,
 
     /// Presenter for displaying the report
     presenter: Presenter,
 
     /// Audit report settings
     report_settings: report::Settings,
+
+    /// Binary scanning configuration (max input size)
+    #[cfg(feature = "binary-scanning")]
+    binary_size_limit: Option<u64>,
+
+    /// Binary scanning configuration (max auditable payload size)
+    #[cfg(feature = "binary-scanning")]
+    audit_data_size_limit: Option<usize>,
 }
 
 impl Auditor {
     /// Initialize the auditor
     pub fn new(config: &AuditConfig) -> Self {
-        let advisory_db_url = config
-            .database
-            .url
-            .as_ref()
-            .map(AsRef::as_ref)
-            .unwrap_or(rustsec::repository::git::DEFAULT_URL);
-
-        let advisory_db_path = config
-            .database
-            .path
-            .as_ref()
-            .cloned()
-            .unwrap_or_else(rustsec::repository::git::Repository::default_path);
-
+        let advisory_db_path = config.database.path();
         let database = if config.database.fetch {
-            if !config.output.is_quiet() {
-                status_ok!("Fetching", "advisory database from `{}`", advisory_db_url);
-            }
-
-            let mut result = rustsec::repository::git::Repository::fetch(
-                advisory_db_url,
+            update_db(
                 &advisory_db_path,
-                !config.database.stale,
-                Duration::from_secs(0),
-            );
-            // If the directory is locked, print a message and wait for it to become unlocked.
-            // If we don't print the message, `cargo audit` would just hang with no explanation.
-            if let Err(e) = &result {
-                if e.kind() == ErrorKind::LockTimeout {
-                    status_warn!(
-                        "directory {} is locked, waiting for up to {} seconds for it to become available",
-                        advisory_db_path.display(),
-                        DEFAULT_LOCK_TIMEOUT.as_secs()
-                    );
-                    result = rustsec::repository::git::Repository::fetch(
-                        advisory_db_url,
-                        &advisory_db_path,
-                        !config.database.stale,
-                        DEFAULT_LOCK_TIMEOUT,
-                    );
-                }
-            }
-
-            let advisory_db_repo = result.unwrap_or_else(|e| {
-                status_err!(
-                    "couldn't fetch advisory database: {}",
-                    display_err_with_source(&e)
-                );
-                exit(1);
-            });
-
-            rustsec::Database::load_from_repo(&advisory_db_repo).unwrap_or_else(|e| {
-                status_err!(
-                    "error loading advisory database: {}",
-                    display_err_with_source(&e)
-                );
-                exit(1);
-            })
+                &config.database,
+                config.output.is_quiet(),
+            )
         } else {
             rustsec::Database::open(&advisory_db_path).unwrap_or_else(|e| {
                 status_err!(
@@ -118,19 +80,20 @@ impl Auditor {
                     status_ok!("Updating", "crates.io index");
                 }
 
-                let mut result = registry::CachedIndex::fetch(Duration::from_secs(0));
+                let user_agent = format!("cargo-audit/{}", crate::VERSION);
+                let mut result = CachedIndex::fetch_as(Duration::from_secs(0), user_agent.clone());
 
                 // If the directory is locked, print a message and wait for it to become unlocked.
                 // If we don't print the message, `cargo audit` would just hang with no explanation.
-                if let Err(e) = &result {
-                    if e.kind() == ErrorKind::LockTimeout {
-                        status_warn!(
-                            "directory {} is locked, waiting for up to {} seconds for it to become available",
-                            advisory_db_path.display(),
-                            DEFAULT_LOCK_TIMEOUT.as_secs()
-                        );
-                        result = registry::CachedIndex::fetch(DEFAULT_LOCK_TIMEOUT);
-                    }
+                if let Err(e) = &result
+                    && e.kind() == ErrorKind::LockTimeout
+                {
+                    status_warn!(
+                        "directory {} is locked, waiting for up to {} seconds for it to become available",
+                        advisory_db_path.display(),
+                        DEFAULT_LOCK_TIMEOUT.as_secs()
+                    );
+                    result = CachedIndex::fetch_as(DEFAULT_LOCK_TIMEOUT, user_agent);
                 }
 
                 match result {
@@ -144,19 +107,19 @@ impl Auditor {
                     }
                 }
             } else {
-                let mut result = registry::CachedIndex::open(Duration::from_secs(0));
+                let mut result = CachedIndex::open(Duration::from_secs(0));
 
                 // If the directory is locked, print a message and wait for it to become unlocked.
                 // If we don't print the message, `cargo audit` would just hang with no explanation.
-                if let Err(e) = &result {
-                    if e.kind() == ErrorKind::LockTimeout {
-                        status_warn!(
-                            "directory {} is locked, waiting for up to {} seconds for it to become available",
-                            advisory_db_path.display(),
-                            DEFAULT_LOCK_TIMEOUT.as_secs()
-                        );
-                        result = registry::CachedIndex::open(DEFAULT_LOCK_TIMEOUT)
-                    }
+                if let Err(e) = &result
+                    && e.kind() == ErrorKind::LockTimeout
+                {
+                    status_warn!(
+                        "directory {} is locked, waiting for up to {} seconds for it to become available",
+                        advisory_db_path.display(),
+                        DEFAULT_LOCK_TIMEOUT.as_secs()
+                    );
+                    result = CachedIndex::open(DEFAULT_LOCK_TIMEOUT)
                 }
 
                 match result {
@@ -179,6 +142,10 @@ impl Auditor {
             registry_index,
             presenter: Presenter::new(&config.output),
             report_settings: config.report_settings(),
+            #[cfg(feature = "binary-scanning")]
+            binary_size_limit: Some(DEFAULT_MAX_BINARY_SIZE),
+            #[cfg(feature = "binary-scanning")]
+            audit_data_size_limit: None,
         }
     }
 
@@ -242,13 +209,32 @@ impl Auditor {
     }
 
     #[cfg(feature = "binary-scanning")]
+    /// Configure binary-scanning limits for this `Auditor`.
+    ///
+    /// `max_binary_size` is in bytes. If unset, defaults to 100MB.
+    ///
+    /// `audit_data_size_limit` is the maximum size (in bytes) of embedded auditable payload data
+    /// to parse. If unset, the default from `rustsec` applies (currently 8MB).
+    pub fn set_binary_scan_limits(
+        &mut self,
+        max_binary_size: Option<u64>,
+        audit_data_size_limit: Option<usize>,
+    ) {
+        self.binary_size_limit = Some(max_binary_size.unwrap_or(DEFAULT_MAX_BINARY_SIZE));
+        self.audit_data_size_limit = audit_data_size_limit.or(Some(8 * 1024 * 1024));
+    }
+
+    #[cfg(feature = "binary-scanning")]
     /// Perform an audit of a binary file with dependency data embedded by `cargo auditable`
     fn audit_binary(&mut self, binary_path: &Path) -> rustsec::Result<rustsec::Report> {
         use rustsec::binary_scanning::BinaryReport::*;
-        let file_contents = std::fs::read(binary_path)?;
-        let (binary_type, report) =
-            rustsec::binary_scanning::load_deps_from_binary(&file_contents, Option::None)?;
+        let file_contents = self.read_binary_with_limit(binary_path)?;
+        let (binary_type, report) = rustsec::binary_scanning::load_deps_from_binary(
+            &file_contents,
+            self.audit_data_size_limit,
+        )?;
         self.presenter.binary_scan_report(&report, binary_path);
+        self.presenter.set_binary_contents(file_contents);
         match report {
             Complete(lockfile) | Incomplete(lockfile) => {
                 self.audit(&lockfile, Some(binary_path), Some(binary_type))
@@ -258,6 +244,26 @@ impl Auditor {
                 "No dependency information found! Is this a Rust executable built with cargo?",
             )),
         }
+    }
+
+    #[cfg(feature = "binary-scanning")]
+    fn read_binary_with_limit(&self, binary_path: &Path) -> rustsec::Result<Vec<u8>> {
+        let file = std::fs::File::open(binary_path)?;
+        let limit = self.binary_size_limit.unwrap_or(DEFAULT_MAX_BINARY_SIZE);
+        let mut limited = file.take(limit.saturating_add(1));
+        let mut buffer = Vec::new();
+        limited.read_to_end(&mut buffer)?;
+        if buffer.len() as u64 > limit {
+            return Err(Error::new(
+                ErrorKind::BadParam,
+                format!(
+                    "binary {} exceeds max size limit of {} bytes",
+                    binary_path.display(),
+                    limit
+                ),
+            ));
+        }
+        Ok(buffer)
     }
 
     /// The part of the auditing process that is shared between auditing lockfiles and binary files
@@ -286,6 +292,7 @@ impl Auditor {
                 .append(&mut yanked);
         }
 
+        self.presenter.mark_denied_warnings(&mut report);
         self.presenter.print_report(&report, lockfile, path);
 
         Ok(report)
@@ -311,10 +318,12 @@ impl Auditor {
                         let warning = Warning::new(WarningKind::Yanked, pkg, None, None, None);
                         result.push(warning);
                     }
-                    Err(e) => status_err!(
-                        "couldn't check if the package is yanked: {}",
-                        display_err_with_source(&e)
-                    ),
+                    Err(e) => {
+                        status_err!(
+                            "couldn't check if the package is yanked: {}",
+                            display_err_with_source(&e)
+                        );
+                    }
                 }
             }
         }
@@ -363,6 +372,53 @@ impl Auditor {
                 .presenter
                 .should_exit_with_failure_due_to_self(&self.self_advisories())
     }
+}
+
+pub(crate) fn update_db(path: &Path, config: &DatabaseConfig, quiet: bool) -> rustsec::Database {
+    let url = config.url();
+    if !quiet {
+        status_ok!("Fetching", "advisory database from `{}`", url);
+    }
+
+    let mut result = rustsec::repository::git::Repository::fetch(
+        url,
+        path,
+        !config.stale,
+        Duration::from_secs(0),
+    );
+    // If the directory is locked, print a message and wait for it to become unlocked.
+    // If we don't print the message, `cargo audit` would just hang with no explanation.
+    if let Err(e) = &result
+        && e.kind() == ErrorKind::LockTimeout
+    {
+        status_warn!(
+            "directory {} is locked, waiting for up to {} seconds for it to become available",
+            path.display(),
+            DEFAULT_LOCK_TIMEOUT.as_secs()
+        );
+        result = rustsec::repository::git::Repository::fetch(
+            url,
+            path,
+            !config.stale,
+            DEFAULT_LOCK_TIMEOUT,
+        );
+    }
+
+    let advisory_db_repo = result.unwrap_or_else(|e| {
+        status_err!(
+            "couldn't fetch advisory database: {}",
+            display_err_with_source(&e)
+        );
+        exit(1);
+    });
+
+    rustsec::Database::load_from_repo(&advisory_db_repo).unwrap_or_else(|e| {
+        status_err!(
+            "error loading advisory database: {}",
+            display_err_with_source(&e)
+        );
+        exit(1);
+    })
 }
 
 /// Summary of the report over multiple scanned files

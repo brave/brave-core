@@ -109,10 +109,7 @@ where
     /// Reserves capacity for at least `additional` more elements to be inserted in the [`IndexMap`].
     #[inline]
     pub fn reserve(&mut self, additional: usize) {
-        #[cfg(not(feature = "no-hash-maps"))]
         self.inner.reserve(additional);
-        #[cfg(feature = "no-hash-maps")]
-        let _ = additional;
     }
 
     /// Returns true if `key` is contains in the [`IndexMap`].
@@ -494,7 +491,7 @@ pub struct IntoIter<K, V> {
     inner: detail::IntoIterImpl<K, V>,
 }
 
-impl<'a, K, V> Iterator for IntoIter<K, V> {
+impl<K, V> Iterator for IntoIter<K, V> {
     type Item = (K, V);
 
     #[inline]
@@ -508,14 +505,14 @@ impl<'a, K, V> Iterator for IntoIter<K, V> {
     }
 }
 
-impl<'a, K, V> ExactSizeIterator for IntoIter<K, V> {
+impl<K, V> ExactSizeIterator for IntoIter<K, V> {
     #[inline]
     fn len(&self) -> usize {
         self.inner.len()
     }
 }
 
-impl<'a, K, V> FusedIterator for IntoIter<K, V> {}
+impl<K, V> FusedIterator for IntoIter<K, V> {}
 
 /// An iterator over the keys of a [`IndexMap`].
 #[derive(Debug, Clone)]

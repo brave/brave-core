@@ -714,6 +714,58 @@ fn sym_loop_detect() {
     assert!(err.io_error().is_none());
 }
 
+// A symlink that resolves to a directory *above* the root of the walk is
+// also a loop: the target contains the root, so descending into it leads
+// back to the root.
+#[test]
+fn sym_loop_above_root_detect() {
+    let dir = Dir::tmp();
+    dir.mkdirp("outside");
+    dir.touch_all(&["outside/stray"]);
+    dir.mkdirp("root/deep");
+    dir.touch_all(&["root/file"]);
+    dir.symlink_dir(".", "root/deep/up");
+
+    let wd = WalkDir::new(dir.join("root")).follow_links(true);
+    let r = dir.run_recursive(wd);
+
+    let (ents, errs) = (r.sorted_paths(), r.errs());
+    assert_eq!(
+        vec![dir.join("root"), dir.join("root/deep"), dir.join("root/file"),],
+        ents
+    );
+    assert_eq!(1, errs.len());
+
+    let err = &errs[0];
+    assert_eq!(Some(&*dir.join("root/deep/up")), err.path());
+    assert!(err.loop_ancestor().is_some());
+    assert!(err.io_error().is_none());
+}
+
+// Only ancestors are loops. A symlink to a directory outside the root that
+// does not contain the root is still followed.
+#[test]
+fn sym_outside_root_is_followed() {
+    let dir = Dir::tmp();
+    dir.mkdirp("outside");
+    dir.touch_all(&["outside/stray"]);
+    dir.mkdirp("root");
+    dir.symlink_dir("outside", "root/link");
+
+    let wd = WalkDir::new(dir.join("root")).follow_links(true);
+    let r = dir.run_recursive(wd);
+    r.assert_no_errors();
+
+    assert_eq!(
+        vec![
+            dir.join("root"),
+            dir.join("root/link"),
+            dir.join("root/link/stray"),
+        ],
+        r.sorted_paths()
+    );
+}
+
 #[test]
 fn sym_self_loop_no_error() {
     let dir = Dir::tmp();

@@ -1,4 +1,5 @@
 // Internal
+use crate::INTERNAL_ERROR_MSG;
 use crate::builder::StyledStr;
 use crate::builder::{Arg, ArgGroup, ArgPredicate, Command, PossibleValue};
 use crate::error::{Error, Result as ClapResult};
@@ -8,7 +9,6 @@ use crate::util::ChildGraph;
 use crate::util::FlatMap;
 use crate::util::FlatSet;
 use crate::util::Id;
-use crate::INTERNAL_ERROR_MSG;
 
 pub(crate) struct Validator<'cmd> {
     cmd: &'cmd Command,
@@ -40,7 +40,7 @@ impl<'cmd> Validator<'cmd> {
             let bn = self.cmd.get_bin_name_fallback();
             return Err(Error::missing_subcommand(
                 self.cmd,
-                bn.to_string(),
+                bn.to_owned(),
                 self.cmd
                     .all_subcommand_names()
                     .map(|s| s.to_owned())
@@ -132,8 +132,7 @@ impl<'cmd> Validator<'cmd> {
         }
 
         debug!("Validator::build_conflict_err: name={name:?}");
-        let mut seen = FlatSet::new();
-        let conflicts = conflict_ids
+        let conflict_ids = conflict_ids
             .iter()
             .flat_map(|c_id| {
                 if self.cmd.find_group(c_id).is_some() {
@@ -142,16 +141,18 @@ impl<'cmd> Validator<'cmd> {
                     vec![c_id.clone()]
                 }
             })
-            .filter_map(|c_id| {
-                seen.insert(c_id.clone()).then(|| {
-                    let c_arg = self.cmd.find(&c_id).expect(INTERNAL_ERROR_MSG);
-                    c_arg.to_string()
-                })
+            .collect::<FlatSet<_>>()
+            .into_vec();
+        let conflicts = conflict_ids
+            .iter()
+            .map(|c_id| {
+                let c_arg = self.cmd.find(c_id).expect(INTERNAL_ERROR_MSG);
+                c_arg.to_string()
             })
             .collect();
 
         let former_arg = self.cmd.find(name).expect(INTERNAL_ERROR_MSG);
-        let usg = self.build_conflict_err_usage(matcher, conflict_ids);
+        let usg = self.build_conflict_err_usage(matcher, &conflict_ids);
         Err(Error::argument_conflict(
             self.cmd,
             former_arg.to_string(),
@@ -501,7 +502,7 @@ fn gather_direct_conflicts(cmd: &Command, id: &Id) -> Vec<Id> {
 }
 
 fn gather_arg_direct_conflicts(cmd: &Command, arg: &Arg) -> Vec<Id> {
-    let mut conf = arg.blacklist.clone();
+    let mut conf = arg.conflicts.clone();
     for group_id in cmd.groups_for_arg(arg.get_id()) {
         let group = cmd.find_group(&group_id).expect(INTERNAL_ERROR_MSG);
         conf.extend(group.conflicts.iter().cloned());

@@ -1,0 +1,5 @@
+error: function must have signature `fn() -> !`
+ --> $DIR/panic-handler-empty.rs:5:4
+  |
+5 | fn foo() {}
+  |    ^^^

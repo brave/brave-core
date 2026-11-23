@@ -43,6 +43,59 @@ fn test_put_u8() {
 }
 
 #[test]
+fn test_put_i8_negative() {
+    let mut vec = Vec::new();
+    vec.put_i8(-1);
+    vec.put_i8(i8::MIN);
+    assert_eq!(b"\xff\x80", &vec[..]);
+
+    let mut buf = BytesMut::new();
+    buf.put_i8(-1);
+    buf.put_i8(i8::MIN);
+    assert_eq!(b"\xff\x80", &buf[..]);
+}
+
+#[test]
+fn test_put_u8_grow_from_empty() {
+    let expected: Vec<u8> = (0..=255).collect();
+
+    let mut vec = Vec::new();
+    let mut buf = BytesMut::new();
+    assert_eq!(buf.capacity(), 0);
+    for &n in &expected {
+        vec.put_u8(n);
+        buf.put_u8(n);
+    }
+    assert_eq!(expected, vec);
+    assert_eq!(expected, buf);
+}
+
+#[test]
+fn test_bytes_mut_put_u8_after_split() {
+    // The front half has no spare capacity after `split_to`, so writing to it
+    // must reallocate rather than clobber the back half.
+    let mut back = BytesMut::from(&b"abcdef"[..]);
+    let mut front = back.split_to(3);
+    assert_eq!(front.capacity(), 3);
+    front.put_u8(b'X');
+    back.put_u8(b'Y');
+    assert_eq!(b"abcX", &front[..]);
+    assert_eq!(b"defY", &back[..]);
+
+    // `split` leaves the spare capacity with the now-empty original, so this
+    // writes in place at a non-zero offset into the shared allocation.
+    let mut buf = BytesMut::with_capacity(8);
+    buf.put_slice(b"abc");
+    let front = buf.split();
+    assert!(buf.capacity() > 0);
+    let ptr = buf.as_ptr();
+    buf.put_u8(b'Z');
+    assert_eq!(ptr, buf.as_ptr());
+    assert_eq!(b"abc", &front[..]);
+    assert_eq!(b"Z", &buf[..]);
+}
+
+#[test]
 fn test_put_u16() {
     let mut buf = Vec::with_capacity(8);
     buf.put_u16(8532);

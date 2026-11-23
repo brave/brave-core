@@ -1,0 +1,7 @@
+error: multiple `defmt` attributes not supported
+ --> $DIR/derive-multi-attr.rs:3:5
+  |
+3 | /     #[defmt(Debug2Format)]
+4 | |     #[defmt()]
+5 | |     f: bool,
+  | |___________^

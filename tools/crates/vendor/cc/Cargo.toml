@@ -10,16 +10,15 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2018"
-rust-version = "1.63"
+edition = "2021"
+rust-version = "1.65.0"
 name = "cc"
-version = "1.2.50"
-authors = ["Alex Crichton <alex@alexcrichton.com>"]
+version = "1.11.3"
 build = false
 exclude = [
     "/.github",
-    "tests",
     "src/bin",
+    "tests",
 ]
 autolib = false
 autobins = false
@@ -39,11 +38,15 @@ categories = ["development-tools::build-utils"]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/rust-lang/cc-rs"
 
+[package.metadata.docs.rs]
+all-features = true
+
 [features]
+compile-commands = []
 jobserver = []
 parallel = [
-    "dep:libc",
     "dep:jobserver",
+    "dep:libc",
 ]
 
 [lib]
@@ -51,23 +54,34 @@ name = "cc"
 path = "src/lib.rs"
 
 [dependencies.find-msvc-tools]
-version = "0.1.5"
+version = "0.1.15"
 
 [dependencies.jobserver]
-version = "0.1.30"
+version = "0.1.32"
 optional = true
 default-features = false
 
 [dependencies.shlex]
-version = "1.3.0"
+version = "2.0.1"
 
 [dev-dependencies.tempfile]
-version = "3"
+version = "3.0.4"
 
 [target."cfg(unix)".dependencies.libc]
-version = "0.2.62"
+version = "0.2.168"
 optional = true
 default-features = false
+
+[lints.clippy]
+borrow_as_ptr = "warn"
+disallowed_methods = "warn"
+doc_markdown = "warn"
+manual_let_else = "warn"
+ptr_as_ptr = "warn"
+ptr_cast_constness = "warn"
+
+[lints.rust]
+missing_docs = "warn"
 
 [lints.rust.unexpected_cfgs]
 level = "allow"

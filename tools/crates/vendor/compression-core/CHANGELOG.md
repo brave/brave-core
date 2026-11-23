@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.34](https://github.com/Nullus157/async-compression/compare/compression-core-v0.4.33...compression-core-v0.4.34) - 2026-10-17
+
+### Other
+
+- add keywords to compression crates ([#502](https://github.com/Nullus157/async-compression/pull/502))
+
+## [0.4.33](https://github.com/Nullus157/async-compression/compare/compression-core-v0.4.32...compression-core-v0.4.33) - 2026-09-02
+
+### Other
+
+- Fix safety contract on assume_init, use asserts ([#479](https://github.com/Nullus157/async-compression/pull/479))
+- Enforce WriteBuffer bounds checks in release builds ([#477](https://github.com/Nullus157/async-compression/pull/477))
+
+### Fixed
+
+- Fix `WriteBuffer::assume_init` to track initialization relative to the written position without adding overlapping calls, and enforce bounds checks for initialization setters in release builds ([#475](https://github.com/Nullus157/async-compression/issues/475)).
+- Enforce `WriteBuffer::advance` and `WriteBuffer::written` initialization checks in release builds to prevent safe access to uninitialized memory ([#477](https://github.com/Nullus157/async-compression/pull/477)).
+
+## [0.4.32](https://github.com/Nullus157/async-compression/compare/compression-core-v0.4.31...compression-core-v0.4.32) - 2026-04-21
+
+### Other
+
+- Include license files in published crates ([#467](https://github.com/Nullus157/async-compression/pull/467))
+
 ## [0.4.31](https://github.com/Nullus157/async-compression/compare/compression-core-v0.4.30...compression-core-v0.4.31) - 2025-11-21
 
 ### Added

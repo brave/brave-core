@@ -16,7 +16,17 @@
     doc = ::document_features::document_features!()
 )]
 #![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg))]
-#![deny(missing_docs, rust_2018_idioms, unsafe_code)]
+#![deny(missing_docs, unsafe_code)]
+
+use std::{borrow::Cow, ops::Deref, path::Path};
+
+/// The default memory-backed storage for pack data and index files.
+pub use memmap2::Mmap as MMap;
+
+/// A byte-oriented backing store for pack data and indices.
+pub trait FileData: Deref<Target = [u8]> {}
+
+impl<T> FileData for T where T: Deref<Target = [u8]> {}
 
 ///
 pub mod bundle;
@@ -47,16 +57,45 @@ pub mod multi_index;
 ///
 pub mod verify;
 
+///
+#[cfg(feature = "testing")]
+pub mod testing;
+
 mod mmap {
     use std::path::Path;
 
     pub fn read_only(path: &Path) -> std::io::Result<memmap2::Mmap> {
         let file = std::fs::File::open(path)?;
         // SAFETY: we have to take the risk of somebody changing the file underneath. Git never writes into the same file.
-        #[allow(unsafe_code)]
+        #[expect(unsafe_code)]
         unsafe {
-            memmap2::MmapOptions::new().map_copy_read_only(&file)
+            // On Windows, a copy-on-write view is charged against the system commit limit in full when it is
+            // created, so mapping a pack larger than the available commit fails with `ERROR_COMMITMENT_LIMIT`
+            // (os error 1455) even though no page is ever written. A plain read-only view costs no commit.
+            #[cfg(windows)]
+            {
+                memmap2::MmapOptions::new().map(&file)
+            }
+            // Everywhere else, `MAP_PRIVATE` is free and works under more circumstances. And in fact, it's
+            // needed for best compatibilty and won't cause troble on *nix systems.
+            #[cfg(not(windows))]
+            {
+                memmap2::MmapOptions::new().map_copy_read_only(&file)
+            }
         }
+    }
+}
+
+/// Return a display-friendly name for pack- or index-related progress messages.
+///
+/// Prefer the file name, but fall back to the full path for paths without a terminal component.
+fn source_name(path: &Path) -> Cow<'_, str> {
+    if path.as_os_str().is_empty() {
+        Cow::Borrowed("<memory>")
+    } else if let Some(name) = path.file_name() {
+        name.to_string_lossy()
+    } else {
+        path.as_os_str().to_string_lossy()
     }
 }
 
@@ -72,6 +111,25 @@ fn read_u64(b: &[u8]) -> u64 {
 
 fn exact_vec<T>(capacity: usize) -> Vec<T> {
     let mut v = Vec::new();
-    v.reserve_exact(capacity);
+    _ = v.try_reserve_exact(capacity);
     v
+}
+
+#[inline]
+fn fan_is_monotonically_increasing(fan: &[u32]) -> bool {
+    !fan.windows(2).any(|window| window[0] > window[1])
+}
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn exact_capacity_is_only_an_optimization() {
+        let result = std::panic::catch_unwind(|| super::exact_vec::<u8>(usize::MAX));
+        assert!(result.is_ok(), "failure to preallocate an optimization must not panic");
+        assert_eq!(
+            result.expect("preallocation does not panic").capacity(),
+            0,
+            "a failed preallocation leaves the vector empty"
+        );
+    }
 }

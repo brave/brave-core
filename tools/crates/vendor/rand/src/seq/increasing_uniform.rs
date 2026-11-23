@@ -6,11 +6,11 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use crate::{Rng, RngCore};
+use crate::{Rng, RngExt};
 
 /// Similar to a Uniform distribution,
 /// but after returning a number in the range [0,n], n is increased by 1.
-pub(crate) struct IncreasingUniform<R: RngCore> {
+pub(crate) struct IncreasingUniform<R: Rng> {
     pub rng: R,
     n: u32,
     // Chunk is a random number in [0, (n + 1) * (n + 2) *..* (n + chunk_remaining) )
@@ -18,7 +18,7 @@ pub(crate) struct IncreasingUniform<R: RngCore> {
     chunk_remaining: u8,
 }
 
-impl<R: RngCore> IncreasingUniform<R> {
+impl<R: Rng> IncreasingUniform<R> {
     /// Create a dice roller.
     /// The next item returned will be a random number in the range [0,n]
     pub fn new(rng: R, n: u32) -> Self {

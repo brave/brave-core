@@ -176,8 +176,11 @@ impl BoundedBacktracker {
             return None;
         }
         // If the backtracker is just going to return an error because the
-        // haystack is too long, then obviously do not use it.
-        if input.get_span().len() > engine.max_haystack_len() {
+        // haystack is too long, then obviously do not use it. Note that
+        // we use '>=' here because when max_haystack_len() returns 0,
+        // the backtracker cannot handle any haystack (including the empty
+        // string with length 0).
+        if input.get_span().len() >= engine.max_haystack_len() {
             return None;
         }
         Some(engine)
@@ -598,7 +601,6 @@ impl HybridEngine {
             let result = hybrid::dfa::Builder::new()
                 .configure(
                     dfa_config
-                        .clone()
                         .match_kind(MatchKind::All)
                         .prefilter(None)
                         .specialize_start_states(false),
@@ -892,7 +894,6 @@ impl DFAEngine {
             let result = dfa::dense::Builder::new()
                 .configure(
                     dfa_config
-                        .clone()
                         // We never need unanchored reverse searches, so
                         // there's no point in building it into the DFA, which
                         // WILL take more space. (This isn't done for the lazy
@@ -1253,7 +1254,7 @@ impl ReverseDFAEngine {
                          which exceeds the heuristic limit of {}",
                         nfarev.states().len(),
                         state_limit,
-					);
+                    );
                     return None;
                 }
             }

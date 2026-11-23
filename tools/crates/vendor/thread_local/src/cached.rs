@@ -3,7 +3,6 @@
 use super::{IntoIter, IterMut, ThreadLocal};
 use std::fmt;
 use std::panic::UnwindSafe;
-use std::usize;
 
 /// Wrapper around [`ThreadLocal`].
 ///
@@ -62,14 +61,14 @@ impl<T: Send> CachedThreadLocal<T> {
     /// be done safely---the mutable borrow statically guarantees no other
     /// threads are currently accessing their associated values.
     #[inline]
-    pub fn iter_mut(&mut self) -> CachedIterMut<T> {
+    pub fn iter_mut(&mut self) -> CachedIterMut<'_, T> {
         CachedIterMut {
             inner: self.inner.iter_mut(),
         }
     }
 
     /// Removes all thread-specific values from the `ThreadLocal`, effectively
-    /// reseting it to its original state.
+    /// resetting it to its original state.
     ///
     /// Since this call borrows the `ThreadLocal` mutably, this operation can
     /// be done safely---the mutable borrow statically guarantees no other

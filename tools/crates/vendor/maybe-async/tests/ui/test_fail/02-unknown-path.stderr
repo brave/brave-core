@@ -1,5 +1,0 @@
-error: Unknown path: `unknown`, must be `async`
- --> tests/ui/test_fail/02-unknown-path.rs:9:40
-  |
-9 | #[maybe_async::test(feature="is_sync", unknown(not(feature="is_sync"), async_std::test))]
-  |                                        ^^^^^^^

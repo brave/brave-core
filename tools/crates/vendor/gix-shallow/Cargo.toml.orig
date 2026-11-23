@@ -2,27 +2,39 @@ lints.workspace = true
 
 [package]
 name = "gix-shallow"
-version = "0.6.0"
+version = "0.15.1"
 repository = "https://github.com/GitoxideLabs/gitoxide"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
 license = "MIT OR Apache-2.0"
 description = "Handle files specifying the shallow boundary"
-edition = "2021"
-include = ["src/**/*", "LICENSE-*"]
-rust-version = "1.82"
+edition = "2024"
+include = ["/src/**/*", "/LICENSE-*"]
+rust-version = "1.88"
 
 [lib]
-doctest = false
+doctest = true
 test = false
 
 [features]
+## Enable support for the SHA-1 hash by enabling the respective feature in the `gix-hash` crate.
+sha1 = ["gix-hash/sha1"]
+## Enable support for the SHA-256 hash by enabling the respective feature in the `gix-hash` crate.
+sha256 = ["gix-hash/sha256"]
 ## Data structures implement `serde::Serialize` and `serde::Deserialize`.
-serde = ["dep:serde", "gix-hash/serde"]
+serde = ["dep:serde", "gix-hash/serde", "nonempty/serialize"]
 
 [dependencies]
-gix-hash = { version = "^0.20.0", path = "../gix-hash" }
-gix-lock = { version = "^19.0.0", path = "../gix-lock" }
+gix-hash = { version = "^0.28.1", path = "../gix-hash" }
+gix-lock = { version = "^26.0.0", path = "../gix-lock" }
+gix-error = { version = "^0.5.2", path = "../gix-error" }
 
-thiserror = "2.0.17"
 bstr = { version = "1.12.0", default-features = false }
+nonempty = "0.12.0"
 serde = { version = "1.0.114", optional = true, default-features = false, features = ["std", "derive"] }
+
+[package.metadata.docs.rs]
+features = ["sha1"]
+
+[dev-dependencies]
+tempfile = "3.26.0"
+gix-hash = { path = "../gix-hash", features = ["sha1", "sha256"] }

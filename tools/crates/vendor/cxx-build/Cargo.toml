@@ -10,10 +10,10 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.82"
+edition = "2024"
+rust-version = "1.88"
 name = "cxx-build"
-version = "1.0.192"
+version = "1.0.205"
 authors = ["David Tolnay <dtolnay@gmail.com>"]
 build = false
 exclude = ["build.rs"]
@@ -76,7 +76,7 @@ default-features = false
 version = "1.0.5"
 
 [dependencies.syn]
-version = "2.0.46"
+version = "3"
 features = [
     "clone-impls",
     "full",

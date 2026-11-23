@@ -11,7 +11,7 @@
 use proc_macro2::TokenStream;
 use quote::quote;
 use quote::quote_spanned;
-use syn::{spanned::Spanned, Data, DeriveInput, Fields, Ident, Variant};
+use syn::{Data, DeriveInput, Fields, Ident, Variant, spanned::Spanned};
 
 use crate::item::{Item, Kind, Name};
 
@@ -41,7 +41,7 @@ pub(crate) fn gen_for_enum(
 ) -> Result<TokenStream, syn::Error> {
     if !matches!(&*item.kind(), Kind::Value) {
         abort! { item.kind().span(),
-            "`{}` cannot be used with `value`",
+            "`{}` cannot be used with `#[value]`",
             item.kind().name(),
         }
     }
@@ -86,7 +86,10 @@ fn lits(variants: &[(&Variant, Item)]) -> Result<Vec<(TokenStream, Ident)>, syn:
             continue;
         }
         if !matches!(variant.fields, Fields::Unit) {
-            abort!(variant.span(), "`#[derive(ValueEnum)]` only supports unit variants. Non-unit variants must be skipped");
+            abort!(
+                variant.span(),
+                "`#[derive(ValueEnum)]` only supports unit variants. Non-unit variants must be skipped"
+            );
         }
         let fields = item.field_methods();
         let deprecations = item.deprecations();

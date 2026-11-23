@@ -1,10 +1,12 @@
 use crate::attr::Attribute;
-use crate::expr::Member;
+use crate::expr::{Expr, Member};
 use crate::ident::Ident;
 use crate::path::{Path, QSelf};
 use crate::punctuated::Punctuated;
 use crate::token;
 use crate::ty::Type;
+use alloc::boxed::Box;
+use alloc::vec::Vec;
 use proc_macro2::TokenStream;
 
 pub use crate::expr::{
@@ -26,6 +28,9 @@ ast_enum_of_structs! {
     pub enum Pat {
         /// A const block: `const { ... }`.
         Const(PatConst),
+
+        /// A pattern with guard predicate: `Some(x) if x > 0`.
+        Guard(PatGuard),
 
         /// A pattern that binds a new variable: `ref mut binding @ SUBPATTERN`.
         Ident(PatIdent),
@@ -76,28 +81,16 @@ ast_enum_of_structs! {
         Type(PatType),
 
         /// Tokens in pattern position not interpreted by Syn.
+        ///
+        /// <div class="warning">
+        ///
+        /// Important: see [Compatibility notes][crate#verbatim-variants].
+        ///
+        /// </div>
         Verbatim(TokenStream),
 
         /// A pattern that matches any value: `_`.
         Wild(PatWild),
-
-        // For testing exhaustiveness in downstream code, use the following idiom:
-        //
-        //     match pat {
-        //         #![cfg_attr(test, deny(non_exhaustive_omitted_patterns))]
-        //
-        //         Pat::Box(pat) => {...}
-        //         Pat::Ident(pat) => {...}
-        //         ...
-        //         Pat::Wild(pat) => {...}
-        //
-        //         _ => { /* some sane fallback */ }
-        //     }
-        //
-        // This way we fail your tests but don't break your library when adding
-        // a variant. You will be notified by a test failure when a variant is
-        // added, so that you can add code to handle it, but your library will
-        // continue to compile and work for downstream users in the interim.
     }
 }
 
@@ -113,6 +106,17 @@ ast_struct! {
         pub mutability: Option<Token![mut]>,
         pub ident: Ident,
         pub subpat: Option<(Token![@], Box<Pat>)>,
+    }
+}
+
+ast_struct! {
+    /// A pattern with guard predicate: `Some(x) if x > 0`.
+    #[cfg_attr(docsrs, doc(cfg(feature = "full")))]
+    pub struct PatGuard {
+        pub attrs: Vec<Attribute>,
+        pub pat: Box<Pat>,
+        pub if_token: Token![if],
+        pub guard: Box<Expr>,
     }
 }
 
@@ -224,7 +228,7 @@ ast_struct! {
 ast_struct! {
     /// A single field in a struct pattern.
     ///
-    /// Patterns like the fields of Foo `{ x, ref y, ref mut z }` are treated
+    /// Patterns like the fields of `Pat { x, ref y, ref mut z }` are treated
     /// the same as `x: x, y: ref y, z: ref mut z` but there is no colon token.
     #[cfg_attr(docsrs, doc(cfg(feature = "full")))]
     pub struct FieldPat {
@@ -238,6 +242,7 @@ ast_struct! {
 #[cfg(feature = "parsing")]
 pub(crate) mod parsing {
     use crate::attr::Attribute;
+    use crate::buffer::Cursor;
     use crate::error::{self, Result};
     use crate::expr::{
         Expr, ExprConst, ExprLit, ExprMacro, ExprPath, ExprRange, Member, RangeLimits,
@@ -246,16 +251,18 @@ pub(crate) mod parsing {
     use crate::ident::Ident;
     use crate::lit::Lit;
     use crate::mac::{self, Macro};
-    use crate::parse::{Parse, ParseBuffer, ParseStream};
+    use crate::parse::{Parse, ParseStream};
     use crate::pat::{
-        FieldPat, Pat, PatIdent, PatOr, PatParen, PatReference, PatRest, PatSlice, PatStruct,
-        PatTuple, PatTupleStruct, PatType, PatWild,
+        FieldPat, Pat, PatGuard, PatIdent, PatOr, PatParen, PatReference, PatRest, PatSlice,
+        PatStruct, PatTuple, PatTupleStruct, PatType, PatWild,
     };
     use crate::path::{self, Path, QSelf};
     use crate::punctuated::Punctuated;
     use crate::stmt::Block;
     use crate::token;
     use crate::verbatim;
+    use alloc::boxed::Box;
+    use alloc::vec::Vec;
     use proc_macro2::TokenStream;
 
     #[cfg_attr(docsrs, doc(cfg(feature = "parsing")))]
@@ -285,7 +292,7 @@ pub(crate) mod parsing {
         ///   |      ^^^^^^^^^^^^^^ help: wrap the pattern in parentheses: `(Some(_) | None)`
         /// ```
         pub fn parse_single(input: ParseStream) -> Result<Self> {
-            let begin = input.fork();
+            let begin = input.cursor();
             let lookahead = input.lookahead1();
             if lookahead.peek(Ident)
                 && (input.peek2(Token![::])
@@ -331,7 +338,8 @@ pub(crate) mod parsing {
 
         /// Parse a pattern, possibly involving `|`, but not a leading `|`.
         pub fn parse_multi(input: ParseStream) -> Result<Self> {
-            multi_pat_impl(input, None)
+            let allow_guard = false;
+            multi_pat_impl(input, None, allow_guard)
         }
 
         /// Parse a pattern, possibly involving `|`, possibly including a
@@ -378,7 +386,14 @@ pub(crate) mod parsing {
         /// macro-generated macro input.
         pub fn parse_multi_with_leading_vert(input: ParseStream) -> Result<Self> {
             let leading_vert: Option<Token![|]> = input.parse()?;
-            multi_pat_impl(input, leading_vert)
+            let allow_guard = false;
+            multi_pat_impl(input, leading_vert, allow_guard)
+        }
+
+        pub(crate) fn parse_multi_with_leading_vert_and_guard(input: ParseStream) -> Result<Self> {
+            let leading_vert: Option<Token![|]> = input.parse()?;
+            let allow_guard = true;
+            multi_pat_impl(input, leading_vert, allow_guard)
         }
     }
 
@@ -394,7 +409,11 @@ pub(crate) mod parsing {
         }
     }
 
-    fn multi_pat_impl(input: ParseStream, leading_vert: Option<Token![|]>) -> Result<Pat> {
+    fn multi_pat_impl(
+        input: ParseStream,
+        leading_vert: Option<Token![|]>,
+        allow_guard: bool,
+    ) -> Result<Pat> {
         let mut pat = Pat::parse_single(input)?;
         if leading_vert.is_some()
             || input.peek(Token![|]) && !input.peek(Token![||]) && !input.peek(Token![|=])
@@ -411,6 +430,16 @@ pub(crate) mod parsing {
                 attrs: Vec::new(),
                 leading_vert,
                 cases,
+            });
+        }
+        if allow_guard && input.peek(Token![if]) {
+            let if_token: Token![if] = input.parse()?;
+            let guard: Expr = input.parse()?;
+            pat = Pat::Guard(PatGuard {
+                attrs: Vec::new(),
+                pat: Box::new(pat),
+                if_token,
+                guard: Box::new(guard),
             });
         }
         Ok(pat)
@@ -460,10 +489,10 @@ pub(crate) mod parsing {
         })
     }
 
-    fn pat_box(begin: ParseBuffer, input: ParseStream) -> Result<Pat> {
+    fn pat_box(begin: Cursor, input: ParseStream) -> Result<Pat> {
         input.parse::<Token![box]>()?;
         Pat::parse_single(input)?;
-        Ok(Pat::Verbatim(verbatim::between(&begin, input)))
+        Ok(Pat::Verbatim(verbatim::between(begin, input.cursor())))
     }
 
     fn pat_ident(input: ParseStream) -> Result<PatIdent> {
@@ -554,7 +583,7 @@ pub(crate) mod parsing {
     }
 
     fn field_pat(input: ParseStream) -> Result<FieldPat> {
-        let begin = input.fork();
+        let begin = input.cursor();
         let boxed: Option<Token![box]> = input.parse()?;
         let by_ref: Option<Token![ref]> = input.parse()?;
         let mutability: Option<Token![mut]> = input.parse()?;
@@ -582,7 +611,7 @@ pub(crate) mod parsing {
         };
 
         let pat = if boxed.is_some() {
-            Pat::Verbatim(verbatim::between(&begin, input))
+            Pat::Verbatim(verbatim::between(begin, input.cursor()))
         } else {
             Pat::Ident(PatIdent {
                 attrs: Vec::new(),
@@ -792,7 +821,7 @@ pub(crate) mod parsing {
     }
 
     fn pat_const(input: ParseStream) -> Result<TokenStream> {
-        let begin = input.fork();
+        let begin = input.cursor();
         input.parse::<Token![const]>()?;
 
         let content;
@@ -800,7 +829,7 @@ pub(crate) mod parsing {
         content.call(Attribute::parse_inner)?;
         content.call(Block::parse_within)?;
 
-        Ok(verbatim::between(&begin, input))
+        Ok(verbatim::between(begin, input.cursor()))
     }
 }
 
@@ -808,8 +837,8 @@ pub(crate) mod parsing {
 mod printing {
     use crate::attr::FilterAttrs;
     use crate::pat::{
-        FieldPat, Pat, PatIdent, PatOr, PatParen, PatReference, PatRest, PatSlice, PatStruct,
-        PatTuple, PatTupleStruct, PatType, PatWild,
+        FieldPat, Pat, PatGuard, PatIdent, PatOr, PatParen, PatReference, PatRest, PatSlice,
+        PatStruct, PatTuple, PatTupleStruct, PatType, PatWild,
     };
     use crate::path;
     use crate::path::printing::PathStyle;
@@ -827,6 +856,16 @@ mod printing {
                 at_token.to_tokens(tokens);
                 subpat.to_tokens(tokens);
             }
+        }
+    }
+
+    #[cfg_attr(docsrs, doc(cfg(feature = "printing")))]
+    impl ToTokens for PatGuard {
+        fn to_tokens(&self, tokens: &mut TokenStream) {
+            tokens.append_all(self.attrs.outer());
+            self.pat.to_tokens(tokens);
+            self.if_token.to_tokens(tokens);
+            self.guard.to_tokens(tokens);
         }
     }
 

@@ -2,6 +2,8 @@
 
 #![cfg_attr(not(all(test, feature = "float")), allow(dead_code, unused_macros))]
 
+#[allow(unused_imports)]
+pub(crate) use self::generated::{RegISize, RegSize};
 #[macro_use]
 #[path = "gen/utils.rs"]
 mod generated;
@@ -51,15 +53,15 @@ macro_rules! doc_comment {
     all(target_arch = "x86_64", not(any(target_env = "sgx", miri))),
 ))]
 macro_rules! ifunc {
-    (unsafe fn($($arg_pat:ident: $arg_ty:ty),*) $(-> $ret_ty:ty)? { $($detect_body:tt)* }) => {{
+    (unsafe fn($($arg_pat:ident: $arg_ty:ty),* $(,)?) $(-> $ret_ty:ty)? { $($init_body:tt)* }) => {{
         type FnTy = unsafe fn($($arg_ty),*) $(-> $ret_ty)?;
         static FUNC: core::sync::atomic::AtomicPtr<()>
-            = core::sync::atomic::AtomicPtr::new(detect as *mut ());
+            = core::sync::atomic::AtomicPtr::new(init as *mut ());
         #[cold]
-        unsafe fn detect($($arg_pat: $arg_ty),*) $(-> $ret_ty)? {
-            let func: FnTy = { $($detect_body)* };
+        unsafe fn init($($arg_pat: $arg_ty),*) $(-> $ret_ty)? {
+            let func: FnTy = { $($init_body)* };
             FUNC.store(func as *mut (), core::sync::atomic::Ordering::Relaxed);
-            // SAFETY: the caller must uphold the safety contract for the function returned by $detect_body.
+            // SAFETY: the caller must uphold the safety contract for the function returned by $init_body.
             unsafe { func($($arg_pat),*) }
         }
         // SAFETY: `FnTy` is a function pointer, which is always safe to transmute with a `*mut ()`.
@@ -68,11 +70,26 @@ macro_rules! ifunc {
         let func = {
             core::mem::transmute::<*mut (), FnTy>(FUNC.load(core::sync::atomic::Ordering::Relaxed))
         };
-        // SAFETY: the caller must uphold the safety contract for the function returned by $detect_body.
+        // SAFETY: the caller must uphold the safety contract for the function returned by $init_body.
         // (To force the caller to use unsafe block for this macro, do not use
         // unsafe block here.)
         func($($arg_pat),*)
     }};
+}
+
+#[cfg(not(portable_atomic_no_asm))]
+#[allow(unused_macros)]
+macro_rules! __asm {
+    ($($tt:tt)*) => {
+        core::arch::asm!($($tt)*)
+    };
+}
+#[cfg(portable_atomic_no_asm)]
+#[allow(unused_macros)]
+macro_rules! __asm {
+    ($($tt:tt)*) => {
+        asm!($($tt)*)
+    };
 }
 
 #[allow(unused_macros)]
@@ -230,6 +247,34 @@ macro_rules! impl_default_no_fetch_ops {
     };
 }
 macro_rules! impl_default_bit_opts {
+    (AtomicPtr, $int_type:ty) => {
+        impl<T> AtomicPtr<T> {
+            #[inline]
+            #[cfg_attr(miri, track_caller)] // even without panics, this helps for Miri backtraces
+            pub(crate) fn bit_set(&self, bit: u32, order: Ordering) -> bool {
+                #[cfg(portable_atomic_no_strict_provenance)]
+                use crate::utils::ptr::PtrExt as _;
+                let mask = <$int_type>::wrapping_shl(1, bit);
+                self.fetch_or(mask, order).addr() & mask != 0
+            }
+            #[inline]
+            #[cfg_attr(miri, track_caller)] // even without panics, this helps for Miri backtraces
+            pub(crate) fn bit_clear(&self, bit: u32, order: Ordering) -> bool {
+                #[cfg(portable_atomic_no_strict_provenance)]
+                use crate::utils::ptr::PtrExt as _;
+                let mask = <$int_type>::wrapping_shl(1, bit);
+                self.fetch_and(!mask, order).addr() & mask != 0
+            }
+            #[inline]
+            #[cfg_attr(miri, track_caller)] // even without panics, this helps for Miri backtraces
+            pub(crate) fn bit_toggle(&self, bit: u32, order: Ordering) -> bool {
+                #[cfg(portable_atomic_no_strict_provenance)]
+                use crate::utils::ptr::PtrExt as _;
+                let mask = <$int_type>::wrapping_shl(1, bit);
+                self.fetch_xor(mask, order).addr() & mask != 0
+            }
+        }
+    };
     ($atomic_type:ident, $int_type:ty) => {
         impl $atomic_type {
             #[inline]
@@ -255,10 +300,75 @@ macro_rules! impl_default_bit_opts {
 }
 
 // This just outputs the input as is, but can be used like an item-level block by using it with cfg.
+// Note: This macro is items!({ }), not items! { }.
+// An extra brace is used in input to make contents rustfmt-able.
 macro_rules! items {
-    ($($tt:tt)*) => {
+    ({$($tt:tt)*}) => {
         $($tt)*
     };
+}
+
+// rustfmt-compatible cfg_select/cfg_if alternative
+// Note: This macro is cfg_sel!({ }), not cfg_sel! { }.
+// An extra brace is used in input to make contents rustfmt-able.
+macro_rules! cfg_sel {
+    ({#[cfg(else)] { $($output:tt)* }}) => {
+        $($output)*
+    };
+    ({
+        #[cfg($cfg:meta)]
+        { $($output:tt)* }
+        $($( $rest:tt )+)?
+    }) => {
+        #[cfg($cfg)]
+        cfg_sel! {{#[cfg(else)] { $($output)* }}}
+        $(
+            #[cfg(not($cfg))]
+            cfg_sel! {{ $($rest)+ }}
+        )?
+    };
+    ({
+        #[cfg_attr(portable_atomic_no_cfg_target_has_atomic, cfg($cfg1:meta))]
+        #[cfg_attr(not(portable_atomic_no_cfg_target_has_atomic), cfg($cfg2:meta))]
+        { $($output:tt)* }
+        $($( $rest:tt )+)?
+    }) => {
+        #[cfg_attr(portable_atomic_no_cfg_target_has_atomic, cfg($cfg1))]
+        #[cfg_attr(not(portable_atomic_no_cfg_target_has_atomic), cfg($cfg2))]
+        cfg_sel! {{#[cfg(else)] { $($output)* }}}
+        $(
+            #[cfg_attr(portable_atomic_no_cfg_target_has_atomic, cfg(not($cfg1)))]
+            #[cfg_attr(not(portable_atomic_no_cfg_target_has_atomic), cfg(not($cfg2)))]
+            cfg_sel! {{ $($rest)+ }}
+        )?
+    };
+}
+
+// Equivalent to core::hint::cold_path, but compatible with pre-1.95 rustc.
+#[allow(dead_code)]
+#[inline(always)]
+#[cold]
+fn cold_path() {}
+// Stable equivalent of core::hint::{likely, unlikely}.
+#[allow(dead_code)]
+#[inline(always)]
+pub(crate) fn likely(b: bool) -> bool {
+    if b {
+        true
+    } else {
+        cold_path();
+        false
+    }
+}
+#[allow(dead_code)]
+#[inline(always)]
+pub(crate) fn unlikely(b: bool) -> bool {
+    if b {
+        cold_path();
+        true
+    } else {
+        false
+    }
 }
 
 // Equivalent to core::hint::assert_unchecked, but compatible with pre-1.81 rustc.
@@ -420,15 +530,17 @@ type RetInt = u32;
 // Adapted from https://github.com/taiki-e/atomic-maybe-uninit/blob/v0.3.6/src/utils.rs#L255.
 // Helper for implementing sub-word atomic operations using word-sized LL/SC loop or CAS loop.
 //
-// Refs: https://github.com/llvm/llvm-project/blob/llvmorg-21.1.0/llvm/lib/CodeGen/AtomicExpandPass.cpp#L812
+// Refs: https://github.com/llvm/llvm-project/blob/llvmorg-22.1.0-rc1/llvm/lib/CodeGen/AtomicExpandPass.cpp#L811
 // (aligned_ptr, shift, mask)
 #[cfg(any(target_arch = "riscv32", target_arch = "riscv64"))]
 #[allow(dead_code)]
 #[inline]
 pub(crate) fn create_sub_word_mask_values<T>(ptr: *mut T) -> (*mut MinWord, RetInt, RetInt) {
+    use core::mem;
+
     #[cfg(portable_atomic_no_strict_provenance)]
     use self::ptr::PtrExt as _;
-    use core::mem;
+
     // RISC-V, MIPS, SPARC, LoongArch, Xtensa, BPF: shift amount of 32-bit shift instructions is 5 bits unsigned (0-31).
     // PowerPC, C-SKY: shift amount of 32-bit shift instructions is 6 bits unsigned (0-63) and shift amount 32-63 means "clear".
     // Arm: shift amount of 32-bit shift instructions is 8 bits unsigned (0-255).
@@ -476,92 +588,101 @@ pub(crate) fn create_sub_word_mask_values<T>(ptr: *mut T) -> (*mut MinWord, RetI
 // This module provides core::ptr strict_provenance/exposed_provenance polyfill for pre-1.84 rustc.
 #[allow(dead_code)]
 pub(crate) mod ptr {
-    #[cfg(portable_atomic_no_strict_provenance)]
-    use core::mem;
-    #[cfg(not(portable_atomic_no_strict_provenance))]
-    #[allow(unused_imports)]
-    pub(crate) use core::ptr::{
-        with_exposed_provenance, with_exposed_provenance_mut, without_provenance_mut,
-    };
-
-    #[cfg(portable_atomic_no_strict_provenance)]
-    #[inline(always)]
-    #[must_use]
-    pub(crate) const fn without_provenance_mut<T>(addr: usize) -> *mut T {
-        // An int-to-pointer transmute currently has exactly the intended semantics: it creates a
-        // pointer without provenance. Note that this is *not* a stable guarantee about transmute
-        // semantics, it relies on sysroot crates having special status.
-        // SAFETY: every valid integer is also a valid pointer (as long as you don't dereference that
-        // pointer).
-        #[cfg(miri)]
-        unsafe {
-            mem::transmute(addr)
-        }
-        // const transmute requires Rust 1.56.
-        #[cfg(not(miri))]
+    cfg_sel!({
+        #[cfg(not(portable_atomic_no_strict_provenance))]
         {
-            addr as *mut T
+            #[allow(unused_imports)]
+            pub(crate) use core::ptr::{
+                with_exposed_provenance, with_exposed_provenance_mut, without_provenance_mut,
+            };
         }
-    }
-    #[cfg(portable_atomic_no_strict_provenance)]
-    #[inline(always)]
-    #[must_use]
-    #[cfg_attr(miri, track_caller)] // even without panics, this helps for Miri backtraces
-    pub(crate) fn with_exposed_provenance<T>(addr: usize) -> *const T {
-        addr as *const T
-    }
-    #[cfg(portable_atomic_no_strict_provenance)]
-    #[inline(always)]
-    #[must_use]
-    #[cfg_attr(miri, track_caller)] // even without panics, this helps for Miri backtraces
-    pub(crate) fn with_exposed_provenance_mut<T>(addr: usize) -> *mut T {
-        addr as *mut T
-    }
-
-    #[cfg(portable_atomic_no_strict_provenance)]
-    pub(crate) trait PtrExt<T: ?Sized>: Copy {
-        #[must_use]
-        fn addr(self) -> usize;
-        #[must_use]
-        fn with_addr(self, addr: usize) -> Self
-        where
-            T: Sized;
-    }
-    #[cfg(portable_atomic_no_strict_provenance)]
-    impl<T: ?Sized> PtrExt<T> for *mut T {
-        #[inline(always)]
-        #[must_use]
-        fn addr(self) -> usize {
-            // A pointer-to-integer transmute currently has exactly the right semantics: it returns the
-            // address without exposing the provenance. Note that this is *not* a stable guarantee about
-            // transmute semantics, it relies on sysroot crates having special status.
-            // SAFETY: Pointer-to-integer transmutes are valid (if you are okay with losing the
-            // provenance).
-            unsafe { mem::transmute(self as *mut ()) }
-        }
-        #[inline]
-        #[must_use]
-        fn with_addr(self, addr: usize) -> Self
-        where
-            T: Sized,
+        #[cfg(else)]
         {
-            // This should probably be an intrinsic to avoid doing any sort of arithmetic, but
-            // meanwhile, we can implement it with `wrapping_offset`, which preserves the pointer's
-            // provenance.
-            let self_addr = self.addr() as isize;
-            let dest_addr = addr as isize;
-            let offset = dest_addr.wrapping_sub(self_addr);
-            (self as *mut u8).wrapping_offset(offset) as *mut T
+            #[inline(always)]
+            #[must_use]
+            pub(crate) const fn without_provenance_mut<T>(addr: usize) -> *mut T {
+                // An int-to-pointer transmute currently has exactly the intended semantics: it creates a
+                // pointer without provenance. Note that this is *not* a stable guarantee about transmute
+                // semantics, it relies on sysroot crates having special status.
+                // SAFETY: every valid integer is also a valid pointer (as long as you don't dereference that
+                // pointer).
+                #[cfg(miri)]
+                unsafe {
+                    core::mem::transmute(addr)
+                }
+                // const transmute requires Rust 1.56.
+                // Using transmute doesn't work with CHERI: https://github.com/kent-weak-memory/rust/blob/0c0ca909de877f889629057e1ddf139527446d75/library/core/src/ptr/mod.rs#L607
+                #[cfg(not(miri))]
+                {
+                    addr as *mut T
+                }
+            }
+            #[inline(always)]
+            #[must_use]
+            #[cfg_attr(miri, track_caller)] // even without panics, this helps for Miri backtraces
+            pub(crate) fn with_exposed_provenance<T>(addr: usize) -> *const T {
+                addr as *const T
+            }
+            #[inline(always)]
+            #[must_use]
+            #[cfg_attr(miri, track_caller)] // even without panics, this helps for Miri backtraces
+            pub(crate) fn with_exposed_provenance_mut<T>(addr: usize) -> *mut T {
+                addr as *mut T
+            }
+
+            pub(crate) trait PtrExt<T: ?Sized>: Copy {
+                #[must_use]
+                fn addr(self) -> usize;
+                #[must_use]
+                fn with_addr(self, addr: usize) -> Self
+                where
+                    T: Sized;
+            }
+            impl<T: ?Sized> PtrExt<T> for *mut T {
+                #[inline(always)]
+                #[must_use]
+                fn addr(self) -> usize {
+                    // A pointer-to-integer transmute currently has exactly the right semantics: it returns the
+                    // address without exposing the provenance. Note that this is *not* a stable guarantee about
+                    // transmute semantics, it relies on sysroot crates having special status.
+                    // SAFETY: Pointer-to-integer transmutes are valid (if you are okay with losing the
+                    // provenance).
+                    #[cfg(miri)]
+                    unsafe {
+                        core::mem::transmute(self as *mut ())
+                    }
+                    // Using transmute doesn't work with CHERI: https://github.com/kent-weak-memory/rust/blob/0c0ca909de877f889629057e1ddf139527446d75/library/core/src/ptr/mut_ptr.rs#L210
+                    #[cfg(not(miri))]
+                    {
+                        self as *mut () as usize
+                    }
+                }
+                #[inline]
+                #[must_use]
+                fn with_addr(self, addr: usize) -> Self
+                where
+                    T: Sized,
+                {
+                    // This should probably be an intrinsic to avoid doing any sort of arithmetic, but
+                    // meanwhile, we can implement it with `wrapping_offset`, which preserves the pointer's
+                    // provenance.
+                    let self_addr = self.addr() as isize;
+                    let dest_addr = addr as isize;
+                    let offset = dest_addr.wrapping_sub(self_addr);
+                    (self as *mut u8).wrapping_offset(offset) as *mut T
+                }
+            }
         }
-    }
+    });
 }
 
 // This module provides:
 // - core::ffi polyfill (c_* type aliases and CStr) for pre-1.64 rustc compatibility.
 //   (core::ffi::* (except c_void) requires Rust 1.64)
-// - safe abstraction (c! macro) for creating static C strings without runtime checks.
+// - Safe abstraction (c! macro) for creating static C strings without runtime checks.
 //   (c"..." requires Rust 1.77)
-// - helper macros for defining FFI bindings.
+// - Helper macros for defining FFI bindings with static signature/type/value assertions.
+// - Helper macros for defining asm-based syscalls on Linux.
 #[cfg(any(
     test,
     portable_atomic_test_no_std_static_assert_ffi,
@@ -571,66 +692,68 @@ pub(crate) mod ptr {
 #[allow(dead_code, non_camel_case_types, unused_macros)]
 #[macro_use]
 pub(crate) mod ffi {
+    // -------------------------------------------------------------------------
+    // core::ffi polyfill and c"..." equivalent
+
     pub(crate) type c_void = core::ffi::c_void;
     // c_{,u}int is {i,u}16 on 16-bit targets, otherwise {i,u}32.
     // https://github.com/rust-lang/rust/blob/1.84.0/library/core/src/ffi/mod.rs#L156
-    #[cfg(target_pointer_width = "16")]
-    pub(crate) type c_int = i16;
-    #[cfg(target_pointer_width = "16")]
-    pub(crate) type c_uint = u16;
-    #[cfg(not(target_pointer_width = "16"))]
-    pub(crate) type c_int = i32;
-    #[cfg(not(target_pointer_width = "16"))]
-    pub(crate) type c_uint = u32;
+    cfg_sel!({
+        #[cfg(target_pointer_width = "16")]
+        {
+            pub(crate) type c_int = i16;
+            pub(crate) type c_uint = u16;
+        }
+        #[cfg(else)]
+        {
+            pub(crate) type c_int = i32;
+            pub(crate) type c_uint = u32;
+        }
+    });
     // c_{,u}long is {i,u}64 on non-Windows 64-bit targets, otherwise {i,u}32.
     // https://github.com/rust-lang/rust/blob/1.84.0/library/core/src/ffi/mod.rs#L168
-    #[cfg(all(target_pointer_width = "64", not(windows)))]
-    pub(crate) type c_long = i64;
-    #[cfg(all(target_pointer_width = "64", not(windows)))]
-    pub(crate) type c_ulong = u64;
-    #[cfg(not(all(target_pointer_width = "64", not(windows))))]
-    pub(crate) type c_long = i32;
-    #[cfg(not(all(target_pointer_width = "64", not(windows))))]
-    pub(crate) type c_ulong = u32;
+    cfg_sel!({
+        #[cfg(all(target_pointer_width = "64", not(windows)))]
+        {
+            pub(crate) type c_long = i64;
+            pub(crate) type c_ulong = u64;
+        }
+        #[cfg(else)]
+        {
+            pub(crate) type c_long = i32;
+            pub(crate) type c_ulong = u32;
+        }
+    });
     // c_size_t is currently always usize.
     // https://github.com/rust-lang/rust/blob/1.84.0/library/core/src/ffi/mod.rs#L76
     pub(crate) type c_size_t = usize;
     // c_char is u8 by default on non-Apple/non-Windows/non-Vita Arm/C-SKY/Hexagon/MSP430/PowerPC/RISC-V/s390x/Xtensa targets, otherwise i8 by default.
     // See references in https://github.com/rust-lang/rust/issues/129945 for details.
-    #[cfg(all(
-        not(any(target_vendor = "apple", windows, target_os = "vita")),
-        any(
-            target_arch = "aarch64",
-            target_arch = "arm",
-            target_arch = "csky",
-            target_arch = "hexagon",
-            target_arch = "msp430",
-            target_arch = "powerpc",
-            target_arch = "powerpc64",
-            target_arch = "riscv32",
-            target_arch = "riscv64",
-            target_arch = "s390x",
-            target_arch = "xtensa",
-        ),
-    ))]
-    pub(crate) type c_char = u8;
-    #[cfg(not(all(
-        not(any(target_vendor = "apple", windows, target_os = "vita")),
-        any(
-            target_arch = "aarch64",
-            target_arch = "arm",
-            target_arch = "csky",
-            target_arch = "hexagon",
-            target_arch = "msp430",
-            target_arch = "powerpc",
-            target_arch = "powerpc64",
-            target_arch = "riscv32",
-            target_arch = "riscv64",
-            target_arch = "s390x",
-            target_arch = "xtensa",
-        ),
-    )))]
-    pub(crate) type c_char = i8;
+    cfg_sel!({
+        #[cfg(all(
+            not(any(target_vendor = "apple", windows, target_os = "vita")),
+            any(
+                target_arch = "aarch64",
+                target_arch = "arm",
+                target_arch = "csky",
+                target_arch = "hexagon",
+                target_arch = "msp430",
+                target_arch = "powerpc",
+                target_arch = "powerpc64",
+                target_arch = "riscv32",
+                target_arch = "riscv64",
+                target_arch = "s390x",
+                target_arch = "xtensa",
+            ),
+        ))]
+        {
+            pub(crate) type c_char = u8;
+        }
+        #[cfg(else)]
+        {
+            pub(crate) type c_char = i8;
+        }
+    });
 
     // Static assertions for C type definitions.
     #[cfg(test)]
@@ -730,6 +853,9 @@ pub(crate) mod ffi {
         }
     }
 
+    // -------------------------------------------------------------------------
+    // Helper macros for defining FFI bindings with static signature/type/value assertions.
+
     /// Defines types with #[cfg(test)] static assertions which checks
     /// types are the same as the platform's latest header files' ones.
     // Note: This macro is sys_ty!({ }), not sys_ty! { }.
@@ -812,7 +938,7 @@ pub(crate) mod ffi {
     macro_rules! sys_fn {
         ({
             $(#[$extern_attr:meta])*
-            extern $abi:literal {$(
+            extern $abi:tt {$(
                 $(#[$fn_attr:meta])*
                 $vis:vis fn $([$($windows_path:ident)::+])? $name:ident(
                     $($args:tt)*
@@ -833,6 +959,289 @@ pub(crate) mod ffi {
                 )*}
             );
         };
+    }
+
+    // -----------------------------------------------------------------------------
+    // Helper macros for defining asm-based syscalls on Linux.
+    //
+    // Use asm-based syscall on Linux for compatibility with non-libc targets if possible.
+    //
+    // In non-Linux environments (including Android), syscalls should be called via libc,
+    // mainly for the following reasons.
+    // - asm-based syscalls are not permitted in the first place. e.g.,
+    //   - OpenBSD https://github.com/golang/go/issues/36435
+    //   - CheriBSD https://www.cheribsd.org/release-notes/25.03/index.html
+    // - Stability of asm-based syscalls is not guaranteed. e.g.,
+    //   - macOS https://go-review.googlesource.com/c/go/+/25495
+    // - Syscalls via libc (or also libsys on FreeBSD) provide additional protections. e.g.,
+    //   - OpenBSD https://lwn.net/Articles/806863/
+    //   - CheriBSD https://www.cheribsd.org/release-notes/25.03/index.html
+    //   - FreeBSD https://www.freebsd.org/status/report-2024-01-2024-03/libsys/
+    //   - Android https://android.googlesource.com/platform/bionic/+/HEAD/docs/fdtrack.md
+    //
+    // Miri and Sanitizer do not support inline assembly.
+    #[cfg(all(
+        target_os = "linux",
+        not(any(miri, portable_atomic_sanitize_thread)),
+        not(portable_atomic_no_asm_syscall),
+    ))]
+    #[macro_use]
+    mod syscall_helper {
+        // Note:
+        // - The syscall number and arguments must be extended to the register size by the caller of macros.
+        //   The kernel extends the low bits on some architectures, but it does not on many architectures. e.g.,
+        //   x86_64 (pre-5.14): https://github.com/torvalds/linux/commit/0595494891723a1dcca5eaa8eeca8ab54ad953b9
+        //   powerpc64: https://github.com/torvalds/linux/blob/v7.1/arch/powerpc/kernel/syscall.c#L16
+        //   riscv64: https://github.com/torvalds/linux/blob/v7.1/arch/riscv/kernel/traps.c#L328
+        //   loongarch64: https://github.com/torvalds/linux/blob/v7.1/arch/loongarch/kernel/syscall.c#L61
+        //
+        // Refs:
+        // - https://man7.org/linux/man-pages/man2/syscall.2.html
+        // - aarch64 (test-only)
+        //   https://git.musl-libc.org/cgit/musl/tree/arch/aarch64/syscall_arch.h?h=v1.2.6
+        // - arm (test-only)
+        //   https://git.musl-libc.org/cgit/musl/tree/arch/arm/syscall_arch.h?h=v1.2.6
+        // - powerpc64 (test-only)
+        //   https://github.com/torvalds/linux/blob/v7.1/Documentation/arch/powerpc/syscall64-abi.rst
+        //   https://git.musl-libc.org/cgit/musl/tree/arch/powerpc64/syscall_arch.h?h=v1.2.6
+        // - riscv32/riscv64
+        //   https://git.musl-libc.org/cgit/musl/tree/arch/riscv32/syscall_arch.h?h=v1.2.6
+        //   https://git.musl-libc.org/cgit/musl/tree/arch/riscv64/syscall_arch.h?h=v1.2.6
+
+        #[cfg(test)] // test-only
+        #[cfg(all(target_arch = "aarch64", target_pointer_width = "64"))]
+        macro_rules! asm_syscall {
+            (
+                $number:ident, $r:ident,
+                $($arg1:ident $(, $arg2:ident $(, $arg3:ident
+                    $(, $arg4:ident $(, $arg5:ident $(, $arg6:ident )?)?)?
+                )?)?)?
+            ) => {
+                __asm!(
+                    "svc 0",
+                    in("x8") $number,
+                    lateout("x0") $r,
+                    $(in("x0") $arg1,
+                        $(in("x1") $arg2,
+                            $(in("x2") $arg3,
+                                $(in("x3") $arg4,
+                                    $(in("x4") $arg5,
+                                        $(in("x5") $arg6, )?
+                                    )?
+                                )?
+                            )?
+                        )?
+                    )?
+                    // Clobber SVE registers and do not use `preserves_flags` because
+                    // AArch64 Linux syscalls clears non-v[0-31] bits of z[0-31], and all of p[0-15] and ffr,
+                    // and calls SMSTOP SM which clears z[0-31], p[0-15], ffr, and modifies FPSR
+                    // when CPU is in streaming SVE mode.
+                    // https://github.com/torvalds/linux/blob/v7.1/Documentation/arch/arm64/sve.rst#3--system-call-behaviour
+                    // https://github.com/torvalds/linux/blob/v7.1/Documentation/arch/arm64/sme.rst#3--system-call-behaviour
+                    // https://developer.arm.com/documentation/109246/0101/SME-Overview/Streaming-SVE-mode
+                    out("z0") _,
+                    out("z1") _,
+                    out("z2") _,
+                    out("z3") _,
+                    out("z4") _,
+                    out("z5") _,
+                    out("z6") _,
+                    out("z7") _,
+                    out("z8") _,
+                    out("z9") _,
+                    out("z10") _,
+                    out("z11") _,
+                    out("z12") _,
+                    out("z13") _,
+                    out("z14") _,
+                    out("z15") _,
+                    out("z16") _,
+                    out("z17") _,
+                    out("z18") _,
+                    out("z19") _,
+                    out("z20") _,
+                    out("z21") _,
+                    out("z22") _,
+                    out("z23") _,
+                    out("z24") _,
+                    out("z25") _,
+                    out("z26") _,
+                    out("z27") _,
+                    out("z28") _,
+                    out("z29") _,
+                    out("z30") _,
+                    out("z31") _,
+                    out("p0") _,
+                    out("p1") _,
+                    out("p2") _,
+                    out("p3") _,
+                    out("p4") _,
+                    out("p5") _,
+                    out("p6") _,
+                    out("p7") _,
+                    out("p8") _,
+                    out("p9") _,
+                    out("p10") _,
+                    out("p11") _,
+                    out("p12") _,
+                    out("p13") _,
+                    out("p14") _,
+                    out("p15") _,
+                    out("ffr") _,
+                    options(nostack),
+                )
+            };
+        }
+        #[cfg(test)] // test-only
+        #[cfg(target_arch = "arm")]
+        macro_rules! asm_syscall {
+            (
+                $number_const:path, $number:literal, $r:ident,
+                $($arg1:ident $(, $arg2:ident $(, $arg3:ident
+                    $(, $arg4:ident $(, $arg5:ident $(, $arg6:ident )?)?)?
+                )?)?)?
+            ) => {{
+                static_assert!($number_const == $number && 0 <= $number && $number <= 255);
+                __asm!(
+                    // r7 is reserved on thumb and MOV requires Thumb-2 or Arm mode.
+                    // cfg(target_feature = "thumb-mode")/cfg(target_feature = "thumb2")
+                    // doesn't work on stable and register swapping is much cheaper than syscall,
+                    // so we always swap register and use MOVS instead of MOV.
+                    // Note: r6 is reserved by LLVM, so this assembly may not work for syscall6
+                    //       with Thumb-1 (pre-v7 Arm in Thumb mode) because the allocation of
+                    //       `tmp` may fail.
+                    //       (syscall6 is needless in the current our use cases.)
+                    "movs {tmp}, r7",
+                    concat!("movs r7, ", $number),
+                    "svc 0",
+                    "movs r7, {tmp}",
+                    tmp = out(reg) _,
+                    lateout("r0") $r,
+                    $(in("r0") $arg1,
+                        $(in("r1") $arg2,
+                            $(in("r2") $arg3,
+                                $(in("r3") $arg4,
+                                    $(in("r4") $arg5,
+                                        $(in("r5") $arg6, )?
+                                    )?
+                                )?
+                            )?
+                        )?
+                    )?
+                    // Do not use `preserves_flags` because MOVS modifies the flags.
+                    // Do not use `nostack` because SVC pushes to stack on M-profile architectures.
+                    // https://github.com/torvalds/linux/blob/v7.1/arch/arm/kernel/entry-header.S#L61
+                )
+            }};
+        }
+        // POWER9+ has fast syscall using SCV, but it is needless in the current our use cases.
+        #[cfg(test)] // test-only
+        #[cfg(all(target_arch = "powerpc64", target_pointer_width = "64"))]
+        macro_rules! asm_syscall {
+            (
+                $number:ident, $r:ident,
+                $($arg1:ident $(, $arg2:ident $(, $arg3:ident
+                    $(, $arg4:ident $(, $arg5:ident $(, $arg6:ident )?)?)?
+                )?)?)?
+            ) => {
+                __asm!(
+                    "sc",
+                    "bns+ 2f",
+                    "neg %r3, %r3",
+                    "2:",
+                    inout("r0") $number => _,
+                    lateout("r3") $r,
+                    $(in("r3") $arg1,
+                        $(in("r4") $arg2,
+                            $(in("r5") $arg3,
+                                $(in("r6") $arg4,
+                                    $(in("r7") $arg5,
+                                        $(in("r8") $arg6, )?
+                                    )?
+                                )?
+                            )?
+                        )?
+                    )?
+                    lateout("r4") _,
+                    lateout("r5") _,
+                    lateout("r6") _,
+                    lateout("r7") _,
+                    lateout("r8") _,
+                    out("r9") _,
+                    out("r10") _,
+                    out("r11") _,
+                    out("r12") _,
+                    out("cr0") _,
+                    out("ctr") _,
+                    out("xer") _,
+                    options(nostack, preserves_flags),
+                )
+            };
+        }
+        #[cfg(any(
+            target_arch = "riscv32",
+            all(target_arch = "riscv64", target_pointer_width = "64"),
+        ))]
+        macro_rules! asm_syscall {
+            (
+                $number:ident, $r:ident,
+                $($arg1:ident $(, $arg2:ident $(, $arg3:ident
+                    $(, $arg4:ident $(, $arg5:ident $(, $arg6:ident )?)?)?
+                )?)?)?
+            ) => {
+                __asm!(
+                    "ecall",
+                    in("a7") $number,
+                    lateout("a0") $r,
+                    $(in("a0") $arg1,
+                        $(in("a1") $arg2,
+                            $(in("a2") $arg3,
+                                $(in("a3") $arg4,
+                                    $(in("a4") $arg5,
+                                        $(in("a5") $arg6, )?
+                                    )?
+                                )?
+                            )?
+                        )?
+                    )?
+                    // Clobber vector registers and do not use `preserves_flags` because RISC-V Linux syscalls don't preserve them.
+                    // https://github.com/torvalds/linux/blob/v7.1/Documentation/arch/riscv/vector.rst#3--vector-register-state-across-system-calls
+                    out("v0") _,
+                    out("v1") _,
+                    out("v2") _,
+                    out("v3") _,
+                    out("v4") _,
+                    out("v5") _,
+                    out("v6") _,
+                    out("v7") _,
+                    out("v8") _,
+                    out("v9") _,
+                    out("v10") _,
+                    out("v11") _,
+                    out("v12") _,
+                    out("v13") _,
+                    out("v14") _,
+                    out("v15") _,
+                    out("v16") _,
+                    out("v17") _,
+                    out("v18") _,
+                    out("v19") _,
+                    out("v20") _,
+                    out("v21") _,
+                    out("v22") _,
+                    out("v23") _,
+                    out("v24") _,
+                    out("v25") _,
+                    out("v26") _,
+                    out("v27") _,
+                    out("v28") _,
+                    out("v29") _,
+                    out("v30") _,
+                    out("v31") _,
+                    options(nostack),
+                )
+            };
+        }
     }
 
     #[allow(

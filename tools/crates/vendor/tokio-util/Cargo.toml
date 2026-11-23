@@ -11,9 +11,9 @@
 
 [package]
 edition = "2021"
-rust-version = "1.71"
+rust-version = "1.85"
 name = "tokio-util"
-version = "0.7.17"
+version = "0.7.20"
 authors = ["Tokio Contributors <team@tokio.rs>"]
 build = false
 autolib = false
@@ -50,7 +50,7 @@ features = ["full"]
 
 [features]
 __docs_rs = ["futures-util"]
-codec = []
+codec = ["libc"]
 compat = ["futures-io"]
 default = []
 full = [
@@ -132,8 +132,16 @@ name = "io_inspect"
 path = "tests/io_inspect.rs"
 
 [[test]]
+name = "io_read_arc"
+path = "tests/io_read_arc.rs"
+
+[[test]]
 name = "io_reader_stream"
 path = "tests/io_reader_stream.rs"
+
+[[test]]
+name = "io_simplex"
+path = "tests/io_simplex.rs"
 
 [[test]]
 name = "io_sink_writer"
@@ -146,6 +154,10 @@ path = "tests/io_stream_reader.rs"
 [[test]]
 name = "io_sync_bridge"
 path = "tests/io_sync_bridge.rs"
+
+[[test]]
+name = "io_write_all_vectored"
+path = "tests/io_write_all_vectored.rs"
 
 [[test]]
 name = "length_delimited"
@@ -225,7 +237,7 @@ version = "0.4.4"
 optional = true
 
 [dependencies.tokio]
-version = "1.28.0"
+version = "1.51.0"
 features = ["sync"]
 
 [dependencies.tracing]
@@ -258,6 +270,17 @@ version = "0.1"
 
 [dev-dependencies.tokio-test]
 version = "0.4.0"
+
+[target."cfg(loom)".dev-dependencies.loom]
+version = "0.7"
+features = [
+    "futures",
+    "checkpoint",
+]
+
+[target."cfg(unix)".dependencies.libc]
+version = "0.2.168"
+optional = true
 
 [lints.rust.unexpected_cfgs]
 level = "warn"

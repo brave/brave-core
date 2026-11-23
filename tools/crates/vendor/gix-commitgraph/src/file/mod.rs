@@ -2,7 +2,7 @@
 
 use std::fmt::{Display, Formatter};
 
-pub use self::{commit::Commit, init::Error};
+pub use self::commit::Commit;
 
 mod access;
 pub mod commit;

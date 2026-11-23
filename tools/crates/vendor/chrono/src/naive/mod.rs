@@ -31,6 +31,7 @@ pub use self::internals::YearFlags as __BenchYearFlags;
 /// A week represented by a [`NaiveDate`] and a [`Weekday`] which is the first
 /// day of the week.
 #[derive(Clone, Copy, Debug, Eq)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct NaiveWeek {
     date: NaiveDate,
     start: Weekday,
@@ -60,6 +61,7 @@ impl NaiveWeek {
     /// ```
     #[inline]
     #[must_use]
+    #[track_caller]
     pub const fn first_day(&self) -> NaiveDate {
         expect(self.checked_first_day(), "first weekday out of range for `NaiveDate`")
     }
@@ -112,6 +114,7 @@ impl NaiveWeek {
     /// ```
     #[inline]
     #[must_use]
+    #[track_caller]
     pub const fn last_day(&self) -> NaiveDate {
         expect(self.checked_last_day(), "last weekday out of range for `NaiveDate`")
     }
@@ -166,6 +169,7 @@ impl NaiveWeek {
     /// ```
     #[inline]
     #[must_use]
+    #[track_caller]
     pub const fn days(&self) -> RangeInclusive<NaiveDate> {
         // `expect` doesn't work because `RangeInclusive` is not `Copy`
         match self.checked_days() {
@@ -226,6 +230,7 @@ impl Hash for NaiveWeek {
 /// difference applies only when dealing with `DateTime<TimeZone>` data types and in other cases
 /// `TimeDelta::days(n)` and `Days::new(n)` are equivalent.
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, PartialOrd, Ord)]
+#[cfg_attr(feature = "defmt", derive(defmt::Format))]
 pub struct Days(pub(crate) u64);
 
 impl Days {

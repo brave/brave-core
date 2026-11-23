@@ -10,10 +10,10 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2018"
-rust-version = "1.31"
+edition = "2021"
+rust-version = "1.63"
 name = "pkg-config"
-version = "0.3.32"
+version = "0.3.34"
 authors = ["Alex Crichton <alex@alexcrichton.com>"]
 build = false
 autolib = false
@@ -38,6 +38,3 @@ path = "src/lib.rs"
 [[test]]
 name = "test"
 path = "tests/test.rs"
-
-[dev-dependencies.lazy_static]
-version = "1"

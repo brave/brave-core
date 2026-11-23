@@ -1047,16 +1047,16 @@ macro_rules! seq_impl {
                     }
 
                     #[inline]
-                    fn visit_seq<A>(mut self, mut $access: A) -> Result<Self::Value, A::Error>
+                    fn visit_seq<A>(self, mut $access: A) -> Result<Self::Value, A::Error>
                     where
                         A: SeqAccess<'de>,
                     {
-                        $clear(&mut self.0);
-                        $reserve(&mut self.0, size_hint::cautious::<T>($access.size_hint()));
+                        $clear(&mut *self.0);
+                        $reserve(&mut *self.0, size_hint::cautious::<T>($access.size_hint()));
 
                         // FIXME: try to overwrite old values here? (Vec, VecDeque, LinkedList)
                         while let Some(value) = tri!($access.next_element()) {
-                            $insert(&mut self.0, value);
+                            $insert(&mut *self.0, value);
                         }
 
                         Ok(())

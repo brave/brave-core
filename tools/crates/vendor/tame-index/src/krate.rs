@@ -40,6 +40,11 @@ pub struct IndexVersion {
     /// [Rust Version](https://doc.rust-lang.org/cargo/reference/manifest.html#the-rust-version-field)
     #[serde(skip_serializing_if = "Option::is_none")]
     pub rust_version: Option<SmolStr>,
+    /// Publication time of the crate
+    ///
+    /// As of now this is a RFC 3339 UTC timestamp
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub pubtime: Option<SmolStr>,
     /// The index version, 1 if not set, v2 indicates presence of feature2 field
     #[serde(skip_serializing_if = "Option::is_none")]
     v: Option<u32>,
@@ -59,6 +64,7 @@ impl IndexVersion {
             rust_version: None,
             checksum: Chksum(Default::default()),
             yanked: false,
+            pubtime: None,
             v: None,
         }
     }

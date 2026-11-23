@@ -1463,6 +1463,8 @@ pub const SO_DEVMEM_DONTNEED: u32 = 89;
 pub const SCM_TS_OPT_ID: u32 = 90;
 pub const SO_RCVPRIORITY: u32 = 91;
 pub const SO_PASSRIGHTS: u32 = 92;
+pub const SO_INQ: u32 = 93;
+pub const SCM_INQ: u32 = 93;
 pub const SYS_SOCKET: u32 = 1;
 pub const SYS_BIND: u32 = 2;
 pub const SYS_CONNECT: u32 = 3;
@@ -1916,6 +1918,7 @@ pub const DEVCONF_IOAM6_ID_WIDE: _bindgen_ty_3 = _bindgen_ty_3::DEVCONF_IOAM6_ID
 pub const DEVCONF_NDISC_EVICT_NOCARRIER: _bindgen_ty_3 = _bindgen_ty_3::DEVCONF_NDISC_EVICT_NOCARRIER;
 pub const DEVCONF_ACCEPT_UNTRACKED_NA: _bindgen_ty_3 = _bindgen_ty_3::DEVCONF_ACCEPT_UNTRACKED_NA;
 pub const DEVCONF_ACCEPT_RA_MIN_LFT: _bindgen_ty_3 = _bindgen_ty_3::DEVCONF_ACCEPT_RA_MIN_LFT;
+pub const DEVCONF_FORCE_FORWARDING: _bindgen_ty_3 = _bindgen_ty_3::DEVCONF_FORCE_FORWARDING;
 pub const DEVCONF_MAX: _bindgen_ty_3 = _bindgen_ty_3::DEVCONF_MAX;
 pub const TCP_FLAG_AE: _bindgen_ty_4 = _bindgen_ty_4::TCP_FLAG_AE;
 pub const TCP_FLAG_CWR: _bindgen_ty_4 = _bindgen_ty_4::TCP_FLAG_CWR;
@@ -2138,7 +2141,8 @@ DEVCONF_IOAM6_ID_WIDE = 55,
 DEVCONF_NDISC_EVICT_NOCARRIER = 56,
 DEVCONF_ACCEPT_UNTRACKED_NA = 57,
 DEVCONF_ACCEPT_RA_MIN_LFT = 58,
-DEVCONF_MAX = 59,
+DEVCONF_FORCE_FORWARDING = 59,
+DEVCONF_MAX = 60,
 }
 #[repr(u32)]
 #[non_exhaustive]

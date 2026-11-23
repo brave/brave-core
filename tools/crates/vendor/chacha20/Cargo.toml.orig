@@ -1,0 +1,90 @@
+[package]
+name = "chacha20"
+version = "0.10.2"
+authors = ["RustCrypto Developers"]
+edition = "2024"
+rust-version = "1.85"
+documentation = "https://docs.rs/chacha20"
+readme = "README.md"
+repository = "https://github.com/RustCrypto/stream-ciphers"
+license = "MIT OR Apache-2.0"
+keywords = ["crypto", "stream-cipher", "chacha8", "chacha12", "xchacha20"]
+categories = ["cryptography", "no-std"]
+description = """
+The ChaCha20 stream cipher (RFC 8439) implemented in pure Rust using traits
+from the RustCrypto `cipher` crate, with optional architecture-specific
+hardware acceleration (AVX2, SSE2). Additionally provides the ChaCha8, ChaCha12,
+XChaCha20, XChaCha12 and XChaCha8 stream ciphers, and also optional
+rand_core-compatible RNGs based on those ciphers.
+"""
+
+[dependencies]
+cfg-if = "1"
+cipher = { version = "0.5", optional = true, features = ["stream-wrapper"] }
+rand_core = { version = "0.10", optional = true, default-features = false }
+
+# `zeroize` is an explicit dependency because this crate may be used without the `cipher` crate
+zeroize = { version = "1.8.1", optional = true, default-features = false }
+
+[target.'cfg(any(target_arch = "x86_64", target_arch = "x86"))'.dependencies]
+cpufeatures = "0.3"
+
+[dev-dependencies]
+cipher = { version = "0.5", features = ["dev"] }
+hex-literal = "1"
+
+[features]
+default = ["cipher"]
+legacy = ["cipher"]
+rng = ["dep:rand_core"]
+xchacha = ["cipher"]
+
+[lints.rust]
+missing_copy_implementations = "warn"
+missing_debug_implementations = "warn"
+missing_docs = "warn"
+trivial_casts = "warn"
+trivial_numeric_casts = "warn"
+unreachable_pub = "warn"
+unused_lifetimes = "warn"
+unused_qualifications = "warn"
+
+[lints.rust.unexpected_cfgs]
+level = "warn"
+check-cfg = [
+    'cfg(chacha20_avx512)',
+    'cfg(chacha20_backend, values("avx2", "avx512", "soft", "sse2"))'
+]
+
+[lints.clippy]
+borrow_as_ptr = "warn"
+cast_lossless = "warn"
+cast_possible_truncation = "warn"
+cast_possible_wrap = "warn"
+cast_precision_loss = "warn"
+cast_sign_loss = "warn"
+checked_conversions = "warn"
+from_iter_instead_of_collect = "warn"
+implicit_saturating_sub = "warn"
+manual_assert = "warn"
+map_unwrap_or = "warn"
+missing_errors_doc = "warn"
+missing_panics_doc = "warn"
+mod_module_files = "warn"
+must_use_candidate = "warn"
+needless_range_loop = "allow"
+ptr_as_ptr = "warn"
+redundant_closure_for_method_calls = "warn"
+ref_as_ptr = "warn"
+return_self_not_must_use = "warn"
+semicolon_if_nothing_returned = "warn"
+trivially_copy_pass_by_ref = "warn"
+std_instead_of_alloc = "warn"
+std_instead_of_core = "warn"
+undocumented_unsafe_blocks = "warn"
+unnecessary_safety_comment = "warn"
+unwrap_in_result = "warn"
+unwrap_used = "warn"
+
+[package.metadata.docs.rs]
+all-features = true

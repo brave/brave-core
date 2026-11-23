@@ -1,4 +1,4 @@
-use crate::result::{ZipError, ZipResult};
+use crate::result::{invalid, ZipResult};
 use crate::unstable::LittleEndianReadExt;
 use core::mem::size_of;
 use std::io::Read;
@@ -18,9 +18,7 @@ impl UnicodeExtraField {
         crc32.update(ascii_field);
         let actual_crc32 = crc32.finalize();
         if self.crc32 != actual_crc32 {
-            return Err(ZipError::InvalidArchive(
-                "CRC32 checksum failed on Unicode extra field",
-            ));
+            return Err(invalid!("CRC32 checksum failed on Unicode extra field"));
         }
         Ok(self.content)
     }
@@ -34,7 +32,7 @@ impl UnicodeExtraField {
         let crc32 = reader.read_u32_le()?;
         let content_len = (len as usize)
             .checked_sub(size_of::<u8>() + size_of::<u32>())
-            .ok_or(ZipError::InvalidArchive("Unicode extra field is too small"))?;
+            .ok_or(invalid!("Unicode extra field is too small"))?;
         let mut content = vec![0u8; content_len].into_boxed_slice();
         reader.read_exact(&mut content)?;
         Ok(Self { crc32, content })

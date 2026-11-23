@@ -1,36 +1,12 @@
 use crate::off_t;
 use crate::prelude::*;
 
-pub type __u64 = c_ulonglong;
-pub type __s64 = c_longlong;
 pub type wchar_t = u32;
 pub type nlink_t = u32;
 pub type blksize_t = c_int;
 
 s! {
     pub struct stat {
-        pub st_dev: crate::dev_t,
-        pub st_ino: crate::ino_t,
-        pub st_mode: crate::mode_t,
-        pub st_nlink: crate::nlink_t,
-        pub st_uid: crate::uid_t,
-        pub st_gid: crate::gid_t,
-        pub st_rdev: crate::dev_t,
-        __pad0: Padding<c_ulong>,
-        pub st_size: off_t,
-        pub st_blksize: crate::blksize_t,
-        __pad1: Padding<c_int>,
-        pub st_blocks: crate::blkcnt_t,
-        pub st_atime: crate::time_t,
-        pub st_atime_nsec: c_long,
-        pub st_mtime: crate::time_t,
-        pub st_mtime_nsec: c_long,
-        pub st_ctime: crate::time_t,
-        pub st_ctime_nsec: c_long,
-        __unused: Padding<[c_uint; 2]>,
-    }
-
-    pub struct stat64 {
         pub st_dev: crate::dev_t,
         pub st_ino: crate::ino_t,
         pub st_mode: crate::mode_t,
@@ -60,9 +36,9 @@ s! {
     }
 
     pub struct ipc_perm {
-        #[cfg(musl_v1_2_3)]
+        #[cfg(musl_v1_2)]
         pub __key: crate::key_t,
-        #[cfg(not(musl_v1_2_3))]
+        #[cfg(not(musl_v1_2))]
         #[deprecated(
             since = "0.2.173",
             note = "This field is incorrectly named and will be changed
@@ -75,9 +51,9 @@ s! {
         pub cgid: crate::gid_t,
         pub mode: crate::mode_t,
 
-        #[cfg(musl_v1_2_3)]
+        #[cfg(musl_v1_2)]
         pub __seq: c_int,
-        #[cfg(not(musl_v1_2_3))]
+        #[cfg(not(musl_v1_2))]
         #[deprecated(
             since = "0.2.173",
             note = "The type of this field has changed from c_ushort to c_int,
@@ -122,7 +98,7 @@ s! {
     }
 
     pub struct user_fpsimd_struct {
-        pub vregs: [crate::__uint128_t; 32],
+        pub vregs: [u128; 32],
         pub fpsr: u32,
         pub fpcr: u32,
     }
@@ -393,6 +369,7 @@ pub const SYS_pread64: c_long = 67;
 pub const SYS_pwrite64: c_long = 68;
 pub const SYS_preadv: c_long = 69;
 pub const SYS_pwritev: c_long = 70;
+pub const SYS_sendfile: c_long = 71;
 pub const SYS_pselect6: c_long = 72;
 pub const SYS_ppoll: c_long = 73;
 pub const SYS_signalfd4: c_long = 74;
@@ -544,6 +521,7 @@ pub const SYS_keyctl: c_long = 219;
 pub const SYS_clone: c_long = 220;
 pub const SYS_execve: c_long = 221;
 pub const SYS_mmap: c_long = 222;
+pub const SYS_fadvise64: c_long = 223;
 pub const SYS_swapon: c_long = 224;
 pub const SYS_swapoff: c_long = 225;
 pub const SYS_mprotect: c_long = 226;

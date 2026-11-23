@@ -13,7 +13,7 @@ fn builds_local_registry() {
             tame_index::IndexUrl::CratesIoSparse,
         ))
         .unwrap(),
-        reqwest::blocking::Client::new(),
+        utils::blocking_client(),
     );
 
     let mut mdc = cargo_metadata::MetadataCommand::new();
@@ -55,7 +55,10 @@ fn builds_local_registry() {
         ip.versions.push(pkg.version.to_string().into());
     }
 
-    let client = local::builder::Client::build(reqwest::blocking::ClientBuilder::new()).unwrap();
+    let client = local::builder::Client::build(
+        reqwest::blocking::ClientBuilder::new().tls_backend_preconfigured(utils::tls_config()),
+    )
+    .unwrap();
 
     let lrb_td = utils::tempdir();
     let lrb = local::LocalRegistryBuilder::create(lrb_td.path().to_owned()).unwrap();
@@ -132,6 +135,7 @@ local-registry = "{local_path}""#,
 #[test]
 fn downloads_and_verifies() {
     let client = reqwest::blocking::Client::builder()
+        .tls_backend_preconfigured(utils::tls_config())
         .no_gzip()
         .build()
         .unwrap();

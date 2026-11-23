@@ -1,14 +1,17 @@
 use bstr::BStr;
 
-use crate::protocol::context::Error;
+use gix_error::{Result, bail};
 
 mod write {
     use bstr::{BStr, BString};
 
-    use crate::protocol::{context::serde::validate, Context};
+    use crate::protocol::{Context, ContextOptions, context::serde::validate};
 
     impl Context {
         /// Write ourselves to `out` such that [`from_bytes()`][Self::from_bytes()] can decode it losslessly.
+        /// Invalid field values are retained as `input` bytes in the I/O error.
+        /// After [wrapping](gix_error::Error::from_error()), inspect them with
+        /// [metadata](gix_error::Error::metadata()).
         pub fn write_to(&self, mut out: impl std::io::Write) -> std::io::Result<()> {
             use bstr::ByteSlice;
             fn write_key(out: &mut impl std::io::Write, key: &str, value: &BStr) -> std::io::Result<()> {
@@ -18,6 +21,7 @@ mod write {
                 out.write_all(b"\n")
             }
             let Context {
+                options: ContextOptions { protect_protocol },
                 protocol,
                 host,
                 path,
@@ -25,6 +29,7 @@ mod write {
                 password,
                 oauth_refresh_token,
                 password_expiry_utc,
+                www_authenticate,
                 url,
                 // We only decode quit and interpret it, but won't get to pass it on as it means to stop the
                 // credential helper invocation chain.
@@ -32,7 +37,7 @@ mod write {
             } = self;
             for (key, value) in [("url", url), ("path", path)] {
                 if let Some(value) = value {
-                    validate(key, value.as_slice().into()).map_err(std::io::Error::other)?;
+                    validate(key, value.as_slice().into(), *protect_protocol).map_err(std::io::Error::other)?;
                     write_key(&mut out, key, value.as_ref()).ok();
                 }
             }
@@ -44,15 +49,20 @@ mod write {
                 ("oauth_refresh_token", oauth_refresh_token),
             ] {
                 if let Some(value) = value {
-                    validate(key, value.as_str().into()).map_err(std::io::Error::other)?;
+                    validate(key, value.as_str().into(), *protect_protocol).map_err(std::io::Error::other)?;
                     write_key(&mut out, key, value.as_bytes().as_bstr()).ok();
                 }
             }
             if let Some(value) = password_expiry_utc {
                 let key = "password_expiry_utc";
                 let value = value.to_string();
-                validate(key, value.as_str().into()).map_err(std::io::Error::other)?;
+                validate(key, value.as_str().into(), *protect_protocol).map_err(std::io::Error::other)?;
                 write_key(&mut out, key, value.as_bytes().as_bstr()).ok();
+            }
+            for value in www_authenticate {
+                let key = "wwwauth[]";
+                validate(key, value.as_ref(), *protect_protocol).map_err(std::io::Error::other)?;
+                write_key(&mut out, key, value.as_ref()).ok();
             }
             Ok(())
         }
@@ -68,27 +78,25 @@ mod write {
 
 ///
 pub mod decode {
-    use bstr::{BString, ByteSlice};
+    use bstr::ByteSlice;
 
-    use crate::protocol::{context, context::serde::validate, Context};
+    use gix_error::{ErrorExt, Result, bail, validation};
 
-    /// The error returned by [`from_bytes()`][Context::from_bytes()].
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error("Illformed UTF-8 in value of key {key:?}: {value:?}")]
-        IllformedUtf8InValue { key: String, value: BString },
-        #[error(transparent)]
-        Encoding(#[from] context::Error),
-        #[error("Invalid format in line {line:?}, expecting key=value")]
-        Syntax { line: BString },
-    }
+    use crate::protocol::{Context, ContextOptions, context::serde::validate};
 
     impl Context {
         /// Decode ourselves from `input` which is the format written by [`write_to()`][Self::write_to()].
-        pub fn from_bytes(input: &[u8]) -> Result<Self, Error> {
-            let mut ctx = Context::default();
+        /// `options` control what to support during deserialization.
+        /// Invalid line or value bytes are stored as `input` in [`gix_error::Message::values`].
+        /// After [wrapping](gix_error::Error::from_error()), inspect them with
+        /// [metadata](gix_error::Error::metadata()).
+        pub fn from_bytes(input: &[u8], options: ContextOptions) -> Result<Self> {
+            let mut ctx = Context {
+                options,
+                ..Context::default()
+            };
             let Context {
+                options: _,
                 protocol,
                 host,
                 path,
@@ -96,6 +104,7 @@ pub mod decode {
                 password,
                 oauth_refresh_token,
                 password_expiry_utc,
+                www_authenticate,
                 url,
                 quit,
             } = &mut ctx;
@@ -105,17 +114,19 @@ pub mod decode {
                     it.next().and_then(|k| k.to_str().ok()),
                     it.next().map(ByteSlice::as_bstr),
                 ) {
-                    (Some(key), Some(value)) => validate(key, value)
-                        .map(|_| (key, value.to_owned()))
-                        .map_err(Into::into),
-                    _ => Err(Error::Syntax { line: line.into() }),
+                    (Some(key), Some(value)) => {
+                        validate(key, value, options.protect_protocol).map(|_| (key, value.to_owned()))
+                    }
+                    _ => Err(validation("Invalid format, expecting key=value")
+                        .with_input(line)
+                        .raise()),
                 }
             }) {
                 let (key, value) = res?;
                 match key {
                     "protocol" | "host" | "username" | "password" | "oauth_refresh_token" => {
                         if !value.is_utf8() {
-                            return Err(Error::IllformedUtf8InValue { key: key.into(), value });
+                            bail!(validation(format!("Illformed UTF-8 in value of key {key:?}")).with_input(value));
                         }
                         let value = value.to_string();
                         *match key {
@@ -132,8 +143,11 @@ pub mod decode {
                     }
                     "url" => *url = Some(value),
                     "path" => *path = Some(value),
+                    "wwwauth[]" => www_authenticate.push(value),
                     "quit" => {
-                        *quit = gix_config_value::Boolean::try_from(value.as_ref()).ok().map(Into::into);
+                        *quit = gix_config_value::Boolean::try_from(value.as_bstr())
+                            .ok()
+                            .map(Into::into);
                     }
                     _ => {}
                 }
@@ -143,12 +157,20 @@ pub mod decode {
     }
 }
 
-fn validate(key: &str, value: &BStr) -> Result<(), Error> {
-    if key.contains('\0') || key.contains('\n') || value.contains(&0) || value.contains(&b'\n') {
-        return Err(Error::Encoding {
-            key: key.to_owned(),
-            value: value.to_owned(),
-        });
+fn validate(key: &str, value: &BStr, protect_protocol: bool) -> Result {
+    if key.contains('\0')
+        || key.contains('\n')
+        || key.contains('\r')
+        || value.contains(&0)
+        || value.contains(&b'\n')
+        || (protect_protocol && value.contains(&b'\r'))
+    {
+        bail!(
+            gix_error::validation(format!(
+                "{key:?}={value:?} must not contain null bytes or newlines neither in key nor in value."
+            ))
+            .with_input(value)
+        );
     }
     Ok(())
 }

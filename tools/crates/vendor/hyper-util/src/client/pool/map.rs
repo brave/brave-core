@@ -48,6 +48,10 @@ where
 // impl Map
 
 impl Map<builder::StartHere, builder::StartHere> {
+    #[allow(
+        rustdoc::broken_intra_doc_links,
+        reason = "this link is intended for docs.rs builds"
+    )]
     /// Create a [`Builder`] to configure a new `Map`.
     pub fn builder<Dst>() -> builder::Builder<Dst, builder::WantsKeyer, builder::WantsServiceMaker>
     {

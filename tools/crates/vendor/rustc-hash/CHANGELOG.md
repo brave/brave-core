@@ -1,3 +1,12 @@
+# 2.1.3
+
+- [Use derive_const to fix `feature = "nightly"` build](https://github.com/rust-lang/rustc-hash/pull/77)
+- [Internally update to rand 0.9](https://github.com/rust-lang/rustc-hash/pull/64)
+
+# 2.1.2
+
+- [Refactor byte hashing to remove unreachable panic](https://github.com/rust-lang/rustc-hash/pull/65)
+
 # 2.1.1
 
 - Change the internal algorithm to better accomodate large hashmaps.

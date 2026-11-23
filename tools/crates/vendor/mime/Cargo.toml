@@ -11,8 +11,14 @@
 
 [package]
 name = "mime"
-version = "0.3.17"
+version = "0.3.18"
 authors = ["Sean McArthur <sean@seanmonstar.com>"]
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Strongly Typed Mimes"
 documentation = "https://docs.rs/mime"
 readme = "README.md"
@@ -23,5 +29,25 @@ keywords = [
 ]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/hyperium/mime"
+
+[lib]
+name = "mime"
+path = "src/lib.rs"
+
+[[test]]
+name = "regressions"
+path = "tests/regressions.rs"
+
+[[bench]]
+name = "cmp"
+path = "benches/cmp.rs"
+
+[[bench]]
+name = "fmt"
+path = "benches/fmt.rs"
+
+[[bench]]
+name = "parse"
+path = "benches/parse.rs"
 
 [dependencies]

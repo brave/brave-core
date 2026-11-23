@@ -1,8 +1,10 @@
 use bstr::BStr;
+use gix_error::ErrorExt;
+use gix_error::Result;
 use gix_object::TreeRefIter;
 
-use super::{Action, ChangeRef, Error, Options};
-use crate::{rewrites, rewrites::tracker};
+use super::{Action, ChangeRef, Options};
+use crate::{rewrites, rewrites::tracker, tree::Error};
 
 /// Call `for_each` repeatedly with all changes that are needed to convert `lhs` to `rhs`.
 /// Provide a `resource_cache` to speed up obtaining blobs for similarity checks.
@@ -21,18 +23,19 @@ use crate::{rewrites, rewrites::tracker};
 /// `rhs` or `lhs` can be empty to indicate deletion or addition of an entire tree.
 ///
 /// Note that the rewrite outcome is only available if [rewrite-tracking was enabled](Options::rewrites).
-pub fn diff<E>(
+pub fn diff(
     lhs: TreeRefIter<'_>,
     rhs: TreeRefIter<'_>,
     resource_cache: &mut crate::blob::Platform,
     tree_diff_state: &mut crate::tree::State,
     objects: &impl gix_object::FindObjectOrHeader,
-    for_each: impl FnMut(ChangeRef<'_>) -> Result<Action, E>,
+    for_each: impl FnMut(ChangeRef<'_>) -> Result<Action>,
     options: Options,
-) -> Result<Option<rewrites::Outcome>, Error>
-where
-    E: Into<Box<dyn std::error::Error + Sync + Send + 'static>>,
-{
+) -> std::result::Result<Option<rewrites::Outcome>, Error> {
+    fn callback_error(err: gix_error::Error) -> Error {
+        Error::Failure(err.and_raise(gix_error::message("The user-provided callback failed")))
+    }
+
     let mut delegate = Delegate {
         src_tree: lhs,
         recorder: crate::tree::Recorder::default().track_location(options.location),
@@ -46,41 +49,38 @@ where
         Ok(()) => {
             let outcome = delegate.process_tracked_changes(resource_cache)?;
             match delegate.err {
-                Some(err) => Err(Error::ForEach(err.into())),
+                Some(err) => Err(callback_error(err)),
                 None => Ok(outcome),
             }
         }
         Err(crate::tree::Error::Cancelled) => delegate
             .err
-            .map_or(Err(Error::Diff(crate::tree::Error::Cancelled)), |err| {
-                Err(Error::ForEach(err.into()))
-            }),
-        Err(err) => Err(err.into()),
+            .map_or(Err(Error::Cancelled), |err| Err(callback_error(err))),
+        Err(err) => Err(err),
     }
 }
 
-struct Delegate<'a, 'old, VisitFn, E, Objects> {
+struct Delegate<'a, 'old, VisitFn, Objects> {
     src_tree: TreeRefIter<'old>,
     recorder: crate::tree::Recorder,
     objects: &'a Objects,
     visit: VisitFn,
     tracked: Option<rewrites::Tracker<crate::tree::visit::Change>>,
     location: Option<crate::tree::recorder::Location>,
-    err: Option<E>,
+    err: Option<gix_error::Error>,
 }
 
-impl<VisitFn, E, Objects> Delegate<'_, '_, VisitFn, E, Objects>
+impl<VisitFn, Objects> Delegate<'_, '_, VisitFn, Objects>
 where
     Objects: gix_object::FindObjectOrHeader,
-    VisitFn: for<'delegate> FnMut(ChangeRef<'_>) -> Result<Action, E>,
-    E: Into<Box<dyn std::error::Error + Sync + Send + 'static>>,
+    VisitFn: FnMut(ChangeRef<'_>) -> Result<Action>,
 {
     /// Call `visit` on an attached version of `change`.
     fn emit_change(
         change: crate::tree::visit::Change,
         location: &BStr,
         visit: &mut VisitFn,
-        stored_err: &mut Option<E>,
+        stored_err: &mut Option<gix_error::Error>,
     ) -> crate::tree::visit::Action {
         use crate::tree::visit::Change::*;
         let change = match change {
@@ -118,11 +118,11 @@ where
             },
         };
         match visit(change) {
-            Ok(Action::Cancel) => crate::tree::visit::Action::Cancel,
-            Ok(Action::Continue) => crate::tree::visit::Action::Continue,
+            Ok(std::ops::ControlFlow::Break(())) => std::ops::ControlFlow::Break(()),
+            Ok(std::ops::ControlFlow::Continue(())) => std::ops::ControlFlow::Continue(()),
             Err(err) => {
                 *stored_err = Some(err);
-                crate::tree::visit::Action::Cancel
+                std::ops::ControlFlow::Break(())
             }
         }
     }
@@ -130,7 +130,7 @@ where
     fn process_tracked_changes(
         &mut self,
         diff_cache: &mut crate::blob::Platform,
-    ) -> Result<Option<rewrites::Outcome>, Error> {
+    ) -> std::result::Result<Option<rewrites::Outcome>, Error> {
         use crate::rewrites::tracker::Change as _;
         let tracked = match self.tracked.as_mut() {
             Some(t) => t,
@@ -157,11 +157,11 @@ where
                         },
                     };
                     match (self.visit)(change) {
-                        Ok(Action::Cancel) => crate::tree::visit::Action::Cancel,
-                        Ok(Action::Continue) => crate::tree::visit::Action::Continue,
+                        Ok(std::ops::ControlFlow::Break(())) => std::ops::ControlFlow::Break(()),
+                        Ok(std::ops::ControlFlow::Continue(())) => std::ops::ControlFlow::Continue(()),
                         Err(err) => {
                             self.err = Some(err);
-                            crate::tree::visit::Action::Cancel
+                            std::ops::ControlFlow::Break(())
                         }
                     }
                 }
@@ -179,11 +179,10 @@ where
     }
 }
 
-impl<VisitFn, E, Objects> crate::tree::Visit for Delegate<'_, '_, VisitFn, E, Objects>
+impl<VisitFn, Objects> crate::tree::Visit for Delegate<'_, '_, VisitFn, Objects>
 where
     Objects: gix_object::FindObjectOrHeader,
-    VisitFn: for<'delegate> FnMut(ChangeRef<'_>) -> Result<Action, E>,
-    E: Into<Box<dyn std::error::Error + Sync + Send + 'static>>,
+    VisitFn: FnMut(ChangeRef<'_>) -> Result<Action>,
 {
     fn pop_front_tracked_path_and_set_current(&mut self) {
         self.recorder.pop_front_tracked_path_and_set_current();
@@ -205,7 +204,7 @@ where
         match self.tracked.as_mut() {
             Some(tracked) => tracked
                 .try_push_change(change, self.recorder.path())
-                .map_or(crate::tree::visit::Action::Continue, |change| {
+                .map_or(std::ops::ControlFlow::Continue(()), |change| {
                     Self::emit_change(change, self.recorder.path(), &mut self.visit, &mut self.err)
                 }),
             None => Self::emit_change(change, self.recorder.path(), &mut self.visit, &mut self.err),
@@ -259,7 +258,7 @@ mod tree_to_changes {
         }
 
         fn visit_tree(&mut self, _entry: &EntryRef<'_>) -> gix_traverse::tree::visit::Action {
-            gix_traverse::tree::visit::Action::Continue
+            std::ops::ControlFlow::Continue(true)
         }
 
         fn visit_nontree(&mut self, entry: &EntryRef<'_>) -> gix_traverse::tree::visit::Action {
@@ -274,7 +273,7 @@ mod tree_to_changes {
                     self.recorder.path(),
                 );
             }
-            gix_traverse::tree::visit::Action::Continue
+            std::ops::ControlFlow::Continue(true)
         }
     }
 }

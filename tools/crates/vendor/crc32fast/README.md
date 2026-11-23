@@ -39,7 +39,12 @@ This crate contains multiple CRC32 implementations:
 
 - A fast baseline implementation which processes up to 16 bytes per iteration
 - An optimized implementation for modern `x86` using `sse` and `pclmulqdq` instructions
-- An optimized implementation for `aarch64` using `crc32` instructions
+- Wider `x86` implementations using `vpclmulqdq` on 256-bit (`avx2`) and 512-bit (`avx512f`)
+  registers, folding many independent streams per instruction (compiled with Rust 1.89+; the
+  crate's minimum supported Rust version is otherwise unchanged)
+- An optimized implementation for `aarch64` using `crc32` instructions, with a 3-way interleaved
+  variant that hides instruction latency on larger inputs, and, from 64 bytes on CPUs with `pmull`
+  (the `aes` feature), one that folds 4 to 16 independent streams with carry-less multiplies
 
 Calling the `Hasher::new` constructor at runtime will perform a feature detection to select the most
 optimal implementation for the current CPU feature set.
@@ -78,9 +83,9 @@ might experience breaking changes when updating compiler versions.
 This project is licensed under either of
 
 - Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE) or
-  http://www.apache.org/licenses/LICENSE-2.0)
+  https://www.apache.org/licenses/LICENSE-2.0)
 - MIT license ([LICENSE-MIT](LICENSE-MIT) or
-  http://opensource.org/licenses/MIT)
+  https://opensource.org/license/mit)
 
 at your option.
 

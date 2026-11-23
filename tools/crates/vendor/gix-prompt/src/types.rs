@@ -1,22 +1,4 @@
-use std::{borrow::Cow, path::Path};
-
-/// The error returned by [ask()][crate::ask()].
-#[derive(Debug, thiserror::Error)]
-#[allow(missing_docs)]
-pub enum Error {
-    #[error("Terminal prompts are disabled")]
-    Disabled,
-    #[error("The current platform has no implementation for prompting in the terminal")]
-    UnsupportedPlatform,
-    #[error(
-        "Failed to open terminal at {:?} for writing prompt, or to write it",
-        crate::unix::TTY_PATH
-    )]
-    TtyIo(#[from] std::io::Error),
-    #[cfg(unix)]
-    #[error("Failed to obtain or set terminal configuration")]
-    TerminalConfiguration(#[from] rustix::io::Errno),
-}
+use std::path::PathBuf;
 
 /// The way the user is prompted.
 #[derive(Default, Debug, Copy, Clone, Eq, PartialEq)]
@@ -32,16 +14,16 @@ pub enum Mode {
 
 /// The options used in `[ask()]`.
 #[derive(Default, Clone)]
-pub struct Options<'a> {
+pub struct Options {
     /// The path or name (for lookup in `PATH`) to the askpass program to call before prompting the user.
     ///
     /// It's called like this `askpass <prompt>`, but note that it won't know if the input should be hidden or not.
-    pub askpass: Option<Cow<'a, Path>>,
+    pub askpass: Option<PathBuf>,
     /// The way the user is prompted.
     pub mode: Mode,
 }
 
-impl Options<'_> {
+impl Options {
     /// Change this instance to incorporate information from the environment.
     ///
     /// - if `use_git_askpass` is true, use `GIT_ASKPASS` to override any existing [`askpass`][Options::askpass] program
@@ -59,12 +41,12 @@ impl Options<'_> {
         use_git_terminal_prompt: bool,
     ) -> Self {
         if let Some(askpass) = use_git_askpass.then(|| std::env::var_os("GIT_ASKPASS")).flatten() {
-            self.askpass = Some(Cow::Owned(askpass.into()));
+            self.askpass = Some(askpass.into());
         }
-        if self.askpass.is_none() {
-            if let Some(askpass) = use_ssh_askpass.then(|| std::env::var_os("SSH_ASKPASS")).flatten() {
-                self.askpass = Some(Cow::Owned(askpass.into()));
-            }
+        if self.askpass.is_none()
+            && let Some(askpass) = use_ssh_askpass.then(|| std::env::var_os("SSH_ASKPASS")).flatten()
+        {
+            self.askpass = Some(askpass.into());
         }
         self.mode = use_git_terminal_prompt
             .then(|| {

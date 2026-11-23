@@ -8,7 +8,7 @@ use std::net::SocketAddr;
 /// +----+----------+----------+
 /// | 1  |    1     | 1 to 255 |
 /// +----+----------+----------+
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct NegotiationReq<'a>(pub &'a AuthMethod);
 
 /// +----+--------+
@@ -16,7 +16,7 @@ pub struct NegotiationReq<'a>(pub &'a AuthMethod);
 /// +----+--------+
 /// | 1  |   1    |
 /// +----+--------+
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct NegotiationRes(pub AuthMethod);
 
 /// +----+------+----------+------+----------+
@@ -24,7 +24,7 @@ pub struct NegotiationRes(pub AuthMethod);
 /// +----+------+----------+------+----------+
 /// | 1  |  1   | 1 to 255 |  1   | 1 to 255 |
 /// +----+------+----------+------+----------+
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct AuthenticationReq<'a>(pub &'a str, pub &'a str);
 
 /// +----+--------+
@@ -32,7 +32,7 @@ pub struct AuthenticationReq<'a>(pub &'a str, pub &'a str);
 /// +----+--------+
 /// | 1  |   1    |
 /// +----+--------+
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct AuthenticationRes(pub bool);
 
 /// +----+-----+-------+------+----------+----------+
@@ -40,7 +40,7 @@ pub struct AuthenticationRes(pub bool);
 /// +----+-----+-------+------+----------+----------+
 /// | 1  |  1  | X'00' |  1   | Variable |    2     |
 /// +----+-----+-------+------+----------+----------+
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct ProxyReq<'a>(pub &'a Address);
 
 /// +----+-----+-------+------+----------+----------+
@@ -48,7 +48,7 @@ pub struct ProxyReq<'a>(pub &'a Address);
 /// +----+-----+-------+------+----------+----------+
 /// | 1  |  1  | X'00' |  1   | Variable |    2     |
 /// +----+-----+-------+------+----------+----------+
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct ProxyRes(pub Status);
 
 #[repr(u8)]
@@ -59,7 +59,7 @@ pub enum AuthMethod {
     NoneAcceptable = 0xFF,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum Address {
     Socket(SocketAddr),
     Domain(String, u16),
@@ -92,10 +92,10 @@ impl NegotiationReq<'_> {
     }
 }
 
-impl TryFrom<&mut BytesMut> for NegotiationRes {
+impl TryFrom<&mut &[u8]> for NegotiationRes {
     type Error = ParsingError;
 
-    fn try_from(buf: &mut BytesMut) -> Result<Self, ParsingError> {
+    fn try_from(buf: &mut &[u8]) -> Result<Self, ParsingError> {
         if buf.remaining() < 2 {
             return Err(ParsingError::Incomplete);
         }
@@ -117,20 +117,20 @@ impl AuthenticationReq<'_> {
 
         buf.put_u8(0x01); // Version
 
-        buf.put_u8(self.0.len() as u8); // Username length (guarenteed to be 255 or less)
+        buf.put_u8(self.0.len() as u8); // Username length (guaranteed to be 255 or less)
         buf.put_slice(self.0.as_bytes()); // Username
 
-        buf.put_u8(self.1.len() as u8); // Password length (guarenteed to be 255 or less)
+        buf.put_u8(self.1.len() as u8); // Password length (guaranteed to be 255 or less)
         buf.put_slice(self.1.as_bytes()); // Password
 
         Ok(3 + self.0.len() + self.1.len())
     }
 }
 
-impl TryFrom<&mut BytesMut> for AuthenticationRes {
+impl TryFrom<&mut &[u8]> for AuthenticationRes {
     type Error = ParsingError;
 
-    fn try_from(buf: &mut BytesMut) -> Result<Self, ParsingError> {
+    fn try_from(buf: &mut &[u8]) -> Result<Self, ParsingError> {
         if buf.remaining() < 2 {
             return Err(ParsingError::Incomplete);
         }
@@ -152,7 +152,7 @@ impl ProxyReq<'_> {
         let addr_len = match self.0 {
             Address::Socket(SocketAddr::V4(_)) => 1 + 4 + 2,
             Address::Socket(SocketAddr::V6(_)) => 1 + 16 + 2,
-            Address::Domain(ref domain, _) => 1 + 1 + domain.len() + 2,
+            Address::Domain(domain, _) => 1 + 1 + domain.len() + 2,
         };
 
         if buf.capacity() - buf.len() < 3 + addr_len {
@@ -168,10 +168,10 @@ impl ProxyReq<'_> {
     }
 }
 
-impl TryFrom<&mut BytesMut> for ProxyRes {
+impl TryFrom<&mut &[u8]> for ProxyRes {
     type Error = ParsingError;
 
-    fn try_from(buf: &mut BytesMut) -> Result<Self, ParsingError> {
+    fn try_from(buf: &mut &[u8]) -> Result<Self, ParsingError> {
         if buf.remaining() < 3 {
             return Err(ParsingError::Incomplete);
         }
@@ -239,10 +239,10 @@ impl Address {
     }
 }
 
-impl TryFrom<&mut BytesMut> for Address {
+impl TryFrom<&mut &[u8]> for Address {
     type Error = ParsingError;
 
-    fn try_from(buf: &mut BytesMut) -> Result<Self, Self::Error> {
+    fn try_from(buf: &mut &[u8]) -> Result<Self, Self::Error> {
         if buf.remaining() < 2 {
             return Err(ParsingError::Incomplete);
         }
@@ -263,17 +263,18 @@ impl TryFrom<&mut BytesMut> for Address {
             }
             // Domain
             0x03 => {
-                let len = buf.get_u8();
+                let len = buf.get_u8() as usize;
 
                 if len == 0 {
                     return Err(ParsingError::Other);
-                } else if buf.remaining() < (len as usize) + 2 {
+                } else if buf.remaining() < len + 2 {
                     return Err(ParsingError::Incomplete);
                 }
 
-                let domain = std::str::from_utf8(&buf[..len as usize])
+                let domain = std::str::from_utf8(&buf.chunk()[..len])
                     .map_err(|_| ParsingError::Other)?
                     .to_string();
+                buf.advance(len);
 
                 let port = buf.get_u16();
 
@@ -344,5 +345,158 @@ impl std::fmt::Display for Status {
             Self::CommandNotSupported => "command not supported",
             Self::AddressTypeNotSupported => "address type not supported",
         })
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    use std::net::{Ipv4Addr, Ipv6Addr};
+
+    #[test]
+    fn negotiation_req_serialization() {
+        let expected = [
+            0x05, // protocol version
+            0x01, // number of authentication methods: 1
+            0x00, // method: no authentication
+        ];
+
+        let mut buf = BytesMut::with_capacity(expected.len());
+        let n = NegotiationReq(&AuthMethod::NoAuth)
+            .write_to_buf(&mut buf)
+            .unwrap();
+        assert_eq!(n, buf.len());
+        assert_eq!(&buf[..], &expected[..]);
+    }
+
+    #[test]
+    fn negotiation_res_deserialization() {
+        let raw = [
+            0x05, // protocol version
+            0x02, // selected method: username/password
+        ];
+
+        let mut view = &raw[..];
+
+        let res = NegotiationRes::try_from(&mut view).unwrap();
+        assert_eq!(res, NegotiationRes(AuthMethod::UserPass));
+        assert!(view.is_empty());
+    }
+
+    #[test]
+    fn authentication_req_serialization() {
+        let expected = [
+            0x01, // authentication version
+            0x04, // username length: 4
+            b'u', b's', b'e', b'r', // username
+            0x04, // password length: 4
+            b'p', b'a', b's', b's', // password
+        ];
+
+        let mut buf = BytesMut::with_capacity(expected.len());
+        let n = AuthenticationReq("user", "pass")
+            .write_to_buf(&mut buf)
+            .unwrap();
+        assert_eq!(n, buf.len());
+        assert_eq!(&buf[..], &expected[..]);
+    }
+
+    #[test]
+    fn authentication_res_deserialization() {
+        let raw = [
+            0x01, // authentication version
+            0x00, // status: success
+        ];
+        assert_eq!(
+            AuthenticationRes::try_from(&mut &raw[..]).unwrap(),
+            AuthenticationRes(true)
+        );
+
+        let raw = [
+            0x01, // authentication version
+            0x01, // status: failure
+        ];
+        assert_eq!(
+            AuthenticationRes::try_from(&mut &raw[..]).unwrap(),
+            AuthenticationRes(false)
+        );
+    }
+
+    #[test]
+    fn proxy_req_serialization() {
+        let expected = [
+            0x05, // protocol version
+            0x01, // command: connect
+            0x00, // reserved
+            0x01, // address type: IPv4
+            127, 0, 0, 1, // destination address: 127.0.0.1
+            0x1F, 0x90, // destination port: 8080
+        ];
+
+        let addr = Address::Socket(SocketAddr::new(Ipv4Addr::LOCALHOST.into(), 8080));
+
+        let mut buf = BytesMut::with_capacity(expected.len());
+        let n = ProxyReq(&addr).write_to_buf(&mut buf).unwrap();
+        assert_eq!(n, buf.len());
+        assert_eq!(&buf[..], &expected[..]);
+    }
+
+    #[test]
+    fn proxy_res_deserialization() {
+        let raw = [
+            0x05, // protocol version
+            0x00, // reply: success
+            0x00, // reserved
+            0x01, // address type: IPv4
+            127, 0, 0, 1, // bound address: 127.0.0.1
+            0x1F, 0x90, // bound port: 8080
+        ];
+        let mut view = &raw[..];
+
+        let res = ProxyRes::try_from(&mut view).unwrap();
+        assert_eq!(res, ProxyRes(Status::Success));
+        assert!(view.is_empty());
+    }
+
+    #[test]
+    fn serialization_would_overflow() {
+        let mut buf = BytesMut::with_capacity(2);
+
+        let err = NegotiationReq(&AuthMethod::NoAuth)
+            .write_to_buf(&mut buf)
+            .unwrap_err();
+        assert!(matches!(err, SerializeError::WouldOverflow));
+    }
+
+    fn assert_address_roundtrips(addr: Address) {
+        let mut buf = BytesMut::with_capacity(64);
+
+        let n = addr.write_to_buf(&mut buf).unwrap();
+        assert_eq!(n, buf.len());
+
+        let mut view = &buf[..];
+        assert_eq!(Address::try_from(&mut view).unwrap(), addr);
+        assert!(view.is_empty(), "address bytes should be fully consumed");
+    }
+
+    #[test]
+    fn address_roundtrip_ipv4() {
+        assert_address_roundtrips(Address::Socket(SocketAddr::new(
+            Ipv4Addr::LOCALHOST.into(),
+            8080,
+        )));
+    }
+
+    #[test]
+    fn address_roundtrip_ipv6() {
+        assert_address_roundtrips(Address::Socket(SocketAddr::new(
+            Ipv6Addr::LOCALHOST.into(),
+            8080,
+        )));
+    }
+
+    #[test]
+    fn address_roundtrip_domain() {
+        assert_address_roundtrips(Address::Domain("example.com".into(), 8080));
     }
 }

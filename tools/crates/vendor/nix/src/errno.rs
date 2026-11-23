@@ -3247,6 +3247,10 @@ mod consts {
         EOPNOTSUPP = libc::EOPNOTSUPP,
     }
 
+    impl Errno {
+        pub const EWOULDBLOCK: Errno = Errno::EAGAIN;
+    }
+
     #[deprecated(
         since = "0.28.0",
         note = "please use `Errno::from_raw()` instead"

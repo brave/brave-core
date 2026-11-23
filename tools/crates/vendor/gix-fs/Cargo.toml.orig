@@ -2,34 +2,47 @@ lints.workspace = true
 
 [package]
 name = "gix-fs"
-version = "0.17.0"
+version = "0.24.1"
 repository = "https://github.com/GitoxideLabs/gitoxide"
 license = "MIT OR Apache-2.0"
 description = "A crate providing file system specific utilities to `gitoxide`"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
-edition = "2021"
-rust-version = "1.82"
-include = ["src/**/*", "LICENSE-*"]
+edition = "2024"
+rust-version = "1.88"
+include = ["/src/**/*", "/LICENSE-*"]
 
 [lib]
-doctest = false
+doctest = true
 
 [features]
-## Data structures implement `serde::Serialize` and `serde::Deserialize`.
+## [`Capabilities`] implements `serde::Serialize` and `serde::Deserialize`.
 serde = ["dep:serde"]
 
-[dependencies]
-bstr = "1.12.0"
-gix-path = { version = "^0.10.21", path = "../gix-path" }
-gix-features = { version = "^0.44.0", path = "../gix-features", features = ["fs-read-dir"] }
-gix-utils = { version = "^0.3.1", path = "../gix-utils" }
-thiserror = "2.0.17"
-serde = { version = "1.0.114", optional = true, default-features = false, features = ["std", "derive"] }
+## Enable recursive directory traversal with optional Unicode precomposition and Git-style sorting using the `walkdir` crate.
+walkdir = ["dep:walkdir"]
 
-# For `Capabilities` to assure parallel operation works.
-fastrand = { version = "2.1.0", default-features = false, features = ["std"] }
+[dependencies]
+gix-parallel = { version = "^0.50.0", path = "../gix-parallel" }
+bstr = "1.12.0"
+gix-path = { version = "^0.14.1", path = "../gix-path" }
+gix-utils = { version = "^0.5.1", path = "../gix-utils" }
+gix-error = { version = "^0.5.2", path = "../gix-error" }
+
+serde = { version = "1.0.114", optional = true, default-features = false, features = ["std", "derive"] }
+walkdir = { version = "2.3.2", optional = true }
+
+document-features = { version = "0.2.0", optional = true }
+
+[target.'cfg(unix)'.dependencies]
+libc = { version = "0.2.186" }
 
 [dev-dependencies]
+gix-testtools = { path = "../tests/tools", default-features = false, features = ["sha1"] }
+insta = "1.46.3"
 crossbeam-channel = "0.5.15"
 is_ci = "1.1.1"
-tempfile = "3.23.0"
+tempfile = "3.26.0"
+
+[package.metadata.docs.rs]
+all-features = true
+features = ["document-features"]

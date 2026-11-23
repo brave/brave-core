@@ -9,14 +9,15 @@ use std::time::Duration;
 use std::{cmp, fmt, ops};
 
 const fn zero_init_timespec() -> timespec {
-    // `std::mem::MaybeUninit::zeroed()` is not yet a const fn
-    // (https://github.com/rust-lang/rust/issues/91850) so we will instead initialize an array of
-    // the appropriate size to zero and then transmute it to a timespec value.
+    // TODO(MSRV>=1.75, feature(const_maybe_uninit_zeroed): use [`std::mem::MaybeUninit::zeroed()`]
     unsafe { std::mem::transmute([0u8; std::mem::size_of::<timespec>()]) }
 }
 
 #[cfg(any(
-    all(feature = "time", any(target_os = "android", target_os = "linux")),
+    all(
+        feature = "time",
+        any(target_os = "android", target_os = "freebsd", target_os = "linux")
+    ),
     all(
         any(
             target_os = "freebsd",
@@ -624,6 +625,10 @@ impl TimeVal {
         })
     }
 
+    #[cfg_attr(
+        any(target_env = "musl", target_env = "ohos"),
+        allow(deprecated)
+    )] // https://github.com/rust-lang/libc/issues/1848
     fn micros_mod_sec(&self) -> suseconds_t {
         if self.tv_sec() < 0 && self.tv_usec() > 0 {
             self.tv_usec() - MICROS_PER_SEC as suseconds_t
@@ -640,6 +645,10 @@ impl TimeVal {
         self.0.tv_sec
     }
 
+    #[cfg_attr(
+        any(target_env = "musl", target_env = "ohos"),
+        allow(deprecated)
+    )] // https://github.com/rust-lang/libc/issues/1848
     pub const fn tv_usec(&self) -> suseconds_t {
         self.0.tv_usec
     }

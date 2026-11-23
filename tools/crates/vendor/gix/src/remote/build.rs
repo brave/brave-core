@@ -1,80 +1,73 @@
-use crate::{bstr::BStr, remote, Remote};
+use gix_error::ResultExt;
+
+use crate::{Remote, Result, bstr::BStr, remote};
 
 /// Builder methods
 impl Remote<'_> {
     /// Override the `url` to be used when fetching data from a remote.
     ///
     /// Note that this URL is typically set during instantiation with [`crate::Repository::remote_at()`].
-    pub fn with_url<Url, E>(self, url: Url) -> Result<Self, remote::init::Error>
+    pub fn with_url<Url, E>(self, url: Url) -> Result<Self>
     where
         Url: TryInto<gix_url::Url, Error = E>,
-        gix_url::parse::Error: From<E>,
+        E: std::error::Error + Send + Sync + 'static,
     {
-        self.url_inner(
-            url.try_into().map_err(|err| remote::init::Error::Url(err.into()))?,
-            true,
-        )
+        self.url_inner(url.try_into().or_error()?, true)
     }
 
     /// Set the `url` to be used when fetching data from a remote, without applying rewrite rules in case these could be faulty,
     /// eliminating one failure mode.
     ///
     /// Note that this URL is typically set during instantiation with [`crate::Repository::remote_at_without_url_rewrite()`].
-    pub fn with_url_without_url_rewrite<Url, E>(self, url: Url) -> Result<Self, remote::init::Error>
+    pub fn with_url_without_url_rewrite<Url, E>(self, url: Url) -> Result<Self>
     where
         Url: TryInto<gix_url::Url, Error = E>,
-        gix_url::parse::Error: From<E>,
+        E: std::error::Error + Send + Sync + 'static,
     {
-        self.url_inner(
-            url.try_into().map_err(|err| remote::init::Error::Url(err.into()))?,
-            false,
-        )
+        self.url_inner(url.try_into().or_error()?, false)
     }
 
     /// Set the `url` to be used when pushing data to a remote.
     #[deprecated = "Use `with_push_url()` instead"]
-    pub fn push_url<Url, E>(self, url: Url) -> Result<Self, remote::init::Error>
+    pub fn push_url<Url, E>(self, url: Url) -> Result<Self>
     where
         Url: TryInto<gix_url::Url, Error = E>,
-        gix_url::parse::Error: From<E>,
+        E: std::error::Error + Send + Sync + 'static,
     {
         self.with_push_url(url)
     }
 
-    /// Set the `url` to be used when pushing data to a remote.
-    pub fn with_push_url<Url, E>(self, url: Url) -> Result<Self, remote::init::Error>
+    /// Set the explicit `url` to be used when pushing data to a remote.
+    ///
+    /// Explicit push URLs are rewritten with `url.<base>.insteadOf`; `pushInsteadOf` only applies when a fetch URL is used
+    /// as the push fallback because no explicit push URL is configured.
+    pub fn with_push_url<Url, E>(self, url: Url) -> Result<Self>
     where
         Url: TryInto<gix_url::Url, Error = E>,
-        gix_url::parse::Error: From<E>,
+        E: std::error::Error + Send + Sync + 'static,
     {
-        self.push_url_inner(
-            url.try_into().map_err(|err| remote::init::Error::Url(err.into()))?,
-            true,
-        )
+        self.push_url_inner(url.try_into().or_error()?, true)
     }
 
     /// Set the `url` to be used when pushing data to a remote, without applying rewrite rules in case these could be faulty,
     /// eliminating one failure mode.
     #[deprecated = "Use `with_push_url_without_rewrite()` instead"]
-    pub fn push_url_without_url_rewrite<Url, E>(self, url: Url) -> Result<Self, remote::init::Error>
+    pub fn push_url_without_url_rewrite<Url, E>(self, url: Url) -> Result<Self>
     where
         Url: TryInto<gix_url::Url, Error = E>,
-        gix_url::parse::Error: From<E>,
+        E: std::error::Error + Send + Sync + 'static,
     {
         self.with_push_url_without_url_rewrite(url)
     }
 
     /// Set the `url` to be used when pushing data to a remote, without applying rewrite rules in case these could be faulty,
     /// eliminating one failure mode.
-    pub fn with_push_url_without_url_rewrite<Url, E>(self, url: Url) -> Result<Self, remote::init::Error>
+    pub fn with_push_url_without_url_rewrite<Url, E>(self, url: Url) -> Result<Self>
     where
         Url: TryInto<gix_url::Url, Error = E>,
-        gix_url::parse::Error: From<E>,
+        E: std::error::Error + Send + Sync + 'static,
     {
-        self.push_url_inner(
-            url.try_into().map_err(|err| remote::init::Error::Url(err.into()))?,
-            false,
-        )
+        self.push_url_inner(url.try_into().or_error()?, false)
     }
 
     /// Configure how tags should be handled when fetching from the remote.
@@ -83,32 +76,43 @@ impl Remote<'_> {
         self
     }
 
-    fn push_url_inner(
-        mut self,
-        push_url: gix_url::Url,
-        should_rewrite_urls: bool,
-    ) -> Result<Self, remote::init::Error> {
-        self.push_url = push_url.into();
+    fn push_url_inner(mut self, push_url: gix_url::Url, should_rewrite_urls: bool) -> Result<Self> {
+        self.push_urls = vec![push_url];
 
-        let (_, push_url_alias) = if should_rewrite_urls {
-            remote::init::rewrite_urls(&self.repo.config, None, self.push_url.as_ref())
+        self.push_url_aliases = if should_rewrite_urls {
+            remote::init::rewrite_url_aliases_with_error_kind(
+                &self.repo.config,
+                &self.push_urls,
+                remote::Direction::Fetch,
+                remote::Direction::Push,
+            )
         } else {
-            Ok((None, None))
+            Ok(vec![None; self.push_urls.len()])
         }?;
-        self.push_url_alias = push_url_alias;
+        self.url_push_aliases = vec![None; self.urls.len()];
 
         Ok(self)
     }
 
-    fn url_inner(mut self, url: gix_url::Url, should_rewrite_urls: bool) -> Result<Self, remote::init::Error> {
-        self.url = url.into();
+    fn url_inner(mut self, url: gix_url::Url, should_rewrite_urls: bool) -> Result<Self> {
+        self.urls = vec![url];
 
-        let (fetch_url_alias, _) = if should_rewrite_urls {
-            remote::init::rewrite_urls(&self.repo.config, self.url.as_ref(), None)
+        self.url_aliases = if should_rewrite_urls {
+            remote::init::rewrite_url_aliases(&self.repo.config, &self.urls, remote::Direction::Fetch)
         } else {
-            Ok((None, None))
+            Ok(vec![None; self.urls.len()])
         }?;
-        self.url_alias = fetch_url_alias;
+        self.url_push_aliases = if should_rewrite_urls && self.push_urls.is_empty() {
+            remote::init::rewrite_url_aliases_with_fallback_non_destructive(
+                &self.repo.config,
+                &self.urls,
+                remote::Direction::Push,
+                remote::Direction::Fetch,
+            )
+            .0
+        } else {
+            vec![None; self.urls.len()]
+        };
 
         Ok(self)
     }
@@ -118,7 +122,7 @@ impl Remote<'_> {
         mut self,
         specs: impl IntoIterator<Item = Spec>,
         direction: remote::Direction,
-    ) -> Result<Self, gix_refspec::parse::Error>
+    ) -> Result<Self>
     where
         Spec: AsRef<BStr>,
     {
@@ -135,7 +139,7 @@ impl Remote<'_> {
                 )
                 .map(|s| s.to_owned())
             })
-            .collect::<Result<Vec<_>, _>>()?;
+            .collect::<std::result::Result<Vec<_>, _>>()?;
         let specs = match direction {
             Push => &mut self.push_specs,
             Fetch => &mut self.fetch_specs,

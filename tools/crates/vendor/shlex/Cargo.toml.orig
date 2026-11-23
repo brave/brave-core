@@ -1,6 +1,6 @@
 [package]
 name = "shlex"
-version = "1.3.0"
+version = "2.0.1"
 authors = [
     "comex <comexk@gmail.com>",
     "Fenhl <fenhl@fenhl.net>",
@@ -17,7 +17,11 @@ categories = [
     "parser-implementations"
 ]
 rust-version = "1.46.0"
+edition = "2018"
 
 [features]
 std = []
 default = ["std"]
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(manual_codegen_check)'] }

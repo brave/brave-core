@@ -1,26 +1,24 @@
-use super::Error;
+use crate::error::{ResultExt, message};
 use crate::{
+    Repository, Result,
     config::{cache::util::ApplyLeniency, tree::Pack},
-    Repository,
 };
 
-pub fn index_threads(repo: &Repository) -> Result<Option<usize>, Error> {
-    Ok(repo
-        .config
-        .resolved
-        .integer_filter(Pack::THREADS, &mut repo.filter_config_section())
-        .map(|threads| Pack::THREADS.try_into_usize(threads))
-        .transpose()
-        .with_leniency(repo.options.lenient_config)?)
+pub fn index_threads(repo: &Repository) -> Result<Option<usize>> {
+    Pack::THREADS
+        .try_into_usize(
+            repo.config
+                .resolved
+                .integer_filter(Pack::THREADS, &mut repo.filter_config_section()),
+        )
+        .with_leniency(repo.options.lenient_config)
+        .or_raise(|| message("The configured pack thread count is invalid"))
 }
 
-pub fn pack_index_version(repo: &Repository) -> Result<gix_pack::index::Version, Error> {
-    Ok(repo
-        .config
-        .resolved
-        .integer(Pack::INDEX_VERSION)
-        .map(|value| Pack::INDEX_VERSION.try_into_index_version(value))
-        .transpose()
-        .with_leniency(repo.options.lenient_config)?
+pub fn pack_index_version(repo: &Repository) -> Result<gix_pack::index::Version> {
+    Ok(Pack::INDEX_VERSION
+        .try_into_index_version(repo.config.resolved.integer(Pack::INDEX_VERSION))
+        .with_leniency(repo.options.lenient_config)
+        .or_raise(|| message("The configured pack index version is invalid"))?
         .unwrap_or(gix_pack::index::Version::V2))
 }

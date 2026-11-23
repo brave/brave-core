@@ -555,9 +555,22 @@ pub unsafe fn madvise(
     length: size_t,
     advise: MmapAdvise,
 ) -> Result<()> {
+    let ptr = {
+        // The AIX signature of 'madvise()' differs from the POSIX specification,
+        // which expects 'void *' as the type of the 'addr' argument, whereas AIX uses
+        // 'caddr_t' (i.e., 'char *').
+        #[cfg(target_os = "aix")]
+        {
+            addr.as_ptr() as *mut u8
+        }
+        #[cfg(not(target_os = "aix"))]
+        {
+            addr.as_ptr()
+        }
+    };
+
     unsafe {
-        Errno::result(libc::madvise(addr.as_ptr(), length, advise as i32))
-            .map(drop)
+        Errno::result(libc::madvise(ptr, length, advise as i32)).map(drop)
     }
 }
 

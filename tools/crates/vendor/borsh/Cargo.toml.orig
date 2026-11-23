@@ -32,15 +32,16 @@ cfg_aliases = "0.2.1"
 
 [dependencies]
 ascii = { version = "1.1", optional = true }
-borsh-derive = { path = "../borsh-derive", version = "~1.6.0", optional = true }
+borsh-derive = { path = "../borsh-derive", version = "~1.8.1", optional = true }
 
 # hashbrown can be used in no-std context.
 # NOTE: There is no reason to restrict use of older versions, but we don't want to get
 # sudden breaking changes with an open range of versions, so we limit the range by not yet released 0.16.0 version:
 hashbrown = { version = ">=0.11,<0.16.0", optional = true }
-bytes = { version = "1", optional = true }
+bytes = { version = "1", optional = true, default-features = false }
 indexmap = { version = "2", optional = true }
 bson = { version = "2", optional = true }
+uuid = { version = "1", optional = true, default-features = false }
 
 [dev-dependencies]
 insta = "1.29.0"
@@ -54,7 +55,7 @@ targets = ["x86_64-unknown-linux-gnu"]
 default = ["std"]
 derive = ["borsh-derive"]
 unstable__schema = ["derive", "borsh-derive/schema"]
-std = []
+std = ["bytes?/std"]
 # Opt into impls for Rc<T> and Arc<T>. Serializing and deserializing these types
 # does not preserve identity and may result in multiple copies of the same data.
 # Be sure that this is what you want before enabling this feature.

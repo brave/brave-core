@@ -98,19 +98,14 @@ impl fmt::Debug for AllowPrivateNetwork {
     }
 }
 
-#[derive(Clone)]
+#[derive(Clone, Default)]
 enum AllowPrivateNetworkInner {
     Yes,
+    #[default]
     No,
     Predicate(
         Arc<dyn for<'a> Fn(&'a HeaderValue, &'a RequestParts) -> bool + Send + Sync + 'static>,
     ),
-}
-
-impl Default for AllowPrivateNetworkInner {
-    fn default() -> Self {
-        Self::No
-    }
 }
 
 #[cfg(test)]

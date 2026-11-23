@@ -9,7 +9,7 @@
 //!
 //! ## Reader, the fast path
 //!
-//! * Publish an active address ‒ the address we'll be loading stuff from.
+//! * Publish the storage address ‒ the address we'll be loading stuff from ‒ in the slot.
 //! * Puts a generation into the control.
 //! * Loads the pointer and puts it to the debt slot.
 //! * Confirms by CaS-replacing the generation back to idle state.
@@ -36,8 +36,9 @@
 //! a distinct tag). In that case it'll try to:
 //!
 //! * First verify that the reservation is being done for the same address it modified, by reading
-//!   and re-confirming the active_addr slot corresponding to the currently handled node. If it is
-//!   for some other address, the writer doesn't have to be concerned and proceeds to the next slot.
+//!   and re-confirming the storage word of the slot corresponding to the currently handled node. If
+//!   it is for some other address, the writer doesn't have to be concerned and proceeds to the next
+//!   slot.
 //! * It does a full load. That is fine, because the writer must be on a different thread than the
 //!   reader and therefore there is at least one free slot. Full load means paying the debt right
 //!   away by incrementing the reference count.
@@ -148,10 +149,9 @@ pub(super) struct Slots {
     ///   can however force that for the Handover type.
     control: AtomicUsize,
     /// A possibly active debt.
+    ///
+    /// Its storage word holds the address the reader is trying to load from.
     slot: Debt,
-    /// If there's a generation in control, this signifies what address the reader is trying to
-    /// load from.
-    active_addr: AtomicUsize,
     /// A place where a writer can put a replacement value.
     ///
     /// Note that this is simply an allocation, and every participating slot contributes one, but
@@ -171,8 +171,6 @@ impl Default for Slots {
         Slots {
             control: AtomicUsize::new(IDLE),
             slot: Debt::default(),
-            // Doesn't matter yet
-            active_addr: AtomicUsize::new(0),
             // Also doesn't matter
             handover: Handover::default(),
             // Here we would like it to point to our handover. But for that we need to be in place
@@ -188,7 +186,7 @@ impl Slots {
         &self.slot
     }
 
-    pub(super) fn get_debt(&self, ptr: usize, local: &Local) -> (usize, bool) {
+    pub(super) fn get_debt(&self, storage_addr: usize, local: &Local) -> (usize, bool) {
         // Incrementing by 4 ensures we always have enough space for 2 bit of tags.
         let gen = local.generation.get().wrapping_add(4);
         debug_assert_eq!(gen & GEN_TAG, 0);
@@ -200,7 +198,7 @@ impl Slots {
         // generation/released slot. That way we may re-confirm in the writer that the reader is
         // not in between here and the compare_exchange below with a stale gen (eg. if we are in
         // here, the re-confirm there will load the NO_DEPT and we are fine).
-        self.active_addr.store(ptr, SeqCst);
+        self.slot.storage.store(storage_addr, SeqCst);
 
         // We are the only ones allowed to do the IDLE -> * transition and we never leave it in
         // anything else after an transaction, so this is OK. But we still need a load-store SeqCst
@@ -234,10 +232,10 @@ impl Slots {
                     );
                     // Get the address that other thread is trying to load from. By that acquire,
                     // we also sync the control into our thread once more and reconfirm that the
-                    // value of the active_addr is in between two same instances, therefore up to
-                    // date to it.
-                    let active_addr = who.active_addr.load(SeqCst);
-                    if active_addr != storage_addr {
+                    // value of the slot's storage word is in between two same instances, therefore
+                    // up to date to it.
+                    let reader_storage = who.slot.storage.load(SeqCst);
+                    if reader_storage != storage_addr {
                         // Acquire for the same reason as on the top.
                         let new_control = who.control.load(SeqCst);
                         if new_control == control {
@@ -309,7 +307,7 @@ impl Slots {
         // Put the slot there and consider it acquire of a „lock“. For that we need swap, not store
         // only (we need Acquire and Acquire works only on loads). Release is to make sure control
         // is observable by the other thread (but that's probably not necessary anyway?)
-        let prev = self.slot.0.swap(ptr, SeqCst);
+        let prev = self.slot.ptr.swap(ptr, SeqCst);
         debug_assert_eq!(Debt::NONE, prev);
 
         // Confirm by writing to the control (or discover that we got helped). We stop anyone else

@@ -1,7 +1,7 @@
 use std::env;
 use std::fs::File;
 use std::io::Write;
-use std::process::Command;
+use std::process::{Command, Output};
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::mpsc;
 use std::sync::Arc;
@@ -105,6 +105,53 @@ const TESTS: &[Test] = &[
     },
 ];
 
+/// The make binary under test, overridable via the `MAKE` env var.
+fn make() -> String {
+    env::var("MAKE").unwrap_or_else(|_| "make".to_string())
+}
+
+/// Whether we are running in a Continuous Integration environment.
+pub fn is_ci() -> bool {
+    env::var_os("CI").is_some()
+}
+
+/// The jobserver wire formats to exercise as `make`'s server.
+///
+/// The `fifo`/`pipe` distinction is Unix-only: on Unix, GNU Make >= 4.4
+/// defaults to the named-pipe (`fifo:PATH`) form but can be told to use the
+/// legacy `R,W` pipe form via `--jobserver-style`, so we run every test under
+/// both to cover both [`Client::from_env`] parse paths. CI must use a make new
+/// enough to support both; locally an older make falls back to a single run.
+///
+/// Windows has neither style (its jobserver is a named semaphore), so just run
+/// once with whatever make defaults to.
+#[cfg(unix)]
+fn jobserver_styles() -> Vec<&'static str> {
+    let supports_style = Command::new(make())
+        .args(["--jobserver-style=fifo", "--version"])
+        .output()
+        .map(|o| o.status.success())
+        .unwrap_or(false);
+
+    if supports_style {
+        vec!["--jobserver-style=fifo", "--jobserver-style=pipe"]
+    } else if is_ci() {
+        panic!(
+            "CI requires a GNU Make supporting `--jobserver-style` (>= 4.4) \
+             so both jobserver wire formats are tested; `{}` does not",
+            make()
+        );
+    } else {
+        // Older make defaults to a single style; pass no extra flag.
+        vec![""]
+    }
+}
+
+#[cfg(windows)]
+fn jobserver_styles() -> Vec<&'static str> {
+    vec![""]
+}
+
 fn main() {
     if let Ok(test) = env::var("TEST_TO_RUN") {
         return (TESTS.iter().find(|t| t.name == test).unwrap().f)();
@@ -114,31 +161,38 @@ fn main() {
     let me = me.to_str().unwrap();
     let filter = env::args().nth(1);
 
+    let styles = jobserver_styles();
+
     let join_handles = TESTS
         .iter()
         .filter(|test| match filter {
             Some(ref s) => test.name.contains(s),
             None => true,
         })
-        .map(|test| {
-            let td = t!(tempfile::tempdir());
-            let makefile = format!(
-                "\
+        .flat_map(|test| {
+            styles.iter().map(move |style| {
+                let td = t!(tempfile::tempdir());
+                let makefile = format!(
+                    "\
 all: export TEST_TO_RUN={}
 all:
 \t{}
 ",
-                test.name,
-                (test.rule)(me)
-            );
-            t!(t!(File::create(td.path().join("Makefile"))).write_all(makefile.as_bytes()));
-            thread::spawn(move || {
-                let prog = env::var("MAKE").unwrap_or_else(|_| "make".to_string());
-                let mut cmd = Command::new(prog);
-                cmd.args(test.make_args);
-                cmd.current_dir(td.path());
+                    test.name,
+                    (test.rule)(me)
+                );
+                t!(t!(File::create(td.path().join("Makefile"))).write_all(makefile.as_bytes()));
+                let style = *style;
+                thread::spawn(move || {
+                    let mut cmd = Command::new(make());
+                    if !style.is_empty() {
+                        cmd.arg(style);
+                    }
+                    cmd.args(test.make_args);
+                    cmd.current_dir(td.path());
 
-                (test, cmd.output().unwrap())
+                    (test, style, cmd.output().unwrap())
+                })
             })
         })
         .collect::<Vec<_>>();
@@ -148,14 +202,15 @@ all:
     let failures = join_handles
         .into_iter()
         .filter_map(|join_handle| {
-            let (test, output) = join_handle.join().unwrap();
+            let (test, style, output): (&Test, &str, Output) = join_handle.join().unwrap();
+            let name = format!("{} {}", test.name, style);
 
             if output.status.success() {
-                println!("test {} ... ok", test.name);
+                println!("test {} ... ok", name);
                 None
             } else {
-                println!("test {} ... FAIL", test.name);
-                Some((test, output))
+                println!("test {} ... FAIL", name);
+                Some((name, output))
             }
         })
         .collect::<Vec<_>>();
@@ -167,8 +222,8 @@ all:
 
     println!("\n----------- failures");
 
-    for (test, output) in failures {
-        println!("test {}", test.name);
+    for (name, output) in failures {
+        println!("test {}", name);
         let stdout = String::from_utf8_lossy(&output.stdout);
         let stderr = String::from_utf8_lossy(&output.stderr);
 

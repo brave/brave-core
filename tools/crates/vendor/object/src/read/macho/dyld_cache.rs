@@ -4,8 +4,8 @@ use core::fmt::{self, Debug};
 use core::{mem, slice};
 
 use crate::endian::{Endian, Endianness, U16, U32, U64};
-use crate::macho;
 use crate::read::{Architecture, Error, File, ReadError, ReadRef, Result};
+use crate::{SkipDebugList, macho};
 
 /// A parsed representation of the dyld shared cache.
 #[derive(Debug)]
@@ -90,7 +90,10 @@ where
 
         let mut files = Vec::new();
         let mappings = header.mappings(endian, data)?;
-        files.push(DyldFile { data, mappings });
+        files.push(DyldFile {
+            data: SkipDebugList(data),
+            mappings,
+        });
 
         let symbols_subcache_uuid = header.symbols_subcache_uuid(endian);
         let subcaches_info = header.subcaches(endian, data)?;
@@ -125,7 +128,10 @@ where
                     return Err(Error("Unexpected SubCache UUID"));
                 }
                 let mappings = header.mappings(endian, data)?;
-                files.push(DyldFile { data, mappings });
+                files.push(DyldFile {
+                    data: SkipDebugList(data),
+                    mappings,
+                });
             }
         }
 
@@ -138,7 +144,10 @@ where
                     return Err(Error("Unexpected .symbols SubCache UUID"));
                 }
                 let mappings = header.mappings(endian, data)?;
-                Some(DyldFile { data, mappings })
+                Some(DyldFile {
+                    data: SkipDebugList(data),
+                    mappings,
+                })
             }
             None => None,
         };
@@ -188,9 +197,7 @@ where
     }
 
     /// Return all the mappings in this cache.
-    pub fn mappings<'cache>(
-        &'cache self,
-    ) -> impl Iterator<Item = DyldCacheMapping<'data, E, R>> + 'cache {
+    pub fn mappings(&self) -> impl Iterator<Item = DyldCacheMapping<'data, E, R>> {
         let endian = self.endian;
         self.files
             .iter()
@@ -202,7 +209,7 @@ where
     pub fn data_and_offset_for_address(&self, address: u64) -> Option<(R, u64)> {
         for file in &self.files {
             if let Some(file_offset) = file.address_to_file_offset(self.endian, address) {
-                return Some((file.data, file_offset));
+                return Some((file.data.0, file_offset));
             }
         }
         None
@@ -216,7 +223,7 @@ where
     E: Endian,
     R: ReadRef<'data>,
 {
-    data: R,
+    data: SkipDebugList<R>,
     mappings: DyldCacheMappingSlice<'data, E>,
 }
 
@@ -233,7 +240,7 @@ where
         };
         DyldCacheMappingIterator {
             endian,
-            data: self.data,
+            data: self.data.0,
             iter,
         }
     }
@@ -241,10 +248,10 @@ where
     /// Find the file offset an address in the mappings.
     fn address_to_file_offset(&self, endian: E, address: u64) -> Option<u64> {
         for mapping in self.mappings(endian) {
-            let mapping_address = mapping.address();
-            if address >= mapping_address && address < mapping_address.wrapping_add(mapping.size())
-            {
-                return Some(address - mapping_address + mapping.file_offset());
+            if let Some(mapping_offset) = address.checked_sub(mapping.address()) {
+                if mapping_offset < mapping.size() {
+                    return mapping.file_offset().checked_add(mapping_offset);
+                }
             }
         }
         None
@@ -446,7 +453,7 @@ where
     }
 
     /// The mapping maximum protection
-    pub fn max_prot(&self) -> u32 {
+    pub fn max_prot(&self) -> macho::VmProt {
         match self.info {
             DyldCacheMappingVersion::V1(info) => info.max_prot.get(self.endian),
             DyldCacheMappingVersion::V2(info) => info.max_prot.get(self.endian),
@@ -454,7 +461,7 @@ where
     }
 
     /// The mapping initial protection
-    pub fn init_prot(&self) -> u32 {
+    pub fn init_prot(&self) -> macho::VmProt {
         match self.info {
             DyldCacheMappingVersion::V1(info) => info.init_prot.get(self.endian),
             DyldCacheMappingVersion::V2(info) => info.init_prot.get(self.endian),
@@ -673,8 +680,10 @@ where
                 RelocationStateV2::Page | RelocationStateV2::PageExtra => {
                     let offset = self.offset;
                     let pointer = self
-                        .data
-                        .read_at::<U64<E>>(self.mapping_file_offset + self.page_offset + offset)
+                        .mapping_file_offset
+                        .checked_add(self.page_offset)
+                        .and_then(|x| x.checked_add(offset))
+                        .and_then(|x| self.data.read_at::<U64<E>>(x).ok())
                         .read_error("Invalid dyld cache slide pointer offset")?
                         .get(self.endian);
 
@@ -686,14 +695,17 @@ where
                             self.state = RelocationStateV2::Start
                         };
                     } else {
-                        self.offset = offset + next * 4;
+                        self.offset = next
+                            .checked_mul(4)
+                            .and_then(|delta| offset.checked_add(delta))
+                            .read_error("Invalid dyld cache slide pointer offset")?;
                     };
 
                     let value = pointer & !self.delta_mask;
                     if value != 0 {
                         return Ok(Some(DyldRelocation {
                             offset,
-                            value: value + self.value_add,
+                            value: value.wrapping_add(self.value_add),
                             auth: None,
                         }));
                     }
@@ -755,8 +767,9 @@ where
                 RelocationStateV3::Page => {
                     let offset = self.offset;
                     let pointer = self
-                        .data
-                        .read_at::<U64<E>>(self.mapping_file_offset + offset)
+                        .mapping_file_offset
+                        .checked_add(offset)
+                        .and_then(|x| self.data.read_at::<U64<E>>(x).ok())
                         .read_error("Invalid dyld cache slide pointer offset")?
                         .get(self.endian);
                     let pointer = macho::DyldCacheSlidePointer3(pointer);
@@ -765,11 +778,13 @@ where
                     if next == 0 {
                         self.state = RelocationStateV3::Start;
                     } else {
-                        self.offset = offset + next * 8;
+                        self.offset = offset
+                            .checked_add(next * 8)
+                            .read_error("Invalid dyld cache slide pointer offset")?;
                     }
 
                     if pointer.is_auth() {
-                        let value = pointer.runtime_offset() + self.auth_value_add;
+                        let value = pointer.runtime_offset().wrapping_add(self.auth_value_add);
                         let key = match pointer.key() {
                             1 => macho::PtrauthKey::IB,
                             2 => macho::PtrauthKey::DA,
@@ -852,8 +867,9 @@ where
                 RelocationStateV5::Page => {
                     let offset = self.offset;
                     let pointer = self
-                        .data
-                        .read_at::<U64<E>>(self.mapping_file_offset + offset)
+                        .mapping_file_offset
+                        .checked_add(offset)
+                        .and_then(|x| self.data.read_at::<U64<E>>(x).ok())
                         .read_error("Invalid dyld cache slide pointer offset")?
                         .get(self.endian);
                     let pointer = macho::DyldCacheSlidePointer5(pointer);
@@ -862,10 +878,12 @@ where
                     if next == 0 {
                         self.state = RelocationStateV5::Start;
                     } else {
-                        self.offset = offset + next * 8;
+                        self.offset = offset
+                            .checked_add(next * 8)
+                            .read_error("Invalid dyld cache slide pointer offset")?;
                     }
 
-                    let mut value = pointer.runtime_offset() + self.value_add;
+                    let mut value = pointer.runtime_offset().wrapping_add(self.value_add);
                     let auth = if pointer.is_auth() {
                         let key = if pointer.key_is_data() {
                             macho::PtrauthKey::DA

@@ -9,14 +9,13 @@ use tui::{
 };
 
 use crate::{
+    Throughput,
     messages::Message,
     progress::{Key, Task},
     render::tui::{
-        draw,
+        InterruptDrawInfo, Line, draw,
         utils::{block_width, rect},
-        InterruptDrawInfo, Line,
     },
-    Throughput,
 };
 
 #[derive(Default)]

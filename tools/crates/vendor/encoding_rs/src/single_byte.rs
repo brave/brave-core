@@ -120,8 +120,9 @@ impl SingleByteDecoder {
                                                         Space::Available(
                                                             destination_handle_again,
                                                         ) => {
-                                                            let (b_again, _unread_handle_again) =
+                                                            let (b_again, unread_handle_again) =
                                                                 source_handle_again.read();
+                                                            unread_handle_again.commit();
                                                             b = b_again;
                                                             destination_handle =
                                                                 destination_handle_again;
@@ -143,6 +144,7 @@ impl SingleByteDecoder {
         }
     }
 
+    #[inline(always)]
     pub fn decode_to_utf16_raw(
         &mut self,
         src: &[u8],
@@ -158,14 +160,8 @@ impl SingleByteDecoder {
         // which will be separately marked.
         let mut converted = 0usize;
         'outermost: loop {
-            match unsafe {
-                // Safety: length is the minimum length, `src/dst + x` will always be valid for reads/writes of `len - x`
-                ascii_to_basic_latin(
-                    src.as_ptr().add(converted),
-                    dst.as_mut_ptr().add(converted),
-                    length - converted,
-                )
-            } {
+            // Safety: length is the minimum length, `src/dst + x` will always be valid for reads/writes of `len - x`
+            match ascii_to_basic_latin(&src[converted..], &mut dst[converted..]) {
                 None => {
                     return (pending, length, length);
                 }
@@ -414,14 +410,8 @@ impl SingleByteEncoder {
         // which will be separately marked.
         let mut converted = 0usize;
         'outermost: loop {
-            match unsafe {
-                // Safety: length is the minimum length, `src/dst + x` will always be valid for reads/writes of `len - x`
-                basic_latin_to_ascii(
-                    src.as_ptr().add(converted),
-                    dst.as_mut_ptr().add(converted),
-                    length - converted,
-                )
-            } {
+            // Safety: length is the minimum length, `src/dst + x` will always be valid for reads/writes of `len - x`
+            match basic_latin_to_ascii(&src[converted..], &mut dst[converted..]) {
                 None => {
                     return (pending, length, length);
                 }
@@ -450,7 +440,10 @@ impl SingleByteEncoder {
                                 let high_bits = non_ascii & 0xFC00u16;
                                 if high_bits == 0xD800u16 {
                                     // high surrogate
-                                    if converted + 1 == length {
+                                    // Compare with `src.len()`, not `length`: when `dst` is
+                                    // the shorter buffer, the low surrogate may still be in
+                                    // `src`. (Reporting an unmappable writes nothing to `dst`.)
+                                    if converted + 1 == src.len() {
                                         // End of buffer. This surrogate is unpaired.
                                         return (
                                             EncoderResult::Unmappable('\u{FFFD}'),
@@ -458,8 +451,8 @@ impl SingleByteEncoder {
                                             converted,
                                         );
                                     }
-                                    // Safety: convered < length from outside the match, and `converted + 1 != length`,
-                                    // So `converted + 1 < length` as well. We're in bounds
+                                    // Safety: converted < length <= src.len() from outside the match, and
+                                    // `converted + 1 != src.len()`, so `converted + 1 < src.len()`. We're in bounds
                                     let second =
                                         u32::from(unsafe { *src.get_unchecked(converted + 1) });
                                     if second & 0xFC00u32 != 0xDC00u32 {
@@ -628,6 +621,37 @@ mod tests {
             &[0x0391u16, 0x03C5u16, 0x03C4u16, 0x03CCu16, 0xD83Du16],
             b"\xC1\xF5\xF4\xFC&#65533;",
         );
+    }
+
+    #[test]
+    fn test_encode_surrogate_pair_at_output_end() {
+        // The output buffer runs out at the high surrogate, but the low surrogate
+        // is in the same input buffer: the pair is one unmappable astral character.
+        let src = [0x0391u16, 0xD83Du16, 0xDCA9u16, 0x03C4u16];
+        let mut encoder = WINDOWS_1253.new_encoder();
+        let mut dst = [0u8; 2];
+        let (result, read, written) =
+            encoder.encode_from_utf16_without_replacement(&src, &mut dst, true);
+        assert_eq!(result, EncoderResult::Unmappable('\u{1F4A9}'));
+        assert_eq!(read, 3);
+        assert_eq!(written, 1);
+        assert_eq!(dst[0], 0xC1);
+
+        // With replacement, an 11-byte buffer leaves room for one byte
+        // before the space reserved for a numeric character reference.
+        let mut encoder = WINDOWS_1253.new_encoder();
+        let mut out = Vec::new();
+        let mut src = &src[..];
+        loop {
+            let mut dst = [0u8; 11];
+            let (result, read, written, _) = encoder.encode_from_utf16(src, &mut dst, true);
+            out.extend_from_slice(&dst[..written]);
+            src = &src[read..];
+            if result == CoderResult::InputEmpty {
+                break;
+            }
+        }
+        assert_eq!(out, b"\xC1&#128169;\xF4");
     }
 
     pub const HIGH_BYTES: &'static [u8; 128] = &[

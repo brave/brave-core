@@ -1,6 +1,6 @@
 [package]
 name = "addr2line"
-version = "0.25.1"
+version = "0.27.1"
 description = "A cross-platform symbolication library written in Rust, using `gimli`"
 documentation = "https://docs.rs/addr2line"
 keywords = ["DWARF", "debug", "elf", "symbolicate", "atos"]
@@ -9,7 +9,7 @@ license = "Apache-2.0 OR MIT"
 readme = "./README.md"
 repository = "https://github.com/gimli-rs/addr2line"
 edition = "2018"
-rust-version = "1.81"
+rust-version = "1.88"
 include = [
     "/CHANGELOG.md",
     "/Cargo.lock",
@@ -21,14 +21,14 @@ include = [
 ]
 
 [dependencies]
-gimli = { version = "0.32.0", default-features = false, features = ["read"] }
+gimli = { version = "0.34.0", default-features = false, features = ["read"] }
 fallible-iterator = { version = "0.3.0", default-features = false, optional = true }
 smallvec = { version = "1", default-features = false, optional = true }
 rustc-demangle = { version = "0.1", optional = true }
-cpp_demangle = { version = "0.4", default-features = false, features = ["alloc"], optional = true }
+cpp_demangle = { version = "0.5", default-features = false, features = ["alloc"], optional = true }
 
 # loader dependencies
-object = { version = "0.37.0", default-features = false, features = ["read", "compression"], optional = true }
+object = { version = "0.40.0", default-features = false, features = ["read", "compression"], optional = true }
 memmap2 = { version = "0.9.4", optional = true }
 typed-arena = { version = "2", optional = true }
 
@@ -42,7 +42,7 @@ alloc = { version = '1.0.0', optional = true, package = 'rustc-std-workspace-all
 
 [dev-dependencies]
 backtrace = "0.3.13"
-criterion = "0.7.0"
+criterion = "0.8.1"
 findshlibs = "0.10"
 libtest-mimic = "0.8.1"
 auxiliary = { path = "tests/auxiliary" }

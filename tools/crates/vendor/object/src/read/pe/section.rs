@@ -5,8 +5,9 @@ use crate::endian::LittleEndian as LE;
 use crate::pe;
 use crate::pe::ImageSectionHeader;
 use crate::read::{
-    self, CompressedData, CompressedFileRange, ObjectSection, ObjectSegment, ReadError, ReadRef,
-    Relocation, RelocationMap, Result, SectionFlags, SectionIndex, SectionKind, SegmentFlags,
+    self, CompressedData, CompressedFileRange, ObjectSection, ObjectSegment, Permissions,
+    ReadError, ReadRef, Relocation, RelocationMap, Result, SectionFlags, SectionIndex, SectionKind,
+    SegmentFlags,
 };
 
 use super::{ImageNtHeaders, PeFile, SectionTable};
@@ -114,7 +115,7 @@ where
     }
 
     fn data(&self) -> Result<&'data [u8]> {
-        self.section.pe_data(self.file.data)
+        self.section.pe_data(self.file.data.0)
     }
 
     fn data_range(&self, address: u64, size: u64) -> Result<Option<&'data [u8]>> {
@@ -147,6 +148,16 @@ where
     fn flags(&self) -> SegmentFlags {
         let characteristics = self.section.characteristics.get(LE);
         SegmentFlags::Coff { characteristics }
+    }
+
+    #[inline]
+    fn permissions(&self) -> Permissions {
+        let characteristics = self.section.characteristics.get(LE);
+        Permissions::new(
+            characteristics.contains(pe::IMAGE_SCN_MEM_READ),
+            characteristics.contains(pe::IMAGE_SCN_MEM_WRITE),
+            characteristics.contains(pe::IMAGE_SCN_MEM_EXECUTE),
+        )
     }
 }
 
@@ -266,7 +277,7 @@ where
     }
 
     fn data(&self) -> Result<&'data [u8]> {
-        self.section.pe_data(self.file.data)
+        self.section.pe_data(self.file.data.0)
     }
 
     fn data_range(&self, address: u64, size: u64) -> Result<Option<&'data [u8]>> {

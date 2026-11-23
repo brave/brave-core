@@ -182,10 +182,10 @@ impl<'a, R: Read> Entry<'a, R> {
     /// location `dst` will be overwritten.
     ///
     /// > **Note**: This function does not have as many sanity checks as
-    /// > `Archive::unpack` or `Entry::unpack_in`. As a result if you're
-    /// > thinking of unpacking untrusted tarballs you may want to review the
-    /// > implementations of the previous two functions and perhaps implement
-    /// > similar logic yourself.
+    /// > [`Archive::unpack`] or [`Entry::unpack_in`], and does not prevent
+    /// > writes outside `dst`. See the [crate-level security
+    /// > documentation][crate#security]. If you're unpacking untrusted
+    /// > archives, prefer [`Entry::unpack_in`] instead.
     ///
     /// # Examples
     ///
@@ -214,7 +214,7 @@ impl<'a, R: Read> Entry<'a, R> {
     ///
     /// # Security
     ///
-    /// See [`Archive::unpack`].
+    /// See the [crate-level security documentation][crate#security].
     ///
     /// # Examples
     ///

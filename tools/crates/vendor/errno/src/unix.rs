@@ -77,6 +77,7 @@ extern "C" {
             target_os = "netbsd",
             target_os = "android",
             target_os = "espidf",
+            target_os = "nuttx",
             target_os = "vxworks",
             target_os = "cygwin",
             target_env = "newlib"
@@ -95,10 +96,20 @@ extern "C" {
             target_os = "redox",
             target_os = "dragonfly",
             target_os = "emscripten",
+            target_os = "fuchsia",
+            target_env = "mlibc",
         ),
         link_name = "__errno_location"
     )]
     #[cfg_attr(target_os = "aix", link_name = "_Errno")]
-    #[cfg_attr(target_os = "nto", link_name = "__get_errno_ptr")]
+    #[cfg_attr(
+        any(target_os = "nto", target_os = "qnx"),
+        link_name = "__get_errno_ptr"
+    )]
+    // Newer libc versions re-export `c_int` from `std` which is incompatible
+    // with Rust < 1.64. However, this is not actually a problem as users can
+    // use an older `libc`.
+    // See: https://github.com/rust-lang/libc/pull/5015
+    #[clippy::msrv = "1.64"]
     fn errno_location() -> *mut c_int;
 }

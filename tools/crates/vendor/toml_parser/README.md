@@ -1,6 +1,6 @@
 # toml_parser
 
-[![Documentation](https://img.shields.io/badge/docs-master-blue.svg)](https://docs.rs/toml_parser)
+[![Documentation](https://img.shields.io/badge/docs-main-blue.svg)](https://docs.rs/toml_parser)
 ![License](https://img.shields.io/crates/l/toml_parser.svg)
 [![Crates Status](https://img.shields.io/crates/v/toml_parser.svg)](https://crates.io/crates/toml_parser)
 

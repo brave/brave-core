@@ -12,11 +12,7 @@
 [package]
 edition = "2021"
 name = "zerocopy-derive"
-version = "0.8.31"
-authors = [
-    "Joshua Liebow-Feeser <joshlf@google.com>",
-    "Jack Wrenn <jswrenn@amazon.com>",
-]
+version = "0.8.64"
 build = false
 exclude = [
     ".*",
@@ -39,8 +35,8 @@ path = "src/lib.rs"
 proc-macro = true
 
 [[test]]
-name = "crate_path"
-path = "tests/crate_path.rs"
+name = "clippy"
+path = "tests/clippy.rs"
 
 [[test]]
 name = "deprecated"
@@ -87,6 +83,10 @@ name = "include"
 path = "tests/include.rs"
 
 [[test]]
+name = "invariant"
+path = "tests/invariant.rs"
+
+[[test]]
 name = "issue_2117"
 path = "tests/issue_2117.rs"
 
@@ -95,12 +95,40 @@ name = "issue_2835"
 path = "tests/issue_2835.rs"
 
 [[test]]
+name = "issue_2880"
+path = "tests/issue_2880.rs"
+
+[[test]]
+name = "issue_2915"
+path = "tests/issue_2915.rs"
+
+[[test]]
+name = "on_error"
+path = "tests/on_error.rs"
+
+[[test]]
 name = "paths_and_modules"
 path = "tests/paths_and_modules.rs"
 
 [[test]]
 name = "priv_in_pub"
 path = "tests/priv_in_pub.rs"
+
+[[test]]
+name = "project"
+path = "tests/project.rs"
+
+[[test]]
+name = "project_enum"
+path = "tests/project_enum.rs"
+
+[[test]]
+name = "project_struct"
+path = "tests/project_struct.rs"
+
+[[test]]
+name = "raw_identifiers"
+path = "tests/raw_identifiers.rs"
 
 [[test]]
 name = "struct_from_bytes"
@@ -131,8 +159,8 @@ name = "struct_unaligned"
 path = "tests/struct_unaligned.rs"
 
 [[test]]
-name = "trybuild"
-path = "tests/trybuild.rs"
+name = "ui"
+path = "tests/ui.rs"
 
 [[test]]
 name = "union_from_bytes"
@@ -179,20 +207,8 @@ features = ["full"]
 [dev-dependencies.dissimilar]
 version = "1.0.9"
 
-[dev-dependencies.libc]
-version = "=0.2.163"
-
-[dev-dependencies.once_cell]
-version = "=1.9"
-
 [dev-dependencies.prettyplease]
-version = "=0.2.17"
-
-[dev-dependencies.proc-macro2]
-version = "=1.0.80"
-
-[dev-dependencies.quote]
-version = "=1.0.40"
+version = "0.2.17"
 
 [dev-dependencies.rustversion]
 version = "1.0"
@@ -200,11 +216,18 @@ version = "1.0"
 [dev-dependencies.static_assertions]
 version = "1.1"
 
-[dev-dependencies.trybuild]
-version = "=1.0.89"
-features = ["diff"]
+[dev-dependencies.syn]
+version = "2.0.46"
+features = ["visit"]
 
 [lints.rust.unexpected_cfgs]
 level = "warn"
 priority = 0
-check-cfg = ["cfg(zerocopy_derive_union_into_bytes)"]
+check-cfg = [
+    "cfg(__ZEROCOPY_INTERNAL_USE_ONLY_NIGHTLY_FEATURES_IN_TESTS)",
+    'cfg(__ZEROCOPY_INTERNAL_USE_ONLY_TOOLCHAIN, values("msrv", "stable", "nightly"))',
+    "cfg(coverage_nightly)",
+    "cfg(zerocopy_derive_union_into_bytes)",
+    "cfg(zerocopy_unstable_linux)",
+    "cfg(zerocopy_unstable_ptr)",
+]

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: BSD-2-Clause OR Apache-2.0 OR MIT
+//
 // Copyright 2019 The Fuchsia Authors
 //
 // Licensed under a BSD-style license <LICENSE-BSD>, Apache License, Version 2.0
@@ -85,7 +87,7 @@ use super::*;
 pub trait ByteOrder:
     Copy + Clone + Debug + Display + Eq + PartialEq + Ord + PartialOrd + Hash + private::Sealed
 {
-    #[doc(hidden)]
+    /// A value-level representation of byte order.
     const ORDER: Order;
 }
 
@@ -96,10 +98,12 @@ mod private {
     impl Sealed for super::LittleEndian {}
 }
 
-#[allow(missing_copy_implementations, missing_debug_implementations)]
-#[doc(hidden)]
+/// A value-level representation of [`ByteOrder`].
+#[derive(Copy, Clone, Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub enum Order {
+    /// A value-level representation of [`BigEndian`].
     BigEndian,
+    /// A value-level representation of [`LittleEndian`].
     LittleEndian,
 }
 
@@ -162,6 +166,42 @@ pub type BE = BigEndian;
 /// A type alias for [`LittleEndian`].
 pub type LE = LittleEndian;
 
+macro_rules! impl_dbg_trait {
+    ($name:ident, $native:ident) => {
+        impl<O: ByteOrder> Debug for $name<O> {
+            #[inline]
+            fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+                // This results in a format like "U16(42)".
+                f.debug_tuple(stringify!($name)).field(&self.get()).finish()
+            }
+        }
+    };
+}
+
+macro_rules! impl_dbg_traits {
+    ($name:ident, $native:ident, "floating point number") => {
+        #[cfg(not(no_fp_fmt_parse))]
+        impl_dbg_trait!($name, $native);
+
+        #[cfg(no_fp_fmt_parse)]
+        impl<O: ByteOrder> Debug for $name<O> {
+            #[inline]
+            fn fmt(&self, _f: &mut Formatter<'_>) -> fmt::Result {
+                panic!("floating point support is turned off");
+            }
+        }
+    };
+    ($name:ident, $native:ident, "unsigned integer") => {
+        impl_dbg_traits!($name, $native, @all_types);
+    };
+    ($name:ident, $native:ident, "signed integer") => {
+        impl_dbg_traits!($name, $native, @all_types);
+    };
+    ($name:ident, $native:ident, @all_types) => {
+        impl_dbg_trait!($name, $native);
+    };
+}
+
 macro_rules! impl_fmt_trait {
     ($name:ident, $native:ident, $trait:ident) => {
         impl<O: ByteOrder> $trait for $name<O> {
@@ -175,6 +215,7 @@ macro_rules! impl_fmt_trait {
 
 macro_rules! impl_fmt_traits {
     ($name:ident, $native:ident, "floating point number") => {
+        #[cfg(not(no_fp_fmt_parse))]
         impl_fmt_trait!($name, $native, Display);
     };
     ($name:ident, $native:ident, "unsigned integer") => {
@@ -686,16 +727,9 @@ example of how it can be used for parsing UDP packets.
             }
         }
 
+        impl_dbg_traits!($name, $native, $number_kind);
         impl_fmt_traits!($name, $native, $number_kind);
         impl_ops_traits!($name, $native, $number_kind);
-
-        impl<O: ByteOrder> Debug for $name<O> {
-            #[inline]
-            fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-                // This results in a format like "U16(42)".
-                f.debug_tuple(stringify!($name)).field(&self.get()).finish()
-            }
-        }
     };
 }
 
@@ -1202,7 +1236,7 @@ mod tests {
     impl_traits!(I32, i32, signed);
     impl_traits!(I64, i64, signed);
     impl_traits!(I128, i128, signed);
-    impl_traits!(Isize, isize, unsigned);
+    impl_traits!(Isize, isize, signed);
     impl_traits!(F32, f32, signed, @float);
     impl_traits!(F64, f64, signed, @float);
 
@@ -1310,44 +1344,81 @@ mod tests {
         call_for_unsigned_types!(test_max_value, NonNativeEndian);
     }
 
-    #[cfg_attr(test, test)]
-    #[cfg_attr(kani, kani::proof)]
-    fn test_endian() {
-        fn test<T: ByteOrderType>(invert: bool) {
-            let mut r = SmallRng::seed_from_u64(RNG_SEED);
-            for _ in 0..RAND_ITERS {
-                let native = T::Native::rand(&mut r);
-                let mut bytes = T::ByteArray::default();
-                bytes.as_mut_bytes().copy_from_slice(native.as_bytes());
-                if invert {
-                    bytes = bytes.invert();
-                }
-                let mut from_native = T::new(native);
-                let from_bytes = T::from_bytes(bytes);
-
-                from_native.assert_eq_or_nan(from_bytes);
-                from_native.get().assert_eq_or_nan(native);
-                from_bytes.get().assert_eq_or_nan(native);
-
-                assert_eq!(from_native.into_bytes(), bytes);
-                assert_eq!(from_bytes.into_bytes(), bytes);
-
-                let updated = T::Native::rand(&mut r);
-                from_native.set(updated);
-                from_native.get().assert_eq_or_nan(updated);
+    fn test_endian_roundtrip<T: ByteOrderType>(invert: bool) {
+        let mut r = SmallRng::seed_from_u64(RNG_SEED);
+        for _ in 0..RAND_ITERS {
+            let native = T::Native::rand(&mut r);
+            let mut bytes = T::ByteArray::default();
+            bytes.as_mut_bytes().copy_from_slice(native.as_bytes());
+            if invert {
+                bytes = bytes.invert();
             }
-        }
+            let mut from_native = T::new(native);
+            let from_bytes = T::from_bytes(bytes);
 
-        fn test_native<T: ByteOrderType>() {
-            test::<T>(false);
-        }
+            from_native.assert_eq_or_nan(from_bytes);
+            from_native.get().assert_eq_or_nan(native);
+            from_bytes.get().assert_eq_or_nan(native);
 
-        fn test_non_native<T: ByteOrderType>() {
-            test::<T>(true);
-        }
+            assert_eq!(from_native.into_bytes(), bytes);
+            assert_eq!(from_bytes.into_bytes(), bytes);
 
-        call_for_all_types!(test_native, NativeEndian);
-        call_for_all_types!(test_non_native, NonNativeEndian);
+            let updated = T::Native::rand(&mut r);
+            from_native.set(updated);
+            from_native.get().assert_eq_or_nan(updated);
+        }
+    }
+
+    fn test_endian_native<T: ByteOrderType>() {
+        test_endian_roundtrip::<T>(false);
+    }
+
+    fn test_endian_non_native<T: ByteOrderType>() {
+        test_endian_roundtrip::<T>(true);
+    }
+
+    #[cfg(test)]
+    #[test]
+    fn test_endian() {
+        call_for_all_types!(test_endian_native, NativeEndian);
+        call_for_all_types!(test_endian_non_native, NonNativeEndian);
+    }
+
+    // Under Kani, split `test_endian` by type family so CBMC does not inline
+    // all 24 integer and IEEE-754 float byte-reversal checks into a single
+    // multi-gigabyte goto-program and can verify the three families in
+    // parallel under `-j`.
+    #[cfg(kani)]
+    #[kani::proof]
+    fn test_endian_unsigned() {
+        call_for_unsigned_types!(test_endian_native, NativeEndian);
+        call_for_unsigned_types!(test_endian_non_native, NonNativeEndian);
+    }
+
+    #[cfg(kani)]
+    #[kani::proof]
+    fn test_endian_signed() {
+        call_for_signed_types!(test_endian_native, NativeEndian);
+        call_for_signed_types!(test_endian_non_native, NonNativeEndian);
+    }
+
+    #[cfg(kani)]
+    #[kani::proof]
+    fn test_endian_float() {
+        call_for_float_types!(test_endian_native, NativeEndian);
+        call_for_float_types!(test_endian_non_native, NonNativeEndian);
+    }
+
+    #[test]
+    fn test_float_bit_patterns() {
+        for bits in [0u32, 0x8000_0000, 0x7F80_0000, 0xFF80_0000, 0x7FC0_1234] {
+            let be = F32::<BE>::new(f32::from_bits(bits));
+            let le = F32::<LE>::new(f32::from_bits(bits));
+            assert_eq!(be.to_bytes(), bits.to_be_bytes());
+            assert_eq!(le.to_bytes(), bits.to_le_bytes());
+            assert_eq!(be.get().to_bits(), bits);
+            assert_eq!(le.get().to_bits(), bits);
+        }
     }
 
     #[test]
@@ -1372,7 +1443,6 @@ mod tests {
             FNT: Fn(T::Native, T) -> T,
             FNN: Fn(T::Native, T::Native) -> T::Native,
             FNNChecked: Fn(T::Native, T::Native) -> Option<T::Native>,
-
             FATT: Fn(&mut T, T),
             FATN: Fn(&mut T, T::Native),
             FANT: Fn(&mut T::Native, T),
@@ -1519,6 +1589,17 @@ mod tests {
 
         test!(@unary Not, not, call_for_signed_types, call_for_unsigned_types);
         test!(@unary Neg, neg, call_for_signed_types, call_for_float_types);
+
+        for shift in [0u64, 1, 31, 63] {
+            let n = 0x0123_4567_89AB_CDEFu64;
+            let shift_u32: u32 = shift.try_into().unwrap();
+            let shl = n.checked_shl(shift_u32).unwrap();
+            let shr = n.checked_shr(shift_u32).unwrap();
+            assert_eq!(core::ops::Shl::shl(U64::<NativeEndian>::new(n), shift).get(), shl);
+            assert_eq!(core::ops::Shr::shr(U64::<NativeEndian>::new(n), shift).get(), shr);
+            assert_eq!(core::ops::Shl::shl(U64::<NonNativeEndian>::new(n), shift).get(), shl);
+            assert_eq!(core::ops::Shr::shr(U64::<NonNativeEndian>::new(n), shift).get(), shr);
+        }
     }
 
     #[test]
@@ -1528,5 +1609,44 @@ mod tests {
         assert_eq!(format!("{:?}", val), "U16(10)");
         assert_eq!(format!("{:03?}", val), "U16(010)");
         assert_eq!(format!("{:x?}", val), "U16(a)");
+    }
+
+    #[test]
+    fn test_byteorder_traits_coverage() {
+        let val_be = U16::<BigEndian>::from_bytes([0, 1]);
+        let val_le = U16::<LittleEndian>::from_bytes([1, 0]);
+
+        assert_eq!(val_be.get(), 1);
+        assert_eq!(val_le.get(), 1);
+
+        // Debug
+        assert_eq!(format!("{:?}", val_be), "U16(1)");
+        assert_eq!(format!("{:?}", val_le), "U16(1)");
+
+        // PartialOrd, Ord with same type
+        assert!(val_be >= val_be);
+        assert!(val_be <= val_be);
+        assert_eq!(val_be.cmp(&val_be), core::cmp::Ordering::Equal);
+
+        let low = U16::<LE>::new(255);
+        let high = U16::<LE>::new(256);
+        assert!(low < high);
+        assert!(low < 256u16);
+        assert_eq!(low.cmp(&high), core::cmp::Ordering::Less);
+        assert!(I16::<LE>::new(-1) < I16::<LE>::new(0));
+
+        // PartialOrd with native
+        assert!(val_be == 1u16);
+        assert!(val_be >= 1u16);
+
+        // Default
+        let default_be: U16<BigEndian> = Default::default();
+        assert_eq!(default_be.get(), 0);
+
+        // I16
+        let val_be_i16 = I16::<BigEndian>::from_bytes([0, 1]);
+        assert_eq!(val_be_i16.get(), 1);
+        assert_eq!(format!("{:?}", val_be_i16), "I16(1)");
+        assert_eq!(val_be_i16.cmp(&val_be_i16), core::cmp::Ordering::Equal);
     }
 }

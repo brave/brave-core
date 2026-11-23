@@ -1,25 +1,16 @@
 #![deny(missing_docs)]
-// TODO: Switch to interior mutability (e.g. use Mutexes or thread-local
-// RefCells) and remove this, since even in single-threaded mode `static mut`
-// references can be a hazard due to recursive access.
-#![allow(static_mut_refs)]
 
-extern crate std;
-use core::sync::atomic::{AtomicBool, Ordering};
-use std::boxed::Box;
-use std::collections::BTreeMap;
-use std::ffi::c_void;
-use std::future::Future;
-use std::mem;
-use std::pin::Pin;
-use std::ptr;
-use std::sync::Arc;
-use std::task::{Context, Poll, Wake, Waker};
-use std::vec::Vec;
-
-use futures::channel::oneshot;
-use futures::future::FutureExt;
-use futures::stream::{FuturesUnordered, StreamExt};
+use alloc::boxed::Box;
+use alloc::collections::BTreeMap;
+use alloc::sync::Arc;
+use alloc::task::Wake;
+use core::ffi::c_void;
+use core::future::Future;
+use core::mem;
+use core::pin::Pin;
+use core::ptr;
+use core::sync::atomic::{AtomicU32, Ordering};
+use core::task::{Context, Poll, Waker};
 
 macro_rules! rtdebug {
     ($($f:tt)*) => {
@@ -27,41 +18,98 @@ macro_rules! rtdebug {
         // crate like `log` or such to reduce runtime deps. Intended to be used
         // during development for now.
         if false {
+            #[cfg(feature = "std")]
             std::eprintln!($($f)*);
         }
     }
+}
 
+/// Helper macro to deduplicate foreign definitions of wasm functions.
+///
+/// This automatically imports when on wasm targets and then defines a dummy
+/// panicking shim for native targets to support native compilation but fail at
+/// runtime.
+macro_rules! extern_wasm {
+    (
+        $(#[$extern_attr:meta])*
+        unsafe extern "C" {
+            $(
+                $(#[$func_attr:meta])*
+                $vis:vis fn $func_name:ident ( $($args:tt)* ) $(-> $ret:ty)?;
+            )*
+        }
+    ) => {
+        $(
+            #[cfg(not(target_family = "wasm"))]
+            #[allow(unused, reason = "dummy shim for non-wasm compilation, never invoked")]
+            $vis unsafe fn $func_name($($args)*) $(-> $ret)? {
+                unreachable!();
+            }
+        )*
+
+        #[cfg(target_family = "wasm")]
+        $(#[$extern_attr])*
+        unsafe extern "C" {
+            $(
+                $(#[$func_attr])*
+                $vis fn $func_name($($args)*) $(-> $ret)?;
+            )*
+        }
+    };
 }
 
 mod abi_buffer;
 mod cabi;
 mod error_context;
 mod future_support;
+#[cfg(feature = "futures-stream")]
+mod futures_stream;
+#[cfg(feature = "inter-task-wakeup")]
+mod inter_task_wakeup;
 mod stream_support;
 mod subtask;
+mod try_lock;
+#[cfg(feature = "inter-task-wakeup")]
+mod unit_stream;
 mod waitable;
 mod waitable_set;
+
+#[cfg(not(feature = "inter-task-wakeup"))]
+use inter_task_wakeup_disabled as inter_task_wakeup;
+#[cfg(not(feature = "inter-task-wakeup"))]
+mod inter_task_wakeup_disabled;
 
 use self::waitable_set::WaitableSet;
 pub use abi_buffer::*;
 pub use error_context::*;
 pub use future_support::*;
+#[cfg(feature = "futures-stream")]
+pub use futures_stream::*;
 pub use stream_support::*;
 #[doc(hidden)]
 pub use subtask::Subtask;
+#[cfg(feature = "inter-task-wakeup")]
+pub use unit_stream::*;
 
-pub use futures;
+type BoxFuture<'a> = Pin<Box<dyn Future<Output = ()> + 'a>>;
 
-type BoxFuture = Pin<Box<dyn Future<Output = ()> + 'static>>;
+#[cfg(feature = "async-spawn")]
+mod spawn;
+#[cfg(feature = "async-spawn")]
+pub use spawn::spawn;
+#[cfg(not(feature = "async-spawn"))]
+mod spawn_disabled;
+#[cfg(not(feature = "async-spawn"))]
+use spawn_disabled as spawn;
 
 /// Represents a task created by either a call to an async-lifted export or a
 /// future run using `block_on` or `start_task`.
-struct FutureState {
+struct FutureState<'a> {
     /// Remaining work to do (if any) before this task can be considered "done".
     ///
     /// Note that we won't tell the host the task is done until this is drained
     /// and `waitables` is empty.
-    tasks: FuturesUnordered<BoxFuture>,
+    tasks: spawn::Tasks<'a>,
 
     /// The waitable set containing waitables created by this task, if any.
     waitable_set: Option<WaitableSet>,
@@ -86,15 +134,18 @@ struct FutureState {
 
     /// Clone of `waker` field, but represented as `std::task::Waker`.
     waker_clone: Waker,
+
+    /// State related to supporting inter-task wakeup scenarios.
+    inter_task_wakeup: inter_task_wakeup::State,
 }
 
-impl FutureState {
-    fn new(future: BoxFuture) -> FutureState {
+impl FutureState<'_> {
+    fn new(future: BoxFuture<'_>) -> FutureState<'_> {
         let waker = Arc::new(FutureWaker::default());
         FutureState {
             waker_clone: waker.clone().into(),
             waker,
-            tasks: [future].into_iter().collect(),
+            tasks: spawn::Tasks::new(future),
             waitable_set: None,
             waitables: BTreeMap::new(),
             wasip3_task: cabi::wasip3_task {
@@ -104,6 +155,7 @@ impl FutureState {
                 waitable_register,
                 waitable_unregister,
             },
+            inter_task_wakeup: Default::default(),
         }
     }
 
@@ -125,7 +177,7 @@ impl FutureState {
 
     /// Handles the `event{0,1,2}` event codes and returns a corresponding
     /// return code along with a flag whether this future is "done" or not.
-    fn callback(&mut self, event0: u32, event1: u32, event2: u32) -> (u32, bool) {
+    fn callback(&mut self, event0: u32, event1: u32, event2: u32) -> CallbackCode {
         match event0 {
             EVENT_NONE => rtdebug!("EVENT_NONE"),
             EVENT_SUBTASK => rtdebug!("EVENT_SUBTASK({event1:#x}, {event2:#x})"),
@@ -140,15 +192,98 @@ impl FutureState {
                 // code/bool indicating we're done. The caller will then
                 // appropriately deallocate this `FutureState` which will
                 // transitively run all destructors.
-                return (CALLBACK_CODE_EXIT, true);
+                return CallbackCode::Exit;
             }
             _ => unreachable!(),
         }
-        if event0 != EVENT_NONE {
-            self.deliver_waitable_event(event1, event2)
-        }
 
-        self.poll()
+        self.with_p3_task_set(|me| {
+            // Transition our sleep state to ensure that the inter-task stream
+            // isn't used since there's no need to use that here.
+            me.waker
+                .sleep_state
+                .store(SLEEP_STATE_WOKEN, Ordering::Relaxed);
+
+            // With all of our context now configured, deliver the event
+            // notification this callback corresponds to.
+            //
+            // Note that this should happen under the reset of
+            // `waker.sleep_state` above to ensure that if a waker is woken it
+            // won't actually signal our inter-task stream since we're already
+            // in the process of handling the future.
+            if event0 != EVENT_NONE {
+                me.deliver_waitable_event(event1, event2)
+            }
+
+            // If there's still an in-progress read (e.g. `event{1,2}`) wasn't
+            // ourselves getting woken up, then cancel the read since we're
+            // processing the future here anyway.
+            me.cancel_inter_task_stream_read();
+
+            loop {
+                let mut context = Context::from_waker(&me.waker_clone);
+
+                // On each turn of this loop reset the state to "polling"
+                // which clears out any pending wakeup if one was sent. This
+                // in theory helps minimize wakeups from previous iterations
+                // happening in this iteration.
+                me.waker
+                    .sleep_state
+                    .store(SLEEP_STATE_POLLING, Ordering::Relaxed);
+
+                // Poll our future, seeing if it was able to make progress.
+                let poll = me.tasks.poll_next(&mut context);
+
+                match poll {
+                    // A future completed, yay! Keep going to see if more have
+                    // completed.
+                    Poll::Ready(Some(())) => (),
+
+                    // The task list is empty, but there might be remaining work
+                    // in terms of waitables through the cabi interface. In this
+                    // situation wait for all waitables to be resolved before
+                    // signaling that our own task is done.
+                    Poll::Ready(None) => {
+                        assert!(me.tasks.is_empty());
+                        if me.remaining_work() {
+                            let waitable = me.waitable_set.as_ref().unwrap().as_raw();
+                            break CallbackCode::Wait(waitable);
+                        } else {
+                            break CallbackCode::Exit;
+                        }
+                    }
+
+                    // Some future within `self.tasks` is not ready yet. If our
+                    // `waker` was signaled then that means this is a yield
+                    // operation, otherwise it means we're blocking on
+                    // something.
+                    Poll::Pending => {
+                        assert!(!me.tasks.is_empty());
+                        if me.waker.sleep_state.load(Ordering::Relaxed) == SLEEP_STATE_WOKEN {
+                            if me.remaining_work() {
+                                let (event0, event1, event2) =
+                                    me.waitable_set.as_ref().unwrap().poll();
+                                if event0 != EVENT_NONE {
+                                    me.deliver_waitable_event(event1, event2);
+                                    continue;
+                                }
+                            }
+                            break CallbackCode::Yield;
+                        }
+
+                        // Transition our state to "sleeping" so wakeup
+                        // notifications know that they need to signal the
+                        // inter-task stream.
+                        me.waker
+                            .sleep_state
+                            .store(SLEEP_STATE_SLEEPING, Ordering::Relaxed);
+                        me.read_inter_task_stream();
+                        let waitable = me.waitable_set.as_ref().unwrap().as_raw();
+                        break CallbackCode::Wait(waitable);
+                    }
+                }
+            }
+        })
     }
 
     /// Deliver the `code` event to the `waitable` store within our map. This
@@ -156,64 +291,18 @@ impl FutureState {
     /// is kept in-sync with our map.
     fn deliver_waitable_event(&mut self, waitable: u32, code: u32) {
         self.remove_waitable(waitable);
+
+        if self
+            .inter_task_wakeup
+            .consume_waitable_event(waitable, code)
+        {
+            return;
+        }
+
         let (ptr, callback) = self.waitables.remove(&waitable).unwrap();
         unsafe {
             callback(ptr, code);
         }
-    }
-
-    /// Poll this task until it either completes or can't make immediate
-    /// progress.
-    ///
-    /// Returns the code representing what happened along with a boolean as to
-    /// whether this execution is done.
-    fn poll(&mut self) -> (u32, bool) {
-        self.with_p3_task_set(|me| {
-            let mut context = Context::from_waker(&me.waker_clone);
-
-            loop {
-                // Reset the waker before polling to clear out any pending
-                // notification, if any.
-                me.waker.0.store(false, Ordering::Relaxed);
-
-                // Poll our future, handling `SPAWNED` around this.
-                let poll;
-                unsafe {
-                    poll = me.tasks.poll_next_unpin(&mut context);
-                    if !SPAWNED.is_empty() {
-                        me.tasks.extend(SPAWNED.drain(..));
-                    }
-                }
-
-                match poll {
-                    // A future completed, yay! Keep going to see if more have
-                    // completed.
-                    Poll::Ready(Some(())) => (),
-
-                    // The `FuturesUnordered` list is empty meaning that there's no
-                    // more work left to do, so we're done.
-                    Poll::Ready(None) => {
-                        assert!(!me.remaining_work());
-                        assert!(me.tasks.is_empty());
-                        break (CALLBACK_CODE_EXIT, true);
-                    }
-
-                    // Some future within `FuturesUnordered` is not ready yet. If
-                    // our `waker` was signaled then that means this is a yield
-                    // operation, otherwise it means we're blocking on something.
-                    Poll::Pending => {
-                        assert!(!me.tasks.is_empty());
-                        if me.waker.0.load(Ordering::Relaxed) {
-                            break (CALLBACK_CODE_YIELD, false);
-                        }
-
-                        assert!(me.remaining_work());
-                        let waitable = me.waitable_set.as_ref().unwrap().as_raw();
-                        break (CALLBACK_CODE_WAIT | (waitable << 4), false);
-                    }
-                }
-            }
-        })
     }
 
     fn with_p3_task_set<R>(&mut self, f: impl FnOnce(&mut Self) -> R) -> R {
@@ -229,7 +318,7 @@ impl FutureState {
                 }
             }
         }
-        let self_raw = self as *mut FutureState;
+        let self_raw = self as *mut FutureState<'_>;
         self.wasip3_task.ptr = self_raw.cast();
         let prev = unsafe { cabi::wasip3_task_set(&mut self.wasip3_task) };
         let _reset = ResetTask(prev);
@@ -238,8 +327,12 @@ impl FutureState {
     }
 }
 
-impl Drop for FutureState {
+impl Drop for FutureState<'_> {
     fn drop(&mut self) {
+        // If there's an active read of the inter-task stream, go ahead and
+        // cancel it, since we're about to drop the stream anyway.
+        self.cancel_inter_task_stream_read();
+
         // If this state has active tasks then they need to be dropped which may
         // execute arbitrary code. This arbitrary code might require the p3 APIs
         // for managing waitables, notably around removing them. In this
@@ -259,27 +352,44 @@ unsafe extern "C" fn waitable_register(
     callback: unsafe extern "C" fn(*mut c_void, u32),
     callback_ptr: *mut c_void,
 ) -> *mut c_void {
-    let ptr = ptr.cast::<FutureState>();
+    let ptr = ptr.cast::<FutureState<'static>>();
     assert!(!ptr.is_null());
-    (*ptr).add_waitable(waitable);
-    match (*ptr).waitables.insert(waitable, (callback_ptr, callback)) {
-        Some((prev, _)) => prev,
-        None => ptr::null_mut(),
+    unsafe {
+        (*ptr).add_waitable(waitable);
+        match (*ptr).waitables.insert(waitable, (callback_ptr, callback)) {
+            Some((prev, _)) => prev,
+            None => ptr::null_mut(),
+        }
     }
 }
 
 unsafe extern "C" fn waitable_unregister(ptr: *mut c_void, waitable: u32) -> *mut c_void {
-    let ptr = ptr.cast::<FutureState>();
+    let ptr = ptr.cast::<FutureState<'static>>();
     assert!(!ptr.is_null());
-    (*ptr).remove_waitable(waitable);
-    match (*ptr).waitables.remove(&waitable) {
-        Some((prev, _)) => prev,
-        None => ptr::null_mut(),
+    unsafe {
+        (*ptr).remove_waitable(waitable);
+        match (*ptr).waitables.remove(&waitable) {
+            Some((prev, _)) => prev,
+            None => ptr::null_mut(),
+        }
     }
 }
 
+/// Status for "this task is actively being polled"
+const SLEEP_STATE_POLLING: u32 = 0;
+/// Status for "this task has a wakeup scheduled, no more action need be taken".
+const SLEEP_STATE_WOKEN: u32 = 1;
+/// Status for "this task is not being polled and has not been woken"
+///
+/// Wakeups on this status signal the inter-task stream.
+const SLEEP_STATE_SLEEPING: u32 = 2;
+
 #[derive(Default)]
-struct FutureWaker(AtomicBool);
+struct FutureWaker {
+    /// One of `SLEEP_STATE_*` indicating the current status.
+    sleep_state: AtomicU32,
+    inter_task_stream: inter_task_wakeup::WakerState,
+}
 
 impl Wake for FutureWaker {
     fn wake(self: Arc<Self>) {
@@ -287,13 +397,20 @@ impl Wake for FutureWaker {
     }
 
     fn wake_by_ref(self: &Arc<Self>) {
-        self.0.store(true, Ordering::Relaxed)
+        match self.sleep_state.swap(SLEEP_STATE_WOKEN, Ordering::Relaxed) {
+            // If this future was currently being polled, or if someone else
+            // already woke it up, then there's nothing to do.
+            SLEEP_STATE_POLLING | SLEEP_STATE_WOKEN => {}
+
+            // If this future is sleeping, however, then this is a cross-task
+            // wakeup meaning that we need to write to its wakeup stream.
+            other => {
+                assert_eq!(other, SLEEP_STATE_SLEEPING);
+                self.inter_task_stream.wake();
+            }
+        }
     }
 }
-
-/// Any newly-deferred work queued by calls to the `spawn` function while
-/// polling the current task.
-static mut SPAWNED: Vec<BoxFuture> = Vec::new();
 
 const EVENT_NONE: u32 = 0;
 const EVENT_SUBTASK: u32 = 1;
@@ -303,10 +420,22 @@ const EVENT_FUTURE_READ: u32 = 4;
 const EVENT_FUTURE_WRITE: u32 = 5;
 const EVENT_CANCEL: u32 = 6;
 
-const CALLBACK_CODE_EXIT: u32 = 0;
-const CALLBACK_CODE_YIELD: u32 = 1;
-const CALLBACK_CODE_WAIT: u32 = 2;
-const _CALLBACK_CODE_POLL: u32 = 3;
+#[derive(PartialEq, Debug)]
+enum CallbackCode {
+    Exit,
+    Yield,
+    Wait(u32),
+}
+
+impl CallbackCode {
+    fn encode(self) -> u32 {
+        match self {
+            CallbackCode::Exit => 0,
+            CallbackCode::Yield => 1,
+            CallbackCode::Wait(waitable) => 2 | (waitable << 4),
+        }
+    }
+}
 
 const STATUS_STARTING: u32 = 0;
 const STATUS_STARTED: u32 = 1;
@@ -386,7 +515,7 @@ pub unsafe fn callback(event0: u32, event1: u32, event2: u32) -> u32 {
     // Acquire our context-local state, assert it's not-null, and then reset
     // the state to null while we're running to help prevent any unintended
     // usage.
-    let state = context_get().cast::<FutureState>();
+    let state = context_get().cast::<FutureState<'static>>();
     assert!(!state.is_null());
     unsafe {
         context_set(ptr::null_mut());
@@ -397,24 +526,15 @@ pub unsafe fn callback(event0: u32, event1: u32, event2: u32) -> u32 {
     // our future so deallocate it. Otherwise put our future back in
     // context-local storage and forward the code.
     unsafe {
-        let (rc, done) = (*state).callback(event0, event1, event2);
-        if done {
+        let rc = (*state).callback(event0, event1, event2);
+        if rc == CallbackCode::Exit {
             drop(Box::from_raw(state));
         } else {
             context_set(state.cast());
         }
-        rtdebug!(" => (cb) {rc:#x}");
-        rc
+        rtdebug!(" => (cb) {rc:?}");
+        rc.encode()
     }
-}
-
-/// Defer the specified future to be run after the current async-lifted export
-/// task has returned a value.
-///
-/// The task will remain in a running state until all spawned futures have
-/// completed.
-pub fn spawn(future: impl Future<Output = ()> + 'static) {
-    unsafe { SPAWNED.push(Box::pin(future)) }
 }
 
 /// Run the specified future to completion, returning the result.
@@ -422,15 +542,20 @@ pub fn spawn(future: impl Future<Output = ()> + 'static) {
 /// This uses `waitable-set.wait` to poll for progress on any in-progress calls
 /// to async-lowered imports as necessary.
 // TODO: refactor so `'static` bounds aren't necessary
-pub fn block_on<T: 'static>(future: impl Future<Output = T> + 'static) -> T {
-    let (tx, mut rx) = oneshot::channel();
-    let state = &mut FutureState::new(Box::pin(future.map(move |v| drop(tx.send(v)))) as BoxFuture);
+pub fn block_on<T: 'static>(future: impl Future<Output = T>) -> T {
+    let mut result = None;
+    let mut state = FutureState::new(Box::pin(async {
+        result = Some(future.await);
+    }));
     let mut event = (EVENT_NONE, 0, 0);
     loop {
         match state.callback(event.0, event.1, event.2) {
-            (_, true) => break rx.try_recv().unwrap().unwrap(),
-            (CALLBACK_CODE_YIELD, false) => event = state.waitable_set.as_ref().unwrap().poll(),
-            _ => event = state.waitable_set.as_ref().unwrap().wait(),
+            CallbackCode::Exit => {
+                drop(state);
+                break result.unwrap();
+            }
+            CallbackCode::Yield => event = state.waitable_set.as_ref().unwrap().poll(),
+            CallbackCode::Wait(_) => event = state.waitable_set.as_ref().unwrap().wait(),
         }
     }
 }
@@ -456,17 +581,14 @@ pub fn block_on<T: 'static>(future: impl Future<Output = T> + 'static) -> T {
 /// at this yield point. The caller should return back and exit from the task
 /// ASAP in this situation.
 pub fn yield_blocking() -> bool {
-    #[cfg(not(target_arch = "wasm32"))]
-    unsafe fn yield_() -> bool {
-        unreachable!();
+    extern_wasm! {
+        #[link(wasm_import_module = "$root")]
+        unsafe extern "C" {
+            #[link_name = "[thread-yield]"]
+            fn yield_() -> bool;
+        }
     }
 
-    #[cfg(target_arch = "wasm32")]
-    #[link(wasm_import_module = "$root")]
-    extern "C" {
-        #[link_name = "[thread-yield]"]
-        fn yield_() -> bool;
-    }
     // Note that the return value from the raw intrinsic is inverted, the
     // canonical ABI returns "did this task get cancelled" while this function
     // works as "should work continue going".
@@ -510,40 +632,14 @@ pub async fn yield_async() {
     Yield::default().await;
 }
 
-/// Call the `backpressure.set` canonical built-in function.
-///
-/// When `enabled` is `true`, this tells the host to defer any new calls to this
-/// component instance until further notice (i.e. until `backpressure.set` is
-/// called again with `enabled` set to `false`).
-#[deprecated = "use backpressure_{inc,dec} instead"]
-pub fn backpressure_set(enabled: bool) {
-    #[cfg(not(target_arch = "wasm32"))]
-    unsafe fn backpressure_set(_: i32) {
-        unreachable!();
-    }
-
-    #[cfg(target_arch = "wasm32")]
-    #[link(wasm_import_module = "$root")]
-    extern "C" {
-        #[link_name = "[backpressure-set]"]
-        fn backpressure_set(_: i32);
-    }
-
-    unsafe { backpressure_set(if enabled { 1 } else { 0 }) }
-}
-
 /// Call the `backpressure.inc` canonical built-in function.
 pub fn backpressure_inc() {
-    #[cfg(not(target_arch = "wasm32"))]
-    unsafe fn backpressure_inc() {
-        unreachable!();
-    }
-
-    #[cfg(target_arch = "wasm32")]
-    #[link(wasm_import_module = "$root")]
-    extern "C" {
-        #[link_name = "[backpressure-inc]"]
-        fn backpressure_inc();
+    extern_wasm! {
+        #[link(wasm_import_module = "$root")]
+        unsafe extern "C" {
+            #[link_name = "[backpressure-inc]"]
+            fn backpressure_inc();
+        }
     }
 
     unsafe { backpressure_inc() }
@@ -551,48 +647,36 @@ pub fn backpressure_inc() {
 
 /// Call the `backpressure.dec` canonical built-in function.
 pub fn backpressure_dec() {
-    #[cfg(not(target_arch = "wasm32"))]
-    unsafe fn backpressure_dec() {
-        unreachable!();
-    }
-
-    #[cfg(target_arch = "wasm32")]
-    #[link(wasm_import_module = "$root")]
-    extern "C" {
-        #[link_name = "[backpressure-dec]"]
-        fn backpressure_dec();
+    extern_wasm! {
+        #[link(wasm_import_module = "$root")]
+        unsafe extern "C" {
+            #[link_name = "[backpressure-dec]"]
+            fn backpressure_dec();
+        }
     }
 
     unsafe { backpressure_dec() }
 }
 
 fn context_get() -> *mut u8 {
-    #[cfg(not(target_arch = "wasm32"))]
-    unsafe fn get() -> *mut u8 {
-        unreachable!()
-    }
-
-    #[cfg(target_arch = "wasm32")]
-    #[link(wasm_import_module = "$root")]
-    extern "C" {
-        #[link_name = "[context-get-0]"]
-        fn get() -> *mut u8;
+    extern_wasm! {
+        #[link(wasm_import_module = "$root")]
+        unsafe extern "C" {
+            #[link_name = "[context-get-0]"]
+            fn get() -> *mut u8;
+        }
     }
 
     unsafe { get() }
 }
 
 unsafe fn context_set(value: *mut u8) {
-    #[cfg(not(target_arch = "wasm32"))]
-    unsafe fn set(_: *mut u8) {
-        unreachable!()
-    }
-
-    #[cfg(target_arch = "wasm32")]
-    #[link(wasm_import_module = "$root")]
-    extern "C" {
-        #[link_name = "[context-set-0]"]
-        fn set(value: *mut u8);
+    extern_wasm! {
+        #[link(wasm_import_module = "$root")]
+        unsafe extern "C" {
+            #[link_name = "[context-set-0]"]
+            fn set(value: *mut u8);
+        }
     }
 
     unsafe { set(value) }
@@ -617,16 +701,12 @@ impl TaskCancelOnDrop {
 
 impl Drop for TaskCancelOnDrop {
     fn drop(&mut self) {
-        #[cfg(not(target_arch = "wasm32"))]
-        unsafe fn cancel() {
-            unreachable!()
-        }
-
-        #[cfg(target_arch = "wasm32")]
-        #[link(wasm_import_module = "[export]$root")]
-        extern "C" {
-            #[link_name = "[task-cancel]"]
-            fn cancel();
+        extern_wasm! {
+            #[link(wasm_import_module = "[export]$root")]
+            unsafe extern "C" {
+                #[link_name = "[task-cancel]"]
+                fn cancel();
+            }
         }
 
         unsafe { cancel() }

@@ -10,6 +10,7 @@ extend-exclude = [
   "third_party/boringtun/vendor",
   "third_party/rust",
   "third_party/wasm/vendor",
+  "tools/crates/vendor",
   # Vendored generated code for the purposes of PRESUBMIT.py tests
   "net/cert/test_data/out/pyproto",
 ]

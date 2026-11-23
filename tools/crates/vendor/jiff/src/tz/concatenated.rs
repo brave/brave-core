@@ -3,10 +3,15 @@ use alloc::{
     vec::Vec,
 };
 
+use jcore::util::ArrayStr;
+
 use crate::{
-    error::{err, Error, ErrorContext},
+    error::{
+        Error, ErrorContext,
+        tz::concatenated::{ALLOC_LIMIT, Error as E},
+    },
     tz::TimeZone,
-    util::{array_str::ArrayStr, escape, utf8},
+    util::{escape, utf8},
 };
 
 /// An abstraction for reading data from Android's concatenated TZif data file.
@@ -71,7 +76,7 @@ impl<R: Read> ConcatenatedTzif<R> {
         alloc(scratch1, self.header.index_len())?;
         self.rdr
             .read_exact_at(scratch1, self.header.index_offset)
-            .context("failed to read index block")?;
+            .context(E::FailedReadIndex)?;
 
         let mut index = &**scratch1;
         while !index.is_empty() {
@@ -94,7 +99,7 @@ impl<R: Read> ConcatenatedTzif<R> {
             let start = self.header.data_offset.saturating_add(entry.start());
             self.rdr
                 .read_exact_at(scratch2, start)
-                .context("failed to read TZif data block")?;
+                .context(E::FailedReadData)?;
             return TimeZone::tzif(name, scratch2).map(Some);
         }
         Ok(None)
@@ -114,7 +119,7 @@ impl<R: Read> ConcatenatedTzif<R> {
         alloc(scratch, self.header.index_len())?;
         self.rdr
             .read_exact_at(scratch, self.header.index_offset)
-            .context("failed to read index block")?;
+            .context(E::FailedReadIndex)?;
 
         let names_len = self.header.index_len() / IndexEntry::LEN;
         // Why are we careless with this alloc? Well, its size is proportional
@@ -154,31 +159,17 @@ impl Header {
     fn read<R: Read + ?Sized>(rdr: &R) -> Result<Header, Error> {
         // 12 bytes plus 3 4-byte big endian integers.
         let mut buf = [0; 12 + 3 * 4];
-        rdr.read_exact_at(&mut buf, 0)
-            .context("failed to read concatenated TZif header")?;
+        rdr.read_exact_at(&mut buf, 0).context(E::FailedReadHeader)?;
         if &buf[..6] != b"tzdata" {
-            return Err(err!(
-                "expected first 6 bytes of concatenated TZif header \
-                 to be `tzdata`, but found `{found}`",
-                found = escape::Bytes(&buf[..6]),
-            ));
+            return Err(Error::from(E::ExpectedFirstSixBytes));
         }
         if buf[11] != 0 {
-            return Err(err!(
-                "expected last byte of concatenated TZif header \
-                 to be NUL, but found `{found}`",
-                found = escape::Bytes(&buf[..12]),
-            ));
+            return Err(Error::from(E::ExpectedLastByte));
         }
 
         let version = {
-            let version = core::str::from_utf8(&buf[6..11]).map_err(|_| {
-                err!(
-                    "expected version in concatenated TZif header to \
-                     be valid UTF-8, but found `{found}`",
-                    found = escape::Bytes(&buf[6..11]),
-                )
-            })?;
+            let version = core::str::from_utf8(&buf[6..11])
+                .map_err(|_| E::ExpectedVersion)?;
             // OK because `version` is exactly 5 bytes, by construction.
             ArrayStr::new(version).unwrap()
         };
@@ -187,19 +178,12 @@ impl Header {
         // OK because the sub-slice is sized to exactly 4 bytes.
         let data_offset = u64::from(read_be32(&buf[16..20]));
         if index_offset > data_offset {
-            return Err(err!(
-                "invalid index ({index_offset}) and data ({data_offset}) \
-                 offsets, expected index offset to be less than or equal \
-                 to data offset",
-            ));
+            return Err(Error::from(E::InvalidIndexDataOffsets));
         }
         // we don't read 20..24 since we don't care about zonetab (yet)
         let header = Header { version, index_offset, data_offset };
         if header.index_len() % IndexEntry::LEN != 0 {
-            return Err(err!(
-                "length of index block is not a multiple {len}",
-                len = IndexEntry::LEN,
-            ));
+            return Err(Error::from(E::InvalidLengthIndexBlock));
         }
         Ok(header)
     }
@@ -268,12 +252,8 @@ impl<'a> IndexEntry<'a> {
     ///
     /// This returns an error if the name isn't valid UTF-8.
     fn name(&self) -> Result<&str, Error> {
-        core::str::from_utf8(self.name_bytes()).map_err(|_| {
-            err!(
-                "IANA time zone identifier `{name}` is not valid UTF-8",
-                name = escape::Bytes(self.name_bytes()),
-            )
-        })
+        core::str::from_utf8(self.name_bytes())
+            .map_err(|_| Error::from(E::ExpectedIanaName))
     }
 
     /// Returns the IANA time zone identifier as a byte slice.
@@ -350,20 +330,12 @@ fn read_be32(bytes: &[u8]) -> u32 {
 impl Read for [u8] {
     fn read_exact_at(&self, buf: &mut [u8], offset: u64) -> Result<(), Error> {
         let offset = usize::try_from(offset)
-            .map_err(|_| err!("offset `{offset}` overflowed `usize`"))?;
+            .map_err(|_| E::InvalidOffsetOverflowSlice)?;
         let Some(slice) = self.get(offset..) else {
-            return Err(err!(
-                "given offset `{offset}` is not valid \
-                 (only {len} bytes are available)",
-                len = self.len(),
-            ));
+            return Err(Error::from(E::InvalidOffsetTooBig));
         };
         if buf.len() > slice.len() {
-            return Err(err!(
-                "unexpected EOF, expected {len} bytes but only have {have}",
-                len = buf.len(),
-                have = slice.len()
-            ));
+            return Err(Error::from(E::ExpectedMoreData));
         }
         buf.copy_from_slice(&slice[..buf.len()]);
         Ok(())
@@ -395,9 +367,7 @@ impl Read for std::fs::File {
                     offset = u64::try_from(n)
                         .ok()
                         .and_then(|n| n.checked_add(offset))
-                        .ok_or_else(|| {
-                            err!("offset overflow when reading from `File`")
-                        })?;
+                        .ok_or(E::InvalidOffsetOverflowFile)?;
                 }
                 Err(ref e) if e.kind() == io::ErrorKind::Interrupted => {}
                 Err(e) => return Err(Error::io(e)),
@@ -419,9 +389,9 @@ impl Read for std::fs::File {
     fn read_exact_at(&self, buf: &mut [u8], offset: u64) -> Result<(), Error> {
         use std::io::{Read as _, Seek as _, SeekFrom};
         let mut file = self;
-        file.seek(SeekFrom::Start(offset)).map_err(Error::io).with_context(
-            || err!("failed to seek to offset {offset} in `File`"),
-        )?;
+        file.seek(SeekFrom::Start(offset))
+            .map_err(Error::io)
+            .context(E::FailedSeek)?;
         file.read_exact(buf).map_err(Error::io)
     }
 }
@@ -443,31 +413,13 @@ impl Read for std::fs::File {
 /// enough in that kind of environment by far. The goal is to avoid OOM for
 /// exorbitantly large allocations through some kind of attack vector.
 fn alloc(bytes: &mut Vec<u8>, additional: usize) -> Result<(), Error> {
-    // At time of writing, the biggest TZif data file is a few KB. And the
-    // index block is tens of KB. So impose a limit that is a couple of orders
-    // of magnitude bigger, but still overall pretty small for... some systems.
-    // Anyway, I welcome improvements to this heuristic!
-    const LIMIT: usize = 10 * 1 << 20;
-
-    if additional > LIMIT {
-        return Err(err!(
-            "attempted to allocate more than {LIMIT} bytes \
-             while reading concatenated TZif data, which \
-             exceeds a heuristic limit to prevent huge allocations \
-             (please file a bug if this error is inappropriate)",
-        ));
+    if additional > ALLOC_LIMIT {
+        return Err(Error::from(E::AllocRequestOverLimit));
     }
-    bytes.try_reserve_exact(additional).map_err(|_| {
-        err!(
-            "failed to allocation {additional} bytes \
-             for reading concatenated TZif data"
-        )
-    })?;
+    bytes.try_reserve_exact(additional).map_err(|_| E::AllocFailed)?;
     // This... can't actually happen right?
-    let new_len = bytes
-        .len()
-        .checked_add(additional)
-        .ok_or_else(|| err!("total allocation length overflowed `usize`"))?;
+    let new_len =
+        bytes.len().checked_add(additional).ok_or(E::AllocOverflow)?;
     bytes.resize(new_len, 0);
     Ok(())
 }
@@ -475,12 +427,12 @@ fn alloc(bytes: &mut Vec<u8>, additional: usize) -> Result<(), Error> {
 #[cfg(test)]
 mod tests {
     use crate::{
+        Timestamp,
         civil::date,
         tz::{
-            offset, testdata::ANDROID_CONCATENATED_TZIF, AmbiguousOffset,
-            Offset,
+            AmbiguousOffset, Offset, offset,
+            testdata::ANDROID_CONCATENATED_TZIF,
         },
-        Timestamp,
     };
 
     use super::*;
@@ -806,7 +758,7 @@ mod tests {
             for &(datetime, ambiguous_kind) in datetimes_to_ambiguous {
                 let (year, month, day, hour, min, sec, nano) = datetime;
                 let dt = date(year, month, day).at(hour, min, sec, nano);
-                let got = tz.to_ambiguous_zoned(dt);
+                let got = tz.to_ambiguous_zoned_datetime(dt);
                 assert_eq!(
                     got.offset(),
                     ambiguous_kind,

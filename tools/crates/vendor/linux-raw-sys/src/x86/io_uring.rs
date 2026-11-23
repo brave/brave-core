@@ -210,6 +210,22 @@ pub name: [__u8; 128usize],
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
+pub struct logical_block_metadata_cap {
+pub lbmd_flags: __u32,
+pub lbmd_interval: __u16,
+pub lbmd_size: __u8,
+pub lbmd_opaque_size: __u8,
+pub lbmd_opaque_offset: __u8,
+pub lbmd_pi_size: __u8,
+pub lbmd_pi_offset: __u8,
+pub lbmd_guard_tag_type: __u8,
+pub lbmd_app_tag_size: __u8,
+pub lbmd_ref_tag_size: __u8,
+pub lbmd_storage_tag_size: __u8,
+pub pad: __u8,
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
 pub struct file_dedupe_range_info {
 pub dest_fd: __s64,
 pub dest_offset: __u64,
@@ -250,6 +266,15 @@ pub fsx_nextents: __u32,
 pub fsx_projid: __u32,
 pub fsx_cowextsize: __u32,
 pub fsx_pad: [crate::ctypes::c_uchar; 8usize],
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct file_attr {
+pub fa_xflags: __u64,
+pub fa_extsize: __u32,
+pub fa_nextents: __u32,
+pub fa_projid: __u32,
+pub fa_cowextsize: __u32,
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -650,6 +675,12 @@ pub flags: __u32,
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
+pub struct io_timespec {
+pub tv_sec: __u64,
+pub tv_nsec: __u64,
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
 pub struct io_uring_zcrx_rqe {
 pub off: __u64,
 pub len: __u32,
@@ -878,9 +909,18 @@ pub const SEEK_MAX: u32 = 4;
 pub const RENAME_NOREPLACE: u32 = 1;
 pub const RENAME_EXCHANGE: u32 = 2;
 pub const RENAME_WHITEOUT: u32 = 4;
+pub const LBMD_PI_CAP_INTEGRITY: u32 = 1;
+pub const LBMD_PI_CAP_REFTAG: u32 = 2;
+pub const LBMD_PI_CSUM_NONE: u32 = 0;
+pub const LBMD_PI_CSUM_IP: u32 = 1;
+pub const LBMD_PI_CSUM_CRC16_T10DIF: u32 = 2;
+pub const LBMD_PI_CSUM_CRC64_NVME: u32 = 4;
+pub const LBMD_SIZE_VER0: u32 = 16;
 pub const FILE_DEDUPE_RANGE_SAME: u32 = 0;
 pub const FILE_DEDUPE_RANGE_DIFFERS: u32 = 1;
 pub const NR_FILE: u32 = 8192;
+pub const FILE_ATTR_SIZE_VER0: u32 = 24;
+pub const FILE_ATTR_SIZE_LATEST: u32 = 24;
 pub const FS_XFLAG_REALTIME: u32 = 1;
 pub const FS_XFLAG_PREALLOC: u32 = 2;
 pub const FS_XFLAG_IMMUTABLE: u32 = 8;
@@ -996,6 +1036,7 @@ pub const IORING_RECV_MULTISHOT: u32 = 2;
 pub const IORING_RECVSEND_FIXED_BUF: u32 = 4;
 pub const IORING_SEND_ZC_REPORT_USAGE: u32 = 8;
 pub const IORING_RECVSEND_BUNDLE: u32 = 16;
+pub const IORING_SEND_VECTORIZED: u32 = 32;
 pub const IORING_NOTIF_USAGE_ZC_COPIED: u32 = 2147483648;
 pub const IORING_ACCEPT_MULTISHOT: u32 = 1;
 pub const IORING_ACCEPT_DONTWAIT: u32 = 2;
@@ -1007,6 +1048,7 @@ pub const IORING_NOP_INJECT_RESULT: u32 = 1;
 pub const IORING_NOP_FILE: u32 = 2;
 pub const IORING_NOP_FIXED_FILE: u32 = 4;
 pub const IORING_NOP_FIXED_BUFFER: u32 = 8;
+pub const IORING_NOP_TW: u32 = 16;
 pub const IORING_CQE_F_BUFFER: u32 = 1;
 pub const IORING_CQE_F_MORE: u32 = 2;
 pub const IORING_CQE_F_SOCK_NONEMPTY: u32 = 4;
@@ -1052,6 +1094,8 @@ pub const IORING_FEAT_NO_IOWAIT: u32 = 131072;
 pub const IORING_RSRC_REGISTER_SPARSE: u32 = 1;
 pub const IORING_REGISTER_FILES_SKIP: i32 = -2;
 pub const IO_URING_OP_SUPPORTED: u32 = 1;
+pub const IORING_TIMESTAMP_HW_SHIFT: u32 = 16;
+pub const IORING_TIMESTAMP_TYPE_SHIFT: u32 = 17;
 pub const IORING_ZCRX_AREA_SHIFT: u32 = 48;
 pub const IORING_MEM_REGION_TYPE_USER: _bindgen_ty_1 = _bindgen_ty_1::IORING_MEM_REGION_TYPE_USER;
 pub const IORING_MEM_REGION_REG_WAIT_ARG: _bindgen_ty_2 = _bindgen_ty_2::IORING_MEM_REGION_REG_WAIT_ARG;
@@ -1071,6 +1115,12 @@ FSCONFIG_SET_FD = 5,
 FSCONFIG_CMD_CREATE = 6,
 FSCONFIG_CMD_RECONFIGURE = 7,
 FSCONFIG_CMD_CREATE_EXCL = 8,
+}
+#[repr(u32)]
+#[non_exhaustive]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub enum procfs_ino {
+PROCFS_ROOT_INO = 1,
 }
 #[repr(u32)]
 #[non_exhaustive]
@@ -1286,6 +1336,7 @@ SOCKET_URING_OP_SIOCINQ = 0,
 SOCKET_URING_OP_SIOCOUTQ = 1,
 SOCKET_URING_OP_GETSOCKOPT = 2,
 SOCKET_URING_OP_SETSOCKOPT = 3,
+SOCKET_URING_OP_TX_TIMESTAMP = 4,
 }
 #[repr(u32)]
 #[non_exhaustive]
@@ -1324,7 +1375,7 @@ pub __bindgen_anon_1: io_uring_sqe__bindgen_ty_2__bindgen_ty_1,
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub union io_uring_sqe__bindgen_ty_3 {
-pub rw_flags: __kernel_rwf_t,
+pub rw_flags: __u32,
 pub fsync_flags: __u32,
 pub poll_events: __u16,
 pub poll32_events: __u32,

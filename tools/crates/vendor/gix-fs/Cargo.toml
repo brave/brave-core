@@ -10,15 +10,15 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.82"
+edition = "2024"
+rust-version = "1.88"
 name = "gix-fs"
-version = "0.17.0"
+version = "0.24.1"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
 build = false
 include = [
-    "src/**/*",
-    "LICENSE-*",
+    "/src/**/*",
+    "/LICENSE-*",
 ]
 autolib = false
 autobins = false
@@ -29,32 +29,39 @@ description = "A crate providing file system specific utilities to `gitoxide`"
 readme = false
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/GitoxideLabs/gitoxide"
+resolver = "2"
+
+[package.metadata.docs.rs]
+all-features = true
+features = ["document-features"]
 
 [features]
 serde = ["dep:serde"]
+walkdir = ["dep:walkdir"]
 
 [lib]
 name = "gix_fs"
 path = "src/lib.rs"
-doctest = false
+doctest = true
 
 [dependencies.bstr]
 version = "1.12.0"
 
-[dependencies.fastrand]
-version = "2.1.0"
-features = ["std"]
-default-features = false
+[dependencies.document-features]
+version = "0.2.0"
+optional = true
 
-[dependencies.gix-features]
-version = "^0.44.0"
-features = ["fs-read-dir"]
+[dependencies.gix-error]
+version = "^0.5.2"
+
+[dependencies.gix-parallel]
+version = "^0.50.0"
 
 [dependencies.gix-path]
-version = "^0.10.21"
+version = "^0.14.1"
 
 [dependencies.gix-utils]
-version = "^0.3.1"
+version = "^0.5.1"
 
 [dependencies.serde]
 version = "1.0.114"
@@ -65,19 +72,27 @@ features = [
 optional = true
 default-features = false
 
-[dependencies.thiserror]
-version = "2.0.17"
+[dependencies.walkdir]
+version = "2.3.2"
+optional = true
 
 [dev-dependencies.crossbeam-channel]
 version = "0.5.15"
+
+[dev-dependencies.insta]
+version = "1.46.3"
 
 [dev-dependencies.is_ci]
 version = "1.1.1"
 
 [dev-dependencies.tempfile]
-version = "3.23.0"
+version = "3.26.0"
+
+[target."cfg(unix)".dependencies.libc]
+version = "0.2.186"
 
 [lints.clippy]
+assert_is_empty = "allow"
 bool_to_int_with_if = "allow"
 borrow_as_ptr = "allow"
 cast_lossless = "allow"
@@ -96,7 +111,6 @@ explicit_into_iter_loop = "allow"
 explicit_iter_loop = "allow"
 filter_map_next = "allow"
 fn_params_excessive_bools = "allow"
-from_iter_instead_of_collect = "allow"
 if_not_else = "allow"
 ignored_unit_patterns = "allow"
 implicit_clone = "allow"

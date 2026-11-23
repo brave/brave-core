@@ -1,36 +1,14 @@
-use bstr::BString;
+use crate::{DELIMITER_LINE, FLUSH_LINE, MAX_DATA_LEN, MAX_LINE_LEN, PacketLineRef, RESPONSE_END_LINE, U16_HEX_BYTES};
+use gix_error::{Message, Result, bail, ensure, message, validation};
 
-use crate::{PacketLineRef, DELIMITER_LINE, FLUSH_LINE, MAX_DATA_LEN, MAX_LINE_LEN, RESPONSE_END_LINE, U16_HEX_BYTES};
-
-/// The error used in the [`decode`][mod@crate::decode] module
-#[derive(Debug, thiserror::Error)]
-#[allow(missing_docs)]
-pub enum Error {
-    #[error("Failed to decode the first four hex bytes indicating the line length: {err}")]
-    HexDecode { err: String },
-    #[error("The data received claims to be larger than the maximum allowed size: got {length_in_bytes}, exceeds {MAX_DATA_LEN}")]
-    DataLengthLimitExceeded { length_in_bytes: usize },
-    #[error("Received an invalid empty line")]
-    DataIsEmpty,
-    #[error("Received an invalid line of length 3")]
-    InvalidLineLength,
-    #[error("{data:?} - consumed {bytes_consumed} bytes")]
-    Line { data: BString, bytes_consumed: usize },
-    #[error("Needing {bytes_needed} additional bytes to decode the line successfully")]
-    NotEnoughData { bytes_needed: usize },
+pub(crate) fn data_length_limit_exceeded(length_in_bytes: usize) -> Message {
+    message!(
+        "The data received claims to be larger than the maximum allowed size: got {length_in_bytes}, exceeds {MAX_DATA_LEN}"
+    ).validation()
 }
 
-///
-pub mod band {
-    /// The error used in [`PacketLineRef::decode_band()`][super::PacketLineRef::decode_band()].
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error("attempt to decode a non-side channel line or input was malformed: {band_id}")]
-        InvalidSideBand { band_id: u8 },
-        #[error("attempt to decode a non-data line into a side-channel band")]
-        NonDataLine,
-    }
+pub(crate) fn not_enough_data(bytes_needed: usize) -> Message {
+    message!("Needing {bytes_needed} additional bytes to decode the line successfully").validation()
 }
 
 /// A utility return type to support incremental parsing of packet lines.
@@ -59,7 +37,7 @@ pub enum PacketLineOrWantedSize<'a> {
 }
 
 /// Decode the `four_bytes` packet line prefix provided in hexadecimal form and check it for validity.
-pub fn hex_prefix(four_bytes: &[u8]) -> Result<PacketLineOrWantedSize<'_>, Error> {
+pub fn hex_prefix(four_bytes: &[u8]) -> Result<PacketLineOrWantedSize<'_>> {
     debug_assert_eq!(four_bytes.len(), 4, "need four hex bytes");
     for (line_bytes, line_type) in &[
         (FLUSH_LINE, PacketLineRef::Flush),
@@ -72,14 +50,16 @@ pub fn hex_prefix(four_bytes: &[u8]) -> Result<PacketLineOrWantedSize<'_>, Error
     }
 
     let mut buf = [0u8; U16_HEX_BYTES / 2];
-    faster_hex::hex_decode(four_bytes, &mut buf).map_err(|err| Error::HexDecode { err: err.to_string() })?;
+    faster_hex::hex_decode(four_bytes, &mut buf).map_err(|err| {
+        message!("Failed to decode the first four hex bytes indicating the line length: {err}").validation_error()
+    })?;
     let wanted_bytes = u16::from_be_bytes(buf);
 
     if wanted_bytes == 3 {
-        return Err(Error::InvalidLineLength);
+        bail!(validation("Received an invalid line of length 3"));
     }
     if wanted_bytes == 4 {
-        return Err(Error::DataIsEmpty);
+        bail!(validation("Received an invalid empty line"));
     }
     debug_assert!(
         wanted_bytes as usize > U16_HEX_BYTES,
@@ -89,18 +69,14 @@ pub fn hex_prefix(four_bytes: &[u8]) -> Result<PacketLineOrWantedSize<'_>, Error
 }
 
 /// Obtain a `PacketLine` from `data` after assuring `data` is small enough to fit.
-pub fn to_data_line(data: &[u8]) -> Result<PacketLineRef<'_>, Error> {
-    if data.len() > MAX_LINE_LEN {
-        return Err(Error::DataLengthLimitExceeded {
-            length_in_bytes: data.len(),
-        });
-    }
+pub fn to_data_line(data: &[u8]) -> Result<PacketLineRef<'_>> {
+    ensure!(data.len() <= MAX_LINE_LEN, data_length_limit_exceeded(data.len()));
 
     Ok(PacketLineRef::Data(data))
 }
 
 /// Decode `data` as packet line while reporting whether the data is complete or not using a [`Stream`].
-pub fn streaming(data: &[u8]) -> Result<Stream<'_>, Error> {
+pub fn streaming(data: &[u8]) -> Result<Stream<'_>> {
     let data_len = data.len();
     if data_len < U16_HEX_BYTES {
         return Ok(Stream::Incomplete {
@@ -113,14 +89,10 @@ pub fn streaming(data: &[u8]) -> Result<Stream<'_>, Error> {
             return Ok(Stream::Complete {
                 line,
                 bytes_consumed: 4,
-            })
+            });
         }
     } + U16_HEX_BYTES;
-    if wanted_bytes > MAX_LINE_LEN {
-        return Err(Error::DataLengthLimitExceeded {
-            length_in_bytes: wanted_bytes,
-        });
-    }
+    ensure!(wanted_bytes <= MAX_LINE_LEN, data_length_limit_exceeded(wanted_bytes));
     if data_len < wanted_bytes {
         return Ok(Stream::Incomplete {
             bytes_needed: wanted_bytes - data_len,
@@ -137,9 +109,9 @@ pub fn streaming(data: &[u8]) -> Result<Stream<'_>, Error> {
 ///
 /// Note that failure also happens if there is not enough data to parse a complete packet line, as opposed to [`streaming()`] decoding
 /// succeeds in that case, stating how much more bytes are required.
-pub fn all_at_once(data: &[u8]) -> Result<PacketLineRef<'_>, Error> {
+pub fn all_at_once(data: &[u8]) -> Result<PacketLineRef<'_>> {
     match streaming(data)? {
         Stream::Complete { line, .. } => Ok(line),
-        Stream::Incomplete { bytes_needed } => Err(Error::NotEnoughData { bytes_needed }),
+        Stream::Incomplete { bytes_needed } => Err(not_enough_data(bytes_needed).validation_error()),
     }
 }

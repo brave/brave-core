@@ -56,7 +56,7 @@ pub(super) struct EncodableLockfile {
 
 impl EncodableLockfile {
     /// Attempt to find a checksum for a package in a V1 lockfile
-    pub fn find_checksum(&self, package: &Package) -> Option<Checksum> {
+    fn find_checksum(&self, package: &Package) -> Option<Checksum> {
         for (key, value) in &self.metadata {
             if let Ok(dep) = key.checksum_dependency() {
                 if dep.name == package.name && dep.version == package.version {
@@ -72,7 +72,7 @@ impl EncodableLockfile {
 impl TryFrom<EncodableLockfile> for Lockfile {
     type Error = Error;
 
-    fn try_from(raw_lockfile: EncodableLockfile) -> Result<Lockfile> {
+    fn try_from(raw_lockfile: EncodableLockfile) -> Result<Self> {
         let version = match raw_lockfile.version {
             Some(n) => n.try_into()?,
             None => ResolveVersion::detect(&raw_lockfile.package, &raw_lockfile.metadata)?,
@@ -94,7 +94,7 @@ impl TryFrom<EncodableLockfile> for Lockfile {
             })
         }
 
-        Ok(Lockfile {
+        Ok(Self {
             version,
             packages,
             root: raw_lockfile
@@ -109,7 +109,7 @@ impl TryFrom<EncodableLockfile> for Lockfile {
 }
 
 impl From<&Lockfile> for EncodableLockfile {
-    fn from(lockfile: &Lockfile) -> EncodableLockfile {
+    fn from(lockfile: &Lockfile) -> Self {
         let mut packages = Vec::with_capacity(lockfile.packages.len());
         let mut metadata = lockfile.metadata.clone();
 
@@ -144,7 +144,7 @@ impl From<&Lockfile> for EncodableLockfile {
             None
         };
 
-        EncodableLockfile {
+        Self {
             version,
             package: packages,
             root: lockfile
@@ -207,7 +207,7 @@ impl ToString for EncodableLockfile {
         }
 
         // Trim redundant newlines
-        if out.ends_with("\n\n") {
+        while out.ends_with("\n\n") {
             out.pop();
         }
 
@@ -220,14 +220,14 @@ impl ToString for EncodableLockfile {
 /// This method is adapted from the same-named method in upstream Cargo:
 /// <https://github.com/rust-lang/cargo/blob/0c70319/src/cargo/ops/lockfile.rs#L194-L221>
 fn emit_package(dep: &toml::value::Table, out: &mut String) {
-    writeln!(out, "name = {}", &dep["name"]).unwrap();
-    writeln!(out, "version = {}", &dep["version"]).unwrap();
+    writeln!(out, "name = {}", dep["name"]).unwrap();
+    writeln!(out, "version = {}", dep["version"]).unwrap();
 
     if dep.contains_key("source") {
-        writeln!(out, "source = {}", &dep["source"]).unwrap();
+        writeln!(out, "source = {}", dep["source"]).unwrap();
     }
     if dep.contains_key("checksum") {
-        writeln!(out, "checksum = {}", &dep["checksum"]).unwrap();
+        writeln!(out, "checksum = {}", dep["checksum"]).unwrap();
     }
 
     if let Some(s) = dep.get("dependencies") {
@@ -243,7 +243,7 @@ fn emit_package(dep: &toml::value::Table, out: &mut String) {
             out.push_str("]\n");
         }
     } else if dep.contains_key("replace") {
-        writeln!(out, "replace = {}", &dep["replace"]).unwrap();
+        writeln!(out, "replace = {}", dep["replace"]).unwrap();
     }
 
     out.push('\n');
@@ -275,7 +275,7 @@ pub(crate) struct EncodablePackage {
 impl EncodablePackage {
     /// Resolve all of the dependencies of a package, which in the V2 format
     /// may be abbreviated to prevent merge conflicts
-    fn resolve(&self, packages: &[EncodablePackage]) -> Result<Package> {
+    fn resolve(&self, packages: &[Self]) -> Result<Package> {
         let mut dependencies = Vec::with_capacity(self.dependencies.len());
 
         for dep in &self.dependencies {
@@ -303,8 +303,8 @@ impl EncodablePackage {
         }
     }
 
-    fn from_package(package: &Package, version: ResolveVersion) -> EncodablePackage {
-        EncodablePackage {
+    fn from_package(package: &Package, version: ResolveVersion) -> Self {
+        Self {
             name: package.name.clone(),
             version: package.version.clone(),
             source: package
@@ -341,7 +341,7 @@ fn encodable_source_id(id: SourceId, version: ResolveVersion) -> Option<Encodabl
 impl TryFrom<&EncodablePackage> for Package {
     type Error = Error;
 
-    fn try_from(raw_package: &EncodablePackage) -> Result<Package> {
+    fn try_from(raw_package: &EncodablePackage) -> Result<Self> {
         raw_package.resolve(&[])
     }
 }
@@ -362,7 +362,7 @@ pub(crate) struct EncodableDependency {
 impl EncodableDependency {
     /// Resolve this dependency, which in the V2 format may be abbreviated to
     /// prevent merge conflicts
-    pub fn resolve(&self, packages: &[EncodablePackage]) -> Result<Dependency> {
+    fn resolve(&self, packages: &[EncodablePackage]) -> Result<Dependency> {
         for pkg in packages {
             if pkg.name == self.name
                 && (self.version.is_none() || self.version.as_ref() == Some(&pkg.version))
@@ -389,7 +389,7 @@ impl EncodableDependency {
     }
 
     /// Prepare `ResolveVersion::V2` dependencies by removing ones which are unambiguous
-    pub fn v2(&mut self, packages: &[Package]) {
+    fn v2(&mut self, packages: &[Package]) {
         let mut matching = vec![];
 
         for package in packages {
@@ -422,8 +422,8 @@ impl EncodableDependency {
         }
     }
 
-    pub fn from_dependency(dep: &Dependency, version: ResolveVersion) -> EncodableDependency {
-        EncodableDependency {
+    fn from_dependency(dep: &Dependency, version: ResolveVersion) -> Self {
+        Self {
             name: dep.name.clone(),
             version: Some(dep.version.clone()),
             source: dep
@@ -476,7 +476,7 @@ impl FromStr for EncodableDependency {
 
 impl fmt::Display for EncodableDependency {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", &self.name)?;
+        write!(f, "{}", self.name)?;
 
         if let Some(version) = &self.version {
             write!(f, " {version}")?;
@@ -494,7 +494,7 @@ impl fmt::Display for EncodableDependency {
 impl TryFrom<&EncodableDependency> for Dependency {
     type Error = Error;
 
-    fn try_from(raw_dependency: &EncodableDependency) -> Result<Dependency> {
+    fn try_from(raw_dependency: &EncodableDependency) -> Result<Self> {
         raw_dependency.resolve(&[])
     }
 }

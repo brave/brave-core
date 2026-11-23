@@ -71,27 +71,25 @@ mod sys {
     pub(crate) fn system_time() -> std::time::SystemTime {
         use std::time::{Duration, SystemTime};
 
-        #[cfg(not(feature = "std"))]
-        use crate::util::libm::Float;
-
         let millis = js_sys::Date::new_0().get_time();
-        let sign = millis.signum();
+        let is_positive = millis.is_sign_positive();
         let millis = millis.abs() as u64;
         let duration = Duration::from_millis(millis);
-        let result = if sign >= 0.0 {
+        let result = if is_positive {
             SystemTime::UNIX_EPOCH.checked_add(duration)
         } else {
             SystemTime::UNIX_EPOCH.checked_sub(duration)
         };
-        // It's a little sad that we have to panic here, but the standard
-        // SystemTime::now() API is infallible, so we kind of have to match it.
-        // With that said, a panic here would be highly unusual. It would imply
-        // that the system time is set to some extreme timestamp very far in the
-        // future or the past.
+        // It's a little sad that we have to panic here, but the
+        // standard SystemTime::now() API is infallible, so we kind
+        // of have to match it. With that said, a panic here would be
+        // highly unusual. It would imply that the system time is set
+        // to some extreme timestamp very far in the future or the
+        // past.
         let Some(timestamp) = result else {
             panic!(
-                "failed to get current time: \
-             subtracting {duration:?} from Unix epoch overflowed"
+                "failed to get current time from Javascript date: \
+                 arithmetic on Unix epoch overflowed"
             )
         };
         timestamp

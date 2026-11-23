@@ -1,10 +1,11 @@
 use http::header::USER_AGENT;
 use http::{HeaderMap, HeaderValue, Method};
-use js_sys::{Promise, JSON};
+use js_sys::Promise;
 use std::convert::TryInto;
 use std::{fmt, future::Future, sync::Arc};
 use url::Url;
 use wasm_bindgen::prelude::{wasm_bindgen, UnwrapThrowExt as _};
+use wasm_bindgen::JsCast;
 
 use super::{AbortGuard, Request, RequestBuilder, Response};
 use crate::IntoUrl;
@@ -197,6 +198,27 @@ async fn fetch(req: Request) -> crate::Result<Response> {
     let mut init = web_sys::RequestInit::new();
     init.method(req.method().as_str());
 
+    if let Some(referrer) = &req.referrer {
+        init.set_referrer(referrer);
+    }
+
+    if let Some(policy) = &req.referrer_policy {
+        let policy = match policy.as_str() {
+            "no-referrer" => web_sys::ReferrerPolicy::NoReferrer,
+            "no-referrer-when-downgrade" => web_sys::ReferrerPolicy::NoReferrerWhenDowngrade,
+            "origin" => web_sys::ReferrerPolicy::Origin,
+            "origin-when-cross-origin" => web_sys::ReferrerPolicy::OriginWhenCrossOrigin,
+            "same-origin" => web_sys::ReferrerPolicy::SameOrigin,
+            "strict-origin" => web_sys::ReferrerPolicy::StrictOrigin,
+            "strict-origin-when-cross-origin" => {
+                web_sys::ReferrerPolicy::StrictOriginWhenCrossOrigin
+            }
+            "unsafe-url" => web_sys::ReferrerPolicy::UnsafeUrl,
+            _ => web_sys::ReferrerPolicy::None,
+        };
+        init.set_referrer_policy(policy);
+    }
+
     // convert HeaderMap to Headers
     let js_headers = web_sys::Headers::new()
         .map_err(crate::error::wasm)
@@ -261,17 +283,20 @@ async fn fetch(req: Request) -> crate::Result<Response> {
     let url = Url::parse(&js_resp.url()).expect_throw("url parse");
 
     let js_headers = js_resp.headers();
-    let js_iter = js_sys::try_iter(&js_headers)
-        .expect_throw("headers try_iter")
-        .expect_throw("headers have an iterator");
-
-    for item in js_iter {
+    for item in js_headers.entries() {
         let item = item.expect_throw("headers iterator doesn't throw");
-        let serialized_headers: String = JSON::stringify(&item)
-            .expect_throw("serialized headers")
-            .into();
-        let [name, value]: [String; 2] = serde_json::from_str(&serialized_headers)
-            .expect_throw("deserializable serialized headers");
+        let item: js_sys::Array = item.dyn_into().expect_throw("header item is an array");
+
+        let name = item
+            .get(0)
+            .as_string()
+            .expect_throw("header name is a string");
+
+        let value = item
+            .get(1)
+            .as_string()
+            .expect_throw("header value is a string");
+
         resp = resp.header(&name, &value);
     }
 

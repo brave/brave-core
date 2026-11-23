@@ -1,6 +1,6 @@
 use super::operators::{Frame, OperatorValidator, OperatorValidatorAllocations};
 use crate::{BinaryReader, Result, ValType, VisitOperator};
-use crate::{FunctionBody, Operator, WasmFeatures, WasmModuleResources};
+use crate::{FrameStack, FunctionBody, ModuleArity, Operator, WasmFeatures, WasmModuleResources};
 
 /// Resources necessary to perform validation of a function.
 ///
@@ -57,10 +57,47 @@ impl<T: WasmModuleResources> FuncToValidate<T> {
 ///
 /// This is a finalized validator which is ready to process a [`FunctionBody`].
 /// This is created from the [`FuncToValidate::into_validator`] method.
+#[derive(Clone)]
 pub struct FuncValidator<T> {
     validator: OperatorValidator,
     resources: T,
     index: u32,
+}
+
+impl<T: WasmModuleResources> ModuleArity for FuncValidator<T> {
+    fn sub_type_at(&self, type_idx: u32) -> Option<&crate::SubType> {
+        self.resources.sub_type_at(type_idx)
+    }
+
+    fn tag_type_arity(&self, at: u32) -> Option<(u32, u32)> {
+        let ty = self.resources.tag_at(at)?;
+        Some((
+            u32::try_from(ty.params().len()).unwrap(),
+            u32::try_from(ty.results().len()).unwrap(),
+        ))
+    }
+
+    fn type_index_of_function(&self, func_idx: u32) -> Option<u32> {
+        self.resources.type_index_of_function(func_idx)
+    }
+
+    fn func_type_of_cont_type(&self, cont_ty: &crate::ContType) -> Option<&crate::FuncType> {
+        let id = cont_ty.0.as_core_type_id()?;
+        Some(self.resources.sub_type_at_id(id).unwrap_func())
+    }
+
+    fn sub_type_of_ref_type(&self, rt: &crate::RefType) -> Option<&crate::SubType> {
+        let id = rt.type_index()?.as_core_type_id()?;
+        Some(self.resources.sub_type_at_id(id))
+    }
+
+    fn control_stack_height(&self) -> u32 {
+        u32::try_from(self.validator.control_stack_height()).unwrap()
+    }
+
+    fn label_block(&self, depth: u32) -> Option<(crate::BlockType, crate::FrameKind)> {
+        self.validator.jump(depth)
+    }
 }
 
 /// External handle to the internal allocations used during function validation.
@@ -80,11 +117,69 @@ impl<T: WasmModuleResources> FuncValidator<T> {
     pub fn validate(&mut self, body: &FunctionBody<'_>) -> Result<()> {
         let mut reader = body.get_binary_reader();
         self.read_locals(&mut reader)?;
-        reader.set_features(self.validator.features);
-        while !reader.eof() {
-            reader.visit_operator(&mut self.visitor(reader.original_position()))??;
+        #[cfg(feature = "features")]
+        {
+            reader.set_features(self.validator.features);
         }
-        self.finish(reader.original_position())
+        while !reader.eof() {
+            // In a `debug_check_try_op` build, verify that `rollback` successfully returns the
+            // validator to its previous state after each (valid or invalid) operator.
+            #[cfg(all(debug_check_try_op, feature = "try-op"))]
+            {
+                let snapshot = self.validator.clone();
+                let op = reader.peek_operator(&self.visitor(reader.original_position()))?;
+                self.validator.begin_try_op();
+                let _ = self.op(reader.original_position(), &op);
+                self.validator.rollback();
+                self.validator.pop_push_log.clear();
+                assert!(self.validator == snapshot);
+            }
+
+            // In a debug build, verify that the validator's pops and pushes to and from
+            // the operand stack match the operator's arity.
+            #[cfg(debug_assertions)]
+            let (ops_before, arity) = {
+                let op = reader.peek_operator(&self.visitor(reader.original_position()))?;
+                let arity = op.operator_arity(&self.visitor(reader.original_position()));
+                (reader.clone(), arity)
+            };
+
+            reader.visit_operator(&mut self.visitor(reader.original_position()))??;
+
+            #[cfg(debug_assertions)]
+            {
+                let (params, results) = arity.ok_or(format_err!(
+                    reader.original_position(),
+                    "could not calculate operator arity"
+                ))?;
+
+                // Analyze the log to determine the actual, externally visible
+                // pop/push count. This allows us to hide the fact that we might
+                // push and then pop a temporary while validating an
+                // instruction, which shouldn't be visible from the outside.
+                let mut pop_count = 0;
+                let mut push_count = 0;
+                for op in self.validator.pop_push_log.drain(..) {
+                    match op {
+                        true => push_count += 1,
+                        false if push_count > 0 => push_count -= 1,
+                        false => pop_count += 1,
+                    }
+                }
+
+                if pop_count != params || push_count != results {
+                    panic!(
+                        "\
+arity mismatch in validation
+    operator: {:?}
+    expected: {params} -> {results}
+    got       {pop_count} -> {push_count}",
+                        ops_before.peek_operator(&self.visitor(ops_before.original_position()))?,
+                    );
+                }
+            }
+        }
+        reader.finish_expression(&self.visitor(reader.original_position()))
     }
 
     /// Reads the local definitions from the given `BinaryReader`, often sourced
@@ -113,12 +208,28 @@ impl<T: WasmModuleResources> FuncValidator<T> {
 
     /// Validates the next operator in a function.
     ///
-    /// This functions is expected to be called once-per-operator in a
+    /// This function is expected to be called once-per-operator in a
     /// WebAssembly function. Each operator's offset in the original binary and
     /// the operator itself are passed to this function to provide more useful
-    /// error messages.
+    /// error messages. On error, the validator may be left in an undefined
+    /// state and should not be reused.
     pub fn op(&mut self, offset: usize, operator: &Operator<'_>) -> Result<()> {
         self.visitor(offset).visit_operator(operator)
+    }
+
+    /// Validates the next operator in a function, rolling back the validator
+    /// to its previous state if this is unsuccessful. The validator may be reused
+    /// even after an error.
+    #[cfg(feature = "try-op")]
+    pub fn try_op(&mut self, offset: usize, operator: &Operator<'_>) -> Result<()> {
+        self.validator.begin_try_op();
+        let res = self.op(offset, operator);
+        if res.is_ok() {
+            self.validator.commit();
+        } else {
+            self.validator.rollback();
+        }
+        res
     }
 
     /// Get the operator visitor for the next operator in the function.
@@ -132,31 +243,35 @@ impl<T: WasmModuleResources> FuncValidator<T> {
     /// pub fn validate<R>(validator: &mut FuncValidator<R>, body: &FunctionBody<'_>) -> Result<()>
     /// where R: WasmModuleResources
     /// {
-    ///     let mut operator_reader = body.get_binary_reader();
+    ///     let mut operator_reader = body.get_binary_reader_for_operators()?;
     ///     while !operator_reader.eof() {
     ///         let mut visitor = validator.visitor(operator_reader.original_position());
     ///         operator_reader.visit_operator(&mut visitor)??;
     ///     }
-    ///     validator.finish(operator_reader.original_position())
+    ///     operator_reader.finish_expression(&validator.visitor(operator_reader.original_position()))
     /// }
     /// ```
     pub fn visitor<'this, 'a: 'this>(
         &'this mut self,
         offset: usize,
-    ) -> impl VisitOperator<'a, Output = Result<()>> + 'this {
+    ) -> impl VisitOperator<'a, Output = Result<()>> + ModuleArity + FrameStack + 'this {
         self.validator.with_resources(&self.resources, offset)
     }
 
-    /// Function that must be called after the last opcode has been processed.
-    ///
-    /// This will validate that the function was properly terminated with the
-    /// `end` opcode. If this function is not called then the function will not
-    /// be properly validated.
-    ///
-    /// The `offset` provided to this function will be used as a position for an
-    /// error if validation fails.
-    pub fn finish(&mut self, offset: usize) -> Result<()> {
-        self.validator.finish(offset)
+    /// Same as [`FuncValidator::visitor`] except that the returned type
+    /// implements the [`VisitSimdOperator`](crate::VisitSimdOperator) trait as
+    /// well.
+    #[cfg(feature = "simd")]
+    pub fn simd_visitor<'this, 'a: 'this>(
+        &'this mut self,
+        offset: usize,
+    ) -> impl crate::VisitSimdOperator<'a, Output = Result<()>> + ModuleArity + 'this {
+        self.validator.with_resources_simd(&self.resources, offset)
+    }
+
+    /// Returns the Wasm features enabled for this validator.
+    pub fn features(&self) -> &WasmFeatures {
+        &self.validator.features
     }
 
     /// Returns the underlying module resources that this validator is using.
@@ -237,7 +352,8 @@ impl<T: WasmModuleResources> FuncValidator<T> {
 mod tests {
     use super::*;
     use crate::types::CoreTypeId;
-    use crate::HeapType;
+    use crate::{HeapType, Parser, RefType, Validator};
+    use alloc::vec::Vec;
 
     struct EmptyResources(crate::SubType);
 
@@ -249,6 +365,8 @@ mod tests {
                 composite_type: crate::CompositeType {
                     inner: crate::CompositeInnerType::Func(crate::FuncType::new([], [])),
                     shared: false,
+                    descriptor_idx: None,
+                    describes_idx: None,
                 },
             })
         }
@@ -270,10 +388,13 @@ mod tests {
         fn sub_type_at(&self, _type_idx: u32) -> Option<&crate::SubType> {
             Some(&self.0)
         }
+        fn sub_type_at_id(&self, _id: CoreTypeId) -> &crate::SubType {
+            todo!()
+        }
         fn type_id_of_function(&self, _at: u32) -> Option<CoreTypeId> {
             todo!()
         }
-        fn type_of_function(&self, _func_idx: u32) -> Option<&crate::FuncType> {
+        fn type_index_of_function(&self, _at: u32) -> Option<u32> {
             todo!()
         }
         fn check_heap_type(&self, _t: &mut HeapType, _offset: usize) -> Result<()> {
@@ -288,6 +409,9 @@ mod tests {
         fn is_subtype(&self, _t1: ValType, _t2: ValType) -> bool {
             todo!()
         }
+        fn is_shared(&self, _ty: RefType) -> bool {
+            todo!()
+        }
         fn element_count(&self) -> u32 {
             todo!()
         }
@@ -295,6 +419,9 @@ mod tests {
             todo!()
         }
         fn is_function_referenced(&self, _idx: u32) -> bool {
+            todo!()
+        }
+        fn has_function_exact_type(&self, _idx: u32) -> bool {
             todo!()
         }
     }
@@ -317,18 +444,200 @@ mod tests {
         assert_eq!(v.operand_stack_height(), 1);
 
         // Entering a new control block does not affect the stack height.
-        assert!(v
-            .op(
+        assert!(
+            v.op(
                 1,
                 &Operator::Block {
                     blockty: crate::BlockType::Empty
                 }
             )
-            .is_ok());
+            .is_ok()
+        );
         assert_eq!(v.operand_stack_height(), 1);
 
         // Pushing another constant value makes use have two values on the stack.
         assert!(v.op(2, &Operator::I32Const { value: 99 }).is_ok());
         assert_eq!(v.operand_stack_height(), 2);
+    }
+
+    fn assert_arity(wat: &str, expected: Vec<Vec<(u32, u32)>>) {
+        let wasm = wat::parse_str(wat).unwrap();
+        assert!(Validator::new().validate_all(&wasm).is_ok());
+
+        let parser = Parser::new(0);
+        let mut validator = Validator::new();
+
+        let mut actual = vec![];
+
+        for payload in parser.parse_all(&wasm) {
+            let payload = payload.unwrap();
+            match payload {
+                crate::Payload::CodeSectionEntry(body) => {
+                    let mut arity = vec![];
+                    let mut func_validator = validator
+                        .code_section_entry(&body)
+                        .unwrap()
+                        .into_validator(FuncValidatorAllocations::default());
+                    let ops = body.get_operators_reader().unwrap();
+                    for op in ops.into_iter() {
+                        let op = op.unwrap();
+                        arity.push(
+                            op.operator_arity(&func_validator)
+                                .expect("valid operators should have arity"),
+                        );
+                        func_validator.op(usize::MAX, &op).expect("should be valid");
+                    }
+                    actual.push(arity);
+                }
+                p => {
+                    validator.payload(&p).unwrap();
+                }
+            }
+        }
+
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn arity_smoke_test() {
+        let wasm = r#"
+            (module
+                (type $pair (struct (field i32) (field i32)))
+
+                (func $add (param i32 i32) (result i32)
+                    local.get 0
+                    local.get 1
+                    i32.add
+                )
+
+                (func $f (param i32 i32) (result (ref null $pair))
+                    local.get 0
+                    local.get 1
+                    call $add
+                    if (result (ref null $pair))
+                    local.get 0
+                    local.get 1
+                      struct.new $pair
+                    else
+                      unreachable
+                      i32.add
+                      unreachable
+                    end
+                )
+            )
+        "#;
+
+        assert_arity(
+            wasm,
+            vec![
+                // $add
+                vec![
+                    // local.get 0
+                    (0, 1),
+                    // local.get 1
+                    (0, 1),
+                    // i32.add
+                    (2, 1),
+                    // end
+                    (1, 1),
+                ],
+                // $f
+                vec![
+                    // local.get 0
+                    (0, 1),
+                    // local.get 1
+                    (0, 1),
+                    // call $add
+                    (2, 1),
+                    // if
+                    (1, 0),
+                    // local.get 0
+                    (0, 1),
+                    // local.get 1
+                    (0, 1),
+                    // struct.new $pair
+                    (2, 1),
+                    // else
+                    (1, 0),
+                    // unreachable,
+                    (0, 0),
+                    // i32.add
+                    (2, 1),
+                    // unreachable
+                    (0, 0),
+                    // end
+                    (1, 1),
+                    // implicit end
+                    (1, 1),
+                ],
+            ],
+        );
+    }
+
+    #[test]
+    fn arity_if_no_else_same_params_and_results() {
+        let wasm = r#"
+            (module
+                (func (export "f") (param i64 i32) (result i64)
+                    (local.get 0)
+                    (local.get 1)
+                    ;; If with no else. Same number of params and results.
+                    if (param i64) (result i64)
+                        drop
+                        i64.const -1
+                    end
+                )
+            )
+        "#;
+
+        assert_arity(
+            wasm,
+            vec![vec![
+                // local.get 0
+                (0, 1),
+                // local.get 1
+                (0, 1),
+                // if
+                (2, 1),
+                // drop
+                (1, 0),
+                // i64.const -1
+                (0, 1),
+                // end
+                (1, 1),
+                // implicit end
+                (1, 1),
+            ]],
+        );
+    }
+
+    #[test]
+    fn arity_br_table() {
+        let wasm = r#"
+            (module
+                (func (export "f") (result i32 i32)
+                    i32.const 0
+                    i32.const 1
+                    i32.const 2
+                    br_table 0 0
+                )
+            )
+        "#;
+
+        assert_arity(
+            wasm,
+            vec![vec![
+                // i32.const 0
+                (0, 1),
+                // i32.const 1
+                (0, 1),
+                // i32.const 2
+                (0, 1),
+                // br_table
+                (3, 0),
+                // implicit end
+                (2, 2),
+            ]],
+        );
     }
 }

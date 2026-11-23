@@ -14,11 +14,12 @@ use crate::builder::Str;
 use crate::builder::StyledStr;
 use crate::builder::Styles;
 use crate::builder::{Arg, Command};
-use crate::output::display_width;
-use crate::output::wrap;
-use crate::output::Usage;
 use crate::output::TAB;
 use crate::output::TAB_WIDTH;
+use crate::output::Usage;
+use crate::output::display_width;
+use crate::output::wrap;
+use crate::util::Escape;
 use crate::util::FlatSet;
 
 /// `clap` auto-generated help writer
@@ -657,12 +658,15 @@ impl HelpTemplate<'_, '_> {
         help.indent("", &trailing_indent);
         self.writer.push_styled(&help);
 
+        let mut has_possible_values = false;
         if let Some(arg) = arg {
             if !arg.is_hide_possible_values_set() && self.use_long_pv(arg) {
                 const DASH_SPACE: usize = "- ".len();
                 let possible_vals = arg.get_possible_values();
                 if !possible_vals.is_empty() {
                     debug!("HelpTemplate::help: Found possible vals...{possible_vals:?}");
+                    has_possible_values = true;
+
                     let longest = possible_vals
                         .iter()
                         .filter(|f| !f.is_hide_set())
@@ -709,7 +713,7 @@ impl HelpTemplate<'_, '_> {
 
         if !spec_vals.is_empty() && next_line_specs {
             let mut help = StyledStr::new();
-            if !help_is_empty {
+            if !help_is_empty || has_possible_values {
                 let sep = "\n\n";
                 help.push_str(sep);
             }
@@ -792,12 +796,9 @@ impl HelpTemplate<'_, '_> {
                 .default_vals
                 .iter()
                 .map(|dv| dv.to_string_lossy())
-                .map(|dv| {
-                    if dv.contains(char::is_whitespace) {
-                        Cow::from(format!("{dv:?}"))
-                    } else {
-                        dv
-                    }
+                .map(|dv| match Escape(dv.as_ref()).to_cow() {
+                    Cow::Borrowed(_) => dv,
+                    Cow::Owned(escaped) => Cow::Owned(escaped),
                 })
                 .collect::<Vec<_>>()
                 .join(" ");
@@ -829,8 +830,9 @@ impl HelpTemplate<'_, '_> {
         als.extend(long_als);
 
         if !als.is_empty() {
+            let plural = pluralize(als.len(), "", "es");
             let als = als.join(&val_sep);
-            spec_vals.push(format!("{ctx}[aliases: {ctx:#}{als}{ctx}]{ctx:#}"));
+            spec_vals.push(format!("{ctx}[alias{plural}: {ctx:#}{als}{ctx}]{ctx:#}"));
         }
 
         if !a.is_hide_possible_values_set() && !self.use_long_pv(a) {
@@ -1039,7 +1041,10 @@ impl HelpTemplate<'_, '_> {
                 "HelpTemplate::spec_vals: Found long flag aliases...{:?}",
                 a.get_all_long_flag_aliases().collect::<Vec<_>>()
             );
-            spec_vals.push(format!("{ctx}[aliases: {ctx:#}{all_als}{ctx}]{ctx:#}"));
+            let plural = pluralize(short_als.len(), "", "es");
+            spec_vals.push(format!(
+                "{ctx}[alias{plural}: {ctx:#}{all_als}{ctx}]{ctx:#}"
+            ));
         }
 
         spec_vals.join(" ")
@@ -1076,6 +1081,10 @@ impl HelpTemplate<'_, '_> {
     }
 }
 
+fn pluralize<'s>(values: usize, single: &'s str, plural: &'s str) -> &'s str {
+    if values == 1 { single } else { plural }
+}
+
 const NEXT_LINE_INDENT: &str = "        ";
 
 type ArgSortKey = fn(arg: &Arg) -> (usize, String);
@@ -1098,7 +1107,7 @@ fn option_sort_key(arg: &Arg) -> (usize, String) {
         s.push(if x.is_ascii_lowercase() { '0' } else { '1' });
         s
     } else if let Some(x) = arg.get_long() {
-        x.to_string()
+        x.to_owned()
     } else {
         let mut s = '{'.to_string();
         s.push_str(arg.get_id().as_str());

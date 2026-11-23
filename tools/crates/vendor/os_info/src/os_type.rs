@@ -27,6 +27,8 @@ pub enum Type {
     Arch,
     /// Artix Linux (<https://en.wikipedia.org/wiki/Artix_Linux>).
     Artix,
+    /// Bazzite (<https://en.wikipedia.org/wiki/Bazzite_(operating_system)>).
+    Bazzite,
     /// Bluefin (<https://projectbluefin.io>).
     Bluefin,
     /// CachyOS (<https://en.wikipedia.org/wiki/Arch_Linux#Derivatives>).
@@ -55,6 +57,8 @@ pub enum Type {
     Gentoo,
     /// HardenedBSD (https://hardenedbsd.org/).
     HardenedBSD,
+    /// Hurd (https://hurd.gnu.org/).
+    Hurd,
     /// Illumos (https://en.wikipedia.org/wiki/Illumos).
     Illumos,
     /// instantOS (<https://instantos.io/>).
@@ -63,6 +67,8 @@ pub enum Type {
     Ios,
     /// Kali Linux (https://en.wikipedia.org/wiki/Kali_Linux).
     Kali,
+    /// KDE neon (https://en.wikipedia.org/wiki/KDE_neon).
+    KDENeon,
     /// Linux based operating system (<https://en.wikipedia.org/wiki/Linux>).
     Linux,
     /// Mabox (<https://maboxlinux.org/>).
@@ -144,6 +150,7 @@ impl Display for Type {
             Type::Amazon => write!(f, "Amazon Linux AMI"),
             Type::AOSC => write!(f, "AOSC OS"),
             Type::Arch => write!(f, "Arch Linux"),
+            Type::Bazzite => write!(f, "Bazzite"),
             Type::Bluefin => write!(f, "Bluefin"),
             Type::CachyOS => write!(f, "CachyOS Linux"),
             Type::Artix => write!(f, "Artix Linux"),
@@ -155,6 +162,7 @@ impl Display for Type {
             Type::InstantOS => write!(f, "instantOS"),
             Type::Ios => write!(f, "iOS"),
             Type::Kali => write!(f, "Kali Linux"),
+            Type::KDENeon => write!(f, "KDE neon"),
             Type::Macos => write!(f, "Mac OS"),
             Type::MidnightBSD => write!(f, "Midnight BSD"),
             Type::Mint => write!(f, "Linux Mint"),
@@ -199,6 +207,7 @@ mod tests {
             (Type::AOSC, "AOSC OS"),
             (Type::Arch, "Arch Linux"),
             (Type::Artix, "Artix Linux"),
+            (Type::Bazzite, "Bazzite"),
             (Type::Bluefin, "Bluefin"),
             (Type::CachyOS, "CachyOS Linux"),
             (Type::CentOS, "CentOS"),
@@ -217,6 +226,7 @@ mod tests {
             (Type::InstantOS, "instantOS"),
             (Type::Ios, "iOS"),
             (Type::Kali, "Kali Linux"),
+            (Type::KDENeon, "KDE neon"),
             (Type::Linux, "Linux"),
             (Type::Mabox, "Mabox"),
             (Type::Macos, "Mac OS"),

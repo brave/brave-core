@@ -13,13 +13,18 @@ jobs:
     name: stable
     strategy:
       matrix:
-        os:
-          - ubuntu-latest
-          - macos-latest
-          - windows-latest
+        # `expect` names the kernel detection should pick, on runners whose
+        # CPU features are known.
+        include:
+          - { os: ubuntu-latest }
+          - { os: ubuntu-24.04-arm, expect: pmull }
+          - { os: macos-latest, expect: pmull }
+          - { os: windows-latest }
     runs-on: ${{ matrix.os }}
+    env:
+      CRC32FAST_EXPECT: ${{ matrix.expect }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Install Rust
         run: rustup update stable --no-self-update
       - name: Test in debug mode
@@ -32,7 +37,7 @@ jobs:
     name: nightly
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Install Rust
         run: rustup update nightly
       - name: Test in debug mode
@@ -47,23 +52,49 @@ jobs:
     name: msrv
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Get MSRV from Cargo.toml
         id: msrv
         run: echo "version=$(grep '^rust-version' Cargo.toml | sed 's/rust-version = "\(.*\)"/\1/')" >> $GITHUB_OUTPUT
+      # The MSRV covers what we publish: the library and its normal
+      # dependencies. Dev-dependencies are never compiled by anyone who depends
+      # on crc32fast, so they are not held to it, which is why this job builds
+      # the library rather than running the test suite. Building alone does not
+      # keep them out though -- cargo resolves the whole graph, dev-dependencies
+      # included, before it builds anything, so one that needs a newer cargo
+      # fails this job before the library is touched. Strip them first, while
+      # the current stable cargo is still the active toolchain and can resolve
+      # them, and only then switch to the MSRV toolchain.
+      - name: Install cargo-hack
+        run: cargo install --force cargo-hack --locked
+      - name: Remove dev-dependencies
+        run: cargo hack --remove-dev-deps
       - name: Install Rust
         run: rustup update ${{ steps.msrv.outputs.version }} && rustup default ${{ steps.msrv.outputs.version }}
-      - name: Test in debug mode
-        run: cargo test --no-fail-fast
-      - name: Test in release mode
-        run: cargo test --no-fail-fast --release
-      - name: Check with no default features
-        run: cargo check --no-default-features
+      - name: Build
+        run: cargo build
+      - name: Build with no default features
+        run: cargo build --no-default-features
+      # Checking another target needs only its standard library, not a cross
+      # linker. At the MSRV, aarch64 gets the baseline implementation.
+      - name: Check aarch64
+        run: |
+          rustup target add aarch64-unknown-linux-gnu
+          cargo check --target aarch64-unknown-linux-gnu
+          cargo check --target aarch64-unknown-linux-gnu --no-default-features
+      # 1.80 is the oldest rustc that compiles the aarch64 kernels, the version
+      # `build.rs` sets `stable_arm_crc32_intrinsics` from; keep the two in
+      # step.
+      - name: Check aarch64 on 1.80
+        run: |
+          rustup toolchain install 1.80 --profile minimal --target aarch64-unknown-linux-gnu --no-self-update
+          cargo +1.80 check --target aarch64-unknown-linux-gnu
+          cargo +1.80 check --target aarch64-unknown-linux-gnu --no-default-features
   asan:
     name: asan
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Install Rust
         run: rustup update nightly --no-self-update
       - name: Run address sanitizer
@@ -79,8 +110,10 @@ jobs:
         target:
           - i686-unknown-linux-gnu
           - aarch64-unknown-linux-gnu
+          - riscv64gc-unknown-linux-gnu
+          - s390x-unknown-linux-gnu
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Install Rust
         run: rustup update --no-self-update
       - name: Install Cross
@@ -97,7 +130,7 @@ jobs:
         target:
           - wasm32-unknown-unknown
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Install Rust
         run: rustup update --no-self-update
       - name: Add target
@@ -114,7 +147,7 @@ jobs:
         target:
           - aarch64-unknown-linux-gnu
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Install Rust
         run: rustup update nightly --no-self-update && rustup default nightly
       - name: Add target

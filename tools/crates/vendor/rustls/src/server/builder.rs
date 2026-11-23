@@ -100,6 +100,9 @@ impl ConfigBuilder<ServerConfig, WantsServerCert> {
 
     /// Sets a custom [`ResolvesServerCert`].
     pub fn with_cert_resolver(self, cert_resolver: Arc<dyn ResolvesServerCert>) -> ServerConfig {
+        #[cfg(feature = "tls12")]
+        let require_ems = self.provider.fips();
+
         ServerConfig {
             provider: self.provider,
             verifier: self.state.verifier,
@@ -118,8 +121,9 @@ impl ConfigBuilder<ServerConfig, WantsServerCert> {
             max_early_data_size: 0,
             send_half_rtt_data: false,
             send_tls13_tickets: 2,
+            max_tls13_tickets: 0,
             #[cfg(feature = "tls12")]
-            require_ems: cfg!(feature = "fips"),
+            require_ems,
             time_provider: self.time_provider,
             cert_compressors: compress::default_cert_compressors().to_vec(),
             cert_compression_cache: Arc::new(compress::CompressionCache::default()),

@@ -1,38 +1,38 @@
 pub trait TomlWrite: core::fmt::Write {
     fn open_table_header(&mut self) -> core::fmt::Result {
-        write!(self, "[")
+        self.write_str("[")
     }
     fn close_table_header(&mut self) -> core::fmt::Result {
-        write!(self, "]")
+        self.write_str("]")
     }
 
     fn open_array_of_tables_header(&mut self) -> core::fmt::Result {
-        write!(self, "[[")
+        self.write_str("[[")
     }
     fn close_array_of_tables_header(&mut self) -> core::fmt::Result {
-        write!(self, "]]")
+        self.write_str("]]")
     }
 
     fn open_inline_table(&mut self) -> core::fmt::Result {
-        write!(self, "{{")
+        self.write_str("{")
     }
     fn close_inline_table(&mut self) -> core::fmt::Result {
-        write!(self, "}}")
+        self.write_str("}")
     }
 
     fn open_array(&mut self) -> core::fmt::Result {
-        write!(self, "[")
+        self.write_str("[")
     }
     fn close_array(&mut self) -> core::fmt::Result {
-        write!(self, "]")
+        self.write_str("]")
     }
 
     fn key_sep(&mut self) -> core::fmt::Result {
-        write!(self, ".")
+        self.write_str(".")
     }
 
     fn keyval_sep(&mut self) -> core::fmt::Result {
-        write!(self, "=")
+        self.write_str("=")
     }
 
     /// Write an encoded TOML key
@@ -69,19 +69,19 @@ pub trait TomlWrite: core::fmt::Write {
     }
 
     fn val_sep(&mut self) -> core::fmt::Result {
-        write!(self, ",")
+        self.write_str(",")
     }
 
     fn space(&mut self) -> core::fmt::Result {
-        write!(self, " ")
+        self.write_str(" ")
     }
 
     fn open_comment(&mut self) -> core::fmt::Result {
-        write!(self, "#")
+        self.write_str("#")
     }
 
     fn newline(&mut self) -> core::fmt::Result {
-        writeln!(self)
+        self.write_str("\n")
     }
 }
 

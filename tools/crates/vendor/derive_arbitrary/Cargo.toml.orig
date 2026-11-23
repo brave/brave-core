@@ -1,6 +1,6 @@
 [package]
 name = "derive_arbitrary"
-version = "1.4.2" # Make sure it matches the version of the arbitrary crate itself (not including the patch version)
+version = "1.5.0" # Make sure it matches the version of the arbitrary crate itself (not including the patch version)
 authors = [
     "The Rust-Fuzz Project Developers",
     "Nick Fitzgerald <fitzgen@gmail.com>",
@@ -16,12 +16,12 @@ description = "Derives arbitrary traits"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/rust-fuzz/arbitrary"
 documentation = "https://docs.rs/arbitrary/"
-rust-version = "1.63.0"
+rust-version = "1.71.0"
 
 [dependencies]
 proc-macro2 = "1.0"
 quote = "1.0"
-syn = { version = "2", features = ['derive', 'parsing', 'extra-traits'] }
+syn = { version = "3", features = ['derive', 'parsing', 'extra-traits'] }
 
 [lib]
 proc-macro = true

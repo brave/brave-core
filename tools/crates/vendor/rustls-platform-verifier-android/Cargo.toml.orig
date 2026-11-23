@@ -1,0 +1,19 @@
+[package]
+name = "rustls-platform-verifier-android"
+version = "0.2.0"
+description = "The internal JVM support component of the rustls-platform-verifier crate. You shouldn't depend on this directly."
+repository = "https://github.com/rustls/rustls-platform-verifier"
+license = "MIT OR Apache-2.0"
+edition = "2021"
+
+include = [
+    "src/*",
+]
+
+[dependencies]
+
+[dev-dependencies]
+rustls = { version = "0.23", default-features = false, features = ["aws-lc-rs"] }
+similar-asserts = "2"
+tokio = { version = "1", features = ["macros"] }
+webpki-ccadb = "0.2.2"

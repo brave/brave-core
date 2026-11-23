@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.63"
 name = "hyper"
-version = "1.8.1"
+version = "1.12.0"
 authors = ["Sean McArthur <sean@seanmonstar.com>"]
 build = false
 include = [
@@ -86,13 +86,12 @@ full = [
 ]
 http1 = [
     "dep:atomic-waker",
-    "dep:futures-channel",
     "dep:futures-core",
     "dep:httparse",
     "dep:itoa",
-    "dep:pin-utils",
 ]
 http2 = [
+    "dep:atomic-waker",
     "dep:futures-channel",
     "dep:futures-core",
     "dep:h2",
@@ -131,7 +130,7 @@ optional = true
 default-features = false
 
 [dependencies.h2]
-version = "0.4.2"
+version = "0.4.14"
 optional = true
 
 [dependencies.http]
@@ -160,10 +159,6 @@ optional = true
 version = "0.2.4"
 optional = true
 
-[dependencies.pin-utils]
-version = "0.1"
-optional = true
-
 [dependencies.smallvec]
 version = "1.12"
 features = [
@@ -183,7 +178,7 @@ optional = true
 default-features = false
 
 [dependencies.want]
-version = "0.3"
+version = "0.3.2"
 optional = true
 
 [dev-dependencies.form_urlencoded]
@@ -240,6 +235,99 @@ version = "0.4"
 
 [dev-dependencies.tokio-util]
 version = "0.7.10"
+
+[dev-dependencies.tracing]
+version = "0.1"
+
+[dev-dependencies.tracing-subscriber]
+version = "0.3"
+
+[lints.clippy]
+absolute_paths = "allow"
+arbitrary_source_item_ordering = "allow"
+arithmetic_side_effects = "allow"
+as_conversions = "allow"
+blanket_clippy_restriction_lints = "allow"
+cast_precision_loss = "allow"
+checked_conversions = "allow"
+clone_on_ref_ptr = "allow"
+cognitive_complexity = "allow"
+decimal_literal_representation = "allow"
+default_numeric_fallback = "allow"
+definition_in_module_root = "allow"
+else_if_without_else = "allow"
+error_impl_error = "allow"
+expect_used = "allow"
+field_scoped_visibility_modifiers = "allow"
+float_arithmetic = "allow"
+if_not_else = "allow"
+if_then_some_else_none = "allow"
+impl_trait_in_params = "allow"
+implicit_return = "allow"
+indexing_slicing = "allow"
+inline_modules = "allow"
+inline_trait_bounds = "allow"
+items_after_statements = "allow"
+let_underscore_must_use = "allow"
+let_underscore_untyped = "allow"
+let_unit_value = "allow"
+match_wild_err_arm = "allow"
+min_ident_chars = "allow"
+missing_assert_message = "allow"
+missing_docs_in_private_items = "allow"
+missing_inline_in_public_items = "allow"
+missing_trait_methods = "allow"
+mod_module_files = "allow"
+module_inception = "allow"
+module_name_repetitions = "allow"
+multiple_inherent_impl = "allow"
+multiple_unsafe_ops_per_block = "allow"
+must_use_candidate = "allow"
+needless_bool = "allow"
+needless_pass_by_value = "allow"
+new_without_default = "allow"
+panic_in_result_fn = "allow"
+pattern_type_mismatch = "allow"
+pub_use = "allow"
+pub_with_shorthand = "allow"
+question_mark_used = "allow"
+redundant_closure_for_method_calls = "allow"
+redundant_else = "allow"
+renamed_function_params = "allow"
+rest_pattern_accessible_field = "allow"
+same_name_method = "allow"
+self_named_module_files = "deny"
+semicolon_inside_block = "allow"
+semicolon_outside_block = "allow"
+shadow_reuse = "allow"
+shadow_same = "allow"
+shadow_unrelated = "allow"
+single_call_fn = "allow"
+std_instead_of_alloc = "allow"
+std_instead_of_core = "allow"
+struct_excessive_bools = "allow"
+struct_field_names = "allow"
+too_many_lines = "allow"
+trivially_copy_pass_by_ref = "allow"
+type_complexity = "allow"
+unnecessary_rest_pattern = "allow"
+unnecessary_safety_comment = "allow"
+unnested_or_patterns = "allow"
+unreachable = "allow"
+unseparated_literal_suffix = "allow"
+unused_async = "allow"
+unused_trait_names = "allow"
+unwrap_in_result = "allow"
+used_underscore_items = "allow"
+wildcard_enum_match_arm = "allow"
+
+[lints.clippy.pedantic]
+level = "warn"
+priority = -1
+
+[lints.clippy.restriction]
+level = "warn"
+priority = -2
 
 [lints.rust.unexpected_cfgs]
 level = "warn"

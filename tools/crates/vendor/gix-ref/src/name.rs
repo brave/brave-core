@@ -27,7 +27,7 @@ impl Category<'_> {
         }
     }
 
-    /// Returns true if the category is private to their worktrees, and never shared with other worktrees.
+    /// Returns `true` if the category is private to their worktrees, and never shared with other worktrees.
     pub fn is_worktree_private(&self) -> bool {
         matches!(
             self,
@@ -39,12 +39,17 @@ impl Category<'_> {
                 | Category::Bisect
         )
     }
+
+    /// Returns `true` if this category represents remote-tracking branches, like `refs/remotes/<remote>/<name>`.
+    pub fn is_remote_tracking_branch(&self) -> bool {
+        matches!(self, Category::RemoteBranch)
+    }
 }
 
 impl FullNameRef {
     pub(crate) fn new_unchecked(v: &BStr) -> &Self {
         // SAFETY: FullNameRef is transparent and equivalent to a &BStr if provided as reference
-        #[allow(unsafe_code)]
+        #[expect(unsafe_code)]
         unsafe {
             std::mem::transmute(v)
         }
@@ -54,7 +59,7 @@ impl FullNameRef {
 impl PartialNameRef {
     pub(crate) fn new_unchecked(v: &BStr) -> &Self {
         // SAFETY: PartialNameRef is transparent and equivalent to a &BStr if provided as reference
-        #[allow(unsafe_code)]
+        #[expect(unsafe_code)]
         unsafe {
             std::mem::transmute(v)
         }
@@ -91,7 +96,8 @@ impl PartialNameRef {
 impl PartialNameRef {
     /// Convert this name into the relative path possibly identifying the reference location.
     /// Note that it may be only a partial path though.
-    pub fn to_partial_path(&self) -> &Path {
+    /// Return an error if the name cannot be represented as a native path.
+    pub fn to_partial_path(&self) -> gix_error::Result<&Path> {
         gix_path::from_byte_slice(self.0.as_bstr())
     }
 
@@ -127,13 +133,13 @@ impl<'a> From<&'a FullNameRef> for &'a PartialNameRef {
 }
 
 impl<'a> convert::TryFrom<&'a OsStr> for &'a PartialNameRef {
-    type Error = Error;
+    type Error = gix_error::Exn<Error>;
 
     fn try_from(v: &'a OsStr) -> Result<Self, Self::Error> {
-        let v = gix_path::os_str_into_bstr(v).map_err(|_| {
-            Error::Tag(gix_validate::tag::name::Error::InvalidByte {
-                byte: "<unknown encoding>".into(),
-            })
+        use gix_error::ResultExt;
+
+        let v = gix_path::os_str_into_bstr(v).or_raise_typed(|| Error::InvalidByte {
+            byte: "<unknown encoding>".into(),
         })?;
         Ok(PartialNameRef::new_unchecked(gix_validate::reference::name_partial(
             v.as_bstr(),
@@ -144,7 +150,7 @@ impl<'a> convert::TryFrom<&'a OsStr> for &'a PartialNameRef {
 mod impls {
     use std::borrow::Borrow;
 
-    use crate::{bstr::ByteSlice, PartialName, PartialNameRef};
+    use crate::{PartialName, PartialNameRef, bstr::ByteSlice};
 
     impl Borrow<PartialNameRef> for PartialName {
         #[inline]
@@ -221,7 +227,10 @@ impl<'a> convert::TryFrom<&'a str> for PartialName {
     }
 }
 
-#[allow(clippy::infallible_try_from)]
+#[expect(
+    clippy::infallible_try_from,
+    reason = "it's here so that it can be done, even if infallible. Needed for parameters that use `TryFrom` generically."
+)]
 impl<'a> convert::TryFrom<&'a FullName> for &'a PartialNameRef {
     type Error = Infallible;
 

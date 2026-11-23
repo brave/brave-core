@@ -13,9 +13,7 @@
  * limitations under the License.
  */
 
-use crate::{
-    BinaryReader, BinaryReaderError, FromReader, Result, SectionLimited, Subsection, Subsections,
-};
+use crate::{BinaryReader, Error, FromReader, Result, SectionLimited, Subsection, Subsections};
 use core::ops::Range;
 
 /// Represents a name map from the names custom section.
@@ -131,7 +129,7 @@ impl<'a> Subsection<'a> for Name<'a> {
             0 => {
                 let name = reader.read_string()?;
                 if !reader.eof() {
-                    return Err(BinaryReaderError::new(
+                    return Err(Error::new(
                         "trailing data at the end of a name",
                         reader.original_position(),
                     ));

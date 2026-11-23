@@ -1,7 +1,7 @@
 //! User Interaction (MUI)
 
 use crate::{
-    Error, Result,
+    Error,
     v4::metric::{Metric, MetricType},
 };
 use alloc::borrow::ToOwned;
@@ -17,11 +17,12 @@ use core::{fmt, str::FromStr};
 /// > solely at the will of the attacker, or whether a separate user (or
 /// > user-initiated process) must participate in some manner. The resulting
 /// > score is greatest when no user interaction is required.
-#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+#[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
 pub enum ModifiedUserInteraction {
     /// Not Defined (X)
     ///
     /// > The metric has not been evaluated.
+    #[default]
     NotDefined,
     /// Active (A)
     ///
@@ -58,21 +59,15 @@ pub enum ModifiedUserInteraction {
     None,
 }
 
-impl Default for ModifiedUserInteraction {
-    fn default() -> Self {
-        Self::NotDefined
-    }
-}
-
 impl Metric for ModifiedUserInteraction {
     const TYPE: MetricType = MetricType::MUI;
 
     fn as_str(self) -> &'static str {
         match self {
-            ModifiedUserInteraction::NotDefined => "X",
-            ModifiedUserInteraction::None => "N",
-            ModifiedUserInteraction::Passive => "P",
-            ModifiedUserInteraction::Active => "A",
+            Self::NotDefined => "X",
+            Self::None => "N",
+            Self::Passive => "P",
+            Self::Active => "A",
         }
     }
 }
@@ -86,12 +81,12 @@ impl fmt::Display for ModifiedUserInteraction {
 impl FromStr for ModifiedUserInteraction {
     type Err = Error;
 
-    fn from_str(s: &str) -> Result<Self> {
+    fn from_str(s: &str) -> Result<Self, Error> {
         match s {
-            "X" => Ok(ModifiedUserInteraction::NotDefined),
-            "N" => Ok(ModifiedUserInteraction::None),
-            "P" => Ok(ModifiedUserInteraction::Passive),
-            "A" => Ok(ModifiedUserInteraction::Active),
+            "X" => Ok(Self::NotDefined),
+            "N" => Ok(Self::None),
+            "P" => Ok(Self::Passive),
+            "A" => Ok(Self::Active),
             _ => Err(Error::InvalidMetricV4 {
                 metric_type: Self::TYPE,
                 value: s.to_owned(),

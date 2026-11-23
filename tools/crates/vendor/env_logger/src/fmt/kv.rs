@@ -36,7 +36,7 @@ pub fn hidden_kv_format(_formatter: &mut Formatter, _fields: &dyn Source) -> io:
 pub fn default_kv_format(formatter: &mut Formatter, fields: &dyn Source) -> io::Result<()> {
     fields
         .visit(&mut DefaultVisitSource(formatter))
-        .map_err(|e| io::Error::new(io::ErrorKind::Other, e))
+        .map_err(io::Error::other)
 }
 
 struct DefaultVisitSource<'a>(&'a mut Formatter);

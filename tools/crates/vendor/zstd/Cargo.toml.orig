@@ -4,10 +4,10 @@ description = "Binding for the zstd compression library."
 documentation = "https://docs.rs/zstd"
 keywords = ["zstd", "zstandard", "compression"]
 categories = ["compression", "api-bindings"]
-license = "MIT"
+license = "BSD-3-Clause"
 name = "zstd"
 repository = "https://github.com/gyscos/zstd-rs"
-version = "0.13.3"
+version = "0.13.5"
 exclude = ["assets/*.zst", "/.github"]
 readme = "Readme.md"
 edition = "2018"
@@ -20,7 +20,7 @@ features = ["experimental", "zstdmt", "zdict_builder", "doc-cfg"]
 travis-ci = { repository = "gyscos/zstd-rs" }
 
 [dependencies]
-zstd-safe = { path = "zstd-safe", version = "7.1.0", default-features = false, features = ["std"] }
+zstd-safe = { path = "zstd-safe", version = "7.4.1", default-features = false, features = ["std"] }
 
 [dev-dependencies]
 clap = {version = "4.0", features=["derive"]}

@@ -6,7 +6,7 @@ use crate::read::{
     self, ComdatKind, ObjectComdat, ReadError, ReadRef, Result, SectionIndex, SymbolIndex,
 };
 
-use super::{CoffFile, CoffHeader, ImageSymbol};
+use super::{CoffFile, CoffHeader, Symbol};
 
 /// An iterator for the COMDAT section groups in a [`CoffBigFile`](super::CoffBigFile).
 pub type CoffBigComdatIterator<'data, 'file, R = &'data [u8]> =
@@ -68,32 +68,35 @@ pub struct CoffComdat<
 > {
     file: &'file CoffFile<'data, R, Coff>,
     symbol_index: SymbolIndex,
-    symbol: &'data Coff::ImageSymbol,
-    selection: u8,
+    symbol: &'data Coff::Symbol,
+    section_index: u32,
+    selection: pe::ComdatSelection,
 }
 
 impl<'data, 'file, R: ReadRef<'data>, Coff: CoffHeader> CoffComdat<'data, 'file, R, Coff> {
     fn parse(
         file: &'file CoffFile<'data, R, Coff>,
-        section_symbol: &'data Coff::ImageSymbol,
+        section_symbol: &'data Coff::Symbol,
         index: SymbolIndex,
     ) -> Option<CoffComdat<'data, 'file, R, Coff>> {
         // Must be a section symbol.
         if !section_symbol.has_aux_section() {
             return None;
         }
+        // Must have a valid section index.
+        let section_number = section_symbol.section_number();
+        let section_index = section_number.index()?;
 
         // Auxiliary record must have a non-associative selection.
         let aux = file.common.symbols.aux_section(index).ok()?;
         let selection = aux.selection;
-        if selection == 0 || selection == pe::IMAGE_COMDAT_SELECT_ASSOCIATIVE {
+        if selection == pe::ComdatSelection(0) || selection == pe::IMAGE_COMDAT_SELECT_ASSOCIATIVE {
             return None;
         }
 
         // Find the COMDAT symbol.
         let mut symbol_index = index;
         let mut symbol = section_symbol;
-        let section_number = section_symbol.section_number();
         loop {
             symbol_index.0 += 1 + symbol.number_of_aux_symbols() as usize;
             symbol = file.common.symbols.symbol(symbol_index).ok()?;
@@ -106,6 +109,7 @@ impl<'data, 'file, R: ReadRef<'data>, Coff: CoffHeader> CoffComdat<'data, 'file,
             file,
             symbol_index,
             symbol,
+            section_index,
             selection,
         })
     }
@@ -157,7 +161,7 @@ impl<'data, 'file, R: ReadRef<'data>, Coff: CoffHeader> ObjectComdat<'data>
     fn sections(&self) -> Self::SectionIterator {
         CoffComdatSectionIterator {
             file: self.file,
-            section_number: self.symbol.section_number(),
+            section_index: self.section_index,
             index: SymbolIndex(0),
         }
     }
@@ -176,7 +180,7 @@ pub struct CoffComdatSectionIterator<
     Coff: CoffHeader = pe::ImageFileHeader,
 > {
     file: &'file CoffFile<'data, R, Coff>,
-    section_number: i32,
+    section_index: u32,
     index: SymbolIndex,
 }
 
@@ -198,7 +202,9 @@ impl<'data, 'file, R: ReadRef<'data>, Coff: CoffHeader> Iterator
                 continue;
             }
 
-            let section_number = symbol.section_number();
+            let Some(section_index) = symbol.section_number().index() else {
+                continue;
+            };
 
             let aux = self.file.common.symbols.aux_section(index).ok()?;
             if aux.selection == pe::IMAGE_COMDAT_SELECT_ASSOCIATIVE {
@@ -207,12 +213,12 @@ impl<'data, 'file, R: ReadRef<'data>, Coff: CoffHeader> Iterator
                 } else {
                     u32::from(aux.number.get(LE))
                 };
-                if number as i32 == self.section_number {
-                    return Some(SectionIndex(section_number as usize));
+                if number == self.section_index {
+                    return Some(SectionIndex(section_index as usize));
                 }
-            } else if aux.selection != 0 {
-                if section_number == self.section_number {
-                    return Some(SectionIndex(section_number as usize));
+            } else if aux.selection != pe::ComdatSelection(0) {
+                if section_index == self.section_index {
+                    return Some(SectionIndex(section_index as usize));
                 }
             }
         }

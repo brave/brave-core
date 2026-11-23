@@ -1,6 +1,6 @@
 # [base64](https://crates.io/crates/base64)
 
-[![](https://img.shields.io/crates/v/base64.svg)](https://crates.io/crates/base64) [![Docs](https://docs.rs/base64/badge.svg)](https://docs.rs/base64) [![CircleCI](https://circleci.com/gh/marshallpierce/rust-base64/tree/master.svg?style=shield)](https://circleci.com/gh/marshallpierce/rust-base64/tree/master) [![codecov](https://codecov.io/gh/marshallpierce/rust-base64/branch/master/graph/badge.svg)](https://codecov.io/gh/marshallpierce/rust-base64) [![unsafe forbidden](https://img.shields.io/badge/unsafe-forbidden-success.svg)](https://github.com/rust-secure-code/safety-dance/)
+[![](https://img.shields.io/crates/v/base64.svg)](https://crates.io/crates/base64) [![Docs](https://docs.rs/base64/badge.svg)](https://docs.rs/base64) [![CircleCI](https://circleci.com/gh/marshallpierce/rust-base64/tree/master.svg?style=shield)](https://circleci.com/gh/marshallpierce/rust-base64/tree/master) [![codecov](https://codecov.io/gh/marshallpierce/rust-base64/branch/master/graph/badge.svg)](https://codecov.io/gh/marshallpierce/rust-base64)
 
 <a href="https://www.jetbrains.com/?from=rust-base64"><img src="/icon_CLion.svg" height="40px"/></a>
 
@@ -63,7 +63,7 @@ optionally may allow other behaviors.
 
 ## Rust version compatibility
 
-The minimum supported Rust version is 1.48.0.
+The minimum supported Rust version is 1.71.0.
 
 # Contributing
 
@@ -88,6 +88,31 @@ This crate supports no_std. By default the crate targets std via the `std` featu
 the `default-features` to target `core` instead. In that case you lose out on all the functionality revolving
 around `std::io`, `std::error::Error`, and heap allocations. There is an additional `alloc` feature that you can activate
 to bring back the support for heap allocations.
+
+## SIMD acceleration
+
+The default-on `simd-unsafe` feature enables SIMD-accelerated engines for the standard and
+URL-safe alphabets, which are several times faster than the scalar `GeneralPurpose` engine. It is
+the only feature that uses `unsafe`; without it the crate is `#![forbid(unsafe_code)]`.
+
+The `Simd` engine detects the best available instruction set (AVX2 on `x86_64`, NEON on `aarch64`) at
+runtime and falls back to the scalar engine, and needs the `std` feature. The `Avx2` and `Neon`
+engines target one instruction set without runtime detection, so they can be used in `no_std` builds
+when the target is known to support the instructions.
+
+### Testing SIMD
+
+Testing SIMD directly requires having all of the necessary hardware available. Fortunately, the instructions we use are
+also provided by Miri, so we can check for UB and proper logic all at once on any system. Here, this is filtering for
+tests with `miri` in the name as those are written to be acceptably slow under Miri's overhead, but any test should work
+(eventually).
+
+```
+RUSTFLAGS="-C target-feature=+avx2" cargo +nightly miri \
+    test --target x86_64-unknown-linux-gnu miri
+RUSTFLAGS="-C target-feature=+neon" cargo +nightly miri \
+    test --target aarch64-unknown-linux-gnu miri
+```
 
 ## Profiling
 
@@ -151,4 +176,3 @@ cargo +nightly fuzz run decode_random
 ## License
 
 This project is dual-licensed under MIT and Apache 2.0.
-

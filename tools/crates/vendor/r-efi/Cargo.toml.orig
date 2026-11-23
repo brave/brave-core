@@ -1,6 +1,6 @@
 [package]
 name = "r-efi"
-version = "5.3.0"
+version = "6.0.0"
 
 categories = [
         "embedded",
@@ -28,10 +28,6 @@ rust-version = "1.68"
 core = { version = '1.0.0', optional = true, package = 'rustc-std-workspace-core' }
 
 [features]
-# No-op for backwards compatibility.
-efiapi = []
-# Maps to `native` for backwards compatibility.
-examples = ['native']
 # We feature-gate all native code, since it will not link correctly, unless you
 # use a UEFI target configuration. To make `cargo test` work, we exclude all
 # these from normal runs.

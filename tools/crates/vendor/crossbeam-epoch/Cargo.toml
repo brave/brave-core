@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.61"
 name = "crossbeam-epoch"
-version = "0.9.20"
+version = "0.9.21"
 build = "build.rs"
 autolib = false
 autobins = false

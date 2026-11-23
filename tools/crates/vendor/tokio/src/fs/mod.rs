@@ -16,9 +16,17 @@
 //! such as hangs during runtime shutdown. For special files, you should use a
 //! dedicated type such as [`tokio::net::unix::pipe`] or [`AsyncFd`] instead.
 //!
-//! Currently, Tokio will always use [`spawn_blocking`] on all platforms, but it
-//! may be changed to use asynchronous file system APIs such as io_uring in the
-//! future.
+//! Tokio currently uses [`spawn_blocking`] on all platforms, but also uses
+//! io_uring for file operations on Linux when compiled with `tokio_unstable`.
+//! Operations that cannot be cancelled with [`spawn_blocking`] may possibly
+//! be cancelled with io_uring.
+//!
+//! # Cancellation
+//!
+//! Cancelling a future from this module will stop waiting for the result, but
+//! the underlying blocking operation will continue to run on the thread pool.
+//! For example, cancelling a [`write()`] future after it has been
+//! polled will still result in the data being written to disk.
 //!
 //! # Usage
 //!
@@ -229,6 +237,9 @@ pub use self::dir_builder::DirBuilder;
 mod file;
 pub use self::file::File;
 
+mod file_times;
+pub use self::file_times::FileTimes;
+
 mod hard_link;
 pub use self::hard_link::hard_link;
 
@@ -237,9 +248,6 @@ pub use self::metadata::metadata;
 
 mod open_options;
 pub use self::open_options::OpenOptions;
-cfg_io_uring! {
-    pub(crate) use self::open_options::UringOpenOptions;
-}
 
 mod read;
 pub use self::read::read;
@@ -298,6 +306,13 @@ cfg_windows! {
     pub use self::symlink_file::symlink_file;
 }
 
+cfg_io_uring! {
+    pub(crate) mod read_uring;
+    pub(crate) use self::read_uring::read_uring;
+
+    pub(crate) use self::open_options::UringOpenOptions;
+}
+
 use std::io;
 
 #[cfg(not(test))]
@@ -312,9 +327,6 @@ where
 {
     match spawn_blocking(f).await {
         Ok(res) => res,
-        Err(_) => Err(io::Error::new(
-            io::ErrorKind::Other,
-            "background task failed",
-        )),
+        Err(_) => Err(io::Error::other("background task failed")),
     }
 }

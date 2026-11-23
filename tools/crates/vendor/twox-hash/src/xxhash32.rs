@@ -6,7 +6,7 @@ use core::{
     mem,
 };
 
-use crate::{IntoU32, IntoU64};
+use crate::{IntoU32 as _, IntoU64 as _};
 
 // Keeping these constants in this form to match the C code.
 const PRIME32_1: u32 = 0x9E3779B1;
@@ -76,7 +76,7 @@ impl Buffer {
 
         if self.offset == 0 {
             return (None, data);
-        };
+        }
 
         let bytes = self.data.bytes_mut();
         debug_assert!(self.offset <= bytes.len());
@@ -295,7 +295,7 @@ impl Hasher {
         // "Note that, if input length is so large that it requires
         // more than 32-bits, only the lower 32-bits are added to the
         // accumulator."
-        acc += len as u32;
+        acc = acc.wrapping_add(len as u32);
 
         // Step 5. Consume remaining input
         while let Some((chunk, rest)) = remaining.split_first_chunk() {
@@ -348,7 +348,7 @@ impl hash::Hasher for Hasher {
     // RATIONALE: See RATIONALE[inline]
     #[inline]
     fn finish(&self) -> u64 {
-        Hasher::finish_32(self).into()
+        Self::finish_32(self).into()
     }
 }
 
@@ -486,7 +486,12 @@ mod test {
         let bytes200: [u8; 200] = array::from_fn(|i| i as _);
 
         let mut hasher = Hasher::with_seed(0);
-        for _ in 0..(4_300_000_000 / bytes200.len()) {
+
+        let a_large_amount = 4_300_000_000_u64;
+        let chunk_len = bytes200.len().into_u64();
+        let n_writes = a_large_amount / chunk_len;
+
+        for _ in 0..n_writes {
             hasher.write(&bytes200);
         }
 
@@ -495,6 +500,18 @@ mod test {
 
         // compared against the C implementation
         assert_eq!(hasher.finish(), 0x1522_4ca7);
+    }
+
+    #[test]
+    fn adding_the_length_overflows_the_accumulator() {
+        // For inputs under 16 bytes, the accumulator is `seed +
+        // PRIME32_5`. To set the accumulator to `u32::MAX`, work
+        // backwards:
+        let seed = u32::MAX - PRIME32_5;
+
+        // Hashing one or more bytes causes cause the accumulator
+        // to overflow
+        assert_eq!(0x9010_bbab, Hasher::oneshot(seed, b"x"));
     }
 
     #[test]
@@ -586,7 +603,7 @@ mod serialize_impl {
             let mut buffer_data = BufferData::new();
             buffer_data.bytes_mut().copy_from_slice(&buffer);
 
-            Ok(Hasher {
+            Ok(Self {
                 seed,
                 accumulators: Accumulators([v1, v2, v3, v4]),
                 buffer: Buffer {
@@ -603,7 +620,7 @@ mod serialize_impl {
         where
             S: serde::Serializer,
         {
-            let Hasher {
+            let Self {
                 seed,
                 ref accumulators,
                 ref buffer,

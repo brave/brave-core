@@ -1,3 +1,118 @@
+1.13.2 (2026-11-17)
+===================
+Bug fixes:
+
+* [#1333](https://github.com/rust-lang/regex/issues/1333):
+Fix a glob syntax error in `package.include`.
+* [#1388](https://github.com/rust-lang/regex/issues/1388), [#1344](https://github.com/rust-lang/regex/issues/1344):
+Panic in `BoundedBacktracker` when haystack length exceeds capacity.
+* [#1389](https://github.com/rust-lang/regex/issues/1389):
+Revert default pool capacity change.
+* [#1394](https://github.com/rust-lang/regex/issues/1394), [#1392](https://github.com/rust-lang/regex/issues/1392):
+Allow Parser to be reused in `regex-syntax`.
+* [#1395](https://github.com/rust-lang/regex/issues/1395), [#1393](https://github.com/rust-lang/regex/issues/1393):
+Make Position's Ord match Eq in `regex-syntax`.
+* [#1400](https://github.com/rust-lang/regex/issues/1400):
+Fix incorrect match offsets for alternations whose branches start with the
+same repetition.
+* [#1415](https://github.com/rust-lang/regex/issues/1415):
+Avoid PikeVM panic with excess capture slots.
+* [#1417](https://github.com/rust-lang/regex/issues/1417):
+The `Pattern` trait now requires `unsafe`.
+* [#1419](https://github.com/rust-lang/regex/issues/1419):
+Read the high half of a serialized `ByteSet` from the right offset.
+* [a1e367b](https://github.com/rust-lang/regex/commit/a1e367bbb6a51aaad2d0b23a74608c09a3a50b87):
+Fix a bug when `WhichCaptures::None` is used.
+* [#1406](https://github.com/rust-lang/regex/issues/1406):
+Fix off-by-one error.
+
+Enhancements:
+
+* [80b9d14](https://github.com/rust-lang/regex/commit/80b9d14e4be9f0b703a742d11c064abce05f210b):
+Add is_match_with to `regex-automata::meta::Regex`.
+
+Performance:
+
+* [#1352](https://github.com/rust-lang/regex/issues/1352):
+Do codepoint range canonicalization in-place.
+
+Documentation:
+
+* [#1380](https://github.com/rust-lang/regex/issues/1380):
+Document overflow for `Span::offset`.
+
+
+1.13.1 (2026-07-15)
+===================
+This is a release that fixes a bug where incorrect regex match offsets could be
+reported. Note that this doesn't impact whether a match occurs or not, just
+where it occurs. The match offsets are still valid for slicing, they just may
+not refer to the correct leftmost-first match. See
+[#1364](https://github.com/rust-lang/regex/pull/1364) for (many) more details.
+
+Bug fixes:
+
+* [#1354](https://github.com/rust-lang/regex/issues/1354):
+Fixes previously unsound reverse suffix and inner optimizations.
+
+
+1.13.0 (2026-07-09)
+===================
+This release includes a new API, a `regex!` macro, for lazy compilation of
+a regex from a string literal. If you use regexes a lot, it's likely you've
+already written one exactly like it. The new macro can be used like this:
+
+```rust
+use regex::regex;
+
+fn is_match(line: &str) -> bool {
+    // The regex will be compiled approximately once and reused automatically.
+    // This avoids the footgun of using `Regex::new` here, which would
+    // guarantee that it would be compiled every time this routine is called.
+    // This would likely make this routine much slower than it needs to be.
+    regex!(r"bar|baz").is_match(line)
+}
+
+let hay = "\
+path/to/foo:54:Blue Harvest
+path/to/bar:90:Something, Something, Something, Dark Side
+path/to/baz:3:It's a Trap!
+";
+
+let matches = hay.lines().filter(|line| is_match(line)).count();
+assert_eq!(matches, 2);
+```
+
+Improvements:
+
+* [#709](https://github.com/rust-lang/regex/issues/709):
+Add a new `regex!` macro for efficient and automatic reuse of a compiled regex.
+
+
+1.12.4 (2026-06-09)
+===================
+This release includes a performance optimization for compilation of regexes
+with very large character classes.
+
+Improvements:
+
+* [#1308](https://github.com/rust-lang/regex/pull/1308):
+Avoid re-canonicalizing the entire interval set when pushing new class ranges.
+
+
+1.12.3 (2026-02-03)
+===================
+This release excludes some unnecessary things from the archive published to
+crates.io. Specifically, fuzzing data and various shell scripts are now
+excluded. If you run into problems, please file an issue.
+
+Improvements:
+
+* [#1319](https://github.com/rust-lang/regex/pull/1319):
+Switch from a Cargo `exclude` list to an `include` list, and exclude some
+unnecessary stuff.
+
+
 1.12.2 (2025-10-13)
 ===================
 This release fixes a `cargo doc` breakage on nightly when `--cfg docsrs` is

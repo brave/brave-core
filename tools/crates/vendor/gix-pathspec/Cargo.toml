@@ -10,16 +10,16 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.82"
+edition = "2024"
+rust-version = "1.88"
 name = "gix-pathspec"
-version = "0.13.0"
+version = "0.22.1"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
 build = false
 include = [
-    "src/**/*",
-    "LICENSE-*",
-    "README.md",
+    "/src/**/*",
+    "/LICENSE-*",
+    "/README.md",
 ]
 autolib = false
 autobins = false
@@ -30,11 +30,12 @@ description = "A crate of the gitoxide project dealing magical pathspecs"
 readme = "README.md"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/GitoxideLabs/gitoxide"
+resolver = "2"
 
 [lib]
 name = "gix_pathspec"
 path = "src/lib.rs"
-doctest = false
+doctest = true
 
 [dependencies.bitflags]
 version = "2"
@@ -45,24 +46,29 @@ features = ["std"]
 default-features = false
 
 [dependencies.gix-attributes]
-version = "^0.28.0"
+version = "^0.37.1"
 
 [dependencies.gix-config-value]
-version = "^0.15.2"
+version = "^0.21.1"
+
+[dependencies.gix-error]
+version = "^0.5.2"
+features = ["bstr"]
 
 [dependencies.gix-glob]
-version = "^0.22.0"
+version = "^0.29.1"
 
 [dependencies.gix-path]
-version = "^0.10.21"
+version = "^0.14.1"
 
-[dependencies.thiserror]
-version = "2.0.17"
+[dev-dependencies.insta]
+version = "1.46.3"
 
 [dev-dependencies.serial_test]
-version = "3.1.1"
+version = "3.4.0"
 
 [lints.clippy]
+assert_is_empty = "allow"
 bool_to_int_with_if = "allow"
 borrow_as_ptr = "allow"
 cast_lossless = "allow"
@@ -81,7 +87,6 @@ explicit_into_iter_loop = "allow"
 explicit_iter_loop = "allow"
 filter_map_next = "allow"
 fn_params_excessive_bools = "allow"
-from_iter_instead_of_collect = "allow"
 if_not_else = "allow"
 ignored_unit_patterns = "allow"
 implicit_clone = "allow"

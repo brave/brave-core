@@ -8,7 +8,7 @@ use http::Uri;
 use hyper::rt;
 use hyper_util::client::legacy::connect::Connection;
 use hyper_util::rt::TokioIo;
-use pki_types::ServerName;
+use rustls::pki_types::ServerName;
 use tokio_rustls::TlsConnector;
 use tower_service::Service;
 
@@ -33,6 +33,23 @@ impl<T> HttpsConnector<T> {
     /// This is the same as [`crate::HttpsConnectorBuilder::new()`].
     pub fn builder() -> builder::ConnectorBuilder<builder::WantsTlsConfig> {
         builder::ConnectorBuilder::new()
+    }
+
+    /// Creates a new `HttpsConnector`.
+    ///
+    /// The recommended way to create a `HttpsConnector` is to use a [`crate::HttpsConnectorBuilder`]. See [`HttpsConnector::builder()`].
+    pub fn new(
+        http: T,
+        tls_config: impl Into<Arc<rustls::ClientConfig>>,
+        force_https: bool,
+        server_name_resolver: Arc<dyn ResolveServerName + Send + Sync>,
+    ) -> Self {
+        Self {
+            http,
+            tls_config: tls_config.into(),
+            force_https,
+            server_name_resolver,
+        }
     }
 
     /// Force the use of HTTPS when connecting.
@@ -77,16 +94,10 @@ where
             }
             Some(scheme) if scheme != &http::uri::Scheme::HTTPS => {
                 let message = format!("unsupported scheme {scheme}");
-                return Box::pin(async move {
-                    Err(io::Error::new(io::ErrorKind::Other, message).into())
-                });
+                return Box::pin(async move { Err(io::Error::other(message).into()) });
             }
             Some(_) => {}
-            None => {
-                return Box::pin(async move {
-                    Err(io::Error::new(io::ErrorKind::Other, "missing scheme").into())
-                })
-            }
+            None => return Box::pin(async move { Err(io::Error::other("missing scheme").into()) }),
         };
 
         let cfg = self.tls_config.clone();
@@ -106,7 +117,7 @@ where
                 TlsConnector::from(cfg)
                     .connect(hostname, TokioIo::new(tcp))
                     .await
-                    .map_err(|e| io::Error::new(io::ErrorKind::Other, e))?,
+                    .map_err(io::Error::other)?,
             )))
         })
     }
@@ -127,7 +138,7 @@ where
 }
 
 impl<T> fmt::Debug for HttpsConnector<T> {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("HttpsConnector")
             .field("force_https", &self.force_https)
             .finish()

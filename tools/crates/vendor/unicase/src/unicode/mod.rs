@@ -9,33 +9,19 @@ mod map;
 pub struct Unicode<S>(pub S);
 
 impl<S: AsRef<str>> Unicode<S> {
+    fn to_folded_chars(&self) -> impl Iterator<Item = char> + '_ {
+        self.0.as_ref().chars().flat_map(lookup)
+    }
+
     pub fn to_folded_case(&self) -> String {
-        self.0.as_ref().chars().flat_map(lookup).collect()
+        self.to_folded_chars().collect()
     }
 }
 
 impl<S1: AsRef<str>, S2: AsRef<str>> PartialEq<Unicode<S2>> for Unicode<S1> {
     #[inline]
     fn eq(&self, other: &Unicode<S2>) -> bool {
-        let mut left = self.0.as_ref().chars().flat_map(lookup);
-        let mut right = other.0.as_ref().chars().flat_map(lookup);
-
-        // inline Iterator::eq since not added until Rust 1.5
-        loop {
-            let x = match left.next() {
-                None => return right.next().is_none(),
-                Some(val) => val,
-            };
-
-            let y = match right.next() {
-                None => return false,
-                Some(val) => val,
-            };
-
-            if x != y {
-                return false;
-            }
-        }
+        self.to_folded_chars().eq(other.to_folded_chars())
     }
 }
 
@@ -51,9 +37,7 @@ impl<T: AsRef<str>> PartialOrd for Unicode<T> {
 impl<T: AsRef<str>> Ord for Unicode<T> {
     #[inline]
     fn cmp(&self, other: &Self) -> Ordering {
-        let self_chars = self.0.as_ref().chars().flat_map(lookup);
-        let other_chars = other.0.as_ref().chars().flat_map(lookup);
-        self_chars.cmp(other_chars)
+        self.to_folded_chars().cmp(other.to_folded_chars())
     }
 }
 
@@ -61,8 +45,8 @@ impl<S: AsRef<str>> Hash for Unicode<S> {
     #[inline]
     fn hash<H: Hasher>(&self, hasher: &mut H) {
         let mut buf = [0; 4];
-        for c in self.0.as_ref().chars().flat_map(|c| lookup(c)) {
-            let len = char_to_utf8(c, &mut buf);
+        for c in self.to_folded_chars() {
+            let len = c.encode_utf8(&mut buf).len();
             // we can't use `write(buf)` because the ASCII variant uses
             // `write_u8`. The docs for Hash say that's technically different.
             // ¯\_(ツ)_/¯
@@ -72,35 +56,6 @@ impl<S: AsRef<str>> Hash for Unicode<S> {
         }
         // prefix-freedom
         hasher.write_u8(0xFF);
-    }
-}
-
-#[inline]
-fn char_to_utf8(c: char, dst: &mut [u8; 4]) -> usize {
-    const TAG_CONT: u8 = 0b1000_0000;
-    const TAG_TWO_B: u8 = 0b1100_0000;
-    const TAG_THREE_B: u8 = 0b1110_0000;
-    const TAG_FOUR_B: u8 = 0b1111_0000;
-
-    let code = c as u32;
-    if code <= 0x7F {
-        dst[0] = code as u8;
-        1
-    } else if code <= 0x7FF {
-        dst[0] = (code >> 6 & 0x1F) as u8 | TAG_TWO_B;
-        dst[1] = (code & 0x3F) as u8 | TAG_CONT;
-        2
-    } else if code <= 0xFFFF {
-        dst[0] = (code >> 12 & 0x0F) as u8 | TAG_THREE_B;
-        dst[1] = (code >> 6 & 0x3F) as u8 | TAG_CONT;
-        dst[2] = (code & 0x3F) as u8 | TAG_CONT;
-        3
-    } else {
-        dst[0] = (code >> 18 & 0x07) as u8 | TAG_FOUR_B;
-        dst[1] = (code >> 12 & 0x3F) as u8 | TAG_CONT;
-        dst[2] = (code >> 6 & 0x3F) as u8 | TAG_CONT;
-        dst[3] = (code & 0x3F) as u8 | TAG_CONT;
-        4
     }
 }
 
@@ -130,8 +85,8 @@ mod fold {
                     Some(one)
                 }
                 Fold::Three(one, two, three) => {
-                    *self = Fold::Two(one, two);
-                    Some(three)
+                    *self = Fold::Two(two, three);
+                    Some(one)
                 }
             }
         }
@@ -193,6 +148,16 @@ mod tests {
         eq!("ﬂour", "flour");
         eq!("Maße", "MASSE");
         eq!("ᾲ στο διάολο", "ὰι στο διάολο");
+    }
+
+    #[test]
+    fn test_three_char_case_folding() {
+        // Characters whose full case folding is three characters.
+        eq!("ﬃ", "ffi");
+        eq!("ﬄ", "FFL");
+        eq!("ΐ", "ι\u{308}\u{301}");
+        eq!("ᾷ", "α\u{342}ι");
+        assert_eq!(Unicode("ﬃ").to_folded_case(), "ffi");
     }
 
     #[test]

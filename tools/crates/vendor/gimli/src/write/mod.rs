@@ -5,16 +5,17 @@
 //! This module works by building up a representation of the debugging information
 //! in memory, and then writing it all at once. It supports two major use cases:
 //!
-//! * Use the [`DwarfUnit`](./struct.DwarfUnit.html) type when writing DWARF
+//! * Use the [`DwarfUnit`] type when writing DWARF
 //!   for a single compilation unit.
 //!
-//! * Use the [`Dwarf`](./struct.Dwarf.html) type when writing DWARF for multiple
+//! * Use the [`Dwarf`] type when writing DWARF for multiple
 //!   compilation units.
 //!
 //! The module also supports reading in DWARF debugging information and writing it out
-//! again, possibly after modifying it. Create a [`read::Dwarf`](../read/struct.Dwarf.html)
-//! instance, and then use [`Dwarf::from`](./struct.Dwarf.html#method.from) to convert
-//! it to a writable instance.
+//! again, possibly after modifying it. Create a [`read::Dwarf`](crate::read::Dwarf)
+//! instance, and then use [`Dwarf::from`] to perform a simple conversion to a writable
+//! instance. [`Dwarf::convert`] or [`Dwarf::convert_with_filter`] can be used for
+//! more complex conversions.
 //!
 //! ## Example Usage
 //!
@@ -58,11 +59,14 @@
 //! #     example().unwrap();
 //! # }
 
-use std::error;
-use std::fmt;
-use std::result;
+use core::error;
+use core::fmt;
+use core::result;
 
 use crate::constants;
+
+type FnvIndexMap<T, V> = indexmap::IndexMap<T, V, fnv::FnvBuildHasher>;
+type FnvIndexSet<T> = indexmap::IndexSet<T, fnv::FnvBuildHasher>;
 
 mod endian_vec;
 pub use self::endian_vec::*;
@@ -164,6 +168,7 @@ pub use self::unit::*;
 
 /// An error that occurred when writing.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum Error {
     /// The given offset is out of bounds.
     OffsetOutOfBounds,
@@ -201,6 +206,10 @@ pub enum Error {
     UnsupportedCfiExpressionReference,
     /// Unsupported forward reference in expression.
     UnsupportedExpressionForwardReference,
+    /// Range or location entry is an address pair, but base address is set.
+    UnexpectedBaseAddress,
+    /// Range or location entry is an offset pair, but base address is not set.
+    MissingBaseAddress,
 }
 
 impl fmt::Display for Error {
@@ -254,6 +263,18 @@ impl fmt::Display for Error {
             Error::UnsupportedExpressionForwardReference => {
                 write!(f, "Unsupported forward reference in expression.")
             }
+            Error::UnexpectedBaseAddress => {
+                write!(
+                    f,
+                    "Range or location entry is an address pair, but base address is set."
+                )
+            }
+            Error::MissingBaseAddress => {
+                write!(
+                    f,
+                    "Range or location entry is an offset pair, but base address is not set."
+                )
+            }
         }
     }
 }
@@ -282,20 +303,6 @@ pub enum Address {
     },
 }
 
-/// A reference to a `.debug_info` entry.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-pub enum Reference {
-    /// An external symbol.
-    ///
-    /// The meaning of this value is decided by the writer, but
-    /// will typically be an index into a symbol table.
-    Symbol(usize),
-    /// An entry in the same section.
-    ///
-    /// This only supports references in units that are emitted together.
-    Entry(UnitId, UnitEntryId),
-}
-
 // This type is only used in debug assertions.
 #[cfg(not(debug_assertions))]
 type BaseId = ();
@@ -307,7 +314,7 @@ struct BaseId(usize);
 #[cfg(debug_assertions)]
 impl Default for BaseId {
     fn default() -> Self {
-        use std::sync::atomic;
+        use core::sync::atomic;
         static BASE_ID: atomic::AtomicUsize = atomic::AtomicUsize::new(0);
         BaseId(BASE_ID.fetch_add(1, atomic::Ordering::Relaxed))
     }
@@ -318,13 +325,13 @@ mod convert {
     use super::*;
     use crate::read;
 
-    pub(crate) use super::unit::convert::*;
-
     /// An error that occurred when converting a read value into a write value.
     #[derive(Debug, Clone, Copy, PartialEq, Eq)]
     pub enum ConvertError {
         /// An error occurred when reading.
         Read(read::Error),
+        /// An error occurred when writing.
+        Write(Error),
         /// Writing of this attribute value is not implemented yet.
         UnsupportedAttributeValue,
         /// This attribute value is an invalid name/form combination.
@@ -337,6 +344,12 @@ mod convert {
         UnsupportedLineInstruction,
         /// Writing this form of line string is not implemented yet.
         UnsupportedLineStringForm,
+        /// A `DW_LNE_end_sequence` instruction was missing at the end of a sequence.
+        MissingLineEndSequence,
+        /// The name of the compilation unit is missing.
+        MissingCompilationName,
+        /// The path of the compilation directory is missing.
+        MissingCompilationDirectory,
         /// A `.debug_line` file index is invalid.
         InvalidFileIndex,
         /// A `.debug_line` directory index is invalid.
@@ -368,6 +381,7 @@ mod convert {
             use self::ConvertError::*;
             match *self {
                 Read(ref e) => e.fmt(f),
+                Write(ref e) => e.fmt(f),
                 UnsupportedAttributeValue => {
                     write!(f, "Writing of this attribute value is not implemented yet.")
                 }
@@ -388,6 +402,14 @@ mod convert {
                     f,
                     "Writing this form of line string is not implemented yet."
                 ),
+                MissingLineEndSequence => write!(
+                    f,
+                    "A `DW_LNE_end_sequence` instruction was missing at the end of a sequence."
+                ),
+                MissingCompilationName => write!(f, "The name of the compilation unit is missing."),
+                MissingCompilationDirectory => {
+                    write!(f, "The path of the compilation directory is missing.")
+                }
                 InvalidFileIndex => write!(f, "A `.debug_line` file index is invalid."),
                 InvalidDirectoryIndex => write!(f, "A `.debug_line` directory index is invalid."),
                 InvalidLineBase => write!(f, "A `.debug_line` line base is invalid."),
@@ -418,6 +440,12 @@ mod convert {
     impl From<read::Error> for ConvertError {
         fn from(e: read::Error) -> Self {
             ConvertError::Read(e)
+        }
+    }
+
+    impl From<Error> for ConvertError {
+        fn from(e: Error) -> Self {
+            ConvertError::Write(e)
         }
     }
 

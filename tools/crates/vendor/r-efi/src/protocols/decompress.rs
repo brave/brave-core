@@ -12,15 +12,15 @@ pub const PROTOCOL_GUID: crate::base::Guid = crate::base::Guid::from_fields(
     &[0x00, 0x90, 0x27, 0x3f, 0xc1, 0x4d],
 );
 
-pub type ProtocolGetInfo = eficall! {fn(
+pub type ProtocolGetInfo = unsafe extern "efiapi" fn(
     *mut Protocol,
     *mut core::ffi::c_void,
     u32,
     *mut u32,
     *mut u32,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolDecompress = eficall! {fn(
+pub type ProtocolDecompress = unsafe extern "efiapi" fn(
     *mut Protocol,
     *mut core::ffi::c_void,
     u32,
@@ -28,7 +28,7 @@ pub type ProtocolDecompress = eficall! {fn(
     u32,
     *mut core::ffi::c_void,
     u32,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
 #[repr(C)]
 pub struct Protocol {

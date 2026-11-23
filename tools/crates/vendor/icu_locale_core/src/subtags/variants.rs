@@ -17,7 +17,7 @@ use core::ops::Deref;
 /// # Examples
 ///
 /// ```
-/// use icu::locale::subtags::{variant, Variants};
+/// use icu::locale::subtags::{Variants, variant};
 ///
 /// let mut v = vec![variant!("posix"), variant!("macos")];
 /// v.sort();
@@ -49,7 +49,7 @@ impl Variants {
     /// # Examples
     ///
     /// ```
-    /// use icu::locale::subtags::{variant, Variants};
+    /// use icu::locale::subtags::{Variants, variant};
     ///
     /// let variants = Variants::from_variant(variant!("posix"));
     /// ```
@@ -67,7 +67,7 @@ impl Variants {
     /// # Examples
     ///
     /// ```
-    /// use icu::locale::subtags::{variant, Variants};
+    /// use icu::locale::subtags::{Variants, variant};
     ///
     /// let mut v = vec![variant!("posix"), variant!("macos")];
     /// v.sort();
@@ -96,7 +96,7 @@ impl Variants {
     /// # Examples
     ///
     /// ```
-    /// use icu::locale::subtags::{variant, Variants};
+    /// use icu::locale::subtags::{Variants, variant};
     ///
     /// let mut v = vec![variant!("posix"), variant!("macos")];
     /// v.sort();
@@ -117,6 +117,58 @@ impl Variants {
     /// Whether the list of variants is empty.
     pub const fn is_empty(&self) -> bool {
         self.0.is_empty()
+    }
+
+    /// Adds a variant to the list, maintaining sorted order.
+    ///
+    /// Returns `true` if the variant was added, `false` if it was already present.
+    ///
+    /// ✨ *Enabled with the `alloc` Cargo feature.*
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use icu::locale::subtags::{Variants, variant};
+    ///
+    /// let mut variants = Variants::new();
+    /// assert!(variants.push(variant!("posix")));
+    /// assert!(!variants.push(variant!("posix"))); // Already present
+    /// assert!(variants.push(variant!("macos")));
+    /// assert_eq!(variants.to_string(), "macos-posix");
+    /// ```
+    #[cfg(feature = "alloc")]
+    pub fn push(&mut self, variant: Variant) -> bool {
+        match self.binary_search(&variant) {
+            Ok(_) => false, // Already present
+            Err(i) => {
+                self.0.insert(i, variant);
+                true
+            }
+        }
+    }
+
+    /// Removes a variant from the list.
+    ///
+    /// Returns `true` if the variant was removed, `false` if it was not present.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use icu::locale::subtags::{Variants, variant};
+    ///
+    /// let mut variants = Variants::from_variant(variant!("posix"));
+    /// assert!(variants.remove(&variant!("posix")));
+    /// assert!(!variants.remove(&variant!("posix"))); // Already removed
+    /// assert!(variants.is_empty());
+    /// ```
+    pub fn remove(&mut self, variant: &Variant) -> bool {
+        match self.binary_search(variant) {
+            Ok(i) => {
+                self.0.remove(i);
+                true
+            }
+            Err(_) => false,
+        }
     }
 
     pub(crate) fn for_each_subtag_str<E, F>(&self, f: &mut F) -> Result<(), E>

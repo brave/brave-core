@@ -1,13 +1,13 @@
 use serde_spanned::Spanned;
 
 use crate::alloc_prelude::*;
+use crate::de::DeString;
+use crate::de::DeTable;
+use crate::de::DeValue;
 use crate::de::parser::array::on_array;
 use crate::de::parser::key::on_key;
 use crate::de::parser::prelude::*;
 use crate::de::parser::value::on_scalar;
-use crate::de::DeString;
-use crate::de::DeTable;
-use crate::de::DeValue;
 use crate::map::Entry;
 
 /// ```abnf
@@ -106,16 +106,22 @@ impl<'i> State<'i> {
         path: Vec<Spanned<DeString<'i>>>,
         key: Option<Spanned<DeString<'i>>>,
     ) {
+        #[cfg(feature = "debug")]
+        let _scope = TraceScope::new("inline_table::capture_key");
         if let Some(key) = key {
             self.current_key = Some((path, key));
         }
     }
 
     fn finish_key(&mut self, _event: &toml_parser::parser::Event) {
+        #[cfg(feature = "debug")]
+        let _scope = TraceScope::new("inline_table::finish_key");
         self.seen_keyval_sep = true;
     }
 
     fn capture_value(&mut self, _event: &toml_parser::parser::Event, value: Spanned<DeValue<'i>>) {
+        #[cfg(feature = "debug")]
+        let _scope = TraceScope::new("inline_table::capture_value");
         self.current_value = Some(value);
     }
 
@@ -138,6 +144,16 @@ impl<'i> State<'i> {
             // "Likewise, using dotted keys to redefine tables already defined in [table] form is not allowed"
             let mixed_table_types = table.is_dotted() == path.is_empty();
             if mixed_table_types {
+                #[cfg(feature = "debug")]
+                trace(
+                    &format!("table.dotted={}", table.is_dotted()),
+                    anstyle::AnsiColor::Red.on_default(),
+                );
+                #[cfg(feature = "debug")]
+                trace(
+                    &format!("path.is_empty={}", path.is_empty()),
+                    anstyle::AnsiColor::Red.on_default(),
+                );
                 let key_span = get_key_span(&key);
                 errors.report_error(ParseError::new("duplicate key").with_unexpected(key_span));
             } else {
@@ -181,12 +197,17 @@ fn descend_path<'a, 'i>(
     #[cfg(feature = "debug")]
     trace(
         &format!(
-            "key={:?}",
+            "path={:?}",
             path.iter().map(|k| k.get_ref()).collect::<Vec<_>>()
         ),
         anstyle::AnsiColor::Blue.on_default(),
     );
     for key in path.iter() {
+        #[cfg(feature = "debug")]
+        trace(
+            &format!("path[_]={:?}", key.get_ref()),
+            anstyle::AnsiColor::Blue.on_default(),
+        );
         table = match table.entry(key.clone()) {
             Entry::Vacant(entry) => {
                 let mut new_table = DeTable::new();
@@ -200,12 +221,27 @@ fn descend_path<'a, 'i>(
             }
             Entry::Occupied(entry) => {
                 let spanned = entry.into_mut();
+                let old_span = spanned.span();
                 match spanned.as_mut() {
-                    DeValue::Table(ref mut sweet_child_of_mine) => {
+                    DeValue::Table(sweet_child_of_mine) => {
                         // Since tables cannot be defined more than once, redefining such tables using a
                         // [table] header is not allowed. Likewise, using dotted keys to redefine tables
                         // already defined in [table] form is not allowed.
-                        if dotted && !sweet_child_of_mine.is_implicit() {
+                        let mixed_table_types = dotted && !sweet_child_of_mine.is_implicit();
+                        if mixed_table_types {
+                            #[cfg(feature = "debug")]
+                            trace(
+                                &format!("dotted={dotted}"),
+                                anstyle::AnsiColor::Red.on_default(),
+                            );
+                            #[cfg(feature = "debug")]
+                            trace(
+                                &format!(
+                                    "sweet_child_of_mine.is_implicit={}",
+                                    sweet_child_of_mine.is_implicit()
+                                ),
+                                anstyle::AnsiColor::Red.on_default(),
+                            );
                             let key_span = get_key_span(key);
                             errors.report_error(
                                 ParseError::new("duplicate key").with_unexpected(key_span),
@@ -214,14 +250,17 @@ fn descend_path<'a, 'i>(
                         }
                         sweet_child_of_mine
                     }
-                    item => {
+                    existing => {
+                        let old_span =
+                            toml_parser::Span::new_unchecked(old_span.start, old_span.end);
                         let key_span = get_key_span(key);
                         errors.report_error(
                             ParseError::new(format!(
                                 "cannot extend value of type {} with a dotted key",
-                                item.type_str()
+                                existing.type_str()
                             ))
-                            .with_unexpected(key_span),
+                            .with_unexpected(key_span)
+                            .with_context(old_span),
                         );
                         return None;
                     }

@@ -6,7 +6,7 @@ use crate::data;
 /// The header portion of a pack data entry, identifying the kind of stored object.
 #[derive(PartialEq, Eq, Debug, Hash, Ord, PartialOrd, Clone, Copy)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-#[allow(missing_docs)]
+#[expect(missing_docs)]
 pub enum Header {
     /// The object is a commit
     Commit,
@@ -16,14 +16,8 @@ pub enum Header {
     Blob,
     /// The object is a tag
     Tag,
-    /// Describes a delta-object which needs to be applied to a base. The base object is identified by the `base_id` field
-    /// which is found within the parent repository.
-    /// Most commonly used for **thin-packs** when receiving pack files from the server to refer to objects that are not
-    /// part of the pack but expected to be present in the receivers repository.
-    ///
-    /// # Note
-    /// This could also be an object within this pack if the LSB encoded offset would be larger than 20 bytes, which is unlikely to
-    /// happen.
+    /// Describes a delta-object which needs to be applied to a base identified by `base_id`.
+    /// The base may occur anywhere in the same pack or in the parent repository, as it does in a **thin-pack**.
     ///
     /// **The naming** is exactly the same as the canonical implementation uses, namely **REF_DELTA**.
     RefDelta { base_id: gix_hash::ObjectId },
@@ -38,12 +32,14 @@ pub enum Header {
 }
 
 impl Header {
-    /// Subtract `distance` from `pack_offset` safely without the chance for overflow or no-ops if `distance` is 0.
+    /// Subtract `distance` from `pack_offset` safely, returning only offsets beyond the pack header.
     pub fn verified_base_pack_offset(pack_offset: data::Offset, distance: u64) -> Option<data::Offset> {
         if distance == 0 {
             return None;
         }
-        pack_offset.checked_sub(distance)
+        pack_offset
+            .checked_sub(distance)
+            .filter(|offset| *offset >= data::header::SIZE as data::Offset)
     }
     /// Convert the header's object kind into [`gix_object::Kind`] if possible
     pub fn as_kind(&self) -> Option<gix_object::Kind> {
@@ -113,7 +109,12 @@ impl Header {
         Ok(written)
     }
 
-    /// The size of the header in bytes when serialized
+    /// The size of the header in bytes when written in canonical form.
+    ///
+    /// This is the number of bytes [`Self::write_to()`] would emit for `decompressed_size`.
+    /// It does not inspect existing pack bytes and therefore does not preserve non-canonical
+    /// overlong size encodings. Use [`data::Entry::header_size()`] for decoded entries when the
+    /// result has to match the header length present in the pack.
     pub fn size(&self, decompressed_size: u64) -> usize {
         self.write_to(decompressed_size, &mut io::sink())
             .expect("io::sink() to never fail")
@@ -146,5 +147,26 @@ mod tests {
         let mut buf = [0u8; 10];
         let buf = leb64_encode(u64::MAX, &mut buf);
         assert_eq!(buf.len(), 10, "10 bytes should be used when 64bits are encoded");
+    }
+
+    #[test]
+    fn verified_base_pack_offset_rejects_the_pack_header() {
+        let first_entry_offset = data::header::SIZE as data::Offset;
+        assert_eq!(
+            Header::verified_base_pack_offset(first_entry_offset + 1, 1),
+            Some(first_entry_offset)
+        );
+        for (pack_offset, distance) in [
+            (first_entry_offset + 1, 0),
+            (first_entry_offset, 1),
+            (first_entry_offset, first_entry_offset),
+            (first_entry_offset, first_entry_offset + 1),
+        ] {
+            assert_eq!(
+                Header::verified_base_pack_offset(pack_offset, distance),
+                None,
+                "offset {pack_offset} and distance {distance} cannot point to a pack entry"
+            );
+        }
     }
 }

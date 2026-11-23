@@ -1,0 +1,20 @@
+[package]
+name = "multiversion_no_op"
+description = "Provides a pass-through function attribute called multiversion for optimizing build times"
+version = "1.0.0"
+edition = "2021" # match `multiversion`
+authors = ["Henri Sivonen <hsivonen@hsivonen.fi>"]
+license = "Apache-2.0 OR MIT"
+readme = "README.md"
+documentation = "https://docs.rs/multiversion_no_op/"
+homepage = "https://docs.rs/multiversion_no_op/"
+repository = "https://github.com/hsivonen/multiversion_no_op"
+keywords = ["multiversioning"]
+categories = ["hardware-support", "no-std"]
+rust-version = "1.56"
+
+[lib]
+proc-macro = true
+
+[badges]
+maintenance = { status = "as-is" }

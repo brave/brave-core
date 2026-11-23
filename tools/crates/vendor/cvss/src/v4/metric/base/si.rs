@@ -1,7 +1,7 @@
 //! Integrity Impact to the Subsequent System (SI)
 
 use crate::{
-    Error, Result,
+    Error,
     v4::metric::{Metric, MetricType},
 };
 use alloc::borrow::ToOwned;
@@ -19,7 +19,7 @@ use core::{fmt, str::FromStr};
 /// > system (e.g. due to insufficient logging).
 /// > The resulting score is greatest when the consequence to the system is
 /// > highest.
-#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+#[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
 pub enum IntegrityImpactToTheSubsequentSystem {
     /// None (N)
     ///
@@ -42,13 +42,8 @@ pub enum IntegrityImpactToTheSubsequentSystem {
     /// > the Subsequent System. Alternatively, only some files can be modified,
     /// > but malicious modification would present a direct, serious consequence
     /// > to the Subsequent System.
+    #[default]
     High,
-}
-
-impl Default for IntegrityImpactToTheSubsequentSystem {
-    fn default() -> Self {
-        Self::High
-    }
 }
 
 impl Metric for IntegrityImpactToTheSubsequentSystem {
@@ -56,9 +51,9 @@ impl Metric for IntegrityImpactToTheSubsequentSystem {
 
     fn as_str(self) -> &'static str {
         match self {
-            IntegrityImpactToTheSubsequentSystem::None => "N",
-            IntegrityImpactToTheSubsequentSystem::Low => "L",
-            IntegrityImpactToTheSubsequentSystem::High => "H",
+            Self::None => "N",
+            Self::Low => "L",
+            Self::High => "H",
         }
     }
 }
@@ -72,11 +67,11 @@ impl fmt::Display for IntegrityImpactToTheSubsequentSystem {
 impl FromStr for IntegrityImpactToTheSubsequentSystem {
     type Err = Error;
 
-    fn from_str(s: &str) -> Result<Self> {
+    fn from_str(s: &str) -> Result<Self, Error> {
         match s {
-            "N" => Ok(IntegrityImpactToTheSubsequentSystem::None),
-            "L" => Ok(IntegrityImpactToTheSubsequentSystem::Low),
-            "H" => Ok(IntegrityImpactToTheSubsequentSystem::High),
+            "N" => Ok(Self::None),
+            "L" => Ok(Self::Low),
+            "H" => Ok(Self::High),
             _ => Err(Error::InvalidMetricV4 {
                 metric_type: Self::TYPE,
                 value: s.to_owned(),
@@ -101,29 +96,24 @@ pub(crate) mod merge {
     /// Result of the merging of the base and modified metrics.
     ///
     /// Used in scoring.
-    #[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+    #[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
     pub(crate) enum MergedIntegrityImpactToTheSubsequentSystem {
         Safety,
+        #[default]
         High,
         Low,
         None,
     }
 
-    impl Default for MergedIntegrityImpactToTheSubsequentSystem {
-        fn default() -> Self {
-            Self::High
-        }
-    }
-
     impl FromStr for MergedIntegrityImpactToTheSubsequentSystem {
         type Err = Error;
 
-        fn from_str(s: &str) -> Result<Self> {
+        fn from_str(s: &str) -> Result<Self, Error> {
             match s {
-                "S" => Ok(MergedIntegrityImpactToTheSubsequentSystem::Safety),
-                "H" => Ok(MergedIntegrityImpactToTheSubsequentSystem::High),
-                "L" => Ok(MergedIntegrityImpactToTheSubsequentSystem::Low),
-                "N" => Ok(MergedIntegrityImpactToTheSubsequentSystem::None),
+                "S" => Ok(Self::Safety),
+                "H" => Ok(Self::High),
+                "L" => Ok(Self::Low),
+                "N" => Ok(Self::None),
                 _ => Err(Error::InvalidMetricV4 {
                     metric_type: MetricType::SI,
                     value: s.to_owned(),

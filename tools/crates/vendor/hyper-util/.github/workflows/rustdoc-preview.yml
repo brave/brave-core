@@ -39,7 +39,7 @@ jobs:
           exit 1
 
       - name: Checkout PR branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           # Check out the PR's branch
           ref: refs/pull/${{ github.event.issue.number }}/head
@@ -81,7 +81,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout gh-pages branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: gh-pages
           persist-credentials: true

@@ -80,11 +80,38 @@ impl<I: Interval> IntervalSet<I> {
     }
 
     /// Add a new interval to this set.
-    pub fn push(&mut self, interval: I) {
-        // TODO: This could be faster. e.g., Push the interval such that
-        // it preserves canonicalization.
-        self.ranges.push(interval);
-        self.canonicalize();
+    pub fn push(&mut self, mut interval: I) {
+        let Err(i) = self.ranges.binary_search(&interval) else {
+            // Exact match, `interval` is already in the set.
+            return;
+        };
+
+        // The search finds us the first index where the previous interval
+        // start is less than or equal to the new interval start. Since the
+        // existing intervals are non-overlapping we only need to try to union
+        // this single preceding interval
+        let mut start = i;
+        if let Some(before_i) = i.checked_sub(1) {
+            let before = &self.ranges[before_i];
+            if let Some(union) = before.union(&interval) {
+                interval = union;
+                start = before_i;
+            }
+        }
+        // `interval` may overlap any number of intervals following the
+        // insertion point so will union each of them until we reach the
+        // first non-overlapping interval
+        let mut end = i;
+        for after_i in i..self.ranges.len() {
+            let after = &self.ranges[after_i];
+            let Some(union) = interval.union(after) else {
+                break;
+            };
+            interval = union;
+            end = after_i + 1;
+        }
+        self.ranges.splice(start..end, core::iter::once(interval));
+
         // We don't know whether the new interval added here is considered
         // case folded, so we conservatively assume that the entire set is
         // no longer case folded if it was previously.
@@ -347,24 +374,28 @@ impl<I: Interval> IntervalSet<I> {
         self.ranges.sort();
         assert!(!self.ranges.is_empty());
 
-        // Is there a way to do this in-place with constant memory? I couldn't
-        // figure out a way to do it. So just append the canonicalization to
-        // the end of this range, and then drain it before we're done.
-        let drain_end = self.ranges.len();
-        for oldi in 0..drain_end {
-            // If we've added at least one new range, then check if we can
-            // merge this range in the previously added range.
-            if self.ranges.len() > drain_end {
-                let (last, rest) = self.ranges.split_last_mut().unwrap();
-                if let Some(union) = last.union(&rest[oldi]) {
-                    *last = union;
-                    continue;
+        // `canonical_index` points to the last index of the canonicalized
+        // portion of the vector
+        let mut canonical_index = 0;
+        // `next_index` points to the next element we either merge into the
+        // last canonicalized element or move into the next canonicalized slot.
+        for next_index in 1..self.ranges.len() {
+            let (before, after) = self.ranges.split_at_mut(next_index);
+            let canonical = &mut before[canonical_index];
+            let next = &after[0];
+
+            if let Some(union) = canonical.union(next) {
+                *canonical = union;
+            } else {
+                canonical_index += 1;
+                // If we have merged a previous pair of ranges we fill in the gap caused
+                // by any such merges
+                if canonical_index != next_index {
+                    before[canonical_index] = *next;
                 }
             }
-            let range = self.ranges[oldi];
-            self.ranges.push(range);
         }
-        self.ranges.drain(..drain_end);
+        self.ranges.truncate(canonical_index + 1);
     }
 
     /// Returns true if and only if this class is in a canonical ordering.

@@ -1,10 +1,9 @@
 #![cfg(all(feature = "read", feature = "write"))]
 
-use object::read::{Object, ObjectSection, ObjectSymbol};
+use object::read::elf::Sym;
+use object::read::{Object, ObjectSymbol};
+use object::{Architecture, BinaryFormat, Endianness, SymbolFlags, SymbolKind, SymbolScope};
 use object::{read, write};
-use object::{
-    Architecture, BinaryFormat, Endianness, SectionKind, SymbolFlags, SymbolKind, SymbolScope,
-};
 
 #[test]
 fn coff_x86_64_common() {
@@ -66,6 +65,7 @@ fn coff_x86_64_common() {
     assert_eq!(symbol.scope(), SymbolScope::Linkage);
     assert!(!symbol.is_weak());
     assert!(!symbol.is_undefined());
+    assert!(symbol.is_common());
     assert_eq!(symbol.address(), 0);
     assert_eq!(symbol.size(), 4);
 
@@ -77,6 +77,7 @@ fn coff_x86_64_common() {
     assert_eq!(symbol.scope(), SymbolScope::Linkage);
     assert!(!symbol.is_weak());
     assert!(!symbol.is_undefined());
+    assert!(symbol.is_common());
     assert_eq!(symbol.address(), 0);
     assert_eq!(symbol.size(), 8);
 
@@ -88,6 +89,7 @@ fn coff_x86_64_common() {
     assert_eq!(symbol.scope(), SymbolScope::Linkage);
     assert!(!symbol.is_weak());
     assert!(symbol.is_undefined());
+    assert!(!symbol.is_common());
     assert_eq!(symbol.address(), 0);
     assert_eq!(symbol.size(), 0);
 
@@ -128,8 +130,7 @@ fn elf_x86_64_common() {
 
     //std::fs::write(&"common.o", &bytes).unwrap();
 
-    let object = read::File::parse(&*bytes).unwrap();
-    assert_eq!(object.format(), BinaryFormat::Elf);
+    let object = read::elf::ElfFile64::<Endianness>::parse(&*bytes).unwrap();
     assert_eq!(object.architecture(), Architecture::X86_64);
 
     let mut symbols = object.symbols();
@@ -142,8 +143,11 @@ fn elf_x86_64_common() {
     assert_eq!(symbol.scope(), SymbolScope::Linkage);
     assert!(!symbol.is_weak());
     assert!(!symbol.is_undefined());
+    assert!(symbol.is_common());
     assert_eq!(symbol.address(), 0);
     assert_eq!(symbol.size(), 4);
+    // For ELF, the value of a common symbol is its alignment.
+    assert_eq!(symbol.elf_symbol().st_value(Endianness::Little), 4);
 
     let symbol = symbols.next().unwrap();
     println!("{:?}", symbol);
@@ -153,8 +157,10 @@ fn elf_x86_64_common() {
     assert_eq!(symbol.scope(), SymbolScope::Linkage);
     assert!(!symbol.is_weak());
     assert!(!symbol.is_undefined());
+    assert!(symbol.is_common());
     assert_eq!(symbol.address(), 0);
     assert_eq!(symbol.size(), 8);
+    assert_eq!(symbol.elf_symbol().st_value(Endianness::Little), 8);
 
     let symbol = symbols.next();
     assert!(symbol.is_none(), "unexpected symbol {:?}", symbol);
@@ -201,16 +207,6 @@ fn macho_x86_64_common() {
     assert_eq!(object.architecture(), Architecture::X86_64);
 
     let mut sections = object.sections();
-
-    let common = sections.next().unwrap();
-    println!("{:?}", common);
-    let common_index = common.index();
-    assert_eq!(common.name(), Ok("__common"));
-    assert_eq!(common.segment_name(), Ok(Some("__DATA")));
-    assert_eq!(common.kind(), SectionKind::Common);
-    assert_eq!(common.size(), 16);
-    assert_eq!(common.data(), Ok(&[][..]));
-
     let section = sections.next();
     assert!(section.is_none(), "unexpected section {:?}", section);
 
@@ -220,21 +216,33 @@ fn macho_x86_64_common() {
     println!("{:?}", symbol);
     assert_eq!(symbol.name(), Ok("_v1"));
     assert_eq!(symbol.kind(), SymbolKind::Data);
-    assert_eq!(symbol.section_index(), Some(common_index));
+    assert_eq!(symbol.section(), read::SymbolSection::Common);
     assert_eq!(symbol.scope(), SymbolScope::Linkage);
     assert!(!symbol.is_weak());
     assert!(!symbol.is_undefined());
+    assert!(symbol.is_common());
     assert_eq!(symbol.address(), 0);
+    assert_eq!(symbol.size(), 4);
+    let SymbolFlags::MachO { n_desc, .. } = symbol.flags() else {
+        panic!("unexpected symbol flags");
+    };
+    assert_eq!(n_desc.common_alignment(), 2);
 
     let symbol = symbols.next().unwrap();
     println!("{:?}", symbol);
     assert_eq!(symbol.name(), Ok("_v2"));
     assert_eq!(symbol.kind(), SymbolKind::Data);
-    assert_eq!(symbol.section_index(), Some(common_index));
+    assert_eq!(symbol.section(), read::SymbolSection::Common);
     assert_eq!(symbol.scope(), SymbolScope::Linkage);
     assert!(!symbol.is_weak());
     assert!(!symbol.is_undefined());
-    assert_eq!(symbol.address(), 8);
+    assert!(symbol.is_common());
+    assert_eq!(symbol.address(), 0);
+    assert_eq!(symbol.size(), 8);
+    let SymbolFlags::MachO { n_desc, .. } = symbol.flags() else {
+        panic!("unexpected symbol flags");
+    };
+    assert_eq!(n_desc.common_alignment(), 3);
 
     let symbol = symbols.next();
     assert!(symbol.is_none(), "unexpected symbol {:?}", symbol);

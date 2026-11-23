@@ -353,7 +353,7 @@ pub type VirtualAddress = u64;
 /// invocation, if invoked as an UEFI driver.
 /// In most cases it is perfectly fine to cast the pointer to a real rust reference. However, this
 /// should be an explicit decision by the caller.
-pub type ImageEntryPoint = eficall! {fn(Handle, *mut crate::system::SystemTable) -> Status};
+pub type ImageEntryPoint = unsafe extern "efiapi" fn(Handle, *mut crate::system::SystemTable) -> Status;
 
 /// Globally Unique Identifiers
 ///

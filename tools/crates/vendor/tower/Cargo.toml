@@ -13,7 +13,7 @@
 edition = "2018"
 rust-version = "1.64.0"
 name = "tower"
-version = "0.5.2"
+version = "0.5.3"
 authors = ["Tower Maintainers <team@tower-rs.com>"]
 build = false
 autolib = false
@@ -50,6 +50,110 @@ rustdoc-args = [
 
 [package.metadata.playground]
 features = ["full"]
+
+[features]
+balance = [
+    "discover",
+    "load",
+    "ready-cache",
+    "make",
+    "slab",
+    "util",
+]
+buffer = [
+    "tokio/sync",
+    "tokio/rt",
+    "tokio-util",
+    "tracing",
+    "pin-project-lite",
+]
+discover = [
+    "futures-core",
+    "pin-project-lite",
+]
+filter = [
+    "futures-util",
+    "pin-project-lite",
+]
+full = [
+    "balance",
+    "buffer",
+    "discover",
+    "filter",
+    "hedge",
+    "limit",
+    "load",
+    "load-shed",
+    "make",
+    "ready-cache",
+    "reconnect",
+    "retry",
+    "spawn-ready",
+    "steer",
+    "timeout",
+    "util",
+]
+hedge = [
+    "util",
+    "filter",
+    "futures-util",
+    "hdrhistogram",
+    "tokio/time",
+    "tracing",
+]
+limit = [
+    "tokio/time",
+    "tokio/sync",
+    "tokio-util",
+    "tracing",
+    "pin-project-lite",
+]
+load = [
+    "tokio/time",
+    "tracing",
+    "pin-project-lite",
+]
+load-shed = ["pin-project-lite"]
+log = ["tracing/log"]
+make = [
+    "pin-project-lite",
+    "tokio",
+]
+ready-cache = [
+    "futures-core",
+    "futures-util",
+    "indexmap",
+    "tokio/sync",
+    "tracing",
+    "pin-project-lite",
+]
+reconnect = [
+    "make",
+    "tracing",
+]
+retry = [
+    "tokio/time",
+    "util",
+]
+spawn-ready = [
+    "futures-util",
+    "tokio/sync",
+    "tokio/rt",
+    "util",
+    "tracing",
+]
+steer = []
+timeout = [
+    "pin-project-lite",
+    "tokio/time",
+]
+tokio-stream = []
+util = [
+    "futures-core",
+    "futures-util",
+    "pin-project-lite",
+    "sync_wrapper",
+]
 
 [lib]
 name = "tower"
@@ -132,7 +236,7 @@ version = "0.2.7"
 optional = true
 
 [dependencies.slab]
-version = "0.4"
+version = "0.4.9"
 optional = true
 
 [dependencies.sync_wrapper]
@@ -141,11 +245,6 @@ optional = true
 
 [dependencies.tokio]
 version = "1.6.2"
-features = ["sync"]
-optional = true
-
-[dependencies.tokio-stream]
-version = "0.1.0"
 optional = true
 
 [dependencies.tokio-util]
@@ -167,6 +266,13 @@ default-features = false
 
 [dev-dependencies.futures]
 version = "0.3.22"
+features = ["std"]
+default-features = false
+
+[dev-dependencies.futures-util]
+version = "0.3.22"
+features = ["async-await-macro"]
+default-features = false
 
 [dev-dependencies.hdrhistogram]
 version = "7.0"
@@ -175,17 +281,11 @@ default-features = false
 [dev-dependencies.http]
 version = "1"
 
-[dev-dependencies.lazy_static]
-version = "1.4.0"
-
-[dev-dependencies.pin-project-lite]
-version = "0.2.7"
-
 [dev-dependencies.quickcheck]
 version = "1"
 
 [dev-dependencies.rand]
-version = "0.8"
+version = "0.9"
 features = ["small_rng"]
 
 [dev-dependencies.tokio]
@@ -198,7 +298,7 @@ features = [
 ]
 
 [dev-dependencies.tokio-stream]
-version = "0.1.0"
+version = "0.1.1"
 
 [dev-dependencies.tokio-test]
 version = "0.4"
@@ -218,111 +318,3 @@ features = [
     "ansi",
 ]
 default-features = false
-
-[features]
-__common = [
-    "futures-core",
-    "pin-project-lite",
-]
-balance = [
-    "discover",
-    "load",
-    "ready-cache",
-    "make",
-    "slab",
-    "util",
-]
-buffer = [
-    "__common",
-    "tokio/sync",
-    "tokio/rt",
-    "tokio-util",
-    "tracing",
-]
-discover = ["__common"]
-filter = [
-    "__common",
-    "futures-util",
-]
-full = [
-    "balance",
-    "buffer",
-    "discover",
-    "filter",
-    "hedge",
-    "limit",
-    "load",
-    "load-shed",
-    "make",
-    "ready-cache",
-    "reconnect",
-    "retry",
-    "spawn-ready",
-    "steer",
-    "timeout",
-    "util",
-]
-hedge = [
-    "util",
-    "filter",
-    "futures-util",
-    "hdrhistogram",
-    "tokio/time",
-    "tracing",
-]
-limit = [
-    "__common",
-    "tokio/time",
-    "tokio/sync",
-    "tokio-util",
-    "tracing",
-]
-load = [
-    "__common",
-    "tokio/time",
-    "tracing",
-]
-load-shed = ["__common"]
-log = ["tracing/log"]
-make = [
-    "futures-util",
-    "pin-project-lite",
-    "tokio/io-std",
-]
-ready-cache = [
-    "futures-core",
-    "futures-util",
-    "indexmap",
-    "tokio/sync",
-    "tracing",
-    "pin-project-lite",
-]
-reconnect = [
-    "make",
-    "tokio/io-std",
-    "tracing",
-]
-retry = [
-    "__common",
-    "tokio/time",
-    "util",
-]
-spawn-ready = [
-    "__common",
-    "futures-util",
-    "tokio/sync",
-    "tokio/rt",
-    "util",
-    "tracing",
-]
-steer = []
-timeout = [
-    "pin-project-lite",
-    "tokio/time",
-]
-util = [
-    "__common",
-    "futures-util",
-    "pin-project-lite",
-    "sync_wrapper",
-]

@@ -1,168 +1,143 @@
-use core::marker::PhantomData;
-
 use crate::common::{DebugInfoOffset, Format};
-use crate::read::{parse_debug_info_offset, Error, Reader, ReaderOffset, Result, UnitOffset};
+use crate::constants::GdbIndexSymbolKind;
+use crate::read::{Error, Reader, ReaderOffset, Result, UnitOffset};
 
-// The various "Accelerated Access" sections (DWARF standard v4 Section 6.1) all have
-// similar structures. They consist of a header with metadata and an offset into the
-// .debug_info section for the entire compilation unit, and a series
-// of following entries that list addresses (for .debug_aranges) or names
-// (for .debug_pubnames and .debug_pubtypes) that are covered.
+// Common parsing for the `.debug_pub*` sections (DWARF v4 Section 6.1.1, Lookup by Name).
 //
-// Because these three tables all have similar structures, we abstract out some of
-// the parsing mechanics.
-
-pub trait LookupParser<R: Reader> {
-    /// The type of the produced header.
-    type Header;
-    /// The type of the produced entry.
-    type Entry;
-
-    /// Parse a header from `input`. Returns a tuple of `input` sliced to contain just the entries
-    /// corresponding to this header (without the header itself), and the parsed representation of
-    /// the header itself.
-    fn parse_header(input: &mut R) -> Result<(R, Self::Header)>;
-
-    /// Parse a single entry from `input`. Returns either a parsed representation of the entry
-    /// or None if `input` is exhausted.
-    fn parse_entry(input: &mut R, header: &Self::Header) -> Result<Option<Self::Entry>>;
-}
+// These sections consist of sets of data. Each set has a header with metadata followed by
+// a series of entries.
 
 #[derive(Clone, Debug)]
-pub struct DebugLookup<R, Parser>
-where
-    R: Reader,
-    Parser: LookupParser<R>,
-{
-    input_buffer: R,
-    phantom: PhantomData<Parser>,
+pub(crate) struct DebugPubSet<R: Reader> {
+    pub(crate) section: R,
 }
 
-impl<R, Parser> From<R> for DebugLookup<R, Parser>
-where
-    R: Reader,
-    Parser: LookupParser<R>,
-{
-    fn from(input_buffer: R) -> Self {
-        DebugLookup {
-            input_buffer,
-            phantom: PhantomData,
+impl<R: Reader> DebugPubSet<R> {
+    pub(crate) fn sets(&self, is_gnu: bool) -> PubSetIter<R> {
+        PubSetIter {
+            input: self.section.clone(),
+            is_gnu,
         }
     }
-}
 
-impl<R, Parser> DebugLookup<R, Parser>
-where
-    R: Reader,
-    Parser: LookupParser<R>,
-{
-    pub fn items(&self) -> LookupEntryIter<R, Parser> {
-        LookupEntryIter {
+    pub(crate) fn items(&self, is_gnu: bool) -> PubSetEntryIter<R> {
+        PubSetEntryIter {
             current_set: None,
-            remaining_input: self.input_buffer.clone(),
+            sets: self.sets(is_gnu),
         }
-    }
-
-    pub fn reader(&self) -> &R {
-        &self.input_buffer
     }
 }
 
 #[derive(Clone, Debug)]
-pub struct LookupEntryIter<R, Parser>
-where
-    R: Reader,
-    Parser: LookupParser<R>,
-{
-    current_set: Option<(R, Parser::Header)>, // Only none at the very beginning and end.
-    remaining_input: R,
+pub(crate) struct PubSetIter<R: Reader> {
+    input: R,
+    is_gnu: bool,
 }
 
-impl<R, Parser> LookupEntryIter<R, Parser>
-where
-    R: Reader,
-    Parser: LookupParser<R>,
-{
+impl<R: Reader> PubSetIter<R> {
+    /// Advance the iterator and return the next set.
+    ///
+    /// Returns the newly parsed set as `Ok(Some(PubSet))`. Returns `Ok(None)` when
+    /// iteration is complete. If an error occurs while parsing the next header,
+    /// then this error is returned as `Err(e)`, and all subsequent calls return
+    /// `Ok(None)`.
+    pub(crate) fn next(&mut self) -> Result<Option<PubSet<R>>> {
+        if self.input.is_empty() {
+            return Ok(None);
+        }
+        match PubSetHeader::parse(&mut self.input) {
+            Ok((header, entries)) => Ok(Some(PubSet {
+                header,
+                entries,
+                is_gnu: self.is_gnu,
+            })),
+            Err(e) => {
+                self.input.empty();
+                Err(e)
+            }
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub(crate) struct PubSetEntryIter<R: Reader> {
+    // Only none at the very beginning and end.
+    // PubSet::entries is consumed as we iterate.
+    current_set: Option<PubSet<R>>,
+    sets: PubSetIter<R>,
+}
+
+impl<R: Reader> PubSetEntryIter<R> {
     /// Advance the iterator and return the next entry.
     ///
-    /// Returns the newly parsed entry as `Ok(Some(Parser::Entry))`. Returns
+    /// Returns the newly parsed entry as `Ok(Some(PubSetEntry))`. Returns
     /// `Ok(None)` when iteration is complete and all entries have already been
     /// parsed and yielded. If an error occurs while parsing the next entry,
     /// then this error is returned as `Err(e)`, and all subsequent calls return
     /// `Ok(None)`.
-    ///
-    /// Can be [used with `FallibleIterator`](./index.html#using-with-fallibleiterator).
-    pub fn next(&mut self) -> Result<Option<Parser::Entry>> {
+    pub(crate) fn next(&mut self) -> Result<Option<PubSetEntry<R>>> {
         loop {
-            if let Some((ref mut input, ref header)) = self.current_set {
-                if !input.is_empty() {
-                    match Parser::parse_entry(input, header) {
-                        Ok(Some(entry)) => return Ok(Some(entry)),
-                        Ok(None) => {}
-                        Err(e) => {
-                            input.empty();
-                            self.remaining_input.empty();
-                            return Err(e);
-                        }
+            if let Some(set) = &mut self.current_set
+                && !set.entries.is_empty()
+            {
+                match PubSetEntry::parse(&mut set.entries, &set.header, set.is_gnu) {
+                    Ok(Some(entry)) => return Ok(Some(entry)),
+                    Ok(None) => {
+                        self.current_set = None;
+                    }
+                    Err(e) => {
+                        self.sets.input.empty();
+                        self.current_set = None;
+                        return Err(e);
                     }
                 }
             }
-            if self.remaining_input.is_empty() {
-                self.current_set = None;
-                return Ok(None);
-            }
-            match Parser::parse_header(&mut self.remaining_input) {
-                Ok(set) => {
-                    self.current_set = Some(set);
-                }
-                Err(e) => {
-                    self.current_set = None;
-                    self.remaining_input.empty();
-                    return Err(e);
-                }
+            match self.sets.next() {
+                Ok(Some(set)) => self.current_set = Some(set),
+                Ok(None) => return Ok(None),
+                Err(e) => return Err(e),
             }
         }
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct PubStuffHeader<T = usize> {
-    format: Format,
-    length: T,
-    version: u16,
-    unit_offset: DebugInfoOffset<T>,
-    unit_length: T,
+#[derive(Debug, Clone)]
+pub(crate) struct PubSet<R: Reader> {
+    pub(crate) header: PubSetHeader<R::Offset>,
+    entries: R,
+    is_gnu: bool,
 }
 
-pub trait PubStuffEntry<R: Reader> {
-    fn new(
-        die_offset: UnitOffset<R::Offset>,
-        name: R,
-        unit_header_offset: DebugInfoOffset<R::Offset>,
-    ) -> Self;
+impl<R: Reader> PubSet<R> {
+    /// Return an iterator over just the entries in this set.
+    pub(crate) fn items(&self) -> PubSetEntryIter<R> {
+        // Empty set iterator.
+        let mut set_input = self.entries.clone();
+        set_input.empty();
+        let sets = PubSetIter {
+            input: set_input,
+            is_gnu: self.is_gnu,
+        };
+
+        PubSetEntryIter {
+            sets,
+            current_set: Some(self.clone()),
+        }
+    }
 }
 
-#[derive(Clone, Debug)]
-pub struct PubStuffParser<R, Entry>
-where
-    R: Reader,
-    Entry: PubStuffEntry<R>,
-{
-    // This struct is never instantiated.
-    phantom: PhantomData<(R, Entry)>,
+#[derive(Debug, Clone)]
+pub(crate) struct PubSetHeader<T = usize> {
+    pub(crate) format: Format,
+    pub(crate) length: T,
+    pub(crate) version: u16,
+    pub(crate) unit_offset: DebugInfoOffset<T>,
+    pub(crate) unit_length: T,
 }
 
-impl<R, Entry> LookupParser<R> for PubStuffParser<R, Entry>
-where
-    R: Reader,
-    Entry: PubStuffEntry<R>,
-{
-    type Header = PubStuffHeader<R::Offset>;
-    type Entry = Entry;
-
-    /// Parse an pubthings set header. Returns a tuple of the
-    /// pubthings to be parsed for this set, and the newly created PubThingHeader struct.
-    fn parse_header(input: &mut R) -> Result<(R, Self::Header)> {
+impl<T: ReaderOffset> PubSetHeader<T> {
+    /// Parse a set header. Returns a tuple of the set header and the entry data.
+    fn parse<R: Reader<Offset = T>>(input: &mut R) -> Result<(PubSetHeader<R::Offset>, R)> {
         let (length, format) = input.read_initial_length()?;
         let mut rest = input.split(length)?;
 
@@ -171,32 +146,60 @@ where
             return Err(Error::UnknownVersion(u64::from(version)));
         }
 
-        let unit_offset = parse_debug_info_offset(&mut rest, format)?;
+        let unit_offset = rest.read_offset(format).map(DebugInfoOffset)?;
         let unit_length = rest.read_length(format)?;
 
-        let header = PubStuffHeader {
+        let header = PubSetHeader {
             format,
             length,
             version,
             unit_offset,
             unit_length,
         };
-        Ok((rest, header))
+        Ok((header, rest))
+    }
+}
+
+#[derive(Debug, Clone)]
+pub(crate) struct PubSetEntry<R: Reader> {
+    pub(crate) unit_header_offset: DebugInfoOffset<R::Offset>,
+    pub(crate) die_offset: UnitOffset<R::Offset>,
+    pub(crate) name: R,
+    flags: u8,
+}
+
+impl<R: Reader> PubSetEntry<R> {
+    pub(crate) fn is_static(&self) -> bool {
+        self.flags & 0x80 != 0
     }
 
-    /// Parse a single pubthing. Return `None` for the null pubthing, `Some` for an actual pubthing.
-    fn parse_entry(input: &mut R, header: &Self::Header) -> Result<Option<Self::Entry>> {
+    pub(crate) fn kind(&self) -> GdbIndexSymbolKind {
+        GdbIndexSymbolKind((self.flags >> 4) & 7)
+    }
+
+    pub(crate) fn flags(&self) -> u8 {
+        self.flags
+    }
+
+    /// Parse a single set entry. Return `None` for the null entry.
+    fn parse(
+        input: &mut R,
+        header: &PubSetHeader<R::Offset>,
+        is_gnu: bool,
+    ) -> Result<Option<PubSetEntry<R>>> {
         let offset = input.read_offset(header.format)?;
         if offset.into_u64() == 0 {
             input.empty();
-            Ok(None)
-        } else {
-            let name = input.read_null_terminated_slice()?;
-            Ok(Some(Self::Entry::new(
-                UnitOffset(offset),
-                name,
-                header.unit_offset,
-            )))
+            return Ok(None);
         }
+
+        let flags = if is_gnu { input.read_u8()? } else { 0 };
+        let name = input.read_null_terminated_slice()?;
+        Ok(Some(PubSetEntry {
+            die_offset: UnitOffset(offset),
+            name,
+            flags,
+            unit_header_offset: header.unit_offset,
+        }))
     }
 }

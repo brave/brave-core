@@ -12,10 +12,9 @@ mod strategy;
 
 use toml_writer::TomlWrite as _;
 
+use super::Error;
 use super::style;
 use super::value;
-use super::Error;
-use crate::alloc_prelude::*;
 use buffer::Table;
 use strategy::SerializationStrategy;
 
@@ -191,7 +190,7 @@ impl<'d> serde_core::ser::Serializer for Serializer<'d> {
     {
         match SerializationStrategy::from(value) {
             SerializationStrategy::Value | SerializationStrategy::ArrayOfTables => {
-                let dst = self.table.body_mut();
+                let dst = self.buf.ensure_body(&mut self.table);
 
                 dst.key(variant)?;
                 dst.space()?;
@@ -202,7 +201,9 @@ impl<'d> serde_core::ser::Serializer for Serializer<'d> {
                 dst.newline()?;
             }
             SerializationStrategy::Table | SerializationStrategy::Unknown => {
-                let child = self.buf.child_table(&mut self.table, variant.to_owned());
+                let child = self
+                    .buf
+                    .child_table(&mut self.table, |dst| dst.key(variant).map_err(Error::from))?;
                 let value_serializer = Serializer::with_table(self.buf, child, self.style);
                 value.serialize(value_serializer)?;
             }
@@ -259,7 +260,9 @@ impl<'d> serde_core::ser::Serializer for Serializer<'d> {
         variant: &'static str,
         _len: usize,
     ) -> Result<Self::SerializeStructVariant, Self::Error> {
-        let child = self.buf.child_table(&mut self.table, variant.to_owned());
+        let child = self
+            .buf
+            .child_table(&mut self.table, |dst| dst.key(variant).map_err(Error::from))?;
         self.buf.push(self.table);
         map::SerializeDocumentTable::map(self.buf, child, self.style)
     }

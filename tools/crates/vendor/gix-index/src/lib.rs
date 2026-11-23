@@ -4,7 +4,7 @@
     doc = ::document_features::document_features!()
 )]
 #![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg))]
-#![deny(unsafe_code, missing_docs, rust_2018_idioms)]
+#![deny(unsafe_code, missing_docs)]
 
 use std::{ops::Range, path::PathBuf};
 
@@ -53,7 +53,7 @@ pub enum Version {
 }
 
 /// An entry in the index, identifying a non-tree item on disk.
-#[derive(Debug, Clone, Eq, PartialEq)]
+#[derive(Clone, Eq, PartialEq)]
 pub struct Entry {
     /// The filesystem stat information for the file on disk.
     pub stat: entry::Stat,
@@ -112,6 +112,12 @@ pub struct AccelerateLookup<'a> {
 /// As opposed to a snapshot, it's meant to be altered and eventually be written back to disk or converted into a tree.
 /// We treat index and its state synonymous.
 ///
+/// # Path Format
+///
+/// All entry paths stored by [`State`], and all path-like arguments used to access entries, are repository-relative byte
+/// strings with `/` as separator. They are not platform-native filesystem paths, must not be absolute, and must not use
+/// separators like `\`; convert worktree or absolute paths to this representation before lookup or insertion.
+///
 /// # A note on safety
 ///
 /// An index (i.e. [`State`]) created by hand is not guaranteed to have valid entry paths as they are entirely controlled
@@ -159,7 +165,54 @@ pub struct State {
 mod impls {
     use std::fmt::{Debug, Formatter};
 
-    use crate::{entry::Stage, State};
+    use crate::{Entry, PathStorageRef, State, entry::Stage};
+
+    impl Entry {
+        pub(crate) fn fmt_debug(&self, f: &mut Formatter, path_backing: Option<&PathStorageRef>) -> std::fmt::Result {
+            if f.alternate() {
+                write!(
+                    f,
+                    "{} {}{:?} mtime: {:?} {} ",
+                    match self.flags.stage() {
+                        Stage::Unconflicted => "       ",
+                        Stage::Base => "BASE   ",
+                        Stage::Ours => "OURS   ",
+                        Stage::Theirs => "THEIRS ",
+                    },
+                    if self.flags.is_empty() {
+                        "".to_string()
+                    } else {
+                        format!("{:?} ", self.flags)
+                    },
+                    self.mode,
+                    self.stat.mtime,
+                    self.id,
+                )?;
+                return match path_backing {
+                    Some(path_backing) => write!(f, "{}", self.path_in(path_backing)),
+                    None => write!(f, "{:?}", self.path),
+                };
+            }
+
+            let mut entry = f.debug_struct("Entry");
+            entry
+                .field("stat", &self.stat)
+                .field("id", &self.id)
+                .field("flags", &self.flags)
+                .field("mode", &self.mode);
+            match path_backing {
+                Some(path_backing) => entry.field("path", &self.path_in(path_backing)),
+                None => entry.field("path", &self.path),
+            }
+            .finish()
+        }
+    }
+
+    impl Debug for Entry {
+        fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+            self.fmt_debug(f, None)
+        }
+    }
 
     impl Debug for State {
         fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
@@ -191,7 +244,7 @@ mod impls {
 pub(crate) mod util {
     #[inline]
     pub fn var_int(data: &[u8]) -> Option<(u64, &[u8])> {
-        let (num, consumed) = gix_features::decode::leb64_from_read(data).ok()?;
+        let (num, consumed) = gix_utils::decode::leb64_from_read(data).ok()?;
         let data = &data[consumed..];
         (num, data).into()
     }

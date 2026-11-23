@@ -177,10 +177,14 @@ much detail." You can remove this by rounding the `Span` to the nearest half
 hour before printing:
 
 ```
-use jiff::{civil, RoundMode, Unit, ZonedDifference};
+use jiff::{civil, RoundMode, Unit, ZonedDateTimeDifference};
 
-let commented_at = civil::date(2024, 8, 1).at(19, 29, 13, 123_456_789).in_tz("US/Eastern")?;
-let now = civil::date(2024, 12, 26).at(12, 49, 0, 0).in_tz("US/Eastern")?;
+let commented_at = civil::date(2024, 8, 1)
+    .at(19, 29, 13, 123_456_789)
+    .in_tz("America/New_York")?;
+let now = civil::date(2024, 12, 26)
+    .at(12, 49, 0, 0)
+    .in_tz("America/New_York")?;
 
 // The default, with units permitted up to years.
 let span = now.since((Unit::Year, &commented_at))?;
@@ -190,7 +194,7 @@ assert_eq!(format!("{span:#}"), "4mo 24d 17h 19m 46s 876ms 543µs 211ns");
 // rounding the result. We could also do this with `Span::round`
 // directly by providing `now` as our relative zoned datetime.
 let rounded = now.since(
-    ZonedDifference::new(&commented_at)
+    ZonedDateTimeDifference::new(&commented_at)
         .smallest(Unit::Minute)
         .largest(Unit::Year)
         .mode(RoundMode::HalfExpand)
@@ -256,7 +260,9 @@ assert_eq!(dur, Duration::new(30 * 24 * 60 * 60 + 38_016, 0));
 // In contrast, Jiff will reject `1M`:
 assert_eq!(
     "1M".parse::<jiff::Span>().unwrap_err().to_string(),
-    "failed to parse \"1M\" in the \"friendly\" format: expected to find unit designator suffix (e.g., 'years' or 'secs'), but found input beginning with \"M\" instead",
+    "failed to parse input in the \"friendly\" duration format: \
+     expected to find unit designator suffix \
+     (e.g., `years` or `secs`) after parsing integer",
 );
 
 # Ok::<(), Box<dyn std::error::Error>>(())
@@ -335,7 +341,9 @@ assert_eq!(
 // Jiff is saving you from doing something wrong
 assert_eq!(
     "1 day".parse::<SignedDuration>().unwrap_err().to_string(),
-    "failed to parse \"1 day\" in the \"friendly\" format: parsing day units into a `SignedDuration` is not supported (perhaps try parsing into a `Span` instead)",
+    "failed to parse input in the \"friendly\" duration format: \
+     parsing calendar units (days in this case) in this context \
+     is not supported (perhaps try parsing into a `jiff::Span` instead)",
 );
 ```
 
@@ -385,22 +393,31 @@ use jiff::{civil, Span};
 let span: Span = "1 day".parse()?;
 let dur = humantime::parse_duration("1 day")?;
 
-let zdt = civil::date(2024, 3, 9).at(17, 0, 0, 0).in_tz("US/Eastern")?;
+let zdt = civil::date(2024, 3, 9).at(17, 0, 0, 0).in_tz("America/New_York")?;
 
 // Adding 1 day gives the generally expected result of the same clock
 // time on the following day when adding a `Span`.
-assert_eq!(&zdt + span, civil::date(2024, 3, 10).at(17, 0, 0, 0).in_tz("US/Eastern")?);
+assert_eq!(
+    &zdt + span,
+    civil::date(2024, 3, 10).at(17, 0, 0, 0).in_tz("America/New_York")?,
+);
 // But with humantime, all days are assumed to be exactly 24 hours. So
 // you get an instant in time that is 24 hours later, even when some
 // days are shorter and some are longer.
-assert_eq!(&zdt + dur, civil::date(2024, 3, 10).at(18, 0, 0, 0).in_tz("US/Eastern")?);
+assert_eq!(
+    &zdt + dur,
+    civil::date(2024, 3, 10).at(18, 0, 0, 0).in_tz("America/New_York")?,
+);
 
 // Notice also that this inaccuracy can occur merely by a duration that
 // _crosses_ a time zone transition boundary (like DST) at any point. It
 // doesn't require your datetimes to be "close" to when DST occurred.
 let dur = humantime::parse_duration("20 day")?;
-let zdt = civil::date(2024, 3, 1).at(17, 0, 0, 0).in_tz("US/Eastern")?;
-assert_eq!(&zdt + dur, civil::date(2024, 3, 21).at(18, 0, 0, 0).in_tz("US/Eastern")?);
+let zdt = civil::date(2024, 3, 1).at(17, 0, 0, 0).in_tz("America/New_York")?;
+assert_eq!(
+    &zdt + dur,
+    civil::date(2024, 3, 21).at(18, 0, 0, 0).in_tz("America/New_York")?,
+);
 
 # Ok::<(), Box<dyn std::error::Error>>(())
 ```

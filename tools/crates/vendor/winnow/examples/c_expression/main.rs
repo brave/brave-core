@@ -1,6 +1,8 @@
 use winnow::prelude::*;
 
 mod parser;
+#[cfg(test)]
+mod test;
 
 fn main() -> Result<(), lexopt::Error> {
     let args = Args::parse()?;
@@ -28,7 +30,7 @@ impl Args {
     fn parse() -> Result<Self, lexopt::Error> {
         use lexopt::prelude::*;
 
-        let mut res = Args::default();
+        let mut res = Self::default();
 
         let mut args = lexopt::Parser::from_env();
         while let Some(arg) = args.next()? {

@@ -10,10 +10,10 @@
 //! strings. The implementation comes straight from [libcore] but avoids the
 //! performance penalty of going through [`core::fmt::Formatter`].
 //!
-//! See also [`ryu`] for printing floating point primitives.
+//! See also [`zmij`] for printing floating point primitives.
 //!
 //! [libcore]: https://github.com/rust-lang/rust/blob/1.92.0/library/core/src/fmt/num.rs#L190-L253
-//! [`ryu`]: https://github.com/dtolnay/ryu
+//! [`zmij`]: https://github.com/dtolnay/zmij
 //!
 //! # Example
 //!
@@ -25,11 +25,19 @@
 //! }
 //! ```
 //!
-//! # Performance (lower is better)
+//! # Performance
 //!
-//! ![performance](https://raw.githubusercontent.com/dtolnay/itoa/master/performance.png)
+//! The [itoa-benchmark] compares this library and other Rust integer formatting
+//! implementations across a range of integer sizes. The vertical axis in this
+//! chart shows nanoseconds taken by a single execution of
+//! `itoa::Buffer::new().format(value)` so a lower result indicates a faster
+//! library.
+//!
+//! [itoa-benchmark]: https://github.com/dtolnay/itoa-benchmark
+//!
+//! ![performance](https://raw.githubusercontent.com/dtolnay/itoa/master/itoa-benchmark.png)
 
-#![doc(html_root_url = "https://docs.rs/itoa/1.0.16")]
+#![doc(html_root_url = "https://docs.rs/itoa/1.0.19")]
 #![no_std]
 #![allow(
     clippy::cast_lossless,
@@ -47,7 +55,6 @@ mod u128_ext;
 
 use core::hint;
 use core::mem::{self, MaybeUninit};
-use core::ptr;
 use core::str;
 #[cfg(feature = "no-panic")]
 use no_panic::no_panic;
@@ -97,9 +104,8 @@ impl Buffer {
     /// representation within the buffer.
     #[cfg_attr(feature = "no-panic", no_panic)]
     pub fn format<I: Integer>(&mut self, i: I) -> &str {
-        let string = i.write(unsafe {
-            &mut *ptr::addr_of_mut!(self.bytes).cast::<<I as private::Sealed>::Buffer>()
-        });
+        let buf_ptr = self.bytes.as_mut_ptr().cast::<I::Buffer>();
+        let string = i.write(unsafe { &mut *buf_ptr });
         if string.len() > I::MAX_STR_LEN {
             unsafe { hint::unreachable_unchecked() };
         }
@@ -167,7 +173,7 @@ macro_rules! impl_Integer {
                 );
                 if self < 0 {
                     offset -= 1;
-                    buf[offset].write(b'-');
+                    unsafe { buf.get_unchecked_mut(offset).write(b'-') };
                 }
                 // SAFETY: Starting from `offset`, all elements of the slice have been set.
                 unsafe { slice_buffer_to_str(buf, offset) }
@@ -209,7 +215,7 @@ impl_Integer_size!(usize as u32 #[cfg(target_pointer_width = "32")]);
 impl_Integer_size!(isize as i64 #[cfg(target_pointer_width = "64")]);
 impl_Integer_size!(usize as u64 #[cfg(target_pointer_width = "64")]);
 
-#[repr(align(2))]
+#[repr(C, align(2))]
 struct DecimalPairs([u8; 200]);
 
 // The string of all two-digit numbers in range 00..99 is used as a lookup table.
@@ -278,13 +284,13 @@ macro_rules! impl_Unsigned {
                     remain /= scale;
                     let (pair1, pair2) = divmod100(quad as u32);
                     unsafe {
-                        buf[offset + 0]
+                        buf.get_unchecked_mut(offset + 0)
                             .write(*DECIMAL_PAIRS.0.get_unchecked(pair1 as usize * 2 + 0));
-                        buf[offset + 1]
+                        buf.get_unchecked_mut(offset + 1)
                             .write(*DECIMAL_PAIRS.0.get_unchecked(pair1 as usize * 2 + 1));
-                        buf[offset + 2]
+                        buf.get_unchecked_mut(offset + 2)
                             .write(*DECIMAL_PAIRS.0.get_unchecked(pair2 as usize * 2 + 0));
-                        buf[offset + 3]
+                        buf.get_unchecked_mut(offset + 3)
                             .write(*DECIMAL_PAIRS.0.get_unchecked(pair2 as usize * 2 + 1));
                     }
                 }
@@ -296,9 +302,9 @@ macro_rules! impl_Unsigned {
                     let (last, pair) = divmod100(remain as u32);
                     remain = last as Self;
                     unsafe {
-                        buf[offset + 0]
+                        buf.get_unchecked_mut(offset + 0)
                             .write(*DECIMAL_PAIRS.0.get_unchecked(pair as usize * 2 + 0));
-                        buf[offset + 1]
+                        buf.get_unchecked_mut(offset + 1)
                             .write(*DECIMAL_PAIRS.0.get_unchecked(pair as usize * 2 + 1));
                     }
                 }
@@ -310,7 +316,7 @@ macro_rules! impl_Unsigned {
                     // Either the compiler sees that remain < 10, or it prevents
                     // a boundary check up next.
                     let last = remain as u8 & 15;
-                    buf[offset].write(b'0' + last);
+                    unsafe { buf.get_unchecked_mut(offset).write(b'0' + last) };
                     // not used: remain = 0;
                 }
 
@@ -364,10 +370,14 @@ impl Unsigned for u128 {
             remain /= 1_00_00;
             let (pair1, pair2) = divmod100(quad as u32);
             unsafe {
-                buf[offset + 0].write(*DECIMAL_PAIRS.0.get_unchecked(pair1 as usize * 2 + 0));
-                buf[offset + 1].write(*DECIMAL_PAIRS.0.get_unchecked(pair1 as usize * 2 + 1));
-                buf[offset + 2].write(*DECIMAL_PAIRS.0.get_unchecked(pair2 as usize * 2 + 0));
-                buf[offset + 3].write(*DECIMAL_PAIRS.0.get_unchecked(pair2 as usize * 2 + 1));
+                buf.get_unchecked_mut(offset + 0)
+                    .write(*DECIMAL_PAIRS.0.get_unchecked(pair1 as usize * 2 + 0));
+                buf.get_unchecked_mut(offset + 1)
+                    .write(*DECIMAL_PAIRS.0.get_unchecked(pair1 as usize * 2 + 1));
+                buf.get_unchecked_mut(offset + 2)
+                    .write(*DECIMAL_PAIRS.0.get_unchecked(pair2 as usize * 2 + 0));
+                buf.get_unchecked_mut(offset + 3)
+                    .write(*DECIMAL_PAIRS.0.get_unchecked(pair2 as usize * 2 + 1));
             }
         }
 
@@ -378,8 +388,10 @@ impl Unsigned for u128 {
             let (last, pair) = divmod100(remain as u32);
             remain = last as u64;
             unsafe {
-                buf[offset + 0].write(*DECIMAL_PAIRS.0.get_unchecked(pair as usize * 2 + 0));
-                buf[offset + 1].write(*DECIMAL_PAIRS.0.get_unchecked(pair as usize * 2 + 1));
+                buf.get_unchecked_mut(offset + 0)
+                    .write(*DECIMAL_PAIRS.0.get_unchecked(pair as usize * 2 + 0));
+                buf.get_unchecked_mut(offset + 1)
+                    .write(*DECIMAL_PAIRS.0.get_unchecked(pair as usize * 2 + 1));
             }
         }
 
@@ -390,7 +402,7 @@ impl Unsigned for u128 {
             // Either the compiler sees that remain < 10, or it prevents
             // a boundary check up next.
             let last = remain as u8 & 15;
-            buf[offset].write(b'0' + last);
+            unsafe { buf.get_unchecked_mut(offset).write(b'0' + last) };
             // not used: remain = 0;
         }
         offset
@@ -404,7 +416,7 @@ fn enc_16lsd<const OFFSET: usize>(buf: &mut [MaybeUninit<u8>], n: u64) {
     let mut remain = n;
 
     // Format per four digits from the lookup table.
-    for quad_index in (0..4).rev() {
+    for quad_index in (1..4).rev() {
         // pull two pairs
         let quad = remain % 1_00_00;
         remain /= 1_00_00;
@@ -419,6 +431,15 @@ fn enc_16lsd<const OFFSET: usize>(buf: &mut [MaybeUninit<u8>], n: u64) {
             buf[quad_index * 4 + OFFSET + 3]
                 .write(*DECIMAL_PAIRS.0.get_unchecked(pair2 as usize * 2 + 1));
         }
+    }
+
+    // final two pairs
+    let (pair1, pair2) = divmod100(remain as u32);
+    unsafe {
+        buf[OFFSET + 0].write(*DECIMAL_PAIRS.0.get_unchecked(pair1 as usize * 2 + 0));
+        buf[OFFSET + 1].write(*DECIMAL_PAIRS.0.get_unchecked(pair1 as usize * 2 + 1));
+        buf[OFFSET + 2].write(*DECIMAL_PAIRS.0.get_unchecked(pair2 as usize * 2 + 0));
+        buf[OFFSET + 3].write(*DECIMAL_PAIRS.0.get_unchecked(pair2 as usize * 2 + 1));
     }
 }
 

@@ -57,6 +57,9 @@ fn link_name() {
     assert_eq!(h.link_name().unwrap().unwrap().to_str(), Some("foo\\bar"));
 
     assert!(h.set_link_name("\0").is_err());
+
+    h.set_link_name("/foo").unwrap();
+    assert_eq!(h.link_name().unwrap().unwrap().to_str(), Some("/foo"));
 }
 
 #[test]
@@ -157,6 +160,10 @@ fn set_path() {
     assert!(h.set_path("..").is_err());
     assert!(h.set_path("foo/..").is_err());
     assert!(h.set_path("foo/../bar").is_err());
+    assert!(h.set_path("/foo").is_err());
+
+    assert!(h.set_path_absolute("/foo").is_ok());
+    assert_eq!(h.path().unwrap().to_str(), Some("/foo"));
 
     h = Header::new_ustar();
     h.set_path("foo").unwrap();

@@ -1,7 +1,10 @@
 #![allow(dead_code)]
 
-use crate::c_schar;
 use crate::prelude::*;
+use crate::{
+    c_schar,
+    ptrdiff_t,
+};
 
 // types
 pub type __s16_type = c_short;
@@ -77,7 +80,16 @@ pub type wchar_t = c_int;
 pub type wint_t = c_uint;
 pub type gid_t = __gid_t;
 pub type uid_t = __uid_t;
-pub type off_t = __off_t;
+
+cfg_if! {
+    if #[cfg(any(target_pointer_width = "64", gnu_file_offset_bits64))] {
+        pub type off_t = __off64_t;
+    } else {
+        pub type off_t = __off_t;
+    }
+}
+
+// FIXME(1.0,deprecate,64): lfs binding to be removed
 pub type off64_t = __off64_t;
 pub type useconds_t = __useconds_t;
 pub type pid_t = __pid_t;
@@ -101,7 +113,16 @@ pub type quad_t = __quad_t;
 pub type u_quad_t = __u_quad_t;
 pub type fsid_t = __fsid_t;
 pub type loff_t = __loff_t;
-pub type ino_t = __ino_t;
+
+cfg_if! {
+    if #[cfg(any(target_pointer_width = "64", gnu_file_offset_bits64))] {
+        pub type ino_t = __ino64_t;
+    } else {
+        pub type ino_t = __ino_t;
+    }
+}
+
+// FIXME(1.0,deprecate,64): lfs binding to be removed
 pub type ino64_t = __ino64_t;
 pub type dev_t = __dev_t;
 pub type mode_t = __mode_t;
@@ -129,11 +150,24 @@ pub type sigset_t = __sigset_t;
 pub type __fd_mask = c_long;
 pub type fd_mask = __fd_mask;
 pub type blksize_t = __blksize_t;
-pub type blkcnt_t = __blkcnt_t;
-pub type fsblkcnt_t = __fsblkcnt_t;
-pub type fsfilcnt_t = __fsfilcnt_t;
+
+cfg_if! {
+    if #[cfg(any(target_pointer_width = "64", gnu_file_offset_bits64))] {
+        pub type blkcnt_t = __blkcnt64_t;
+        pub type fsblkcnt_t = __fsblkcnt64_t;
+        pub type fsfilcnt_t = __fsfilcnt64_t;
+    } else {
+        pub type blkcnt_t = __blkcnt_t;
+        pub type fsblkcnt_t = __fsblkcnt_t;
+        pub type fsfilcnt_t = __fsfilcnt_t;
+    }
+}
+
+// FIXME(1.0,deprecate,64): lfs binding to be removed
 pub type blkcnt64_t = __blkcnt64_t;
+// FIXME(1.0,deprecate,64): lfs binding to be removed
 pub type fsblkcnt64_t = __fsblkcnt64_t;
+// FIXME(1.0,deprecate,64): lfs binding to be removed
 pub type fsfilcnt64_t = __fsfilcnt64_t;
 
 pub type __pthread_spinlock_t = c_int;
@@ -164,7 +198,16 @@ pub type pthread_once_t = __pthread_once;
 
 pub type __rlimit_resource = c_uint;
 pub type __rlimit_resource_t = __rlimit_resource;
-pub type rlim_t = __rlim_t;
+
+cfg_if! {
+    if #[cfg(any(target_pointer_width = "64", gnu_file_offset_bits64))] {
+        pub type rlim_t = __rlim64_t;
+    } else {
+        pub type rlim_t = __rlim_t;
+    }
+}
+
+// FIXME(1.0,deprecate,64): lfs binding to be removed
 pub type rlim64_t = __rlim64_t;
 
 pub type __rusage_who = c_int;
@@ -226,8 +269,9 @@ pub type nl_item = c_int;
 pub type iconv_t = *mut c_void;
 
 extern_ty! {
-    pub enum fpos64_t {} // FIXME(hurd): fill this out with a struct
-    pub enum timezone {}
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
+    pub type fpos64_t; // FIXME(hurd): fill this out with a struct
+    pub type timezone;
 }
 
 // structs
@@ -285,8 +329,8 @@ s! {
     pub struct sockaddr_storage {
         pub ss_len: c_uchar,
         pub ss_family: sa_family_t,
-        pub __ss_padding: [c_char; 122usize],
-        pub __ss_align: __uint32_t,
+        __ss_padding: Padding<[c_char; 122usize]>,
+        __ss_align: __uint32_t,
     }
 
     pub struct sockaddr_at {
@@ -350,13 +394,14 @@ s! {
     }
 
     pub struct dirent {
-        pub d_ino: __ino_t,
+        pub d_ino: ino_t,
         pub d_reclen: c_ushort,
         pub d_type: c_uchar,
         pub d_namlen: c_uchar,
         pub d_name: [c_char; 1usize],
     }
 
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
     pub struct dirent64 {
         pub d_ino: __ino64_t,
         pub d_reclen: c_ushort,
@@ -431,6 +476,7 @@ s! {
         pub si_value: crate::sigval,
     }
 
+    #[derive(Default)]
     pub struct timespec {
         pub tv_sec: __time_t,
         pub tv_nsec: __syscall_slong_t,
@@ -448,24 +494,39 @@ s! {
     pub struct stat {
         pub st_fstype: c_int,
         pub st_dev: __fsid_t, /* Actually st_fsid */
-        pub st_ino: __ino_t,
+        pub st_ino: ino_t,
         pub st_gen: c_uint,
         pub st_rdev: __dev_t,
         pub st_mode: __mode_t,
         pub st_nlink: __nlink_t,
         pub st_uid: __uid_t,
         pub st_gid: __gid_t,
-        pub st_size: __off_t,
-        pub st_atim: crate::timespec,
-        pub st_mtim: crate::timespec,
-        pub st_ctim: crate::timespec,
+        pub st_size: off_t,
+        pub st_atim: timespec,
+        pub st_mtim: timespec,
+        pub st_ctim: timespec,
         pub st_blksize: __blksize_t,
-        pub st_blocks: __blkcnt_t,
+        pub st_blocks: blkcnt_t,
         pub st_author: __uid_t,
         pub st_flags: c_uint,
-        pub st_spare: [c_int; 11usize],
+        st_spare: Padding<
+            [c_int; if cfg!(not(gnu_file_offset_bits64)) {
+                if size_of::<__fsid_t>() == size_of::<c_int>() {
+                    12
+                } else {
+                    11
+                }
+            } else {
+                if size_of::<__fsid_t>() == size_of::<c_int>() {
+                    9
+                } else {
+                    8
+                }
+            }],
+        >,
     }
 
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
     pub struct stat64 {
         pub st_fstype: c_int,
         pub st_dev: __fsid_t, /* Actually st_fsid */
@@ -477,14 +538,20 @@ s! {
         pub st_uid: __uid_t,
         pub st_gid: __gid_t,
         pub st_size: __off64_t,
-        pub st_atim: crate::timespec,
-        pub st_mtim: crate::timespec,
-        pub st_ctim: crate::timespec,
+        pub st_atim: timespec,
+        pub st_mtim: timespec,
+        pub st_ctim: timespec,
         pub st_blksize: __blksize_t,
         pub st_blocks: __blkcnt64_t,
         pub st_author: __uid_t,
         pub st_flags: c_uint,
-        pub st_spare: [c_int; 8usize],
+        st_spare: Padding<
+            [c_int; if size_of::<__fsid_t>() == size_of::<c_int>() {
+                9
+            } else {
+                8
+            }],
+        >,
     }
 
     pub struct statx {
@@ -520,19 +587,20 @@ s! {
     pub struct statfs {
         pub f_type: c_uint,
         pub f_bsize: c_ulong,
-        pub f_blocks: __fsblkcnt_t,
-        pub f_bfree: __fsblkcnt_t,
-        pub f_bavail: __fsblkcnt_t,
-        pub f_files: __fsblkcnt_t,
-        pub f_ffree: __fsblkcnt_t,
+        pub f_blocks: fsblkcnt_t,
+        pub f_bfree: fsblkcnt_t,
+        pub f_bavail: fsblkcnt_t,
+        pub f_files: fsblkcnt_t,
+        pub f_ffree: fsblkcnt_t,
         pub f_fsid: __fsid_t,
         pub f_namelen: c_ulong,
-        pub f_favail: __fsfilcnt_t,
+        pub f_favail: fsfilcnt_t,
         pub f_frsize: c_ulong,
         pub f_flag: c_ulong,
-        pub f_spare: [c_uint; 3usize],
+        f_spare: Padding<[c_uint; 3usize]>,
     }
 
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
     pub struct statfs64 {
         pub f_type: c_uint,
         pub f_bsize: c_ulong,
@@ -546,25 +614,26 @@ s! {
         pub f_favail: __fsfilcnt64_t,
         pub f_frsize: c_ulong,
         pub f_flag: c_ulong,
-        pub f_spare: [c_uint; 3usize],
+        f_spare: Padding<[c_uint; 3usize]>,
     }
 
     pub struct statvfs {
         pub __f_type: c_uint,
         pub f_bsize: c_ulong,
-        pub f_blocks: __fsblkcnt_t,
-        pub f_bfree: __fsblkcnt_t,
-        pub f_bavail: __fsblkcnt_t,
-        pub f_files: __fsfilcnt_t,
-        pub f_ffree: __fsfilcnt_t,
+        pub f_blocks: fsblkcnt_t,
+        pub f_bfree: fsblkcnt_t,
+        pub f_bavail: fsblkcnt_t,
+        pub f_files: fsfilcnt_t,
+        pub f_ffree: fsfilcnt_t,
         pub f_fsid: __fsid_t,
         pub f_namemax: c_ulong,
-        pub f_favail: __fsfilcnt_t,
+        pub f_favail: fsfilcnt_t,
         pub f_frsize: c_ulong,
         pub f_flag: c_ulong,
-        pub f_spare: [c_uint; 3usize],
+        f_spare: Padding<[c_uint; 3usize]>,
     }
 
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
     pub struct statvfs64 {
         pub __f_type: c_uint,
         pub f_bsize: c_ulong,
@@ -578,7 +647,7 @@ s! {
         pub f_favail: __fsfilcnt64_t,
         pub f_frsize: c_ulong,
         pub f_flag: c_ulong,
-        pub f_spare: [c_uint; 3usize],
+        f_spare: Padding<[c_uint; 3usize]>,
     }
 
     pub struct aiocb {
@@ -596,7 +665,7 @@ s! {
         pub aio_offset: off_t,
         #[cfg(all(not(target_arch = "x86_64"), target_pointer_width = "32"))]
         __unused1: Padding<[c_char; 4]>,
-        __glibc_reserved: [c_char; 32],
+        __glibc_reserved: Padding<[c_char; 32]>,
     }
 
     pub struct mq_attr {
@@ -627,6 +696,7 @@ s! {
         pub __pshared: __pthread_process_shared,
         pub __mutex_type: __pthread_mutex_type,
     }
+
     pub struct __pthread_mutex {
         pub __lock: c_uint,
         pub __owner_id: c_uint,
@@ -634,8 +704,8 @@ s! {
         pub __shpid: c_int,
         pub __type: c_int,
         pub __flags: c_int,
-        pub __reserved1: c_uint,
-        pub __reserved2: c_uint,
+        __reserved1: Padding<c_uint>,
+        __reserved2: Padding<c_uint>,
     }
 
     pub struct __pthread_condattr {
@@ -708,7 +778,7 @@ s! {
     }
 
     pub struct _IO_FILE {
-        _unused: [u8; 0],
+        _unused: Padding<[u8; 0]>,
     }
 
     pub struct sched_param {
@@ -865,6 +935,7 @@ s! {
         pub domainname: [c_char; _UTSNAME_LENGTH],
     }
 
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
     pub struct rlimit64 {
         pub rlim_cur: rlim64_t,
         pub rlim_max: rlim64_t,
@@ -892,25 +963,30 @@ s! {
         pub l_type: c_int,
         #[cfg(target_pointer_width = "32")]
         pub l_whence: c_int,
+
         #[cfg(target_pointer_width = "64")]
         pub l_type: c_short,
         #[cfg(target_pointer_width = "64")]
         pub l_whence: c_short,
-        pub l_start: __off_t,
-        pub l_len: __off_t,
+
+        pub l_start: off_t,
+        pub l_len: off_t,
         pub l_pid: __pid_t,
     }
 
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
     pub struct flock64 {
         #[cfg(target_pointer_width = "32")]
         pub l_type: c_int,
         #[cfg(target_pointer_width = "32")]
         pub l_whence: c_int,
+
         #[cfg(target_pointer_width = "64")]
         pub l_type: c_short,
         #[cfg(target_pointer_width = "64")]
         pub l_whence: c_short,
-        pub l_start: __off_t,
+
+        pub l_start: __off64_t,
         pub l_len: __off64_t,
         pub l_pid: __pid_t,
     }
@@ -928,6 +1004,10 @@ s! {
         __unused5: Padding<*mut c_void>,
     }
 
+    #[deprecated(
+        since = "0.2.187",
+        note = "Use `glob_t` instead. The definitions are equivalent."
+    )]
     pub struct glob64_t {
         pub gl_pathc: size_t,
         pub gl_pathv: *mut *mut c_char,
@@ -953,10 +1033,7 @@ s! {
     }
 
     pub struct cpu_set_t {
-        #[cfg(all(target_pointer_width = "32", not(target_arch = "x86_64")))]
-        bits: [u32; 32],
-        #[cfg(not(all(target_pointer_width = "32", not(target_arch = "x86_64"))))]
-        bits: [u64; 16],
+        __bits: [__cpu_mask; __CPU_SETSIZE / __NCPUBITS],
     }
 
     pub struct if_nameindex {
@@ -1041,7 +1118,7 @@ s! {
         pub ut_tv: __timeval,
 
         pub ut_addr_v6: [i32; 4],
-        __glibc_reserved: [c_char; 20],
+        __glibc_reserved: Padding<[c_char; 20]>,
     }
 }
 
@@ -1064,6 +1141,23 @@ impl siginfo_t {
 
     pub unsafe fn si_status(&self) -> c_int {
         self.si_status
+    }
+}
+
+s_no_extra_traits! {
+    pub struct fpos_t {
+        __pos: off_t,
+        __state: __mbstate_t,
+    }
+
+    struct __mbstate_t {
+        __count: c_int,
+        __value: __c_anonymous___mbstate_t___value,
+    }
+
+    union __c_anonymous___mbstate_t___value {
+        __wch: c_int,
+        __wchb: [c_char; 4],
     }
 }
 
@@ -1188,10 +1282,18 @@ pub const __PTHREAD_SPIN_LOCK_INITIALIZER: c_int = 0;
 pub const PTHREAD_MUTEX_NORMAL: c_int = 0;
 
 // sys/resource.h
-pub const RLIM_INFINITY: crate::rlim_t = 2147483647;
-pub const RLIM64_INFINITY: crate::rlim64_t = 9223372036854775807;
-pub const RLIM_SAVED_MAX: crate::rlim_t = RLIM_INFINITY;
-pub const RLIM_SAVED_CUR: crate::rlim_t = RLIM_INFINITY;
+cfg_if! {
+    if #[cfg(gnu_file_offset_bits64)] {
+        pub const RLIM_INFINITY: rlim64_t = 0x7fffffffffffffff;
+    } else {
+        pub const RLIM_INFINITY: rlim_t = -1_isize as rlim_t;
+    }
+}
+
+// FIXME(1.0,deprecate,64): lfs binding to be removed
+pub const RLIM64_INFINITY: rlim64_t = 0x7fffffffffffffff;
+pub const RLIM_SAVED_MAX: rlim_t = RLIM_INFINITY;
+pub const RLIM_SAVED_CUR: rlim_t = RLIM_INFINITY;
 pub const PRIO_MIN: c_int = -20;
 pub const PRIO_MAX: c_int = 20;
 
@@ -1229,7 +1331,11 @@ pub const PF_IPX: c_int = 23;
 pub const PF_SIP: c_int = 24;
 pub const PF_PIP: c_int = 25;
 pub const PF_INET6: c_int = 26;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const PF_MAX: c_int = 27;
+
 pub const AF_UNSPEC: c_int = 0;
 pub const AF_LOCAL: c_int = 1;
 pub const AF_UNIX: c_int = 1;
@@ -1259,7 +1365,11 @@ pub const AF_IPX: c_int = 23;
 pub const AF_SIP: c_int = 24;
 pub const pseudo_AF_PIP: c_int = 25;
 pub const AF_INET6: c_int = 26;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const AF_MAX: c_int = 27;
+
 pub const SOMAXCONN: c_int = 4096;
 pub const _SS_SIZE: usize = 128;
 pub const CMGROUP_MAX: usize = 16;
@@ -1525,8 +1635,15 @@ pub const _POSIX_QLIMIT: usize = 1;
 pub const _POSIX_HIWAT: usize = 512;
 pub const _POSIX_UIO_MAXIOV: usize = 16;
 pub const _POSIX_CLOCKRES_MIN: usize = 20000000;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const NAME_MAX: usize = 255;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const NGROUPS_MAX: usize = 256;
+
 pub const _POSIX_THREAD_KEYS_MAX: usize = 128;
 pub const _POSIX_THREAD_DESTRUCTOR_ITERATIONS: usize = 4;
 pub const _POSIX_THREAD_THREADS_MAX: usize = 64;
@@ -2465,6 +2582,7 @@ pub const SCHED_FIFO: c_int = 1;
 pub const SCHED_RR: c_int = 2;
 pub const _BITS_TYPES_STRUCT_SCHED_PARAM: usize = 1;
 pub const __CPU_SETSIZE: usize = 1024;
+pub const __NCPUBITS: usize = __cpu_mask::BITS as usize;
 pub const CPU_SETSIZE: usize = 1024;
 
 // pthread.h
@@ -2519,43 +2637,80 @@ pub const TCP_REPAIR_OFF: c_int = 0;
 pub const TCP_REPAIR_OFF_NO_WP: c_int = -1;
 
 // stdint.h
-pub const INT8_MIN: i8 = -128;
-pub const INT16_MIN: i16 = -32768;
-pub const INT32_MIN: i32 = -2147483648;
-pub const INT8_MAX: i8 = 127;
-pub const INT16_MAX: i16 = 32767;
-pub const INT32_MAX: i32 = 2147483647;
-pub const UINT8_MAX: u8 = 255;
-pub const UINT16_MAX: u16 = 65535;
-pub const UINT32_MAX: u32 = 4294967295;
-pub const INT_LEAST8_MIN: int_least8_t = -128;
-pub const INT_LEAST16_MIN: int_least16_t = -32768;
-pub const INT_LEAST32_MIN: int_least32_t = -2147483648;
-pub const INT_LEAST8_MAX: int_least8_t = 127;
-pub const INT_LEAST16_MAX: int_least16_t = 32767;
-pub const INT_LEAST32_MAX: int_least32_t = 2147483647;
-pub const UINT_LEAST8_MAX: uint_least8_t = 255;
-pub const UINT_LEAST16_MAX: uint_least16_t = 65535;
-pub const UINT_LEAST32_MAX: uint_least32_t = 4294967295;
-pub const INT_FAST8_MIN: int_fast8_t = -128;
-pub const INT_FAST16_MIN: int_fast16_t = -2147483648;
-pub const INT_FAST32_MIN: int_fast32_t = -2147483648;
-pub const INT_FAST8_MAX: int_fast8_t = 127;
-pub const INT_FAST16_MAX: int_fast16_t = 2147483647;
-pub const INT_FAST32_MAX: int_fast32_t = 2147483647;
-pub const UINT_FAST8_MAX: uint_fast8_t = 255;
-pub const UINT_FAST16_MAX: uint_fast16_t = 4294967295;
-pub const UINT_FAST32_MAX: uint_fast32_t = 4294967295;
-pub const INTPTR_MIN: __intptr_t = -2147483648;
-pub const INTPTR_MAX: __intptr_t = 2147483647;
-pub const UINTPTR_MAX: usize = 4294967295;
-pub const PTRDIFF_MIN: __ptrdiff_t = -2147483648;
-pub const PTRDIFF_MAX: __ptrdiff_t = 2147483647;
-pub const SIG_ATOMIC_MIN: __sig_atomic_t = -2147483648;
-pub const SIG_ATOMIC_MAX: __sig_atomic_t = 2147483647;
-pub const SIZE_MAX: usize = 4294967295;
-pub const WINT_MIN: wint_t = 0;
-pub const WINT_MAX: wint_t = 4294967295;
+#[deprecated(since = "0.2.190", note = "Use `i8::MIN` instead.")]
+pub const INT8_MIN: i8 = i8::MIN;
+#[deprecated(since = "0.2.190", note = "Use `i16::MIN` instead.")]
+pub const INT16_MIN: i16 = i16::MIN;
+#[deprecated(since = "0.2.190", note = "Use `i32::MIN` instead.")]
+pub const INT32_MIN: i32 = i32::MIN;
+#[deprecated(since = "0.2.190", note = "Use `i8::MAX` instead.")]
+pub const INT8_MAX: i8 = i8::MAX;
+#[deprecated(since = "0.2.190", note = "Use `i16::MAX` instead.")]
+pub const INT16_MAX: i16 = i16::MAX;
+#[deprecated(since = "0.2.190", note = "Use `i32::MAX` instead.")]
+pub const INT32_MAX: i32 = i32::MAX;
+#[deprecated(since = "0.2.190", note = "Use `u8::MAX` instead.")]
+pub const UINT8_MAX: u8 = u8::MAX;
+#[deprecated(since = "0.2.190", note = "Use `u16::MAX` instead.")]
+pub const UINT16_MAX: u16 = u16::MAX;
+#[deprecated(since = "0.2.190", note = "Use `u32::MAX` instead.")]
+pub const UINT32_MAX: u32 = u32::MAX;
+#[deprecated(since = "0.2.190", note = "Use `int_least8_t::MIN` instead.")]
+pub const INT_LEAST8_MIN: int_least8_t = int_least8_t::MIN;
+#[deprecated(since = "0.2.190", note = "Use `int_least16_t::MIN` instead.")]
+pub const INT_LEAST16_MIN: int_least16_t = int_least16_t::MIN;
+#[deprecated(since = "0.2.190", note = "Use `int_least32_t::MIN` instead.")]
+pub const INT_LEAST32_MIN: int_least32_t = int_least32_t::MIN;
+#[deprecated(since = "0.2.190", note = "Use `int_least8_t::MAX` instead.")]
+pub const INT_LEAST8_MAX: int_least8_t = int_least8_t::MAX;
+#[deprecated(since = "0.2.190", note = "Use `int_least16_t::MAX` instead.")]
+pub const INT_LEAST16_MAX: int_least16_t = int_least16_t::MAX;
+#[deprecated(since = "0.2.190", note = "Use `int_least32_t::MAX` instead.")]
+pub const INT_LEAST32_MAX: int_least32_t = int_least32_t::MAX;
+#[deprecated(since = "0.2.190", note = "Use `uint_least8_t::MAX` instead.")]
+pub const UINT_LEAST8_MAX: uint_least8_t = uint_least8_t::MAX;
+#[deprecated(since = "0.2.190", note = "Use `uint_least16_t::MAX` instead.")]
+pub const UINT_LEAST16_MAX: uint_least16_t = uint_least16_t::MAX;
+#[deprecated(since = "0.2.190", note = "Use `uint_least32_t::MAX` instead.")]
+pub const UINT_LEAST32_MAX: uint_least32_t = uint_least32_t::MAX;
+#[deprecated(since = "0.2.190", note = "Use `int_fast8_t::MIN` instead.")]
+pub const INT_FAST8_MIN: int_fast8_t = int_fast8_t::MIN;
+#[deprecated(since = "0.2.190", note = "Use `int_fast16_t::MIN` instead.")]
+pub const INT_FAST16_MIN: int_fast16_t = int_fast16_t::MIN;
+#[deprecated(since = "0.2.190", note = "Use `int_fast32_t::MIN` instead.")]
+pub const INT_FAST32_MIN: int_fast32_t = int_fast32_t::MIN;
+#[deprecated(since = "0.2.190", note = "Use `int_fast8_t::MAX` instead.")]
+pub const INT_FAST8_MAX: int_fast8_t = int_fast8_t::MAX;
+#[deprecated(since = "0.2.190", note = "Use `int_fast16_t::MAX` instead.")]
+pub const INT_FAST16_MAX: int_fast16_t = int_fast16_t::MAX;
+#[deprecated(since = "0.2.190", note = "Use `int_fast32_t::MAX` instead.")]
+pub const INT_FAST32_MAX: int_fast32_t = int_fast32_t::MAX;
+#[deprecated(since = "0.2.190", note = "Use `uint_fast8_t::MAX` instead.")]
+pub const UINT_FAST8_MAX: uint_fast8_t = uint_fast8_t::MAX;
+#[deprecated(since = "0.2.190", note = "Use `uint_fast16_t::MAX` instead.")]
+pub const UINT_FAST16_MAX: uint_fast16_t = uint_fast16_t::MAX;
+#[deprecated(since = "0.2.190", note = "Use `uint_fast32_t::MAX` instead.")]
+pub const UINT_FAST32_MAX: uint_fast32_t = uint_fast32_t::MAX;
+#[deprecated(since = "0.2.190", note = "Use `intptr_t::MIN` instead.")]
+pub const INTPTR_MIN: intptr_t = intptr_t::MIN;
+#[deprecated(since = "0.2.190", note = "Use `intptr_t::MAX` instead.")]
+pub const INTPTR_MAX: intptr_t = intptr_t::MAX;
+#[deprecated(since = "0.2.190", note = "Use `uintptr_t::MAX` instead.")]
+pub const UINTPTR_MAX: uintptr_t = uintptr_t::MAX;
+#[deprecated(since = "0.2.190", note = "Use `ptrdiff_t::MIN` instead.")]
+pub const PTRDIFF_MIN: ptrdiff_t = ptrdiff_t::MIN;
+#[deprecated(since = "0.2.190", note = "Use `ptrdiff_t::MAX` instead.")]
+pub const PTRDIFF_MAX: ptrdiff_t = ptrdiff_t::MAX;
+#[deprecated(since = "0.2.190", note = "Use `c_int::MIN` instead.")]
+pub const SIG_ATOMIC_MIN: __sig_atomic_t = c_int::MIN;
+#[deprecated(since = "0.2.190", note = "Use `c_int::MAX` instead.")]
+pub const SIG_ATOMIC_MAX: __sig_atomic_t = c_int::MAX;
+#[deprecated(since = "0.2.190", note = "Use `size_t::MAX` instead.")]
+pub const SIZE_MAX: size_t = size_t::MAX;
+#[deprecated(since = "0.2.190", note = "Use `wint_t::MIN` instead.")]
+pub const WINT_MIN: wint_t = wint_t::MIN;
+#[deprecated(since = "0.2.190", note = "Use `wint_t::MAX` instead.")]
+pub const WINT_MAX: wint_t = wint_t::MAX;
 pub const INT8_WIDTH: usize = 8;
 pub const UINT8_WIDTH: usize = 8;
 pub const INT16_WIDTH: usize = 16;
@@ -2684,6 +2839,12 @@ pub const XATTR_CREATE: c_int = 0x1;
 pub const XATTR_REPLACE: c_int = 0x2;
 
 // spawn.h
+pub const POSIX_SPAWN_RESETIDS: c_short = 0x01;
+pub const POSIX_SPAWN_SETPGROUP: c_short = 0x02;
+pub const POSIX_SPAWN_SETSIGDEF: c_short = 0x04;
+pub const POSIX_SPAWN_SETSIGMASK: c_short = 0x08;
+pub const POSIX_SPAWN_SETSCHEDPARAM: c_short = 0x10;
+pub const POSIX_SPAWN_SETSCHEDULER: c_short = 0x20;
 pub const POSIX_SPAWN_USEVFORK: c_int = 64;
 pub const POSIX_SPAWN_SETSID: c_int = 128;
 
@@ -3206,6 +3367,9 @@ pub const RTLD_DI_PROFILEOUT: c_int = 8;
 pub const RTLD_DI_TLS_MODID: c_int = 9;
 pub const RTLD_DI_TLS_DATA: c_int = 10;
 pub const RTLD_DI_PHDR: c_int = 11;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const RTLD_DI_MAX: c_int = 11;
 
 pub const SI_ASYNCIO: c_int = -4;
@@ -3330,24 +3494,24 @@ pub const PTHREAD_MUTEX_INITIALIZER: pthread_mutex_t = pthread_mutex_t {
     __shpid: 0,
     __type: PTHREAD_MUTEX_TIMED as c_int,
     __flags: 0,
-    __reserved1: 0,
-    __reserved2: 0,
+    __reserved1: Padding::new(0),
+    __reserved2: Padding::new(0),
 };
 pub const PTHREAD_COND_INITIALIZER: pthread_cond_t = pthread_cond_t {
     __lock: __PTHREAD_SPIN_LOCK_INITIALIZER,
-    __queue: 0i64 as *mut __pthread,
-    __attr: 0i64 as *mut __pthread_condattr,
+    __queue: ptr::null_mut(),
+    __attr: ptr::null_mut(),
     __wrefs: 0,
-    __data: 0i64 as *mut c_void,
+    __data: ptr::null_mut(),
 };
 pub const PTHREAD_RWLOCK_INITIALIZER: pthread_rwlock_t = pthread_rwlock_t {
     __held: __PTHREAD_SPIN_LOCK_INITIALIZER,
     __lock: __PTHREAD_SPIN_LOCK_INITIALIZER,
     __readers: 0,
-    __readerqueue: 0i64 as *mut __pthread,
-    __writerqueue: 0i64 as *mut __pthread,
-    __attr: 0i64 as *mut __pthread_rwlockattr,
-    __data: 0i64 as *mut c_void,
+    __readerqueue: ptr::null_mut(),
+    __writerqueue: ptr::null_mut(),
+    __attr: ptr::null_mut(),
+    __data: ptr::null_mut(),
 };
 pub const PTHREAD_STACK_MIN: size_t = 0;
 
@@ -3360,120 +3524,208 @@ const fn CMSG_ALIGN(len: usize) -> usize {
 
 // functions
 f! {
-    pub fn CMSG_FIRSTHDR(mhdr: *const msghdr) -> *mut cmsghdr {
+    pub unsafe fn CMSG_FIRSTHDR(mhdr: *const msghdr) -> *mut cmsghdr {
         if (*mhdr).msg_controllen as usize >= size_of::<cmsghdr>() {
-            (*mhdr).msg_control.cast::<cmsghdr>()
+            (*mhdr).msg_control.cast()
         } else {
-            core::ptr::null_mut::<cmsghdr>()
+            ptr::null_mut()
         }
     }
 
-    pub fn CMSG_DATA(cmsg: *const cmsghdr) -> *mut c_uchar {
+    pub unsafe fn CMSG_DATA(cmsg: *const cmsghdr) -> *mut c_uchar {
         (cmsg as *mut c_uchar).offset(CMSG_ALIGN(size_of::<cmsghdr>()) as isize)
     }
 
-    pub const fn CMSG_SPACE(length: c_uint) -> c_uint {
+    pub const unsafe fn CMSG_SPACE(length: c_uint) -> c_uint {
         (CMSG_ALIGN(length as usize) + CMSG_ALIGN(size_of::<cmsghdr>())) as c_uint
     }
 
-    pub const fn CMSG_LEN(length: c_uint) -> c_uint {
+    pub const unsafe fn CMSG_LEN(length: c_uint) -> c_uint {
         CMSG_ALIGN(size_of::<cmsghdr>()) as c_uint + length
     }
 
-    pub fn CMSG_NXTHDR(mhdr: *const msghdr, cmsg: *const cmsghdr) -> *mut cmsghdr {
+    pub unsafe fn CMSG_NXTHDR(mhdr: *const msghdr, cmsg: *const cmsghdr) -> *mut cmsghdr {
         if ((*cmsg).cmsg_len as usize) < size_of::<cmsghdr>() {
-            return core::ptr::null_mut::<cmsghdr>();
+            return ptr::null_mut();
         }
         let next = (cmsg as usize + CMSG_ALIGN((*cmsg).cmsg_len as usize)) as *mut cmsghdr;
         let max = (*mhdr).msg_control as usize + (*mhdr).msg_controllen as usize;
         if (next.offset(1)) as usize > max
             || next as usize + CMSG_ALIGN((*next).cmsg_len as usize) > max
         {
-            core::ptr::null_mut::<cmsghdr>()
+            ptr::null_mut()
         } else {
-            next.cast::<cmsghdr>()
+            next.cast()
         }
     }
 
-    pub fn CPU_ALLOC_SIZE(count: c_int) -> size_t {
+    pub unsafe fn CPU_ALLOC_SIZE(count: c_int) -> size_t {
         let _dummy: cpu_set_t = mem::zeroed();
-        let size_in_bits = 8 * size_of_val(&_dummy.bits[0]);
+        let size_in_bits = 8 * size_of_val(&_dummy.__bits[0]);
         ((count as size_t + size_in_bits - 1) / 8) as size_t
     }
 
-    pub fn CPU_ZERO(cpuset: &mut cpu_set_t) -> () {
-        for slot in cpuset.bits.iter_mut() {
-            *slot = 0;
-        }
+    pub unsafe fn CPU_ZERO(cpuset: &mut cpu_set_t) -> () {
+        cpuset.__bits.fill(0);
     }
 
-    pub fn CPU_SET(cpu: usize, cpuset: &mut cpu_set_t) -> () {
-        let size_in_bits = 8 * size_of_val(&cpuset.bits[0]); // 32, 64 etc
+    pub unsafe fn CPU_SET(cpu: usize, cpuset: &mut cpu_set_t) -> () {
+        let size_in_bits = 8 * size_of_val(&cpuset.__bits[0]); // 32, 64 etc
         let (idx, offset) = (cpu / size_in_bits, cpu % size_in_bits);
-        cpuset.bits[idx] |= 1 << offset;
+        cpuset.__bits[idx] |= 1 << offset;
     }
 
-    pub fn CPU_CLR(cpu: usize, cpuset: &mut cpu_set_t) -> () {
-        let size_in_bits = 8 * size_of_val(&cpuset.bits[0]); // 32, 64 etc
+    pub unsafe fn CPU_CLR(cpu: usize, cpuset: &mut cpu_set_t) -> () {
+        let size_in_bits = 8 * size_of_val(&cpuset.__bits[0]); // 32, 64 etc
         let (idx, offset) = (cpu / size_in_bits, cpu % size_in_bits);
-        cpuset.bits[idx] &= !(1 << offset);
+        cpuset.__bits[idx] &= !(1 << offset);
     }
 
-    pub fn CPU_ISSET(cpu: usize, cpuset: &cpu_set_t) -> bool {
-        let size_in_bits = 8 * size_of_val(&cpuset.bits[0]);
+    pub unsafe fn CPU_ISSET(cpu: usize, cpuset: &cpu_set_t) -> bool {
+        let size_in_bits = 8 * size_of_val(&cpuset.__bits[0]);
         let (idx, offset) = (cpu / size_in_bits, cpu % size_in_bits);
-        0 != (cpuset.bits[idx] & (1 << offset))
+        0 != (cpuset.__bits[idx] & (1 << offset))
     }
 
-    pub fn CPU_COUNT_S(size: usize, cpuset: &cpu_set_t) -> c_int {
+    pub unsafe fn CPU_COUNT_S(size: usize, cpuset: &cpu_set_t) -> c_int {
         let mut s: u32 = 0;
-        let size_of_mask = size_of_val(&cpuset.bits[0]);
-        for i in cpuset.bits[..(size / size_of_mask)].iter() {
+        let size_of_mask = size_of_val(&cpuset.__bits[0]);
+        for i in &cpuset.__bits[..(size / size_of_mask)] {
             s += i.count_ones();
         }
         s as c_int
     }
 
-    pub fn CPU_COUNT(cpuset: &cpu_set_t) -> c_int {
+    pub unsafe fn CPU_COUNT(cpuset: &cpu_set_t) -> c_int {
         CPU_COUNT_S(size_of::<cpu_set_t>(), cpuset)
     }
 
-    pub fn CPU_EQUAL(set1: &cpu_set_t, set2: &cpu_set_t) -> bool {
-        set1.bits == set2.bits
+    pub unsafe fn CPU_EQUAL(set1: &cpu_set_t, set2: &cpu_set_t) -> bool {
+        set1.__bits == set2.__bits
     }
 
-    pub fn IPTOS_TOS(tos: u8) -> u8 {
+    pub unsafe fn IPTOS_TOS(tos: u8) -> u8 {
         tos & IPTOS_TOS_MASK
     }
 
-    pub fn IPTOS_PREC(tos: u8) -> u8 {
+    pub unsafe fn IPTOS_PREC(tos: u8) -> u8 {
         tos & IPTOS_PREC_MASK
     }
 
-    pub fn FD_CLR(fd: c_int, set: *mut fd_set) -> () {
+    pub unsafe fn FD_CLR(fd: c_int, set: *mut fd_set) -> () {
         let fd = fd as usize;
         let size = size_of_val(&(*set).fds_bits[0]) * 8;
-        (*set).fds_bits[fd / size] &= !(1 << (fd % size));
-        return;
+        let Some(slot) = (*set).fds_bits.get_mut(fd / size) else {
+            panic!("fd {fd} out of range: valid fds are 0..FD_SETSIZE (0..{FD_SETSIZE})");
+        };
+        *slot &= !(1 << (fd % size));
     }
 
-    pub fn FD_ISSET(fd: c_int, set: *const fd_set) -> bool {
+    pub unsafe fn FD_ISSET(fd: c_int, set: *const fd_set) -> bool {
         let fd = fd as usize;
         let size = size_of_val(&(*set).fds_bits[0]) * 8;
-        return ((*set).fds_bits[fd / size] & (1 << (fd % size))) != 0;
+        let Some(slot) = (*set).fds_bits.get(fd / size) else {
+            panic!("fd {fd} out of range: valid fds are 0..FD_SETSIZE (0..{FD_SETSIZE})");
+        };
+        (*slot & (1 << (fd % size))) != 0
     }
 
-    pub fn FD_SET(fd: c_int, set: *mut fd_set) -> () {
+    pub unsafe fn FD_SET(fd: c_int, set: *mut fd_set) -> () {
         let fd = fd as usize;
         let size = size_of_val(&(*set).fds_bits[0]) * 8;
-        (*set).fds_bits[fd / size] |= 1 << (fd % size);
-        return;
+        let Some(slot) = (*set).fds_bits.get_mut(fd / size) else {
+            panic!("fd {fd} out of range: valid fds are 0..FD_SETSIZE (0..{FD_SETSIZE})");
+        };
+        *slot |= 1 << (fd % size);
     }
 
-    pub fn FD_ZERO(set: *mut fd_set) -> () {
-        for slot in (*set).fds_bits.iter_mut() {
-            *slot = 0;
-        }
+    pub unsafe fn FD_ZERO(set: *mut fd_set) -> () {
+        (*set).fds_bits.fill(0);
+    }
+
+    pub const safe fn makedev(major: c_uint, minor: c_uint) -> crate::dev_t {
+        let major = major as crate::dev_t;
+        let minor = minor as crate::dev_t;
+        let mut dev = 0;
+        dev |= major << 8;
+        dev |= minor;
+        dev
+    }
+
+    pub const safe fn major(dev: crate::dev_t) -> c_uint {
+        ((dev >> 8) & 0xff) as c_uint
+    }
+
+    pub const safe fn minor(dev: crate::dev_t) -> c_uint {
+        (dev & 0xffff00ff) as c_uint
+    }
+
+    pub safe fn SIGRTMAX() -> c_int {
+        unsafe { __libc_current_sigrtmax() }
+    }
+
+    pub safe fn SIGRTMIN() -> c_int {
+        unsafe { __libc_current_sigrtmin() }
+    }
+
+    pub const safe fn WIFSTOPPED(status: c_int) -> bool {
+        (status & 0xff) == 0x7f
+    }
+
+    pub const safe fn WSTOPSIG(status: c_int) -> c_int {
+        (status >> 8) & 0xff
+    }
+
+    pub const safe fn WIFCONTINUED(status: c_int) -> bool {
+        status == 0xffff
+    }
+
+    pub const safe fn WIFSIGNALED(status: c_int) -> bool {
+        ((status & 0x7f) + 1) as i8 >= 2
+    }
+
+    pub const safe fn WTERMSIG(status: c_int) -> c_int {
+        status & 0x7f
+    }
+
+    pub const safe fn WIFEXITED(status: c_int) -> bool {
+        (status & 0x7f) == 0
+    }
+
+    pub const safe fn WEXITSTATUS(status: c_int) -> c_int {
+        (status >> 8) & 0xff
+    }
+
+    pub const safe fn WCOREDUMP(status: c_int) -> bool {
+        (status & 0x80) != 0
+    }
+
+    pub const safe fn W_EXITCODE(ret: c_int, sig: c_int) -> c_int {
+        (ret << 8) | sig
+    }
+
+    pub const safe fn W_STOPCODE(sig: c_int) -> c_int {
+        (sig << 8) | 0x7f
+    }
+
+    pub const safe fn QCMD(cmd: c_int, type_: c_int) -> c_int {
+        (cmd << 8) | (type_ & 0x00ff)
+    }
+
+    pub const safe fn IPOPT_COPIED(o: u8) -> u8 {
+        o & IPOPT_COPY
+    }
+
+    pub const safe fn IPOPT_CLASS(o: u8) -> u8 {
+        o & IPOPT_CLASS_MASK
+    }
+
+    pub const safe fn IPOPT_NUMBER(o: u8) -> u8 {
+        o & IPOPT_NUMBER_MASK
+    }
+
+    pub const safe fn IPTOS_ECN(x: u8) -> u8 {
+        x & crate::IPTOS_ECN_MASK
     }
 }
 
@@ -3530,27 +3782,33 @@ extern "C" {
 
     pub fn dup3(oldfd: c_int, newfd: c_int, flags: c_int) -> c_int;
 
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
     pub fn pread64(fd: c_int, buf: *mut c_void, count: size_t, offset: off64_t) -> ssize_t;
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
     pub fn pwrite64(fd: c_int, buf: *const c_void, count: size_t, offset: off64_t) -> ssize_t;
 
     pub fn readv(__fd: c_int, __iovec: *const crate::iovec, __count: c_int) -> ssize_t;
     pub fn writev(__fd: c_int, __iovec: *const crate::iovec, __count: c_int) -> ssize_t;
 
+    #[cfg_attr(gnu_file_offset_bits64, link_name = "preadv64")]
     pub fn preadv(
         __fd: c_int,
         __iovec: *const crate::iovec,
         __count: c_int,
-        __offset: __off_t,
+        __offset: off_t,
     ) -> ssize_t;
+    #[cfg_attr(gnu_file_offset_bits64, link_name = "pwritev64")]
     pub fn pwritev(
         __fd: c_int,
         __iovec: *const crate::iovec,
         __count: c_int,
-        __offset: __off_t,
+        __offset: off_t,
     ) -> ssize_t;
 
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
     pub fn preadv64(fd: c_int, iov: *const crate::iovec, iovcnt: c_int, offset: off64_t)
         -> ssize_t;
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
     pub fn pwritev64(
         fd: c_int,
         iov: *const crate::iovec,
@@ -3619,13 +3877,18 @@ extern "C" {
         oldattr: *mut crate::mq_attr,
     ) -> c_int;
 
-    pub fn lseek64(__fd: c_int, __offset: __off64_t, __whence: c_int) -> __off64_t;
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
+    pub fn lseek64(__fd: c_int, __offset: off64_t, __whence: c_int) -> off64_t;
 
-    pub fn lseek(__fd: c_int, __offset: __off_t, __whence: c_int) -> __off_t;
-
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
+    #[allow(clashing_extern_declarations)]
     pub fn fgetpos64(stream: *mut crate::FILE, ptr: *mut fpos64_t) -> c_int;
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
     pub fn fseeko64(stream: *mut crate::FILE, offset: off64_t, whence: c_int) -> c_int;
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
+    #[allow(clashing_extern_declarations)]
     pub fn fsetpos64(stream: *mut crate::FILE, ptr: *const fpos64_t) -> c_int;
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
     pub fn ftello64(stream: *mut crate::FILE) -> off64_t;
 
     pub fn bind(__fd: c_int, __addr: *const sockaddr, __len: crate::socklen_t) -> c_int;
@@ -3657,7 +3920,9 @@ extern "C" {
         addrlen: *mut crate::socklen_t,
     ) -> ssize_t;
 
+    #[cfg_attr(gnu_file_offset_bits64, link_name = "sendfile64")]
     pub fn sendfile(out_fd: c_int, in_fd: c_int, offset: *mut off_t, count: size_t) -> ssize_t;
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
     pub fn sendfile64(out_fd: c_int, in_fd: c_int, offset: *mut off64_t, count: size_t) -> ssize_t;
 
     pub fn shutdown(__fd: c_int, __how: c_int) -> c_int;
@@ -3998,10 +4263,10 @@ extern "C" {
         old_value: *mut crate::itimerspec,
     ) -> c_int;
 
-    pub fn fstat(__fd: c_int, __buf: *mut stat) -> c_int;
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
     pub fn fstat64(__fd: c_int, __buf: *mut stat64) -> c_int;
 
-    pub fn fstatat(__fd: c_int, __file: *const c_char, __buf: *mut stat, __flag: c_int) -> c_int;
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
     pub fn fstatat64(
         __fd: c_int,
         __file: *const c_char,
@@ -4017,41 +4282,50 @@ extern "C" {
         statxbuf: *mut statx,
     ) -> c_int;
 
-    pub fn ftruncate(__fd: c_int, __length: __off_t) -> c_int;
-    pub fn ftruncate64(__fd: c_int, __length: __off64_t) -> c_int;
-    pub fn truncate64(__file: *const c_char, __length: __off64_t) -> c_int;
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
+    pub fn ftruncate64(__fd: c_int, __length: off64_t) -> c_int;
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
+    pub fn truncate64(__file: *const c_char, __length: off64_t) -> c_int;
 
-    pub fn lstat(__file: *const c_char, __buf: *mut stat) -> c_int;
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
     pub fn lstat64(__file: *const c_char, __buf: *mut stat64) -> c_int;
 
+    #[cfg_attr(gnu_file_offset_bits64, link_name = "statfs64")]
     pub fn statfs(path: *const c_char, buf: *mut statfs) -> c_int;
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
     pub fn statfs64(__file: *const c_char, __buf: *mut statfs64) -> c_int;
+    #[cfg_attr(gnu_file_offset_bits64, link_name = "fstatfs64")]
     pub fn fstatfs(fd: c_int, buf: *mut statfs) -> c_int;
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
     pub fn fstatfs64(__fildes: c_int, __buf: *mut statfs64) -> c_int;
 
-    pub fn statvfs(__file: *const c_char, __buf: *mut statvfs) -> c_int;
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
     pub fn statvfs64(__file: *const c_char, __buf: *mut statvfs64) -> c_int;
-    pub fn fstatvfs(__fildes: c_int, __buf: *mut statvfs) -> c_int;
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
     pub fn fstatvfs64(__fildes: c_int, __buf: *mut statvfs64) -> c_int;
 
-    pub fn open(__file: *const c_char, __oflag: c_int, ...) -> c_int;
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
     pub fn open64(__file: *const c_char, __oflag: c_int, ...) -> c_int;
 
-    pub fn openat(__fd: c_int, __file: *const c_char, __oflag: c_int, ...) -> c_int;
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
     pub fn openat64(__fd: c_int, __file: *const c_char, __oflag: c_int, ...) -> c_int;
 
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
     pub fn fopen64(filename: *const c_char, mode: *const c_char) -> *mut crate::FILE;
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
     pub fn freopen64(
         filename: *const c_char,
         mode: *const c_char,
         file: *mut crate::FILE,
     ) -> *mut crate::FILE;
 
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
     pub fn creat64(path: *const c_char, mode: mode_t) -> c_int;
 
     pub fn mkostemp(template: *mut c_char, flags: c_int) -> c_int;
     pub fn mkostemps(template: *mut c_char, suffixlen: c_int, flags: c_int) -> c_int;
     pub fn mkstemps(template: *mut c_char, suffixlen: c_int) -> c_int;
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
     pub fn tmpfile64() -> *mut crate::FILE;
 
     pub fn popen(command: *const c_char, mode: *const c_char) -> *mut crate::FILE;
@@ -4206,20 +4480,16 @@ extern "C" {
 
     pub fn faccessat(dirfd: c_int, pathname: *const c_char, mode: c_int, flags: c_int) -> c_int;
 
-    pub fn stat(__file: *const c_char, __buf: *mut stat) -> c_int;
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
     pub fn stat64(__file: *const c_char, __buf: *mut stat64) -> c_int;
 
-    pub fn readdir(dirp: *mut crate::DIR) -> *mut crate::dirent;
-    pub fn readdir64(dirp: *mut crate::DIR) -> *mut crate::dirent64;
-    pub fn readdir_r(
-        dirp: *mut crate::DIR,
-        entry: *mut crate::dirent,
-        result: *mut *mut crate::dirent,
-    ) -> c_int;
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
+    pub fn readdir64(dirp: *mut crate::DIR) -> *mut dirent64;
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
     pub fn readdir64_r(
         dirp: *mut crate::DIR,
-        entry: *mut crate::dirent64,
-        result: *mut *mut crate::dirent64,
+        entry: *mut dirent64,
+        result: *mut *mut dirent64,
     ) -> c_int;
     pub fn seekdir(dirp: *mut crate::DIR, loc: c_long);
     pub fn telldir(dirp: *mut crate::DIR) -> c_long;
@@ -4231,13 +4501,14 @@ extern "C" {
 
     pub fn __errno_location() -> *mut c_int;
 
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
     pub fn mmap64(
         __addr: *mut c_void,
         __len: size_t,
         __prot: c_int,
         __flags: c_int,
         __fd: c_int,
-        __offset: __off64_t,
+        __offset: off64_t,
     ) -> *mut c_void;
 
     pub fn mremap(
@@ -4255,23 +4526,31 @@ extern "C" {
     pub fn syncfs(fd: c_int) -> c_int;
     pub fn fdatasync(fd: c_int) -> c_int;
 
+    #[deprecated(since = "0.2.187", note = "This routine doesn't exist upstream.")]
     pub fn fallocate64(fd: c_int, mode: c_int, offset: off64_t, len: off64_t) -> c_int;
+    #[cfg_attr(gnu_file_offset_bits64, link_name = "posix_fallocate64")]
     pub fn posix_fallocate(fd: c_int, offset: off_t, len: off_t) -> c_int;
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
     pub fn posix_fallocate64(fd: c_int, offset: off64_t, len: off64_t) -> c_int;
 
+    #[cfg_attr(gnu_file_offset_bits64, link_name = "posix_fadvise64")]
     pub fn posix_fadvise(fd: c_int, offset: off_t, len: off_t, advise: c_int) -> c_int;
 
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
     pub fn posix_fadvise64(fd: c_int, offset: off64_t, len: off64_t, advise: c_int) -> c_int;
 
     pub fn madvise(__addr: *mut c_void, __len: size_t, __advice: c_int) -> c_int;
 
     pub fn posix_madvise(addr: *mut c_void, len: size_t, advice: c_int) -> c_int;
 
-    pub fn getrlimit(resource: crate::__rlimit_resource_t, rlim: *mut crate::rlimit) -> c_int;
-    pub fn getrlimit64(resource: crate::__rlimit_resource_t, rlim: *mut crate::rlimit64) -> c_int;
-    pub fn setrlimit(resource: crate::__rlimit_resource_t, rlim: *const crate::rlimit) -> c_int;
-    pub fn setrlimit64(resource: crate::__rlimit_resource_t, rlim: *const crate::rlimit64)
-        -> c_int;
+    #[cfg_attr(gnu_file_offset_bits64, link_name = "getrlimit64")]
+    pub fn getrlimit(resource: __rlimit_resource_t, rlim: *mut crate::rlimit) -> c_int;
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
+    pub fn getrlimit64(resource: __rlimit_resource_t, rlim: *mut rlimit64) -> c_int;
+    #[cfg_attr(gnu_file_offset_bits64, link_name = "setrlimit64")]
+    pub fn setrlimit(resource: __rlimit_resource_t, rlim: *const crate::rlimit) -> c_int;
+    // FIXME(1.0,deprecate,64): lfs binding to be removed
+    pub fn setrlimit64(resource: __rlimit_resource_t, rlim: *const rlimit64) -> c_int;
 
     pub fn getpriority(which: crate::__priority_which, who: crate::id_t) -> c_int;
     pub fn setpriority(which: crate::__priority_which, who: crate::id_t, prio: c_int) -> c_int;
@@ -4364,20 +4643,48 @@ extern "C" {
 
     pub fn regfree(preg: *mut crate::regex_t);
 
+    #[cfg_attr(
+        all(gnu_file_offset_bits64, gnu_time_bits64),
+        link_name = "__glob64_time64"
+    )]
+    #[cfg_attr(
+        all(gnu_file_offset_bits64, not(gnu_time_bits64)),
+        link_name = "glob64"
+    )]
     pub fn glob(
         pattern: *const c_char,
         flags: c_int,
         errfunc: Option<extern "C" fn(epath: *const c_char, errno: c_int) -> c_int>,
-        pglob: *mut crate::glob_t,
+        pglob: *mut glob_t,
     ) -> c_int;
-    pub fn globfree(pglob: *mut crate::glob_t);
+    #[cfg_attr(
+        all(gnu_file_offset_bits64, gnu_time_bits64),
+        link_name = "__globfree64_time64"
+    )]
+    #[cfg_attr(
+        all(gnu_file_offset_bits64, not(gnu_time_bits64)),
+        link_name = "globfree64"
+    )]
+    pub fn globfree(pglob: *mut glob_t);
 
+    #[cfg_attr(gnu_time_bits64, link_name = "__glob64_time64")]
+    #[deprecated(
+        since = "0.2.187",
+        note = "Use `glob` instead. Their definitions are equivalent."
+    )]
+    #[allow(deprecated)]
     pub fn glob64(
         pattern: *const c_char,
         flags: c_int,
         errfunc: Option<extern "C" fn(epath: *const c_char, errno: c_int) -> c_int>,
         pglob: *mut glob64_t,
     ) -> c_int;
+    #[cfg_attr(gnu_time_bits64, link_name = "__globfree64_time64")]
+    #[deprecated(
+        since = "0.2.187",
+        note = "Use `globfree` instead. Their definitions are equivalent."
+    )]
+    #[allow(deprecated)]
     pub fn globfree64(pglob: *mut glob64_t);
 
     pub fn getxattr(
@@ -4463,93 +4770,6 @@ extern "C" {
 
     pub fn gnu_get_libc_release() -> *const c_char;
     pub fn gnu_get_libc_version() -> *const c_char;
-}
-
-safe_f! {
-    pub const fn makedev(major: c_uint, minor: c_uint) -> crate::dev_t {
-        let major = major as crate::dev_t;
-        let minor = minor as crate::dev_t;
-        let mut dev = 0;
-        dev |= major << 8;
-        dev |= minor;
-        dev
-    }
-
-    pub const fn major(dev: crate::dev_t) -> c_uint {
-        ((dev >> 8) & 0xff) as c_uint
-    }
-
-    pub const fn minor(dev: crate::dev_t) -> c_uint {
-        (dev & 0xffff00ff) as c_uint
-    }
-
-    pub fn SIGRTMAX() -> c_int {
-        unsafe { __libc_current_sigrtmax() }
-    }
-
-    pub fn SIGRTMIN() -> c_int {
-        unsafe { __libc_current_sigrtmin() }
-    }
-
-    pub const fn WIFSTOPPED(status: c_int) -> bool {
-        (status & 0xff) == 0x7f
-    }
-
-    pub const fn WSTOPSIG(status: c_int) -> c_int {
-        (status >> 8) & 0xff
-    }
-
-    pub const fn WIFCONTINUED(status: c_int) -> bool {
-        status == 0xffff
-    }
-
-    pub const fn WIFSIGNALED(status: c_int) -> bool {
-        ((status & 0x7f) + 1) as i8 >= 2
-    }
-
-    pub const fn WTERMSIG(status: c_int) -> c_int {
-        status & 0x7f
-    }
-
-    pub const fn WIFEXITED(status: c_int) -> bool {
-        (status & 0x7f) == 0
-    }
-
-    pub const fn WEXITSTATUS(status: c_int) -> c_int {
-        (status >> 8) & 0xff
-    }
-
-    pub const fn WCOREDUMP(status: c_int) -> bool {
-        (status & 0x80) != 0
-    }
-
-    pub const fn W_EXITCODE(ret: c_int, sig: c_int) -> c_int {
-        (ret << 8) | sig
-    }
-
-    pub const fn W_STOPCODE(sig: c_int) -> c_int {
-        (sig << 8) | 0x7f
-    }
-
-    pub const fn QCMD(cmd: c_int, type_: c_int) -> c_int {
-        (cmd << 8) | (type_ & 0x00ff)
-    }
-
-    pub const fn IPOPT_COPIED(o: u8) -> u8 {
-        o & IPOPT_COPY
-    }
-
-    pub const fn IPOPT_CLASS(o: u8) -> u8 {
-        o & IPOPT_CLASS_MASK
-    }
-
-    pub const fn IPOPT_NUMBER(o: u8) -> u8 {
-        o & IPOPT_NUMBER_MASK
-    }
-
-    pub const fn IPTOS_ECN(x: u8) -> u8 {
-        x & crate::IPTOS_ECN_MASK
-    }
 }
 
 cfg_if! {

@@ -52,13 +52,13 @@ mod variant;
 mod variants;
 
 #[doc(inline)]
-pub use language::{language, Language};
+pub use language::{Language, language};
 #[doc(inline)]
-pub use region::{region, Region};
+pub use region::{Region, region};
 #[doc(inline)]
-pub use script::{script, Script};
+pub use script::{Script, script};
 #[doc(inline)]
-pub use variant::{variant, Variant};
+pub use variant::{Variant, variant};
 pub use variants::Variants;
 
 impl_tinystr_subtag!(
@@ -72,8 +72,7 @@ impl_tinystr_subtag!(
     /// ```
     /// use icu::locale::subtags::Subtag;
     ///
-    /// let subtag1: Subtag = "Foo".parse()
-    ///     .expect("Failed to parse a Subtag.");
+    /// let subtag1: Subtag = "Foo".parse().expect("Failed to parse a Subtag.");
     ///
     /// assert_eq!(subtag1.as_str(), "foo");
     /// ```
@@ -112,7 +111,7 @@ impl Subtag {
     }
 
     #[doc(hidden)]
-    pub fn from_tinystr_unvalidated(input: tinystr::TinyAsciiStr<8>) -> Self {
+    pub const fn from_tinystr_unvalidated(input: tinystr::TinyAsciiStr<8>) -> Self {
         Self(input)
     }
 

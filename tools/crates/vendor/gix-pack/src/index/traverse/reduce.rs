@@ -3,11 +3,10 @@ use std::{
     time::Instant,
 };
 
-use gix_features::{
-    parallel,
-    progress::Progress,
-    threading::{lock, Mutable, OwnShared},
-};
+use gix_error::{Result, bail, cancelled};
+use gix_parallel as parallel;
+use gix_parallel::{Mutable, OwnShared, lock};
+use gix_utils::progress::Progress;
 
 use crate::{data, index::traverse};
 
@@ -27,24 +26,21 @@ fn div_decode_result(lhs: &mut data::decode::entry::Outcome, div: usize) {
     }
 }
 
-pub struct Reducer<'a, P, E> {
+pub struct Reducer<'a, P> {
     progress: OwnShared<Mutable<P>>,
-    check: traverse::SafetyCheck,
     then: Instant,
     entries_seen: usize,
     stats: traverse::Statistics,
     should_interrupt: &'a AtomicBool,
-    _error: std::marker::PhantomData<E>,
 }
 
-impl<'a, P, E> Reducer<'a, P, E>
+impl<'a, P> Reducer<'a, P>
 where
     P: Progress,
 {
     pub fn from_progress(
         progress: OwnShared<Mutable<P>>,
         pack_data_len_in_bytes: usize,
-        check: traverse::SafetyCheck,
         should_interrupt: &'a AtomicBool,
     ) -> Self {
         let stats = traverse::Statistics {
@@ -53,34 +49,25 @@ where
         };
         Reducer {
             progress,
-            check,
             then: Instant::now(),
             entries_seen: 0,
             should_interrupt,
             stats,
-            _error: Default::default(),
         }
     }
 }
 
-impl<P, E> parallel::Reduce for Reducer<'_, P, E>
+impl<P> parallel::Reduce for Reducer<'_, P>
 where
     P: Progress,
-    E: std::error::Error + Send + Sync + 'static,
 {
-    type Input = Result<Vec<data::decode::entry::Outcome>, traverse::Error<E>>;
+    type Input = Result<Vec<data::decode::entry::Outcome>>;
     type FeedProduce = ();
     type Output = traverse::Statistics;
-    type Error = traverse::Error<E>;
+    type Error = gix_error::Error;
 
-    fn feed(&mut self, input: Self::Input) -> Result<(), Self::Error> {
-        let chunk_stats: Vec<_> = match input {
-            Err(err @ traverse::Error::PackDecode { .. }) if !self.check.fatal_decode_error() => {
-                lock(&self.progress).info(format!("Ignoring decode error: {err}"));
-                return Ok(());
-            }
-            res => res,
-        }?;
+    fn feed(&mut self, input: Self::Input) -> Result {
+        let chunk_stats = input?;
         self.entries_seen += chunk_stats.len();
 
         let chunk_total = chunk_stats.into_iter().fold(
@@ -106,12 +93,12 @@ where
         lock(&self.progress).set(self.entries_seen);
 
         if self.should_interrupt.load(Ordering::SeqCst) {
-            return Err(Self::Error::Interrupted);
+            bail!(cancelled("Interrupted"));
         }
         Ok(())
     }
 
-    fn finalize(mut self) -> Result<Self::Output, Self::Error> {
+    fn finalize(mut self) -> Result<Self::Output> {
         div_decode_result(&mut self.stats.average, self.entries_seen);
 
         let elapsed_s = self.then.elapsed().as_secs_f32();
@@ -122,7 +109,7 @@ where
             self.entries_seen,
             elapsed_s,
             objects_per_second,
-            gix_features::progress::bytesize::ByteSize(self.stats.average.object_size * u64::from(objects_per_second))
+            gix_utils::progress::bytesize::ByteSize(self.stats.average.object_size * u64::from(objects_per_second))
         ));
         Ok(self.stats)
     }

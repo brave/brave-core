@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 
+use crate::error::ErrorKind;
 use crate::limits::{
     MAX_WASM_FUNCTION_PARAMS, MAX_WASM_FUNCTION_RETURNS, MAX_WASM_STRUCT_FIELDS,
     MAX_WASM_SUPERTYPES, MAX_WASM_TYPES,
@@ -20,7 +21,7 @@ use crate::limits::{
 use crate::prelude::*;
 #[cfg(feature = "validate")]
 use crate::types::CoreTypeId;
-use crate::{BinaryReader, BinaryReaderError, FromReader, Result, SectionLimited};
+use crate::{BinaryReader, Error, FromReader, Result, SectionLimited};
 use core::cmp::Ordering;
 use core::fmt::{self, Debug};
 use core::hash::{Hash, Hasher};
@@ -238,7 +239,7 @@ impl fmt::Display for PackedIndex {
 /// The uncompressed form of a `PackedIndex`.
 ///
 /// Can be used for `match` statements.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Ord, PartialOrd, Hash)]
 pub enum UnpackedIndex {
     /// An index into a Wasm module's types space.
     Module(u32),
@@ -480,6 +481,20 @@ impl SubType {
         self.composite_type.unwrap_array()
     }
 
+    /// Construct a function `SubType`.
+    pub fn func(signature: FuncType, shared: bool) -> Self {
+        Self {
+            is_final: true,
+            supertype_idx: None,
+            composite_type: CompositeType {
+                inner: CompositeInnerType::Func(signature),
+                shared,
+                descriptor_idx: None,
+                describes_idx: None,
+            },
+        }
+    }
+
     /// Unwrap an `FuncType` or panic.
     ///
     /// Does not check finality or whether there is a supertype.
@@ -494,6 +509,13 @@ impl SubType {
         self.composite_type.unwrap_struct()
     }
 
+    /// Unwrap an `ContType` or panic.
+    ///
+    /// Does not check finality or whether there is a supertype.
+    pub fn unwrap_cont(&self) -> &ContType {
+        self.composite_type.unwrap_cont()
+    }
+
     /// Maps any `UnpackedIndex` via the specified closure.
     #[cfg(feature = "validate")]
     pub(crate) fn remap_indices(
@@ -501,6 +523,12 @@ impl SubType {
         f: &mut dyn FnMut(&mut PackedIndex) -> Result<()>,
     ) -> Result<()> {
         if let Some(idx) = &mut self.supertype_idx {
+            f(idx)?;
+        }
+        if let Some(idx) = &mut self.composite_type.descriptor_idx {
+            f(idx)?;
+        }
+        if let Some(idx) = &mut self.composite_type.describes_idx {
             f(idx)?;
         }
         match &mut self.composite_type.inner {
@@ -520,19 +548,12 @@ impl SubType {
                     field.remap_indices(f)?;
                 }
             }
+            CompositeInnerType::Cont(ty) => {
+                ty.remap_indices(f)?;
+            }
         }
         Ok(())
     }
-}
-
-/// Represents a composite type in a WebAssembly module.
-#[derive(Debug, Clone, Hash, PartialEq, Eq, PartialOrd, Ord)]
-pub struct CompositeType {
-    /// The type defined inside the composite type.
-    pub inner: CompositeInnerType,
-    /// Is the composite type shared? This is part of the
-    /// shared-everything-threads proposal.
-    pub shared: bool,
 }
 
 /// A [`CompositeType`] can contain one of these types.
@@ -544,19 +565,41 @@ pub enum CompositeInnerType {
     Array(ArrayType),
     /// The type is for a struct.
     Struct(StructType),
+    /// The type is for a continuation.
+    Cont(ContType),
+}
+
+impl fmt::Display for CompositeInnerType {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            CompositeInnerType::Func(ty) => write!(f, "{ty}"),
+            CompositeInnerType::Array(ty) => write!(f, "{ty}"),
+            CompositeInnerType::Struct(ty) => write!(f, "{ty}"),
+            CompositeInnerType::Cont(ty) => write!(f, "{ty}"),
+        }
+    }
+}
+
+/// Represents a composite type in a WebAssembly module.
+#[derive(Debug, Clone, Hash, PartialEq, Eq, PartialOrd, Ord)]
+pub struct CompositeType {
+    /// The type defined inside the composite type.
+    pub inner: CompositeInnerType,
+    /// Is the composite type shared? This is part of the
+    /// shared-everything-threads proposal.
+    pub shared: bool,
+    /// The descriptor type.
+    pub descriptor_idx: Option<PackedIndex>,
+    /// The descriptor for type.
+    pub describes_idx: Option<PackedIndex>,
 }
 
 impl fmt::Display for CompositeType {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        use CompositeInnerType::*;
         if self.shared {
             write!(f, "(shared ")?;
         }
-        match self.inner {
-            Array(_) => write!(f, "(array ...)"),
-            Func(_) => write!(f, "(func ...)"),
-            Struct(_) => write!(f, "(struct ...)"),
-        }?;
+        write!(f, "{}", self.inner)?;
         if self.shared {
             write!(f, ")")?;
         }
@@ -588,6 +631,14 @@ impl CompositeType {
             _ => panic!("not a struct"),
         }
     }
+
+    /// Unwrap a `ContType` or panic.
+    pub fn unwrap_cont(&self) -> &ContType {
+        match &self.inner {
+            CompositeInnerType::Cont(c) => c,
+            _ => panic!("not a cont"),
+        }
+    }
 }
 
 /// Represents a type of a function in a WebAssembly module.
@@ -608,6 +659,28 @@ impl fmt::Debug for FuncType {
     }
 }
 
+impl fmt::Display for FuncType {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "(func")?;
+        if self.params().len() > 0 {
+            write!(f, " (param")?;
+            for p in self.params() {
+                write!(f, " {p}")?;
+            }
+            write!(f, ")")?;
+        }
+        if self.results().len() > 0 {
+            write!(f, " (result")?;
+            for p in self.results() {
+                write!(f, " {p}")?;
+            }
+            write!(f, ")")?;
+        }
+        write!(f, ")")?;
+        Ok(())
+    }
+}
+
 impl FuncType {
     /// Creates a new [`FuncType`] from the given `params` and `results`.
     pub fn new<P, R>(params: P, results: R) -> Self
@@ -624,7 +697,7 @@ impl FuncType {
         }
     }
 
-    /// Creates a new [`FuncType`] fom its raw parts.
+    /// Creates a new [`FuncType`] from its raw parts.
     ///
     /// # Panics
     ///
@@ -664,34 +737,17 @@ impl FuncType {
     pub(crate) fn results_mut(&mut self) -> &mut [ValType] {
         &mut self.params_results[self.len_params..]
     }
-
-    #[cfg(feature = "validate")]
-    pub(crate) fn desc(&self) -> String {
-        use core::fmt::Write;
-
-        let mut s = String::new();
-        s.push_str("[");
-        for (i, param) in self.params().iter().enumerate() {
-            if i > 0 {
-                s.push_str(" ");
-            }
-            write!(s, "{param}").unwrap();
-        }
-        s.push_str("] -> [");
-        for (i, result) in self.results().iter().enumerate() {
-            if i > 0 {
-                s.push_str(" ");
-            }
-            write!(s, "{result}").unwrap();
-        }
-        s.push_str("]");
-        s
-    }
 }
 
 /// Represents a type of an array in a WebAssembly module.
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub struct ArrayType(pub FieldType);
+
+impl fmt::Display for ArrayType {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "(array {})", self.0)
+    }
+}
 
 /// Represents a field type of an array or a struct.
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
@@ -700,6 +756,16 @@ pub struct FieldType {
     pub element_type: StorageType,
     /// Are elements mutable.
     pub mutable: bool,
+}
+
+impl fmt::Display for FieldType {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        if self.mutable {
+            write!(f, "(mut {})", self.element_type)
+        } else {
+            fmt::Display::fmt(&self.element_type, f)
+        }
+    }
 }
 
 impl FieldType {
@@ -764,6 +830,39 @@ pub struct StructType {
     pub fields: Box<[FieldType]>,
 }
 
+impl fmt::Display for StructType {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "(struct")?;
+        for field in self.fields.iter() {
+            write!(f, " {field}")?;
+        }
+        write!(f, ")")?;
+        Ok(())
+    }
+}
+
+/// Represents a type of a continuation in a WebAssembly module.
+#[derive(Debug, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
+pub struct ContType(pub PackedIndex);
+
+impl fmt::Display for ContType {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "(cont {})", self.0)
+    }
+}
+
+impl ContType {
+    /// Maps any `UnpackedIndex` via the specified closure.
+    #[cfg(feature = "validate")]
+    pub(crate) fn remap_indices(
+        &mut self,
+        map: &mut dyn FnMut(&mut PackedIndex) -> Result<()>,
+    ) -> Result<()> {
+        map(&mut self.0)?;
+        Ok(())
+    }
+}
+
 /// Represents the types of values in a WebAssembly module.
 #[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum ValType {
@@ -811,6 +910,9 @@ impl ValType {
     /// Alias for the wasm `exnref` type.
     pub const EXNREF: ValType = ValType::Ref(RefType::EXNREF);
 
+    /// Alias for the wasm `contref` type.
+    pub const CONTREF: ValType = ValType::Ref(RefType::CONTREF);
+
     /// Returns whether this value type is a "reference type".
     ///
     /// Only reference types are allowed in tables, for example, and with some
@@ -846,7 +948,11 @@ impl ValType {
             ValType::Ref(r) => {
                 if let Some(mut idx) = r.type_index() {
                     map(&mut idx)?;
-                    *r = RefType::concrete(r.is_nullable(), idx);
+                    *r = if r.is_exact_type_ref() {
+                        RefType::exact(r.is_nullable(), idx)
+                    } else {
+                        RefType::concrete(r.is_nullable(), idx)
+                    }
                 }
             }
             ValType::I32 | ValType::I64 | ValType::F32 | ValType::F64 | ValType::V128 => {}
@@ -866,14 +972,14 @@ impl ValType {
 /// The GC proposal introduces heap types: any, eq, i31, struct, array,
 /// nofunc, noextern, none.
 //
-// RefType is a bit-packed enum that fits in a `u24` aka `[u8; 3]`. Note that
+// RefType is a bit-packed enum that fits in a u32. Note that
 // its content is opaque (and subject to change), but its API is stable.
 //
 // It has the following internal structure:
 //
 // ```
-// [nullable:u1 concrete==1:u1 index:u22]
-// [nullable:u1 concrete==0:u1 shared:u1 abstype:u4 (unused):u17]
+// [concrete==1:u1 exact:u1 nullable:u1 index:u22]
+// [concrete==0:u1 (unused):u1 nullable:u1 shared:u1 abstype:u4 (unused):u17]
 // ```
 //
 // Where
@@ -883,6 +989,8 @@ impl ValType {
 // - `concrete` determines if the ref is of a dynamically defined type with an
 //   index (encoded in a following bit-packing section) or of a known fixed
 //   type,
+//
+// - `exact` determites if the ref is of an exact type,
 //
 // - `index` is the type index,
 //
@@ -905,12 +1013,15 @@ impl ValType {
 //   0011 = extern
 //   0010 = noextern
 //
+//   0111 = cont
+//   0110 = nocont
+//
 //   0001 = exn
 //
 //   0000 = none
 //   ```
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct RefType([u8; 3]);
+pub struct RefType(u32);
 
 impl fmt::Debug for RefType {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -923,21 +1034,24 @@ impl fmt::Debug for RefType {
                 let name = ty.as_str(nullable);
                 match (nullable, shared) {
                     // Print the shortened form if nullable; i.e., `*ref`.
-                    (true, true) => write!(f, "(shared {}ref)", name),
-                    (true, false) => write!(f, "{}ref", name),
+                    (true, true) => write!(f, "(shared {name}ref)"),
+                    (true, false) => write!(f, "{name}ref"),
                     // Print the long form otherwise; i.e., `(ref *)`.
-                    (false, true) => write!(f, "(ref (shared {}))", name),
-                    (false, false) => write!(f, "(ref {})", name),
+                    (false, true) => write!(f, "(ref (shared {name}))"),
+                    (false, false) => write!(f, "(ref {name})"),
                 }
             }
             // Handle concrete types separately; they always use the long form
             // and don't show `shared`-ness.
             HeapType::Concrete(index) => {
                 if self.is_nullable() {
-                    write!(f, "(ref null {})", index)
+                    write!(f, "(ref null {index})")
                 } else {
-                    write!(f, "(ref {})", index)
+                    write!(f, "(ref {index})")
                 }
+            }
+            HeapType::Exact(index) => {
+                write!(f, "(ref (exact {index}))")
             }
         }
     }
@@ -972,8 +1086,9 @@ fn can_fit_max_wasm_types_in_ref_type() {
 
 impl RefType {
     // These bits are valid for all `RefType`s.
-    const NULLABLE_BIT: u32 = 1 << 23;
-    const CONCRETE_BIT: u32 = 1 << 22;
+    const CONCRETE_BIT: u32 = 1 << 24;
+    const EXACT_BIT: u32 = 1 << 23;
+    const NULLABLE_BIT: u32 = 1 << 22;
 
     // The `abstype` field is valid only when `concrete == 0`.
     const SHARED_BIT: u32 = 1 << 21;
@@ -990,6 +1105,8 @@ impl RefType {
     const EXN_ABSTYPE: u32 = 0b0001 << 17;
     const NOEXN_ABSTYPE: u32 = 0b1110 << 17;
     const NONE_ABSTYPE: u32 = 0b0000 << 17;
+    const CONT_ABSTYPE: u32 = 0b0111 << 17;
+    const NOCONT_ABSTYPE: u32 = 0b0110 << 17;
 
     // The `index` is valid only when `concrete == 1`.
     const INDEX_MASK: u32 = (1 << 22) - 1;
@@ -1037,6 +1154,14 @@ impl RefType {
     /// `nullexnref`.
     pub const NULLEXNREF: Self = RefType::NOEXN.nullable();
 
+    /// A nullable reference to a cont object aka `(ref null cont)` aka
+    /// `contref`.
+    pub const CONTREF: Self = RefType::CONT.nullable();
+
+    /// A nullable reference to a nocont object aka `(ref null nocont)` aka
+    /// `nullcontref`.
+    pub const NULLCONTREF: Self = RefType::NOCONT.nullable();
+
     /// A non-nullable untyped function reference aka `(ref func)`.
     pub const FUNC: Self = RefType::from_u32(Self::FUNC_ABSTYPE);
 
@@ -1073,29 +1198,24 @@ impl RefType {
     /// A non-nullable reference to a noexn object aka `(ref noexn)`.
     pub const NOEXN: Self = RefType::from_u32(Self::NOEXN_ABSTYPE);
 
+    /// A non-nullable reference to a cont object aka `(ref cont)`.
+    pub const CONT: Self = RefType::from_u32(Self::CONT_ABSTYPE);
+
+    /// A non-nullable reference to a nocont object aka `(ref nocont)`.
+    pub const NOCONT: Self = RefType::from_u32(Self::NOCONT_ABSTYPE);
+
     const fn can_represent_type_index(index: u32) -> bool {
         index & Self::INDEX_MASK == index
     }
 
-    const fn u24_to_u32(bytes: [u8; 3]) -> u32 {
-        let expanded_bytes = [bytes[0], bytes[1], bytes[2], 0];
-        u32::from_le_bytes(expanded_bytes)
-    }
-
-    const fn u32_to_u24(x: u32) -> [u8; 3] {
-        let bytes = x.to_le_bytes();
-        debug_assert!(bytes[3] == 0);
-        [bytes[0], bytes[1], bytes[2]]
-    }
-
     #[inline]
     const fn as_u32(&self) -> u32 {
-        Self::u24_to_u32(self.0)
+        self.0
     }
 
     #[inline]
     const fn from_u32(x: u32) -> Self {
-        debug_assert!(x & (0b11111111 << 24) == 0);
+        debug_assert!(x & (0b1111111 << 25) == 0);
 
         // Either concrete or it must be a known abstract type.
         debug_assert!(
@@ -1114,10 +1234,12 @@ impl RefType {
                         | Self::NONE_ABSTYPE
                         | Self::EXN_ABSTYPE
                         | Self::NOEXN_ABSTYPE
+                        | Self::CONT_ABSTYPE
+                        | Self::NOCONT_ABSTYPE
                 )
         );
 
-        RefType(Self::u32_to_u24(x))
+        RefType(x)
     }
 
     /// Create a reference to a concrete Wasm-defined type at the given
@@ -1132,6 +1254,14 @@ impl RefType {
         RefType::from_u32(nullable32 | Self::CONCRETE_BIT | index)
     }
 
+    /// Create a reference to exact type.
+    pub fn exact(nullable: bool, index: PackedIndex) -> Self {
+        let index: u32 = PackedIndex::to_u32(index);
+        debug_assert!(Self::can_represent_type_index(index));
+        let nullable32 = Self::NULLABLE_BIT * nullable as u32;
+        RefType::from_u32(nullable32 | Self::EXACT_BIT | Self::CONCRETE_BIT | index)
+    }
+
     /// Create a new `RefType`.
     ///
     /// Returns `None` when the heap type's type index (if any) is beyond this
@@ -1140,6 +1270,7 @@ impl RefType {
         let base32 = Self::NULLABLE_BIT * (nullable as u32);
         match heap_type {
             HeapType::Concrete(index) => Some(RefType::concrete(nullable, index.pack()?)),
+            HeapType::Exact(index) => Some(RefType::exact(nullable, index.pack()?)),
             HeapType::Abstract { shared, ty } => {
                 use AbstractHeapType::*;
                 let base32 = base32 | (Self::SHARED_BIT * (shared as u32));
@@ -1156,6 +1287,8 @@ impl RefType {
                     I31 => Some(Self::from_u32(base32 | Self::I31_ABSTYPE)),
                     Exn => Some(Self::from_u32(base32 | Self::EXN_ABSTYPE)),
                     NoExn => Some(Self::from_u32(base32 | Self::NOEXN_ABSTYPE)),
+                    Cont => Some(Self::from_u32(base32 | Self::CONT_ABSTYPE)),
+                    NoCont => Some(Self::from_u32(base32 | Self::NOCONT_ABSTYPE)),
                 }
             }
         }
@@ -1179,6 +1312,11 @@ impl RefType {
     /// Is this a reference to an concrete type?
     pub const fn is_concrete_type_ref(&self) -> bool {
         self.as_u32() & Self::CONCRETE_BIT != 0
+    }
+
+    /// Is this an exact reference to a type?
+    pub const fn is_exact_type_ref(&self) -> bool {
+        !self.as_u32() & (Self::EXACT_BIT | Self::CONCRETE_BIT) == 0
     }
 
     /// If this is a reference to a concrete Wasm-defined type, get its
@@ -1221,6 +1359,17 @@ impl RefType {
         !self.is_concrete_type_ref() && self.abstype() == Self::STRUCT_ABSTYPE
     }
 
+    /// Is this the abstract untyped cont reference type aka `(ref
+    /// null cont)` aka `contref`?
+    pub const fn is_cont_ref(&self) -> bool {
+        !self.is_concrete_type_ref() && self.abstype() == Self::CONT_ABSTYPE
+    }
+
+    /// Is this none type?
+    pub const fn is_none_ref(&self) -> bool {
+        !self.is_concrete_type_ref() && self.abstype() == Self::NONE_ABSTYPE
+    }
+
     /// Is this ref type nullable?
     pub const fn is_nullable(&self) -> bool {
         self.as_u32() & Self::NULLABLE_BIT != 0
@@ -1249,7 +1398,11 @@ impl RefType {
     pub fn heap_type(&self) -> HeapType {
         let s = self.as_u32();
         if self.is_concrete_type_ref() {
-            HeapType::Concrete(self.type_index().unwrap().unpack())
+            if !self.is_exact_type_ref() {
+                HeapType::Concrete(self.type_index().unwrap().unpack())
+            } else {
+                HeapType::Exact(self.type_index().unwrap().unpack())
+            }
         } else {
             use AbstractHeapType::*;
             let shared = s & Self::SHARED_BIT != 0;
@@ -1266,6 +1419,8 @@ impl RefType {
                 Self::I31_ABSTYPE => I31,
                 Self::EXN_ABSTYPE => Exn,
                 Self::NOEXN_ABSTYPE => NoExn,
+                Self::CONT_ABSTYPE => Cont,
+                Self::NOCONT_ABSTYPE => NoCont,
                 _ => unreachable!(),
             };
             HeapType::Abstract { shared, ty }
@@ -1294,6 +1449,8 @@ impl RefType {
                     (true, true, I31) => "(shared i31ref)",
                     (true, true, Exn) => "(shared exnref)",
                     (true, true, NoExn) => "(shared nullexnref)",
+                    (true, true, Cont) => "(shared contref)",
+                    (true, true, NoCont) => "(shared nullcontref)",
                     // Unshared but nullable.
                     (false, true, Func) => "funcref",
                     (false, true, Extern) => "externref",
@@ -1307,6 +1464,8 @@ impl RefType {
                     (false, true, I31) => "i31ref",
                     (false, true, Exn) => "exnref",
                     (false, true, NoExn) => "nullexnref",
+                    (false, true, Cont) => "contref",
+                    (false, true, NoCont) => "nullcontref",
                     // Shared but not nullable.
                     (true, false, Func) => "(ref (shared func))",
                     (true, false, Extern) => "(ref (shared extern))",
@@ -1320,6 +1479,8 @@ impl RefType {
                     (true, false, I31) => "(ref (shared i31))",
                     (true, false, Exn) => "(ref (shared exn))",
                     (true, false, NoExn) => "(ref (shared noexn))",
+                    (true, false, Cont) => "(ref (shared cont))",
+                    (true, false, NoCont) => "(ref (shared nocont))",
                     // Neither shared nor nullable.
                     (false, false, Func) => "(ref func)",
                     (false, false, Extern) => "(ref extern)",
@@ -1333,6 +1494,8 @@ impl RefType {
                     (false, false, I31) => "(ref i31)",
                     (false, false, Exn) => "(ref exn)",
                     (false, false, NoExn) => "(ref noexn)",
+                    (false, false, Cont) => "(ref cont)",
+                    (false, false, NoCont) => "(ref nocont)",
                 }
             }
             HeapType::Concrete(_) => {
@@ -1340,6 +1503,13 @@ impl RefType {
                     "(ref null $type)"
                 } else {
                     "(ref $type)"
+                }
+            }
+            HeapType::Exact(_) => {
+                if nullable {
+                    "(ref null (exact $type))"
+                } else {
+                    "(ref (exact $type))"
                 }
             }
         }
@@ -1362,6 +1532,10 @@ pub enum HeapType {
     ///
     /// Introduced in the function-references proposal.
     Concrete(UnpackedIndex),
+    /// An exact, user-defined type.
+    ///
+    /// Introduced in the custom-descriptors proposal.
+    Exact(UnpackedIndex),
 }
 
 impl HeapType {
@@ -1461,10 +1635,22 @@ pub enum AbstractHeapType {
     ///
     /// Introduced in the exception-handling proposal.
     NoExn,
+
+    /// The abstract `continuation` heap type.
+    ///
+    /// Introduced in the stack-switching proposal.
+    Cont,
+
+    /// The abstract `noexn` heap type.
+    ///
+    /// The common subtype (a.k.a. bottom) of all continuation types.
+    ///
+    /// Introduced in the stack-switching proposal.
+    NoCont,
 }
 
 impl AbstractHeapType {
-    const fn as_str(&self, nullable: bool) -> &str {
+    pub(crate) const fn as_str(&self, nullable: bool) -> &str {
         use AbstractHeapType::*;
         match (nullable, self) {
             (_, Any) => "any",
@@ -1483,6 +1669,33 @@ impl AbstractHeapType {
             (_, Exn) => "exn",
             (true, NoExn) => "nullexn",
             (false, NoExn) => "noexn",
+            (_, Cont) => "cont",
+            (true, NoCont) => "nullcont",
+            (false, NoCont) => "nocont",
+        }
+    }
+
+    #[cfg(feature = "validate")]
+    pub(crate) fn is_subtype_of(&self, other: AbstractHeapType) -> bool {
+        use AbstractHeapType::*;
+
+        match (self, other) {
+            (a, b) if *a == b => true,
+            (Eq | I31 | Struct | Array | None, Any) => true,
+            (I31 | Struct | Array | None, Eq) => true,
+            (NoExtern, Extern) => true,
+            (NoFunc, Func) => true,
+            (None, I31 | Array | Struct) => true,
+            (NoExn, Exn) => true,
+            (NoCont, Cont) => true,
+            // Nothing else matches. (Avoid full wildcard matches so
+            // that adding/modifying variants is easier in the
+            // future.)
+            (
+                Func | Extern | Exn | Any | Eq | Array | I31 | Struct | Cont | None | NoFunc
+                | NoExtern | NoExn | NoCont,
+                _,
+            ) => false,
         }
     }
 }
@@ -1527,6 +1740,7 @@ impl<'a> FromReader<'a> for ValType {
         // | 0x7B    | -5      | v128         | simd proposal                |
         // | 0x78    | -8      | i8           | gc proposal, in `FieldType`  |
         // | 0x77    | -9      | i16          | gc proposal, in `FieldType`  |
+        // | 0x75    | -11     | nocont       | stack switching proposal     |
         // | 0x74    | -12     | noexn        | gc + exceptions proposal     |
         // | 0x73    | -13     | nofunc       | gc proposal                  |
         // | 0x72    | -14     | noextern     | gc proposal                  |
@@ -1539,12 +1753,15 @@ impl<'a> FromReader<'a> for ValType {
         // | 0x6B    | -21     | struct       | gc proposal                  |
         // | 0x6A    | -22     | array        | gc proposal                  |
         // | 0x69    | -23     | exnref       | gc + exceptions proposal     |
+        // | 0x68    | -24     | contref      | stack switching proposal     |
         // | 0x65    | -27     | shared $t    | shared-everything proposal   |
         // | 0x64    | -28     | ref $t       | gc proposal, prefix byte     |
         // | 0x63    | -29     | ref null $t  | gc proposal, prefix byte     |
+        // | 0x62    | -30     | exact $t     | custom descriptor proposal   |
         // | 0x60    | -32     | func $t      | prefix byte                  |
         // | 0x5f    | -33     | struct $t    | gc proposal, prefix byte     |
         // | 0x5e    | -34     | array $t     | gc proposal, prefix byte     |
+        // | 0x5d    | -35     | cont $t      | stack switching proposal     |
         // | 0x50    | -48     | sub $t       | gc proposal, prefix byte     |
         // | 0x4F    | -49     | sub final $t | gc proposal, prefix byte     |
         // | 0x4E    | -50     | rec $t       | gc proposal, prefix byte     |
@@ -1576,84 +1793,106 @@ impl<'a> FromReader<'a> for ValType {
                 reader.read_u8()?;
                 Ok(ValType::V128)
             }
-            0x70 | 0x6F | 0x65 | 0x64 | 0x63 | 0x6E | 0x71 | 0x72 | 0x73 | 0x74 | 0x6D | 0x6B
-            | 0x6A | 0x6C | 0x69 => Ok(ValType::Ref(reader.read()?)),
-            _ => bail!(reader.original_position(), "invalid value type"),
+            _ => {
+                // Reclassify errors as invalid value types here because
+                // that's the "root" of what was being parsed rather than
+                // reference types.
+                let refty = reader.read().map_err(|mut e| {
+                    if let ErrorKind::InvalidHeapType = e.kind() {
+                        e.set_message("invalid value type");
+                    }
+                    e
+                })?;
+                Ok(ValType::Ref(refty))
+            }
         }
     }
 }
 
 impl<'a> FromReader<'a> for RefType {
     fn from_reader(reader: &mut BinaryReader<'a>) -> Result<Self> {
-        let absheapty = |byte, pos| match byte {
-            0x70 => Ok(RefType::FUNC.nullable()),
-            0x6F => Ok(RefType::EXTERN.nullable()),
-            0x6E => Ok(RefType::ANY.nullable()),
-            0x71 => Ok(RefType::NONE.nullable()),
-            0x72 => Ok(RefType::NOEXTERN.nullable()),
-            0x73 => Ok(RefType::NOFUNC.nullable()),
-            0x6D => Ok(RefType::EQ.nullable()),
-            0x6B => Ok(RefType::STRUCT.nullable()),
-            0x6A => Ok(RefType::ARRAY.nullable()),
-            0x6C => Ok(RefType::I31.nullable()),
-            0x69 => Ok(RefType::EXN.nullable()),
-            0x74 => Ok(RefType::NOEXN.nullable()),
-            _ => bail!(pos, "invalid abstract heap type"),
-        };
-
         // NB: See `FromReader<'a> for ValType` for a table of how this
         // interacts with other value encodings.
-        match reader.read()? {
-            byte @ (0x70 | 0x6F | 0x6E | 0x71 | 0x72 | 0x73 | 0x6D | 0x6B | 0x6A | 0x6C | 0x69
-            | 0x74) => {
-                let pos = reader.original_position();
-                absheapty(byte, pos)
-            }
-            0x65 => {
-                let byte = reader.read()?;
-                let pos = reader.original_position();
-                Ok(absheapty(byte, pos)?.shared().expect("must be abstract"))
-            }
-            byte @ (0x63 | 0x64) => {
-                let nullable = byte == 0x63;
-                let pos = reader.original_position();
+        let pos = reader.original_position();
+        match reader.peek()? {
+            0x63 | 0x64 => {
+                let nullable = reader.read_u8()? == 0x63;
                 RefType::new(nullable, reader.read()?)
-                    .ok_or_else(|| crate::BinaryReaderError::new("type index too large", pos))
+                    .ok_or_else(|| crate::Error::new("type index too large", pos))
             }
-            _ => bail!(reader.original_position(), "malformed reference type"),
+            0x62 => Err(crate::Error::new("unexpected exact type", pos)),
+            _ => {
+                // The short form of a reference type (without a `0x63`/`0x64`
+                // prefix byte) is only an abbreviation for `ref null <ht>` where
+                // `<ht>` is an *abstract* heap type; a bare (non-negative) type
+                // index is not a value type. Parse an abstract heap type
+                // directly, handling the `0x65` prefix for `shared` variants,
+                // rather than parsing a full heap type and then rejecting the
+                // concrete/exact cases that a heap type additionally allows.
+                let shared = reader.peek()? == 0x65;
+                if shared {
+                    reader.read_u8()?;
+                }
+                let ty = reader.read().map_err(|mut e| {
+                    if let ErrorKind::InvalidHeapType = e.kind() {
+                        e.set_message("malformed reference type");
+                    }
+                    e
+                })?;
+                // `RefType::new` is infallible for abstract heap types.
+                Ok(RefType::new(true, HeapType::Abstract { shared, ty }).unwrap())
+            }
         }
     }
 }
 
 impl<'a> FromReader<'a> for HeapType {
     fn from_reader(reader: &mut BinaryReader<'a>) -> Result<Self> {
-        // NB: See `FromReader<'a> for ValType` for a table of how this
-        // interacts with other value encodings.
-        match reader.peek()? {
-            0x65 => {
-                reader.read_u8()?;
-                let ty = reader.read()?;
-                Ok(HeapType::Abstract { shared: true, ty })
-            }
-            0x70 | 0x6F | 0x6E | 0x71 | 0x72 | 0x73 | 0x6D | 0x6B | 0x6A | 0x6C | 0x69 | 0x74 => {
-                let ty = reader.read()?;
-                Ok(HeapType::Abstract { shared: false, ty })
-            }
-            _ => {
-                let idx = match u32::try_from(reader.read_var_s33()?) {
-                    Ok(idx) => idx,
-                    Err(_) => {
-                        bail!(reader.original_position(), "invalid indexed ref heap type");
-                    }
-                };
+        // Unconditionally read a `s33` value. If it's positive then that means
+        // it fits in a `u32` meaning that this is a valid concrete type index.
+        // If it's negative, however, then it must be an abstract heap type due
+        // to how non-concrete types are encoded (see `ValType` comments). In
+        // that situation "rewind" the reader and go back to the original bytes
+        // to parse them as an abstract heap type.
+        let mut clone = reader.clone();
+        let s33 = clone.read_var_s33()?;
+        match u32::try_from(s33) {
+            Ok(idx) => {
+                // Be sure to update `reader` with the state after the s33 was
+                // read.
+                *reader = clone;
                 let idx = PackedIndex::from_module_index(idx).ok_or_else(|| {
-                    BinaryReaderError::new(
+                    Error::new(
                         "type index greater than implementation limits",
                         reader.original_position(),
                     )
                 })?;
                 Ok(HeapType::Concrete(idx.unpack()))
             }
+            Err(_) => match reader.peek()? {
+                0x65 => {
+                    reader.read_u8()?;
+                    let ty = reader.read()?;
+                    Ok(HeapType::Abstract { shared: true, ty })
+                }
+                0x62 => {
+                    reader.read_u8()?;
+                    let idx = reader.read_var_u32()?;
+                    Ok(HeapType::Exact(UnpackedIndex::Module(idx)))
+                }
+                _ => {
+                    // Reclassify errors as "invalid heap type" here because
+                    // that's the "root" of what was being parsed rather than
+                    // abstract heap types.
+                    let ty = reader.read().map_err(|mut e| {
+                        if let ErrorKind::InvalidHeapType = e.kind() {
+                            e.set_message("invalid heap type");
+                        }
+                        e
+                    })?;
+                    Ok(HeapType::Abstract { shared: false, ty })
+                }
+            },
         }
     }
 }
@@ -1674,8 +1913,13 @@ impl<'a> FromReader<'a> for AbstractHeapType {
             0x6C => Ok(I31),
             0x69 => Ok(Exn),
             0x74 => Ok(NoExn),
+            0x68 => Ok(Cont),
+            0x75 => Ok(NoCont),
             _ => {
-                bail!(reader.original_position(), "invalid abstract heap type");
+                return Err(Error::invalid_heap_type(
+                    "invalid abstract heap type",
+                    reader.original_position() - 1,
+                ));
             }
         }
     }
@@ -1759,12 +2003,27 @@ pub struct MemoryType {
 
 impl MemoryType {
     /// Gets the index type for the memory.
-    pub fn index_type(&self) -> ValType {
+    pub const fn index_type(&self) -> ValType {
         if self.memory64 {
             ValType::I64
         } else {
             ValType::I32
         }
+    }
+
+    /// Returns the actual log2 of the page size of this linear memory,
+    /// returning the default if the memory itself doesn't specify.
+    pub const fn page_size_log2(&self) -> u32 {
+        const DEFAULT_WASM_PAGE_SIZE_LOG2: u32 = 16;
+        match self.page_size_log2 {
+            Some(log2) => log2,
+            None => DEFAULT_WASM_PAGE_SIZE_LOG2,
+        }
+    }
+
+    /// Returns the page size, in bytes, of this linear memory.
+    pub const fn page_size(&self) -> u32 {
+        1 << self.page_size_log2()
     }
 }
 
@@ -1780,14 +2039,14 @@ pub struct GlobalType {
 }
 
 /// Represents a tag kind.
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum TagKind {
     /// The tag is an exception type.
     Exception,
 }
 
 /// A tag's type.
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct TagType {
     /// The kind of tag
     pub kind: TagKind,
@@ -1818,6 +2077,9 @@ impl<'a> TypeSectionReader<'a> {
                 CompositeInnerType::Array(_) | CompositeInnerType::Struct(_) => {
                     bail!(offset, "gc proposal not supported");
                 }
+                CompositeInnerType::Cont(_) => {
+                    bail!(offset, "stack switching proposal not supported");
+                }
             }
         })
     }
@@ -1829,10 +2091,7 @@ impl<'a> FromReader<'a> for CompositeType {
     }
 }
 
-fn read_composite_type(
-    opcode: u8,
-    reader: &mut BinaryReader,
-) -> Result<CompositeType, BinaryReaderError> {
+fn read_composite_type(opcode: u8, reader: &mut BinaryReader) -> Result<CompositeType, Error> {
     // NB: See `FromReader<'a> for ValType` for a table of how this
     // interacts with other value encodings.
     let (shared, opcode) = if opcode == 0x65 {
@@ -1840,13 +2099,41 @@ fn read_composite_type(
     } else {
         (false, opcode)
     };
+    let (describes_idx, opcode) = if opcode == 0x4c {
+        let idx = PackedIndex::from_module_index(reader.read_var_u32()?).ok_or_else(|| {
+            Error::new(
+                "type index greater than implementation limits",
+                reader.original_position(),
+            )
+        })?;
+        (Some(idx), reader.read_u8()?)
+    } else {
+        (None, opcode)
+    };
+    let (descriptor_idx, opcode) = if opcode == 0x4d {
+        let idx = PackedIndex::from_module_index(reader.read_var_u32()?).ok_or_else(|| {
+            Error::new(
+                "type index greater than implementation limits",
+                reader.original_position(),
+            )
+        })?;
+        (Some(idx), reader.read_u8()?)
+    } else {
+        (None, opcode)
+    };
     let inner = match opcode {
         0x60 => CompositeInnerType::Func(reader.read()?),
         0x5e => CompositeInnerType::Array(reader.read()?),
         0x5f => CompositeInnerType::Struct(reader.read()?),
+        0x5d => CompositeInnerType::Cont(reader.read()?),
         x => return reader.invalid_leading_byte(x, "type"),
     };
-    Ok(CompositeType { shared, inner })
+    Ok(CompositeType {
+        shared,
+        inner,
+        descriptor_idx,
+        describes_idx,
+    })
 }
 
 impl<'a> FromReader<'a> for RecGroup {
@@ -1883,17 +2170,14 @@ impl<'a> FromReader<'a> for SubType {
                 let idx_iter = reader.read_iter(MAX_WASM_SUPERTYPES, "supertype idxs")?;
                 let idxs = idx_iter.collect::<Result<Vec<u32>>>()?;
                 if idxs.len() > 1 {
-                    return Err(BinaryReaderError::new(
-                        "multiple supertypes not supported",
-                        pos,
-                    ));
+                    return Err(Error::new("multiple supertypes not supported", pos));
                 }
                 let supertype_idx = idxs
                     .first()
                     .copied()
                     .map(|idx| {
                         PackedIndex::from_module_index(idx).ok_or_else(|| {
-                            BinaryReaderError::new(
+                            Error::new(
                                 "type index greater than implementation limits",
                                 reader.original_position(),
                             )
@@ -1960,5 +2244,23 @@ impl<'a> FromReader<'a> for StructType {
         Ok(StructType {
             fields: fields.collect::<Result<_>>()?,
         })
+    }
+}
+
+impl<'a> FromReader<'a> for ContType {
+    fn from_reader(reader: &mut BinaryReader<'a>) -> Result<Self> {
+        let idx = match u32::try_from(reader.read_var_s33()?) {
+            Ok(idx) => idx,
+            Err(_) => {
+                bail!(reader.original_position(), "invalid continuation type");
+            }
+        };
+        let idx = PackedIndex::from_module_index(idx).ok_or_else(|| {
+            Error::new(
+                "type index greater than implementation limits",
+                reader.original_position(),
+            )
+        })?;
+        Ok(ContType(idx))
     }
 }

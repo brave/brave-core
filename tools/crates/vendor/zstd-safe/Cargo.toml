@@ -13,7 +13,7 @@
 edition = "2018"
 rust-version = "1.64"
 name = "zstd-safe"
-version = "7.2.4"
+version = "7.4.1"
 authors = ["Alexandre Bury <alexandre.bury@gmail.com>"]
 build = "build.rs"
 exclude = ["update_consts.sh"]
@@ -33,7 +33,7 @@ categories = [
     "api-bindings",
     "compression",
 ]
-license = "MIT OR Apache-2.0"
+license = "BSD-3-Clause"
 repository = "https://github.com/gyscos/zstd-rs"
 
 [package.metadata.docs.rs]
@@ -72,7 +72,7 @@ name = "zstd_safe"
 path = "src/lib.rs"
 
 [dependencies.zstd-sys]
-version = "2.0.15"
+version = "2.0.17"
 default-features = false
 
 [lints.rust]

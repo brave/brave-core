@@ -13,12 +13,13 @@ use alloc::borrow::Cow;
 use alloc::string::String;
 use alloc::vec::Vec;
 use core::{fmt, result, str};
+use hashbrown as _;
 #[cfg(not(feature = "std"))]
 use hashbrown::HashMap;
 #[cfg(feature = "std")]
 use std::{boxed::Box, collections::HashMap, error, io};
 
-use crate::endian::{Endianness, U32, U64};
+use crate::endian::{Endian, Endianness};
 
 pub use crate::common::*;
 
@@ -31,7 +32,7 @@ pub use coff::CoffExportStyle;
 pub mod elf;
 
 #[cfg(feature = "macho")]
-mod macho;
+pub mod macho;
 #[cfg(feature = "macho")]
 pub use macho::MachOBuildVersion;
 
@@ -41,8 +42,8 @@ pub mod pe;
 #[cfg(feature = "xcoff")]
 mod xcoff;
 
-pub(crate) mod string;
-pub use string::StringId;
+mod string;
+pub use string::*;
 
 mod util;
 pub use util::*;
@@ -58,9 +59,6 @@ impl fmt::Display for Error {
     }
 }
 
-#[cfg(feature = "std")]
-impl error::Error for Error {}
-#[cfg(all(not(feature = "std"), core_error))]
 impl core::error::Error for Error {}
 
 /// The result type used within the write module.
@@ -89,7 +87,7 @@ pub struct Object<'a> {
     tlv_bootstrap: Option<SymbolId>,
     /// Mach-O CPU subtype.
     #[cfg(feature = "macho")]
-    macho_cpu_subtype: Option<u32>,
+    macho_cpu_subtype: Option<crate::macho::CpuSubtype>,
     #[cfg(feature = "macho")]
     macho_build_version: Option<MachOBuildVersion>,
     /// Mach-O MH_SUBSECTIONS_VIA_SYMBOLS flag. Only ever set if format is Mach-O.
@@ -526,28 +524,18 @@ impl<'a> Object<'a> {
         self.format != BinaryFormat::Coff
     }
 
-    /// Return true if the file format supports `StandardSection::Common`.
-    #[inline]
-    pub fn has_common(&self) -> bool {
-        self.format == BinaryFormat::MachO
-    }
-
     /// Add a new common symbol and return its `SymbolId`.
     ///
-    /// For Mach-O, this appends the symbol to the `__common` section.
+    /// This sets `symbol.section` to [`SymbolSection::Common`], `symbol.size` to `size`,
+    /// and `symbol.value` to `align`.
     ///
-    /// `align` must be a power of two.
+    /// `align` must be a power of two. It is ignored for COFF, which has no way of
+    /// encoding the alignment of a common symbol.
     pub fn add_common_symbol(&mut self, mut symbol: Symbol, size: u64, align: u64) -> SymbolId {
-        if self.has_common() {
-            let symbol_id = self.add_symbol(symbol);
-            let section = self.section_id(StandardSection::Common);
-            self.add_symbol_bss(symbol_id, section, size, align);
-            symbol_id
-        } else {
-            symbol.section = SymbolSection::Common;
-            symbol.size = size;
-            self.add_symbol(symbol)
-        }
+        symbol.section = SymbolSection::Common;
+        symbol.size = size;
+        symbol.value = align;
+        self.add_symbol(symbol)
     }
 
     /// Add a new file symbol and return its `SymbolId`.
@@ -572,6 +560,9 @@ impl<'a> Object<'a> {
         }
         let name = if self.format == BinaryFormat::Coff {
             section.name.clone()
+        } else if self.format == BinaryFormat::MachO {
+            // Use LLVM's convention for section symbols.
+            format!("ltmp{}", section_id.0).into_bytes()
         } else {
             Vec::new()
         };
@@ -689,14 +680,53 @@ impl<'a> Object<'a> {
     ///
     /// Relocations must only be added after the referenced symbols have been added
     /// and defined (if applicable).
-    pub fn add_relocation(&mut self, section: SectionId, mut relocation: Relocation) -> Result<()> {
+    pub fn add_relocation(&mut self, section: SectionId, relocation: Relocation) -> Result<()> {
+        self.add_relocation_internal(section, relocation.into())
+    }
+
+    /// Add a relocation with a subtractor to a section.
+    ///
+    /// Relocations must only be added after the referenced symbols have been added
+    /// and defined (if applicable).
+    ///
+    /// This is like [`Self::add_relocation`], but the relocation operation
+    /// calculates the difference of two symbols. Currently, only some Mach-O
+    /// targets support this.
+    pub fn add_relocation_with_subtractor(
+        &mut self,
+        section: SectionId,
+        relocation: Relocation,
+        subtractor: Option<SymbolId>,
+    ) -> Result<()> {
+        if let Some(subtractor) = subtractor {
+            if self.format != BinaryFormat::MachO {
+                return Err(Error(format!(
+                    "unsupported relocation subtractor {:?} for {:?}",
+                    subtractor, relocation,
+                )));
+            }
+        }
+        self.add_relocation_internal(
+            section,
+            RelocationInternal {
+                subtractor,
+                ..relocation.into()
+            },
+        )
+    }
+
+    fn add_relocation_internal(
+        &mut self,
+        section: SectionId,
+        mut relocation: RelocationInternal,
+    ) -> Result<()> {
         match self.format {
             #[cfg(feature = "coff")]
             BinaryFormat::Coff => self.coff_translate_relocation(&mut relocation)?,
             #[cfg(feature = "elf")]
             BinaryFormat::Elf => self.elf_translate_relocation(&mut relocation)?,
             #[cfg(feature = "macho")]
-            BinaryFormat::MachO => self.macho_translate_relocation(&mut relocation)?,
+            BinaryFormat::MachO => self.macho_translate_relocation(section, &mut relocation)?,
             #[cfg(feature = "xcoff")]
             BinaryFormat::Xcoff => self.xcoff_translate_relocation(&mut relocation)?,
             _ => unimplemented!(),
@@ -723,7 +753,7 @@ impl<'a> Object<'a> {
     fn write_relocation_addend(
         &mut self,
         section: SectionId,
-        relocation: &Relocation,
+        relocation: &RelocationInternal,
     ) -> Result<()> {
         let size = match self.format {
             #[cfg(feature = "coff")]
@@ -737,10 +767,16 @@ impl<'a> Object<'a> {
             _ => unimplemented!(),
         };
         let data = self.sections[section.0].data_mut();
-        let offset = relocation.offset as usize;
+        let mut write_bytes = |src: &[u8]| -> Option<()> {
+            let offset = usize::try_from(relocation.offset).ok()?;
+            data.get_mut(offset..)?
+                .get_mut(..src.len())?
+                .copy_from_slice(src);
+            Some(())
+        };
         match size {
-            32 => data.write_at(offset, &U32::new(self.endian, relocation.addend as u32)),
-            64 => data.write_at(offset, &U64::new(self.endian, relocation.addend as u64)),
+            32 => write_bytes(&self.endian.write_u32(relocation.addend as u32)),
+            64 => write_bytes(&self.endian.write_u64(relocation.addend as u64)),
             _ => {
                 return Err(Error(format!(
                     "unimplemented relocation addend {:?}",
@@ -748,7 +784,7 @@ impl<'a> Object<'a> {
                 )));
             }
         }
-        .map_err(|_| {
+        .ok_or_else(|| {
             Error(format!(
                 "invalid relocation offset {}+{} (max {})",
                 relocation.offset,
@@ -775,12 +811,14 @@ impl<'a> Object<'a> {
     pub fn write_stream<W: io::Write>(&self, w: W) -> result::Result<(), Box<dyn error::Error>> {
         let mut stream = StreamingBuffer::new(w);
         self.emit(&mut stream)?;
-        stream.result()?;
-        stream.into_inner().flush()?;
+        stream.flush()?;
         Ok(())
     }
 
     /// Write the object to a `WritableBuffer`.
+    ///
+    /// The buffer will receive a single [`WritableBuffer::reserve`] call with the exact
+    /// output size before any bytes are written.
     pub fn emit(&self, buffer: &mut dyn WritableBuffer) -> Result<()> {
         match self.format {
             #[cfg(feature = "coff")]
@@ -822,10 +860,9 @@ pub enum StandardSection {
     UninitializedTls,
     /// TLS variable structures. Only supported for Mach-O.
     TlsVariables,
-    /// Common data. Only supported for Mach-O.
-    Common,
     /// Notes for GNU properties. Only supported for ELF.
     GnuProperty,
+    EhFrame,
 }
 
 impl StandardSection {
@@ -841,8 +878,8 @@ impl StandardSection {
             StandardSection::Tls => SectionKind::Tls,
             StandardSection::UninitializedTls => SectionKind::UninitializedTls,
             StandardSection::TlsVariables => SectionKind::TlsVariables,
-            StandardSection::Common => SectionKind::Common,
             StandardSection::GnuProperty => SectionKind::Note,
+            StandardSection::EhFrame => SectionKind::ReadOnlyData,
         }
     }
 
@@ -858,8 +895,8 @@ impl StandardSection {
             StandardSection::Tls,
             StandardSection::UninitializedTls,
             StandardSection::TlsVariables,
-            StandardSection::Common,
             StandardSection::GnuProperty,
+            StandardSection::EhFrame,
         ]
     }
 }
@@ -877,7 +914,7 @@ pub struct Section<'a> {
     size: u64,
     align: u64,
     data: Cow<'a, [u8]>,
-    relocations: Vec<Relocation>,
+    relocations: Vec<RelocationInternal>,
     symbol: Option<SymbolId>,
     /// Section flags that are specific to each file format.
     pub flags: SectionFlags,
@@ -1017,7 +1054,9 @@ pub struct Symbol {
     pub name: Vec<u8>,
     /// The value of the symbol.
     ///
-    /// If the symbol defined in a section, then this is the section offset of the symbol.
+    /// For [`SymbolSection::Section`], this is the section offset of the symbol.
+    ///
+    /// For [`SymbolSection::Common`], this is its alignment, which must be a power of two.
     pub value: u64,
     /// The size of the symbol.
     pub size: u64,
@@ -1047,8 +1086,6 @@ impl Symbol {
     }
 
     /// Return true if the symbol is common data.
-    ///
-    /// Note: does not check for `SymbolSection::Section` with `SectionKind::Common`.
     #[inline]
     pub fn is_common(&self) -> bool {
         self.section == SymbolSection::Common
@@ -1076,6 +1113,28 @@ pub struct Relocation {
     pub addend: i64,
     /// The fields that define the relocation type.
     pub flags: RelocationFlags,
+}
+
+#[derive(Debug)]
+pub(crate) struct RelocationInternal {
+    offset: u64,
+    symbol: SymbolId,
+    #[cfg_attr(not(feature = "macho"), allow(unused))]
+    subtractor: Option<SymbolId>,
+    addend: i64,
+    flags: RelocationFlags,
+}
+
+impl From<Relocation> for RelocationInternal {
+    fn from(value: Relocation) -> Self {
+        RelocationInternal {
+            offset: value.offset,
+            symbol: value.symbol,
+            subtractor: None,
+            addend: value.addend,
+            flags: value.flags,
+        }
+    }
 }
 
 /// An identifier used to reference a COMDAT section group.

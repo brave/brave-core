@@ -72,6 +72,26 @@ where
     test_cycle(data, |data| f(data).unwrap(), |data| g(data).unwrap())
 }
 
+/// Compressible data, `len` bytes, different for each seed.
+///
+/// The worker thread tests use it in the sizes that keep a job busy long
+/// enough to be caught running.
+#[cfg(all(test, feature = "zstdmt"))]
+fn test_words(len: usize, seed: u64) -> Vec<u8> {
+    let words: [&[u8]; 6] =
+        [b"lorem ", b"ipsum ", b"dolor ", b"sit ", b"amet ", b"elit "];
+    let mut x = seed | 1;
+    let mut data = Vec::with_capacity(len + 8);
+    while data.len() < len {
+        x ^= x << 13;
+        x ^= x >> 7;
+        x ^= x << 17;
+        data.extend_from_slice(words[(x % 6) as usize]);
+    }
+    data.truncate(len);
+    data
+}
+
 #[test]
 fn default_compression_level_in_range() {
     assert!(compression_level_range().contains(&DEFAULT_COMPRESSION_LEVEL));

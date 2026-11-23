@@ -46,7 +46,7 @@
 //!
 //! #### URL-safe alphabet
 //!
-//! The standard alphabet uses `+` and `/` as its two non-alphanumeric tokens,
+//! The standard alphabet uses `+` and `/` as its two non-alphanumeric symbols,
 //! which cannot be safely used in URL’s without encoding them as `%2B` and
 //! `%2F`.
 //!
@@ -113,6 +113,8 @@
 //! # use base64::{engine::general_purpose::STANDARD_NO_PAD, Engine as _};
 //! assert_eq!(STANDARD_NO_PAD.decode(b"Zm8="), Err(base64::DecodeError::InvalidPadding));
 //! ```
+//!
+//! Padding serves no practical purpose, so where possible, encode without padding.
 //!
 //! ### Further customization
 //!
@@ -188,6 +190,33 @@
 //! # }
 //! ```
 //!
+//! This also allows for constant-space validity checking of encoded data, using a
+//! statically allocated buffer:
+//!
+#![cfg_attr(feature = "std", doc = "```")]
+#![cfg_attr(not(feature = "std"), doc = "```ignore")]
+//! # use std::io::{self, Read};
+//! use base64::{engine::general_purpose::STANDARD, read::DecoderReader};
+//!
+//! # fn main() -> Result<(), Box<dyn std::error::Error>> {
+//! let mut invalid_input = "dt==";
+//! let mut decoder = DecoderReader::new(io::Cursor::new(&mut invalid_input), &STANDARD);
+//!
+//! let mut buf = [0u8; 128];
+//!
+//! let is_valid = loop {
+//!     match decoder.read(&mut buf) {
+//!         Ok(0) => break true, // Read to end w/o error
+//!         Ok(_) => continue,
+//!         Err(_) => break false,
+//!     }
+//! };
+//!
+//! assert!(!is_valid);
+//! # Ok(())
+//! # }
+//! ```
+//!
 //! #### Encoding
 //!
 #![cfg_attr(feature = "std", doc = "```")]
@@ -216,11 +245,30 @@
 //! assert_eq!("base64: AAECAw==", format!("base64: {}", value));
 //! ```
 //!
+//! # Crate features
+//!
+//! - `std` (default): enables `std::io` integration, [`std::error::Error`] impls, and heap
+//!   allocation. Implies `alloc`.
+//! - `alloc`: enables the allocating APIs (e.g. [`Engine::encode`], [`Engine::decode`]) in a
+//!   `no_std` build.
+//! - `simd-unsafe`: enables the SIMD-accelerated engines. It is on by default and is the only
+//!   feature that introduces `unsafe` code; with it disabled the crate is
+//!   `#![forbid(unsafe_code)]`.
+//!
+//! ## SIMD acceleration
+//!
+//! With the `simd-unsafe` feature, the [`engine`] module provides SIMD engines for the standard and
+//! URL-safe alphabets that are several times faster than [`GeneralPurpose`][engine::GeneralPurpose]:
+//!
+//! - `Simd` picks the best available instruction set (AVX2 on `x86_64`, NEON on `aarch64`) at
+//!   runtime and falls back to the scalar engine. It needs `std` for the CPU-feature detection.
+//! - `Avx2` and `Neon` target one instruction set without runtime detection, so they can be used in
+//!   `no_std` builds when the target is known to support the instructions.
+//!
 //! # Panics
 //!
 //! If length calculations result in overflowing `usize`, a panic will result.
 
-#![cfg_attr(feature = "cargo-clippy", allow(clippy::cast_lossless))]
 #![deny(
     missing_docs,
     trivial_casts,
@@ -230,18 +278,15 @@
     unused_results,
     variant_size_differences
 )]
-#![forbid(unsafe_code)]
-// Allow globally until https://github.com/rust-lang/rust-clippy/issues/8768 is resolved.
-// The desired state is to allow it only for the rstest_reuse import.
-#![allow(clippy::single_component_path_imports)]
+// The `simd-unsafe` feature (on by default) is the only source of `unsafe`; without it the crate
+// is `#![forbid(unsafe_code)]`. When it is enabled, `unsafe` is confined to the SIMD engine module,
+// which opts back in with a localized `allow`.
+#![cfg_attr(not(feature = "simd-unsafe"), forbid(unsafe_code))]
+#![cfg_attr(feature = "simd-unsafe", deny(unsafe_code))]
 #![cfg_attr(not(any(feature = "std", test)), no_std)]
 
 #[cfg(any(feature = "alloc", test))]
 extern crate alloc;
-
-// has to be included at top level because of the way rstest_reuse defines its macros
-#[cfg(test)]
-use rstest_reuse;
 
 mod chunked_encoder;
 pub mod display;
@@ -273,5 +318,3 @@ pub mod prelude;
 
 #[cfg(test)]
 mod tests;
-
-const PAD_BYTE: u8 = b'=';

@@ -1,0 +1,7 @@
+bench_ref_from_bytes_static_size:
+	xor eax, eax
+	test dil, 1
+	cmovne rdi, rax
+	cmp rsi, 6
+	cmove rax, rdi
+	ret

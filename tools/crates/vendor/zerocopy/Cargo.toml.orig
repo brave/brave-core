@@ -15,10 +15,15 @@
 [package]
 edition = "2021"
 name = "zerocopy"
-version = "0.8.31"
-authors = ["Joshua Liebow-Feeser <joshlf@google.com>", "Jack Wrenn <jswrenn@amazon.com>"]
+version = "0.8.64"
 description = "Zerocopy makes zero-cost memory manipulation effortless. We write \"unsafe\" so you don't have to."
-categories = ["embedded", "encoding", "no-std::no-alloc", "parsing", "rust-patterns"]
+categories = [
+    "embedded",
+    "encoding",
+    "no-std::no-alloc",
+    "parsing",
+    "rust-patterns",
+]
 keywords = ["cast", "convert", "transmute", "transmutation", "type-punning"]
 license = "BSD-2-Clause OR Apache-2.0 OR MIT"
 repository = "https://github.com/google/zerocopy"
@@ -35,6 +40,22 @@ exclude = [".*"]
 # Each name is suffixed with the version it corresponds to. This is a convention
 # used in the codebase to make it less likely for us to make mistakes when
 # writing `doc_cfg` attributes.
+#
+# It may seem odd to name cfgs `no-zerocopy-foo` and emit these cfgs on
+# toolchains lower than that target toolchain. We do this because it is
+# friendlier to users who compile zerocopy by directly invoking rustc or by
+# invoking rustc from a build system other than Cargo. If such a user provides
+# no `--cfg` arguments, then, assuming they are on a sufficiently recent
+# toolchain, everything will "just work" without requiring extra configuration.
+# See [1] for an example of a user upgrading from a version of zerocopy which
+# did things in the inverse way. See #2259 for more context.
+#
+# [1] https://fuchsia-review.googlesource.com/c/fuchsia/+/1433139/1/third_party/rust_crates/Cargo.toml
+
+
+# From 1.100.0, Rust supports the `core::alloc::Allocator` trait and
+# custom-allocator `Box` methods.
+no-zerocopy-allocator-api-1-100-0 = "1.100.0"
 
 # From 1.89.0, Rust supports x86 AVX-12 SIMD types (previously gated by the
 # `stdarch_x86_avx512` feature).
@@ -42,6 +63,9 @@ no-zerocopy-simd-x86-avx12-1-89-0 = "1.89.0"
 
 # From 1.81.0, Rust supports the `core::error::Error` trait.
 no-zerocopy-core-error-1-81-0 = "1.81.0"
+
+# From 1.79.0, Rust supports extracting the length from a raw slice pointer.
+no-zerocopy-slice-ptr-len-1-79-0 = "1.79.0"
 
 # From 1.78.0, Rust supports the `#[diagnostic::on_unimplemented]` attribute.
 no-zerocopy-diagnostic-on-unimplemented-1-78-0 = "1.78.0"
@@ -58,17 +82,29 @@ no-zerocopy-target-has-atomics-1-60-0 = "1.60.0"
 # versions, these types require the "simd-nightly" feature.
 no-zerocopy-aarch64-simd-1-59-0 = "1.59.0"
 
+# Include SIMD types from `core::arch::aarch64` on big endian targets. Prior to
+# 1.87.0 (https://github.com/rust-lang/rust/pull/136831) the types were only
+# correct on little endian and backed off from stable in a breaking change.
+no-zerocopy-aarch64-simd-be-1-87-0 = "1.87.0"
+
 # Permit panicking in `const fn`s and calling `Vec::try_reserve`.
 no-zerocopy-panic-in-const-and-vec-try-reserve-1-57-0 = "1.57.0"
 
 [package.metadata.ci]
 # The versions of the stable and nightly compiler toolchains to use in CI.
-pinned-stable = "1.91.1"
-pinned-nightly = "nightly-2025-11-23"
+pinned-stable = "1.100.0"
+pinned-nightly = "nightly-2026-09-30"
 
 [package.metadata.docs.rs]
 all-features = true
-rustdoc-args = ["--cfg", "doc_cfg", "--generate-link-to-definition"]
+rustdoc-args = ["--cfg", "doc_cfg", "--generate-link-to-definition", "--extend-css", "rustdoc/style.css"]
+targets = [
+    "x86_64-unknown-linux-gnu",
+    "x86_64-apple-darwin",
+    "x86_64-pc-windows-msvc",
+    "i686-unknown-linux-gnu",
+    "i686-pc-windows-msvc"
+]
 
 [package.metadata.playground]
 features = ["__internal_use_only_features_that_work_on_stable"]
@@ -83,33 +119,44 @@ std = ["alloc"]
 # This feature depends on all other features that work on the stable compiler.
 # We make no stability guarantees about this feature; it may be modified or
 # removed at any time.
-__internal_use_only_features_that_work_on_stable = ["alloc", "derive", "simd", "std"]
+__internal_use_only_features_that_work_on_stable = [
+    "alloc",
+    "derive",
+    "simd",
+    "std",
+]
 
 [dependencies]
-zerocopy-derive = { version = "=0.8.31", path = "zerocopy-derive", optional = true }
+zerocopy-derive = { version = "=0.8.64", path = "zerocopy-derive", optional = true }
 
 # The "associated proc macro pattern" ensures that the versions of zerocopy and
 # zerocopy-derive remain equal, even if the 'derive' feature isn't used.
 # See: https://github.com/matklad/macro-dep-test
 [target.'cfg(any())'.dependencies]
-zerocopy-derive = { version = "=0.8.31", path = "zerocopy-derive" }
+zerocopy-derive = { version = "=0.8.64", path = "zerocopy-derive" }
+
+# The UI suite needs the `derive` feature, so let Cargo skip this integration
+# test when that feature is disabled.
+[[test]]
+name = "ui"
+path = "tests/ui.rs"
+required-features = ["derive"]
+
+# This target requires LLVM tooling and is exercised by its dedicated CI job.
+# Exclude it from Cargo's ordinary unfiltered test selection.
+[[test]]
+name = "codegen"
+path = "tests/codegen.rs"
+test = false
 
 [dev-dependencies]
-# More recent versions of `either` have an MSRV higher than ours.
-either = "=1.13.0"
 # FIXME(#381) Remove this dependency once we have our own layout gadgets.
 elain = "0.3.0"
-# More recent versions of `glob` have an MSRV higher than ours.
-glob = "=0.3.2"
 itertools = "0.11"
-rand = { version = "0.8.5", default-features = false, features = ["small_rng"] }
+rand = { version = "0.8.7", default-features = false, features = ["small_rng"] }
+regex = "1.0"
 rustversion = "1.0"
 static_assertions = "1.1"
 testutil = { path = "testutil" }
-# Pinned to a specific version so that the version used for local development
-# and the version used in CI are guaranteed to be the same. Future versions
-# sometimes change the output format slightly, so a version mismatch can cause
-# CI test failures.
-trybuild = { version = "=1.0.89", features = ["diff"] }
 # In tests, unlike in production, zerocopy-derive is not optional
-zerocopy-derive = { version = "=0.8.31", path = "zerocopy-derive" }
+zerocopy-derive = { version = "=0.8.64", path = "zerocopy-derive" }

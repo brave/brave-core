@@ -5,7 +5,7 @@
 ///
 /// * [handshake](handshake())
 /// * **ls-refs**
-///     * [get available refs by refspecs](RefMap::new())
+///     * [get available refs by refspecs](RefMap::fetch())
 /// * **fetch pack**
 ///     * `negotiate` until a pack can be received (TBD)
 /// * [officially terminate the connection](crate::indicate_end_of_interaction())
@@ -21,25 +21,12 @@
 mod arguments;
 pub use arguments::Arguments;
 
-#[cfg(any(feature = "blocking-client", feature = "async-client"))]
-#[cfg(feature = "fetch")]
-mod error;
-#[cfg(any(feature = "blocking-client", feature = "async-client"))]
-#[cfg(feature = "fetch")]
-pub use error::Error;
 ///
 pub mod response;
 
 #[cfg(any(feature = "blocking-client", feature = "async-client"))]
 #[cfg(feature = "fetch")]
 pub(crate) mod function;
-
-#[cfg(any(feature = "blocking-client", feature = "async-client"))]
-#[cfg(feature = "handshake")]
-mod handshake;
-#[cfg(any(feature = "blocking-client", feature = "async-client"))]
-#[cfg(feature = "handshake")]
-pub use handshake::upload_pack as handshake;
 
 #[cfg(feature = "fetch")]
 pub mod negotiate;

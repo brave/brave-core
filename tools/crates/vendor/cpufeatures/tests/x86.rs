@@ -1,4 +1,4 @@
-//! x86/x86_64 tests
+//! `x86`/`x86_64` tests
 
 #![cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 

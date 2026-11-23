@@ -1,12 +1,9 @@
-use lazy_static::lazy_static;
 use pkg_config::Error;
 use std::env;
 use std::path::PathBuf;
 use std::sync::Mutex;
 
-lazy_static! {
-    static ref LOCK: Mutex<()> = Mutex::new(());
-}
+static LOCK: Mutex<()> = Mutex::new(());
 
 fn reset() {
     for (k, _) in env::vars() {

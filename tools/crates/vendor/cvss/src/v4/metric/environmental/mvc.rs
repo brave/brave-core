@@ -1,7 +1,7 @@
 //! Confidentiality Impact to the Vulnerable System (MVC)
 
 use crate::{
-    Error, Result,
+    Error,
     v4::metric::{Metric, MetricType},
 };
 use alloc::borrow::ToOwned;
@@ -18,11 +18,12 @@ use core::{fmt, str::FromStr};
 /// > only authorized users, as well as preventing access by, or disclosure to,
 /// > unauthorized ones. The resulting score is greatest when the loss to the
 /// > system is highest.
-#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+#[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
 pub enum ModifiedConfidentialityImpactToTheVulnerableSystem {
     /// Not Defined (X)
     ///
     /// > The metric has not been evaluated.
+    #[default]
     NotDefined,
     /// None (N)
     ///
@@ -47,21 +48,15 @@ pub enum ModifiedConfidentialityImpactToTheVulnerableSystem {
     High,
 }
 
-impl Default for ModifiedConfidentialityImpactToTheVulnerableSystem {
-    fn default() -> Self {
-        Self::NotDefined
-    }
-}
-
 impl Metric for ModifiedConfidentialityImpactToTheVulnerableSystem {
     const TYPE: MetricType = MetricType::MVC;
 
     fn as_str(self) -> &'static str {
         match self {
-            ModifiedConfidentialityImpactToTheVulnerableSystem::NotDefined => "X",
-            ModifiedConfidentialityImpactToTheVulnerableSystem::None => "N",
-            ModifiedConfidentialityImpactToTheVulnerableSystem::Low => "L",
-            ModifiedConfidentialityImpactToTheVulnerableSystem::High => "H",
+            Self::NotDefined => "X",
+            Self::None => "N",
+            Self::Low => "L",
+            Self::High => "H",
         }
     }
 }
@@ -75,12 +70,12 @@ impl fmt::Display for ModifiedConfidentialityImpactToTheVulnerableSystem {
 impl FromStr for ModifiedConfidentialityImpactToTheVulnerableSystem {
     type Err = Error;
 
-    fn from_str(s: &str) -> Result<Self> {
+    fn from_str(s: &str) -> Result<Self, Error> {
         match s {
-            "X" => Ok(ModifiedConfidentialityImpactToTheVulnerableSystem::NotDefined),
-            "N" => Ok(ModifiedConfidentialityImpactToTheVulnerableSystem::None),
-            "L" => Ok(ModifiedConfidentialityImpactToTheVulnerableSystem::Low),
-            "H" => Ok(ModifiedConfidentialityImpactToTheVulnerableSystem::High),
+            "X" => Ok(Self::NotDefined),
+            "N" => Ok(Self::None),
+            "L" => Ok(Self::Low),
+            "H" => Ok(Self::High),
             _ => Err(Error::InvalidMetricV4 {
                 metric_type: Self::TYPE,
                 value: s.to_owned(),

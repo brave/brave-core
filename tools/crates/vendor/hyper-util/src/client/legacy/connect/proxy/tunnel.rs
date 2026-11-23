@@ -1,10 +1,8 @@
 use std::error::Error as StdError;
-use std::future::Future;
-use std::marker::{PhantomData, Unpin};
+use std::marker::PhantomData;
 use std::pin::Pin;
-use std::task::{self, Poll};
+use std::task::{self, Poll, ready};
 
-use futures_core::ready;
 use http::{HeaderMap, HeaderValue, Uri};
 use hyper::rt::{Read, Write};
 use pin_project_lite::pin_project;
@@ -214,22 +212,25 @@ where
         }
         pos += n;
 
-        let recvd = &buf[..pos];
-        if recvd.starts_with(b"HTTP/1.1 200") || recvd.starts_with(b"HTTP/1.0 200") {
-            if recvd.ends_with(b"\r\n\r\n") {
-                return Ok(conn);
+        let mut headers = [httparse::EMPTY_HEADER; MAX_HEADERS];
+        let mut res = httparse::Response::new(&mut headers);
+        match res.parse(&buf[..pos]) {
+            Ok(httparse::Status::Complete(_)) => match res.code {
+                Some(200) => return Ok(conn),
+                Some(407) => return Err(TunnelError::ProxyAuthRequired),
+                _ => return Err(TunnelError::TunnelUnsuccessful),
+            },
+            Ok(httparse::Status::Partial) => {
+                if pos == buf.len() {
+                    return Err(TunnelError::ProxyHeadersTooLong);
+                }
             }
-            if pos == buf.len() {
-                return Err(TunnelError::ProxyHeadersTooLong);
-            }
-        // else read more
-        } else if recvd.starts_with(b"HTTP/1.1 407") {
-            return Err(TunnelError::ProxyAuthRequired);
-        } else {
-            return Err(TunnelError::TunnelUnsuccessful);
+            Err(_) => return Err(TunnelError::TunnelUnsuccessful),
         }
     }
 }
+
+const MAX_HEADERS: usize = 100;
 
 impl std::fmt::Display for TunnelError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -250,9 +251,70 @@ impl std::fmt::Display for TunnelError {
 impl std::error::Error for TunnelError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         match self {
-            TunnelError::Io(ref e) => Some(e),
-            TunnelError::ConnectFailed(ref e) => Some(&**e),
+            TunnelError::Io(e) => Some(e),
+            TunnelError::ConnectFailed(e) => Some(&**e),
             _ => None,
         }
+    }
+}
+
+#[cfg(all(test, feature = "tokio"))]
+mod tests {
+    use std::time::Duration;
+
+    use tokio::io::AsyncWriteExt;
+
+    use super::{Headers, TunnelError, tunnel};
+    use crate::rt::TokioIo;
+
+    async fn handshake(response: &'static [u8]) -> Result<(), TunnelError> {
+        let (client, mut server) = tokio::io::duplex(1024);
+        tokio::spawn(async move {
+            server.write_all(response).await.unwrap();
+        });
+
+        tokio::time::timeout(
+            Duration::from_secs(1),
+            tunnel(TokioIo::new(client), "example.com", 443, &Headers::Empty),
+        )
+        .await
+        .expect("handshake should not hang")
+        .map(drop)
+    }
+
+    #[tokio::test]
+    async fn established() {
+        handshake(b"HTTP/1.1 200 Connection established\r\n\r\n")
+            .await
+            .expect("200 response should establish the tunnel");
+    }
+
+    #[tokio::test]
+    async fn established_with_early_data() {
+        handshake(b"HTTP/1.1 200 OK\r\n\r\nHELLO")
+            .await
+            .expect("early data must not prevent establishing the tunnel");
+    }
+
+    #[tokio::test]
+    async fn proxy_auth_required() {
+        let err = handshake(b"HTTP/1.1 407 Proxy Authentication Required\r\n\r\n")
+            .await
+            .unwrap_err();
+        assert!(matches!(err, TunnelError::ProxyAuthRequired));
+    }
+
+    #[tokio::test]
+    async fn non_200_is_unsuccessful() {
+        let err = handshake(b"HTTP/1.1 500 Internal Server Error\r\n\r\n")
+            .await
+            .unwrap_err();
+        assert!(matches!(err, TunnelError::TunnelUnsuccessful));
+    }
+
+    #[tokio::test]
+    async fn malformed_status_is_rejected() {
+        let err = handshake(b"HTTP/1.1 2000 OK\r\n\r\n").await.unwrap_err();
+        assert!(matches!(err, TunnelError::TunnelUnsuccessful));
     }
 }

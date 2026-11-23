@@ -1,6 +1,6 @@
 [package]
 name = "tokio-rustls"
-version = "0.26.4"
+version = "0.26.6"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/rustls/tokio-rustls"
 homepage = "https://github.com/rustls/tokio-rustls"
@@ -10,7 +10,7 @@ description = "Asynchronous TLS/SSL streams for Tokio using Rustls."
 categories = ["asynchronous", "cryptography", "network-programming"]
 edition = "2021"
 rust-version = "1.71"
-exclude = ["/.github", "/examples", "/scripts"]
+exclude = ["/.github", "/examples", "/scripts", "/tests/"]
 
 [dependencies]
 rustls = { version = "0.23.27", default-features = false, features = ["std"] }
@@ -35,3 +35,15 @@ lazy_static = "1.1"
 rcgen = { version = "0.14", features = ["pem"] }
 tokio = { version = "1.0", features = ["full"] }
 webpki-roots = "1"
+
+[package.metadata.cargo_check_external_types]
+allowed_external_types = [
+    # ---
+    "rustls",
+    "rustls::*",
+    "rustls_pki_types",
+    "rustls_pki_types::*",
+    "tokio::io::async_read::AsyncRead",
+    "tokio::io::async_buf_read::AsyncBufRead",
+    "tokio::io::async_write::AsyncWrite",
+]

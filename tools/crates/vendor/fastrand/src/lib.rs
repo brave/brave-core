@@ -29,7 +29,7 @@
 //! let elem = v[i];
 //! ```
 //!
-//! Sample values from an array with `O(n)` complexity (`n` is the length of array):
+//! Sample values from an array with `O(n)` complexity (`n` is the length of the array):
 //!
 //! ```
 //! fastrand::choose_multiple([1, 4, 5], 2);
@@ -44,7 +44,7 @@
 //! fastrand::shuffle(&mut v);
 //! ```
 //!
-//! Generate a random [`Vec`] or [`String`]:
+//! Generate a random [`Vec`] or [`String`](alloc::string::String):
 //!
 //! ```
 //! use std::iter::repeat_with;
@@ -86,7 +86,7 @@
 //!
 //! # WebAssembly Notes
 //!
-//! For non-WASI WASM targets, there is additional sublety to consider when utilizing the global RNG.
+//! For non-WASI WASM targets, there is additional subtlety to consider when utilizing the global RNG.
 //! By default, `std` targets will use entropy sources in the standard library to seed the global RNG.
 //! However, these sources are not available by default on WASM targets outside of WASI.
 //!
@@ -121,7 +121,6 @@ use core::ops::{Bound, RangeBounds};
 use alloc::vec::Vec;
 
 #[cfg(feature = "std")]
-#[cfg_attr(docsrs, doc(cfg(feature = "std")))]
 mod global_rng;
 
 #[cfg(feature = "std")]
@@ -261,13 +260,13 @@ macro_rules! rng_integer {
             };
 
             let low = match range.start_bound() {
-                Bound::Unbounded => core::$t::MIN,
+                Bound::Unbounded => $t::MIN,
                 Bound::Included(&x) => x,
                 Bound::Excluded(&x) => x.checked_add(1).unwrap_or_else(panic_empty_range),
             };
 
             let high = match range.end_bound() {
-                Bound::Unbounded => core::$t::MAX,
+                Bound::Unbounded => $t::MAX,
                 Bound::Included(&x) => x,
                 Bound::Excluded(&x) => x.checked_sub(1).unwrap_or_else(panic_empty_range),
             };
@@ -276,7 +275,7 @@ macro_rules! rng_integer {
                 panic_empty_range();
             }
 
-            if low == core::$t::MIN && high == core::$t::MAX {
+            if low == $t::MIN && high == $t::MAX {
                 self.$gen() as $t
             } else {
                 let len = high.wrapping_sub(low).wrapping_add(1);
@@ -290,7 +289,7 @@ impl Rng {
     /// Creates a new random number generator with the initial seed.
     #[inline]
     #[must_use = "this creates a new instance of `Rng`; if you want to initialize the thread-local generator, use `fastrand::seed()` instead"]
-    pub fn with_seed(seed: u64) -> Self {
+    pub const fn with_seed(seed: u64) -> Self {
         Rng(seed)
     }
 
@@ -323,14 +322,14 @@ impl Rng {
         Rng::with_seed(self.gen_u64())
     }
 
-    /// Generates a random `char` in ranges a-z and A-Z.
+    /// Generates a random `char` in range a-z and A-Z.
     #[inline]
     pub fn alphabetic(&mut self) -> char {
         const CHARS: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         *self.choice(CHARS).unwrap() as char
     }
 
-    /// Generates a random `char` in ranges a-z, A-Z and 0-9.
+    /// Generates a random `char` in range a-z, A-Z and 0-9.
     #[inline]
     pub fn alphanumeric(&mut self) -> char {
         const CHARS: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -345,7 +344,7 @@ impl Rng {
 
     /// Generates a random digit in the given `base`.
     ///
-    /// Digits are represented by `char`s in ranges 0-9 and a-z.
+    /// Digits are represented by `char`s in range 0-9 and a-z.
     ///
     /// Panics if the base is zero or greater than 36.
     #[inline]
@@ -364,18 +363,67 @@ impl Rng {
         }
     }
 
+    /// Generates a random `f32` in range `0..=1`.
+    #[inline]
+    pub fn f32_inclusive(&mut self) -> f32 {
+        // Generate a number in 0..2^63 then convert to f32 and multiply by 2^(-63).
+        //
+        // Even though we're returning f32, we still generate u64 internally to make
+        // it possible to return nonzero numbers as small as 2^(-63). If we only
+        // generated u32 internally, the smallest nonzero number we could return
+        // would be 2^(-32).
+        //
+        // The integer we generate is in 0..2^63 rather than 0..2^64 to improve speed
+        // on x86-64, which has efficient i64->float conversion (cvtsi2ss) but for
+        // which u64->float conversion must be implemented in software.
+        //
+        // There is still some remaining bias in the int-to-float conversion, because
+        // nonzero numbers <=2^(-64) are never generated, even though they are
+        // expressible in f32. However, at this point the bias in int-to-float conversion
+        // is no larger than the bias in the underlying WyRand generator: since it only
+        // has a 64-bit state, it necessarily already have biases of at least 2^(-64)
+        // probability.
+        //
+        // See e.g. Section 3.1 of Thomas, David B., et al. "Gaussian random number generators,
+        // https://www.doc.ic.ac.uk/~wl/papers/07/csur07dt.pdf, for background.
+        const MUL: f32 = 1.0 / (1u64 << 63) as f32;
+        (self.gen_u64() >> 1) as f32 * MUL
+    }
+
     /// Generates a random `f32` in range `0..1`.
+    ///
+    /// Function `f32_inclusive()` is a little simpler and faster, so default
+    /// to that if inclusive range is acceptable.
+    #[inline]
     pub fn f32(&mut self) -> f32 {
-        let b = 32;
-        let f = core::f32::MANTISSA_DIGITS - 1;
-        f32::from_bits((1 << (b - 2)) - (1 << f) + (self.u32(..) >> (b - f))) - 1.0
+        loop {
+            let x = self.f32_inclusive();
+            if x < 1.0 {
+                return x;
+            }
+        }
+    }
+
+    /// Generates a random `f64` in range `0..=1`.
+    #[inline]
+    pub fn f64_inclusive(&mut self) -> f64 {
+        // See the comment in f32_inclusive() for more details.
+        const MUL: f64 = 1.0 / (1u64 << 63) as f64;
+        (self.gen_u64() >> 1) as f64 * MUL
     }
 
     /// Generates a random `f64` in range `0..1`.
+    ///
+    /// Function `f64_inclusive()` is a little simpler and faster, so default
+    /// to that if inclusive range is acceptable.
+    #[inline]
     pub fn f64(&mut self) -> f64 {
-        let b = 64;
-        let f = core::f64::MANTISSA_DIGITS - 1;
-        f64::from_bits((1 << (b - 2)) - (1 << f) + (self.u64(..) >> (b - f))) - 1.0
+        loop {
+            let x = self.f64_inclusive();
+            if x < 1.0 {
+                return x;
+            }
+        }
     }
 
     /// Collects `amount` values at random from the iterable into a vector.
@@ -386,7 +434,6 @@ impl Rng {
     ///
     /// Complexity is `O(n)` where `n` is the length of the iterable.
     #[cfg(feature = "alloc")]
-    #[cfg_attr(docsrs, doc(cfg(feature = "alloc")))]
     pub fn choose_multiple<I: IntoIterator>(&mut self, source: I, amount: usize) -> Vec<I::Item> {
         // Adapted from: https://docs.rs/rand/latest/rand/seq/trait.IteratorRandom.html#method.choose_multiple
         let mut reservoir = Vec::with_capacity(amount);

@@ -35,6 +35,13 @@ impl<'a, T> ParsedItem<'a, T> {
         Some(self.0)
     }
 
+    /// Discard the stored value, returning the remaining input.
+    #[must_use = "this returns the remaining input"]
+    #[inline]
+    pub(crate) fn discard_value(self) -> &'a [u8] {
+        self.0
+    }
+
     /// Filter the value with the provided function. If the function returns `false`, the value
     /// is discarded and `None` is returned. Otherwise, the value is preserved and `Some(self)` is
     /// returned.
@@ -46,15 +53,6 @@ impl<'a, T> ParsedItem<'a, T> {
 
 impl<'a> ParsedItem<'a, ()> {
     /// Discard the unit value, returning the remaining input.
-    #[must_use = "this returns the remaining input"]
-    #[inline]
-    pub(crate) const fn into_inner(self) -> &'a [u8] {
-        self.0
-    }
-}
-
-impl<'a> ParsedItem<'a, Option<()>> {
-    /// Discard the potential unit value, returning the remaining input.
     #[must_use = "this returns the remaining input"]
     #[inline]
     pub(crate) const fn into_inner(self) -> &'a [u8] {

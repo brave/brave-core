@@ -1047,7 +1047,7 @@ impl<'t, 'p> TranslatorI<'t, 'p> {
         if let Ok(ref mut class) = result {
             self.unicode_fold_and_negate(
                 &ast_class.span,
-                ast_class.negated,
+                ast_class.is_negated(),
                 class,
             )?;
         }
@@ -2471,6 +2471,10 @@ mod tests {
             hir_uclass_query(ClassQuery::Binary("Z"))
         );
         assert_eq!(
+            t(r"\p{gc!=Separator}"),
+            hir_negate(hir_uclass_query(ClassQuery::Binary("Z")))
+        );
+        assert_eq!(
             t(r"\p{Other}"),
             hir_uclass_query(ClassQuery::Binary("Other"))
         );
@@ -2486,7 +2490,7 @@ mod tests {
         );
         assert_eq!(
             t(r"\P{gc!=separator}"),
-            hir_negate(hir_uclass_query(ClassQuery::Binary("Z")))
+            hir_uclass_query(ClassQuery::Binary("Z"))
         );
 
         assert_eq!(t(r"\p{any}"), hir_uclass_query(ClassQuery::Binary("Any")));
@@ -3641,6 +3645,12 @@ mod tests {
                 hir_alt(vec![hir_lit("foo"), hir_lit("foobar")]),
             ]),
         );
+        // Tests that we don't lift a common prefix that can match more than
+        // one way, since that changes which branch leftmost-first prefers. A
+        // literal before it is still lifted.
+        assert_eq!(t("ab*b|ab*c"), t("a(?:b*b|b*c)"));
+        assert_ne!(t("ab*b|ab*c"), t("ab*(?:b|c)"));
+        assert_ne!(t("a*?b|a*?a"), t("a*?(?:b|a)"));
     }
 
     #[test]

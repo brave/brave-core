@@ -5,19 +5,42 @@ use std::{
 
 use gix_url::{ArgumentSafety::*, Url};
 
-use crate::{client::blocking_io::file::SpawnProcessOnDemand, Protocol};
+use crate::{Protocol, client::blocking_io::file::SpawnProcessOnDemand};
 
 /// The error used in [`connect()`].
-#[derive(Debug, thiserror::Error)]
-#[allow(missing_docs)]
+#[derive(Debug)]
+#[expect(missing_docs)]
 pub enum Error {
-    #[error("The scheme in \"{}\" is not usable for an ssh connection", .0.to_bstring())]
     UnsupportedScheme(gix_url::Url),
-    #[error("Host name '{host}' could be mistaken for a command-line argument")]
     AmbiguousHostName { host: String },
+    PrepareCommand(gix_error::Error),
 }
 
-impl crate::IsSpuriousError for Error {}
+impl std::fmt::Display for Error {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Error::UnsupportedScheme(url) => write!(
+                f,
+                "The scheme in \"{}\" is not usable for an ssh connection",
+                url.to_bstring()
+            ),
+            Error::AmbiguousHostName { host } => {
+                write!(f, "Host name '{host}' could be mistaken for a command-line argument")
+            }
+            Error::PrepareCommand(_) => f.write_str("Could not prepare the ssh command"),
+        }
+    }
+}
+
+impl std::error::Error for Error {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            Error::AmbiguousHostName { .. } => Some(const { &gix_error::ClassificationMarker::VALIDATION }),
+            Error::UnsupportedScheme(_) => Some(const { &gix_error::ClassificationMarker::UNSUPPORTED }),
+            Error::PrepareCommand(err) => Some(err),
+        }
+    }
+}
 
 /// The kind of SSH programs we have built-in support for.
 ///
@@ -43,14 +66,15 @@ pub mod invocation {
     use std::ffi::OsString;
 
     /// The error returned when producing ssh invocation arguments based on a selected invocation kind.
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
+    #[derive(Debug)]
+    #[expect(missing_docs)]
     pub enum Error {
-        #[error("Username '{user}' could be mistaken for a command-line argument")]
-        AmbiguousUserName { user: String },
-        #[error("Host name '{host}' could be mistaken for a command-line argument")]
-        AmbiguousHostName { host: String },
-        #[error("The 'Simple' ssh variant doesn't support {function}")]
+        AmbiguousUserName {
+            user: String,
+        },
+        AmbiguousHostName {
+            host: String,
+        },
         Unsupported {
             /// The simple command that should have been invoked.
             command: OsString,
@@ -58,13 +82,40 @@ pub mod invocation {
             function: &'static str,
         },
     }
+
+    impl std::fmt::Display for Error {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            match self {
+                Error::AmbiguousUserName { user } => {
+                    write!(f, "Username '{user}' could be mistaken for a command-line argument")
+                }
+                Error::AmbiguousHostName { host } => {
+                    write!(f, "Host name '{host}' could be mistaken for a command-line argument")
+                }
+                Error::Unsupported { function, .. } => {
+                    write!(f, "The 'Simple' ssh variant doesn't support {function}")
+                }
+            }
+        }
+    }
+
+    impl std::error::Error for Error {
+        fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+            match self {
+                Error::AmbiguousUserName { .. } | Error::AmbiguousHostName { .. } => {
+                    Some(const { &gix_error::ClassificationMarker::VALIDATION })
+                }
+                Error::Unsupported { .. } => Some(const { &gix_error::ClassificationMarker::UNSUPPORTED }),
+            }
+        }
+    }
 }
 
 ///
 pub mod connect {
     use std::ffi::{OsStr, OsString};
 
-    use crate::client::ssh::ProgramKind;
+    use crate::client::blocking_io::ssh::ProgramKind;
 
     /// The options for use when [connecting][super::connect()] via the `ssh` protocol.
     #[derive(Debug, Clone, Default)]
@@ -101,7 +152,10 @@ pub mod connect {
 /// The `desired_version` is the preferred protocol version when establishing the connection, but note that it can be
 /// downgraded by servers not supporting it.
 /// If `trace` is `true`, all packetlines received or sent will be passed to the facilities of the `gix-trace` crate.
-#[allow(clippy::result_large_err)]
+#[expect(
+    clippy::result_large_err,
+    reason = "will be removed once `gix-error` is used consistently"
+)]
 pub fn connect(
     url: Url,
     desired_version: Protocol,
@@ -125,7 +179,10 @@ pub fn connect(
     ))
 }
 
-#[allow(clippy::result_large_err)]
+#[expect(
+    clippy::result_large_err,
+    reason = "will be removed once `gix-error` is used consistently"
+)]
 fn determine_client_kind(
     known_kind: Option<ProgramKind>,
     ssh_cmd: &OsStr,
@@ -135,7 +192,7 @@ fn determine_client_kind(
     let mut kind = known_kind.unwrap_or_else(|| ProgramKind::from(ssh_cmd));
     if known_kind.is_none() && kind == ProgramKind::Simple {
         let mut cmd = build_client_feature_check_command(ssh_cmd, url, disallow_shell)?;
-        gix_features::trace::debug!(cmd = ?cmd, "invoking `ssh` for feature check");
+        gix_trace::debug!(cmd = ?cmd, "invoking `ssh` for feature check");
         kind = if cmd.status().ok().is_some_and(|status| status.success()) {
             ProgramKind::Ssh
         } else {
@@ -145,7 +202,10 @@ fn determine_client_kind(
     Ok(kind)
 }
 
-#[allow(clippy::result_large_err)]
+#[expect(
+    clippy::result_large_err,
+    reason = "will be removed once `gix-error` is used consistently"
+)]
 fn build_client_feature_check_command(ssh_cmd: &OsStr, url: &Url, disallow_shell: bool) -> Result<Command, Error> {
     let mut prepare = gix_command::prepare(ssh_cmd)
         .stderr(Stdio::null())
@@ -161,7 +221,7 @@ fn build_client_feature_check_command(ssh_cmd: &OsStr, url: &Url, disallow_shell
     if disallow_shell {
         prepare.use_shell = false;
     }
-    Ok(prepare.into())
+    prepare.try_into().map_err(Error::PrepareCommand)
 }
 
 #[cfg(test)]

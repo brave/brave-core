@@ -1,0 +1,5 @@
+error: unknown display hint: "dunno"
+ --> $DIR/write-invalid-hint.rs:5:26
+  |
+5 |         defmt::write!(f, "{=u8:dunno}", 42)
+  |                          ^^^^^^^^^^^^^

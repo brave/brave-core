@@ -2,27 +2,37 @@ lints.workspace = true
 
 [package]
 name = "gix-revwalk"
-version = "0.22.0"
+version = "0.38.0"
 repository = "https://github.com/GitoxideLabs/gitoxide"
 license = "MIT OR Apache-2.0"
 description = "A crate providing utilities for walking the revision graph"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
-edition = "2021"
-include = ["src/**/*", "LICENSE-*"]
-rust-version = "1.82"
+edition = "2024"
+include = ["/src/**/*", "/LICENSE-*"]
+rust-version = "1.88"
 
 [lib]
 doctest = false
 
-[dependencies]
-gix-hash = { version = "^0.20.0", path = "../gix-hash" }
-gix-object = { version = "^0.51.0", path = "../gix-object" }
-gix-date = { version = "^0.10.6", path = "../gix-date" }
-gix-hashtable = { version = "^0.10.0", path = "../gix-hashtable" }
-gix-commitgraph = { version = "^0.30.0", path = "../gix-commitgraph" }
+[features]
+## Enable support for the SHA-1 hash by forwarding the feature to dependencies.
+sha1 = ["gix-hash/sha1"]
+## Enable support for the SHA-256 hash by forwarding the feature to dependencies.
+sha256 = ["gix-hash/sha256"]
 
-thiserror = "2.0.17"
+[dependencies]
+gix-hash = { version = "^0.28.1", path = "../gix-hash" }
+gix-error = { version = "^0.5.2", path = "../gix-error" }
+gix-object = { version = "^0.66.1", path = "../gix-object" }
+gix-date = { version = "^0.18.1", path = "../gix-date" }
+gix-hashtable = { version = "^0.18.0", path = "../gix-hashtable" }
+gix-commitgraph = { version = "^0.42.0", path = "../gix-commitgraph" }
+
 smallvec = "1.15.1"
 
 [dev-dependencies]
-gix-testtools = { path = "../tests/tools" }
+gix-testtools = { path = "../tests/tools", default-features = false }
+gix-hash = { path = "../gix-hash", features = ["sha1", "sha256"] }
+
+[package.metadata.docs.rs]
+features = ["sha1"]

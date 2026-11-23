@@ -1,6 +1,6 @@
 use std::{borrow::Cow, collections::BTreeSet};
 
-use crate::bstr::BStr;
+use crate::bstr::{BStr, BString};
 
 /// The direction of an operation carried out (or to be carried out) through a remote.
 #[derive(Debug, Eq, PartialEq, Copy, Clone, Hash)]
@@ -33,15 +33,12 @@ pub enum Name<'repo> {
 }
 
 /// A type-definition for a sorted list of unvalidated remote names - they have been read straight from the configuration.
-pub type Names<'a> = BTreeSet<Cow<'a, BStr>>;
+pub type Names = BTreeSet<BString>;
 
 ///
 pub mod name;
 
 mod build;
-
-mod errors;
-pub use errors::find;
 
 ///
 pub mod init;
@@ -56,7 +53,7 @@ pub mod connect;
 #[cfg(any(feature = "async-network-client", feature = "blocking-network-client"))]
 mod connection;
 #[cfg(any(feature = "async-network-client", feature = "blocking-network-client"))]
-pub use connection::{ref_map, AuthenticateFn, Connection};
+pub use connection::{AuthenticateFn, Connection, ref_map};
 
 ///
 pub mod save;

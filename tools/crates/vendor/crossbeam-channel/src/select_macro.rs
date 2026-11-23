@@ -90,7 +90,7 @@ macro_rules! crossbeam_channel_internal {
     };
     // Print an error if there is a semicolon after the block.
     (@list
-        ($case:ident $args:tt $(-> $res:pat)* => $body:block; $($tail:tt)*)
+        ($case:ident $args:tt $(-> $res:pat)* => { $($body:tt)* }; $($tail:tt)*)
         ($($head:tt)*)
     ) => {
         compile_error!(
@@ -98,6 +98,16 @@ macro_rules! crossbeam_channel_internal {
         )
     };
     // The first case is separated by a comma.
+    (@list
+        ($case:ident ($($args:tt)*) $(-> $res:pat)* => { $($body:tt)* }, $($tail:tt)*)
+        ($($head:tt)*)
+    ) => {
+        $crate::crossbeam_channel_internal!(
+            @list
+            ($($tail)*)
+            ($($head)* $case ($($args)*) $(-> $res)* => { $($body)* },)
+        )
+    };
     (@list
         ($case:ident ($($args:tt)*) $(-> $res:pat)* => $body:expr, $($tail:tt)*)
         ($($head:tt)*)
@@ -110,13 +120,13 @@ macro_rules! crossbeam_channel_internal {
     };
     // Don't require a comma after the case if it has a proper block.
     (@list
-        ($case:ident ($($args:tt)*) $(-> $res:pat)* => $body:block $($tail:tt)*)
+        ($case:ident ($($args:tt)*) $(-> $res:pat)* => { $($body:tt)* } $($tail:tt)*)
         ($($head:tt)*)
     ) => {
         $crate::crossbeam_channel_internal!(
             @list
             ($($tail)*)
-            ($($head)* $case ($($args)*) $(-> $res)* => { $body },)
+            ($($head)* $case ($($args)*) $(-> $res)* => { $($body)* },)
         )
     };
     // Only one case remains.
@@ -985,7 +995,7 @@ macro_rules! crossbeam_channel_internal {
 ///
 /// This macro allows you to define a set of channel operations, wait until any one of them becomes
 /// ready, and finally execute it. If multiple operations are ready at the same time, a random one
-/// among them is selected (i.e. the unbiased selection). Use `select_biased!` for the biased
+/// among them is selected (i.e. the unbiased selection). Use [`select_biased!`] for the biased
 /// selection.
 ///
 /// It is also possible to define a `default` case that gets executed if none of the operations are
@@ -998,6 +1008,7 @@ macro_rules! crossbeam_channel_internal {
 /// dynamically created list of channel operations.
 ///
 /// [`Select`]: super::Select
+/// [`select_biased!`]: super::select_biased
 ///
 /// # Examples
 ///

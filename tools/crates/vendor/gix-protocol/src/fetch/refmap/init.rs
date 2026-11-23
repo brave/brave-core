@@ -1,119 +1,49 @@
-use std::collections::HashSet;
-
-use bstr::{BString, ByteVec};
-use gix_features::progress::Progress;
+use bstr::ByteSlice;
+use gix_error::{Result, ResultExt, corruption, message};
+use gix_transport::client::Capabilities;
 
 use crate::{
-    fetch,
     fetch::{
-        refmap::{Mapping, Source, SpecIndex},
         RefMap,
+        refmap::{Mapping, Source, SpecIndex},
     },
-    transport::client::Transport,
+    handshake::Ref,
 };
 
-/// The error returned by [`RefMap::new()`].
-#[derive(Debug, thiserror::Error)]
-#[allow(missing_docs)]
-pub enum Error {
-    #[error("The object format {format:?} as used by the remote is unsupported")]
-    UnknownObjectFormat { format: BString },
-    #[error(transparent)]
-    MappingValidation(#[from] gix_refspec::match_group::validate::Error),
-    #[error(transparent)]
-    ListRefs(#[from] crate::ls_refs::Error),
-}
-
-/// For use in [`RefMap::new()`].
+/// For use in [`RefMap::from_refs()`].
 #[derive(Debug, Clone)]
-pub struct Options {
-    /// Use a two-component prefix derived from the ref-spec's source, like `refs/heads/`  to let the server pre-filter refs
-    /// with great potential for savings in traffic and local CPU time. Defaults to `true`.
-    pub prefix_from_spec_as_filter_on_remote: bool,
+pub struct Context {
+    /// All explicit refspecs to identify references on the remote that you are interested in.
+    /// Note that these are copied to [`RefMap::refspecs`] for convenience, as `RefMap::mappings` refer to them by index.
+    pub fetch_refspecs: Vec<gix_refspec::RefSpec>,
     /// A list of refspecs to use as implicit refspecs which won't be saved or otherwise be part of the remote in question.
     ///
     /// This is useful for handling `remote.<name>.tagOpt` for example.
     pub extra_refspecs: Vec<gix_refspec::RefSpec>,
 }
 
-impl Default for Options {
-    fn default() -> Self {
-        Options {
-            prefix_from_spec_as_filter_on_remote: true,
-            extra_refspecs: Vec::new(),
-        }
+impl Context {
+    pub(crate) fn aggregate_refspecs(&self) -> Vec<gix_refspec::RefSpec> {
+        let mut all_refspecs = self.fetch_refspecs.clone();
+        all_refspecs.extend(self.extra_refspecs.iter().cloned());
+        all_refspecs
     }
 }
 
 impl RefMap {
-    /// Create a new instance by obtaining all references on the remote that have been filtered through our remote's
-    /// for _fetching_.
-    ///
-    /// A [context](fetch::Context) is provided to bundle what would be additional parameters,
-    /// and [options](Options) are used to further configure the call.
-    ///
-    /// * `progress` is used if `ls-refs` is invoked on the remote. Always the case when V2 is used.
-    /// * `fetch_refspecs` are all explicit refspecs to identify references on the remote that you are interested in.
-    ///    Note that these are copied to [`RefMap::refspecs`] for convenience, as `RefMap::mappings` refer to them by index.
-    #[allow(clippy::result_large_err)]
-    #[maybe_async::maybe_async]
-    pub async fn new<T>(
-        mut progress: impl Progress,
-        fetch_refspecs: &[gix_refspec::RefSpec],
-        fetch::Context {
-            handshake,
-            transport,
-            user_agent,
-            trace_packetlines,
-        }: fetch::Context<'_, T>,
-        Options {
-            prefix_from_spec_as_filter_on_remote,
+    /// Create a ref-map from already obtained `remote_refs`. Use `context` to pass in refspecs.
+    /// `capabilities` are used to determine the object format.
+    /// Invalid or unsupported object formats include their bytes as `input` [metadata](gix_error::Error::metadata()).
+    pub fn from_refs(remote_refs: Vec<Ref>, capabilities: &Capabilities, context: Context) -> Result<RefMap> {
+        let all_refspecs = context.aggregate_refspecs();
+        let Context {
+            fetch_refspecs,
             extra_refspecs,
-        }: Options,
-    ) -> Result<Self, Error>
-    where
-        T: Transport,
-    {
-        let _span = gix_trace::coarse!("gix_protocol::fetch::RefMap::new()");
-        let null = gix_hash::ObjectId::null(gix_hash::Kind::Sha1); // OK to hardcode Sha1, it's not supposed to match, ever.
-
-        let all_refspecs = {
-            let mut s: Vec<_> = fetch_refspecs.to_vec();
-            s.extend(extra_refspecs.clone());
-            s
-        };
-        let remote_refs = match handshake.refs.take() {
-            Some(refs) => refs,
-            None => {
-                crate::ls_refs(
-                    transport,
-                    &handshake.capabilities,
-                    |_capabilities, arguments, features| {
-                        features.push(user_agent);
-                        if prefix_from_spec_as_filter_on_remote {
-                            let mut seen = HashSet::new();
-                            for spec in &all_refspecs {
-                                let spec = spec.to_ref();
-                                if seen.insert(spec.instruction()) {
-                                    let mut prefixes = Vec::with_capacity(1);
-                                    spec.expand_prefixes(&mut prefixes);
-                                    for mut prefix in prefixes {
-                                        prefix.insert_str(0, "ref-prefix ");
-                                        arguments.push(prefix);
-                                    }
-                                }
-                            }
-                        }
-                        Ok(crate::ls_refs::Action::Continue)
-                    },
-                    &mut progress,
-                    trace_packetlines,
-                )
-                .await?
-            }
-        };
+        } = context;
         let num_explicit_specs = fetch_refspecs.len();
         let group = gix_refspec::MatchGroup::from_fetch_specs(all_refspecs.iter().map(gix_refspec::RefSpec::to_ref));
+        let object_hash = extract_object_hash(capabilities)?;
+        let null = object_hash.null();
         let (res, fixes) = group
             .match_lhs(remote_refs.iter().map(|r| {
                 let (full_ref_name, target, object) = r.unpack();
@@ -123,7 +53,8 @@ impl RefMap {
                     object,
                 }
             }))
-            .validated()?;
+            .validated()
+            .or_raise(|| message("Failed to validate mappings between remote and local references"))?;
 
         let mappings = res.mappings;
         let mappings = mappings
@@ -147,10 +78,9 @@ impl RefMap {
             })
             .collect();
 
-        let object_hash = extract_object_format(handshake)?;
-        Ok(RefMap {
+        Ok(Self {
             mappings,
-            refspecs: fetch_refspecs.to_vec(),
+            refspecs: fetch_refspecs,
             extra_refspecs,
             fixes,
             remote_refs,
@@ -159,21 +89,23 @@ impl RefMap {
     }
 }
 
-/// Assume sha1 if server says nothing, otherwise configure anything beyond sha1 in the local repo configuration
-#[allow(clippy::result_large_err)]
-fn extract_object_format(outcome: &crate::handshake::Outcome) -> Result<gix_hash::Kind, Error> {
-    use bstr::ByteSlice;
-    let object_hash =
-        if let Some(object_format) = outcome.capabilities.capability("object-format").and_then(|c| c.value()) {
-            let object_format = object_format.to_str().map_err(|_| Error::UnknownObjectFormat {
-                format: object_format.into(),
-            })?;
-            match object_format {
-                "sha1" => gix_hash::Kind::Sha1,
-                unknown => return Err(Error::UnknownObjectFormat { format: unknown.into() }),
-            }
-        } else {
-            gix_hash::Kind::Sha1
-        };
-    Ok(object_hash)
+/// Resolve the object format advertised by the server through the `object-format` capability.
+///
+/// When the capability is absent, the server is implicitly speaking Sha1 - older servers
+/// don't advertise it at all, and even newer ones may omit it for empty repositories.
+/// In builds whose `gix-hash` lacks the `sha1` feature, it's treated as unknown object format error.
+/// Errors include the object format bytes as `input` [metadata](gix_error::Error::metadata()).
+fn extract_object_hash(capabilities: &Capabilities) -> Result<gix_hash::Kind> {
+    let object_format = match capabilities.capability("object-format").and_then(|c| c.value()) {
+        Some(object_format) => object_format.to_str().or_raise(|| {
+            corruption("The object format used by the remote isn't valid UTF-8").with_input(object_format.as_bytes())
+        })?,
+        None => "sha1",
+    };
+    match object_format.parse::<gix_hash::Kind>() {
+        Ok(kind) => Ok(kind),
+        Err(err) => Err(message!("The object format used by the remote is unsupported: {err}")
+            .with_input(object_format.as_bytes())
+            .unsupported_error()),
+    }
 }

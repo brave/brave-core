@@ -1,28 +1,11 @@
 use bstr::{BStr, BString, ByteSlice};
+use gix_error::Result;
+use gix_error::{OptionExt, bail, corruption, message};
 
 #[cfg(any(feature = "blocking-client", feature = "async-client"))]
-use crate::client;
-use crate::Protocol;
+use crate::{Protocol, client};
 
-/// The error used in [`Capabilities::from_bytes()`] and [`Capabilities::from_lines()`].
-#[derive(Debug, thiserror::Error)]
-#[allow(missing_docs)]
-pub enum Error {
-    #[error("Capabilities were missing entirely as there was no 0 byte")]
-    MissingDelimitingNullByte,
-    #[error("there was not a single capability behind the delimiter")]
-    NoCapabilities,
-    #[error("a version line was expected, but none was retrieved")]
-    MissingVersionLine,
-    #[error("expected 'version X', got {0:?}")]
-    MalformattedVersionLine(BString),
-    #[error("Got unsupported version {actual:?}, expected {}", *desired as u8)]
-    UnsupportedVersion { desired: Protocol, actual: BString },
-    #[error("An IO error occurred while reading V2 lines")]
-    Io(#[from] std::io::Error),
-}
-
-/// A structure to represent multiple [capabilities][Capability] or features supported by the server.
+/// A structure to represent multiple [capabilities](Capability) or features supported by the server.
 ///
 /// ### Deviation
 ///
@@ -63,17 +46,17 @@ impl<'a> Capability<'a> {
     /// Returns the value associated with the capability.
     ///
     /// Note that the caller must know whether a single or multiple values are expected, in which
-    /// case [`values()`][Capability::values()] should be called.
+    /// case [`values()`](Capability::values()) should be called.
     pub fn value(&self) -> Option<&'a BStr> {
         self.0.splitn(2, |b| *b == b'=').nth(1).map(ByteSlice::as_bstr)
     }
-    /// Returns the values of a capability if its [`value()`][Capability::value()] is space separated.
+    /// Returns the values of a capability if its [`value()`](Capability::value()) is space separated.
     pub fn values(&self) -> Option<impl Iterator<Item = &'a BStr>> {
         self.value().map(|v| v.split(|b| *b == b' ').map(ByteSlice::as_bstr))
     }
-    /// Returns true if its space-separated [`value()`][Capability::value()] contains the given `want`ed capability.
-    pub fn supports(&self, want: impl Into<&'a BStr>) -> Option<bool> {
-        let want = want.into();
+    /// Returns true if its space-separated [`value()`](Capability::value()) contains the given `want`ed capability.
+    pub fn supports(&self, want: impl gix_utils::AsBStr) -> Option<bool> {
+        let want = want.as_bstr();
         self.values().map(|mut iter| iter.any(|v| v == want))
     }
 }
@@ -82,10 +65,18 @@ impl Capabilities {
     /// Parse capabilities from the given `bytes`.
     ///
     /// Useful in case they are encoded within a `ref` behind a null byte.
-    pub fn from_bytes(bytes: &[u8]) -> Result<(Capabilities, usize), Error> {
-        let delimiter_pos = bytes.find_byte(0).ok_or(Error::MissingDelimitingNullByte)?;
+    pub fn from_bytes(bytes: &[u8]) -> Result<(Capabilities, usize)> {
+        let delimiter_pos = bytes.find_byte(0).ok_or_raise(|| {
+            let err = message("Capabilities were missing entirely as there was no 0 byte");
+            // Explicit v1 headers reach here due to the documented V1 limitation, not malformed peer data.
+            if bytes == b"version 1" || bytes == b"version 1\n" {
+                err.unsupported()
+            } else {
+                err.corrupted()
+            }
+        })?;
         if delimiter_pos + 1 == bytes.len() {
-            return Err(Error::NoCapabilities);
+            bail!(corruption("there was not a single capability behind the delimiter"));
         }
         let capabilities = &bytes[delimiter_pos + 1..];
         Ok((
@@ -103,22 +94,21 @@ impl Capabilities {
     /// Useful for parsing capabilities from a data sent from a server, and to avoid having to deal with
     /// blocking and async traits for as long as possible. There is no value in parsing a few bytes
     /// in a non-blocking fashion.
-    pub fn from_lines(lines_buf: BString) -> Result<Capabilities, Error> {
+    pub fn from_lines(lines_buf: BString) -> Result<Capabilities> {
         let mut lines = <_ as bstr::ByteSlice>::lines(lines_buf.as_slice().trim());
-        let version_line = lines.next().ok_or(Error::MissingVersionLine)?;
+        let version_line = lines
+            .next()
+            .ok_or_raise(|| corruption("a version line was expected, but none was retrieved"))?;
         let (name, value) = version_line.split_at(
             version_line
                 .find(b" ")
-                .ok_or_else(|| Error::MalformattedVersionLine(version_line.to_owned().into()))?,
+                .ok_or_raise(|| message!("expected 'version X', got {version_line:?}").corrupted())?,
         );
         if name != b"version" {
-            return Err(Error::MalformattedVersionLine(version_line.to_owned().into()));
+            bail!("expected 'version X', got {version_line:?}".corrupted());
         }
         if value != b" 2" {
-            return Err(Error::UnsupportedVersion {
-                desired: Protocol::V2,
-                actual: value.to_owned().into(),
-            });
+            bail!("Got unsupported version {value:?}, expected 2".unsupported());
         }
         Ok(Capabilities {
             value_sep: b'\n',
@@ -147,7 +137,9 @@ impl Capabilities {
 /// internal use
 #[cfg(any(feature = "blocking-client", feature = "async-client"))]
 impl Capabilities {
-    fn extract_protocol(capabilities_or_version: gix_packetline::TextRef<'_>) -> Result<Protocol, client::Error> {
+    fn extract_protocol(
+        capabilities_or_version: gix_packetline::TextRef<'_>,
+    ) -> std::result::Result<Protocol, client::Error> {
         let line = capabilities_or_version.as_bstr();
         let version = if line.starts_with_str("version ") {
             if line.len() != "version X".len() {
@@ -165,36 +157,40 @@ impl Capabilities {
     }
 }
 
-#[cfg(feature = "blocking-client")]
 ///
-pub mod recv {
+#[cfg(feature = "blocking-client")]
+pub mod blocking_recv {
     use std::io;
 
     use bstr::ByteVec;
 
-    use crate::{client, client::Capabilities, Protocol};
+    use crate::{
+        Protocol,
+        client::{self, Capabilities, blocking_io::ReadlineBufRead},
+        packetline::blocking_io::StreamingPeekableIter,
+    };
 
-    /// Success outcome of [`Capabilities::from_lines_with_version_detection`].
-    pub struct Outcome<'a> {
+    /// The information provided by the server upon first connection.
+    pub struct Handshake<'a> {
         /// The [`Capabilities`] the remote advertised.
         pub capabilities: Capabilities,
         /// The remote refs as a [`io::BufRead`].
         ///
         /// This is `Some` only when protocol v1 is used. The [`io::BufRead`] must be exhausted by
         /// the caller.
-        pub refs: Option<Box<dyn crate::client::ReadlineBufRead + 'a>>,
+        pub refs: Option<Box<dyn ReadlineBufRead + 'a>>,
         /// The [`Protocol`] the remote advertised.
         pub protocol: Protocol,
     }
 
-    impl Capabilities {
+    impl Handshake<'_> {
         /// Read the capabilities and version advertisement from the given packetline reader.
         ///
         /// If [`Protocol::V1`] was requested, or the remote decided to downgrade, the remote refs
-        /// advertisement will also be included in the [`Outcome`].
+        /// advertisement will also be included in the [`Handshake`].
         pub fn from_lines_with_version_detection<T: io::Read>(
-            rd: &mut gix_packetline::StreamingPeekableIter<T>,
-        ) -> Result<Outcome<'_>, client::Error> {
+            rd: &mut StreamingPeekableIter<T>,
+        ) -> Result<Handshake<'_>, client::Error> {
             // NOTE that this is vitally important - it is turned on and stays on for all following requests so
             // we automatically abort if the server sends an ERR line anywhere.
             // We are sure this can't clash with binary data when sent due to the way the PACK
@@ -210,13 +206,13 @@ pub mod recv {
                         Protocol::V1 => {
                             let (capabilities, delimiter_position) = Capabilities::from_bytes(line.0)?;
                             rd.peek_buffer_replace_and_truncate(delimiter_position, b'\n');
-                            Outcome {
+                            Handshake {
                                 capabilities,
                                 refs: Some(Box::new(rd.as_read())),
                                 protocol: Protocol::V1,
                             }
                         }
-                        Protocol::V2 => Outcome {
+                        Protocol::V2 => Handshake {
                             capabilities: {
                                 let mut rd = rd.as_read();
                                 let mut buf = Vec::new();
@@ -239,7 +235,7 @@ pub mod recv {
                         },
                     }
                 }
-                None => Outcome {
+                None => Handshake {
                     capabilities: Capabilities::default(),
                     refs: Some(Box::new(rd.as_read())),
                     protocol: Protocol::V0,
@@ -249,36 +245,39 @@ pub mod recv {
     }
 }
 
-#[cfg(feature = "async-client")]
-#[allow(missing_docs)]
 ///
-pub mod recv {
+#[cfg(feature = "async-client")]
+pub mod async_recv {
     use bstr::ByteVec;
     use futures_io::AsyncRead;
 
-    use crate::{client, client::Capabilities, Protocol};
+    use crate::{
+        Protocol,
+        client::{self, Capabilities, async_io::ReadlineBufRead},
+        packetline::async_io::StreamingPeekableIter,
+    };
 
-    /// Success outcome of [`Capabilities::from_lines_with_version_detection`].
-    pub struct Outcome<'a> {
+    /// The information provided by the server upon first connection.
+    pub struct Handshake<'a> {
         /// The [`Capabilities`] the remote advertised.
         pub capabilities: Capabilities,
-        /// The remote refs as an [`AsyncBufRead`].
+        /// The remote refs as an [`AsyncBufRead`][futures_io::AsyncBufRead].
         ///
-        /// This is `Some` only when protocol v1 is used. The [`AsyncBufRead`] must be exhausted by
+        /// This is `Some` only when protocol v1 is used. The [`AsyncRead`] must be exhausted by
         /// the caller.
-        pub refs: Option<Box<dyn crate::client::ReadlineBufRead + Unpin + 'a>>,
+        pub refs: Option<Box<dyn ReadlineBufRead + Unpin + 'a>>,
         /// The [`Protocol`] the remote advertised.
         pub protocol: Protocol,
     }
 
-    impl Capabilities {
+    impl Handshake<'_> {
         /// Read the capabilities and version advertisement from the given packetline reader.
         ///
         /// If [`Protocol::V1`] was requested, or the remote decided to downgrade, the remote refs
-        /// advertisement will also be included in the [`Outcome`].
+        /// advertisement will also be included in the [`Handshake`].
         pub async fn from_lines_with_version_detection<T: AsyncRead + Unpin>(
-            rd: &mut gix_packetline::StreamingPeekableIter<T>,
-        ) -> Result<Outcome<'_>, client::Error> {
+            rd: &mut StreamingPeekableIter<T>,
+        ) -> Result<Handshake<'_>, client::Error> {
             // NOTE that this is vitally important - it is turned on and stays on for all following requests so
             // we automatically abort if the server sends an ERR line anywhere.
             // We are sure this can't clash with binary data when sent due to the way the PACK
@@ -294,13 +293,13 @@ pub mod recv {
                         Protocol::V1 => {
                             let (capabilities, delimiter_position) = Capabilities::from_bytes(line.0)?;
                             rd.peek_buffer_replace_and_truncate(delimiter_position, b'\n');
-                            Outcome {
+                            Handshake {
                                 capabilities,
                                 refs: Some(Box::new(rd.as_read())),
                                 protocol: Protocol::V1,
                             }
                         }
-                        Protocol::V2 => Outcome {
+                        Protocol::V2 => Handshake {
                             capabilities: {
                                 let mut rd = rd.as_read();
                                 let mut buf = Vec::new();
@@ -323,7 +322,7 @@ pub mod recv {
                         },
                     }
                 }
-                None => Outcome {
+                None => Handshake {
                     capabilities: Capabilities::default(),
                     refs: Some(Box::new(rd.as_read())),
                     protocol: Protocol::V0,

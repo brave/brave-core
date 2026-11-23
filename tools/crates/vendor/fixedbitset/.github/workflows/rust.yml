@@ -29,11 +29,11 @@ jobs:
         components: clippy
     - name: Tests (x86_64)
       run: |
-        cargo clippy &&
+        cargo clippy --all-features &&
         cargo test -v --no-default-features --tests --lib &&
-        cargo build --verbose --features "$FEATURES" &&
-        cargo test --verbose --features "$FEATURES" &&
-        cargo test --verbose --release --features "$FEATURES"
+        cargo build --verbose --all-features &&
+        cargo test --verbose --all-features &&
+        cargo test --verbose --release --all-features
 
   # Ensure the crate builds on x86
   build_MSRV:
@@ -51,21 +51,24 @@ jobs:
         target: x86_64-unknown-linux-gnu
         toolchain: ${{ matrix.rust }}
         components: clippy
+    # Keep test dependencies compatible with Rust 1.56 without restricting library users.
+    - run: cp .github/Cargo.lock.msrv Cargo.lock
     - name: Tests (x86_64)
       run: |
-        cargo clippy &&
-        cargo test -v --no-default-features --tests --lib &&
-        cargo build --verbose --features "$FEATURES" &&
-        cargo test --verbose --features "$FEATURES" &&
-        cargo test --verbose --release --features "$FEATURES"
+        cargo clippy --locked --all-features &&
+        cargo test --locked -v --no-default-features --tests --lib &&
+        cargo build --locked --verbose --all-features &&
+        cargo test --locked --verbose --all-features &&
+        cargo test --locked --verbose --release --all-features
 
   # Ensure the crate builds on ARM
   build_aarch64:
-    runs-on: macos-14
+    runs-on: macos-15
     strategy:
       matrix:
         rust: [stable, nightly]
-        features: ["+neon", "-neon"]
+        # NEON is required by the aarch64 Apple ABI and cannot be disabled.
+        features: ["+neon"]
     env:
       RUSTFLAGS: "-C target-feature=${{matrix.features}} -D warnings"
     steps:
@@ -77,11 +80,11 @@ jobs:
         components: clippy
     - name: Tests (aarch64)
       run: |
-        cargo clippy &&
+        cargo clippy --all-features &&
         cargo test -v --no-default-features --tests --lib &&
-        cargo build --verbose --features "$FEATURES" &&
-        cargo test --verbose --features "$FEATURES" &&
-        cargo test --verbose --release --features "$FEATURES"
+        cargo build --verbose --all-features &&
+        cargo test --verbose --all-features &&
+        cargo test --verbose --release --all-features
 
   # Enforce rustfmt formatting
   formatting:
@@ -132,6 +135,22 @@ jobs:
       - run: cat .github/Cargo.toml.wasm_ci >> Cargo.toml
       - run: wasm-pack test --headless --chrome
       - run: wasm-pack test --headless --firefox
+
+  check-wasm64:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        features: ["+simd128", "-simd128"]
+    env:
+      # No -D warnings: it would also apply to the std built from source.
+      RUSTFLAGS: "-C target-feature=${{matrix.features}}"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: nightly
+          components: rust-src
+      - run: cargo check -Zbuild-std=std,panic_abort --target wasm64-unknown-unknown
 
   miri:
     runs-on: ubuntu-latest

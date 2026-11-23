@@ -1,10 +1,11 @@
 use crate::{
     config,
-    config::tree::{keys, Init, Key, Section},
+    config::tree::{Init, Key, Section, keys},
 };
 
 impl Init {
     /// The `init.defaultBranch` key.
+    // TODO: review its usage for cases where this key is not set - sometimes it's 'master', sometimes it's 'main'.
     pub const DEFAULT_BRANCH: keys::Any = keys::Any::new("defaultBranch", &config::Tree::INIT)
         .with_deviation("If not set, we use `main` instead of `master`");
 }

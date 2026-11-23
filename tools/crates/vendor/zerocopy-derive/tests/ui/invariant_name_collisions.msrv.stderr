@@ -1,0 +1,36 @@
+error[E0530]: let bindings cannot shadow constants
+  --> $DIR/invariant_name_collisions.rs:17:10
+   |
+13 | const CONST: () = ();
+   | --------------------- the constant `CONST` is defined here
+...
+17 | #[derive(TryFromBytes)]
+   |          ^^^^^^^^^^^^ cannot be named the same as a constant
+   |
+   = note: this error originates in the derive macro `TryFromBytes` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0530]: let bindings cannot shadow unit structs
+  --> $DIR/invariant_name_collisions.rs:25:10
+   |
+14 | struct Unit;
+   | ------------ the unit struct `Unit` is defined here
+...
+25 | #[derive(TryFromBytes)]
+   |          ^^^^^^^^^^^^ cannot be named the same as a unit struct
+   |
+   = note: this error originates in the derive macro `TryFromBytes` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0530]: let bindings cannot shadow const parameters
+  --> $DIR/invariant_name_collisions.rs:33:10
+   |
+33 | #[derive(TryFromBytes)]
+   |          ^^^^^^^^^^^^ cannot be named the same as a const parameter
+...
+36 | struct ConstParam<const N: usize> {
+   |                         - the const parameter `N` is defined here
+   |
+   = note: this error originates in the derive macro `TryFromBytes` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: aborting due to 3 previous errors
+
+For more information about this error, try `rustc --explain E0530`.

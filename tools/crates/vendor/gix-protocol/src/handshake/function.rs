@@ -1,28 +1,47 @@
-use gix_features::{progress, progress::Progress};
-use gix_transport::{client, client::SetServiceResponse, Service};
-use maybe_async::maybe_async;
+use crate::bisync::bisync;
+use gix_error::Result;
+use gix_error::{ErrorExt, OptionExt, ResultExt, bail, message};
+use gix_transport::{Service, client};
+use gix_utils::progress;
+use gix_utils::progress::Progress;
 
-use super::{Error, Outcome};
+use crate::Handshake;
+#[crate::bisync::only_async]
+use crate::transport::client::async_io::{SetServiceResponse, Transport};
+#[crate::bisync::only_sync]
+use crate::transport::client::blocking_io::{SetServiceResponse, Transport};
 use crate::{credentials, handshake::refs};
+
+fn credentials_rejected(err: std::io::Error, url: &bstr::BString) -> gix_error::Error {
+    let context = message!("Credentials provided for \"{url}\" were not accepted by the remote");
+    let err = err.raise();
+    let context = if err.downcast_any_ref::<client::AuthenticationRequired>().is_some() {
+        context.unauthenticated()
+    } else {
+        context
+    };
+    err.and_raise(context)
+}
 
 /// Perform a handshake with the server on the other side of `transport`, with `authenticate` being used if authentication
 /// turns out to be required. `extra_parameters` are the parameters `(name, optional value)` to add to the handshake,
 /// each time it is performed in case authentication is required.
 /// `progress` is used to inform about what's currently happening.
-#[allow(clippy::result_large_err)]
-#[maybe_async]
+/// The `service` tells the server whether to be in 'send' or 'receive' mode.
+#[bisync]
 pub async fn handshake<AuthFn, T>(
     mut transport: T,
     service: Service,
     mut authenticate: AuthFn,
     extra_parameters: Vec<(String, Option<String>)>,
     progress: &mut impl Progress,
-) -> Result<Outcome, Error>
+) -> Result<Handshake>
 where
-    AuthFn: FnMut(credentials::helper::Action) -> credentials::protocol::Result,
-    T: client::Transport,
+    AuthFn: FnMut(credentials::helper::Action) -> Result<Option<credentials::protocol::Outcome>>,
+    T: Transport,
 {
-    let _span = gix_features::trace::detail!("gix_protocol::handshake()", service = ?service, extra_parameters = ?extra_parameters);
+    let _span =
+        gix_trace::detail!("gix_protocol::handshake()", service = ?service, extra_parameters = ?extra_parameters);
     let (server_protocol_version, refs, capabilities) = {
         progress.init(None, progress::steps());
         progress.set_name("handshake".into());
@@ -42,24 +61,41 @@ where
         } = match result {
             Ok(v) => Ok(v),
             Err(client::Error::Io(ref err)) if err.kind() == std::io::ErrorKind::PermissionDenied => {
+                let www_authenticate = err
+                    .get_ref()
+                    .and_then(|err| err.downcast_ref::<client::AuthenticationRequired>())
+                    .map(|err| err.www_authenticate.clone())
+                    .unwrap_or_default();
                 drop(result); // needed to workaround this: https://github.com/rust-lang/rust/issues/76149
                 let url = transport.to_url().into_owned();
                 progress.set_name("authentication".into());
-                let credentials::protocol::Outcome { identity, next } =
-                    authenticate(credentials::helper::Action::get_for_url(url.clone()))?
-                        .ok_or(Error::EmptyCredentials)?;
-                transport.set_identity(identity)?;
+                let credentials::protocol::Outcome { identity, next } = authenticate(credentials::helper::Action::Get(
+                    credentials::protocol::Context {
+                        url: Some(url.clone()),
+                        www_authenticate,
+                        ..Default::default()
+                    },
+                ))
+                .or_raise(|| message("Failed to obtain credentials"))?
+                .ok_or_raise(|| {
+                    gix_error::unauthenticated(
+                        "No credentials were returned at all as if the credential helper isn't functioning unknowingly",
+                    )
+                })?;
+                transport
+                    .set_identity(identity)
+                    .or_raise(|| message("Could not set transport identity"))?;
                 progress.step();
                 progress.set_name("handshake (authenticated)".into());
                 match transport.handshake(service, &extra_parameters).await {
                     Ok(v) => {
-                        authenticate(next.store())?;
+                        authenticate(next.store()).or_raise(|| message("Failed to store credentials"))?;
                         Ok(v)
                     }
                     // Still no permission? Reject the credentials.
                     Err(client::Error::Io(err)) if err.kind() == std::io::ErrorKind::PermissionDenied => {
-                        authenticate(next.erase())?;
-                        return Err(Error::InvalidCredentials { url, source: err });
+                        authenticate(next.erase()).or_raise(|| message("Failed to erase credentials"))?;
+                        return Err(credentials_rejected(err, &url));
                     }
                     // Otherwise, do nothing, as we don't know if it actually got to try the credentials.
                     // If they were previously stored, they remain. In the worst case, the user has to enter them again
@@ -68,12 +104,13 @@ where
                 }
             }
             Err(err) => Err(err),
-        }?;
+        }
+        .or_raise(|| message("Transport handshake failed"))?;
 
         if !supported_versions.is_empty() && !supported_versions.contains(&actual_protocol) {
-            return Err(Error::TransportProtocolPolicyViolation {
-                actual_version: actual_protocol,
-            });
+            bail!(
+                "The transport didn't accept the advertised server version {actual_protocol:?} and closed the connection client side".unsupported()
+            );
         }
 
         let parsed_refs = match refs {
@@ -99,10 +136,79 @@ where
         .map(|(refs, shallow)| (Some(refs), Some(shallow)))
         .unwrap_or_default();
 
-    Ok(Outcome {
+    Ok(Handshake {
         server_protocol_version,
         refs,
         v1_shallow_updates,
         capabilities,
     })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::credentials_rejected;
+    use bstr::BString;
+    use gix_error::Class;
+    use gix_transport::client::AuthenticationRequired;
+
+    #[test]
+    fn permission_denied_requires_a_typed_signal_to_classify_as_authentication() {
+        let err = credentials_rejected(
+            std::io::Error::new(std::io::ErrorKind::PermissionDenied, "repository access denied"),
+            &BString::from("https://example.com/repo"),
+        );
+        assert_eq!(
+            err.classify().map(|class| class.class()).collect::<Vec<_>>(),
+            [Class::PermissionDenied],
+            "access denial retains native permission classification without guessing authentication"
+        );
+        assert!(
+            err.downcast_any_ref::<std::io::Error>().is_some(),
+            "the native access-denial source remains available"
+        );
+
+        let err = credentials_rejected(
+            std::io::Error::new(std::io::ErrorKind::PermissionDenied, AuthenticationRequired::default()),
+            &BString::from("https://example.com/repo"),
+        );
+        assert!(
+            err.is_unauthenticated(),
+            "a typed challenge verifies rejected credentials"
+        );
+        assert!(
+            !err.is_permission_denied(),
+            "authentication is distinct from authorization"
+        );
+        assert!(
+            err.downcast_any_ref::<AuthenticationRequired>().is_some(),
+            "the typed challenge remains available"
+        );
+    }
+
+    #[test]
+    fn nested_authentication_payload_is_verified_without_losing_sources() {
+        use gix_error::{ErrorExt, message};
+
+        let payload = AuthenticationRequired::default().and_raise(message("HTTP request failed"));
+        let err = credentials_rejected(
+            std::io::Error::new(std::io::ErrorKind::PermissionDenied, payload),
+            &BString::from("https://example.com/repo"),
+        );
+        assert!(
+            err.is_unauthenticated(),
+            "nested typed challenges verify authentication failures"
+        );
+        assert!(
+            !err.is_permission_denied(),
+            "nested challenges suppress native permission fallback"
+        );
+        assert!(
+            err.downcast_any_ref::<AuthenticationRequired>().is_some(),
+            "the nested typed source remains available"
+        );
+        assert!(
+            err.downcast_any_ref::<std::io::Error>().is_some(),
+            "the native I/O wrapper remains available"
+        );
+    }
 }

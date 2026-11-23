@@ -230,7 +230,7 @@ pub const EVT_NOTIFY_SIGNAL: u32 = 0x00000200u32;
 pub const EVT_SIGNAL_EXIT_BOOT_SERVICES: u32 = 0x00000201u32;
 pub const EVT_SIGNAL_VIRTUAL_ADDRESS_CHANGE: u32 = 0x60000202u32;
 
-pub type EventNotify = eficall! {fn(crate::base::Event, *mut core::ffi::c_void)};
+pub type EventNotify = unsafe extern "efiapi" fn(crate::base::Event, *mut core::ffi::c_void);
 
 pub const EVENT_GROUP_EXIT_BOOT_SERVICES: crate::base::Guid = crate::base::Guid::from_fields(
     0x27abf055,
@@ -654,90 +654,90 @@ pub struct TableHeader {
 pub const RUNTIME_SERVICES_SIGNATURE: u64 = 0x56524553544e5552u64; // "RUNTSERV"
 pub const RUNTIME_SERVICES_REVISION: u32 = SPECIFICATION_REVISION;
 
-pub type RuntimeGetTime = eficall! {fn(
+pub type RuntimeGetTime = unsafe extern "efiapi" fn(
     *mut Time,
     *mut TimeCapabilities,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type RuntimeSetTime = eficall! {fn(
+pub type RuntimeSetTime = unsafe extern "efiapi" fn(
     *mut Time,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type RuntimeGetWakeupTime = eficall! {fn(
+pub type RuntimeGetWakeupTime = unsafe extern "efiapi" fn(
     *mut crate::base::Boolean,
     *mut crate::base::Boolean,
     *mut Time,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type RuntimeSetWakeupTime = eficall! {fn(
+pub type RuntimeSetWakeupTime = unsafe extern "efiapi" fn(
     crate::base::Boolean,
     *mut Time,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type RuntimeSetVirtualAddressMap = eficall! {fn(
+pub type RuntimeSetVirtualAddressMap = unsafe extern "efiapi" fn(
     usize,
     usize,
     u32,
     *mut MemoryDescriptor,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type RuntimeConvertPointer = eficall! {fn(
+pub type RuntimeConvertPointer = unsafe extern "efiapi" fn(
     usize,
     *mut *mut core::ffi::c_void,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type RuntimeGetVariable = eficall! {fn(
+pub type RuntimeGetVariable = unsafe extern "efiapi" fn(
     *mut crate::base::Char16,
     *mut crate::base::Guid,
     *mut u32,
     *mut usize,
     *mut core::ffi::c_void,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type RuntimeGetNextVariableName = eficall! {fn(
+pub type RuntimeGetNextVariableName = unsafe extern "efiapi" fn(
     *mut usize,
     *mut crate::base::Char16,
     *mut crate::base::Guid,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type RuntimeSetVariable = eficall! {fn(
+pub type RuntimeSetVariable = unsafe extern "efiapi" fn(
     *mut crate::base::Char16,
     *mut crate::base::Guid,
     u32,
     usize,
     *mut core::ffi::c_void,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type RuntimeGetNextHighMonoCount = eficall! {fn(
+pub type RuntimeGetNextHighMonoCount = unsafe extern "efiapi" fn(
     *mut u32,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type RuntimeResetSystem = eficall! {fn(
+pub type RuntimeResetSystem = unsafe extern "efiapi" fn(
     ResetType,
     crate::base::Status,
     usize,
     *mut core::ffi::c_void,
-)};
+);
 
-pub type RuntimeUpdateCapsule = eficall! {fn(
+pub type RuntimeUpdateCapsule = unsafe extern "efiapi" fn(
     *mut *mut CapsuleHeader,
     usize,
     crate::base::PhysicalAddress,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type RuntimeQueryCapsuleCapabilities = eficall! {fn(
+pub type RuntimeQueryCapsuleCapabilities = unsafe extern "efiapi" fn(
     *mut *mut CapsuleHeader,
     usize,
     *mut u64,
     *mut ResetType,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type RuntimeQueryVariableInfo = eficall! {fn(
+pub type RuntimeQueryVariableInfo = unsafe extern "efiapi" fn(
     u32,
     *mut u64,
     *mut u64,
     *mut u64,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
 #[repr(C)]
 pub struct RuntimeServices {
@@ -766,269 +766,269 @@ pub struct RuntimeServices {
 pub const BOOT_SERVICES_SIGNATURE: u64 = 0x56524553544f4f42u64; // "BOOTSERV"
 pub const BOOT_SERVICES_REVISION: u32 = SPECIFICATION_REVISION;
 
-pub type BootRaiseTpl = eficall! {fn(
+pub type BootRaiseTpl = unsafe extern "efiapi" fn(
     crate::base::Tpl,
-) -> crate::base::Tpl};
+) -> crate::base::Tpl;
 
-pub type BootRestoreTpl = eficall! {fn(
+pub type BootRestoreTpl = unsafe extern "efiapi" fn(
     crate::base::Tpl,
-)};
+);
 
-pub type BootAllocatePages = eficall! {fn(
+pub type BootAllocatePages = unsafe extern "efiapi" fn(
     AllocateType,
     MemoryType,
     usize,
     *mut crate::base::PhysicalAddress,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootFreePages = eficall! {fn(
+pub type BootFreePages = unsafe extern "efiapi" fn(
     crate::base::PhysicalAddress,
     usize,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootGetMemoryMap = eficall! {fn(
+pub type BootGetMemoryMap = unsafe extern "efiapi" fn(
     *mut usize,
     *mut MemoryDescriptor,
     *mut usize,
     *mut usize,
     *mut u32,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootAllocatePool = eficall! {fn(
+pub type BootAllocatePool = unsafe extern "efiapi" fn(
     MemoryType,
     usize,
     *mut *mut core::ffi::c_void,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootFreePool = eficall! {fn(
+pub type BootFreePool = unsafe extern "efiapi" fn(
     *mut core::ffi::c_void,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootCreateEvent = eficall! {fn(
+pub type BootCreateEvent = unsafe extern "efiapi" fn(
     u32,
     crate::base::Tpl,
     Option<EventNotify>,
     *mut core::ffi::c_void,
     *mut crate::base::Event,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootSetTimer = eficall! {fn(
+pub type BootSetTimer = unsafe extern "efiapi" fn(
     crate::base::Event,
     TimerDelay,
     u64,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootWaitForEvent = eficall! {fn(
+pub type BootWaitForEvent = unsafe extern "efiapi" fn(
     usize,
     *mut crate::base::Event,
     *mut usize,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootSignalEvent = eficall! {fn(
+pub type BootSignalEvent = unsafe extern "efiapi" fn(
     crate::base::Event,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootCloseEvent = eficall! {fn(
+pub type BootCloseEvent = unsafe extern "efiapi" fn(
     crate::base::Event,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootCheckEvent = eficall! {fn(
+pub type BootCheckEvent = unsafe extern "efiapi" fn(
     crate::base::Event,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootInstallProtocolInterface = eficall! {fn(
+pub type BootInstallProtocolInterface = unsafe extern "efiapi" fn(
     *mut crate::base::Handle,
     *mut crate::base::Guid,
     InterfaceType,
     *mut core::ffi::c_void,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootReinstallProtocolInterface = eficall! {fn(
+pub type BootReinstallProtocolInterface = unsafe extern "efiapi" fn(
     crate::base::Handle,
     *mut crate::base::Guid,
     *mut core::ffi::c_void,
     *mut core::ffi::c_void,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootUninstallProtocolInterface = eficall! {fn(
+pub type BootUninstallProtocolInterface = unsafe extern "efiapi" fn(
     crate::base::Handle,
     *mut crate::base::Guid,
     *mut core::ffi::c_void,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootHandleProtocol = eficall! {fn(
+pub type BootHandleProtocol = unsafe extern "efiapi" fn(
     crate::base::Handle,
     *mut crate::base::Guid,
     *mut *mut core::ffi::c_void,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootRegisterProtocolNotify = eficall! {fn(
+pub type BootRegisterProtocolNotify = unsafe extern "efiapi" fn(
     *mut crate::base::Guid,
     crate::base::Event,
     *mut *mut core::ffi::c_void,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootLocateHandle = eficall! {fn(
+pub type BootLocateHandle = unsafe extern "efiapi" fn(
     LocateSearchType,
     *mut crate::base::Guid,
     *mut core::ffi::c_void,
     *mut usize,
     *mut crate::base::Handle,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootLocateDevicePath = eficall! {fn(
+pub type BootLocateDevicePath = unsafe extern "efiapi" fn(
     *mut crate::base::Guid,
     *mut *mut crate::protocols::device_path::Protocol,
     *mut crate::base::Handle,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootInstallConfigurationTable = eficall! {fn(
+pub type BootInstallConfigurationTable = unsafe extern "efiapi" fn(
     *mut crate::base::Guid,
     *mut core::ffi::c_void,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootLoadImage = eficall! {fn(
+pub type BootLoadImage = unsafe extern "efiapi" fn(
     crate::base::Boolean,
     crate::base::Handle,
     *mut crate::protocols::device_path::Protocol,
     *mut core::ffi::c_void,
     usize,
     *mut crate::base::Handle,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootStartImage = eficall! {fn(
+pub type BootStartImage = unsafe extern "efiapi" fn(
     crate::base::Handle,
     *mut usize,
     *mut *mut crate::base::Char16,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootExit = eficall! {fn(
+pub type BootExit = unsafe extern "efiapi" fn(
     crate::base::Handle,
     crate::base::Status,
     usize,
     *mut crate::base::Char16,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootUnloadImage = eficall! {fn(
+pub type BootUnloadImage = unsafe extern "efiapi" fn(
     crate::base::Handle,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootExitBootServices = eficall! {fn(
+pub type BootExitBootServices = unsafe extern "efiapi" fn(
     crate::base::Handle,
     usize,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootGetNextMonotonicCount = eficall! {fn(
+pub type BootGetNextMonotonicCount = unsafe extern "efiapi" fn(
     *mut u64,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootStall = eficall! {fn(
+pub type BootStall = unsafe extern "efiapi" fn(
     usize,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootSetWatchdogTimer = eficall! {fn(
+pub type BootSetWatchdogTimer = unsafe extern "efiapi" fn(
     usize,
     u64,
     usize,
     *mut crate::base::Char16,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootConnectController = eficall! {fn(
+pub type BootConnectController = unsafe extern "efiapi" fn(
     crate::base::Handle,
     *mut crate::base::Handle,
     *mut crate::protocols::device_path::Protocol,
     crate::base::Boolean,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootDisconnectController = eficall! {fn(
+pub type BootDisconnectController = unsafe extern "efiapi" fn(
     crate::base::Handle,
     crate::base::Handle,
     crate::base::Handle,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootOpenProtocol = eficall! {fn(
+pub type BootOpenProtocol = unsafe extern "efiapi" fn(
     crate::base::Handle,
     *mut crate::base::Guid,
     *mut *mut core::ffi::c_void,
     crate::base::Handle,
     crate::base::Handle,
     u32,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootCloseProtocol = eficall! {fn(
+pub type BootCloseProtocol = unsafe extern "efiapi" fn(
     crate::base::Handle,
     *mut crate::base::Guid,
     crate::base::Handle,
     crate::base::Handle,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootOpenProtocolInformation = eficall! {fn(
+pub type BootOpenProtocolInformation = unsafe extern "efiapi" fn(
     crate::base::Handle,
     *mut crate::base::Guid,
     *mut *mut OpenProtocolInformationEntry,
     *mut usize,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootProtocolsPerHandle = eficall! {fn(
+pub type BootProtocolsPerHandle = unsafe extern "efiapi" fn(
     crate::base::Handle,
     *mut *mut *mut crate::base::Guid,
     *mut usize,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootLocateHandleBuffer = eficall! {fn(
+pub type BootLocateHandleBuffer = unsafe extern "efiapi" fn(
     LocateSearchType,
     *mut crate::base::Guid,
     *mut core::ffi::c_void,
     *mut usize,
     *mut *mut crate::base::Handle,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootLocateProtocol = eficall! {fn(
+pub type BootLocateProtocol = unsafe extern "efiapi" fn(
     *mut crate::base::Guid,
     *mut core::ffi::c_void,
     *mut *mut core::ffi::c_void,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootInstallMultipleProtocolInterfaces = eficall! {fn(
+pub type BootInstallMultipleProtocolInterfaces = unsafe extern "efiapi" fn(
     *mut crate::base::Handle,
     // XXX: Actual definition is variadic. See eficall!{} for details.
     *mut core::ffi::c_void,
     *mut core::ffi::c_void,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootUninstallMultipleProtocolInterfaces = eficall! {fn(
+pub type BootUninstallMultipleProtocolInterfaces = unsafe extern "efiapi" fn(
     crate::base::Handle,
     // XXX: Actual definition is variadic. See eficall!{} for details.
     *mut core::ffi::c_void,
     *mut core::ffi::c_void,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootCalculateCrc32 = eficall! {fn(
+pub type BootCalculateCrc32 = unsafe extern "efiapi" fn(
     *mut core::ffi::c_void,
     usize,
     *mut u32,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type BootCopyMem = eficall! {fn(
+pub type BootCopyMem = unsafe extern "efiapi" fn(
     *mut core::ffi::c_void,
     *mut core::ffi::c_void,
     usize,
-)};
+);
 
-pub type BootSetMem = eficall! {fn(
+pub type BootSetMem = unsafe extern "efiapi" fn(
     *mut core::ffi::c_void,
     usize,
     u8,
-)};
+);
 
-pub type BootCreateEventEx = eficall! {fn(
+pub type BootCreateEventEx = unsafe extern "efiapi" fn(
     u32,
     crate::base::Tpl,
     Option<EventNotify>,
     *const core::ffi::c_void,
     *const crate::base::Guid,
     *mut crate::base::Event,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
 #[repr(C)]
 pub struct BootServices {

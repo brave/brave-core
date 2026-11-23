@@ -2,8 +2,8 @@ use crate::common::{DebugMacinfoOffset, SectionId};
 use crate::endianity::Endianity;
 use crate::read::{EndianSlice, Reader, ReaderOffset, Section, UnitRef};
 use crate::{
-    constants, DebugLineOffset, DebugMacroOffset, DebugStrOffset, DebugStrOffsetsIndex, DwMacinfo,
-    DwMacro, Error, Format, Result,
+    DebugLineOffset, DebugMacroOffset, DebugStrOffset, DebugStrOffsetsIndex, DwMacinfo, DwMacro,
+    Error, Format, Result, constants,
 };
 
 /// The raw contents of the `.debug_macinfo` section.
@@ -447,10 +447,18 @@ impl<R: Reader> fallible_iterator::FallibleIterator for MacroIter<R> {
     }
 }
 
+impl<R: Reader> Iterator for MacroIter<R> {
+    type Item = Result<MacroEntry<R>>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        MacroIter::next(self).transpose()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{test_util::GimliSectionMethods, DebugStr, LittleEndian};
+    use crate::{DebugStr, LittleEndian, test_util::GimliSectionMethods};
     use test_assembler::{Endian, Label, LabelMaker, Section};
 
     #[test]

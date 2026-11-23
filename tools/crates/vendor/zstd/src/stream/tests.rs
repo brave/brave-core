@@ -276,3 +276,41 @@ fn test_finish_empty_encoder() {
     enc.write_all(b"this should not work").unwrap_err();
     enc.finish().unwrap();
 }
+
+#[test]
+fn test_encoder_with_context_starts_a_new_frame() {
+    use std::io::Write;
+
+    // An encoder is given up before `finish()`...
+    let mut cctx = zstd_safe::CCtx::create();
+    Encoder::with_context(Vec::new(), &mut cctx)
+        .write_all(b"first job")
+        .unwrap();
+
+    // ... and the next one on the same context does not inherit its input.
+    let mut encoder = Encoder::with_context(Vec::new(), &mut cctx);
+    encoder.write_all(b"second job").unwrap();
+    let second = encoder.finish().unwrap();
+    assert_eq!(decode_all(&second[..]).unwrap(), b"second job");
+}
+
+#[test]
+fn test_decoder_with_context_starts_a_new_frame() {
+    use std::io::Read;
+
+    let first = encode_all(&b"first job"[..], 1).unwrap();
+    let second = encode_all(&b"second job"[..], 1).unwrap();
+
+    // A decoder is given up before all of its output has been read...
+    let mut dctx = zstd_safe::DCtx::create();
+    Decoder::with_context(&first[..], &mut dctx)
+        .read_exact(&mut [0u8; 5])
+        .unwrap();
+
+    // ... and the next one on the same context does not inherit the rest.
+    let mut output = Vec::new();
+    Decoder::with_context(&second[..], &mut dctx)
+        .read_to_end(&mut output)
+        .unwrap();
+    assert_eq!(output, b"second job");
+}

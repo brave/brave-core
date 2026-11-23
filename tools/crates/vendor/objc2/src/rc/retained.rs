@@ -438,28 +438,32 @@ impl<T: Message> Retained<T> {
     /// This is useful when calling Objective-C methods that return
     /// autoreleased objects, see [Cocoa's Memory Management Policy][mmRules].
     ///
-    /// This has exactly the same semantics as [`Retained::retain`], except it can
-    /// sometimes avoid putting the object into the autorelease pool, possibly
-    /// yielding increased speed and reducing memory pressure.
+    /// This has exactly the same semantics as [`Retained::retain`], except it
+    /// can sometimes avoid putting the object into the autorelease pool,
+    /// possibly yielding increased speed and reducing memory pressure.
     ///
     /// Note: This relies heavily on being inlined right after [`msg_send!`],
     /// be careful to not accidentally require instructions between these.
     ///
+    /// Various resources on this topic:
+    /// - <https://www.mikeash.com/pyblog/friday-qa-2011-09-30-automatic-reference-counting.html>
+    /// - <https://www.galloway.me.uk/2012/02/how-does-objc_retainautoreleasedreturnvalue-work/>
+    /// - <https://github.com/gfx-rs/metal-rs/issues/222>
+    /// - <https://news.ycombinator.com/item?id=29311736>
+    /// - <https://stackoverflow.com/a/23765612>
+    ///
     /// [mmRules]: https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/MemoryMgmt/Articles/mmRules.html
     /// [`msg_send!`]: crate::msg_send
-    ///
     ///
     /// # Safety
     ///
     /// Same as [`Retained::retain`].
     #[doc(alias = "objc_retainAutoreleasedReturnValue")]
-    #[inline]
+    #[inline(always)] // This relies heavily on being inlined
     pub unsafe fn retain_autoreleased(ptr: *mut T) -> Option<Retained<T>> {
-        // Add magic nop instruction to participate in the fast autorelease
-        // scheme.
-        //
-        // See `callerAcceptsOptimizedReturn` in `objc-object.h`:
-        // https://github.com/apple-oss-distributions/objc4/blob/objc4-838/runtime/objc-object.h#L1209-L1377
+        // Add magic nop `mov` instruction to participate in the fast
+        // autorelease scheme. See `callerAcceptsOptimizedReturn`:
+        // https://github.com/apple-oss-distributions/objc4/blob/objc4-951.7/runtime/objc-object.h#L1310-L1478
         //
         // We will unconditionally emit these instructions, even if they end
         // up being unused (for example because we're unlucky with inlining,
@@ -471,30 +475,27 @@ impl<T: Message> Retained<T> {
         // swiftc: https://github.com/apple/swift/blob/swift-5.5.3-RELEASE/lib/IRGen/GenObjC.cpp#L148-L173
         // Clang: https://github.com/llvm/llvm-project/blob/889317d47b7f046cf0e68746da8f7f264582fb5b/clang/lib/CodeGen/CGObjC.cpp#L2339-L2373
         //
-        // Note that LLVM may sometimes insert extra instructions between the
-        // assembly and the `objc_retainAutoreleasedReturnValue` call,
-        // especially when doing tail calls and it needs to clean up the
-        // function frame. Unsure how to avoid this in a performant manner?
-        // Maybe force not doing tail calls by inserting assembly to do the
-        // call manually?
-        //
-        // Resources:
-        // - https://www.mikeash.com/pyblog/friday-qa-2011-09-30-automatic-reference-counting.html
-        // - https://www.galloway.me.uk/2012/02/how-does-objc_retainautoreleasedreturnvalue-work/
-        // - https://github.com/gfx-rs/metal-rs/issues/222
-        // - https://news.ycombinator.com/item?id=29311736
-        // - https://stackoverflow.com/a/23765612
+        // Note that we add `in("...") ptr`, to ensure that the magic nop is
+        // never placed directly after `bl _objc_autorelease` and similar
+        // unless we're passing the return value directly from that to this
+        // function. That this is needed is IMO a bug in Apple's runtime, see
+        // `retain_autoreleased_called_with_different_argument` for a test
+        // that breaks without this.
         //
         // SAFETY:
         // Based on https://doc.rust-lang.org/stable/reference/inline-assembly.html#rules-for-inline-assembly
         //
-        // We don't care about the value of the register (so it's okay to be
-        // undefined), and its value is preserved.
+        // We don't care about the value of the register we're moving, even
+        // undefined (as far as that concept holds in assembly) values are
+        // okay, and the value of the register is preserved.
         //
-        // nomem: No reads or writes to memory are performed (this `mov`
-        //   operates entirely on registers).
-        // preserves_flags: `mov` doesn't modify any flags.
-        // nostack: We don't touch the stack.
+        // The `in("...") ptr` is valid, we don't use it in the assembly code
+        // (though the optimizer is not allowed to assume this).
+        //
+        // As for the options:
+        // - `nomem`: No reads or writes to memory are performed.
+        // - `preserves_flags`: `mov` doesn't modify any flags.
+        // - `nostack`: We don't touch the stack.
 
         // Only worth doing on the Apple runtime.
         // Not supported on TARGET_OS_WIN32.
@@ -503,61 +504,96 @@ impl<T: Message> Retained<T> {
             // Supported since macOS 10.7.
             #[cfg(target_arch = "x86_64")]
             {
-                // x86_64 looks at the next call instruction.
+                // The x86_64 impl looks at the `mov rax, rdi` that moves the
+                // value from the return register to the first argument, and
+                // it looks at the call instruction after that, so we don't
+                // need to insert a magic nop here.
                 //
-                // This is expected to be a PLT entry - if the user specifies
-                // `-Zplt=no`, a GOT entry will be created instead, and this
-                // will not work.
-            }
+                // The call instruction is expected to be a PLT entry, if the
+                // user specifies `-Zplt=no`, a GOT entry will be created
+                // instead, and the optimization will likely not work.
+            };
 
             // Supported since macOS 10.8.
             #[cfg(target_arch = "arm")]
             unsafe {
-                core::arch::asm!("mov r7, r7", options(nomem, preserves_flags, nostack))
+                core::arch::asm!("mov r7, r7", in("r0") ptr as usize, options(nomem, preserves_flags, nostack))
             };
 
             // Supported since macOS 10.10.
             //
             // On macOS 13.0 / iOS 16.0 / tvOS 16.0 / watchOS 9.0, the runtime
-            // instead checks the return pointer address, so we no longer need
-            // to emit these extra instructions, see this video from WWDC22:
+            // also checks the return pointer address, so we do not need to
+            // emit this extra instruction when the deployment target is high
+            // enough, see this video:
             // https://developer.apple.com/videos/play/wwdc2022/110363/
+            //
+            // TODO: Use `objc_claimAutoreleasedReturnValue` in this case instead?
             #[cfg(all(target_arch = "aarch64", not(feature = "unstable-apple-new")))]
             unsafe {
                 // Same as `mov x29, x29`.
-                core::arch::asm!("mov fp, fp", options(nomem, preserves_flags, nostack))
+                core::arch::asm!("mov fp, fp", in("x0") ptr as usize, options(nomem, preserves_flags, nostack))
             };
 
             // Supported since macOS 10.12.
             #[cfg(target_arch = "x86")]
             unsafe {
-                core::arch::asm!("mov ebp, ebp", options(nomem, preserves_flags, nostack))
+                core::arch::asm!("mov ebp, ebp", in("eax") ptr as usize, options(nomem, preserves_flags, nostack))
             };
         }
 
-        // SAFETY: Same as `Retained::retain`, this is just an optimization.
+        // SAFETY:
+        // - The caller upholds that the pointer is valid or null.
+        // - We ensure that this is never tail-called on Apple targets.
+        //   (Tail-call ~= `jmp`/`b` instruction instead of `call`/`bl`).
+        //
+        //   This is important since `objc_retainAutoreleasedReturnValue` on
+        //   Aarch64 in the macOS 13+ runtime inspects its return address, and
+        //   might end up retaining the wrong object in certain situations if
+        //   that points to the wrong place, see:
+        //   https://github.com/madsmtm/objc2/issues/861
+        //   https://github.com/apple-oss-distributions/objc4/blob/objc4-951.7/runtime/objc-object.h#L1682-L1719
+        //
+        //   This is also important for the optimization to actually kick in;
+        //   if this ends up tail-called, it's likely that the compiler will
+        //   insert stack cleanup routines between this and the magic nop
+        //   above, ruining the optimization.
+        //
+        //   Finally, on x86_64, there is no magic `nop`, instead the
+        //   optimization checks that this is a `call` instruction (see
+        //   comment above), so we also don't want this tail-called there.
+        //
+        //   (Note that tail-calls are probably not strictly broken on the
+        //   32-bit targets, but we might as well enforce it everywhere to be
+        //   sure, the extra `nop` doesn't cost that much).
         let res: *mut T = unsafe { ffi::objc_retainAutoreleasedReturnValue(ptr.cast()) }.cast();
 
-        // Ideally, we'd be able to specify that the above call should never
-        // be tail-call optimized (become a `jmp` instruction instead of a
-        // `call`); Rust doesn't really have a way of doing this currently, so
-        // we emit a `nop` to make such tail-call optimizations less likely to
-        // occur.
+        // Ideally, we'd be able to just tell the compiler that the above call
+        // should never be tail-call optimized. Rust doesn't really have a
+        // proper way of expressing this though, see:
+        // https://rust-lang.zulipchat.com/#narrow/channel/131828-t-compiler/topic/Avoiding.20tail.20call.20optimizations.3F
         //
-        // This is brittle! We should find a better solution!
-        #[cfg(all(target_vendor = "apple", target_arch = "x86_64"))]
+        // Instead, we emit a `nop` to make it impossible for the compiler to
+        // perform such an optimization (since it's not allowed to peek into
+        // and reorder the `asm!`).
+        //
+        // In the future, we can possibly optimize this to something like:
+        // ```
+        // #![feature(asm_sym, asm_unwind)]
+        // core::arch::asm!(
+        //     "mov fp, fp",
+        //     "bl {}", // TODO: PLT / GOT?
+        //     sym objc2::ffi::objc_retainAutoreleasedReturnValue,
+        //     in("r0") ptr,
+        //     out("r0") res,
+        //     clobber_abi("C-unwind"),
+        //     options(may_unwind),
+        // );
+        // ```
+        #[cfg(target_vendor = "apple")]
         {
-            // SAFETY: Similar to above.
+            // SAFETY: Similar to above, a `nop` is always safe to call.
             unsafe { core::arch::asm!("nop", options(nomem, preserves_flags, nostack)) };
-            // TODO: Possibly more efficient alternative? Also consider PLT.
-            // #![feature(asm_sym)]
-            // core::arch::asm!(
-            //     "mov rdi, rax",
-            //     "call {}",
-            //     sym objc2::ffi::objc_retainAutoreleasedReturnValue,
-            //     inout("rax") obj,
-            //     clobber_abi("C-unwind"),
-            // );
         }
 
         debug_assert_eq!(
@@ -565,7 +601,7 @@ impl<T: Message> Retained<T> {
             "objc_retainAutoreleasedReturnValue did not return the same pointer"
         );
 
-        // SAFETY: Same as `Retained::retain`.
+        // SAFETY: We just retained the object, so it has +1 retain count.
         unsafe { Self::from_raw(res) }
     }
 
@@ -1064,5 +1100,129 @@ mod tests {
         expected.release += 1;
         expected.drop += 1;
         expected.assert_current();
+    }
+
+    // Regression test for https://github.com/madsmtm/objc2/issues/861.
+    #[test]
+    fn retain_autoreleased_not_tail_called() {
+        // If broken, this will get compiled as:
+        //
+        // ```
+        // _retain_autoreleased:
+        //     mov x29, x29
+        //     b _objc_retainAutoreleasedReturnValue
+        //
+        // _trigger:
+        //     bl _objc_autorelease
+        //     mov x0, x1
+        //     bl _retain_autoreleased
+        //     b _objc_release
+        // ```
+        //
+        // And that would cause `objc_retainAutoreleasedReturnValue` to see
+        // its return address at `bl _retain_autoreleased`, look two
+        // instructions up, and find that it matches the return address from
+        // `bl _objc_autorelease`.
+        //
+        // (It doesn't try to read the intermediate `mov` instruction, so it
+        // doesn't know that the objects don't match).
+        #[inline(never)]
+        fn retain_autoreleased(obj: &NSObject) -> Retained<NSObject> {
+            let obj: *const NSObject = obj;
+            let obj = unsafe { Retained::retain_autoreleased(obj.cast_mut()) };
+            unsafe { obj.unwrap_unchecked() }
+        }
+
+        #[inline(never)]
+        fn trigger(a: Retained<NSObject>, b: &NSObject) {
+            let _ = Retained::autorelease_ptr(a);
+            let b = retain_autoreleased(b);
+            // Helps ensure ^ is not tail-called.
+            drop(b);
+        }
+
+        let a = NSObject::new();
+        let b = NSObject::new();
+
+        let a_clone = a.clone();
+        // Forget `b` when unwinding make this easier to debug.
+        let b_clone = ManuallyDrop::new(b.clone());
+
+        // We've cloned twice.
+        assert_eq!(a.retainCount(), 2);
+        assert_eq!(b.retainCount(), 2);
+
+        autoreleasepool(|_| {
+            trigger(a_clone, &b);
+
+            // `a` should be autoreleased, and so not yet dropped.
+            assert_eq!(a.retainCount(), 2);
+            // `b` should be retained and dropped, so no change.
+            assert_eq!(b.retainCount(), 2);
+        });
+
+        // And now `a` should've been dropped and `b` still unchanged.
+        assert_eq!(a.retainCount(), 1);
+        assert_eq!(b.retainCount(), 2);
+
+        let _ = ManuallyDrop::into_inner(b_clone);
+    }
+
+    /// Regression test for <https://github.com/madsmtm/objc2/issues/861>.
+    ///
+    /// Specifically the bug that `objc_autorelease` only checks that the next
+    /// instruction is `mov x29, x29`, not that any further code is.
+    #[test]
+    fn retain_autoreleased_called_with_different_argument() {
+        // If broken, this will get compiled as:
+        //
+        // ```
+        // bl _objc_autorelease
+        // mov x29, x29
+        // mov x0, x1
+        // bl _objc_retainAutoreleasedReturnValue
+        // nop
+        // b _objc_release
+        // ```
+        //
+        // Specifically, with the `mov x29, x29` right after `objc_autorelease`,
+        // instead of before `objc_retainAutoreleasedReturnValue`.
+        //
+        // This is a problem, because it `objc_autorelease` checks whether the
+        // next instruction is that, and if it is, it performs the
+        // optimization (which is incorrect, `a` and `b` are different!)
+        #[inline(never)]
+        fn trigger(a: Retained<NSObject>, b: &NSObject) {
+            let _ = Retained::autorelease_ptr(a);
+            let b = unsafe { Retained::retain_autoreleased(b as *const NSObject as *mut NSObject) };
+            let b = unsafe { b.unwrap_unchecked() };
+            drop(b);
+        }
+
+        let a = NSObject::new();
+        let b = NSObject::new();
+
+        let a_clone = a.clone();
+        // Forget `b` when unwinding make this easier to debug.
+        let b_clone = ManuallyDrop::new(b.clone());
+
+        // We've cloned twice.
+        assert_eq!(a.retainCount(), 2);
+        assert_eq!(b.retainCount(), 2);
+
+        autoreleasepool(|_| {
+            trigger(a_clone, &b);
+
+            // `a` should be autoreleased, and so not yet dropped.
+            assert_eq!(a.retainCount(), 2);
+            // `b` should be retained and dropped, so no change.
+            assert_eq!(b.retainCount(), 2);
+        });
+
+        // And now `a` should've been dropped and `b` still unchanged.
+        assert_eq!(a.retainCount(), 1);
+        assert_eq!(b.retainCount(), 2);
+
+        let _ = ManuallyDrop::into_inner(b_clone);
     }
 }

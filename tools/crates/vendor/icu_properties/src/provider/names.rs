@@ -26,6 +26,12 @@ icu_provider::data_marker!(
     is_singleton = true
 );
 icu_provider::data_marker!(
+    /// `PropertyNameParseBlockV1`
+    PropertyNameParseBlockV1,
+    PropertyValueNameToEnumMap<'static>,
+    is_singleton = true
+);
+icu_provider::data_marker!(
     /// `PropertyNameParseCanonicalCombiningClassV1`
     PropertyNameParseCanonicalCombiningClassV1,
     PropertyValueNameToEnumMap<'static>,
@@ -74,6 +80,12 @@ icu_provider::data_marker!(
     is_singleton = true
 );
 icu_provider::data_marker!(
+    /// `PropertyNameParseJoiningGroupV1`
+    PropertyNameParseJoiningGroupV1,
+    PropertyValueNameToEnumMap<'static>,
+    is_singleton = true
+);
+icu_provider::data_marker!(
     /// `PropertyNameParseJoiningTypeV1`
     PropertyNameParseJoiningTypeV1,
     PropertyValueNameToEnumMap<'static>,
@@ -82,6 +94,12 @@ icu_provider::data_marker!(
 icu_provider::data_marker!(
     /// `PropertyNameParseLineBreakV1`
     PropertyNameParseLineBreakV1,
+    PropertyValueNameToEnumMap<'static>,
+    is_singleton = true
+);
+icu_provider::data_marker!(
+    /// `PropertyNameParseNumericTypeV1`
+    PropertyNameParseNumericTypeV1,
     PropertyValueNameToEnumMap<'static>,
     is_singleton = true
 );
@@ -118,6 +136,18 @@ icu_provider::data_marker!(
 icu_provider::data_marker!(
     /// `PropertyNameShortBidiClassV1`
     PropertyNameShortBidiClassV1,
+    PropertyEnumToValueNameLinearMap<'static>,
+    is_singleton = true
+);
+icu_provider::data_marker!(
+    /// `PropertyNameLongBlockV1`
+    PropertyNameLongBlockV1,
+    PropertyEnumToValueNameLinearMap<'static>,
+    is_singleton = true
+);
+icu_provider::data_marker!(
+    /// `PropertyNameShortBlockV1`
+    PropertyNameShortBlockV1,
     PropertyEnumToValueNameLinearMap<'static>,
     is_singleton = true
 );
@@ -194,6 +224,18 @@ icu_provider::data_marker!(
     is_singleton = true
 );
 icu_provider::data_marker!(
+    /// `PropertyNameLongJoiningGroupV1`
+    PropertyNameLongJoiningGroupV1,
+    PropertyEnumToValueNameLinearMap<'static>,
+    is_singleton = true
+);
+icu_provider::data_marker!(
+    /// `PropertyNameShortJoiningGroupV1`
+    PropertyNameShortJoiningGroupV1,
+    PropertyEnumToValueNameLinearMap<'static>,
+    is_singleton = true
+);
+icu_provider::data_marker!(
     /// `PropertyNameLongJoiningTypeV1`
     PropertyNameLongJoiningTypeV1,
     PropertyEnumToValueNameLinearMap<'static>,
@@ -210,6 +252,18 @@ icu_provider::data_marker!(
     PropertyNameLongLineBreakV1,
     PropertyEnumToValueNameLinearMap<'static>,
     is_singleton = true
+);
+icu_provider::data_marker!(
+    /// `PropertyNameLongNumericTypeV1`
+    PropertyNameLongNumericTypeV1,
+    PropertyEnumToValueNameLinearMap<'static>,
+    is_singleton = true,
+);
+icu_provider::data_marker!(
+    /// `PropertyNameShortNumericTypeV1`
+    PropertyNameShortNumericTypeV1,
+    PropertyEnumToValueNameLinearMap<'static>,
+    is_singleton = true,
 );
 icu_provider::data_marker!(
     /// `PropertyNameShortLineBreakV1`

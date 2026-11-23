@@ -12,14 +12,16 @@ use std::{
     time::Duration,
 };
 
+use jcore::util::ArrayStr;
+
 use crate::{
-    error::{err, Error},
+    error::{Error, tz::db::Error as E},
     timestamp::Timestamp,
     tz::{
-        concatenated::ConcatenatedTzif, db::special_time_zone, TimeZone,
-        TimeZoneNameIter,
+        TimeZone, TimeZoneNameIter, concatenated::ConcatenatedTzif,
+        db::special_time_zone,
     },
-    util::{self, array_str::ArrayStr, cache::Expiration, utf8},
+    util::{self, cache::Expiration, utf8},
 };
 
 const DEFAULT_TTL: Duration = Duration::new(5 * 60, 0);
@@ -203,13 +205,13 @@ impl Database {
 
 impl core::fmt::Debug for Database {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        write!(f, "Concatenated(")?;
+        f.write_str("Concatenated(")?;
         if let Some(ref path) = self.path {
-            write!(f, "{}", path.display())?;
+            path.display().fmt(f)?;
         } else {
-            write!(f, "unavailable")?;
+            f.write_str("unavailable")?;
         }
-        write!(f, ")")
+        f.write_str(")")
     }
 }
 
@@ -540,11 +542,7 @@ fn read_names_and_version(
     let names: Vec<Arc<str>> =
         db.available(scratch)?.into_iter().map(Arc::from).collect();
     if names.is_empty() {
-        return Err(err!(
-            "found no IANA time zone identifiers in \
-             concatenated tzdata file at {path}",
-            path = path.display(),
-        ));
+        return Err(Error::from(E::ConcatenatedMissingIanaIdentifiers));
     }
     Ok((names, db.version()))
 }

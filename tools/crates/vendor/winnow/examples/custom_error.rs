@@ -19,7 +19,7 @@ impl<I: Stream + Clone> ParserError<I> for CustomError<I> {
     type Inner = Self;
 
     fn from_input(input: &I) -> Self {
-        CustomError::Winnow(input.clone())
+        Self::Winnow(input.clone())
     }
 
     fn into_inner(self) -> Result<Self::Inner, Self> {
@@ -44,7 +44,7 @@ impl<I: Stream + Clone, E: std::error::Error + Send + Sync + 'static> FromExtern
 {
     #[inline]
     fn from_external_error(input: &I, e: E) -> Self {
-        CustomError::External {
+        Self::External {
             cause: Box::new(e),
             input: input.clone(),
         }

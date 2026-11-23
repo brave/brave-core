@@ -5,7 +5,10 @@ use crate::{extension::Signature, util::split_at_byte_exclusive};
 
 pub type Paths = Vec<ResolvePath>;
 
-#[allow(dead_code)]
+#[expect(
+    dead_code,
+    reason = "REUC is decoded but not yet exposed or written; retain its fields for planned round-trip support"
+)]
 #[derive(Clone)]
 pub struct ResolvePath {
     /// relative to the root of the repository, or what would be stored in the index
@@ -15,7 +18,10 @@ pub struct ResolvePath {
     stages: [Option<Stage>; 3],
 }
 
-#[allow(dead_code)]
+#[expect(
+    dead_code,
+    reason = "REUC is decoded but not yet exposed or written; retain its fields for planned round-trip support"
+)]
 #[derive(Clone, Copy)]
 pub struct Stage {
     mode: u32,

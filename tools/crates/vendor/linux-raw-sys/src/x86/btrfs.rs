@@ -208,6 +208,22 @@ pub name: [__u8; 128usize],
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
+pub struct logical_block_metadata_cap {
+pub lbmd_flags: __u32,
+pub lbmd_interval: __u16,
+pub lbmd_size: __u8,
+pub lbmd_opaque_size: __u8,
+pub lbmd_opaque_offset: __u8,
+pub lbmd_pi_size: __u8,
+pub lbmd_pi_offset: __u8,
+pub lbmd_guard_tag_type: __u8,
+pub lbmd_app_tag_size: __u8,
+pub lbmd_ref_tag_size: __u8,
+pub lbmd_storage_tag_size: __u8,
+pub pad: __u8,
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
 pub struct file_dedupe_range_info {
 pub dest_fd: __s64,
 pub dest_offset: __u64,
@@ -248,6 +264,15 @@ pub fsx_nextents: __u32,
 pub fsx_projid: __u32,
 pub fsx_cowextsize: __u32,
 pub fsx_pad: [crate::ctypes::c_uchar; 8usize],
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct file_attr {
+pub fa_xflags: __u64,
+pub fa_extsize: __u32,
+pub fa_nextents: __u32,
+pub fa_projid: __u32,
+pub fa_cowextsize: __u32,
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -1376,9 +1401,18 @@ pub const SEEK_MAX: u32 = 4;
 pub const RENAME_NOREPLACE: u32 = 1;
 pub const RENAME_EXCHANGE: u32 = 2;
 pub const RENAME_WHITEOUT: u32 = 4;
+pub const LBMD_PI_CAP_INTEGRITY: u32 = 1;
+pub const LBMD_PI_CAP_REFTAG: u32 = 2;
+pub const LBMD_PI_CSUM_NONE: u32 = 0;
+pub const LBMD_PI_CSUM_IP: u32 = 1;
+pub const LBMD_PI_CSUM_CRC16_T10DIF: u32 = 2;
+pub const LBMD_PI_CSUM_CRC64_NVME: u32 = 4;
+pub const LBMD_SIZE_VER0: u32 = 16;
 pub const FILE_DEDUPE_RANGE_SAME: u32 = 0;
 pub const FILE_DEDUPE_RANGE_DIFFERS: u32 = 1;
 pub const NR_FILE: u32 = 8192;
+pub const FILE_ATTR_SIZE_VER0: u32 = 24;
+pub const FILE_ATTR_SIZE_LATEST: u32 = 24;
 pub const FS_XFLAG_REALTIME: u32 = 1;
 pub const FS_XFLAG_PREALLOC: u32 = 2;
 pub const FS_XFLAG_IMMUTABLE: u32 = 8;
@@ -1539,7 +1573,8 @@ pub const BTRFS_INO_LOOKUP_USER_PATH_MAX: u32 = 3824;
 pub const BTRFS_DEFRAG_RANGE_COMPRESS: u32 = 1;
 pub const BTRFS_DEFRAG_RANGE_START_IO: u32 = 2;
 pub const BTRFS_DEFRAG_RANGE_COMPRESS_LEVEL: u32 = 4;
-pub const BTRFS_DEFRAG_RANGE_FLAGS_SUPP: u32 = 7;
+pub const BTRFS_DEFRAG_RANGE_NOCOMPRESS: u32 = 8;
+pub const BTRFS_DEFRAG_RANGE_FLAGS_SUPP: u32 = 15;
 pub const BTRFS_SAME_DATA_DIFFERS: u32 = 1;
 pub const BTRFS_LOGICAL_INO_ARGS_IGNORE_OFFSET: u32 = 1;
 pub const BTRFS_DEV_STATS_RESET: u32 = 1;
@@ -1746,6 +1781,12 @@ FSCONFIG_SET_FD = 5,
 FSCONFIG_CMD_CREATE = 6,
 FSCONFIG_CMD_RECONFIGURE = 7,
 FSCONFIG_CMD_CREATE_EXCL = 8,
+}
+#[repr(u32)]
+#[non_exhaustive]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub enum procfs_ino {
+PROCFS_ROOT_INO = 1,
 }
 #[repr(u32)]
 #[non_exhaustive]

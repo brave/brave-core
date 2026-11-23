@@ -1,4 +1,3 @@
-use crate::error::Needed;
 use crate::stream::AsBStr;
 use crate::stream::AsBytes;
 use crate::stream::Checkpoint;
@@ -6,6 +5,7 @@ use crate::stream::Compare;
 use crate::stream::CompareResult;
 use crate::stream::FindSlice;
 use crate::stream::Location;
+use crate::stream::Needed;
 use crate::stream::Offset;
 #[cfg(feature = "unstable-recover")]
 #[cfg(feature = "std")]
@@ -178,12 +178,6 @@ impl<I: Stream> Stream for LocatingSlice<I> {
         self.input.reset(&checkpoint.inner);
     }
 
-    #[inline(always)]
-    fn raw(&self) -> &dyn core::fmt::Debug {
-        #![allow(deprecated)]
-        self.input.raw()
-    }
-
     fn trace(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         self.input.trace(f)
     }
@@ -264,12 +258,12 @@ where
     }
 }
 
-impl<I> Offset<<LocatingSlice<I> as Stream>::Checkpoint> for LocatingSlice<I>
+impl<I> Offset<<Self as Stream>::Checkpoint> for LocatingSlice<I>
 where
     I: Stream,
 {
     #[inline(always)]
-    fn offset_from(&self, other: &<LocatingSlice<I> as Stream>::Checkpoint) -> usize {
+    fn offset_from(&self, other: &<Self as Stream>::Checkpoint) -> usize {
         self.checkpoint().offset_from(other)
     }
 }

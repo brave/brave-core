@@ -7,7 +7,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased - YYYY-MM-DD
 
 
-## 0.3.0 - 2025-04-19
+## [0.3.1] - 2025-04-19
+[0.3.1]: https://github.com/madsmtm/objc2/compare/dispatch2-0.3.0...dispatch2-0.3.1
+
+### Fixed
+- Fixed reference counting in `DispatchSemaphoreGuard::release`.
+- Inlined more functions. This should allow using this library on macOS 10.12 with `crate-type = ["dylib"]`.
+
+
+## [0.3.0] - 2025-04-19
+[0.3.0]: https://github.com/madsmtm/objc2/compare/dispatch2-0.2.0...dispatch2-0.3.0
 
 ### Added
 - Allow `Queue::exec_sync` on workloops.
@@ -49,7 +58,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   publicly exported in the root.
 
 
-## 0.2.0 - 2025-01-22
+## [0.2.0] - 2025-01-22
+[0.2.0]: https://github.com/madsmtm/objc2/compare/dispatch2-0.1.0...dispatch2-0.2.0
 
 ### Added
 - Added support for `objc2` encodings.
@@ -113,6 +123,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   - `Queue::barrier_async_and_wait`
 
 
-## 0.1.0 - 2022-10-02
+## [0.1.0] - 2022-10-02
+[0.1.0]: https://github.com/madsmtm/objc2/releases/tag/dispatch2-0.1.0
 
 Initial version.

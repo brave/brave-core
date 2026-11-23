@@ -1,18 +1,19 @@
 use bstr::{BString, ByteSlice, ByteVec};
-use imara_diff::{intern, Sink};
-use intern::{InternedInput, Interner, Token};
+use imara_diff::{Diff, InternedInput, Interner, Token};
 use std::fmt::Write;
 use std::{hash::Hash, ops::Range};
 
 use super::{ConsumeBinaryHunk, ConsumeBinaryHunkDelegate, ConsumeHunk, ContextSize, DiffLineKind, HunkHeader};
 
-/// A [`Sink`] that creates a unified diff. It can be used to create a textual diff in the
-/// format typically output by `git` or `gnu-diff` if the `-u` option is used.
+/// A helper that renders a [`Diff`] as unified diff output.
+/// It can be used to create a textual diff in the format typically output by `git`
+/// or `gnu-diff` if the `-u` option is used.
 pub struct UnifiedDiff<'a, T, D>
 where
     T: Hash + Eq + AsRef<[u8]>,
     D: ConsumeHunk,
 {
+    diff: &'a Diff,
     before: &'a [Token],
     after: &'a [Token],
     interner: &'a Interner<T>,
@@ -44,15 +45,13 @@ where
     T: Hash + Eq + AsRef<[u8]>,
     D: ConsumeHunk,
 {
-    /// Create a new instance to create a unified diff using the lines in `input`,
-    /// which also must be used when running the diff algorithm.
-    /// `context_size` is the amount of lines around each hunk which will be passed
-    /// to `consume_hunk`.
+    /// Create a new instance to create a unified diff from `diff` using the lines in `input`.
+    /// `context_size` is the amount of lines around each hunk which will be passed to `consume_hunk`.
     ///
-    /// `consume_hunk` is called for each hunk with all the information required to create a
-    /// unified diff.
-    pub fn new(input: &'a InternedInput<T>, consume_hunk: D, context_size: ContextSize) -> Self {
+    /// `consume_hunk` is called for each hunk with all the information required to create a unified diff.
+    pub fn new(diff: &'a Diff, input: &'a InternedInput<T>, consume_hunk: D, context_size: ContextSize) -> Self {
         Self {
+            diff,
             interner: &input.interner,
             before: &input.before,
             after: &input.after,
@@ -125,14 +124,6 @@ where
     fn nothing_to_flush(&self) -> bool {
         self.before_hunk_len == 0 && self.after_hunk_len == 0
     }
-}
-
-impl<T, D> Sink for UnifiedDiff<'_, T, D>
-where
-    T: Hash + Eq + AsRef<[u8]>,
-    D: ConsumeHunk,
-{
-    type Out = std::io::Result<D::Out>;
 
     fn process_change(&mut self, before: Range<u32>, after: Range<u32>) {
         if self.err.is_some() {
@@ -172,7 +163,11 @@ where
         self.print_tokens(&self.after[after.start as usize..after.end as usize], DiffLineKind::Add);
     }
 
-    fn finish(mut self) -> Self::Out {
+    /// Consume all hunks from `diff` and return the delegate's final output.
+    pub fn consume(mut self) -> std::io::Result<D::Out> {
+        for hunk in self.diff.hunks() {
+            self.process_change(hunk.before, hunk.after);
+        }
         if let Err(err) = self.flush_accumulated_hunk() {
             self.err = Some(err);
         }
@@ -260,7 +255,8 @@ where
 }
 
 impl DiffLineKind {
-    const fn to_prefix(self) -> char {
+    /// Returns a one-character representation for use in unified diffs.
+    pub const fn to_prefix(self) -> char {
         match self {
             DiffLineKind::Context => ' ',
             DiffLineKind::Add => '+',

@@ -10,15 +10,15 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.82"
+edition = "2024"
+rust-version = "1.88"
 name = "gix-shallow"
-version = "0.6.0"
+version = "0.15.1"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
 build = false
 include = [
-    "src/**/*",
-    "LICENSE-*",
+    "/src/**/*",
+    "/LICENSE-*",
 ]
 autolib = false
 autobins = false
@@ -29,28 +29,41 @@ description = "Handle files specifying the shallow boundary"
 readme = false
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/GitoxideLabs/gitoxide"
+resolver = "2"
+
+[package.metadata.docs.rs]
+features = ["sha1"]
 
 [features]
 serde = [
     "dep:serde",
     "gix-hash/serde",
+    "nonempty/serialize",
 ]
+sha1 = ["gix-hash/sha1"]
+sha256 = ["gix-hash/sha256"]
 
 [lib]
 name = "gix_shallow"
 path = "src/lib.rs"
 test = false
-doctest = false
+doctest = true
 
 [dependencies.bstr]
 version = "1.12.0"
 default-features = false
 
+[dependencies.gix-error]
+version = "^0.5.2"
+
 [dependencies.gix-hash]
-version = "^0.20.0"
+version = "^0.28.1"
 
 [dependencies.gix-lock]
-version = "^19.0.0"
+version = "^26.0.0"
+
+[dependencies.nonempty]
+version = "0.12.0"
 
 [dependencies.serde]
 version = "1.0.114"
@@ -61,10 +74,11 @@ features = [
 optional = true
 default-features = false
 
-[dependencies.thiserror]
-version = "2.0.17"
+[dev-dependencies.tempfile]
+version = "3.26.0"
 
 [lints.clippy]
+assert_is_empty = "allow"
 bool_to_int_with_if = "allow"
 borrow_as_ptr = "allow"
 cast_lossless = "allow"
@@ -83,7 +97,6 @@ explicit_into_iter_loop = "allow"
 explicit_iter_loop = "allow"
 filter_map_next = "allow"
 fn_params_excessive_bools = "allow"
-from_iter_instead_of_collect = "allow"
 if_not_else = "allow"
 ignored_unit_patterns = "allow"
 implicit_clone = "allow"

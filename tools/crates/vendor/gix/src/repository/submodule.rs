@@ -1,29 +1,32 @@
-use std::rc::Rc;
+use std::{io::Read, rc::Rc};
 
-use crate::{submodule, Repository};
+use crate::error::{ErrorExt, ResultExt, message};
+use crate::{Repository, Result, submodule};
+use gix_fs::FileOrSymlink;
 
 impl Repository {
     /// Open the `.gitmodules` file as present in the worktree, or return `None` if no such file is available.
+    /// Symlinked worktree `.gitmodules` files are silently ignored so content outside the repository
+    /// cannot become active submodule configuration by being linked into the worktree.
     /// Note that git configuration is also contributing to the result based on the current snapshot.
+    /// Only sections accepted by the repository's configuration filter contribute overrides.
     ///
     /// Note that his method will not look in other places, like the index or the `HEAD` tree.
-    // TODO(submodule): make it use an updated snapshot instead once we have `config()`.
-    pub fn open_modules_file(&self) -> Result<Option<gix_submodule::File>, submodule::open_modules_file::Error> {
+    pub fn open_modules_file(&self) -> Result<Option<gix_submodule::File>> {
         let path = match self.modules_path() {
             Some(path) => path,
             None => return Ok(None),
         };
-        let buf = match std::fs::read(&path) {
-            Ok(buf) => buf,
+        let mut file = match gix_fs::open_read_only_no_follow(&path) {
+            Ok(FileOrSymlink::File(file)) => file,
+            Ok(FileOrSymlink::Symlink) => return Ok(None),
             Err(err) if err.kind() == std::io::ErrorKind::NotFound => return Ok(None),
-            Err(err) => return Err(err.into()),
+            Err(err) => return Err(err.and_raise(message("Could not open '.gitmodules' file"))),
         };
-
-        Ok(Some(gix_submodule::File::from_bytes(
-            &buf,
-            path,
-            &self.config.resolved,
-        )?))
+        let mut buf = Vec::new();
+        file.read_to_end(&mut buf)
+            .or_raise(|| message("Could not read '.gitmodules' file"))?;
+        Ok(Some(self.modules_from_bytes(&buf, Some(path))?))
     }
 
     /// Return a shared [`.gitmodules` file](submodule::File) which is updated automatically if the in-memory snapshot
@@ -37,7 +40,7 @@ impl Repository {
     /// Note that git configuration is also contributing to the result based on the current snapshot.
     ///
     // TODO(submodule): make it use an updated snapshot instead once we have `config()`.
-    pub fn modules(&self) -> Result<Option<submodule::ModulesSnapshot>, submodule::modules::Error> {
+    pub fn modules(&self) -> Result<Option<submodule::ModulesSnapshot>> {
         match self.modules.recent_snapshot(
             || {
                 self.modules_path()
@@ -56,7 +59,7 @@ impl Repository {
                     None => match self
                         .head()?
                         .try_peel_to_id()?
-                        .map(|id| -> Result<Option<_>, submodule::modules::Error> {
+                        .map(|id| -> Result<Option<_>> {
                             Ok(id
                                 .object()?
                                 .peel_to_commit()?
@@ -71,18 +74,30 @@ impl Repository {
                         None => return Ok(None),
                     },
                 };
-                Ok(Some(gix_features::threading::OwnShared::new(
-                    gix_submodule::File::from_bytes(&self.find_object(id)?.data, None, &self.config.resolved)
-                        .map_err(submodule::open_modules_file::Error::from)?
-                        .into(),
+                Ok(Some(gix_parallel::OwnShared::new(
+                    self.modules_from_bytes(&self.find_object(id)?.data, None)?.into(),
                 )))
             }
         }
     }
 
+    fn modules_from_bytes(&self, bytes: &[u8], path: Option<std::path::PathBuf>) -> Result<gix_submodule::File> {
+        let mut overrides = gix_config::File::new(self.config.resolved.meta_owned());
+        for section in self
+            .config
+            .resolved
+            .sections_by_name_and_filter("submodule", self.filter_config_section())
+            .into_iter()
+            .flatten()
+        {
+            overrides.push_section(section.to_owned())?;
+        }
+        gix_submodule::File::from_bytes(bytes, path, &overrides)
+    }
+
     /// Return the list of available submodules, or `None` if there is no submodule configuration.
     #[doc(alias = "git2")]
-    pub fn submodules(&self) -> Result<Option<impl Iterator<Item = crate::Submodule<'_>>>, submodule::modules::Error> {
+    pub fn submodules(&self) -> Result<Option<impl Iterator<Item = crate::Submodule<'_>>>> {
         let modules = match self.modules()? {
             None => return Ok(None),
             Some(m) => m,

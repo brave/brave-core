@@ -22,7 +22,6 @@
 
 #![no_std]
 
-use icu_normalizer::properties::CanonicalCombiningClassMapBorrowed;
 use icu_normalizer::uts46::Uts46MapperBorrowed;
 use icu_properties::props::GeneralCategory;
 use icu_properties::CodePointMapDataBorrowed;
@@ -203,7 +202,6 @@ impl BidiClassMask {
 /// An adapter between a Unicode back end an the `idna` crate.
 pub struct Adapter {
     mapper: Uts46MapperBorrowed<'static>,
-    canonical_combining_class: CanonicalCombiningClassMapBorrowed<'static>,
     general_category: CodePointMapDataBorrowed<'static, GeneralCategory>,
     bidi_class: CodePointMapDataBorrowed<'static, icu_properties::props::BidiClass>,
     joining_type: CodePointMapDataBorrowed<'static, icu_properties::props::JoiningType>,
@@ -223,7 +221,6 @@ impl Adapter {
     pub const fn new() -> Self {
         Self {
             mapper: Uts46MapperBorrowed::new(),
-            canonical_combining_class: CanonicalCombiningClassMapBorrowed::new(),
             general_category: icu_properties::CodePointMapData::<GeneralCategory>::new(),
             bidi_class: icu_properties::CodePointMapData::<icu_properties::props::BidiClass>::new(),
             joining_type:
@@ -234,7 +231,7 @@ impl Adapter {
     /// `true` iff the Canonical_Combining_Class of `c` is Virama.
     #[inline(always)]
     pub fn is_virama(&self, c: char) -> bool {
-        self.canonical_combining_class.get_u8(c) == 9
+        self.mapper.is_virama(c)
     }
 
     /// `true` iff the General_Category of `c` is Mark, i.e. any of Nonspacing_Mark,

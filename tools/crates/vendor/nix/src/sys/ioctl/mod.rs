@@ -227,11 +227,21 @@
 //! ```
 use cfg_if::cfg_if;
 
-#[cfg(any(linux_android, target_os = "fuchsia", target_os = "redox"))]
+#[cfg(any(
+    linux_android,
+    target_os = "fuchsia",
+    target_os = "redox",
+    target_os = "cygwin"
+))]
 #[macro_use]
 mod linux;
 
-#[cfg(any(linux_android, target_os = "fuchsia", target_os = "redox"))]
+#[cfg(any(
+    linux_android,
+    target_os = "fuchsia",
+    target_os = "redox",
+    target_os = "cygwin"
+))]
 pub use self::linux::*;
 
 #[cfg(any(bsd, solarish, target_os = "haiku",))]

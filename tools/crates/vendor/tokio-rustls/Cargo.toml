@@ -13,12 +13,13 @@
 edition = "2021"
 rust-version = "1.71"
 name = "tokio-rustls"
-version = "0.26.4"
+version = "0.26.6"
 build = false
 exclude = [
     "/.github",
     "/examples",
     "/scripts",
+    "/tests/",
 ]
 autolib = false
 autobins = false
@@ -36,6 +37,17 @@ categories = [
 ]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/rustls/tokio-rustls"
+
+[package.metadata.cargo_check_external_types]
+allowed_external_types = [
+    "rustls",
+    "rustls::*",
+    "rustls_pki_types",
+    "rustls_pki_types::*",
+    "tokio::io::async_read::AsyncRead",
+    "tokio::io::async_buf_read::AsyncBufRead",
+    "tokio::io::async_write::AsyncWrite",
+]
 
 [features]
 aws-lc-rs = ["aws_lc_rs"]
@@ -56,26 +68,6 @@ zlib = ["rustls/zlib"]
 [lib]
 name = "tokio_rustls"
 path = "src/lib.rs"
-
-[[test]]
-name = "badssl"
-path = "tests/badssl.rs"
-
-[[test]]
-name = "certs"
-path = "tests/certs/main.rs"
-
-[[test]]
-name = "early-data"
-path = "tests/early-data.rs"
-
-[[test]]
-name = "test"
-path = "tests/test.rs"
-
-[[test]]
-name = "utils"
-path = "tests/utils.rs"
 
 [dependencies.rustls]
 version = "0.23.27"

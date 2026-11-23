@@ -7,15 +7,20 @@ pub type socklen_t = u32;
 pub type sa_family_t = u8;
 pub type pthread_t = crate::uintptr_t;
 pub type nfds_t = c_uint;
+#[cfg(target_os = "dragonfly")]
+pub type regoff_t = c_int;
+#[cfg(not(target_os = "dragonfly"))]
 pub type regoff_t = off_t;
 
-s! {
+s2! {
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct sockaddr {
         pub sa_len: u8,
         pub sa_family: sa_family_t,
         pub sa_data: [c_char; 14],
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct sockaddr_in6 {
         pub sin6_len: u8,
         pub sin6_family: sa_family_t,
@@ -25,39 +30,45 @@ s! {
         pub sin6_scope_id: u32,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct passwd {
+        #[custom_default(ptr::null_mut())]
         pub pw_name: *mut c_char,
+        #[custom_default(ptr::null_mut())]
         pub pw_passwd: *mut c_char,
         pub pw_uid: crate::uid_t,
         pub pw_gid: crate::gid_t,
         pub pw_change: crate::time_t,
+        #[custom_default(ptr::null_mut())]
         pub pw_class: *mut c_char,
+        #[custom_default(ptr::null_mut())]
         pub pw_gecos: *mut c_char,
+        #[custom_default(ptr::null_mut())]
         pub pw_dir: *mut c_char,
+        #[custom_default(ptr::null_mut())]
         pub pw_shell: *mut c_char,
         pub pw_expire: crate::time_t,
 
-        #[cfg(not(any(
-            target_os = "macos",
-            target_os = "ios",
-            target_os = "tvos",
-            target_os = "watchos",
-            target_os = "visionos",
-            target_os = "netbsd",
-            target_os = "openbsd"
-        )))]
+        #[cfg(not(any(target_vendor = "apple", target_os = "netbsd", target_os = "openbsd")))]
         pub pw_fields: c_int,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct ifaddrs {
+        #[custom_default(ptr::null_mut())]
         pub ifa_next: *mut ifaddrs,
+        #[custom_default(ptr::null_mut())]
         pub ifa_name: *mut c_char,
         pub ifa_flags: c_uint,
+        #[custom_default(ptr::null_mut())]
         pub ifa_addr: *mut crate::sockaddr,
+        #[custom_default(ptr::null_mut())]
         pub ifa_netmask: *mut crate::sockaddr,
+        #[custom_default(ptr::null_mut())]
         pub ifa_dstaddr: *mut crate::sockaddr,
+        #[custom_default(ptr::null_mut())]
         pub ifa_data: *mut c_void,
-        #[cfg(target_os = "netbsd")]
+        #[cfg(any(target_os = "dragonfly", target_os = "netbsd"))]
         pub ifa_addrflags: c_uint,
     }
 
@@ -74,30 +85,21 @@ s! {
         fds_bits: [i32; FD_SETSIZE as usize / 32],
     }
 
-    pub struct tm {
-        pub tm_sec: c_int,
-        pub tm_min: c_int,
-        pub tm_hour: c_int,
-        pub tm_mday: c_int,
-        pub tm_mon: c_int,
-        pub tm_year: c_int,
-        pub tm_wday: c_int,
-        pub tm_yday: c_int,
-        pub tm_isdst: c_int,
-        pub tm_gmtoff: c_long,
-        pub tm_zone: *mut c_char,
-    }
-
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct msghdr {
+        #[custom_default(ptr::null_mut())]
         pub msg_name: *mut c_void,
         pub msg_namelen: crate::socklen_t,
+        #[custom_default(ptr::null_mut())]
         pub msg_iov: *mut crate::iovec,
         pub msg_iovlen: c_int,
+        #[custom_default(ptr::null_mut())]
         pub msg_control: *mut c_void,
         pub msg_controllen: crate::socklen_t,
         pub msg_flags: c_int,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct cmsghdr {
         pub cmsg_len: crate::socklen_t,
         pub cmsg_level: c_int,
@@ -108,52 +110,69 @@ s! {
         __fsid_val: [i32; 2],
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct if_nameindex {
         pub if_index: c_uint,
+        #[custom_default(ptr::null_mut())]
         pub if_name: *mut c_char,
     }
 
     pub struct regex_t {
         __re_magic: c_int,
         __re_nsub: size_t,
+        #[custom_default(ptr::null_mut())]
         __re_endp: *const c_char,
+        #[custom_default(ptr::null_mut())]
         __re_g: *mut c_void,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct regmatch_t {
         pub rm_so: regoff_t,
         pub rm_eo: regoff_t,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct option {
+        #[custom_default(ptr::null_mut())]
         pub name: *const c_char,
         pub has_arg: c_int,
+        #[custom_default(ptr::null_mut())]
         pub flag: *mut c_int,
         pub val: c_int,
     }
+
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct sockaddr_un {
         pub sun_len: u8,
         pub sun_family: sa_family_t,
+        #[custom_default([0; 104])]
         pub sun_path: [c_char; 104],
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct utsname {
+        #[custom_default([0; 256])]
         #[cfg(not(target_os = "dragonfly"))]
         pub sysname: [c_char; 256],
         #[cfg(target_os = "dragonfly")]
         pub sysname: [c_char; 32],
+        #[custom_default([0; 256])]
         #[cfg(not(target_os = "dragonfly"))]
         pub nodename: [c_char; 256],
         #[cfg(target_os = "dragonfly")]
         pub nodename: [c_char; 32],
+        #[custom_default([0; 256])]
         #[cfg(not(target_os = "dragonfly"))]
         pub release: [c_char; 256],
         #[cfg(target_os = "dragonfly")]
         pub release: [c_char; 32],
+        #[custom_default([0; 256])]
         #[cfg(not(target_os = "dragonfly"))]
         pub version: [c_char; 256],
         #[cfg(target_os = "dragonfly")]
         pub version: [c_char; 32],
+        #[custom_default([0; 256])]
         #[cfg(not(target_os = "dragonfly"))]
         pub machine: [c_char; 256],
         #[cfg(target_os = "dragonfly")]
@@ -177,7 +196,10 @@ pub const FIOASYNC: c_ulong = 0x8004667d;
 pub const FIOSETOWN: c_ulong = 0x8004667c;
 pub const FIOGETOWN: c_ulong = 0x4004667b;
 
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const PATH_MAX: c_int = 1024;
+
 pub const MAXPATHLEN: c_int = PATH_MAX;
 
 pub const IOV_MAX: c_int = 1024;
@@ -399,8 +421,14 @@ pub const POLLRDBAND: c_short = 0x080;
 pub const POLLWRBAND: c_short = 0x100;
 
 cfg_if! {
-    // Not yet implemented on NetBSD
-    if #[cfg(not(any(target_os = "netbsd")))] {
+    // Not yet implemented on NetBSD, and not present on iOS/tvOS/watchOS/visionOS.
+    if #[cfg(not(any(
+        target_os = "netbsd",
+        target_os = "ios",
+        target_os = "tvos",
+        target_os = "watchos",
+        target_os = "visionos",
+    )))] {
         pub const BIOCGBLEN: c_ulong = 0x40044266;
         pub const BIOCSBLEN: c_ulong = 0xc0044266;
         pub const BIOCFLUSH: c_uint = 0x20004268;
@@ -413,47 +441,20 @@ cfg_if! {
         pub const BIOCVERSION: c_ulong = 0x40044271;
         pub const BIOCGHDRCMPLT: c_ulong = 0x40044274;
         pub const BIOCSHDRCMPLT: c_ulong = 0x80044275;
-        pub const SIOCGIFADDR: c_ulong = 0xc0206921;
     }
 }
 
-pub const REG_BASIC: c_int = 0o0000;
-pub const REG_EXTENDED: c_int = 0o0001;
-pub const REG_ICASE: c_int = 0o0002;
-pub const REG_NOSUB: c_int = 0o0004;
-pub const REG_NEWLINE: c_int = 0o0010;
-pub const REG_NOSPEC: c_int = 0o0020;
-pub const REG_PEND: c_int = 0o0040;
-pub const REG_DUMP: c_int = 0o0200;
+// Not yet implemented on NetBSD.
+#[cfg(not(target_os = "netbsd"))]
+pub const SIOCGIFADDR: c_ulong = 0xc0206921;
 
-pub const REG_NOMATCH: c_int = 1;
-pub const REG_BADPAT: c_int = 2;
-pub const REG_ECOLLATE: c_int = 3;
-pub const REG_ECTYPE: c_int = 4;
-pub const REG_EESCAPE: c_int = 5;
-pub const REG_ESUBREG: c_int = 6;
-pub const REG_EBRACK: c_int = 7;
-pub const REG_EPAREN: c_int = 8;
-pub const REG_EBRACE: c_int = 9;
-pub const REG_BADBR: c_int = 10;
-pub const REG_ERANGE: c_int = 11;
-pub const REG_ESPACE: c_int = 12;
-pub const REG_BADRPT: c_int = 13;
-pub const REG_EMPTY: c_int = 14;
-pub const REG_ASSERT: c_int = 15;
-pub const REG_INVARG: c_int = 16;
-pub const REG_ATOI: c_int = 255;
-pub const REG_ITOA: c_int = 0o0400;
-
-pub const REG_NOTBOL: c_int = 0o00001;
-pub const REG_NOTEOL: c_int = 0o00002;
-pub const REG_STARTEND: c_int = 0o00004;
-pub const REG_TRACE: c_int = 0o00400;
-pub const REG_LARGE: c_int = 0o01000;
-pub const REG_BACKR: c_int = 0o02000;
-
-pub const TIOCCBRK: c_uint = 0x2000747a;
-pub const TIOCSBRK: c_uint = 0x2000747b;
+cfg_if! {
+    // Redefined in `new/apple`
+    if #[cfg(not(target_vendor = "apple"))] {
+        pub const TIOCCBRK: c_uint = 0x2000747a;
+        pub const TIOCSBRK: c_uint = 0x2000747b;
+    }
+}
 
 pub const PRIO_PROCESS: c_int = 0;
 pub const PRIO_PGRP: c_int = 1;
@@ -463,103 +464,116 @@ pub const ITIMER_REAL: c_int = 0;
 pub const ITIMER_VIRTUAL: c_int = 1;
 pub const ITIMER_PROF: c_int = 2;
 
-// net/route.h
+cfg_if! {
+    // Not present on iOS/tvOS/watchOS/visionOS
+    if #[cfg(not(any(
+        target_os = "ios",
+        target_os = "tvos",
+        target_os = "watchos",
+        target_os = "visionos",
+    )))] {
+        // net/route.h
 
-pub const RTF_UP: c_int = 0x1;
-pub const RTF_GATEWAY: c_int = 0x2;
-pub const RTF_HOST: c_int = 0x4;
-pub const RTF_REJECT: c_int = 0x8;
-pub const RTF_DYNAMIC: c_int = 0x10;
-pub const RTF_MODIFIED: c_int = 0x20;
-pub const RTF_DONE: c_int = 0x40;
-pub const RTF_STATIC: c_int = 0x800;
-pub const RTF_BLACKHOLE: c_int = 0x1000;
-pub const RTF_PROTO2: c_int = 0x4000;
-pub const RTF_PROTO1: c_int = 0x8000;
+        pub const RTF_UP: c_int = 0x1;
+        pub const RTF_GATEWAY: c_int = 0x2;
+        pub const RTF_HOST: c_int = 0x4;
+        pub const RTF_REJECT: c_int = 0x8;
+        pub const RTF_DYNAMIC: c_int = 0x10;
+        pub const RTF_MODIFIED: c_int = 0x20;
+        pub const RTF_DONE: c_int = 0x40;
+        pub const RTF_STATIC: c_int = 0x800;
+        pub const RTF_BLACKHOLE: c_int = 0x1000;
+        pub const RTF_PROTO2: c_int = 0x4000;
+        pub const RTF_PROTO1: c_int = 0x8000;
 
-// Message types
-pub const RTM_ADD: c_int = 0x1;
-pub const RTM_DELETE: c_int = 0x2;
-pub const RTM_CHANGE: c_int = 0x3;
-pub const RTM_GET: c_int = 0x4;
-pub const RTM_LOSING: c_int = 0x5;
-pub const RTM_REDIRECT: c_int = 0x6;
-pub const RTM_MISS: c_int = 0x7;
+        // Message types
+        pub const RTM_ADD: c_int = 0x1;
+        pub const RTM_DELETE: c_int = 0x2;
+        pub const RTM_CHANGE: c_int = 0x3;
+        pub const RTM_GET: c_int = 0x4;
+        pub const RTM_LOSING: c_int = 0x5;
+        pub const RTM_REDIRECT: c_int = 0x6;
+        pub const RTM_MISS: c_int = 0x7;
 
-// Bitmask values for rtm_addrs.
-pub const RTA_DST: c_int = 0x1;
-pub const RTA_GATEWAY: c_int = 0x2;
-pub const RTA_NETMASK: c_int = 0x4;
-pub const RTA_GENMASK: c_int = 0x8;
-pub const RTA_IFP: c_int = 0x10;
-pub const RTA_IFA: c_int = 0x20;
-pub const RTA_AUTHOR: c_int = 0x40;
-pub const RTA_BRD: c_int = 0x80;
+        // Bitmask values for rtm_addrs.
+        pub const RTA_DST: c_int = 0x1;
+        pub const RTA_GATEWAY: c_int = 0x2;
+        pub const RTA_NETMASK: c_int = 0x4;
+        pub const RTA_GENMASK: c_int = 0x8;
+        pub const RTA_IFP: c_int = 0x10;
+        pub const RTA_IFA: c_int = 0x20;
+        pub const RTA_AUTHOR: c_int = 0x40;
+        pub const RTA_BRD: c_int = 0x80;
 
-// Index offsets for sockaddr array for alternate internal encoding.
-pub const RTAX_DST: c_int = 0;
-pub const RTAX_GATEWAY: c_int = 1;
-pub const RTAX_NETMASK: c_int = 2;
-pub const RTAX_GENMASK: c_int = 3;
-pub const RTAX_IFP: c_int = 4;
-pub const RTAX_IFA: c_int = 5;
-pub const RTAX_AUTHOR: c_int = 6;
-pub const RTAX_BRD: c_int = 7;
-
-f! {
-    pub fn CMSG_FIRSTHDR(mhdr: *const crate::msghdr) -> *mut cmsghdr {
-        if (*mhdr).msg_controllen as usize >= size_of::<cmsghdr>() {
-            (*mhdr).msg_control.cast::<cmsghdr>()
-        } else {
-            core::ptr::null_mut()
-        }
-    }
-
-    pub fn FD_CLR(fd: c_int, set: *mut fd_set) -> () {
-        let bits = size_of_val(&(*set).fds_bits[0]) * 8;
-        let fd = fd as usize;
-        (*set).fds_bits[fd / bits] &= !(1 << (fd % bits));
-        return;
-    }
-
-    pub fn FD_ISSET(fd: c_int, set: *const fd_set) -> bool {
-        let bits = size_of_val(&(*set).fds_bits[0]) * 8;
-        let fd = fd as usize;
-        return ((*set).fds_bits[fd / bits] & (1 << (fd % bits))) != 0;
-    }
-
-    pub fn FD_SET(fd: c_int, set: *mut fd_set) -> () {
-        let bits = size_of_val(&(*set).fds_bits[0]) * 8;
-        let fd = fd as usize;
-        (*set).fds_bits[fd / bits] |= 1 << (fd % bits);
-        return;
-    }
-
-    pub fn FD_ZERO(set: *mut fd_set) -> () {
-        for slot in &mut (*set).fds_bits {
-            *slot = 0;
-        }
+        // Index offsets for sockaddr array for alternate internal encoding.
+        pub const RTAX_DST: c_int = 0;
+        pub const RTAX_GATEWAY: c_int = 1;
+        pub const RTAX_NETMASK: c_int = 2;
+        pub const RTAX_GENMASK: c_int = 3;
+        pub const RTAX_IFP: c_int = 4;
+        pub const RTAX_IFA: c_int = 5;
+        pub const RTAX_AUTHOR: c_int = 6;
+        pub const RTAX_BRD: c_int = 7;
     }
 }
 
-safe_f! {
-    pub const fn WTERMSIG(status: c_int) -> c_int {
+f! {
+    pub unsafe fn CMSG_FIRSTHDR(mhdr: *const crate::msghdr) -> *mut cmsghdr {
+        if (*mhdr).msg_controllen as usize >= size_of::<cmsghdr>() {
+            (*mhdr).msg_control.cast()
+        } else {
+            ptr::null_mut()
+        }
+    }
+
+    pub unsafe fn FD_CLR(fd: c_int, set: *mut fd_set) -> () {
+        let fd = fd as usize;
+        let bits = size_of_val(&(*set).fds_bits[0]) * 8;
+        let Some(slot) = (*set).fds_bits.get_mut(fd / bits) else {
+            panic!("fd {fd} out of range: valid fds are 0..FD_SETSIZE (0..{FD_SETSIZE})");
+        };
+        *slot &= !(1 << (fd % bits));
+    }
+
+    pub unsafe fn FD_ISSET(fd: c_int, set: *const fd_set) -> bool {
+        let fd = fd as usize;
+        let bits = size_of_val(&(*set).fds_bits[0]) * 8;
+        let Some(slot) = (*set).fds_bits.get(fd / bits) else {
+            panic!("fd {fd} out of range: valid fds are 0..FD_SETSIZE (0..{FD_SETSIZE})");
+        };
+        (*slot & (1 << (fd % bits))) != 0
+    }
+
+    pub unsafe fn FD_SET(fd: c_int, set: *mut fd_set) -> () {
+        let fd = fd as usize;
+        let bits = size_of_val(&(*set).fds_bits[0]) * 8;
+        let Some(slot) = (*set).fds_bits.get_mut(fd / bits) else {
+            panic!("fd {fd} out of range: valid fds are 0..FD_SETSIZE (0..{FD_SETSIZE})");
+        };
+        *slot |= 1 << (fd % bits);
+    }
+
+    pub unsafe fn FD_ZERO(set: *mut fd_set) -> () {
+        (*set).fds_bits.fill(0);
+    }
+
+    pub const safe fn WTERMSIG(status: c_int) -> c_int {
         status & 0o177
     }
 
-    pub const fn WIFEXITED(status: c_int) -> bool {
+    pub const safe fn WIFEXITED(status: c_int) -> bool {
         (status & 0o177) == 0
     }
 
-    pub const fn WEXITSTATUS(status: c_int) -> c_int {
+    pub const safe fn WEXITSTATUS(status: c_int) -> c_int {
         (status >> 8) & 0x00ff
     }
 
-    pub const fn WCOREDUMP(status: c_int) -> bool {
+    pub const safe fn WCOREDUMP(status: c_int) -> bool {
         (status & 0o200) != 0
     }
 
-    pub const fn QCMD(cmd: c_int, type_: c_int) -> c_int {
+    pub const safe fn QCMD(cmd: c_int, type_: c_int) -> c_int {
         (cmd << 8) | (type_ & 0x00ff)
     }
 }
@@ -597,7 +611,6 @@ extern "C" {
     pub fn ioctl(fd: c_int, request: c_ulong, ...) -> c_int;
     pub fn kqueue() -> c_int;
     pub fn unmount(target: *const c_char, arg: c_int) -> c_int;
-    pub fn syscall(num: c_int, ...) -> c_int;
     #[cfg_attr(target_os = "netbsd", link_name = "__getpwent50")]
     pub fn getpwent() -> *mut passwd;
     pub fn setpwent();
@@ -614,7 +627,7 @@ extern "C" {
     pub fn getpeereid(socket: c_int, euid: *mut crate::uid_t, egid: *mut crate::gid_t) -> c_int;
 
     #[cfg_attr(
-        all(target_os = "macos", not(target_arch = "aarch64")),
+        all(target_os = "macos", any(target_arch = "x86", target_arch = "x86_64")),
         link_name = "glob$INODE64"
     )]
     #[cfg_attr(target_os = "netbsd", link_name = "__glob30")]
@@ -659,6 +672,7 @@ extern "C" {
     )]
     pub fn telldir(dirp: *mut crate::DIR) -> c_long;
     pub fn madvise(addr: *mut c_void, len: size_t, advice: c_int) -> c_int;
+    pub fn minherit(addr: *mut c_void, len: size_t, inherit: c_int) -> c_int;
 
     #[cfg_attr(
         all(target_os = "macos", target_arch = "x86"),
@@ -729,6 +743,8 @@ extern "C" {
         link_name = "sigaltstack$UNIX2003"
     )]
     #[cfg_attr(target_os = "netbsd", link_name = "__sigaltstack14")]
+    // `sigaltstack` is prohibited on tvOS and watchOS.
+    #[cfg(not(any(target_os = "tvos", target_os = "watchos")))]
     pub fn sigaltstack(ss: *const stack_t, oss: *mut stack_t) -> c_int;
     #[cfg_attr(target_os = "netbsd", link_name = "__sigsuspend14")]
     pub fn sigsuspend(mask: *const crate::sigset_t) -> c_int;
@@ -890,13 +906,21 @@ extern "C" {
 }
 
 cfg_if! {
-    if #[cfg(any(
-        target_os = "macos",
-        target_os = "ios",
-        target_os = "tvos",
-        target_os = "watchos",
-        target_os = "visionos"
-    ))] {
+    // `syscall` is prohibited on tvOS and watchOS (and strongly discouraged
+    // on iOS and macOS).
+    if #[cfg(not(any(target_os = "tvos", target_os = "watchos")))] {
+        extern "C" {
+            #[cfg_attr(
+                target_os = "openbsd",
+                deprecated(since = "0.2.190", note = "Removed in OpenBSD 7.5")
+            )]
+            pub fn syscall(num: c_int, ...) -> c_int;
+        }
+    }
+}
+
+cfg_if! {
+    if #[cfg(target_vendor = "apple")] {
         mod apple;
         pub use self::apple::*;
     } else if #[cfg(any(target_os = "openbsd", target_os = "netbsd"))] {

@@ -31,7 +31,7 @@ pub const NUM_LOCK_ACTIVE: u8 = 0x02u8;
 pub const CAPS_LOCK_ACTIVE: u8 = 0x04u8;
 
 pub type KeyToggleState = u8;
-pub type KeyNotifyFunction = eficall! {fn(*mut KeyData) -> crate::base::Status};
+pub type KeyNotifyFunction = unsafe extern "efiapi" fn(*mut KeyData) -> crate::base::Status;
 
 #[repr(C)]
 #[derive(Clone, Copy, Debug, Default)]
@@ -47,32 +47,32 @@ pub struct KeyData {
     pub key_state: KeyState,
 }
 
-pub type ProtocolReset = eficall! {fn(
+pub type ProtocolReset = unsafe extern "efiapi" fn(
     *mut Protocol,
     crate::base::Boolean,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolReadKeyStrokeEx = eficall! {fn(
+pub type ProtocolReadKeyStrokeEx = unsafe extern "efiapi" fn(
     *mut Protocol,
     *mut KeyData,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolSetState = eficall! {fn(
+pub type ProtocolSetState = unsafe extern "efiapi" fn(
     *mut Protocol,
     *mut KeyToggleState,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolRegisterKeyNotify = eficall! {fn(
+pub type ProtocolRegisterKeyNotify = unsafe extern "efiapi" fn(
     *mut Protocol,
     *mut KeyData,
     KeyNotifyFunction,
     *mut *mut core::ffi::c_void,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolUnregisterKeyNotify = eficall! {fn(
+pub type ProtocolUnregisterKeyNotify = unsafe extern "efiapi" fn(
     *mut Protocol,
     *mut core::ffi::c_void,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
 #[repr(C)]
 pub struct Protocol {

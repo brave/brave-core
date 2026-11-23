@@ -1,4 +1,6 @@
 use gix_date::SecondsSinceUnixEpoch;
+use gix_error::{ErrorExt, Result, message};
+use gix_error::{ResultExt, corruption};
 use smallvec::SmallVec;
 
 use super::LazyCommit;
@@ -8,7 +10,7 @@ impl<'graph, 'cache> LazyCommit<'graph, 'cache> {
     /// Return an iterator over the parents of this commit.
     pub fn iter_parents(&self) -> Parents<'graph, 'cache> {
         let backing = match &self.backing {
-            Either::Left(buf) => Either::Left(gix_object::CommitRefIter::from_bytes(buf)),
+            Either::Left(buf) => Either::Left(gix_object::CommitRefIter::from_bytes(buf, self.object_hash)),
             Either::Right((cache, pos)) => Either::Right((*cache, cache.commit_at(*pos).iter_parents())),
         };
         Parents { backing }
@@ -18,9 +20,11 @@ impl<'graph, 'cache> LazyCommit<'graph, 'cache> {
     ///
     /// This is the single-most important date for determining recency of commits.
     /// Note that this can only fail if the commit is backed by the object database *and* parsing fails.
-    pub fn committer_timestamp(&self) -> Result<SecondsSinceUnixEpoch, gix_object::decode::Error> {
+    pub fn committer_timestamp(&self) -> Result<SecondsSinceUnixEpoch> {
         Ok(match &self.backing {
-            Either::Left(buf) => gix_object::CommitRefIter::from_bytes(buf).committer()?.seconds(),
+            Either::Left(buf) => gix_object::CommitRefIter::from_bytes(buf, self.object_hash)
+                .committer()?
+                .seconds(),
             Either::Right((cache, pos)) => cache.commit_at(*pos).committer_timestamp() as SecondsSinceUnixEpoch, // a cast as we cannot represent the error and trying seems overkill
         })
     }
@@ -34,11 +38,14 @@ impl<'graph, 'cache> LazyCommit<'graph, 'cache> {
     }
 
     /// Returns the generation of the commit and its commit-time, either from cache if available, or parsed from the object buffer.
-    pub fn generation_and_timestamp(
-        &self,
-    ) -> Result<(Option<Generation>, SecondsSinceUnixEpoch), gix_object::decode::Error> {
+    pub fn generation_and_timestamp(&self) -> Result<(Option<Generation>, SecondsSinceUnixEpoch)> {
         Ok(match &self.backing {
-            Either::Left(buf) => (None, gix_object::CommitRefIter::from_bytes(buf).committer()?.seconds()),
+            Either::Left(buf) => (
+                None,
+                gix_object::CommitRefIter::from_bytes(buf, self.object_hash)
+                    .committer()?
+                    .seconds(),
+            ),
             Either::Right((cache, pos)) => {
                 let commit = cache.commit_at(*pos);
                 (
@@ -52,16 +59,16 @@ impl<'graph, 'cache> LazyCommit<'graph, 'cache> {
 
     /// Convert ourselves into an owned version, which effectively detaches us from the underlying graph.
     /// Use `new_data()` to provide the `data` field for the owned `Commit`.
-    pub fn to_owned<T>(&self, new_data: impl FnOnce() -> T) -> Result<Commit<T>, to_owned::Error> {
+    pub fn to_owned<T>(&self, new_data: impl FnOnce() -> T) -> Result<Commit<T>> {
         let data = new_data();
         Ok(match &self.backing {
             Either::Left(buf) => {
                 use gix_object::commit::ref_iter::Token;
-                let iter = gix_object::CommitRefIter::from_bytes(buf);
+                let iter = gix_object::CommitRefIter::from_bytes(buf, self.object_hash);
                 let mut parents = SmallVec::default();
                 let mut timestamp = None;
                 for token in iter {
-                    match token? {
+                    match token.or_raise(|| corruption("A commit could not be decoded during traversal"))? {
                         Token::Tree { .. } => {}
                         Token::Parent { id } => parents.push(id),
                         Token::Author { .. } => {}
@@ -87,15 +94,15 @@ impl<'graph, 'cache> LazyCommit<'graph, 'cache> {
                 let mut parents = SmallVec::default();
                 let commit = cache.commit_at(*pos);
                 for pos in commit.iter_parents() {
-                    let pos = pos?;
+                    let pos =
+                        pos.or_raise(|| corruption("Could not find commit position in graph when traversing parents"))?;
                     parents.push(cache.commit_at(pos).id().to_owned());
                 }
+                let actual = commit.committer_timestamp();
                 Commit {
                     parents,
-                    commit_time: commit.committer_timestamp().try_into().map_err(|_| {
-                        to_owned::Error::CommitGraphTime {
-                            actual: commit.committer_timestamp(),
-                        }
+                    commit_time: SecondsSinceUnixEpoch::try_from(actual).or_raise(|| {
+                        message!("Commit-graph time could not be presented as signed integer: {actual}").corrupted()
                     })?,
                     generation: Some(commit.generation()),
                     data,
@@ -117,7 +124,7 @@ pub struct Parents<'graph, 'cache> {
 }
 
 impl Iterator for Parents<'_, '_> {
-    type Item = Result<gix_hash::ObjectId, iter_parents::Error>;
+    type Item = Result<gix_hash::ObjectId>;
 
     fn next(&mut self) -> Option<Self::Item> {
         match &mut self.backing {
@@ -127,42 +134,19 @@ impl Iterator for Parents<'_, '_> {
                         Ok(gix_object::commit::ref_iter::Token::Tree { .. }) => continue,
                         Ok(gix_object::commit::ref_iter::Token::Parent { id }) => return Some(Ok(id)),
                         Ok(_unused_token) => break,
-                        Err(err) => return Some(Err(err.into())),
+                        Err(err) => {
+                            return Some(Err(
+                                err.and_raise(corruption("An error occurred when parsing commit parents"))
+                            ));
+                        }
                     }
                 }
                 None
             }
-            Either::Right((cache, it)) => it
-                .next()
-                .map(|r| r.map(|pos| cache.id_at(pos).to_owned()).map_err(Into::into)),
+            Either::Right((cache, it)) => it.next().map(|r| {
+                r.map(|pos| cache.id_at(pos).to_owned())
+                    .or_raise(|| corruption("An error occurred when parsing parents from the commit graph"))
+            }),
         }
-    }
-}
-
-///
-pub mod iter_parents {
-    /// The error returned by the [`Parents`][super::Parents] iterator.
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error("An error occurred when parsing commit parents")]
-        DecodeCommit(#[from] gix_object::decode::Error),
-        #[error("An error occurred when parsing parents from the commit graph")]
-        DecodeCommitGraph(#[from] gix_commitgraph::file::commit::Error),
-    }
-}
-
-///
-pub mod to_owned {
-    /// The error returned by [`to_owned()`][crate::graph::LazyCommit::to_owned()].
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error("A commit could not be decoded during traversal")]
-        Decode(#[from] gix_object::decode::Error),
-        #[error("Could not find commit position in graph when traversing parents")]
-        CommitGraphParent(#[from] gix_commitgraph::file::commit::Error),
-        #[error("Commit-graph time could not be presented as signed integer: {actual}")]
-        CommitGraphTime { actual: u64 },
     }
 }

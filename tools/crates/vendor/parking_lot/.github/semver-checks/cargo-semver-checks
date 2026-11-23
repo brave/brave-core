@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# release-plz does not expose cargo-semver-checks feature selection, so its
+# default check enables the incompatible send_guard and deadlock_detection
+# features together. Override the checker arguments until this is supported:
+# https://github.com/release-plz/release-plz/issues/2291
+features=()
+previous=
+for arg in "$@"; do
+    if [[ "$previous" == --package && "$arg" == parking_lot ]]; then
+        # Disable automatic feature selection to omit send_guard, which is
+        # incompatible with deadlock_detection.
+        features=(--default-features --features arc_lock,owning_ref,serde,deadlock_detection)
+    fi
+    previous=$arg
+done
+
+"$CARGO_SEMVER_CHECKS_REAL" "$@" "${features[@]}"

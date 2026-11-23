@@ -113,6 +113,12 @@ pub struct Inotify {
 pub struct WatchDescriptor {
     wd: i32,
 }
+impl WatchDescriptor {
+    /// Raw WatchDescriptor, from libc.
+    pub fn as_raw(self) -> i32 {
+        self.wd
+    }
+}
 
 /// A single inotify event.
 ///
@@ -124,7 +130,7 @@ pub struct InotifyEvent {
     /// this event comes from.
     pub wd: WatchDescriptor,
     /// Event mask. This field is a bitfield describing the exact event that
-    /// occured.
+    /// occurred.
     pub mask: AddWatchFlags,
     /// This cookie is a number that allows you to connect related events. For
     /// now only IN_MOVED_FROM and IN_MOVED_TO can be connected.

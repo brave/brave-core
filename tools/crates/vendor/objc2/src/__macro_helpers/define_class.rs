@@ -1,6 +1,6 @@
-use alloc::ffi::CString;
 #[cfg(debug_assertions)]
 use alloc::vec::Vec;
+use core::ffi::CStr;
 use core::marker::PhantomData;
 use core::panic::{RefUnwindSafe, UnwindSafe};
 #[cfg(debug_assertions)]
@@ -15,7 +15,10 @@ use crate::runtime::{
 use crate::runtime::{AnyProtocol, MethodDescription};
 use crate::{AnyThread, ClassType, DefinedClass, Message, ProtocolType};
 
-use super::defined_ivars::{register_with_ivars, setup_dealloc};
+use super::defined_ivars::{
+    drop_flag_offset, ivar_drop_flag_names, ivars_offset, register_drop_flag, register_ivars,
+    setup_dealloc,
+};
 use super::{CopyFamily, InitFamily, MutableCopyFamily, NewFamily, NoneFamily};
 
 /// Helper for determining auto traits of defined classes.
@@ -184,42 +187,132 @@ impl<T: Message> MaybeOptionRetained for Option<Retained<T>> {
     }
 }
 
+/// Convert a class name with a trailing NUL byte to a `CStr`, at `const`.
+#[track_caller]
+pub const fn class_c_name(name: &str) -> &CStr {
+    let bytes = name.as_bytes();
+    // Workaround for `from_bytes_with_nul` not being `const` in MSRV.
+    let mut i = 0;
+    while i < bytes.len() - 1 {
+        if bytes[i] == 0 {
+            panic!("class name must not contain interior NUL bytes");
+        }
+        i += 1;
+    }
+    if let Ok(c_name) = CStr::from_bytes_until_nul(bytes) {
+        c_name
+    } else {
+        unreachable!()
+    }
+}
+
+// Kept separate for code size.
+#[track_caller]
+fn class_not_present(c_name: &CStr) -> ! {
+    panic!("could not create new class {c_name:?}, though there was no other class with that name")
+}
+
+#[track_caller]
+fn class_not_unique(c_name: &CStr) -> ! {
+    panic!("could not create new class {c_name:?}, perhaps a class with that name already exists?")
+}
+
+#[inline]
+#[track_caller]
+#[allow(clippy::new_without_default)]
+pub fn define_class<T: DefinedClass>(
+    c_name: &CStr,
+    name_is_auto_generated: bool,
+    register_impls: impl FnOnce(&mut ClassBuilderHelper<T>),
+) -> (&'static AnyClass, isize, isize)
+where
+    T::Super: ClassType,
+{
+    let (ivar_name, drop_flag_name) = ivar_drop_flag_names::<T>();
+
+    let superclass = <T::Super as ClassType>::class();
+    let cls = if let Some(builder) = ClassBuilder::new(c_name, superclass) {
+        let mut this = ClassBuilderHelper {
+            builder,
+            p: PhantomData,
+        };
+
+        setup_dealloc::<T>(&mut this.builder);
+
+        register_impls(&mut this);
+
+        register_ivars::<T>(&mut this.builder, &ivar_name);
+        register_drop_flag::<T>(&mut this.builder, &drop_flag_name);
+
+        this.builder.register()
+    } else {
+        // When loading two dynamic libraries that both use a class from some
+        // shared (static) Rust library, the dynamic linker will duplicate the
+        // statics that `define_class!` defines.
+        //
+        // For most statics that people create, this is the desired behaviour.
+        //
+        // In our case though, there is only a single Objective-C runtime with
+        // a single list of classes, and thus those two dynamic libraries end
+        // up trying to register the same class multiple times.
+        //
+        // To support such use-cases, we assume that the existing class is the
+        // one that we want, and don't try to declare it ourselves.
+        //
+        // This is **sound** within the context of a single linker invocation,
+        // since we ensure in `define_class!` with `#[extern_name = ...]` that
+        // the class name is unique.
+        //
+        // It is **unsound** in the case above of multiple dynamic libraries,
+        // since we cannot guarantee that the name actually comes from the
+        // same piece of code. The dynamic linker already does this same merge
+        // operation though, so we will consider this a non-issue (i.e. the
+        // same problem already exists in Objective-C w. dynamic libraries).
+        //
+        // See <https://github.com/rust-windowing/raw-window-metal/issues/29>
+        // for more details on the use-case.
+        //
+        // NOTE: We _could_ also solve this by autogenerating a class name
+        // based on the address of a static - but in the future, we would like
+        // to generate fully static classes, and then such a solution wouldn't
+        // be possible.
+        //
+        // ---
+        //
+        // We only do this by default when we've auto-generated the name,
+        // since here we'll be reasonably sure that it's unique to that
+        // specific piece of code.
+        //
+        // In the future, we might be able to relax this to also work with
+        // user-specified names, though we'd have to somehow ensure that the
+        // name isn't something crazy like "NSObject".
+        //
+        // We also have an (intentionally undocumented) workaround env var in
+        // case this becomes a problem for users in the future.
+        let overridden = option_env!("UNSAFE_OBJC2_ALLOW_CLASS_OVERRIDE") == Some("1");
+        if name_is_auto_generated || overridden {
+            AnyClass::get(c_name).unwrap_or_else(|| class_not_present(c_name))
+        } else {
+            class_not_unique(c_name)
+        }
+    };
+
+    // Pass class and offsets back to allow storing them in statics for faster
+    // subsequent access.
+    (
+        cls,
+        ivars_offset::<T>(cls, &ivar_name),
+        drop_flag_offset::<T>(cls, &drop_flag_name),
+    )
+}
+
 #[derive(Debug)]
 pub struct ClassBuilderHelper<T: ?Sized> {
     builder: ClassBuilder,
     p: PhantomData<T>,
 }
 
-// Outlined for code size
-#[track_caller]
-fn create_builder(name: &str, superclass: &AnyClass) -> ClassBuilder {
-    let c_name = CString::new(name).expect("class name must be UTF-8");
-    match ClassBuilder::new(&c_name, superclass) {
-        Some(builder) => builder,
-        None => panic!(
-            "could not create new class {name}. Perhaps a class with that name already exists?"
-        ),
-    }
-}
-
 impl<T: DefinedClass> ClassBuilderHelper<T> {
-    #[inline]
-    #[track_caller]
-    #[allow(clippy::new_without_default)]
-    pub fn new() -> Self
-    where
-        T::Super: ClassType,
-    {
-        let mut builder = create_builder(T::NAME, <T::Super as ClassType>::class());
-
-        setup_dealloc::<T>(&mut builder);
-
-        Self {
-            builder,
-            p: PhantomData,
-        }
-    }
-
     #[inline]
     pub fn add_protocol_methods<P>(&mut self) -> ClassProtocolMethodsBuilder<'_, T>
     where
@@ -278,11 +371,6 @@ impl<T: DefinedClass> ClassBuilderHelper<T> {
     {
         // SAFETY: Checked by caller
         unsafe { self.builder.add_class_method(sel, func) }
-    }
-
-    #[inline]
-    pub fn register(self) -> (&'static AnyClass, isize, isize) {
-        register_with_ivars::<T>(self.builder)
     }
 }
 

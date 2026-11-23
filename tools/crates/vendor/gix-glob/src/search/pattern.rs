@@ -4,6 +4,7 @@ use std::{
 };
 
 use bstr::{BStr, BString, ByteSlice, ByteVec};
+use gix_fs::FileOrSymlink;
 
 use crate::{pattern::Case, search::Pattern};
 
@@ -39,16 +40,23 @@ pub struct Mapping<T> {
     pub sequence_number: usize,
 }
 
+/// Read `path` into `buf`, clearing it first.
+///
+/// Return `Ok(true)` if the entire file was read, even if empty, or `Ok(false)` for missing paths,
+/// directory-related errors, or symlinks skipped when `follow_symlinks` is `false`. On Windows,
+/// permission-denied errors from opening, inspecting, or reading also yield `Ok(false)`.
+/// Return other I/O errors as `Err`. Leave `buf` empty unless the entire file was read.
 fn read_in_full_ignore_missing(path: &Path, follow_symlinks: bool, buf: &mut Vec<u8>) -> std::io::Result<bool> {
     buf.clear();
     let file = if follow_symlinks {
-        std::fs::File::open(path)
+        std::fs::File::open(path).map(FileOrSymlink::File)
     } else {
-        gix_features::fs::open_options_no_follow().read(true).open(path)
+        gix_fs::open_read_only_no_follow(path)
     };
     Ok(match file {
-        Ok(mut file) => {
-            if let Err(err) = file.read_to_end(buf) {
+        Ok(FileOrSymlink::Symlink) => false,
+        Ok(FileOrSymlink::File(file)) => {
+            if let Err(err) = read_in_full(file, buf) {
                 if io_err_is_dir(&err) {
                     false
                 } else {
@@ -63,12 +71,30 @@ fn read_in_full_ignore_missing(path: &Path, follow_symlinks: bool, buf: &mut Vec
     })
 }
 
+/// Read all bytes from `reader`, clearing `buf` if reading fails.
+fn read_in_full(mut reader: impl Read, buf: &mut Vec<u8>) -> std::io::Result<usize> {
+    reader.read_to_end(buf).inspect_err(|_| buf.clear())
+}
+
+/// Return `true` for errors treated as directory-related when loading pattern files, and `false` otherwise.
+///
+/// This includes `IsADirectory` and `NotADirectory`. On Windows, it also includes `PermissionDenied`,
+/// since opening a directory as a file can report that error. This also catches genuine permission
+/// failures on Windows; the result does not prove that the path is a directory.
 fn io_err_is_dir(err: &std::io::Error) -> bool {
-    // TODO: use the enum variant NotADirectory for this once stabilized
-    let raw = err.raw_os_error();
-    raw == Some(if cfg!(windows) { 5 } else { 21 }) /* Not a directory */
-        /* Also that, but under different circumstances */
-        || raw == Some(20)
+    matches!(
+        err.kind(),
+        std::io::ErrorKind::IsADirectory | std::io::ErrorKind::NotADirectory
+    ) || {
+        #[cfg(windows)]
+        {
+            err.kind() == std::io::ErrorKind::PermissionDenied
+        }
+        #[cfg(not(windows))]
+        {
+            false
+        }
+    }
 }
 
 /// Instantiation
@@ -80,28 +106,43 @@ where
     /// If `root` is `Some(…)` it's used to see `source_file` as relative to itself, if `source_file` is absolute.
     /// If source is relative and should be treated as base, set `root` to `Some("")`.
     /// `parse` is a way to parse bytes to pattern.
-    pub fn from_bytes(bytes: &[u8], source_file: PathBuf, root: Option<&Path>, parse: T) -> Self {
+    /// Returns an error if a source-relative base cannot be represented as Git path bytes.
+    pub fn from_bytes(bytes: &[u8], source_file: PathBuf, root: Option<&Path>, parse: T) -> std::io::Result<Self> {
         let patterns = parse.bytes_to_patterns(bytes, source_file.as_path());
-        let base = root
-            .and_then(|root| source_file.parent().expect("file").strip_prefix(root).ok())
-            .and_then(|base| {
-                (!base.as_os_str().is_empty()).then(|| {
-                    let mut base: BString =
-                        gix_path::to_unix_separators_on_windows(gix_path::into_bstr(base)).into_owned();
-
+        let base = if let Some(root) = root {
+            let parent = source_file.parent().ok_or_else(|| {
+                std::io::Error::new(
+                    std::io::ErrorKind::InvalidInput,
+                    "Pattern source must have a parent directory",
+                )
+            })?;
+            parent
+                .strip_prefix(root)
+                .ok()
+                .filter(|base| !base.as_os_str().is_empty())
+                .map(|base| {
+                    let mut base = gix_path::to_unix_separators_on_windows(
+                        gix_path::into_bstr(base).map_err(std::io::Error::other)?,
+                    )
+                    .into_owned();
                     base.push_byte(b'/');
-                    base
+                    Ok::<_, std::io::Error>(base)
                 })
-            });
-        List {
+                .transpose()?
+        } else {
+            None
+        };
+        Ok(List {
             patterns,
             source: Some(source_file),
             base,
-        }
+        })
     }
 
     /// Create a pattern list from the `source` file, which may be located underneath `root`, while optionally
     /// following symlinks with `follow_symlinks`, providing `buf` to temporarily store the data contained in the file.
+    /// When symlinks aren't followed, they are treated as absent files.
+    /// `buf` is cleared before reading and left empty if the file is skipped or reading fails.
     /// `parse` is a way to parse bytes to pattern.
     pub fn from_file(
         source: impl Into<PathBuf>,
@@ -111,8 +152,9 @@ where
         parse: T,
     ) -> std::io::Result<Option<Self>> {
         let source = source.into();
-        Ok(read_in_full_ignore_missing(&source, follow_symlinks, buf)?
-            .then(|| Self::from_bytes(buf, source, root, parse)))
+        read_in_full_ignore_missing(&source, follow_symlinks, buf)?
+            .then(|| Self::from_bytes(buf, source, root, parse))
+            .transpose()
     }
 }
 

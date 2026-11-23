@@ -8,8 +8,6 @@ pub type fsfilcnt_t = c_ulong;
 pub type ino_t = u64;
 pub type nlink_t = u64;
 pub type off_t = i64;
-pub type suseconds_t = i64;
-pub type time_t = i64;
 pub type wchar_t = i32;
 
 s! {
@@ -81,14 +79,6 @@ s! {
         __size: [c_ulong; 16],
     }
 
-    pub struct siginfo_t {
-        pub si_signo: c_int,
-        pub si_code: c_int,
-        pub si_errno: c_int,
-        _pad: Padding<c_int>,
-        _pad2: Padding<[c_long; 14]>,
-    }
-
     pub struct ipc_perm {
         pub __key: crate::key_t,
         pub uid: crate::uid_t,
@@ -125,8 +115,8 @@ s! {
         pub msg_qbytes: crate::msglen_t,
         pub msg_lspid: crate::pid_t,
         pub msg_lrpid: crate::pid_t,
-        __glibc_reserved4: c_ulong,
-        __glibc_reserved5: c_ulong,
+        __glibc_reserved4: Padding<c_ulong>,
+        __glibc_reserved5: Padding<c_ulong>,
     }
 
     pub struct statfs {
@@ -141,7 +131,7 @@ s! {
         pub f_fsid: crate::fsid_t,
 
         pub f_namelen: c_long,
-        f_spare: [c_long; 6],
+        f_spare: Padding<[c_long; 6]>,
     }
 
     pub struct msghdr {

@@ -1,50 +1,11 @@
 use bstr::BString;
-use gix_transport::{client, Protocol};
+use gix_error::{Error, Result, ResultExt, bail, message, unsupported};
+use gix_transport::Protocol;
 
 use crate::{command::Feature, fetch::Response};
 
-/// The error returned in the [response module][crate::fetch::response].
-#[derive(Debug, thiserror::Error)]
-#[allow(missing_docs)]
-pub enum Error {
-    #[error("Failed to read from line reader")]
-    Io(#[source] std::io::Error),
-    #[error(transparent)]
-    UploadPack(#[from] gix_transport::packetline::read::Error),
-    #[error(transparent)]
-    Transport(#[from] client::Error),
-    #[error("Currently we require feature {feature:?}, which is not supported by the server")]
-    MissingServerCapability { feature: &'static str },
-    #[error("Encountered an unknown line prefix in {line:?}")]
-    UnknownLineType { line: String },
-    #[error("Unknown or unsupported header: {header:?}")]
-    UnknownSectionHeader { header: String },
-}
-
-impl From<std::io::Error> for Error {
-    fn from(err: std::io::Error) -> Self {
-        if err.kind() == std::io::ErrorKind::Other {
-            match err.into_inner() {
-                Some(err) => match err.downcast::<gix_transport::packetline::read::Error>() {
-                    Ok(err) => Error::UploadPack(*err),
-                    Err(err) => Error::Io(std::io::Error::other(err)),
-                },
-                None => Error::Io(std::io::ErrorKind::Other.into()),
-            }
-        } else {
-            Error::Io(err)
-        }
-    }
-}
-
-impl gix_transport::IsSpuriousError for Error {
-    fn is_spurious(&self) -> bool {
-        match self {
-            Error::Io(err) => err.is_spurious(),
-            Error::Transport(err) => err.is_spurious(),
-            _ => false,
-        }
-    }
+fn unknown_line(line: &str) -> Error {
+    message!("Encountered an unknown line prefix in {line:?}").corrupted_error()
 }
 
 /// An 'ACK' line received from the server.
@@ -72,24 +33,24 @@ pub struct WantedRef {
 }
 
 /// Parse a `ShallowUpdate` from a `line` as received to the server.
-pub fn shallow_update_from_line(line: &str) -> Result<ShallowUpdate, Error> {
+pub fn shallow_update_from_line(line: &str) -> Result<ShallowUpdate> {
     match line.trim_end().split_once(' ') {
         Some((prefix, id)) => {
             let id = gix_hash::ObjectId::from_hex(id.as_bytes())
-                .map_err(|_| Error::UnknownLineType { line: line.to_owned() })?;
+                .or_raise(|| message!("Encountered an unknown line prefix in {line:?}").corrupted())?;
             Ok(match prefix {
                 "shallow" => ShallowUpdate::Shallow(id),
                 "unshallow" => ShallowUpdate::Unshallow(id),
-                _ => return Err(Error::UnknownLineType { line: line.to_owned() }),
+                _ => return Err(unknown_line(line)),
             })
         }
-        None => Err(Error::UnknownLineType { line: line.to_owned() }),
+        None => Err(unknown_line(line)),
     }
 }
 
 impl Acknowledgement {
     /// Parse an `Acknowledgement` from a `line` as received to the server.
-    pub fn from_line(line: &str) -> Result<Acknowledgement, Error> {
+    pub fn from_line(line: &str) -> Result<Acknowledgement> {
         let mut tokens = line.trim_end().splitn(3, ' ');
         match (tokens.next(), tokens.next(), tokens.next()) {
             (Some(first), id, description) => Ok(match first {
@@ -98,21 +59,21 @@ impl Acknowledgement {
                 "ACK" => {
                     let id = match id {
                         Some(id) => gix_hash::ObjectId::from_hex(id.as_bytes())
-                            .map_err(|_| Error::UnknownLineType { line: line.to_owned() })?,
-                        None => return Err(Error::UnknownLineType { line: line.to_owned() }),
+                            .or_raise(|| message!("Encountered an unknown line prefix in {line:?}").corrupted())?,
+                        None => return Err(unknown_line(line)),
                     };
                     if let Some(description) = description {
                         match description {
                             "common" => {}
                             "ready" => return Ok(Acknowledgement::Ready),
-                            _ => return Err(Error::UnknownLineType { line: line.to_owned() }),
+                            _ => return Err(unknown_line(line)),
                         }
                     }
                     Acknowledgement::Common(id)
                 }
-                _ => return Err(Error::UnknownLineType { line: line.to_owned() }),
+                _ => return Err(unknown_line(line)),
             }),
-            (None, _, _) => Err(Error::UnknownLineType { line: line.to_owned() }),
+            (None, _, _) => Err(unknown_line(line)),
         }
     }
     /// Returns the hash of the acknowledged object if this instance acknowledges a common one.
@@ -126,14 +87,14 @@ impl Acknowledgement {
 
 impl WantedRef {
     /// Parse a `WantedRef` from a `line` as received from the server.
-    pub fn from_line(line: &str) -> Result<WantedRef, Error> {
+    pub fn from_line(line: &str) -> Result<WantedRef> {
         match line.trim_end().split_once(' ') {
             Some((id, path)) => {
                 let id = gix_hash::ObjectId::from_hex(id.as_bytes())
-                    .map_err(|_| Error::UnknownLineType { line: line.to_owned() })?;
+                    .or_raise(|| message!("Encountered an unknown line prefix in {line:?}").corrupted())?;
                 Ok(WantedRef { id, path: path.into() })
             }
-            None => Err(Error::UnknownLineType { line: line.to_owned() }),
+            None => Err(unknown_line(line)),
         }
     }
 }
@@ -149,24 +110,24 @@ impl Response {
     ///
     /// Even though technically any set of features supported by the server could work, we only implement the ones that
     /// make it easy to maintain all versions with a single code base that aims to be and remain maintainable.
-    pub fn check_required_features(version: Protocol, features: &[Feature]) -> Result<(), Error> {
+    pub fn check_required_features(version: Protocol, features: &[Feature]) -> Result {
         match version {
             Protocol::V0 | Protocol::V1 => {
                 let has = |name: &str| features.iter().any(|f| f.0 == name);
                 // Let's focus on V2 standards, and simply not support old servers to keep our code simpler
                 if !has("multi_ack_detailed") {
-                    return Err(Error::MissingServerCapability {
-                        feature: "multi_ack_detailed",
-                    });
+                    bail!(unsupported(
+                        "Currently we require feature \"multi_ack_detailed\", which is not supported by the server",
+                    ));
                 }
                 // It's easy to NOT do sideband for us, but then again, everyone supports it.
-                // CORRECTION: If side-band is off, it would send the packfile without packet line encoding,
+                // CORRECTION: If sideband is off, it would send the packfile without packet line encoding,
                 // which is nothing we ever want to deal with (despite it being more efficient). In V2, this
                 // is not even an option anymore, sidebands are always present.
                 if !has("side-band") && !has("side-band-64k") {
-                    return Err(Error::MissingServerCapability {
-                        feature: "side-band OR side-band-64k",
-                    });
+                    bail!(unsupported(
+                        "Currently we require feature \"side-band OR side-band-64k\", which is not supported by the server"
+                    ));
                 }
             }
             Protocol::V2 => {}
@@ -185,7 +146,7 @@ impl Response {
     }
 
     /// Append the given `updates` which may have been obtained from a
-    /// (handshake::Outcome)[crate::handshake::Outcome::v1_shallow_updates].
+    /// (handshake::Outcome)[crate::Handshake::v1_shallow_updates].
     ///
     /// In V2, these are received as part of the pack, but V1 sends them early, so we
     /// offer to re-integrate them here.
@@ -228,7 +189,5 @@ impl Response {
     }
 }
 
-#[cfg(feature = "async-client")]
-mod async_io;
-#[cfg(feature = "blocking-client")]
-mod blocking_io;
+#[cfg(any(feature = "async-client", feature = "blocking-client"))]
+mod io;

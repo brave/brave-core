@@ -30,12 +30,18 @@
 //!
 //! - A fast baseline implementation which processes up to 16 bytes per iteration
 //! - An optimized implementation for modern `x86` using `sse` and `pclmulqdq` instructions
+//! - Wider `x86` implementations using `vpclmulqdq` on 256-bit (`avx2`) and 512-bit (`avx512f`)
+//!   registers (available when built with Rust 1.89 or newer)
+//! - An optimized implementation for `aarch64` using `crc32` instructions, interleaving three
+//!   chains on larger inputs, and from 64 bytes on CPUs with `pmull` (the `aes` feature), one that
+//!   folds 4 to 16 independent streams with carry-less multiplies
 //!
 //! Calling the [`Hasher::new`] constructor at runtime will perform a feature detection to select the most
 //! optimal implementation for the current CPU feature set.
 
 #![cfg_attr(not(feature = "std"), no_std)]
 #![deny(missing_docs)]
+#![deny(unsafe_code)]
 use core::fmt;
 use core::hash;
 
@@ -47,6 +53,7 @@ mod table;
 /// Computes the CRC32 hash of a byte slice.
 ///
 /// Check out [`Hasher`] for more advanced use-cases.
+#[inline]
 pub fn hash(buf: &[u8]) -> u32 {
     let mut h = Hasher::new();
     h.update(buf);
@@ -54,16 +61,11 @@ pub fn hash(buf: &[u8]) -> u32 {
 }
 
 #[derive(Clone)]
-enum State {
-    Baseline(baseline::State),
-    Specialized(specialized::State),
-}
-
-#[derive(Clone)]
 /// Represents an in-progress CRC32 computation.
 pub struct Hasher {
     amount: u64,
-    state: State,
+    state: u32,
+    spec: Option<specialized::State>,
 }
 
 const DEFAULT_INIT_STATE: u32 = 0;
@@ -73,6 +75,7 @@ impl Hasher {
     ///
     /// This will perform a CPU feature detection at runtime to select the most
     /// optimal implementation for the current processor architecture.
+    #[inline]
     pub fn new() -> Self {
         Self::new_with_initial(DEFAULT_INIT_STATE)
     }
@@ -81,6 +84,7 @@ impl Hasher {
     ///
     /// This works just like `Hasher::new`, except that it allows for an initial
     /// CRC32 state to be passed in.
+    #[inline]
     pub fn new_with_initial(init: u32) -> Self {
         Self::new_with_initial_len(init, 0)
     }
@@ -90,6 +94,7 @@ impl Hasher {
     /// As `new_with_initial`, but also accepts a length (in bytes). The
     /// resulting object can then be used with `combine` to compute `crc(a ||
     /// b)` from `crc(a)`, `crc(b)`, and `len(b)`.
+    #[inline]
     pub fn new_with_initial_len(init: u32, amount: u64) -> Self {
         Self::internal_new_specialized(init, amount)
             .unwrap_or_else(|| Self::internal_new_baseline(init, amount))
@@ -97,61 +102,75 @@ impl Hasher {
 
     #[doc(hidden)]
     // Internal-only API. Don't use.
+    #[inline]
     pub fn internal_new_baseline(init: u32, amount: u64) -> Self {
         Hasher {
             amount,
-            state: State::Baseline(baseline::State::new(init)),
+            state: init,
+            spec: None,
         }
     }
 
     #[doc(hidden)]
     // Internal-only API. Don't use.
+    #[inline]
     pub fn internal_new_specialized(init: u32, amount: u64) -> Option<Self> {
-        {
-            if let Some(state) = specialized::State::new(init) {
-                return Some(Hasher {
-                    amount,
-                    state: State::Specialized(state),
-                });
-            }
-        }
-        None
+        Some(Hasher {
+            amount,
+            state: init,
+            spec: Some(specialized::State::new()?),
+        })
     }
 
     /// Process the given byte slice and update the hash state.
+    #[inline]
     pub fn update(&mut self, buf: &[u8]) {
         self.amount += buf.len() as u64;
-        match self.state {
-            State::Baseline(ref mut state) => state.update(buf),
-            State::Specialized(ref mut state) => state.update(buf),
-        }
+        self.state = match &self.spec {
+            None => baseline::update_fast_16(self.state, buf),
+            Some(spec) => spec.update(self.state, buf),
+        };
+    }
+
+    /// Returns the total number of bytes represented by this hash state.
+    ///
+    /// This includes the length passed to [`Hasher::new_with_initial_len`] and
+    /// the lengths of any hash states added with [`Hasher::combine`].
+    /// [`Hasher::reset`] sets the length back to zero.
+    ///
+    /// A state created with [`Hasher::new_with_initial`] starts with a length
+    /// of zero because the length of the initial state is not known.
+    ///
+    /// ```
+    /// use crc32fast::Hasher;
+    ///
+    /// let mut hasher = Hasher::new();
+    /// hasher.update(b"hello");
+    /// hasher.update(b" world");
+    /// assert_eq!(hasher.total_len(), 11);
+    /// ```
+    #[inline]
+    pub fn total_len(&self) -> u64 {
+        self.amount
     }
 
     /// Finalize the hash state and return the computed CRC32 value.
+    #[inline]
     pub fn finalize(self) -> u32 {
-        match self.state {
-            State::Baseline(state) => state.finalize(),
-            State::Specialized(state) => state.finalize(),
-        }
+        self.state
     }
 
     /// Reset the hash state.
+    #[inline]
     pub fn reset(&mut self) {
+        self.state = 0;
         self.amount = 0;
-        match self.state {
-            State::Baseline(ref mut state) => state.reset(),
-            State::Specialized(ref mut state) => state.reset(),
-        }
     }
 
     /// Combine the hash state with the hash state for the subsequent block of bytes.
     pub fn combine(&mut self, other: &Self) {
         self.amount += other.amount;
-        let other_crc = other.clone().finalize();
-        match self.state {
-            State::Baseline(ref mut state) => state.combine(other_crc, other.amount),
-            State::Specialized(ref mut state) => state.combine(other_crc, other.amount),
-        }
+        self.state = combine::combine(self.state, other.state, other.amount);
     }
 }
 
@@ -180,6 +199,46 @@ impl hash::Hasher for Hasher {
 #[cfg(test)]
 mod test {
     use super::Hasher;
+
+    #[test]
+    fn total_len_tracks_resumed_and_combined_blocks() {
+        let prefix = b"hello";
+        let suffix = b" world";
+        let mut hasher = Hasher::new_with_initial_len(super::hash(prefix), prefix.len() as u64);
+        assert_eq!(hasher.total_len(), 5);
+        hasher.update(b" ");
+        assert_eq!(hasher.total_len(), 6);
+
+        let mut remaining = Hasher::new();
+        remaining.update(&suffix[1..]);
+        hasher.combine(&remaining);
+        assert_eq!(hasher.total_len(), 11);
+        assert_eq!(hasher.clone().finalize(), super::hash(b"hello world"));
+        assert_eq!(remaining.total_len(), 5);
+
+        hasher.reset();
+        assert_eq!(hasher.total_len(), 0);
+        hasher.update(b"again");
+        assert_eq!(hasher.total_len(), 5);
+        assert_eq!(hasher.finalize(), super::hash(b"again"));
+    }
+
+    #[test]
+    fn total_len_for_empty_and_unknown_initial_length() {
+        let mut hasher = Hasher::new();
+        assert_eq!(hasher.total_len(), 0);
+        hasher.update(b"");
+        hasher.combine(&Hasher::new());
+        assert_eq!(hasher.total_len(), 0);
+        assert_eq!(
+            Hasher::new_with_initial(super::hash(b"prefix")).total_len(),
+            0
+        );
+        assert_eq!(
+            Hasher::new_with_initial_len(0, u64::MAX).total_len(),
+            u64::MAX
+        );
+    }
 
     quickcheck::quickcheck! {
         fn combine(bytes_1: Vec<u8>, bytes_2: Vec<u8>) -> bool {

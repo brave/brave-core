@@ -18,25 +18,45 @@ jobs:
       matrix:
         os: [ubuntu, macos, windows]
         channel: [stable, beta, nightly]
-        feature: [arc_lock, serde, deadlock_detection]
+        feature: [arc_lock, serde, deadlock_detection, send_guard]
         include:
           - channel: nightly
             feature: nightly
             os: ubuntu
-          - channel: nightly
-            feature: hardware-lock-elision
+          - channel: stable
+            feature: ""
             os: ubuntu
+            target: wasm32-wasip1-threads
+            test_args: --test parking
+          - channel: nightly
+            feature: nightly
+            os: ubuntu
+            target: wasm32-wasip1-threads
+            test_args: --test parking
+
+    env:
+      CARGO_TARGET_WASM32_WASIP1_THREADS_RUNNER: wasmtime run -S threads -W shared-memory=y
 
     steps:
     - uses: actions/checkout@v4
     - run: rustup default ${{ matrix.channel }}
+    - if: matrix.target
+      run: |
+        rustup target add ${{ matrix.target }}
+        echo "CARGO_BUILD_TARGET=${{ matrix.target }}" >> "$GITHUB_ENV"
+    - uses: bytecodealliance/actions/wasmtime/setup@v1
+      if: matrix.target
+      with:
+        # v46 is the last Wasmtime release series supporting WASI threads.
+        version: v46.0.3
     - run: cargo build --all
-    - run: cargo test --all
-    - run: cargo build --all --features ${{ matrix.feature }}
-    - run: cargo test --all --features ${{ matrix.feature }}
-      if: matrix.feature == 'nightly'
+    - run: cargo test --all ${{ matrix.test_args }}
+    - run: cargo build --all --features '${{ matrix.feature }}'
+    - run: cargo test --all --features '${{ matrix.feature }}' ${{ matrix.test_args }}
     - run: cargo install cargo-msrv
+      if: ${{ !matrix.target }}
     - run: cargo msrv --workspace verify
+      if: ${{ !matrix.target }}
   build_other_platforms:
     runs-on: ubuntu-latest
     strategy:
@@ -46,6 +66,8 @@ jobs:
           - x86_64-fortanix-unknown-sgx
           - x86_64-unknown-redox
           - x86_64-linux-android
+          - wasm32-wasip1
+          - wasm32-wasip2
     steps:
     - uses: actions/checkout@v4
     - run: rustup default nightly
@@ -66,3 +88,8 @@ jobs:
           cd benchmark
           cargo run --release --bin mutex -- 2 1 0 1 2
           cargo run --release --bin rwlock -- 1 1 1 0 1 2
+  miri:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - run: bash ci/miri.sh

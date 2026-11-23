@@ -5,17 +5,18 @@ use core_foundation::dictionary::CFDictionary;
 use core_foundation::error::CFError;
 use core_foundation::string::CFString;
 use security_framework_sys::item::kSecAttrKeyType;
-use security_framework_sys::key::SecKeyCreateFromData;
 use std::ptr;
 
 use crate::key::{KeyType, SecKey};
 
 /// An extension trait adding OSX specific functionality to `SecKey`.
+#[deprecated(note = "Deprecated by Apple. There's no replacement for symmetric keys")]
 pub trait SecKeyExt {
     /// Creates a new `SecKey` from a buffer containing key data.
     fn from_data(key_type: KeyType, key_data: &CFData) -> Result<SecKey, CFError>;
 }
 
+#[allow(deprecated)]
 impl SecKeyExt for SecKey {
     fn from_data(key_type: KeyType, key_data: &CFData) -> Result<Self, CFError> {
         unsafe {
@@ -23,7 +24,7 @@ impl SecKeyExt for SecKey {
             let dict = CFDictionary::from_CFType_pairs(&[(key, key_type.to_str())]);
 
             let mut err = ptr::null_mut();
-            let key = SecKeyCreateFromData(
+            let key = security_framework_sys::key::SecKeyCreateFromData(
                 dict.as_concrete_TypeRef(),
                 key_data.as_concrete_TypeRef(),
                 &mut err,

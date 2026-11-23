@@ -1,0 +1,59 @@
+[package]
+name = "jiff-core"
+version = "0.1.8"  #:version
+authors = ["Andrew Gallant <jamslam@gmail.com>"]
+license = "Unlicense OR MIT"
+homepage = "https://github.com/BurntSushi/jiff/tree/master/crates/jiff-core"
+repository = "https://github.com/BurntSushi/jiff"
+documentation = "https://docs.rs/jiff-core"
+description = "Low level datetime primitives for the Jiff library."
+categories = ["date-and-time"]
+keywords = ["date", "time", "civil", "timestamp"]
+workspace = "../.."
+include = ["/src/**/*.rs", "COPYING", "LICENSE-MIT", "UNLICENSE"]
+edition.workspace = true
+rust-version.workspace = true
+
+[lib]
+name = "jiff_core"
+bench = false
+
+[features]
+default = ["std", "tz-fat"]
+alloc = []
+std = ["alloc", "log?/std"]
+arbitrary = ["dep:arbitrary", "std"]
+defmt = ["dep:defmt"]
+logging = ["dep:log"]
+tz-fat = []
+
+[dependencies]
+arbitrary = { version = "1.4.2", optional = true, features = ["derive"] }
+defmt = { version = "1.0.0", optional = true }
+log = { version = "0.4.21", optional = true, default-features = false }
+
+[dev-dependencies]
+quickcheck = { version = "1.0.0", default-features = false }
+
+[package.metadata.docs.rs]
+# We want to document all features.
+all-features = true
+# Since this crate's feature setup is pretty complicated, it is worth opting
+# into a nightly unstable option to show the features that need to be enabled
+# for public API items. To do that, we set `docsrs_jiff`, and when that's
+# enabled, we enable the 'doc_cfg' feature.
+#
+# To test this locally, run:
+#
+#     RUSTDOCFLAGS="--cfg docsrs_jiff" cargo +nightly doc --all-features
+#
+# Note that we use `docsrs_jiff` instead of the more standard `docsrs` because
+# other crates use that same `cfg` knob. And since we are enabling a nightly
+# feature, they sometimes break. By using our "own" `cfg` knob, we are closer
+# to being masters of our own destiny.
+rustdoc-args = ["--cfg", "docsrs_jiff"]
+
+# This squashes the (AFAIK) erroneous warning that `docsrs_jiff` is not a
+# valid `cfg` knob.
+[lints.rust]
+unexpected_cfgs = { level = "allow", check-cfg = ['cfg(docsrs_jiff)'] }

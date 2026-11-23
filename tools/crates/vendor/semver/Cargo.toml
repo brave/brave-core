@@ -10,10 +10,10 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2018"
-rust-version = "1.61"
+edition = "2021"
+rust-version = "1.68"
 name = "semver"
-version = "1.0.27"
+version = "1.0.28"
 authors = ["David Tolnay <dtolnay@gmail.com>"]
 build = false
 exclude = ["build.rs"]
@@ -34,9 +34,11 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/dtolnay/semver"
 
 [package.metadata.docs.rs]
+features = ["serde"]
 targets = ["x86_64-unknown-linux-gnu"]
 rustdoc-args = [
     "--generate-link-to-definition",
+    "--generate-macro-expansion",
     "--extern-html-root-url=core=https://doc.rust-lang.org",
     "--extern-html-root-url=alloc=https://doc.rust-lang.org",
     "--extern-html-root-url=std=https://doc.rust-lang.org",
@@ -73,6 +75,7 @@ path = "tests/test_version_req.rs"
 [[bench]]
 name = "parse"
 path = "benches/parse.rs"
+harness = false
 
 [dependencies.serde]
 version = "1.0.220"
@@ -83,4 +86,8 @@ package = "serde_core"
 [target."cfg(any())".dependencies.serde]
 version = "1.0.220"
 optional = true
+default-features = false
+
+[target."cfg(not(miri))".dev-dependencies.criterion]
+version = "0.8"
 default-features = false

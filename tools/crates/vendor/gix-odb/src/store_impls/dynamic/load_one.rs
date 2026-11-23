@@ -1,6 +1,6 @@
 use std::{
     path::Path,
-    sync::{atomic::Ordering, Arc},
+    sync::{Arc, atomic::Ordering},
 };
 
 use crate::store::{handle, types};
@@ -24,16 +24,15 @@ impl super::Store {
             path: &Path,
             id: types::PackId,
             object_hash: gix_hash::Kind,
+            alloc_limit_bytes: Option<usize>,
         ) -> std::io::Result<Arc<gix_pack::data::File>> {
             gix_pack::data::File::at(path, object_hash)
+                .map(|pack| pack.with_alloc_limit_bytes(alloc_limit_bytes))
                 .map(|mut pack| {
                     pack.id = id.to_intrinsic_pack_id();
                     Arc::new(pack)
                 })
-                .map_err(|err| match err {
-                    gix_pack::data::header::decode::Error::Io { source, .. } => source,
-                    other => std::io::Error::other(other),
-                })
+                .map_err(super::error_to_io)
         }
 
         let slot = &self.files[id.index];
@@ -56,16 +55,16 @@ impl super::Store {
                                 let mut files = slot.files.load_full();
                                 let files_mut = Arc::make_mut(&mut files);
                                 let pack = match files_mut {
-                                    Some(types::IndexAndPacks::Index(bundle)) => bundle
-                                        .data
-                                        .load_with_recovery(|path| load_pack(path, id, self.object_hash))?,
+                                    Some(types::IndexAndPacks::Index(bundle)) => {
+                                        bundle.data.load_with_recovery(|path| {
+                                            load_pack(path, id, self.object_hash, self.alloc_limit_bytes)
+                                        })?
+                                    }
                                     Some(types::IndexAndPacks::MultiIndex(_)) => {
                                         // something changed between us getting the lock, trigger a complete index refresh.
                                         None
                                     }
-                                    None => {
-                                        unreachable!("BUG: must set this handle to be stable to avoid slots to be cleared/changed")
-                                    }
+                                    None => None,
                                 };
                                 slot.files.store(files);
                                 Ok(pack)
@@ -75,9 +74,7 @@ impl super::Store {
                     // This can also happen if they use an old index into our new and refreshed data which might have a multi-index
                     // here.
                     Some(types::IndexAndPacks::MultiIndex(_)) => Ok(None),
-                    None => {
-                        unreachable!("BUG: must set this handle to be stable to avoid slots to be cleared/changed")
-                    }
+                    None => Ok(None),
                 }
             }
             Some(pack_index) => {
@@ -100,10 +97,10 @@ impl super::Store {
                                             .data
                                             .get_mut(pack_index as usize)
                                             .expect("BUG: must set this handle to be stable")
-                                            .load_with_recovery(|path| load_pack(path, id, self.object_hash))?,
-                                        None => {
-                                            unreachable!("BUG: must set this handle to be stable to avoid slots to be cleared/changed")
-                                        }
+                                            .load_with_recovery(|path| {
+                                                load_pack(path, id, self.object_hash, self.alloc_limit_bytes)
+                                            })?,
+                                        None => None,
                                     };
                                     slot.files.store(files);
                                     Ok(pack)
@@ -114,9 +111,7 @@ impl super::Store {
                     // This can also happen if they use an old index into our new and refreshed data which might have a multi-index
                     // here.
                     Some(types::IndexAndPacks::Index(_)) => Ok(None),
-                    None => {
-                        unreachable!("BUG: must set this handle to be stable to avoid slots to be cleared/changed")
-                    }
+                    None => Ok(None),
                 }
             }
         }

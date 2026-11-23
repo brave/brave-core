@@ -15,7 +15,8 @@ impl Namespace {
         self.0.as_ref()
     }
     /// Return ourselves as a path for use within the filesystem.
-    pub fn to_path(&self) -> &Path {
+    /// Return an error if the namespace cannot be represented as a native path.
+    pub fn to_path(&self) -> gix_error::Result<&Path> {
         gix_path::from_byte_slice(&self.0)
     }
     /// Append the given `prefix` to this namespace so it becomes usable for prefixed iteration.

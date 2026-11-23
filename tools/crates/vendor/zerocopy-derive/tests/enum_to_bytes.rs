@@ -15,6 +15,7 @@ include!("include.rs");
 // An enum is `IntoBytes` if if has a defined repr.
 
 #[derive(imp::IntoBytes)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(C)]
 enum C {
     A,
@@ -23,6 +24,7 @@ enum C {
 util_assert_impl_all!(C: imp::IntoBytes);
 
 #[derive(imp::IntoBytes)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(u8)]
 enum U8 {
     A,
@@ -31,6 +33,7 @@ enum U8 {
 util_assert_impl_all!(U8: imp::IntoBytes);
 
 #[derive(imp::IntoBytes)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(u16)]
 enum U16 {
     A,
@@ -39,6 +42,7 @@ enum U16 {
 util_assert_impl_all!(U16: imp::IntoBytes);
 
 #[derive(imp::IntoBytes)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(u32)]
 enum U32 {
     A,
@@ -47,6 +51,7 @@ enum U32 {
 util_assert_impl_all!(U32: imp::IntoBytes);
 
 #[derive(imp::IntoBytes)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(u64)]
 enum U64 {
     A,
@@ -55,6 +60,7 @@ enum U64 {
 util_assert_impl_all!(U64: imp::IntoBytes);
 
 #[derive(imp::IntoBytes)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(usize)]
 enum Usize {
     A,
@@ -63,6 +69,7 @@ enum Usize {
 util_assert_impl_all!(Usize: imp::IntoBytes);
 
 #[derive(imp::IntoBytes)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(i8)]
 enum I8 {
     A,
@@ -71,6 +78,7 @@ enum I8 {
 util_assert_impl_all!(I8: imp::IntoBytes);
 
 #[derive(imp::IntoBytes)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(i16)]
 enum I16 {
     A,
@@ -79,6 +87,7 @@ enum I16 {
 util_assert_impl_all!(I16: imp::IntoBytes);
 
 #[derive(imp::IntoBytes)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(i32)]
 enum I32 {
     A,
@@ -87,6 +96,7 @@ enum I32 {
 util_assert_impl_all!(I32: imp::IntoBytes);
 
 #[derive(imp::IntoBytes)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(i64)]
 enum I64 {
     A,
@@ -95,6 +105,7 @@ enum I64 {
 util_assert_impl_all!(I64: imp::IntoBytes);
 
 #[derive(imp::IntoBytes)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(isize)]
 enum Isize {
     A,
@@ -103,6 +114,7 @@ enum Isize {
 util_assert_impl_all!(Isize: imp::IntoBytes);
 
 #[derive(imp::IntoBytes)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(u8)]
 enum HasData {
     A(u8),
@@ -112,6 +124,7 @@ enum HasData {
 util_assert_impl_all!(HasData: imp::IntoBytes);
 
 #[derive(imp::IntoBytes)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(u32)]
 enum HasData32 {
     A(u32),
@@ -127,7 +140,17 @@ util_assert_impl_all!(HasData: imp::IntoBytes);
 // Tag { A }`, which is two bytes long, rather than the correct `#[repr(u8)]
 // struct Tag { A }`, which is one byte long.
 #[derive(imp::IntoBytes)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(u8, align(2))]
 enum BadTagWouldHavePadding {
     A(u8, u16),
 }
+
+#[derive(imp::IntoBytes)]
+#[zerocopy(crate = "zerocopy_renamed")]
+#[repr(u8, align(2))]
+enum HasAlign {
+    A(u8),
+}
+
+util_assert_impl_all!(HasAlign: imp::IntoBytes);

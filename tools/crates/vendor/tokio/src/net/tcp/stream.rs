@@ -1,7 +1,10 @@
 cfg_not_wasi! {
+    use std::time::Duration;
+}
+
+cfg_not_wasip1! {
     use crate::net::{to_socket_addrs, ToSocketAddrs};
     use std::future::poll_fn;
-    use std::time::Duration;
 }
 
 use crate::io::{AsyncRead, AsyncWrite, Interest, PollEvented, ReadBuf, Ready};
@@ -73,7 +76,7 @@ cfg_net! {
 }
 
 impl TcpStream {
-    cfg_not_wasi! {
+    cfg_not_wasip1! {
         /// Opens a TCP connection to a remote host.
         ///
         /// `addr` is an address of the remote host. Anything which implements the
@@ -83,6 +86,9 @@ impl TcpStream {
         /// result in a successful connection, the error returned from the last
         /// connection attempt (the last address) is returned.
         ///
+        /// For example, on a host without IPv6 connectivity, the
+        /// `AddrNotAvailable` error of a later IPv6 attempt can hide an earlier
+        /// IPv4 failure such as connection refused.
         /// To configure the socket before connecting, you can use the [`TcpSocket`]
         /// type.
         ///
@@ -162,6 +168,18 @@ impl TcpStream {
         Ok(TcpStream { io })
     }
 
+    /// A stream returned by `accept`: assumed readable and writable, so that
+    /// its first read and write try the socket instead of waiting for the
+    /// driver's first event (see `Registration::assume_ready`).
+    pub(crate) fn new_accepted(connected: mio::net::TcpStream) -> io::Result<TcpStream> {
+        let stream = TcpStream::new(connected)?;
+        stream
+            .io
+            .registration()
+            .assume_ready(Ready::READABLE | Ready::WRITABLE);
+        Ok(stream)
+    }
+
     /// Creates new `TcpStream` from a `std::net::TcpStream`.
     ///
     /// This function is intended to be used to wrap a TCP stream from the
@@ -228,7 +246,6 @@ impl TcpStream {
     ///
     /// #[tokio::main]
     /// async fn main() -> Result<(), Box<dyn Error>> {
-    /// #   if cfg!(miri) { return Ok(()); } // No `socket` in miri.
     ///     let mut data = [0u8; 12];
     /// #   if false {
     ///     let listener = TcpListener::bind("127.0.0.1:34254").await?;
@@ -272,7 +289,7 @@ impl TcpStream {
 
         #[cfg(target_os = "wasi")]
         {
-            use std::os::wasi::io::{FromRawFd, IntoRawFd};
+            use std::os::fd::{FromRawFd, IntoRawFd};
             self.io
                 .into_inner()
                 .map(|io| io.into_raw_fd())
@@ -1070,6 +1087,13 @@ impl TcpStream {
     /// Successive calls return the same data. This is accomplished by passing
     /// `MSG_PEEK` as a flag to the underlying `recv` system call.
     ///
+    /// # Cancel safety
+    ///
+    /// This method is cancel safe. If the method is used as a branch in
+    /// [`tokio::select!`](crate::select) and another branch
+    /// completes first, then it is guaranteed that no peek was performed, and
+    /// that `buf` has not been modified.
+    ///
     /// # Examples
     ///
     /// ```no_run
@@ -1249,9 +1273,10 @@ impl TcpStream {
         /// Reads the linger duration for this socket by getting the `SO_LINGER`
         /// option.
         ///
-        /// For more information about this option, see [`set_linger`].
+        /// For more information about this option, see [`set_zero_linger`] and [`set_linger`].
         ///
         /// [`set_linger`]: TcpStream::set_linger
+        /// [`set_zero_linger`]: TcpStream::set_zero_linger
         ///
         /// # Examples
         ///
@@ -1278,9 +1303,25 @@ impl TcpStream {
         /// If `SO_LINGER` is not specified, and the stream is closed, the system handles the call in a
         /// way that allows the process to continue as quickly as possible.
         ///
+        /// This option is deprecated because setting `SO_LINGER` on a socket used with Tokio is
+        /// always incorrect as it leads to blocking the thread when the socket is closed. For more
+        /// details, please see:
+        ///
+        /// > Volumes of communications have been devoted to the intricacies of `SO_LINGER` versus
+        /// > non-blocking (`O_NONBLOCK`) sockets. From what I can tell, the final word is: don't
+        /// > do it. Rely on the `shutdown()`-followed-by-`read()`-eof technique instead.
+        /// >
+        /// > From [The ultimate `SO_LINGER` page, or: why is my tcp not reliable](https://blog.netherlabs.nl/articles/2009/01/18/the-ultimate-so_linger-page-or-why-is-my-tcp-not-reliable)
+        ///
+        /// Although this method is deprecated, it will not be removed from Tokio.
+        ///
+        /// Note that the special case of setting `SO_LINGER` to zero does not lead to blocking.
+        /// Tokio provides [`set_zero_linger`](Self::set_zero_linger) for this purpose.
+        ///
         /// # Examples
         ///
         /// ```no_run
+        /// # #![allow(deprecated)]
         /// use tokio::net::TcpStream;
         ///
         /// # async fn dox() -> Result<(), Box<dyn std::error::Error>> {
@@ -1290,8 +1331,42 @@ impl TcpStream {
         /// # Ok(())
         /// # }
         /// ```
+        #[deprecated = "`SO_LINGER` causes the socket to block the thread on drop"]
         pub fn set_linger(&self, dur: Option<Duration>) -> io::Result<()> {
             socket2::SockRef::from(self).set_linger(dur)
+        }
+
+        /// Sets a linger duration of zero on this socket by setting the `SO_LINGER` option.
+        ///
+        /// This causes the connection to be forcefully aborted ("abortive close") when the socket
+        /// is dropped or closed. Instead of the normal TCP shutdown handshake (`FIN`/`ACK`), a TCP
+        /// `RST` (reset) segment is sent to the peer, and the socket immediately discards any
+        /// unsent data residing in the socket send buffer. This prevents the socket from entering
+        /// the `TIME_WAIT` state after closing it.
+        ///
+        /// This is a destructive action. Any data currently buffered by the OS but not yet
+        /// transmitted will be lost. The peer will likely receive a "Connection Reset" error
+        /// rather than a clean end-of-stream.
+        ///
+        /// See the documentation for [`set_linger`](Self::set_linger) for additional details on
+        /// how `SO_LINGER` works.
+        ///
+        /// # Examples
+        ///
+        /// ```no_run
+        /// use std::time::Duration;
+        /// use tokio::net::TcpStream;
+        ///
+        /// # async fn dox() -> Result<(), Box<dyn std::error::Error>> {
+        /// let stream = TcpStream::connect("127.0.0.1:8080").await?;
+        ///
+        /// stream.set_zero_linger()?;
+        /// assert_eq!(stream.linger()?, Some(Duration::ZERO));
+        /// # Ok(())
+        /// # }
+        /// ```
+        pub fn set_zero_linger(&self) -> io::Result<()> {
+            socket2::SockRef::from(self).set_linger(Some(Duration::ZERO))
         }
     }
 
@@ -1506,7 +1581,7 @@ cfg_windows! {
 #[cfg(all(tokio_unstable, target_os = "wasi"))]
 mod sys {
     use super::TcpStream;
-    use std::os::wasi::prelude::*;
+    use std::os::fd::{AsFd, AsRawFd, BorrowedFd, RawFd};
 
     impl AsRawFd for TcpStream {
         fn as_raw_fd(&self) -> RawFd {

@@ -76,25 +76,16 @@ macro_rules! izip {
     };
 }
 
-use memmap2::Mmap;
+use crate::MMap;
 
 /// The version of an index file
 #[derive(Default, PartialEq, Eq, Ord, PartialOrd, Debug, Hash, Clone, Copy)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-#[allow(missing_docs)]
+#[expect(missing_docs)]
 pub enum Version {
     V1 = 1,
     #[default]
     V2 = 2,
-}
-
-impl Version {
-    /// The kind of hash to produce to be compatible to this kind of index
-    pub fn hash(&self) -> gix_hash::Kind {
-        match self {
-            Version::V1 | Version::V2 => gix_hash::Kind::Sha1,
-        }
-    }
 }
 
 /// A way to indicate if a lookup, despite successful, was ambiguous or yielded exactly
@@ -107,8 +98,8 @@ pub type EntryIndex = u32;
 const FAN_LEN: usize = 256;
 
 /// A representation of a pack index file
-pub struct File {
-    data: Mmap,
+pub struct File<T = MMap> {
+    data: T,
     path: std::path::PathBuf,
     version: Version,
     num_objects: u32,
@@ -118,7 +109,10 @@ pub struct File {
 }
 
 /// Basic file information
-impl File {
+impl<T> File<T>
+where
+    T: crate::FileData,
+{
     /// The version of the pack index
     pub fn version(&self) -> Version {
         self.version
@@ -153,3 +147,5 @@ pub mod verify;
 ///
 #[cfg(feature = "streaming-input")]
 pub mod write;
+#[cfg(feature = "streaming-input")]
+pub use write::function::write_data_iter_to_stream;

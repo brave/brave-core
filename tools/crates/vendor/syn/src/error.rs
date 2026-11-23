@@ -2,17 +2,23 @@
 use crate::buffer::Cursor;
 use crate::ext::{PunctExt as _, TokenStreamExt as _};
 use crate::thread::ThreadBound;
+#[cfg(feature = "parsing")]
+use alloc::format;
+use alloc::string::{String, ToString};
+use alloc::vec;
+use alloc::vec::Vec;
+use core::fmt::{self, Debug, Display};
+#[cfg(feature = "parsing")]
+use core::ops::Range;
+use core::slice;
 use proc_macro2::{
     Delimiter, Group, Ident, LexError, Literal, Punct, Spacing, Span, TokenStream, TokenTree,
 };
 #[cfg(feature = "printing")]
 use quote::ToTokens;
-use std::fmt::{self, Debug, Display};
-use std::slice;
-use std::vec;
 
 /// The result of a Syn parser.
-pub type Result<T> = std::result::Result<T, Error>;
+pub type Result<T> = core::result::Result<T, Error>;
 
 /// Error returned when a Syn parser cannot parse the input tokens.
 ///
@@ -23,7 +29,7 @@ pub type Result<T> = std::result::Result<T, Error>;
 /// [`compile_error!`] in the generated code. This produces a better diagnostic
 /// message than simply panicking the macro.
 ///
-/// [`compile_error!`]: std::compile_error!
+/// [`compile_error!`]: core::compile_error!
 ///
 /// When parsing macro input, the [`parse_macro_input!`] macro handles the
 /// conversion to `compile_error!` automatically.
@@ -112,7 +118,7 @@ struct ErrorMessage {
     message: String,
 }
 
-// Cannot use std::ops::Range<Span> because that does not implement Copy,
+// Cannot use core::ops::Range<Span> because that does not implement Copy,
 // whereas ThreadBound<T> requires a Copy impl as a way to ensure no Drop impls
 // are involved.
 struct SpanRange {
@@ -156,7 +162,7 @@ impl Error {
     ///     Ok(s)
     /// }
     /// ```
-    pub fn new<T: Display>(span: Span, message: T) -> Self {
+    pub fn new(span: Span, message: impl Display) -> Self {
         return new(span, message.to_string());
 
         fn new(span: Span, message: String) -> Error {
@@ -187,7 +193,7 @@ impl Error {
     /// `ParseStream::error`)!
     #[cfg(feature = "printing")]
     #[cfg_attr(docsrs, doc(cfg(feature = "printing")))]
-    pub fn new_spanned<T: ToTokens, U: Display>(tokens: T, message: U) -> Self {
+    pub fn new_spanned(tokens: impl ToTokens, message: impl Display) -> Self {
         return new_spanned(tokens.into_token_stream(), message.to_string());
 
         fn new_spanned(tokens: TokenStream, message: String) -> Error {
@@ -197,6 +203,83 @@ impl Error {
             Error {
                 messages: vec![ErrorMessage {
                     span: ThreadBound::new(SpanRange { start, end }),
+                    message,
+                }],
+            }
+        }
+    }
+
+    /// Creates an error spanning the given cursor range.
+    ///
+    /// # Example
+    ///
+    /// This parses a sequence of '+'-separated lifetimes and types like
+    /// `Vec<u8> + dyn Display + 'static`, at least one of which must be a type.
+    ///
+    /// ```
+    /// use syn::{Lifetime, Token, Type};
+    /// use syn::parse::{Error, ParseStream, Result};
+    ///
+    /// enum Thing {
+    ///     Lifetime(Lifetime),
+    ///     Type(Type),
+    /// }
+    ///
+    /// fn parse_things(input: ParseStream) -> Result<Vec<Thing>> {
+    ///     let things_begin = input.cursor();
+    ///     let things_end;
+    ///     let mut things = Vec::new();
+    ///     let mut has_type = false;
+    ///     loop {
+    ///         if input.peek(Lifetime) {
+    ///             let lifetime: Lifetime = input.parse()?;
+    ///             things.push(Thing::Lifetime(lifetime));
+    ///         } else {
+    ///             let ty = input.call(Type::without_plus)?;
+    ///             things.push(Thing::Type(ty));
+    ///             has_type = true;
+    ///         }
+    ///         let plus_token: Option<Token![+]> = input.parse()?;
+    ///         if plus_token.is_none() {
+    ///             things_end = input.cursor();
+    ///             break;
+    ///         }
+    ///     }
+    ///
+    ///     if has_type {
+    ///         Ok(things)
+    ///     } else {
+    ///         let msg = "things must not be all lifetimes, at least one type is required";
+    ///         Err(Error::new_range(things_begin..things_end, msg))
+    ///     }
+    /// }
+    /// ```
+    ///
+    /// ```text
+    /// error: things must not be all lifetimes, at least one type is required
+    ///  --> example.rs:4:23
+    ///   |
+    /// 4 |     example!(THINGS = 'a + 'b, ...);
+    ///   |                       ^^^^^^^
+    /// ```
+    #[cfg(feature = "parsing")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "parsing")))]
+    pub fn new_range<'a>(span: impl Into<Range<Cursor<'a>>>, message: impl Display) -> Self {
+        return new_range(span.into(), message.to_string());
+
+        fn new_range(span: Range<Cursor>, message: String) -> Error {
+            assert!(crate::buffer::same_buffer(span.start, span.end));
+            assert!(span.start <= span.end);
+            Error {
+                messages: vec![ErrorMessage {
+                    span: ThreadBound::new(SpanRange {
+                        start: span.start.span(),
+                        end: if span.start == span.end {
+                            span.end.span()
+                        } else {
+                            span.end.prev_span()
+                        },
+                    }),
                     message,
                 }],
             }
@@ -221,7 +304,7 @@ impl Error {
     /// The [`parse_macro_input!`] macro provides a convenient way to invoke
     /// this method correctly in a procedural macro.
     ///
-    /// [`compile_error!`]: std::compile_error!
+    /// [`compile_error!`]: core::compile_error!
     /// [`parse_macro_input!`]: crate::parse_macro_input!
     pub fn to_compile_error(&self) -> TokenStream {
         let mut tokens = TokenStream::new();
@@ -233,7 +316,7 @@ impl Error {
 
     /// Render the error as an invocation of [`compile_error!`].
     ///
-    /// [`compile_error!`]: std::compile_error!
+    /// [`compile_error!`]: core::compile_error!
     ///
     /// # Example
     ///
@@ -401,6 +484,7 @@ impl Clone for SpanRange {
 
 impl Copy for SpanRange {}
 
+// TODO: impl core::error::Error (requires Rust 1.81+)
 impl std::error::Error for Error {}
 
 impl From<LexError> for Error {

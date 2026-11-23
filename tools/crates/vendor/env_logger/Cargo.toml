@@ -10,21 +10,19 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.71"
+edition = "2024"
+rust-version = "1.85"
 name = "env_logger"
-version = "0.11.8"
+version = "0.11.12"
 build = false
 include = [
-    "build.rs",
-    "src/**/*",
-    "Cargo.toml",
-    "Cargo.lock",
-    "LICENSE*",
-    "README.md",
-    "benches/**/*",
-    "examples/**/*",
-    "tests/**/*",
+    "/build.rs",
+    "/src/**/*",
+    "/Cargo.toml",
+    "/Cargo.lock",
+    "/LICENSE*",
+    "/README.md",
+    "/examples/**/*",
 ]
 autolib = false
 autobins = false
@@ -44,49 +42,46 @@ keywords = [
 categories = ["development-tools::debugging"]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/rust-cli/env_logger"
+resolver = "2"
 
 [package.metadata.docs.rs]
 all-features = true
-rustdoc-args = [
-    "--cfg",
-    "docsrs",
-    "--generate-link-to-definition",
-]
+rustdoc-args = ["--generate-link-to-definition"]
 
 [[package.metadata.release.pre-release-replacements]]
 file = "CHANGELOG.md"
-min = 1
-replace = "{{version}}"
 search = "Unreleased"
-
-[[package.metadata.release.pre-release-replacements]]
-exactly = 1
-file = "CHANGELOG.md"
-replace = "...{{tag_name}}"
-search = '\.\.\.HEAD'
-
-[[package.metadata.release.pre-release-replacements]]
-file = "CHANGELOG.md"
+replace = "{{version}}"
 min = 1
-replace = "{{date}}"
-search = "ReleaseDate"
 
 [[package.metadata.release.pre-release-replacements]]
-exactly = 1
 file = "CHANGELOG.md"
+search = '\.\.\.HEAD'
+replace = "...{{tag_name}}"
+exactly = 1
+
+[[package.metadata.release.pre-release-replacements]]
+file = "CHANGELOG.md"
+search = "ReleaseDate"
+replace = "{{date}}"
+min = 1
+
+[[package.metadata.release.pre-release-replacements]]
+file = "CHANGELOG.md"
+search = "<!-- next-header -->"
 replace = """
 <!-- next-header -->
 ## [Unreleased] - ReleaseDate
 """
-search = "<!-- next-header -->"
+exactly = 1
 
 [[package.metadata.release.pre-release-replacements]]
-exactly = 1
 file = "CHANGELOG.md"
+search = "<!-- next-url -->"
 replace = """
 <!-- next-url -->
-[Unreleased]: https://github.com/rust-cli/env_logger/compare/{{tag_name}}...HEAD"""
-search = "<!-- next-url -->"
+[Unreleased]: {{repository}}/compare/{{tag_name}}...HEAD"""
+exactly = 1
 
 [features]
 auto-color = [
@@ -136,63 +131,55 @@ name = "in_tests"
 path = "examples/in_tests.rs"
 
 [[example]]
+name = "millis_since_init"
+path = "examples/millis_since_init.rs"
+
+[[example]]
 name = "syslog_friendly_format"
 path = "examples/syslog_friendly_format.rs"
 
-[[test]]
-name = "init-twice-retains-filter"
-path = "tests/init-twice-retains-filter.rs"
-harness = false
-
-[[test]]
-name = "log-in-log"
-path = "tests/log-in-log.rs"
-harness = false
-
-[[test]]
-name = "log_tls_dtors"
-path = "tests/log_tls_dtors.rs"
-harness = false
-
-[[test]]
-name = "regexp_filter"
-path = "tests/regexp_filter.rs"
-harness = false
-
 [dependencies.anstream]
-version = "0.6.11"
+version = "1.0.0"
 features = ["wincon"]
 optional = true
 default-features = false
 
 [dependencies.anstyle]
-version = "1.0.6"
+version = "1.0.13"
 optional = true
 
 [dependencies.env_filter]
-version = "0.1.0"
+version = "2.0.0"
+features = ["std"]
 default-features = false
 
 [dependencies.jiff]
-version = "0.2.3"
+version = "1.0.1"
 features = ["std"]
 optional = true
 default-features = false
 
 [dependencies.log]
-version = "0.4.21"
+version = "0.4.29"
 features = ["std"]
 
 [lints.clippy]
+allow_attributes_without_reason = "warn"
 bool_assert_comparison = "allow"
 branches_sharing_code = "allow"
+byte_char_slices = "allow"
+cast_possible_truncation = "warn"
+cast_possible_wrap = "warn"
+cast_sign_loss = "warn"
 checked_conversions = "warn"
 collapsible_else_if = "allow"
+collapsible_match = "allow"
+collection_is_never_read = "warn"
 create_dir = "warn"
 dbg_macro = "warn"
 debug_assert_with_mut_call = "warn"
 doc_markdown = "warn"
-empty_enum = "warn"
+empty_enums = "warn"
 enum_glob_use = "warn"
 expl_impl_clone_on_copy = "warn"
 explicit_deref_methods = "warn"
@@ -200,9 +187,10 @@ explicit_into_iter_loop = "warn"
 fallible_impl_from = "warn"
 filter_map_next = "warn"
 flat_map_option = "warn"
+float_cmp = "warn"
 float_cmp_const = "warn"
 fn_params_excessive_bools = "warn"
-from_iter_instead_of_collect = "warn"
+fn_to_numeric_cast_any = "warn"
 if_same_then_else = "allow"
 implicit_clone = "warn"
 imprecise_flops = "warn"
@@ -218,10 +206,12 @@ linkedlist = "warn"
 lossy_float_literal = "warn"
 macro_use_imports = "warn"
 mem_forget = "warn"
+mismatching_type_param_order = "warn"
 mutex_integer = "warn"
-needless_continue = "warn"
+needless_continue = "allow"
 needless_for_each = "warn"
 negative_feature_names = "warn"
+partial_pub_fields = "warn"
 path_buf_push_overwrite = "warn"
 ptr_as_ptr = "warn"
 rc_mutex = "warn"
@@ -232,19 +222,27 @@ result_large_err = "allow"
 same_functions_in_if_condition = "warn"
 self_named_module_files = "warn"
 semicolon_if_nothing_returned = "warn"
+should_panic_without_expect = "warn"
 str_to_string = "warn"
 string_add = "warn"
 string_add_assign = "warn"
 string_lit_as_bytes = "warn"
-string_to_string = "warn"
 todo = "warn"
 trait_duplication_in_bounds = "warn"
+undocumented_unsafe_blocks = "warn"
 uninlined_format_args = "warn"
+unnecessary_safety_comment = "warn"
+unnecessary_safety_doc = "warn"
+unseparated_literal_suffix = "warn"
+use_self = "warn"
 verbose_file_reads = "warn"
 wildcard_imports = "warn"
 zero_sized_map_values = "warn"
 
 [lints.rust]
+non_ascii_idents = "warn"
+trivial_numeric_casts = "warn"
+unnameable_types = "warn"
 unreachable_pub = "warn"
 unsafe_op_in_unsafe_fn = "warn"
 unused_lifetimes = "warn"
@@ -254,3 +252,12 @@ unused_qualifications = "warn"
 [lints.rust.rust_2018_idioms]
 level = "warn"
 priority = -1
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+lto = true
+codegen-units = 1
+debug = "line-tables-only"
+panic = "abort"

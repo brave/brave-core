@@ -2,16 +2,17 @@
 // called LICENSE at the top level of the ICU4X source tree
 // (online at: https://github.com/unicode-org/icu4x/blob/main/LICENSE ).
 
+#![allow(unused_qualifications)]
+
 use super::VarZeroVecFormatError;
 use crate::ule::*;
 use core::cmp::Ordering;
 use core::convert::TryFrom;
 use core::marker::PhantomData;
-use core::mem;
 use core::ops::Range;
 
 /// This trait allows switching between different possible internal
-/// representations of VarZeroVec.
+/// representations of [`VarZeroVec`](super::VarZeroVec).
 ///
 /// Currently this crate supports three formats: [`Index8`], [`Index16`] and [`Index32`],
 /// with [`Index16`] being the default for all [`VarZeroVec`](super::VarZeroVec)
@@ -108,7 +109,7 @@ impl VarZeroVecFormat for Index32 {
 unsafe impl IntegerULE for u8 {
     const TOO_LARGE_ERROR: &'static str = "Attempted to build VarZeroVec out of elements that \
                                      cumulatively are larger than a u8 in size";
-    const SIZE: usize = mem::size_of::<Self>();
+    const SIZE: usize = size_of::<Self>();
     const MAX_VALUE: u32 = u8::MAX as u32;
     #[inline]
     fn iule_to_usize(self) -> usize {
@@ -128,7 +129,7 @@ unsafe impl IntegerULE for u8 {
 unsafe impl IntegerULE for RawBytesULE<2> {
     const TOO_LARGE_ERROR: &'static str = "Attempted to build VarZeroVec out of elements that \
                                      cumulatively are larger than a u16 in size";
-    const SIZE: usize = mem::size_of::<Self>();
+    const SIZE: usize = size_of::<Self>();
     const MAX_VALUE: u32 = u16::MAX as u32;
     #[inline]
     fn iule_to_usize(self) -> usize {
@@ -148,7 +149,7 @@ unsafe impl IntegerULE for RawBytesULE<2> {
 unsafe impl IntegerULE for RawBytesULE<4> {
     const TOO_LARGE_ERROR: &'static str = "Attempted to build VarZeroVec out of elements that \
                                      cumulatively are larger than a u32 in size";
-    const SIZE: usize = mem::size_of::<Self>();
+    const SIZE: usize = size_of::<Self>();
     const MAX_VALUE: u32 = u32::MAX;
     #[inline]
     fn iule_to_usize(self) -> usize {
@@ -165,7 +166,7 @@ unsafe impl IntegerULE for RawBytesULE<4> {
     }
 }
 
-/// A more parsed version of `VarZeroSlice`. This type is where most of the VarZeroVec
+/// A more parsed version of [`VarZeroSlice`](super::VarZeroSlice). This type is where most of the[ `VarZeroVec`](super::VarZeroVec)
 /// internal representation code lies.
 ///
 /// This is *basically* an `&'a [u8]` to a zero copy buffer, but split out into
@@ -214,7 +215,7 @@ impl<'a, T: VarULE + ?Sized, F> VarZeroVecComponents<'a, T, F> {
     }
 }
 impl<'a, T: VarULE + ?Sized, F: VarZeroVecFormat> VarZeroVecComponents<'a, T, F> {
-    /// Construct a new VarZeroVecComponents, checking invariants about the overall buffer size:
+    /// Construct a new [`VarZeroVecComponents`], checking invariants about the overall buffer size:
     ///
     /// - There must be either zero or at least four bytes (if four, this is the "length" parsed as a usize)
     /// - There must be at least `4*(length - 1) + 4` bytes total, to form the array `indices` of indices
@@ -254,7 +255,7 @@ impl<'a, T: VarULE + ?Sized, F: VarZeroVecFormat> VarZeroVecComponents<'a, T, F>
         Self::parse_bytes_with_length(len_u32?, rest)
     }
 
-    /// Construct a new VarZeroVecComponents, checking invariants about the overall buffer size:
+    /// Construct a new [`VarZeroVecComponents`], checking invariants about the overall buffer size:
     ///
     /// - There must be at least `4*len` bytes total, to form the array `indices` of indices.
     /// - `indices[i]..indices[i+1]` must index into a valid section of
@@ -278,11 +279,19 @@ impl<'a, T: VarULE + ?Sized, F: VarZeroVecFormat> VarZeroVecComponents<'a, T, F>
         };
         // The indices array is one element shorter since the first index is always 0,
         // so we use len_minus_one
+        //
+        // We do the math in u32 space so that we can be sure that VZVs constructed
+        // on 64 bit computers can still be used on 32 bit ones.
+        let indices_len = u32::try_from(F::Index::SIZE)
+            .ok()
+            .and_then(|x| x.checked_mul(len_minus_one))
+            .and_then(|x| usize::try_from(x).ok())
+            .ok_or(VarZeroVecFormatError::Metadata)?;
         let indices_bytes = slice
-            .get(..F::Index::SIZE * (len_minus_one as usize))
+            .get(..indices_len)
             .ok_or(VarZeroVecFormatError::Metadata)?;
         let things = slice
-            .get(F::Index::SIZE * (len_minus_one as usize)..)
+            .get(indices_len..)
             .ok_or(VarZeroVecFormatError::Metadata)?;
 
         let borrowed = VarZeroVecComponents {
@@ -321,6 +330,7 @@ impl<'a, T: VarULE + ?Sized, F: VarZeroVecFormat> VarZeroVecComponents<'a, T, F>
 
         let len = len_ule.get_unchecked(0).iule_to_usize();
         let len_u32 = len as u32;
+        debug_assert_eq!(len, len_u32 as usize);
 
         // Safety: This method requires the bytes to have passed through `parse_bytes()`
         // whereas we're calling something that asks for `parse_bytes_with_length()`.
@@ -350,8 +360,10 @@ impl<'a, T: VarULE + ?Sized, F: VarZeroVecFormat> VarZeroVecComponents<'a, T, F>
         };
         // The indices array is one element shorter since the first index is always 0,
         // so we use len_minus_one
-        let indices_bytes = slice.get_unchecked(..F::Index::SIZE * (len_minus_one as usize));
-        let things = slice.get_unchecked(F::Index::SIZE * (len_minus_one as usize)..);
+        let indices_len = F::Index::SIZE.wrapping_mul(len_minus_one as usize);
+        debug_assert!(F::Index::SIZE.checked_mul(len_minus_one as usize).is_some());
+        let indices_bytes = slice.get_unchecked(..indices_len);
+        let things = slice.get_unchecked(indices_len..);
 
         VarZeroVecComponents {
             len,
@@ -420,7 +432,7 @@ impl<'a, T: VarULE + ?Sized, F: VarZeroVecFormat> VarZeroVecComponents<'a, T, F>
         self.indices.len()
     }
 
-    /// Check the internal invariants of VarZeroVecComponents:
+    /// Check the internal invariants of [`VarZeroVecComponents`]:
     ///
     /// - `indices[i]..indices[i+1]` must index into a valid section of
     ///   `things`, such that it parses to a `T::VarULE`
@@ -428,8 +440,8 @@ impl<'a, T: VarULE + ?Sized, F: VarZeroVecFormat> VarZeroVecComponents<'a, T, F>
     ///   `things`, such that it parses to a `T::VarULE`
     /// - `indices` is monotonically increasing
     ///
-    /// This method is NOT allowed to call any other methods on VarZeroVecComponents since all other methods
-    /// assume that the slice has been passed through check_indices_and_things
+    /// This method is NOT allowed to call any other methods on [`VarZeroVecComponents`] since all other methods
+    /// assume that the slice has been passed through [`Self::check_indices_and_things`]
     #[inline]
     #[expect(clippy::len_zero)] // more explicit to enforce safety invariants
     fn check_indices_and_things(self) -> Result<(), VarZeroVecFormatError> {
@@ -471,7 +483,7 @@ impl<'a, T: VarULE + ?Sized, F: VarZeroVecFormat> VarZeroVecComponents<'a, T, F>
         Ok(())
     }
 
-    /// Create an iterator over the Ts contained in VarZeroVecComponents
+    /// Create an iterator over the Ts contained in [`VarZeroVecComponents`]
     #[inline]
     pub fn iter(self) -> VarZeroSliceIter<'a, T, F> {
         VarZeroSliceIter::new(self)
@@ -501,7 +513,7 @@ impl<'a, T: VarULE + ?Sized, F: VarZeroVecFormat> VarZeroVecComponents<'a, T, F>
     }
 }
 
-/// An iterator over VarZeroSlice
+/// An iterator over [`VarZeroSlice`](super::VarZeroSlice)
 #[derive(Debug)]
 pub struct VarZeroSliceIter<'a, T: ?Sized, F = Index16> {
     components: VarZeroVecComponents<'a, T, F>,
@@ -511,6 +523,16 @@ pub struct VarZeroSliceIter<'a, T: ?Sized, F = Index16> {
     //
     // It must be a valid index into the `things` array of components, coming from `components.indices_slice()`
     start_index: usize,
+}
+
+impl<'a, T: VarULE + ?Sized, F: VarZeroVecFormat> Clone for VarZeroSliceIter<'a, T, F> {
+    fn clone(&self) -> Self {
+        Self {
+            components: self.components,
+            index: self.index,
+            start_index: self.start_index,
+        }
+    }
 }
 
 impl<'a, T: VarULE + ?Sized, F: VarZeroVecFormat> VarZeroSliceIter<'a, T, F> {
@@ -677,7 +699,7 @@ where
     }
 }
 
-/// Collects the bytes for a VarZeroSlice into a Vec.
+/// Collects the bytes for a [`VarZeroSlice`](super::VarZeroSlice) into a [`Vec`].
 #[cfg(feature = "alloc")]
 pub fn get_serializable_bytes_non_empty<T, A, F>(elements: &[A]) -> Option<alloc::vec::Vec<u8>>
 where
@@ -696,8 +718,8 @@ where
     Some(output)
 }
 
-/// Writes the bytes for a VarZeroLengthlessSlice into an output buffer.
-/// Usable for a VarZeroSlice if you first write the length bytes.
+/// Writes the bytes for a [`VarZeroLengthlessSlice`](super::lenghtless::VarZeroLengthlessSlice) into an output buffer.
+/// Usable for a [`VarZeroSlice`](super::VarZeroSlice) if you first write the length bytes.
 ///
 /// Every byte in the buffer will be initialized after calling this function.
 ///
@@ -718,7 +740,14 @@ where
     // idx_offset = offset from the start of the buffer for the next index
     let mut idx_offset: usize = 0;
     // first_dat_offset = offset from the start of the buffer of the first data block
-    let first_dat_offset: usize = idx_offset + (elements.len() - 1) * F::Index::SIZE;
+    #[expect(
+        clippy::expect_used,
+        reason = "Function contract allows panicky behavior"
+    )]
+    let indices_size = F::Index::SIZE
+        .checked_mul(elements.len() - 1)
+        .expect(F::Index::TOO_LARGE_ERROR);
+    let first_dat_offset: usize = idx_offset + indices_size;
     // dat_offset = offset from the start of the buffer of the next data block
     let mut dat_offset: usize = first_dat_offset;
 
@@ -741,18 +770,28 @@ where
         }
 
         let dat_limit = dat_offset + element_len;
-        #[expect(clippy::indexing_slicing)] // Function contract allows panicky behavior
+        #[expect(
+            clippy::indexing_slicing,
+            reason = "Function contract allows panicky behavior"
+        )]
         let dat_slice = &mut output[dat_offset..dat_limit];
         element.encode_var_ule_write(dat_slice);
         debug_assert_eq!(T::validate_bytes(dat_slice), Ok(()));
         dat_offset = dat_limit;
     }
 
-    debug_assert_eq!(idx_offset, F::Index::SIZE * (elements.len() - 1));
+    #[expect(
+        clippy::expect_used,
+        reason = "Function contract allows panicky behavior"
+    )]
+    let indices_size = F::Index::SIZE
+        .checked_mul(elements.len() - 1)
+        .expect(F::Index::TOO_LARGE_ERROR);
+    debug_assert_eq!(idx_offset, indices_size);
     assert_eq!(dat_offset, output.len());
 }
 
-/// Writes the bytes for a VarZeroSlice into an output buffer.
+/// Writes the bytes for a [`VarZeroSlice`](super::VarZeroSlice) into an output buffer.
 ///
 /// Every byte in the buffer will be initialized after calling this function.
 ///

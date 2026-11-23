@@ -39,9 +39,12 @@ pub(super) struct Parser {
     header: Header,
 }
 
+/// The fixed prefix every gzip member starts with: magic bytes plus the deflate method.
+const MAGIC: [u8; 3] = [0x1f, 0x8b, 0x08];
+
 impl Header {
     fn parse(input: &[u8; 10]) -> io::Result<Self> {
-        if input[0..3] != [0x1f, 0x8b, 0x08] {
+        if input[0..3] != MAGIC {
             return Err(io::Error::new(
                 io::ErrorKind::InvalidData,
                 "Invalid gzip header",
@@ -87,6 +90,19 @@ impl Parser {
             match &mut self.state {
                 State::Fixed(data) => {
                     data.copy_unwritten_from(input);
+
+                    // `MAGIC` decides validity, so reject as soon as the bytes seen so far
+                    // contradict it instead of waiting for all 10. A reader that stalls part
+                    // way through the header would otherwise never resolve, which matters for
+                    // `multiple_members` over a live stream.
+                    let seen = data.written();
+                    let checked = seen.len().min(MAGIC.len());
+                    if seen[..checked] != MAGIC[..checked] {
+                        return Err(io::Error::new(
+                            io::ErrorKind::InvalidData,
+                            "Invalid gzip header",
+                        ));
+                    }
 
                     if data.unwritten().is_empty() {
                         let data = data.get_mut();
@@ -155,11 +171,9 @@ impl Parser {
                 }
 
                 State::Crc(data) => {
-                    let header = std::mem::take(&mut self.header);
-
                     if !self.header.flags.crc {
                         self.state = State::Done;
-                        break Ok(Some(header));
+                        break Ok(Some(std::mem::take(&mut self.header)));
                     }
 
                     data.copy_unwritten_from(input);
@@ -170,7 +184,7 @@ impl Parser {
                         let checksum = crc.sum().to_le_bytes();
 
                         if data == checksum[..2] {
-                            Ok(Some(header))
+                            Ok(Some(std::mem::take(&mut self.header)))
                         } else {
                             Err(io::Error::new(
                                 io::ErrorKind::InvalidData,

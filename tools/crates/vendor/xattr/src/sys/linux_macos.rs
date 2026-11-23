@@ -51,19 +51,16 @@ impl Iterator for XAttrs {
 /// functions. Unfortunately, we can't write this as a helper function because I need to call
 /// generic rustix function with two different types.
 macro_rules! allocate_loop {
-    (|$buf:ident| $($e:tt)*) => {
+    (|$buf:ident| $($e:expr)*, || $($s:expr)*) => {
         crate::util::allocate_loop(
             |$buf| Ok($($e)*?.0),
-            || {
-                let $buf: &mut [u8] = &mut [];
-                Ok($($e)*?)
-            },
+            || Ok($($s)*?),
         )
     };
 }
 
 pub fn get_fd(fd: BorrowedFd<'_>, name: &OsStr) -> io::Result<Vec<u8>> {
-    allocate_loop!(|buf| rfs::fgetxattr(fd, name, buf))
+    allocate_loop!(|buf| rfs::fgetxattr(fd, name, buf), || rfs::fgetxattr_query(fd, name))
 }
 
 pub fn set_fd(fd: BorrowedFd<'_>, name: &OsStr, value: &[u8]) -> io::Result<()> {
@@ -77,7 +74,7 @@ pub fn remove_fd(fd: BorrowedFd<'_>, name: &OsStr) -> io::Result<()> {
 }
 
 pub fn list_fd(fd: BorrowedFd<'_>) -> io::Result<XAttrs> {
-    let vec = allocate_loop!(|buf| rfs::flistxattr(fd, buf))?;
+    let vec = allocate_loop!(|buf| rfs::flistxattr(fd, buf), || rfs::flistxattr_query(fd))?;
     Ok(XAttrs {
         data: vec.into_boxed_slice(),
         offset: 0,
@@ -86,9 +83,9 @@ pub fn list_fd(fd: BorrowedFd<'_>) -> io::Result<XAttrs> {
 
 pub fn get_path(path: &Path, name: &OsStr, deref: bool) -> io::Result<Vec<u8>> {
     if deref {
-        allocate_loop!(|buf| rfs::getxattr(path, name, buf))
+        allocate_loop!(|buf| rfs::getxattr(path, name, buf), || rfs::getxattr_query(path, name))
     } else {
-        allocate_loop!(|buf| rfs::lgetxattr(path, name, buf))
+        allocate_loop!(|buf| rfs::lgetxattr(path, name, buf), || rfs::lgetxattr_query(path, name))
     }
 }
 
@@ -109,9 +106,9 @@ pub fn remove_path(path: &Path, name: &OsStr, deref: bool) -> io::Result<()> {
 
 pub fn list_path(path: &Path, deref: bool) -> io::Result<XAttrs> {
     let vec = if deref {
-        allocate_loop!(|buf| rfs::listxattr(path, buf))
+        allocate_loop!(|buf| rfs::listxattr(path, buf), || rfs::listxattr_query(path))
     } else {
-        allocate_loop!(|buf| rfs::llistxattr(path, buf))
+        allocate_loop!(|buf| rfs::llistxattr(path, buf), || rfs::llistxattr_query(path))
     }?;
     Ok(XAttrs {
         data: vec.into_boxed_slice(),

@@ -28,13 +28,12 @@
 #![deny(missing_docs)]
 #![deny(missing_debug_implementations)]
 
-
 use std::cmp::Ordering;
 use std::error::Error;
 use std::fmt;
 use std::hash::{Hash, Hasher};
-use std::str::FromStr;
 use std::slice;
+use std::str::FromStr;
 
 mod parse;
 
@@ -136,7 +135,7 @@ impl Mime {
     /// assert_eq!(mime.type_(), mime::TEXT);
     /// ```
     #[inline]
-    pub fn type_(&self) -> Name {
+    pub fn type_<'a>(&'a self) -> Name<'a> {
         Name {
             source: &self.source.as_ref()[..self.slash],
             insensitive: true,
@@ -153,10 +152,10 @@ impl Mime {
     /// assert_eq!(mime.subtype(), mime::PLAIN);
     /// ```
     #[inline]
-    pub fn subtype(&self) -> Name {
-        let end = self.plus.unwrap_or_else(|| {
-            return self.semicolon().unwrap_or(self.source.as_ref().len())
-        });
+    pub fn subtype<'a>(&'a self) -> Name<'a> {
+        let end = self
+            .plus
+            .unwrap_or_else(|| return self.semicolon().unwrap_or(self.source.as_ref().len()));
         Name {
             source: &self.source.as_ref()[self.slash + 1..end],
             insensitive: true,
@@ -176,7 +175,7 @@ impl Mime {
     /// assert!(mime::TEXT_PLAIN.suffix().is_none());
     /// ```
     #[inline]
-    pub fn suffix(&self) -> Option<Name> {
+    pub fn suffix<'a>(&'a self) -> Option<Name<'a>> {
         let end = self.semicolon().unwrap_or(self.source.as_ref().len());
         self.plus.map(|idx| Name {
             source: &self.source.as_ref()[idx + 1..end],
@@ -198,7 +197,9 @@ impl Mime {
     /// assert_eq!(mime.get_param(mime::BOUNDARY).unwrap(), "ABCDEFG");
     /// ```
     pub fn get_param<'a, N>(&'a self, attr: N) -> Option<Name<'a>>
-    where N: PartialEq<Name<'a>> {
+    where
+        N: PartialEq<Name<'a>>,
+    {
         self.params().find(|e| attr == e.0).map(|e| e.1)
     }
 
@@ -207,12 +208,10 @@ impl Mime {
     pub fn params<'a>(&'a self) -> Params<'a> {
         let inner = match self.params {
             ParamSource::Utf8(_) => ParamsInner::Utf8,
-            ParamSource::Custom(_, ref params) => {
-                ParamsInner::Custom {
-                    source: &self.source,
-                    params: params.iter(),
-                }
-            }
+            ParamSource::Custom(_, ref params) => ParamsInner::Custom {
+                source: &self.source,
+                params: params.iter(),
+            },
             ParamSource::None => ParamsInner::None,
         };
 
@@ -239,8 +238,7 @@ impl Mime {
     #[inline]
     fn semicolon(&self) -> Option<usize> {
         match self.params {
-            ParamSource::Utf8(i) |
-            ParamSource::Custom(i, _) => Some(i),
+            ParamSource::Utf8(i) | ParamSource::Custom(i, _) => Some(i),
             ParamSource::None => None,
         }
     }
@@ -265,110 +263,18 @@ fn eq_ascii(a: &str, b: &str) -> bool {
 }
 
 fn mime_eq_str(mime: &Mime, s: &str) -> bool {
-    if let ParamSource::Utf8(semicolon) = mime.params {
-        if mime.source.as_ref().len() == s.len() {
-            eq_ascii(mime.source.as_ref(), s)
-        } else {
-            params_eq(semicolon, mime.source.as_ref(), s)
-        }
-    } else if let Some(semicolon) = mime.semicolon() {
-        params_eq(semicolon, mime.source.as_ref(), s)
-    } else {
-        eq_ascii(mime.source.as_ref(), s)
+    if mime.source.as_ref() == s {
+        return true;
     }
-}
+    if mime.semicolon().is_none() {
+        return eq_ascii(mime.source.as_ref(), s);
+    }
 
-fn params_eq(semicolon: usize, a: &str, b: &str) -> bool {
-    if b.len() < semicolon + 1 {
-        false
-    } else if !eq_ascii(&a[..semicolon], &b[..semicolon]) {
-        false
-    } else {
-        // gotta check for quotes, LWS, and for case senstive names
-        let mut a = &a[semicolon + 1..];
-        let mut b = &b[semicolon + 1..];
-        let mut sensitive;
-
-        loop {
-            a = a.trim();
-            b = b.trim();
-
-            match (a.is_empty(), b.is_empty()) {
-                (true, true) => return true,
-                (true, false) |
-                (false, true) => return false,
-                (false, false) => (),
-            }
-
-            //name
-            if let Some(a_idx) = a.find('=') {
-                let a_name = {
-                    #[allow(deprecated)]
-                    { a[..a_idx].trim_left() }
-                };
-                if let Some(b_idx) = b.find('=') {
-                    let b_name = {
-                        #[allow(deprecated)]
-                        { b[..b_idx].trim_left() }
-                    };
-                    if !eq_ascii(a_name, b_name) {
-                        return false;
-                    }
-                    sensitive = a_name != CHARSET;
-                    a = &a[..a_idx];
-                    b = &b[..b_idx];
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-            //value
-            let a_quoted = if a.as_bytes()[0] == b'"' {
-                a = &a[1..];
-                true
-            } else {
-                false
-            };
-            let b_quoted = if b.as_bytes()[0] == b'"' {
-                b = &b[1..];
-                true
-            } else {
-                false
-            };
-
-            let a_end = if a_quoted {
-                if let Some(quote) = a.find('"') {
-                    quote
-                } else {
-                    return false;
-                }
-            } else {
-                a.find(';').unwrap_or(a.len())
-            };
-
-            let b_end = if b_quoted {
-                if let Some(quote) = b.find('"') {
-                    quote
-                } else {
-                    return false;
-                }
-            } else {
-                b.find(';').unwrap_or(b.len())
-            };
-
-            if sensitive {
-                if !eq_ascii(&a[..a_end], &b[..b_end]) {
-                    return false;
-                }
-            } else {
-                if &a[..a_end] != &b[..b_end] {
-                    return false;
-                }
-            }
-            a = &a[a_end..];
-            b = &b[b_end..];
-        }
+    // Parse before comparing parameters, so arbitrary strings cannot cause
+    // invalid UTF-8 slicing and quoted values use the same rules as Mime.
+    match s.parse::<Mime>() {
+        Ok(other) => mime == &other,
+        Err(_) => false,
     }
 }
 
@@ -376,13 +282,9 @@ impl PartialEq for Mime {
     #[inline]
     fn eq(&self, other: &Mime) -> bool {
         match (self.atom(), other.atom()) {
-            // TODO:
-            // This could optimize for when there are no customs parameters.
-            // Any parsed mime has already been lowercased, so if there aren't
-            // any parameters that are case sensistive, this can skip the
-            // eq_ascii, and just use a memcmp instead.
-            (0, _) |
-            (_, 0) => mime_eq_str(self, other.source.as_ref()),
+            (0, _) | (_, 0) => {
+                self.essence_str() == other.essence_str() && self.params().eq(other.params())
+            }
             (a, b) => a == b,
         }
     }
@@ -398,19 +300,28 @@ impl PartialOrd for Mime {
 
 impl Ord for Mime {
     fn cmp(&self, other: &Mime) -> Ordering {
-        self.source.as_ref().cmp(other.source.as_ref())
+        match self.essence_str().cmp(other.essence_str()) {
+            Ordering::Equal => self.params().cmp(other.params()),
+            ordering => ordering,
+        }
     }
 }
 
 impl Hash for Mime {
     fn hash<T: Hasher>(&self, hasher: &mut T) {
-        hasher.write(self.source.as_ref().as_bytes());
+        self.essence_str().hash(hasher);
+        let mut count = 0usize;
+        for param in self.params() {
+            param.hash(hasher);
+            count += 1;
+        }
+        count.hash(hasher);
     }
 }
 
 impl<'a> PartialEq<&'a str> for Mime {
     #[inline]
-    fn eq(&self, s: & &'a str) -> bool {
+    fn eq(&self, s: &&'a str) -> bool {
         mime_eq_str(self, *s)
     }
 }
@@ -474,7 +385,7 @@ impl<'a> Name<'a> {
 
 impl<'a, 'b> PartialEq<&'b str> for Name<'a> {
     #[inline]
-    fn eq(&self, other: & &'b str) -> bool {
+    fn eq(&self, other: &&'b str) -> bool {
         name_eq_str(self, *other)
     }
 }
@@ -545,20 +456,21 @@ impl<'a> Iterator for Params<'a> {
                 self.0 = ParamsInner::None;
                 Some(value)
             }
-            ParamsInner::Custom { source, ref mut params } => {
-                params.next().map(|&(name, value)| {
-                    let name = Name {
-                        source: &source.as_ref()[name.0..name.1],
-                        insensitive: true,
-                    };
-                    let value = Name {
-                        source: &source.as_ref()[value.0..value.1],
-                        insensitive: name == CHARSET,
-                    };
-                    (name, value)
-                })
-            }
-            ParamsInner::None => None
+            ParamsInner::Custom {
+                source,
+                ref mut params,
+            } => params.next().map(|&(name, value)| {
+                let name = Name {
+                    source: &source.as_ref()[name.0..name.1],
+                    insensitive: true,
+                };
+                let value = Name {
+                    source: &source.as_ref()[value.0..value.1],
+                    insensitive: name == CHARSET,
+                };
+                (name, value)
+            }),
+            ParamsInner::None => None,
         }
     }
 
@@ -706,18 +618,17 @@ macro_rules! mime_constant {
     )
 }
 
-
 #[cfg(test)]
 macro_rules! mime_constant_test {
     ($id:ident, $src:expr, $slash:expr) => (
-        mime_constant_test!($id, $src, $slash, None);
+        mime_constant_test!($id, $src, $slash, None)
     );
     ($id:ident, $src:expr, $slash:expr, $plus:expr) => (
-        mime_constant_test!(FULL $id, $src, $slash, $plus, ParamSource::None);
+        mime_constant_test!(FULL $id, $src, $slash, $plus, ParamSource::None)
     );
 
     ($id:ident, $src:expr, $slash:expr, $plus:expr, $params:expr) => (
-        mime_constant_test!(FULL $id, $src, $slash, $plus, ParamSource::Utf8($params));
+        mime_constant_test!(FULL $id, $src, $slash, $plus, ParamSource::Utf8($params))
     );
 
     (FULL $id:ident, $src:expr, $slash:expr, $plus:expr, $params:expr) => ({
@@ -741,7 +652,6 @@ macro_rules! mime_constant_test {
         __mime.atom()
     })
 }
-
 
 mimes! {
     STAR_STAR, "*/*", 1;
@@ -783,21 +693,19 @@ mimes! {
     MULTIPART_FORM_DATA, "multipart/form-data", 9;
 }
 
-#[deprecated(since="0.3.1", note="please use `TEXT_JAVASCRIPT` instead")]
+#[deprecated(since = "0.3.1", note = "please use `TEXT_JAVASCRIPT` instead")]
 #[doc(hidden)]
 pub const TEXT_JAVSCRIPT: Mime = TEXT_JAVASCRIPT;
 
-
 #[cfg(test)]
 mod tests {
-    use std::str::FromStr;
     use super::*;
+    use std::str::FromStr;
 
     #[test]
     fn test_type_() {
         assert_eq!(TEXT_PLAIN.type_(), TEXT);
     }
-
 
     #[test]
     fn test_subtype() {
@@ -834,11 +742,20 @@ mod tests {
     fn test_mime_from_str() {
         assert_eq!(Mime::from_str("text/plain").unwrap(), TEXT_PLAIN);
         assert_eq!(Mime::from_str("TEXT/PLAIN").unwrap(), TEXT_PLAIN);
-        assert_eq!(Mime::from_str("text/plain;charset=utf-8").unwrap(), TEXT_PLAIN_UTF_8);
-        assert_eq!(Mime::from_str("text/plain;charset=\"utf-8\"").unwrap(), TEXT_PLAIN_UTF_8);
+        assert_eq!(
+            Mime::from_str("text/plain;charset=utf-8").unwrap(),
+            TEXT_PLAIN_UTF_8
+        );
+        assert_eq!(
+            Mime::from_str("text/plain;charset=\"utf-8\"").unwrap(),
+            TEXT_PLAIN_UTF_8
+        );
 
         // spaces
-        assert_eq!(Mime::from_str("text/plain; charset=utf-8").unwrap(), TEXT_PLAIN_UTF_8);
+        assert_eq!(
+            Mime::from_str("text/plain; charset=utf-8").unwrap(),
+            TEXT_PLAIN_UTF_8
+        );
 
         // quotes + semi colon
         Mime::from_str("text/plain;charset=\"utf-8\"; foo=bar").unwrap();
@@ -848,7 +765,6 @@ mod tests {
         assert_eq!(upper, TEXT_PLAIN);
         assert_eq!(upper.type_(), TEXT);
         assert_eq!(upper.subtype(), PLAIN);
-
 
         let extended = Mime::from_str("TEXT/PLAIN; CHARSET=UTF-8; FOO=BAR").unwrap();
         assert_eq!(extended, "text/plain; charset=utf-8; foo=BAR");
@@ -860,7 +776,10 @@ mod tests {
         // stars
         assert_eq!("*/*".parse::<Mime>().unwrap(), STAR_STAR);
         assert_eq!("image/*".parse::<Mime>().unwrap(), "image/*");
-        assert_eq!("text/*; charset=utf-8".parse::<Mime>().unwrap(), "text/*; charset=utf-8");
+        assert_eq!(
+            "text/*; charset=utf-8".parse::<Mime>().unwrap(),
+            "text/*; charset=utf-8"
+        );
 
         // parse errors
         Mime::from_str("f o o / bar").unwrap_err();
@@ -887,7 +806,6 @@ mod tests {
             assert_eq!(mime.subtype(), EVENT_STREAM, "case = {:?}", case);
             assert!(!mime.has_params(), "case = {:?}", case);
         }
-
     }
 
     #[test]
@@ -910,7 +828,6 @@ mod tests {
         assert_eq!(mime.get_param(CHARSET).unwrap(), "utf-8");
         assert_eq!(mime.get_param("foo").unwrap(), "bar");
         assert_eq!(mime.get_param("baz"), None);
-
 
         let mime = Mime::from_str("text/plain;charset=\"utf-8\"").unwrap();
         assert_eq!(mime.get_param(CHARSET), Some(UTF_8));

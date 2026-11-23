@@ -12,11 +12,7 @@
 [package]
 edition = "2018"
 name = "platforms"
-version = "3.7.0"
-authors = [
-    "Tony Arcieri <bascule@gmail.com>",
-    'Sergey "Shnatsel" Davidoff <shnatsel@gmail.com>',
-]
+version = "4.4.0"
 build = false
 exclude = [
     "README.header.md",
@@ -60,3 +56,19 @@ path = "src/lib.rs"
 [dependencies.serde]
 version = "1"
 optional = true
+
+[lints.clippy]
+cloned_instead_of_copied = "warn"
+manual_let_else = "warn"
+or_fun_call = "warn"
+upper_case_acronyms = "warn"
+use_self = "warn"
+
+[lints.rust]
+elided_lifetimes_in_paths = "warn"
+trivial_numeric_casts = "warn"
+unnameable_types = "warn"
+unreachable_pub = "warn"
+unused_extern_crates = "warn"
+unused_import_braces = "warn"
+unused_qualifications = "warn"

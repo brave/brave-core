@@ -86,8 +86,14 @@ macro_rules! buf_get_impl {
 
 // https://en.wikipedia.org/wiki/Sign_extension
 fn sign_extend(val: u64, nbytes: usize) -> i64 {
-    let shift = (8 - nbytes) * 8;
-    (val << shift) as i64 >> shift
+    debug_assert!(nbytes <= 8, "nbytes must be in [0, 8]");
+    if nbytes == 0 {
+        // avoid `val << 64` panic
+        0
+    } else {
+        let shift = (8 - nbytes) * 8;
+        (val << shift) as i64 >> shift
+    }
 }
 
 /// Read bytes from a buffer.
@@ -2079,7 +2085,7 @@ pub trait Buf {
     ///
     /// This function panics if `nbytes` is greater than 8.
     fn try_get_int(&mut self, nbytes: usize) -> Result<i64, TryGetError> {
-        buf_try_get_impl!(be => self, i64, nbytes);
+        Ok(sign_extend(self.try_get_uint(nbytes)?, nbytes))
     }
 
     /// Gets a signed n-byte integer from `self` in little-endian byte order.
@@ -2111,7 +2117,7 @@ pub trait Buf {
     ///
     /// This function panics if `nbytes` is greater than 8.
     fn try_get_int_le(&mut self, nbytes: usize) -> Result<i64, TryGetError> {
-        buf_try_get_impl!(le => self, i64, nbytes);
+        Ok(sign_extend(self.try_get_uint_le(nbytes)?, nbytes))
     }
 
     /// Gets a signed n-byte integer from `self` in native-endian byte order.
@@ -2960,3 +2966,20 @@ impl<T: AsRef<[u8]>> Buf for std::io::Cursor<T> {
 // The existence of this function makes the compiler catch if the Buf
 // trait is "object-safe" or not.
 fn _assert_trait_object(_b: &dyn Buf) {}
+
+#[cfg(test)]
+mod tests {
+    use super::sign_extend;
+
+    #[test]
+    fn sign_extend_zero_bytes() {
+        assert_eq!(sign_extend(u64::MAX, 0), 0);
+    }
+
+    #[test]
+    #[cfg(debug_assertions)]
+    #[should_panic(expected = "nbytes must be in [0, 8]")]
+    fn sign_extend_more_than_eight_bytes_panics_in_debug() {
+        sign_extend(0, 9);
+    }
+}

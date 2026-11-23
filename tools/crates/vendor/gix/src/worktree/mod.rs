@@ -1,4 +1,4 @@
-use std::path::PathBuf;
+use std::{ffi::OsStr, path::PathBuf};
 
 #[cfg(feature = "worktree-archive")]
 pub use gix_archive as archive;
@@ -9,20 +9,32 @@ pub use gix_worktree_state as state;
 #[cfg(feature = "worktree-stream")]
 pub use gix_worktree_stream as stream;
 
+/// Add linked worktrees.
+#[cfg(feature = "worktree-mutation")]
+pub mod add;
+#[cfg(feature = "worktree-mutation")]
+mod checkout;
+/// Remove linked worktrees.
+#[cfg(feature = "worktree-mutation")]
+pub mod remove;
+
 use crate::{
+    Repository, Result,
     bstr::{BStr, BString},
-    Repository,
 };
 
 #[cfg(feature = "index")]
-pub(crate) type IndexStorage = gix_features::threading::OwnShared<gix_fs::SharedFileSnapshotMut<gix_index::File>>;
+pub(crate) type IndexStorage = gix_parallel::OwnShared<gix_fs::SharedFileSnapshotMut<gix_index::File>>;
 /// A lazily loaded and auto-updated worktree index.
 #[cfg(feature = "index")]
 pub type Index = gix_fs::SharedFileSnapshot<gix_index::File>;
 
 /// A type to represent an index which either was loaded from disk as it was persisted there, or created on the fly in memory.
 #[cfg(feature = "index")]
-#[allow(clippy::large_enum_variant)]
+#[expect(
+    clippy::large_enum_variant,
+    reason = "will be removed once `gix-error` is used consistently"
+)]
 #[derive(Clone)]
 pub enum IndexPersistedOrInMemory {
     /// The index as loaded from disk, and shared across clones of the owning `Repository`.
@@ -68,27 +80,35 @@ impl<'repo> crate::Worktree<'repo> {
     ///
     /// It cannot be removed.
     pub fn is_main(&self) -> bool {
-        self.id().is_none()
+        id(self.parent.git_dir(), self.parent.common_dir.is_some()).is_none()
     }
 
     /// Return true if this worktree cannot be pruned, moved or deleted, which is useful if it is located on an external storage device.
     ///
     /// Always false for the main worktree.
     pub fn is_locked(&self) -> bool {
-        Proxy::new(self.parent, self.parent.git_dir()).is_locked()
+        !self.is_main() && Proxy::new(self.parent, self.parent.git_dir()).is_locked()
     }
 
     /// Provide a reason for the locking of this worktree, if it is locked at all.
     ///
+    /// Always `None` for the main worktree.
+    ///
     /// Note that we squelch errors in case the file cannot be read in which case the
     /// reason is an empty string.
     pub fn lock_reason(&self) -> Option<BString> {
+        if self.is_main() {
+            return None;
+        }
         Proxy::new(self.parent, self.parent.git_dir()).lock_reason()
     }
 
-    /// Return the ID of the repository worktree, if it is a linked worktree, or `None` if it's a linked worktree.
-    pub fn id(&self) -> Option<&BStr> {
+    /// Return the ID of the repository worktree, if it is a linked worktree, or `Ok(None)` if it's the main worktree.
+    /// Return an error if its directory name cannot be represented as Git bytes.
+    pub fn id(&self) -> Result<Option<&BStr>> {
         id(self.parent.git_dir(), self.parent.common_dir.is_some())
+            .map(gix_path::os_str_into_bstr)
+            .transpose()
     }
 
     /// Returns true if the `.git` file or directory exists within the worktree.
@@ -99,14 +119,30 @@ impl<'repo> crate::Worktree<'repo> {
     }
 }
 
-pub(crate) fn id(git_dir: &std::path::Path, has_common_dir: bool) -> Option<&BStr> {
+fn id(git_dir: &std::path::Path, has_common_dir: bool) -> Option<&OsStr> {
     if !has_common_dir {
         return None;
     }
-    let candidate = gix_path::os_str_into_bstr(git_dir.file_name().expect("at least one directory level"))
-        .expect("no illformed UTF-8");
-    let maybe_worktrees = git_dir.parent()?;
-    (maybe_worktrees.file_name()?.to_str()? == "worktrees").then_some(candidate)
+    let candidate = git_dir.file_name().expect("at least one directory level");
+    (git_dir.parent()?.file_name()? == "worktrees").then_some(candidate)
+}
+
+/// Mutation
+#[cfg(feature = "worktree-mutation")]
+impl crate::Worktree<'_> {
+    /// Set or clear this linked worktree's lock, preventing pruning, moving, and removal while locked.
+    ///
+    /// `Some(reason)` creates or replaces the lock reason; an empty reason locks without an explanation.
+    /// `None` unlocks, succeeding even if already unlocked. The main worktree cannot be locked or unlocked.
+    /// See [`Proxy::set_lock()`] for storage and concurrency details.
+    pub fn set_lock(&self, reason: Option<&BStr>) -> Result<()> {
+        use crate::error::{bail, validation};
+
+        if self.is_main() {
+            bail!(validation("The main worktree cannot be locked or unlocked"));
+        }
+        Proxy::new(self.parent, self.parent.git_dir()).set_lock(reason)
+    }
 }
 
 ///
@@ -115,28 +151,16 @@ pub mod proxy;
 ///
 #[cfg(feature = "index")]
 pub mod open_index {
-    /// The error returned by [`Worktree::open_index()`][crate::Worktree::open_index()].
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error(transparent)]
-        ConfigIndexThreads(#[from] crate::config::key::GenericErrorWithValue),
-        #[error(transparent)]
-        ConfigSkipHash(#[from] crate::config::boolean::Error),
-        #[error(transparent)]
-        IndexFile(#[from] gix_index::file::init::Error),
-        #[error(transparent)]
-        IndexCorrupt(#[from] gix_index::file::verify::Error),
-    }
+    use crate::Result;
 
     impl crate::Worktree<'_> {
         /// A shortcut to [`crate::Repository::open_index()`].
-        pub fn open_index(&self) -> Result<gix_index::File, Error> {
+        pub fn open_index(&self) -> Result<gix_index::File> {
             self.parent.open_index()
         }
 
         /// A shortcut to [`crate::Repository::index()`].
-        pub fn index(&self) -> Result<crate::worktree::Index, Error> {
+        pub fn index(&self) -> Result<crate::worktree::Index> {
             self.parent.index()
         }
     }
@@ -145,17 +169,7 @@ pub mod open_index {
 ///
 #[cfg(feature = "excludes")]
 pub mod excludes {
-    use crate::AttributeStack;
-
-    /// The error returned by [`Worktree::excludes()`][crate::Worktree::excludes()].
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error(transparent)]
-        OpenIndex(#[from] crate::worktree::open_index::Error),
-        #[error(transparent)]
-        CreateCache(#[from] crate::config::exclude_stack::Error),
-    }
+    use crate::{AttributeStack, Result};
 
     impl crate::Worktree<'_> {
         /// Configure a file-system cache checking if files below the repository are excluded.
@@ -167,13 +181,13 @@ pub mod excludes {
         ///
         /// When only excludes are desired, this is the most efficient way to obtain them. Otherwise use
         /// [`Worktree::attributes()`][crate::Worktree::attributes()] for accessing both attributes and excludes.
-        pub fn excludes(&self, overrides: Option<gix_ignore::Search>) -> Result<AttributeStack<'_>, Error> {
+        pub fn excludes(&self, overrides: Option<gix_ignore::Search>) -> Result<AttributeStack<'_>> {
             let index = self.index()?;
-            Ok(self.parent.excludes(
+            self.parent.excludes(
                 &index,
                 overrides,
                 gix_worktree::stack::state::ignore::Source::WorktreeThenIdMappingIfNotSkipped,
-            )?)
+            )
         }
     }
 }
@@ -181,17 +195,7 @@ pub mod excludes {
 ///
 #[cfg(feature = "attributes")]
 pub mod attributes {
-    use crate::{AttributeStack, Worktree};
-
-    /// The error returned by [`Worktree::attributes()`].
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error(transparent)]
-        OpenIndex(#[from] crate::worktree::open_index::Error),
-        #[error(transparent)]
-        CreateCache(#[from] crate::repository::attributes::Error),
-    }
+    use crate::{AttributeStack, Result, Worktree};
 
     impl<'repo> Worktree<'repo> {
         /// Configure a file-system cache checking if files below the repository are excluded or for querying their attributes.
@@ -200,25 +204,23 @@ pub mod attributes {
         ///
         /// * `$XDG_CONFIG_HOME/…/ignore|attributes` if `core.excludesFile|attributesFile` is *not* set, otherwise use the configured file.
         /// * `$GIT_DIR/info/exclude|attributes` if present.
-        pub fn attributes(&self, overrides: Option<gix_ignore::Search>) -> Result<AttributeStack<'repo>, Error> {
+        pub fn attributes(&self, overrides: Option<gix_ignore::Search>) -> Result<AttributeStack<'repo>> {
             let index = self.index()?;
-            Ok(self.parent.attributes(
+            self.parent.attributes(
                 &index,
                 gix_worktree::stack::state::attributes::Source::WorktreeThenIdMapping,
                 gix_worktree::stack::state::ignore::Source::WorktreeThenIdMappingIfNotSkipped,
                 overrides,
-            )?)
+            )
         }
 
         /// Like [attributes()][Self::attributes()], but without access to exclude/ignore information.
-        pub fn attributes_only(&self) -> Result<AttributeStack<'repo>, Error> {
+        pub fn attributes_only(&self) -> Result<AttributeStack<'repo>> {
             let index = self.index()?;
-            self.parent
-                .attributes_only(
-                    &index,
-                    gix_worktree::stack::state::attributes::Source::WorktreeThenIdMapping,
-                )
-                .map_err(|err| Error::CreateCache(err.into()))
+            self.parent.attributes_only(
+                &index,
+                gix_worktree::stack::state::attributes::Source::WorktreeThenIdMapping,
+            )
         }
     }
 }
@@ -227,20 +229,10 @@ pub mod attributes {
 #[cfg(feature = "attributes")]
 pub mod pathspec {
     use crate::{
+        Result, Worktree,
         bstr::BStr,
         config::{cache::util::ApplyLeniencyDefaultValue, tree::gitoxide},
-        Worktree,
     };
-
-    /// The error returned by [`Worktree::pathspec()`].
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error(transparent)]
-        Init(#[from] crate::pathspec::init::Error),
-        #[error(transparent)]
-        OpenIndex(#[from] crate::worktree::open_index::Error),
-    }
 
     impl<'repo> Worktree<'repo> {
         /// Configure pathspecs `patterns` to be matched against, with pathspec attributes read from the worktree and then from the index
@@ -251,34 +243,27 @@ pub mod pathspec {
         /// ### Deviation
         ///
         /// Pathspec attributes match case-insensitively by default if the underlying filesystem is configured that way.
-        pub fn pathspec(
-            &self,
-            patterns: impl IntoIterator<Item = impl AsRef<BStr>>,
-        ) -> Result<crate::Pathspec<'repo>, Error> {
+        pub fn pathspec(&self, patterns: impl IntoIterator<Item = impl AsRef<BStr>>) -> Result<crate::Pathspec<'repo>> {
             let index = self.index()?;
-            let inherit_ignore_case = self
-                .parent
-                .config
-                .resolved
-                .boolean("gitoxide.pathspec.inheritIgnoreCase")
-                .map(|res| {
-                    gitoxide::Pathspec::INHERIT_IGNORE_CASE
-                        .enrich_error(res)
-                        .with_lenient_default_value(
-                            self.parent.config.lenient_config,
-                            gitoxide::Pathspec::INHERIT_IGNORE_CASE_DEFAULT,
-                        )
-                })
-                .transpose()
-                .map_err(|err| Error::Init(crate::pathspec::init::Error::Defaults(err.into())))?
+            let inherit_ignore_case = gitoxide::Pathspec::INHERIT_IGNORE_CASE
+                .enrich_error(
+                    self.parent
+                        .config
+                        .resolved
+                        .boolean("gitoxide.pathspec.inheritIgnoreCase"),
+                )
+                .with_lenient_default_value(
+                    self.parent.config.lenient_config,
+                    Some(gitoxide::Pathspec::INHERIT_IGNORE_CASE_DEFAULT),
+                )?
                 .unwrap_or(gitoxide::Pathspec::INHERIT_IGNORE_CASE_DEFAULT);
-            Ok(self.parent.pathspec(
+            self.parent.pathspec(
                 true, /* empty patterns match prefix */
                 patterns,
                 inherit_ignore_case,
                 &index,
                 gix_worktree::stack::state::attributes::Source::WorktreeThenIdMapping,
-            )?)
+            )
         }
     }
 }

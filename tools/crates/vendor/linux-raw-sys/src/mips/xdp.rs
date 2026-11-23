@@ -181,6 +181,7 @@ pub const XDP_UMEM_FILL_RING: u32 = 5;
 pub const XDP_UMEM_COMPLETION_RING: u32 = 6;
 pub const XDP_STATISTICS: u32 = 7;
 pub const XDP_OPTIONS: u32 = 8;
+pub const XDP_MAX_TX_SKB_BUDGET: u32 = 9;
 pub const XDP_OPTIONS_ZEROCOPY: u32 = 1;
 pub const XDP_PGOFF_RX_RING: u32 = 0;
 pub const XDP_PGOFF_TX_RING: u32 = 2147483648;

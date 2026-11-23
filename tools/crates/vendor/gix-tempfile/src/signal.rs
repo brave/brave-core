@@ -78,7 +78,7 @@ pub mod handler {
         }
 
         #[test]
-        fn various_termination_signals_remove_tempfiles_unconditionally() -> Result<(), Box<dyn std::error::Error>> {
+        fn various_termination_signals_remove_tempfiles_unconditionally() -> gix_testtools::TestResult {
             crate::signal::setup(Default::default());
             let dir = tempfile::tempdir()?;
             for sig in signal_hook::consts::TERM_SIGNALS {

@@ -1,21 +1,8 @@
+use gix_error::ResultExt;
 use gix_object::TreeRefIter;
 
 use super::{Action, Change, Platform};
-use crate::{diff::rewrites::tracker, Tree};
-
-/// The error return by methods on the [diff platform][Platform].
-#[derive(Debug, thiserror::Error)]
-#[allow(missing_docs)]
-pub enum Error {
-    #[error(transparent)]
-    Diff(#[from] gix_diff::tree_with_rewrites::Error),
-    #[error("The user-provided callback failed")]
-    ForEach(#[source] Box<dyn std::error::Error + Send + Sync + 'static>),
-    #[error(transparent)]
-    ResourceCache(#[from] crate::repository::diff_resource_cache::Error),
-    #[error("Failure during rename tracking")]
-    RenameTracking(#[from] tracker::emit::Error),
-}
+use crate::{Result, Tree};
 
 /// Add the item to compare to.
 impl<'old> Platform<'_, 'old> {
@@ -23,14 +10,11 @@ impl<'old> Platform<'_, 'old> {
     ///
     /// `other` could also be created with the [`empty_tree()`][crate::Repository::empty_tree()] method to handle the first commit
     /// in a repository - it doesn't have a parent, equivalent to compare 'nothing' to something.
-    pub fn for_each_to_obtain_tree<'new, E>(
+    pub fn for_each_to_obtain_tree<'new>(
         &mut self,
         other: &Tree<'new>,
-        for_each: impl FnMut(Change<'_, 'old, 'new>) -> Result<Action, E>,
-    ) -> Result<Option<gix_diff::rewrites::Outcome>, Error>
-    where
-        E: Into<Box<dyn std::error::Error + Sync + Send + 'static>>,
-    {
+        for_each: impl FnMut(Change<'_, 'old, 'new>) -> Result<Action>,
+    ) -> Result<Option<gix_diff::rewrites::Outcome>> {
         self.for_each_to_obtain_tree_inner(other, for_each, None)
     }
 
@@ -44,27 +28,21 @@ impl<'old> Platform<'_, 'old> {
     ///
     /// Note that to do rename tracking like `git` does, one has to configure the `resource_cache` with
     /// a conversion pipeline that uses [`gix_diff::blob::pipeline::Mode::ToGit`].
-    pub fn for_each_to_obtain_tree_with_cache<'new, E>(
+    pub fn for_each_to_obtain_tree_with_cache<'new>(
         &mut self,
         other: &Tree<'new>,
         resource_cache: &mut gix_diff::blob::Platform,
-        for_each: impl FnMut(Change<'_, 'old, 'new>) -> Result<Action, E>,
-    ) -> Result<Option<gix_diff::rewrites::Outcome>, Error>
-    where
-        E: Into<Box<dyn std::error::Error + Sync + Send + 'static>>,
-    {
+        for_each: impl FnMut(Change<'_, 'old, 'new>) -> Result<Action>,
+    ) -> Result<Option<gix_diff::rewrites::Outcome>> {
         self.for_each_to_obtain_tree_inner(other, for_each, Some(resource_cache))
     }
 
-    fn for_each_to_obtain_tree_inner<'new, E>(
+    fn for_each_to_obtain_tree_inner<'new>(
         &mut self,
         other: &Tree<'new>,
-        mut for_each: impl FnMut(Change<'_, 'old, 'new>) -> Result<Action, E>,
+        mut for_each: impl FnMut(Change<'_, 'old, 'new>) -> Result<Action>,
         resource_cache: Option<&mut gix_diff::blob::Platform>,
-    ) -> Result<Option<gix_diff::rewrites::Outcome>, Error>
-    where
-        E: Into<Box<dyn std::error::Error + Sync + Send + 'static>>,
-    {
+    ) -> Result<Option<gix_diff::rewrites::Outcome>> {
         let repo = self.lhs.repo;
         let mut storage;
         let cache = match resource_cache {
@@ -75,19 +53,15 @@ impl<'old> Platform<'_, 'old> {
             Some(cache) => cache,
         };
         let opts = self.options.into();
-        Ok(gix_diff::tree_with_rewrites(
-            TreeRefIter::from_bytes(&self.lhs.data),
-            TreeRefIter::from_bytes(&other.data),
+        gix_diff::tree_with_rewrites(
+            TreeRefIter::from_bytes(&self.lhs.data, self.lhs.id.kind()),
+            TreeRefIter::from_bytes(&other.data, other.id.kind()),
             cache,
             &mut self.state,
             &repo.objects,
-            |change| {
-                for_each(Change::from_change_ref(change, repo, other.repo)).map(|action| match action {
-                    Action::Continue => gix_diff::tree_with_rewrites::Action::Continue,
-                    Action::Cancel => gix_diff::tree_with_rewrites::Action::Cancel,
-                })
-            },
+            |change| for_each(Change::from_change_ref(change, repo, other.repo)),
             opts,
-        )?)
+        )
+        .or_error()
     }
 }

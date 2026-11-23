@@ -1,9 +1,9 @@
 [package]
 name = "tar"
-version = "0.4.45"
+version = "0.4.46"
 authors = ["Alex Crichton <alex@alexcrichton.com>"]
-homepage = "https://github.com/alexcrichton/tar-rs"
-repository = "https://github.com/alexcrichton/tar-rs"
+homepage = "https://github.com/composefs/tar-rs"
+repository = "https://github.com/composefs/tar-rs"
 documentation = "https://docs.rs/tar"
 license = "MIT OR Apache-2.0"
 keywords = ["tar", "tarfile", "encoding"]
@@ -23,7 +23,7 @@ contents are never required to be entirely resident in memory all at once.
 filetime = "0.2.8"
 
 [dev-dependencies]
-astral-tokio-tar = "0.5"
+astral-tokio-tar = "0.6.2"
 rand = { version = "0.8", features = ["small_rng"] }
 tempfile = "3"
 tokio = { version = "1", features = ["macros", "rt"] }

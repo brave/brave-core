@@ -13,9 +13,9 @@ use super::hs;
 #[cfg(feature = "std")]
 use crate::WantsVerifier;
 use crate::builder::ConfigBuilder;
-use crate::common_state::{CommonState, Side};
 #[cfg(feature = "std")]
-use crate::common_state::{Protocol, State};
+use crate::common_state::State;
+use crate::common_state::{CommonState, Protocol, Side};
 use crate::conn::{ConnectionCommon, ConnectionCore, UnbufferedConnectionCommon};
 #[cfg(doc)]
 use crate::crypto;
@@ -398,10 +398,23 @@ pub struct ServerConfig {
     /// do any resumption.
     pub send_tls13_tickets: usize,
 
+    /// Upper bound on the number of TLS 1.3 tickets sent in response to a
+    /// client [RFC 9149] `ticket_request` extension.
+    ///
+    /// A client requesting `n` tickets receives `min(n, max_tls13_tickets)`.
+    /// Set to 0 to ignore client requests entirely (clients get
+    /// `send_tls13_tickets` regardless).
+    ///
+    /// The default is 0 (extension is ignored, preserving current behavior).
+    ///
+    /// [RFC 9149]: https://datatracker.ietf.org/doc/html/rfc9149
+    pub max_tls13_tickets: usize,
+
     /// If set to `true`, requires the client to support the extended
     /// master secret extraction method defined in [RFC 7627].
     ///
-    /// The default is `true` if the "fips" crate feature is enabled,
+    /// The default is `true` if the configured [`CryptoProvider`] is
+    /// FIPS-compliant (i.e., [`CryptoProvider::fips()`] returns `true`),
     /// `false` otherwise.
     ///
     /// It must be set to `true` to meet FIPS requirement mentioned in section
@@ -557,13 +570,14 @@ impl ServerConfig {
     /// We support a given TLS version if it's quoted in the configured
     /// versions *and* at least one ciphersuite for this version is
     /// also configured.
-    pub(crate) fn supports_version(&self, v: ProtocolVersion) -> bool {
+    pub(crate) fn supports_version(&self, v: ProtocolVersion, protocol: Protocol) -> bool {
         self.versions.contains(v)
             && self
                 .provider
                 .cipher_suites
                 .iter()
                 .any(|cs| cs.version().version == v)
+            && protocol.supports_version(v)
     }
 
     #[cfg(feature = "std")]
@@ -622,7 +636,7 @@ mod connection {
         }
 
         #[cfg(read_buf)]
-        fn read_buf(&mut self, cursor: core::io::BorrowedCursor<'_>) -> io::Result<()> {
+        fn read_buf(&mut self, cursor: core::io::BorrowedCursor<'_, u8>) -> io::Result<()> {
             self.early_data.read_buf(cursor)
         }
     }
@@ -1166,7 +1180,7 @@ impl EarlyDataState {
     }
 
     #[cfg(read_buf)]
-    fn read_buf(&mut self, cursor: core::io::BorrowedCursor<'_>) -> io::Result<()> {
+    fn read_buf(&mut self, cursor: core::io::BorrowedCursor<'_, u8>) -> io::Result<()> {
         match self {
             Self::Accepted { received, .. } => received.read_buf(cursor),
             _ => Err(io::Error::from(io::ErrorKind::BrokenPipe)),
@@ -1275,7 +1289,7 @@ mod tests {
         use core::io::BorrowedBuf;
 
         let mut buf = [0u8; 5];
-        let mut buf: BorrowedBuf<'_> = buf.as_mut_slice().into();
+        let mut buf: BorrowedBuf<'_, u8> = buf.as_mut_slice().into();
         assert_eq!(
             format!("{:?}", EarlyDataState::default().read_buf(buf.unfilled())),
             "Err(Kind(BrokenPipe))"

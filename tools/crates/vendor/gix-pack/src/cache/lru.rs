@@ -28,7 +28,7 @@ mod memory {
     pub struct MemoryCappedHashmap {
         inner: clru::CLruCache<Key, Entry, std::collections::hash_map::RandomState, CustomScale>,
         free_list: Vec<Vec<u8>>,
-        debug: gix_features::cache::Debug,
+        debug: gix_utils::cache::Debug,
     }
 
     impl MemoryCappedHashmap {
@@ -41,7 +41,7 @@ mod memory {
                         .with_scale(CustomScale),
                 ),
                 free_list: Vec::new(),
-                debug: gix_features::cache::Debug::new(format!("MemoryCappedHashmap({memory_cap_in_bytes}B)")),
+                debug: gix_utils::cache::Debug::new(format!("MemoryCappedHashmap({memory_cap_in_bytes}B)")),
             }
         }
     }
@@ -103,7 +103,7 @@ mod _static {
     pub struct StaticLinkedList<const SIZE: usize> {
         inner: uluru::LRUCache<Entry, SIZE>,
         last_evicted: Vec<u8>,
-        debug: gix_features::cache::Debug,
+        debug: gix_utils::cache::Debug,
         /// the amount of bytes we are currently holding, taking into account the capacities of all Vecs we keep.
         mem_used: usize,
         /// The total amount of memory we should be able to hold with all entries combined.
@@ -116,7 +116,7 @@ mod _static {
             StaticLinkedList {
                 inner: Default::default(),
                 last_evicted: Vec::new(),
-                debug: gix_features::cache::Debug::new(format!("StaticLinkedList<{SIZE}>")),
+                debug: gix_utils::cache::Debug::new(format!("StaticLinkedList<{SIZE}>")),
                 mem_used: 0,
                 mem_limit: if mem_limit == 0 { usize::MAX } else { mem_limit },
             }

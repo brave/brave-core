@@ -5,15 +5,15 @@ pub type blksize_t = i64;
 pub type nlink_t = u64;
 pub type wchar_t = i32;
 pub type greg_t = u64;
-pub type __u64 = u64;
-pub type __s64 = i64;
+
+// FIXME(1.0,deprecate): lfs binding to be removed
 pub type statfs64 = statfs;
 
 s! {
     pub struct ipc_perm {
-        #[cfg(musl_v1_2_3)]
+        #[cfg(musl_v1_2)]
         pub __key: crate::key_t,
-        #[cfg(not(musl_v1_2_3))]
+        #[cfg(not(musl_v1_2))]
         #[deprecated(
             since = "0.2.173",
             note = "This field is incorrectly named and will be changed
@@ -47,26 +47,6 @@ s! {
         pub st_ctime_nsec: c_long,
         pub st_blksize: crate::blksize_t,
         pub st_blocks: crate::blkcnt_t,
-        __unused: Padding<[c_long; 3]>,
-    }
-
-    pub struct stat64 {
-        pub st_dev: crate::dev_t,
-        pub st_ino: crate::ino64_t,
-        pub st_nlink: crate::nlink_t,
-        pub st_mode: crate::mode_t,
-        pub st_uid: crate::uid_t,
-        pub st_gid: crate::gid_t,
-        pub st_rdev: crate::dev_t,
-        pub st_size: off_t,
-        pub st_atime: crate::time_t,
-        pub st_atime_nsec: c_long,
-        pub st_mtime: crate::time_t,
-        pub st_mtime_nsec: c_long,
-        pub st_ctime: crate::time_t,
-        pub st_ctime_nsec: c_long,
-        pub st_blksize: crate::blksize_t,
-        pub st_blocks: crate::blkcnt64_t,
         __unused: Padding<[c_long; 3]>,
     }
 
@@ -161,8 +141,8 @@ pub const SA_NOCLDWAIT: c_int = 2;
 pub const SA_ONSTACK: c_int = 0x08000000;
 pub const SA_SIGINFO: c_int = 4;
 pub const SIGBUS: c_int = 7;
-pub const SIGSTKSZ: size_t = 0x2000;
-pub const MINSIGSTKSZ: size_t = 2048;
+pub const SIGSTKSZ: size_t = 10240;
+pub const MINSIGSTKSZ: size_t = 4096;
 pub const SIG_SETMASK: c_int = 2;
 
 pub const O_NOCTTY: c_int = 256;
@@ -362,7 +342,6 @@ pub const CIBAUD: crate::tcflag_t = 0o02003600000;
 
 pub const ISIG: crate::tcflag_t = 0o000001;
 pub const ICANON: crate::tcflag_t = 0o000002;
-pub const XCASE: crate::tcflag_t = 0o000004;
 pub const ECHOE: crate::tcflag_t = 0o000020;
 pub const ECHOK: crate::tcflag_t = 0o000040;
 pub const ECHONL: crate::tcflag_t = 0o000100;
@@ -469,12 +448,10 @@ pub const SYS_uname: c_long = 122;
 pub const SYS_adjtimex: c_long = 124;
 pub const SYS_mprotect: c_long = 125;
 pub const SYS_sigprocmask: c_long = 126;
-#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
-pub const SYS_create_module: c_long = 127;
+// 127 was SYS_create_module
 pub const SYS_init_module: c_long = 128;
 pub const SYS_delete_module: c_long = 129;
-#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
-pub const SYS_get_kernel_syms: c_long = 130;
+// 130 was SYS_get_kernel_syms
 pub const SYS_quotactl: c_long = 131;
 pub const SYS_getpgid: c_long = 132;
 pub const SYS_fchdir: c_long = 133;
@@ -505,8 +482,7 @@ pub const SYS_sched_get_priority_min: c_long = 160;
 pub const SYS_sched_rr_get_interval: c_long = 161;
 pub const SYS_nanosleep: c_long = 162;
 pub const SYS_mremap: c_long = 163;
-#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
-pub const SYS_query_module: c_long = 167;
+// 167 was SYS_query_module
 pub const SYS_poll: c_long = 168;
 pub const SYS_nfsservctl: c_long = 169;
 pub const SYS_prctl: c_long = 172;

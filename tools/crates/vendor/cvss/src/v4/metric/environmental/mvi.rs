@@ -1,7 +1,7 @@
 //! Integrity Impact to the Vulnerable System (MVI)
 
 use crate::{
-    Error, Result,
+    Error,
     v4::metric::{Metric, MetricType},
 };
 use alloc::borrow::ToOwned;
@@ -20,11 +20,12 @@ use core::{fmt, str::FromStr};
 /// > system (e.g. due to insufficient logging).
 /// > The resulting score is greatest when the consequence to the system is
 /// > highest.
-#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+#[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
 pub enum ModifiedIntegrityImpactToTheVulnerableSystem {
     /// Not Defined (X)
     ///
     /// > The metric has not been evaluated.
+    #[default]
     NotDefined,
     /// None (N)
     ///
@@ -47,21 +48,15 @@ pub enum ModifiedIntegrityImpactToTheVulnerableSystem {
     High,
 }
 
-impl Default for ModifiedIntegrityImpactToTheVulnerableSystem {
-    fn default() -> Self {
-        Self::NotDefined
-    }
-}
-
 impl Metric for ModifiedIntegrityImpactToTheVulnerableSystem {
     const TYPE: MetricType = MetricType::MVI;
 
     fn as_str(self) -> &'static str {
         match self {
-            ModifiedIntegrityImpactToTheVulnerableSystem::NotDefined => "X",
-            ModifiedIntegrityImpactToTheVulnerableSystem::None => "N",
-            ModifiedIntegrityImpactToTheVulnerableSystem::Low => "L",
-            ModifiedIntegrityImpactToTheVulnerableSystem::High => "H",
+            Self::NotDefined => "X",
+            Self::None => "N",
+            Self::Low => "L",
+            Self::High => "H",
         }
     }
 }
@@ -75,12 +70,12 @@ impl fmt::Display for ModifiedIntegrityImpactToTheVulnerableSystem {
 impl FromStr for ModifiedIntegrityImpactToTheVulnerableSystem {
     type Err = Error;
 
-    fn from_str(s: &str) -> Result<Self> {
+    fn from_str(s: &str) -> Result<Self, Error> {
         match s {
-            "X" => Ok(ModifiedIntegrityImpactToTheVulnerableSystem::NotDefined),
-            "N" => Ok(ModifiedIntegrityImpactToTheVulnerableSystem::None),
-            "L" => Ok(ModifiedIntegrityImpactToTheVulnerableSystem::Low),
-            "H" => Ok(ModifiedIntegrityImpactToTheVulnerableSystem::High),
+            "X" => Ok(Self::NotDefined),
+            "N" => Ok(Self::None),
+            "L" => Ok(Self::Low),
+            "H" => Ok(Self::High),
             _ => Err(Error::InvalidMetricV4 {
                 metric_type: Self::TYPE,
                 value: s.to_owned(),

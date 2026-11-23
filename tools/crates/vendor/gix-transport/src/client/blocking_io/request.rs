@@ -1,23 +1,24 @@
 use std::{io, io::Write};
 
-use crate::client::{ExtendedBufRead, MessageKind, WriteMode};
+use crate::{
+    client::{MessageKind, WriteMode, blocking_io::ExtendedBufRead},
+    packetline::blocking_io::{Writer, encode},
+};
 
 /// A [`Write`][io::Write] implementation optimized for writing packet lines.
 /// A type implementing `Write` for packet lines, which when done can be transformed into a `Read` for
 /// obtaining the response.
 pub struct RequestWriter<'a> {
     on_into_read: MessageKind,
-    writer: gix_packetline::Writer<Box<dyn io::Write + 'a>>,
+    writer: Writer<Box<dyn io::Write + 'a>>,
     reader: Box<dyn ExtendedBufRead<'a> + Unpin + 'a>,
     trace: bool,
 }
 
 impl io::Write for RequestWriter<'_> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
-        #[allow(unused_imports)]
         if self.trace {
-            use bstr::ByteSlice;
-            gix_features::trace::trace!(">> {}", buf.as_bstr());
+            gix_trace::trace!(">> {}", bstr::BStr::new(buf));
         }
         self.writer.write(buf)
     }
@@ -40,7 +41,7 @@ impl<'a> RequestWriter<'a> {
         on_into_read: MessageKind,
         trace: bool,
     ) -> Self {
-        let mut writer = gix_packetline::Writer::new(Box::new(writer) as Box<dyn io::Write>);
+        let mut writer = Writer::new(Box::new(writer) as Box<dyn io::Write>);
         match write_mode {
             WriteMode::Binary => writer.enable_binary_mode(),
             WriteMode::OneLfTerminatedLinePerWriteCall => writer.enable_text_mode(),
@@ -58,29 +59,27 @@ impl<'a> RequestWriter<'a> {
         match message {
             MessageKind::Flush => {
                 if self.trace {
-                    gix_features::trace::trace!(">> FLUSH");
+                    gix_trace::trace!(">> FLUSH");
                 }
-                gix_packetline::PacketLineRef::Flush.write_to(self.writer.inner_mut())
+                encode::write_packet_line(&gix_packetline::PacketLineRef::Flush, self.writer.inner_mut())
             }
             MessageKind::Delimiter => {
                 if self.trace {
-                    gix_features::trace::trace!(">> DELIM");
+                    gix_trace::trace!(">> DELIM");
                 }
-                gix_packetline::PacketLineRef::Delimiter.write_to(self.writer.inner_mut())
+                encode::write_packet_line(&gix_packetline::PacketLineRef::Delimiter, self.writer.inner_mut())
             }
             MessageKind::ResponseEnd => {
                 if self.trace {
-                    gix_features::trace::trace!(">> RESPONSE_END");
+                    gix_trace::trace!(">> RESPONSE_END");
                 }
-                gix_packetline::PacketLineRef::ResponseEnd.write_to(self.writer.inner_mut())
+                encode::write_packet_line(&gix_packetline::PacketLineRef::ResponseEnd, self.writer.inner_mut())
             }
             MessageKind::Text(t) => {
-                #[allow(unused_variables, unused_imports)]
                 if self.trace {
-                    use bstr::ByteSlice;
-                    gix_features::trace::trace!(">> {}", t.as_bstr());
+                    gix_trace::trace!(">> {}", bstr::BStr::new(t));
                 }
-                gix_packetline::TextRef::from(t).write_to(self.writer.inner_mut())
+                encode::write_text(&gix_packetline::TextRef::from(t), self.writer.inner_mut())
             }
         }
         .map(|_| ())

@@ -1,0 +1,12 @@
+error[E0277]: the trait bound `<F as FlavorT>::Str: Format` is not satisfied
+  --> tests/ui/derive_removed_bound.rs:11:10
+   |
+11 | #[derive(defmt::Format)]
+   |          ^^^^^^^^^^^^^ the trait `Format` is not implemented for `<F as FlavorT>::Str`
+   |
+note: required by a bound in `defmt::export::fmt`
+  --> src/export/mod.rs
+   |
+   | pub fn fmt<T: Format + ?Sized>(f: &T) {
+   |               ^^^^^^ required by this bound in `fmt`
+   = note: this error originates in the derive macro `defmt::Format` (in Nightly builds, run with -Z macro-backtrace for more info)

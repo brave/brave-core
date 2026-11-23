@@ -2,7 +2,7 @@ use crate::{
     codecs::EncodeV2,
     core::util::{PartialBuffer, WriteBuffer},
 };
-use std::{io::Result, ops::ControlFlow};
+use std::{io::Result, ops::ControlFlow, panic::AssertUnwindSafe};
 
 #[derive(Debug)]
 enum State {
@@ -10,6 +10,7 @@ enum State {
     Flushing,
     Finishing,
     Done,
+    Error(AssertUnwindSafe<std::io::Error>),
 }
 
 #[derive(Debug)]
@@ -34,10 +35,10 @@ impl Encoder {
         mut input: Option<&mut PartialBuffer<&[u8]>>,
     ) -> ControlFlow<Result<()>> {
         loop {
-            self.state = match self.state {
-                State::Encoding(mut read) => match input.as_mut() {
+            self.state = match &mut self.state {
+                State::Encoding(read) => match input.as_mut() {
                     None => {
-                        if read == 0 {
+                        if *read == 0 {
                             if output.written().is_empty() {
                                 // Poll for more data
                                 break;
@@ -53,10 +54,15 @@ impl Encoder {
                             State::Finishing
                         } else {
                             if let Err(err) = encoder.encode(input, output) {
-                                return ControlFlow::Break(Err(err));
+                                self.state = State::Error(AssertUnwindSafe(err));
+                                if output.written_len() > 0 {
+                                    return ControlFlow::Break(Ok(()));
+                                } else {
+                                    continue;
+                                }
                             }
 
-                            read += input.written().len();
+                            *read += input.written().len();
 
                             // Poll for more data
                             break;
@@ -72,16 +78,37 @@ impl Encoder {
                         break;
                     }
                     Ok(false) => State::Flushing,
-                    Err(err) => return ControlFlow::Break(Err(err)),
+                    Err(err) => {
+                        self.state = State::Error(AssertUnwindSafe(err));
+                        if output.written_len() > 0 {
+                            return ControlFlow::Break(Ok(()));
+                        } else {
+                            continue;
+                        }
+                    }
                 },
 
                 State::Finishing => match encoder.finish(output) {
                     Ok(true) => State::Done,
                     Ok(false) => State::Finishing,
-                    Err(err) => return ControlFlow::Break(Err(err)),
+                    Err(err) => {
+                        self.state = State::Error(AssertUnwindSafe(err));
+                        if output.written_len() > 0 {
+                            return ControlFlow::Break(Ok(()));
+                        } else {
+                            continue;
+                        }
+                    }
                 },
 
                 State::Done => return ControlFlow::Break(Ok(())),
+
+                State::Error(_) => {
+                    let State::Error(err) = std::mem::replace(&mut self.state, State::Done) else {
+                        unreachable!()
+                    };
+                    return ControlFlow::Break(Err(err.0));
+                }
             };
 
             if output.has_no_spare_space() {
@@ -101,9 +128,8 @@ macro_rules! impl_encoder {
     () => {
         use crate::generic::bufread::Encoder as GenericEncoder;
 
-        use std::ops::ControlFlow;
+        use std::{ops::ControlFlow, task::ready};
 
-        use futures_core::ready;
         use pin_project_lite::pin_project;
 
         pin_project! {
@@ -182,7 +208,11 @@ macro_rules! impl_encoder {
                 }
 
                 if is_pending {
-                    return Poll::Pending;
+                    if output.written().is_empty() {
+                        return Poll::Pending;
+                    } else {
+                        return Poll::Ready(Ok(()));
+                    }
                 }
             }
         }

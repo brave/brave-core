@@ -11,9 +11,9 @@
 
 [package]
 edition = "2021"
-rust-version = "1.66"
+rust-version = "1.70"
 name = "security-framework-sys"
-version = "2.15.0"
+version = "2.17.0"
 authors = [
     "Steven Fackler <sfackler@gmail.com>",
     "Kornel <kornel@geekhood.net>",
@@ -51,21 +51,22 @@ targets = [
 status = "looking-for-maintainer"
 
 [features]
-OSX_10_10 = ["OSX_10_9"]
-OSX_10_11 = ["OSX_10_10"]
-OSX_10_12 = ["OSX_10_11"]
-OSX_10_13 = ["OSX_10_12"]
-OSX_10_14 = ["OSX_10_13"]
-OSX_10_15 = ["OSX_10_14"]
+OSX_10_10 = []
+OSX_10_11 = []
+OSX_10_12 = []
+OSX_10_13 = []
+OSX_10_14 = []
+OSX_10_15 = []
 OSX_10_9 = []
-default = ["OSX_10_12"]
+default = ["OSX_10_13"]
+macos-12 = []
 
 [lib]
 name = "security_framework_sys"
 path = "src/lib.rs"
 
 [dependencies.core-foundation-sys]
-version = "0.8.6"
+version = "0.8.7"
 
 [dependencies.libc]
 version = "0.2.150"

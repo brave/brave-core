@@ -25,6 +25,7 @@ pub const fn update_hash(current_hash: u16, byte: u8) -> u16 {
     ((current_hash << LZ_HASH_SHIFT) ^ byte as u16) & (LZ_HASH_SIZE as u16 - 1)
 }
 
+#[derive(Clone)]
 pub struct HashBuffers {
     pub dict: Box<[u8; LZ_DICT_FULL_SIZE]>,
     pub next: Box<[u16; LZ_DICT_SIZE]>,
@@ -53,6 +54,7 @@ impl Default for HashBuffers {
     }
 }
 
+#[derive(Clone)]
 pub struct LocalBuf {
     pub b: [u8; OUT_BUF_SIZE],
 }

@@ -1,9 +1,9 @@
 //! Lexed TOML tokens
 
-use super::Span;
 use super::APOSTROPHE;
 use super::COMMENT_START_SYMBOL;
 use super::QUOTATION_MARK;
+use super::Span;
 use super::WSCHAR;
 use crate::decoder::Encoding;
 

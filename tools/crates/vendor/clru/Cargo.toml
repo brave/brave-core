@@ -10,10 +10,16 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
+edition = "2024"
 name = "clru"
-version = "0.6.2"
+version = "0.6.3"
 authors = ["marmeladema <xademax@gmail.com>"]
+build = false
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "An LRU cache implementation with constant time operations and weighted semantic"
 readme = "README.md"
 keywords = [
@@ -24,4 +30,9 @@ keywords = [
 license = "MIT"
 repository = "https://github.com/marmeladema/clru-rs"
 
-[dependencies]
+[lib]
+name = "clru"
+path = "src/lib.rs"
+
+[dependencies.hashbrown]
+version = "0.16"

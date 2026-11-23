@@ -1,6 +1,14 @@
-use gix_refspec::RefSpec;
+use gix_error::{ResultExt, bail};
+use gix_ref::{FullName, FullNameRef};
+use gix_refspec::{MatchGroup, RefSpec, match_group};
 
-use crate::{bstr::BStr, remote, Remote};
+#[cfg(any(feature = "blocking-network-client", feature = "async-network-client"))]
+use crate::types::RemoteDetached;
+use crate::{
+    Remote, Result,
+    bstr::{BStr, BString, ByteVec},
+    remote,
+};
 
 /// Access
 impl<'repo> Remote<'repo> {
@@ -27,47 +35,191 @@ impl<'repo> Remote<'repo> {
         self.fetch_tags
     }
 
-    /// Return the url used for the given `direction` with rewrites from `url.<base>.insteadOf|pushInsteadOf`, unless the instance
+    /// Return the name of the default branch on the remote, like `refs/heads/main`, as recorded locally,
+    /// or `None` if it isn't known.
+    ///
+    /// The record is the symbolic reference `refs/remotes/<name>/HEAD`. Cloning with `git` or `gix`, and `git remote set-head`,
+    /// point it to the remote-tracking branch of the default branch, like `refs/remotes/origin/main`,
+    /// and since Git 2.48, `git fetch` creates it if it's missing. The fetch refspecs of this remote then
+    /// map this remote-tracking branch back to the branch on the remote, and it's an error if they map
+    /// more than one remote reference to it.
+    ///
+    /// `None` is returned if this remote has no name, if `refs/remotes/<name>/HEAD` doesn't exist or isn't symbolic,
+    /// or if no fetch refspec maps a remote reference to its target. The source must identify a branch in `refs/heads/`
+    /// (also accepting exact names like `heads/main`); sources like `HEAD`, object IDs, tags, or unqualified names like
+    /// `main` return `None` as their branch cannot be determined offline.
+    ///
+    /// As the remote isn't contacted, it may have changed its default branch since, and the returned branch
+    /// may not exist anymore. `git2::Remote::default_branch()`, on the other hand, asks the connected remote
+    /// for its current `HEAD`.
+    #[doc(alias = "git2")]
+    pub fn default_branch(&self) -> Result<Option<FullName>> {
+        let Some(name) = self.name() else {
+            return Ok(None);
+        };
+        let mut head_name = BString::from("refs/remotes/");
+        head_name.push_str(name.as_bstr());
+        head_name.push_str("/HEAD");
+        // Names that can't be part of a reference name can't have remote-tracking branches either.
+        let Ok(head_name) = FullName::try_from(head_name) else {
+            return Ok(None);
+        };
+        let Some(head) = self.repo.try_find_reference(head_name.as_bstr())? else {
+            return Ok(None);
+        };
+        let target = head.target();
+        let Some(tracking_branch) = target.try_name() else {
+            return Ok(None);
+        };
+
+        let outcome = self.reverse_map_tracking_ref(tracking_branch);
+        let num_mappings = outcome.mappings.len();
+        let mut mappings = outcome.mappings.into_iter();
+        let Some(mapping) = mappings.next() else {
+            return Ok(None);
+        };
+        if let Some(other_mapping) = mappings.next() {
+            bail!(gix_error::validation(format!(
+                "Found {num_mappings} mappings to '{}', including '{}' and '{}', so the default branch is ambiguous",
+                tracking_branch.as_bstr(),
+                mapping.lhs,
+                other_mapping.lhs
+            )));
+        }
+        let match_group::SourceRef::FullName(remote_branch) = mapping.lhs else {
+            return Ok(None);
+        };
+        let remote_branch = if remote_branch.starts_with(b"refs/heads/") {
+            remote_branch.into_owned()
+        } else if remote_branch.starts_with(b"heads/")
+            && outcome.group.specs.iter().any(|spec| {
+                spec.source() == Some(remote_branch.as_ref()) && spec.destination() == Some(tracking_branch.as_bstr())
+            })
+        {
+            // Git expands exact sources, not globs. Check all specs as identical mappings are deduplicated.
+            let mut full_name = BString::from("refs/");
+            full_name.push_str(remote_branch.as_ref());
+            full_name
+        } else {
+            return Ok(None);
+        };
+        FullName::try_from(remote_branch)
+            .map(Some)
+            .or_raise(|| gix_error::validation("The remote reference that the remote HEAD maps to has an invalid name"))
+    }
+
+    /// Reverse-map a local tracking reference through this remote's fetch refspecs by name only.
+    pub(crate) fn reverse_map_tracking_ref<'spec, 'name>(
+        &'spec self,
+        tracking_ref: &'name FullNameRef,
+    ) -> match_group::match_rhs::Outcome<'spec, 'name> {
+        MatchGroup::from_fetch_specs(self.fetch_specs.iter().map(RefSpec::to_ref)).match_rhs(std::iter::once(
+            match_group::Item {
+                full_ref_name: tracking_ref.as_bstr(),
+                target: self.repo.object_hash().null_ref(),
+                object: None,
+            },
+        ))
+    }
+
+    /// Return the first url used for the given `direction` with rewrites from `url.<base>.insteadOf|pushInsteadOf`, unless the instance
     /// was created with one of the `_without_url_rewrite()` methods.
-    /// For pushing, this is the `remote.<name>.pushUrl` or the `remote.<name>.url` used for fetching, and for fetching it's
-    /// the `remote.<name>.url`.
+    /// See [`urls()`](Self::urls()) for how rewrite rules differ between fetch URLs, explicit push URLs, and push fallbacks.
+    /// For pushing, this is the first `remote.<name>.pushUrl` or the first `remote.<name>.url` used for fetching, and for
+    /// fetching it's the first `remote.<name>.url`. Unlike `git remote get-url`, a missing fetch URL doesn't fall back to a
+    /// symbolic remote name, but a URL-shaped remote name may itself be used as the fallback URL.
     /// Note that it's possible to only have the push url set, in which case there will be no way to fetch from the remote as
     /// the push-url isn't used for that.
     pub fn url(&self, direction: remote::Direction) -> Option<&gix_url::Url> {
+        self.urls(direction).next()
+    }
+
+    /// Return all urls used for the given `direction` with rewrites from `url.<base>.insteadOf|pushInsteadOf`, unless the
+    /// instance was created with one of the `_without_url_rewrite()` methods.
+    ///
+    /// Fetch URLs are rewritten with `url.<base>.insteadOf`. Explicit `remote.<name>.pushUrl` values are also rewritten with
+    /// `insteadOf`, and `pushInsteadOf` is ignored for them. If no explicit push URL is configured, the fetch URLs are used
+    /// as push fallbacks: matching `pushInsteadOf` rules take precedence, with `insteadOf` used when none match.
+    ///
+    /// Values are returned in configuration order.
+    pub fn urls(&self, direction: remote::Direction) -> impl Iterator<Item = &gix_url::Url> + '_ {
+        let (urls, aliases) = self.urls_and_aliases(direction);
+        debug_assert_eq!(
+            urls.len(),
+            aliases.len(),
+            "each URL should have a corresponding rewrite slot"
+        );
+        urls.iter()
+            .zip(aliases)
+            .map(|(url, alias)| alias.as_ref().unwrap_or(url))
+    }
+
+    fn urls_and_aliases(&self, direction: remote::Direction) -> (&[gix_url::Url], &[Option<gix_url::Url>]) {
         match direction {
-            remote::Direction::Fetch => self.url_alias.as_ref().or(self.url.as_ref()),
-            remote::Direction::Push => self
-                .push_url_alias
-                .as_ref()
-                .or(self.push_url.as_ref())
-                .or_else(|| self.url(remote::Direction::Fetch)),
+            remote::Direction::Fetch => (&self.urls, &self.url_aliases),
+            remote::Direction::Push if self.push_urls.is_empty() => (&self.urls, &self.url_push_aliases),
+            remote::Direction::Push => (&self.push_urls, &self.push_url_aliases),
         }
+    }
+
+    /// Return a clone of this remote without its repository reference.
+    #[cfg(any(feature = "blocking-network-client", feature = "async-network-client"))]
+    pub(crate) fn detached(&self) -> RemoteDetached {
+        self.clone().into()
+    }
+}
+
+/// Access
+#[cfg(any(feature = "blocking-network-client", feature = "async-network-client"))]
+impl RemoteDetached {
+    /// Return the name of this remote or `None` if it wasn't persisted to disk yet.
+    pub(crate) fn name(&self) -> Option<&remote::Name<'static>> {
+        self.name.as_ref()
+    }
+
+    /// Return the set of ref-specs used for fetching, which may be empty, in order of occurrence in the configuration.
+    pub(crate) fn fetch_refspecs(&self) -> &[RefSpec] {
+        &self.fetch_specs
     }
 }
 
 /// Modification
 impl Remote<'_> {
-    /// Read `url.<base>.insteadOf|pushInsteadOf` configuration variables and apply them to our urls, changing them in place.
+    /// Re-read `url.<base>.insteadOf|pushInsteadOf` and recompute the effective URLs returned by [`url()`](Self::url()) and
+    /// [`urls()`](Self::urls()). This may be called repeatedly to refresh rewrite rules after configuration changes.
     ///
-    /// This happens only once, and one if them may be changed even when reporting an error.
-    /// If both urls fail, only the first error (for fetch urls) is reported.
-    pub fn rewrite_urls(&mut self) -> Result<&mut Self, remote::init::Error> {
-        let url_err = match remote::init::rewrite_url(&self.repo.config, self.url.as_ref(), remote::Direction::Fetch) {
-            Ok(url) => {
-                self.url_alias = url;
-                None
-            }
-            Err(err) => err.into(),
+    /// Every URL is attempted non-destructively: successful rewrites remain effective if another rewritten URL is malformed,
+    /// while a failed entry keeps using its original URL. The first error is returned in fetch, push-fallback, explicit-push
+    /// order. See [`urls()`](Self::urls()) for which rules apply to each category.
+    pub fn rewrite_urls(&mut self) -> Result<&mut Self> {
+        let (url_aliases, url_err) =
+            remote::init::rewrite_url_aliases_non_destructive(&self.repo.config, &self.urls, remote::Direction::Fetch);
+        self.url_aliases = url_aliases;
+        let url_push_err = if self.push_urls.is_empty() {
+            let (url_push_aliases, err) = remote::init::rewrite_url_aliases_with_fallback_non_destructive(
+                &self.repo.config,
+                &self.urls,
+                remote::Direction::Push,
+                remote::Direction::Fetch,
+            );
+            self.url_push_aliases = url_push_aliases;
+            err
+        } else {
+            self.url_push_aliases = vec![None; self.urls.len()];
+            None
         };
-        let push_url_err =
-            match remote::init::rewrite_url(&self.repo.config, self.push_url.as_ref(), remote::Direction::Push) {
-                Ok(url) => {
-                    self.push_url_alias = url;
-                    None
-                }
-                Err(err) => err.into(),
-            };
-        url_err.or(push_url_err).map(Err::<&mut Self, _>).transpose()?;
+        let (push_url_aliases, push_url_err) = remote::init::rewrite_url_aliases_non_destructive_with_error_kind(
+            &self.repo.config,
+            &self.push_urls,
+            remote::Direction::Fetch,
+            remote::Direction::Push,
+        );
+        self.push_url_aliases = push_url_aliases;
+        url_err
+            .or(url_push_err)
+            .or(push_url_err)
+            .map(Err::<&mut Self, _>)
+            .transpose()?;
         Ok(self)
     }
 
@@ -77,7 +229,7 @@ impl Remote<'_> {
         &mut self,
         specs: impl IntoIterator<Item = Spec>,
         direction: remote::Direction,
-    ) -> Result<(), gix_refspec::parse::Error>
+    ) -> Result
     where
         Spec: AsRef<BStr>,
     {
@@ -94,12 +246,38 @@ impl Remote<'_> {
                 )
                 .map(|url| url.to_owned())
             })
-            .collect::<Result<_, _>>()?;
+            .collect::<std::result::Result<_, _>>()?;
         let dst = match direction {
             Push => &mut self.push_specs,
             Fetch => &mut self.fetch_specs,
         };
         *dst = specs;
         Ok(())
+    }
+}
+
+#[cfg(any(feature = "blocking-network-client", feature = "async-network-client"))]
+impl From<Remote<'_>> for RemoteDetached {
+    fn from(
+        Remote {
+            name,
+            urls,
+            url_aliases,
+            url_push_aliases: _,
+            fetch_specs,
+            fetch_tags,
+            push_urls: _,
+            push_url_aliases: _,
+            push_specs: _,
+            repo: _,
+        }: Remote<'_>,
+    ) -> Self {
+        RemoteDetached {
+            name,
+            urls,
+            url_aliases,
+            fetch_specs,
+            fetch_tags,
+        }
     }
 }

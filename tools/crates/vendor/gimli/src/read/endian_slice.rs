@@ -35,14 +35,6 @@ where
 
     /// Return a reference to the raw slice.
     #[inline]
-    #[doc(hidden)]
-    #[deprecated(note = "Method renamed to EndianSlice::slice; use that instead.")]
-    pub fn buf(&self) -> &'input [u8] {
-        self.slice
-    }
-
-    /// Return a reference to the raw slice.
-    #[inline]
     pub fn slice(&self) -> &'input [u8] {
         self.slice
     }
@@ -236,6 +228,18 @@ where
     #[inline]
     fn is_empty(&self) -> bool {
         self.slice.is_empty()
+    }
+
+    // NB: This implementation is not strictly necessary, but it results
+    //     in better code gen than the default.
+    #[inline]
+    fn read_u8(&mut self) -> Result<u8> {
+        if let Some((&byte, rest)) = self.slice.split_first() {
+            self.slice = rest;
+            Ok(byte)
+        } else {
+            Err(Error::UnexpectedEof(self.offset_id()))
+        }
     }
 
     #[inline]

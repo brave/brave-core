@@ -20,8 +20,8 @@ pub(crate) enum JsonValue {
     Boolean(bool),
     Str(String),
     Num(f64),
-    Array(Vec<JsonValue>),
-    Object(HashMap<String, JsonValue>),
+    Array(Vec<Self>),
+    Object(HashMap<String, Self>),
 }
 
 /// Use `Partial` to cause `ErrMode::Incomplete` while parsing
@@ -153,7 +153,7 @@ fn unicode_escape<'i, E: ParserError<Stream<'i>>>(input: &mut Stream<'i>) -> Mod
 }
 
 fn u16_hex<'i, E: ParserError<Stream<'i>>>(input: &mut Stream<'i>) -> ModalResult<u16, E> {
-    take(4usize)
+    take(4_usize)
         .verify_map(|s| u16::from_str_radix(s, 16).ok())
         .parse_next(input)
 }

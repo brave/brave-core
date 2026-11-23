@@ -75,8 +75,8 @@ where
         Stream {
             io,
             session,
-            // The state so far is only used to detect EOF, so either Stream
-            // or EarlyData state should both be all right.
+            // The state so far is only used to detect EOF, so both Stream
+            // and EarlyData states should be acceptable.
             eof: false,
             // Whether a previous flush returned pending, or a write occured without a flush.
             need_flush: false,
@@ -218,8 +218,7 @@ where
             Err(e) if e.kind() == io::ErrorKind::WouldBlock => {
                 if !io_pending {
                     // If `wants_read()` is satisfied, rustls will not return `WouldBlock`.
-                    // but if it does, we can try again.
-                    //
+                    // But if it does, we can try again.
                     // If the rustls state is abnormal, it may cause a cyclic wakeup.
                     // but tokio's cooperative budget will prevent infinite wakeup.
                     cx.waker().wake_by_ref();

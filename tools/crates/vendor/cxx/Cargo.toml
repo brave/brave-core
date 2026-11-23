@@ -10,16 +10,16 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.82"
+edition = "2024"
+rust-version = "1.88"
 name = "cxx"
-version = "1.0.192"
+version = "1.0.205"
 authors = ["David Tolnay <dtolnay@gmail.com>"]
 build = "build.rs"
 links = "cxxbridge1"
 exclude = [
+    "/bridge",
     "/demo",
-    "/gen",
     "/syntax",
     "/third-party",
     "/tools/buck/prelude",
@@ -57,6 +57,7 @@ rustdoc-args = [
 
 [package.metadata.bazel]
 additive_build_file_content = """
+load("@rules_cc//cc:defs.bzl", "cc_library")
 cc_library(
     name = "cxx_cc",
     srcs = ["src/cxx.cc"],
@@ -68,8 +69,8 @@ cc_library(
     visibility = ["//visibility:public"],
 )
 """
-deps = [":cxx_cc"]
 gen_build_script = false
+link_deps = [":cxx_cc"]
 
 [package.metadata.bazel.extra_aliased_targets]
 cxx_cc = "cxx_cc"
@@ -121,7 +122,7 @@ name = "unique_ptr"
 path = "tests/unique_ptr.rs"
 
 [dependencies.cxxbridge-macro]
-version = "=1.0.192"
+version = "=1.0.205"
 
 [dependencies.foldhash]
 version = "0.2"
@@ -137,7 +138,7 @@ version = "1.0.101"
 version = "1"
 
 [dev-dependencies.cxx-gen]
-version = "0.7"
+version = "=0.7.205"
 
 [dev-dependencies.cxx-test-suite]
 version = "0"
@@ -157,7 +158,7 @@ version = "1.0.13"
 [dev-dependencies.scratch]
 version = "1"
 
-[dev-dependencies.target-triple]
+[dev-dependencies.target-tuple]
 version = "1"
 
 [dev-dependencies.tempfile]
@@ -171,11 +172,11 @@ features = ["diff"]
 version = "1.0.101"
 
 [build-dependencies.cxxbridge-flags]
-version = "=1.0.192"
+version = "=1.0.205"
 default-features = false
 
 [target."cfg(any())".build-dependencies.cxx-build]
-version = "=1.0.192"
+version = "=1.0.205"
 
 [target."cfg(any())".build-dependencies.cxxbridge-cmd]
-version = "=1.0.192"
+version = "=1.0.205"

@@ -12,9 +12,15 @@
 [package]
 edition = "2018"
 name = "crc-catalog"
-version = "2.4.0"
+version = "2.5.0"
 authors = ["Akhil Velagapudi <akhilvelagapudi@gmail.com>"]
+build = false
 exclude = ["generate_catalog.sh"]
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Catalog of CRC algorithms (generated from http://reveng.sourceforge.net/crc-catalogue) expressed as simple Rust structs."
 readme = "README.md"
 keywords = ["crc"]
@@ -27,3 +33,7 @@ repository = "https://github.com/akhilles/crc-catalog.git"
 
 [package.metadata.docs.rs]
 targets = ["x86_64-unknown-linux-gnu"]
+
+[lib]
+name = "crc_catalog"
+path = "src/lib.rs"

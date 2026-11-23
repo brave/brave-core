@@ -1,6 +1,20 @@
 Recent Changes (arrayvec)
 =========================
 
+## 0.7.8
+
+- Fix tests on 32-bit architectures by skipping them by [@decathorpe](https://github.com/decathorpe) [#312](https://github.com/bluss/arrayvec/pull/312).
+
+## 0.7.7
+
+- Fix lifetime warning by [@niklasf](https://github.com/niklasf)
+  [#305](https://github.com/bluss/arrayvec/pull/305)
+- Fix double free for ZSTs by [@Shnatsel](https://github.com/Shnatsel)
+  [#308](https://github.com/bluss/arrayvec/pull/308)
+- Use 16-bit length on 16-bit targets (internal representation change) by
+  [@kornelski](https://github.com/kornelski)
+  [#234](https://github.com/bluss/arrayvec/pull/234)
+
 ## 0.7.6
 
 - Fix no-std build [#274](https://github.com/bluss/arrayvec/pull/274)

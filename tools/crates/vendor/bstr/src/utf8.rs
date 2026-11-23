@@ -120,6 +120,30 @@ impl<'a> Iterator for Chars<'a> {
         self.bs = &self.bs[size..];
         Some(ch)
     }
+
+    #[inline]
+    fn count(mut self) -> usize {
+        let mut count = 0;
+        loop {
+            // ASCII fast path taken if two consecutive ASCII chars found
+            match self.bs {
+                [fst, snd, ..] if *fst <= 0x7F && *snd <= 0x7F => {
+                    let size = ascii::first_non_ascii_byte(self.bs);
+                    count += size;
+                    self.bs = &self.bs[size..];
+                }
+                _ => (),
+            }
+
+            let (_ch, size) = decode(self.bs);
+            if size == 0 {
+                return count;
+            } else {
+                count += 1;
+                self.bs = &self.bs[size..];
+            }
+        }
+    }
 }
 
 impl<'a> DoubleEndedIterator for Chars<'a> {
@@ -564,9 +588,10 @@ pub fn validate(slice: &[u8]) -> Result<(), Utf8Error> {
 /// for a successful decode is always between 1 and 4, inclusive.
 ///
 /// When unsuccessful, `None` is returned along with the number of bytes that
-/// make up a maximal prefix of a valid UTF-8 code unit sequence. In this case,
-/// the number of bytes consumed is always between 0 and 3, inclusive, where
-/// 0 is only returned when `slice` is empty.
+/// make up a maximal prefix of a valid UTF-8 code unit sequence. When there is
+/// no prefix of a valid UTF-8 code unit sequence, then 1 byte is consumed.
+/// Thus, for a non-empty slice given, the number of bytes consumed is always
+/// at least `1`. `0` is only returned when `slice` is empty.
 ///
 /// # Examples
 ///
@@ -1244,6 +1269,14 @@ mod tests {
     #[test]
     fn chars() {
         for (i, &(expected, input)) in LOSSY_TESTS.iter().enumerate() {
+            assert_eq!(
+                B(input).chars().collect::<Vec<char>>().len(),
+                B(input).chars().count(),
+                "chars.count(ith: {:?}, given: {:?})",
+                i,
+                input
+            );
+
             let got: String = B(input).chars().collect();
             assert_eq!(
                 expected, got,

@@ -11,6 +11,7 @@
 //! logged based on the parsed filters when log records are received.
 //!
 //! ```
+//! # #[cfg(feature = "std")] {
 //! use env_filter::Filter;
 //! use log::{Log, Metadata, Record};
 //!
@@ -35,12 +36,18 @@
 //! }
 //!
 //! let logger = env_filter::FilteredLog::new(PrintLogger, builder.build());
+//! # }
 //! ```
 
 #![cfg_attr(docsrs, feature(doc_cfg))]
+#![cfg_attr(all(not(feature = "std"), not(test)), no_std)]
 #![warn(missing_docs)]
 #![warn(clippy::print_stderr)]
 #![warn(clippy::print_stdout)]
+#![warn(clippy::std_instead_of_core)]
+#![warn(clippy::std_instead_of_alloc)]
+
+extern crate alloc;
 
 mod directive;
 mod filter;
@@ -48,8 +55,8 @@ mod filtered_log;
 mod op;
 mod parser;
 
-use directive::enabled;
 use directive::Directive;
+use directive::enabled;
 use op::FilterOp;
 use parser::parse_spec;
 

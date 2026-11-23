@@ -1,0 +1,97 @@
+[package]
+description = "Rust bindings to the JNI"
+documentation = "https://docs.rs/jni"
+readme = "../../README.md"
+keywords = ["ffi", "jni", "java"]
+categories = ["api-bindings"]
+name = "jni"
+repository = "https://github.com/jni-rs/jni-rs"
+# ¡When bumping version please also update it in examples and documentation!
+version = "0.22.4"
+exclude = ["/benches", "/examples", "/mylib-example", "/tests"]
+
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[[bench]]
+name = "api_calls"
+harness = false
+
+# Unfortunately Cargo does not support specifying features for all examples at once
+# https://github.com/rust-lang/cargo/issues/6945
+[[example]]
+name = "bind_java_type_hooks"
+required-features = ["invocation"]
+[[example]]
+name = "bind_java_type_is_instance_of"
+required-features = ["invocation"]
+[[example]]
+name = "bind_java_type_wrapper"
+required-features = ["invocation"]
+[[example]]
+name = "bind_java_type"
+required-features = ["invocation"]
+[[example]]
+name = "jni_sig_wrapper"
+required-features = ["invocation"]
+[[example]]
+name = "jni_sig"
+required-features = ["invocation"]
+[[example]]
+name = "jni_str"
+required-features = ["invocation"]
+[[example]]
+name = "native_method_wrapper"
+required-features = ["invocation"]
+[[example]]
+name = "native_method"
+required-features = ["invocation"]
+
+[dependencies]
+jni-macros.workspace = true
+jni-sys.workspace = true
+simd_cesu8.workspace = true
+
+log.workspace = true
+thiserror.workspace = true
+
+cfg-if = "1.0.0"
+combine = "4.1.0"
+
+[target.'cfg(windows)'.dependencies]
+windows-link = "0.2"
+
+[target.'cfg(not(target_os = "android"))'.dependencies]
+libloading = { workspace = true, optional = true }
+java-locator = { workspace = true, optional = true }
+
+[build-dependencies]
+walkdir = "2"
+
+[dev-dependencies]
+rusty-fork.workspace = true
+trybuild.workspace = true
+javac.workspace = true
+criterion = { version = "0.7", features = ["html_reports"] }
+assert_matches = "1.5.0"
+lazy_static = "1"
+static_assertions = "1"
+
+[target.'cfg(windows)'.dev-dependencies]
+bytemuck = "1.13.0"
+windows-sys = { version = "0.61", features = [
+    "Win32_System_Threading",
+    "Win32_Foundation",
+] }
+
+[features]
+invocation = ["dep:java-locator", "dep:libloading"]
+default = []
+
+# Hidden feature for testing cfg attribute support in bind_java_type macro
+_cfg_test = []
+
+[package.metadata.docs.rs]
+features = ["invocation"]

@@ -925,7 +925,7 @@ mod bstr {
 mod bstr_serde {
     use core::fmt;
 
-    use serde::{
+    use serde_core::{
         de::Error, de::Visitor, Deserialize, Deserializer, Serialize,
         Serializer,
     };
@@ -985,7 +985,7 @@ mod bstring_serde {
 
     use alloc::{boxed::Box, string::String, vec::Vec};
 
-    use serde::{
+    use serde_core::{
         de::Error, de::SeqAccess, de::Visitor, Deserialize, Deserializer,
         Serialize, Serializer,
     };

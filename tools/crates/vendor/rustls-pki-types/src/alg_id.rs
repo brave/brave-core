@@ -16,7 +16,7 @@ use core::ops::Deref;
 /// OBJECT_IDENTIFIER { 2.16.840.1.101.3.4.3.17 }
 /// ```
 ///
-/// <https://www.ietf.org/archive/id/draft-ietf-lamps-dilithium-certificates-07.html#name-identifiers>
+/// <https://www.rfc-editor.org/info/rfc9881#name-identifiers>
 pub const ML_DSA_44: AlgorithmIdentifier =
     AlgorithmIdentifier::from_slice(include_bytes!("data/alg-ml-dsa-44.der"));
 
@@ -28,7 +28,7 @@ pub const ML_DSA_44: AlgorithmIdentifier =
 /// OBJECT_IDENTIFIER { 2.16.840.1.101.3.4.3.18 }
 /// ```
 ///
-/// <https://www.ietf.org/archive/id/draft-ietf-lamps-dilithium-certificates-07.html#name-identifiers>
+/// <https://www.rfc-editor.org/info/rfc9881#name-identifiers>
 pub const ML_DSA_65: AlgorithmIdentifier =
     AlgorithmIdentifier::from_slice(include_bytes!("data/alg-ml-dsa-65.der"));
 
@@ -40,7 +40,7 @@ pub const ML_DSA_65: AlgorithmIdentifier =
 /// OBJECT_IDENTIFIER { 2.16.840.1.101.3.4.3.19 }
 /// ```
 ///
-/// <https://www.ietf.org/archive/id/draft-ietf-lamps-dilithium-certificates-07.html#name-identifiers>
+/// <https://www.rfc-editor.org/info/rfc9881#name-identifiers>
 pub const ML_DSA_87: AlgorithmIdentifier =
     AlgorithmIdentifier::from_slice(include_bytes!("data/alg-ml-dsa-87.der"));
 

@@ -2,9 +2,10 @@
 
 [![Crate][crate-image]][crate-link]
 [![Docs][docs-image]][docs-link]
+[![Build Status][build-image]][build-link]
 ![Apache 2.0/MIT Licensed][license-image]
 ![MSRV][rustc-image]
-[![Build Status][build-image]][build-link]
+[![Project Chat][chat-image]][chat-link]
 
 Securely zero memory (a.k.a. [zeroize]) while avoiding compiler optimizations.
 
@@ -22,25 +23,39 @@ in doing so they love to "optimize away" unnecessary zeroing calls. There are
 many documented "tricks" to attempt to avoid these optimizations and ensure
 that a zeroing routine is performed reliably.
 
-This crate isn't about tricks: it uses [core::ptr::write_volatile]
-and [core::sync::atomic] memory fences to provide easy-to-use, portable
-zeroing behavior which works on all of Rust's core number types and slices
-thereof, implemented in pure Rust with no usage of FFI or assembly.
+The [`Zeroize` trait] uses [core::ptr::write_volatile] and, on supported targets,
+inline assembly optimization barriers to provide portable zeroing behavior.
+The barriers allow optimized bulk fills, with portable bulk volatile writes
+as a fallback. The `zeroize_bytes` function provides direct access to this
+byte-zeroing backend.
 
 - No insecure fallbacks!
 - No dependencies!
-- No FFI or inline assembly! **WASM friendly** (and tested)!
+- No FFI! **WASM friendly** (and tested)!
 - `#![no_std]` i.e. **embedded-friendly**!
 - No functionality besides securely zeroing memory!
 - (Optional) Custom derive support for zeroing complex structures
 
 ## Minimum Supported Rust Version
 
-Rust **1.60** or newer.
+Requires Rust **1.85** or newer.
 
-In the future, we reserve the right to change MSRV (i.e. MSRV is out-of-scope
-for this crate's SemVer guarantees), however when we do it will be accompanied by
-a minor version bump.
+In the future, we reserve the right to change MSRV (i.e. MSRV is out-of-scope for this crate's
+semantic versioning guarantees).
+
+## Example
+
+```rust
+use zeroize::Zeroize;
+
+// Protip: don't embed secrets in your source code.
+// This is just an example.
+let mut secret = b"Air shield password: 1,2,3,4,5".to_vec();
+// [ ... ] open the air shield here
+
+// Now that we're done using the secret, zero it out.
+secret.zeroize();
+```
 
 ## License
 
@@ -61,12 +76,14 @@ dual licensed as above, without any additional terms or conditions.
 
 [crate-image]: https://img.shields.io/crates/v/zeroize.svg
 [crate-link]: https://crates.io/crates/zeroize
+[build-image]: https://github.com/RustCrypto/utils/actions/workflows/zeroize.yml/badge.svg?branch=master
+[build-link]: https://github.com/RustCrypto/utils/actions/workflows/zeroize.yml?query=branch:master
 [docs-image]: https://docs.rs/zeroize/badge.svg
 [docs-link]: https://docs.rs/zeroize/
 [license-image]: https://img.shields.io/badge/license-Apache2.0/MIT-blue.svg
-[rustc-image]: https://img.shields.io/badge/rustc-1.60+-blue.svg
-[build-image]: https://github.com/RustCrypto/utils/actions/workflows/zeroize.yml/badge.svg
-[build-link]: https://github.com/RustCrypto/utils/actions/workflows/zeroize.yml
+[rustc-image]: https://img.shields.io/badge/rustc-1.85+-blue.svg
+[chat-image]: https://img.shields.io/badge/zulip-join_chat-blue.svg
+[chat-link]: https://rustcrypto.zulipchat.com/#narrow/stream/260052-utils
 
 [//]: # (general links)
 
@@ -76,5 +93,4 @@ dual licensed as above, without any additional terms or conditions.
 [Documentation]: https://docs.rs/zeroize/
 [Zeroing memory securely is hard]: http://www.daemonology.net/blog/2014-09-04-how-to-zero-a-buffer.html
 [core::ptr::write_volatile]: https://doc.rust-lang.org/core/ptr/fn.write_volatile.html
-[core::sync::atomic]: https://doc.rust-lang.org/stable/core/sync/atomic/index.html
 [good cryptographic hygiene]: https://github.com/veorq/cryptocoding#clean-memory-of-secret-data

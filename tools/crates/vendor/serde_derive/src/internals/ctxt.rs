@@ -25,7 +25,7 @@ impl Ctxt {
         }
     }
 
-    /// Add an error to the context object with a tokenenizable object.
+    /// Add an error to the context object with a tokenizable object.
     ///
     /// The object is used for spanning in error messages.
     pub fn error_spanned_by<A: ToTokens, T: Display>(&self, obj: A, msg: T) {
@@ -46,9 +46,8 @@ impl Ctxt {
     pub fn check(self) -> syn::Result<()> {
         let mut errors = self.errors.borrow_mut().take().unwrap().into_iter();
 
-        let mut combined = match errors.next() {
-            Some(first) => first,
-            None => return Ok(()),
+        let Some(mut combined) = errors.next() else {
+            return Ok(());
         };
 
         for rest in errors {

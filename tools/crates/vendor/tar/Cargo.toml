@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.63"
 name = "tar"
-version = "0.4.45"
+version = "0.4.46"
 authors = ["Alex Crichton <alex@alexcrichton.com>"]
 build = false
 exclude = ["tests/archives/*"]
@@ -28,7 +28,7 @@ currently handle compression, but it is abstract over all I/O readers and
 writers. Additionally, great lengths are taken to ensure that the entire
 contents are never required to be entirely resident in memory all at once.
 """
-homepage = "https://github.com/alexcrichton/tar-rs"
+homepage = "https://github.com/composefs/tar-rs"
 documentation = "https://docs.rs/tar"
 readme = "README.md"
 keywords = [
@@ -37,7 +37,7 @@ keywords = [
     "encoding",
 ]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/alexcrichton/tar-rs"
+repository = "https://github.com/composefs/tar-rs"
 
 [features]
 default = ["xattr"]
@@ -74,7 +74,7 @@ path = "tests/entry.rs"
 version = "0.2.8"
 
 [dev-dependencies.astral-tokio-tar]
-version = "0.5"
+version = "0.6.2"
 
 [dev-dependencies.rand]
 version = "0.8"

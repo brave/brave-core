@@ -21,9 +21,9 @@ use url::Url;
 use std::path::Path;
 
 /// Location of the crates.io index
-pub const CRATES_IO_INDEX: &str = "https://github.com/rust-lang/crates.io-index";
+const CRATES_IO_INDEX: &str = "https://github.com/rust-lang/crates.io-index";
 /// Location of the crates.io sparse HTTP index
-pub const CRATES_IO_SPARSE_INDEX: &str = "sparse+https://index.crates.io/";
+const CRATES_IO_SPARSE_INDEX: &str = "sparse+https://index.crates.io/";
 
 /// Unique identifier for a source of packages.
 #[derive(Clone, Debug)]
@@ -90,12 +90,11 @@ impl SourceId {
             }
             "registry" => {
                 let url = url.into_url()?;
-                Ok(SourceId::new(SourceKind::Registry, url)?
-                    .with_precise(Some("locked".to_string())))
+                Ok(Self::new(SourceKind::Registry, url)?.with_precise(Some("locked".to_string())))
             }
             "sparse" => {
                 let url = url.into_url()?;
-                Ok(SourceId::new(SourceKind::SparseRegistry, url)?
+                Ok(Self::new(SourceKind::SparseRegistry, url)?
                     .with_precise(Some("locked".to_string())))
             }
             "path" => Self::new(SourceKind::Path, url.into_url()?),
@@ -300,7 +299,7 @@ impl Serialize for SourceId {
 impl<'de> Deserialize<'de> for SourceId {
     fn deserialize<D: de::Deserializer<'de>>(d: D) -> std::result::Result<Self, D::Error> {
         let string = String::deserialize(d)?;
-        SourceId::from_url(&string).map_err(de::Error::custom)
+        Self::from_url(&string).map_err(de::Error::custom)
     }
 }
 
@@ -319,8 +318,8 @@ impl fmt::Display for SourceId {
 }
 
 impl Default for SourceId {
-    fn default() -> SourceId {
-        SourceId::for_registry(&CRATES_IO_INDEX.into_url().unwrap()).unwrap()
+    fn default() -> Self {
+        Self::for_registry(&CRATES_IO_INDEX.into_url().unwrap()).unwrap()
     }
 }
 
@@ -422,7 +421,7 @@ pub enum GitReference {
 impl GitReference {
     /// Returns a `Display`able view of this git reference, or None if using
     /// the head of the default branch
-    pub fn pretty_ref(&self, url_encoded: bool) -> Option<PrettyRef<'_>> {
+    pub fn pretty_ref(&self, url_encoded: bool) -> Option<impl fmt::Display + '_> {
         match self {
             Self::DefaultBranch => None,
             _ => Some(PrettyRef {
@@ -434,7 +433,7 @@ impl GitReference {
 }
 
 /// A git reference that can be `Display`ed
-pub struct PrettyRef<'a> {
+struct PrettyRef<'a> {
     inner: &'a GitReference,
     url_encoded: bool,
 }

@@ -3,7 +3,7 @@
 use core::fmt::Debug;
 use core::str;
 
-use crate::read::{self, ObjectSegment, ReadRef, Result, SegmentFlags};
+use crate::read::{self, ObjectSegment, Permissions, ReadRef, Result, SegmentFlags};
 use crate::xcoff;
 
 use super::{FileHeader, XcoffFile};
@@ -112,6 +112,10 @@ where
     }
 
     fn flags(&self) -> SegmentFlags {
+        unreachable!();
+    }
+
+    fn permissions(&self) -> Permissions {
         unreachable!();
     }
 }

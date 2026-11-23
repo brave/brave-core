@@ -12,11 +12,11 @@ of Rust source code.
 Currently this library is geared toward use in Rust procedural macros, but
 contains some APIs that may be useful more generally.
 
-- **Data structures** — Syn provides a complete syntax tree that can represent
-  any valid Rust source code. The syntax tree is rooted at [`syn::File`] which
-  represents a full source file, but there are other entry points that may be
-  useful to procedural macros including [`syn::Item`], [`syn::Expr`] and
-  [`syn::Type`].
+- **Data structures** — Syn provides a syntax tree that can represent most
+  stable Rust source code and some unstable syntax. The syntax tree is rooted at
+  [`syn::File`] which represents a full source file, but there are other entry
+  points that may be useful to procedural macros including [`syn::Item`],
+  [`syn::Expr`] and [`syn::Type`].
 
 - **Derives** — Of particular interest to derive macros is [`syn::DeriveInput`]
   which is any of the three legal input items to a derive macro. An example
@@ -39,12 +39,12 @@ contains some APIs that may be useful more generally.
   procedural macros enable only what they need, and do not pay in compile time
   for all the rest.
 
-[`syn::File`]: https://docs.rs/syn/2.0/syn/struct.File.html
-[`syn::Item`]: https://docs.rs/syn/2.0/syn/enum.Item.html
-[`syn::Expr`]: https://docs.rs/syn/2.0/syn/enum.Expr.html
-[`syn::Type`]: https://docs.rs/syn/2.0/syn/enum.Type.html
-[`syn::DeriveInput`]: https://docs.rs/syn/2.0/syn/struct.DeriveInput.html
-[parser functions]: https://docs.rs/syn/2.0/syn/parse/index.html
+[`syn::File`]: https://docs.rs/syn/3/syn/struct.File.html
+[`syn::Item`]: https://docs.rs/syn/3/syn/enum.Item.html
+[`syn::Expr`]: https://docs.rs/syn/3/syn/enum.Expr.html
+[`syn::Type`]: https://docs.rs/syn/3/syn/enum.Type.html
+[`syn::DeriveInput`]: https://docs.rs/syn/3/syn/struct.DeriveInput.html
+[parser functions]: https://docs.rs/syn/3/syn/parse/index.html
 
 [*Release notes*](https://github.com/dtolnay/syn/releases)
 
@@ -73,12 +73,16 @@ tokens back to the compiler to compile into the user's crate.
 [`TokenStream`]: https://doc.rust-lang.org/proc_macro/struct.TokenStream.html
 
 ```toml
-[dependencies]
-syn = "2.0"
-quote = "1.0"
+# Cargo.toml
+[package]
+...
 
 [lib]
 proc-macro = true
+
+[dependencies]
+syn = "3"
+quote = "1"
 ```
 
 ```rust
@@ -148,11 +152,22 @@ macro as shown in the `heapsize` example, token-based macros in Syn are able to
 trigger errors that directly pinpoint the source of the problem.
 
 ```console
-error[E0277]: the trait bound `std::thread::Thread: HeapSize` is not satisfied
- --> src/main.rs:7:5
+error[E0277]: the trait bound `Thread: HeapSize` is not satisfied
+ --> src/main.rs:9:5
   |
-7 |     bad: std::thread::Thread,
-  |     ^^^^^^^^^^^^^^^^^^^^^^^^ the trait `HeapSize` is not implemented for `std::thread::Thread`
+3 | #[derive(HeapSize)]
+  |          -------- required by a bound introduced by this call
+...
+9 |     bad: std::thread::Thread,
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^ the trait `HeapSize` is not implemented for `Thread`
+  |
+  = help: the following other types implement trait `HeapSize`:
+            &'a T
+            Box<T>
+            Demo<'a, T>
+            String
+            [T]
+            u8
 ```
 
 <br>
@@ -205,7 +220,7 @@ longer trigger or be less helpful than it used to be.
 
 When developing a procedural macro it can be helpful to look at what the
 generated code looks like. Use `cargo rustc -- -Zunstable-options
---pretty=expanded` or the [`cargo expand`] subcommand.
+-Zunpretty=expanded` or the [`cargo expand`] subcommand.
 
 [`cargo expand`]: https://github.com/dtolnay/cargo-expand
 

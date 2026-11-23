@@ -31,15 +31,16 @@
 //! ```
 //!
 //! An implementation for `Instant` is intentionally omitted since its values are only meaningful in
-//! relation to a [`Duration`], and obtaining an `Instant` from a [`Duration`] is very simple
-//! anyway.
+//! relation to a [`SignedDuration`], and obtaining an `Instant` from a [`SignedDuration`] is very
+//! simple anyway.
 
 use alloc::boxed::Box;
 
-use quickcheck::{empty_shrinker, single_shrinker, Arbitrary, Gen};
+use quickcheck::{Arbitrary, Gen, empty_shrinker, single_shrinker};
 
 use crate::{
-    Date, Duration, Month, OffsetDateTime, PrimitiveDateTime, Time, UtcDateTime, UtcOffset, Weekday,
+    Date, Month, OffsetDateTime, PlainDateTime, SignedDuration, Time, Timestamp, UtcDateTime,
+    UtcOffset, Weekday,
 };
 
 /// Obtain an arbitrary value between the minimum and maximum inclusive.
@@ -76,7 +77,7 @@ impl Arbitrary for Date {
     }
 }
 
-impl Arbitrary for Duration {
+impl Arbitrary for SignedDuration {
     #[inline]
     fn arbitrary(g: &mut Gen) -> Self {
         Self::new_ranged(<_>::arbitrary(g), <_>::arbitrary(g))
@@ -124,7 +125,7 @@ impl Arbitrary for Time {
     }
 }
 
-impl Arbitrary for PrimitiveDateTime {
+impl Arbitrary for PlainDateTime {
     #[inline]
     fn arbitrary(g: &mut Gen) -> Self {
         Self::new(<_>::arbitrary(g), <_>::arbitrary(g))
@@ -184,6 +185,22 @@ impl Arbitrary for UtcDateTime {
             (self.date(), self.time())
                 .shrink()
                 .map(|(date, time)| Self::new(date, time)),
+        )
+    }
+}
+
+impl Arbitrary for Timestamp {
+    #[inline]
+    fn arbitrary(g: &mut Gen) -> Self {
+        Self::new_ranged(<_>::arbitrary(g), <_>::arbitrary(g))
+    }
+
+    #[inline]
+    fn shrink(&self) -> Box<dyn Iterator<Item = Self>> {
+        Box::new(
+            self.as_parts_ranged()
+                .shrink()
+                .map(|(seconds, nanoseconds)| Self::new_ranged(seconds, nanoseconds)),
         )
     }
 }

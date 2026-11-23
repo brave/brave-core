@@ -118,6 +118,11 @@ impl<T> FixedSizeList<T> {
     }
 
     #[inline]
+    pub(crate) fn front_idx(&self) -> usize {
+        self.front
+    }
+
+    #[inline]
     pub(crate) fn back_idx(&self) -> usize {
         self.back
     }
@@ -170,11 +175,6 @@ impl<T> FixedSizeList<T> {
     #[inline]
     pub(crate) fn pop_front(&mut self) -> Option<T> {
         self.remove(self.front)
-    }
-
-    #[inline]
-    pub(crate) fn pop_back(&mut self) -> Option<T> {
-        self.remove(self.back)
     }
 
     pub(crate) fn remove(&mut self, idx: usize) -> Option<T> {
@@ -275,13 +275,13 @@ impl<T> FixedSizeList<T> {
 
     pub(crate) fn retain<F>(&mut self, mut f: F)
     where
-        F: FnMut(&T) -> bool,
+        F: FnMut(usize, &T) -> bool,
     {
         let mut front = self.front;
         while front != usize::MAX {
             let node = self.node_ref(front).unwrap();
             let next = node.next;
-            if !f(&node.data) {
+            if !f(front, &node.data) {
                 self.remove(front);
             }
             front = next;
@@ -290,13 +290,13 @@ impl<T> FixedSizeList<T> {
 
     pub(crate) fn retain_mut<F>(&mut self, mut f: F)
     where
-        F: FnMut(&mut T) -> bool,
+        F: FnMut(usize, &mut T) -> bool,
     {
         let mut front = self.front;
         while front != usize::MAX {
             let node = self.node_mut(front).unwrap();
             let next = node.next;
-            if !f(&mut node.data) {
+            if !f(front, &mut node.data) {
                 self.remove(front);
             }
             front = next;
@@ -343,7 +343,7 @@ pub(crate) struct FixedSizeListIter<'a, T> {
     len: usize,
 }
 
-impl<'a, T> Clone for FixedSizeListIter<'a, T> {
+impl<T> Clone for FixedSizeListIter<'_, T> {
     fn clone(&self) -> Self {
         Self {
             list: self.list,
@@ -374,7 +374,7 @@ impl<'a, T> Iterator for FixedSizeListIter<'a, T> {
     }
 }
 
-impl<'a, T> DoubleEndedIterator for FixedSizeListIter<'a, T> {
+impl<T> DoubleEndedIterator for FixedSizeListIter<'_, T> {
     fn next_back(&mut self) -> Option<Self::Item> {
         if self.len > 0 {
             let back = self.back;
@@ -388,7 +388,7 @@ impl<'a, T> DoubleEndedIterator for FixedSizeListIter<'a, T> {
     }
 }
 
-impl<'a, T> ExactSizeIterator for FixedSizeListIter<'a, T> {
+impl<T> ExactSizeIterator for FixedSizeListIter<'_, T> {
     fn len(&self) -> usize {
         self.size_hint().0
     }
@@ -454,7 +454,7 @@ impl<'a, T> Iterator for FixedSizeListIterMut<'a, T> {
     }
 }
 
-impl<'a, T> DoubleEndedIterator for FixedSizeListIterMut<'a, T> {
+impl<T> DoubleEndedIterator for FixedSizeListIterMut<'_, T> {
     #[allow(unsafe_code)]
     fn next_back(&mut self) -> Option<Self::Item> {
         if self.len > 0 {
@@ -481,7 +481,7 @@ impl<'a, T> DoubleEndedIterator for FixedSizeListIterMut<'a, T> {
     }
 }
 
-impl<'a, T> ExactSizeIterator for FixedSizeListIterMut<'a, T> {
+impl<T> ExactSizeIterator for FixedSizeListIterMut<'_, T> {
     fn len(&self) -> usize {
         self.size_hint().0
     }

@@ -21,7 +21,7 @@ const OS_HAS_THREAD_SAFE_ENVIRONMENT: bool = match std::env::consts::OS.as_bytes
 /// For safety documentation, see [`time::util::refresh_tz`].
 #[inline]
 pub(super) unsafe fn refresh_tz_unchecked() {
-    extern "C" {
+    unsafe extern "C" {
         #[cfg_attr(target_os = "netbsd", link_name = "__tzset50")]
         fn tzset();
     }

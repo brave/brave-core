@@ -1,4 +1,4 @@
-use core::mem::{self, ManuallyDrop};
+use core::mem::{self, ManuallyDrop, MaybeUninit};
 use core::ops::{Deref, RangeBounds};
 use core::ptr::NonNull;
 use core::{cmp, fmt, hash, ptr, slice};
@@ -106,18 +106,22 @@ pub struct Bytes {
     vtable: &'static Vtable,
 }
 
+// `data` is passed by value (`*mut ()` instead of `&mut AtomicPtr<()>`)
+// when `&mut self` or `self` is consumed.
+// This allows the optimizer to see that the address of the `Bytes` is not
+// captured by the indirect call, enabling further optimizations.
 pub(crate) struct Vtable {
     /// fn(data, ptr, len)
     pub clone: unsafe fn(&AtomicPtr<()>, *const u8, usize) -> Bytes,
     /// fn(data, ptr, len)
     ///
     /// `into_*` consumes the `Bytes`, returning the respective value.
-    pub into_vec: unsafe fn(&AtomicPtr<()>, *const u8, usize) -> Vec<u8>,
-    pub into_mut: unsafe fn(&AtomicPtr<()>, *const u8, usize) -> BytesMut,
+    pub into_vec: unsafe fn(*mut (), *const u8, usize) -> Vec<u8>,
+    pub into_mut: unsafe fn(*mut (), *const u8, usize) -> BytesMut,
     /// fn(data)
     pub is_unique: unsafe fn(&AtomicPtr<()>) -> bool,
     /// fn(data, ptr, len)
-    pub drop: unsafe fn(&mut AtomicPtr<()>, *const u8, usize),
+    pub drop: unsafe fn(*mut (), *const u8, usize),
 }
 
 impl Bytes {
@@ -367,34 +371,7 @@ impl Bytes {
     /// Requires that `begin <= end` and `end <= self.len()`, otherwise slicing
     /// will panic.
     pub fn slice(&self, range: impl RangeBounds<usize>) -> Self {
-        use core::ops::Bound;
-
-        let len = self.len();
-
-        let begin = match range.start_bound() {
-            Bound::Included(&n) => n,
-            Bound::Excluded(&n) => n.checked_add(1).expect("out of range"),
-            Bound::Unbounded => 0,
-        };
-
-        let end = match range.end_bound() {
-            Bound::Included(&n) => n.checked_add(1).expect("out of range"),
-            Bound::Excluded(&n) => n,
-            Bound::Unbounded => len,
-        };
-
-        assert!(
-            begin <= end,
-            "range start must not be greater than end: {:?} <= {:?}",
-            begin,
-            end,
-        );
-        assert!(
-            end <= len,
-            "range end out of bounds: {:?} <= {:?}",
-            end,
-            len,
-        );
+        let (begin, end) = crate::range(range, self.len());
 
         if end == begin {
             return Bytes::new_empty_with_ptr(self.ptr.wrapping_add(begin));
@@ -431,8 +408,11 @@ impl Bytes {
     ///
     /// # Panics
     ///
-    /// Requires that the given `sub` slice is in fact contained within the
-    /// `Bytes` buffer; otherwise this function will panic.
+    /// Panics if the given `subset` slice is not in fact contained within the
+    /// `Bytes` buffer.
+    ///
+    /// An empty `subset` is exempt: it is accepted even when it does not point
+    /// into `self`, and returns an empty `Bytes`.
     pub fn slice_ref(&self, subset: &[u8]) -> Self {
         // Empty slice and empty Bytes may have their pointers reset
         // so explicitly allow empty slice to be a subslice of any slice.
@@ -512,6 +492,8 @@ impl Bytes {
 
         self.len = at;
 
+        // SAFETY: `at` has been asserted to be <= `self.len()`, and the
+        // `at == self.len()` and `at == 0` cases were handled above.
         unsafe { ret.inc_start(at) };
 
         ret
@@ -560,6 +542,8 @@ impl Bytes {
 
         let mut ret = self.clone();
 
+        // SAFETY: `at` has been asserted to be <= `self.len()`, and the
+        // `at == self.len()` and `at == 0` cases were handled above.
         unsafe { self.inc_start(at) };
 
         ret.len = at;
@@ -586,7 +570,9 @@ impl Bytes {
     /// ```
     #[inline]
     pub fn truncate(&mut self, len: usize) {
-        if len < self.len {
+        if len == 0 {
+            drop(mem::replace(self, Bytes::new_empty_with_ptr(self.ptr)));
+        } else if len < self.len {
             // The Vec "promotable" vtables do not store the capacity,
             // so we cannot truncate while using this repr. We *have* to
             // promote using `split_off` so the capacity can be stored.
@@ -671,6 +657,11 @@ impl Bytes {
         self.len -= by;
         self.ptr = self.ptr.add(by);
     }
+
+    #[inline]
+    fn data_mut(&mut self) -> *mut () {
+        self.data.with_mut(|p| *p)
+    }
 }
 
 // Vtable must enforce this behavior
@@ -680,7 +671,8 @@ unsafe impl Sync for Bytes {}
 impl Drop for Bytes {
     #[inline]
     fn drop(&mut self) {
-        unsafe { (self.vtable.drop)(&mut self.data, self.ptr, self.len) }
+        let data = self.data_mut();
+        unsafe { (self.vtable.drop)(data, self.ptr, self.len) }
     }
 }
 
@@ -959,24 +951,26 @@ impl From<&'static str> for Bytes {
 
 impl From<Vec<u8>> for Bytes {
     fn from(vec: Vec<u8>) -> Bytes {
+        // Avoid an extra allocation if possible.
+        if vec.len() == vec.capacity() {
+            return Bytes::from(vec.into_boxed_slice());
+        }
+
+        let shared = Box::new(MaybeUninit::<Shared>::uninit());
         let mut vec = ManuallyDrop::new(vec);
         let ptr = vec.as_mut_ptr();
         let len = vec.len();
         let cap = vec.capacity();
 
-        // Avoid an extra allocation if possible.
-        if len == cap {
-            let vec = ManuallyDrop::into_inner(vec);
-            return Bytes::from(vec.into_boxed_slice());
-        }
+        let shared = Shared::init_to_raw(
+            shared,
+            Shared {
+                buf: ptr,
+                cap,
+                ref_cnt: AtomicUsize::new(1),
+            },
+        );
 
-        let shared = Box::new(Shared {
-            buf: ptr,
-            cap,
-            ref_cnt: AtomicUsize::new(1),
-        });
-
-        let shared = Box::into_raw(shared);
         // The pointer should be aligned, so this assert should
         // always succeed.
         debug_assert!(
@@ -1040,8 +1034,9 @@ impl From<Bytes> for BytesMut {
     /// assert_eq!(BytesMut::from(bytes), BytesMut::from(&b"hello"[..]));
     /// ```
     fn from(bytes: Bytes) -> Self {
-        let bytes = ManuallyDrop::new(bytes);
-        unsafe { (bytes.vtable.into_mut)(&bytes.data, bytes.ptr, bytes.len) }
+        let mut bytes = ManuallyDrop::new(bytes);
+        let data = bytes.data_mut();
+        unsafe { (bytes.vtable.into_mut)(data, bytes.ptr, bytes.len) }
     }
 }
 
@@ -1053,8 +1048,9 @@ impl From<String> for Bytes {
 
 impl From<Bytes> for Vec<u8> {
     fn from(bytes: Bytes) -> Vec<u8> {
-        let bytes = ManuallyDrop::new(bytes);
-        unsafe { (bytes.vtable.into_vec)(&bytes.data, bytes.ptr, bytes.len) }
+        let mut bytes = ManuallyDrop::new(bytes);
+        let data = bytes.data_mut();
+        unsafe { (bytes.vtable.into_vec)(data, bytes.ptr, bytes.len) }
     }
 }
 
@@ -1084,12 +1080,12 @@ unsafe fn static_clone(_: &AtomicPtr<()>, ptr: *const u8, len: usize) -> Bytes {
     Bytes::from_static(slice)
 }
 
-unsafe fn static_to_vec(_: &AtomicPtr<()>, ptr: *const u8, len: usize) -> Vec<u8> {
+unsafe fn static_to_vec(_: *mut (), ptr: *const u8, len: usize) -> Vec<u8> {
     let slice = slice::from_raw_parts(ptr, len);
     slice.to_vec()
 }
 
-unsafe fn static_to_mut(_: &AtomicPtr<()>, ptr: *const u8, len: usize) -> BytesMut {
+unsafe fn static_to_mut(_: *mut (), ptr: *const u8, len: usize) -> BytesMut {
     let slice = slice::from_raw_parts(ptr, len);
     BytesMut::from(slice)
 }
@@ -1098,7 +1094,7 @@ fn static_is_unique(_: &AtomicPtr<()>) -> bool {
     false
 }
 
-unsafe fn static_drop(_: &mut AtomicPtr<()>, _: *const u8, _: usize) {
+unsafe fn static_drop(_: *mut (), _: *const u8, _: usize) {
     // nothing to drop for &'static [u8]
 }
 
@@ -1135,15 +1131,15 @@ unsafe fn owned_clone<T>(data: &AtomicPtr<()>, ptr: *const u8, len: usize) -> By
     }
 }
 
-unsafe fn owned_to_vec<T>(data: &AtomicPtr<()>, ptr: *const u8, len: usize) -> Vec<u8> {
+unsafe fn owned_to_vec<T>(owned: *mut (), ptr: *const u8, len: usize) -> Vec<u8> {
     let slice = slice::from_raw_parts(ptr, len);
     let vec = slice.to_vec();
-    owned_drop_impl::<T>(data.load(Ordering::Relaxed));
+    owned_drop_impl::<T>(owned);
     vec
 }
 
-unsafe fn owned_to_mut<T>(data: &AtomicPtr<()>, ptr: *const u8, len: usize) -> BytesMut {
-    BytesMut::from_vec(owned_to_vec::<T>(data, ptr, len))
+unsafe fn owned_to_mut<T>(owned: *mut (), ptr: *const u8, len: usize) -> BytesMut {
+    BytesMut::from_vec(owned_to_vec::<T>(owned, ptr, len))
 }
 
 unsafe fn owned_is_unique(_data: &AtomicPtr<()>) -> bool {
@@ -1168,9 +1164,8 @@ unsafe fn owned_drop_impl<T>(owned: *mut ()) {
     drop(Box::<Owned<T>>::from_raw(owned.cast()));
 }
 
-unsafe fn owned_drop<T>(data: &mut AtomicPtr<()>, _ptr: *const u8, _len: usize) {
-    let owned = data.load(Ordering::Relaxed);
-    owned_drop_impl::<T>(owned);
+unsafe fn owned_drop<T>(data: *mut (), _ptr: *const u8, _len: usize) {
+    owned_drop_impl::<T>(data);
 }
 
 // ===== impl PromotableVtable =====
@@ -1205,12 +1200,11 @@ unsafe fn promotable_even_clone(data: &AtomicPtr<()>, ptr: *const u8, len: usize
 }
 
 unsafe fn promotable_to_vec(
-    data: &AtomicPtr<()>,
+    shared: *mut (),
     ptr: *const u8,
     len: usize,
     f: fn(*mut ()) -> *mut u8,
 ) -> Vec<u8> {
-    let shared = data.load(Ordering::Acquire);
     let kind = shared as usize & KIND_MASK;
 
     if kind == KIND_ARC {
@@ -1231,12 +1225,11 @@ unsafe fn promotable_to_vec(
 }
 
 unsafe fn promotable_to_mut(
-    data: &AtomicPtr<()>,
+    shared: *mut (),
     ptr: *const u8,
     len: usize,
     f: fn(*mut ()) -> *mut u8,
 ) -> BytesMut {
-    let shared = data.load(Ordering::Acquire);
     let kind = shared as usize & KIND_MASK;
 
     if kind == KIND_ARC {
@@ -1259,31 +1252,28 @@ unsafe fn promotable_to_mut(
     }
 }
 
-unsafe fn promotable_even_to_vec(data: &AtomicPtr<()>, ptr: *const u8, len: usize) -> Vec<u8> {
-    promotable_to_vec(data, ptr, len, |shared| {
+unsafe fn promotable_even_to_vec(shared: *mut (), ptr: *const u8, len: usize) -> Vec<u8> {
+    promotable_to_vec(shared, ptr, len, |shared| {
         ptr_map(shared.cast(), |addr| addr & !KIND_MASK)
     })
 }
 
-unsafe fn promotable_even_to_mut(data: &AtomicPtr<()>, ptr: *const u8, len: usize) -> BytesMut {
-    promotable_to_mut(data, ptr, len, |shared| {
+unsafe fn promotable_even_to_mut(shared: *mut (), ptr: *const u8, len: usize) -> BytesMut {
+    promotable_to_mut(shared, ptr, len, |shared| {
         ptr_map(shared.cast(), |addr| addr & !KIND_MASK)
     })
 }
 
-unsafe fn promotable_even_drop(data: &mut AtomicPtr<()>, ptr: *const u8, len: usize) {
-    data.with_mut(|shared| {
-        let shared = *shared;
-        let kind = shared as usize & KIND_MASK;
+unsafe fn promotable_even_drop(shared: *mut (), ptr: *const u8, len: usize) {
+    let kind = shared as usize & KIND_MASK;
 
-        if kind == KIND_ARC {
-            release_shared(shared.cast());
-        } else {
-            debug_assert_eq!(kind, KIND_VEC);
-            let buf = ptr_map(shared.cast(), |addr| addr & !KIND_MASK);
-            free_boxed_slice(buf, ptr, len);
-        }
-    });
+    if kind == KIND_ARC {
+        release_shared(shared.cast());
+    } else {
+        debug_assert_eq!(kind, KIND_VEC);
+        let buf = ptr_map(shared.cast(), |addr| addr & !KIND_MASK);
+        free_boxed_slice(buf, ptr, len);
+    }
 }
 
 unsafe fn promotable_odd_clone(data: &AtomicPtr<()>, ptr: *const u8, len: usize) -> Bytes {
@@ -1298,27 +1288,24 @@ unsafe fn promotable_odd_clone(data: &AtomicPtr<()>, ptr: *const u8, len: usize)
     }
 }
 
-unsafe fn promotable_odd_to_vec(data: &AtomicPtr<()>, ptr: *const u8, len: usize) -> Vec<u8> {
-    promotable_to_vec(data, ptr, len, |shared| shared.cast())
+unsafe fn promotable_odd_to_vec(shared: *mut (), ptr: *const u8, len: usize) -> Vec<u8> {
+    promotable_to_vec(shared, ptr, len, |shared| shared.cast())
 }
 
-unsafe fn promotable_odd_to_mut(data: &AtomicPtr<()>, ptr: *const u8, len: usize) -> BytesMut {
-    promotable_to_mut(data, ptr, len, |shared| shared.cast())
+unsafe fn promotable_odd_to_mut(shared: *mut (), ptr: *const u8, len: usize) -> BytesMut {
+    promotable_to_mut(shared, ptr, len, |shared| shared.cast())
 }
 
-unsafe fn promotable_odd_drop(data: &mut AtomicPtr<()>, ptr: *const u8, len: usize) {
-    data.with_mut(|shared| {
-        let shared = *shared;
-        let kind = shared as usize & KIND_MASK;
+unsafe fn promotable_odd_drop(shared: *mut (), ptr: *const u8, len: usize) {
+    let kind = shared as usize & KIND_MASK;
 
-        if kind == KIND_ARC {
-            release_shared(shared.cast());
-        } else {
-            debug_assert_eq!(kind, KIND_VEC);
+    if kind == KIND_ARC {
+        release_shared(shared.cast());
+    } else {
+        debug_assert_eq!(kind, KIND_VEC);
 
-            free_boxed_slice(shared.cast(), ptr, len);
-        }
-    });
+        free_boxed_slice(shared.cast(), ptr, len);
+    }
 }
 
 unsafe fn promotable_is_unique(data: &AtomicPtr<()>) -> bool {
@@ -1347,6 +1334,15 @@ struct Shared {
     ref_cnt: AtomicUsize,
 }
 
+impl Shared {
+    fn init_to_raw(b: Box<MaybeUninit<Self>>, v: Self) -> *mut Self {
+        let shared = Box::into_raw(b).cast::<Self>();
+        // SAFETY: The Box has the right layout.
+        unsafe { shared.write(v) };
+        shared
+    }
+}
+
 impl Drop for Shared {
     fn drop(&mut self) {
         unsafe { dealloc(self.buf, Layout::from_size_align(self.cap, 1).unwrap()) }
@@ -1357,7 +1353,12 @@ impl Drop for Shared {
 // This is a necessary invariant since we depend on allocating `Shared` a
 // shared object to implicitly carry the `KIND_ARC` flag in its pointer.
 // This flag is set when the LSB is 0.
-const _: [(); 0 - mem::align_of::<Shared>() % 2] = []; // Assert that the alignment of `Shared` is divisible by 2.
+const _: () = {
+    assert!(
+        mem::align_of::<Shared>() % 2 == 0,
+        "Shared alignment must be divisible by 2 for pointer tagging"
+    );
+};
 
 static SHARED_VTABLE: Vtable = Vtable {
     clone: shared_clone,
@@ -1405,8 +1406,8 @@ unsafe fn shared_to_vec_impl(shared: *mut Shared, ptr: *const u8, len: usize) ->
     }
 }
 
-unsafe fn shared_to_vec(data: &AtomicPtr<()>, ptr: *const u8, len: usize) -> Vec<u8> {
-    shared_to_vec_impl(data.load(Ordering::Relaxed).cast(), ptr, len)
+unsafe fn shared_to_vec(shared: *mut (), ptr: *const u8, len: usize) -> Vec<u8> {
+    shared_to_vec_impl(shared.cast(), ptr, len)
 }
 
 unsafe fn shared_to_mut_impl(shared: *mut Shared, ptr: *const u8, len: usize) -> BytesMut {
@@ -1444,8 +1445,8 @@ unsafe fn shared_to_mut_impl(shared: *mut Shared, ptr: *const u8, len: usize) ->
     }
 }
 
-unsafe fn shared_to_mut(data: &AtomicPtr<()>, ptr: *const u8, len: usize) -> BytesMut {
-    shared_to_mut_impl(data.load(Ordering::Relaxed).cast(), ptr, len)
+unsafe fn shared_to_mut(shared: *mut (), ptr: *const u8, len: usize) -> BytesMut {
+    shared_to_mut_impl(shared.cast(), ptr, len)
 }
 
 pub(crate) unsafe fn shared_is_unique(data: &AtomicPtr<()>) -> bool {
@@ -1454,10 +1455,8 @@ pub(crate) unsafe fn shared_is_unique(data: &AtomicPtr<()>) -> bool {
     ref_cnt == 1
 }
 
-unsafe fn shared_drop(data: &mut AtomicPtr<()>, _ptr: *const u8, _len: usize) {
-    data.with_mut(|shared| {
-        release_shared(shared.cast());
-    });
+unsafe fn shared_drop(shared: *mut (), _ptr: *const u8, _len: usize) {
+    release_shared(shared.cast());
 }
 
 unsafe fn shallow_clone_arc(shared: *mut Shared, ptr: *const u8, len: usize) -> Bytes {
@@ -1494,16 +1493,18 @@ unsafe fn shallow_clone_vec(
     // updated and since the buffer hasn't been promoted to an
     // `Arc`, those three fields still are the components of the
     // vector.
-    let shared = Box::new(Shared {
-        buf,
-        cap: offset.offset_from(buf) as usize + len,
-        // Initialize refcount to 2. One for this reference, and one
-        // for the new clone that will be returned from
-        // `shallow_clone`.
-        ref_cnt: AtomicUsize::new(2),
-    });
-
-    let shared = Box::into_raw(shared);
+    let shared = Box::new(MaybeUninit::<Shared>::uninit());
+    let shared = Shared::init_to_raw(
+        shared,
+        Shared {
+            buf,
+            cap: offset.offset_from(buf) as usize + len,
+            // Initialize refcount to 2. One for this reference, and one
+            // for the new clone that will be returned from
+            // `shallow_clone`.
+            ref_cnt: AtomicUsize::new(2),
+        },
+    );
 
     // The pointer should be aligned, so this assert should
     // always succeed.

@@ -12,7 +12,7 @@
 [package]
 edition = "2018"
 name = "fs-err"
-version = "3.2.2"
+version = "3.3.2"
 authors = ["Andrew Hickman <andrew.hickman1@sky.com>"]
 build = "build.rs"
 exclude = [
@@ -32,7 +32,7 @@ categories = [
     "command-line-interface",
     "filesystem",
 ]
-license = "MIT/Apache-2.0"
+license = "MIT OR Apache-2.0"
 repository = "https://github.com/andrewhickman/fs-err"
 
 [package.metadata.release]
@@ -55,7 +55,7 @@ rustdoc-args = [
 [features]
 debug = ["path_facts"]
 debug_tokio = [
-    "path_facts",
+    "debug",
     "tokio/rt-multi-thread",
 ]
 expose_original_error = []

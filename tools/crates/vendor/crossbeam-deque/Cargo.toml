@@ -13,8 +13,8 @@
 edition = "2021"
 rust-version = "1.61"
 name = "crossbeam-deque"
-version = "0.8.6"
-build = false
+version = "0.8.8"
+build = "build.rs"
 autolib = false
 autobins = false
 autoexamples = false
@@ -36,6 +36,13 @@ categories = [
 ]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/crossbeam-rs/crossbeam"
+
+[features]
+default = ["std"]
+std = [
+    "crossbeam-epoch/std",
+    "crossbeam-utils/std",
+]
 
 [lib]
 name = "crossbeam_deque"
@@ -67,13 +74,6 @@ default-features = false
 
 [dev-dependencies.rand]
 version = "0.8"
-
-[features]
-default = ["std"]
-std = [
-    "crossbeam-epoch/std",
-    "crossbeam-utils/std",
-]
 
 [lints.clippy.declare_interior_mutable_const]
 level = "allow"

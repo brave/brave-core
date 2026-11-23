@@ -8,13 +8,16 @@ pub fn agent(name: impl Into<String>) -> String {
 }
 #[cfg(any(feature = "blocking-client", feature = "async-client"))]
 mod with_transport {
-    use gix_transport::client::Transport;
+    #[cfg(all(feature = "async-client", not(feature = "blocking-client")))]
+    use gix_transport::client::async_io::Transport;
+    #[cfg(feature = "blocking-client")]
+    use gix_transport::client::blocking_io::Transport;
 
     /// Send a message to indicate the remote side that there is nothing more to expect from us, indicating a graceful shutdown.
     /// If `trace` is `true`, all packetlines received or sent will be passed to the facilities of the `gix-trace` crate.
-    #[maybe_async::maybe_async]
+    #[crate::bisync::bisync]
     pub async fn indicate_end_of_interaction(
-        mut transport: impl gix_transport::client::Transport,
+        mut transport: impl Transport,
         trace: bool,
     ) -> Result<(), gix_transport::client::Error> {
         // An empty request marks the (early) end of the interaction. Only relevant in stateful transports though.
@@ -62,7 +65,7 @@ mod with_transport {
         /// This will happen exactly once, and it is not considered an error to call it multiple times.
         ///
         /// For convenience, this is not consuming, but could be to assure the underlying transport isn't used anymore.
-        #[maybe_async::maybe_async]
+        #[crate::bisync::bisync]
         pub async fn indicate_end_of_interaction(&mut self) -> Result<(), gix_transport::client::Error> {
             if self.flush_packet_sent {
                 return Ok(());
@@ -78,7 +81,7 @@ mod with_transport {
         T: Transport,
     {
         fn drop(&mut self) {
-            #[cfg(feature = "async-client")]
+            #[cfg(all(feature = "async-client", not(feature = "blocking-client")))]
             {
                 // TODO: this should be an async drop once the feature is available.
                 //       Right now we block the executor by forcing this communication, but that only
@@ -86,7 +89,7 @@ mod with_transport {
                 //       connection in an async context.
                 crate::futures_lite::future::block_on(self.indicate_end_of_interaction()).ok();
             }
-            #[cfg(not(feature = "async-client"))]
+            #[cfg(feature = "blocking-client")]
             {
                 self.indicate_end_of_interaction().ok();
             }

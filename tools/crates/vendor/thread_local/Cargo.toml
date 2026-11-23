@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.63"
 name = "thread_local"
-version = "1.1.9"
+version = "1.1.10"
 authors = ["Amanieu d'Antras <amanieu@gmail.com>"]
 build = false
 autolib = false
@@ -39,13 +39,5 @@ nightly = []
 name = "thread_local"
 path = "src/lib.rs"
 
-[[bench]]
-name = "thread_local"
-path = "benches/thread_local.rs"
-harness = false
-
 [dependencies.cfg-if]
 version = "1.0.0"
-
-[dev-dependencies.criterion]
-version = "0.5.1"

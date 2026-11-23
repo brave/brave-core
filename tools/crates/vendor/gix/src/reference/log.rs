@@ -4,8 +4,8 @@ use gix_object::commit::MessageRef;
 use gix_ref::file::ReferenceExt;
 
 use crate::{
-    bstr::{BStr, BString, ByteVec},
     Reference,
+    bstr::{BStr, BString, ByteVec},
 };
 
 impl Reference<'_> {
@@ -15,7 +15,7 @@ impl Reference<'_> {
     }
 
     /// Return true if a reflog is present for this reference.
-    pub fn log_exists(&self) -> bool {
+    pub fn log_exists(&self) -> crate::Result<bool> {
         self.inner.log_exists(&self.repo.refs)
     }
 }

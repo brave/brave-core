@@ -10,15 +10,15 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.82"
+edition = "2024"
+rust-version = "1.88"
 name = "gix-diff"
-version = "0.54.1"
+version = "0.70.0"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
 build = false
 include = [
-    "src/**/*",
-    "LICENSE-*",
+    "/src/**/*",
+    "/LICENSE-*",
 ]
 autolib = false
 autobins = false
@@ -29,10 +29,20 @@ description = "Calculate differences between various git objects"
 readme = false
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/GitoxideLabs/gitoxide"
+resolver = "2"
 
 [package.metadata.docs.rs]
 all-features = true
-features = ["document-features"]
+features = [
+    "sha1",
+    "document-features",
+]
+
+[package.metadata.cargo-machete]
+ignored = [
+    "getrandom",
+    "serde",
+]
 
 [features]
 blob = [
@@ -61,6 +71,8 @@ serde = [
     "gix-object/serde",
     "gix-index?/serde",
 ]
+sha1 = ["gix-hash/sha1"]
+sha256 = ["gix-hash/sha256"]
 wasm = ["dep:getrandom"]
 
 [lib]
@@ -77,66 +89,70 @@ version = "0.2.0"
 optional = true
 
 [dependencies.getrandom]
-version = "0.2.8"
-features = ["js"]
+version = "0.4"
+features = ["wasm_js"]
 optional = true
 default-features = false
 
 [dependencies.gix-attributes]
-version = "^0.28.1"
+version = "^0.37.1"
 optional = true
 
 [dependencies.gix-command]
-version = "^0.6.3"
+version = "^0.12.1"
 optional = true
 
+[dependencies.gix-error]
+version = "^0.5.2"
+
 [dependencies.gix-filter]
-version = "^0.21.0"
+version = "^0.36.1"
 optional = true
 
 [dependencies.gix-fs]
-version = "^0.17.0"
+version = "^0.24.1"
 optional = true
 
 [dependencies.gix-hash]
-version = "^0.20.1"
+version = "^0.28.1"
 
 [dependencies.gix-index]
-version = "^0.42.1"
+version = "^0.58.0"
 optional = true
 
 [dependencies.gix-object]
-version = "^0.51.1"
+version = "^0.66.1"
 
 [dependencies.gix-path]
-version = "^0.10.21"
+version = "^0.14.1"
 optional = true
 
 [dependencies.gix-pathspec]
-version = "^0.13.0"
+version = "^0.22.1"
 optional = true
 
 [dependencies.gix-tempfile]
-version = "^19.0.0"
+version = "^26.0.0"
 optional = true
 
 [dependencies.gix-trace]
-version = "^0.1.15"
+version = "^0.3.1"
 optional = true
 
 [dependencies.gix-traverse]
-version = "^0.48.0"
+version = "^0.64.0"
 optional = true
 
 [dependencies.gix-worktree]
-version = "^0.43.1"
+version = "^0.59.0"
 features = ["attributes"]
 optional = true
 default-features = false
 
 [dependencies.imara-diff]
-version = "0.1.8"
+version = "^0.3.2"
 optional = true
+package = "gix-imara-diff"
 
 [dependencies.serde]
 version = "1.0.114"
@@ -144,10 +160,17 @@ features = ["derive"]
 optional = true
 default-features = false
 
-[dependencies.thiserror]
-version = "2.0.17"
+[dev-dependencies.criterion]
+version = "0.8.2"
+
+[dev-dependencies.insta]
+version = "1.46.3"
+
+[dev-dependencies.pretty_assertions]
+version = "1.4.0"
 
 [lints.clippy]
+assert_is_empty = "allow"
 bool_to_int_with_if = "allow"
 borrow_as_ptr = "allow"
 cast_lossless = "allow"
@@ -166,7 +189,6 @@ explicit_into_iter_loop = "allow"
 explicit_iter_loop = "allow"
 filter_map_next = "allow"
 fn_params_excessive_bools = "allow"
-from_iter_instead_of_collect = "allow"
 if_not_else = "allow"
 ignored_unit_patterns = "allow"
 implicit_clone = "allow"

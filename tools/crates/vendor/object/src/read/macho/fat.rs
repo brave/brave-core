@@ -1,7 +1,7 @@
 use crate::endian::BigEndian;
 use crate::macho;
 use crate::pod::Pod;
-use crate::read::{Architecture, Error, ReadError, ReadRef, Result};
+use crate::read::{self, Architecture, Error, ReadError, ReadRef, Result};
 
 pub use macho::{FatArch32, FatArch64, FatHeader};
 
@@ -56,12 +56,12 @@ impl<'data, Fat: FatArch> MachOFatFile<'data, Fat> {
 
 /// A trait for generic access to [`macho::FatArch32`] and [`macho::FatArch64`].
 #[allow(missing_docs)]
-pub trait FatArch: Pod {
+pub trait FatArch: Pod + read::private::Sealed {
     type Word: Into<u64>;
     const MAGIC: u32;
 
-    fn cputype(&self) -> u32;
-    fn cpusubtype(&self) -> u32;
+    fn cputype(&self) -> macho::CpuType;
+    fn cpusubtype(&self) -> macho::CpuSubtype;
     fn offset(&self) -> Self::Word;
     fn size(&self) -> Self::Word;
     fn align(&self) -> u32;
@@ -89,15 +89,17 @@ pub trait FatArch: Pod {
     }
 }
 
+impl read::private::Sealed for FatArch32 {}
+
 impl FatArch for FatArch32 {
     type Word = u32;
     const MAGIC: u32 = macho::FAT_MAGIC;
 
-    fn cputype(&self) -> u32 {
+    fn cputype(&self) -> macho::CpuType {
         self.cputype.get(BigEndian)
     }
 
-    fn cpusubtype(&self) -> u32 {
+    fn cpusubtype(&self) -> macho::CpuSubtype {
         self.cpusubtype.get(BigEndian)
     }
 
@@ -114,15 +116,17 @@ impl FatArch for FatArch32 {
     }
 }
 
+impl read::private::Sealed for FatArch64 {}
+
 impl FatArch for FatArch64 {
     type Word = u64;
     const MAGIC: u32 = macho::FAT_MAGIC_64;
 
-    fn cputype(&self) -> u32 {
+    fn cputype(&self) -> macho::CpuType {
         self.cputype.get(BigEndian)
     }
 
-    fn cpusubtype(&self) -> u32 {
+    fn cpusubtype(&self) -> macho::CpuSubtype {
         self.cpusubtype.get(BigEndian)
     }
 

@@ -1,7 +1,7 @@
 //! Another LRU cache implementation in rust.
 //! It has two main characteristics that differentiates it from other implementation:
 //!
-//! 1. It is backed by a [HashMap](https://doc.rust-lang.org/std/collections/struct.HashMap.html): it
+//! 1. It is backed by a [`hashbrown::HashTable`]: it
 //!    offers a O(1) time complexity (amortized average) for any operation that requires to lookup an entry from
 //!    a key.
 //!
@@ -24,13 +24,9 @@
 //!
 //! * [`CLruCache::put`]: an infallible insertion that will remove a maximum of 1 element.
 //! * [`CLruCache::put_or_modify`]: a conditional insertion or modification flow similar
-//!   to the entry API of [`HashMap`].
+//!   to an entry API.
 //! * [`CLruCache::try_put_or_modify`]: fallible version of [`CLruCache::put_or_modify`].
 //! * All APIs that allow to retrieve a mutable reference to a value (e.g.: [`CLruCache::get_mut`]).
-//!
-//! The cache requires the keys to be clonable because it will store 2 instances
-//! of each key in different internal data structures. If cloning a key can be
-//! expensive, you might want to consider using an [`std::rc::Rc`] or an [`std::sync::Arc`].
 //!
 //! ## Examples
 //!
@@ -105,10 +101,10 @@ pub use crate::config::*;
 use crate::list::{FixedSizeList, FixedSizeListIter, FixedSizeListIterMut};
 pub use crate::weight::*;
 
+use hashbrown::HashTable;
+use hashbrown::hash_table::Entry;
 use std::borrow::Borrow;
-use std::collections::hash_map::Entry;
 use std::collections::hash_map::RandomState;
-use std::collections::HashMap;
 use std::hash::{BuildHasher, Hash};
 use std::iter::FromIterator;
 use std::num::NonZeroUsize;
@@ -144,14 +140,20 @@ struct CLruNode<K, V> {
 /// For the same reason, it is a logic error for a value to change weight while
 /// being stored in the cache.
 ///
-/// The cache requires the keys to be clonable because it will store 2 instances
-/// of each key in different internal data structures. If cloning a key can be
-/// expensive, you might want to consider using an `Rc` or an `Arc`.
-///
 /// Note 1: See [`CLruCache::put_with_weight`]
+///
+/// # Internal invariants
+///
+/// `lookup` stores indices into `storage`. Every index in `lookup` corresponds
+/// to a live entry in `storage`, and every live entry in `storage` has exactly
+/// one matching index in `lookup`. This means `storage.get(idx)` is guaranteed
+/// to return `Some` for any `idx` retrieved from `lookup`, and
+/// `lookup.find_entry(hash, |&i| i == idx)` is guaranteed to succeed for any
+/// live `idx` in `storage`.
 #[derive(Debug)]
 pub struct CLruCache<K, V, S = RandomState, W: WeightScale<K, V> = ZeroWeightScale> {
-    lookup: HashMap<K, usize, S>,
+    hash_builder: S,
+    lookup: HashTable<usize>,
     storage: FixedSizeList<CLruNode<K, V>>,
     scale: W,
     weight: usize,
@@ -161,7 +163,8 @@ impl<K: Eq + Hash, V> CLruCache<K, V> {
     /// Creates a new LRU cache that holds at most `capacity` elements.
     pub fn new(capacity: NonZeroUsize) -> Self {
         Self {
-            lookup: HashMap::new(),
+            hash_builder: RandomState::default(),
+            lookup: HashTable::new(),
             storage: FixedSizeList::new(capacity.get()),
             scale: ZeroWeightScale,
             weight: 0,
@@ -176,7 +179,8 @@ impl<K: Eq + Hash, V> CLruCache<K, V> {
             reserve = capacity.get();
         }
         Self {
-            lookup: HashMap::with_capacity(reserve),
+            hash_builder: RandomState::default(),
+            lookup: HashTable::with_capacity(reserve),
             storage: FixedSizeList::with_memory(capacity.get(), reserve),
             scale: ZeroWeightScale,
             weight: 0,
@@ -189,7 +193,8 @@ impl<K: Eq + Hash, V, S: BuildHasher> CLruCache<K, V, S> {
     /// and uses the provided hash builder to hash keys.
     pub fn with_hasher(capacity: NonZeroUsize, hash_builder: S) -> CLruCache<K, V, S> {
         Self {
-            lookup: HashMap::with_hasher(hash_builder),
+            hash_builder,
+            lookup: HashTable::new(),
             storage: FixedSizeList::new(capacity.get()),
             scale: ZeroWeightScale,
             weight: 0,
@@ -202,7 +207,8 @@ impl<K: Eq + Hash, V, W: WeightScale<K, V>> CLruCache<K, V, RandomState, W> {
     /// and uses the provided scale to retrieve value's weight.
     pub fn with_scale(capacity: NonZeroUsize, scale: W) -> CLruCache<K, V, RandomState, W> {
         Self {
-            lookup: HashMap::with_hasher(RandomState::default()),
+            hash_builder: RandomState::default(),
+            lookup: HashTable::new(),
             storage: FixedSizeList::new(capacity.get()),
             scale,
             weight: 0,
@@ -210,7 +216,7 @@ impl<K: Eq + Hash, V, W: WeightScale<K, V>> CLruCache<K, V, RandomState, W> {
     }
 }
 
-impl<K: Clone + Eq + Hash, V, S: BuildHasher, W: WeightScale<K, V>> CLruCache<K, V, S, W> {
+impl<K: Eq + Hash, V, S: BuildHasher, W: WeightScale<K, V>> CLruCache<K, V, S, W> {
     /// Creates a new LRU cache using the provided configuration.
     pub fn with_config(config: CLruCacheConfig<K, V, S, W>) -> Self {
         let CLruCacheConfig {
@@ -221,7 +227,8 @@ impl<K: Clone + Eq + Hash, V, S: BuildHasher, W: WeightScale<K, V>> CLruCache<K,
             ..
         } = config;
         Self {
-            lookup: HashMap::with_hasher(hash_builder),
+            hash_builder,
+            lookup: HashTable::new(),
             storage: if let Some(reserve) = reserve {
                 FixedSizeList::with_memory(capacity.get(), reserve)
             } else {
@@ -290,60 +297,102 @@ impl<K: Clone + Eq + Hash, V, S: BuildHasher, W: WeightScale<K, V>> CLruCache<K,
     /// If the key already exists in the cache, then it updates the key's value and returns the old value.
     /// Otherwise, `None` is returned.
     pub fn put_with_weight(&mut self, key: K, value: V) -> Result<Option<V>, (K, V)> {
-        let weight = self.scale.weight(&key, &value);
-        if weight >= self.capacity() {
+        let new_weight = self.scale.weight(&key, &value);
+        if new_weight >= self.capacity() {
             return Err((key, value));
         }
-        match self.lookup.entry(key) {
-            Entry::Occupied(mut occ) => {
-                // TODO: store keys in the cache itself for reuse.
-                let mut keys = Vec::new();
-                let old = self.storage.remove(*occ.get()).unwrap();
+        let hash = self.hash_builder.hash_one(&key);
+
+        // Inline eviction helper — evicts the LRU entry using an explicit table
+        // reference, since the entry API borrows self.lookup.
+        let evict_with = |table: &mut HashTable<usize>,
+                          storage: &mut FixedSizeList<CLruNode<K, V>>,
+                          hash_builder: &S,
+                          scale: &W,
+                          weight: &mut usize| {
+            let back_idx = storage.back_idx();
+            debug_assert_ne!(back_idx, usize::MAX);
+            // unwrap: back_idx is valid (list is non-empty)
+            let back_hash = hash_builder.hash_one(&storage.get(back_idx).unwrap().key);
+            // unwrap: lookup ↔ storage invariant
+            table
+                .find_entry(back_hash, |&i| i == back_idx)
+                .unwrap()
+                .remove();
+            // unwrap: back_idx is a valid live entry
+            let CLruNode { key, value } = storage.remove(back_idx).unwrap();
+            *weight -= scale.weight(&key, &value);
+        };
+
+        // unwrap inside closures: lookup ↔ storage invariant (see struct doc)
+        match self.lookup.entry(
+            hash,
+            |&idx| self.storage.get(idx).unwrap().key == key,
+            |&i| {
+                self.hash_builder
+                    .hash_one(&self.storage.get(i).unwrap().key)
+            },
+        ) {
+            Entry::Occupied(entry) => {
+                // Single probe: entry() found and remove() evicts in one shot.
+                let (idx, vacant) = entry.remove();
+                // unwrap: idx was just in the table, so it's a valid storage entry
+                let old = self.storage.remove(idx).unwrap();
                 self.weight -= self.scale.weight(&old.key, &old.value);
-                while self.storage.len() + self.weight + weight >= self.storage.capacity() {
-                    let node = self.storage.pop_back().unwrap();
-                    self.weight -= self.scale.weight(&node.key, &node.value);
-                    keys.push(node.key);
+
+                // Evict until there's room
+                let table = vacant.into_table();
+                while self.storage.len() + self.weight + new_weight >= self.storage.capacity() {
+                    evict_with(
+                        table,
+                        &mut self.storage,
+                        &self.hash_builder,
+                        &self.scale,
+                        &mut self.weight,
+                    );
                 }
-                // It's fine to unwrap here because:
-                // * the cache capacity is non zero
-                // * the cache cannot be full
-                let (idx, _) = self
-                    .storage
-                    .push_front(CLruNode {
-                        key: occ.key().clone(),
-                        value,
-                    })
-                    .unwrap();
-                occ.insert(idx);
-                self.weight += weight;
-                for key in keys.drain(..) {
-                    self.lookup.remove(&key);
-                }
+
+                // unwrap: cache capacity is non-zero and we just made room
+                // inner unwrap: lookup ↔ storage invariant
+                let (new_idx, _) = self.storage.push_front(CLruNode { key, value }).unwrap();
+                table.insert_unique(hash, new_idx, |&i| {
+                    self.hash_builder
+                        .hash_one(&self.storage.get(i).unwrap().key)
+                });
+                self.weight += new_weight;
+
                 Ok(Some(old.value))
             }
-            Entry::Vacant(vac) => {
-                let mut keys = Vec::new();
-                while self.storage.len() + self.weight + weight >= self.storage.capacity() {
-                    let node = self.storage.pop_back().unwrap();
-                    self.weight -= self.scale.weight(&node.key, &node.value);
-                    keys.push(node.key);
+            Entry::Vacant(entry) => {
+                if self.storage.len() + self.weight + new_weight < self.storage.capacity() {
+                    // No eviction needed: single probe via entry()
+                    // unwrap: cache capacity is non-zero and there is room
+                    let (idx, _) = self.storage.push_front(CLruNode { key, value }).unwrap();
+                    entry.insert(idx);
+                    self.weight += new_weight;
+                } else {
+                    // Eviction needed: give up the vacant slot
+                    let table = entry.into_table();
+                    while self.storage.len() + self.weight + new_weight >= self.storage.capacity() {
+                        evict_with(
+                            table,
+                            &mut self.storage,
+                            &self.hash_builder,
+                            &self.scale,
+                            &mut self.weight,
+                        );
+                    }
+
+                    // unwrap: cache capacity is non-zero and we just made room
+                    // inner unwrap: lookup ↔ storage invariant
+                    let (idx, _) = self.storage.push_front(CLruNode { key, value }).unwrap();
+                    table.insert_unique(hash, idx, |&i| {
+                        self.hash_builder
+                            .hash_one(&self.storage.get(i).unwrap().key)
+                    });
+                    self.weight += new_weight;
                 }
-                // It's fine to unwrap here because:
-                // * the cache capacity is non zero
-                // * the cache cannot be full
-                let (idx, _) = self
-                    .storage
-                    .push_front(CLruNode {
-                        key: vac.key().clone(),
-                        value,
-                    })
-                    .unwrap();
-                vac.insert(idx);
-                self.weight += weight;
-                for key in keys.drain(..) {
-                    self.lookup.remove(&key);
-                }
+
                 Ok(None)
             }
         }
@@ -356,7 +405,11 @@ impl<K: Clone + Eq + Hash, V, S: BuildHasher, W: WeightScale<K, V>> CLruCache<K,
         K: Borrow<Q>,
         Q: Hash + Eq + ?Sized,
     {
-        let idx = *self.lookup.get(key)?;
+        let hash = self.hash_builder.hash_one(key);
+        // unwrap: lookup ↔ storage invariant (see struct doc)
+        let idx = *self.lookup.find(hash, |&idx| {
+            self.storage.get(idx).unwrap().key.borrow() == key
+        })?;
         self.storage.move_front(idx).map(|node| &node.value)
     }
 
@@ -366,7 +419,16 @@ impl<K: Clone + Eq + Hash, V, S: BuildHasher, W: WeightScale<K, V>> CLruCache<K,
         K: Borrow<Q>,
         Q: Hash + Eq + ?Sized,
     {
-        let idx = self.lookup.remove(key)?;
+        let hash = self.hash_builder.hash_one(key);
+        // unwrap: lookup ↔ storage invariant (see struct doc)
+        let idx = self
+            .lookup
+            .find_entry(hash, |&idx| {
+                self.storage.get(idx).unwrap().key.borrow() == key
+            })
+            .ok()?
+            .remove()
+            .0;
         self.storage.remove(idx).map(|CLruNode { key, value, .. }| {
             self.weight -= self.scale.weight(&key, &value);
             value
@@ -375,24 +437,44 @@ impl<K: Clone + Eq + Hash, V, S: BuildHasher, W: WeightScale<K, V>> CLruCache<K,
 
     /// Removes and returns the key and value corresponding to the most recently used item or `None` if the cache is empty.
     pub fn pop_front(&mut self) -> Option<(K, V)> {
-        if let Some(CLruNode { key, value }) = self.storage.pop_front() {
-            self.lookup.remove(&key).unwrap();
-            self.weight -= self.scale.weight(&key, &value);
-            Some((key, value))
-        } else {
-            None
+        let front_idx = self.storage.front_idx();
+        if front_idx == usize::MAX {
+            return None;
         }
+        // unwrap: front_idx is valid (list is non-empty, guarded above)
+        let hash = self
+            .hash_builder
+            .hash_one(&self.storage.get(front_idx).unwrap().key);
+        // unwrap: lookup ↔ storage invariant (see struct doc)
+        self.lookup
+            .find_entry(hash, |&i| i == front_idx)
+            .unwrap()
+            .remove();
+        // unwrap: front_idx is a valid live entry
+        let CLruNode { key, value } = self.storage.remove(front_idx).unwrap();
+        self.weight -= self.scale.weight(&key, &value);
+        Some((key, value))
     }
 
     /// Removes and returns the key and value corresponding to the least recently used item or `None` if the cache is empty.
     pub fn pop_back(&mut self) -> Option<(K, V)> {
-        if let Some(CLruNode { key, value }) = self.storage.pop_back() {
-            self.lookup.remove(&key).unwrap();
-            self.weight -= self.scale.weight(&key, &value);
-            Some((key, value))
-        } else {
-            None
+        let back_idx = self.storage.back_idx();
+        if back_idx == usize::MAX {
+            return None;
         }
+        // unwrap: back_idx is valid (list is non-empty, guarded above)
+        let hash = self
+            .hash_builder
+            .hash_one(&self.storage.get(back_idx).unwrap().key);
+        // unwrap: lookup ↔ storage invariant (see struct doc)
+        self.lookup
+            .find_entry(hash, |&i| i == back_idx)
+            .unwrap()
+            .remove();
+        // unwrap: back_idx is a valid live entry
+        let CLruNode { key, value } = self.storage.remove(back_idx).unwrap();
+        self.weight -= self.scale.weight(&key, &value);
+        Some((key, value))
     }
 
     /// Returns a reference to the value corresponding to the key in the cache or `None` if it is not present in the cache.
@@ -402,7 +484,11 @@ impl<K: Clone + Eq + Hash, V, S: BuildHasher, W: WeightScale<K, V>> CLruCache<K,
         K: Borrow<Q>,
         Q: Hash + Eq + ?Sized,
     {
-        let idx = *self.lookup.get(key)?;
+        let hash = self.hash_builder.hash_one(key);
+        // unwrap: lookup ↔ storage invariant (see struct doc)
+        let idx = *self.lookup.find(hash, |&idx| {
+            self.storage.get(idx).unwrap().key.borrow() == key
+        })?;
         self.storage.get(idx).map(|node| &node.value)
     }
 
@@ -428,16 +514,13 @@ impl<K: Clone + Eq + Hash, V, S: BuildHasher, W: WeightScale<K, V>> CLruCache<K,
     /// If the new capacity is smaller than the size of the current cache any entries past the new capacity are discarded.
     pub fn resize(&mut self, capacity: NonZeroUsize) {
         while capacity.get() < self.storage.len() + self.weight() {
-            if let Some(CLruNode { key, value }) = self.storage.pop_back() {
-                self.lookup.remove(&key).unwrap();
-                self.weight -= self.scale.weight(&key, &value);
-            }
+            self.evict_back();
         }
         self.storage.resize(capacity.get());
-        for i in 0..self.len() {
-            let data = self.storage.get(i).unwrap();
-            *self.lookup.get_mut(&data.key).unwrap() = i;
-        }
+
+        // After resize, storage may have been reordered (indices compacted to 0..len).
+        // Rebuild the hash table to match the new indices.
+        self.rebuild_lookup();
     }
 
     /// Retains only the elements specified by the predicate.
@@ -448,15 +531,55 @@ impl<K: Clone + Eq + Hash, V, S: BuildHasher, W: WeightScale<K, V>> CLruCache<K,
     {
         self.storage.retain(
             #[inline]
-            |CLruNode { ref key, ref value }| {
+            |idx, CLruNode { key, value }| {
                 if f(key, value) {
                     true
                 } else {
-                    self.lookup.remove(key).unwrap();
+                    let hash = self.hash_builder.hash_one(key);
+                    // unwrap: lookup ↔ storage invariant (see struct doc)
+                    self.lookup
+                        .find_entry(hash, |&i| i == idx)
+                        .unwrap()
+                        .remove();
+                    self.weight -= self.scale.weight(key, value);
                     false
                 }
             },
         )
+    }
+
+    /// Evicts the least recently used entry from the cache.
+    fn evict_back(&mut self) {
+        let back_idx = self.storage.back_idx();
+        debug_assert_ne!(back_idx, usize::MAX);
+        // unwrap: back_idx is valid (list is non-empty, asserted above)
+        let hash = self
+            .hash_builder
+            .hash_one(&self.storage.get(back_idx).unwrap().key);
+        // unwrap: lookup ↔ storage invariant (see struct doc)
+        self.lookup
+            .find_entry(hash, |&i| i == back_idx)
+            .unwrap()
+            .remove();
+        // unwrap: back_idx is a valid live entry
+        let CLruNode { key, value } = self.storage.remove(back_idx).unwrap();
+        self.weight -= self.scale.weight(&key, &value);
+    }
+
+    /// Rebuilds the hash table from the storage.
+    fn rebuild_lookup(&mut self) {
+        self.lookup.clear();
+        // After reorder(), storage is compacted to indices 0..len.
+        // unwrap: indices in 0..len are all valid after compaction.
+        for idx in 0..self.storage.len() {
+            let hash = self
+                .hash_builder
+                .hash_one(&self.storage.get(idx).unwrap().key);
+            self.lookup.insert_unique(hash, idx, |&i| {
+                self.hash_builder
+                    .hash_one(&self.storage.get(i).unwrap().key)
+            });
+        }
     }
 }
 
@@ -470,35 +593,58 @@ impl<K, V, S, W: WeightScale<K, V>> CLruCache<K, V, S, W> {
     }
 }
 
-impl<K: Clone + Eq + Hash, V, S: BuildHasher> CLruCache<K, V, S> {
+impl<K: Eq + Hash, V, S: BuildHasher> CLruCache<K, V, S> {
     /// Puts a key-value pair into cache.
     /// If the key already exists in the cache, then it updates the key's value and returns the old value.
     /// Otherwise, `None` is returned.
     pub fn put(&mut self, key: K, value: V) -> Option<V> {
-        match self.lookup.entry(key) {
-            Entry::Occupied(occ) => {
-                // It's fine to unwrap here because:
-                // * the entry already exists
-                let node = self.storage.move_front(*occ.get()).unwrap();
+        let hash = self.hash_builder.hash_one(&key);
+
+        // unwrap inside closures: lookup ↔ storage invariant (see struct doc)
+        match self.lookup.entry(
+            hash,
+            |&idx| self.storage.get(idx).unwrap().key == key,
+            |&i| {
+                self.hash_builder
+                    .hash_one(&self.storage.get(i).unwrap().key)
+            },
+        ) {
+            Entry::Occupied(entry) => {
+                let &idx = entry.get();
+                // unwrap: the entry exists in storage
+                let node = self.storage.move_front(idx).unwrap();
                 Some(std::mem::replace(&mut node.value, value))
             }
-            Entry::Vacant(vac) => {
-                let key = vac.key().clone();
+            Entry::Vacant(entry) => {
                 if self.storage.is_full() {
-                    let idx = self.storage.back_idx();
-                    // It's fine to unwrap here because:
-                    // * the cache capacity is non zero
-                    // * the cache is full
-                    let node = self.storage.move_front(idx).unwrap();
-                    let obsolete_key = std::mem::replace(node, CLruNode { key, value }).key;
-                    vac.insert(idx);
-                    self.lookup.remove(&obsolete_key);
+                    // Cache is full: give up the vacant slot, evict, then re-insert.
+                    let table = entry.into_table();
+                    let back_idx = self.storage.back_idx();
+                    // unwrap: back_idx is valid (cache is full, so list is non-empty)
+                    let old_hash = self
+                        .hash_builder
+                        .hash_one(&self.storage.get(back_idx).unwrap().key);
+                    // unwrap: lookup ↔ storage invariant
+                    table
+                        .find_entry(old_hash, |&i| i == back_idx)
+                        .unwrap()
+                        .remove();
+
+                    // unwrap: cache capacity is non-zero and cache is full
+                    let node = self.storage.move_front(back_idx).unwrap();
+                    *node = CLruNode { key, value };
+
+                    // Re-probe to insert (unavoidable — eviction invalidated the vacant slot)
+                    // inner unwrap: lookup ↔ storage invariant
+                    table.insert_unique(hash, back_idx, |&i| {
+                        self.hash_builder
+                            .hash_one(&self.storage.get(i).unwrap().key)
+                    });
                 } else {
-                    // It's fine to unwrap here because:
-                    // * the cache capacity is non zero
-                    // * the cache is not full
+                    // unwrap: cache capacity is non-zero and cache is not full
                     let (idx, _) = self.storage.push_front(CLruNode { key, value }).unwrap();
-                    vac.insert(idx);
+                    // Single probe: reuse the slot found by entry()
+                    entry.insert(idx);
                 }
                 None
             }
@@ -520,34 +666,62 @@ impl<K: Clone + Eq + Hash, V, S: BuildHasher> CLruCache<K, V, S> {
         mut modify_op: M,
         data: T,
     ) -> &mut V {
-        match self.lookup.entry(key) {
-            Entry::Occupied(occ) => {
-                // It's fine to unwrap here because:
-                // * the entry already exists
-                let node = self.storage.move_front(*occ.get()).unwrap();
+        let hash = self.hash_builder.hash_one(&key);
+
+        // unwrap inside closures: lookup ↔ storage invariant (see struct doc)
+        match self.lookup.entry(
+            hash,
+            |&idx| self.storage.get(idx).unwrap().key == key,
+            |&i| {
+                self.hash_builder
+                    .hash_one(&self.storage.get(i).unwrap().key)
+            },
+        ) {
+            Entry::Occupied(entry) => {
+                let &idx = entry.get();
+                // unwrap: the entry exists in storage
+                let node = self.storage.move_front(idx).unwrap();
                 modify_op(&node.key, &mut node.value, data);
                 &mut node.value
             }
-            Entry::Vacant(vac) => {
-                let key = vac.key().clone();
+            Entry::Vacant(entry) => {
+                // Key not found: compute value
                 let value = put_op(&key, data);
+
                 if self.storage.is_full() {
-                    let index = self.storage.back_idx();
-                    // It's fine to unwrap here because:
-                    // * the cache capacity is non zero
-                    // * the cache is full
-                    let node = self.storage.move_front(index).unwrap();
-                    let obsolete_key = std::mem::replace(node, CLruNode { key, value }).key;
-                    vac.insert(index);
-                    self.lookup.remove(&obsolete_key);
-                    &mut node.value
+                    // Cache is full: give up the vacant slot, evict, then re-insert.
+                    let table = entry.into_table();
+                    let back_idx = self.storage.back_idx();
+                    // unwrap: back_idx is valid (cache is full, so list is non-empty)
+                    let old_hash = self
+                        .hash_builder
+                        .hash_one(&self.storage.get(back_idx).unwrap().key);
+                    // unwrap: lookup ↔ storage invariant
+                    table
+                        .find_entry(old_hash, |&i| i == back_idx)
+                        .unwrap()
+                        .remove();
+
+                    // unwrap: cache capacity is non-zero and cache is full
+                    let node = self.storage.move_front(back_idx).unwrap();
+                    *node = CLruNode { key, value };
+
+                    // Re-probe to insert (unavoidable — eviction invalidated the vacant slot)
+                    // inner unwrap: lookup ↔ storage invariant
+                    table.insert_unique(hash, back_idx, |&i| {
+                        self.hash_builder
+                            .hash_one(&self.storage.get(i).unwrap().key)
+                    });
+
+                    // unwrap: back_idx was just moved to front, still a valid live entry
+                    &mut self.storage.get_mut(back_idx).unwrap().value
                 } else {
-                    // It's fine to unwrap here because:
-                    // * the cache capacity is non zero
-                    // * the cache cannot be full
-                    let (idx, node) = self.storage.push_front(CLruNode { key, value }).unwrap();
-                    vac.insert(idx);
-                    &mut node.value
+                    // unwrap: cache capacity is non-zero and cache is not full
+                    let (idx, _) = self.storage.push_front(CLruNode { key, value }).unwrap();
+                    // Single probe: reuse the slot found by entry()
+                    entry.insert(idx);
+                    // unwrap: idx was just inserted above
+                    &mut self.storage.get_mut(idx).unwrap().value
                 }
             }
         }
@@ -575,46 +749,70 @@ impl<K: Clone + Eq + Hash, V, S: BuildHasher> CLruCache<K, V, S> {
         mut modify_op: M,
         data: T,
     ) -> Result<&mut V, E> {
-        match self.lookup.entry(key) {
-            Entry::Occupied(occ) => {
-                // It's fine to unwrap here because:
-                // * the entry already exists
-                let node = self.storage.move_front(*occ.get()).unwrap();
-                match modify_op(&node.key, &mut node.value, data) {
-                    Ok(()) => Ok(&mut node.value),
-                    Err(err) => Err(err),
-                }
+        let hash = self.hash_builder.hash_one(&key);
+
+        // unwrap inside closures: lookup ↔ storage invariant (see struct doc)
+        match self.lookup.entry(
+            hash,
+            |&idx| self.storage.get(idx).unwrap().key == key,
+            |&i| {
+                self.hash_builder
+                    .hash_one(&self.storage.get(i).unwrap().key)
+            },
+        ) {
+            Entry::Occupied(entry) => {
+                let &idx = entry.get();
+                // unwrap: the entry exists in storage
+                let node = self.storage.move_front(idx).unwrap();
+                modify_op(&node.key, &mut node.value, data)?;
+                Ok(&mut node.value)
             }
-            Entry::Vacant(vac) => {
-                let value = match put_op(vac.key(), data) {
-                    Ok(value) => value,
-                    Err(err) => return Err(err),
-                };
-                let key = vac.key().clone();
+            Entry::Vacant(entry) => {
+                // Key not found: compute value (may fail).
+                // If put_op fails, the VacantEntry is dropped and the table is unchanged.
+                let value = put_op(&key, data)?;
+
                 if self.storage.is_full() {
-                    let idx = self.storage.back_idx();
-                    // It's fine to unwrap here because:
-                    // * the cache capacity is non zero
-                    // * the cache is full
-                    let node = self.storage.move_front(idx).unwrap();
-                    let obsolete_key = std::mem::replace(node, CLruNode { key, value }).key;
-                    vac.insert(idx);
-                    self.lookup.remove(&obsolete_key);
-                    Ok(&mut node.value)
+                    // Cache is full: give up the vacant slot, evict, then re-insert.
+                    let table = entry.into_table();
+                    let back_idx = self.storage.back_idx();
+                    // unwrap: back_idx is valid (cache is full, so list is non-empty)
+                    let old_hash = self
+                        .hash_builder
+                        .hash_one(&self.storage.get(back_idx).unwrap().key);
+                    // unwrap: lookup ↔ storage invariant
+                    table
+                        .find_entry(old_hash, |&i| i == back_idx)
+                        .unwrap()
+                        .remove();
+
+                    // unwrap: cache capacity is non-zero and cache is full
+                    let node = self.storage.move_front(back_idx).unwrap();
+                    *node = CLruNode { key, value };
+
+                    // Re-probe to insert (unavoidable — eviction invalidated the vacant slot)
+                    // inner unwrap: lookup ↔ storage invariant
+                    table.insert_unique(hash, back_idx, |&i| {
+                        self.hash_builder
+                            .hash_one(&self.storage.get(i).unwrap().key)
+                    });
+
+                    // unwrap: back_idx was just moved to front, still a valid live entry
+                    Ok(&mut self.storage.get_mut(back_idx).unwrap().value)
                 } else {
-                    // It's fine to unwrap here because:
-                    // * the cache capacity is non zero
-                    // * the cache cannot be full
-                    let (idx, node) = self.storage.push_front(CLruNode { key, value }).unwrap();
-                    vac.insert(idx);
-                    Ok(&mut node.value)
+                    // unwrap: cache capacity is non-zero and cache is not full
+                    let (idx, _) = self.storage.push_front(CLruNode { key, value }).unwrap();
+                    // Single probe: reuse the slot found by entry()
+                    entry.insert(idx);
+                    // unwrap: idx was just inserted above
+                    Ok(&mut self.storage.get_mut(idx).unwrap().value)
                 }
             }
         }
     }
 
     /// Returns the value corresponding to the most recently used item or `None` if the cache is empty.
-    /// Like `peek`, `font` does not update the LRU list so the item's position will be unchanged.
+    /// Like `peek`, `front` does not update the LRU list so the item's position will be unchanged.
     pub fn front_mut(&mut self) -> Option<(&K, &mut V)> {
         self.storage
             .front_mut()
@@ -636,7 +834,11 @@ impl<K: Clone + Eq + Hash, V, S: BuildHasher> CLruCache<K, V, S> {
         K: Borrow<Q>,
         Q: Hash + Eq + ?Sized,
     {
-        let idx = *self.lookup.get(key)?;
+        let hash = self.hash_builder.hash_one(key);
+        // unwrap: lookup ↔ storage invariant (see struct doc)
+        let idx = *self.lookup.find(hash, |&idx| {
+            self.storage.get(idx).unwrap().key.borrow() == key
+        })?;
         self.storage.move_front(idx).map(|node| &mut node.value)
     }
 
@@ -647,7 +849,11 @@ impl<K: Clone + Eq + Hash, V, S: BuildHasher> CLruCache<K, V, S> {
         K: Borrow<Q>,
         Q: Hash + Eq + ?Sized,
     {
-        let idx = *self.lookup.get(key)?;
+        let hash = self.hash_builder.hash_one(key);
+        // unwrap: lookup ↔ storage invariant (see struct doc)
+        let idx = *self.lookup.find(hash, |&idx| {
+            self.storage.get(idx).unwrap().key.borrow() == key
+        })?;
         self.storage.get_mut(idx).map(|node| &mut node.value)
     }
 
@@ -659,14 +865,16 @@ impl<K: Clone + Eq + Hash, V, S: BuildHasher> CLruCache<K, V, S> {
     {
         self.storage.retain_mut(
             #[inline]
-            |CLruNode {
-                 ref key,
-                 ref mut value,
-             }| {
+            |idx, CLruNode { key, value }| {
                 if f(key, value) {
                     true
                 } else {
-                    self.lookup.remove(key).unwrap();
+                    let hash = self.hash_builder.hash_one(key);
+                    // unwrap: lookup ↔ storage invariant (see struct doc)
+                    self.lookup
+                        .find_entry(hash, |&i| i == idx)
+                        .unwrap()
+                        .remove();
                     false
                 }
             },
@@ -710,7 +918,7 @@ impl<'a, K, V> Iterator for CLruCacheIter<'a, K, V> {
     }
 }
 
-impl<'a, K, V> DoubleEndedIterator for CLruCacheIter<'a, K, V> {
+impl<K, V> DoubleEndedIterator for CLruCacheIter<'_, K, V> {
     fn next_back(&mut self) -> Option<Self::Item> {
         self.iter
             .next_back()
@@ -718,7 +926,7 @@ impl<'a, K, V> DoubleEndedIterator for CLruCacheIter<'a, K, V> {
     }
 }
 
-impl<'a, K, V> ExactSizeIterator for CLruCacheIter<'a, K, V> {
+impl<K, V> ExactSizeIterator for CLruCacheIter<'_, K, V> {
     fn len(&self) -> usize {
         self.iter.len()
     }
@@ -759,7 +967,7 @@ impl<'a, K, V> Iterator for CLruCacheIterMut<'a, K, V> {
     }
 }
 
-impl<'a, K, V> DoubleEndedIterator for CLruCacheIterMut<'a, K, V> {
+impl<K, V> DoubleEndedIterator for CLruCacheIterMut<'_, K, V> {
     fn next_back(&mut self) -> Option<Self::Item> {
         self.iter
             .next_back()
@@ -767,7 +975,7 @@ impl<'a, K, V> DoubleEndedIterator for CLruCacheIterMut<'a, K, V> {
     }
 }
 
-impl<'a, K, V> ExactSizeIterator for CLruCacheIterMut<'a, K, V> {
+impl<K, V> ExactSizeIterator for CLruCacheIterMut<'_, K, V> {
     fn len(&self) -> usize {
         self.iter.len()
     }
@@ -793,7 +1001,7 @@ pub struct CLruCacheIntoIter<K, V, S, W: WeightScale<K, V>> {
     cache: CLruCache<K, V, S, W>,
 }
 
-impl<K: Clone + Eq + Hash, V, S: BuildHasher, W: WeightScale<K, V>> Iterator
+impl<K: Eq + Hash, V, S: BuildHasher, W: WeightScale<K, V>> Iterator
     for CLruCacheIntoIter<K, V, S, W>
 {
     type Item = (K, V);
@@ -809,7 +1017,7 @@ impl<K: Clone + Eq + Hash, V, S: BuildHasher, W: WeightScale<K, V>> Iterator
     }
 }
 
-impl<K: Clone + Eq + Hash, V, S: BuildHasher, W: WeightScale<K, V>> DoubleEndedIterator
+impl<K: Eq + Hash, V, S: BuildHasher, W: WeightScale<K, V>> DoubleEndedIterator
     for CLruCacheIntoIter<K, V, S, W>
 {
     fn next_back(&mut self) -> Option<Self::Item> {
@@ -817,7 +1025,7 @@ impl<K: Clone + Eq + Hash, V, S: BuildHasher, W: WeightScale<K, V>> DoubleEndedI
     }
 }
 
-impl<K: Clone + Eq + Hash, V, S: BuildHasher, W: WeightScale<K, V>> ExactSizeIterator
+impl<K: Eq + Hash, V, S: BuildHasher, W: WeightScale<K, V>> ExactSizeIterator
     for CLruCacheIntoIter<K, V, S, W>
 {
     fn len(&self) -> usize {
@@ -825,9 +1033,7 @@ impl<K: Clone + Eq + Hash, V, S: BuildHasher, W: WeightScale<K, V>> ExactSizeIte
     }
 }
 
-impl<K: Clone + Eq + Hash, V, S: BuildHasher, W: WeightScale<K, V>> IntoIterator
-    for CLruCache<K, V, S, W>
-{
+impl<K: Eq + Hash, V, S: BuildHasher, W: WeightScale<K, V>> IntoIterator for CLruCache<K, V, S, W> {
     type Item = (K, V);
     type IntoIter = CLruCacheIntoIter<K, V, S, W>;
 
@@ -838,9 +1044,7 @@ impl<K: Clone + Eq + Hash, V, S: BuildHasher, W: WeightScale<K, V>> IntoIterator
     }
 }
 
-impl<K: Clone + Eq + Hash, V, S: BuildHasher + Default> FromIterator<(K, V)>
-    for CLruCache<K, V, S>
-{
+impl<K: Eq + Hash, V, S: BuildHasher + Default> FromIterator<(K, V)> for CLruCache<K, V, S> {
     fn from_iter<I: IntoIterator<Item = (K, V)>>(iter: I) -> Self {
         let cap = NonZeroUsize::new(usize::MAX).unwrap();
         let mut cache = CLruCache::with_hasher(cap, S::default());
@@ -857,7 +1061,7 @@ impl<K: Clone + Eq + Hash, V, S: BuildHasher + Default> FromIterator<(K, V)>
     }
 }
 
-impl<K: Clone + Eq + Hash, V, S: BuildHasher> Extend<(K, V)> for CLruCache<K, V, S> {
+impl<K: Eq + Hash, V, S: BuildHasher> Extend<(K, V)> for CLruCache<K, V, S> {
     fn extend<T: IntoIterator<Item = (K, V)>>(&mut self, iter: T) {
         for (k, v) in iter {
             self.put(k, v);
@@ -870,22 +1074,14 @@ impl<K: Clone + Eq + Hash, V, S: BuildHasher> Extend<(K, V)> for CLruCache<K, V,
 mod tests {
     use super::*;
 
-    #[allow(unsafe_code)]
-    const ONE: NonZeroUsize = unsafe { NonZeroUsize::new_unchecked(1) };
-    #[allow(unsafe_code)]
-    const TWO: NonZeroUsize = unsafe { NonZeroUsize::new_unchecked(2) };
-    #[allow(unsafe_code)]
-    const THREE: NonZeroUsize = unsafe { NonZeroUsize::new_unchecked(3) };
-    #[allow(unsafe_code)]
-    const FOUR: NonZeroUsize = unsafe { NonZeroUsize::new_unchecked(4) };
-    #[allow(unsafe_code)]
-    const FIVE: NonZeroUsize = unsafe { NonZeroUsize::new_unchecked(5) };
-    #[allow(unsafe_code)]
-    const SIX: NonZeroUsize = unsafe { NonZeroUsize::new_unchecked(6) };
-    #[allow(unsafe_code)]
-    const HEIGHT: NonZeroUsize = unsafe { NonZeroUsize::new_unchecked(8) };
-    #[allow(unsafe_code)]
-    const MANY: NonZeroUsize = unsafe { NonZeroUsize::new_unchecked(200) };
+    const ONE: NonZeroUsize = NonZeroUsize::new(1).unwrap();
+    const TWO: NonZeroUsize = NonZeroUsize::new(2).unwrap();
+    const THREE: NonZeroUsize = NonZeroUsize::new(3).unwrap();
+    const FOUR: NonZeroUsize = NonZeroUsize::new(4).unwrap();
+    const FIVE: NonZeroUsize = NonZeroUsize::new(5).unwrap();
+    const SIX: NonZeroUsize = NonZeroUsize::new(6).unwrap();
+    const HEIGHT: NonZeroUsize = NonZeroUsize::new(8).unwrap();
+    const MANY: NonZeroUsize = NonZeroUsize::new(200).unwrap();
 
     #[test]
     fn test_insert_and_get() {
@@ -1558,7 +1754,7 @@ mod tests {
 
     #[test]
     fn test_panic_in_put_or_modify() {
-        use std::panic::{catch_unwind, AssertUnwindSafe};
+        use std::panic::{AssertUnwindSafe, catch_unwind};
 
         let mut cache = CLruCache::new(TWO);
 
@@ -1579,10 +1775,12 @@ mod tests {
 
         // A panic in the modify closure will move the
         // key at the top of the cache.
-        assert!(catch_unwind(AssertUnwindSafe(|| {
-            cache.put_or_modify("a", put, modify, 7);
-        }))
-        .is_err());
+        assert!(
+            catch_unwind(AssertUnwindSafe(|| {
+                cache.put_or_modify("a", put, modify, 7);
+            }))
+            .is_err()
+        );
 
         let mut iter = cache.iter();
         assert_eq!(iter.next(), Some((&"a", &3)));
@@ -1593,10 +1791,12 @@ mod tests {
 
         // A panic in the put closure won't have any
         // any impact on the cache.
-        assert!(catch_unwind(AssertUnwindSafe(|| {
-            cache.put_or_modify("c", put, modify, 7);
-        }))
-        .is_err());
+        assert!(
+            catch_unwind(AssertUnwindSafe(|| {
+                cache.put_or_modify("c", put, modify, 7);
+            }))
+            .is_err()
+        );
 
         let mut iter = cache.iter();
         assert_eq!(iter.next(), Some((&"a", &3)));
@@ -1609,7 +1809,7 @@ mod tests {
         let mut cache = CLruCache::new(TWO);
 
         let put = |_: &&str, value: usize| {
-            if value % 2 == 0 {
+            if value.is_multiple_of(2) {
                 Ok(value)
             } else {
                 Err(value)
@@ -1617,7 +1817,7 @@ mod tests {
         };
 
         let modify = |_: &&str, old: &mut usize, new: usize| {
-            if new % 2 == 0 {
+            if new.is_multiple_of(2) {
                 *old = new;
                 Ok(())
             } else {
@@ -2155,5 +2355,124 @@ mod tests {
 
         let cache: CLruCache<String, String> = CLruCache::new(TWO);
         cache_in_rwlock(cache);
+    }
+
+    /// A key type that is Hash + Eq but NOT Clone.
+    /// This test proves the K: Clone bound is truly gone from the public API.
+    #[derive(Debug, PartialEq, Eq, Hash)]
+    struct NonCloneKey(String);
+
+    #[test]
+    fn test_non_clone_key() {
+        let mut cache = CLruCache::new(THREE);
+
+        // put / get
+        assert_eq!(cache.put(NonCloneKey("a".into()), 1), None);
+        assert_eq!(cache.put(NonCloneKey("b".into()), 2), None);
+        assert_eq!(cache.put(NonCloneKey("c".into()), 3), None);
+        assert_eq!(cache.get(&NonCloneKey("a".into())), Some(&1));
+        assert_eq!(cache.get(&NonCloneKey("b".into())), Some(&2));
+        assert_eq!(cache.get(&NonCloneKey("c".into())), Some(&3));
+
+        // update existing key
+        assert_eq!(cache.put(NonCloneKey("a".into()), 10), Some(1));
+        assert_eq!(cache.get(&NonCloneKey("a".into())), Some(&10));
+
+        // eviction (cache is full, inserting new key evicts LRU)
+        assert_eq!(cache.put(NonCloneKey("d".into()), 4), None);
+        // "b" was LRU (after "a" was accessed above, order is a, c, b from MRU→LRU)
+        // Actually after the update of "a" and get of "b" and "c":
+        // put a=10 → moves a to front: [a, c, b]
+        // put d=4 → evicts b: [d, a, c]
+        assert_eq!(cache.get(&NonCloneKey("b".into())), None);
+        assert_eq!(cache.get(&NonCloneKey("d".into())), Some(&4));
+
+        // peek (no LRU update)
+        assert_eq!(cache.peek(&NonCloneKey("a".into())), Some(&10));
+
+        // get_mut
+        if let Some(v) = cache.get_mut(&NonCloneKey("c".into())) {
+            *v = 30;
+        }
+        assert_eq!(cache.get(&NonCloneKey("c".into())), Some(&30));
+
+        // peek_mut
+        if let Some(v) = cache.peek_mut(&NonCloneKey("d".into())) {
+            *v = 40;
+        }
+        assert_eq!(cache.peek(&NonCloneKey("d".into())), Some(&40));
+
+        // contains
+        assert!(cache.contains(&NonCloneKey("a".into())));
+        assert!(!cache.contains(&NonCloneKey("z".into())));
+
+        // pop
+        assert_eq!(cache.pop(&NonCloneKey("a".into())), Some(10));
+        assert_eq!(cache.len(), 2);
+
+        // pop_front / pop_back
+        cache.put(NonCloneKey("e".into()), 5);
+        // order: [e, c, d] (e is MRU, d is LRU)
+        assert_eq!(cache.pop_front(), Some((NonCloneKey("e".into()), 5)));
+        assert_eq!(cache.pop_back(), Some((NonCloneKey("d".into()), 40)));
+        assert_eq!(cache.len(), 1);
+
+        // retain
+        // cache has [c=30], put f and g → [g, f, c]
+        cache.put(NonCloneKey("f".into()), 6);
+        cache.put(NonCloneKey("g".into()), 7);
+        cache.retain(|_k, v| *v > 6);
+        // keeps g=7 and c=30, removes f=6
+        assert_eq!(cache.len(), 2);
+        assert_eq!(cache.get(&NonCloneKey("f".into())), None);
+        assert_eq!(cache.get(&NonCloneKey("g".into())), Some(&7));
+        assert_eq!(cache.get(&NonCloneKey("c".into())), Some(&30));
+
+        // clear
+        cache.clear();
+        assert!(cache.is_empty());
+
+        // resize
+        cache.put(NonCloneKey("h".into()), 8);
+        cache.put(NonCloneKey("i".into()), 9);
+        cache.put(NonCloneKey("j".into()), 10);
+        cache.resize(TWO); // shrinks, evicts LRU
+        assert_eq!(cache.len(), 2);
+        assert_eq!(cache.get(&NonCloneKey("h".into())), None); // evicted
+        assert_eq!(cache.get(&NonCloneKey("j".into())), Some(&10));
+
+        // put_or_modify
+        cache.clear();
+        cache.resize(THREE);
+        cache.put_or_modify(
+            NonCloneKey("k".into()),
+            |_k, _data| 100,
+            |_k, v, _data| *v += 1,
+            (),
+        );
+        assert_eq!(cache.get(&NonCloneKey("k".into())), Some(&100));
+        cache.put_or_modify(
+            NonCloneKey("k".into()),
+            |_k, _data| 100,
+            |_k, v, _data| *v += 1,
+            (),
+        );
+        assert_eq!(cache.get(&NonCloneKey("k".into())), Some(&101));
+
+        // try_put_or_modify
+        let result: Result<&mut i32, &str> = cache.try_put_or_modify(
+            NonCloneKey("l".into()),
+            |_k, _data| Ok(200),
+            |_k, v, _data| {
+                *v += 1;
+                Ok(())
+            },
+            (),
+        );
+        assert_eq!(result, Ok(&mut 200));
+
+        // into_iter (cache has k=101, l=200)
+        let items: Vec<_> = cache.into_iter().collect();
+        assert_eq!(items.len(), 2);
     }
 }

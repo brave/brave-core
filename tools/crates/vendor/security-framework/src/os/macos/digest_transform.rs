@@ -131,8 +131,8 @@ impl Builder {
     // FIXME: deprecate and remove: don't expose CFData in Rust APIs.
     pub fn execute(&self, data: &CFData) -> Result<CFData, CFError> {
         unsafe {
-            let digest_type = match self.digest_type {
-                Some(ref digest_type) => digest_type.to_type(),
+            let digest_type = match &self.digest_type {
+                Some(digest_type) => digest_type.to_type(),
                 None => ptr::null(),
             };
 
@@ -145,7 +145,7 @@ impl Builder {
             }
             let mut transform = SecTransform::wrap_under_create_rule(transform);
 
-            if let Some(ref hmac_key) = self.hmac_key {
+            if let Some(hmac_key) = &self.hmac_key {
                 let key = CFString::wrap_under_get_rule(kSecDigestHMACKeyAttribute);
                 transform.set_attribute(&key, hmac_key)?;
             }

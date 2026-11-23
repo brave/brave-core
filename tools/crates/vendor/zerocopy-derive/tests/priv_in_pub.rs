@@ -25,10 +25,12 @@ mod test {
     // types).
 
     #[derive(imp::KnownLayout, imp::IntoBytes, imp::FromZeros, imp::FromBytes, imp::Unaligned)]
+    #[zerocopy(crate = "zerocopy_renamed")]
     #[repr(C)]
     pub struct Public(Private);
 
     #[derive(imp::KnownLayout, imp::IntoBytes, imp::FromZeros, imp::FromBytes, imp::Unaligned)]
+    #[zerocopy(crate = "zerocopy_renamed")]
     #[repr(C)]
     struct Private(());
 }

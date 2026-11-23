@@ -1,6 +1,7 @@
 use std::{borrow::Cow, path::Path};
 
 use bstr::{BStr, ByteSlice};
+use gix_error::Result;
 
 use crate::{MagicSignature, Pattern, Search};
 
@@ -67,7 +68,8 @@ impl Search {
     /// as they are not quire the same.
     ///
     /// See also: [`maybe_prefix_directory()`](Self::longest_common_directory).
-    pub fn prefix_directory(&self) -> Cow<'_, Path> {
+    /// Returns an error if the directory cannot be represented as a platform path.
+    pub fn prefix_directory(&self) -> Result<Cow<'_, Path>> {
         gix_path::from_bstr(
             self.patterns
                 .iter()
@@ -81,8 +83,11 @@ impl Search {
     /// Note that if it is returned, it's guaranteed to be longer than the [prefix-directory](Self::prefix_directory).
     ///
     /// Returns `None` if the returned directory would be empty, or if all pathspecs are exclusive.
-    pub fn longest_common_directory(&self) -> Option<Cow<'_, Path>> {
-        let first_non_excluded = self.patterns.iter().find(|p| !p.value.pattern.is_excluded())?;
+    /// Returns an error if the directory cannot be represented as a platform path.
+    pub fn longest_common_directory(&self) -> Result<Option<Cow<'_, Path>>> {
+        let Some(first_non_excluded) = self.patterns.iter().find(|p| !p.value.pattern.is_excluded()) else {
+            return Ok(None);
+        };
         let common_prefix = first_non_excluded.value.pattern.path[..self.common_prefix_len].as_bstr();
         let stripped_prefix = if first_non_excluded
             .value
@@ -92,9 +97,12 @@ impl Search {
         {
             common_prefix
         } else {
-            common_prefix[..common_prefix.rfind_byte(b'/')?].as_bstr()
+            let Some(last_slash) = common_prefix.rfind_byte(b'/') else {
+                return Ok(None);
+            };
+            common_prefix[..last_slash].as_bstr()
         };
-        Some(gix_path::from_bstr(stripped_prefix))
+        gix_path::from_bstr(stripped_prefix).map(Some)
     }
 }
 

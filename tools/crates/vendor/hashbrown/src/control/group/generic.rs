@@ -1,20 +1,21 @@
 use super::super::{BitMask, Tag};
-use core::{mem, ptr};
+use core::ptr;
 
 // Use the native word size as the group size. Using a 64-bit group size on
 // a 32-bit architecture will just end up being more expensive because
 // shifts and multiplies will need to be emulated.
 
-cfg_if! {
-    if #[cfg(any(
+cfg_select! {
+    any(
         target_pointer_width = "64",
         target_arch = "aarch64",
         target_arch = "x86_64",
         target_arch = "wasm32",
-    ))] {
+    ) => {
         type GroupWord = u64;
         type NonZeroGroupWord = core::num::NonZeroU64;
-    } else {
+    }
+    _ => {
         type GroupWord = u32;
         type NonZeroGroupWord = core::num::NonZeroU32;
     }
@@ -24,8 +25,7 @@ pub(crate) type BitMaskWord = GroupWord;
 pub(crate) type NonZeroBitMaskWord = NonZeroGroupWord;
 pub(crate) const BITMASK_STRIDE: usize = 8;
 // We only care about the highest bit of each tag for the mask.
-#[allow(clippy::cast_possible_truncation, clippy::unnecessary_cast)]
-pub(crate) const BITMASK_MASK: BitMaskWord = u64::from_ne_bytes([Tag::DELETED.0; 8]) as GroupWord;
+const BITMASK_MASK: BitMaskWord = u64::from_ne_bytes([Tag::DELETED.0; 8]) as GroupWord;
 pub(crate) const BITMASK_ITER_MASK: BitMaskWord = !0;
 
 /// Helper function to replicate a tag across a `GroupWord`.
@@ -45,10 +45,10 @@ pub(crate) struct Group(GroupWord);
 // little-endian just before creating a BitMask. The can potentially
 // enable the compiler to eliminate unnecessary byte swaps if we are
 // only checking whether a BitMask is empty.
-#[allow(clippy::use_self)]
+#[expect(clippy::use_self)]
 impl Group {
     /// Number of bytes in the group.
-    pub(crate) const WIDTH: usize = mem::size_of::<Self>();
+    pub(crate) const WIDTH: usize = size_of::<Self>();
 
     /// Returns a full group of empty tags, suitable for use as the initial
     /// value for an empty hash table.
@@ -70,27 +70,26 @@ impl Group {
 
     /// Loads a group of tags starting at the given address.
     #[inline]
-    #[allow(clippy::cast_ptr_alignment)] // unaligned load
     pub(crate) unsafe fn load(ptr: *const Tag) -> Self {
-        Group(ptr::read_unaligned(ptr.cast()))
+        unsafe { Group(ptr::read_unaligned(ptr.cast())) }
     }
 
     /// Loads a group of tags starting at the given address, which must be
-    /// aligned to `mem::align_of::<Group>()`.
+    /// aligned to `align_of::<Group>()`.
     #[inline]
-    #[allow(clippy::cast_ptr_alignment)]
     pub(crate) unsafe fn load_aligned(ptr: *const Tag) -> Self {
-        debug_assert_eq!(ptr.align_offset(mem::align_of::<Self>()), 0);
-        Group(ptr::read(ptr.cast()))
+        debug_assert_eq!(ptr.align_offset(align_of::<Self>()), 0);
+        unsafe { Group(ptr::read(ptr.cast())) }
     }
 
     /// Stores the group of tags to the given address, which must be
-    /// aligned to `mem::align_of::<Group>()`.
+    /// aligned to `align_of::<Group>()`.
     #[inline]
-    #[allow(clippy::cast_ptr_alignment)]
     pub(crate) unsafe fn store_aligned(self, ptr: *mut Tag) {
-        debug_assert_eq!(ptr.align_offset(mem::align_of::<Self>()), 0);
-        ptr::write(ptr.cast(), self.0);
+        debug_assert_eq!(ptr.align_offset(align_of::<Self>()), 0);
+        unsafe {
+            ptr::write(ptr.cast(), self.0);
+        }
     }
 
     /// Returns a `BitMask` indicating all tags in the group which *may*
@@ -132,7 +131,7 @@ impl Group {
     /// Returns a `BitMask` indicating all tags in the group which are full.
     #[inline]
     pub(crate) fn match_full(self) -> BitMask {
-        self.match_empty_or_deleted().invert()
+        BitMask(self.match_empty_or_deleted().0 ^ BITMASK_MASK)
     }
 
     /// Performs the following transformation on all tags in the group:

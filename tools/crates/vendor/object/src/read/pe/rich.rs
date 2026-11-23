@@ -67,7 +67,7 @@ impl<'data> RichHeaderInfo<'data> {
     }
 
     /// Returns an iterator over the unmasked entries.
-    pub fn unmasked_entries(&self) -> impl Iterator<Item = RichHeaderEntry> + 'data {
+    pub fn unmasked_entries(&self) -> impl Iterator<Item = RichHeaderEntry> + use<'data> {
         let xor_key = self.xor_key;
         self.masked_entries
             .iter()

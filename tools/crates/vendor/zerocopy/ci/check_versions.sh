@@ -9,6 +9,7 @@
 # those terms.
 
 set -eo pipefail
+cd "$(dirname "$0")/.."
 
 # Usage: version <crate-name>
 function version {

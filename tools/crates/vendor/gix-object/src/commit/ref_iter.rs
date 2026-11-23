@@ -1,19 +1,15 @@
+use gix_error::{OptionExt, Result};
 use std::{borrow::Cow, ops::Range};
 
 use bstr::BStr;
-use gix_hash::{oid, ObjectId};
-use winnow::{
-    combinator::{alt, eof, opt, terminated},
-    error::StrContext,
-    prelude::*,
-    token::take_till,
-};
+use gix_hash::{ObjectId, oid};
 
 use crate::{
-    bstr::ByteSlice,
-    commit::{decode, SignedData, SIGNATURE_FIELD_NAME},
-    parse::{self, NL},
     CommitRefIter,
+    bstr::ByteSlice,
+    commit::{decode, signature_field_name},
+    parse,
+    signature::SignedData,
 };
 
 #[derive(Copy, Clone)]
@@ -37,11 +33,13 @@ pub(crate) enum State {
 
 /// Lifecycle
 impl<'a> CommitRefIter<'a> {
-    /// Create a commit iterator from data.
-    pub fn from_bytes(data: &'a [u8]) -> CommitRefIter<'a> {
+    /// Create a commit iterator from the given `data`, using `object_hash` to know
+    /// what kind of hash to expect for validation.
+    pub fn from_bytes(data: &'a [u8], hash_kind: gix_hash::Kind) -> CommitRefIter<'a> {
         CommitRefIter {
             data,
             state: State::default(),
+            hash_kind,
         }
     }
 }
@@ -49,31 +47,32 @@ impl<'a> CommitRefIter<'a> {
 /// Access
 impl<'a> CommitRefIter<'a> {
     /// Parse `data` as commit and return its PGP signature, along with *all non-signature* data as [`SignedData`], or `None`
-    /// if the commit isn't signed.
+    /// if the commit isn't signed. All hashes in `data` are parsed as `object_hash`.
     ///
     /// This allows the caller to validate the signature by passing the signed data along with the signature back to the program
     /// that created it.
-    pub fn signature(data: &'a [u8]) -> Result<Option<(Cow<'a, BStr>, SignedData<'a>)>, crate::decode::Error> {
+    pub fn signature(data: &'a [u8], hash_kind: gix_hash::Kind) -> Result<Option<(Cow<'a, BStr>, SignedData<'a>)>> {
         let mut signature_and_range = None;
 
         let raw_tokens = CommitRefIterRaw {
             data,
             state: State::default(),
             offset: 0,
+            hash_kind,
         };
         for token in raw_tokens {
             let token = token?;
-            if let Token::ExtraHeader((name, value)) = &token.token {
-                if *name == SIGNATURE_FIELD_NAME {
-                    // keep track of the signature range alongside the signature data,
-                    // because all but the signature is the signed data.
-                    signature_and_range = Some((value.clone(), token.token_range));
-                    break;
-                }
+            if let Token::ExtraHeader((name, value)) = &token.token
+                && *name == signature_field_name(hash_kind)
+            {
+                // keep track of the signature range alongside the signature data,
+                // because all but the signature is the signed data.
+                signature_and_range = Some((value.clone(), token.token_range));
+                break;
             }
         }
 
-        Ok(signature_and_range.map(|(sig, signature_range)| (sig, SignedData { data, signature_range })))
+        Ok(signature_and_range.map(|(sig, signature_range)| (sig, SignedData::new(data, signature_range))))
     }
 
     /// Returns the object id of this commits tree if it is the first function called and if there is no error in decoding
@@ -83,9 +82,9 @@ impl<'a> CommitRefIter<'a> {
     /// Errors are coerced into options, hiding whether there was an error or not. The caller should assume an error if they
     /// call the method as intended. Such a squelched error cannot be recovered unless the objects data is retrieved and parsed again.
     /// `next()`.
-    pub fn tree_id(&mut self) -> Result<ObjectId, crate::decode::Error> {
-        let tree_id = self.next().ok_or_else(missing_field)??;
-        Token::try_into_id(tree_id).ok_or_else(missing_field)
+    pub fn tree_id(&mut self) -> Result<ObjectId> {
+        let tree_id = self.next().ok_or_raise(missing_field)??;
+        Token::try_into_id(tree_id).ok_or_raise(missing_field)
     }
 
     /// Return all `parent_ids` as iterator.
@@ -111,32 +110,32 @@ impl<'a> CommitRefIter<'a> {
     }
 
     /// Returns the committer signature if there is no decoding error.
-    pub fn committer(mut self) -> Result<gix_actor::SignatureRef<'a>, crate::decode::Error> {
+    pub fn committer(mut self) -> Result<gix_actor::SignatureRef<'a>> {
         self.find_map(|t| match t {
             Ok(Token::Committer { signature }) => Some(Ok(signature)),
             Err(err) => Some(Err(err)),
             _ => None,
         })
-        .ok_or_else(missing_field)?
+        .ok_or_raise(missing_field)?
     }
 
     /// Returns the author signature if there is no decoding error.
     ///
     /// It may contain white space surrounding it, and is exactly as parsed.
-    pub fn author(mut self) -> Result<gix_actor::SignatureRef<'a>, crate::decode::Error> {
+    pub fn author(mut self) -> Result<gix_actor::SignatureRef<'a>> {
         self.find_map(|t| match t {
             Ok(Token::Author { signature }) => Some(Ok(signature)),
             Err(err) => Some(Err(err)),
             _ => None,
         })
-        .ok_or_else(missing_field)?
+        .ok_or_raise(missing_field)?
     }
 
     /// Returns the message if there is no decoding error.
     ///
     /// It may contain white space surrounding it, and is exactly as
     //  parsed.
-    pub fn message(mut self) -> Result<&'a BStr, crate::decode::Error> {
+    pub fn message(mut self) -> Result<&'a BStr> {
         self.find_map(|t| match t {
             Ok(Token::Message(msg)) => Some(Ok(msg)),
             Err(err) => Some(Err(err)),
@@ -147,101 +146,89 @@ impl<'a> CommitRefIter<'a> {
     }
 }
 
-fn missing_field() -> crate::decode::Error {
+fn missing_field() -> gix_error::Message {
     crate::decode::empty_error()
 }
 
 impl<'a> CommitRefIter<'a> {
     #[inline]
-    fn next_inner(mut i: &'a [u8], state: &mut State) -> Result<(&'a [u8], Token<'a>), crate::decode::Error> {
+    fn next_inner(mut i: &'a [u8], state: &mut State, hash_kind: gix_hash::Kind) -> Result<(&'a [u8], Token<'a>)> {
         let input = &mut i;
-        match Self::next_inner_(input, state) {
+        match Self::next_inner_(input, state, hash_kind) {
             Ok(token) => Ok((*input, token)),
-            Err(err) => Err(crate::decode::Error::with_err(err, input)),
+            Err(err) => Err(err),
         }
     }
 
-    fn next_inner_(
-        input: &mut &'a [u8],
-        state: &mut State,
-    ) -> Result<Token<'a>, winnow::error::ErrMode<crate::decode::ParseError>> {
+    fn next_inner_(input: &mut &'a [u8], state: &mut State, hash_kind: gix_hash::Kind) -> Result<Token<'a>> {
         use State::*;
         Ok(match state {
             Tree => {
-                let tree = (|i: &mut _| parse::header_field(i, b"tree", parse::hex_hash))
-                    .context(StrContext::Expected("tree <40 lowercase hex char>".into()))
-                    .parse_next(input)?;
+                let tree = parse::header_field(input, b"tree", |value| parse::hex_hash(value, hash_kind))?;
                 *state = State::Parents;
                 Token::Tree {
                     id: ObjectId::from_hex(tree).expect("parsing validation"),
                 }
             }
             Parents => {
-                let parent = opt(|i: &mut _| parse::header_field(i, b"parent", parse::hex_hash))
-                    .context(StrContext::Expected("commit <40 lowercase hex char>".into()))
-                    .parse_next(input)?;
-                match parent {
-                    Some(parent) => Token::Parent {
+                if input.starts_with(b"parent ") {
+                    let parent = parse::header_field(input, b"parent", |value| parse::hex_hash(value, hash_kind))?;
+                    Token::Parent {
                         id: ObjectId::from_hex(parent).expect("parsing validation"),
-                    },
-                    None => {
-                        *state = State::Signature {
-                            of: SignatureKind::Author,
-                        };
-                        Self::next_inner_(input, state)?
                     }
+                } else {
+                    *state = State::Signature {
+                        of: SignatureKind::Author,
+                    };
+                    Self::next_inner_(input, state, hash_kind)?
                 }
             }
-            Signature { ref mut of } => {
+            Signature { of } => {
                 let who = *of;
-                let (field_name, err_msg) = match of {
+                let field_name = match of {
                     SignatureKind::Author => {
                         *of = SignatureKind::Committer;
-                        (&b"author"[..], "author <signature>")
+                        &b"author"[..]
                     }
                     SignatureKind::Committer => {
                         *state = State::Encoding;
-                        (&b"committer"[..], "committer <signature>")
+                        &b"committer"[..]
                     }
                 };
-                let signature = (|i: &mut _| parse::header_field(i, field_name, parse::signature))
-                    .context(StrContext::Expected(err_msg.into()))
-                    .parse_next(input)?;
+                let signature = parse::header_field(input, field_name, parse::signature)?;
                 match who {
                     SignatureKind::Author => Token::Author { signature },
                     SignatureKind::Committer => Token::Committer { signature },
                 }
             }
             Encoding => {
-                let encoding = opt(|i: &mut _| parse::header_field(i, b"encoding", take_till(0.., NL)))
-                    .context(StrContext::Expected("encoding <encoding>".into()))
-                    .parse_next(input)?;
                 *state = State::ExtraHeaders;
-                match encoding {
-                    Some(encoding) => Token::Encoding(encoding.as_bstr()),
-                    None => Self::next_inner_(input, state)?,
+                if input.starts_with(b"encoding ") {
+                    let encoding = parse::header_field(input, b"encoding", Ok)?;
+                    Token::Encoding(encoding.as_bstr())
+                } else {
+                    Self::next_inner_(input, state, hash_kind)?
                 }
             }
             ExtraHeaders => {
-                let extra_header = opt(alt((
-                    |i: &mut _| parse::any_header_field_multi_line(i).map(|(k, o)| (k.as_bstr(), Cow::Owned(o))),
-                    |i: &mut _| {
-                        parse::any_header_field(i, take_till(0.., NL))
-                            .map(|(k, o)| (k.as_bstr(), Cow::Borrowed(o.as_bstr())))
-                    },
-                )))
-                .context(StrContext::Expected("<field> <single-line|multi-line>".into()))
-                .parse_next(input)?;
-                match extra_header {
-                    Some(extra_header) => Token::ExtraHeader(extra_header),
-                    None => {
-                        *state = State::Message;
-                        Self::next_inner_(input, state)?
+                if input.starts_with(b"\n") {
+                    *state = State::Message;
+                    Self::next_inner_(input, state, hash_kind)?
+                } else {
+                    let before = *input;
+                    {
+                        let extra_header = parse::any_header_field_multi_line(input)
+                            .map(|(k, o)| (k.as_bstr(), Cow::Owned(o)))
+                            .or_else(|_| {
+                                *input = before;
+                                parse::any_header_field(input).map(|(k, o)| (k.as_bstr(), Cow::Borrowed(o.as_bstr())))
+                            })?;
+                        Token::ExtraHeader(extra_header)
                     }
                 }
             }
             Message => {
-                let message = terminated(decode::message, eof).parse_next(input)?;
+                let message = decode::message(input)?;
                 debug_assert!(
                     input.is_empty(),
                     "we should have consumed all data - otherwise iter may go forever"
@@ -253,13 +240,13 @@ impl<'a> CommitRefIter<'a> {
 }
 
 impl<'a> Iterator for CommitRefIter<'a> {
-    type Item = Result<Token<'a>, crate::decode::Error>;
+    type Item = Result<Token<'a>>;
 
     fn next(&mut self) -> Option<Self::Item> {
         if self.data.is_empty() {
             return None;
         }
-        match Self::next_inner(self.data, &mut self.state) {
+        match Self::next_inner(self.data, &mut self.state, self.hash_kind) {
             Ok((data, token)) => {
                 self.data = data;
                 Some(Ok(token))
@@ -277,16 +264,17 @@ struct CommitRefIterRaw<'a> {
     data: &'a [u8],
     state: State,
     offset: usize,
+    hash_kind: gix_hash::Kind,
 }
 
 impl<'a> Iterator for CommitRefIterRaw<'a> {
-    type Item = Result<RawToken<'a>, crate::decode::Error>;
+    type Item = Result<RawToken<'a>>;
 
     fn next(&mut self) -> Option<Self::Item> {
         if self.data.is_empty() {
             return None;
         }
-        match CommitRefIter::next_inner(self.data, &mut self.state) {
+        match CommitRefIter::next_inner(self.data, &mut self.state, self.hash_kind) {
             Ok((remaining, token)) => {
                 let consumed = self.data.len() - remaining.len();
                 let start = self.offset;
@@ -315,7 +303,7 @@ struct RawToken<'a> {
 }
 
 /// A token returned by the [commit iterator][CommitRefIter].
-#[allow(missing_docs)]
+#[expect(missing_docs)]
 #[derive(PartialEq, Eq, Debug, Hash, Ord, PartialOrd, Clone)]
 pub enum Token<'a> {
     Tree {

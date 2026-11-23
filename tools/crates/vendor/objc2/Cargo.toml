@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.71"
 name = "objc2"
-version = "0.6.3"
+version = "0.6.5"
 authors = ["Mads Marquart <mads@marquart.dk>"]
 build = "build.rs"
 autolib = false
@@ -96,6 +96,7 @@ unstable-arbitrary-self-types = []
 unstable-autoreleasesafe = []
 unstable-coerce-pointee = []
 unstable-compiler-rt = ["gnustep-1-7"]
+unstable-darwin-objc = []
 unstable-gnustep-strict-apple-compat = ["gnustep-1-7"]
 unstable-objfw = []
 unstable-requires-macos = []

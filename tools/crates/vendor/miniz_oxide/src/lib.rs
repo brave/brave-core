@@ -23,7 +23,7 @@ fn roundtrip(data: &[u8]) {
 "##
 )]
 #![forbid(unsafe_code)]
-#![cfg_attr(all(not(feature = "std"), not(feature = "serde")), no_std)]
+#![cfg_attr(not(feature = "std"), no_std)]
 
 #[cfg(feature = "with-alloc")]
 extern crate alloc;
@@ -44,6 +44,7 @@ pub use crate::shared::{MZ_ADLER32_INIT, MZ_DEFAULT_WINDOW_BITS};
 #[repr(i32)]
 #[derive(Copy, Clone, PartialEq, Eq)]
 #[cfg_attr(not(feature = "rustc-dep-of-std"), derive(Hash, Debug))]
+#[non_exhaustive]
 pub enum MZFlush {
     /// Don't force any flushing.
     /// Used when more input data is expected.
@@ -112,6 +113,7 @@ pub enum MZStatus {
 #[repr(i32)]
 #[cfg_attr(not(feature = "rustc-dep-of-std"), derive(Hash, Debug))]
 #[derive(Copy, Clone, PartialEq, Eq)]
+#[non_exhaustive]
 pub enum MZError {
     /// Unused
     ErrNo = -1,

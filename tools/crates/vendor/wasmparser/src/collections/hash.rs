@@ -97,24 +97,24 @@ use std::collections::hash_map::RandomState as RandomStateImpl;
 #[derive(Clone, Debug)]
 #[cfg(not(feature = "std"))]
 struct RandomStateImpl {
-    state: ahash::RandomState,
+    state: hashbrown::DefaultHashBuilder,
 }
 
 #[cfg(not(feature = "std"))]
 impl Default for RandomStateImpl {
     fn default() -> RandomStateImpl {
         RandomStateImpl {
-            state: ahash::RandomState::new(),
+            state: hashbrown::DefaultHashBuilder::default(),
         }
     }
 }
 
 #[cfg(not(feature = "std"))]
 impl BuildHasher for RandomStateImpl {
-    type Hasher = ahash::AHasher;
+    type Hasher = <hashbrown::DefaultHashBuilder as BuildHasher>::Hasher;
 
     #[inline]
-    fn build_hasher(&self) -> ahash::AHasher {
+    fn build_hasher(&self) -> Self::Hasher {
         self.state.build_hasher()
     }
 }

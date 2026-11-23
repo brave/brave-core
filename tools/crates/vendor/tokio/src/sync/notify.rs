@@ -16,12 +16,9 @@ use std::marker::PhantomPinned;
 use std::panic::{RefUnwindSafe, UnwindSafe};
 use std::pin::Pin;
 use std::ptr::NonNull;
-use std::sync::atomic::Ordering::{self, Acquire, Relaxed, Release, SeqCst};
+use std::sync::atomic::Ordering::{self, AcqRel, Acquire, Relaxed, Release};
 use std::sync::Arc;
 use std::task::{Context, Poll, Waker};
-
-type WaitList = LinkedList<Waiter, <Waiter as linked_list::Link>::Target>;
-type GuardedWaitList = GuardedLinkedList<Waiter, <Waiter as linked_list::Link>::Target>;
 
 /// Notifies a single task to wake up.
 ///
@@ -211,7 +208,7 @@ pub struct Notify {
     // - number of times `notify_waiters` was called can
     //   be modified only if `waiters` lock is held
     state: AtomicUsize,
-    waiters: Mutex<WaitList>,
+    waiters: Mutex<LinkedList<Waiter>>,
 }
 
 #[derive(Debug)]
@@ -327,14 +324,14 @@ enum Notification {
 /// and gates the access to it on `notify.waiters` mutex. It also empties
 /// the list on drop.
 struct NotifyWaitersList<'a> {
-    list: GuardedWaitList,
+    list: GuardedLinkedList<Waiter>,
     is_empty: bool,
     notify: &'a Notify,
 }
 
 impl<'a> NotifyWaitersList<'a> {
     fn new(
-        unguarded_list: WaitList,
+        unguarded_list: LinkedList<Waiter>,
         guard: Pin<&'a Waiter>,
         notify: &'a Notify,
     ) -> NotifyWaitersList<'a> {
@@ -349,7 +346,7 @@ impl<'a> NotifyWaitersList<'a> {
 
     /// Removes the last element from the guarded list. Modifying this list
     /// requires an exclusive access to the main list in `Notify`.
-    fn pop_back_locked(&mut self, _waiters: &mut WaitList) -> Option<NonNull<Waiter>> {
+    fn pop_back_locked(&mut self, _waiters: &mut LinkedList<Waiter>) -> Option<NonNull<Waiter>> {
         let result = self.list.pop_back();
         if result.is_none() {
             // Save information about emptiness to avoid waiting for lock
@@ -467,7 +464,7 @@ fn inc_num_notify_waiters_calls(data: usize) -> usize {
 }
 
 fn atomic_inc_num_notify_waiters_calls(data: &AtomicUsize) {
-    data.fetch_add(1 << NOTIFY_WAITERS_SHIFT, SeqCst);
+    data.fetch_add(1 << NOTIFY_WAITERS_SHIFT, AcqRel);
 }
 
 impl Notify {
@@ -565,7 +562,7 @@ impl Notify {
     pub fn notified(&self) -> Notified<'_> {
         // we load the number of times notify_waiters
         // was called and store that in the future.
-        let state = self.state.load(SeqCst);
+        let state = self.state.load(Acquire);
         Notified {
             notify: self,
             state: State::Init,
@@ -613,7 +610,7 @@ impl Notify {
     pub fn notified_owned(self: Arc<Self>) -> OwnedNotified {
         // we load the number of times notify_waiters
         // was called and store that in the future.
-        let state = self.state.load(SeqCst);
+        let state = self.state.load(Acquire);
         OwnedNotified {
             notify: self,
             state: State::Init,
@@ -676,7 +673,7 @@ impl Notify {
 
     fn notify_with_strategy(&self, strategy: NotifyOneStrategy) {
         // Load the current state
-        let mut curr = self.state.load(SeqCst);
+        let mut curr = self.state.load(Acquire);
 
         // If the state is `EMPTY`, transition to `NOTIFIED` and return.
         while let EMPTY | NOTIFIED = get_state(curr) {
@@ -684,7 +681,7 @@ impl Notify {
             // happens-before synchronization must happen between this atomic
             // operation and a task calling `notified().await`.
             let new = set_state(curr, NOTIFIED);
-            let res = self.state.compare_exchange(curr, new, SeqCst, SeqCst);
+            let res = self.state.compare_exchange(curr, new, AcqRel, Acquire);
 
             match res {
                 // No waiters, no further work to do
@@ -700,7 +697,7 @@ impl Notify {
 
         // The state must be reloaded while the lock is held. The state may only
         // transition out of WAITING while the lock is held.
-        curr = self.state.load(SeqCst);
+        curr = self.state.load(Acquire);
 
         if let Some(waker) = notify_locked(&mut waiters, &self.state, curr, strategy) {
             drop(waiters);
@@ -747,7 +744,7 @@ impl Notify {
     fn inner_notify_waiters<'a>(
         &'a self,
         curr: usize,
-        mut waiters: crate::loom::sync::MutexGuard<'a, LinkedList<Waiter, Waiter>>,
+        mut waiters: crate::loom::sync::MutexGuard<'a, LinkedList<Waiter>>,
     ) {
         if matches!(get_state(curr), EMPTY | NOTIFIED) {
             // There are no waiting tasks. All we need to do is increment the
@@ -759,7 +756,7 @@ impl Notify {
         // Increment the number of times this method was called
         // and transition to empty.
         let new_state = set_state(inc_num_notify_waiters_calls(curr), EMPTY);
-        self.state.store(new_state, SeqCst);
+        self.state.store(new_state, Release);
 
         // It is critical for `GuardedLinkedList` safety that the guard node is
         // pinned in memory and is not dropped until the guarded list is dropped.
@@ -822,7 +819,7 @@ impl Notify {
 
         // The state must be loaded while the lock is held. The state may only
         // transition out of WAITING while the lock is held.
-        let current_state = self.state.load(SeqCst);
+        let current_state = self.state.load(Acquire);
 
         NotifyGuard {
             guarded_notify: self,
@@ -842,21 +839,21 @@ impl UnwindSafe for Notify {}
 impl RefUnwindSafe for Notify {}
 
 fn notify_locked(
-    waiters: &mut WaitList,
+    waiters: &mut LinkedList<Waiter>,
     state: &AtomicUsize,
     curr: usize,
     strategy: NotifyOneStrategy,
 ) -> Option<Waker> {
     match get_state(curr) {
         EMPTY | NOTIFIED => {
-            let res = state.compare_exchange(curr, set_state(curr, NOTIFIED), SeqCst, SeqCst);
+            let res = state.compare_exchange(curr, set_state(curr, NOTIFIED), AcqRel, Acquire);
 
             match res {
                 Ok(_) => None,
                 Err(actual) => {
                     let actual_state = get_state(actual);
                     assert!(actual_state == EMPTY || actual_state == NOTIFIED);
-                    state.store(set_state(actual, NOTIFIED), SeqCst);
+                    state.store(set_state(actual, NOTIFIED), Release);
                     None
                 }
             }
@@ -888,7 +885,7 @@ fn notify_locked(
                 // must be transitioned to `EMPTY`. As transitioning
                 // **from** `WAITING` requires the lock to be held, a
                 // `store` is sufficient.
-                state.store(set_state(curr, EMPTY), SeqCst);
+                state.store(set_state(curr, EMPTY), Release);
             }
             waker
         }
@@ -1025,8 +1022,8 @@ impl Notified<'_> {
         }
     }
 
-    fn poll_notified(self: Pin<&mut Self>, waker: Option<&Waker>) -> Poll<()> {
-        self.project().poll_notified(waker)
+    fn poll_notified(self: Pin<&mut Self>, ctx: Option<&mut Context<'_>>) -> Poll<()> {
+        self.project().poll_notified(ctx)
     }
 }
 
@@ -1034,7 +1031,7 @@ impl Future for Notified<'_> {
     type Output = ();
 
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<()> {
-        self.poll_notified(Some(cx.waker()))
+        self.poll_notified(Some(cx))
     }
 }
 
@@ -1080,8 +1077,8 @@ impl OwnedNotified {
         }
     }
 
-    fn poll_notified(self: Pin<&mut Self>, waker: Option<&Waker>) -> Poll<()> {
-        self.project().poll_notified(waker)
+    fn poll_notified(self: Pin<&mut Self>, ctx: Option<&mut Context<'_>>) -> Poll<()> {
+        self.project().poll_notified(ctx)
     }
 }
 
@@ -1089,7 +1086,7 @@ impl Future for OwnedNotified {
     type Output = ();
 
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<()> {
-        self.poll_notified(Some(cx.waker()))
+        self.poll_notified(Some(cx))
     }
 }
 
@@ -1105,7 +1102,7 @@ impl Drop for OwnedNotified {
 // ===== impl NotifiedProject =====
 
 impl NotifiedProject<'_> {
-    fn poll_notified(self, waker: Option<&Waker>) -> Poll<()> {
+    fn poll_notified(self, mut ctx: Option<&mut Context<'_>>) -> Poll<()> {
         let NotifiedProject {
             notify,
             state,
@@ -1116,14 +1113,22 @@ impl NotifiedProject<'_> {
         'outer_loop: loop {
             match *state {
                 State::Init => {
-                    let curr = notify.state.load(SeqCst);
+                    let curr = notify.state.load(Acquire);
+
+                    // Check if `notify_waiters` was called before attempting to acquire
+                    // the `NOTIFIED` state. If a broadcast occurred, we will be woken by it,
+                    // leaving the `notify_one` permit for other waiters.
+                    if get_num_notify_waiters_calls(curr) != *notify_waiters_calls {
+                        *state = State::Done;
+                        continue 'outer_loop;
+                    }
 
                     // Optimistically try acquiring a pending notification
                     let res = notify.state.compare_exchange(
                         set_state(curr, NOTIFIED),
                         set_state(curr, EMPTY),
-                        SeqCst,
-                        SeqCst,
+                        AcqRel,
+                        Acquire,
                     );
 
                     if res.is_ok() {
@@ -1134,14 +1139,14 @@ impl NotifiedProject<'_> {
 
                     // Clone the waker before locking, a waker clone can be
                     // triggering arbitrary code.
-                    let waker = waker.cloned();
+                    let waker = ctx.as_mut().map(|ctx| ctx.waker().clone());
 
                     // Acquire the lock and attempt to transition to the waiting
                     // state.
                     let mut waiters = notify.waiters.lock();
 
                     // Reload the state with the lock held
-                    let mut curr = notify.state.load(SeqCst);
+                    let mut curr = notify.state.load(Acquire);
 
                     // if notify_waiters has been called after the future
                     // was created, then we are done
@@ -1158,8 +1163,8 @@ impl NotifiedProject<'_> {
                                 let res = notify.state.compare_exchange(
                                     set_state(curr, EMPTY),
                                     set_state(curr, WAITING),
-                                    SeqCst,
-                                    SeqCst,
+                                    AcqRel,
+                                    Acquire,
                                 );
 
                                 if let Err(actual) = res {
@@ -1175,8 +1180,8 @@ impl NotifiedProject<'_> {
                                 let res = notify.state.compare_exchange(
                                     set_state(curr, NOTIFIED),
                                     set_state(curr, EMPTY),
-                                    SeqCst,
-                                    SeqCst,
+                                    AcqRel,
+                                    Acquire,
                                 );
 
                                 match res {
@@ -1218,10 +1223,9 @@ impl NotifiedProject<'_> {
                     return Poll::Pending;
                 }
                 State::Waiting => {
-                    #[cfg(feature = "taskdump")]
-                    if let Some(waker) = waker {
-                        let mut ctx = Context::from_waker(waker);
-                        std::task::ready!(crate::trace::trace_leaf(&mut ctx));
+                    #[cfg(all(tokio_unstable, feature = "taskdump"))]
+                    if let Some(ctx) = ctx.as_mut() {
+                        std::task::ready!(crate::trace::trace_leaf(ctx));
                     }
 
                     if waiter.notification.load(Acquire).is_some() {
@@ -1260,7 +1264,7 @@ impl NotifiedProject<'_> {
                     }
 
                     // Load the state with the lock held.
-                    let curr = notify.state.load(SeqCst);
+                    let curr = notify.state.load(Acquire);
 
                     if get_num_notify_waiters_calls(curr) != *notify_waiters_calls {
                         // Before we add a waiter to the list we check if these numbers are
@@ -1282,7 +1286,8 @@ impl NotifiedProject<'_> {
                         // Safety: we hold the lock, so we can modify the waker.
                         unsafe {
                             waiter.waker.with_mut(|v| {
-                                if let Some(waker) = waker {
+                                if let Some(ctx) = ctx.as_ref() {
+                                    let waker = ctx.waker();
                                     let should_update = match &*v {
                                         Some(current_waker) => !current_waker.will_wake(waker),
                                         None => true,
@@ -1312,10 +1317,9 @@ impl NotifiedProject<'_> {
                     drop(old_waker);
                 }
                 State::Done => {
-                    #[cfg(feature = "taskdump")]
-                    if let Some(waker) = waker {
-                        let mut ctx = Context::from_waker(waker);
-                        std::task::ready!(crate::trace::trace_leaf(&mut ctx));
+                    #[cfg(all(tokio_unstable, feature = "taskdump"))]
+                    if let Some(ctx) = ctx.as_mut() {
+                        std::task::ready!(crate::trace::trace_leaf(ctx));
                     }
                     return Poll::Ready(());
                 }
@@ -1336,7 +1340,7 @@ impl NotifiedProject<'_> {
         // longer stored in the linked list.
         if matches!(*state, State::Waiting) {
             let mut waiters = notify.waiters.lock();
-            let mut notify_state = notify.state.load(SeqCst);
+            let mut notify_state = notify.state.load(Acquire);
 
             // We hold the lock, so this field is not concurrently accessed by
             // `notify_*` functions and we can use the relaxed ordering.
@@ -1351,7 +1355,7 @@ impl NotifiedProject<'_> {
 
             if waiters.is_empty() && get_state(notify_state) == WAITING {
                 notify_state = set_state(notify_state, EMPTY);
-                notify.state.store(notify_state, SeqCst);
+                notify.state.store(notify_state, Release);
             }
 
             // See if the node was notified but not received. In this case, if
@@ -1385,7 +1389,7 @@ unsafe impl linked_list::Link for Waiter {
     }
 
     unsafe fn pointers(target: NonNull<Waiter>) -> NonNull<linked_list::Pointers<Waiter>> {
-        Waiter::addr_of_pointers(target)
+        unsafe { Waiter::addr_of_pointers(target) }
     }
 }
 
@@ -1397,7 +1401,7 @@ fn is_unpin<T: Unpin>() {}
 /// While this guard is held, the `Notify` instance's waiter list is locked.
 pub(crate) struct NotifyGuard<'a> {
     guarded_notify: &'a Notify,
-    guarded_waiters: crate::loom::sync::MutexGuard<'a, WaitList>,
+    guarded_waiters: crate::loom::sync::MutexGuard<'a, LinkedList<Waiter>>,
     current_state: usize,
 }
 

@@ -1,16 +1,14 @@
 [package]
 name         = "rustsec"
 description  = "Client library for the RustSec security advisory database"
-version      = "0.31.0"
-authors      = ["Tony Arcieri <bascule@gmail.com>"]
+version      = "0.34.1"
 license      = "Apache-2.0 OR MIT"
 homepage     = "https://rustsec.org"
 repository   = "https://github.com/rustsec/rustsec"
-readme       = "README.md"
 categories   = ["api-bindings", "development-tools"]
 keywords     = ["audit", "rustsec", "security", "advisory", "vulnerability"]
 edition      = "2024"
-rust-version = "1.85"
+rust-version = "1.88"
 
 [dependencies]
 cargo-lock = { workspace = true }
@@ -22,6 +20,7 @@ serde = { workspace = true, features = ["serde_derive"] }
 thiserror = { workspace = true }
 toml = { workspace = true }
 url = { workspace = true, features = ["serde"] }
+jiff = { workspace = true, features = ["std"] }
 
 # for scanning binary files
 auditable-info = { workspace = true, features = ["wasm"], optional = true }
@@ -31,10 +30,10 @@ once_cell = { workspace = true, optional = true }
 binfarce = { workspace = true, optional = true }
 
 # optional dependencies
-tame-index = { workspace = true, features = ["sparse", "native-certs"], optional = true }
+tame-index = { workspace = true, features = ["sparse"], optional = true }
 home = { workspace = true, optional = true }
 time = { workspace = true, features = ["formatting", "serde", "parsing"], optional = true }
-gix = { workspace = true, features = ["worktree-mutation", "revision", "max-performance-safe"], optional = true }
+gix = { workspace = true, optional = true }
 
 [dev-dependencies]
 tempfile = { workspace = true }
@@ -50,8 +49,8 @@ git = [
     "dep:gix",
 ]
 # Exactly one of 'gix-reqwest' or 'gix-curl' must be enabled when using the 'git' feature.
-gix-reqwest = ["tame-index/gix-reqwest", "git"]
-gix-curl = ["tame-index/gix-curl", "git"]
+gix-reqwest = ["gix/blocking-http-transport-reqwest-rust-tls", "git"]
+gix-curl = ["gix/blocking-http-transport-curl", "git"]
 dependency-tree = ["cargo-lock/dependency-tree"]
 osv-export = ["git"]
 binary-scanning = ["dep:auditable-info", "dep:auditable-serde", "dep:binfarce", "dep:quitters", "dep:once_cell"]
@@ -75,3 +74,6 @@ allowed_external_types = [
     "time::offset_date_time::OffsetDateTime",
     "url::Url",
 ]
+
+[lints]
+workspace = true

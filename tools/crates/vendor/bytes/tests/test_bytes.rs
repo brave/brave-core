@@ -142,6 +142,23 @@ fn slice() {
 }
 
 #[test]
+fn slice_with_excluded_start() {
+    use core::ops::Bound::Excluded;
+
+    let bytes = Bytes::from_static(b"hello");
+    assert_eq!(&bytes.slice((Excluded(1), Excluded(4)))[..], b"ll");
+}
+
+#[test]
+#[should_panic]
+fn slice_excluded_start_overflow() {
+    use core::ops::Bound::{Excluded, Unbounded};
+
+    let bytes = Bytes::from_static(b"hello");
+    bytes.slice((Excluded(usize::MAX), Unbounded));
+}
+
+#[test]
 #[should_panic]
 fn slice_oob_1() {
     let a = Bytes::from(&b"hello world"[..]);
@@ -337,6 +354,31 @@ fn truncate() {
     assert_eq!(hello, s);
     hello.truncate(5);
     assert_eq!(hello, "hello");
+}
+
+#[test]
+fn truncate_to_zero_releases_shared_reference() {
+    let mut bytes = BytesMut::from(&b"hello"[..]);
+    drop(bytes.split_off(bytes.len()));
+    let mut truncated = bytes.freeze();
+    let remaining = truncated.clone();
+
+    truncated.truncate(0);
+
+    assert!(truncated.is_empty());
+    let mut remaining = remaining.try_into_mut().unwrap();
+    remaining[0] = b'H';
+    assert_eq!(remaining, b"Hello"[..]);
+
+    let mut bytes = BytesMut::from(&b"hello"[..]);
+    drop(bytes.split_off(bytes.len()));
+    let mut nonempty = bytes.freeze();
+    let remaining = nonempty.clone();
+
+    nonempty.truncate(1);
+
+    assert_eq!(nonempty, b"h"[..]);
+    assert!(remaining.try_into_mut().is_err());
 }
 
 #[test]
@@ -598,6 +640,30 @@ fn extend_mut() {
 }
 
 #[test]
+fn extend_mut_after_advance() {
+    let mut bytes = BytesMut::with_capacity(16);
+    bytes.extend_from_slice(b"abcdef");
+    bytes.advance(2);
+
+    bytes.extend([b'g', b'h']);
+
+    assert_eq!(bytes.len(), 6);
+    assert_eq!(&bytes[..], b"cdefgh");
+    assert_eq!(bytes.capacity(), 14);
+}
+
+#[test]
+fn extend_mut_non_fused() {
+    // Yields 1, None, 3.
+    let mut items = [Some(1), None, Some(3)].into_iter();
+    let iter = core::iter::from_fn(|| items.next().flatten());
+
+    let mut bytes = BytesMut::with_capacity(16);
+    bytes.extend(iter);
+    assert_eq!(&bytes[..], [1]);
+}
+
+#[test]
 fn extend_from_slice_mut() {
     for &i in &[3, 34] {
         let mut bytes = BytesMut::new();
@@ -605,6 +671,23 @@ fn extend_from_slice_mut() {
         bytes.extend_from_slice(&LONG[i..]);
         assert_eq!(LONG[..], *bytes);
     }
+}
+
+#[test]
+fn extend_from_within_normal() {
+    let mut bytes = BytesMut::new();
+    bytes.extend_from_slice(&LONG[..23]);
+    bytes.extend_from_within(10..22);
+    bytes.extend_from_within(22..35);
+    assert_eq!(LONG[..], *bytes);
+}
+
+#[test]
+#[should_panic]
+fn extend_from_within_out_of_range() {
+    let mut bytes = BytesMut::new();
+    bytes.extend_from_slice(&LONG[..23]);
+    bytes.extend_from_within(23..=23);
 }
 
 #[test]
@@ -1526,6 +1609,65 @@ fn split_to_empty_addr_mut() {
     let _ = &buf[..];
 }
 
+#[test]
+fn bytes_mut_split_boundary_capacities() {
+    // VEC mode
+    for at in [0, 5, 11] {
+        let mut buf = BytesMut::with_capacity(64);
+        buf.extend_from_slice(b"hello world");
+
+        let other = buf.split_off(at);
+        assert_eq!(
+            buf.capacity() + other.capacity(),
+            64,
+            "split_off at {} should preserve total capacity",
+            at
+        );
+    }
+
+    for at in [0, 5, 11] {
+        let mut buf = BytesMut::with_capacity(64);
+        buf.extend_from_slice(b"hello world");
+
+        let other = buf.split_to(at);
+        assert_eq!(
+            buf.capacity() + other.capacity(),
+            64,
+            "split_to at {} should preserve total capacity",
+            at
+        );
+    }
+
+    // ARC mode (promote via a no-op split)
+    for at in [0, 5, 11] {
+        let mut buf = BytesMut::with_capacity(64);
+        buf.extend_from_slice(b"hello world");
+        let _ = buf.split_to(0); // promotes to ARC
+
+        let other = buf.split_off(at);
+        assert_eq!(
+            buf.capacity() + other.capacity(),
+            64,
+            "ARC split_off at {} should preserve total capacity",
+            at
+        );
+    }
+
+    for at in [0, 5, 11] {
+        let mut buf = BytesMut::with_capacity(64);
+        buf.extend_from_slice(b"hello world");
+        let _ = buf.split_to(0); // promotes to ARC
+
+        let other = buf.split_to(at);
+        assert_eq!(
+            buf.capacity() + other.capacity(),
+            64,
+            "ARC split_to at {} should preserve total capacity",
+            at
+        );
+    }
+}
+
 #[derive(Clone)]
 struct SharedAtomicCounter(Arc<AtomicUsize>);
 
@@ -1706,4 +1848,17 @@ fn bytes_mut_put_bytes_specialization() {
     assert_eq!(&[10], bytes_mut.as_ref());
     // If allocation is reused, capacity should be equal to original vec capacity.
     assert_eq!(bytes_mut.capacity(), capacity);
+}
+
+#[test]
+#[should_panic]
+fn bytes_mut_reserve_overflow() {
+    let mut a = BytesMut::from(&b"hello world"[..]);
+    let mut b = a.split_off(5);
+    // Ensure b becomes the unique owner of the backing storage
+    drop(a);
+    // Trigger overflow in new_cap + offset inside reserve
+    b.reserve(usize::MAX - 6);
+    // This call relies on the corrupted cap and may cause UB & HBO
+    b.put_u8(b'h');
 }

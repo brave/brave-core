@@ -33,7 +33,7 @@ pub mod commit {
         /// * an empty tree, if [Options::with_allow_missing_merge_base()] is enabled.
         pub merge_base_tree_id: gix_hash::ObjectId,
         /// The object ids of all the commits which were found to be merge-bases, or `None` if there was no merge-base.
-        pub merge_bases: Option<Vec<gix_hash::ObjectId>>,
+        pub merge_bases: Option<nonempty::NonEmpty<gix_hash::ObjectId>>,
         /// A list of virtual commits that were created to merge multiple merge-bases into one, the last one being
         /// the one we used as merge-base for the merge.
         /// As they are not reachable by anything they will be garbage collected, but knowing them provides options.
@@ -107,8 +107,8 @@ pub mod commit {
 pub mod tree {
     use gix_merge::blob::builtin_driver;
     pub use gix_merge::tree::{
-        apply_index_entries, treat_as_unresolved, Conflict, ContentMerge, Resolution, ResolutionFailure,
-        TreatAsUnresolved,
+        Conflict, ContentMerge, Resolution, ResolutionFailure, TreatAsUnresolved, apply_index_entries,
+        treat_as_unresolved,
     };
 
     /// The outcome produced by [`Repository::merge_trees()`](crate::Repository::merge_trees()).

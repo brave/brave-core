@@ -1654,6 +1654,16 @@ unsafe impl BufMut for Vec<u8> {
     }
 
     #[inline]
+    fn put_u8(&mut self, n: u8) {
+        self.push(n);
+    }
+
+    #[inline]
+    fn put_i8(&mut self, n: i8) {
+        self.push(n as u8);
+    }
+
+    #[inline]
     fn put_slice(&mut self, src: &[u8]) {
         self.extend_from_slice(src);
     }

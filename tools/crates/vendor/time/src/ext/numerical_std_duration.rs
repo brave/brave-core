@@ -1,6 +1,6 @@
 use core::time::Duration as StdDuration;
 
-use crate::convert::*;
+use crate::unit::*;
 
 /// Sealed trait to prevent downstream implementations.
 mod sealed {
@@ -96,7 +96,7 @@ impl NumericalStdDuration for u64 {
     fn std_minutes(self) -> StdDuration {
         StdDuration::from_secs(
             self.checked_mul(Second::per_t(Minute))
-                .expect("overflow constructing `time::Duration`"),
+                .expect("overflow constructing `time::SignedDuration`"),
         )
     }
 
@@ -108,7 +108,7 @@ impl NumericalStdDuration for u64 {
     fn std_hours(self) -> StdDuration {
         StdDuration::from_secs(
             self.checked_mul(Second::per_t(Hour))
-                .expect("overflow constructing `time::Duration`"),
+                .expect("overflow constructing `time::SignedDuration`"),
         )
     }
 
@@ -120,7 +120,7 @@ impl NumericalStdDuration for u64 {
     fn std_days(self) -> StdDuration {
         StdDuration::from_secs(
             self.checked_mul(Second::per_t(Day))
-                .expect("overflow constructing `time::Duration`"),
+                .expect("overflow constructing `time::SignedDuration`"),
         )
     }
 
@@ -132,7 +132,7 @@ impl NumericalStdDuration for u64 {
     fn std_weeks(self) -> StdDuration {
         StdDuration::from_secs(
             self.checked_mul(Second::per_t(Week))
-                .expect("overflow constructing `time::Duration`"),
+                .expect("overflow constructing `time::SignedDuration`"),
         )
     }
 }

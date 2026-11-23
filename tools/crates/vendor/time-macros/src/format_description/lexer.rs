@@ -1,6 +1,7 @@
 use core::iter;
 
 use super::{Error, Location, Spanned, SpannedValue};
+use crate::FormatDescriptionVersion;
 
 pub(super) struct Lexed<I: Iterator> {
     iter: iter::Peekable<I>,
@@ -19,7 +20,7 @@ impl<'iter, 'token: 'iter, I: Iterator<Item = Result<Token<'token>, Error>> + 'i
         self.iter.peek()
     }
 
-    pub(super) fn next_if_whitespace(&mut self) -> Option<Spanned<&'token [u8]>> {
+    pub(super) fn next_if_whitespace(&mut self) -> Option<Spanned<&'token str>> {
         if let Some(&Ok(Token::ComponentPart {
             kind: ComponentKind::Whitespace,
             value,
@@ -32,7 +33,7 @@ impl<'iter, 'token: 'iter, I: Iterator<Item = Result<Token<'token>, Error>> + 'i
         }
     }
 
-    pub(super) fn next_if_not_whitespace(&mut self) -> Option<Spanned<&'token [u8]>> {
+    pub(super) fn next_if_not_whitespace(&mut self) -> Option<Spanned<&'token str>> {
         if let Some(&Ok(Token::ComponentPart {
             kind: ComponentKind::NotWhitespace,
             value,
@@ -92,84 +93,117 @@ pub(super) enum Token<'a> {
     },
     ComponentPart {
         kind: ComponentKind,
-        value: Spanned<&'a [u8]>,
+        value: Spanned<&'a str>,
     },
 }
 
+impl std::fmt::Debug for Token<'_> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Literal(arg0) => f
+                .debug_tuple("Literal")
+                .field(&String::from_utf8_lossy(arg0))
+                .finish(),
+            Self::Bracket { kind, location } => f
+                .debug_struct("Bracket")
+                .field("kind", kind)
+                .field("location", location)
+                .finish(),
+            Self::ComponentPart { kind, value } => f
+                .debug_struct("ComponentPart")
+                .field("kind", kind)
+                .field("value", value)
+                .finish(),
+        }
+    }
+}
+
+#[derive(Debug)]
 pub(super) enum BracketKind {
     Opening,
     Closing,
 }
 
+#[derive(Debug)]
 pub(super) enum ComponentKind {
     Whitespace,
     NotWhitespace,
 }
 
-fn attach_location<'item>(
-    iter: impl Iterator<Item = &'item u8>,
+pub(super) fn lex(
+    version: FormatDescriptionVersion,
+    mut input: &[u8],
     proc_span: proc_macro::Span,
-) -> impl Iterator<Item = (&'item u8, Location)> {
-    let mut byte_pos = 0;
+) -> Lexed<impl Iterator<Item = Result<Token<'_>, Error>>> {
+    let mut depth: u32 = 0;
+    let mut byte_pos: u32 = 0;
+    let mut nested_component_name_seen = false;
+    let mut second_bracket_location = None;
 
-    iter.map(move |byte| {
+    let iter = iter::from_fn(move || {
+        if version.is_v1()
+            && let Some(location) = second_bracket_location.take()
+        {
+            return Some(Ok(Token::Bracket {
+                kind: BracketKind::Opening,
+                location,
+            }));
+        }
+
+        let byte = *input.first()?;
         let location = Location {
             byte: byte_pos,
             proc_span,
         };
-        byte_pos += 1;
-        (byte, location)
-    })
-}
 
-pub(super) fn lex<const VERSION: u8>(
-    mut input: &[u8],
-    proc_span: proc_macro::Span,
-) -> Lexed<impl Iterator<Item = Result<Token<'_>, Error>>> {
-    assert!(version!(1..=2));
-
-    let mut depth: u8 = 0;
-    let mut iter = attach_location(input.iter(), proc_span).peekable();
-    let mut second_bracket_location = None;
-
-    let iter = iter::from_fn(move || {
-        if version!(..=1) {
-            if let Some(location) = second_bracket_location.take() {
-                return Some(Ok(Token::Bracket {
-                    kind: BracketKind::Opening,
-                    location,
-                }));
-            }
-        }
-
-        Some(Ok(match iter.next()? {
-            (b'\\', backslash_loc) if version!(2..) => match iter.next() {
-                Some((b'\\' | b'[' | b']', char_loc)) => {
-                    let char = &input[1..2];
-                    input = &input[2..];
-                    if depth == 0 {
-                        Token::Literal(char.spanned(backslash_loc.to(char_loc)))
-                    } else {
-                        Token::ComponentPart {
-                            kind: ComponentKind::NotWhitespace,
-                            value: char.spanned(backslash_loc.to(char_loc)),
+        Some(Ok(match byte {
+            b'\\' if version.is_at_least_v2() => {
+                let backslash_loc = location;
+                match input.get(1) {
+                    Some(b'\\' | b'[' | b']') => {
+                        let char_loc = Location {
+                            byte: byte_pos + 1,
+                            proc_span,
+                        };
+                        // Safety: We know that the character is either a left bracket, a right
+                        // bracket, or a backslash.
+                        let char = unsafe { str::from_utf8_unchecked(&input[1..2]) };
+                        input = &input[2..];
+                        byte_pos += 2;
+                        if depth == 0 {
+                            Token::Literal(char.as_bytes().spanned(backslash_loc.to(char_loc)))
+                        } else {
+                            Token::ComponentPart {
+                                kind: ComponentKind::NotWhitespace,
+                                value: char.spanned(backslash_loc.to(char_loc)),
+                            }
                         }
                     }
+                    Some(_) => {
+                        let loc = Location {
+                            byte: byte_pos + 1,
+                            proc_span,
+                        };
+                        return Some(Err(loc.error("invalid escape sequence")));
+                    }
+                    None => {
+                        return Some(Err(backslash_loc.error("unexpected end of input")));
+                    }
                 }
-                Some((_, loc)) => {
-                    return Some(Err(loc.error("invalid escape sequence")));
-                }
-                None => {
-                    return Some(Err(backslash_loc.error("unexpected end of input")));
-                }
-            },
-            (b'[', location) if version!(..=1) => {
-                if let Some((_, second_location)) = iter.next_if(|&(&byte, _)| byte == b'[') {
+            }
+            b'[' if version.is_v1() && !nested_component_name_seen => {
+                if input.get(1) == Some(&b'[') {
+                    let second_location = Location {
+                        byte: byte_pos + 1,
+                        proc_span,
+                    };
                     second_bracket_location = Some(second_location);
                     input = &input[2..];
+                    byte_pos += 2;
                 } else {
                     depth += 1;
                     input = &input[1..];
+                    byte_pos += 1;
                 }
 
                 Token::Bracket {
@@ -177,55 +211,77 @@ pub(super) fn lex<const VERSION: u8>(
                     location,
                 }
             }
-            (b'[', location) => {
+            b'[' => {
                 depth += 1;
                 input = &input[1..];
+                byte_pos += 1;
 
                 Token::Bracket {
                     kind: BracketKind::Opening,
                     location,
                 }
             }
-            (b']', location) if depth > 0 => {
+            b']' if depth > 0 => {
                 depth -= 1;
+                if version.is_v1() {
+                    nested_component_name_seen = depth != 0;
+                }
                 input = &input[1..];
+                byte_pos += 1;
 
                 Token::Bracket {
                     kind: BracketKind::Closing,
                     location,
                 }
             }
-            (_, start_location) if depth == 0 => {
-                let mut bytes = 1;
-                let mut end_location = start_location;
+            _ if depth == 0 => {
+                let mut bytes: u32 = 1;
+                let mut end_location = location;
 
-                while let Some((_, location)) =
-                    iter.next_if(|&(&byte, _)| !((version!(2..) && byte == b'\\') || byte == b'['))
-                {
-                    end_location = location;
+                while let Some(&next_byte) = input.get(bytes as usize) {
+                    if (version.is_at_least_v2() && next_byte == b'\\') || next_byte == b'[' {
+                        break;
+                    }
+                    end_location = Location {
+                        byte: byte_pos + bytes,
+                        proc_span,
+                    };
                     bytes += 1;
                 }
 
-                let value = &input[..bytes];
-                input = &input[bytes..];
+                let value = &input[..bytes as usize];
+                input = &input[bytes as usize..];
+                byte_pos += bytes;
 
-                Token::Literal(value.spanned(start_location.to(end_location)))
+                Token::Literal(value.spanned(location.to(end_location)))
             }
-            (byte, start_location) => {
-                let mut bytes = 1;
-                let mut end_location = start_location;
+            byte => {
+                let mut bytes: u32 = 1;
+                let mut end_location = location;
                 let is_whitespace = byte.is_ascii_whitespace();
 
-                while let Some((_, location)) = iter.next_if(|&(byte, _)| {
-                    !matches!(byte, b'\\' | b'[' | b']')
-                        && is_whitespace == byte.is_ascii_whitespace()
-                }) {
-                    end_location = location;
+                while let Some(&next_byte) = input.get(bytes as usize) {
+                    if matches!(next_byte, b'\\' | b'[' | b']')
+                        || is_whitespace != next_byte.is_ascii_whitespace()
+                    {
+                        break;
+                    }
+                    end_location = Location {
+                        byte: byte_pos + bytes,
+                        proc_span,
+                    };
                     bytes += 1;
                 }
 
-                let value = &input[..bytes];
-                input = &input[bytes..];
+                let Ok(value) = str::from_utf8(&input[..bytes as usize]) else {
+                    return Some(Err(location.error("components must be valid UTF-8")));
+                };
+                input = &input[bytes as usize..];
+                byte_pos += bytes;
+
+                if version.is_v1() && !is_whitespace {
+                    nested_component_name_seen = true;
+                }
 
                 Token::ComponentPart {
                     kind: if is_whitespace {
@@ -233,7 +289,7 @@ pub(super) fn lex<const VERSION: u8>(
                     } else {
                         ComponentKind::NotWhitespace
                     },
-                    value: value.spanned(start_location.to(end_location)),
+                    value: value.spanned(location.to(end_location)),
                 }
             }
         }))

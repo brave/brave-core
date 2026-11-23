@@ -1,8 +1,9 @@
+use gix_error::Result;
 use std::sync::atomic::{AtomicBool, Ordering};
 
-use gix_features::{parallel, progress::DynNestedProgress};
+use gix_parallel as parallel;
+use gix_utils::progress::DynNestedProgress;
 
-use super::Error;
 use crate::{
     cache::delta::traverse,
     index::{self, traverse::Outcome, util::index_entries_sorted_by_offset_ascending},
@@ -16,6 +17,9 @@ pub struct Options {
     pub thread_limit: Option<usize>,
     /// The kinds of safety checks to perform.
     pub check: crate::index::traverse::SafetyCheck,
+    /// If `Some`, rejects individual allocations above the given number of bytes while resolving decoded object and
+    /// delta result buffers. `Some(0)` rejects all non-empty allocations.
+    pub alloc_limit_bytes: Option<usize>,
 }
 
 /// The progress ids used in [`index::File::traverse_with_index()`].
@@ -37,7 +41,7 @@ pub enum ProgressId {
     DecodedBytes,
 }
 
-impl From<ProgressId> for gix_features::progress::Id {
+impl From<ProgressId> for gix_utils::progress::Id {
     fn from(v: ProgressId) -> Self {
         match v {
             ProgressId::HashPackDataBytes => *b"PTHP",
@@ -51,39 +55,39 @@ impl From<ProgressId> for gix_features::progress::Id {
 }
 
 /// Traversal with index
-impl index::File {
+impl<T> index::File<T>
+where
+    T: crate::FileData + Sync,
+{
     /// Iterate through all _decoded objects_ in the given `pack` and handle them with a `Processor`, using an index to reduce waste
     /// at the cost of memory.
     ///
     /// For more details, see the documentation on the [`traverse()`][index::File::traverse()] method.
-    pub fn traverse_with_index<Processor, E>(
+    pub fn traverse_with_index<Processor, D>(
         &self,
-        pack: &crate::data::File,
+        pack: &crate::data::File<D>,
         mut processor: Processor,
         progress: &mut dyn DynNestedProgress,
         should_interrupt: &AtomicBool,
-        Options { check, thread_limit }: Options,
-    ) -> Result<Outcome, Error<E>>
+        Options {
+            check,
+            thread_limit,
+            alloc_limit_bytes,
+        }: Options,
+    ) -> Result<Outcome>
     where
-        Processor: FnMut(gix_object::Kind, &[u8], &index::Entry, &dyn gix_features::progress::Progress) -> Result<(), E>
-            + Send
-            + Clone,
-        E: std::error::Error + Send + Sync + 'static,
+        Processor:
+            FnMut(gix_object::Kind, &[u8], &index::Entry, &dyn gix_utils::progress::Progress) -> Result + Send + Clone,
+        D: crate::FileData + Send + Sync,
     {
         let (verify_result, traversal_result) = parallel::join(
             {
                 let mut pack_progress = progress.add_child_with_id(
-                    format!(
-                        "Hash of pack '{}'",
-                        pack.path().file_name().expect("pack has filename").to_string_lossy()
-                    ),
+                    format!("Hash of pack \"{}\"", crate::source_name(pack.path())),
                     ProgressId::HashPackDataBytes.into(),
                 );
                 let mut index_progress = progress.add_child_with_id(
-                    format!(
-                        "Hash of index '{}'",
-                        self.path.file_name().expect("index has filename").to_string_lossy()
-                    ),
+                    format!("Hash of index \"{}\"", crate::source_name(&self.path)),
                     ProgressId::HashPackIndexBytes.into(),
                 );
                 move || {
@@ -95,7 +99,7 @@ impl index::File {
                     res
                 }
             },
-            || -> Result<_, Error<_>> {
+            || -> Result<_> {
                 let sorted_entries = index_entries_sorted_by_offset_ascending(
                     self,
                     &mut progress.add_child_with_id(
@@ -107,7 +111,7 @@ impl index::File {
                     pack.path(),
                     sorted_entries.into_iter().map(Entry::from),
                     &|e| e.index_entry.pack_offset,
-                    &|id| self.lookup(id).map(|idx| self.pack_offset_at_index(idx)),
+                    &|id| Ok(self.lookup(id).map(|idx| self.pack_offset_at_index(idx))),
                     &mut progress.add_child_with_id("indexing".into(), ProgressId::TreeFromOffsetsObjects.into()),
                     should_interrupt,
                     self.object_hash,
@@ -130,7 +134,7 @@ impl index::File {
                         data.object_kind = object_kind;
                         data.compressed_size = entry_end - pack_entry.data_offset;
                         data.object_size = bytes.len() as u64;
-                        let result = index::traverse::process_entry(
+                        index::traverse::process_entry(
                             check,
                             object_kind,
                             bytes,
@@ -139,21 +143,14 @@ impl index::File {
                                 // TODO: Fix this - we overwrite the header of 'data' which also changes the computed entry size,
                                 // causing index and pack to seemingly mismatch. This is surprising, and should be done differently.
                                 // debug_assert_eq!(&data.index_entry.pack_offset, &pack_entry.pack_offset());
-                                gix_features::hash::crc32(
+                                crc32fast::hash(
                                     pack.entry_slice(data.index_entry.pack_offset..entry_end)
                                         .expect("slice pointing into the pack (by now data is verified)"),
                                 )
                             },
                             progress,
                             &mut processor,
-                        );
-                        match result {
-                            Err(err @ Error::PackDecode { .. }) if !check.fatal_decode_error() => {
-                                progress.info(format!("Ignoring decode error: {err}"));
-                                Ok(())
-                            }
-                            res => res,
-                        }
+                        )
                     },
                     traverse::Options {
                         object_progress: Box::new(
@@ -164,6 +161,7 @@ impl index::File {
                         thread_limit,
                         should_interrupt,
                         object_hash: self.object_hash,
+                        alloc_limit_bytes,
                     },
                 )?);
                 outcome.pack_size = pack.data_len() as u64;

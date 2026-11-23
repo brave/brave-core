@@ -288,8 +288,5 @@ mod shared {
     }
 }
 
-#[cfg(feature = "async-client")]
-mod async_io;
-
-#[cfg(feature = "blocking-client")]
-mod blocking_io;
+#[cfg(any(feature = "async-client", feature = "blocking-client"))]
+mod io;

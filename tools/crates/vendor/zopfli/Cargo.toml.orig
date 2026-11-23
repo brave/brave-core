@@ -1,11 +1,10 @@
 [package]
 name = "zopfli"
-version = "0.8.3"
+version = "0.8.4"
 edition = "2021"
-rust-version = "1.73.0"
+rust-version = "1.88.0"
 description = "A Rust implementation of the Zopfli compression algorithm."
 readme = "README.md"
-homepage = "https://github.com/zopfli-rs/zopfli"
 repository = "https://github.com/zopfli-rs/zopfli"
 license = "Apache-2.0"
 keywords = ["compression"]
@@ -29,15 +28,15 @@ name = "zopfli"
 required-features = ["gzip", "std", "zlib"]
 
 [dependencies]
-bumpalo = "3.19.0"
-crc32fast = { version = "1.5.0", default-features = false, optional = true }
-log = { version = "0.4.28", optional = true }
-simd-adler32 = { version = "0.3.7", default-features = false, optional = true }
+bumpalo = "3.20.3"
+crc32fast = { version = "1.5.2", default-features = false, optional = true }
+log = { version = "0.4.34", optional = true }
+simd-adler32 = { version = "0.3.10", default-features = false, optional = true }
 
 [dev-dependencies]
-miniz_oxide = "0.8.9"
-proptest = "1.7.0"
-proptest-derive = "0.6.0"
+miniz_oxide = "0.9.1"
+proptest = "1.11.0"
+proptest-derive = "0.9.0"
 
 [features]
 default = ["gzip", "std", "zlib"]

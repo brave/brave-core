@@ -30,10 +30,7 @@ jobs:
       # run clippy to verify we have no warnings
       - run: cargo fetch
       - name: cargo clippy
-        # Unfortunately we can't use --all-features since that would enable request and curl for gix which is not allowed
-        run: cargo clippy --all-targets --features __internal_all -- -D warnings
-      - name: sigh
-        run: cargo clippy --all-targets --features gix-curl,sparse,local-builder -- -D warnings
+        run: cargo clippy --all-targets --all-features -- -D warnings
 
   test:
     name: Test
@@ -41,7 +38,7 @@ jobs:
       matrix:
         os:
           - ubuntu-22.04
-        features: ["--features git", "--features sparse", "--features local-builder,sparse"]
+        features: ["--features sparse", "--features local-builder,sparse"]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -53,6 +50,7 @@ jobs:
         run: cargo test ${{ matrix.features }}
       - name: Test connection reuse
         if: ${{ matrix.features == '--features sparse' }}
+        continue-on-error: true
         run: |
           cargo run --manifest-path tests/connect/Cargo.toml
 

@@ -73,7 +73,7 @@ const HAS_WAITERS: usize = 1 << 1;
 
 impl<T> Mutex<T> {
     /// Creates a new futures-aware mutex.
-    pub fn new(t: T) -> Self {
+    pub const fn new(t: T) -> Self {
         Self {
             state: AtomicUsize::new(0),
             waiters: StdMutex::new(Slab::new()),
@@ -276,6 +276,7 @@ impl<T: ?Sized> Drop for OwnedMutexLockFuture<T> {
 /// An RAII guard returned by the `lock_owned` and `try_lock_owned` methods.
 /// When this structure is dropped (falls out of scope), the lock will be
 /// unlocked.
+#[clippy::has_significant_drop]
 pub struct OwnedMutexGuard<T: ?Sized> {
     mutex: Arc<Mutex<T>>,
 }
@@ -385,6 +386,7 @@ impl<T: ?Sized> Drop for MutexLockFuture<'_, T> {
 /// An RAII guard returned by the `lock` and `try_lock` methods.
 /// When this structure is dropped (falls out of scope), the lock will be
 /// unlocked.
+#[clippy::has_significant_drop]
 pub struct MutexGuard<'a, T: ?Sized> {
     mutex: &'a Mutex<T>,
 }
@@ -446,6 +448,7 @@ impl<T: ?Sized> DerefMut for MutexGuard<'_, T> {
 
 /// An RAII guard returned by the `MutexGuard::map` and `MappedMutexGuard::map` methods.
 /// When this structure is dropped (falls out of scope), the lock will be unlocked.
+#[clippy::has_significant_drop]
 pub struct MappedMutexGuard<'a, T: ?Sized, U: ?Sized> {
     mutex: &'a Mutex<T>,
     value: *mut U,
@@ -550,8 +553,8 @@ mod tests {
     fn test_mutex_guard_debug_not_recurse() {
         let mutex = Mutex::new(42);
         let guard = mutex.try_lock().unwrap();
-        let _ = format!("{:?}", guard);
+        let _ = format!("{guard:?}");
         let guard = MutexGuard::map(guard, |n| n);
-        let _ = format!("{:?}", guard);
+        let _ = format!("{guard:?}");
     }
 }

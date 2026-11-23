@@ -229,7 +229,9 @@ pub type Result<T> = ::std::result::Result<T, Error>;
 /// a loop. On most platforms, this operation is illegal.
 ///
 /// Note that when following symbolic/soft links, loops are detected and an
-/// error is reported.
+/// error is reported. This includes a link that resolves to a directory
+/// *containing* the root of this walk, since descending into such a
+/// directory leads back to the root.
 #[derive(Debug)]
 pub struct WalkDir {
     opts: WalkDirOptions,
@@ -293,7 +295,7 @@ impl WalkDir {
                 follow_root_links: true,
                 max_open: 10,
                 min_depth: 0,
-                max_depth: ::std::usize::MAX,
+                max_depth: usize::MAX,
                 sorter: None,
                 contents_first: false,
                 same_file_system: false,
@@ -582,6 +584,18 @@ pub struct IntoIter {
     /// This is *only* used when [`follow_links`] is enabled. In all other
     /// cases this stack is empty.
     ///
+    /// Before the walk begins, this is seeded with the directories *above*
+    /// the root, deepest last. Descending into one of those is a loop just
+    /// as much as descending into a directory the walk is already inside:
+    /// the target contains the root, so it leads back to the root. They are
+    /// never pushed by the walk itself, since the walk starts below them, so
+    /// without seeding they could never be detected.
+    ///
+    /// This means this stack is deeper than `stack_list` by however many
+    /// directories lie above the root. The two still grow and shrink
+    /// together, so the seeded entries are never popped: `stack_list` would
+    /// have to be over-popped first, which panics.
+    ///
     /// [`follow_links`]: struct.WalkDir.html#method.follow_links
     stack_path: Vec<Ancestor>,
     /// An index into `stack_list` that points to the oldest open directory
@@ -622,15 +636,15 @@ struct Ancestor {
 impl Ancestor {
     /// Create a new ancestor from the given directory path.
     #[cfg(windows)]
-    fn new(dent: &DirEntry) -> io::Result<Ancestor> {
-        let handle = Handle::from_path(dent.path())?;
-        Ok(Ancestor { path: dent.path().to_path_buf(), handle })
+    fn new(path: &Path) -> io::Result<Ancestor> {
+        let handle = Handle::from_path(path)?;
+        Ok(Ancestor { path: path.to_path_buf(), handle })
     }
 
     /// Create a new ancestor from the given directory path.
     #[cfg(not(windows))]
-    fn new(dent: &DirEntry) -> io::Result<Ancestor> {
-        Ok(Ancestor { path: dent.path().to_path_buf() })
+    fn new(path: &Path) -> io::Result<Ancestor> {
+        Ok(Ancestor { path: path.to_path_buf() })
     }
 
     /// Returns true if and only if the given open file handle corresponds to
@@ -646,6 +660,28 @@ impl Ancestor {
     fn is_same(&self, child: &Handle) -> io::Result<bool> {
         Ok(child == &Handle::from_path(&self.path)?)
     }
+}
+
+/// Returns the directories strictly above `root`, ordered deepest last so
+/// that they can be used to seed `stack_path`.
+///
+/// Any path that cannot be canonicalized or opened is skipped. Such a
+/// directory cannot be descended into anyway, so the only consequence is that
+/// a symlink resolving to it is not recognized as a loop.
+fn root_ancestors(root: &Path) -> Vec<Ancestor> {
+    let canonical = match root.canonicalize() {
+        Ok(canonical) => canonical,
+        Err(_) => return vec![],
+    };
+    let mut ancestors: Vec<Ancestor> = canonical
+        .ancestors()
+        // drop the root path which will be pushed by the walk later
+        .skip(1)
+        .filter_map(|path| Ancestor::new(path).ok())
+        .collect();
+    // deepest last matches the pushes by the walk later
+    ancestors.reverse();
+    ancestors
 }
 
 /// A sequence of unconsumed directory entries.
@@ -690,6 +726,9 @@ impl Iterator for IntoIter {
                 let result = util::device_num(&start)
                     .map_err(|e| Error::from_path(0, start.clone(), e));
                 self.root_device = Some(itry!(result));
+            }
+            if self.opts.follow_links {
+                self.stack_path = root_ancestors(&start);
             }
             let dent = itry!(DirEntry::from_path(0, start, false));
             if let Some(result) = self.handle_entry(dent) {
@@ -921,7 +960,7 @@ impl IntoIter {
             list = DirList::Closed(entries.into_iter());
         }
         if self.opts.follow_links {
-            let ancestor = Ancestor::new(&dent)
+            let ancestor = Ancestor::new(dent.path())
                 .map_err(|err| Error::from_io(self.depth, err))?;
             self.stack_path.push(ancestor);
         }

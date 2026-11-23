@@ -3,6 +3,8 @@
 // (online at: https://github.com/unicode-org/icu4x/blob/main/LICENSE ).
 
 use super::*;
+#[cfg(feature = "alloc")]
+use alloc::boxed::Box;
 use core::cmp::Ordering;
 use core::ops::Range;
 
@@ -19,7 +21,7 @@ use core::ops::Range;
 ///
 /// # Examples
 ///
-/// Const-construct a ZeroSlice of u16:
+/// Const-construct a [`ZeroSlice`] of u16:
 ///
 /// ```
 /// use zerovec::ule::AsULE;
@@ -68,13 +70,13 @@ where
         // &[u8] and &[T::ULE] are the same slice with different length metadata.
         Self::from_ule_slice(core::slice::from_raw_parts(
             bytes.as_ptr() as *const T::ULE,
-            bytes.len() / core::mem::size_of::<T::ULE>(),
+            bytes.len() / size_of::<T::ULE>(),
         ))
     }
 
     /// Construct a `&ZeroSlice<T>` from a slice of ULEs.
     ///
-    /// This function can be used for constructing ZeroVecs in a const context, avoiding
+    /// This function can be used for constructing [`ZeroVec`]s in a const context, avoiding
     /// parsing checks.
     ///
     /// See [`ZeroSlice`] for an example.
@@ -90,10 +92,10 @@ where
     /// ✨ *Enabled with the `alloc` Cargo feature.*
     #[inline]
     #[cfg(feature = "alloc")]
-    pub fn from_boxed_slice(slice: alloc::boxed::Box<[T::ULE]>) -> alloc::boxed::Box<Self> {
+    pub fn from_boxed_slice(slice: Box<[T::ULE]>) -> Box<Self> {
         // This is safe because ZeroSlice is transparent over [T::ULE]
         // so Box<ZeroSlice<T>> can be safely cast from Box<[T::ULE]>
-        unsafe { alloc::boxed::Box::from_raw(alloc::boxed::Box::into_raw(slice) as *mut Self) }
+        unsafe { Box::from_raw(Box::into_raw(slice) as *mut Self) }
     }
 
     /// Returns this slice as its underlying `&[u8]` byte buffer representation.
@@ -139,7 +141,7 @@ where
     /// assert_eq!(4, zerovec.len());
     /// assert_eq!(
     ///     bytes.len(),
-    ///     zerovec.len() * std::mem::size_of::<<u16 as AsULE>::ULE>()
+    ///     zerovec.len() * size_of::<<u16 as AsULE>::ULE>()
     /// );
     /// ```
     #[inline]
@@ -216,7 +218,7 @@ where
     }
 
     /// Gets a subslice of elements within a certain range. Returns `None` if the range
-    /// is out of bounds of this `ZeroSlice`.
+    /// is out of bounds of this [`ZeroSlice`].
     ///
     /// # Example
     ///
@@ -403,7 +405,7 @@ where
     }
 }
 
-/// An iterator over elements in a VarZeroVec
+/// An iterator over elements in a [`ZeroSlice`]
 #[derive(Debug)]
 pub struct ZeroSliceIter<'a, T: AsULE>(core::slice::Iter<'a, T::ULE>);
 
@@ -514,11 +516,12 @@ impl<T> Eq for ZeroSlice<T> where T: AsULE + Eq {}
 
 impl<T> PartialEq<ZeroSlice<T>> for ZeroSlice<T>
 where
-    T: AsULE + PartialEq,
+    T: AsULE,
 {
     #[inline]
     fn eq(&self, other: &ZeroSlice<T>) -> bool {
-        self.as_zerovec().eq(&other.as_zerovec())
+        // All Zero-to-Zero PartialEq impls call this one
+        self.as_bytes().eq(other.as_bytes())
     }
 }
 
@@ -528,27 +531,48 @@ where
 {
     #[inline]
     fn eq(&self, other: &[T]) -> bool {
+        // All Slice-to-Zero PartialEq impls call this one
         self.iter().eq(other.iter().copied())
+    }
+}
+
+impl<T> PartialEq<&[T]> for ZeroSlice<T>
+where
+    T: AsULE + PartialEq,
+{
+    #[inline]
+    fn eq(&self, other: &&[T]) -> bool {
+        ZeroSlice::eq(self, *other)
+    }
+}
+
+impl<T, const N: usize> PartialEq<[T; N]> for ZeroSlice<T>
+where
+    T: AsULE + PartialEq,
+{
+    #[inline]
+    fn eq(&self, other: &[T; N]) -> bool {
+        ZeroSlice::eq(self, &other[..])
     }
 }
 
 impl<'a, T> PartialEq<ZeroVec<'a, T>> for ZeroSlice<T>
 where
-    T: AsULE + PartialEq,
+    T: AsULE,
 {
     #[inline]
     fn eq(&self, other: &ZeroVec<'a, T>) -> bool {
-        self.as_zerovec().eq(other)
+        ZeroSlice::eq(self, other.as_slice())
     }
 }
 
 impl<'a, T> PartialEq<ZeroSlice<T>> for ZeroVec<'a, T>
 where
-    T: AsULE + PartialEq,
+    T: AsULE,
 {
     #[inline]
     fn eq(&self, other: &ZeroSlice<T>) -> bool {
-        self.eq(&other.as_zerovec())
+        ZeroSlice::eq(self.as_slice(), other)
     }
 }
 
@@ -573,8 +597,14 @@ impl<T: AsULE + Ord> Ord for ZeroSlice<T> {
     }
 }
 
+impl<T: AsULE> core::hash::Hash for ZeroSlice<T> {
+    fn hash<H: core::hash::Hasher>(&self, state: &mut H) {
+        state.write(self.as_bytes());
+    }
+}
+
 #[cfg(feature = "alloc")]
-impl<T: AsULE> AsRef<ZeroSlice<T>> for alloc::vec::Vec<T::ULE> {
+impl<T: AsULE> AsRef<ZeroSlice<T>> for Vec<T::ULE> {
     fn as_ref(&self) -> &ZeroSlice<T> {
         ZeroSlice::<T>::from_ule_slice(self)
     }

@@ -2,7 +2,7 @@ use std::{mem::size_of, ops::Range};
 
 use crate::{
     data,
-    index::{self, EntryIndex, PrefixLookupResult, FAN_LEN},
+    index::{self, EntryIndex, FAN_LEN, PrefixLookupResult},
 };
 
 const N32_SIZE: usize = size_of::<u32>();
@@ -27,7 +27,10 @@ pub struct Entry {
 }
 
 /// Iteration and access
-impl index::File {
+impl<T> index::File<T>
+where
+    T: crate::FileData,
+{
     fn iter_v1(&self) -> impl Iterator<Item = Entry> + '_ {
         match self.version {
             index::Version::V1 => self.data[V1_HEADER_SIZE..]
@@ -51,10 +54,14 @@ impl index::File {
             .chunks_exact(self.hash_len)
             .take(self.num_objects as usize);
         let crcs = self.data[self.offset_crc32_v2()..]
-            .chunks_exact(N32_SIZE)
+            .as_chunks::<N32_SIZE>()
+            .0
+            .iter()
             .take(self.num_objects as usize);
         let offsets = self.data[self.offset_pack_offset_v2()..]
-            .chunks_exact(N32_SIZE)
+            .as_chunks::<N32_SIZE>()
+            .0
+            .iter()
             .take(self.num_objects as usize);
         assert_eq!(oids.len(), crcs.len());
         assert_eq!(crcs.len(), offsets.len());
@@ -167,7 +174,11 @@ impl index::File {
             index::Version::V1 => self.iter().map(|e| e.pack_offset).collect(),
             index::Version::V2 => {
                 let offset32_start = &self.data[self.offset_pack_offset_v2()..];
-                let offsets32 = offset32_start.chunks_exact(N32_SIZE).take(self.num_objects as usize);
+                let offsets32 = offset32_start
+                    .as_chunks::<N32_SIZE>()
+                    .0
+                    .iter()
+                    .take(self.num_objects as usize);
                 assert_eq!(self.num_objects as usize, offsets32.len());
                 let pack_offset_64_start = self.offset_pack_offset64_v2();
                 offsets32
@@ -220,7 +231,7 @@ pub(crate) fn lookup_prefix<'a>(
 
     // Bisect using indices
     while lower_bound < upper_bound {
-        let mid = (lower_bound + upper_bound) / 2;
+        let mid = u32::midpoint(lower_bound, upper_bound);
         let mid_sha = oid_at_index(mid);
 
         use std::cmp::Ordering::*;
@@ -280,7 +291,7 @@ pub(crate) fn lookup<'a>(
     let mut lower_bound = if first_byte != 0 { fan[first_byte - 1] } else { 0 };
 
     while lower_bound < upper_bound {
-        let mid = (lower_bound + upper_bound) / 2;
+        let mid = u32::midpoint(lower_bound, upper_bound);
         let mid_sha = oid_at_index(mid);
 
         use std::cmp::Ordering::*;

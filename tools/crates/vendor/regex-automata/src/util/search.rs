@@ -843,9 +843,23 @@ impl Span {
 
     /// Returns a new span with `offset` added to this span's `start` and `end`
     /// values.
+    ///
+    /// # Panics
+    ///
+    /// This panics if adding `offset` to either part of this `Span` would
+    /// result in overflow.
     #[inline]
     pub fn offset(&self, offset: usize) -> Span {
-        Span { start: self.start + offset, end: self.end + offset }
+        Span {
+            start: self
+                .start
+                .checked_add(offset)
+                .expect("Span::offset: start+offset overflowed usize"),
+            end: self
+                .end
+                .checked_add(offset)
+                .expect("Span::offset: end+offset overflowed usize"),
+        }
     }
 }
 
@@ -1879,6 +1893,15 @@ pub enum MatchErrorKind {
     /// An error indicating that a particular type of anchored search was
     /// requested, but that the regex engine does not support it.
     ///
+    /// When this error occurs with [`Anchored::Pattern`], then one common
+    /// cause is that the underlying regex engine was built without support
+    /// for anchored starting states for each pattern. For DFA engines, this
+    /// typically means enabling the
+    /// [`hybrid::dfa::Config::starts_for_each_pattern`](crate::hybrid::dfa::Config::starts_for_each_pattern)
+    /// or
+    /// [`dfa::dense::Config::starts_for_each_pattern`](crate::dfa::dense::Config::starts_for_each_pattern)
+    /// configuration option, depending on which regex engine is being built.
+    ///
     /// Note that this error should not be returned by a regex engine simply
     /// because the pattern ID is invalid (i.e., equal to or exceeds the number
     /// of patterns in the regex). In that case, the regex engine should report
@@ -1929,6 +1952,15 @@ impl core::fmt::Display for MatchError {
 
 #[cfg(test)]
 mod tests {
+    use super::*;
+
+    #[test]
+    #[should_panic(expected = "overflowed usize")]
+    fn span_offset_overflow_panics() {
+        let s = Span { start: usize::MAX, end: usize::MAX };
+        let _ = s.offset(1);
+    }
+
     use super::*;
 
     // We test that our 'MatchError' type is the size we expect. This isn't an

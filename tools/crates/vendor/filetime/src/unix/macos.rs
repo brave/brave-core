@@ -1,46 +1,14 @@
 //! Beginning with macOS 10.13, `utimensat` is supported by the OS, so here, we check if the symbol exists
 //! and if not, we fallback to `utimes`.
+
 use crate::FileTime;
 use libc::{c_char, c_int, timespec};
 use std::ffi::{CStr, CString};
-use std::fs::File;
 use std::os::unix::prelude::*;
 use std::path::Path;
 use std::sync::atomic::AtomicUsize;
 use std::sync::atomic::Ordering::SeqCst;
 use std::{io, mem};
-
-pub fn set_file_times(p: &Path, atime: FileTime, mtime: FileTime) -> io::Result<()> {
-    set_times(p, Some(atime), Some(mtime), false)
-}
-
-pub fn set_file_mtime(p: &Path, mtime: FileTime) -> io::Result<()> {
-    set_times(p, None, Some(mtime), false)
-}
-
-pub fn set_file_atime(p: &Path, atime: FileTime) -> io::Result<()> {
-    set_times(p, Some(atime), None, false)
-}
-
-pub fn set_file_handle_times(
-    f: &File,
-    atime: Option<FileTime>,
-    mtime: Option<FileTime>,
-) -> io::Result<()> {
-    // Attempt to use the `futimens` syscall, but if it's not supported by the
-    // current kernel then fall back to an older syscall.
-    if let Some(func) = futimens() {
-        let times = [super::to_timespec(&atime), super::to_timespec(&mtime)];
-        let rc = unsafe { func(f.as_raw_fd(), times.as_ptr()) };
-        if rc == 0 {
-            return Ok(());
-        } else {
-            return Err(io::Error::last_os_error());
-        }
-    }
-
-    super::utimes::set_file_handle_times(f, atime, mtime)
-}
 
 pub fn set_symlink_file_times(p: &Path, atime: FileTime, mtime: FileTime) -> io::Result<()> {
     set_times(p, Some(atime), Some(mtime), true)
@@ -79,14 +47,6 @@ fn utimensat() -> Option<unsafe extern "C" fn(c_int, *const c_char, *const times
     static ADDR: AtomicUsize = AtomicUsize::new(0);
     unsafe {
         fetch(&ADDR, CStr::from_bytes_with_nul_unchecked(b"utimensat\0"))
-            .map(|sym| mem::transmute(sym))
-    }
-}
-
-fn futimens() -> Option<unsafe extern "C" fn(c_int, *const timespec) -> c_int> {
-    static ADDR: AtomicUsize = AtomicUsize::new(0);
-    unsafe {
-        fetch(&ADDR, CStr::from_bytes_with_nul_unchecked(b"futimens\0"))
             .map(|sym| mem::transmute(sym))
     }
 }

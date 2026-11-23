@@ -11,10 +11,9 @@
 
 [package]
 edition = "2024"
-rust-version = "1.85"
+rust-version = "1.88"
 name = "cargo-audit"
-version = "0.22.0"
-authors = ["Tony Arcieri <bascule@gmail.com>"]
+version = "0.23.0"
 build = false
 exclude = ["tests/"]
 autolib = false
@@ -36,11 +35,24 @@ license = "Apache-2.0 OR MIT"
 repository = "https://github.com/rustsec/rustsec"
 resolver = "2"
 
+[package.metadata.binstall]
+pkg-url = "{ repo }/releases/download/cargo-audit/v{ version }/{ name }-{ target }-v{ version }{ archive-suffix }"
+bin-dir = "{ name }-{ target }-v{ version }/{ bin }{ binary-ext }"
+pkg-fmt = "tgz"
+
+[package.metadata.binstall.overrides.x86_64-pc-windows-msvc]
+pkg-fmt = "zip"
+
 [badges.maintenance]
 status = "actively-developed"
 
 [features]
-binary-scanning = ["rustsec/binary-scanning"]
+binary-scanning = [
+    "rustsec/binary-scanning",
+    "dep:object",
+    "dep:rustc-demangle",
+    "dep:syn",
+]
 default = ["binary-scanning"]
 fix = []
 
@@ -52,14 +64,12 @@ path = "src/lib.rs"
 name = "cargo-audit"
 path = "src/bin/cargo-audit/main.rs"
 
-[dependencies.abscissa_core]
-version = "0.8"
-
 [dependencies.cargo-lock]
 version = "11"
 
 [dependencies.clap]
 version = "4"
+features = ["derive"]
 
 [dependencies.display-error-chain]
 version = "0.2.0"
@@ -67,8 +77,21 @@ version = "0.2.0"
 [dependencies.home]
 version = "0.5"
 
+[dependencies.object]
+version = "0.40"
+features = [
+    "read",
+    "wasm",
+]
+optional = true
+default-features = false
+
+[dependencies.rustc-demangle]
+version = "0.1"
+optional = true
+
 [dependencies.rustsec]
-version = "0.31"
+version = "0.34"
 features = ["dependency-tree"]
 
 [dependencies.serde]
@@ -78,12 +101,29 @@ features = ["serde_derive"]
 [dependencies.serde_json]
 version = "1"
 
+[dependencies.syn]
+version = "3"
+features = ["extra-traits"]
+optional = true
+
+[dependencies.termcolor]
+version = "1"
+
 [dependencies.thiserror]
 version = "2"
 
-[dev-dependencies.abscissa_core]
-version = "0.8"
-features = ["testing"]
+[dependencies.toml]
+version = "1.0"
+
+[dependencies.tracing-subscriber]
+version = "0.3"
+features = [
+    "ansi",
+    "env-filter",
+    "fmt",
+    "tracing-log",
+]
+default-features = false
 
 [dev-dependencies.once_cell]
 version = "1.15.0"
@@ -91,5 +131,18 @@ version = "1.15.0"
 [dev-dependencies.tempfile]
 version = "3"
 
-[dev-dependencies.toml]
-version = "0.9"
+[lints.clippy]
+cloned_instead_of_copied = "warn"
+manual_let_else = "warn"
+or_fun_call = "warn"
+upper_case_acronyms = "warn"
+use_self = "warn"
+
+[lints.rust]
+elided_lifetimes_in_paths = "warn"
+trivial_numeric_casts = "warn"
+unnameable_types = "warn"
+unreachable_pub = "warn"
+unused_extern_crates = "warn"
+unused_import_braces = "warn"
+unused_qualifications = "warn"

@@ -13,9 +13,10 @@
 edition = "2018"
 rust-version = "1.51"
 name = "arrayvec"
-version = "0.7.6"
+version = "0.7.8"
 authors = ["bluss"]
 build = false
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false
@@ -48,11 +49,9 @@ features = [
 no-dev-version = true
 tag-name = "{{version}}"
 
-[profile.bench]
-debug = 2
-
-[profile.release]
-debug = 2
+[features]
+default = ["std"]
+std = []
 
 [lib]
 name = "arrayvec"
@@ -106,6 +105,8 @@ version = "1.0"
 
 [build-dependencies]
 
-[features]
-default = ["std"]
-std = []
+[profile.bench]
+debug = 2
+
+[profile.release]
+debug = 2

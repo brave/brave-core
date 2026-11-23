@@ -5,7 +5,7 @@
 use super::*;
 use core::cmp::Ordering;
 use core::marker::PhantomData;
-use core::mem::{self, MaybeUninit};
+use core::mem::MaybeUninit;
 
 /// This type is the [`ULE`] type for `Option<U>` where `U` is a [`ULE`] type
 ///
@@ -54,8 +54,8 @@ impl<U: Copy> OptionULE<U> {
     }
 }
 
-impl<U: Copy + core::fmt::Debug> core::fmt::Debug for OptionULE<U> {
-    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+impl<U: Copy + fmt::Debug> fmt::Debug for OptionULE<U> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         self.get().fmt(f)
     }
 }
@@ -74,7 +74,7 @@ impl<U: Copy + core::fmt::Debug> core::fmt::Debug for OptionULE<U> {
 //     invariant on the subfields
 unsafe impl<U: ULE> ULE for OptionULE<U> {
     fn validate_bytes(bytes: &[u8]) -> Result<(), UleError> {
-        let size = mem::size_of::<Self>();
+        let size = size_of::<Self>();
         if bytes.len() % size != 0 {
             return Err(UleError::length::<Self>(bytes.len()));
         }
@@ -158,8 +158,8 @@ impl<U: VarULE + ?Sized> OptionVarULE<U> {
     }
 }
 
-impl<U: VarULE + ?Sized + core::fmt::Debug> core::fmt::Debug for OptionVarULE<U> {
-    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+impl<U: VarULE + ?Sized + fmt::Debug> fmt::Debug for OptionVarULE<U> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         self.as_ref().fmt(f)
     }
 }
@@ -197,6 +197,10 @@ unsafe impl<U: VarULE + ?Sized> VarULE for OptionVarULE<U> {
 
     #[inline]
     unsafe fn from_bytes_unchecked(bytes: &[u8]) -> &Self {
+        debug_assert!(
+            !bytes.is_empty(),
+            "Bytes must be nonempty by OptionVarULE validation invariants"
+        );
         let entire_struct_as_slice: *const [u8] =
             ::core::ptr::slice_from_raw_parts(bytes.as_ptr(), bytes.len() - 1);
         &*(entire_struct_as_slice as *const Self)
@@ -260,5 +264,19 @@ impl<U: VarULE + ?Sized + PartialOrd> PartialOrd for OptionVarULE<U> {
 impl<U: VarULE + ?Sized + Ord> Ord for OptionVarULE<U> {
     fn cmp(&self, other: &Self) -> Ordering {
         self.as_ref().cmp(&other.as_ref())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    #[cfg(debug_assertions)]
+    #[should_panic]
+    fn test_option_varule_underflow() {
+        unsafe {
+            let _ = OptionVarULE::<str>::from_bytes_unchecked(&[]);
+        }
     }
 }

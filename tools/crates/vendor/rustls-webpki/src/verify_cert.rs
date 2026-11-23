@@ -17,6 +17,8 @@ use alloc::vec::Vec;
 use core::fmt;
 use core::ops::ControlFlow;
 
+#[cfg(feature = "alloc")]
+use pki_types::SubjectPublicKeyInfoDer;
 use pki_types::{CertificateDer, SignatureVerificationAlgorithm, TrustAnchor, UnixTime};
 
 use crate::cert::Cert;
@@ -24,6 +26,8 @@ use crate::crl::RevocationOptions;
 use crate::der::{self, FromDer};
 use crate::end_entity::EndEntityCert;
 use crate::error::Error;
+#[cfg(feature = "alloc")]
+use crate::spki_for_anchor;
 use crate::{public_values_eq, signed_data, subject_name};
 
 // Use `'a` for lifetimes that we don't care about, `'p` for lifetimes that become a part of
@@ -34,6 +38,7 @@ pub(crate) struct ChainOptions<'a, 'p, V> {
     pub(crate) trust_anchors: &'p [TrustAnchor<'p>],
     pub(crate) intermediate_certs: &'p [CertificateDer<'p>],
     pub(crate) revocation: Option<RevocationOptions<'a>>,
+    pub(crate) distrusted_spkis: &'a [&'a [u8]],
 }
 
 impl<'a, 'p: 'a, V: ExtendedKeyUsageValidator> ChainOptions<'a, 'p, V> {
@@ -58,6 +63,13 @@ impl<'a, 'p: 'a, V: ExtendedKeyUsageValidator> ChainOptions<'a, 'p, V> {
         sub_ca_count: usize,
         budget: &mut Budget,
     ) -> Result<&'p TrustAnchor<'p>, ControlFlow<Error, Error>> {
+        if self
+            .distrusted_spkis
+            .contains(&path.head().spki.as_slice_less_safe())
+        {
+            return Err(Error::CertDistrusted.into());
+        }
+
         let role = path.node().role();
 
         check_issuer_independent_properties(path.head(), time, role, sub_ca_count, &self.eku)?;
@@ -71,7 +83,12 @@ impl<'a, 'p: 'a, V: ExtendedKeyUsageValidator> ChainOptions<'a, 'p, V> {
                     return Err(Error::UnknownIssuer.into());
                 }
 
-                // TODO: check_distrust(trust_anchor_subject, trust_anchor_spki)?;
+                if self
+                    .distrusted_spkis
+                    .contains(&trust_anchor.subject_public_key_info.as_ref())
+                {
+                    return Err(Error::CertDistrusted.into());
+                }
 
                 let node = path.node();
                 self.check_signed_chain(&node, time, trust_anchor, budget)?;
@@ -213,6 +230,15 @@ impl<'p> VerifiedPath<'p> {
     /// Yields the trust anchor for this path.
     pub fn anchor(&self) -> &'p TrustAnchor<'p> {
         self.anchor
+    }
+
+    /// Get the `SubjectPublicKeyInfo` of the issuer of the end-entity certificate.
+    #[cfg(feature = "alloc")]
+    pub fn issuer_spki(&self) -> SubjectPublicKeyInfoDer<'p> {
+        match self.intermediate_certificates().next() {
+            Some(issuer) => issuer.subject_public_key_info(),
+            None => spki_for_anchor(self.anchor),
+        }
     }
 }
 
@@ -900,6 +926,18 @@ pub(crate) enum Role {
     EndEntity,
 }
 
+// SPKI SEQUENCE contents (without tag/length) that should invalidate any path containing them.
+pub(crate) const DISTRUSTED_SPKIS: &[&[u8]] = &[
+    include_bytes!("data/distrusted/EMDVTLSCAG3B.spki.der"),
+    include_bytes!("data/distrusted/EMDVTLSCAG3C.spki.der"),
+    include_bytes!("data/distrusted/EMEVTLSCAG3B.spki.der"),
+    include_bytes!("data/distrusted/EMEVTLSCAG3C.spki.der"),
+    include_bytes!("data/distrusted/EMOVTLSCAG3B.spki.der"),
+    include_bytes!("data/distrusted/EMOVTLSCAG3C.spki.der"),
+    include_bytes!("data/distrusted/EMOVCSCAG3B.spki.der"),
+    include_bytes!("data/distrusted/EMOVCSCAG3C.spki.der"),
+];
+
 #[cfg(all(test, feature = "alloc", any(feature = "ring", feature = "aws-lc-rs")))]
 mod tests {
     use alloc::borrow::ToOwned;
@@ -1205,6 +1243,130 @@ mod tests {
         assert_eq!(path_intermediates[1].issuer(), trust_anchor_cert.subject());
     }
 
+    #[test]
+    fn distrusted_spki() {
+        fn verify(
+            ee_cert: &EndEntityCert<'_>,
+            intermediates: &[CertificateDer<'_>],
+            trust_anchors: &[TrustAnchor<'_>],
+            distrusted_spkis: &[&[u8]],
+        ) -> Result<usize, Error> {
+            use core::time::Duration;
+
+            ChainOptions {
+                eku: KeyUsage::server_auth(),
+                supported_sig_algs: crate::ALL_VERIFICATION_ALGS,
+                trust_anchors,
+                intermediate_certs: intermediates,
+                revocation: None,
+                distrusted_spkis,
+            }
+            .build_chain(
+                ee_cert,
+                UnixTime::since_unix_epoch(Duration::from_secs(0x1fed_f00d)),
+                None,
+            )
+            .map(|path| path.intermediate_certificates().count())
+        }
+
+        let root = make_issuer("Root");
+        let trust_anchors = &[anchor_from_trusted_cert(root.der()).unwrap()];
+        let issuing_intermediate = make_intermediate("Issuing Intermediate", &root);
+        let unrelated = make_intermediate("Intermediate", &root);
+
+        let params = issuer_params("Intermediate");
+        let key = KeyPair::generate_for(test_utils::RCGEN_SIGNATURE_ALG).unwrap();
+        // Issue the same SPKI under two different issuers to test cross-signing.
+        let intermediate = params.signed_by(&key, &issuing_intermediate).unwrap();
+        let cross_signed = params.signed_by(&key, &root).unwrap();
+        let ee = make_end_entity(&Issuer::new(params, key));
+        let ee_cert = EndEntityCert::try_from(ee.cert.der()).unwrap();
+        let intermediates = &[
+            unrelated.der().clone(),
+            intermediate.der().clone(),
+            issuing_intermediate.der().clone(),
+        ];
+        assert_eq!(
+            verify(&ee_cert, intermediates, trust_anchors, DISTRUSTED_SPKIS),
+            Ok(2)
+        );
+
+        // Distrusting any certificate in the path, including the root or leaf, rejects the chain.
+        for cert in [
+            root.der(),
+            issuing_intermediate.der(),
+            intermediate.der(),
+            ee.cert.der(),
+        ] {
+            assert_eq!(
+                verify(
+                    &ee_cert,
+                    intermediates,
+                    trust_anchors,
+                    &[anchor_from_trusted_cert(cert)
+                        .unwrap()
+                        .subject_public_key_info
+                        .as_ref()]
+                ),
+                Err(Error::CertDistrusted)
+            );
+        }
+
+        // Distrusting an unused intermediate leaves the valid path usable.
+        assert_eq!(
+            verify(
+                &ee_cert,
+                intermediates,
+                trust_anchors,
+                &[anchor_from_trusted_cert(unrelated.der())
+                    .unwrap()
+                    .subject_public_key_info
+                    .as_ref()]
+            ),
+            Ok(2)
+        );
+
+        // A different cross-sign provides a valid path around the distrusted issuer.
+        let intermediates = &[
+            intermediate.der().clone(),
+            issuing_intermediate.der().clone(),
+            cross_signed.der().clone(),
+        ];
+        let issuer_spki = anchor_from_trusted_cert(issuing_intermediate.der()).unwrap();
+        assert_eq!(
+            verify(
+                &ee_cert,
+                intermediates,
+                trust_anchors,
+                &[issuer_spki.subject_public_key_info.as_ref()]
+            ),
+            Ok(1)
+        );
+
+        // Distrusting the shared SPKI rejects the original certificate and its cross-sign.
+        let intermediate_spki = anchor_from_trusted_cert(intermediate.der()).unwrap();
+        assert_eq!(
+            verify(
+                &ee_cert,
+                intermediates,
+                trust_anchors,
+                &[intermediate_spki.subject_public_key_info.as_ref()]
+            ),
+            Err(Error::CertDistrusted)
+        );
+
+        // Reject a distrusted intermediate before searching for its issuer.
+        assert_eq!(
+            verify(
+                &ee_cert,
+                &[intermediate.der().clone()],
+                &[],
+                &[intermediate_spki.subject_public_key_info.as_ref()]
+            ),
+            Err(Error::CertDistrusted)
+        );
+    }
+
     fn make_intermediate(
         org_name: impl Into<String>,
         issuer: &Issuer<'_, impl SigningKey>,
@@ -1357,6 +1519,7 @@ mod tests {
             trust_anchors,
             intermediate_certs,
             revocation: None,
+            distrusted_spkis: DISTRUSTED_SPKIS,
         };
 
         match opts.build_chain_inner(
