@@ -8,6 +8,62 @@ import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
 
 assert(enable_brave_rewards)
 
+source_set("brave_rewards") {
+  sources = [
+    "rewards_page_data_source.cc",
+    "rewards_page_data_source.h",
+    "rewards_page_ui.cc",
+    "rewards_page_ui.h",
+    "rewards_web_ui_utils.cc",
+    "rewards_web_ui_utils.h",
+  ]
+
+  public_deps = [ "//base" ]
+
+  deps = [
+    ":rewards_page_handler",
+    "//brave/browser/brave_adaptive_captcha",
+    "//brave/browser/brave_rewards",
+    "//brave/browser/brave_rewards:tab_helper",
+    "//brave/browser/brave_rewards:util",
+    "//brave/components/brave_adaptive_captcha",
+    "//brave/components/brave_ads/buildflags",
+    "//brave/components/brave_rewards/core:features",
+    "//brave/components/brave_rewards/resources:static_resources",
+    "//brave/components/brave_rewards/resources/rewards_page:rewards_page_generated",
+    "//brave/components/constants",
+    "//brave/components/resources:static_resources",
+    "//brave/components/resources:strings",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/webui:favicon_source",
+    "//chrome/browser/ui/webui:theme_source",
+    "//chrome/browser/ui/webui/sanitized_image:sanitized_image_source",
+    "//components/favicon_base",
+    "//components/prefs",
+    "//content/public/browser",
+    "//ui/webui",
+  ]
+
+  if (enable_brave_ads) {
+    deps += [ "//brave/browser/brave_ads" ]
+  }
+
+  if (is_android) {
+    deps += [ "//brave/browser/ui/android/brave_rewards" ]
+  } else {
+    sources += [
+      "rewards_page_top_ui.cc",
+      "rewards_page_top_ui.h",
+    ]
+    deps += [
+      "//chrome/browser/ui:browser_tabstrip",
+      "//chrome/browser/ui/tabs:tab_strip",
+      "//content/public/common",
+    ]
+  }
+}
+
 source_set("rewards_page_handler") {
   sources = [
     "rewards_page_handler.cc",

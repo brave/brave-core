@@ -334,6 +334,7 @@ if (enable_brave_rewards) {
   brave_chrome_browser_deps += [
     "//brave/browser/brave_rewards:brave_rewards_impl",
     "//brave/browser/brave_rewards:util",
+    "//brave/browser/ui/webui/brave_rewards",
     "//brave/components/brave_rewards/content",
   ]
 }
