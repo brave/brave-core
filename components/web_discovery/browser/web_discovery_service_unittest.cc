@@ -65,11 +65,9 @@ class WebDiscoveryServiceTest : public testing::Test {
         shared_url_loader_factory_, &backup_results_service_);
   }
 
-  // Check if service is active (has both components)
-  bool IsActive() const {
-    return service_->server_config_loader_ != nullptr &&
-           service_->credential_manager_ != nullptr;
-  }
+  // An active service has in-flight server config requests, which never get a
+  // response here. Stopping destroys the loaders and disconnects them.
+  bool IsActive() { return url_loader_factory_.NumPending() > 0; }
 
   base::test::TaskEnvironment task_environment_;
   TestingPrefServiceSimple local_state_;
