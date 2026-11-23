@@ -1027,7 +1027,8 @@ SharedPinnedTabService::CreateDummyWebContents(
   auto dummy_contents = content::WebContents::Create(create_params);
   DummyContentsData::CreateForWebContents(dummy_contents.get(),
                                           shared_contents);
-  pinned_tab_reset::ExcludeFromPinnedTabReset(dummy_contents.get());
+  pinned_tab_reset::ExcludeFromPinnedTabReset(dummy_contents.get(),
+                                              shared_contents);
   return dummy_contents;
 }
 

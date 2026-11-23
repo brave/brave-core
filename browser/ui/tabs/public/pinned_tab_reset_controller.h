@@ -51,7 +51,8 @@ class PinnedTabResetController : public TabStripModelObserver {
   // doing nothing, when the shortcut should close tabs as usual.
   bool HandleCloseTabShortcut();
 
-  // Navigates `tab` to the URL it was pinned with, clearing its history.
+  // Navigates `tab` to the URL it was pinned with, clearing its history. For a
+  // shared pinned tab placeholder, resets the tab it stands in for.
   void ResetPinnedTab(tabs::TabInterface* tab);
 
   // Used when a tab is restored from a session or from the recently closed
@@ -74,6 +75,7 @@ class PinnedTabResetController : public TabStripModelObserver {
   void OnTabPinnedStateChanged(tabs::TabInterface* tab, int index) override;
 
   void RecordPinnedUrl(content::WebContents* contents);
+  static void ResetToPinnedUrl(content::WebContents* contents);
 
   const raw_ref<BrowserWindowInterface> browser_;
 
@@ -85,10 +87,12 @@ namespace pinned_tab_reset {
 // The URL `contents` was pinned with, if it's a pinned tab that has one.
 std::optional<GURL> GetPinnedUrl(const content::WebContents* contents);
 
-// Keeps `contents` from ever getting a pinned URL. For contents that only
-// stand in for a pinned tab, like shared pinned tab placeholders in inactive
-// windows.
-void ExcludeFromPinnedTabReset(content::WebContents* contents);
+// Keeps `contents` from ever getting a pinned URL, for contents that only
+// stand in for a pinned tab's `stands_in_for`, like shared pinned tab
+// placeholders in inactive windows. Resetting `contents` resets
+// `stands_in_for` instead.
+void ExcludeFromPinnedTabReset(content::WebContents* contents,
+                               content::WebContents* stands_in_for);
 
 // Hooks for the tab views, and the session and recently closed tab code. All
 // are no-ops when the window has no controller.

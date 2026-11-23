@@ -422,6 +422,67 @@ IN_PROC_BROWSER_TEST_F(PinnedTabResetSharedPinnedTabsBrowserTest,
   EXPECT_EQ(pinned_url_, shared_contents->GetLastCommittedURL());
 }
 
+// A placeholder selected with other tabs resets the shared tab it stands for
+// instead of closing it in every window.
+IN_PROC_BROWSER_TEST_F(PinnedTabResetSharedPinnedTabsBrowserTest,
+                       ShortcutOnPlaceholderResetsSharedTab) {
+  ASSERT_NO_FATAL_FAILURE(SetUpPinnedTabNavigatedAway());
+  auto* service =
+      SharedPinnedTabServiceFactory::GetForProfile(browser()->GetProfile());
+  ASSERT_TRUE(service);
+  content::WebContents* shared_contents = model()->GetWebContentsAt(0);
+
+  BrowserWindowInterface* browser_2 = chrome::OpenEmptyWindow(
+      browser()->GetProfile(), /*should_trigger_session_restore=*/false);
+  TabStripModel* model_2 = browser_2->GetTabStripModel();
+  ASSERT_TRUE(base::test::RunUntil([&]() { return model_2->count() > 1; }));
+  ASSERT_TRUE(service->IsDummyContents(model_2->GetWebContentsAt(0)));
+  ASSERT_FALSE(model_2->IsTabPinned(1));
+
+  // Select the placeholder along with the active unpinned tab.
+  ui::ListSelectionModel selection;
+  selection.SetSelectedIndex(0);
+  selection.AddIndexToSelection(1);
+  selection.set_active(1);
+  selection.set_anchor(1);
+  model_2->SetSelectionFromModel(selection);
+  ASSERT_TRUE(model_2->IsTabSelected(0));
+  ASSERT_EQ(1, model_2->active_index());
+
+  auto* controller_2 = PinnedTabResetController::From(browser_2);
+  ASSERT_TRUE(controller_2);
+  EXPECT_TRUE(controller_2->HandleCloseTabShortcut());
+
+  EXPECT_EQ(shared_contents, model()->GetWebContentsAt(0));
+  EXPECT_TRUE(model()->IsTabPinned(0));
+  ExpectPinnedTabReset();
+  ASSERT_TRUE(model_2->IsTabPinned(0));
+  EXPECT_TRUE(service->IsDummyContents(model_2->GetWebContentsAt(0)));
+}
+
+// Unpinning from a window that has the placeholder brings the shared contents
+// there unpinned, and they must forget their pinned URL.
+IN_PROC_BROWSER_TEST_F(PinnedTabResetSharedPinnedTabsBrowserTest,
+                       UnpinningPlaceholderForgetsPinnedUrl) {
+  ASSERT_NO_FATAL_FAILURE(SetUpPinnedTabNavigatedAway());
+  content::WebContents* shared_contents = model()->GetWebContentsAt(0);
+  ASSERT_TRUE(pinned_tab_reset::GetPinnedUrl(shared_contents));
+
+  BrowserWindowInterface* browser_2 = chrome::OpenEmptyWindow(
+      browser()->GetProfile(), /*should_trigger_session_restore=*/false);
+  TabStripModel* model_2 = browser_2->GetTabStripModel();
+  ASSERT_TRUE(base::test::RunUntil([&]() { return model_2->count() > 1; }));
+
+  model_2->SetTabPinned(0, false);
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return model_2->GetIndexOfWebContents(shared_contents) !=
+           TabStripModel::kNoTab;
+  }));
+  EXPECT_FALSE(
+      model_2->IsTabPinned(model_2->GetIndexOfWebContents(shared_contents)));
+  EXPECT_FALSE(pinned_tab_reset::GetPinnedUrl(shared_contents));
+}
+
 // Uses chrome:// URLs, as the test server's port changes between launches.
 class PinnedTabResetSessionRestoreBrowserTest
     : public PinnedTabResetBrowserTest {

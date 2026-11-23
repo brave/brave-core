@@ -13,6 +13,7 @@
 
 #include "base/containers/map_util.h"
 #include "base/feature_list.h"
+#include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "base/types/to_address.h"
 #include "brave/browser/sessions/brave_session_keys.h"
@@ -59,7 +60,8 @@ void PersistPinnedUrl(content::WebContents* contents,
                                    kBravePinnedTabUrlKey, value);
 }
 
-// Marks contents that must never get a pinned URL.
+// Marks contents that must never get a pinned URL, as they only stand in for
+// other contents.
 class PinnedTabResetExcludedData
     : public content::WebContentsUserData<PinnedTabResetExcludedData> {
  public:
@@ -68,18 +70,35 @@ class PinnedTabResetExcludedData
       delete;
   ~PinnedTabResetExcludedData() override = default;
 
+  content::WebContents* stands_in_for() const { return stands_in_for_.get(); }
+
  private:
   friend WebContentsUserData;
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 
-  explicit PinnedTabResetExcludedData(content::WebContents* contents)
-      : content::WebContentsUserData<PinnedTabResetExcludedData>(*contents) {}
+  PinnedTabResetExcludedData(content::WebContents* contents,
+                             content::WebContents* stands_in_for)
+      : content::WebContentsUserData<PinnedTabResetExcludedData>(*contents),
+        stands_in_for_(stands_in_for ? stands_in_for->GetWeakPtr() : nullptr) {}
+
+  base::WeakPtr<content::WebContents> stands_in_for_;
 };
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(PinnedTabResetExcludedData);
 
 bool IsExcluded(const content::WebContents* contents) {
   return !!PinnedTabResetExcludedData::FromWebContents(contents);
+}
+
+// Returns the contents that hold the pinned URL for `contents`: itself, or for
+// a placeholder, the contents it stands in for. Null when there's none.
+content::WebContents* GetContentsWithPinnedUrl(content::WebContents* contents) {
+  if (const auto* excluded =
+          PinnedTabResetExcludedData::FromWebContents(contents)) {
+    contents = excluded->stands_in_for();
+  }
+  return contents && pinned_tab_reset::GetPinnedUrl(contents) ? contents
+                                                              : nullptr;
 }
 
 // Holds the URL a pinned tab was pinned with. Attached to the WebContents so it
@@ -201,25 +220,28 @@ bool PinnedTabResetController::HandleCloseTabShortcut() {
     }
   }
 
-  // Pinned tabs without a pinned URL, e.g. not loaded yet, close as usual.
-  std::vector<tabs::TabInterface*> tabs_to_reset;
+  // Pinned tabs without a pinned URL, e.g. not loaded yet, close as usual. A
+  // shared pinned tab placeholder resets the tab it stands for instead.
+  std::vector<content::WebContents*> contents_to_reset;
   std::vector<content::WebContents*> contents_to_close;
   for (tabs::TabInterface* tab : selected_tabs) {
     if (sidebar::IsWebPanelTab(tab)) {
       return false;
     }
-    // Closing a shared pinned tab placeholder would close the tab in every
-    // window.
-    if (IsExcluded(tab->GetContents())) {
-      continue;
+    content::WebContents* contents = tab->GetContents();
+    if (tab->IsPinned()) {
+      if (content::WebContents* to_reset = GetContentsWithPinnedUrl(contents)) {
+        contents_to_reset.push_back(to_reset);
+        continue;
+      }
+      // Closing a placeholder would close the tab in every window.
+      if (IsExcluded(contents)) {
+        continue;
+      }
     }
-    if (tab->IsPinned() && pinned_tab_reset::GetPinnedUrl(tab->GetContents())) {
-      tabs_to_reset.push_back(tab);
-    } else {
-      contents_to_close.push_back(tab->GetContents());
-    }
+    contents_to_close.push_back(contents);
   }
-  if (tabs_to_reset.empty()) {
+  if (contents_to_reset.empty()) {
     return false;
   }
 
@@ -237,8 +259,8 @@ bool PinnedTabResetController::HandleCloseTabShortcut() {
                      /*pinned=*/false);
   }
 
-  for (tabs::TabInterface* tab : tabs_to_reset) {
-    ResetPinnedTab(tab);
+  for (content::WebContents* contents : contents_to_reset) {
+    ResetToPinnedUrl(contents);
   }
   for (content::WebContents* contents : contents_to_close) {
     model->CloseWebContents(contents,
@@ -249,10 +271,18 @@ bool PinnedTabResetController::HandleCloseTabShortcut() {
 }
 
 void PinnedTabResetController::ResetPinnedTab(tabs::TabInterface* tab) {
-  content::WebContents* contents = tab->GetContents();
-  if (!contents || !tab->IsPinned()) {
+  if (!tab->IsPinned() || !tab->GetContents()) {
     return;
   }
+  if (content::WebContents* contents =
+          GetContentsWithPinnedUrl(tab->GetContents())) {
+    ResetToPinnedUrl(contents);
+  }
+}
+
+// static
+void PinnedTabResetController::ResetToPinnedUrl(
+    content::WebContents* contents) {
   const std::optional<GURL> pinned_url =
       pinned_tab_reset::GetPinnedUrl(contents);
   if (!pinned_url) {
@@ -308,9 +338,15 @@ void PinnedTabResetController::OnTabStripModelChanged(
     }
   } else if (change.type() == TabStripModelChange::kReplaced) {
     // E.g. a discarded tab gets new contents.
+    const auto* replace = change.GetReplace();
+    // Unpinning a shared pinned tab placeholder replaces it with the real
+    // contents, which must forget their pinned URL.
+    if (!replace->tab->IsPinned()) {
+      PinnedTabUrlData::Clear(replace->new_contents);
+      return;
+    }
     // Never overwrites the URL the new contents already has: shared pinned
     // tabs swap the real contents with a placeholder this way.
-    const auto* replace = change.GetReplace();
     if (PinnedTabUrlData::FromWebContents(replace->new_contents)) {
       return;
     }
@@ -361,8 +397,9 @@ std::optional<GURL> GetPinnedUrl(const content::WebContents* contents) {
   return data->url();
 }
 
-void ExcludeFromPinnedTabReset(content::WebContents* contents) {
-  PinnedTabResetExcludedData::CreateForWebContents(contents);
+void ExcludeFromPinnedTabReset(content::WebContents* contents,
+                               content::WebContents* stands_in_for) {
+  PinnedTabResetExcludedData::CreateForWebContents(contents, stands_in_for);
 }
 
 void MaybeResetOnMousePressed(tabs::TabInterface* tab,
