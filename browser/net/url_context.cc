@@ -146,6 +146,15 @@ void BraveRequestInfo::set_request_initiator(
   request_initiator_ = value;
 }
 
+std::optional<url::Origin>
+BraveRequestInfo::request_initiator_for_adblock_rules() const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!request_initiator_) {
+    return std::nullopt;
+  }
+  return GetPrecursorOriginIfOpaque(*request_initiator_);
+}
+
 const std::optional<url::Origin>& BraveRequestInfo::top_frame_origin() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return top_frame_origin_;

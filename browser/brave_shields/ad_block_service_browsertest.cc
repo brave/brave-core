@@ -1708,6 +1708,59 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SandboxedIframeRequestsBlocked) {
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
+// A request from a sandboxed frame matches `$domain=` rules for the origin
+// the frame's opaque origin was derived from.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       SandboxedIframeRequestMatchesPrecursorDomain) {
+  NavigateToURL(embedded_test_server()->GetURL("a.com", kAdBlockTestPage));
+  ASSERT_EQ(true, EvalJs(web_contents(),
+                         content::JsReplace("addFrame($1, 'allow-scripts')",
+                                            embedded_test_server()->GetURL(
+                                                "b.com", kAdBlockTestPage))));
+  content::RenderFrameHost* frame = ChildFrameAt(web_contents(), 0);
+  ASSERT_TRUE(frame);
+  ASSERT_TRUE(frame->GetLastCommittedOrigin().opaque());
+
+  // Positive control: a rule for another domain doesn't match.
+  UpdateAdBlockInstanceWithRules("adbanner.js$domain=c.com");
+  EXPECT_EQ(true, EvalJs(frame,
+                         "setExpectations(0, 0, 1, 0);"
+                         "xhr('adbanner.js')"));
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  UpdateAdBlockInstanceWithRules("adbanner.js$domain=b.com");
+  EXPECT_EQ(true, EvalJs(frame,
+                         "setExpectations(0, 0, 1, 1);"
+                         "xhr('adbanner.js?1')"));
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+}
+
+// A request from a sandboxed frame to the site its opaque origin was derived
+// from is first party.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       SandboxedIframeRequestToPrecursorSiteIsFirstParty) {
+  UpdateAdBlockInstanceWithRules("adbanner.js$~third-party");
+  NavigateToURL(embedded_test_server()->GetURL("a.com", kAdBlockTestPage));
+  ASSERT_EQ(true, EvalJs(web_contents(),
+                         "addFrame('/blocking.html', 'allow-scripts')"));
+  content::RenderFrameHost* frame = ChildFrameAt(web_contents(), 0);
+  ASSERT_TRUE(frame);
+  ASSERT_TRUE(frame->GetLastCommittedOrigin().opaque());
+
+  // Positive control: a request to another site is third party.
+  EXPECT_EQ(true,
+            EvalJs(frame, content::JsReplace("setExpectations(0, 0, 1, 0);"
+                                             "xhr($1)",
+                                             embedded_test_server()->GetURL(
+                                                 "c.com", "/adbanner.js"))));
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  EXPECT_EQ(true, EvalJs(frame,
+                         "setExpectations(0, 0, 1, 1);"
+                         "xhr('adbanner.js')"));
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+}
+
 // Tests for the origin whose Shields settings apply to a request.
 class AdBlockServiceSettingsOriginTest : public AdBlockServiceTest {
  protected:

@@ -236,6 +236,39 @@ TEST_F(BraveRequestInfoTest, KeepsOpaqueTopFrameOriginWithoutPrecursor) {
   EXPECT_TRUE(ctx->first_party_origin_for_adblock_rules().opaque());
 }
 
+TEST_F(BraveRequestInfoTest, RequestInitiatorForAdblockRulesNoInitiator) {
+  BraveRequestInfo ctx(GURL("https://example.com/script.js"));
+
+  EXPECT_EQ(std::nullopt, ctx.request_initiator_for_adblock_rules());
+}
+
+TEST_F(BraveRequestInfoTest, RequestInitiatorForAdblockRulesNonOpaque) {
+  const url::Origin initiator =
+      url::Origin::Create(GURL("https://initiator.example"));
+  BraveRequestInfo ctx(GURL("https://example.com/script.js"));
+  ctx.set_request_initiator(initiator);
+
+  EXPECT_EQ(initiator, ctx.request_initiator_for_adblock_rules());
+}
+
+TEST_F(BraveRequestInfoTest, RequestInitiatorForAdblockRulesUsesPrecursor) {
+  const url::Origin precursor =
+      url::Origin::Create(GURL("https://initiator.example"));
+  BraveRequestInfo ctx(GURL("https://example.com/script.js"));
+  ctx.set_request_initiator(precursor.DeriveNewOpaqueOrigin());
+
+  EXPECT_EQ(precursor, ctx.request_initiator_for_adblock_rules());
+}
+
+TEST_F(BraveRequestInfoTest,
+       RequestInitiatorForAdblockRulesOpaqueWithoutPrecursor) {
+  const url::Origin opaque;
+  BraveRequestInfo ctx(GURL("https://example.com/script.js"));
+  ctx.set_request_initiator(opaque);
+
+  EXPECT_EQ(opaque, ctx.request_initiator_for_adblock_rules());
+}
+
 TEST_F(BraveRequestInfoTest, FirstPartyOriginForAdblockRulesMainFrame) {
   const GURL url("https://example.com/page");
   const url::Origin initiator =
@@ -363,6 +396,7 @@ TEST_F(BraveRequestInfoTest,
     ctx.set_resource_type(blink::mojom::ResourceType::kMainFrame);
     EXPECT_TRUE(ctx.first_party_origin_for_adblock_rules().opaque());
   }
+}
 
 class BraveRequestInfoFrameTest : public ChromeRenderViewHostTestHarness {
  protected:

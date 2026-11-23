@@ -334,6 +334,8 @@ void UseCnameResult(const ResponseCallback& next_callback,
     next_callback.Run();
     return;
   }
+  const url::Origin request_initiator =
+      *ctx->request_initiator_for_adblock_rules();
 
   if (cname.has_value() && ctx->request_url().host() != *cname &&
       !cname->empty()) {
@@ -342,7 +344,7 @@ void UseCnameResult(const ResponseCallback& next_callback,
     const GURL canonical_url =
         ctx->request_url().ReplaceComponents(replacements);
 
-    ShouldBlockRequestParams input{*ctx->request_initiator(),
+    ShouldBlockRequestParams input{request_initiator,
                                    ctx->request_url(),
                                    ctx->resource_type(),
                                    ctx->aggressive_blocking(),
@@ -416,6 +418,8 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
   DCHECK_NE(ctx->request_identifier(), 0UL);
   DCHECK(!ctx->request_url().is_empty());
   CHECK(ctx->request_initiator());
+  const url::Origin request_initiator =
+      *ctx->request_initiator_for_adblock_rules();
 
   // DNS queries won't be routed through Tor or proxies, so we need to
   // skip requests in those contexts.
@@ -433,7 +437,7 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
           brave_shields::features::kBraveAdblockDefault1pBlocking) &&
       should_check_uncloaked && !ctx->aggressive_blocking() &&
       SameDomainOrHost(
-          ctx->request_url(), *ctx->request_initiator(),
+          ctx->request_url(), request_initiator,
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
     should_check_uncloaked = false;
   }
@@ -444,7 +448,7 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
       should_check_uncloaked ? ctx->browser_context()->GetWeakPtr() : nullptr;
 
   ShouldBlockRequestParams input{
-      *ctx->request_initiator(),  ctx->request_url(), ctx->resource_type(),
+      request_initiator,          ctx->request_url(), ctx->resource_type(),
       ctx->aggressive_blocking(), ctx->method(),      ctx->render_frame_token(),
       ctx->devtools_request_id()};
   auto* ad_block_service = g_brave_browser_process->ad_block_service();
