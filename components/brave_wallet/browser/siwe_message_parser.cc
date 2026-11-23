@@ -124,9 +124,14 @@ ExtractOptionalValue(std::string_view input,
                      bool is_resources = false) {
   auto effective_field = base::StrCat({"\n", field});
   auto field_end = effective_field.length();
-  if (field_end == input.length()) {
+
+  // Every field but Resources requires a value after its token. The ABNF has
+  // `resources = *( LF resource )`, so a bare "Resources:" ending the message
+  // is a valid empty list.
+  if (field_end == input.length() && !is_resources) {
     return std::nullopt;
   }
+
   auto field_pos = input.rfind(effective_field);
   if (field_pos == std::string::npos) {
     return std::make_pair(std::string::npos, input);
@@ -446,10 +451,7 @@ bool SIWEMessageParser::ParseOptionalResources(
     }
     urls.push_back(url);
   }
-  if (!urls.size()) {
-    return false;
-  }
-  resources = urls;
+  resources = std::move(urls);
   CHECK(ShrinkMessage(msg_view, value->first));
   return true;
 }

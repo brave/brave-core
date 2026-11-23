@@ -342,6 +342,10 @@ TEST_F(SIWEMessageParserTest, CommonErrors) {
         // This is valid for optional field
         if (invalid_case ==
                 base::StrCat({state_info.token, state_info.value}) ||
+            // A bare "Resources:" is a valid empty list, see
+            // OptionalResourcesEmpty.
+            (state_info.token == resources_token() &&
+             invalid_case == state_info.token) ||
             // This has been tested in invalid issued_at
             invalid_case.empty()) {
           continue;
@@ -510,6 +514,58 @@ TEST_F(SIWEMessageParserTest, OptionalResources) {
   EXPECT_FALSE(result->expiration_time);
   EXPECT_FALSE(result->not_before);
   EXPECT_FALSE(result->request_id);
+}
+
+TEST_F(SIWEMessageParserTest, OptionalResourcesEmpty) {
+  // `resources = *( LF resource )` permits zero entries, so a message ending at
+  // "Resources:" has to parse instead of falling back to EIP-191.
+
+  const std::string message =
+      base::StrCat({valid_issued_at_prefix(), "\n", resources_token()});
+  auto result = parser_.Parse(message);
+  ASSERT_TRUE(result);
+  EXPECT_EQ(parser_.state(), State::kEnd);
+  // The field is present, it just has no entries.
+  ASSERT_TRUE(result->resources);
+  EXPECT_TRUE(result->resources->empty());
+  // rest of the fields
+  EXPECT_EQ(result->origin, url::Origin::Create(GURL("https://example.com")));
+  EXPECT_EQ(result->address, kExampleAddress);
+  EXPECT_FALSE(result->statement);
+  EXPECT_EQ(result->uri, GURL(kExampleUri));
+  EXPECT_EQ(result->version, 1u);
+  EXPECT_EQ(result->chain_id, 5u);
+  EXPECT_EQ(result->nonce, kExampleNonce);
+  EXPECT_EQ(result->issued_at, kExampleISO8601Time);
+  EXPECT_FALSE(result->expiration_time);
+  EXPECT_FALSE(result->not_before);
+  EXPECT_FALSE(result->request_id);
+
+  // An empty list is also valid after each of the preceding optional fields.
+  for (const auto& preceding : {
+           base::StrCat({expiration_time_token(), kExampleISO8601Time}),
+           base::StrCat({not_before_token(), kExampleISO8601Time}),
+           base::StrCat({request_id_token(), kExampleRequestId}),
+           base::StrCat({expiration_time_token(), kExampleISO8601Time, "\n",
+                         not_before_token(), kExampleISO8601Time, "\n",
+                         request_id_token(), kExampleRequestId}),
+       }) {
+    const std::string message_with_preceding = base::StrCat(
+        {valid_issued_at_prefix(), "\n", preceding, "\n", resources_token()});
+    SCOPED_TRACE(testing::Message() << "\"" << message_with_preceding << "\"");
+    auto preceding_result = parser_.Parse(message_with_preceding);
+    ASSERT_TRUE(preceding_result);
+    EXPECT_EQ(parser_.state(), State::kEnd);
+    ASSERT_TRUE(preceding_result->resources);
+    EXPECT_TRUE(preceding_result->resources->empty());
+  }
+
+  // Trailing LF is still considered invalid.
+  const std::string dangling_lf =
+      base::StrCat({valid_issued_at_prefix(), "\n", resources_token(), "\n"});
+  SCOPED_TRACE(testing::Message() << "\"" << dangling_lf << "\"");
+  EXPECT_FALSE(parser_.Parse(dangling_lf));
+  EXPECT_EQ(parser_.state(), State::kOptionalFields);
 }
 
 TEST_F(SIWEMessageParserTest, OptionalFieldsOrder) {
