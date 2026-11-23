@@ -28,7 +28,7 @@ import {
 } from '$wallet/components/shared/password-input/new-password-input'
 import {
   OnboardingCreatingWallet, //
-} from '$wallet/page/screens/onboarding/creating_wallet/onboarding_creating_wallet'
+} from '../onboarding_creating_wallet/onboarding_creating_wallet'
 import {
   OnboardingContentLayout, //
 } from '../components/onboarding_content_layout/onboarding_content_layout'
