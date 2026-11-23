@@ -16,6 +16,8 @@ export default function DeleteConversationModal() {
   const cancelButtonRef = React.useRef<HTMLElement>(null)
 
   // Start on Cancel so a stray keypress can't delete; Delete is one Tab away.
+  // TODO(https://github.com/brave/leo/issues/1522): Use Dialog's initial
+  // focus option once Nala has one.
   React.useEffect(() => {
     if (!aiChatContext.deletingConversationId) {
       return
