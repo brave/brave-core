@@ -14,7 +14,10 @@
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/memory/raw_ptr.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/task/thread_pool/thread_pool_instance.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
@@ -38,6 +41,17 @@ using ::testing::_;
 namespace ai_chat {
 
 namespace {
+
+// Waits for JSON parses already posted to the thread pool, and their replies.
+// Needed to assert that an event is not delivered, which no `RunUntil()`
+// condition can wait for.
+void WaitForPendingParses() {
+  base::ThreadPoolInstance::Get()->FlushForTesting();
+  base::test::TestFuture<void> replies_done;
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, replies_done.GetCallback());
+  EXPECT_TRUE(replies_done.Wait());
+}
 
 constexpr char kTestModelName[] = "test-model";
 constexpr char kTestUpstreamModelName[] = "upstream-test-model";
@@ -148,6 +162,9 @@ class ObliviousHttpAPIClientUnitTest : public testing::Test,
       data_received_callback = base::BindLambdaForTesting(
           [&](EngineConsumer::GenerationResultData data) {
             received_chunks_.push_back(std::move(data));
+            if (on_chunk_received_) {
+              on_chunk_received_.Run();
+            }
           });
     }
 
@@ -181,6 +198,7 @@ class ObliviousHttpAPIClientUnitTest : public testing::Test,
   raw_ptr<MockObliviousHttpConfigManager> config_manager_ = nullptr;
   base::test::TestFuture<EngineConsumer::GenerationResult> future_;
   std::vector<EngineConsumer::GenerationResultData> received_chunks_;
+  base::RepeatingClosure on_chunk_received_;
   network::mojom::ObliviousHttpRequestPtr last_request_;
   mojo::Remote<network::mojom::ObliviousHttpClient> completion_client_;
   mojo::Remote<network::mojom::ObliviousHttpChunkClient> chunk_client_;
@@ -225,6 +243,49 @@ TEST_F(ObliviousHttpAPIClientUnitTest,
   ASSERT_TRUE(result.has_value());
   ASSERT_TRUE(result->event->is_completion_event());
   EXPECT_EQ("", result->event->get_completion_event()->completion);
+}
+
+// Events are parsed on a worker sequence, so a request can complete while
+// several of its events are still being parsed. The completion follows them.
+TEST_F(ObliviousHttpAPIClientUnitTest,
+       PerformRequest_Streaming_CompletesAfterPendingEvents) {
+  PerformRequest(/*enable_data_received_callback=*/true);
+  {
+    // Holds the parses until the request has completed.
+    base::test::TaskEnvironment::ParallelExecutionFence fence;
+    EmitChunk("part1");
+    EmitChunk("part2");
+    CompleteWithInnerResponse(net::HTTP_OK, "");
+    EXPECT_TRUE(received_chunks_.empty());
+    EXPECT_FALSE(future_.IsReady());
+  }
+  auto result = future_.Take();
+
+  ASSERT_EQ(2u, received_chunks_.size());
+  ASSERT_TRUE(received_chunks_[0].event->is_completion_event());
+  EXPECT_EQ("part1",
+            received_chunks_[0].event->get_completion_event()->completion);
+  ASSERT_TRUE(received_chunks_[1].event->is_completion_event());
+  EXPECT_EQ("part2",
+            received_chunks_[1].event->get_completion_event()->completion);
+  ASSERT_TRUE(result.has_value());
+}
+
+// Nothing is delivered after a data callback clears all queries. Using the
+// deleted `InnerClient` after the callback is only reported under ASan.
+TEST_F(ObliviousHttpAPIClientUnitTest,
+       PerformRequest_Streaming_ClearAllQueriesFromDataCallback) {
+  on_chunk_received_ =
+      base::BindLambdaForTesting([&]() { client_->ClearAllQueries(); });
+  PerformRequest(/*enable_data_received_callback=*/true);
+
+  EmitChunk("part1");
+  EmitChunk("part2");
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return !received_chunks_.empty(); }));
+  // So that a second delivery would be seen.
+  WaitForPendingParses();
+  EXPECT_EQ(1u, received_chunks_.size());
 }
 
 TEST_F(ObliviousHttpAPIClientUnitTest,
