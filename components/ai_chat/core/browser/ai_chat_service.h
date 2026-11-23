@@ -18,6 +18,7 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
@@ -87,6 +88,21 @@ class AIChatService : public KeyedService,
       base::expected<std::vector<std::string>, mojom::APIError>)>;
   using GetFocusTabsCallback = base::OnceCallback<void(
       base::expected<std::vector<std::string>, mojom::APIError>)>;
+
+  // Tells the user when a response finishes in the background.
+  class NotificationDelegate {
+   public:
+    virtual ~NotificationDelegate() = default;
+
+    // |conversation_title| is empty if the conversation has none.
+    virtual void ShowCompletionNotification(
+        const std::string& conversation_uuid,
+        const std::u16string& conversation_title) = 0;
+
+    // The conversation was viewed or removed.
+    virtual void CloseCompletionNotification(
+        const std::string& conversation_uuid) = 0;
+  };
 
   AIChatService(
       ModelService* model_service,
@@ -275,6 +291,8 @@ class AIChatService : public KeyedService,
   RestoreWorkspaceAssociatedContentFromUrl(const GURL& url,
                                            const std::string& content_uuid);
 
+  void SetNotificationDelegate(std::unique_ptr<NotificationDelegate> delegate);
+
   std::unique_ptr<EngineConsumer> GetDefaultAIEngine();
   std::unique_ptr<EngineConsumer> GetEngineForModel(
       const std::string& model_key);
@@ -440,7 +458,8 @@ class AIChatService : public KeyedService,
       base::expected<std::vector<std::string>, mojom::APIError> result);
   // Creates the tool providers for |conversation| and adds them to it.
   void AddToolProvidersToConversation(ConversationHandler* conversation);
-  // Sends |conversation_generation_state_| to all |observer_remotes_|.
+  // Sends |conversation_generation_state_| to all |observer_remotes_| and
+  // closes out-of-date notifications.
   void NotifyConversationGenerationStateChanged();
   // Whether |uuid| has a loaded ConversationHandler with a connected client.
   // This doesn't mean the conversation is on screen.
@@ -452,6 +471,7 @@ class AIChatService : public KeyedService,
   // DeleteConversation() without OnConversationListChanged(), for callers that
   // delete several conversations and then send the list once.
   void DeleteConversationWithoutNotifyingList(const std::string& id);
+  void ShowCompletionNotification(const std::string& uuid);
 
   raw_ptr<ModelService> model_service_;
   raw_ptr<TabTrackerService> tab_tracker_service_;
@@ -568,6 +588,10 @@ class AIChatService : public KeyedService,
   // can hand out a proxy delegate before the bridge itself exists; the bridge
   // is owned, accessed, and destroyed only on |db_task_runner_|.
   scoped_refptr<AIChatSyncBackend> sync_backend_;
+
+  std::unique_ptr<NotificationDelegate> notification_delegate_;
+  // Conversations we've shown a notification for.
+  base::flat_set<std::string> notified_conversations_;
 
   base::WeakPtrFactory<AIChatService> weak_ptr_factory_{this};
 };
