@@ -88,8 +88,8 @@ bool BraveBrowserNativeWidgetMac::ExecuteCommand(
     int32_t command,
     ui::mojom::WindowOpenDisposition window_open_disposition,
     bool is_before_first_responder) {
-  // Only the keyboard shortcut resets pinned tabs; File -> Close Tab closes
-  // them. See the comment on is_before_first_responder below.
+  // is_before_first_responder is true for the Cmd+W shortcut and false for
+  // File -> Close Tab, so only the shortcut resets pinned tabs.
   if (command == IDC_CLOSE_TAB && is_before_first_responder &&
       base::FeatureList::IsEnabled(tabs::kBravePinnedTabReset)) {
     if (BrowserView* browser_view = browser_view_.get()) {

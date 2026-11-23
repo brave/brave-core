@@ -83,6 +83,7 @@ void PinnedTabResetBrowserTest::SetUpOnMainThread() {
   ASSERT_TRUE(embedded_test_server()->Start());
   pinned_url_ = embedded_test_server()->GetURL("a.com", "/title1.html");
   other_url_ = embedded_test_server()->GetURL("a.com", "/title2.html");
+  ASSERT_TRUE(controller());
 }
 
 TabStripModel* PinnedTabResetBrowserTest::model() {
@@ -102,7 +103,9 @@ void PinnedTabResetBrowserTest::SetUpPinnedTabNavigatedAway() {
   ASSERT_EQ(other_url_, model()->GetWebContentsAt(0)->GetLastCommittedURL());
 }
 
-void PinnedTabResetBrowserTest::ExpectPinnedTabReset(int index) {
+void PinnedTabResetBrowserTest::ExpectPinnedTabReset(int index,
+                                                     base::Location location) {
+  SCOPED_TRACE(location.ToString());
   content::WebContents* pinned = model()->GetWebContentsAt(index);
   EXPECT_TRUE(content::WaitForLoadStop(pinned));
   EXPECT_EQ(pinned_url_, pinned->GetLastCommittedURL());
@@ -113,7 +116,6 @@ IN_PROC_BROWSER_TEST_F(PinnedTabResetBrowserTest, ShortcutResetsPinnedTab) {
   ASSERT_NO_FATAL_FAILURE(SetUpPinnedTabNavigatedAway());
   ASSERT_EQ(2, model()->count());
 
-  ASSERT_TRUE(controller());
   EXPECT_TRUE(controller()->HandleCloseTabShortcut());
 
   EXPECT_EQ(2, model()->count());

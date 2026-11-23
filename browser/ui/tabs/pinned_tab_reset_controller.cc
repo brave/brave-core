@@ -338,10 +338,9 @@ void PinnedTabResetController::RecordPinnedUrl(content::WebContents* contents) {
   if (sidebar::IsWebPanelTab(base::to_address(browser_), contents)) {
     return;
   }
-  GURL url = contents->GetLastCommittedURL();
-  if (url.is_empty()) {
-    url = contents->GetVisibleURL();
-  }
+  // A pending URL may never commit, so a tab without a committed page waits
+  // for its first one.
+  const GURL& url = contents->GetLastCommittedURL();
   if (IsUsablePinnedUrl(url)) {
     PinnedTabUrlData::Set(contents, url);
   } else {

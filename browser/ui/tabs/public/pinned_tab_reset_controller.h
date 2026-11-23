@@ -58,6 +58,10 @@ class PinnedTabResetController : public TabStripModelObserver {
   // list.
   void RestorePinnedUrl(content::WebContents* contents, const GURL& url);
 
+  // Adds kBravePinnedTabUrlKey to `extra_data` when the tab at `index`, a
+  // valid index in this window's tab strip, has a pinned URL, and leaves
+  // `extra_data` untouched otherwise. Used for recently closed tab entries,
+  // read back by pinned_tab_reset::MaybeRestoreFromExtraData().
   void PopulateExtraData(int index,
                          std::map<std::string, std::string>& extra_data) const;
 
