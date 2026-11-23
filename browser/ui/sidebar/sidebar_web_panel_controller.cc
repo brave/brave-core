@@ -85,9 +85,12 @@ void SidebarWebPanelController::CloseWebPanel(bool suppress_animations) {
     // off screen before this returns. Only the tab close can wait.
     GetMultiContentsView()->SetWebPanelContents(nullptr);
 
-    // The side panel can open from inside a TabStripModel notification -
-    // activating a tab re-shows that tab's contextual entry - and the model
-    // forbids mutating it from there.
+    // When CloseWebPanel() is invoked in a TabStripModel's notification,
+    // Calling FinishClose() would re-enter the TabStripModel's mutation API -
+    // which is forbidden by re-entrance guard. This typically happens when a
+    // contextual side panel shows up due to tab activation and closes web
+    // panel. So we should not call FinishClose() in this callstack and post
+    // task.
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE, base::BindOnce(&SidebarWebPanelController::FinishClose,
                                   weak_factory_.GetWeakPtr()));
