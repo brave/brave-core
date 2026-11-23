@@ -12,6 +12,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
 #include "base/types/pass_key.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 
 class BraveBrowserView;
 class BrowserWindowInterface;
@@ -26,6 +27,8 @@ class View;
 // `UpdatePlacement`.
 class TabStripPlacementCoordinator {
  public:
+  DECLARE_USER_DATA(TabStripPlacementCoordinator);
+
   // Creates an instance for the specified browser view and tab strip region
   // view. Instances may only be created and owned by BraveBrowserView.
   TabStripPlacementCoordinator(base::PassKey<BraveBrowserView>,
@@ -37,6 +40,10 @@ class TabStripPlacementCoordinator {
       delete;
 
   ~TabStripPlacementCoordinator();
+
+  // Returns the instance for `browser`, or nullptr when `browser` has no views
+  // UI, e.g. a WebUI browser window.
+  static TabStripPlacementCoordinator* From(BrowserWindowInterface* browser);
 
   enum class PlacementKind {
     kDefault = 0,
@@ -67,6 +74,8 @@ class TabStripPlacementCoordinator {
   raw_ref<BrowserWindowInterface> browser_window_interface_;
   raw_ref<views::View> tab_strip_region_view_;
   base::flat_map<PlacementKind, Placement> placements_;
+  ui::ScopedUnownedUserData<TabStripPlacementCoordinator>
+      scoped_unowned_user_data_;
 };
 
 using TabStripPlacementKind = TabStripPlacementCoordinator::PlacementKind;
