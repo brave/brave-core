@@ -47,7 +47,7 @@
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
-#include "ui/base/list_selection_model.h"
+#include "ui/base/models/list_selection_model.h"
 #include "ui/events/event.h"
 #include "ui/events/event_constants.h"
 #include "ui/views/view_utils.h"
