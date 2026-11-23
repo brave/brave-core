@@ -1,0 +1,14 @@
+diff --git a/net/android/network_library.cc b/net/android/network_library.cc
+index 6dc04f5d18efac0831281bbc4920eaf721ebed3c..56e1ed0af4825647f92de99b301c04d8b294056a 100644
+--- a/net/android/network_library.cc
++++ b/net/android/network_library.cc
+@@ -152,6 +152,9 @@ bool HaveOnlyLoopbackAddresses() {
+ }
+ 
+ bool GetMimeTypeFromExtension(std::string_view extension, std::string* result) {
++  if (!base::android::IsJavaAvailable()) {
++    return false;
++  }
+   JNIEnv* env = AttachCurrentThread();
+ 
+   ScopedJavaLocalRef<jstring> extension_string =
