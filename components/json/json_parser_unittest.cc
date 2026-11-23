@@ -17,8 +17,9 @@ TEST(JsonParser, ConvertUint64ToString) {
   std::string json =
       "{\"a\": " + base::NumberToString(std::numeric_limits<uint64_t>::max()) +
       "}";
-  EXPECT_EQ(json::convert_uint64_value_to_string("/a", json, false),
-            R"({"a":"18446744073709551615"})");
+  EXPECT_EQ(base::test::ParseJsonDict(
+                json::convert_uint64_value_to_string("/a", json, false)),
+            base::test::ParseJsonDict(R"({"a":"18446744073709551615"})"));
 
   // std::numeric_limits<uint64_t>::max + 1
   json = "{\"a\": 18446744073709551616 }";
@@ -33,32 +34,42 @@ TEST(JsonParser, ConvertUint64ToString) {
   EXPECT_TRUE(json::convert_uint64_value_to_string("/a", json, true).empty());
 
   json = R"({"a": { "b/a": 1, "c": 2 }, "d": "string"})";
-  EXPECT_EQ(json::convert_uint64_value_to_string("/a/b~1a", json, false),
-            R"({"a":{"b/a":"1","c":2},"d":"string"})");
+  EXPECT_EQ(
+      base::test::ParseJsonDict(
+          json::convert_uint64_value_to_string("/a/b~1a", json, false)),
+      base::test::ParseJsonDict(R"({"a":{"b/a":"1","c":2},"d":"string"})"));
 
   json = R"({"a": { "b~a": 1, "c": 2 }, "d": "string"})";
-  EXPECT_EQ(json::convert_uint64_value_to_string("/a/b~0a", json, false),
-            R"({"a":{"b~a":"1","c":2},"d":"string"})");
+  EXPECT_EQ(
+      base::test::ParseJsonDict(
+          json::convert_uint64_value_to_string("/a/b~0a", json, false)),
+      base::test::ParseJsonDict(R"({"a":{"b~a":"1","c":2},"d":"string"})"));
 
   json = R"({"a": { "b": 1, "c": 2 }, "d": "string"})";
-  EXPECT_EQ(json::convert_uint64_value_to_string("/a/b", json, false),
-            R"({"a":{"b":"1","c":2},"d":"string"})");
+  EXPECT_EQ(base::test::ParseJsonDict(
+                json::convert_uint64_value_to_string("/a/b", json, false)),
+            base::test::ParseJsonDict(R"({"a":{"b":"1","c":2},"d":"string"})"));
 
   json = R"({"a": { "b": [{"e":1}], "c": 2 }, "d": "string"})";
-  EXPECT_EQ(json::convert_uint64_value_to_string("/a/b/0/e", json, false),
-            R"({"a":{"b":[{"e":"1"}],"c":2},"d":"string"})");
+  EXPECT_EQ(base::test::ParseJsonDict(
+                json::convert_uint64_value_to_string("/a/b/0/e", json, false)),
+            base::test::ParseJsonDict(
+                R"({"a":{"b":[{"e":"1"}],"c":2},"d":"string"})"));
 
   json = R"({"a":[{"b":1}]})";
-  EXPECT_EQ(json::convert_uint64_value_to_string("/a/0/b", json, false),
-            R"({"a":[{"b":"1"}]})");
+  EXPECT_EQ(base::test::ParseJsonDict(
+                json::convert_uint64_value_to_string("/a/0/b", json, false)),
+            base::test::ParseJsonDict(R"({"a":[{"b":"1"}]})"));
 
   json = R"({"a":[1]})";
-  EXPECT_EQ(json::convert_uint64_value_to_string("/a/0", json, false),
-            R"({"a":["1"]})");
+  EXPECT_EQ(base::test::ParseJsonDict(
+                json::convert_uint64_value_to_string("/a/0", json, false)),
+            base::test::ParseJsonDict(R"({"a":["1"]})"));
 
   json = R"({"a": 0 })";
-  EXPECT_EQ(json::convert_uint64_value_to_string("/a", json, false),
-            R"({"a":"0"})");
+  EXPECT_EQ(base::test::ParseJsonDict(
+                json::convert_uint64_value_to_string("/a", json, false)),
+            base::test::ParseJsonDict(R"({"a":"0"})"));
 
   json = R"({"a": 0.1 })";
   EXPECT_TRUE(json::convert_uint64_value_to_string("/a", json, false).empty());
@@ -95,8 +106,9 @@ TEST(JsonParser, ConvertInt64ToString) {
   json =
       "{\"a\": " + base::NumberToString(std::numeric_limits<int64_t>::min()) +
       "}";
-  EXPECT_EQ(json::convert_int64_value_to_string("/a", json, false),
-            R"({"a":"-9223372036854775808"})");
+  EXPECT_EQ(base::test::ParseJsonDict(
+                json::convert_int64_value_to_string("/a", json, false)),
+            base::test::ParseJsonDict(R"({"a":"-9223372036854775808"})"));
 
   // std::numeric_limits<int64_t>::min() - 1
   json = "{\"a\": -9223372036854775809 }";
@@ -107,36 +119,47 @@ TEST(JsonParser, ConvertInt64ToString) {
   json =
       "{\"a\": " + base::NumberToString(std::numeric_limits<int64_t>::max()) +
       "}";
-  EXPECT_EQ(json::convert_int64_value_to_string("/a", json, false),
-            R"({"a":"9223372036854775807"})");
+  EXPECT_EQ(base::test::ParseJsonDict(
+                json::convert_int64_value_to_string("/a", json, false)),
+            base::test::ParseJsonDict(R"({"a":"9223372036854775807"})"));
 
   json = R"({"a": { "b/a": 1, "c": 2 }, "d": "string"})";
-  EXPECT_EQ(json::convert_int64_value_to_string("/a/b~1a", json, false),
-            R"({"a":{"b/a":"1","c":2},"d":"string"})");
+  EXPECT_EQ(
+      base::test::ParseJsonDict(
+          json::convert_int64_value_to_string("/a/b~1a", json, false)),
+      base::test::ParseJsonDict(R"({"a":{"b/a":"1","c":2},"d":"string"})"));
 
   json = R"({"a": { "b~a": 1, "c": 2 }, "d": "string"})";
-  EXPECT_EQ(json::convert_int64_value_to_string("/a/b~0a", json, false),
-            R"({"a":{"b~a":"1","c":2},"d":"string"})");
+  EXPECT_EQ(
+      base::test::ParseJsonDict(
+          json::convert_int64_value_to_string("/a/b~0a", json, false)),
+      base::test::ParseJsonDict(R"({"a":{"b~a":"1","c":2},"d":"string"})"));
 
   json = R"({"a": { "b": 1, "c": 2 }, "d": "string"})";
-  EXPECT_EQ(json::convert_int64_value_to_string("/a/b", json, false),
-            R"({"a":{"b":"1","c":2},"d":"string"})");
+  EXPECT_EQ(base::test::ParseJsonDict(
+                json::convert_int64_value_to_string("/a/b", json, false)),
+            base::test::ParseJsonDict(R"({"a":{"b":"1","c":2},"d":"string"})"));
 
   json = R"({"a": { "b": [{"e":1}], "c": 2 }, "d": "string"})";
-  EXPECT_EQ(json::convert_int64_value_to_string("/a/b/0/e", json, false),
-            R"({"a":{"b":[{"e":"1"}],"c":2},"d":"string"})");
+  EXPECT_EQ(base::test::ParseJsonDict(
+                json::convert_int64_value_to_string("/a/b/0/e", json, false)),
+            base::test::ParseJsonDict(
+                R"({"a":{"b":[{"e":"1"}],"c":2},"d":"string"})"));
 
   json = R"({"a":[{"b":1}]})";
-  EXPECT_EQ(json::convert_int64_value_to_string("/a/0/b", json, false),
-            R"({"a":[{"b":"1"}]})");
+  EXPECT_EQ(base::test::ParseJsonDict(
+                json::convert_int64_value_to_string("/a/0/b", json, false)),
+            base::test::ParseJsonDict(R"({"a":[{"b":"1"}]})"));
 
   json = R"({"a":[1]})";
-  EXPECT_EQ(json::convert_int64_value_to_string("/a/0", json, false),
-            R"({"a":["1"]})");
+  EXPECT_EQ(base::test::ParseJsonDict(
+                json::convert_int64_value_to_string("/a/0", json, false)),
+            base::test::ParseJsonDict(R"({"a":["1"]})"));
 
   json = R"({"a": 0 })";
-  EXPECT_EQ(json::convert_int64_value_to_string("/a", json, false),
-            R"({"a":"0"})");
+  EXPECT_EQ(base::test::ParseJsonDict(
+                json::convert_int64_value_to_string("/a", json, false)),
+            base::test::ParseJsonDict(R"({"a":"0"})"));
 
   json = R"({"a": 0.1 })";
   EXPECT_TRUE(json::convert_int64_value_to_string("/a", json, false).empty());
@@ -326,24 +349,32 @@ TEST(JsonParser, ConvertUint64InObjectArrayToString) {
   std::string json(
       R"({"a":[{"key":18446744073709551615},{"key":2},{"key":3}]})");
   EXPECT_EQ(
-      json::convert_uint64_in_object_array_to_string("/a", "", "key", json),
-      R"({"a":[{"key":"18446744073709551615"},{"key":"2"},{"key":"3"}]})");
+      base::test::ParseJsonDict(json::convert_uint64_in_object_array_to_string(
+          "/a", "", "key", json)),
+      base::test::ParseJsonDict(
+          R"({"a":[{"key":"18446744073709551615"},{"key":"2"},{"key":"3"}]})"));
 
   json = R"({"a":{"b":[{"key":18446744073709551615},{"key":2}]}})";
   EXPECT_EQ(
-      json::convert_uint64_in_object_array_to_string("/a/b", "", "key", json),
-      R"({"a":{"b":[{"key":"18446744073709551615"},{"key":"2"}]}})");
+      base::test::ParseJsonDict(json::convert_uint64_in_object_array_to_string(
+          "/a/b", "", "key", json)),
+      base::test::ParseJsonDict(
+          R"({"a":{"b":[{"key":"18446744073709551615"},{"key":"2"}]}})"));
 
   // Null value support.
   json = R"({"a":[{"key":18446744073709551615},{"key":null}]})";
   EXPECT_EQ(
-      json::convert_uint64_in_object_array_to_string("/a", "", "key", json),
-      R"({"a":[{"key":"18446744073709551615"},{"key":null}]})");
+      base::test::ParseJsonDict(json::convert_uint64_in_object_array_to_string(
+          "/a", "", "key", json)),
+      base::test::ParseJsonDict(
+          R"({"a":[{"key":"18446744073709551615"},{"key":null}]})"));
 
   json = R"({"a":[{"b":{"key":18446744073709551615}},{"b":{"key":null}}]})";
   EXPECT_EQ(
-      json::convert_uint64_in_object_array_to_string("/a", "/b", "key", json),
-      R"({"a":[{"b":{"key":"18446744073709551615"}},{"b":{"key":null}}]})");
+      base::test::ParseJsonDict(json::convert_uint64_in_object_array_to_string(
+          "/a", "/b", "key", json)),
+      base::test::ParseJsonDict(
+          R"({"a":[{"b":{"key":"18446744073709551615"}},{"b":{"key":null}}]})"));
 
   // Empty object array, nothing to convert.
   json = R"({"a":[]})";
@@ -365,13 +396,17 @@ TEST(JsonParser, ConvertUint64InObjectArrayToString) {
   // convert those objects.
   json = R"({"a":[{"key":1},{"diff-key":1},{"key":2}]})";
   EXPECT_EQ(
-      json::convert_uint64_in_object_array_to_string("/a", "", "key", json),
-      R"({"a":[{"key":"1"},{"diff-key":1},{"key":"2"}]})");
+      base::test::ParseJsonDict(json::convert_uint64_in_object_array_to_string(
+          "/a", "", "key", json)),
+      base::test::ParseJsonDict(
+          R"({"a":[{"key":"1"},{"diff-key":1},{"key":"2"}]})"));
 
   json = R"({"a":[{"b":{"key":1}},{"b":{"diff-key":1}},{"b":{"key":2}}]})";
   EXPECT_EQ(
-      json::convert_uint64_in_object_array_to_string("/a", "/b", "key", json),
-      R"({"a":[{"b":{"key":"1"}},{"b":{"diff-key":1}},{"b":{"key":"2"}}]})");
+      base::test::ParseJsonDict(json::convert_uint64_in_object_array_to_string(
+          "/a", "/b", "key", json)),
+      base::test::ParseJsonDict(
+          R"({"a":[{"b":{"key":"1"}},{"b":{"diff-key":1}},{"b":{"key":"2"}}]})"));
 
   std::vector<std::string> invalid_cases = {
       // Value at path isn't an array.
@@ -413,15 +448,19 @@ TEST(JsonParser, ConvertUint64InObjectArrayToString) {
   json =
       R"({"a":[{"b":{"key":18446744073709551615}},{"b":{"key":2}},{"b":{"key":3}}]})";
   EXPECT_EQ(
-      json::convert_uint64_in_object_array_to_string("/a", "/b", "key", json),
-      R"({"a":[{"b":{"key":"18446744073709551615"}},{"b":{"key":"2"}},{"b":{"key":"3"}}]})");
+      base::test::ParseJsonDict(json::convert_uint64_in_object_array_to_string(
+          "/a", "/b", "key", json)),
+      base::test::ParseJsonDict(
+          R"({"a":[{"b":{"key":"18446744073709551615"}},{"b":{"key":"2"}},{"b":{"key":"3"}}]})"));
 
   // Object array where key is nested deeper
   json =
       R"({"a":[{"b":{"c":{"key":18446744073709551615}}},{"b":{"c":{"key":2}}}]})";
   EXPECT_EQ(
-      json::convert_uint64_in_object_array_to_string("/a", "/b/c", "key", json),
-      R"({"a":[{"b":{"c":{"key":"18446744073709551615"}}},{"b":{"c":{"key":"2"}}}]})");
+      base::test::ParseJsonDict(json::convert_uint64_in_object_array_to_string(
+          "/a", "/b/c", "key", json)),
+      base::test::ParseJsonDict(
+          R"({"a":[{"b":{"c":{"key":"18446744073709551615"}}},{"b":{"c":{"key":"2"}}}]})"));
 }
 
 TEST(JsonParser, ConvertAllNumbersToString) {
@@ -429,19 +468,23 @@ TEST(JsonParser, ConvertAllNumbersToString) {
   std::string json(
       R"({"a":[{"key":18446744073709551615},{"key":-2},{"key":3.14}]})");
   EXPECT_EQ(
-      json::convert_all_numbers_to_string(json, ""),
-      R"({"a":[{"key":"18446744073709551615"},{"key":"-2"},{"key":"3.14"}]})");
+      base::test::ParseJsonDict(json::convert_all_numbers_to_string(json, "")),
+      base::test::ParseJsonDict(
+          R"({"a":[{"key":"18446744073709551615"},{"key":"-2"},{"key":"3.14"}]})"));
 
   // OK: convert deeply nested value to string
   json = R"({"some":[{"deeply":{"nested":[{"path":123}]}}]})";
-  EXPECT_EQ(json::convert_all_numbers_to_string(json, ""),
-            R"({"some":[{"deeply":{"nested":[{"path":"123"}]}}]})");
+  EXPECT_EQ(
+      base::test::ParseJsonDict(json::convert_all_numbers_to_string(json, "")),
+      base::test::ParseJsonDict(
+          R"({"some":[{"deeply":{"nested":[{"path":"123"}]}}]})"));
 
   // OK: values other than u64/f64/i64 are unchanged
   json = R"({"a":[{"key":18446744073709551615},{"key":null},{"key":true}]})";
   EXPECT_EQ(
-      json::convert_all_numbers_to_string(json, ""),
-      R"({"a":[{"key":"18446744073709551615"},{"key":null},{"key":true}]})");
+      base::test::ParseJsonDict(json::convert_all_numbers_to_string(json, "")),
+      base::test::ParseJsonDict(
+          R"({"a":[{"key":"18446744073709551615"},{"key":null},{"key":true}]})"));
 
   // OK: empty object array, nothing to convert
   json = R"({"a":[]})";
@@ -453,15 +496,18 @@ TEST(JsonParser, ConvertAllNumbersToString) {
 
   // OK: floating point values in scientific notation are unchanged
   json = R"({"a": 1.196568750220778e-7})";
-  EXPECT_EQ(json::convert_all_numbers_to_string(json, ""),
-            R"({"a":"1.196568750220778e-7"})");
+  EXPECT_EQ(
+      base::test::ParseJsonDict(json::convert_all_numbers_to_string(json, "")),
+      base::test::ParseJsonDict(R"({"a":"1.196568750220778e-7"})"));
 
   // OK: convert under specified JSON path only
   json = R"({"a":1,"outer":{"inner": 2}})";
-  EXPECT_EQ(json::convert_all_numbers_to_string(json, "/outer"),
-            R"({"a":1,"outer":{"inner":"2"}})");
-  EXPECT_EQ(json::convert_all_numbers_to_string(json, "/a"),
-            R"({"a":"1","outer":{"inner":2}})");
+  EXPECT_EQ(base::test::ParseJsonDict(
+                json::convert_all_numbers_to_string(json, "/outer")),
+            base::test::ParseJsonDict(R"({"a":1,"outer":{"inner":"2"}})"));
+  EXPECT_EQ(base::test::ParseJsonDict(
+                json::convert_all_numbers_to_string(json, "/a")),
+            base::test::ParseJsonDict(R"({"a":"1","outer":{"inner":2}})"));
 
   // KO: invalid path has no effect on the JSON
   json = R"({"a":1,"outer":{"inner":2}})";
