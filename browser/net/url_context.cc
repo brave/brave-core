@@ -558,15 +558,25 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
           render_frame_host->GetOutermostMainFrame()->GetLastCommittedOrigin());
     }
   }
-  // Shields settings use the top frame origin. When it is opaque, the page
-  // stores the origin to use instead. Frameless workers have no page, so they
-  // get the default settings.
+  // Shields settings use the origin stored for the page the request belongs
+  // to. A main frame navigation belongs to the new page, but its frame token
+  // still refers to the current one, so it uses the top frame origin instead,
+  // and only uses the current page's stored origin when that is opaque.
+  // Frameless requests have no page, so they use the top frame origin, or the
+  // default settings when it is opaque.
   url::Origin settings_origin;
-  if (isolation_info && isolation_info->top_frame_origin() &&
-      !isolation_info->top_frame_origin()->opaque()) {
+  auto* render_frame_host =
+      content::RenderFrameHost::FromFrameToken(ctx->render_frame_token());
+  const bool is_main_frame_navigation =
+      isolation_info && isolation_info->request_type() ==
+                            net::IsolationInfo::RequestType::kMainFrame;
+  if (render_frame_host && !is_main_frame_navigation) {
+    settings_origin =
+        brave_shields::ShieldsSettingsOrigin::GetForFrame(render_frame_host);
+  } else if (isolation_info && isolation_info->top_frame_origin() &&
+             !isolation_info->top_frame_origin()->opaque()) {
     settings_origin = *isolation_info->top_frame_origin();
-  } else if (auto* render_frame_host = content::RenderFrameHost::FromFrameToken(
-                 ctx->render_frame_token())) {
+  } else if (render_frame_host) {
     settings_origin =
         brave_shields::ShieldsSettingsOrigin::GetForFrame(render_frame_host);
   }
