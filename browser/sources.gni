@@ -671,6 +671,7 @@ if (is_android) {
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser/importer",
     "//brave/browser/p3a",
+    "//brave/browser/ui/webui/new_tab_page",
     "//brave/components/brave_search_conversion",
     "//brave/components/time_period_storage",
     "//chrome/browser/ui/color:mixers",

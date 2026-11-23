@@ -1,0 +1,116 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
+import("//brave/components/brave_talk/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+
+assert(!is_android)
+
+source_set("new_tab_page") {
+  sources = [
+    "brave_new_tab_message_handler.cc",
+    "brave_new_tab_message_handler.h",
+    "brave_new_tab_page_handler.cc",
+    "brave_new_tab_page_handler.h",
+    "brave_new_tab_ui.cc",
+    "brave_new_tab_ui.h",
+    "brave_new_tab_ui_utils.cc",
+    "brave_new_tab_ui_utils.h",
+    "top_sites_message_handler.cc",
+    "top_sites_message_handler.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/brave_ads/core/browser/service",
+    "//brave/components/brave_new_tab_ui:mojom",
+    "//brave/components/brave_news/common:mojom",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//components/ntp_tiles",
+    "//components/omnibox/browser:mojo_bindings",
+    "//components/prefs",
+    "//components/search_engines",
+    "//content/public/browser",
+    "//mojo/public/cpp/bindings",
+    "//ui/shell_dialogs",
+    "//ui/webui",
+  ]
+
+  deps = [
+    "//brave/browser:browser_process",
+    "//brave/browser/misc_metrics",
+    "//brave/browser/new_tab",
+    "//brave/browser/ntp_background",
+    "//brave/browser/profiles:util",
+    "//brave/browser/ui:ui_features",
+    "//brave/browser/ui/webui:brave_sanitized_image_source",
+    "//brave/browser/ui/webui:brave_webui_source",
+    "//brave/browser/ui/webui/brave_new_tab_page_refresh",
+    "//brave/components/brave_ads/buildflags",
+    "//brave/components/brave_new_tab_ui:generated_resources",
+    "//brave/components/brave_news/common/buildflags",
+    "//brave/components/brave_perf_predictor/common",
+    "//brave/components/brave_search_conversion",
+    "//brave/components/brave_shields/core/common",
+    "//brave/components/brave_talk/buildflags",
+    "//brave/components/constants",
+    "//brave/components/misc_metrics",
+    "//brave/components/ntp_background_images/browser",
+    "//brave/components/ntp_background_images/common",
+    "//brave/components/p3a",
+    "//brave/components/resources:static_resources",
+    "//brave/components/time_period_storage",
+    "//chrome/app:generated_resources",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/contextual_search",
+    "//chrome/browser/first_run",
+    "//chrome/browser/new_tab_page/prefs",
+    "//chrome/browser/ntp_tiles",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/search_engines",
+    "//chrome/browser/themes",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/select_file_policy",
+    "//chrome/browser/ui/webui:plural_string_handler",
+    "//chrome/browser/ui/webui:theme_source",
+    "//chrome/browser/ui/webui/searchbox",
+    "//chrome/common:constants",
+    "//components/contextual_search:public",
+    "//components/country_codes",
+    "//components/strings:components_strings",
+    "//components/tabs:public",
+  ]
+
+  if (enable_brave_ads) {
+    deps += [
+      "//brave/browser/brave_ads",
+      "//brave/components/brave_ads/core/public:headers",
+    ]
+  }
+
+  if (enable_brave_news) {
+    deps += [
+      "//brave/browser/brave_news",
+      "//brave/components/brave_news/browser",
+      "//brave/components/brave_news/common",
+    ]
+  }
+
+  if (enable_brave_talk) {
+    deps += [ "//brave/components/brave_talk" ]
+  }
+
+  if (enable_brave_vpn) {
+    public_deps += [ "//brave/components/brave_vpn/common/mojom" ]
+    deps += [
+      "//brave/browser/brave_vpn",
+      "//brave/browser/ui/brave_vpn",
+      "//brave/components/brave_vpn/browser",
+      "//brave/components/brave_vpn/common",
+    ]
+  }
+}
