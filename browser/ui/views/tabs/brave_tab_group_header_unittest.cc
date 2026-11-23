@@ -138,10 +138,9 @@ TEST_F(BraveTabGroupHeaderTest, TitleChipClipPathClearedInVerticalTabs) {
   EXPECT_TRUE(title_chip()->clip_path().isEmpty());
 }
 
-// In vertical tabs, |title_chip_| should only be as wide as the group title,
-// not span the full width of the header, and should be capped to the header
-// width for long titles.
-TEST_F(BraveTabGroupHeaderTest, TitleChipFitsTitleInVerticalTabs) {
+// In vertical tabs, |title_chip_| should span the entire width of the header
+// (minus padding), regardless of the group title's length.
+TEST_F(BraveTabGroupHeaderTest, TitleChipSpansFullWidthInVerticalTabs) {
   TestingProfile profile;
   profile.GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
 
@@ -163,15 +162,13 @@ TEST_F(BraveTabGroupHeaderTest, TitleChipFitsTitleInVerticalTabs) {
   group_views_->header()->SetBounds(0, 0, kHeaderWidth, 40);
 
   SetGroupTitle(u"Hola");
-  const int short_title_chip_width = title_chip()->width();
-  EXPECT_GT(short_title_chip_width, 0);
-  EXPECT_LT(short_title_chip_width, kAvailableWidth);
+  EXPECT_EQ(kAvailableWidth, title_chip()->width());
   EXPECT_EQ(BraveTabGroupHeader::kPaddingForGroup, title_chip()->x());
 
   // Re-running layout must not change the chip size.
   group_views_->header()->InvalidateLayout();
   views::test::RunScheduledLayout(group_views_->header());
-  EXPECT_EQ(short_title_chip_width, title_chip()->width());
+  EXPECT_EQ(kAvailableWidth, title_chip()->width());
 
   SetGroupTitle(
       u"A very long tab group title that needs much more space than is "
