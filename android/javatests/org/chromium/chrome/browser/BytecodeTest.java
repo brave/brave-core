@@ -160,6 +160,7 @@ import org.chromium.chrome.browser.toolbar.top.ToolbarActionModeCallback;
 import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
 import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
 import org.chromium.chrome.browser.toolbar.top.tab_strip.TabStripTransitionCoordinator.TabStripTransitionHandler;
+import org.chromium.chrome.browser.ttc.TtcEntryPoint;
 import org.chromium.chrome.browser.ui.actions.ActionRegistry;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuBlocker;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
@@ -2386,7 +2387,8 @@ public class BytecodeTest {
                         Supplier.class,
                         BrowserControlsVisibilityManager.class,
                         NonNullObservableSupplier.class,
-                        NonNullObservableSupplier.class));
+                        NonNullObservableSupplier.class,
+                        TtcEntryPoint.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/SwipeRefreshHandler",
