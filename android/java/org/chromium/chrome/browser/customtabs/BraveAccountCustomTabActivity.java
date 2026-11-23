@@ -67,8 +67,7 @@ public class BraveAccountCustomTabActivity extends CustomTabActivity {
 
         // Due to bytecode manipulation, SwipeRefreshHandler instances
         // are actually BraveSwipeRefreshHandler at runtime.
-        BraveSwipeRefreshHandler handler = (BraveSwipeRefreshHandler) SwipeRefreshHandler.get(tab);
-        assert handler != null;
+        BraveSwipeRefreshHandler handler = (BraveSwipeRefreshHandler) SwipeRefreshHandler.from(tab);
         handler.setIgnorePullToRefresh(true);
 
         // Hide the toolbar container
