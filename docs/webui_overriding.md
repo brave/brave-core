@@ -268,8 +268,7 @@ new elements to the page to get things looking right.
 In this scenario, its best to add a new build target to Brave and patch it into
 the upstream build for that WebUI.
 
-See `//brave/browser/resources/settings/BUILD.gn` and
-`//brave/browser/resources/settings/settings.gni` for how to get this setup.
+See `//brave/browser/resources/settings/BUILD.gn` for how to get this setup.
 
 ## Strings
 
