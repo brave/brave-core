@@ -1654,7 +1654,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
           "brave-reporting-api",                                               \
           "Enable Reporting API",                                              \
           "Controls whether the Chromium Reporting API is enabled.",           \
-          kOsAll,                                                              \
+          kOsDesktop | kOsAndroid,                                             \
           FEATURE_VALUE_TYPE(blink::features::kBraveReportingAPI),             \
       },                                                                       \
       {                                                                        \
