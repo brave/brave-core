@@ -34,6 +34,16 @@ substitutions:
       feature_name: kGooglePlayProtectInApkTelemetry
       value: base::FEATURE_DISABLED_BY_DEFAULT
 
+  - description: |-
+      Ship kMaliciousApkDownloadCheck disabled.
+
+      Upstream enabled it by default, which makes
+      `DownloadProtectionDelegateAndroid` send a `ClientDownloadRequest` for
+      every APK download to a Google endpoint whenever Safe Browsing is on.
+    set_feature_flag_default_state:
+      feature_name: kMaliciousApkDownloadCheck
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
   - description: 'Ship kNotificationTelemetry disabled.'
     set_feature_flag_default_state:
       feature_name: kNotificationTelemetry

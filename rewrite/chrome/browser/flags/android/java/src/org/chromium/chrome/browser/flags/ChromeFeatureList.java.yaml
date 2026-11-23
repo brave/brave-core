@@ -13,3 +13,14 @@ substitutions:
       pattern: 'newMutableFlagWithSafeDefault(ANDROID_TIPS_NOTIFICATIONS, true)'
       replace:
         'newMutableFlagWithSafeDefault(ANDROID_TIPS_NOTIFICATIONS, false)'
+
+  - description: |-
+      Ship the MaliciousApkDownloadCheck cached flag disabled.
+
+      Matches the C++ default Brave sets for
+      safe_browsing::kMaliciousApkDownloadCheck, so the download UI doesn't
+      offer APK scanning before native flags are cached.
+    regex:
+      re_pattern: |-
+        (MALICIOUS_APK_DOWNLOAD_CHECK,\s*/\* defaultValue= \*/ )true
+      replace: '\1false'

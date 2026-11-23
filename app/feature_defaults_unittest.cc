@@ -303,6 +303,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &safe_browsing::kAntivirusTelemetryForDownloads,
       &safe_browsing::kClientSideDetectionClipboardCopyApi,
       &safe_browsing::kGooglePlayProtectInApkTelemetry,
+#if BUILDFLAG(IS_ANDROID)
+      &safe_browsing::kMaliciousApkDownloadCheck,
+#endif
       &safe_browsing::kNotificationTelemetry,
 #if BUILDFLAG(IS_ANDROID)
       &security_interstitials::features::kHttpsFirstDialogUi,

@@ -1,8 +1,17 @@
 diff --git a/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java b/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java
-index dc06b00a0886ad25278e85163eb18c1fbdadc973..7b065e9a54de3d972eca28496a53c88ad30231d7 100644
+index 14777c2bbda39addc54930ead30055cc8d46b0b9..3dee259f6a955d868e7494f0e54d730df1408021 100644
 --- a/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java
 +++ b/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java
-@@ -1793,7 +1793,7 @@ public abstract class ChromeFeatureList {
+@@ -1373,7 +1373,7 @@ public abstract class ChromeFeatureList {
+     public static final CachedFlag sMaliciousApkDownloadCheck =
+             newCachedFlag(
+                     MALICIOUS_APK_DOWNLOAD_CHECK,
+-                    /* defaultValue= */ true,
++                    /* defaultValue= */ false,
+                     /* defaultValueInTests= */ true);
+     public static final CachedFlag sMigrateManagementToWebUIOnMobile =
+             newCachedFlag(
+@@ -1799,7 +1799,7 @@ public abstract class ChromeFeatureList {
      public static final MutableFlagWithSafeDefault sAndroidTabDeclutterArchiveOnDesktop =
              newMutableFlagWithSafeDefault(ANDROID_TAB_DECLUTTER_ARCHIVE_ON_DESKTOP, false);
      public static final MutableFlagWithSafeDefault sAndroidTipsNotifications =
