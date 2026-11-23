@@ -7,6 +7,7 @@ use core::str::FromStr;
 use powerfmt::smart_display::{FormatterOptions, Metadata, SmartDisplay};
 
 use self::Month::*;
+use crate::iter::MonthIter;
 use crate::{error, util};
 
 /// Months of the year.
@@ -56,13 +57,7 @@ impl Month {
             10 => Ok(October),
             11 => Ok(November),
             12 => Ok(December),
-            n => Err(error::ComponentRange {
-                name: "month",
-                minimum: 1,
-                maximum: 12,
-                value: n as i64,
-                conditional_message: None,
-            }),
+            _ => Err(error::ComponentRange::unconditional("month")),
         }
     }
 
@@ -162,7 +157,7 @@ impl Month {
     /// ```
     #[inline]
     pub const fn nth_prev(self, n: u8) -> Self {
-        match self as i8 - 1 - (n % 12) as i8 {
+        match self as i8 - 1 - (n % 12).cast_signed() {
             1 | -11 => February,
             2 | -10 => March,
             3 | -9 => April,
@@ -180,33 +175,51 @@ impl Month {
             }
         }
     }
-}
 
-mod private {
-    #[non_exhaustive]
-    #[derive(Debug, Clone, Copy)]
-    pub struct MonthMetadata;
+    /// Create an infinite iterator starting at this month.
+    ///
+    /// ```rust
+    /// # use time::Month;
+    /// let mut iter = Month::iter_from(Month::January);
+    /// assert_eq!(iter.next(), Some(Month::January));
+    /// assert_eq!(iter.next(), Some(Month::February));
+    /// assert_eq!(iter.next(), Some(Month::March));
+    /// assert_eq!(iter.next(), Some(Month::April));
+    /// assert_eq!(iter.next(), Some(Month::May));
+    /// assert_eq!(iter.next(), Some(Month::June));
+    /// assert_eq!(iter.next(), Some(Month::July));
+    /// assert_eq!(iter.next(), Some(Month::August));
+    /// assert_eq!(iter.next(), Some(Month::September));
+    /// assert_eq!(iter.next(), Some(Month::October));
+    /// assert_eq!(iter.next(), Some(Month::November));
+    /// assert_eq!(iter.next(), Some(Month::December));
+    /// assert_eq!(iter.next(), Some(Month::January));
+    /// // … continuing forever
+    /// ```
+    #[inline]
+    pub const fn iter_from(start: Self) -> MonthIter {
+        MonthIter::new(start)
+    }
 }
-use private::MonthMetadata;
 
 impl SmartDisplay for Month {
-    type Metadata = MonthMetadata;
+    type Metadata = ();
 
     #[inline]
     fn metadata(&self, _: FormatterOptions) -> Metadata<'_, Self> {
         match self {
-            January => Metadata::new(7, self, MonthMetadata),
-            February => Metadata::new(8, self, MonthMetadata),
-            March => Metadata::new(5, self, MonthMetadata),
-            April => Metadata::new(5, self, MonthMetadata),
-            May => Metadata::new(3, self, MonthMetadata),
-            June => Metadata::new(4, self, MonthMetadata),
-            July => Metadata::new(4, self, MonthMetadata),
-            August => Metadata::new(6, self, MonthMetadata),
-            September => Metadata::new(9, self, MonthMetadata),
-            October => Metadata::new(7, self, MonthMetadata),
-            November => Metadata::new(8, self, MonthMetadata),
-            December => Metadata::new(8, self, MonthMetadata),
+            January => Metadata::new(7, self, ()),
+            February => Metadata::new(8, self, ()),
+            March => Metadata::new(5, self, ()),
+            April => Metadata::new(5, self, ()),
+            May => Metadata::new(3, self, ()),
+            June => Metadata::new(4, self, ()),
+            July => Metadata::new(4, self, ()),
+            August => Metadata::new(6, self, ()),
+            September => Metadata::new(9, self, ()),
+            October => Metadata::new(7, self, ()),
+            November => Metadata::new(8, self, ()),
+            December => Metadata::new(8, self, ()),
         }
     }
 
@@ -273,13 +286,7 @@ impl TryFrom<u8> for Month {
     fn try_from(value: u8) -> Result<Self, Self::Error> {
         match NonZero::new(value) {
             Some(value) => Self::from_number(value),
-            None => Err(error::ComponentRange {
-                name: "month",
-                minimum: 1,
-                maximum: 12,
-                value: 0,
-                conditional_message: None,
-            }),
+            None => Err(error::ComponentRange::unconditional("month")),
         }
     }
 }

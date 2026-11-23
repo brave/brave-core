@@ -3,16 +3,20 @@ use core_foundation_sys::string::CFStringRef;
 use std::os::raw::c_void;
 
 pub enum OpaqueSecKeychainRef {}
+#[cfg(target_os = "macos")]
 pub type SecKeychainRef = *mut OpaqueSecKeychainRef;
 
 pub enum OpaqueSecKeychainItemRef {}
+#[cfg(target_os = "macos")]
 pub type SecKeychainItemRef = *mut OpaqueSecKeychainItemRef;
 
 // OSType from MacTypes.h
+#[cfg(target_os = "macos")]
 pub type SecKeychainAttrType = u32;
 
 #[repr(C)]
 #[derive(Copy, Clone)]
+#[cfg(target_os = "macos")]
 pub struct SecKeychainAttribute {
     pub tag: SecKeychainAttrType,
     pub length: u32,
@@ -21,6 +25,7 @@ pub struct SecKeychainAttribute {
 
 #[repr(C)]
 #[derive(Copy, Clone)]
+#[cfg(target_os = "macos")]
 pub struct SecKeychainAttributeList {
     pub count: u32,
     pub attr: *mut SecKeychainAttribute,
@@ -30,6 +35,7 @@ pub enum OpaqueSecCertificateRef {}
 pub type SecCertificateRef = *mut OpaqueSecCertificateRef;
 
 pub enum OpaqueSecAccessRef {}
+#[cfg(target_os = "macos")]
 pub type SecAccessRef = *mut OpaqueSecAccessRef;
 
 pub enum OpaqueSecAccessControlRef {}

@@ -13,8 +13,9 @@
 edition = "2018"
 rust-version = "1.36"
 name = "futures-sink"
-version = "0.3.31"
+version = "0.3.34"
 build = false
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false
@@ -30,16 +31,16 @@ repository = "https://github.com/rust-lang/futures-rs"
 [package.metadata.docs.rs]
 all-features = true
 
+[features]
+alloc = []
+default = ["std"]
+std = ["alloc"]
+
 [lib]
 name = "futures_sink"
 path = "src/lib.rs"
 
 [dependencies]
-
-[features]
-alloc = []
-default = ["std"]
-std = ["alloc"]
 
 [lints.rust]
 missing_debug_implementations = "warn"

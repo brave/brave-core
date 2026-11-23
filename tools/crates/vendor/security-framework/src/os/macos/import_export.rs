@@ -17,8 +17,7 @@ use crate::key::SecKey;
 use crate::os::macos::access::SecAccess;
 use crate::os::macos::keychain::SecKeychain;
 
-// TODO: deprecate
-#[doc(hidden)]
+#[deprecated(note = "Obsolete. Use Pkcs12ImportOptions directly.")]
 /// Obsolete. Use Pkcs12ImportOptions directly.
 pub trait Pkcs12ImportOptionsExt {
     /// Specifies the keychain in which to import the identity.
@@ -30,11 +29,14 @@ pub trait Pkcs12ImportOptionsExt {
     fn access(&mut self, access: SecAccess) -> &mut Self;
 }
 
+#[allow(deprecated)]
 impl Pkcs12ImportOptionsExt for Pkcs12ImportOptions {
+    /// Moved to Pkcs12ImportOptions. Remove Pkcs12ImportOptionsExt trait.
     fn keychain(&mut self, keychain: SecKeychain) -> &mut Self {
         Self::keychain(self, keychain)
     }
 
+    /// Moved to Pkcs12ImportOptions. Remove Pkcs12ImportOptionsExt trait.
     fn access(&mut self, access: SecAccess) -> &mut Self {
         Self::access(self, access)
     }
@@ -44,9 +46,11 @@ impl Pkcs12ImportOptionsExt for Pkcs12ImportOptions {
 #[derive(Default)]
 pub struct ImportOptions<'a> {
     filename: Option<CFString>,
+    input_format: Option<SecExternalFormat>,
     passphrase: Option<CFType>,
     secure_passphrase: bool,
     no_access_control: bool,
+    access: Option<SecAccess>,
     alert_title: Option<CFString>,
     alert_prompt: Option<CFString>,
     items: Option<&'a mut SecItems>,
@@ -67,6 +71,13 @@ impl<'a> ImportOptions<'a> {
     #[inline]
     pub fn filename(&mut self, filename: &str) -> &mut Self {
         self.filename = Some(CFString::from_str(filename).unwrap());
+        self
+    }
+
+    /// Require input data to be PKCS#12
+    #[inline]
+    pub fn pkcs12(&mut self) -> &mut Self {
+        self.input_format = Some(kSecFormatPKCS12);
         self
     }
 
@@ -96,6 +107,13 @@ impl<'a> ImportOptions<'a> {
     #[inline(always)]
     pub fn no_access_control(&mut self, no_access_control: bool) -> &mut Self {
         self.no_access_control = no_access_control;
+        self
+    }
+
+    /// Specifies the access control to be associated with the identity. macOS only.
+    #[inline(always)]
+    pub fn access(&mut self, access: SecAccess) -> &mut Self {
+        self.access = Some(access);
         self
     }
 
@@ -136,9 +154,18 @@ impl<'a> ImportOptions<'a> {
         let data = CFData::from_buffer(data);
         let data = data.as_concrete_TypeRef();
 
-        let filename = match self.filename {
-            Some(ref filename) => filename.as_concrete_TypeRef(),
+        let filename = match &self.filename {
+            Some(filename) => filename.as_concrete_TypeRef(),
             None => ptr::null(),
+        };
+
+        let mut input_format_out;
+        let input_format_ptr = match self.input_format {
+            None => ptr::null_mut(),
+            Some(format) => {
+                input_format_out = format;
+                &mut input_format_out
+            },
         };
 
         let mut key_params = SecItemImportExportKeyParameters {
@@ -152,7 +179,7 @@ impl<'a> ImportOptions<'a> {
             keyAttributes: ptr::null(),
         };
 
-        if let Some(ref passphrase) = self.passphrase {
+        if let Some(passphrase) = &self.passphrase {
             key_params.passphrase = passphrase.as_CFTypeRef();
         }
 
@@ -164,22 +191,26 @@ impl<'a> ImportOptions<'a> {
             key_params.flags |= kSecKeyNoAccessControl;
         }
 
-        if let Some(ref alert_title) = self.alert_title {
+        if let Some(access) = &self.access {
+            key_params.accessRef = access.as_concrete_TypeRef();
+        }
+
+        if let Some(alert_title) = &self.alert_title {
             key_params.alertTitle = alert_title.as_concrete_TypeRef();
         }
 
-        if let Some(ref alert_prompt) = self.alert_prompt {
+        if let Some(alert_prompt) = &self.alert_prompt {
             key_params.alertPrompt = alert_prompt.as_concrete_TypeRef();
         }
 
-        let keychain = match self.keychain {
-            Some(ref keychain) => keychain.as_concrete_TypeRef(),
+        let keychain = match &self.keychain {
+            Some(keychain) => keychain.as_concrete_TypeRef(),
             None => ptr::null_mut(),
         };
 
         let mut raw_items = ptr::null();
         let items_ref = match self.items {
-            Some(_) => std::ptr::addr_of_mut!(raw_items),
+            Some(_) => &mut raw_items,
             None => ptr::null_mut(),
         };
 
@@ -187,7 +218,7 @@ impl<'a> ImportOptions<'a> {
             let ret = SecItemImport(
                 data,
                 filename,
-                ptr::null_mut(),
+                input_format_ptr,
                 ptr::null_mut(),
                 0,
                 &key_params,
@@ -198,7 +229,7 @@ impl<'a> ImportOptions<'a> {
                 return Err(Error::from_code(ret));
             }
 
-            if let Some(ref mut items) = self.items {
+            if let Some(items) = &mut self.items {
                 let raw_items = CFArray::<CFType>::wrap_under_create_rule(raw_items);
                 for item in raw_items.iter() {
                     let type_id = item.type_of();
@@ -276,17 +307,12 @@ mod test {
             .unwrap();
 
         let data = include_bytes!("../../../test/server.p12");
-        let mut items = SecItems::default();
-        ImportOptions::new()
-            .filename("server.p12")
+        let identities = Pkcs12ImportOptions::new()
             .passphrase("password123")
-            .items(&mut items)
-            .keychain(&keychain)
+            .keychain(keychain)
             .import(data)
             .unwrap();
-        assert_eq!(1, items.identities.len());
-        assert_eq!(0, items.certificates.len());
-        assert_eq!(0, items.keys.len());
+        assert_eq!(1, identities.len());
     }
 
     #[test]
@@ -328,9 +354,7 @@ mod test {
             .keychain(keychain)
             .import(data));
         assert_eq!(1, identities.len());
-        assert_eq!(
-            hex::encode(identities[0].key_id.as_ref().unwrap()),
-            "ed6492936dcc8907e397e573b36e633458dc33f1"
-        );
+        assert!(identities[0].key_id.is_some());
+        assert_eq!(identities[0].key_id.as_ref().unwrap().len(), 20);
     }
 }

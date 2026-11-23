@@ -3,6 +3,8 @@ use alloc::sync::Arc;
 use alloc::vec::Vec;
 use core::cmp;
 
+use gimli::ReaderOffset;
+
 use crate::{
     Context, DebugFile, Error, Function, Functions, LazyFunctions, LazyLines, LazyResult,
     LineLocationRangeIter, Lines, Location, LookupContinuation, LookupResult, RangeAttributes,
@@ -34,6 +36,7 @@ impl<R: gimli::Reader> ResUnit<R> {
     /// Returns the DWARF sections and the unit.
     ///
     /// Loads the DWO unit if necessary.
+    #[allow(clippy::type_complexity)]
     pub(crate) fn dwarf_and_unit<'unit, 'ctx: 'unit>(
         &'unit self,
         ctx: &'ctx Context<R>,
@@ -166,6 +169,7 @@ impl<R: gimli::Reader> ResUnit<R> {
         lines.find_location_range(probe_low, probe_high).map(Some)
     }
 
+    #[allow(clippy::type_complexity)]
     pub(crate) fn find_function_or_location<'unit, 'ctx: 'unit>(
         &'unit self,
         probe: u64,
@@ -208,14 +212,14 @@ impl<R: gimli::Reader> ResUnits<R> {
         while let Some(header) = headers.next()? {
             aranges.push((header.debug_info_offset(), header.offset()));
         }
-        aranges.sort_by_key(|i| i.0);
+        aranges.sort_unstable_by_key(|i| i.0);
 
         let mut unit_ranges = Vec::new();
         let mut res_units = Vec::new();
         let mut units = sections.units();
         while let Some(header) = units.next()? {
             let unit_id = res_units.len();
-            let offset = match header.offset().as_debug_info_offset() {
+            let offset = match header.debug_info_offset() {
                 Some(offset) => offset,
                 None => continue,
             };
@@ -362,7 +366,7 @@ impl<R: gimli::Reader> ResUnits<R> {
         }
 
         // Sort this for faster lookup in `Self::find_range`.
-        unit_ranges.sort_by_key(|i| i.range.end);
+        unit_ranges.sort_unstable_by_key(|i| (i.range.end, i.unit_id));
 
         // Calculate the `min_begin` field now that we've determined the order of
         // CUs.
@@ -391,7 +395,7 @@ impl<R: gimli::Reader> ResUnits<R> {
             .binary_search_by_key(&offset.0, |unit| unit.offset.0)
         {
             // There is never a DIE at the unit offset or before the first unit.
-            Ok(_) | Err(0) => Err(gimli::Error::NoEntryAtGivenOffset),
+            Ok(_) | Err(0) => Err(gimli::Error::NoEntryAtGivenOffset(offset.0.into_u64())),
             Err(i) => Ok(&self.units[i - 1].dw_unit),
         }
     }
@@ -505,7 +509,7 @@ impl<R: gimli::Reader> SupUnits<R> {
         let mut sup_units = Vec::new();
         let mut units = sections.units();
         while let Some(header) = units.next()? {
-            let offset = match header.offset().as_debug_info_offset() {
+            let offset = match header.debug_info_offset() {
                 Some(offset) => offset,
                 None => continue,
             };
@@ -529,7 +533,7 @@ impl<R: gimli::Reader> SupUnits<R> {
             .binary_search_by_key(&offset.0, |unit| unit.offset.0)
         {
             // There is never a DIE at the unit offset or before the first unit.
-            Ok(_) | Err(0) => Err(gimli::Error::NoEntryAtGivenOffset),
+            Ok(_) | Err(0) => Err(gimli::Error::NoEntryAtGivenOffset(offset.0.into_u64())),
             Err(i) => Ok(&self.units[i - 1].dw_unit),
         }
     }

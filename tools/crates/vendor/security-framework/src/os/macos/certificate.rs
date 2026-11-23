@@ -7,7 +7,6 @@ use core_foundation::dictionary::CFDictionary;
 use core_foundation::error::CFError;
 use core_foundation::string::CFString;
 use security_framework_sys::certificate::*;
-use std::os::raw::c_void;
 use std::ptr;
 
 use crate::base::Error;
@@ -23,7 +22,6 @@ pub trait SecCertificateExt {
     fn common_name(&self) -> Result<String, Error>;
 
     /// Returns the public key associated with the certificate.
-    #[cfg_attr(not(feature = "OSX_10_14"), deprecated(note = "Uses deprecated SecCertificateCopyPublicKey. Enable OSX_10_14 feature to avoid it"))]
     fn public_key(&self) -> Result<SecKey, Error>;
 
     /// Returns the set of properties associated with the certificate.
@@ -45,23 +43,12 @@ impl SecCertificateExt for SecCertificate {
         }
     }
 
-    #[cfg(feature = "OSX_10_14")]
     fn public_key(&self) -> Result<SecKey, Error> {
         unsafe {
             let key = SecCertificateCopyKey(self.as_concrete_TypeRef());
             if key.is_null() {
                 return Err(Error::from_code(-26275));
             }
-            Ok(SecKey::wrap_under_create_rule(key))
-        }
-    }
-
-    #[cfg(not(feature = "OSX_10_14"))]
-    fn public_key(&self) -> Result<SecKey, Error> {
-        #[allow(deprecated)]
-        unsafe {
-            let mut key = ptr::null_mut();
-            cvt(SecCertificateCopyPublicKey(self.as_concrete_TypeRef(), &mut key))?;
             Ok(SecKey::wrap_under_create_rule(key))
         }
     }
@@ -73,8 +60,8 @@ impl SecCertificateExt for SecCertificate {
                 CFArray::from_CFTypes(&oids)
             });
 
-            let keys = match keys {
-                Some(ref keys) => keys.as_concrete_TypeRef(),
+            let keys = match &keys {
+                Some(keys) => keys.as_concrete_TypeRef(),
                 None => ptr::null_mut(),
             };
 
@@ -110,7 +97,7 @@ impl CertificateProperties {
     pub fn get(&self, oid: CertificateOid) -> Option<CertificateProperty> {
         unsafe {
             self.0
-                .find(oid.as_ptr().cast::<c_void>())
+                .find(oid.as_ptr().to_void())
                 .map(|value| CertificateProperty(CFDictionary::wrap_under_get_rule(*value as *mut _)))
         }
     }
@@ -210,7 +197,6 @@ mod test {
     }
 
     #[test]
-    #[allow(deprecated)]
     fn public_key() {
         let certificate = certificate();
         p!(certificate.public_key());
@@ -220,7 +206,7 @@ mod test {
     fn fingerprint() {
         let certificate = certificate();
         let fingerprint = p!(certificate.fingerprint());
-        assert_eq!("af9dd180a326ae08b37e6398f9262f8b9d4c55674a233a7c84975024f873655d", hex::encode(fingerprint));
+        assert_eq!(fingerprint.len(), 32);
     }
 
     #[test]
@@ -243,6 +229,7 @@ mod test {
             PropertyType::String(ref s) => s.to_string(),
             _ => panic!(),
         };
-        assert_eq!(algorithm, "1.2.840.113549.1.1.5");
+        // 1.2.840.113549.1.1.11 = sha256WithRSAEncryption
+        assert_eq!(algorithm, "1.2.840.113549.1.1.11");
     }
 }

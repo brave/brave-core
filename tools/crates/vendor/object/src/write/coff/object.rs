@@ -11,7 +11,7 @@ struct SectionOffsets {
     name: writer::Name,
     offset: u32,
     reloc_offset: u32,
-    selection: u8,
+    selection: coff::ComdatSelection,
     associative_section: u32,
 }
 
@@ -64,14 +64,16 @@ impl<'a> Object<'a> {
                 // Unsupported section.
                 (&[], &[], SectionKind::TlsVariables, SectionFlags::None)
             }
-            StandardSection::Common => {
-                // Unsupported section.
-                (&[], &[], SectionKind::Common, SectionFlags::None)
-            }
             StandardSection::GnuProperty => {
                 // Unsupported section.
                 (&[], &[], SectionKind::Note, SectionFlags::None)
             }
+            StandardSection::EhFrame => (
+                &[],
+                &b".eh_frame"[..],
+                SectionKind::ReadOnlyData,
+                SectionFlags::None,
+            ),
         }
     }
 
@@ -113,26 +115,62 @@ impl<'a> Object<'a> {
                     | coff::IMAGE_SCN_MEM_DISCARDABLE
             }
             SectionKind::Linker => coff::IMAGE_SCN_LNK_INFO | coff::IMAGE_SCN_LNK_REMOVE,
-            SectionKind::Common
-            | SectionKind::Tls
+            SectionKind::Tls
             | SectionKind::UninitializedTls
             | SectionKind::TlsVariables
             | SectionKind::Note
             | SectionKind::Unknown
-            | SectionKind::Metadata
-            | SectionKind::Elf(_) => {
+            | SectionKind::Metadata => {
                 return SectionFlags::None;
             }
         };
         SectionFlags::Coff { characteristics }
     }
 
-    pub(crate) fn coff_symbol_flags(&self, _symbol: &Symbol) -> SymbolFlags<SectionId, SymbolId> {
-        // TODO: Need SymbolFlags::Coff for COFF-specific flags (type and storage class).
-        SymbolFlags::None
+    pub(crate) fn coff_symbol_flags(&self, symbol: &Symbol) -> SymbolFlags<SectionId, SymbolId> {
+        let typ = if symbol.kind == SymbolKind::Text {
+            coff::IMAGE_SYM_DTYPE_FUNCTION.into()
+        } else {
+            coff::SymbolType(0)
+        };
+        let storage_class = match symbol.kind {
+            _ if symbol.weak => coff::IMAGE_SYM_CLASS_WEAK_EXTERNAL,
+            SymbolKind::File => coff::IMAGE_SYM_CLASS_FILE,
+            SymbolKind::Section => {
+                if symbol.section.id().is_some() {
+                    coff::IMAGE_SYM_CLASS_STATIC
+                } else {
+                    coff::IMAGE_SYM_CLASS_SECTION
+                }
+            }
+            SymbolKind::Label => coff::IMAGE_SYM_CLASS_LABEL,
+            SymbolKind::Text | SymbolKind::Data | SymbolKind::Tls => match symbol.section {
+                SymbolSection::None => {
+                    return SymbolFlags::None;
+                }
+                SymbolSection::Undefined | SymbolSection::Common => coff::IMAGE_SYM_CLASS_EXTERNAL,
+                SymbolSection::Absolute | SymbolSection::Section(_) => match symbol.scope {
+                    SymbolScope::Unknown => {
+                        return SymbolFlags::None;
+                    }
+                    SymbolScope::Compilation => coff::IMAGE_SYM_CLASS_STATIC,
+                    SymbolScope::Linkage | SymbolScope::Dynamic => coff::IMAGE_SYM_CLASS_EXTERNAL,
+                },
+            },
+            SymbolKind::Unknown => match symbol.section {
+                SymbolSection::Undefined => coff::IMAGE_SYM_CLASS_EXTERNAL,
+                _ => {
+                    return SymbolFlags::None;
+                }
+            },
+        };
+        SymbolFlags::Coff { typ, storage_class }
     }
 
-    pub(crate) fn coff_translate_relocation(&mut self, reloc: &mut Relocation) -> Result<()> {
+    pub(crate) fn coff_translate_relocation(
+        &mut self,
+        reloc: &mut RelocationInternal,
+    ) -> Result<()> {
         use RelocationEncoding as E;
         use RelocationKind as K;
 
@@ -218,7 +256,7 @@ impl<'a> Object<'a> {
         Ok(())
     }
 
-    pub(crate) fn coff_adjust_addend(&self, relocation: &mut Relocation) -> Result<bool> {
+    pub(crate) fn coff_adjust_addend(&self, relocation: &mut RelocationInternal) -> Result<bool> {
         let typ = if let RelocationFlags::Coff { typ } = relocation.flags {
             typ
         } else {
@@ -262,7 +300,7 @@ impl<'a> Object<'a> {
         Ok(true)
     }
 
-    pub(crate) fn coff_relocation_size(&self, reloc: &Relocation) -> Result<u8> {
+    pub(crate) fn coff_relocation_size(&self, reloc: &RelocationInternal) -> Result<u8> {
         let typ = if let RelocationFlags::Coff { typ } = reloc.flags {
             typ
         } else {
@@ -551,7 +589,7 @@ impl<'a> Object<'a> {
             section_offsets[index].reloc_offset =
                 writer.reserve_relocations(section.relocations.len());
         }
-        writer.reserve_symtab_strtab();
+        writer.reserve_symtab_strtab()?;
 
         // Start writing.
         writer.write_file_header(writer::FileHeader {
@@ -579,7 +617,7 @@ impl<'a> Object<'a> {
             time_date_stamp: 0,
             characteristics: match self.flags {
                 FileFlags::Coff { characteristics } => characteristics,
-                _ => 0,
+                _ => coff::FileFlags(0),
             },
         })?;
 
@@ -596,13 +634,13 @@ impl<'a> Object<'a> {
                     section.kind
                 )));
             };
-            if section_offsets[index].selection != 0 {
+            if section_offsets[index].selection.0 != 0 {
                 characteristics |= coff::IMAGE_SCN_LNK_COMDAT;
             };
             if section.relocations.len() > 0xffff {
                 characteristics |= coff::IMAGE_SCN_LNK_NRELOC_OVFL;
             }
-            characteristics |= match section.align {
+            characteristics = characteristics.with_align(match section.align {
                 1 => coff::IMAGE_SCN_ALIGN_1BYTES,
                 2 => coff::IMAGE_SCN_ALIGN_2BYTES,
                 4 => coff::IMAGE_SCN_ALIGN_4BYTES,
@@ -624,7 +662,7 @@ impl<'a> Object<'a> {
                         section.align
                     )));
                 }
-            };
+            });
             writer.write_section_header(writer::SectionHeader {
                 name: section_offsets[index].name,
                 size_of_raw_data: section.size as u32,
@@ -642,7 +680,6 @@ impl<'a> Object<'a> {
             writer.write_section(&section.data);
 
             if !section.relocations.is_empty() {
-                //debug_assert_eq!(section_offsets[index].reloc_offset, buffer.len());
                 writer.write_relocations_count(section.relocations.len());
                 for reloc in &section.relocations {
                     let typ = if let RelocationFlags::Coff { typ } = reloc.flags {
@@ -661,7 +698,7 @@ impl<'a> Object<'a> {
 
         // Write symbols.
         for (index, symbol) in self.symbols.iter().enumerate() {
-            let SymbolFlags::None = symbol.flags else {
+            let SymbolFlags::Coff { typ, storage_class } = self.symbol_flags(symbol) else {
                 return Err(Error(format!(
                     "unimplemented symbol `{}` kind {:?}",
                     symbol.name().unwrap_or(""),
@@ -670,66 +707,15 @@ impl<'a> Object<'a> {
             };
             let section_number = match symbol.section {
                 // weak symbols are always undefined
-                _ if symbol.weak => coff::IMAGE_SYM_UNDEFINED as u16,
+                _ if symbol.weak => coff::IMAGE_SYM_UNDEFINED,
                 SymbolSection::None => {
                     debug_assert_eq!(symbol.kind, SymbolKind::File);
-                    coff::IMAGE_SYM_DEBUG as u16
+                    coff::IMAGE_SYM_DEBUG
                 }
-                SymbolSection::Undefined => coff::IMAGE_SYM_UNDEFINED as u16,
-                SymbolSection::Absolute => coff::IMAGE_SYM_ABSOLUTE as u16,
-                SymbolSection::Common => coff::IMAGE_SYM_UNDEFINED as u16,
-                SymbolSection::Section(id) => id.0 as u16 + 1,
-            };
-            let typ = if symbol.kind == SymbolKind::Text {
-                coff::IMAGE_SYM_DTYPE_FUNCTION << coff::IMAGE_SYM_DTYPE_SHIFT
-            } else {
-                coff::IMAGE_SYM_TYPE_NULL
-            };
-            let storage_class = match symbol.kind {
-                _ if symbol.weak => coff::IMAGE_SYM_CLASS_WEAK_EXTERNAL,
-                SymbolKind::File => coff::IMAGE_SYM_CLASS_FILE,
-                SymbolKind::Section => {
-                    if symbol.section.id().is_some() {
-                        coff::IMAGE_SYM_CLASS_STATIC
-                    } else {
-                        coff::IMAGE_SYM_CLASS_SECTION
-                    }
-                }
-                SymbolKind::Label => coff::IMAGE_SYM_CLASS_LABEL,
-                SymbolKind::Text | SymbolKind::Data | SymbolKind::Tls => match symbol.section {
-                    SymbolSection::None => {
-                        return Err(Error(format!(
-                            "missing section for symbol `{}`",
-                            symbol.name().unwrap_or("")
-                        )));
-                    }
-                    SymbolSection::Undefined | SymbolSection::Common => {
-                        coff::IMAGE_SYM_CLASS_EXTERNAL
-                    }
-                    SymbolSection::Absolute | SymbolSection::Section(_) => match symbol.scope {
-                        SymbolScope::Unknown => {
-                            return Err(Error(format!(
-                                "unimplemented symbol `{}` scope {:?}",
-                                symbol.name().unwrap_or(""),
-                                symbol.scope
-                            )));
-                        }
-                        SymbolScope::Compilation => coff::IMAGE_SYM_CLASS_STATIC,
-                        SymbolScope::Linkage | SymbolScope::Dynamic => {
-                            coff::IMAGE_SYM_CLASS_EXTERNAL
-                        }
-                    },
-                },
-                SymbolKind::Unknown => match symbol.section {
-                    SymbolSection::Undefined => coff::IMAGE_SYM_CLASS_EXTERNAL,
-                    _ => {
-                        return Err(Error(format!(
-                            "unimplemented symbol `{}` kind {:?}",
-                            symbol.name().unwrap_or(""),
-                            symbol.kind
-                        )))
-                    }
-                },
+                SymbolSection::Undefined => coff::IMAGE_SYM_UNDEFINED,
+                SymbolSection::Absolute => coff::IMAGE_SYM_ABSOLUTE,
+                SymbolSection::Common => coff::IMAGE_SYM_UNDEFINED,
+                SymbolSection::Section(id) => coff::SymbolSection(id.0 as i32 + 1),
             };
             let number_of_aux_symbols = symbol_offsets[index].aux_count;
             let value = if symbol.weak {
@@ -751,8 +737,8 @@ impl<'a> Object<'a> {
                     name: weak_default_symbol.name,
                     value: symbol.value as u32,
                     section_number: match symbol.section {
-                        SymbolSection::Section(id) => id.0 as u16 + 1,
-                        SymbolSection::Undefined => coff::IMAGE_SYM_ABSOLUTE as u16,
+                        SymbolSection::Section(id) => coff::SymbolSection(id.0 as i32 + 1),
+                        SymbolSection::Undefined => coff::IMAGE_SYM_ABSOLUTE,
                         o => {
                             return Err(Error(format!(
                                 "invalid symbol section for weak external `{}` section {o:?}",
@@ -761,7 +747,7 @@ impl<'a> Object<'a> {
                         }
                     },
                     number_of_aux_symbols: 0,
-                    typ: 0,
+                    typ: coff::SymbolType(0),
                     storage_class: coff::IMAGE_SYM_CLASS_EXTERNAL,
                 });
             }

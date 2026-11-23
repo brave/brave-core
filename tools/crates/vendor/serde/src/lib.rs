@@ -95,7 +95,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 // Serde types in rustdoc of other crates get linked to here.
-#![doc(html_root_url = "https://docs.rs/serde/1.0.228")]
+#![doc(html_root_url = "https://docs.rs/serde/1.0.229")]
 // Support using Serde without the standard library!
 #![cfg_attr(not(feature = "std"), no_std)]
 // Show which crate feature enables conditionally compiled APIs in documentation.
@@ -105,7 +105,7 @@
 // discussion of these features please refer to this issue:
 //
 //    https://github.com/serde-rs/serde/issues/812
-#![cfg_attr(feature = "unstable", feature(never_type))]
+#![cfg_attr(all(feature = "unstable", docsrs), feature(never_type))]
 #![allow(
     unknown_lints,
     bare_trait_objects,
@@ -119,7 +119,7 @@
     // clippy bug: https://github.com/rust-lang/rust-clippy/issues/7768
     clippy::semicolon_if_nothing_returned,
     // not available in our oldest supported compiler
-    clippy::empty_enum,
+    clippy::empty_enums,
     clippy::type_repetition_in_bounds, // https://github.com/rust-lang/rust-clippy/issues/8772
     // integer and float ser/de requires these sorts of casts
     clippy::cast_possible_truncation,

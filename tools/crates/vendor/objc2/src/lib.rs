@@ -104,6 +104,7 @@
 //! [#203]: https://github.com/madsmtm/objc2/issues/203
 
 #![no_std]
+#![cfg_attr(feature = "unstable-darwin-objc", feature(darwin_objc))]
 #![cfg_attr(
     feature = "unstable-autoreleasesafe",
     feature(negative_impls, auto_traits)
@@ -125,7 +126,7 @@
 #![warn(clippy::missing_errors_doc)]
 #![warn(clippy::missing_panics_doc)]
 // Update in Cargo.toml as well.
-#![doc(html_root_url = "https://docs.rs/objc2/0.6.3")]
+#![doc(html_root_url = "https://docs.rs/objc2/0.6.5")]
 
 #[cfg(not(feature = "alloc"))]
 compile_error!("The `alloc` feature currently must be enabled.");

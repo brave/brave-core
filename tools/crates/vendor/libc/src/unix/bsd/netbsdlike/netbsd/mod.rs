@@ -14,7 +14,7 @@ pub type idtype_t = c_int;
 type __pthread_spin_t = __cpu_simple_lock_nv_t;
 pub type shmatt_t = c_uint;
 pub type cpuset_t = _cpuset;
-pub type pthread_spin_t = c_uchar;
+pub type pthread_spin_t = __pthread_spin_t;
 
 // elf.h
 
@@ -46,7 +46,7 @@ e! {
 }
 
 extern_ty! {
-    pub enum _cpuset {}
+    pub type _cpuset;
 }
 
 cfg_if! {
@@ -80,10 +80,11 @@ impl siginfo_t {
             _si_signo: c_int,
             _si_errno: c_int,
             _si_code: c_int,
+            #[cfg(target_pointer_width = "64")]
             __pad1: Padding<c_int>,
             _pid: crate::pid_t,
         }
-        (*(self as *const siginfo_t as *const siginfo_timer))._pid
+        (*(self as *const siginfo_t).cast::<siginfo_timer>())._pid
     }
 
     pub unsafe fn si_uid(&self) -> crate::uid_t {
@@ -92,11 +93,12 @@ impl siginfo_t {
             _si_signo: c_int,
             _si_errno: c_int,
             _si_code: c_int,
+            #[cfg(target_pointer_width = "64")]
             __pad1: Padding<c_int>,
             _pid: crate::pid_t,
             _uid: crate::uid_t,
         }
-        (*(self as *const siginfo_t as *const siginfo_timer))._uid
+        (*(self as *const siginfo_t).cast::<siginfo_timer>())._uid
     }
 
     pub unsafe fn si_value(&self) -> crate::sigval {
@@ -105,12 +107,13 @@ impl siginfo_t {
             _si_signo: c_int,
             _si_errno: c_int,
             _si_code: c_int,
+            #[cfg(target_pointer_width = "64")]
             __pad1: Padding<c_int>,
             _pid: crate::pid_t,
             _uid: crate::uid_t,
             value: crate::sigval,
         }
-        (*(self as *const siginfo_t as *const siginfo_timer)).value
+        (*(self as *const siginfo_t).cast::<siginfo_timer>()).value
     }
 
     pub unsafe fn si_status(&self) -> c_int {
@@ -119,15 +122,13 @@ impl siginfo_t {
             _si_signo: c_int,
             _si_errno: c_int,
             _si_code: c_int,
+            #[cfg(target_pointer_width = "64")]
             __pad1: Padding<c_int>,
             _pid: crate::pid_t,
             _uid: crate::uid_t,
-            _value: crate::sigval,
-            _cpid: crate::pid_t,
-            _cuid: crate::uid_t,
             status: c_int,
         }
-        (*(self as *const siginfo_t as *const siginfo_timer)).status
+        (*(self as *const siginfo_t).cast::<siginfo_timer>()).status
     }
 }
 
@@ -159,6 +160,20 @@ s! {
         __unused6: Padding<*mut c_void>,
         __unused7: Padding<*mut c_void>,
         __unused8: Padding<*mut c_void>,
+    }
+
+    pub struct tm {
+        pub tm_sec: c_int,
+        pub tm_min: c_int,
+        pub tm_hour: c_int,
+        pub tm_mday: c_int,
+        pub tm_mon: c_int,
+        pub tm_year: c_int,
+        pub tm_wday: c_int,
+        pub tm_yday: c_int,
+        pub tm_isdst: c_int,
+        pub tm_gmtoff: c_long,
+        pub tm_zone: *mut c_char,
     }
 
     pub struct mq_attr {
@@ -211,9 +226,13 @@ s! {
         pub si_signo: c_int,
         pub si_code: c_int,
         pub si_errno: c_int,
+        #[cfg(target_pointer_width = "64")]
         __pad1: Padding<c_int>,
         pub si_addr: *mut c_void,
+        #[cfg(target_pointer_width = "64")]
         __pad2: Padding<[u64; 13]>,
+        #[cfg(target_pointer_width = "32")]
+        __pad2: Padding<[u64; 14]>,
     }
 
     pub struct pthread_attr_t {
@@ -231,20 +250,20 @@ s! {
             target_arch = "x86",
             target_arch = "x86_64"
         ))]
-        ptm_pad1: [u8; 3],
+        ptm_pad1: Padding<[u8; 3]>,
         // actually a union with a non-unused, 0-initialized field
-        ptm_unused: __pthread_spin_t,
+        ptm_unused: Padding<__pthread_spin_t>,
         #[cfg(any(
             target_arch = "sparc",
             target_arch = "sparc64",
             target_arch = "x86",
             target_arch = "x86_64"
         ))]
-        ptm_pad2: [u8; 3],
+        ptm_pad2: Padding<[u8; 3]>,
         ptm_owner: crate::pthread_t,
         ptm_waiters: *mut u8,
         ptm_recursed: c_uint,
-        ptm_spare2: *mut c_void,
+        ptm_spare2: Padding<*mut c_void>,
     }
 
     pub struct pthread_mutexattr_t {
@@ -354,7 +373,7 @@ s! {
     }
 
     pub struct uucred {
-        pub cr_unused: c_ushort,
+        cr_unused: Padding<c_ushort>,
         pub cr_uid: crate::uid_t,
         pub cr_gid: crate::gid_t,
         pub cr_ngroups: c_short,
@@ -422,6 +441,33 @@ s! {
     pub struct Aux64Info {
         pub a_type: Elf64_Word,
         pub a_v: Elf64_Xword,
+    }
+
+    // sys/sysctl.h
+
+    pub struct kinfo_file {
+        pub ki_fileaddr: u64,
+        pub ki_flag: u32,
+        pub ki_iflags: u32,
+        pub ki_ftype: u32,
+        pub ki_count: u32,
+        pub ki_msgcount: u32,
+        pub ki_usecount: u32,
+        pub ki_fucred: u64,
+        pub ki_fuid: u32,
+        pub ki_fgid: u32,
+        pub ki_fops: u64,
+        pub ki_foffset: u64,
+        pub ki_fdata: u64,
+        pub ki_vun: u64,
+        pub ki_vsize: u64,
+        pub ki_vtype: u32,
+        pub ki_vtag: u32,
+        pub ki_vdata: u64,
+        pub ki_pid: u32,
+        pub ki_fd: i32,
+        pub ki_ofileflags: u32,
+        _ki_padto64bits: Padding<u32>,
     }
 
     // link.h
@@ -923,7 +969,7 @@ pub const TCP_CONGCTL: c_int = 0x20;
 pub const SOCK_CONN_DGRAM: c_int = 6;
 pub const SOCK_DCCP: c_int = SOCK_CONN_DGRAM;
 pub const SOCK_NOSIGPIPE: c_int = 0x40000000;
-pub const SOCK_FLAGS_MASK: c_int = 0xf0000000;
+pub const SOCK_FLAGS_MASK: c_int = u32_cast_int(0xf0000000);
 
 pub const SO_SNDTIMEO: c_int = 0x100b;
 pub const SO_RCVTIMEO: c_int = 0x100c;
@@ -1065,6 +1111,13 @@ pub const MAP_ALIGNMENT_256TB: c_int = 48 << MAP_ALIGNMENT_SHIFT;
 pub const MAP_ALIGNMENT_64PB: c_int = 56 << MAP_ALIGNMENT_SHIFT;
 // mremap flag
 pub const MAP_REMAPDUP: c_int = 0x004;
+
+// minherit syscall inherit values
+pub const MAP_INHERIT_SHARE: c_int = 0;
+pub const MAP_INHERIT_COPY: c_int = 1;
+pub const MAP_INHERIT_NONE: c_int = 2;
+pub const MAP_INHERIT_DONATE_COPY: c_int = 3;
+pub const MAP_INHERIT_ZERO: c_int = 4;
 
 pub const DCCP_TYPE_REQUEST: c_int = 0;
 pub const DCCP_TYPE_RESPONSE: c_int = 1;
@@ -1230,7 +1283,7 @@ pub const MNT_NOATIME: c_int = 0x04000000;
 pub const MNT_AUTOMOUNTED: c_int = 0x10000000;
 pub const MNT_SYMPERM: c_int = 0x20000000;
 pub const MNT_NODEVMTIME: c_int = 0x40000000;
-pub const MNT_SOFTDEP: c_int = 0x80000000;
+pub const MNT_SOFTDEP: c_int = u32_cast_int(0x80000000);
 pub const MNT_POSIX1EACLS: c_int = 0x00000800;
 pub const MNT_ACLS: c_int = MNT_POSIX1EACLS;
 pub const MNT_WAIT: c_int = 1;
@@ -1282,23 +1335,23 @@ cfg_if! {
         pub const PTHREAD_MUTEX_INITIALIZER: pthread_mutex_t = pthread_mutex_t {
             ptm_magic: 0x33330003,
             ptm_errorcheck: 0,
-            ptm_pad1: [0; 3],
-            ptm_unused: 0,
-            ptm_pad2: [0; 3],
-            ptm_waiters: 0 as *mut _,
+            ptm_pad1: Padding::new([0; 3]),
+            ptm_unused: Padding::new(0),
+            ptm_pad2: Padding::new([0; 3]),
+            ptm_waiters: ptr::null_mut(),
             ptm_owner: 0,
             ptm_recursed: 0,
-            ptm_spare2: 0 as *mut _,
+            ptm_spare2: Padding::new(ptr::null_mut()),
         };
     } else {
         pub const PTHREAD_MUTEX_INITIALIZER: pthread_mutex_t = pthread_mutex_t {
             ptm_magic: 0x33330003,
             ptm_errorcheck: 0,
-            ptm_unused: 0,
-            ptm_waiters: 0 as *mut _,
+            ptm_unused: Padding::new(0),
+            ptm_waiters: ptr::null_mut(),
             ptm_owner: 0,
             ptm_recursed: 0,
-            ptm_spare2: 0 as *mut _,
+            ptm_spare2: Padding::new(ptr::null_mut()),
         };
     }
 }
@@ -1306,21 +1359,21 @@ cfg_if! {
 pub const PTHREAD_COND_INITIALIZER: pthread_cond_t = pthread_cond_t {
     ptc_magic: 0x55550005,
     ptc_lock: 0,
-    ptc_waiters_first: 0 as *mut _,
-    ptc_waiters_last: 0 as *mut _,
-    ptc_mutex: 0 as *mut _,
-    ptc_private: 0 as *mut _,
+    ptc_waiters_first: ptr::null_mut(),
+    ptc_waiters_last: ptr::null_mut(),
+    ptc_mutex: ptr::null_mut(),
+    ptc_private: ptr::null_mut(),
 };
 pub const PTHREAD_RWLOCK_INITIALIZER: pthread_rwlock_t = pthread_rwlock_t {
     ptr_magic: 0x99990009,
     ptr_interlock: 0,
-    ptr_rblocked_first: 0 as *mut _,
-    ptr_rblocked_last: 0 as *mut _,
-    ptr_wblocked_first: 0 as *mut _,
-    ptr_wblocked_last: 0 as *mut _,
+    ptr_rblocked_first: ptr::null_mut(),
+    ptr_rblocked_last: ptr::null_mut(),
+    ptr_wblocked_first: ptr::null_mut(),
+    ptr_wblocked_last: ptr::null_mut(),
     ptr_nreaders: 0,
     ptr_owner: 0,
-    ptr_private: 0 as *mut _,
+    ptr_private: ptr::null_mut(),
 };
 pub const PTHREAD_MUTEX_NORMAL: c_int = 0;
 pub const PTHREAD_MUTEX_ERRORCHECK: c_int = 1;
@@ -1432,7 +1485,7 @@ pub const CTLFLAG_ALIAS: c_int = 0x00010000;
 pub const CTLFLAG_MMAP: c_int = 0x00020000;
 pub const CTLFLAG_OWNDESC: c_int = 0x00040000;
 pub const CTLFLAG_UNSIGNED: c_int = 0x00080000;
-pub const SYSCTL_VERS_MASK: c_int = 0xff000000;
+pub const SYSCTL_VERS_MASK: c_int = u32_cast_int(0xff000000);
 pub const SYSCTL_VERS_0: c_int = 0x00000000;
 pub const SYSCTL_VERS_1: c_int = 0x01000000;
 pub const SYSCTL_VERSION: c_int = SYSCTL_VERS_1;
@@ -1670,6 +1723,8 @@ pub const KVME_FLAG_PAGEABLE: c_int = 0x000000008;
 pub const KVME_FLAG_GROWS_UP: c_int = 0x000000010;
 pub const KVME_FLAG_GROWS_DOWN: c_int = 0x000000020;
 
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const NGROUPS_MAX: c_int = 16;
 
 pub const KI_NGROUPS: c_int = 16;
@@ -1678,6 +1733,10 @@ pub const KI_WMESGLEN: c_int = 8;
 pub const KI_MAXLOGNAME: c_int = 24;
 pub const KI_MAXEMULLEN: c_int = 16;
 pub const KI_LNAMELEN: c_int = 20;
+
+pub const KERN_FILE_BYFILE: c_int = 1;
+pub const KERN_FILE_BYPID: c_int = 2;
+pub const KERN_FILESLOP: c_int = 10;
 
 // sys/lwp.h
 pub const LSIDL: c_int = 1;
@@ -1742,6 +1801,9 @@ pub const RTM_CHGADDR: c_int = 0x18;
 pub const RTA_TAG: c_int = 0x100;
 
 pub const RTAX_TAG: c_int = 8;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const RTAX_MAX: c_int = 9;
 
 // For eventfd
@@ -1759,71 +1821,73 @@ const fn _ALIGN(p: usize) -> usize {
     (p + _ALIGNBYTES) & !_ALIGNBYTES
 }
 
+// include/paths.h
+pub const _PATH_DEFPATH: *const c_char = cstr(b"/usr/bin:/bin:/usr/pkg/bin:/usr/local/bin\0");
+pub const _PATH_BSHELL: *const c_char = cstr(b"/bin/sh\0");
+
 f! {
-    pub fn CMSG_DATA(cmsg: *const cmsghdr) -> *mut c_uchar {
+    pub unsafe fn CMSG_DATA(cmsg: *const cmsghdr) -> *mut c_uchar {
         (cmsg as *mut c_uchar).add(_ALIGN(size_of::<cmsghdr>()))
     }
 
-    pub const fn CMSG_LEN(length: c_uint) -> c_uint {
+    pub const unsafe fn CMSG_LEN(length: c_uint) -> c_uint {
         _ALIGN(size_of::<cmsghdr>()) as c_uint + length
     }
 
-    pub fn CMSG_NXTHDR(mhdr: *const crate::msghdr, cmsg: *const cmsghdr) -> *mut cmsghdr {
+    pub unsafe fn CMSG_NXTHDR(mhdr: *const crate::msghdr, cmsg: *const cmsghdr) -> *mut cmsghdr {
         if cmsg.is_null() {
             return crate::CMSG_FIRSTHDR(mhdr);
         }
         let next = cmsg as usize + _ALIGN((*cmsg).cmsg_len as usize) + _ALIGN(size_of::<cmsghdr>());
         let max = (*mhdr).msg_control as usize + (*mhdr).msg_controllen as usize;
         if next > max {
-            core::ptr::null_mut::<cmsghdr>()
+            ptr::null_mut()
         } else {
             (cmsg as usize + _ALIGN((*cmsg).cmsg_len as usize)) as *mut cmsghdr
         }
     }
 
-    pub const fn CMSG_SPACE(length: c_uint) -> c_uint {
+    pub const unsafe fn CMSG_SPACE(length: c_uint) -> c_uint {
         (_ALIGN(size_of::<cmsghdr>()) + _ALIGN(length as usize)) as c_uint
     }
 
     // dirfd() is a macro on netbsd to access
     // the first field of the struct where dirp points to:
     // http://cvsweb.netbsd.org/bsdweb.cgi/src/include/dirent.h?rev=1.36
-    pub fn dirfd(dirp: *mut crate::DIR) -> c_int {
+    pub unsafe fn dirfd(dirp: *mut crate::DIR) -> c_int {
         *(dirp as *const c_int)
     }
 
-    pub fn SOCKCREDSIZE(ngrps: usize) -> usize {
+    pub unsafe fn SOCKCREDSIZE(ngrps: usize) -> usize {
         let ngrps = if ngrps > 0 { ngrps - 1 } else { 0 };
         size_of::<sockcred>() + size_of::<crate::gid_t>() * ngrps
     }
 
-    pub fn PROT_MPROTECT(x: c_int) -> c_int {
+    pub unsafe fn PROT_MPROTECT(x: c_int) -> c_int {
         x << 3
     }
 
-    pub fn PROT_MPROTECT_EXTRACT(x: c_int) -> c_int {
+    pub unsafe fn PROT_MPROTECT_EXTRACT(x: c_int) -> c_int {
         (x >> 3) & 0x7
     }
-}
 
-safe_f! {
-    pub const fn WSTOPSIG(status: c_int) -> c_int {
+    pub const safe fn WSTOPSIG(status: c_int) -> c_int {
         status >> 8
     }
 
-    pub const fn WIFSIGNALED(status: c_int) -> bool {
+    pub const safe fn WIFSIGNALED(status: c_int) -> bool {
         (status & 0o177) != 0o177 && (status & 0o177) != 0
     }
 
-    pub const fn WIFSTOPPED(status: c_int) -> bool {
-        (status & 0o177) == 0o177
+    pub const safe fn WIFSTOPPED(status: c_int) -> bool {
+        (status & 0o177) == 0o177 && !WIFCONTINUED(status)
     }
 
-    pub const fn WIFCONTINUED(status: c_int) -> bool {
+    pub const safe fn WIFCONTINUED(status: c_int) -> bool {
         status == 0xffff
     }
 
-    pub const fn makedev(major: c_uint, minor: c_uint) -> crate::dev_t {
+    pub const safe fn makedev(major: c_uint, minor: c_uint) -> crate::dev_t {
         let major = major as crate::dev_t;
         let minor = minor as crate::dev_t;
         let mut dev = 0;
@@ -1833,11 +1897,11 @@ safe_f! {
         dev
     }
 
-    pub const fn major(dev: crate::dev_t) -> c_int {
+    pub const safe fn major(dev: crate::dev_t) -> c_int {
         (((dev as u32) & 0x000fff00) >> 8) as c_int
     }
 
-    pub const fn minor(dev: crate::dev_t) -> c_int {
+    pub const safe fn minor(dev: crate::dev_t) -> c_int {
         let mut res = 0;
         res |= ((dev as u32) & 0xfff00000) >> 12;
         res |= (dev as u32) & 0x000000ff;
@@ -1858,6 +1922,7 @@ extern "C" {
     pub fn chflags(path: *const c_char, flags: c_ulong) -> c_int;
     pub fn fchflags(fd: c_int, flags: c_ulong) -> c_int;
     pub fn lchflags(path: *const c_char, flags: c_ulong) -> c_int;
+    pub fn lchmod(path: *const c_char, mode: crate::mode_t) -> c_int;
 
     pub fn extattr_list_fd(
         fd: c_int,
@@ -2176,12 +2241,6 @@ extern "C" {
         ts: *const crate::timespec,
         sigmask: *const crate::sigset_t,
     ) -> c_int;
-    pub fn ppoll(
-        fds: *mut crate::pollfd,
-        nfds: crate::nfds_t,
-        ts: *const crate::timespec,
-        sigmask: *const crate::sigset_t,
-    ) -> c_int;
     pub fn getrandom(buf: *mut c_void, buflen: size_t, flags: c_uint) -> ssize_t;
 
     pub fn reboot(mode: c_int, bootstr: *mut c_char) -> c_int;
@@ -2190,7 +2249,7 @@ extern "C" {
     pub fn _lwp_park(
         clock: crate::clockid_t,
         flags: c_int,
-        ts: *const crate::timespec,
+        ts: *mut crate::timespec,
         unpark: crate::lwpid_t,
         hint: *const c_void,
         unparkhint: *mut c_void,
@@ -2201,6 +2260,7 @@ extern "C" {
         ntargets: size_t,
         hint: *const c_void,
     ) -> c_int;
+    #[link_name = "__getmntinfo13"]
     pub fn getmntinfo(mntbufp: *mut *mut crate::statvfs, flags: c_int) -> c_int;
     pub fn getvfsstat(buf: *mut crate::statvfs, bufsize: size_t, flags: c_int) -> c_int;
 

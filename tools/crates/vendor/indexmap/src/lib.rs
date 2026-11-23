@@ -76,7 +76,7 @@
 //!
 //! ### Rust Version
 //!
-//! This version of indexmap requires Rust 1.82 or later.
+//! This version of indexmap requires Rust 1.85 or later.
 //!
 //! The indexmap 2.x release series will use a carefully considered version
 //! upgrade policy, where in a later 2.x version, we will raise the minimum
@@ -106,6 +106,7 @@ extern crate alloc;
 extern crate std;
 
 mod arbitrary;
+mod inner;
 #[macro_use]
 mod macros;
 #[cfg(feature = "borsh")]
@@ -171,13 +172,13 @@ where
 
 impl<K, V> Bucket<K, V> {
     // field accessors -- used for `f` instead of closures in `.map(f)`
-    fn key_ref(&self) -> &K {
+    const fn key_ref(&self) -> &K {
         &self.key
     }
-    fn value_ref(&self) -> &V {
+    const fn value_ref(&self) -> &V {
         &self.value
     }
-    fn value_mut(&mut self) -> &mut V {
+    const fn value_mut(&mut self) -> &mut V {
         &mut self.value
     }
     fn key(self) -> K {
@@ -189,13 +190,13 @@ impl<K, V> Bucket<K, V> {
     fn key_value(self) -> (K, V) {
         (self.key, self.value)
     }
-    fn refs(&self) -> (&K, &V) {
+    const fn refs(&self) -> (&K, &V) {
         (&self.key, &self.value)
     }
-    fn ref_mut(&mut self) -> (&K, &mut V) {
+    const fn ref_mut(&mut self) -> (&K, &mut V) {
         (&self.key, &mut self.value)
     }
-    fn muts(&mut self) -> (&mut K, &mut V) {
+    const fn muts(&mut self) -> (&mut K, &mut V) {
         (&mut self.key, &mut self.value)
     }
 }

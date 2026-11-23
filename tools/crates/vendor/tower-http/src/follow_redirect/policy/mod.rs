@@ -18,7 +18,7 @@ pub use self::{
     same_origin::SameOrigin,
 };
 
-use http::{uri::Scheme, Request, StatusCode, Uri};
+use http::{uri::Scheme, Method, Request, StatusCode, Uri};
 
 /// Trait for the policy on handling redirection responses.
 ///
@@ -27,21 +27,21 @@ use http::{uri::Scheme, Request, StatusCode, Uri};
 /// Detecting a cyclic redirection:
 ///
 /// ```
-/// use http::{Request, Uri};
+/// use http::{Method, Request, Uri};
 /// use std::collections::HashSet;
 /// use tower_http::follow_redirect::policy::{Action, Attempt, Policy};
 ///
 /// #[derive(Clone)]
 /// pub struct DetectCycle {
-///     uris: HashSet<Uri>,
+///     uris: HashSet<(Method, Uri)>,
 /// }
 ///
 /// impl<B, E> Policy<B, E> for DetectCycle {
 ///     fn redirect(&mut self, attempt: &Attempt<'_>) -> Result<Action, E> {
-///         if self.uris.contains(attempt.location()) {
+///         if self.uris.contains(&(attempt.method().clone(), attempt.location().clone())) {
 ///             Ok(Action::Stop)
 ///         } else {
-///             self.uris.insert(attempt.previous().clone());
+///             self.uris.insert((attempt.previous_method().clone(), attempt.previous().clone()));
 ///             Ok(Action::Follow)
 ///         }
 ///     }
@@ -198,7 +198,9 @@ pub type Standard = And<Limited, FilterCredentials>;
 /// A type that holds information on a redirection attempt.
 pub struct Attempt<'a> {
     pub(crate) status: StatusCode,
+    pub(crate) method: &'a Method,
     pub(crate) location: &'a Uri,
+    pub(crate) previous_method: &'a Method,
     pub(crate) previous: &'a Uri,
 }
 
@@ -208,9 +210,19 @@ impl<'a> Attempt<'a> {
         self.status
     }
 
+    /// Returns the destination method of the redirection.
+    pub fn method(&self) -> &'a Method {
+        self.method
+    }
+
     /// Returns the destination URI of the redirection.
     pub fn location(&self) -> &'a Uri {
         self.location
+    }
+
+    /// Returns the method for the previous request, before redirection.
+    pub fn previous_method(&self) -> &'a Method {
+        self.previous_method
     }
 
     /// Returns the URI of the original request.

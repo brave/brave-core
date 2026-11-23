@@ -28,8 +28,8 @@ use iso_2022_jp::*;
 use replacement::*;
 use shift_jis::*;
 use single_byte::*;
-use utf_16::*;
 use utf_8::*;
+use utf_16::*;
 use x_user_defined::*;
 
 pub enum VariantDecoder {
@@ -117,27 +117,6 @@ impl VariantDecoder {
         }
     }
 
-    pub fn decode_to_utf16_raw(
-        &mut self,
-        src: &[u8],
-        dst: &mut [u16],
-        last: bool,
-    ) -> (DecoderResult, usize, usize) {
-        match *self {
-            VariantDecoder::SingleByte(ref mut v) => v.decode_to_utf16_raw(src, dst, last),
-            VariantDecoder::Utf8(ref mut v) => v.decode_to_utf16_raw(src, dst, last),
-            VariantDecoder::Gb18030(ref mut v) => v.decode_to_utf16_raw(src, dst, last),
-            VariantDecoder::Big5(ref mut v) => v.decode_to_utf16_raw(src, dst, last),
-            VariantDecoder::EucJp(ref mut v) => v.decode_to_utf16_raw(src, dst, last),
-            VariantDecoder::Iso2022Jp(ref mut v) => v.decode_to_utf16_raw(src, dst, last),
-            VariantDecoder::ShiftJis(ref mut v) => v.decode_to_utf16_raw(src, dst, last),
-            VariantDecoder::EucKr(ref mut v) => v.decode_to_utf16_raw(src, dst, last),
-            VariantDecoder::Replacement(ref mut v) => v.decode_to_utf16_raw(src, dst, last),
-            VariantDecoder::UserDefined(ref mut v) => v.decode_to_utf16_raw(src, dst, last),
-            VariantDecoder::Utf16(ref mut v) => v.decode_to_utf16_raw(src, dst, last),
-        }
-    }
-
     pub fn decode_to_utf8_raw(
         &mut self,
         src: &[u8],
@@ -157,6 +136,15 @@ impl VariantDecoder {
             VariantDecoder::UserDefined(ref mut v) => v.decode_to_utf8_raw(src, dst, last),
             VariantDecoder::Utf16(ref mut v) => v.decode_to_utf8_raw(src, dst, last),
         }
+    }
+
+    pub fn decode_to_utf16_raw(
+        &mut self,
+        src: &[u8],
+        dst: &mut [u16],
+        last: bool,
+    ) -> (DecoderResult, usize, usize) {
+        decode_to_utf16_raw_impl(self, src, dst, last)
     }
 
     pub fn latin1_byte_compatible_up_to(&self, buffer: &[u8]) -> Option<usize> {
@@ -206,6 +194,28 @@ impl VariantDecoder {
             }
         };
         Some(Encoding::ascii_valid_up_to(buffer))
+    }
+}
+
+#[crate::multiversion(targets("x86_64+avx2+bmi1", "x86+avx2+bmi1"))]
+fn decode_to_utf16_raw_impl(
+    dec: &mut VariantDecoder,
+    src: &[u8],
+    dst: &mut [u16],
+    last: bool,
+) -> (DecoderResult, usize, usize) {
+    match *dec {
+        VariantDecoder::SingleByte(ref mut v) => v.decode_to_utf16_raw(src, dst, last),
+        VariantDecoder::Utf8(ref mut v) => v.decode_to_utf16_raw(src, dst, last),
+        VariantDecoder::Gb18030(ref mut v) => v.decode_to_utf16_raw(src, dst, last),
+        VariantDecoder::Big5(ref mut v) => v.decode_to_utf16_raw(src, dst, last),
+        VariantDecoder::EucJp(ref mut v) => v.decode_to_utf16_raw(src, dst, last),
+        VariantDecoder::Iso2022Jp(ref mut v) => v.decode_to_utf16_raw(src, dst, last),
+        VariantDecoder::ShiftJis(ref mut v) => v.decode_to_utf16_raw(src, dst, last),
+        VariantDecoder::EucKr(ref mut v) => v.decode_to_utf16_raw(src, dst, last),
+        VariantDecoder::Replacement(ref mut v) => v.decode_to_utf16_raw(src, dst, last),
+        VariantDecoder::UserDefined(ref mut v) => v.decode_to_utf16_raw(src, dst, last),
+        VariantDecoder::Utf16(ref mut v) => v.decode_to_utf16_raw(src, dst, last),
     }
 }
 
@@ -392,9 +402,9 @@ impl VariantEncoding {
     }
 
     pub fn is_single_byte(&self) -> bool {
-        match *self {
-            VariantEncoding::SingleByte(_, _, _, _) | VariantEncoding::UserDefined => true,
-            _ => false,
-        }
+        matches!(
+            *self,
+            VariantEncoding::SingleByte(_, _, _, _) | VariantEncoding::UserDefined
+        )
     }
 }

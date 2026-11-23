@@ -1,9 +1,9 @@
-use std::borrow::Cow;
-
 use crate::{
-    file::{init, Metadata},
-    path, source, File, Source,
+    File, Source,
+    file::{Metadata, init},
+    path, source,
 };
+use gix_error::Result;
 
 /// Easy-instantiation of typical non-repository git configuration files with all configuration defaulting to typical values.
 ///
@@ -14,7 +14,7 @@ use crate::{
 ///
 /// Also note that relevant information to interpolate paths will be obtained from the environment or other
 /// source on unix.
-impl File<'static> {
+impl File {
     /// Open all global configuration files which involves the following sources:
     ///
     /// * [git-installation](source::Kind::GitInstallation)
@@ -24,7 +24,7 @@ impl File<'static> {
     /// which excludes repository local configuration, as well as override-configuration from environment variables.
     ///
     /// Note that the file might [be empty][File::is_void()] in case no configuration file was found.
-    pub fn from_globals() -> Result<File<'static>, init::from_paths::Error> {
+    pub fn from_globals() -> Result<File> {
         let metas = [
             source::Kind::GitInstallation,
             source::Kind::System,
@@ -35,8 +35,7 @@ impl File<'static> {
         .filter_map(|source| {
             let path = source
                 .storage_location(&mut gix_path::env::var)
-                .and_then(|p| p.is_file().then_some(p))
-                .map(Cow::into_owned);
+                .and_then(|p| p.is_file().then_some(p));
 
             Metadata {
                 path,
@@ -62,7 +61,7 @@ impl File<'static> {
     /// See [`git-config`'s documentation] for more information on the environment variables in question.
     ///
     /// [`git-config`'s documentation]: https://git-scm.com/docs/git-config#Documentation/git-config.txt-GITCONFIGCOUNT
-    pub fn from_environment_overrides() -> Result<File<'static>, init::from_env::Error> {
+    pub fn from_environment_overrides() -> Result<File> {
         let home = gix_path::env::home_dir();
         let options = init::Options {
             includes: init::includes::Options::follow_without_conditional(home.as_deref()),
@@ -74,7 +73,7 @@ impl File<'static> {
 }
 
 /// An easy way to provide complete configuration for a repository.
-impl File<'static> {
+impl File {
     /// This configuration type includes the following sources, in order of precedence:
     ///
     /// - globals
@@ -86,7 +85,9 @@ impl File<'static> {
     ///
     /// Includes will be resolved within limits as some information like the git installation directory is missing to interpolate
     /// paths with as well as git repository information like the branch name.
-    pub fn from_git_dir(dir: std::path::PathBuf) -> Result<File<'static>, from_git_dir::Error> {
+    pub fn from_git_dir(dir: std::path::PathBuf) -> Result<File> {
+        use gix_error::{ResultExt, message};
+
         let (mut local, git_dir) = {
             let source = Source::Local;
             let mut path = dir;
@@ -95,13 +96,14 @@ impl File<'static> {
                     .storage_location(&mut gix_path::env::var)
                     .expect("location available for local"),
             );
-            let local = Self::from_path_no_includes(path.clone(), source)?;
+            let local = Self::from_path_no_includes(path.clone(), source)
+                .or_raise(|| message("Could not read repository-local configuration"))?;
             path.pop();
             (local, path)
         };
 
         let worktree = match local.boolean("extensions.worktreeConfig") {
-            Some(Ok(worktree_config)) => worktree_config.then(|| {
+            Ok(Some(worktree_config)) => worktree_config.then(|| {
                 let source = Source::Worktree;
                 let path = git_dir.join(
                     source
@@ -112,7 +114,8 @@ impl File<'static> {
             }),
             _ => None,
         }
-        .transpose()?;
+        .transpose()
+        .or_raise(|| message("Could not read worktree configuration"))?;
 
         let home = gix_path::env::home_dir();
         let options = init::Options {
@@ -129,35 +132,25 @@ impl File<'static> {
             ..Default::default()
         };
 
-        let mut globals = Self::from_globals()?;
-        globals.resolve_includes(options)?;
-        local.resolve_includes(options)?;
+        let mut globals = Self::from_globals().or_raise(|| message("Could not read global configuration"))?;
+        globals
+            .resolve_includes(options)
+            .or_raise(|| message("Could not resolve includes in global configuration"))?;
+        local
+            .resolve_includes(options)
+            .or_raise(|| message("Could not resolve includes in repository-local configuration"))?;
 
-        globals.append(local);
+        globals.append(local)?;
         if let Some(mut worktree) = worktree {
-            worktree.resolve_includes(options)?;
-            globals.append(worktree);
+            worktree
+                .resolve_includes(options)
+                .or_raise(|| message("Could not resolve includes in worktree configuration"))?;
+            globals.append(worktree)?;
         }
-        globals.append(Self::from_environment_overrides()?);
+        let environment =
+            Self::from_environment_overrides().or_raise(|| message("Could not read environment configuration"))?;
+        globals.append(environment)?;
 
         Ok(globals)
-    }
-}
-
-///
-pub mod from_git_dir {
-    use crate::file::init;
-
-    /// The error returned by [`File::from_git_dir()`][crate::File::from_git_dir()].
-    #[derive(Debug, thiserror::Error)]
-    pub enum Error {
-        #[error(transparent)]
-        FromPaths(#[from] init::from_paths::Error),
-        #[error(transparent)]
-        FromEnv(#[from] init::from_env::Error),
-        #[error(transparent)]
-        Init(#[from] init::Error),
-        #[error(transparent)]
-        Includes(#[from] init::includes::Error),
     }
 }

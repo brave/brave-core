@@ -1,6 +1,5 @@
-use std::borrow::Cow;
-
 use bstr::{BStr, BString, ByteSlice, ByteVec};
+use gix_error::Result;
 
 use crate::{file, parse::Event};
 
@@ -8,7 +7,7 @@ pub(crate) mod multi_value;
 pub(crate) mod section;
 pub(crate) mod value;
 
-fn escape_value(value: &BStr) -> BString {
+pub(crate) fn escape_value(value: &BStr) -> BString {
     let starts_with_whitespace = value.first().is_some_and(u8::is_ascii_whitespace);
     let ends_with_whitespace = value
         .get(value.len().saturating_sub(1))
@@ -37,14 +36,14 @@ fn escape_value(value: &BStr) -> BString {
     buf
 }
 
-#[derive(PartialEq, Eq, Hash, PartialOrd, Ord, Debug)]
-struct Whitespace<'a> {
-    pre_key: Option<Cow<'a, BStr>>,
-    pre_sep: Option<Cow<'a, BStr>>,
-    post_sep: Option<Cow<'a, BStr>>,
+#[derive(Debug)]
+struct Whitespace {
+    pre_key: Option<BString>,
+    pre_sep: Option<BString>,
+    post_sep: Option<BString>,
 }
 
-impl Default for Whitespace<'_> {
+impl Default for Whitespace {
     fn default() -> Self {
         Whitespace {
             pre_key: Some(b"\t".as_bstr().into()),
@@ -54,20 +53,20 @@ impl Default for Whitespace<'_> {
     }
 }
 
-impl<'a> Whitespace<'a> {
-    fn key_value_separators(&self) -> Vec<Event<'a>> {
+impl Whitespace {
+    fn key_value_separators(&self, backing: &mut Vec<u8>) -> Result<Vec<Event>> {
         let mut out = Vec::with_capacity(3);
         if let Some(ws) = &self.pre_sep {
-            out.push(Event::Whitespace(ws.clone()));
+            out.push(Event::Whitespace(crate::parse::Span::append(backing, ws)?));
         }
         out.push(Event::KeyValueSeparator);
         if let Some(ws) = &self.post_sep {
-            out.push(Event::Whitespace(ws.clone()));
+            out.push(Event::Whitespace(crate::parse::Span::append(backing, ws)?));
         }
-        out
+        Ok(out)
     }
 
-    fn from_body(s: &file::section::Body<'a>) -> Self {
+    fn from_body(s: &file::section::BodyData, backing: &[u8]) -> Self {
         let key_pos =
             s.0.iter()
                 .enumerate()
@@ -75,7 +74,7 @@ impl<'a> Whitespace<'a> {
         key_pos
             .map(|key_pos| {
                 let pre_key = s.0[..key_pos].iter().next_back().and_then(|e| match e {
-                    Event::Whitespace(s) => Some(s.clone()),
+                    Event::Whitespace(s) => Some(s.to_bstring_in(backing)),
                     _ => None,
                 });
                 let from_key = &s.0[key_pos..];
@@ -86,11 +85,11 @@ impl<'a> Whitespace<'a> {
                     .map(|sep_pos| {
                         (
                             from_key.get(sep_pos - 1).and_then(|e| match e {
-                                Event::Whitespace(ws) => Some(ws.clone()),
+                                Event::Whitespace(ws) => Some(ws.to_bstring_in(backing)),
                                 _ => None,
                             }),
                             from_key.get(sep_pos + 1).and_then(|e| match e {
-                                Event::Whitespace(ws) => Some(ws.clone()),
+                                Event::Whitespace(ws) => Some(ws.to_bstring_in(backing)),
                                 _ => None,
                             }),
                         )

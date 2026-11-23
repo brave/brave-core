@@ -1,10 +1,10 @@
 error[E0119]: conflicting implementations of trait `MustNotImplDrop` for type `Foo<_, _>`
   --> tests/ui/pin_project/conflict-drop.rs:5:1
    |
-5  | / pin_project! { //~ ERROR E0119
-6  | |     struct Foo<T, U> {
-7  | |         #[pin]
-8  | |         future: T,
+ 5 | / pin_project! { //~ ERROR E0119
+ 6 | |     struct Foo<T, U> {
+ 7 | |         #[pin]
+ 8 | |         future: T,
 ...  |
 11 | | }
    | | ^

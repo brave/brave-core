@@ -41,12 +41,18 @@ impl<'data, Elf: FileHeader> HashTable<'data, Elf> {
         self.chains.len() as u32
     }
 
-    fn bucket(&self, endian: Elf::Endian, hash: u32) -> SymbolIndex {
-        SymbolIndex(self.buckets[(hash as usize) % self.buckets.len()].get(endian) as usize)
+    fn bucket(&self, endian: Elf::Endian, hash: u32) -> Option<SymbolIndex> {
+        let bucket_count = self.buckets.len();
+        if bucket_count == 0 {
+            return None;
+        }
+        Some(SymbolIndex(
+            self.buckets[(hash as usize) % bucket_count].get(endian) as usize,
+        ))
     }
 
-    fn chain(&self, endian: Elf::Endian, index: SymbolIndex) -> SymbolIndex {
-        SymbolIndex(self.chains[index.0].get(endian) as usize)
+    fn chain(&self, endian: Elf::Endian, index: SymbolIndex) -> Option<SymbolIndex> {
+        Some(SymbolIndex(self.chains.get(index.0)?.get(endian) as usize))
     }
 
     /// Use the hash table to find the symbol table entry with the given name, hash and version.
@@ -60,7 +66,7 @@ impl<'data, Elf: FileHeader> HashTable<'data, Elf> {
         versions: &VersionTable<'data, Elf>,
     ) -> Option<(SymbolIndex, &'data Elf::Sym)> {
         // Get the chain start from the bucket for this hash.
-        let mut index = self.bucket(endian, hash);
+        let mut index = self.bucket(endian, hash)?;
         // Avoid infinite loop.
         let mut i = 0;
         let strings = symbols.strings();
@@ -72,7 +78,7 @@ impl<'data, Elf: FileHeader> HashTable<'data, Elf> {
                     return Some((index, symbol));
                 }
             }
-            index = self.chain(endian, index);
+            index = self.chain(endian, index)?;
             i += 1;
         }
         None
@@ -144,30 +150,31 @@ impl<'data, Elf: FileHeader> GnuHashTable<'data, Elf> {
         }
 
         // Find the highest chain index in a bucket.
-        let mut max_symbol = 0;
-        for bucket in self.buckets {
-            let bucket = bucket.get(endian);
-            if max_symbol < bucket {
-                max_symbol = bucket;
-            }
-        }
+        let max_bucket = self.buckets.iter().map(|b| b.get(endian)).max()?;
 
         // Find the end of the chain.
+        let mut chain_length = 0;
         for value in self
             .values
-            .get(max_symbol.checked_sub(self.symbol_base)? as usize..)?
+            .get(max_bucket.checked_sub(self.symbol_base)? as usize..)?
         {
-            max_symbol += 1;
+            chain_length += 1;
             if value.get(endian) & 1 != 0 {
-                return Some(max_symbol);
+                return max_bucket.checked_add(chain_length);
             }
         }
 
         None
     }
 
-    fn bucket(&self, endian: Elf::Endian, hash: u32) -> SymbolIndex {
-        SymbolIndex(self.buckets[(hash as usize) % self.buckets.len()].get(endian) as usize)
+    fn bucket(&self, endian: Elf::Endian, hash: u32) -> Option<SymbolIndex> {
+        let bucket_count = self.buckets.len();
+        if bucket_count == 0 {
+            return None;
+        }
+        Some(SymbolIndex(
+            self.buckets[(hash as usize) % bucket_count].get(endian) as usize,
+        ))
     }
 
     /// Use the hash table to find the symbol table entry with the given name, hash, and version.
@@ -184,6 +191,9 @@ impl<'data, Elf: FileHeader> GnuHashTable<'data, Elf> {
 
         // Test against bloom filter.
         let bloom_count = self.bloom_filters.len() / mem::size_of::<Elf::Word>();
+        if bloom_count == 0 {
+            return None;
+        }
         let offset =
             ((hash / word_bits) & (bloom_count as u32 - 1)) * mem::size_of::<Elf::Word>() as u32;
         let filter = if word_bits == 64 {
@@ -206,7 +216,7 @@ impl<'data, Elf: FileHeader> GnuHashTable<'data, Elf> {
         }
 
         // Get the chain start from the bucket for this hash.
-        let mut index = self.bucket(endian, hash);
+        let mut index = self.bucket(endian, hash)?;
         if index == SymbolIndex(0) {
             return None;
         }
@@ -232,5 +242,104 @@ impl<'data, Elf: FileHeader> GnuHashTable<'data, Elf> {
             index.0 += 1;
         }
         None
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::elf;
+    use crate::endian::LittleEndian;
+
+    type FileHeader = elf::FileHeader64<LittleEndian>;
+
+    #[test]
+    fn hash_table_zero_buckets() {
+        // bucket_count = 0, chain_count = 0.
+        let data = [0u8; 8];
+        let table = HashTable::<FileHeader>::parse(LittleEndian, &data).unwrap();
+        let symbols = SymbolTable::<FileHeader, &[u8]>::default();
+        let versions = VersionTable::default();
+        assert!(
+            table
+                .find(LittleEndian, b"foo", 0, None, &symbols, &versions)
+                .is_none()
+        );
+    }
+
+    #[test]
+    fn hash_table_chain_out_of_bounds() {
+        let data = [
+            1, 0, 0, 0, // bucket_count = 1
+            1, 0, 0, 0, // chain_count = 1
+            1, 0, 0, 0, // buckets[0] = 1 (invalid)
+            0, 0, 0, 0, // chains[0] = 0
+        ];
+        let table = HashTable::<FileHeader>::parse(LittleEndian, &data).unwrap();
+        let symbols = SymbolTable::<FileHeader, &[u8]>::default();
+        let versions = VersionTable::default();
+        // hash 0 selects buckets[0] = 1, which is out of range for the chains.
+        assert!(
+            table
+                .find(LittleEndian, b"foo", 0, None, &symbols, &versions)
+                .is_none()
+        );
+    }
+
+    #[test]
+    fn gnu_hash_table_zero_bloom() {
+        let data = [
+            1, 0, 0, 0, // bucket_count = 1
+            1, 0, 0, 0, // symbol_base = 1
+            0, 0, 0, 0, // bloom_count = 0
+            0, 0, 0, 0, // bloom_shift = 0
+            0, 0, 0, 0, // buckets[0] = 0
+            1, 0, 0, 0, // values[0] (chain end bit set)
+        ];
+        let table = GnuHashTable::<FileHeader>::parse(LittleEndian, &data).unwrap();
+        let symbols = SymbolTable::<FileHeader, &[u8]>::default();
+        let versions = VersionTable::default();
+        assert!(
+            table
+                .find(LittleEndian, b"foo", 0, None, &symbols, &versions)
+                .is_none()
+        );
+    }
+
+    #[test]
+    fn gnu_hash_table_zero_buckets() {
+        let data = [
+            0, 0, 0, 0, // bucket_count = 0
+            1, 0, 0, 0, // symbol_base = 1
+            1, 0, 0, 0, // bloom_count = 1
+            0, 0, 0, 0, // bloom_shift = 0
+            0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, // bloom_filters[0]
+            1, 0, 0, 0, // values[0] (chain end bit set)
+        ];
+        let table = GnuHashTable::<FileHeader>::parse(LittleEndian, &data).unwrap();
+        let symbols = SymbolTable::<FileHeader, &[u8]>::default();
+        let versions = VersionTable::default();
+        // The bloom filter passes so that the empty bucket lookup is reached.
+        assert!(
+            table
+                .find(LittleEndian, b"foo", 0, None, &symbols, &versions)
+                .is_none()
+        );
+    }
+
+    #[test]
+    fn gnu_hash_table_symbol_length_overflow() {
+        let data = [
+            1, 0, 0, 0, // bucket_count = 1
+            0xff, 0xff, 0xff, 0xff, // symbol_base = u32::MAX
+            1, 0, 0, 0, // bloom_count = 1
+            0, 0, 0, 0, // bloom_shift = 0
+            0, 0, 0, 0, 0, 0, 0, 0, // bloom_filters[0]
+            0xff, 0xff, 0xff, 0xff, // buckets[0] = u32::MAX
+            1, 0, 0, 0, // values[0] (chain end bit set)
+        ];
+        let table = GnuHashTable::<FileHeader>::parse(LittleEndian, &data).unwrap();
+        // max_bucket (u32::MAX) + 1 overflows, so this returns None
+        assert_eq!(table.symbol_table_length(LittleEndian), None);
     }
 }

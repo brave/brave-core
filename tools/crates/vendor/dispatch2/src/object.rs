@@ -65,6 +65,7 @@ pub unsafe trait DispatchObject {
     /// This extends the duration in which the object is alive by detaching it
     /// from the lifetime information carried by the reference.
     #[doc(alias = "dispatch_retain")]
+    #[inline]
     fn retain(&self) -> DispatchRetained<Self> {
         let ptr: NonNull<Self> = NonNull::from(self);
         // SAFETY:
@@ -80,6 +81,7 @@ pub unsafe trait DispatchObject {
     ///
     /// TODO.
     #[doc(alias = "dispatch_get_context")]
+    #[inline]
     fn context(&self) -> *mut c_void {
         dispatch_get_context(self.as_raw())
     }
@@ -90,6 +92,7 @@ pub unsafe trait DispatchObject {
     ///
     /// TODO.
     #[doc(alias = "dispatch_set_context")]
+    #[inline]
     unsafe fn set_context(&self, context: *mut c_void) {
         // SAFETY: Upheld by the caller.
         unsafe { dispatch_set_context(self.as_raw(), context) }
@@ -101,12 +104,14 @@ pub unsafe trait DispatchObject {
     ///
     /// TODO.
     #[doc(alias = "dispatch_set_finalizer_f")]
+    #[inline]
     unsafe fn set_finalizer_f(&self, finalizer: dispatch_function_t) {
         // SAFETY: Upheld by the caller.
         unsafe { dispatch_set_finalizer_f(self.as_raw(), finalizer) }
     }
 
     /// Set the finalizer function for the object.
+    #[inline]
     fn set_finalizer<F>(&self, destructor: F)
     where
         F: Send + FnOnce(),
@@ -132,6 +137,7 @@ pub unsafe trait DispatchObject {
     ///
     /// - There must not be a cycle in the hierarchy of queues.
     #[doc(alias = "dispatch_set_target_queue")]
+    #[inline]
     unsafe fn set_target_queue(&self, queue: &DispatchQueue) {
         // SAFETY: `object` and `queue` cannot be null, rest is upheld by caller.
         unsafe { dispatch_set_target_queue(self.as_raw(), Some(queue)) };
@@ -142,6 +148,7 @@ pub unsafe trait DispatchObject {
     /// # Safety
     ///
     /// - DispatchObject should be a queue or queue source.
+    #[inline]
     unsafe fn set_qos_class_floor(
         &self,
         qos_class: DispatchQoS,
@@ -158,20 +165,24 @@ pub unsafe trait DispatchObject {
     }
 
     /// Activate the object.
+    #[inline]
     fn activate(&self) {
         dispatch_activate(self.as_raw());
     }
 
     /// Suspend the invocation of functions on the object.
+    #[inline]
     fn suspend(&self) {
         dispatch_suspend(self.as_raw());
     }
 
     /// Resume the invocation of functions on the object.
+    #[inline]
     fn resume(&self) {
         dispatch_resume(self.as_raw());
     }
 
+    #[inline]
     #[doc(hidden)]
     fn as_raw(&self) -> NonNull<dispatch_object_s> {
         NonNull::from(self).cast()

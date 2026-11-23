@@ -10,15 +10,15 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.82"
+edition = "2024"
+rust-version = "1.88"
 name = "gix-negotiate"
-version = "0.22.0"
+version = "0.38.0"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
 build = false
 include = [
-    "src/**/*",
-    "LICENSE-*",
+    "/src/**/*",
+    "/LICENSE-*",
 ]
 autolib = false
 autobins = false
@@ -29,6 +29,14 @@ description = "A crate of the gitoxide project implementing negotiation algorith
 readme = false
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/GitoxideLabs/gitoxide"
+resolver = "2"
+
+[package.metadata.docs.rs]
+features = ["sha1"]
+
+[features]
+sha1 = ["gix-hash/sha1"]
+sha256 = ["gix-hash/sha256"]
 
 [lib]
 name = "gix_negotiate"
@@ -40,29 +48,27 @@ doctest = false
 version = "2"
 
 [dependencies.gix-commitgraph]
-version = "^0.30.0"
+version = "^0.42.0"
 
 [dependencies.gix-date]
-version = "^0.10.6"
+version = "^0.18.1"
+
+[dependencies.gix-error]
+version = "^0.5.2"
 
 [dependencies.gix-hash]
-version = "^0.20.0"
+version = "^0.28.1"
 
 [dependencies.gix-object]
-version = "^0.51.0"
+version = "^0.66.1"
 
 [dependencies.gix-revwalk]
-version = "^0.22.0"
-
-[dependencies.smallvec]
-version = "1.15.1"
-
-[dependencies.thiserror]
-version = "2.0.17"
+version = "^0.38.0"
 
 [dev-dependencies]
 
 [lints.clippy]
+assert_is_empty = "allow"
 bool_to_int_with_if = "allow"
 borrow_as_ptr = "allow"
 cast_lossless = "allow"
@@ -81,7 +87,6 @@ explicit_into_iter_loop = "allow"
 explicit_iter_loop = "allow"
 filter_map_next = "allow"
 fn_params_excessive_bools = "allow"
-from_iter_instead_of_collect = "allow"
 if_not_else = "allow"
 ignored_unit_patterns = "allow"
 implicit_clone = "allow"

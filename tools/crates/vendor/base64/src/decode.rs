@@ -6,7 +6,7 @@ use core::fmt;
 use std::error;
 
 /// Errors that can occur while decoding.
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, PartialEq, Eq)]
 pub enum DecodeError {
     /// An invalid byte was found in the input. The offset and offending byte are provided.
     ///
@@ -21,9 +21,23 @@ pub enum DecodeError {
     InvalidLength(usize),
     /// The last non-padding input symbol's encoded 6 bits have nonzero bits that will be discarded.
     /// This is indicative of corrupted or truncated Base64.
-    /// Unlike [DecodeError::InvalidByte], which reports symbols that aren't in the alphabet,
+    /// Unlike [`DecodeError::InvalidByte`], which reports symbols that aren't in the alphabet,
     /// this error is for symbols that are in the alphabet but represent nonsensical encodings.
-    InvalidLastSymbol(usize, u8),
+    ///
+    /// See [`crate::engine::GeneralPurposeConfig::with_decode_allow_trailing_bits`] to control
+    /// whether to detect this encoding error and produce this variant.
+    InvalidLastSymbol {
+        /// Offset in the input
+        offset: usize,
+        /// The offending symbol
+        symbol: u8,
+        /// The bits the symbol corresponds to.
+        ///
+        /// Since this error is being reported, this value has high bits erroneously set.
+        /// For a 2-symbol suffix, only the first 2 bits may be set (6 + 2 = 8 bits,
+        /// 1 byte), and for a 3 symbol, only the first 4 (6 + 6 + 4 = 16, 2 bytes).
+        symbol_value: u8,
+    },
     /// The nature of the padding was not as configured: absent or incorrect when it must be
     /// canonical, or present when it must be absent, etc.
     InvalidPadding,
@@ -36,11 +50,36 @@ impl fmt::Display for DecodeError {
                 write!(f, "Invalid symbol {}, offset {}.", byte, index)
             }
             Self::InvalidLength(len) => write!(f, "Invalid input length: {}", len),
-            Self::InvalidLastSymbol(index, byte) => {
-                write!(f, "Invalid last symbol {}, offset {}.", byte, index)
+            Self::InvalidLastSymbol {
+                offset,
+                symbol,
+                symbol_value,
+            } => {
+                write!(
+                    f,
+                    "Invalid last symbol {:#4x} ('{}') at offset {}, decoded as {:#010b}.",
+                    symbol,
+                    // To have been decoded at all, it must have been ascii, but rather than have a
+                    // panicking code path, replacement char seems reasonable.
+                    // Can't use `char::from_u32` as that's 1.52+, so we make a 1-byte str.
+                    core::str::from_utf8(&[symbol])
+                        .ok()
+                        .and_then(|s| s.chars().next())
+                        // associated const is also 1.52+
+                        .unwrap_or(core::char::REPLACEMENT_CHARACTER),
+                    offset,
+                    symbol_value
+                )
             }
             Self::InvalidPadding => write!(f, "Invalid padding"),
         }
+    }
+}
+
+impl fmt::Debug for DecodeError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        // 1.48.0 can't handle {self}
+        write!(f, "{}", self)
     }
 }
 
@@ -50,7 +89,7 @@ impl error::Error for DecodeError {}
 /// Errors that can occur while decoding into a slice.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum DecodeSliceError {
-    /// A [DecodeError] occurred
+    /// A [`DecodeError`] occurred
     DecodeError(DecodeError),
     /// The provided slice is too small.
     OutputSliceTooSmall,
@@ -83,7 +122,7 @@ impl From<DecodeError> for DecodeSliceError {
 
 /// Decode base64 using the [`STANDARD` engine](STANDARD).
 ///
-/// See [Engine::decode].
+/// See [`Engine::decode`].
 #[deprecated(since = "0.21.0", note = "Use Engine::decode")]
 #[cfg(any(feature = "alloc", test))]
 pub fn decode<T: AsRef<[u8]>>(input: T) -> Result<Vec<u8>, DecodeError> {
@@ -92,7 +131,7 @@ pub fn decode<T: AsRef<[u8]>>(input: T) -> Result<Vec<u8>, DecodeError> {
 
 /// Decode from string reference as octets using the specified [Engine].
 ///
-/// See [Engine::decode].
+/// See [`Engine::decode`].
 ///Returns a `Result` containing a `Vec<u8>`.
 #[deprecated(since = "0.21.0", note = "Use Engine::decode")]
 #[cfg(any(feature = "alloc", test))]
@@ -105,7 +144,7 @@ pub fn decode_engine<E: Engine, T: AsRef<[u8]>>(
 
 /// Decode from string reference as octets.
 ///
-/// See [Engine::decode_vec].
+/// See [`Engine::decode_vec`].
 #[cfg(any(feature = "alloc", test))]
 #[deprecated(since = "0.21.0", note = "Use Engine::decode_vec")]
 pub fn decode_engine_vec<E: Engine, T: AsRef<[u8]>>(
@@ -118,7 +157,7 @@ pub fn decode_engine_vec<E: Engine, T: AsRef<[u8]>>(
 
 /// Decode the input into the provided output slice.
 ///
-/// See [Engine::decode_slice].
+/// See [`Engine::decode_slice`].
 #[deprecated(since = "0.21.0", note = "Use Engine::decode_slice")]
 pub fn decode_engine_slice<E: Engine, T: AsRef<[u8]>>(
     input: T,
@@ -146,6 +185,7 @@ pub fn decode_engine_slice<E: Engine, T: AsRef<[u8]>>(
 /// // start of the next quad of encoded symbols
 /// assert_eq!(6, decoded_len_estimate(5));
 /// ```
+#[must_use]
 pub fn decoded_len_estimate(encoded_len: usize) -> usize {
     STANDARD
         .internal_decoded_len_estimate(encoded_len)
@@ -157,13 +197,11 @@ mod tests {
     use super::*;
     use crate::{
         alphabet,
-        engine::{general_purpose, Config, GeneralPurpose},
+        engine::{general_purpose, GeneralPurpose},
         tests::{assert_encode_sanity, random_engine},
     };
-    use rand::{
-        distributions::{Distribution, Uniform},
-        Rng, SeedableRng,
-    };
+    use rand::distr::{Distribution, Uniform};
+    use rand::{rngs, RngExt};
 
     #[test]
     fn decode_into_nonempty_vec_doesnt_clobber_existing_prefix() {
@@ -173,10 +211,10 @@ mod tests {
         let mut decoded_without_prefix = Vec::new();
         let mut prefix = Vec::new();
 
-        let prefix_len_range = Uniform::new(0, 1000);
-        let input_len_range = Uniform::new(0, 1000);
+        let prefix_len_range = Uniform::new(0, 1000).unwrap();
+        let input_len_range = Uniform::new(0, 1000).unwrap();
 
-        let mut rng = rand::rngs::SmallRng::from_entropy();
+        let mut rng = rand::make_rng::<rngs::SmallRng>();
 
         for _ in 0..10_000 {
             orig_data.clear();
@@ -188,18 +226,18 @@ mod tests {
             let input_len = input_len_range.sample(&mut rng);
 
             for _ in 0..input_len {
-                orig_data.push(rng.gen());
+                orig_data.push(rng.random());
             }
 
             let engine = random_engine(&mut rng);
             engine.encode_string(&orig_data, &mut encoded_data);
-            assert_encode_sanity(&encoded_data, engine.config().encode_padding(), input_len);
+            assert_encode_sanity(&encoded_data, &engine, input_len);
 
             let prefix_len = prefix_len_range.sample(&mut rng);
 
             // fill the buf with a prefix
             for _ in 0..prefix_len {
-                prefix.push(rng.gen());
+                prefix.push(rng.random());
             }
 
             decoded_with_prefix.resize(prefix_len, 0);
@@ -283,6 +321,20 @@ mod tests {
         }
     }
 
+    #[test]
+    fn invalid_last_symbol_debug() {
+        let err = DecodeError::InvalidLastSymbol {
+            offset: 100,
+            symbol: b'W',
+            symbol_value: 0x16,
+        };
+
+        assert_eq!(
+            "Invalid last symbol 0x57 ('W') at offset 100, decoded as 0b00010110.",
+            format!("{:?}", err)
+        );
+    }
+
     fn do_decode_slice_doesnt_clobber_existing_prefix_or_suffix<
         F: Fn(&GeneralPurpose, &[u8], &mut [u8]) -> usize,
     >(
@@ -293,9 +345,9 @@ mod tests {
         let mut decode_buf = Vec::new();
         let mut decode_buf_copy: Vec<u8> = Vec::new();
 
-        let input_len_range = Uniform::new(0, 1000);
+        let input_len_range = Uniform::new(0, 1000).unwrap();
 
-        let mut rng = rand::rngs::SmallRng::from_entropy();
+        let mut rng = rand::make_rng::<rngs::SmallRng>();
 
         for _ in 0..10_000 {
             orig_data.clear();
@@ -306,16 +358,16 @@ mod tests {
             let input_len = input_len_range.sample(&mut rng);
 
             for _ in 0..input_len {
-                orig_data.push(rng.gen());
+                orig_data.push(rng.random());
             }
 
             let engine = random_engine(&mut rng);
             engine.encode_string(&orig_data, &mut encoded_data);
-            assert_encode_sanity(&encoded_data, engine.config().encode_padding(), input_len);
+            assert_encode_sanity(&encoded_data, &engine, input_len);
 
             // fill the buffer with random garbage, long enough to have some room before and after
             for _ in 0..5000 {
-                decode_buf.push(rng.gen());
+                decode_buf.push(rng.random());
             }
 
             // keep a copy for later comparison
@@ -354,7 +406,11 @@ mod coverage_gaming {
             "{} {} {} {}",
             DecodeError::InvalidByte(0, 0),
             DecodeError::InvalidLength(0),
-            DecodeError::InvalidLastSymbol(0, 0),
+            DecodeError::InvalidLastSymbol {
+                offset: 0,
+                symbol: 0,
+                symbol_value: 0,
+            },
             DecodeError::InvalidPadding,
         );
     }

@@ -1,35 +1,31 @@
+use jcore::{bounds::Sign, constants as c};
+
 use crate::{
-    civil::{Date, DateTime, Time},
-    error::{err, Error, ErrorContext},
+    SignedDuration, Timestamp, Unit, ZonedDateTime,
+    civil::{Date, DateTime, ISOWeekDate, Time, Weekday},
+    error::{Error, ErrorContext, fmt::temporal::Error as E},
     fmt::{
+        Parsed,
         offset::{self, ParsedOffset},
         rfc9557::{self, ParsedAnnotations},
         temporal::Pieces,
-        util::{parse_temporal_fraction, DurationUnits},
-        Parsed,
+        util::{DurationUnits, parse_temporal_fraction},
     },
     span::Span,
     tz::{
-        AmbiguousZoned, Disambiguation, Offset, OffsetConflict, TimeZone,
-        TimeZoneDatabase,
+        AmbiguousZonedDateTime, Disambiguation, Offset, OffsetConflict,
+        TimeZone, TimeZoneDatabase,
     },
-    util::{
-        c::Sign,
-        escape, parse,
-        t::{self, C},
-    },
-    SignedDuration, Timestamp, Unit, Zoned,
+    util::{b, escape, parse},
 };
 
 /// The datetime components parsed from a string.
 #[derive(Debug)]
 pub(super) struct ParsedDateTime<'i> {
-    /// The original input that the datetime was parsed from.
-    input: escape::Bytes<'i>,
     /// A required civil date.
-    date: ParsedDate<'i>,
+    date: ParsedDate,
     /// An optional civil time.
-    time: Option<ParsedTime<'i>>,
+    time: Option<ParsedTime>,
     /// An optional UTC offset.
     offset: Option<ParsedOffset>,
     /// An optional RFC 9557 annotations parsed.
@@ -56,41 +52,37 @@ impl<'i> ParsedDateTime<'i> {
     }
 
     #[cfg_attr(feature = "perf-inline", inline(always))]
-    pub(super) fn to_zoned(
+    pub(super) fn to_zoned_datetime(
         &self,
         db: &TimeZoneDatabase,
         offset_conflict: OffsetConflict,
         disambiguation: Disambiguation,
-    ) -> Result<Zoned, Error> {
-        self.to_ambiguous_zoned(db, offset_conflict)?
+    ) -> Result<ZonedDateTime, Error> {
+        self.to_ambiguous_zoned_datetime(db, offset_conflict)?
             .disambiguate(disambiguation)
     }
 
     #[cfg_attr(feature = "perf-inline", inline(always))]
-    pub(super) fn to_ambiguous_zoned(
+    fn to_ambiguous_zoned_datetime(
         &self,
         db: &TimeZoneDatabase,
         offset_conflict: OffsetConflict,
-    ) -> Result<AmbiguousZoned, Error> {
+    ) -> Result<AmbiguousZonedDateTime, Error> {
         let time = self.time.as_ref().map_or(Time::midnight(), |p| p.time);
         let dt = DateTime::from_parts(self.date.date, time);
 
         // We always require a time zone when parsing a zoned instant.
-        let tz_annotation =
-            self.annotations.to_time_zone_annotation()?.ok_or_else(|| {
-                err!(
-                    "failed to find time zone in square brackets \
-                     in {:?}, which is required for parsing a zoned instant",
-                    self.input,
-                )
-            })?;
+        let tz_annotation = self
+            .annotations
+            .to_time_zone_annotation()?
+            .ok_or(E::MissingTimeZoneAnnotation)?;
         let tz = tz_annotation.to_time_zone_with(db)?;
 
         // If there's no offset, then our only choice, regardless of conflict
         // resolution preference, is to use the time zone. That is, there is no
         // possible conflict.
         let Some(ref parsed_offset) = self.offset else {
-            return Ok(tz.into_ambiguous_zoned(dt));
+            return Ok(tz.into_ambiguous_zoned_datetime(dt));
         };
         if parsed_offset.is_zulu() {
             // When `Z` is used, that means the offset to local time is not
@@ -102,11 +94,7 @@ impl<'i> ParsedDateTime<'i> {
             // likely result in `OffsetConflict::Reject` raising an error.
             // (Unless the actual correct offset at the time is `+00:00` for
             // the time zone parsed.)
-            return OffsetConflict::AlwaysOffset
-                .resolve(dt, Offset::UTC, tz)
-                .with_context(|| {
-                    err!("parsing {input:?} failed", input = self.input)
-                });
+            return OffsetConflict::AlwaysOffset.resolve(dt, Offset::UTC, tz);
         }
         let offset = parsed_offset.to_offset()?;
         let is_equal = |parsed: Offset, candidate: Offset| {
@@ -125,7 +113,7 @@ impl<'i> ParsedDateTime<'i> {
             // is stupidly rare, so I'm not sure it's worth the effort to
             // improve the error message. I'd be open to a simple patch
             // though.)
-            if candidate.part_seconds_ranged() == C(0)
+            if candidate.seconds() % c::SECS_PER_MIN_32 == 0
                 || parsed_offset.has_subminute()
             {
                 return parsed == candidate;
@@ -137,46 +125,30 @@ impl<'i> ParsedDateTime<'i> {
             };
             parsed == candidate
         };
-        offset_conflict.resolve_with(dt, offset, tz, is_equal).with_context(
-            || err!("parsing {input:?} failed", input = self.input),
-        )
+        offset_conflict.resolve_with(dt, offset, tz, is_equal)
     }
 
     #[cfg_attr(feature = "perf-inline", inline(always))]
     pub(super) fn to_timestamp(&self) -> Result<Timestamp, Error> {
-        let time = self.time.as_ref().map(|p| p.time).ok_or_else(|| {
-            err!(
-                "failed to find time component in {:?}, \
-                 which is required for parsing a timestamp",
-                self.input,
-            )
-        })?;
-        let parsed_offset = self.offset.as_ref().ok_or_else(|| {
-            err!(
-                "failed to find offset component in {:?}, \
-                 which is required for parsing a timestamp",
-                self.input,
-            )
-        })?;
+        let time = self
+            .time
+            .as_ref()
+            .map(|p| p.time)
+            .ok_or(E::MissingTimeInTimestamp)?;
+        let parsed_offset =
+            self.offset.as_ref().ok_or(E::MissingOffsetInTimestamp)?;
         let offset = parsed_offset.to_offset()?;
         let dt = DateTime::from_parts(self.date.date, time);
-        let timestamp = offset.to_timestamp(dt).with_context(|| {
-            err!(
-                "failed to convert civil datetime to timestamp \
-                 with offset {offset}",
-            )
-        })?;
+        let timestamp = offset
+            .to_timestamp(dt)
+            .context(E::ConvertDateTimeToTimestamp { offset })?;
         Ok(timestamp)
     }
 
     #[cfg_attr(feature = "perf-inline", inline(always))]
     pub(super) fn to_datetime(&self) -> Result<DateTime, Error> {
         if self.offset.as_ref().map_or(false, |o| o.is_zulu()) {
-            return Err(err!(
-                "cannot parse civil date from string with a Zulu \
-                 offset, parse as a `Timestamp` and convert to a civil \
-                 datetime instead",
-            ));
+            return Err(Error::from(E::CivilDateTimeZulu));
         }
         Ok(DateTime::from_parts(self.date.date, self.time()))
     }
@@ -184,11 +156,7 @@ impl<'i> ParsedDateTime<'i> {
     #[cfg_attr(feature = "perf-inline", inline(always))]
     pub(super) fn to_date(&self) -> Result<Date, Error> {
         if self.offset.as_ref().map_or(false, |o| o.is_zulu()) {
-            return Err(err!(
-                "cannot parse civil date from string with a Zulu \
-                 offset, parse as a `Timestamp` and convert to a civil \
-                 date instead",
-            ));
+            return Err(Error::from(E::CivilDateTimeZulu));
         }
         Ok(self.date.date)
     }
@@ -201,45 +169,49 @@ impl<'i> ParsedDateTime<'i> {
 
 impl<'i> core::fmt::Display for ParsedDateTime<'i> {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        core::fmt::Display::fmt(&self.input, f)
+        core::fmt::Display::fmt(&self.date, f)?;
+        if let Some(ref time) = self.time {
+            f.write_str("T")?;
+            core::fmt::Display::fmt(&time, f)?;
+        }
+        if let Some(ref offset) = self.offset {
+            core::fmt::Display::fmt(&offset, f)?;
+        }
+        core::fmt::Display::fmt(&self.annotations, f)
     }
 }
 
 /// The result of parsing a Gregorian calendar civil date.
 #[derive(Debug)]
-pub(super) struct ParsedDate<'i> {
-    /// The original input that the date was parsed from.
-    input: escape::Bytes<'i>,
+pub(super) struct ParsedDate {
     /// The actual parsed date.
     date: Date,
 }
 
-impl<'i> core::fmt::Display for ParsedDate<'i> {
+impl core::fmt::Display for ParsedDate {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        core::fmt::Display::fmt(&self.input, f)
+        core::fmt::Display::fmt(&self.date, f)
     }
 }
 
 /// The result of parsing a 24-hour civil time.
 #[derive(Debug)]
-pub(super) struct ParsedTime<'i> {
-    /// The original input that the time was parsed from.
-    input: escape::Bytes<'i>,
+pub(super) struct ParsedTime {
     /// The actual parsed time.
     time: Time,
     /// Whether the time was parsed in extended format or not.
     extended: bool,
 }
 
-impl<'i> ParsedTime<'i> {
+impl ParsedTime {
     pub(super) fn to_time(&self) -> Time {
         self.time
     }
 }
 
-impl<'i> core::fmt::Display for ParsedTime<'i> {
+impl core::fmt::Display for ParsedTime {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        core::fmt::Display::fmt(&self.input, f)
+        core::fmt::Display::fmt(&self.time, f)
     }
 }
 
@@ -262,7 +234,7 @@ pub(super) enum ParsedTimeZoneKind<'i> {
     Named(&'i str),
     Offset(ParsedOffset),
     #[cfg(feature = "alloc")]
-    Posix(crate::tz::posix::PosixTimeZoneOwned),
+    Posix(jcore::tz::posix::TimeZone),
 }
 
 impl<'i> ParsedTimeZone<'i> {
@@ -272,24 +244,11 @@ impl<'i> ParsedTimeZone<'i> {
     ) -> Result<TimeZone, Error> {
         match self.kind {
             ParsedTimeZoneKind::Named(iana_name) => {
-                let tz = db.get(iana_name).with_context(|| {
-                    err!(
-                        "parsed apparent IANA time zone identifier \
-                         {iana_name} from {input}, but the tzdb lookup \
-                         failed",
-                        input = self.input,
-                    )
-                })?;
-                Ok(tz)
+                db.get(iana_name).context(E::FailedTzdbLookup)
             }
             ParsedTimeZoneKind::Offset(poff) => {
-                let offset = poff.to_offset().with_context(|| {
-                    err!(
-                        "offset successfully parsed from {input}, \
-                         but failed to convert to numeric `Offset`",
-                        input = self.input,
-                    )
-                })?;
+                let offset =
+                    poff.to_offset().context(E::FailedOffsetNumeric)?;
                 Ok(TimeZone::fixed(offset))
             }
             #[cfg(feature = "alloc")]
@@ -313,12 +272,12 @@ impl DateTimeParser {
         DateTimeParser { _priv: () }
     }
 
-    // TemporalDateTimeString[Zoned] :::
-    //   AnnotatedDateTime[?Zoned]
+    // TemporalDateTimeString[ZonedDateTime] :::
+    //   AnnotatedDateTime[?ZonedDateTime]
     //
-    // AnnotatedDateTime[Zoned] :::
-    //   [~Zoned] DateTime TimeZoneAnnotation[opt] Annotations[opt]
-    //   [+Zoned] DateTime TimeZoneAnnotation Annotations[opt]
+    // AnnotatedDateTime[ZonedDateTime] :::
+    //   [~ZonedDateTime] DateTime TimeZoneAnnotation[opt] Annotations[opt]
+    //   [+ZonedDateTime] DateTime TimeZoneAnnotation Annotations[opt]
     //
     // DateTime :::
     //   Date
@@ -328,23 +287,20 @@ impl DateTimeParser {
         &self,
         input: &'i [u8],
     ) -> Result<Parsed<'i, ParsedDateTime<'i>>, Error> {
-        let mkslice = parse::slicer(input);
         let Parsed { value: date, input } = self.parse_date_spec(input)?;
-        if input.is_empty() {
+        let Some((&first, tail)) = input.split_first() else {
             let value = ParsedDateTime {
-                input: escape::Bytes(mkslice(input)),
                 date,
                 time: None,
                 offset: None,
                 annotations: ParsedAnnotations::none(),
             };
             return Ok(Parsed { value, input });
-        }
-        let (time, offset, input) = if !matches!(input[0], b' ' | b'T' | b't')
-        {
+        };
+        let (time, offset, input) = if !matches!(first, b' ' | b'T' | b't') {
             (None, None, input)
         } else {
-            let input = &input[1..];
+            let input = tail;
             // If there's a separator, then we must parse a time and we are
             // *allowed* to parse an offset. But without a separator, we don't
             // support offsets. Just annotations (which are parsed below).
@@ -354,13 +310,7 @@ impl DateTimeParser {
         };
         let Parsed { value: annotations, input } =
             self.parse_annotations(input)?;
-        let value = ParsedDateTime {
-            input: escape::Bytes(mkslice(input)),
-            date,
-            time,
-            offset,
-            annotations,
-        };
+        let value = ParsedDateTime { date, time, offset, annotations };
         Ok(Parsed { value, input })
     }
 
@@ -384,20 +334,17 @@ impl DateTimeParser {
     #[cfg_attr(feature = "perf-inline", inline(always))]
     pub(super) fn parse_temporal_time<'i>(
         &self,
-        mut input: &'i [u8],
-    ) -> Result<Parsed<'i, ParsedTime<'i>>, Error> {
+        input: &'i [u8],
+    ) -> Result<Parsed<'i, ParsedTime>, Error> {
         let mkslice = parse::slicer(input);
 
-        if input.starts_with(b"T") || input.starts_with(b"t") {
-            input = &input[1..];
+        if let Some(input) =
+            input.strip_prefix(b"T").or_else(|| input.strip_prefix(b"t"))
+        {
             let Parsed { value: time, input } = self.parse_time_spec(input)?;
             let Parsed { value: offset, input } = self.parse_offset(input)?;
             if offset.map_or(false, |o| o.is_zulu()) {
-                return Err(err!(
-                    "cannot parse civil time from string with a Zulu \
-                     offset, parse as a `Timestamp` and convert to a civil \
-                     time instead",
-                ));
+                return Err(Error::from(E::CivilDateTimeZulu));
             }
             let Parsed { input, .. } = self.parse_annotations(input)?;
             return Ok(Parsed { value: time, input });
@@ -414,18 +361,10 @@ impl DateTimeParser {
         if let Ok(parsed) = self.parse_temporal_datetime(input) {
             let Parsed { value: dt, input } = parsed;
             if dt.offset.map_or(false, |o| o.is_zulu()) {
-                return Err(err!(
-                    "cannot parse plain time from full datetime string with a \
-                     Zulu offset, parse as a `Timestamp` and convert to a \
-                     plain time instead",
-                ));
+                return Err(Error::from(E::CivilDateTimeZulu));
             }
             let Some(time) = dt.time else {
-                return Err(err!(
-                    "successfully parsed date from {parsed:?}, but \
-                     no time component was found",
-                    parsed = dt.input,
-                ));
+                return Err(Error::from(E::MissingTimeInDate));
             };
             return Ok(Parsed { value: time, input });
         }
@@ -436,11 +375,7 @@ impl DateTimeParser {
         let Parsed { value: time, input } = self.parse_time_spec(input)?;
         let Parsed { value: offset, input } = self.parse_offset(input)?;
         if offset.map_or(false, |o| o.is_zulu()) {
-            return Err(err!(
-                "cannot parse plain time from string with a Zulu \
-                 offset, parse as a `Timestamp` and convert to a plain \
-                 time instead",
-            ));
+            return Err(Error::from(E::CivilDateTimeZulu));
         }
         // The possible ambiguities occur with the time AND the
         // optional offset, so try to parse what we have so far as
@@ -452,18 +387,10 @@ impl DateTimeParser {
         if !time.extended {
             let possibly_ambiguous = mkslice(input);
             if self.parse_month_day(possibly_ambiguous).is_ok() {
-                return Err(err!(
-                    "parsed time from {parsed:?} is ambiguous \
-                             with a month-day date",
-                    parsed = escape::Bytes(possibly_ambiguous),
-                ));
+                return Err(Error::from(E::AmbiguousTimeMonthDay));
             }
             if self.parse_year_month(possibly_ambiguous).is_ok() {
-                return Err(err!(
-                    "parsed time from {parsed:?} is ambiguous \
-                             with a year-month date",
-                    parsed = escape::Bytes(possibly_ambiguous),
-                ));
+                return Err(Error::from(E::AmbiguousTimeYearMonth));
             }
         }
         // OK... carry on.
@@ -476,9 +403,7 @@ impl DateTimeParser {
         &self,
         mut input: &'i [u8],
     ) -> Result<Parsed<'i, ParsedTimeZone<'i>>, Error> {
-        let Some(first) = input.first().copied() else {
-            return Err(err!("an empty string is not a valid time zone"));
-        };
+        let &first = input.first().ok_or(E::EmptyTimeZone)?;
         let original = escape::Bytes(input);
         if matches!(first, b'+' | b'-') {
             static P: offset::Parser = offset::Parser::new()
@@ -495,20 +420,15 @@ impl DateTimeParser {
         // be an IANA time zone identifier. We do this in a couple
         // different cases below, hence the helper function.
         let mknamed = |consumed, remaining| {
-            let Ok(tzid) = core::str::from_utf8(consumed) else {
-                return Err(err!(
-                    "found plausible IANA time zone identifier \
-                     {input:?}, but it is not valid UTF-8",
-                    input = escape::Bytes(consumed),
-                ));
-            };
+            let tzid = core::str::from_utf8(consumed)
+                .map_err(|_| E::InvalidTimeZoneUtf8)?;
             let kind = ParsedTimeZoneKind::Named(tzid);
             let value = ParsedTimeZone { input: original, kind };
             Ok(Parsed { value, input: remaining })
         };
         // This part get tricky. The common case is absolutely an IANA time
-        // zone identifier. So we try to parse something that looks like an IANA
-        // tz id.
+        // zone identifier. So we try to parse something that looks like an
+        // IANA tz id.
         //
         // In theory, IANA tz ids can never be valid POSIX TZ strings, since
         // POSIX TZ strings minimally require an offset in them (e.g., `EST5`)
@@ -521,12 +441,12 @@ impl DateTimeParser {
         let mkconsumed = parse::slicer(input);
         let mut saw_number = false;
         loop {
-            let Some(byte) = input.first().copied() else { break };
+            let Some((&byte, tail)) = input.split_first() else { break };
             if byte.is_ascii_whitespace() {
                 break;
             }
             saw_number = saw_number || byte.is_ascii_digit();
-            input = &input[1..];
+            input = tail;
         }
         let consumed = mkconsumed(input);
         if !saw_number {
@@ -534,20 +454,17 @@ impl DateTimeParser {
         }
         #[cfg(not(feature = "alloc"))]
         {
-            Err(err!(
-                "cannot parsed time zones other than fixed offsets \
-                 without the `alloc` crate feature enabled",
-            ))
+            Err(Error::from(E::AllocPosixTimeZone))
         }
         #[cfg(feature = "alloc")]
         {
-            use crate::tz::posix::PosixTimeZone;
+            use jcore::tz::posix;
 
-            match PosixTimeZone::parse_prefix(consumed) {
-                Ok((posix_tz, input)) => {
+            match posix::TimeZone::parse_prefix(consumed) {
+                Ok((posix_tz, len)) => {
                     let kind = ParsedTimeZoneKind::Posix(posix_tz);
                     let value = ParsedTimeZone { input: original, kind };
-                    Ok(Parsed { value, input })
+                    Ok(Parsed { value, input: &consumed[len..] })
                 }
                 // We get here for invalid POSIX tz strings, or even if
                 // they are technically valid according to POSIX but not
@@ -559,6 +476,47 @@ impl DateTimeParser {
         }
     }
 
+    /// Parses an ISO 8601 week date.
+    ///
+    /// Note that this isn't part of the Temporal ISO 8601 spec. We put it here
+    /// because it shares a fair bit of code with parsing regular ISO 8601
+    /// dates.
+    #[cfg_attr(feature = "perf-inline", inline(always))]
+    pub(super) fn parse_iso_week_date<'i>(
+        &self,
+        input: &'i [u8],
+    ) -> Result<Parsed<'i, ISOWeekDate>, Error> {
+        // Parse year component.
+        let Parsed { value: year, input } = self.parse_year(input)?;
+        let extended = input.starts_with(b"-");
+
+        // Parse optional separator.
+        let Parsed { input, .. } = self
+            .parse_date_separator(input, extended)
+            .context(E::FailedSeparatorAfterYear)?;
+
+        // Parse 'W' prefix before week num.
+        let Parsed { input, .. } = self
+            .parse_week_prefix(input)
+            .context(E::FailedWeekNumberPrefixInDate)?;
+
+        // Parse week num component.
+        let Parsed { value: week, input } = self.parse_week_num(input)?;
+
+        // Parse optional separator.
+        let Parsed { input, .. } = self
+            .parse_date_separator(input, extended)
+            .context(E::FailedSeparatorAfterWeekNumber)?;
+
+        // Parse day component.
+        let Parsed { value: weekday, input } = self.parse_weekday(input)?;
+
+        let iso_week_date = ISOWeekDate::new(year, week, weekday)
+            .context(E::InvalidWeekDate)?;
+
+        Ok(Parsed { value: iso_week_date, input: input })
+    }
+
     // Date :::
     //   DateYear - DateMonth - DateDay
     //   DateYear DateMonth DateDay
@@ -566,43 +524,29 @@ impl DateTimeParser {
     fn parse_date_spec<'i>(
         &self,
         input: &'i [u8],
-    ) -> Result<Parsed<'i, ParsedDate<'i>>, Error> {
-        let mkslice = parse::slicer(input);
-        let original = escape::Bytes(input);
-
+    ) -> Result<Parsed<'i, ParsedDate>, Error> {
         // Parse year component.
-        let Parsed { value: year, input } =
-            self.parse_year(input).with_context(|| {
-                err!("failed to parse year in date {original:?}")
-            })?;
+        let Parsed { value: year, input } = self.parse_year(input)?;
         let extended = input.starts_with(b"-");
 
         // Parse optional separator.
         let Parsed { input, .. } = self
             .parse_date_separator(input, extended)
-            .context("failed to parse separator after year")?;
+            .context(E::FailedSeparatorAfterYear)?;
 
         // Parse month component.
-        let Parsed { value: month, input } =
-            self.parse_month(input).with_context(|| {
-                err!("failed to parse month in date {original:?}")
-            })?;
+        let Parsed { value: month, input } = self.parse_month(input)?;
 
         // Parse optional separator.
         let Parsed { input, .. } = self
             .parse_date_separator(input, extended)
-            .context("failed to parse separator after month")?;
+            .context(E::FailedSeparatorAfterMonth)?;
 
         // Parse day component.
-        let Parsed { value: day, input } =
-            self.parse_day(input).with_context(|| {
-                err!("failed to parse day in date {original:?}")
-            })?;
+        let Parsed { value: day, input } = self.parse_day(input)?;
 
-        let date = Date::new_ranged(year, month, day).with_context(|| {
-            err!("date parsed from {original:?} is not valid")
-        })?;
-        let value = ParsedDate { input: escape::Bytes(mkslice(input)), date };
+        let date = Date::new(year, month, day).context(E::InvalidDate)?;
+        let value = ParsedDate { date };
         Ok(Parsed { value, input })
     }
 
@@ -616,85 +560,53 @@ impl DateTimeParser {
     fn parse_time_spec<'i>(
         &self,
         input: &'i [u8],
-    ) -> Result<Parsed<'i, ParsedTime<'i>>, Error> {
-        let mkslice = parse::slicer(input);
-        let original = escape::Bytes(input);
-
+    ) -> Result<Parsed<'i, ParsedTime>, Error> {
         // Parse hour component.
-        let Parsed { value: hour, input } =
-            self.parse_hour(input).with_context(|| {
-                err!("failed to parse hour in time {original:?}")
-            })?;
+        let Parsed { value: hour, input } = self.parse_hour(input)?;
         let extended = input.starts_with(b":");
 
         // Parse optional minute component.
         let Parsed { value: has_minute, input } =
             self.parse_time_separator(input, extended);
         if !has_minute {
-            let time = Time::new_ranged(
-                hour,
-                t::Minute::N::<0>(),
-                t::Second::N::<0>(),
-                t::SubsecNanosecond::N::<0>(),
-            );
-            let value = ParsedTime {
-                input: escape::Bytes(mkslice(input)),
-                time,
-                extended,
-            };
+            // OK because we know `hour` is in bounds and all combinations of
+            // `hour` with zeros are valid `Time` values.
+            let time = Time::new(hour, 0, 0, 0).unwrap();
+            let value = ParsedTime { time, extended };
             return Ok(Parsed { value, input });
         }
-        let Parsed { value: minute, input } =
-            self.parse_minute(input).with_context(|| {
-                err!("failed to parse minute in time {original:?}")
-            })?;
+        let Parsed { value: minute, input } = self.parse_minute(input)?;
 
         // Parse optional second component.
         let Parsed { value: has_second, input } =
             self.parse_time_separator(input, extended);
         if !has_second {
-            let time = Time::new_ranged(
-                hour,
-                minute,
-                t::Second::N::<0>(),
-                t::SubsecNanosecond::N::<0>(),
-            );
-            let value = ParsedTime {
-                input: escape::Bytes(mkslice(input)),
-                time,
-                extended,
-            };
+            // OK because we know `hour` and `minute` are in bounds and all
+            // combinations of `hour` and `minute` with zero seconds/nanos are
+            // valid `Time` values.
+            let time = Time::new(hour, minute, 0, 0).unwrap();
+            let value = ParsedTime { time, extended };
             return Ok(Parsed { value, input });
         }
-        let Parsed { value: second, input } =
-            self.parse_second(input).with_context(|| {
-                err!("failed to parse second in time {original:?}")
-            })?;
+        let Parsed { value: second, input } = self.parse_second(input)?;
 
         // Parse an optional fractional component.
         let Parsed { value: nanosecond, input } =
-            parse_temporal_fraction(input).with_context(|| {
-                err!(
-                    "failed to parse fractional nanoseconds \
-                     in time {original:?}",
-                )
-            })?;
+            parse_temporal_fraction(input)
+                .context(E::FailedFractionalSecondInTime)?;
 
-        let time = Time::new_ranged(
+        // OK because we know that all our components are in bounds and all
+        // combinations of in-bounds components are valid `Time` values.
+        let time = Time::new(
             hour,
             minute,
             second,
             // OK because `parse_temporal_fraction` guarantees
             // `0..=999_999_999`.
-            nanosecond
-                .map(|n| t::SubsecNanosecond::new(n).unwrap())
-                .unwrap_or(t::SubsecNanosecond::N::<0>()),
-        );
-        let value = ParsedTime {
-            input: escape::Bytes(mkslice(input)),
-            time,
-            extended,
-        };
+            nanosecond.map(|n| i32::try_from(n).unwrap()).unwrap_or(0),
+        )
+        .unwrap();
+        let value = ParsedTime { time, extended };
         Ok(Parsed { value, input })
     }
 
@@ -715,33 +627,22 @@ impl DateTimeParser {
         &self,
         input: &'i [u8],
     ) -> Result<Parsed<'i, ()>, Error> {
-        let original = escape::Bytes(input);
-
         // Parse month component.
-        let Parsed { value: month, mut input } =
-            self.parse_month(input).with_context(|| {
-                err!("failed to parse month in month-day {original:?}")
-            })?;
+        let Parsed { value: month, mut input } = self.parse_month(input)?;
 
         // Skip over optional separator.
-        if input.starts_with(b"-") {
-            input = &input[1..];
+        if let Some(tail) = input.strip_prefix(b"-") {
+            input = tail;
         }
 
         // Parse day component.
-        let Parsed { value: day, input } =
-            self.parse_day(input).with_context(|| {
-                err!("failed to parse day in month-day {original:?}")
-            })?;
+        let Parsed { value: day, input } = self.parse_day(input)?;
 
         // Check that the month-day is valid. Since Temporal's month-day
         // permits 02-29, we use a leap year. The error message here is
         // probably confusing, but these errors should never be exposed to the
         // user.
-        let year = t::Year::N::<2024>();
-        let _ = Date::new_ranged(year, month, day).with_context(|| {
-            err!("month-day parsed from {original:?} is not valid")
-        })?;
+        let _ = Date::new(2024, month, day).context(E::InvalidMonthDay)?;
 
         // We have a valid year-month. But we don't return it because we just
         // need to check validity.
@@ -758,31 +659,20 @@ impl DateTimeParser {
         &self,
         input: &'i [u8],
     ) -> Result<Parsed<'i, ()>, Error> {
-        let original = escape::Bytes(input);
-
         // Parse year component.
-        let Parsed { value: year, mut input } =
-            self.parse_year(input).with_context(|| {
-                err!("failed to parse year in date {original:?}")
-            })?;
+        let Parsed { value: year, mut input } = self.parse_year(input)?;
 
         // Skip over optional separator.
-        if input.starts_with(b"-") {
-            input = &input[1..];
+        if let Some(tail) = input.strip_prefix(b"-") {
+            input = tail;
         }
 
         // Parse month component.
-        let Parsed { value: month, input } =
-            self.parse_month(input).with_context(|| {
-                err!("failed to parse month in month-day {original:?}")
-            })?;
+        let Parsed { value: month, input } = self.parse_month(input)?;
 
         // Check that the year-month is valid. We just use a day of 1, since
         // every month in every year must have a day 1.
-        let day = t::Day::N::<1>();
-        let _ = Date::new_ranged(year, month, day).with_context(|| {
-            err!("year-month parsed from {original:?} is not valid")
-        })?;
+        let _ = Date::new(year, month, 1).context(E::InvalidYearMonth)?;
 
         // We have a valid year-month. But we don't return it because we just
         // need to check validity.
@@ -803,51 +693,34 @@ impl DateTimeParser {
     fn parse_year<'i>(
         &self,
         input: &'i [u8],
-    ) -> Result<Parsed<'i, t::Year>, Error> {
-        // TODO: We could probably decrease the codegen for this function,
-        // or at least make it tighter, by putting the code for signed years
-        // behind an unlineable function.
-
+    ) -> Result<Parsed<'i, i16>, Error> {
         let Parsed { value: sign, input } = self.parse_year_sign(input);
         if let Some(sign) = sign {
-            let (year, input) = parse::split(input, 6).ok_or_else(|| {
-                err!(
-                    "expected six digit year (because of a leading sign), \
-                     but found end of input",
-                )
-            })?;
-            let year = parse::i64(year).with_context(|| {
-                err!(
-                    "failed to parse {year:?} as year (a six digit integer)",
-                    year = escape::Bytes(year),
-                )
-            })?;
-            let year =
-                t::Year::try_new("year", year).context("year is not valid")?;
-            if year == C(0) && sign.is_negative() {
-                return Err(err!(
-                    "year zero must be written without a sign or a \
-                     positive sign, but not a negative sign",
-                ));
-            }
-            Ok(Parsed { value: year * sign.as_ranged_integer(), input })
-        } else {
-            let (year, input) = parse::split(input, 4).ok_or_else(|| {
-                err!(
-                    "expected four digit year (or leading sign for \
-                     six digit year), but found end of input",
-                )
-            })?;
-            let year = parse::i64(year).with_context(|| {
-                err!(
-                    "failed to parse {year:?} as year (a four digit integer)",
-                    year = escape::Bytes(year),
-                )
-            })?;
-            let year =
-                t::Year::try_new("year", year).context("year is not valid")?;
-            Ok(Parsed { value: year, input })
+            return self.parse_signed_year(input, sign);
         }
+
+        let (year, input) =
+            parse::split(input, 4).ok_or(E::ExpectedFourDigitYear)?;
+        let year =
+            parse::bi64::<b::Year>(year).context(E::ParseYearFourDigit)?;
+        Ok(Parsed { value: year, input })
+    }
+
+    #[cold]
+    #[inline(never)]
+    fn parse_signed_year<'i>(
+        &self,
+        input: &'i [u8],
+        sign: Sign,
+    ) -> Result<Parsed<'i, i16>, Error> {
+        let (year, input) =
+            parse::split(input, 6).ok_or(E::ExpectedSixDigitYear)?;
+        let year =
+            parse::bi64::<b::Year>(year).context(E::ParseYearSixDigit)?;
+        if year == 0 && sign.is_negative() {
+            return Err(Error::from(E::InvalidYearZero));
+        }
+        Ok(Parsed { value: sign * year, input })
     }
 
     // DateMonth :::
@@ -859,18 +732,11 @@ impl DateTimeParser {
     fn parse_month<'i>(
         &self,
         input: &'i [u8],
-    ) -> Result<Parsed<'i, t::Month>, Error> {
-        let (month, input) = parse::split(input, 2).ok_or_else(|| {
-            err!("expected two digit month, but found end of input")
-        })?;
-        let month = parse::i64(month).with_context(|| {
-            err!(
-                "failed to parse {month:?} as month (a two digit integer)",
-                month = escape::Bytes(month),
-            )
-        })?;
+    ) -> Result<Parsed<'i, i8>, Error> {
+        let (month, input) =
+            parse::split(input, 2).ok_or(E::ExpectedTwoDigitMonth)?;
         let month =
-            t::Month::try_new("month", month).context("month is not valid")?;
+            parse::bi64::<b::Month>(month).context(E::ParseMonthTwoDigit)?;
         Ok(Parsed { value: month, input })
     }
 
@@ -881,20 +747,10 @@ impl DateTimeParser {
     //   30
     //   31
     #[cfg_attr(feature = "perf-inline", inline(always))]
-    fn parse_day<'i>(
-        &self,
-        input: &'i [u8],
-    ) -> Result<Parsed<'i, t::Day>, Error> {
-        let (day, input) = parse::split(input, 2).ok_or_else(|| {
-            err!("expected two digit day, but found end of input")
-        })?;
-        let day = parse::i64(day).with_context(|| {
-            err!(
-                "failed to parse {day:?} as day (a two digit integer)",
-                day = escape::Bytes(day),
-            )
-        })?;
-        let day = t::Day::try_new("day", day).context("day is not valid")?;
+    fn parse_day<'i>(&self, input: &'i [u8]) -> Result<Parsed<'i, i8>, Error> {
+        let (day, input) =
+            parse::split(input, 2).ok_or(E::ExpectedTwoDigitDay)?;
+        let day = parse::bi64::<b::Day>(day).context(E::ParseDayTwoDigit)?;
         Ok(Parsed { value: day, input })
     }
 
@@ -912,18 +768,11 @@ impl DateTimeParser {
     fn parse_hour<'i>(
         &self,
         input: &'i [u8],
-    ) -> Result<Parsed<'i, t::Hour>, Error> {
-        let (hour, input) = parse::split(input, 2).ok_or_else(|| {
-            err!("expected two digit hour, but found end of input")
-        })?;
-        let hour = parse::i64(hour).with_context(|| {
-            err!(
-                "failed to parse {hour:?} as hour (a two digit integer)",
-                hour = escape::Bytes(hour),
-            )
-        })?;
+    ) -> Result<Parsed<'i, i8>, Error> {
+        let (hour, input) =
+            parse::split(input, 2).ok_or(E::ExpectedTwoDigitHour)?;
         let hour =
-            t::Hour::try_new("hour", hour).context("hour is not valid")?;
+            parse::bi64::<b::Hour>(hour).context(E::ParseHourTwoDigit)?;
         Ok(Parsed { value: hour, input })
     }
 
@@ -941,18 +790,11 @@ impl DateTimeParser {
     fn parse_minute<'i>(
         &self,
         input: &'i [u8],
-    ) -> Result<Parsed<'i, t::Minute>, Error> {
-        let (minute, input) = parse::split(input, 2).ok_or_else(|| {
-            err!("expected two digit minute, but found end of input")
-        })?;
-        let minute = parse::i64(minute).with_context(|| {
-            err!(
-                "failed to parse {minute:?} as minute (a two digit integer)",
-                minute = escape::Bytes(minute),
-            )
-        })?;
-        let minute = t::Minute::try_new("minute", minute)
-            .context("minute is not valid")?;
+    ) -> Result<Parsed<'i, i8>, Error> {
+        let (minute, input) =
+            parse::split(input, 2).ok_or(E::ExpectedTwoDigitMinute)?;
+        let minute = parse::bi64::<b::Minute>(minute)
+            .context(E::ParseMinuteTwoDigit)?;
         Ok(Parsed { value: minute, input })
     }
 
@@ -971,23 +813,16 @@ impl DateTimeParser {
     fn parse_second<'i>(
         &self,
         input: &'i [u8],
-    ) -> Result<Parsed<'i, t::Second>, Error> {
-        let (second, input) = parse::split(input, 2).ok_or_else(|| {
-            err!("expected two digit second, but found end of input",)
-        })?;
-        let mut second = parse::i64(second).with_context(|| {
-            err!(
-                "failed to parse {second:?} as second (a two digit integer)",
-                second = escape::Bytes(second),
-            )
-        })?;
+    ) -> Result<Parsed<'i, i8>, Error> {
+        let (second, input) =
+            parse::split(input, 2).ok_or(E::ExpectedTwoDigitSecond)?;
+        let mut second = parse::bi64::<b::LeapSecond>(second)
+            .context(E::ParseSecondTwoDigit)?;
         // NOTE: I believe Temporal allows one to make this configurable. That
         // is, to reject it. But for now, we just always clamp a leap second.
         if second == 60 {
             second = 59;
         }
-        let second = t::Second::try_new("second", second)
-            .context("second is not valid")?;
         Ok(Parsed { value: second, input })
     }
 
@@ -1007,7 +842,7 @@ impl DateTimeParser {
         input: &'i [u8],
     ) -> Result<Parsed<'i, ParsedAnnotations<'i>>, Error> {
         const P: rfc9557::Parser = rfc9557::Parser::new();
-        if input.is_empty() || input[0] != b'[' {
+        if input.first().map_or(true, |&b| b != b'[') {
             let value = ParsedAnnotations::none();
             return Ok(Parsed { input, value });
         }
@@ -1022,32 +857,24 @@ impl DateTimeParser {
     #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_date_separator<'i>(
         &self,
-        mut input: &'i [u8],
+        input: &'i [u8],
         extended: bool,
     ) -> Result<Parsed<'i, ()>, Error> {
         if !extended {
             // If we see a '-' when not in extended mode, then we can report
             // a better error message than, e.g., "-3 isn't a valid day."
             if input.starts_with(b"-") {
-                return Err(err!(
-                    "expected no separator after month since none was \
-                     found after the year, but found a '-' separator",
-                ));
+                return Err(Error::from(E::ExpectedNoSeparator));
             }
             return Ok(Parsed { value: (), input });
         }
-        if input.is_empty() {
-            return Err(err!(
-                "expected '-' separator, but found end of input"
-            ));
+        let (&first, input) =
+            input.split_first().ok_or(E::ExpectedSeparatorFoundEndOfInput)?;
+        if first != b'-' {
+            return Err(Error::from(E::ExpectedSeparatorFoundByte {
+                byte: first,
+            }));
         }
-        if input[0] != b'-' {
-            return Err(err!(
-                "expected '-' separator, but found {found:?} instead",
-                found = escape::Byte(input[0]),
-            ));
-        }
-        input = &input[1..];
         Ok(Parsed { value: (), input })
     }
 
@@ -1068,13 +895,16 @@ impl DateTimeParser {
         extended: bool,
     ) -> Parsed<'i, bool> {
         if !extended {
-            let expected =
-                input.len() >= 2 && input[..2].iter().all(u8::is_ascii_digit);
+            let expected = parse::split(input, 2)
+                .map_or(false, |(prefix, _)| {
+                    prefix.iter().all(u8::is_ascii_digit)
+                });
             return Parsed { value: expected, input };
         }
-        let is_separator = input.get(0).map_or(false, |&b| b == b':');
-        if is_separator {
-            input = &input[1..];
+        let mut is_separator = false;
+        if let Some(tail) = input.strip_prefix(b":") {
+            is_separator = true;
+            input = tail;
         }
         Parsed { value: is_separator, input }
     }
@@ -1094,9 +924,9 @@ impl DateTimeParser {
     #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_year_sign<'i>(
         &self,
-        mut input: &'i [u8],
+        input: &'i [u8],
     ) -> Parsed<'i, Option<Sign>> {
-        let Some(sign) = input.get(0).copied() else {
+        let Some((&sign, tail)) = input.split_first() else {
             return Parsed { value: None, input };
         };
         let sign = if sign == b'+' {
@@ -1106,8 +936,53 @@ impl DateTimeParser {
         } else {
             return Parsed { value: None, input };
         };
-        input = &input[1..];
-        Parsed { value: Some(sign), input }
+        Parsed { value: Some(sign), input: tail }
+    }
+
+    /// Parses the `W` that is expected to appear before the week component in
+    /// an ISO 8601 week date.
+    #[cfg_attr(feature = "perf-inline", inline(always))]
+    fn parse_week_prefix<'i>(
+        &self,
+        input: &'i [u8],
+    ) -> Result<Parsed<'i, ()>, Error> {
+        let (&first, input) =
+            input.split_first().ok_or(E::ExpectedWeekPrefixFoundEndOfInput)?;
+        if !matches!(first, b'W' | b'w') {
+            return Err(Error::from(E::ExpectedWeekPrefixFoundByte {
+                byte: first,
+            }));
+        }
+        Ok(Parsed { value: (), input })
+    }
+
+    /// Parses the week number that follows a `W` in an ISO week date.
+    #[cfg_attr(feature = "perf-inline", inline(always))]
+    fn parse_week_num<'i>(
+        &self,
+        input: &'i [u8],
+    ) -> Result<Parsed<'i, i8>, Error> {
+        let (week_num, input) =
+            parse::split(input, 2).ok_or(E::ExpectedTwoDigitWeekNumber)?;
+        let week_num = parse::bi64::<b::ISOWeek>(week_num)
+            .context(E::ParseWeekNumberTwoDigit)?;
+        Ok(Parsed { value: week_num, input })
+    }
+
+    /// Parses the weekday (1-indexed, starting with Monday) in an ISO 8601
+    /// week date.
+    #[cfg_attr(feature = "perf-inline", inline(always))]
+    fn parse_weekday<'i>(
+        &self,
+        input: &'i [u8],
+    ) -> Result<Parsed<'i, Weekday>, Error> {
+        let (weekday, input) =
+            parse::split(input, 1).ok_or(E::ExpectedOneDigitWeekday)?;
+        let weekday = parse::bi64::<b::WeekdayMondayOne>(weekday)
+            .context(E::ParseWeekdayOneDigit)?;
+        // OK because we know `weekday` is in bounds from above.
+        let weekday = Weekday::from_monday_one_offset(weekday).unwrap();
+        Ok(Parsed { value: weekday, input })
     }
 }
 
@@ -1138,14 +1013,7 @@ impl SpanParser {
             let parsed = parsed.and_then(|_| builder.to_span())?;
             parsed.into_full()
         }
-
-        let input = input.as_ref();
-        imp(self, input).with_context(|| {
-            err!(
-                "failed to parse {input:?} as an ISO 8601 duration string",
-                input = escape::Bytes(input)
-            )
-        })
+        imp(self, input.as_ref())
     }
 
     #[cfg_attr(feature = "perf-inline", inline(always))]
@@ -1160,14 +1028,7 @@ impl SpanParser {
             let parsed = parsed.and_then(|_| builder.to_signed_duration())?;
             parsed.into_full()
         }
-
-        let input = input.as_ref();
-        imp(self, input).with_context(|| {
-            err!(
-                "failed to parse {input:?} as an ISO 8601 duration string",
-                input = escape::Bytes(input)
-            )
-        })
+        imp(self, input.as_ref())
     }
 
     #[cfg_attr(feature = "perf-inline", inline(always))]
@@ -1187,14 +1048,7 @@ impl SpanParser {
             let d = parsed.value;
             parsed.into_full_with(format_args!("{d:?}"))
         }
-
-        let input = input.as_ref();
-        imp(self, input).with_context(|| {
-            err!(
-                "failed to parse {input:?} as an ISO 8601 duration string",
-                input = escape::Bytes(input)
-            )
-        })
+        imp(self, input.as_ref())
     }
 
     #[cfg_attr(feature = "perf-inline", inline(always))]
@@ -1203,7 +1057,6 @@ impl SpanParser {
         input: &'i [u8],
         builder: &mut DurationUnits,
     ) -> Result<Parsed<'i, ()>, Error> {
-        let original = escape::Bytes(input);
         let (sign, input) =
             if !input.first().map_or(false, |&b| matches!(b, b'+' | b'-')) {
                 (Sign::Positive, input)
@@ -1211,8 +1064,8 @@ impl SpanParser {
                 let Parsed { value: sign, input } = self.parse_sign(input);
                 (sign, input)
             };
-        let Parsed { input, .. } = self.parse_duration_designator(input)?;
 
+        let Parsed { input, .. } = self.parse_duration_designator(input)?;
         let Parsed { input, .. } = self.parse_date_units(input, builder)?;
         let Parsed { value: has_time, mut input } =
             self.parse_time_designator(input);
@@ -1221,11 +1074,7 @@ impl SpanParser {
             input = parsed.input;
 
             if builder.get_min().map_or(true, |min| min > Unit::Hour) {
-                return Err(err!(
-                    "found a time designator (T or t) in an ISO 8601 \
-                     duration string in {original:?}, but did not find \
-                     any time units",
-                ));
+                return Err(Error::from(E::ExpectedTimeUnits));
             }
         }
         builder.set_sign(sign);
@@ -1238,7 +1087,6 @@ impl SpanParser {
         input: &'i [u8],
         builder: &mut DurationUnits,
     ) -> Result<Parsed<'i, ()>, Error> {
-        let original = escape::Bytes(input);
         let (sign, input) =
             if !input.first().map_or(false, |&b| matches!(b, b'+' | b'-')) {
                 (Sign::Positive, input)
@@ -1246,25 +1094,17 @@ impl SpanParser {
                 let Parsed { value: sign, input } = self.parse_sign(input);
                 (sign, input)
             };
-        let Parsed { input, .. } = self.parse_duration_designator(input)?;
 
+        let Parsed { input, .. } = self.parse_duration_designator(input)?;
         let Parsed { value: has_time, input } =
             self.parse_time_designator(input);
         if !has_time {
-            return Err(err!(
-                "parsing ISO 8601 duration into a `SignedDuration` requires \
-                 that the duration contain a time component and no \
-                 components of days or greater",
-            ));
+            return Err(Error::from(E::ExpectedTimeDesignator));
         }
 
         let Parsed { input, .. } = self.parse_time_units(input, builder)?;
         if builder.get_min().map_or(true, |min| min > Unit::Hour) {
-            return Err(err!(
-                "found a time designator (T or t) in an ISO 8601 \
-                 duration string in {original:?}, but did not find \
-                 any time units",
-            ));
+            return Err(Error::from(E::ExpectedTimeUnits));
         }
         builder.set_sign(sign);
         Ok(Parsed { value: (), input })
@@ -1339,26 +1179,21 @@ impl SpanParser {
         &self,
         input: &'i [u8],
     ) -> Result<Parsed<'i, Unit>, Error> {
-        if input.is_empty() {
-            return Err(err!(
-                "expected to find date unit designator suffix \
-                 (Y, M, W or D), but found end of input",
-            ));
-        }
-        let unit = match input[0] {
+        let (&first, input) = input
+            .split_first()
+            .ok_or(E::ExpectedDateDesignatorFoundEndOfInput)?;
+        let unit = match first {
             b'Y' | b'y' => Unit::Year,
             b'M' | b'm' => Unit::Month,
             b'W' | b'w' => Unit::Week,
             b'D' | b'd' => Unit::Day,
-            unknown => {
-                return Err(err!(
-                    "expected to find date unit designator suffix \
-                     (Y, M, W or D), but found {found:?} instead",
-                    found = escape::Byte(unknown),
-                ));
+            _ => {
+                return Err(Error::from(E::ExpectedDateDesignatorFoundByte {
+                    byte: first,
+                }));
             }
         };
-        Ok(Parsed { value: unit, input: &input[1..] })
+        Ok(Parsed { value: unit, input })
     }
 
     #[cfg_attr(feature = "perf-inline", inline(always))]
@@ -1366,25 +1201,20 @@ impl SpanParser {
         &self,
         input: &'i [u8],
     ) -> Result<Parsed<'i, Unit>, Error> {
-        if input.is_empty() {
-            return Err(err!(
-                "expected to find time unit designator suffix \
-                 (H, M or S), but found end of input",
-            ));
-        }
-        let unit = match input[0] {
+        let (&first, input) = input
+            .split_first()
+            .ok_or(E::ExpectedTimeDesignatorFoundEndOfInput)?;
+        let unit = match first {
             b'H' | b'h' => Unit::Hour,
             b'M' | b'm' => Unit::Minute,
             b'S' | b's' => Unit::Second,
-            unknown => {
-                return Err(err!(
-                    "expected to find time unit designator suffix \
-                     (H, M or S), but found {found:?} instead",
-                    found = escape::Byte(unknown),
-                ));
+            _ => {
+                return Err(Error::from(E::ExpectedTimeDesignatorFoundByte {
+                    byte: first,
+                }));
             }
         };
-        Ok(Parsed { value: unit, input: &input[1..] })
+        Ok(Parsed { value: unit, input })
     }
 
     // DurationDesignator ::: one of
@@ -1394,30 +1224,28 @@ impl SpanParser {
         &self,
         input: &'i [u8],
     ) -> Result<Parsed<'i, ()>, Error> {
-        if input.is_empty() {
-            return Err(err!(
-                "expected to find duration beginning with 'P' or 'p', \
-                 but found end of input",
-            ));
+        let (&first, input) = input
+            .split_first()
+            .ok_or(E::ExpectedDurationDesignatorFoundEndOfInput)?;
+        if !matches!(first, b'P' | b'p') {
+            return Err(Error::from(E::ExpectedDurationDesignatorFoundByte {
+                byte: first,
+            }));
         }
-        if !matches!(input[0], b'P' | b'p') {
-            return Err(err!(
-                "expected 'P' or 'p' prefix to begin duration, \
-                 but found {found:?} instead",
-                found = escape::Byte(input[0]),
-            ));
-        }
-        Ok(Parsed { value: (), input: &input[1..] })
+        Ok(Parsed { value: (), input })
     }
 
     // TimeDesignator ::: one of
     //   T t
     #[cfg_attr(feature = "perf-inline", inline(always))]
     fn parse_time_designator<'i>(&self, input: &'i [u8]) -> Parsed<'i, bool> {
-        if input.is_empty() || !matches!(input[0], b'T' | b't') {
+        let Some((&first, tail)) = input.split_first() else {
+            return Parsed { value: false, input };
+        };
+        if !matches!(first, b'T' | b't') {
             return Parsed { value: false, input };
         }
-        Parsed { value: true, input: &input[1..] }
+        Parsed { value: true, input: tail }
     }
 
     // TemporalSign :::
@@ -1429,17 +1257,13 @@ impl SpanParser {
     #[cold]
     #[inline(never)]
     fn parse_sign<'i>(&self, input: &'i [u8]) -> Parsed<'i, Sign> {
-        let Some(sign) = input.get(0).copied() else {
-            return Parsed { value: Sign::Positive, input };
-        };
-        let sign = if sign == b'+' {
-            Sign::Positive
-        } else if sign == b'-' {
-            Sign::Negative
+        if let Some(tail) = input.strip_prefix(b"+") {
+            Parsed { value: Sign::Positive, input: tail }
+        } else if let Some(tail) = input.strip_prefix(b"-") {
+            Parsed { value: Sign::Negative, input: tail }
         } else {
-            return Parsed { value: Sign::Positive, input };
-        };
-        Parsed { value: sign, input: &input[1..] }
+            Parsed { value: Sign::Positive, input }
+        }
     }
 }
 
@@ -1456,6 +1280,8 @@ mod tests {
 
         insta::assert_debug_snapshot!(p(b"PT0s"), @"0s");
         insta::assert_debug_snapshot!(p(b"PT0.000000001s"), @"1ns");
+        insta::assert_debug_snapshot!(p(b"-PT0.000000001s"), @"-1ns");
+        insta::assert_debug_snapshot!(p(b"-PT0.5s"), @"-500000000ns");
         insta::assert_debug_snapshot!(p(b"PT1s"), @"1s");
         insta::assert_debug_snapshot!(p(b"PT59s"), @"59s");
         insta::assert_debug_snapshot!(p(b"PT60s"), @"60s");
@@ -1481,63 +1307,63 @@ mod tests {
 
         insta::assert_snapshot!(
             p(b"P0d"),
-            @r#"failed to parse "P0d" as an ISO 8601 duration string: parsing ISO 8601 duration into a `SignedDuration` requires that the duration contain a time component and no components of days or greater"#,
+            @"parsing ISO 8601 duration in this context requires that the duration contain a time component and no components of days or greater",
         );
         insta::assert_snapshot!(
             p(b"PT0d"),
-            @r#"failed to parse "PT0d" as an ISO 8601 duration string: expected to find time unit designator suffix (H, M or S), but found "d" instead"#,
+            @"expected to find time unit designator suffix (`H`, `M` or `S`), but found `d` instead",
         );
         insta::assert_snapshot!(
             p(b"P0dT1s"),
-            @r#"failed to parse "P0dT1s" as an ISO 8601 duration string: parsing ISO 8601 duration into a `SignedDuration` requires that the duration contain a time component and no components of days or greater"#,
+            @"parsing ISO 8601 duration in this context requires that the duration contain a time component and no components of days or greater",
         );
 
         insta::assert_snapshot!(
             p(b""),
-            @r#"failed to parse "" as an ISO 8601 duration string: expected to find duration beginning with 'P' or 'p', but found end of input"#,
+            @"expected to find duration beginning with `P` or `p`, but found end of input",
         );
         insta::assert_snapshot!(
             p(b"P"),
-            @r#"failed to parse "P" as an ISO 8601 duration string: parsing ISO 8601 duration into a `SignedDuration` requires that the duration contain a time component and no components of days or greater"#,
+            @"parsing ISO 8601 duration in this context requires that the duration contain a time component and no components of days or greater",
         );
         insta::assert_snapshot!(
             p(b"PT"),
-            @r#"failed to parse "PT" as an ISO 8601 duration string: found a time designator (T or t) in an ISO 8601 duration string in "PT", but did not find any time units"#,
+            @"found a time designator (`T` or `t`) in an ISO 8601 duration string, but did not find any time units",
         );
         insta::assert_snapshot!(
             p(b"PTs"),
-            @r#"failed to parse "PTs" as an ISO 8601 duration string: found a time designator (T or t) in an ISO 8601 duration string in "PTs", but did not find any time units"#,
+            @"found a time designator (`T` or `t`) in an ISO 8601 duration string, but did not find any time units",
         );
 
         insta::assert_snapshot!(
             p(b"PT1s1m"),
-            @r#"failed to parse "PT1s1m" as an ISO 8601 duration string: found value 1 with unit minute after unit second, but units must be written from largest to smallest (and they can't be repeated)"#,
+            @"found value with unit minute after unit second, but units must be written from largest to smallest (and they can't be repeated)",
         );
         insta::assert_snapshot!(
             p(b"PT1s1h"),
-            @r#"failed to parse "PT1s1h" as an ISO 8601 duration string: found value 1 with unit hour after unit second, but units must be written from largest to smallest (and they can't be repeated)"#,
+            @"found value with unit hour after unit second, but units must be written from largest to smallest (and they can't be repeated)",
         );
         insta::assert_snapshot!(
             p(b"PT1m1h"),
-            @r#"failed to parse "PT1m1h" as an ISO 8601 duration string: found value 1 with unit hour after unit minute, but units must be written from largest to smallest (and they can't be repeated)"#,
+            @"found value with unit hour after unit minute, but units must be written from largest to smallest (and they can't be repeated)",
         );
 
         insta::assert_snapshot!(
             p(b"-PT9223372036854775809s"),
-            @r#"failed to parse "-PT9223372036854775809s" as an ISO 8601 duration string: `-9223372036854775809` seconds is too big (or small) to fit into a signed 64-bit integer"#,
+            @"value for seconds is too big (or small) to fit into a signed 64-bit integer",
         );
         insta::assert_snapshot!(
             p(b"PT9223372036854775808s"),
-            @r#"failed to parse "PT9223372036854775808s" as an ISO 8601 duration string: `9223372036854775808` seconds is too big (or small) to fit into a signed 64-bit integer"#,
+            @"value for seconds is too big (or small) to fit into a signed 64-bit integer",
         );
 
         insta::assert_snapshot!(
             p(b"PT1m9223372036854775807s"),
-            @r#"failed to parse "PT1m9223372036854775807s" as an ISO 8601 duration string: accumulated `SignedDuration` of `1m` overflowed when adding 9223372036854775807 of unit second"#,
+            @"accumulated duration overflowed when adding value to unit second",
         );
         insta::assert_snapshot!(
             p(b"PT2562047788015215.6h"),
-            @r#"failed to parse "PT2562047788015215.6h" as an ISO 8601 duration string: accumulated `SignedDuration` of `2562047788015215h` overflowed when adding 0.600000000 of unit hour"#,
+            @"accumulated duration overflowed when adding fractional value to unit hour",
         );
     }
 
@@ -1578,76 +1404,76 @@ mod tests {
 
         insta::assert_snapshot!(
             p(b"-PT1S"),
-            @r#"failed to parse "-PT1S" as an ISO 8601 duration string: cannot parse negative duration into unsigned `std::time::Duration`"#,
+            @"cannot parse negative duration into unsigned `std::time::Duration`",
         );
         insta::assert_snapshot!(
             p(b"-PT0S"),
-            @r#"failed to parse "-PT0S" as an ISO 8601 duration string: cannot parse negative duration into unsigned `std::time::Duration`"#,
+            @"cannot parse negative duration into unsigned `std::time::Duration`",
         );
 
         insta::assert_snapshot!(
             p(b"P0d"),
-            @r#"failed to parse "P0d" as an ISO 8601 duration string: parsing ISO 8601 duration into a `SignedDuration` requires that the duration contain a time component and no components of days or greater"#,
+            @"parsing ISO 8601 duration in this context requires that the duration contain a time component and no components of days or greater",
         );
         insta::assert_snapshot!(
             p(b"PT0d"),
-            @r#"failed to parse "PT0d" as an ISO 8601 duration string: expected to find time unit designator suffix (H, M or S), but found "d" instead"#,
+            @"expected to find time unit designator suffix (`H`, `M` or `S`), but found `d` instead",
         );
         insta::assert_snapshot!(
             p(b"P0dT1s"),
-            @r#"failed to parse "P0dT1s" as an ISO 8601 duration string: parsing ISO 8601 duration into a `SignedDuration` requires that the duration contain a time component and no components of days or greater"#,
+            @"parsing ISO 8601 duration in this context requires that the duration contain a time component and no components of days or greater",
         );
 
         insta::assert_snapshot!(
             p(b""),
-            @r#"failed to parse "" as an ISO 8601 duration string: expected to find duration beginning with 'P' or 'p', but found end of input"#,
+            @"expected to find duration beginning with `P` or `p`, but found end of input",
         );
         insta::assert_snapshot!(
             p(b"P"),
-            @r#"failed to parse "P" as an ISO 8601 duration string: parsing ISO 8601 duration into a `SignedDuration` requires that the duration contain a time component and no components of days or greater"#,
+            @"parsing ISO 8601 duration in this context requires that the duration contain a time component and no components of days or greater",
         );
         insta::assert_snapshot!(
             p(b"PT"),
-            @r#"failed to parse "PT" as an ISO 8601 duration string: found a time designator (T or t) in an ISO 8601 duration string in "PT", but did not find any time units"#,
+            @"found a time designator (`T` or `t`) in an ISO 8601 duration string, but did not find any time units",
         );
         insta::assert_snapshot!(
             p(b"PTs"),
-            @r#"failed to parse "PTs" as an ISO 8601 duration string: found a time designator (T or t) in an ISO 8601 duration string in "PTs", but did not find any time units"#,
+            @"found a time designator (`T` or `t`) in an ISO 8601 duration string, but did not find any time units",
         );
 
         insta::assert_snapshot!(
             p(b"PT1s1m"),
-            @r#"failed to parse "PT1s1m" as an ISO 8601 duration string: found value 1 with unit minute after unit second, but units must be written from largest to smallest (and they can't be repeated)"#,
+            @"found value with unit minute after unit second, but units must be written from largest to smallest (and they can't be repeated)",
         );
         insta::assert_snapshot!(
             p(b"PT1s1h"),
-            @r#"failed to parse "PT1s1h" as an ISO 8601 duration string: found value 1 with unit hour after unit second, but units must be written from largest to smallest (and they can't be repeated)"#,
+            @"found value with unit hour after unit second, but units must be written from largest to smallest (and they can't be repeated)",
         );
         insta::assert_snapshot!(
             p(b"PT1m1h"),
-            @r#"failed to parse "PT1m1h" as an ISO 8601 duration string: found value 1 with unit hour after unit minute, but units must be written from largest to smallest (and they can't be repeated)"#,
+            @"found value with unit hour after unit minute, but units must be written from largest to smallest (and they can't be repeated)",
         );
 
         insta::assert_snapshot!(
             p(b"-PT9223372036854775809S"),
-            @r#"failed to parse "-PT9223372036854775809S" as an ISO 8601 duration string: cannot parse negative duration into unsigned `std::time::Duration`"#,
+            @"cannot parse negative duration into unsigned `std::time::Duration`",
         );
         insta::assert_snapshot!(
             p(b"PT18446744073709551616S"),
-            @r#"failed to parse "PT18446744073709551616S" as an ISO 8601 duration string: number `18446744073709551616` too big to parse into 64-bit integer"#,
+            @"number too big to parse into 64-bit integer",
         );
 
         insta::assert_snapshot!(
             p(b"PT5124095576030431H16.999999999S"),
-            @r#"failed to parse "PT5124095576030431H16.999999999S" as an ISO 8601 duration string: accumulated `std::time::Duration` of `18446744073709551600s` overflowed when adding 16 of unit second"#,
+            @"accumulated duration overflowed when adding value to unit second",
         );
         insta::assert_snapshot!(
             p(b"PT1M18446744073709551556S"),
-            @r#"failed to parse "PT1M18446744073709551556S" as an ISO 8601 duration string: accumulated `std::time::Duration` of `60s` overflowed when adding 18446744073709551556 of unit second"#,
+            @"accumulated duration overflowed when adding value to unit second",
         );
         insta::assert_snapshot!(
             p(b"PT5124095576030431.5H"),
-            @r#"failed to parse "PT5124095576030431.5H" as an ISO 8601 duration string: accumulated `std::time::Duration` of `18446744073709551600s` overflowed when adding 0.500000000 of unit hour"#,
+            @"accumulated duration overflowed when adding fractional value to unit hour",
         );
     }
 
@@ -1679,6 +1505,11 @@ mod tests {
         insta::assert_debug_snapshot!(p(b"PT1.123456789m"), @"1m 7s 407ms 407µs 340ns");
 
         insta::assert_debug_snapshot!(p(b"PT0.5s"), @"500ms");
+        insta::assert_debug_snapshot!(p(b"-PT0.5s"), @"500ms ago");
+        insta::assert_debug_snapshot!(
+            p(b"-PT0.000000001s"),
+            @"1ns ago",
+        );
         insta::assert_debug_snapshot!(p(b"PT0.123456789s"), @"123ms 456µs 789ns");
         insta::assert_debug_snapshot!(p(b"PT1.123456789s"), @"1s 123ms 456µs 789ns");
 
@@ -1702,6 +1533,13 @@ mod tests {
             p(b"Pt843517082H"), @"175307616h 10518456960m 631107417600s 631107417600000ms 512231824800000000µs");
         insta::assert_debug_snapshot!(
             p(b"Pt843517081H"), @"175307616h 10518456960m 631107417600s 631107417600000ms 512231821200000000µs");
+
+        // The excess from a unit over its limit should be combined with
+        // smaller units instead of one clobbering the other.
+        insta::assert_debug_snapshot!(p(b"PT175307617h1m"), @"175307616h 61m");
+        insta::assert_debug_snapshot!(p(b"-PT175307617h1m"), @"175307616h 61m ago");
+        insta::assert_debug_snapshot!(p(b"PT175307617h1.5m"), @"175307616h 61m 30s");
+        insta::assert_debug_snapshot!(p(b"PT10518456961m1s"), @"10518456960m 61s");
     }
 
     #[test]
@@ -1710,36 +1548,30 @@ mod tests {
             DateTimeParser::new().parse_temporal_datetime(input).unwrap()
         };
 
-        insta::assert_debug_snapshot!(p(b"2024-06-01"), @r###"
+        insta::assert_debug_snapshot!(p(b"2024-06-01"), @r#"
         Parsed {
             value: ParsedDateTime {
-                input: "2024-06-01",
                 date: ParsedDate {
-                    input: "2024-06-01",
                     date: 2024-06-01,
                 },
                 time: None,
                 offset: None,
                 annotations: ParsedAnnotations {
-                    input: "",
                     time_zone: None,
                 },
             },
             input: "",
         }
-        "###);
-        insta::assert_debug_snapshot!(p(b"2024-06-01[America/New_York]"), @r###"
+        "#);
+        insta::assert_debug_snapshot!(p(b"2024-06-01[America/New_York]"), @r#"
         Parsed {
             value: ParsedDateTime {
-                input: "2024-06-01[America/New_York]",
                 date: ParsedDate {
-                    input: "2024-06-01",
                     date: 2024-06-01,
                 },
                 time: None,
                 offset: None,
                 annotations: ParsedAnnotations {
-                    input: "[America/New_York]",
                     time_zone: Some(
                         Named {
                             critical: false,
@@ -1750,42 +1582,35 @@ mod tests {
             },
             input: "",
         }
-        "###);
-        insta::assert_debug_snapshot!(p(b"2024-06-01T01:02:03"), @r###"
+        "#);
+        insta::assert_debug_snapshot!(p(b"2024-06-01T01:02:03"), @r#"
         Parsed {
             value: ParsedDateTime {
-                input: "2024-06-01T01:02:03",
                 date: ParsedDate {
-                    input: "2024-06-01",
                     date: 2024-06-01,
                 },
                 time: Some(
                     ParsedTime {
-                        input: "01:02:03",
                         time: 01:02:03,
                         extended: true,
                     },
                 ),
                 offset: None,
                 annotations: ParsedAnnotations {
-                    input: "",
                     time_zone: None,
                 },
             },
             input: "",
         }
-        "###);
-        insta::assert_debug_snapshot!(p(b"2024-06-01T01:02:03-05"), @r###"
+        "#);
+        insta::assert_debug_snapshot!(p(b"2024-06-01T01:02:03-05"), @r#"
         Parsed {
             value: ParsedDateTime {
-                input: "2024-06-01T01:02:03-05",
                 date: ParsedDate {
-                    input: "2024-06-01",
                     date: 2024-06-01,
                 },
                 time: Some(
                     ParsedTime {
-                        input: "01:02:03",
                         time: 01:02:03,
                         extended: true,
                     },
@@ -1798,24 +1623,20 @@ mod tests {
                     },
                 ),
                 annotations: ParsedAnnotations {
-                    input: "",
                     time_zone: None,
                 },
             },
             input: "",
         }
-        "###);
-        insta::assert_debug_snapshot!(p(b"2024-06-01T01:02:03-05[America/New_York]"), @r###"
+        "#);
+        insta::assert_debug_snapshot!(p(b"2024-06-01T01:02:03-05[America/New_York]"), @r#"
         Parsed {
             value: ParsedDateTime {
-                input: "2024-06-01T01:02:03-05[America/New_York]",
                 date: ParsedDate {
-                    input: "2024-06-01",
                     date: 2024-06-01,
                 },
                 time: Some(
                     ParsedTime {
-                        input: "01:02:03",
                         time: 01:02:03,
                         extended: true,
                     },
@@ -1828,7 +1649,6 @@ mod tests {
                     },
                 ),
                 annotations: ParsedAnnotations {
-                    input: "[America/New_York]",
                     time_zone: Some(
                         Named {
                             critical: false,
@@ -1839,18 +1659,15 @@ mod tests {
             },
             input: "",
         }
-        "###);
-        insta::assert_debug_snapshot!(p(b"2024-06-01T01:02:03Z[America/New_York]"), @r###"
+        "#);
+        insta::assert_debug_snapshot!(p(b"2024-06-01T01:02:03Z[America/New_York]"), @r#"
         Parsed {
             value: ParsedDateTime {
-                input: "2024-06-01T01:02:03Z[America/New_York]",
                 date: ParsedDate {
-                    input: "2024-06-01",
                     date: 2024-06-01,
                 },
                 time: Some(
                     ParsedTime {
-                        input: "01:02:03",
                         time: 01:02:03,
                         extended: true,
                     },
@@ -1861,7 +1678,6 @@ mod tests {
                     },
                 ),
                 annotations: ParsedAnnotations {
-                    input: "[America/New_York]",
                     time_zone: Some(
                         Named {
                             critical: false,
@@ -1872,18 +1688,15 @@ mod tests {
             },
             input: "",
         }
-        "###);
-        insta::assert_debug_snapshot!(p(b"2024-06-01T01:02:03-01[America/New_York]"), @r###"
+        "#);
+        insta::assert_debug_snapshot!(p(b"2024-06-01T01:02:03-01[America/New_York]"), @r#"
         Parsed {
             value: ParsedDateTime {
-                input: "2024-06-01T01:02:03-01[America/New_York]",
                 date: ParsedDate {
-                    input: "2024-06-01",
                     date: 2024-06-01,
                 },
                 time: Some(
                     ParsedTime {
-                        input: "01:02:03",
                         time: 01:02:03,
                         extended: true,
                     },
@@ -1896,7 +1709,6 @@ mod tests {
                     },
                 ),
                 annotations: ParsedAnnotations {
-                    input: "[America/New_York]",
                     time_zone: Some(
                         Named {
                             critical: false,
@@ -1907,7 +1719,7 @@ mod tests {
             },
             input: "",
         }
-        "###);
+        "#);
     }
 
     #[test]
@@ -1916,78 +1728,66 @@ mod tests {
             DateTimeParser::new().parse_temporal_datetime(input).unwrap()
         };
 
-        insta::assert_debug_snapshot!(p(b"2024-06-01T01"), @r###"
+        insta::assert_debug_snapshot!(p(b"2024-06-01T01"), @r#"
         Parsed {
             value: ParsedDateTime {
-                input: "2024-06-01T01",
                 date: ParsedDate {
-                    input: "2024-06-01",
                     date: 2024-06-01,
                 },
                 time: Some(
                     ParsedTime {
-                        input: "01",
                         time: 01:00:00,
                         extended: false,
                     },
                 ),
                 offset: None,
                 annotations: ParsedAnnotations {
-                    input: "",
                     time_zone: None,
                 },
             },
             input: "",
         }
-        "###);
-        insta::assert_debug_snapshot!(p(b"2024-06-01T0102"), @r###"
+        "#);
+        insta::assert_debug_snapshot!(p(b"2024-06-01T0102"), @r#"
         Parsed {
             value: ParsedDateTime {
-                input: "2024-06-01T0102",
                 date: ParsedDate {
-                    input: "2024-06-01",
                     date: 2024-06-01,
                 },
                 time: Some(
                     ParsedTime {
-                        input: "0102",
                         time: 01:02:00,
                         extended: false,
                     },
                 ),
                 offset: None,
                 annotations: ParsedAnnotations {
-                    input: "",
                     time_zone: None,
                 },
             },
             input: "",
         }
-        "###);
-        insta::assert_debug_snapshot!(p(b"2024-06-01T01:02"), @r###"
+        "#);
+        insta::assert_debug_snapshot!(p(b"2024-06-01T01:02"), @r#"
         Parsed {
             value: ParsedDateTime {
-                input: "2024-06-01T01:02",
                 date: ParsedDate {
-                    input: "2024-06-01",
                     date: 2024-06-01,
                 },
                 time: Some(
                     ParsedTime {
-                        input: "01:02",
                         time: 01:02:00,
                         extended: true,
                     },
                 ),
                 offset: None,
                 annotations: ParsedAnnotations {
-                    input: "",
                     time_zone: None,
                 },
             },
             input: "",
         }
-        "###);
+        "#);
     }
 
     #[test]
@@ -1996,54 +1796,46 @@ mod tests {
             DateTimeParser::new().parse_temporal_datetime(input).unwrap()
         };
 
-        insta::assert_debug_snapshot!(p(b"2024-06-01t01:02:03"), @r###"
+        insta::assert_debug_snapshot!(p(b"2024-06-01t01:02:03"), @r#"
         Parsed {
             value: ParsedDateTime {
-                input: "2024-06-01t01:02:03",
                 date: ParsedDate {
-                    input: "2024-06-01",
                     date: 2024-06-01,
                 },
                 time: Some(
                     ParsedTime {
-                        input: "01:02:03",
                         time: 01:02:03,
                         extended: true,
                     },
                 ),
                 offset: None,
                 annotations: ParsedAnnotations {
-                    input: "",
                     time_zone: None,
                 },
             },
             input: "",
         }
-        "###);
-        insta::assert_debug_snapshot!(p(b"2024-06-01 01:02:03"), @r###"
+        "#);
+        insta::assert_debug_snapshot!(p(b"2024-06-01 01:02:03"), @r#"
         Parsed {
             value: ParsedDateTime {
-                input: "2024-06-01 01:02:03",
                 date: ParsedDate {
-                    input: "2024-06-01",
                     date: 2024-06-01,
                 },
                 time: Some(
                     ParsedTime {
-                        input: "01:02:03",
                         time: 01:02:03,
                         extended: true,
                     },
                 ),
                 offset: None,
                 annotations: ParsedAnnotations {
-                    input: "",
                     time_zone: None,
                 },
             },
             input: "",
         }
-        "###);
+        "#);
     }
 
     #[test]
@@ -2051,46 +1843,42 @@ mod tests {
         let p =
             |input| DateTimeParser::new().parse_temporal_time(input).unwrap();
 
-        insta::assert_debug_snapshot!(p(b"01:02:03"), @r###"
+        insta::assert_debug_snapshot!(p(b"01:02:03"), @r#"
         Parsed {
             value: ParsedTime {
-                input: "01:02:03",
                 time: 01:02:03,
                 extended: true,
             },
             input: "",
         }
-        "###);
-        insta::assert_debug_snapshot!(p(b"130113"), @r###"
+        "#);
+        insta::assert_debug_snapshot!(p(b"130113"), @r#"
         Parsed {
             value: ParsedTime {
-                input: "130113",
                 time: 13:01:13,
                 extended: false,
             },
             input: "",
         }
-        "###);
-        insta::assert_debug_snapshot!(p(b"T01:02:03"), @r###"
+        "#);
+        insta::assert_debug_snapshot!(p(b"T01:02:03"), @r#"
         Parsed {
             value: ParsedTime {
-                input: "01:02:03",
                 time: 01:02:03,
                 extended: true,
             },
             input: "",
         }
-        "###);
-        insta::assert_debug_snapshot!(p(b"T010203"), @r###"
+        "#);
+        insta::assert_debug_snapshot!(p(b"T010203"), @r#"
         Parsed {
             value: ParsedTime {
-                input: "010203",
                 time: 01:02:03,
                 extended: false,
             },
             input: "",
         }
-        "###);
+        "#);
     }
 
     #[test]
@@ -2098,88 +1886,80 @@ mod tests {
         let p =
             |input| DateTimeParser::new().parse_temporal_time(input).unwrap();
 
-        insta::assert_debug_snapshot!(p(b"2024-06-01T01:02:03"), @r###"
+        insta::assert_debug_snapshot!(p(b"2024-06-01T01:02:03"), @r#"
         Parsed {
             value: ParsedTime {
-                input: "01:02:03",
                 time: 01:02:03,
                 extended: true,
             },
             input: "",
         }
-        "###);
-        insta::assert_debug_snapshot!(p(b"2024-06-01T01:02:03.123"), @r###"
+        "#);
+        insta::assert_debug_snapshot!(p(b"2024-06-01T01:02:03.123"), @r#"
         Parsed {
             value: ParsedTime {
-                input: "01:02:03.123",
                 time: 01:02:03.123,
                 extended: true,
             },
             input: "",
         }
-        "###);
-        insta::assert_debug_snapshot!(p(b"2024-06-01T01"), @r###"
+        "#);
+        insta::assert_debug_snapshot!(p(b"2024-06-01T01"), @r#"
         Parsed {
             value: ParsedTime {
-                input: "01",
                 time: 01:00:00,
                 extended: false,
             },
             input: "",
         }
-        "###);
-        insta::assert_debug_snapshot!(p(b"2024-06-01T0102"), @r###"
+        "#);
+        insta::assert_debug_snapshot!(p(b"2024-06-01T0102"), @r#"
         Parsed {
             value: ParsedTime {
-                input: "0102",
                 time: 01:02:00,
                 extended: false,
             },
             input: "",
         }
-        "###);
-        insta::assert_debug_snapshot!(p(b"2024-06-01T010203"), @r###"
+        "#);
+        insta::assert_debug_snapshot!(p(b"2024-06-01T010203"), @r#"
         Parsed {
             value: ParsedTime {
-                input: "010203",
                 time: 01:02:03,
                 extended: false,
             },
             input: "",
         }
-        "###);
-        insta::assert_debug_snapshot!(p(b"2024-06-01T010203-05"), @r###"
+        "#);
+        insta::assert_debug_snapshot!(p(b"2024-06-01T010203-05"), @r#"
         Parsed {
             value: ParsedTime {
-                input: "010203",
                 time: 01:02:03,
                 extended: false,
             },
             input: "",
         }
-        "###);
+        "#);
         insta::assert_debug_snapshot!(
-            p(b"2024-06-01T010203-05[America/New_York]"), @r###"
+            p(b"2024-06-01T010203-05[America/New_York]"), @r#"
         Parsed {
             value: ParsedTime {
-                input: "010203",
                 time: 01:02:03,
                 extended: false,
             },
             input: "",
         }
-        "###);
+        "#);
         insta::assert_debug_snapshot!(
-            p(b"2024-06-01T010203[America/New_York]"), @r###"
+            p(b"2024-06-01T010203[America/New_York]"), @r#"
         Parsed {
             value: ParsedTime {
-                input: "010203",
                 time: 01:02:03,
                 extended: false,
             },
             input: "",
         }
-        "###);
+        "#);
     }
 
     #[test]
@@ -2190,11 +1970,11 @@ mod tests {
 
         insta::assert_snapshot!(
             p(b"010203"),
-            @r###"parsed time from "010203" is ambiguous with a month-day date"###,
+            @"parsed time is ambiguous with a month-day date",
         );
         insta::assert_snapshot!(
             p(b"130112"),
-            @r###"parsed time from "130112" is ambiguous with a year-month date"###,
+            @"parsed time is ambiguous with a year-month date",
         );
     }
 
@@ -2206,21 +1986,21 @@ mod tests {
 
         insta::assert_snapshot!(
             p(b"2024-06-01[America/New_York]"),
-            @r###"successfully parsed date from "2024-06-01[America/New_York]", but no time component was found"###,
+            @"successfully parsed date, but no time component was found",
         );
         // 2099 is not a valid time, but 2099-12-01 is a valid date, so this
         // carves a path where a full datetime parse is OK, but a basic
         // time-only parse is not.
         insta::assert_snapshot!(
             p(b"2099-12-01[America/New_York]"),
-            @r###"successfully parsed date from "2099-12-01[America/New_York]", but no time component was found"###,
+            @"successfully parsed date, but no time component was found",
         );
         // Like above, but this time we use an invalid date. As a result, we
         // get an error reported not on the invalid date, but on how it is an
         // invalid time. (Because we're asking for a time here.)
         insta::assert_snapshot!(
             p(b"2099-13-01[America/New_York]"),
-            @r###"failed to parse minute in time "2099-13-01[America/New_York]": minute is not valid: parameter 'minute' with value 99 is not in the required range of 0..=59"###,
+            @"failed to parse two digit integer as minute: parameter 'minute' is not in the required range of 0..=59",
         );
     }
 
@@ -2232,19 +2012,19 @@ mod tests {
 
         insta::assert_snapshot!(
             p(b"T00:00:00Z"),
-            @"cannot parse civil time from string with a Zulu offset, parse as a `Timestamp` and convert to a civil time instead",
+            @"cannot parse civil date/time from string with a Zulu offset, parse as a `jiff::Timestamp` first and convert to a civil date/time instead",
         );
         insta::assert_snapshot!(
             p(b"00:00:00Z"),
-            @"cannot parse plain time from string with a Zulu offset, parse as a `Timestamp` and convert to a plain time instead",
+            @"cannot parse civil date/time from string with a Zulu offset, parse as a `jiff::Timestamp` first and convert to a civil date/time instead",
         );
         insta::assert_snapshot!(
             p(b"000000Z"),
-            @"cannot parse plain time from string with a Zulu offset, parse as a `Timestamp` and convert to a plain time instead",
+            @"cannot parse civil date/time from string with a Zulu offset, parse as a `jiff::Timestamp` first and convert to a civil date/time instead",
         );
         insta::assert_snapshot!(
             p(b"2099-12-01T00:00:00Z"),
-            @"cannot parse plain time from full datetime string with a Zulu offset, parse as a `Timestamp` and convert to a plain time instead",
+            @"cannot parse civil date/time from string with a Zulu offset, parse as a `jiff::Timestamp` first and convert to a civil date/time instead",
         );
     }
 
@@ -2252,58 +2032,53 @@ mod tests {
     fn ok_date_basic() {
         let p = |input| DateTimeParser::new().parse_date_spec(input).unwrap();
 
-        insta::assert_debug_snapshot!(p(b"2010-03-14"), @r###"
+        insta::assert_debug_snapshot!(p(b"2010-03-14"), @r#"
         Parsed {
             value: ParsedDate {
-                input: "2010-03-14",
                 date: 2010-03-14,
             },
             input: "",
         }
-        "###);
-        insta::assert_debug_snapshot!(p(b"20100314"), @r###"
+        "#);
+        insta::assert_debug_snapshot!(p(b"20100314"), @r#"
         Parsed {
             value: ParsedDate {
-                input: "20100314",
                 date: 2010-03-14,
             },
             input: "",
         }
-        "###);
-        insta::assert_debug_snapshot!(p(b"2010-03-14T01:02:03"), @r###"
+        "#);
+        insta::assert_debug_snapshot!(p(b"2010-03-14T01:02:03"), @r#"
         Parsed {
             value: ParsedDate {
-                input: "2010-03-14",
                 date: 2010-03-14,
             },
             input: "T01:02:03",
         }
-        "###);
-        insta::assert_debug_snapshot!(p(b"-009999-03-14"), @r###"
+        "#);
+        insta::assert_debug_snapshot!(p(b"-009999-03-14"), @r#"
         Parsed {
             value: ParsedDate {
-                input: "-009999-03-14",
                 date: -009999-03-14,
             },
             input: "",
         }
-        "###);
-        insta::assert_debug_snapshot!(p(b"+009999-03-14"), @r###"
+        "#);
+        insta::assert_debug_snapshot!(p(b"+009999-03-14"), @r#"
         Parsed {
             value: ParsedDate {
-                input: "+009999-03-14",
                 date: 9999-03-14,
             },
             input: "",
         }
-        "###);
+        "#);
     }
 
     #[test]
     fn err_date_empty() {
         insta::assert_snapshot!(
             DateTimeParser::new().parse_date_spec(b"").unwrap_err(),
-            @r###"failed to parse year in date "": expected four digit year (or leading sign for six digit year), but found end of input"###,
+            @"expected four digit year (or leading sign for six digit year), but found end of input",
         );
     }
 
@@ -2311,40 +2086,40 @@ mod tests {
     fn err_date_year() {
         insta::assert_snapshot!(
             DateTimeParser::new().parse_date_spec(b"123").unwrap_err(),
-            @r###"failed to parse year in date "123": expected four digit year (or leading sign for six digit year), but found end of input"###,
+            @"expected four digit year (or leading sign for six digit year), but found end of input",
         );
         insta::assert_snapshot!(
             DateTimeParser::new().parse_date_spec(b"123a").unwrap_err(),
-            @r###"failed to parse year in date "123a": failed to parse "123a" as year (a four digit integer): invalid digit, expected 0-9 but got a"###,
+            @"failed to parse four digit integer as year: invalid digit, expected 0-9 but got a",
         );
 
         insta::assert_snapshot!(
             DateTimeParser::new().parse_date_spec(b"-9999").unwrap_err(),
-            @r###"failed to parse year in date "-9999": expected six digit year (because of a leading sign), but found end of input"###,
+            @"expected six digit year (because of a leading sign), but found end of input",
         );
         insta::assert_snapshot!(
             DateTimeParser::new().parse_date_spec(b"+9999").unwrap_err(),
-            @r###"failed to parse year in date "+9999": expected six digit year (because of a leading sign), but found end of input"###,
+            @"expected six digit year (because of a leading sign), but found end of input",
         );
         insta::assert_snapshot!(
             DateTimeParser::new().parse_date_spec(b"-99999").unwrap_err(),
-            @r###"failed to parse year in date "-99999": expected six digit year (because of a leading sign), but found end of input"###,
+            @"expected six digit year (because of a leading sign), but found end of input",
         );
         insta::assert_snapshot!(
             DateTimeParser::new().parse_date_spec(b"+99999").unwrap_err(),
-            @r###"failed to parse year in date "+99999": expected six digit year (because of a leading sign), but found end of input"###,
+            @"expected six digit year (because of a leading sign), but found end of input",
         );
         insta::assert_snapshot!(
             DateTimeParser::new().parse_date_spec(b"-99999a").unwrap_err(),
-            @r###"failed to parse year in date "-99999a": failed to parse "99999a" as year (a six digit integer): invalid digit, expected 0-9 but got a"###,
+            @"failed to parse six digit integer as year: invalid digit, expected 0-9 but got a",
         );
         insta::assert_snapshot!(
             DateTimeParser::new().parse_date_spec(b"+999999").unwrap_err(),
-            @r###"failed to parse year in date "+999999": year is not valid: parameter 'year' with value 999999 is not in the required range of -9999..=9999"###,
+            @"failed to parse six digit integer as year: parameter 'year' is not in the required range of -9999..=9999",
         );
         insta::assert_snapshot!(
             DateTimeParser::new().parse_date_spec(b"-010000").unwrap_err(),
-            @r###"failed to parse year in date "-010000": year is not valid: parameter 'year' with value 10000 is not in the required range of -9999..=9999"###,
+            @"failed to parse six digit integer as year: parameter 'year' is not in the required range of -9999..=9999",
         );
     }
 
@@ -2352,19 +2127,19 @@ mod tests {
     fn err_date_month() {
         insta::assert_snapshot!(
             DateTimeParser::new().parse_date_spec(b"2024-").unwrap_err(),
-            @r###"failed to parse month in date "2024-": expected two digit month, but found end of input"###,
+            @"expected two digit month, but found end of input",
         );
         insta::assert_snapshot!(
             DateTimeParser::new().parse_date_spec(b"2024").unwrap_err(),
-            @r###"failed to parse month in date "2024": expected two digit month, but found end of input"###,
+            @"expected two digit month, but found end of input",
         );
         insta::assert_snapshot!(
             DateTimeParser::new().parse_date_spec(b"2024-13-01").unwrap_err(),
-            @r###"failed to parse month in date "2024-13-01": month is not valid: parameter 'month' with value 13 is not in the required range of 1..=12"###,
+            @"failed to parse two digit integer as month: parameter 'month' is not in the required range of 1..=12",
         );
         insta::assert_snapshot!(
             DateTimeParser::new().parse_date_spec(b"20241301").unwrap_err(),
-            @r###"failed to parse month in date "20241301": month is not valid: parameter 'month' with value 13 is not in the required range of 1..=12"###,
+            @"failed to parse two digit integer as month: parameter 'month' is not in the required range of 1..=12",
         );
     }
 
@@ -2372,27 +2147,27 @@ mod tests {
     fn err_date_day() {
         insta::assert_snapshot!(
             DateTimeParser::new().parse_date_spec(b"2024-12-").unwrap_err(),
-            @r###"failed to parse day in date "2024-12-": expected two digit day, but found end of input"###,
+            @"expected two digit day, but found end of input",
         );
         insta::assert_snapshot!(
             DateTimeParser::new().parse_date_spec(b"202412").unwrap_err(),
-            @r###"failed to parse day in date "202412": expected two digit day, but found end of input"###,
+            @"expected two digit day, but found end of input",
         );
         insta::assert_snapshot!(
             DateTimeParser::new().parse_date_spec(b"2024-12-40").unwrap_err(),
-            @r###"failed to parse day in date "2024-12-40": day is not valid: parameter 'day' with value 40 is not in the required range of 1..=31"###,
+            @"failed to parse two digit integer as day: parameter 'day' is not in the required range of 1..=31",
         );
         insta::assert_snapshot!(
             DateTimeParser::new().parse_date_spec(b"2024-11-31").unwrap_err(),
-            @r###"date parsed from "2024-11-31" is not valid: parameter 'day' with value 31 is not in the required range of 1..=30"###,
+            @"parsed date is not valid: parameter 'day' for `2024-11` is invalid, must be in range `1..=30`",
         );
         insta::assert_snapshot!(
             DateTimeParser::new().parse_date_spec(b"2024-02-30").unwrap_err(),
-            @r###"date parsed from "2024-02-30" is not valid: parameter 'day' with value 30 is not in the required range of 1..=29"###,
+            @"parsed date is not valid: parameter 'day' for `2024-02` is invalid, must be in range `1..=29`",
         );
         insta::assert_snapshot!(
             DateTimeParser::new().parse_date_spec(b"2023-02-29").unwrap_err(),
-            @r###"date parsed from "2023-02-29" is not valid: parameter 'day' with value 29 is not in the required range of 1..=28"###,
+            @"parsed date is not valid: parameter 'day' for `2023-02` is invalid, must be in range `1..=28`",
         );
     }
 
@@ -2400,11 +2175,11 @@ mod tests {
     fn err_date_separator() {
         insta::assert_snapshot!(
             DateTimeParser::new().parse_date_spec(b"2024-1231").unwrap_err(),
-            @r###"failed to parse separator after month: expected '-' separator, but found "3" instead"###,
+            @"failed to parse separator after month: expected `-` separator, but found `3`",
         );
         insta::assert_snapshot!(
             DateTimeParser::new().parse_date_spec(b"202412-31").unwrap_err(),
-            @"failed to parse separator after month: expected no separator after month since none was found after the year, but found a '-' separator",
+            @"failed to parse separator after month: expected no separator since none was found after the year, but found a `-` separator",
         );
     }
 
@@ -2412,128 +2187,119 @@ mod tests {
     fn ok_time_basic() {
         let p = |input| DateTimeParser::new().parse_time_spec(input).unwrap();
 
-        insta::assert_debug_snapshot!(p(b"01:02:03"), @r###"
+        insta::assert_debug_snapshot!(p(b"01:02:03"), @r#"
         Parsed {
             value: ParsedTime {
-                input: "01:02:03",
                 time: 01:02:03,
                 extended: true,
             },
             input: "",
         }
-        "###);
-        insta::assert_debug_snapshot!(p(b"010203"), @r###"
+        "#);
+        insta::assert_debug_snapshot!(p(b"010203"), @r#"
         Parsed {
             value: ParsedTime {
-                input: "010203",
                 time: 01:02:03,
                 extended: false,
             },
             input: "",
         }
-        "###);
+        "#);
     }
 
     #[test]
     fn ok_time_fractional() {
         let p = |input| DateTimeParser::new().parse_time_spec(input).unwrap();
 
-        insta::assert_debug_snapshot!(p(b"01:02:03.123456789"), @r###"
+        insta::assert_debug_snapshot!(p(b"01:02:03.123456789"), @r#"
         Parsed {
             value: ParsedTime {
-                input: "01:02:03.123456789",
                 time: 01:02:03.123456789,
                 extended: true,
             },
             input: "",
         }
-        "###);
-        insta::assert_debug_snapshot!(p(b"010203.123456789"), @r###"
+        "#);
+        insta::assert_debug_snapshot!(p(b"010203.123456789"), @r#"
         Parsed {
             value: ParsedTime {
-                input: "010203.123456789",
                 time: 01:02:03.123456789,
                 extended: false,
             },
             input: "",
         }
-        "###);
+        "#);
 
-        insta::assert_debug_snapshot!(p(b"01:02:03.9"), @r###"
+        insta::assert_debug_snapshot!(p(b"01:02:03.9"), @r#"
         Parsed {
             value: ParsedTime {
-                input: "01:02:03.9",
                 time: 01:02:03.9,
                 extended: true,
             },
             input: "",
         }
-        "###);
+        "#);
     }
 
     #[test]
     fn ok_time_no_fractional() {
         let p = |input| DateTimeParser::new().parse_time_spec(input).unwrap();
 
-        insta::assert_debug_snapshot!(p(b"01:02.123456789"), @r###"
+        insta::assert_debug_snapshot!(p(b"01:02.123456789"), @r#"
         Parsed {
             value: ParsedTime {
-                input: "01:02",
                 time: 01:02:00,
                 extended: true,
             },
             input: ".123456789",
         }
-        "###);
+        "#);
     }
 
     #[test]
     fn ok_time_leap() {
         let p = |input| DateTimeParser::new().parse_time_spec(input).unwrap();
 
-        insta::assert_debug_snapshot!(p(b"01:02:60"), @r###"
+        insta::assert_debug_snapshot!(p(b"01:02:60"), @r#"
         Parsed {
             value: ParsedTime {
-                input: "01:02:60",
                 time: 01:02:59,
                 extended: true,
             },
             input: "",
         }
-        "###);
+        "#);
     }
 
     #[test]
     fn ok_time_mixed_format() {
         let p = |input| DateTimeParser::new().parse_time_spec(input).unwrap();
 
-        insta::assert_debug_snapshot!(p(b"01:0203"), @r###"
+        insta::assert_debug_snapshot!(p(b"01:0203"), @r#"
         Parsed {
             value: ParsedTime {
-                input: "01:02",
                 time: 01:02:00,
                 extended: true,
             },
             input: "03",
         }
-        "###);
-        insta::assert_debug_snapshot!(p(b"0102:03"), @r###"
+        "#);
+        insta::assert_debug_snapshot!(p(b"0102:03"), @r#"
         Parsed {
             value: ParsedTime {
-                input: "0102",
                 time: 01:02:00,
                 extended: false,
             },
             input: ":03",
         }
-        "###);
+        "#);
     }
 
     #[test]
     fn err_time_empty() {
         insta::assert_snapshot!(
             DateTimeParser::new().parse_time_spec(b"").unwrap_err(),
-            @r###"failed to parse hour in time "": expected two digit hour, but found end of input"###,
+            @"expected two digit hour, but found end of input",
         );
     }
 
@@ -2541,15 +2307,15 @@ mod tests {
     fn err_time_hour() {
         insta::assert_snapshot!(
             DateTimeParser::new().parse_time_spec(b"a").unwrap_err(),
-            @r###"failed to parse hour in time "a": expected two digit hour, but found end of input"###,
+            @"expected two digit hour, but found end of input",
         );
         insta::assert_snapshot!(
             DateTimeParser::new().parse_time_spec(b"1a").unwrap_err(),
-            @r###"failed to parse hour in time "1a": failed to parse "1a" as hour (a two digit integer): invalid digit, expected 0-9 but got a"###,
+            @"failed to parse two digit integer as hour: invalid digit, expected 0-9 but got a",
         );
         insta::assert_snapshot!(
             DateTimeParser::new().parse_time_spec(b"24").unwrap_err(),
-            @r###"failed to parse hour in time "24": hour is not valid: parameter 'hour' with value 24 is not in the required range of 0..=23"###,
+            @"failed to parse two digit integer as hour: parameter 'hour' is not in the required range of 0..=23",
         );
     }
 
@@ -2557,19 +2323,19 @@ mod tests {
     fn err_time_minute() {
         insta::assert_snapshot!(
             DateTimeParser::new().parse_time_spec(b"01:").unwrap_err(),
-            @r###"failed to parse minute in time "01:": expected two digit minute, but found end of input"###,
+            @"expected two digit minute, but found end of input",
         );
         insta::assert_snapshot!(
             DateTimeParser::new().parse_time_spec(b"01:a").unwrap_err(),
-            @r###"failed to parse minute in time "01:a": expected two digit minute, but found end of input"###,
+            @"expected two digit minute, but found end of input",
         );
         insta::assert_snapshot!(
             DateTimeParser::new().parse_time_spec(b"01:1a").unwrap_err(),
-            @r###"failed to parse minute in time "01:1a": failed to parse "1a" as minute (a two digit integer): invalid digit, expected 0-9 but got a"###,
+            @"failed to parse two digit integer as minute: invalid digit, expected 0-9 but got a",
         );
         insta::assert_snapshot!(
             DateTimeParser::new().parse_time_spec(b"01:60").unwrap_err(),
-            @r###"failed to parse minute in time "01:60": minute is not valid: parameter 'minute' with value 60 is not in the required range of 0..=59"###,
+            @"failed to parse two digit integer as minute: parameter 'minute' is not in the required range of 0..=59",
         );
     }
 
@@ -2577,19 +2343,19 @@ mod tests {
     fn err_time_second() {
         insta::assert_snapshot!(
             DateTimeParser::new().parse_time_spec(b"01:02:").unwrap_err(),
-            @r###"failed to parse second in time "01:02:": expected two digit second, but found end of input"###,
+            @"expected two digit second, but found end of input",
         );
         insta::assert_snapshot!(
             DateTimeParser::new().parse_time_spec(b"01:02:a").unwrap_err(),
-            @r###"failed to parse second in time "01:02:a": expected two digit second, but found end of input"###,
+            @"expected two digit second, but found end of input",
         );
         insta::assert_snapshot!(
             DateTimeParser::new().parse_time_spec(b"01:02:1a").unwrap_err(),
-            @r###"failed to parse second in time "01:02:1a": failed to parse "1a" as second (a two digit integer): invalid digit, expected 0-9 but got a"###,
+            @"failed to parse two digit integer as second: invalid digit, expected 0-9 but got a",
         );
         insta::assert_snapshot!(
             DateTimeParser::new().parse_time_spec(b"01:02:61").unwrap_err(),
-            @r###"failed to parse second in time "01:02:61": second is not valid: parameter 'second' with value 61 is not in the required range of 0..=59"###,
+            @"failed to parse two digit integer as second: parameter 'second' is not in the required range of 0..=60",
         );
     }
 
@@ -2597,11 +2363,226 @@ mod tests {
     fn err_time_fractional() {
         insta::assert_snapshot!(
             DateTimeParser::new().parse_time_spec(b"01:02:03.").unwrap_err(),
-            @r###"failed to parse fractional nanoseconds in time "01:02:03.": found decimal after seconds component, but did not find any decimal digits after decimal"###,
+            @"failed to parse fractional seconds in time: found decimal after seconds component, but did not find any digits after decimal",
         );
         insta::assert_snapshot!(
             DateTimeParser::new().parse_time_spec(b"01:02:03.a").unwrap_err(),
-            @r###"failed to parse fractional nanoseconds in time "01:02:03.a": found decimal after seconds component, but did not find any decimal digits after decimal"###,
+            @"failed to parse fractional seconds in time: found decimal after seconds component, but did not find any digits after decimal",
+        );
+    }
+
+    #[test]
+    fn ok_iso_week_date_parse_basic() {
+        fn p(input: &str) -> Parsed<'_, ISOWeekDate> {
+            DateTimeParser::new()
+                .parse_iso_week_date(input.as_bytes())
+                .unwrap()
+        }
+
+        insta::assert_debug_snapshot!( p("2024-W01-5"), @r#"
+        Parsed {
+            value: 2024-W01-5,
+            input: "",
+        }
+        "#);
+        insta::assert_debug_snapshot!( p("2024-W52-7"), @r#"
+        Parsed {
+            value: 2024-W52-7,
+            input: "",
+        }
+        "#);
+        insta::assert_debug_snapshot!( p("2004-W53-6"), @r#"
+        Parsed {
+            value: 2004-W53-6,
+            input: "",
+        }
+        "#);
+        insta::assert_debug_snapshot!( p("2009-W01-1"), @r#"
+        Parsed {
+            value: 2009-W01-1,
+            input: "",
+        }
+        "#);
+
+        insta::assert_debug_snapshot!( p("2024W015"), @r#"
+        Parsed {
+            value: 2024-W01-5,
+            input: "",
+        }
+        "#);
+        insta::assert_debug_snapshot!( p("2024W527"), @r#"
+        Parsed {
+            value: 2024-W52-7,
+            input: "",
+        }
+        "#);
+        insta::assert_debug_snapshot!( p("2004W536"), @r#"
+        Parsed {
+            value: 2004-W53-6,
+            input: "",
+        }
+        "#);
+        insta::assert_debug_snapshot!( p("2009W011"), @r#"
+        Parsed {
+            value: 2009-W01-1,
+            input: "",
+        }
+        "#);
+
+        // Lowercase should be okay. This matches how
+        // we support `T` or `t`.
+        insta::assert_debug_snapshot!( p("2009w011"), @r#"
+        Parsed {
+            value: 2009-W01-1,
+            input: "",
+        }
+        "#);
+    }
+
+    #[test]
+    fn err_iso_week_date_year() {
+        let p = |input: &str| {
+            DateTimeParser::new()
+                .parse_iso_week_date(input.as_bytes())
+                .unwrap_err()
+        };
+
+        insta::assert_snapshot!(
+            p("123"),
+            @"expected four digit year (or leading sign for six digit year), but found end of input",
+        );
+        insta::assert_snapshot!(
+            p("123a"),
+            @"failed to parse four digit integer as year: invalid digit, expected 0-9 but got a",
+        );
+
+        insta::assert_snapshot!(
+            p("-9999"),
+            @"expected six digit year (because of a leading sign), but found end of input",
+        );
+        insta::assert_snapshot!(
+            p("+9999"),
+            @"expected six digit year (because of a leading sign), but found end of input",
+        );
+        insta::assert_snapshot!(
+            p("-99999"),
+            @"expected six digit year (because of a leading sign), but found end of input",
+        );
+        insta::assert_snapshot!(
+            p("+99999"),
+            @"expected six digit year (because of a leading sign), but found end of input",
+        );
+        insta::assert_snapshot!(
+            p("-99999a"),
+            @"failed to parse six digit integer as year: invalid digit, expected 0-9 but got a",
+        );
+        insta::assert_snapshot!(
+            p("+999999"),
+            @"failed to parse six digit integer as year: parameter 'year' is not in the required range of -9999..=9999",
+        );
+        insta::assert_snapshot!(
+            p("-010000"),
+            @"failed to parse six digit integer as year: parameter 'year' is not in the required range of -9999..=9999",
+        );
+    }
+
+    #[test]
+    fn err_iso_week_date_week_prefix() {
+        let p = |input: &str| {
+            DateTimeParser::new()
+                .parse_iso_week_date(input.as_bytes())
+                .unwrap_err()
+        };
+
+        insta::assert_snapshot!(
+            p("2024-"),
+            @"failed to parse week number prefix in date: expected `W` or `w`, but found end of input",
+        );
+        insta::assert_snapshot!(
+            p("2024"),
+            @"failed to parse week number prefix in date: expected `W` or `w`, but found end of input",
+        );
+    }
+
+    #[test]
+    fn err_iso_week_date_week_number() {
+        let p = |input: &str| {
+            DateTimeParser::new()
+                .parse_iso_week_date(input.as_bytes())
+                .unwrap_err()
+        };
+
+        insta::assert_snapshot!(
+            p("2024-W"),
+            @"expected two digit week number, but found end of input",
+        );
+        insta::assert_snapshot!(
+            p("2024-W1"),
+            @"expected two digit week number, but found end of input",
+        );
+        insta::assert_snapshot!(
+            p("2024-W53-1"),
+            @"parsed week date is not valid: parameter 'iso-week' is not in the required range of 1..=53",
+        );
+        insta::assert_snapshot!(
+            p("2030W531"),
+            @"parsed week date is not valid: parameter 'iso-week' is not in the required range of 1..=53",
+        );
+    }
+
+    #[test]
+    fn err_iso_week_date_parse_incomplete() {
+        let p = |input: &str| {
+            DateTimeParser::new()
+                .parse_iso_week_date(input.as_bytes())
+                .unwrap_err()
+        };
+
+        insta::assert_snapshot!(
+            p("2024-W53-1"),
+            @"parsed week date is not valid: parameter 'iso-week' is not in the required range of 1..=53",
+        );
+        insta::assert_snapshot!(
+            p("2025-W53-1"),
+            @"parsed week date is not valid: parameter 'iso-week' is not in the required range of 1..=53",
+        );
+    }
+
+    #[test]
+    fn err_iso_week_date_date_day() {
+        let p = |input: &str| {
+            DateTimeParser::new()
+                .parse_iso_week_date(input.as_bytes())
+                .unwrap_err()
+        };
+        insta::assert_snapshot!(
+            p("2024-W12-"),
+            @"expected one digit weekday, but found end of input",
+        );
+        insta::assert_snapshot!(
+            p("2024W12"),
+            @"expected one digit weekday, but found end of input",
+        );
+        insta::assert_snapshot!(
+            p("2024-W11-8"),
+            @"failed to parse one digit integer as weekday: parameter 'weekday (Monday 1-indexed)' is not in the required range of 1..=7",
+        );
+    }
+
+    #[test]
+    fn err_iso_week_date_date_separator() {
+        let p = |input: &str| {
+            DateTimeParser::new()
+                .parse_iso_week_date(input.as_bytes())
+                .unwrap_err()
+        };
+        insta::assert_snapshot!(
+            p("2024-W521"),
+            @"failed to parse separator after week number: expected `-` separator, but found `1`",
+        );
+        insta::assert_snapshot!(
+            p("2024W01-5"),
+            @"failed to parse separator after week number: expected no separator since none was found after the year, but found a `-` separator",
         );
     }
 }

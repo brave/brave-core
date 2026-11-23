@@ -1,6 +1,6 @@
+use crate::SectionId;
 use crate::constants;
 use crate::write::{Address, Error, Result, Writer};
-use crate::SectionId;
 
 /// A relocation to be applied to a section.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

@@ -111,10 +111,6 @@ impl<R> From<R> for DebugLine<R> {
     }
 }
 
-/// Deprecated. `LineNumberProgram` has been renamed to `LineProgram`.
-#[deprecated(note = "LineNumberProgram has been renamed to LineProgram, use that instead.")]
-pub type LineNumberProgram<R, Offset> = dyn LineProgram<R, Offset>;
-
 /// A `LineProgram` provides access to a `LineProgramHeader` and
 /// a way to add files to the files table if necessary. Gimli consumers should
 /// never need to use or see this trait.
@@ -154,10 +150,6 @@ where
         // Nop. Our file table is already complete.
     }
 }
-
-/// Deprecated. `StateMachine` has been renamed to `LineRows`.
-#[deprecated(note = "StateMachine has been renamed to LineRows, use that instead.")]
-pub type StateMachine<R, Program, Offset> = LineRows<R, Program, Offset>;
 
 /// Executes a `LineProgram` to iterate over the rows in the matrix of line number information.
 ///
@@ -229,7 +221,7 @@ where
     /// an instruction, then `Err(e)` is returned.
     ///
     /// Unfortunately, the references mean that this cannot be a
-    /// `FallibleIterator`.
+    /// `Iterator`.
     pub fn next_row(&mut self) -> Result<Option<(&LineProgramHeader<R, Offset>, &LineRow)>> {
         // Perform any reset that was required after copying the previous row.
         self.row.reset(self.program.header());
@@ -257,10 +249,6 @@ where
         }
     }
 }
-
-/// Deprecated. `Opcode` has been renamed to `LineInstruction`.
-#[deprecated(note = "Opcode has been renamed to LineInstruction, use that instead.")]
-pub type Opcode<R> = LineInstruction<R, <R as Reader>::Offset>;
 
 /// A parsed line number program instruction.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -516,10 +504,6 @@ where
     }
 }
 
-/// Deprecated. `OpcodesIter` has been renamed to `LineInstructions`.
-#[deprecated(note = "OpcodesIter has been renamed to LineInstructions, use that instead.")]
-pub type OpcodesIter<R> = LineInstructions<R>;
-
 /// An iterator yielding parsed instructions.
 ///
 /// See
@@ -549,7 +533,7 @@ impl<R: Reader> LineInstructions<R> {
     /// `Ok(None)`.
     ///
     /// Unfortunately, the `header` parameter means that this cannot be a
-    /// `FallibleIterator`.
+    /// `Iterator`.
     #[inline(always)]
     pub fn next_instruction(
         &mut self,
@@ -568,10 +552,6 @@ impl<R: Reader> LineInstructions<R> {
         }
     }
 }
-
-/// Deprecated. `LineNumberRow` has been renamed to `LineRow`.
-#[deprecated(note = "LineNumberRow has been renamed to LineRow, use that instead.")]
-pub type LineNumberRow = LineRow;
 
 /// A row in the line number program's resulting matrix.
 ///
@@ -966,10 +946,6 @@ pub enum ColumnType {
     Column(NonZeroU64),
 }
 
-/// Deprecated. `LineNumberSequence` has been renamed to `LineSequence`.
-#[deprecated(note = "LineNumberSequence has been renamed to LineSequence, use that instead.")]
-pub type LineNumberSequence<R> = LineSequence<R>;
-
 /// A sequence within a line number program.  A sequence, as defined in section
 /// 6.2.5 of the standard, is a linear subset of a line number program within
 /// which addresses are monotonically increasing.
@@ -983,12 +959,6 @@ pub struct LineSequence<R: Reader> {
     pub end: u64,
     instructions: LineInstructions<R>,
 }
-
-/// Deprecated. `LineNumberProgramHeader` has been renamed to `LineProgramHeader`.
-#[deprecated(
-    note = "LineNumberProgramHeader has been renamed to LineProgramHeader, use that instead."
-)]
-pub type LineNumberProgramHeader<R, Offset> = LineProgramHeader<R, Offset>;
 
 /// A header for a line number program in the `.debug_line` section, as defined
 /// in section 6.2.4 of the standard.
@@ -1276,7 +1246,7 @@ where
             address_size = rest.read_address_size()?;
             let segment_selector_size = rest.read_u8()?;
             if segment_selector_size != 0 {
-                return Err(Error::UnsupportedSegmentSize);
+                return Err(Error::UnsupportedSegmentSize(segment_selector_size));
             }
         }
 
@@ -1341,6 +1311,7 @@ where
             comp_dir = None;
             directory_entry_format = FileEntryFormat::parse(rest)?;
             let count = rest.read_uleb128()?;
+            include_directories.reserve(count.min(rest.len().into_u64()) as usize);
             for _ in 0..count {
                 include_directories.push(parse_directory_v5(
                     rest,
@@ -1375,6 +1346,7 @@ where
             comp_file = None;
             file_name_entry_format = FileEntryFormat::parse(rest)?;
             let count = rest.read_uleb128()?;
+            file_names.reserve(count.min(rest.len().into_u64()) as usize);
             for _ in 0..count {
                 file_names.push(parse_file_v5(rest, encoding, &file_name_entry_format)?);
             }
@@ -1399,12 +1371,6 @@ where
         Ok(header)
     }
 }
-
-/// Deprecated. `IncompleteLineNumberProgram` has been renamed to `IncompleteLineProgram`.
-#[deprecated(
-    note = "IncompleteLineNumberProgram has been renamed to IncompleteLineProgram, use that instead."
-)]
-pub type IncompleteLineNumberProgram<R, Offset> = IncompleteLineProgram<R, Offset>;
 
 /// A line number program that has not been run to completion.
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -1492,12 +1458,6 @@ where
         Ok((program, sequences))
     }
 }
-
-/// Deprecated. `CompleteLineNumberProgram` has been renamed to `CompleteLineProgram`.
-#[deprecated(
-    note = "CompleteLineNumberProgram has been renamed to CompleteLineProgram, use that instead."
-)]
-pub type CompleteLineNumberProgram<R, Offset> = CompleteLineProgram<R, Offset>;
 
 /// A line number program that has previously been run to completion.
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -1748,10 +1708,10 @@ fn parse_file_v5<R: Reader>(
                 }
             }
             constants::DW_LNCT_MD5 => {
-                if let AttributeValue::Block(mut value) = value {
-                    if value.len().into_u64() == 16 {
-                        md5 = value.read_u8_array()?;
-                    }
+                if let AttributeValue::Block(mut value) = value
+                    && value.len().into_u64() == 16
+                {
+                    md5 = value.read_u8_array()?;
                 }
             }
             constants::DW_LNCT_LLVM_source => {

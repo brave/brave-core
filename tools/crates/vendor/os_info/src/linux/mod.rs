@@ -34,6 +34,7 @@ mod tests {
             | Type::AOSC
             | Type::Arch
             | Type::Artix
+            | Type::Bazzite
             | Type::Bluefin
             | Type::CachyOS
             | Type::CentOS
@@ -44,6 +45,7 @@ mod tests {
             | Type::Garuda
             | Type::Gentoo
             | Type::Kali
+            | Type::KDENeon
             | Type::Linux
             | Type::Mabox
             | Type::Manjaro

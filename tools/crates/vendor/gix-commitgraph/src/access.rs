@@ -1,4 +1,4 @@
-use crate::{file, file::Commit, File, Graph, Position};
+use crate::{File, Graph, Position, file, file::Commit};
 
 /// Access
 impl Graph {
@@ -9,6 +9,13 @@ impl Graph {
     pub fn commit_at(&self, pos: Position) -> Commit<'_> {
         let r = self.lookup_by_pos(pos);
         r.file.commit_at(r.pos)
+    }
+
+    /// The kind of hash used in this `Graph`.
+    ///
+    /// Note that it is always conforming to the hash used in the owning repository.
+    pub fn object_hash(&self) -> gix_hash::Kind {
+        self.files.first().object_hash()
     }
 
     /// Returns the commit matching the given `id`.
@@ -74,7 +81,7 @@ impl Graph {
                         file,
                         _file_index: file_index,
                         pos: file::Position(remaining),
-                    }
+                    };
                 }
             }
         }

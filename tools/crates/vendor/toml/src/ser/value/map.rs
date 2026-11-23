@@ -2,12 +2,12 @@ use core::fmt::Write as _;
 
 use toml_writer::TomlWrite as _;
 
-use super::array::SerializeTupleVariant;
-use super::array::SerializeValueArray;
-use super::key::KeySerializer;
 use super::Error;
 use super::Style;
 use super::ValueSerializer;
+use super::array::SerializeTupleVariant;
+use super::array::SerializeValueArray;
+use super::key::KeySerializer;
 use crate::alloc_prelude::*;
 
 #[doc(hidden)]
@@ -56,6 +56,17 @@ impl<'d> serde_core::ser::SerializeMap for SerializeMap<'d> {
         match self {
             Self::Datetime(s) => s.serialize_value(value),
             Self::Table(s) => s.serialize_value(value),
+        }
+    }
+
+    fn serialize_entry<K, V>(&mut self, key: &K, value: &V) -> Result<(), Self::Error>
+    where
+        K: serde_core::ser::Serialize + ?Sized,
+        V: serde_core::ser::Serialize + ?Sized,
+    {
+        match self {
+            Self::Datetime(s) => s.serialize_entry(key, value),
+            Self::Table(s) => s.serialize_entry(key, value),
         }
     }
 
@@ -180,6 +191,46 @@ impl<'d> SerializeTable<'d> {
         self.dst.close_inline_table()?;
         Ok(self.dst)
     }
+
+    fn write_entry<T>(
+        &mut self,
+        write_key: impl FnOnce(&mut String) -> Result<(), Error>,
+        value: &T,
+    ) -> Result<(), Error>
+    where
+        T: serde_core::ser::Serialize + ?Sized,
+    {
+        let mut encoded_value = String::new();
+        let mut is_none = false;
+        let value_serializer =
+            MapValueSerializer::new(&mut encoded_value, &mut is_none, self.style);
+        let res = value.serialize(value_serializer);
+        match res {
+            Ok(_) => {
+                use core::fmt::Write as _;
+
+                if self.seen_value {
+                    self.dst.val_sep()?;
+                }
+                self.seen_value = true;
+                self.dst.space()?;
+                write_key(self.dst)?;
+                self.dst.space()?;
+                self.dst.keyval_sep()?;
+                self.dst.space()?;
+                write!(self.dst, "{encoded_value}")?;
+            }
+            Err(e) => {
+                // Preserve key errors even when the value fails or is omitted.
+                encoded_value.clear();
+                write_key(&mut encoded_value)?;
+                if !(e == Error::unsupported_none() && is_none) {
+                    return Err(e);
+                }
+            }
+        }
+        Ok(())
+    }
 }
 
 impl<'d> serde_core::ser::SerializeMap for SerializeTable<'d> {
@@ -206,33 +257,21 @@ impl<'d> serde_core::ser::SerializeMap for SerializeTable<'d> {
             .key
             .take()
             .expect("always called after `serialize_key`");
-        let mut encoded_value = String::new();
-        let mut is_none = false;
-        let value_serializer =
-            MapValueSerializer::new(&mut encoded_value, &mut is_none, self.style);
-        let res = value.serialize(value_serializer);
-        match res {
-            Ok(_) => {
-                use core::fmt::Write as _;
+        self.write_entry(
+            |dst| {
+                dst.push_str(&encoded_key);
+                Ok(())
+            },
+            value,
+        )
+    }
 
-                if self.seen_value {
-                    self.dst.val_sep()?;
-                }
-                self.seen_value = true;
-                self.dst.space()?;
-                write!(self.dst, "{encoded_key}")?;
-                self.dst.space()?;
-                self.dst.keyval_sep()?;
-                self.dst.space()?;
-                write!(self.dst, "{encoded_value}")?;
-            }
-            Err(e) => {
-                if !(e == Error::unsupported_none() && is_none) {
-                    return Err(e);
-                }
-            }
-        }
-        Ok(())
+    fn serialize_entry<K, V>(&mut self, key: &K, value: &V) -> Result<(), Self::Error>
+    where
+        K: serde_core::ser::Serialize + ?Sized,
+        V: serde_core::ser::Serialize + ?Sized,
+    {
+        self.write_entry(|dst| key.serialize(KeySerializer { dst }), value)
     }
 
     fn end(self) -> Result<Self::Ok, Self::Error> {

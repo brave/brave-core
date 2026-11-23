@@ -136,15 +136,15 @@ split up.
 time zone aware datetimes. For example, Chrono provides `NaiveDate::succ_opt`
 to get the next day, but this method isn't available on `NaiveDateTime` or
 `DateTime`. Instead, to implement it correctly on `DateTime`, you have to get
-the naive date, get the date for tomorrow via `succ_opt`, and then convert
-it back to the same `NaiveDateTime` and finally make it time zone aware by
+the naive date, get the date for tomorrow via `succ_opt`, and then convert it
+back to the same `NaiveDateTime` and finally make it time zone aware by
 applying the original time zone to it. In contrast, in Jiff, it's just a matter
-of calling `Zoned::tomorrow`. Indeed, (almost) any method you can call on
-`civil::Date` in Jiff is also available on `civil::DateTime` and likewise for
-`Zoned`. This makes transitioning between datetime types very easy. Chrono
-almost appears to provide this same experience via traits like `Datelike`,
-but doesn't fully commit and, in my opinion, the end result has a feeling of
-arbitrariness to it.
+of calling `ZonedDateTime::tomorrow`. Indeed, (almost) any method you can call
+on `civil::Date` in Jiff is also available on `civil::DateTime` and likewise
+for `ZonedDateTime`. This makes transitioning between datetime types very easy.
+Chrono almost appears to provide this same experience via traits like
+`Datelike`, but doesn't fully commit and, in my opinion, the end result has a
+feeling of arbitrariness to it.
 * Chrono lacks a standard timestamp type. You can approximate this with a
 `DateTime<Utc>`, but it's a more complicated type that includes a full datetime
 representation. In contrast, Jiff provides a `Timestamp` type for when you just
@@ -153,29 +153,27 @@ rest of the datetime types in a consistent way.
 
 ### `time`
 
-My main gripe with the `time` crate is that it has no [IANA Time Zone Database]
-support at all. This means it cannot do DST safe arithmetic. Consequently, it
-emphasizes the use of "fixed offset" datetimes in a similar fashion as Chrono,
-except `time` does not provide any extension mechanism like a `TimeZone` trait.
-In my view, fixed offset datetimes are rarely the right thing to use. In my
-opinion, this makes writing correct datetime code with the `time` crate rather
-difficult. In contrast, Jiff provides full [IANA Time Zone Database] support,
-and it should be very rare to need fixed offset datetimes (although Jiff does
-support them via `TimeZone::fixed`).
+My main gripe with the `time` crate is that it has very limited
+[IANA Time Zone Database] support. This means it is difficult to do DST safe
+arithmetic. Consequently, it emphasizes the use of "fixed offset" datetimes
+in a similar fashion as Chrono, except `time` does not provide any extension
+mechanism like a `TimeZone` trait. In my view, fixed offset datetimes are
+rarely the right thing to use. In my opinion, this makes writing correct
+datetime code with the `time` crate rather difficult. In contrast, Jiff
+provides full [IANA Time Zone Database] support, and it should be very
+rare to need fixed offset datetimes (although Jiff does support them via
+`TimeZone::fixed`).
 
-The `time` crate also, at present, relies on unsound `libc` APIs for
-determining the current time zone offset, but makes them sound by requiring (by
-default) that `UtcOffset::current_local_offset` is only called when there is
-only 1 thread. This is a result of the `libc` APIs accessing the environment
-in a way that is unsynchronized with Rust's standard library access to the
-environment. This is likely a temporary limitation, but at time of writing,
-this state has persisted for quite some time already. In contrast, Jiff detects
-the current time zone of the platform on its own without use of `libc`, and
-thus sidesteps this issue. (This is also what Chrono does.)
+(Note that at time of writing, there does exist an unofficial [`time-tz`]
+crate that provides very limited support for time zones in concert with the
+`time` crate. However, there is no time zone aware datetime type and no way to
+distinguish between calendar arithmetic and time arithmetic across daylight
+saving time boundaries. The `time-tz` crate borrows the design of `chrono-tz`,
+and thus has all of its downsides as well.)
 
 I overall find the API of `time` to be easier to understand than Chrono, likely
 because there are fewer generics. But `time` is also supporting a lot less than
-Chrono and Jiff (because of the missing time zone support).
+Chrono and Jiff (because of the missing time zone support in `time` itself).
 
 As with Chrono, I've done a
 [more detailed comparison between Jiff and `time`][comparison-time].
@@ -317,9 +315,9 @@ left daylight saving time, creating a fold in time). Being unaware of this
 corner case leads to folks assuming that "1 day" and "24 hours" are _always_
 exactly equivalent. But they aren't. The design of Jiff leans into this and
 ensures that so long as you're using `Span` to encode a concept of days and are
-doing arithmetic with it on `Zoned` values, then you can never get it wrong.
-Jiff will always take time zones into account when dealing with units of days
-or bigger.
+doing arithmetic with it on `ZonedDateTime` values, then you can never get it
+wrong. Jiff will always take time zones into account when dealing with units of
+days or bigger.
 
 The design of `Span` comes from [Temporal], which [uses only one duration
 type][temporal-one-duration]. From that issue, there are some significant
@@ -384,22 +382,23 @@ to describe time zone transitions in Rust code that can then be used to build a
 `TimeZone` directly. But, the benefit of TZif is that it is inter-operable and
 a standard. There are tools that can build them.
 
-An important thing to note here is that I actually approach questions like
-"Why isn't `TimeZone` a trait?" as instead "Why _should_ `TimeZone` be a trait?"
-In particular, I personally perceive costs to introducing generics, especially
-on a fundamental type in the crate. For example, if `TimeZone` were a trait,
-then `Zoned` would not be a concrete type. It would be generic over a type
+An important thing to note here is that I actually approach questions like "Why
+isn't `TimeZone` a trait?" as instead "Why _should_ `TimeZone` be a trait?" In
+particular, I personally perceive costs to introducing generics, especially on
+a fundamental type in the crate. For example, if `TimeZone` were a trait, then
+`ZonedDateTime` would not be a concrete type. It would be generic over a type
 parameter that implements the `TimeZone` trait. This in turn implies that
-anyone _using_ a `Zoned` in their own types or APIs needs to think about the
-`TimeZone` trait and likely incorporate it into their own type signatures. This
-is because a `TimeZone` trait implies an open system that infects everything
-it touches. The complexity isn't contained. But a concrete `TimeZone` type,
-like what Jiff has, encapsulates everything there is about time zones.
+anyone _using_ a `ZonedDateTime` in their own types or APIs needs to think
+about the `TimeZone` trait and likely incorporate it into their own type
+signatures. This is because a `TimeZone` trait implies an open system that
+infects everything it touches. The complexity isn't contained. But a concrete
+`TimeZone` type, like what Jiff has, encapsulates everything there is about
+time zones.
 
-(Making `Zoned` generic over a type parameter with a _default_ type does
-contain the complexity in some cases, but not all. I explored using default
-type parameters in Jiff for supporting [leap seconds][github-issue-leap], and
-it was overall quite awkward in my opinion.)
+(Making `ZonedDateTime` generic over a type parameter with a _default_ type
+does contain the complexity in some cases, but not all. I explored using
+default type parameters in Jiff for supporting [leap
+seconds][github-issue-leap], and it was overall quite awkward in my opinion.)
 
 The trade off is that we do give up some flexibility. For example, Chrono uses
 a `TimeZone` trait design. This enables external crates to provide their own
@@ -410,14 +409,14 @@ zone aware datetime type (`DateTime<T>`) to be `Copy` if `T` is `Copy`. It is
 somewhat difficult (although not literally impossible) to make a TZif-backed
 time zone implement `Copy`, but a _reference_ to it is `Copy` and a reference
 to it can still implement Chrono's `TimeZone` trait. (And indeed, this is what
-the `tzfile` crate does.) This ultimately leads to more flexibility compared
-to Jiff, where its `Zoned` type embeds a `TimeZone` and a `TimeZone` cannot
-easily be made `Copy` without giving up something else.
+the `tzfile` crate does.) This ultimately leads to more flexibility compared to
+Jiff, where its `ZonedDateTime` type embeds a `TimeZone` and a `TimeZone`
+cannot easily be made `Copy` without giving up something else.
 
 My opinions on the costs of generics tend to overestimate them compared to many
 others in my experience, so your mileage may vary on where you land on this
-issue. Buy in my opinion, being able to just write `Zoned` as a concrete type
-without any generics is a huge win for comprehensibility.
+issue. Buy in my opinion, being able to just write `ZonedDateTime` as a
+concrete type without any generics is a huge win for comprehensibility.
 
 
 ## Why doesn't `TimeZone` implement `Copy`?
@@ -427,13 +426,15 @@ to implement `Copy`. The reason why I wanted it to implement `Copy` is because
 I wanted all datetime types to have "plain old data" semantics. That is, I want
 callers to think of them as small immutable bits of data that can be freely
 copied without worry. This makes APIs a little nicer because you can ask for a
-`Zoned` instead of a `&Zoned`, assuming the `Zoned` type is small enough.
+`ZonedDateTime` instead of a `&ZonedDateTime`, assuming the `ZonedDateTime`
+type is small enough.
 
-But, in order for `Zoned` to be `Copy`, it must be the case that `TimeZone` is
-`Copy`. This is because `Zoned` embeds a `TimeZone`. Indeed, this is the reason
-for its existence: it couples an instant in time with a particular geographic
-region. This makes it possible to expose very ergonomic high level APIs that
-don't require the caller to keep passing in a `TimeZone` value repeatedly.
+But, in order for `ZonedDateTime` to be `Copy`, it must be the case that
+`TimeZone` is `Copy`. This is because `ZonedDateTime` embeds a `TimeZone`.
+Indeed, this is the reason for its existence: it couples an instant in time
+with a particular geographic region. This makes it possible to expose very
+ergonomic high level APIs that don't require the caller to keep passing in a
+`TimeZone` value repeatedly.
 
 So, how can a `TimeZone` be `Copy`? Well, both fixed offset and POSIX time
 zones could be `Copy`. There's no huge challenge in that. (Internally, a POSIX
@@ -456,7 +457,7 @@ synchronization whatsoever to use it. It is just an `Arc` internally to make it
 pointer-sized.
 
 
-## Why isn't there a `SystemZoned` type? Or a `OffsetZoned` type?
+## Why no `SystemZonedDateTime` or `OffsetZonedDateTime` types?
 
 Some datetime libraries have multiple different zone aware datetime types. Jiff
 opts to have just one, and embeds support for the different types of time zones
@@ -492,11 +493,11 @@ to both `SignedDuration` and `Span` to make conversions between it and
 `std::time::Duration` easier.
 
 
-## What are the `ZoneDifference` and `ZonedRound` types for?
+## What are the `ZoneDifference` and `ZonedDateTimeRound` types for?
 
-The `ZonedDifference` and `ZonedRound` are builders for expressing the
-parameters to the functions `Zoned::{since, until}` and `Zoned::round`,
-respectively. For example, this:
+The `ZonedDateTimeDifference` and `ZonedDateTimeRound` are builders for
+expressing the parameters to the functions `ZonedDateTime::{since, until}` and
+`ZonedDateTime::round`, respectively. For example, this:
 
 ```rust
 use jiff::{civil::date, ToSpan};
@@ -511,28 +512,28 @@ assert_eq!(zdt1.until(&zdt2)?, 744.hours().seconds(36).fieldwise());
 Is equivalent to:
 
 ```rust
-use jiff::{civil::date, ToSpan, ZonedDifference};
+use jiff::{civil::date, ToSpan, ZonedDateTimeDifference};
 
 let zdt1 = date(2024, 7, 16).at(22, 3, 23, 0).in_tz("America/New_York")?;
 let zdt2 = date(2024, 8, 16).at(22, 3, 59, 0).in_tz("America/New_York")?;
 assert_eq!(
-  zdt1.until(ZonedDifference::new(&zdt2))?,
+  zdt1.until(ZonedDateTimeDifference::new(&zdt2))?,
   744.hours().seconds(36).fieldwise(),
 );
 
 # Ok::<(), Box<dyn std::error::Error>>(())
 ```
 
-The point of this is that `ZonedDifference` permits specifying additional
-configuration. For example, rounding the span returned:
+The point of this is that `ZonedDateTimeDifference` permits specifying
+additional configuration. For example, rounding the span returned:
 
 ```rust
-use jiff::{civil::date, ToSpan, Unit, ZonedDifference};
+use jiff::{civil::date, ToSpan, Unit, ZonedDateTimeDifference};
 
 let zdt1 = date(2024, 7, 16).at(22, 3, 23, 0).in_tz("America/New_York")?;
 let zdt2 = date(2024, 8, 16).at(22, 3, 59, 0).in_tz("America/New_York")?;
 assert_eq!(
-    zdt1.until(ZonedDifference::new(&zdt2).smallest(Unit::Minute))?,
+    zdt1.until(ZonedDateTimeDifference::new(&zdt2).smallest(Unit::Minute))?,
     744.hours().fieldwise(),
 );
 
@@ -540,22 +541,22 @@ assert_eq!(
 ```
 
 By using a dedicated type to represent the parameters, we can enable ergonomic
-uses of the API for common cases (by using `From<&Zoned> for ZonedDifference`
-trait implementations) while still permitting callers to provide additional
-configuration.
+uses of the API for common cases (by using `From<&ZonedDateTime> for
+ZonedDateTimeDifference` trait implementations) while still permitting callers
+to provide additional configuration.
 
 An alternative API would be to remove the additional parameters to
-`Zoned::until`, and instead require callers to do span rounding themselves
-explicitly. But this is more verbose and requires repeating the correct
-zoned datetime to indicate how to interpret non-uniform units. For example,
-instead of this:
+`ZonedDateTime::until`, and instead require callers to do span rounding
+themselves explicitly. But this is more verbose and requires repeating the
+correct zoned datetime to indicate how to interpret non-uniform units. For
+example, instead of this:
 
 ```rust
-use jiff::{civil::date, ToSpan, Unit, ZonedDifference};
+use jiff::{civil::date, ToSpan, Unit, ZonedDateTimeDifference};
 
 let zdt1 = date(2024, 7, 16).at(22, 3, 23, 0).in_tz("America/New_York")?;
 let zdt2 = date(2024, 8, 16).at(22, 3, 59, 0).in_tz("America/New_York")?;
-let diff = ZonedDifference::new(&zdt2)
+let diff = ZonedDateTimeDifference::new(&zdt2)
     .largest(Unit::Month)
     .smallest(Unit::Minute);
 assert_eq!(zdt1.until(diff)?, 1.month().fieldwise());
@@ -583,12 +584,12 @@ assert_eq!(rounded, 1.month().fieldwise());
 # Ok::<(), Box<dyn std::error::Error>>(())
 ```
 
-This is somewhat fiddly and easy to get wrong. Moreover, the `Zoned::until`
-API, when rounding is enabled, will automatically use `RoundMode::Trunc`, since
-this is what usually expects when computing the span between two datetimes. But
-span rounding uses `RoundMode::HalfExpand` by default, corresponding to how you
-were likely taught to round in school. (Rounds to the nearest unit, with ties
-breaking away from zero.)
+This is somewhat fiddly and easy to get wrong. Moreover, the
+`ZonedDateTime::until` API, when rounding is enabled, will automatically use
+`RoundMode::Trunc`, since this is what usually expects when computing the span
+between two datetimes. But span rounding uses `RoundMode::HalfExpand` by
+default, corresponding to how you were likely taught to round in school.
+(Rounds to the nearest unit, with ties breaking away from zero.)
 
 Similar reasoning applies to other "parameter builder" types like
 `civil::DateTimeDifference` as well.
@@ -634,5 +635,6 @@ serious confusion and conflicts in names when someone wants to use both an
 [`tzfile`]: https://docs.rs/tzfile
 [`chrono`]: https://docs.rs/chrono
 [`time`]: https://docs.rs/time
+[`time-tz`]: https://docs.rs/time-tz
 [`hifitime`]: https://docs.rs/hifitime
 [`icu`]: https://docs.rs/icu

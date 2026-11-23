@@ -20,20 +20,12 @@ use core::mem::MaybeUninit;
 
 pub use crate::util::{inner_u32, inner_u64};
 
-#[path = "../util_libc.rs"]
-mod util_libc;
+#[path = "../utils/sys_fill_exact.rs"]
+mod utils;
 
 #[inline]
 pub fn fill_inner(dest: &mut [MaybeUninit<u8>]) -> Result<(), Error> {
-    util_libc::sys_fill_exact(dest, |buf| unsafe {
-        let ret = libc::getrandom(buf.as_mut_ptr().cast(), buf.len(), 0);
-
-        #[cfg(any(target_os = "android", target_os = "linux"))]
-        #[allow(unused_unsafe)] // TODO(MSRV 1.65): Remove this.
-        unsafe {
-            super::sanitizer::unpoison_linux_getrandom_result(buf, ret);
-        }
-
-        ret
+    utils::sys_fill_exact(dest, |buf| unsafe {
+        libc::getrandom(buf.as_mut_ptr().cast(), buf.len(), 0)
     })
 }

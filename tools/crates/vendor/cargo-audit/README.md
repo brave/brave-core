@@ -10,6 +10,12 @@
 Audit your dependencies for crates with security vulnerabilities reported to the
 [RustSec Advisory Database].
 
+## Related Experimental Tool
+
+If you want additional function-level reachability context, see
+[`reachsec`](https://github.com/xizheyin/reachsec), an experimental standalone
+companion to `cargo audit`.
+
 ## Requirements
 
 `cargo audit` requires Rust **1.74** or later.
@@ -21,10 +27,16 @@ Audit your dependencies for crates with security vulnerabilities reported to the
 `cargo audit` is a Cargo subcommand and can be installed with `cargo install`:
 
 ```
-$ cargo install cargo-audit --locked
+$ cargo install cargo-audit
 ```
 
 Once installed, run `cargo audit` at the toplevel of any Cargo project.
+
+Only run it on projects you trust. If `Cargo.lock` is missing, `cargo audit` runs `cargo update --workspace` to generate one, and Cargo can execute code from the project it runs in, see [Do not run any Cargo commands on untrusted projects](https://shnatsel.medium.com/do-not-run-any-cargo-commands-on-untrusted-projects-4c31c89a78d6). To audit a project you do not trust, pass its lockfile with `--file` so that `cargo audit` does not generate one, and run it from a directory outside the project, since Cargo reads configuration from the current directory:
+
+```
+$ cargo audit --file path/to/Cargo.lock
+```
 
 ### Alpine Linux
 
@@ -62,7 +74,7 @@ to fix vulnerable dependency requirements.
 To enable it, install `cargo audit` with the `fix` feature enabled:
 
 ```
-$ cargo install cargo-audit --locked --features=fix
+$ cargo install cargo-audit --features=fix
 ```
 
 Once installed, run `cargo audit fix` to automatically fix vulnerable
@@ -109,6 +121,34 @@ $ cargo audit --ignore RUSTSEC-2017-0001
 
 This option can also be configured via the [`audit.toml`](./audit.toml.example) file.
 
+## Filtering by target platform
+
+Use `--target-arch` and `--target-os` to filter advisories by CPU architecture
+and operating system. These use Rust's `target_arch` and `target_os` values,
+not full target triples. For the available names, see the `platforms` crate's
+[`Arch` documentation](https://docs.rs/platforms/latest/platforms/enum.Arch.html)
+and [`Os` documentation](https://docs.rs/platforms/latest/platforms/enum.Os.html).
+Use the strings shown in the variant descriptions (for example, `aarch64` and
+`macos`), rather than the Rust enum variant names (`AArch64` and `MacOS`).
+The registry evolves as Rust adds or removes targets.
+
+Each flag can be repeated to include multiple values:
+
+```sh
+cargo audit --target-arch x86_64 --target-os linux --target-os windows
+```
+
+The equivalent settings in [`audit.toml`](./audit.toml.example) are:
+
+```toml
+[target]
+arch = ["x86_64"]
+os = ["linux", "windows"]
+```
+
+Advisories that do not restrict the selected architecture or operating system
+are still included. By default, neither filter is applied.
+
 ## Using `cargo audit` on Travis CI
 
 To automatically run `cargo audit` on every build in Travis CI, you can add the following to your `.travis.yml`:
@@ -117,7 +157,7 @@ To automatically run `cargo audit` on every build in Travis CI, you can add the 
 language: rust
 cache: cargo # cache cargo-audit once installed
 before_script:
-  - cargo install --force --locked cargo-audit
+  - cargo install --force cargo-audit
   - cargo generate-lockfile
 script:
   - cargo audit

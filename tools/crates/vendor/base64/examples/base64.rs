@@ -30,7 +30,7 @@ struct Opt {
     no_padding: bool,
 
     /// The file to encode or decode.
-    #[structopt(name = "FILE", parse(from_os_str))]
+    #[structopt(name = "FILE")]
     file: Option<PathBuf>,
 }
 

@@ -1,33 +1,13 @@
+use crate::error::message;
 use std::sync::atomic::AtomicBool;
 
-use gix_status::index_as_worktree::traits::{CompareBlobs, SubmoduleStatus};
-
 use crate::{
+    Error, Repository, Result,
     bstr::{BStr, BString},
-    config, Repository,
+    config,
+    config::cache::util::ApplyLeniencyDefault,
 };
-
-/// The error returned by [Repository::index_worktree_status()].
-#[derive(Debug, thiserror::Error)]
-#[allow(missing_docs)]
-pub enum Error {
-    #[error("A working tree is required to perform a directory walk")]
-    MissingWorkDir,
-    #[error(transparent)]
-    AttributesAndExcludes(#[from] crate::repository::attributes::Error),
-    #[error(transparent)]
-    Pathspec(#[from] crate::pathspec::init::Error),
-    #[error(transparent)]
-    Prefix(#[from] gix_path::realpath::Error),
-    #[error(transparent)]
-    FilesystemOptions(#[from] config::boolean::Error),
-    #[error(transparent)]
-    IndexAsWorktreeWithRenames(#[from] gix_status::index_as_worktree_with_renames::Error),
-    #[error(transparent)]
-    StatOptions(#[from] config::stat_options::Error),
-    #[error(transparent)]
-    ResourceCache(#[from] crate::diff::resource_cache::Error),
-}
+use gix_status::index_as_worktree::traits::{CompareBlobs, SubmoduleStatus};
 
 /// Options for use with [Repository::index_worktree_status()].
 #[derive(Default, Debug, Clone, Copy, PartialEq)]
@@ -85,8 +65,8 @@ impl Repository {
     /// ### Note
     ///
     /// This is a lower-level method, prefer the [`status`](Repository::status()) method for greater ease of use.
-    #[allow(clippy::too_many_arguments)]
-    pub fn index_worktree_status<'index, T, U, E>(
+    #[expect(clippy::too_many_arguments)]
+    pub fn index_worktree_status<'index, T, U>(
         &self,
         index: &'index gix_index::State,
         patterns: impl IntoIterator<Item = impl AsRef<BStr>>,
@@ -96,30 +76,35 @@ impl Repository {
             SubmoduleStatus = U,
         >,
         compare: impl CompareBlobs<Output = T> + Send + Clone,
-        submodule: impl SubmoduleStatus<Output = U, Error = E> + Send + Clone,
-        progress: &mut dyn gix_features::progress::Progress,
+        submodule: impl SubmoduleStatus<Output = U> + Send + Clone,
+        progress: &mut dyn gix_utils::progress::Progress,
         should_interrupt: &AtomicBool,
         options: Options,
-    ) -> Result<gix_status::index_as_worktree_with_renames::Outcome, Error>
+    ) -> Result<gix_status::index_as_worktree_with_renames::Outcome>
     where
         T: Send + Clone,
         U: Send + Clone,
-        E: std::error::Error + Send + Sync + 'static,
     {
         let _span = gix_trace::coarse!("gix::index_worktree_status");
-        let workdir = self.workdir().ok_or(Error::MissingWorkDir)?;
+        let workdir = self
+            .workdir()
+            .ok_or_else(|| Error::from_error(message("A working tree is required to perform a directory walk")))?;
         let attrs_and_excludes = self.attributes(
             index,
             crate::worktree::stack::state::attributes::Source::WorktreeThenIdMapping,
             crate::worktree::stack::state::ignore::Source::WorktreeThenIdMappingIfNotSkipped,
             None,
         )?;
-        let pathspec =
-            self.index_worktree_status_pathspec::<Error>(patterns, index, options.dirwalk_options.as_ref())?;
+        let pathspec = self.index_worktree_status_pathspec(patterns, index, options.dirwalk_options.as_ref())?;
 
         let cwd = self.current_dir();
         let git_dir_realpath = crate::path::realpath_opts(self.git_dir(), cwd, crate::path::realpath::MAX_SYMLINKS)?;
         let fs_caps = self.filesystem_options()?;
+        let fscache = config::tree::Core::FS_CACHE
+            .enrich_error(self.config.resolved.boolean(config::tree::Core::FS_CACHE))
+            .with_lenient_default(self.config.lenient_config)?
+            // if unset, default to enabled on Windows. Good for missing Git installations that would turn it on by installation config
+            .unwrap_or(cfg!(windows));
         let accelerate_lookup = fs_caps.ignore_case.then(|| index.prepare_icase_backing());
         let resource_cache = crate::diff::resource_cache(
             self,
@@ -151,12 +136,13 @@ impl Repository {
             },
             gix_status::index_as_worktree_with_renames::Options {
                 sorting: options.sorting,
-                object_hash: self.object_hash(),
                 tracked_file_modifications: gix_status::index_as_worktree::Options {
                     fs: fs_caps,
                     thread_limit: options.thread_limit,
                     stat: self.stat_options()?,
+                    fscache,
                 },
+                fscache,
                 dirwalk: options.dirwalk_options.map(Into::into),
                 rewrites: options.rewrites,
             },
@@ -164,29 +150,20 @@ impl Repository {
         Ok(out)
     }
 
-    pub(super) fn index_worktree_status_pathspec<E>(
+    pub(super) fn index_worktree_status_pathspec(
         &self,
         patterns: impl IntoIterator<Item = impl AsRef<BStr>>,
         index: &gix_index::State,
         options: Option<&crate::dirwalk::Options>,
-    ) -> Result<crate::Pathspec<'_>, E>
-    where
-        E: From<crate::repository::attributes::Error> + From<crate::pathspec::init::Error>,
-    {
+    ) -> Result<crate::Pathspec<'_>> {
         let empty_patterns_match_prefix = options.is_some_and(|opts| opts.empty_patterns_match_prefix);
-        let attrs_and_excludes = self.attributes(
-            index,
-            crate::worktree::stack::state::attributes::Source::WorktreeThenIdMapping,
-            crate::worktree::stack::state::ignore::Source::WorktreeThenIdMappingIfNotSkipped,
-            None,
-        )?;
-        Ok(crate::Pathspec::new(
-            self,
+        self.pathspec(
             empty_patterns_match_prefix,
             patterns,
             true, /* inherit ignore case */
-            move || Ok(attrs_and_excludes.inner),
-        )?)
+            index,
+            crate::worktree::stack::state::attributes::Source::WorktreeThenIdMapping,
+        )
     }
 }
 
@@ -204,26 +181,22 @@ pub struct BuiltinSubmoduleStatus {
 
 ///
 mod submodule_status {
-    use std::borrow::Cow;
 
-    use crate::config::cache::util::ApplyLeniency;
+    use crate::{Result, config::cache::util::ApplyLeniency};
     use crate::{
         bstr,
         bstr::BStr,
         config,
-        status::{index_worktree::BuiltinSubmoduleStatus, Submodule},
+        status::{Submodule, index_worktree::BuiltinSubmoduleStatus},
     };
 
     impl BuiltinSubmoduleStatus {
         /// Create a new instance from a `repo` and a `mode` to control how the submodule status will be obtained.
-        pub fn new(
-            repo: crate::ThreadSafeRepository,
-            mode: Submodule,
-        ) -> Result<Self, crate::submodule::modules::Error> {
+        pub fn new(repo: crate::ThreadSafeRepository, mode: Submodule) -> Result<Self> {
             let local_repo = repo.to_thread_local();
             let submodule_paths = match local_repo.submodules() {
                 Ok(Some(sm)) => {
-                    let mut v: Vec<_> = sm.filter_map(|sm| sm.path().ok().map(Cow::into_owned)).collect();
+                    let mut v: Vec<_> = sm.filter_map(|sm| sm.path().ok()).collect();
                     v.sort();
                     v
                 }
@@ -241,23 +214,10 @@ mod submodule_status {
         }
     }
 
-    /// The error returned submodule status checks.
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error(transparent)]
-        SubmoduleStatus(#[from] crate::submodule::status::Error),
-        #[error(transparent)]
-        IgnoreConfig(#[from] crate::submodule::config::Error),
-        #[error(transparent)]
-        DiffSubmoduleIgnoreConfig(#[from] config::key::GenericErrorWithValue),
-    }
-
     impl gix_status::index_as_worktree::traits::SubmoduleStatus for BuiltinSubmoduleStatus {
         type Output = crate::submodule::Status;
-        type Error = Error;
 
-        fn status(&mut self, _entry: &gix_index::Entry, rela_path: &BStr) -> Result<Option<Self::Output>, Self::Error> {
+        fn status(&mut self, _entry: &gix_index::Entry, rela_path: &BStr) -> Result<Option<Self::Output>> {
             use bstr::ByteSlice;
             if self
                 .submodule_paths
@@ -283,7 +243,7 @@ mod submodule_status {
                     // diff.ignoreSubmodules is the global setting, and if it exists, it overrides the submodule's own ignore setting.
                     let global_ignore = repo
                         .config_snapshot()
-                        .string(&config::tree::Diff::IGNORE_SUBMODULES)
+                        .string(config::tree::Diff::IGNORE_SUBMODULES)
                         .map(|value| config::tree::Diff::IGNORE_SUBMODULES.try_into_ignore(value))
                         .transpose()
                         .with_leniency(repo.config.lenient_config)?;
@@ -434,8 +394,9 @@ pub mod iter {
 
     use super::{Item, RewriteSource};
     use crate::{
+        Result,
         bstr::{BStr, BString},
-        status::{index_worktree, Platform},
+        status::{Platform, index_worktree},
     };
 
     /// Access
@@ -571,7 +532,7 @@ pub mod iter {
     /// Lifecycle
     impl<Progress> Platform<'_, Progress>
     where
-        Progress: gix_features::progress::Progress,
+        Progress: gix_utils::progress::Progress,
     {
         /// Turn the platform into an iterator for changes between the index and the working tree.
         ///
@@ -581,7 +542,7 @@ pub mod iter {
         pub fn into_index_worktree_iter(
             mut self,
             patterns: impl IntoIterator<Item = BString>,
-        ) -> Result<index_worktree::Iter, crate::status::into_iter::Error> {
+        ) -> Result<index_worktree::Iter> {
             // deactivate the tree-iteration
             self.head_tree = None;
             Ok(index_worktree::Iter {
@@ -591,19 +552,13 @@ pub mod iter {
     }
 
     impl Iterator for super::Iter {
-        type Item = Result<Item, index_worktree::Error>;
+        type Item = Result<Item>;
 
         fn next(&mut self) -> Option<Self::Item> {
             self.inner.next().map(|res| {
                 res.map(|item| match item {
                     crate::status::Item::IndexWorktree(item) => item,
                     crate::status::Item::TreeIndex(_) => unreachable!("BUG: we deactivated this kind of traversal"),
-                })
-                .map_err(|err| match err {
-                    crate::status::iter::Error::IndexWorktree(err) => err,
-                    crate::status::iter::Error::TreeIndex(_) => {
-                        unreachable!("BUG: we deactivated this kind of traversal")
-                    }
                 })
             })
         }

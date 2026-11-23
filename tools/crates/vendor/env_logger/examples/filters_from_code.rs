@@ -4,7 +4,7 @@ Specify logging filters in code instead of using an environment variable.
 
 use env_logger::Builder;
 
-use log::{debug, error, info, trace, warn, LevelFilter};
+use log::{LevelFilter, debug, error, info, trace, warn};
 
 fn main() {
     Builder::new().filter_level(LevelFilter::max()).init();

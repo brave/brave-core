@@ -11,7 +11,7 @@ mod snapshot;
 
 mod debug;
 
-use proc_macro2::{Delimiter, Group, Ident, Span, TokenStream, TokenTree};
+use proc_macro2::{Delimiter, Group, Ident, Punct, Spacing, Span, TokenStream, TokenTree};
 use quote::{quote, ToTokens as _};
 use syn::parse::Parser as _;
 use syn::{Block, Stmt};
@@ -22,6 +22,7 @@ fn test_raw_operator() {
 
     snapshot!(stmt, @r#"
     Stmt::Local {
+        modifiers: LocalModifiers,
         pat: Pat::Wild,
         init: Some(LocalInit {
             expr: Expr::RawAddr {
@@ -47,6 +48,7 @@ fn test_raw_variable() {
 
     snapshot!(stmt, @r#"
     Stmt::Local {
+        modifiers: LocalModifiers,
         pat: Pat::Wild,
         init: Some(LocalInit {
             expr: Expr::Reference {
@@ -86,8 +88,10 @@ fn test_none_group() {
     snapshot!(tokens as Stmt, @r#"
     Stmt::Item(Item::Fn {
         vis: Visibility::Inherited,
+        modifiers: FnModifiers,
         sig: Signature {
             asyncness: Some,
+            safety: Safety::Default,
             ident: "f",
             generics: Generics,
             output: ReturnType::Default,
@@ -131,8 +135,9 @@ fn test_let_dot_dot() {
         let .. = 10;
     };
 
-    snapshot!(tokens as Stmt, @r#"
+    snapshot!(tokens as Stmt, @"
     Stmt::Local {
+        modifiers: LocalModifiers,
         pat: Pat::Rest,
         init: Some(LocalInit {
             expr: Expr::Lit {
@@ -140,7 +145,7 @@ fn test_let_dot_dot() {
             },
         }),
     }
-    "#);
+    ");
 }
 
 #[test]
@@ -151,6 +156,7 @@ fn test_let_else() {
 
     snapshot!(tokens as Stmt, @r#"
     Stmt::Local {
+        modifiers: LocalModifiers,
         pat: Pat::TupleStruct {
             path: Path {
                 segments: [
@@ -208,7 +214,9 @@ fn test_macros() {
     snapshot!(tokens as Stmt, @r#"
     Stmt::Item(Item::Fn {
         vis: Visibility::Inherited,
+        modifiers: FnModifiers,
         sig: Signature {
+            safety: Safety::Default,
             ident: "main",
             generics: Generics,
             output: ReturnType::Default,
@@ -333,5 +341,38 @@ fn test_early_parse_loop() {
             None,
         ),
     ]
+    "#);
+}
+
+// Regression test for https://github.com/dtolnay/syn/issues/2081
+#[test]
+fn test_interpolated_lifetime_at_statement_start() {
+    // «∅ 'a ∅» : loop {}
+    let tokens = TokenStream::from_iter([
+        TokenTree::Group(Group::new(
+            Delimiter::None,
+            TokenStream::from_iter([
+                TokenTree::Punct(Punct::new('\'', Spacing::Joint)),
+                TokenTree::Ident(Ident::new("a", Span::call_site())),
+            ]),
+        )),
+        TokenTree::Punct(Punct::new(':', Spacing::Joint)),
+        TokenTree::Ident(Ident::new("loop", Span::call_site())),
+        TokenTree::Group(Group::new(Delimiter::Brace, TokenStream::new())),
+    ]);
+    snapshot!(tokens as Stmt, @r#"
+    Stmt::Expr(
+        Expr::Loop {
+            label: Some(Label {
+                name: Lifetime {
+                    ident: "a",
+                },
+            }),
+            body: Block {
+                stmts: [],
+            },
+        },
+        None,
+    )
     "#);
 }

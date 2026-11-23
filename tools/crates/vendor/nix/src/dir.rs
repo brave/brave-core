@@ -5,15 +5,9 @@ use crate::fcntl::{self, OFlag};
 use crate::sys;
 use crate::{NixPath, Result};
 use cfg_if::cfg_if;
-use std::ffi;
+use std::ffi::{CStr, CString};
 use std::os::unix::io::{AsRawFd, IntoRawFd, RawFd};
 use std::ptr;
-
-#[cfg(target_os = "linux")]
-use libc::{dirent64 as dirent, readdir64_r as readdir_r};
-
-#[cfg(not(target_os = "linux"))]
-use libc::{dirent, readdir_r};
 
 /// An open directory.
 ///
@@ -26,7 +20,7 @@ use libc::{dirent, readdir_r};
 ///    * can be iterated through multiple times without closing and reopening the file
 ///      descriptor. Each iteration rewinds when finished.
 ///    * returns entries for `.` (current directory) and `..` (parent directory).
-///    * returns entries' names as a [`CStr`][cstr] (no allocation or conversion beyond whatever libc
+///    * returns entries' names as a [`CStr`] (no allocation or conversion beyond whatever libc
 ///      does).
 ///
 /// [AsFd]: std::os::fd::AsFd
@@ -119,21 +113,18 @@ impl Dir {
     }
 
     /// Returns an iterator of `Result<Entry>` which rewinds when finished.
-    pub fn iter(&mut self) -> Iter {
+    pub fn iter(&mut self) -> Iter<'_> {
         Iter(self)
     }
 }
 
-// `Dir` is not `Sync`. With the current implementation, it could be, but according to
-// https://www.gnu.org/software/libc/manual/html_node/Reading_002fClosing-Directory.html,
-// future versions of POSIX are likely to obsolete `readdir_r` and specify that it's unsafe to
-// call `readdir` simultaneously from multiple threads.
+// `Dir` is not `Sync` because it's unsafe to call `readdir` simultaneously from multiple threads.
 //
 // `Dir` is safe to pass from one thread to another, as it's not reference-counted.
 unsafe impl Send for Dir {}
 
 impl std::os::fd::AsFd for Dir {
-    fn as_fd(&self) -> std::os::fd::BorrowedFd {
+    fn as_fd(&self) -> std::os::fd::BorrowedFd<'_> {
         let raw_fd = self.as_raw_fd();
 
         // SAFETY:
@@ -160,29 +151,22 @@ impl Drop for Dir {
 }
 
 // The pass by mut is technically needless only because the inner NonNull is
-// Copy.  But philosophically we're mutating the Dir, so we pass by mut.
+// Copy.  But we are actually mutating the Dir, so we pass by mut.
 #[allow(clippy::needless_pass_by_ref_mut)]
-fn next(dir: &mut Dir) -> Option<Result<Entry>> {
+fn readdir(dir: &mut Dir) -> Option<Result<Entry>> {
+    Errno::clear();
     unsafe {
-        // Note: POSIX specifies that portable applications should dynamically allocate a
-        // buffer with room for a `d_name` field of size `pathconf(..., _PC_NAME_MAX)` plus 1
-        // for the NUL byte. It doesn't look like the std library does this; it just uses
-        // fixed-sized buffers (and libc's dirent seems to be sized so this is appropriate).
-        // Probably fine here too then.
-        let mut ent = std::mem::MaybeUninit::<dirent>::uninit();
-        let mut result = ptr::null_mut();
-        if let Err(e) = Errno::result(readdir_r(
-            dir.0.as_ptr(),
-            ent.as_mut_ptr(),
-            &mut result,
-        )) {
-            return Some(Err(e));
+        let de = libc::readdir(dir.0.as_ptr());
+        if de.is_null() {
+            if Errno::last_raw() == 0 {
+                // EOF
+                None
+            } else {
+                Some(Err(Errno::last()))
+            }
+        } else {
+            Some(Ok(Entry::from_raw(&*de)))
         }
-        if result.is_null() {
-            return None;
-        }
-        assert_eq!(result, ent.as_mut_ptr());
-        Some(Ok(Entry(ent.assume_init())))
     }
 }
 
@@ -194,7 +178,7 @@ impl Iterator for Iter<'_> {
     type Item = Result<Entry>;
 
     fn next(&mut self) -> Option<Self::Item> {
-        next(self.0)
+        readdir(self.0)
     }
 }
 
@@ -212,7 +196,7 @@ impl Iterator for OwningIter {
     type Item = Result<Entry>;
 
     fn next(&mut self) -> Option<Self::Item> {
-        next(&mut self.0)
+        readdir(&mut self.0)
     }
 }
 
@@ -252,9 +236,18 @@ impl IntoIterator for Dir {
 /// A directory entry, similar to `std::fs::DirEntry`.
 ///
 /// Note that unlike the std version, this may represent the `.` or `..` entries.
-#[derive(Copy, Clone, Debug, Eq, Hash, PartialEq)]
-#[repr(transparent)]
-pub struct Entry(dirent);
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+pub struct Entry {
+    ino: u64,
+    type_: Option<Type>,
+    // On some platforms libc::dirent is a "flexible-length structure", where there may be
+    // data beyond the end of the struct definition.  So it isn't possible to copy it and subsequently
+    // dereference the copy's d_name field.  Nor is it possible for Entry to wrap a &libc::dirent.
+    // At least, not if it is to work with the Iterator trait.  Because the Entry would need to
+    // maintain a mutable reference to the Dir, which would conflict with the iterator's mutable
+    // reference to the same Dir.  So we're forced to copy the name here.
+    name: CString,
+}
 
 /// Type of file referenced by a directory entry
 #[derive(Copy, Clone, Debug, Eq, Hash, PartialEq)]
@@ -277,10 +270,28 @@ pub enum Type {
 
 impl Entry {
     /// Returns the inode number (`d_ino`) of the underlying `dirent`.
+    pub fn ino(&self) -> u64 {
+        self.ino
+    }
+
+    /// Returns the bare file name of this directory entry without any other leading path component.
+    pub fn file_name(&self) -> &CStr {
+        self.name.as_c_str()
+    }
+
+    /// Returns the type of this directory entry, if known.
+    ///
+    /// See platform `readdir(3)` or `dirent(5)` manpage for when the file type is known;
+    /// notably, some Linux filesystems don't implement this. The caller should use `stat` or
+    /// `fstat` if this returns `None`.
+    pub fn file_type(&self) -> Option<Type> {
+        self.type_
+    }
+
     #[allow(clippy::useless_conversion)] // Not useless on all OSes
     // The cast is not unnecessary on all platforms.
     #[allow(clippy::unnecessary_cast)]
-    pub fn ino(&self) -> u64 {
+    fn from_raw(de: &libc::dirent) -> Self {
         cfg_if! {
             if #[cfg(any(target_os = "aix",
                          target_os = "emscripten",
@@ -291,38 +302,34 @@ impl Entry {
                          solarish,
                          linux_android,
                          apple_targets))] {
-                self.0.d_ino as u64
+                let ino = de.d_ino as u64;
             } else {
-                u64::from(self.0.d_fileno)
+                let ino = u64::from(de.d_fileno);
             }
         }
-    }
-
-    /// Returns the bare file name of this directory entry without any other leading path component.
-    pub fn file_name(&self) -> &ffi::CStr {
-        unsafe { ffi::CStr::from_ptr(self.0.d_name.as_ptr()) }
-    }
-
-    /// Returns the type of this directory entry, if known.
-    ///
-    /// See platform `readdir(3)` or `dirent(5)` manpage for when the file type is known;
-    /// notably, some Linux filesystems don't implement this. The caller should use `stat` or
-    /// `fstat` if this returns `None`.
-    pub fn file_type(&self) -> Option<Type> {
-        #[cfg(not(any(solarish, target_os = "aix", target_os = "haiku")))]
-        match self.0.d_type {
-            libc::DT_FIFO => Some(Type::Fifo),
-            libc::DT_CHR => Some(Type::CharacterDevice),
-            libc::DT_DIR => Some(Type::Directory),
-            libc::DT_BLK => Some(Type::BlockDevice),
-            libc::DT_REG => Some(Type::File),
-            libc::DT_LNK => Some(Type::Symlink),
-            libc::DT_SOCK => Some(Type::Socket),
-            /* libc::DT_UNKNOWN | */ _ => None,
+        cfg_if! {
+            if #[cfg(not(any(solarish, target_os = "aix", target_os = "haiku")))] {
+                let type_ = match de.d_type {
+                    libc::DT_FIFO => Some(Type::Fifo),
+                    libc::DT_CHR => Some(Type::CharacterDevice),
+                    libc::DT_DIR => Some(Type::Directory),
+                    libc::DT_BLK => Some(Type::BlockDevice),
+                    libc::DT_REG => Some(Type::File),
+                    libc::DT_LNK => Some(Type::Symlink),
+                    libc::DT_SOCK => Some(Type::Socket),
+                    /* libc::DT_UNKNOWN | */ _ => None,
+                };
+            } else {
+                // illumos, Solaris, and Haiku systems do not have the d_type member at all:
+                #[cfg(any(solarish, target_os = "aix", target_os = "haiku"))]
+                let type_ = None;
+            }
         }
+        // Annoyingly, since libc::dirent is open-ended, the easiest way to read the name field in
+        // Rust is to treat it like a pointer.
+        // Safety: safe because we knod that de.d_name is in valid memory.
+        let name = unsafe { CStr::from_ptr(de.d_name.as_ptr()) }.to_owned();
 
-        // illumos, Solaris, and Haiku systems do not have the d_type member at all:
-        #[cfg(any(solarish, target_os = "aix", target_os = "haiku"))]
-        None
+        Entry { ino, type_, name }
     }
 }

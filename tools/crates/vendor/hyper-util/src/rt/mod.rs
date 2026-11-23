@@ -1,5 +1,10 @@
 //! Runtime utilities
 
+#[cfg(feature = "tracing")]
+pub mod tracing;
+#[cfg(feature = "tracing")]
+pub use self::tracing::{CurrentSpanExecutor, MkSpanExecutor, WithSpanExecutor};
+
 #[cfg(feature = "client-legacy")]
 mod io;
 #[cfg(feature = "client-legacy")]

@@ -1,6 +1,6 @@
 [package]
 name = "objc2"
-version = "0.6.3" # Remember to update html_root_url in lib.rs
+version = "0.6.5" # Remember to update html_root_url in lib.rs
 description = "Objective-C interface and runtime bindings"
 keywords = ["objective-c", "macos", "ios", "objc_msgSend", "objc"]
 categories = [
@@ -69,7 +69,7 @@ disable-encoding-assertions = []
 # no longer required.
 verify = []
 
-# Make the `sel!` macro look up the selector statically.
+# Make the `sel!`/`class!` macro look up the item statically.
 #
 # The plan is to enable this by default, but right now we are uncertain of
 # its stability, and it might need significant changes before being fully
@@ -81,6 +81,9 @@ unstable-static-sel = ["dep:objc2-proc-macros"]
 unstable-static-sel-inlined = ["unstable-static-sel"]
 unstable-static-class = ["dep:objc2-proc-macros"]
 unstable-static-class-inlined = ["unstable-static-class"]
+
+# Augment the above with the nightly `darwin_objc` feature.
+unstable-darwin-objc = []
 
 # Uses nightly features to make autorelease pools fully sound
 unstable-autoreleasesafe = []

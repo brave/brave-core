@@ -1,3 +1,5 @@
+use gix_error::{Result, ResultExt, message};
+
 use gix_object::bstr::ByteSlice;
 use gix_path::RelativePath;
 use std::{
@@ -9,9 +11,9 @@ use std::{
 };
 
 use crate::{
+    BStr, FullName, Namespace, Reference,
     file::loose::{self, iter::SortedLoosePaths},
     store_impl::{file, packed},
-    BStr, FullName, Namespace, Reference,
 };
 
 /// An iterator stepping through sorted input of loose references and packed references, preferring loose refs over otherwise
@@ -21,10 +23,10 @@ use crate::{
 pub struct LooseThenPacked<'p, 's> {
     git_dir: &'s Path,
     common_dir: Option<&'s Path>,
+    object_hash: gix_hash::Kind,
     namespace: Option<&'s Namespace>,
     iter_packed: Option<Peekable<packed::Iter<'p>>>,
     iter_git_dir: Peekable<SortedLoosePaths>,
-    #[allow(dead_code)]
     iter_common_dir: Option<Peekable<SortedLoosePaths>>,
     buf: Vec<u8>,
 }
@@ -64,48 +66,31 @@ impl<'p> LooseThenPacked<'p, '_> {
         }
     }
 
-    fn convert_packed(
-        &mut self,
-        packed: Result<packed::Reference<'p>, packed::iter::Error>,
-    ) -> Result<Reference, Error> {
-        packed
-            .map(Into::into)
-            .map(|r| self.strip_namespace(r))
-            .map_err(|err| match err {
-                packed::iter::Error::Reference {
-                    invalid_line,
-                    line_number,
-                } => Error::PackedReference {
-                    invalid_line,
-                    line_number,
-                },
-                packed::iter::Error::Header { .. } => unreachable!("this one only happens on iteration creation"),
-            })
+    fn convert_packed(&mut self, packed: Result<packed::Reference<'p>>) -> Result<Reference> {
+        packed.map(Into::into).map(|r| self.strip_namespace(r))
     }
 
-    fn convert_loose(&mut self, res: std::io::Result<(PathBuf, FullName)>) -> Result<Reference, Error> {
+    /// Read failures include [metadata](gix_error::Error::metadata()) `path` (native path), the loose reference being
+    /// visited.
+    fn convert_loose(&mut self, res: std::io::Result<(PathBuf, FullName)>) -> Result<Reference> {
         let buf = &mut self.buf;
         let git_dir = self.git_dir;
         let common_dir = self.common_dir;
-        let (refpath, name) = res.map_err(Error::Traversal)?;
+        let (refpath, name) = res.or_raise(|| message("Could not traverse reference directory"))?;
         std::fs::File::open(&refpath)
             .and_then(|mut f| {
                 buf.clear();
                 f.read_to_end(buf)
             })
-            .map_err(|err| Error::ReadFileContents {
-                source: err,
-                path: refpath.to_owned(),
-            })?;
-        loose::Reference::try_from_path(name, buf)
-            .map_err(|err| {
+            .or_raise(|| file::find::read_reference_error(refpath.as_path()))?;
+        loose::Reference::try_from_path(name, buf, self.object_hash)
+            .or_raise(|| {
                 let relative_path = refpath
                     .strip_prefix(git_dir)
                     .ok()
                     .or_else(|| common_dir.and_then(|common_dir| refpath.strip_prefix(common_dir).ok()))
                     .expect("one of our bases contains the path");
-                Error::ReferenceCreation {
-                    source: err,
+                file::find::ReferenceDecode {
                     relative_path: relative_path.into(),
                 }
             })
@@ -115,7 +100,7 @@ impl<'p> LooseThenPacked<'p, '_> {
 }
 
 impl Iterator for LooseThenPacked<'_, '_> {
-    type Item = Result<Reference, Error>;
+    type Item = Result<Reference>;
 
     fn next(&mut self) -> Option<Self::Item> {
         fn advance_to_non_private(iter: &mut Peekable<SortedLoosePaths>) {
@@ -224,7 +209,7 @@ impl file::Store {
     ///
     /// Note that since packed-refs are storing refs as precomposed unicode if [`Self::precompose_unicode`] is true, for consistency
     /// we also return loose references as precomposed unicode.
-    pub fn iter(&self) -> Result<Platform<'_>, packed::buffer::open::Error> {
+    pub fn iter(&self) -> Result<Platform<'_>> {
         Ok(Platform {
             store: self,
             packed: self.assure_packed_refs_uptodate()?,
@@ -266,14 +251,15 @@ pub(crate) enum IterInfo<'a> {
 }
 
 impl<'a> IterInfo<'a> {
-    fn prefix(&self) -> Option<Cow<'_, BStr>> {
+    fn prefix(&self) -> Result<Option<Cow<'_, BStr>>> {
         match self {
             IterInfo::Base { .. } => None,
             IterInfo::PrefixAndBase { prefix, .. } => Some(gix_path::into_bstr(*prefix)),
             IterInfo::BaseAndIterRoot { prefix, .. } => Some(gix_path::into_bstr(prefix.clone())),
-            IterInfo::ComputedIterationRoot { prefix, .. } => Some(prefix.clone()),
+            IterInfo::ComputedIterationRoot { prefix, .. } => Some(Ok(prefix.clone())),
             IterInfo::Pseudo { .. } => None,
         }
+        .transpose()
     }
 
     fn into_iter(self) -> Peekable<SortedLoosePaths> {
@@ -314,7 +300,8 @@ impl<'a> IterInfo<'a> {
     }
 
     fn from_prefix(base: &'a Path, prefix: &'a RelativePath, precompose_unicode: bool) -> std::io::Result<Self> {
-        let prefix_path = gix_path::from_bstr(prefix.as_ref().as_bstr());
+        let prefix_path = gix_path::from_bstr(prefix.as_ref().as_bstr())
+            .map_err(|err| std::io::Error::new(std::io::ErrorKind::InvalidInput, err))?;
         let iter_root = base.join(&prefix_path);
         if prefix.as_ref().ends_with(b"/") {
             Ok(IterInfo::BaseAndIterRoot {
@@ -347,19 +334,24 @@ impl file::Store {
         packed: Option<&'p packed::Buffer>,
     ) -> std::io::Result<LooseThenPacked<'p, 's>> {
         match self.namespace.as_ref() {
-            Some(namespace) => self.iter_from_info(
-                IterInfo::PrefixAndBase {
-                    base: self.git_dir(),
-                    prefix: namespace.to_path(),
-                    precompose_unicode: self.precompose_unicode,
-                },
-                self.common_dir().map(|base| IterInfo::PrefixAndBase {
-                    base,
-                    prefix: namespace.to_path(),
-                    precompose_unicode: self.precompose_unicode,
-                }),
-                packed,
-            ),
+            Some(namespace) => {
+                let prefix = namespace
+                    .to_path()
+                    .map_err(|err| std::io::Error::new(std::io::ErrorKind::InvalidInput, err))?;
+                self.iter_from_info(
+                    IterInfo::PrefixAndBase {
+                        base: self.git_dir(),
+                        prefix,
+                        precompose_unicode: self.precompose_unicode,
+                    },
+                    self.common_dir().map(|base| IterInfo::PrefixAndBase {
+                        base,
+                        prefix,
+                        precompose_unicode: self.precompose_unicode,
+                    }),
+                    packed,
+                )
+            }
             None => self.iter_from_info(
                 IterInfo::Base {
                     base: self.git_dir(),
@@ -432,9 +424,13 @@ impl file::Store {
         Ok(LooseThenPacked {
             git_dir: self.git_dir(),
             common_dir: self.common_dir(),
+            object_hash: self.object_hash,
             iter_packed: match packed {
                 Some(packed) => Some(
-                    match git_dir_info.prefix() {
+                    match git_dir_info
+                        .prefix()
+                        .map_err(|err| std::io::Error::new(std::io::ErrorKind::InvalidInput, err))?
+                    {
                         Some(prefix) => packed.iter_prefixed(prefix.into_owned()),
                         None => packed.iter(),
                     }
@@ -450,29 +446,3 @@ impl file::Store {
         })
     }
 }
-
-mod error {
-    use std::{io, path::PathBuf};
-
-    use gix_object::bstr::BString;
-
-    use crate::store_impl::file;
-
-    /// The error returned by the [`LooseThenPacked`][super::LooseThenPacked] iterator.
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error("The file system could not be traversed")]
-        Traversal(#[source] io::Error),
-        #[error("The ref file {path:?} could not be read in full")]
-        ReadFileContents { source: io::Error, path: PathBuf },
-        #[error("The reference at \"{relative_path}\" could not be instantiated")]
-        ReferenceCreation {
-            source: file::loose::reference::decode::Error,
-            relative_path: PathBuf,
-        },
-        #[error("Invalid reference in line {line_number}: {invalid_line:?}")]
-        PackedReference { invalid_line: BString, line_number: usize },
-    }
-}
-pub use error::Error;

@@ -260,6 +260,19 @@ mod linux_android {
     }
 }
 
+#[cfg(target_os = "freebsd")]
+mod freebsd {
+    use nix::unistd::pthread_getthreadid_np;
+
+    #[test]
+    fn test_pthread_getthreadid_np() {
+        let tid: ::libc::pid_t = pthread_getthreadid_np().into();
+        // FreeBSD has thread id namespace shared with pids, the split
+        // is at PID_MAX = 99999.
+        assert!(tid >= 100000);
+    }
+}
+
 #[test]
 // `getgroups()` and `setgroups()` do not behave as expected on Apple platforms
 #[cfg(not(any(

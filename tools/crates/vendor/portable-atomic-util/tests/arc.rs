@@ -81,6 +81,45 @@ fn make_mut_clone_panic() {
     drop(v1);
 }
 
+/// Test that a panic from a destructor does not leak the allocation.
+#[test]
+fn panic_no_leak() {
+    // use std::alloc::{AllocError, Allocator, Global, Layout};
+    use std::panic::{AssertUnwindSafe, catch_unwind};
+    // use std::ptr::NonNull;
+
+    // TODO: no custom allocator support
+    // struct AllocCount(Cell<i32>);
+    // unsafe impl Allocator for AllocCount {
+    //     fn allocate(&self, layout: Layout) -> Result<NonNull<[u8]>, AllocError> {
+    //         self.0.set(self.0.get() + 1);
+    //         Global.allocate(layout)
+    //     }
+    //     unsafe fn deallocate(&self, ptr: NonNull<u8>, layout: Layout) {
+    //         self.0.set(self.0.get() - 1);
+    //         unsafe { Global.deallocate(ptr, layout) }
+    //     }
+    // }
+
+    struct PanicOnDrop;
+    impl Drop for PanicOnDrop {
+        fn drop(&mut self) {
+            panic!("PanicOnDrop");
+        }
+    }
+
+    if !is_panic_abort() {
+        // let alloc = AllocCount(Cell::new(0));
+        // let rc = Arc::new_in(PanicOnDrop, &alloc);
+        let rc = Arc::new(PanicOnDrop);
+        // assert_eq!(alloc.0.get(), 1);
+
+        let panic_message = catch_unwind(AssertUnwindSafe(|| drop(rc))).unwrap_err();
+        assert_eq!(*panic_message.downcast_ref::<&'static str>().unwrap(), "PanicOnDrop");
+        // assert_eq!(alloc.0.get(), 0);
+    }
+}
+
 #[test]
 fn weak_dangling() {
     let w = Weak::<Aligned>::new();
@@ -93,15 +132,15 @@ fn weak_dangling() {
 
 // For -C panic=abort -Z panic_abort_tests: https://github.com/rust-lang/rust/issues/67650
 fn is_panic_abort() -> bool {
-    build_context::PANIC.contains("abort")
+    !matches!(build_context::PANIC, "unwind" | "") // cfg(panic) requires Rust 1.60
 }
 
-// https://github.com/rust-lang/rust/blob/1.80.0/library/alloc/src/sync/tests.rs
+// https://github.com/rust-lang/rust/blob/1.84.0/library/alloc/src/sync/tests.rs
 #[allow(clippy::many_single_char_names)]
 mod alloc_tests {
     use std::{
-        convert::TryInto,
-        sync::{mpsc::channel, Mutex},
+        convert::TryInto as _,
+        sync::{Mutex, mpsc::channel},
         thread,
     };
 
@@ -126,7 +165,7 @@ mod alloc_tests {
     }
 
     #[test]
-    #[cfg_attr(target_os = "emscripten", ignore)]
+    #[cfg_attr(target_os = "emscripten", ignore = "thread::spawn doesn't work on emscripten")]
     fn manually_share_arc() {
         let v = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         let arc_v = Arc::new(v);
@@ -321,22 +360,22 @@ mod alloc_tests {
         let mut cow1 = cow0.clone();
         let mut cow2 = cow1.clone();
 
-        assert!(75 == *Arc::make_mut(&mut cow0));
-        assert!(75 == *Arc::make_mut(&mut cow1));
-        assert!(75 == *Arc::make_mut(&mut cow2));
+        assert_eq!(75, *Arc::make_mut(&mut cow0));
+        assert_eq!(75, *Arc::make_mut(&mut cow1));
+        assert_eq!(75, *Arc::make_mut(&mut cow2));
 
         *Arc::make_mut(&mut cow0) += 1;
         *Arc::make_mut(&mut cow1) += 2;
         *Arc::make_mut(&mut cow2) += 3;
 
-        assert!(76 == *cow0);
-        assert!(77 == *cow1);
-        assert!(78 == *cow2);
+        assert_eq!(76, *cow0);
+        assert_eq!(77, *cow1);
+        assert_eq!(78, *cow2);
 
         // none should point to the same backing memory
-        assert!(*cow0 != *cow1);
-        assert!(*cow0 != *cow2);
-        assert!(*cow1 != *cow2);
+        assert_ne!(*cow0, *cow1);
+        assert_ne!(*cow0, *cow2);
+        assert_ne!(*cow1, *cow2);
     }
 
     #[test]
@@ -345,20 +384,20 @@ mod alloc_tests {
         let cow1 = cow0.clone();
         let cow2 = cow1.clone();
 
-        assert!(75 == *cow0);
-        assert!(75 == *cow1);
-        assert!(75 == *cow2);
+        assert_eq!(75, *cow0);
+        assert_eq!(75, *cow1);
+        assert_eq!(75, *cow2);
 
         *Arc::make_mut(&mut cow0) += 1;
-        assert!(76 == *cow0);
-        assert!(75 == *cow1);
-        assert!(75 == *cow2);
+        assert_eq!(76, *cow0);
+        assert_eq!(75, *cow1);
+        assert_eq!(75, *cow2);
 
         // cow1 and cow2 should share the same contents
         // cow0 should have a unique reference
-        assert!(*cow0 != *cow1);
-        assert!(*cow0 != *cow2);
-        assert!(*cow1 == *cow2);
+        assert_ne!(*cow0, *cow1);
+        assert_ne!(*cow0, *cow2);
+        assert_eq!(*cow1, *cow2);
     }
 
     #[test]
@@ -366,12 +405,12 @@ mod alloc_tests {
         let mut cow0 = Arc::new(75);
         let cow1_weak = Arc::downgrade(&cow0);
 
-        assert!(75 == *cow0);
-        assert!(75 == *cow1_weak.upgrade().unwrap());
+        assert_eq!(75, *cow0);
+        assert_eq!(75, *cow1_weak.upgrade().unwrap());
 
         *Arc::make_mut(&mut cow0) += 1;
 
-        assert!(76 == *cow0);
+        assert_eq!(76, *cow0);
         assert!(cow1_weak.upgrade().is_none());
     }
 
@@ -408,7 +447,7 @@ mod alloc_tests {
         let mut canary = AtomicUsize::new(0);
         let x = Arc::new(Canary(&mut canary as *mut AtomicUsize));
         drop(x);
-        assert!(canary.load(Acquire) == 1);
+        assert_eq!(canary.load(Acquire), 1);
     }
 
     #[test]
@@ -416,49 +455,49 @@ mod alloc_tests {
         let mut canary = AtomicUsize::new(0);
         let arc = Arc::new(Canary(&mut canary as *mut AtomicUsize));
         let arc_weak = Arc::downgrade(&arc);
-        assert!(canary.load(Acquire) == 0);
+        assert_eq!(canary.load(Acquire), 0);
         drop(arc);
-        assert!(canary.load(Acquire) == 1);
+        assert_eq!(canary.load(Acquire), 1);
         drop(arc_weak);
     }
 
     #[test]
     fn test_strong_count() {
         let a = Arc::new(0);
-        assert!(Arc::strong_count(&a) == 1);
+        assert_eq!(Arc::strong_count(&a), 1);
         let w = Arc::downgrade(&a);
-        assert!(Arc::strong_count(&a) == 1);
+        assert_eq!(Arc::strong_count(&a), 1);
         let b = w.upgrade().expect("");
-        assert!(Arc::strong_count(&b) == 2);
-        assert!(Arc::strong_count(&a) == 2);
+        assert_eq!(Arc::strong_count(&b), 2);
+        assert_eq!(Arc::strong_count(&a), 2);
         drop(w);
         drop(a);
-        assert!(Arc::strong_count(&b) == 1);
+        assert_eq!(Arc::strong_count(&b), 1);
         let c = b.clone();
-        assert!(Arc::strong_count(&b) == 2);
-        assert!(Arc::strong_count(&c) == 2);
+        assert_eq!(Arc::strong_count(&b), 2);
+        assert_eq!(Arc::strong_count(&c), 2);
     }
 
     #[test]
     fn test_weak_count() {
         let a = Arc::new(0);
-        assert!(Arc::strong_count(&a) == 1);
-        assert!(Arc::weak_count(&a) == 0);
+        assert_eq!(Arc::strong_count(&a), 1);
+        assert_eq!(Arc::weak_count(&a), 0);
         let w = Arc::downgrade(&a);
-        assert!(Arc::strong_count(&a) == 1);
-        assert!(Arc::weak_count(&a) == 1);
+        assert_eq!(Arc::strong_count(&a), 1);
+        assert_eq!(Arc::weak_count(&a), 1);
         let x = w.clone();
-        assert!(Arc::weak_count(&a) == 2);
+        assert_eq!(Arc::weak_count(&a), 2);
         drop(w);
         drop(x);
-        assert!(Arc::strong_count(&a) == 1);
-        assert!(Arc::weak_count(&a) == 0);
+        assert_eq!(Arc::strong_count(&a), 1);
+        assert_eq!(Arc::weak_count(&a), 0);
         let c = a.clone();
-        assert!(Arc::strong_count(&a) == 2);
-        assert!(Arc::weak_count(&a) == 0);
+        assert_eq!(Arc::strong_count(&a), 2);
+        assert_eq!(Arc::weak_count(&a), 0);
         let d = Arc::downgrade(&c);
-        assert!(Arc::weak_count(&c) == 1);
-        assert!(Arc::strong_count(&c) == 2);
+        assert_eq!(Arc::weak_count(&c), 1);
+        assert_eq!(Arc::strong_count(&c), 2);
 
         drop(a);
         drop(c);
@@ -472,9 +511,8 @@ mod alloc_tests {
     }
 
     // Make sure deriving works with Arc<T>
-    #[allow(dead_code)]
     #[derive(Eq, Ord, PartialEq, PartialOrd, Clone, Debug, Default)]
-    struct Foo {
+    struct _Foo {
         inner: Arc<i32>,
     }
 
@@ -512,7 +550,7 @@ mod alloc_tests {
     fn test_from_owned() {
         let foo = 123;
         let foo_arc = Arc::from(foo);
-        assert!(123 == *foo_arc);
+        assert_eq!(123, *foo_arc);
     }
 
     #[test]
@@ -532,7 +570,7 @@ mod alloc_tests {
     }
 
     #[test]
-    #[cfg_attr(target_os = "emscripten", ignore)]
+    #[cfg_attr(target_os = "emscripten", ignore = "thread::spawn doesn't work on emscripten")]
     fn test_weak_count_locked() {
         let mut a = Arc::new(AtomicBool::new(false));
         let a2 = a.clone();

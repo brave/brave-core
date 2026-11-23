@@ -1,42 +1,13 @@
+use gix_error::{Result, corruption, message};
 use std::{cmp::Ordering, sync::atomic::AtomicBool, time::Instant};
 
-use gix_features::progress::{Count, DynNestedProgress, Progress};
+use gix_error::{OptionExt, bail, cancelled};
+use gix_utils::progress::{Count, DynNestedProgress, Progress};
 
 use crate::{exact_vec, index, multi_index::File};
 
 ///
 pub mod integrity {
-    use crate::multi_index::EntryIndex;
-
-    /// Returned by [`multi_index::File::verify_integrity()`][crate::multi_index::File::verify_integrity()].
-    #[derive(thiserror::Error, Debug)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error("Object {id} should be at pack-offset {expected_pack_offset} but was found at {actual_pack_offset}")]
-        PackOffsetMismatch {
-            id: gix_hash::ObjectId,
-            expected_pack_offset: u64,
-            actual_pack_offset: u64,
-        },
-        #[error(transparent)]
-        MultiIndexChecksum(#[from] crate::multi_index::verify::checksum::Error),
-        #[error(transparent)]
-        IndexIntegrity(#[from] crate::index::verify::integrity::Error),
-        #[error(transparent)]
-        BundleInit(#[from] crate::bundle::init::Error),
-        #[error("Counted {actual} objects, but expected {expected} as per multi-index")]
-        UnexpectedObjectCount { actual: usize, expected: usize },
-        #[error("{id} wasn't found in the index referenced in the multi-pack index")]
-        OidNotFound { id: gix_hash::ObjectId },
-        #[error("The object id at multi-index entry {index} wasn't in order")]
-        OutOfOrder { index: EntryIndex },
-        #[error("The fan at index {index} is out of order as it's larger then the following value.")]
-        Fan { index: usize },
-        #[error("The multi-index claims to have no objects")]
-        Empty,
-        #[error("Interrupted")]
-        Interrupted,
-    }
 
     /// Returned by [`multi_index::File::verify_integrity()`][crate::multi_index::File::verify_integrity()].
     pub struct Outcome {
@@ -57,7 +28,7 @@ pub mod integrity {
         ObjectOffsets,
     }
 
-    impl From<ProgressId> for gix_features::progress::Id {
+    impl From<ProgressId> for gix_utils::progress::Id {
         fn from(v: ProgressId) -> Self {
             match v {
                 ProgressId::ChecksumBytes => *b"MVCK",
@@ -67,20 +38,17 @@ pub mod integrity {
     }
 }
 
-///
-pub mod checksum {
-    /// Returned by [`multi_index::File::verify_checksum()`][crate::multi_index::File::verify_checksum()].
-    pub type Error = crate::verify::checksum::Error;
-}
-
-impl File {
+impl<T> File<T>
+where
+    T: crate::FileData,
+{
     /// Validate that our [`checksum()`][File::checksum()] matches the actual contents
     /// of this index file, and return it if it does.
     pub fn verify_checksum(
         &self,
         progress: &mut dyn Progress,
         should_interrupt: &AtomicBool,
-    ) -> Result<gix_hash::ObjectId, checksum::Error> {
+    ) -> Result<gix_hash::ObjectId> {
         crate::verify::checksum_on_disk_or_mmap(
             self.path(),
             &self.data,
@@ -98,17 +66,13 @@ impl File {
         &self,
         progress: &mut dyn DynNestedProgress,
         should_interrupt: &AtomicBool,
-    ) -> Result<gix_hash::ObjectId, integrity::Error> {
+    ) -> Result<gix_hash::ObjectId> {
         self.verify_integrity_inner(
             progress,
             should_interrupt,
             false,
             index::verify::integrity::Options::default(),
         )
-        .map_err(|err| match err {
-            index::traverse::Error::Processor(err) => err,
-            _ => unreachable!("BUG: no other error type is possible"),
-        })
         .map(|o| o.actual_index_checksum)
     }
 
@@ -120,7 +84,7 @@ impl File {
         progress: &mut dyn DynNestedProgress,
         should_interrupt: &AtomicBool,
         options: index::verify::integrity::Options<F>,
-    ) -> Result<integrity::Outcome, index::traverse::Error<integrity::Error>>
+    ) -> Result<integrity::Outcome>
     where
         C: crate::cache::DecodeEntry,
         F: Fn() -> C + Send + Clone,
@@ -134,32 +98,34 @@ impl File {
         should_interrupt: &AtomicBool,
         deep_check: bool,
         options: index::verify::integrity::Options<F>,
-    ) -> Result<integrity::Outcome, index::traverse::Error<integrity::Error>>
+    ) -> Result<integrity::Outcome>
     where
         C: crate::cache::DecodeEntry,
         F: Fn() -> C + Send + Clone,
     {
-        let parent = self.path.parent().expect("must be in a directory");
+        let parent = self.path.parent().ok_or_raise(|| {
+            gix_error::validation(format!(
+                "The multi-index path \"{}\" has no parent directory",
+                self.path.display()
+            ))
+        })?;
 
-        let actual_index_checksum = self
-            .verify_checksum(
-                &mut progress.add_child_with_id(
-                    format!("{}: checksum", self.path.display()),
-                    integrity::ProgressId::ChecksumBytes.into(),
-                ),
-                should_interrupt,
-            )
-            .map_err(integrity::Error::from)
-            .map_err(index::traverse::Error::Processor)?;
+        let actual_index_checksum = self.verify_checksum(
+            &mut progress.add_child_with_id(
+                format!("{}: checksum", self.path.display()),
+                integrity::ProgressId::ChecksumBytes.into(),
+            ),
+            should_interrupt,
+        )?;
 
         if let Some(first_invalid) = crate::verify::fan(&self.fan) {
-            return Err(index::traverse::Error::Processor(integrity::Error::Fan {
-                index: first_invalid,
-            }));
+            bail!(corruption(format!(
+                "The fan at index {first_invalid} is out of order as it's larger then the following value."
+            )));
         }
 
         if self.num_objects == 0 {
-            return Err(index::traverse::Error::Processor(integrity::Error::Empty));
+            bail!(corruption("The multi-index claims to have no objects"));
         }
 
         let mut pack_traverse_statistics = Vec::new();
@@ -169,39 +135,33 @@ impl File {
         let mut pack_ids_and_offsets = exact_vec(self.num_objects as usize);
         {
             let order_start = Instant::now();
-            let mut progress = progress.add_child_with_id("checking oid order".into(), gix_features::progress::UNKNOWN);
-            progress.init(
-                Some(self.num_objects as usize),
-                gix_features::progress::count("objects"),
-            );
+            let mut progress = progress.add_child_with_id("checking oid order".into(), gix_utils::progress::UNKNOWN);
+            progress.init(Some(self.num_objects as usize), gix_utils::progress::count("objects"));
 
             for entry_index in 0..(self.num_objects - 1) {
                 let lhs = self.oid_at_index(entry_index);
                 let rhs = self.oid_at_index(entry_index + 1);
 
                 if rhs.cmp(lhs) != Ordering::Greater {
-                    return Err(index::traverse::Error::Processor(integrity::Error::OutOfOrder {
-                        index: entry_index,
-                    }));
+                    bail!(corruption(format!(
+                        "The object id at multi-index entry {entry_index} wasn't in order"
+                    )));
                 }
-                let (pack_id, _) = self.pack_id_and_pack_offset_at_index(entry_index);
+                let (pack_id, _) = self.pack_id_and_pack_offset_at_index(entry_index)?;
                 pack_ids_and_offsets.push((pack_id, entry_index));
                 progress.inc();
             }
             {
                 let entry_index = self.num_objects - 1;
-                let (pack_id, _) = self.pack_id_and_pack_offset_at_index(entry_index);
+                let (pack_id, _) = self.pack_id_and_pack_offset_at_index(entry_index)?;
                 pack_ids_and_offsets.push((pack_id, entry_index));
             }
             // sort by pack-id to allow handling all indices matching a pack while its open.
-            pack_ids_and_offsets.sort_by(|l, r| l.0.cmp(&r.0));
+            pack_ids_and_offsets.sort_by_key(|l| l.0);
             progress.show_throughput(order_start);
         };
 
-        progress.init(
-            Some(self.num_indices as usize),
-            gix_features::progress::count("indices"),
-        );
+        progress.init(Some(self.num_indices as usize), gix_utils::progress::count("indices"));
 
         let mut pack_ids_slice = pack_ids_and_offsets.as_slice();
 
@@ -213,17 +173,12 @@ impl File {
             let index;
             let index_path = parent.join(index_file_name);
             let index = if deep_check {
-                bundle = crate::Bundle::at(index_path, self.object_hash)
-                    .map_err(integrity::Error::from)
-                    .map_err(index::traverse::Error::Processor)?
-                    .into();
+                let mut opened_bundle = crate::Bundle::at(index_path, self.object_hash)?;
+                opened_bundle.pack.alloc_limit_bytes = self.alloc_limit_bytes;
+                bundle = Some(opened_bundle);
                 bundle.as_ref().map(|b| &b.index).expect("just set")
             } else {
-                index = Some(
-                    index::File::at(index_path, self.object_hash)
-                        .map_err(|err| integrity::Error::BundleInit(crate::bundle::init::Error::Index(err)))
-                        .map_err(index::traverse::Error::Processor)?,
-                );
+                index = Some(index::File::at(index_path, self.object_hash)?);
                 index.as_ref().expect("just set")
             };
 
@@ -235,33 +190,26 @@ impl File {
                     "verify object offsets".into(),
                     integrity::ProgressId::ObjectOffsets.into(),
                 );
-                offsets_progress.init(
-                    Some(pack_ids_and_offsets.len()),
-                    gix_features::progress::count("objects"),
-                );
+                offsets_progress.init(Some(pack_ids_and_offsets.len()), gix_utils::progress::count("objects"));
                 pack_ids_slice = &pack_ids_slice[slice_end..];
 
                 for entry_id in multi_index_entries_to_check.iter().map(|e| e.1) {
                     let oid = self.oid_at_index(entry_id);
-                    let (_, expected_pack_offset) = self.pack_id_and_pack_offset_at_index(entry_id);
-                    let entry_in_bundle_index = index.lookup(oid).ok_or_else(|| {
-                        index::traverse::Error::Processor(integrity::Error::OidNotFound { id: oid.to_owned() })
+                    let (_, expected_pack_offset) = self.pack_id_and_pack_offset_at_index(entry_id)?;
+                    let entry_in_bundle_index = index.lookup(oid).ok_or_raise(|| {
+                        message!("{oid} wasn't found in the index referenced in the multi-pack index").corrupted()
                     })?;
                     let actual_pack_offset = index.pack_offset_at_index(entry_in_bundle_index);
                     if actual_pack_offset != expected_pack_offset {
-                        return Err(index::traverse::Error::Processor(
-                            integrity::Error::PackOffsetMismatch {
-                                id: oid.to_owned(),
-                                expected_pack_offset,
-                                actual_pack_offset,
-                            },
-                        ));
+                        bail!(
+                            "Object {oid} should be at pack-offset {expected_pack_offset} but was found at {actual_pack_offset}".corrupted()
+                        );
                     }
                     offsets_progress.inc();
                 }
 
                 if should_interrupt.load(std::sync::atomic::Ordering::Relaxed) {
-                    return Err(index::traverse::Error::Processor(integrity::Error::Interrupted));
+                    bail!(cancelled("Interrupted"));
                 }
                 offsets_progress.show_throughput(offset_start);
             }
@@ -273,34 +221,7 @@ impl File {
                 let crate::bundle::verify::integrity::Outcome {
                     actual_index_checksum: _,
                     pack_traverse_outcome,
-                } = bundle
-                    .verify_integrity(progress, should_interrupt, options.clone())
-                    .map_err(|err| {
-                        use index::traverse::Error::*;
-                        match err {
-                            Processor(err) => Processor(integrity::Error::IndexIntegrity(err)),
-                            IndexVerify(err) => IndexVerify(err),
-                            Tree(err) => Tree(err),
-                            TreeTraversal(err) => TreeTraversal(err),
-                            PackVerify(err) => PackVerify(err),
-                            PackDecode { id, offset, source } => PackDecode { id, offset, source },
-                            PackMismatch(err) => PackMismatch(err),
-                            EntryType(err) => EntryType(err),
-                            PackObjectVerify { offset, source } => PackObjectVerify { offset, source },
-                            Crc32Mismatch {
-                                expected,
-                                actual,
-                                offset,
-                                kind,
-                            } => Crc32Mismatch {
-                                expected,
-                                actual,
-                                offset,
-                                kind,
-                            },
-                            Interrupted => Interrupted,
-                        }
-                    })?;
+                } = bundle.verify_integrity(progress, should_interrupt, options.clone())?;
                 pack_traverse_statistics.push(pack_traverse_outcome);
             }
         }

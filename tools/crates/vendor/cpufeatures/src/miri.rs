@@ -7,7 +7,7 @@
 #[doc(hidden)]
 macro_rules! __unless_target_features {
     ($($tf:tt),+ => $body:expr ) => {
-        false
+        cfg!(all($(target_feature = $tf,)*))
     };
 }
 

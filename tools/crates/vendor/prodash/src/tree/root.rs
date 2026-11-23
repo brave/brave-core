@@ -1,6 +1,6 @@
 use std::{
     ops::Deref,
-    sync::{atomic::AtomicUsize, Arc, Weak},
+    sync::{Arc, Weak, atomic::AtomicUsize},
 };
 
 use parking_lot::Mutex;

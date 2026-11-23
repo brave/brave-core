@@ -263,27 +263,27 @@ impl FromStr for StatusCode {
     }
 }
 
-impl<'a> From<&'a StatusCode> for StatusCode {
+impl From<&StatusCode> for StatusCode {
     #[inline]
-    fn from(t: &'a StatusCode) -> Self {
+    fn from(t: &StatusCode) -> Self {
         t.to_owned()
     }
 }
 
-impl<'a> TryFrom<&'a [u8]> for StatusCode {
+impl TryFrom<&[u8]> for StatusCode {
     type Error = InvalidStatusCode;
 
     #[inline]
-    fn try_from(t: &'a [u8]) -> Result<Self, Self::Error> {
+    fn try_from(t: &[u8]) -> Result<Self, Self::Error> {
         StatusCode::from_bytes(t)
     }
 }
 
-impl<'a> TryFrom<&'a str> for StatusCode {
+impl TryFrom<&str> for StatusCode {
     type Error = InvalidStatusCode;
 
     #[inline]
-    fn try_from(t: &'a str) -> Result<Self, Self::Error> {
+    fn try_from(t: &str) -> Result<Self, Self::Error> {
         t.parse()
     }
 }

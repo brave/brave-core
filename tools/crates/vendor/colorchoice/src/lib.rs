@@ -1,7 +1,7 @@
 //! Global override of color control
 
 #![cfg_attr(not(test), no_std)]
-#![cfg_attr(docsrs, feature(doc_auto_cfg))]
+#![cfg_attr(docsrs, feature(doc_cfg))]
 #![warn(missing_docs)]
 #![warn(clippy::print_stderr)]
 #![warn(clippy::print_stdout)]
@@ -10,9 +10,10 @@ use core::sync::atomic::{AtomicUsize, Ordering};
 
 /// Selection for overriding color output
 #[allow(clippy::exhaustive_enums)]
-#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Default)]
 pub enum ColorChoice {
     /// Use colors if the output device appears to support them
+    #[default]
     Auto,
     /// Like `Always`, except it never tries to use anything other than emitting ANSI
     /// color codes.
@@ -34,12 +35,6 @@ impl ColorChoice {
     /// Override the detected [`ColorChoice`]
     pub fn write_global(self) {
         USER.set(self);
-    }
-}
-
-impl Default for ColorChoice {
-    fn default() -> Self {
-        Self::Auto
     }
 }
 

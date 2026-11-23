@@ -261,7 +261,7 @@ macro_rules! into_impl {
 
 impl<S: AsRef<str>> From<S> for UniCase<S> {
     fn from(s: S) -> Self {
-        UniCase::unicode(s)
+        UniCase::new(s)
     }
 }
 
@@ -308,6 +308,7 @@ impl<S: FromStr + AsRef<str>> FromStr for UniCase<S> {
 #[cfg(test)]
 mod tests {
     use super::UniCase;
+    use alloc::borrow::Cow;
     use std::borrow::ToOwned;
     use std::collections::hash_map::DefaultHasher;
     use std::hash::{Hash, Hasher};
@@ -333,16 +334,47 @@ mod tests {
         let a = UniCase::new("foobar");
         let b = UniCase::new("FOOBAR");
         let c = UniCase::ascii("FoObAr");
+        let d = UniCase::<&str>::from("foobar");
 
         assert_eq!(a, b);
-        assert_eq!(b, a);
         assert_eq!(a, c);
+        assert_eq!(a, d);
+
+        assert_eq!(b, a);
+        assert_eq!(b, c);
+        assert_eq!(b, d);
+
         assert_eq!(c, a);
+        assert_eq!(c, b);
+        assert_eq!(c, d);
+
+        assert_eq!(d, a);
+        assert_eq!(d, b);
+        assert_eq!(d, c);
+
         assert_eq!(hash(&a), hash(&b));
         assert_eq!(hash(&a), hash(&c));
+        assert_eq!(hash(&a), hash(&d));
+
         assert!(a.is_ascii());
         assert!(b.is_ascii());
         assert!(c.is_ascii());
+        assert!(d.is_ascii());
+    }
+
+    #[test]
+    fn test_str_ascii() {
+        // https://github.com/seanmonstar/unicase/issues/76
+
+        let a = UniCase::new("foobar");
+        let b = UniCase::<&str>::from("foobar");
+        let c = UniCase::<String>::from(String::from("foobar"));
+        let d = UniCase::<Cow<str>>::from(Cow::from("foobar"));
+
+        assert!(a.is_ascii());
+        assert!(b.is_ascii());
+        assert!(c.is_ascii());
+        assert!(d.is_ascii());
     }
 
     #[test]

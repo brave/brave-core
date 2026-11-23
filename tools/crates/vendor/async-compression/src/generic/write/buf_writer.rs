@@ -4,11 +4,10 @@
 
 use super::AsyncBufWrite;
 use compression_core::util::WriteBuffer;
-use futures_core::ready;
 use std::{
     fmt, io,
     pin::Pin,
-    task::{Context, Poll},
+    task::{ready, Context, Poll},
 };
 
 const DEFAULT_BUF_SIZE: usize = 8192;
@@ -95,13 +94,13 @@ impl BufWriter {
         &mut self,
         poll_write: &mut dyn FnMut(&[u8]) -> Poll<io::Result<usize>>,
     ) -> Poll<io::Result<()>> {
-        let ret = ready!(self.do_flush(poll_write));
+        ready!(self.do_flush(poll_write))?;
 
         debug_assert_eq!(self.buffered, self.written);
         self.buffered = 0;
         self.written = 0;
 
-        Poll::Ready(ret)
+        Poll::Ready(Ok(()))
     }
 
     pub fn poll_write(
@@ -168,8 +167,8 @@ impl Drop for Buffer<'_> {
 macro_rules! impl_buf_writer {
     ($poll_close: tt) => {
         use crate::generic::write::{AsyncBufWrite, BufWriter as GenericBufWriter, Buffer};
-        use futures_core::ready;
         use pin_project_lite::pin_project;
+        use std::task::ready;
 
         pin_project! {
             #[derive(Debug)]

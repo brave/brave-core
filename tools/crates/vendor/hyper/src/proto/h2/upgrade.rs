@@ -31,6 +31,7 @@ pub(super) fn pair<B>(
         UpgradedSendStreamTask {
             h2_tx: send_stream,
             rx,
+            buffered: None,
             error_tx: Some(error_tx),
         },
     )
@@ -55,6 +56,7 @@ pin_project! {
         h2_tx: SendStream<SendBuf<B>>,
         #[pin]
         rx: mpsc::Receiver<Cursor<Box<[u8]>>>,
+        buffered: Option<Cursor<Box<[u8]>>>,
         error_tx: Option<oneshot::Sender<crate::Error>>,
     }
 }
@@ -73,33 +75,6 @@ where
         // one of the sides hanging up, so the task doesn't live around
         // longer than it's meant to.
         loop {
-            // we don't have the next chunk of data yet, so just reserve 1 byte to make
-            // sure there's some capacity available. h2 will handle the capacity management
-            // for the actual body chunk.
-            me.h2_tx.reserve_capacity(1);
-
-            if me.h2_tx.capacity() == 0 {
-                // poll_capacity oddly needs a loop
-                'capacity: loop {
-                    match me.h2_tx.poll_capacity(cx) {
-                        Poll::Ready(Some(Ok(0))) => {}
-                        Poll::Ready(Some(Ok(_))) => break,
-                        Poll::Ready(Some(Err(e))) => {
-                            return Poll::Ready(Err(crate::Error::new_body_write(e)))
-                        }
-                        Poll::Ready(None) => {
-                            // None means the stream is no longer in a
-                            // streaming state, we either finished it
-                            // somehow, or the remote reset us.
-                            return Poll::Ready(Err(crate::Error::new_body_write(
-                                "send stream capacity unexpectedly closed",
-                            )));
-                        }
-                        Poll::Pending => break 'capacity,
-                    }
-                }
-            }
-
             match me.h2_tx.poll_reset(cx) {
                 Poll::Ready(Ok(reason)) => {
                     trace!("stream received RST_STREAM: {:?}", reason);
@@ -113,11 +88,43 @@ where
                 Poll::Pending => (),
             }
 
+            // A write taken from the mpsc receiver waits here for h2 capacity,
+            // and the next one isn't pulled until it has been handed to h2, so
+            // the writer still sees h2 backpressure.
+            if me.buffered.is_some() {
+                // poll_capacity oddly needs a loop
+                while me.h2_tx.capacity() == 0 {
+                    match ready!(me.h2_tx.poll_capacity(cx)) {
+                        Some(Ok(0)) => {}
+                        Some(Ok(_)) => break,
+                        Some(Err(e)) => return Poll::Ready(Err(crate::Error::new_body_write(e))),
+                        None => {
+                            // None means the stream is no longer in a
+                            // streaming state, we either finished it
+                            // somehow, or the remote reset us.
+                            return Poll::Ready(Err(crate::Error::new_body_write(
+                                "send stream capacity unexpectedly closed",
+                            )));
+                        }
+                    }
+                }
+
+                let cursor = me.buffered.take().expect("checked is_some above");
+                me.h2_tx
+                    .send_data(SendBuf::Cursor(cursor), false)
+                    .map_err(crate::Error::new_body_write)?;
+                continue;
+            }
+
             match me.rx.as_mut().poll_next(cx) {
                 Poll::Ready(Some(cursor)) => {
-                    me.h2_tx
-                        .send_data(SendBuf::Cursor(cursor), false)
-                        .map_err(crate::Error::new_body_write)?;
+                    // Only reserve capacity once there is something to send.
+                    // Reserving while idle, even a single byte, pins that
+                    // capacity on the connection-level window (#4003). As in
+                    // `PipeToSendStream`, h2 raises the request to the
+                    // buffered length inside `send_data`.
+                    me.h2_tx.reserve_capacity(1);
+                    *me.buffered = Some(cursor);
                 }
                 Poll::Ready(None) => {
                     me.h2_tx
@@ -165,9 +172,7 @@ impl Read for H2Upgraded {
             self.buf = loop {
                 match ready!(self.recv_stream.poll_data(cx)) {
                     None => return Poll::Ready(Ok(())),
-                    Some(Ok(buf)) if buf.is_empty() && !self.recv_stream.is_end_stream() => {
-                        continue
-                    }
+                    Some(Ok(buf)) if buf.is_empty() && !self.recv_stream.is_end_stream() => {}
                     Some(Ok(buf)) => {
                         self.ping.record_data(buf.len());
                         break buf;
@@ -273,7 +278,8 @@ fn io_error(e: crate::Error) -> std::io::Error {
 
 fn h2_to_io_error(e: h2::Error) -> std::io::Error {
     if e.is_io() {
-        e.into_io().unwrap()
+        e.into_io()
+            .expect("h2 error reported io cause without an underlying io error")
     } else {
         std::io::Error::new(std::io::ErrorKind::Other, e)
     }

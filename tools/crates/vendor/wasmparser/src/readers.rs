@@ -13,14 +13,16 @@
  * limitations under the License.
  */
 
-use crate::{BinaryReader, BinaryReaderError, Result};
+use crate::{BinaryReader, Error, Result};
 use ::core::fmt;
 use ::core::marker;
 use ::core::ops::Range;
 
+#[cfg(feature = "component-model")]
 mod component;
 mod core;
 
+#[cfg(feature = "component-model")]
 pub use self::component::*;
 pub use self::core::*;
 
@@ -33,6 +35,19 @@ pub trait FromReader<'a>: Sized {
     /// Attempts to read `Self` from the provided binary reader, returning an
     /// error if it is unable to do so.
     fn from_reader(reader: &mut BinaryReader<'a>) -> Result<Self>;
+}
+
+impl<'a> FromReader<'a> for bool {
+    fn from_reader(reader: &mut BinaryReader<'a>) -> Result<Self> {
+        match reader.read_u8()? {
+            0 => Ok(false),
+            1 => Ok(true),
+            _ => Err(Error::new(
+                "invalid boolean value",
+                reader.original_position() - 1,
+            )),
+        }
+    }
 }
 
 impl<'a> FromReader<'a> for u32 {
@@ -187,7 +202,7 @@ where
             if self.section.reader.eof() {
                 return None;
             }
-            return Some(Err(BinaryReaderError::new(
+            return Some(Err(Error::new(
                 "section size mismatch: unexpected data at the end of the section",
                 self.section.reader.original_position(),
             )));
@@ -277,7 +292,7 @@ impl<'a, T> Subsections<'a, T> {
         T: Subsection<'a>,
     {
         let subsection_id = self.reader.read_u7()?;
-        let reader = self.reader.read_reader("unexpected end of section")?;
+        let reader = self.reader.read_reader()?;
         T::from_reader(subsection_id, reader)
     }
 }

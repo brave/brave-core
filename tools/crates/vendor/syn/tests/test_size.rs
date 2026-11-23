@@ -10,7 +10,7 @@ use syn::{Expr, Item, Lit, Pat, Type};
 )]
 #[test]
 fn test_expr_size() {
-    assert_eq!(mem::size_of::<Expr>(), 176);
+    assert_eq!(mem::size_of::<Expr>(), 168);
 }
 
 #[rustversion::attr(before(2022-09-09), ignore = "requires nightly-2022-09-09 or newer")]
@@ -20,7 +20,7 @@ fn test_expr_size() {
 )]
 #[test]
 fn test_item_size() {
-    assert_eq!(mem::size_of::<Item>(), 352);
+    assert_eq!(mem::size_of::<Item>(), 360);
 }
 
 #[rustversion::attr(before(2023-04-29), ignore = "requires nightly-2023-04-29 or newer")]
@@ -30,7 +30,7 @@ fn test_item_size() {
 )]
 #[test]
 fn test_type_size() {
-    assert_eq!(mem::size_of::<Type>(), 224);
+    assert_eq!(mem::size_of::<Type>(), 248);
 }
 
 #[rustversion::attr(before(2023-04-29), ignore = "requires nightly-2023-04-29 or newer")]

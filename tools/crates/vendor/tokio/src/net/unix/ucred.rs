@@ -24,8 +24,10 @@ impl UCred {
 
     /// Gets PID (process ID) of the process.
     ///
-    /// This is only implemented under Linux, Android, iOS, macOS, Solaris,
-    /// Illumos and Cygwin. On other platforms this will always return `None`.
+    /// This is implemented under Linux, Android, OpenBSD, FreeBSD (since
+    /// FreeBSD 13), NetBSD, NTO, iOS, macOS, tvOS, watchOS, visionOS,
+    /// Solaris, Illumos, Cygwin, Haiku, and Redox. On other platforms this
+    /// will always return `None`.
     pub fn pid(&self) -> Option<unix::pid_t> {
         self.pid
     }
@@ -41,11 +43,14 @@ impl UCred {
 ))]
 pub(crate) use self::impl_linux::get_peer_cred;
 
-#[cfg(any(target_os = "netbsd", target_os = "nto"))]
+#[cfg(target_os = "netbsd")]
 pub(crate) use self::impl_netbsd::get_peer_cred;
 
-#[cfg(any(target_os = "dragonfly", target_os = "freebsd"))]
-pub(crate) use self::impl_bsd::get_peer_cred;
+#[cfg(target_os = "dragonfly")]
+pub(crate) use self::impl_dragonfly::get_peer_cred;
+
+#[cfg(target_os = "freebsd")]
+pub(crate) use self::impl_freebsd::get_peer_cred;
 
 #[cfg(any(
     target_os = "macos",
@@ -62,8 +67,17 @@ pub(crate) use self::impl_solaris::get_peer_cred;
 #[cfg(target_os = "aix")]
 pub(crate) use self::impl_aix::get_peer_cred;
 
-#[cfg(any(target_os = "espidf", target_os = "vita"))]
+#[cfg(any(
+    target_os = "espidf",
+    target_os = "fuchsia",
+    target_os = "hurd",
+    target_os = "nuttx",
+    target_os = "vita"
+))]
 pub(crate) use self::impl_noproc::get_peer_cred;
+
+#[cfg(target_os = "nto")]
+pub(crate) use self::impl_nto::get_peer_cred;
 
 #[cfg(any(
     target_os = "linux",
@@ -130,16 +144,20 @@ pub(crate) mod impl_linux {
     }
 }
 
-#[cfg(any(target_os = "netbsd", target_os = "nto"))]
+#[cfg(target_os = "netbsd")]
 pub(crate) mod impl_netbsd {
     use crate::net::unix::{self, UnixStream};
 
-    use libc::{c_void, getsockopt, socklen_t, unpcbid, LOCAL_PEEREID, SOL_SOCKET};
+    use libc::{c_void, getsockopt, socklen_t, unpcbid, LOCAL_PEEREID};
     use std::io;
     use std::mem::size_of;
     use std::os::unix::io::AsRawFd;
 
     pub(crate) fn get_peer_cred(sock: &UnixStream) -> io::Result<super::UCred> {
+        // `SOL_LOCAL` is not re-exported by `libc` for NetBSD; it is defined
+        // as 0 in `<sys/un.h>`.
+        const SOL_LOCAL: libc::c_int = 0;
+
         unsafe {
             let raw_fd = sock.as_raw_fd();
 
@@ -154,7 +172,7 @@ pub(crate) mod impl_netbsd {
 
             let ret = getsockopt(
                 raw_fd,
-                SOL_SOCKET,
+                SOL_LOCAL,
                 LOCAL_PEEREID,
                 &mut unpcbid as *mut unpcbid as *mut c_void,
                 &mut unpcbid_size,
@@ -172,8 +190,8 @@ pub(crate) mod impl_netbsd {
     }
 }
 
-#[cfg(any(target_os = "dragonfly", target_os = "freebsd"))]
-pub(crate) mod impl_bsd {
+#[cfg(target_os = "dragonfly")]
+pub(crate) mod impl_dragonfly {
     use crate::net::unix::{self, UnixStream};
 
     use libc::getpeereid;
@@ -199,6 +217,74 @@ pub(crate) mod impl_bsd {
             } else {
                 Err(io::Error::last_os_error())
             }
+        }
+    }
+}
+
+#[cfg(target_os = "freebsd")]
+pub(crate) mod impl_freebsd {
+    use crate::net::unix::{self, UnixStream};
+
+    use libc::{c_void, getsockopt, socklen_t, xucred, LOCAL_PEERCRED, XUCRED_VERSION};
+    use std::io;
+    use std::mem::{size_of, MaybeUninit};
+    use std::os::unix::io::AsRawFd;
+
+    pub(crate) fn get_peer_cred(sock: &UnixStream) -> io::Result<super::UCred> {
+        // `SOL_LOCAL` is not re-exported by `libc` for FreeBSD; it is defined
+        // as 0 in `<sys/un.h>`.
+        const SOL_LOCAL: libc::c_int = 0;
+
+        unsafe {
+            let raw_fd = sock.as_raw_fd();
+
+            let mut xucred = MaybeUninit::<xucred>::zeroed();
+            let mut len = size_of::<xucred>() as socklen_t;
+
+            let ret = getsockopt(
+                raw_fd,
+                SOL_LOCAL,
+                LOCAL_PEERCRED,
+                xucred.as_mut_ptr() as *mut c_void,
+                &mut len,
+            );
+
+            if ret != 0 {
+                return Err(io::Error::last_os_error());
+            }
+            if len as usize != size_of::<xucred>() {
+                return Err(io::Error::new(
+                    io::ErrorKind::InvalidData,
+                    "unexpected xucred size from LOCAL_PEERCRED",
+                ));
+            }
+
+            let xucred = xucred.assume_init();
+
+            // Match `getpeereid(3)` and reject any `xucred` whose version we
+            // don't know how to interpret.
+            if xucred.cr_version != XUCRED_VERSION {
+                return Err(io::Error::new(
+                    io::ErrorKind::InvalidData,
+                    "unexpected xucred version from LOCAL_PEERCRED",
+                ));
+            }
+
+            // `cr_pid` is populated by the kernel since FreeBSD 13. PID 0 is
+            // the kernel scheduler and never a real userland peer, so we
+            // surface it as `None` rather than a misleading `Some(0)`.
+            let pid = match xucred.cr_pid__c_anonymous_union.cr_pid {
+                0 => None,
+                p => Some(p as unix::pid_t),
+            };
+
+            // `xucred` carries the effective uid in `cr_uid` and the effective
+            // gid in `cr_groups[0]`, matching what `getpeereid(2)` returns.
+            Ok(super::UCred {
+                uid: xucred.cr_uid as unix::uid_t,
+                gid: xucred.cr_groups[0] as unix::gid_t,
+                pid,
+            })
         }
     }
 }
@@ -317,7 +403,13 @@ pub(crate) mod impl_aix {
     }
 }
 
-#[cfg(any(target_os = "espidf", target_os = "vita"))]
+#[cfg(any(
+    target_os = "espidf",
+    target_os = "fuchsia",
+    target_os = "hurd",
+    target_os = "nuttx",
+    target_os = "vita"
+))]
 pub(crate) mod impl_noproc {
     use crate::net::unix::UnixStream;
     use std::io;
@@ -328,5 +420,36 @@ pub(crate) mod impl_noproc {
             gid: 0,
             pid: None,
         })
+    }
+}
+
+#[cfg(target_os = "nto")]
+pub(crate) mod impl_nto {
+    use crate::net::unix::{self, UnixStream};
+
+    use libc::getpeereid;
+    use std::io;
+    use std::mem::MaybeUninit;
+    use std::os::unix::io::AsRawFd;
+
+    pub(crate) fn get_peer_cred(sock: &UnixStream) -> io::Result<super::UCred> {
+        unsafe {
+            let raw_fd = sock.as_raw_fd();
+
+            let mut uid = MaybeUninit::uninit();
+            let mut gid = MaybeUninit::uninit();
+
+            let ret = getpeereid(raw_fd, uid.as_mut_ptr(), gid.as_mut_ptr());
+
+            if ret == 0 {
+                Ok(super::UCred {
+                    uid: uid.assume_init() as unix::uid_t,
+                    gid: gid.assume_init() as unix::gid_t,
+                    pid: None,
+                })
+            } else {
+                Err(io::Error::last_os_error())
+            }
+        }
     }
 }

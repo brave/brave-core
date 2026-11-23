@@ -11,10 +11,9 @@
 
 [package]
 edition = "2024"
-rust-version = "1.85"
+rust-version = "1.88"
 name = "rustsec"
-version = "0.31.0"
-authors = ["Tony Arcieri <bascule@gmail.com>"]
+version = "0.34.1"
 build = false
 autolib = false
 autobins = false
@@ -82,11 +81,11 @@ git = [
     "dep:gix",
 ]
 gix-curl = [
-    "tame-index/gix-curl",
+    "gix/blocking-http-transport-curl",
     "git",
 ]
 gix-reqwest = [
-    "tame-index/gix-reqwest",
+    "gix/blocking-http-transport-reqwest-rust-tls",
     "git",
 ]
 osv-export = ["git"]
@@ -98,6 +97,10 @@ path = "src/lib.rs"
 [[test]]
 name = "advisories"
 path = "tests/advisories.rs"
+
+[[test]]
+name = "commit"
+path = "tests/commit.rs"
 
 [[test]]
 name = "database"
@@ -132,18 +135,19 @@ optional = true
 version = "11"
 
 [dependencies.cvss]
-version = "2.2"
+version = "3.0"
 features = ["serde"]
 
 [dependencies.fs-err]
 version = "3"
 
 [dependencies.gix]
-version = "0.74"
+version = "0.90"
 features = [
-    "worktree-mutation",
+    "max-performance",
     "revision",
-    "max-performance-safe",
+    "sha1",
+    "worktree-mutation",
 ]
 optional = true
 default-features = false
@@ -152,12 +156,17 @@ default-features = false
 version = "0.5"
 optional = true
 
+[dependencies.jiff]
+version = "0.2"
+features = ["std"]
+default-features = false
+
 [dependencies.once_cell]
 version = "1.15.0"
 optional = true
 
 [dependencies.platforms]
-version = "3"
+version = "4"
 features = ["serde"]
 
 [dependencies.quitters]
@@ -173,11 +182,8 @@ version = "1"
 features = ["serde_derive"]
 
 [dependencies.tame-index]
-version = "0.24"
-features = [
-    "sparse",
-    "native-certs",
-]
+version = "0.26"
+features = ["sparse"]
 optional = true
 default-features = false
 
@@ -195,7 +201,7 @@ optional = true
 default-features = false
 
 [dependencies.toml]
-version = "0.9"
+version = "1.0"
 
 [dependencies.url]
 version = "2"
@@ -209,3 +215,19 @@ version = "1"
 
 [dev-dependencies.tempfile]
 version = "3"
+
+[lints.clippy]
+cloned_instead_of_copied = "warn"
+manual_let_else = "warn"
+or_fun_call = "warn"
+upper_case_acronyms = "warn"
+use_self = "warn"
+
+[lints.rust]
+elided_lifetimes_in_paths = "warn"
+trivial_numeric_casts = "warn"
+unnameable_types = "warn"
+unreachable_pub = "warn"
+unused_extern_crates = "warn"
+unused_import_braces = "warn"
+unused_qualifications = "warn"

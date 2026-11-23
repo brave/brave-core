@@ -105,10 +105,7 @@ impl<'data> DataDirectories<'data> {
             None => return Ok(None),
         };
         let import_va = data_dir.virtual_address.get(LE);
-        let (section_data, section_va) = sections
-            .pe_data_containing(data, import_va)
-            .read_error("Invalid import data dir virtual address")?;
-        Ok(Some(ImportTable::new(section_data, section_va, import_va)))
+        ImportTable::from_sections(data, sections, import_va).map(Some)
     }
 
     /// Returns the partially parsed delay-load import directory.

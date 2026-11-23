@@ -130,6 +130,7 @@ pub type thread_latency_qos_policy_t = *mut thread_latency_qos_policy;
 pub type thread_throughput_qos_policy_data_t = thread_throughput_qos_policy;
 pub type thread_throughput_qos_policy_t = *mut thread_throughput_qos_policy;
 
+#[cfg(target_os = "macos")]
 pub type pthread_jit_write_callback_t = Option<extern "C" fn(ctx: *mut c_void) -> c_int>;
 
 pub type os_clockid_t = u32;
@@ -180,7 +181,7 @@ deprecated_mach! {
 }
 
 extern_ty! {
-    pub enum timezone {}
+    pub type timezone;
 }
 
 #[derive(Debug)]
@@ -234,27 +235,32 @@ impl Clone for sysdir_search_path_domain_mask_t {
     }
 }
 
-s! {
+s2! {
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct ip_mreq {
         pub imr_multiaddr: in_addr,
         pub imr_interface: in_addr,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct ip_mreqn {
         pub imr_multiaddr: in_addr,
         pub imr_address: in_addr,
         pub imr_ifindex: c_int,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct ip_mreq_source {
         pub imr_multiaddr: in_addr,
         pub imr_sourceaddr: in_addr,
         pub imr_interface: in_addr,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct aiocb {
         pub aio_fildes: c_int,
         pub aio_offset: off_t,
+        #[custom_default(ptr::null_mut())]
         pub aio_buf: *mut c_void,
         pub aio_nbytes: size_t,
         pub aio_reqprio: c_int,
@@ -267,6 +273,7 @@ s! {
         __unused1: Padding<c_int>,
         pub gl_offs: size_t,
         __unused2: Padding<c_int>,
+        #[custom_default(ptr::null_mut())]
         pub gl_pathv: *mut *mut c_char,
 
         __unused3: Padding<*mut c_void>,
@@ -278,23 +285,45 @@ s! {
         __unused8: Padding<*mut c_void>,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
+    pub struct tm {
+        pub tm_sec: c_int,
+        pub tm_min: c_int,
+        pub tm_hour: c_int,
+        pub tm_mday: c_int,
+        pub tm_mon: c_int,
+        pub tm_year: c_int,
+        pub tm_wday: c_int,
+        pub tm_yday: c_int,
+        pub tm_isdst: c_int,
+        pub tm_gmtoff: c_long,
+        #[custom_default(ptr::null_mut())]
+        pub tm_zone: *mut c_char,
+    }
+
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct addrinfo {
         pub ai_flags: c_int,
         pub ai_family: c_int,
         pub ai_socktype: c_int,
         pub ai_protocol: c_int,
         pub ai_addrlen: crate::socklen_t,
+        #[custom_default(ptr::null_mut())]
         pub ai_canonname: *mut c_char,
+        #[custom_default(ptr::null_mut())]
         pub ai_addr: *mut crate::sockaddr,
+        #[custom_default(ptr::null_mut())]
         pub ai_next: *mut addrinfo,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     #[deprecated(since = "0.2.55", note = "Use the `mach2` crate instead")]
     pub struct mach_timebase_info {
         pub numer: u32,
         pub denom: u32,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct stat {
         pub st_dev: dev_t,
         pub st_mode: mode_t,
@@ -327,12 +356,14 @@ s! {
         pub si_pid: crate::pid_t,
         pub si_uid: crate::uid_t,
         pub si_status: c_int,
+        #[custom_default(ptr::null_mut())]
         pub si_addr: *mut c_void,
         //Requires it to be union for tests
         //pub si_value: crate::sigval,
         _pad: Padding<[usize; 9]>,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct sigaction {
         // FIXME(union): this field is actually a union
         pub sa_sigaction: crate::sighandler_t,
@@ -340,12 +371,15 @@ s! {
         pub sa_flags: c_int,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct stack_t {
+        #[custom_default(ptr::null_mut())]
         pub ss_sp: *mut c_void,
         pub ss_size: size_t,
         pub ss_flags: c_int,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct fstore_t {
         pub fst_flags: c_uint,
         pub fst_posmode: c_int,
@@ -354,6 +388,7 @@ s! {
         pub fst_bytesalloc: off_t,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct fpunchhole_t {
         pub fp_flags: c_uint, /* unused */
         pub reserved: c_uint, /* (to maintain 8-byte alignment) */
@@ -361,11 +396,13 @@ s! {
         pub fp_length: off_t, /* IN: size of the region */
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct ftrimactivefile_t {
         pub fta_offset: off_t,
         pub fta_length: off_t,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct fspecread_t {
         pub fsr_flags: c_uint,
         pub reserved: c_uint,
@@ -373,11 +410,13 @@ s! {
         pub fsr_length: off_t,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct radvisory {
         pub ra_offset: off_t,
         pub ra_count: c_int,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct statvfs {
         pub f_bsize: c_ulong,
         pub f_frsize: c_ulong,
@@ -392,13 +431,19 @@ s! {
         pub f_namemax: c_ulong,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct Dl_info {
+        #[custom_default(ptr::null_mut())]
         pub dli_fname: *const c_char,
+        #[custom_default(ptr::null_mut())]
         pub dli_fbase: *mut c_void,
+        #[custom_default(ptr::null_mut())]
         pub dli_sname: *const c_char,
+        #[custom_default(ptr::null_mut())]
         pub dli_saddr: *mut c_void,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct sockaddr_in {
         pub sin_len: u8,
         pub sin_family: crate::sa_family_t,
@@ -407,6 +452,7 @@ s! {
         pub sin_zero: [c_char; 8],
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct kevent64_s {
         pub ident: u64,
         pub filter: i16,
@@ -417,6 +463,7 @@ s! {
         pub ext: [u64; 2],
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct dqblk {
         pub dqb_bhardlimit: u64,
         pub dqb_bsoftlimit: u64,
@@ -430,6 +477,7 @@ s! {
         pub dqb_spare: [u32; 4],
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct if_msghdr {
         pub ifm_msglen: c_ushort,
         pub ifm_version: c_uchar,
@@ -440,6 +488,7 @@ s! {
         pub ifm_data: if_data,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct ifa_msghdr {
         pub ifam_msglen: c_ushort,
         pub ifam_version: c_uchar,
@@ -450,6 +499,7 @@ s! {
         pub ifam_metric: c_int,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct ifma_msghdr {
         pub ifmam_msglen: c_ushort,
         pub ifmam_version: c_uchar,
@@ -459,6 +509,7 @@ s! {
         pub ifmam_index: c_ushort,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct ifma_msghdr2 {
         pub ifmam_msglen: c_ushort,
         pub ifmam_version: c_uchar,
@@ -469,6 +520,8 @@ s! {
         pub ifmam_refcount: i32,
     }
 
+    #[cfg(target_os = "macos")]
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct rt_metrics {
         pub rmx_locks: u32,
         pub rmx_mtu: u32,
@@ -486,6 +539,8 @@ s! {
         pub rmx_filler: [u32; 3],
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
+    #[cfg(target_os = "macos")]
     pub struct rt_msghdr {
         pub rtm_msglen: c_ushort,
         pub rtm_version: c_uchar,
@@ -501,6 +556,8 @@ s! {
         pub rtm_rmx: rt_metrics,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
+    #[cfg(target_os = "macos")]
     pub struct rt_msghdr2 {
         pub rtm_msglen: c_ushort,
         pub rtm_version: c_uchar,
@@ -516,6 +573,7 @@ s! {
         pub rtm_rmx: rt_metrics,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct termios {
         pub c_iflag: crate::tcflag_t,
         pub c_oflag: crate::tcflag_t,
@@ -526,6 +584,7 @@ s! {
         pub c_ospeed: crate::speed_t,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct flock {
         pub l_start: off_t,
         pub l_len: off_t,
@@ -534,23 +593,37 @@ s! {
         pub l_whence: c_short,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct sf_hdtr {
+        #[custom_default(ptr::null_mut())]
         pub headers: *mut crate::iovec,
         pub hdr_cnt: c_int,
+        #[custom_default(ptr::null_mut())]
         pub trailers: *mut crate::iovec,
         pub trl_cnt: c_int,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct lconv {
+        #[custom_default(ptr::null_mut())]
         pub decimal_point: *mut c_char,
+        #[custom_default(ptr::null_mut())]
         pub thousands_sep: *mut c_char,
+        #[custom_default(ptr::null_mut())]
         pub grouping: *mut c_char,
+        #[custom_default(ptr::null_mut())]
         pub int_curr_symbol: *mut c_char,
+        #[custom_default(ptr::null_mut())]
         pub currency_symbol: *mut c_char,
+        #[custom_default(ptr::null_mut())]
         pub mon_decimal_point: *mut c_char,
+        #[custom_default(ptr::null_mut())]
         pub mon_thousands_sep: *mut c_char,
+        #[custom_default(ptr::null_mut())]
         pub mon_grouping: *mut c_char,
+        #[custom_default(ptr::null_mut())]
         pub positive_sign: *mut c_char,
+        #[custom_default(ptr::null_mut())]
         pub negative_sign: *mut c_char,
         pub int_frac_digits: c_char,
         pub frac_digits: c_char,
@@ -568,6 +641,8 @@ s! {
         pub int_n_sign_posn: c_char,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
+    #[cfg(target_os = "macos")]
     pub struct proc_taskinfo {
         pub pti_virtual_size: u64,
         pub pti_resident_size: u64,
@@ -589,6 +664,8 @@ s! {
         pub pti_priority: i32,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
+    #[cfg(target_os = "macos")]
     pub struct proc_bsdinfo {
         pub pbi_flags: u32,
         pub pbi_status: u32,
@@ -614,11 +691,44 @@ s! {
         pub pbi_start_tvusec: u64,
     }
 
+    #[cfg(target_os = "macos")]
+    pub struct proc_bsdshortinfo {
+        /// Process ID.
+        pub pbsi_pid: u32,
+        /// Process parent ID.
+        pub pbsi_ppid: u32,
+        /// Process perp ID.
+        pub pbsi_pgid: u32,
+        /// `p_stat` value: `SZOMB`, `SRUN`, etc.
+        pub pbsi_status: u32,
+        /// Up to 16 characters of process name.
+        pub pbsi_comm: [c_char; MAXCOMLEN],
+        /// 64bit, emulated, etc.
+        pub pbsi_flags: u32,
+        /// Current UID on process.
+        pub pbsi_uid: crate::uid_t,
+        /// Current GID on process.
+        pub pbsi_gid: crate::gid_t,
+        /// Current RUID on process.
+        pub pbsi_ruid: crate::uid_t,
+        /// Current RGID on process.
+        pub pbsi_rgid: crate::gid_t,
+        /// Current SVUID on process.
+        pub pbsi_svuid: crate::uid_t,
+        /// Current SVGID on process.
+        pub pbsi_svgid: crate::gid_t,
+        /// Reserved for future use.
+        pbsi_rfu: Padding<u32>,
+    }
+
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
+    #[cfg(target_os = "macos")]
     pub struct proc_taskallinfo {
         pub pbsd: proc_bsdinfo,
         pub ptinfo: proc_taskinfo,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct xsw_usage {
         pub xsu_total: u64,
         pub xsu_avail: u64,
@@ -627,6 +737,7 @@ s! {
         pub xsu_encrypted: crate::boolean_t,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct xucred {
         pub cr_version: c_uint,
         pub cr_uid: crate::uid_t,
@@ -634,6 +745,7 @@ s! {
         pub cr_groups: [crate::gid_t; 16],
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     #[deprecated(since = "0.2.55", note = "Use the `mach2` crate instead")]
     pub struct mach_header {
         pub magic: u32,
@@ -645,6 +757,7 @@ s! {
         pub flags: u32,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     #[deprecated(since = "0.2.55", note = "Use the `mach2` crate instead")]
     pub struct mach_header_64 {
         pub magic: u32,
@@ -657,6 +770,7 @@ s! {
         pub reserved: u32,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct segment_command {
         pub cmd: u32,
         pub cmdsize: u32,
@@ -671,6 +785,7 @@ s! {
         pub flags: u32,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct segment_command_64 {
         pub cmd: u32,
         pub cmdsize: u32,
@@ -685,11 +800,13 @@ s! {
         pub flags: u32,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct load_command {
         pub cmd: u32,
         pub cmdsize: u32,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct sockaddr_dl {
         pub sdl_len: c_uchar,
         pub sdl_family: c_uchar,
@@ -701,6 +818,8 @@ s! {
         pub sdl_data: [c_char; 12],
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
+    #[cfg(target_os = "macos")]
     pub struct sockaddr_inarp {
         pub sin_len: c_uchar,
         pub sin_family: c_uchar,
@@ -711,6 +830,8 @@ s! {
         pub sin_other: c_ushort,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
+    #[cfg(target_os = "macos")]
     pub struct sockaddr_ctl {
         pub sc_len: c_uchar,
         pub sc_family: c_uchar,
@@ -720,12 +841,14 @@ s! {
         pub sc_reserved: [u32; 5],
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct in_pktinfo {
         pub ipi_ifindex: c_uint,
         pub ipi_spec_dst: crate::in_addr,
         pub ipi_addr: crate::in_addr,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct in6_pktinfo {
         pub ipi6_addr: crate::in6_addr,
         pub ipi6_ifindex: c_uint,
@@ -733,6 +856,7 @@ s! {
 
     // sys/ipc.h:
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct ipc_perm {
         pub uid: crate::uid_t,
         pub gid: crate::gid_t,
@@ -744,15 +868,16 @@ s! {
     }
 
     // sys/sem.h
-
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct sembuf {
         pub sem_num: c_ushort,
         pub sem_op: c_short,
         pub sem_flg: c_short,
     }
 
-    // sys/shm.h
-
+    // sys/if_arp.h
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
+    #[cfg(target_os = "macos")]
     pub struct arphdr {
         pub ar_hrd: u16,
         pub ar_pro: u16,
@@ -761,11 +886,14 @@ s! {
         pub ar_op: u16,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct in_addr {
         pub s_addr: crate::in_addr_t,
     }
 
     // net/ndrv.h
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
+    #[cfg(target_os = "macos")]
     pub struct sockaddr_ndrv {
         pub snd_len: c_uchar,
         pub snd_family: c_uchar,
@@ -774,14 +902,18 @@ s! {
 
     // sys/socket.h
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct sa_endpoints_t {
-        pub sae_srcif: c_uint,                   // optional source interface
+        pub sae_srcif: c_uint, // optional source interface
+        #[custom_default(ptr::null_mut())]
         pub sae_srcaddr: *const crate::sockaddr, // optional source address
-        pub sae_srcaddrlen: crate::socklen_t,    // size of source address
+        pub sae_srcaddrlen: crate::socklen_t, // size of source address
+        #[custom_default(ptr::null_mut())]
         pub sae_dstaddr: *const crate::sockaddr, // destination address
-        pub sae_dstaddrlen: crate::socklen_t,    // size of destination address
+        pub sae_dstaddrlen: crate::socklen_t, // size of destination address
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct timex {
         pub modes: c_uint,
         pub offset: c_long,
@@ -802,6 +934,7 @@ s! {
         pub stbcnt: c_long,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct ntptimeval {
         pub time: crate::timespec,
         pub maxerror: c_long,
@@ -810,14 +943,17 @@ s! {
         pub time_state: c_int,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct thread_standard_policy {
         pub no_data: natural_t,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct thread_extended_policy {
         pub timeshare: boolean_t,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct thread_time_constraint_policy {
         pub period: u32,
         pub computation: u32,
@@ -825,27 +961,33 @@ s! {
         pub preemptible: boolean_t,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct thread_precedence_policy {
         pub importance: integer_t,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct thread_affinity_policy {
         pub affinity_tag: integer_t,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct thread_background_policy {
         pub priority: integer_t,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct thread_latency_qos_policy {
         pub thread_latency_qos_tier: thread_latency_qos_t,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct thread_throughput_qos_policy {
         pub thread_throughput_qos_tier: thread_throughput_qos_t,
     }
 
     // malloc/malloc.h
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct malloc_statistics_t {
         pub blocks_in_use: c_uint,
         pub size_in_use: size_t,
@@ -853,6 +995,7 @@ s! {
         pub size_allocated: size_t,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct mstats {
         pub bytes_total: size_t,
         pub chunks_used: size_t,
@@ -861,11 +1004,14 @@ s! {
         pub bytes_free: size_t,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct vm_range_t {
         pub address: crate::vm_address_t,
         pub size: crate::vm_size_t,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
+    #[cfg(target_os = "macos")]
     pub struct vinfo_stat {
         pub vst_dev: u32,
         pub vst_mode: u16,
@@ -890,6 +1036,8 @@ s! {
         pub vst_qspare: [i64; 2],
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
+    #[cfg(target_os = "macos")]
     pub struct vnode_info {
         pub vi_stat: vinfo_stat,
         pub vi_type: c_int,
@@ -897,6 +1045,8 @@ s! {
         pub vi_fsid: crate::fsid_t,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
+    #[cfg(target_os = "macos")]
     pub struct vnode_info_path {
         pub vip_vi: vnode_info,
         // Normally it's `vip_path: [c_char; MAXPATHLEN]` but because libc supports an old rustc
@@ -904,11 +1054,14 @@ s! {
         pub vip_path: [[c_char; 32]; 32],
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
+    #[cfg(target_os = "macos")]
     pub struct proc_vnodepathinfo {
         pub pvi_cdir: vnode_info_path,
         pub pvi_rdir: vnode_info_path,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct vm_statistics {
         pub free_count: natural_t,
         pub active_count: natural_t,
@@ -927,11 +1080,13 @@ s! {
         pub speculative_count: natural_t,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct task_thread_times_info {
         pub user_time: time_value_t,
         pub system_time: time_value_t,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct rusage_info_v0 {
         pub ri_uuid: [u8; 16],
         pub ri_user_time: u64,
@@ -946,6 +1101,7 @@ s! {
         pub ri_proc_exit_abstime: u64,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct rusage_info_v1 {
         pub ri_uuid: [u8; 16],
         pub ri_user_time: u64,
@@ -966,6 +1122,7 @@ s! {
         pub ri_child_elapsed_abstime: u64,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct rusage_info_v2 {
         pub ri_uuid: [u8; 16],
         pub ri_user_time: u64,
@@ -988,6 +1145,7 @@ s! {
         pub ri_diskio_byteswritten: u64,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct rusage_info_v3 {
         pub ri_uuid: [u8; 16],
         pub ri_user_time: u64,
@@ -1019,6 +1177,7 @@ s! {
         pub ri_serviced_system_time: u64,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct rusage_info_v4 {
         pub ri_uuid: [u8; 16],
         pub ri_user_time: u64,
@@ -1058,11 +1217,13 @@ s! {
         pub ri_runnable_time: u64,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct image_offset {
         pub uuid: crate::uuid_t,
         pub offset: u32,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct attrlist {
         pub bitmapcount: c_ushort,
         pub reserved: u16,
@@ -1073,16 +1234,19 @@ s! {
         pub forkattr: attrgroup_t,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct attrreference_t {
         pub attr_dataoffset: i32,
         pub attr_length: u32,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct vol_capabilities_attr_t {
         pub capabilities: vol_capabilities_set_t,
         pub valid: vol_capabilities_set_t,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct attribute_set_t {
         pub commonattr: attrgroup_t,
         pub volattr: attrgroup_t,
@@ -1091,6 +1255,7 @@ s! {
         pub forkattr: attrgroup_t,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct vol_attributes_attr_t {
         pub validattr: attribute_set_t,
         pub nativeattr: attribute_set_t,
@@ -1139,6 +1304,8 @@ s! {
         pub tcpi_rxretransmitpackets: u64,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
+    #[cfg(target_os = "macos")]
     pub struct in6_addrlifetime {
         pub ia6t_expire: time_t,
         pub ia6t_preferred: time_t,
@@ -1146,6 +1313,8 @@ s! {
         pub ia6t_pltime: u32,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
+    #[cfg(target_os = "macos")]
     pub struct in6_ifstat {
         pub ifs6_in_receive: crate::u_quad_t,
         pub ifs6_in_hdrerr: crate::u_quad_t,
@@ -1174,6 +1343,8 @@ s! {
         pub ifs6_defrtr_expiry_cnt: crate::u_quad_t,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
+    #[cfg(target_os = "macos")]
     pub struct icmp6_ifstat {
         pub ifs6_in_msg: crate::u_quad_t,
         pub ifs6_in_error: crate::u_quad_t,
@@ -1212,11 +1383,14 @@ s! {
     }
 
     // mach/host_info.h
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct host_cpu_load_info {
         pub cpu_ticks: [crate::natural_t; CPU_STATE_MAX as usize],
     }
 
     // net/if_mib.h
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
+    #[cfg(target_os = "macos")]
     pub struct ifmibdata {
         /// Name of interface
         pub ifmd_name: [c_char; crate::IFNAMSIZ],
@@ -1236,6 +1410,8 @@ s! {
         pub ifmd_data: if_data64,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
+    #[cfg(target_os = "macos")]
     pub struct ifs_iso_8802_3 {
         pub dot3StatsAlignmentErrors: u32,
         pub dot3StatsFCSErrors: u32,
@@ -1256,17 +1432,23 @@ s! {
     }
 
     // kern_control.h
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
+    #[cfg(target_os = "macos")]
     pub struct ctl_info {
         pub ctl_id: u32,
+        #[custom_default([0; MAX_KCTL_NAME])]
         pub ctl_name: [c_char; MAX_KCTL_NAME],
     }
 
     // sys/proc_info.h
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
+    #[cfg(target_os = "macos")]
     pub struct proc_fdinfo {
         pub proc_fd: i32,
         pub proc_fdtype: u32,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     #[repr(packed(4))]
     pub struct kevent {
         pub ident: crate::uintptr_t,
@@ -1274,9 +1456,11 @@ s! {
         pub flags: u16,
         pub fflags: u32,
         pub data: intptr_t,
+        #[custom_default(ptr::null_mut())]
         pub udata: *mut c_void,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     #[repr(packed(4))]
     pub struct semid_ds {
         // Note the manpage shows different types than the system header.
@@ -1290,6 +1474,7 @@ s! {
         pub sem_pad3: [i32; 4],
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     #[repr(packed(4))]
     pub struct shmid_ds {
         pub shm_perm: ipc_perm,
@@ -1301,9 +1486,12 @@ s! {
         pub shm_dtime: crate::time_t, // FIXME(macos): 64-bit wrong align => wrong offset
         pub shm_ctime: crate::time_t, // FIXME(macos): 64-bit wrong align => wrong offset
         // FIXME: 64-bit wrong align => wrong offset:
+        #[custom_default(ptr::null_mut())]
         pub shm_internal: *mut c_void,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
+    #[cfg(target_os = "macos")]
     pub struct proc_threadinfo {
         pub pth_user_time: u64,
         pub pth_system_time: u64,
@@ -1315,9 +1503,11 @@ s! {
         pub pth_curpri: i32,
         pub pth_priority: i32,
         pub pth_maxpriority: i32,
+        #[custom_default([0; MAXTHREADNAMESIZE])]
         pub pth_name: [c_char; MAXTHREADNAMESIZE],
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct statfs {
         pub f_bsize: u32,
         pub f_iosize: i32,
@@ -1331,19 +1521,24 @@ s! {
         pub f_type: u32,
         pub f_flags: u32,
         pub f_fssubtype: u32,
+        #[custom_default([0; 16])]
         pub f_fstypename: [c_char; 16],
+        #[custom_default([0; 1024])]
         pub f_mntonname: [c_char; 1024],
+        #[custom_default([0; 1024])]
         pub f_mntfromname: [c_char; 1024],
         pub f_flags_ext: u32,
         pub f_reserved: [u32; 7],
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct dirent {
         pub d_ino: u64,
         pub d_seekoff: u64,
         pub d_reclen: u16,
         pub d_namlen: u16,
         pub d_type: u8,
+        #[custom_default([0; 1024])]
         pub d_name: [c_char; 1024],
     }
 
@@ -1352,18 +1547,37 @@ s! {
         pub ss_family: crate::sa_family_t,
         __ss_pad1: Padding<[u8; 6]>,
         __ss_align: i64,
+        #[custom_default(Padding::new([0; 112]))]
         __ss_pad2: Padding<[u8; 112]>,
     }
 
+    // netinet/in.h: RFC 3678 multicast group membership requests.
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
+    #[repr(packed(4))]
+    pub struct group_req {
+        pub gr_interface: u32,
+        pub gr_group: crate::sockaddr_storage,
+    }
+
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
+    #[repr(packed(4))]
+    pub struct group_source_req {
+        pub gsr_interface: u32,
+        pub gsr_group: crate::sockaddr_storage,
+        pub gsr_source: crate::sockaddr_storage,
+    }
+
     pub struct utmpx {
+        #[custom_default([0; _UTX_USERSIZE])]
         pub ut_user: [c_char; _UTX_USERSIZE],
         pub ut_id: [c_char; _UTX_IDSIZE],
         pub ut_line: [c_char; _UTX_LINESIZE],
         pub ut_pid: crate::pid_t,
         pub ut_type: c_short,
         pub ut_tv: crate::timeval,
+        #[custom_default([0; _UTX_HOSTSIZE])]
         pub ut_host: [c_char; _UTX_HOSTSIZE],
-        ut_pad: [u32; 16],
+        ut_pad: Padding<[u32; 16]>,
     }
 
     pub struct sigevent {
@@ -1371,13 +1585,16 @@ s! {
         pub sigev_signo: c_int,
         pub sigev_value: crate::sigval,
         __unused1: Padding<*mut c_void>, //actually a function pointer
+        #[custom_default(ptr::null_mut())]
         pub sigev_notify_attributes: *mut crate::pthread_attr_t,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct processor_cpu_load_info {
         pub cpu_ticks: [c_uint; CPU_STATE_MAX as usize],
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct processor_basic_info {
         pub cpu_type: cpu_type_t,
         pub cpu_subtype: cpu_subtype_t,
@@ -1386,11 +1603,13 @@ s! {
         pub is_master: crate::boolean_t,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct processor_set_basic_info {
         pub processor_count: c_int,
         pub default_policy: c_int,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct processor_set_load_info {
         pub task_count: c_int,
         pub thread_count: c_int,
@@ -1398,11 +1617,13 @@ s! {
         pub mach_factor: integer_t,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct time_value_t {
         pub seconds: integer_t,
         pub microseconds: integer_t,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct thread_basic_info {
         pub user_time: time_value_t,
         pub system_time: time_value_t,
@@ -1414,12 +1635,14 @@ s! {
         pub sleep_time: crate::integer_t,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct thread_identifier_info {
         pub thread_id: u64,
         pub thread_handle: u64,
         pub dispatch_qaddr: u64,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct thread_extended_info {
         pub pth_user_time: u64,
         pub pth_system_time: u64,
@@ -1431,9 +1654,11 @@ s! {
         pub pth_curpri: i32,
         pub pth_priority: i32,
         pub pth_maxpriority: i32,
+        #[custom_default([0; MAXTHREADNAMESIZE])]
         pub pth_name: [c_char; MAXTHREADNAMESIZE],
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     #[repr(packed(4))]
     pub struct if_data64 {
         pub ifi_type: c_uchar,
@@ -1466,6 +1691,7 @@ s! {
         pub ifi_lastchange: timeval32,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     #[repr(packed(4))]
     pub struct if_msghdr2 {
         pub ifm_msglen: c_ushort,
@@ -1481,6 +1707,7 @@ s! {
         pub ifm_data: if_data64,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     #[repr(packed(8))]
     pub struct vm_statistics64 {
         pub free_count: natural_t,
@@ -1507,8 +1734,42 @@ s! {
         pub external_page_count: natural_t,
         pub internal_page_count: natural_t,
         pub total_uncompressed_pages_in_compressor: u64,
+        pub swapped_count: u64,
+        pub total_tag_storage_pages: u64,
+        pub nontag_pageable_tag_storage_pages: u64,
+        pub nontag_wired_tag_storage_pages: u64,
+        pub free_tag_storage_pages: u64,
+        pub tag_storing_tag_storage_pages: u64,
+        pub total_tagged_pages: u64,
+        pub resident_tagged_pages: u64,
+        pub compressed_tagged_pages: u64,
+        pub tagged_compressions: u64,
+        pub tagged_decompressions: u64,
+        pub compressed_tag_storage_bytes: u64,
+        pub speculative_pages_created: u64,
+        pub speculative_pages_activated: u64,
+        pub swap_count: u64,
+        pub empty_tag_storing_tag_storage_pages: u64,
+        pub executable_count: u64,
+        pub shared_region_count: u64,
+        pub boot_stolen_count: u64,
+        pub secluded_count: u64,
+        pub active_internal_count: u64,
+        pub inactive_internal_count: u64,
+        pub active_external_count: u64,
+        pub inactive_external_count: u64,
+        pub purgeable_pageable_count: u64,
+        pub purgeable_wired_count: u64,
+        pub background_internal_count: u64,
+        pub background_external_count: u64,
+        pub donated_count: u64,
+        pub realtime_count: u64,
+        pub max_mem_count: u64,
+        pub phantom_ghosts_found: u64,
+        pub phantom_ghosts_added: u64,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     #[repr(packed(4))]
     pub struct mach_task_basic_info {
         pub virtual_size: mach_vm_size_t,
@@ -1520,6 +1781,7 @@ s! {
         pub suspend_count: integer_t,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     #[repr(packed(4))]
     pub struct log2phys {
         pub l2p_flags: c_uint,
@@ -1531,6 +1793,7 @@ s! {
         _os_unfair_lock_opaque: u32,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     #[repr(packed(1))]
     pub struct sockaddr_vm {
         pub svm_len: c_uchar,
@@ -1540,12 +1803,14 @@ s! {
         pub svm_cid: c_uint,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct ifdevmtu {
         pub ifdm_current: c_int,
         pub ifdm_min: c_int,
         pub ifdm_max: c_int,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     #[repr(packed(4))]
     pub struct ifkpi {
         pub ifk_module_id: c_uint,
@@ -1553,28 +1818,41 @@ s! {
         pub ifk_data: __c_anonymous_ifk_data,
     }
 
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     pub struct ifreq {
         pub ifr_name: [c_char; crate::IFNAMSIZ],
         pub ifr_ifru: __c_anonymous_ifr_ifru,
     }
 
+    pub struct ifaliasreq {
+        pub ifra_name: [c_char; crate::IFNAMSIZ],
+        pub ifra_addr: crate::sockaddr,
+        pub ifra_broadaddr: crate::sockaddr,
+        pub ifra_mask: crate::sockaddr,
+    }
+
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
+    #[cfg(target_os = "macos")]
     pub struct in6_ifreq {
         pub ifr_name: [c_char; crate::IFNAMSIZ],
         pub ifr_ifru: __c_anonymous_ifr_ifru6,
     }
 }
 
-s_no_extra_traits! {
+s_no_extra_traits2! {
+    #[exhaustive] // FIXME(exhaustive): review for 1.0
     #[repr(packed(4))]
     pub struct ifconf {
         pub ifc_len: c_int,
         pub ifc_ifcu: __c_anonymous_ifc_ifcu,
     }
+    #[unsafe(union_default_via_zeroed)]
     pub union __c_anonymous_ifk_data {
         pub ifk_ptr: *mut c_void,
         pub ifk_value: c_int,
     }
 
+    #[unsafe(union_default_via_zeroed)]
     pub union __c_anonymous_ifr_ifru {
         pub ifru_addr: crate::sockaddr,
         pub ifru_dstaddr: crate::sockaddr,
@@ -1594,23 +1872,31 @@ s_no_extra_traits! {
         pub ifru_functional_type: u32,
     }
 
+    #[unsafe(union_default_via_zeroed)]
     pub union __c_anonymous_ifc_ifcu {
         pub ifcu_buf: *mut c_char,
         pub ifcu_req: *mut ifreq,
     }
+}
 
-    pub union __c_anonymous_ifr_ifru6 {
-        pub ifru_addr: crate::sockaddr_in6,
-        pub ifru_dstaddr: crate::sockaddr_in6,
-        pub ifru_flags: c_int,
-        pub ifru_flags6: c_int,
-        pub ifru_metrics: c_int,
-        pub ifru_intval: c_int,
-        pub ifru_data: *mut c_char,
-        pub ifru_lifetime: in6_addrlifetime,
-        pub ifru_stat: in6_ifstat,
-        pub ifru_icmp6stat: icmp6_ifstat,
-        pub ifru_scope_id: [u32; SCOPE6_ID_MAX],
+cfg_if! {
+    if #[cfg(target_os = "macos")] {
+        s_no_extra_traits2! {
+            #[unsafe(union_default_via_zeroed)]
+            pub union __c_anonymous_ifr_ifru6 {
+                pub ifru_addr: crate::sockaddr_in6,
+                pub ifru_dstaddr: crate::sockaddr_in6,
+                pub ifru_flags: c_int,
+                pub ifru_flags6: c_int,
+                pub ifru_metrics: c_int,
+                pub ifru_intval: c_int,
+                pub ifru_data: *mut c_char,
+                pub ifru_lifetime: in6_addrlifetime,
+                pub ifru_stat: in6_ifstat,
+                pub ifru_icmp6stat: icmp6_ifstat,
+                pub ifru_scope_id: [u32; SCOPE6_ID_MAX],
+            }
+        }
     }
 }
 
@@ -1648,7 +1934,7 @@ impl siginfo_t {
     }
 }
 
-s_no_extra_traits! {
+s_no_extra_traits2! {
     pub union semun {
         pub val: c_int,
         pub buf: *mut semid_ds,
@@ -1778,6 +2064,7 @@ cfg_if! {
             }
         }
 
+        #[cfg(target_os = "macos")]
         impl PartialEq for __c_anonymous_ifr_ifru6 {
             fn eq(&self, other: &__c_anonymous_ifr_ifru6) -> bool {
                 unsafe {
@@ -1797,8 +2084,10 @@ cfg_if! {
             }
         }
 
+        #[cfg(target_os = "macos")]
         impl Eq for __c_anonymous_ifr_ifru6 {}
 
+        #[cfg(target_os = "macos")]
         impl hash::Hash for __c_anonymous_ifr_ifru6 {
             fn hash<H: hash::Hasher>(&self, state: &mut H) {
                 unsafe {
@@ -1896,6 +2185,41 @@ pub const ABMON_9: crate::nl_item = 41;
 pub const ABMON_10: crate::nl_item = 42;
 pub const ABMON_11: crate::nl_item = 43;
 pub const ABMON_12: crate::nl_item = 44;
+
+pub const REG_BASIC: c_int = 0o0000;
+pub const REG_EXTENDED: c_int = 0o0001;
+pub const REG_ICASE: c_int = 0o0002;
+pub const REG_NOSUB: c_int = 0o0004;
+pub const REG_NEWLINE: c_int = 0o0010;
+pub const REG_NOSPEC: c_int = 0o0020;
+pub const REG_PEND: c_int = 0o0040;
+pub const REG_DUMP: c_int = 0o0200;
+
+pub const REG_NOMATCH: c_int = 1;
+pub const REG_BADPAT: c_int = 2;
+pub const REG_ECOLLATE: c_int = 3;
+pub const REG_ECTYPE: c_int = 4;
+pub const REG_EESCAPE: c_int = 5;
+pub const REG_ESUBREG: c_int = 6;
+pub const REG_EBRACK: c_int = 7;
+pub const REG_EPAREN: c_int = 8;
+pub const REG_EBRACE: c_int = 9;
+pub const REG_BADBR: c_int = 10;
+pub const REG_ERANGE: c_int = 11;
+pub const REG_ESPACE: c_int = 12;
+pub const REG_BADRPT: c_int = 13;
+pub const REG_EMPTY: c_int = 14;
+pub const REG_ASSERT: c_int = 15;
+pub const REG_INVARG: c_int = 16;
+pub const REG_ATOI: c_int = 255;
+pub const REG_ITOA: c_int = 0o0400;
+
+pub const REG_NOTBOL: c_int = 0o00001;
+pub const REG_NOTEOL: c_int = 0o00002;
+pub const REG_STARTEND: c_int = 0o00004;
+pub const REG_TRACE: c_int = 0o00400;
+pub const REG_LARGE: c_int = 0o01000;
+pub const REG_BACKR: c_int = 0o02000;
 
 pub const CLOCK_REALTIME: crate::clockid_t = 0;
 pub const CLOCK_MONOTONIC_RAW: crate::clockid_t = 4;
@@ -2030,25 +2354,30 @@ pub const PROT_READ: c_int = 1;
 pub const PROT_WRITE: c_int = 2;
 pub const PROT_EXEC: c_int = 4;
 
-pub const PT_TRACE_ME: c_int = 0;
-pub const PT_READ_I: c_int = 1;
-pub const PT_READ_D: c_int = 2;
-pub const PT_READ_U: c_int = 3;
-pub const PT_WRITE_I: c_int = 4;
-pub const PT_WRITE_D: c_int = 5;
-pub const PT_WRITE_U: c_int = 6;
-pub const PT_CONTINUE: c_int = 7;
-pub const PT_KILL: c_int = 8;
-pub const PT_STEP: c_int = 9;
-pub const PT_ATTACH: c_int = 10;
-pub const PT_DETACH: c_int = 11;
-pub const PT_SIGEXC: c_int = 12;
-pub const PT_THUPDATE: c_int = 13;
-pub const PT_ATTACHEXC: c_int = 14;
+cfg_if! {
+    if #[cfg(target_os = "macos")] {
+        // ptrace.h
+        pub const PT_TRACE_ME: c_int = 0;
+        pub const PT_READ_I: c_int = 1;
+        pub const PT_READ_D: c_int = 2;
+        pub const PT_READ_U: c_int = 3;
+        pub const PT_WRITE_I: c_int = 4;
+        pub const PT_WRITE_D: c_int = 5;
+        pub const PT_WRITE_U: c_int = 6;
+        pub const PT_CONTINUE: c_int = 7;
+        pub const PT_KILL: c_int = 8;
+        pub const PT_STEP: c_int = 9;
+        pub const PT_ATTACH: c_int = 10;
+        pub const PT_DETACH: c_int = 11;
+        pub const PT_SIGEXC: c_int = 12;
+        pub const PT_THUPDATE: c_int = 13;
+        pub const PT_ATTACHEXC: c_int = 14;
 
-pub const PT_FORCEQUOTA: c_int = 30;
-pub const PT_DENY_ATTACH: c_int = 31;
-pub const PT_FIRSTMACH: c_int = 32;
+        pub const PT_FORCEQUOTA: c_int = 30;
+        pub const PT_DENY_ATTACH: c_int = 31;
+        pub const PT_FIRSTMACH: c_int = 32;
+    }
+}
 
 pub const MAP_FILE: c_int = 0x0000;
 pub const MAP_SHARED: c_int = 0x0001;
@@ -2061,6 +2390,9 @@ pub const CPU_STATE_USER: c_int = 0;
 pub const CPU_STATE_SYSTEM: c_int = 1;
 pub const CPU_STATE_IDLE: c_int = 2;
 pub const CPU_STATE_NICE: c_int = 3;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const CPU_STATE_MAX: c_int = 4;
 
 pub const PROCESSOR_BASIC_INFO: c_int = 1;
@@ -2082,9 +2414,9 @@ deprecated_mach! {
     pub const VM_FLAGS_SUPERPAGE_MASK: c_int = 0x70000;
     pub const VM_FLAGS_RETURN_DATA_ADDR: c_int = 0x100000;
     pub const VM_FLAGS_RETURN_4K_DATA_ADDR: c_int = 0x800000;
-    pub const VM_FLAGS_ALIAS_MASK: c_int = 0xFF000000;
-    pub const VM_FLAGS_USER_ALLOCATE: c_int = 0xff07401f;
-    pub const VM_FLAGS_USER_MAP: c_int = 0xff97401f;
+    pub const VM_FLAGS_ALIAS_MASK: c_int = u32_cast_int(0xFF000000);
+    pub const VM_FLAGS_USER_ALLOCATE: c_int = u32_cast_int(0xff07401f);
+    pub const VM_FLAGS_USER_MAP: c_int = u32_cast_int(0xff97401f);
     pub const VM_FLAGS_USER_REMAP: c_int = VM_FLAGS_FIXED
         | VM_FLAGS_ANYWHERE
         | VM_FLAGS_RANDOM_ADDR
@@ -2287,7 +2619,11 @@ pub const ENOPOLICY: c_int = 103;
 pub const ENOTRECOVERABLE: c_int = 104;
 pub const EOWNERDEAD: c_int = 105;
 pub const EQFULL: c_int = 106;
-pub const ELAST: c_int = 106;
+pub const ENOTCAPABLE: c_int = 107;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.and use.
+pub const ELAST: c_int = 107;
 
 pub const EAI_AGAIN: c_int = 2;
 pub const EAI_BADFLAGS: c_int = 3;
@@ -2319,8 +2655,10 @@ pub const F_THAW_FS: c_int = 54;
 pub const F_GLOBAL_NOCACHE: c_int = 55;
 pub const F_NODIRECT: c_int = 62;
 pub const F_LOG2PHYS_EXT: c_int = 65;
+pub const F_SETNOSIGPIPE: c_int = 73;
+pub const F_GETNOSIGPIPE: c_int = 74;
 pub const F_BARRIERFSYNC: c_int = 85;
-// See https://github.com/apple/darwin-xnu/blob/main/bsd/sys/fcntl.h
+// See https://github.com/apple-oss-distributions/xnu/blob/main/bsd/sys/fcntl.h
 pub const F_OFD_SETLK: c_int = 90; /* Acquire or release open file description lock */
 pub const F_OFD_SETLKW: c_int = 91; /* (as F_OFD_SETLK but blocking if conflicting lock) */
 pub const F_OFD_GETLK: c_int = 92; /* Examine OFD lock */
@@ -2342,80 +2680,6 @@ pub const AT_EACCESS: c_int = 0x0010;
 pub const AT_SYMLINK_NOFOLLOW: c_int = 0x0020;
 pub const AT_SYMLINK_FOLLOW: c_int = 0x0040;
 pub const AT_REMOVEDIR: c_int = 0x0080;
-
-pub const TIOCMODG: c_ulong = 0x40047403;
-pub const TIOCMODS: c_ulong = 0x80047404;
-pub const TIOCM_LE: c_int = 0x1;
-pub const TIOCM_DTR: c_int = 0x2;
-pub const TIOCM_RTS: c_int = 0x4;
-pub const TIOCM_ST: c_int = 0x8;
-pub const TIOCM_SR: c_int = 0x10;
-pub const TIOCM_CTS: c_int = 0x20;
-pub const TIOCM_CAR: c_int = 0x40;
-pub const TIOCM_CD: c_int = 0x40;
-pub const TIOCM_RNG: c_int = 0x80;
-pub const TIOCM_RI: c_int = 0x80;
-pub const TIOCM_DSR: c_int = 0x100;
-pub const TIOCEXCL: c_int = 0x2000740d;
-pub const TIOCNXCL: c_int = 0x2000740e;
-pub const TIOCFLUSH: c_ulong = 0x80047410;
-pub const TIOCGETD: c_ulong = 0x4004741a;
-pub const TIOCSETD: c_ulong = 0x8004741b;
-pub const TIOCIXON: c_uint = 0x20007481;
-pub const TIOCIXOFF: c_uint = 0x20007480;
-pub const TIOCSDTR: c_uint = 0x20007479;
-pub const TIOCCDTR: c_uint = 0x20007478;
-pub const TIOCGPGRP: c_ulong = 0x40047477;
-pub const TIOCSPGRP: c_ulong = 0x80047476;
-pub const TIOCOUTQ: c_ulong = 0x40047473;
-pub const TIOCSTI: c_ulong = 0x80017472;
-pub const TIOCNOTTY: c_uint = 0x20007471;
-pub const TIOCPKT: c_ulong = 0x80047470;
-pub const TIOCPKT_DATA: c_int = 0x0;
-pub const TIOCPKT_FLUSHREAD: c_int = 0x1;
-pub const TIOCPKT_FLUSHWRITE: c_int = 0x2;
-pub const TIOCPKT_STOP: c_int = 0x4;
-pub const TIOCPKT_START: c_int = 0x8;
-pub const TIOCPKT_NOSTOP: c_int = 0x10;
-pub const TIOCPKT_DOSTOP: c_int = 0x20;
-pub const TIOCPKT_IOCTL: c_int = 0x40;
-pub const TIOCSTOP: c_uint = 0x2000746f;
-pub const TIOCSTART: c_uint = 0x2000746e;
-pub const TIOCMSET: c_ulong = 0x8004746d;
-pub const TIOCMBIS: c_ulong = 0x8004746c;
-pub const TIOCMBIC: c_ulong = 0x8004746b;
-pub const TIOCMGET: c_ulong = 0x4004746a;
-#[deprecated(since = "0.2.178", note = "Removed in MacOSX 12.0.1")]
-pub const TIOCREMOTE: c_ulong = 0x80047469;
-pub const TIOCGWINSZ: c_ulong = 0x40087468;
-pub const TIOCSWINSZ: c_ulong = 0x80087467;
-pub const TIOCUCNTL: c_ulong = 0x80047466;
-pub const TIOCSTAT: c_uint = 0x20007465;
-pub const TIOCSCONS: c_uint = 0x20007463;
-pub const TIOCCONS: c_ulong = 0x80047462;
-pub const TIOCSCTTY: c_uint = 0x20007461;
-pub const TIOCEXT: c_ulong = 0x80047460;
-pub const TIOCSIG: c_uint = 0x2000745f;
-pub const TIOCDRAIN: c_uint = 0x2000745e;
-pub const TIOCMSDTRWAIT: c_ulong = 0x8004745b;
-pub const TIOCMGDTRWAIT: c_ulong = 0x4004745a;
-pub const TIOCSDRAINWAIT: c_ulong = 0x80047457;
-pub const TIOCGDRAINWAIT: c_ulong = 0x40047456;
-pub const TIOCDSIMICROCODE: c_uint = 0x20007455;
-pub const TIOCPTYGRANT: c_uint = 0x20007454;
-pub const TIOCPTYGNAME: c_uint = 0x40807453;
-pub const TIOCPTYUNLK: c_uint = 0x20007452;
-pub const TIOCGETA: c_ulong = 0x40487413;
-pub const TIOCSETA: c_ulong = 0x80487414;
-pub const TIOCSETAW: c_ulong = 0x80487415;
-pub const TIOCSETAF: c_ulong = 0x80487416;
-
-pub const BIOCGRSIG: c_ulong = 0x40044272;
-pub const BIOCSRSIG: c_ulong = 0x80044273;
-pub const BIOCSDLT: c_ulong = 0x80044278;
-pub const BIOCGSEESENT: c_ulong = 0x40044276;
-pub const BIOCSSEESENT: c_ulong = 0x80044277;
-pub const BIOCGDLTLIST: c_ulong = 0xc00c4279;
 
 pub const FIODTYPE: c_ulong = 0x4004667a;
 
@@ -2529,6 +2793,7 @@ pub const MADV_ZERO_WIRED_PAGES: c_int = 6;
 pub const MADV_FREE_REUSABLE: c_int = 7;
 pub const MADV_FREE_REUSE: c_int = 8;
 pub const MADV_CAN_REUSE: c_int = 9;
+pub const MADV_ZERO: c_int = 11;
 
 pub const MINCORE_INCORE: c_int = 0x1;
 pub const MINCORE_REFERENCED: c_int = 0x2;
@@ -2536,7 +2801,11 @@ pub const MINCORE_MODIFIED: c_int = 0x4;
 pub const MINCORE_REFERENCED_OTHER: c_int = 0x8;
 pub const MINCORE_MODIFIED_OTHER: c_int = 0x10;
 
-pub const CTLIOCGINFO: c_ulong = 0xc0644e03;
+cfg_if! {
+    if #[cfg(target_os = "macos")] {
+        pub const CTLIOCGINFO: c_ulong = 0xc0644e03;
+    }
+}
 
 //
 // sys/netinet/in.h
@@ -2755,6 +3024,14 @@ pub const IPPROTO_MAX: c_int = 256;
 /// last return value of *_input(), meaning "all job for this pkt is done".
 pub const IPPROTO_DONE: c_int = 257;
 
+// RFC 3678 protocol-independent multicast
+pub const MCAST_JOIN_GROUP: c_int = 80;
+pub const MCAST_LEAVE_GROUP: c_int = 81;
+pub const MCAST_JOIN_SOURCE_GROUP: c_int = 82;
+pub const MCAST_LEAVE_SOURCE_GROUP: c_int = 83;
+pub const MCAST_BLOCK_SOURCE: c_int = 84;
+pub const MCAST_UNBLOCK_SOURCE: c_int = 85;
+
 pub const AF_UNSPEC: c_int = 0;
 pub const AF_LOCAL: c_int = 1;
 pub const AF_UNIX: c_int = AF_LOCAL;
@@ -2796,10 +3073,15 @@ pub const pseudo_AF_HDRCMPLT: c_int = 35;
 pub const AF_IEEE80211: c_int = 37;
 pub const AF_UTUN: c_int = 38;
 pub const AF_VSOCK: c_int = 40;
-pub const AF_SYS_CONTROL: c_int = 2;
 
-pub const SYSPROTO_EVENT: c_int = 1;
-pub const SYSPROTO_CONTROL: c_int = 2;
+cfg_if! {
+    if #[cfg(target_os = "macos")] {
+        // sys/sys_domain.h
+        pub const AF_SYS_CONTROL: c_int = 2;
+        pub const SYSPROTO_EVENT: c_int = 1;
+        pub const SYSPROTO_CONTROL: c_int = 2;
+    }
+}
 
 pub const PF_UNSPEC: c_int = AF_UNSPEC;
 pub const PF_LOCAL: c_int = AF_LOCAL;
@@ -3123,6 +3405,7 @@ pub const _CS_DARWIN_USER_CACHE_DIR: c_int = 65538;
 
 pub const OS_UNFAIR_LOCK_INIT: os_unfair_lock = os_unfair_lock {
     _os_unfair_lock_opaque: 0,
+    __non_exhaustive: (),
 };
 
 pub const OS_LOG_TYPE_DEFAULT: crate::os_log_type_t = 0x00;
@@ -3153,6 +3436,7 @@ pub const EVFILT_MACHPORT: i16 = -8;
 pub const EVFILT_FS: i16 = -9;
 pub const EVFILT_USER: i16 = -10;
 pub const EVFILT_VM: i16 = -12;
+pub const EVFILT_EXCEPT: i16 = -15;
 
 pub const EV_ADD: u16 = 0x1;
 pub const EV_DELETE: u16 = 0x2;
@@ -3162,6 +3446,9 @@ pub const EV_ONESHOT: u16 = 0x10;
 pub const EV_CLEAR: u16 = 0x20;
 pub const EV_RECEIPT: u16 = 0x40;
 pub const EV_DISPATCH: u16 = 0x80;
+pub const EV_UDATA_SPECIFIC: u16 = 0x0100;
+pub const EV_DISPATCH2: u16 = EV_DISPATCH | EV_UDATA_SPECIFIC;
+pub const EV_VANISHED: u16 = 0x0200;
 pub const EV_FLAG0: u16 = 0x1000;
 pub const EV_POLL: u16 = 0x1000;
 pub const EV_FLAG1: u16 = 0x2000;
@@ -3169,6 +3456,10 @@ pub const EV_OOBAND: u16 = 0x2000;
 pub const EV_ERROR: u16 = 0x4000;
 pub const EV_EOF: u16 = 0x8000;
 pub const EV_SYSFLAGS: u16 = 0xf000;
+
+pub const KEVENT_FLAG_NONE: c_uint = 0x000000;
+pub const KEVENT_FLAG_IMMEDIATE: c_uint = 0x000001;
+pub const KEVENT_FLAG_ERROR_EVENTS: c_uint = 0x000002;
 
 pub const NOTE_TRIGGER: u32 = 0x01000000;
 pub const NOTE_FFNOP: u32 = 0x00000000;
@@ -3178,6 +3469,7 @@ pub const NOTE_FFCOPY: u32 = 0xc0000000;
 pub const NOTE_FFCTRLMASK: u32 = 0xc0000000;
 pub const NOTE_FFLAGSMASK: u32 = 0x00ffffff;
 pub const NOTE_LOWAT: u32 = 0x00000001;
+pub const NOTE_OOB: u32 = 0x00000002;
 pub const NOTE_DELETE: u32 = 0x00000001;
 pub const NOTE_WRITE: u32 = 0x00000002;
 pub const NOTE_EXTEND: u32 = 0x00000004;
@@ -3186,20 +3478,17 @@ pub const NOTE_LINK: u32 = 0x00000010;
 pub const NOTE_RENAME: u32 = 0x00000020;
 pub const NOTE_REVOKE: u32 = 0x00000040;
 pub const NOTE_NONE: u32 = 0x00000080;
+pub const NOTE_FUNLOCK: u32 = 0x00000100;
+pub const NOTE_LEASE_DOWNGRADE: u32 = 0x00000200;
+pub const NOTE_LEASE_RELEASE: u32 = 0x00000400;
 pub const NOTE_EXIT: u32 = 0x80000000;
 pub const NOTE_FORK: u32 = 0x40000000;
 pub const NOTE_EXEC: u32 = 0x20000000;
-#[doc(hidden)]
-#[deprecated(since = "0.2.49", note = "Deprecated since MacOSX 10.9")]
-pub const NOTE_REAP: u32 = 0x10000000;
 pub const NOTE_SIGNAL: u32 = 0x08000000;
 pub const NOTE_EXITSTATUS: u32 = 0x04000000;
 pub const NOTE_EXIT_DETAIL: u32 = 0x02000000;
 pub const NOTE_PDATAMASK: u32 = 0x000fffff;
 pub const NOTE_PCTRLMASK: u32 = 0xfff00000;
-#[doc(hidden)]
-#[deprecated(since = "0.2.49", note = "Deprecated since MacOSX 10.9")]
-pub const NOTE_EXIT_REPARENTED: u32 = 0x00080000;
 pub const NOTE_EXIT_DETAIL_MASK: u32 = 0x00070000;
 pub const NOTE_EXIT_DECRYPTFAIL: u32 = 0x00010000;
 pub const NOTE_EXIT_MEMORY: u32 = 0x00020000;
@@ -3290,7 +3579,7 @@ pub const CTLTYPE_STRING: c_int = 3;
 pub const CTLTYPE_QUAD: c_int = 4;
 pub const CTLTYPE_OPAQUE: c_int = 5;
 pub const CTLTYPE_STRUCT: c_int = CTLTYPE_OPAQUE;
-pub const CTLFLAG_RD: c_int = 0x80000000;
+pub const CTLFLAG_RD: c_int = u32_cast_int(0x80000000);
 pub const CTLFLAG_WR: c_int = 0x40000000;
 pub const CTLFLAG_RW: c_int = CTLFLAG_RD | CTLFLAG_WR;
 pub const CTLFLAG_NOLOCK: c_int = 0x20000000;
@@ -3407,12 +3696,6 @@ pub const KERN_KDSETRTCDEC: c_int = 15;
 pub const KERN_KDGETENTROPY: c_int = 16;
 pub const KERN_KDWRITETR: c_int = 17;
 pub const KERN_KDWRITEMAP: c_int = 18;
-#[doc(hidden)]
-#[deprecated(since = "0.2.49", note = "Removed in MacOSX 10.12")]
-pub const KERN_KDENABLE_BG_TRACE: c_int = 19;
-#[doc(hidden)]
-#[deprecated(since = "0.2.49", note = "Removed in MacOSX 10.12")]
-pub const KERN_KDDISABLE_BG_TRACE: c_int = 20;
 pub const KERN_KDREADCURTHRMAP: c_int = 21;
 pub const KERN_KDSET_TYPEFILTER: c_int = 22;
 pub const KERN_KDBUFWAIT: c_int = 23;
@@ -3497,6 +3780,10 @@ pub const VM_PROT_NONE: crate::vm_prot_t = 0x00;
 pub const VM_PROT_READ: crate::vm_prot_t = 0x01;
 pub const VM_PROT_WRITE: crate::vm_prot_t = 0x02;
 pub const VM_PROT_EXECUTE: crate::vm_prot_t = 0x04;
+pub const VM_INHERIT_SHARE: c_int = 0;
+pub const VM_INHERIT_COPY: c_int = 1;
+pub const VM_INHERIT_NONE: c_int = 2;
+pub const VM_INHERIT_DONATE_COPY: c_int = 3;
 pub const MEMORY_OBJECT_NULL: crate::memory_object_t = 0;
 pub const HW_MACHINE: c_int = 1;
 pub const HW_MODEL: c_int = 2;
@@ -3527,14 +3814,39 @@ pub const HW_TARGET: c_int = 26;
 pub const HW_PRODUCT: c_int = 27;
 pub const HW_MAXID: c_int = 28;
 pub const USER_CS_PATH: c_int = 1;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const USER_BC_BASE_MAX: c_int = 2;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const USER_BC_DIM_MAX: c_int = 3;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const USER_BC_SCALE_MAX: c_int = 4;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const USER_BC_STRING_MAX: c_int = 5;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const USER_COLL_WEIGHTS_MAX: c_int = 6;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const USER_EXPR_NEST_MAX: c_int = 7;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const USER_LINE_MAX: c_int = 8;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const USER_RE_DUP_MAX: c_int = 9;
+
 pub const USER_POSIX2_VERSION: c_int = 10;
 pub const USER_POSIX2_C_BIND: c_int = 11;
 pub const USER_POSIX2_C_DEV: c_int = 12;
@@ -3578,11 +3890,7 @@ pub const SIGEV_THREAD: c_int = 3;
 pub const AIO_CANCELED: c_int = 2;
 pub const AIO_NOTCANCELED: c_int = 4;
 pub const AIO_ALLDONE: c_int = 1;
-#[deprecated(
-    since = "0.2.64",
-    note = "Can vary at runtime.  Use sysconf(3) instead"
-)]
-pub const AIO_LISTIO_MAX: c_int = 16;
+pub const AIO_LISTIO_MAX: c_int = 32;
 pub const LIO_NOP: c_int = 0;
 pub const LIO_WRITE: c_int = 2;
 pub const LIO_READ: c_int = 1;
@@ -3609,82 +3917,97 @@ pub const XATTR_NODEFAULT: c_int = 0x0010;
 pub const XATTR_SHOWCOMPRESSION: c_int = 0x0020;
 
 pub const NET_RT_IFLIST2: c_int = 0x0006;
+pub const NET_RT_DUMP2: c_int = 0x0007;
 
-// net/route.h
-pub const RTF_DELCLONE: c_int = 0x80;
-pub const RTF_CLONING: c_int = 0x100;
-pub const RTF_XRESOLVE: c_int = 0x200;
-pub const RTF_LLINFO: c_int = 0x400;
-pub const RTF_NOIFREF: c_int = 0x2000;
-pub const RTF_PRCLONING: c_int = 0x10000;
-pub const RTF_WASCLONED: c_int = 0x20000;
-pub const RTF_PROTO3: c_int = 0x40000;
-pub const RTF_PINNED: c_int = 0x100000;
-pub const RTF_LOCAL: c_int = 0x200000;
-pub const RTF_BROADCAST: c_int = 0x400000;
-pub const RTF_MULTICAST: c_int = 0x800000;
-pub const RTF_IFSCOPE: c_int = 0x1000000;
-pub const RTF_CONDEMNED: c_int = 0x2000000;
-pub const RTF_IFREF: c_int = 0x4000000;
-pub const RTF_PROXY: c_int = 0x8000000;
-pub const RTF_ROUTER: c_int = 0x10000000;
-pub const RTF_DEAD: c_int = 0x20000000;
-pub const RTF_GLOBAL: c_int = 0x40000000;
+cfg_if! {
+    if #[cfg(target_os = "macos")] {
+        // net/route.h
+        pub const RTF_DELCLONE: c_int = 0x80;
+        pub const RTF_CLONING: c_int = 0x100;
+        pub const RTF_XRESOLVE: c_int = 0x200;
+        pub const RTF_LLINFO: c_int = 0x400;
+        pub const RTF_NOIFREF: c_int = 0x2000;
+        pub const RTF_PRCLONING: c_int = 0x10000;
+        pub const RTF_WASCLONED: c_int = 0x20000;
+        pub const RTF_PROTO3: c_int = 0x40000;
+        pub const RTF_PINNED: c_int = 0x100000;
+        pub const RTF_LOCAL: c_int = 0x200000;
+        pub const RTF_BROADCAST: c_int = 0x400000;
+        pub const RTF_MULTICAST: c_int = 0x800000;
+        pub const RTF_IFSCOPE: c_int = 0x1000000;
+        pub const RTF_CONDEMNED: c_int = 0x2000000;
+        pub const RTF_IFREF: c_int = 0x4000000;
+        pub const RTF_PROXY: c_int = 0x8000000;
+        pub const RTF_ROUTER: c_int = 0x10000000;
+        pub const RTF_DEAD: c_int = 0x20000000;
+        pub const RTF_GLOBAL: c_int = 0x40000000;
 
-pub const RTM_VERSION: c_int = 5;
+        pub const RTM_VERSION: c_int = 5;
 
-// Message types
-pub const RTM_LOCK: c_int = 0x8;
-pub const RTM_OLDADD: c_int = 0x9;
-pub const RTM_OLDDEL: c_int = 0xa;
-pub const RTM_RESOLVE: c_int = 0xb;
-pub const RTM_NEWADDR: c_int = 0xc;
-pub const RTM_DELADDR: c_int = 0xd;
-pub const RTM_IFINFO: c_int = 0xe;
-pub const RTM_NEWMADDR: c_int = 0xf;
-pub const RTM_DELMADDR: c_int = 0x10;
-pub const RTM_IFINFO2: c_int = 0x12;
-pub const RTM_NEWMADDR2: c_int = 0x13;
-pub const RTM_GET2: c_int = 0x14;
+        // Message types
+        pub const RTM_LOCK: c_int = 0x8;
+        pub const RTM_OLDADD: c_int = 0x9;
+        pub const RTM_OLDDEL: c_int = 0xa;
+        pub const RTM_RESOLVE: c_int = 0xb;
+        pub const RTM_NEWADDR: c_int = 0xc;
+        pub const RTM_DELADDR: c_int = 0xd;
+        pub const RTM_IFINFO: c_int = 0xe;
+        pub const RTM_NEWMADDR: c_int = 0xf;
+        pub const RTM_DELMADDR: c_int = 0x10;
+        pub const RTM_IFINFO2: c_int = 0x12;
+        pub const RTM_NEWMADDR2: c_int = 0x13;
+        pub const RTM_GET2: c_int = 0x14;
 
-// Bitmask values for rtm_inits and rmx_locks.
-pub const RTV_MTU: c_int = 0x1;
-pub const RTV_HOPCOUNT: c_int = 0x2;
-pub const RTV_EXPIRE: c_int = 0x4;
-pub const RTV_RPIPE: c_int = 0x8;
-pub const RTV_SPIPE: c_int = 0x10;
-pub const RTV_SSTHRESH: c_int = 0x20;
-pub const RTV_RTT: c_int = 0x40;
-pub const RTV_RTTVAR: c_int = 0x80;
+        // Bitmask values for rtm_inits and rmx_locks.
+        pub const RTV_MTU: c_int = 0x1;
+        pub const RTV_HOPCOUNT: c_int = 0x2;
+        pub const RTV_EXPIRE: c_int = 0x4;
+        pub const RTV_RPIPE: c_int = 0x8;
+        pub const RTV_SPIPE: c_int = 0x10;
+        pub const RTV_SSTHRESH: c_int = 0x20;
+        pub const RTV_RTT: c_int = 0x40;
+        pub const RTV_RTTVAR: c_int = 0x80;
 
-pub const RTAX_MAX: c_int = 8;
+        /// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+        /// for details.
+        pub const RTAX_MAX: c_int = 8;
+    }
+}
 
 pub const KERN_PROCARGS2: c_int = 49;
 
-pub const PROC_PIDTASKALLINFO: c_int = 2;
-pub const PROC_PIDTBSDINFO: c_int = 3;
-pub const PROC_PIDTASKINFO: c_int = 4;
-pub const PROC_PIDTHREADINFO: c_int = 5;
-pub const PROC_PIDVNODEPATHINFO: c_int = 9;
-pub const PROC_PIDPATHINFO_MAXSIZE: c_int = 4096;
+cfg_if! {
+    if #[cfg(target_os = "macos")] {
+        // sys/proc_info.h
+        pub const PROC_PIDTASKALLINFO: c_int = 2;
+        pub const PROC_PIDTBSDINFO: c_int = 3;
+        pub const PROC_PIDTASKINFO: c_int = 4;
+        pub const PROC_PIDTHREADINFO: c_int = 5;
+        pub const PROC_PIDVNODEPATHINFO: c_int = 9;
+        pub const PROC_PIDT_SHORTBSDINFO: c_int = 13;
+        pub const PROC_PIDPATHINFO_MAXSIZE: c_int = 4096;
 
-pub const PROC_PIDLISTFDS: c_int = 1;
-pub const PROC_PIDLISTFD_SIZE: c_int = size_of::<proc_fdinfo>() as c_int;
-pub const PROX_FDTYPE_ATALK: c_int = 0;
-pub const PROX_FDTYPE_VNODE: c_int = 1;
-pub const PROX_FDTYPE_SOCKET: c_int = 2;
-pub const PROX_FDTYPE_PSHM: c_int = 3;
-pub const PROX_FDTYPE_PSEM: c_int = 4;
-pub const PROX_FDTYPE_KQUEUE: c_int = 5;
-pub const PROX_FDTYPE_PIPE: c_int = 6;
-pub const PROX_FDTYPE_FSEVENTS: c_int = 7;
-pub const PROX_FDTYPE_NETPOLICY: c_int = 9;
-pub const PROX_FDTYPE_CHANNEL: c_int = 10;
-pub const PROX_FDTYPE_NEXUS: c_int = 11;
+        pub const PROC_PIDLISTFDS: c_int = 1;
+        pub const PROC_PIDLISTFD_SIZE: c_int = size_of::<proc_fdinfo>() as c_int;
+        pub const PROX_FDTYPE_ATALK: c_int = 0;
+        pub const PROX_FDTYPE_VNODE: c_int = 1;
+        pub const PROX_FDTYPE_SOCKET: c_int = 2;
+        pub const PROX_FDTYPE_PSHM: c_int = 3;
+        pub const PROX_FDTYPE_PSEM: c_int = 4;
+        pub const PROX_FDTYPE_KQUEUE: c_int = 5;
+        pub const PROX_FDTYPE_PIPE: c_int = 6;
+        pub const PROX_FDTYPE_FSEVENTS: c_int = 7;
+        pub const PROX_FDTYPE_NETPOLICY: c_int = 9;
+        pub const PROX_FDTYPE_CHANNEL: c_int = 10;
+        pub const PROX_FDTYPE_NEXUS: c_int = 11;
 
-pub const PROC_CSM_ALL: c_uint = 0x0001;
-pub const PROC_CSM_NOSMT: c_uint = 0x0002;
-pub const PROC_CSM_TECS: c_uint = 0x0004;
+        // libproc.h
+        pub const PROC_CSM_ALL: c_uint = 0x0001;
+        pub const PROC_CSM_NOSMT: c_uint = 0x0002;
+        pub const PROC_CSM_TECS: c_uint = 0x0004;
+    }
+}
+
 pub const MAXCOMLEN: usize = 16;
 pub const MAXTHREADNAMESIZE: usize = 64;
 
@@ -3696,29 +4019,13 @@ pub const LC_SEGMENT_64: u32 = 0x19;
 pub const MH_MAGIC: u32 = 0xfeedface;
 pub const MH_MAGIC_64: u32 = 0xfeedfacf;
 
-// net/if_utun.h
-pub const UTUN_OPT_FLAGS: c_int = 1;
-pub const UTUN_OPT_IFNAME: c_int = 2;
-
-// net/bpf.h
-pub const DLT_NULL: c_uint = 0; // no link-layer encapsulation
-pub const DLT_EN10MB: c_uint = 1; // Ethernet (10Mb)
-pub const DLT_EN3MB: c_uint = 2; // Experimental Ethernet (3Mb)
-pub const DLT_AX25: c_uint = 3; // Amateur Radio AX.25
-pub const DLT_PRONET: c_uint = 4; // Proteon ProNET Token Ring
-pub const DLT_CHAOS: c_uint = 5; // Chaos
-pub const DLT_IEEE802: c_uint = 6; // IEEE 802 Networks
-pub const DLT_ARCNET: c_uint = 7; // ARCNET
-pub const DLT_SLIP: c_uint = 8; // Serial Line IP
-pub const DLT_PPP: c_uint = 9; // Point-to-point Protocol
-pub const DLT_FDDI: c_uint = 10; // FDDI
-pub const DLT_ATM_RFC1483: c_uint = 11; // LLC/SNAP encapsulated atm
-pub const DLT_RAW: c_uint = 12; // raw IP
-pub const DLT_LOOP: c_uint = 108;
-
-// https://github.com/apple/darwin-xnu/blob/HEAD/bsd/net/bpf.h#L100
-// sizeof(i32)
-pub const BPF_ALIGNMENT: c_int = 4;
+cfg_if! {
+    if #[cfg(target_os = "macos")] {
+        // net/if_utun.h
+        pub const UTUN_OPT_FLAGS: c_int = 1;
+        pub const UTUN_OPT_IFNAME: c_int = 2;
+    }
+}
 
 // sys/mount.h
 pub const MNT_NODEV: c_int = 0x00000010;
@@ -3864,7 +4171,11 @@ pub const MNT_NOWAIT: c_int = 2;
 
 // <mach/thread_policy.h>
 pub const THREAD_STANDARD_POLICY: c_int = 1;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const THREAD_STANDARD_POLICY_COUNT: c_int = 0;
+
 pub const THREAD_EXTENDED_POLICY: c_int = 1;
 pub const THREAD_TIME_CONSTRAINT_POLICY: c_int = 2;
 pub const THREAD_PRECEDENCE_POLICY: c_int = 3;
@@ -3926,7 +4237,11 @@ pub const VM_PAGE_QUERY_PAGE_CS_NX: i32 = 0x400;
 
 // mach/task_info.h
 pub const TASK_THREAD_TIMES_INFO: u32 = 3;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const HOST_CPU_LOAD_INFO_COUNT: u32 = 4;
+
 pub const MACH_TASK_BASIC_INFO: u32 = 20;
 
 pub const MACH_PORT_NULL: i32 = 0;
@@ -3989,7 +4304,10 @@ pub const COPYFILE_STATE_DST_BSIZE: c_int = 12;
 pub const COPYFILE_STATE_BSIZE: c_int = 13;
 
 // <sys/attr.h>
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const ATTR_BIT_MAP_COUNT: c_ushort = 5;
+
 pub const FSOPT_NOFOLLOW: u32 = 0x1;
 pub const FSOPT_NOFOLLOW_ANY: u32 = 0x800;
 pub const FSOPT_REPORT_FULLSIZE: u32 = 0x4;
@@ -4155,75 +4473,120 @@ pub const VMADDR_CID_RESERVED: c_uint = 1;
 pub const VMADDR_CID_HOST: c_uint = 2;
 pub const VMADDR_PORT_ANY: c_uint = 0xFFFFFFFF;
 
+// include/paths.h
+pub const _PATH_DEFPATH: *const c_char = cstr(b"/usr/bin:/bin\0");
+pub const _PATH_BSHELL: *const c_char = cstr(b"/bin/sh\0");
+
 const fn __DARWIN_ALIGN32(p: usize) -> usize {
     const __DARWIN_ALIGNBYTES32: usize = size_of::<u32>() - 1;
     (p + __DARWIN_ALIGNBYTES32) & !__DARWIN_ALIGNBYTES32
 }
 
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const THREAD_EXTENDED_POLICY_COUNT: mach_msg_type_number_t =
     (size_of::<thread_extended_policy_data_t>() / size_of::<integer_t>()) as mach_msg_type_number_t;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const THREAD_TIME_CONSTRAINT_POLICY_COUNT: mach_msg_type_number_t =
     (size_of::<thread_time_constraint_policy_data_t>() / size_of::<integer_t>())
         as mach_msg_type_number_t;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const THREAD_PRECEDENCE_POLICY_COUNT: mach_msg_type_number_t =
     (size_of::<thread_precedence_policy_data_t>() / size_of::<integer_t>())
         as mach_msg_type_number_t;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const THREAD_AFFINITY_POLICY_COUNT: mach_msg_type_number_t =
     (size_of::<thread_affinity_policy_data_t>() / size_of::<integer_t>()) as mach_msg_type_number_t;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const THREAD_BACKGROUND_POLICY_COUNT: mach_msg_type_number_t =
     (size_of::<thread_background_policy_data_t>() / size_of::<integer_t>())
         as mach_msg_type_number_t;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const THREAD_LATENCY_QOS_POLICY_COUNT: mach_msg_type_number_t =
     (size_of::<thread_latency_qos_policy_data_t>() / size_of::<integer_t>())
         as mach_msg_type_number_t;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const THREAD_THROUGHPUT_QOS_POLICY_COUNT: mach_msg_type_number_t =
     (size_of::<thread_throughput_qos_policy_data_t>() / size_of::<integer_t>())
         as mach_msg_type_number_t;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const THREAD_BASIC_INFO_COUNT: mach_msg_type_number_t =
     (size_of::<thread_basic_info_data_t>() / size_of::<integer_t>()) as mach_msg_type_number_t;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const THREAD_IDENTIFIER_INFO_COUNT: mach_msg_type_number_t =
     (size_of::<thread_identifier_info_data_t>() / size_of::<integer_t>()) as mach_msg_type_number_t;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const THREAD_EXTENDED_INFO_COUNT: mach_msg_type_number_t =
     (size_of::<thread_extended_info_data_t>() / size_of::<integer_t>()) as mach_msg_type_number_t;
 
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const TASK_THREAD_TIMES_INFO_COUNT: u32 =
     (size_of::<task_thread_times_info_data_t>() / size_of::<natural_t>()) as u32;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const MACH_TASK_BASIC_INFO_COUNT: u32 =
     (size_of::<mach_task_basic_info_data_t>() / size_of::<natural_t>()) as u32;
+
+/// Constants may change across releases. See the [usage guidelines](crate#usage-guidelines)
+/// for details.
 pub const HOST_VM_INFO64_COUNT: mach_msg_type_number_t =
     (size_of::<vm_statistics64_data_t>() / size_of::<integer_t>()) as mach_msg_type_number_t;
 
-// bsd/net/if_mib.h
-/// Non-interface-specific
-pub const IFMIB_SYSTEM: c_int = 1;
-/// Per-interface data table
-pub const IFMIB_IFDATA: c_int = 2;
-/// All interfaces data at once
-pub const IFMIB_IFALLDATA: c_int = 3;
+cfg_if! {
+    if #[cfg(target_os = "macos")] {
+        // bsd/net/if_mib.h
+        /// Non-interface-specific
+        pub const IFMIB_SYSTEM: c_int = 1;
+        /// Per-interface data table
+        pub const IFMIB_IFDATA: c_int = 2;
+        /// All interfaces data at once
+        pub const IFMIB_IFALLDATA: c_int = 3;
 
-/// Generic stats for all kinds of ifaces
-pub const IFDATA_GENERAL: c_int = 1;
-/// Specific to the type of interface
-pub const IFDATA_LINKSPECIFIC: c_int = 2;
-/// Addresses assigned to interface
-pub const IFDATA_ADDRS: c_int = 3;
-/// Multicast addresses assigned to interface
-pub const IFDATA_MULTIADDRS: c_int = 4;
+        /// Generic stats for all kinds of ifaces
+        pub const IFDATA_GENERAL: c_int = 1;
+        /// Specific to the type of interface
+        pub const IFDATA_LINKSPECIFIC: c_int = 2;
+        /// Addresses assigned to interface
+        pub const IFDATA_ADDRS: c_int = 3;
+        /// Multicast addresses assigned to interface
+        pub const IFDATA_MULTIADDRS: c_int = 4;
 
-/// Number of interfaces configured
-pub const IFMIB_IFCOUNT: c_int = 1;
+        /// Number of interfaces configured
+        pub const IFMIB_IFCOUNT: c_int = 1;
 
-/// Functions not specific to a type of iface
-pub const NETLINK_GENERIC: c_int = 0;
+        /// Functions not specific to a type of iface
+        pub const NETLINK_GENERIC: c_int = 0;
 
-pub const DOT3COMPLIANCE_STATS: c_int = 1;
-pub const DOT3COMPLIANCE_COLLS: c_int = 2;
+        pub const DOT3COMPLIANCE_STATS: c_int = 1;
+        pub const DOT3COMPLIANCE_COLLS: c_int = 2;
 
-// kern_control.h
-pub const MAX_KCTL_NAME: usize = 96;
+        // kern_control.h
+        pub const MAX_KCTL_NAME: usize = 96;
+    }
+}
 
 f! {
-    pub fn CMSG_NXTHDR(mhdr: *const crate::msghdr, cmsg: *const cmsghdr) -> *mut cmsghdr {
+    pub unsafe fn CMSG_NXTHDR(mhdr: *const crate::msghdr, cmsg: *const cmsghdr) -> *mut cmsghdr {
         if cmsg.is_null() {
             return crate::CMSG_FIRSTHDR(mhdr);
         }
@@ -4231,75 +4594,63 @@ f! {
         let next = cmsg as usize + __DARWIN_ALIGN32(cmsg_len);
         let max = (*mhdr).msg_control as usize + (*mhdr).msg_controllen as usize;
         if next + __DARWIN_ALIGN32(size_of::<cmsghdr>()) > max {
-            core::ptr::null_mut()
+            ptr::null_mut()
         } else {
             next as *mut cmsghdr
         }
     }
 
-    pub fn CMSG_DATA(cmsg: *const cmsghdr) -> *mut c_uchar {
+    pub unsafe fn CMSG_DATA(cmsg: *const cmsghdr) -> *mut c_uchar {
         (cmsg as *mut c_uchar).add(__DARWIN_ALIGN32(size_of::<cmsghdr>()))
     }
 
-    pub const fn CMSG_SPACE(length: c_uint) -> c_uint {
+    pub const unsafe fn CMSG_SPACE(length: c_uint) -> c_uint {
         (__DARWIN_ALIGN32(size_of::<cmsghdr>()) + __DARWIN_ALIGN32(length as usize)) as c_uint
     }
 
-    pub const fn CMSG_LEN(length: c_uint) -> c_uint {
+    pub const unsafe fn CMSG_LEN(length: c_uint) -> c_uint {
         (__DARWIN_ALIGN32(size_of::<cmsghdr>()) + length as usize) as c_uint
     }
 
-    pub const fn VM_MAKE_TAG(id: u8) -> u32 {
+    pub const unsafe fn VM_MAKE_TAG(id: u8) -> u32 {
         (id as u32) << 24u32
     }
-}
 
-safe_f! {
-    pub const fn WSTOPSIG(status: c_int) -> c_int {
+    pub const safe fn WSTOPSIG(status: c_int) -> c_int {
         status >> 8
     }
 
-    pub const fn _WSTATUS(status: c_int) -> c_int {
+    pub const safe fn _WSTATUS(status: c_int) -> c_int {
         status & 0x7f
     }
 
-    pub const fn WIFCONTINUED(status: c_int) -> bool {
+    pub const safe fn WIFCONTINUED(status: c_int) -> bool {
         _WSTATUS(status) == _WSTOPPED && WSTOPSIG(status) == 0x13
     }
 
-    pub const fn WIFSIGNALED(status: c_int) -> bool {
+    pub const safe fn WIFSIGNALED(status: c_int) -> bool {
         _WSTATUS(status) != _WSTOPPED && _WSTATUS(status) != 0
     }
 
-    pub const fn WIFSTOPPED(status: c_int) -> bool {
+    pub const safe fn WIFSTOPPED(status: c_int) -> bool {
         _WSTATUS(status) == _WSTOPPED && WSTOPSIG(status) != 0x13
     }
 
-    pub const fn makedev(major: i32, minor: i32) -> dev_t {
+    pub const safe fn makedev(major: i32, minor: i32) -> dev_t {
         (major << 24) | minor
     }
 
-    pub const fn major(dev: dev_t) -> i32 {
+    pub const safe fn major(dev: dev_t) -> i32 {
         (dev >> 24) & 0xff
     }
 
-    pub const fn minor(dev: dev_t) -> i32 {
+    pub const safe fn minor(dev: dev_t) -> i32 {
         dev & 0xffffff
     }
 }
 
 extern "C" {
     pub fn setgrent();
-    #[doc(hidden)]
-    #[deprecated(since = "0.2.49", note = "Deprecated in MacOSX 10.5")]
-    #[cfg_attr(not(target_arch = "aarch64"), link_name = "daemon$1050")]
-    pub fn daemon(nochdir: c_int, noclose: c_int) -> c_int;
-    #[doc(hidden)]
-    #[deprecated(since = "0.2.49", note = "Deprecated in MacOSX 10.10")]
-    pub fn sem_destroy(sem: *mut sem_t) -> c_int;
-    #[doc(hidden)]
-    #[deprecated(since = "0.2.49", note = "Deprecated in MacOSX 10.10")]
-    pub fn sem_init(sem: *mut sem_t, pshared: c_int, value: c_uint) -> c_int;
     pub fn aio_read(aiocbp: *mut aiocb) -> c_int;
     pub fn aio_write(aiocbp: *mut aiocb) -> c_int;
     pub fn aio_fsync(op: c_int, aiocbp: *mut aiocb) -> c_int;
@@ -4317,6 +4668,8 @@ extern "C" {
     pub fn aio_cancel(fd: c_int, aiocbp: *mut aiocb) -> c_int;
     pub fn chflags(path: *const c_char, flags: c_uint) -> c_int;
     pub fn fchflags(fd: c_int, flags: c_uint) -> c_int;
+    pub fn lchflags(path: *const c_char, flags: c_uint) -> c_int;
+    pub fn lchmod(path: *const c_char, mode: mode_t) -> c_int;
     pub fn clock_getres(clk_id: crate::clockid_t, tp: *mut crate::timespec) -> c_int;
     pub fn clock_gettime(clk_id: crate::clockid_t, tp: *mut crate::timespec) -> c_int;
     pub fn lio_listio(
@@ -4439,7 +4792,9 @@ extern "C" {
     pub fn pthread_main_np() -> c_int;
     pub fn pthread_threadid_np(thread: crate::pthread_t, thread_id: *mut u64) -> c_int;
 
+    #[cfg(target_os = "macos")]
     pub fn pthread_jit_write_protect_np(enabled: c_int);
+    #[cfg(target_os = "macos")]
     pub fn pthread_jit_write_protect_supported_np() -> c_int;
     // An array of pthread_jit_write_with_callback_np must declare
     // the list of callbacks e.g.
@@ -4447,10 +4802,12 @@ extern "C" {
     // static callbacks: [libc::pthread_jit_write_callback_t; 2] = [native_jit_write_cb,
     // std::mem::transmute::<libc::pthread_jit_write_callback_t>(std::ptr::null())];
     // (a handy PTHREAD_JIT_WRITE_CALLBACK_NP macro for other languages).
+    #[cfg(target_os = "macos")]
     pub fn pthread_jit_write_with_callback_np(
         callback: crate::pthread_jit_write_callback_t,
         ctx: *mut c_void,
     ) -> c_int;
+    #[cfg(target_os = "macos")]
     pub fn pthread_jit_write_freeze_callbacks_np();
     pub fn pthread_cpu_number_np(cpu_number_out: *mut size_t) -> c_int;
 
@@ -4536,12 +4893,12 @@ extern "C" {
     );
     pub fn backtrace_async(array: *mut *mut c_void, length: size_t, task_id: *mut u32) -> size_t;
     #[cfg_attr(
-        all(target_os = "macos", not(target_arch = "aarch64")),
+        all(target_os = "macos", any(target_arch = "x86", target_arch = "x86_64")),
         link_name = "statfs$INODE64"
     )]
     pub fn statfs(path: *const c_char, buf: *mut statfs) -> c_int;
     #[cfg_attr(
-        all(target_os = "macos", not(target_arch = "aarch64")),
+        all(target_os = "macos", any(target_arch = "x86", target_arch = "x86_64")),
         link_name = "fstatfs$INODE64"
     )]
     pub fn fstatfs(fd: c_int, buf: *mut statfs) -> c_int;
@@ -4569,6 +4926,7 @@ extern "C" {
         data: *mut c_void,
     ) -> c_int;
     pub fn fmount(src: *const c_char, fd: c_int, flags: c_int, data: *mut c_void) -> c_int;
+    #[cfg(target_os = "macos")]
     pub fn ptrace(request: c_int, pid: crate::pid_t, addr: *mut c_char, data: c_int) -> c_int;
     pub fn quotactl(special: *const c_char, cmd: c_int, id: c_int, data: *mut c_char) -> c_int;
     pub fn sethostname(name: *const c_char, len: c_int) -> c_int;
@@ -4677,7 +5035,11 @@ extern "C" {
         infop: *mut crate::siginfo_t,
         options: c_int,
     ) -> c_int;
+    // `brk` is prohibited on tvOS and watchOS.
+    #[cfg(not(any(target_os = "tvos", target_os = "watchos")))]
     pub fn brk(addr: *const c_void) -> *mut c_void;
+    // `sbrk` is prohibited on tvOS and watchOS.
+    #[cfg(not(any(target_os = "tvos", target_os = "watchos")))]
     pub fn sbrk(increment: c_int) -> *mut c_void;
     pub fn settimeofday(tv: *const crate::timeval, tz: *const crate::timezone) -> c_int;
     #[deprecated(since = "0.2.55", note = "Use the `mach2` crate instead")]
@@ -4776,6 +5138,26 @@ extern "C" {
         fd: c_int,
         newfd: c_int,
     ) -> c_int;
+    #[cfg(target_os = "macos")]
+    pub fn posix_spawn_file_actions_addchdir_np(
+        actions: *mut posix_spawn_file_actions_t,
+        path: *const c_char,
+    ) -> c_int;
+    #[cfg(target_os = "macos")]
+    pub fn posix_spawn_file_actions_addfchdir_np(
+        actions: *mut posix_spawn_file_actions_t,
+        fd: c_int,
+    ) -> c_int;
+    #[cfg(target_os = "macos")]
+    pub fn posix_spawn_file_actions_addchdir(
+        actions: *mut posix_spawn_file_actions_t,
+        path: *const c_char,
+    ) -> c_int;
+    #[cfg(target_os = "macos")]
+    pub fn posix_spawn_file_actions_addfchdir(
+        actions: *mut posix_spawn_file_actions_t,
+        fd: c_int,
+    ) -> c_int;
     pub fn uname(buf: *mut crate::utsname) -> c_int;
 
     pub fn connectx(
@@ -4794,12 +5176,12 @@ extern "C" {
     pub fn ntp_gettime(buf: *mut ntptimeval) -> c_int;
 
     #[cfg_attr(
-        all(target_os = "macos", not(target_arch = "aarch64")),
+        all(target_os = "macos", any(target_arch = "x86", target_arch = "x86_64")),
         link_name = "getmntinfo$INODE64"
     )]
     pub fn getmntinfo(mntbufp: *mut *mut statfs, flags: c_int) -> c_int;
     #[cfg_attr(
-        all(target_os = "macos", not(target_arch = "aarch64")),
+        all(target_os = "macos", any(target_arch = "x86", target_arch = "x86_64")),
         link_name = "getfsstat$INODE64"
     )]
     pub fn getfsstat(mntbufp: *mut statfs, bufsize: c_int, flags: c_int) -> c_int;
@@ -4875,52 +5257,10 @@ extern "C" {
     ) -> *mut c_void;
     pub fn malloc_zone_free(zone: *mut crate::malloc_zone_t, ptr: *mut c_void);
 
-    pub fn proc_listpids(t: u32, typeinfo: u32, buffer: *mut c_void, buffersize: c_int) -> c_int;
-    pub fn proc_listallpids(buffer: *mut c_void, buffersize: c_int) -> c_int;
-    pub fn proc_listpgrppids(pgrpid: crate::pid_t, buffer: *mut c_void, buffersize: c_int)
-        -> c_int;
-    pub fn proc_listchildpids(ppid: crate::pid_t, buffer: *mut c_void, buffersize: c_int) -> c_int;
-    pub fn proc_pidinfo(
-        pid: c_int,
-        flavor: c_int,
-        arg: u64,
-        buffer: *mut c_void,
-        buffersize: c_int,
-    ) -> c_int;
-    pub fn proc_pidfdinfo(
-        pid: c_int,
-        fd: c_int,
-        flavor: c_int,
-        buffer: *mut c_void,
-        buffersize: c_int,
-    ) -> c_int;
-    pub fn proc_pidfileportinfo(
-        pid: c_int,
-        fileport: u32,
-        flavor: c_int,
-        buffer: *mut c_void,
-        buffersize: c_int,
-    ) -> c_int;
-    pub fn proc_pidpath(pid: c_int, buffer: *mut c_void, buffersize: u32) -> c_int;
-    pub fn proc_name(pid: c_int, buffer: *mut c_void, buffersize: u32) -> c_int;
-    pub fn proc_regionfilename(
-        pid: c_int,
-        address: u64,
-        buffer: *mut c_void,
-        buffersize: u32,
-    ) -> c_int;
-    pub fn proc_kmsgbuf(buffer: *mut c_void, buffersize: u32) -> c_int;
-    pub fn proc_libversion(major: *mut c_int, minor: *mut c_int) -> c_int;
-    pub fn proc_pid_rusage(pid: c_int, flavor: c_int, buffer: *mut rusage_info_t) -> c_int;
-
-    // Available from Big Sur
-    pub fn proc_set_no_smt() -> c_int;
-    pub fn proc_setthread_no_smt() -> c_int;
-    pub fn proc_set_csm(flags: u32) -> c_int;
-    pub fn proc_setthread_csm(flags: u32) -> c_int;
     /// # Notes
     ///
     /// `id` is of type [`uuid_t`].
+    #[cfg(target_os = "macos")]
     pub fn gethostuuid(id: *mut u8, timeout: *const crate::timespec) -> c_int;
 
     pub fn gethostid() -> c_long;
@@ -4939,6 +5279,7 @@ extern "C" {
     pub fn _NSGetEnviron() -> *mut *mut *mut c_char;
     pub fn _NSGetProgname() -> *mut *mut c_char;
 
+    #[cfg(target_os = "macos")]
     #[deprecated(since = "0.2.55", note = "Use the `mach2` crate instead")]
     pub fn mach_vm_map(
         target_task: crate::vm_map_t,
@@ -4981,7 +5322,8 @@ extern "C" {
         out_processor_infoCnt: *mut mach_msg_type_number_t,
     ) -> crate::kern_return_t;
 
-    #[deprecated(since = "0.2.55", note = "Use the `mach2` crate instead")]
+    #[doc(hidden)] // technically public but is an internal implementation detail.
+    #[deprecated(since = "0.2.55", note = "use mach_task_self() instead")]
     pub static mut mach_task_self_: crate::mach_port_t;
     pub fn task_for_pid(
         host: crate::mach_port_t,
@@ -5087,6 +5429,9 @@ extern "C" {
     pub fn mkfifoat(dirfd: c_int, pathname: *const c_char, mode: mode_t) -> c_int;
     pub fn mknodat(dirfd: c_int, pathname: *const c_char, mode: mode_t, dev: dev_t) -> c_int;
     pub fn freadlink(fd: c_int, buf: *mut c_char, size: size_t) -> c_int;
+
+    // exec* marked as prohibited on tvOS and watchOS.
+    #[cfg(not(any(target_os = "tvos", target_os = "watchos")))]
     pub fn execvP(
         file: *const c_char,
         search_path: *const c_char,
@@ -5109,19 +5454,72 @@ pub unsafe fn mach_task_self() -> crate::mach_port_t {
 }
 
 cfg_if! {
+    // Prohibited on iOS/tvOS/watchOS/visionOS
     if #[cfg(target_os = "macos")] {
         extern "C" {
             pub fn clock_settime(clock_id: crate::clockid_t, tp: *const crate::timespec) -> c_int;
+
+            // libproc.h
+            pub fn proc_listpids(
+                t: u32,
+                typeinfo: u32,
+                buffer: *mut c_void,
+                buffersize: c_int,
+            ) -> c_int;
+            pub fn proc_listallpids(buffer: *mut c_void, buffersize: c_int) -> c_int;
+            pub fn proc_listpgrppids(
+                pgrpid: crate::pid_t,
+                buffer: *mut c_void,
+                buffersize: c_int,
+            ) -> c_int;
+            pub fn proc_listchildpids(
+                ppid: crate::pid_t,
+                buffer: *mut c_void,
+                buffersize: c_int,
+            ) -> c_int;
+            pub fn proc_pidinfo(
+                pid: c_int,
+                flavor: c_int,
+                arg: u64,
+                buffer: *mut c_void,
+                buffersize: c_int,
+            ) -> c_int;
+            pub fn proc_pidfdinfo(
+                pid: c_int,
+                fd: c_int,
+                flavor: c_int,
+                buffer: *mut c_void,
+                buffersize: c_int,
+            ) -> c_int;
+            pub fn proc_pidfileportinfo(
+                pid: c_int,
+                fileport: u32,
+                flavor: c_int,
+                buffer: *mut c_void,
+                buffersize: c_int,
+            ) -> c_int;
+            pub fn proc_pidpath(pid: c_int, buffer: *mut c_void, buffersize: u32) -> c_int;
+            pub fn proc_name(pid: c_int, buffer: *mut c_void, buffersize: u32) -> c_int;
+            pub fn proc_regionfilename(
+                pid: c_int,
+                address: u64,
+                buffer: *mut c_void,
+                buffersize: u32,
+            ) -> c_int;
+            pub fn proc_kmsgbuf(buffer: *mut c_void, buffersize: u32) -> c_int;
+            pub fn proc_libversion(major: *mut c_int, minor: *mut c_int) -> c_int;
+            pub fn proc_pid_rusage(pid: c_int, flavor: c_int, buffer: *mut rusage_info_t) -> c_int;
+            // Available from Big Sur
+            pub fn proc_set_no_smt() -> c_int;
+            pub fn proc_setthread_no_smt() -> c_int;
+            pub fn proc_set_csm(flags: u32) -> c_int;
+            pub fn proc_setthread_csm(flags: u32) -> c_int;
         }
     }
 }
+
 cfg_if! {
-    if #[cfg(any(
-        target_os = "macos",
-        target_os = "ios",
-        target_os = "tvos",
-        target_os = "visionos"
-    ))] {
+    if #[cfg(target_vendor = "apple")] {
         extern "C" {
             pub fn memmem(
                 haystack: *const c_void,
@@ -5129,6 +5527,8 @@ cfg_if! {
                 needle: *const c_void,
                 needlelen: size_t,
             ) -> *mut c_void;
+            // `task_set_info` is prohibited on tvOS and watchOS.
+            #[cfg(not(any(target_os = "tvos", target_os = "watchos")))]
             pub fn task_set_info(
                 target_task: crate::task_t,
                 flavor: crate::task_flavor_t,

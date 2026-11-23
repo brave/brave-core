@@ -205,7 +205,7 @@ mod remote {
         let index = crates_io(&td);
         let lock = &utils::unlocked();
 
-        let client = reqwest::blocking::Client::builder().build().unwrap();
+        let client = utils::blocking_client();
 
         let rsi = tame_index::index::RemoteSparseIndex::new(index, client);
 
@@ -400,7 +400,7 @@ mod remote {
         let index = crates_io(&td);
         let lock = &utils::unlocked();
 
-        let client = reqwest::blocking::Client::builder().build().unwrap();
+        let client = utils::blocking_client();
         let rsi = tame_index::index::RemoteSparseIndex::new(index, client);
 
         let results = rsi.krates(
@@ -422,7 +422,7 @@ mod remote {
         let index = crates_io(&td);
         let lock = &utils::unlocked();
 
-        let client = reqwest::Client::builder().build().unwrap();
+        let client = utils::async_client();
         let rsi = tame_index::index::AsyncRemoteSparseIndex::new(index, client);
 
         let results = rsi

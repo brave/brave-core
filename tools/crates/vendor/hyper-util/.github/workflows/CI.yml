@@ -27,7 +27,7 @@ jobs:
     name: Check Style
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt
@@ -48,38 +48,35 @@ jobs:
           - macos-latest
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - name: Install Rust (${{ matrix.rust }})
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.rust }}
+      # All features includes rt-tracing-exec-force, testing span propagation.
       - run: cargo test --all-features
+      # full excludes that opt-in, so also check that TokioExecutor does not
+      # propagate spans by default. Limit this extra run to runtime tests.
+      - run: "cargo test --features full --lib rt::"
 
   msrv:
     name: Check MSRV (${{ matrix.rust }}) on ${{ matrix.os }}
     needs: [style]
     strategy:
       matrix:
-        rust: [ 1.63 ] # keep in sync with 'rust-version' in Cargo.toml
+        rust: [ 1.85 ] # keep in sync with 'rust-version' in Cargo.toml
         os:
           - ubuntu-latest
           - windows-latest
           - macos-latest
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v5
-      - uses: dtolnay/rust-toolchain@stable
-      - uses: Swatinem/rust-cache@v2
-      - name: Resolve MSRV aware dependencies
-        run: |
-          cargo update
-          cargo update system-configuration --precise 0.5.0
-        env:
-          CARGO_RESOLVER_INCOMPATIBLE_RUST_VERSIONS: fallback
+      - uses: actions/checkout@v7
       - name: Install Rust (${{ matrix.rust }})
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.rust }}
+      - uses: Swatinem/rust-cache@v2
       - run: cargo check --features full
 
   miri:
@@ -87,7 +84,7 @@ jobs:
     needs: [style]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@nightly
         with:
           components: miri
@@ -102,7 +99,7 @@ jobs:
     needs: [style]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@stable
       - uses: taiki-e/install-action@cargo-hack
       - run: cargo hack --no-dev-deps check --feature-powerset --depth 2
@@ -111,7 +108,7 @@ jobs:
     name: semver
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - name: Check semver
         uses: obi1kenobi/cargo-semver-checks-action@v2
         with:
@@ -124,6 +121,6 @@ jobs:
     needs: [style, test]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@nightly
       - run: cargo rustdoc --features full -- --cfg docsrs -D rustdoc::broken_intra_doc_links

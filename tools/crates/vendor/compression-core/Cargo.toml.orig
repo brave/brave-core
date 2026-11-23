@@ -1,9 +1,10 @@
 [package]
 name = "compression-core"
-version = "0.4.31"
+version = "0.4.34"
 description = """
 Abstractions for compression algorithms.
 """
+keywords = ["compression", "codec", "buffer", "async-compression"]
 authors.workspace = true
 categories.workspace = true
 edition.workspace = true

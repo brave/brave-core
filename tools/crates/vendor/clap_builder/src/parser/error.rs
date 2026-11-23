@@ -22,7 +22,7 @@ pub enum MatchesError {
 
 impl MatchesError {
     #[cfg_attr(debug_assertions, track_caller)]
-    pub(crate) fn unwrap<T>(id: &str, r: Result<T, MatchesError>) -> T {
+    pub(crate) fn unwrap<T>(id: &str, r: Result<T, Self>) -> T {
         let err = match r {
             Ok(t) => {
                 return t;
@@ -45,7 +45,10 @@ impl std::fmt::Display for MatchesError {
                 )
             }
             Self::UnknownArgument {} => {
-                writeln!(f, "Unknown argument or group id.  Make sure you are using the argument id and not the short or long flags")
+                writeln!(
+                    f,
+                    "Unknown argument or group id.  Make sure you are using the argument id and not the short or long flags"
+                )
             }
         }
     }

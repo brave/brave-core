@@ -24,7 +24,7 @@ impl<L, R> Either<L, R> {
     /// This function is part of the generated code from `pin-project-lite`,
     /// for a more in depth explanation and the rest of the generated code refer
     /// to the [`proj`] module.
-    pub(crate) fn project(self: Pin<&mut Self>) -> EitherProj<L, R> {
+    pub(crate) fn project(self: Pin<&mut Self>) -> EitherProj<'_, L, R> {
         unsafe {
             match self.get_unchecked_mut() {
                 Self::Left(left) => EitherProj::Left(Pin::new_unchecked(left)),
@@ -138,6 +138,7 @@ pub(crate) mod proj {
         }
         impl<'__pin, L, R> Unpin for Either<L, R> where __Origin<'__pin, L, R>: Unpin {}
 
+        #[allow(unused)]
         trait MustNotImplDrop {}
         #[allow(drop_bounds)]
         impl<T: Drop> MustNotImplDrop for T {}

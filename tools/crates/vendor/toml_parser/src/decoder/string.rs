@@ -4,17 +4,17 @@ use winnow::stream::ContainsToken as _;
 use winnow::stream::Offset as _;
 use winnow::stream::Stream as _;
 
+use crate::ErrorSink;
+use crate::Expected;
+use crate::ParseError;
+use crate::Raw;
+use crate::Span;
 use crate::decoder::StringBuilder;
 use crate::lexer::APOSTROPHE;
 use crate::lexer::ML_BASIC_STRING_DELIM;
 use crate::lexer::ML_LITERAL_STRING_DELIM;
 use crate::lexer::QUOTATION_MARK;
 use crate::lexer::WSCHAR;
-use crate::ErrorSink;
-use crate::Expected;
-use crate::ParseError;
-use crate::Raw;
-use crate::Span;
 
 const ALLOCATION_ERROR: &str = "could not allocate for string";
 
@@ -702,20 +702,46 @@ pub(crate) fn decode_unquoted_key<'i>(
         );
     }
 
-    for (i, b) in s.as_bytes().iter().enumerate() {
-        if !UNQUOTED_CHAR.contains_token(b) {
-            error.report_error(
-                ParseError::new("invalid unquoted key")
-                    .with_context(Span::new_unchecked(0, s.len()))
-                    .with_expected(&[
-                        Expected::Description("letters"),
-                        Expected::Description("numbers"),
-                        Expected::Literal("-"),
-                        Expected::Literal("_"),
-                    ])
-                    .with_unexpected(Span::new_unchecked(i, i)),
-            );
+    let mut span = None;
+    for (i, _b) in s
+        .as_bytes()
+        .iter()
+        .enumerate()
+        .filter(|(_, b)| !UNQUOTED_CHAR.contains_token(*b))
+    {
+        if let Some((start, end)) = span {
+            if i == end {
+                span = Some((start, i + 1));
+            } else {
+                error.report_error(
+                    ParseError::new("invalid unquoted key")
+                        .with_context(Span::new_unchecked(0, s.len()))
+                        .with_expected(&[
+                            Expected::Description("letters"),
+                            Expected::Description("numbers"),
+                            Expected::Literal("-"),
+                            Expected::Literal("_"),
+                        ])
+                        .with_unexpected(Span::new_unchecked(start, end)),
+                );
+                span = Some((i, i + 1));
+            }
+        } else {
+            span = Some((i, i + 1));
         }
+    }
+    if let Some((start, end)) = span {
+        error.report_error(
+            ParseError::new("invalid unquoted key")
+                .with_context(Span::new_unchecked(0, s.len()))
+                .with_expected(&[
+                    Expected::Description("letters"),
+                    Expected::Description("numbers"),
+                    Expected::Literal("-"),
+                    Expected::Literal("_"),
+                ])
+                .with_unexpected(Span::new_unchecked(start, end)),
+        );
     }
 
     if !output.push_str(s) {

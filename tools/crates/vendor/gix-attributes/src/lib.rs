@@ -1,16 +1,43 @@
 //! Parse `.gitattribute` files and provide utilities to match against them.
 //!
+//! ## Examples
+//!
+//! ```
+//! use gix_attributes::search::{MetadataCollection, Outcome};
+//! use gix_glob::pattern::Case;
+//!
+//! let mut search = gix_attributes::Search::default();
+//! let mut collection = MetadataCollection::default();
+//! search.add_patterns_buffer(
+//!     b"*.sh text eol=lf",
+//!     "<memory>".into(),
+//!     None,
+//!     &mut collection,
+//!     true,
+//! )?;
+//!
+//! let mut out = Outcome::default();
+//! out.initialize_with_selection(&collection, ["text", "eol"]);
+//! assert!(search.pattern_matching_relative_path("script.sh".into(), Case::Sensitive, Some(false), &mut out));
+//!
+//! let assignments = out
+//!     .iter_selected()
+//!     .map(|m| m.assignment.to_string())
+//!     .collect::<Vec<_>>();
+//! assert_eq!(assignments, vec!["text", "eol=lf"]);
+//! # Ok::<(), std::io::Error>(())
+//! ```
+//!
 //! ## Feature Flags
 #![cfg_attr(
     all(doc, feature = "document-features"),
     doc = ::document_features::document_features!()
 )]
 #![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg))]
-#![deny(missing_docs, rust_2018_idioms)]
+#![deny(missing_docs)]
 #![forbid(unsafe_code)]
 
 pub use gix_glob as glob;
-use kstring::{KString, KStringRef};
 
 mod assignment;
 ///
@@ -66,14 +93,16 @@ pub enum State {
     Unspecified,
 }
 
-/// Represents a validated attribute name
+/// Represents a validated attribute name.
+///
+/// Enable `gix-parallel/parallel` to make this type thread-safe. Without it, the name is backed by an `Rc<str>` and is
+/// neither `Send` nor `Sync`; with it, the name is backed by an `Arc<str>` instead.
 #[derive(PartialEq, Eq, Debug, Hash, Ord, PartialOrd, Clone)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub struct Name(pub(crate) KString);
+pub struct Name(pub(crate) gix_parallel::OwnShared<str>);
 
 /// Holds a validated attribute name as a reference
 #[derive(Copy, Clone, PartialEq, Eq, Debug, Hash, Ord, PartialOrd)]
-pub struct NameRef<'a>(KStringRef<'a>);
+pub struct NameRef<'a>(&'a str);
 
 /// Name an attribute and describe it's assigned state.
 #[derive(PartialEq, Eq, Debug, Hash, Ord, PartialOrd, Clone)]
@@ -115,6 +144,7 @@ pub enum Source {
     GitInstallation,
     /// System-wide attributes file. This is typically defined as
     /// `$(prefix)/etc/gitattributes` (where prefix is the git-installation directory).
+    /// Git for Windows uses `../etc/gitattributes` relative to its runtime prefix instead.
     System,
     /// This is `<xdg-config-home>/git/attributes` and is git application configuration per user.
     ///

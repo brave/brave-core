@@ -57,11 +57,7 @@ pub trait DisplayValue {
     /// Given a `timespan`, return a fraction of the timespan based on the given unit, i.e. `(possible fraction, unit`).
     fn fraction_and_time_unit(&self, timespan: std::time::Duration) -> (Option<f64>, &'static str) {
         fn skip_one(v: f64) -> Option<f64> {
-            if (v - 1.0).abs() < f64::EPSILON {
-                None
-            } else {
-                Some(v)
-            }
+            if (v - 1.0).abs() < f64::EPSILON { None } else { Some(v) }
         }
         const HOUR_IN_SECS: u64 = 60 * 60;
         let secs = timespan.as_secs();

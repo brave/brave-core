@@ -13,12 +13,10 @@ use super::{Error, SampleBorrow, SampleUniform, UniformSampler};
 use crate::distr::utils::WideningMultiply;
 #[cfg(feature = "simd_support")]
 use crate::distr::{Distribution, StandardUniform};
-use crate::Rng;
+use crate::{Rng, RngExt};
 
 #[cfg(feature = "simd_support")]
-use core::simd::prelude::*;
-#[cfg(feature = "simd_support")]
-use core::simd::{LaneCount, SupportedLaneCount};
+use core::simd::{Select, prelude::*};
 
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
@@ -76,6 +74,23 @@ pub struct UniformInt<X> {
 
 macro_rules! uniform_int_impl {
     ($ty:ty, $uty:ty, $sample_ty:ident) => {
+        impl UniformInt<$ty> {
+            /// Get the maximum possible value
+            #[allow(unused)]
+            #[inline]
+            pub(crate) fn max(&self) -> $ty {
+                if self.range == 0 {
+                    return <$ty>::MAX;
+                } else {
+                    // Wrapping through <$ty>::MIN is possible with a valid
+                    // sampler over signed types. Wrapping through <$ty>::MAX is
+                    // possible with a bad sampler (constructible using serde).
+                    let max = self.low.wrapping_add(self.range.wrapping_sub(1));
+                    if max < self.low { <$ty>::MAX } else { max }
+                }
+            }
+        }
+
         impl SampleUniform for $ty {
             type Sampler = UniformInt<$ty>;
         }
@@ -89,7 +104,7 @@ macro_rules! uniform_int_impl {
             type X = $ty;
 
             #[inline] // if the range is constant, this helps LLVM to do the
-                      // calculations at compile-time.
+            // calculations at compile-time.
             fn new<B1, B2>(low_b: B1, high_b: B2) -> Result<Self, Error>
             where
                 B1: SampleBorrow<Self::X> + Sized,
@@ -104,7 +119,7 @@ macro_rules! uniform_int_impl {
             }
 
             #[inline] // if the range is constant, this helps LLVM to do the
-                      // calculations at compile-time.
+            // calculations at compile-time.
             fn new_inclusive<B1, B2>(low_b: B1, high_b: B2) -> Result<Self, Error>
             where
                 B1: SampleBorrow<Self::X> + Sized,
@@ -283,7 +298,6 @@ macro_rules! uniform_simd_int_impl {
         #[cfg(feature = "simd_support")]
         impl<const LANES: usize> SampleUniform for Simd<$ty, LANES>
         where
-            LaneCount<LANES>: SupportedLaneCount,
             Simd<$unsigned, LANES>:
                 WideningMultiply<Output = (Simd<$unsigned, LANES>, Simd<$unsigned, LANES>)>,
             StandardUniform: Distribution<Simd<$unsigned, LANES>>,
@@ -294,7 +308,6 @@ macro_rules! uniform_simd_int_impl {
         #[cfg(feature = "simd_support")]
         impl<const LANES: usize> UniformSampler for UniformInt<Simd<$ty, LANES>>
         where
-            LaneCount<LANES>: SupportedLaneCount,
             Simd<$unsigned, LANES>:
                 WideningMultiply<Output = (Simd<$unsigned, LANES>, Simd<$unsigned, LANES>)>,
             StandardUniform: Distribution<Simd<$unsigned, LANES>>,
@@ -437,7 +450,7 @@ impl UniformSampler for UniformUsize {
     type X = usize;
 
     #[inline] // if the range is constant, this helps LLVM to do the
-              // calculations at compile-time.
+    // calculations at compile-time.
     fn new<B1, B2>(low_b: B1, high_b: B2) -> Result<Self, Error>
     where
         B1: SampleBorrow<Self::X> + Sized,
@@ -453,7 +466,7 @@ impl UniformSampler for UniformUsize {
     }
 
     #[inline] // if the range is constant, this helps LLVM to do the
-              // calculations at compile-time.
+    // calculations at compile-time.
     fn new_inclusive<B1, B2>(low_b: B1, high_b: B2) -> Result<Self, Error>
     where
         B1: SampleBorrow<Self::X> + Sized,
@@ -697,6 +710,7 @@ mod tests {
         let r = Uniform::try_from(2u32..7).unwrap();
         assert_eq!(r.0.low, 2);
         assert_eq!(r.0.range, 5);
+        assert_eq!(r.0.max(), 6);
     }
 
     #[test]
@@ -711,6 +725,7 @@ mod tests {
         let r = Uniform::try_from(2u32..=6).unwrap();
         assert_eq!(r.0.low, 2);
         assert_eq!(r.0.range, 5);
+        assert_eq!(r.0.max(), 6);
     }
 
     #[test]
@@ -882,7 +897,7 @@ mod tests {
         use serde_json;
         let serialized_on_32bit = r#"{"low":10,"range":91,"thresh":74}"#;
         let deserialized: UniformUsize =
-            serde_json::from_str(&serialized_on_32bit).expect("deserialization");
+            serde_json::from_str(serialized_on_32bit).expect("deserialization");
         assert_eq!(
             deserialized,
             UniformUsize::new_inclusive(10, 100).expect("creation")

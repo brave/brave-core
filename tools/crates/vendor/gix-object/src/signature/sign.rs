@@ -1,0 +1,298 @@
+use std::{
+    ffi::{OsStr, OsString},
+    io::Write,
+    path::PathBuf,
+    process::Stdio,
+};
+
+use bstr::{BString, ByteSlice};
+use gix_error::{Result, ResultExt, bail, corruption, message, validation};
+
+use crate::{Commit, CommitRef, Tag, TagRef, WriteTo};
+
+use super::Format;
+
+/// Fully resolved options for signing a commit or annotated tag.
+#[derive(Clone, Debug)]
+pub struct Options {
+    /// The signature format.
+    pub format: Format,
+    /// The external signing program.
+    pub program: OsString,
+    /// Additional arguments passed to the signing program before Git's fixed arguments.
+    pub program_arguments: Vec<OsString>,
+    /// The key, identity, or key path passed to the signing program.
+    ///
+    /// SSH key paths must already be resolved; this plumbing layer does not perform Git-style path interpolation.
+    pub signing_key: OsString,
+    /// Environment variables set only for the signing program.
+    pub environment: Vec<(OsString, OsString)>,
+}
+
+impl CommitRef<'_> {
+    /// Return an owned copy of this commit with its active signature replaced by a newly created one.
+    pub fn sign(self, options: Options) -> Result<Commit> {
+        self.into_owned()?.sign(options)
+    }
+}
+
+impl Commit {
+    /// Return this commit with its active signature replaced by a newly created one according to `options`.
+    ///
+    /// Unsuccessful signer exits provide `program`, `exit_status`, `stdout`, `stderr`, and, when available, `exit_code`
+    /// according to the [external program runtime failure schema](gix_error::Metadata#external-program-runtime-failure).
+    pub fn sign(mut self, options: Options) -> Result<Commit> {
+        let signature_field = crate::commit::signature_field_name(self.tree.kind());
+        self.extra_headers.retain(|(name, _)| name != signature_field);
+        let mut payload = Vec::new();
+        self.write_to(&mut payload).or_error()?;
+        let signature = sign(&payload, &options)?;
+        self.extra_headers.push((signature_field.into(), signature));
+        Ok(self)
+    }
+}
+
+impl TagRef<'_> {
+    /// Return an owned copy of this annotated tag with its in-body signature replaced by a newly created one
+    /// according to `options`.
+    pub fn sign(self, options: Options) -> Result<Tag> {
+        self.into_owned()?.sign(options)
+    }
+}
+
+impl Tag {
+    /// Return this annotated tag with its in-body signature replaced by a newly created one according to `options`.
+    ///
+    /// Unsuccessful signer exits provide `program`, `exit_status`, `stdout`, `stderr`, and, when available, `exit_code`
+    /// according to the [external program runtime failure schema](gix_error::Metadata#external-program-runtime-failure).
+    pub fn sign(mut self, options: Options) -> Result<Tag> {
+        self.signature = None;
+        let mut payload = Vec::new();
+        self.write_to(&mut payload).or_error()?;
+        // Tag signatures follow the message in the object body, separated by a newline which is itself signed. This
+        // differs from commit signatures, which are inserted as a header after signing the commit without that header.
+        payload.push(b'\n');
+        self.signature = Some(sign(&payload, &options)?);
+        Ok(self)
+    }
+}
+
+fn sign(payload: &[u8], options: &Options) -> Result<BString> {
+    match options.format {
+        Format::OpenPgp | Format::X509 => sign_gpg(payload, options),
+        Format::Ssh => sign_ssh(payload, options),
+    }
+}
+
+fn command(options: &Options) -> gix_command::Prepare {
+    options.environment.iter().fold(
+        gix_command::prepare(&options.program).args(&options.program_arguments),
+        |command, (key, value)| command.env(key, value),
+    )
+}
+
+fn sign_gpg(payload: &[u8], options: &Options) -> Result<BString> {
+    if options.signing_key.is_empty() {
+        bail!(validation("A signing key is required"));
+    }
+    let output = run(
+        command(options)
+            .args([OsStr::new("--status-fd=2"), OsStr::new("-bsau")])
+            .arg(&options.signing_key)
+            .stdin(Stdio::piped())
+            .stdout(Stdio::piped())
+            .stderr(Stdio::piped()),
+        &options.program,
+        payload,
+    )?;
+    if !output.status.success() {
+        bail!(program_failure(&options.program, output));
+    }
+    if !output
+        .stderr
+        .lines()
+        .any(|line| line.starts_with(b"[GNUPG:] SIG_CREATED "))
+    {
+        bail!(corruption("The OpenPGP/X.509 signer did not report SIG_CREATED"));
+    }
+    Ok(strip_cr_before_lf(output.stdout).into())
+}
+
+fn sign_ssh(payload: &[u8], options: &Options) -> Result<BString> {
+    if options.signing_key.is_empty() {
+        bail!(validation("A signing key is required"));
+    }
+    let mut literal_key_file = None;
+    let literal_key = options
+        .signing_key
+        .to_str()
+        .and_then(|key| is_literal_ssh_key(key.as_bytes()));
+    let (key, literal) = match literal_key {
+        Some(key) => {
+            let mut file = secure_temporary_file()?;
+            write_temporary(&mut file, key)?;
+            let path = temporary_path(&mut file)?;
+            literal_key_file = Some(file);
+            (path.into_os_string(), true)
+        }
+        // Unlike literal keys, resolved key paths can be passed directly to `ssh-keygen -f`.
+        None => (options.signing_key.clone(), false),
+    };
+    let key = super::ssh_path_argument(std::path::Path::new(&key))?;
+    let mut payload_file = secure_temporary_file()?;
+    write_temporary(&mut payload_file, payload)?;
+    let payload_path = temporary_path(&mut payload_file)?;
+    let mut signature_path = payload_path.as_os_str().to_owned();
+    signature_path.push(".sig");
+    let signature_path = PathBuf::from(signature_path);
+    let mut command = command(options).args(["-Y", "sign", "-n", "git", "-f"]).arg(key);
+    if literal {
+        command = command.arg("-U");
+    }
+    let output = command
+        .arg(super::ssh_path_argument(&payload_path)?)
+        .stdin(Stdio::null())
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .spawn()
+        .or_raise(|| message("Could not execute signing program").with_program(&options.program))?
+        .wait_with_output()
+        .or_raise(|| message("Could not communicate with signing program").with_program(&options.program))?;
+    drop(literal_key_file);
+    if !output.status.success() {
+        bail!(program_failure(&options.program, output));
+    }
+    let signature = std::fs::read(&signature_path).or_raise(|| corruption("The SSH signer produced no signature"));
+    let _ = std::fs::remove_file(signature_path);
+    Ok(strip_cr_before_lf(signature?).into())
+}
+
+/// Return the SSH public key encoded by Git's literal-key syntax.
+///
+/// A literal key either starts with `key::`, in which case the prefix is removed, or directly with `ssh-`, in which
+/// case it is returned unchanged. All other values are considered paths.
+pub fn is_literal_ssh_key(key: &[u8]) -> Option<&[u8]> {
+    key.strip_prefix(b"key::")
+        .or_else(|| key.starts_with(b"ssh-").then_some(key))
+}
+
+/// On Unix, creates a file with 0o600 just like Git.
+fn secure_temporary_file() -> Result<gix_tempfile::Handle<gix_tempfile::handle::Writable>> {
+    gix_tempfile::new(
+        std::env::temp_dir(),
+        gix_tempfile::ContainingDirectory::Exists,
+        gix_tempfile::AutoRemove::Tempfile,
+    )
+    .or_raise(|| message("Could not create or write a temporary signing file"))
+}
+
+fn write_temporary(file: &mut gix_tempfile::Handle<gix_tempfile::handle::Writable>, data: &[u8]) -> Result {
+    file.with_mut(|file| file.write_all(data))
+        .or_raise(|| message("Could not create or write a temporary signing file"))?
+        .or_raise(|| message("Could not create or write a temporary signing file"))
+}
+
+fn temporary_path(file: &mut gix_tempfile::Handle<gix_tempfile::handle::Writable>) -> Result<PathBuf> {
+    file.with_mut(|file| file.path().to_owned())
+        .or_raise(|| message("Could not create or write a temporary signing file"))
+}
+
+fn program_failure(program: &OsStr, output: std::process::Output) -> gix_error::Message {
+    message("Signing program failed")
+        .with_program(program)
+        .with_exit_status(output.status)
+        .with("stdout", output.stdout)
+        .with("stderr", output.stderr)
+}
+
+fn run(command: gix_command::Prepare, program: &OsStr, input: &[u8]) -> Result<std::process::Output> {
+    let mut child = command
+        .spawn()
+        .or_raise(|| message("Could not execute signing program").with_program(program))?;
+    child
+        .stdin
+        .take()
+        .expect("configured as piped")
+        .write_all(input)
+        .or_raise(|| message("Could not communicate with signing program").with_program(program))?;
+    child
+        .wait_with_output()
+        .or_raise(|| message("Could not communicate with signing program").with_program(program))
+}
+
+/// Normalize signer-produced CRLF line endings to LF before embedding the signature in an object.
+///
+/// This matches Git and keeps signed object bytes independent of the platform on which the signer ran.
+fn strip_cr_before_lf(input: Vec<u8>) -> Vec<u8> {
+    let mut output = Vec::with_capacity(input.len());
+    let mut bytes = input.into_iter().peekable();
+    while let Some(byte) = bytes.next() {
+        if byte != b'\r' || bytes.peek() != Some(&b'\n') {
+            output.push(byte);
+        }
+    }
+    output
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn missing_signing_program_is_reported_only_in_metadata() -> gix_testtools::TestResult {
+        let directory = gix_testtools::tempfile::TempDir::new()?;
+        let program = directory.path().join("missing signer");
+        for format in [Format::OpenPgp, Format::X509, Format::Ssh] {
+            let err = sign(
+                b"payload",
+                &Options {
+                    format,
+                    program: program.as_os_str().into(),
+                    program_arguments: Vec::new(),
+                    signing_key: "unused".into(),
+                    environment: Vec::new(),
+                },
+            )
+            .expect_err("the signing program does not exist in the disposable directory");
+            let diagnostic = err
+                .iter_errors()
+                .find_map(|err| err.downcast_ref::<gix_error::Message>())
+                .expect("the spawn failure has a diagnostic message");
+            assert_eq!(
+                diagnostic.message, "Could not execute signing program",
+                "the prose identifies signing without repeating the program pathname"
+            );
+            assert_eq!(
+                diagnostic.values.get("program"),
+                Some(&gix_error::MetadataValue::from(program.as_path())),
+                "program metadata retains the exact signer pathname"
+            );
+        }
+        Ok(())
+    }
+
+    #[test]
+    fn programs_with_spaces_are_invoked_directly() -> gix_testtools::TestResult {
+        let program = OsStr::new("a directory/signer");
+        let command: std::process::Command = command(&Options {
+            format: Format::OpenPgp,
+            program: program.into(),
+            program_arguments: vec!["argument with spaces".into()],
+            signing_key: "key".into(),
+            environment: Vec::new(),
+        })
+        .try_into()?;
+
+        assert_eq!(
+            command.get_program(),
+            program,
+            "a signer pathname is passed directly instead of being interpreted by a shell"
+        );
+        assert_eq!(
+            command.get_args().collect::<Vec<_>>(),
+            [OsStr::new("argument with spaces")],
+            "signer arguments remain separate from the program pathname"
+        );
+        Ok(())
+    }
+}

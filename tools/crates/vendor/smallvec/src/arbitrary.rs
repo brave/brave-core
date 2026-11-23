@@ -1,9 +1,16 @@
-use crate::{Array, SmallVec};
-use arbitrary::{Arbitrary, Unstructured};
+use {
+    crate::{
+        Array,
+        SmallVec
+    },
+    arbitrary::{
+        Arbitrary,
+        Unstructured
+    }
+};
 
 impl<'a, A: Array> Arbitrary<'a> for SmallVec<A>
-where
-    <A as Array>::Item: Arbitrary<'a>,
+where <A as Array>::Item: Arbitrary<'a>
 {
     fn arbitrary(u: &mut Unstructured<'a>) -> arbitrary::Result<Self> {
         u.arbitrary_iter()?.collect()

@@ -72,6 +72,8 @@ public:
 
   // Note: no null terminator.
   const char *data() const noexcept;
+  char *data() noexcept;
+
   std::size_t size() const noexcept;
   std::size_t length() const noexcept;
   bool empty() const noexcept;
@@ -277,12 +279,6 @@ private:
   void *pos;
   std::size_t stride;
 };
-
-#if __cplusplus >= 202002L
-static_assert(std::ranges::contiguous_range<rust::Slice<const uint8_t>>);
-static_assert(std::contiguous_iterator<rust::Slice<const uint8_t>::iterator>);
-#endif
-
 #endif // CXXBRIDGE1_RUST_SLICE
 
 #ifndef CXXBRIDGE1_RUST_BOX
@@ -910,11 +906,6 @@ bool Vec<T>::empty() const noexcept {
 }
 
 template <typename T>
-T *Vec<T>::data() noexcept {
-  return const_cast<T *>(const_cast<const Vec<T> *>(this)->data());
-}
-
-template <typename T>
 const T &Vec<T>::operator[](std::size_t n) const noexcept {
   assert(n < this->size());
   auto data = reinterpret_cast<const char *>(this->data());
@@ -1147,3 +1138,14 @@ struct IsRelocatable
 
 } // namespace cxxbridge1
 } // namespace rust
+
+#if __cplusplus >= 202002L
+namespace std {
+namespace ranges {
+template <typename T>
+constexpr bool enable_borrowed_range<rust::Slice<T>> = true;
+template <typename T>
+constexpr bool enable_view<rust::Slice<T>> = true;
+} // namespace ranges
+} // namespace std
+#endif

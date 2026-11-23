@@ -1,11 +1,13 @@
 use crate::common::{Encoding, Format};
 use crate::read::{Error, Reader, Result};
 
+/// The header for the .debug_loclists/.debug_rnglists sections.
 #[derive(Debug, Clone, Copy)]
-pub(crate) struct ListsHeader {
-    encoding: Encoding,
-    #[allow(dead_code)]
-    offset_entry_count: u32,
+pub struct ListsHeader {
+    /// The encoding parameters for this set of entries.
+    pub encoding: Encoding,
+    /// The number of entries in the offset table that follows this header.
+    pub offset_entry_count: u32,
 }
 
 impl Default for ListsHeader {
@@ -23,9 +25,8 @@ impl Default for ListsHeader {
 
 impl ListsHeader {
     /// Return the serialized size of the table header.
-    #[allow(dead_code)]
     #[inline]
-    fn size(self) -> u8 {
+    pub fn size(self) -> u8 {
         // initial_length + version + address_size + segment_selector_size + offset_entry_count
         ListsHeader::size_for_encoding(self.encoding)
     }
@@ -39,30 +40,32 @@ impl ListsHeader {
 }
 
 // TODO: add an iterator over headers in the appropriate sections section
-#[allow(dead_code)]
-fn parse_header<R: Reader>(input: &mut R) -> Result<ListsHeader> {
-    let (length, format) = input.read_initial_length()?;
-    input.truncate(length)?;
+impl ListsHeader {
+    /// Parse `ListsHeader` from a `Reader`.
+    pub fn parse<R: Reader>(input: &mut R) -> Result<ListsHeader> {
+        let (length, format) = input.read_initial_length()?;
+        input.truncate(length)?;
 
-    let version = input.read_u16()?;
-    if version != 5 {
-        return Err(Error::UnknownVersion(u64::from(version)));
+        let version = input.read_u16()?;
+        if version != 5 {
+            return Err(Error::UnknownVersion(u64::from(version)));
+        }
+
+        let address_size = input.read_address_size()?;
+        let segment_selector_size = input.read_u8()?;
+        if segment_selector_size != 0 {
+            return Err(Error::UnsupportedSegmentSize(segment_selector_size));
+        }
+        let offset_entry_count = input.read_u32()?;
+
+        let encoding = Encoding {
+            format,
+            version,
+            address_size,
+        };
+        Ok(ListsHeader {
+            encoding,
+            offset_entry_count,
+        })
     }
-
-    let address_size = input.read_address_size()?;
-    let segment_selector_size = input.read_u8()?;
-    if segment_selector_size != 0 {
-        return Err(Error::UnsupportedSegmentSize);
-    }
-    let offset_entry_count = input.read_u32()?;
-
-    let encoding = Encoding {
-        format,
-        version,
-        address_size,
-    };
-    Ok(ListsHeader {
-        encoding,
-        offset_entry_count,
-    })
 }

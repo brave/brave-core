@@ -46,7 +46,7 @@ pub enum ValueHint {
     /// A single string containing a command and its arguments.
     CommandString,
     /// Capture the remaining arguments as a command name and arguments for that command. This is
-    /// common when writing shell wrappers that execute anther command, for example `sudo` or `env`.
+    /// common when writing shell wrappers that execute another command, for example `sudo` or `env`.
     ///
     /// This hint is special, the argument must be a positional argument and have
     /// [`.num_args(1..)`] and Command must use [`Command::trailing_var_arg(true)`]. The result is that the
@@ -74,19 +74,19 @@ impl FromStr for ValueHint {
     type Err = String;
     fn from_str(s: &str) -> Result<Self, <Self as FromStr>::Err> {
         Ok(match &*s.to_ascii_lowercase() {
-            "unknown" => ValueHint::Unknown,
-            "other" => ValueHint::Other,
-            "anypath" => ValueHint::AnyPath,
-            "filepath" => ValueHint::FilePath,
-            "dirpath" => ValueHint::DirPath,
-            "executablepath" => ValueHint::ExecutablePath,
-            "commandname" => ValueHint::CommandName,
-            "commandstring" => ValueHint::CommandString,
-            "commandwitharguments" => ValueHint::CommandWithArguments,
-            "username" => ValueHint::Username,
-            "hostname" => ValueHint::Hostname,
-            "url" => ValueHint::Url,
-            "emailaddress" => ValueHint::EmailAddress,
+            "unknown" => Self::Unknown,
+            "other" => Self::Other,
+            "anypath" => Self::AnyPath,
+            "filepath" => Self::FilePath,
+            "dirpath" => Self::DirPath,
+            "executablepath" => Self::ExecutablePath,
+            "commandname" => Self::CommandName,
+            "commandstring" => Self::CommandString,
+            "commandwitharguments" => Self::CommandWithArguments,
+            "username" => Self::Username,
+            "hostname" => Self::Hostname,
+            "url" => Self::Url,
+            "emailaddress" => Self::EmailAddress,
             _ => return Err(format!("unknown ValueHint: `{s}`")),
         })
     }

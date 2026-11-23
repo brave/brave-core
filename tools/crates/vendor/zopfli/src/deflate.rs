@@ -158,7 +158,7 @@ impl<W: Write> Write for DeflateEncoder<W> {
         }
 
         // Set the chunk to be used for the next compression operation
-        // to this chunk. We don't know whether it's last or not yet
+        // to this chunk. We don't know whether it's last yet
         self.set_chunk(buf);
 
         Ok(buf.len())
@@ -1345,13 +1345,16 @@ impl<W: Write> BitwiseWriter<W> {
     }
 
     fn add_bit(&mut self, bit: u8) -> Result<(), Error> {
+        // Flush a full byte before buffering the new bit so that writer state stays constant
+        // between failed writes
+        if self.bp >= 8 {
+            self.finish_partial_bits()?;
+        }
+
         self.bit |= bit << self.bp;
         self.bp += 1;
-        if self.bp == 8 {
-            self.finish_partial_bits()
-        } else {
-            Ok(())
-        }
+
+        Ok(())
     }
 
     fn add_bits(&mut self, symbol: u32, length: u32) -> Result<(), Error> {
@@ -1378,11 +1381,11 @@ impl<W: Write> BitwiseWriter<W> {
 
     fn finish_partial_bits(&mut self) -> Result<(), Error> {
         if self.bp != 0 {
-            let bytes = &[self.bit];
-            self.add_bytes(bytes)?;
+            self.add_byte(self.bit)?;
             self.bit = 0;
             self.bp = 0;
         }
+
         Ok(())
     }
 }
@@ -1437,5 +1440,20 @@ mod test {
             decompressed_data,
             "Decompressed data should match input data"
         );
+    }
+
+    #[test]
+    fn too_small_write_buffer_works() {
+        let mut tiny_buf = [0; 4];
+        let mut encoder =
+            DeflateEncoder::new(Options::default(), BlockType::Fixed, &mut tiny_buf[..]);
+
+        encoder
+            .write_all(b"data which won't compress into a very tiny buffer")
+            .expect("First small data write should buffer into a chunk");
+
+        encoder
+            .finish()
+            .expect_err("Flushing the pending buffer to the stream should fail gracefully");
     }
 }

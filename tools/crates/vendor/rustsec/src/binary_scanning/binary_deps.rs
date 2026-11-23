@@ -133,13 +133,11 @@ fn lockfile_from_version_info_json(input: &VersionInfo) -> Result<Lockfile, carg
                     .dependencies
                     .iter()
                     .map(|i| {
-                        let package =
-                            input
-                                .packages
-                                .get(*i)
-                                .ok_or(cargo_lock::Error::Parse(format!(
-                                    "There is no dependency with index {i} in the input JSON"
-                                )))?;
+                        let package = input.packages.get(*i).ok_or_else(|| {
+                            cargo_lock::Error::Parse(format!(
+                                "there is no dependency with index {i} in the input JSON"
+                            ))
+                        })?;
 
                         Result::<_, cargo_lock::Error>::Ok(Dependency {
                             name: cargo_lock::package::Name::from_str(package.name.as_str())?,

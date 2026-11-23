@@ -13,7 +13,7 @@
 edition = "2018"
 rust-version = "1.67.0"
 name = "flate2"
-version = "1.1.5"
+version = "1.1.11"
 authors = [
     "Alex Crichton <alex@alexcrichton.com>",
     "Josh Triplett <josh@joshtriplett.org>",
@@ -55,37 +55,51 @@ rustdoc-args = [
 ]
 
 [features]
+any_c_zlib = ["any_zlib"]
 any_impl = []
 any_zlib = ["any_impl"]
-cloudflare_zlib = [
-    "any_zlib",
-    "cloudflare-zlib-sys",
+cloudflare_zlib = ["zlib"]
+default = [
+    "rust_backend",
+    "runtime_detection",
 ]
-default = ["rust_backend"]
 miniz-sys = ["rust_backend"]
+miniz_oxide = [
+    "any_impl",
+    "dep:miniz_oxide",
+    "dep:crc32fast",
+]
+runtime_detection = [
+    "zlib-rs?/std",
+    "crc32fast?/std",
+]
 rust_backend = [
     "miniz_oxide",
     "any_impl",
 ]
 zlib = [
-    "any_zlib",
+    "any_c_zlib",
     "libz-sys",
+    "dep:crc32fast",
 ]
 zlib-default = [
-    "any_zlib",
+    "any_c_zlib",
     "libz-sys/default",
+    "dep:crc32fast",
 ]
 zlib-ng = [
-    "any_zlib",
+    "any_c_zlib",
     "libz-ng-sys",
+    "dep:crc32fast",
 ]
 zlib-ng-compat = [
     "zlib",
     "libz-sys/zlib-ng",
+    "dep:crc32fast",
 ]
 zlib-rs = [
     "any_zlib",
-    "libz-rs-sys",
+    "dep:zlib-rs",
 ]
 
 [lib]
@@ -185,6 +199,10 @@ name = "zlibencoder-write"
 path = "examples/zlibencoder-write.rs"
 
 [[test]]
+name = "capabilities"
+path = "tests/capabilities.rs"
+
+[[test]]
 name = "early-flush"
 path = "tests/early-flush.rs"
 
@@ -197,28 +215,37 @@ name = "gunzip"
 path = "tests/gunzip.rs"
 
 [[test]]
+name = "gzip-read-errors"
+path = "tests/gzip-read-errors.rs"
+
+[[test]]
+name = "partial-write"
+path = "tests/partial-write.rs"
+
+[[test]]
+name = "write-after-finish"
+path = "tests/write-after-finish.rs"
+
+[[test]]
 name = "zero-write"
 path = "tests/zero-write.rs"
 
-[dependencies.cloudflare-zlib-sys]
-version = "0.3.6"
-optional = true
+[[test]]
+name = "zlib-rs-uninit"
+path = "tests/zlib-rs-uninit.rs"
 
 [dependencies.crc32fast]
 version = "1.2.0"
+optional = true
+default-features = false
+
+[dependencies.document-features]
+version = "0.2"
+optional = true
 
 [dependencies.libz-ng-sys]
 version = "1.1.16"
 optional = true
-
-[dependencies.libz-rs-sys]
-version = "0.5.1"
-features = [
-    "std",
-    "rust-allocator",
-]
-optional = true
-default-features = false
 
 [dependencies.libz-sys]
 version = "1.1.20"
@@ -226,12 +253,18 @@ optional = true
 default-features = false
 
 [dependencies.miniz_oxide]
-version = "0.8.5"
-features = [
-    "with-alloc",
-    "simd",
-]
+version = "0.9.0"
+features = ["simd"]
 optional = true
+
+[dependencies.zlib-rs]
+version = "0.6.7"
+features = ["rust-allocator"]
+optional = true
+default-features = false
+
+[dev-dependencies.futures]
+version = "0.3"
 default-features = false
 
 [dev-dependencies.quickcheck]
@@ -241,10 +274,7 @@ default-features = false
 [dev-dependencies.rand]
 version = "0.9"
 
-[target.'cfg(all(target_arch = "wasm32", not(target_os = "emscripten")))'.dependencies.miniz_oxide]
-version = "0.8.5"
-features = [
-    "with-alloc",
-    "simd",
-]
-default-features = false
+[lints.rust.unexpected_cfgs]
+level = "warn"
+priority = 0
+check-cfg = ["cfg(flate2_unstable_nightly_alloc_io)"]

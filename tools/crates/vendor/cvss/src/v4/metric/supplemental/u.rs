@@ -1,7 +1,7 @@
 //! Provider Urgency (U)
 
 use crate::{
-    Error, Result,
+    Error,
     v4::metric::{Metric, MetricType},
 };
 use alloc::borrow::ToOwned;
@@ -27,11 +27,12 @@ use core::{fmt, str::FromStr};
 /// >
 /// > The Penultimate Product Provider (PPP) is best positioned to provide a
 /// > direct assessment of Provider Urgency.
-#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+#[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
 pub enum ProviderUrgency {
     /// Not Defined (X)
     ///
     /// > The metric has not been evaluated.
+    #[default]
     NotDefined,
     /// Red
     ///
@@ -55,22 +56,16 @@ pub enum ProviderUrgency {
     Clear,
 }
 
-impl Default for ProviderUrgency {
-    fn default() -> Self {
-        Self::NotDefined
-    }
-}
-
 impl Metric for ProviderUrgency {
     const TYPE: MetricType = MetricType::U;
 
     fn as_str(self) -> &'static str {
         match self {
-            ProviderUrgency::NotDefined => "X",
-            ProviderUrgency::Red => "Red",
-            ProviderUrgency::Amber => "Amber",
-            ProviderUrgency::Green => "Green",
-            ProviderUrgency::Clear => "Clear",
+            Self::NotDefined => "X",
+            Self::Red => "Red",
+            Self::Amber => "Amber",
+            Self::Green => "Green",
+            Self::Clear => "Clear",
         }
     }
 }
@@ -84,13 +79,13 @@ impl fmt::Display for ProviderUrgency {
 impl FromStr for ProviderUrgency {
     type Err = Error;
 
-    fn from_str(s: &str) -> Result<Self> {
+    fn from_str(s: &str) -> Result<Self, Error> {
         match s {
-            "X" => Ok(ProviderUrgency::NotDefined),
-            "RED" => Ok(ProviderUrgency::Red),
-            "AMBER" => Ok(ProviderUrgency::Amber),
-            "GREEN" => Ok(ProviderUrgency::Green),
-            "CLEAR" => Ok(ProviderUrgency::Clear),
+            "X" => Ok(Self::NotDefined),
+            "RED" => Ok(Self::Red),
+            "AMBER" => Ok(Self::Amber),
+            "GREEN" => Ok(Self::Green),
+            "CLEAR" => Ok(Self::Clear),
             _ => Err(Error::InvalidMetricV4 {
                 metric_type: Self::TYPE,
                 value: s.to_owned(),

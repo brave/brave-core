@@ -1,16 +1,10 @@
-use std::borrow::Cow;
-
 use gix_merge::blob::builtin_driver::text;
 use gix_object::Write;
 
 use crate::{
+    Error, Repository, Result,
     config::{cache::util::ApplyLeniencyDefault, tree},
     prelude::ObjectIdExt,
-    repository::{
-        blob_merge_options, merge_commits, merge_resource_cache, merge_trees, tree_merge_options, virtual_merge_base,
-        virtual_merge_base_with_graph,
-    },
-    Repository,
 };
 
 /// Merge-utilities
@@ -24,19 +18,12 @@ impl Repository {
     pub fn merge_resource_cache(
         &self,
         worktree_roots: gix_merge::blob::pipeline::WorktreeRoots,
-    ) -> Result<gix_merge::blob::Platform, merge_resource_cache::Error> {
+    ) -> Result<gix_merge::blob::Platform> {
         let index = self.index_or_load_from_head_or_empty()?;
         let mode = {
-            let renormalize = self
-                .config
-                .resolved
-                .boolean(&tree::Merge::RENORMALIZE)
-                .map(|res| {
-                    tree::Merge::RENORMALIZE
-                        .enrich_error(res)
-                        .with_lenient_default(self.config.lenient_config)
-                })
-                .transpose()?
+            let renormalize = tree::Merge::RENORMALIZE
+                .enrich_error(self.config.resolved.boolean(tree::Merge::RENORMALIZE))
+                .with_lenient_default(self.config.lenient_config)?
                 .unwrap_or_default();
             if renormalize {
                 gix_merge::blob::pipeline::Mode::Renormalize
@@ -54,10 +41,14 @@ impl Repository {
                 },
             )?
             .inner;
-        let filter = gix_filter::Pipeline::new(self.command_context()?, crate::filter::Pipeline::options(self)?);
+        let filter = gix_filter::Pipeline::new(
+            self.command_context()?,
+            self.object_hash(),
+            crate::filter::Pipeline::options(self)?,
+        );
         let filter = gix_merge::blob::Pipeline::new(worktree_roots, filter, self.config.merge_pipeline_options()?);
         let options = gix_merge::blob::platform::Options {
-            default_driver: self.config.resolved.string(&tree::Merge::DEFAULT).map(Cow::into_owned),
+            default_driver: self.config.resolved.string(tree::Merge::DEFAULT),
         };
         let drivers = self.config.merge_drivers()?;
         Ok(gix_merge::blob::Platform::new(filter, mode, attrs, drivers, options))
@@ -65,7 +56,7 @@ impl Repository {
 
     /// Return options for use with [`gix_merge::blob::PlatformRef::merge()`], accessible through
     /// [merge_resource_cache()](Self::merge_resource_cache).
-    pub fn blob_merge_options(&self) -> Result<gix_merge::blob::platform::merge::Options, blob_merge_options::Error> {
+    pub fn blob_merge_options(&self) -> Result<gix_merge::blob::platform::merge::Options> {
         Ok(gix_merge::blob::platform::merge::Options {
             is_virtual_ancestor: false,
             resolve_binary_with: None,
@@ -75,7 +66,7 @@ impl Repository {
                     style: self
                         .config
                         .resolved
-                        .string(&tree::Merge::CONFLICT_STYLE)
+                        .string(tree::Merge::CONFLICT_STYLE)
                         .map(|value| {
                             tree::Merge::CONFLICT_STYLE
                                 .try_into_conflict_style(value)
@@ -90,7 +81,7 @@ impl Repository {
     }
 
     /// Read all relevant configuration options to instantiate options for use in [`merge_trees()`](Self::merge_trees).
-    pub fn tree_merge_options(&self) -> Result<crate::merge::tree::Options, tree_merge_options::Error> {
+    pub fn tree_merge_options(&self) -> Result<crate::merge::tree::Options> {
         let (mut rewrites, mut is_configured) = crate::diff::utils::new_rewrites_inner(
             &self.config.resolved,
             self.config.lenient_config,
@@ -139,7 +130,7 @@ impl Repository {
         their_tree: impl AsRef<gix_hash::oid>,
         labels: gix_merge::blob::builtin_driver::text::Labels<'_>,
         options: crate::merge::tree::Options,
-    ) -> Result<crate::merge::tree::Outcome<'_>, merge_trees::Error> {
+    ) -> Result<crate::merge::tree::Outcome<'_>> {
         let mut diff_cache = self.diff_resource_cache_for_tree_diff()?;
         let mut blob_merge = self.merge_resource_cache(Default::default())?;
         let gix_merge::tree::Outcome {
@@ -193,7 +184,7 @@ impl Repository {
         their_commit: impl Into<gix_hash::ObjectId>,
         labels: gix_merge::blob::builtin_driver::text::Labels<'_>,
         options: crate::merge::commit::Options,
-    ) -> Result<crate::merge::commit::Outcome<'_>, merge_commits::Error> {
+    ) -> Result<crate::merge::commit::Outcome<'_>> {
         let mut diff_cache = self.diff_resource_cache_for_tree_diff()?;
         let mut blob_merge = self.merge_resource_cache(Default::default())?;
         let commit_graph = self.commit_graph_if_enabled()?;
@@ -251,10 +242,10 @@ impl Repository {
         &self,
         merge_bases: impl IntoIterator<Item = impl Into<gix_hash::ObjectId>>,
         options: crate::merge::tree::Options,
-    ) -> Result<crate::merge::virtual_merge_base::Outcome<'_>, virtual_merge_base::Error> {
+    ) -> Result<crate::merge::virtual_merge_base::Outcome<'_>> {
         let commit_graph = self.commit_graph_if_enabled()?;
         let mut graph = self.revision_graph(commit_graph.as_ref());
-        Ok(self.virtual_merge_base_with_graph(merge_bases, &mut graph, options)?)
+        self.virtual_merge_base_with_graph(merge_bases, &mut graph, options)
     }
 
     /// Like [`Self::virtual_merge_base()`], but also allows to reuse a `graph` for faster merge-base calculation,
@@ -264,11 +255,11 @@ impl Repository {
         merge_bases: impl IntoIterator<Item = impl Into<gix_hash::ObjectId>>,
         graph: &mut gix_revwalk::Graph<'_, '_, gix_revwalk::graph::Commit<gix_revision::merge_base::Flags>>,
         options: crate::merge::tree::Options,
-    ) -> Result<crate::merge::virtual_merge_base::Outcome<'_>, virtual_merge_base_with_graph::Error> {
+    ) -> Result<crate::merge::virtual_merge_base::Outcome<'_>> {
         let mut merge_bases: Vec<_> = merge_bases.into_iter().map(Into::into).collect();
         let first = merge_bases
             .pop()
-            .ok_or(virtual_merge_base_with_graph::Error::MissingCommit)?;
+            .ok_or_else(|| Error::from_error(gix_error::message("No commit was provided as merge-base")))?;
         let Some(second) = merge_bases.pop() else {
             let tree_id = self.find_commit(first)?.tree_id()?;
             let commit_id = first.attach(self);

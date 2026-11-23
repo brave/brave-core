@@ -4,11 +4,10 @@ use std::{
     pin::Pin,
     ptr,
     task::{Context, Poll, RawWaker, RawWakerVTable, Waker},
-    thread,
     time::Duration,
 };
 
-use crate::Error;
+use crate::{parallel::reactor::Reactor, Error};
 
 const NOOP_WAKER_VTABLE: RawWakerVTable = RawWakerVTable::new(
     // Cloning just returns a new no-op raw waker
@@ -29,7 +28,7 @@ impl Future for YieldOnce {
     type Output = ();
 
     fn poll(self: Pin<&mut Self>, _cx: &mut Context<'_>) -> Poll<()> {
-        let flag = &mut std::pin::Pin::into_inner(self).0;
+        let flag = &mut core::pin::Pin::into_inner(self).0;
         if !*flag {
             *flag = true;
             Poll::Pending
@@ -48,6 +47,7 @@ pub(crate) fn block_on<Fut1, Fut2>(
     mut fut1: Fut1,
     mut fut2: Fut2,
     has_made_progress: &Cell<bool>,
+    reactor: &Reactor,
 ) -> Result<(), Error>
 where
     Fut1: Future<Output = Result<(), Error>>,
@@ -62,8 +62,8 @@ where
     let mut fut1 = Some(unsafe { Pin::new_unchecked(&mut fut1) });
     let mut fut2 = Some(unsafe { Pin::new_unchecked(&mut fut2) });
 
-    // TODO: Once `Waker::noop` stablised and our MSRV is bumped to the version
-    // which it is stablised, replace this with `Waker::noop`.
+    // TODO: Once `Waker::noop` stabilised and our MSRV is bumped to the version
+    // which it is stabilised, replace this with `Waker::noop`.
     let waker = unsafe { Waker::from_raw(NOOP_RAW_WAKER) };
     let mut context = Context::from_waker(&waker);
 
@@ -91,22 +91,8 @@ where
         }
 
         if !has_made_progress.get() {
-            if backoff_cnt > 3 {
-                // We have yielded at least three times without making'
-                // any progress, so we will sleep for a while.
-                let duration = Duration::from_millis(100 * (backoff_cnt - 3).min(10));
-                thread::sleep(duration);
-            } else {
-                // Given that we spawned a lot of compilation tasks, it is unlikely
-                // that OS cannot find other ready task to execute.
-                //
-                // If all of them are done, then we will yield them and spawn more,
-                // or simply return.
-                //
-                // Thus this will not be turned into a busy-wait loop and it will not
-                // waste CPU resource.
-                thread::yield_now();
-            }
+            let duration = Duration::from_millis((backoff_cnt + 1).min(10));
+            reactor.wait_with_timeout(duration)?;
         }
 
         backoff_cnt = if has_made_progress.get() {

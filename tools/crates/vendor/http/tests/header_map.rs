@@ -56,6 +56,23 @@ fn with_capacity_overflow() {
 }
 
 #[test]
+fn extend_size_hint_above_capacity() {
+    // A `HeaderMap` may hold more values than the table can index when many
+    // values are appended under one name, so an exact size hint can exceed the
+    // largest `reserve` request. Extending must not panic in that case.
+    let name = HeaderName::from_static("h");
+    let value = HeaderValue::from_static("0");
+    let pairs: Vec<(HeaderName, HeaderValue)> =
+        std::iter::repeat_with(|| (name.clone(), value.clone()))
+            .take(24_577)
+            .collect();
+
+    let map = HeaderMap::from_iter(pairs);
+    assert_eq!(map.len(), 24_577);
+    assert_eq!(map.keys_len(), 1);
+}
+
+#[test]
 #[should_panic]
 fn reserve_overflow() {
     // See https://github.com/hyperium/http/issues/352
@@ -671,4 +688,87 @@ fn ensure_miri_sharedreadonly_not_violated() {
     );
 
     let _foo = &headers.iter().next();
+}
+
+#[test]
+fn ensure_miri_itermut_not_violated() {
+    let mut headers = HeaderMap::<u32>::default();
+    headers.insert(HeaderName::from_static("hello"), 1u32);
+    headers.insert(HeaderName::from_static("zomg"), 2u32);
+
+    let mut iter = headers.iter_mut();
+    let (_, first) = iter.next().unwrap();
+    let (_, second) = iter.next().unwrap();
+
+    *first += 10;
+    *second += 20;
+}
+
+#[test]
+fn ensure_miri_valueitermut_not_violated() {
+    let mut headers = HeaderMap::<u32>::default();
+    headers.insert(HeaderName::from_static("hello"), 1u32);
+    headers.append(HeaderName::from_static("hello"), 2u32);
+    headers.append(HeaderName::from_static("hello"), 3u32);
+
+    let mut entry = match headers.entry(HeaderName::from_static("hello")) {
+        Entry::Occupied(entry) => entry,
+        Entry::Vacant(_) => panic!(),
+    };
+
+    let mut iter = entry.iter_mut();
+    let first = iter.next().unwrap();
+    let second = iter.next().unwrap();
+
+    *first += 10;
+    *second += 20;
+}
+
+#[test]
+fn into_iter_drop_panic_after_yielding_extra_value_double_drops() {
+    use std::panic::{catch_unwind, AssertUnwindSafe};
+
+    struct ManuallyAllocated {
+        ptr: *mut u8,
+        panic_on_drop: bool,
+    }
+
+    impl ManuallyAllocated {
+        fn new(byte: u8, panic_on_drop: bool) -> Self {
+            Self {
+                ptr: Box::into_raw(Box::new(byte)),
+                panic_on_drop,
+            }
+        }
+    }
+
+    impl Drop for ManuallyAllocated {
+        fn drop(&mut self) {
+            unsafe {
+                drop(Box::from_raw(self.ptr));
+            }
+
+            if self.panic_on_drop {
+                panic!("intentional drop panic");
+            }
+        }
+    }
+
+    let mut map: HeaderMap<ManuallyAllocated> = HeaderMap::default();
+    map.append("x-first", ManuallyAllocated::new(1, false));
+    map.append("x-first", ManuallyAllocated::new(2, false));
+    map.insert("x-second", ManuallyAllocated::new(3, true));
+
+    let mut iter = map.into_iter();
+
+    // HeaderMap::IntoIter yields extra values with ptr::read from
+    // self.extra_values and relies on Drop setting self.extra_values.len() to
+    // zero after the iterator has been fully consumed. If a later value's Drop
+    // panics while IntoIter::drop is draining the iterator, that set_len(0) is
+    // skipped. The Vec then drops already-yielded extra value slots again. The
+    // safe sequence below therefore double-frees byte 2 under Miri.
+    drop(iter.next().unwrap());
+    drop(iter.next().unwrap());
+
+    let _ = catch_unwind(AssertUnwindSafe(|| drop(iter)));
 }

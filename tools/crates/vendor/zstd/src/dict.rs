@@ -114,7 +114,12 @@ pub fn from_continuous(
     use crate::map_error_code;
 
     // Complain if the lengths don't add up to the entire data.
-    if sample_sizes.iter().sum::<usize>() != sample_data.len() {
+    // Add them with overflow detection: a wrapping sum would accept sizes
+    // reaching far outside of `sample_data`.
+    let total_size = sample_sizes
+        .iter()
+        .try_fold(0usize, |total, &size| total.checked_add(size));
+    if total_size != Some(sample_data.len()) {
         return Err(io::Error::new(
             io::ErrorKind::Other,
             "sample sizes don't add up".to_string(),
@@ -292,5 +297,13 @@ mod tests {
 
             assert_eq!(&content, &result);
         }
+    }
+
+    #[test]
+    fn test_from_continuous_overflowing_sizes() {
+        // These sizes only add up to the data length by wrapping around.
+        let data = [0u8; 100];
+        let sizes = [usize::MAX - 99, 200];
+        assert!(super::from_continuous(&data, &sizes, 4000).is_err());
     }
 }

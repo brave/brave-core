@@ -13,7 +13,7 @@
 edition = "2018"
 rust-version = "1.64"
 name = "zstd-sys"
-version = "2.0.16+zstd.1.5.7"
+version = "2.1.3+zstd.1.5.7"
 authors = ["Alexandre Bury <alexandre.bury@gmail.com>"]
 build = "build.rs"
 links = "zstd"
@@ -29,8 +29,14 @@ include = [
     "/zstd/lib/**/*.c",
     "/zstd/lib/**/*.h",
     "/zstd/lib/**/*.S",
+    "/zstd/lib/libzstd.pc.in",
     "/zstd/contrib/seekable_format/*.c",
     "/zstd/contrib/seekable_format/*.h",
+    "/zstd/build/cmake/CMakeLists.txt",
+    "/zstd/build/cmake/zstdConfig.cmake.in",
+    "/zstd/build/cmake/CMakeModules/*.cmake",
+    "/zstd/build/cmake/lib/CMakeLists.txt",
+    "/zstd/build/cmake/lib/*.in",
 ]
 autolib = false
 autobins = false
@@ -48,18 +54,18 @@ categories = [
     "api-bindings",
     "compression",
 ]
-license = "MIT/Apache-2.0"
+license = "BSD-3-Clause AND BSD-2-Clause"
 repository = "https://github.com/gyscos/zstd-rs"
 
 [package.metadata.docs.rs]
 features = ["experimental"]
 
 [features]
+cmake = ["dep:cmake"]
 debug = []
 default = [
     "legacy",
     "zdict_builder",
-    "bindgen",
 ]
 experimental = []
 fat-lto = []
@@ -68,10 +74,12 @@ no_asm = []
 no_wasm_shim = []
 non-cargo = []
 pkg-config = []
+rust-backend = ["dep:libzstd-rs-sys"]
 seekable = []
 std = []
 thin = []
 thin-lto = []
+vendored = []
 zdict_builder = []
 zstdmt = []
 
@@ -80,8 +88,13 @@ name = "zstd_sys"
 path = "src/lib.rs"
 doctest = false
 
+[dependencies.libzstd-rs-sys]
+version = "=0.0.1-prerelease.2"
+features = ["export-symbols"]
+optional = true
+
 [build-dependencies.bindgen]
-version = "0.72"
+version = "0.73.2"
 features = ["runtime"]
 optional = true
 default-features = false
@@ -89,6 +102,10 @@ default-features = false
 [build-dependencies.cc]
 version = "1.0.45"
 features = ["parallel"]
+
+[build-dependencies.cmake]
+version = "0.1"
+optional = true
 
 [build-dependencies.pkg-config]
 version = "0.3.28"

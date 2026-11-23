@@ -24,7 +24,6 @@ fn bench_eq_consts(b: &mut Bencher) {
     });
 }
 
-
 #[bench]
 fn bench_ne_consts(b: &mut Bencher) {
     let one = TEXT_XML;

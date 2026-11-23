@@ -140,6 +140,7 @@ impl TINFLStatus {
             inflate::TINFLStatus::Done => Self::Done,
             inflate::TINFLStatus::NeedsMoreInput => Self::NeedsMoreInput,
             inflate::TINFLStatus::HasMoreOutput => Self::HasMoreOutput,
+            _ => Self::Failed, // Unknown status
         }
     }
 }

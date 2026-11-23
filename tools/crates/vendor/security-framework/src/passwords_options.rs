@@ -16,11 +16,9 @@ use security_framework_sys::item::{
     kSecAttrPath, kSecAttrPort, kSecAttrProtocol, kSecAttrSecurityDomain, kSecAttrServer,
     kSecAttrService, kSecClass, kSecClassGenericPassword, kSecClassInternetPassword,
 };
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 use security_framework_sys::item::kSecAttrSynchronizable;
-#[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
 use security_framework_sys::item::kSecAttrSynchronizableAny;
-#[cfg(any(feature = "OSX_10_15", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
+#[cfg(any(feature = "OSX_10_15", not(target_os = "macos")))]
 use security_framework_sys::item::kSecUseDataProtectionKeychain;
 use security_framework_sys::keychain::{SecAuthenticationType, SecProtocolType};
 
@@ -37,10 +35,8 @@ bitflags::bitflags! {
     pub struct AccessControlOptions: CFOptionFlags {
         /** Constraint to access an item with either biometry or passcode. */
         const USER_PRESENCE = kSecAccessControlUserPresence;
-        #[cfg(feature = "OSX_10_13")]
         /** Constraint to access an item with Touch ID for any enrolled fingers, or Face ID. */
         const BIOMETRY_ANY = kSecAccessControlBiometryAny;
-        #[cfg(feature = "OSX_10_13")]
         /** Constraint to access an item with Touch ID for currently enrolled fingers, or from Face ID with the currently enrolled user. */
         const BIOMETRY_CURRENT_SET = kSecAccessControlBiometryCurrentSet;
         /** Constraint to access an item with a passcode. */
@@ -138,7 +134,6 @@ impl PasswordOptions {
         }
     }
 
-    #[cfg(any(feature = "OSX_10_12", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
     /// Specify whether password is cloud-synchronized, not cloud-synchronized, or either (`None`).
     ///
     /// Note: cloud-synchronized and not-cloud-synchronized passwords are kept
@@ -194,7 +189,7 @@ impl PasswordOptions {
         }
     }
 
-    #[cfg(any(feature = "OSX_10_15", target_os = "ios", target_os = "tvos", target_os = "watchos", target_os = "visionos"))]
+    #[cfg(any(feature = "OSX_10_15", not(target_os = "macos")))]
     /// Use the data protection keychain (always true except on macOS)
     pub fn use_protected_keychain(&mut self) {
         unsafe {

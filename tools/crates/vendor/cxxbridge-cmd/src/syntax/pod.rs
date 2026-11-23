@@ -1,6 +1,6 @@
 use crate::syntax::atom::Atom::{self, *};
 use crate::syntax::query::TypeQuery;
-use crate::syntax::{primitive, Types};
+use crate::syntax::{Types, primitive};
 
 impl<'a> Types<'a> {
     pub(crate) fn is_guaranteed_pod(&self, ty: impl Into<TypeQuery<'a>>) -> bool {
@@ -27,12 +27,9 @@ impl<'a> Types<'a> {
             | TypeQuery::SharedPtr
             | TypeQuery::WeakPtr
             | TypeQuery::CxxVector
-            | TypeQuery::Void => false,
-            TypeQuery::Ref(_)
-            | TypeQuery::Str
-            | TypeQuery::Fn
-            | TypeQuery::SliceRef
-            | TypeQuery::Ptr(_) => true,
+            | TypeQuery::Void
+            | TypeQuery::Ref(_) => false,
+            TypeQuery::Str | TypeQuery::Fn | TypeQuery::SliceRef | TypeQuery::Ptr(_) => true,
             TypeQuery::Array(array) => self.is_guaranteed_pod(&array.inner),
         }
     }

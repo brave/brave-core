@@ -1,0 +1,52 @@
+error: use of deprecated function `old_check`
+  --> $DIR/invariant_lints.rs:23:26
+   |
+23 |     #[zerocopy(invariant(old_check()))]
+   |                          ^^^^^^^^^
+   |
+note: the lint level is defined here
+  --> $DIR/invariant_lints.rs:9:9
+   |
+ 9 | #![deny(deprecated)]
+   |         ^^^^^^^^^^
+
+error: use of deprecated function `old_check`
+  --> $DIR/invariant_lints.rs:33:30
+   |
+33 |         #[zerocopy(invariant(old_check()))]
+   |                              ^^^^^^^^^
+
+error: use of deprecated function `old_check`
+  --> $DIR/invariant_lints.rs:43:26
+   |
+43 |     #[zerocopy(invariant(old_check()))]
+   |                          ^^^^^^^^^
+
+warning: function `old_check` is never used
+  --> $DIR/invariant_lints.rs:16:4
+   |
+16 | fn old_check() -> bool {
+   |    ^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: struct `Struct` is never constructed
+  --> $DIR/invariant_lints.rs:22:8
+   |
+22 | struct Struct {
+   |        ^^^^^^
+
+warning: enum `Enum` is never used
+  --> $DIR/invariant_lints.rs:31:6
+   |
+31 | enum Enum {
+   |      ^^^^
+
+warning: union `Union` is never used
+  --> $DIR/invariant_lints.rs:42:7
+   |
+42 | union Union {
+   |       ^^^^^
+
+error: aborting due to 3 previous errors; 4 warnings emitted
+

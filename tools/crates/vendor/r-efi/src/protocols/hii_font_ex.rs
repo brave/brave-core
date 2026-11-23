@@ -9,7 +9,7 @@ pub const PROTOCOL_GUID: crate::base::Guid = crate::base::Guid::from_fields(
     &[0xc8, 0xf3, 0x37, 0x18, 0x07, 0x3f],
 );
 
-pub type ProtocolStringToImageEx = eficall! {fn(
+pub type ProtocolStringToImageEx = unsafe extern "efiapi" fn(
     *const Protocol,
     super::hii_font::OutFlags,
     super::hii_font::String,
@@ -20,9 +20,9 @@ pub type ProtocolStringToImageEx = eficall! {fn(
     *mut *mut super::hii_font::RowInfo,
     *mut usize,
     *mut usize,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolStringIdToImageEx = eficall! {fn(
+pub type ProtocolStringIdToImageEx = unsafe extern "efiapi" fn(
     *const Protocol,
     super::hii_font::OutFlags,
     crate::hii::Handle,
@@ -35,30 +35,30 @@ pub type ProtocolStringIdToImageEx = eficall! {fn(
     *mut *mut super::hii_font::RowInfo,
     *mut usize,
     *mut usize,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolGetGlyphEx = eficall! {fn(
+pub type ProtocolGetGlyphEx = unsafe extern "efiapi" fn(
     *const Protocol,
     crate::base::Char16,
     *const DisplayInfo,
     *mut *mut ImageOutput,
     usize,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolGetFontInfoEx = eficall! {fn(
+pub type ProtocolGetFontInfoEx = unsafe extern "efiapi" fn(
     *const Protocol,
     *mut super::hii_font::Handle,
     *const DisplayInfo,
     *mut *mut DisplayInfo,
     super::hii_font::String,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolGetGlyphInfo = eficall! {fn(
+pub type ProtocolGetGlyphInfo = unsafe extern "efiapi" fn(
     *const Protocol,
     crate::base::Char16,
     *const DisplayInfo,
     *mut crate::hii::GlyphInfo,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
 #[repr(C)]
 pub struct Protocol {

@@ -19,24 +19,24 @@ pub const PROTOCOL_GUID: crate::base::Guid = crate::base::Guid::from_fields(
     &[0x00, 0x90, 0x27, 0x3f, 0xc1, 0x4d],
 );
 
-pub type ProtocolGetDriver = eficall! {fn(
+pub type ProtocolGetDriver = unsafe extern "efiapi" fn(
     *mut Protocol,
     crate::base::Handle,
     *mut crate::base::Handle,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolGetDriverPath = eficall! {fn(
+pub type ProtocolGetDriverPath = unsafe extern "efiapi" fn(
     *mut Protocol,
     crate::base::Handle,
     *mut *mut crate::protocols::device_path::Protocol
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolDriverLoaded = eficall! {fn(
+pub type ProtocolDriverLoaded = unsafe extern "efiapi" fn(
     *mut Protocol,
     crate::base::Handle,
     *mut crate::protocols::device_path::Protocol,
     crate::base::Handle,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
 #[repr(C)]
 pub struct Protocol {

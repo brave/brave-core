@@ -1,7 +1,7 @@
 use std::io::{Cursor, Write};
 use std::{cmp, io, str};
 
-use rand::Rng;
+use rand::{Rng, RngExt};
 
 use crate::{
     alphabet::{STANDARD, URL_SAFE},
@@ -265,7 +265,7 @@ fn drop_calls_finish_for_you() {
 
 #[test]
 fn every_possible_split_of_input() {
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::rng();
     let mut orig_data = Vec::<u8>::new();
     let mut stream_encoded = Vec::<u8>::new();
     let mut normal_encoded = String::new();
@@ -278,7 +278,7 @@ fn every_possible_split_of_input() {
         normal_encoded.clear();
 
         for _ in 0..size {
-            orig_data.push(rng.gen());
+            orig_data.push(rng.random());
         }
 
         let engine = random_engine(&mut rng);
@@ -308,7 +308,7 @@ fn encode_random_config_matches_normal_encode_tiny_input_len() {
 
 #[test]
 fn retrying_writes_that_error_with_interrupted_works() {
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::rng();
     let mut orig_data = Vec::<u8>::new();
     let mut stream_encoded = Vec::<u8>::new();
     let mut normal_encoded = String::new();
@@ -318,9 +318,9 @@ fn retrying_writes_that_error_with_interrupted_works() {
         stream_encoded.clear();
         normal_encoded.clear();
 
-        let orig_len: usize = rng.gen_range(100..20_000);
+        let orig_len: usize = rng.random_range(100..20_000);
         for _ in 0..orig_len {
-            orig_data.push(rng.gen());
+            orig_data.push(rng.random());
         }
 
         // encode the normal way
@@ -329,7 +329,7 @@ fn retrying_writes_that_error_with_interrupted_works() {
 
         // encode via the stream encoder
         {
-            let mut interrupt_rng = rand::thread_rng();
+            let mut interrupt_rng = rand::rng();
             let mut interrupting_writer = InterruptingWriter {
                 w: &mut stream_encoded,
                 rng: &mut interrupt_rng,
@@ -341,7 +341,7 @@ fn retrying_writes_that_error_with_interrupted_works() {
             while bytes_consumed < orig_len {
                 // use short inputs since we want to use `extra` a lot as that's what needs rollback
                 // when errors occur
-                let input_len: usize = cmp::min(rng.gen_range(0..10), orig_len - bytes_consumed);
+                let input_len: usize = cmp::min(rng.random_range(0..10), orig_len - bytes_consumed);
 
                 retry_interrupted_write_all(
                     &mut stream_encoder,
@@ -372,7 +372,7 @@ fn retrying_writes_that_error_with_interrupted_works() {
 
 #[test]
 fn writes_that_only_write_part_of_input_and_sometimes_interrupt_produce_correct_encoded_data() {
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::rng();
     let mut orig_data = Vec::<u8>::new();
     let mut stream_encoded = Vec::<u8>::new();
     let mut normal_encoded = String::new();
@@ -382,9 +382,9 @@ fn writes_that_only_write_part_of_input_and_sometimes_interrupt_produce_correct_
         stream_encoded.clear();
         normal_encoded.clear();
 
-        let orig_len: usize = rng.gen_range(100..20_000);
+        let orig_len: usize = rng.random_range(100..20_000);
         for _ in 0..orig_len {
-            orig_data.push(rng.gen());
+            orig_data.push(rng.random());
         }
 
         // encode the normal way
@@ -393,7 +393,7 @@ fn writes_that_only_write_part_of_input_and_sometimes_interrupt_produce_correct_
 
         // encode via the stream encoder
         {
-            let mut partial_rng = rand::thread_rng();
+            let mut partial_rng = rand::rng();
             let mut partial_writer = PartialInterruptingWriter {
                 w: &mut stream_encoded,
                 rng: &mut partial_rng,
@@ -405,7 +405,8 @@ fn writes_that_only_write_part_of_input_and_sometimes_interrupt_produce_correct_
             let mut bytes_consumed = 0;
             while bytes_consumed < orig_len {
                 // use at most medium-length inputs to exercise retry logic more aggressively
-                let input_len: usize = cmp::min(rng.gen_range(0..100), orig_len - bytes_consumed);
+                let input_len: usize =
+                    cmp::min(rng.random_range(0..100), orig_len - bytes_consumed);
 
                 let res =
                     stream_encoder.write(&orig_data[bytes_consumed..bytes_consumed + input_len]);
@@ -451,7 +452,7 @@ fn retry_interrupted_write_all<W: Write>(w: &mut W, buf: &[u8]) -> io::Result<()
 }
 
 fn do_encode_random_config_matches_normal_encode(max_input_len: usize) {
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::rng();
     let mut orig_data = Vec::<u8>::new();
     let mut stream_encoded = Vec::<u8>::new();
     let mut normal_encoded = String::new();
@@ -461,9 +462,9 @@ fn do_encode_random_config_matches_normal_encode(max_input_len: usize) {
         stream_encoded.clear();
         normal_encoded.clear();
 
-        let orig_len: usize = rng.gen_range(100..20_000);
+        let orig_len: usize = rng.random_range(100..20_000);
         for _ in 0..orig_len {
-            orig_data.push(rng.gen());
+            orig_data.push(rng.random());
         }
 
         // encode the normal way
@@ -475,8 +476,10 @@ fn do_encode_random_config_matches_normal_encode(max_input_len: usize) {
             let mut stream_encoder = EncoderWriter::new(&mut stream_encoded, &engine);
             let mut bytes_consumed = 0;
             while bytes_consumed < orig_len {
-                let input_len: usize =
-                    cmp::min(rng.gen_range(0..max_input_len), orig_len - bytes_consumed);
+                let input_len: usize = cmp::min(
+                    rng.random_range(0..max_input_len),
+                    orig_len - bytes_consumed,
+                );
 
                 // write a little bit of the data
                 stream_encoder
@@ -506,7 +509,7 @@ struct InterruptingWriter<'a, W: 'a + Write, R: 'a + Rng> {
 
 impl<'a, W: Write, R: Rng> Write for InterruptingWriter<'a, W, R> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
-        if self.rng.gen_range(0.0..1.0) <= self.fraction {
+        if self.rng.random_range(0.0..1.0) <= self.fraction {
             return Err(io::Error::new(io::ErrorKind::Interrupted, "interrupted"));
         }
 
@@ -514,7 +517,7 @@ impl<'a, W: Write, R: Rng> Write for InterruptingWriter<'a, W, R> {
     }
 
     fn flush(&mut self) -> io::Result<()> {
-        if self.rng.gen_range(0.0..1.0) <= self.fraction {
+        if self.rng.random_range(0.0..1.0) <= self.fraction {
             return Err(io::Error::new(io::ErrorKind::Interrupted, "interrupted"));
         }
 
@@ -534,17 +537,17 @@ struct PartialInterruptingWriter<'a, W: 'a + Write, R: 'a + Rng> {
 
 impl<'a, W: Write, R: Rng> Write for PartialInterruptingWriter<'a, W, R> {
     fn write(&mut self, buf: &[u8]) -> io::Result<usize> {
-        if self.rng.gen_range(0.0..1.0) > self.no_interrupt_fraction {
+        if self.rng.random_range(0.0..1.0) > self.no_interrupt_fraction {
             return Err(io::Error::new(io::ErrorKind::Interrupted, "interrupted"));
         }
 
-        if self.rng.gen_range(0.0..1.0) <= self.full_input_fraction || buf.is_empty() {
+        if self.rng.random_range(0.0..1.0) <= self.full_input_fraction || buf.is_empty() {
             // pass through the buf untouched
             self.w.write(buf)
         } else {
             // only use a prefix of it
             self.w
-                .write(&buf[0..(self.rng.gen_range(0..(buf.len() - 1)))])
+                .write(&buf[0..(self.rng.random_range(0..(buf.len() - 1)))])
         }
     }
 

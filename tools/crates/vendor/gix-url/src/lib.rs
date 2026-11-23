@@ -1,53 +1,98 @@
 //! A library implementing a URL for use in git with access to its special capabilities.
+//!
+//! ## Examples
+//!
+//! ```
+//! let mut url = gix_url::parse("ssh://git@example.com/gitoxide").unwrap();
+//! assert_eq!(url.user(), Some("git"));
+//! assert_eq!(url.host(), Some("example.com"));
+//! assert_eq!(url.to_bstring(), "ssh://git@example.com/gitoxide");
+//!
+//! assert_eq!(url.set_user(Some("byron".into())), Some("git".into()));
+//! assert_eq!(url.user_argument_safe(), Some("byron"));
+//! assert_eq!(url.to_bstring(), "ssh://byron@example.com/gitoxide");
+//!
+//! let suspicious = gix_url::parse("ssh://-Fconfig@host/repo").unwrap();
+//! assert_eq!(suspicious.user_argument_safe(), None, "The user isn't returned as it looks like an argument");
+//! ```
 //! ## Feature Flags
 #![cfg_attr(
     all(doc, feature = "document-features"),
     doc = ::document_features::document_features!()
 )]
 #![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg))]
-#![deny(rust_2018_idioms, missing_docs)]
+#![deny(missing_docs)]
 #![forbid(unsafe_code)]
 
+use gix_error::Result;
 use std::{borrow::Cow, path::PathBuf};
 
-use bstr::{BStr, BString};
+use bstr::{BStr, BString, ByteSlice};
+use gix_error::bail;
+use gix_utils::AsBStr;
 
-///
+const HTTP_PATH_ENCODE_SET: &percent_encoding::AsciiSet = &percent_encoding::CONTROLS
+    .add(b' ')
+    .add(b'"')
+    .add(b'%')
+    .add(b'<')
+    .add(b'>')
+    .add(b'`')
+    .add(b'{')
+    .add(b'}');
+
+/// User-home expansion for repository paths.
 pub mod expand_path;
 
 mod scheme;
 pub use scheme::Scheme;
 mod impls;
 
-///
+/// Parsing errors and input classifications.
 pub mod parse;
 
 /// Minimal URL parser to replace the `url` crate dependency
 mod simple_url;
 
-/// Parse the given `bytes` as a [git url](Url).
+/// Parse a Git remote location from `input`.
 ///
-/// # Note
+/// This accepts standard URLs, SCP-like SSH locations, remote-helper locations and local paths. URL and SCP-like
+/// inputs must be UTF-8; remote-helper addresses and local paths retain arbitrary bytes.
+/// Errors with input context include offending bytes as `input` [metadata](gix_error::Error::metadata()).
+/// Overlong URLs may retain only a prefix of the input.
 ///
-/// We cannot and should never have to deal with UTF-16 encoded windows strings, so bytes input is acceptable.
-/// For file-paths, we don't expect UTF8 encoding either.
-pub fn parse(input: &BStr) -> Result<Url, parse::Error> {
+/// Locations of the `<helper>::<address>` form described in
+/// [`gitremote-helpers`](https://git-scm.com/docs/gitremote-helpers) are recognized before any URL
+/// syntax, so an address may itself contain `://`. They are represented as
+/// [`Scheme::Helper`] holding the helper name, with the address kept verbatim in [`Url::path`] as only the helper
+/// program can interpret it. The command-executing `ext` helper is represented as [`Scheme::Ext`] in both spellings;
+/// `ext://<address>` retains the entire URL as its command. Other unknown URL transports in the
+/// `<helper>://<address>` form are represented as [`Scheme::HelperUrl`].
+///
+/// # Deviation
+///
+/// Unlike Git, this rejects textual and overflowing ports in SSH and Git URLs. Git treats such port text as part of
+/// the hostname, which hides the malformed port and causes a less useful hostname-resolution error later.
+///
+/// Also unlike Git, an empty remote-helper name as in `::address` is not accepted, as the `git-remote-` program it
+/// would name cannot meaningfully exist.
+pub fn parse(input: impl AsBStr) -> Result<Url> {
     use parse::InputScheme;
+    let input = input.as_bstr();
     match parse::find_scheme(input) {
+        InputScheme::RemoteHelper { helper_end } => Ok(parse::remote_helper(input, helper_end)),
         InputScheme::Local => parse::local(input),
-        InputScheme::Url { protocol_end } if input[..protocol_end].eq_ignore_ascii_case(b"file") => {
-            parse::file_url(input, protocol_end)
-        }
+        InputScheme::Url { protocol_end } if input[..protocol_end] == *b"file" => parse::file_url(input, protocol_end),
         InputScheme::Url { protocol_end } => parse::url(input, protocol_end),
         InputScheme::Scp { colon } => parse::scp(input, colon),
     }
 }
 
-/// Expand `path` for the given `user`, which can be obtained by [`parse()`], resolving the home directories
-/// of `user` automatically.
+/// Expand `path` for the given `user`, which can be obtained from [`expand_path::parse()`], resolving the home
+/// directory automatically.
 ///
 /// If more precise control of the resolution mechanism is needed, then use the [expand_path::with()] function.
-pub fn expand_path(user: Option<&expand_path::ForUser>, path: &BStr) -> Result<PathBuf, expand_path::Error> {
+pub fn expand_path(user: Option<&expand_path::ForUser>, path: &BStr) -> Result<PathBuf> {
     expand_path::with(user, path, |user| match user {
         expand_path::ForUser::Current => gix_path::env::home_dir(),
         expand_path::ForUser::Name(user) => {
@@ -77,65 +122,205 @@ pub enum ArgumentSafety<'a> {
     Dangerous(&'a str),
 }
 
+/// Decoded components returned by [`Url::path_query_fragment()`].
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct PathComponents<'a> {
+    /// The repository path, with `/` used for an empty HTTP path.
+    pub path: &'a BStr,
+    /// HTTP query name/value pairs in input order, including duplicate names.
+    ///
+    /// Names and values use form decoding: literal `+` becomes a space, while `%2B` becomes `+`.
+    /// Empty `&`-separated fields are skipped; names without `=` have an empty value.
+    /// `None` means no query delimiter was present, while `Some(Vec::new())` represents an empty query.
+    /// Decoded bytes are borrowed except when replacing literal plus signs requires an owned value.
+    pub query: Option<Vec<(Cow<'a, BStr>, Cow<'a, BStr>)>>,
+    /// The decoded HTTP fragment without its leading `#`, preserving literal plus signs.
+    ///
+    /// `None` means no fragment delimiter was present, while `Some("")` represents an empty fragment.
+    pub fragment: Option<&'a BStr>,
+}
+
 /// A URL with support for specialized git related capabilities.
 ///
 /// Additionally, there is support for [deserialization](Url::from_bytes()) and [serialization](Url::to_bstring()).
 ///
 /// # Mutability Warning
 ///
-/// Due to the mutability of this type, it's possible that the URL serializes to something invalid
-/// when fields are modified directly. URLs should always be parsed to this type from string or byte
-/// parameters, but never be accepted as an instance of this type and then reconstructed, to maintain
-/// validity guarantees.
+/// Public fields can be modified into combinations that do not serialize or parse. Use [`parse()`] or
+/// [`Url::from_parts()`] at trust boundaries; do not assume an accepted `Url` remains valid without revalidation.
 ///
 /// # Serialization
 ///
 /// This type does not implement `Into<String>`, `From<Url> for String` because URLs
 /// can contain non-UTF-8 sequences in the path component when parsed from raw bytes.
-/// Use [to_bstring()](Url::to_bstring()) for lossless serialization, or use the [`Display`](std::fmt::Display)
-/// trait for a UTF-8 representation that redacts passwords for safe logging.
+/// Use [to_bstring()](Url::to_bstring()) for complete serialization, including non-UTF-8 path bytes, or use the
+/// [`Display`](std::fmt::Display) trait for a UTF-8 representation that redacts passwords for safe logging.
 ///
 /// When the `serde` feature is enabled, this type implements `serde::Serialize` and `serde::Deserialize`,
 /// which will serialize *all* fields, including the password.
 ///
 /// # Security Warning
 ///
-/// URLs may contain passwords and using standard [formatting](std::fmt::Display) will redact
-/// such password, whereas [lossless serialization](Url::to_bstring()) will contain all parts of the
-/// URL.
+/// URLs may contain passwords and using standard [formatting](std::fmt::Display) will redact such passwords,
+/// whereas [`Url::to_bstring()`] includes all URL parts.
 /// **Beware that some URLs still print secrets if they use them outside of the designated password fields.**
 ///
-/// Also note that URLs that fail to parse are typically stored in [the resulting error](parse::Error) type
+/// Also note that URLs that fail to parse are typically stored in [the resulting error](gix_error::Error) type
 /// and printed in full using its display implementation.
 #[derive(PartialEq, Eq, Debug, Hash, Ord, PartialOrd, Clone)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
 pub struct Url {
     /// The URL scheme.
     pub scheme: Scheme,
     /// The user to impersonate on the remote.
+    ///
+    /// Stored in decoded form: percent-encoded characters are decoded during parsing.
+    /// Re-encoded during canonical serialization, but written as-is in alternative form.
     pub user: Option<String>,
     /// The password associated with a user.
+    ///
+    /// Stored in decoded form: percent-encoded characters are decoded during parsing.
+    /// Re-encoded during canonical serialization. Its presence makes serialization use canonical rather than alternative
+    /// form because SCP-like and local-path syntax cannot represent a password.
     pub password: Option<String>,
-    /// The host to which to connect. Localhost is implied if `None`.
+    /// The host to which to connect, or `None` for locations without a host, such as local paths.
+    ///
+    /// Brackets are stripped from parsed SSH hosts and otherwise preserved as parsed. Serialization adds brackets to
+    /// unbracketed colon-containing hosts when needed to disambiguate a port or scoped IPv6 address.
+    /// DNS-like ASCII hosts are lowercased. Non-HTTP hosts are percent-decoded for Git compatibility, while HTTP and
+    /// HTTPS host escapes remain encoded.
     pub host: Option<String>,
-    /// When serializing, use the alternative forms as it was parsed as such.
+    /// Request alternative serialization, generally because the location was parsed in that form.
+    ///
+    /// Alternative forms include SCP-like syntax (`user@host:path`), bare file paths, and the `<helper>::<address>`
+    /// syntax of [`gitremote-helpers`](https://git-scm.com/docs/gitremote-helpers).
+    /// It is used only for SSH or file locations without a password or port. [`Scheme::Helper`] and [`Scheme::Ext`]
+    /// always use remote-helper form, and SCP-like form is also retained when canonical SSH form would change a
+    /// relative repository path.
     pub serialize_alternative_form: bool,
-    /// The port to use when connecting to a host. If `None`, standard ports depending on `scheme` will be used.
+    /// The explicit port, if parsed or assigned.
+    ///
+    /// Git accepts port zero in SSH and Git URLs, so this field may contain `0`. Textual and overflowing ports are
+    /// rejected unlike Git; see the deviation documented on [`parse()`]. Use [`Self::port_or_default()`] to obtain a
+    /// scheme default when this is `None`.
     pub port: Option<u16>,
     /// The path portion of the URL, usually the location of the git repository.
+    ///
+    /// Percent-encoded characters are decoded during parsing (e.g., `%20` becomes a space in this field). An unchanged
+    /// parsed path may retain its original encoded spelling for serialization. Constructed or modified HTTP paths are
+    /// percent-encoded during canonical serialization; other schemes write the path bytes as stored.
+    ///
+    /// Path normalization during parsing:
+    /// - SSH/Git schemes: Leading `/~` is stripped (e.g., `/~repo` becomes `~repo`)
+    /// - SSH/Git schemes: Empty paths are rejected as errors
+    /// - HTTP/HTTPS schemes: Empty paths are normalized to `/`
+    ///
+    /// This type has no separate query or fragment fields. For HTTP and HTTPS, `?`, `#`, and everything after them are
+    /// stored in this field. For other URL schemes, Git treats `?` and `#` before the first slash as authority text.
+    /// Use [`Self::path_query_fragment()`] to access the decoded path, query pairs, and fragment separately.
+    ///
+    /// For locations in the `<helper>::<address>` form of
+    /// [`gitremote-helpers`](https://git-scm.com/docs/gitremote-helpers), this holds the address verbatim,
+    /// uninterpreted and possibly empty, as only the helper program can make sense of it.
+    ///
+    /// During serialization, SSH/Git URLs prepend `/` to paths not starting with `/`.
     ///
     /// # Security Warning
     ///
     /// URLs allow paths to start with `-` which makes it possible to mask command-line arguments as path which then leads to
     /// the invocation of programs from an attacker controlled URL. See <https://secure.phabricator.com/T12961> for details.
     ///
-    /// If this value is ever going to be passed to a command-line application, call [Self::path_argument_safe()] instead.
+    /// For a slash-prefixed path that will be passed intact to a command-line application, call
+    /// [`Self::path_argument_safe()`]. Other path forms require validation appropriate to how they will be passed.
     pub path: BString,
+    /// The original parsed path when it contains percent escapes.
+    ///
+    /// This lets serialization retain the encoded spelling while [`Self::path`] remains decoded. It is reused only
+    /// while decoding it still produces the public path; constructing or mutating the public path encodes percent signs.
+    #[cfg_attr(feature = "serde", serde(default))]
+    pub(crate) path_with_percent_escapes: Option<BString>,
+}
+
+#[cfg(feature = "serde")]
+impl<'de> serde::Deserialize<'de> for Url {
+    fn deserialize<D>(deserializer: D) -> std::result::Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        #[derive(serde::Deserialize)]
+        struct Fields {
+            scheme: Scheme,
+            user: Option<String>,
+            password: Option<String>,
+            host: Option<String>,
+            serialize_alternative_form: bool,
+            port: Option<u16>,
+            path: BString,
+            #[serde(default)]
+            path_with_percent_escapes: Option<BString>,
+        }
+
+        let mut fields = Fields::deserialize(deserializer)?;
+        if fields.path_with_percent_escapes.as_ref() == Some(&fields.path) {
+            fields.path_with_percent_escapes = Some(encode_legacy_http_path(&fields.path));
+            fields.path = percent_encoding::percent_decode(&fields.path)
+                .collect::<Vec<_>>()
+                .into();
+        }
+        Ok(Url {
+            scheme: fields.scheme,
+            user: fields.user,
+            password: fields.password,
+            host: fields.host,
+            serialize_alternative_form: fields.serialize_alternative_form,
+            port: fields.port,
+            path: fields.path,
+            path_with_percent_escapes: fields.path_with_percent_escapes,
+        })
+    }
+}
+
+#[cfg(feature = "serde")]
+fn encode_legacy_http_path(path: &[u8]) -> BString {
+    let mut out = Vec::with_capacity(path.len());
+    let mut start = 0;
+    let mut pos = 0;
+    while pos + 2 < path.len() {
+        if path[pos] == b'%' && path[pos + 1].is_ascii_hexdigit() && path[pos + 2].is_ascii_hexdigit() {
+            out.extend(
+                percent_encoding::percent_encode(&path[start..pos], HTTP_PATH_ENCODE_SET)
+                    .to_string()
+                    .bytes(),
+            );
+            out.extend_from_slice(&path[pos..pos + 3]);
+            pos += 3;
+            start = pos;
+        } else {
+            pos += 1;
+        }
+    }
+    out.extend(
+        percent_encoding::percent_encode(&path[start..], HTTP_PATH_ENCODE_SET)
+            .to_string()
+            .bytes(),
+    );
+    out.into()
 }
 
 /// Instantiation
 impl Url {
-    /// Create a new instance from the given parts, including a password, which will be validated by parsing them back.
+    /// Create an instance from the given parts and validate it by serializing and parsing it back.
+    ///
+    /// For HTTP and HTTPS, `path` is decoded data: literal percent signs are encoded during serialization, and an empty
+    /// path is normalized to `/`. Other schemes interpret `path` according to their serialized syntax.
+    /// `serialize_alternative_form` merely requests alternative form; passwords, ports, and unsupported schemes force
+    /// canonical URL serialization.
+    /// Invalid remote-helper names include the name bytes as `input` [metadata](gix_error::Error::metadata());
+    /// other validation errors retain the input context documented by [`parse()`].
+    ///
+    /// # Panics
+    ///
+    /// Panics if the supplied parts cannot be serialized before validation, such as a user without a host.
     pub fn from_parts(
         scheme: Scheme,
         user: Option<String>,
@@ -144,20 +329,35 @@ impl Url {
         port: Option<u16>,
         path: BString,
         serialize_alternative_form: bool,
-    ) -> Result<Self, parse::Error> {
-        parse(
+    ) -> Result<Self> {
+        if let Scheme::Helper(name) = &scheme
+            && !parse::is_valid_remote_helper_name(name.as_bytes())
+        {
+            bail!(gix_error::validation("Invalid remote-helper name").with_input(name.as_bytes()));
+        }
+        let is_http = matches!(scheme, Scheme::Http | Scheme::Https);
+        let mut parsed = parse(
             Url {
                 scheme,
                 user,
                 password,
                 host,
                 port,
-                path,
+                path: path.clone(),
                 serialize_alternative_form,
+                path_with_percent_escapes: None,
             }
-            .to_bstring()
-            .as_ref(),
-        )
+            .to_bstring(),
+        )?;
+        if is_http {
+            // Preserve the caller's path as decoded data, except for an empty path normalized to `/` above. In
+            // particular, percent escapes supplied through `from_parts()` are literal text and must be encoded.
+            if !path.is_empty() {
+                parsed.path = path;
+            }
+            parsed.path_with_percent_escapes = None;
+        }
+        Ok(parsed)
     }
 }
 
@@ -180,22 +380,27 @@ impl Url {
 
 /// Builder
 impl Url {
-    /// Enable alternate serialization for this url, e.g. `file:///path` becomes `/path`.
+    /// Request alternative serialization, e.g. `file:///path` becomes `/path`.
     ///
-    /// This is automatically set correctly for parsed URLs, but can be set here for urls
-    /// created by constructor.
-    pub fn serialize_alternate_form(mut self, use_alternate_form: bool) -> Self {
+    /// Parsed URLs set this automatically. Alternative form is used only for SSH or file locations without a password
+    /// or port; all other values serialize in canonical URL form.
+    ///
+    /// Setting `use_alternate_form` to `false` requests canonical, URL-like, serialization. SCP-like form is retained if
+    /// canonical SSH form would change a relative repository path. Remote-helper form is always retained because URL
+    /// form would change the address Git passes to the helper.
+    pub fn with_request_alternate_form(mut self, use_alternate_form: bool) -> Self {
         self.serialize_alternative_form = use_alternate_form;
         self
     }
 
-    /// Turn a file url like `file://relative` into `file:///root/relative`, hence it assures the url's path component is absolute,
-    /// using `current_dir` if needed to achieve that.
-    pub fn canonicalize(&mut self, current_dir: &std::path::Path) -> Result<(), gix_path::realpath::Error> {
+    /// Resolve the path of a file location against `current_dir` and normalize it in place.
+    ///
+    /// Other schemes are unchanged.
+    pub fn canonicalize(&mut self, current_dir: &std::path::Path) -> Result {
         if self.scheme == Scheme::File {
-            let path = gix_path::from_bstr(Cow::Borrowed(self.path.as_ref()));
+            let path = gix_path::from_bstr(Cow::Borrowed(self.path.as_ref()))?;
             let abs_path = gix_path::realpath_opts(path.as_ref(), current_dir, gix_path::realpath::MAX_SYMLINKS)?;
-            self.path = gix_path::into_bstr(abs_path).into_owned();
+            self.path = gix_path::into_bstr(abs_path)?.into_owned();
         }
         Ok(())
     }
@@ -217,7 +422,7 @@ impl Url {
 
     /// Classify the username of this URL by whether it is safe to pass as a command-line argument.
     ///
-    /// Use this method instead of [Self::user()] if the host is going to be passed to a command-line application.
+    /// Use this method instead of [Self::user()] if the username is going to be passed to a command-line application.
     /// If the unsafe and absent cases need not be distinguished, [Self::user_argument_safe()] may also be used.
     pub fn user_as_argument(&self) -> ArgumentSafety<'_> {
         match self.user() {
@@ -229,7 +434,7 @@ impl Url {
 
     /// Return the username of this URL if present *and* if it can't be mistaken for a command-line argument.
     ///
-    /// Use this method or [Self::user_as_argument()] instead of [Self::user()] if the host is going to be
+    /// Use this method or [Self::user_as_argument()] instead of [Self::user()] if the username is going to be
     /// passed to a command-line application. Prefer [Self::user_as_argument()] unless the unsafe and absent
     /// cases need not be distinguished from each other.
     pub fn user_argument_safe(&self) -> Option<&str> {
@@ -281,14 +486,158 @@ impl Url {
         }
     }
 
-    /// Return the path of this URL *if* it can't be mistaken for a command-line argument.
-    /// Note that it always begins with a slash, which is ignored for this comparison.
+    fn path_with_percent_escapes(&self) -> Option<&BStr> {
+        let encoded = self.path_with_percent_escapes.as_ref()?;
+        percent_encoding::percent_decode(encoded)
+            .eq(self.path.iter().copied())
+            .then_some(encoded.as_ref())
+    }
+
+    /// Return the original percent-escaped spelling of [`Self::path`] when it still matches the current path.
     ///
-    /// Use this method instead of accessing [Self::path] directly if the path is going to be passed to a
-    /// command-line application, unless it is certain that the leading `/` will always be included.
+    /// Parsing decodes percent escapes into [`Self::path`], so `/my%20repo` becomes `/my repo`. This method
+    /// preserves the encoded spelling as long as decoding it produces the current path bytes. This compares
+    /// values, not mutation history: restoring the decoded path also restores access to its original spelling.
+    ///
+    /// If no encoded spelling was retained, or the current path differs, return [`Self::path`] as-is. This method
+    /// does not percent-encode a modified path; use [`Self::to_bstring()`] to serialize the complete URL.
+    /// Query and fragment components stored in the path are included; use
+    /// [`Self::path_query_fragment()`] to obtain the decoded path, query pairs, and fragment separately.
+    ///
+    /// ```
+    /// let mut url = gix_url::parse("https://host/my%20repo")?;
+    /// assert_eq!(url.path, "/my repo", "the public path contains decoded bytes");
+    /// assert_eq!(url.original_path(), "/my%20repo", "the original spelling is retained");
+    ///
+    /// url.path = "/other repo".into();
+    /// assert_eq!(url.original_path(), "/other repo", "a changed path is returned as-is");
+    /// assert_eq!(url.to_bstring(), "https://host/other%20repo", "HTTP serialization encodes spaces");
+    ///
+    /// url.path = "/my repo".into();
+    /// assert_eq!(url.original_path(), "/my%20repo", "restoring the path reuses the original spelling");
+    /// # Ok::<(), gix_error::Error>(())
+    /// ```
+    pub fn original_path(&self) -> &BStr {
+        self.path_with_percent_escapes().unwrap_or(self.path.as_ref())
+    }
+
+    /// Return the decoded path, query name/value pairs, and fragment for HTTP and HTTPS.
+    ///
+    /// Component boundaries, query `&` separators, and the first `=` in each query pair are recognized before
+    /// percent-decoding. Encoded delimiters remain data: `?x=a%26b` yields one pair, `("x", "a&b")`.
+    /// Percent escapes are decoded exactly once, so `%2523` remains `%23`. Query names and values also use form
+    /// decoding, turning literal `+` into spaces; `%2B` remains `+`. Path and fragment plus signs remain literal.
+    ///
+    /// Paths supplied through [`Self::from_parts()`] or changed through [`Self::path`] are already decoded data:
+    /// percent escapes remain literal text, while literal delimiters and query plus signs retain their syntactic roles.
+    /// This agrees with parsing the serialized URL. An original escaped spelling is reused only while it still decodes
+    /// to the current path.
+    /// Empty HTTP paths return `/`, including when the URL only specifies a query or fragment after the host.
+    ///
+    /// Other schemes return [`Self::path`] unchanged with no query or fragment. In particular, SSH paths retain
+    /// literal `?` and `#`, URL-form SSH paths are already decoded, and SCP-style paths retain literal percent escapes.
+    /// Repository names and any `.git` suffix are preserved for the caller to interpret. Serialization is unchanged.
+    ///
+    /// ```
+    /// let url = gix_url::parse("https://host/repo%23one?x=a%26b#fragment%23one")?;
+    /// let parts = url.path_query_fragment();
+    /// assert_eq!(parts.path, "/repo#one");
+    /// let query = parts.query.expect("the URL has a query");
+    /// assert_eq!(query.len(), 1);
+    /// assert_eq!(query[0].0.as_ref(), "x");
+    /// assert_eq!(query[0].1.as_ref(), "a&b");
+    /// assert_eq!(parts.fragment, Some("fragment#one".into()));
+    /// assert_eq!(url.path, "/repo#one?x=a&b#fragment#one");
+    /// # Ok::<(), gix_error::Error>(())
+    /// ```
+    pub fn path_query_fragment(&self) -> PathComponents<'_> {
+        fn decoded_len(original: &[u8], is_encoded: bool) -> usize {
+            if is_encoded {
+                percent_encoding::percent_decode(original).count()
+            } else {
+                original.len()
+            }
+        }
+
+        /// Advance over an original component while borrowing its already-decoded bytes.
+        fn take_decoded<'a>(original: &[u8], decoded: &mut &'a [u8], is_encoded: bool) -> &'a BStr {
+            let (part, rest) = decoded.split_at(decoded_len(original, is_encoded));
+            *decoded = rest;
+            BStr::new(part)
+        }
+
+        fn decode_query_component<'a>(original: &[u8], decoded: &'a BStr, is_encoded: bool) -> Cow<'a, BStr> {
+            if !original.contains(&b'+') {
+                return Cow::Borrowed(decoded);
+            }
+            let mut out = decoded.to_owned();
+            let mut offset = 0;
+            for part in original.split_inclusive(|byte| *byte == b'+') {
+                offset += decoded_len(part, is_encoded);
+                if part.ends_with(b"+") {
+                    out[offset - 1] = b' ';
+                }
+            }
+            Cow::Owned(out)
+        }
+
+        let mut parts = PathComponents {
+            path: self.path.as_ref(),
+            query: None,
+            fragment: None,
+        };
+        if !matches!(self.scheme, Scheme::Http | Scheme::Https) {
+            return parts;
+        }
+        let original = self.path_with_percent_escapes();
+        let is_encoded = original.is_some();
+        let mut original: &[u8] = original.unwrap_or(self.path.as_ref());
+        let mut decoded: &[u8] = self.path.as_ref();
+        let path_end = original.find_byteset(b"?#").unwrap_or(original.len());
+        parts.path = take_decoded(&original[..path_end], &mut decoded, is_encoded);
+        if parts.path.is_empty() {
+            parts.path = "/".into();
+        }
+        original = &original[path_end..];
+
+        if let Some(query_and_fragment) = original.strip_prefix(b"?") {
+            decoded = &decoded[1..];
+            let query_end = query_and_fragment.find_byte(b'#').unwrap_or(query_and_fragment.len());
+            original = &query_and_fragment[query_end..];
+            let mut pairs = Vec::new();
+            for (index, pair) in query_and_fragment[..query_end].split(|byte| *byte == b'&').enumerate() {
+                if index != 0 {
+                    decoded = &decoded[1..];
+                }
+                let mut decoded_pair: &[u8] = take_decoded(pair, &mut decoded, is_encoded);
+                if pair.is_empty() {
+                    continue;
+                }
+                let (name, value) = pair.split_at(pair.find_byte(b'=').unwrap_or(pair.len()));
+                let decoded_name = take_decoded(name, &mut decoded_pair, is_encoded);
+                let (value, decoded_value) = if value.is_empty() {
+                    (value, decoded_pair)
+                } else {
+                    (&value[1..], &decoded_pair[1..])
+                };
+                pairs.push((
+                    decode_query_component(name, decoded_name, is_encoded),
+                    decode_query_component(value, BStr::new(decoded_value), is_encoded),
+                ));
+            }
+            parts.query = Some(pairs);
+        }
+        parts.fragment = original.starts_with(b"#").then(|| BStr::new(&decoded[1..]));
+        parts
+    }
+
+    /// Return a slash-prefixed path if the bytes after the slash can't be mistaken for a command-line argument.
+    ///
+    /// The leading slash must be present and must be passed to the command. Empty and non-slash-prefixed paths return
+    /// `None`; validate those according to how they will be passed.
     pub fn path_argument_safe(&self) -> Option<&BStr> {
         self.path
-            .get(1..)
+            .strip_prefix(b"/")
             .and_then(|truncated| (!looks_like_command_line_option(truncated)).then_some(self.path.as_ref()))
     }
 
@@ -307,7 +656,7 @@ impl Url {
                 Https => 443,
                 Ssh => 22,
                 Git => 9418,
-                File | Ext(_) => return None,
+                File | Ext | Helper(_) | HelperUrl(_) => return None,
             })
         })
     }
@@ -319,51 +668,138 @@ fn looks_like_command_line_option(b: &[u8]) -> bool {
 
 /// Transformation
 impl Url {
-    /// Turn a file URL like `file://relative` into `file:///root/relative`, hence it assures the URL's path component is absolute, using
-    /// `current_dir` if necessary.
-    pub fn canonicalized(&self, current_dir: &std::path::Path) -> Result<Self, gix_path::realpath::Error> {
+    /// Return a clone whose file path is resolved against `current_dir` and normalized.
+    ///
+    /// Other schemes are returned unchanged.
+    pub fn canonicalized(&self, current_dir: &std::path::Path) -> Result<Self> {
         let mut res = self.clone();
         res.canonicalize(current_dir)?;
         Ok(res)
     }
 }
 
-fn percent_encode(s: &str) -> Cow<'_, str> {
-    percent_encoding::utf8_percent_encode(s, percent_encoding::NON_ALPHANUMERIC).into()
-}
-
 /// Serialization
 impl Url {
-    /// Write this URL losslessly to `out`, ready to be parsed again.
+    /// Write all URL components, including the password, to `out` in a form suitable for parsing again.
+    ///
+    /// Parsed escapes for reserved path characters retain their spelling while [`Self::path`] is unchanged, but other
+    /// escaping and canonicalization can change the original input spelling. Invalid combinations created through
+    /// public field mutation may return an error.
     pub fn write_to(&self, out: &mut dyn std::io::Write) -> std::io::Result<()> {
+        if matches!(self.scheme, Scheme::Ext | Scheme::Helper(_)) {
+            if let Scheme::Helper(name) = &self.scheme
+                && !parse::is_valid_remote_helper_name(name.as_bytes())
+            {
+                return Err(std::io::Error::other("invalid remote-helper name"));
+            }
+            if self.user.is_some() || self.password.is_some() || self.host.is_some() || self.port.is_some() {
+                return Err(std::io::Error::other(
+                    "remote-helper form cannot represent user, password, host or port",
+                ));
+            }
+            return self.write_remote_helper_form_to(out);
+        }
+
+        if self.scheme == Scheme::Ssh
+            && !self.path.is_empty()
+            && !self.path.starts_with(b"/")
+            && !self.path.starts_with(b"~")
+        {
+            if self.password.is_none() && self.port.is_none() && self.host.is_some() {
+                return self.write_alternative_form_to(out);
+            }
+            return Err(std::io::Error::other(
+                "relative SSH paths cannot be serialized canonically without changing their meaning",
+            ));
+        }
+
         // Since alternative form doesn't employ any escape syntax, password and
         // port number cannot be encoded.
-        if self.serialize_alternative_form
-            && (self.scheme == Scheme::File || self.scheme == Scheme::Ssh)
-            && self.password.is_none()
-            && self.port.is_none()
-        {
-            self.write_alternative_form_to(out)
-        } else {
-            self.write_canonical_form_to(out)
+        if self.serialize_alternative_form && self.password.is_none() && self.port.is_none() {
+            match &self.scheme {
+                Scheme::File | Scheme::Ssh => return self.write_alternative_form_to(out),
+                _ => {}
+            }
         }
+        self.write_canonical_form_to(out)
+    }
+
+    fn write_remote_helper_form_to(&self, out: &mut dyn std::io::Write) -> std::io::Result<()> {
+        out.write_all(self.scheme.as_str().as_bytes())?;
+        out.write_all(b"::")?;
+        out.write_all(&self.path)
     }
 
     fn write_canonical_form_to(&self, out: &mut dyn std::io::Write) -> std::io::Result<()> {
+        fn percent_encode(s: &str, encode_colon: bool) -> Cow<'_, str> {
+            /// Characters that must be percent-encoded in the userinfo component of a URL.
+            ///
+            /// According to RFC 3986, userinfo can contain:
+            /// - unreserved characters: `A-Z a-z 0-9 - . _ ~`
+            /// - percent-encoded characters
+            /// - sub-delims: `! $ & ' ( ) * + , ; =`
+            /// - `:`
+            ///
+            /// This encode-set encodes everything else, particularly `@` (userinfo delimiter),
+            /// `/` `?` `#` (path/query/fragment delimiters), and various other special characters.
+            const USERINFO_ENCODE_SET: &percent_encoding::AsciiSet = &percent_encoding::CONTROLS
+                .add(b' ')
+                .add(b'"')
+                .add(b'#')
+                .add(b'%')
+                .add(b'/')
+                .add(b'<')
+                .add(b'>')
+                .add(b'?')
+                .add(b'@')
+                .add(b'[')
+                .add(b'\\')
+                .add(b']')
+                .add(b'^')
+                .add(b'`')
+                .add(b'{')
+                .add(b'|')
+                .add(b'}');
+            const USERNAME_ENCODE_SET: &percent_encoding::AsciiSet = &USERINFO_ENCODE_SET.add(b':');
+
+            let encode_set = if encode_colon {
+                USERNAME_ENCODE_SET
+            } else {
+                USERINFO_ENCODE_SET
+            };
+            percent_encoding::utf8_percent_encode(s, encode_set).into()
+        }
+
+        fn write_host(out: &mut dyn std::io::Write, host: &str, bracket: bool, scheme: &Scheme) -> std::io::Result<()> {
+            if bracket {
+                out.write_all(b"[")?;
+                out.write_all(host.replace('%', "%25").as_bytes())?;
+                out.write_all(b"]")
+            } else if matches!(scheme, Scheme::File | Scheme::Http | Scheme::Https) {
+                out.write_all(host.as_bytes())
+            } else {
+                out.write_all(percent_encode(host, host.parse::<std::net::Ipv6Addr>().is_err()).as_bytes())
+            }
+        }
+
         out.write_all(self.scheme.as_str().as_bytes())?;
         out.write_all(b"://")?;
+
+        let needs_brackets = self.host_needs_brackets()
+            && (self.port.is_some() || self.host.as_ref().is_some_and(|host| host.contains('%')));
+
         match (&self.user, &self.host) {
             (Some(user), Some(host)) => {
-                out.write_all(percent_encode(user).as_bytes())?;
+                out.write_all(percent_encode(user, true).as_bytes())?;
                 if let Some(password) = &self.password {
                     out.write_all(b":")?;
-                    out.write_all(percent_encode(password).as_bytes())?;
+                    out.write_all(percent_encode(password, false).as_bytes())?;
                 }
                 out.write_all(b"@")?;
-                out.write_all(host.as_bytes())?;
+                write_host(out, host, needs_brackets, &self.scheme)?;
             }
             (None, Some(host)) => {
-                out.write_all(host.as_bytes())?;
+                write_host(out, host, needs_brackets, &self.scheme)?;
             }
             (None, None) => {}
             (Some(_user), None) => {
@@ -375,23 +811,57 @@ impl Url {
         if let Some(port) = &self.port {
             write!(out, ":{port}")?;
         }
-        out.write_all(&self.path)?;
+        // For SSH and Git URLs, add leading '/' if path doesn't start with '/'
+        // This handles paths like "~repo" which serialize as "/~repo" in URL form
+        if matches!(self.scheme, Scheme::Ssh | Scheme::Git) && !self.path.starts_with(b"/") {
+            out.write_all(b"/")?;
+        }
+        if let Some(encoded) = self.path_with_percent_escapes() {
+            out.write_all(encoded)?;
+        } else if matches!(self.scheme, Scheme::Http | Scheme::Https) {
+            // We intentionally do not encode '?' and '#': ParsedUrl keeps them in `path`,
+            // and encoding would change routed endpoints for already parsed URLs.
+            write!(
+                out,
+                "{}",
+                percent_encoding::percent_encode(&self.path, HTTP_PATH_ENCODE_SET)
+            )?;
+        } else {
+            out.write_all(&self.path)?;
+        }
         Ok(())
     }
 
+    fn host_needs_brackets(&self) -> bool {
+        fn is_ipv6(h: &str) -> bool {
+            h.contains(':') && !h.starts_with('[')
+        }
+        self.host.as_ref().is_some_and(|h| is_ipv6(h))
+    }
+
     fn write_alternative_form_to(&self, out: &mut dyn std::io::Write) -> std::io::Result<()> {
+        let needs_brackets = self.host_needs_brackets();
+
         match (&self.user, &self.host) {
             (Some(user), Some(host)) => {
                 out.write_all(user.as_bytes())?;
-                assert!(
-                    self.password.is_none(),
-                    "BUG: cannot serialize password in alternative form"
-                );
                 out.write_all(b"@")?;
+                if needs_brackets {
+                    out.write_all(b"[")?;
+                }
                 out.write_all(host.as_bytes())?;
+                if needs_brackets {
+                    out.write_all(b"]")?;
+                }
             }
             (None, Some(host)) => {
+                if needs_brackets {
+                    out.write_all(b"[")?;
+                }
                 out.write_all(host.as_bytes())?;
+                if needs_brackets {
+                    out.write_all(b"]")?;
+                }
             }
             (None, None) => {}
             (Some(_user), None) => {
@@ -400,7 +870,6 @@ impl Url {
                 ));
             }
         }
-        assert!(self.port.is_none(), "BUG: cannot serialize port in alternative form");
         if self.scheme == Scheme::Ssh {
             out.write_all(b":")?;
         }
@@ -408,7 +877,14 @@ impl Url {
         Ok(())
     }
 
-    /// Transform ourselves into a binary string, losslessly, or fail if the URL is malformed due to host or user parts being incorrect.
+    /// Serialize all URL components, including the password, into a binary string.
+    ///
+    /// Parsed escapes for reserved path characters retain their spelling while [`Self::path`] is unchanged, but other
+    /// escaping and canonicalization can change the original input spelling.
+    ///
+    /// # Panics
+    ///
+    /// Panics if public field mutation created a structure that cannot be serialized, such as a user without a host.
     pub fn to_bstring(&self) -> BString {
         let mut buf = Vec::with_capacity(
             (5 + 3)
@@ -426,12 +902,36 @@ impl Url {
 /// Deserialization
 impl Url {
     /// Parse a URL from `bytes`.
-    pub fn from_bytes(bytes: &BStr) -> Result<Self, parse::Error> {
+    /// Errors retain the `input` [metadata](gix_error::Error::metadata()) documented by [`parse()`].
+    pub fn from_bytes(bytes: &BStr) -> Result<Self> {
         parse(bytes)
     }
 }
 
 /// This module contains extensions to the [Url] struct which are only intended to be used
+#[cfg(all(test, feature = "serde"))]
+mod serde_tests {
+    #[test]
+    fn legacy_encoded_public_path_is_migrated() -> gix_testtools::TestResult {
+        for (input, legacy_path, decoded_path) in [
+            ("https://example.com/a%2Fb", "/a%2Fb", "/a/b"),
+            ("https://example.com/%20%25", "/ %25", "/ %"),
+        ] {
+            let mut legacy = crate::parse(input)?;
+            legacy.path = legacy_path.into();
+            legacy.path_with_percent_escapes = Some(legacy_path.into());
+
+            let migrated: crate::Url = serde_json::from_slice(&serde_json::to_vec(&legacy)?)?;
+            assert_eq!(
+                migrated.path, decoded_path,
+                "the public path is upgraded to decoded form"
+            );
+            assert_eq!(migrated.to_bstring(), input, "the encoded spelling remains lossless");
+        }
+        Ok(())
+    }
+}
+
 /// for testing code. Do not use this module in production! For all intents and purposes, the APIs of
 /// all functions and types exposed by this module are considered unstable and are allowed to break
 /// even in patch releases!
@@ -464,6 +964,7 @@ pub mod testing {
                 port,
                 path,
                 serialize_alternative_form,
+                path_with_percent_escapes: None,
             }
         }
     }

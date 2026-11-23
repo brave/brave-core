@@ -1,9 +1,11 @@
+use gix_error::{Error, Result};
 use std::{borrow::Cow, cell::RefCell, cmp::Ordering};
 
 use bstr::BStr;
+use gix_error::{ErrorExt, bail, message, validation};
 use gix_filter::attributes::glob::pattern::Case;
 
-use super::{Action, ChangeRef, Error, RewriteOptions};
+use super::{Action, ChangeRef, RewriteOptions};
 use crate::rewrites;
 
 /// Produce an entry-by-entry diff between `lhs` and `rhs`, sending changes to `cb(change) -> Action` for consumption,
@@ -26,27 +28,28 @@ use crate::rewrites;
 /// The entries in `lhs` and `rhs` are both expected to be sorted like index entries are typically sorted.
 ///
 /// Note that sparse indices aren't supported, they must be "unsparsed" before.
-pub fn diff<'rhs, 'lhs: 'rhs, E, Find>(
+pub fn diff<'rhs, 'lhs: 'rhs, Find>(
     lhs: &'lhs gix_index::State,
     rhs: &'rhs gix_index::State,
-    mut cb: impl FnMut(ChangeRef<'lhs, 'rhs>) -> Result<Action, E>,
+    mut cb: impl FnMut(ChangeRef<'lhs, 'rhs>) -> Result<Action>,
     rewrite_options: Option<RewriteOptions<'_, Find>>,
     pathspec: &mut gix_pathspec::Search,
     pathspec_attributes: &mut dyn FnMut(&BStr, Case, bool, &mut gix_attributes::search::Outcome) -> bool,
-) -> Result<Option<rewrites::Outcome>, Error>
+) -> Result<Option<rewrites::Outcome>>
 where
-    E: Into<Box<dyn std::error::Error + Send + Sync>>,
     Find: gix_object::FindObjectOrHeader,
 {
     if lhs.is_sparse() || rhs.is_sparse() {
-        return Err(Error::IsSparse);
+        bail!(validation("Cannot diff indices that contain sparse entries"));
     }
     if lhs
         .entries()
         .iter()
         .any(|e| e.stage() != gix_index::entry::Stage::Unconflicted)
     {
-        return Err(Error::LhsHasUnmerged);
+        bail!(validation(
+            "Unmerged entries aren't allowed in the left-hand index, only in the right-hand index"
+        ));
     }
 
     let lhs_range = lhs
@@ -95,10 +98,10 @@ where
                 let (rhs_idx, rhs_path, rhs_entry) = rhs;
                 match lhs_path.cmp(rhs_path) {
                     Ordering::Less => match emit_deletion(lhs, &mut cb, tracker.as_mut())? {
-                        Action::Continue => {
+                        std::ops::ControlFlow::Continue(()) => {
                             lhs_storage = lhs_iter.next();
                         }
-                        Action::Cancel => return Ok(None),
+                        std::ops::ControlFlow::Break(()) => return Ok(None),
                     },
                     Ordering::Equal => {
                         if ignore_unmerged_and_intent_to_add(rhs) {
@@ -122,9 +125,9 @@ where
                                 Some(tracker) => tracker.try_push_change(change, rhs_path),
                             };
                             if let Some(change) = change {
-                                match cb(change).map_err(|err| Error::Callback(err.into()))? {
-                                    Action::Continue => {}
-                                    Action::Cancel => return Ok(None),
+                                match cb(change).map_err(callback_error)? {
+                                    std::ops::ControlFlow::Continue(()) => {}
+                                    std::ops::ControlFlow::Break(()) => return Ok(None),
                                 }
                             }
                         }
@@ -132,22 +135,22 @@ where
                         rhs_storage = rhs_iter.next();
                     }
                     Ordering::Greater => match emit_addition(rhs, &mut cb, tracker.as_mut())? {
-                        Action::Continue => {
+                        std::ops::ControlFlow::Continue(()) => {
                             rhs_storage = rhs_iter.next();
                         }
-                        Action::Cancel => return Ok(None),
+                        std::ops::ControlFlow::Break(()) => return Ok(None),
                     },
                 }
             }
             (Some(lhs), None) => match emit_deletion(lhs, &mut cb, tracker.as_mut())? {
-                Action::Cancel => return Ok(None),
-                Action::Continue => {
+                std::ops::ControlFlow::Break(()) => return Ok(None),
+                std::ops::ControlFlow::Continue(()) => {
                     lhs_storage = lhs_iter.next();
                 }
             },
             (None, Some(rhs)) => match emit_addition(rhs, &mut cb, tracker.as_mut())? {
-                Action::Cancel => return Ok(None),
-                Action::Continue => {
+                std::ops::ControlFlow::Break(()) => return Ok(None),
+                std::ops::ControlFlow::Continue(()) => {
                     rhs_storage = rhs_iter.next();
                 }
             },
@@ -180,11 +183,11 @@ where
                     dst.change
                 };
                 match cb(change) {
-                    Ok(Action::Continue) => crate::tree::visit::Action::Continue,
-                    Ok(Action::Cancel) => crate::tree::visit::Action::Cancel,
+                    Ok(std::ops::ControlFlow::Continue(())) => std::ops::ControlFlow::Continue(()),
+                    Ok(std::ops::ControlFlow::Break(())) => std::ops::ControlFlow::Break(()),
                     Err(err) => {
-                        cb_err = Some(Error::Callback(err.into()));
-                        crate::tree::visit::Action::Cancel
+                        cb_err = Some(callback_error(err));
+                        std::ops::ControlFlow::Break(())
                     }
                 }
             },
@@ -220,14 +223,11 @@ where
     }
 }
 
-fn emit_deletion<'rhs, 'lhs: 'rhs, E>(
+fn emit_deletion<'rhs, 'lhs: 'rhs>(
     (idx, path, entry): (usize, &'lhs BStr, &'lhs gix_index::Entry),
-    mut cb: impl FnMut(ChangeRef<'lhs, 'rhs>) -> Result<Action, E>,
+    mut cb: impl FnMut(ChangeRef<'lhs, 'rhs>) -> Result<Action>,
     tracker: Option<&mut rewrites::Tracker<ChangeRef<'lhs, 'rhs>>>,
-) -> Result<Action, Error>
-where
-    E: Into<Box<dyn std::error::Error + Send + Sync>>,
-{
+) -> Result<Action> {
     let change = ChangeRef::Deletion {
         location: Cow::Borrowed(path),
         index: idx,
@@ -239,23 +239,20 @@ where
         None => change,
         Some(tracker) => match tracker.try_push_change(change, path) {
             Some(change) => change,
-            None => return Ok(Action::Continue),
+            None => return Ok(std::ops::ControlFlow::Continue(())),
         },
     };
 
-    cb(change).map_err(|err| Error::Callback(err.into()))
+    cb(change).map_err(callback_error)
 }
 
-fn emit_addition<'rhs, 'lhs: 'rhs, E>(
+fn emit_addition<'rhs, 'lhs: 'rhs>(
     (idx, path, entry): (usize, &'rhs BStr, &'rhs gix_index::Entry),
-    mut cb: impl FnMut(ChangeRef<'lhs, 'rhs>) -> Result<Action, E>,
+    mut cb: impl FnMut(ChangeRef<'lhs, 'rhs>) -> Result<Action>,
     tracker: Option<&mut rewrites::Tracker<ChangeRef<'lhs, 'rhs>>>,
-) -> Result<Action, Error>
-where
-    E: Into<Box<dyn std::error::Error + Send + Sync>>,
-{
+) -> Result<Action> {
     if ignore_unmerged_and_intent_to_add((idx, path, entry)) {
-        return Ok(Action::Continue);
+        return Ok(std::ops::ControlFlow::Continue(()));
     }
 
     let change = ChangeRef::Addition {
@@ -269,11 +266,15 @@ where
         None => change,
         Some(tracker) => match tracker.try_push_change(change, path) {
             Some(change) => change,
-            None => return Ok(Action::Continue),
+            None => return Ok(std::ops::ControlFlow::Continue(())),
         },
     };
 
-    cb(change).map_err(|err| Error::Callback(err.into()))
+    cb(change).map_err(callback_error)
+}
+
+fn callback_error(err: Error) -> Error {
+    err.and_raise(message("The callback indicated failure"))
 }
 
 fn ignore_unmerged_and_intent_to_add<'rhs, 'lhs: 'rhs>(

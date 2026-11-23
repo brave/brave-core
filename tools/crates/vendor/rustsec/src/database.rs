@@ -120,20 +120,20 @@ impl Database {
     /// Query the database according to the given query object
     pub fn query(&self, query: &Query) -> Vec<&Advisory> {
         // Use indexes if we know a package name and collection
-        if let Some(name) = &query.package_name {
-            if let Some(collection) = query.collection {
-                return match collection {
-                    Collection::Crates => self.crate_index.get(name),
-                    Collection::Rust => self.rust_index.get(name),
-                }
-                .map(|slots| {
-                    slots
-                        .map(|slot| self.advisories.get(*slot).unwrap())
-                        .filter(|advisory| query.matches(advisory))
-                        .collect()
-                })
-                .unwrap_or_else(Vec::new);
+        if let Some(name) = &query.package_name
+            && let Some(collection) = query.collection
+        {
+            return match collection {
+                Collection::Crates => self.crate_index.get(name),
+                Collection::Rust => self.rust_index.get(name),
             }
+            .map(|slots| {
+                slots
+                    .map(|slot| self.advisories.get(*slot).unwrap())
+                    .filter(|advisory| query.matches(advisory))
+                    .collect()
+            })
+            .unwrap_or_else(Vec::new);
         }
 
         self.iter()
@@ -146,6 +146,14 @@ impl Database {
         let mut vulns = vec![];
 
         for package in &lockfile.packages {
+            if package
+                .source
+                .as_ref()
+                .is_none_or(|source| !source.is_default_registry())
+            {
+                continue;
+            }
+
             let advisories = self.query(&query.clone().package(package));
 
             vulns.extend(

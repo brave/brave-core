@@ -29,6 +29,11 @@ use core::ops::{Deref, DerefMut};
 ///
 /// The alignment of `CachePadded<T>` is the maximum of N bytes and the alignment of `T`.
 ///
+/// # Layout
+///
+/// Since crossbeam-utils 0.8.22, this type is `#[repr(C)]` and is guaranteed that the pointer to
+/// `CachePadded<T>` has the same address as the pointer to the underlying `T`.
+///
 /// # Examples
 ///
 /// Alignment and padding:
@@ -40,9 +45,9 @@ use core::ops::{Deref, DerefMut};
 /// let addr1 = &*array[0] as *const i8 as usize;
 /// let addr2 = &*array[1] as *const i8 as usize;
 ///
-/// assert!(addr2 - addr1 >= 32);
-/// assert_eq!(addr1 % 32, 0);
-/// assert_eq!(addr2 % 32, 0);
+/// assert!(addr2 - addr1 >= 16);
+/// assert_eq!(addr1 % 16, 0);
+/// assert_eq!(addr2 % 16, 0);
 /// ```
 ///
 /// When building a concurrent queue with a head and a tail index, it is wise to place them in
@@ -145,6 +150,7 @@ use core::ops::{Deref, DerefMut};
     )),
     repr(align(64))
 )]
+#[repr(C)]
 pub struct CachePadded<T> {
     value: T,
 }

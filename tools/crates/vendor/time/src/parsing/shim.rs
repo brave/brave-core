@@ -1,53 +1,46 @@
 //! Extension traits for things either not implemented or not yet stable in the MSRV.
 
-/// Equivalent of `foo.parse()` for slices.
-pub(crate) trait IntegerParseBytes<T> {
-    #[allow(clippy::missing_docs_in_private_items)]
-    fn parse_bytes(&self) -> Option<T>;
-}
-
-impl<T: Integer> IntegerParseBytes<T> for [u8] {
-    #[inline]
-    fn parse_bytes(&self) -> Option<T> {
-        T::parse_bytes(self)
-    }
-}
-
-/// Marker trait for all integer types, including `NonZero*`
+/// Marker trait for integer types.
 pub(crate) trait Integer: Sized {
-    #[allow(clippy::missing_docs_in_private_items)]
-    fn parse_bytes(src: &[u8]) -> Option<Self>;
+    /// The maximum number of digits that this type can have.
+    const MAX_NUM_DIGITS: u8;
+    /// The zero value for this type.
+    const ZERO: Self;
+
+    /// Push a digit onto the end of this integer, assuming no overflow.
+    ///
+    /// This is equivalent to `self * 10 + digit`.
+    fn push_digit(self, digit: u8) -> Self;
+
+    /// Push a digit onto the end of this integer, returning `None` on overflow.
+    ///
+    /// This is equivalent to `self.checked_mul(10)?.checked_add(digit)`.
+    fn checked_push_digit(self, digit: u8) -> Option<Self>;
 }
 
 /// Parse the given types from bytes.
 macro_rules! impl_parse_bytes {
     ($($t:ty)*) => ($(
         impl Integer for $t {
-            #[allow(trivial_numeric_casts)]
+            const MAX_NUM_DIGITS: u8 = match Self::MAX.checked_ilog10() {
+                Some(digits) => digits as u8 + 1,
+                None => 1,
+            };
+
+            const ZERO: Self = 0;
+
+            #[allow(trivial_numeric_casts, reason = "macro-generated code")]
             #[inline]
-            fn parse_bytes(src: &[u8]) -> Option<Self> {
-                src.iter().try_fold::<Self, _, _>(0, |result, c| {
-                    result.checked_mul(10)?.checked_add((c - b'0') as Self)
-                })
+            fn push_digit(self, digit: u8) -> Self {
+                self * 10 + digit as Self
+            }
+
+            #[allow(trivial_numeric_casts, reason = "macro-generated code")]
+            #[inline]
+            fn checked_push_digit(self, digit: u8) -> Option<Self> {
+                self.checked_mul(10)?.checked_add(digit as Self)
             }
         }
     )*)
 }
 impl_parse_bytes! { u8 u16 u32 u128 }
-
-/// Parse the given types from bytes.
-macro_rules! impl_parse_bytes_nonzero {
-    ($($t:ty)*) => {$(
-        impl Integer for $t {
-            #[inline]
-            fn parse_bytes(src: &[u8]) -> Option<Self> {
-                Self::new(src.parse_bytes()?)
-            }
-        }
-    )*}
-}
-
-impl_parse_bytes_nonzero! {
-    core::num::NonZero<u8>
-    core::num::NonZero<u16>
-}

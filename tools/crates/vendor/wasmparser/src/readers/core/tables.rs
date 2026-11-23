@@ -74,17 +74,18 @@ impl<'a> FromReader<'a> for TableType {
         let has_max = (flags & 0b001) != 0;
         let shared = (flags & 0b010) != 0;
         let table64 = (flags & 0b100) != 0;
+
         Ok(TableType {
             element_type,
             table64,
-            initial: if table64 {
+            initial: if reader.memory64() {
                 reader.read_var_u64()?
             } else {
                 reader.read_var_u32()?.into()
             },
             maximum: if !has_max {
                 None
-            } else if table64 {
+            } else if reader.memory64() {
                 Some(reader.read_var_u64()?)
             } else {
                 Some(reader.read_var_u32()?.into())

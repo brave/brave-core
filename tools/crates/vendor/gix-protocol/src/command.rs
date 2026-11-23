@@ -1,10 +1,8 @@
 //! V2 command abstraction to validate invocations and arguments, like a database of what we know about them.
-use std::borrow::Cow;
-
 use super::Command;
 
-/// A key value pair of values known at compile time.
-pub type Feature = (&'static str, Option<Cow<'static, str>>);
+/// A feature name known at compile time and its optional owned value.
+pub type Feature = (&'static str, Option<String>);
 
 impl Command {
     /// Produce the name of the command as known by the server side.
@@ -19,9 +17,11 @@ impl Command {
 #[cfg(any(test, feature = "async-client", feature = "blocking-client"))]
 mod with_io {
     use bstr::{BString, ByteSlice};
+
+    use gix_error::{Result, bail};
     use gix_transport::client::Capabilities;
 
-    use crate::{command::Feature, Command};
+    use crate::{Command, command::Feature};
 
     impl Command {
         /// Only V2
@@ -119,7 +119,7 @@ mod with_io {
             version: gix_transport::Protocol,
             server_capabilities: &Capabilities,
         ) -> Vec<Feature> {
-            match self {
+            let mut features = match self {
                 Command::Fetch => match version {
                     gix_transport::Protocol::V0 | gix_transport::Protocol::V1 => {
                         let has_multi_ack_detailed = server_capabilities.contains("multi_ack_detailed");
@@ -156,26 +156,35 @@ mod with_io {
                     }
                 },
                 Command::LsRefs => vec![],
+            };
+            // Echo the server's object format in every v2 command.
+            // A stateless transport like HTTP sends each command as its own request, so without this,
+            // the server assumes SHA1 and aborts any command against a SHA-256 repository.
+            if matches!(version, gix_transport::Protocol::V2)
+                && let Some(object_format) = server_capabilities
+                    .capability("object-format")
+                    .and_then(|c| c.value())
+                    .and_then(|value| value.to_str().ok())
+            {
+                features.push(("object-format", Some(object_format.to_owned())));
             }
+            features
         }
         /// Return an error if the given `arguments` and `features` don't match what's statically known.
+        /// Unknown arguments are validation failures; capabilities the server does not advertise are unsupported.
         pub fn validate_argument_prefixes(
             &self,
             version: gix_transport::Protocol,
             server: &Capabilities,
             arguments: &[BString],
             features: &[Feature],
-        ) -> Result<(), validate_argument_prefixes::Error> {
-            use validate_argument_prefixes::Error;
+        ) -> Result {
             let allowed = self.all_argument_prefixes();
             for arg in arguments {
                 if allowed.iter().any(|allowed| arg.starts_with(allowed.as_bytes())) {
                     continue;
                 }
-                return Err(Error::UnsupportedArgument {
-                    command: self.as_str(),
-                    argument: arg.clone(),
-                });
+                bail!("{}: argument {arg} is not known or allowed".validation(), self.as_str());
             }
             match version {
                 gix_transport::Protocol::V0 | gix_transport::Protocol::V1 => {
@@ -186,10 +195,7 @@ mod with_io {
                         {
                             continue;
                         }
-                        return Err(Error::UnsupportedCapability {
-                            command: self.as_str(),
-                            feature: feature.to_string(),
-                        });
+                        bail!("{}: capability {feature} is not supported".unsupported(), self.as_str());
                     }
                 }
                 gix_transport::Protocol::V2 => {
@@ -208,12 +214,9 @@ mod with_io {
                             continue;
                         }
                         match *feature {
-                            "agent" => {}
+                            "agent" | "object-format" => {}
                             _ => {
-                                return Err(Error::UnsupportedCapability {
-                                    command: self.as_str(),
-                                    feature: feature.to_string(),
-                                })
+                                bail!("{}: capability {feature} is not supported".unsupported(), self.as_str());
                             }
                         }
                     }
@@ -222,21 +225,4 @@ mod with_io {
             Ok(())
         }
     }
-
-    ///
-    pub mod validate_argument_prefixes {
-        use bstr::BString;
-
-        /// The error returned by [Command::validate_argument_prefixes()](super::Command::validate_argument_prefixes()).
-        #[derive(Debug, thiserror::Error)]
-        #[allow(missing_docs)]
-        pub enum Error {
-            #[error("{command}: argument {argument} is not known or allowed")]
-            UnsupportedArgument { command: &'static str, argument: BString },
-            #[error("{command}: capability {feature} is not supported")]
-            UnsupportedCapability { command: &'static str, feature: String },
-        }
-    }
 }
-#[cfg(any(test, feature = "async-client", feature = "blocking-client"))]
-pub use with_io::validate_argument_prefixes;

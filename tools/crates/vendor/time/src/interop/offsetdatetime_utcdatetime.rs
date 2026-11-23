@@ -1,10 +1,10 @@
 use core::cmp::Ordering;
 use core::ops::Sub;
 
-use crate::{Duration, OffsetDateTime, UtcDateTime};
+use crate::{OffsetDateTime, SignedDuration, UtcDateTime};
 
 impl Sub<OffsetDateTime> for UtcDateTime {
-    type Output = Duration;
+    type Output = SignedDuration;
 
     /// # Panics
     ///
@@ -17,7 +17,7 @@ impl Sub<OffsetDateTime> for UtcDateTime {
 }
 
 impl Sub<UtcDateTime> for OffsetDateTime {
-    type Output = Duration;
+    type Output = SignedDuration;
 
     /// # Panics
     ///
@@ -75,6 +75,6 @@ impl From<UtcDateTime> for OffsetDateTime {
     #[inline]
     #[track_caller]
     fn from(datetime: UtcDateTime) -> Self {
-        datetime.as_primitive().assume_utc()
+        datetime.as_plain().assume_utc()
     }
 }

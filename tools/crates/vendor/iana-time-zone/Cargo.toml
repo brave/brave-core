@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.62.0"
 name = "iana-time-zone"
-version = "0.1.64"
+version = "0.1.65"
 authors = [
     "Andrew Straw <strawman@astraw.com>",
     "René Kijewski <rene.kijewski@fu-berlin.de>",

@@ -31,9 +31,14 @@ pub struct Encoder<'a, W: Write> {
 
 /// A decoder that decompress and forward data to another writer.
 ///
-/// Note that you probably want to `flush()` after writing your stream content.
-/// You can use [`auto_flush()`] to automatically flush the writer on drop.
+/// Don't forget to call [`finish()`] after writing your stream content: it
+/// flushes the decompressed data, and is the only way to know whether the
+/// input stopped in the middle of a frame.
 ///
+/// You can also use [`auto_flush()`] to automatically flush the writer on
+/// drop; note that this does not check for an incomplete frame.
+///
+/// [`finish()`]: Decoder::finish
 /// [`auto_flush()`]: Decoder::auto_flush
 pub struct Decoder<'a, W: Write> {
     // output writer (decompressed data)
@@ -43,6 +48,9 @@ pub struct Decoder<'a, W: Write> {
 /// A wrapper around an `Encoder<W>` that finishes the stream on drop.
 ///
 /// This can be created by the [`auto_finish()`] method on the [`Encoder`].
+///
+/// If it is dropped because the wrapped writer panicked, the stream is left
+/// unfinished and the writer is not used again.
 ///
 /// [`auto_finish()`]: Encoder::auto_finish
 /// [`Encoder`]: Encoder
@@ -60,6 +68,9 @@ pub struct AutoFinishEncoder<
 /// A wrapper around a `Decoder<W>` that flushes the stream on drop.
 ///
 /// This can be created by the [`auto_flush()`] method on the [`Decoder`].
+///
+/// If it is dropped because the wrapped writer panicked, nothing is flushed
+/// and the writer is not used again.
 ///
 /// [`auto_flush()`]: Decoder::auto_flush
 /// [`Decoder`]: Decoder
@@ -105,6 +116,12 @@ where
 {
     fn drop(&mut self) {
         let mut decoder = self.decoder.take().unwrap();
+        // The writer panicked and still has the same data pending: calling
+        // it again would panic again, and a second panic while unwinding
+        // aborts the process.
+        if decoder.writer.panicked() {
+            return;
+        }
         let result = decoder.flush();
         if let Some(mut on_finish) = self.on_flush.take() {
             on_finish(result);
@@ -148,7 +165,14 @@ impl<'a, W: Write, F: FnMut(io::Result<W>)> AutoFinishEncoder<'a, W, F> {
 
 impl<W: Write, F: FnMut(io::Result<W>)> Drop for AutoFinishEncoder<'_, W, F> {
     fn drop(&mut self) {
-        let result = self.encoder.take().unwrap().finish();
+        let encoder = self.encoder.take().unwrap();
+        // The writer panicked and still has the same data pending: calling
+        // it again would panic again, and a second panic while unwinding
+        // aborts the process.
+        if encoder.writer.panicked() {
+            return;
+        }
+        let result = encoder.finish();
         if let Some(mut on_finish) = self.on_finish.take() {
             on_finish(result);
         }
@@ -251,7 +275,8 @@ impl<'a, W: Write> Encoder<'a, W> {
     /// Returns an encoder that will finish the stream on drop.
     ///
     /// Calls the given callback with the result from `finish()`. This runs during drop so it's
-    /// important that the provided callback doesn't panic.
+    /// important that the provided callback doesn't panic. It is not called if the wrapped
+    /// writer panicked.
     pub fn on_finish<F: FnMut(io::Result<W>)>(
         self,
         f: F,
@@ -370,6 +395,15 @@ impl<'a, W: Write> Decoder<'a, W> {
         Decoder { writer }
     }
 
+    /// Creates a decoder that uses the provided context to decompress a stream.
+    pub fn with_context(
+        writer: W,
+        context: &'a mut zstd_safe::DCtx<'static>,
+    ) -> Self {
+        let encoder = raw::Decoder::with_context(context);
+        Self::with_decoder(writer, encoder)
+    }
+
     /// Creates a new decoder, using an existing prepared `DecoderDictionary`.
     ///
     /// (Provides better compression ratio for small files,
@@ -399,8 +433,34 @@ impl<'a, W: Write> Decoder<'a, W> {
     }
 
     /// Returns the inner `Write`.
+    ///
+    /// Careful: this neither flushes the decompressed data nor checks that
+    /// the input ended on a complete frame.
+    /// Use [`finish(self)`](#method.finish) for that.
     pub fn into_inner(self) -> W {
         self.writer.into_inner().0
+    }
+
+    /// Finishes the stream.
+    ///
+    /// This flushes all the decompressed data, and returns an `UnexpectedEof`
+    /// error if the data written so far does not end on a complete frame.
+    ///
+    /// This returns the inner writer in case you need it.
+    pub fn finish(mut self) -> io::Result<W> {
+        self.do_finish()?;
+        Ok(self.into_inner())
+    }
+
+    /// Attempts to finish the stream.
+    ///
+    /// Same as [`finish(self)`](#method.finish), but does not consume `self`.
+    ///
+    /// `write` on this object will fail after `do_finish` has succeeded.
+    pub fn do_finish(&mut self) -> io::Result<()> {
+        // Unlike when encoding, finishing does not flush anything by itself.
+        self.writer.flush()?;
+        self.writer.finish()
     }
 
     /// Return a recommendation for the size of data to write at once.
@@ -419,7 +479,8 @@ impl<'a, W: Write> Decoder<'a, W> {
     /// Returns a decoder that will flush the stream on drop.
     ///
     /// Calls the given callback with the result from `flush()`. This runs during drop so it's
-    /// important that the provided callback doesn't panic.
+    /// important that the provided callback doesn't panic. It is not called if the wrapped
+    /// writer panicked.
     pub fn on_flush<F: FnMut(io::Result<()>)>(
         self,
         f: F,

@@ -1,10 +1,13 @@
 use super::utils::cstr;
-use crate::{
-    fs::UringOpenOptions,
-    runtime::driver::op::{CancelData, Cancellable, Completable, CqeResult, Op},
-};
+
+use crate::fs::UringOpenOptions;
+use crate::runtime::driver::op::{CancelData, Cancellable, Completable, CqeResult, Op};
+
 use io_uring::{opcode, types};
-use std::{ffi::CString, io, os::fd::FromRawFd, path::Path};
+use std::ffi::CString;
+use std::io::{self, Error};
+use std::os::fd::FromRawFd;
+use std::path::Path;
 
 #[derive(Debug)]
 pub(crate) struct Open {
@@ -14,12 +17,29 @@ pub(crate) struct Open {
     path: CString,
 }
 
+/// Distinguishes whether an `Interrupted` error allows retrying the open operation.
+#[derive(Debug)]
+pub(crate) enum OpenError {
+    /// A submission error: return it without retrying, even for `Interrupted`.
+    Submission(io::Error),
+    /// An error reported by the CQE: retry only if it is `Interrupted`.
+    Completion(io::Error),
+}
+
 impl Completable for Open {
-    type Output = crate::fs::File;
-    fn complete(self, cqe: CqeResult) -> io::Result<Self::Output> {
-        let fd = cqe.result? as i32;
-        let file = unsafe { crate::fs::File::from_raw_fd(fd) };
-        Ok(file)
+    type Output = Result<crate::fs::File, OpenError>;
+    fn complete(self, cqe: CqeResult) -> Self::Output {
+        cqe.result
+            .map(|fd| unsafe { crate::fs::File::from_raw_fd(fd as i32) })
+            .map_err(OpenError::Completion)
+    }
+
+    fn complete_with_error(self, err: Error) -> Self::Output {
+        Err(OpenError::Submission(err))
+    }
+
+    fn complete_after_cancel(err: Error) -> Self::Output {
+        Err(OpenError::Submission(err))
     }
 }
 
@@ -49,5 +69,15 @@ impl Op<Open> {
         // SAFETY: Parameters are valid for the entire duration of the operation
         let op = unsafe { Op::new(open_op, Open { path }) };
         Ok(op)
+    }
+}
+
+pub(crate) async fn open(path: &Path, options: &UringOpenOptions) -> io::Result<crate::fs::File> {
+    loop {
+        match Op::open(path, options)?.await {
+            Ok(file) => return Ok(file),
+            Err(OpenError::Completion(e)) if e.kind() == io::ErrorKind::Interrupted => continue,
+            Err(OpenError::Completion(e) | OpenError::Submission(e)) => return Err(e),
+        }
     }
 }

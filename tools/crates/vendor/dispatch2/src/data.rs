@@ -16,6 +16,7 @@ impl DispatchData {
     // pub const EMPTY: &Self = _dispatch_data_empty;
 
     /// Get an empty [`DispatchData`].
+    #[inline]
     pub fn empty() -> &'static Self {
         // SAFETY: The static is valid.
         unsafe { &_dispatch_data_empty }
@@ -24,6 +25,7 @@ impl DispatchData {
     /// Creates a dispatch data object with a copy of the given contiguous
     /// buffer of memory.
     #[cfg(feature = "block2")]
+    #[inline]
     pub fn from_bytes(data: &[u8]) -> DispatchRetained<Self> {
         // TODO: Autogenerate?
         const DISPATCH_DATA_DESTRUCTOR_DEFAULT: crate::dispatch_block_t = ptr::null_mut();
@@ -44,6 +46,7 @@ impl DispatchData {
     /// Creates a dispatch data object with a reference to the given
     /// contiguous buffer of memory.
     #[cfg(feature = "block2")]
+    #[inline]
     pub fn from_static_bytes(data: &'static [u8]) -> DispatchRetained<Self> {
         block2::global_block! {
             static NOOP_BLOCK = || {}
@@ -66,6 +69,7 @@ impl DispatchData {
     /// buffer of memory.
     #[cfg(feature = "alloc")]
     #[cfg(feature = "block2")]
+    #[inline]
     pub fn from_boxed(data: alloc::boxed::Box<[u8]>) -> DispatchRetained<Self> {
         let data_len = data.len();
         let raw = alloc::boxed::Box::into_raw(data);
@@ -104,6 +108,7 @@ impl DispatchData {
     #[cfg(feature = "alloc")]
     #[cfg(feature = "block2")]
     #[cfg(feature = "objc2")]
+    #[inline]
     pub fn to_vec(&self) -> alloc::vec::Vec<u8> {
         let contents = core::cell::RefCell::new(alloc::vec::Vec::new());
         let block = block2::RcBlock::new(

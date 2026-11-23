@@ -4,8 +4,8 @@ mod map;
 
 use toml_writer::TomlWrite as _;
 
-use super::style::Style;
 use super::Error;
+use super::style::Style;
 use crate::alloc_prelude::*;
 #[allow(clippy::wildcard_imports)]
 pub(crate) use array::*;
@@ -116,6 +116,11 @@ impl<'d> serde_core::ser::Serializer for ValueSerializer<'d> {
         Ok(self.dst)
     }
 
+    fn serialize_i128(self, v: i128) -> Result<Self::Ok, Self::Error> {
+        self.dst.value(v)?;
+        Ok(self.dst)
+    }
+
     fn serialize_u8(self, v: u8) -> Result<Self::Ok, Self::Error> {
         self.dst.value(v)?;
         Ok(self.dst)
@@ -132,10 +137,13 @@ impl<'d> serde_core::ser::Serializer for ValueSerializer<'d> {
     }
 
     fn serialize_u64(self, v: u64) -> Result<Self::Ok, Self::Error> {
-        let v: i64 = v
-            .try_into()
-            .map_err(|_err| Error::out_of_range(Some("u64")))?;
-        self.serialize_i64(v)
+        self.dst.value(v)?;
+        Ok(self.dst)
+    }
+
+    fn serialize_u128(self, v: u128) -> Result<Self::Ok, Self::Error> {
+        self.dst.value(v)?;
+        Ok(self.dst)
     }
 
     fn serialize_f32(self, mut v: f32) -> Result<Self::Ok, Self::Error> {

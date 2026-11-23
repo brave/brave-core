@@ -65,7 +65,110 @@ pub static UTF8_DATA: Utf8Data = Utf8Data {
 
 // END GENERATED CODE
 
+// The UTF-8 validation code provided by this crate is faster than the UTF-8 validation code
+// provided by the standard library. When SIMD is used, the simdutf8 crate is much faster
+// than the code here. However, when SIMD isn't used, simdutf8 delegates to the standard
+// library and not here. To use the code here when SSE 4.2 isn't available for simdutf8
+// to use, let's implement custom dispatch here. As a bonus, the `core_detect` crate
+// works without `std`.
+
+cfg_if! {
+    if #[cfg(all(target_arch = "aarch64", target_feature = "neon"))] {
+        #[inline(always)]
+        fn fast_utf8_valid_up_to(src: &[u8]) -> Option<usize> {
+            if src.len() >= 64 {
+                // SAFETY: The cfg check above ensures that the precondition, NEON availability on aarch64, is satisfied.
+                Some(match unsafe { simdutf8::compat::imp::aarch64::neon::validate_utf8(src) } {
+                    Ok(_) => src.len(),
+                    Err(e) => e.valid_up_to(),
+                })
+            } else {
+                None
+            }
+        }
+    } else if #[cfg(target_feature = "avx2")] {
+        #[inline(always)]
+        fn fast_utf8_valid_up_to(src: &[u8]) -> Option<usize> {
+            if src.len() >= 64 {
+                // SAFETY: The cfg check above ensures that the precondition, AVX2 availability, is satisfied.
+                Some(match unsafe { simdutf8::compat::imp::x86::avx2::validate_utf8(src) } {
+                    Ok(_) => src.len(),
+                    Err(e) => e.valid_up_to(),
+                })
+            } else {
+                None
+            }
+        }
+    } else if #[cfg(target_feature = "sse4.2")] {
+        #[inline(always)]
+        fn fast_utf8_valid_up_to(src: &[u8]) -> Option<usize> {
+            if src.len() >= 64 {
+                if core_detect::is_x86_feature_detected!("avx2") {
+                    // SAFETY: The dynamic check above ensures that the precondition, AVX2 availability, is satisfied.
+                    Some(match unsafe { simdutf8::compat::imp::x86::avx2::validate_utf8(src) } {
+                        Ok(_) => src.len(),
+                        Err(e) => e.valid_up_to(),
+                    })
+                } else {
+                    // SAFETY: The cfg check above ensures that the precondition, SSE 4.2 availability, is satisfied.
+                    Some(match unsafe { simdutf8::compat::imp::x86::sse42::validate_utf8(src) } {
+                        Ok(_) => src.len(),
+                        Err(e) => e.valid_up_to(),
+                    })
+                }
+            } else {
+                None
+            }
+        }
+    } else if #[cfg(target_feature = "sse")] { // "sse" stands in for cpuid availability
+        #[inline(always)]
+        fn fast_utf8_valid_up_to(src: &[u8]) -> Option<usize> {
+            if src.len() >= 64 {
+                if core_detect::is_x86_feature_detected!("avx2") {
+                    // SAFETY: The dynamic check above ensures that the precondition, AVX2 availability, is satisfied.
+                    Some(match unsafe { simdutf8::compat::imp::x86::avx2::validate_utf8(src) } {
+                        Ok(_) => src.len(),
+                        Err(e) => e.valid_up_to(),
+                    })
+                } else if core_detect::is_x86_feature_detected!("sse4.2") {
+                    // SAFETY: The dynamic check above ensures that the precondition, SSE 4.2 availability, is satisfied.
+                    Some(match unsafe { simdutf8::compat::imp::x86::sse42::validate_utf8(src) } {
+                        Ok(_) => src.len(),
+                        Err(e) => e.valid_up_to(),
+                    })
+                } else {
+                    None
+                }
+            } else {
+                None
+            }
+        }
+    } else if #[cfg(all(target_arch = "wasm32", target_feature = "simd128"))] {
+        #[inline(always)]
+        fn fast_utf8_valid_up_to(src: &[u8]) -> Option<usize> {
+            if src.len() >= 64 {
+                // SAFETY: The cfg check above ensures that the precondition, simd128 availability on wasm32, is satisfied.
+                Some(match unsafe { simdutf8::compat::imp::wasm32::simd128::validate_utf8(src) } {
+                    Ok(_) => src.len(),
+                    Err(e) => e.valid_up_to(),
+                })
+            } else {
+                None
+            }
+        }
+    } else {
+        #[inline(always)]
+        fn fast_utf8_valid_up_to(_src: &[u8]) -> Option<usize> {
+            None
+        }
+    }
+}
+
 pub fn utf8_valid_up_to(src: &[u8]) -> usize {
+    if let Some(up_to) = fast_utf8_valid_up_to(src) {
+        return up_to;
+    }
+
     let mut read = 0;
     'outer: loop {
         let mut byte = {
@@ -226,7 +329,8 @@ pub fn utf8_valid_up_to(src: &[u8]) -> usize {
     read
 }
 
-#[cfg_attr(feature = "cargo-clippy", allow(never_loop, cyclomatic_complexity))]
+#[inline(always)]
+#[allow(clippy::never_loop, clippy::cognitive_complexity)]
 pub fn convert_utf8_to_utf16_up_to_invalid(src: &[u8], dst: &mut [u16]) -> (usize, usize) {
     let mut read = 0;
     let mut written = 0;
@@ -235,9 +339,7 @@ pub fn convert_utf8_to_utf16_up_to_invalid(src: &[u8], dst: &mut [u16]) -> (usiz
             let src_remaining = &src[read..];
             let dst_remaining = &mut dst[written..];
             let length = ::core::cmp::min(src_remaining.len(), dst_remaining.len());
-            match unsafe {
-                ascii_to_basic_latin(src_remaining.as_ptr(), dst_remaining.as_mut_ptr(), length)
-            } {
+            match ascii_to_basic_latin(src_remaining, dst_remaining) {
                 None => {
                     read += length;
                     written += length;
@@ -371,6 +473,7 @@ pub fn convert_utf8_to_utf16_up_to_invalid(src: &[u8], dst: &mut [u16]) -> (usiz
                         unsafe { *(dst.get_unchecked_mut(written)) = u16::from(byte) };
                         read += 1;
                         written += 1;
+                        // See `u8u16punct` branch for punctuation loop here.
                         continue 'outer;
                     }
                     continue 'inner;
@@ -496,15 +599,15 @@ impl Utf8Decoder {
     }
 
     decoder_functions!(
-        {},
-        {
+        preamble = {},
+        loop_preamble = {
             // This is the fast path. The rest runs only at the
             // start and end for partial sequences.
             if self.bytes_needed == 0 {
                 dest.copy_utf8_up_to_invalid_from(&mut source);
             }
         },
-        {
+        eof = {
             if self.bytes_needed != 0 {
                 let bad_bytes = (self.bytes_seen + 1) as u8;
                 self.code_point = 0;
@@ -517,7 +620,7 @@ impl Utf8Decoder {
                 );
             }
         },
-        {
+        body = {
             if self.bytes_needed == 0 {
                 if b < 0x80u8 {
                     destination_handle.write_ascii(b);
@@ -592,34 +695,51 @@ impl Utf8Decoder {
             self.bytes_seen = 0;
             continue;
         },
-        self,
-        src_consumed,
-        dest,
-        source,
-        b,
-        destination_handle,
-        unread_handle,
-        check_space_astral
+        self = self,
+        src_consumed = src_consumed,
+        dest = dest,
+        source = source,
+        byte = b,
+        destination_handle = destination_handle,
+        unread_handle = unread_handle,
+        destination_check = check_space_astral
     );
 }
 
-#[cfg_attr(feature = "cargo-clippy", allow(never_loop))]
+#[allow(clippy::never_loop)]
 #[inline(never)]
+#[crate::multiversion(targets("x86_64+avx2+bmi1", "x86+avx2+bmi1"))]
 pub fn convert_utf16_to_utf8_partial_inner(src: &[u16], dst: &mut [u8]) -> (usize, usize) {
     let mut read = 0;
     let mut written = 0;
     'outer: loop {
         let mut unit = {
+            // `basic_latin_to_ascii` may write garbage beyond the logical number
+            // of read and written code units. If `dst` was longer than necessary,
+            // this would not be a problem, since we know that every code unit
+            // in input will result in at least one code unit in output, so the
+            // garbage would get subsequently overwritten. However, when the
+            // conversion here ends due to running out of output space, we
+            // may have a situation where we have written a byte of garbage
+            // to output, but we don't overwrite it, because there is not
+            // enough space in the output for every possible scalar (4 bytes).
+            //
+            // Therefore, let's make the destination slice that this function
+            // operates on 3 bytes shorter to make the SIMD code stop a bit
+            // earlier and then `convert_utf16_to_utf8_partial_tail` will
+            // handle the part that this function does not.
+            let capped_dst_len = dst.len().saturating_sub(3);
+            if written >= capped_dst_len {
+                return (read, written);
+            }
             let src_remaining = &src[read..];
-            let dst_remaining = &mut dst[written..];
+            let dst_remaining = &mut dst[written..capped_dst_len];
             let length = if dst_remaining.len() < src_remaining.len() {
                 dst_remaining.len()
             } else {
                 src_remaining.len()
             };
-            match unsafe {
-                basic_latin_to_ascii(src_remaining.as_ptr(), dst_remaining.as_mut_ptr(), length)
-            } {
+            match basic_latin_to_ascii(src_remaining, dst_remaining) {
                 None => {
                     read += length;
                     written += length;
@@ -716,29 +836,33 @@ pub fn convert_utf16_to_utf8_partial_inner(src: &[u16], dst: &mut [u8]) -> (usiz
                 }
                 break;
             }
-            // Now see if the next unit is Basic Latin
-            // read > src.len() is impossible, but using
-            // >= instead of == allows the compiler to elide a bound check.
-            if read >= src.len() {
-                debug_assert_eq!(read, src.len());
-                return (read, written);
-            }
-            unit = src[read];
-            if unlikely(unit < 0x80) {
-                // written > dst.len() is impossible, but using
+            'punctuation: loop {
+                // Now see if the next unit is Basic Latin
+                // read > src.len() is impossible, but using
                 // >= instead of == allows the compiler to elide a bound check.
-                if written >= dst.len() {
-                    debug_assert_eq!(written, dst.len());
+                if read >= src.len() {
+                    debug_assert_eq!(read, src.len());
                     return (read, written);
                 }
-                dst[written] = unit as u8;
-                read += 1;
-                written += 1;
-                // Mysteriously, adding a punctuation check here makes
-                // the expected benificiary cases *slower*!
-                continue 'outer;
+                unit = src[read];
+                if unlikely(unit < 0x80) {
+                    // written > dst.len() is impossible, but using
+                    // >= instead of == allows the compiler to elide a bound check.
+                    if written >= dst.len() {
+                        debug_assert_eq!(written, dst.len());
+                        return (read, written);
+                    }
+                    dst[written] = unit as u8;
+                    read += 1;
+                    written += 1;
+                    // A punctuation check was slower in 2018 but makes sense in 2026.
+                    if unit < 0x3C {
+                        continue 'punctuation;
+                    }
+                    continue 'outer;
+                }
+                continue 'inner;
             }
-            continue 'inner;
         }
     }
 }
@@ -792,6 +916,7 @@ pub fn convert_utf16_to_utf8_partial_tail(src: &[u16], dst: &mut [u8]) -> (usize
         // Got surrogate
         if unit_minus_surrogate_start <= (0xDBFF - 0xD800) {
             // Got high surrogate
+            #[allow(clippy::branches_sharing_code)]
             if read >= src.len() {
                 // Unpaired high surrogate
                 unit = 0xFFFD;
@@ -868,7 +993,7 @@ impl Utf8Encoder {
         let bytes = src.as_bytes();
         let mut to_write = bytes.len();
         if to_write <= dst.len() {
-            (&mut dst[..to_write]).copy_from_slice(bytes);
+            dst[..to_write].copy_from_slice(bytes);
             return (EncoderResult::InputEmpty, to_write, to_write);
         }
         to_write = dst.len();
@@ -876,7 +1001,7 @@ impl Utf8Encoder {
         while (bytes[to_write] & 0xC0) == 0x80 {
             to_write -= 1;
         }
-        (&mut dst[..to_write]).copy_from_slice(&bytes[..to_write]);
+        dst[..to_write].copy_from_slice(&bytes[..to_write]);
         (EncoderResult::OutputFull, to_write, to_write)
     }
 }

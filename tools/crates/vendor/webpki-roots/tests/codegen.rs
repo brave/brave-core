@@ -2,8 +2,8 @@ use std::ascii::escape_default;
 use std::fmt::Write;
 use std::fs;
 
+use aws_lc_rs::digest;
 use pki_types::CertificateDer;
-use ring::digest;
 use webpki::anchor_from_trusted_cert;
 use webpki_ccadb::fetch_ccadb_roots;
 use x509_parser::prelude::AttributeTypeAndValue;

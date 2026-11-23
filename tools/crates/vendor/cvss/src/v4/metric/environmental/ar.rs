@@ -1,7 +1,7 @@
 //! Availability Requirements (AR)
 
 use crate::{
-    Error, Result,
+    Error,
     v4::metric::{Metric, MetricType},
 };
 use alloc::borrow::ToOwned;
@@ -25,13 +25,14 @@ use core::{fmt, str::FromStr};
 /// > assuming “reasonable worst case”, in absence of explicit values, these
 /// > metrics are set to the default value of Not Defined (X), which is
 /// > equivalent to the metric value of High (H).
-#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+#[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
 pub enum AvailabilityRequirements {
     /// Not Defined (X)
     ///
     /// > This is the default value. Assigning this value indicates there is
     /// > insufficient information to choose one of the other values. This has
     /// > the same effect as assigning High as the worst case.
+    #[default]
     NotDefined,
     /// Low (L)
     ///
@@ -53,21 +54,15 @@ pub enum AvailabilityRequirements {
     High,
 }
 
-impl Default for AvailabilityRequirements {
-    fn default() -> Self {
-        Self::NotDefined
-    }
-}
-
 impl Metric for AvailabilityRequirements {
     const TYPE: MetricType = MetricType::AR;
 
     fn as_str(self) -> &'static str {
         match self {
-            AvailabilityRequirements::NotDefined => "X",
-            AvailabilityRequirements::Low => "L",
-            AvailabilityRequirements::Medium => "M",
-            AvailabilityRequirements::High => "H",
+            Self::NotDefined => "X",
+            Self::Low => "L",
+            Self::Medium => "M",
+            Self::High => "H",
         }
     }
 }
@@ -81,12 +76,12 @@ impl fmt::Display for AvailabilityRequirements {
 impl FromStr for AvailabilityRequirements {
     type Err = Error;
 
-    fn from_str(s: &str) -> Result<Self> {
+    fn from_str(s: &str) -> Result<Self, Error> {
         match s {
-            "X" => Ok(AvailabilityRequirements::NotDefined),
-            "L" => Ok(AvailabilityRequirements::Low),
-            "M" => Ok(AvailabilityRequirements::Medium),
-            "H" => Ok(AvailabilityRequirements::High),
+            "X" => Ok(Self::NotDefined),
+            "L" => Ok(Self::Low),
+            "M" => Ok(Self::Medium),
+            "H" => Ok(Self::High),
             _ => Err(Error::InvalidMetricV4 {
                 metric_type: Self::TYPE,
                 value: s.to_owned(),
@@ -105,27 +100,22 @@ pub(crate) mod merge {
     use alloc::borrow::ToOwned;
     use core::str::FromStr;
 
-    #[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+    #[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
     pub(crate) enum MergedAvailabilityRequirements {
         Low,
         Medium,
+        #[default]
         High,
-    }
-
-    impl Default for MergedAvailabilityRequirements {
-        fn default() -> Self {
-            Self::High
-        }
     }
 
     impl FromStr for MergedAvailabilityRequirements {
         type Err = Error;
 
-        fn from_str(s: &str) -> Result<Self> {
+        fn from_str(s: &str) -> Result<Self, Error> {
             match s {
-                "L" => Ok(MergedAvailabilityRequirements::Low),
-                "M" => Ok(MergedAvailabilityRequirements::Medium),
-                "H" => Ok(MergedAvailabilityRequirements::High),
+                "L" => Ok(Self::Low),
+                "M" => Ok(Self::Medium),
+                "H" => Ok(Self::High),
                 _ => Err(Error::InvalidMetricV4 {
                     metric_type: MetricType::AR,
                     value: s.to_owned(),

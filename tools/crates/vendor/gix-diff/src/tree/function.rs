@@ -1,10 +1,10 @@
 use std::{borrow::BorrowMut, collections::VecDeque};
 
-use gix_object::{tree::EntryRef, FindExt, TreeRefIter};
+use gix_object::{FindExt, TreeRefIter, tree::EntryRef};
 
 use crate::tree::{
-    visit::{Change, ChangeId, Relation},
     Error, State, TreeInfoTuple, Visit,
+    visit::{Change, ChangeId, Relation},
 };
 
 /// Calculate the changes that would need to be applied to `lhs` to get `rhs` using `objects` to obtain objects as needed for traversal.
@@ -23,7 +23,7 @@ use crate::tree::{
 ///   by the delegate implementation which should be as specific as possible. Rename tracking can be computed on top of the changes
 ///   received by the `delegate`.
 /// * cycle checking is not performed, but can be performed in the delegate which can return
-///   [`tree::visit::Action::Cancel`](crate::tree::visit::Action::Cancel) to stop the traversal.
+///   [`std::ops::ControlFlow::Break`] to stop the traversal.
 ///
 /// [git_cmp_c]: https://github.com/git/git/blob/ef8ce8f3d4344fd3af049c17eeba5cd20d98b69f/tree-diff.c#L72-L88
 /// [git_cmp_rs]: https://github.com/GitoxideLabs/gitoxide/blob/795962b107d86f58b1f7c75006da256d19cc80ad/gix-object/src/tree/mod.rs#L263-L273
@@ -120,12 +120,7 @@ where
 }
 
 fn compare(a: &EntryRef<'_>, b: &EntryRef<'_>) -> std::cmp::Ordering {
-    let common = a.filename.len().min(b.filename.len());
-    a.filename[..common].cmp(&b.filename[..common]).then_with(|| {
-        let a = a.filename.get(common).or_else(|| a.mode.is_tree().then_some(&b'/'));
-        let b = b.filename.get(common).or_else(|| b.mode.is_tree().then_some(&b'/'));
-        a.cmp(&b)
-    })
+    gix_object::tree::name_order(a.filename, a.mode.is_tree(), b.filename, b.mode.is_tree())
 }
 
 fn delete_entry_schedule_recursion(
@@ -148,7 +143,7 @@ fn delete_entry_schedule_recursion(
             oid: entry.oid.to_owned(),
             relation,
         })
-        .cancelled();
+        .is_break();
     if is_cancelled {
         return Err(Error::Cancelled);
     }
@@ -180,7 +175,7 @@ fn add_entry_schedule_recursion(
             oid: entry.oid.to_owned(),
             relation,
         })
-        .cancelled()
+        .is_break()
     {
         return Err(Error::Cancelled);
     }
@@ -230,7 +225,12 @@ fn catchup_rhs_with_lhs(
                     break;
                 }
             },
-            Some(Err(err)) => return Err(Error::EntriesDecode(err.to_owned())),
+            Some(Err(_)) => {
+                let Err(err) = rhs_entries.next().expect("the peeked item to be present") else {
+                    unreachable!("peeked error changed before it was consumed")
+                };
+                return Err(err.into());
+            }
             None => {
                 delegate.pop_path_component();
                 delete_entry_schedule_recursion(lhs, queue, change_id, relation_to_propagate, delegate)?;
@@ -279,7 +279,12 @@ fn catchup_lhs_with_rhs(
                     break;
                 }
             },
-            Some(Err(err)) => return Err(Error::EntriesDecode(err.to_owned())),
+            Some(Err(_)) => {
+                let Err(err) = lhs_entries.next().expect("the peeked item to be present") else {
+                    unreachable!("peeked error changed before it was consumed")
+                };
+                return Err(err.into());
+            }
             None => {
                 delegate.pop_path_component();
                 add_entry_schedule_recursion(rhs, queue, change_id, relation_to_propagate, delegate)?;
@@ -300,24 +305,30 @@ fn handle_lhs_and_rhs_with_equal_filenames(
 ) -> Result<(), Error> {
     match (lhs.mode.is_tree(), rhs.mode.is_tree()) {
         (true, true) => {
-            delegate.push_back_tracked_path_component(lhs.filename);
-            if lhs.oid != rhs.oid
-                && delegate
+            if lhs.oid == rhs.oid {
+                // If the tree oids are identical, we won't bother recursing
+                // into this subtree as the entire tree is identical.
+                // For path management purposes, treat it like a skipped blob.
+                delegate.push_path_component(lhs.filename);
+            } else {
+                delegate.push_back_tracked_path_component(lhs.filename);
+                if delegate
                     .visit(Change::Modification {
                         previous_entry_mode: lhs.mode,
                         previous_oid: lhs.oid.to_owned(),
                         entry_mode: rhs.mode,
                         oid: rhs.oid.to_owned(),
                     })
-                    .cancelled()
-            {
-                return Err(Error::Cancelled);
+                    .is_break()
+                {
+                    return Err(Error::Cancelled);
+                }
+                queue.push_back((
+                    Some(lhs.oid.to_owned()),
+                    Some(rhs.oid.to_owned()),
+                    relation_to_propagate,
+                ));
             }
-            queue.push_back((
-                Some(lhs.oid.to_owned()),
-                Some(rhs.oid.to_owned()),
-                relation_to_propagate,
-            ));
         }
         (_, true) => {
             delegate.push_back_tracked_path_component(lhs.filename);
@@ -327,7 +338,7 @@ fn handle_lhs_and_rhs_with_equal_filenames(
                     oid: lhs.oid.to_owned(),
                     relation: None,
                 })
-                .cancelled()
+                .is_break()
             {
                 return Err(Error::Cancelled);
             }
@@ -342,7 +353,7 @@ fn handle_lhs_and_rhs_with_equal_filenames(
                     oid: rhs.oid.to_owned(),
                     relation,
                 })
-                .cancelled()
+                .is_break()
             {
                 return Err(Error::Cancelled);
             }
@@ -360,7 +371,7 @@ fn handle_lhs_and_rhs_with_equal_filenames(
                     oid: lhs.oid.to_owned(),
                     relation,
                 })
-                .cancelled()
+                .is_break()
             {
                 return Err(Error::Cancelled);
             }
@@ -370,7 +381,7 @@ fn handle_lhs_and_rhs_with_equal_filenames(
                     oid: rhs.oid.to_owned(),
                     relation: None,
                 })
-                .cancelled()
+                .is_break()
             {
                 return Err(Error::Cancelled);
             }
@@ -387,7 +398,7 @@ fn handle_lhs_and_rhs_with_equal_filenames(
                         entry_mode: rhs.mode,
                         oid: rhs.oid.to_owned(),
                     })
-                    .cancelled()
+                    .is_break()
             {
                 return Err(Error::Cancelled);
             }
@@ -419,7 +430,7 @@ mod tests {
 
     #[test]
     fn compare_select_samples() {
-        let null = gix_hash::ObjectId::null(gix_hash::Kind::Sha1);
+        let null = gix_testtools::object_hash().null();
         let actual = compare(
             &EntryRef {
                 mode: EntryKind::Blob.into(),

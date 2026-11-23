@@ -1,3 +1,49 @@
+# 1.12.2 (November 17th, 2026)
+
+### Fixed
+- Fix sign extension in `try_get_int` and `try_get_int_le` (#839)
+- Release shared reference when truncating `Bytes` to zero length (#842)
+- Preserve buffer order in `Chain::chunks_vectored` (#872)
+
+### Changed
+- Inline `BytesMut::put_slice` (#860)
+- Optimize `BytesMut::put` cold reuse path (#866)
+- Only reserve in `BytesMut::put` if the source isn't contiguous (#867)
+- Specialize `BytesMut::extend<u8>` when it is `Vec`-backed (#829)
+- Inline `BytesMut`'s specialized `BufMut` methods and add `put_u8` fast paths (#850)
+- Improve performance of `Writer::write_all` and `BytesMut::put_bytes` (#871)
+- Assert `nbytes <= 8` in `sign_extend` (#862)
+- Simplify shared alignment assertions (#841)
+- Raise minimum `serde` version to 1.0.70 (#863)
+
+### Documented
+- Correct the Panics section of `Bytes::slice_ref` (#873)
+
+# 1.12.1 (July 8th, 2026)
+
+### Fixed
+- Properly handle when `Box::new` panics (#837)
+
+# 1.12.0 (June 18th, 2026)
+
+### Added
+- Add `BytesMut::extend_from_within()` (#818)
+- Add `BytesMut::try_unsplit()` (#746)
+
+### Fixed
+- Fix panic in `get_int` if `nbytes` is zero (#806)
+
+### Changed
+- Pass vtable data by value (#826)
+- Exclude development scripts from published package (#810)
+
+### Documented
+- Document that `BytesMut::{reserve,try_reserve}` doesn't preserve unused capacity (#808)
+
+# 1.11.1 (February 3rd, 2026)
+
+- Fix integer overflow in `BytesMut::reserve`
+
 # 1.11.0 (November 14th, 2025)
 
 - Bump MSRV to 1.57 (#788)

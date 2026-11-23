@@ -11,6 +11,7 @@ macro_rules! link_macro {
         // connected to the library given in the #[link] attribute.
         #[link(name = "kernel32")]
         extern $abi {
+            #[allow(missing_docs)]
             $(#[link_name=$link_name])?
             pub fn $($function)*;
         }

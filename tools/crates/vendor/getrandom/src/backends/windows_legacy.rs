@@ -20,7 +20,7 @@ compile_error!("`windows_legacy` backend can be enabled only for Windows targets
 // Binding to the Windows.Win32.Security.Authentication.Identity.RtlGenRandom
 // API. Don't use windows-targets as it doesn't support Windows 7 targets.
 #[link(name = "advapi32")]
-extern "system" {
+unsafe extern "system" {
     #[link_name = "SystemFunction036"]
     fn RtlGenRandom(randombuffer: *mut c_void, randombufferlength: u32) -> BOOLEAN;
 }

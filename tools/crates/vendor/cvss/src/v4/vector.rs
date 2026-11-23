@@ -302,7 +302,7 @@ impl fmt::Display for Vector {
 impl FromStr for Vector {
     type Err = Error;
 
-    fn from_str(s: &str) -> crate::Result<Self> {
+    fn from_str(s: &str) -> Result<Self, Error> {
         let component_vec = s
             .split('/')
             .map(|component| {
@@ -324,10 +324,10 @@ impl FromStr for Vector {
 
                 Ok((id, value))
             })
-            .collect::<crate::Result<Vec<_>>>()?;
+            .collect::<Result<Vec<_>, Error>>()?;
 
         let mut components = component_vec.iter();
-        let &(id, version_string) = components.next().ok_or(Error::InvalidPrefix {
+        let &(id, version_string) = components.next().ok_or_else(|| Error::InvalidPrefix {
             prefix: s.to_owned(),
         })?;
 

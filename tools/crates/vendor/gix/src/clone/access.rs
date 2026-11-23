@@ -1,4 +1,10 @@
-use crate::{bstr::BString, clone::PrepareFetch, Repository};
+use gix_error::ResultExt;
+
+use crate::{
+    Repository, Result,
+    bstr::{BString, ByteSlice},
+    clone::PrepareFetch,
+};
 
 /// Builder
 impl PrepareFetch {
@@ -12,10 +18,7 @@ impl PrepareFetch {
     /// It can also be used to configure additional options, like those for fetching tags. Note that
     /// [`with_fetch_tags()`](crate::Remote::with_fetch_tags()) should be called here to configure the clone as desired.
     /// Otherwise, a clone is configured to be complete and fetches all tags, not only those reachable from all branches.
-    pub fn configure_remote(
-        mut self,
-        f: impl FnMut(crate::Remote<'_>) -> Result<crate::Remote<'_>, Box<dyn std::error::Error + Send + Sync>> + 'static,
-    ) -> Self {
+    pub fn configure_remote(mut self, f: impl FnMut(crate::Remote<'_>) -> Result<crate::Remote<'_>> + 'static) -> Self {
         self.configure_remote = Some(Box::new(f));
         self
     }
@@ -24,7 +27,7 @@ impl PrepareFetch {
     /// [`configure_remote()`](Self::configure_remote()).
     ///
     /// If not set here, it defaults to `origin` or the value of `clone.defaultRemoteName`.
-    pub fn with_remote_name(mut self, name: impl Into<BString>) -> Result<Self, crate::remote::name::Error> {
+    pub fn with_remote_name(mut self, name: impl Into<BString>) -> Result<Self> {
         self.remote_name = Some(crate::remote::name::validated(name)?);
         Ok(self)
     }
@@ -48,11 +51,52 @@ impl PrepareFetch {
     ///
     /// Note that `name` should be a partial name like `main` or `feat/one`, but can be a full ref name.
     /// If a branch on the remote matches, it will automatically be retrieved even without a refspec.
-    pub fn with_ref_name<'a, Name, E>(mut self, name: Option<Name>) -> Result<Self, E>
+    ///
+    /// Setting `name` to `Some(_)` clears a revision previously set with [`with_revision()`](Self::with_revision).
+    /// Passing `None` leaves the revision unchanged.
+    pub fn with_ref_name<'a, Name, E>(mut self, name: Option<Name>) -> Result<Self>
     where
         Name: TryInto<&'a gix_ref::PartialNameRef, Error = E>,
+        std::result::Result<&'a gix_ref::PartialNameRef, E>: ResultExt<Success = &'a gix_ref::PartialNameRef>,
     {
-        self.ref_name = name.map(TryInto::try_into).transpose()?.map(ToOwned::to_owned);
+        self.ref_name = name
+            .map(|name| name.try_into().or_error())
+            .transpose()?
+            .map(ToOwned::to_owned);
+        if self.ref_name.is_some() {
+            self.revision = None;
+        }
+        Ok(self)
+    }
+
+    /// Fetch only `revision` and check it out with a detached `HEAD`.
+    ///
+    /// A revision is either `HEAD`, a full reference name like `refs/heads/main`, or a full object ID.
+    /// No local or remote-tracking references are created and no fetch refspec is persisted.
+    /// It replaces any extra refspecs supplied with [`with_fetch_options()`](Self::with_fetch_options)
+    /// before fetching.
+    /// Setting `revision` to `Some(_)` clears a ref name previously set with [`with_ref_name()`](Self::with_ref_name).
+    /// Passing `None` leaves the ref name unchanged.
+    pub fn with_revision(mut self, revision: Option<impl Into<BString>>) -> Result<Self> {
+        self.revision = revision
+            .map(|revision| {
+                let revision = revision.into();
+                let spec = gix_refspec::parse(revision.as_ref(), gix_refspec::parse::Operation::Fetch)
+                    .map_err(crate::clone::with_revision::Error::Parse)?;
+                let source = spec.source().expect("one-sided non-empty fetch refspec");
+                let is_full_ref = source.starts_with(b"refs/") && source.find_byteset(b"*?[]\\").is_none();
+                let is_valid = revision.as_bstr() == source
+                    && spec.destination().is_none()
+                    && (source == "HEAD" || is_full_ref || gix_hash::ObjectId::from_hex(source).is_ok());
+                is_valid
+                    .then(|| spec.to_owned())
+                    .ok_or(crate::clone::with_revision::Error::Invalid { revision })
+            })
+            .transpose()
+            .or_error()?;
+        if self.revision.is_some() {
+            self.ref_name = None;
+        }
         Ok(self)
     }
 }
@@ -68,7 +112,7 @@ impl PrepareFetch {
 impl Drop for PrepareFetch {
     fn drop(&mut self) {
         if let Some(repo) = self.repo.take() {
-            std::fs::remove_dir_all(repo.workdir().unwrap_or_else(|| repo.path())).ok();
+            super::cleanup_clone_destination_on_drop(&repo, self.remove_worktree_on_drop);
         }
     }
 }

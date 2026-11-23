@@ -12,43 +12,43 @@ pub const PROTOCOL_GUID: crate::base::Guid = crate::base::Guid::from_fields(
     &[0xed, 0xb8, 0x2f, 0xb7, 0x72, 0xa4],
 );
 
-pub type ProtocolGetDevicePathSize = eficall! {fn(
+pub type ProtocolGetDevicePathSize = unsafe extern "efiapi" fn(
     *const crate::protocols::device_path::Protocol,
-) -> usize};
+) -> usize;
 
-pub type ProtocolDuplicateDevicePath = eficall! {fn(
+pub type ProtocolDuplicateDevicePath = unsafe extern "efiapi" fn(
     *const crate::protocols::device_path::Protocol,
-) -> *mut crate::protocols::device_path::Protocol};
+) -> *mut crate::protocols::device_path::Protocol;
 
-pub type ProtocolAppendDevicePath = eficall! {fn(
+pub type ProtocolAppendDevicePath = unsafe extern "efiapi" fn(
     *const crate::protocols::device_path::Protocol,
     *const crate::protocols::device_path::Protocol,
-) -> *mut crate::protocols::device_path::Protocol};
+) -> *mut crate::protocols::device_path::Protocol;
 
-pub type ProtocolAppendDeviceNode = eficall! {fn(
+pub type ProtocolAppendDeviceNode = unsafe extern "efiapi" fn(
     *const crate::protocols::device_path::Protocol,
     *const crate::protocols::device_path::Protocol,
-) -> *mut crate::protocols::device_path::Protocol};
+) -> *mut crate::protocols::device_path::Protocol;
 
-pub type ProtocolAppendDevicePathInstance = eficall! {fn(
+pub type ProtocolAppendDevicePathInstance = unsafe extern "efiapi" fn(
     *const crate::protocols::device_path::Protocol,
     *const crate::protocols::device_path::Protocol,
-) -> *mut crate::protocols::device_path::Protocol};
+) -> *mut crate::protocols::device_path::Protocol;
 
-pub type ProtocolGetNextDevicePathInstance = eficall! {fn(
+pub type ProtocolGetNextDevicePathInstance = unsafe extern "efiapi" fn(
     *mut *mut crate::protocols::device_path::Protocol,
     *mut usize,
-) -> *mut crate::protocols::device_path::Protocol};
+) -> *mut crate::protocols::device_path::Protocol;
 
-pub type ProtocolIsDevicePathMultiInstance = eficall! {fn(
+pub type ProtocolIsDevicePathMultiInstance = unsafe extern "efiapi" fn(
     *const crate::protocols::device_path::Protocol,
-) -> crate::base::Boolean};
+) -> crate::base::Boolean;
 
-pub type ProtocolCreateDeviceNode = eficall! {fn(
+pub type ProtocolCreateDeviceNode = unsafe extern "efiapi" fn(
     u8,
     u8,
     u16,
-) -> *mut crate::protocols::device_path::Protocol};
+) -> *mut crate::protocols::device_path::Protocol;
 
 #[repr(C)]
 pub struct Protocol {

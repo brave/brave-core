@@ -59,7 +59,7 @@ impl Display for Nomenclature {
 impl FromStr for Nomenclature {
     type Err = Error;
 
-    fn from_str(s: &str) -> crate::Result<Self> {
+    fn from_str(s: &str) -> Result<Self, Error> {
         match s {
             "CVSS-B" => Ok(Self::CvssB),
             "CVSS-BE" => Ok(Self::CvssBE),
@@ -91,10 +91,10 @@ impl From<&Vector> for Nomenclature {
             || vector.mvi.is_some();
 
         match (has_threat, has_environmental) {
-            (true, true) => Nomenclature::CvssBTE,
-            (true, false) => Nomenclature::CvssBT,
-            (false, true) => Nomenclature::CvssBE,
-            (false, false) => Nomenclature::CvssB,
+            (true, true) => Self::CvssBTE,
+            (true, false) => Self::CvssBT,
+            (false, true) => Self::CvssBE,
+            (false, false) => Self::CvssB,
         }
     }
 }
@@ -153,7 +153,7 @@ impl Score {
     #[cfg(feature = "std")]
     pub(crate) fn round_v4(value: f64) -> f64 {
         let value = f64::clamp(value, 0.0, 10.0);
-        const EPSILON: f64 = 10e-6;
+        const EPSILON: f64 = 1e-6;
         ((value + EPSILON) * 10.).round() / 10.
     }
 
@@ -189,13 +189,13 @@ impl Display for Score {
 }
 
 impl From<Score> for f64 {
-    fn from(score: Score) -> f64 {
+    fn from(score: Score) -> Self {
         score.value()
     }
 }
 
 impl From<Score> for Severity {
-    fn from(score: Score) -> Severity {
+    fn from(score: Score) -> Self {
         score.severity()
     }
 }
@@ -217,6 +217,18 @@ mod tests {
         // 8.6 - 7.15 = 1.4499999999999993 (float) => 1.5
         assert_eq!(Score::round_v4(8.6 - 7.15), 1.5);
         assert_eq!(Score::round_v4(5.12345), 5.1);
+    }
+
+    #[test]
+    #[cfg(feature = "std")]
+    fn round_v4_epsilon_magnitude() {
+        // 5e-6 below the tie — more than the documented 10**-6 epsilon, so it stays down.
+        // No corpus vector lands in that band, so only this case notices a constant that is
+        // too large: the previous 10e-6 (= 1e-5) lifted it to 8.6.
+        assert_eq!(Score::round_v4(8.549_995), 8.5);
+        // Scores clamp to the 0.0..=10.0 range before rounding.
+        assert_eq!(Score::round_v4(-0.5), 0.0);
+        assert_eq!(Score::round_v4(10.7), 10.0);
     }
 
     #[test]

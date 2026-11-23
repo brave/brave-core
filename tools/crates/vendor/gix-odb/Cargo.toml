@@ -10,15 +10,15 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.82"
+edition = "2024"
+rust-version = "1.88"
 name = "gix-odb"
-version = "0.71.1"
+version = "0.87.0"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
 build = false
 include = [
-    "src/**/*",
-    "LICENSE-*",
+    "/src/**/*",
+    "/LICENSE-*",
 ]
 autolib = false
 autobins = false
@@ -29,9 +29,11 @@ description = "Implements various git object databases"
 readme = false
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/GitoxideLabs/gitoxide"
+resolver = "2"
 
 [package.metadata.docs.rs]
 features = [
+    "sha1",
     "document-features",
     "serde",
 ]
@@ -43,51 +45,71 @@ serde = [
     "gix-object/serde",
     "gix-pack/serde",
 ]
+sha1 = [
+    "gix-hash/sha1",
+    "gix-pack/sha1",
+]
+sha256 = [
+    "gix-hash/sha256",
+    "gix-pack/sha256",
+]
 
 [lib]
 name = "gix_odb"
 path = "src/lib.rs"
-doctest = false
+doctest = true
 
 [dependencies.arc-swap]
+version = "1.9.0"
+
+[dependencies.crc32fast]
 version = "1.5.0"
 
 [dependencies.document-features]
 version = "0.2.0"
 optional = true
 
-[dependencies.gix-date]
-version = "^0.10.7"
-
-[dependencies.gix-features]
-version = "^0.44.1"
-features = [
-    "walkdir",
-    "zlib",
-    "crc32",
-]
+[dependencies.gix-error]
+version = "^0.5.2"
 
 [dependencies.gix-fs]
-version = "^0.17.0"
+version = "^0.24.1"
+features = ["walkdir"]
 
 [dependencies.gix-hash]
-version = "^0.20.1"
+version = "^0.28.1"
 
 [dependencies.gix-hashtable]
-version = "^0.10.0"
+version = "^0.18.0"
 
 [dependencies.gix-object]
-version = "^0.51.1"
+version = "^0.66.1"
 
 [dependencies.gix-pack]
-version = "^0.61.1"
+version = "^0.77.0"
 default-features = false
 
+[dependencies.gix-parallel]
+version = "^0.50.0"
+
 [dependencies.gix-path]
-version = "^0.10.21"
+version = "^0.14.1"
 
 [dependencies.gix-quote]
-version = "^0.6.1"
+version = "^0.10.1"
+
+[dependencies.gix-trace]
+version = "^0.3.1"
+
+[dependencies.gix-utils]
+version = "^0.5.1"
+features = ["progress"]
+
+[dependencies.gix-zlib]
+version = "^0.4.0"
+
+[dependencies.memmap2]
+version = "0.9.11"
 
 [dependencies.parking_lot]
 version = "0.12.4"
@@ -99,12 +121,25 @@ optional = true
 default-features = false
 
 [dependencies.tempfile]
-version = "3.23.0"
+version = "3.26.0"
 
-[dependencies.thiserror]
-version = "2.0.17"
+[dev-dependencies.crossbeam-channel]
+version = "0.5.15"
+
+[dev-dependencies.filetime]
+version = "0.2.29"
+
+[dev-dependencies.insta]
+version = "1.46.3"
+
+[dev-dependencies.maplit]
+version = "1.0.2"
+
+[dev-dependencies.pretty_assertions]
+version = "1.0.0"
 
 [lints.clippy]
+assert_is_empty = "allow"
 bool_to_int_with_if = "allow"
 borrow_as_ptr = "allow"
 cast_lossless = "allow"
@@ -123,7 +158,6 @@ explicit_into_iter_loop = "allow"
 explicit_iter_loop = "allow"
 filter_map_next = "allow"
 fn_params_excessive_bools = "allow"
-from_iter_instead_of_collect = "allow"
 if_not_else = "allow"
 ignored_unit_patterns = "allow"
 implicit_clone = "allow"

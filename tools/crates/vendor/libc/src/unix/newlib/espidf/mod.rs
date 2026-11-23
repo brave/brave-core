@@ -97,6 +97,19 @@ pub const SIGHUP: c_int = 1;
 pub const SIGQUIT: c_int = 3;
 pub const NSIG: size_t = 32;
 
+pub const SOMAXCONN: c_int = 128;
+
+pub const DT_UNKNOWN: u8 = 0;
+pub const DT_REG: u8 = 1;
+pub const DT_DIR: u8 = 2;
+// Not used by esp-idf, but still defined in headers.
+pub const DT_CHR: u8 = 4;
+pub const DT_BLK: u8 = 6;
+pub const DT_FIFO: u8 = 8;
+pub const DT_LNK: u8 = 10;
+pub const DT_SOCK: u8 = 12;
+pub const DT_WHT: u8 = 14;
+
 extern "C" {
     pub fn pthread_create(
         native: *mut crate::pthread_t,
@@ -116,9 +129,3 @@ extern "C" {
 
     pub fn eventfd(initval: c_uint, flags: c_int) -> c_int;
 }
-
-pub use crate::unix::newlib::generic::{
-    dirent,
-    sigset_t,
-    stat,
-};

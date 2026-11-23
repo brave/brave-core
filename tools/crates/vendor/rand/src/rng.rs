@@ -7,21 +7,21 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-//! [`Rng`] trait
+//! [`RngExt`] trait
 
 use crate::distr::uniform::{SampleRange, SampleUniform};
 use crate::distr::{self, Distribution, StandardUniform};
 use core::num::Wrapping;
 use core::{mem, slice};
-use rand_core::RngCore;
+use rand_core::Rng;
 
 /// User-level interface for RNGs
 ///
-/// [`RngCore`] is the `dyn`-safe implementation-level interface for Random
-/// (Number) Generators. This trait, `Rng`, provides a user-level interface on
-/// RNGs. It is implemented automatically for any `R: RngCore`.
+/// [`Rng`] is the `dyn`-safe implementation-level interface for Random
+/// (Number) Generators. This trait, `RngExt`, provides a user-level interface
+/// on RNGs. It is implemented automatically for any <code>R: [Rng][]</code>.
 ///
-/// This trait must usually be brought into scope via `use rand::Rng;` or
+/// This trait must usually be brought into scope via `use rand::RngExt;` or
 /// `use rand::prelude::*;`.
 ///
 /// # Generic usage
@@ -29,15 +29,13 @@ use rand_core::RngCore;
 /// The basic pattern is `fn foo<R: Rng + ?Sized>(rng: &mut R)`. Some
 /// things are worth noting here:
 ///
-/// - Since `Rng: RngCore` and every `RngCore` implements `Rng`, it makes no
-///   difference whether we use `R: Rng` or `R: RngCore`.
-/// - The `+ ?Sized` un-bounding allows functions to be called directly on
-///   type-erased references; i.e. `foo(r)` where `r: &mut dyn RngCore`. Without
-///   this it would be necessary to write `foo(&mut r)`.
+/// - Since `RngExt: Rng` and every `RngExt` implements `Rng`, it makes no
+///   difference whether we use `R: Rng` or `R: RngExt` for `R: Sized`.
+/// - Only `Rng` is dyn safe, supporting `&mut dyn Rng` and `R: Rng + ?Sized`.
 ///
 /// An alternative pattern is possible: `fn foo<R: Rng>(rng: R)`. This has some
-/// trade-offs. It allows the argument to be consumed directly without a `&mut`
-/// (which is how `from_rng(rand::rng())` works); also it still works directly
+/// trade-offs. It allows the argument to be consumed directly without a `&mut`;
+/// also it still works directly
 /// on references (including type-erased references). Unfortunately within the
 /// function `foo` it is not known whether `rng` is a reference type or not,
 /// hence many uses of `rng` require an extra reference, either explicitly
@@ -47,7 +45,7 @@ use rand_core::RngCore;
 /// Example:
 ///
 /// ```
-/// use rand::Rng;
+/// use rand::{Rng, RngExt};
 ///
 /// fn foo<R: Rng + ?Sized>(rng: &mut R) -> f32 {
 ///     rng.random()
@@ -55,13 +53,13 @@ use rand_core::RngCore;
 ///
 /// # let v = foo(&mut rand::rng());
 /// ```
-pub trait Rng: RngCore {
+pub trait RngExt: Rng {
     /// Return a random value via the [`StandardUniform`] distribution.
     ///
     /// # Example
     ///
     /// ```
-    /// use rand::Rng;
+    /// use rand::RngExt;
     ///
     /// let mut rng = rand::rng();
     /// let x: u32 = rng.random();
@@ -76,11 +74,11 @@ pub trait Rng: RngCore {
     /// generated.
     ///
     /// For arrays of integers, especially for those with small element types
-    /// (< 64 bit), it will likely be faster to instead use [`Rng::fill`],
+    /// (< 64 bit), it will likely be faster to instead use [`RngExt::fill`],
     /// though note that generated values will differ.
     ///
     /// ```
-    /// use rand::Rng;
+    /// use rand::RngExt;
     ///
     /// let mut rng = rand::rng();
     /// let tuple: (u8, i32, char) = rng.random(); // arbitrary tuple support
@@ -101,7 +99,7 @@ pub trait Rng: RngCore {
 
     /// Return an iterator over [`random`](Self::random) variates
     ///
-    /// This is a just a wrapper over [`Rng::sample_iter`] using
+    /// This is a just a wrapper over [`RngExt::sample_iter`] using
     /// [`distr::StandardUniform`].
     ///
     /// Note: this method consumes its argument. Use
@@ -110,7 +108,7 @@ pub trait Rng: RngCore {
     /// # Example
     ///
     /// ```
-    /// use rand::{rngs::SmallRng, Rng, SeedableRng};
+    /// use rand::{rngs::SmallRng, RngExt, SeedableRng};
     ///
     /// let rng = SmallRng::seed_from_u64(0);
     /// let v: Vec<i32> = rng.random_iter().take(5).collect();
@@ -131,8 +129,10 @@ pub trait Rng: RngCore {
     /// made from the given range. See also the [`Uniform`] distribution
     /// type which may be faster if sampling from the same range repeatedly.
     ///
-    /// All types support `low..high_exclusive` and `low..=high` range syntax.
-    /// Unsigned integer types also support `..high_exclusive` and `..=high` syntax.
+    /// All supported types may be sampled with `low..high_exclusive`
+    /// ([`Range`]) and `low..=high` ([`RangeInclusive`]) syntax. Unsigned
+    /// integer types also support `..high_exclusive` ([`RangeTo`]) and
+    /// `..=high` ([`RangeToInclusive`]) syntax.
     ///
     /// # Panics
     ///
@@ -141,22 +141,24 @@ pub trait Rng: RngCore {
     /// # Example
     ///
     /// ```
-    /// use rand::Rng;
+    /// use rand::RngExt;
     ///
     /// let mut rng = rand::rng();
     ///
     /// // Exclusive range
-    /// let n: u32 = rng.random_range(..10);
-    /// println!("{}", n);
-    /// let m: f64 = rng.random_range(-40.0..1.3e5);
-    /// println!("{}", m);
+    /// println!("{}", rng.random_range::<u32, _>(..10));
+    /// println!("{}", rng.random_range(-40.0..1.3e5));
     ///
     /// // Inclusive range
-    /// let n: u32 = rng.random_range(..=10);
-    /// println!("{}", n);
+    /// println!("{}", rng.random_range(-10..=10));
+    /// println!("{}", rng.random_range('a'..='z'));
     /// ```
     ///
     /// [`Uniform`]: distr::uniform::Uniform
+    /// [`Range`]: std::ops::Range
+    /// [`RangeInclusive`]: std::ops::RangeInclusive
+    /// [`RangeTo`]: std::ops::RangeTo
+    /// [`RangeToInclusive`]: std::ops::RangeToInclusive
     #[track_caller]
     fn random_range<T, R>(&mut self, range: R) -> T
     where
@@ -175,7 +177,7 @@ pub trait Rng: RngCore {
     /// # Example
     ///
     /// ```
-    /// use rand::Rng;
+    /// use rand::RngExt;
     ///
     /// let mut rng = rand::rng();
     /// println!("{}", rng.random_bool(1.0 / 3.0));
@@ -213,7 +215,7 @@ pub trait Rng: RngCore {
     /// # Example
     ///
     /// ```
-    /// use rand::Rng;
+    /// use rand::RngExt;
     ///
     /// let mut rng = rand::rng();
     /// println!("{}", rng.random_ratio(2, 3));
@@ -237,7 +239,7 @@ pub trait Rng: RngCore {
     /// ### Example
     ///
     /// ```
-    /// use rand::Rng;
+    /// use rand::RngExt;
     /// use rand::distr::Uniform;
     ///
     /// let mut rng = rand::rng();
@@ -258,7 +260,7 @@ pub trait Rng: RngCore {
     /// # Example
     ///
     /// ```
-    /// use rand::Rng;
+    /// use rand::RngExt;
     /// use rand::distr::{Alphanumeric, Uniform, StandardUniform};
     ///
     /// let mut rng = rand::rng();
@@ -295,7 +297,7 @@ pub trait Rng: RngCore {
     ///
     /// This method is implemented for types which may be safely reinterpreted
     /// as an (aligned) `[u8]` slice then filled with random data. It is often
-    /// faster than using [`Rng::random`] but not value-equivalent.
+    /// faster than using [`RngExt::random`] but not value-equivalent.
     ///
     /// The distribution is expected to be uniform with portable results, but
     /// this cannot be guaranteed for third-party implementations.
@@ -303,93 +305,39 @@ pub trait Rng: RngCore {
     /// # Example
     ///
     /// ```
-    /// use rand::Rng;
+    /// use rand::RngExt;
     ///
     /// let mut arr = [0i8; 20];
     /// rand::rng().fill(&mut arr[..]);
     /// ```
     ///
-    /// [`fill_bytes`]: RngCore::fill_bytes
+    /// [`fill_bytes`]: Rng::fill_bytes
     #[track_caller]
-    fn fill<T: Fill + ?Sized>(&mut self, dest: &mut T) {
-        dest.fill(self)
-    }
-
-    /// Alias for [`Rng::random`].
-    #[inline]
-    #[deprecated(
-        since = "0.9.0",
-        note = "Renamed to `random` to avoid conflict with the new `gen` keyword in Rust 2024."
-    )]
-    fn r#gen<T>(&mut self) -> T
-    where
-        StandardUniform: Distribution<T>,
-    {
-        self.random()
-    }
-
-    /// Alias for [`Rng::random_range`].
-    #[inline]
-    #[deprecated(since = "0.9.0", note = "Renamed to `random_range`")]
-    fn gen_range<T, R>(&mut self, range: R) -> T
-    where
-        T: SampleUniform,
-        R: SampleRange<T>,
-    {
-        self.random_range(range)
-    }
-
-    /// Alias for [`Rng::random_bool`].
-    #[inline]
-    #[deprecated(since = "0.9.0", note = "Renamed to `random_bool`")]
-    fn gen_bool(&mut self, p: f64) -> bool {
-        self.random_bool(p)
-    }
-
-    /// Alias for [`Rng::random_ratio`].
-    #[inline]
-    #[deprecated(since = "0.9.0", note = "Renamed to `random_ratio`")]
-    fn gen_ratio(&mut self, numerator: u32, denominator: u32) -> bool {
-        self.random_ratio(numerator, denominator)
+    fn fill<T: Fill>(&mut self, dest: &mut [T]) {
+        Fill::fill_slice(dest, self)
     }
 }
 
-impl<R: RngCore + ?Sized> Rng for R {}
+impl<R: Rng + ?Sized> RngExt for R {}
 
-/// Types which may be filled with random data
+/// Support filling a slice with random data
 ///
-/// This trait allows arrays to be efficiently filled with random data.
+/// This trait allows slices of "plain data" types to be efficiently filled
+/// with random data.
 ///
 /// Implementations are expected to be portable across machines unless
 /// clearly documented otherwise (see the
 /// [Chapter on Portability](https://rust-random.github.io/book/portability.html)).
-pub trait Fill {
-    /// Fill self with random data
-    fn fill<R: Rng + ?Sized>(&mut self, rng: &mut R);
+/// The implementations provided achieve this by byte-swapping on big-endian
+/// machines.
+pub trait Fill: Sized {
+    /// Fill this with random data
+    fn fill_slice<R: Rng + ?Sized>(this: &mut [Self], rng: &mut R);
 }
 
-macro_rules! impl_fill_each {
-    () => {};
-    ($t:ty) => {
-        impl Fill for [$t] {
-            fn fill<R: Rng + ?Sized>(&mut self, rng: &mut R) {
-                for elt in self.iter_mut() {
-                    *elt = rng.random();
-                }
-            }
-        }
-    };
-    ($t:ty, $($tt:ty,)*) => {
-        impl_fill_each!($t);
-        impl_fill_each!($($tt,)*);
-    };
-}
-
-impl_fill_each!(bool, char, f32, f64,);
-
-impl Fill for [u8] {
-    fn fill<R: Rng + ?Sized>(&mut self, rng: &mut R) {
-        rng.fill_bytes(self)
+impl Fill for u8 {
+    fn fill_slice<R: Rng + ?Sized>(this: &mut [Self], rng: &mut R) {
+        rng.fill_bytes(this)
     }
 }
 
@@ -402,56 +350,45 @@ const unsafe fn __unsafe() {}
 /// All bit patterns of `[u8; size_of::<$t>()]` must represent values of `$t`.
 macro_rules! impl_fill {
     () => {};
+    (to_le! plain $x:ident) => {
+        $x.to_le()
+    };
+    (to_le! wrapping $x:ident) => {
+        Wrapping($x.0.to_le())
+    };
+    (fill_slice! $t:ty, $to_le:tt) => {
+        fn fill_slice<R: Rng + ?Sized>(this: &mut [Self], rng: &mut R) {
+            if this.len() > 0 {
+                let size = mem::size_of_val(this);
+                rng.fill_bytes(
+                    // SAFETY: `this` non-null and valid for reads and writes within its `size`
+                    // bytes. `this` meets the alignment requirements of `&mut [u8]`.
+                    // The contents of `this` are initialized. Both `[u8]` and `[$t]` are valid
+                    // for all bit-patterns of their contents (note that the SAFETY requirement
+                    // on callers of this macro). `this` is not borrowed.
+                    unsafe {
+                        slice::from_raw_parts_mut(this.as_mut_ptr()
+                            as *mut u8,
+                            size
+                        )
+                    }
+                );
+                for x in this {
+                    *x = impl_fill!(to_le! $to_le x);
+                }
+            }
+        }
+    };
     ($t:ty) => {{
         // Force caller to wrap with an `unsafe` block
         __unsafe();
 
-        impl Fill for [$t] {
-            fn fill<R: Rng + ?Sized>(&mut self, rng: &mut R) {
-                if self.len() > 0 {
-                    let size = mem::size_of_val(self);
-                    rng.fill_bytes(
-                        // SAFETY: `self` non-null and valid for reads and writes within its `size`
-                        // bytes. `self` meets the alignment requirements of `&mut [u8]`.
-                        // The contents of `self` are initialized. Both `[u8]` and `[$t]` are valid
-                        // for all bit-patterns of their contents (note that the SAFETY requirement
-                        // on callers of this macro). `self` is not borrowed.
-                        unsafe {
-                            slice::from_raw_parts_mut(self.as_mut_ptr()
-                                as *mut u8,
-                                size
-                            )
-                        }
-                    );
-                    for x in self {
-                        *x = x.to_le();
-                    }
-                }
-            }
+        impl Fill for $t {
+            impl_fill!(fill_slice! $t, plain);
         }
 
-        impl Fill for [Wrapping<$t>] {
-            fn fill<R: Rng + ?Sized>(&mut self, rng: &mut R) {
-                if self.len() > 0 {
-                    let size = self.len() * mem::size_of::<$t>();
-                    rng.fill_bytes(
-                        // SAFETY: `self` non-null and valid for reads and writes within its `size`
-                        // bytes. `self` meets the alignment requirements of `&mut [u8]`.
-                        // The contents of `self` are initialized. Both `[u8]` and `[$t]` are valid
-                        // for all bit-patterns of their contents (note that the SAFETY requirement
-                        // on callers of this macro). `self` is not borrowed.
-                        unsafe {
-                            slice::from_raw_parts_mut(self.as_mut_ptr()
-                                as *mut u8,
-                                size
-                            )
-                        }
-                    );
-                    for x in self {
-                        *x = Wrapping(x.0.to_le());
-                    }
-                }
-            }
+        impl Fill for Wrapping<$t> {
+            impl_fill!(fill_slice! $t, wrapping);
         }}
     };
     ($t:ty, $($tt:ty,)*) => {{
@@ -466,15 +403,6 @@ macro_rules! impl_fill {
 const _: () = unsafe { impl_fill!(u16, u32, u64, u128,) };
 // SAFETY: All bit patterns of `[u8; size_of::<$t>()]` represent values of `i*`.
 const _: () = unsafe { impl_fill!(i8, i16, i32, i64, i128,) };
-
-impl<T, const N: usize> Fill for [T; N]
-where
-    [T]: Fill,
-{
-    fn fill<R: Rng + ?Sized>(&mut self, rng: &mut R) {
-        <[T] as Fill>::fill(self, rng)
-    }
-}
 
 #[cfg(test)]
 mod test {
@@ -510,27 +438,21 @@ mod test {
 
         // Convert to byte sequence and back to u64; byte-swap twice if BE.
         let mut array = [0u64; 2];
-        rng.fill(&mut array[..]);
+        rng.fill(&mut array);
         assert_eq!(array, [x, x]);
         assert_eq!(rng.next_u64(), x);
 
         // Convert to bytes then u32 in LE order
         let mut array = [0u32; 2];
-        rng.fill(&mut array[..]);
+        rng.fill(&mut array);
         assert_eq!(array, [x as u32, (x >> 32) as u32]);
         assert_eq!(rng.next_u32(), x as u32);
 
         // Check equivalence using wrapped arrays
         let mut warray = [Wrapping(0u32); 2];
-        rng.fill(&mut warray[..]);
+        rng.fill(&mut warray);
         assert_eq!(array[0], warray[0].0);
         assert_eq!(array[1], warray[1].0);
-
-        // Check equivalence for generated floats
-        let mut array = [0f32; 2];
-        rng.fill(&mut array);
-        let arr2: [f32; 2] = rng.random();
-        assert_eq!(array, arr2);
     }
 
     #[test]
@@ -605,7 +527,7 @@ mod test {
 
     #[test]
     fn test_rng_mut_ref() {
-        fn use_rng(mut r: impl Rng) {
+        fn use_rng(mut r: impl RngExt) {
             let _ = r.next_u32();
         }
 
@@ -617,7 +539,7 @@ mod test {
     fn test_rng_trait_object() {
         use crate::distr::{Distribution, StandardUniform};
         let mut rng = rng(109);
-        let mut r = &mut rng as &mut dyn RngCore;
+        let mut r = &mut rng as &mut dyn Rng;
         r.next_u32();
         r.random::<i32>();
         assert_eq!(r.random_range(0..1), 0);
@@ -629,7 +551,7 @@ mod test {
     fn test_rng_boxed_trait() {
         use crate::distr::{Distribution, StandardUniform};
         let rng = rng(110);
-        let mut r = Box::new(rng) as Box<dyn RngCore>;
+        let mut r = Box::new(rng) as Box<dyn Rng>;
         r.next_u32();
         r.random::<i32>();
         assert_eq!(r.random_range(0..1), 0);

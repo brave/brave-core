@@ -13,12 +13,18 @@
 edition = "2018"
 rust-version = "1.71.0"
 name = "schannel"
-version = "0.1.28"
+version = "0.1.30"
 authors = [
     "Steven Fackler <sfackler@gmail.com>",
     "Steffen Butzer <steffen.butzer@outlook.com>",
 ]
 build = false
+include = [
+    "/src/",
+    "LICENSE.md",
+    "README.md",
+]
+autolib = false
 autobins = false
 autoexamples = false
 autotests = false

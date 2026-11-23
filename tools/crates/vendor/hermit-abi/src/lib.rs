@@ -662,9 +662,10 @@ extern "C" {
 	///
 	/// # Example
 	///
-	/// ```
+	/// ```no_run
+	/// use std::ffi::CString;
 	/// use hermit_abi::in_addr;
-	/// let c_string = std::ffi::CString::new("rust-lang.org").expect("CString::new failed");
+	/// let c_string = CString::new("rust-lang.org").expect("CString::new failed");
 	/// let name = c_string.into_raw();
 	/// let mut inaddr: in_addr = Default::default();
 	/// let _ = unsafe {
@@ -676,7 +677,7 @@ extern "C" {
 	/// };
 	///
 	/// // retake pointer to free memory
-	/// let _ = CString::from_raw(name);
+	/// let _ = unsafe { CString::from_raw(name) };
 	/// ```
 	#[link_name = "sys_getaddrbyname"]
 	pub fn getaddrbyname(name: *const c_char, inaddr: *mut u8, len: usize) -> i32;
@@ -704,7 +705,7 @@ extern "C" {
 	/// action, but scatters the input data from the `iovcnt` buffers specified by the
 	/// members of the iov array: `iov[0], iov[1], ..., iov[iovcnt-1]`.
 	///
-	/// ```
+	/// ```custom
 	/// struct iovec {
 	///     char   *iov_base;  /* Base address. */
 	///     size_t iov_len;    /* Length. */
@@ -771,7 +772,7 @@ extern "C" {
 	/// action, but gathers the output data from the `iovcnt` buffers specified by the
 	/// members of the iov array: `iov[0], iov[1], ..., iov[iovcnt-1]`.
 	///
-	/// ```
+	/// ```custom
 	/// struct iovec {
 	///     char   *iov_base;  /* Base address. */
 	///     size_t iov_len;    /* Length. */
@@ -790,6 +791,10 @@ extern "C" {
 	/// reference table.
 	#[link_name = "sys_close"]
 	pub fn close(fd: i32) -> i32;
+
+	/// synchronize a file's in-core state with that on disk
+	#[link_name = "sys_fsync"]
+	pub fn fsync(fd: i32) -> i32;
 
 	/// duplicate an existing file descriptor
 	#[link_name = "sys_dup"]

@@ -2,7 +2,7 @@
 
 use crate::read::magic_finder::{Backwards, Forward, MagicFinder, OptimisticMagicFinder};
 use crate::read::ArchiveOffset;
-use crate::result::{ZipError, ZipResult};
+use crate::result::{invalid, ZipError, ZipResult};
 use core::mem;
 use std::io;
 use std::io::prelude::*;
@@ -266,8 +266,7 @@ impl FixedSizeBlock for Zip32CDEBlock {
         self.magic
     }
 
-    const WRONG_MAGIC_ERROR: ZipError =
-        ZipError::InvalidArchive("Invalid digital signature header");
+    const WRONG_MAGIC_ERROR: ZipError = invalid!("Invalid digital signature header");
 
     to_and_from_le![
         (magic, Magic),
@@ -333,9 +332,7 @@ impl Zip32CentralDirectoryEnd {
         let mut zip_file_comment = vec![0u8; zip_file_comment_length as usize].into_boxed_slice();
         if let Err(e) = reader.read_exact(&mut zip_file_comment) {
             if e.kind() == io::ErrorKind::UnexpectedEof {
-                return Err(ZipError::InvalidArchive(
-                    "EOCD comment exceeds file boundary",
-                ));
+                return Err(invalid!("EOCD comment exceeds file boundary"));
             }
 
             return Err(e.into());
@@ -356,9 +353,7 @@ impl Zip32CentralDirectoryEnd {
         let (block, comment) = self.into_block_and_comment();
 
         if comment.len() > u16::MAX as usize {
-            return Err(ZipError::InvalidArchive(
-                "EOCD comment length exceeds u16::MAX",
-            ));
+            return Err(invalid!("EOCD comment length exceeds u16::MAX"));
         }
 
         block.write(writer)?;
@@ -390,8 +385,7 @@ impl FixedSizeBlock for Zip64CDELocatorBlock {
         self.magic
     }
 
-    const WRONG_MAGIC_ERROR: ZipError =
-        ZipError::InvalidArchive("Invalid zip64 locator digital signature header");
+    const WRONG_MAGIC_ERROR: ZipError = invalid!("Invalid zip64 locator digital signature header");
 
     to_and_from_le![
         (magic, Magic),
@@ -467,8 +461,7 @@ impl FixedSizeBlock for Zip64CDEBlock {
         self.magic
     }
 
-    const WRONG_MAGIC_ERROR: ZipError =
-        ZipError::InvalidArchive("Invalid digital signature header");
+    const WRONG_MAGIC_ERROR: ZipError = invalid!("Invalid digital signature header");
 
     to_and_from_le![
         (magic, Magic),
@@ -513,11 +506,9 @@ impl Zip64CentralDirectoryEnd {
         } = Zip64CDEBlock::parse(reader)?;
 
         if record_size < 44 {
-            return Err(ZipError::InvalidArchive("Low EOCD64 record size"));
+            return Err(invalid!("Low EOCD64 record size"));
         } else if record_size.saturating_add(12) > max_size {
-            return Err(ZipError::InvalidArchive(
-                "EOCD64 extends beyond EOCD64 locator",
-            ));
+            return Err(invalid!("EOCD64 extends beyond EOCD64 locator"));
         }
 
         let mut zip_file_comment = vec![0u8; record_size as usize - 44].into_boxed_slice();
@@ -639,7 +630,7 @@ pub(crate) fn find_central_directory<R: Read + Seek>(
         // ! Relaxed (inequality) due to garbage-after-comment Python files
         // Consistency check: the EOCD comment must terminate before the end of file
         if eocd.zip_file_comment.len() as u64 + eocd_offset + 22 > file_len {
-            parsing_error = Some(ZipError::InvalidArchive("Invalid EOCD comment length"));
+            parsing_error = Some(invalid!("Invalid EOCD comment length"));
             continue;
         }
 
@@ -649,9 +640,7 @@ pub(crate) fn find_central_directory<R: Read + Seek>(
                 eocd_offset: u64,
             ) -> ZipResult<(u64, Zip64CentralDirectoryEndLocator)> {
                 if eocd_offset < mem::size_of::<Zip64CDELocatorBlock>() as u64 {
-                    return Err(ZipError::InvalidArchive(
-                        "EOCD64 Locator does not fit in file",
-                    ));
+                    return Err(invalid!("EOCD64 Locator does not fit in file"));
                 }
 
                 let locator64_offset = eocd_offset - mem::size_of::<Zip64CDELocatorBlock>() as u64;
@@ -683,7 +672,7 @@ pub(crate) fn find_central_directory<R: Read + Seek>(
 
             // Consistency check: the CD relative offset cannot be after the EOCD
             if relative_cd_offset >= eocd_offset {
-                parsing_error = Some(ZipError::InvalidArchive("Invalid CDFH offset in EOCD"));
+                parsing_error = Some(invalid!("Invalid CDFH offset in EOCD"));
                 continue;
             }
 
@@ -715,20 +704,18 @@ pub(crate) fn find_central_directory<R: Read + Seek>(
                 });
             }
 
-            parsing_error = Some(ZipError::InvalidArchive("No CDFH found"));
+            parsing_error = Some(invalid!("No CDFH found"));
             continue;
         };
 
         // Consistency check: the EOCD64 offset must be before EOCD64 Locator offset */
         if locator64.end_of_central_directory_offset >= locator64_offset {
-            parsing_error = Some(ZipError::InvalidArchive("Invalid EOCD64 Locator CD offset"));
+            parsing_error = Some(invalid!("Invalid EOCD64 Locator CD offset"));
             continue;
         }
 
         if locator64.number_of_disks > 1 {
-            parsing_error = Some(ZipError::InvalidArchive(
-                "Multi-disk ZIP files are not supported",
-            ));
+            parsing_error = Some(invalid!("Multi-disk ZIP files are not supported"));
             continue;
         }
 
@@ -743,16 +730,12 @@ pub(crate) fn find_central_directory<R: Read + Seek>(
 
             // Consistency check: EOCD64 locator should agree with the EOCD64
             if z64.disk_with_central_directory != locator64.disk_with_central_directory {
-                return Err(ZipError::InvalidArchive(
-                    "Invalid EOCD64: inconsistency with Locator data",
-                ));
+                return Err(invalid!("Invalid EOCD64: inconsistency with Locator data"));
             }
 
             // Consistency check: the EOCD64 must have the expected length
             if z64.record_size + 12 != expected_length {
-                return Err(ZipError::InvalidArchive(
-                    "Invalid EOCD64: inconsistent length",
-                ));
+                return Err(invalid!("Invalid EOCD64: inconsistent length"));
             }
 
             Ok(z64)
@@ -795,9 +778,8 @@ pub(crate) fn find_central_directory<R: Read + Seek>(
                             )
                             .saturating_add(eocd64.central_directory_offset)
                     {
-                        local_error = Some(ZipError::InvalidArchive(
-                            "Invalid EOCD64: inconsistent number of files",
-                        ));
+                        local_error =
+                            Some(invalid!("Invalid EOCD64: inconsistent number of files"));
                         continue;
                     }
 
@@ -813,10 +795,10 @@ pub(crate) fn find_central_directory<R: Read + Seek>(
             }
         }
 
-        parsing_error = local_error.or(Some(ZipError::InvalidArchive("Could not find EOCD64")));
+        parsing_error = local_error.or(Some(invalid!("Could not find EOCD64")));
     }
 
-    Err(parsing_error.unwrap_or(ZipError::InvalidArchive("Could not find EOCD")))
+    Err(parsing_error.unwrap_or(invalid!("Could not find EOCD")))
 }
 
 pub(crate) fn is_dir(filename: &str) -> bool {
@@ -847,7 +829,7 @@ mod test {
             self.magic
         }
 
-        const WRONG_MAGIC_ERROR: ZipError = ZipError::InvalidArchive("unreachable");
+        const WRONG_MAGIC_ERROR: ZipError = invalid!("unreachable");
 
         to_and_from_le![(magic, Magic), (file_name_length, u16)];
     }

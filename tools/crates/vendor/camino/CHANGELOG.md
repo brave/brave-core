@@ -3,6 +3,40 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+<!-- next-header -->
+## Unreleased - ReleaseDate
+
+## [1.2.6] - 2026-09-15
+
+### Fixed
+
+- The `Utf8Path::ends_with` parameter is now called `child` to match `std::path::Path::ends_with`. Thanks [hxperl](https://github.com/hxperl) for your first contribution!
+
+## [1.2.5] - 2026-07-28
+
+### Fixed
+
+Removed unnecessary files from the package.
+
+## [1.2.4] - 2026-06-27
+
+### Added
+
+Methods to convert between `Box<Utf8Path>` and `Box<Path>`:
+
+- `From<Box<Utf8Path>> for Box<Path>` (as of release, not documented due to [rust-lang/rust#158466](https://github.com/rust-lang/rust/pull/158466)).
+- `Utf8Path::into_std_boxed_path(self: Box<Self>)`
+- `Utf8Path::from_boxed_path(path: Box<Path>)`
+- `TryFrom<Box<Path>> for Box<Utf8Path>`
+
+Thanks [nicopap](https://github.com/nicopap) for your first contribution!
+
+## [1.2.3] - 2026-06-18
+
+### Performance improvements
+
+- `Utf8Path::hash` now delegates to `std::path::Path::hash`, resulting in hashing requiring ~2x fewer instructions. Thanks [stormslowly](https://github.com/stormslowly) for your first contribution!
+
 ## [1.2.2] - 2025-12-14
 
 ### Added
@@ -195,6 +229,11 @@ Thanks to [BenjaminBrienen](https://github.com/BenjaminBrienen) for your first c
 
 Initial release.
 
+<!-- next-url -->
+[1.2.6]: https://github.com/camino-rs/camino/releases/tag/camino-1.2.6
+[1.2.5]: https://github.com/camino-rs/camino/releases/tag/camino-1.2.5
+[1.2.4]: https://github.com/camino-rs/camino/releases/tag/camino-1.2.4
+[1.2.3]: https://github.com/camino-rs/camino/releases/tag/camino-1.2.3
 [1.2.2]: https://github.com/camino-rs/camino/releases/tag/camino-1.2.2
 [1.2.1]: https://github.com/camino-rs/camino/releases/tag/camino-1.2.1
 [1.2.0]: https://github.com/camino-rs/camino/releases/tag/camino-1.2.0

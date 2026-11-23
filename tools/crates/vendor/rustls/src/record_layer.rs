@@ -198,8 +198,8 @@ impl RecordLayer {
     /// "the next message processed by `encrypt_outgoing`"
     pub(crate) fn pre_encrypt_action(&self, add: u64) -> PreEncryptAction {
         match self.write_seq.saturating_add(add) {
-            v if v == self.write_seq_max => PreEncryptAction::RefreshOrClose,
             SEQ_HARD_LIMIT.. => PreEncryptAction::Refuse,
+            v if v >= self.write_seq_max => PreEncryptAction::RefreshOrClose,
             _ => PreEncryptAction::Nothing,
         }
     }
@@ -272,6 +272,28 @@ const SEQ_HARD_LIMIT: u64 = 0xffff_ffff_ffff_fffeu64;
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn pre_encrypt_action_checks_limits() {
+        let action = |write_seq_max, write_seq, add| {
+            let mut record_layer = RecordLayer::new();
+            record_layer.write_seq_max = write_seq_max;
+            record_layer.write_seq = write_seq;
+            record_layer.pre_encrypt_action(add)
+        };
+
+        assert_eq!(action(10, 8, 1), PreEncryptAction::Nothing);
+        assert_eq!(action(10, 8, 2), PreEncryptAction::RefreshOrClose);
+        assert_eq!(action(10, 11, 0), PreEncryptAction::RefreshOrClose);
+        assert_eq!(
+            action(SEQ_SOFT_LIMIT, SEQ_HARD_LIMIT - 1, 0),
+            PreEncryptAction::RefreshOrClose
+        );
+        assert_eq!(
+            action(SEQ_SOFT_LIMIT, SEQ_HARD_LIMIT - 1, 1),
+            PreEncryptAction::Refuse
+        );
+    }
 
     #[test]
     fn test_has_decrypted() {

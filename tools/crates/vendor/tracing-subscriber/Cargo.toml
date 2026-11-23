@@ -13,7 +13,7 @@
 edition = "2018"
 rust-version = "1.65.0"
 name = "tracing-subscriber"
-version = "0.3.22"
+version = "0.3.23"
 authors = [
     "Eliza Weisman <eliza@buoyant.io>",
     "David Barsky <me@davidbarsky.com>",

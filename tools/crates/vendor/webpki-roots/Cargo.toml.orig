@@ -1,6 +1,6 @@
 [package]
 name = "webpki-roots"
-version = "1.0.4"
+version = "1.0.12"
 edition = { workspace = true }
 rust-version = { workspace = true }
 readme = "README.md"
@@ -13,10 +13,10 @@ description = "Mozilla's CA root certificates for use with webpki"
 pki-types = { workspace = true }
 
 [dev-dependencies]
+aws-lc-rs = { workspace = true }
 hex = { workspace = true }
 percent-encoding = { workspace = true }
 rcgen = { workspace = true }
-ring = { workspace = true }
 rustls = { workspace = true }
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 webpki = { workspace = true }

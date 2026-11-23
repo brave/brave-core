@@ -1,5 +1,7 @@
 use std::collections::HashSet;
 
+use gix_packetline::blocking_io::{StreamingPeekableIter, WithSidebands, Writer};
+
 /// A set of capabilities that have been negotiated between client and server.
 pub type Capabilities = HashSet<String>;
 
@@ -12,9 +14,9 @@ pub struct Client {
     /// The negotiated version of the protocol.
     version: usize,
     /// A way to send packet-line encoded information to the process.
-    input: gix_packetline_blocking::Writer<std::process::ChildStdin>,
+    input: Writer<std::process::ChildStdin>,
     /// A way to read information sent to us by the process.
-    out: gix_packetline_blocking::StreamingPeekableIter<std::process::ChildStdout>,
+    out: StreamingPeekableIter<std::process::ChildStdout>,
 }
 
 /// A handle to facilitate typical server interactions that include the handshake and command-invocations.
@@ -24,9 +26,9 @@ pub struct Server {
     /// The negotiated version of the protocol, it's the highest supported one.
     version: usize,
     /// A way to receive information from the client.
-    input: gix_packetline_blocking::StreamingPeekableIter<std::io::StdinLock<'static>>,
+    input: StreamingPeekableIter<std::io::StdinLock<'static>>,
     /// A way to send information to the client.
-    out: gix_packetline_blocking::Writer<std::io::StdoutLock<'static>>,
+    out: Writer<std::io::StdoutLock<'static>>,
 }
 
 /// The return status of an [invoked command][Client::invoke()].
@@ -109,8 +111,5 @@ pub mod client;
 ///
 pub mod server;
 
-type PacketlineReader<'a, T = std::process::ChildStdout> = gix_packetline_blocking::read::WithSidebands<
-    'a,
-    T,
-    fn(bool, &[u8]) -> gix_packetline_blocking::read::ProgressAction,
->;
+type PacketlineReader<'a, T = std::process::ChildStdout> =
+    WithSidebands<'a, T, fn(bool, &[u8]) -> gix_packetline::read::ProgressAction>;

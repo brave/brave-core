@@ -1,5 +1,5 @@
 use {
-    crate::{Arbitrary, Error, MaxRecursionReached, Result, Unstructured},
+    crate::{Arbitrary, MaxRecursionReached, Result, Unstructured},
     core::{
         mem,
         num::{
@@ -96,7 +96,7 @@ macro_rules! implement_nonzero_int {
             fn arbitrary(u: &mut Unstructured<'a>) -> Result<Self> {
                 match Self::new(<$int as Arbitrary<'a>>::arbitrary(u)?) {
                     Some(n) => Ok(n),
-                    None => Err(Error::IncorrectFormat),
+                    None => Ok(Self::new(<$int>::MAX).unwrap()),
                 }
             }
 

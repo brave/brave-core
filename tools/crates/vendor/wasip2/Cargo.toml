@@ -11,9 +11,9 @@
 
 [package]
 edition = "2021"
-rust-version = "1.82.0"
+rust-version = "1.87.0"
 name = "wasip2"
-version = "1.0.1+wasi-0.2.4"
+version = "1.0.4+wasi-0.2.12"
 build = false
 autolib = false
 autobins = false
@@ -93,5 +93,5 @@ optional = true
 package = "rustc-std-workspace-core"
 
 [dependencies.wit-bindgen]
-version = "0.46.0"
+version = "0.57.1"
 default-features = false

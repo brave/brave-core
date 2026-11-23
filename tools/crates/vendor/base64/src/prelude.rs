@@ -3,6 +3,8 @@
 //! These are re-exports of `const` engines in [crate::engine::general_purpose], renamed with a `BASE64_`
 //! prefix for those who prefer to `use` the entire path to a name.
 //!
+//! All of these engine presets enforce no trailing bits when decoding.
+//!
 //! # Examples
 //!
 #![cfg_attr(feature = "alloc", doc = "```")]

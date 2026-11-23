@@ -98,7 +98,7 @@ in such cases.
 [Time Zone Database]: https://www.iana.org/time-zones
 */
 
-#![allow(warnings)]
+#![allow(dead_code)]
 
 use core::{ops::RangeInclusive, str::FromStr};
 
@@ -109,19 +109,19 @@ use alloc::{
     vec::Vec,
 };
 
+use jcore::bounds::Sign;
+
 use crate::{
+    SignedDuration,
     civil::{Date, DateTime, Time, Weekday},
-    error::{err, Error, ErrorContext},
-    span::{Span, SpanFieldwise, ToSpan},
+    error::{
+        Error, ErrorContext,
+        tz::zic::{Error as E, MAX_LINE_LEN},
+    },
+    span::ToSpan,
     timestamp::Timestamp,
     tz::{Dst, Offset},
-    util::{
-        parse,
-        rangeint::RInto,
-        sync::Arc,
-        t::{self, C},
-    },
-    Unit,
+    util::{b, parse, sync::Arc},
 };
 
 #[derive(Debug, Default, Eq, PartialEq)]
@@ -131,7 +131,7 @@ struct Zic {
 }
 
 impl Zic {
-    fn new(zicp: ZicP) -> Result<Zic, Error> {
+    fn new(_zicp: ZicP) -> Result<Zic, Error> {
         todo!()
     }
 }
@@ -205,12 +205,12 @@ impl Rules {
                 "every name in rule group must be identical"
             );
             let dst = Dst::from(r.save.suffix() == RuleSaveSuffixP::Dst);
-            let offset = r.save.to_offset().map_err(|e| {
-                err!("SAVE value in rule {:?} is too big: {e}", inner.name)
+            let offset = r.save.to_offset().with_context(|| {
+                E::FailedRule { name: inner.name.as_str().into() }
             })?;
-            let years = r
-                .years()
-                .map_err(|e| e.context(err!("rule {:?}", inner.name)))?;
+            let years = r.years().with_context(|| E::FailedRule {
+                name: inner.name.as_str().into(),
+            })?;
             let month = r.inn.month;
             let letters = r.letters.part;
             let day = r.on;
@@ -227,8 +227,8 @@ struct Rule {
     dst: Dst,
     offset: Offset,
     letters: String,
-    years: RangeInclusive<t::Year>,
-    month: t::Month,
+    years: RangeInclusive<i16>,
+    month: i8,
     day: RuleOnP,
     at: RuleAtP,
 }
@@ -260,13 +260,12 @@ impl ZicP {
     ) -> Result<(), Error> {
         while parser.read_next_fields()? {
             self.parse_one(&mut parser)
-                .map_err(|e| e.context(err!("line {}", parser.line_number)))?;
+                .context(E::Line { number: parser.line_number })?;
         }
         if let Some(ref name) = parser.continuation_zone_for {
-            return Err(err!(
-                "expected continuation zone line for {name:?}, \
-                 but found end of data instead",
-            ));
+            return Err(Error::from(E::ExpectedContinuationZoneLine {
+                name: name.as_str().into(),
+            }));
         }
         Ok(())
     }
@@ -277,9 +276,8 @@ impl ZicP {
         assert!(!p.fields.is_empty());
 
         if let Some(name) = p.continuation_zone_for.take() {
-            let zone = ZoneContinuationP::parse(&p.fields).map_err(|e| {
-                e.context("failed to parse continuation 'Zone' line")
-            })?;
+            let zone = ZoneContinuationP::parse(&p.fields)
+                .context(E::FailedContinuationZone)?;
             let more_continuations = zone.until.is_some();
             // OK because `p.continuation_zone_for` is only set when we have
             // seen a first zone with the corresponding name.
@@ -293,51 +291,45 @@ impl ZicP {
 
         let (first, rest) = (&p.fields[0], &p.fields[1..]);
         if first.starts_with("R") && "Rule".starts_with(first) {
-            let rule = RuleP::parse(rest)
-                .map_err(|e| e.context("failed to parse 'Rule' line"))?;
+            let rule = RuleP::parse(rest).context(E::FailedRuleLine)?;
             let name = rule.name.name.clone();
             self.rules.entry(name).or_default().push(rule);
         } else if first.starts_with("Z") && "Zone".starts_with(first) {
-            let first = ZoneFirstP::parse(rest)
-                .map_err(|e| e.context("failed to parse first 'Zone' line"))?;
+            let first = ZoneFirstP::parse(rest).context(E::FailedZoneFirst)?;
             let name = first.name.name.clone();
             if first.until.is_some() {
                 p.continuation_zone_for = Some(name.clone());
             }
             let zone = ZoneP { first, continuations: vec![] };
             if self.links.contains_key(&name) {
-                return Err(err!(
-                    "found zone with name {name:?} that conflicts \
-                     with a link of the same name",
-                ));
+                return Err(Error::from(E::DuplicateZoneLink {
+                    name: name.into(),
+                }));
             }
             if let Some(previous_zone) = self.zones.insert(name, zone) {
-                return Err(err!(
-                    "found duplicate zone for {:?}",
-                    previous_zone.first.name.name,
-                ));
+                return Err(Error::from(E::DuplicateZone {
+                    name: previous_zone.first.name.name.into(),
+                }));
             }
         } else if first.starts_with("L") && "Link".starts_with(first) {
-            let link = LinkP::parse(rest)
-                .map_err(|e| e.context("failed to parse 'Link' line"))?;
+            let link = LinkP::parse(rest).context(E::FailedLinkLine)?;
             let name = link.name.name.clone();
             if self.zones.contains_key(&name) {
-                return Err(err!(
-                    "found link with name {name:?} that conflicts \
-                     with a zone of the same name",
-                ));
+                return Err(Error::from(E::DuplicateLinkZone {
+                    name: name.into(),
+                }));
             }
             if let Some(previous_link) = self.links.insert(name, link) {
-                return Err(err!(
-                    "found duplicate link for {:?}",
-                    previous_link.name.name,
-                ));
+                return Err(Error::from(E::DuplicateLink {
+                    name: previous_link.name.name.into(),
+                }));
             }
             // N.B. We don't check that the link's target name refers to some
             // other zone/link here, because the corresponding zone/link might
             // be defined later.
         } else {
-            return Err(err!("unrecognized zic line: {first:?}"));
+            return Err(Error::from(E::UnrecognizedZicLine)
+                .context(E::Line { number: p.line_number }));
         }
         Ok(())
     }
@@ -369,10 +361,9 @@ struct RuleP {
 impl RuleP {
     fn parse(fields: &[&str]) -> Result<RuleP, Error> {
         if fields.len() != 9 {
-            return Err(err!(
-                "expected exactly 9 fields for rule, but found {} fields",
-                fields.len(),
-            ));
+            return Err(Error::from(E::ExpectedRuleNineFields {
+                got: fields.len(),
+            }));
         }
         let (name_field, fields) = (fields[0], &fields[1..]);
         let (from_field, fields) = (fields[0], &fields[1..]);
@@ -382,47 +373,41 @@ impl RuleP {
         let (on_field, fields) = (fields[0], &fields[1..]);
         let (at_field, fields) = (fields[0], &fields[1..]);
         let (save_field, fields) = (fields[0], &fields[1..]);
-        let (letters_field, fields) = (fields[0], &fields[1..]);
+        let letters_field = fields[0];
 
         let name = name_field
             .parse::<RuleNameP>()
-            .map_err(|e| e.context("failed to parse NAME field"))?;
+            .context(E::FailedParseFieldName)?;
         let from = from_field
             .parse::<RuleFromP>()
-            .map_err(|e| e.context("failed to parse FROM field"))?;
-        let to = to_field
-            .parse::<RuleToP>()
-            .map_err(|e| e.context("failed to parse TO field"))?;
-        let inn = in_field
-            .parse::<RuleInP>()
-            .map_err(|e| e.context("failed to parse IN field"))?;
-        let on = on_field
-            .parse::<RuleOnP>()
-            .map_err(|e| e.context("failed to parse ON field"))?;
-        let at = at_field
-            .parse::<RuleAtP>()
-            .map_err(|e| e.context("failed to parse AT field"))?;
+            .context(E::FailedParseFieldFrom)?;
+        let to = to_field.parse::<RuleToP>().context(E::FailedParseFieldTo)?;
+        let inn =
+            in_field.parse::<RuleInP>().context(E::FailedParseFieldIn)?;
+        let on = on_field.parse::<RuleOnP>().context(E::FailedParseFieldOn)?;
+        let at = at_field.parse::<RuleAtP>().context(E::FailedParseFieldAt)?;
         let save = save_field
             .parse::<RuleSaveP>()
-            .map_err(|e| e.context("failed to parse SAVE field"))?;
+            .context(E::FailedParseFieldSave)?;
         let letters = letters_field
             .parse::<RuleLettersP>()
-            .map_err(|e| e.context("failed to parse LETTERS field"))?;
+            .context(E::FailedParseFieldLetters)?;
 
         Ok(RuleP { name, from, to, inn, on, at, save, letters })
     }
 
-    fn years(&self) -> Result<RangeInclusive<t::Year>, Error> {
+    fn years(&self) -> Result<RangeInclusive<i16>, Error> {
         let start = self.from.year;
         let end = match self.to {
-            RuleToP::Max => t::Year::MAX_SELF,
+            RuleToP::Max => b::Year::MAX,
             RuleToP::Only => start,
             RuleToP::Year { year } => year,
         };
         if start > end {
-            return Err(err!(
-                "found start year {start} to be greater than end year {end}"
-            ));
+            return Err(Error::from(E::InvalidRuleYear {
+                start: start,
+                end: end,
+            }));
         }
         Ok(start..=end)
     }
@@ -462,7 +447,7 @@ struct ZoneFirstP {
 impl ZoneFirstP {
     fn parse(fields: &[&str]) -> Result<ZoneFirstP, Error> {
         if fields.len() < 4 {
-            return Err(err!("first ZONE line must have at least 4 fields"));
+            return Err(Error::from(E::ExpectedFirstZoneFourFields));
         }
         let (name_field, fields) = (fields[0], &fields[1..]);
         let (stdoff_field, fields) = (fields[0], &fields[1..]);
@@ -470,23 +455,20 @@ impl ZoneFirstP {
         let (format_field, fields) = (fields[0], &fields[1..]);
         let name = name_field
             .parse::<ZoneNameP>()
-            .map_err(|e| e.context("failed to parse NAME field"))?;
+            .context(E::FailedParseFieldName)?;
         let stdoff = stdoff_field
             .parse::<ZoneStdoffP>()
-            .map_err(|e| e.context("failed to parse STDOFF field"))?;
+            .context(E::FailedParseFieldStdOff)?;
         let rules = rules_field
             .parse::<ZoneRulesP>()
-            .map_err(|e| e.context("failed to parse RULES field"))?;
+            .context(E::FailedParseFieldRules)?;
         let format = format_field
             .parse::<ZoneFormatP>()
-            .map_err(|e| e.context("failed to parse FORMAT field"))?;
+            .context(E::FailedParseFieldFormat)?;
         let until = if fields.is_empty() {
             None
         } else {
-            Some(
-                ZoneUntilP::parse(fields)
-                    .map_err(|e| e.context("failed to parse UNTIL field"))?,
-            )
+            Some(ZoneUntilP::parse(fields).context(E::FailedParseFieldUntil)?)
         };
         Ok(ZoneFirstP { name, stdoff, rules, format, until })
     }
@@ -512,29 +494,24 @@ struct ZoneContinuationP {
 impl ZoneContinuationP {
     fn parse(fields: &[&str]) -> Result<ZoneContinuationP, Error> {
         if fields.len() < 3 {
-            return Err(err!(
-                "continuation ZONE line must have at least 3 fields"
-            ));
+            return Err(Error::from(E::ExpectedContinuationZoneThreeFields));
         }
         let (stdoff_field, fields) = (fields[0], &fields[1..]);
         let (rules_field, fields) = (fields[0], &fields[1..]);
         let (format_field, fields) = (fields[0], &fields[1..]);
         let stdoff = stdoff_field
             .parse::<ZoneStdoffP>()
-            .map_err(|e| e.context("failed to parse STDOFF field"))?;
+            .context(E::FailedParseFieldStdOff)?;
         let rules = rules_field
             .parse::<ZoneRulesP>()
-            .map_err(|e| e.context("failed to parse RULES field"))?;
+            .context(E::FailedParseFieldRules)?;
         let format = format_field
             .parse::<ZoneFormatP>()
-            .map_err(|e| e.context("failed to parse FORMAT field"))?;
+            .context(E::FailedParseFieldFormat)?;
         let until = if fields.is_empty() {
             None
         } else {
-            Some(
-                ZoneUntilP::parse(fields)
-                    .map_err(|e| e.context("failed to parse UNTIL field"))?,
-            )
+            Some(ZoneUntilP::parse(fields).context(E::FailedParseFieldUntil)?)
         };
         Ok(ZoneContinuationP { stdoff, rules, format, until })
     }
@@ -553,17 +530,14 @@ struct LinkP {
 impl LinkP {
     fn parse(fields: &[&str]) -> Result<LinkP, Error> {
         if fields.len() != 2 {
-            return Err(err!(
-                "expected exactly 2 fields after LINK, but found {}",
-                fields.len()
-            ));
+            return Err(Error::from(E::ExpectedLinkTwoFields));
         }
         let target = fields[0]
             .parse::<ZoneNameP>()
-            .map_err(|e| e.context("failed to parse LINK target"))?;
+            .context(E::FailedParseFieldLinkTarget)?;
         let name = fields[1]
             .parse::<ZoneNameP>()
-            .map_err(|e| e.context("failed to parse LINK name"))?;
+            .context(E::FailedParseFieldLinkName)?;
         Ok(LinkP { target, name })
     }
 }
@@ -592,12 +566,9 @@ impl FromStr for RuleNameP {
         // or not. We erase that information. We could rejigger things to keep
         // that information around, but... Meh.
         if name.is_empty() {
-            Err(err!("NAME field for rule cannot be empty"))
+            Err(Error::from(E::ExpectedNonEmptyName))
         } else if name.starts_with(|ch| matches!(ch, '0'..='9' | '+' | '-')) {
-            Err(err!(
-                "NAME field cannot begin with a digit, + or -, \
-                 but {name:?} begins with one of those",
-            ))
+            Err(Error::from(E::ExpectedNameBegin))
         } else {
             Ok(RuleNameP { name: name.to_string() })
         }
@@ -607,15 +578,14 @@ impl FromStr for RuleNameP {
 /// The year at which this rule begins (inclusive).
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct RuleFromP {
-    year: t::Year,
+    year: i16,
 }
 
 impl FromStr for RuleFromP {
     type Err = Error;
 
     fn from_str(from: &str) -> Result<RuleFromP, Error> {
-        let year = parse_year(from)
-            .map_err(|e| e.context("failed to parse FROM field"))?;
+        let year = parse_year(from).context(E::FailedParseFieldFrom)?;
         Ok(RuleFromP { year })
     }
 }
@@ -630,7 +600,7 @@ enum RuleToP {
     /// A specific year at which the rules ends. The year is an inclusive
     /// bound, but must be greater than or equal to the year in the FROM
     /// field of the rule.
-    Year { year: t::Year },
+    Year { year: i16 },
 }
 
 impl FromStr for RuleToP {
@@ -642,8 +612,7 @@ impl FromStr for RuleToP {
         } else if to.starts_with("o") && "only".starts_with(to) {
             Ok(RuleToP::Only)
         } else {
-            let year = parse_year(to)
-                .map_err(|e| e.context("failed to parse TO field"))?;
+            let year = parse_year(to).context(E::FailedParseFieldTo)?;
             Ok(RuleToP::Year { year })
         }
     }
@@ -652,14 +621,14 @@ impl FromStr for RuleToP {
 /// The month in which a rule becomes active.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct RuleInP {
-    month: t::Month,
+    month: i8,
 }
 
 impl FromStr for RuleInP {
     type Err = Error;
 
     fn from_str(field: &str) -> Result<RuleInP, Error> {
-        static MONTH_PREFIXES: &[(u8, &str, &str)] = &[
+        static MONTH_PREFIXES: &[(i8, &str, &str)] = &[
             (1, "January", "Ja"),
             (2, "February", "F"),
             (3, "March", "Mar"),
@@ -673,13 +642,12 @@ impl FromStr for RuleInP {
             (11, "November", "N"),
             (12, "December", "D"),
         ];
-        for &(number, name, prefix) in MONTH_PREFIXES {
+        for &(month, name, prefix) in MONTH_PREFIXES {
             if field.starts_with(prefix) && name.starts_with(field) {
-                let month = t::Month::new(number).unwrap();
                 return Ok(RuleInP { month });
             }
         }
-        Err(err!("unrecognized month name: {field:?}"))
+        Err(Error::from(E::UnrecognizedMonthName))
     }
 }
 
@@ -687,37 +655,36 @@ impl FromStr for RuleInP {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum RuleOnP {
     /// A specific fixed day of a month.
-    Day { day: t::Day },
+    Day { day: i8 },
     /// The last weekday of a month.
     Last { weekday: Weekday },
     /// The weekday on or before a particular day of the month.
-    OnOrBefore { weekday: Weekday, day: t::Day },
+    OnOrBefore { weekday: Weekday, day: i8 },
     /// The weekday on or after a particular day of the month.
-    OnOrAfter { weekday: Weekday, day: t::Day },
+    OnOrAfter { weekday: Weekday, day: i8 },
 }
 
 impl RuleOnP {
     /// Given a year and a month, return the specific date for this "day of the
     /// month" specification.
-    fn date(&self, year: t::Year, month: t::Month) -> Result<Date, Error> {
+    fn date(&self, year: i16, month: i8) -> Result<Date, Error> {
         match *self {
-            RuleOnP::Day { day } => Date::new_ranged(year, month, day),
+            RuleOnP::Day { day } => Date::new(year, month, day),
             RuleOnP::Last { weekday } => {
-                // Always a valid month given that year/month are valid.
-                let date =
-                    Date::new_ranged(year, month, C(1).rinto()).unwrap();
+                // Always a valid date given that year/month are valid.
+                let date = Date::new(year, month, 1).unwrap();
                 date.nth_weekday_of_month(-1, weekday)
             }
             RuleOnP::OnOrBefore { weekday, day } => {
-                let start = Date::new_ranged(year, month, day)?
-                    .checked_add(1.day())?;
+                let start =
+                    Date::new(year, month, day)?.checked_add(1.day())?;
                 // nth_weekday returns "before" instead of "on or before," so
                 // offset the date by a day to get "on or before" semantics.
                 start.nth_weekday(-1, weekday)
             }
             RuleOnP::OnOrAfter { weekday, day } => {
-                let start = Date::new_ranged(year, month, day)?
-                    .checked_sub(1.day())?;
+                let start =
+                    Date::new(year, month, day)?.checked_sub(1.day())?;
                 // nth_weekday returns "after" instead of "on or after," so
                 // offset the date by a day to get "on or after" semantics.
                 start.nth_weekday(1, weekday)
@@ -747,7 +714,7 @@ impl FromStr for RuleOnP {
             // field. That gets checked at a higher level.
             Ok(RuleOnP::Day { day })
         } else {
-            Err(err!("unrecognized format for day-of-month: {field:?}"))
+            Err(Error::from(E::UnrecognizedDayOfMonthFormat))
         }
     }
 }
@@ -757,7 +724,7 @@ impl FromStr for RuleOnP {
 struct RuleAtP {
     /// The amount of time to add to the start of the day specified by
     /// `RuleOnP`. This may be negative.
-    span: SpanFieldwise,
+    dur: SignedDuration,
     /// An optional suffix indicating how to interpret the overall time at
     /// which a rule takes effect. As I understand it, this applies to the
     /// entire datetime that is specified by IN, ON and AT and not just the
@@ -782,16 +749,16 @@ impl FromStr for RuleAtP {
 
     fn from_str(at: &str) -> Result<RuleAtP, Error> {
         if at.is_empty() {
-            return Err(err!("empty field is not a valid AT value"));
+            return Err(Error::from(E::ExpectedNonEmptyAt));
         }
         let (span_string, suffix_string) = at.split_at(at.len() - 1);
         if suffix_string.chars().all(|ch| ch.is_ascii_alphabetic()) {
-            let span = parse_span(span_string)?.fieldwise();
+            let span = parse_duration(span_string)?;
             let suffix = suffix_string.parse()?;
-            Ok(RuleAtP { span, suffix: Some(suffix) })
+            Ok(RuleAtP { dur: span, suffix: Some(suffix) })
         } else {
-            let span = parse_span(at)?.fieldwise();
-            Ok(RuleAtP { span, suffix: None })
+            let span = parse_duration(at)?;
+            Ok(RuleAtP { dur: span, suffix: None })
         }
     }
 }
@@ -813,7 +780,7 @@ impl FromStr for RuleAtSuffixP {
             "w" => Ok(RuleAtSuffixP::Wall),
             "s" => Ok(RuleAtSuffixP::Standard),
             "u" | "g" | "z" => Ok(RuleAtSuffixP::Universal),
-            _ => Err(err!("unrecognized AT time suffix {suffix:?}")),
+            _ => Err(Error::from(E::UnrecognizedAtTimeSuffix)),
         }
     }
 }
@@ -823,7 +790,7 @@ impl FromStr for RuleAtSuffixP {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct RuleSaveP {
     /// The amount of time to add. This may be negative.
-    span: SpanFieldwise,
+    dur: SignedDuration,
     /// An optional suffix indicating how the resulting time after applying
     /// this rule should be interpreted. When absent, this defaults to DST.
     suffix: Option<RuleSaveSuffixP>,
@@ -836,14 +803,7 @@ impl RuleSaveP {
     fn to_offset(&self) -> Result<Offset, Error> {
         // TODO: I think `zic` rounds to the nearest second, breaking ties to
         // the nearest even second?
-        let seconds = Span::from_invariant_nanoseconds(
-            Unit::Second,
-            self.span.0.to_invariant_nanoseconds(),
-        )?
-        .get_seconds();
-        let seconds = i32::try_from(seconds).map_err(|_| {
-            Error::range("SAVE seconds", seconds, i32::MIN, i32::MAX)
-        })?;
+        let seconds = b::OffsetTotalSeconds::check(self.dur.as_secs())?;
         Offset::from_seconds(seconds)
     }
 
@@ -853,7 +813,7 @@ impl RuleSaveP {
     /// span in the field.
     fn suffix(&self) -> RuleSaveSuffixP {
         self.suffix.unwrap_or_else(|| {
-            if self.span.0.is_zero() {
+            if self.dur.is_zero() {
                 RuleSaveSuffixP::Standard
             } else {
                 RuleSaveSuffixP::Dst
@@ -867,16 +827,16 @@ impl FromStr for RuleSaveP {
 
     fn from_str(at: &str) -> Result<RuleSaveP, Error> {
         if at.is_empty() {
-            return Err(err!("empty field is not a valid SAVE value"));
+            return Err(Error::from(E::ExpectedNonEmptySave));
         }
         let (span_string, suffix_string) = at.split_at(at.len() - 1);
         if suffix_string.chars().all(|ch| ch.is_ascii_alphabetic()) {
-            let span = parse_span(span_string)?.fieldwise();
+            let span = parse_duration(span_string)?;
             let suffix = suffix_string.parse()?;
-            Ok(RuleSaveP { span, suffix: Some(suffix) })
+            Ok(RuleSaveP { dur: span, suffix: Some(suffix) })
         } else {
-            let span = parse_span(at)?.fieldwise();
-            Ok(RuleSaveP { span, suffix: None })
+            let span = parse_duration(at)?;
+            Ok(RuleSaveP { dur: span, suffix: None })
         }
     }
 }
@@ -902,7 +862,7 @@ impl FromStr for RuleSaveSuffixP {
         match suffix {
             "s" => Ok(RuleSaveSuffixP::Standard),
             "d" => Ok(RuleSaveSuffixP::Dst),
-            _ => Err(err!("unrecognized SAVE time suffix {suffix:?}")),
+            _ => Err(Error::from(E::UnrecognizedSaveTimeSuffix)),
         }
     }
 }
@@ -939,14 +899,13 @@ impl FromStr for ZoneNameP {
 
     fn from_str(name: &str) -> Result<ZoneNameP, Error> {
         if name.is_empty() {
-            return Err(err!("zone names cannot be empty"));
+            return Err(Error::from(E::ExpectedNonEmptyZoneName));
         }
         for component in name.split('/') {
             if component == "." || component == ".." {
-                return Err(err!(
-                    "component {component:?} in zone name {name:?} cannot \
-                     be \".\" or \"..\"",
-                ));
+                return Err(Error::from(E::ExpectedZoneNameComponentNoDots {
+                    component: component.into(),
+                }));
             }
         }
         Ok(ZoneNameP { name: name.to_string() })
@@ -957,15 +916,15 @@ impl FromStr for ZoneNameP {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct ZoneStdoffP {
     /// The duration. This only uses units of hours or lower.
-    span: SpanFieldwise,
+    dur: SignedDuration,
 }
 
 impl FromStr for ZoneStdoffP {
     type Err = Error;
 
     fn from_str(stdoff: &str) -> Result<ZoneStdoffP, Error> {
-        let span = parse_span(stdoff)?.fieldwise();
-        Ok(ZoneStdoffP { span })
+        let dur = parse_duration(stdoff)?;
+        Ok(ZoneStdoffP { dur })
     }
 }
 
@@ -1035,16 +994,12 @@ impl FromStr for ZoneFormatP {
     fn from_str(format: &str) -> Result<ZoneFormatP, Error> {
         fn check_abbrev(abbrev: &str) -> Result<String, Error> {
             if abbrev.is_empty() {
-                return Err(err!("empty abbreviations are not allowed"));
+                return Err(Error::from(E::ExpectedNonEmptyAbbreviation));
             }
             let is_ok =
                 |ch| matches!(ch, '+'|'-'|'0'..='9'|'A'..='Z'|'a'..='z');
             if !abbrev.chars().all(is_ok) {
-                return Err(err!(
-                    "abbreviation {abbrev:?} \
-                     contains invalid character; only \"+\", \"-\" and \
-                     ASCII alpha-numeric characters are allowed"
-                ));
+                return Err(Error::from(E::InvalidAbbreviation));
             }
             Ok(abbrev.to_string())
         }
@@ -1073,19 +1028,19 @@ impl FromStr for ZoneFormatP {
 #[derive(Clone, Debug, Eq, PartialEq)]
 enum ZoneUntilP {
     Year {
-        year: t::Year,
+        year: i16,
     },
     YearMonth {
-        year: t::Year,
+        year: i16,
         month: RuleInP,
     },
     YearMonthDay {
-        year: t::Year,
+        year: i16,
         month: RuleInP,
         day: RuleOnP,
     },
     YearMonthDayTime {
-        year: t::Year,
+        year: i16,
         month: RuleInP,
         day: RuleOnP,
         /// Note that adding a span to the year/month/day could overflow
@@ -1098,28 +1053,24 @@ enum ZoneUntilP {
 impl ZoneUntilP {
     fn parse(fields: &[&str]) -> Result<ZoneUntilP, Error> {
         if fields.is_empty() {
-            return Err(err!("expected at least a year"));
+            return Err(Error::from(E::ExpectedUntilYear));
         }
 
         let (year_field, fields) = (fields[0], &fields[1..]);
-        let year = parse_year(year_field)
-            .map_err(|e| e.context("failed to parse year"))?;
+        let year = parse_year(year_field).context(E::FailedParseYear)?;
         if fields.is_empty() {
             return Ok(ZoneUntilP::Year { year });
         }
 
         let (month_field, fields) = (fields[0], &fields[1..]);
-        let month = month_field
-            .parse::<RuleInP>()
-            .map_err(|e| e.context("failed to parse month"))?;
+        let month =
+            month_field.parse::<RuleInP>().context(E::FailedParseMonth)?;
         if fields.is_empty() {
             return Ok(ZoneUntilP::YearMonth { year, month });
         }
 
         let (day_field, fields) = (fields[0], &fields[1..]);
-        let day = day_field
-            .parse::<RuleOnP>()
-            .map_err(|e| e.context("failed to parse day"))?;
+        let day = day_field.parse::<RuleOnP>().context(E::FailedParseDay)?;
         if fields.is_empty() {
             return Ok(ZoneUntilP::YearMonthDay { year, month, day });
         }
@@ -1127,26 +1078,21 @@ impl ZoneUntilP {
         let (duration_field, fields) = (fields[0], &fields[1..]);
         let duration = duration_field
             .parse::<RuleAtP>()
-            .map_err(|e| e.context("failed to parse time duration"))?;
+            .context(E::FailedParseTimeDuration)?;
         if !fields.is_empty() {
-            return Err(err!(
-                "expected no more fields after time of day, \
-                 but found: {fields:?}",
-                fields = fields.join(" "),
-            ));
+            return Err(Error::from(E::ExpectedNothingAfterTime));
         }
         Ok(ZoneUntilP::YearMonthDayTime { year, month, day, duration })
     }
 
     fn to_datetime(&self) -> Result<DateTime, Error> {
         let date = self.on().date(self.year(), self.month())?;
-        let dt = date
-            .to_datetime(Time::midnight())
-            .checked_add(self.at().span.0)?;
+        let dt =
+            date.to_datetime(Time::midnight()).checked_add(self.at().dur)?;
         Ok(dt)
     }
 
-    fn year(&self) -> t::Year {
+    fn year(&self) -> i16 {
         use self::ZoneUntilP::*;
 
         match *self {
@@ -1157,11 +1103,11 @@ impl ZoneUntilP {
         }
     }
 
-    fn month(&self) -> t::Month {
+    fn month(&self) -> i8 {
         use self::ZoneUntilP::*;
 
         match *self {
-            Year { .. } => t::Month::N::<1>(),
+            Year { .. } => 1,
             YearMonth { month, .. }
             | YearMonthDay { month, .. }
             | YearMonthDayTime { month, .. } => month.month,
@@ -1172,9 +1118,7 @@ impl ZoneUntilP {
         use self::ZoneUntilP::*;
 
         match *self {
-            Year { .. } | YearMonth { .. } => {
-                RuleOnP::Day { day: t::Day::N::<1>() }
-            }
+            Year { .. } | YearMonth { .. } => RuleOnP::Day { day: 1 },
             YearMonthDay { day, .. } | YearMonthDayTime { day, .. } => day,
         }
     }
@@ -1184,7 +1128,7 @@ impl ZoneUntilP {
 
         match *self {
             Year { .. } | YearMonth { .. } | YearMonthDay { .. } => {
-                RuleAtP { span: Span::new().fieldwise(), suffix: None }
+                RuleAtP { dur: SignedDuration::ZERO, suffix: None }
             }
             YearMonthDayTime { duration, .. } => duration,
         }
@@ -1194,17 +1138,15 @@ impl ZoneUntilP {
 /// Parse a signed year value.
 ///
 /// This ensures the year is within the range supported by Jiff.
-fn parse_year(year: &str) -> Result<t::Year, Error> {
+fn parse_year(year: &str) -> Result<i16, Error> {
     let (sign, rest) = if year.starts_with("-") {
-        (t::Sign::N::<-1>(), &year[1..])
+        (Sign::Negative, &year[1..])
     } else {
-        (t::Sign::N::<1>(), year)
+        (Sign::Positive, year)
     };
-    let number = parse::i64(rest.as_bytes())
-        .map_err(|e| e.context("failed to parse year"))?;
-    let year = t::Year::new(number)
-        .ok_or_else(|| err!("year is out of range: {number}"))?;
-    Ok(year * sign)
+    let year =
+        parse::bi64::<b::Year>(rest.as_bytes()).context(E::FailedParseYear)?;
+    Ok(sign * year)
 }
 
 /// Parse a duration of time expressed in hours, minutes and seconds.
@@ -1217,128 +1159,102 @@ fn parse_year(year: &str) -> Result<t::Year, Error> {
 /// the nearest second at a higher level.) Hours can seemingly be any number we
 /// can reasonably represent. The leading `-` sign means it can be negative.
 /// And as a special case, a `-` all on its own is equivalent to `0`.
-fn parse_span(span: &str) -> Result<Span, Error> {
+fn parse_duration(span: &str) -> Result<SignedDuration, Error> {
     // This function is just brutal. I feel like I'm over-complicating it. I
     // suppoose we could probably do a little better here with a better set of
     // parser combinator helpers. But it's all inter-woven with parsing numbers
     // too.
 
     let rest = span;
-    let (mut span, sign, rest) = if rest.starts_with("-") {
+    let (sign, rest) = if rest.starts_with("-") {
         // Special case where if the duration is just `-`, then it's equivalent
         // to zero.
         if span.len() == 1 {
-            return Ok(Span::new());
+            return Ok(SignedDuration::ZERO);
         }
-        (Span::new(), t::Sign::N::<-1>(), &rest[1..])
+        (Sign::Negative, &rest[1..])
     } else {
-        (Span::new(), t::Sign::N::<1>(), rest)
+        (Sign::Positive, rest)
     };
+    let mut dur = SignedDuration::ZERO;
 
     // Pluck out the hour component.
     let hour_len = rest.chars().take_while(|c| c.is_ascii_digit()).count();
     let (hour_digits, rest) = rest.split_at(hour_len);
     if hour_digits.is_empty() {
-        return Err(err!(
-            "expected time duration to contain at least one hour digit"
-        ));
+        return Err(Error::from(E::ExpectedTimeOneHour));
     }
-    let hours = parse::i64(hour_digits.as_bytes())
-        .map_err(|e| e.context("failed to parse hours in time duration"))?;
-    span = span
-        .try_hours(hours.saturating_mul(i64::from(sign.get())))
-        .map_err(|_| err!("duration hours '{hours:?}' is out of range"))?;
+    let hours = parse::bi64::<b::SpanHours>(hour_digits.as_bytes())
+        .context(E::FailedParseHour)?;
+    dur += SignedDuration::from_hours(sign * i64::from(hours));
     if rest.is_empty() {
-        return Ok(span);
+        return Ok(dur);
     }
 
     // Now pluck out the minute component.
     if !rest.starts_with(":") {
-        return Err(err!("expected ':' after hours, but found {rest:?}"));
+        return Err(Error::from(E::ExpectedColonAfterHour));
     }
     let rest = &rest[1..];
     let minute_len = rest.chars().take_while(|c| c.is_ascii_digit()).count();
     let (minute_digits, rest) = rest.split_at(minute_len);
     if minute_digits.is_empty() {
-        return Err(err!(
-            "expected minute digits after 'HH:', but found {rest:?} instead"
-        ));
+        return Err(Error::from(E::ExpectedMinuteAfterHours));
     }
-    let minutes = parse::i64(minute_digits.as_bytes())
-        .map_err(|e| e.context("failed to parse minutes in time duration"))?;
-    let minutes_ranged = t::Minute::new(minutes).ok_or_else(|| {
-        err!("duration minutes '{minutes:?}' is out of range")
-    })?;
-    span = span.minutes_ranged((minutes_ranged * sign).rinto());
+    let minutes = parse::bi64::<b::Minute>(minute_digits.as_bytes())
+        .context(E::FailedParseMinute)?;
+    dur += SignedDuration::from_mins(sign * i64::from(minutes));
     if rest.is_empty() {
-        return Ok(span);
+        return Ok(dur);
     }
 
     // Now pluck out the second component.
     if !rest.starts_with(":") {
-        return Err(err!("expected ':' after minutes, but found {rest:?}"));
+        return Err(Error::from(E::ExpectedColonAfterMinute));
     }
     let rest = &rest[1..];
     let second_len = rest.chars().take_while(|c| c.is_ascii_digit()).count();
     let (second_digits, rest) = rest.split_at(second_len);
     if second_digits.is_empty() {
-        return Err(err!(
-            "expected second digits after 'MM:', but found {rest:?} instead"
-        ));
+        return Err(Error::from(E::ExpectedSecondAfterMinutes));
     }
-    let seconds = parse::i64(second_digits.as_bytes())
-        .map_err(|e| e.context("failed to parse seconds in time duration"))?;
-    let seconds_ranged = t::Second::new(seconds).ok_or_else(|| {
-        err!("duration seconds '{seconds:?}' is out of range")
-    })?;
-    span = span.seconds_ranged((seconds_ranged * sign).rinto());
+    let seconds = parse::bi64::<b::Second>(second_digits.as_bytes())
+        .context(E::FailedParseSecond)?;
+    dur += SignedDuration::from_secs(sign * i64::from(seconds));
     if rest.is_empty() {
-        return Ok(span);
+        return Ok(dur);
     }
 
     // Now look for the fractional nanosecond component.
     if !rest.starts_with(".") {
-        return Err(err!("expected '.' after seconds, but found {rest:?}"));
+        return Err(Error::from(E::ExpectedDotAfterSeconds));
     }
     let rest = &rest[1..];
     let nanosecond_len =
         rest.chars().take_while(|c| c.is_ascii_digit()).count();
     let (nanosecond_digits, rest) = rest.split_at(nanosecond_len);
     if nanosecond_digits.is_empty() {
-        return Err(err!(
-            "expected nanosecond digits after 'SS.', \
-             but found {rest:?} instead"
-        ));
+        return Err(Error::from(E::ExpectedNanosecondDigits));
     }
-    let nanoseconds =
-        parse::fraction(nanosecond_digits.as_bytes()).map_err(|e| {
-            e.context("failed to parse nanoseconds in time duration")
-        })?;
-    let nanoseconds_ranged = t::FractionalNanosecond::new(nanoseconds)
-        .ok_or_else(|| {
-            err!("duration nanoseconds '{nanoseconds:?}' is out of range")
-        })?;
-    span = span.nanoseconds_ranged((nanoseconds_ranged * sign).rinto());
+    let nanoseconds = parse::fraction(nanosecond_digits.as_bytes())
+        .context(E::FailedParseNanosecond)?;
+    // OK because `parse::fraction` can't return anything more than
+    // `999_999_999` nanoseconds.
+    dur += SignedDuration::from_nanos(sign * i64::from(nanoseconds));
 
     // We should have consumed everything at this point.
     if !rest.is_empty() {
-        return Err(err!(
-            "found unrecognized trailing {rest:?} in time duration"
-        ));
+        return Err(Error::from(E::UnrecognizedTrailingTimeDuration));
     }
-    span.rebalance(Unit::Hour)
+    Ok(dur)
 }
 
 /// Parses a day of the month.
 ///
 /// This checks that the day is in the range 1-31, but otherwise doesn't
 /// check that it is valid for a particular month.
-fn parse_day(string: &str) -> Result<t::Day, Error> {
-    let number = parse::i64(string.as_bytes())
-        .map_err(|e| e.context("failed to parse number for day"))?;
-    let day = t::Day::new(number)
-        .ok_or_else(|| err!("{number} is not a valid day"))?;
-    Ok(day)
+fn parse_day(string: &str) -> Result<i8, Error> {
+    parse::bi64::<b::Day>(string.as_bytes()).context(E::FailedParseDay)
 }
 
 /// Parses a possibly abbreviated weekday from the given string.
@@ -1357,7 +1273,7 @@ fn parse_weekday(string: &str) -> Result<Weekday, Error> {
             return Ok(weekday);
         }
     }
-    Err(err!("unrecognized day of the week: {string:?}"))
+    Err(Error::from(E::UnrecognizedDayOfWeek))
 }
 
 /// A parser that emits lines as sequences of fields.
@@ -1379,7 +1295,7 @@ struct FieldParser<'a> {
 
 impl<'a> FieldParser<'a> {
     /// Create a new parser from a UTF-8 encoded sequence of bytes.
-    fn new(src: &'a str) -> FieldParser {
+    fn new(src: &'a str) -> FieldParser<'a> {
         FieldParser {
             lines: src.lines(),
             line_number: 0,
@@ -1391,9 +1307,9 @@ impl<'a> FieldParser<'a> {
     /// Create a new parser from a sequence of bytes.
     ///
     /// This returns an error if the given bytes are not valid UTF-8.
-    fn from_bytes(src: &'a [u8]) -> Result<FieldParser, Error> {
+    fn from_bytes(src: &'a [u8]) -> Result<FieldParser<'a>, Error> {
         let src = core::str::from_utf8(src)
-            .map_err(|e| err!("invalid UTF-8: {e}"))?;
+            .map_err(|_| Error::from(E::InvalidUtf8))?;
         Ok(FieldParser::new(src))
     }
 
@@ -1408,13 +1324,11 @@ impl<'a> FieldParser<'a> {
     fn read_next_fields(&mut self) -> Result<bool, Error> {
         self.fields.clear();
         loop {
-            let Some(mut line) = self.lines.next() else { return Ok(false) };
-            self.line_number = self
-                .line_number
-                .checked_add(1)
-                .ok_or_else(|| err!("line count overflowed"))?;
+            let Some(line) = self.lines.next() else { return Ok(false) };
+            self.line_number =
+                self.line_number.checked_add(1).ok_or(E::LineOverflow)?;
             parse_fields(&line, &mut self.fields)
-                .with_context(|| err!("line {}", self.line_number))?;
+                .context(E::Line { number: self.line_number })?;
             if self.fields.is_empty() {
                 continue;
             }
@@ -1443,7 +1357,7 @@ impl<'a> FieldParser<'a> {
 ///
 /// This panics if a `\n` is seen while parsing the `line`.
 fn parse_fields<'a>(
-    mut line: &'a str,
+    line: &'a str,
     fields: &mut Vec<&'a str>,
 ) -> Result<(), Error> {
     /// Returns true if the given character corresponds to whitespace as
@@ -1451,13 +1365,6 @@ fn parse_fields<'a>(
     fn is_space(ch: char) -> bool {
         matches!(ch, ' ' | '\x0C' | '\n' | '\r' | '\t' | '\x0B')
     }
-
-    // `man zic` says that the max line length including the line
-    // terminator is 2048. The `core::str::Lines` iterator doesn't include
-    // the terminator, so we subtract 1 to account for that. Note that this
-    // could potentially allow one extra byte in the case of a \r\n line
-    // terminator, but this seems fine.
-    const MAX_LINE_LEN: usize = 2047;
 
     // The different possible states of the field parser below.
     enum State {
@@ -1469,15 +1376,11 @@ fn parse_fields<'a>(
 
     fields.clear();
     if line.len() > MAX_LINE_LEN {
-        return Err(err!(
-            "line with length {} exceeds \
-             max length of {MAX_LINE_LEN}",
-            line.len()
-        ));
+        return Err(Error::from(E::LineMaxLength));
     }
     // Do a quick scan for a NUL terminator. They are illegal in all cases.
     if line.contains('\x00') {
-        return Err(err!("found line with NUL byte, which isn't allowed"));
+        return Err(Error::from(E::LineNul));
     }
     // The current state of the parser. We start at whitespace, since it also
     // means "before a field."
@@ -1522,9 +1425,8 @@ fn parse_fields<'a>(
             }
             State::AfterQuote => {
                 if !is_space(ch) {
-                    return Err(err!(
-                        "expected whitespace after quoted field, \
-                         but found {ch:?} instead",
+                    return Err(Error::from(
+                        E::ExpectedWhitespaceAfterQuotedField,
                     ));
                 }
                 State::Whitespace
@@ -1537,7 +1439,7 @@ fn parse_fields<'a>(
             fields.push(&line[start..]);
         }
         State::InQuote => {
-            return Err(err!("found unclosed quote"));
+            return Err(Error::from(E::ExpectedCloseQuote));
         }
     }
     Ok(())
@@ -1549,13 +1451,8 @@ mod tests {
 
     use super::*;
 
-    fn td(seconds: i64, nanoseconds: i32) -> SpanFieldwise {
-        Span::new()
-            .seconds(seconds)
-            .nanoseconds(nanoseconds)
-            .rebalance(Unit::Hour)
-            .unwrap()
-            .fieldwise()
+    fn td(seconds: i64, nanoseconds: i32) -> SignedDuration {
+        SignedDuration::new(seconds, nanoseconds)
     }
 
     #[test]
@@ -1700,7 +1597,7 @@ mod tests {
             "US", "1967", "1973", "-", "Apr", "lastSun", "2:00w", "1:00d", "D",
         ])
         .unwrap();
-        insta::assert_debug_snapshot!(rule, @r###"
+        insta::assert_debug_snapshot!(rule, @r#"
         RuleP {
             name: RuleNameP {
                 name: "US",
@@ -1718,17 +1615,13 @@ mod tests {
                 weekday: Sunday,
             },
             at: RuleAtP {
-                span: SpanFieldwise(
-                    2h,
-                ),
+                dur: 7200s,
                 suffix: Some(
                     Wall,
                 ),
             },
             save: RuleSaveP {
-                span: SpanFieldwise(
-                    1h,
-                ),
+                dur: 3600s,
                 suffix: Some(
                     Dst,
                 ),
@@ -1737,20 +1630,39 @@ mod tests {
                 part: "D",
             },
         }
-        "###);
+        "#);
     }
 
     #[test]
     fn parse_rule_err() {
-        assert!(RuleP::parse(&[
-            "US", "1967", "1973", "-", "Apr", "lastSun", "2:00w", "1:00d",
-            "D", "E",
+        assert!(
+            RuleP::parse(&[
+                "US", "1967", "1973", "-", "Apr", "lastSun", "2:00w", "1:00d",
+                "D", "E",
+            ])
+            .is_err()
+        );
+        assert!(
+            RuleP::parse(&[
+                "US", "1967", "1973", "-", "Apr", "lastSun", "2:00w", "1:00d",
+            ])
+            .is_err()
+        );
+    }
+
+    #[test]
+    fn parse_rule_err_at_field() {
+        // A rule whose `AT` field fails to parse should report an error
+        // about the `AT` field. It previously blamed the `NAME` field
+        // because of a copy/paste mistake in the error message.
+        let err = RuleP::parse(&[
+            "US", "1967", "1973", "-", "Apr", "lastSun", "w", "1:00d", "D",
         ])
-        .is_err());
-        assert!(RuleP::parse(&[
-            "US", "1967", "1973", "-", "Apr", "lastSun", "2:00w", "1:00d",
-        ])
-        .is_err());
+        .unwrap_err();
+        assert!(
+            err.to_string().contains("failed to parse `AT` field"),
+            "unexpected error message: {err}",
+        );
     }
 
     #[cfg(not(miri))]
@@ -1759,15 +1671,13 @@ mod tests {
         let zone: ZoneFirstP =
             ZoneFirstP::parse(&["America/Menominee", "-5:00", "-", "EST"])
                 .unwrap();
-        insta::assert_debug_snapshot!(zone, @r###"
+        insta::assert_debug_snapshot!(zone, @r#"
         ZoneFirstP {
             name: ZoneNameP {
                 name: "America/Menominee",
             },
             stdoff: ZoneStdoffP {
-                span: SpanFieldwise(
-                    5h ago,
-                ),
+                dur: -18000s,
             },
             rules: None,
             format: Static {
@@ -1775,7 +1685,7 @@ mod tests {
             },
             until: None,
         }
-        "###);
+        "#);
 
         let zone: ZoneFirstP = ZoneFirstP::parse(&[
             "America/Menominee",
@@ -1788,15 +1698,13 @@ mod tests {
             "2:00",
         ])
         .unwrap();
-        insta::assert_debug_snapshot!(zone, @r###"
+        insta::assert_debug_snapshot!(zone, @r#"
         ZoneFirstP {
             name: ZoneNameP {
                 name: "America/Menominee",
             },
             stdoff: ZoneStdoffP {
-                span: SpanFieldwise(
-                    5h ago,
-                ),
+                dur: -18000s,
             },
             rules: None,
             format: Static {
@@ -1812,15 +1720,13 @@ mod tests {
                         day: 29,
                     },
                     duration: RuleAtP {
-                        span: SpanFieldwise(
-                            2h,
-                        ),
+                        dur: 7200s,
                         suffix: None,
                     },
                 },
             ),
         }
-        "###);
+        "#);
     }
 
     #[test]
@@ -1829,10 +1735,12 @@ mod tests {
         assert!(ZoneFirstP::parse(&["foo"]).is_err());
         assert!(ZoneFirstP::parse(&["foo", "-5"]).is_err());
         assert!(ZoneFirstP::parse(&["foo", "-5", "-"]).is_err());
-        assert!(ZoneFirstP::parse(&[
-            "foo", "-5", "-", "EST", "1973", "Apr", "29", "2:00", "w",
-        ])
-        .is_err());
+        assert!(
+            ZoneFirstP::parse(&[
+                "foo", "-5", "-", "EST", "1973", "Apr", "29", "2:00", "w",
+            ])
+            .is_err()
+        );
     }
 
     #[cfg(not(miri))]
@@ -1840,12 +1748,10 @@ mod tests {
     fn parse_zone_continuation_ok() {
         let zone: ZoneContinuationP =
             ZoneContinuationP::parse(&["-5:00", "-", "EST"]).unwrap();
-        insta::assert_debug_snapshot!(zone, @r###"
+        insta::assert_debug_snapshot!(zone, @r#"
         ZoneContinuationP {
             stdoff: ZoneStdoffP {
-                span: SpanFieldwise(
-                    5h ago,
-                ),
+                dur: -18000s,
             },
             rules: None,
             format: Static {
@@ -1853,18 +1759,16 @@ mod tests {
             },
             until: None,
         }
-        "###);
+        "#);
 
         let zone: ZoneContinuationP = ZoneContinuationP::parse(&[
             "-5:00", "-", "EST", "1973", "Apr", "29", "2:00",
         ])
         .unwrap();
-        insta::assert_debug_snapshot!(zone, @r###"
+        insta::assert_debug_snapshot!(zone, @r#"
         ZoneContinuationP {
             stdoff: ZoneStdoffP {
-                span: SpanFieldwise(
-                    5h ago,
-                ),
+                dur: -18000s,
             },
             rules: None,
             format: Static {
@@ -1880,15 +1784,13 @@ mod tests {
                         day: 29,
                     },
                     duration: RuleAtP {
-                        span: SpanFieldwise(
-                            2h,
-                        ),
+                        dur: 7200s,
                         suffix: None,
                     },
                 },
             ),
         }
-        "###);
+        "#);
     }
 
     #[test]
@@ -1896,10 +1798,12 @@ mod tests {
         assert!(ZoneContinuationP::parse(&[]).is_err());
         assert!(ZoneContinuationP::parse(&["-5"]).is_err());
         assert!(ZoneContinuationP::parse(&["-5", "-"]).is_err());
-        assert!(ZoneContinuationP::parse(&[
-            "-5", "-", "EST", "1973", "Apr", "29", "2:00", "w",
-        ])
-        .is_err());
+        assert!(
+            ZoneContinuationP::parse(&[
+                "-5", "-", "EST", "1973", "Apr", "29", "2:00", "w",
+            ])
+            .is_err()
+        );
     }
 
     #[test]
@@ -1957,11 +1861,11 @@ mod tests {
     #[test]
     fn parse_rule_from_ok() {
         let to: RuleFromP = "2025".parse().unwrap();
-        assert_eq!(to, RuleFromP { year: t::Year::new(2025).unwrap() });
+        assert_eq!(to, RuleFromP { year: 2025 });
         let to: RuleFromP = "9999".parse().unwrap();
-        assert_eq!(to, RuleFromP { year: t::Year::new(9999).unwrap() });
+        assert_eq!(to, RuleFromP { year: 9999 });
         let to: RuleFromP = "-9999".parse().unwrap();
-        assert_eq!(to, RuleFromP { year: t::Year::new(-9999).unwrap() });
+        assert_eq!(to, RuleFromP { year: -9999 });
     }
 
     #[test]
@@ -1973,11 +1877,11 @@ mod tests {
     #[test]
     fn parse_rule_to_ok() {
         let to: RuleToP = "2025".parse().unwrap();
-        assert_eq!(to, RuleToP::Year { year: t::Year::new(2025).unwrap() });
+        assert_eq!(to, RuleToP::Year { year: 2025 });
         let to: RuleToP = "9999".parse().unwrap();
-        assert_eq!(to, RuleToP::Year { year: t::Year::new(9999).unwrap() });
+        assert_eq!(to, RuleToP::Year { year: 9999 });
         let to: RuleToP = "-9999".parse().unwrap();
-        assert_eq!(to, RuleToP::Year { year: t::Year::new(-9999).unwrap() });
+        assert_eq!(to, RuleToP::Year { year: -9999 });
 
         let to: RuleToP = "o".parse().unwrap();
         assert_eq!(to, RuleToP::Only);
@@ -2012,62 +1916,62 @@ mod tests {
     #[test]
     fn parse_rule_in_ok() {
         let inn: RuleInP = "Ja".parse().unwrap();
-        assert_eq!(inn.month.get(), 1);
+        assert_eq!(inn.month, 1);
         let inn: RuleInP = "January".parse().unwrap();
-        assert_eq!(inn.month.get(), 1);
+        assert_eq!(inn.month, 1);
 
         let inn: RuleInP = "F".parse().unwrap();
-        assert_eq!(inn.month.get(), 2);
+        assert_eq!(inn.month, 2);
         let inn: RuleInP = "February".parse().unwrap();
-        assert_eq!(inn.month.get(), 2);
+        assert_eq!(inn.month, 2);
 
         let inn: RuleInP = "Mar".parse().unwrap();
-        assert_eq!(inn.month.get(), 3);
+        assert_eq!(inn.month, 3);
         let inn: RuleInP = "March".parse().unwrap();
-        assert_eq!(inn.month.get(), 3);
+        assert_eq!(inn.month, 3);
 
         let inn: RuleInP = "Ap".parse().unwrap();
-        assert_eq!(inn.month.get(), 4);
+        assert_eq!(inn.month, 4);
         let inn: RuleInP = "April".parse().unwrap();
-        assert_eq!(inn.month.get(), 4);
+        assert_eq!(inn.month, 4);
 
         let inn: RuleInP = "May".parse().unwrap();
-        assert_eq!(inn.month.get(), 5);
+        assert_eq!(inn.month, 5);
 
         let inn: RuleInP = "Jun".parse().unwrap();
-        assert_eq!(inn.month.get(), 6);
+        assert_eq!(inn.month, 6);
         let inn: RuleInP = "June".parse().unwrap();
-        assert_eq!(inn.month.get(), 6);
+        assert_eq!(inn.month, 6);
 
         let inn: RuleInP = "Jul".parse().unwrap();
-        assert_eq!(inn.month.get(), 7);
+        assert_eq!(inn.month, 7);
         let inn: RuleInP = "July".parse().unwrap();
-        assert_eq!(inn.month.get(), 7);
+        assert_eq!(inn.month, 7);
 
         let inn: RuleInP = "Au".parse().unwrap();
-        assert_eq!(inn.month.get(), 8);
+        assert_eq!(inn.month, 8);
         let inn: RuleInP = "August".parse().unwrap();
-        assert_eq!(inn.month.get(), 8);
+        assert_eq!(inn.month, 8);
 
         let inn: RuleInP = "S".parse().unwrap();
-        assert_eq!(inn.month.get(), 9);
+        assert_eq!(inn.month, 9);
         let inn: RuleInP = "September".parse().unwrap();
-        assert_eq!(inn.month.get(), 9);
+        assert_eq!(inn.month, 9);
 
         let inn: RuleInP = "O".parse().unwrap();
-        assert_eq!(inn.month.get(), 10);
+        assert_eq!(inn.month, 10);
         let inn: RuleInP = "October".parse().unwrap();
-        assert_eq!(inn.month.get(), 10);
+        assert_eq!(inn.month, 10);
 
         let inn: RuleInP = "N".parse().unwrap();
-        assert_eq!(inn.month.get(), 11);
+        assert_eq!(inn.month, 11);
         let inn: RuleInP = "November".parse().unwrap();
-        assert_eq!(inn.month.get(), 11);
+        assert_eq!(inn.month, 11);
 
         let inn: RuleInP = "D".parse().unwrap();
-        assert_eq!(inn.month.get(), 12);
+        assert_eq!(inn.month, 12);
         let inn: RuleInP = "December".parse().unwrap();
-        assert_eq!(inn.month.get(), 12);
+        assert_eq!(inn.month, 12);
     }
 
     #[test]
@@ -2082,11 +1986,11 @@ mod tests {
     fn parse_rule_on_ok() {
         // Specific day.
         let on: RuleOnP = "5".parse().unwrap();
-        assert_eq!(on, RuleOnP::Day { day: t::Day::new(5).unwrap() });
+        assert_eq!(on, RuleOnP::Day { day: 5 });
         let on: RuleOnP = "05".parse().unwrap();
-        assert_eq!(on, RuleOnP::Day { day: t::Day::new(5).unwrap() });
+        assert_eq!(on, RuleOnP::Day { day: 5 });
         let on: RuleOnP = "31".parse().unwrap();
-        assert_eq!(on, RuleOnP::Day { day: t::Day::new(31).unwrap() });
+        assert_eq!(on, RuleOnP::Day { day: 31 });
 
         // Last weekday of month.
         let on: RuleOnP = "lastSu".parse().unwrap();
@@ -2104,36 +2008,24 @@ mod tests {
         let on: RuleOnP = "Sun<=25".parse().unwrap();
         assert_eq!(
             on,
-            RuleOnP::OnOrBefore {
-                weekday: Weekday::Sunday,
-                day: t::Day::new(25).unwrap()
-            }
+            RuleOnP::OnOrBefore { weekday: Weekday::Sunday, day: 25 }
         );
         let on: RuleOnP = "Sunday<=25".parse().unwrap();
         assert_eq!(
             on,
-            RuleOnP::OnOrBefore {
-                weekday: Weekday::Sunday,
-                day: t::Day::new(25).unwrap()
-            }
+            RuleOnP::OnOrBefore { weekday: Weekday::Sunday, day: 25 }
         );
 
         // Weekday on or after a day of the month.
         let on: RuleOnP = "Sun>=8".parse().unwrap();
         assert_eq!(
             on,
-            RuleOnP::OnOrAfter {
-                weekday: Weekday::Sunday,
-                day: t::Day::new(8).unwrap()
-            }
+            RuleOnP::OnOrAfter { weekday: Weekday::Sunday, day: 8 }
         );
         let on: RuleOnP = "Sunday>=8".parse().unwrap();
         assert_eq!(
             on,
-            RuleOnP::OnOrAfter {
-                weekday: Weekday::Sunday,
-                day: t::Day::new(8).unwrap()
-            }
+            RuleOnP::OnOrAfter { weekday: Weekday::Sunday, day: 8 }
         );
     }
 
@@ -2176,13 +2068,13 @@ mod tests {
     #[test]
     fn parse_rule_at_ok() {
         let at: RuleAtP = "5".parse().unwrap();
-        assert_eq!(at, RuleAtP { span: td(5 * 60 * 60, 0), suffix: None });
+        assert_eq!(at, RuleAtP { dur: td(5 * 60 * 60, 0), suffix: None });
 
         let at: RuleAtP = "5w".parse().unwrap();
         assert_eq!(
             at,
             RuleAtP {
-                span: td(5 * 60 * 60, 0),
+                dur: td(5 * 60 * 60, 0),
                 suffix: Some(RuleAtSuffixP::Wall)
             }
         );
@@ -2191,18 +2083,18 @@ mod tests {
         assert_eq!(
             at,
             RuleAtP {
-                span: td(-5 * 60 * 60, 0),
+                dur: td(-5 * 60 * 60, 0),
                 suffix: Some(RuleAtSuffixP::Wall)
             }
         );
 
         let at: RuleAtP = "-".parse().unwrap();
-        assert_eq!(at, RuleAtP { span: td(0, 0), suffix: None });
+        assert_eq!(at, RuleAtP { dur: td(0, 0), suffix: None });
 
         let at: RuleAtP = "-s".parse().unwrap();
         assert_eq!(
             at,
-            RuleAtP { span: td(0, 0), suffix: Some(RuleAtSuffixP::Standard) }
+            RuleAtP { dur: td(0, 0), suffix: Some(RuleAtSuffixP::Standard) }
         );
     }
 
@@ -2238,13 +2130,13 @@ mod tests {
     #[test]
     fn parse_rule_save_ok() {
         let at: RuleSaveP = "5".parse().unwrap();
-        assert_eq!(at, RuleSaveP { span: td(5 * 60 * 60, 0), suffix: None });
+        assert_eq!(at, RuleSaveP { dur: td(5 * 60 * 60, 0), suffix: None });
 
         let at: RuleSaveP = "5s".parse().unwrap();
         assert_eq!(
             at,
             RuleSaveP {
-                span: td(5 * 60 * 60, 0),
+                dur: td(5 * 60 * 60, 0),
                 suffix: Some(RuleSaveSuffixP::Standard)
             }
         );
@@ -2253,19 +2145,19 @@ mod tests {
         assert_eq!(
             at,
             RuleSaveP {
-                span: td(-5 * 60 * 60, 0),
+                dur: td(-5 * 60 * 60, 0),
                 suffix: Some(RuleSaveSuffixP::Standard)
             }
         );
 
         let at: RuleSaveP = "-".parse().unwrap();
-        assert_eq!(at, RuleSaveP { span: td(0, 0), suffix: None });
+        assert_eq!(at, RuleSaveP { dur: td(0, 0), suffix: None });
 
         let at: RuleSaveP = "-s".parse().unwrap();
         assert_eq!(
             at,
             RuleSaveP {
-                span: td(0, 0),
+                dur: td(0, 0),
                 suffix: Some(RuleSaveSuffixP::Standard)
             }
         );
@@ -2328,10 +2220,10 @@ mod tests {
     #[test]
     fn parse_zone_stdoff_ok() {
         let stdoff: ZoneStdoffP = "5".parse().unwrap();
-        assert_eq!(stdoff, ZoneStdoffP { span: td(5 * 60 * 60, 0) });
+        assert_eq!(stdoff, ZoneStdoffP { dur: td(5 * 60 * 60, 0) });
 
         let stdoff: ZoneStdoffP = "-5".parse().unwrap();
-        assert_eq!(stdoff, ZoneStdoffP { span: td(-5 * 60 * 60, 0) });
+        assert_eq!(stdoff, ZoneStdoffP { dur: td(-5 * 60 * 60, 0) });
     }
 
     #[test]
@@ -2356,7 +2248,7 @@ mod tests {
         assert_eq!(
             rules,
             ZoneRulesP::Save(RuleSaveP {
-                span: td(5 * 60 * 60, 0),
+                dur: td(5 * 60 * 60, 0),
                 suffix: None,
             })
         );
@@ -2364,7 +2256,7 @@ mod tests {
         assert_eq!(
             rules,
             ZoneRulesP::Save(RuleSaveP {
-                span: td(-5 * 60 * 60, 0),
+                dur: td(-5 * 60 * 60, 0),
                 suffix: None,
             })
         );
@@ -2372,7 +2264,7 @@ mod tests {
         assert_eq!(
             rules,
             ZoneRulesP::Save(RuleSaveP {
-                span: td(-1 * 60 * 60, 0),
+                dur: td(-1 * 60 * 60, 0),
                 suffix: Some(RuleSaveSuffixP::Dst),
             })
         );
@@ -2447,45 +2339,33 @@ mod tests {
     #[test]
     fn parse_zone_until_ok() {
         let until = ZoneUntilP::parse(&["2025"]).unwrap();
-        assert_eq!(
-            until,
-            ZoneUntilP::Year { year: t::Year::new(2025).unwrap() },
-        );
+        assert_eq!(until, ZoneUntilP::Year { year: 2025 },);
         let until = ZoneUntilP::parse(&["9999"]).unwrap();
-        assert_eq!(
-            until,
-            ZoneUntilP::Year { year: t::Year::new(9999).unwrap() },
-        );
+        assert_eq!(until, ZoneUntilP::Year { year: 9999 },);
         let until = ZoneUntilP::parse(&["-9999"]).unwrap();
-        assert_eq!(
-            until,
-            ZoneUntilP::Year { year: t::Year::new(-9999).unwrap() },
-        );
+        assert_eq!(until, ZoneUntilP::Year { year: -9999 },);
 
         let until = ZoneUntilP::parse(&["2025", "Jan"]).unwrap();
         assert_eq!(
             until,
-            ZoneUntilP::YearMonth {
-                year: t::Year::new(2025).unwrap(),
-                month: RuleInP { month: t::Month::new(1).unwrap() },
-            },
+            ZoneUntilP::YearMonth { year: 2025, month: RuleInP { month: 1 } },
         );
 
         let until = ZoneUntilP::parse(&["2025", "Jan", "5"]).unwrap();
         assert_eq!(
             until,
             ZoneUntilP::YearMonthDay {
-                year: t::Year::new(2025).unwrap(),
-                month: RuleInP { month: t::Month::new(1).unwrap() },
-                day: RuleOnP::Day { day: t::Day::new(5).unwrap() },
+                year: 2025,
+                month: RuleInP { month: 1 },
+                day: RuleOnP::Day { day: 5 },
             },
         );
         let until = ZoneUntilP::parse(&["2025", "Jan", "lastSun"]).unwrap();
         assert_eq!(
             until,
             ZoneUntilP::YearMonthDay {
-                year: t::Year::new(2025).unwrap(),
-                month: RuleInP { month: t::Month::new(1).unwrap() },
+                year: 2025,
+                month: RuleInP { month: 1 },
                 day: RuleOnP::Last { weekday: Weekday::Sunday },
             },
         );
@@ -2495,10 +2375,10 @@ mod tests {
         assert_eq!(
             until,
             ZoneUntilP::YearMonthDayTime {
-                year: t::Year::new(2025).unwrap(),
-                month: RuleInP { month: t::Month::new(1).unwrap() },
+                year: 2025,
+                month: RuleInP { month: 1 },
                 day: RuleOnP::Last { weekday: Weekday::Sunday },
-                duration: RuleAtP { span: td(0, 0), suffix: None },
+                duration: RuleAtP { dur: td(0, 0), suffix: None },
             },
         );
         let until =
@@ -2506,10 +2386,10 @@ mod tests {
         assert_eq!(
             until,
             ZoneUntilP::YearMonthDayTime {
-                year: t::Year::new(2025).unwrap(),
-                month: RuleInP { month: t::Month::new(1).unwrap() },
+                year: 2025,
+                month: RuleInP { month: 1 },
                 day: RuleOnP::Last { weekday: Weekday::Sunday },
-                duration: RuleAtP { span: td(5 * 60 * 60, 0), suffix: None },
+                duration: RuleAtP { dur: td(5 * 60 * 60, 0), suffix: None },
             },
         );
         let until =
@@ -2517,10 +2397,10 @@ mod tests {
         assert_eq!(
             until,
             ZoneUntilP::YearMonthDayTime {
-                year: t::Year::new(2025).unwrap(),
-                month: RuleInP { month: t::Month::new(1).unwrap() },
+                year: 2025,
+                month: RuleInP { month: 1 },
                 day: RuleOnP::Last { weekday: Weekday::Sunday },
-                duration: RuleAtP { span: td(-5 * 60 * 60, 0), suffix: None },
+                duration: RuleAtP { dur: td(-5 * 60 * 60, 0), suffix: None },
             },
         );
         let until =
@@ -2529,10 +2409,10 @@ mod tests {
         assert_eq!(
             until,
             ZoneUntilP::YearMonthDayTime {
-                year: t::Year::new(2025).unwrap(),
-                month: RuleInP { month: t::Month::new(1).unwrap() },
+                year: 2025,
+                month: RuleInP { month: 1 },
                 day: RuleOnP::Last { weekday: Weekday::Sunday },
-                duration: RuleAtP { span: td(3661, 1), suffix: None },
+                duration: RuleAtP { dur: td(3661, 1), suffix: None },
             },
         );
         let until =
@@ -2540,11 +2420,11 @@ mod tests {
         assert_eq!(
             until,
             ZoneUntilP::YearMonthDayTime {
-                year: t::Year::new(2025).unwrap(),
-                month: RuleInP { month: t::Month::new(1).unwrap() },
+                year: 2025,
+                month: RuleInP { month: 1 },
                 day: RuleOnP::Last { weekday: Weekday::Sunday },
                 duration: RuleAtP {
-                    span: td(5 * 60 * 60, 0),
+                    dur: td(5 * 60 * 60, 0),
                     suffix: Some(RuleAtSuffixP::Universal),
                 },
             },
@@ -2566,23 +2446,20 @@ mod tests {
         assert!(ZoneUntilP::parse(&["2025", "Jan", "32"]).is_err());
 
         assert!(ZoneUntilP::parse(&["2025", "Jan", "lastSun", "w"]).is_err());
-        assert!(ZoneUntilP::parse(&[
-            "2025",
-            "Jan",
-            "lastSun",
-            "1:1:1.0000000001"
-        ])
-        .is_err());
+        assert!(
+            ZoneUntilP::parse(&["2025", "Jan", "lastSun", "1:1:1.0000000001"])
+                .is_err()
+        );
     }
 
     #[test]
     fn parse_year_ok() {
-        assert_eq!(parse_year("0").unwrap().get(), 0);
-        assert_eq!(parse_year("1").unwrap().get(), 1);
-        assert_eq!(parse_year("-1").unwrap().get(), -1);
-        assert_eq!(parse_year("2025").unwrap().get(), 2025);
-        assert_eq!(parse_year("9999").unwrap().get(), 9999);
-        assert_eq!(parse_year("-9999").unwrap().get(), -9999);
+        assert_eq!(parse_year("0").unwrap(), 0);
+        assert_eq!(parse_year("1").unwrap(), 1);
+        assert_eq!(parse_year("-1").unwrap(), -1);
+        assert_eq!(parse_year("2025").unwrap(), 2025);
+        assert_eq!(parse_year("9999").unwrap(), 9999);
+        assert_eq!(parse_year("-9999").unwrap(), -9999);
     }
 
     #[test]
@@ -2597,84 +2474,87 @@ mod tests {
 
     #[test]
     fn parse_duration_ok() {
-        assert_eq!(parse_span("-").unwrap(), td(0, 0));
-        assert_eq!(parse_span("0").unwrap(), td(0, 0));
-        assert_eq!(parse_span("-0").unwrap(), td(0, 0));
+        assert_eq!(parse_duration("-").unwrap(), td(0, 0));
+        assert_eq!(parse_duration("0").unwrap(), td(0, 0));
+        assert_eq!(parse_duration("-0").unwrap(), td(0, 0));
 
-        assert_eq!(parse_span("1").unwrap(), td(3600, 0));
-        assert_eq!(parse_span("1:1").unwrap(), td(3660, 0));
-        assert_eq!(parse_span("1:1:1").unwrap(), td(3661, 0));
-        assert_eq!(parse_span("1:1:1.1").unwrap(), td(3661, 100_000_000));
+        assert_eq!(parse_duration("1").unwrap(), td(3600, 0));
+        assert_eq!(parse_duration("1:1").unwrap(), td(3660, 0));
+        assert_eq!(parse_duration("1:1:1").unwrap(), td(3661, 0));
+        assert_eq!(parse_duration("1:1:1.1").unwrap(), td(3661, 100_000_000));
         assert_eq!(
-            parse_span("1:1:1.123456789").unwrap(),
+            parse_duration("1:1:1.123456789").unwrap(),
             td(3661, 123_456_789)
         );
-        assert_eq!(parse_span("0:1:0").unwrap(), td(60, 0));
-        assert_eq!(parse_span("0:0:1").unwrap(), td(1, 0));
-        assert_eq!(parse_span("0:0:0.000000001").unwrap(), td(0, 1));
-        assert_eq!(parse_span("0:0:0.000000000").unwrap(), td(0, 0));
+        assert_eq!(parse_duration("0:1:0").unwrap(), td(60, 0));
+        assert_eq!(parse_duration("0:0:1").unwrap(), td(1, 0));
+        assert_eq!(parse_duration("0:0:0.000000001").unwrap(), td(0, 1));
+        assert_eq!(parse_duration("0:0:0.000000000").unwrap(), td(0, 0));
 
-        assert_eq!(parse_span("-1").unwrap(), td(-3600, 0));
-        assert_eq!(parse_span("-1:1").unwrap(), td(-3660, 0));
-        assert_eq!(parse_span("-1:1:1").unwrap(), td(-3661, 0));
-        assert_eq!(parse_span("-1:1:1.1").unwrap(), td(-3661, -100_000_000));
+        assert_eq!(parse_duration("-1").unwrap(), td(-3600, 0));
+        assert_eq!(parse_duration("-1:1").unwrap(), td(-3660, 0));
+        assert_eq!(parse_duration("-1:1:1").unwrap(), td(-3661, 0));
         assert_eq!(
-            parse_span("-1:1:1.123456789").unwrap(),
+            parse_duration("-1:1:1.1").unwrap(),
+            td(-3661, -100_000_000)
+        );
+        assert_eq!(
+            parse_duration("-1:1:1.123456789").unwrap(),
             td(-3661, -123_456_789)
         );
-        assert_eq!(parse_span("-0:1:0").unwrap(), td(-60, 0));
-        assert_eq!(parse_span("-0:0:1").unwrap(), td(-1, 0));
-        assert_eq!(parse_span("-0:0:0.000000001").unwrap(), td(0, -1));
+        assert_eq!(parse_duration("-0:1:0").unwrap(), td(-60, 0));
+        assert_eq!(parse_duration("-0:0:1").unwrap(), td(-1, 0));
+        assert_eq!(parse_duration("-0:0:0.000000001").unwrap(), td(0, -1));
     }
 
     #[test]
     fn parse_duration_err() {
-        assert!(parse_span("").is_err());
-        assert!(parse_span(" ").is_err());
-        assert!(parse_span("a").is_err());
-        assert!(parse_span("999999999999999").is_err());
-        assert!(parse_span("1:").is_err());
-        assert!(parse_span("1:a").is_err());
-        assert!(parse_span("1:60").is_err());
-        assert!(parse_span("1:01:").is_err());
-        assert!(parse_span("1:01:60").is_err());
-        assert!(parse_span("1:01:59.").is_err());
-        assert!(parse_span("1:01:59.0000000001").is_err());
-        assert!(parse_span("1:01:59.0000000000").is_err());
-        assert!(parse_span("1:01:59.000000001a").is_err());
-        assert!(parse_span("1:01:59.000000001 ").is_err());
-        assert!(parse_span("1::59").is_err());
-        assert!(parse_span("1::.1").is_err());
-        assert!(parse_span("::").is_err());
+        assert!(parse_duration("").is_err());
+        assert!(parse_duration(" ").is_err());
+        assert!(parse_duration("a").is_err());
+        assert!(parse_duration("999999999999999").is_err());
+        assert!(parse_duration("1:").is_err());
+        assert!(parse_duration("1:a").is_err());
+        assert!(parse_duration("1:60").is_err());
+        assert!(parse_duration("1:01:").is_err());
+        assert!(parse_duration("1:01:60").is_err());
+        assert!(parse_duration("1:01:59.").is_err());
+        assert!(parse_duration("1:01:59.0000000001").is_err());
+        assert!(parse_duration("1:01:59.0000000000").is_err());
+        assert!(parse_duration("1:01:59.000000001a").is_err());
+        assert!(parse_duration("1:01:59.000000001 ").is_err());
+        assert!(parse_duration("1::59").is_err());
+        assert!(parse_duration("1::.1").is_err());
+        assert!(parse_duration("::").is_err());
         // Maybe we should support this?
-        assert!(parse_span("+1").is_err());
+        assert!(parse_duration("+1").is_err());
 
         // Tricky cases where the number of hours is at the limit, but there
         // are other units present.
-        assert!(parse_span("175307616").is_ok());
-        assert!(parse_span("175307617").is_err());
-        assert!(parse_span("175307616:01").is_ok());
-        assert!(parse_span("175307616:00:01").is_ok());
-        assert!(parse_span("175307616:00:00.999999999").is_ok());
+        assert!(parse_duration("175307616").is_ok());
+        assert!(parse_duration("175307617").is_err());
+        assert!(parse_duration("175307616:01").is_ok());
+        assert!(parse_duration("175307616:00:01").is_ok());
+        assert!(parse_duration("175307616:00:00.999999999").is_ok());
         // Same as above, but for negative hours.
-        assert!(parse_span("-175307616").is_ok());
-        assert!(parse_span("-175307617").is_err());
-        assert!(parse_span("-175307616:01").is_ok());
-        assert!(parse_span("-175307616:00:01").is_ok());
-        assert!(parse_span("-175307616:00:00.999999999").is_ok());
+        assert!(parse_duration("-175307616").is_ok());
+        assert!(parse_duration("-175307617").is_err());
+        assert!(parse_duration("-175307616:01").is_ok());
+        assert!(parse_duration("-175307616:00:01").is_ok());
+        assert!(parse_duration("-175307616:00:00.999999999").is_ok());
     }
 
     #[test]
     fn parse_day_ok() {
-        assert_eq!(parse_day("1").unwrap().get(), 1);
-        assert_eq!(parse_day("2").unwrap().get(), 2);
-        assert_eq!(parse_day("20").unwrap().get(), 20);
-        assert_eq!(parse_day("30").unwrap().get(), 30);
-        assert_eq!(parse_day("31").unwrap().get(), 31);
+        assert_eq!(parse_day("1").unwrap(), 1);
+        assert_eq!(parse_day("2").unwrap(), 2);
+        assert_eq!(parse_day("20").unwrap(), 20);
+        assert_eq!(parse_day("30").unwrap(), 30);
+        assert_eq!(parse_day("31").unwrap(), 31);
 
-        assert_eq!(parse_day("01").unwrap().get(), 1);
-        assert_eq!(parse_day("00000001").unwrap().get(), 1);
-        assert_eq!(parse_day("0000000000000000000001").unwrap().get(), 1);
+        assert_eq!(parse_day("01").unwrap(), 1);
+        assert_eq!(parse_day("00000001").unwrap(), 1);
+        assert_eq!(parse_day("0000000000000000000001").unwrap(), 1);
     }
 
     #[test]

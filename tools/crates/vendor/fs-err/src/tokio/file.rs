@@ -11,6 +11,9 @@ use tokio::io::{AsyncRead, AsyncSeek, AsyncWrite, ReadBuf};
 
 use super::OpenOptions;
 
+#[allow(unused_imports)]
+use crate as fs_err; // for docs
+
 /// Wrapper around [`tokio::fs::File`] which adds more helpful
 /// information to all errors.
 #[derive(Debug)]
@@ -61,7 +64,7 @@ impl File {
         OpenOptions::new()
     }
 
-    /// Converts a [`crate::File`] to a [`tokio::fs::File`].
+    /// Converts a [`fs_err::File`] to a [`fs_err::tokio::File`].
     ///
     /// Wrapper for [`tokio::fs::File::from_std`].
     pub fn from_std(std: crate::File) -> File {
@@ -122,15 +125,15 @@ impl File {
         }
     }
 
-    /// Destructures `File` into a [`crate::File`]. This function is async to allow any
-    /// in-flight operations to complete.
+    /// Destructures `File` into a [`fs_err::File`]. This function is async
+    /// to allow any in-flight operations to complete.
     ///
     /// Wrapper for [`tokio::fs::File::into_std`].
     pub async fn into_std(self) -> crate::File {
         crate::File::from_parts(self.tokio.into_std().await, self.path)
     }
 
-    /// Tries to immediately destructure `File` into a [`crate::File`].
+    /// Tries to immediately destructure `File` into a [`fs_err::File`].
     ///
     /// Wrapper for [`tokio::fs::File::try_into_std`].
     pub fn try_into_std(self) -> Result<crate::File, File> {
@@ -151,10 +154,9 @@ impl File {
     }
 }
 
-/// Methods added by fs-err that are not available on
-/// [`tokio::fs::File`].
+/// Methods added by fs-err that are not available on [`tokio::fs::File`].
 impl File {
-    /// Creates a [`File`](struct.File.html) from a raw file and its path.
+    /// Creates a [`File`] from a raw file and its path.
     pub fn from_parts<P>(file: TokioFile, path: P) -> Self
     where
         P: Into<PathBuf>,
@@ -165,7 +167,7 @@ impl File {
         }
     }
 
-    /// Extract the raw file and its path from this [`File`](struct.File.html).
+    /// Extract the raw file and its path from this [`File`].
     pub fn into_parts(self) -> (TokioFile, PathBuf) {
         (self.tokio, self.path)
     }
@@ -185,7 +187,7 @@ impl File {
         &self.path
     }
 
-    /// Wrap the error in information specific to this `File` object.
+    /// Wrap the error in information specific to this [`File`] object.
     fn error(&self, source: io::Error, kind: ErrorKind) -> io::Error {
         Error::build(source, kind, &self.path)
     }

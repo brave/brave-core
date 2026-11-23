@@ -113,6 +113,14 @@ fn grow_and_insert() {
 }
 
 #[test]
+#[should_panic(expected = "bitset capacity overflow")]
+fn grow_and_insert_usize_max_panics() {
+    // Reject an unrepresentable length before allocating or writing through an unchecked pointer.
+    let mut fb = FixedBitSet::new();
+    fb.grow_and_insert(usize::MAX);
+}
+
+#[test]
 #[cfg_attr(target_family = "wasm", wasm_bindgen_test)]
 fn test_toggle() {
     let mut fb = FixedBitSet::with_capacity(16);
@@ -765,6 +773,45 @@ fn difference() {
         count, iterator_count,
         "intersection and intersection_count produce the same results"
     );
+
+    let a_len = 151;
+    let b_len = 83;
+    let a_start = 0;
+    let a_end = 134;
+    let b_start = 53;
+    let mut a = FixedBitSet::with_capacity(a_len);
+    let mut b = FixedBitSet::with_capacity(b_len);
+    a.set_range(a_start..a_end, true);
+    b.set_range(b_start..b_len, true);
+    let count = a.difference_count(&b);
+    let iterator_count = a.difference(&b).count();
+    let mut a_diff_b = a.difference(&b).collect::<FixedBitSet>();
+    for i in a_start..b_start {
+        assert!(a_diff_b.contains(i));
+    }
+    for i in b_start..b_len {
+        assert!(!a_diff_b.contains(i));
+    }
+    for i in b_len..a_end {
+        assert!(a_diff_b.contains(i));
+    }
+
+    a.difference_with(&b);
+    // difference + collect produces the same results but with a shorter length.
+    a_diff_b.grow(a.len());
+    assert_eq!(
+        a_diff_b, a,
+        "difference and difference_with produce the same results"
+    );
+    assert_eq!(
+        a_diff_b.count_ones(..),
+        count,
+        "difference and difference_count produce the same results"
+    );
+    assert_eq!(
+        count, iterator_count,
+        "intersection and intersection_count produce the same results"
+    );
 }
 
 #[test]
@@ -1310,4 +1357,36 @@ fn clone() {
     assert_eq!(&fb, &fb_clone_from_smaller);
     assert_eq!(&fb, &fb_clone_from_same);
     assert_eq!(&fb, &fb_clone_from_bigger);
+}
+
+fn check_last_positive_bit_and_unset(unset: fn(&mut usize) -> usize) {
+    let mut value = 0;
+    assert_eq!(unset(&mut value), BITS);
+    assert_eq!(value, 0);
+
+    for bit in 0..BITS {
+        value = 1 << bit;
+        assert_eq!(unset(&mut value), bit);
+        assert_eq!(value, 0);
+    }
+
+    value = usize::MAX;
+    for bit in 0..BITS {
+        assert_eq!(unset(&mut value), bit);
+        assert_eq!(value.count_ones() as usize, BITS - bit - 1);
+    }
+    assert_eq!(unset(&mut value), BITS);
+    assert_eq!(value, 0);
+}
+
+#[test]
+#[cfg_attr(target_family = "wasm", wasm_bindgen_test)]
+fn ones_last_positive_bit_and_unset() {
+    check_last_positive_bit_and_unset(Ones::last_positive_bit_and_unset);
+}
+
+#[test]
+#[cfg_attr(target_family = "wasm", wasm_bindgen_test)]
+fn into_ones_last_positive_bit_and_unset() {
+    check_last_positive_bit_and_unset(IntoOnes::last_positive_bit_and_unset);
 }

@@ -1,15 +1,14 @@
-use bstr::ByteSlice;
-
 use crate::{SecondsSinceUnixEpoch, Time};
 
 /// Serialize this instance as string, similar to what [`write_to()`](Self::write_to()) would do.
 impl std::fmt::Display for Time {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let mut buf = Vec::with_capacity(Time::MAX.size());
+        let mut buf = Vec::with_capacity(Time::MIN.size());
         self.write_to(&mut buf).expect("write to memory cannot fail");
-        // SAFETY: We know time serializes as ASCII, as subset of UTF8.
-        #[allow(unsafe_code)]
-        let raw = unsafe { buf.to_str_unchecked() };
+        // Time serializes as ASCII, which is a subset of UTF-8.
+        // Use `from_utf8()` (validated) instead of `from_utf8_unchecked()` for safety,
+        // with the option to switch to an unsafe version if 30% performance boost are needed here.
+        let raw = std::str::from_utf8(&buf).expect("time serializes as valid UTF-8");
         f.write_str(raw)
     }
 }
@@ -47,90 +46,54 @@ impl Time {
 
     /// Computes the number of bytes necessary to write it using [`Time::write_to()`].
     pub const fn size(&self) -> usize {
-        (if self.seconds >= 1_000_000_000_000_000_000 {
-            19
-        } else if self.seconds >= 100_000_000_000_000_000 {
-            18
-        } else if self.seconds >= 10_000_000_000_000_000 {
-            17
-        } else if self.seconds >= 1_000_000_000_000_000 {
-            16
-        } else if self.seconds >= 100_000_000_000_000 {
-            15
-        } else if self.seconds >= 10_000_000_000_000 {
-            14
-        } else if self.seconds >= 1_000_000_000_000 {
-            13
-        } else if self.seconds >= 100_000_000_000 {
-            12
-        } else if self.seconds >= 10_000_000_000 {
-            11
-        } else if self.seconds >= 1_000_000_000 {
-            10
-        } else if self.seconds >= 100_000_000 {
-            9
-        } else if self.seconds >= 10_000_000 {
-            8
-        } else if self.seconds >= 1_000_000 {
-            7
-        } else if self.seconds >= 100_000 {
-            6
-        } else if self.seconds >= 10_000 {
-            5
-        } else if self.seconds >= 1_000 {
-            4
-        } else if self.seconds >= 100 {
-            3
-        } else if self.seconds >= 10 {
-            2
-        } else if self.seconds >= 0 {
-            1
-            // from here, it's sign + num-digits characters
-        } else if self.seconds >= -10 {
-            2
-        } else if self.seconds >= -100 {
-            3
-        } else if self.seconds >= -1_000 {
-            4
-        } else if self.seconds >= -10_000 {
-            5
-        } else if self.seconds >= -100_000 {
-            6
-        } else if self.seconds >= -1_000_000 {
-            7
-        } else if self.seconds >= -10_000_000 {
-            8
-        } else if self.seconds >= -100_000_000 {
-            9
-        } else if self.seconds >= -1_000_000_000 {
-            10
-        } else if self.seconds >= -10_000_000_000 {
-            11
-        } else if self.seconds >= -100_000_000_000 {
-            12
-        } else if self.seconds >= -1_000_000_000_000 {
-            13
-        } else if self.seconds >= -10_000_000_000_000 {
-            14
-        } else if self.seconds >= -100_000_000_000_000 {
-            15
-        } else if self.seconds >= -1_000_000_000_000_000 {
-            16
-        } else if self.seconds >= -10_000_000_000_000_000 {
-            17
-        } else if self.seconds >= -100_000_000_000_000_000 {
-            18
-        } else if self.seconds >= -1_000_000_000_000_000_000 {
-            19
-        } else {
-            20
-        }) + 2 /*space + offset sign*/ + 2 /*offset hours*/ + 2 /*offset minutes*/
+        let is_negative = self.seconds < 0;
+        Self::count_positive_digits(self.seconds.unsigned_abs()) + is_negative as usize + 6
+        // space + offset sign + hours (2) + minutes (2)
     }
 
-    /// The numerically largest possible time instance, whose [size()](Time::size) is the largest possible
-    /// number of bytes to write using [`Time::write_to()`].
+    /// Count the number of decimal digits in a positive integer.
+    const fn count_positive_digits(n: u64) -> usize {
+        // Powers of 10 for comparison
+        const POW10: [u64; 20] = [
+            1,
+            10,
+            100,
+            1_000,
+            10_000,
+            100_000,
+            1_000_000,
+            10_000_000,
+            100_000_000,
+            1_000_000_000,
+            10_000_000_000,
+            100_000_000_000,
+            1_000_000_000_000,
+            10_000_000_000_000,
+            100_000_000_000_000,
+            1_000_000_000_000_000,
+            10_000_000_000_000_000,
+            100_000_000_000_000_000,
+            1_000_000_000_000_000_000,
+            10_000_000_000_000_000_000,
+        ];
+
+        // Binary search would be nice but not const-fn friendly, so use simple loop
+        let mut digits = 1;
+        while digits < 20 && n >= POW10[digits] {
+            digits += 1;
+        }
+        digits
+    }
+
+    /// The numerically largest possible time instance.
     pub const MAX: Time = Time {
         seconds: SecondsSinceUnixEpoch::MAX,
         offset: 99 * 60 * 60 + 59 * 60 + 59,
+    };
+
+    /// The numerically smallest possible time instance.
+    pub const MIN: Time = Time {
+        seconds: SecondsSinceUnixEpoch::MIN,
+        offset: -(99 * 60 * 60 + 59 * 60 + 59),
     };
 }

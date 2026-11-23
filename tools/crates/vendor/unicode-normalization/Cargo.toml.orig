@@ -1,7 +1,7 @@
 [package]
 
 name = "unicode-normalization"
-version = "0.1.25"
+version = "0.1.26"
 authors = [
     "kwantam <kwantam@gmail.com>",
     "Manish Goregaokar <manishsmail@gmail.com>",
@@ -11,7 +11,7 @@ homepage = "https://github.com/unicode-rs/unicode-normalization"
 repository = "https://github.com/unicode-rs/unicode-normalization"
 documentation = "https://docs.rs/unicode-normalization/"
 
-license = "MIT OR Apache-2.0"
+license = "(MIT OR Apache-2.0) AND Unicode-3.0"
 keywords = [
     "text",
     "unicode",

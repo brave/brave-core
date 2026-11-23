@@ -60,18 +60,16 @@ impl Operation {
 ///
 /// ### Lifecycle
 ///
-/// Note that [`shutdown()`][State::shutdown()] must be called to finalize long-running processes.
-/// Failing to do so will naturally shut them down by terminating their pipes, but finishing explicitly
-/// allows to wait for processes as well.
+/// Call [`shutdown()`][State::shutdown()] to finalize long-running processes and observe their status.
+/// Dropping the state also closes their pipes and waits for them on a best-effort basis.
 #[derive(Default)]
 pub struct State {
     /// The list of currently running processes. These are preferred over simple clean-and-smudge programs.
     ///
-    /// Note that these processes are expected to shut-down once their stdin/stdout are dropped, so nothing else
-    /// needs to be done to clean them up after drop.
-    running: HashMap<BString, process::Client>,
+    /// These processes are expected to shut down once their stdin/stdout are dropped.
+    running: ProcessMap,
 
-    /// The context to pass to spawned filter programs.
+    /// The context to pass to spawned filter programs, with `worktree_dir` as their working directory if set.
     pub context: gix_command::Context,
 }
 
@@ -105,10 +103,57 @@ fn substitute_f_parameter(cmd: &BStr, path: &BStr) -> BString {
 
     let mut ofs = 0;
     while let Some(pos) = cmd[ofs..].find(b"%f") {
-        buf.push_str(&cmd[..ofs + pos]);
+        buf.push_str(&cmd[ofs..ofs + pos]);
         buf.extend_from_slice(&gix_quote::single(path));
         ofs += pos + 2;
     }
     buf.push_str(&cmd[ofs..]);
     buf
+}
+
+/// Reaps all tracked filter processes on drop as a best-effort fallback to [`State::shutdown()`].
+#[derive(Default)]
+struct ProcessMap(HashMap<BString, process::Client>);
+
+impl std::ops::Deref for ProcessMap {
+    type Target = HashMap<BString, process::Client>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl std::ops::DerefMut for ProcessMap {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
+    }
+}
+
+impl Drop for ProcessMap {
+    fn drop(&mut self) {
+        for (_, client) in self.0.drain() {
+            let _ = client.into_child().wait();
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::substitute_f_parameter;
+
+    #[test]
+    fn each_f_parameter_is_replaced_with_the_quoted_path() {
+        for (cmd, expected) in [
+            ("cmd", "cmd"),
+            ("cmd %f", "cmd 'path'"),
+            ("cmd a %f b %f c", "cmd a 'path' b 'path' c"),
+            ("%f %f %f", "'path' 'path' 'path'"),
+        ] {
+            assert_eq!(
+                substitute_f_parameter(cmd.into(), "path".into()),
+                expected,
+                "only `%f` is replaced, the rest of the command is copied exactly once"
+            );
+        }
+    }
 }

@@ -156,7 +156,15 @@ impl Decoder<'static> {
 
 impl<'a> Decoder<'a> {
     /// Creates a new decoder which employs the provided context for deserialization.
+    ///
+    /// The context's session is reset first: anything left over from a frame
+    /// that a previous user of the context did not finish is discarded.
+    /// Parameters and dictionary are kept.
     pub fn with_context(context: &'a mut zstd_safe::DCtx<'static>) -> Self {
+        // Otherwise we would start by handing out what is left of the
+        // previous decoder's output. Resetting only the session cannot fail.
+        let _ = context.reset(zstd_safe::ResetDirective::SessionOnly);
+
         Self {
             context: MaybeOwnedDCtx::Borrowed(context),
         }
@@ -291,7 +299,16 @@ impl Encoder<'static> {
 
 impl<'a> Encoder<'a> {
     /// Creates a new encoder that uses the provided context for serialization.
+    ///
+    /// The context's session is reset first: anything left over from a frame
+    /// that a previous user of the context did not finish is discarded, and
+    /// so is the pledged source size (set it on the encoder instead).
+    /// Parameters and dictionary are kept.
     pub fn with_context(context: &'a mut zstd_safe::CCtx<'static>) -> Self {
+        // Otherwise the input buffered by the previous encoder would become
+        // the start of our frame. Resetting only the session cannot fail.
+        let _ = context.reset(zstd_safe::ResetDirective::SessionOnly);
+
         Self {
             context: MaybeOwnedCCtx::Borrowed(context),
         }

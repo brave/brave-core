@@ -4,9 +4,10 @@
 
 use crate::bidi::BidiMirroringGlyph;
 use crate::props::{
-    BidiClass, CanonicalCombiningClass, EastAsianWidth, GeneralCategory, GeneralCategoryGroup,
-    GraphemeClusterBreak, HangulSyllableType, IndicConjunctBreak, IndicSyllabicCategory,
-    JoiningType, LineBreak, Script, SentenceBreak, VerticalOrientation, WordBreak,
+    BidiClass, Block, CanonicalCombiningClass, EastAsianWidth, GeneralCategory,
+    GeneralCategoryGroup, GraphemeClusterBreak, HangulSyllableType, IndicConjunctBreak,
+    IndicSyllabicCategory, JoiningGroup, JoiningType, LineBreak, NumericType, Script,
+    SentenceBreak, VerticalOrientation, WordBreak,
 };
 use crate::script::ScriptWithExt;
 use core::convert::TryInto;
@@ -29,11 +30,35 @@ impl TrieValue for CanonicalCombiningClass {
     }
 }
 
+impl TrieValue for NumericType {
+    type TryFromU32Error = TryFromIntError;
+
+    fn try_from_u32(i: u32) -> Result<Self, Self::TryFromU32Error> {
+        u8::try_from(i).map(Self)
+    }
+
+    fn to_u32(self) -> u32 {
+        u32::from(self.0)
+    }
+}
+
 impl TrieValue for BidiClass {
     type TryFromU32Error = TryFromIntError;
 
     fn try_from_u32(i: u32) -> Result<Self, Self::TryFromU32Error> {
         u8::try_from(i).map(Self)
+    }
+
+    fn to_u32(self) -> u32 {
+        u32::from(self.0)
+    }
+}
+
+impl TrieValue for Block {
+    type TryFromU32Error = TryFromIntError;
+
+    fn try_from_u32(i: u32) -> Result<Self, Self::TryFromU32Error> {
+        u16::try_from(i).map(Self)
     }
 
     fn to_u32(self) -> u32 {
@@ -307,6 +332,17 @@ impl TrieValue for JoiningType {
         u8::try_from(i).map(Self)
     }
 
+    fn to_u32(self) -> u32 {
+        u32::from(self.0)
+    }
+}
+
+impl TrieValue for JoiningGroup {
+    type TryFromU32Error = TryFromIntError;
+
+    fn try_from_u32(i: u32) -> Result<Self, Self::TryFromU32Error> {
+        u8::try_from(i).map(Self)
+    }
     fn to_u32(self) -> u32 {
         u32::from(self.0)
     }

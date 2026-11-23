@@ -13,7 +13,7 @@
 edition = "2018"
 rust-version = "1.34"
 name = "portable-atomic"
-version = "1.12.0"
+version = "1.15.0"
 build = "build.rs"
 exclude = [
     "/.*",
@@ -70,6 +70,7 @@ force-amo = []
 require-cas = []
 s-mode = []
 std = []
+unsafe-assume-privileged = []
 unsafe-assume-single-core = []
 
 [lib]
@@ -90,7 +91,7 @@ default-features = false
 version = "0.1"
 
 [dev-dependencies.crossbeam-utils]
-version = "=0.8.16"
+version = "0.8"
 
 [dev-dependencies.fastrand]
 version = "2"
@@ -114,9 +115,6 @@ version = "1"
 [target."cfg(unix)".dev-dependencies.libc]
 version = "=0.2.163"
 
-[target."cfg(valgrind)".dev-dependencies.crabgrind]
-version = "0.1"
-
 [target."cfg(windows)".dev-dependencies.windows-sys]
 version = "0.61"
 features = [
@@ -136,6 +134,10 @@ transmute_undefined_repr = "warn"
 undocumented_unsafe_blocks = "warn"
 unused_trait_names = "warn"
 
+[lints.clippy.assert_is_empty]
+level = "allow"
+priority = 1
+
 [lints.clippy.bool_assert_comparison]
 level = "allow"
 priority = 1
@@ -145,6 +147,10 @@ level = "allow"
 priority = 1
 
 [lints.clippy.cast_lossless]
+level = "allow"
+priority = 1
+
+[lints.clippy.collapsible_match]
 level = "allow"
 priority = 1
 
@@ -161,10 +167,6 @@ level = "allow"
 priority = 1
 
 [lints.clippy.incompatible_msrv]
-level = "allow"
-priority = 1
-
-[lints.clippy.lint_groups_priority]
 level = "allow"
 priority = 1
 
@@ -228,10 +230,6 @@ priority = 1
 level = "allow"
 priority = 1
 
-[lints.clippy.unreadable_literal]
-level = "allow"
-priority = 1
-
 [lints.rust]
 deprecated_safe = "warn"
 improper_ctypes = "warn"
@@ -251,16 +249,17 @@ check-cfg = [
     'cfg(target_arch,values("loongarch32"))',
     'cfg(target_os,values("trusty"))',
     'cfg(target_os,values("psx"))',
+    'cfg(target_os,values("zos"))',
     'cfg(target_env,values("psx"))',
     'cfg(target_feature,values("lse2","lse128","rcpc3"))',
     'cfg(target_feature,values("quadword-atomics"))',
     'cfg(target_feature,values("zaamo","zabha"))',
     'cfg(target_feature,values("zacas"))',
+    'cfg(target_feature,values("ztso"))',
     'cfg(target_feature,values("miscellaneous-extensions-3"))',
     'cfg(target_pointer_width,values("128"))',
     "cfg(portable_atomic_no_outline_atomics,portable_atomic_outline_atomics,portable_atomic_unstable_f16,portable_atomic_unstable_f128)",
-    "cfg(portable_atomic_unstable_coerce_unsized)",
-    "cfg(portable_atomic_test_detect_false,portable_atomic_test_no_std_static_assert_ffi,qemu,valgrind)",
+    "cfg(portable_atomic_test_detect_false,portable_atomic_test_no_std_static_assert_ffi,qemu,valgrind,valgrind_cross)",
 ]
 
 [profile.release]

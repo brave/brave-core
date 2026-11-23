@@ -348,6 +348,20 @@ impl FixupContext {
     }
 
     pub fn rightmost_subexpression_precedence(self, expr: &Expr) -> Precedence {
+        self.rightmost_subexpression_precedence_impl(
+            expr,
+            #[cfg(feature = "full")]
+            true,
+        )
+    }
+
+    /// Like `rightmost_subexpression_precedence`, but with `scan` false it skips
+    /// the scan of `expr`, for callers that already know it would not consume.
+    fn rightmost_subexpression_precedence_impl(
+        self,
+        expr: &Expr,
+        #[cfg(feature = "full")] scan: bool,
+    ) -> Precedence {
         let default_prec = self.precedence(expr);
 
         #[cfg(feature = "full")]
@@ -359,13 +373,10 @@ impl FixupContext {
         } && match self.next_operator {
             Precedence::Range | Precedence::Or | Precedence::And => true,
             _ => !self.next_operator_can_begin_expr,
-        } {
-            if let Scan::Bailout | Scan::Fail = scan_right(expr, self, self.previous_operator, 1, 0)
-            {
-                if scan_left(expr, self) {
-                    return Precedence::Prefix;
-                }
-            }
+        } && (!scan || scan_right(expr, self, self.previous_operator, 1, 0) != Scan::Consume)
+            && scan_left(expr, self)
+        {
+            return Precedence::Prefix;
         }
 
         default_prec
@@ -567,7 +578,8 @@ fn scan_right(
                 Scan::Consume => return Scan::Consume,
             }
             let right_needs_group = binop_prec != Precedence::Assign
-                && right_fixup.rightmost_subexpression_precedence(&e.right) <= binop_prec;
+                && right_fixup.rightmost_subexpression_precedence_impl(&e.right, false)
+                    <= binop_prec;
             if right_needs_group {
                 consume_by_precedence
             } else if let (Scan::Fail, Precedence::Unambiguous) = (scan, fixup.next_operator) {
@@ -604,7 +616,8 @@ fn scan_right(
                 Scan::Bailout => return consume_by_precedence,
                 Scan::Consume => return Scan::Consume,
             }
-            if right_fixup.rightmost_subexpression_precedence(expr) < Precedence::Prefix {
+            if right_fixup.rightmost_subexpression_precedence_impl(expr, false) < Precedence::Prefix
+            {
                 consume_by_precedence
             } else if let (Scan::Fail, Precedence::Unambiguous) = (scan, fixup.next_operator) {
                 Scan::Fail
@@ -636,7 +649,9 @@ fn scan_right(
                 } {
                     return Scan::Consume;
                 }
-                if right_fixup.rightmost_subexpression_precedence(end) <= Precedence::Range {
+                if right_fixup.rightmost_subexpression_precedence_impl(end, false)
+                    <= Precedence::Range
+                {
                     Scan::Consume
                 } else {
                     Scan::Fail
@@ -723,7 +738,8 @@ fn scan_right(
                 Scan::Consume => return Scan::Consume,
                 _ => {}
             }
-            if right_fixup.rightmost_subexpression_precedence(&e.expr) < Precedence::Let {
+            if right_fixup.rightmost_subexpression_precedence_impl(&e.expr, false) < Precedence::Let
+            {
                 Scan::Consume
             } else if let Scan::Fail = scan {
                 Scan::Bailout

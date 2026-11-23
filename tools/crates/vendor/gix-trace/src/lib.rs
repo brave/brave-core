@@ -1,15 +1,37 @@
 //! A crate providing macros for creating spans in various detail levels. `coarse!` should be used for top-level operations, whereas
 //! `detail!` should be used in plumbing crates unless their operations are likely to cost a lot of time.
 //!
-//! The application is supposed to explicitly turn on tracing via `gix-features`.
-//! Crates that use `gix-features` should use `gix_features::trace`, and those who don't can use `gix_trace` directly.
+//! Applications opt in through this crate's `tracing` feature or the corresponding feature on `gix`.
+//! Plumbing crates use `gix_trace` directly, and applications using `gix` can use its `trace` reexport.
+//! Enable `forest` to collect and print trace trees; its module documentation explains connecting worker spans to their parent.
 //! ## Feature Flags
 #![cfg_attr(
     all(doc, feature = "document-features"),
     doc = ::document_features::document_features!()
 )]
 #![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg))]
-#![deny(missing_docs, rust_2018_idioms, unsafe_code)]
+#![deny(missing_docs, unsafe_code)]
+
+#[cfg(feature = "forest")]
+pub mod forest;
+
+/// A [`tracing_subscriber::Layer`] that collects and processes trace data while preserving
+/// contextual coherence.
+///
+/// Completed root spans and events without parents are passed to the configured
+/// [`forest::Processor`]. Processing failures panic unless handled by a fallback from
+/// [`forest::Processor::or`].
+/// Span fields retain their latest recorded values in the order they were first
+/// recorded. Overlapping or nested entries into the same span count elapsed time
+/// once, from the first entry until the last exit.
+///
+/// See [`forest`] for configuration and connecting worker threads to their parent span.
+#[cfg(feature = "forest")]
+#[derive(Clone, Debug)]
+pub struct ForestLayer<P, T> {
+    processor: P,
+    tag: T,
+}
 
 /// The level at which the tracing item should be created.
 ///
@@ -35,7 +57,7 @@ pub const MAX_LEVEL: Level = Level::Coarse;
 mod enabled;
 
 #[cfg(feature = "tracing")]
-pub use enabled::{field, Span};
+pub use enabled::{__tracing, Span, field};
 
 impl Span {
     /// Execute `f` in with this span active, consuming it.
@@ -44,19 +66,45 @@ impl Span {
     }
 }
 
-#[cfg(feature = "tracing")]
-#[doc(hidden)]
-pub use enabled::{metadata, Event, MetaOnlyCallsite, Metadata};
-
 #[cfg(not(feature = "tracing"))]
 mod disabled;
 #[cfg(not(feature = "tracing"))]
 pub use disabled::Span;
 
+/// Capture the current span and subscriber, restoring both while the returned closure runs.
+///
+/// Wrap a thread's closure before spawning it so spans and events in the thread retain
+/// their parent, including when a subscriber was installed only on the calling thread.
+/// With tracing disabled this returns `f` unchanged.
+///
+/// ```
+/// let _span = gix_trace::coarse!("operation");
+/// std::thread::scope(|scope| {
+///     scope.spawn(gix_trace::in_thread(|| {
+///         let _span = gix_trace::coarse!("worker");
+///     }));
+/// });
+/// ```
+pub fn in_thread<T>(f: impl FnOnce() -> T) -> impl FnOnce() -> T {
+    #[cfg(feature = "tracing")]
+    {
+        let dispatch = tracing::dispatcher::get_default(Clone::clone);
+        let parent = tracing::Span::current();
+        move || {
+            tracing::dispatcher::with_default(&dispatch, move || {
+                let _parent = parent.entered();
+                f()
+            })
+        }
+    }
+    #[cfg(not(feature = "tracing"))]
+    f
+}
+
 ///
 pub mod event {
     #[cfg(feature = "tracing")]
-    pub use tracing_core::Level;
+    pub use tracing::Level;
 
     /// All available tracing levels for use in `event!()` macro.
     #[cfg(not(feature = "tracing"))]

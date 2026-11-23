@@ -61,9 +61,23 @@ impl<'a> Shlex<'a> {
     pub fn new(in_str: &'a str) -> Self {
         Self(bytes::Shlex::new(in_str.as_bytes()))
     }
+
+    /// # Safety
+    ///
+    /// The parameter must have been constructed from valid UTF-8.
+    pub unsafe fn from_bytes(bytes: bytes::Shlex<'a>) -> Self {
+        Self(bytes)
+    }
+
+    /// # Safety
+    ///
+    /// If the returned reference is reassigned, the new [`bytes::Shlex`] must have been constructed from valid UTF-8.
+    pub unsafe fn as_bytes_mut(&mut self) -> &mut bytes::Shlex<'a> {
+        &mut self.0
+    }
 }
 
-impl<'a> Iterator for Shlex<'a> {
+impl Iterator for Shlex<'_> {
     type Item = String;
     fn next(&mut self) -> Option<String> {
         self.0.next().map(|byte_word| {
@@ -78,12 +92,6 @@ impl<'a> core::ops::Deref for Shlex<'a> {
 
     fn deref(&self) -> &Self::Target {
         &self.0
-    }
-}
-
-impl<'a> core::ops::DerefMut for Shlex<'a> {
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
     }
 }
 
@@ -189,23 +197,7 @@ impl From<Quoter> for bytes::Quoter {
 /// Convenience function that consumes an iterable of words and turns it into a single string,
 /// quoting words when necessary. Consecutive words will be separated by a single space.
 ///
-/// Uses default settings except that nul bytes are passed through, which [may be
-/// dangerous](quoting_warning#nul-bytes), leading to this function being deprecated.
-///
-/// Equivalent to [`Quoter::new().allow_nul(true).join(words).unwrap()`](Quoter).
-///
-/// (That configuration never returns `Err`, so this function does not panic.)
-///
-/// The bytes equivalent is [bytes::join].
-#[deprecated(since = "1.3.0", note = "replace with `try_join(words)?` to avoid nul byte danger")]
-pub fn join<'a, I: IntoIterator<Item = &'a str>>(words: I) -> String {
-    Quoter::new().allow_nul(true).join(words).unwrap()
-}
-
-/// Convenience function that consumes an iterable of words and turns it into a single string,
-/// quoting words when necessary. Consecutive words will be separated by a single space.
-///
-/// Uses default settings.  The only error that can be returned is [`QuoteError::Nul`].
+/// Uses default settings. The only error that can be returned is [`QuoteError::Nul`].
 ///
 /// Equivalent to [`Quoter::new().join(words)`](Quoter).
 ///
@@ -216,34 +208,17 @@ pub fn try_join<'a, I: IntoIterator<Item = &'a str>>(words: I) -> Result<String,
 
 /// Given a single word, return a string suitable to encode it as a shell argument.
 ///
-/// Uses default settings except that nul bytes are passed through, which [may be
-/// dangerous](quoting_warning#nul-bytes), leading to this function being deprecated.
-///
-/// Equivalent to [`Quoter::new().allow_nul(true).quote(in_str).unwrap()`](Quoter).
-///
-/// (That configuration never returns `Err`, so this function does not panic.)
-///
-/// The bytes equivalent is [bytes::quote].
-#[deprecated(since = "1.3.0", note = "replace with `try_quote(str)?` to avoid nul byte danger")]
-pub fn quote(in_str: &str) -> Cow<str> {
-    Quoter::new().allow_nul(true).quote(in_str).unwrap()
-}
-
-/// Given a single word, return a string suitable to encode it as a shell argument.
-///
-/// Uses default settings.  The only error that can be returned is [`QuoteError::Nul`].
+/// Uses default settings. The only error that can be returned is [`QuoteError::Nul`].
 ///
 /// Equivalent to [`Quoter::new().quote(in_str)`](Quoter).
 ///
-/// (That configuration never returns `Err`, so this function does not panic.)
-///
 /// The bytes equivalent is [bytes::try_quote].
-pub fn try_quote(in_str: &str) -> Result<Cow<str>, QuoteError> {
+pub fn try_quote(in_str: &str) -> Result<Cow<'_, str>, QuoteError> {
     Quoter::new().quote(in_str)
 }
 
 #[cfg(test)]
-static SPLIT_TEST_ITEMS: &'static [(&'static str, Option<&'static [&'static str]>)] = &[
+static SPLIT_TEST_ITEMS: &[(&str, Option<&[&str]>)] = &[
     ("foo$baz", Some(&["foo$baz"])),
     ("foo baz", Some(&["foo", "baz"])),
     ("foo\"bar\"baz", Some(&["foobarbaz"])),
@@ -340,15 +315,6 @@ fn test_quote() {
         }
     }
     assert!(ok);
-}
-
-#[test]
-#[allow(deprecated)]
-fn test_join() {
-    assert_eq!(join(vec![]), "");
-    assert_eq!(join(vec![""]), "''");
-    assert_eq!(join(vec!["a", "b"]), "a b");
-    assert_eq!(join(vec!["foo bar", "baz"]), "'foo bar' baz");
 }
 
 #[test]

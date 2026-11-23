@@ -3,7 +3,6 @@
 /// It defines how to talk to a given repository.
 #[derive(PartialEq, Eq, Debug, Hash, Ord, PartialOrd, Clone)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-#[allow(missing_docs)]
 pub enum Scheme {
     /// A local resource that is accessible on the current host.
     File,
@@ -15,10 +14,26 @@ pub enum Scheme {
     Http,
     /// Use the HTTPS protocol to talk to git servers.
     Https,
-    /// Any other protocol or transport that isn't known at compile time.
+    /// Run the command in [`Url::path`](crate::Url::path) through Git's built-in `ext` remote helper.
     ///
-    /// It's used to support plug-in transports.
-    Ext(String),
+    /// This represents the `ext::<command> [arguments...]` form. Git disables this transport by default because the
+    /// command is executed locally; see [`git-remote-ext`](https://git-scm.com/docs/git-remote-ext). The
+    /// `ext://<address>` spelling is normalized to this variant with the entire URL as its command, and therefore
+    /// serializes as `ext::ext://<address>`. This preserves the argument Git passes to the helper while ensuring all
+    /// uses of this command-executing transport receive the same policy.
+    Ext,
+    /// A remote-helper transport.
+    ///
+    /// Carries the helper name of locations in the
+    /// `<helper>::<address>` form of [`gitremote-helpers`](https://git-scm.com/docs/gitremote-helpers). Note that such
+    /// a name may be one of the built-in ones above, as `ssh::address` names the `git-remote-ssh` program rather than
+    /// the built-in SSH transport.
+    Helper(String),
+    /// A remote-helper transport written as a URL.
+    ///
+    /// Carries the helper name of locations in the `<helper>://<address>` form. Git passes the entire URL, rather than
+    /// only its address, to the helper program.
+    HelperUrl(String),
 }
 
 impl<'a> From<&'a str> for Scheme {
@@ -30,13 +45,16 @@ impl<'a> From<&'a str> for Scheme {
             "git" => Scheme::Git,
             "http" => Scheme::Http,
             "https" => Scheme::Https,
-            unknown => Scheme::Ext(unknown.into()),
+            "ext" => Scheme::Ext,
+            unknown => Scheme::HelperUrl(unknown.into()),
         }
     }
 }
 
 impl Scheme {
-    /// Return ourselves parseable name.
+    /// Return the canonical textual name of this scheme.
+    ///
+    /// Legacy `ssh+git` and `git+ssh` inputs are represented as [`Scheme::Ssh`] and therefore return `ssh`.
     pub fn as_str(&self) -> &str {
         use Scheme::*;
         match self {
@@ -45,7 +63,8 @@ impl Scheme {
             Ssh => "ssh",
             Http => "http",
             Https => "https",
-            Ext(name) => name.as_str(),
+            Ext => "ext",
+            Helper(name) | HelperUrl(name) => name.as_str(),
         }
     }
 

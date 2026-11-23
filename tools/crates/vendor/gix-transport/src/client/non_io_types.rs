@@ -1,4 +1,4 @@
-/// Configure how the [`RequestWriter`][crate::client::RequestWriter] behaves when writing bytes.
+/// Configure how a `RequestWriter` behaves when writing bytes.
 #[derive(Default, PartialEq, Eq, Debug, Hash, Ord, PartialOrd, Clone, Copy)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum WriteMode {
@@ -15,8 +15,9 @@ pub enum WriteMode {
     OneLfTerminatedLinePerWriteCall,
 }
 
-/// The kind of packet line to write when transforming a [`RequestWriter`][crate::client::RequestWriter] into an
-/// [`ExtendedBufRead`][crate::client::ExtendedBufRead].
+/// The kind of packet line to write when transforming a `RequestWriter` into an `ExtendedBufRead`.
+///
+/// Both the type and the trait have different implementations for blocking vs async I/O.
 #[derive(PartialEq, Eq, Debug, Hash, Ord, PartialOrd, Clone, Copy)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum MessageKind {
@@ -39,122 +40,459 @@ pub(crate) mod connect {
         pub version: crate::Protocol,
         #[cfg(feature = "blocking-client")]
         /// Options to use if the scheme of the URL is `ssh`.
-        pub ssh: crate::client::ssh::connect::Options,
+        pub ssh: crate::client::blocking_io::ssh::connect::Options,
         /// If `true`, all packetlines received or sent will be passed to the facilities of the `gix-trace` crate.
         pub trace: bool,
-    }
-
-    /// The error used in [`connect()`][crate::connect()].
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error(transparent)]
-        Url(#[from] gix_url::parse::Error),
-        #[error("The git repository path could not be converted to UTF8")]
-        PathConversion(#[from] bstr::Utf8Error),
-        #[error("connection failed")]
-        Connection(#[from] Box<dyn std::error::Error + Send + Sync>),
-        #[error("The url {url:?} contains information that would not be used by the {scheme} protocol")]
-        UnsupportedUrlTokens {
-            url: bstr::BString,
-            scheme: gix_url::Scheme,
-        },
-        #[error("The '{0}' protocol is currently unsupported")]
-        UnsupportedScheme(gix_url::Scheme),
-        #[cfg(not(any(feature = "http-client-curl", feature = "http-client-reqwest")))]
-        #[error(
-            "'{0}' is not compiled in. Compile with the 'http-client-curl' or 'http-client-reqwest' cargo feature"
-        )]
-        CompiledWithoutHttp(gix_url::Scheme),
-    }
-
-    // TODO: maybe fix this workaround: want `IsSpuriousError`  in `Connection(…)`
-    impl crate::IsSpuriousError for Error {
-        fn is_spurious(&self) -> bool {
-            match self {
-                Error::Connection(err) => {
-                    #[cfg(feature = "blocking-client")]
-                    if let Some(err) = err.downcast_ref::<crate::client::git::connect::Error>() {
-                        return err.is_spurious();
-                    }
-                    if let Some(err) = err.downcast_ref::<crate::client::Error>() {
-                        return err.is_spurious();
-                    }
-                    false
-                }
-                _ => false,
-            }
-        }
     }
 }
 
 mod error {
+    use gix_error::{ClassificationMarker, Exn, Message};
     use std::ffi::OsString;
 
     use bstr::BString;
 
-    use crate::client::capabilities;
-    #[cfg(feature = "http-client")]
-    use crate::client::http;
     #[cfg(feature = "blocking-client")]
-    use crate::client::ssh;
+    use crate::client::blocking_io::ssh;
 
-    #[cfg(feature = "http-client")]
-    type HttpError = http::Error;
     #[cfg(feature = "blocking-client")]
     type SshInvocationError = ssh::invocation::Error;
-    #[cfg(not(feature = "http-client"))]
-    type HttpError = std::convert::Infallible;
     #[cfg(not(feature = "blocking-client"))]
     type SshInvocationError = std::convert::Infallible;
 
-    /// The error used in most methods of the [`client`][crate::client] module
-    #[derive(thiserror::Error, Debug)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error("A request was performed without performing the handshake first")]
-        MissingHandshake,
-        #[error("An IO error occurred when talking to the server")]
-        Io(#[from] std::io::Error),
-        #[error("Capabilities could not be parsed")]
-        Capabilities {
-            #[from]
-            err: capabilities::Error,
-        },
-        #[error("A packet line could not be decoded")]
-        LineDecode {
-            #[from]
-            err: gix_packetline::decode::Error,
-        },
-        #[error("A {0} line was expected, but there was none")]
-        ExpectedLine(&'static str),
-        #[error("Expected a data line, but got a delimiter")]
-        ExpectedDataLine,
-        #[error("The transport layer does not support authentication")]
-        AuthenticationUnsupported,
-        #[error("The transport layer refuses to use a given identity: {0}")]
-        AuthenticationRefused(&'static str),
-        #[error("The protocol version indicated by {:?} is unsupported", {0})]
-        UnsupportedProtocolVersion(BString),
-        #[error("Failed to invoke program {command:?}")]
-        InvokeProgram { source: std::io::Error, command: OsString },
-        #[error(transparent)]
-        Http(#[from] HttpError),
-        #[error(transparent)]
-        SshInvocation(SshInvocationError),
-        #[error("The repository path '{path}' could be mistaken for a command-line argument")]
-        AmbiguousPath { path: BString },
+    /// Details carried by an HTTP authentication failure in a [`std::io::Error`] of kind
+    /// [`PermissionDenied`][std::io::ErrorKind::PermissionDenied].
+    ///
+    /// Callers can downcast [`std::io::Error::get_ref()`] to this type and forward the challenges
+    /// to credential helpers as `wwwauth[]` attributes.
+    #[derive(Debug, Default)]
+    pub struct AuthenticationRequired {
+        /// HTTP `WWW-Authenticate` header values in the order supplied by the server.
+        pub www_authenticate: Vec<BString>,
     }
 
-    impl crate::IsSpuriousError for Error {
-        fn is_spurious(&self) -> bool {
+    impl std::fmt::Display for AuthenticationRequired {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            f.write_str("Received HTTP status 401")
+        }
+    }
+
+    impl std::error::Error for AuthenticationRequired {
+        fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+            Some(const { &ClassificationMarker::UNAUTHENTICATED })
+        }
+    }
+
+    /// The error used in most methods of the [`client`][crate::client] module.
+    ///
+    /// Sources preserve classifications when raised or converted to [`gix_error::Error`]. Unsafe arguments and
+    /// unexpected packet lines expose classification-only [`gix_error::ClassificationMarker`] sources.
+    /// Use [`gix_error::classify()`] or the classification predicates on [`gix_error::Exn`] and [`gix_error::Error`],
+    /// rather than downcasting these markers to concrete classifier errors. Use [`gix_error::classify()`] with
+    /// [`can_retry()`](gix_error::types::Classifications::can_retry) or
+    /// [`can_retry_lenient()`](gix_error::types::Classifications::can_retry_lenient) to inspect retryability directly.
+    #[derive(Debug)]
+    #[expect(missing_docs)]
+    pub enum Error {
+        MissingHandshake,
+        Io(std::io::Error),
+        Capabilities {
+            err: gix_error::Error,
+        },
+        LineDecode {
+            err: Message,
+        },
+        ExpectedLine(&'static str),
+        ExpectedDataLine,
+        AuthenticationUnsupported,
+        AuthenticationRefused(&'static str),
+        UnsupportedProtocolVersion(BString),
+        InvokeProgram {
+            source: std::io::Error,
+            command: OsString,
+        },
+        #[cfg(feature = "http-client")]
+        Http(gix_error::Error),
+        #[cfg(not(feature = "http-client"))]
+        Http(std::convert::Infallible),
+        SshInvocation(SshInvocationError),
+        AmbiguousPath {
+            path: BString,
+        },
+    }
+
+    impl std::fmt::Display for Error {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             match self {
-                Error::Io(err) => err.is_spurious(),
-                Error::Http(err) => err.is_spurious(),
-                _ => false,
+                Error::MissingHandshake => {
+                    f.write_str("A request was performed without performing the handshake first")
+                }
+                Error::Io(_) => f.write_str("An IO error occurred when talking to the server"),
+                Error::Capabilities { .. } => f.write_str("Capabilities could not be parsed"),
+                Error::LineDecode { .. } => f.write_str("A packet line could not be decoded"),
+                Error::ExpectedLine(line) => write!(f, "A {line} line was expected, but there was none"),
+                Error::ExpectedDataLine => f.write_str("Expected a data line, but got a delimiter"),
+                Error::AuthenticationUnsupported => f.write_str("The transport layer does not support authentication"),
+                Error::AuthenticationRefused(reason) => {
+                    write!(f, "The transport layer refuses to use a given identity: {reason}")
+                }
+                Error::UnsupportedProtocolVersion(version) => {
+                    write!(f, "The protocol version indicated by {version:?} is unsupported")
+                }
+                Error::InvokeProgram { command, .. } => write!(f, "Failed to invoke program {}", command.display()),
+                Error::Http(err) => std::fmt::Display::fmt(err, f),
+                Error::SshInvocation(_) => f.write_str("Failed to prepare SSH invocation"),
+                Error::AmbiguousPath { path } => {
+                    write!(
+                        f,
+                        "The repository path \"{path}\" could be mistaken for a command-line argument"
+                    )
+                }
+            }
+        }
+    }
+
+    impl std::error::Error for Error {
+        fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+            match self {
+                Error::Io(err) => Some(err),
+                Error::LineDecode { err } => Some(err),
+                Error::InvokeProgram { source, .. } => Some(source),
+                Error::Capabilities { err } => Some(err),
+                Error::Http(err) => Some(err),
+                Error::SshInvocation(err) => Some(err),
+                Error::AmbiguousPath { .. } | Error::MissingHandshake => {
+                    Some(const { &ClassificationMarker::VALIDATION })
+                }
+                Error::AuthenticationUnsupported | Error::UnsupportedProtocolVersion(_) => {
+                    Some(const { &ClassificationMarker::UNSUPPORTED })
+                }
+                Error::ExpectedLine(_) | Error::ExpectedDataLine => Some(const { &ClassificationMarker::CORRUPTION }),
+                _ => None,
+            }
+        }
+    }
+
+    impl From<std::io::Error> for Error {
+        fn from(err: std::io::Error) -> Self {
+            Error::Io(err)
+        }
+    }
+
+    impl From<Exn<Message>> for Error {
+        fn from(err: Exn<Message>) -> Self {
+            Error::Capabilities { err: err.into_error() }
+        }
+    }
+
+    impl From<gix_error::Error> for Error {
+        fn from(err: gix_error::Error) -> Self {
+            Error::Capabilities { err }
+        }
+    }
+
+    impl From<Message> for Error {
+        fn from(err: Message) -> Self {
+            Error::LineDecode { err }
+        }
+    }
+
+    impl From<Error> for gix_error::Error {
+        fn from(err: Error) -> Self {
+            Self::from_error(err)
+        }
+    }
+
+    #[cfg(test)]
+    mod tests {
+        #[cfg(feature = "http-client")]
+        use gix_error::{Class, ClassificationMarker, message};
+        use gix_error::{Error, ErrorExt, classify};
+
+        #[test]
+        fn authentication_and_unsupported_errors_preserve_recovery_meaning() {
+            let challenge = super::AuthenticationRequired::default().raise_typed();
+            assert!(
+                challenge.is_unauthenticated(),
+                "401 requests credentials rather than authorization"
+            );
+            assert!(
+                challenge.downcast_any_ref::<super::AuthenticationRequired>().is_some(),
+                "authentication challenges remain available for helpers"
+            );
+            for cause in [
+                super::Error::AuthenticationUnsupported,
+                super::Error::UnsupportedProtocolVersion("version 3".into()),
+            ] {
+                let err = cause.raise_typed();
+                assert!(err.is_unsupported(), "switch transports or protocol implementations");
+                assert!(
+                    !err.is_corrupted(),
+                    "unsupported capabilities are not malformed peer data"
+                );
+                assert!(
+                    err.downcast_any_ref::<super::Error>().is_some(),
+                    "retain the typed transport error"
+                );
+                assert!(err.into_error().is_unsupported(), "erasure preserves recovery meaning");
+            }
+        }
+
+        #[test]
+        fn io_classification_is_independent_of_conversion() {
+            let mut diagnostics = Vec::new();
+            for kind in [
+                std::io::ErrorKind::Interrupted,
+                std::io::ErrorKind::UnexpectedEof,
+                std::io::ErrorKind::TimedOut,
+                std::io::ErrorKind::BrokenPipe,
+                std::io::ErrorKind::AddrInUse,
+                std::io::ErrorKind::ConnectionAborted,
+                std::io::ErrorKind::ConnectionReset,
+                std::io::ErrorKind::ConnectionRefused,
+                std::io::ErrorKind::OutOfMemory,
+                std::io::ErrorKind::NotFound,
+                std::io::ErrorKind::PermissionDenied,
+            ] {
+                let make_error = || super::Error::Io(kind.into());
+                let can_retry = classify(&make_error()).can_retry();
+                let can_retry_lenient = classify(&make_error()).can_retry_lenient();
+                let err = Error::from(make_error());
+                assert_eq!(
+                    err.can_retry(),
+                    can_retry,
+                    "the transport conversion preserves the conservative policy for {kind:?}"
+                );
+                assert_eq!(
+                    err.can_retry_lenient(),
+                    can_retry_lenient,
+                    "the transport conversion preserves the lenient policy for {kind:?}"
+                );
+                assert!(
+                    !err.is_retryable(),
+                    "the transport conversion does not add an explicit retry marker for {kind:?}"
+                );
+                assert_eq!(err.is_not_found(), kind == std::io::ErrorKind::NotFound);
+                assert_eq!(err.is_resource_exhausted(), kind == std::io::ErrorKind::OutOfMemory);
+                diagnostics.push((kind, gix_error::TestError::from(err)));
+            }
+            insta::assert_debug_snapshot!(diagnostics, "transport I/O errors retain the original cause and retry policy", @"
+            [
+                (
+                    Interrupted,
+                    An IO error occurred when talking to the server
+                    
+                    Caused by:
+                        0: operation interrupted,
+                ),
+                (
+                    UnexpectedEof,
+                    An IO error occurred when talking to the server
+                    
+                    Caused by:
+                        0: unexpected end of file,
+                ),
+                (
+                    TimedOut,
+                    An IO error occurred when talking to the server
+                    
+                    Caused by:
+                        0: timed out,
+                ),
+                (
+                    BrokenPipe,
+                    An IO error occurred when talking to the server
+                    
+                    Caused by:
+                        0: broken pipe,
+                ),
+                (
+                    AddrInUse,
+                    An IO error occurred when talking to the server
+                    
+                    Caused by:
+                        0: address in use,
+                ),
+                (
+                    ConnectionAborted,
+                    An IO error occurred when talking to the server
+                    
+                    Caused by:
+                        0: connection aborted,
+                ),
+                (
+                    ConnectionReset,
+                    An IO error occurred when talking to the server
+                    
+                    Caused by:
+                        0: connection reset,
+                ),
+                (
+                    ConnectionRefused,
+                    An IO error occurred when talking to the server
+                    
+                    Caused by:
+                        0: connection refused,
+                ),
+                (
+                    OutOfMemory,
+                    An IO error occurred when talking to the server
+                    
+                    Caused by:
+                        0: out of memory,
+                ),
+                (
+                    NotFound,
+                    An IO error occurred when talking to the server
+                    
+                    Caused by:
+                        0: entity not found,
+                ),
+                (
+                    PermissionDenied,
+                    An IO error occurred when talking to the server
+                    
+                    Caused by:
+                        0: permission denied,
+                ),
+            ]
+            ");
+        }
+
+        #[cfg(feature = "http-client")]
+        #[test]
+        fn http_keeps_retryable_sources() {
+            let err = super::Error::Http(
+                std::io::Error::new(std::io::ErrorKind::BrokenPipe, "retry me").and_raise(message("HTTP failed")),
+            );
+            insta::assert_debug_snapshot!(err, "http keeps retryable sources", @"
+            Http(
+                HTTP failed
+                
+                Caused by:
+                    0: I/O error (BrokenPipe)
+                    1: retry me,
+            )
+            ");
+
+            assert!(classify(&err).can_retry_lenient());
+            assert!(!classify(&err).can_retry());
+            let source = std::error::Error::source(&err)
+                .and_then(|err| err.downcast_ref::<Error>())
+                .expect("HTTP errors retain their gix-error wrapper");
+            assert!(
+                source
+                    .iter_errors()
+                    .any(<dyn std::error::Error + 'static>::is::<std::io::Error>)
+            );
+
+            let explicit = super::Error::Http(
+                ClassificationMarker::with_source(Class::Retryable, message("retry me"))
+                    .and_raise(message("HTTP failed")),
+            );
+            insta::assert_debug_snapshot!(explicit, "HTTP errors retain an explicit retryable source", @"
+            Http(
+                HTTP failed
+                
+                Caused by:
+                    0: retry me,
+            )
+            ");
+            assert!(classify(&explicit).can_retry());
+            assert!(Error::from(explicit).is_retryable());
+
+            let out_of_memory = super::Error::Http(
+                std::io::Error::from(std::io::ErrorKind::OutOfMemory).and_raise(message("HTTP failed")),
+            );
+            insta::assert_debug_snapshot!(out_of_memory, "HTTP errors retain the allocation failure as their source", @"
+            Http(
+                HTTP failed
+                
+                Caused by:
+                    0: out of memory,
+            )
+            ");
+            assert!(!classify(&out_of_memory).can_retry());
+            assert!(classify(&out_of_memory).can_retry_lenient());
+            assert!(Error::from(out_of_memory).is_resource_exhausted());
+        }
+
+        #[test]
+        fn custom_errors_expose_classifications() {
+            use gix_error::Class;
+
+            fn check<Cause: std::error::Error + 'static>(
+                err: impl std::error::Error + Send + Sync + 'static,
+                class: Class,
+            ) -> gix_error::Exn {
+                let err = err.raise_typed();
+                match class {
+                    Class::Validation => assert!(err.is_validation(), "unsafe transport arguments are invalid input"),
+                    Class::Corruption => assert!(err.is_corrupted(), "unexpected packet lines are malformed responses"),
+                    _ => unreachable!("only validation and corruption are exercised here"),
+                }
+                assert!(
+                    err.downcast_any_ref::<Cause>().is_some(),
+                    "the concrete transport error remains available"
+                );
+                assert!(
+                    err.probable_cause().is::<Cause>(),
+                    "the concrete transport error, not its classification marker, is the probable cause"
+                );
+                err.erased()
+            }
+
+            let mut diagnostics = vec![check::<super::Error>(
+                super::Error::AmbiguousPath { path: "-arg".into() },
+                Class::Validation,
+            )];
+            for err in [super::Error::ExpectedLine("version"), super::Error::ExpectedDataLine] {
+                diagnostics.push(check::<super::Error>(err, Class::Corruption));
+            }
+            insta::assert_debug_snapshot!(diagnostics, "unsafe paths and malformed protocol lines retain their concrete diagnostics", @"
+            [
+                The repository path \"-arg\" could be mistaken for a command-line argument,
+                A version line was expected, but there was none,
+                Expected a data line, but got a delimiter,
+            ]
+            ");
+
+            #[cfg(feature = "blocking-client")]
+            {
+                use crate::client::blocking_io::ssh;
+
+                let mut diagnostics = Vec::new();
+                for err in [
+                    ssh::invocation::Error::AmbiguousUserName { user: "-arg".into() },
+                    ssh::invocation::Error::AmbiguousHostName { host: "-arg".into() },
+                ] {
+                    let err = check::<ssh::invocation::Error>(super::Error::SshInvocation(err), Class::Validation);
+                    assert!(
+                        !err.is_corrupted(),
+                        "SSH invocation context does not classify rejected arguments as malformed responses"
+                    );
+                    diagnostics.push(err);
+                }
+                diagnostics.push(check::<ssh::Error>(
+                    ssh::Error::AmbiguousHostName { host: "-arg".into() },
+                    Class::Validation,
+                ));
+                insta::assert_debug_snapshot!(diagnostics, "SSH invocation context preserves the rejected argument as its cause", @"
+                [
+                    Failed to prepare SSH invocation
+                    
+                    Caused by:
+                        0: Username '-arg' could be mistaken for a command-line argument,
+                    Failed to prepare SSH invocation
+                    
+                    Caused by:
+                        0: Host name '-arg' could be mistaken for a command-line argument,
+                    Host name '-arg' could be mistaken for a command-line argument,
+                ]
+                ");
             }
         }
     }
 }
 
-pub use error::Error;
+pub use error::{AuthenticationRequired, Error};

@@ -1,35 +1,22 @@
-///
-pub mod decode {
-    /// The error returned by [`decode()`][super::decode()].
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error("{}", message)]
-        Corrupt { message: &'static str },
-    }
-}
-
+use gix_error::Result;
 /// Decode `data` as EWAH bitmap.
-pub fn decode(data: &[u8]) -> Result<(Vec, &[u8]), decode::Error> {
-    use self::decode::Error;
+pub fn decode(data: &[u8]) -> Result<(Vec, &[u8])> {
     use crate::decode;
+    use gix_error::{OptionExt, validation};
 
-    let (num_bits, data) = decode::u32(data).ok_or(Error::Corrupt {
-        message: "eof reading amount of bits",
-    })?;
-    let (len, data) = decode::u32(data).ok_or(Error::Corrupt {
-        message: "eof reading chunk length",
-    })?;
+    let (num_bits, data) = decode::u32(data).ok_or_raise(|| validation("eof reading amount of bits"))?;
+    let (len, data) = decode::u32(data).ok_or_raise(|| validation("eof reading chunk length"))?;
     let len = len as usize;
 
     // NOTE: git does this by copying all bytes first, and then it will change the endianness in a separate loop.
     //       Maybe it's faster, but we can't do it without unsafe. Let's leave it to the optimizer and maybe
     //       one day somebody will find out that it's worth it to use unsafe here.
+    let word_bytes_len = len
+        .checked_mul(std::mem::size_of::<u64>())
+        .ok_or_raise(|| validation("chunk length overflows size calculation"))?;
     let (mut bits, data) = data
-        .split_at_checked(len * std::mem::size_of::<u64>())
-        .ok_or(Error::Corrupt {
-            message: "eof while reading bit data",
-        })?;
+        .split_at_checked(word_bytes_len)
+        .ok_or_raise(|| validation("eof while reading bit data"))?;
     let mut buf = std::vec::Vec::<u64>::with_capacity(len);
     for _ in 0..len {
         let (bit_num, rest) = bits.split_at(std::mem::size_of::<u64>());
@@ -37,9 +24,7 @@ pub fn decode(data: &[u8]) -> Result<(Vec, &[u8]), decode::Error> {
         buf.push(u64::from_be_bytes(bit_num.try_into().unwrap()));
     }
 
-    let (rlw, data) = decode::u32(data).ok_or(Error::Corrupt {
-        message: "eof while reading run length width",
-    })?;
+    let (rlw, data) = decode::u32(data).ok_or_raise(|| validation("eof while reading run length width"))?;
 
     Ok((
         Vec {
@@ -52,32 +37,97 @@ pub fn decode(data: &[u8]) -> Result<(Vec, &[u8]), decode::Error> {
 }
 
 mod access {
+    use gix_error::{ResultExt, validation};
+
     use super::Vec;
 
     impl Vec {
+        /// Create a bitmap from a sequence of bit values.
+        ///
+        /// The resulting bitmap uses a literal-only EWAH representation.
+        ///
+        /// Returns `None` if `bits.len()` exceeds `u32::MAX`.
+        pub fn from_bits(bits: &[bool]) -> Option<Self> {
+            let literal_words: std::vec::Vec<u64> = bits
+                .chunks(64)
+                .map(|chunk| {
+                    chunk.iter().enumerate().fold(
+                        0u64,
+                        |word, (idx, bit)| {
+                            if *bit { word | (1u64 << idx) } else { word }
+                        },
+                    )
+                })
+                .collect();
+            let num_bits = bits.len().try_into().ok()?;
+
+            Some(Vec {
+                num_bits,
+                bits: std::iter::once((literal_words.len() as u64) << (1 + RLW_RUNNING_BITS))
+                    .chain(literal_words)
+                    .collect(),
+                rlw: 0,
+            })
+        }
+
+        /// Write the bitmap as EWAH bytes to `out`.
+        ///
+        /// These bytes can be parsed again with [`decode()`](super::decode()).
+        pub fn write_to(&self, out: &mut impl std::io::Write) -> std::io::Result<()> {
+            let len = u32::try_from(self.bits.len())
+                .or_raise(|| validation("bit word count exceeds u32::MAX"))
+                .map_err(|err| std::io::Error::new(std::io::ErrorKind::InvalidInput, err))?;
+            let rlw = u32::try_from(self.rlw)
+                .or_raise(|| validation("run length word offset exceeds u32::MAX"))
+                .map_err(|err| std::io::Error::new(std::io::ErrorKind::InvalidInput, err))?;
+
+            out.write_all(&self.num_bits.to_be_bytes())?;
+            out.write_all(&len.to_be_bytes())?;
+            for word in &self.bits {
+                out.write_all(&word.to_be_bytes())?;
+            }
+            out.write_all(&rlw.to_be_bytes())
+        }
+
         /// Call `f(index)` for each bit that is true, given the index of the bit that identifies it uniquely within the bit array.
         /// If `f` returns `None` the iteration will be stopped and `None` is returned.
         ///
         /// The index is sequential like in any other vector.
         pub fn for_each_set_bit(&self, mut f: impl FnMut(usize) -> Option<()>) -> Option<()> {
+            let num_bits = self.num_bits();
             let mut index = 0usize;
             let mut iter = self.bits.iter();
             while let Some(word) = iter.next() {
                 if rlw_runbit_is_set(word) {
-                    let len = rlw_running_len_bits(word);
+                    let len = usize::try_from(rlw_running_len_bits(word)).ok()?;
+                    let end = index.checked_add(len)?;
+                    if end > num_bits {
+                        return None;
+                    }
                     for _ in 0..len {
                         f(index)?;
                         index += 1;
                     }
                 } else {
-                    index += usize::try_from(rlw_running_len_bits(word)).ok()?;
+                    let len = usize::try_from(rlw_running_len_bits(word)).ok()?;
+                    let end = index.checked_add(len)?;
+                    if end > num_bits {
+                        return None;
+                    }
+                    index = end;
                 }
 
                 for _ in 0..rlw_literal_words(word) {
-                    let word = iter
-                        .next()
-                        .expect("BUG: ran out of words while going through uncompressed portion");
-                    for bit_index in 0..64 {
+                    let word = iter.next()?;
+                    let remaining = num_bits.checked_sub(index)?;
+                    if remaining == 0 {
+                        return None;
+                    }
+                    let bits_in_word = remaining.min(64);
+                    if bits_in_word < 64 && (word >> bits_in_word) != 0 {
+                        return None;
+                    }
+                    for bit_index in 0..bits_in_word {
                         if word & (1 << bit_index) != 0 {
                             f(index)?;
                         }
@@ -119,7 +169,6 @@ mod access {
 }
 
 /// A growable collection of u64 that are seen as stream of individual bits.
-#[allow(dead_code)]
 #[derive(Clone)]
 pub struct Vec {
     num_bits: u32,

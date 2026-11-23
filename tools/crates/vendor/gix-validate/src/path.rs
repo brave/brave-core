@@ -3,25 +3,44 @@ use bstr::{BStr, ByteSlice};
 ///
 pub mod component {
     /// The error returned by [`component()`](super::component()).
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
+    #[derive(Debug)]
+    #[expect(missing_docs)]
+    #[non_exhaustive]
     pub enum Error {
-        #[error("A path component must not be empty")]
         Empty,
-        #[error(r"Path separators like / or \ are not allowed")]
         PathSeparator,
-        #[error("Windows path prefixes are not allowed")]
         WindowsPathPrefix,
-        #[error("Windows device-names may have side-effects and are not allowed")]
         WindowsReservedName,
-        #[error(r#"Trailing spaces or dots, and the following characters anywhere, are forbidden in Windows paths, along with non-printable ones: <>:"|?*"#)]
         WindowsIllegalCharacter,
-        #[error("The .git name may never be used")]
         DotGitDir,
-        #[error("The .gitmodules file must not be a symlink")]
         SymlinkedGitModules,
-        #[error("Relative components '.' and '..' are disallowed")]
         Relative,
+    }
+
+    impl std::fmt::Display for Error {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            match self {
+                Error::Empty => write!(f, "A path component must not be empty"),
+                Error::PathSeparator => write!(f, r"Path separators like / or \ are not allowed"),
+                Error::WindowsPathPrefix => write!(f, "Windows path prefixes are not allowed"),
+                Error::WindowsReservedName => {
+                    write!(f, "Windows device-names may have side-effects and are not allowed")
+                }
+                Error::WindowsIllegalCharacter => write!(
+                    f,
+                    r#"Trailing spaces or dots, and the following characters anywhere, are forbidden in Windows paths, along with non-printable ones: <>:"|?*"#
+                ),
+                Error::DotGitDir => write!(f, "The .git name may never be used"),
+                Error::SymlinkedGitModules => write!(f, "The .gitmodules file must not be a symlink"),
+                Error::Relative => write!(f, "Relative components '.' and '..' are disallowed"),
+            }
+        }
+    }
+
+    impl std::error::Error for Error {
+        fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+            Some(const { &gix_error::ClassificationMarker::VALIDATION })
+        }
     }
 
     /// Further specify what to check for in [`component()`](super::component())
@@ -110,10 +129,8 @@ pub fn component(
             return Err(component::Error::SymlinkedGitModules);
         }
 
-        if protect_windows {
-            if let Some(err) = check_win_devices_and_illegal_characters(input) {
-                return Err(err);
-            }
+        if protect_windows && let Some(err) = check_win_devices_and_illegal_characters(input) {
+            return Err(err);
         }
     }
 

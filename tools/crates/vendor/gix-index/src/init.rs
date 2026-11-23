@@ -1,28 +1,17 @@
 ///
 pub mod from_tree {
+    use gix_error::Result;
     use std::collections::VecDeque;
 
     use bstr::{BStr, BString, ByteSlice, ByteVec};
+    use gix_error::{ErrorExt, bail, message};
     use gix_object::{tree, tree::EntryKind};
-    use gix_traverse::tree::{depthfirst, visit::Action, Visit};
+    use gix_traverse::tree::{Visit, depthfirst, visit::Action};
 
     use crate::{
-        entry::{Flags, Mode, Stat},
         Entry, PathStorage, State, Version,
+        entry::{Flags, Mode, Stat},
     };
-
-    /// The error returned by [State::from_tree()].
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error("The path \"{path}\" is invalid")]
-        InvalidComponent {
-            path: BString,
-            source: gix_validate::path::component::Error,
-        },
-        #[error(transparent)]
-        Traversal(#[from] gix_traverse::tree::depthfirst::Error),
-    }
 
     /// Initialization
     impl State {
@@ -44,32 +33,38 @@ pub mod from_tree {
                 end_of_index_at_decode_time: false,
             }
         }
+
         /// Create an index [`State`] by traversing `tree` recursively, accessing sub-trees
         /// with `objects`.
         /// `validate` is used to determine which validations to perform on every path component we see.
+        ///
+        /// # Security
+        ///
+        /// This currently trusts tree shape beyond individual path-component validation, and is exploitable with
+        /// malicious trees that contain file/directory conflicts like `a` and `a/x`. Such trees can produce an
+        /// index [`State`] with inconsistent paths, which may panic or confuse downstream checkout/index consumers.
+        ///
+        /// A previous normalization pass tried to remove these conflicts after traversal, but only checked adjacent
+        /// entries. That was incomplete because [`Entry::cmp_filepaths()`] can order unrelated paths between a file
+        /// and its conflicting child, for example `a`, `a.`, `a/x`.
         ///
         /// **No extension data is currently produced**.
         pub fn from_tree<Find>(
             tree: &gix_hash::oid,
             objects: Find,
             validate: gix_validate::path::component::Options,
-        ) -> Result<Self, Error>
+        ) -> Result<Self>
         where
             Find: gix_object::Find,
         {
-            let _span = gix_features::trace::coarse!("gix_index::State::from_tree()");
+            let _span = gix_trace::coarse!("gix_index::State::from_tree()");
             let mut delegate = CollectEntries::new(validate);
-            match depthfirst(tree.to_owned(), depthfirst::State::default(), &objects, &mut delegate) {
-                Ok(()) => {}
-                Err(gix_traverse::tree::breadthfirst::Error::Cancelled) => {
-                    let (path, err) = delegate
-                        .invalid_path
-                        .take()
-                        .expect("cancellation only happens on validation error");
-                    return Err(Error::InvalidComponent { path, source: err });
-                }
-                Err(err) => return Err(err.into()),
+            let traversal = depthfirst(tree.to_owned(), depthfirst::State::default(), &objects, &mut delegate);
+
+            if let Some((path, err)) = delegate.invalid_path.take() {
+                bail!(err.and_raise(message!("The path \"{path}\" is invalid").validation()));
             }
+            traversal?;
 
             let CollectEntries {
                 entries,
@@ -77,12 +72,8 @@ pub mod from_tree {
                 path: _,
                 path_deque: _,
                 validate: _,
-                invalid_path,
+                invalid_path: _,
             } = delegate;
-
-            if let Some((path, err)) = invalid_path {
-                return Err(Error::InvalidComponent { path, source: err });
-            }
 
             Ok(State {
                 object_hash: tree.kind(),
@@ -131,10 +122,10 @@ pub mod from_tree {
                 self.path.push(b'/');
             }
             self.path.push_str(name);
-            if self.invalid_path.is_none() {
-                if let Err(err) = gix_validate::path::component(name, None, self.validate) {
-                    self.invalid_path = Some((self.path.clone(), err));
-                }
+            if self.invalid_path.is_none()
+                && let Err(err) = gix_validate::path::component(name, None, self.validate)
+            {
+                self.invalid_path = Some((self.path.clone(), err));
             }
         }
 
@@ -175,9 +166,9 @@ pub mod from_tree {
 
         fn determine_action(&self) -> Action {
             if self.invalid_path.is_none() {
-                Action::Continue
+                std::ops::ControlFlow::Continue(true)
             } else {
-                Action::Cancel
+                std::ops::ControlFlow::Break(())
             }
         }
     }

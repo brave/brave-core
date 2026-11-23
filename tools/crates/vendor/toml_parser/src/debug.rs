@@ -1,6 +1,6 @@
-use crate::decoder::Encoding;
 use crate::ErrorSink;
 use crate::Span;
+use crate::decoder::Encoding;
 
 pub(crate) struct DebugDepth(core::sync::atomic::AtomicUsize);
 

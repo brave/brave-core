@@ -1,11 +1,11 @@
 use std::sync::atomic::AtomicBool;
 
-use crate::status::{index_worktree, tree_index, OwnedOrStaticAtomicBool, Platform, Submodule, UntrackedFiles};
+use crate::status::{OwnedOrStaticAtomicBool, Platform, Submodule, UntrackedFiles, index_worktree, tree_index};
 
 /// Builder
 impl<Progress> Platform<'_, Progress>
 where
-    Progress: gix_features::progress::Progress,
+    Progress: gix_utils::progress::Progress,
 {
     /// Call `cb` on dirwalk options if these are set (which is the default when created through [`Repository::status()`](crate::Repository::status())).
     /// The directory walk is used to find untracked files or ignored files.

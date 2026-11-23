@@ -1,14 +1,6 @@
-// Copyright 2016 Amanieu d'Antras
-//
-// Licensed under the Apache License, Version 2.0, <LICENSE-APACHE or
-// http://apache.org/licenses/LICENSE-2.0> or the MIT license <LICENSE-MIT or
-// http://opensource.org/licenses/MIT>, at your option. This file may not be
-// copied, modified, or distributed except according to those terms.
-
-//! A simple spin lock based thread parker. Used on platforms without better
+//! A simple atomic-flag-based thread parker. Used on platforms without better
 //! parking facilities available.
 
-use core::hint::spin_loop;
 use core::sync::atomic::{AtomicBool, Ordering};
 use std::thread;
 use std::time::Instant;
@@ -43,7 +35,7 @@ impl super::ThreadParkerT for ThreadParker {
     #[inline]
     unsafe fn park(&self) {
         while self.parked.load(Ordering::Acquire) != false {
-            spin_loop();
+            thread_yield();
         }
     }
 
@@ -53,7 +45,7 @@ impl super::ThreadParkerT for ThreadParker {
             if Instant::now() >= timeout {
                 return false;
             }
-            spin_loop();
+            thread_yield();
         }
         true
     }

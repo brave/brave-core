@@ -7,42 +7,114 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.4.30](https://github.com/Nullus157/async-compression/compare/async-compression-v0.4.29...async-compression-v0.4.30) - 2025-08-31
-
-### Other
-
-- rm unused dep from async-compression and compression-codecs ([#381](https://github.com/Nullus157/async-compression/pull/381))
-
-## [0.4.29](https://github.com/Nullus157/async-compression/compare/async-compression-v0.4.28...async-compression-v0.4.29) - 2025-08-28
-
-### Other
-
-- Update Deps.rs badge ([#380](https://github.com/Nullus157/async-compression/pull/380))
-- move async-compression to crates/ ([#379](https://github.com/Nullus157/async-compression/pull/379))
-
-## [0.4.28](https://github.com/Nullus157/async-compression/compare/async-compression-v0.4.27...async-compression-v0.4.28) - 2025-08-23
+## [0.4.52](https://github.com/Nullus157/async-compression/compare/async-compression-v0.4.51...async-compression-v0.4.52) - 2026-11-02
 
 ### Fixed
 
-- fix wasi ci testing and update doc in README ([#367](https://github.com/Nullus157/async-compression/pull/367))
+- *(gzip)* validate and consume FHCRC header bytes ([#511](https://github.com/Nullus157/async-compression/pull/511))
 
 ### Other
 
-- Fix Cargo.toml: add back version for async-compression ([#372](https://github.com/Nullus157/async-compression/pull/372))
-- Have separate package.version field for compression-* ([#369](https://github.com/Nullus157/async-compression/pull/369))
-- Re-export compression_codecs as codecs ([#368](https://github.com/Nullus157/async-compression/pull/368))
-- Fix breaking API change ([#366](https://github.com/Nullus157/async-compression/pull/366))
-- Fix docs.rs build for compression-codecs ([#365](https://github.com/Nullus157/async-compression/pull/365))
-- Separate codecs as a separate crate, allow direct configuration ([#363](https://github.com/Nullus157/async-compression/pull/363))
-- *(deps)* bump actions/checkout from 4 to 5 ([#360](https://github.com/Nullus157/async-compression/pull/360))
-- Fix doc link for futures-io ([#361](https://github.com/Nullus157/async-compression/pull/361))
-# Changelog
+- *(clippy)* Suppress clippy lint for macro-generated fields ([#509](https://github.com/Nullus157/async-compression/pull/509))
 
-All notable changes to this project will be documented in this file.
+## [0.4.51](https://github.com/Nullus157/async-compression/compare/async-compression-v0.4.50...async-compression-v0.4.51) - 2026-10-17
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+### Added
 
-## Unreleased
+- *(zstd)* add `mzstd` v0.2.5 ([#505](https://github.com/Nullus157/async-compression/pull/505))
+
+### Other
+
+- add keywords to compression crates ([#502](https://github.com/Nullus157/async-compression/pull/502))
+
+## [0.4.50](https://github.com/Nullus157/async-compression/compare/async-compression-v0.4.49...async-compression-v0.4.50) - 2026-09-30
+
+### Other
+
+- *(deps)* update brotli requirement from 8 to 9 ([#499](https://github.com/Nullus157/async-compression/pull/499))
+
+## [0.4.49](https://github.com/Nullus157/async-compression/compare/async-compression-v0.4.48...async-compression-v0.4.49) - 2026-09-29
+
+### Added
+
+- *(brotli)* add optional mbrotli backend ([#492](https://github.com/Nullus157/async-compression/pull/492))
+
+## [0.4.48](https://github.com/Nullus157/async-compression/compare/async-compression-v0.4.47...async-compression-v0.4.48) - 2026-09-16
+
+### Fixed
+
+- *(gzip)* reject invalid header before the full 10 bytes arrive ([#489](https://github.com/Nullus157/async-compression/pull/489))
+
+## [0.4.47](https://github.com/Nullus157/async-compression/compare/async-compression-v0.4.46...async-compression-v0.4.47) - 2026-09-14
+
+### Fixed
+
+- *(zstd)* avoid no-progress errors while awaiting input ([#486](https://github.com/Nullus157/async-compression/pull/486))
+
+## [0.4.46](https://github.com/Nullus157/async-compression/compare/async-compression-v0.4.45...async-compression-v0.4.46) - 2026-09-09
+
+### Other
+
+- Return UnexpectedEof when deflate64 does not progress ([#483](https://github.com/Nullus157/async-compression/pull/483))
+
+## [0.4.45](https://github.com/Nullus157/async-compression/compare/async-compression-v0.4.44...async-compression-v0.4.45) - 2026-09-07
+
+### Other
+
+- *(deps)* update zstd requirement from 0.13 to 0.14 ([#481](https://github.com/Nullus157/async-compression/pull/481))
+
+## [0.4.44](https://github.com/Nullus157/async-compression/compare/async-compression-v0.4.43...async-compression-v0.4.44) - 2026-09-02
+
+### Other
+
+- updated the following local packages: compression-core, compression-codecs
+
+## [0.4.43](https://github.com/Nullus157/async-compression/compare/async-compression-v0.4.42...async-compression-v0.4.43) - 2026-07-28
+
+### Other
+
+- Fix hang when decoding a corrupt subsequent zstd frame ([#470](https://github.com/Nullus157/async-compression/pull/470))
+
+## [0.4.42](https://github.com/Nullus157/async-compression/compare/async-compression-v0.4.41...async-compression-v0.4.42) - 2026-04-21
+
+### Other
+
+- Include license files in published crates ([#467](https://github.com/Nullus157/async-compression/pull/467))
+- Fix async-compression CHANGELOG ordering ([#463](https://github.com/Nullus157/async-compression/pull/463))
+
+## [0.4.41](https://github.com/Nullus157/async-compression/compare/async-compression-v0.4.40...async-compression-v0.4.41) - 2026-02-25
+
+### Fixed
+
+- On error the encoder/decoder now emit everything it was able to decode. ([#454](https://github.com/Nullus157/async-compression/pull/454))
+
+## [0.4.40](https://github.com/Nullus157/async-compression/compare/async-compression-v0.4.39...async-compression-v0.4.40) - 2026-02-18
+
+### Other
+
+- Fix update of bytes read in the encoder state machine. ([#456](https://github.com/Nullus157/async-compression/pull/456))
+- *(deps)* update rand requirement from 0.9 to 0.10 ([#449](https://github.com/Nullus157/async-compression/pull/449))
+
+## [0.4.39](https://github.com/Nullus157/async-compression/compare/async-compression-v0.4.38...async-compression-v0.4.39) - 2026-02-07
+
+### Other
+
+- Revert "Fix decoding of empty response streams." ([#446](https://github.com/Nullus157/async-compression/pull/446))
+
+## [0.4.38](https://github.com/Nullus157/async-compression/compare/async-compression-v0.4.37...async-compression-v0.4.38) - 2026-02-06
+
+### Other
+
+- Fix decoding of empty response streams. ([#444](https://github.com/Nullus157/async-compression/pull/444))
+- *(deps)* update proptest-derive requirement from 0.7 to 0.8 ([#442](https://github.com/Nullus157/async-compression/pull/442))
+
+## [0.4.37](https://github.com/Nullus157/async-compression/compare/async-compression-v0.4.36...async-compression-v0.4.37) - 2026-01-10
+
+### Other
+
+- Set async-compression msrv ([#440](https://github.com/Nullus157/async-compression/pull/440))
+- Fix BufWriter::flush_buf: propagate error before reset ([#438](https://github.com/Nullus157/async-compression/pull/438))
+- Switch futures_core::ready to standard library api ([#436](https://github.com/Nullus157/async-compression/pull/436))
 
 ## [0.4.36](https://github.com/Nullus157/async-compression/compare/async-compression-v0.4.35...async-compression-v0.4.36) - 2025-12-11
 
@@ -99,6 +171,36 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0), 
 ### Other
 
 - Flush compressed data out of encoders more often ([#383](https://github.com/Nullus157/async-compression/pull/383))
+
+## [0.4.30](https://github.com/Nullus157/async-compression/compare/async-compression-v0.4.29...async-compression-v0.4.30) - 2025-08-31
+
+### Other
+
+- rm unused dep from async-compression and compression-codecs ([#381](https://github.com/Nullus157/async-compression/pull/381))
+
+## [0.4.29](https://github.com/Nullus157/async-compression/compare/async-compression-v0.4.28...async-compression-v0.4.29) - 2025-08-28
+
+### Other
+
+- Update Deps.rs badge ([#380](https://github.com/Nullus157/async-compression/pull/380))
+- move async-compression to crates/ ([#379](https://github.com/Nullus157/async-compression/pull/379))
+
+## [0.4.28](https://github.com/Nullus157/async-compression/compare/async-compression-v0.4.27...async-compression-v0.4.28) - 2025-08-23
+
+### Fixed
+
+- fix wasi ci testing and update doc in README ([#367](https://github.com/Nullus157/async-compression/pull/367))
+
+### Other
+
+- Fix Cargo.toml: add back version for async-compression ([#372](https://github.com/Nullus157/async-compression/pull/372))
+- Have separate package.version field for compression-* ([#369](https://github.com/Nullus157/async-compression/pull/369))
+- Re-export compression_codecs as codecs ([#368](https://github.com/Nullus157/async-compression/pull/368))
+- Fix breaking API change ([#366](https://github.com/Nullus157/async-compression/pull/366))
+- Fix docs.rs build for compression-codecs ([#365](https://github.com/Nullus157/async-compression/pull/365))
+- Separate codecs as a separate crate, allow direct configuration ([#363](https://github.com/Nullus157/async-compression/pull/363))
+- *(deps)* bump actions/checkout from 4 to 5 ([#360](https://github.com/Nullus157/async-compression/pull/360))
+- Fix doc link for futures-io ([#361](https://github.com/Nullus157/async-compression/pull/361))
 
 ## [0.4.27](https://github.com/Nullus157/async-compression/compare/v0.4.26...v0.4.27) - 2025-07-13
 

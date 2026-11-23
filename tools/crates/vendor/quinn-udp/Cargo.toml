@@ -11,9 +11,9 @@
 
 [package]
 edition = "2021"
-rust-version = "1.74.1"
+rust-version = "1.85"
 name = "quinn-udp"
-version = "0.5.14"
+version = "0.5.16"
 build = "build.rs"
 autolib = false
 autobins = false
@@ -93,7 +93,7 @@ version = ">=0.5, <0.7"
 version = "1.19"
 
 [target."cfg(windows)".dependencies.windows-sys]
-version = ">=0.52, <=0.60"
+version = ">=0.52, <=0.61"
 features = [
     "Win32_Foundation",
     "Win32_System_IO",

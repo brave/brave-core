@@ -27,8 +27,8 @@ use serde::{Serialize, Deserialize, Serializer, Deserializer};
 /// The `ArrayString` is a string backed by a fixed size array. It keeps track
 /// of its length, and is parameterized by `CAP` for the maximum capacity.
 ///
-/// `CAP` is of type `usize` but is range limited to `u32::MAX`; attempting to create larger
-/// arrayvecs with larger capacity will panic.
+/// `CAP` is of type `usize` but is range limited to `u32::MAX` (or `u16` on 16-bit targets);
+/// attempting to create larger arrayvecs with larger capacity will panic.
 ///
 /// The string is a contiguous value that you can store directly on the stack
 /// if needed.

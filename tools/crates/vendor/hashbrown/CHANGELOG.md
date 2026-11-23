@@ -7,6 +7,59 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.17.2](https://github.com/rust-lang/hashbrown/compare/v0.17.1...v0.17.2) - 2026-11-22
+
+### Changed
+
+- We now use `std::hash::RandomState` instead of `std::collections::hash_map::RandomState` (#747)
+
+### Fixed
+
+- Allocator no longer leaked when dropping an empty table (#751)
+- `ProbeSeq::move_next` now always uses wrapping arithmetic to avoid overflow (#736)
+- More impls/methods not dependent on default hasher/allocator (#732)
+
+### Other
+
+- Internal `bucket_mask_to_capacity` now has a debug assertion to indicate capacity cannot be `usize::MAX` (#745)
+- Internal `cfg_if!` implementation replaced with a `cfg_select!` shim (#740)
+- Internal `invalid_mut` shim replaced with `ptr::without_provenance_mut` (#739)
+- Various fixes: `clippy::elidable_lifetime_names` (#742), `clippy::manual_assert_eq`/`clippy::manual_assert` (#729), prelude imports (#743), `core` imports (#731)
+- SIMD implementations are now tested in miri (#755)
+- hashbrown now uses trusted publishing (#753)
+- hashbrown is now a JOSH subtree of `rust-lang/rust` (#754)
+
+## [0.17.1](https://github.com/rust-lang/hashbrown/compare/v0.17.0...v0.17.1) - 2026-04-20
+
+### Added
+
+- Added `HashMap::rustc_try_insert` (#722)
+
+## [0.17.0](https://github.com/rust-lang/hashbrown/compare/v0.16.1...v0.17.0) - 2026-04-06
+
+### Added
+
+- Added `hash_table::OccupiedEntry::replace_entry_with` (#669)
+- Added `hash_map::{OccupiedEntry::into_entry, VacantEntryRef::insert_entry_with_key}` (#670)
+- Added `hash_table::UnsafeIter` (#667)
+- Added `iter` methods to various `HashTable` iterators (#667)
+- Added `HashMap::{replace_key,replace_key_unchecked,insert_with_key_unchecked}` (#681)
+- Added `into_map` methods to all `HashMap` entry types (#686)
+- Added `into_table` methods to all `HashTable` entry types (#686)
+- Added `#[must_use]` to constructors (#697)
+- `TryReserveError` now implements `Error` (#698)
+
+### Changed
+
+- Changed `EntryRef` to use `ToOwned` (#670)
+- Bumped MSRV to 1.85 (2024 edition) (#676)
+
+### Fixed
+
+- `HashTable:clone_from` now forwards to `RawTable::clone_from` instead of using the default implementation (#668)
+- Fixed potential UB in `RawTableInner::fallible_with_capacity` (#692)
+- Fixed incorrect length if a hasher panics during rehash (#710)
+
 ## [0.16.1](https://github.com/rust-lang/hashbrown/compare/v0.16.0...v0.16.1) - 2025-11-20
 
 ### Added

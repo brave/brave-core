@@ -185,14 +185,12 @@ pub fn blocksplit_lz77(lz77: &Lz77Store, maxblocks: u16, splitpoints: &mut Vec<u
 
         // If `find_largest_splittable_block` returns `None`, no further split will
         // likely reduce compression.
-        let is_finished = find_largest_splittable_block(lz77.size(), &done, splitpoints).map_or(
-            true,
-            |(start, end)| {
+        let is_finished = find_largest_splittable_block(lz77.size(), &done, splitpoints)
+            .is_none_or(|(start, end)| {
                 lstart = start;
                 lend = end;
                 lend - lstart < 10
-            },
-        );
+            });
 
         if is_finished {
             break;

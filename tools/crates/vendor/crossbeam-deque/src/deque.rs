@@ -6,11 +6,32 @@ use std::fmt;
 use std::marker::PhantomData;
 use std::mem::{self, MaybeUninit};
 use std::ptr;
-use std::sync::atomic::{self, AtomicIsize, AtomicPtr, AtomicUsize, Ordering};
+use std::sync::atomic::{self, AtomicPtr, AtomicUsize, Ordering};
 use std::sync::Arc;
 
 use crossbeam_epoch::{self as epoch, Atomic, Owned};
 use crossbeam_utils::{Backoff, CachePadded};
+
+// Ideally, we want to always use AtomicU64/AtomicI64, but since they are not available on all platforms,
+// we only use them when they are available for now.
+// TODO: On platforms where AtomicU64/AtomicI64 is unavailable, we may want to use AtomicCell instead of
+// AtomicUsize/AtomicIsize. (https://github.com/crossbeam-rs/crossbeam/issues/433)
+#[cfg(target_has_atomic = "64")]
+type AtomicIndex = core::sync::atomic::AtomicU64;
+#[cfg(target_has_atomic = "64")]
+type AtomicWorkerIndex = core::sync::atomic::AtomicI64;
+#[cfg(target_has_atomic = "64")]
+type Index = u64;
+#[cfg(target_has_atomic = "64")]
+type WorkerIndex = i64;
+#[cfg(not(target_has_atomic = "64"))]
+type AtomicIndex = core::sync::atomic::AtomicUsize;
+#[cfg(not(target_has_atomic = "64"))]
+type AtomicWorkerIndex = core::sync::atomic::AtomicIsize;
+#[cfg(not(target_has_atomic = "64"))]
+type Index = usize;
+#[cfg(not(target_has_atomic = "64"))]
+type WorkerIndex = isize;
 
 // Minimum buffer capacity.
 const MIN_CAP: usize = 64;
@@ -58,11 +79,12 @@ impl<T> Buffer<T> {
     }
 
     /// Returns a pointer to the task at the specified `index`.
-    unsafe fn at(&self, index: isize) -> *mut T {
+    unsafe fn at(&self, index: WorkerIndex) -> *mut T {
         // `self.cap` is always a power of two.
         // We do all the loads at `MaybeUninit` because we might realize, after loading, that we
         // don't actually have the right to access this memory.
-        self.ptr.offset(index & (self.cap - 1) as isize)
+        self.ptr
+            .offset((index & (self.cap - 1) as WorkerIndex) as isize)
     }
 
     /// Writes `task` into the specified `index`.
@@ -71,7 +93,7 @@ impl<T> Buffer<T> {
     /// technically speaking a data race and therefore UB. We should use an atomic store here, but
     /// that would be more expensive and difficult to implement generically for all types `T`.
     /// Hence, as a hack, we use a volatile write instead.
-    unsafe fn write(&self, index: isize, task: MaybeUninit<T>) {
+    unsafe fn write(&self, index: WorkerIndex, task: MaybeUninit<T>) {
         ptr::write_volatile(self.at(index).cast::<MaybeUninit<T>>(), task)
     }
 
@@ -81,7 +103,7 @@ impl<T> Buffer<T> {
     /// technically speaking a data race and therefore UB. We should use an atomic load here, but
     /// that would be more expensive and difficult to implement generically for all types `T`.
     /// Hence, as a hack, we use a volatile load instead.
-    unsafe fn read(&self, index: isize) -> MaybeUninit<T> {
+    unsafe fn read(&self, index: WorkerIndex) -> MaybeUninit<T> {
         ptr::read_volatile(self.at(index).cast::<MaybeUninit<T>>())
     }
 }
@@ -109,10 +131,10 @@ impl<T> Copy for Buffer<T> {}
 /// [checker]: https://dl.acm.org/citation.cfm?id=2509514
 struct Inner<T> {
     /// The front index.
-    front: AtomicIsize,
+    front: AtomicWorkerIndex,
 
     /// The back index.
-    back: AtomicIsize,
+    back: AtomicWorkerIndex,
 
     /// The underlying buffer.
     buffer: CachePadded<Atomic<Buffer<T>>>,
@@ -222,8 +244,8 @@ impl<T> Worker<T> {
         let buffer = Buffer::alloc(MIN_CAP);
 
         let inner = Arc::new(CachePadded::new(Inner {
-            front: AtomicIsize::new(0),
-            back: AtomicIsize::new(0),
+            front: AtomicWorkerIndex::new(0),
+            back: AtomicWorkerIndex::new(0),
             buffer: CachePadded::new(Atomic::new(buffer)),
         }));
 
@@ -250,8 +272,8 @@ impl<T> Worker<T> {
         let buffer = Buffer::alloc(MIN_CAP);
 
         let inner = Arc::new(CachePadded::new(Inner {
-            front: AtomicIsize::new(0),
-            back: AtomicIsize::new(0),
+            front: AtomicWorkerIndex::new(0),
+            back: AtomicWorkerIndex::new(0),
             buffer: CachePadded::new(Atomic::new(buffer)),
         }));
 
@@ -331,11 +353,8 @@ impl<T> Worker<T> {
 
             // Is there enough capacity to push `reserve_cap` tasks?
             if cap - len < reserve_cap {
-                // Keep doubling the capacity as much as is needed.
-                let mut new_cap = cap * 2;
-                while new_cap - len < reserve_cap {
-                    new_cap *= 2;
-                }
+                // Ensure capacity for reserve_cap + len, rounded up to the next power of 2
+                let new_cap = (reserve_cap + len).next_power_of_two();
 
                 // Resize the buffer.
                 unsafe {
@@ -402,7 +421,7 @@ impl<T> Worker<T> {
         let len = b.wrapping_sub(f);
 
         // Is the queue full?
-        if len >= buffer.cap as isize {
+        if len >= buffer.cap as WorkerIndex {
             // Yes. Grow the underlying buffer.
             unsafe {
                 self.resize(2 * buffer.cap);
@@ -415,13 +434,17 @@ impl<T> Worker<T> {
             buffer.write(b, MaybeUninit::new(task));
         }
 
+        // ThreadSanitizer does not understand fences, so we omit fence and do store with Release ordering.
+        #[cfg(not(crossbeam_sanitize_thread))]
         atomic::fence(Ordering::Release);
+        let store_order = if cfg!(crossbeam_sanitize_thread) {
+            Ordering::Release
+        } else {
+            Ordering::Relaxed
+        };
 
         // Increment the back index.
-        //
-        // This ordering could be `Relaxed`, but then thread sanitizer would falsely report data
-        // races because it doesn't understand fences.
-        self.inner.back.store(b.wrapping_add(1), Ordering::Release);
+        self.inner.back.store(b.wrapping_add(1), store_order);
     }
 
     /// Pops a task from the queue.
@@ -470,7 +493,7 @@ impl<T> Worker<T> {
                     let task = buffer.read(f).assume_init();
 
                     // Shrink the buffer if `len - 1` is less than one fourth of the capacity.
-                    if buffer.cap > MIN_CAP && len <= buffer.cap as isize / 4 {
+                    if buffer.cap > MIN_CAP && len <= buffer.cap as WorkerIndex / 4 {
                         self.resize(buffer.cap / 2);
                     }
 
@@ -523,7 +546,7 @@ impl<T> Worker<T> {
                         self.inner.back.store(b.wrapping_add(1), Ordering::Relaxed);
                     } else {
                         // Shrink the buffer if `len` is less than one fourth of the capacity.
-                        if buffer.cap > MIN_CAP && len < buffer.cap as isize / 4 {
+                        if buffer.cap > MIN_CAP && len < buffer.cap as WorkerIndex / 4 {
                             unsafe {
                                 self.resize(buffer.cap / 2);
                             }
@@ -732,7 +755,7 @@ impl<T> Stealer<T> {
     /// // Setting a large limit does not guarantee that all elements will be popped. In this case,
     /// // half of the elements are currently popped, but the number of popped elements is considered
     /// // an implementation detail that may be changed in the future.
-    /// let _ = s.steal_batch_with_limit(&w2, std::usize::MAX);
+    /// let _ = s.steal_batch_with_limit(&w2, usize::MAX);
     /// assert_eq!(w2.len(), 3);
     /// ```
     pub fn steal_batch_with_limit(&self, dest: &Worker<T>, limit: usize) -> Steal<()> {
@@ -771,7 +794,7 @@ impl<T> Stealer<T> {
         // Reserve capacity for the stolen batch.
         let batch_size = cmp::min((len as usize + 1) / 2, limit);
         dest.reserve(batch_size);
-        let mut batch_size = batch_size as isize;
+        let mut batch_size = batch_size as WorkerIndex;
 
         // Get the destination buffer and back index.
         let dest_buffer = dest.buffer.get();
@@ -900,13 +923,17 @@ impl<T> Stealer<T> {
             }
         }
 
+        // ThreadSanitizer does not understand fences, so we omit fence and do store with Release ordering.
+        #[cfg(not(crossbeam_sanitize_thread))]
         atomic::fence(Ordering::Release);
+        let store_order = if cfg!(crossbeam_sanitize_thread) {
+            Ordering::Release
+        } else {
+            Ordering::Relaxed
+        };
 
         // Update the back index in the destination queue.
-        //
-        // This ordering could be `Relaxed`, but then thread sanitizer would falsely report data
-        // races because it doesn't understand fences.
-        dest.inner.back.store(dest_b, Ordering::Release);
+        dest.inner.back.store(dest_b, store_order);
 
         // Return with success.
         Steal::Success(())
@@ -969,7 +996,7 @@ impl<T> Stealer<T> {
     /// // Setting a large limit does not guarantee that all elements will be popped. In this case,
     /// // half of the elements are currently popped, but the number of popped elements is considered
     /// // an implementation detail that may be changed in the future.
-    /// assert_eq!(s.steal_batch_with_limit_and_pop(&w2, std::usize::MAX), Steal::Success(3));
+    /// assert_eq!(s.steal_batch_with_limit_and_pop(&w2, usize::MAX), Steal::Success(3));
     /// assert_eq!(w2.pop(), Some(4));
     /// assert_eq!(w2.pop(), Some(5));
     /// assert_eq!(w2.pop(), None);
@@ -1009,7 +1036,7 @@ impl<T> Stealer<T> {
         // Reserve capacity for the stolen batch.
         let batch_size = cmp::min((len as usize - 1) / 2, limit - 1);
         dest.reserve(batch_size);
-        let mut batch_size = batch_size as isize;
+        let mut batch_size = batch_size as WorkerIndex;
 
         // Get the destination buffer and back index.
         let dest_buffer = dest.buffer.get();
@@ -1149,13 +1176,17 @@ impl<T> Stealer<T> {
             }
         }
 
+        // ThreadSanitizer does not understand fences, so we omit fence and do store with Release ordering.
+        #[cfg(not(crossbeam_sanitize_thread))]
         atomic::fence(Ordering::Release);
+        let store_order = if cfg!(crossbeam_sanitize_thread) {
+            Ordering::Release
+        } else {
+            Ordering::Relaxed
+        };
 
         // Update the back index in the destination queue.
-        //
-        // This ordering could be `Relaxed`, but then thread sanitizer would falsely report data
-        // races because it doesn't understand fences.
-        dest.inner.back.store(dest_b, Ordering::Release);
+        dest.inner.back.store(dest_b, store_order);
 
         // Return with success.
         Steal::Success(unsafe { task.assume_init() })
@@ -1186,13 +1217,13 @@ const READ: usize = 2;
 const DESTROY: usize = 4;
 
 // Each block covers one "lap" of indices.
-const LAP: usize = 64;
+const LAP: Index = 64;
 // The maximum number of values a block can hold.
-const BLOCK_CAP: usize = LAP - 1;
+const BLOCK_CAP: usize = LAP as usize - 1;
 // How many lower bits are reserved for metadata.
 const SHIFT: usize = 1;
 // Indicates that the block is not the last one.
-const HAS_NEXT: usize = 1;
+const HAS_NEXT: Index = 1;
 
 /// A slot in a block.
 struct Slot<T> {
@@ -1288,7 +1319,7 @@ impl<T> Block<T> {
 /// A position in a queue.
 struct Position<T> {
     /// The index in the queue.
-    index: AtomicUsize,
+    index: AtomicIndex,
 
     /// The block in the linked list.
     block: AtomicPtr<Block<T>>,
@@ -1332,11 +1363,11 @@ impl<T> Default for Injector<T> {
         Self {
             head: CachePadded::new(Position {
                 block: AtomicPtr::new(block),
-                index: AtomicUsize::new(0),
+                index: AtomicIndex::new(0),
             }),
             tail: CachePadded::new(Position {
                 block: AtomicPtr::new(block),
-                index: AtomicUsize::new(0),
+                index: AtomicIndex::new(0),
             }),
             _marker: PhantomData,
         }
@@ -1376,7 +1407,7 @@ impl<T> Injector<T> {
 
         loop {
             // Calculate the offset of the index into the block.
-            let offset = (tail >> SHIFT) % LAP;
+            let offset = ((tail >> SHIFT) % LAP) as usize;
 
             // If we reached the end of the block, wait until the next one is installed.
             if offset == BLOCK_CAP {
@@ -1454,7 +1485,7 @@ impl<T> Injector<T> {
             block = self.head.block.load(Ordering::Acquire);
 
             // Calculate the offset of the index into the block.
-            offset = (head >> SHIFT) % LAP;
+            offset = ((head >> SHIFT) % LAP) as usize;
 
             // If we reached the end of the block, wait until the next one is installed.
             if offset == BLOCK_CAP {
@@ -1546,7 +1577,7 @@ impl<T> Injector<T> {
         self.steal_batch_with_limit(dest, MAX_BATCH)
     }
 
-    /// Steals no more than of tasks and pushes them into a worker.
+    /// Steals no more than `limit` of tasks and pushes them into a worker.
     ///
     /// How many tasks exactly will be stolen is not specified. That said, this method will try to
     /// steal around half of the tasks in the queue, but also not more than some constant limit.
@@ -1575,7 +1606,7 @@ impl<T> Injector<T> {
     /// // Setting a large limit does not guarantee that all elements will be popped. In this case,
     /// // half of the elements are currently popped, but the number of popped elements is considered
     /// // an implementation detail that may be changed in the future.
-    /// let _ = q.steal_batch_with_limit(&w, std::usize::MAX);
+    /// let _ = q.steal_batch_with_limit(&w, usize::MAX);
     /// assert_eq!(w.len(), 3);
     /// ```
     pub fn steal_batch_with_limit(&self, dest: &Worker<T>, limit: usize) -> Steal<()> {
@@ -1590,7 +1621,7 @@ impl<T> Injector<T> {
             block = self.head.block.load(Ordering::Acquire);
 
             // Calculate the offset of the index into the block.
-            offset = (head >> SHIFT) % LAP;
+            offset = ((head >> SHIFT) % LAP) as usize;
 
             // If we reached the end of the block, wait until the next one is installed.
             if offset == BLOCK_CAP {
@@ -1619,7 +1650,7 @@ impl<T> Injector<T> {
                 // We can steal all tasks till the end of the block.
                 advance = (BLOCK_CAP - offset).min(limit);
             } else {
-                let len = (tail - head) >> SHIFT;
+                let len = ((tail - head) >> SHIFT) as usize;
                 // Steal half of the available tasks.
                 advance = ((len + 1) / 2).min(limit);
             }
@@ -1628,7 +1659,7 @@ impl<T> Injector<T> {
             advance = (BLOCK_CAP - offset).min(limit);
         }
 
-        new_head += advance << SHIFT;
+        new_head += (advance as Index) << SHIFT;
         let new_offset = offset + advance;
 
         // Try moving the head index forward.
@@ -1672,7 +1703,7 @@ impl<T> Injector<T> {
                         let task = slot.task.get().read();
 
                         // Write it into the destination queue.
-                        dest_buffer.write(dest_b.wrapping_add(i as isize), task);
+                        dest_buffer.write(dest_b.wrapping_add(i as WorkerIndex), task);
                     }
                 }
 
@@ -1684,20 +1715,27 @@ impl<T> Injector<T> {
                         let task = slot.task.get().read();
 
                         // Write it into the destination queue.
-                        dest_buffer.write(dest_b.wrapping_add((batch_size - 1 - i) as isize), task);
+                        dest_buffer.write(
+                            dest_b.wrapping_add((batch_size - 1 - i) as WorkerIndex),
+                            task,
+                        );
                     }
                 }
             }
 
+            // ThreadSanitizer does not understand fences, so we omit fence and do store with Release ordering.
+            #[cfg(not(crossbeam_sanitize_thread))]
             atomic::fence(Ordering::Release);
+            let store_order = if cfg!(crossbeam_sanitize_thread) {
+                Ordering::Release
+            } else {
+                Ordering::Relaxed
+            };
 
             // Update the back index in the destination queue.
-            //
-            // This ordering could be `Relaxed`, but then thread sanitizer would falsely report
-            // data races because it doesn't understand fences.
             dest.inner
                 .back
-                .store(dest_b.wrapping_add(batch_size as isize), Ordering::Release);
+                .store(dest_b.wrapping_add(batch_size as WorkerIndex), store_order);
 
             // Destroy the block if we've reached the end, or if another thread wanted to destroy
             // but couldn't because we were busy reading from the slot.
@@ -1771,7 +1809,7 @@ impl<T> Injector<T> {
     /// // Setting a large limit does not guarantee that all elements will be popped. In this case,
     /// // half of the elements are currently popped, but the number of popped elements is considered
     /// // an implementation detail that may be changed in the future.
-    /// assert_eq!(q.steal_batch_with_limit_and_pop(&w, std::usize::MAX), Steal::Success(3));
+    /// assert_eq!(q.steal_batch_with_limit_and_pop(&w, usize::MAX), Steal::Success(3));
     /// assert_eq!(w.pop(), Some(4));
     /// assert_eq!(w.pop(), Some(5));
     /// assert_eq!(w.pop(), None);
@@ -1788,7 +1826,7 @@ impl<T> Injector<T> {
             block = self.head.block.load(Ordering::Acquire);
 
             // Calculate the offset of the index into the block.
-            offset = (head >> SHIFT) % LAP;
+            offset = ((head >> SHIFT) % LAP) as usize;
 
             // If we reached the end of the block, wait until the next one is installed.
             if offset == BLOCK_CAP {
@@ -1816,7 +1854,7 @@ impl<T> Injector<T> {
                 // We can steal all tasks till the end of the block.
                 advance = (BLOCK_CAP - offset).min(limit);
             } else {
-                let len = (tail - head) >> SHIFT;
+                let len = ((tail - head) >> SHIFT) as usize;
                 // Steal half of the available tasks.
                 advance = ((len + 1) / 2).min(limit);
             }
@@ -1825,7 +1863,7 @@ impl<T> Injector<T> {
             advance = (BLOCK_CAP - offset).min(limit);
         }
 
-        new_head += advance << SHIFT;
+        new_head += (advance as Index) << SHIFT;
         let new_offset = offset + advance;
 
         // Try moving the head index forward.
@@ -1874,7 +1912,7 @@ impl<T> Injector<T> {
                         let task = slot.task.get().read();
 
                         // Write it into the destination queue.
-                        dest_buffer.write(dest_b.wrapping_add(i as isize), task);
+                        dest_buffer.write(dest_b.wrapping_add(i as WorkerIndex), task);
                     }
                 }
 
@@ -1887,20 +1925,27 @@ impl<T> Injector<T> {
                         let task = slot.task.get().read();
 
                         // Write it into the destination queue.
-                        dest_buffer.write(dest_b.wrapping_add((batch_size - 1 - i) as isize), task);
+                        dest_buffer.write(
+                            dest_b.wrapping_add((batch_size - 1 - i) as WorkerIndex),
+                            task,
+                        );
                     }
                 }
             }
 
+            // ThreadSanitizer does not understand fences, so we omit fence and do store with Release ordering.
+            #[cfg(not(crossbeam_sanitize_thread))]
             atomic::fence(Ordering::Release);
+            let store_order = if cfg!(crossbeam_sanitize_thread) {
+                Ordering::Release
+            } else {
+                Ordering::Relaxed
+            };
 
             // Update the back index in the destination queue.
-            //
-            // This ordering could be `Relaxed`, but then thread sanitizer would falsely report
-            // data races because it doesn't understand fences.
             dest.inner
                 .back
-                .store(dest_b.wrapping_add(batch_size as isize), Ordering::Release);
+                .store(dest_b.wrapping_add(batch_size as WorkerIndex), store_order);
 
             // Destroy the block if we've reached the end, or if another thread wanted to destroy
             // but couldn't because we were busy reading from the slot.
@@ -1985,7 +2030,7 @@ impl<T> Injector<T> {
                 head >>= SHIFT;
 
                 // Return the difference minus the number of blocks between tail and head.
-                return tail - head - tail / LAP;
+                return (tail - head - tail / LAP) as usize;
             }
         }
     }
@@ -2004,7 +2049,7 @@ impl<T> Drop for Injector<T> {
         unsafe {
             // Drop all values between `head` and `tail` and deallocate the heap-allocated blocks.
             while head != tail {
-                let offset = (head >> SHIFT) % LAP;
+                let offset = ((head >> SHIFT) % LAP) as usize;
 
                 if offset < BLOCK_CAP {
                     // Drop the task in the slot.
@@ -2028,7 +2073,7 @@ impl<T> Drop for Injector<T> {
 
 impl<T> fmt::Debug for Injector<T> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.pad("Worker { .. }")
+        f.pad("Injector { .. }")
     }
 }
 

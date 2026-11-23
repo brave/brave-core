@@ -38,6 +38,9 @@ pub enum Error {
     /// A CA certificate is being used as an end-entity certificate.
     CaUsedAsEndEntity,
 
+    /// A certificate's public key is explicitly distrusted.
+    CertDistrusted,
+
     /// The certificate is expired; i.e. the time it is being validated for is
     /// later than the certificate's notAfter time.
     CertExpired {
@@ -292,7 +295,10 @@ impl Error {
             // Errors related to certificate validity
             Self::CertNotValidYet { .. } | Self::CertExpired { .. } => 290,
             Self::CertNotValidForName(_) => 280,
-            Self::CertRevoked | Self::UnknownRevocationStatus | Self::CrlExpired { .. } => 270,
+            Self::CertDistrusted
+            | Self::CertRevoked
+            | Self::UnknownRevocationStatus
+            | Self::CrlExpired { .. } => 270,
             Self::InvalidCrlSignatureForPublicKey | Self::InvalidSignatureForPublicKey => 260,
             Self::SignatureAlgorithmMismatch => 250,
             Self::EmptyEkuExtension => 245,

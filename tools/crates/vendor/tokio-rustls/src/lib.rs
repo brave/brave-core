@@ -31,7 +31,7 @@
 //! This means that if data written by `poll_write` is not actually written to data channel, it will not return `Ready`.
 //! Thus avoiding the call of `poll_flush`.
 //!
-//! but which does not conform to convention of `AsyncWrite` trait.
+//! But this does not conform to the convention of the `AsyncWrite` trait.
 //! This means that if you give inconsistent data in two `poll_write`, it may cause unexpected behavior.
 //!
 //! see <https://github.com/tokio-rs/tls/issues/41>
@@ -47,7 +47,6 @@ use std::pin::Pin;
 use std::task::{Context, Poll};
 
 pub use rustls;
-
 use rustls::CommonState;
 use tokio::io::{AsyncBufRead, AsyncRead, AsyncWrite, ReadBuf};
 

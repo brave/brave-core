@@ -13,12 +13,28 @@
 edition = "2021"
 rust-version = "1.65"
 name = "regex-syntax"
-version = "0.8.8"
+version = "0.8.12"
 authors = [
     "The Rust Project Developers",
     "Andrew Gallant <jamslam@gmail.com>",
 ]
 build = false
+include = [
+    "/CHANGELOG.md",
+    "/Cargo.toml",
+    "/LICENSE-MIT",
+    "/LICENSE-APACHE",
+    "/README.md",
+    "/UNICODE.md",
+    "bench/README.md",
+    "src/**/*.rs",
+    "testdata/**/*.toml",
+    "tests/**/*.rs",
+    "bench/**/*.rs",
+    "benches/**/*.rs",
+    "LICENSE-UNICODE",
+    "!/tests/fuzz/mod.rs",
+]
 autolib = false
 autobins = false
 autoexamples = false

@@ -306,7 +306,7 @@ fn repr_to_ptr(modified: NonNull<u8>) -> *const u8 {
 }
 
 fn repr_to_ptr_mut(repr: NonNull<u8>) -> *mut u8 {
-    repr_to_ptr(repr) as *mut u8
+    repr_to_ptr(repr).cast_mut()
 }
 
 // Compute the length of the inline string, assuming the argument is in short
@@ -318,7 +318,7 @@ unsafe fn inline_len(repr: &Identifier) -> NonZeroUsize {
     // SAFETY: Identifier's layout is align(8) and at least size 8. We're doing
     // an aligned read of the first 8 bytes from it. The bytes are not all zero
     // because inline strings are at least 1 byte long and cannot contain \0.
-    let repr = unsafe { ptr::read(repr as *const Identifier as *const NonZeroU64) };
+    let repr = unsafe { ptr::addr_of!(*repr).cast::<NonZeroU64>().read() };
 
     #[cfg(target_endian = "little")]
     let zero_bits_on_string_end = repr.leading_zeros();
@@ -335,7 +335,7 @@ unsafe fn inline_len(repr: &Identifier) -> NonZeroUsize {
 // SAFETY: repr must be in the inline representation, i.e. at least 1 and at
 // most 8 nonzero ASCII bytes padded on the end with \0 bytes.
 unsafe fn inline_as_str(repr: &Identifier) -> &str {
-    let ptr = repr as *const Identifier as *const u8;
+    let ptr = ptr::addr_of!(*repr).cast::<u8>();
     let len = unsafe { inline_len(repr) }.get();
     // SAFETY: we are viewing the nonzero ASCII prefix of the inline repr's
     // contents as a slice of bytes. Input/output lifetimes are correctly
@@ -357,7 +357,7 @@ unsafe fn decode_len(ptr: *const u8) -> NonZeroUsize {
     // SAFETY: There is at least one byte of varint followed by at least 9 bytes
     // of string content, which is at least 10 bytes total for the allocation,
     // so reading the first two is no problem.
-    let [first, second] = unsafe { ptr::read(ptr as *const [u8; 2]) };
+    let [first, second] = unsafe { ptr.cast::<[u8; 2]>().read() };
     if second < 0x80 {
         // SAFETY: the length of this heap allocated string has been encoded as
         // one base-128 digit, so the length is at least 9 and at most 127. It

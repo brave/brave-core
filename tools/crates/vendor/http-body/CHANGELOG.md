@@ -1,3 +1,8 @@
+# 1.1.0 (July 13, 2026)
+
+- Implement `Add` for `SizeHint`.
+- Implement `Copy` for `SizeHint`.
+
 # 1.0.1 (July 12, 2024)
 
 - Include LICENSE file.

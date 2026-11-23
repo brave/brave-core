@@ -1,12 +1,14 @@
+use jcore::bounds::Sign;
+
 use crate::{
-    error::{err, ErrorContext},
-    fmt::{
-        friendly::parser_label,
-        util::{parse_temporal_fraction, DurationUnits},
-        Parsed,
-    },
-    util::{c::Sign, escape, parse},
     Error, SignedDuration, Span, Unit,
+    error::{ErrorContext, fmt::friendly::Error as E},
+    fmt::{
+        Parsed,
+        friendly::parser_label,
+        util::{DurationUnits, parse_temporal_fraction},
+    },
+    util::parse,
 };
 
 /// A parser for Jiff's "friendly" duration format.
@@ -188,12 +190,7 @@ impl SpanParser {
         }
 
         let input = input.as_ref();
-        imp(self, input).with_context(|| {
-            err!(
-                "failed to parse {input:?} in the \"friendly\" format",
-                input = escape::Bytes(input)
-            )
-        })
+        imp(self, input).context(E::Failed)
     }
 
     /// Run the parser on the given string (which may be plain bytes) and,
@@ -248,12 +245,7 @@ impl SpanParser {
         }
 
         let input = input.as_ref();
-        imp(self, input).with_context(|| {
-            err!(
-                "failed to parse {input:?} in the \"friendly\" format",
-                input = escape::Bytes(input)
-            )
-        })
+        imp(self, input).context(E::Failed)
     }
 
     /// Run the parser on the given string (which may be plain bytes) and,
@@ -312,12 +304,7 @@ impl SpanParser {
         }
 
         let input = input.as_ref();
-        imp(self, input).with_context(|| {
-            err!(
-                "failed to parse {input:?} in the \"friendly\" format",
-                input = escape::Bytes(input)
-            )
-        })
+        imp(self, input).context(E::Failed)
     }
 
     #[cfg_attr(feature = "perf-inline", inline(always))]
@@ -327,7 +314,7 @@ impl SpanParser {
         builder: &mut DurationUnits,
     ) -> Result<Parsed<'i, ()>, Error> {
         if input.is_empty() {
-            return Err(err!("an empty string is not a valid duration"));
+            return Err(Error::from(E::Empty));
         }
         // Guard prefix sign parsing to avoid the function call, which is
         // marked unlineable to keep the fast path tighter.
@@ -342,11 +329,7 @@ impl SpanParser {
 
         let Parsed { value, input } = self.parse_unit_value(input)?;
         let Some(first_unit_value) = value else {
-            return Err(err!(
-                "parsing a friendly duration requires it to start \
-                 with a unit value (a decimal integer) after an \
-                 optional sign, but no integer was found",
-            ));
+            return Err(Error::from(E::ExpectedIntegerAfterSign));
         };
 
         let Parsed { input, .. } =
@@ -434,11 +417,7 @@ impl SpanParser {
             parsed_any_after_comma = true;
         }
         if !parsed_any_after_comma {
-            return Err(err!(
-                "found comma at the end of duration, \
-                 but a comma indicates at least one more \
-                 unit follows",
-            ));
+            return Err(Error::from(E::ExpectedOneMoreUnitAfterComma));
         }
         Ok(Parsed { value: (), input })
     }
@@ -454,10 +433,13 @@ impl SpanParser {
         input: &'i [u8],
         hour: u64,
     ) -> Result<Parsed<'i, Option<HMS>>, Error> {
-        if !input.first().map_or(false, |&b| b == b':') {
+        let Some((&first, tail)) = input.split_first() else {
+            return Ok(Parsed { input, value: None });
+        };
+        if first != b':' {
             return Ok(Parsed { input, value: None });
         }
-        let Parsed { input, value } = self.parse_hms(&input[1..], hour)?;
+        let Parsed { input, value } = self.parse_hms(tail, hour)?;
         Ok(Parsed { input, value: Some(value) })
     }
 
@@ -477,26 +459,16 @@ impl SpanParser {
         hour: u64,
     ) -> Result<Parsed<'i, HMS>, Error> {
         let Parsed { input, value } = self.parse_unit_value(input)?;
-        let Some(minute) = value else {
-            return Err(err!(
-                "expected to parse minute in 'HH:MM:SS' format \
-                 following parsed hour of {hour}",
-            ));
-        };
-        if !input.first().map_or(false, |&b| b == b':') {
-            return Err(err!(
-                "when parsing 'HH:MM:SS' format, expected to \
-                 see a ':' after the parsed minute of {minute}",
-            ));
+        let minute = value.ok_or(E::ExpectedMinuteAfterHour)?;
+
+        let (&first, input) =
+            input.split_first().ok_or(E::ExpectedColonAfterMinute)?;
+        if first != b':' {
+            return Err(Error::from(E::ExpectedColonAfterMinute));
         }
-        let input = &input[1..];
+
         let Parsed { input, value } = self.parse_unit_value(input)?;
-        let Some(second) = value else {
-            return Err(err!(
-                "expected to parse second in 'HH:MM:SS' format \
-                 following parsed minute of {minute}",
-            ));
-        };
+        let second = value.ok_or(E::ExpectedSecondAfterMinute)?;
         let (fraction, input) =
             if input.first().map_or(false, |&b| b == b'.' || b == b',') {
                 let parsed = parse_temporal_fraction(input)?;
@@ -540,22 +512,8 @@ impl SpanParser {
         &self,
         input: &'i [u8],
     ) -> Result<Parsed<'i, Unit>, Error> {
-        let Some((unit, len)) = parser_label::find(input) else {
-            if input.is_empty() {
-                return Err(err!(
-                    "expected to find unit designator suffix \
-                     (e.g., 'years' or 'secs'), \
-                     but found end of input",
-                ));
-            } else {
-                return Err(err!(
-                    "expected to find unit designator suffix \
-                     (e.g., 'years' or 'secs'), \
-                     but found input beginning with {found:?} instead",
-                    found = escape::Bytes(&input[..input.len().min(20)]),
-                ));
-            }
-        };
+        let (unit, len) =
+            parser_label::find(input).ok_or(E::ExpectedUnitSuffix)?;
         Ok(Parsed { value: unit, input: &input[len..] })
     }
 
@@ -606,17 +564,15 @@ impl SpanParser {
         }
         // Eat any additional whitespace we find before looking for 'ago'.
         input = self.parse_optional_whitespace(&input[1..]).input;
-        let (suffix_sign, input) = if input.starts_with(b"ago") {
-            (Some(Sign::Negative), &input[3..])
-        } else {
-            (None, input)
-        };
+        let (suffix_sign, input) =
+            if let Some(tail) = input.strip_prefix(b"ago") {
+                (Some(Sign::Negative), tail)
+            } else {
+                (None, input)
+            };
         let sign = match (prefix_sign, suffix_sign) {
             (Some(_), Some(_)) => {
-                return Err(err!(
-                    "expected to find either a prefix sign (+/-) or \
-                     a suffix sign (ago), but found both",
-                ))
+                return Err(Error::from(E::ExpectedOneSign));
             }
             (Some(sign), None) => sign,
             (None, Some(sign)) => sign,
@@ -637,24 +593,24 @@ impl SpanParser {
     #[inline(never)]
     fn parse_optional_comma<'i>(
         &self,
-        mut input: &'i [u8],
+        input: &'i [u8],
     ) -> Result<Parsed<'i, ()>, Error> {
-        if !input.first().map_or(false, |&b| b == b',') {
+        let Some((&first, tail)) = input.split_first() else {
+            return Ok(Parsed { value: (), input });
+        };
+        if first != b',' {
             return Ok(Parsed { value: (), input });
         }
-        input = &input[1..];
-        if input.is_empty() {
-            return Err(err!(
-                "expected whitespace after comma, but found end of input"
-            ));
+
+        let (second, input) = tail
+            .split_first()
+            .ok_or(E::ExpectedWhitespaceAfterCommaEndOfInput)?;
+        if !is_whitespace(second) {
+            return Err(Error::from(E::ExpectedWhitespaceAfterComma {
+                byte: *second,
+            }));
         }
-        if !is_whitespace(&input[0]) {
-            return Err(err!(
-                "expected whitespace after comma, but found {found:?}",
-                found = escape::Byte(input[0]),
-            ));
-        }
-        Ok(Parsed { value: (), input: &input[1..] })
+        Ok(Parsed { value: (), input })
     }
 
     /// Parses zero or more bytes of ASCII whitespace.
@@ -721,6 +677,8 @@ mod tests {
         insta::assert_snapshot!(p("1.5secs"), @"PT1.5S");
         insta::assert_snapshot!(p("1.5msecs"), @"PT0.0015S");
         insta::assert_snapshot!(p("1.5µsecs"), @"PT0.0000015S");
+        insta::assert_snapshot!(p("-0.5secs"), @"-PT0.5S");
+        insta::assert_snapshot!(p("0.5secs ago"), @"-PT0.5S");
 
         insta::assert_snapshot!(p("1d 1.5hrs"), @"P1DT1H30M");
         insta::assert_snapshot!(p("1h 1.5mins"), @"PT1H1M30S");
@@ -770,41 +728,82 @@ mod tests {
         // parse due to overflowing i64.
     }
 
+    // When a time unit exceeds its limit, the excess is carried over into
+    // smaller units. This tests that the excess is combined with any smaller
+    // units that were also parsed, instead of one clobbering the other.
+    //
+    // Regression test for: https://github.com/BurntSushi/jiff/issues/660
+    #[test]
+    fn parse_span_boundaries_carry() {
+        // This also checks that the span parsed is consistent with parsing
+        // the same input into a `SignedDuration`.
+        let p = |s: &str| {
+            let span = SpanParser::new().parse_span(s).unwrap();
+            let dur = SpanParser::new().parse_duration(s).unwrap();
+            assert_eq!(dur, SignedDuration::try_from(span).unwrap(), "{s}");
+            span
+        };
+        let pe = |s: &str| SpanParser::new().parse_span(s).unwrap_err();
+
+        insta::assert_snapshot!(p("175307617h 1m"), @"PT175307616H61M");
+        insta::assert_snapshot!(p("175307617h 1m ago"), @"-PT175307616H61M");
+        insta::assert_snapshot!(p("200000000h 30m"), @"PT175307616H1481543070M");
+        insta::assert_snapshot!(p("200000000:30:00"), @"PT175307616H1481543070M");
+        insta::assert_snapshot!(p("200000000h 30.5m"), @"PT175307616H1481543070M30S");
+        insta::assert_snapshot!(p("10518456961m 1s"), @"PT10518456960M61S");
+        insta::assert_snapshot!(p("631107417601s 1ms"), @"PT631107417601.001S");
+        insta::assert_snapshot!(p("631107417600001ms 1us"), @"PT631107417600.001001S");
+        insta::assert_snapshot!(p("631107417600000001us 1ns"), @"PT631107417600.000001001S");
+
+        // The minutes are already at their limit, so the extra hour needs to
+        // skip over them and get added to the seconds.
+        insta::assert_snapshot!(
+            p("175307617h 10518456960m 1s"),
+            @"PT175307616H10518456960M3601S",
+        );
+
+        // Combining the excess with the seconds overflows an `i64`.
+        insta::assert_snapshot!(
+            pe("10518456961m 9223372036854775807s"),
+            @r#"failed to parse input in the "friendly" duration format: failed to set value for second unit on span: failed to set nanosecond value from fractional component"#,
+        );
+    }
+
     #[test]
     fn err_span_basic() {
         let p = |s: &str| SpanParser::new().parse_span(s).unwrap_err();
 
         insta::assert_snapshot!(
             p(""),
-            @r###"failed to parse "" in the "friendly" format: an empty string is not a valid duration"###,
+            @r#"failed to parse input in the "friendly" duration format: an empty string is not valid"#,
         );
         insta::assert_snapshot!(
             p(" "),
-            @r###"failed to parse " " in the "friendly" format: parsing a friendly duration requires it to start with a unit value (a decimal integer) after an optional sign, but no integer was found"###,
+            @r#"failed to parse input in the "friendly" duration format: expected duration to start with a unit value (a decimal integer) after an optional sign, but no integer was found"#,
         );
         insta::assert_snapshot!(
             p("a"),
-            @r###"failed to parse "a" in the "friendly" format: parsing a friendly duration requires it to start with a unit value (a decimal integer) after an optional sign, but no integer was found"###,
+            @r#"failed to parse input in the "friendly" duration format: expected duration to start with a unit value (a decimal integer) after an optional sign, but no integer was found"#,
         );
         insta::assert_snapshot!(
             p("2 months 1 year"),
-            @r###"failed to parse "2 months 1 year" in the "friendly" format: found value 1 with unit year after unit month, but units must be written from largest to smallest (and they can't be repeated)"###,
+            @r#"failed to parse input in the "friendly" duration format: found value with unit year after unit month, but units must be written from largest to smallest (and they can't be repeated)"#,
         );
         insta::assert_snapshot!(
             p("1 year 1 mont"),
-            @r###"failed to parse "1 year 1 mont" in the "friendly" format: parsed value 'P1Y1M', but unparsed input "nt" remains (expected no unparsed input)"###,
+            @r#"failed to parse input in the "friendly" duration format: parsed value 'P1Y1M', but unparsed input "nt" remains (expected no unparsed input)"#,
         );
         insta::assert_snapshot!(
             p("2 months,"),
-            @r###"failed to parse "2 months," in the "friendly" format: expected whitespace after comma, but found end of input"###,
+            @r#"failed to parse input in the "friendly" duration format: expected whitespace after comma, but found end of input"#,
         );
         insta::assert_snapshot!(
             p("2 months, "),
-            @r#"failed to parse "2 months, " in the "friendly" format: found comma at the end of duration, but a comma indicates at least one more unit follows"#,
+            @r#"failed to parse input in the "friendly" duration format: found comma at the end of duration, but a comma indicates at least one more unit follows"#,
         );
         insta::assert_snapshot!(
             p("2 months ,"),
-            @r###"failed to parse "2 months ," in the "friendly" format: parsed value 'P2M', but unparsed input "," remains (expected no unparsed input)"###,
+            @r#"failed to parse input in the "friendly" duration format: parsed value 'P2M', but unparsed input "," remains (expected no unparsed input)"#,
         );
     }
 
@@ -814,19 +813,19 @@ mod tests {
 
         insta::assert_snapshot!(
             p("1yago"),
-            @r###"failed to parse "1yago" in the "friendly" format: parsed value 'P1Y', but unparsed input "ago" remains (expected no unparsed input)"###,
+            @r#"failed to parse input in the "friendly" duration format: parsed value 'P1Y', but unparsed input "ago" remains (expected no unparsed input)"#,
         );
         insta::assert_snapshot!(
             p("1 year 1 monthago"),
-            @r###"failed to parse "1 year 1 monthago" in the "friendly" format: parsed value 'P1Y1M', but unparsed input "ago" remains (expected no unparsed input)"###,
+            @r#"failed to parse input in the "friendly" duration format: parsed value 'P1Y1M', but unparsed input "ago" remains (expected no unparsed input)"#,
         );
         insta::assert_snapshot!(
             p("+1 year 1 month ago"),
-            @r###"failed to parse "+1 year 1 month ago" in the "friendly" format: expected to find either a prefix sign (+/-) or a suffix sign (ago), but found both"###,
+            @r#"failed to parse input in the "friendly" duration format: expected to find either a prefix sign (+/-) or a suffix sign (`ago`), but found both"#,
         );
         insta::assert_snapshot!(
             p("-1 year 1 month ago"),
-            @r###"failed to parse "-1 year 1 month ago" in the "friendly" format: expected to find either a prefix sign (+/-) or a suffix sign (ago), but found both"###,
+            @r#"failed to parse input in the "friendly" duration format: expected to find either a prefix sign (+/-) or a suffix sign (`ago`), but found both"#,
         );
     }
 
@@ -840,7 +839,7 @@ mod tests {
             // the maximum number of microseconds is subtracted off, and we're
             // left over with a value that overflows an i64.
             pe("640330789636854776 micros"),
-            @r#"failed to parse "640330789636854776 micros" in the "friendly" format: failed to set value 640330789636854776 as microsecond unit on span: failed to set nanosecond value 9223372036854776000 (it overflows `i64`) on span determined from 640330789636854776.0"#,
+            @r#"failed to parse input in the "friendly" duration format: failed to set value for microsecond unit on span: failed to set nanosecond value from fractional component"#,
         );
         // one fewer is okay
         insta::assert_snapshot!(
@@ -853,7 +852,7 @@ mod tests {
             // different error path by using an explicit fraction. Here, if
             // we had x.807 micros, it would parse successfully.
             pe("640330789636854775.808 micros"),
-            @r#"failed to parse "640330789636854775.808 micros" in the "friendly" format: failed to set nanosecond value 9223372036854775808 (it overflows `i64`) on span determined from 640330789636854775.808000000"#,
+            @r#"failed to parse input in the "friendly" duration format: failed to set nanosecond value from fractional component"#,
         );
         // one fewer is okay
         insta::assert_snapshot!(
@@ -868,47 +867,47 @@ mod tests {
 
         insta::assert_snapshot!(
             p("19999 years"),
-            @r###"failed to parse "19999 years" in the "friendly" format: failed to set value 19999 as year unit on span: parameter 'years' with value 19999 is not in the required range of -19998..=19998"###,
+            @r#"failed to parse input in the "friendly" duration format: failed to set value for year unit on span: parameter 'years' is not in the required range of -19998..=19998"#,
         );
         insta::assert_snapshot!(
             p("19999 years ago"),
-            @r#"failed to parse "19999 years ago" in the "friendly" format: failed to set value -19999 as year unit on span: parameter 'years' with value -19999 is not in the required range of -19998..=19998"#,
+            @r#"failed to parse input in the "friendly" duration format: failed to set value for year unit on span: parameter 'years' is not in the required range of -19998..=19998"#,
         );
 
         insta::assert_snapshot!(
             p("239977 months"),
-            @r###"failed to parse "239977 months" in the "friendly" format: failed to set value 239977 as month unit on span: parameter 'months' with value 239977 is not in the required range of -239976..=239976"###,
+            @r#"failed to parse input in the "friendly" duration format: failed to set value for month unit on span: parameter 'months' is not in the required range of -239976..=239976"#,
         );
         insta::assert_snapshot!(
             p("239977 months ago"),
-            @r#"failed to parse "239977 months ago" in the "friendly" format: failed to set value -239977 as month unit on span: parameter 'months' with value -239977 is not in the required range of -239976..=239976"#,
+            @r#"failed to parse input in the "friendly" duration format: failed to set value for month unit on span: parameter 'months' is not in the required range of -239976..=239976"#,
         );
 
         insta::assert_snapshot!(
             p("1043498 weeks"),
-            @r###"failed to parse "1043498 weeks" in the "friendly" format: failed to set value 1043498 as week unit on span: parameter 'weeks' with value 1043498 is not in the required range of -1043497..=1043497"###,
+            @r#"failed to parse input in the "friendly" duration format: failed to set value for week unit on span: parameter 'weeks' is not in the required range of -1043497..=1043497"#,
         );
         insta::assert_snapshot!(
             p("1043498 weeks ago"),
-            @r#"failed to parse "1043498 weeks ago" in the "friendly" format: failed to set value -1043498 as week unit on span: parameter 'weeks' with value -1043498 is not in the required range of -1043497..=1043497"#,
+            @r#"failed to parse input in the "friendly" duration format: failed to set value for week unit on span: parameter 'weeks' is not in the required range of -1043497..=1043497"#,
         );
 
         insta::assert_snapshot!(
             p("7304485 days"),
-            @r###"failed to parse "7304485 days" in the "friendly" format: failed to set value 7304485 as day unit on span: parameter 'days' with value 7304485 is not in the required range of -7304484..=7304484"###,
+            @r#"failed to parse input in the "friendly" duration format: failed to set value for day unit on span: parameter 'days' is not in the required range of -7304484..=7304484"#,
         );
         insta::assert_snapshot!(
             p("7304485 days ago"),
-            @r#"failed to parse "7304485 days ago" in the "friendly" format: failed to set value -7304485 as day unit on span: parameter 'days' with value -7304485 is not in the required range of -7304484..=7304484"#,
+            @r#"failed to parse input in the "friendly" duration format: failed to set value for day unit on span: parameter 'days' is not in the required range of -7304484..=7304484"#,
         );
 
         insta::assert_snapshot!(
             p("9223372036854775808 nanoseconds"),
-            @r#"failed to parse "9223372036854775808 nanoseconds" in the "friendly" format: `9223372036854775808` nanoseconds is too big (or small) to fit into a signed 64-bit integer"#,
+            @r#"failed to parse input in the "friendly" duration format: value for nanoseconds is too big (or small) to fit into a signed 64-bit integer"#,
         );
         insta::assert_snapshot!(
             p("9223372036854775808 nanoseconds ago"),
-            @r#"failed to parse "9223372036854775808 nanoseconds ago" in the "friendly" format: failed to set value -9223372036854775808 as nanosecond unit on span: parameter 'nanoseconds' with value -9223372036854775808 is not in the required range of -9223372036854775807..=9223372036854775807"#,
+            @r#"failed to parse input in the "friendly" duration format: failed to set value for nanosecond unit on span: parameter 'nanoseconds' is not in the required range of -9223372036854775807..=9223372036854775807"#,
         );
     }
 
@@ -918,11 +917,11 @@ mod tests {
 
         insta::assert_snapshot!(
             p("1.5 years"),
-            @r#"failed to parse "1.5 years" in the "friendly" format: fractional years are not supported"#,
+            @r#"failed to parse input in the "friendly" duration format: fractional years are not supported"#,
         );
         insta::assert_snapshot!(
             p("1.5 nanos"),
-            @r#"failed to parse "1.5 nanos" in the "friendly" format: fractional nanoseconds are not supported"#,
+            @r#"failed to parse input in the "friendly" duration format: fractional nanoseconds are not supported"#,
         );
     }
 
@@ -932,19 +931,19 @@ mod tests {
 
         insta::assert_snapshot!(
             p("05:"),
-            @r###"failed to parse "05:" in the "friendly" format: expected to parse minute in 'HH:MM:SS' format following parsed hour of 5"###,
+            @r#"failed to parse input in the "friendly" duration format: when parsing the `HH:MM:SS` format, expected to parse minute following hour"#,
         );
         insta::assert_snapshot!(
             p("05:06"),
-            @r###"failed to parse "05:06" in the "friendly" format: when parsing 'HH:MM:SS' format, expected to see a ':' after the parsed minute of 6"###,
+            @r#"failed to parse input in the "friendly" duration format: when parsing the `HH:MM:SS` format, expected to parse `:` following minute"#,
         );
         insta::assert_snapshot!(
             p("05:06:"),
-            @r###"failed to parse "05:06:" in the "friendly" format: expected to parse second in 'HH:MM:SS' format following parsed minute of 6"###,
+            @r#"failed to parse input in the "friendly" duration format: when parsing the `HH:MM:SS` format, expected to parse second following minute"#,
         );
         insta::assert_snapshot!(
             p("2 hours, 05:06:07"),
-            @r#"failed to parse "2 hours, 05:06:07" in the "friendly" format: found `HH:MM:SS` after unit hour, but `HH:MM:SS` can only appear after years, months, weeks or days"#,
+            @r#"failed to parse input in the "friendly" duration format: found `HH:MM:SS` after unit hour, but `HH:MM:SS` can only appear after years, months, weeks or days"#,
         );
     }
 
@@ -968,7 +967,7 @@ mod tests {
         );
         insta::assert_snapshot!(
             perr("9223372036854775808s"),
-            @r#"failed to parse "9223372036854775808s" in the "friendly" format: `9223372036854775808` seconds is too big (or small) to fit into a signed 64-bit integer"#,
+            @r#"failed to parse input in the "friendly" duration format: value for seconds is too big (or small) to fit into a signed 64-bit integer"#,
         );
         insta::assert_snapshot!(
             p("-9223372036854775808s"),
@@ -985,6 +984,8 @@ mod tests {
         insta::assert_snapshot!(p("1.5secs"), @"PT1.5S");
         insta::assert_snapshot!(p("1.5msecs"), @"PT0.0015S");
         insta::assert_snapshot!(p("1.5µsecs"), @"PT0.0000015S");
+        insta::assert_snapshot!(p("-0.5secs"), @"-PT0.5S");
+        insta::assert_snapshot!(p("0.5secs ago"), @"-PT0.5S");
 
         insta::assert_snapshot!(p("1h 1.5mins"), @"PT1H1M30S");
         insta::assert_snapshot!(p("1m 1.5secs"), @"PT1M1.5S");
@@ -1032,21 +1033,21 @@ mod tests {
         insta::assert_snapshot!(p("-2562047788015215hours"), @"-PT2562047788015215H");
         insta::assert_snapshot!(
             pe("2562047788015216hrs"),
-            @r#"failed to parse "2562047788015216hrs" in the "friendly" format: accumulated `SignedDuration` of `0s` overflowed when adding 2562047788015216 of unit hour"#,
+            @r#"failed to parse input in the "friendly" duration format: accumulated duration overflowed when adding value to unit hour"#,
         );
 
         insta::assert_snapshot!(p("153722867280912930minutes"), @"PT2562047788015215H30M");
         insta::assert_snapshot!(p("153722867280912930minutes ago"), @"-PT2562047788015215H30M");
         insta::assert_snapshot!(
             pe("153722867280912931mins"),
-            @r#"failed to parse "153722867280912931mins" in the "friendly" format: accumulated `SignedDuration` of `0s` overflowed when adding 153722867280912931 of unit minute"#,
+            @r#"failed to parse input in the "friendly" duration format: accumulated duration overflowed when adding value to unit minute"#,
         );
 
         insta::assert_snapshot!(p("9223372036854775807seconds"), @"PT2562047788015215H30M7S");
         insta::assert_snapshot!(p("-9223372036854775807seconds"), @"-PT2562047788015215H30M7S");
         insta::assert_snapshot!(
             pe("9223372036854775808s"),
-            @r#"failed to parse "9223372036854775808s" in the "friendly" format: `9223372036854775808` seconds is too big (or small) to fit into a signed 64-bit integer"#,
+            @r#"failed to parse input in the "friendly" duration format: value for seconds is too big (or small) to fit into a signed 64-bit integer"#,
         );
         insta::assert_snapshot!(
             p("-9223372036854775808s"),
@@ -1060,39 +1061,39 @@ mod tests {
 
         insta::assert_snapshot!(
             p(""),
-            @r###"failed to parse "" in the "friendly" format: an empty string is not a valid duration"###,
+            @r#"failed to parse input in the "friendly" duration format: an empty string is not valid"#,
         );
         insta::assert_snapshot!(
             p(" "),
-            @r###"failed to parse " " in the "friendly" format: parsing a friendly duration requires it to start with a unit value (a decimal integer) after an optional sign, but no integer was found"###,
+            @r#"failed to parse input in the "friendly" duration format: expected duration to start with a unit value (a decimal integer) after an optional sign, but no integer was found"#,
         );
         insta::assert_snapshot!(
             p("5"),
-            @r###"failed to parse "5" in the "friendly" format: expected to find unit designator suffix (e.g., 'years' or 'secs'), but found end of input"###,
+            @r#"failed to parse input in the "friendly" duration format: expected to find unit designator suffix (e.g., `years` or `secs`) after parsing integer"#,
         );
         insta::assert_snapshot!(
             p("a"),
-            @r###"failed to parse "a" in the "friendly" format: parsing a friendly duration requires it to start with a unit value (a decimal integer) after an optional sign, but no integer was found"###,
+            @r#"failed to parse input in the "friendly" duration format: expected duration to start with a unit value (a decimal integer) after an optional sign, but no integer was found"#,
         );
         insta::assert_snapshot!(
             p("2 minutes 1 hour"),
-            @r###"failed to parse "2 minutes 1 hour" in the "friendly" format: found value 1 with unit hour after unit minute, but units must be written from largest to smallest (and they can't be repeated)"###,
+            @r#"failed to parse input in the "friendly" duration format: found value with unit hour after unit minute, but units must be written from largest to smallest (and they can't be repeated)"#,
         );
         insta::assert_snapshot!(
             p("1 hour 1 minut"),
-            @r###"failed to parse "1 hour 1 minut" in the "friendly" format: parsed value 'PT1H1M', but unparsed input "ut" remains (expected no unparsed input)"###,
+            @r#"failed to parse input in the "friendly" duration format: parsed value 'PT1H1M', but unparsed input "ut" remains (expected no unparsed input)"#,
         );
         insta::assert_snapshot!(
             p("2 minutes,"),
-            @r###"failed to parse "2 minutes," in the "friendly" format: expected whitespace after comma, but found end of input"###,
+            @r#"failed to parse input in the "friendly" duration format: expected whitespace after comma, but found end of input"#,
         );
         insta::assert_snapshot!(
             p("2 minutes, "),
-            @r#"failed to parse "2 minutes, " in the "friendly" format: found comma at the end of duration, but a comma indicates at least one more unit follows"#,
+            @r#"failed to parse input in the "friendly" duration format: found comma at the end of duration, but a comma indicates at least one more unit follows"#,
         );
         insta::assert_snapshot!(
             p("2 minutes ,"),
-            @r###"failed to parse "2 minutes ," in the "friendly" format: parsed value 'PT2M', but unparsed input "," remains (expected no unparsed input)"###,
+            @r#"failed to parse input in the "friendly" duration format: parsed value 'PT2M', but unparsed input "," remains (expected no unparsed input)"#,
         );
     }
 
@@ -1102,19 +1103,19 @@ mod tests {
 
         insta::assert_snapshot!(
             p("1hago"),
-            @r###"failed to parse "1hago" in the "friendly" format: parsed value 'PT1H', but unparsed input "ago" remains (expected no unparsed input)"###,
+            @r#"failed to parse input in the "friendly" duration format: parsed value 'PT1H', but unparsed input "ago" remains (expected no unparsed input)"#,
         );
         insta::assert_snapshot!(
             p("1 hour 1 minuteago"),
-            @r###"failed to parse "1 hour 1 minuteago" in the "friendly" format: parsed value 'PT1H1M', but unparsed input "ago" remains (expected no unparsed input)"###,
+            @r#"failed to parse input in the "friendly" duration format: parsed value 'PT1H1M', but unparsed input "ago" remains (expected no unparsed input)"#,
         );
         insta::assert_snapshot!(
             p("+1 hour 1 minute ago"),
-            @r###"failed to parse "+1 hour 1 minute ago" in the "friendly" format: expected to find either a prefix sign (+/-) or a suffix sign (ago), but found both"###,
+            @r#"failed to parse input in the "friendly" duration format: expected to find either a prefix sign (+/-) or a suffix sign (`ago`), but found both"#,
         );
         insta::assert_snapshot!(
             p("-1 hour 1 minute ago"),
-            @r###"failed to parse "-1 hour 1 minute ago" in the "friendly" format: expected to find either a prefix sign (+/-) or a suffix sign (ago), but found both"###,
+            @r#"failed to parse input in the "friendly" duration format: expected to find either a prefix sign (+/-) or a suffix sign (`ago`), but found both"#,
         );
     }
 
@@ -1127,7 +1128,7 @@ mod tests {
             // Unlike `Span`, this just overflows because it can't be parsed
             // as a 64-bit integer.
             pe("9223372036854775808 micros"),
-            @r#"failed to parse "9223372036854775808 micros" in the "friendly" format: `9223372036854775808` microseconds is too big (or small) to fit into a signed 64-bit integer"#,
+            @r#"failed to parse input in the "friendly" duration format: value for microseconds is too big (or small) to fit into a signed 64-bit integer"#,
         );
         // one fewer is okay
         insta::assert_snapshot!(
@@ -1142,7 +1143,7 @@ mod tests {
 
         insta::assert_snapshot!(
             p("1.5 nanos"),
-            @r#"failed to parse "1.5 nanos" in the "friendly" format: fractional nanoseconds are not supported"#,
+            @r#"failed to parse input in the "friendly" duration format: fractional nanoseconds are not supported"#,
         );
     }
 
@@ -1152,19 +1153,19 @@ mod tests {
 
         insta::assert_snapshot!(
             p("05:"),
-            @r###"failed to parse "05:" in the "friendly" format: expected to parse minute in 'HH:MM:SS' format following parsed hour of 5"###,
+            @r#"failed to parse input in the "friendly" duration format: when parsing the `HH:MM:SS` format, expected to parse minute following hour"#,
         );
         insta::assert_snapshot!(
             p("05:06"),
-            @r###"failed to parse "05:06" in the "friendly" format: when parsing 'HH:MM:SS' format, expected to see a ':' after the parsed minute of 6"###,
+            @r#"failed to parse input in the "friendly" duration format: when parsing the `HH:MM:SS` format, expected to parse `:` following minute"#,
         );
         insta::assert_snapshot!(
             p("05:06:"),
-            @r###"failed to parse "05:06:" in the "friendly" format: expected to parse second in 'HH:MM:SS' format following parsed minute of 6"###,
+            @r#"failed to parse input in the "friendly" duration format: when parsing the `HH:MM:SS` format, expected to parse second following minute"#,
         );
         insta::assert_snapshot!(
             p("2 hours, 05:06:07"),
-            @r#"failed to parse "2 hours, 05:06:07" in the "friendly" format: found `HH:MM:SS` after unit hour, but `HH:MM:SS` can only appear after years, months, weeks or days"#,
+            @r#"failed to parse input in the "friendly" duration format: found `HH:MM:SS` after unit hour, but `HH:MM:SS` can only appear after years, months, weeks or days"#,
         );
     }
 
@@ -1205,11 +1206,11 @@ mod tests {
         );
         insta::assert_snapshot!(
             perr("18446744073709551616s"),
-            @r#"failed to parse "18446744073709551616s" in the "friendly" format: number `18446744073709551616` too big to parse into 64-bit integer"#,
+            @r#"failed to parse input in the "friendly" duration format: number too big to parse into 64-bit integer"#,
         );
         insta::assert_snapshot!(
             perr("-1s"),
-            @r#"failed to parse "-1s" in the "friendly" format: cannot parse negative duration into unsigned `std::time::Duration`"#,
+            @r#"failed to parse input in the "friendly" duration format: cannot parse negative duration into unsigned `std::time::Duration`"#,
         );
     }
 
@@ -1263,19 +1264,19 @@ mod tests {
         insta::assert_snapshot!(p("5124095576030431hours"), @"PT5124095576030431H");
         insta::assert_snapshot!(
             pe("5124095576030432hrs"),
-            @r#"failed to parse "5124095576030432hrs" in the "friendly" format: accumulated `SignedDuration` of `0s` overflowed when adding 5124095576030432 of unit hour"#,
+            @r#"failed to parse input in the "friendly" duration format: accumulated duration overflowed when adding value to unit hour"#,
         );
 
         insta::assert_snapshot!(p("307445734561825860minutes"), @"PT5124095576030431H");
         insta::assert_snapshot!(
             pe("307445734561825861mins"),
-            @r#"failed to parse "307445734561825861mins" in the "friendly" format: accumulated `SignedDuration` of `0s` overflowed when adding 307445734561825861 of unit minute"#,
+            @r#"failed to parse input in the "friendly" duration format: accumulated duration overflowed when adding value to unit minute"#,
         );
 
         insta::assert_snapshot!(p("18446744073709551615seconds"), @"PT5124095576030431H15S");
         insta::assert_snapshot!(
             pe("18446744073709551616s"),
-            @r#"failed to parse "18446744073709551616s" in the "friendly" format: number `18446744073709551616` too big to parse into 64-bit integer"#,
+            @r#"failed to parse input in the "friendly" duration format: number too big to parse into 64-bit integer"#,
         );
     }
 
@@ -1287,39 +1288,39 @@ mod tests {
 
         insta::assert_snapshot!(
             p(""),
-            @r###"failed to parse "" in the "friendly" format: an empty string is not a valid duration"###,
+            @r#"failed to parse input in the "friendly" duration format: an empty string is not valid"#,
         );
         insta::assert_snapshot!(
             p(" "),
-            @r###"failed to parse " " in the "friendly" format: parsing a friendly duration requires it to start with a unit value (a decimal integer) after an optional sign, but no integer was found"###,
+            @r#"failed to parse input in the "friendly" duration format: expected duration to start with a unit value (a decimal integer) after an optional sign, but no integer was found"#,
         );
         insta::assert_snapshot!(
             p("5"),
-            @r###"failed to parse "5" in the "friendly" format: expected to find unit designator suffix (e.g., 'years' or 'secs'), but found end of input"###,
+            @r#"failed to parse input in the "friendly" duration format: expected to find unit designator suffix (e.g., `years` or `secs`) after parsing integer"#,
         );
         insta::assert_snapshot!(
             p("a"),
-            @r###"failed to parse "a" in the "friendly" format: parsing a friendly duration requires it to start with a unit value (a decimal integer) after an optional sign, but no integer was found"###,
+            @r#"failed to parse input in the "friendly" duration format: expected duration to start with a unit value (a decimal integer) after an optional sign, but no integer was found"#,
         );
         insta::assert_snapshot!(
             p("2 minutes 1 hour"),
-            @r###"failed to parse "2 minutes 1 hour" in the "friendly" format: found value 1 with unit hour after unit minute, but units must be written from largest to smallest (and they can't be repeated)"###,
+            @r#"failed to parse input in the "friendly" duration format: found value with unit hour after unit minute, but units must be written from largest to smallest (and they can't be repeated)"#,
         );
         insta::assert_snapshot!(
             p("1 hour 1 minut"),
-            @r#"failed to parse "1 hour 1 minut" in the "friendly" format: parsed value '3660s', but unparsed input "ut" remains (expected no unparsed input)"#,
+            @r#"failed to parse input in the "friendly" duration format: parsed value '3660s', but unparsed input "ut" remains (expected no unparsed input)"#,
         );
         insta::assert_snapshot!(
             p("2 minutes,"),
-            @r###"failed to parse "2 minutes," in the "friendly" format: expected whitespace after comma, but found end of input"###,
+            @r#"failed to parse input in the "friendly" duration format: expected whitespace after comma, but found end of input"#,
         );
         insta::assert_snapshot!(
             p("2 minutes, "),
-            @r#"failed to parse "2 minutes, " in the "friendly" format: found comma at the end of duration, but a comma indicates at least one more unit follows"#,
+            @r#"failed to parse input in the "friendly" duration format: found comma at the end of duration, but a comma indicates at least one more unit follows"#,
         );
         insta::assert_snapshot!(
             p("2 minutes ,"),
-            @r#"failed to parse "2 minutes ," in the "friendly" format: parsed value '120s', but unparsed input "," remains (expected no unparsed input)"#,
+            @r#"failed to parse input in the "friendly" duration format: parsed value '120s', but unparsed input "," remains (expected no unparsed input)"#,
         );
     }
 
@@ -1331,19 +1332,19 @@ mod tests {
 
         insta::assert_snapshot!(
             p("1hago"),
-            @r#"failed to parse "1hago" in the "friendly" format: parsed value '3600s', but unparsed input "ago" remains (expected no unparsed input)"#,
+            @r#"failed to parse input in the "friendly" duration format: parsed value '3600s', but unparsed input "ago" remains (expected no unparsed input)"#,
         );
         insta::assert_snapshot!(
             p("1 hour 1 minuteago"),
-            @r#"failed to parse "1 hour 1 minuteago" in the "friendly" format: parsed value '3660s', but unparsed input "ago" remains (expected no unparsed input)"#,
+            @r#"failed to parse input in the "friendly" duration format: parsed value '3660s', but unparsed input "ago" remains (expected no unparsed input)"#,
         );
         insta::assert_snapshot!(
             p("+1 hour 1 minute ago"),
-            @r###"failed to parse "+1 hour 1 minute ago" in the "friendly" format: expected to find either a prefix sign (+/-) or a suffix sign (ago), but found both"###,
+            @r#"failed to parse input in the "friendly" duration format: expected to find either a prefix sign (+/-) or a suffix sign (`ago`), but found both"#,
         );
         insta::assert_snapshot!(
             p("-1 hour 1 minute ago"),
-            @r###"failed to parse "-1 hour 1 minute ago" in the "friendly" format: expected to find either a prefix sign (+/-) or a suffix sign (ago), but found both"###,
+            @r#"failed to parse input in the "friendly" duration format: expected to find either a prefix sign (+/-) or a suffix sign (`ago`), but found both"#,
         );
     }
 
@@ -1362,7 +1363,7 @@ mod tests {
             // Unlike `Span`, this just overflows because it can't be parsed
             // as a 64-bit integer.
             pe("18446744073709551616 micros"),
-            @r#"failed to parse "18446744073709551616 micros" in the "friendly" format: number `18446744073709551616` too big to parse into 64-bit integer"#,
+            @r#"failed to parse input in the "friendly" duration format: number too big to parse into 64-bit integer"#,
         );
         // one fewer is okay
         insta::assert_snapshot!(
@@ -1379,7 +1380,7 @@ mod tests {
 
         insta::assert_snapshot!(
             p("1.5 nanos"),
-            @r#"failed to parse "1.5 nanos" in the "friendly" format: fractional nanoseconds are not supported"#,
+            @r#"failed to parse input in the "friendly" duration format: fractional nanoseconds are not supported"#,
         );
     }
 
@@ -1391,19 +1392,19 @@ mod tests {
 
         insta::assert_snapshot!(
             p("05:"),
-            @r###"failed to parse "05:" in the "friendly" format: expected to parse minute in 'HH:MM:SS' format following parsed hour of 5"###,
+            @r#"failed to parse input in the "friendly" duration format: when parsing the `HH:MM:SS` format, expected to parse minute following hour"#,
         );
         insta::assert_snapshot!(
             p("05:06"),
-            @r###"failed to parse "05:06" in the "friendly" format: when parsing 'HH:MM:SS' format, expected to see a ':' after the parsed minute of 6"###,
+            @r#"failed to parse input in the "friendly" duration format: when parsing the `HH:MM:SS` format, expected to parse `:` following minute"#,
         );
         insta::assert_snapshot!(
             p("05:06:"),
-            @r###"failed to parse "05:06:" in the "friendly" format: expected to parse second in 'HH:MM:SS' format following parsed minute of 6"###,
+            @r#"failed to parse input in the "friendly" duration format: when parsing the `HH:MM:SS` format, expected to parse second following minute"#,
         );
         insta::assert_snapshot!(
             p("2 hours, 05:06:07"),
-            @r#"failed to parse "2 hours, 05:06:07" in the "friendly" format: found `HH:MM:SS` after unit hour, but `HH:MM:SS` can only appear after years, months, weeks or days"#,
+            @r#"failed to parse input in the "friendly" duration format: found `HH:MM:SS` after unit hour, but `HH:MM:SS` can only appear after years, months, weeks or days"#,
         );
     }
 }

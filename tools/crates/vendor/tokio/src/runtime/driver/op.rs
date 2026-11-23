@@ -1,14 +1,34 @@
+use crate::io::blocking::Buf;
 use crate::io::uring::open::Open;
+use crate::io::uring::read::Read;
+use crate::io::uring::rename::Rename;
+use crate::io::uring::utils::ArcFd;
 use crate::io::uring::write::Write;
+
+use crate::runtime::io::RegisterResult;
 use crate::runtime::Handle;
+
+#[cfg(
+    // libc::statx is only supported on these platforms
+    // FIXME: Add musl target env when our minimum supported
+    // rust version is 1.93. To clarify, statx support is
+    // introduced to musl in 1.25 as mentioned officially here:
+    // https://musl.libc.org/releases.html.
+    // However, rustup target_env building for *-linux-musl
+    // uses 1.25 musl on all *-linux-musl platforms starting
+    // in 1.93 stable rust version.
+    // https://blog.rust-lang.org/2025/12/05/Updating-musl-1.2.5/
+    any(target_env = "gnu", target_os = "android")
+)]
+use crate::io::uring::statx::Statx;
 use io_uring::cqueue;
 use io_uring::squeue::Entry;
 use std::future::Future;
+use std::io;
+use std::mem;
+use std::os::fd::OwnedFd;
 use std::pin::Pin;
-use std::task::Context;
-use std::task::Poll;
-use std::task::Waker;
-use std::{io, mem};
+use std::task::{Context, Poll, Waker};
 
 // This field isn't accessed directly, but it holds cancellation data,
 // so `#[allow(dead_code)]` is needed.
@@ -17,6 +37,22 @@ use std::{io, mem};
 pub(crate) enum CancelData {
     Open(Open),
     Write(Write),
+    Rename(Rename),
+    ReadVec(Read<Vec<u8>, OwnedFd>),
+    ReadBuf(Read<Buf, ArcFd>),
+    #[cfg(
+        // libc::statx is only supported on these platforms
+        // FIXME: Add musl target env when our minimum supported
+        // rust version is 1.93. To clarify, statx support is
+        // introduced to musl in 1.25 as mentioned officially here:
+        // https://musl.libc.org/releases.html.
+        // However, rustup target_env building for *-linux-musl
+        // uses 1.25 musl on all *-linux-musl platforms starting
+        // in 1.93 stable rust version.
+        // https://blog.rust-lang.org/2025/12/05/Updating-musl-1.2.5/
+        any(target_env = "gnu", target_os = "android")
+    )]
+    Statx(Statx),
 }
 
 #[derive(Debug)]
@@ -36,7 +72,7 @@ pub(crate) enum Lifecycle {
     ),
 
     /// The operation has completed with a single cqe result
-    Completed(io_uring::cqueue::Entry),
+    Completed(cqueue::Entry),
 }
 
 pub(crate) enum State {
@@ -110,7 +146,17 @@ impl From<cqueue::Entry> for CqeResult {
 /// A trait that converts a CQE result into a usable value for each operation.
 pub(crate) trait Completable {
     type Output;
-    fn complete(self, cqe: CqeResult) -> io::Result<Self::Output>;
+    fn complete(self, cqe: CqeResult) -> Self::Output;
+
+    // This is used when you want to terminate an operation with an error.
+    //
+    // The `Op` type that implements this trait can return the passed error
+    // upstream by embedding it in the `Output`.
+    fn complete_with_error(self, error: io::Error) -> Self::Output;
+
+    // Like `complete_with_error`, but for an op cancelled after the SQE reached
+    // the kernel: its resources stay with the driver and are not returned.
+    fn complete_after_cancel(error: io::Error) -> Self::Output;
 }
 
 /// Extracts the `CancelData` needed to safely cancel an in-flight io_uring operation.
@@ -121,24 +167,55 @@ pub(crate) trait Cancellable {
 impl<T: Cancellable> Unpin for Op<T> {}
 
 impl<T: Cancellable + Completable + Send> Future for Op<T> {
-    type Output = io::Result<T::Output>;
+    type Output = T::Output;
 
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
         let this = self.get_mut();
-        let handle = &mut this.handle;
-        let driver = handle.inner.driver().io();
 
         match &mut this.state {
             State::Initialize(entry_opt) => {
                 let entry = entry_opt.take().expect("Entry must be present");
                 let waker = cx.waker().clone();
+
+                let driver = this.handle.inner.driver().io();
                 // SAFETY: entry is valid for the entire duration of the operation
-                let idx = unsafe { driver.register_op(entry, waker)? };
-                this.state = State::Polled(idx);
+                let result = unsafe { driver.register_op(entry, waker) };
+
+                match result {
+                    RegisterResult::Submitted(idx) => this.state = State::Polled(idx),
+
+                    // The kernel never saw the entry, so the resources go back to
+                    // the caller with the error.
+                    RegisterResult::NotPushed(err) => {
+                        let data = this
+                            .take_data()
+                            .expect("Data must be present on Initialization");
+
+                        this.state = State::Complete;
+
+                        return Poll::Ready(data.complete_with_error(err));
+                    }
+
+                    // The kernel may have seen the entry, so cancel to keep the
+                    // resources alive until completion instead of returning them.
+                    RegisterResult::Pushed { index, error } => {
+                        let data = this
+                            .take_data()
+                            .expect("Data must be present on Initialization");
+
+                        this.handle.inner.driver().io().cancel_op(index, Some(data));
+
+                        this.state = State::Complete;
+
+                        return Poll::Ready(T::complete_after_cancel(error));
+                    }
+                };
+
                 Poll::Pending
             }
 
             State::Polled(idx) => {
+                let driver = this.handle.inner.driver().io();
                 let mut ctx = driver.get_uring().lock();
                 let lifecycle = ctx.ops.get_mut(*idx).expect("Lifecycle must be present");
 

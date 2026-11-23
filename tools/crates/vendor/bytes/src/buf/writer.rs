@@ -85,4 +85,21 @@ impl<B: BufMut + Sized> io::Write for Writer<B> {
     fn flush(&mut self) -> io::Result<()> {
         Ok(())
     }
+
+    #[inline]
+    fn write_all(&mut self, src: &[u8]) -> io::Result<()> {
+        let n = self.buf.remaining_mut();
+
+        if src.len() <= n {
+            self.buf.put_slice(src);
+            Ok(())
+        } else {
+            // Like the default impl: write what fits, then fail.
+            self.buf.put_slice(&src[..n]);
+            Err(io::Error::new(
+                io::ErrorKind::WriteZero,
+                "failed to write whole buffer",
+            ))
+        }
+    }
 }

@@ -2,6 +2,41 @@ use super::*;
 use snapbox::prelude::*;
 use snapbox::str;
 
+use crate::error::ErrMode;
+use crate::error::ErrMode::Backtrack;
+use crate::error::InputError;
+use crate::token::literal;
+
+#[test]
+fn test_literal_support_char() {
+    assert_eq!(
+        literal::<_, &[u8], ErrMode<InputError<_>>>(Caseless('a')).parse_peek(b"ABCxyz"),
+        Ok((&b"BCxyz"[..], &b"A"[..]))
+    );
+
+    assert_eq!(
+        literal::<_, &[u8], ErrMode<InputError<_>>>('a').parse_peek(b"ABCxyz"),
+        Err(Backtrack(InputError::at(&b"ABCxyz"[..],)))
+    );
+
+    assert_eq!(
+        literal::<_, &[u8], ErrMode<InputError<_>>>(Caseless('π')).parse_peek(b"\xCF\x803.14"),
+        Ok((&b"3.14"[..], "π".as_bytes()))
+    );
+
+    assert_eq!(
+        literal::<_, _, ErrMode<InputError<_>>>(Caseless('🧑')).parse_peek("🧑你好"),
+        Ok(("你好", "🧑"))
+    );
+
+    let mut buffer = [0; 4];
+    let input = '\u{241b}'.encode_utf8(&mut buffer);
+    assert_eq!(
+        literal::<_, &[u8], ErrMode<InputError<_>>>(Caseless('␛')).parse_peek(input.as_bytes()),
+        Ok((&b""[..], [226, 144, 155].as_slice()))
+    );
+}
+
 mod complete {
     use super::*;
 
@@ -14,6 +49,7 @@ mod complete {
     use crate::stream::ParseSlice;
     use crate::token::none_of;
     use crate::token::one_of;
+    use crate::token::take_till;
     #[cfg(feature = "alloc")]
     use alloc::string::String;
     #[cfg(feature = "alloc")]
@@ -2829,6 +2865,185 @@ Ok(
         );
     }
 
+    #[cfg(feature = "std")]
+    #[test]
+    fn complete_escape_transform_cow() {
+        use crate::ascii::alpha1 as alpha;
+
+        fn esc<'i>(i: &mut &'i str) -> TestResult<&'i str, alloc::borrow::Cow<'i, str>> {
+            escaped(
+                alpha,
+                '\\',
+                alt((
+                    '\\',
+                    '"',
+                    "n".value('\n'),
+                    ("x", hex_uint).map(|(_, hex)| char::from_u32(hex).unwrap()),
+                )),
+            )
+            .parse_next(i)
+        }
+
+        assert_parse!(
+            esc.parse_peek("abcd;"),
+            str![[r#"
+Ok(
+    (
+        ";",
+        "abcd",
+    ),
+)
+
+"#]]
+            .raw()
+        );
+        assert_parse!(
+            esc.parse_peek("ab\\\"cd;"),
+            str![[r#"
+Ok(
+    (
+        ";",
+        "ab\"cd",
+    ),
+)
+
+"#]]
+            .raw()
+        );
+        assert_parse!(
+            esc.parse_peek("\\\"abcd;"),
+            str![[r#"
+Ok(
+    (
+        ";",
+        "\"abcd",
+    ),
+)
+
+"#]]
+            .raw()
+        );
+        assert_parse!(
+            esc.parse_peek("\\n;"),
+            str![[r#"
+Ok(
+    (
+        ";",
+        "\n",
+    ),
+)
+
+"#]]
+            .raw()
+        );
+        assert_parse!(
+            esc.parse_peek("ab\\\"12"),
+            str![[r#"
+Ok(
+    (
+        "12",
+        "ab\"",
+    ),
+)
+
+"#]]
+            .raw()
+        );
+        assert_parse!(
+            esc.parse_peek("ab\\x20"),
+            str![[r#"
+Ok(
+    (
+        "",
+        "ab ",
+    ),
+)
+
+"#]]
+            .raw()
+        );
+        assert_parse!(
+            esc.parse_peek("AB\\"),
+            str![[r#"
+Err(
+    Backtrack(
+        InputError {
+            input: "",
+        },
+    ),
+)
+
+"#]]
+            .raw()
+        );
+        assert_parse!(
+            esc.parse_peek("AB\\A"),
+            str![[r#"
+Err(
+    Backtrack(
+        InputError {
+            input: "A",
+        },
+    ),
+)
+
+"#]]
+            .raw()
+        );
+
+        fn esc2<'i>(i: &mut &'i str) -> TestResult<&'i str, alloc::borrow::Cow<'i, str>> {
+            escaped(
+                alpha,
+                '&',
+                alt(("egrave;".value("è"), "agrave;".value("à"))),
+            )
+            .parse_next(i)
+        }
+        assert_parse!(
+            esc2.parse_peek("ab&egrave;DEF;"),
+            str![[r#"
+Ok(
+    (
+        ";",
+        "abèDEF",
+    ),
+)
+
+"#]]
+            .raw()
+        );
+        assert_parse!(
+            esc2.parse_peek("ab&egrave;D&agrave;EF;"),
+            str![[r#"
+Ok(
+    (
+        ";",
+        "abèDàEF",
+    ),
+)
+
+"#]]
+            .raw()
+        );
+
+        fn esc3<'i>(i: &mut &'i str) -> TestResult<&'i str, String> {
+            escaped(alpha, '␛', alt(("0".value("\0"), "n".value("\n")))).parse_next(i)
+        }
+        assert_parse!(
+            esc3.parse_peek("a␛0bc␛n"),
+            str![[r#"
+Ok(
+    (
+        "",
+        "a\0bc\n",
+    ),
+)
+
+"#]]
+            .raw()
+        );
+    }
+
     #[test]
     #[cfg(feature = "alloc")]
     fn test_escaped_error() {
@@ -2849,6 +3064,89 @@ Ok(
 
 "#]]
             .raw()
+        );
+    }
+
+    #[test]
+    #[cfg(feature = "alloc")]
+    fn try_fesc() {
+        const FEND: u8 = 0xC0;
+        const FESC: u8 = 0xDB;
+        const TFEND: u8 = 0xDC;
+        const TFESC: u8 = 0xDD;
+
+        fn unescape<'i>(input: &mut &'i [u8]) -> TestResult<&'i [u8], Vec<u8>> {
+            escaped(
+                take_till(1.., [FESC].as_slice()),
+                FESC,
+                alt((
+                    (&[TFEND][..]).value(&[FEND][..]),
+                    (&[TFESC][..]).value(&[FESC][..]),
+                )),
+            )
+            .parse_next(input)
+        }
+
+        // fesc
+        let input = &[0x61, 0x62, FESC, TFEND, 0x63, 0x64, 0x65][..];
+        assert_parse!(
+            unescape.parse_peek(input),
+            str![[r#"
+Ok(
+    (
+        [],
+        [
+            97,
+            98,
+            192,
+            99,
+            100,
+            101,
+        ],
+    ),
+)
+
+"#]]
+        );
+
+        // fesczerozero
+        let input = &[0x61, FESC, 0x00, TFEND, 0x63, 0x64][..];
+        assert_parse!(
+            unescape.parse_peek(input),
+            str![[r#"
+Err(
+    Backtrack(
+        InputError {
+            input: [
+                0,
+                220,
+                99,
+                100,
+            ],
+        },
+    ),
+)
+
+"#]]
+        );
+
+        // noesc
+        let input = &[0x61, 0x62, 0x63][..];
+        assert_parse!(
+            unescape.parse_peek(input),
+            str![[r#"
+Ok(
+    (
+        [],
+        [
+            97,
+            98,
+            99,
+        ],
+    ),
+)
+
+"#]]
         );
     }
 }

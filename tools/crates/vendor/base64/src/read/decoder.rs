@@ -1,4 +1,4 @@
-use crate::{engine::Engine, DecodeError, DecodeSliceError, PAD_BYTE};
+use crate::{engine::Engine, DecodeError, DecodeSliceError};
 use std::{cmp, fmt, io};
 
 // This should be large, but it has to fit on the stack.
@@ -159,8 +159,13 @@ impl<'e, E: Engine, R: io::Read> DecoderReader<'e, E, R> {
                                 // be correct, and we now find more padding that happens to be incorrect,
                                 // to be consistent with non-reader decodes, record the error at the first
                                 // padding
-                                (PAD_BYTE, Some(first_pad_offset)) => {
-                                    DecodeError::InvalidByte(first_pad_offset, PAD_BYTE)
+                                (byte, Some(first_pad_offset))
+                                    if byte == self.engine.padding().as_u8() =>
+                                {
+                                    DecodeError::InvalidByte(
+                                        first_pad_offset,
+                                        self.engine.padding().as_u8(),
+                                    )
                                 }
                                 _ => {
                                     DecodeError::InvalidByte(self.input_consumed_len + offset, byte)
@@ -170,9 +175,15 @@ impl<'e, E: Engine, R: io::Read> DecoderReader<'e, E, R> {
                         DecodeError::InvalidLength(len) => {
                             DecodeError::InvalidLength(self.input_consumed_len + len)
                         }
-                        DecodeError::InvalidLastSymbol(offset, byte) => {
-                            DecodeError::InvalidLastSymbol(self.input_consumed_len + offset, byte)
-                        }
+                        DecodeError::InvalidLastSymbol {
+                            offset,
+                            symbol,
+                            symbol_value,
+                        } => DecodeError::InvalidLastSymbol {
+                            offset: self.input_consumed_len + offset,
+                            symbol,
+                            symbol_value,
+                        },
                         DecodeError::InvalidPadding => DecodeError::InvalidPadding,
                     }
                 }
@@ -188,7 +199,7 @@ impl<'e, E: Engine, R: io::Read> DecoderReader<'e, E, R> {
                 // we read more after already finding padding; report error at first padding byte
                 return Err(io::Error::new(
                     io::ErrorKind::InvalidData,
-                    DecodeError::InvalidByte(offset, PAD_BYTE),
+                    DecodeError::InvalidByte(offset, self.engine.padding().as_u8()),
                 ));
             }
         }
@@ -222,7 +233,7 @@ impl<'e, E: Engine, R: io::Read> io::Read for DecoderReader<'e, E, R> {
     /// Under non-error circumstances, this returns `Ok` with the value being the number of bytes
     /// written in `buf`.
     ///
-    /// Where possible, this function buffers base64 to minimize the number of read() calls to the
+    /// Where possible, this function buffers base64 to minimize the number of `read()` calls to the
     /// delegate reader.
     ///
     /// # Errors
@@ -297,8 +308,8 @@ impl<'e, E: Engine, R: io::Read> io::Read for DecoderReader<'e, E, R> {
                 // have to write to a tmp buf first to avoid double mutable borrow
                 let mut decoded_chunk = [0_u8; DECODED_CHUNK_SIZE];
                 // if we are at eof, could have less than BASE64_CHUNK_SIZE, in which case we have
-                // to assume that these last few tokens are, in fact, valid (i.e. must be 2-4 b64
-                // tokens, not 1, since 1 token can't decode to 1 byte).
+                // to assume that these last few symbols are, in fact, valid (i.e. must be 2-4 b64
+                // symbols, not 1, since 1 symbols can't decode to 1 byte).
                 let to_decode = cmp::min(self.b64_len, BASE64_CHUNK_SIZE);
 
                 let decoded = self.decode_to_buf(to_decode, &mut decoded_chunk[..])?;

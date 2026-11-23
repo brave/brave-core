@@ -10,14 +10,12 @@ impl Database {
 
     #[cfg(feature = "std")]
     pub(crate) fn from_path(
-        path: &std::path::Path,
+        _path: &std::path::Path,
     ) -> Result<Database, crate::Error> {
-        Err(crate::error::err!(
-            "system concatenated tzdb unavailable: \
-             crate feature `tzdb-concatenated` is disabled, \
-             opening tzdb at {path} has therefore failed",
-            path = path.display(),
-        ))
+        Err(crate::error::Error::from(
+            crate::error::CrateFeatureError::TzdbConcatenated,
+        )
+        .context(crate::error::tz::db::Error::DisabledConcatenated))
     }
 
     pub(crate) fn none() -> Database {
@@ -41,6 +39,6 @@ impl Database {
 
 impl core::fmt::Debug for Database {
     fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-        write!(f, "Concatenated(unavailable)")
+        f.write_str("Concatenated(unavailable)")
     }
 }

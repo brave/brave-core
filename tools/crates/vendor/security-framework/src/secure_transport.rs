@@ -75,7 +75,6 @@
 #[allow(unused_imports)]
 use core_foundation::array::{CFArray, CFArrayRef};
 use core_foundation::base::{Boolean, TCFType};
-#[cfg(feature = "alpn")]
 use core_foundation::string::CFString;
 use core_foundation::{declare_TCFType, impl_TCFType};
 use core_foundation_sys::base::{kCFAllocatorDefault, OSStatus};
@@ -423,6 +422,7 @@ impl fmt::Debug for SslContext {
 unsafe impl Sync for SslContext {}
 unsafe impl Send for SslContext {}
 
+#[cfg(target_os = "macos")]
 impl SslContext {
     pub(crate) fn as_inner(&self) -> SSLContextRef {
         self.0
@@ -680,24 +680,10 @@ impl SslContext {
     }
 
     /// Returns the set of protocols selected via ALPN if it succeeded.
-    #[cfg(feature = "alpn")]
     pub fn alpn_protocols(&self) -> Result<Vec<String>> {
         let mut array: CFArrayRef = ptr::null();
         unsafe {
-            #[cfg(feature = "OSX_10_13")]
-            {
-                cvt(SSLCopyALPNProtocols(self.0, &mut array))?;
-            }
-
-            #[cfg(not(feature = "OSX_10_13"))]
-            {
-                dlsym! { fn SSLCopyALPNProtocols(SSLContextRef, *mut CFArrayRef) -> OSStatus }
-                if let Some(f) = SSLCopyALPNProtocols.get() {
-                    cvt(f(self.0, &mut array))?;
-                } else {
-                    return Err(Error::from_code(errSecUnimplemented));
-                }
-            }
+            cvt(SSLCopyALPNProtocols(self.0, &mut array))?;
 
             if array.is_null() {
                 return Ok(vec![]);
@@ -711,31 +697,18 @@ impl SslContext {
     /// Configures the set of protocols use for ALPN.
     ///
     /// This is only used for client-side connections.
-    #[cfg(feature = "alpn")]
-    pub fn set_alpn_protocols(&mut self, protocols: &[&str]) -> Result<()> {
+    pub fn set_alpn_protocols(&mut self, protocols: &[impl AsRef<str>]) -> Result<()> {
         // When CFMutableArray is added to core-foundation and IntoIterator trait
         // is implemented for CFMutableArray, the code below should directly collect
         // into a CFMutableArray.
         let protocols = CFArray::from_CFTypes(
             &protocols
                 .iter()
-                .map(|proto| CFString::new(proto))
+                .map(|proto| CFString::new(proto.as_ref()))
                 .collect::<Vec<_>>(),
         );
 
-        #[cfg(feature = "OSX_10_13")]
-        {
-            unsafe { cvt(SSLSetALPNProtocols(self.0, protocols.as_concrete_TypeRef())) }
-        }
-        #[cfg(not(feature = "OSX_10_13"))]
-        {
-            dlsym! { fn SSLSetALPNProtocols(SSLContextRef, CFArrayRef) -> OSStatus }
-            if let Some(f) = SSLSetALPNProtocols.get() {
-                unsafe { cvt(f(self.0, protocols.as_concrete_TypeRef())) }
-            } else {
-                Err(Error::from_code(errSecUnimplemented))
-            }
-        }
+        unsafe { cvt(SSLSetALPNProtocols(self.0, protocols.as_concrete_TypeRef())) }
     }
 
     /// Sets whether the client sends the `SessionTicket` extension in its `ClientHello`.
@@ -745,21 +718,8 @@ impl SslContext {
     /// ticket returned by the server.
     ///
     /// [`SslContext::set_peer_id`]: #method.set_peer_id
-    #[cfg(feature = "session-tickets")]
     pub fn set_session_tickets_enabled(&mut self, enabled: bool) -> Result<()> {
-        #[cfg(feature = "OSX_10_13")]
-        {
-            unsafe { cvt(SSLSetSessionTicketsEnabled(self.0, Boolean::from(enabled))) }
-        }
-        #[cfg(not(feature = "OSX_10_13"))]
-        {
-            dlsym! { fn SSLSetSessionTicketsEnabled(SSLContextRef, Boolean) -> OSStatus }
-            if let Some(f) = SSLSetSessionTicketsEnabled.get() {
-                unsafe { cvt(f(self.0, Boolean::from(enabled))) }
-            } else {
-                Err(Error::from_code(errSecUnimplemented))
-            }
-        }
+        unsafe { cvt(SSLSetSessionTicketsEnabled(self.0, Boolean::from(enabled))) }
     }
 
     /// Returns the number of bytes which can be read without triggering a
@@ -848,11 +808,16 @@ unsafe extern "C" fn read_func<S>(
     data_length: *mut usize,
 ) -> OSStatus
 where S: Read {
-    let conn: &mut Connection<S> = &mut *(connection as *mut _);
+    if data.is_null() || data_length.is_null() || connection.is_null() {
+        return errSecParam;
+    }
+
+    let conn: &mut Connection<S> = unsafe { &mut *(connection as *mut _) };
+    let data = unsafe { slice::from_raw_parts_mut(data.cast::<u8>(), *data_length) };
     let mut read = 0;
 
     let ret = panic::catch_unwind(AssertUnwindSafe(|| {
-        let mut data = slice::from_raw_parts_mut(data.cast::<u8>(), *data_length);
+        let mut data = data;
         while !data.is_empty() {
             match conn.stream.read(data) {
                 Ok(0) => return errSSLClosedNoNotify,
@@ -877,7 +842,9 @@ where S: Read {
         errSecIO
     });
 
-    *data_length = read;
+    unsafe {
+        *data_length = read;
+    }
     ret
 }
 
@@ -887,11 +854,17 @@ unsafe extern "C" fn write_func<S>(
     data_length: *mut usize,
 ) -> OSStatus
 where S: Write {
-    let conn: &mut Connection<S> = &mut *(connection as *mut _);
+    if data.is_null() || data_length.is_null() || connection.is_null() {
+        return errSecParam;
+    }
+
+    let conn: &mut Connection<S> = unsafe { &mut *(connection as *mut _) };
     let mut written = 0;
+    let mut data = unsafe {
+        slice::from_raw_parts(data.cast::<u8>(), *data_length)
+    };
 
     let ret = panic::catch_unwind(AssertUnwindSafe(|| {
-        let mut data = slice::from_raw_parts(data.cast::<u8>(), *data_length);
         while !data.is_empty() {
             match conn.stream.write(data) {
                 Ok(0) => return errSSLClosedNoNotify,
@@ -924,7 +897,7 @@ where S: Write {
         errSecIO
     });
 
-    *data_length = written;
+    unsafe { *data_length = written };
     ret
 }
 
@@ -959,10 +932,10 @@ impl<S> SslStream<S> {
     fn handshake(mut self) -> result::Result<Self, HandshakeError<S>> {
         match unsafe { SSLHandshake(self.ctx.0) } {
             errSecSuccess => Ok(self),
-            reason @ errSSLPeerAuthCompleted
-            | reason @ errSSLClientCertRequested
-            | reason @ errSSLWouldBlock
-            | reason @ errSSLClientHelloReceived => {
+            reason @ (errSSLPeerAuthCompleted
+            | errSSLClientCertRequested
+            | errSSLWouldBlock
+            | errSSLClientHelloReceived) => {
                 Err(HandshakeError::Interrupted(MidHandshakeSslStream {
                     stream: self,
                     error: Error::from_code(reason),
@@ -1136,9 +1109,7 @@ pub struct ClientBuilder {
     danger_accept_invalid_hostnames: bool,
     whitelisted_ciphers: Vec<CipherSuite>,
     blacklisted_ciphers: Vec<CipherSuite>,
-    #[cfg(feature = "alpn")]
-    alpn: Option<Vec<String>>,
-    #[cfg(feature = "session-tickets")]
+    alpn: Option<Vec<Box<str>>>,
     enable_session_tickets: bool,
 }
 
@@ -1166,9 +1137,7 @@ impl ClientBuilder {
             danger_accept_invalid_hostnames: false,
             whitelisted_ciphers: Vec::new(),
             blacklisted_ciphers: Vec::new(),
-            #[cfg(feature = "alpn")]
             alpn: None,
-            #[cfg(feature = "session-tickets")]
             enable_session_tickets: false,
         }
     }
@@ -1268,16 +1237,14 @@ impl ClientBuilder {
     }
 
     /// Configures the set of protocols used for ALPN.
-    #[cfg(feature = "alpn")]
     pub fn alpn_protocols(&mut self, protocols: &[&str]) -> &mut Self {
-        self.alpn = Some(protocols.iter().map(|s| (*s).to_string()).collect());
+        self.alpn = Some(protocols.iter().copied().map(Box::from).collect());
         self
     }
 
     /// Configures the use of the RFC 5077 `SessionTicket` extension.
     ///
     /// Defaults to `false`.
-    #[cfg(feature = "session-tickets")]
     #[inline(always)]
     pub fn enable_session_tickets(&mut self, enable: bool) -> &mut Self {
         self.enable_session_tickets = enable;
@@ -1324,23 +1291,17 @@ impl ClientBuilder {
         if self.use_sni {
             ctx.set_peer_domain_name(domain)?;
         }
-        if let Some(ref identity) = self.identity {
+        if let Some(identity) = &self.identity {
             ctx.set_certificate(identity, &self.chain)?;
         }
-        #[cfg(feature = "alpn")]
-        {
-            if let Some(ref alpn) = self.alpn {
-                ctx.set_alpn_protocols(&alpn.iter().map(|s| &**s).collect::<Vec<_>>())?;
-            }
+        if let Some(alpn) = &self.alpn {
+            ctx.set_alpn_protocols(alpn)?;
         }
-        #[cfg(feature = "session-tickets")]
-        {
-            if self.enable_session_tickets {
-                // We must use the domain here to ensure that we go through certificate validation
-                // again rather than resuming the session if the domain changes.
-                ctx.set_peer_id(domain.as_bytes())?;
-                ctx.set_session_tickets_enabled(true)?;
-            }
+        if self.enable_session_tickets {
+            // We must use the domain here to ensure that we go through certificate validation
+            // again rather than resuming the session if the domain changes.
+            ctx.set_peer_id(domain.as_bytes())?;
+            ctx.set_session_tickets_enabled(true)?;
         }
         ctx.set_break_on_server_auth(true)?;
         self.configure_protocols(&mut ctx)?;
@@ -1548,7 +1509,6 @@ mod test {
     }
 
     #[test]
-    #[cfg(feature = "session-tickets")]
     fn client_session_ticket_resumption() {
         // The first time through this loop, we should do a full handshake. The second time, we
         // should immediately finish the handshake without breaking on server auth.
@@ -1578,22 +1538,20 @@ mod test {
     }
 
     #[test]
-    #[cfg(feature = "alpn")]
     fn client_alpn_accept() {
         let mut ctx = p!(SslContext::new(SslProtocolSide::CLIENT, SslConnectionType::STREAM));
         p!(ctx.set_peer_domain_name("google.com"));
-        p!(ctx.set_alpn_protocols(&vec!["h2"]));
+        p!(ctx.set_alpn_protocols(&["h2"]));
         let stream = p!(TcpStream::connect("google.com:443"));
         let stream = ctx.handshake(stream).unwrap();
         assert_eq!(vec!["h2"], stream.context().alpn_protocols().unwrap());
     }
 
     #[test]
-    #[cfg(feature = "alpn")]
     fn client_alpn_reject() {
         let mut ctx = p!(SslContext::new(SslProtocolSide::CLIENT, SslConnectionType::STREAM));
         p!(ctx.set_peer_domain_name("google.com"));
-        p!(ctx.set_alpn_protocols(&vec!["h2c"]));
+        p!(ctx.set_alpn_protocols(&["h2c"]));
         let stream = p!(TcpStream::connect("google.com:443"));
         let stream = ctx.handshake(stream).unwrap();
         assert!(stream.context().alpn_protocols().is_err());

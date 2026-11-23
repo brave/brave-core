@@ -130,7 +130,15 @@ where
 
         let fut = async move {
             let port = dst.port().map(|p| p.as_u16()).unwrap_or(443);
-            let host = dst.host().ok_or(SocksError::MissingHost)?.to_string();
+            let host_from_uri = dst.host().ok_or(SocksError::MissingHost)?;
+
+            // Note: host() returns the host part of the URI which could be a square bracketed IPv6
+            // address. We need to remove any brackets to make it a valid IP address.
+            //
+            // Whilst SOCKSv4 does not support IPv6, this bracket stripping will enable an IPv6
+            // destination to be correctly rejected down the line. Without it, we would end up with
+            // a DNS resolution failure which would be confusing.
+            let host = crate::client::strip_ipv6_brackets(host_from_uri).to_string();
 
             let conn = connecting.await.map_err(SocksError::Inner)?;
             config.execute(conn, host, port).await

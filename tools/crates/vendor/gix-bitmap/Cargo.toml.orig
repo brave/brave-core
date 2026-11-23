@@ -2,21 +2,24 @@ lints.workspace = true
 
 [package]
 name = "gix-bitmap"
-version = "0.2.15"
+version = "0.6.2"
 repository = "https://github.com/GitoxideLabs/gitoxide"
 license = "MIT OR Apache-2.0"
 description = "A crate of the gitoxide project dedicated implementing the standard git bitmap format"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
-edition = "2021"
-rust-version = "1.82"
-exclude = ["CHANGELOG.md"]
+edition = "2024"
+rust-version = "1.88"
+include = ["/src/**/*", "/LICENSE-*"]
 
 [lib]
-doctest = false
+doctest = true
 test = true
 
 [dependencies]
-thiserror = "2.0.17"
+gix-error = { version = "^0.5.3", path = "../gix-error" }
 
 [dev-dependencies]
-gix-testtools = { path = "../tests/tools" }
+gix-testtools = { path = "../tests/tools", default-features = false }
+
+[package.metadata.qa.wasm]
+targets = ["wasm32-unknown-unknown", "wasm32-wasip1", "wasm32-wasip2"]

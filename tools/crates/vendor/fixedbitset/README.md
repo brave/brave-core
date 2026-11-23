@@ -5,11 +5,20 @@ A simple fixed size bitset container for Rust.
 
 Please read the [API documentation here](https://docs.rs/fixedbitset/)
 
-[![build\_status](https://github.com/petgraph/fixedbitset/workflows/Continuous%20integration/badge.svg?branch=master)](https://github.com/petgraph/fixedbitset/actions)
+[![build\_status](https://github.com/petgraph/fixedbitset/actions/workflows/rust.yml/badge.svg)](https://github.com/petgraph/fixedbitset/actions)
 [![crates](https://img.shields.io/crates/v/fixedbitset.svg)](https://crates.io/crates/fixedbitset)
 
 # Recent Changes
 
+-   0.5.9
+    - [#143](https://github.com/petgraph/fixedbitset/pull/143): Fix subtraction overflow on zero input in `Ones::last_positive_bit_and_unset` and `IntoOnes::last_positive_bit_and_unset`. Both helpers now consistently return the block width and leave zero unchanged in debug and release builds.
+    - [#137](https://github.com/petgraph/fixedbitset/pull/137): Correct the `Zeroes` iterator documentation to describe unset bits and link to `FixedBitSet::zeroes`.
+-   0.5.8
+    - [#142](https://github.com/petgraph/fixedbitset/pull/142) and [#147](https://github.com/petgraph/fixedbitset/pull/147): Fix an overflow soundness issue in `grow_and_insert`; passing `usize::MAX` now panics before allocating.
+    - [#131](https://github.com/petgraph/fixedbitset/pull/131): Fix `difference_count` when the left-hand bitset is longer than the right-hand bitset.
+    - [#130](https://github.com/petgraph/fixedbitset/pull/130): Implement `Clone` for the `Ones` iterator.
+    - [#146](https://github.com/petgraph/fixedbitset/pull/146): Fix wasm64 builds with SIMD enabled by using the generic implementation.
+    - [#148](https://github.com/petgraph/fixedbitset/pull/148): Restore CI across current Rust toolchains, Rust 1.56, and supported ARM runners.
 -   0.5.7
     - [#127](https://github.com/petgraph/fixedbitset/pull/127) and [#128](https://github.com/petgraph/fixedbitset/pull/128): Optimize `Clone::clone_from` to avoid
       extra allocations and copies.

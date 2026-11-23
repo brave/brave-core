@@ -1,13 +1,10 @@
 //! Read and write DWARF's "Little Endian Base 128" (LEB128) variable length
 //! integer encoding.
 //!
-//! The implementation is a direct translation of the psuedocode in the DWARF 4
-//! standard's appendix C.
-//!
 //! Read and write signed integers:
 //!
 //! ```
-//! # #[cfg(all(feature = "read", feature = "write"))] {
+//! # #[cfg(all(feature = "read", feature = "write", feature = "std"))] {
 //! use gimli::{EndianSlice, NativeEndian, leb128};
 //!
 //! let mut buf = [0; 1024];
@@ -28,7 +25,7 @@
 //! Or read and write unsigned integers:
 //!
 //! ```
-//! # #[cfg(all(feature = "read", feature = "write"))] {
+//! # #[cfg(all(feature = "read", feature = "write", feature = "std"))] {
 //! use gimli::{EndianSlice, NativeEndian, leb128};
 //!
 //! let mut buf = [0; 1024];
@@ -64,7 +61,7 @@ fn low_bits_of_u64(val: u64) -> u8 {
 /// encoded.
 #[cfg(feature = "read-core")]
 pub mod read {
-    use super::{low_bits_of_byte, CONTINUATION_BIT, SIGN_BIT};
+    use super::{CONTINUATION_BIT, SIGN_BIT, low_bits_of_byte};
     use crate::read::{Error, Reader, Result};
 
     /// Read bytes until the LEB128 continuation bit is not set.
@@ -80,15 +77,17 @@ pub mod read {
     /// Read an unsigned LEB128 number from the given `Reader` and
     /// return it or an error if reading failed.
     pub fn unsigned<R: Reader>(r: &mut R) -> Result<u64> {
-        let mut result = 0;
-        let mut shift = 0;
+        // The first iteration of this loop is unpeeled for better code
+        // gen for the statistically likely case of single byte values.
+        let byte = r.read_u8()?;
+        if byte & CONTINUATION_BIT == 0 {
+            return Ok(u64::from(byte));
+        }
+        let mut result = u64::from(low_bits_of_byte(byte));
+        let mut shift = 7;
 
         loop {
             let byte = r.read_u8()?;
-            if shift == 63 && byte != 0x00 && byte != 0x01 {
-                return Err(Error::BadUnsignedLeb128);
-            }
-
             let low_bits = u64::from(low_bits_of_byte(byte));
             result |= low_bits << shift;
 
@@ -97,18 +96,30 @@ pub mod read {
             }
 
             shift += 7;
+            if shift >= 63 {
+                break;
+            }
         }
+
+        // The 10th byte (shift == 63) can only contribute bit 63.
+        // Valid values are 0x00 or 0x01 (no continuation bit allowed).
+        let byte = r.read_u8()?;
+        if byte != 0x00 && byte != 0x01 {
+            return Err(Error::BadUnsignedLeb128);
+        }
+        result |= u64::from(byte) << 63;
+        Ok(result)
     }
 
     /// Read an LEB128 u16 from the given `Reader` and
     /// return it or an error if reading failed.
     pub fn u16<R: Reader>(r: &mut R) -> Result<u16> {
         let byte = r.read_u8()?;
-        let mut result = u16::from(low_bits_of_byte(byte));
         if byte & CONTINUATION_BIT == 0 {
-            return Ok(result);
+            return Ok(u16::from(byte));
         }
 
+        let mut result = u16::from(low_bits_of_byte(byte));
         let byte = r.read_u8()?;
         result |= u16::from(low_bits_of_byte(byte)) << 7;
         if byte & CONTINUATION_BIT == 0 {
@@ -156,35 +167,103 @@ pub mod read {
 }
 
 /// A module for writing integers encoded as LEB128.
-#[cfg(feature = "write")]
 pub mod write {
-    use super::{low_bits_of_u64, CONTINUATION_BIT};
-    use std::io;
+    use super::{CONTINUATION_BIT, low_bits_of_u64};
+
+    /// An encoded LEB128 value.
+    ///
+    /// May be signed or unsigned.
+    #[derive(Debug, Clone, Copy)]
+    pub struct Leb128 {
+        bytes: [u8; 10],
+        len: u8,
+    }
+
+    impl Leb128 {
+        /// Return the bytes for the encoded value.
+        pub fn bytes(&self) -> &[u8] {
+            &self.bytes[..self.len as usize]
+        }
+
+        /// Return the length of the encoded bytes.
+        #[allow(clippy::len_without_is_empty)]
+        pub fn len(&self) -> usize {
+            self.len as usize
+        }
+
+        /// Generate the LEB128 encoding for the given unsigned number.
+        pub fn unsigned(mut val: u64) -> Self {
+            let mut bytes = [0; 10];
+            let mut len = 0;
+            loop {
+                let mut byte = low_bits_of_u64(val);
+                val >>= 7;
+                if val != 0 {
+                    // More bytes to come, so set the continuation bit.
+                    byte |= CONTINUATION_BIT;
+                }
+
+                bytes[len] = byte;
+                len += 1;
+
+                if val == 0 {
+                    return Leb128 {
+                        bytes,
+                        len: len as u8,
+                    };
+                }
+            }
+        }
+
+        /// Generate the LEB128 encoding for the given signed number.
+        pub fn signed(mut val: i64) -> Self {
+            let mut bytes = [0; 10];
+            let mut len = 0;
+            loop {
+                let mut byte = val as u8;
+                // Keep the sign bit for testing
+                val >>= 6;
+                let done = val == 0 || val == -1;
+                if done {
+                    byte &= !CONTINUATION_BIT;
+                } else {
+                    // Remove the sign bit
+                    val >>= 1;
+                    // More bytes to come, so set the continuation bit.
+                    byte |= CONTINUATION_BIT;
+                }
+
+                bytes[len] = byte;
+                len += 1;
+
+                if done {
+                    return Leb128 {
+                        bytes,
+                        len: len as u8,
+                    };
+                }
+            }
+        }
+
+        /// Write the bytes.
+        ///
+        /// Returns the written length.
+        #[cfg(feature = "std")]
+        pub fn write<W: std::io::Write>(&self, w: &mut W) -> std::io::Result<usize> {
+            w.write_all(self.bytes())?;
+            Ok(self.len())
+        }
+    }
 
     /// Write the given unsigned number using the LEB128 encoding to the given
     /// `std::io::Write`able. Returns the number of bytes written to `w`, or an
     /// error if writing failed.
-    pub fn unsigned<W>(w: &mut W, mut val: u64) -> Result<usize, io::Error>
+    #[cfg(feature = "std")]
+    pub fn unsigned<W>(w: &mut W, val: u64) -> Result<usize, std::io::Error>
     where
-        W: io::Write,
+        W: std::io::Write,
     {
-        let mut bytes_written = 0;
-        loop {
-            let mut byte = low_bits_of_u64(val);
-            val >>= 7;
-            if val != 0 {
-                // More bytes to come, so set the continuation bit.
-                byte |= CONTINUATION_BIT;
-            }
-
-            let buf = [byte];
-            w.write_all(&buf)?;
-            bytes_written += 1;
-
-            if val == 0 {
-                return Ok(bytes_written);
-            }
-        }
+        Leb128::unsigned(val).write(w)
     }
 
     /// Return the size of the LEB128 encoding of the given unsigned number.
@@ -202,33 +281,12 @@ pub mod write {
     /// Write the given signed number using the LEB128 encoding to the given
     /// `std::io::Write`able. Returns the number of bytes written to `w`, or an
     /// error if writing failed.
-    pub fn signed<W>(w: &mut W, mut val: i64) -> Result<usize, io::Error>
+    #[cfg(feature = "std")]
+    pub fn signed<W>(w: &mut W, val: i64) -> Result<usize, std::io::Error>
     where
-        W: io::Write,
+        W: std::io::Write,
     {
-        let mut bytes_written = 0;
-        loop {
-            let mut byte = val as u8;
-            // Keep the sign bit for testing
-            val >>= 6;
-            let done = val == 0 || val == -1;
-            if done {
-                byte &= !CONTINUATION_BIT;
-            } else {
-                // Remove the sign bit
-                val >>= 1;
-                // More bytes to come, so set the continuation bit.
-                byte |= CONTINUATION_BIT;
-            }
-
-            let buf = [byte];
-            w.write_all(&buf)?;
-            bytes_written += 1;
-
-            if done {
-                return Ok(bytes_written);
-            }
-        }
+        Leb128::signed(val).write(w)
     }
 
     /// Return the size of the LEB128 encoding of the given signed number.
@@ -249,9 +307,10 @@ pub mod write {
 #[cfg(test)]
 #[cfg(all(feature = "read", feature = "write"))]
 mod tests {
-    use super::{low_bits_of_byte, low_bits_of_u64, read, write, CONTINUATION_BIT};
+    use super::{CONTINUATION_BIT, low_bits_of_byte, low_bits_of_u64, read, write};
     use crate::endianity::NativeEndian;
     use crate::read::{EndianSlice, Error, ReaderOffsetId};
+    use alloc::vec::Vec;
 
     trait ResultExt {
         fn map_eof(self, input: &[u8]) -> Self;
@@ -332,6 +391,14 @@ mod tests {
             12857,
             read::unsigned(&mut readable).expect("Should read number")
         );
+    }
+
+    #[test]
+    fn test_read_unsigned_invalid() {
+        let buf = &[0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 2][..];
+        let mut readable = EndianSlice::new(buf, NativeEndian);
+        let err = read::unsigned(&mut readable).unwrap_err();
+        assert!(matches!(err, Error::BadUnsignedLeb128), "{}", err);
     }
 
     // Examples from the DWARF 4 standard, section 7.6, figure 23.
@@ -429,6 +496,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "std")]
     fn test_write_unsigned_not_enough_space() {
         let mut buf = [0; 1];
         let mut writable = &mut buf[..];
@@ -439,6 +507,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "std")]
     fn test_write_signed_not_enough_space() {
         let mut buf = [0; 1];
         let mut writable = &mut buf[..];
@@ -451,12 +520,9 @@ mod tests {
     #[test]
     fn dogfood_signed() {
         fn inner(i: i64) {
-            let mut buf = [0u8; 1024];
-
-            {
-                let mut writable = &mut buf[..];
-                write::signed(&mut writable, i).expect("Should write signed number");
-            }
+            let mut buf = Vec::new();
+            buf.extend(write::Leb128::signed(i).bytes());
+            buf.resize(1024, 0u8);
 
             let mut readable = EndianSlice::new(&buf[..], NativeEndian);
             let result = read::signed(&mut readable).expect("Should be able to read it back again");
@@ -471,12 +537,9 @@ mod tests {
     #[test]
     fn dogfood_unsigned() {
         for i in 0..1025 {
-            let mut buf = [0u8; 1024];
-
-            {
-                let mut writable = &mut buf[..];
-                write::unsigned(&mut writable, i).expect("Should write signed number");
-            }
+            let mut buf = Vec::new();
+            buf.extend(write::Leb128::unsigned(i).bytes());
+            buf.resize(1024, 0u8);
 
             let mut readable = EndianSlice::new(&buf[..], NativeEndian);
             let result =

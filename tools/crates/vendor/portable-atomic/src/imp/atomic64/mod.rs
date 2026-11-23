@@ -7,9 +7,9 @@ See README.md for details.
 */
 
 // pre-v6 Arm Linux
-#[cfg(feature = "fallback")]
 // Miri and Sanitizer do not support inline assembly.
 #[cfg(all(
+    feature = "fallback",
     target_arch = "arm",
     not(any(miri, portable_atomic_sanitize_thread)),
     any(not(portable_atomic_no_asm), portable_atomic_unstable_asm),

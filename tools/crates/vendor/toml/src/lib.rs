@@ -181,11 +181,11 @@ mod table;
 #[doc(inline)]
 #[cfg(feature = "parse")]
 #[cfg(feature = "serde")]
-pub use crate::de::{from_slice, from_str, Deserializer};
+pub use crate::de::{Deserializer, from_slice, from_str};
 #[doc(inline)]
 #[cfg(feature = "display")]
 #[cfg(feature = "serde")]
-pub use crate::ser::{to_string, to_string_pretty, Serializer};
+pub use crate::ser::{Serializer, to_string, to_string_pretty};
 #[doc(inline)]
 #[cfg(feature = "serde")]
 pub use crate::value::Value;

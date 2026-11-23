@@ -4,16 +4,8 @@ use std::{cmp, fmt, hash, str};
 
 use bytes::Bytes;
 
-use super::{ErrorKind, InvalidUri};
+use super::{ErrorKind, InvalidUri, MAX_LEN};
 use crate::byte_str::ByteStr;
-
-/// Validation result for path and query parsing.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-enum PathAndQueryError {
-    InvalidPathChar,
-    InvalidQueryChar,
-    FragmentNotAllowed,
-}
 
 /// Represents the path component of a URI
 #[derive(Clone)]
@@ -27,95 +19,14 @@ const NONE: u16 = u16::MAX;
 impl PathAndQuery {
     // Not public while `bytes` is unstable.
     pub(super) fn from_shared(mut src: Bytes) -> Result<Self, InvalidUri> {
-        let mut query = NONE;
-        let mut fragment = None;
-
-        let mut is_maybe_not_utf8 = false;
-
-        // block for iterator borrow
-        {
-            let mut iter = src.as_ref().iter().enumerate();
-
-            // path ...
-            for (i, &b) in &mut iter {
-                // See https://url.spec.whatwg.org/#path-state
-                match b {
-                    b'?' => {
-                        debug_assert_eq!(query, NONE);
-                        query = i as u16;
-                        break;
-                    }
-                    b'#' => {
-                        fragment = Some(i);
-                        break;
-                    }
-
-                    // This is the range of bytes that don't need to be
-                    // percent-encoded in the path. If it should have been
-                    // percent-encoded, then error.
-                    #[rustfmt::skip]
-                    0x21 |
-                    0x24..=0x3B |
-                    0x3D |
-                    0x40..=0x5F |
-                    0x61..=0x7A |
-                    0x7C |
-                    0x7E => {}
-
-                    // potentially utf8, might not, should check
-                    0x7F..=0xFF => {
-                        is_maybe_not_utf8 = true;
-                    }
-
-                    // These are code points that are supposed to be
-                    // percent-encoded in the path but there are clients
-                    // out there sending them as is and httparse accepts
-                    // to parse those requests, so they are allowed here
-                    // for parity.
-                    //
-                    // For reference, those are code points that are used
-                    // to send requests with JSON directly embedded in
-                    // the URI path. Yes, those things happen for real.
-                    #[rustfmt::skip]
-                    b'"' |
-                    b'{' | b'}' => {}
-
-                    _ => return Err(ErrorKind::InvalidUriChar.into()),
-                }
-            }
-
-            // query ...
-            if query != NONE {
-                for (i, &b) in iter {
-                    match b {
-                        // While queries *should* be percent-encoded, most
-                        // bytes are actually allowed...
-                        // See https://url.spec.whatwg.org/#query-state
-                        //
-                        // Allowed: 0x21 / 0x24 - 0x3B / 0x3D / 0x3F - 0x7E
-                        #[rustfmt::skip]
-                        0x21 |
-                        0x24..=0x3B |
-                        0x3D |
-                        0x3F..=0x7E => {}
-
-                        0x7F..=0xFF => {
-                            is_maybe_not_utf8 = true;
-                        }
-
-                        b'#' => {
-                            fragment = Some(i);
-                            break;
-                        }
-
-                        _ => return Err(ErrorKind::InvalidUriChar.into()),
-                    }
-                }
-            }
-        }
+        let Scanned {
+            query,
+            fragment,
+            is_maybe_not_utf8,
+        } = scan_path_and_query(&src)?;
 
         if let Some(i) = fragment {
-            src.truncate(i);
+            src.truncate(i as usize);
         }
 
         let data = if is_maybe_not_utf8 {
@@ -147,12 +58,17 @@ impl PathAndQuery {
     /// ```
     #[inline]
     pub const fn from_static(src: &'static str) -> Self {
-        match validate_path_and_query_bytes(src.as_bytes()) {
-            Ok(query) => PathAndQuery {
+        match scan_path_and_query(src.as_bytes()) {
+            Ok(Scanned {
+                query,
+                fragment: None,
+                is_maybe_not_utf8: false,
+            }) => PathAndQuery {
                 data: ByteStr::from_static(src),
                 query,
             },
-            Err(_) => panic!("static str is not valid path"),
+            // Yes, we reject fragments and non-utf8
+            _ => panic!("static str is not valid path"),
         }
     }
 
@@ -304,18 +220,18 @@ impl PathAndQuery {
     }
 }
 
-impl<'a> TryFrom<&'a [u8]> for PathAndQuery {
+impl TryFrom<&[u8]> for PathAndQuery {
     type Error = InvalidUri;
     #[inline]
-    fn try_from(s: &'a [u8]) -> Result<Self, Self::Error> {
+    fn try_from(s: &[u8]) -> Result<Self, Self::Error> {
         PathAndQuery::from_shared(Bytes::copy_from_slice(s))
     }
 }
 
-impl<'a> TryFrom<&'a str> for PathAndQuery {
+impl TryFrom<&str> for PathAndQuery {
     type Error = InvalidUri;
     #[inline]
-    fn try_from(s: &'a str) -> Result<Self, Self::Error> {
+    fn try_from(s: &str) -> Result<Self, Self::Error> {
         TryFrom::try_from(s.as_bytes())
     }
 }
@@ -362,11 +278,14 @@ impl fmt::Display for PathAndQuery {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
         if !self.data.is_empty() {
             match self.data.as_bytes()[0] {
-                b'/' | b'*' => write!(fmt, "{}", &self.data[..]),
-                _ => write!(fmt, "/{}", &self.data[..]),
+                b'/' | b'*' => fmt.write_str(&self.data),
+                _ => {
+                    fmt.write_str("/")?;
+                    fmt.write_str(&self.data)
+                }
             }
         } else {
-            write!(fmt, "/")
+            fmt.write_str("/")
         }
     }
 }
@@ -395,16 +314,16 @@ impl PartialEq<str> for PathAndQuery {
     }
 }
 
-impl<'a> PartialEq<PathAndQuery> for &'a str {
+impl PartialEq<PathAndQuery> for &str {
     #[inline]
     fn eq(&self, other: &PathAndQuery) -> bool {
         self == &other.as_str()
     }
 }
 
-impl<'a> PartialEq<&'a str> for PathAndQuery {
+impl PartialEq<&str> for PathAndQuery {
     #[inline]
-    fn eq(&self, other: &&'a str) -> bool {
+    fn eq(&self, other: &&str) -> bool {
         self.as_str() == *other
     }
 }
@@ -451,14 +370,14 @@ impl PartialOrd<PathAndQuery> for str {
     }
 }
 
-impl<'a> PartialOrd<&'a str> for PathAndQuery {
+impl PartialOrd<&str> for PathAndQuery {
     #[inline]
-    fn partial_cmp(&self, other: &&'a str) -> Option<cmp::Ordering> {
+    fn partial_cmp(&self, other: &&str) -> Option<cmp::Ordering> {
         self.as_str().partial_cmp(*other)
     }
 }
 
-impl<'a> PartialOrd<PathAndQuery> for &'a str {
+impl PartialOrd<PathAndQuery> for &str {
     #[inline]
     fn partial_cmp(&self, other: &PathAndQuery) -> Option<cmp::Ordering> {
         self.partial_cmp(&other.as_str())
@@ -479,37 +398,116 @@ impl PartialOrd<PathAndQuery> for String {
     }
 }
 
-/// Shared validation logic for path and query bytes.
-/// Returns the query position (or NONE), or an error.
-const fn validate_path_and_query_bytes(bytes: &[u8]) -> Result<u16, PathAndQueryError> {
-    let mut query: u16 = NONE;
-    let mut i: usize = 0;
+// Scanner implementation that is `const fn`, usable by both `from_static`
+// and `from_shared`.
+// =====
 
-    // path ...
+struct Scanned {
+    query: u16,
+    fragment: Option<u16>,
+    is_maybe_not_utf8: bool,
+}
+
+// Per-byte character classes for the path and query scanners.
+const CLASS_VALID: u8 = 0;
+const CLASS_QUERY: u8 = 1;
+const CLASS_FRAGMENT: u8 = 2;
+const CLASS_HIGH: u8 = 3;
+const CLASS_INVALID: u8 = 4;
+
+const fn build_path_map() -> [u8; 256] {
+    let mut t = [CLASS_INVALID; 256];
+    let mut i = 0;
+    while i < 256 {
+        // See https://url.spec.whatwg.org/#path-state
+        t[i] = match i as u8 {
+            b'?' => CLASS_QUERY,
+            b'#' => CLASS_FRAGMENT,
+
+            // Bytes that don't need to be percent-encoded in the path.
+            0x21 | 0x24..=0x3B | 0x3D | 0x40..=0x5F | 0x61..=0x7A | 0x7C | 0x7E => CLASS_VALID,
+
+            // Potentially utf8, checked later.
+            0x80..=0xFF => CLASS_HIGH,
+
+            // Should be percent-encoded, but accepted for parity with clients
+            // that send them as-is (e.g. JSON embedded in the path).
+            b'"' | b'{' | b'}' => CLASS_VALID,
+
+            _ => CLASS_INVALID,
+        };
+        i += 1;
+    }
+    t
+}
+
+const fn build_query_map() -> [u8; 256] {
+    let mut t = [CLASS_INVALID; 256];
+    let mut i = 0;
+    while i < 256 {
+        // See https://url.spec.whatwg.org/#query-state
+        t[i] = match i as u8 {
+            b'#' => CLASS_FRAGMENT,
+
+            // Allowed: 0x21 / 0x24 - 0x3B / 0x3D / 0x3F - 0x7E
+            0x21 | 0x24..=0x3B | 0x3D | 0x3F..=0x7E => CLASS_VALID,
+
+            0x80..=0xFF => CLASS_HIGH,
+
+            _ => CLASS_INVALID,
+        };
+        i += 1;
+    }
+    t
+}
+
+const PATH_MAP: [u8; 256] = build_path_map();
+const QUERY_MAP: [u8; 256] = build_query_map();
+
+const fn scan_path_and_query(bytes: &[u8]) -> Result<Scanned, ErrorKind> {
+    let mut i = 0;
+    let mut query = NONE;
+    let mut fragment = None;
+
+    let mut is_maybe_not_utf8 = false;
+
+    if bytes.is_empty() {
+        return Err(ErrorKind::Empty);
+    }
+
+    if bytes.len() > MAX_LEN {
+        return Err(ErrorKind::TooLong);
+    }
+
+    if bytes.len() == 1 && bytes[0] == b'*' {
+        return Ok(Scanned {
+            query,
+            fragment,
+            is_maybe_not_utf8: false,
+        });
+    }
+
+    if !matches!(bytes[0], b'/' | b'?' | b'#') {
+        return Err(ErrorKind::PathDoesNotStartWithSlash);
+    }
+
     while i < bytes.len() {
-        let b = bytes[i];
-        if b == b'?' {
-            query = i as u16;
-            i += 1;
-            break;
-        } else if b == b'#' {
-            return Err(PathAndQueryError::FragmentNotAllowed);
-        } else {
-            let allowed = b == 0x21
-                || (b >= 0x24 && b <= 0x3B)
-                || b == 0x3D
-                || (b >= 0x40 && b <= 0x5F)
-                || (b >= 0x61 && b <= 0x7A)
-                || b == 0x7C
-                || b == 0x7E
-                || b == b'"'
-                || b == b'{'
-                || b == b'}'
-                || (b >= 0x7F);
-
-            if !allowed {
-                return Err(PathAndQueryError::InvalidPathChar);
+        match PATH_MAP[bytes[i] as usize] {
+            CLASS_VALID => {}
+            CLASS_QUERY => {
+                debug_assert!(query == NONE);
+                query = i as u16;
+                i += 1;
+                break;
             }
+            CLASS_FRAGMENT => {
+                fragment = Some(i as u16);
+                break;
+            }
+            CLASS_HIGH => {
+                is_maybe_not_utf8 = true;
+            }
+            _ => return Err(ErrorKind::InvalidUriChar),
         }
         i += 1;
     }
@@ -517,26 +515,26 @@ const fn validate_path_and_query_bytes(bytes: &[u8]) -> Result<u16, PathAndQuery
     // query ...
     if query != NONE {
         while i < bytes.len() {
-            let b = bytes[i];
-            if b == b'#' {
-                return Err(PathAndQueryError::FragmentNotAllowed);
+            match QUERY_MAP[bytes[i] as usize] {
+                CLASS_VALID => {}
+                CLASS_HIGH => {
+                    is_maybe_not_utf8 = true;
+                }
+                CLASS_FRAGMENT => {
+                    fragment = Some(i as u16);
+                    break;
+                }
+                _ => return Err(ErrorKind::InvalidUriChar),
             }
-
-            let allowed = b == 0x21
-                || (b >= 0x24 && b <= 0x3B)
-                || b == 0x3D
-                || (b >= 0x3F && b <= 0x7E)
-                || (b >= 0x7F);
-
-            if !allowed {
-                return Err(PathAndQueryError::InvalidQueryChar);
-            }
-
             i += 1;
         }
     }
 
-    Ok(query)
+    Ok(Scanned {
+        query,
+        fragment,
+        is_maybe_not_utf8,
+    })
 }
 
 #[cfg(test)]
@@ -660,6 +658,41 @@ mod tests {
     #[test]
     fn rejects_invalid_utf8_in_query() {
         PathAndQuery::try_from(&[b'/', b'a', b'?', 0xFF][..]).expect_err("reject invalid utf8");
+    }
+
+    #[test]
+    fn rejects_empty_string() {
+        PathAndQuery::try_from("").expect_err("reject empty str");
+    }
+
+    #[test]
+    fn requires_starting_with_slash() {
+        PathAndQuery::try_from("sneaky").expect_err("reject missing slash");
+    }
+
+    #[test]
+    fn rejects_del_in_path() {
+        PathAndQuery::try_from(&[b'/', 0x7F][..]).expect_err("reject DEL");
+    }
+
+    #[test]
+    fn rejects_del_in_query() {
+        PathAndQuery::try_from(&[b'/', b'a', b'?', 0x7F][..]).expect_err("reject DEL");
+    }
+
+    #[test]
+    fn rejects_too_long_path_and_query() {
+        let path = format!("/{}?query", "a".repeat(MAX_LEN));
+        let err = PathAndQuery::try_from(path).expect_err("reject overly long path and query");
+        assert_eq!(err.0, ErrorKind::TooLong);
+    }
+
+    #[test]
+    fn accepts_max_length_path_and_query() {
+        let path = format!("/{}?", "a".repeat(MAX_LEN - 2));
+        let path_and_query = PathAndQuery::try_from(path).expect("accept maximum length");
+        assert_eq!(path_and_query.as_str().len(), MAX_LEN);
+        assert_eq!(path_and_query.query(), Some(""));
     }
 
     #[test]

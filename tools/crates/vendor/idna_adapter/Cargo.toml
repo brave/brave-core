@@ -10,10 +10,10 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.82"
+edition = "2024"
+rust-version = "1.86"
 name = "idna_adapter"
-version = "1.2.1"
+version = "1.2.2"
 authors = ["The rust-url developers"]
 build = false
 autolib = false
@@ -48,9 +48,9 @@ name = "idna_adapter"
 path = "src/lib.rs"
 
 [dependencies.icu_normalizer]
-version = "2"
+version = "2.2"
 default-features = false
 
 [dependencies.icu_properties]
-version = "2"
+version = "2.2"
 default-features = false

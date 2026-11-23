@@ -47,14 +47,35 @@
 #[cfg(doc)]
 use crate::macho;
 
+mod codesign;
+pub use codesign::*;
+
 mod dyld_cache;
 pub use dyld_cache::*;
+
+mod dyld_info;
+pub use dyld_info::*;
+
+mod export;
+pub use export::*;
+
+mod exports_trie;
+pub use exports_trie::*;
 
 mod fat;
 pub use fat::*;
 
+mod fixup;
+pub use fixup::*;
+
 mod file;
 pub use file::*;
+
+mod function_starts;
+pub use function_starts::*;
+
+mod import;
+pub use import::*;
 
 mod load_command;
 pub use load_command::*;

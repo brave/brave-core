@@ -1,0 +1,187 @@
+[workspace]
+members = ["dev_util"]
+resolver = "2"
+
+################################################################################
+# Workspace Package
+################################################################################
+
+[workspace.package]
+# Be sure to update the version number in `README.md`.
+version = "1.2.0"
+authors = ["Sean C. Roach <me@seancroach.dev>"]
+edition = "2021"
+
+################################################################################
+# Workspace Lints
+################################################################################
+
+[workspace.lints.rust]
+missing_docs = "deny"
+
+[workspace.lints.clippy]
+alloc_instead_of_core = "deny"
+doc_markdown = "allow"
+missing_safety_doc = "deny"
+multiple_unsafe_ops_per_block = "deny"
+pedantic = { level = "deny", priority = -1 }
+std_instead_of_alloc = "deny"
+std_instead_of_core = "deny"
+undocumented_unsafe_blocks = "deny"
+
+################################################################################
+# Shared Dependencies
+################################################################################
+
+# `cesu8` is used for comparison with `simd_cesu8`, as well as for generating
+# random data for tests and benchmarks.
+#
+# This is a high-quality crate. Its validity is not questioned at all. The only
+# reason simd_cesu8 exists at all is to be a goblin for performance.
+#
+# https://github.com/emk/cesu8-rs/blob/master/Cargo.toml
+[workspace.dependencies.cesu8]
+version = "1.1.0"
+
+# Criterion is the benchmarking library simd_cesu8 uses.
+#
+# https://github.com/bheisler/criterion.rs/blob/master/Cargo.toml
+[workspace.dependencies.criterion]
+version = "0.5.1"
+features = ["html_reports"]
+
+# `simd_cesu8` uses `rand` for generating random data for tests.
+#
+# https://github.com/rust-random/rand/blob/master/Cargo.toml
+[workspace.dependencies.rand]
+version = "0.8.5"
+
+# `rand_xoshiro` is used for generating random data for benchmarks, and we
+# use it to ensure that the benchmarks are *kind of* deterministic.
+#
+# https://github.com/rust-random/rngs/tree/master/rand_xoshiro
+[workspace.dependencies.rand_xoshiro]
+version = "0.6.0"
+
+################################################################################
+# Package
+################################################################################
+
+[package]
+name = "simd_cesu8"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+rust-version = "1.85.0"
+description = "An extremely fast, SIMD accelerated, encoding and decoding library for CESU-8 and Modified UTF-8."
+homepage = "https://github.com/seancroach/simd_cesu8"
+repository = "https://github.com/seancroach/simd_cesu8"
+license = "Apache-2.0 OR MIT"
+keywords = ["cesu8", "decode", "encode", "mutf8", "no_std"]
+categories = ["encoding", "no-std"]
+
+################################################################################
+# Lib
+################################################################################
+
+[lib]
+# We set `bench` to false so that --save-baseline actually works.
+bench = false
+
+################################################################################
+# Lints
+################################################################################
+
+[lints]
+workspace = true
+
+################################################################################
+# Features
+################################################################################
+
+[features]
+# By default, we enable the `std` feature.
+#
+# `std` enables the use of the standard library, which most people will want to
+# use. Also, `simdutf8` uses the standard library for CPU feature detection,
+# which is generally a good thing to have.
+default = ["std"]
+
+# THIS IS A SEMVER-EXEMPT, PRIVATE FEATURE. DO NOT USE IT.
+#
+# This feature exposes some internal functions regardless of the features that
+# are enabled, so we can benchmark them.
+bench = []
+
+# The `nightly` feature enables nightly-only features like `portable_simd`.
+nightly = []
+
+# The `std` feature enables the use of the standard library. This is useful for
+# `simdutf8` so it can use its CPU feature detection.
+std = ["simdutf8/std"]
+
+################################################################################
+# Dependencies
+################################################################################
+
+# `simdutf8` is used for hot paths in `simd_cesu8` that don't require
+# transcoding.
+#
+# https://github.com/rusticstuff/simdutf8/blob/main/Cargo.toml
+[dependencies.simdutf8]
+version = "0.1.4"
+default-features = false
+
+################################################################################
+# Dev Dependencies
+################################################################################
+
+# The original `cesu8` crate is used for comparison with `simd_cesu8`.
+[dev-dependencies.cesu8]
+workspace = true
+
+# Criterion is the benchmarking library simd_cesu8 uses.
+#
+# https://github.com/bheisler/criterion.rs/blob/master/Cargo.toml
+[dev-dependencies.criterion]
+workspace = true
+
+# `dev_util` is a utility crate that contains common functions used in
+# `simd_cesu8`'s benchmarks and tests, such as generating random data.
+[dev-dependencies.dev_util]
+path = "dev_util"
+
+################################################################################
+# Build Dependencies
+################################################################################
+
+# `rustc_version` is used to check the version of the compiler in the build
+# script to automatically enable the `nightly` feature if the compiler is
+# nightly.
+#
+# https://github.com/djc/rustc-version-rs/blob/main/Cargo.toml
+[build-dependencies.rustc_version]
+version = "0.4.0"
+
+################################################################################
+# Benchmarks
+################################################################################
+
+[[bench]]
+name = "analysis"
+harness = false
+
+################################################################################
+# Profile
+################################################################################
+
+[profile.bench]
+debug = true
+
+################################################################################
+# Docs.rs Configuration
+################################################################################
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]

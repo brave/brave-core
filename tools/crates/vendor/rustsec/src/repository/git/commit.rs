@@ -1,7 +1,5 @@
 //! Commits to the advisory DB git repository
 
-use tame_index::external::gix;
-
 use crate::{
     error::{Error, ErrorKind},
     repository::{
@@ -60,16 +58,23 @@ impl Commit {
         })?;
 
         let commit_id = commit.id;
-        let Some(time) = gix::date::parse_header(cref.committer.time) else {
-            return Err(Error::new(
+        let time = cref.time().map_err(|err| {
+            Error::with_source(
                 ErrorKind::Repo,
-                format!("unable to parse commit time: {}", cref.committer.time),
-            ));
-        };
+                "unable to parse commit time".to_owned(),
+                err,
+            )
+        })?;
 
         let timestamp = crate::repository::git::gix_time_to_time(time);
         let author = {
-            let sig = cref.author();
+            let sig = cref.author().map_err(|err| {
+                Error::with_source(
+                    ErrorKind::Repo,
+                    "unable to parse commit author".to_owned(),
+                    err,
+                )
+            })?;
             format!("{} <{}>", sig.name, sig.email)
         };
 
@@ -83,27 +88,18 @@ impl Commit {
         }
         let commit_id = CommitHash::from_gix(commit_id);
 
-        let (signature, signed_data) = if let Some(sig) = cref.extra_headers().pgp_signature() {
-            // Note this is inefficient as gix doesn't yet support signature extraction natively.
-            // TODO: convert this to native methods once https://github.com/Byron/gitoxide/pull/973 ships in a stable release.
-            let signed_data = {
-                let mut commit_without_signature = cref.clone();
-                let pos = commit_without_signature
-                    .extra_headers
-                    .iter()
-                    .position(|eh| eh.0 == "gpgsig")
-                    .unwrap();
-                commit_without_signature.extra_headers.remove(pos);
-
-                let mut signed_data = Vec::new();
-                use gix::objs::WriteTo;
-                commit_without_signature.write_to(&mut signed_data)?;
-                signed_data
-            };
-
-            (Some(Signature::from_bytes(sig)?), Some(signed_data))
-        } else {
-            (None, None)
+        let (signature, signed_data) = match commit.signature().map_err(|err| {
+            Error::with_source(
+                ErrorKind::Repo,
+                "unable to extract commit signature".to_owned(),
+                err,
+            )
+        })? {
+            Some((signature, signed_data)) => (
+                Some(Signature::from_bytes(signature.as_ref())?),
+                Some(signed_data.to_bstring().into()),
+            ),
+            None => (None, None),
         };
 
         Ok(Self {
@@ -159,11 +155,13 @@ impl Commit {
 
         let mut index = gix::index::File::from_state(index, repo.index_path());
 
-        let opts = gix::worktree::state::checkout::Options {
-            destination_is_initially_empty: false,
-            overwrite_existing: true,
-            ..Default::default()
-        };
+        let mut opts =
+            gix::worktree::state::checkout::Options::new(gix::filter::plumbing::Pipeline::new(
+                gix::command::Context::default(),
+                repo.object_hash(),
+                gix::filter::plumbing::pipeline::Options::default(),
+            ));
+        opts.overwrite_existing = true;
 
         gix::worktree::state::checkout(
             &mut index,

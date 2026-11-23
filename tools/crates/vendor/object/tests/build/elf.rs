@@ -15,7 +15,7 @@ fn test_nobits_offset() {
     let section = builder.sections.add();
     section.name = b".bss"[..].into();
     section.sh_type = elf::SHT_NOBITS;
-    section.sh_flags = (elf::SHF_ALLOC | elf::SHF_WRITE) as u64;
+    section.sh_flags = elf::SHF_ALLOC | elf::SHF_WRITE;
     section.sh_addr = 0x1000;
     section.sh_offset = 0;
     section.sh_size = 0x1000;
@@ -54,7 +54,7 @@ fn test_no_dynstr() {
     let section = builder.sections.add();
     section.name = b".dynsym"[..].into();
     section.sh_type = elf::SHT_DYNSYM;
-    section.sh_flags = elf::SHF_ALLOC as u64;
+    section.sh_flags = elf::SHF_ALLOC;
     section.sh_addralign = 8;
     section.data = build::elf::SectionData::DynamicSymbol;
     let dynsym_id = section.id();
@@ -62,7 +62,7 @@ fn test_no_dynstr() {
     let section = builder.sections.add();
     section.name = b".rela.dyn"[..].into();
     section.sh_type = elf::SHT_RELA;
-    section.sh_flags = elf::SHF_ALLOC as u64;
+    section.sh_flags = elf::SHF_ALLOC;
     section.sh_addralign = 8;
     section.data =
         build::elf::SectionData::DynamicRelocation(vec![build::elf::DynamicRelocation {
@@ -121,7 +121,7 @@ fn test_attribute() {
             vendor: b"GNU"[..].into(),
             subsubsections: vec![
                 (build::elf::AttributesSubsubsection {
-                    tag: build::elf::AttributeTag::File,
+                    scope: build::elf::AttributeScope::File,
                     data: b"123"[..].into(),
                 }),
             ],
@@ -144,8 +144,8 @@ fn test_attribute() {
             assert_eq!(attributes.subsections[0].vendor.as_slice(), b"GNU");
             assert_eq!(attributes.subsections[0].subsubsections.len(), 1);
             assert_eq!(
-                attributes.subsections[0].subsubsections[0].tag,
-                build::elf::AttributeTag::File
+                attributes.subsections[0].subsubsections[0].scope,
+                build::elf::AttributeScope::File
             );
             assert_eq!(
                 attributes.subsections[0].subsubsections[0].data.as_slice(),
@@ -170,7 +170,7 @@ fn test_dynsym() {
     let section = builder.sections.add();
     section.name = b".text"[..].into();
     section.sh_type = elf::SHT_PROGBITS;
-    section.sh_flags = (elf::SHF_ALLOC | elf::SHF_EXECINSTR) as u64;
+    section.sh_flags = elf::SHF_ALLOC | elf::SHF_EXECINSTR;
     section.sh_addralign = 16;
     section.data = build::elf::SectionData::Data(vec![0xcc; 100].into());
     let text_id = section.id();
@@ -178,7 +178,7 @@ fn test_dynsym() {
     let section = builder.sections.add();
     section.name = b".dynsym"[..].into();
     section.sh_type = elf::SHT_DYNSYM;
-    section.sh_flags = elf::SHF_ALLOC as u64;
+    section.sh_flags = elf::SHF_ALLOC;
     section.sh_addralign = 8;
     section.data = build::elf::SectionData::DynamicSymbol;
     let dynsym_id = section.id();
@@ -186,7 +186,7 @@ fn test_dynsym() {
     let section = builder.sections.add();
     section.name = b".dynstr"[..].into();
     section.sh_type = elf::SHT_STRTAB;
-    section.sh_flags = elf::SHF_ALLOC as u64;
+    section.sh_flags = elf::SHF_ALLOC;
     section.sh_addralign = 1;
     section.data = build::elf::SectionData::DynamicString;
     let dynstr_id = section.id();
@@ -194,7 +194,7 @@ fn test_dynsym() {
     let section = builder.sections.add();
     section.name = b".gnu.hash"[..].into();
     section.sh_type = elf::SHT_GNU_HASH;
-    section.sh_flags = elf::SHF_ALLOC as u64;
+    section.sh_flags = elf::SHF_ALLOC;
     section.sh_addralign = 8;
     section.data = build::elf::SectionData::GnuHash;
     let gnu_hash_id = section.id();

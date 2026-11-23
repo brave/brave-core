@@ -1,5 +1,4 @@
 use alloc::fmt;
-use alloc::vec::Vec;
 use core::marker::PhantomData;
 
 #[allow(unused_imports)] // Unused for Wasm
@@ -18,10 +17,11 @@ use crate::read::wasm;
 use crate::read::xcoff;
 use crate::read::{
     self, Architecture, BinaryFormat, CodeView, ComdatKind, CompressedData, CompressedFileRange,
-    Error, Export, FileFlags, FileKind, Import, Object, ObjectComdat, ObjectKind, ObjectMap,
-    ObjectSection, ObjectSegment, ObjectSymbol, ObjectSymbolTable, ReadRef, Relocation,
-    RelocationMap, Result, SectionFlags, SectionIndex, SectionKind, SegmentFlags, SubArchitecture,
-    SymbolFlags, SymbolIndex, SymbolKind, SymbolMap, SymbolMapName, SymbolScope, SymbolSection,
+    Error, Export, FileFlags, FileKind, Import, ImportLibrary, Object, ObjectComdat, ObjectKind,
+    ObjectMap, ObjectSection, ObjectSegment, ObjectSymbol, ObjectSymbolTable, Permissions, ReadRef,
+    Relocation, RelocationMap, Result, SectionFlags, SectionIndex, SectionKind, SegmentFlags,
+    SubArchitecture, SymbolFlags, SymbolIndex, SymbolKind, SymbolMap, SymbolMapName, SymbolScope,
+    SymbolSection,
 };
 
 /// Evaluate an expression on the contents of a file format enum.
@@ -29,58 +29,58 @@ use crate::read::{
 /// This is a hack to avoid virtual calls.
 macro_rules! with_inner {
     ($inner:expr, $enum:ident, | $var:ident | $body:expr) => {
-        match $inner {
+        match &$inner {
             #[cfg(feature = "coff")]
-            $enum::Coff(ref $var) => $body,
+            $enum::Coff($var) => $body,
             #[cfg(feature = "coff")]
-            $enum::CoffBig(ref $var) => $body,
+            $enum::CoffBig($var) => $body,
             #[cfg(feature = "elf")]
-            $enum::Elf32(ref $var) => $body,
+            $enum::Elf32($var) => $body,
             #[cfg(feature = "elf")]
-            $enum::Elf64(ref $var) => $body,
+            $enum::Elf64($var) => $body,
             #[cfg(feature = "macho")]
-            $enum::MachO32(ref $var) => $body,
+            $enum::MachO32($var) => $body,
             #[cfg(feature = "macho")]
-            $enum::MachO64(ref $var) => $body,
+            $enum::MachO64($var) => $body,
             #[cfg(feature = "pe")]
-            $enum::Pe32(ref $var) => $body,
+            $enum::Pe32($var) => $body,
             #[cfg(feature = "pe")]
-            $enum::Pe64(ref $var) => $body,
+            $enum::Pe64($var) => $body,
             #[cfg(feature = "wasm")]
-            $enum::Wasm(ref $var) => $body,
+            $enum::Wasm($var) => $body,
             #[cfg(feature = "xcoff")]
-            $enum::Xcoff32(ref $var) => $body,
+            $enum::Xcoff32($var) => $body,
             #[cfg(feature = "xcoff")]
-            $enum::Xcoff64(ref $var) => $body,
+            $enum::Xcoff64($var) => $body,
         }
     };
 }
 
 macro_rules! with_inner_mut {
     ($inner:expr, $enum:ident, | $var:ident | $body:expr) => {
-        match $inner {
+        match &mut $inner {
             #[cfg(feature = "coff")]
-            $enum::Coff(ref mut $var) => $body,
+            $enum::Coff($var) => $body,
             #[cfg(feature = "coff")]
-            $enum::CoffBig(ref mut $var) => $body,
+            $enum::CoffBig($var) => $body,
             #[cfg(feature = "elf")]
-            $enum::Elf32(ref mut $var) => $body,
+            $enum::Elf32($var) => $body,
             #[cfg(feature = "elf")]
-            $enum::Elf64(ref mut $var) => $body,
+            $enum::Elf64($var) => $body,
             #[cfg(feature = "macho")]
-            $enum::MachO32(ref mut $var) => $body,
+            $enum::MachO32($var) => $body,
             #[cfg(feature = "macho")]
-            $enum::MachO64(ref mut $var) => $body,
+            $enum::MachO64($var) => $body,
             #[cfg(feature = "pe")]
-            $enum::Pe32(ref mut $var) => $body,
+            $enum::Pe32($var) => $body,
             #[cfg(feature = "pe")]
-            $enum::Pe64(ref mut $var) => $body,
+            $enum::Pe64($var) => $body,
             #[cfg(feature = "wasm")]
-            $enum::Wasm(ref mut $var) => $body,
+            $enum::Wasm($var) => $body,
             #[cfg(feature = "xcoff")]
-            $enum::Xcoff32(ref mut $var) => $body,
+            $enum::Xcoff32($var) => $body,
             #[cfg(feature = "xcoff")]
-            $enum::Xcoff64(ref mut $var) => $body,
+            $enum::Xcoff64($var) => $body,
         }
     };
 }
@@ -88,29 +88,29 @@ macro_rules! with_inner_mut {
 /// Like `with_inner!`, but wraps the result in another enum.
 macro_rules! map_inner {
     ($inner:expr, $from:ident, $to:ident, | $var:ident | $body:expr) => {
-        match $inner {
+        match &$inner {
             #[cfg(feature = "coff")]
-            $from::Coff(ref $var) => $to::Coff($body),
+            $from::Coff($var) => $to::Coff($body),
             #[cfg(feature = "coff")]
-            $from::CoffBig(ref $var) => $to::CoffBig($body),
+            $from::CoffBig($var) => $to::CoffBig($body),
             #[cfg(feature = "elf")]
-            $from::Elf32(ref $var) => $to::Elf32($body),
+            $from::Elf32($var) => $to::Elf32($body),
             #[cfg(feature = "elf")]
-            $from::Elf64(ref $var) => $to::Elf64($body),
+            $from::Elf64($var) => $to::Elf64($body),
             #[cfg(feature = "macho")]
-            $from::MachO32(ref $var) => $to::MachO32($body),
+            $from::MachO32($var) => $to::MachO32($body),
             #[cfg(feature = "macho")]
-            $from::MachO64(ref $var) => $to::MachO64($body),
+            $from::MachO64($var) => $to::MachO64($body),
             #[cfg(feature = "pe")]
-            $from::Pe32(ref $var) => $to::Pe32($body),
+            $from::Pe32($var) => $to::Pe32($body),
             #[cfg(feature = "pe")]
-            $from::Pe64(ref $var) => $to::Pe64($body),
+            $from::Pe64($var) => $to::Pe64($body),
             #[cfg(feature = "wasm")]
-            $from::Wasm(ref $var) => $to::Wasm($body),
+            $from::Wasm($var) => $to::Wasm($body),
             #[cfg(feature = "xcoff")]
-            $from::Xcoff32(ref $var) => $to::Xcoff32($body),
+            $from::Xcoff32($var) => $to::Xcoff32($body),
             #[cfg(feature = "xcoff")]
-            $from::Xcoff64(ref $var) => $to::Xcoff64($body),
+            $from::Xcoff64($var) => $to::Xcoff64($body),
         }
     };
 }
@@ -118,58 +118,58 @@ macro_rules! map_inner {
 /// Like `map_inner!`, but the result is a Result or Option.
 macro_rules! map_inner_option {
     ($inner:expr, $from:ident, $to:ident, | $var:ident | $body:expr) => {
-        match $inner {
+        match &$inner {
             #[cfg(feature = "coff")]
-            $from::Coff(ref $var) => $body.map($to::Coff),
+            $from::Coff($var) => $body.map($to::Coff),
             #[cfg(feature = "coff")]
-            $from::CoffBig(ref $var) => $body.map($to::CoffBig),
+            $from::CoffBig($var) => $body.map($to::CoffBig),
             #[cfg(feature = "elf")]
-            $from::Elf32(ref $var) => $body.map($to::Elf32),
+            $from::Elf32($var) => $body.map($to::Elf32),
             #[cfg(feature = "elf")]
-            $from::Elf64(ref $var) => $body.map($to::Elf64),
+            $from::Elf64($var) => $body.map($to::Elf64),
             #[cfg(feature = "macho")]
-            $from::MachO32(ref $var) => $body.map($to::MachO32),
+            $from::MachO32($var) => $body.map($to::MachO32),
             #[cfg(feature = "macho")]
-            $from::MachO64(ref $var) => $body.map($to::MachO64),
+            $from::MachO64($var) => $body.map($to::MachO64),
             #[cfg(feature = "pe")]
-            $from::Pe32(ref $var) => $body.map($to::Pe32),
+            $from::Pe32($var) => $body.map($to::Pe32),
             #[cfg(feature = "pe")]
-            $from::Pe64(ref $var) => $body.map($to::Pe64),
+            $from::Pe64($var) => $body.map($to::Pe64),
             #[cfg(feature = "wasm")]
-            $from::Wasm(ref $var) => $body.map($to::Wasm),
+            $from::Wasm($var) => $body.map($to::Wasm),
             #[cfg(feature = "xcoff")]
-            $from::Xcoff32(ref $var) => $body.map($to::Xcoff32),
+            $from::Xcoff32($var) => $body.map($to::Xcoff32),
             #[cfg(feature = "xcoff")]
-            $from::Xcoff64(ref $var) => $body.map($to::Xcoff64),
+            $from::Xcoff64($var) => $body.map($to::Xcoff64),
         }
     };
 }
 
 macro_rules! map_inner_option_mut {
     ($inner:expr, $from:ident, $to:ident, | $var:ident | $body:expr) => {
-        match $inner {
+        match &mut $inner {
             #[cfg(feature = "coff")]
-            $from::Coff(ref mut $var) => $body.map($to::Coff),
+            $from::Coff($var) => $body.map($to::Coff),
             #[cfg(feature = "coff")]
-            $from::CoffBig(ref mut $var) => $body.map($to::CoffBig),
+            $from::CoffBig($var) => $body.map($to::CoffBig),
             #[cfg(feature = "elf")]
-            $from::Elf32(ref mut $var) => $body.map($to::Elf32),
+            $from::Elf32($var) => $body.map($to::Elf32),
             #[cfg(feature = "elf")]
-            $from::Elf64(ref mut $var) => $body.map($to::Elf64),
+            $from::Elf64($var) => $body.map($to::Elf64),
             #[cfg(feature = "macho")]
-            $from::MachO32(ref mut $var) => $body.map($to::MachO32),
+            $from::MachO32($var) => $body.map($to::MachO32),
             #[cfg(feature = "macho")]
-            $from::MachO64(ref mut $var) => $body.map($to::MachO64),
+            $from::MachO64($var) => $body.map($to::MachO64),
             #[cfg(feature = "pe")]
-            $from::Pe32(ref mut $var) => $body.map($to::Pe32),
+            $from::Pe32($var) => $body.map($to::Pe32),
             #[cfg(feature = "pe")]
-            $from::Pe64(ref mut $var) => $body.map($to::Pe64),
+            $from::Pe64($var) => $body.map($to::Pe64),
             #[cfg(feature = "wasm")]
-            $from::Wasm(ref mut $var) => $body.map($to::Wasm),
+            $from::Wasm($var) => $body.map($to::Wasm),
             #[cfg(feature = "xcoff")]
-            $from::Xcoff32(ref mut $var) => $body.map($to::Xcoff32),
+            $from::Xcoff32($var) => $body.map($to::Xcoff32),
             #[cfg(feature = "xcoff")]
-            $from::Xcoff64(ref mut $var) => $body.map($to::Xcoff64),
+            $from::Xcoff64($var) => $body.map($to::Xcoff64),
         }
     };
 }
@@ -177,29 +177,29 @@ macro_rules! map_inner_option_mut {
 /// Call `next` for a file format iterator.
 macro_rules! next_inner {
     ($inner:expr, $from:ident, $to:ident) => {
-        match $inner {
+        match &mut $inner {
             #[cfg(feature = "coff")]
-            $from::Coff(ref mut iter) => iter.next().map($to::Coff),
+            $from::Coff(iter) => iter.next().map($to::Coff),
             #[cfg(feature = "coff")]
-            $from::CoffBig(ref mut iter) => iter.next().map($to::CoffBig),
+            $from::CoffBig(iter) => iter.next().map($to::CoffBig),
             #[cfg(feature = "elf")]
-            $from::Elf32(ref mut iter) => iter.next().map($to::Elf32),
+            $from::Elf32(iter) => iter.next().map($to::Elf32),
             #[cfg(feature = "elf")]
-            $from::Elf64(ref mut iter) => iter.next().map($to::Elf64),
+            $from::Elf64(iter) => iter.next().map($to::Elf64),
             #[cfg(feature = "macho")]
-            $from::MachO32(ref mut iter) => iter.next().map($to::MachO32),
+            $from::MachO32(iter) => iter.next().map($to::MachO32),
             #[cfg(feature = "macho")]
-            $from::MachO64(ref mut iter) => iter.next().map($to::MachO64),
+            $from::MachO64(iter) => iter.next().map($to::MachO64),
             #[cfg(feature = "pe")]
-            $from::Pe32(ref mut iter) => iter.next().map($to::Pe32),
+            $from::Pe32(iter) => iter.next().map($to::Pe32),
             #[cfg(feature = "pe")]
-            $from::Pe64(ref mut iter) => iter.next().map($to::Pe64),
+            $from::Pe64(iter) => iter.next().map($to::Pe64),
             #[cfg(feature = "wasm")]
-            $from::Wasm(ref mut iter) => iter.next().map($to::Wasm),
+            $from::Wasm(iter) => iter.next().map($to::Wasm),
             #[cfg(feature = "xcoff")]
-            $from::Xcoff32(ref mut iter) => iter.next().map($to::Xcoff32),
+            $from::Xcoff32(iter) => iter.next().map($to::Xcoff32),
             #[cfg(feature = "xcoff")]
-            $from::Xcoff64(ref mut iter) => iter.next().map($to::Xcoff64),
+            $from::Xcoff64(iter) => iter.next().map($to::Xcoff64),
         }
     };
 }
@@ -357,6 +357,21 @@ where
     where
         Self: 'file,
         'data: 'file;
+    type ImportLibraryIterator<'file>
+        = ImportLibraryIterator<'data, 'file, R>
+    where
+        Self: 'file,
+        'data: 'file;
+    type ImportIterator<'file>
+        = ImportIterator<'data, 'file, R>
+    where
+        Self: 'file,
+        'data: 'file;
+    type ExportIterator<'file>
+        = ExportIterator<'data, 'file, R>
+    where
+        Self: 'file,
+        'data: 'file;
 
     fn architecture(&self) -> Architecture {
         with_inner!(self, File, |x| x.architecture())
@@ -452,10 +467,10 @@ where
     #[cfg(feature = "elf")]
     fn dynamic_relocations(&self) -> Option<DynamicRelocationIterator<'data, '_, R>> {
         let inner = match self {
-            File::Elf32(ref elf) => {
+            File::Elf32(elf) => {
                 DynamicRelocationIteratorInternal::Elf32(elf.dynamic_relocations()?)
             }
-            File::Elf64(ref elf) => {
+            File::Elf64(elf) => {
                 DynamicRelocationIteratorInternal::Elf64(elf.dynamic_relocations()?)
             }
             #[allow(unreachable_patterns)]
@@ -477,12 +492,20 @@ where
         with_inner!(self, File, |x| x.object_map())
     }
 
-    fn imports(&self) -> Result<Vec<Import<'data>>> {
-        with_inner!(self, File, |x| x.imports())
+    fn import_libraries(&self) -> Result<ImportLibraryIterator<'data, '_, R>> {
+        map_inner_option!(self, File, ImportLibraryIteratorInternal, |x| x
+            .import_libraries())
+        .map(|inner| ImportLibraryIterator { inner })
     }
 
-    fn exports(&self) -> Result<Vec<Export<'data>>> {
-        with_inner!(self, File, |x| x.exports())
+    fn imports(&self) -> Result<ImportIterator<'data, '_, R>> {
+        map_inner_option!(self, File, ImportIteratorInternal, |x| x.imports())
+            .map(|inner| ImportIterator { inner })
+    }
+
+    fn exports(&self) -> Result<ExportIterator<'data, '_, R>> {
+        map_inner_option!(self, File, ExportIteratorInternal, |x| x.exports())
+            .map(|inner| ExportIterator { inner })
     }
 
     fn has_debug_symbols(&self) -> bool {
@@ -616,6 +639,7 @@ impl<'data, 'file, R: ReadRef<'data>> fmt::Debug for Segment<'data, 'file, R> {
         }
         s.field("address", &self.address())
             .field("size", &self.size())
+            .field("permissions", &self.permissions())
             .finish()
     }
 }
@@ -657,6 +681,10 @@ impl<'data, 'file, R: ReadRef<'data>> ObjectSegment<'data> for Segment<'data, 'f
 
     fn flags(&self) -> SegmentFlags {
         with_inner!(self.inner, SegmentInternal, |x| x.flags())
+    }
+
+    fn permissions(&self) -> Permissions {
+        with_inner!(self.inner, SegmentInternal, |x| x.permissions())
     }
 }
 
@@ -1370,5 +1398,125 @@ impl<'data, 'file, R: ReadRef<'data>> Iterator for SectionRelocationIterator<'da
 
     fn next(&mut self) -> Option<Self::Item> {
         with_inner_mut!(self.inner, SectionRelocationIteratorInternal, |x| x.next())
+    }
+}
+
+/// An iterator for the import libraries in a [`File`].
+#[derive(Debug)]
+pub struct ImportLibraryIterator<'data, 'file, R: ReadRef<'data> = &'data [u8]> {
+    inner: ImportLibraryIteratorInternal<'data, 'file, R>,
+}
+
+#[derive(Debug)]
+enum ImportLibraryIteratorInternal<'data, 'file, R: ReadRef<'data>> {
+    #[cfg(feature = "coff")]
+    Coff(read::NoImportLibraryIterator<'data, 'file, R>),
+    #[cfg(feature = "coff")]
+    CoffBig(read::NoImportLibraryIterator<'data, 'file, R>),
+    #[cfg(feature = "elf")]
+    Elf32(elf::ElfImportLibraryIterator32<'data, 'file, Endianness, R>),
+    #[cfg(feature = "elf")]
+    Elf64(elf::ElfImportLibraryIterator64<'data, 'file, Endianness, R>),
+    #[cfg(feature = "macho")]
+    MachO32(macho::MachOImportLibraryIterator32<'data, 'file, Endianness, R>),
+    #[cfg(feature = "macho")]
+    MachO64(macho::MachOImportLibraryIterator64<'data, 'file, Endianness, R>),
+    #[cfg(feature = "pe")]
+    Pe32(pe::PeImportLibraryIterator32<'data, 'file, R>),
+    #[cfg(feature = "pe")]
+    Pe64(pe::PeImportLibraryIterator64<'data, 'file, R>),
+    #[cfg(feature = "wasm")]
+    Wasm(read::NoImportLibraryIterator<'data, 'file, R>),
+    #[cfg(feature = "xcoff")]
+    Xcoff32(read::NoImportLibraryIterator<'data, 'file, R>),
+    #[cfg(feature = "xcoff")]
+    Xcoff64(read::NoImportLibraryIterator<'data, 'file, R>),
+}
+
+impl<'data, 'file, R: ReadRef<'data>> Iterator for ImportLibraryIterator<'data, 'file, R> {
+    type Item = Result<ImportLibrary<'data>>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        with_inner_mut!(self.inner, ImportLibraryIteratorInternal, |x| x.next())
+    }
+}
+
+/// An iterator for the imports in a [`File`].
+#[derive(Debug)]
+pub struct ImportIterator<'data, 'file, R: ReadRef<'data> = &'data [u8]> {
+    inner: ImportIteratorInternal<'data, 'file, R>,
+}
+
+#[derive(Debug)]
+enum ImportIteratorInternal<'data, 'file, R: ReadRef<'data>> {
+    #[cfg(feature = "coff")]
+    Coff(read::NoImportIterator<'data, 'file, R>),
+    #[cfg(feature = "coff")]
+    CoffBig(read::NoImportIterator<'data, 'file, R>),
+    #[cfg(feature = "elf")]
+    Elf32(elf::ElfImportIterator32<'data, 'file, Endianness, R>),
+    #[cfg(feature = "elf")]
+    Elf64(elf::ElfImportIterator64<'data, 'file, Endianness, R>),
+    #[cfg(feature = "macho")]
+    MachO32(macho::MachOImportIterator32<'data, 'file, Endianness, R>),
+    #[cfg(feature = "macho")]
+    MachO64(macho::MachOImportIterator64<'data, 'file, Endianness, R>),
+    #[cfg(feature = "pe")]
+    Pe32(pe::PeImportIterator32<'data, 'file, R>),
+    #[cfg(feature = "pe")]
+    Pe64(pe::PeImportIterator64<'data, 'file, R>),
+    #[cfg(feature = "wasm")]
+    Wasm(read::NoImportIterator<'data, 'file, R>),
+    #[cfg(feature = "xcoff")]
+    Xcoff32(read::NoImportIterator<'data, 'file, R>),
+    #[cfg(feature = "xcoff")]
+    Xcoff64(read::NoImportIterator<'data, 'file, R>),
+}
+
+impl<'data, 'file, R: ReadRef<'data>> Iterator for ImportIterator<'data, 'file, R> {
+    type Item = Result<Import<'data>>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        with_inner_mut!(self.inner, ImportIteratorInternal, |x| x.next())
+    }
+}
+
+/// An iterator for the exports in a [`File`].
+#[derive(Debug)]
+pub struct ExportIterator<'data, 'file, R: ReadRef<'data> = &'data [u8]> {
+    inner: ExportIteratorInternal<'data, 'file, R>,
+}
+
+#[derive(Debug)]
+enum ExportIteratorInternal<'data, 'file, R: ReadRef<'data>> {
+    #[cfg(feature = "coff")]
+    Coff(read::NoExportIterator<'data, 'file, R>),
+    #[cfg(feature = "coff")]
+    CoffBig(read::NoExportIterator<'data, 'file, R>),
+    #[cfg(feature = "elf")]
+    Elf32(elf::ElfExportIterator32<'data, 'file, Endianness, R>),
+    #[cfg(feature = "elf")]
+    Elf64(elf::ElfExportIterator64<'data, 'file, Endianness, R>),
+    #[cfg(feature = "macho")]
+    MachO32(macho::MachOExportIterator32<'data, 'file, Endianness, R>),
+    #[cfg(feature = "macho")]
+    MachO64(macho::MachOExportIterator64<'data, 'file, Endianness, R>),
+    #[cfg(feature = "pe")]
+    Pe32(pe::PeExportIterator<'data, 'file, R>),
+    #[cfg(feature = "pe")]
+    Pe64(pe::PeExportIterator<'data, 'file, R>),
+    #[cfg(feature = "wasm")]
+    Wasm(read::NoExportIterator<'data, 'file, R>),
+    #[cfg(feature = "xcoff")]
+    Xcoff32(read::NoExportIterator<'data, 'file, R>),
+    #[cfg(feature = "xcoff")]
+    Xcoff64(read::NoExportIterator<'data, 'file, R>),
+}
+
+impl<'data, 'file, R: ReadRef<'data>> Iterator for ExportIterator<'data, 'file, R> {
+    type Item = Result<Export<'data>>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        with_inner_mut!(self.inner, ExportIteratorInternal, |x| x.next())
     }
 }

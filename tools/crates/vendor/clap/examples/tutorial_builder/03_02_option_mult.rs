@@ -1,4 +1,4 @@
-use clap::{command, Arg, ArgAction};
+use clap::{Arg, ArgAction, command};
 
 fn main() {
     let matches = command!() // requires `cargo` feature
@@ -16,5 +16,5 @@ fn main() {
         .map(|v| v.as_str())
         .collect::<Vec<_>>();
 
-    println!("names: {:?}", &args);
+    println!("names: {args:?}");
 }

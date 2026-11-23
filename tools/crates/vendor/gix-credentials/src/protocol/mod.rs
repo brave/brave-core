@@ -1,4 +1,5 @@
 use bstr::BString;
+use gix_error::{Result, message};
 
 use crate::helper;
 
@@ -11,32 +12,11 @@ pub struct Outcome {
     pub next: helper::NextAction,
 }
 
-/// The Result type used in credentials top-level functions to obtain a complete identity.
-pub type Result = std::result::Result<Option<Outcome>, Error>;
-
-/// The error returned top-level credential functions.
-#[derive(Debug, thiserror::Error)]
-#[allow(missing_docs)]
-pub enum Error {
-    #[error(transparent)]
-    UrlParse(#[from] gix_url::parse::Error),
-    #[error("Either 'url' field or both 'protocol' and 'host' fields must be provided")]
-    UrlMissing,
-    #[error(transparent)]
-    ContextDecode(#[from] context::decode::Error),
-    #[error(transparent)]
-    InvokeHelper(#[from] helper::Error),
-    #[error("Could not obtain identity for context: {}", { let mut buf = Vec::<u8>::new(); context.write_to(&mut buf).ok(); String::from_utf8_lossy(&buf).into_owned() })]
-    IdentityMissing { context: Context },
-    #[error("The handler asked to stop trying to obtain credentials")]
-    Quit,
-    #[error("Couldn't obtain {prompt}")]
-    Prompt { prompt: String, source: gix_prompt::Error },
-}
-
 /// Additional context to be passed to the credentials helper.
 #[derive(Debug, Default, Clone, Eq, PartialEq)]
 pub struct Context {
+    /// Options controlling how this context is encoded and decoded.
+    pub options: ContextOptions,
     /// The protocol over which the credential will be used (e.g., https).
     pub protocol: Option<String>,
     /// The remote hostname for a network credential. This includes the port number if one was specified (e.g., "example.com:8088").
@@ -52,6 +32,11 @@ pub struct Context {
     pub oauth_refresh_token: Option<String>,
     /// The expiry date of OAuth tokens as seconds from Unix epoch.
     pub password_expiry_utc: Option<gix_date::SecondsSinceUnixEpoch>,
+    /// HTTP `WWW-Authenticate` challenges, in server order, passed to helpers as `wwwauth[]`.
+    ///
+    /// Helpers can use these to select an authentication method or a stored account without prompting.
+    /// These values are input to helpers and are discarded once the cascade obtains a complete identity.
+    pub www_authenticate: Vec<BString>,
     /// When this special attribute is read by git credential, the value is parsed as a URL and treated as if its constituent
     /// parts were read (e.g., url=<https://example.com> would behave as if
     /// protocol=https and host=example.com had been provided). This can help callers avoid parsing URLs themselves.
@@ -60,28 +45,49 @@ pub struct Context {
     pub quit: Option<bool>,
 }
 
+/// Options for encoding and decoding a [`Context`].
+#[derive(Debug, Clone, Copy, Eq, PartialEq)]
+pub struct ContextOptions {
+    /// If true, carriage returns in credential values are rejected to protect credential-protocol parsing.
+    ///
+    /// NUL bytes and newlines are always rejected.
+    pub protect_protocol: bool,
+}
+
+impl Default for ContextOptions {
+    fn default() -> Self {
+        ContextOptions { protect_protocol: true }
+    }
+}
+
 /// Convert the outcome of a helper invocation to a helper result, assuring that the identity is complete in the process.
-#[allow(clippy::result_large_err)]
-pub fn helper_outcome_to_result(outcome: Option<helper::Outcome>, action: helper::Action) -> Result {
+pub fn helper_outcome_to_result(outcome: Option<helper::Outcome>, action: helper::Action) -> Result<Option<Outcome>> {
     match (action, outcome) {
-        (helper::Action::Get(ctx), None) => Err(Error::IdentityMissing {
-            context: ctx.redacted(),
-        }),
+        (helper::Action::Get(ctx), None) => Err(identity_missing(ctx)),
         (helper::Action::Get(ctx), Some(mut outcome)) => match outcome.consume_identity() {
             Some(identity) => Ok(Some(Outcome {
                 identity,
                 next: outcome.next,
             })),
             None => Err(if outcome.quit {
-                Error::Quit
+                message("The handler asked to stop trying to obtain credentials").cancelled_error()
             } else {
-                Error::IdentityMissing {
-                    context: ctx.redacted(),
-                }
+                identity_missing(ctx)
             }),
         },
         (helper::Action::Store(_) | helper::Action::Erase(_), _ignore) => Ok(None),
     }
+}
+
+fn identity_missing(context: Context) -> gix_error::Error {
+    let mut buf = Vec::new();
+    // Invalid protocol values must not prevent reporting the missing identity.
+    context.redacted().write_to(&mut buf).ok();
+    message!(
+        "Could not obtain identity for context: {}",
+        String::from_utf8_lossy(&buf)
+    )
+    .unauthenticated_error()
 }
 
 ///

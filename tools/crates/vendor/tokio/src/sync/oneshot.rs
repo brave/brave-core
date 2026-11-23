@@ -243,6 +243,13 @@ pub struct Sender<T> {
 ///
 /// [`Future`]: trait@std::future::Future
 ///
+/// # Cancel safety
+///
+/// Awaiting a `&mut Receiver<T>` is cancel safe. If it is used as a branch in
+/// [`tokio::select!`](crate::select) and another branch completes first, it is
+/// guaranteed that no message was received on this
+/// channel.
+///
 /// # Examples
 ///
 /// ```
@@ -404,31 +411,51 @@ struct Inner<T> {
 struct Task(UnsafeCell<MaybeUninit<Waker>>);
 
 impl Task {
+    /// # Safety
+    ///
+    /// The caller must do the necessary synchronization to ensure that
+    /// the [`Self::0`] contains the valid [`Waker`] during the call.
     unsafe fn will_wake(&self, cx: &mut Context<'_>) -> bool {
-        self.with_task(|w| w.will_wake(cx.waker()))
+        unsafe { self.with_task(|w| w.will_wake(cx.waker())) }
     }
 
+    /// # Safety
+    ///
+    /// The caller must do the necessary synchronization to ensure that
+    /// the [`Self::0`] contains the valid [`Waker`] during the call.
     unsafe fn with_task<F, R>(&self, f: F) -> R
     where
         F: FnOnce(&Waker) -> R,
     {
         self.0.with(|ptr| {
-            let waker: *const Waker = (*ptr).as_ptr();
-            f(&*waker)
+            let waker: *const Waker = unsafe { (*ptr).as_ptr() };
+            f(unsafe { &*waker })
         })
     }
 
+    /// # Safety
+    ///
+    /// The caller must do the necessary synchronization to ensure that
+    /// the [`Self::0`] contains the valid [`Waker`] during the call.
     unsafe fn drop_task(&self) {
         self.0.with_mut(|ptr| {
-            let ptr: *mut Waker = (*ptr).as_mut_ptr();
-            ptr.drop_in_place();
+            let ptr: *mut Waker = unsafe { (*ptr).as_mut_ptr() };
+            unsafe {
+                ptr.drop_in_place();
+            }
         });
     }
 
+    /// # Safety
+    ///
+    /// The caller must do the necessary synchronization to ensure that
+    /// the [`Self::0`] contains the valid [`Waker`] during the call.
     unsafe fn set_task(&self, cx: &mut Context<'_>) {
         self.0.with_mut(|ptr| {
-            let ptr: *mut Waker = (*ptr).as_mut_ptr();
-            ptr.write(cx.waker().clone());
+            let ptr: *mut Waker = unsafe { (*ptr).as_mut_ptr() };
+            unsafe {
+                ptr.write(cx.waker().clone());
+            }
         });
     }
 }
@@ -556,7 +583,7 @@ impl<T> Sender<T> {
     /// not be sent.
     ///
     /// This method consumes `self` as only one value may ever be sent on a `oneshot`
-    /// channel. It is not marked async because sending a message to an `oneshot`
+    /// channel. It is not marked async because sending a message to a `oneshot`
     /// channel never requires any form of waiting.  Because of this, the `send`
     /// method can be used in both synchronous and asynchronous code without
     /// problems.
@@ -1241,28 +1268,30 @@ impl<T> Drop for Receiver<T> {
 impl<T> Future for Receiver<T> {
     type Output = Result<T, RecvError>;
 
-    fn poll(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
-        // If `inner` is `None`, then `poll()` has already completed.
-        #[cfg(all(tokio_unstable, feature = "tracing"))]
-        let _res_span = self.resource_span.clone().entered();
-        #[cfg(all(tokio_unstable, feature = "tracing"))]
-        let _ao_span = self.async_op_span.clone().entered();
-        #[cfg(all(tokio_unstable, feature = "tracing"))]
-        let _ao_poll_span = self.async_op_poll_span.clone().entered();
+    fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
+        let this = self.get_mut();
 
-        let ret = if let Some(inner) = self.as_ref().get_ref().inner.as_ref() {
+        #[cfg(all(tokio_unstable, feature = "tracing"))]
+        let _res_span = this.resource_span.enter();
+        #[cfg(all(tokio_unstable, feature = "tracing"))]
+        let _ao_span = this.async_op_span.enter();
+        #[cfg(all(tokio_unstable, feature = "tracing"))]
+        let _ao_poll_span = this.async_op_poll_span.enter();
+
+        // If `inner` is `None`, then `poll()` has already completed.
+        let ret = if let Some(inner) = this.inner.as_ref() {
             #[cfg(all(tokio_unstable, feature = "tracing"))]
-            let res = ready!(trace_poll_op!("poll_recv", inner.poll_recv(cx))).map_err(Into::into);
+            let res = ready!(trace_poll_op!("poll_recv", inner.poll_recv(cx)));
 
             #[cfg(any(not(tokio_unstable), not(feature = "tracing")))]
-            let res = ready!(inner.poll_recv(cx)).map_err(Into::into);
+            let res = ready!(inner.poll_recv(cx));
 
             res
         } else {
             panic!("called after complete");
         };
 
-        self.inner = None;
+        this.inner = None;
         Ready(ret)
     }
 }
@@ -1364,6 +1393,19 @@ impl<T> Inner<T> {
             }
         }
 
+        if prev.is_rx_task_set() && !prev.is_complete() {
+            State::unset_rx_task(&self.state);
+            // SAFETY: The sender only accesses `rx_task` (via
+            // `wake_by_ref`) in `complete()` after successfully setting
+            // `VALUE_SENT`. But `set_complete` will not set `VALUE_SENT`
+            // if `CLOSED` is already set (its CAS loop breaks early).
+            // Since `prev` shows that `VALUE_SENT` was not set before we
+            // set `CLOSED`, the sender can no longer set `VALUE_SENT` and
+            // will never access `rx_task`. Therefore, we have exclusive
+            // access here.
+            unsafe { self.rx_task.drop_task() };
+        }
+
         prev
     }
 
@@ -1377,7 +1419,7 @@ impl<T> Inner<T> {
     /// If `VALUE_SENT` is not set, then only the sender may call this method;
     /// if it is set, then only the receiver may call this method.
     unsafe fn consume_value(&self) -> Option<T> {
-        self.value.with_mut(|ptr| (*ptr).take())
+        self.value.with_mut(|ptr| unsafe { (*ptr).take() })
     }
 
     /// Returns true if there is a value. This function does not check `state`.
@@ -1390,7 +1432,7 @@ impl<T> Inner<T> {
     /// If `VALUE_SENT` is not set, then only the sender may call this method;
     /// if it is set, then only the receiver may call this method.
     unsafe fn has_value(&self) -> bool {
-        self.value.with(|ptr| (*ptr).is_some())
+        self.value.with(|ptr| unsafe { (*ptr).is_some() })
     }
 }
 

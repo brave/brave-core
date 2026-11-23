@@ -1,5 +1,21 @@
 # r-efi - UEFI Reference Specification Protocol Constants and Definitions
 
+## CHANGES WITH 6.0.0:
+
+        * Change all function prototypes to use `unsafe fn`. This is a major
+          change, but reflects what all downstream users have already assumed.
+
+        * Drop the obsolete `efiapi` and `examples` feature flags. The former
+          was unused, and the latter is an alias for `native`.
+
+        * The `eficall!{}` macro is now fully inline in all of r-efi. It is
+          still provided for external users, but will no longer be used by
+          r-efi. All users are recommended to use `extern "efiapi"` directly.
+
+        Contributions from: Alan Egerton, David Rheinsberg
+
+        - Dußlingen, 2026-02-03
+
 ## CHANGES WITH 5.3.0:
 
         * Remove the optional dependency on `compiler-builtins`, which was

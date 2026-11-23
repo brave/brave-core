@@ -25,10 +25,7 @@ enum Gb18030Pending {
 
 impl Gb18030Pending {
     fn is_none(&self) -> bool {
-        match *self {
-            Gb18030Pending::None => true,
-            _ => false,
-        }
+        matches!(*self, Gb18030Pending::None)
     }
 
     fn count(&self) -> usize {
@@ -270,7 +267,7 @@ impl Gb18030Decoder {
                 } else {
                     handle.write_bmp_excl_ascii(gb18030_range_decode(pointer as u16))
                 }
-            } else if pointer >= 189_000 && pointer <= 1_237_575 {
+            } else if (189_000..=1_237_575).contains(&pointer) {
                 // Astral
                 handle.write_astral((pointer - (189_000usize - 0x1_0000usize)) as u32)
             } else {
@@ -301,10 +298,10 @@ fn gbk_encode_non_unified(bmp: u16) -> Option<(usize, usize)> {
     // Try ideographic punctuation first as it's the most likely case.
     // Throwing in the check for full-width currencies and tilde is probably
     // more size-efficient here than elsewhere.
-    if in_inclusive_range16(bmp, 0x2014, 0x3017) || in_inclusive_range16(bmp, 0xFF04, 0xFFE1) {
-        if let Some(pos) = position(&GB2312_SYMBOLS[..], bmp) {
-            return Some((0xA1, pos + 0xA1));
-        }
+    if (in_inclusive_range16(bmp, 0x2014, 0x3017) || in_inclusive_range16(bmp, 0xFF04, 0xFFE1))
+        && let Some(pos) = position(&GB2312_SYMBOLS[..], bmp)
+    {
+        return Some((0xA1, pos + 0xA1));
     }
     // Ext A
     if in_range16(bmp, 0x3400, 0x4E00) {
@@ -389,15 +386,14 @@ fn gbk_encode_non_unified(bmp: u16) -> Option<(usize, usize)> {
         return Some((other_lead + (0x81 + 0x20), other_trail + offset));
     }
     // CJK Radicals Supplement, PUA, and U+9FBx ideographs in GBK_BOTTOM
-    if in_inclusive_range16(bmp, 0x2E81, 0x2ECA)
+    if (in_inclusive_range16(bmp, 0x2E81, 0x2ECA)
         || in_inclusive_range16(bmp, 0x9FB4, 0x9FBB)
-        || in_inclusive_range16(bmp, 0xE816, 0xE855)
+        || in_inclusive_range16(bmp, 0xE816, 0xE855))
+        && let Some(pos) = position(&GBK_BOTTOM[21..], bmp)
     {
-        if let Some(pos) = position(&GBK_BOTTOM[21..], bmp) {
-            let trail = pos + 16;
-            let offset = if trail < 0x3F { 0x40 } else { 0x41 };
-            return Some((0xFE, trail + offset));
-        }
+        let trail = pos + 16;
+        let offset = if trail < 0x3F { 0x40 } else { 0x41 };
+        return Some((0xFE, trail + offset));
     }
     // GB2312 bottom PUA
     let bmp_minus_gb2312_bottom_pua = bmp.wrapping_sub(0xE234);
@@ -757,27 +753,6 @@ mod tests {
 
         // Non-change in GB18030-2022
         encode_gb18030("\u{E817}", b"\xFE\x52");
-    }
-
-    #[test]
-    #[cfg_attr(miri, ignore)] // Miri is too slow
-    fn test_gb18030_decode_all() {
-        let input = include_bytes!("test_data/gb18030_in.txt");
-        let expectation = include_str!("test_data/gb18030_in_ref.txt");
-        let (cow, had_errors) = GB18030.decode_without_bom_handling(input);
-        assert!(!had_errors, "Should not have had errors.");
-        assert_eq!(&cow[..], expectation);
-    }
-
-    #[test]
-    #[cfg_attr(miri, ignore)] // Miri is too slow
-    fn test_gb18030_encode_all() {
-        let input = include_str!("test_data/gb18030_out.txt");
-        let expectation = include_bytes!("test_data/gb18030_out_ref.txt");
-        let (cow, encoding, had_errors) = GB18030.encode(input);
-        assert!(!had_errors, "Should not have had errors.");
-        assert_eq!(encoding, GB18030);
-        assert_eq!(&cow[..], &expectation[..]);
     }
 
     #[test]

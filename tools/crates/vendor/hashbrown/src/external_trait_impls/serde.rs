@@ -11,14 +11,14 @@ mod size_hint {
 }
 
 mod map {
-    use crate::raw::Allocator;
+    use crate::alloc::Allocator;
     use core::fmt;
     use core::hash::{BuildHasher, Hash};
     use core::marker::PhantomData;
     use serde_core::de::{Deserialize, Deserializer, MapAccess, Visitor};
     use serde_core::ser::{Serialize, Serializer};
 
-    use crate::hash_map::HashMap;
+    use crate::HashMap;
 
     use super::size_hint;
 
@@ -97,14 +97,14 @@ mod map {
 }
 
 mod set {
-    use crate::raw::Allocator;
+    use crate::alloc::Allocator;
     use core::fmt;
     use core::hash::{BuildHasher, Hash};
     use core::marker::PhantomData;
     use serde_core::de::{Deserialize, Deserializer, SeqAccess, Visitor};
     use serde_core::ser::{Serialize, Serializer};
 
-    use crate::hash_set::HashSet;
+    use crate::HashSet;
 
     use super::size_hint;
 
@@ -177,7 +177,6 @@ mod set {
             deserializer.deserialize_seq(visitor)
         }
 
-        #[allow(clippy::missing_errors_doc)]
         fn deserialize_in_place<D>(deserializer: D, place: &mut Self) -> Result<(), D::Error>
         where
             D: Deserializer<'de>,

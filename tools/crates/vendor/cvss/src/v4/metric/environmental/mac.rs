@@ -1,7 +1,7 @@
 //! Modified Attack Complexity (MAC)
 
 use crate::{
-    Error, Result,
+    Error,
     v4::metric::{Metric, MetricType},
 };
 use alloc::borrow::ToOwned;
@@ -26,11 +26,12 @@ use core::{fmt, str::FromStr};
 /// > The evasion or satisfaction of authentication mechanisms or requisites is
 /// > included in the Privileges Required assessment and is *not* considered
 /// > here as a factor of relevance for Attack Complexity.
-#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+#[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
 pub enum ModifiedAttackComplexity {
     /// Not Defined (X)
     ///
     /// > The metric has not been evaluated.
+    #[default]
     NotDefined,
 
     /// High (H)
@@ -60,20 +61,14 @@ pub enum ModifiedAttackComplexity {
     Low,
 }
 
-impl Default for ModifiedAttackComplexity {
-    fn default() -> Self {
-        Self::NotDefined
-    }
-}
-
 impl Metric for ModifiedAttackComplexity {
     const TYPE: MetricType = MetricType::MAC;
 
     fn as_str(self) -> &'static str {
         match self {
-            ModifiedAttackComplexity::NotDefined => "X",
-            ModifiedAttackComplexity::High => "H",
-            ModifiedAttackComplexity::Low => "L",
+            Self::NotDefined => "X",
+            Self::High => "H",
+            Self::Low => "L",
         }
     }
 }
@@ -87,11 +82,11 @@ impl fmt::Display for ModifiedAttackComplexity {
 impl FromStr for ModifiedAttackComplexity {
     type Err = Error;
 
-    fn from_str(s: &str) -> Result<Self> {
+    fn from_str(s: &str) -> Result<Self, Error> {
         match s {
-            "X" => Ok(ModifiedAttackComplexity::NotDefined),
-            "H" => Ok(ModifiedAttackComplexity::High),
-            "L" => Ok(ModifiedAttackComplexity::Low),
+            "X" => Ok(Self::NotDefined),
+            "H" => Ok(Self::High),
+            "L" => Ok(Self::Low),
             _ => Err(Error::InvalidMetricV4 {
                 metric_type: Self::TYPE,
                 value: s.to_owned(),

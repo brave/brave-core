@@ -1,5 +1,6 @@
-//! An implementation of the `git` transport layer, abstracting over all of its [versions][Protocol], providing
-//! [`connect()`] to establish a connection given a repository URL.
+//! An implementation of the `git` transport layer, abstracting over all of its [versions][Protocol].
+//!
+//! Use `client::blocking_io::connect()` or `client::async_io::connect()` to establish a connection.
 //!
 //! All git transports are supported, including `ssh`, `git`, `http` and `https`, as well as local repository paths.
 //! ## Feature Flags
@@ -8,7 +9,7 @@
     doc = ::document_features::document_features!()
 )]
 #![cfg_attr(all(doc, feature = "document-features"), feature(doc_cfg))]
-#![deny(missing_docs, rust_2018_idioms)]
+#![deny(missing_docs)]
 #![forbid(unsafe_code)]
 
 #[cfg(feature = "async-trait")]
@@ -43,50 +44,21 @@ pub enum Service {
 }
 
 impl Service {
-    /// Render this instance as string recognized by the git transport layer.
+    /// Render this instance as a string recognized by the git transport layer, like `git-upload-pack`.
     pub fn as_str(&self) -> &'static str {
         match self {
             Service::ReceivePack => "git-receive-pack",
             Service::UploadPack => "git-upload-pack",
         }
     }
-}
 
-mod traits {
-    use std::convert::Infallible;
-
-    /// An error which can tell whether it's worth retrying to maybe succeed next time.
-    pub trait IsSpuriousError: std::error::Error {
-        /// Return `true` if retrying might result in a different outcome due to IO working out differently.
-        fn is_spurious(&self) -> bool {
-            false
-        }
-    }
-
-    impl IsSpuriousError for Infallible {}
-
-    impl IsSpuriousError for std::io::Error {
-        fn is_spurious(&self) -> bool {
-            // TODO: also include the new special Kinds (currently unstable)
-            use std::io::ErrorKind::*;
-            match self.kind() {
-                Unsupported | WriteZero | InvalidInput | InvalidData | WouldBlock | AlreadyExists
-                | AddrNotAvailable | NotConnected | Other | PermissionDenied | NotFound => false,
-                Interrupted | UnexpectedEof | OutOfMemory | TimedOut | BrokenPipe | AddrInUse | ConnectionAborted
-                | ConnectionReset | ConnectionRefused => true,
-                _ => false,
-            }
-        }
+    /// Render this instance as a subcommand understood by the `git` program, like `upload-pack`.
+    pub fn as_git_subcommand(&self) -> &'static str {
+        self.as_str()
+            .strip_prefix("git-")
+            .expect("all services are 'git-*' subcommands")
     }
 }
-pub use traits::IsSpuriousError;
 
 ///
 pub mod client;
-
-#[doc(inline)]
-#[cfg(any(feature = "blocking-client", all(feature = "async-client", feature = "async-std")))]
-pub use client::connect;
-
-#[cfg(all(feature = "async-client", feature = "blocking-client"))]
-compile_error!("Cannot set both 'blocking-client' and 'async-client' features as they are mutually exclusive");

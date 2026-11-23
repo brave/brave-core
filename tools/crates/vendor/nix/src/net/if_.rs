@@ -66,7 +66,6 @@ libc_bitflags!(
                   solarish,
                   apple_targets,
                   target_os = "fuchsia",
-                  target_os = "netbsd",
                   target_os = "cygwin"))]
         IFF_NOTRAILERS as IflagsType;
         /// Interface manages own routes.

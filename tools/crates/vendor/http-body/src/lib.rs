@@ -43,23 +43,42 @@ pub trait Body {
     type Error;
 
     #[allow(clippy::type_complexity)]
-    /// Attempt to pull out the next data buffer of this stream.
+    /// Attempt to pull out the next frame of this stream.
+    ///
+    /// # Return value
+    ///
+    /// This function returns:
+    ///
+    /// - `Poll::Pending` if the next frame is not ready yet.
+    /// - `Poll::Ready(Some(Ok(frame)))` when the next frame is available.
+    /// - `Poll::Ready(Some(Err(error)))` when an error has been reached.
+    /// - `Poll::Ready(None)` means that all of the frames in this stream have been returned, and
+    ///   that the end of the stream has been reached.
+    ///
+    /// If `Poll::Ready(Some(Err(error)))` is returned, this body should be discarded.
+    ///
+    /// Once the end of the stream is reached, implementations should continue to return
+    /// `Poll::Ready(None)`.
     fn poll_frame(
         self: Pin<&mut Self>,
         cx: &mut Context<'_>,
     ) -> Poll<Option<Result<Frame<Self::Data>, Self::Error>>>;
 
-    /// Returns `true` when the end of stream has been reached.
+    /// A hint that may return `true` when the end of stream has been reached.
     ///
     /// An end of stream means that `poll_frame` will return `None`.
     ///
     /// A return value of `false` **does not** guarantee that a value will be
-    /// returned from `poll_frame`.
+    /// returned from `poll_frame`. Combinators or other implementations may
+    /// not be able to know the end of stream has been reached for this hint.
+    ///
+    /// Returning `true` allows consumers of this body to optimize, such as not
+    /// calling `poll_frame` again.
     fn is_end_stream(&self) -> bool {
         false
     }
 
-    /// Returns the bounds on the remaining length of the stream.
+    /// A hint that returns the bounds on the remaining length of the stream.
     ///
     /// When the **exact** remaining length of the stream is known, the upper bound will be set and
     /// will equal the lower bound.

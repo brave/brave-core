@@ -1,114 +1,78 @@
+use gix_error::Result;
 use std::ops::Deref;
+
+use gix_error::{Message, OptionExt, ResultExt, bail, message, not_found};
 
 use gix_pack::cache::DecodeEntry;
 
 use crate::store::{handle, load_index};
 
-pub(crate) mod error {
-    use crate::{loose, pack};
+#[derive(Copy, Clone)]
+pub(crate) struct DeltaBaseRecursion<'a> {
+    pub depth: usize,
+    pub original_id: &'a gix_hash::oid,
+}
 
-    /// Returned by [`Handle::try_find()`][gix_pack::Find::try_find()]
-    #[derive(thiserror::Error, Debug)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error("An error occurred while obtaining an object from the loose object store")]
-        Loose(#[from] loose::find::Error),
-        #[error("An error occurred while obtaining an object from the packed object store")]
-        Pack(#[from] pack::data::decode::Error),
-        #[error(transparent)]
-        LoadIndex(#[from] crate::store::load_index::Error),
-        #[error(transparent)]
-        LoadPack(#[from] std::io::Error),
-        #[error(transparent)]
-        EntryType(#[from] gix_pack::data::entry::decode::Error),
-        #[error("Reached recursion limit of {} while resolving ref delta bases for {}", .max_depth, .id)]
-        DeltaBaseRecursionLimit {
-            /// the maximum recursion depth we encountered.
-            max_depth: usize,
-            /// The original object to lookup
-            id: gix_hash::ObjectId,
-        },
-        #[error("The base object {} could not be found but is required to decode {}", .base_id, .id)]
-        DeltaBaseMissing {
-            /// the id of the base object which failed to lookup
-            base_id: gix_hash::ObjectId,
-            /// The original object to lookup
-            id: gix_hash::ObjectId,
-        },
-        #[error("An error occurred when looking up a ref delta base object {} to decode {}", .base_id, .id)]
-        DeltaBaseLookup {
-            #[source]
-            err: Box<Self>,
-            /// the id of the base object which failed to lookup
-            base_id: gix_hash::ObjectId,
-            /// The original object to lookup
-            id: gix_hash::ObjectId,
-        },
-    }
-
-    #[derive(Copy, Clone)]
-    pub(crate) struct DeltaBaseRecursion<'a> {
-        pub depth: usize,
-        pub original_id: &'a gix_hash::oid,
-    }
-
-    impl<'a> DeltaBaseRecursion<'a> {
-        pub fn new(id: &'a gix_hash::oid) -> Self {
-            Self {
-                original_id: id,
-                depth: 0,
-            }
-        }
-        pub fn inc_depth(mut self) -> Self {
-            self.depth += 1;
-            self
+impl<'a> DeltaBaseRecursion<'a> {
+    pub fn new(id: &'a gix_hash::oid) -> Self {
+        Self {
+            original_id: id,
+            depth: 0,
         }
     }
-
-    #[cfg(test)]
-    mod tests {
-        use super::*;
-
-        #[test]
-        fn error_size() {
-            let actual = std::mem::size_of::<Error>();
-            assert!(actual <= 88, "{actual} <= 88: should not grow without us noticing");
-        }
+    pub fn inc_depth(mut self) -> Self {
+        self.depth += 1;
+        self
     }
 }
-pub use error::Error;
-use gix_features::zlib;
 
 use crate::store::types::PackId;
+
+/// The raised error's [metadata](gix_error::Error::metadata()) `max_depth` (unsigned) and `object_id` (hex text) identify
+/// the recursion limit and original object.
+pub(super) fn delta_base_recursion_limit_error(max_depth: usize, object_id: &gix_hash::oid) -> Message {
+    Message::new("Reached recursion limit while resolving ref delta bases")
+        .with("max_depth", max_depth)
+        .with("object_id", object_id.to_string())
+}
+
+/// The raised error's [metadata](gix_error::Error::metadata()) `base_id` and `object_id` (hex text) identify the delta
+/// base and object being resolved.
+pub(super) fn delta_base_lookup_error(base_id: &gix_hash::oid, object_id: &gix_hash::oid) -> Message {
+    Message::new("Could not resolve delta base object")
+        .with("base_id", base_id.to_string())
+        .with("object_id", object_id.to_string())
+}
 
 impl<S> super::Handle<S>
 where
     S: Deref<Target = super::Store> + Clone,
 {
+    /// Delta resolution failures include [metadata](gix_error::Error::metadata()) `object_id` and `base_id` (hex text).
+    /// Recursion limits include `object_id` (hex text) and `max_depth` (unsigned).
     fn try_find_cached_inner<'a, 'b>(
         &'b self,
         mut id: &'b gix_hash::oid,
         buffer: &'a mut Vec<u8>,
-        inflate: &mut zlib::Inflate,
+        inflate: &mut gix_zlib::Inflate,
         pack_cache: &mut dyn DecodeEntry,
         snapshot: &mut load_index::Snapshot,
-        recursion: Option<error::DeltaBaseRecursion<'_>>,
-    ) -> Result<Option<(gix_object::Data<'a>, Option<gix_pack::data::entry::Location>)>, Error> {
+        recursion: Option<DeltaBaseRecursion<'_>>,
+    ) -> Result<Option<(gix_object::Data<'a>, Option<gix_pack::data::entry::Location>)>> {
         if let Some(r) = recursion {
             if r.depth >= self.max_recursion_depth {
-                return Err(Error::DeltaBaseRecursionLimit {
-                    max_depth: self.max_recursion_depth,
-                    id: r.original_id.to_owned(),
-                });
+                bail!(delta_base_recursion_limit_error(
+                    self.max_recursion_depth,
+                    r.original_id
+                ));
             }
-        } else if !self.ignore_replacements {
-            if let Ok(pos) = self
+        } else if !self.ignore_replacements
+            && let Ok(pos) = self
                 .store
                 .replacements
                 .binary_search_by(|(map_this, _)| map_this.as_ref().cmp(id))
-            {
-                id = self.store.replacements[pos].1.as_ref();
-            }
+        {
+            id = self.store.replacements[pos].1.as_ref();
         }
 
         'outer: loop {
@@ -119,18 +83,18 @@ where
                         object_index: handle::IndexForObjectInPack { pack_id, pack_offset },
                         index_file,
                         pack: possibly_pack,
-                    }) = index.lookup(id)
+                    }) = index.lookup(id)?
                     {
                         let pack = match possibly_pack {
                             Some(pack) => pack,
-                            None => match self.store.load_pack(pack_id, marker)? {
+                            None => match self.store.load_pack(pack_id, marker).or_error()? {
                                 Some(pack) => {
                                     *possibly_pack = Some(pack);
                                     possibly_pack.as_deref().expect("just put it in")
                                 }
                                 None => {
                                     // The pack wasn't available anymore so we are supposed to try another round with a fresh index
-                                    match self.store.load_one_index(self.refresh, snapshot.marker)? {
+                                    match self.store.load_one_index(self.index_ctx(snapshot.marker))? {
                                         Some(new_snapshot) => {
                                             *snapshot = new_snapshot;
                                             self.clear_cache();
@@ -153,17 +117,22 @@ where
                             buffer,
                             inflate,
                             &|id, _out| {
-                                let pack_offset = index_file.pack_offset_by_id(id)?;
-                                pack.entry(pack_offset)
-                                    .ok()
-                                    .map(gix_pack::data::decode::entry::ResolvedBase::InPack)
+                                index_file
+                                    .pack_offset_by_id(id)?
+                                    .map(|pack_offset| {
+                                        pack.entry(pack_offset)
+                                            .map(gix_pack::data::decode::entry::ResolvedBase::InPack)
+                                    })
+                                    .transpose()
                             },
                             pack_cache,
                         );
+
                         let res = match res {
                             Ok(r) => Ok((
                                 gix_object::Data {
                                     kind: r.kind,
+                                    object_hash: pack.object_hash(),
                                     data: buffer.as_slice(),
                                 },
                                 Some(gix_pack::data::entry::Location {
@@ -172,7 +141,13 @@ where
                                     entry_size: r.compressed_size + header_size,
                                 }),
                             )),
-                            Err(gix_pack::data::decode::Error::DeltaBaseUnresolved(base_id)) => {
+                            Err(err) => {
+                                let Some(base_id) = err
+                                    .downcast_any_ref::<gix_pack::data::decode::DeltaBaseUnresolved>()
+                                    .map(|err| err.0)
+                                else {
+                                    return Err(err);
+                                };
                                 // Only with multi-pack indices it's allowed to jump to refer to other packs within this
                                 // multi-pack. Otherwise this would constitute a thin pack which is only allowed in transit.
                                 // However, if we somehow end up with that, we will resolve it safely, even though we could
@@ -185,6 +160,7 @@ where
                                 // The whole ordeal isn't as efficient as it could be due to memory allocation and
                                 // later mem-copying when trying again.
                                 let mut buf = Vec::new();
+                                let context = || delta_base_lookup_error(&base_id, id);
                                 let obj_kind = self
                                     .try_find_cached_inner(
                                         &base_id,
@@ -193,17 +169,14 @@ where
                                         pack_cache,
                                         snapshot,
                                         recursion
-                                            .map(error::DeltaBaseRecursion::inc_depth)
-                                            .or_else(|| error::DeltaBaseRecursion::new(id).into()),
+                                            .map(DeltaBaseRecursion::inc_depth)
+                                            .or_else(|| DeltaBaseRecursion::new(id).into()),
                                     )
-                                    .map_err(|err| Error::DeltaBaseLookup {
-                                        err: Box::new(err),
-                                        base_id,
-                                        id: id.to_owned(),
-                                    })?
-                                    .ok_or_else(|| Error::DeltaBaseMissing {
-                                        base_id,
-                                        id: id.to_owned(),
+                                    .or_raise(context)?
+                                    .ok_or_raise(|| {
+                                        not_found("Could not resolve delta base object: delta base object is missing")
+                                            .with("base_id", base_id.to_string())
+                                            .with("object_id", id.to_string())
                                     })?
                                     .0
                                     .kind;
@@ -215,12 +188,12 @@ where
                                         },
                                     index_file,
                                     pack: possibly_pack,
-                                } = match snapshot.indices[idx].lookup(id) {
+                                } = match snapshot.indices[idx].lookup(id)? {
                                     Some(res) => res,
                                     None => {
                                         let mut out = None;
                                         for index in &mut snapshot.indices {
-                                            out = index.lookup(id);
+                                            out = index.lookup(id)?;
                                             if out.is_some() {
                                                 break;
                                             }
@@ -240,24 +213,19 @@ where
                                     entry,
                                     buffer,
                                     inflate,
-                                    &|id, out| {
-                                        index_file
-                                            .pack_offset_by_id(id)
-                                            .and_then(|pack_offset| {
-                                                pack.entry(pack_offset)
-                                                    .ok()
-                                                    .map(gix_pack::data::decode::entry::ResolvedBase::InPack)
-                                            })
-                                            .or_else(|| {
-                                                (id == base_id).then(|| {
-                                                    out.resize(buf.len(), 0);
-                                                    out.copy_from_slice(buf.as_slice());
-                                                    gix_pack::data::decode::entry::ResolvedBase::OutOfPack {
-                                                        kind: obj_kind,
-                                                        end: out.len(),
-                                                    }
-                                                })
-                                            })
+                                    &|id, out| match index_file.pack_offset_by_id(id)? {
+                                        Some(pack_offset) => pack
+                                            .entry(pack_offset)
+                                            .map(gix_pack::data::decode::entry::ResolvedBase::InPack)
+                                            .map(Some),
+                                        None => Ok((id == base_id).then(|| {
+                                            out.resize(buf.len(), 0);
+                                            out.copy_from_slice(buf.as_slice());
+                                            gix_pack::data::decode::entry::ResolvedBase::OutOfPack {
+                                                kind: obj_kind,
+                                                end: out.len(),
+                                            }
+                                        })),
                                     },
                                     pack_cache,
                                 )
@@ -265,6 +233,7 @@ where
                                     (
                                         gix_object::Data {
                                             kind: r.kind,
+                                            object_hash: pack.object_hash(),
                                             data: buffer.as_slice(),
                                         },
                                         Some(gix_pack::data::entry::Location {
@@ -275,7 +244,6 @@ where
                                     )
                                 })
                             }
-                            Err(err) => Err(err),
                         }?;
 
                         if idx != 0 {
@@ -289,14 +257,11 @@ where
             for lodb in snapshot.loose_dbs.iter() {
                 // TODO: remove this double-lookup once the borrow checker allows it.
                 if lodb.contains(id) {
-                    return lodb
-                        .try_find(id, buffer)
-                        .map(|obj| obj.map(|obj| (obj, None)))
-                        .map_err(Into::into);
+                    return lodb.try_find(id, buffer).map(|obj| obj.map(|obj| (obj, None)));
                 }
             }
 
-            match self.store.load_one_index(self.refresh, snapshot.marker)? {
+            match self.store.load_one_index(self.index_ctx(snapshot.marker))? {
                 Some(new_snapshot) => {
                     *snapshot = new_snapshot;
                     self.clear_cache();
@@ -309,14 +274,18 @@ where
     pub(crate) fn clear_cache(&self) {
         self.packed_object_count.borrow_mut().take();
     }
-}
 
-impl<S> gix_pack::Find for super::Handle<S>
-where
-    S: Deref<Target = super::Store> + Clone,
-{
-    // TODO: probably make this method fallible, but that would mean its own error type.
-    fn contains(&self, id: &gix_hash::oid) -> bool {
+    /// Like [`exists()`](gix_object::Exists::exists), but never look for packs that were added since the last refresh,
+    /// whatever this handle's [refresh mode](super::RefreshMode) is. The indices that the store already knows are still loaded.
+    ///
+    /// Use it to avoid writing objects that already exist. A new object always misses, and in the default refresh
+    /// mode each miss lists the pack directory again, which is slow with many packs. Here a miss costs at most a
+    /// redundant write.
+    pub fn exists_without_refresh(&self, id: &gix_hash::oid) -> bool {
+        self.contains_with_refresh_mode(id, super::RefreshMode::Never)
+    }
+
+    fn contains_with_refresh_mode(&self, id: &gix_hash::oid, refresh_mode: super::RefreshMode) -> bool {
         let mut snapshot = self.snapshot.borrow_mut();
         loop {
             for (idx, index) in snapshot.indices.iter().enumerate() {
@@ -334,7 +303,10 @@ where
                 }
             }
 
-            match self.store.load_one_index(self.refresh, snapshot.marker) {
+            match self.store.load_one_index(super::IndexCtx {
+                refresh_mode,
+                ..self.index_ctx(snapshot.marker)
+            }) {
                 Ok(Some(new_snapshot)) => {
                     *snapshot = new_snapshot;
                     self.clear_cache();
@@ -344,26 +316,42 @@ where
             }
         }
     }
+}
+
+impl<S> gix_pack::Find for super::Handle<S>
+where
+    S: Deref<Target = super::Store> + Clone,
+{
+    // TODO: make this method fallible to propagate index loading failures.
+    fn contains(&self, id: &gix_hash::oid) -> bool {
+        self.contains_with_refresh_mode(id, self.refresh)
+    }
 
     fn try_find_cached<'a>(
         &self,
         id: &gix_hash::oid,
         buffer: &'a mut Vec<u8>,
         pack_cache: &mut dyn DecodeEntry,
-    ) -> Result<Option<(gix_object::Data<'a>, Option<gix_pack::data::entry::Location>)>, gix_object::find::Error> {
+    ) -> Result<Option<(gix_object::Data<'a>, Option<gix_pack::data::entry::Location>)>> {
         let mut snapshot = self.snapshot.borrow_mut();
         let mut inflate = self.inflate.borrow_mut();
         self.try_find_cached_inner(id, buffer, &mut inflate, pack_cache, &mut snapshot, None)
-            .map_err(|err| Box::new(err) as _)
     }
 
-    fn location_by_oid(&self, id: &gix_hash::oid, buf: &mut Vec<u8>) -> Option<gix_pack::data::entry::Location> {
+    fn location_by_oid(
+        &self,
+        id: &gix_hash::oid,
+        buf: &mut Vec<u8>,
+    ) -> Result<Option<gix_pack::data::entry::Location>> {
         assert!(
             matches!(self.token.as_ref(), Some(handle::Mode::KeepDeletedPacksAvailable)),
             "BUG: handle must be configured to `prevent_pack_unload()` before using this method"
         );
 
-        assert!(self.store_ref().replacements.is_empty() || self.ignore_replacements, "Everything related to packing must not use replacements. These are not used here, but it should be turned off for good measure.");
+        assert!(
+            self.store_ref().replacements.is_empty() || self.ignore_replacements,
+            "Everything related to packing must not use replacements. These are not used here, but it should be turned off for good measure."
+        );
 
         let mut snapshot = self.snapshot.borrow_mut();
         let mut inflate = self.inflate.borrow_mut();
@@ -375,18 +363,18 @@ where
                         object_index: handle::IndexForObjectInPack { pack_id, pack_offset },
                         index_file: _,
                         pack: possibly_pack,
-                    }) = index.lookup(id)
+                    }) = index.lookup(id)?
                     {
                         let pack = match possibly_pack {
                             Some(pack) => pack,
-                            None => match self.store.load_pack(pack_id, marker).ok()? {
+                            None => match self.store.load_pack(pack_id, marker).or_error()? {
                                 Some(pack) => {
                                     *possibly_pack = Some(pack);
                                     possibly_pack.as_deref().expect("just put it in")
                                 }
                                 None => {
                                     // The pack wasn't available anymore so we are supposed to try another round with a fresh index
-                                    match self.store.load_one_index(self.refresh, snapshot.marker).ok()? {
+                                    match self.store.load_one_index(self.index_ctx(snapshot.marker))? {
                                         Some(new_snapshot) => {
                                             *snapshot = new_snapshot;
                                             self.clear_cache();
@@ -396,45 +384,56 @@ where
                                             // nothing new in the index, kind of unexpected to not have a pack but to also
                                             // to have no new index yet. We set the new index before removing any slots, so
                                             // this should be observable.
-                                            return None;
+                                            return Ok(None);
                                         }
                                     }
                                 }
                             },
                         };
-                        let entry = pack.entry(pack_offset).ok()?;
-
-                        buf.resize(entry.decompressed_size.try_into().expect("representable size"), 0);
+                        let entry = pack.entry(pack_offset)?;
+                        // This allocation is driven by on-disk pack metadata, so keep it aligned with
+                        // `gix_pack::data::File::with_alloc_limit_bytes()`.
+                        let size = entry.decompressed_size;
+                        if pack.alloc_limit_bytes.is_some_and(|limit| size > limit as u64) {
+                            bail!("Cannot store pack entry in memory: allocation limit exceeded".allocation_limit());
+                        }
+                        let size_usize = usize::try_from(size).or_raise(|| {
+                            message!("Cannot store pack entry of {size} bytes in memory: the entry size cannot be represented in memory")
+                                .allocation_failure()
+                        })?;
+                        buf.clear();
+                        buf.try_reserve(size_usize).or_raise(|| {
+                            message!("Cannot store pack entry of {size} bytes in memory").allocation_failure()
+                        })?;
+                        buf.resize(size_usize, 0);
                         assert_eq!(pack.id, pack_id.to_intrinsic_pack_id(), "both ids must always match");
 
-                        let res = pack
-                            .decompress_entry(&entry, &mut inflate, buf)
-                            .ok()
-                            .map(|entry_size_past_header| gix_pack::data::entry::Location {
-                                pack_id: pack.id,
-                                pack_offset,
-                                entry_size: entry.header_size() + entry_size_past_header,
-                            });
+                        let entry_size_past_header = pack.decompress_entry(&entry, &mut inflate, buf)?;
+                        let location = gix_pack::data::entry::Location {
+                            pack_id: pack.id,
+                            pack_offset,
+                            entry_size: entry.header_size() + entry_size_past_header,
+                        };
 
                         if idx != 0 {
                             snapshot.indices.swap(0, idx);
                         }
-                        return res;
+                        return Ok(Some(location));
                     }
                 }
             }
 
-            match self.store.load_one_index(self.refresh, snapshot.marker).ok()? {
-                Some(new_snapshot) => {
-                    *snapshot = new_snapshot;
-                    self.clear_cache();
-                }
-                None => return None,
+            {
+                let Some(new_snapshot) = self.store.load_one_index(self.index_ctx(snapshot.marker))? else {
+                    return Ok(None);
+                };
+                *snapshot = new_snapshot;
+                self.clear_cache();
             }
         }
     }
 
-    fn pack_offsets_and_oid(&self, pack_id: u32) -> Option<Vec<(u64, gix_hash::ObjectId)>> {
+    fn pack_offsets_and_oid(&self, pack_id: u32) -> Result<Option<Vec<(gix_pack::data::Offset, gix_hash::ObjectId)>>> {
         assert!(
             matches!(self.token.as_ref(), Some(handle::Mode::KeepDeletedPacksAvailable)),
             "BUG: handle must be configured to `prevent_pack_unload()` before using this method"
@@ -445,17 +444,20 @@ where
             {
                 for index in &snapshot.indices {
                     if let Some(iter) = index.iter(pack_id) {
-                        return Some(iter.map(|e| (e.pack_offset, e.oid)).collect());
+                        return iter
+                            .map(|e| e.map(|e| (e.pack_offset, e.oid)))
+                            .collect::<Result<Vec<_>>>()
+                            .map(Some);
                     }
                 }
             }
 
-            match self.store.load_one_index(self.refresh, snapshot.marker).ok()? {
-                Some(new_snapshot) => {
-                    drop(snapshot);
-                    *self.snapshot.borrow_mut() = new_snapshot;
-                }
-                None => return None,
+            {
+                let Some(new_snapshot) = self.store.load_one_index(self.index_ctx(snapshot.marker))? else {
+                    return Ok(None);
+                };
+                drop(snapshot);
+                *self.snapshot.borrow_mut() = new_snapshot;
             }
         }
     }
@@ -507,11 +509,7 @@ where
     S: Deref<Target = super::Store> + Clone,
     Self: gix_pack::Find,
 {
-    fn try_find<'a>(
-        &self,
-        id: &gix_hash::oid,
-        buffer: &'a mut Vec<u8>,
-    ) -> Result<Option<gix_object::Data<'a>>, gix_object::find::Error> {
+    fn try_find<'a>(&self, id: &gix_hash::oid, buffer: &'a mut Vec<u8>) -> Result<Option<gix_object::Data<'a>>> {
         gix_pack::Find::try_find(self, id, buffer).map(|t| t.map(|t| t.0))
     }
 }
@@ -520,7 +518,7 @@ impl<S> gix_object::FindHeader for super::Handle<S>
 where
     S: Deref<Target = super::Store> + Clone,
 {
-    fn try_header(&self, id: &gix_hash::oid) -> Result<Option<gix_object::Header>, gix_object::find::Error> {
+    fn try_header(&self, id: &gix_hash::oid) -> Result<Option<gix_object::Header>> {
         let mut snapshot = self.snapshot.borrow_mut();
         let mut inflate = self.inflate.borrow_mut();
         self.try_header_inner(id, &mut inflate, &mut snapshot, None)
@@ -530,7 +528,6 @@ where
                     size: hdr.size(),
                 })
             })
-            .map_err(|err| Box::new(err) as _)
     }
 }
 

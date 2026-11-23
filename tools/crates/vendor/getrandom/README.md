@@ -19,16 +19,7 @@ library like [`rand`].
 
 [`rand`]: https://crates.io/crates/rand
 
-## Usage
-
-Add the `getrandom` dependency to your `Cargo.toml` file:
-
-```toml
-[dependencies]
-getrandom = "0.3"
-```
-
-Then invoke the `fill` function on a byte buffer to fill it with random data:
+## Examples
 
 ```rust
 fn get_random_u128() -> Result<u128, getrandom::Error> {
@@ -43,7 +34,7 @@ fn get_random_u128() -> Result<u128, getrandom::Error> {
 | Target             | Target Triple      | Implementation
 | ------------------ | ------------------ | --------------
 | Linux, Android     | `*‑linux‑*`        | [`getrandom`][1] system call if available, otherwise [`/dev/urandom`][2] after successfully polling `/dev/random`
-| Windows 10+        | `*‑windows‑*`      | [`ProcessPrng`] on Rust 1.78+, [`RtlGenRandom`] otherwise
+| Windows 10+        | `*‑windows‑*`      | [`ProcessPrng`]
 | Windows 7, 8       | `*-win7‑windows‑*` | [`RtlGenRandom`]
 | macOS              | `*‑apple‑darwin`   | [`getentropy`][3]
 | iOS, tvOS, watchOS | `*‑apple‑{ios,tvos,watchos}` | [`CCRandomGenerateBytes`]
@@ -70,32 +61,54 @@ fn get_random_u128() -> Result<u128, getrandom::Error> {
 | QNX Neutrino       | `*‑nto-qnx*`       | [`/dev/urandom`][14] (identical to `/dev/random`)
 | AIX                | `*-ibm-aix`        | [`/dev/urandom`][15]
 | Cygwin             | `*-cygwin`         | [`getrandom`][20] (based on [`RtlGenRandom`])
+| Motor OS           | `x86_64-unknown-motor` | [`RDRAND`]
 
 Pull Requests that add support for new targets to `getrandom` are always welcome.
+
+### WebAssembly support
+
+This crate fully supports the [WASI] and [Emscripten] targets. However, the `wasm32-unknown-unknown`
+and `wasm64-unknown-unknown` targets (i.e. the target used by `wasm-pack`)
+are not automatically supported since, from the target name alone, we cannot deduce
+which JavaScript interface should be used (or if JavaScript is available at all).
+
+We do not include support for these targets in the default configuration because our JS backend
+(supporting web browsers, web workers and Node.js v19 or later) requires [`wasm-bindgen`],
+**bloating `Cargo.lock`** and **potentially breaking builds** on non-web WASM platforms.
+
+To enable `getrandom`'s functionality on `wasm32/64-unknown-unknown` using
+[`Crypto.getRandomValues`] via [`wasm-bindgen`], enable the `wasm_js` crate feature.
+
+WARNING: We strongly recommend against enabling this feature in libraries (except for tests)
+since it is known to break non-Web WASM builds and further since the usage of `wasm-bindgen`
+causes significant bloat to `Cargo.lock` (on all targets).
+
+The only exception to this rule: if your crate already unconditionally depends on `wasm-bindgen`
+or `js-sys` on "unknown" WASM targets then it's acceptable to enable this feature unconditionally.
 
 ### Opt-in backends
 
 `getrandom` also provides optional (opt-in) backends, which allow users to customize the source
 of randomness based on their specific needs:
 
-| Backend name      | Target               | Target Triple            | Implementation
-| ----------------- | -------------------- | ------------------------ | --------------
-| `linux_getrandom` | Linux, Android       | `*‑linux‑*`              | [`getrandom`][1] system call (without `/dev/urandom` fallback). Bumps minimum supported Linux kernel version to 3.17 and Android API level to 23 (Marshmallow).
-| `linux_raw`       | Linux, Android       | `*‑linux‑*`              | Same as `linux_getrandom`, but uses raw `asm!`-based syscalls instead of `libc`.
-| `rdrand`          | x86, x86-64          | `x86_64-*`, `i686-*`     | [`RDRAND`] instruction
-| `rndr`            | AArch64              | `aarch64-*`              | [`RNDR`] register
-| `wasm_js`         | Web Browser, Node.js | `wasm32‑unknown‑unknown`, `wasm32v1-none` | [`Crypto.getRandomValues`]. Enabled by the `wasm_js` feature ([see below](#webassembly-support)).
-| `efi_rng`         | UEFI                 | `*-unknown‑uefi`         | [`EFI_RNG_PROTOCOL`] with `EFI_RNG_ALGORITHM_RAW` (requires `std` and Nightly compiler)
-| `windows_legacy`  | Windows              | `*-windows-*`            | [`RtlGenRandom`]
-| `custom`          | All targets          | `*`                      | User-provided custom implementation (see [custom backend])
-| `unsupported`     | All targets          | `*`                      | Always returns `Err(Error::UNSUPPORTED)` (see [unsupported backend])
+| Backend name        | Target               | Target Triple            | Implementation
+| ------------------- | -------------------- | ------------------------ | --------------
+| `linux_getrandom`   | Linux, Android       | `*‑linux‑*`              | [`getrandom`][1] system call (without `/dev/urandom` fallback). Bumps minimum supported Linux kernel version to 3.17 and Android API level to 23 (Marshmallow).
+| `linux_raw`         | Linux, Android       | `*‑linux‑*`              | Same as `linux_getrandom`, but uses raw `asm!`-based syscalls instead of `libc`.
+| `rdrand`            | x86, x86-64          | `x86_64-*`, `i686-*`     | [`RDRAND`] instruction
+| `rndr`              | AArch64              | `aarch64-*`              | [`RNDR`] register
+| `efi_rng`           | UEFI                 | `*-unknown‑uefi`         | [`EFI_RNG_PROTOCOL`] with `EFI_RNG_ALGORITHM_RAW` (requires `std` and Nightly compiler)
+| `windows_legacy`    | Windows              | `*-windows-*`            | [`RtlGenRandom`]
+| `custom`            | All targets          | `*`                      | User-provided custom implementation (see [custom backend])
+| `unsupported`       | All targets          | `*`                      | Always returns `Err(Error::UNSUPPORTED)` (see [unsupported backend])
+| `extern_impl`       | All targets          | `*`                      | Externally-provided custom implementation (see [externally implemented interface])
 
 Opt-in backends can be enabled using the `getrandom_backend` configuration flag.
 The flag can be set either by specifying the `rustflags` field in [`.cargo/config.toml`]:
 ```toml
 # It's recommended to set the flag on a per-target basis:
-[target.wasm32-unknown-unknown]
-rustflags = ['--cfg', 'getrandom_backend="wasm_js"']
+[target.'cfg(target_os = "linux")']
+rustflags = ['--cfg', 'getrandom_backend="linux_getrandom"']
 ```
 
 Or by using the `RUSTFLAGS` environment variable:
@@ -124,29 +137,6 @@ Note that the raw syscall backend may be slower than backends based on `libc::ge
 e.g. it does not implement vDSO optimizations and on `x86` it uses the infamously slow
 `int 0x80` instruction to perform syscall.
 
-### WebAssembly support
-
-This crate fully supports the [WASI] and [Emscripten] targets. However,
-the `wasm32-unknown-unknown` target (i.e. the target used by `wasm-pack`)
-is not automatically supported since, from the target name alone, we cannot deduce
-which JavaScript interface should be used (or if JavaScript is available at all).
-
-We do not include support for this target in the default configuration because
-our JS backend (supporting web browsers, web workers and Node.js v19 or later)
-requires [`wasm-bindgen`], **bloating `Cargo.lock`** and
-**potentially breaking builds** on non-web WASM platforms.
-
-To enable `getrandom`'s functionality on `wasm32-unknown-unknown` using the Web
-Crypto methods [described above][opt-in] via [`wasm-bindgen`], enable the
-`wasm_js` feature flag. Setting `RUSTFLAGS='--cfg getrandom_backend="wasm_js"'`
-is allowed but is no longer required and does nothing (it was required in a
-prior version of this crate).
-
-WARNING: enabling the `wasm_js` feature will bloat `Cargo.lock` on all platforms
-(where [`wasm-bindgen`] is not an existing dependency) and is known to cause
-build issues on some non-web WASM platforms, even when a different backend is
-selected via `getrandom_backend`.
-
 ### Custom backend
 
 If this crate does not support your target out of the box or you have to use
@@ -159,7 +149,7 @@ Next, you need to define an `extern` function with the following signature:
 ```rust
 use getrandom::Error;
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 unsafe extern "Rust" fn __getrandom_v03_custom(
     dest: *mut u8,
     len: usize,
@@ -189,7 +179,7 @@ fn my_entropy_source(buf: &mut [u8]) -> Result<(), getrandom::Error> {
     Ok(())
 }
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 unsafe extern "Rust" fn __getrandom_v03_custom(
     dest: *mut u8,
     len: usize,
@@ -203,6 +193,38 @@ unsafe extern "Rust" fn __getrandom_v03_custom(
     my_entropy_source(buf)
 }
 ```
+
+### Externally Implemented Interface
+
+Using the nightly-only feature [`extern_item_impls`] it is possible to provide
+a custom backend for `getrandom`, even to override an existing first-party implementation.
+First, enable the `extern_impl` opt-in backend to allow usage of this nightly feature.
+Then, you may provide implementations for `fill_uninit`, `u32`, and/or `u64`
+with an attribute macro from the `implementation` module.
+
+[`extern_item_impls`]: https://github.com/rust-lang/rust/issues/125418
+
+```rust
+use core::mem::MaybeUninit;
+
+#[cfg(getrandom_backend = "extern_impl")]
+#[getrandom::implementation::fill_uninit]
+fn my_fill_uninit_implementation(
+    dest: &mut [MaybeUninit<u8>]
+) -> Result<(), getrandom::Error> {
+    // ...
+    Ok(())
+}
+```
+
+For further details on what a suitable implementation for `fill_uninit` may look
+like, see [custom backend].
+
+`getrandom` will provide a default implementation for `u32` and `u64`, but does
+not currently provide a default for `fill_uninit`, even if one is normally
+available for the current target. If no implementation is available,
+a compilation error will be raised with instructions for how to provide
+an implementation.
 
 ### Unsupported backend
 
@@ -302,7 +324,14 @@ RUSTFLAGS="-Zsanitizer=memory" cargo test -Zbuild-std --target=x86_64-unknown-li
 
 ## Minimum Supported Rust Version
 
-This crate requires Rust 1.63 or later.
+This crate requires Rust 1.85 or later.
+
+The most reliable way to get an MSRV-respecting behavior is to set
+`CARGO_RESOLVER_INCOMPATIBLE_RUST_VERSIONS=fallback` when doing
+`cargo update -p getrandom`, like so:
+```sh
+CARGO_RESOLVER_INCOMPATIBLE_RUST_VERSIONS=fallback cargo update -p getrandom
+```
 
 ## License
 
@@ -376,6 +405,7 @@ dual licensed as above, without any additional terms or conditions.
 [WASI]: https://github.com/WebAssembly/WASI
 [Emscripten]: https://emscripten.org
 [opt-in]: #opt-in-backends
+[externally implemented interface]: #externally-implemented-interface
 
 [//]: # (licenses)
 

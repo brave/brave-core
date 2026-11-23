@@ -2,7 +2,7 @@ extern crate proc_macro;
 
 use proc_macro2::{Span, TokenStream};
 use quote::quote;
-use syn::*;
+use syn::{ext::IdentExt as _, *};
 
 mod container_attributes;
 mod field_attributes;
@@ -31,7 +31,7 @@ fn expand_derive_arbitrary(input: syn::DeriveInput) -> Result<TokenStream> {
 
     // This won't be used if `needs_recursive_count` ends up false.
     let recursive_count = syn::Ident::new(
-        &format!("RECURSIVE_COUNT_{}", input.ident),
+        &format!("RECURSIVE_COUNT_{}", input.ident.unraw()),
         Span::call_site(),
     );
 

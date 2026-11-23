@@ -36,7 +36,7 @@ impl<B, E> Policy<B, E> for Limited {
 
 #[cfg(test)]
 mod tests {
-    use http::{Request, Uri};
+    use http::{Method, Request, Uri};
 
     use super::*;
 
@@ -51,7 +51,9 @@ mod tests {
 
             let attempt = Attempt {
                 status: Default::default(),
+                method: &Method::GET,
                 location: &uri,
+                previous_method: &Method::GET,
                 previous: &uri,
             };
             assert!(Policy::<(), ()>::redirect(&mut policy, &attempt)
@@ -64,7 +66,9 @@ mod tests {
 
         let attempt = Attempt {
             status: Default::default(),
+            method: &Method::GET,
             location: &uri,
+            previous_method: &Method::GET,
             previous: &uri,
         };
         assert!(Policy::<(), ()>::redirect(&mut policy, &attempt)

@@ -1,8 +1,28 @@
-use std::process::{Command, Stdio};
+use std::{
+    path::Path,
+    process::{Command, Stdio},
+};
 
 use bstr::{BString, ByteSlice, ByteVec};
+use gix_error::Result;
 
-use crate::{helper, Program};
+use crate::{Program, helper};
+
+/// Correctly quotes `git_progarm`, while assuming `name_and_args` are good to be put into a script.
+fn external_name_command(
+    git_program: &Path,
+    name_and_args: &bstr::BStr,
+    action: &helper::Action,
+) -> Result<std::process::Command> {
+    let git_program = gix_path::to_unix_separators_on_windows(gix_path::into_bstr(git_program)?);
+    let mut args = gix_quote::single(git_program.as_ref());
+    args.push_str(" credential-");
+    args.push_str(name_and_args);
+    gix_command::prepare(gix_path::from_bstr(args.as_bstr())?.into_owned())
+        .arg(action.as_arg(true))
+        .command_may_be_shell_script_allow_manual_argument_splitting()
+        .try_into()
+}
 
 /// The kind of helper program to use.
 #[derive(Debug, Clone, Eq, PartialEq)]
@@ -39,8 +59,10 @@ impl Program {
 
     /// Parse the given input as per the custom helper definition, supporting `!<script>`, `name` and `/absolute/name`, the latter two
     /// also support arguments which are ignored here.
-    pub fn from_custom_definition(input: impl Into<BString>) -> Self {
-        fn from_custom_definition_inner(mut input: BString) -> Program {
+    ///
+    /// Returns an error if the helper name or path cannot be represented by the platform.
+    pub fn from_custom_definition(input: impl Into<BString>) -> Result<Self> {
+        fn from_custom_definition_inner(mut input: BString) -> Result<Program> {
             let kind = if input.starts_with(b"!") {
                 input.remove(0);
                 Kind::ExternalShellScript(input)
@@ -50,48 +72,43 @@ impl Program {
                         .find_byte(b' ')
                         .map_or(input.as_slice(), |pos| &input[..pos])
                         .as_bstr(),
-                );
+                )?;
                 if gix_path::is_absolute(path) {
                     Kind::ExternalPath { path_and_args: input }
                 } else {
                     Kind::ExternalName { name_and_args: input }
                 }
             };
-            Program {
+            Ok(Program {
                 kind,
                 child: None,
                 stderr: true,
-            }
+            })
         }
         from_custom_definition_inner(input.into())
     }
 
     /// Convert the program into the respective command, suitable to invoke `action`.
-    pub fn to_command(&self, action: &helper::Action) -> std::process::Command {
+    ///
+    /// Returns an error if helper or executable paths cannot be represented in the required encoding.
+    pub fn to_command(&self, action: &helper::Action) -> Result<std::process::Command> {
         let git_program = gix_path::env::exe_invocation();
         let mut cmd = match &self.kind {
             Kind::Builtin => {
-                let mut cmd = Command::from(gix_command::prepare(git_program));
+                let mut cmd = Command::try_from(gix_command::prepare(git_program))?;
                 cmd.arg("credential").arg(action.as_arg(false));
                 cmd
             }
             Kind::ExternalName { name_and_args } => {
-                let mut args = name_and_args.clone();
-                args.insert_str(0, "credential-");
-                args.insert_str(0, " ");
-                args.insert_str(0, git_program.to_string_lossy().as_ref());
-                gix_command::prepare(gix_path::from_bstr(args.as_bstr()).into_owned())
-                    .arg(action.as_arg(true))
-                    .command_may_be_shell_script_allow_manual_argument_splitting()
-                    .into()
+                external_name_command(git_program, name_and_args.as_bstr(), action)?
             }
             Kind::ExternalShellScript(for_shell)
             | Kind::ExternalPath {
                 path_and_args: for_shell,
-            } => gix_command::prepare(gix_path::from_bstr(for_shell.as_bstr()).as_ref())
+            } => gix_command::prepare(gix_path::from_bstr(for_shell.as_bstr())?.as_ref())
                 .command_may_be_shell_script()
                 .arg(action.as_arg(true))
-                .into(),
+                .try_into()?,
         };
         cmd.stdin(Stdio::piped())
             .stdout(if action.expects_output() {
@@ -100,7 +117,7 @@ impl Program {
                 Stdio::null()
             })
             .stderr(if self.stderr { Stdio::inherit() } else { Stdio::null() });
-        cmd
+        Ok(cmd)
     }
 }
 
@@ -119,7 +136,9 @@ impl Program {
         action: &helper::Action,
     ) -> std::io::Result<(std::process::ChildStdin, Option<std::process::ChildStdout>)> {
         assert!(self.child.is_none(), "BUG: must not call `start()` twice");
-        let mut cmd = self.to_command(action);
+        let mut cmd = self
+            .to_command(action)
+            .map_err(|err| std::io::Error::new(std::io::ErrorKind::InvalidInput, err))?;
         gix_trace::debug!(cmd = ?cmd, "launching credential helper");
         let mut child = cmd.spawn()?;
         let stdin = child.stdin.take().expect("stdin to be configured");
@@ -135,10 +154,8 @@ impl Program {
         if status.success() {
             Ok(())
         } else {
-            Err(std::io::Error::other(format!(
-                "Credentials helper program failed with status code {:?}",
-                status.code()
-            )))
+            let failure = gix_error::message("Credentials helper program failed").with_exit_status(status);
+            Err(std::io::Error::other(failure))
         }
     }
 }
@@ -146,3 +163,35 @@ impl Program {
 ///
 pub mod main;
 pub use main::function::main;
+
+#[cfg(test)]
+mod tests {
+    use std::{ffi::OsStr, path::Path};
+
+    use crate::helper;
+
+    #[test]
+    fn git_program_with_spaces_is_quoted_in_external_name_shell_scripts() -> gix_testtools::TestResult {
+        let cmd = super::external_name_command(
+            Path::new(r"C:\Program Files\Git\mingw64\bin\git.exe"),
+            "manager --config=~/credentials".into(),
+            &helper::Action::Get(Default::default()),
+        )?;
+        let script = cmd
+            .get_args()
+            .skip_while(|arg| *arg != OsStr::new("-c"))
+            .nth(1)
+            .expect("a shell invocation has its script after the '-c' argument");
+
+        assert_eq!(
+            script,
+            OsStr::new(if cfg!(windows) {
+                r#"'C:/Program Files/Git/mingw64/bin/git.exe' credential-manager --config=~/credentials "$@""#
+            } else {
+                r#"'C:\Program Files\Git\mingw64\bin\git.exe' credential-manager --config=~/credentials "$@""#
+            }),
+            "the Git executable is a single shell token even when its path contains spaces"
+        );
+        Ok(())
+    }
+}

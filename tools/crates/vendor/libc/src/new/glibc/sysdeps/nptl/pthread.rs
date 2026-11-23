@@ -1,11 +1,34 @@
 //! Source header: `sysdeps/nptl/pthread.h`
 //!
-//! <https://github.com/bminor/glibc/blob/master/sysdeps/nptl/pthread.h>
+//! <https://github.com/sailfishos-mirror/glibc/blob/master/sysdeps/nptl/pthread.h>
+
+use super::bits::struct_mutex::*;
+use crate::prelude::*;
+
+c_enum! {
+    #[repr(c_int)]
+    enum #anon {
+        PTHREAD_MUTEX_TIMED_NP,
+        PTHREAD_MUTEX_RECURSIVE_NP,
+        PTHREAD_MUTEX_ERRORCHECK_NP,
+        pub PTHREAD_MUTEX_ADAPTIVE_NP,
+    }
+}
+
+pub const PTHREAD_MUTEX_INITIALIZER: crate::pthread_mutex_t =
+    __PTHREAD_MUTEX_INITIALIZER(PTHREAD_MUTEX_TIMED_NP);
+pub const PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP: crate::pthread_mutex_t =
+    __PTHREAD_MUTEX_INITIALIZER(PTHREAD_MUTEX_RECURSIVE_NP);
+pub const PTHREAD_ERRORCHECK_MUTEX_INITIALIZER_NP: crate::pthread_mutex_t =
+    __PTHREAD_MUTEX_INITIALIZER(PTHREAD_MUTEX_ERRORCHECK_NP);
+pub const PTHREAD_ADAPTIVE_MUTEX_INITIALIZER_NP: crate::pthread_mutex_t =
+    __PTHREAD_MUTEX_INITIALIZER(PTHREAD_MUTEX_ADAPTIVE_NP);
 
 pub use crate::new::common::linux_like::pthread::{
     pthread_getaffinity_np,
     pthread_getattr_np,
     pthread_getname_np,
+    pthread_gettid_np,
     pthread_setaffinity_np,
     pthread_setname_np,
 };

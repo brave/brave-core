@@ -35,8 +35,8 @@ impl Version {
     // the rustc version, we assume this is the current version.
     // It is no problem if this is older than the actual latest stable.
     // LLVM version is assumed to be the minimum external LLVM version:
-    // https://github.com/rust-lang/rust/blob/1.92.0/src/bootstrap/src/core/build_steps/llvm.rs#L626
-    pub(crate) const LATEST: Self = Self::stable(92, 20);
+    // https://github.com/rust-lang/rust/blob/1.97.0/src/bootstrap/src/core/build_steps/llvm.rs#L638
+    pub(crate) const LATEST: Self = Self::stable(97, 21);
 
     pub(crate) const fn stable(rustc_minor: u32, llvm_major: u32) -> Self {
         Self { minor: rustc_minor, nightly: false, commit_date: Date::UNKNOWN, llvm: llvm_major }
@@ -74,6 +74,7 @@ impl Version {
         let nightly = match env::var_os("RUSTC_BOOTSTRAP") {
             // When -1 is passed rustc works like stable, e.g., cfg(target_feature = "unstable_target_feature") will never be set. https://github.com/rust-lang/rust/pull/132993
             Some(ref v) if v == "-1" => false,
+            // When 1 is passed stable rustc works like nightly, but we ignore it for now.
             _ => channel == "nightly" || channel == "dev",
         };
 

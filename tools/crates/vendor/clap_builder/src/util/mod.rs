@@ -1,6 +1,7 @@
 #![allow(clippy::single_component_path_imports)]
 
 mod any_value;
+mod escape;
 pub(crate) mod flat_map;
 pub(crate) mod flat_set;
 mod graph;
@@ -11,13 +12,14 @@ pub use self::id::Id;
 
 pub(crate) use self::any_value::AnyValue;
 pub(crate) use self::any_value::AnyValueId;
+pub(crate) use self::escape::Escape;
 pub(crate) use self::flat_map::Entry;
 pub(crate) use self::flat_map::FlatMap;
 pub(crate) use self::flat_set::FlatSet;
 pub(crate) use self::graph::ChildGraph;
-pub(crate) use self::str_to_bool::str_to_bool;
 pub(crate) use self::str_to_bool::FALSE_LITERALS;
 pub(crate) use self::str_to_bool::TRUE_LITERALS;
+pub(crate) use self::str_to_bool::str_to_bool;
 
 pub(crate) mod color;
 

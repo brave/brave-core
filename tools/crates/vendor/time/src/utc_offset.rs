@@ -5,35 +5,39 @@ use alloc::string::String;
 use core::cmp::Ordering;
 use core::fmt;
 use core::hash::{Hash, Hasher};
+use core::mem::MaybeUninit;
 use core::ops::Neg;
 #[cfg(feature = "formatting")]
 use std::io;
 
-use deranged::{RangedI32, RangedI8};
-use powerfmt::ext::FormatterExt;
-use powerfmt::smart_display::{self, FormatterOptions, Metadata, SmartDisplay};
+use deranged::{ri8, ri32, ru8};
+use powerfmt::smart_display::{FormatterOptions, Metadata, SmartDisplay};
 
-use crate::convert::*;
+#[cfg(feature = "local-offset")]
+use crate::OffsetDateTime;
+#[cfg(any(feature = "formatting", feature = "parsing"))]
+use crate::PrivateMethod;
 use crate::error;
 #[cfg(feature = "formatting")]
 use crate::formatting::Formattable;
 use crate::internal_macros::ensure_ranged;
+use crate::num_fmt::{str_from_raw_parts, two_digits_zero_padded};
 #[cfg(feature = "parsing")]
-use crate::parsing::Parsable;
+use crate::parsing::{Parsable, Parsed};
 #[cfg(feature = "local-offset")]
 use crate::sys::local_offset_at;
-#[cfg(feature = "local-offset")]
-use crate::OffsetDateTime;
+use crate::unit::*;
 
 /// The type of the `hours` field of `UtcOffset`.
-type Hours = RangedI8<-25, 25>;
+pub(crate) type Hours = ri8<-25, 25>;
 /// The type of the `minutes` field of `UtcOffset`.
-type Minutes = RangedI8<{ -(Minute::per_t::<i8>(Hour) - 1) }, { Minute::per_t::<i8>(Hour) - 1 }>;
+pub(crate) type Minutes =
+    ri8<{ -(Minute::per_t::<i8>(Hour) - 1) }, { Minute::per_t::<i8>(Hour) - 1 }>;
 /// The type of the `seconds` field of `UtcOffset`.
-type Seconds =
-    RangedI8<{ -(Second::per_t::<i8>(Minute) - 1) }, { Second::per_t::<i8>(Minute) - 1 }>;
+pub(crate) type Seconds =
+    ri8<{ -(Second::per_t::<i8>(Minute) - 1) }, { Second::per_t::<i8>(Minute) - 1 }>;
 /// The type capable of storing the range of whole seconds that a `UtcOffset` can encompass.
-type WholeSeconds = RangedI32<
+type WholeSeconds = ri32<
     {
         Hours::MIN.get() as i32 * Second::per_t::<i32>(Hour)
             + Minutes::MIN.get() as i32 * Second::per_t::<i32>(Minute)
@@ -54,7 +58,7 @@ type WholeSeconds = RangedI32<
 #[derive(Clone, Copy, Eq)]
 #[cfg_attr(not(docsrs), repr(C))]
 pub struct UtcOffset {
-    /// The order of this struct's fields matter. Do not reorder them.
+    // The order of this struct's fields matter. Do not reorder them.
 
     // Little endian version
     #[cfg(target_endian = "little")]
@@ -75,15 +79,18 @@ pub struct UtcOffset {
 
 impl Hash for UtcOffset {
     #[inline]
-    fn hash<H: Hasher>(&self, state: &mut H) {
-        state.write_u32(self.as_u32());
+    fn hash<H>(&self, state: &mut H)
+    where
+        H: Hasher,
+    {
+        state.write_u32(self.as_u32_for_equality());
     }
 }
 
 impl PartialEq for UtcOffset {
     #[inline]
     fn eq(&self, other: &Self) -> bool {
-        self.as_u32().eq(&other.as_u32())
+        self.as_u32_for_equality().eq(&other.as_u32_for_equality())
     }
 }
 
@@ -97,30 +104,45 @@ impl PartialOrd for UtcOffset {
 impl Ord for UtcOffset {
     #[inline]
     fn cmp(&self, other: &Self) -> Ordering {
-        self.as_u32().cmp(&other.as_u32())
+        self.as_i32_for_comparison()
+            .cmp(&other.as_i32_for_comparison())
     }
 }
 
 impl UtcOffset {
-    /// Provide a representation of the `UtcOffset` as a `u32`. This value can be used for equality,
-    /// hashing, and ordering.
+    /// Provide a representation of the `UtcOffset` as a `i32`. This value can be used for equality,
+    /// and hashing. This value is not suitable for ordering; use `as_i32_for_comparison` instead.
     #[inline]
-    pub(crate) const fn as_u32(self) -> u32 {
-        #[cfg(target_endian = "big")]
-        return u32::from_be_bytes([
-            self.seconds.get() as u8,
-            self.minutes.get() as u8,
-            self.hours.get() as u8,
-            0,
-        ]);
+    pub(crate) const fn as_u32_for_equality(self) -> u32 {
+        // Safety: Size and alignment are handled by the compiler. Both the source and destination
+        // types are plain old data (POD) types.
+        unsafe {
+            if const { cfg!(target_endian = "little") } {
+                core::mem::transmute::<[i8; 4], u32>([
+                    self.seconds.get(),
+                    self.minutes.get(),
+                    self.hours.get(),
+                    0,
+                ])
+            } else {
+                core::mem::transmute::<[i8; 4], u32>([
+                    self.hours.get(),
+                    self.minutes.get(),
+                    self.seconds.get(),
+                    0,
+                ])
+            }
+        }
+    }
 
-        #[cfg(target_endian = "little")]
-        return u32::from_le_bytes([
-            self.seconds.get() as u8,
-            self.minutes.get() as u8,
-            self.hours.get() as u8,
-            0,
-        ]);
+    /// Provide a representation of the `UtcOffset` as a `i32`. This value can be used for ordering.
+    /// While it is suitable for equality, `as_u32_for_equality` is preferred for performance
+    /// reasons.
+    #[inline]
+    const fn as_i32_for_comparison(self) -> i32 {
+        (self.hours.get() as i32) << 16
+            | (self.minutes.get() as i32) << 8
+            | (self.seconds.get() as i32)
     }
 
     /// A `UtcOffset` that is UTC.
@@ -177,9 +199,9 @@ impl UtcOffset {
         seconds: i8,
     ) -> Result<Self, error::ComponentRange> {
         Ok(Self::from_hms_ranged(
-            ensure_ranged!(Hours: hours),
-            ensure_ranged!(Minutes: minutes),
-            ensure_ranged!(Seconds: seconds),
+            ensure_ranged!(Hours: hours("offset hour")),
+            ensure_ranged!(Minutes: minutes("offset minute")),
+            ensure_ranged!(Seconds: seconds("offset second")),
         ))
     }
 
@@ -295,8 +317,8 @@ impl UtcOffset {
 
     /// Obtain the UTC offset as its hours, minutes, and seconds. The sign of all three components
     /// will always match. A positive value indicates an offset to the east; a negative to the west.
-    #[cfg(feature = "quickcheck")]
     #[inline]
+    #[cfg(any(feature = "formatting", feature = "quickcheck"))]
     pub(crate) const fn as_hms_ranged(self) -> (Hours, Minutes, Seconds) {
         (self.hours, self.minutes, self.seconds)
     }
@@ -349,7 +371,7 @@ impl UtcOffset {
     /// assert_eq!(offset!(-1:02:03).whole_seconds(), -3723);
     /// ```
     // This may be useful for anyone manually implementing arithmetic, as it
-    // would let them construct a `Duration` directly.
+    // would let them construct a `SignedDuration` directly.
     #[inline]
     pub const fn whole_seconds(self) -> i32 {
         self.hours.get() as i32 * Second::per_t::<i32>(Hour)
@@ -381,7 +403,7 @@ impl UtcOffset {
     /// ```
     #[inline]
     pub const fn is_utc(self) -> bool {
-        self.hours.get() == 0 && self.minutes.get() == 0 && self.seconds.get() == 0
+        self.as_u32_for_equality() == Self::UTC.as_u32_for_equality()
     }
 
     /// Check if the offset is positive, or east of UTC.
@@ -394,7 +416,7 @@ impl UtcOffset {
     /// ```
     #[inline]
     pub const fn is_positive(self) -> bool {
-        self.hours.get() > 0 || self.minutes.get() > 0 || self.seconds.get() > 0
+        self.as_i32_for_comparison() > Self::UTC.as_i32_for_comparison()
     }
 
     /// Check if the offset is negative, or west of UTC.
@@ -407,7 +429,7 @@ impl UtcOffset {
     /// ```
     #[inline]
     pub const fn is_negative(self) -> bool {
-        self.hours.get() < 0 || self.minutes.get() < 0 || self.seconds.get() < 0
+        self.as_i32_for_comparison() < Self::UTC.as_i32_for_comparison()
     }
 
     /// Attempt to obtain the system's UTC offset at a known moment in time. If the offset cannot be
@@ -453,7 +475,7 @@ impl UtcOffset {
         output: &mut (impl io::Write + ?Sized),
         format: &(impl Formattable + ?Sized),
     ) -> Result<usize, error::Format> {
-        format.format_into(output, None, None, Some(self))
+        format.format_into(output, &self, &mut Default::default(), PrivateMethod)
     }
 
     /// Format the `UtcOffset` using the provided [format description](crate::format_description).
@@ -461,13 +483,14 @@ impl UtcOffset {
     /// ```rust
     /// # use time::format_description;
     /// # use time_macros::offset;
-    /// let format = format_description::parse("[offset_hour sign:mandatory]:[offset_minute]")?;
+    /// let format =
+    ///     format_description::parse_borrowed::<3>("[offset_hour sign:mandatory]:[offset_minute]")?;
     /// assert_eq!(offset!(+1).format(&format)?, "+01:00");
     /// # Ok::<_, time::Error>(())
     /// ```
     #[inline]
     pub fn format(self, format: &(impl Formattable + ?Sized)) -> Result<String, error::Format> {
-        format.format(None, None, Some(self))
+        format.format(&self, &mut Default::default(), PrivateMethod)
     }
 }
 
@@ -488,57 +511,100 @@ impl UtcOffset {
         input: &str,
         description: &(impl Parsable + ?Sized),
     ) -> Result<Self, error::Parse> {
-        description.parse_offset(input.as_bytes())
+        description.parse_offset(input.as_bytes(), None, PrivateMethod)
+    }
+
+    /// Parse a `UtcOffset` from the input using the provided [format
+    /// description](crate::format_description) and default values.
+    ///
+    /// ```rust
+    /// # use time::UtcOffset;
+    /// # use time::parsing::Parsed;
+    /// # use time_macros::{offset, format_description};
+    /// let format = format_description!("[offset_hour sign:mandatory]");
+    /// let defaults = Parsed::new()
+    ///     .with_offset_minute_signed(30)
+    ///     .expect("30 is a valid offset minute");
+    /// assert_eq!(
+    ///     UtcOffset::parse_with_defaults(b"+05", &format, defaults)?,
+    ///     offset!(+5:30)
+    /// );
+    /// # Ok::<_, time::Error>(())
+    /// ```
+    #[inline]
+    pub fn parse_with_defaults(
+        input: &[u8],
+        description: &(impl Parsable + ?Sized),
+        defaults: Parsed,
+    ) -> Result<Self, error::Parse> {
+        description.parse_offset(input, Some(defaults), PrivateMethod)
     }
 }
 
-mod private {
-    #[non_exhaustive]
-    #[derive(Debug, Clone, Copy)]
-    pub struct UtcOffsetMetadata;
-}
-use private::UtcOffsetMetadata;
-
+// This no longer needs special handling, as the format is fixed and doesn't require anything
+// advanced. Trait impls can't be deprecated and the info is still useful for other types
+// implementing `SmartDisplay`, so leave it as-is for now.
 impl SmartDisplay for UtcOffset {
-    type Metadata = UtcOffsetMetadata;
+    type Metadata = ();
 
     #[inline]
     fn metadata(&self, _: FormatterOptions) -> Metadata<'_, Self> {
-        let sign = if self.is_negative() { '-' } else { '+' };
-        let width = smart_display::padded_width_of!(
-            sign,
-            self.hours.abs() => width(2),
-            ":",
-            self.minutes.abs() => width(2),
-            ":",
-            self.seconds.abs() => width(2),
-        );
-        Metadata::new(width, self, UtcOffsetMetadata)
+        Metadata::new(9, self, ())
     }
 
     #[inline]
-    fn fmt_with_metadata(
-        &self,
-        f: &mut fmt::Formatter<'_>,
-        metadata: Metadata<Self>,
-    ) -> fmt::Result {
-        f.pad_with_width(
-            metadata.unpadded_width(),
-            format_args!(
-                "{}{:02}:{:02}:{:02}",
-                if self.is_negative() { '-' } else { '+' },
-                self.hours.abs(),
-                self.minutes.abs(),
-                self.seconds.abs(),
-            ),
-        )
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        fmt::Display::fmt(self, f)
+    }
+}
+
+impl UtcOffset {
+    /// The maximum number of bytes that the `fmt_into_buffer` method will write, which is also used
+    /// for the `Display` implementation.
+    pub(crate) const DISPLAY_BUFFER_SIZE: usize = 9;
+
+    /// Format the `UtcOffset` into the provided buffer, returning the number of bytes written.
+    #[inline]
+    pub(crate) const fn fmt_into_buffer(
+        self,
+        buf: &mut [MaybeUninit<u8>; Self::DISPLAY_BUFFER_SIZE],
+    ) -> usize {
+        let hours = self.hours.get().unsigned_abs();
+        let minutes = self.minutes.get().unsigned_abs();
+        let seconds = self.seconds.get().unsigned_abs();
+
+        let sign = if self.is_negative() { b'-' } else { b'+' };
+        buf[0] = MaybeUninit::new(sign);
+        buf[3] = MaybeUninit::new(b':');
+        buf[6] = MaybeUninit::new(b':');
+
+        // Safety: `hours`, `minutes` and `seconds` are all less than 100. Both the source and
+        // destination are valid for two bytes, aligned, and do not overlap.
+        unsafe {
+            two_digits_zero_padded(ru8::new_unchecked(hours))
+                .as_ptr()
+                .copy_to_nonoverlapping(buf.as_mut_ptr().add(1).cast(), 2);
+            two_digits_zero_padded(ru8::new_unchecked(minutes))
+                .as_ptr()
+                .copy_to_nonoverlapping(buf.as_mut_ptr().add(4).cast(), 2);
+            two_digits_zero_padded(ru8::new_unchecked(seconds))
+                .as_ptr()
+                .copy_to_nonoverlapping(buf.as_mut_ptr().add(7).cast(), 2);
+        }
+
+        // The number of bytes written does not vary; it is always 9.
+        9
     }
 }
 
 impl fmt::Display for UtcOffset {
     #[inline]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        SmartDisplay::fmt(self, f)
+        let mut buf = [MaybeUninit::uninit(); Self::DISPLAY_BUFFER_SIZE];
+        let len = self.fmt_into_buffer(&mut buf);
+        // Safety: All bytes up to `len` have been initialized with ASCII characters.
+        let s = unsafe { str_from_raw_parts(buf.as_ptr().cast(), len) };
+        f.pad(s)
     }
 }
 

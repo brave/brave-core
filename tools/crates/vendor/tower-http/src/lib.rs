@@ -11,73 +11,55 @@
 //!
 //! # Example server
 //!
-//! This example shows how to apply middleware from tower-http to a [`Service`] and then run
-//! that service using [hyper].
+//! This example shows how to apply middleware from `tower-http` to a [`Service`] and then run
+//! that service using [hyper] and [hyper-util].
 //!
 //! ```rust,no_run
 //! use tower_http::{
-//!     add_extension::AddExtensionLayer,
 //!     compression::CompressionLayer,
-//!     propagate_header::PropagateHeaderLayer,
-//!     sensitive_headers::SetSensitiveRequestHeadersLayer,
-//!     set_header::SetResponseHeaderLayer,
 //!     trace::TraceLayer,
-//!     validate_request::ValidateRequestHeaderLayer,
 //! };
 //! use tower::{ServiceBuilder, service_fn, BoxError};
-//! use http::{Request, Response, header::{HeaderName, CONTENT_TYPE, AUTHORIZATION}};
-//! use std::{sync::Arc, net::SocketAddr, convert::Infallible, iter::once};
+//! use http::{Request, Response};
+//! use std::net::{SocketAddr, Ipv6Addr};
 //! use bytes::Bytes;
 //! use http_body_util::Full;
-//! # struct DatabaseConnectionPool;
-//! # impl DatabaseConnectionPool {
-//! #     fn new() -> DatabaseConnectionPool { DatabaseConnectionPool }
+//! use hyper_util::rt::{TokioIo, TokioExecutor};
+//! use hyper_util::service::TowerToHyperService;
+//!
+//! # async fn handler(_: Request<hyper::body::Incoming>) -> Result<Response<Full<Bytes>>, BoxError> {
+//! #     Ok(Response::new(Full::new(Bytes::from("hello"))))
 //! # }
-//! # fn content_length_from_response<B>(_: &http::Response<B>) -> Option<http::HeaderValue> { None }
-//! # async fn update_in_flight_requests_metric(count: usize) {}
-//!
-//! // Our request handler. This is where we would implement the application logic
-//! // for responding to HTTP requests...
-//! async fn handler(request: Request<Full<Bytes>>) -> Result<Response<Full<Bytes>>, BoxError> {
-//!     // ...
-//!     # todo!()
-//! }
-//!
-//! // Shared state across all request handlers --- in this case, a pool of database connections.
-//! struct State {
-//!     pool: DatabaseConnectionPool,
-//! }
 //!
 //! #[tokio::main]
-//! async fn main() {
-//!     // Construct the shared state.
-//!     let state = State {
-//!         pool: DatabaseConnectionPool::new(),
-//!     };
+//! async fn main() -> Result<(), BoxError> {
+//!     let addr = SocketAddr::from((Ipv6Addr::LOCALHOST, 8000));
+//!     let listener = tokio::net::TcpListener::bind(addr).await?;
+//!     println!("Listening on http://{}", addr);
 //!
-//!     // Use tower's `ServiceBuilder` API to build a stack of tower middleware
-//!     // wrapping our request handler.
-//!     let service = ServiceBuilder::new()
-//!         // Mark the `Authorization` request header as sensitive so it doesn't show in logs
-//!         .layer(SetSensitiveRequestHeadersLayer::new(once(AUTHORIZATION)))
-//!         // High level logging of requests and responses
-//!         .layer(TraceLayer::new_for_http())
-//!         // Share an `Arc<State>` with all requests
-//!         .layer(AddExtensionLayer::new(Arc::new(state)))
-//!         // Compress responses
-//!         .layer(CompressionLayer::new())
-//!         // Propagate `X-Request-Id`s from requests to responses
-//!         .layer(PropagateHeaderLayer::new(HeaderName::from_static("x-request-id")))
-//!         // If the response has a known size set the `Content-Length` header
-//!         .layer(SetResponseHeaderLayer::overriding(CONTENT_TYPE, content_length_from_response))
-//!         // Authorize requests using a token
-//!         .layer(ValidateRequestHeaderLayer::bearer("passwordlol"))
-//!         // Accept only application/json, application/* and */* in a request's ACCEPT header
-//!         .layer(ValidateRequestHeaderLayer::accept("application/json"))
-//!         // Wrap a `Service` in our middleware stack
-//!         .service_fn(handler);
-//!     # let mut service = service;
-//!     # tower::Service::call(&mut service, Request::new(Full::default()));
+//!     loop {
+//!         let (socket, _) = listener.accept().await?;
+//!
+//!         tokio::spawn(async move {
+//!             let socket = TokioIo::new(socket);
+//!
+//!             // Build our middleware stack
+//!             let service = ServiceBuilder::new()
+//!                 .layer(TraceLayer::new_for_http())
+//!                 .layer(CompressionLayer::new())
+//!                 .service_fn(handler);
+//!
+//!             // Wrap it for hyper
+//!             let hyper_service = TowerToHyperService::new(service);
+//!
+//!             if let Err(err) = hyper_util::server::conn::auto::Builder::new(TokioExecutor::new())
+//!                 .serve_connection(socket, hyper_service)
+//!                 .await
+//!             {
+//!                 eprintln!("failed to serve connection: {err:#}");
+//!             }
+//!         });
+//!     }
 //! }
 //! ```
 //!
@@ -165,6 +147,7 @@
 //! [http]: https://crates.io/crates/http
 //! [http-body]: https://crates.io/crates/http-body
 //! [hyper]: https://crates.io/crates/hyper
+//! [hyper-util]: https://crates.io/crates/hyper-util
 //! [guides]: https://github.com/tower-rs/tower/tree/master/guides
 //! [tonic]: https://crates.io/crates/tonic
 //! [warp]: https://crates.io/crates/warp
@@ -180,7 +163,7 @@
     clippy::all,
     clippy::dbg_macro,
     clippy::todo,
-    clippy::empty_enum,
+    clippy::empty_enums,
     clippy::enum_glob_use,
     clippy::mem_forget,
     clippy::unused_self,
@@ -190,7 +173,6 @@
     clippy::match_wildcard_for_single_variants,
     clippy::if_let_mutex,
     clippy::await_holding_lock,
-    clippy::match_on_vec_items,
     clippy::imprecise_flops,
     clippy::suboptimal_flops,
     clippy::lossy_float_literal,
@@ -328,6 +310,9 @@ pub mod timeout;
 
 #[cfg(feature = "normalize-path")]
 pub mod normalize_path;
+
+#[cfg(feature = "on-early-drop")]
+pub mod on_early_drop;
 
 pub mod classify;
 pub mod services;

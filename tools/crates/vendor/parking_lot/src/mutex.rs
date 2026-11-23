@@ -1,13 +1,6 @@
-// Copyright 2016 Amanieu d'Antras
-//
-// Licensed under the Apache License, Version 2.0, <LICENSE-APACHE or
-// http://apache.org/licenses/LICENSE-2.0> or the MIT license <LICENSE-MIT or
-// http://opensource.org/licenses/MIT>, at your option. This file may not be
-// copied, modified, or distributed except according to those terms.
-
 use crate::raw_mutex::RawMutex;
 
-/// A mutual exclusion primitive useful for protecting shared data
+/// A mutual exclusion primitive useful for protecting shared data.
 ///
 /// This mutex will block threads waiting for the lock to become available. The
 /// mutex can be statically initialized or created by the `new`
@@ -18,36 +11,21 @@ use crate::raw_mutex::RawMutex;
 ///
 /// # Fairness
 ///
-/// A typical unfair lock can often end up in a situation where a single thread
-/// quickly acquires and releases the same mutex in succession, which can starve
-/// other threads waiting to acquire the mutex. While this improves throughput
-/// because it doesn't force a context switch when a thread tries to re-acquire
-/// a mutex it has just released, this can starve other threads.
+/// This mutex uses unfair unlocking by default, which allows the unlocking
+/// thread to re-acquire the mutex before a waiting thread and generally
+/// improves throughput. This can starve waiting threads.
 ///
-/// This mutex uses [eventual fairness](https://trac.webkit.org/changeset/203350)
-/// to ensure that the lock will be fair on average without sacrificing
-/// throughput. This is done by forcing a fair unlock on average every 0.5ms,
-/// which will force the lock to go to the next thread waiting for the mutex.
-///
-/// Additionally, any critical section longer than 1ms will always use a fair
-/// unlock, which has a negligible impact on throughput considering the length
-/// of the critical section.
-///
-/// You can also force a fair unlock by calling `MutexGuard::unlock_fair` when
-/// unlocking a mutex instead of simply dropping the `MutexGuard`.
+/// Fair unlocking can be requested explicitly by calling
+/// `MutexGuard::unlock_fair` instead of simply dropping the `MutexGuard`. A
+/// fair unlock hands the mutex directly to a waiting thread.
 ///
 /// # Differences from the standard library `Mutex`
 ///
 /// - No poisoning, the lock is released normally on panic.
-/// - Only requires 1 byte of space, whereas the standard library boxes the
-///   `Mutex` due to platform limitations.
-/// - Can be statically constructed.
-/// - Does not require any drop glue when dropped.
-/// - Inline fast path for the uncontended case.
-/// - Efficient handling of micro-contention using adaptive spinning.
+/// - Only requires 1 byte of lock state.
+/// - Supports locking with a timeout.
 /// - Allows raw locking & unlocking without a guard.
-/// - Supports eventual fairness so that the mutex is fair on average.
-/// - Optionally allows making the mutex fair by calling `MutexGuard::unlock_fair`.
+/// - Supports explicit fair unlocking through `MutexGuard::unlock_fair`.
 ///
 /// # Examples
 ///
@@ -66,7 +44,7 @@ use crate::raw_mutex::RawMutex;
 /// let data = Arc::new(Mutex::new(0));
 ///
 /// let (tx, rx) = channel();
-/// for _ in 0..10 {
+/// for _ in 0..N {
 ///     let (data, tx) = (Arc::clone(&data), tx.clone());
 ///     thread::spawn(move || {
 ///         // The shared state can only be accessed once the lock is held.
@@ -85,21 +63,14 @@ use crate::raw_mutex::RawMutex;
 /// ```
 pub type Mutex<T> = lock_api::Mutex<RawMutex, T>;
 
-/// Creates a new mutex in an unlocked state ready for use.
-///
-/// This allows creating a mutex in a constant context on stable Rust.
-pub const fn const_mutex<T>(val: T) -> Mutex<T> {
-    Mutex::const_new(<RawMutex as lock_api::RawMutex>::INIT, val)
-}
-
-/// An RAII implementation of a "scoped lock" of a mutex. When this structure is
-/// dropped (falls out of scope), the lock will be unlocked.
+/// An RAII guard which unlocks the mutex when dropped.
 ///
 /// The data protected by the mutex can be accessed through this guard via its
-/// `Deref` and `DerefMut` implementations.
+/// [`Deref`](core::ops::Deref) and [`DerefMut`](core::ops::DerefMut)
+/// implementations.
 pub type MutexGuard<'a, T> = lock_api::MutexGuard<'a, RawMutex, T>;
 
-/// An RAII mutex guard returned by `MutexGuard::map`, which can point to a
+/// An RAII mutex guard returned by [`MutexGuard::map`], which can point to a
 /// subfield of the protected data.
 ///
 /// The main difference between `MappedMutexGuard` and `MutexGuard` is that the
@@ -113,21 +84,18 @@ mod tests {
     use crate::{Condvar, MappedMutexGuard, Mutex, MutexGuard};
     use std::collections::HashMap;
     use std::ops::Deref;
+    use std::sync::Arc;
     use std::sync::atomic::{AtomicUsize, Ordering};
     use std::sync::mpsc::channel;
-    use std::sync::Arc;
     use std::thread;
 
     #[cfg(feature = "serde")]
-    use bincode::{deserialize, serialize};
+    use postcard::{from_bytes, to_stdvec};
 
     struct Packet<T>(Arc<(Mutex<T>, Condvar)>);
 
     #[derive(Eq, PartialEq, Debug)]
     struct NonCopy(i32);
-
-    unsafe impl<T: Send> Send for Packet<T> {}
-    unsafe impl<T> Sync for Packet<T> {}
 
     #[test]
     fn smoke() {
@@ -138,7 +106,7 @@ mod tests {
 
     #[test]
     fn lots_and_lots() {
-        const J: u32 = 1000;
+        const J: u32 = if cfg!(miri) { 200 } else { 1000 };
         const K: u32 = 3;
 
         let m = Arc::new(Mutex::new(0));
@@ -175,7 +143,10 @@ mod tests {
     #[test]
     fn try_lock() {
         let m = Mutex::new(());
-        *m.try_lock().unwrap() = ();
+        let guard = m.try_lock().unwrap();
+        assert!(m.try_lock().is_none());
+        drop(guard);
+        assert!(m.try_lock().is_some());
     }
 
     #[test]
@@ -304,8 +275,8 @@ mod tests {
         let contents: Vec<u8> = vec![0, 1, 2];
         let mutex = Mutex::new(contents.clone());
 
-        let serialized = serialize(&mutex).unwrap();
-        let deserialized: Mutex<Vec<u8>> = deserialize(&serialized).unwrap();
+        let serialized = to_stdvec(&mutex).unwrap();
+        let deserialized: Mutex<Vec<u8>> = from_bytes(&serialized).unwrap();
 
         assert_eq!(*(mutex.lock()), *(deserialized.lock()));
         assert_eq!(contents, *(deserialized.lock()));

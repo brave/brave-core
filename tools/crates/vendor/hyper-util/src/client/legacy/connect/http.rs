@@ -1,15 +1,13 @@
 use std::error::Error as StdError;
 use std::fmt;
-use std::future::Future;
 use std::io;
 use std::marker::PhantomData;
 use std::net::{IpAddr, Ipv4Addr, Ipv6Addr, SocketAddr};
-use std::pin::Pin;
+use std::pin::{Pin, pin};
 use std::sync::Arc;
-use std::task::{self, Poll};
+use std::task::{self, Poll, ready};
 use std::time::Duration;
 
-use futures_core::ready;
 use futures_util::future::Either;
 use http::uri::{Scheme, Uri};
 use pin_project_lite::pin_project;
@@ -18,7 +16,7 @@ use tokio::net::{TcpSocket, TcpStream};
 use tokio::time::Sleep;
 use tracing::{debug, trace, warn};
 
-use super::dns::{self, resolve, GaiResolver, Resolve};
+use super::dns::{self, GaiResolver, Resolve, resolve};
 use super::{Connected, Connection};
 use crate::rt::TokioIo;
 
@@ -90,6 +88,8 @@ struct Config {
     ))]
     interface: Option<std::ffi::CString>,
     #[cfg(any(target_os = "android", target_os = "fuchsia", target_os = "linux"))]
+    mark: Option<u32>,
+    #[cfg(any(target_os = "android", target_os = "fuchsia", target_os = "linux"))]
     tcp_user_timeout: Option<Duration>,
 }
 
@@ -115,11 +115,7 @@ impl TcpKeepaliveConfig {
         if let Some(retries) = self.retries {
             ka = Self::ka_with_retries(ka, retries, &mut dirty)
         };
-        if dirty {
-            Some(ka)
-        } else {
-            None
-        }
+        if dirty { Some(ka) } else { None }
     }
 
     #[cfg(
@@ -250,6 +246,8 @@ impl<R> HttpConnector<R> {
                     target_os = "watchos",
                 ))]
                 interface: None,
+                #[cfg(any(target_os = "android", target_os = "fuchsia", target_os = "linux"))]
+                mark: None,
                 #[cfg(any(target_os = "android", target_os = "fuchsia", target_os = "linux"))]
                 tcp_user_timeout: None,
             }),
@@ -397,7 +395,7 @@ impl<R> HttpConnector<R> {
     /// - macOS, iOS, visionOS, watchOS, and tvOS
     ///
     /// [VRF]: https://www.kernel.org/doc/Documentation/networking/vrf.txt
-    /// [`man 7 socket`] https://man7.org/linux/man-pages/man7/socket.7.html
+    /// [`man 7 socket`]: https://man7.org/linux/man-pages/man7/socket.7.html
     /// [`man 7p ip`]: https://docs.oracle.com/cd/E86824_01/html/E54777/ip-7p.html
     #[cfg(any(
         target_os = "android",
@@ -425,6 +423,26 @@ impl<R> HttpConnector<R> {
             self.config_mut().interface = Some(interface);
         }
         self
+    }
+
+    /// Sets the mark on sockets produced by this connector.
+    ///
+    /// This sets the `SO_MARK` option on the socket (see [`man 7 socket`]
+    /// for details). The mark can be matched by policy routing rules and
+    /// packet filters.
+    ///
+    /// Setting the mark requires the binary to either have `CAP_NET_ADMIN`
+    /// or to be run as root.
+    ///
+    /// This function is only available on the following operating systems:
+    /// - Linux, including Android
+    /// - Fuchsia
+    ///
+    /// [`man 7 socket`]: https://man7.org/linux/man-pages/man7/socket.7.html
+    #[cfg(any(target_os = "android", target_os = "fuchsia", target_os = "linux"))]
+    #[inline]
+    pub fn set_mark(&mut self, mark: Option<u32>) {
+        self.config_mut().mark = mark;
     }
 
     /// Sets the value of the TCP_USER_TIMEOUT option on the socket.
@@ -534,7 +552,7 @@ where
         let config = &self.config;
 
         let (host, port) = get_host_port(config, &dst)?;
-        let host = host.trim_start_matches('[').trim_end_matches(']');
+        let host = crate::client::strip_ipv6_brackets(host);
 
         // If the host is already an IP addr (v4 or v6),
         // skip resolving the dns and start connecting right away.
@@ -899,6 +917,14 @@ fn connect(
         }
     }
 
+    // On Linux-like systems, set the packet mark using `SO_MARK`.
+    #[cfg(any(target_os = "android", target_os = "fuchsia", target_os = "linux"))]
+    if let Some(mark) = config.mark {
+        socket
+            .set_mark(mark)
+            .map_err(ConnectError::m("tcp set_mark error"))?;
+    }
+
     #[cfg(any(target_os = "android", target_os = "fuchsia", target_os = "linux"))]
     if let Some(tcp_user_timeout) = &config.tcp_user_timeout {
         if let Err(e) = socket.set_tcp_user_timeout(Some(*tcp_user_timeout)) {
@@ -954,14 +980,9 @@ impl ConnectingTcp<'_> {
         match self.fallback {
             None => self.preferred.connect(self.config).await,
             Some(mut fallback) => {
-                let preferred_fut = self.preferred.connect(self.config);
-                futures_util::pin_mut!(preferred_fut);
-
-                let fallback_fut = fallback.remote.connect(self.config);
-                futures_util::pin_mut!(fallback_fut);
-
-                let fallback_delay = fallback.delay;
-                futures_util::pin_mut!(fallback_delay);
+                let preferred_fut = pin!(self.preferred.connect(self.config));
+                let fallback_fut = pin!(fallback.remote.connect(self.config));
+                let fallback_delay = pin!(fallback.delay);
 
                 let (result, future) =
                     match futures_util::future::select(preferred_fut, fallback_delay).await {
@@ -1170,8 +1191,8 @@ mod tests {
         use std::net::{IpAddr, Ipv4Addr, Ipv6Addr, TcpListener};
         use std::time::{Duration, Instant};
 
-        use super::dns;
         use super::ConnectingTcp;
+        use super::dns;
 
         let server4 = TcpListener::bind("127.0.0.1:0").unwrap();
         let addr = server4.local_addr().unwrap();
@@ -1308,6 +1329,12 @@ mod tests {
                             target_os = "watchos",
                         ))]
                         interface: None,
+                        #[cfg(any(
+                            target_os = "android",
+                            target_os = "fuchsia",
+                            target_os = "linux"
+                        ))]
+                        mark: None,
                         #[cfg(any(
                             target_os = "android",
                             target_os = "fuchsia",

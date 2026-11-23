@@ -605,15 +605,13 @@ fn set_name() {
 
 #[test]
 fn name_can_be_expr() {
-    const NAME: &str = "  NameCanBeExpr  ";
-
     define_class!(
         #[unsafe(super(NSObject))]
-        #[name = NAME.trim_ascii()]
-        struct NameCanBeExpr;
+        #[name = concat!("Name", 5, "Concat")]
+        struct Name5Concat;
     );
 
-    let expected = "NameCanBeExpr";
-    assert_eq!(NameCanBeExpr::class().name().to_str().unwrap(), expected);
-    assert_eq!(NameCanBeExpr::NAME, expected);
+    let expected = "Name5Concat";
+    assert_eq!(Name5Concat::class().name().to_str().unwrap(), expected);
+    assert_eq!(Name5Concat::NAME, expected);
 }

@@ -47,6 +47,7 @@ pub use self::addr::{AddressFamily, UnixAddr};
     target_os = "cygwin",
 )))]
 #[cfg(feature = "net")]
+#[cfg_attr(docsrs, doc(cfg(feature = "net")))]
 pub use self::addr::{LinkAddr, SockaddrIn, SockaddrIn6};
 #[cfg(any(
     solarish,
@@ -56,13 +57,14 @@ pub use self::addr::{LinkAddr, SockaddrIn, SockaddrIn6};
     target_os = "cygwin",
 ))]
 #[cfg(feature = "net")]
+#[cfg_attr(docsrs, doc(cfg(feature = "net")))]
 pub use self::addr::{SockaddrIn, SockaddrIn6};
 
 #[cfg(linux_android)]
 pub use crate::sys::socket::addr::alg::AlgAddr;
 #[cfg(linux_android)]
 pub use crate::sys::socket::addr::netlink::NetlinkAddr;
-#[cfg(apple_targets)]
+#[cfg(target_os = "macos")]
 #[cfg(feature = "ioctl")]
 pub use crate::sys::socket::addr::sys_control::SysControlAddr;
 #[cfg(any(linux_android, apple_targets))]
@@ -123,8 +125,7 @@ impl TryFrom<i32> for SockType {
     }
 }
 
-/// Constants used in [`socket`](fn.socket.html) and [`socketpair`](fn.socketpair.html)
-/// to specify the protocol to use.
+/// Constants used in [`socket`] and [`socketpair`] to specify the protocol to use.
 #[repr(i32)]
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 #[non_exhaustive]
@@ -137,7 +138,7 @@ pub enum SockProtocol {
     Raw = libc::IPPROTO_RAW,
     /// Allows applications to configure and control a KEXT
     /// ([ref](https://developer.apple.com/library/content/documentation/Darwin/Conceptual/NKEConceptual/control/control.html))
-    #[cfg(apple_targets)]
+    #[cfg(target_os = "macos")]
     KextControl = libc::SYSPROTO_CONTROL,
     /// Receives routing and link updates and may be used to modify the routing tables (both IPv4 and IPv6), IP addresses, link
     // parameters, neighbor setups, queueing disciplines, traffic classes and packet classifiers
@@ -701,7 +702,7 @@ impl<S> RecvMsg<'_, '_, S> {
     /// Iterate over the valid control messages pointed to by this msghdr. If
     /// allocated space for CMSGs was too small it is not safe to iterate,
     /// instead return an `Error::ENOBUFS` error.
-    pub fn cmsgs(&self) -> Result<CmsgIterator> {
+    pub fn cmsgs(&self) -> Result<CmsgIterator<'_>> {
 
         if self.mhdr.msg_flags & MSG_CTRUNC == MSG_CTRUNC {
             return Err(Errno::ENOBUFS);
@@ -772,7 +773,9 @@ pub enum ControlMessageOwned {
     ///
     /// # Examples
     ///
-    /// ```
+#[cfg_attr(all(target_env = "musl", target_pointer_width = "32"), doc = "See <https://github.com/nix-rust/nix/issues/2698> for notes regarding 32-bit musl")]
+#[cfg_attr(all(target_env = "musl", target_pointer_width = "32"), doc = "```no_run")]
+#[cfg_attr(any(not(target_env = "musl"), target_pointer_width = "64"), doc="```")]
     /// # #[macro_use] extern crate nix;
     /// # use nix::sys::socket::*;
     /// # use nix::sys::time::*;
@@ -912,7 +915,7 @@ pub enum ControlMessageOwned {
     ///
     /// `UdpGroSegment` socket option should be enabled on a socket
     /// to allow receiving GRO packets.
-    #[cfg(target_os = "linux")]
+    #[cfg(linux_android)]
     #[cfg(feature = "net")]
     #[cfg_attr(docsrs, doc(cfg(feature = "net")))]
     UdpGroSegments(i32),
@@ -1087,7 +1090,7 @@ impl ControlMessageOwned {
                 let dl = unsafe { ptr::read_unaligned(p as *const libc::sockaddr_in) };
                 ControlMessageOwned::Ipv4OrigDstAddr(dl)
             },
-            #[cfg(target_os = "linux")]
+            #[cfg(linux_android)]
             #[cfg(feature = "net")]
             (libc::SOL_UDP, libc::UDP_GRO) => {
                 let gso_size: i32 = unsafe { ptr::read_unaligned(p as *const _) };
@@ -1110,7 +1113,10 @@ impl ControlMessageOwned {
                 let (err, addr) = unsafe { Self::recv_err_helper::<sockaddr_in6>(p, len) };
                 ControlMessageOwned::Ipv6RecvErr(err, addr)
             },
-            #[cfg(any(linux_android, target_os = "freebsd"))]
+            #[cfg(any(
+                all(linux_android, not(target_env = "uclibc")),
+                target_os = "freebsd"
+            ))]
             #[cfg(feature = "net")]
             (libc::IPPROTO_IPV6, libc::IPV6_ORIGDSTADDR) => {
                 let dl = unsafe { ptr::read_unaligned(p as *const libc::sockaddr_in6) };
@@ -1265,7 +1271,7 @@ pub enum ControlMessage<'a> {
     /// passed through this control message.
     /// Send buffer should consist of multiple fixed-size wire payloads
     /// following one by one, and the last, possibly smaller one.
-    #[cfg(target_os = "linux")]
+    #[cfg(linux_android)]
     #[cfg(feature = "net")]
     #[cfg_attr(docsrs, doc(cfg(feature = "net")))]
     UdpGsoSegments(&'a u16),
@@ -1437,7 +1443,7 @@ impl ControlMessage<'_> {
             ControlMessage::AlgSetAeadAssoclen(len) => {
                 len as *const _ as *const u8
             },
-            #[cfg(target_os = "linux")]
+            #[cfg(linux_android)]
             #[cfg(feature = "net")]
             ControlMessage::UdpGsoSegments(gso_size) => {
                 gso_size as *const _ as *const u8
@@ -1515,7 +1521,7 @@ impl ControlMessage<'_> {
             ControlMessage::AlgSetAeadAssoclen(len) => {
                 mem::size_of_val(len)
             },
-            #[cfg(target_os = "linux")]
+            #[cfg(linux_android)]
             #[cfg(feature = "net")]
             ControlMessage::UdpGsoSegments(gso_size) => {
                 mem::size_of_val(gso_size)
@@ -1572,7 +1578,7 @@ impl ControlMessage<'_> {
             #[cfg(linux_android)]
             ControlMessage::AlgSetIv(_) | ControlMessage::AlgSetOp(_) |
                 ControlMessage::AlgSetAeadAssoclen(_) => libc::SOL_ALG,
-            #[cfg(target_os = "linux")]
+            #[cfg(linux_android)]
             #[cfg(feature = "net")]
             ControlMessage::UdpGsoSegments(_) => libc::SOL_UDP,
             #[cfg(any(linux_android, target_os = "netbsd", apple_targets))]
@@ -1624,7 +1630,7 @@ impl ControlMessage<'_> {
             ControlMessage::AlgSetAeadAssoclen(_) => {
                 libc::ALG_SET_AEAD_ASSOCLEN
             },
-            #[cfg(target_os = "linux")]
+            #[cfg(linux_android)]
             #[cfg(feature = "net")]
             ControlMessage::UdpGsoSegments(_) => {
                 libc::UDP_SEGMENT
@@ -1739,7 +1745,7 @@ pub fn sendmsg<S>(fd: RawFd, iov: &[IoSlice<'_>], cmsgs: &[ControlMessage],
 }
 
 
-/// An extension of `sendmsg` that allows the caller to transmit multiple
+/// An extension of [`sendmsg`] that allows the caller to transmit multiple
 /// messages on a socket using a single system call. This has performance
 /// benefits for some applications.
 ///
@@ -1753,9 +1759,6 @@ pub fn sendmsg<S>(fd: RawFd, iov: &[IoSlice<'_>], cmsgs: &[ControlMessage],
 ///
 /// # Returns
 /// `Vec` with numbers of sent bytes on each sent message.
-///
-/// # References
-/// [`sendmsg`](fn.sendmsg.html)
 #[cfg(any(linux_android, target_os = "freebsd", target_os = "netbsd"))]
 pub fn sendmmsg<'a, XS, AS, C, I, S>(
     fd: RawFd,
@@ -2405,7 +2408,7 @@ pub fn recvfrom<T: SockaddrLike>(
 ) -> Result<(usize, Option<T>)> {
     unsafe {
         let mut addr = mem::MaybeUninit::<T>::uninit();
-        let mut len = mem::size_of_val(&addr) as socklen_t;
+        let mut len = T::size();
 
         let ret = Errno::result(libc::recvfrom(
             sockfd,
@@ -2416,7 +2419,7 @@ pub fn recvfrom<T: SockaddrLike>(
             &mut len as *mut socklen_t,
         ))? as usize;
 
-        Ok((ret, T::from_raw(addr.assume_init().as_ptr(), Some(len))))
+        Ok((ret, T::from_raw(addr.as_ptr().cast(), Some(len))))
     }
 }
 
@@ -2519,7 +2522,7 @@ pub fn getpeername<T: SockaddrLike>(fd: RawFd) -> Result<T> {
 
         Errno::result(ret)?;
 
-        T::from_raw(addr.assume_init().as_ptr(), Some(len)).ok_or(Errno::EINVAL)
+        T::from_raw(addr.as_ptr().cast(), Some(len)).ok_or(Errno::EINVAL)
     }
 }
 
@@ -2535,7 +2538,7 @@ pub fn getsockname<T: SockaddrLike>(fd: RawFd) -> Result<T> {
 
         Errno::result(ret)?;
 
-        T::from_raw(addr.assume_init().as_ptr(), Some(len)).ok_or(Errno::EINVAL)
+        T::from_raw(addr.as_ptr().cast(), Some(len)).ok_or(Errno::EINVAL)
     }
 }
 

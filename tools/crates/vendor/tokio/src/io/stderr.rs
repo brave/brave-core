@@ -29,7 +29,7 @@ cfg_io_std! {
     ///
     /// #[tokio::main]
     /// async fn main() -> io::Result<()> {
-    ///     let mut stderr = io::stdout();
+    ///     let mut stderr = io::stderr();
     ///     stderr.write_all(b"Print some error here.").await?;
     ///     Ok(())
     /// }
@@ -50,6 +50,20 @@ cfg_io_std! {
     /// to occur as a single write, so multiple threads writing data with
     /// [`write_all`] may result in interleaved output.
     ///
+    /// Note that unlike [`std::io::stderr`], each call to this `stderr()`
+    /// produces a new writer, so for example, this program does **not** flush stderr:
+    ///
+    /// ```no_run
+    /// # use tokio::io::AsyncWriteExt;
+    /// # #[tokio::main]
+    /// # async fn main() -> std::io::Result<()> {
+    /// tokio::io::stderr().write_all(b"aa").await?;
+    /// tokio::io::stderr().flush().await?;
+    /// # Ok(())
+    /// # }
+    /// ```
+    ///
+    /// [`std::io::stderr`]: std::io::stderr
     /// [`AsyncWrite`]: AsyncWrite
     /// [`write_all`]: crate::io::AsyncWriteExt::write_all()
     ///
@@ -70,7 +84,7 @@ cfg_io_std! {
         // SAFETY: The `Read` implementation of `std` does not read from the
         // buffer it is borrowing and correctly reports the length of the data
         // written into the buffer.
-        let blocking = unsafe { Blocking::new(std) };
+        let blocking = unsafe { Blocking::new_mandatory(std) };
         Stderr {
             std: SplitByUtf8BoundaryIfWindows::new(blocking),
         }

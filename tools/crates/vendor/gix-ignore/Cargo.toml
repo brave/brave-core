@@ -10,15 +10,15 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.82"
+edition = "2024"
+rust-version = "1.88"
 name = "gix-ignore"
-version = "0.17.1"
+version = "0.24.1"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
 build = false
 include = [
-    "src/**/*",
-    "LICENSE-*",
+    "/src/**/*",
+    "/LICENSE-*",
 ]
 autolib = false
 autobins = false
@@ -29,10 +29,14 @@ description = "A crate of the gitoxide project dealing .gitignore files"
 readme = false
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/GitoxideLabs/gitoxide"
+resolver = "2"
 
 [package.metadata.docs.rs]
 all-features = true
 features = ["document-features"]
+
+[package.metadata.cargo-machete]
+ignored = ["serde"]
 
 [features]
 serde = [
@@ -44,7 +48,7 @@ serde = [
 [lib]
 name = "gix_ignore"
 path = "src/lib.rs"
-doctest = false
+doctest = true
 
 [dependencies.bstr]
 version = "1.12.0"
@@ -59,13 +63,13 @@ version = "0.2.1"
 optional = true
 
 [dependencies.gix-glob]
-version = "^0.22.1"
+version = "^0.29.1"
 
 [dependencies.gix-path]
-version = "^0.10.21"
+version = "^0.14.1"
 
 [dependencies.gix-trace]
-version = "^0.1.15"
+version = "^0.3.1"
 
 [dependencies.serde]
 version = "1.0.114"
@@ -79,6 +83,7 @@ version = "2.0.3"
 [dev-dependencies]
 
 [lints.clippy]
+assert_is_empty = "allow"
 bool_to_int_with_if = "allow"
 borrow_as_ptr = "allow"
 cast_lossless = "allow"
@@ -97,7 +102,6 @@ explicit_into_iter_loop = "allow"
 explicit_iter_loop = "allow"
 filter_map_next = "allow"
 fn_params_excessive_bools = "allow"
-from_iter_instead_of_collect = "allow"
 if_not_else = "allow"
 ignored_unit_patterns = "allow"
 implicit_clone = "allow"

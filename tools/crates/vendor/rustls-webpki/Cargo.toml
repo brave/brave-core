@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.71"
 name = "rustls-webpki"
-version = "0.103.13"
+version = "0.103.17"
 build = false
 include = [
     "Cargo.toml",
@@ -29,6 +29,7 @@ include = [
     "src/end_entity.rs",
     "src/error.rs",
     "src/rpk_entity.rs",
+    "src/sct.rs",
     "src/subject_name/dns_name.rs",
     "src/subject_name/ip_address.rs",
     "src/subject_name/mod.rs",
@@ -60,7 +61,10 @@ license = "ISC"
 repository = "https://github.com/rustls/webpki"
 
 [package.metadata.docs.rs]
-all-features = true
+features = [
+    "aws-lc-rs",
+    "ring",
+]
 rustdoc-args = [
     "--cfg",
     "webpki_docsrs",
@@ -89,10 +93,7 @@ aws-lc-rs-fips = [
     "dep:aws-lc-rs",
     "aws-lc-rs/fips",
 ]
-aws-lc-rs-unstable = [
-    "aws-lc-rs",
-    "aws-lc-rs/unstable",
-]
+aws-lc-rs-unstable = ["aws-lc-rs"]
 default = ["std"]
 ring = ["dep:ring"]
 std = [
@@ -105,7 +106,7 @@ name = "webpki"
 path = "src/lib.rs"
 
 [dependencies.aws-lc-rs]
-version = "1.14"
+version = "1.18"
 optional = true
 default-features = false
 
@@ -123,7 +124,7 @@ default-features = false
 version = "0.9"
 
 [dev-dependencies.base64]
-version = "0.22"
+version = "0.23"
 
 [dev-dependencies.bencher]
 version = "0.1.5"

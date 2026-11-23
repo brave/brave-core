@@ -1576,6 +1576,7 @@ pub const IFLA_VXLAN_VNIFILTER: _bindgen_ty_24 = _bindgen_ty_24::IFLA_VXLAN_VNIF
 pub const IFLA_VXLAN_LOCALBYPASS: _bindgen_ty_24 = _bindgen_ty_24::IFLA_VXLAN_LOCALBYPASS;
 pub const IFLA_VXLAN_LABEL_POLICY: _bindgen_ty_24 = _bindgen_ty_24::IFLA_VXLAN_LABEL_POLICY;
 pub const IFLA_VXLAN_RESERVED_BITS: _bindgen_ty_24 = _bindgen_ty_24::IFLA_VXLAN_RESERVED_BITS;
+pub const IFLA_VXLAN_MC_ROUTE: _bindgen_ty_24 = _bindgen_ty_24::IFLA_VXLAN_MC_ROUTE;
 pub const __IFLA_VXLAN_MAX: _bindgen_ty_24 = _bindgen_ty_24::__IFLA_VXLAN_MAX;
 pub const IFLA_GENEVE_UNSPEC: _bindgen_ty_25 = _bindgen_ty_25::IFLA_GENEVE_UNSPEC;
 pub const IFLA_GENEVE_ID: _bindgen_ty_25 = _bindgen_ty_25::IFLA_GENEVE_ID;
@@ -1646,6 +1647,7 @@ pub const IFLA_BOND_AD_LACP_ACTIVE: _bindgen_ty_29 = _bindgen_ty_29::IFLA_BOND_A
 pub const IFLA_BOND_MISSED_MAX: _bindgen_ty_29 = _bindgen_ty_29::IFLA_BOND_MISSED_MAX;
 pub const IFLA_BOND_NS_IP6_TARGET: _bindgen_ty_29 = _bindgen_ty_29::IFLA_BOND_NS_IP6_TARGET;
 pub const IFLA_BOND_COUPLED_CONTROL: _bindgen_ty_29 = _bindgen_ty_29::IFLA_BOND_COUPLED_CONTROL;
+pub const IFLA_BOND_BROADCAST_NEIGH: _bindgen_ty_29 = _bindgen_ty_29::IFLA_BOND_BROADCAST_NEIGH;
 pub const __IFLA_BOND_MAX: _bindgen_ty_29 = _bindgen_ty_29::__IFLA_BOND_MAX;
 pub const IFLA_BOND_AD_INFO_UNSPEC: _bindgen_ty_30 = _bindgen_ty_30::IFLA_BOND_AD_INFO_UNSPEC;
 pub const IFLA_BOND_AD_INFO_AGGREGATOR: _bindgen_ty_30 = _bindgen_ty_30::IFLA_BOND_AD_INFO_AGGREGATOR;
@@ -2446,7 +2448,8 @@ IFLA_VXLAN_VNIFILTER = 30,
 IFLA_VXLAN_LOCALBYPASS = 31,
 IFLA_VXLAN_LABEL_POLICY = 32,
 IFLA_VXLAN_RESERVED_BITS = 33,
-__IFLA_VXLAN_MAX = 34,
+IFLA_VXLAN_MC_ROUTE = 34,
+__IFLA_VXLAN_MAX = 35,
 }
 #[repr(u32)]
 #[non_exhaustive]
@@ -2574,7 +2577,8 @@ IFLA_BOND_AD_LACP_ACTIVE = 29,
 IFLA_BOND_MISSED_MAX = 30,
 IFLA_BOND_NS_IP6_TARGET = 31,
 IFLA_BOND_COUPLED_CONTROL = 32,
-__IFLA_BOND_MAX = 33,
+IFLA_BOND_BROADCAST_NEIGH = 33,
+__IFLA_BOND_MAX = 34,
 }
 #[repr(u32)]
 #[non_exhaustive]

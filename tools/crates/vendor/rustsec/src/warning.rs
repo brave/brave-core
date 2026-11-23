@@ -22,6 +22,10 @@ pub struct Warning {
 
     /// Versions impacted by this warning
     pub versions: Option<advisory::Versions>,
+
+    /// Whether this warning is denied by the audit's policy
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub denied: bool,
 }
 
 impl Warning {
@@ -39,6 +43,7 @@ impl Warning {
             advisory,
             affected,
             versions,
+            denied: false,
         }
     }
 
@@ -101,10 +106,10 @@ impl FromStr for WarningKind {
 
     fn from_str(s: &str) -> Result<Self, Error> {
         Ok(match s {
-            "notice" => WarningKind::Notice,
-            "unmaintained" => WarningKind::Unmaintained,
-            "unsound" => WarningKind::Unsound,
-            "yanked" => WarningKind::Yanked,
+            "notice" => Self::Notice,
+            "unmaintained" => Self::Unmaintained,
+            "unsound" => Self::Unsound,
+            "yanked" => Self::Yanked,
             other => fail!(ErrorKind::Parse, "invalid warning type: {}", other),
         })
     }
@@ -113,5 +118,25 @@ impl FromStr for WarningKind {
 impl fmt::Display for WarningKind {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.as_str())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn denied_json_roundtrip() {
+        let package: Package =
+            serde_json::from_str(r#"{"name":"example","version":"1.0.0"}"#).unwrap();
+        let mut warning = Warning::new(WarningKind::Yanked, &package, None, None, None);
+        assert!(!warning.denied);
+        let json = serde_json::to_string(&warning).unwrap();
+        assert!(!json.contains("\"denied\""));
+        assert!(!serde_json::from_str::<Warning>(&json).unwrap().denied);
+
+        warning.denied = true;
+        let json = serde_json::to_string(&warning).unwrap();
+        assert!(serde_json::from_str::<Warning>(&json).unwrap().denied);
     }
 }

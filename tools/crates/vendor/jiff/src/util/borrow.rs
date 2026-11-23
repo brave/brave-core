@@ -39,7 +39,7 @@ impl<'a, T: core::fmt::Display> core::fmt::Display for DumbCow<'a, T> {
     }
 }
 
-/// A `Cow`, but can be used in core-only mode.
+/// A `Cow` for strings, but can be used in core-only mode.
 ///
 /// In core-only, the `Owned` variant doesn't exist.
 #[derive(Clone, Debug, Eq, Hash, PartialEq, PartialOrd, Ord)]

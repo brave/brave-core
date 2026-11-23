@@ -153,12 +153,15 @@ pub enum Error {
 
     /// An invalid stream identifier was provided.
     ///
-    /// This is returned if a SETTINGS or PING frame is received with a stream
-    /// identifier other than zero.
+    /// This is returned if a SETTINGS, PING or GOAWAY frame is received with a
+    /// stream identifier other than zero.
     InvalidStreamId,
 
     /// A request or response is malformed.
     MalformedMessage,
+
+    /// The decoded header list was too large to continue processing.
+    HeaderListWayTooLarge,
 
     /// An invalid stream dependency ID was provided
     ///

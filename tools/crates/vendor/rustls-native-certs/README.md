@@ -25,12 +25,11 @@ Release notes can be found [on GitHub](https://github.com/rustls/rustls-native-c
 This library exposes a single function with this signature:
 
 ```rust
-pub fn load_native_certs() -> Result<Vec<pki_types::CertificateDer<'static>>, std::io::Error>
+pub fn load_native_certs() -> CertificateResult
 ```
 
-On success, this returns a `Vec<pki_types::CertificateDer<'static>>` loaded with a
-snapshot of the root certificates found on this platform.  This
-function fails in a platform-specific way, expressed in a `std::io::Error`.
+This returns a `CertificateResult` which contains `certs: Vec<CertificateDer<'static>>` loaded with a
+snapshot of the root certificates found on this platform along with any platform-specific errors.
 
 This function can be expensive: on some platforms it involves loading
 and parsing a ~300KB disk file.  It's therefore prudent to call

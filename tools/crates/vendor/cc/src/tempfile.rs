@@ -1,14 +1,17 @@
 #![cfg_attr(target_family = "wasm", allow(unused))]
 
+#[cfg(any(all(unix, not(target_os = "wasi")), windows))]
+use std::os;
+
 use std::{
     collections::hash_map::RandomState,
     fs::{remove_file, File, OpenOptions},
     hash::{BuildHasher, Hasher},
-    io, os,
+    io,
     path::{Path, PathBuf},
 };
 
-#[cfg(not(any(unix, target_family = "wasm", windows)))]
+#[cfg(not(any(unix, target_family = "wasm", windows, target_os = "motor")))]
 compile_error!("Your system is not supported since cc cannot create named tempfile");
 
 fn rand() -> u64 {

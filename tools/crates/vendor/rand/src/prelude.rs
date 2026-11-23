@@ -14,13 +14,12 @@
 //!
 //! ```
 //! use rand::prelude::*;
-//! # let mut r = StdRng::from_rng(&mut rand::rng());
+//! # let mut r: StdRng = rand::make_rng();
 //! # let _: f32 = r.random();
 //! ```
 
 #[doc(no_inline)]
 pub use crate::distr::Distribution;
-#[cfg(feature = "small_rng")]
 #[doc(no_inline)]
 pub use crate::rngs::SmallRng;
 #[cfg(feature = "std_rng")]
@@ -32,4 +31,4 @@ pub use crate::rngs::ThreadRng;
 #[doc(no_inline)]
 pub use crate::seq::{IndexedMutRandom, IndexedRandom, IteratorRandom, SliceRandom};
 #[doc(no_inline)]
-pub use crate::{CryptoRng, Rng, RngCore, SeedableRng};
+pub use crate::{CryptoRng, Rng, RngExt, SeedableRng};

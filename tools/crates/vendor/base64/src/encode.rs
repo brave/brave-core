@@ -1,17 +1,16 @@
+use crate::alphabet::Symbol;
+#[cfg(any(feature = "alloc", test))]
+use crate::engine::general_purpose::STANDARD;
+use crate::engine::{Config, Engine};
 #[cfg(any(feature = "alloc", test))]
 use alloc::string::String;
 use core::fmt;
 #[cfg(any(feature = "std", test))]
 use std::error;
 
-#[cfg(any(feature = "alloc", test))]
-use crate::engine::general_purpose::STANDARD;
-use crate::engine::{Config, Engine};
-use crate::PAD_BYTE;
-
 /// Encode arbitrary octets as base64 using the [`STANDARD` engine](STANDARD).
 ///
-/// See [Engine::encode].
+/// See [`Engine::encode`].
 #[allow(unused)]
 #[deprecated(since = "0.21.0", note = "Use Engine::encode")]
 #[cfg(any(feature = "alloc", test))]
@@ -21,7 +20,7 @@ pub fn encode<T: AsRef<[u8]>>(input: T) -> String {
 
 ///Encode arbitrary octets as base64 using the provided `Engine` into a new `String`.
 ///
-/// See [Engine::encode].
+/// See [`Engine::encode`].
 #[allow(unused)]
 #[deprecated(since = "0.21.0", note = "Use Engine::encode")]
 #[cfg(any(feature = "alloc", test))]
@@ -31,7 +30,7 @@ pub fn encode_engine<E: Engine, T: AsRef<[u8]>>(input: T, engine: &E) -> String 
 
 ///Encode arbitrary octets as base64 into a supplied `String`.
 ///
-/// See [Engine::encode_string].
+/// See [`Engine::encode_string`].
 #[allow(unused)]
 #[deprecated(since = "0.21.0", note = "Use Engine::encode_string")]
 #[cfg(any(feature = "alloc", test))]
@@ -40,12 +39,12 @@ pub fn encode_engine_string<E: Engine, T: AsRef<[u8]>>(
     output_buf: &mut String,
     engine: &E,
 ) {
-    engine.encode_string(input, output_buf)
+    engine.encode_string(input, output_buf);
 }
 
 /// Encode arbitrary octets as base64 into a supplied slice.
 ///
-/// See [Engine::encode_slice].
+/// See [`Engine::encode_slice`].
 #[allow(unused)]
 #[deprecated(since = "0.21.0", note = "Use Engine::encode_slice")]
 pub fn encode_engine_slice<E: Engine, T: AsRef<[u8]>>(
@@ -58,7 +57,7 @@ pub fn encode_engine_slice<E: Engine, T: AsRef<[u8]>>(
 
 /// B64-encode and pad (if configured).
 ///
-/// This helper exists to avoid recalculating encoded_size, which is relatively expensive on short
+/// This helper exists to avoid recalculating `encoded_size`, which is relatively expensive on short
 /// inputs.
 ///
 /// `encoded_size` is the encoded size calculated for `input`.
@@ -77,7 +76,11 @@ pub(crate) fn encode_with_padding<E: Engine + ?Sized>(
     let b64_bytes_written = engine.internal_encode(input, output);
 
     let padding_bytes = if engine.config().encode_padding() {
-        add_padding(b64_bytes_written, &mut output[b64_bytes_written..])
+        add_padding(
+            b64_bytes_written,
+            engine.padding(),
+            &mut output[b64_bytes_written..],
+        )
     } else {
         0
     };
@@ -94,6 +97,7 @@ pub(crate) fn encode_with_padding<E: Engine + ?Sized>(
 ///
 /// Returns `None` if the encoded length can't be represented in `usize`. This will happen for
 /// input lengths in approximately the top quarter of the range of `usize`.
+#[must_use]
 pub const fn encoded_len(bytes_len: usize, padding: bool) -> Option<usize> {
     let rem = bytes_len % 3;
 
@@ -129,13 +133,13 @@ pub const fn encoded_len(bytes_len: usize, padding: bool) -> Option<usize> {
 /// `output` is the slice where padding should be written, of length at least 2.
 ///
 /// Returns the number of padding bytes written.
-pub(crate) fn add_padding(unpadded_output_len: usize, output: &mut [u8]) -> usize {
+pub(crate) fn add_padding(unpadded_output_len: usize, padding: Symbol, output: &mut [u8]) -> usize {
     let pad_bytes = (4 - (unpadded_output_len % 4)) % 4;
     // for just a couple bytes, this has better performance than using
     // .fill(), or iterating over mutable refs, which call memset()
     #[allow(clippy::needless_range_loop)]
     for i in 0..pad_bytes {
-        output[i] = PAD_BYTE;
+        output[i] = padding.as_u8();
     }
 
     pad_bytes
@@ -163,15 +167,14 @@ impl error::Error for EncodeSliceError {}
 mod tests {
     use super::*;
 
+    use crate::alphabet::PADDING_SYMBOL;
     use crate::{
         alphabet,
         engine::general_purpose::{GeneralPurpose, NO_PAD, STANDARD},
         tests::{assert_encode_sanity, random_config, random_engine},
     };
-    use rand::{
-        distributions::{Distribution, Uniform},
-        Rng, SeedableRng,
-    };
+    use rand::distr::{Distribution, Uniform};
+    use rand::{rngs, RngExt};
     use std::str;
 
     const URL_SAFE_NO_PAD_ENGINE: GeneralPurpose = GeneralPurpose::new(&alphabet::URL_SAFE, NO_PAD);
@@ -239,10 +242,10 @@ mod tests {
         let mut encoded_data_with_prefix = String::new();
         let mut decoded = Vec::new();
 
-        let prefix_len_range = Uniform::new(0, 1000);
-        let input_len_range = Uniform::new(0, 1000);
+        let prefix_len_range = Uniform::new(0, 1000).unwrap();
+        let input_len_range = Uniform::new(0, 1000).unwrap();
 
-        let mut rng = rand::rngs::SmallRng::from_entropy();
+        let mut rng = rand::make_rng::<rngs::SmallRng>();
 
         for _ in 0..10_000 {
             orig_data.clear();
@@ -254,7 +257,7 @@ mod tests {
             let input_len = input_len_range.sample(&mut rng);
 
             for _ in 0..input_len {
-                orig_data.push(rng.gen());
+                orig_data.push(rng.random());
             }
 
             let prefix_len = prefix_len_range.sample(&mut rng);
@@ -273,16 +276,8 @@ mod tests {
                 encoded_data_no_prefix.len() + prefix_len,
                 encoded_data_with_prefix.len()
             );
-            assert_encode_sanity(
-                &encoded_data_no_prefix,
-                engine.config().encode_padding(),
-                input_len,
-            );
-            assert_encode_sanity(
-                &encoded_data_with_prefix[prefix_len..],
-                engine.config().encode_padding(),
-                input_len,
-            );
+            assert_encode_sanity(&encoded_data_no_prefix, &engine, input_len);
+            assert_encode_sanity(&encoded_data_with_prefix[prefix_len..], &engine, input_len);
 
             // append plain encode onto prefix
             prefix.push_str(&encoded_data_no_prefix);
@@ -303,9 +298,9 @@ mod tests {
         let mut encoded_data_original_state = Vec::new();
         let mut decoded = Vec::new();
 
-        let input_len_range = Uniform::new(0, 1000);
+        let input_len_range = Uniform::new(0, 1000).unwrap();
 
-        let mut rng = rand::rngs::SmallRng::from_entropy();
+        let mut rng = rand::make_rng::<rngs::SmallRng>();
 
         for _ in 0..10_000 {
             orig_data.clear();
@@ -316,12 +311,12 @@ mod tests {
             let input_len = input_len_range.sample(&mut rng);
 
             for _ in 0..input_len {
-                orig_data.push(rng.gen());
+                orig_data.push(rng.random());
             }
 
             // plenty of existing garbage in the encoded buffer
             for _ in 0..10 * input_len {
-                encoded_data.push(rng.gen());
+                encoded_data.push(rng.random());
             }
 
             encoded_data_original_state.extend_from_slice(&encoded_data);
@@ -337,7 +332,7 @@ mod tests {
 
             assert_encode_sanity(
                 str::from_utf8(&encoded_data[0..encoded_size]).unwrap(),
-                engine.config().encode_padding(),
+                &engine,
                 input_len,
             );
 
@@ -358,9 +353,9 @@ mod tests {
         let mut input = Vec::new();
         let mut output = Vec::new();
 
-        let input_len_range = Uniform::new(0, 1000);
+        let input_len_range = Uniform::new(0, 1000).unwrap();
 
-        let mut rng = rand::rngs::SmallRng::from_entropy();
+        let mut rng = rand::make_rng::<rngs::SmallRng>();
 
         for _ in 0..10_000 {
             input.clear();
@@ -369,7 +364,7 @@ mod tests {
             let input_len = input_len_range.sample(&mut rng);
 
             for _ in 0..input_len {
-                input.push(rng.gen());
+                input.push(rng.random());
             }
 
             let config = random_config(&mut rng);
@@ -378,7 +373,7 @@ mod tests {
             // fill up the output buffer with garbage
             let encoded_size = encoded_len(input_len, config.encode_padding()).unwrap();
             for _ in 0..encoded_size {
-                output.push(rng.gen());
+                output.push(rng.random());
             }
 
             let orig_output_buf = output.clone();
@@ -398,9 +393,9 @@ mod tests {
         let mut input = Vec::new();
         let mut output = Vec::new();
 
-        let input_len_range = Uniform::new(0, 1000);
+        let input_len_range = Uniform::new(0, 1000).unwrap();
 
-        let mut rng = rand::rngs::SmallRng::from_entropy();
+        let mut rng = rand::make_rng::<rngs::SmallRng>();
 
         for _ in 0..10_000 {
             input.clear();
@@ -409,7 +404,7 @@ mod tests {
             let input_len = input_len_range.sample(&mut rng);
 
             for _ in 0..input_len {
-                input.push(rng.gen());
+                input.push(rng.random());
             }
 
             let engine = random_engine(&mut rng);
@@ -417,7 +412,7 @@ mod tests {
             // fill up the output buffer with garbage
             let encoded_size = encoded_len(input_len, engine.config().encode_padding()).unwrap();
             for _ in 0..encoded_size + 1000 {
-                output.push(rng.gen());
+                output.push(rng.random());
             }
 
             let orig_output_buf = output.clone();
@@ -436,7 +431,7 @@ mod tests {
     fn add_padding_random_valid_utf8() {
         let mut output = Vec::new();
 
-        let mut rng = rand::rngs::SmallRng::from_entropy();
+        let mut rng = rand::make_rng::<rngs::SmallRng>();
 
         // cover our bases for length % 4
         for unpadded_output_len in 0..20 {
@@ -444,12 +439,12 @@ mod tests {
 
             // fill output with random
             for _ in 0..100 {
-                output.push(rng.gen());
+                output.push(rng.random());
             }
 
             let orig_output_buf = output.clone();
 
-            let bytes_written = add_padding(unpadded_output_len, &mut output);
+            let bytes_written = add_padding(unpadded_output_len, PADDING_SYMBOL, &mut output);
 
             // make sure the part beyond bytes_written is the same garbage it was before
             assert_eq!(orig_output_buf[bytes_written..], output[bytes_written..]);
@@ -468,14 +463,14 @@ mod tests {
         assert_eq!(enc_len, encoded_len(input_len, padded).unwrap());
 
         let mut bytes: Vec<u8> = Vec::new();
-        let mut rng = rand::rngs::SmallRng::from_entropy();
+        let mut rng = rand::make_rng::<rngs::SmallRng>();
 
         for _ in 0..input_len {
-            bytes.push(rng.gen());
+            bytes.push(rng.random());
         }
 
         let encoded = engine.encode(&bytes);
-        assert_encode_sanity(&encoded, padded, input_len);
+        assert_encode_sanity(&encoded, engine, input_len);
 
         assert_eq!(enc_len, encoded.len());
     }

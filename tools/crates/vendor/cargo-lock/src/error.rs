@@ -25,29 +25,29 @@ pub enum Error {
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            Error::Io(kind) => write!(f, "I/O operation failed: {kind}"),
-            Error::Parse(s) => write!(f, "parse error: {s}"),
-            Error::Version(err) => write!(f, "version error: {err}"),
-            Error::Resolution(err) => write!(f, "resolution error: {err}"),
+            Self::Io(kind) => write!(f, "I/O operation failed: {kind}"),
+            Self::Parse(s) => write!(f, "parse error: {s}"),
+            Self::Version(err) => write!(f, "version error: {err}"),
+            Self::Resolution(err) => write!(f, "resolution error: {err}"),
         }
     }
 }
 
 impl From<io::Error> for Error {
     fn from(err: io::Error) -> Self {
-        Error::Io(err.kind())
+        Self::Io(err.kind())
     }
 }
 
 impl From<semver::Error> for Error {
     fn from(err: semver::Error) -> Self {
-        Error::Version(err)
+        Self::Version(err)
     }
 }
 
 impl From<std::num::ParseIntError> for Error {
     fn from(err: std::num::ParseIntError) -> Self {
-        Error::Parse(err.to_string())
+        Self::Parse(err.to_string())
     }
 }
 

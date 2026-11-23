@@ -1,14 +1,11 @@
 use crate::combinator::trace;
 use crate::error::ParserError;
 use crate::stream::Stream;
-use crate::*;
-
-#[doc(inline)]
-pub use crate::seq;
+use crate::Parser;
 
 /// Sequence two parsers, only returning the output from the second.
 ///
-/// See also [`seq`] to generalize this across any number of fields.
+/// See also [`seq`][crate::combinator::seq] to generalize this across any number of fields.
 ///
 /// # Example
 ///
@@ -46,7 +43,7 @@ where
 
 /// Sequence two parsers, only returning the output of the first.
 ///
-/// See also [`seq`] to generalize this across any number of fields.
+/// See also [`seq`][crate::combinator::seq] to generalize this across any number of fields.
 ///
 /// # Example
 ///
@@ -84,7 +81,7 @@ where
 
 /// Sequence three parsers, only returning the values of the first and third.
 ///
-/// See also [`seq`] to generalize this across any number of fields.
+/// See also [`seq`][crate::combinator::seq] to generalize this across any number of fields.
 ///
 /// # Example
 ///
@@ -103,17 +100,17 @@ where
 /// assert!(parser.parse_peek("").is_err());
 /// assert!(parser.parse_peek("123").is_err());
 /// ```
-pub fn separated_pair<Input, O1, Sep, O2, Error, P1, SepParser, P2>(
-    mut first: P1,
+pub fn separated_pair<Input, Output1, Sep, Output2, Error, Parser1, SepParser, Parser2>(
+    mut first: Parser1,
     mut sep: SepParser,
-    mut second: P2,
-) -> impl Parser<Input, (O1, O2), Error>
+    mut second: Parser2,
+) -> impl Parser<Input, (Output1, Output2), Error>
 where
     Input: Stream,
     Error: ParserError<Input>,
-    P1: Parser<Input, O1, Error>,
+    Parser1: Parser<Input, Output1, Error>,
     SepParser: Parser<Input, Sep, Error>,
-    P2: Parser<Input, O2, Error>,
+    Parser2: Parser<Input, Output2, Error>,
 {
     trace("separated_pair", move |input: &mut Input| {
         let o1 = first.parse_next(input)?;
@@ -124,7 +121,7 @@ where
 
 /// Sequence three parsers, only returning the output of the second.
 ///
-/// See also [`seq`] to generalize this across any number of fields.
+/// See also [`seq`][crate::combinator::seq] to generalize this across any number of fields.
 ///
 /// # Example
 ///

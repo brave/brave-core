@@ -31,8 +31,8 @@ use crate::utils::MakeMaybeUninit;
 /// the number of initialized elements. The `ArrayVec<T, CAP>` is parameterized
 /// by `T` for the element type and `CAP` for the maximum capacity.
 ///
-/// `CAP` is of type `usize` but is range limited to `u32::MAX`; attempting to create larger
-/// arrayvecs with larger capacity will panic.
+/// `CAP` is of type `usize` but is range limited to `u32::MAX` (or `u16::MAX` on 16-bit targets);
+/// attempting to create larger arrayvecs with larger capacity will panic.
 ///
 /// The vector is a contiguous value (storing the elements inline) that you can store directly on
 /// the stack if needed.
@@ -535,6 +535,41 @@ impl<T, const CAP: usize> ArrayVec<T, CAP> {
         drop(g);
     }
 
+    /// Returns the remaining spare capacity of the vector as a slice of
+    /// `MaybeUninit<T>`.
+    ///
+    /// The returned slice can be used to fill the vector with data (e.g. by
+    /// reading from a file) before marking the data as initialized using the
+    /// [`set_len`] method.
+    ///
+    /// [`set_len`]: ArrayVec::set_len
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use arrayvec::ArrayVec;
+    ///
+    /// // Allocate vector big enough for 10 elements.
+    /// let mut v: ArrayVec<i32, 10> = ArrayVec::new();
+    ///
+    /// // Fill in the first 3 elements.
+    /// let uninit = v.spare_capacity_mut();
+    /// uninit[0].write(0);
+    /// uninit[1].write(1);
+    /// uninit[2].write(2);
+    ///
+    /// // Mark the first 3 elements of the vector as being initialized.
+    /// unsafe {
+    ///     v.set_len(3);
+    /// }
+    ///
+    /// assert_eq!(&v[..], &[0, 1, 2]);
+    /// ```
+    pub fn spare_capacity_mut(&mut self) -> &mut [MaybeUninit<T>] {
+        let len = self.len();
+        &mut self.xs[len..]
+    }
+
     /// Set the vector’s length without dropping or moving out elements
     ///
     /// This method is `unsafe` because it changes the notion of the
@@ -602,7 +637,7 @@ impl<T, const CAP: usize> ArrayVec<T, CAP> {
     /// assert_eq!(&v1[..], &[3]);
     /// assert_eq!(&v2[..], &[1, 2]);
     /// ```
-    pub fn drain<R>(&mut self, range: R) -> Drain<T, CAP>
+    pub fn drain<R>(&mut self, range: R) -> Drain<'_, T, CAP>
         where R: RangeBounds<usize>
     {
         // Memory safety
@@ -629,7 +664,7 @@ impl<T, const CAP: usize> ArrayVec<T, CAP> {
         self.drain_range(start, end)
     }
 
-    fn drain_range(&mut self, start: usize, end: usize) -> Drain<T, CAP>
+    fn drain_range(&mut self, start: usize, end: usize) -> Drain<'_, T, CAP>
     {
         let len = self.len();
 
@@ -1102,6 +1137,11 @@ impl<T, const CAP: usize> ArrayVec<T, CAP> {
                 debug_assert_ne!(ptr, end_ptr);
                 if mem::size_of::<T>() != 0 {
                     ptr.write(elt);
+                } else {
+                    // The ZST element has logically been moved into the vector.
+                    // There is no memory to write, but dropping `elt` here would
+                    // drop it once now and once again when the vector is dropped.
+                    mem::forget(elt);
                 }
                 ptr = raw_ptr_add(ptr, 1);
                 guard.data += 1;

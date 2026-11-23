@@ -62,7 +62,7 @@ impl<R: Read> ZipStreamReader<R> {
         let directory = directory.as_ref().canonicalize()?;
         struct Extractor(PathBuf, IndexMap<Box<str>, ()>);
         impl ZipStreamVisitor for Extractor {
-            fn visit_file(&mut self, file: &mut ZipFile<'_>) -> ZipResult<()> {
+            fn visit_file<R: Read>(&mut self, file: &mut ZipFile<'_, R>) -> ZipResult<()> {
                 self.1.insert(file.name().into(), ());
                 let mut outpath = self.0.clone();
                 file.safe_prepare_path(&self.0, &mut outpath, None::<&(_, fn(&Path) -> bool)>)?;
@@ -94,7 +94,7 @@ impl<R: Read> ZipStreamReader<R> {
                     use super::ZipError;
                     let filepath = metadata
                         .enclosed_name()
-                        .ok_or(ZipError::InvalidArchive("Invalid file path"))?;
+                        .ok_or(crate::result::invalid!("Invalid file path"))?;
 
                     let outpath = self.0.join(filepath);
 
@@ -119,7 +119,7 @@ pub trait ZipStreamVisitor {
     ///     - `comment`: set to an empty string
     ///     - `data_start`: set to 0
     ///     - `external_attributes`: `unix_mode()`: will return None
-    fn visit_file(&mut self, file: &mut ZipFile<'_>) -> ZipResult<()>;
+    fn visit_file<R: Read>(&mut self, file: &mut ZipFile<'_, R>) -> ZipResult<()>;
 
     /// This function is guranteed to be called after all `visit_file`s.
     ///
@@ -219,7 +219,7 @@ mod test {
 
     struct DummyVisitor;
     impl ZipStreamVisitor for DummyVisitor {
-        fn visit_file(&mut self, _file: &mut ZipFile<'_>) -> ZipResult<()> {
+        fn visit_file<R: Read>(&mut self, _file: &mut ZipFile<'_, R>) -> ZipResult<()> {
             Ok(())
         }
 
@@ -235,7 +235,7 @@ mod test {
     #[derive(Default, Debug, Eq, PartialEq)]
     struct CounterVisitor(u64, u64);
     impl ZipStreamVisitor for CounterVisitor {
-        fn visit_file(&mut self, _file: &mut ZipFile<'_>) -> ZipResult<()> {
+        fn visit_file<R: Read>(&mut self, _file: &mut ZipFile<'_, R>) -> ZipResult<()> {
             self.0 += 1;
             Ok(())
         }
@@ -278,7 +278,7 @@ mod test {
             filenames: BTreeSet<Box<str>>,
         }
         impl ZipStreamVisitor for V {
-            fn visit_file(&mut self, file: &mut ZipFile<'_>) -> ZipResult<()> {
+            fn visit_file<R: Read>(&mut self, file: &mut ZipFile<'_, R>) -> ZipResult<()> {
                 if file.is_file() {
                     self.filenames.insert(file.name().into());
                 }
@@ -315,7 +315,7 @@ mod test {
             filenames: BTreeSet<Box<str>>,
         }
         impl ZipStreamVisitor for V {
-            fn visit_file(&mut self, file: &mut ZipFile<'_>) -> ZipResult<()> {
+            fn visit_file<R: Read>(&mut self, file: &mut ZipFile<'_, R>) -> ZipResult<()> {
                 let full_name = file.enclosed_name().unwrap();
                 let file_name = full_name.file_name().unwrap().to_str().unwrap();
                 assert!(

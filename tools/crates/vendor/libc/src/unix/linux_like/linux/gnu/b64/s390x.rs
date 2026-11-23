@@ -4,7 +4,6 @@ use crate::prelude::*;
 use crate::{
     off64_t,
     off_t,
-    pthread_mutex_t,
 };
 
 pub type blksize_t = i64;
@@ -12,20 +11,8 @@ pub type nlink_t = u64;
 pub type suseconds_t = i64;
 pub type wchar_t = i32;
 pub type greg_t = u64;
-pub type __u64 = u64;
-pub type __s64 = i64;
 
 s! {
-    // FIXME(1.0): This should not implement `PartialEq`
-    #[allow(unpredictable_function_pointer_comparisons)]
-    pub struct sigaction {
-        pub sa_sigaction: crate::sighandler_t,
-        __glibc_reserved0: c_int,
-        pub sa_flags: c_int,
-        pub sa_restorer: Option<extern "C" fn()>,
-        pub sa_mask: crate::sigset_t,
-    }
-
     pub struct statfs {
         pub f_type: c_uint,
         pub f_bsize: c_uint,
@@ -38,7 +25,7 @@ s! {
         pub f_namelen: c_uint,
         pub f_frsize: c_uint,
         pub f_flags: c_uint,
-        f_spare: [c_uint; 4],
+        f_spare: Padding<[c_uint; 4]>,
     }
 
     pub struct flock {
@@ -55,14 +42,6 @@ s! {
         pub l_start: off64_t,
         pub l_len: off64_t,
         pub l_pid: crate::pid_t,
-    }
-
-    pub struct siginfo_t {
-        pub si_signo: c_int,
-        pub si_errno: c_int,
-        pub si_code: c_int,
-        _pad: Padding<c_int>,
-        _pad2: Padding<[c_long; 14]>,
     }
 
     pub struct stack_t {
@@ -89,7 +68,7 @@ s! {
         pub st_ctime_nsec: c_long,
         pub st_blksize: crate::blksize_t,
         pub st_blocks: crate::blkcnt_t,
-        __glibc_reserved: [c_long; 3],
+        __glibc_reserved: Padding<[c_long; 3]>,
     }
 
     pub struct stat64 {
@@ -110,7 +89,7 @@ s! {
         pub st_ctime_nsec: c_long,
         pub st_blksize: crate::blksize_t,
         pub st_blocks: crate::blkcnt64_t,
-        __glibc_reserved: [c_long; 3],
+        __glibc_reserved: Padding<[c_long; 3]>,
     }
 
     pub struct pthread_attr_t {
@@ -141,21 +120,6 @@ s! {
         pub shm_nattch: crate::shmatt_t,
         __unused4: Padding<c_ulong>,
         __unused5: Padding<c_ulong>,
-    }
-
-    pub struct statvfs {
-        pub f_bsize: c_ulong,
-        pub f_frsize: c_ulong,
-        pub f_blocks: crate::fsblkcnt_t,
-        pub f_bfree: crate::fsblkcnt_t,
-        pub f_bavail: crate::fsblkcnt_t,
-        pub f_files: crate::fsfilcnt_t,
-        pub f_ffree: crate::fsfilcnt_t,
-        pub f_favail: crate::fsfilcnt_t,
-        pub f_fsid: c_ulong,
-        pub f_flag: c_ulong,
-        pub f_namemax: c_ulong,
-        __f_spare: [c_int; 6],
     }
 
     pub struct __psw_t {
@@ -198,21 +162,6 @@ s! {
         pub f_flags: c_uint,
         pub f_spare: [c_uint; 4],
     }
-
-    pub struct statvfs64 {
-        pub f_bsize: c_ulong,
-        pub f_frsize: c_ulong,
-        pub f_blocks: u64,
-        pub f_bfree: u64,
-        pub f_bavail: u64,
-        pub f_files: u64,
-        pub f_ffree: u64,
-        pub f_favail: u64,
-        pub f_fsid: c_ulong,
-        pub f_flag: c_ulong,
-        pub f_namemax: c_ulong,
-        __f_spare: [c_int; 6],
-    }
 }
 
 s_no_extra_traits! {
@@ -239,6 +188,13 @@ cfg_if! {
                 d.hash(state);
             }
         }
+    }
+}
+
+s_no_extra_traits! {
+    #[repr(align(8))]
+    pub struct max_align_t {
+        priv_: [i64; 3],
     }
 }
 
@@ -274,11 +230,6 @@ pub const ECOMM: c_int = 70;
 pub const EPROTO: c_int = 71;
 pub const EDOTDOT: c_int = 73;
 
-pub const SA_NODEFER: c_int = 0x40000000;
-pub const SA_RESETHAND: c_int = 0x80000000;
-pub const SA_RESTART: c_int = 0x10000000;
-pub const SA_NOCLDSTOP: c_int = 0x00000001;
-
 pub const EPOLL_CLOEXEC: c_int = 0x80000;
 
 pub const EFD_CLOEXEC: c_int = 0x80000;
@@ -289,25 +240,6 @@ pub const __SIZEOF_PTHREAD_BARRIERATTR_T: usize = 4;
 pub const __SIZEOF_PTHREAD_MUTEX_T: usize = 40;
 pub const __SIZEOF_PTHREAD_RWLOCK_T: usize = 56;
 pub const __SIZEOF_PTHREAD_BARRIER_T: usize = 32;
-
-pub const PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP: crate::pthread_mutex_t = pthread_mutex_t {
-    size: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    ],
-};
-pub const PTHREAD_ERRORCHECK_MUTEX_INITIALIZER_NP: crate::pthread_mutex_t = pthread_mutex_t {
-    size: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    ],
-};
-pub const PTHREAD_ADAPTIVE_MUTEX_INITIALIZER_NP: crate::pthread_mutex_t = pthread_mutex_t {
-    size: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    ],
-};
 
 pub const EUCLEAN: c_int = 117;
 pub const ENOTNAM: c_int = 118;
@@ -327,16 +259,8 @@ pub const O_APPEND: c_int = 1024;
 pub const O_CREAT: c_int = 64;
 pub const O_EXCL: c_int = 128;
 pub const O_NONBLOCK: c_int = 2048;
-pub const SA_NOCLDWAIT: c_int = 2;
-pub const SA_ONSTACK: c_int = 0x08000000;
-pub const SA_SIGINFO: c_int = 4;
-pub const SIGBUS: c_int = 7;
 pub const SIGSTKSZ: size_t = 0x2000;
 pub const MINSIGSTKSZ: size_t = 2048;
-pub const SIG_SETMASK: c_int = 2;
-
-pub const SOCK_STREAM: c_int = 1;
-pub const SOCK_DGRAM: c_int = 2;
 
 pub const O_NOCTTY: c_int = 256;
 pub const O_SYNC: c_int = 1052672;
@@ -431,30 +355,6 @@ pub const EOWNERDEAD: c_int = 130;
 pub const ENOTRECOVERABLE: c_int = 131;
 pub const EHWPOISON: c_int = 133;
 pub const ERFKILL: c_int = 132;
-
-pub const SIGTTIN: c_int = 21;
-pub const SIGTTOU: c_int = 22;
-pub const SIGXCPU: c_int = 24;
-pub const SIGXFSZ: c_int = 25;
-pub const SIGVTALRM: c_int = 26;
-pub const SIGPROF: c_int = 27;
-pub const SIGWINCH: c_int = 28;
-pub const SIGCHLD: c_int = 17;
-pub const SIGUSR1: c_int = 10;
-pub const SIGUSR2: c_int = 12;
-pub const SIGCONT: c_int = 18;
-pub const SIGSTOP: c_int = 19;
-pub const SIGTSTP: c_int = 20;
-pub const SIGURG: c_int = 23;
-pub const SIGIO: c_int = 29;
-pub const SIGSYS: c_int = 31;
-pub const SIGSTKFLT: c_int = 16;
-#[deprecated(since = "0.2.55", note = "Use SIGSYS instead")]
-pub const SIGUNUSED: c_int = 31;
-pub const SIGPOLL: c_int = 29;
-pub const SIGPWR: c_int = 30;
-pub const SIG_BLOCK: c_int = 0x000000;
-pub const SIG_UNBLOCK: c_int = 0x01;
 
 pub const O_ASYNC: c_int = 0x2000;
 pub const O_NDELAY: c_int = 0x800;
@@ -570,7 +470,6 @@ pub const CIBAUD: crate::tcflag_t = 0o02003600000;
 
 pub const ISIG: crate::tcflag_t = 0o000001;
 pub const ICANON: crate::tcflag_t = 0o000002;
-pub const XCASE: crate::tcflag_t = 0o000004;
 pub const ECHOE: crate::tcflag_t = 0o000020;
 pub const ECHOK: crate::tcflag_t = 0o000040;
 pub const ECHONL: crate::tcflag_t = 0o000100;
@@ -677,12 +576,10 @@ pub const SYS_uname: c_long = 122;
 pub const SYS_adjtimex: c_long = 124;
 pub const SYS_mprotect: c_long = 125;
 pub const SYS_sigprocmask: c_long = 126;
-#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
-pub const SYS_create_module: c_long = 127;
+// 127 was SYS_create_module
 pub const SYS_init_module: c_long = 128;
 pub const SYS_delete_module: c_long = 129;
-#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
-pub const SYS_get_kernel_syms: c_long = 130;
+// 130 was SYS_get_kernel_syms
 pub const SYS_quotactl: c_long = 131;
 pub const SYS_getpgid: c_long = 132;
 pub const SYS_fchdir: c_long = 133;
@@ -712,8 +609,7 @@ pub const SYS_sched_get_priority_min: c_long = 160;
 pub const SYS_sched_rr_get_interval: c_long = 161;
 pub const SYS_nanosleep: c_long = 162;
 pub const SYS_mremap: c_long = 163;
-#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
-pub const SYS_query_module: c_long = 167;
+// 167 was SYS_query_module
 pub const SYS_poll: c_long = 168;
 pub const SYS_nfsservctl: c_long = 169;
 pub const SYS_prctl: c_long = 172;

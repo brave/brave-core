@@ -16,3 +16,6 @@ pub use table::{Id, Item, Table};
 
 #[cfg(feature = "elf")]
 pub mod elf;
+
+#[cfg(feature = "macho")]
+pub mod macho;

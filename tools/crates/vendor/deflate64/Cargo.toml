@@ -12,7 +12,7 @@
 [package]
 edition = "2021"
 name = "deflate64"
-version = "0.1.10"
+version = "0.1.12"
 authors = ["anatawa12 <anatawa12@icloud.com>"]
 build = false
 exclude = [
@@ -37,9 +37,25 @@ categories = ["compression"]
 license = "MIT"
 repository = "https://github.com/anatawa12/deflate64-rs"
 
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = [
+    "--cfg",
+    "docsrs",
+]
+
+[features]
+checkpoint = []
+default = []
+
 [lib]
 name = "deflate64"
 path = "src/lib.rs"
+
+[[bench]]
+name = "inflate"
+path = "benches/inflate.rs"
+harness = false
 
 [dependencies]
 

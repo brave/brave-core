@@ -22,7 +22,7 @@ use crate::Result;
 /// a function that applies the operator to its operand, and the
 /// operator's associativity (infix only).
 ///
-/// For a more full-featured example, look at the [C-style Expression][crate::_topic::arithmetic#c-style-expression]
+/// For a more full-featured example, look at the [C-style Expressions][crate::_topic::language#c-style-expressions]
 /// topic.
 ///
 /// # Example
@@ -30,6 +30,7 @@ use crate::Result;
 /// Parsing a simple arithmetic expression without parenthesis.
 ///
 /// ```rust
+/// # #[cfg(feature = "ascii")] {
 /// # use winnow::prelude::*;
 /// # use winnow::error::ContextError;
 /// # use winnow::ascii::digit1;
@@ -64,6 +65,7 @@ use crate::Result;
 /// assert_eq!(parser().parse("1+1"), Ok(2));
 /// assert_eq!(parser().parse("0!"), Ok(1));
 /// assert_eq!(parser().parse("-1*5*2*10+30/3!"), Ok(-95));
+/// # }
 /// ```
 #[doc(alias = "pratt")]
 #[doc(alias = "separated")]
@@ -93,9 +95,7 @@ where
         parse_prefix: fail,
         parse_postfix: fail,
         parse_infix: fail,
-        i: Default::default(),
-        o: Default::default(),
-        e: Default::default(),
+        marker: Default::default(),
     }
 }
 
@@ -119,9 +119,7 @@ where
     parse_prefix: Pre,
     parse_postfix: Post,
     parse_infix: Pix,
-    i: core::marker::PhantomData<I>,
-    o: core::marker::PhantomData<O>,
-    e: core::marker::PhantomData<E>,
+    marker: core::marker::PhantomData<(I, O, E)>,
 }
 
 impl<I, O, ParseOperand, Pre, Post, Pix, E> Expression<I, O, ParseOperand, Pre, Post, Pix, E>
@@ -150,13 +148,11 @@ where
             parse_prefix: parser,
             parse_postfix: self.parse_postfix,
             parse_infix: self.parse_infix,
-            i: Default::default(),
-            o: Default::default(),
-            e: Default::default(),
+            marker: Default::default(),
         }
     }
 
-    /// Sets the prefix operator parser.
+    /// Sets the postfix operator parser.
     ///
     /// The parser should parse the input to a [`Postfix`],
     /// which contains the operator's binding power and
@@ -176,13 +172,11 @@ where
             parse_prefix: self.parse_prefix,
             parse_postfix: parser,
             parse_infix: self.parse_infix,
-            i: Default::default(),
-            o: Default::default(),
-            e: Default::default(),
+            marker: Default::default(),
         }
     }
 
-    /// Sets the prefix operator parser.
+    /// Sets the infix operator parser.
     ///
     /// The parser should parse the input to a [`Infix`],
     /// which contains the operator's binding power and
@@ -202,9 +196,7 @@ where
             parse_prefix: self.parse_prefix,
             parse_postfix: self.parse_postfix,
             parse_infix: parser,
-            i: Default::default(),
-            o: Default::default(),
-            e: Default::default(),
+            marker: Default::default(),
         }
     }
 
@@ -294,10 +286,7 @@ where
     /// given expression. That's a language-specific detail, and it depends on
     /// what you want to parse.
     #[inline(always)]
-    pub fn current_precedence_level(
-        mut self,
-        level: i64,
-    ) -> Expression<I, O, ParseOperand, Pre, Post, Pix, E> {
+    pub fn current_precedence_level(mut self, level: i64) -> Self {
         self.precedence_level = level;
         self
     }
@@ -432,13 +421,13 @@ pub struct Prefix<I, O, E>(
 impl<I, O, E> Clone for Prefix<I, O, E> {
     #[inline(always)]
     fn clone(&self) -> Self {
-        Prefix(self.0, self.1)
+        Self(self.0, self.1)
     }
 }
 
-impl<I: Stream, O, E: ParserError<I>> Parser<I, Prefix<I, O, E>, E> for Prefix<I, O, E> {
+impl<I: Stream, O, E: ParserError<I>> Parser<I, Self, E> for Prefix<I, O, E> {
     #[inline(always)]
-    fn parse_next(&mut self, input: &mut I) -> Result<Prefix<I, O, E>, E> {
+    fn parse_next(&mut self, input: &mut I) -> Result<Self, E> {
         empty.value(self.clone()).parse_next(input)
     }
 }
@@ -457,13 +446,13 @@ pub struct Postfix<I, O, E>(
 impl<I, O, E> Clone for Postfix<I, O, E> {
     #[inline(always)]
     fn clone(&self) -> Self {
-        Postfix(self.0, self.1)
+        Self(self.0, self.1)
     }
 }
 
-impl<I: Stream, O, E: ParserError<I>> Parser<I, Postfix<I, O, E>, E> for Postfix<I, O, E> {
+impl<I: Stream, O, E: ParserError<I>> Parser<I, Self, E> for Postfix<I, O, E> {
     #[inline(always)]
-    fn parse_next(&mut self, input: &mut I) -> Result<Postfix<I, O, E>, E> {
+    fn parse_next(&mut self, input: &mut I) -> Result<Self, E> {
         empty.value(self.clone()).parse_next(input)
     }
 }
@@ -513,21 +502,21 @@ impl<I, O, E> Clone for Infix<I, O, E> {
     #[inline(always)]
     fn clone(&self) -> Self {
         match self {
-            Infix::Left(p, f) => Infix::Left(*p, *f),
-            Infix::Right(p, f) => Infix::Right(*p, *f),
-            Infix::Neither(p, f) => Infix::Neither(*p, *f),
+            Self::Left(p, f) => Self::Left(*p, *f),
+            Self::Right(p, f) => Self::Right(*p, *f),
+            Self::Neither(p, f) => Self::Neither(*p, *f),
         }
     }
 }
 
-impl<I: Stream, O, E: ParserError<I>> Parser<I, Infix<I, O, E>, E> for Infix<I, O, E> {
+impl<I: Stream, O, E: ParserError<I>> Parser<I, Self, E> for Infix<I, O, E> {
     #[inline(always)]
-    fn parse_next(&mut self, input: &mut I) -> Result<Infix<I, O, E>, E> {
+    fn parse_next(&mut self, input: &mut I) -> Result<Self, E> {
         empty.value(self.clone()).parse_next(input)
     }
 }
 
-#[cfg(test)]
+#[cfg(all(test, feature = "ascii"))]
 mod tests {
     use crate::ascii::digit1;
     use crate::combinator::fail;

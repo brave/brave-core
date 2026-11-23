@@ -1,7 +1,7 @@
 [package]
 name = "xattr"
 edition = "2021"
-version = "1.6.1"
+version = "1.7.0"
 authors = ["Steven Allen <steven@stebalien.com>"]
 description = "unix extended filesystem attributes"
 
@@ -9,6 +9,8 @@ documentation = "https://docs.rs/xattr"
 repository = "https://github.com/Stebalien/xattr"
 keywords = ["xattr", "filesystem", "unix"]
 license = "MIT OR Apache-2.0"
+include = ["README.md", "LICENSE-*", "Cargo.toml", "src/**/*.rs", "tests/**/*.rs"]
+rust-version = "1.65"
 
 [features]
 default = ["unsupported"]
@@ -21,7 +23,7 @@ default = ["unsupported"]
 unsupported = []
 
 [target.'cfg(any(target_os = "android", target_os = "linux", target_os = "macos", target_os = "hurd"))'.dependencies.rustix]
-version = "1.0.0"
+version = "1.1.6"
 default-features = false
 features = ["fs", "std"]
 

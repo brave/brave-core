@@ -71,21 +71,36 @@
 //!    pointers, we use `Option<fn ...>`.
 //!
 //!  * `prefer *mut over *const`: Whenever we transpose pointers from the
-//!    specification into Rust, we prefer `*mut` in almost all cases. `*const`
-//!    should only be used if the underlying value is known not to be accessible
-//!    via any other mutable pointer type. Since this is rarely the case in
-//!    UEFI, we avoid it.
+//!    specification into Rust, we default to `*mut`. So far, there is no
+//!    reason to use `*const`. We prefer `*mut T`, because:
 //!
-//!    The reasoning is that Rust allows coercing immutable types into `*const`
-//!    pointers, without any explicit casting required. However, immutable Rust
-//!    references require that no other mutable reference exists simultaneously.
-//!    This is not a guarantee of `const`-pointers in C / UEFI, hence this
-//!    coercion is usually ill-advised or even wrong.
+//!    * it is invariant over `T`, unlike `*const T`, which is covariant over
+//!      `T`. This variance is useful when treating the raw pointer like a
+//!      shared reference (which is also covariant over `T`). However, if the
+//!      raw pointer can be aliases by mutable pointers somewhere in the UEFI
+//!      stack, the variance might no longer apply. Using `*mut T` avoids this
+//!      default covariance, and requires callers to introduce manually if
+//!      desired.
+//!    * it cannot be automatically coerced from shared references. This
+//!      coercion is not necessarily correct, given that `const T *` pointers
+//!      in C do not share the immutability guarantee of Rust shared
+//!      references. By using `*mut T` an explicit pointer cast is required,
+//!      which we definitely want.
+//!    * it correctly conveys mutability to Miri Stacked Borrows. While Tree
+//!      Borrows do not distinguish raw pointers, Stacked Borrows do, and they
+//!      require a pointer to originate from a mutable reference if mutability
+//!      is desired.
 //!
-//!    Lastly, note that `*mut` and `*const` and be `as`-casted in both
+//!    Lastly, note that `*mut` and `*const` can be `as`-casted in both
 //!    directions without violating any Rust guarantees. Any UB concerns always
 //!    stem from the safety guarantees of the surrounding code, not of the
 //!    raw-pointer handling.
+//!
+//!  * `default to unsafe fn`: Always use `unsafe fn` for function prototypes.
+//!    UEFI makes no guarantees about global state, as such any implementation
+//!    of any UEFI prototype might introduce unsafety. Use `unsafe fn`
+//!    unconditionally, so the prototypes can be used for externally provided
+//!    code.
 //!
 //! # Specification Details
 //!

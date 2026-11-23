@@ -1,5 +1,4 @@
-use core_foundation_sys::base::CFOptionFlags;
-use core_foundation_sys::base::{Boolean, CFTypeID};
+use core_foundation_sys::base::{Boolean, CFOptionFlags, CFTypeID};
 use core_foundation_sys::string::CFStringRef;
 
 use crate::base::SecPolicyRef;

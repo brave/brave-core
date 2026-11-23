@@ -1,9 +1,10 @@
-#![allow(missing_docs)]
+use gix_error::Result;
 use std::{borrow::Cow, fmt::Display, str::FromStr};
 
 use bstr::{BStr, BString};
+use gix_error::{Message, ResultExt, bail, ensure, validation};
 
-use crate::{Color, Error};
+use crate::Color;
 
 impl Display for Color {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -31,18 +32,16 @@ impl Display for Color {
     }
 }
 
-fn color_err(input: impl Into<BString>) -> Error {
-    Error::new(
-        "Colors are specific color values and their attributes, like 'brightred', or 'blue'",
-        input,
-    )
+fn color_err(input: impl Into<BString>) -> Message {
+    validation("Colors are specific color values and their attributes, like 'brightred', or 'blue'")
+        .with_input(gix_error::MetadataValue::Bytes(input.into().into()))
 }
 
 impl TryFrom<&BStr> for Color {
-    type Error = Error;
+    type Error = gix_error::Error;
 
-    fn try_from(s: &BStr) -> Result<Self, Self::Error> {
-        let s = std::str::from_utf8(s).map_err(|err| color_err(s).with_err(err))?;
+    fn try_from(s: &BStr) -> Result<Self> {
+        let s = std::str::from_utf8(s).or_raise(|| color_err(s))?;
         enum ColorItem {
             Value(Name),
             Attr(Attribute),
@@ -72,12 +71,12 @@ impl TryFrom<&BStr> for Color {
                         } else if background.is_none() {
                             background = Some(v);
                         } else {
-                            return Err(color_err(s));
+                            bail!(color_err(s));
                         }
                     }
                     ColorItem::Attr(a) => attributes |= a,
                 },
-                Err(_) => return Err(color_err(s)),
+                Err(_) => bail!(color_err(s)),
             }
         }
 
@@ -89,41 +88,89 @@ impl TryFrom<&BStr> for Color {
     }
 }
 
-impl TryFrom<Cow<'_, BStr>> for Color {
-    type Error = Error;
+impl TryFrom<&str> for Color {
+    type Error = gix_error::Error;
 
-    fn try_from(c: Cow<'_, BStr>) -> Result<Self, Self::Error> {
+    fn try_from(value: &str) -> Result<Self> {
+        Self::try_from(BStr::new(value))
+    }
+}
+
+impl TryFrom<Cow<'_, BStr>> for Color {
+    type Error = gix_error::Error;
+
+    fn try_from(c: Cow<'_, BStr>) -> Result<Self> {
         Self::try_from(c.as_ref())
+    }
+}
+
+impl TryFrom<BString> for Color {
+    type Error = gix_error::Error;
+
+    fn try_from(value: BString) -> Result<Self> {
+        Self::try_from(BStr::new(&value))
     }
 }
 
 /// Discriminating enum for names of [`Color`] values.
 ///
 /// `git-config` supports the eight standard colors, their bright variants, an
-/// ANSI color code, or a 24-bit hex value prefixed with an octothorpe/hash.
+/// ANSI color code, or a hex value prefixed with an octothorpe/hash. The hex value
+/// is either 24-bit, like `#ff11bb`, or the 12-bit shorthand `#f1b`, which stands
+/// for the same color. Color names and the `bright` prefix are matched
+/// case-insensitively, and `bright` may only precede one of the eight standard colors.
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
-#[allow(missing_docs)]
 pub enum Name {
+    /// The `normal` color name.
     Normal,
+    /// The terminal's default color.
     Default,
+    /// Black.
     Black,
+    /// Bright black.
     BrightBlack,
+    /// Red.
     Red,
+    /// Bright red.
     BrightRed,
+    /// Green.
     Green,
+    /// Bright green.
     BrightGreen,
+    /// Yellow.
     Yellow,
+    /// Bright yellow.
     BrightYellow,
+    /// Blue.
     Blue,
+    /// Bright blue.
     BrightBlue,
+    /// Magenta.
     Magenta,
+    /// Bright magenta.
     BrightMagenta,
+    /// Cyan.
     Cyan,
+    /// Bright cyan.
     BrightCyan,
+    /// White.
     White,
+    /// Bright white.
     BrightWhite,
-    Ansi(u8),
-    Rgb(u8, u8, u8),
+    /// A color from the ANSI 256-color palette.
+    Ansi(
+        /// The palette index.
+        u8,
+    ),
+    /// A 24-bit RGB color.
+    Rgb(
+        /// The red component.
+        u8,
+        /// The green component.
+        u8,
+        /// The blue component.
+        u8,
+    ),
 }
 
 impl Display for Name {
@@ -155,7 +202,7 @@ impl Display for Name {
 
 #[cfg(feature = "serde")]
 impl serde::Serialize for Name {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    fn serialize<S>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error>
     where
         S: serde::Serializer,
     {
@@ -163,69 +210,84 @@ impl serde::Serialize for Name {
     }
 }
 
-impl FromStr for Name {
-    type Err = Error;
+/// Parse the digits behind a `#` the way `git` does, which is either a 24-bit value
+/// like `ff11bb`, or its 12-bit shorthand `f1b`, where each digit stands for a doubled
+/// pair. Any other length is rejected, as is a digit that isn't hexadecimal.
+fn parse_hex(hex: &[u8]) -> Option<(u8, u8, u8)> {
+    fn nibble(b: u8) -> Option<u8> {
+        char::from(b).to_digit(16).map(|d| d as u8)
+    }
 
-    fn from_str(mut s: &str) -> Result<Self, Self::Err> {
-        let bright = if let Some(rest) = s.strip_prefix("bright") {
-            s = rest;
-            true
-        } else {
-            false
+    match *hex {
+        [r, g, b] => Some((nibble(r)? * 0x11, nibble(g)? * 0x11, nibble(b)? * 0x11)),
+        [r1, r0, g1, g0, b1, b0] => Some((
+            nibble(r1)? << 4 | nibble(r0)?,
+            nibble(g1)? << 4 | nibble(g0)?,
+            nibble(b1)? << 4 | nibble(b0)?,
+        )),
+        _ => None,
+    }
+}
+
+impl FromStr for Name {
+    type Err = gix_error::Error;
+
+    fn from_str(s: &str) -> Result<Self> {
+        const BASIC: &[(&str, Name, Name)] = &[
+            ("black", Name::Black, Name::BrightBlack),
+            ("red", Name::Red, Name::BrightRed),
+            ("green", Name::Green, Name::BrightGreen),
+            ("yellow", Name::Yellow, Name::BrightYellow),
+            ("blue", Name::Blue, Name::BrightBlue),
+            ("magenta", Name::Magenta, Name::BrightMagenta),
+            ("cyan", Name::Cyan, Name::BrightCyan),
+            ("white", Name::White, Name::BrightWhite),
+        ];
+
+        if s.eq_ignore_ascii_case("normal") {
+            return Ok(Self::Normal);
+        }
+
+        let (name, is_bright) = match s.split_at_checked("bright".len()) {
+            Some((prefix, rest)) if prefix.eq_ignore_ascii_case("bright") => (rest, true),
+            _ => (s, false),
         };
 
-        match s {
-            "normal" if !bright => return Ok(Self::Normal),
-            "-1" if !bright => return Ok(Self::Normal),
-            "normal" if bright => return Err(color_err(s)),
-            "default" if !bright => return Ok(Self::Default),
-            "default" if bright => return Err(color_err(s)),
-            "black" if !bright => return Ok(Self::Black),
-            "black" if bright => return Ok(Self::BrightBlack),
-            "red" if !bright => return Ok(Self::Red),
-            "red" if bright => return Ok(Self::BrightRed),
-            "green" if !bright => return Ok(Self::Green),
-            "green" if bright => return Ok(Self::BrightGreen),
-            "yellow" if !bright => return Ok(Self::Yellow),
-            "yellow" if bright => return Ok(Self::BrightYellow),
-            "blue" if !bright => return Ok(Self::Blue),
-            "blue" if bright => return Ok(Self::BrightBlue),
-            "magenta" if !bright => return Ok(Self::Magenta),
-            "magenta" if bright => return Ok(Self::BrightMagenta),
-            "cyan" if !bright => return Ok(Self::Cyan),
-            "cyan" if bright => return Ok(Self::BrightCyan),
-            "white" if !bright => return Ok(Self::White),
-            "white" if bright => return Ok(Self::BrightWhite),
-            _ => (),
+        for &(basic, plain, brightened) in BASIC {
+            if name.eq_ignore_ascii_case(basic) {
+                return Ok(if is_bright { brightened } else { plain });
+            }
+        }
+
+        ensure!(!is_bright, color_err(s));
+
+        if s.eq_ignore_ascii_case("normal") || s == "-1" {
+            return Ok(Self::Normal);
+        }
+
+        if s.eq_ignore_ascii_case("default") {
+            return Ok(Self::Default);
         }
 
         if let Ok(v) = u8::from_str(s) {
             return Ok(Self::Ansi(v));
         }
 
-        if let Some(s) = s.strip_prefix('#') {
-            if s.len() == 6 && s.is_char_boundary(2) && s.is_char_boundary(4) && s.is_char_boundary(6) {
-                let rgb = (
-                    u8::from_str_radix(&s[..2], 16),
-                    u8::from_str_radix(&s[2..4], 16),
-                    u8::from_str_radix(&s[4..], 16),
-                );
-
-                if let (Ok(r), Ok(g), Ok(b)) = rgb {
-                    return Ok(Self::Rgb(r, g, b));
-                }
-            }
+        if let Some(hex) = s.strip_prefix('#')
+            && let Some((r, g, b)) = parse_hex(hex.as_bytes())
+        {
+            return Ok(Self::Rgb(r, g, b));
         }
 
-        Err(color_err(s))
+        Err(color_err(s).validation_error())
     }
 }
 
 impl TryFrom<&BStr> for Name {
-    type Error = Error;
+    type Error = gix_error::Error;
 
-    fn try_from(s: &BStr) -> Result<Self, Self::Error> {
-        Self::from_str(std::str::from_utf8(s).map_err(|err| color_err(s).with_err(err))?)
+    fn try_from(s: &BStr) -> Result<Self> {
+        Self::from_str(std::str::from_utf8(s).or_raise(|| color_err(s))?)
     }
 }
 
@@ -237,22 +299,36 @@ bitflags::bitflags! {
     /// variant.
     #[derive(Default, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
     pub struct Attribute: u32 {
+        /// Use bold or increased-intensity text.
         const BOLD = 1 << 1;
+        /// Use dim or decreased-intensity text.
         const DIM = 1 << 2;
+        /// Use italic text.
         const ITALIC = 1 << 3;
+        /// Underline text.
         const UL = 1 << 4;
+        /// Blink text.
         const BLINK = 1 << 5;
+        /// Reverse the foreground and background colors.
         const REVERSE = 1 << 6;
+        /// Strike through text.
         const STRIKE = 1 << 7;
-        /// Reset is special as we have to be able to parse it, without git actually doing anything with it
+        /// Parse the `reset` attribute, which Git otherwise leaves without an effect here.
         const RESET = 1 << 8;
 
+        /// Disable dim text.
         const NO_DIM = 1 << 21;
+        /// Disable bold text.
         const NO_BOLD = 1 << 22;
+        /// Disable italic text.
         const NO_ITALIC = 1 << 23;
+        /// Disable underlining.
         const NO_UL = 1 << 24;
+        /// Disable blinking.
         const NO_BLINK = 1 << 25;
+        /// Disable reversed colors.
         const NO_REVERSE = 1 << 26;
+        /// Disable strikethrough.
         const NO_STRIKE = 1 << 27;
     }
 }
@@ -296,7 +372,7 @@ impl Display for Attribute {
 
 #[cfg(feature = "serde")]
 impl serde::Serialize for Attribute {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    fn serialize<S>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error>
     where
         S: serde::Serializer,
     {
@@ -305,9 +381,9 @@ impl serde::Serialize for Attribute {
 }
 
 impl FromStr for Attribute {
-    type Err = Error;
+    type Err = gix_error::Error;
 
-    fn from_str(mut s: &str) -> Result<Self, Self::Err> {
+    fn from_str(mut s: &str) -> Result<Self> {
         let inverted = if let Some(rest) = s.strip_prefix("no-").or_else(|| s.strip_prefix("no")) {
             s = rest;
             true
@@ -315,9 +391,15 @@ impl FromStr for Attribute {
             false
         };
 
+        if s.eq_ignore_ascii_case("reset") {
+            return if inverted {
+                Err(color_err(s).validation_error())
+            } else {
+                Ok(Attribute::RESET)
+            };
+        }
+
         match s {
-            "reset" if !inverted => Ok(Attribute::RESET),
-            "reset" if inverted => Err(color_err(s)),
             "bold" if !inverted => Ok(Attribute::BOLD),
             "bold" if inverted => Ok(Attribute::NO_BOLD),
             "dim" if !inverted => Ok(Attribute::DIM),
@@ -332,15 +414,15 @@ impl FromStr for Attribute {
             "italic" if inverted => Ok(Attribute::NO_ITALIC),
             "strike" if !inverted => Ok(Attribute::STRIKE),
             "strike" if inverted => Ok(Attribute::NO_STRIKE),
-            _ => Err(color_err(s)),
+            _ => Err(color_err(s).validation_error()),
         }
     }
 }
 
 impl TryFrom<&BStr> for Attribute {
-    type Error = Error;
+    type Error = gix_error::Error;
 
-    fn try_from(s: &BStr) -> Result<Self, Self::Error> {
-        Self::from_str(std::str::from_utf8(s).map_err(|err| color_err(s).with_err(err))?)
+    fn try_from(s: &BStr) -> Result<Self> {
+        Self::from_str(std::str::from_utf8(s).or_raise(|| color_err(s))?)
     }
 }

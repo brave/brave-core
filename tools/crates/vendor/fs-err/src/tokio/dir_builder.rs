@@ -15,7 +15,7 @@ impl DirBuilder {
     /// Creates a new set of options with default mode/security settings for all
     /// platforms and also non-recursive.
     ///
-    /// This is a wrapper version of [`tokio::fs::DirBuilder::new`]
+    /// This is a wrapper version of [`tokio::fs::DirBuilder::new`].
     ///
     /// # Examples
     ///

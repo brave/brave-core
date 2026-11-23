@@ -42,7 +42,7 @@ where
 {
     /// Create a new [`AsyncReadBody`] wrapping the given reader,
     /// with a specific read buffer capacity
-    fn with_capacity(read: T, capacity: usize) -> Self {
+    pub fn with_capacity(read: T, capacity: usize) -> Self {
         Self {
             reader: ReaderStream::with_capacity(read, capacity),
         }

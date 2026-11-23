@@ -129,6 +129,43 @@ fn min_u64_usize(a: u64, b: usize) -> usize {
     }
 }
 
+/// Performs bounds checking of a range.
+///
+/// This is a spiritual copy of [core::slice::index::range] because that
+/// function is currently unstable.
+#[inline(always)]
+#[track_caller]
+fn range(range: impl core::ops::RangeBounds<usize>, len: usize) -> (usize, usize) {
+    use core::ops::Bound;
+
+    let begin = match range.start_bound() {
+        Bound::Included(&n) => n,
+        Bound::Excluded(&n) => n.checked_add(1).expect("out of range"),
+        Bound::Unbounded => 0,
+    };
+
+    let end = match range.end_bound() {
+        Bound::Included(&n) => n.checked_add(1).expect("out of range"),
+        Bound::Excluded(&n) => n,
+        Bound::Unbounded => len,
+    };
+
+    assert!(
+        begin <= end,
+        "range start must not be greater than end: {:?} <= {:?}",
+        begin,
+        end,
+    );
+    assert!(
+        end <= len,
+        "range end out of bounds: {:?} <= {:?}",
+        end,
+        len,
+    );
+
+    (begin, end)
+}
+
 /// Error type for the `try_get_` methods of [`Buf`].
 /// Indicates that there were not enough remaining
 /// bytes in the buffer while attempting

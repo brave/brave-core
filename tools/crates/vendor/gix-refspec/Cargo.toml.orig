@@ -2,26 +2,36 @@ lints.workspace = true
 
 [package]
 name = "gix-refspec"
-version = "0.32.0"
+version = "0.47.1"
 repository = "https://github.com/GitoxideLabs/gitoxide"
 license = "MIT OR Apache-2.0"
 description = "A crate of the gitoxide project for parsing and representing refspecs"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
-edition = "2021"
-include = ["src/**/*", "LICENSE-*", "README.md"]
-rust-version = "1.82"
+edition = "2024"
+include = ["/src/**/*", "/LICENSE-*", "/README.md"]
+rust-version = "1.88"
 
 [lib]
-doctest = false
+doctest = true
+
+[features]
+## Enable support for the SHA-1 hash by enabling the respective feature in the `gix-hash` crate.
+sha1 = ["gix-hash/sha1"]
+## Enable support for the SHA-256 hash by enabling the respective feature in the `gix-hash` crate.
+sha256 = ["gix-hash/sha256"]
 
 [dependencies]
-gix-revision = { version = "^0.36.0", path = "../gix-revision", default-features = false }
-gix-validate = { version = "^0.10.1", path = "../gix-validate" }
-gix-hash = { version = "^0.20.0", path = "../gix-hash" }
+gix-validate = { version = "^0.13.1", path = "../gix-validate" }
+gix-hash = { version = "^0.28.1", path = "../gix-hash" }
+gix-error = { version = "^0.5.2", path = "../gix-error", features = ["bstr"] }
 
 bstr = { version = "1.12.0", default-features = false, features = ["std"] }
-thiserror = "2.0.17"
 smallvec = "1.15.1"
 
 [dev-dependencies]
 gix-testtools = { path = "../tests/tools" }
+gix-hash = { path = "../gix-hash", features = ["sha1", "sha256"] }
+insta = "1.46.3"
+
+[package.metadata.docs.rs]
+features = ["sha1"]

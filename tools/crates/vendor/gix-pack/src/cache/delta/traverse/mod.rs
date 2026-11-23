@@ -1,48 +1,29 @@
+use gix_error::Result;
 use std::sync::atomic::{AtomicBool, Ordering};
 
-use gix_features::{
-    parallel::in_parallel_with_slice,
-    progress::{self, DynNestedProgress, Progress},
-    threading,
-    threading::{Mutable, OwnShared},
-};
+use gix_error::bail;
+use gix_parallel as threading;
+use gix_parallel::{Mutable, OwnShared};
+use gix_utils::progress::{self, DynNestedProgress, Progress};
 
 use crate::{
-    cache::delta::{traverse::util::ItemSliceSync, Item, Tree},
+    cache::delta::{Tree, traverse::util::ItemSliceSync, tree::Item},
     data::EntryRange,
 };
 
 mod resolve;
 pub(crate) mod util;
 
-/// Returned by [`Tree::traverse()`]
-#[derive(thiserror::Error, Debug)]
-#[allow(missing_docs)]
-pub enum Error {
-    #[error("{message}")]
-    ZlibInflate {
-        source: gix_features::zlib::inflate::Error,
-        message: &'static str,
-    },
-    #[error("The resolver failed to obtain the pack entry bytes for the entry at {pack_offset}")]
-    ResolveFailed { pack_offset: u64 },
-    #[error(transparent)]
-    EntryType(#[from] crate::data::entry::decode::Error),
-    #[error("One of the object inspectors failed")]
-    Inspect(#[from] Box<dyn std::error::Error + Send + Sync>),
-    #[error("Interrupted")]
-    Interrupted,
-    #[error(
-    "The base at {base_pack_offset} was referred to by a ref-delta, but it was never added to the tree as if the pack was still thin."
-    )]
-    OutOfPackRefDelta {
-        /// The base's offset which was from a resolved ref-delta that didn't actually get added to the tree
-        base_pack_offset: crate::data::Offset,
-    },
-    #[error("Failed to spawn thread when switching to work-stealing mode")]
-    SpawnThread(#[from] std::io::Error),
-    #[error(transparent)]
-    Delta(#[from] crate::data::delta::apply::Error),
+/// Shared access to ref-delta child indices awaiting a resolved base, keyed by its object ID.
+pub(super) type SharedRefDeltaChildren = OwnShared<Mutable<super::tree::RefDeltaChildren>>;
+
+#[cold]
+pub(super) fn allocation_error(kind: gix_error::ResourceExhaustionKind) -> gix_error::Message {
+    gix_error::resource_exhaustion(kind, "Entry too large to fit in memory")
+}
+
+pub(super) fn interrupted() -> gix_error::Error {
+    gix_error::message("Interrupted").cancelled_error()
 }
 
 /// Additional context passed to the `inspect_object(…)` function of the [`Tree::traverse()`] method.
@@ -72,6 +53,9 @@ pub struct Options<'a, 's> {
     /// specifies what kind of hashes we expect to be stored in oid-delta entries, which is viable to decoding them
     /// with the correct size.
     pub object_hash: gix_hash::Kind,
+    /// If `Some`, rejects individual allocations above the given number of bytes while resolving decoded object and
+    /// delta result buffers. `Some(0)` rejects all non-empty allocations.
+    pub alloc_limit_bytes: Option<usize>,
 }
 
 /// The outcome of [`Tree::traverse()`]
@@ -88,6 +72,10 @@ where
 {
     /// Traverse this tree of delta objects with a function `inspect_object` to process each object at will.
     ///
+    /// Forward references with known base offsets are attached before traversal. Children recorded by base object ID
+    /// during streaming indexing are attached when their bases are fully decoded and hashed, including bases that are
+    /// themselves deltas. All bases must be represented in this tree; external thin-pack bases must be inserted beforehand.
+    ///
     /// * `should_run_in_parallel() -> bool` returns true if the underlying pack is big enough to warrant parallel traversal at all.
     /// * `resolve(EntrySlice, &mut Vec<u8>) -> Option<()>` resolves the bytes in the pack for the given `EntrySlice` and stores them in the
     ///   output vector. It returns `Some(())` if the object existed in the pack, or `None` to indicate a resolution error, which would abort the
@@ -103,7 +91,7 @@ where
     /// This method returns a vector of all tree items, along with their potentially modified custom node data.
     ///
     /// _Note_ that this method consumed the Tree to assure safe parallel traversal with mutation support.
-    pub fn traverse<F, MBFN, E, R>(
+    pub fn traverse<F, MBFN, R>(
         mut self,
         resolve: F,
         resolve_data: &R,
@@ -115,13 +103,13 @@ where
             size_progress,
             should_interrupt,
             object_hash,
+            alloc_limit_bytes,
         }: Options<'_, '_>,
-    ) -> Result<Outcome<T>, Error>
+    ) -> Result<Outcome<T>>
     where
         F: for<'r> Fn(EntryRange, &'r R) -> Option<&'r [u8]> + Send + Clone,
         R: Send + Sync,
-        MBFN: FnMut(&mut T, &dyn Progress, Context<'_>) -> Result<(), E> + Send + Clone,
-        E: std::error::Error + Send + Sync + 'static,
+        MBFN: FnMut(&mut T, &dyn Progress, Context<'_>) -> Result + Send + Clone,
     {
         self.set_pack_entries_end_and_resolve_ref_offsets(pack_entries_end)?;
 
@@ -129,59 +117,50 @@ where
         let object_counter = {
             let progress = &mut object_progress;
             progress.init(Some(num_objects), progress::count("objects"));
+            progress.set(0);
             progress.counter()
         };
         size_progress.init(None, progress::bytes());
         let size_counter = size_progress.counter();
-        let object_progress = OwnShared::new(Mutable::new(object_progress));
+        let resolver_progress = object_progress.add_child("delta resolver".into());
 
         let start = std::time::Instant::now();
-        let (mut root_items, mut child_items_vec) = self.take_root_and_child();
+        let (mut root_items, mut child_items_vec, ref_delta_children) = self.take_root_child_and_refs();
+        let ref_delta_children =
+            (!ref_delta_children.is_empty()).then(|| OwnShared::new(Mutable::new(ref_delta_children)));
         let child_items = ItemSliceSync::new(&mut child_items_vec);
-        let child_items = &child_items;
-        in_parallel_with_slice(
-            &mut root_items,
-            thread_limit,
-            {
-                {
-                    let object_progress = object_progress.clone();
-                    move |thread_index| resolve::State {
-                        delta_bytes: Vec::<u8>::with_capacity(4096),
-                        fully_resolved_delta_bytes: Vec::<u8>::with_capacity(4096),
-                        progress: Box::new(
-                            threading::lock(&object_progress).add_child(format!("thread {thread_index}")),
-                        ),
-                        resolve: resolve.clone(),
-                        modify_base: inspect_object.clone(),
-                        child_items,
-                    }
-                }
-            },
-            {
-                move |node, state, threads_left, should_interrupt| {
-                    // SAFETY: This invariant is upheld since `child_items` and `node` come from the same Tree.
-                    // This means we can rely on Tree's invariant that node.children will be the only `children` array in
-                    // for nodes in this tree that will contain any of those children.
-                    #[allow(unsafe_code)]
-                    unsafe {
-                        resolve::deltas(
-                            object_counter.clone(),
-                            size_counter.clone(),
-                            node,
-                            state,
-                            resolve_data,
-                            object_hash.len_in_bytes(),
-                            threads_left,
-                            should_interrupt,
-                        )
-                    }
-                }
-            },
-            || (!should_interrupt.load(Ordering::Relaxed)).then(|| std::time::Duration::from_millis(50)),
-            |_| (),
-        )?;
+        // SAFETY: Both item slices come from the same Tree, whose child-index uniqueness invariant still holds.
+        #[expect(unsafe_code)]
+        unsafe {
+            resolve::all(
+                &mut root_items,
+                &child_items,
+                thread_limit,
+                num_objects,
+                object_counter.clone(),
+                size_counter,
+                &resolver_progress,
+                resolve,
+                resolve_data,
+                inspect_object,
+                ref_delta_children.clone(),
+                object_hash,
+                alloc_limit_bytes,
+                should_interrupt,
+            )?;
+        }
 
-        threading::lock(&object_progress).show_throughput(start);
+        if let Some(ref_delta_children) = ref_delta_children
+            && let Some((base_id, _children)) = threading::lock(&ref_delta_children).first_key_value()
+        {
+            bail!("The ref-delta base object {base_id} could not be found".not_found());
+        }
+
+        if object_counter.load(Ordering::Relaxed) != num_objects {
+            bail!(gix_error::corruption("Pack delta traversal left unresolved objects"));
+        }
+
+        object_progress.show_throughput(start);
         size_progress.show_throughput(start);
 
         Ok(Outcome {

@@ -247,7 +247,7 @@ fn test_readlink() {
     let tempdir = tempfile::tempdir().unwrap();
     let src = tempdir.path().join("a");
     let dst = tempdir.path().join("b");
-    println!("a: {:?}, b: {:?}", &src, &dst);
+    println!("a: {:?}, b: {:?}", src, dst);
     fs::symlink(src.as_path(), dst.as_path()).unwrap();
     let dirfd = open(tempdir.path(), OFlag::empty(), Mode::empty()).unwrap();
     let expected_dir = src.to_str().unwrap();
@@ -541,13 +541,14 @@ mod test_posix_fallocate {
                 assert_eq!(tmp.read(&mut data).expect("read failure"), LEN);
                 assert_eq!(&data[..], &[0u8; LEN][..]);
             }
-            Err(Errno::EINVAL) => {
-                // POSIX requires posix_fallocate to return EINVAL both for
-                // invalid arguments (i.e. len < 0) and if the operation is not
-                // supported by the file system.
-                // There's no way to tell for sure whether the file system
-                // supports posix_fallocate, so we must pass the test if it
-                // returns EINVAL.
+            Err(Errno::ENOTSUP) | Err(Errno::EINVAL) => {
+                // POSIX 1003.1-2024 Issue 8 specified ENOTSUP for "the file
+                // system does not support this operation", so Nix should accept
+                // that error code and pass the test.
+                // But older POSIX required posix_fallocate to return EINVAL
+                // both for invalid arguments (i.e. len < 0) and if the
+                // operation is not supported by the file system.  So we must
+                // also pass the test if it returns EINVAL.
             }
             _ => res.unwrap(),
         }

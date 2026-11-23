@@ -32,7 +32,7 @@ impl FxRandomState {
         // 2. Change the cached result on every creation, so maps created
         //    on the same thread don't have the same iteration order
         thread_local!(static SEED: Cell<usize> = {
-            Cell::new(rand::thread_rng().gen())
+            Cell::new(rand::rng().random_range(..=usize::MAX))
         });
 
         SEED.with(|seed| {
@@ -92,7 +92,7 @@ mod tests {
         // `1 / 2.pow(bit_size_of::<usize>())`. Or 1/1.7e19 for 64 bit platforms or 1/4294967295
         // for 32 bit platforms. I suppose this is acceptable.
         let a = FxHashMapRand::<&str, u32>::default();
-        let b = thread::spawn(|| FxHashMapRand::<&str, u32>::default())
+        let b = thread::spawn(FxHashMapRand::<&str, u32>::default)
             .join()
             .unwrap();
 

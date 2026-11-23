@@ -1,12 +1,9 @@
 //! The configuration file
 
-use rustsec::{
-    Error, ErrorKind, WarningKind, advisory,
-    platforms::target::{Arch, OS},
-    report,
-};
-use serde::{Deserialize, Serialize};
 use std::{path::PathBuf, str::FromStr};
+
+use rustsec::{Error, ErrorKind, WarningKind, advisory, report};
+use serde::{Deserialize, Serialize};
 
 /// `cargo audit` configuration:
 ///
@@ -131,6 +128,22 @@ pub struct DatabaseConfig {
     pub stale: bool,
 }
 
+impl DatabaseConfig {
+    pub(crate) fn url(&self) -> &str {
+        self.url
+            .as_ref()
+            .map(AsRef::as_ref)
+            .unwrap_or(rustsec::repository::git::DEFAULT_URL)
+    }
+
+    pub(crate) fn path(&self) -> PathBuf {
+        self.path
+            .as_ref()
+            .cloned()
+            .unwrap_or_else(rustsec::repository::git::Repository::default_path)
+    }
+}
+
 impl Default for DatabaseConfig {
     fn default() -> Self {
         Self {
@@ -158,7 +171,8 @@ pub struct OutputConfig {
     pub quiet: bool,
 
     /// Show inverse dependency trees along with advisories (default: true)
-    pub show_tree: Option<bool>,
+    #[serde(default = "default_show_tree")]
+    pub show_tree: bool,
 }
 
 impl OutputConfig {
@@ -166,6 +180,10 @@ impl OutputConfig {
     pub fn is_quiet(&self) -> bool {
         self.quiet || self.format == OutputFormat::Json || self.format == OutputFormat::Sarif
     }
+}
+
+fn default_show_tree() -> bool {
+    true
 }
 
 /// Warning kinds
@@ -192,23 +210,23 @@ impl DenyOption {
     /// Get all of the possible warnings to be denied
     pub fn all() -> Vec<Self> {
         vec![
-            DenyOption::Warnings,
-            DenyOption::Unmaintained,
-            DenyOption::Unsound,
-            DenyOption::Yanked,
+            Self::Warnings,
+            Self::Unmaintained,
+            Self::Unsound,
+            Self::Yanked,
         ]
     }
     /// Get the warning::Kind that corresponds to self, if applicable
     pub fn get_warning_kind(self) -> &'static [WarningKind] {
         match self {
-            DenyOption::Warnings => &[
+            Self::Warnings => &[
                 WarningKind::Unmaintained,
                 WarningKind::Unsound,
                 WarningKind::Yanked,
             ],
-            DenyOption::Unmaintained => &[WarningKind::Unmaintained],
-            DenyOption::Unsound => &[WarningKind::Unsound],
-            DenyOption::Yanked => &[WarningKind::Yanked],
+            Self::Unmaintained => &[WarningKind::Unmaintained],
+            Self::Unsound => &[WarningKind::Unsound],
+            Self::Yanked => &[WarningKind::Yanked],
         }
     }
 }
@@ -218,10 +236,10 @@ impl FromStr for DenyOption {
 
     fn from_str(s: &str) -> Result<Self, Error> {
         match s {
-            "warnings" => Ok(DenyOption::Warnings),
-            "unmaintained" => Ok(DenyOption::Unmaintained),
-            "unsound" => Ok(DenyOption::Unsound),
-            "yanked" => Ok(DenyOption::Yanked),
+            "warnings" => Ok(Self::Warnings),
+            "unmaintained" => Ok(Self::Unmaintained),
+            "unsound" => Ok(Self::Unsound),
+            "yanked" => Ok(Self::Yanked),
             other => Err(Error::new(
                 ErrorKind::Parse,
                 format!("invalid deny option: {other}"),
@@ -252,9 +270,9 @@ impl FromStr for OutputFormat {
 
     fn from_str(s: &str) -> Result<Self, Error> {
         match s {
-            "json" => Ok(OutputFormat::Json),
-            "sarif" => Ok(OutputFormat::Sarif),
-            "terminal" => Ok(OutputFormat::Terminal),
+            "json" => Ok(Self::Json),
+            "sarif" => Ok(Self::Sarif),
+            "terminal" => Ok(Self::Terminal),
             other => Err(Error::new(
                 ErrorKind::Parse,
                 format!("invalid output format: {other}"),
@@ -285,26 +303,26 @@ pub enum FilterList<T> {
 #[serde(deny_unknown_fields)]
 pub struct TargetConfig {
     /// Target architecture to find vulnerabilities for
-    pub arch: Option<FilterList<Arch>>,
+    pub arch: Option<FilterList<String>>,
 
     /// Target OS to find vulnerabilities for
-    pub os: Option<FilterList<OS>>,
+    pub os: Option<FilterList<String>>,
 }
 
 impl TargetConfig {
     /// Returns list of configured target architectures, cloning if needed
-    pub fn arch(&self) -> Vec<Arch> {
+    pub fn arch(&self) -> Vec<String> {
         match &self.arch {
-            Some(FilterList::Single(single)) => vec![*single],
+            Some(FilterList::Single(single)) => vec![single.clone()],
             Some(FilterList::Many(many)) => many.clone(),
             None => vec![],
         }
     }
 
     /// Returns list of configured target operating systems, cloning if needed
-    pub fn os(&self) -> Vec<OS> {
+    pub fn os(&self) -> Vec<String> {
         match &self.os {
-            Some(FilterList::Single(single)) => vec![*single],
+            Some(FilterList::Single(single)) => vec![single.clone()],
             Some(FilterList::Many(many)) => many.clone(),
             None => vec![],
         }

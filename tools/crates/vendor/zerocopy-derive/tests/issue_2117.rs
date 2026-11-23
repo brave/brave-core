@@ -16,5 +16,6 @@ include!("include.rs");
 // Make sure no unexpected `cfg`s are emitted by our derives (see #2117).
 
 #[derive(imp::KnownLayout)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(C)]
 pub struct Test(pub [u8; 32]);

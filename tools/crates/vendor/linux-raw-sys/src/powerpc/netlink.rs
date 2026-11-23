@@ -616,6 +616,31 @@ pub tca_family: crate::ctypes::c_uchar,
 pub tca__pad1: crate::ctypes::c_uchar,
 pub tca__pad2: crate::ctypes::c_ushort,
 }
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct fib_rule_hdr {
+pub family: __u8,
+pub dst_len: __u8,
+pub src_len: __u8,
+pub tos: __u8,
+pub table: __u8,
+pub res1: __u8,
+pub res2: __u8,
+pub action: __u8,
+pub flags: __u32,
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct fib_rule_uid_range {
+pub start: __u32,
+pub end: __u32,
+}
+#[repr(C)]
+#[derive(Debug, Copy, Clone)]
+pub struct fib_rule_port_range {
+pub start: __u16,
+pub end: __u16,
+}
 pub const _K_SS_MAXSIZE: u32 = 128;
 pub const SOCK_SNDBUF_LOCK: u32 = 1;
 pub const SOCK_RCVBUF_LOCK: u32 = 2;
@@ -785,6 +810,7 @@ pub const NTF_STICKY: u32 = 64;
 pub const NTF_ROUTER: u32 = 128;
 pub const NTF_EXT_MANAGED: u32 = 1;
 pub const NTF_EXT_LOCKED: u32 = 2;
+pub const NTF_EXT_EXT_VALIDATED: u32 = 4;
 pub const NUD_INCOMPLETE: u32 = 1;
 pub const NUD_REACHABLE: u32 = 2;
 pub const NUD_STALE: u32 = 4;
@@ -875,6 +901,13 @@ pub const RTEXT_FILTER_MRP: u32 = 16;
 pub const RTEXT_FILTER_CFM_CONFIG: u32 = 32;
 pub const RTEXT_FILTER_CFM_STATUS: u32 = 64;
 pub const RTEXT_FILTER_MST: u32 = 128;
+pub const FIB_RULE_PERMANENT: u32 = 1;
+pub const FIB_RULE_INVERT: u32 = 2;
+pub const FIB_RULE_UNRESOLVED: u32 = 4;
+pub const FIB_RULE_IIF_DETACHED: u32 = 8;
+pub const FIB_RULE_DEV_DETACHED: u32 = 8;
+pub const FIB_RULE_OIF_DETACHED: u32 = 16;
+pub const FIB_RULE_FIND_SADDR: u32 = 65536;
 pub const NETLINK_UNCONNECTED: _bindgen_ty_1 = _bindgen_ty_1::NETLINK_UNCONNECTED;
 pub const NETLINK_CONNECTED: _bindgen_ty_1 = _bindgen_ty_1::NETLINK_CONNECTED;
 pub const IFLA_UNSPEC: _bindgen_ty_2 = _bindgen_ty_2::IFLA_UNSPEC;
@@ -1191,6 +1224,7 @@ pub const IFLA_VXLAN_VNIFILTER: _bindgen_ty_22 = _bindgen_ty_22::IFLA_VXLAN_VNIF
 pub const IFLA_VXLAN_LOCALBYPASS: _bindgen_ty_22 = _bindgen_ty_22::IFLA_VXLAN_LOCALBYPASS;
 pub const IFLA_VXLAN_LABEL_POLICY: _bindgen_ty_22 = _bindgen_ty_22::IFLA_VXLAN_LABEL_POLICY;
 pub const IFLA_VXLAN_RESERVED_BITS: _bindgen_ty_22 = _bindgen_ty_22::IFLA_VXLAN_RESERVED_BITS;
+pub const IFLA_VXLAN_MC_ROUTE: _bindgen_ty_22 = _bindgen_ty_22::IFLA_VXLAN_MC_ROUTE;
 pub const __IFLA_VXLAN_MAX: _bindgen_ty_22 = _bindgen_ty_22::__IFLA_VXLAN_MAX;
 pub const IFLA_GENEVE_UNSPEC: _bindgen_ty_23 = _bindgen_ty_23::IFLA_GENEVE_UNSPEC;
 pub const IFLA_GENEVE_ID: _bindgen_ty_23 = _bindgen_ty_23::IFLA_GENEVE_ID;
@@ -1261,6 +1295,7 @@ pub const IFLA_BOND_AD_LACP_ACTIVE: _bindgen_ty_27 = _bindgen_ty_27::IFLA_BOND_A
 pub const IFLA_BOND_MISSED_MAX: _bindgen_ty_27 = _bindgen_ty_27::IFLA_BOND_MISSED_MAX;
 pub const IFLA_BOND_NS_IP6_TARGET: _bindgen_ty_27 = _bindgen_ty_27::IFLA_BOND_NS_IP6_TARGET;
 pub const IFLA_BOND_COUPLED_CONTROL: _bindgen_ty_27 = _bindgen_ty_27::IFLA_BOND_COUPLED_CONTROL;
+pub const IFLA_BOND_BROADCAST_NEIGH: _bindgen_ty_27 = _bindgen_ty_27::IFLA_BOND_BROADCAST_NEIGH;
 pub const __IFLA_BOND_MAX: _bindgen_ty_27 = _bindgen_ty_27::__IFLA_BOND_MAX;
 pub const IFLA_BOND_AD_INFO_UNSPEC: _bindgen_ty_28 = _bindgen_ty_28::IFLA_BOND_AD_INFO_UNSPEC;
 pub const IFLA_BOND_AD_INFO_AGGREGATOR: _bindgen_ty_28 = _bindgen_ty_28::IFLA_BOND_AD_INFO_AGGREGATOR;
@@ -1647,6 +1682,48 @@ pub const TCA_ROOT_COUNT: _bindgen_ty_68 = _bindgen_ty_68::TCA_ROOT_COUNT;
 pub const TCA_ROOT_TIME_DELTA: _bindgen_ty_68 = _bindgen_ty_68::TCA_ROOT_TIME_DELTA;
 pub const TCA_ROOT_EXT_WARN_MSG: _bindgen_ty_68 = _bindgen_ty_68::TCA_ROOT_EXT_WARN_MSG;
 pub const __TCA_ROOT_MAX: _bindgen_ty_68 = _bindgen_ty_68::__TCA_ROOT_MAX;
+pub const FRA_UNSPEC: _bindgen_ty_69 = _bindgen_ty_69::FRA_UNSPEC;
+pub const FRA_DST: _bindgen_ty_69 = _bindgen_ty_69::FRA_DST;
+pub const FRA_SRC: _bindgen_ty_69 = _bindgen_ty_69::FRA_SRC;
+pub const FRA_IIFNAME: _bindgen_ty_69 = _bindgen_ty_69::FRA_IIFNAME;
+pub const FRA_GOTO: _bindgen_ty_69 = _bindgen_ty_69::FRA_GOTO;
+pub const FRA_UNUSED2: _bindgen_ty_69 = _bindgen_ty_69::FRA_UNUSED2;
+pub const FRA_PRIORITY: _bindgen_ty_69 = _bindgen_ty_69::FRA_PRIORITY;
+pub const FRA_UNUSED3: _bindgen_ty_69 = _bindgen_ty_69::FRA_UNUSED3;
+pub const FRA_UNUSED4: _bindgen_ty_69 = _bindgen_ty_69::FRA_UNUSED4;
+pub const FRA_UNUSED5: _bindgen_ty_69 = _bindgen_ty_69::FRA_UNUSED5;
+pub const FRA_FWMARK: _bindgen_ty_69 = _bindgen_ty_69::FRA_FWMARK;
+pub const FRA_FLOW: _bindgen_ty_69 = _bindgen_ty_69::FRA_FLOW;
+pub const FRA_TUN_ID: _bindgen_ty_69 = _bindgen_ty_69::FRA_TUN_ID;
+pub const FRA_SUPPRESS_IFGROUP: _bindgen_ty_69 = _bindgen_ty_69::FRA_SUPPRESS_IFGROUP;
+pub const FRA_SUPPRESS_PREFIXLEN: _bindgen_ty_69 = _bindgen_ty_69::FRA_SUPPRESS_PREFIXLEN;
+pub const FRA_TABLE: _bindgen_ty_69 = _bindgen_ty_69::FRA_TABLE;
+pub const FRA_FWMASK: _bindgen_ty_69 = _bindgen_ty_69::FRA_FWMASK;
+pub const FRA_OIFNAME: _bindgen_ty_69 = _bindgen_ty_69::FRA_OIFNAME;
+pub const FRA_PAD: _bindgen_ty_69 = _bindgen_ty_69::FRA_PAD;
+pub const FRA_L3MDEV: _bindgen_ty_69 = _bindgen_ty_69::FRA_L3MDEV;
+pub const FRA_UID_RANGE: _bindgen_ty_69 = _bindgen_ty_69::FRA_UID_RANGE;
+pub const FRA_PROTOCOL: _bindgen_ty_69 = _bindgen_ty_69::FRA_PROTOCOL;
+pub const FRA_IP_PROTO: _bindgen_ty_69 = _bindgen_ty_69::FRA_IP_PROTO;
+pub const FRA_SPORT_RANGE: _bindgen_ty_69 = _bindgen_ty_69::FRA_SPORT_RANGE;
+pub const FRA_DPORT_RANGE: _bindgen_ty_69 = _bindgen_ty_69::FRA_DPORT_RANGE;
+pub const FRA_DSCP: _bindgen_ty_69 = _bindgen_ty_69::FRA_DSCP;
+pub const FRA_FLOWLABEL: _bindgen_ty_69 = _bindgen_ty_69::FRA_FLOWLABEL;
+pub const FRA_FLOWLABEL_MASK: _bindgen_ty_69 = _bindgen_ty_69::FRA_FLOWLABEL_MASK;
+pub const FRA_SPORT_MASK: _bindgen_ty_69 = _bindgen_ty_69::FRA_SPORT_MASK;
+pub const FRA_DPORT_MASK: _bindgen_ty_69 = _bindgen_ty_69::FRA_DPORT_MASK;
+pub const FRA_DSCP_MASK: _bindgen_ty_69 = _bindgen_ty_69::FRA_DSCP_MASK;
+pub const __FRA_MAX: _bindgen_ty_69 = _bindgen_ty_69::__FRA_MAX;
+pub const FR_ACT_UNSPEC: _bindgen_ty_70 = _bindgen_ty_70::FR_ACT_UNSPEC;
+pub const FR_ACT_TO_TBL: _bindgen_ty_70 = _bindgen_ty_70::FR_ACT_TO_TBL;
+pub const FR_ACT_GOTO: _bindgen_ty_70 = _bindgen_ty_70::FR_ACT_GOTO;
+pub const FR_ACT_NOP: _bindgen_ty_70 = _bindgen_ty_70::FR_ACT_NOP;
+pub const FR_ACT_RES3: _bindgen_ty_70 = _bindgen_ty_70::FR_ACT_RES3;
+pub const FR_ACT_RES4: _bindgen_ty_70 = _bindgen_ty_70::FR_ACT_RES4;
+pub const FR_ACT_BLACKHOLE: _bindgen_ty_70 = _bindgen_ty_70::FR_ACT_BLACKHOLE;
+pub const FR_ACT_UNREACHABLE: _bindgen_ty_70 = _bindgen_ty_70::FR_ACT_UNREACHABLE;
+pub const FR_ACT_PROHIBIT: _bindgen_ty_70 = _bindgen_ty_70::FR_ACT_PROHIBIT;
+pub const __FR_ACT_MAX: _bindgen_ty_70 = _bindgen_ty_70::__FR_ACT_MAX;
 #[repr(u32)]
 #[non_exhaustive]
 #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
@@ -2225,7 +2302,10 @@ NL80211_ATTR_SUPPORTED_SELECTORS = 334,
 NL80211_ATTR_MLO_RECONF_REM_LINKS = 335,
 NL80211_ATTR_EPCS = 336,
 NL80211_ATTR_ASSOC_MLD_EXT_CAPA_OPS = 337,
-__NL80211_ATTR_AFTER_LAST = 338,
+NL80211_ATTR_WIPHY_RADIO_INDEX = 338,
+NL80211_ATTR_S1G_LONG_BEACON_PERIOD = 339,
+NL80211_ATTR_S1G_SHORT_BEACON = 340,
+__NL80211_ATTR_AFTER_LAST = 341,
 }
 #[repr(u32)]
 #[non_exhaustive]
@@ -3842,7 +3922,8 @@ NL80211_WIPHY_RADIO_ATTR_INDEX = 1,
 NL80211_WIPHY_RADIO_ATTR_FREQ_RANGE = 2,
 NL80211_WIPHY_RADIO_ATTR_INTERFACE_COMBINATION = 3,
 NL80211_WIPHY_RADIO_ATTR_ANTENNA_MASK = 4,
-__NL80211_WIPHY_RADIO_ATTR_LAST = 5,
+NL80211_WIPHY_RADIO_ATTR_RTS_THRESHOLD = 5,
+__NL80211_WIPHY_RADIO_ATTR_LAST = 6,
 }
 #[repr(u32)]
 #[non_exhaustive]
@@ -3852,6 +3933,15 @@ __NL80211_WIPHY_RADIO_FREQ_ATTR_INVALID = 0,
 NL80211_WIPHY_RADIO_FREQ_ATTR_START = 1,
 NL80211_WIPHY_RADIO_FREQ_ATTR_END = 2,
 __NL80211_WIPHY_RADIO_FREQ_ATTR_LAST = 3,
+}
+#[repr(u32)]
+#[non_exhaustive]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub enum nl80211_s1g_short_beacon_attrs {
+__NL80211_S1G_SHORT_BEACON_ATTR_INVALID = 0,
+NL80211_S1G_SHORT_BEACON_ATTR_HEAD = 1,
+NL80211_S1G_SHORT_BEACON_ATTR_TAIL = 2,
+__NL80211_S1G_SHORT_BEACON_ATTR_LAST = 3,
 }
 #[repr(u32)]
 #[non_exhaustive]
@@ -4347,7 +4437,8 @@ IFLA_VXLAN_VNIFILTER = 30,
 IFLA_VXLAN_LOCALBYPASS = 31,
 IFLA_VXLAN_LABEL_POLICY = 32,
 IFLA_VXLAN_RESERVED_BITS = 33,
-__IFLA_VXLAN_MAX = 34,
+IFLA_VXLAN_MC_ROUTE = 34,
+__IFLA_VXLAN_MAX = 35,
 }
 #[repr(u32)]
 #[non_exhaustive]
@@ -4475,7 +4566,8 @@ IFLA_BOND_AD_LACP_ACTIVE = 29,
 IFLA_BOND_MISSED_MAX = 30,
 IFLA_BOND_NS_IP6_TARGET = 31,
 IFLA_BOND_COUPLED_CONTROL = 32,
-__IFLA_BOND_MAX = 33,
+IFLA_BOND_BROADCAST_NEIGH = 33,
+__IFLA_BOND_MAX = 34,
 }
 #[repr(u32)]
 #[non_exhaustive]
@@ -5177,6 +5269,58 @@ TCA_ROOT_TIME_DELTA = 4,
 TCA_ROOT_EXT_WARN_MSG = 5,
 __TCA_ROOT_MAX = 6,
 }
+#[repr(u32)]
+#[non_exhaustive]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub enum _bindgen_ty_69 {
+FRA_UNSPEC = 0,
+FRA_DST = 1,
+FRA_SRC = 2,
+FRA_IIFNAME = 3,
+FRA_GOTO = 4,
+FRA_UNUSED2 = 5,
+FRA_PRIORITY = 6,
+FRA_UNUSED3 = 7,
+FRA_UNUSED4 = 8,
+FRA_UNUSED5 = 9,
+FRA_FWMARK = 10,
+FRA_FLOW = 11,
+FRA_TUN_ID = 12,
+FRA_SUPPRESS_IFGROUP = 13,
+FRA_SUPPRESS_PREFIXLEN = 14,
+FRA_TABLE = 15,
+FRA_FWMASK = 16,
+FRA_OIFNAME = 17,
+FRA_PAD = 18,
+FRA_L3MDEV = 19,
+FRA_UID_RANGE = 20,
+FRA_PROTOCOL = 21,
+FRA_IP_PROTO = 22,
+FRA_SPORT_RANGE = 23,
+FRA_DPORT_RANGE = 24,
+FRA_DSCP = 25,
+FRA_FLOWLABEL = 26,
+FRA_FLOWLABEL_MASK = 27,
+FRA_SPORT_MASK = 28,
+FRA_DPORT_MASK = 29,
+FRA_DSCP_MASK = 30,
+__FRA_MAX = 31,
+}
+#[repr(u32)]
+#[non_exhaustive]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
+pub enum _bindgen_ty_70 {
+FR_ACT_UNSPEC = 0,
+FR_ACT_TO_TBL = 1,
+FR_ACT_GOTO = 2,
+FR_ACT_NOP = 3,
+FR_ACT_RES3 = 4,
+FR_ACT_RES4 = 5,
+FR_ACT_BLACKHOLE = 6,
+FR_ACT_UNREACHABLE = 7,
+FR_ACT_PROHIBIT = 8,
+__FR_ACT_MAX = 9,
+}
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub union __kernel_sockaddr_storage__bindgen_ty_1 {
@@ -5245,7 +5389,7 @@ impl nl80211_attrs {
 pub const NUM_NL80211_ATTR: nl80211_attrs = nl80211_attrs::__NL80211_ATTR_AFTER_LAST;
 }
 impl nl80211_attrs {
-pub const NL80211_ATTR_MAX: nl80211_attrs = nl80211_attrs::NL80211_ATTR_ASSOC_MLD_EXT_CAPA_OPS;
+pub const NL80211_ATTR_MAX: nl80211_attrs = nl80211_attrs::NL80211_ATTR_S1G_SHORT_BEACON;
 }
 impl nl80211_iftype {
 pub const NL80211_IFTYPE_MAX: nl80211_iftype = nl80211_iftype::NL80211_IFTYPE_NAN;
@@ -5443,10 +5587,13 @@ impl nl80211_mbssid_config_attributes {
 pub const NL80211_MBSSID_CONFIG_ATTR_MAX: nl80211_mbssid_config_attributes = nl80211_mbssid_config_attributes::NL80211_MBSSID_CONFIG_ATTR_TX_LINK_ID;
 }
 impl nl80211_wiphy_radio_attrs {
-pub const NL80211_WIPHY_RADIO_ATTR_MAX: nl80211_wiphy_radio_attrs = nl80211_wiphy_radio_attrs::NL80211_WIPHY_RADIO_ATTR_ANTENNA_MASK;
+pub const NL80211_WIPHY_RADIO_ATTR_MAX: nl80211_wiphy_radio_attrs = nl80211_wiphy_radio_attrs::NL80211_WIPHY_RADIO_ATTR_RTS_THRESHOLD;
 }
 impl nl80211_wiphy_radio_freq_range {
 pub const NL80211_WIPHY_RADIO_FREQ_ATTR_MAX: nl80211_wiphy_radio_freq_range = nl80211_wiphy_radio_freq_range::NL80211_WIPHY_RADIO_FREQ_ATTR_END;
+}
+impl nl80211_s1g_short_beacon_attrs {
+pub const NL80211_S1G_SHORT_BEACON_ATTR_MAX: nl80211_s1g_short_beacon_attrs = nl80211_s1g_short_beacon_attrs::NL80211_S1G_SHORT_BEACON_ATTR_TAIL;
 }
 impl macsec_validation_type {
 pub const MACSEC_VALIDATE_MAX: macsec_validation_type = macsec_validation_type::MACSEC_VALIDATE_STRICT;

@@ -1,4 +1,5 @@
 use crate::extension::{Link, Signature};
+use gix_error::{Result, bail, corruption};
 
 /// The signature of the link extension.
 pub const SIGNATURE: Signature = *b"link";
@@ -12,35 +13,12 @@ pub struct Bitmaps {
     pub replace: gix_bitmap::ewah::Vec,
 }
 
-///
-pub mod decode {
+pub(crate) fn decode(data: &[u8], object_hash: gix_hash::Kind) -> Result<Link> {
+    use gix_error::{OptionExt, ResultExt};
 
-    /// The error returned when decoding link extensions.
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error("{0}")]
-        Corrupt(&'static str),
-        #[error("{kind} bitmap corrupt")]
-        BitmapDecode {
-            err: gix_bitmap::ewah::decode::Error,
-            kind: &'static str,
-        },
-    }
-
-    impl From<std::num::TryFromIntError> for Error {
-        fn from(_: std::num::TryFromIntError) -> Self {
-            Self::Corrupt("error in bitmap iteration trying to convert from u64 to usize")
-        }
-    }
-}
-
-pub(crate) fn decode(data: &[u8], object_hash: gix_hash::Kind) -> Result<Link, decode::Error> {
     let (id, data) = data
         .split_at_checked(object_hash.len_in_bytes())
-        .ok_or(decode::Error::Corrupt(
-            "link extension too short to read share index checksum",
-        ))
+        .ok_or_raise(|| corruption("link extension too short to read share index checksum"))
         .map(|(id, d)| (gix_hash::ObjectId::from_bytes_or_panic(id), d))?;
 
     if data.is_empty() {
@@ -50,13 +28,11 @@ pub(crate) fn decode(data: &[u8], object_hash: gix_hash::Kind) -> Result<Link, d
         });
     }
 
-    let (delete, data) =
-        gix_bitmap::ewah::decode(data).map_err(|err| decode::Error::BitmapDecode { kind: "delete", err })?;
-    let (replace, data) =
-        gix_bitmap::ewah::decode(data).map_err(|err| decode::Error::BitmapDecode { kind: "replace", err })?;
+    let (delete, data) = gix_bitmap::ewah::decode(data).or_raise(|| corruption("delete bitmap corrupt"))?;
+    let (replace, data) = gix_bitmap::ewah::decode(data).or_raise(|| corruption("replace bitmap corrupt"))?;
 
     if !data.is_empty() {
-        return Err(decode::Error::Corrupt("garbage trailing link extension"));
+        bail!(corruption("garbage trailing link extension"));
     }
 
     Ok(Link {
@@ -72,7 +48,8 @@ impl Link {
         object_hash: gix_hash::Kind,
         skip_hash: bool,
         options: crate::decode::Options,
-    ) -> Result<(), crate::file::init::Error> {
+    ) -> Result {
+        let corrupt = |message| gix_error::message(message).corrupted_error();
         let shared_index_path = split_index
             .path
             .parent()
@@ -92,33 +69,33 @@ impl Link {
             let mut split_entry_index = 0;
 
             let mut err = None;
-            bitmaps.replace.for_each_set_bit(|replace_index| {
+            if bitmaps.replace.for_each_set_bit(|replace_index| {
                 let shared_entry = match shared_index.entries.get_mut(replace_index) {
                     Some(e) => e,
                     None => {
-                        err = decode::Error::Corrupt("replace bitmap length exceeds shared index length - more entries in bitmap than found in shared index").into();
+                        err = Some(corrupt("replace bitmap length exceeds shared index length - more entries in bitmap than found in shared index"));
                         return None
                     }
                 };
 
                 if shared_entry.flags.contains(crate::entry::Flags::REMOVE) {
-                    err = decode::Error::Corrupt("entry is marked as both replace and delete").into();
+                    err = Some(corrupt("entry is marked as both replace and delete"));
                     return None
                 }
 
                 let split_entry = match split_index.entries.get(split_entry_index) {
                     Some(e) => e,
                     None => {
-                        err = decode::Error::Corrupt("replace bitmap length exceeds split index length - more entries in bitmap than found in split index").into();
+                        err = Some(corrupt("replace bitmap length exceeds split index length - more entries in bitmap than found in split index"));
                         return None
                     }
                 };
                 if !split_entry.path.is_empty() {
-                    err = decode::Error::Corrupt("paths in split index entries that are for replacement should be empty").into();
+                    err = Some(corrupt("paths in split index entries that are for replacement should be empty"));
                     return None
                 }
                 if shared_entry.path.is_empty() {
-                    err = decode::Error::Corrupt("paths in shared index entries that are replaced should not be empty").into();
+                    err = Some(corrupt("paths in shared index entries that are replaced should not be empty"));
                     return None
                 }
                 shared_entry.stat = split_entry.stat;
@@ -128,9 +105,11 @@ impl Link {
 
                 split_entry_index += 1;
                 Some(())
-            });
+            }).is_none() && err.is_none() {
+                err = Some(corrupt("replace bitmap is malformed"));
+            }
             if let Some(err) = err {
-                return Err(err.into());
+                return Err(err);
             }
 
             let split_index_path_backing = std::mem::take(&mut split_index.path_backing);
@@ -146,19 +125,21 @@ impl Link {
                     .extend_from_slice(&split_index_path_backing[split_index_path]);
             }
 
-            bitmaps.delete.for_each_set_bit(|delete_index| {
+            if bitmaps.delete.for_each_set_bit(|delete_index| {
                 let shared_entry = match shared_index.entries.get_mut(delete_index) {
                     Some(e) => e,
                     None => {
-                        err = decode::Error::Corrupt("delete bitmap length exceeds shared index length - more entries in bitmap than found in shared index").into();
+                        err = Some(corrupt("delete bitmap length exceeds shared index length - more entries in bitmap than found in shared index"));
                         return None
                     }
                 };
                 shared_entry.flags.insert(crate::entry::Flags::REMOVE);
                 Some(())
-            });
+            }).is_none() && err.is_none() {
+                err = Some(corrupt("delete bitmap is malformed"));
+            }
             if let Some(err) = err {
-                return Err(err.into());
+                return Err(err);
             }
 
             shared_index

@@ -1,11 +1,15 @@
+use gix_error::Result;
+use smallvec::SmallVec;
 use std::ops::Range;
 
-use gix_features::zlib;
-use smallvec::SmallVec;
+use gix_error::{OptionExt, ResourceExhaustionKind, ResultExt, bail, corruption, message, validation};
 
 use crate::{
     cache, data,
-    data::{delta, file::decode::Error, File},
+    data::{
+        File, delta,
+        file::decode::{DeltaBaseUnresolved, allocation_error, resize_with_limit},
+    },
 };
 
 /// A return value of a resolve function, which given an [`ObjectId`][gix_hash::ObjectId] determines where an object can be found.
@@ -16,7 +20,7 @@ pub enum ResolvedBase {
     InPack(data::Entry),
     /// Indicates the object of `kind` was found outside of the pack, and its data was written into an output
     /// vector which now has a length of `end`.
-    #[allow(missing_docs)]
+    #[expect(missing_docs)]
     OutOfPack { kind: gix_object::Kind, end: usize },
 }
 
@@ -73,42 +77,46 @@ impl Outcome {
 }
 
 /// Decompression of objects
-impl File {
+impl<T> File<T>
+where
+    T: crate::FileData,
+{
+    fn decoded_object_size(&self, size: u64) -> Result<usize> {
+        decoded_object_size(size, self.alloc_limit_bytes)
+    }
+
     /// Decompress the given `entry` into `out` and return the amount of bytes read from the pack data.
     /// Note that `inflate` is not reset after usage, but will be reset before using it.
     ///
     /// _Note_ that this method does not resolve deltified objects, but merely decompresses their content
     /// `out` is expected to be large enough to hold `entry.size` bytes.
-    ///
-    /// # Panics
-    ///
-    /// If `out` isn't large enough to hold the decompressed `entry`
     pub fn decompress_entry(
         &self,
         entry: &data::Entry,
-        inflate: &mut zlib::Inflate,
+        inflate: &mut gix_zlib::Inflate,
         out: &mut [u8],
-    ) -> Result<usize, Error> {
-        assert!(
-            out.len() as u64 >= entry.decompressed_size,
-            "output buffer isn't large enough to hold decompressed result, want {}, have {}",
-            entry.decompressed_size,
-            out.len()
-        );
-
-        self.decompress_entry_from_data_offset(entry.data_offset, inflate, out)
-            .map_err(Into::into)
+    ) -> Result<usize> {
+        let size = usize::try_from(entry.decompressed_size)
+            .or_raise(|| allocation_error(ResourceExhaustionKind::AllocationFailure))?;
+        if out.len() < size {
+            bail!(validation("Output buffer is too small for the decompressed entry"));
+        }
+        self.decompress_entry_from_data_offset(entry.data_offset, inflate, &mut out[..size])
     }
 
     /// Obtain the [`Entry`][crate::data::Entry] at the given `offset` into the pack.
     ///
     /// The `offset` is typically obtained from the pack index file.
-    pub fn entry(&self, offset: data::Offset) -> Result<data::Entry, data::entry::decode::Error> {
+    pub fn entry(&self, offset: data::Offset) -> Result<data::Entry> {
         let pack_offset: usize = offset.try_into().expect("offset representable by machine");
-        assert!(pack_offset <= self.data.len(), "offset out of bounds");
+        if pack_offset > self.data.len() {
+            bail!(corruption(
+                "Pack entry is truncated: an entry offset pointing beyond pack data"
+            ));
+        }
 
         let object_data = &self.data[pack_offset..];
-        data::Entry::from_bytes(object_data, offset, self.hash_len)
+        data::Entry::from_bytes(object_data, offset, self.object_hash)
     }
 
     /// Decompress the object expected at the given data offset, sans pack header. This information is only
@@ -119,32 +127,66 @@ impl File {
     pub(crate) fn decompress_entry_from_data_offset(
         &self,
         data_offset: data::Offset,
-        inflate: &mut zlib::Inflate,
+        inflate: &mut gix_zlib::Inflate,
         out: &mut [u8],
-    ) -> Result<usize, zlib::inflate::Error> {
-        let offset: usize = data_offset.try_into().expect("offset representable by machine");
-        assert!(offset < self.data.len(), "entry offset out of bounds");
-
-        inflate.reset();
-        inflate
-            .once(&self.data[offset..], out)
-            .map(|(_status, consumed_in, _consumed_out)| consumed_in)
+    ) -> Result<usize> {
+        let (consumed_in, _consumed_out) =
+            self.decompress_complete_entry_from_data_offset(data_offset, inflate, out)?;
+        Ok(consumed_in)
     }
 
-    /// Like `decompress_entry_from_data_offset`, but returns consumed input and output.
-    pub(crate) fn decompress_entry_from_data_offset_2(
+    /// Like `decompress_entry_from_data_offset`, but returns `(consumed-input, consumed-output)`.
+    ///
+    /// The compressed stream must end exactly after producing `out.len()` bytes. Pack entry
+    /// headers are untrusted, so callers must not accept streams that stop early and
+    /// leave zero-filled slack in the destination buffer, nor streams that require more output
+    /// than the header promised. Both cases would make later delta parsing operate on bytes that
+    /// are not the entry payload described by the pack header.
+    pub(crate) fn decompress_complete_entry_from_data_offset(
         &self,
         data_offset: data::Offset,
-        inflate: &mut zlib::Inflate,
+        inflate: &mut gix_zlib::Inflate,
         out: &mut [u8],
-    ) -> Result<(usize, usize), zlib::inflate::Error> {
-        let offset: usize = data_offset.try_into().expect("offset representable by machine");
-        assert!(offset < self.data.len(), "entry offset out of bounds");
+    ) -> Result<(usize, usize)> {
+        let input = self.entry_data(data_offset)?;
+        inflate.reset();
+        let (status, consumed_in, consumed_out) = inflate
+            .once(input, out)
+            .or_raise(|| message("Failed to decompress pack entry"))?;
+        if status != gix_zlib::Status::StreamEnd || consumed_out != out.len() {
+            bail!(corruption(
+                "Pack entry is truncated: pack entry decompressed size does not match entry header",
+            ));
+        }
+        Ok((consumed_in, consumed_out))
+    }
 
+    /// Like [`Self::decompress_commplete_entry_from_data_offset()`], but allows callers to inspect incomplete streams.
+    ///
+    /// This is only for callers that intentionally decompress a prefix into a smaller buffer, such as
+    /// delta header probing. Full pack entry decoding should use [`Self::decompress_commplete_entry_from_data_offset()`].
+    pub(crate) fn decompress_entry_from_data_offset_unchecked(
+        &self,
+        data_offset: data::Offset,
+        inflate: &mut gix_zlib::Inflate,
+        out: &mut [u8],
+    ) -> Result<(gix_zlib::Status, usize, usize)> {
+        let input = self.entry_data(data_offset)?;
         inflate.reset();
         inflate
-            .once(&self.data[offset..], out)
-            .map(|(_status, consumed_in, consumed_out)| (consumed_in, consumed_out))
+            .prefix(input, out)
+            .or_raise(|| message("Failed to decompress pack entry"))
+    }
+
+    /// Return the pack data from `data_offset`, where the compressed entry data starts, to the pack end
+    fn entry_data(&self, data_offset: data::Offset) -> Result<&[u8]> {
+        let offset: usize = data_offset.try_into().expect("offset representable by machine");
+        if offset >= self.data.len() {
+            bail!(corruption(
+                "Pack entry is truncated: an entry data offset pointing beyond pack data"
+            ));
+        }
+        Ok(&self.data[offset..])
     }
 
     /// Decode an entry, resolving delta's as needed, while growing the `out` vector if there is not enough
@@ -154,26 +196,25 @@ impl File {
     /// `inflate` will be used for decompressing entries, and will not be reset after usage, but before first using it.
     ///
     /// `resolve` is a function to lookup objects with the given [`ObjectId`][gix_hash::ObjectId], in case the full object id is used to refer to
-    /// a base object, instead of an in-pack offset.
+    /// a base object, instead of an in-pack offset. Return `Ok(None)` if the base could not be found;
+    /// lookup errors are propagated unchanged instead of being treated as missing bases.
     ///
     /// `delta_cache` is a mechanism to avoid looking up base objects multiple times when decompressing multiple objects in a row.
     /// Use a [Noop-Cache][cache::Never] to disable caching all together at the cost of repeating work.
+    #[expect(clippy::type_complexity)] // Keep the fallible resolver's arguments and result explicit.
     pub fn decode_entry(
         &self,
         entry: data::Entry,
         out: &mut Vec<u8>,
-        inflate: &mut zlib::Inflate,
-        resolve: &dyn Fn(&gix_hash::oid, &mut Vec<u8>) -> Option<ResolvedBase>,
+        inflate: &mut gix_zlib::Inflate,
+        resolve: &dyn Fn(&gix_hash::oid, &mut Vec<u8>) -> Result<Option<ResolvedBase>>,
         delta_cache: &mut dyn cache::DecodeEntry,
-    ) -> Result<Outcome, Error> {
+    ) -> Result<Outcome> {
         use crate::data::entry::Header::*;
         match entry.header {
             Tree | Blob | Commit | Tag => {
-                let size: usize = entry.decompressed_size.try_into().map_err(|_| Error::OutOfMemory)?;
-                if let Some(additional) = size.checked_sub(out.len()) {
-                    out.try_reserve(additional)?;
-                }
-                out.resize(size, 0);
+                let size = self.decoded_object_size(entry.decompressed_size)?;
+                resize_with_limit(out, size, self.alloc_limit_bytes)?;
                 self.decompress_entry(&entry, inflate, out.as_mut_slice())
                     .map(|consumed_input| {
                         Outcome::from_object_entry(
@@ -190,18 +231,20 @@ impl File {
     /// resolve: technically, this shouldn't ever be required as stored local packs don't refer to objects by id
     /// that are outside of the pack. Unless, of course, the ref refers to an object within this pack, which means
     /// it's very, very large as 20bytes are smaller than the corresponding MSB encoded number
+    #[expect(clippy::type_complexity)] // Match the public decoder's resolver signature.
     fn resolve_deltas(
         &self,
         last: data::Entry,
-        resolve: &dyn Fn(&gix_hash::oid, &mut Vec<u8>) -> Option<ResolvedBase>,
-        inflate: &mut zlib::Inflate,
+        resolve: &dyn Fn(&gix_hash::oid, &mut Vec<u8>) -> Result<Option<ResolvedBase>>,
+        inflate: &mut gix_zlib::Inflate,
         out: &mut Vec<u8>,
         cache: &mut dyn cache::DecodeEntry,
-    ) -> Result<Outcome, Error> {
+    ) -> Result<Outcome> {
         // all deltas, from the one that produces the desired object (first) to the oldest at the end of the chain
         let mut chain = SmallVec::<[Delta; 10]>::default();
         let first_entry = last.clone();
         let mut cursor = last;
+        let mut cycle = super::DeltaCycle::new(cursor.data_offset);
         let mut base_buffer_size: Option<usize> = None;
         let mut object_kind: Option<gix_object::Kind> = None;
         let mut consumed_input: Option<usize> = None;
@@ -221,11 +264,37 @@ impl File {
             }
             // This is a pessimistic guess, as worst possible compression should not be bigger than the data itself.
             // TODO: is this assumption actually true?
-            total_delta_data_size += cursor.decompressed_size;
-            let decompressed_size = cursor
-                .decompressed_size
-                .try_into()
-                .expect("a single delta size small enough to fit a usize");
+            total_delta_data_size = total_delta_data_size
+                .checked_add(cursor.decompressed_size)
+                .ok_or_raise(|| allocation_error(ResourceExhaustionKind::AllocationFailure))?;
+            let chain_capacity = if chain.len() == chain.capacity() {
+                chain
+                    .len()
+                    .checked_add(1)
+                    .and_then(usize::checked_next_power_of_two)
+                    .ok_or_raise(|| allocation_error(ResourceExhaustionKind::AllocationFailure))?
+            } else if chain.spilled() {
+                chain.capacity()
+            } else {
+                0
+            };
+            let chain_bytes = chain_capacity
+                .checked_mul(std::mem::size_of::<Delta>())
+                .ok_or_raise(|| allocation_error(ResourceExhaustionKind::AllocationFailure))?;
+            let allocation_size = total_delta_data_size.max(chain_bytes as u64);
+            if self
+                .alloc_limit_bytes
+                .is_some_and(|limit| allocation_size > limit as u64)
+            {
+                bail!(allocation_error(ResourceExhaustionKind::AllocationLimit));
+            }
+            let decompressed_size = self.decoded_object_size(cursor.decompressed_size)?;
+            if chain_capacity > chain.capacity() {
+                chain
+                    .try_reserve_exact(chain_capacity - chain.len())
+                    .map_err(|_| allocation_error(ResourceExhaustionKind::AllocationFailure))
+                    .or_error()?;
+            }
             chain.push(Delta {
                 data: Range {
                     start: 0,
@@ -238,18 +307,27 @@ impl File {
             });
             use crate::data::entry::Header;
             cursor = match cursor.header {
-                Header::OfsDelta { base_distance } => self.entry(cursor.base_pack_offset(base_distance))?,
-                Header::RefDelta { base_id } => match resolve(base_id.as_ref(), out) {
+                Header::OfsDelta { base_distance } => {
+                    let offset = cursor
+                        .checked_base_pack_offset(base_distance)
+                        .ok_or_else(|| {
+                            corruption("Pack entry is truncated: an ofs-delta base distance pointing before pack start")
+                        })
+                        .or_error()?;
+                    self.entry(offset)?
+                }
+                Header::RefDelta { base_id } => match resolve(base_id.as_ref(), out)? {
                     Some(ResolvedBase::InPack(entry)) => entry,
                     Some(ResolvedBase::OutOfPack { end, kind }) => {
                         base_buffer_size = Some(end);
                         object_kind = Some(kind);
                         break;
                     }
-                    None => return Err(Error::DeltaBaseUnresolved(base_id)),
+                    None => bail!(DeltaBaseUnresolved(base_id)),
                 },
                 _ => unreachable!("cursor.is_delta() only allows deltas here"),
             };
+            cycle.check(cursor.data_offset)?;
         }
 
         // This can happen if the cache held the first entry itself
@@ -265,24 +343,31 @@ impl File {
         // First pass will decompress all delta data and keep it in our output buffer
         // [<possibly resolved base object>]<delta-1..delta-n>...
         // so that we can find the biggest result size.
-        let total_delta_data_size: usize = total_delta_data_size.try_into().expect("delta data to fit in memory");
+        let total_delta_data_size = usize::try_from(total_delta_data_size)
+            .or_raise(|| allocation_error(ResourceExhaustionKind::AllocationFailure))?;
 
         let chain_len = chain.len();
+        let actual_base_size = match base_buffer_size {
+            Some(size) => size,
+            None => self.decoded_object_size(cursor.decompressed_size)?,
+        };
         let (first_buffer_end, second_buffer_end) = {
             let delta_start = base_buffer_size.unwrap_or(0);
 
             let delta_range = Range {
                 start: delta_start,
-                end: delta_start + total_delta_data_size,
+                end: delta_start
+                    .checked_add(total_delta_data_size)
+                    .ok_or_raise(|| allocation_error(ResourceExhaustionKind::AllocationFailure))?,
             };
-            out.try_reserve(delta_range.end.saturating_sub(out.len()))?;
-            out.resize(delta_range.end, 0);
+            resize_with_limit(out, delta_range.end, self.alloc_limit_bytes)?;
 
             let mut instructions = &mut out[delta_range.clone()];
             let mut relative_delta_start = 0;
             let mut biggest_result_size = 0;
+            let mut expected_base_size = actual_base_size;
             for (delta_idx, delta) in chain.iter_mut().rev().enumerate() {
-                let consumed_from_data_offset = self.decompress_entry_from_data_offset(
+                let (consumed_from_data_offset, consumed_out) = self.decompress_complete_entry_from_data_offset(
                     delta.data_offset,
                     inflate,
                     &mut instructions[..delta.decompressed_size],
@@ -292,20 +377,27 @@ impl File {
                     consumed_input = Some(consumed_from_data_offset);
                 }
 
-                let (base_size, offset) = delta::decode_header_size(instructions);
+                let current_delta = &instructions[..consumed_out];
+                let (base_size, offset) = delta::decode_header_size(current_delta)?;
                 let mut bytes_consumed_by_header = offset;
+                delta.base_size = self.decoded_object_size(base_size)?;
+                if delta.base_size != expected_base_size {
+                    bail!(corruption(
+                        "Corrupt delta data: delta base size does not match base object size"
+                    ));
+                }
                 biggest_result_size = biggest_result_size.max(base_size);
-                delta.base_size = base_size.try_into().expect("base size fits into usize");
 
-                let (result_size, offset) = delta::decode_header_size(&instructions[offset..]);
+                let (result_size, offset) = delta::decode_header_size(&current_delta[offset..])?;
                 bytes_consumed_by_header += offset;
                 biggest_result_size = biggest_result_size.max(result_size);
-                delta.result_size = result_size.try_into().expect("result size fits into usize");
+                delta.result_size = self.decoded_object_size(result_size)?;
+                expected_base_size = delta.result_size;
 
                 // the absolute location into the instructions buffer, so we keep track of the end point of the last
                 delta.data.start = relative_delta_start + bytes_consumed_by_header;
+                delta.data.end = relative_delta_start + consumed_out;
                 relative_delta_start += delta.decompressed_size;
-                delta.data.end = relative_delta_start;
 
                 instructions = &mut instructions[delta.decompressed_size..];
             }
@@ -313,29 +405,27 @@ impl File {
             // Now we can produce a buffer like this
             // [<biggest-result-buffer, possibly filled with resolved base object data>]<biggest-result-buffer><delta-1..delta-n>
             // from [<possibly resolved base object>]<delta-1..delta-n>...
-            let biggest_result_size: usize = biggest_result_size.try_into().map_err(|_| Error::OutOfMemory)?;
+            if base_buffer_size.is_none() {
+                biggest_result_size = biggest_result_size.max(cursor.decompressed_size);
+            }
+            let biggest_result_size = self.decoded_object_size(biggest_result_size)?;
             let first_buffer_size = biggest_result_size;
             let second_buffer_size = first_buffer_size;
-            let out_size = first_buffer_size + second_buffer_size + total_delta_data_size;
-            out.try_reserve(out_size.saturating_sub(out.len()))?;
-            out.resize(out_size, 0);
+            let out_size = first_buffer_size
+                .checked_add(second_buffer_size)
+                .and_then(|size| size.checked_add(total_delta_data_size))
+                .ok_or_raise(|| allocation_error(ResourceExhaustionKind::AllocationFailure))?;
+            resize_with_limit(out, out_size, self.alloc_limit_bytes)?;
 
             // Now 'rescue' the deltas, because in the next step we possibly overwrite that portion
             // of memory with the base object (in the majority of cases)
             let second_buffer_end = {
-                let end = first_buffer_size + second_buffer_size;
-                if delta_range.start < end {
-                    // …this means that the delta size is even larger than two uncompressed worst-case
-                    // intermediate results combined. It would already be undesirable to have it bigger
-                    // then the target size (as you could just store the object in whole).
-                    // However, this just means that it reuses existing deltas smartly, which as we rightfully
-                    // remember stand for an object each. However, this means a lot of data is read to restore
-                    // a single object sometimes. Fair enough - package size is minimized that way.
-                    out.copy_within(delta_range, end);
-                } else {
-                    let (buffers, instructions) = out.split_at_mut(end);
-                    instructions.copy_from_slice(&buffers[delta_range]);
-                }
+                let end = first_buffer_size
+                    .checked_add(second_buffer_size)
+                    .ok_or_raise(|| allocation_error(ResourceExhaustionKind::AllocationFailure))?;
+                // Move the decompressed delta instructions behind the two work buffers so they remain intact
+                // while we repurpose the front of `out` for base-object materialization and delta application.
+                out.copy_within(delta_range, end);
                 end
             };
 
@@ -345,7 +435,9 @@ impl File {
                 let base_entry = cursor;
                 debug_assert!(!base_entry.header.is_delta());
                 object_kind = base_entry.header.as_kind();
-                self.decompress_entry_from_data_offset(base_entry.data_offset, inflate, out)?;
+                let base_size = self.decoded_object_size(base_entry.decompressed_size)?;
+                let out_base = &mut out[..base_size];
+                self.decompress_entry_from_data_offset(base_entry.data_offset, inflate, out_base)?;
             }
 
             (first_buffer_size, second_buffer_end)
@@ -415,6 +507,15 @@ impl File {
             object_size: last_result_size as u64,
         })
     }
+}
+
+/// Convert user-controlled sizes from pack data into allocation sizes while enforcing the configured allocation cap.
+fn decoded_object_size(size: u64, alloc_limit_bytes: Option<usize>) -> Result<usize> {
+    let size = usize::try_from(size).or_raise(|| allocation_error(ResourceExhaustionKind::AllocationFailure))?;
+    if alloc_limit_bytes.is_some_and(|limit| size > limit) {
+        bail!(allocation_error(ResourceExhaustionKind::AllocationLimit));
+    }
+    Ok(size)
 }
 
 #[cfg(test)]

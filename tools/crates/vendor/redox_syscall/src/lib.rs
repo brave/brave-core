@@ -51,6 +51,3 @@ pub mod sigabi;
 
 /// V2 scheme format
 pub mod schemev2;
-
-pub mod scheme;
-pub use scheme::*;

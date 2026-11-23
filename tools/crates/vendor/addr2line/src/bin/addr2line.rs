@@ -1,11 +1,11 @@
-use fallible_iterator::FallibleIterator;
 use std::borrow::Cow;
+use std::ffi::OsStr;
 use std::io::{BufRead, Lines, StdinLock, Write};
 use std::path::{Path, PathBuf};
 
+use addr2line::{Loader, Location};
 use clap::{Arg, ArgAction, Command};
-
-use addr2line::{Loader, LoaderReader, Location};
+use fallible_iterator::FallibleIterator;
 
 fn parse_uint_from_hex_string(string: &str) -> Option<u64> {
     if string.len() > 2 && string.starts_with("0x") {
@@ -15,22 +15,23 @@ fn parse_uint_from_hex_string(string: &str) -> Option<u64> {
     }
 }
 
-enum Addrs<'a> {
+enum Addrs<'a, R: gimli::Reader> {
     Args(clap::parser::ValuesRef<'a, String>),
     Stdin(Lines<StdinLock<'a>>),
     All {
-        iter: addr2line::LocationRangeIter<'a, LoaderReader<'a>>,
+        iter: addr2line::LocationRangeIter<'a, R>,
         max: u64,
     },
 }
 
-impl<'a> Iterator for Addrs<'a> {
+impl<'a, R: gimli::Reader> Iterator for Addrs<'a, R> {
     type Item = Option<u64>;
 
     fn next(&mut self) -> Option<Option<u64>> {
         let text = match self {
-            Addrs::Args(vals) => vals.next().map(Cow::from),
-            Addrs::Stdin(lines) => lines.next().map(Result::unwrap).map(Cow::from),
+            Addrs::Args(vals) => vals.next().map(Cow::from)?,
+            // Treat all stdin errors as EOF.
+            Addrs::Stdin(lines) => lines.next()?.ok().map(Cow::from)?,
             Addrs::All { iter, max } => {
                 for (addr, _len, _loc) in iter {
                     if addr >= *max {
@@ -41,9 +42,7 @@ impl<'a> Iterator for Addrs<'a> {
                 return None;
             }
         };
-        text.as_ref()
-            .map(Cow::as_ref)
-            .map(parse_uint_from_hex_string)
+        Some(parse_uint_from_hex_string(&text))
     }
 }
 
@@ -100,6 +99,15 @@ struct Options<'a> {
 }
 
 fn main() {
+    let name = std::env::args_os()
+        .next()
+        .as_deref()
+        .map(Path::new)
+        .and_then(Path::file_name)
+        .and_then(OsStr::to_str)
+        .unwrap_or("addr2line")
+        .to_owned();
+
     let matches = Command::new("addr2line")
         .version(env!("CARGO_PKG_VERSION"))
         .about("A fast addr2line Rust port")
@@ -187,19 +195,32 @@ fn main() {
         section: matches.get_one::<String>("section"),
     };
 
-    let ctx = Loader::new_with_sup(opts.exe, opts.sup).unwrap();
+    let ctx = match Loader::new_with_sup(opts.exe, opts.sup) {
+        Ok(ctx) => ctx,
+        Err(e) => {
+            eprintln!("{name}: failed to load debug info: {e}");
+            std::process::exit(1);
+        }
+    };
 
     let section_range = opts.section.map(|section_name| {
         ctx.get_section_range(section_name.as_bytes())
-            .unwrap_or_else(|| panic!("cannot find section {}", section_name))
+            .unwrap_or_else(|| {
+                eprintln!("{name}: cannot find section {section_name}");
+                std::process::exit(1);
+            })
     });
 
     let stdin = std::io::stdin();
     let addrs = if matches.get_flag("all") {
-        Addrs::All {
-            iter: ctx.find_location_range(0, !0).unwrap(),
-            max: 0,
-        }
+        let iter = match ctx.find_location_range(0, !0) {
+            Ok(iter) => iter,
+            Err(e) => {
+                eprintln!("{name}: failed to find all addresses: {e}");
+                std::process::exit(1);
+            }
+        };
+        Addrs::All { iter, max: 0 }
     } else {
         matches
             .get_many::<String>("addrs")
@@ -237,11 +258,32 @@ fn main() {
         });
 
         if opts.do_functions || opts.do_inlines {
-            let mut printed_anything = false;
-            if let Some(probe) = probe {
-                let mut frames = ctx.find_frames(probe).unwrap().peekable();
+            let print_frames = |probe| {
+                let Some(probe) = probe else {
+                    return false;
+                };
+                let frames = match ctx.find_frames(probe) {
+                    Ok(frames) => frames,
+                    Err(e) => {
+                        eprintln!("{name}: failed to find frames for 0x{probe:x}: {e}");
+                        // Fallback to symbol lookup to ensure we print something.
+                        return false;
+                    }
+                };
+
+                let mut printed_anything = false;
+                let mut frames = frames.peekable();
                 let mut first = true;
-                while let Some(frame) = frames.next().unwrap() {
+                while let Some(frame_result) = frames.next().transpose() {
+                    let frame = match frame_result {
+                        Ok(frame) => frame,
+                        Err(e) => {
+                            eprintln!("{name}: failed to get next frame for 0x{probe:x}: {e}");
+                            // Fallback to symbol lookup if needed to ensure we print something.
+                            return printed_anything;
+                        }
+                    };
+
                     if opts.pretty && !first {
                         print!(" (inlined by) ");
                     }
@@ -284,12 +326,13 @@ fn main() {
                         break;
                     }
                 }
-            }
+                printed_anything
+            };
 
-            if !printed_anything {
+            if !print_frames(probe) {
                 if opts.do_functions {
-                    let name = probe.and_then(|probe| ctx.find_symbol(probe));
-                    print_function(name, None, opts.demangle);
+                    let symbol = probe.and_then(|probe| ctx.find_symbol(probe));
+                    print_function(symbol, None, opts.demangle);
 
                     if opts.pretty {
                         print!(" at ");
@@ -301,13 +344,28 @@ fn main() {
                 print_loc(None, opts.basenames, opts.llvm);
             }
         } else {
-            let loc = probe.and_then(|probe| ctx.find_location(probe).unwrap());
+            let loc = probe.and_then(|probe| match ctx.find_location(probe) {
+                Ok(loc) => loc,
+                Err(e) => {
+                    eprintln!("{name}: failed to find location for 0x{probe:x}: {e}");
+                    None
+                }
+            });
             print_loc(loc.as_ref(), opts.basenames, opts.llvm);
         }
 
         if opts.llvm {
             println!();
         }
-        std::io::stdout().flush().unwrap();
+
+        // Flush required because caller may wait for response before
+        // writing another address.
+        if let Err(e) = std::io::stdout().flush() {
+            if e.kind() == std::io::ErrorKind::BrokenPipe {
+                std::process::exit(0);
+            }
+            eprintln!("{name}: error flushing stdout: {e}");
+            std::process::exit(1);
+        }
     }
 }

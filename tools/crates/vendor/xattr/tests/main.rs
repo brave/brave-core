@@ -1,3 +1,12 @@
+#![cfg(any(
+    target_os = "linux",
+    target_os = "freebsd",
+    target_os = "netbsd",
+    target_os = "hurd",
+    target_os = "macos",
+    target_os = "android"
+))]
+
 use std::collections::BTreeSet;
 use std::ffi::OsStr;
 use xattr::FileExt;
@@ -5,12 +14,6 @@ use xattr::FileExt;
 use tempfile::{tempfile, tempfile_in, NamedTempFile};
 
 #[test]
-#[cfg(any(
-    target_os = "linux",
-    target_os = "freebsd",
-    target_os = "macos",
-    target_os = "android"
-))]
 fn test_fd() {
     use std::os::unix::ffi::OsStrExt;
     let tmp = tempfile().unwrap();
@@ -45,12 +48,6 @@ fn test_fd() {
 }
 
 #[test]
-#[cfg(any(
-    target_os = "linux",
-    target_os = "freebsd",
-    target_os = "macos",
-    target_os = "android"
-))]
 fn test_path() {
     use std::os::unix::ffi::OsStrExt;
     let tmp = NamedTempFile::new().unwrap();
@@ -88,23 +85,11 @@ fn test_path() {
 }
 
 #[test]
-#[cfg(any(
-    target_os = "linux",
-    target_os = "freebsd",
-    target_os = "macos",
-    target_os = "android"
-))]
 fn test_missing() {
     assert!(xattr::get("/var/empty/does-not-exist", "user.test").is_err());
 }
 
 #[test]
-#[cfg(any(
-    target_os = "linux",
-    target_os = "freebsd",
-    target_os = "macos",
-    target_os = "android"
-))]
 fn test_debug() {
     use std::os::unix::ffi::OsStrExt;
 
@@ -139,12 +124,6 @@ fn test_debug() {
 }
 
 #[test]
-#[cfg(any(
-    target_os = "linux",
-    target_os = "freebsd",
-    target_os = "macos",
-    target_os = "android"
-))]
 fn test_multi() {
     use std::os::unix::ffi::OsStrExt;
     // Only works on "real" filesystems.
@@ -174,7 +153,7 @@ fn test_multi() {
 // This test is skipped on android because the /data/tmp filesystem doesn't support >4kib of
 // extended attributes.
 #[test]
-#[cfg(any(target_os = "linux", target_os = "freebsd", target_os = "macos"))]
+#[cfg(not(target_os = "android"))]
 fn test_large() {
     use std::ffi::OsString;
     use std::os::unix::ffi::OsStrExt;
@@ -205,12 +184,6 @@ fn test_large() {
 // Tests the deref API variants - regression test for
 // https://github.com/Stebalien/xattr/issues/57
 #[test]
-#[cfg(any(
-    target_os = "linux",
-    target_os = "freebsd",
-    target_os = "macos",
-    target_os = "android"
-))]
 fn test_path_deref() {
     use std::os::unix::ffi::OsStrExt;
     // Only works on "real" filesystems.

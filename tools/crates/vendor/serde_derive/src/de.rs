@@ -26,9 +26,9 @@ pub fn expand_derive_deserialize(input: &mut syn::DeriveInput) -> syn::Result<To
     replace_receiver(input);
 
     let ctxt = Ctxt::new();
-    let cont = match Container::from_ast(&ctxt, input, Derive::Deserialize, &private.ident()) {
-        Some(cont) => cont,
-        None => return Err(ctxt.check().unwrap_err()),
+    let Some(cont) = Container::from_ast(&ctxt, input, Derive::Deserialize, &private.ident())
+    else {
+        return Err(ctxt.check().unwrap_err());
     };
     precondition(&ctxt, &cont);
     ctxt.check()?;
@@ -594,12 +594,15 @@ fn deserialize_seq_in_place(
                     let (wrapper, wrapper_ty) = wrap_deserialize_field_with(params, field.ty, path);
                     quote!({
                         #wrapper
-                        match _serde::de::SeqAccess::next_element::<#wrapper_ty>(&mut __seq)? {
-                            _serde::#private::Some(__wrap) => {
+                        match _serde::de::SeqAccess::next_element::<#wrapper_ty>(&mut __seq) {
+                            _serde::#private::Ok(_serde::#private::Some(__wrap)) => {
                                 self.place.#member = __wrap.value;
                             }
-                            _serde::#private::None => {
+                            _serde::#private::Ok(_serde::#private::None) => {
                                 #value_if_none;
+                            }
+                            _serde::#private::Err(__err) => {
+                                return _serde::#private::Err(__err);
                             }
                         }
                     })
@@ -652,7 +655,7 @@ struct FieldWithAliases<'a> {
     aliases: &'a BTreeSet<Name>,
 }
 
-fn field_i(i: usize) -> Ident {
+pub(crate) fn field_i(i: usize) -> Ident {
     Ident::new(&format!("__field{}", i), Span::call_site())
 }
 

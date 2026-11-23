@@ -14,7 +14,7 @@
 //!
 //! ```
 //! use icu::locale::extensions::private::subtag;
-//! use icu::locale::{locale, Locale};
+//! use icu::locale::{Locale, locale};
 //!
 //! let mut loc: Locale = "en-US-x-foo-faa".parse().expect("Parsing failed.");
 //!
@@ -36,7 +36,7 @@ use core::ops::Deref;
 use core::str::FromStr;
 
 #[doc(inline)]
-pub use other::{subtag, Subtag};
+pub use other::{Subtag, subtag};
 
 #[cfg(feature = "alloc")]
 use super::ExtensionType;
@@ -112,7 +112,7 @@ impl Private {
         Err(ParseError::InvalidExtension)
     }
 
-    /// A constructor which takes a pre-sorted list of [`Subtag`].
+    /// A constructor which takes a list of [`Subtag`]s.
     ///
     /// ✨ *Enabled with the `alloc` Cargo feature.*
     ///

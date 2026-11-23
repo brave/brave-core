@@ -1,19 +1,16 @@
-use core::fmt::Write;
-
 use crate::{
-    civil::Weekday,
-    error::{err, ErrorContext},
-    fmt::{
-        offset,
-        strtime::{BrokenDownTime, Extension, Flag, Meridiem},
-        Parsed,
-    },
-    util::{
-        escape, parse,
-        rangeint::{ri8, RFrom},
-        t::{self, C},
-    },
     Error, Timestamp,
+    civil::Weekday,
+    error::{
+        ErrorContext,
+        fmt::strtime::{Error as E, ParseError as PE},
+        util::ParseIntError,
+    },
+    fmt::{
+        Parsed, offset,
+        strtime::{BrokenDownTime, Extension, Flag, Meridiem},
+    },
+    util::{b, parse},
 };
 
 pub(super) struct Parser<'f, 'i, 't> {
@@ -24,109 +21,97 @@ pub(super) struct Parser<'f, 'i, 't> {
 
 impl<'f, 'i, 't> Parser<'f, 'i, 't> {
     pub(super) fn parse(&mut self) -> Result<(), Error> {
+        let failc =
+            |directive, colons| E::DirectiveFailure { directive, colons };
+        let fail = |directive| failc(directive, 0);
+
         while !self.fmt.is_empty() {
             if self.f() != b'%' {
                 self.parse_literal()?;
                 continue;
             }
             if !self.bump_fmt() {
-                return Err(err!(
-                    "invalid format string, expected byte after '%', \
-                     but found end of format string",
-                ));
+                return Err(Error::from(E::UnexpectedEndAfterPercent));
             }
             // We don't check this for `%.` since that currently always
             // must lead to `%.f` which can actually parse the empty string!
             if self.inp.is_empty() && self.f() != b'.' {
-                return Err(err!(
-                    "expected non-empty input for directive %{directive}, \
-                     but found end of input",
-                    directive = escape::Byte(self.f()),
-                ));
+                return Err(Error::from(PE::ExpectedNonEmpty {
+                    directive: self.f(),
+                }));
             }
             // Parse extensions like padding/case options and padding width.
             let ext = self.parse_extension()?;
             match self.f() {
-                b'%' => self.parse_percent().context("%% failed")?,
-                b'A' => self.parse_weekday_full().context("%A failed")?,
-                b'a' => self.parse_weekday_abbrev().context("%a failed")?,
-                b'B' => self.parse_month_name_full().context("%B failed")?,
-                b'b' => self.parse_month_name_abbrev().context("%b failed")?,
-                b'C' => self.parse_century(ext).context("%C failed")?,
-                b'D' => self.parse_american_date().context("%D failed")?,
-                b'd' => self.parse_day(ext).context("%d failed")?,
-                b'e' => self.parse_day(ext).context("%e failed")?,
-                b'F' => self.parse_iso_date().context("%F failed")?,
-                b'f' => self.parse_fractional(ext).context("%f failed")?,
-                b'G' => self.parse_iso_week_year(ext).context("%G failed")?,
-                b'g' => self.parse_iso_week_year2(ext).context("%g failed")?,
-                b'H' => self.parse_hour24(ext).context("%H failed")?,
-                b'h' => self.parse_month_name_abbrev().context("%h failed")?,
-                b'I' => self.parse_hour12(ext).context("%I failed")?,
-                b'j' => self.parse_day_of_year(ext).context("%j failed")?,
-                b'k' => self.parse_hour24(ext).context("%k failed")?,
-                b'l' => self.parse_hour12(ext).context("%l failed")?,
-                b'M' => self.parse_minute(ext).context("%M failed")?,
-                b'm' => self.parse_month(ext).context("%m failed")?,
-                b'N' => self.parse_fractional(ext).context("%N failed")?,
-                b'n' => self.parse_whitespace().context("%n failed")?,
-                b'P' => self.parse_ampm().context("%P failed")?,
-                b'p' => self.parse_ampm().context("%p failed")?,
+                b'%' => self.parse_percent().context(fail(b'%'))?,
+                b'A' => self.parse_weekday_full().context(fail(b'A'))?,
+                b'a' => self.parse_weekday_abbrev().context(fail(b'a'))?,
+                b'B' => self.parse_month_name_full().context(fail(b'B'))?,
+                b'b' => self.parse_month_name_abbrev().context(fail(b'b'))?,
+                b'C' => self.parse_century(ext).context(fail(b'C'))?,
+                b'D' => self.parse_american_date().context(fail(b'D'))?,
+                b'd' => self.parse_day(ext).context(fail(b'd'))?,
+                b'e' => self.parse_day(ext).context(fail(b'e'))?,
+                b'F' => self.parse_iso_date().context(fail(b'F'))?,
+                b'f' => self.parse_fractional(ext).context(fail(b'f'))?,
+                b'G' => self.parse_iso_week_year(ext).context(fail(b'G'))?,
+                b'g' => self.parse_iso_week_year2(ext).context(fail(b'g'))?,
+                b'H' => self.parse_hour24(ext).context(fail(b'H'))?,
+                b'h' => self.parse_month_name_abbrev().context(fail(b'h'))?,
+                b'I' => self.parse_hour12(ext).context(fail(b'I'))?,
+                b'j' => self.parse_day_of_year(ext).context(fail(b'j'))?,
+                b'k' => self.parse_hour24(ext).context(fail(b'k'))?,
+                b'l' => self.parse_hour12(ext).context(fail(b'l'))?,
+                b'M' => self.parse_minute(ext).context(fail(b'M'))?,
+                b'm' => self.parse_month(ext).context(fail(b'm'))?,
+                b'N' => self.parse_fractional(ext).context(fail(b'N'))?,
+                b'n' => self.parse_whitespace().context(fail(b'n'))?,
+                b'P' => self.parse_ampm().context(fail(b'P'))?,
+                b'p' => self.parse_ampm().context(fail(b'p'))?,
                 b'Q' => match ext.colons {
-                    0 => self.parse_iana_nocolon().context("%Q failed")?,
-                    1 => self.parse_iana_colon().context("%:Q failed")?,
-                    _ => {
-                        return Err(err!(
-                            "invalid number of `:` in `%Q` directive"
-                        ))
-                    }
+                    0 => self.parse_iana_nocolon().context(fail(b'Q'))?,
+                    1 => self.parse_iana_colon().context(failc(b'Q', 1))?,
+                    _ => return Err(E::ColonCount { directive: b'Q' }.into()),
                 },
-                b'R' => self.parse_clock_nosecs().context("%R failed")?,
-                b'S' => self.parse_second(ext).context("%S failed")?,
-                b's' => self.parse_timestamp(ext).context("%s failed")?,
-                b'T' => self.parse_clock_secs().context("%T failed")?,
-                b't' => self.parse_whitespace().context("%t failed")?,
-                b'U' => self.parse_week_sun(ext).context("%U failed")?,
-                b'u' => self.parse_weekday_mon(ext).context("%u failed")?,
-                b'V' => self.parse_week_iso(ext).context("%V failed")?,
-                b'W' => self.parse_week_mon(ext).context("%W failed")?,
-                b'w' => self.parse_weekday_sun(ext).context("%w failed")?,
-                b'Y' => self.parse_year(ext).context("%Y failed")?,
-                b'y' => self.parse_year2(ext).context("%y failed")?,
+                b'R' => self.parse_clock_nosecs().context(fail(b'R'))?,
+                b'S' => self.parse_second(ext).context(fail(b'S'))?,
+                b's' => self.parse_timestamp(ext).context(fail(b's'))?,
+                b'T' => self.parse_clock_secs().context(fail(b'T'))?,
+                b't' => self.parse_whitespace().context(fail(b't'))?,
+                b'U' => self.parse_week_sun(ext).context(fail(b'U'))?,
+                b'u' => self.parse_weekday_mon(ext).context(fail(b'u'))?,
+                b'V' => self.parse_week_iso(ext).context(fail(b'V'))?,
+                b'W' => self.parse_week_mon(ext).context(fail(b'W'))?,
+                b'w' => self.parse_weekday_sun(ext).context(fail(b'w'))?,
+                b'Y' => self.parse_year(ext).context(fail(b'Y'))?,
+                b'y' => self.parse_year2(ext).context(fail(b'y'))?,
                 b'z' => match ext.colons {
-                    0 => self.parse_offset_nocolon().context("%z failed")?,
-                    1 => self.parse_offset_colon().context("%:z failed")?,
-                    2 => self.parse_offset_colon2().context("%::z failed")?,
-                    3 => self.parse_offset_colon3().context("%:::z failed")?,
-                    _ => {
-                        return Err(err!(
-                            "invalid number of `:` in `%z` directive"
-                        ))
-                    }
+                    0 => self.parse_offset_nocolon().context(fail(b'z'))?,
+                    1 => self.parse_offset_colon().context(failc(b'z', 1))?,
+                    2 => self.parse_offset_colon2().context(failc(b'z', 2))?,
+                    3 => self.parse_offset_colon3().context(failc(b'z', 3))?,
+                    _ => return Err(E::ColonCount { directive: b'z' }.into()),
                 },
                 b'c' => {
-                    return Err(err!("cannot parse locale date and time"));
+                    return Err(Error::from(PE::NotAllowedLocaleDateAndTime));
                 }
                 b'r' => {
-                    return Err(err!(
-                        "cannot parse locale 12-hour clock time"
+                    return Err(Error::from(
+                        PE::NotAllowedLocaleTwelveHourClockTime,
                     ));
                 }
                 b'X' => {
-                    return Err(err!("cannot parse locale clock time"));
+                    return Err(Error::from(PE::NotAllowedLocaleClockTime));
                 }
-                b'x' => {
-                    return Err(err!("cannot parse locale date"));
-                }
+                b'x' => return Err(Error::from(PE::NotAllowedLocaleDate)),
                 b'Z' => {
-                    return Err(err!("cannot parse time zone abbreviations"));
+                    return Err(Error::from(
+                        PE::NotAllowedTimeZoneAbbreviation,
+                    ));
                 }
                 b'.' => {
                     if !self.bump_fmt() {
-                        return Err(err!(
-                            "invalid format string, expected directive \
-                             after '%.'",
-                        ));
+                        return Err(E::UnexpectedEndAfterDot.into());
                     }
                     // Skip over any precision settings that might be here.
                     // This is a specific special format supported by `%.f`.
@@ -134,23 +119,20 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
                     let ext = Extension { width, ..ext };
                     self.fmt = fmt;
                     match self.f() {
-                        b'f' => self
-                            .parse_dot_fractional(ext)
-                            .context("%.f failed")?,
+                        b'f' => self.parse_dot_fractional(ext).context(
+                            E::DirectiveFailureDot { directive: b'f' },
+                        )?,
                         unk => {
-                            return Err(err!(
-                                "found unrecognized directive %{unk} \
-                                 following %.",
-                                unk = escape::Byte(unk),
+                            return Err(Error::from(
+                                E::UnknownDirectiveAfterDot { directive: unk },
                             ));
                         }
                     }
                 }
                 unk => {
-                    return Err(err!(
-                        "found unrecognized directive %{unk}",
-                        unk = escape::Byte(unk),
-                    ));
+                    return Err(Error::from(E::UnknownDirective {
+                        directive: unk,
+                    }));
                 }
             }
         }
@@ -197,6 +179,9 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
     /// after the `%`. If any extensions are parsed, the parser is bumped
     /// to the next byte. (If no next byte exists, then an error is returned.)
     fn parse_extension(&mut self) -> Result<Extension, Error> {
+        if self.f().is_ascii_alphabetic() {
+            return Ok(Extension { flag: None, width: None, colons: 0 });
+        }
         let (flag, fmt) = Extension::parse_flag(self.fmt)?;
         let (width, fmt) = Extension::parse_width(fmt)?;
         let (colons, fmt) = Extension::parse_colons(fmt)?;
@@ -221,18 +206,14 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
                 while self.i().is_ascii_whitespace() && self.bump_input() {}
             }
         } else if self.inp.is_empty() {
-            return Err(err!(
-                "expected to match literal byte {byte:?} from \
-                 format string, but found end of input",
-                byte = escape::Byte(self.fmt[0]),
-            ));
+            return Err(Error::from(PE::ExpectedMatchLiteralEndOfInput {
+                expected: self.f(),
+            }));
         } else if self.f() != self.i() {
-            return Err(err!(
-                "expected to match literal byte {expect:?} from \
-                 format string, but found byte {found:?} in input",
-                expect = escape::Byte(self.f()),
-                found = escape::Byte(self.i()),
-            ));
+            return Err(Error::from(PE::ExpectedMatchLiteralByte {
+                expected: self.fmt[0],
+                got: self.i(),
+            }));
         } else {
             self.bump_input();
         }
@@ -254,11 +235,10 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
     /// Parses a literal '%' from the input.
     fn parse_percent(&mut self) -> Result<(), Error> {
         if self.i() != b'%' {
-            return Err(err!(
-                "expected '%' due to '%%' in format string, \
-                 but found {byte:?} in input",
-                byte = escape::Byte(self.inp[0]),
-            ));
+            return Err(Error::from(PE::ExpectedMatchLiteralByte {
+                expected: b'%',
+                got: self.i(),
+            }));
         }
         self.bump_fmt();
         self.bump_input();
@@ -283,12 +263,12 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
         let (index, inp) = parse_ampm(self.inp)?;
         self.inp = inp;
 
-        self.tm.meridiem = Some(match index {
+        self.tm.set_meridiem(Some(match index {
             0 => Meridiem::AM,
             1 => Meridiem::PM,
             // OK because 0 <= index <= 1.
-            index => unreachable!("unknown AM/PM index {index}"),
-        });
+            _ => unreachable!("unknown AM/PM index"),
+        }));
         self.bump_fmt();
         Ok(())
     }
@@ -317,12 +297,10 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
     fn parse_day(&mut self, ext: Extension) -> Result<(), Error> {
         let (day, inp) = ext
             .parse_number(2, Flag::PadZero, self.inp)
-            .context("failed to parse day")?;
+            .context(PE::ParseDay)?;
         self.inp = inp;
 
-        let day =
-            t::Day::try_new("day", day).context("day number is invalid")?;
-        self.tm.day = Some(day);
+        self.tm.day = Some(b::Day::check(day).context(PE::ParseDay)?);
         self.bump_fmt();
         Ok(())
     }
@@ -333,12 +311,11 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
     fn parse_day_of_year(&mut self, ext: Extension) -> Result<(), Error> {
         let (day, inp) = ext
             .parse_number(3, Flag::PadZero, self.inp)
-            .context("failed to parse day of year")?;
+            .context(PE::ParseDayOfYear)?;
         self.inp = inp;
 
-        let day = t::DayOfYear::try_new("day-of-year", day)
-            .context("day of year number is invalid")?;
-        self.tm.day_of_year = Some(day);
+        self.tm.day_of_year =
+            Some(b::DayOfYear::check(day).context(PE::ParseDayOfYear)?);
         self.bump_fmt();
         Ok(())
     }
@@ -347,28 +324,26 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
     fn parse_hour24(&mut self, ext: Extension) -> Result<(), Error> {
         let (hour, inp) = ext
             .parse_number(2, Flag::PadZero, self.inp)
-            .context("failed to parse hour")?;
+            .context(PE::ParseHour)?;
         self.inp = inp;
 
-        let hour = t::Hour::try_new("hour", hour)
-            .context("hour number is invalid")?;
-        self.tm.hour = Some(hour);
+        let hour = b::Hour::check(hour).context(PE::ParseHour)?;
+        // OK because our hour is in bounds.
+        self.tm.set_hour(Some(hour)).unwrap();
         self.bump_fmt();
         Ok(())
     }
 
     /// Parses `%I`, which is equivalent to the hour on a 12-hour clock.
     fn parse_hour12(&mut self, ext: Extension) -> Result<(), Error> {
-        type Hour12 = ri8<1, 12>;
-
         let (hour, inp) = ext
             .parse_number(2, Flag::PadZero, self.inp)
-            .context("failed to parse hour")?;
+            .context(PE::ParseHour)?;
         self.inp = inp;
 
-        let hour =
-            Hour12::try_new("hour", hour).context("hour number is invalid")?;
-        self.tm.hour = Some(t::Hour::rfrom(hour));
+        let hour = b::Hour12::check(hour).context(PE::ParseHour)?;
+        // OK because our hour is in bounds.
+        self.tm.set_hour(Some(hour)).unwrap();
         self.bump_fmt();
         Ok(())
     }
@@ -386,12 +361,11 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
     fn parse_minute(&mut self, ext: Extension) -> Result<(), Error> {
         let (minute, inp) = ext
             .parse_number(2, Flag::PadZero, self.inp)
-            .context("failed to parse minute")?;
+            .context(PE::ParseMinute)?;
         self.inp = inp;
 
-        let minute = t::Minute::try_new("minute", minute)
-            .context("minute number is invalid")?;
-        self.tm.minute = Some(minute);
+        self.tm.minute =
+            Some(b::Minute::check(minute).context(PE::ParseMinute)?);
         self.bump_fmt();
         Ok(())
     }
@@ -401,9 +375,10 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
     fn parse_iana_nocolon(&mut self) -> Result<(), Error> {
         #[cfg(not(feature = "alloc"))]
         {
-            Err(err!(
-                "cannot parse `%Q` without Jiff's `alloc` feature enabled"
-            ))
+            Err(Error::from(PE::NotAllowedAlloc {
+                directive: b'Q',
+                colons: 0,
+            }))
         }
         #[cfg(feature = "alloc")]
         {
@@ -425,9 +400,10 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
     fn parse_iana_colon(&mut self) -> Result<(), Error> {
         #[cfg(not(feature = "alloc"))]
         {
-            Err(err!(
-                "cannot parse `%:Q` without Jiff's `alloc` feature enabled"
-            ))
+            Err(Error::from(PE::NotAllowedAlloc {
+                directive: b'Q',
+                colons: 1,
+            }))
         }
         #[cfg(feature = "alloc")]
         {
@@ -523,7 +499,7 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
     fn parse_second(&mut self, ext: Extension) -> Result<(), Error> {
         let (mut second, inp) = ext
             .parse_number(2, Flag::PadZero, self.inp)
-            .context("failed to parse second")?;
+            .context(PE::ParseSecond)?;
         self.inp = inp;
 
         // As with other parses in Jiff, and like Temporal,
@@ -532,9 +508,8 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
         if second == 60 {
             second = 59;
         }
-        let second = t::Second::try_new("second", second)
-            .context("second number is invalid")?;
-        self.tm.second = Some(second);
+        self.tm.second =
+            Some(b::Second::check(second).context(PE::ParseSecond)?);
         self.bump_fmt();
         Ok(())
     }
@@ -545,23 +520,14 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
         let (timestamp, inp) = ext
             // 19 comes from `i64::MAX.to_string().len()`.
             .parse_number(19, Flag::PadSpace, inp)
-            .context("failed to parse Unix timestamp (in seconds)")?;
+            .context(PE::ParseTimestamp)?;
         // I believe this error case is actually impossible. Since `timestamp`
         // is guaranteed to be positive, and negating any positive `i64` will
         // always result in a valid `i64`.
-        let timestamp = timestamp.checked_mul(sign).ok_or_else(|| {
-            err!(
-                "parsed Unix timestamp `{timestamp}` with a \
-                 leading `-` sign, which causes overflow",
-            )
-        })?;
         let timestamp =
-            Timestamp::from_second(timestamp).with_context(|| {
-                err!(
-                    "parsed Unix timestamp `{timestamp}`, \
-                     but out of range of valid Jiff `Timestamp`",
-                )
-            })?;
+            timestamp.checked_mul(sign).ok_or(PE::ParseTimestamp)?;
+        let timestamp =
+            Timestamp::from_second(timestamp).context(PE::ParseTimestamp)?;
         self.inp = inp;
         self.tm.timestamp = Some(timestamp);
 
@@ -585,30 +551,21 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
         }
         let digits = mkdigits(self.inp);
         if digits.is_empty() {
-            return Err(err!(
-                "expected at least one fractional decimal digit, \
-                 but did not find any",
-            ));
+            return Err(Error::from(PE::ExpectedFractionalDigit));
         }
         // I believe this error can never happen, since we know we have no more
         // than 9 ASCII digits. Any sequence of 9 ASCII digits can be parsed
         // into an `i64`.
-        let nanoseconds = parse::fraction(digits).map_err(|err| {
-            err!(
-                "failed to parse {digits:?} as fractional second component \
-                 (up to 9 digits, nanosecond precision): {err}",
-                digits = escape::Bytes(digits),
-            )
-        })?;
+        let nanoseconds =
+            parse::fraction(digits).context(PE::ParseFractionalSeconds)?;
         // I believe this is also impossible to fail, since the maximal
         // fractional nanosecond is 999_999_999, and which also corresponds
         // to the maximal expressible number with 9 ASCII digits. So every
         // possible expressible value here is in range.
-        let nanoseconds =
-            t::SubsecNanosecond::try_new("nanoseconds", nanoseconds).map_err(
-                |err| err!("fractional nanoseconds are not valid: {err}"),
-            )?;
-        self.tm.subsec = Some(nanoseconds);
+        self.tm.subsec = Some(
+            b::SubsecNanosecond::check(nanoseconds)
+                .context(PE::ParseFractionalSeconds)?,
+        );
         self.bump_fmt();
         Ok(())
     }
@@ -629,12 +586,10 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
     fn parse_month(&mut self, ext: Extension) -> Result<(), Error> {
         let (month, inp) = ext
             .parse_number(2, Flag::PadZero, self.inp)
-            .context("failed to parse month")?;
+            .context(PE::ParseMonth)?;
         self.inp = inp;
 
-        let month = t::Month::try_new("month", month)
-            .context("month number is invalid")?;
-        self.tm.month = Some(month);
+        self.tm.month = Some(b::Month::check(month).context(PE::ParseMonth)?);
         self.bump_fmt();
         Ok(())
     }
@@ -645,8 +600,7 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
         self.inp = inp;
 
         // Both are OK because 0 <= index <= 11.
-        let index = i8::try_from(index).unwrap();
-        self.tm.month = Some(t::Month::new(index + 1).unwrap());
+        self.tm.month = Some(index + 1);
         self.bump_fmt();
         Ok(())
     }
@@ -668,13 +622,12 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
             b"December",
         ];
 
-        let (index, inp) = parse_choice(self.inp, CHOICES)
-            .context("unrecognized month name")?;
+        let (index, inp) =
+            parse_choice(self.inp, CHOICES).context(PE::UnknownMonthName)?;
         self.inp = inp;
 
         // Both are OK because 0 <= index <= 11.
-        let index = i8::try_from(index).unwrap();
-        self.tm.month = Some(t::Month::new(index + 1).unwrap());
+        self.tm.month = Some(index + 1);
         self.bump_fmt();
         Ok(())
     }
@@ -705,7 +658,7 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
         ];
 
         let (index, inp) = parse_choice(self.inp, CHOICES)
-            .context("unrecognized weekday abbreviation")?;
+            .context(PE::UnknownWeekdayAbbreviation)?;
         self.inp = inp;
 
         // Both are OK because 0 <= index <= 6.
@@ -721,14 +674,13 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
     fn parse_weekday_mon(&mut self, ext: Extension) -> Result<(), Error> {
         let (weekday, inp) = ext
             .parse_number(1, Flag::NoPad, self.inp)
-            .context("failed to parse weekday number")?;
+            .context(PE::ParseWeekdayNumber)?;
         self.inp = inp;
 
-        let weekday = i8::try_from(weekday).map_err(|_| {
-            err!("parsed weekday number `{weekday}` is invalid")
-        })?;
+        let weekday =
+            i8::try_from(weekday).map_err(|_| PE::ParseWeekdayNumber)?;
         let weekday = Weekday::from_monday_one_offset(weekday)
-            .context("weekday number is invalid")?;
+            .context(PE::ParseWeekdayNumber)?;
         self.tm.weekday = Some(weekday);
         self.bump_fmt();
         Ok(())
@@ -738,14 +690,13 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
     fn parse_weekday_sun(&mut self, ext: Extension) -> Result<(), Error> {
         let (weekday, inp) = ext
             .parse_number(1, Flag::NoPad, self.inp)
-            .context("failed to parse weekday number")?;
+            .context(PE::ParseWeekdayNumber)?;
         self.inp = inp;
 
-        let weekday = i8::try_from(weekday).map_err(|_| {
-            err!("parsed weekday number `{weekday}` is invalid")
-        })?;
+        let weekday =
+            i8::try_from(weekday).map_err(|_| PE::ParseWeekdayNumber)?;
         let weekday = Weekday::from_sunday_zero_offset(weekday)
-            .context("weekday number is invalid")?;
+            .context(PE::ParseWeekdayNumber)?;
         self.tm.weekday = Some(weekday);
         self.bump_fmt();
         Ok(())
@@ -756,12 +707,11 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
     fn parse_week_sun(&mut self, ext: Extension) -> Result<(), Error> {
         let (week, inp) = ext
             .parse_number(2, Flag::PadZero, self.inp)
-            .context("failed to parse Sunday-based week number")?;
+            .context(PE::ParseSundayWeekNumber)?;
         self.inp = inp;
 
-        let week = t::WeekNum::try_new("week", week)
-            .context("Sunday-based week number is invalid")?;
-        self.tm.week_sun = Some(week);
+        self.tm.week_sun =
+            Some(b::WeekNum::check(week).context(PE::ParseSundayWeekNumber)?);
         self.bump_fmt();
         Ok(())
     }
@@ -770,12 +720,11 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
     fn parse_week_iso(&mut self, ext: Extension) -> Result<(), Error> {
         let (week, inp) = ext
             .parse_number(2, Flag::PadZero, self.inp)
-            .context("failed to parse ISO 8601 week number")?;
+            .context(PE::ParseIsoWeekNumber)?;
         self.inp = inp;
 
-        let week = t::ISOWeek::try_new("week", week)
-            .context("ISO 8601 week number is invalid")?;
-        self.tm.iso_week = Some(week);
+        self.tm.iso_week =
+            Some(b::ISOWeek::check(week).context(PE::ParseIsoWeekNumber)?);
         self.bump_fmt();
         Ok(())
     }
@@ -785,12 +734,11 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
     fn parse_week_mon(&mut self, ext: Extension) -> Result<(), Error> {
         let (week, inp) = ext
             .parse_number(2, Flag::PadZero, self.inp)
-            .context("failed to parse Monday-based week number")?;
+            .context(PE::ParseMondayWeekNumber)?;
         self.inp = inp;
 
-        let week = t::WeekNum::try_new("week", week)
-            .context("Monday-based week number is invalid")?;
-        self.tm.week_mon = Some(week);
+        self.tm.week_mon =
+            Some(b::WeekNum::check(week).context(PE::ParseMondayWeekNumber)?);
         self.bump_fmt();
         Ok(())
     }
@@ -798,17 +746,14 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
     /// Parses `%Y`, which we permit to be any year, including a negative year.
     fn parse_year(&mut self, ext: Extension) -> Result<(), Error> {
         let (sign, inp) = parse_optional_sign(self.inp);
-        let (year, inp) = ext
-            .parse_number(4, Flag::PadZero, inp)
-            .context("failed to parse year")?;
+        let (year, inp) =
+            ext.parse_number(4, Flag::PadZero, inp).context(PE::ParseYear)?;
         self.inp = inp;
 
         // OK because sign=={1,-1} and year can't be bigger than 4 digits
         // so overflow isn't possible.
         let year = sign.checked_mul(year).unwrap();
-        let year = t::Year::try_new("year", year)
-            .context("year number is invalid")?;
-        self.tm.year = Some(year);
+        self.tm.year = Some(b::Year::check(year).context(PE::ParseYear)?);
         self.bump_fmt();
         Ok(())
     }
@@ -817,20 +762,17 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
     ///
     /// The numbers 69-99 refer to 1969-1999, while 00-68 refer to 2000-2068.
     fn parse_year2(&mut self, ext: Extension) -> Result<(), Error> {
-        type Year2Digit = ri8<0, 99>;
-
         let (year, inp) = ext
             .parse_number(2, Flag::PadZero, self.inp)
-            .context("failed to parse 2-digit year")?;
+            .context(PE::ParseYearTwoDigit)?;
         self.inp = inp;
 
-        let year = Year2Digit::try_new("year (2 digits)", year)
-            .context("year number is invalid")?;
-        let mut year = t::Year::rfrom(year);
-        if year <= C(68) {
-            year += C(2000);
+        let mut year =
+            b::YearTwoDigit::check(year).context(PE::ParseYearTwoDigit)?;
+        if year <= 68 {
+            year += 2000;
         } else {
-            year += C(1900);
+            year += 1900;
         }
         self.tm.year = Some(year);
         self.bump_fmt();
@@ -841,17 +783,12 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
     /// century.
     fn parse_century(&mut self, ext: Extension) -> Result<(), Error> {
         let (sign, inp) = parse_optional_sign(self.inp);
-        let (century, inp) = ext
-            .parse_number(2, Flag::NoPad, inp)
-            .context("failed to parse century")?;
+        let (century, inp) =
+            ext.parse_number(2, Flag::NoPad, inp).context(PE::ParseCentury)?;
         self.inp = inp;
 
-        if !(0 <= century && century <= 99) {
-            return Err(err!(
-                "century `{century}` is too big, must be in range 0-99",
-            ));
-        }
-
+        let century =
+            i64::from(b::Century::check(century).context(PE::ParseCentury)?);
         // OK because sign=={1,-1} and century can't be bigger than 2 digits
         // so overflow isn't possible.
         let century = sign.checked_mul(century).unwrap();
@@ -859,9 +796,7 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
         // 100 will never overflow.
         let year = century.checked_mul(100).unwrap();
         // I believe the error condition here is impossible.
-        let year = t::Year::try_new("year", year)
-            .context("year number (from century) is invalid")?;
-        self.tm.year = Some(year);
+        self.tm.year = Some(b::Year::check(year).context(PE::ParseCentury)?);
         self.bump_fmt();
         Ok(())
     }
@@ -871,15 +806,14 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
         let (sign, inp) = parse_optional_sign(self.inp);
         let (year, inp) = ext
             .parse_number(4, Flag::PadZero, inp)
-            .context("failed to parse ISO 8601 week-based year")?;
+            .context(PE::ParseIsoWeekYear)?;
         self.inp = inp;
 
         // OK because sign=={1,-1} and year can't be bigger than 4 digits
         // so overflow isn't possible.
         let year = sign.checked_mul(year).unwrap();
-        let year = t::ISOYear::try_new("year", year)
-            .context("ISO 8601 week-based year number is invalid")?;
-        self.tm.iso_week_year = Some(year);
+        self.tm.iso_week_year =
+            Some(b::ISOYear::check(year).context(PE::ParseIsoWeekYear)?);
         self.bump_fmt();
         Ok(())
     }
@@ -888,20 +822,17 @@ impl<'f, 'i, 't> Parser<'f, 'i, 't> {
     ///
     /// The numbers 69-99 refer to 1969-1999, while 00-68 refer to 2000-2068.
     fn parse_iso_week_year2(&mut self, ext: Extension) -> Result<(), Error> {
-        type Year2Digit = ri8<0, 99>;
-
         let (year, inp) = ext
             .parse_number(2, Flag::PadZero, self.inp)
-            .context("failed to parse 2-digit ISO 8601 week-based year")?;
+            .context(PE::ParseIsoWeekYearTwoDigit)?;
         self.inp = inp;
 
-        let year = Year2Digit::try_new("year (2 digits)", year)
-            .context("ISO 8601 week-based year number is invalid")?;
-        let mut year = t::ISOYear::rfrom(year);
-        if year <= C(68) {
-            year += C(2000);
+        let mut year = b::YearTwoDigit::check(year)
+            .context(PE::ParseIsoWeekYearTwoDigit)?;
+        if year <= 68 {
+            year += 2000;
         } else {
-            year += C(1900);
+            year += 1900;
         }
         self.tm.iso_week_year = Some(year);
         self.bump_fmt();
@@ -964,15 +895,10 @@ impl Extension {
             n = n
                 .checked_mul(10)
                 .and_then(|n| n.checked_add(digit))
-                .ok_or_else(|| {
-                    err!(
-                        "number '{}' too big to parse into 64-bit integer",
-                        escape::Bytes(&inp[..digits]),
-                    )
-                })?;
+                .ok_or(ParseIntError::TooBig)?;
         }
         if digits == 0 {
-            return Err(err!("invalid number, no digits found"));
+            return Err(Error::from(ParseIntError::NoDigitsFound));
         }
         Ok((n, &inp[digits..]))
     }
@@ -1001,40 +927,25 @@ fn parse_optional_sign<'i>(input: &'i [u8]) -> (i64, &'i [u8]) {
 ///
 /// If no choice given is a prefix of the input, then an error is returned.
 /// The error includes the possible allowed choices.
+///
+/// # Panics
+///
+/// When `choices.len()` exceeds `i8::MAX`.
 fn parse_choice<'i>(
     input: &'i [u8],
-    choices: &[&'static [u8]],
-) -> Result<(usize, &'i [u8]), Error> {
+    choices: &'static [&'static [u8]],
+) -> Result<(i8, &'i [u8]), Error> {
+    debug_assert!(choices.len() < usize::from(i8::MAX.unsigned_abs()));
     for (i, choice) in choices.into_iter().enumerate() {
         if input.len() < choice.len() {
             continue;
         }
         let (candidate, input) = input.split_at(choice.len());
         if candidate.eq_ignore_ascii_case(choice) {
-            return Ok((i, input));
+            return Ok((i8::try_from(i).unwrap(), input));
         }
     }
-    #[cfg(feature = "alloc")]
-    {
-        let mut err = alloc::format!(
-            "failed to find expected choice at beginning of {input:?}, \
-             available choices are: ",
-            input = escape::Bytes(input),
-        );
-        for (i, choice) in choices.iter().enumerate() {
-            if i > 0 {
-                write!(err, ", ").unwrap();
-            }
-            write!(err, "{}", escape::Bytes(choice)).unwrap();
-        }
-        Err(Error::adhoc(err))
-    }
-    #[cfg(not(feature = "alloc"))]
-    {
-        Err(err!(
-            "failed to find expected value from a set of allowed choices"
-        ))
-    }
+    Err(Error::from(PE::ExpectedChoice { available: choices }))
 }
 
 /// Like `parse_choice`, but specialized for AM/PM.
@@ -1044,25 +955,14 @@ fn parse_choice<'i>(
 #[cfg_attr(feature = "perf-inline", inline(always))]
 fn parse_ampm<'i>(input: &'i [u8]) -> Result<(usize, &'i [u8]), Error> {
     if input.len() < 2 {
-        return Err(err!(
-            "expected to find AM or PM, \
-             but the remaining input, {input:?}, is too short \
-             to contain one",
-            input = escape::Bytes(input),
-        ));
+        return Err(Error::from(PE::ExpectedAmPmTooShort));
     }
     let (x, input) = input.split_at(2);
     let candidate = &[x[0].to_ascii_lowercase(), x[1].to_ascii_lowercase()];
     let index = match candidate {
         b"am" => 0,
         b"pm" => 1,
-        _ => {
-            return Err(err!(
-                "expected to find AM or PM, but found \
-                {candidate:?} instead",
-                candidate = escape::Bytes(x),
-            ))
-        }
+        _ => return Err(Error::from(PE::ExpectedAmPm)),
     };
     Ok((index, input))
 }
@@ -1076,12 +976,7 @@ fn parse_weekday_abbrev<'i>(
     input: &'i [u8],
 ) -> Result<(usize, &'i [u8]), Error> {
     if input.len() < 3 {
-        return Err(err!(
-            "expected to find a weekday abbreviation, \
-             but the remaining input, {input:?}, is too short \
-             to contain one",
-            input = escape::Bytes(input),
-        ));
+        return Err(Error::from(PE::ExpectedWeekdayAbbreviationTooShort));
     }
     let (x, input) = input.split_at(3);
     let candidate = &[
@@ -1097,13 +992,7 @@ fn parse_weekday_abbrev<'i>(
         b"thu" => 4,
         b"fri" => 5,
         b"sat" => 6,
-        _ => {
-            return Err(err!(
-                "expected to find weekday abbreviation, but found \
-                {candidate:?} instead",
-                candidate = escape::Bytes(x),
-            ))
-        }
+        _ => return Err(Error::from(PE::ExpectedWeekdayAbbreviation)),
     };
     Ok((index, input))
 }
@@ -1115,14 +1004,9 @@ fn parse_weekday_abbrev<'i>(
 #[cfg_attr(feature = "perf-inline", inline(always))]
 fn parse_month_name_abbrev<'i>(
     input: &'i [u8],
-) -> Result<(usize, &'i [u8]), Error> {
+) -> Result<(i8, &'i [u8]), Error> {
     if input.len() < 3 {
-        return Err(err!(
-            "expected to find a month name abbreviation, \
-             but the remaining input, {input:?}, is too short \
-             to contain one",
-            input = escape::Bytes(input),
-        ));
+        return Err(Error::from(PE::ExpectedMonthAbbreviationTooShort));
     }
     let (x, input) = input.split_at(3);
     let candidate = &[
@@ -1143,13 +1027,7 @@ fn parse_month_name_abbrev<'i>(
         b"oct" => 9,
         b"nov" => 10,
         b"dec" => 11,
-        _ => {
-            return Err(err!(
-                "expected to find month name abbreviation, but found \
-                 {candidate:?} instead",
-                candidate = escape::Bytes(x),
-            ))
-        }
+        _ => return Err(Error::from(PE::ExpectedMonthAbbreviation)),
     };
     Ok((index, input))
 }
@@ -1158,8 +1036,8 @@ fn parse_month_name_abbrev<'i>(
 fn parse_iana<'i>(input: &'i [u8]) -> Result<(&'i str, &'i [u8]), Error> {
     let mkiana = parse::slicer(input);
     let (_, mut input) = parse_iana_component(input)?;
-    while input.starts_with(b"/") {
-        input = &input[1..];
+    while let Some(tail) = input.strip_prefix(b"/") {
+        input = tail;
         let (_, unconsumed) = parse_iana_component(input)?;
         input = unconsumed;
     }
@@ -1180,17 +1058,10 @@ fn parse_iana_component<'i>(
 ) -> Result<(&'i [u8], &'i [u8]), Error> {
     let mkname = parse::slicer(input);
     if input.is_empty() {
-        return Err(err!(
-            "expected the start of an IANA time zone identifier \
-             name or component, but found end of input instead",
-        ));
+        return Err(Error::from(PE::ExpectedIanaTzEndOfInput));
     }
     if !matches!(input[0], b'_' | b'.' | b'A'..=b'Z' | b'a'..=b'z') {
-        return Err(err!(
-            "expected the start of an IANA time zone identifier \
-             name or component, but found {:?} instead",
-            escape::Byte(input[0]),
-        ));
+        return Err(Error::from(PE::ExpectedIanaTz));
     }
     input = &input[1..];
 
@@ -1200,8 +1071,12 @@ fn parse_iana_component<'i>(
             b'_' | b'.' | b'+' | b'-' | b'0'..=b'9' | b'A'..=b'Z' | b'a'..=b'z',
         )
     };
-    while !input.is_empty() && is_iana_char(input[0]) {
-        input = &input[1..];
+    loop {
+        let Some((&first, tail)) = input.split_first() else { break };
+        if !is_iana_char(first) {
+            break;
+        }
+        input = tail;
     }
     Ok((mkname(input), input))
 }
@@ -1214,7 +1089,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn ok_parse_zoned() {
+    fn ok_parse_zoned_datetime() {
         if crate::tz::db().is_definitively_empty() {
             return;
         }
@@ -1222,7 +1097,7 @@ mod tests {
         let p = |fmt: &str, input: &str| {
             BrokenDownTime::parse_mono(fmt.as_bytes(), input.as_bytes())
                 .unwrap()
-                .to_zoned()
+                .to_zoned_datetime()
                 .unwrap()
         };
 
@@ -1701,7 +1576,7 @@ mod tests {
         let p = |fmt: &str, input: &str| {
             BrokenDownTime::parse_mono(fmt.as_bytes(), input.as_bytes())
                 .unwrap()
-                .to_offset()
+                .offset
                 .unwrap()
         };
 
@@ -1816,116 +1691,116 @@ mod tests {
 
         insta::assert_snapshot!(
             p("%M", ""),
-            @"strptime parsing failed: expected non-empty input for directive %M, but found end of input",
+            @"strptime parsing failed: expected non-empty input for directive `%M`, but found end of input",
         );
         insta::assert_snapshot!(
             p("%M", "a"),
-            @"strptime parsing failed: %M failed: failed to parse minute: invalid number, no digits found",
+            @"strptime parsing failed: %M failed: failed to parse minute number: invalid number, no digits found",
         );
         insta::assert_snapshot!(
             p("%M%S", "15"),
-            @"strptime parsing failed: expected non-empty input for directive %S, but found end of input",
+            @"strptime parsing failed: expected non-empty input for directive `%S`, but found end of input",
         );
         insta::assert_snapshot!(
             p("%M%a", "Sun"),
-            @"strptime parsing failed: %M failed: failed to parse minute: invalid number, no digits found",
+            @"strptime parsing failed: %M failed: failed to parse minute number: invalid number, no digits found",
         );
 
         insta::assert_snapshot!(
             p("%y", "999"),
-            @r###"strptime expects to consume the entire input, but "9" remains unparsed"###,
+            @"strptime expects to consume the entire input, but `9` remains unparsed",
         );
         insta::assert_snapshot!(
             p("%Y", "-10000"),
-            @r###"strptime expects to consume the entire input, but "0" remains unparsed"###,
+            @"strptime expects to consume the entire input, but `0` remains unparsed",
         );
         insta::assert_snapshot!(
             p("%Y", "10000"),
-            @r###"strptime expects to consume the entire input, but "0" remains unparsed"###,
+            @"strptime expects to consume the entire input, but `0` remains unparsed",
         );
         insta::assert_snapshot!(
             p("%A %m/%d/%y", "Mon 7/14/24"),
-            @r#"strptime parsing failed: %A failed: unrecognized weekday abbreviation: failed to find expected choice at beginning of "Mon 7/14/24", available choices are: Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday"#,
+            @"strptime parsing failed: %A failed: unrecognized weekday abbreviation: failed to find expected value, available choices are: Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday",
         );
         insta::assert_snapshot!(
             p("%b", "Bad"),
-            @r###"strptime parsing failed: %b failed: expected to find month name abbreviation, but found "Bad" instead"###,
+            @"strptime parsing failed: %b failed: expected to find month name abbreviation",
         );
         insta::assert_snapshot!(
             p("%h", "July"),
-            @r###"strptime expects to consume the entire input, but "y" remains unparsed"###,
+            @"strptime expects to consume the entire input, but `y` remains unparsed",
         );
         insta::assert_snapshot!(
             p("%B", "Jul"),
-            @r###"strptime parsing failed: %B failed: unrecognized month name: failed to find expected choice at beginning of "Jul", available choices are: January, February, March, April, May, June, July, August, September, October, November, December"###,
+            @"strptime parsing failed: %B failed: unrecognized month name: failed to find expected value, available choices are: January, February, March, April, May, June, July, August, September, October, November, December",
         );
         insta::assert_snapshot!(
             p("%H", "24"),
-            @"strptime parsing failed: %H failed: hour number is invalid: parameter 'hour' with value 24 is not in the required range of 0..=23",
+            @"strptime parsing failed: %H failed: failed to parse hour number: parameter 'hour' is not in the required range of 0..=23",
         );
         insta::assert_snapshot!(
             p("%M", "60"),
-            @"strptime parsing failed: %M failed: minute number is invalid: parameter 'minute' with value 60 is not in the required range of 0..=59",
+            @"strptime parsing failed: %M failed: failed to parse minute number: parameter 'minute' is not in the required range of 0..=59",
         );
         insta::assert_snapshot!(
             p("%S", "61"),
-            @"strptime parsing failed: %S failed: second number is invalid: parameter 'second' with value 61 is not in the required range of 0..=59",
+            @"strptime parsing failed: %S failed: failed to parse second number: parameter 'second' is not in the required range of 0..=59",
         );
         insta::assert_snapshot!(
             p("%I", "0"),
-            @"strptime parsing failed: %I failed: hour number is invalid: parameter 'hour' with value 0 is not in the required range of 1..=12",
+            @"strptime parsing failed: %I failed: failed to parse hour number: parameter 'hour (12 hour clock)' is not in the required range of 1..=12",
         );
         insta::assert_snapshot!(
             p("%I", "13"),
-            @"strptime parsing failed: %I failed: hour number is invalid: parameter 'hour' with value 13 is not in the required range of 1..=12",
+            @"strptime parsing failed: %I failed: failed to parse hour number: parameter 'hour (12 hour clock)' is not in the required range of 1..=12",
         );
         insta::assert_snapshot!(
             p("%p", "aa"),
-            @r###"strptime parsing failed: %p failed: expected to find AM or PM, but found "aa" instead"###,
+            @"strptime parsing failed: %p failed: expected to find `AM` or `PM`",
         );
 
         insta::assert_snapshot!(
             p("%_", " "),
-            @r###"strptime parsing failed: expected to find specifier directive after flag "_", but found end of format string"###,
+            @"strptime parsing failed: expected to find specifier directive after flag `_`, but found end of format string",
         );
         insta::assert_snapshot!(
             p("%-", " "),
-            @r###"strptime parsing failed: expected to find specifier directive after flag "-", but found end of format string"###,
+            @"strptime parsing failed: expected to find specifier directive after flag `-`, but found end of format string",
         );
         insta::assert_snapshot!(
             p("%0", " "),
-            @r###"strptime parsing failed: expected to find specifier directive after flag "0", but found end of format string"###,
+            @"strptime parsing failed: expected to find specifier directive after flag `0`, but found end of format string",
         );
         insta::assert_snapshot!(
             p("%^", " "),
-            @r###"strptime parsing failed: expected to find specifier directive after flag "^", but found end of format string"###,
+            @"strptime parsing failed: expected to find specifier directive after flag `^`, but found end of format string",
         );
         insta::assert_snapshot!(
             p("%#", " "),
-            @r###"strptime parsing failed: expected to find specifier directive after flag "#", but found end of format string"###,
+            @"strptime parsing failed: expected to find specifier directive after flag `#`, but found end of format string",
         );
         insta::assert_snapshot!(
             p("%_1", " "),
-            @"strptime parsing failed: expected to find specifier directive after width 1, but found end of format string",
+            @"strptime parsing failed: expected to find specifier directive after parsed width, but found end of format string",
         );
         insta::assert_snapshot!(
             p("%_23", " "),
-            @"strptime parsing failed: expected to find specifier directive after width 23, but found end of format string",
+            @"strptime parsing failed: expected to find specifier directive after parsed width, but found end of format string",
         );
 
         insta::assert_snapshot!(
             p("%:", " "),
-            @"strptime parsing failed: expected to find specifier directive after 1 colons, but found end of format string",
+            @"strptime parsing failed: expected to find specifier directive after colons, but found end of format string",
         );
 
         insta::assert_snapshot!(
             p("%::", " "),
-            @"strptime parsing failed: expected to find specifier directive after 2 colons, but found end of format string",
+            @"strptime parsing failed: expected to find specifier directive after colons, but found end of format string",
         );
 
         insta::assert_snapshot!(
             p("%:::", " "),
-            @"strptime parsing failed: expected to find specifier directive after 3 colons, but found end of format string",
+            @"strptime parsing failed: expected to find specifier directive after colons, but found end of format string",
         );
 
         insta::assert_snapshot!(
@@ -1938,15 +1813,15 @@ mod tests {
         );
         insta::assert_snapshot!(
             p("%H:%M:%S%.f", "15:59:01.1234567891"),
-            @r###"strptime expects to consume the entire input, but "1" remains unparsed"###,
+            @"strptime expects to consume the entire input, but `1` remains unparsed",
         );
         insta::assert_snapshot!(
             p("%H:%M:%S.%f", "15:59:01."),
-            @"strptime parsing failed: expected non-empty input for directive %f, but found end of input",
+            @"strptime parsing failed: expected non-empty input for directive `%f`, but found end of input",
         );
         insta::assert_snapshot!(
             p("%H:%M:%S.%f", "15:59:01"),
-            @r###"strptime parsing failed: expected to match literal byte "." from format string, but found end of input"###,
+            @"strptime parsing failed: expected to match literal byte `.` from format string, but found end of input",
         );
         insta::assert_snapshot!(
             p("%H:%M:%S.%f", "15:59:01.a"),
@@ -1954,11 +1829,11 @@ mod tests {
         );
         insta::assert_snapshot!(
             p("%H:%M:%S.%N", "15:59:01."),
-            @"strptime parsing failed: expected non-empty input for directive %N, but found end of input",
+            @"strptime parsing failed: expected non-empty input for directive `%N`, but found end of input",
         );
         insta::assert_snapshot!(
             p("%H:%M:%S.%N", "15:59:01"),
-            @r###"strptime parsing failed: expected to match literal byte "." from format string, but found end of input"###,
+            @"strptime parsing failed: expected to match literal byte `.` from format string, but found end of input",
         );
         insta::assert_snapshot!(
             p("%H:%M:%S.%N", "15:59:01.a"),
@@ -1967,61 +1842,61 @@ mod tests {
 
         insta::assert_snapshot!(
             p("%Q", "+America/New_York"),
-            @r#"strptime parsing failed: %Q failed: failed to parse hours in UTC numeric offset "+America/New_York": failed to parse "Am" as hours (a two digit integer): invalid digit, expected 0-9 but got A"#,
+            @"strptime parsing failed: %Q failed: failed to parse hours in UTC numeric offset: failed to parse hours (requires a two digit integer): invalid digit, expected 0-9 but got A",
         );
         insta::assert_snapshot!(
             p("%Q", "-America/New_York"),
-            @r#"strptime parsing failed: %Q failed: failed to parse hours in UTC numeric offset "-America/New_York": failed to parse "Am" as hours (a two digit integer): invalid digit, expected 0-9 but got A"#,
+            @"strptime parsing failed: %Q failed: failed to parse hours in UTC numeric offset: failed to parse hours (requires a two digit integer): invalid digit, expected 0-9 but got A",
         );
         insta::assert_snapshot!(
             p("%:Q", "+0400"),
-            @r#"strptime parsing failed: %:Q failed: parsed hour component of time zone offset from "+0400", but could not find required colon separator"#,
+            @"strptime parsing failed: %:Q failed: parsed hour component of time zone offset, but could not find required colon separator",
         );
         insta::assert_snapshot!(
             p("%Q", "+04:00"),
-            @r#"strptime parsing failed: %Q failed: parsed hour component of time zone offset from "+04:00", but found colon after hours which is not allowed"#,
+            @"strptime parsing failed: %Q failed: parsed hour component of time zone offset, but found colon after hours which is not allowed",
         );
         insta::assert_snapshot!(
             p("%Q", "America/"),
-            @"strptime parsing failed: %Q failed: expected the start of an IANA time zone identifier name or component, but found end of input instead",
+            @"strptime parsing failed: %Q failed: expected to find the start of an IANA time zone identifier name or component, but found end of input instead",
         );
         insta::assert_snapshot!(
             p("%Q", "America/+"),
-            @r###"strptime parsing failed: %Q failed: expected the start of an IANA time zone identifier name or component, but found "+" instead"###,
+            @"strptime parsing failed: %Q failed: expected to find the start of an IANA time zone identifier name or component",
         );
 
         insta::assert_snapshot!(
             p("%s", "-377705023202"),
-            @"strptime parsing failed: %s failed: parsed Unix timestamp `-377705023202`, but out of range of valid Jiff `Timestamp`: parameter 'second' with value -377705023202 is not in the required range of -377705023201..=253402207200",
+            @"strptime parsing failed: %s failed: failed to parse Unix timestamp (in seconds): parameter 'Unix timestamp seconds' is not in the required range of -377705023201..=253402207200",
         );
         insta::assert_snapshot!(
             p("%s", "253402207201"),
-            @"strptime parsing failed: %s failed: parsed Unix timestamp `253402207201`, but out of range of valid Jiff `Timestamp`: parameter 'second' with value 253402207201 is not in the required range of -377705023201..=253402207200",
+            @"strptime parsing failed: %s failed: failed to parse Unix timestamp (in seconds): parameter 'Unix timestamp seconds' is not in the required range of -377705023201..=253402207200",
         );
         insta::assert_snapshot!(
             p("%s", "-9999999999999999999"),
-            @"strptime parsing failed: %s failed: failed to parse Unix timestamp (in seconds): number '9999999999999999999' too big to parse into 64-bit integer",
+            @"strptime parsing failed: %s failed: failed to parse Unix timestamp (in seconds): number too big to parse into 64-bit integer",
         );
         insta::assert_snapshot!(
             p("%s", "9999999999999999999"),
-            @"strptime parsing failed: %s failed: failed to parse Unix timestamp (in seconds): number '9999999999999999999' too big to parse into 64-bit integer",
+            @"strptime parsing failed: %s failed: failed to parse Unix timestamp (in seconds): number too big to parse into 64-bit integer",
         );
 
         insta::assert_snapshot!(
             p("%u", "0"),
-            @"strptime parsing failed: %u failed: weekday number is invalid: parameter 'weekday' with value 0 is not in the required range of 1..=7",
+            @"strptime parsing failed: %u failed: failed to parse weekday number: parameter 'weekday (Monday 1-indexed)' is not in the required range of 1..=7",
         );
         insta::assert_snapshot!(
             p("%w", "7"),
-            @"strptime parsing failed: %w failed: weekday number is invalid: parameter 'weekday' with value 7 is not in the required range of 0..=6",
+            @"strptime parsing failed: %w failed: failed to parse weekday number: parameter 'weekday (Sunday 0-indexed)' is not in the required range of 0..=6",
         );
         insta::assert_snapshot!(
             p("%u", "128"),
-            @r###"strptime expects to consume the entire input, but "28" remains unparsed"###,
+            @"strptime expects to consume the entire input, but `28` remains unparsed",
         );
         insta::assert_snapshot!(
             p("%w", "128"),
-            @r###"strptime expects to consume the entire input, but "28" remains unparsed"###,
+            @"strptime expects to consume the entire input, but `28` remains unparsed",
         );
     }
 
@@ -2041,11 +1916,11 @@ mod tests {
         );
         insta::assert_snapshot!(
             p("%m", "7"),
-            @"missing year, date cannot be created",
+            @"year required to parse date",
         );
         insta::assert_snapshot!(
             p("%d", "25"),
-            @"missing year, date cannot be created",
+            @"year required to parse date",
         );
         insta::assert_snapshot!(
             p("%Y-%m", "2024-7"),
@@ -2057,33 +1932,33 @@ mod tests {
         );
         insta::assert_snapshot!(
             p("%m-%d", "7-25"),
-            @"missing year, date cannot be created",
+            @"year required to parse date",
         );
 
         insta::assert_snapshot!(
             p("%m/%d/%y", "6/31/24"),
-            @"invalid date: parameter 'day' with value 31 is not in the required range of 1..=30",
+            @"invalid date: parameter 'day' for `2024-06` is invalid, must be in range `1..=30`",
         );
         insta::assert_snapshot!(
             p("%m/%d/%y", "2/29/23"),
-            @"invalid date: parameter 'day' with value 29 is not in the required range of 1..=28",
+            @"invalid date: parameter 'day' for `2023-02` is invalid, must be in range `1..=28`",
         );
         insta::assert_snapshot!(
             p("%a %m/%d/%y", "Mon 7/14/24"),
-            @"parsed weekday Monday does not match weekday Sunday from parsed date 2024-07-14",
+            @"parsed weekday `Monday` does not match weekday `Sunday` from parsed date",
         );
         insta::assert_snapshot!(
             p("%A %m/%d/%y", "Monday 7/14/24"),
-            @"parsed weekday Monday does not match weekday Sunday from parsed date 2024-07-14",
+            @"parsed weekday `Monday` does not match weekday `Sunday` from parsed date",
         );
 
         insta::assert_snapshot!(
             p("%Y-%U-%u", "2025-00-2"),
-            @"weekday `Tuesday` is not valid for Sunday based week number `0` in year `2025`",
+            @"weekday `Tuesday` is not valid for Sunday based week number",
         );
         insta::assert_snapshot!(
             p("%Y-%W-%u", "2025-00-2"),
-            @"weekday `Tuesday` is not valid for Monday based week number `0` in year `2025`",
+            @"weekday `Tuesday` is not valid for Monday based week number",
         );
     }
 
@@ -2125,57 +2000,57 @@ mod tests {
 
         insta::assert_snapshot!(
             p("%z", "+05:30"),
-            @r#"strptime parsing failed: %z failed: parsed hour component of time zone offset from "+05:30", but found colon after hours which is not allowed"#,
+            @"strptime parsing failed: %z failed: parsed hour component of time zone offset, but found colon after hours which is not allowed",
         );
         insta::assert_snapshot!(
             p("%:z", "+0530"),
-            @r#"strptime parsing failed: %:z failed: parsed hour component of time zone offset from "+0530", but could not find required colon separator"#,
+            @"strptime parsing failed: %:z failed: parsed hour component of time zone offset, but could not find required colon separator",
         );
         insta::assert_snapshot!(
             p("%::z", "+0530"),
-            @r#"strptime parsing failed: %::z failed: parsed hour component of time zone offset from "+0530", but could not find required colon separator"#,
+            @"strptime parsing failed: %::z failed: parsed hour component of time zone offset, but could not find required colon separator",
         );
         insta::assert_snapshot!(
             p("%:::z", "+0530"),
-            @r#"strptime parsing failed: %:::z failed: parsed hour component of time zone offset from "+0530", but could not find required colon separator"#,
+            @"strptime parsing failed: %:::z failed: parsed hour component of time zone offset, but could not find required colon separator",
         );
 
         insta::assert_snapshot!(
             p("%z", "+05"),
-            @r#"strptime parsing failed: %z failed: parsed hour component of time zone offset from "+05", but could not find required minute component"#,
+            @"strptime parsing failed: %z failed: parsed hour component of time zone offset, but could not find required minute component",
         );
         insta::assert_snapshot!(
             p("%:z", "+05"),
-            @r#"strptime parsing failed: %:z failed: parsed hour component of time zone offset from "+05", but could not find required minute component"#,
+            @"strptime parsing failed: %:z failed: parsed hour component of time zone offset, but could not find required minute component",
         );
         insta::assert_snapshot!(
             p("%::z", "+05"),
-            @r#"strptime parsing failed: %::z failed: parsed hour component of time zone offset from "+05", but could not find required minute component"#,
+            @"strptime parsing failed: %::z failed: parsed hour component of time zone offset, but could not find required minute component",
         );
         insta::assert_snapshot!(
             p("%::z", "+05:30"),
-            @r#"strptime parsing failed: %::z failed: parsed hour and minute components of time zone offset from "+05:30", but could not find required second component"#,
+            @"strptime parsing failed: %::z failed: parsed hour and minute components of time zone offset, but could not find required second component",
         );
         insta::assert_snapshot!(
             p("%:::z", "+5"),
-            @r#"strptime parsing failed: %:::z failed: failed to parse hours in UTC numeric offset "+5": expected two digit hour after sign, but found end of input"#,
+            @"strptime parsing failed: %:::z failed: failed to parse hours in UTC numeric offset: expected two digit hour after sign, but found end of input",
         );
 
         insta::assert_snapshot!(
             p("%z", "+0530:15"),
-            @r#"strptime expects to consume the entire input, but ":15" remains unparsed"#,
+            @"strptime expects to consume the entire input, but `:15` remains unparsed",
         );
         insta::assert_snapshot!(
             p("%:z", "+05:3015"),
-            @r#"strptime expects to consume the entire input, but "15" remains unparsed"#,
+            @"strptime expects to consume the entire input, but `15` remains unparsed",
         );
         insta::assert_snapshot!(
             p("%::z", "+05:3015"),
-            @r#"strptime parsing failed: %::z failed: parsed hour and minute components of time zone offset from "+05:3015", but could not find required second component"#,
+            @"strptime parsing failed: %::z failed: parsed hour and minute components of time zone offset, but could not find required second component",
         );
         insta::assert_snapshot!(
             p("%:::z", "+05:3015"),
-            @r#"strptime expects to consume the entire input, but "15" remains unparsed"#,
+            @"strptime expects to consume the entire input, but `15` remains unparsed",
         );
     }
 
@@ -2192,7 +2067,7 @@ mod tests {
 
         insta::assert_snapshot!(
             p("%^50C%", "2000000000000000000#0077)()"),
-            @"strptime parsing failed: %C failed: century `2000000000000000000` is too big, must be in range 0-99",
+            @"strptime parsing failed: %C failed: failed to parse year number for century: parameter 'century' is not in the required range of 0..=99",
         );
     }
 }

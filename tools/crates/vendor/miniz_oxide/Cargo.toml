@@ -12,7 +12,7 @@
 [package]
 edition = "2021"
 name = "miniz_oxide"
-version = "0.8.9"
+version = "0.9.1"
 authors = [
     "Frommi <daniil.liferenko@gmail.com>",
     "oyvindln <oyvindln@users.noreply.github.com>",
@@ -52,7 +52,7 @@ rustc-dep-of-std = [
     "adler2/rustc-dep-of-std",
 ]
 simd = ["simd-adler32"]
-std = []
+std = ["serde?/std"]
 with-alloc = []
 
 [lib]
@@ -75,11 +75,15 @@ package = "rustc-std-workspace-core"
 
 [dependencies.serde]
 version = "1.0"
-features = ["derive"]
+features = [
+    "derive",
+    "alloc",
+]
 optional = true
+default-features = false
 
 [dependencies.simd-adler32]
-version = "0.3.3"
+version = "0.3.8"
 optional = true
 default-features = false
 

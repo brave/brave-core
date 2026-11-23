@@ -27,6 +27,8 @@ pub struct Tree {
     /// The amount of non-tree items in this directory tree, including sub-trees, recursively.
     /// The value of the top-level tree is thus equal to the value of the total amount of entries.
     /// If `None`, the tree is considered invalid and needs to be refreshed
+    ///
+    /// Note that this value can't be trusted, and it may exceed the amount of entries or mismatch.
     pub num_entries: Option<u32>,
     /// The child-trees below the current tree.
     pub children: Vec<Tree>,
@@ -42,8 +44,7 @@ pub struct Link {
 }
 
 /// The extension for untracked files.
-#[allow(dead_code)]
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct UntrackedCache {
     /// Something identifying the location and machine that this cache is for.
     /// Should the repository be copied to a different machine, the entire cache can immediately be invalidated.
@@ -61,7 +62,10 @@ pub struct UntrackedCache {
 }
 
 /// The extension for keeping state on recent information provided by the filesystem monitor.
-#[allow(dead_code)]
+#[expect(
+    dead_code,
+    reason = "for the time when we know what to do with it, for now we just ser-de it"
+)]
 #[derive(Clone)]
 pub struct FsMonitor {
     token: fs_monitor::Token,

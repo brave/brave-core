@@ -1,7 +1,7 @@
 //! Vulnerability Response Effort (RE)
 
 use crate::{
-    Error, Result,
+    Error,
     v4::metric::{Metric, MetricType},
 };
 use alloc::borrow::ToOwned;
@@ -10,11 +10,12 @@ use core::{fmt, str::FromStr};
 /// Vulnerability Response Effort (RE) - CVSS v4.0 Supplemental Metric Group
 ///
 /// Described in CVSS v4.0 Specification: Section 5.6
-#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+#[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
 pub enum VulnerabilityResponseEffort {
     /// Not Defined (X)
     ///
     /// > The metric has not been evaluated.
+    #[default]
     NotDefined,
 
     /// Low (L)
@@ -54,21 +55,15 @@ pub enum VulnerabilityResponseEffort {
     High,
 }
 
-impl Default for VulnerabilityResponseEffort {
-    fn default() -> Self {
-        Self::NotDefined
-    }
-}
-
 impl Metric for VulnerabilityResponseEffort {
     const TYPE: MetricType = MetricType::RE;
 
     fn as_str(self) -> &'static str {
         match self {
-            VulnerabilityResponseEffort::NotDefined => "X",
-            VulnerabilityResponseEffort::Low => "L",
-            VulnerabilityResponseEffort::Moderate => "M",
-            VulnerabilityResponseEffort::High => "H",
+            Self::NotDefined => "X",
+            Self::Low => "L",
+            Self::Moderate => "M",
+            Self::High => "H",
         }
     }
 }
@@ -82,12 +77,12 @@ impl fmt::Display for VulnerabilityResponseEffort {
 impl FromStr for VulnerabilityResponseEffort {
     type Err = Error;
 
-    fn from_str(s: &str) -> Result<Self> {
+    fn from_str(s: &str) -> Result<Self, Error> {
         match s {
-            "X" => Ok(VulnerabilityResponseEffort::NotDefined),
-            "L" => Ok(VulnerabilityResponseEffort::Low),
-            "M" => Ok(VulnerabilityResponseEffort::Moderate),
-            "H" => Ok(VulnerabilityResponseEffort::High),
+            "X" => Ok(Self::NotDefined),
+            "L" => Ok(Self::Low),
+            "M" => Ok(Self::Moderate),
+            "H" => Ok(Self::High),
             _ => Err(Error::InvalidMetricV4 {
                 metric_type: Self::TYPE,
                 value: s.to_owned(),

@@ -19,6 +19,8 @@ use crate::os::macos::keychain::SecKeychain;
 use crate::trust::SecTrust;
 
 /// Information about an imported identity.
+#[derive(Clone)]
+#[non_exhaustive]
 pub struct ImportedIdentity {
     /// The label of the identity.
     pub label: Option<String>,
@@ -30,7 +32,6 @@ pub struct ImportedIdentity {
     pub cert_chain: Option<Vec<SecCertificate>>,
     /// The identity itself.
     pub identity: Option<SecIdentity>,
-    _p: (),
 }
 
 /// A builder type to import an identity from PKCS#12 formatted data.
@@ -86,7 +87,7 @@ impl Pkcs12ImportOptions {
 
             let mut options = vec![];
 
-            if let Some(ref passphrase) = self.passphrase {
+            if let Some(passphrase) = &self.passphrase {
                 options.push((
                     CFString::wrap_under_get_rule(kSecImportExportPassphrase),
                     passphrase.as_CFType(),
@@ -118,7 +119,7 @@ impl Pkcs12ImportOptions {
                     .find(kSecImportItemTrust)
                     .map(|trust| SecTrust::wrap_under_get_rule(*trust as *mut _));
                 let cert_chain = raw_item
-                    .find(kSecImportItemCertChain.cast())
+                    .find(kSecImportItemCertChain)
                     .map(|cert_chain| {
                         CFArray::<SecCertificate>::wrap_under_get_rule((*cert_chain).cast())
                             .iter()
@@ -135,7 +136,6 @@ impl Pkcs12ImportOptions {
                     trust,
                     cert_chain,
                     identity,
-                    _p: (),
                 });
             }
 
@@ -146,14 +146,14 @@ impl Pkcs12ImportOptions {
     #[cfg(target_os = "macos")]
     fn import_setup(&self, options: &mut Vec<(CFString, CFType)>) {
         unsafe {
-            if let Some(ref keychain) = self.keychain {
+            if let Some(keychain) = &self.keychain {
                 options.push((
                     CFString::wrap_under_get_rule(kSecImportExportKeychain),
                     keychain.as_CFType(),
                 ));
             }
 
-            if let Some(ref access) = self.access {
+            if let Some(access) = &self.access {
                 options.push((
                     CFString::wrap_under_get_rule(kSecImportExportAccess),
                     access.as_CFType(),

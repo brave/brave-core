@@ -1,6 +1,6 @@
 //! Parsers extracting tokens from the stream
 
-#[cfg(test)]
+#[cfg(all(test, feature = "ascii"))]
 mod tests;
 
 use crate::combinator::trace;
@@ -138,6 +138,7 @@ where
 /// ```
 ///
 /// ```rust
+/// # #[cfg(feature = "ascii")] {
 /// # use winnow::{error::ErrMode, error::ContextError, error::Needed};
 /// # use winnow::prelude::*;
 /// use winnow::token::literal;
@@ -152,6 +153,7 @@ where
 /// assert_eq!(parser.parse_peek("HeLlO, World!"), Ok((", World!", "HeLlO")));
 /// assert!(parser.parse_peek("Something").is_err());
 /// assert!(parser.parse_peek("").is_err());
+/// # }
 /// ```
 #[inline(always)]
 #[doc(alias = "tag")]
@@ -325,10 +327,10 @@ where
     )
 }
 
-/// Recognize the longest (m <= len <= n) input slice that matches a [set of tokens][ContainsToken]
+/// Recognize the longest input slice (bound by `occurrences`) that matches a [set of tokens][ContainsToken]
 ///
 /// It will return an `ErrMode::Backtrack(_)` if the set of tokens wasn't met or is out
-/// of range (m <= len <= n).
+/// of `occurrences` range.
 ///
 /// *[Partial version][crate::_topic::partial]* will return a `ErrMode::Incomplete(Needed::new(1))` if a member of the set of tokens reaches the end of the input or is too short.
 ///
@@ -607,9 +609,12 @@ where
     }
 }
 
-/// Recognize the longest input slice (if any) till a member of a [set of tokens][ContainsToken] is found.
+/// Recognize the longest input slice  (bound by `any_token_occurrences`) till a member of a [set of tokens][ContainsToken] is found.
 ///
 /// It doesn't consume the terminating token from the set.
+///
+/// It will return an `ErrMode::Backtrack(_)` if the set of tokens wasn't met or is out
+/// of `occurrences` range.
 ///
 /// *[Partial version][crate::_topic::partial]* will return a `ErrMode::Incomplete(Needed::new(1))` if the match reaches the
 /// end of input or if there was not match.
@@ -626,9 +631,9 @@ where
 /// # use winnow::prelude::*;
 /// # use winnow::stream::ContainsToken;
 /// # use winnow::error::ContextError;
-/// pub fn take_till<'i>(occurrences: RangeFrom<usize>, set: impl ContainsToken<char>) -> impl Parser<&'i str, &'i str, ContextError>
+/// pub fn take_till<'i>(any_token_occurrences: RangeFrom<usize>, set: impl ContainsToken<char>) -> impl Parser<&'i str, &'i str, ContextError>
 /// # {
-/// #     winnow::token::take_till(occurrences, set)
+/// #     winnow::token::take_till(any_token_occurrences, set)
 /// # }
 /// ```
 ///
@@ -667,7 +672,7 @@ where
 #[inline(always)]
 #[doc(alias = "is_not")]
 pub fn take_till<Set, Input, Error>(
-    occurrences: impl Into<Range>,
+    any_token_occurrences: impl Into<Range>,
     set: Set,
 ) -> impl Parser<Input, <Input as Stream>::Slice, Error>
 where
@@ -678,7 +683,7 @@ where
     let Range {
         start_inclusive,
         end_inclusive,
-    } = occurrences.into();
+    } = any_token_occurrences.into();
     trace("take_till", move |i: &mut Input| {
         match (start_inclusive, end_inclusive) {
             (0, None) => {
@@ -811,11 +816,14 @@ where
     }
 }
 
-/// Recognize the input slice up to the first occurrence of a [literal].
+/// Recognize the longest input slice (bound by `any_token_occurrences`) until [literal] is found.
 ///
 /// Feature `simd` will enable the use of [`memchr`](https://docs.rs/memchr/latest/memchr/).
 ///
 /// It doesn't consume the literal.
+///
+/// It will return an `ErrMode::Backtrack(_)` if the set of tokens wasn't met or is out
+/// of `occurrences` range.
 ///
 /// *Complete version*: It will return `Err(ErrMode::Backtrack(_))`
 /// if the literal wasn't met.
@@ -834,9 +842,9 @@ where
 /// # use std::ops::RangeFrom;
 /// # use winnow::prelude::*;;
 /// # use winnow::error::ContextError;
-/// pub fn take_until(occurrences: RangeFrom<usize>, literal: &str) -> impl Parser<&str, &str, ContextError>
+/// pub fn take_until(any_token_occurrences: RangeFrom<usize>, literal: &str) -> impl Parser<&str, &str, ContextError>
 /// # {
-/// #     winnow::token::take_until(occurrences, literal)
+/// #     winnow::token::take_until(any_token_occurrences, literal)
 /// # }
 /// ```
 ///
@@ -907,7 +915,7 @@ where
 /// ```
 #[inline(always)]
 pub fn take_until<Literal, Input, Error>(
-    occurrences: impl Into<Range>,
+    any_token_occurrences: impl Into<Range>,
     literal: Literal,
 ) -> impl Parser<Input, <Input as Stream>::Slice, Error>
 where
@@ -918,7 +926,7 @@ where
     let Range {
         start_inclusive,
         end_inclusive,
-    } = occurrences.into();
+    } = any_token_occurrences.into();
     trace("take_until", move |i: &mut Input| {
         match (start_inclusive, end_inclusive) {
             (0, None) => {

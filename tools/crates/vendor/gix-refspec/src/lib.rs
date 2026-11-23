@@ -1,5 +1,29 @@
 //! Parse git ref-specs and represent them.
-#![deny(missing_docs, rust_2018_idioms)]
+//!
+//! ## Examples
+//!
+//! ```
+//! use bstr::ByteSlice;
+//! use gix_refspec::parse::Operation;
+//!
+//! let spec = gix_refspec::parse(
+//!     "refs/heads/*:refs/remotes/origin/*".into(),
+//!     Operation::Fetch,
+//! )
+//! .unwrap();
+//!
+//! assert_eq!(spec.remote().unwrap(), "refs/heads/*");
+//! assert_eq!(spec.local().unwrap(), "refs/remotes/origin/*");
+//! assert_eq!(spec.prefix().unwrap(), "refs/heads/");
+//!
+//! let mut prefixes = Vec::new();
+//! spec.expand_prefixes(&mut prefixes);
+//! assert_eq!(prefixes.len(), 1);
+//! assert_eq!(prefixes[0].as_bstr(), "refs/heads/");
+//!
+//! assert_eq!(spec.to_bstring(), "refs/heads/*:refs/remotes/origin/*");
+//! ```
+#![deny(missing_docs)]
 #![forbid(unsafe_code)]
 
 ///

@@ -49,7 +49,7 @@ impl Tree {
             }
         }
 
-        Ok(Tree { graph, nodes })
+        Ok(Self { graph, nodes })
     }
 
     /// Render the dependency graph for the given [`NodeIndex`] using the
@@ -103,7 +103,7 @@ pub struct Symbols {
 }
 
 impl Default for Symbols {
-    fn default() -> Symbols {
+    fn default() -> Self {
         Self {
             down: "│",
             tee: "├",
@@ -173,9 +173,9 @@ impl<'g, 's> Presenter<'g, 's> {
             } else {
                 "inexact".to_string()
             };
-            writeln!(w, "{} {} {}", &package.name, &package.version, spec)?;
+            writeln!(w, "{} {} {}", package.name, package.version, spec)?;
         } else {
-            writeln!(w, "{} {}", &package.name, &package.version)?;
+            writeln!(w, "{} {}", package.name, package.version)?;
         }
 
         if !new {

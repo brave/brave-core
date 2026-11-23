@@ -7,10 +7,10 @@ error[E0061]: this function takes 0 arguments but 1 argument was supplied
 note: function defined here
   --> tests/ui/pinned_drop/call-drop-inner.rs:5:1
    |
-5  | / pin_project! {
-6  | |     pub struct S {
-7  | |         #[pin]
-8  | |         field: u8,
+ 5 | / pin_project! {
+ 6 | |     pub struct S {
+ 7 | |         #[pin]
+ 8 | |         field: u8,
 ...  |
 15 | | }
    | |_^

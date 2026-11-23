@@ -2,38 +2,121 @@
 //!
 //! [RFC 2822]: https://datatracker.ietf.org/doc/html/rfc2822
 
+use num_conv::prelude::*;
+
+use crate::parsing::ParsedItem;
 use crate::parsing::combinator::rfc::rfc2234::wsp;
 use crate::parsing::combinator::{ascii_char, one_or_more, zero_or_more};
-use crate::parsing::ParsedItem;
+
+const DEPTH_LIMIT: u8 = 32;
 
 /// Consume the `fws` rule.
 // The full rule is equivalent to /\r\n[ \t]+|[ \t]+(?:\r\n[ \t]+)*/
 #[inline]
-pub(crate) fn fws(mut input: &[u8]) -> Option<ParsedItem<'_, ()>> {
-    if let [b'\r', b'\n', rest @ ..] = input {
-        one_or_more(wsp)(rest)
-    } else {
-        input = one_or_more(wsp)(input)?.into_inner();
-        while let [b'\r', b'\n', rest @ ..] = input {
-            input = one_or_more(wsp)(rest)?.into_inner();
-        }
-        Some(ParsedItem(input, ()))
+pub(crate) fn fws(input: &[u8]) -> Option<ParsedItem<'_, ()>> {
+    // Fast path for a single space followed by any ASCII character above space (the highest
+    // codepoint for ASCII whitespace).
+    if input.first() == Some(&b' ') && matches!(input.get(1), Some(0x21..)) {
+        return Some(ParsedItem(&input[1..], ()));
     }
+
+    crate::hint::cold_path();
+
+    // Secondary fast path for single whitespace character followed by non-whitespace.
+    if !matches!(input.first(), Some(b'\r' | b' ' | b'\t')) {
+        return None;
+    }
+
+    if !matches!(input.get(1), Some(b' ' | b'\r' | b'\n' | b'\t')) {
+        return Some(ParsedItem(&input[1..], ()));
+    }
+
+    #[inline(never)]
+    fn fws_uncommon(mut input: &[u8]) -> Option<ParsedItem<'_, ()>> {
+        if let [b'\r', b'\n', rest @ ..] = input {
+            one_or_more(wsp)(rest)
+        } else {
+            input = one_or_more(wsp)(input)?.into_inner();
+            while let [b'\r', b'\n', rest @ ..] = input {
+                input = one_or_more(wsp)(rest)?.into_inner();
+            }
+            Some(ParsedItem(input, ()))
+        }
+    }
+    fws_uncommon(input)
 }
 
 /// Consume the `cfws` rule.
 // The full rule is equivalent to any combination of `fws` and `comment` so long as it is not empty.
 #[inline]
 pub(crate) fn cfws(input: &[u8]) -> Option<ParsedItem<'_, ()>> {
-    one_or_more(|input| fws(input).or_else(|| comment(input)))(input)
+    // Fast path for a single space followed by any ASCII character above the left parenthesis
+    // (which would start a comment).
+    if input.first() == Some(&b' ') && matches!(input.get(1), Some(0x29..)) {
+        return Some(ParsedItem(&input[1..], ()));
+    }
+
+    crate::hint::cold_path();
+
+    // Secondary fast path for whitespace other than a single space.
+    if input.first() != Some(&b'(') {
+        if !matches!(input.first(), Some(b'\r' | b' ' | b'\t')) {
+            return None;
+        }
+
+        if !matches!(input.get(1), Some(b'(' | b' ' | b'\r' | b'\n' | b'\t')) {
+            return Some(ParsedItem(&input[1..], ()));
+        }
+    }
+
+    #[inline(never)]
+    fn cfws_uncommon(input: &[u8]) -> Option<ParsedItem<'_, ()>> {
+        one_or_more(|input| fws(input).or_else(|| comment(input, 1)))(input)
+    }
+    cfws_uncommon(input)
+}
+
+/// Optional `cfws` rule. This is equivalent to `opt(cfws)`, but is better optimized for the common
+/// case where no `cfws` is present.
+#[inline]
+pub(crate) fn opt_cfws(input: &[u8]) -> ParsedItem<'_, ()> {
+    if matches!(input.first(), Some(0x29..)) {
+        ParsedItem(input, ())
+    } else {
+        cfws(input).unwrap_or(ParsedItem(input, ()))
+    }
+}
+
+/// Equivalent to `opt(cfws)`, `ascii_char::<b':'>`, and `opt(cfws)` called in sequence, but is
+/// better optimized for the common case where no `cfws` is present.
+#[inline]
+pub(crate) fn opt_cfws_colon_opt_cfws(input: &[u8]) -> Option<ParsedItem<'_, ()>> {
+    if input.first() == Some(&b':') && matches!(input.get(1), Some(0x29..)) {
+        Some(ParsedItem(&input[1..], ()))
+    } else {
+        crate::hint::cold_path();
+        let input = opt_cfws(input).into_inner();
+        let input = ascii_char::<b':'>(input)?.into_inner();
+        let input = opt_cfws(input).into_inner();
+        Some(ParsedItem(input, ()))
+    }
 }
 
 /// Consume the `comment` rule.
 #[inline]
-fn comment(mut input: &[u8]) -> Option<ParsedItem<'_, ()>> {
+fn comment(mut input: &[u8], depth: u8) -> Option<ParsedItem<'_, ()>> {
+    // Avoid stack exhaustion DoS by limiting recursion depth. This will cause highly-nested
+    // comments to fail parsing, but comments *at all* are incredibly rare in practice.
+    //
+    // The error from this will not be descriptive, but the rarity and near-certain maliciousness of
+    // such inputs makes this an acceptable trade-off.
+    if depth == DEPTH_LIMIT {
+        return None;
+    }
+
     input = ascii_char::<b'('>(input)?.into_inner();
     input = zero_or_more(fws)(input).into_inner();
-    while let Some(rest) = ccontent(input) {
+    while let Some(rest) = ccontent(input, depth + 1) {
         input = rest.into_inner();
         input = zero_or_more(fws)(input).into_inner();
     }
@@ -44,10 +127,10 @@ fn comment(mut input: &[u8]) -> Option<ParsedItem<'_, ()>> {
 
 /// Consume the `ccontent` rule.
 #[inline]
-fn ccontent(input: &[u8]) -> Option<ParsedItem<'_, ()>> {
+fn ccontent(input: &[u8], depth: u8) -> Option<ParsedItem<'_, ()>> {
     ctext(input)
         .or_else(|| quoted_pair(input))
-        .or_else(|| comment(input))
+        .or_else(|| comment(input, depth))
 }
 
 /// Consume the `ctext` rule.
@@ -116,4 +199,70 @@ fn text<'a>(input: &'a [u8]) -> ParsedItem<'a, ()> {
     };
 
     new_text(input).unwrap_or_else(|| obs_text(input))
+}
+
+/// Consume an old zone literal, returning the offset in hours.
+pub(crate) fn zone_literal(input: &[u8]) -> Option<ParsedItem<'_, i8>> {
+    let [first, second, third, rest @ ..] = input else {
+        const UT_VARIANTS: [u16; 4] = [
+            u16::from_ne_bytes(*b"ut"),
+            u16::from_ne_bytes(*b"uT"),
+            u16::from_ne_bytes(*b"Ut"),
+            u16::from_ne_bytes(*b"UT"),
+        ];
+
+        let [first, rest @ ..] = input else {
+            return None;
+        };
+        if let [second, rest @ ..] = rest
+            && UT_VARIANTS.contains(&u16::from_ne_bytes([*first, *second]))
+        {
+            return Some(ParsedItem(rest, 0));
+        }
+        return (*first != b'j' && *first != b'J' && first.is_ascii_alphabetic())
+            .then_some(ParsedItem(rest, 0));
+    };
+    let byte = u32::from_ne_bytes([
+        0,
+        first.to_ascii_lowercase(),
+        second.to_ascii_lowercase(),
+        third.to_ascii_lowercase(),
+    ]);
+    const ZONES: [u32; 8] = [
+        u32::from_ne_bytes([0, b'e', b's', b't']),
+        u32::from_ne_bytes([0, b'e', b'd', b't']),
+        u32::from_ne_bytes([0, b'c', b's', b't']),
+        u32::from_ne_bytes([0, b'c', b'd', b't']),
+        u32::from_ne_bytes([0, b'm', b's', b't']),
+        u32::from_ne_bytes([0, b'm', b'd', b't']),
+        u32::from_ne_bytes([0, b'p', b's', b't']),
+        u32::from_ne_bytes([0, b'p', b'd', b't']),
+    ];
+
+    let eq = [
+        if ZONES[0] == byte { i32::MAX } else { 0 },
+        if ZONES[1] == byte { i32::MAX } else { 0 },
+        if ZONES[2] == byte { i32::MAX } else { 0 },
+        if ZONES[3] == byte { i32::MAX } else { 0 },
+        if ZONES[4] == byte { i32::MAX } else { 0 },
+        if ZONES[5] == byte { i32::MAX } else { 0 },
+        if ZONES[6] == byte { i32::MAX } else { 0 },
+        if ZONES[7] == byte { i32::MAX } else { 0 },
+    ];
+    if eq == [0; 8] && byte != const { u32::from_ne_bytes([0, b'g', b'm', b't']) } {
+        return None;
+    }
+
+    let nonzero_zones = [
+        eq[0] & -5,
+        eq[1] & -4,
+        eq[2] & -6,
+        eq[3] & -5,
+        eq[4] & -7,
+        eq[5] & -6,
+        eq[6] & -8,
+        eq[7] & -7,
+    ];
+    let zone = nonzero_zones.iter().sum::<i32>().truncate();
+    Some(ParsedItem(rest, zone))
 }

@@ -1,7 +1,5 @@
 use crate::prelude::*;
-use crate::{
-    BinaryReader, BinaryReaderError, FromReader, Result, SectionLimited, Subsection, Subsections,
-};
+use crate::{BinaryReader, Error, FromReader, Result, SectionLimited, Subsection, Subsections};
 use core::ops::Range;
 
 bitflags::bitflags! {
@@ -93,7 +91,7 @@ pub struct Segment<'a> {
 
 impl<'a> FromReader<'a> for Segment<'a> {
     fn from_reader(reader: &mut BinaryReader<'a>) -> Result<Self> {
-        let name = reader.read_string()?;
+        let name = reader.read_unlimited_string()?;
         let alignment = reader.read_var_u32()?;
         let flags = reader.read()?;
         Ok(Self {
@@ -143,7 +141,7 @@ pub struct Comdat<'a> {
 
 impl<'a> FromReader<'a> for Comdat<'a> {
     fn from_reader(reader: &mut BinaryReader<'a>) -> Result<Self> {
-        let name = reader.read_string()?;
+        let name = reader.read_unlimited_string()?;
         let flags = reader.read_var_u32()?;
         // FIXME(#188) ideally shouldn't need to skip here
         let symbols = reader.skip(|reader| {
@@ -299,7 +297,7 @@ impl<'a> FromReader<'a> for SymbolInfo<'a> {
             SYMTAB_FUNCTION | SYMTAB_GLOBAL | SYMTAB_EVENT | SYMTAB_TABLE => {
                 let index = reader.read_var_u32()?;
                 let name = match defined || explicit_name {
-                    true => Some(reader.read_string()?),
+                    true => Some(reader.read_unlimited_string()?),
                     false => None,
                 };
                 Ok(match kind {
@@ -311,7 +309,7 @@ impl<'a> FromReader<'a> for SymbolInfo<'a> {
                 })
             }
             SYMTAB_DATA => {
-                let name = reader.read_string()?;
+                let name = reader.read_unlimited_string()?;
                 let data = match defined {
                     true => Some(reader.read()?),
                     false => None,
@@ -409,8 +407,8 @@ impl<'a> LinkingSectionReader<'a> {
 
         let version = reader.read_var_u32()?;
         if version != 2 {
-            return Err(BinaryReaderError::new(
-                format!("unsupported linking section version: {}", version),
+            return Err(Error::new(
+                format!("unsupported linking section version: {version}"),
                 offset,
             ));
         }

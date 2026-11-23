@@ -120,7 +120,7 @@ impl Unit {
         current_value: Step,
         upper_bound: Option<Step>,
         throughput: impl Into<Option<display::Throughput>>,
-    ) -> display::UnitDisplay {
+    ) -> display::UnitDisplay<'_> {
         display::UnitDisplay {
             current_value,
             upper_bound,

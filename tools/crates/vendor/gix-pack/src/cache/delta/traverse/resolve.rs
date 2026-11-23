@@ -1,23 +1,24 @@
-use std::{
-    collections::BTreeMap,
-    sync::atomic::{AtomicBool, AtomicIsize, Ordering},
-};
+use gix_error::Result;
+use std::sync::atomic::{AtomicBool, Ordering};
 
-use gix_features::{progress::Progress, threading, zlib};
+use gix_error::{OptionExt, ResourceExhaustionKind, ResultExt, bail, message};
+use gix_parallel::{self as threading, OwnShared};
+use gix_utils::progress::Progress;
 
 use crate::{
     cache::delta::{
-        traverse::{util::ItemSliceSync, Context, Error},
-        Item,
+        traverse::{Context, allocation_error, interrupted, util::ItemSliceSync},
+        tree::Item,
     },
     data,
     data::EntryRange,
+    data::decode::resize_with_limit,
 };
 
-mod root {
-    use crate::cache::delta::{traverse::util::ItemSliceSync, Item};
+mod node {
+    use crate::cache::delta::{traverse::util::ItemSliceSync, tree::Item};
 
-    /// An item returned by `iter_root_chunks`, allowing access to the `data` stored alongside nodes in a [`Tree`].
+    /// A node in a delta tree, with exclusive access to its item data.
     pub(crate) struct Node<'a, T: Send> {
         // SAFETY INVARIANT: see Node::new(). That function is the only one used
         // to create or modify these fields.
@@ -26,443 +27,987 @@ mod root {
     }
 
     impl<'a, T: Send> Node<'a, T> {
-        /// SAFETY: `item.children` must uniquely reference elements in child_items that no other currently alive
-        /// item does. All child_items must also have unique children, unless the child_item is itself `item`,
-        /// in which case no other live item should reference it in its `item.children`.
-        ///
-        /// This safety invariant can be reliably upheld by making sure `item` comes from a Tree and `child_items`
-        /// was constructed using that Tree's child_items. This works since Tree has this invariant as well: all
-        /// child_items are referenced at most once (really, exactly once) by a node in the tree.
-        ///
-        /// Note that this invariant is a bit more relaxed than that on `deltas()`, because this function can be called
-        /// for traversal within a child item, which happens in into_child_iter()
-        #[allow(unsafe_code)]
+        /// SAFETY: `item.children` must uniquely reference elements in `child_items` that no other live item does.
+        /// All child items must uphold the same invariant.
+        #[expect(unsafe_code)]
         pub(super) unsafe fn new(item: &'a mut Item<T>, child_items: &'a ItemSliceSync<'a, Item<T>>) -> Self {
             Node { item, child_items }
         }
-    }
 
-    impl<'a, T: Send> Node<'a, T> {
-        /// Returns the offset into the pack at which the `Node`s data is located.
-        pub fn offset(&self) -> u64 {
-            self.item.offset
-        }
-
-        /// Returns the slice into the data pack at which the pack entry is located.
+        /// Return the pack byte range used to resolve this entry's header and compressed data.
         pub fn entry_slice(&self) -> crate::data::EntryRange {
             self.item.offset..self.item.next_offset
         }
 
-        /// Returns the node data associated with this node.
+        /// Return the data associated with this node.
         pub fn data(&mut self) -> &mut T {
             &mut self.item.data
         }
 
-        /// Returns true if this node has children, e.g. is not a leaf in the tree.
+        /// Return true if this node is a base for other deltas.
         pub fn has_children(&self) -> bool {
             !self.item.children().is_empty()
         }
 
-        /// Transform this `Node` into an iterator over its children.
-        ///
-        /// Children are `Node`s referring to pack entries whose base object is this pack entry.
+        pub fn add_children(&mut self, children: impl IntoIterator<Item = u32>) {
+            self.item.extend_children(children);
+        }
+
+        /// Transform this node into an iterator over its children.
         pub fn into_child_iter(self) -> impl Iterator<Item = Node<'a, T>> + 'a {
             let children = self.child_items;
-            #[allow(unsafe_code)]
+            #[expect(unsafe_code)]
             self.item.children().iter().map(move |&index| {
-                // SAFETY: Due to the invariant on new(), we can rely on these indices
-                // being unique.
+                // SAFETY: Tree guarantees that each child index belongs to exactly one parent.
                 let item = unsafe { children.get_mut(index as usize) };
-                // SAFETY: Since every child_item is also required to uphold the uniqueness guarantee,
-                // creating a Node with one of the child_items that we are allowed access to is still fine.
+                // SAFETY: The child inherits the same uniqueness guarantee.
                 unsafe { Node::new(item, children) }
             })
         }
     }
 }
 
-pub(super) struct State<'items, F, MBFN, T: Send> {
-    pub delta_bytes: Vec<u8>,
-    pub fully_resolved_delta_bytes: Vec<u8>,
-    pub progress: Box<dyn Progress>,
-    pub resolve: F,
-    pub modify_base: MBFN,
-    pub child_items: &'items ItemSliceSync<'items, Item<T>>,
-}
+use node::Node;
 
-/// SAFETY: `item.children` must uniquely reference elements in child_items that no other currently alive
-/// item does. All child_items must also have unique children.
-///
-/// This safety invariant can be reliably upheld by making sure `item` comes from a Tree and `child_items`
-/// was constructed using that Tree's child_items. This works since Tree has this invariant as well: all
-/// child_items are referenced at most once (really, exactly once) by a node in the tree.
-#[allow(clippy::too_many_arguments, unsafe_code)]
-#[deny(unsafe_op_in_unsafe_fn)] // this is a big function, require unsafe for the one small unsafe op we have
-pub(super) unsafe fn deltas<T, F, MBFN, E, R>(
-    objects: gix_features::progress::StepShared,
-    size: gix_features::progress::StepShared,
-    item: &mut Item<T>,
-    State {
-        delta_bytes,
-        fully_resolved_delta_bytes,
-        progress,
-        resolve,
-        modify_base,
-        child_items,
-    }: &mut State<'_, F, MBFN, T>,
-    resolve_data: &R,
-    hash_len: usize,
-    threads_left: &AtomicIsize,
-    should_interrupt: &AtomicBool,
-) -> Result<(), Error>
-where
-    T: Send,
-    R: Send + Sync,
-    F: for<'r> Fn(EntryRange, &'r R) -> Option<&'r [u8]> + Send + Clone,
-    MBFN: FnMut(&mut T, &dyn Progress, Context<'_>) -> Result<(), E> + Send + Clone,
-    E: std::error::Error + Send + Sync + 'static,
-{
-    let mut decompressed_bytes_by_pack_offset = BTreeMap::new();
-    let mut inflate = zlib::Inflate::default();
-    let mut decompress_from_resolver = |slice: EntryRange, out: &mut Vec<u8>| -> Result<(data::Entry, u64), Error> {
-        let bytes = resolve(slice.clone(), resolve_data).ok_or(Error::ResolveFailed {
-            pack_offset: slice.start,
-        })?;
-        let entry = data::Entry::from_bytes(bytes, slice.start, hash_len)?;
-        let compressed = &bytes[entry.header_size()..];
-        let decompressed_len = entry.decompressed_size as usize;
-        decompress_all_at_once_with(&mut inflate, compressed, decompressed_len, out)?;
-        Ok((entry, slice.end))
+fn attach_ref_delta_children<T: Send>(
+    node: &mut Node<'_, T>,
+    entry: &data::Entry,
+    decompressed: &[u8],
+    ref_delta_children: Option<&super::SharedRefDeltaChildren>,
+    object_hash: gix_hash::Kind,
+) -> Result {
+    let Some(ref_delta_children) = ref_delta_children else {
+        return Ok(());
     };
-
-    // each node is a base, and its children always start out as deltas which become a base after applying them.
-    // These will be pushed onto our stack until all are processed
-    let root_level = 0;
-    // SAFETY: This invariant is required from the caller
-    #[allow(unsafe_code)]
-    let root_node = unsafe { root::Node::new(item, child_items) };
-    let mut nodes: Vec<_> = vec![(root_level, root_node)];
-    while let Some((level, mut base)) = nodes.pop() {
-        if should_interrupt.load(Ordering::Relaxed) {
-            return Err(Error::Interrupted);
-        }
-        let (base_entry, entry_end, base_bytes) = if level == root_level {
-            let mut buf = Vec::new();
-            let (a, b) = decompress_from_resolver(base.entry_slice(), &mut buf)?;
-            (a, b, buf)
-        } else {
-            decompressed_bytes_by_pack_offset
-                .remove(&base.offset())
-                .expect("we store the resolved delta buffer when done")
-        };
-
-        // anything done here must be repeated further down for leaf-nodes.
-        // This way we avoid retaining their decompressed memory longer than needed (they have no children,
-        // thus their memory can be released right away, using 18% less peak memory on the linux kernel).
-        {
-            modify_base(
-                base.data(),
-                progress,
-                Context {
-                    entry: &base_entry,
-                    entry_end,
-                    decompressed: &base_bytes,
-                    level,
-                },
-            )
-            .map_err(|err| Box::new(err) as Box<dyn std::error::Error + Send + Sync>)?;
-            objects.fetch_add(1, Ordering::Relaxed);
-            size.fetch_add(base_bytes.len(), Ordering::Relaxed);
-        }
-
-        for mut child in base.into_child_iter() {
-            let (mut child_entry, entry_end) = decompress_from_resolver(child.entry_slice(), delta_bytes)?;
-            let (base_size, consumed) = data::delta::decode_header_size(delta_bytes);
-            let mut header_ofs = consumed;
-            assert_eq!(
-                base_bytes.len(),
-                base_size as usize,
-                "recorded base size in delta does match the actual one"
-            );
-            let (result_size, consumed) = data::delta::decode_header_size(&delta_bytes[consumed..]);
-            header_ofs += consumed;
-
-            fully_resolved_delta_bytes.resize(result_size as usize, 0);
-            data::delta::apply(&base_bytes, fully_resolved_delta_bytes, &delta_bytes[header_ofs..])?;
-
-            // FIXME: this actually invalidates the "pack_offset()" computation, which is not obvious to consumers
-            //        at all
-            child_entry.header = base_entry.header; // assign the actual object type, instead of 'delta'
-            if child.has_children() {
-                decompressed_bytes_by_pack_offset.insert(
-                    child.offset(),
-                    (child_entry, entry_end, std::mem::take(fully_resolved_delta_bytes)),
-                );
-                nodes.push((level + 1, child));
-            } else {
-                modify_base(
-                    child.data(),
-                    &progress,
-                    Context {
-                        entry: &child_entry,
-                        entry_end,
-                        decompressed: fully_resolved_delta_bytes,
-                        level: level + 1,
-                    },
-                )
-                .map_err(|err| Box::new(err) as Box<dyn std::error::Error + Send + Sync>)?;
-                objects.fetch_add(1, Ordering::Relaxed);
-                size.fetch_add(base_bytes.len(), Ordering::Relaxed);
-            }
-        }
-
-        // After the first round, see if we can use additional threads, and if so we enter multi-threaded mode.
-        // In it we will keep using new threads as they become available while using this thread for coordination.
-        // We optimize for a low memory footprint as we are likely to get here if long delta-chains with large objects are involved.
-        // Try to avoid going into threaded mode if there isn't more than one unit of work anyway.
-        if nodes.len() > 1 {
-            if let Ok(initial_threads) =
-                threads_left.fetch_update(Ordering::SeqCst, Ordering::SeqCst, |threads_available| {
-                    (threads_available > 0).then_some(0)
-                })
-            {
-                // Assure no memory is held here.
-                *delta_bytes = Vec::new();
-                *fully_resolved_delta_bytes = Vec::new();
-                return deltas_mt(
-                    initial_threads,
-                    decompressed_bytes_by_pack_offset,
-                    objects,
-                    size,
-                    &progress,
-                    nodes,
-                    resolve.clone(),
-                    resolve_data,
-                    modify_base.clone(),
-                    hash_len,
-                    threads_left,
-                    should_interrupt,
-                );
-            }
-        }
+    // Avoid hashing every remaining object once all pending ref-deltas have found their bases.
+    if threading::lock(ref_delta_children).is_empty() {
+        return Ok(());
     }
 
+    let kind = entry.header.as_kind().expect("a fully resolved object has a base kind");
+    let id = gix_object::compute_hash(object_hash, kind, decompressed)
+        .or_raise(|| message("Failed to hash an object while resolving in-pack ref-deltas"))?;
+    if let Some(children) = threading::lock(ref_delta_children).remove(&id) {
+        node.add_children(children);
+    }
     Ok(())
 }
 
-/// * `initial_threads` is the threads we may spawn, not accounting for our own thread which is still considered used by the parent
-///   system. Since this thread will take a controlling function, we may spawn one more than that. In threaded mode, we will finish
-///   all remaining work.
-#[allow(clippy::too_many_arguments)]
-fn deltas_mt<T, F, MBFN, E, R>(
-    mut threads_to_create: isize,
-    decompressed_bytes_by_pack_offset: BTreeMap<u64, (data::Entry, u64, Vec<u8>)>,
-    objects: gix_features::progress::StepShared,
-    size: gix_features::progress::StepShared,
+/// A parsed entry and its decompressed bytes, ready to serve as a delta base.
+struct ResolvedBase {
+    /// The pack entry, with a delta header replaced by its resolved object kind.
+    entry: data::Entry,
+    /// The pack offset immediately after the entry.
+    entry_end: u64,
+    /// The fully resolved object bytes.
+    bytes: Vec<u8>,
+}
+
+/// A resolved base shared by sibling work items.
+///
+/// [`OwnShared`] uses an `Arc` for parallel builds and an `Rc` otherwise. Once all siblings have released their clones,
+/// the task holding the sole reference can use [`OwnShared::try_unwrap()`] to recover the base and reuse its `Vec`
+/// allocation as scratch space.
+type SharedResolvedBase = OwnShared<ResolvedBase>;
+
+/// A schedulable delta-tree node.
+///
+/// Work items can move between workers because each [`Node`] grants exclusive access to one item, while siblings
+/// share their parent only through an immutable [`SharedResolvedBase`].
+struct WorkItem<'a, T: Send> {
+    /// The traversal level, with roots at level `0`.
+    level: u16,
+    /// The exclusive handle to the tree item being resolved.
+    node: Node<'a, T>,
+    /// The resolved parent's entry and bytes needed to apply this node's delta, or `None` for roots.
+    parent: Option<SharedResolvedBase>,
+}
+
+/// Resolve all delta trees from a shared, lock-free work-stealing pool.
+/// It's `unsafe` as there is safety-constraints on `items` and `child_items`.
+///
+/// SAFETY: `items` and `child_items` must originate from the same [`crate::cache::delta::Tree`].
+#[expect(clippy::too_many_arguments, unsafe_code)]
+#[deny(unsafe_op_in_unsafe_fn)]
+pub(super) unsafe fn all<T, F, MBFN, R>(
+    items: &mut [Item<T>],
+    child_items: &ItemSliceSync<'_, Item<T>>,
+    thread_limit: Option<usize>,
+    num_objects: usize,
+    objects: gix_utils::progress::StepShared,
+    size: gix_utils::progress::StepShared,
     progress: &dyn Progress,
-    nodes: Vec<(u16, root::Node<'_, T>)>,
     resolve: F,
     resolve_data: &R,
     modify_base: MBFN,
-    hash_len: usize,
-    threads_left: &AtomicIsize,
+    ref_delta_children: Option<super::SharedRefDeltaChildren>,
+    object_hash: gix_hash::Kind,
+    alloc_limit_bytes: Option<usize>,
     should_interrupt: &AtomicBool,
-) -> Result<(), Error>
+) -> Result
 where
     T: Send,
     R: Send + Sync,
     F: for<'r> Fn(EntryRange, &'r R) -> Option<&'r [u8]> + Send + Clone,
-    MBFN: FnMut(&mut T, &dyn Progress, Context<'_>) -> Result<(), E> + Send + Clone,
-    E: std::error::Error + Send + Sync + 'static,
+    MBFN: FnMut(&mut T, &dyn Progress, Context<'_>) -> Result + Send + Clone,
 {
-    let nodes = gix_features::threading::Mutable::new(nodes);
-    let decompressed_bytes_by_pack_offset = gix_features::threading::Mutable::new(decompressed_bytes_by_pack_offset);
-    threads_to_create += 1; // ourselves
-    let mut returned_ourselves = false;
+    let work = items
+        .iter_mut()
+        .map(|item| {
+            // SAFETY: Required from the caller, and each root item is unique.
+            #[expect(unsafe_code)]
+            let node = unsafe { Node::new(item, child_items) };
+            WorkItem {
+                level: 0,
+                node,
+                parent: None,
+            }
+        })
+        .collect::<Vec<_>>();
 
-    gix_features::parallel::threads(|s| -> Result<(), Error> {
-        let mut threads = Vec::new();
-        let poll_interval = std::time::Duration::from_millis(100);
-        loop {
-            for tid in 0..threads_to_create {
-                let thread = gix_features::parallel::build_thread()
-                    .name(format!("gix-pack.traverse_deltas.{tid}"))
-                    .spawn_scoped(s, {
-                        let nodes = &nodes;
-                        let decompressed_bytes_by_pack_offset = &decompressed_bytes_by_pack_offset;
-                        let resolve = resolve.clone();
-                        let mut modify_base = modify_base.clone();
+    #[cfg(feature = "parallel")]
+    {
+        resolve_parallel(
+            gix_parallel::num_threads(thread_limit).min(num_objects),
+            work,
+            objects,
+            size,
+            progress,
+            resolve,
+            resolve_data,
+            modify_base,
+            ref_delta_children,
+            object_hash,
+            alloc_limit_bytes,
+            should_interrupt,
+        )
+    }
+    #[cfg(not(feature = "parallel"))]
+    {
+        let _ = thread_limit;
+        let _ = num_objects;
+        resolve_serial(
+            work,
+            objects,
+            size,
+            progress,
+            resolve,
+            resolve_data,
+            modify_base,
+            ref_delta_children,
+            object_hash,
+            alloc_limit_bytes,
+            should_interrupt,
+        )
+    }
+}
+
+/// Resolve all work on the current thread using `work` as a LIFO stack.
+///
+/// `work` initially contains only roots. Resolving a node adds a [`WorkItem`] for each child to the same stack consumed by
+/// the loop, so processing continues through dynamically scheduled descendants, including ref-delta children attached
+/// during resolution, until both they and the remaining roots are exhausted. LIFO order makes children of the current
+/// node run before roots that were already waiting.
+#[cfg(not(feature = "parallel"))]
+#[expect(clippy::too_many_arguments)]
+fn resolve_serial<T, F, MBFN, R>(
+    mut work: Vec<WorkItem<'_, T>>,
+    objects: gix_utils::progress::StepShared,
+    size: gix_utils::progress::StepShared,
+    progress: &dyn Progress,
+    resolve: F,
+    resolve_data: &R,
+    mut modify_base: MBFN,
+    ref_delta_children: Option<super::SharedRefDeltaChildren>,
+    object_hash: gix_hash::Kind,
+    alloc_limit_bytes: Option<usize>,
+    should_interrupt: &AtomicBool,
+) -> Result
+where
+    T: Send,
+    R: Send + Sync,
+    F: for<'r> Fn(EntryRange, &'r R) -> Option<&'r [u8]> + Send + Clone,
+    MBFN: FnMut(&mut T, &dyn Progress, Context<'_>) -> Result + Send + Clone,
+{
+    let mut delta_bytes = Vec::new();
+    let mut fully_resolved_delta_bytes = Vec::new();
+    let mut inflate = gix_zlib::Inflate::default();
+    while let Some(task) = work.pop() {
+        if should_interrupt.load(Ordering::Relaxed) {
+            return Err(interrupted());
+        }
+        resolve_task(
+            task,
+            &mut delta_bytes,
+            &mut fully_resolved_delta_bytes,
+            &mut inflate,
+            progress,
+            &resolve,
+            resolve_data,
+            &mut modify_base,
+            ref_delta_children.as_ref(),
+            object_hash,
+            alloc_limit_bytes,
+            &objects,
+            &size,
+            |child| work.push(child),
+        )?;
+    }
+    Ok(())
+}
+
+/// Resolve work in parallel with per-worker LIFO queues and work stealing.
+///
+/// Roots start in a shared queue. Each worker prefers children on its own queue, then steals from peer queues, and finally
+/// takes another root. This favors completing active trees before starting more roots.
+///
+/// Newly discovered children are scheduled on the current worker, where idle peers can steal them and help with an active
+/// tree. A worker that temporarily finds no task yields while other work is queued or in progress, since it may expose
+/// more descendants, and exits only when no work remains.
+#[cfg(feature = "parallel")]
+#[expect(clippy::too_many_arguments)]
+fn resolve_parallel<T, F, MBFN, R>(
+    num_threads: usize,
+    work: Vec<WorkItem<'_, T>>,
+    objects: gix_utils::progress::StepShared,
+    size: gix_utils::progress::StepShared,
+    progress: &dyn Progress,
+    resolve: F,
+    resolve_data: &R,
+    modify_base: MBFN,
+    ref_delta_children: Option<super::SharedRefDeltaChildren>,
+    object_hash: gix_hash::Kind,
+    alloc_limit_bytes: Option<usize>,
+    should_interrupt: &AtomicBool,
+) -> Result
+where
+    T: Send,
+    R: Send + Sync,
+    F: for<'r> Fn(EntryRange, &'r R) -> Option<&'r [u8]> + Send + Clone,
+    MBFN: FnMut(&mut T, &dyn Progress, Context<'_>) -> Result + Send + Clone,
+{
+    use gix_error::ErrorExt;
+    use std::sync::atomic::AtomicUsize;
+
+    if num_threads == 0 {
+        return Ok(());
+    }
+    let roots = crossbeam_deque::Injector::new();
+    let remaining = AtomicUsize::new(work.len());
+    for task in work {
+        roots.push(task);
+    }
+    let workers: Vec<_> = (0..num_threads).map(|_| crossbeam_deque::Worker::new_lifo()).collect();
+    let stealers: Vec<_> = workers.iter().map(crossbeam_deque::Worker::stealer).collect();
+    let abort = AtomicBool::new(false);
+
+    gix_parallel::threads(|scope| {
+        let mut handles = Vec::with_capacity(num_threads);
+        for (tid, worker) in workers.into_iter().enumerate() {
+            let result = gix_parallel::build_thread()
+                .name(format!("gix-pack.traverse_deltas.{tid}"))
+                .spawn_scoped(
+                    scope,
+                    gix_trace::in_thread({
+                        let stealers = &stealers;
+                        let roots = &roots;
+                        let remaining = &remaining;
+                        let abort = &abort;
                         let objects = &objects;
                         let size = &size;
+                        let resolve = resolve.clone();
+                        let mut modify_base = modify_base.clone();
+                        let ref_delta_children = ref_delta_children.clone();
+                        move || {
+                            // Make sure we never deadlock because a panicking worker can't update `remaining` anymore.
+                            let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+                                let mut delta_bytes = Vec::new();
+                                let mut fully_resolved_delta_bytes = Vec::new();
+                                let mut inflate = gix_zlib::Inflate::default();
+                                loop {
+                                    if abort.load(Ordering::Relaxed) {
+                                        return Ok(());
+                                    }
+                                    if should_interrupt.load(Ordering::Relaxed) {
+                                        abort.store(true, Ordering::Relaxed);
+                                        return Err(interrupted());
+                                    }
+                                    let Some(task) = steal(&worker, stealers, roots) else {
+                                        if remaining.load(Ordering::Acquire) == 0 {
+                                            return Ok(());
+                                        }
+                                        std::thread::yield_now();
+                                        continue;
+                                    };
 
-                        move || -> Result<(), Error> {
-                            let mut fully_resolved_delta_bytes = Vec::new();
-                            let mut delta_bytes = Vec::new();
-                            let mut inflate = zlib::Inflate::default();
-                            let mut decompress_from_resolver =
-                                |slice: EntryRange, out: &mut Vec<u8>| -> Result<(data::Entry, u64), Error> {
-                                    let bytes = resolve(slice.clone(), resolve_data).ok_or(Error::ResolveFailed {
-                                        pack_offset: slice.start,
-                                    })?;
-                                    let entry = data::Entry::from_bytes(bytes, slice.start, hash_len)?;
-                                    let compressed = &bytes[entry.header_size()..];
-                                    let decompressed_len = entry.decompressed_size as usize;
-                                    decompress_all_at_once_with(&mut inflate, compressed, decompressed_len, out)?;
-                                    Ok((entry, slice.end))
-                                };
-
-                            loop {
-                                let (level, mut base) = match threading::lock(nodes).pop() {
-                                    Some(v) => v,
-                                    None => break,
-                                };
-                                if should_interrupt.load(Ordering::Relaxed) {
-                                    return Err(Error::Interrupted);
-                                }
-                                let (base_entry, entry_end, base_bytes) = if level == 0 {
-                                    let mut buf = Vec::new();
-                                    let (a, b) = decompress_from_resolver(base.entry_slice(), &mut buf)?;
-                                    (a, b, buf)
-                                } else {
-                                    threading::lock(decompressed_bytes_by_pack_offset)
-                                        .remove(&base.offset())
-                                        .expect("we store the resolved delta buffer when done")
-                                };
-
-                                // anything done here must be repeated further down for leaf-nodes.
-                                // This way we avoid retaining their decompressed memory longer than needed (they have no children,
-                                // thus their memory can be released right away, using 18% less peak memory on the linux kernel).
-                                {
-                                    modify_base(
-                                        base.data(),
-                                        progress,
-                                        Context {
-                                            entry: &base_entry,
-                                            entry_end,
-                                            decompressed: &base_bytes,
-                                            level,
-                                        },
-                                    )
-                                    .map_err(|err| Box::new(err) as Box<dyn std::error::Error + Send + Sync>)?;
-                                    objects.fetch_add(1, Ordering::Relaxed);
-                                    size.fetch_add(base_bytes.len(), Ordering::Relaxed);
-                                }
-
-                                for mut child in base.into_child_iter() {
-                                    let (mut child_entry, entry_end) =
-                                        decompress_from_resolver(child.entry_slice(), &mut delta_bytes)?;
-                                    let (base_size, consumed) = data::delta::decode_header_size(&delta_bytes);
-                                    let mut header_ofs = consumed;
-                                    assert_eq!(
-                                        base_bytes.len(),
-                                        base_size as usize,
-                                        "recorded base size in delta does match the actual one"
-                                    );
-                                    let (result_size, consumed) =
-                                        data::delta::decode_header_size(&delta_bytes[consumed..]);
-                                    header_ofs += consumed;
-
-                                    fully_resolved_delta_bytes.resize(result_size as usize, 0);
-                                    data::delta::apply(
-                                        &base_bytes,
+                                    let task_result = resolve_task(
+                                        task,
+                                        &mut delta_bytes,
                                         &mut fully_resolved_delta_bytes,
-                                        &delta_bytes[header_ofs..],
-                                    )?;
-
-                                    // FIXME: this actually invalidates the "pack_offset()" computation, which is not obvious to consumers
-                                    //        at all
-                                    child_entry.header = base_entry.header; // assign the actual object type, instead of 'delta'
-                                    if child.has_children() {
-                                        threading::lock(decompressed_bytes_by_pack_offset).insert(
-                                            child.offset(),
-                                            (child_entry, entry_end, std::mem::take(&mut fully_resolved_delta_bytes)),
-                                        );
-                                        threading::lock(nodes).push((level + 1, child));
-                                    } else {
-                                        modify_base(
-                                            child.data(),
-                                            progress,
-                                            Context {
-                                                entry: &child_entry,
-                                                entry_end,
-                                                decompressed: &fully_resolved_delta_bytes,
-                                                level: level + 1,
-                                            },
-                                        )
-                                        .map_err(|err| Box::new(err) as Box<dyn std::error::Error + Send + Sync>)?;
-                                        objects.fetch_add(1, Ordering::Relaxed);
-                                        size.fetch_add(base_bytes.len(), Ordering::Relaxed);
+                                        &mut inflate,
+                                        progress,
+                                        &resolve,
+                                        resolve_data,
+                                        &mut modify_base,
+                                        ref_delta_children.as_ref(),
+                                        object_hash,
+                                        alloc_limit_bytes,
+                                        objects,
+                                        size,
+                                        |child| {
+                                            remaining.fetch_add(1, Ordering::Release);
+                                            worker.push(child);
+                                        },
+                                    );
+                                    remaining.fetch_sub(1, Ordering::AcqRel);
+                                    if let Err(err) = task_result {
+                                        abort.store(true, Ordering::Relaxed);
+                                        return Err(err);
                                     }
                                 }
+                            }));
+                            if result.is_err() {
+                                abort.store(true, Ordering::Relaxed);
                             }
-                            Ok(())
+                            result.unwrap_or_else(|payload| std::panic::resume_unwind(payload))
                         }
-                    })?;
-                threads.push(thread);
-            }
-            if threads_left
-                .fetch_update(Ordering::SeqCst, Ordering::SeqCst, |threads_available: isize| {
-                    (threads_available > 0).then(|| {
-                        threads_to_create = threads_available.min(threading::lock(&nodes).len() as isize);
-                        threads_available - threads_to_create
-                    })
-                })
-                .is_err()
-            {
-                threads_to_create = 0;
-            }
-
-            // What we really want to do is either wait for one of our threads to go down
-            // or for another scheduled thread to become available. Unfortunately we can't do that,
-            // but may instead find a good way to set the polling interval instead of hard-coding it.
-            std::thread::sleep(poll_interval);
-            // Get out of threads are already starving or they would be starving soon as no work is left.
-            //
-            // Lint: ScopedJoinHandle is not the same depending on active features and is not exposed in some cases.
-            #[allow(clippy::redundant_closure_for_method_calls)]
-            if threads.iter().any(|t| t.is_finished()) {
-                let mut running_threads = Vec::new();
-                for thread in threads.drain(..) {
-                    if thread.is_finished() {
-                        match thread.join() {
-                            Ok(Err(err)) => return Err(err),
-                            Ok(Ok(())) => {
-                                if !returned_ourselves {
-                                    returned_ourselves = true;
-                                } else {
-                                    threads_left.fetch_add(1, Ordering::SeqCst);
-                                }
-                            }
-                            Err(err) => {
-                                std::panic::resume_unwind(err);
-                            }
+                    }),
+                );
+            match result {
+                Ok(handle) => handles.push(handle),
+                Err(err) => {
+                    abort.store(true, Ordering::Relaxed);
+                    for handle in handles {
+                        if let Err(payload) = handle.join() {
+                            std::panic::resume_unwind(payload);
                         }
-                    } else {
-                        running_threads.push(thread);
                     }
+                    return Err(err.and_raise(message("Failed to spawn thread when switching to work-stealing mode")));
                 }
-                if running_threads.is_empty() && threading::lock(&nodes).is_empty() {
-                    break;
-                }
-                threads = running_threads;
             }
         }
 
-        Ok(())
+        let mut error = None;
+        for handle in handles {
+            match handle.join() {
+                Ok(Err(err)) if error.is_none() => error = Some(err),
+                Ok(_) => {}
+                Err(payload) => std::panic::resume_unwind(payload),
+            }
+        }
+        error.map_or(Ok(()), Err)
     })
 }
 
+/// Take local work or steal it from another worker or the shared root queue, in that order.
+///
+/// Work in peer queues belongs to already active trees and retains shared base buffers. Preferring it advances those
+/// trees toward completion and releases their buffers before another root starts a new tree.
+#[cfg(feature = "parallel")]
+fn steal<T>(
+    worker: &crossbeam_deque::Worker<T>,
+    stealers: &[crossbeam_deque::Stealer<T>],
+    roots: &crossbeam_deque::Injector<T>,
+) -> Option<T> {
+    if let Some(task) = worker.pop() {
+        return Some(task);
+    }
+    loop {
+        let mut retry = false;
+        for stealer in stealers {
+            match stealer.steal() {
+                crossbeam_deque::Steal::Success(task) => return Some(task),
+                crossbeam_deque::Steal::Retry => retry = true,
+                crossbeam_deque::Steal::Empty => {}
+            }
+        }
+        match roots.steal() {
+            crossbeam_deque::Steal::Success(task) => return Some(task),
+            crossbeam_deque::Steal::Retry => retry = true,
+            crossbeam_deque::Steal::Empty => {}
+        }
+        if !retry {
+            return None;
+        }
+    }
+}
+
+/// Resolve one work item using scratch buffers owned by the calling worker.
+///
+/// `delta_bytes` holds inflated delta instructions, while `fully_resolved_delta_bytes` receives the object produced by
+/// applying them. Passing both by mutable reference preserves their allocations across tasks handled by the same worker.
+///
+/// A resolved delta that has children moves its output buffer into [`SharedResolvedBase`]. Once the last sibling releases
+/// that base, [`OwnShared::try_unwrap()`] can recover its allocation; the largest available delta buffer is retained as
+/// `fully_resolved_delta_bytes` for a later task. Root objects deliberately use a task-local buffer instead.
+///
+/// `push` separates discovering children from scheduling them. This function calls it with each child [`WorkItem`];
+/// serial traversal pushes that item onto its `Vec`, while parallel traversal pushes it onto the current worker's deque
+/// and updates the shared count of unfinished work.
+#[expect(clippy::too_many_arguments)]
+fn resolve_task<'a, T, F, MBFN, R>(
+    WorkItem {
+        level,
+        mut node,
+        parent,
+    }: WorkItem<'a, T>,
+    delta_bytes: &mut Vec<u8>,
+    fully_resolved_delta_bytes: &mut Vec<u8>,
+    inflate: &mut gix_zlib::Inflate,
+    progress: &dyn Progress,
+    resolve: &F,
+    resolve_data: &R,
+    modify_base: &mut MBFN,
+    ref_delta_children: Option<&super::SharedRefDeltaChildren>,
+    object_hash: gix_hash::Kind,
+    alloc_limit_bytes: Option<usize>,
+    objects: &gix_utils::progress::StepShared,
+    size: &gix_utils::progress::StepShared,
+    mut push: impl FnMut(WorkItem<'a, T>),
+) -> Result
+where
+    T: Send,
+    R: Send + Sync,
+    F: for<'r> Fn(EntryRange, &'r R) -> Option<&'r [u8]> + Send,
+    MBFN: FnMut(&mut T, &dyn Progress, Context<'_>) -> Result + Send,
+{
+    let is_root = parent.is_none();
+    // Root buffers either become shared bases or are dropped after inspection. Keeping leaf-root allocations out of
+    // worker scratch avoids retaining an occasionally huge capacity for the worker's lifetime.
+    let mut root_bytes = Vec::new();
+    let (entry, entry_end) = if let Some(parent) = parent.as_ref() {
+        let (mut entry, entry_end) = decompress_from_resolver(
+            node.entry_slice(),
+            delta_bytes,
+            inflate,
+            resolve,
+            resolve_data,
+            object_hash,
+            alloc_limit_bytes,
+        )?;
+        let (base_size, consumed) = data::delta::decode_header_size(delta_bytes)?;
+        let base_size = decoded_size_limited(base_size, alloc_limit_bytes)?;
+        if parent.bytes.len() != base_size {
+            bail!(gix_error::corruption(
+                "Corrupt delta data: delta base size does not match base object size"
+            ));
+        }
+        let (result_size, result_header_size) = data::delta::decode_header_size(&delta_bytes[consumed..])?;
+        let result_size = decoded_size_limited(result_size, alloc_limit_bytes)?;
+        resize_with_limit(fully_resolved_delta_bytes, result_size, alloc_limit_bytes)?;
+        data::delta::apply(
+            &parent.bytes,
+            fully_resolved_delta_bytes,
+            &delta_bytes[consumed + result_header_size..],
+        )?;
+        entry.header = parent.entry.header;
+        (entry, entry_end)
+    } else {
+        decompress_from_resolver(
+            node.entry_slice(),
+            &mut root_bytes,
+            inflate,
+            resolve,
+            resolve_data,
+            object_hash,
+            alloc_limit_bytes,
+        )?
+    };
+
+    let resolved = ResolvedBase {
+        entry,
+        entry_end,
+        bytes: if is_root {
+            root_bytes
+        } else {
+            std::mem::take(fully_resolved_delta_bytes)
+        },
+    };
+    attach_ref_delta_children(
+        &mut node,
+        &resolved.entry,
+        &resolved.bytes,
+        ref_delta_children,
+        object_hash,
+    )?;
+    let has_children = node.has_children();
+    inspect(&mut node, level, &resolved, progress, modify_base, objects, size)?;
+    let mut reusable = if has_children {
+        let resolved = OwnShared::new(resolved);
+        for child in node.into_child_iter() {
+            push(WorkItem {
+                level: level + 1,
+                node: child,
+                parent: Some(OwnShared::clone(&resolved)),
+            });
+        }
+        None
+    } else if is_root {
+        None
+    } else {
+        Some(resolved.bytes)
+    };
+
+    // This might be a leaf, while its base buffer now is also exclusively available,
+    // and if so, keep the larger buffer.
+    if let Some(parent) = parent
+        && let Ok(parent) = OwnShared::try_unwrap(parent)
+        && reusable
+            .as_ref()
+            .is_none_or(|reusable| parent.bytes.capacity() > reusable.capacity())
+    {
+        reusable = Some(parent.bytes);
+    }
+    if let Some(reusable) = reusable {
+        *fully_resolved_delta_bytes = reusable;
+    }
+    fully_resolved_delta_bytes.clear();
+    Ok(())
+}
+
+/// Hand one fully resolved node to the caller's inspector and record its progress.
+///
+/// `modify_base` receives mutable access to the node's associated data and a [`Context`] containing the parsed entry,
+/// its end offset, the resolved object bytes, and its delta-tree level. Only a successful inspection increments the
+/// object counter and the total number of resolved bytes; inspector errors abort traversal.
+fn inspect<T, MBFN>(
+    node: &mut Node<'_, T>,
+    level: u16,
+    resolved: &ResolvedBase,
+    progress: &dyn Progress,
+    modify_base: &mut MBFN,
+    objects: &gix_utils::progress::StepShared,
+    size: &gix_utils::progress::StepShared,
+) -> Result
+where
+    T: Send,
+    MBFN: FnMut(&mut T, &dyn Progress, Context<'_>) -> Result + Send,
+{
+    modify_base(
+        node.data(),
+        progress,
+        Context {
+            entry: &resolved.entry,
+            entry_end: resolved.entry_end,
+            decompressed: &resolved.bytes,
+            level,
+        },
+    )
+    .or_raise(|| message("One of the object inspectors failed"))?;
+    objects.fetch_add(1, Ordering::Relaxed);
+    size.fetch_add(resolved.bytes.len(), Ordering::Relaxed);
+    Ok(())
+}
+
+/// Resolve and decompress one pack entry into `out`, returning its parsed metadata and end offset.
+///
+/// `resolve` keeps traversal independent of pack storage by borrowing the bytes for `slice` from caller-owned
+/// `resolve_data`, such as an in-memory buffer or mapped file.
+fn decompress_from_resolver<F, R>(
+    slice: EntryRange,
+    out: &mut Vec<u8>,
+    inflate: &mut gix_zlib::Inflate,
+    resolve: &F,
+    resolve_data: &R,
+    object_hash: gix_hash::Kind,
+    alloc_limit_bytes: Option<usize>,
+) -> Result<(data::Entry, u64)>
+where
+    F: for<'r> Fn(EntryRange, &'r R) -> Option<&'r [u8]> + Send,
+{
+    let bytes = resolve(slice.clone(), resolve_data).ok_or_raise(|| {
+        gix_error::message!(
+            "The resolver failed to obtain the pack entry bytes for the entry at {}",
+            slice.start
+        )
+    })?;
+    let entry = data::Entry::from_bytes(bytes, slice.start, object_hash)?;
+    let compressed = &bytes[entry.header_size()..];
+    let decompressed_len = decoded_size_limited(entry.decompressed_size, alloc_limit_bytes)?;
+    decompress_all_at_once_with(inflate, compressed, decompressed_len, out, alloc_limit_bytes)?;
+    Ok((entry, slice.end))
+}
+
 fn decompress_all_at_once_with(
-    inflate: &mut zlib::Inflate,
+    inflate: &mut gix_zlib::Inflate,
     b: &[u8],
     decompressed_len: usize,
     out: &mut Vec<u8>,
-) -> Result<(), Error> {
-    out.resize(decompressed_len, 0);
+    alloc_limit_bytes: Option<usize>,
+) -> Result {
+    resize_with_limit(out, decompressed_len, alloc_limit_bytes)?;
     inflate.reset();
-    inflate.once(b, out).map_err(|err| Error::ZlibInflate {
-        source: err,
-        message: "Failed to decompress entry",
-    })?;
+    inflate
+        .once(b, out)
+        .or_raise(|| message("Failed to decompress entry"))?;
     Ok(())
+}
+
+fn decoded_size_limited(size: u64, alloc_limit_bytes: Option<usize>) -> Result<usize> {
+    let size = usize::try_from(size).or_raise(|| allocation_error(ResourceExhaustionKind::AllocationFailure))?;
+    if alloc_limit_bytes.is_some_and(|limit| size > limit) {
+        bail!(allocation_error(ResourceExhaustionKind::AllocationLimit));
+    }
+    Ok(size)
+}
+
+#[cfg(test)]
+mod tests {
+    use std::{
+        io::Write,
+        sync::atomic::{AtomicBool, AtomicUsize, Ordering},
+        time::Duration,
+    };
+
+    use gix_error::Result;
+
+    use gix_utils::progress;
+
+    use crate::{
+        cache::delta::{Tree, traverse},
+        data,
+    };
+
+    #[test]
+    fn traversal_buffer_growth_respects_alloc_limit() -> gix_testtools::TestResult {
+        let mut out = Vec::new();
+        let mut inflate = gix_zlib::Inflate::default();
+        for size in [64, 65] {
+            let payload = vec![b'A'; size];
+            super::decompress_all_at_once_with(&mut inflate, &deflate(&payload), size, &mut out, Some(65))?;
+            assert_eq!(
+                out, payload,
+                "each entry must decompress correctly into the reused buffer"
+            );
+            assert!(
+                out.capacity() <= 65,
+                "traversal buffer growth must not allocate beyond the cap"
+            );
+        }
+        Ok(())
+    }
+
+    #[test]
+    fn traversal_rejects_unreachable_delta_cycles() -> gix_testtools::TestResult {
+        for has_root in [false, true] {
+            for cycle_len in [1, 2, 3] {
+                let mut pack = Vec::new();
+                let mut tree = Tree::with_capacity(cycle_len + usize::from(has_root), None)?;
+                if has_root {
+                    let root = append_entry(&mut pack, data::entry::Header::Blob, 0, b"");
+                    tree.add_root(root, ())?;
+                }
+                let offsets: Vec<_> = (0..cycle_len)
+                    .map(|_| {
+                        append_entry(
+                            &mut pack,
+                            data::entry::Header::RefDelta {
+                                base_id: gix_hash::Kind::Sha1.null(),
+                            },
+                            2,
+                            &[0, 0],
+                        )
+                    })
+                    .collect();
+                for (index, &offset) in offsets.iter().enumerate() {
+                    tree.add_child(offsets[(index + 1) % cycle_len], offset, ())?;
+                }
+                let err = traverse(
+                    tree,
+                    &pack,
+                    Some(2),
+                    None,
+                    |slice, pack| pack.get(slice.start as usize..slice.end as usize),
+                    |(), _, _| Ok(()),
+                )
+                .expect_err("every delta must be inspected, including components without a root");
+                assert!(err.is_corrupted(), "an unreachable delta cycle is corrupt pack data");
+            }
+        }
+        Ok(())
+    }
+
+    #[test]
+    fn traversal_accepts_forward_delta_bases() -> gix_testtools::TestResult {
+        let mut pack = Vec::new();
+        let child = append_entry(
+            &mut pack,
+            data::entry::Header::RefDelta {
+                base_id: gix_hash::Kind::Sha1.null(),
+            },
+            2,
+            &[0, 0],
+        );
+        let root = append_entry(&mut pack, data::entry::Header::Blob, 0, b"");
+        let mut tree = Tree::with_capacity(2, None)?;
+        tree.add_child(root, child, ())?;
+        tree.add_root(root, ())?;
+        traverse(
+            tree,
+            &pack,
+            Some(1),
+            None,
+            |slice, pack| pack.get(slice.start as usize..slice.end as usize),
+            |(), _, _| Ok(()),
+        )?;
+        Ok(())
+    }
+
+    #[test]
+    fn traversal_accepts_reused_progress() -> gix_testtools::TestResult {
+        use progress::Count;
+
+        let mut pack = Vec::new();
+        let root = append_entry(&mut pack, data::entry::Header::Blob, 0, b"");
+        let mut tree = Tree::with_capacity(1, None)?;
+        tree.add_root(root, ())?;
+        let object_progress = prodash::progress::Log::new("reused", Some(0));
+        object_progress.set(3); // A previous indexing or traversal operation already counted objects.
+        let counter = object_progress.counter();
+        tree.traverse(
+            |slice, pack: &Vec<u8>| pack.get(slice.start as usize..slice.end as usize),
+            &pack,
+            pack.len() as u64,
+            |(), _, _| Ok(()),
+            traverse::Options {
+                object_progress: Box::new(object_progress),
+                size_progress: &mut progress::Discard,
+                thread_limit: Some(1),
+                should_interrupt: &AtomicBool::new(false),
+                object_hash: gix_hash::Kind::Sha1,
+                alloc_limit_bytes: None,
+            },
+        )?;
+        assert_eq!(
+            counter.load(Ordering::Relaxed),
+            1,
+            "only this traversal's objects are counted"
+        );
+        Ok(())
+    }
+
+    #[test]
+    fn traversal_resolves_children_lazily() -> gix_testtools::TestResult {
+        let mut pack = Vec::new();
+        let root_offset = append_entry(&mut pack, data::entry::Header::Blob, 1, b"A");
+        let first_child = append_delta(&mut pack, root_offset, b'B');
+        let second_child = append_delta(&mut pack, root_offset, b'C');
+        let first_leaf = append_delta(&mut pack, first_child, b'D');
+        let second_leaf = append_delta(&mut pack, second_child, b'E');
+
+        let mut tree = Tree::with_capacity(5, None)?;
+        tree.add_root(root_offset, ())?;
+        tree.add_child(root_offset, first_child, ())?;
+        tree.add_child(root_offset, second_child, ())?;
+        tree.add_child(first_child, first_leaf, ())?;
+        tree.add_child(second_child, second_leaf, ())?;
+
+        let resolve_calls = AtomicUsize::new(0);
+        let calls_at_first_child = AtomicUsize::new(usize::MAX);
+        traverse(
+            tree,
+            &pack,
+            Some(1),
+            None,
+            |slice, pack| {
+                resolve_calls.fetch_add(1, Ordering::Relaxed);
+                pack.get(slice.start as usize..slice.end as usize)
+            },
+            |(), _progress, context| {
+                if context.level == 1 {
+                    calls_at_first_child.fetch_min(resolve_calls.load(Ordering::Relaxed), Ordering::Relaxed);
+                }
+                Ok(())
+            },
+        )?;
+
+        assert_eq!(
+            calls_at_first_child.load(Ordering::Relaxed),
+            2,
+            "the first child must be inspected before its siblings are materialized"
+        );
+        Ok(())
+    }
+
+    #[test]
+    fn traversal_parallelizes_children_of_one_root() -> gix_testtools::TestResult {
+        let mut pack = Vec::new();
+        let root_offset = append_entry(&mut pack, data::entry::Header::Blob, 1, b"A");
+        let child_offsets: Vec<_> = (b'B'..=b'I')
+            .map(|byte| append_delta(&mut pack, root_offset, byte))
+            .collect();
+
+        let mut tree = Tree::with_capacity(1 + child_offsets.len(), None)?;
+        tree.add_root(root_offset, ())?;
+        for child_offset in child_offsets {
+            tree.add_child(root_offset, child_offset, ())?;
+        }
+
+        let active = AtomicUsize::new(0);
+        let max_active = AtomicUsize::new(0);
+        traverse(
+            tree,
+            &pack,
+            Some(2),
+            None,
+            |slice, pack| pack.get(slice.start as usize..slice.end as usize),
+            |(), _progress, context| {
+                if context.level > 0 {
+                    let now_active = active.fetch_add(1, Ordering::Relaxed) + 1;
+                    max_active.fetch_max(now_active, Ordering::Relaxed);
+                    std::thread::sleep(Duration::from_millis(20));
+                    active.fetch_sub(1, Ordering::Relaxed);
+                }
+                Ok(())
+            },
+        )?;
+
+        let expected = if cfg!(feature = "parallel") { 1 } else { 0 };
+        assert!(
+            max_active.load(Ordering::Relaxed) > expected,
+            "idle workers must help with children of the last remaining root (if in parallel mode)"
+        );
+        Ok(())
+    }
+
+    #[test]
+    fn traversal_rejects_declared_decompressed_size_over_alloc_limit() -> gix_testtools::TestResult {
+        let mut pack = Vec::new();
+        let root_offset = append_entry(&mut pack, data::entry::Header::Blob, 1, b"");
+        let mut tree = Tree::with_capacity(1, None)?;
+        tree.add_root(root_offset, ())?;
+
+        let err = traverse_with_limit(tree, &pack).expect_err("entry size exceeds the allocation cap");
+
+        insta::assert_debug_snapshot!(err, "declared decompressed sizes above the cap must be rejected before allocation", @"Entry too large to fit in memory");
+        Ok(())
+    }
+
+    #[test]
+    fn traversal_rejects_delta_base_size_over_alloc_limit() -> gix_testtools::TestResult {
+        let mut pack = Vec::new();
+        let root_offset = append_entry(&mut pack, data::entry::Header::Blob, 0, b"");
+
+        let delta = [1, 0];
+        let child_offset = pack.len() as u64;
+        append_entry(
+            &mut pack,
+            data::entry::Header::OfsDelta {
+                base_distance: child_offset - root_offset,
+            },
+            delta.len() as u64,
+            &delta,
+        );
+
+        let mut tree = Tree::with_capacity(2, None)?;
+        tree.add_root(root_offset, ())?;
+        tree.add_child(root_offset, child_offset, ())?;
+
+        let err = traverse_with_limit(tree, &pack).expect_err("delta base size exceeds the allocation cap");
+
+        insta::assert_debug_snapshot!(err, "delta base sizes above the cap must be rejected before comparing them with the decoded base", @"Entry too large to fit in memory");
+        Ok(())
+    }
+
+    #[test]
+    fn traversal_rejects_delta_result_size_over_alloc_limit() -> gix_testtools::TestResult {
+        let mut pack = Vec::new();
+        let root_offset = append_entry(&mut pack, data::entry::Header::Blob, 0, b"");
+
+        let delta = [0, 1, 1, b'A'];
+        let child_offset = pack.len() as u64;
+        append_entry(
+            &mut pack,
+            data::entry::Header::OfsDelta {
+                base_distance: child_offset - root_offset,
+            },
+            delta.len() as u64,
+            &delta,
+        );
+
+        let mut tree = Tree::with_capacity(2, None)?;
+        tree.add_root(root_offset, ())?;
+        tree.add_child(root_offset, child_offset, ())?;
+
+        let err = traverse_with_limit(tree, &pack).expect_err("delta result size exceeds the allocation cap");
+
+        insta::assert_debug_snapshot!(err, "delta result sizes above the cap must be rejected before resizing the output buffer", @"Entry too large to fit in memory");
+        Ok(())
+    }
+
+    fn traverse_with_limit(tree: Tree<()>, pack: &Vec<u8>) -> Result {
+        traverse(
+            tree,
+            pack,
+            Some(1),
+            Some(0),
+            |slice, pack| pack.get(slice.start as usize..slice.end as usize),
+            |(), _progress, _context| Ok(()),
+        )
+    }
+
+    fn traverse<F, MBFN>(
+        tree: Tree<()>,
+        pack: &Vec<u8>,
+        thread_limit: Option<usize>,
+        alloc_limit_bytes: Option<usize>,
+        resolve: F,
+        inspect: MBFN,
+    ) -> Result
+    where
+        F: for<'r> Fn(data::EntryRange, &'r Vec<u8>) -> Option<&'r [u8]> + Send + Clone,
+        MBFN: FnMut(&mut (), &dyn progress::Progress, traverse::Context<'_>) -> Result + Send + Clone,
+    {
+        let should_interrupt = AtomicBool::new(false);
+        let mut size_progress = progress::Discard;
+        tree.traverse(
+            resolve,
+            pack,
+            pack.len() as u64,
+            inspect,
+            traverse::Options {
+                object_progress: Box::new(progress::Discard),
+                size_progress: &mut size_progress,
+                thread_limit,
+                should_interrupt: &should_interrupt,
+                object_hash: gix_hash::Kind::Sha1,
+                alloc_limit_bytes,
+            },
+        )
+        .map(|_| ())
+    }
+
+    fn append_delta(pack: &mut Vec<u8>, base_offset: data::Offset, byte: u8) -> data::Offset {
+        let delta = [1, 1, 1, byte];
+        let offset = pack.len() as data::Offset;
+        append_entry(
+            pack,
+            data::entry::Header::OfsDelta {
+                base_distance: offset - base_offset,
+            },
+            delta.len() as u64,
+            &delta,
+        )
+    }
+
+    fn append_entry(
+        pack: &mut Vec<u8>,
+        header: data::entry::Header,
+        decompressed_size: u64,
+        payload: &[u8],
+    ) -> data::Offset {
+        let offset = pack.len() as data::Offset;
+        header
+            .write_to(decompressed_size, pack)
+            .expect("writing an entry header to memory succeeds");
+        pack.extend(deflate(payload));
+        offset
+    }
+
+    fn deflate(bytes: &[u8]) -> Vec<u8> {
+        let mut out = gix_zlib::stream::deflate::Write::new(Vec::new(), gix_zlib::Compression::BEST_SPEED);
+        out.write_all(bytes).expect("writing to deflater succeeds");
+        out.flush().expect("flushing deflater succeeds");
+        out.into_inner()
+    }
 }

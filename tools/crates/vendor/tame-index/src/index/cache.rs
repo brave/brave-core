@@ -47,7 +47,7 @@ pub struct ValidCacheEntry<'buffer> {
     /// For git indices this will be the sha1 of the HEAD commit when the cache
     /// entry was written
     ///
-    /// For sparse indicies, this will be an HTTP header from the response that
+    /// For sparse indices, this will be an HTTP header from the response that
     /// was last written to disk, which is currently either `etag: <etag>` or
     /// `last-modified: <timestamp>`
     pub revision: &'buffer str,

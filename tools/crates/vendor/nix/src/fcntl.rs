@@ -745,7 +745,7 @@ pub enum FcntlArg<'a> {
     F_SETFL(OFlag), // O_NONBLOCK
     /// Set or clear a file segment lock
     F_SETLK(&'a libc::flock),
-    /// Like [`F_SETLK`](FcntlArg::F_SETLK) except that if a shared or exclusive lock is blocked by
+    /// Like [`F_SETLK`] except that if a shared or exclusive lock is blocked by
     /// other locks, the process waits until the request can be satisfied.
     F_SETLKW(&'a libc::flock),
     /// Get the first lock that blocks the lock description
@@ -753,7 +753,7 @@ pub enum FcntlArg<'a> {
     /// Acquire or release an open file description lock
     #[cfg(linux_android)]
     F_OFD_SETLK(&'a libc::flock),
-    /// Like [`F_OFD_SETLK`](FcntlArg::F_OFD_SETLK) except that if a conflicting lock is held on
+    /// Like [`F_OFD_SETLK`] except that if a conflicting lock is held on
     /// the file, then wait for that lock to be released.
     #[cfg(linux_android)]
     F_OFD_SETLKW(&'a libc::flock),
@@ -1038,6 +1038,7 @@ pub unsafe trait Flockable: std::os::fd::AsRawFd {}
 pub struct Flock<T: Flockable>(T);
 
 #[cfg(not(any(target_os = "redox", target_os = "solaris")))]
+#[allow(clippy::unnecessary_unwrap)] // https://github.com/rust-lang/rust-clippy/issues/15744
 impl<T: Flockable> Drop for Flock<T> {
     fn drop(&mut self) {
         let res = Errno::result(unsafe { libc::flock(self.0.as_raw_fd(), libc::LOCK_UN) });
@@ -1174,16 +1175,20 @@ libc_bitflags! {
         /// Request that pages be moved instead of copied.
         ///
         /// Not applicable to `vmsplice`.
+        #[cfg(not(target_env = "uclibc"))]
         SPLICE_F_MOVE;
         /// Do not block on I/O.
+        #[cfg(not(target_env = "uclibc"))]
         SPLICE_F_NONBLOCK;
         /// Hint that more data will be coming in a subsequent splice.
         ///
         /// Not applicable to `vmsplice`.
+        #[cfg(not(target_env = "uclibc"))]
         SPLICE_F_MORE;
         /// Gift the user pages to the kernel.
         ///
         /// Not applicable to `splice`.
+        #[cfg(not(target_env = "uclibc"))]
         SPLICE_F_GIFT;
     }
 }

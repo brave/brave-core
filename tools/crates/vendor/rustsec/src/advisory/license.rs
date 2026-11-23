@@ -30,9 +30,9 @@ pub enum License {
 impl From<String> for License {
     fn from(s: String) -> Self {
         match s.as_str() {
-            "CC0-1.0" => License::CcZero10,
-            "CC-BY-4.0" => License::CcBy40,
-            _ => License::Other(s),
+            "CC0-1.0" => Self::CcZero10,
+            "CC-BY-4.0" => Self::CcBy40,
+            _ => Self::Other(s),
         }
     }
 }
@@ -56,9 +56,9 @@ impl License {
     /// Get license as an `&str` containing the SPDX identifier
     pub fn spdx(&self) -> &str {
         match &self {
-            License::CcBy40 => "CC-BY-4.0",
-            License::CcZero10 => "CC0-1.0",
-            License::Other(l) => l,
+            Self::CcBy40 => "CC-BY-4.0",
+            Self::CcZero10 => "CC0-1.0",
+            Self::Other(l) => l,
         }
     }
 }
@@ -69,9 +69,9 @@ impl FromStr for License {
     // Parse standard SPDX identifiers
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         Ok(match s {
-            "CC0-1.0" => License::CcZero10,
-            "CC-BY-4.0" => License::CcBy40,
-            l => License::Other(l.to_string()),
+            "CC0-1.0" => Self::CcZero10,
+            "CC-BY-4.0" => Self::CcBy40,
+            l => Self::Other(l.to_string()),
         })
     }
 }

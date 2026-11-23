@@ -67,6 +67,47 @@ pub mod bitflags {
     pub use crate::bitflags;
 }
 
+pub type Map<K, V> = alloc::collections::BTreeMap<K, V>;
+
+/// Trait abstracting the map operations needed by generated WIT bindings.
+///
+/// Generated code delegates to these methods rather than calling inherent
+/// methods on a concrete type, so users can swap in their own map
+/// implementation via the `map_type` bindgen option.
+///
+/// The type must also implement `IntoIterator` (both owned and by-reference)
+/// so that generated lowering code can iterate over entries.
+pub trait WitMap<K, V>: Sized {
+    fn wit_map_new(capacity: usize) -> Self;
+    fn wit_map_push(&mut self, key: K, value: V);
+    fn wit_map_len(&self) -> usize;
+}
+
+impl<K: Ord, V> WitMap<K, V> for alloc::collections::BTreeMap<K, V> {
+    fn wit_map_new(_capacity: usize) -> Self {
+        alloc::collections::BTreeMap::new()
+    }
+    fn wit_map_push(&mut self, key: K, value: V) {
+        self.insert(key, value);
+    }
+    fn wit_map_len(&self) -> usize {
+        self.len()
+    }
+}
+
+#[cfg(feature = "std")]
+impl<K: core::hash::Hash + Eq, V> WitMap<K, V> for std::collections::HashMap<K, V> {
+    fn wit_map_new(capacity: usize) -> Self {
+        std::collections::HashMap::with_capacity(capacity)
+    }
+    fn wit_map_push(&mut self, key: K, value: V) {
+        self.insert(key, value);
+    }
+    fn wit_map_len(&self) -> usize {
+        self.len()
+    }
+}
+
 /// For more information about this see `./ci/rebuild-libwit-bindgen-cabi.sh`.
 #[cfg(not(target_env = "p2"))]
 mod wit_bindgen_cabi_realloc;
@@ -81,7 +122,7 @@ mod wit_bindgen_cabi_realloc;
 pub fn maybe_link_cabi_realloc() {
     #[cfg(all(target_family = "wasm", not(target_env = "p2")))]
     {
-        extern "C" {
+        unsafe extern "C" {
             fn cabi_realloc(
                 old_ptr: *mut u8,
                 old_len: usize,
@@ -117,19 +158,21 @@ pub unsafe fn cabi_realloc(
     align: usize,
     new_len: usize,
 ) -> *mut u8 {
-    use alloc::alloc::{alloc as allocate, handle_alloc_error, realloc, Layout};
+    use alloc::alloc::{Layout, alloc as allocate, handle_alloc_error, realloc};
 
     let layout;
-    let ptr = if old_len == 0 {
-        if new_len == 0 {
-            return align as *mut u8;
+    let ptr = unsafe {
+        if old_len == 0 {
+            if new_len == 0 {
+                return align as *mut u8;
+            }
+            layout = Layout::from_size_align_unchecked(new_len, align);
+            allocate(layout)
+        } else {
+            debug_assert_ne!(new_len, 0, "non-zero old_len requires non-zero new_len!");
+            layout = Layout::from_size_align_unchecked(old_len, align);
+            realloc(old_ptr, layout, new_len)
         }
-        layout = Layout::from_size_align_unchecked(new_len, align);
-        allocate(layout)
-    } else {
-        debug_assert_ne!(new_len, 0, "non-zero old_len requires non-zero new_len!");
-        layout = Layout::from_size_align_unchecked(old_len, align);
-        realloc(old_ptr, layout, new_len)
     };
     if ptr.is_null() {
         // Print a nice message in debug mode, but in release mode don't
@@ -164,7 +207,7 @@ pub fn run_ctors_once() {
             // exported function to (unconditionally) run ctors. By using
             // this function, the linked module is opting into "manually"
             // running ctors.
-            extern "C" {
+            unsafe extern "C" {
                 fn __wasm_call_ctors();
             }
             __wasm_call_ctors();
@@ -225,6 +268,64 @@ impl Drop for Cleanup {
                 *self.ptr.add(i).as_ptr() = 0xff;
             }
             alloc::alloc::dealloc(self.ptr.as_ptr(), self.layout);
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use alloc::collections::BTreeMap;
+    use alloc::string::ToString;
+
+    #[test]
+    fn btreemap_new_push() {
+        let mut m: BTreeMap<u32, alloc::string::String> = WitMap::wit_map_new(10);
+        assert_eq!(m.len(), 0);
+
+        WitMap::wit_map_push(&mut m, 1, "one".to_string());
+        WitMap::wit_map_push(&mut m, 2, "two".to_string());
+        assert_eq!(m.len(), 2);
+    }
+
+    #[test]
+    fn btreemap_duplicate_key_overwrites() {
+        let mut m: BTreeMap<u32, u32> = WitMap::wit_map_new(0);
+        WitMap::wit_map_push(&mut m, 1, 10);
+        WitMap::wit_map_push(&mut m, 1, 20);
+        assert_eq!(m.len(), 1);
+        assert_eq!(m[&1], 20);
+    }
+
+    #[test]
+    fn btreemap_wit_map_len() {
+        let mut m: BTreeMap<u32, u32> = WitMap::wit_map_new(0);
+        assert_eq!(m.wit_map_len(), 0);
+        WitMap::wit_map_push(&mut m, 1, 10);
+        assert_eq!(m.wit_map_len(), 1);
+        WitMap::wit_map_push(&mut m, 2, 20);
+        assert_eq!(m.wit_map_len(), 2);
+    }
+
+    #[cfg(feature = "std")]
+    mod hashmap_tests {
+        use super::*;
+        use std::collections::HashMap;
+
+        #[test]
+        fn hashmap_new_push() {
+            let mut m: HashMap<u32, u32> = WitMap::wit_map_new(5);
+            WitMap::wit_map_push(&mut m, 1, 10);
+            WitMap::wit_map_push(&mut m, 2, 20);
+            assert_eq!(m.len(), 2);
+        }
+
+        #[test]
+        fn hashmap_wit_map_len() {
+            let mut m: HashMap<u32, u32> = WitMap::wit_map_new(0);
+            assert_eq!(m.wit_map_len(), 0);
+            WitMap::wit_map_push(&mut m, 1, 10);
+            assert_eq!(m.wit_map_len(), 1);
         }
     }
 }

@@ -3,6 +3,134 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 
 # Change Log
 
+## [0.31.4] - 2026-11-16
+
+### Fixed
+
+- Fixed undefined behavior in `recvfrom`.
+  ([#2717](https://github.com/nix-rust/nix/pull/2717))
+- Fixed the documented feature requirement of `SockaddrIn`, `SockaddrIn6` and
+  `LinkAddr`: docs.rs now shows that they need the `net` feature
+  ([#2854](https://github.com/nix-rust/nix/pull/2854))
+- Fixed the `PosixSpawnAttr` and `PosixSpawnFileActions` methods ignoring
+  errors, as the `posix_spawn*` functions return the error number directly
+  instead of -1. ([#2865](https://github.com/nix-rust/nix/pull/2865))
+
+
+## [0.31.3] - 2026-05-11
+
+### Added
+
+- Enable module `ioctl` for Cygwin
+  ([#2715](https://github.com/nix-rust/nix/pull/2715))
+- Add
+  `CLOCK_BOOTTIME/CLOCK_PROCESS_CPUTIME_ID/CLOCK_THREAD_CPUTIME_ID/CLOCK_UPTIME`
+  to NetBSD-like platforms ([#2716](https://github.com/nix-rust/nix/pull/2716))
+- unistd: add mkfifo for redox
+  ([#2749](https://github.com/nix-rust/nix/pull/2749))
+- Added `kevent64` support on apple targets: `Kqueue::kevent64`, `KEvent64`,
+  and `Kevent64Flags`. ([#2781](https://github.com/nix-rust/nix/pull/2781))
+
+### Fixed
+
+- fix SaFlags_t definition on redox
+  ([#2751](https://github.com/nix-rust/nix/pull/2751))
+- Fixed `EpollEvent::events()` to use `from_bits_retain` instead of
+  `from_bits().unwrap()`, preventing panics when the kernel returns
+  unknown epoll flags. ([#2783](https://github.com/nix-rust/nix/pull/2783))
+- Fixed `KEvent::flags()` and `KEvent::fflags()` to use `from_bits_retain`
+  instead of `from_bits().unwrap()`, preventing panics when the kernel
+  returns unknown kqueue flags.
+  ([#2784](https://github.com/nix-rust/nix/pull/2784))
+
+
+## [0.31.2] - 2026-02-28
+
+### Added
+
+- Add WatchDescriptor::as_raw, to get libc id of WatchDescriptor.
+  ([#2718](https://github.com/nix-rust/nix/pull/2718))
+- Added process::pthread_getthreadid_np() on FreeBSD.
+  ([#2725](https://github.com/nix-rust/nix/pull/2725))
+- Added timerfd support on FreeBSD
+  ([#2728](https://github.com/nix-rust/nix/pull/2728))
+
+### Fixed
+
+- The libc requirement is now `0.2.181`, rather than pinned to 0.2.180.
+  ([#2744](https://github.com/nix-rust/nix/pull/2744))
+
+
+## [0.31.1] - 2026-01-23
+
+### Added
+
+- termios: Add definition for IUCLC to supported platforms
+  ([#2702](https://github.com/nix-rust/nix/pull/2702))
+- termios: Add definition for XCASE for supported platforms
+  ([#2703](https://github.com/nix-rust/nix/pull/2703))
+
+
+## [0.31.0] - 2026-01-22
+
+### Added
+
+- Added the UDP GSO/GRO socket options and CMsgs on Android. This includes the
+  following types:
+  - UdpGsoSegment
+  - UdpGroSegment
+  - ControlMessage::UdpGsoSegments
+  - ControlMessageOwned::UdpGroSegments
+
+  ([#2666](https://github.com/nix-rust/nix/pull/2666))
+- Define errno EWOULDBLOCK as an alias of EAGAIN to match the AIX libc
+  definition. ([#2692](https://github.com/nix-rust/nix/pull/2692))
+- Enable module `ifaddrs` on GNU Hurd
+  ([#2697](https://github.com/nix-rust/nix/pull/2697))
+- Add termios `OutputFlags::OFILL` for Linux, Android, Aix, Cygwin, Fuchsia,
+  Haiku,
+  GNU/Hurd, Nto, Redox, Illumos, Solaris and Apple OSes.
+  ([#2701](https://github.com/nix-rust/nix/pull/2701))
+- add sync() for cygwin ([#2708](https://github.com/nix-rust/nix/pull/2708))
+
+### Changed
+
+- changed `EpollEvent` methods to be `const`
+  ([#2656](https://github.com/nix-rust/nix/pull/2656))
+- Bumped libc to
+  [0.2.180](https://github.com/rust-lang/libc/releases/tag/0.2.180)
+  ([#2724](https://github.com/nix-rust/nix/pull/2724))
+
+### Fixed
+
+- Fixed `nix::sys::ptrace::syscall_info`, which was not setting the `data`
+  argument properly, causing garbage values to be returned.
+  ([#2653](https://github.com/nix-rust/nix/pull/2653))
+- Cast the 'addr' argument of 'madvise()' to '*mut u8' on AIX to match the
+  signature in the AIX libc.
+  ([#2655](https://github.com/nix-rust/nix/pull/2655))
+- Fixed the Dir module on NTO, Solaris, Hurd, and possibly other platforms.
+  The
+  d_name field was not copied correctly on those platforms.  For some other
+  platforms, it could be copied incorrectly for files with very long pathnames.
+  ([#2674](https://github.com/nix-rust/nix/pull/2674))
+- Fix the build on Illumos ([#2694](https://github.com/nix-rust/nix/pull/2694))
+
+### Removed
+
+- Removed `Eq` and `PartialEq` implementations from `SigHandler`, because they
+  never worked reliably.  The suggested alternative is `matches!`.  For
+  example:
+  ```
+  let h: SigHandler = ...
+  if matches!(h, SigHandler::SigIgn) {
+      ...
+  }
+  ``` ([#2642](https://github.com/nix-rust/nix/pull/2642))
+- Removed `IFF_NOTRAILERS` by NetBSD, as it has been removed upstream and from
+  libc ([#2724](https://github.com/nix-rust/nix/pull/2724))
+
+
 ## [0.30.1] - 2025-05-04
 
 ### Fixed

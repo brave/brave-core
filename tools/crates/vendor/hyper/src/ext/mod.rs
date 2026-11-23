@@ -113,8 +113,8 @@ impl Protocol {
 }
 
 #[cfg(feature = "http2")]
-impl<'a> From<&'a str> for Protocol {
-    fn from(value: &'a str) -> Self {
+impl<'proto> From<&'proto str> for Protocol {
+    fn from(value: &'proto str) -> Self {
         Self {
             inner: h2::ext::Protocol::from(value),
         }
@@ -165,10 +165,10 @@ impl HeaderCaseMap {
     /// Returns a view of all spellings associated with that header name,
     /// in the order they were found.
     #[cfg(feature = "client")]
-    pub(crate) fn get_all<'a>(
-        &'a self,
+    pub(crate) fn get_all<'hdr>(
+        &'hdr self,
         name: &HeaderName,
-    ) -> impl Iterator<Item = impl AsRef<[u8]> + 'a> + 'a {
+    ) -> impl Iterator<Item = impl AsRef<[u8]> + 'hdr> + 'hdr {
         self.get_all_internal(name)
     }
 
@@ -181,7 +181,7 @@ impl HeaderCaseMap {
 
     #[cfg(any(feature = "client", feature = "server"))]
     pub(crate) fn default() -> Self {
-        Self(Default::default())
+        Self(HeaderMap::default())
     }
 
     #[cfg(any(test, feature = "ffi"))]
@@ -238,14 +238,17 @@ impl OriginalHeaderOrder {
         N: IntoHeaderName + Into<HeaderName> + Clone,
     {
         let name: HeaderName = name.into();
-        let idx;
-        if self.num_entries.contains_key(&name) {
-            idx = self.num_entries[&name];
-            *self.num_entries.get_mut(&name).unwrap() += 1;
-        } else {
-            idx = 0;
-            self.num_entries.insert(name.clone(), 1);
-        }
+        let idx = match self.num_entries.entry(name.clone()) {
+            std::collections::hash_map::Entry::Occupied(mut entry) => {
+                let idx = *entry.get();
+                *entry.get_mut() += 1;
+                idx
+            }
+            std::collections::hash_map::Entry::Vacant(entry) => {
+                entry.insert(1);
+                0
+            }
+        };
         self.entry_order.push((name, idx));
     }
 
@@ -254,41 +257,6 @@ impl OriginalHeaderOrder {
     // here.
     /// This returns an iterator that provides header names and indexes
     /// in the original order received.
-    ///
-    /// # Examples
-    /// ```no_run
-    /// use hyper::ext::OriginalHeaderOrder;
-    /// use hyper::header::{HeaderName, HeaderValue, HeaderMap};
-    ///
-    /// let mut h_order = OriginalHeaderOrder::default();
-    /// let mut h_map = Headermap::new();
-    ///
-    /// let name1 = b"Set-CookiE";
-    /// let value1 = b"a=b";
-    /// h_map.append(name1);
-    /// h_order.append(name1);
-    ///
-    /// let name2 = b"Content-Encoding";
-    /// let value2 = b"gzip";
-    /// h_map.append(name2, value2);
-    /// h_order.append(name2);
-    ///
-    /// let name3 = b"SET-COOKIE";
-    /// let value3 = b"c=d";
-    /// h_map.append(name3, value3);
-    /// h_order.append(name3)
-    ///
-    /// let mut iter = h_order.get_in_order()
-    ///
-    /// let (name, idx) = iter.next();
-    /// assert_eq!(b"a=b", h_map.get_all(name).nth(idx).unwrap());
-    ///
-    /// let (name, idx) = iter.next();
-    /// assert_eq!(b"gzip", h_map.get_all(name).nth(idx).unwrap());
-    ///
-    /// let (name, idx) = iter.next();
-    /// assert_eq!(b"c=d", h_map.get_all(name).nth(idx).unwrap());
-    /// ```
     pub(crate) fn get_in_order(&self) -> impl Iterator<Item = &(HeaderName, usize)> {
         self.entry_order.iter()
     }

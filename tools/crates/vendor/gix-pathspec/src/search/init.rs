@@ -1,6 +1,7 @@
+use gix_error::Result;
 use std::path::Path;
 
-use crate::{search::Spec, MagicSignature, Pattern, Search};
+use crate::{MagicSignature, Pattern, Search, search::Spec};
 
 /// Create a new specification to support matches from `pathspec`, [normalizing](Pattern::normalize()) it with `prefix` and `root`.
 fn mapping_from_pattern(
@@ -8,7 +9,7 @@ fn mapping_from_pattern(
     prefix: &Path,
     root: &Path,
     sequence_number: usize,
-) -> Result<gix_glob::search::pattern::Mapping<Spec>, crate::normalize::Error> {
+) -> Result<gix_glob::search::pattern::Mapping<Spec>> {
     pathspec.normalize(prefix, root)?;
     let mut match_all = pathspec.is_nil();
     let glob = {
@@ -98,17 +99,17 @@ impl Search {
         pathspecs: impl IntoIterator<Item = Pattern>,
         prefix: Option<&std::path::Path>,
         root: &std::path::Path,
-    ) -> Result<Self, crate::normalize::Error> {
+    ) -> Result<Self> {
         fn inner(
             pathspecs: &mut dyn Iterator<Item = Pattern>,
             prefix: Option<&std::path::Path>,
             root: &std::path::Path,
-        ) -> Result<Search, crate::normalize::Error> {
+        ) -> Result<Search> {
             let prefix = prefix.unwrap_or(std::path::Path::new(""));
             let mut patterns = pathspecs
                 .enumerate()
                 .map(|(idx, pattern)| mapping_from_pattern(pattern, prefix, root, idx))
-                .collect::<Result<Vec<_>, _>>()?;
+                .collect::<std::result::Result<Vec<_>, _>>()?;
 
             if patterns.is_empty() && !prefix.as_os_str().is_empty() {
                 patterns.push(mapping_from_pattern(
@@ -132,6 +133,10 @@ impl Search {
             Ok(Search {
                 all_patterns_are_excluded: patterns.iter().all(|s| s.value.pattern.is_excluded()),
                 patterns,
+                match_all: Pattern {
+                    nil: true,
+                    ..Default::default()
+                },
                 source: None,
                 common_prefix_len,
             })

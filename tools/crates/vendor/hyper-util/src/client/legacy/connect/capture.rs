@@ -47,7 +47,7 @@ pub struct CaptureConnection {
 /// connection is available.
 ///
 /// ```rust
-/// # #[cfg(feature  = "tokio")]
+/// # #[cfg(all(feature = "tokio", any(feature = "http1", feature = "http2")))]
 /// # async fn example() {
 /// use hyper_util::client::legacy::connect::capture_connection;
 /// use hyper_util::client::legacy::Client;
@@ -131,18 +131,20 @@ mod test {
             "connection has not been set"
         );
         tx.set(&Connected::new().proxy(true));
-        assert!(rx
-            .connection_metadata()
-            .as_ref()
-            .expect("connected should be set")
-            .is_proxied());
+        assert!(
+            rx.connection_metadata()
+                .as_ref()
+                .expect("connected should be set")
+                .is_proxied()
+        );
 
         // ensure it can be called multiple times
-        assert!(rx
-            .connection_metadata()
-            .as_ref()
-            .expect("connected should be set")
-            .is_proxied());
+        assert!(
+            rx.connection_metadata()
+                .as_ref()
+                .expect("connected should be set")
+                .is_proxied()
+        );
     }
 
     #[tokio::test]
@@ -153,12 +155,13 @@ mod test {
             "connection has not been set"
         );
         let test_task = tokio::spawn(async move {
-            assert!(rx
-                .wait_for_connection_metadata()
-                .await
-                .as_ref()
-                .expect("connection should be set")
-                .is_proxied());
+            assert!(
+                rx.wait_for_connection_metadata()
+                    .await
+                    .as_ref()
+                    .expect("connection should be set")
+                    .is_proxied()
+            );
             // can be awaited multiple times
             assert!(
                 rx.wait_for_connection_metadata().await.is_some(),

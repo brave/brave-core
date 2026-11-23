@@ -1,19 +1,16 @@
-use std::{
-    borrow::Cow,
-    path::{Path, PathBuf},
-};
+use std::path::{Path, PathBuf};
 
 use bstr::{BStr, BString, ByteSlice, ByteVec};
-use gix_features::threading::OwnShared;
+use gix_error::{OptionExt, Result, ResultExt, message, not_found};
+use gix_parallel::OwnShared;
 use gix_ref::Category;
 
 use crate::{
-    file,
-    file::{includes, init, Metadata, SectionId},
-    path, File,
+    File, file,
+    file::{Metadata, SectionId, includes, init},
 };
 
-impl File<'static> {
+impl File {
     /// Traverse all `include` and `includeIf` directives found in this instance and follow them, loading the
     /// referenced files from their location and adding their content right past the value that included them.
     ///
@@ -33,7 +30,7 @@ impl File<'static> {
     ///   We can fix this by 'splitting' the include section if needed so the included sections are put into the right place.
     /// - `hasconfig:remote.*.url` will not prevent itself to include files with `[remote "name"]\nurl = x` values, but it also
     ///   won't match them, i.e. one cannot include something that will cause the condition to match or to always be true.
-    pub fn resolve_includes(&mut self, options: init::Options<'_>) -> Result<(), Error> {
+    pub fn resolve_includes(&mut self, options: init::Options<'_>) -> Result {
         if options.includes.max_depth == 0 {
             return Ok(());
         }
@@ -42,22 +39,23 @@ impl File<'static> {
     }
 }
 
-pub(crate) fn resolve(config: &mut File<'static>, buf: &mut Vec<u8>, options: init::Options<'_>) -> Result<(), Error> {
+pub(crate) fn resolve(config: &mut File, buf: &mut Vec<u8>, options: init::Options<'_>) -> Result {
     resolve_includes_recursive(None, config, 0, buf, options)
 }
 
 fn resolve_includes_recursive(
-    search_config: Option<&File<'static>>,
-    target_config: &mut File<'static>,
+    search_config: Option<&File>,
+    target_config: &mut File,
     depth: u8,
     buf: &mut Vec<u8>,
     options: init::Options<'_>,
-) -> Result<(), Error> {
+) -> Result {
     if depth == options.includes.max_depth {
         return if options.includes.err_on_max_depth_exceeded {
-            Err(Error::IncludeDepthExceeded {
-                max_depth: options.includes.max_depth,
-            })
+            Err(message!(
+                "The maximum allowed length {} of the file include chain built by following nested resolve_includes is exceeded",
+                options.includes.max_depth
+            ).validation_error())
         } else {
             Ok(())
         };
@@ -66,21 +64,22 @@ fn resolve_includes_recursive(
     for id in target_config.section_order.clone().into_iter() {
         let section = &target_config.sections[&id];
         let header = &section.header;
-        let header_name = header.name.as_ref();
+        let backing = &target_config.backing;
+        let header_name = header.name.as_bstr_in(backing);
         let mut paths = None;
         if header_name == "include" && header.subsection_name.is_none() {
-            paths = Some(gather_paths(section, id));
-        } else if header_name == "includeIf" {
-            if let Some(condition) = &header.subsection_name {
-                let target_config_path = section.meta.path.as_deref();
-                if include_condition_match(
-                    condition.as_ref(),
-                    target_config_path,
-                    search_config.unwrap_or(target_config),
-                    options.includes,
-                )? {
-                    paths = Some(gather_paths(section, id));
-                }
+            paths = Some(gather_paths(section, id, backing));
+        } else if header_name == "includeIf"
+            && let Some(condition) = &header.subsection_name
+        {
+            let target_config_path = section.meta.path.as_deref();
+            if include_condition_match(
+                condition.value_in(backing),
+                target_config_path,
+                search_config.unwrap_or(target_config),
+                options.includes,
+            )? {
+                paths = Some(gather_paths(section, id, backing));
             }
         }
         if let Some(paths) = paths {
@@ -91,12 +90,12 @@ fn resolve_includes_recursive(
 }
 
 fn insert_includes_recursively(
-    section_ids_and_include_paths: Vec<(SectionId, crate::Path<'_>)>,
-    target_config: &mut File<'static>,
+    section_ids_and_include_paths: Vec<(SectionId, crate::Path)>,
+    target_config: &mut File,
     depth: u8,
     options: init::Options<'_>,
     buf: &mut Vec<u8>,
-) -> Result<(), Error> {
+) -> Result {
     for (section_id, config_path) in section_ids_and_include_paths {
         let meta = OwnShared::clone(&target_config.sections[&section_id].meta);
         let target_config_path = meta.path.as_deref();
@@ -110,13 +109,15 @@ fn insert_includes_recursively(
 
         buf.clear();
         std::io::copy(
-            &mut std::fs::File::open(&config_path).map_err(|err| Error::Io {
-                source: err,
-                path: config_path.to_owned(),
+            &mut std::fs::File::open(&config_path).or_raise(|| {
+                message!(
+                    "Could not read included configuration file at \"{}\"",
+                    config_path.display()
+                )
             })?,
             buf,
         )
-        .map_err(Error::CopyBuffer)?;
+        .or_raise(|| message("Failed to copy configuration file into buffer"))?;
         let config_meta = Metadata {
             path: Some(config_path),
             trust: meta.trust,
@@ -128,34 +129,32 @@ fn insert_includes_recursively(
             ..options
         };
 
-        let mut include_config =
-            File::from_bytes_owned(buf, config_meta, no_follow_options).map_err(|err| match err {
-                init::Error::Parse(err) => Error::Parse(err),
-                init::Error::Interpolate(err) => Error::Interpolate(err),
-                init::Error::Includes(_) => unreachable!("BUG: {:?} not possible due to no-follow options", err),
-            })?;
+        let mut include_config = File::from_bytes_owned(buf, config_meta, no_follow_options)
+            .or_raise(|| message("Could not parse included configuration file"))?;
         resolve_includes_recursive(Some(target_config), &mut include_config, depth + 1, buf, options)?;
 
-        target_config.append_or_insert(include_config, Some(section_id));
+        target_config
+            .append_or_insert(include_config, Some(section_id))
+            .or_raise(|| message("Could not append included configuration"))?;
     }
     Ok(())
 }
 
-fn gather_paths(section: &file::Section<'_>, id: SectionId) -> Vec<(SectionId, crate::Path<'static>)> {
+fn gather_paths(section: &file::SectionData, id: SectionId, backing: &[u8]) -> Vec<(SectionId, crate::Path)> {
     section
         .body
-        .values("path")
+        .values_in(backing, "path")
         .into_iter()
-        .map(|path| (id, crate::Path::from(Cow::Owned(path.into_owned()))))
+        .map(|path| (id, crate::Path::from(path)))
         .collect()
 }
 
 fn include_condition_match(
     condition: &BStr,
     target_config_path: Option<&Path>,
-    search_config: &File<'static>,
+    search_config: &File,
     options: Options<'_>,
-) -> Result<bool, Error> {
+) -> Result<bool> {
     let mut tokens = condition.splitn(2, |b| *b == b':');
     let (prefix, condition) = match (tokens.next(), tokens.next()) {
         (Some(a), Some(b)) => (a, b),
@@ -215,16 +214,16 @@ fn onbranch_matches(
         .category_and_short_name()
         .filter(|(cat, _)| *cat == Category::LocalBranch)?;
 
-    let condition = if condition.ends_with(b"/") {
+    let condition: BString = if condition.ends_with(b"/") {
         let mut condition: BString = condition.into();
         condition.push_str("**");
-        Cow::Owned(condition)
+        condition
     } else {
         condition.into()
     };
 
     gix_glob::wildmatch(
-        condition.as_ref(),
+        condition.as_bstr(),
         branch_name,
         gix_glob::wildmatch::Mode::NO_MATCH_SLASH_LITERAL,
     )
@@ -242,25 +241,28 @@ fn gitdir_matches(
         ..
     }: Options<'_>,
     wildmatch_mode: gix_glob::wildmatch::Mode,
-) -> Result<bool, Error> {
+) -> Result<bool> {
     if !err_on_interpolation_failure && git_dir.is_none() {
         return Ok(false);
     }
-    let git_dir = gix_path::to_unix_separators_on_windows(gix_path::into_bstr(git_dir.ok_or(Error::MissingGitDir)?));
+    let git_dir =
+        gix_path::to_unix_separators_on_windows(gix_path::into_bstr(git_dir.ok_or_raise(|| {
+            not_found("The git directory must be provided to support `gitdir:` conditional includes")
+        })?)?);
 
-    let mut pattern_path: Cow<'_, _> = {
-        let path = match check_interpolation_result(
-            err_on_interpolation_failure,
-            crate::Path::from(Cow::Borrowed(condition_path)).interpolate(context),
-        )? {
-            Some(p) => p,
-            None => return Ok(false),
-        };
-        gix_path::into_bstr(path).into_owned().into()
+    let mut pattern_path = match check_interpolation_result(
+        err_on_interpolation_failure,
+        crate::Path::from(condition_path.to_owned()).interpolate(context),
+    )
+    .or_raise(|| message("Could not interpolate conditional include path"))?
+    {
+        Some(path) => gix_path::into_bstr(path)?.into_owned(),
+        // Git keeps the original condition pattern when interpolation fails.
+        None => condition_path.to_owned(),
     };
     // NOTE: yes, only if we do path interpolation will the slashes be forced to unix separators on windows
     if pattern_path != condition_path {
-        pattern_path = gix_path::to_unix_separators_on_windows(pattern_path);
+        pattern_path = gix_path::to_unix_separators_on_windows(pattern_path).into_owned();
     }
 
     if let Some(relative_pattern_path) = pattern_path.strip_prefix(b"./") {
@@ -268,27 +270,25 @@ fn gitdir_matches(
             return Ok(false);
         }
         let parent_dir = target_config_path
-            .ok_or(Error::MissingConfigPath)?
+            .ok_or_raise(|| {
+                not_found("Include paths from environment variables must not be relative as no config file path exists as root")
+            })?
             .parent()
             .expect("config path can never be /");
-        let mut joined_path = gix_path::to_unix_separators_on_windows(gix_path::into_bstr(parent_dir)).into_owned();
+        let mut joined_path = gix_path::to_unix_separators_on_windows(gix_path::into_bstr(parent_dir)?).into_owned();
         joined_path.push(b'/');
         joined_path.extend_from_slice(relative_pattern_path);
-        pattern_path = joined_path.into();
+        pattern_path = joined_path;
     }
 
     // NOTE: this special handling of leading backslash is needed to do it like git does
     if pattern_path.iter().next() != Some(&(std::path::MAIN_SEPARATOR as u8))
-        && !gix_path::from_bstr(pattern_path.clone()).is_absolute()
+        && !gix_path::from_bstr(pattern_path.clone())?.is_absolute()
     {
-        let mut prefixed = pattern_path.into_owned();
-        prefixed.insert_str(0, "**/");
-        pattern_path = prefixed.into();
+        pattern_path.insert_str(0, "**/");
     }
     if pattern_path.ends_with(b"/") {
-        let mut suffixed = pattern_path.into_owned();
-        suffixed.push_str("**");
-        pattern_path = suffixed.into();
+        pattern_path.push_str("**");
     }
 
     let match_mode = gix_glob::wildmatch::Mode::NO_MATCH_SLASH_LITERAL | wildmatch_mode;
@@ -297,36 +297,30 @@ fn gitdir_matches(
         return Ok(true);
     }
 
-    let expanded_git_dir = gix_path::into_bstr(gix_path::realpath(gix_path::from_byte_slice(&git_dir))?);
+    let expanded_git_dir = gix_path::to_unix_separators_on_windows(gix_path::into_bstr(
+        gix_path::realpath(gix_path::from_byte_slice(&git_dir)?)
+            .or_raise(|| message("Could not resolve the git directory to its real path"))?,
+    )?);
     Ok(gix_glob::wildmatch(
         pattern_path.as_bstr(),
-        expanded_git_dir.as_bstr(),
+        expanded_git_dir.as_ref(),
         match_mode,
     ))
 }
 
-fn check_interpolation_result(
-    disable: bool,
-    res: Result<Cow<'_, std::path::Path>, path::interpolate::Error>,
-) -> Result<Option<Cow<'_, std::path::Path>>, path::interpolate::Error> {
+fn check_interpolation_result(disable: bool, res: Result<impl Into<PathBuf>>) -> Result<Option<PathBuf>> {
     if disable {
-        return res.map(Some);
+        return res.map(|path| Some(path.into()));
     }
     match res {
-        Ok(good) => Ok(good.into()),
-        Err(err) => match err {
-            path::interpolate::Error::Missing { .. } | path::interpolate::Error::UserInterpolationUnsupported => {
-                Ok(None)
-            }
-            path::interpolate::Error::UsernameConversion(_) | path::interpolate::Error::Utf8Conversion { .. } => {
-                Err(err)
-            }
-        },
+        Ok(good) => Ok(Some(good.into())),
+        Err(err) if err.is_validation() => Err(err),
+        Err(_) => Ok(None),
     }
 }
 
 fn resolve_path(
-    path: crate::Path<'_>,
+    path: crate::Path,
     target_config_path: Option<&Path>,
     includes::Options {
         interpolate: context,
@@ -334,8 +328,10 @@ fn resolve_path(
         err_on_missing_config_path,
         ..
     }: includes::Options<'_>,
-) -> Result<Option<PathBuf>, Error> {
-    let path = match check_interpolation_result(err_on_interpolation_failure, path.interpolate(context))? {
+) -> Result<Option<PathBuf>> {
+    let path = match check_interpolation_result(err_on_interpolation_failure, path.interpolate(context))
+        .or_raise(|| message("Could not interpolate include path"))?
+    {
         Some(p) => p,
         None => return Ok(None),
     };
@@ -344,15 +340,17 @@ fn resolve_path(
             return Ok(None);
         }
         target_config_path
-            .ok_or(Error::MissingConfigPath)?
+            .ok_or_raise(|| {
+                not_found("Include paths from environment variables must not be relative as no config file path exists as root")
+            })?
             .parent()
             .expect("path is a config file which naturally lives in a directory")
             .join(path)
     } else {
-        path.into()
+        path
     };
     Ok(Some(path))
 }
 
 mod types;
-pub use types::{conditional, Error, Options};
+pub use types::{Options, conditional};

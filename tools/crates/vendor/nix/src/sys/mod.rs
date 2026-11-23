@@ -40,6 +40,7 @@ feature! {
     solarish,
     target_os = "fuchsia",
     target_os = "redox",
+    target_os = "cygwin",
 ))]
 #[cfg(feature = "ioctl")]
 #[cfg_attr(docsrs, doc(cfg(feature = "ioctl")))]
@@ -96,7 +97,7 @@ feature! {
 #[cfg(not(any(
     target_os = "redox",
     target_os = "fuchsia",
-    solarish,
+    target_os = "solaris",
     target_os = "haiku"
 )))]
 feature! {
@@ -187,7 +188,7 @@ feature! {
     pub mod inotify;
 }
 
-#[cfg(linux_android)]
+#[cfg(any(linux_android, target_os = "freebsd"))]
 feature! {
     #![feature = "time"]
     pub mod timerfd;

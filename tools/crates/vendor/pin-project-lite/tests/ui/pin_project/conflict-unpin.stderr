@@ -1,9 +1,9 @@
 error[E0119]: conflicting implementations of trait `Unpin` for type `Foo<_, _>`
   --> tests/ui/pin_project/conflict-unpin.rs:7:1
    |
-7  | / pin_project! { //~ ERROR E0119
-8  | |     struct Foo<T, U> {
-9  | |         #[pin]
+ 7 | / pin_project! { //~ ERROR E0119
+ 8 | |     struct Foo<T, U> {
+ 9 | |         #[pin]
 10 | |         future: T,
 ...  |
 13 | | }

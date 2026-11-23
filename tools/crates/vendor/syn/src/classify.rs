@@ -8,10 +8,10 @@ use crate::path::{Path, PathArguments};
 use crate::punctuated::Punctuated;
 #[cfg(any(feature = "printing", feature = "full"))]
 use crate::ty::{ReturnType, Type};
+#[cfg(any(feature = "printing", feature = "full"))]
+use core::ops::ControlFlow;
 #[cfg(feature = "full")]
 use proc_macro2::{Delimiter, TokenStream, TokenTree};
-#[cfg(any(feature = "printing", feature = "full"))]
-use std::ops::ControlFlow;
 
 #[cfg(feature = "full")]
 pub(crate) fn requires_semi_to_be_stmt(expr: &Expr) -> bool {
@@ -71,7 +71,7 @@ pub(crate) fn requires_comma_to_be_match_arm(expr: &Expr) -> bool {
 pub(crate) fn trailing_unparameterized_path(mut ty: &Type) -> bool {
     loop {
         match ty {
-            Type::BareFn(t) => match &t.output {
+            Type::FnPtr(t) => match &t.output {
                 ReturnType::Default => return false,
                 ReturnType::Type(_, ret) => ty = ret,
             },
@@ -244,7 +244,7 @@ pub(crate) fn expr_trailing_brace(mut expr: &Expr) -> bool {
     fn type_trailing_brace(mut ty: &Type) -> bool {
         loop {
             match ty {
-                Type::BareFn(t) => match &t.output {
+                Type::FnPtr(t) => match &t.output {
                     ReturnType::Default => return false,
                     ReturnType::Type(_, ret) => ty = ret,
                 },

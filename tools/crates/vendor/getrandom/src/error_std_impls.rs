@@ -7,9 +7,7 @@ impl From<Error> for io::Error {
     fn from(err: Error) -> Self {
         match err.raw_os_error() {
             Some(errno) => io::Error::from_raw_os_error(errno),
-            None => io::Error::new(io::ErrorKind::Other, err),
+            None => io::Error::other(err),
         }
     }
 }
-
-impl std::error::Error for Error {}

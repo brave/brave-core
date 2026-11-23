@@ -6,7 +6,7 @@
 
 use std::error::Error as StdError;
 use std::fmt;
-use std::future::Future;
+use std::future::poll_fn;
 use std::pin::Pin;
 use std::task::{self, Poll};
 use std::time::Duration;
@@ -14,19 +14,18 @@ use std::time::Duration;
 use futures_util::future::{self, Either, FutureExt, TryFutureExt};
 use http::uri::Scheme;
 use hyper::client::conn::TrySendError as ConnTrySendError;
-use hyper::header::{HeaderValue, HOST};
+use hyper::header::{HOST, HeaderValue};
 use hyper::rt::Timer;
-use hyper::{body::Body, Method, Request, Response, Uri, Version};
+use hyper::{Method, Request, Response, Uri, Version, body::Body};
 use tracing::{debug, trace, warn};
 
-use super::connect::capture::CaptureConnectionExtension;
 #[cfg(feature = "tokio")]
 use super::connect::HttpConnector;
+use super::connect::capture::CaptureConnectionExtension;
 use super::connect::{Alpn, Connect, Connected, Connection};
 use super::pool::{self, Ver};
 
-use crate::common::future::poll_fn;
-use crate::common::{lazy as hyper_lazy, timer, Exec, Lazy, SyncWrapper};
+use crate::common::{Exec, Lazy, SyncWrapper, lazy as hyper_lazy, timer};
 
 type BoxSendFuture = Pin<Box<dyn Future<Output = ()> + Send>>;
 
@@ -119,7 +118,7 @@ impl Client<(), ()> {
     /// # Example
     ///
     /// ```
-    /// # #[cfg(feature = "tokio")]
+    /// # #[cfg(all(feature = "tokio", feature = "http2"))]
     /// # fn run () {
     /// use std::time::Duration;
     /// use hyper_util::client::legacy::Client;
@@ -337,7 +336,7 @@ where
                         e!(SendRequest, err.into_error())
                             .with_connect_info(pooled.conn_info.clone()),
                     ))
-                }
+                };
             }
         };
 
@@ -485,7 +484,7 @@ where
     fn connect_to(
         &self,
         pool_key: PoolKey,
-    ) -> impl Lazy<Output = Result<pool::Pooled<PoolClient<B>, PoolKey>, Error>> + Send + Unpin
+    ) -> impl Lazy<Output = Result<pool::Pooled<PoolClient<B>, PoolKey>, Error>> + Send + Unpin + use<C, B>
     {
         let executor = self.exec.clone();
         let pool = self.pool.clone();
@@ -496,7 +495,6 @@ where
         let ver = self.config.ver;
         let is_ver_h2 = ver == Ver::Http2;
         let connector = self.connector.clone();
-        let dst = domain_as_uri(pool_key.clone());
         hyper_lazy(move || {
             // Try to take a "connecting lock".
             //
@@ -512,6 +510,7 @@ where
                     return Either::Right(future::err(canceled));
                 }
             };
+            let dst = domain_as_uri(pool_key);
             Either::Left(
                 connector
                     .connect(super::connect::sealed::Internal, dst)
@@ -995,7 +994,7 @@ fn is_schema_secure(uri: &Uri) -> bool {
 /// # Example
 ///
 /// ```
-/// # #[cfg(feature = "tokio")]
+/// # #[cfg(all(feature = "tokio", feature = "http2"))]
 /// # fn run () {
 /// use std::time::Duration;
 /// use hyper_util::client::legacy::Client;
@@ -1058,7 +1057,7 @@ impl Builder {
     /// # Example
     ///
     /// ```
-    /// # #[cfg(feature = "tokio")]
+    /// # #[cfg(all(feature = "tokio", feature = "http2"))]
     /// # fn run () {
     /// use std::time::Duration;
     /// use hyper_util::client::legacy::Client;
@@ -1427,6 +1426,18 @@ impl Builder {
         self
     }
 
+    /// Sets the header table size to use for HTTP2.
+    ///
+    /// Passing `None` will do nothing.
+    ///
+    /// If not set, hyper will use a default.
+    #[cfg(feature = "http2")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "http2")))]
+    pub fn http2_header_table_size(&mut self, size: impl Into<Option<u32>>) -> &mut Self {
+        self.h2_builder.header_table_size(size);
+        self
+    }
+
     /// Sets an interval for HTTP2 Ping frames should be sent to keep a
     /// connection alive.
     ///
@@ -1498,6 +1509,36 @@ impl Builder {
     #[cfg_attr(docsrs, doc(cfg(feature = "http2")))]
     pub fn http2_max_concurrent_reset_streams(&mut self, max: usize) -> &mut Self {
         self.h2_builder.max_concurrent_reset_streams(max);
+        self
+    }
+
+    /// Configures the maximum number of local resets due to protocol errors made by the remote end.
+    ///
+    /// See the documentation of [`h2::client::Builder::max_local_error_reset_streams`] for more
+    /// details.
+    ///
+    /// The default value is determined by the `h2` crate.
+    ///
+    /// [`h2::client::Builder::max_local_error_reset_streams`]: https://docs.rs/h2/latest/h2/client/struct.Builder.html#method.max_local_error_reset_streams
+    #[cfg(feature = "http2")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "http2")))]
+    pub fn http2_max_local_error_reset_streams(
+        &mut self,
+        max: impl Into<Option<usize>>,
+    ) -> &mut Self {
+        self.h2_builder.max_local_error_reset_streams(max);
+        self
+    }
+
+    /// Sets the `SETTINGS_MAX_CONCURRENT_STREAMS` option for HTTP2 connections.
+    ///
+    /// Passing `None` will do nothing.
+    ///
+    /// The default value is determined by the `h2` crate.
+    #[cfg(feature = "http2")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "http2")))]
+    pub fn http2_max_concurrent_streams(&mut self, max: impl Into<Option<u32>>) -> &mut Self {
+        self.h2_builder.max_concurrent_streams(max);
         self
     }
 

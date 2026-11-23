@@ -5,6 +5,10 @@ on: [push, pull_request]
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     name: Test
@@ -24,9 +28,6 @@ jobs:
           - build: macos
             os: macos-latest
             rust: stable
-          - build: win32
-            os: windows-latest
-            rust: stable-i686-pc-windows-msvc
           - build: win64
             os: windows-latest
             rust: stable-x86_64-pc-windows-msvc
@@ -34,11 +35,15 @@ jobs:
             os: windows-latest
             rust: stable-x86_64-pc-windows-gnu
     steps:
-    - uses: actions/checkout@v4
-    - uses: dtolnay/rust-toolchain@master
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
-        toolchain: ${{ matrix.rust }}
-    - uses: taiki-e/install-action@cargo-hack
+        persist-credentials: false
+    - run: rustup toolchain add ${TOOLCHAIN} && rustup default ${TOOLCHAIN}
+      env:
+        TOOLCHAIN: ${{ matrix.rust }}
+    - uses: taiki-e/install-action@0abfcd587b70a713fdaa7fb502c885e2112acb15 # v2.75.7
+      with:
+        tool: cargo-hack
     - run: cargo hack test --feature-powerset --exclude-features max_level_off,max_level_error,max_level_warn,max_level_info,max_level_debug,max_level_trace,release_max_level_off,release_max_level_error,release_max_level_warn,release_max_level_info,release_max_level_debug,release_max_level_trace
     - run: cargo run --verbose --manifest-path test_max_level_features/Cargo.toml
     - run: cargo run --verbose --manifest-path test_max_level_features/Cargo.toml --release
@@ -47,10 +52,10 @@ jobs:
     name: Check Format and Clippy
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: dtolnay/rust-toolchain@stable
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
-        components: clippy
+        persist-credentials: false
+    - run: rustup toolchain add stable --component clippy && rustup default stable
     - run: cargo fmt -- --check
     - run: cargo fmt --manifest-path test_max_level_features/Cargo.toml -- --check
     - run: cargo clippy --verbose
@@ -60,8 +65,10 @@ jobs:
     name: Check Documentation
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: dtolnay/rust-toolchain@stable
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        persist-credentials: false
+    - run: rustup toolchain add stable && rustup default stable
     - name: Run rustdoc
       env:
         RUSTDOCFLAGS: "-D warnings"
@@ -71,8 +78,10 @@ jobs:
     name: Feature check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@nightly
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - run: rustup toolchain add nightly && rustup default nightly
       - run: cargo build --verbose -Z avoid-dev-deps --features kv
       - run: cargo build --verbose -Z avoid-dev-deps --features "kv std"
       - run: cargo build --verbose -Z avoid-dev-deps --features "kv kv_sval"
@@ -84,34 +93,53 @@ jobs:
     name: Minimal versions
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@nightly
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - run: rustup toolchain add nightly && rustup default nightly
       - run: cargo build --verbose -Z minimal-versions --features kv
       - run: cargo build --verbose -Z minimal-versions --features "kv std"
       - run: cargo build --verbose -Z minimal-versions --features "kv kv_sval"
       - run: cargo build --verbose -Z minimal-versions --features "kv kv_serde"
       - run: cargo build --verbose -Z minimal-versions --features "kv kv_std"
       - run: cargo build --verbose -Z minimal-versions --features "kv kv_sval kv_serde"
-
-  msrv:
-    name: MSRV
+  
+  msrv-external-test:
+    name: MSRV external test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@1.68.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          components: clippy
-      - uses: taiki-e/install-action@cargo-hack
-      - run: cargo hack test --feature-powerset --exclude-features max_level_off,max_level_error,max_level_warn,max_level_info,max_level_debug,max_level_trace,release_max_level_off,release_max_level_error,release_max_level_warn,release_max_level_info,release_max_level_debug,release_max_level_trace
+          persist-credentials: false
+      - run: rustup toolchain add ${TOOLCHAIN} && rustup default ${TOOLCHAIN}
+        env:
+          TOOLCHAIN: 1.71
       - run: cargo run --verbose --manifest-path test_max_level_features/Cargo.toml
       - run: cargo run --verbose --manifest-path test_max_level_features/Cargo.toml --release
+
+  msrv-test:
+    name: MSRV test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - run: rustup toolchain add ${TOOLCHAIN} && rustup default ${TOOLCHAIN}
+        env:
+          TOOLCHAIN: 1.81
+      - uses: taiki-e/install-action@0abfcd587b70a713fdaa7fb502c885e2112acb15 # v2.75.7
+        with:
+          tool: cargo-hack
+      - run: cargo hack test --feature-powerset --exclude-features max_level_off,max_level_error,max_level_warn,max_level_info,max_level_debug,max_level_trace,release_max_level_off,release_max_level_error,release_max_level_warn,release_max_level_info,release_max_level_debug,release_max_level_trace
 
   embedded:
     name: Embedded
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - run: rustup toolchain add stable && rustup default stable
       - run: rustup target add thumbv6m-none-eabi riscv32imc-unknown-none-elf
       - run: cargo build --verbose --target=thumbv6m-none-eabi
       - run: cargo build --verbose --target=riscv32imc-unknown-none-elf

@@ -2,8 +2,6 @@ use crate::off64_t;
 use crate::prelude::*;
 
 pub type wchar_t = u32;
-pub type __u64 = c_ulonglong;
-pub type __s64 = c_longlong;
 
 s! {
     pub struct stat {
@@ -29,6 +27,7 @@ s! {
         __unused5: Padding<c_uint>,
     }
 
+    // FIXME(1.0,deprecate): lfs binding to be removed
     pub struct stat64 {
         pub st_dev: crate::dev_t,
         pub st_ino: crate::ino_t,
@@ -64,6 +63,9 @@ s! {
         pub uc_link: *mut ucontext_t,
         pub uc_stack: crate::stack_t,
         pub uc_sigmask: crate::sigset_t,
+        /* The kernel adds extra padding after uc_sigmask to match
+         * glibc sigset_t on ARM64. */
+        __padding: Padding<[c_char; 128 - size_of::<crate::sigset_t>()]>,
         pub uc_mcontext: mcontext_t,
     }
 
@@ -78,7 +80,7 @@ s! {
     }
 
     pub struct user_fpsimd_struct {
-        pub vregs: [crate::__uint128_t; 32],
+        pub vregs: [u128; 32],
         pub fpsr: u32,
         pub fpcr: u32,
     }

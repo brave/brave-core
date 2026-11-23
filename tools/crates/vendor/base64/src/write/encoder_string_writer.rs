@@ -3,7 +3,7 @@ use crate::engine::Engine;
 use std::io;
 
 /// A `Write` implementation that base64-encodes data using the provided config and accumulates the
-/// resulting base64 utf8 `&str` in a [StrConsumer] implementation (typically `String`), which is
+/// resulting base64 utf8 `&str` in a [`StrConsumer`] implementation (typically `String`), which is
 /// then exposed via `into_inner()`.
 ///
 /// # Examples
@@ -53,7 +53,7 @@ pub struct EncoderStringWriter<'e, E: Engine, S: StrConsumer> {
 }
 
 impl<'e, E: Engine, S: StrConsumer> EncoderStringWriter<'e, E, S> {
-    /// Create a EncoderStringWriter that will append to the provided `StrConsumer`.
+    /// Create a `EncoderStringWriter` that will append to the provided `StrConsumer`.
     pub fn from_consumer(str_consumer: S, engine: &'e E) -> Self {
         EncoderStringWriter {
             encoder: EncoderWriter::new(Utf8SingleCodeUnitWriter { str_consumer }, engine),
@@ -73,7 +73,7 @@ impl<'e, E: Engine, S: StrConsumer> EncoderStringWriter<'e, E, S> {
 }
 
 impl<'e, E: Engine> EncoderStringWriter<'e, E, String> {
-    /// Create a EncoderStringWriter that will encode into a new `String` with the provided config.
+    /// Create a `EncoderStringWriter` that will encode into a new `String` with the provided config.
     pub fn new(engine: &'e E) -> Self {
         EncoderStringWriter::from_consumer(String::new(), engine)
     }
@@ -95,7 +95,7 @@ pub trait StrConsumer {
     fn consume(&mut self, buf: &str);
 }
 
-/// As for io::Write, `StrConsumer` is implemented automatically for `&mut S`.
+/// As for `io::Write`, `StrConsumer` is implemented automatically for `&mut S`.
 impl<S: StrConsumer + ?Sized> StrConsumer for &mut S {
     fn consume(&mut self, buf: &str) {
         (**self).consume(buf);
@@ -138,13 +138,13 @@ mod tests {
     use crate::{
         engine::Engine, tests::random_engine, write::encoder_string_writer::EncoderStringWriter,
     };
-    use rand::Rng;
+    use rand::RngExt;
     use std::cmp;
     use std::io::Write;
 
     #[test]
     fn every_possible_split_of_input() {
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rng();
         let mut orig_data = Vec::<u8>::new();
         let mut normal_encoded = String::new();
 
@@ -172,7 +172,7 @@ mod tests {
     }
     #[test]
     fn incremental_writes() {
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rng();
         let mut orig_data = Vec::<u8>::new();
         let mut normal_encoded = String::new();
 
@@ -192,7 +192,7 @@ mod tests {
             // write small nibbles of data
             let mut offset = 0;
             while offset < size {
-                let nibble_size = cmp::min(rng.gen_range(0..=64), size - offset);
+                let nibble_size = cmp::min(rng.random_range(0..=64), size - offset);
                 let len = stream_encoder
                     .write(&orig_data[offset..offset + nibble_size])
                     .unwrap();

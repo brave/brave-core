@@ -1,0 +1,5 @@
+error: `#[panic_handler]` attribute cannot be used together with `#[export_name]`
+ --> tests/ui/panic-handler-export-name.rs:5:1
+  |
+5 | #[export_name = "hello"]
+  | ^

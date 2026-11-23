@@ -1,7 +1,7 @@
 use crate::combinator::trace;
 use crate::error::{ModalError, ParserError};
 use crate::stream::Stream;
-use crate::*;
+use crate::{Parser, Result};
 
 /// Apply a [`Parser`], producing `None` on [`ErrMode::Backtrack`][crate::error::ErrMode::Backtrack].
 ///
@@ -10,10 +10,10 @@ use crate::*;
 /// # Example
 ///
 /// ```rust
+/// # #[cfg(feature = "ascii")] {
 /// # use winnow::prelude::*;
 /// use winnow::combinator::opt;
 /// use winnow::ascii::alpha1;
-/// # fn main() {
 ///
 /// fn parser<'i>(i: &mut &'i str) -> ModalResult<Option<&'i str>> {
 ///   opt(alpha1).parse_next(i)
@@ -48,11 +48,11 @@ where
 /// # Example
 ///
 /// ```rust
+/// # #[cfg(feature = "ascii")] {
 /// # use winnow::prelude::*;
 /// # use winnow::combinator::opt;
 /// use winnow::combinator::cond;
 /// use winnow::ascii::alpha1;
-/// # fn main() {
 ///
 /// fn parser<'i>(i: &mut &'i str) -> ModalResult<Option<&'i str>> {
 ///   let prefix = opt("-").parse_next(i)?;
@@ -91,10 +91,10 @@ where
 /// # Example
 ///
 /// ```rust
+/// # #[cfg(feature = "ascii")] {
 /// # use winnow::prelude::*;
 /// use winnow::combinator::peek;
 /// use winnow::ascii::alpha1;
-/// # fn main() {
 ///
 /// fn parser<'i>(input: &mut &'i str) -> ModalResult<&'i str> {
 ///     peek(alpha1).parse_next(input)
@@ -178,10 +178,10 @@ where
 /// # Example
 ///
 /// ```rust
+/// # #[cfg(feature = "ascii")] {
 /// # use winnow::prelude::*;
 /// use winnow::combinator::not;
 /// use winnow::ascii::alpha1;
-/// # fn main() {
 ///
 /// fn parser<'i>(input: &mut &'i str) -> ModalResult<()> {
 ///     not(alpha1).parse_next(input)
@@ -220,13 +220,13 @@ where
 ///
 /// Without `cut_err`:
 /// ```rust
+/// # #[cfg(feature = "ascii")] {
 /// # use winnow::token::one_of;
 /// # use winnow::token::rest;
 /// # use winnow::ascii::digit1;
 /// # use winnow::combinator::alt;
 /// # use winnow::combinator::preceded;
 /// # use winnow::prelude::*;
-/// # fn main() {
 ///
 /// fn parser<'i>(input: &mut &'i str) -> ModalResult<&'i str> {
 ///   alt((
@@ -243,6 +243,7 @@ where
 ///
 /// With `cut_err`:
 /// ```rust
+/// # #[cfg(feature = "ascii")] {
 /// # use winnow::{error::ErrMode, error::ContextError};
 /// # use winnow::prelude::*;
 /// # use winnow::token::one_of;
@@ -251,7 +252,6 @@ where
 /// # use winnow::combinator::alt;
 /// # use winnow::combinator::preceded;
 /// use winnow::combinator::cut_err;
-/// # fn main() {
 ///
 /// fn parser<'i>(input: &mut &'i str) -> ModalResult<&'i str> {
 ///   alt((
@@ -324,112 +324,6 @@ where
         todo!("unimplemented parse")
     })
     .parse_next(input)
-}
-
-/// Repeats the embedded parser, lazily returning the results
-///
-/// Call the iterator's [`ParserIterator::finish`] method to get the remaining input if successful,
-/// or the error value if we encountered an error.
-///
-/// On [`ErrMode::Backtrack`][crate::error::ErrMode::Backtrack], iteration will stop. To instead chain an error up, see [`cut_err`].
-///
-/// # Example
-///
-/// ```rust
-/// # use winnow::prelude::*;
-/// use winnow::{combinator::iterator, ascii::alpha1, combinator::terminated};
-/// use std::collections::HashMap;
-///
-/// let data = "abc|defg|hijkl|mnopqr|123";
-/// let mut it = iterator(data, terminated(alpha1, "|"));
-///
-/// let parsed = it.map(|v| (v, v.len())).collect::<HashMap<_,_>>();
-/// let res: ModalResult<_> = it.finish();
-///
-/// assert_eq!(parsed, [("abc", 3usize), ("defg", 4), ("hijkl", 5), ("mnopqr", 6)].iter().cloned().collect());
-/// assert_eq!(res, Ok(("123", ())));
-/// ```
-pub fn iterator<Input, Output, Error, ParseNext>(
-    input: Input,
-    parser: ParseNext,
-) -> ParserIterator<ParseNext, Input, Output, Error>
-where
-    ParseNext: Parser<Input, Output, Error>,
-    Input: Stream,
-    Error: ParserError<Input>,
-{
-    ParserIterator {
-        parser,
-        input,
-        state: State::Running,
-        o: Default::default(),
-    }
-}
-
-/// Main structure associated to [`iterator`].
-pub struct ParserIterator<F, I, O, E>
-where
-    F: Parser<I, O, E>,
-    I: Stream,
-{
-    parser: F,
-    input: I,
-    state: State<E>,
-    o: core::marker::PhantomData<O>,
-}
-
-impl<F, I, O, E> ParserIterator<F, I, O, E>
-where
-    F: Parser<I, O, E>,
-    I: Stream,
-    E: ParserError<I>,
-{
-    /// Returns the remaining input if parsing was successful, or the error if we encountered an error.
-    pub fn finish(self) -> Result<(I, ()), E> {
-        match self.state {
-            State::Running | State::Done => Ok((self.input, ())),
-            State::Cut(e) => Err(e),
-        }
-    }
-}
-
-impl<F, I, O, E> core::iter::Iterator for &mut ParserIterator<F, I, O, E>
-where
-    F: Parser<I, O, E>,
-    I: Stream,
-    E: ParserError<I>,
-{
-    type Item = O;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        if matches!(self.state, State::Running) {
-            let start = self.input.checkpoint();
-
-            match self.parser.parse_next(&mut self.input) {
-                Ok(o) => {
-                    self.state = State::Running;
-                    Some(o)
-                }
-                Err(e) if e.is_backtrack() => {
-                    self.input.reset(&start);
-                    self.state = State::Done;
-                    None
-                }
-                Err(e) => {
-                    self.state = State::Cut(e);
-                    None
-                }
-            }
-        } else {
-            None
-        }
-    }
-}
-
-enum State<E> {
-    Running,
-    Done,
-    Cut(E),
 }
 
 /// Succeed, consuming no input

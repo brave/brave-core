@@ -52,22 +52,20 @@
 //!   Libraries should never enable this feature, as the decision of what format to use should be up
 //!   to the user.
 //!
-//! - `rand` (_implicitly enables `rand08` and `rand09`_)
+//! - `rand` (_implicitly enables `rand08`, `rand09`, and `rand010`_)
 //!
 //!   Previously, this would enable support for `rand` 0.8. Since the release of `rand` 0.9, the
-//!   feature has been split into `rand08` and `rand09` to allow support for both versions. For
-//!   backwards compatibility and simplicity, this feature enables support for _both_ series.
+//!   feature has been split into `rand08` and `rand09` to allow support for both versions. `rand`
+//!   0.10 has since been added. For backwards compatibility and simplicity, this feature enables
+//!   support for _all_ series.
 //!
-//!   It is strongly recommended to enable `rand08` or `rand09` directly, as enabling `rand` will
-//!   needlessly pull in both versions.
+//!   It is strongly recommended to enable the version you need directly, as enabling `rand` will
+//!   needlessly pull in all versions.
 //!
-//! - `rand08`
+//! - `rand08`, `rand09`, `rand010`
 //!
-//!   Enables [`rand` 0.8](https://docs.rs/rand/0.8) support for all types.
-//!
-//! - `rand09`
-//!
-//!   Enables [`rand` 0.9](https://docs.rs/rand/0.9) support for all types.
+//!   Enables [`rand` 0.8](https://docs.rs/rand/0.8), [`rand` 0.9](https://docs.rs/rand/0.9), and
+//!   [`rand` 0.10](https://docs.rs/rand/0.10) support for all types, respectively.
 //!
 //! - `quickcheck` (_implicitly enables `alloc`_)
 //!
@@ -80,7 +78,7 @@
 //!   well as obtaining the UTC offset from JavaScript.
 
 #![doc(html_playground_url = "https://play.rust-lang.org")]
-#![cfg_attr(docsrs, feature(doc_auto_cfg, doc_notable_trait))]
+#![cfg_attr(docsrs, feature(doc_cfg, doc_notable_trait))]
 #![no_std]
 #![doc(html_favicon_url = "https://avatars0.githubusercontent.com/u/55999857")]
 #![doc(html_logo_url = "https://avatars0.githubusercontent.com/u/55999857")]
@@ -93,8 +91,12 @@ extern crate alloc;
 #[cfg(feature = "std")]
 extern crate std;
 
+/// Deprecated module for units of time.
+#[deprecated(note = "import from `time::unit` instead")]
+pub mod convert {
+    pub use time_core::unit::*;
+}
 mod date;
-mod duration;
 pub mod error;
 pub mod ext;
 #[cfg(any(feature = "formatting", feature = "parsing"))]
@@ -106,34 +108,39 @@ mod hint;
 mod instant;
 mod internal_macros;
 mod interop;
+pub mod iter;
 #[cfg(feature = "macros")]
 pub mod macros;
 mod month;
+mod num_fmt;
 mod offset_date_time;
 #[cfg(feature = "parsing")]
 pub mod parsing;
-mod primitive_date_time;
+mod plain_date_time;
 #[cfg(feature = "quickcheck")]
 mod quickcheck;
+#[cfg(feature = "rand010")]
+mod rand010;
 #[cfg(feature = "rand08")]
 mod rand08;
 #[cfg(feature = "rand09")]
 mod rand09;
 #[cfg(feature = "serde")]
 pub mod serde;
+mod signed_duration;
 mod sys;
 #[cfg(test)]
 mod tests;
 mod time;
+mod timestamp;
 mod utc_date_time;
 mod utc_offset;
 pub mod util;
 mod weekday;
 
-pub use time_core::convert;
+pub use time_core::unit;
 
 pub use crate::date::Date;
-pub use crate::duration::Duration;
 pub use crate::error::Error;
 #[doc(hidden)]
 #[cfg(feature = "std")]
@@ -141,28 +148,31 @@ pub use crate::error::Error;
 pub use crate::instant::Instant;
 pub use crate::month::Month;
 pub use crate::offset_date_time::OffsetDateTime;
-pub use crate::primitive_date_time::PrimitiveDateTime;
+pub use crate::plain_date_time::PlainDateTime;
+pub use crate::signed_duration::SignedDuration;
 pub use crate::time::Time;
+pub use crate::timestamp::Timestamp;
 pub use crate::utc_date_time::UtcDateTime;
 pub use crate::utc_offset::UtcOffset;
 pub use crate::weekday::Weekday;
 
 /// An alias for [`std::result::Result`] with a generic error from the time crate.
 pub type Result<T> = core::result::Result<T, Error>;
-
-/// This is a separate function to reduce the code size of `expect_opt!`.
-#[inline(never)]
-#[cold]
-#[track_caller]
-const fn expect_failed(message: &str) -> ! {
-    panic!("{}", message)
-}
-
-/// Returns the size of the pointed-to value in bytes.
+/// A [`PlainDateTime`] under its original name.
 ///
-/// This is a `const fn` in the standard library starting in Rust 1.85. When MSRV is at least that,
-/// this can be removed.
-#[inline]
-const fn size_of_val<T>(_: &T) -> usize {
-    size_of::<T>()
-}
+/// This type is not currently deprecated, but it likely will be in the future. Use
+/// [`PlainDateTime`] when writing new code. In the next breaking release, this alias will be
+/// removed.
+pub type PrimitiveDateTime = PlainDateTime;
+/// A [`SignedDuration`] under its original name.
+///
+/// This type is not currently deprecated, but it likely will be in the future. Use
+/// [`SignedDuration`] when writing new code. In the next breaking release, this alias will be
+/// removed.
+pub type Duration = SignedDuration;
+
+/// A private type used to restrict the ability to call methods that are not intended to be called
+/// by downstream users.
+#[cfg(any(feature = "formatting", feature = "parsing"))]
+#[derive(Debug)]
+struct PrivateMethod;

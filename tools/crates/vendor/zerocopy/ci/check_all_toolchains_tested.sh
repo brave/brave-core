@@ -9,6 +9,7 @@
 # those terms.
 
 set -eo pipefail
+cd "$(dirname "$0")/.."
 
 # Check whether the set of toolchains tested in this file (other than
 # 'msrv', 'stable', and 'nightly') is equal to the set of toolchains
@@ -18,7 +19,7 @@ set -eo pipefail
 # non-zero error code, which causes this script to fail (thanks to
 # `set -e`).
 diff \
-  <(cat .github/workflows/ci.yml | yq '.jobs.build_test.strategy.matrix.toolchain | .[]' | \
+  <(yq -r '.jobs.build_test.strategy.matrix.toolchain | .[]' ../.github/workflows/ci.yml | \
     sort -u | grep -v '^\(msrv\|stable\|nightly\)$') \
   <(cargo metadata -q --format-version 1 | \
     jq -r ".packages[] | select(.name == \"zerocopy\").metadata.\"build-rs\" | keys | .[]" | \

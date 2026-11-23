@@ -53,7 +53,7 @@ mod test_fanotify;
 mod test_inotify;
 mod test_pthread;
 
-#[cfg(any(linux_android, freebsdlike, netbsdlike, apple_targets))]
+#[cfg(any(linux_android, freebsdlike, netbsdlike, target_os = "macos"))]
 mod test_ptrace;
 #[cfg(linux_android)]
 mod test_timerfd;

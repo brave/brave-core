@@ -2,12 +2,12 @@
 authors = ["Alexandre Bury <alexandre.bury@gmail.com>"]
 name = "zstd-safe"
 build = "build.rs"
-version = "7.2.4"
+version = "7.4.1"
 description = "Safe low-level bindings for the zstd compression library."
 keywords = ["zstd", "zstandard", "compression"]
 categories = ["api-bindings", "compression"]
 repository = "https://github.com/gyscos/zstd-rs"
-license = "MIT OR Apache-2.0"
+license = "BSD-3-Clause"
 readme = "Readme.md"
 edition = "2018"
 rust-version = "1.64"
@@ -17,7 +17,7 @@ exclude = ["update_consts.sh"]
 features = ["experimental", "arrays", "std", "zdict_builder", "doc-cfg"]
 
 [dependencies]
-zstd-sys = { path = "zstd-sys", version = "2.0.15", default-features = false }
+zstd-sys = { path = "zstd-sys", version = "2.0.17", default-features = false }
 
 [features]
 default = ["legacy", "arrays", "zdict_builder"]

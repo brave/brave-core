@@ -374,9 +374,9 @@ pub mod ascii {
     //!
     //! Module defines [BorshDeserialize] implementation for
     //! some types from [ascii](::ascii) crate.
-    use crate::BorshDeserialize;
     use crate::__private::maybestd::{string::ToString, vec::Vec};
     use crate::io::{Error, ErrorKind, Read, Result};
+    use crate::BorshDeserialize;
 
     impl BorshDeserialize for ascii::AsciiString {
         #[inline]
@@ -486,6 +486,15 @@ where
     }
 }
 
+#[cfg(feature = "uuid")]
+impl BorshDeserialize for uuid::Uuid {
+    fn deserialize_reader<R: Read>(reader: &mut R) -> Result<Self> {
+        Ok(uuid::Uuid::from_bytes(
+            BorshDeserialize::deserialize_reader(reader)?,
+        ))
+    }
+}
+
 impl<T> BorshDeserialize for Cow<'_, T>
 where
     T: ToOwned + ?Sized,
@@ -527,10 +536,10 @@ where
 pub mod hashes {
     use core::hash::{BuildHasher, Hash};
 
-    use crate::BorshDeserialize;
     use crate::__private::maybestd::collections::{HashMap, HashSet};
     use crate::__private::maybestd::vec::Vec;
     use crate::io::{Read, Result};
+    use crate::BorshDeserialize;
 
     #[cfg(feature = "de_strict_order")]
     const ERROR_WRONG_ORDER_OF_KEYS: &str = "keys were not serialized in ascending order";

@@ -1,14 +1,15 @@
 [package]
 name = "hyper-rustls"
-version = "0.27.7"
+version = "0.27.10"
 edition = "2021"
-rust-version = "1.71"
+rust-version = "1.85"
 license = "Apache-2.0 OR ISC OR MIT"
 readme = "README.md"
 description = "Rustls+hyper integration for pure rust HTTPS"
 homepage = "https://github.com/rustls/hyper-rustls"
 repository = "https://github.com/rustls/hyper-rustls"
 documentation = "https://docs.rs/hyper-rustls/"
+include = ["Cargo.toml", "LICENSE-MIT", "LICENSE-APACHE", "LICENSE-ISC", "README.md", "src/**/*.rs"]
 
 [features]
 default = ["native-tokio", "http1", "tls12", "logging", "aws-lc-rs"]
@@ -27,9 +28,8 @@ http = "1"
 hyper = { version = "1", default-features = false }
 hyper-util = { version = "0.1", default-features = false, features = ["client-legacy", "tokio"] }
 log = { version = "0.4.4", optional = true }
-pki-types = { package = "rustls-pki-types", version = "1" }
 rustls-native-certs = { version = "0.8", optional = true }
-rustls-platform-verifier = { version = "0.6", optional = true }
+rustls-platform-verifier = { version = "0.7", optional = true }
 rustls = { version = "0.23", default-features = false }
 tokio = "1.0"
 tokio-rustls = { version = "0.26", default-features = false }
@@ -41,7 +41,6 @@ cfg-if = "1"
 http-body-util = "0.1"
 hyper-util = { version = "0.1", default-features = false, features = ["server-auto"] }
 rustls = { version = "0.23", default-features = false, features = ["tls12"] }
-rustls-pemfile = "2"
 tokio = { version = "1.0", features = ["io-std", "macros", "net", "rt-multi-thread"] }
 
 [[example]]
@@ -53,6 +52,26 @@ required-features = ["native-tokio", "http1"]
 name = "server"
 path = "examples/server.rs"
 required-features = ["aws-lc-rs"]
+
+[lints.clippy]
+cloned_instead_of_copied = "warn"
+manual_let_else = "warn"
+needless_collect = "warn"
+needless_pass_by_ref_mut = "warn"
+or_fun_call = "warn"
+redundant_clone = "warn"
+upper_case_acronyms = "warn"
+use_self = "warn"
+
+[lints.rust]
+elided_lifetimes_in_paths = "warn"
+trivial_numeric_casts = "warn"
+unexpected_cfgs = { level = "warn", check-cfg = ["cfg(hyper_rustls_docsrs)"] }
+unnameable_types = "warn"
+unreachable_pub = "warn"
+unused_extern_crates = "warn"
+unused_import_braces = "warn"
+unused_qualifications = "warn"
 
 [package.metadata.docs.rs]
 no-default-features = true
@@ -66,4 +85,4 @@ features = [
     "tls12",
     "webpki-tokio",
 ]
-rustdoc-args = ["--cfg", "docsrs"]
+rustdoc-args = ["--cfg", "hyper_rustls_docsrs"]

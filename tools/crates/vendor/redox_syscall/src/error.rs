@@ -8,7 +8,7 @@ pub struct Error {
 pub type Result<T, E = Error> = result::Result<T, E>;
 
 impl Error {
-    pub fn new(errno: i32) -> Error {
+    pub const fn new(errno: i32) -> Error {
         Error { errno }
     }
 
@@ -31,7 +31,7 @@ impl Error {
     pub fn text(&self) -> &'static str {
         STR_ERROR
             .get(self.errno as usize)
-            .map(|&x| x)
+            .copied()
             .unwrap_or("Unknown Error")
     }
 }
@@ -188,9 +188,9 @@ pub const EKEYREVOKED: i32 = 128; /* Key has been revoked */
 pub const EKEYREJECTED: i32 = 129; /* Key was rejected by service */
 pub const EOWNERDEAD: i32 = 130; /* Owner died */
 pub const ENOTRECOVERABLE: i32 = 131; /* State not recoverable */
-pub const ESKMSG: i32 = 132; /* Scheme-kernel message code */
+pub const ERSVD: i32 = 132; /* Reserved (formerly "scheme-kernel message code") */
 
-pub static STR_ERROR: [&'static str; 133] = [
+pub static STR_ERROR: [&str; 133] = [
     "Success",
     "Operation not permitted",
     "No such file or directory",
@@ -323,5 +323,5 @@ pub static STR_ERROR: [&'static str; 133] = [
     "Key was rejected by service",
     "Owner died",
     "State not recoverable",
-    "Scheme-kernel message code",
+    "Reserved (formerly scheme-kernel message code)",
 ];

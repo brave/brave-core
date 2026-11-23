@@ -57,7 +57,7 @@ pub trait PemObject: Sized {
 
     /// Decode the first section of this type from PEM read from an [`io::Read`].
     #[cfg(feature = "std")]
-    fn from_pem_reader(rd: impl std::io::Read) -> Result<Self, Error> {
+    fn from_pem_reader(rd: impl io::Read) -> Result<Self, Error> {
         Self::pem_reader_iter(rd)
             .next()
             .unwrap_or(Err(Error::NoItemsFound))
@@ -65,7 +65,7 @@ pub trait PemObject: Sized {
 
     /// Iterate over all sections of this type from PEM present in an [`io::Read`].
     #[cfg(feature = "std")]
-    fn pem_reader_iter<R: std::io::Read>(rd: R) -> ReadIter<io::BufReader<R>, Self> {
+    fn pem_reader_iter<R: io::Read>(rd: R) -> ReadIter<io::BufReader<R>, Self> {
         ReadIter::new(io::BufReader::new(rd))
     }
 
@@ -96,6 +96,8 @@ pub struct ReadIter<R, T> {
     _ty: PhantomData<T>,
     line: Vec<u8>,
     b64_buf: Vec<u8>,
+    /// Used to fuse the iterator on I/O errors
+    done: bool,
 }
 
 #[cfg(feature = "std")]
@@ -107,6 +109,7 @@ impl<R: io::BufRead, T: PemObject> ReadIter<R, T> {
             _ty: PhantomData,
             line: Vec::with_capacity(80),
             b64_buf: Vec::with_capacity(1024),
+            done: false,
         }
     }
 }
@@ -116,6 +119,10 @@ impl<R: io::BufRead, T: PemObject> Iterator for ReadIter<R, T> {
     type Item = Result<T, Error>;
 
     fn next(&mut self) -> Option<Self::Item> {
+        if self.done {
+            return None;
+        }
+
         loop {
             self.b64_buf.clear();
             return match from_buf_inner(&mut self.rd, &mut self.line, &mut self.b64_buf) {
@@ -124,6 +131,10 @@ impl<R: io::BufRead, T: PemObject> Iterator for ReadIter<R, T> {
                     None => continue,
                 },
                 Ok(None) => return None,
+                Err(Error::Io(error)) => {
+                    self.done = true;
+                    Some(Err(Error::Io(error)))
+                }
                 Err(err) => Some(Err(err)),
             };
         }
@@ -320,10 +331,17 @@ fn read(
 
     if section.is_some() {
         b64buf.extend(line);
+        if b64buf.len() > MAX_PEM_SECTION_SIZE {
+            return Err(Error::SectionTooLarge);
+        }
     }
 
     Ok(ControlFlow::Continue(()))
 }
+
+// We've seen CRLs of 100MB (DER) / ~135MB (PEM) in the wild.
+// 256MB seems like an OK upper bound.
+const MAX_PEM_SECTION_SIZE: usize = 256 * 1024 * 1024;
 
 enum SectionLabel {
     Known(SectionKind),
@@ -482,6 +500,9 @@ pub enum Error {
 
     /// No items found of desired type
     NoItemsFound,
+
+    /// PEM section exceeds maximum allowed size of 256 MB
+    SectionTooLarge,
 }
 
 impl fmt::Display for Error {
@@ -497,6 +518,9 @@ impl fmt::Display for Error {
             #[cfg(feature = "std")]
             Self::Io(e) => write!(f, "I/O error: {e}"),
             Self::NoItemsFound => write!(f, "no items found"),
+            Self::SectionTooLarge => {
+                write!(f, "PEM section exceeds maximum allowed size of 256 MB")
+            }
         }
     }
 }

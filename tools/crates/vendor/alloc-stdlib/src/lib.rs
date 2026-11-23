@@ -1,3 +1,4 @@
+#![cfg_attr(not(feature="unsafe"), forbid(unsafe_code))]
 #[macro_use]
 extern crate alloc_no_stdlib;
 pub mod heap_alloc;

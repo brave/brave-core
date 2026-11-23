@@ -1,0 +1,120 @@
+// Modified for gitoxide from the upstream imara-diff crate.
+// Upstream source: git cat-file -p 32d1e45d3df061e6ccba6db7fdce92db29e345d8:src/util.rs
+
+use crate::Hunk;
+use crate::intern::Token;
+
+/// Computes the number of common tokens at the start of two sequences.
+pub fn common_prefix(file1: &[Token], file2: &[Token]) -> u32 {
+    let mut off = 0;
+    for (token1, token2) in file1.iter().zip(file2) {
+        if token1 != token2 {
+            break;
+        }
+        off += 1;
+    }
+    off
+}
+
+/// Computes the number of common tokens at the end of two sequences.
+pub fn common_postfix(file1: &[Token], file2: &[Token]) -> u32 {
+    let mut off = 0;
+    for (token1, token2) in file1.iter().rev().zip(file2.iter().rev()) {
+        if token1 != token2 {
+            break;
+        }
+        off += 1;
+    }
+    off
+}
+
+/// Computes both the common prefix and postfix lengths of two sequences.
+pub fn common_edges(file1: &[Token], file2: &[Token]) -> (u32, u32) {
+    let prefix = common_prefix(file1, file2);
+    let postfix = common_postfix(&file1[prefix as usize..], &file2[prefix as usize..]);
+    (prefix, postfix)
+}
+
+/// Removes the common prefix from both sequences and returns its length.
+pub fn strip_common_prefix(file1: &mut &[Token], file2: &mut &[Token]) -> u32 {
+    let off = common_prefix(file1, file2);
+    *file1 = &file1[off as usize..];
+    *file2 = &file2[off as usize..];
+    off
+}
+
+/// Removes the common postfix from both sequences and returns its length.
+pub fn strip_common_postfix(file1: &mut &[Token], file2: &mut &[Token]) -> u32 {
+    let off = common_postfix(file1, file2);
+    *file1 = &file1[..file1.len() - off as usize];
+    *file2 = &file2[..file2.len() - off as usize];
+    off
+}
+
+/// Computes an approximation of the square root using bit operations.
+/// This returns a u32 instead of a u64 like `xdl_bogosqrt` does, so
+/// when `val` has >=63 significant bits the result clamps to `u32::MAX`
+/// to avoid an overflow.
+pub fn sqrt(val: usize) -> u32 {
+    // git's xdl_bogosqrt shifts `n` right by two per doubling and stops
+    // once it reaches zero, which rounds the halved bit count up:
+    //
+    //     for (i = 1; n > 0; n >>= 2) i <<= 1;
+    //
+    // Take the ceiling here to avoid the integer division rounding down.
+    let nbits = (usize::BITS - val.leading_zeros()).div_ceil(2);
+    1u32.checked_shl(nbits).unwrap_or(u32::MAX)
+}
+
+impl Hunk {
+    pub(crate) fn next_hunk(&mut self, removed: &[bool], added: &[bool]) -> bool {
+        let Some(off) = find_next_change(added, self.after.end) else {
+            return false;
+        };
+        let mut off_before = 0;
+        loop {
+            debug_assert!(
+                removed.len() as u32 != self.before.end || off == 0,
+                "broken hunk alignment {self:?} "
+            );
+            let unchanged_tokens =
+                find_next_change(removed, self.before.end).unwrap_or(removed.len() as u32 - self.before.end);
+            if off_before + unchanged_tokens > off {
+                self.before.start = self.before.end + (off - off_before);
+                self.before.end = self.before.start;
+                break;
+            }
+            off_before += unchanged_tokens;
+            self.before.start = self.before.end + unchanged_tokens;
+            self.before.end = find_hunk_end(removed, self.before.end + unchanged_tokens);
+            if off_before == off {
+                break;
+            }
+        }
+        self.after.start = self.after.end + off;
+        self.after.end = find_hunk_end(added, self.after.start);
+        true
+    }
+}
+
+/// Finds the offset to the next changed token starting from the given position.
+pub fn find_next_change(changes: &[bool], pos: u32) -> Option<u32> {
+    changes[pos as usize..]
+        .iter()
+        .position(|&changed| changed)
+        .map(|off| off as u32)
+}
+
+/// Finds the end position of a hunk of changed tokens starting from the given position.
+pub fn find_hunk_end(changes: &[bool], pos: u32) -> u32 {
+    pos + changes[pos as usize..].iter().take_while(|&&changed| changed).count() as u32
+}
+
+/// Finds the start position of a hunk of changed tokens ending at the given position.
+pub fn find_hunk_start(changes: &[bool], pos: u32) -> u32 {
+    pos - changes[..pos as usize]
+        .iter()
+        .rev()
+        .take_while(|&&changed| changed)
+        .count() as u32
+}

@@ -16,7 +16,7 @@ where
     impl<'a> Visitor<'a> for SmolStrVisitor {
         type Value = SmolStr;
 
-        fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        fn expecting(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
             formatter.write_str("a string")
         }
 
@@ -67,10 +67,7 @@ where
         {
             match String::from_utf8(v) {
                 Ok(s) => Ok(SmolStr::from(s)),
-                Err(e) => Err(Error::invalid_value(
-                    Unexpected::Bytes(&e.into_bytes()),
-                    &self,
-                )),
+                Err(e) => Err(Error::invalid_value(Unexpected::Bytes(&e.into_bytes()), &self)),
             }
         }
     }

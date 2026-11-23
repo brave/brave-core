@@ -6,7 +6,10 @@ use crate::{
 };
 
 #[derive(Clone)]
-#[allow(dead_code)]
+#[expect(
+    dead_code,
+    reason = "for the time when we actually support the git status daemon, this just models its data."
+)]
 pub enum Token {
     V1 { nanos_since_1970: u64 },
     V2 { token: BString },
@@ -29,7 +32,16 @@ pub fn decode(data: &[u8]) -> Option<FsMonitor> {
     };
 
     let (ewah_size, data) = read_u32(data)?;
-    let (entry_dirty, data) = gix_bitmap::ewah::decode(&data[..ewah_size as usize]).ok()?;
+    let ((entry_dirty, extra), data) = data
+        .split_at_checked(ewah_size as usize)
+        .and_then(|(entry_dirty, data)| {
+            gix_bitmap::ewah::decode(entry_dirty)
+                .ok()
+                .map(|entry_dirty| (entry_dirty, data))
+        })?;
+    if !extra.is_empty() {
+        return None;
+    }
 
     if !data.is_empty() {
         return None;

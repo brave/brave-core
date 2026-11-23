@@ -66,7 +66,7 @@ pub(super) fn lock(file: &File, state: LockState, timeout: Option<Duration>) -> 
                 }
 
                 act.sa_flags = libc::SA_SIGINFO;
-                act.sa_sigaction = on_sig as usize;
+                act.sa_sigaction = on_sig as *const () as usize;
 
                 // Register the action with the signal handler
                 if libc::sigaction(libc::SIGUSR1, &act, std::ptr::null_mut()) != 0 {

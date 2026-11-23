@@ -63,7 +63,7 @@ impl RegistryKey {
                 self.raw(),
                 key.as_ptr(),
                 0,
-                KEY_READ | KEY_WOW64_32KEY,
+                (KEY_READ | KEY_WOW64_32KEY).try_into().unwrap(),
                 &mut ret,
             )
         };
@@ -118,7 +118,7 @@ impl RegistryKey {
                 name.as_ptr(),
                 null_mut(),
                 null_mut(),
-                v.as_mut_ptr() as *mut _,
+                v.as_mut_ptr().cast(),
                 &mut len,
             );
             // We don't check for `ERROR_MORE_DATA` (which would if the value

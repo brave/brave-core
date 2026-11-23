@@ -2,7 +2,7 @@
 // the 'inverse' query of memchr, e.g. finding the first byte not in the
 // provided set. This is simple for the 1-byte case.
 
-use core::{cmp, usize};
+use core::cmp;
 
 const USIZE_BYTES: usize = core::mem::size_of::<usize>();
 const ALIGN_MASK: usize = core::mem::align_of::<usize>() - 1;

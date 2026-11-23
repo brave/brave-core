@@ -1,18 +1,16 @@
 //! Parse parts of an ISO 8601-formatted value.
 
-#[allow(unused_imports, reason = "MSRV of 1.87")]
-use num_conv::prelude::*;
-
-use crate::convert::*;
 use crate::error;
 use crate::error::ParseFromDescription::{InvalidComponent, InvalidLiteral};
-use crate::format_description::well_known::iso8601::EncodedConfig;
 use crate::format_description::well_known::Iso8601;
+use crate::format_description::well_known::iso8601::EncodedConfig;
+use crate::internal_macros::try_likely_ok;
 use crate::parsing::combinator::rfc::iso8601::{
-    day, dayk, dayo, float, hour, min, month, week, year, ExtendedKind,
+    ExtendedKind, day, dayk, dayo, float, hour, min, month, week, year,
 };
-use crate::parsing::combinator::{ascii_char, sign};
+use crate::parsing::combinator::{Sign, ascii_char, sign};
 use crate::parsing::{Parsed, ParsedItem};
+use crate::unit::*;
 
 impl<const CONFIG: EncodedConfig> Iso8601<CONFIG> {
     // Basic: [year][month][day]
@@ -25,10 +23,11 @@ impl<const CONFIG: EncodedConfig> Iso8601<CONFIG> {
     pub(crate) fn parse_date<'a>(
         parsed: &'a mut Parsed,
         extended_kind: &'a mut ExtendedKind,
-    ) -> impl FnMut(&[u8]) -> Result<&[u8], error::Parse> + 'a {
+    ) -> impl FnMut(&[u8]) -> Result<&[u8], error::Parse> + use<'a, CONFIG> {
         move |input| {
             // Same for any acceptable format.
-            let ParsedItem(mut input, year) = year(input).ok_or(InvalidComponent("year"))?;
+            let ParsedItem(mut input, year) =
+                try_likely_ok!(year(input).ok_or(InvalidComponent("year")));
             *extended_kind = match ascii_char::<b'-'>(input) {
                 Some(ParsedItem(new_input, ())) => {
                     input = new_input;
@@ -38,24 +37,27 @@ impl<const CONFIG: EncodedConfig> Iso8601<CONFIG> {
             };
 
             let parsed_month_day = (|| {
-                let ParsedItem(mut input, month) = month(input).ok_or(InvalidComponent("month"))?;
+                let ParsedItem(mut input, month) =
+                    try_likely_ok!(month(input).ok_or(InvalidComponent("month")));
                 if extended_kind.is_extended() {
-                    input = ascii_char::<b'-'>(input)
-                        .ok_or(InvalidLiteral)?
+                    input = try_likely_ok!(ascii_char::<b'-'>(input).ok_or(InvalidLiteral))
                         .into_inner();
                 }
-                let ParsedItem(input, day) = day(input).ok_or(InvalidComponent("day"))?;
+                let ParsedItem(input, day) =
+                    try_likely_ok!(day(input).ok_or(InvalidComponent("day")));
                 Ok(ParsedItem(input, (month, day)))
             })();
             let mut ret_error = match parsed_month_day {
                 Ok(ParsedItem(input, (month, day))) => {
-                    *parsed = parsed
-                        .with_year(year)
-                        .ok_or(InvalidComponent("year"))?
-                        .with_month(month)
-                        .ok_or(InvalidComponent("month"))?
+                    *parsed = try_likely_ok!(
+                        try_likely_ok!(
+                            try_likely_ok!(parsed.with_year(year).ok_or(InvalidComponent("year")))
+                                .with_month(month)
+                                .ok_or(InvalidComponent("month"))
+                        )
                         .with_day(day)
-                        .ok_or(InvalidComponent("day"))?;
+                        .ok_or(InvalidComponent("day"))
+                    );
                     return Ok(input);
                 }
                 Err(err) => err,
@@ -63,38 +65,41 @@ impl<const CONFIG: EncodedConfig> Iso8601<CONFIG> {
 
             // Don't check for `None`, as the error from year-month-day will always take priority.
             if let Some(ParsedItem(input, ordinal)) = dayo(input) {
-                *parsed = parsed
-                    .with_year(year)
-                    .ok_or(InvalidComponent("year"))?
-                    .with_ordinal(ordinal)
-                    .ok_or(InvalidComponent("ordinal"))?;
+                *parsed = try_likely_ok!(
+                    try_likely_ok!(parsed.with_year(year).ok_or(InvalidComponent("year")))
+                        .with_ordinal(ordinal)
+                        .ok_or(InvalidComponent("ordinal"))
+                );
                 return Ok(input);
             }
 
             let parsed_week_weekday = (|| {
-                let input = ascii_char::<b'W'>(input)
-                    .ok_or((false, InvalidLiteral))?
-                    .into_inner();
+                let input =
+                    try_likely_ok!(ascii_char::<b'W'>(input).ok_or((false, InvalidLiteral)))
+                        .into_inner();
                 let ParsedItem(mut input, week) =
-                    week(input).ok_or((true, InvalidComponent("week")))?;
+                    try_likely_ok!(week(input).ok_or((true, InvalidComponent("week"))));
                 if extended_kind.is_extended() {
-                    input = ascii_char::<b'-'>(input)
-                        .ok_or((true, InvalidLiteral))?
+                    input = try_likely_ok!(ascii_char::<b'-'>(input).ok_or((true, InvalidLiteral)))
                         .into_inner();
                 }
                 let ParsedItem(input, weekday) =
-                    dayk(input).ok_or((true, InvalidComponent("weekday")))?;
+                    try_likely_ok!(dayk(input).ok_or((true, InvalidComponent("weekday"))));
                 Ok(ParsedItem(input, (week, weekday)))
             })();
             match parsed_week_weekday {
                 Ok(ParsedItem(input, (week, weekday))) => {
-                    *parsed = parsed
-                        .with_iso_year(year)
-                        .ok_or(InvalidComponent("year"))?
-                        .with_iso_week_number(week)
-                        .ok_or(InvalidComponent("week"))?
+                    *parsed = try_likely_ok!(
+                        try_likely_ok!(
+                            try_likely_ok!(
+                                parsed.with_iso_year(year).ok_or(InvalidComponent("year"))
+                            )
+                            .with_iso_week_number(week)
+                            .ok_or(InvalidComponent("week"))
+                        )
                         .with_weekday(weekday)
-                        .ok_or(InvalidComponent("weekday"))?;
+                        .ok_or(InvalidComponent("weekday"))
+                    );
                     return Ok(input);
                 }
                 Err((false, _err)) => {}
@@ -115,67 +120,81 @@ impl<const CONFIG: EncodedConfig> Iso8601<CONFIG> {
         parsed: &'a mut Parsed,
         extended_kind: &'a mut ExtendedKind,
         date_is_present: bool,
-    ) -> impl FnMut(&[u8]) -> Result<&[u8], error::Parse> + 'a {
+    ) -> impl FnMut(&[u8]) -> Result<&[u8], error::Parse> + use<'a, CONFIG> {
         move |mut input| {
-            if date_is_present {
-                input = ascii_char::<b'T'>(input)
-                    .ok_or(InvalidLiteral)?
-                    .into_inner();
+            match ascii_char::<b'T'>(input) {
+                Some(parsed) => input = parsed.into_inner(),
+                None if date_is_present => return Err(InvalidLiteral.into()),
+                None => {}
             }
 
-            let ParsedItem(mut input, hour) = float(input).ok_or(InvalidComponent("hour"))?;
+            let ParsedItem(mut input, hour) =
+                try_likely_ok!(float(input).ok_or(InvalidComponent("hour")));
             match hour {
-                (hour, None) => parsed.set_hour_24(hour).ok_or(InvalidComponent("hour"))?,
+                (hour, None) => {
+                    try_likely_ok!(parsed.set_hour_24(hour).ok_or(InvalidComponent("hour")))
+                }
                 (hour, Some(fractional_part)) => {
-                    *parsed = parsed
-                        .with_hour_24(hour)
-                        .ok_or(InvalidComponent("hour"))?
-                        .with_minute((fractional_part * Second::per_t::<f64>(Minute)) as u8)
-                        .ok_or(InvalidComponent("minute"))?
-                        .with_second(
-                            (fractional_part * Second::per_t::<f64>(Hour)
-                                % Minute::per_t::<f64>(Hour)) as u8,
+                    *parsed = try_likely_ok!(
+                        try_likely_ok!(
+                            try_likely_ok!(
+                                try_likely_ok!(
+                                    parsed.with_hour_24(hour).ok_or(InvalidComponent("hour"))
+                                )
+                                .with_minute((fractional_part * Second::per_t::<f64>(Minute)) as u8)
+                                .ok_or(InvalidComponent("minute"))
+                            )
+                            .with_second(
+                                (fractional_part * Second::per_t::<f64>(Hour)
+                                    % Minute::per_t::<f64>(Hour))
+                                    as u8,
+                            )
+                            .ok_or(InvalidComponent("second"))
                         )
-                        .ok_or(InvalidComponent("second"))?
                         .with_subsecond(
                             (fractional_part * Nanosecond::per_t::<f64>(Hour)
                                 % Nanosecond::per_t::<f64>(Second))
                                 as u32,
                         )
-                        .ok_or(InvalidComponent("subsecond"))?;
+                        .ok_or(InvalidComponent("subsecond"))
+                    );
                     return Ok(input);
                 }
             };
 
             if let Some(ParsedItem(new_input, ())) = ascii_char::<b':'>(input) {
-                extended_kind
-                    .coerce_extended()
-                    .ok_or(InvalidComponent("minute"))?;
+                try_likely_ok!(
+                    extended_kind
+                        .coerce_extended()
+                        .ok_or(InvalidComponent("minute"))
+                );
                 input = new_input;
             };
 
             let mut input = match float(input) {
                 Some(ParsedItem(input, (minute, None))) => {
                     extended_kind.coerce_basic();
-                    parsed
-                        .set_minute(minute)
-                        .ok_or(InvalidComponent("minute"))?;
+                    try_likely_ok!(parsed.set_minute(minute).ok_or(InvalidComponent("minute")));
                     input
                 }
                 Some(ParsedItem(input, (minute, Some(fractional_part)))) => {
                     // `None` is valid behavior, so don't error if this fails.
                     extended_kind.coerce_basic();
-                    *parsed = parsed
-                        .with_minute(minute)
-                        .ok_or(InvalidComponent("minute"))?
-                        .with_second((fractional_part * Second::per_t::<f64>(Minute)) as u8)
-                        .ok_or(InvalidComponent("second"))?
+                    *parsed = try_likely_ok!(
+                        try_likely_ok!(
+                            try_likely_ok!(
+                                parsed.with_minute(minute).ok_or(InvalidComponent("minute"))
+                            )
+                            .with_second((fractional_part * Second::per_t::<f64>(Minute)) as u8)
+                            .ok_or(InvalidComponent("second"))
+                        )
                         .with_subsecond(
                             (fractional_part * Nanosecond::per_t::<f64>(Minute)
                                 % Nanosecond::per_t::<f64>(Second))
                                 as u32,
                         )
-                        .ok_or(InvalidComponent("subsecond"))?;
+                        .ok_or(InvalidComponent("subsecond"))
+                    );
                     return Ok(input);
                 }
                 // colon was present, so minutes are required
@@ -186,13 +205,15 @@ impl<const CONFIG: EncodedConfig> Iso8601<CONFIG> {
                 }
                 None => {
                     // Missing components are assumed to be zero.
-                    *parsed = parsed
-                        .with_minute(0)
-                        .ok_or(InvalidComponent("minute"))?
-                        .with_second(0)
-                        .ok_or(InvalidComponent("second"))?
+                    *parsed = try_likely_ok!(
+                        try_likely_ok!(
+                            try_likely_ok!(parsed.with_minute(0).ok_or(InvalidComponent("minute")))
+                                .with_second(0)
+                                .ok_or(InvalidComponent("second"))
+                        )
                         .with_subsecond(0)
-                        .ok_or(InvalidComponent("subsecond"))?;
+                        .ok_or(InvalidComponent("subsecond"))
+                    );
                     return Ok(input);
                 }
             };
@@ -201,11 +222,11 @@ impl<const CONFIG: EncodedConfig> Iso8601<CONFIG> {
                 match ascii_char::<b':'>(input) {
                     Some(ParsedItem(new_input, ())) => input = new_input,
                     None => {
-                        *parsed = parsed
-                            .with_second(0)
-                            .ok_or(InvalidComponent("second"))?
-                            .with_subsecond(0)
-                            .ok_or(InvalidComponent("subsecond"))?;
+                        *parsed = try_likely_ok!(
+                            try_likely_ok!(parsed.with_second(0).ok_or(InvalidComponent("second")))
+                                .with_subsecond(0)
+                                .ok_or(InvalidComponent("subsecond"))
+                        );
                         return Ok(input);
                     }
                 }
@@ -226,11 +247,11 @@ impl<const CONFIG: EncodedConfig> Iso8601<CONFIG> {
                 // Missing components are assumed to be zero.
                 None => (input, 0, 0),
             };
-            *parsed = parsed
-                .with_second(second)
-                .ok_or(InvalidComponent("second"))?
-                .with_subsecond(subsecond)
-                .ok_or(InvalidComponent("subsecond"))?;
+            *parsed = try_likely_ok!(
+                try_likely_ok!(parsed.with_second(second).ok_or(InvalidComponent("second")))
+                    .with_subsecond(subsecond)
+                    .ok_or(InvalidComponent("subsecond"))
+            );
 
             Ok(input)
         }
@@ -243,51 +264,62 @@ impl<const CONFIG: EncodedConfig> Iso8601<CONFIG> {
     pub(crate) fn parse_offset<'a>(
         parsed: &'a mut Parsed,
         extended_kind: &'a mut ExtendedKind,
-    ) -> impl FnMut(&[u8]) -> Result<&[u8], error::Parse> + 'a {
+    ) -> impl FnMut(&[u8]) -> Result<&[u8], error::Parse> + use<'a, CONFIG> {
         move |input| {
             if let Some(ParsedItem(input, ())) = ascii_char::<b'Z'>(input) {
-                *parsed = parsed
-                    .with_offset_hour(0)
-                    .ok_or(InvalidComponent("offset hour"))?
-                    .with_offset_minute_signed(0)
-                    .ok_or(InvalidComponent("offset minute"))?
+                *parsed = try_likely_ok!(
+                    try_likely_ok!(
+                        try_likely_ok!(
+                            parsed
+                                .with_offset_hour(0)
+                                .ok_or(InvalidComponent("offset hour"))
+                        )
+                        .with_offset_minute_signed(0)
+                        .ok_or(InvalidComponent("offset minute"))
+                    )
                     .with_offset_second_signed(0)
-                    .ok_or(InvalidComponent("offset second"))?;
+                    .ok_or(InvalidComponent("offset second"))
+                );
                 return Ok(input);
             }
 
-            let ParsedItem(input, sign) = sign(input).ok_or(InvalidComponent("offset hour"))?;
-            let mut input = hour(input)
-                .and_then(|parsed_item| {
-                    parsed_item.consume_value(|hour| {
-                        parsed.set_offset_hour(if sign == b'-' {
-                            -hour.cast_signed()
-                        } else {
-                            hour.cast_signed()
+            let ParsedItem(input, sign) =
+                try_likely_ok!(sign(input).ok_or(InvalidComponent("offset hour")));
+            let mut input = try_likely_ok!(
+                hour(input)
+                    .and_then(|parsed_item| {
+                        parsed_item.consume_value(|hour| {
+                            parsed.set_offset_hour(match sign {
+                                Sign::Negative => -hour.cast_signed(),
+                                Sign::Positive => hour.cast_signed(),
+                            })
                         })
                     })
-                })
-                .ok_or(InvalidComponent("offset hour"))?;
+                    .ok_or(InvalidComponent("offset hour"))
+            );
 
-            if extended_kind.maybe_extended() {
-                if let Some(ParsedItem(new_input, ())) = ascii_char::<b':'>(input) {
+            if extended_kind.maybe_extended()
+                && let Some(ParsedItem(new_input, ())) = ascii_char::<b':'>(input)
+            {
+                try_likely_ok!(
                     extended_kind
                         .coerce_extended()
-                        .ok_or(InvalidComponent("offset minute"))?;
-                    input = new_input;
-                };
-            }
+                        .ok_or(InvalidComponent("offset minute"))
+                );
+                input = new_input;
+            };
 
             match min(input) {
                 Some(ParsedItem(new_input, min)) => {
                     input = new_input;
-                    parsed
-                        .set_offset_minute_signed(if sign == b'-' {
-                            -min.cast_signed()
-                        } else {
-                            min.cast_signed()
-                        })
-                        .ok_or(InvalidComponent("offset minute"))?;
+                    try_likely_ok!(
+                        parsed
+                            .set_offset_minute_signed(match sign {
+                                Sign::Negative => -min.cast_signed(),
+                                Sign::Positive => min.cast_signed(),
+                            })
+                            .ok_or(InvalidComponent("offset minute"))
+                    );
                 }
                 None => {
                     // Omitted offset minute is assumed to be zero.
@@ -319,10 +351,6 @@ fn round(value: f64) -> f64 {
         debug_assert!(value.is_sign_positive() && !value.is_nan());
 
         let f = value % 1.;
-        if f < 0.5 {
-            value - f
-        } else {
-            value - f + 1.
-        }
+        if f < 0.5 { value - f } else { value - f + 1. }
     }
 }

@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.75"
 name = "zlib-rs"
-version = "0.5.5"
+version = "0.6.8"
 build = false
 publish = true
 autolib = false
@@ -29,6 +29,7 @@ repository = "https://github.com/trifectatechfoundation/zlib-rs"
 
 [features]
 ZLIB_DEBUG = []
+__internal-api = []
 __internal-fuzz = ["arbitrary"]
 __internal-fuzz-disable-checksum = []
 __internal-test = ["quickcheck"]
@@ -38,6 +39,7 @@ default = [
     "std",
     "c-allocator",
 ]
+lsx = []
 rust-allocator = []
 std = ["rust-allocator"]
 vpclmulqdq = []

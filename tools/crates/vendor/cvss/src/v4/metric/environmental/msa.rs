@@ -1,7 +1,7 @@
 //! Availability Impact to the Subsequent System (MSA)
 
 use crate::{
-    Error, Result,
+    Error,
     v4::metric::{Metric, MetricType},
 };
 use alloc::borrow::ToOwned;
@@ -22,11 +22,12 @@ use core::{fmt, str::FromStr};
 /// > attacks that consume network bandwidth, processor cycles, or disk space
 /// > all impact the availability of a system. The resulting score is greatest
 /// > when the consequence to the system is highest.
-#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+#[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
 pub enum ModifiedAvailabilityImpactToTheSubsequentSystem {
     /// Not Defined (X)
     ///
     /// > The metric has not been evaluated.
+    #[default]
     NotDefined,
 
     /// Negligible (N)
@@ -66,22 +67,16 @@ pub enum ModifiedAvailabilityImpactToTheSubsequentSystem {
     Safety,
 }
 
-impl Default for ModifiedAvailabilityImpactToTheSubsequentSystem {
-    fn default() -> Self {
-        Self::NotDefined
-    }
-}
-
 impl Metric for ModifiedAvailabilityImpactToTheSubsequentSystem {
     const TYPE: MetricType = MetricType::MSA;
 
     fn as_str(self) -> &'static str {
         match self {
-            ModifiedAvailabilityImpactToTheSubsequentSystem::NotDefined => "X",
-            ModifiedAvailabilityImpactToTheSubsequentSystem::Negligible => "N",
-            ModifiedAvailabilityImpactToTheSubsequentSystem::Low => "L",
-            ModifiedAvailabilityImpactToTheSubsequentSystem::High => "H",
-            ModifiedAvailabilityImpactToTheSubsequentSystem::Safety => "S",
+            Self::NotDefined => "X",
+            Self::Negligible => "N",
+            Self::Low => "L",
+            Self::High => "H",
+            Self::Safety => "S",
         }
     }
 }
@@ -95,13 +90,13 @@ impl fmt::Display for ModifiedAvailabilityImpactToTheSubsequentSystem {
 impl FromStr for ModifiedAvailabilityImpactToTheSubsequentSystem {
     type Err = Error;
 
-    fn from_str(s: &str) -> Result<Self> {
+    fn from_str(s: &str) -> Result<Self, Error> {
         match s {
-            "X" => Ok(ModifiedAvailabilityImpactToTheSubsequentSystem::NotDefined),
-            "N" => Ok(ModifiedAvailabilityImpactToTheSubsequentSystem::Negligible),
-            "L" => Ok(ModifiedAvailabilityImpactToTheSubsequentSystem::Low),
-            "H" => Ok(ModifiedAvailabilityImpactToTheSubsequentSystem::High),
-            "S" => Ok(ModifiedAvailabilityImpactToTheSubsequentSystem::Safety),
+            "X" => Ok(Self::NotDefined),
+            "N" => Ok(Self::Negligible),
+            "L" => Ok(Self::Low),
+            "H" => Ok(Self::High),
+            "S" => Ok(Self::Safety),
             _ => Err(Error::InvalidMetricV4 {
                 metric_type: Self::TYPE,
                 value: s.to_owned(),

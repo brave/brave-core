@@ -21,7 +21,7 @@ pub struct MetadataKey(String);
 impl MetadataKey {
     /// Create a metadata key for a checksum for the given dependency
     pub fn for_checksum(dep: &Dependency) -> Self {
-        MetadataKey(format!("{CHECKSUM_PREFIX}{dep}"))
+        Self(format!("{CHECKSUM_PREFIX}{dep}"))
     }
 
     /// Is this metadata key a checksum entry?
@@ -51,14 +51,14 @@ impl FromStr for MetadataKey {
     type Err = Error;
 
     fn from_str(s: &str) -> Result<Self> {
-        Ok(MetadataKey(s.to_owned()))
+        Ok(Self(s.to_owned()))
     }
 }
 
 impl TryFrom<&MetadataKey> for Dependency {
     type Error = Error;
 
-    fn try_from(key: &MetadataKey) -> Result<Dependency> {
+    fn try_from(key: &MetadataKey) -> Result<Self> {
         if !key.is_checksum() {
             return Err(Error::Parse(
                 "can only parse dependencies from `checksum` metadata".to_owned(),
@@ -113,14 +113,14 @@ impl FromStr for MetadataValue {
     type Err = Error;
 
     fn from_str(s: &str) -> Result<Self> {
-        Ok(MetadataValue(s.to_owned()))
+        Ok(Self(s.to_owned()))
     }
 }
 
 impl TryFrom<&MetadataValue> for Checksum {
     type Error = Error;
 
-    fn try_from(value: &MetadataValue) -> Result<Checksum> {
+    fn try_from(value: &MetadataValue) -> Result<Self> {
         value.as_ref().parse()
     }
 }

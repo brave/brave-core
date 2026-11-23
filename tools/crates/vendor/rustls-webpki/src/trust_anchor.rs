@@ -1,3 +1,5 @@
+#[cfg(feature = "alloc")]
+use pki_types::SubjectPublicKeyInfoDer;
 use pki_types::{CertificateDer, TrustAnchor};
 
 use crate::cert::{Cert, lenient_certificate_serial_number};
@@ -41,6 +43,12 @@ pub fn anchor_from_trusted_cert<'a>(
         }
         Err(err) => Err(err),
     }
+}
+
+/// Reconstitutes the given trust anchor's SubjectPublicKeyInfo.
+#[cfg(feature = "alloc")]
+pub fn spki_for_anchor(anchor: &TrustAnchor<'_>) -> SubjectPublicKeyInfoDer<'static> {
+    der::asn1_wrap(der::Tag::Sequence, &anchor.subject_public_key_info).into()
 }
 
 /// Parses a v1 certificate directly into a TrustAnchor.

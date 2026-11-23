@@ -1,7 +1,7 @@
 //! Availability Impact to the Subsequent System (SA)
 
 use crate::{
-    Error, Result,
+    Error,
     v4::metric::{Metric, MetricType},
 };
 use alloc::borrow::ToOwned;
@@ -22,7 +22,7 @@ use core::{fmt, str::FromStr};
 /// > attacks that consume network bandwidth, processor cycles, or disk space
 /// > all impact the availability of a system. The resulting score is greatest
 /// > when the consequence to the system is highest.
-#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+#[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
 pub enum AvailabilityImpactToTheSubsequentSystem {
     /// None (N)
     ///
@@ -55,13 +55,8 @@ pub enum AvailabilityImpactToTheSubsequentSystem {
     /// > instance of a successful attack, leaks a only small amount of memory,
     /// > but after repeated exploitation causes a service to become completely
     /// > unavailable).
+    #[default]
     High,
-}
-
-impl Default for AvailabilityImpactToTheSubsequentSystem {
-    fn default() -> Self {
-        Self::High
-    }
 }
 
 impl Metric for AvailabilityImpactToTheSubsequentSystem {
@@ -69,9 +64,9 @@ impl Metric for AvailabilityImpactToTheSubsequentSystem {
 
     fn as_str(self) -> &'static str {
         match self {
-            AvailabilityImpactToTheSubsequentSystem::None => "N",
-            AvailabilityImpactToTheSubsequentSystem::Low => "L",
-            AvailabilityImpactToTheSubsequentSystem::High => "H",
+            Self::None => "N",
+            Self::Low => "L",
+            Self::High => "H",
         }
     }
 }
@@ -85,11 +80,11 @@ impl fmt::Display for AvailabilityImpactToTheSubsequentSystem {
 impl FromStr for AvailabilityImpactToTheSubsequentSystem {
     type Err = Error;
 
-    fn from_str(s: &str) -> Result<Self> {
+    fn from_str(s: &str) -> Result<Self, Error> {
         match s {
-            "N" => Ok(AvailabilityImpactToTheSubsequentSystem::None),
-            "L" => Ok(AvailabilityImpactToTheSubsequentSystem::Low),
-            "H" => Ok(AvailabilityImpactToTheSubsequentSystem::High),
+            "N" => Ok(Self::None),
+            "L" => Ok(Self::Low),
+            "H" => Ok(Self::High),
             _ => Err(Error::InvalidMetricV4 {
                 metric_type: Self::TYPE,
                 value: s.to_owned(),
@@ -114,29 +109,24 @@ pub(crate) mod merge {
     /// Result of the merging of the base and modified metrics.
     ///
     /// Used in scoring.
-    #[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+    #[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
     pub(crate) enum MergedAvailabilityImpactToTheSubsequentSystem {
         Safety,
+        #[default]
         High,
         Low,
         None,
     }
 
-    impl Default for MergedAvailabilityImpactToTheSubsequentSystem {
-        fn default() -> Self {
-            Self::High
-        }
-    }
-
     impl FromStr for MergedAvailabilityImpactToTheSubsequentSystem {
         type Err = Error;
 
-        fn from_str(s: &str) -> Result<Self> {
+        fn from_str(s: &str) -> Result<Self, Error> {
             match s {
-                "S" => Ok(MergedAvailabilityImpactToTheSubsequentSystem::Safety),
-                "H" => Ok(MergedAvailabilityImpactToTheSubsequentSystem::High),
-                "L" => Ok(MergedAvailabilityImpactToTheSubsequentSystem::Low),
-                "N" => Ok(MergedAvailabilityImpactToTheSubsequentSystem::None),
+                "S" => Ok(Self::Safety),
+                "H" => Ok(Self::High),
+                "L" => Ok(Self::Low),
+                "N" => Ok(Self::None),
                 _ => Err(Error::InvalidMetricV4 {
                     metric_type: MetricType::SA,
                     value: s.to_owned(),

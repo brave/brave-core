@@ -10,15 +10,15 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.82"
+edition = "2024"
+rust-version = "1.88"
 name = "gix-trace"
-version = "0.1.16"
+version = "0.3.2"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
 build = false
 include = [
-    "src/**/*",
-    "LICENSE-*",
+    "/src/**/*",
+    "/LICENSE-*",
 ]
 autolib = false
 autobins = false
@@ -29,31 +29,117 @@ description = "A crate to provide minimal `tracing` support that can be turned o
 readme = false
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/GitoxideLabs/gitoxide"
+resolver = "2"
 
 [package.metadata.docs.rs]
 all-features = true
 features = ["document-features"]
 
+[[package.metadata.qa.tests]]
+args = ["--no-default-features"]
+
+[[package.metadata.qa.tests]]
+args = [
+    "--no-default-features",
+    "--features",
+    "tracing",
+]
+
+[[package.metadata.qa.tests]]
+args = [
+    "--no-default-features",
+    "--features",
+    "tracing,tracing-detail",
+]
+
+[[package.metadata.qa.tests]]
+args = [
+    "--no-default-features",
+    "--features",
+    "forest",
+]
+
+[[package.metadata.qa.tests]]
+args = ["--all-features"]
+
+[[package.metadata.qa.doctests]]
+args = [
+    "--no-default-features",
+    "--features",
+    "forest",
+]
+
+[[package.metadata.qa.doctests]]
+args = [
+    "--no-default-features",
+    "--features",
+    "forest-ansi,tracing-detail",
+]
+
 [features]
 default = []
-tracing = ["dep:tracing-core"]
+forest = [
+    "tracing",
+    "dep:tracing-subscriber",
+    "dep:gix-error",
+    "dep:smallvec",
+]
+forest-ansi = [
+    "forest",
+    "dep:nu-ansi-term",
+]
+forest-cpu-time = [
+    "forest",
+    "dep:libc",
+]
+tracing = ["dep:tracing"]
 tracing-detail = []
 
 [lib]
 name = "gix_trace"
 path = "src/lib.rs"
-test = false
-doctest = false
 
 [dependencies.document-features]
 version = "0.2.0"
 optional = true
 
-[dependencies.tracing-core]
-version = "0.1.35"
+[dependencies.gix-error]
+version = "^0.5.3"
 optional = true
 
+[dependencies.nu-ansi-term]
+version = "0.50.3"
+optional = true
+
+[dependencies.smallvec]
+version = "1.15.1"
+features = ["write"]
+optional = true
+
+[dependencies.tracing]
+version = "0.1.44"
+features = ["std"]
+optional = true
+default-features = false
+
+[dependencies.tracing-subscriber]
+version = "0.3.22"
+features = ["fmt"]
+optional = true
+default-features = false
+
+[dev-dependencies.tracing-subscriber]
+version = "0.3.22"
+features = ["env-filter"]
+default-features = false
+
+[target."cfg(unix)".dependencies.libc]
+version = "0.2.186"
+optional = true
+default-features = false
+
 [lints.clippy]
+assert_is_empty = "allow"
 bool_to_int_with_if = "allow"
 borrow_as_ptr = "allow"
 cast_lossless = "allow"
@@ -72,7 +158,6 @@ explicit_into_iter_loop = "allow"
 explicit_iter_loop = "allow"
 filter_map_next = "allow"
 fn_params_excessive_bools = "allow"
-from_iter_instead_of_collect = "allow"
 if_not_else = "allow"
 ignored_unit_patterns = "allow"
 implicit_clone = "allow"
@@ -131,3 +216,4 @@ level = "warn"
 priority = -1
 
 [lints.rust]
+unnameable_types = "warn"

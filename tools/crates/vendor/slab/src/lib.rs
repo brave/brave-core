@@ -27,6 +27,13 @@
 //! value associated with a given key is removed from a slab, that key may be
 //! returned from future calls to `insert`.
 //!
+//! # Performance notes
+//!
+//! Methods that remove values and return them, such as [`Slab::remove`] and
+//! [`Slab::try_remove`], might copy the removed values to the stack even if
+//! their return values are unused. For types that don't have drop glue, the
+//! compiler can usually elide these copies.
+//!
 //! # Examples
 //!
 //! Basic storing and retrieval.
@@ -1115,19 +1122,21 @@ impl<T> Slab<T> {
     /// ```
     pub fn try_remove(&mut self, key: usize) -> Option<T> {
         if let Some(entry) = self.entries.get_mut(key) {
-            // Swap the entry at the provided value
-            let prev = mem::replace(entry, Entry::Vacant(self.next));
+            if let Entry::Occupied(_) = entry {
+                // Here we use `std::mem::replace` to move the entry's value to
+                // the stack and set the entry as vacant in one shot. By doing
+                // this only when the entry is occupied, the compiler should be
+                // able to elide copying the bytes to the stack if the value
+                // turns out to be unused.
 
-            match prev {
-                Entry::Occupied(val) => {
-                    self.len -= 1;
-                    self.next = key;
-                    return val.into();
-                }
-                _ => {
-                    // Woops, the entry is actually vacant, restore the state
-                    *entry = prev;
-                }
+                let val = match core::mem::replace(entry, Entry::Vacant(self.next)) {
+                    Entry::Occupied(val) => val, // confirmed occupied above
+                    _ => unreachable!(),
+                };
+
+                self.len -= 1;
+                self.next = key;
+                return val.into();
             }
         }
         None
@@ -1346,7 +1355,7 @@ impl<T> FromIterator<(usize, T)> for Slab<T> {
         let mut builder = builder::Builder::with_capacity(iterator.size_hint().0);
 
         for (key, value) in iterator {
-            builder.pair(key, value)
+            builder.pair(key, value);
         }
         builder.build()
     }

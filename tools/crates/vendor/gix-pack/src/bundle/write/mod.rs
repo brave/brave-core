@@ -1,19 +1,21 @@
+use gix_error::Result;
 use std::{
     io,
     io::Write,
     marker::PhantomData,
     path::{Path, PathBuf},
-    sync::{atomic::AtomicBool, Arc},
+    sync::{Arc, atomic::AtomicBool},
 };
 
-use gix_features::{interrupt, progress, progress::Progress};
+use gix_error::{ResultExt, message};
 use gix_tempfile::{AutoRemove, ContainingDirectory};
+use gix_utils::interrupt;
+use gix_utils::progress;
+use gix_utils::progress::Progress;
 
 use crate::data;
 
-mod error;
-pub use error::Error;
-use gix_features::progress::prodash::DynNestedProgress;
+use gix_utils::progress::prodash::DynNestedProgress;
 
 mod types;
 use types::{LockWriter, PassThrough};
@@ -34,7 +36,7 @@ pub enum ProgressId {
     IndexingSteps(PhantomData<crate::index::write::ProgressId>),
 }
 
-impl From<ProgressId> for gix_features::progress::Id {
+impl From<ProgressId> for gix_utils::progress::Id {
     fn from(v: ProgressId) -> Self {
         match v {
             ProgressId::ReadPackBytes => *b"BWRB",
@@ -48,11 +50,13 @@ impl crate::Bundle {
     ///
     /// In the latter case, the functionality provided here is more a kind of pack data stream validation.
     ///
-    /// * `progress` provides detailed progress information which can be discarded with [`gix_features::progress::Discard`].
+    /// * `progress` provides detailed progress information which can be discarded with [`gix_utils::progress::Discard`].
     /// * `should_interrupt` is checked regularly and when true, the whole operation will stop.
-    /// * `thin_pack_base_object_lookup` If set, we expect to see a thin-pack with objects that reference their base object by object id which is
-    ///   expected to exist in the object database the bundle is contained within.
-    ///   `options` further configure how the task is performed.
+    /// * `thin_pack_base_object_lookup` retrieves external bases to insert into the output pack, completing a thin pack.
+    ///   Ref-deltas whose bases are not found through this lookup are resolved in-pack during indexing, including forward
+    ///   references. A base available neither through the lookup nor in the pack causes the operation to fail.
+    /// * `object_hash` specifies the hash to use for writing the bundle.
+    /// * `options` further configure how the task is performed.
     ///
     /// # Note
     ///
@@ -65,9 +69,10 @@ impl crate::Bundle {
         progress: &mut dyn DynNestedProgress,
         should_interrupt: &AtomicBool,
         thin_pack_base_object_lookup: Option<impl gix_object::Find>,
+        object_hash: gix_hash::Kind,
         options: Options,
-    ) -> Result<Outcome, Error> {
-        let _span = gix_features::trace::coarse!("gix_pack::Bundle::write_to_directory()");
+    ) -> Result<Outcome> {
+        let _span = gix_trace::coarse!("gix_pack::Bundle::write_to_directory()");
         let mut read_progress = progress.add_child_with_id("read pack".into(), ProgressId::ReadPackBytes.into());
         read_progress.init(None, progress::bytes());
         let pack = progress::Read {
@@ -75,67 +80,67 @@ impl crate::Bundle {
             progress: progress::ThroughputOnDrop::new(read_progress),
         };
 
-        let object_hash = options.object_hash;
         let data_file = Arc::new(parking_lot::Mutex::new(io::BufWriter::with_capacity(
             64 * 1024,
             match directory.as_ref() {
-                Some(directory) => gix_tempfile::new(directory, ContainingDirectory::Exists, AutoRemove::Tempfile)?,
-                None => gix_tempfile::new(std::env::temp_dir(), ContainingDirectory::Exists, AutoRemove::Tempfile)?,
+                Some(directory) => gix_tempfile::new(directory, ContainingDirectory::Exists, AutoRemove::Tempfile)
+                    .or_raise(|| message("Could not create temporary pack file"))?,
+                None => gix_tempfile::new(std::env::temp_dir(), ContainingDirectory::Exists, AutoRemove::Tempfile)
+                    .or_raise(|| message("Could not create temporary pack file"))?,
             },
         )));
-        let (pack_entries_iter, pack_version): (
-            Box<dyn Iterator<Item = Result<data::input::Entry, data::input::Error>>>,
-            _,
-        ) = match thin_pack_base_object_lookup {
-            Some(thin_pack_lookup) => {
-                let pack = interrupt::Read {
-                    inner: pack,
-                    should_interrupt,
-                };
-                let buffered_pack = io::BufReader::new(pack);
-                let pack_entries_iter = data::input::LookupRefDeltaObjectsIter::new(
-                    data::input::BytesToEntriesIter::new_from_header(
-                        buffered_pack,
-                        options.iteration_mode,
-                        data::input::EntryDataMode::KeepAndCrc32,
-                        object_hash,
-                    )?,
-                    thin_pack_lookup,
-                );
-                let pack_version = pack_entries_iter.inner.version();
-                let pack_entries_iter = data::input::EntriesToBytesIter::new(
-                    pack_entries_iter,
-                    LockWriter {
-                        writer: data_file.clone(),
-                    },
-                    pack_version,
-                    gix_hash::Kind::Sha1, // Thin packs imply a pack being transported, and there we only ever know SHA1 at the moment.
-                );
-                (Box::new(pack_entries_iter), pack_version)
-            }
-            None => {
-                let pack = PassThrough {
-                    reader: interrupt::Read {
+        let (pack_entries_iter, pack_version): (Box<dyn Iterator<Item = Result<data::input::Entry>>>, _) =
+            match thin_pack_base_object_lookup {
+                Some(thin_pack_lookup) => {
+                    let pack = interrupt::Read {
                         inner: pack,
                         should_interrupt,
-                    },
-                    writer: Some(data_file.clone()),
-                };
-                // This buf-reader is required to assure we call 'read()' in order to fill the (extra) buffer. Otherwise all the counting
-                // we do with the wrapped pack reader doesn't work as it does not expect anyone to call BufRead functions directly.
-                // However, this is exactly what's happening in the ZipReader implementation that is eventually used.
-                // The performance impact of this is probably negligible, compared to all the other work that is done anyway :D.
-                let buffered_pack = io::BufReader::new(pack);
-                let pack_entries_iter = data::input::BytesToEntriesIter::new_from_header(
-                    buffered_pack,
-                    options.iteration_mode,
-                    data::input::EntryDataMode::Crc32,
-                    object_hash,
-                )?;
-                let pack_version = pack_entries_iter.version();
-                (Box::new(pack_entries_iter), pack_version)
-            }
-        };
+                    };
+                    let buffered_pack = io::BufReader::new(pack);
+                    let pack_entries_iter = data::input::LookupRefDeltaObjectsIter::new(
+                        data::input::BytesToEntriesIter::new_from_header(
+                            buffered_pack,
+                            options.iteration_mode,
+                            data::input::EntryDataMode::KeepAndCrc32,
+                            object_hash,
+                        )?,
+                        thin_pack_lookup,
+                        options.compression,
+                    );
+                    let pack_version = pack_entries_iter.inner.version();
+                    let pack_entries_iter = data::input::EntriesToBytesIter::new(
+                        pack_entries_iter,
+                        LockWriter {
+                            writer: data_file.clone(),
+                        },
+                        pack_version,
+                        object_hash,
+                    );
+                    (Box::new(pack_entries_iter), pack_version)
+                }
+                None => {
+                    let pack = PassThrough {
+                        reader: interrupt::Read {
+                            inner: pack,
+                            should_interrupt,
+                        },
+                        writer: Some(data_file.clone()),
+                    };
+                    // This buf-reader is required to assure we call 'read()' in order to fill the (extra) buffer. Otherwise all the counting
+                    // we do with the wrapped pack reader doesn't work as it does not expect anyone to call BufRead functions directly.
+                    // However, this is exactly what's happening in the ZipReader implementation that is eventually used.
+                    // The performance impact of this is probably negligible, compared to all the other work that is done anyway :D.
+                    let buffered_pack = io::BufReader::new(pack);
+                    let pack_entries_iter = data::input::BytesToEntriesIter::new_from_header(
+                        buffered_pack,
+                        options.iteration_mode,
+                        data::input::EntryDataMode::Crc32,
+                        object_hash,
+                    )?;
+                    let pack_version = pack_entries_iter.version();
+                    (Box::new(pack_entries_iter), pack_version)
+                }
+            };
         let WriteOutcome {
             outcome,
             data_path,
@@ -144,6 +149,7 @@ impl crate::Bundle {
         } = crate::Bundle::inner_write(
             directory,
             progress,
+            object_hash,
             options,
             data_file,
             pack_entries_iter,
@@ -168,6 +174,7 @@ impl crate::Bundle {
     /// As it sends portions of the input to a thread it requires the 'static lifetime for the interrupt flags. This can only
     /// be satisfied by a static `AtomicBool` which is only suitable for programs that only run one of these operations at a time
     /// or don't mind that all of them abort when the flag is set.
+    #[expect(clippy::too_many_arguments)]
     pub fn write_to_directory_eagerly(
         pack: Box<dyn io::Read + Send + 'static>,
         pack_size: Option<u64>,
@@ -175,9 +182,10 @@ impl crate::Bundle {
         progress: &mut dyn DynNestedProgress,
         should_interrupt: &'static AtomicBool,
         thin_pack_base_object_lookup: Option<impl gix_object::Find + Send + 'static>,
+        object_hash: gix_hash::Kind,
         options: Options,
-    ) -> Result<Outcome, Error> {
-        let _span = gix_features::trace::coarse!("gix_pack::Bundle::write_to_directory_eagerly()");
+    ) -> Result<Outcome> {
+        let _span = gix_trace::coarse!("gix_pack::Bundle::write_to_directory_eagerly()");
         let mut read_progress = progress.add_child_with_id("read pack".into(), ProgressId::ReadPackBytes.into()); /* Bundle Write Read pack Bytes*/
         read_progress.init(pack_size.map(|s| s as usize), progress::bytes());
         let pack = progress::Read {
@@ -186,13 +194,14 @@ impl crate::Bundle {
         };
 
         let data_file = Arc::new(parking_lot::Mutex::new(io::BufWriter::new(match directory.as_ref() {
-            Some(directory) => gix_tempfile::new(directory, ContainingDirectory::Exists, AutoRemove::Tempfile)?,
-            None => gix_tempfile::new(std::env::temp_dir(), ContainingDirectory::Exists, AutoRemove::Tempfile)?,
+            Some(directory) => gix_tempfile::new(directory, ContainingDirectory::Exists, AutoRemove::Tempfile)
+                .or_raise(|| message("Could not create temporary pack file"))?,
+            None => gix_tempfile::new(std::env::temp_dir(), ContainingDirectory::Exists, AutoRemove::Tempfile)
+                .or_raise(|| message("Could not create temporary pack file"))?,
         })));
-        let object_hash = options.object_hash;
         let eight_pages = 4096 * 8;
         let (pack_entries_iter, pack_version): (
-            Box<dyn Iterator<Item = Result<data::input::Entry, data::input::Error>> + Send + 'static>,
+            Box<dyn Iterator<Item = Result<data::input::Entry>> + Send + 'static>,
             _,
         ) = match thin_pack_base_object_lookup {
             Some(thin_pack_lookup) => {
@@ -209,6 +218,7 @@ impl crate::Bundle {
                         object_hash,
                     )?,
                     thin_pack_lookup,
+                    options.compression,
                 );
                 let pack_kind = pack_entries_iter.inner.version();
                 (Box::new(pack_entries_iter), pack_kind)
@@ -234,7 +244,7 @@ impl crate::Bundle {
         };
         let num_objects = pack_entries_iter.size_hint().0;
         let pack_entries_iter =
-            gix_features::parallel::EagerIterIf::new(move || num_objects > 25_000, pack_entries_iter, 5_000, 5);
+            gix_parallel::EagerIterIf::new(move || num_objects > 25_000, pack_entries_iter, 5_000, 5);
 
         let WriteOutcome {
             outcome,
@@ -244,6 +254,7 @@ impl crate::Bundle {
         } = crate::Bundle::inner_write(
             directory,
             progress,
+            object_hash,
             options,
             data_file,
             Box::new(pack_entries_iter),
@@ -261,20 +272,23 @@ impl crate::Bundle {
         })
     }
 
+    #[expect(clippy::too_many_arguments)]
     fn inner_write<'a>(
         directory: Option<impl AsRef<Path>>,
         progress: &mut dyn DynNestedProgress,
+        object_hash: gix_hash::Kind,
         Options {
             thread_limit,
             iteration_mode: _,
             index_version: index_kind,
-            object_hash,
+            alloc_limit_bytes,
+            compression: _,
         }: Options,
         data_file: SharedTempFile,
-        mut pack_entries_iter: Box<dyn Iterator<Item = Result<data::input::Entry, data::input::Error>> + 'a>,
+        mut pack_entries_iter: Box<dyn Iterator<Item = Result<data::input::Entry>> + 'a>,
         should_interrupt: &AtomicBool,
         pack_version: data::Version,
-    ) -> Result<WriteOutcome, Error> {
+    ) -> Result<WriteOutcome> {
         let mut indexing_progress = progress.add_child_with_id(
             "create index file".into(),
             ProgressId::IndexingSteps(Default::default()).into(),
@@ -282,9 +296,10 @@ impl crate::Bundle {
         Ok(match directory {
             Some(directory) => {
                 let directory = directory.as_ref();
-                let mut index_file = gix_tempfile::new(directory, ContainingDirectory::Exists, AutoRemove::Tempfile)?;
+                let mut index_file = gix_tempfile::new(directory, ContainingDirectory::Exists, AutoRemove::Tempfile)
+                    .or_raise(|| message("Could not create temporary index file"))?;
 
-                let outcome = crate::index::File::write_data_iter_to_stream(
+                let outcome = crate::index::write_data_iter_to_stream(
                     index_kind,
                     {
                         let data_file = Arc::clone(&data_file);
@@ -296,6 +311,7 @@ impl crate::Bundle {
                     &mut index_file,
                     should_interrupt,
                     object_hash,
+                    alloc_limit_bytes,
                     pack_version,
                 )?;
                 drop(pack_entries_iter);
@@ -317,21 +333,23 @@ impl crate::Bundle {
                     } else {
                         let keep_path = data_path.with_extension("keep");
 
-                        std::fs::write(&keep_path, b"")?;
+                        std::fs::write(&keep_path, b"").or_raise(|| message("Could not create pack keep file"))?;
                         Arc::try_unwrap(data_file)
                             .expect("only one handle left after pack was consumed")
                             .into_inner()
                             .into_inner()
-                            .map_err(|err| Error::from(err.into_error()))?
-                            .persist(&data_path)?;
+                            .or_error()?
+                            .persist(&data_path)
+                            .or_raise(|| message("Could not persist pack file"))?;
                         Some(keep_path)
                     };
                     if !index_path.is_file() {
                         index_file
                             .persist(&index_path)
                             .inspect_err(|_err| {
-                                gix_features::trace::warn!("pack file at \"{}\" is retained despite failing to move the index file into place. You can use plumbing to make it usable.",data_path.display());
-                            })?;
+                                gix_trace::warn!("pack file at \"{}\" is retained despite failing to move the index file into place. You can use plumbing to make it usable.",data_path.display());
+                            })
+                            .or_raise(|| message("Could not persist pack index"))?;
                     }
                     WriteOutcome {
                         outcome,
@@ -342,7 +360,7 @@ impl crate::Bundle {
                 }
             }
             None => WriteOutcome {
-                outcome: crate::index::File::write_data_iter_to_stream(
+                outcome: crate::index::write_data_iter_to_stream(
                     index_kind,
                     move || new_pack_file_resolver(data_file),
                     &mut pack_entries_iter,
@@ -351,6 +369,7 @@ impl crate::Bundle {
                     &mut io::sink(),
                     should_interrupt,
                     object_hash,
+                    alloc_limit_bytes,
                     pack_version,
                 )?,
                 data_path: None,
@@ -365,7 +384,7 @@ fn resolve_entry(range: data::EntryRange, mapped_file: &memmap2::Mmap) -> Option
     mapped_file.get(range.start as usize..range.end as usize)
 }
 
-#[allow(clippy::type_complexity)] // cannot typedef impl Fn
+#[expect(clippy::type_complexity)] // cannot typedef impl Fn
 fn new_pack_file_resolver(
     data_file: SharedTempFile,
 ) -> io::Result<(

@@ -1,27 +1,6 @@
-use std::{
-    path::PathBuf,
-    sync::atomic::{AtomicBool, Ordering},
-    time::{Instant, SystemTime},
-};
-
-use gix_features::progress::{Count, DynNestedProgress, Progress};
+use std::time::SystemTime;
 
 use crate::multi_index;
-
-mod error {
-    /// The error returned by [`multi_index::File::write_from_index_paths()`][super::multi_index::File::write_from_index_paths()]..
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error(transparent)]
-        Io(#[from] gix_hash::io::Error),
-        #[error("Interrupted")]
-        Interrupted,
-        #[error(transparent)]
-        OpenIndex(#[from] crate::index::init::Error),
-    }
-}
-pub use error::Error;
 
 /// An entry suitable for sorting and writing
 pub(crate) struct Entry {
@@ -32,19 +11,19 @@ pub(crate) struct Entry {
     index_mtime: SystemTime,
 }
 
-/// Options for use in [`multi_index::File::write_from_index_paths()`].
+/// Options for use in [`multi_index::write_from_index_paths()`].
 pub struct Options {
     /// The kind of hash to use for objects and to expect in the input files.
     pub object_hash: gix_hash::Kind,
 }
 
-/// The result of [`multi_index::File::write_from_index_paths()`].
+/// The result of [`multi_index::write_from_index_paths()`].
 pub struct Outcome {
     /// The calculated multi-index checksum of the file at `multi_index_path`.
     pub multi_index_checksum: gix_hash::ObjectId,
 }
 
-/// The progress ids used in [`write_from_index_paths()`][multi_index::File::write_from_index_paths()].
+/// The progress ids used in [`crate::multi_index::write_from_index_paths()`].
 ///
 /// Use this information to selectively extract the progress of interest in case the parent application has custom visualization.
 #[derive(Debug, Copy, Clone)]
@@ -55,7 +34,7 @@ pub enum ProgressId {
     BytesWritten,
 }
 
-impl From<ProgressId> for gix_features::progress::Id {
+impl From<ProgressId> for gix_utils::progress::Id {
     fn from(v: ProgressId) -> Self {
         match v {
             ProgressId::FromPathsCollectingEntries => *b"MPCE",
@@ -64,7 +43,7 @@ impl From<ProgressId> for gix_features::progress::Id {
     }
 }
 
-impl multi_index::File {
+impl<T> multi_index::File<T> {
     pub(crate) const SIGNATURE: &'static [u8] = b"MIDX";
     pub(crate) const HEADER_LEN: usize = 4 /*signature*/ +
         1 /*version*/ +
@@ -72,6 +51,22 @@ impl multi_index::File {
         1 /*num chunks */ +
         1 /*num base files */ +
         4 /*num pack files*/;
+}
+
+pub(super) mod function {
+    use gix_error::Result;
+    use std::{
+        path::PathBuf,
+        sync::atomic::{AtomicBool, Ordering},
+        time::{Instant, SystemTime},
+    };
+
+    use gix_error::{ResourceExhaustionKind, ResultExt, cancelled, ensure};
+    use gix_utils::progress::{Count, DynNestedProgress, Progress};
+
+    use crate::{MMap, multi_index};
+
+    use super::{Entry, Options, Outcome, ProgressId};
 
     /// Create a new multi-index file for writing to `out` from the pack index files at `index_paths`.
     ///
@@ -82,7 +77,7 @@ impl multi_index::File {
         progress: &mut dyn DynNestedProgress,
         should_interrupt: &AtomicBool,
         Options { object_hash }: Options,
-    ) -> Result<Outcome, Error> {
+    ) -> Result<Outcome> {
         let out = gix_hash::io::Write::new(out, object_hash);
         let (index_paths_sorted, index_filenames_sorted) = {
             index_paths.sort();
@@ -100,7 +95,7 @@ impl multi_index::File {
                 "Collecting entries".into(),
                 ProgressId::FromPathsCollectingEntries.into(),
             );
-            progress.init(Some(index_paths_sorted.len()), gix_features::progress::count("indices"));
+            progress.init(Some(index_paths_sorted.len()), gix_utils::progress::count("indices"));
 
             // This could be parallelized… but it's probably not worth it unless you have 500mio objects.
             for (index_id, index) in index_paths_sorted.iter().enumerate() {
@@ -110,7 +105,12 @@ impl multi_index::File {
                     .unwrap_or(SystemTime::UNIX_EPOCH);
                 let index = crate::index::File::at(index, object_hash)?;
 
-                entries.reserve(index.num_objects() as usize);
+                entries.try_reserve(index.num_objects() as usize).or_raise(|| {
+                    gix_error::resource_exhaustion(
+                        ResourceExhaustionKind::AllocationFailure,
+                        "Too many index entries to fit in memory",
+                    )
+                })?;
                 entries.extend(index.iter().map(|e| Entry {
                     id: e.oid,
                     pack_index: index_id as u32,
@@ -118,15 +118,13 @@ impl multi_index::File {
                     index_mtime: mtime,
                 }));
                 progress.inc();
-                if should_interrupt.load(Ordering::Relaxed) {
-                    return Err(Error::Interrupted);
-                }
+                ensure!(!should_interrupt.load(Ordering::Relaxed), cancelled("Interrupted"));
             }
             progress.show_throughput(start);
 
             let start = Instant::now();
             progress.set_name("Deduplicate".into());
-            progress.init(Some(entries.len()), gix_features::progress::count("entries"));
+            progress.init(Some(entries.len()), gix_utils::progress::count("entries"));
             entries.sort_by(|l, r| {
                 l.id.cmp(&r.id)
                     .then_with(|| l.index_mtime.cmp(&r.index_mtime).reverse())
@@ -135,9 +133,7 @@ impl multi_index::File {
             entries.dedup_by_key(|e| e.id);
             progress.inc_by(entries.len());
             progress.show_throughput(start);
-            if should_interrupt.load(Ordering::Relaxed) {
-                return Err(Error::Interrupted);
-            }
+            ensure!(!should_interrupt.load(Ordering::Relaxed), cancelled("Interrupted"));
             entries
         };
 
@@ -168,29 +164,29 @@ impl multi_index::File {
             progress.add_child_with_id("Writing multi-index".into(), ProgressId::BytesWritten.into());
         let write_start = Instant::now();
         write_progress.init(
-            Some(cf.planned_storage_size() as usize + Self::HEADER_LEN),
-            gix_features::progress::bytes(),
+            Some(cf.planned_storage_size() as usize + multi_index::File::<MMap>::HEADER_LEN),
+            gix_utils::progress::bytes(),
         );
-        let mut out = gix_features::progress::Write {
+        let mut out = gix_utils::progress::Write {
             inner: out,
             progress: write_progress,
         };
 
-        let bytes_written = Self::write_header(
+        let bytes_written = multi_index::File::<MMap>::write_header(
             &mut out,
             cf.num_chunks().try_into().expect("BUG: wrote more than 256 chunks"),
             index_paths_sorted.len() as u32,
             object_hash,
         )
-        .map_err(gix_hash::io::Error::from)?;
+        .map_err(gix_hash::io::from_std_io)?;
 
         {
             progress.set_name("Writing chunks".into());
-            progress.init(Some(cf.num_chunks()), gix_features::progress::count("chunks"));
+            progress.init(Some(cf.num_chunks()), gix_utils::progress::count("chunks"));
 
             let mut chunk_write = cf
                 .into_write(&mut out, bytes_written)
-                .map_err(gix_hash::io::Error::from)?;
+                .map_err(gix_hash::io::from_std_io)?;
             while let Some(chunk_to_write) = chunk_write.next_chunk() {
                 match chunk_to_write {
                     multi_index::chunk::index_names::ID => {
@@ -208,25 +204,25 @@ impl multi_index::File {
                     ),
                     unknown => unreachable!("BUG: forgot to implement chunk {:?}", std::str::from_utf8(&unknown)),
                 }
-                .map_err(gix_hash::io::Error::from)?;
+                .map_err(gix_hash::io::from_std_io)?;
                 progress.inc();
-                if should_interrupt.load(Ordering::Relaxed) {
-                    return Err(Error::Interrupted);
-                }
+                ensure!(!should_interrupt.load(Ordering::Relaxed), cancelled("Interrupted"));
             }
         }
 
         // write trailing checksum
-        let multi_index_checksum = out.inner.hash.try_finalize().map_err(gix_hash::io::Error::from)?;
+        let multi_index_checksum = out.inner.hash.try_finalize()?;
         out.inner
             .inner
             .write_all(multi_index_checksum.as_slice())
-            .map_err(gix_hash::io::Error::from)?;
+            .map_err(gix_hash::io::from_std_io)?;
         out.progress.show_throughput(write_start);
 
         Ok(Outcome { multi_index_checksum })
     }
+}
 
+impl multi_index::File<crate::MMap> {
     fn write_header(
         out: &mut dyn std::io::Write,
         num_chunks: u8,

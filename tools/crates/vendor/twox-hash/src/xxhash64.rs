@@ -6,7 +6,7 @@ use core::{
     mem,
 };
 
-use crate::IntoU64;
+use crate::IntoU64 as _;
 
 // Keeping these constants in this form to match the C code.
 const PRIME64_1: u64 = 0x9E3779B185EBCA87;
@@ -76,7 +76,7 @@ impl Buffer {
 
         if self.offset == 0 {
             return (None, data);
-        };
+        }
 
         let bytes = self.data.bytes_mut();
         debug_assert!(self.offset <= bytes.len());
@@ -292,7 +292,7 @@ impl Hasher {
         };
 
         // Step 4. Add input length
-        acc += len;
+        acc = acc.wrapping_add(len);
 
         // Step 5. Consume remaining input
         while let Some((chunk, rest)) = remaining.split_first_chunk() {
@@ -487,6 +487,18 @@ mod test {
     }
 
     #[test]
+    fn adding_the_length_overflows_the_accumulator() {
+        // For inputs under 32 bytes, the accumulator is `seed +
+        // PRIME64_5`. To set the accumulator to `u64::MAX`, work
+        // backwards:
+        let seed = u64::MAX - PRIME64_5;
+
+        // Hashing one or more bytes causes cause the accumulator
+        // to overflow
+        assert_eq!(0xf953_d52c_12a9_f5fb, Hasher::oneshot(seed, b"x"));
+    }
+
+    #[test]
     fn can_be_used_in_a_hashmap_with_a_default_seed() {
         let mut hash: HashMap<_, _, BuildHasherDefault<Hasher>> = Default::default();
         hash.insert(42, "the answer");
@@ -574,7 +586,7 @@ mod serialize_impl {
             let mut buffer_data = BufferData::new();
             buffer_data.bytes_mut().copy_from_slice(&buffer);
 
-            Ok(Hasher {
+            Ok(Self {
                 seed,
                 accumulators: Accumulators([v1, v2, v3, v4]),
                 buffer: Buffer {
@@ -591,7 +603,7 @@ mod serialize_impl {
         where
             S: serde::Serializer,
         {
-            let Hasher {
+            let Self {
                 seed,
                 ref accumulators,
                 ref buffer,

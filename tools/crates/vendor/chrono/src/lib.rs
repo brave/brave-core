@@ -501,12 +501,10 @@
 //! [chrono#1095]: https://github.com/chronotope/chrono/pull/1095
 
 #![doc(html_root_url = "https://docs.rs/chrono/latest/", test(attr(deny(warnings))))]
-#![deny(missing_docs)]
-#![deny(missing_debug_implementations)]
 #![warn(unreachable_pub)]
-#![deny(clippy::tests_outside_test_module)]
+#![warn(clippy::tests_outside_test_module)]
 #![cfg_attr(not(any(feature = "std", test)), no_std)]
-#![cfg_attr(docsrs, feature(doc_auto_cfg))]
+#![cfg_attr(docsrs, feature(doc_cfg))]
 
 #[cfg(feature = "alloc")]
 extern crate alloc;
@@ -684,6 +682,13 @@ impl fmt::Display for OutOfRange {
 impl fmt::Debug for OutOfRange {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "out of range")
+    }
+}
+
+#[cfg(feature = "defmt")]
+impl defmt::Format for OutOfRange {
+    fn format(&self, fmt: defmt::Formatter) {
+        defmt::write!(fmt, "out of range");
     }
 }
 

@@ -184,7 +184,7 @@ mod imp {
 
 #[cfg(test)]
 mod tests {
-  use rand::Rng;
+  use rand::{Rng, SeedableRng, rngs::SmallRng};
 
   #[test]
   fn zeroes() {
@@ -208,8 +208,9 @@ mod tests {
 
   #[test]
   fn random() {
+    if super::get_imp().is_none() { return; } // don't do any work if we're not on this target
     let mut random = [0; 512 * 1024];
-    rand::thread_rng().fill(&mut random[..]);
+    SmallRng::from_entropy().fill(&mut random[..]);
 
     assert_sum_eq(&random[..1]);
     assert_sum_eq(&random[..100]);
@@ -227,7 +228,7 @@ mod tests {
     if let Some(update) = super::get_imp() {
       let (a, b) = update(1, 0, data);
       let left = u32::from(b) << 16 | u32::from(a);
-      let right = adler::adler32_slice(data);
+      let right = adler2::adler32_slice(data);
 
       assert_eq!(left, right, "len({})", data.len());
     }

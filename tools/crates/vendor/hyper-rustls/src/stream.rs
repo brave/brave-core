@@ -36,7 +36,7 @@ impl<T: rt::Read + rt::Write + Connection + Unpin> Connection for MaybeHttpsStre
 }
 
 impl<T: fmt::Debug> fmt::Debug for MaybeHttpsStream<T> {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match *self {
             Self::Http(..) => f.pad("Http(..)"),
             Self::Https(..) => f.pad("Https(..)"),
@@ -60,7 +60,7 @@ impl<T: rt::Read + rt::Write + Unpin> rt::Read for MaybeHttpsStream<T> {
     #[inline]
     fn poll_read(
         self: Pin<&mut Self>,
-        cx: &mut Context,
+        cx: &mut Context<'_>,
         buf: rt::ReadBufCursor<'_>,
     ) -> Poll<Result<(), io::Error>> {
         match Pin::get_mut(self) {

@@ -22,7 +22,7 @@ fn main() -> Result<()> {
                 }
             }
             Payload::ImportSection(s) => {
-                for import in s {
+                for import in s.into_imports() {
                     let import = import?;
                     println!("  Import {}::{}", import.module, import.name);
                 }

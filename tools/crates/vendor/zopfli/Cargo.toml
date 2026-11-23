@@ -11,9 +11,9 @@
 
 [package]
 edition = "2021"
-rust-version = "1.73.0"
+rust-version = "1.88.0"
 name = "zopfli"
-version = "0.8.3"
+version = "0.8.4"
 build = false
 exclude = [
     ".github/*",
@@ -29,7 +29,6 @@ autoexamples = false
 autotests = false
 autobenches = false
 description = "A Rust implementation of the Zopfli compression algorithm."
-homepage = "https://github.com/zopfli-rs/zopfli"
 readme = "README.md"
 keywords = ["compression"]
 categories = [
@@ -71,30 +70,30 @@ required-features = [
 ]
 
 [dependencies.bumpalo]
-version = "3.19.0"
+version = "3.20.3"
 
 [dependencies.crc32fast]
-version = "1.5.0"
+version = "1.5.2"
 optional = true
 default-features = false
 
 [dependencies.log]
-version = "0.4.28"
+version = "0.4.34"
 optional = true
 
 [dependencies.simd-adler32]
-version = "0.3.7"
+version = "0.3.10"
 optional = true
 default-features = false
 
 [dev-dependencies.miniz_oxide]
-version = "0.8.9"
+version = "0.9.1"
 
 [dev-dependencies.proptest]
-version = "1.7.0"
+version = "1.11.0"
 
 [dev-dependencies.proptest-derive]
-version = "0.6.0"
+version = "0.9.0"
 
 [profile.release]
 debug = 2

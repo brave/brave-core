@@ -157,7 +157,7 @@ impl LocalRegistry {
     }
 }
 
-/// Allows the building of a local registry from a [`RemoteGitIndex`] or [`RemoteSparseIndex`]
+/// Allows the building of a local registry from a [`RemoteSparseIndex`]
 pub struct LocalRegistryBuilder {
     path: PathBuf,
 }

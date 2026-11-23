@@ -25,8 +25,8 @@ use zerotrie::cursor::ZeroTrieSimpleAsciiCursor;
 /// # Example
 ///
 /// ```
-/// use icu::properties::props::GeneralCategory;
 /// use icu::properties::PropertyParser;
+/// use icu::properties::props::GeneralCategory;
 ///
 /// let lookup = PropertyParser::<GeneralCategory>::new();
 /// // short name for value
@@ -86,7 +86,7 @@ impl<T> PropertyParser<T> {
     /// [📚 Help choosing a constructor](icu_provider::constructors)
     #[cfg(feature = "compiled_data")]
     #[expect(clippy::new_ret_no_self)]
-    pub fn new() -> PropertyParserBorrowed<'static, T>
+    pub const fn new() -> PropertyParserBorrowed<'static, T>
     where
         T: ParseableEnumeratedProperty,
     {
@@ -134,8 +134,8 @@ impl<T: TrieValue> PropertyParserBorrowed<'_, T> {
     /// # Example
     ///
     /// ```
-    /// use icu::properties::props::GeneralCategory;
     /// use icu::properties::PropertyParser;
+    /// use icu::properties::props::GeneralCategory;
     ///
     /// let lookup = PropertyParser::<GeneralCategory>::new();
     /// assert_eq!(
@@ -151,6 +151,11 @@ impl<T: TrieValue> PropertyParserBorrowed<'_, T> {
     /// ```
     #[inline]
     pub fn get_strict_u16(self, name: &str) -> Option<u16> {
+        self.get_strict_u16_utf8(name.as_bytes())
+    }
+
+    #[doc(hidden)]
+    pub fn get_strict_u16_utf8(self, name: &[u8]) -> Option<u16> {
         get_strict_u16(self.map, name)
     }
 
@@ -160,8 +165,8 @@ impl<T: TrieValue> PropertyParserBorrowed<'_, T> {
     /// # Example
     ///
     /// ```
-    /// use icu::properties::props::GeneralCategory;
     /// use icu::properties::PropertyParser;
+    /// use icu::properties::props::GeneralCategory;
     ///
     /// let lookup = PropertyParser::<GeneralCategory>::new();
     /// assert_eq!(
@@ -177,7 +182,12 @@ impl<T: TrieValue> PropertyParserBorrowed<'_, T> {
     /// ```
     #[inline]
     pub fn get_strict(self, name: &str) -> Option<T> {
-        T::try_from_u32(self.get_strict_u16(name)? as u32).ok()
+        self.get_strict_utf8(name.as_bytes())
+    }
+
+    #[doc(hidden)]
+    pub fn get_strict_utf8(self, name: &[u8]) -> Option<T> {
+        T::try_from_u32(self.get_strict_u16_utf8(name)? as u32).ok()
     }
 
     /// Get the property value as a u16, doing a loose search looking for
@@ -187,8 +197,8 @@ impl<T: TrieValue> PropertyParserBorrowed<'_, T> {
     /// # Example
     ///
     /// ```
-    /// use icu::properties::props::GeneralCategory;
     /// use icu::properties::PropertyParser;
+    /// use icu::properties::props::GeneralCategory;
     ///
     /// let lookup = PropertyParser::<GeneralCategory>::new();
     /// assert_eq!(
@@ -207,6 +217,11 @@ impl<T: TrieValue> PropertyParserBorrowed<'_, T> {
     /// ```
     #[inline]
     pub fn get_loose_u16(self, name: &str) -> Option<u16> {
+        self.get_loose_u16_utf8(name.as_bytes())
+    }
+
+    #[doc(hidden)]
+    pub fn get_loose_u16_utf8(self, name: &[u8]) -> Option<u16> {
         get_loose_u16(self.map, name)
     }
 
@@ -217,8 +232,8 @@ impl<T: TrieValue> PropertyParserBorrowed<'_, T> {
     /// # Example
     ///
     /// ```
-    /// use icu::properties::props::GeneralCategory;
     /// use icu::properties::PropertyParser;
+    /// use icu::properties::props::GeneralCategory;
     ///
     /// let lookup = PropertyParser::<GeneralCategory>::new();
     /// assert_eq!(
@@ -237,7 +252,12 @@ impl<T: TrieValue> PropertyParserBorrowed<'_, T> {
     /// ```
     #[inline]
     pub fn get_loose(self, name: &str) -> Option<T> {
-        T::try_from_u32(self.get_loose_u16(name)? as u32).ok()
+        self.get_loose_utf8(name.as_bytes())
+    }
+
+    #[doc(hidden)]
+    pub fn get_loose_utf8(self, name: &[u8]) -> Option<T> {
+        T::try_from_u32(self.get_loose_u16_utf8(name)? as u32).ok()
     }
 }
 
@@ -255,7 +275,7 @@ impl<T: TrieValue> PropertyParserBorrowed<'static, T> {
     ///
     /// [📚 Help choosing a constructor](icu_provider::constructors)
     #[cfg(feature = "compiled_data")]
-    pub fn new() -> Self
+    pub const fn new() -> Self
     where
         T: ParseableEnumeratedProperty,
     {
@@ -278,24 +298,22 @@ impl<T: TrieValue> PropertyParserBorrowed<'static, T> {
 }
 
 /// Avoid monomorphizing multiple copies of this function
-fn get_strict_u16(payload: &PropertyValueNameToEnumMap<'_>, name: &str) -> Option<u16> {
+fn get_strict_u16(payload: &PropertyValueNameToEnumMap<'_>, name: &[u8]) -> Option<u16> {
     payload.map.get(name).and_then(|i| i.try_into().ok())
 }
 
 /// Avoid monomorphizing multiple copies of this function
-fn get_loose_u16(payload: &PropertyValueNameToEnumMap<'_>, name: &str) -> Option<u16> {
+fn get_loose_u16(payload: &PropertyValueNameToEnumMap<'_>, name: &[u8]) -> Option<u16> {
     fn recurse(mut cursor: ZeroTrieSimpleAsciiCursor, mut rest: &[u8]) -> Option<usize> {
         if cursor.is_empty() {
             return None;
         }
 
-        // Skip whitespace, underscore, hyphen in trie.
-        for skip in [b'\t', b'\n', b'\x0C', b'\r', b' ', 0x0B, b'_', b'-'] {
-            let mut skip_cursor = cursor.clone();
-            skip_cursor.step(skip);
-            if let Some(r) = recurse(skip_cursor, rest) {
-                return Some(r);
-            }
+        // Skip underscore in trie
+        let mut skip_cursor = cursor.clone();
+        skip_cursor.step(b'_');
+        if let Some(r) = recurse(skip_cursor, rest) {
+            return Some(r);
         }
 
         let ascii = loop {
@@ -313,20 +331,30 @@ fn get_loose_u16(payload: &PropertyValueNameToEnumMap<'_>, name: &str) -> Option
             }
         };
 
-        let mut other_case_cursor = cursor.clone();
-        cursor.step(ascii);
-        other_case_cursor.step(if ascii.is_ascii_lowercase() {
+        // Try matching with the original case first
+        let mut cursor_clone = cursor.clone();
+        cursor_clone.step(ascii);
+        if let Some(r) = recurse(cursor_clone, rest) {
+            return Some(r);
+        }
+
+        // Try matching with the other case
+        let other_case = if ascii.is_ascii_lowercase() {
             ascii.to_ascii_uppercase()
         } else {
             ascii.to_ascii_lowercase()
-        });
-        // This uses the call stack as the DFS stack. The recursion will terminate as
-        // rest's length is strictly shrinking. The call stack's depth is limited by
-        // name.len().
-        recurse(cursor, rest).or_else(|| recurse(other_case_cursor, rest))
+        };
+
+        // If the other_case is different then recurse
+        if other_case != ascii {
+            cursor.step(other_case);
+            return recurse(cursor, rest);
+        }
+
+        None
     }
 
-    recurse(payload.map.cursor(), name.as_bytes()).and_then(|i| i.try_into().ok())
+    recurse(payload.map.cursor(), name).and_then(|i| i.try_into().ok())
 }
 
 /// A struct capable of looking up a property name from a value
@@ -336,8 +364,8 @@ fn get_loose_u16(payload: &PropertyValueNameToEnumMap<'_>, name: &str) -> Option
 /// # Example
 ///
 /// ```
-/// use icu::properties::props::CanonicalCombiningClass;
 /// use icu::properties::PropertyNamesLong;
+/// use icu::properties::props::CanonicalCombiningClass;
 ///
 /// let names = PropertyNamesLong::<CanonicalCombiningClass>::new();
 /// assert_eq!(
@@ -383,7 +411,7 @@ impl<T: NamedEnumeratedProperty> PropertyNamesLong<T> {
     /// [📚 Help choosing a constructor](icu_provider::constructors)
     #[cfg(feature = "compiled_data")]
     #[expect(clippy::new_ret_no_self)]
-    pub fn new() -> PropertyNamesLongBorrowed<'static, T> {
+    pub const fn new() -> PropertyNamesLongBorrowed<'static, T> {
         PropertyNamesLongBorrowed::new()
     }
 
@@ -414,8 +442,8 @@ impl<'a, T: NamedEnumeratedProperty> PropertyNamesLongBorrowed<'a, T> {
     /// # Example
     ///
     /// ```rust
-    /// use icu::properties::props::CanonicalCombiningClass;
     /// use icu::properties::PropertyNamesLong;
+    /// use icu::properties::props::CanonicalCombiningClass;
     ///
     /// let lookup = PropertyNamesLong::<CanonicalCombiningClass>::new();
     /// assert_eq!(
@@ -447,7 +475,7 @@ impl<T: NamedEnumeratedProperty> PropertyNamesLongBorrowed<'static, T> {
     ///
     /// [📚 Help choosing a constructor](icu_provider::constructors)
     #[cfg(feature = "compiled_data")]
-    pub fn new() -> Self {
+    pub const fn new() -> Self {
         Self {
             map: T::SINGLETON_LONG,
         }
@@ -474,8 +502,8 @@ impl<T: NamedEnumeratedProperty> PropertyNamesLongBorrowed<'static, T> {
 /// # Example
 ///
 /// ```
-/// use icu::properties::props::CanonicalCombiningClass;
 /// use icu::properties::PropertyNamesShort;
+/// use icu::properties::props::CanonicalCombiningClass;
 ///
 /// let names = PropertyNamesShort::<CanonicalCombiningClass>::new();
 /// assert_eq!(names.get(CanonicalCombiningClass::KanaVoicing), Some("KV"));
@@ -516,7 +544,7 @@ impl<T: NamedEnumeratedProperty> PropertyNamesShort<T> {
     /// [📚 Help choosing a constructor](icu_provider::constructors)
     #[cfg(feature = "compiled_data")]
     #[expect(clippy::new_ret_no_self)]
-    pub fn new() -> PropertyNamesShortBorrowed<'static, T> {
+    pub const fn new() -> PropertyNamesShortBorrowed<'static, T> {
         PropertyNamesShortBorrowed::new()
     }
 
@@ -547,8 +575,8 @@ impl<'a, T: NamedEnumeratedProperty> PropertyNamesShortBorrowed<'a, T> {
     /// # Example
     ///
     /// ```rust
-    /// use icu::properties::props::CanonicalCombiningClass;
     /// use icu::properties::PropertyNamesShort;
+    /// use icu::properties::props::CanonicalCombiningClass;
     ///
     /// let lookup = PropertyNamesShort::<CanonicalCombiningClass>::new();
     /// assert_eq!(lookup.get(CanonicalCombiningClass::KanaVoicing), Some("KV"));
@@ -569,8 +597,8 @@ impl PropertyNamesShortBorrowed<'_, Script> {
     ///
     /// ```rust
     /// use icu::locale::subtags::script;
-    /// use icu::properties::props::Script;
     /// use icu::properties::PropertyNamesShort;
+    /// use icu::properties::props::Script;
     ///
     /// let lookup = PropertyNamesShort::<Script>::new();
     /// assert_eq!(
@@ -586,8 +614,8 @@ impl PropertyNamesShortBorrowed<'_, Script> {
     /// For the reverse direction, use property parsing as normal:
     /// ```
     /// use icu::locale::subtags::script;
-    /// use icu::properties::props::Script;
     /// use icu::properties::PropertyParser;
+    /// use icu::properties::props::Script;
     ///
     /// let parser = PropertyParser::<Script>::new();
     /// assert_eq!(
@@ -620,7 +648,7 @@ impl<T: NamedEnumeratedProperty> PropertyNamesShortBorrowed<'static, T> {
     ///
     /// [📚 Help choosing a constructor](icu_provider::constructors)
     #[cfg(feature = "compiled_data")]
-    pub fn new() -> Self {
+    pub const fn new() -> Self {
         Self {
             map: T::SINGLETON_SHORT,
         }
@@ -726,7 +754,12 @@ pub trait NamedEnumeratedProperty: ParseableEnumeratedProperty {
     /// ✨ *Enabled with the `compiled_data` Cargo feature.*
     #[cfg(feature = "compiled_data")]
     fn try_from_str(s: &str) -> Option<Self> {
-        PropertyParser::new().get_loose(s)
+        Self::try_from_utf8(s.as_bytes())
+    }
+    #[cfg(feature = "compiled_data")]
+    #[doc(hidden)]
+    fn try_from_utf8(s: &[u8]) -> Option<Self> {
+        PropertyParser::new().get_loose_utf8(s)
     }
     /// Convenience method for `PropertyNamesLong::new().get(*self).unwrap()`
     ///
@@ -804,6 +837,22 @@ impl_value_getter! {
         PropertyNameParseBidiClassV1 / SINGLETON_PROPERTY_NAME_PARSE_BIDI_CLASS_V1;
         PropertyEnumToValueNameLinearMap / PropertyNameShortBidiClassV1 / SINGLETON_PROPERTY_NAME_SHORT_BIDI_CLASS_V1;
         PropertyEnumToValueNameLinearMap / PropertyNameLongBidiClassV1 / SINGLETON_PROPERTY_NAME_LONG_BIDI_CLASS_V1;
+    }
+}
+
+impl_value_getter! {
+    impl Block {
+        PropertyNameParseBlockV1 / SINGLETON_PROPERTY_NAME_PARSE_BLOCK_V1;
+        PropertyEnumToValueNameLinearMap / PropertyNameShortBlockV1 / SINGLETON_PROPERTY_NAME_SHORT_BLOCK_V1;
+        PropertyEnumToValueNameLinearMap / PropertyNameLongBlockV1 / SINGLETON_PROPERTY_NAME_LONG_BLOCK_V1;
+    }
+}
+
+impl_value_getter! {
+    impl NumericType {
+        PropertyNameParseNumericTypeV1 / SINGLETON_PROPERTY_NAME_PARSE_NUMERIC_TYPE_V1;
+        PropertyEnumToValueNameLinearMap / PropertyNameShortNumericTypeV1 / SINGLETON_PROPERTY_NAME_SHORT_NUMERIC_TYPE_V1;
+        PropertyEnumToValueNameLinearMap / PropertyNameLongNumericTypeV1 / SINGLETON_PROPERTY_NAME_LONG_NUMERIC_TYPE_V1;
     }
 }
 
@@ -900,6 +949,14 @@ impl_value_getter! {
         PropertyNameParseIndicConjunctBreakV1 / SINGLETON_PROPERTY_NAME_PARSE_INDIC_CONJUNCT_BREAK_V1;
         PropertyEnumToValueNameLinearMap / PropertyNameShortIndicConjunctBreakV1 / SINGLETON_PROPERTY_NAME_SHORT_INDIC_CONJUNCT_BREAK_V1;
         PropertyEnumToValueNameLinearMap / PropertyNameLongIndicConjunctBreakV1 / SINGLETON_PROPERTY_NAME_LONG_INDIC_CONJUNCT_BREAK_V1;
+    }
+}
+
+impl_value_getter! {
+    impl JoiningGroup {
+        PropertyNameParseJoiningGroupV1 / SINGLETON_PROPERTY_NAME_PARSE_JOINING_GROUP_V1;
+        PropertyEnumToValueNameLinearMap / PropertyNameShortJoiningGroupV1 / SINGLETON_PROPERTY_NAME_SHORT_JOINING_GROUP_V1;
+        PropertyEnumToValueNameLinearMap / PropertyNameLongJoiningGroupV1 / SINGLETON_PROPERTY_NAME_LONG_JOINING_GROUP_V1;
     }
 }
 

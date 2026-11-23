@@ -23,6 +23,7 @@ pub struct Builder<W: Write> {
 #[derive(Clone, Copy)]
 struct BuilderOptions {
     mode: HeaderMode,
+    preserve_absolute: bool,
     follow: bool,
     sparse: bool,
 }
@@ -35,6 +36,7 @@ impl<W: Write> Builder<W> {
         Builder {
             options: BuilderOptions {
                 mode: HeaderMode::Complete,
+                preserve_absolute: false,
                 follow: true,
                 sparse: true,
             },
@@ -50,11 +52,46 @@ impl<W: Write> Builder<W> {
         self.options.mode = mode;
     }
 
-    /// Follow symlinks, archiving the contents of the file they point to rather
-    /// than adding a symlink to the archive. Defaults to true.
+    /// Peserve absolute path while creating an archive
+    pub fn preserve_absolute(&mut self, preserve: bool) {
+        self.options.preserve_absolute = preserve;
+    }
+
+    /// Control whether symlinks are followed when reading from the filesystem.
+    /// Defaults to `true` (but see the note below — you almost certainly want
+    /// to call `follow_symlinks(false)`).
     ///
-    /// When true, it exhibits the same behavior as GNU `tar` command's
-    /// `--dereference` or `-h` options <https://man7.org/linux/man-pages/man1/tar.1.html>.
+    /// When `true`, symlinks are dereferenced: the archive entry contains the
+    /// contents of the symlink target rather than the symlink itself,
+    /// equivalent to GNU `tar --dereference` (`-h`). When `false` (the default
+    /// for all mainstream tar implementations), symlinks are stored as symlink
+    /// entries in the archive.
+    ///
+    /// # Why you should almost always use `follow_symlinks(false)`
+    ///
+    /// Every mainstream tar implementation preserves symlinks by default.
+    /// GNU `tar` requires the explicit `--dereference` (`-h`) flag to follow
+    /// them. Go's `archive/tar` stores whatever the underlying `fs.FS` reports
+    /// and never dereferences on its own. BSD `tar` behaves the same way.
+    /// This crate's default of `true` is a historical quirk kept for
+    /// compatibility but is wrong for most use-cases:
+    ///
+    /// - Symlinks in the source tree are part of its structure and should
+    ///   normally be preserved, not silently replaced by their targets.
+    /// - When `true`, [`append_dir_all`](Builder::append_dir_all) follows
+    ///   symlinks that point *outside* `src_path` just as readily as those
+    ///   inside it. If the archiving process has broader filesystem read access
+    ///   than whoever controls the source tree (e.g. a privileged backup
+    ///   service, a CI runner archiving user-submitted workspaces), an attacker
+    ///   can plant a symlink inside `src_path` to silently include arbitrary
+    ///   files from the host.
+    ///
+    /// Call `follow_symlinks(false)` unless you have a specific reason to
+    /// flatten symlinks into their targets. For the strongest guarantee, open
+    /// `src_path` with [`cap-std`] and walk the tree with capability-safe I/O,
+    /// which blocks symlink escapes at the OS level regardless of this setting.
+    ///
+    /// [`cap-std`]: https://docs.rs/cap-std/
     pub fn follow_symlinks(&mut self, follow: bool) {
         self.options.follow = follow;
     }
@@ -179,7 +216,8 @@ impl<W: Write> Builder<W> {
         path: P,
         data: R,
     ) -> io::Result<()> {
-        prepare_header_path(self.get_mut(), header, path.as_ref())?;
+        let allow_absolute = self.options.preserve_absolute;
+        prepare_header_path(self.get_mut(), header, path.as_ref(), allow_absolute)?;
         header.set_cksum();
         self.append(header, data)
     }
@@ -222,7 +260,8 @@ impl<W: Write> Builder<W> {
     where
         W: Seek,
     {
-        EntryWriter::start(self.get_mut(), header, path.as_ref())
+        let allow_absolute = self.options.preserve_absolute;
+        EntryWriter::start(self.get_mut(), header, path.as_ref(), allow_absolute)
     }
 
     /// Adds a new link (symbolic or hard) entry to this archive with the specified path and target.
@@ -267,7 +306,8 @@ impl<W: Write> Builder<W> {
     }
 
     fn _append_link(&mut self, header: &mut Header, path: &Path, target: &Path) -> io::Result<()> {
-        prepare_header_path(self.get_mut(), header, path)?;
+        let allow_abolute = self.options.preserve_absolute;
+        prepare_header_path(self.get_mut(), header, path, allow_abolute)?;
         prepare_header_link(self.get_mut(), header, target)?;
         header.set_cksum();
         self.append(header, std::io::empty())
@@ -418,6 +458,48 @@ impl<W: Write> Builder<W> {
     /// `finish` or `into_inner` function needs to be called to finish
     /// writing the archive.
     ///
+    /// # Security
+    ///
+    /// **Call [`follow_symlinks(false)`](Builder::follow_symlinks) before this
+    /// method** unless you have an explicit reason to dereference symlinks.
+    /// All mainstream tar implementations (GNU tar, BSD tar, Go's
+    /// `archive/tar`) preserve symlinks by default; this crate's default of
+    /// `true` is a historical quirk.
+    ///
+    /// When `follow_symlinks` is `true` (the current default), this method
+    /// dereferences every symlink it encounters, including ones whose targets
+    /// lie **outside** `src_path`. When the archiver runs with broader
+    /// filesystem access than whoever controls the source tree (e.g. a
+    /// privileged backup or export service), an attacker can plant a symlink
+    /// inside `src_path` to silently include arbitrary files the archiver can
+    /// read, with no indication in the archive that they came from outside the
+    /// source root.
+    ///
+    /// ```no_run
+    /// use tar::Builder;
+    ///
+    /// # let src_path = std::path::Path::new(".");
+    /// # let writer = std::io::sink();
+    /// // Recommended: preserve symlinks as-is, matching GNU tar's default.
+    /// let mut ar = Builder::new(writer);
+    /// ar.follow_symlinks(false);
+    /// ar.append_dir_all("", src_path).unwrap();
+    /// ar.finish().unwrap();
+    /// ```
+    ///
+    /// With `follow_symlinks(false)`, symlinks inside the source tree are
+    /// stored as symlink entries in the archive rather than being read through.
+    /// Note that the resulting archive may then contain symlinks with absolute
+    /// or `..`-relative targets; validate or strip those on extraction if the
+    /// archive consumer is also untrusted.
+    ///
+    /// For the strongest available guarantee, open `src_path` using [`cap-std`]
+    /// and walk the directory tree with capability-safe I/O. This prevents
+    /// symlink escapes at the OS level and protects against TOCTOU races that
+    /// a purely path-based check cannot close.
+    ///
+    /// [`cap-std`]: https://docs.rs/cap-std/
+    ///
     /// # Examples
     ///
     /// ```
@@ -515,8 +597,9 @@ impl EntryWriter<'_> {
         obj: &'a mut dyn SeekWrite,
         header: &'a mut Header,
         path: &Path,
+        allow_absolute: bool,
     ) -> io::Result<EntryWriter<'a>> {
-        prepare_header_path(obj.as_write(), header, path)?;
+        prepare_header_path(obj.as_write(), header, path, allow_absolute)?;
 
         // Reserve space for header, will be overwritten once data is written.
         obj.write_all([0u8; BLOCK_SIZE as usize].as_ref())?;
@@ -624,14 +707,28 @@ fn append_path_with_name(
     if stat.is_file() {
         append_file(dst, ar_name, &mut fs::File::open(path)?, options)
     } else if stat.is_dir() {
-        append_fs(dst, ar_name, &stat, options.mode, None)
+        append_fs(
+            dst,
+            ar_name,
+            &stat,
+            options.mode,
+            options.preserve_absolute,
+            None,
+        )
     } else if stat.file_type().is_symlink() {
         let link_name = fs::read_link(path)?;
-        append_fs(dst, ar_name, &stat, options.mode, Some(&link_name))
+        append_fs(
+            dst,
+            ar_name,
+            &stat,
+            options.mode,
+            options.preserve_absolute,
+            Some(&link_name),
+        )
     } else {
         #[cfg(unix)]
         {
-            append_special(dst, path, &stat, options.mode)
+            append_special(dst, path, &stat, options.mode, options.preserve_absolute)
         }
         #[cfg(not(unix))]
         {
@@ -646,6 +743,7 @@ fn append_special(
     path: &Path,
     stat: &fs::Metadata,
     mode: HeaderMode,
+    allow_absolute: bool,
 ) -> io::Result<()> {
     use ::std::os::unix::fs::{FileTypeExt, MetadataExt};
 
@@ -669,7 +767,7 @@ fn append_special(
 
     let mut header = Header::new_gnu();
     header.set_metadata_in_mode(stat, mode);
-    prepare_header_path(dst, &mut header, path)?;
+    prepare_header_path(dst, &mut header, path, allow_absolute)?;
 
     header.set_entry_type(entry_type);
     let dev_id = stat.rdev();
@@ -693,7 +791,7 @@ fn append_file(
     let stat = file.metadata()?;
     let mut header = Header::new_gnu();
 
-    prepare_header_path(dst, &mut header, path)?;
+    prepare_header_path(dst, &mut header, path, options.preserve_absolute)?;
     header.set_metadata_in_mode(&stat, options.mode);
     let sparse_entries = if options.sparse {
         prepare_header_sparse(file, &stat, &mut header)?
@@ -725,7 +823,14 @@ fn append_dir(
     options: BuilderOptions,
 ) -> io::Result<()> {
     let stat = fs::metadata(src_path)?;
-    append_fs(dst, path, &stat, options.mode, None)
+    append_fs(
+        dst,
+        path,
+        &stat,
+        options.mode,
+        options.preserve_absolute,
+        None,
+    )
 }
 
 fn prepare_header(size: u64, entry_type: u8) -> Header {
@@ -743,12 +848,23 @@ fn prepare_header(size: u64, entry_type: u8) -> Header {
     header
 }
 
-fn prepare_header_path(dst: &mut dyn Write, header: &mut Header, path: &Path) -> io::Result<()> {
+fn prepare_header_path(
+    dst: &mut dyn Write,
+    header: &mut Header,
+    path: &Path,
+    allow_absolute: bool,
+) -> io::Result<()> {
     // Try to encode the path directly in the header, but if it ends up not
     // working (probably because it's too long) then try to use the GNU-specific
     // long name extension by emitting an entry which indicates that it's the
     // filename.
-    if let Err(e) = header.set_path(path) {
+    let result = if allow_absolute {
+        header.set_path_absolute(path)
+    } else {
+        header.set_path(path)
+    };
+
+    if let Err(e) = result {
         let data = path2bytes(path)?;
         let max = header.as_old().name.len();
         // Since `e` isn't specific enough to let us know the path is indeed too
@@ -769,7 +885,7 @@ fn prepare_header_path(dst: &mut dyn Write, header: &mut Header, path: &Path) ->
             Ok(s) => s,
             Err(e) => str::from_utf8(&data[..e.valid_up_to()]).unwrap(),
         };
-        header.set_truncated_path_for_gnu_header(truncated)?;
+        header.set_truncated_path_for_gnu_header(truncated, allow_absolute)?;
 
         let header2 = prepare_header(data.len() as u64, b'L');
         // null-terminated string
@@ -859,11 +975,12 @@ fn append_fs(
     path: &Path,
     meta: &fs::Metadata,
     mode: HeaderMode,
+    allow_absolute: bool,
     link_name: Option<&Path>,
 ) -> io::Result<()> {
     let mut header = Header::new_gnu();
 
-    prepare_header_path(dst, &mut header, path)?;
+    prepare_header_path(dst, &mut header, path, allow_absolute)?;
     header.set_metadata_in_mode(meta, mode);
     if let Some(link_name) = link_name {
         prepare_header_link(dst, &mut header, link_name)?;
@@ -894,13 +1011,20 @@ fn append_dir_all(
         } else if !options.follow && is_symlink {
             let stat = fs::symlink_metadata(&src)?;
             let link_name = fs::read_link(&src)?;
-            append_fs(dst, &dest, &stat, options.mode, Some(&link_name))?;
+            append_fs(
+                dst,
+                &dest,
+                &stat,
+                options.mode,
+                options.preserve_absolute,
+                Some(&link_name),
+            )?;
         } else {
             #[cfg(unix)]
             {
                 let stat = fs::metadata(&src)?;
                 if !stat.is_file() {
-                    append_special(dst, &dest, &stat, options.mode)?;
+                    append_special(dst, &dest, &stat, options.mode, options.preserve_absolute)?;
                     continue;
                 }
             }

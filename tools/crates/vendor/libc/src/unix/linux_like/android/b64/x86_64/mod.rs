@@ -3,8 +3,6 @@ use crate::prelude::*;
 
 pub type wchar_t = i32;
 pub type greg_t = i64;
-pub type __u64 = c_ulonglong;
-pub type __s64 = c_longlong;
 
 s! {
     pub struct stat {
@@ -27,6 +25,7 @@ s! {
         __unused: Padding<[c_long; 3]>,
     }
 
+    // FIXME(1.0,deprecate): lfs binding to be removed
     pub struct stat64 {
         pub st_dev: crate::dev_t,
         pub st_ino: crate::ino_t,
@@ -151,7 +150,7 @@ s! {
         pub mxcr_mask: c_uint,
         pub st_space: [c_uint; 32],
         pub xmm_space: [c_uint; 64],
-        padding: [c_uint; 24],
+        padding: Padding<[c_uint; 24]>,
     }
 }
 
@@ -371,14 +370,11 @@ pub const SYS_sethostname: c_long = 170;
 pub const SYS_setdomainname: c_long = 171;
 pub const SYS_iopl: c_long = 172;
 pub const SYS_ioperm: c_long = 173;
-#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
-pub const SYS_create_module: c_long = 174;
+// 174 was SYS_create_module
 pub const SYS_init_module: c_long = 175;
 pub const SYS_delete_module: c_long = 176;
-#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
-pub const SYS_get_kernel_syms: c_long = 177;
-#[deprecated(since = "0.2.70", note = "Functional up to 2.6 kernel")]
-pub const SYS_query_module: c_long = 178;
+// 177 was SYS_get_kernel_syms
+// 178 was SYS_query_module
 pub const SYS_quotactl: c_long = 179;
 pub const SYS_nfsservctl: c_long = 180;
 pub const SYS_getpmsg: c_long = 181;

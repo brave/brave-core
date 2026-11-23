@@ -7,7 +7,7 @@
 //! - [Tutorial][_tutorial::chapter_0]
 //! - [Special Topics][_topic]
 //! - [Discussions](https://github.com/winnow-rs/winnow/discussions)
-//! - [CHANGELOG](https://github.com/winnow-rs/winnow/blob/v0.7.14/CHANGELOG.md) (includes major version migration
+//! - [CHANGELOG](https://github.com/winnow-rs/winnow/blob/v1.0.5/CHANGELOG.md) (includes major version migration
 //!   guides)
 //!
 //! ## Aspirations
@@ -26,7 +26,7 @@
 //! - Resilient maintainership, including
 //!   - Willing to break compatibility rather than batching up breaking changes in large releases
 //!   - Leverage feature flags to keep one active branch
-//! - We will support the last 6 months of rust releases (MSRV, currently 1.64.0)
+//! - We will support the last 6 months of rust releases (MSRV)
 //!
 //! See also [Special Topic: Why winnow?][crate::_topic::why]
 //!
@@ -39,7 +39,7 @@
 //!
 //! Then use it to parse:
 //! ```rust
-//! # #[cfg(feature = "alloc")] {
+//! # #[cfg(all(feature = "alloc", feature = "parser"))] {
 #![doc = include_str!("../examples/css/parser.rs")]
 //! # }
 //! ```
@@ -99,15 +99,21 @@ pub(crate) mod util {
 mod macros;
 
 #[macro_use]
+#[cfg(feature = "parser")]
 pub mod error;
 
+#[cfg(feature = "parser")]
 mod parser;
 
 pub mod stream;
 
+#[cfg(feature = "ascii")]
 pub mod ascii;
+#[cfg(feature = "binary")]
 pub mod binary;
+#[cfg(feature = "parser")]
 pub mod combinator;
+#[cfg(feature = "parser")]
 pub mod token;
 
 #[cfg(feature = "unstable-doc")]
@@ -124,6 +130,7 @@ pub mod _tutorial;
 /// ## Example
 ///
 /// ```rust
+/// # #[cfg(feature = "ascii")] {
 /// use winnow::prelude::*;
 ///
 /// fn parse_data(input: &mut &str) -> ModalResult<u64> {
@@ -135,28 +142,42 @@ pub mod _tutorial;
 ///   let result = parse_data.parse("100");
 ///   assert_eq!(result, Ok(100));
 /// }
+/// # }
 /// ```
 pub mod prelude {
+    #[cfg(feature = "parser")]
     pub use crate::error::ModalError as _;
+    #[cfg(feature = "parser")]
     pub use crate::error::ParserError as _;
     pub use crate::stream::AsChar as _;
     pub use crate::stream::ContainsToken as _;
     pub use crate::stream::Stream as _;
     pub use crate::stream::StreamIsPartial as _;
+    #[cfg(feature = "parser")]
     pub use crate::ModalParser;
+    #[cfg(feature = "parser")]
     pub use crate::ModalResult;
+    #[cfg(feature = "parser")]
     pub use crate::Parser;
     #[cfg(feature = "unstable-recover")]
     #[cfg(feature = "std")]
+    #[cfg(feature = "parser")]
     pub use crate::RecoverableParser as _;
 
-    #[cfg(test)]
+    #[cfg(all(test, feature = "parser"))]
     pub(crate) use crate::TestResult;
 }
 
+#[cfg(feature = "parser")]
 pub use error::ModalResult;
+#[cfg(feature = "parser")]
 pub use error::Result;
-pub use parser::*;
+#[cfg(feature = "unstable-recover")]
+#[cfg(feature = "std")]
+#[cfg(feature = "parser")]
+pub use parser::RecoverableParser;
+#[cfg(feature = "parser")]
+pub use parser::{ModalParser, Parser};
 pub use stream::BStr;
 pub use stream::Bytes;
 pub use stream::LocatingSlice;
@@ -164,5 +185,5 @@ pub use stream::Partial;
 pub use stream::Stateful;
 pub use stream::Str;
 
-#[cfg(test)]
+#[cfg(all(test, feature = "parser"))]
 pub(crate) use error::TestResult;

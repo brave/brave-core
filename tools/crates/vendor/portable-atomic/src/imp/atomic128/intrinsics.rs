@@ -122,7 +122,9 @@ unsafe fn atomic_compare_exchange(
             success: Ordering,
             failure: Ordering,
         ) -> (u128, bool) {
-            debug_assert!(dst as usize % 16 == 0);
+            #[cfg(portable_atomic_no_strict_provenance)]
+            use crate::utils::ptr::PtrExt as _;
+            debug_assert!(dst.addr() % 16 == 0);
             #[cfg(not(target_feature = "cmpxchg16b"))]
             {
                 debug_assert!(detect::detect().cmpxchg16b());

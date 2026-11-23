@@ -1,0 +1,32 @@
+warning: variants `A` and `B` are never constructed
+  --> $DIR/privacy.rs:94:9
+   |
+93 |     pub enum Enum {
+   |              ---- variants in this enum
+94 |         A(u8, u16),
+   |         ^
+95 |         B { a: u8, b: u16 },
+   |         ^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+error: type `private::_::_::_::ẕb` is private
+   --> $DIR/privacy.rs:142:9
+    |
+142 |         _,
+    |         ^ private type
+
+error: type `private::_::_::_::ẕ1` is private
+   --> $DIR/privacy.rs:160:9
+    |
+160 |         _,
+    |         ^ private type
+
+error: type `private::_::_::_::ẕb` is private
+   --> $DIR/privacy.rs:172:104
+    |
+172 | ...project_clients::TryFromBytesDerive, _, _, { zerocopy_renamed::ident_id!(b) }>>::Type =
+    |                                         ^ private type
+
+error: aborting due to 3 previous errors; 1 warning emitted
+

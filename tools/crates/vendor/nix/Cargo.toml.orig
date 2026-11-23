@@ -2,9 +2,8 @@
 name        = "nix"
 description = "Rust friendly bindings to *nix APIs"
 edition     = "2021"
-version     = "0.30.1"
+version     = "0.31.4"
 rust-version = "1.69"
-authors     = ["The nix-rust Project Developers"]
 repository  = "https://github.com/nix-rust/nix"
 license     = "MIT"
 categories  = ["os::unix-apis"]
@@ -28,17 +27,17 @@ targets = [
 ]
 
 [dependencies]
-libc = { version = "0.2.171", features = ["extra_traits"] }
+libc = { version = "0.2.186", features = ["extra_traits"] }
 bitflags = "2.3.3"
 cfg-if = "1.0"
-pin-utils = { version = "0.1.0", optional = true }
+pin-project-lite = { version = "0.2", optional = true }
 memoffset = { version = "0.9", optional = true }
 
 [features]
 default = []
 
 acct = []
-aio = ["pin-utils"]
+aio = ["pin-project-lite"]
 dir = ["fs"]
 env = []
 event = ["poll"]
@@ -91,7 +90,7 @@ caps = "0.5.3"
 sysctl = "0.4"
 
 [build-dependencies]
-cfg_aliases = "0.2.1"
+cfg_aliases = "0.2.2"
 
 [[test]]
 name = "test"

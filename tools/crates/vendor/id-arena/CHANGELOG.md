@@ -1,3 +1,9 @@
+# 2.3.0
+
+Released 2026-01-14
+
+* Fix no-std build.
+
 # 2.2.1
 
 Released 2019-02-15.

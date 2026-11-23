@@ -1,0 +1,10 @@
+bench_ref_from_prefix_dynamic_size:
+	mov rdx, rsi
+	xor eax, eax
+	sub rdx, 4
+	mov rcx, rdi
+	cmovb rcx, rax
+	shr rdx
+	test dil, 1
+	cmove rax, rcx
+	ret

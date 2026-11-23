@@ -1068,8 +1068,8 @@ impl Utf8Path {
     /// ```
     #[inline]
     #[must_use]
-    pub fn ends_with(&self, base: impl AsRef<Path>) -> bool {
-        self.0.ends_with(base)
+    pub fn ends_with(&self, child: impl AsRef<Path>) -> bool {
+        self.0.ends_with(child)
     }
 
     /// Extracts the stem (non-extension) portion of [`self.file_name`].
@@ -1683,14 +1683,84 @@ impl Utf8Path {
     #[must_use = "`self` will be dropped if the result is not used"]
     #[inline]
     pub fn into_path_buf(self: Box<Utf8Path>) -> Utf8PathBuf {
+        Utf8PathBuf(self.into_std_boxed_path().into_path_buf())
+    }
+
+    /// Converts a [`Box<Utf8Path>`] into a [`Box<Path>`] without copying or allocating.
+    ///
+    /// This is equivalent to the [`From<Box<Utf8Path>> for Box<Path>`][from]
+    /// implementation, but may aid in type inference.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use camino::{Utf8Path, Utf8PathBuf};
+    /// use std::path::Path;
+    ///
+    /// let utf8_path_buf = Utf8PathBuf::from("foo.txt");
+    /// let boxed_utf8_path = utf8_path_buf.into_boxed_path();
+    /// let boxed_std_path = boxed_utf8_path.into_std_boxed_path();
+    /// assert_eq!(boxed_std_path.to_str(), Some("foo.txt"));
+    ///
+    /// // Convert back to a Box<Utf8Path>.
+    /// let new_boxed_utf8_path = Utf8Path::from_boxed_path(boxed_std_path).unwrap();
+    /// assert_eq!(&*new_boxed_utf8_path, Utf8Path::new("foo.txt"));
+    /// ```
+    ///
+    /// [from]: #impl-From<Box<Utf8Path>>-for-Box<Path>
+    #[must_use = "`self` will be dropped if the result is not used"]
+    #[inline]
+    pub fn into_std_boxed_path(self: Box<Utf8Path>) -> Box<Path> {
         let ptr = Box::into_raw(self) as *mut Path;
         // SAFETY:
-        // * self is valid UTF-8
         // * ptr was constructed by consuming self so it represents an owned path.
         // * Utf8Path is marked as #[repr(transparent)] so the conversion from a *mut Utf8Path to a
         //   *mut Path is valid.
-        let boxed_path = unsafe { Box::from_raw(ptr) };
-        Utf8PathBuf(boxed_path.into_path_buf())
+        unsafe { Box::from_raw(ptr) }
+    }
+
+    /// Creates a new [`Box<Utf8Path>`] from a [`Box<Path>`] containing valid UTF-8 characters,
+    /// without copying or allocating.
+    ///
+    /// Errors with the original [`Box<Path>`] if it is not valid UTF-8.
+    ///
+    /// For a version that returns a type that implements [`std::error::Error`],
+    /// see [`TryFrom<Box<Path>>`][tryfrom].
+    ///
+    /// [tryfrom]: #impl-TryFrom<Box<Path>>-for-Box<Utf8Path>
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use camino::Utf8Path;
+    /// use std::ffi::OsStr;
+    /// # #[cfg(unix)]
+    /// use std::os::unix::ffi::OsStrExt;
+    /// use std::path::Path;
+    ///
+    /// let unicode_path: Box<Path> = Path::new("/valid/unicode").into();
+    /// Utf8Path::from_boxed_path(unicode_path).expect("valid Unicode path succeeded");
+    ///
+    /// // Paths on Unix can be non-UTF-8.
+    /// # #[cfg(unix)]
+    /// let non_unicode_str = OsStr::from_bytes(b"\xFF\xFF\xFF");
+    /// # #[cfg(unix)]
+    /// let non_unicode_path: Box<Path> = Path::new(non_unicode_str).into();
+    /// # #[cfg(unix)]
+    /// Utf8Path::from_boxed_path(non_unicode_path).expect_err("non-Unicode path failed");
+    /// ```
+    pub fn from_boxed_path(path: Box<Path>) -> Result<Box<Utf8Path>, Box<Path>> {
+        if path.as_os_str().to_str().is_some() {
+            let ptr = Box::into_raw(path) as *mut Utf8Path;
+            // SAFETY:
+            // * path is valid UTF-8 (just checked above)
+            // * ptr was constructed by consuming path so it represents an owned path.
+            // * Utf8Path is marked as #[repr(transparent)] so the conversion from a *mut Path to a
+            //   *mut Utf8Path is valid.
+            Ok(unsafe { Box::from_raw(ptr) })
+        } else {
+            Err(path)
+        }
     }
 
     // invariant: Path must be guaranteed to be utf-8 data
@@ -2608,6 +2678,12 @@ impl From<Box<Utf8Path>> for Utf8PathBuf {
     }
 }
 
+impl From<Box<Utf8Path>> for Box<Path> {
+    fn from(path: Box<Utf8Path>) -> Box<Path> {
+        path.into_std_boxed_path()
+    }
+}
+
 impl From<Utf8PathBuf> for Box<Utf8Path> {
     fn from(path: Utf8PathBuf) -> Box<Utf8Path> {
         path.into_boxed_path()
@@ -2777,6 +2853,42 @@ impl<'a> TryFrom<&'a OsStr> for &'a Utf8Path {
 
     fn try_from(os_str: &'a OsStr) -> Result<&'a Utf8Path, Self::Error> {
         Utf8Path::from_os_str(os_str).ok_or(FromOsStrError(()))
+    }
+}
+
+/// Converts a [`Box<Path>`] to a [`Box<Utf8Path>`].
+///
+/// Returns [`FromBoxedPathError`] if the path is not valid UTF-8.
+///
+/// # Examples
+///
+/// ```
+/// use camino::Utf8Path;
+/// use std::convert::TryFrom;
+/// use std::ffi::OsStr;
+/// # #[cfg(unix)]
+/// use std::os::unix::ffi::OsStrExt;
+/// use std::path::Path;
+///
+/// let unicode_path: Box<Path> = Path::new("/valid/unicode").into();
+/// <Box<Utf8Path>>::try_from(unicode_path).expect("valid Unicode path succeeded");
+///
+/// // Paths on Unix can be non-UTF-8.
+/// # #[cfg(unix)]
+/// let non_unicode_str = OsStr::from_bytes(b"\xFF\xFF\xFF");
+/// # #[cfg(unix)]
+/// let non_unicode_path: Box<Path> = Path::new(non_unicode_str).into();
+/// # #[cfg(unix)]
+/// assert!(<Box<Utf8Path>>::try_from(non_unicode_path).is_err(), "non-Unicode path failed");
+/// ```
+impl TryFrom<Box<Path>> for Box<Utf8Path> {
+    type Error = FromBoxedPathError;
+
+    fn try_from(path: Box<Path>) -> Result<Box<Utf8Path>, Self::Error> {
+        Utf8Path::from_boxed_path(path).map_err(|path| FromBoxedPathError {
+            path,
+            error: FromPathError(()),
+        })
     }
 }
 
@@ -3062,6 +3174,94 @@ impl error::Error for FromOsStrError {
     }
 }
 
+/// A possible error value while converting a [`Box<Path>`] to a [`Box<Utf8Path>`].
+///
+/// Produced by the [`TryFrom<Box<Path>>`][tryfrom] implementation for [`Box<Utf8Path>`].
+///
+/// [tryfrom]: Utf8Path#impl-TryFrom<Box<Path>>-for-Box<Utf8Path>
+///
+/// # Examples
+///
+/// ```
+/// use camino::{Utf8Path, FromBoxedPathError};
+/// use std::convert::{TryFrom, TryInto};
+/// use std::ffi::OsStr;
+/// # #[cfg(unix)]
+/// use std::os::unix::ffi::OsStrExt;
+/// use std::path::Path;
+///
+/// let unicode_path: Box<Path> = Path::new("/valid/unicode").into();
+/// let utf8_path: Box<Utf8Path> = unicode_path.try_into().expect("valid Unicode path succeeded");
+///
+/// // Paths on Unix can be non-UTF-8.
+/// # #[cfg(unix)]
+/// let non_unicode_str = OsStr::from_bytes(b"\xFF\xFF\xFF");
+/// # #[cfg(unix)]
+/// let non_unicode_path: Box<Path> = Path::new(non_unicode_str).into();
+/// # #[cfg(unix)]
+/// let err: FromBoxedPathError = <Box<Utf8Path>>::try_from(non_unicode_path.clone())
+///     .expect_err("non-Unicode path failed");
+/// # #[cfg(unix)]
+/// assert_eq!(err.as_path(), &*non_unicode_path);
+/// # #[cfg(unix)]
+/// assert_eq!(err.into_boxed_path(), non_unicode_path);
+/// ```
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct FromBoxedPathError {
+    path: Box<Path>,
+    error: FromPathError,
+}
+
+impl FromBoxedPathError {
+    /// Returns the [`Path`] slice that was attempted to be converted to [`Box<Utf8Path>`].
+    #[inline]
+    pub fn as_path(&self) -> &Path {
+        &self.path
+    }
+
+    /// Returns the [`Box<Path>`] that was attempted to be converted to [`Box<Utf8Path>`].
+    #[inline]
+    pub fn into_boxed_path(self) -> Box<Path> {
+        self.path
+    }
+
+    /// Fetches a [`FromPathError`] for more about the conversion failure.
+    ///
+    /// At the moment this struct does not contain any additional information, but is provided for
+    /// completeness.
+    #[inline]
+    pub fn from_path_error(&self) -> FromPathError {
+        self.error
+    }
+
+    /// Converts self into a [`std::io::Error`] with kind
+    /// [`InvalidData`](io::ErrorKind::InvalidData).
+    ///
+    /// Many users of [`FromBoxedPathError`] will want to convert it into an [`io::Error`]. This is a
+    /// convenience method to do that.
+    pub fn into_io_error(self) -> io::Error {
+        // NOTE: we don't currently implement `From<FromBoxedPathError> for io::Error` because we
+        // want to ensure the user actually desires that conversion.
+        io::Error::new(io::ErrorKind::InvalidData, self)
+    }
+}
+
+impl fmt::Display for FromBoxedPathError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "Box<Path> contains invalid UTF-8: {}",
+            self.path.display()
+        )
+    }
+}
+
+impl error::Error for FromBoxedPathError {
+    fn source(&self) -> Option<&(dyn error::Error + 'static)> {
+        Some(&self.error)
+    }
+}
+
 // ---
 // AsRef impls
 // ---
@@ -3207,10 +3407,9 @@ impl PartialEq for Utf8Path {
 impl Eq for Utf8Path {}
 
 impl Hash for Utf8Path {
+    #[inline]
     fn hash<H: Hasher>(&self, state: &mut H) {
-        for component in self.components() {
-            component.hash(state)
-        }
+        self.0.hash(state)
     }
 }
 

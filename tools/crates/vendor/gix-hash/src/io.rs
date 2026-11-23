@@ -1,17 +1,21 @@
-use crate::hasher;
+use gix_error::{Error, ErrorExt, message};
 
-/// The error type for I/O operations that compute hashes.
-#[derive(Debug, thiserror::Error)]
-#[allow(missing_docs)]
-pub enum Error {
-    #[error(transparent)]
-    Io(#[from] std::io::Error),
-    #[error("Failed to hash data")]
-    Hasher(#[from] hasher::Error),
+/// Convert an I/O error into this module's error type without changing its message.
+// TODO(gix-error): review and attempt to remove the need for this if possible. But don't stress it.
+pub fn from_std_io(source: std::io::Error) -> Error {
+    source.raise()
+}
+
+/// Convert a hashing error into this module's error type and add operation context.
+// TODO(gix-error): review and attempt to remove the need for this if possible. But don't stress it.
+pub fn from_hasher(source: Error) -> Error {
+    source.and_raise(message("Failed to hash data"))
 }
 
 pub(super) mod _impl {
-    use crate::{hasher, io::Error, Hasher};
+    use crate::{Hasher, hasher, io::from_std_io};
+
+    use gix_error::{ErrorExt, Result};
 
     /// Compute the hash of `kind` for the bytes in the file at `path`, hashing only the first `num_bytes_from_start`
     /// while initializing and calling `progress`.
@@ -21,16 +25,16 @@ pub(super) mod _impl {
     ///
     /// # Note
     ///
-    /// * [Interrupts][gix_features::interrupt] are supported.
+    /// * Interruption is supported through `should_interrupt`.
     pub fn bytes_of_file(
         path: &std::path::Path,
         num_bytes_from_start: u64,
         kind: crate::Kind,
-        progress: &mut dyn gix_features::progress::Progress,
+        progress: &mut dyn gix_utils::progress::Progress,
         should_interrupt: &std::sync::atomic::AtomicBool,
-    ) -> Result<crate::ObjectId, Error> {
+    ) -> Result<crate::ObjectId> {
         bytes(
-            &mut std::fs::File::open(path)?,
+            &mut std::fs::File::open(path).map_err(from_std_io)?,
             num_bytes_from_start,
             kind,
             progress,
@@ -43,9 +47,9 @@ pub(super) mod _impl {
         read: &mut dyn std::io::Read,
         num_bytes_from_start: u64,
         kind: crate::Kind,
-        progress: &mut dyn gix_features::progress::Progress,
+        progress: &mut dyn gix_utils::progress::Progress,
         should_interrupt: &std::sync::atomic::AtomicBool,
-    ) -> Result<crate::ObjectId, Error> {
+    ) -> Result<crate::ObjectId> {
         bytes_with_hasher(read, num_bytes_from_start, hasher(kind), progress, should_interrupt)
     }
 
@@ -54,14 +58,14 @@ pub(super) mod _impl {
         read: &mut dyn std::io::Read,
         num_bytes_from_start: u64,
         mut hasher: Hasher,
-        progress: &mut dyn gix_features::progress::Progress,
+        progress: &mut dyn gix_utils::progress::Progress,
         should_interrupt: &std::sync::atomic::AtomicBool,
-    ) -> Result<crate::ObjectId, Error> {
+    ) -> Result<crate::ObjectId> {
         let start = std::time::Instant::now();
         // init progress before the possibility for failure, as convenience in case people want to recover
         progress.init(
-            Some(num_bytes_from_start as gix_features::progress::prodash::progress::Step),
-            gix_features::progress::bytes(),
+            Some(num_bytes_from_start as gix_utils::progress::prodash::progress::Step),
+            gix_utils::progress::bytes(),
         );
 
         const BUF_SIZE: usize = u16::MAX as usize;
@@ -70,12 +74,16 @@ pub(super) mod _impl {
 
         while bytes_left > 0 {
             let out = &mut buf[..BUF_SIZE.min(bytes_left as usize)];
-            read.read_exact(out)?;
+            read.read_exact(out).map_err(from_std_io)?;
             bytes_left -= out.len() as u64;
             progress.inc_by(out.len());
             hasher.update(out);
             if should_interrupt.load(std::sync::atomic::Ordering::SeqCst) {
-                return Err(std::io::Error::other("Interrupted").into());
+                return Err(gix_error::ClassificationMarker::with_source(
+                    gix_error::Class::Cancelled,
+                    std::io::Error::new(std::io::ErrorKind::Interrupted, "Interrupted"),
+                )
+                .raise());
             }
         }
 
@@ -114,7 +122,13 @@ pub(super) mod _impl {
         /// Create a new hash writer which hashes all bytes written to `inner` with a hash of `kind`.
         pub fn new(inner: T, object_hash: crate::Kind) -> Self {
             match object_hash {
+                #[cfg(feature = "sha1")]
                 crate::Kind::Sha1 => Write {
+                    inner,
+                    hash: crate::hasher(object_hash),
+                },
+                #[cfg(feature = "sha256")]
+                crate::Kind::Sha256 => Write {
                     inner,
                     hash: crate::hasher(object_hash),
                 },

@@ -1,11 +1,11 @@
 use std::iter::Peekable;
 
-use proc_macro::{token_stream, Span, TokenStream};
-use time_core::convert::*;
+use proc_macro::{Span, TokenStream, token_stream};
+use time_core::unit::*;
 
+use crate::Error;
 use crate::helpers::{consume_any_ident, consume_number, consume_punct};
 use crate::to_tokens::ToTokenStream;
-use crate::Error;
 
 pub(crate) struct Offset {
     pub(crate) hours: i8,
@@ -56,22 +56,22 @@ pub(crate) fn parse(chars: &mut Peekable<token_stream::IntoIter>) -> Result<Offs
         Err(Error::InvalidComponent {
             name: "hour",
             value: hours.to_string(),
-            span_start: Some(hours_span),
-            span_end: Some(hours_span),
+            span_start: Some(hours_span.start()),
+            span_end: Some(hours_span.end()),
         })
     } else if minutes >= Minute::per_t(Hour) {
         Err(Error::InvalidComponent {
             name: "minute",
             value: minutes.to_string(),
-            span_start: Some(minutes_span),
-            span_end: Some(minutes_span),
+            span_start: Some(minutes_span.start()),
+            span_end: Some(minutes_span.end()),
         })
     } else if seconds >= Second::per_t(Minute) {
         Err(Error::InvalidComponent {
             name: "second",
             value: seconds.to_string(),
-            span_start: Some(seconds_span),
-            span_end: Some(seconds_span),
+            span_start: Some(seconds_span.start()),
+            span_end: Some(seconds_span.end()),
         })
     } else {
         Ok(Offset {

@@ -1,7 +1,7 @@
 //! Availability Impact to the Vulnerable System (VA)
 
 use crate::{
-    Error, Result,
+    Error,
     v4::metric::{Metric, MetricType},
 };
 use alloc::borrow::ToOwned;
@@ -22,7 +22,7 @@ use core::{fmt, str::FromStr};
 /// > attacks that consume network bandwidth, processor cycles, or disk space
 /// > all impact the availability of a system. The resulting score is greatest
 /// > when the consequence to the system is highest.
-#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+#[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
 pub enum AvailabilityImpactToTheVulnerableSystem {
     /// None (N)
     ///
@@ -54,13 +54,8 @@ pub enum AvailabilityImpactToTheVulnerableSystem {
     /// > instance of a successful attack, leaks a only small amount of memory,
     /// > but after repeated exploitation causes a service to become completely
     /// > unavailable).
+    #[default]
     High,
-}
-
-impl Default for AvailabilityImpactToTheVulnerableSystem {
-    fn default() -> Self {
-        Self::High
-    }
 }
 
 impl Metric for AvailabilityImpactToTheVulnerableSystem {
@@ -68,9 +63,9 @@ impl Metric for AvailabilityImpactToTheVulnerableSystem {
 
     fn as_str(self) -> &'static str {
         match self {
-            AvailabilityImpactToTheVulnerableSystem::None => "N",
-            AvailabilityImpactToTheVulnerableSystem::Low => "L",
-            AvailabilityImpactToTheVulnerableSystem::High => "H",
+            Self::None => "N",
+            Self::Low => "L",
+            Self::High => "H",
         }
     }
 }
@@ -84,11 +79,11 @@ impl fmt::Display for AvailabilityImpactToTheVulnerableSystem {
 impl FromStr for AvailabilityImpactToTheVulnerableSystem {
     type Err = Error;
 
-    fn from_str(s: &str) -> Result<Self> {
+    fn from_str(s: &str) -> Result<Self, Error> {
         match s {
-            "N" => Ok(AvailabilityImpactToTheVulnerableSystem::None),
-            "L" => Ok(AvailabilityImpactToTheVulnerableSystem::Low),
-            "H" => Ok(AvailabilityImpactToTheVulnerableSystem::High),
+            "N" => Ok(Self::None),
+            "L" => Ok(Self::Low),
+            "H" => Ok(Self::High),
             _ => Err(Error::InvalidMetricV4 {
                 metric_type: Self::TYPE,
                 value: s.to_owned(),
@@ -113,27 +108,22 @@ pub(crate) mod merge {
     /// Result of the merging of the base and modified metrics.
     ///
     /// Used in scoring.
-    #[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+    #[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
     pub(crate) enum MergedAvailabilityImpactToTheVulnerableSystem {
+        #[default]
         High,
         Low,
         None,
     }
 
-    impl Default for MergedAvailabilityImpactToTheVulnerableSystem {
-        fn default() -> Self {
-            Self::High
-        }
-    }
-
     impl FromStr for MergedAvailabilityImpactToTheVulnerableSystem {
         type Err = Error;
 
-        fn from_str(s: &str) -> Result<Self> {
+        fn from_str(s: &str) -> Result<Self, Error> {
             match s {
-                "H" => Ok(MergedAvailabilityImpactToTheVulnerableSystem::High),
-                "L" => Ok(MergedAvailabilityImpactToTheVulnerableSystem::Low),
-                "N" => Ok(MergedAvailabilityImpactToTheVulnerableSystem::None),
+                "H" => Ok(Self::High),
+                "L" => Ok(Self::Low),
+                "N" => Ok(Self::None),
                 _ => Err(Error::InvalidMetricV4 {
                     metric_type: MetricType::VA,
                     value: s.to_owned(),

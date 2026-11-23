@@ -149,7 +149,7 @@ fn unicode_escape<'i, E: ParserError<Stream<'i>>>(input: &mut Stream<'i>) -> Mod
 }
 
 fn u16_hex<'i, E: ParserError<Stream<'i>>>(input: &mut Stream<'i>) -> ModalResult<u16, E> {
-    take(4usize)
+    take(4_usize)
         .verify_map(|s| u16::from_str_radix(s, 16).ok())
         .parse_next(input)
 }

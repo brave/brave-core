@@ -134,7 +134,8 @@ feature! {
 
     #[cfg(any(linux_android,
               bsd,
-              solarish))]
+              solarish,
+              target_os = "hurd"))]
     #[deny(missing_docs)]
     pub mod ifaddrs;
     #[cfg(not(target_os = "redox"))]

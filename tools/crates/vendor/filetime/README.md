@@ -2,10 +2,17 @@
 
 [Documentation](https://docs.rs/filetime)
 
-A helper library for inspecting and setting the various timestamps of files in Rust. This
-library takes into account cross-platform differences in terms of where the
-timestamps are located, what they are called, and how to convert them into a
-platform-independent representation.
+> **Note**: this library is quite old and superseded by functionality in the
+> standard library. Nowadays you shouldn't use this crate and you should use
+> [`FileTimes`] and [`File::set_times`] instead.
+
+[`FileTimes`]: https://doc.rust-lang.org/stable/std/fs/struct.FileTimes.html
+[`File::set_times`]: https://doc.rust-lang.org/stable/std/fs/struct.File.html#method.set_times
+
+A helper library for inspecting and setting the various timestamps of files in
+Rust. This library takes into account cross-platform differences in terms of
+where the timestamps are located, what they are called, and how to convert them
+into a platform-independent representation.
 
 ```toml
 # Cargo.toml
@@ -15,9 +22,10 @@ filetime = "0.2"
 
 # Advantages over using `std::fs::Metadata`
 
-This library includes the ability to set this data, which std does not.
-
-This library, when built with `RUSTFLAGS=--cfg emulate_second_only_system` set, will return all times rounded down to the second. This emulates the behavior of some file systems, mostly [HFS](https://en.wikipedia.org/wiki/HFS_Plus), allowing debugging on other hardware.
+This library, when built with `RUSTFLAGS=--cfg emulate_second_only_system` set,
+will return all times rounded down to the second. This emulates the behavior of
+some file systems, mostly [HFS](https://en.wikipedia.org/wiki/HFS_Plus),
+allowing debugging on other hardware.
 
 # License
 

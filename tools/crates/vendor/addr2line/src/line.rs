@@ -58,11 +58,13 @@ impl Lines {
                     let end = row.address();
                     let mut rows = Vec::new();
                     mem::swap(&mut rows, &mut sequence_rows);
-                    sequences.push(LineSequence {
-                        start,
-                        end,
-                        rows: rows.into_boxed_slice(),
-                    });
+                    if start < end {
+                        sequences.push(LineSequence {
+                            start,
+                            end,
+                            rows: rows.into_boxed_slice(),
+                        });
+                    }
                 }
                 continue;
             }
@@ -94,7 +96,7 @@ impl Lines {
                 column,
             });
         }
-        sequences.sort_by_key(|x| x.start);
+        sequences.sort_unstable_by_key(|x| x.start);
 
         let mut files = Vec::new();
         let header = rows.header();

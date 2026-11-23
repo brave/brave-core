@@ -314,13 +314,9 @@ impl<'a> BorrowedCertRevocationList<'a> {
 
     fn find_serial(&self, serial: &[u8]) -> Result<Option<BorrowedRevokedCert<'_>>, Error> {
         for revoked_cert_result in self {
-            match revoked_cert_result {
-                Err(e) => return Err(e),
-                Ok(revoked_cert) => {
-                    if revoked_cert.serial_number.eq(serial) {
-                        return Ok(Some(revoked_cert));
-                    }
-                }
+            let revoked_cert = revoked_cert_result?;
+            if revoked_cert.serial_number.eq(serial) {
+                return Ok(Some(revoked_cert));
             }
         }
 

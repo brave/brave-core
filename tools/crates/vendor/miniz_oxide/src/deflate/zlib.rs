@@ -1,14 +1,12 @@
-use crate::deflate::core::deflate_flags::{
-    TDEFL_FORCE_ALL_RAW_BLOCKS, TDEFL_GREEDY_PARSING_FLAG, TDEFL_RLE_MATCHES,
-};
+use crate::deflate::core::deflate_flags::{TDEFL_GREEDY_PARSING_FLAG, TDEFL_RLE_MATCHES};
 
 const DEFAULT_CM: u8 = 8;
-const DEFAULT_CINFO: u8 = 7 << 4;
+const _DEFAULT_CINFO: u8 = 7 << 4;
 const _DEFAULT_FDICT: u8 = 0;
-const DEFAULT_CMF: u8 = DEFAULT_CM | DEFAULT_CINFO;
+const _DEFAULT_CMF: u8 = DEFAULT_CM | _DEFAULT_CINFO;
 // CMF used for RLE (technically it uses a window size of 0 but the lowest that can
 // be specified in the header corresponds to a window size of 1 << (0 + 8) aka 256.
-const MIN_CMF: u8 = DEFAULT_CM; // | 0
+const _MIN_CMF: u8 = DEFAULT_CM; // | 0
 /// The 16-bit value consisting of CMF and FLG must be divisible by this to be valid.
 const FCHECK_DIVISOR: u8 = 31;
 
@@ -45,31 +43,22 @@ const fn zlib_level_from_flags(flags: u32) -> u8 {
     }
 }
 
-#[inline]
-const fn cmf_from_flags(flags: u32) -> u8 {
-    if (flags & TDEFL_RLE_MATCHES == 0) && (flags & TDEFL_FORCE_ALL_RAW_BLOCKS == 0) {
-        DEFAULT_CMF
-    // If we are using RLE encoding or no compression the window bits can be set as the
-    // minimum.
-    } else {
-        MIN_CMF
-    }
-}
-
 /// Get the zlib header for the level using the default window size and no
 /// dictionary.
 #[inline]
-fn header_from_level(level: u8, flags: u32) -> [u8; 2] {
-    let cmf = cmf_from_flags(flags);
+fn header_from_level(level: u8, window_bits: u8) -> [u8; 2] {
+    // bits 0 to 3 compression method (always 8)
+    // bits 4 to 7, log 2 of window size - 7
+    let cmf = DEFAULT_CM | (window_bits.saturating_sub(8) << 4);
     [cmf, add_fcheck(cmf, level << 6)]
 }
 
 /// Create a zlib header from the given compression flags.
 /// Only level is considered.
 #[inline]
-pub fn header_from_flags(flags: u32) -> [u8; 2] {
+pub fn header_from_flags(flags: u32, window_bits: u8) -> [u8; 2] {
     let level = zlib_level_from_flags(flags);
-    header_from_level(level, flags)
+    header_from_level(level, window_bits)
 }
 
 #[cfg(test)]
@@ -103,7 +92,7 @@ mod test {
 
     #[test]
     fn test_header() {
-        let header = super::header_from_level(3, 0);
+        let header = super::header_from_level(3, 8);
         assert_eq!(
             ((usize::from(header[0]) * 256) + usize::from(header[1])) % 31,
             0

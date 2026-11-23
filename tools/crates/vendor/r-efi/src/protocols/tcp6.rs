@@ -140,53 +140,53 @@ pub struct CloseToken {
     pub abort_on_close: crate::base::Boolean,
 }
 
-pub type ProtocolGetModeData = eficall! {fn(
+pub type ProtocolGetModeData = unsafe extern "efiapi" fn(
     *mut Protocol,
     *mut ConnectionState,
     *mut ConfigData,
     *mut crate::protocols::ip6::ModeData,
     *mut crate::protocols::managed_network::ConfigData,
     *mut crate::protocols::simple_network::Mode,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolConfigure = eficall! {fn(
+pub type ProtocolConfigure = unsafe extern "efiapi" fn(
     *mut Protocol,
     *mut ConfigData,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolConnect = eficall! {fn(
+pub type ProtocolConnect = unsafe extern "efiapi" fn(
     *mut Protocol,
     *mut ConnectionToken,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolAccept = eficall! {fn(
+pub type ProtocolAccept = unsafe extern "efiapi" fn(
     *mut Protocol,
     *mut ListenToken,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolTransmit = eficall! {fn(
+pub type ProtocolTransmit = unsafe extern "efiapi" fn(
     *mut Protocol,
     *mut IoToken,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolReceive = eficall! {fn(
+pub type ProtocolReceive = unsafe extern "efiapi" fn(
     *mut Protocol,
     *mut IoToken,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolClose = eficall! {fn(
+pub type ProtocolClose = unsafe extern "efiapi" fn(
     *mut Protocol,
     *mut CloseToken,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolCancel = eficall! {fn(
+pub type ProtocolCancel = unsafe extern "efiapi" fn(
     *mut Protocol,
     *mut CompletionToken,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
-pub type ProtocolPoll = eficall! {fn(
+pub type ProtocolPoll = unsafe extern "efiapi" fn(
     *mut Protocol,
-) -> crate::base::Status};
+) -> crate::base::Status;
 
 #[repr(C)]
 pub struct Protocol {

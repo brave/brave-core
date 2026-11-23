@@ -49,12 +49,6 @@ fn is_lock_free() {
 }
 
 #[test]
-fn const_is_lock_free() {
-    const _U: bool = AtomicCell::<usize>::is_lock_free();
-    const _I: bool = AtomicCell::<isize>::is_lock_free();
-}
-
-#[test]
 fn drops_unit() {
     static CNT: AtomicUsize = AtomicUsize::new(0);
     CNT.store(0, SeqCst);
@@ -254,11 +248,24 @@ fn garbage_padding() {
 }
 
 #[test]
-fn const_atomic_cell_new() {
+fn const_atomic_cell() {
+    const _IS_LOCK_FREE_U: bool = AtomicCell::<usize>::is_lock_free();
+    const _IS_LOCK_FREE_I: bool = AtomicCell::<isize>::is_lock_free();
+    static INTO_INNER: usize = {
+        let v = AtomicCell::new(!0);
+        v.into_inner()
+    };
+    #[rustversion::since(1.83)]
+    static _AS_PTR: AtomicCell<usize> = {
+        let v = AtomicCell::new(!0);
+        let _p = v.as_ptr();
+        v
+    };
     static CELL: AtomicCell<usize> = AtomicCell::new(0);
 
     CELL.store(1);
     assert_eq!(CELL.load(), 1);
+    assert_eq!(INTO_INNER, !0);
 }
 
 // https://github.com/crossbeam-rs/crossbeam/pull/767

@@ -21,7 +21,7 @@ impl<'a> Iter<'a> {
             return Err(std::io::Error::new(
                 std::io::ErrorKind::InvalidInput,
                 format!(
-                    "Removal target '{target}' must be contained in boundary '{boundary}'",
+                    "Removal target \"{target}\" must be contained in boundary \"{boundary}\"",
                     target = target.display(),
                     boundary = boundary.display()
                 ),
@@ -54,7 +54,10 @@ impl<'a> Iterator for Iter<'a> {
                 self.cursor = match dir.parent() {
                     Some(parent) => (parent != self.boundary).then_some(parent),
                     None => {
-                        unreachable!("directory {:?} ran out of parents, this really shouldn't happen before hitting the boundary {:?}", dir, self.boundary)
+                        unreachable!(
+                            "directory {dir:?} ran out of parents, this really shouldn't happen before hitting the boundary {:?}",
+                            self.boundary
+                        )
                     }
                 };
                 next
@@ -69,9 +72,9 @@ impl<'a> Iterator for Iter<'a> {
 /// Note that `boundary_dir` must contain `delete_dir` or an error is returned, otherwise `delete_dir` is returned on success.
 pub fn empty_upward_until_boundary<'a>(delete_dir: &'a Path, boundary_dir: &'a Path) -> std::io::Result<&'a Path> {
     for item in Iter::new(delete_dir, boundary_dir)? {
-        match item {
-            Ok(_dir) => continue,
-            Err(err) => return Err(err),
+        {
+            let _dir = item?;
+            continue;
         }
     }
     Ok(delete_dir)

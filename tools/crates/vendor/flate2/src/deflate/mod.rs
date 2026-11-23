@@ -4,7 +4,9 @@ pub mod write;
 
 #[cfg(test)]
 mod tests {
-    use std::io::prelude::*;
+    use crate::io::{Read, Write};
+    use alloc::string::ToString;
+    use alloc::vec::Vec;
 
     use rand::{rng, Rng};
 
@@ -160,6 +162,71 @@ mod tests {
         let mut d = read::DeflateDecoder::new(&result[..]);
         let mut data = Vec::new();
         assert_eq!(d.read(&mut data).unwrap(), 0);
+    }
+
+    #[test]
+    fn rejects_incomplete_stream() {
+        for input in [b"1".as_slice(), b"12", b"123", b"1234"] {
+            let mut decoder = read::DeflateDecoder::new(input);
+            let error = crate::io::copy(&mut decoder, &mut crate::io::sink()).unwrap_err();
+            assert_eq!(error.kind(), crate::io::ErrorKind::UnexpectedEof);
+            assert_eq!(error.to_string(), "incomplete deflate stream");
+        }
+    }
+
+    #[test]
+    fn write_decoder_rejects_incomplete_stream() {
+        let mut encoder = write::DeflateEncoder::new(Vec::new(), Compression::default());
+        encoder.write_all(b"hello").unwrap();
+        let compressed = encoder.finish().unwrap();
+
+        for end in 0..compressed.len() {
+            let truncated = &compressed[..end];
+
+            let mut decoder = write::DeflateDecoder::new(Vec::new());
+            decoder.write_all(truncated).unwrap();
+            assert_incomplete(decoder.finish().unwrap_err());
+
+            let mut decoder = write::DeflateDecoder::new(Vec::new());
+            decoder.write_all(truncated).unwrap();
+            assert_incomplete(decoder.try_finish().unwrap_err());
+            decoder
+                .reset(Vec::new())
+                .expect("decoder should reset after an incomplete stream");
+        }
+
+        let mut decoder = write::DeflateDecoder::new(Vec::new());
+        decoder.write_all(&compressed).unwrap();
+        decoder.try_finish().unwrap();
+        decoder.try_finish().unwrap();
+        assert_eq!(
+            decoder.finish().unwrap(),
+            b"hello",
+            "finishing an already finished decoder should not change its output"
+        );
+
+        fn assert_incomplete(error: crate::io::Error) {
+            assert_eq!(error.kind(), crate::io::ErrorKind::UnexpectedEof);
+            assert_eq!(error.to_string(), "incomplete deflate stream");
+        }
+    }
+
+    #[test]
+    fn write_decoder_reset_drains_pending_output() {
+        let input = vec![b'a'; 32 * 1024 + 1];
+        let mut encoder = write::DeflateEncoder::new(Vec::new(), Compression::default());
+        encoder.write_all(&input).unwrap();
+
+        let mut decoder = write::DeflateDecoder::new(Vec::new());
+        decoder.write_all(&encoder.finish().unwrap()).unwrap();
+        let output = decoder
+            .reset(Vec::new())
+            .expect("decoder should reset after draining pending output");
+
+        assert!(
+            output == input,
+            "reset should preserve all decoder output byte-for-byte"
+        );
     }
 
     #[test]

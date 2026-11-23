@@ -52,10 +52,10 @@ impl ResolveVersion {
         }
 
         if is_v1 {
-            Ok(ResolveVersion::V1)
+            Ok(Self::V1)
         } else {
             // Default to V2
-            Ok(ResolveVersion::V2)
+            Ok(Self::V2)
         }
     }
 
@@ -68,13 +68,13 @@ impl ResolveVersion {
 /// V3 format is now the default.
 impl Default for ResolveVersion {
     fn default() -> Self {
-        ResolveVersion::V3
+        Self::V3
     }
 }
 
 impl From<ResolveVersion> for u32 {
-    fn from(version: ResolveVersion) -> u32 {
-        version as u32
+    fn from(version: ResolveVersion) -> Self {
+        version as Self
     }
 }
 
@@ -93,10 +93,10 @@ impl TryFrom<u32> for ResolveVersion {
 
     fn try_from(num: u32) -> Result<Self> {
         match num {
-            1 => Ok(ResolveVersion::V1),
-            2 => Ok(ResolveVersion::V2),
-            3 => Ok(ResolveVersion::V3),
-            4 => Ok(ResolveVersion::V4),
+            1 => Ok(Self::V1),
+            2 => Ok(Self::V2),
+            3 => Ok(Self::V3),
+            4 => Ok(Self::V4),
             _ => Err(Error::Parse(format!(
                 "invalid Cargo.lock format version: `{num}`"
             ))),

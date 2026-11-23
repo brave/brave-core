@@ -8,13 +8,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@1.74.0
+      - uses: dtolnay/rust-toolchain@stable
         with:
-          components: rustfmt
+          components: rustfmt, clippy
       - uses: Swatinem/rust-cache@v2
       - run: cargo fmt -- --check
+      - run: cargo clippy -- -D warnings
       - run: cargo test
-      - run: cargo bench
+      - run: cd benches && cargo bench
+  msrv:
+    name: MSRV
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@1.63.0
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo test
   miri:
     runs-on: ubuntu-latest
     steps:

@@ -9,11 +9,10 @@ use crate::{
     package::{self, Package},
 };
 
-pub use tame_index::external::reqwest::ClientBuilder;
+use tame_index::external::reqwest::ClientBuilder;
 use tame_index::utils::flock::{FileLock, LockOptions};
 
 enum Index {
-    Git(tame_index::index::RemoteGitIndex),
     SparseCached(tame_index::index::SparseIndex),
     SparseRemote(tame_index::index::AsyncRemoteSparseIndex),
 }
@@ -27,7 +26,6 @@ impl Index {
     ) -> Result<Option<tame_index::IndexKrate>, Error> {
         let name = name.as_str().try_into().map_err(Error::from_tame)?;
         let res = match self {
-            Self::Git(gi) => gi.krate(name, true, lock),
             Self::SparseCached(si) => si.cached_krate(name, lock),
             Self::SparseRemote(rsi) => rsi.cached_krate(name, lock),
         }
@@ -70,42 +68,41 @@ impl CachedIndex {
     /// It will fail with [`rustsec::Error::LockTimeout`](Error) if the lock is still held
     /// after that time.
     ///
-    /// If `lock_timeout` is set to `std::time::Duration::from_secs(0)`, it will not wait at all,
+    /// If `lock_timeout` is set to `Duration::from_secs(0)`, it will not wait at all,
     /// and instead return an error immediately if it fails to aquire the lock.
-    pub fn fetch(lock_timeout: Duration) -> Result<Self, Error> {
-        Self::fetch_inner(None, lock_timeout).map_err(Error::from_tame)
+    pub fn fetch_as(lock_timeout: Duration, user_agent: String) -> Result<Self, Error> {
+        Self::fetch_inner(lock_timeout, user_agent).map_err(Error::from_tame)
     }
 
-    fn fetch_inner(
-        client: Option<ClientBuilder>,
-        lock_timeout: Duration,
-    ) -> Result<Self, tame_index::Error> {
-        let index = tame_index::index::ComboIndexCache::new(tame_index::IndexLocation::new(
+    /// Open the local crates.io index
+    ///
+    /// Synthesizes a user agent string based on the current version of `rustsec`.
+    #[deprecated(since = "0.30.0", note = "Use `CachedIndex::fetch_as()` instead")]
+    pub fn fetch(lock_timeout: Duration) -> Result<Self, Error> {
+        Self::fetch_inner(
+            lock_timeout,
+            format!("rustsec/{}", env!("CARGO_PKG_VERSION")),
+        )
+        .map_err(Error::from_tame)
+    }
+
+    fn fetch_inner(lock_timeout: Duration, user_agent: String) -> Result<Self, tame_index::Error> {
+        let si = tame_index::index::SparseIndex::new(tame_index::IndexLocation::new(
             tame_index::IndexUrl::crates_io(None, None, None)?,
         ))?;
 
         let lock = acquire_cargo_package_lock(lock_timeout)?;
 
-        let index = match index {
-            tame_index::index::ComboIndexCache::Git(gi) => {
-                let mut rgi = tame_index::index::RemoteGitIndex::new(gi, &lock)?;
-                rgi.fetch(&lock)?;
-                Index::Git(rgi)
-            }
-            tame_index::index::ComboIndexCache::Sparse(si) => {
-                let client_builder = client.unwrap_or_default();
-                // note: this would need to change if rustsec ever adds the capability
-                // to query other indices that _might_ not support HTTP/2, but
-                // hopefully that would never need to happen
-                let client = client_builder.build().map_err(tame_index::Error::from)?;
+        // note: this would need to change if rustsec ever adds the capability
+        // to query other indices that _might_ not support HTTP/2, but
+        // hopefully that would never need to happen
+        let client = ClientBuilder::default()
+            .user_agent(user_agent)
+            .build()
+            .map_err(tame_index::Error::from)?;
 
-                Index::SparseRemote(tame_index::index::AsyncRemoteSparseIndex::new(si, client))
-            }
-            _ => panic!("Unsupported crates.io index type"),
-        };
-
-        Ok(CachedIndex {
-            index,
+        Ok(Self {
+            index: Index::SparseRemote(tame_index::index::AsyncRemoteSparseIndex::new(si, client)),
             cache: Default::default(),
             lock,
         })
@@ -130,22 +127,15 @@ impl CachedIndex {
     }
 
     fn open_inner(lock_timeout: Duration) -> Result<Self, tame_index::Error> {
-        let index = tame_index::index::ComboIndexCache::new(tame_index::IndexLocation::new(
+        let si = tame_index::index::SparseIndex::new(tame_index::IndexLocation::new(
             tame_index::IndexUrl::crates_io(None, None, None)?,
         ))?;
 
         let lock = acquire_cargo_package_lock(lock_timeout)?;
 
-        let index = match index {
-            tame_index::index::ComboIndexCache::Git(gi) => {
-                let rgi = tame_index::index::RemoteGitIndex::new(gi, &lock)?;
-                Index::Git(rgi)
-            }
-            tame_index::index::ComboIndexCache::Sparse(si) => Index::SparseCached(si),
-            _ => panic!("Unsupported crates.io index type"),
-        };
+        let index = Index::SparseCached(si);
 
-        Ok(CachedIndex {
+        Ok(Self {
             index,
             cache: Default::default(),
             lock,
@@ -157,7 +147,7 @@ impl CachedIndex {
         // only look up info on packages that aren't yet cached
         packages.retain(|pkg| !self.cache.contains_key(pkg));
         match &self.index {
-            Index::Git(_) | Index::SparseCached(_) => {
+            Index::SparseCached(_) => {
                 for pkg in packages {
                     self.insert(pkg.to_owned(), self.index.krate(pkg, &self.lock));
                 }
@@ -242,13 +232,13 @@ impl CachedIndex {
                     ErrorKind::NotFound,
                     format!(
                         "No such version in crates.io index: {} {}",
-                        &package.name, &package.version
+                        package.name, package.version
                     ),
                 )),
             },
             Ok(None) => Err(Error::new(
                 ErrorKind::NotFound,
-                format!("No such crate in crates.io index: {}", &package.name),
+                format!("No such crate in crates.io index: {}", package.name),
             )),
             Err(err) => Err(err.clone()),
         }

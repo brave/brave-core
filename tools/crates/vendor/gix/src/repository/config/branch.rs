@@ -1,17 +1,16 @@
-use std::{borrow::Cow, collections::BTreeSet};
+use std::collections::BTreeSet;
 
+use crate::error::{ErrorExt, ResultExt, bail, message, validation};
 use gix_ref::{FullName, FullNameRef};
 
 use crate::{
-    bstr::BStr,
+    Result,
+    bstr::{BStr, ByteSlice},
     config::{
         cache::util::ApplyLeniencyDefault,
         tree::{Branch, Push},
     },
     push, remote,
-    repository::{
-        branch_remote_ref_name, branch_remote_tracking_ref_name, upstream_branch_and_remote_name_for_tracking_branch,
-    },
 };
 
 /// Query configuration related to branches.
@@ -41,11 +40,7 @@ impl crate::Repository {
     ///
     /// See also [`Reference::remote_ref_name()`](crate::Reference::remote_ref_name()).
     #[doc(alias = "branch_upstream_name", alias = "git2")]
-    pub fn branch_remote_ref_name(
-        &self,
-        name: &FullNameRef,
-        direction: remote::Direction,
-    ) -> Option<Result<Cow<'_, FullNameRef>, branch_remote_ref_name::Error>> {
+    pub fn branch_remote_ref_name(&self, name: &FullNameRef, direction: remote::Direction) -> Option<Result<FullName>> {
         match direction {
             remote::Direction::Fetch => {
                 let short_name = name.shorten();
@@ -56,17 +51,15 @@ impl crate::Repository {
                         if name.starts_with(b"refs/") {
                             crate::config::tree::branch::Merge::try_into_fullrefname(name)
                         } else {
-                            gix_ref::Category::LocalBranch
-                                .to_full_name(name.as_ref())
-                                .map(Cow::Owned)
+                            gix_ref::Category::LocalBranch.to_full_name(name.as_bstr()).or_error()
                         }
-                        .map_err(Into::into)
+                        .or_raise(|| validation("The configured name of the remote ref to merge wasn't valid"))
                     })
             }
             remote::Direction::Push => {
                 let remote = match self.branch_remote(name.shorten(), direction)? {
                     Ok(r) => r,
-                    Err(err) => return Some(Err(err.into())),
+                    Err(err) => return Some(Err(err)),
                 };
                 if remote.push_specs.is_empty() {
                     let push_default =
@@ -80,11 +73,11 @@ impl crate::Repository {
                                     .with_lenient_default(self.config.lenient_config)
                             }) {
                             Ok(v) => v,
-                            Err(err) => return Some(Err(err.into())),
+                            Err(err) => return Some(Err(err)),
                         };
                     match push_default {
                         push::Default::Nothing => None,
-                        push::Default::Current | push::Default::Matching => Some(Ok(Cow::Owned(name.to_owned()))),
+                        push::Default::Current | push::Default::Matching => Some(Ok(name.to_owned())),
                         push::Default::Upstream => self.branch_remote_ref_name(name, remote::Direction::Fetch),
                         push::Default::Simple => match self.branch_remote_ref_name(name, remote::Direction::Fetch)? {
                             Ok(fetch_ref) if fetch_ref.as_ref() == name => Some(Ok(fetch_ref)),
@@ -93,8 +86,7 @@ impl crate::Repository {
                         },
                     }
                 } else {
-                    matching_remote(name, remote.push_specs.iter(), self.object_hash())
-                        .map(|res| res.map_err(Into::into))
+                    matching_remote(name, remote.push_specs.iter(), self.object_hash()).map(|res| res.or_error())
                 }
             }
         }
@@ -122,60 +114,55 @@ impl crate::Repository {
         &self,
         name: &FullNameRef,
         direction: remote::Direction,
-    ) -> Option<Result<Cow<'_, FullNameRef>, branch_remote_tracking_ref_name::Error>> {
+    ) -> Option<Result<FullName>> {
         let remote_ref = match self.branch_remote_ref_name(name, direction)? {
             Ok(r) => r,
-            Err(err) => return Some(Err(err.into())),
+            Err(err) => {
+                return Some(Err(err.and_raise(message(
+                    "Could not get the remote reference to translate into the local tracking branch",
+                ))));
+            }
         };
         let remote = match self.branch_remote(name.shorten(), direction)? {
             Ok(r) => r,
-            Err(err) => return Some(Err(err.into())),
+            Err(err) => {
+                return Some(Err(err.and_raise(message(
+                    "Couldn't find remote to obtain fetch-specs for mapping to the tracking reference",
+                ))));
+            }
         };
 
         if remote.fetch_specs.is_empty() {
             return None;
         }
         matching_remote(remote_ref.as_ref(), remote.fetch_specs.iter(), self.object_hash())
-            .map(|res| res.map_err(Into::into))
+            .map(|res| res.or_raise(|| message("The name of the tracking reference was invalid")))
     }
 
     /// Given a local `tracking_branch` name, find the remote that maps to it along with the name of the branch on
     /// the side of the remote, also called upstream branch.
     ///
     /// Return `Ok(None)` if there is no remote with fetch-refspecs that would match `tracking_branch` on the right-hand side,
-    /// or `Err` if the matches were ambiguous.
-    ///
-    /// ### Limitations
-    ///
-    /// A single valid mapping is required as fine-grained matching isn't implemented yet. This means that
+    /// or `Err` if the matches were ambiguous. All configured remotes are searched, and their fetch refspecs are reverse-mapped.
+    /// A single valid mapping is required: mappings from multiple remotes or multiple mappings within one remote are ambiguous.
+    /// Destinations match literally, and the source must be a valid full reference name; abbreviated sources
+    /// aren't expanded into branch names.
     pub fn upstream_branch_and_remote_for_tracking_branch(
         &self,
         tracking_branch: &FullNameRef,
-    ) -> Result<Option<(FullName, crate::Remote<'_>)>, upstream_branch_and_remote_name_for_tracking_branch::Error> {
-        use upstream_branch_and_remote_name_for_tracking_branch::Error;
+    ) -> Result<Option<(FullName, crate::Remote<'_>)>> {
         if tracking_branch.category() != Some(gix_ref::Category::RemoteBranch) {
-            return Err(Error::BranchCategory {
-                full_name: tracking_branch.to_owned(),
-            });
+            bail!(validation(format!(
+                "The input branch '{}' needs to be a remote tracking branch",
+                tracking_branch.as_bstr()
+            )));
         }
 
-        let null = self.object_hash().null();
-        let item_to_search = gix_refspec::match_group::Item {
-            full_ref_name: tracking_branch.as_bstr(),
-            target: &null,
-            object: None,
-        };
         let mut candidates = Vec::new();
         let mut ambiguous_remotes = Vec::new();
         for remote_name in self.remote_names() {
-            let remote = self.find_remote(remote_name.as_ref())?;
-            let match_group = gix_refspec::MatchGroup::from_fetch_specs(
-                remote
-                    .refspecs(remote::Direction::Fetch)
-                    .iter()
-                    .map(|spec| spec.to_ref()),
-            );
-            let out = match_group.match_rhs(Some(item_to_search).into_iter());
+            let remote = self.find_remote(remote_name)?;
+            let out = remote.reverse_map_tracking_ref(tracking_branch);
             match &out.mappings[..] {
                 [] => {}
                 [one] => candidates.push((remote.clone(), one.lhs.clone().into_owned())),
@@ -185,23 +172,21 @@ impl crate::Repository {
 
         if candidates.len() == 1 {
             let (remote, candidate) = candidates.pop().expect("just checked for one entry");
-            let upstream_branch = match candidate {
-                gix_refspec::match_group::SourceRef::FullName(name) => gix_ref::FullName::try_from(name.into_owned())?,
-                gix_refspec::match_group::SourceRef::ObjectId(_) => {
-                    unreachable!("Such a reverse mapping isn't ever produced")
-                }
-            };
+            let upstream_branch = source_ref_to_full_name(candidate)?;
             return Ok(Some((upstream_branch, remote)));
         }
-        if ambiguous_remotes.len() + candidates.len() > 1 {
-            return Err(Error::AmbiguousRemotes {
-                remotes: ambiguous_remotes
-                    .into_iter()
-                    .map(|r| r.name)
-                    .chain(candidates.into_iter().map(|(r, _)| r.name))
-                    .flatten()
-                    .collect(),
-            });
+        if !ambiguous_remotes.is_empty() || candidates.len() > 1 {
+            let remotes = ambiguous_remotes
+                .into_iter()
+                .map(|r| r.name)
+                .chain(candidates.into_iter().map(|(r, _)| r.name))
+                .flatten()
+                .map(|name| name.as_bstr().to_string())
+                .collect::<Vec<_>>()
+                .join(", ");
+            bail!(validation(format!(
+                "Found ambiguous remotes without 1:1 mapping or more than one match: {remotes}"
+            )));
         }
         Ok(None)
     }
@@ -235,7 +220,7 @@ impl crate::Repository {
             })
             .flatten()
             .or_else(|| config.string_by("branch", Some(name), Branch::REMOTE.name))
-            .and_then(|name| name.try_into().ok())
+            .map(Into::into)
     }
 
     /// Like [`branch_remote_name(…)`](Self::branch_remote_name()), but returns a [Remote](crate::Remote).
@@ -247,20 +232,22 @@ impl crate::Repository {
         &self,
         short_branch_name: impl Into<&'a BStr>,
         direction: remote::Direction,
-    ) -> Option<Result<crate::Remote<'_>, remote::find::existing::Error>> {
+    ) -> Option<Result<crate::Remote<'_>>> {
         let name = self.branch_remote_name(short_branch_name, direction)?;
-        self.try_find_remote(name.as_bstr())
-            .map(|res| res.map_err(Into::into))
-            .or_else(|| match name {
-                remote::Name::Url(url) => gix_url::parse(url.as_ref())
-                    .map_err(Into::into)
-                    .and_then(|url| {
-                        self.remote_at(url)
-                            .map_err(|err| remote::find::existing::Error::Find(remote::find::Error::Init(err)))
-                    })
-                    .into(),
-                remote::Name::Symbol(_) => None,
-            })
+        self.try_find_remote(name.as_bstr()).or_else(|| match name {
+            remote::Name::Url(url) => gix_url::parse(&url).and_then(|url| self.remote_at(url)).into(),
+            remote::Name::Symbol(_) => None,
+        })
+    }
+}
+
+fn source_ref_to_full_name(source: gix_refspec::match_group::SourceRef<'_>) -> Result<FullName> {
+    match source {
+        gix_refspec::match_group::SourceRef::FullName(name) => gix_ref::FullName::try_from(name.into_owned())
+            .or_raise(|| validation("The upstream branch name is invalid")),
+        gix_refspec::match_group::SourceRef::ObjectId(_) => {
+            unreachable!("Such a reverse mapping isn't ever produced")
+        }
     }
 }
 
@@ -268,7 +255,7 @@ fn matching_remote<'a>(
     lhs: &FullNameRef,
     specs: impl IntoIterator<Item = &'a gix_refspec::RefSpec>,
     object_hash: gix_hash::Kind,
-) -> Option<Result<Cow<'static, FullNameRef>, gix_validate::reference::name::Error>> {
+) -> Option<std::result::Result<FullName, gix_validate::reference::name::Error>> {
     let search = gix_refspec::MatchGroup {
         specs: specs
             .into_iter()
@@ -288,5 +275,5 @@ fn matching_remote<'a>(
     out.mappings
         .into_iter()
         .next()
-        .and_then(|m| m.rhs.map(|name| FullName::try_from(name.into_owned()).map(Cow::Owned)))
+        .and_then(|m| m.rhs.map(|name| FullName::try_from(name.into_owned())))
 }

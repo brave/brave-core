@@ -14,7 +14,7 @@ use super::index;
 use crate::distr::uniform::{SampleBorrow, SampleUniform};
 #[cfg(feature = "alloc")]
 use crate::distr::weighted::{Error as WeightError, Weight};
-use crate::Rng;
+use crate::{Rng, RngExt};
 use core::ops::{Index, IndexMut};
 
 /// Extension trait on indexable lists, providing random sampling methods.
@@ -60,11 +60,35 @@ pub trait IndexedRandom: Index<usize> {
         }
     }
 
+    /// Return an iterator which samples from `self` with replacement
+    ///
+    /// Returns `None` if and only if `self.is_empty()`.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use rand::seq::IndexedRandom;
+    ///
+    /// let choices = [1, 2, 4, 8, 16, 32];
+    /// let mut rng = rand::rng();
+    /// for choice in choices.choose_iter(&mut rng).unwrap().take(3) {
+    ///     println!("{:?}", choice);
+    /// }
+    /// ```
+    fn choose_iter<R>(&self, rng: &mut R) -> Option<impl Iterator<Item = &Self::Output>>
+    where
+        R: Rng + ?Sized,
+    {
+        let distr = crate::distr::Uniform::new(0, self.len()).ok()?;
+        Some(rng.sample_iter(distr).map(|i| &self[i]))
+    }
+
     /// Uniformly sample `amount` distinct elements from self
     ///
     /// Chooses `amount` elements from the slice at random, without repetition,
     /// and in random order. The returned iterator is appropriate both for
     /// collection into a `Vec` and filling an existing buffer (see example).
+    /// If `amount > self.len()`, all available elements are sampled.
     ///
     /// In case this API is not sufficiently flexible, use [`index::sample`].
     ///
@@ -78,26 +102,22 @@ pub trait IndexedRandom: Index<usize> {
     /// let sample = "Hello, audience!".as_bytes();
     ///
     /// // collect the results into a vector:
-    /// let v: Vec<u8> = sample.choose_multiple(&mut rng, 3).cloned().collect();
+    /// let v: Vec<u8> = sample.sample(&mut rng, 3).cloned().collect();
     ///
     /// // store in a buffer:
     /// let mut buf = [0u8; 5];
-    /// for (b, slot) in sample.choose_multiple(&mut rng, buf.len()).zip(buf.iter_mut()) {
+    /// for (b, slot) in sample.sample(&mut rng, buf.len()).zip(buf.iter_mut()) {
     ///     *slot = *b;
     /// }
     /// ```
     #[cfg(feature = "alloc")]
-    fn choose_multiple<R>(
-        &self,
-        rng: &mut R,
-        amount: usize,
-    ) -> SliceChooseIter<'_, Self, Self::Output>
+    fn sample<R>(&self, rng: &mut R, amount: usize) -> IndexedSamples<'_, Self, Self::Output>
     where
         Self::Output: Sized,
         R: Rng + ?Sized,
     {
         let amount = core::cmp::min(amount, self.len());
-        SliceChooseIter {
+        IndexedSamples {
             slice: self,
             _phantom: Default::default(),
             indices: index::sample(rng, self.len(), amount).into_iter(),
@@ -107,7 +127,7 @@ pub trait IndexedRandom: Index<usize> {
     /// Uniformly sample a fixed-size array of distinct elements from self
     ///
     /// Chooses `N` elements from the slice at random, without repetition,
-    /// and in random order.
+    /// and in random order. Returns `None` if (and only if) `N > self.len()`.
     ///
     /// For slices, complexity is the same as [`index::sample_array`].
     ///
@@ -118,9 +138,9 @@ pub trait IndexedRandom: Index<usize> {
     /// let mut rng = &mut rand::rng();
     /// let sample = "Hello, audience!".as_bytes();
     ///
-    /// let a: [u8; 3] = sample.choose_multiple_array(&mut rng).unwrap();
+    /// let a: [u8; 3] = sample.sample_array(&mut rng).unwrap();
     /// ```
-    fn choose_multiple_array<R, const N: usize>(&self, rng: &mut R) -> Option<[Self::Output; N]>
+    fn sample_array<R, const N: usize>(&self, rng: &mut R) -> Option<[Self::Output; N]>
     where
         Self::Output: Clone + Sized,
         R: Rng + ?Sized,
@@ -132,7 +152,7 @@ pub trait IndexedRandom: Index<usize> {
     /// Biased sampling for one element
     ///
     /// Returns a reference to one element of the slice, sampled according
-    /// to the provided weights. Returns `None` only if the slice is empty.
+    /// to the provided weights.
     ///
     /// The specified function `weight` maps each item `x` to a relative
     /// likelihood `weight(x)`. The probability of each item being selected is
@@ -170,14 +190,37 @@ pub trait IndexedRandom: Index<usize> {
         B: SampleBorrow<X>,
         X: SampleUniform + Weight + PartialOrd<X>,
     {
-        use crate::distr::{weighted::WeightedIndex, Distribution};
+        use crate::distr::weighted::WeightedIndex;
         let distr = WeightedIndex::new((0..self.len()).map(|idx| weight(&self[idx])))?;
-        Ok(&self[distr.sample(rng)])
+        Ok(&self[rng.sample(distr)])
+    }
+
+    /// Biased sampling with replacement
+    ///
+    /// Returns an iterator which samples elements from `self` according to the
+    /// given weights with replacement (i.e. elements may be repeated).
+    ///
+    /// See also doc for [`Self::choose_weighted`].
+    #[cfg(feature = "alloc")]
+    fn choose_weighted_iter<R, F, B, X>(
+        &self,
+        rng: &mut R,
+        weight: F,
+    ) -> Result<impl Iterator<Item = &Self::Output>, WeightError>
+    where
+        R: Rng + ?Sized,
+        F: Fn(&Self::Output) -> B,
+        B: SampleBorrow<X>,
+        X: SampleUniform + Weight + PartialOrd<X>,
+    {
+        use crate::distr::weighted::WeightedIndex;
+        let distr = WeightedIndex::new((0..self.len()).map(|idx| weight(&self[idx])))?;
+        Ok(rng.sample_iter(distr).map(|i| &self[i]))
     }
 
     /// Biased sampling of `amount` distinct elements
     ///
-    /// Similar to [`choose_multiple`], but where the likelihood of each
+    /// Similar to [`sample`], but where the likelihood of each
     /// element's inclusion in the output may be specified. Zero-weighted
     /// elements are never returned; the result may therefore contain fewer
     /// elements than `amount` even when `self.len() >= amount`. The elements
@@ -202,18 +245,18 @@ pub trait IndexedRandom: Index<usize> {
     /// // (50% * 50%) + (25% * 67%) = 41.7% chance that the output is `['a', 'b']` in some order.
     /// // (50% * 50%) + (25% * 67%) = 41.7% chance that the output is `['a', 'c']` in some order.
     /// // (25% * 33%) + (25% * 33%) = 16.6% chance that the output is `['b', 'c']` in some order.
-    /// println!("{:?}", choices.choose_multiple_weighted(&mut rng, 2, |item| item.1).unwrap().collect::<Vec<_>>());
+    /// println!("{:?}", choices.sample_weighted(&mut rng, 2, |item| item.1).unwrap().collect::<Vec<_>>());
     /// ```
-    /// [`choose_multiple`]: IndexedRandom::choose_multiple
+    /// [`sample`]: IndexedRandom::sample
     // Note: this is feature-gated on std due to usage of f64::powf.
     // If necessary, we may use alloc+libm as an alternative (see PR #1089).
     #[cfg(feature = "std")]
-    fn choose_multiple_weighted<R, F, X>(
+    fn sample_weighted<R, F, X>(
         &self,
         rng: &mut R,
         amount: usize,
         weight: F,
-    ) -> Result<SliceChooseIter<'_, Self, Self::Output>, WeightError>
+    ) -> Result<IndexedSamples<'_, Self, Self::Output>, WeightError>
     where
         Self::Output: Sized,
         R: Rng + ?Sized,
@@ -221,7 +264,7 @@ pub trait IndexedRandom: Index<usize> {
         X: Into<f64>,
     {
         let amount = core::cmp::min(amount, self.len());
-        Ok(SliceChooseIter {
+        Ok(IndexedSamples {
             slice: self,
             _phantom: Default::default(),
             indices: index::sample_weighted(
@@ -232,6 +275,49 @@ pub trait IndexedRandom: Index<usize> {
             )?
             .into_iter(),
         })
+    }
+
+    /// Deprecated: use [`Self::sample`] instead
+    #[cfg(feature = "alloc")]
+    #[deprecated(since = "0.10.0", note = "Renamed to `sample`")]
+    fn choose_multiple<R>(
+        &self,
+        rng: &mut R,
+        amount: usize,
+    ) -> IndexedSamples<'_, Self, Self::Output>
+    where
+        Self::Output: Sized,
+        R: Rng + ?Sized,
+    {
+        self.sample(rng, amount)
+    }
+
+    /// Deprecated: use [`Self::sample_array`] instead
+    #[deprecated(since = "0.10.0", note = "Renamed to `sample_array`")]
+    fn choose_multiple_array<R, const N: usize>(&self, rng: &mut R) -> Option<[Self::Output; N]>
+    where
+        Self::Output: Clone + Sized,
+        R: Rng + ?Sized,
+    {
+        self.sample_array(rng)
+    }
+
+    /// Deprecated: use [`Self::sample_weighted`] instead
+    #[cfg(feature = "std")]
+    #[deprecated(since = "0.10.0", note = "Renamed to `sample_weighted`")]
+    fn choose_multiple_weighted<R, F, X>(
+        &self,
+        rng: &mut R,
+        amount: usize,
+        weight: F,
+    ) -> Result<IndexedSamples<'_, Self, Self::Output>, WeightError>
+    where
+        Self::Output: Sized,
+        R: Rng + ?Sized,
+        F: Fn(&Self::Output) -> X,
+        X: Into<f64>,
+    {
+        self.sample_weighted(rng, amount, weight)
     }
 }
 
@@ -261,7 +347,7 @@ pub trait IndexedMutRandom: IndexedRandom + IndexMut<usize> {
     /// Biased sampling for one element (mut)
     ///
     /// Returns a mutable reference to one element of the slice, sampled according
-    /// to the provided weights. Returns `None` only if the slice is empty.
+    /// to the provided weights.
     ///
     /// The specified function `weight` maps each item `x` to a relative
     /// likelihood `weight(x)`. The probability of each item being selected is
@@ -288,7 +374,7 @@ pub trait IndexedMutRandom: IndexedRandom + IndexMut<usize> {
         B: SampleBorrow<X>,
         X: SampleUniform + Weight + PartialOrd<X>,
     {
-        use crate::distr::{weighted::WeightedIndex, Distribution};
+        use crate::distr::{Distribution, weighted::WeightedIndex};
         let distr = WeightedIndex::new((0..self.len()).map(|idx| weight(&self[idx])))?;
         let index = distr.sample(rng);
         Ok(&mut self[index])
@@ -334,23 +420,35 @@ pub trait SliceRandom: IndexedMutRandom {
     where
         R: Rng + ?Sized;
 
-    /// Shuffle a slice in place, but exit early.
+    /// Sample `amount` shuffled elements
     ///
-    /// Returns two mutable slices from the source slice. The first contains
-    /// `amount` elements randomly permuted. The second has the remaining
-    /// elements that are not fully shuffled.
+    /// Shuffles `amount` random elements into the end of the slice (`n..` where
+    /// `n = self.len() - amount`). The rest of the slice (`..n`) contains the
+    /// remaining elements in a permuted but not fully shuffled order.
+    ///
+    /// Returns a tuple of the sampled elements (`&mut self[n..]`) and the
+    /// remaining elements (`&mut self[..n]`).
     ///
     /// This is an efficient method to select `amount` elements at random from
     /// the slice, provided the slice may be mutated.
     ///
-    /// If you only need to choose elements randomly and `amount > self.len()/2`
-    /// then you may improve performance by taking
-    /// `amount = self.len() - amount` and using only the second slice.
-    ///
-    /// If `amount` is greater than the number of elements in the slice, this
-    /// will perform a full shuffle.
-    ///
     /// For slices, complexity is `O(m)` where `m = amount`.
+    /// If `amount >= self.len()` this is equivalent to [`Self::shuffle`].
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use rand::seq::SliceRandom;
+    ///
+    /// let mut rng = rand::rng();
+    /// let mut y = [1, 2, 3, 4, 5];
+    /// let (shuffled, rest) = y.partial_shuffle(&mut rng, 3);
+    /// assert_eq!(shuffled.len(), 3);
+    /// assert_eq!(rest.len(), 2);
+    /// let sampled = shuffled.to_vec();
+    /// assert_eq!(&sampled, &y[2..5]);
+    /// ```
+    #[must_use]
     fn partial_shuffle<R>(
         &mut self,
         rng: &mut R,
@@ -378,14 +476,14 @@ impl<T> SliceRandom for [T] {
             // There is no need to shuffle an empty or single element slice
             return;
         }
-        self.partial_shuffle(rng, self.len());
+        let _ = self.partial_shuffle(rng, self.len());
     }
 
     fn partial_shuffle<R>(&mut self, rng: &mut R, amount: usize) -> (&mut [T], &mut [T])
     where
         R: Rng + ?Sized,
     {
-        let m = self.len().saturating_sub(amount);
+        let n = self.len().saturating_sub(amount);
 
         // The algorithm below is based on Durstenfeld's algorithm for the
         // [Fisher–Yates shuffle](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm)
@@ -397,18 +495,18 @@ impl<T> SliceRandom for [T] {
         // but only works for 32 bit integers
         // So we must use the slow method if the slice is longer than that.
         if self.len() < (u32::MAX as usize) {
-            let mut chooser = IncreasingUniform::new(rng, m as u32);
-            for i in m..self.len() {
+            let mut chooser = IncreasingUniform::new(rng, n as u32);
+            for i in n..self.len() {
                 let index = chooser.next_index();
                 self.swap(i, index);
             }
         } else {
-            for i in m..self.len() {
+            for i in n..self.len() {
                 let index = rng.random_range(..i + 1);
                 self.swap(i, index);
             }
         }
-        let r = self.split_at_mut(m);
+        let r = self.split_at_mut(n);
         (r.1, r.0)
     }
 }
@@ -416,17 +514,17 @@ impl<T> SliceRandom for [T] {
 /// An iterator over multiple slice elements.
 ///
 /// This struct is created by
-/// [`IndexedRandom::choose_multiple`](trait.IndexedRandom.html#tymethod.choose_multiple).
+/// [`IndexedRandom::sample`](trait.IndexedRandom.html#tymethod.sample).
 #[cfg(feature = "alloc")]
 #[derive(Debug)]
-pub struct SliceChooseIter<'a, S: ?Sized + 'a, T: 'a> {
+pub struct IndexedSamples<'a, S: ?Sized + 'a, T: 'a> {
     slice: &'a S,
     _phantom: core::marker::PhantomData<T>,
     indices: index::IndexVecIntoIter,
 }
 
 #[cfg(feature = "alloc")]
-impl<'a, S: Index<usize, Output = T> + ?Sized + 'a, T: 'a> Iterator for SliceChooseIter<'a, S, T> {
+impl<'a, S: Index<usize, Output = T> + ?Sized + 'a, T: 'a> Iterator for IndexedSamples<'a, S, T> {
     type Item = &'a T;
 
     fn next(&mut self) -> Option<Self::Item> {
@@ -441,12 +539,17 @@ impl<'a, S: Index<usize, Output = T> + ?Sized + 'a, T: 'a> Iterator for SliceCho
 
 #[cfg(feature = "alloc")]
 impl<'a, S: Index<usize, Output = T> + ?Sized + 'a, T: 'a> ExactSizeIterator
-    for SliceChooseIter<'a, S, T>
+    for IndexedSamples<'a, S, T>
 {
     fn len(&self) -> usize {
         self.indices.len()
     }
 }
+
+/// Deprecated: renamed to [`IndexedSamples`]
+#[cfg(feature = "alloc")]
+#[deprecated(since = "0.10.0", note = "Renamed to `IndexedSamples`")]
+pub type SliceChooseIter<'a, S, T> = IndexedSamples<'a, S, T>;
 
 #[cfg(test)]
 mod test {
@@ -496,16 +599,13 @@ mod test {
         assert_eq!(nums.choose_mut(&mut r), Some(&mut 3));
 
         assert_eq!(
-            &chars.choose_multiple_array(&mut r),
+            &chars.sample_array(&mut r),
             &Some(['f', 'i', 'd', 'b', 'c', 'm', 'j', 'k'])
         );
 
         #[cfg(feature = "alloc")]
         assert_eq!(
-            &chars
-                .choose_multiple(&mut r, 8)
-                .cloned()
-                .collect::<Vec<char>>(),
+            &chars.sample(&mut r, 8).cloned().collect::<Vec<char>>(),
             &['h', 'm', 'd', 'b', 'c', 'e', 'n', 'f']
         );
 
@@ -672,7 +772,7 @@ mod test {
         let choices = [('a', 2), ('b', 1), ('c', 0)];
         for _ in 0..100 {
             let result = choices
-                .choose_multiple_weighted(&mut rng, 2, |item| item.1)
+                .sample_weighted(&mut rng, 2, |item| item.1)
                 .unwrap()
                 .collect::<Vec<_>>();
 
@@ -682,29 +782,29 @@ mod test {
 
         // Case 2: All of the weights are 0
         let choices = [('a', 0), ('b', 0), ('c', 0)];
-        let r = choices.choose_multiple_weighted(&mut rng, 2, |item| item.1);
+        let r = choices.sample_weighted(&mut rng, 2, |item| item.1);
         assert_eq!(r.unwrap().len(), 0);
 
         // Case 3: Negative weights
         let choices = [('a', -1), ('b', 1), ('c', 1)];
-        let r = choices.choose_multiple_weighted(&mut rng, 2, |item| item.1);
+        let r = choices.sample_weighted(&mut rng, 2, |item| item.1);
         assert_eq!(r.unwrap_err(), WeightError::InvalidWeight);
 
         // Case 4: Empty list
         let choices = [];
-        let r = choices.choose_multiple_weighted(&mut rng, 0, |_: &()| 0);
+        let r = choices.sample_weighted(&mut rng, 0, |_: &()| 0);
         assert_eq!(r.unwrap().count(), 0);
 
         // Case 5: NaN weights
         let choices = [('a', f64::NAN), ('b', 1.0), ('c', 1.0)];
-        let r = choices.choose_multiple_weighted(&mut rng, 2, |item| item.1);
+        let r = choices.sample_weighted(&mut rng, 2, |item| item.1);
         assert_eq!(r.unwrap_err(), WeightError::InvalidWeight);
 
         // Case 6: +infinity weights
         let choices = [('a', f64::INFINITY), ('b', 1.0), ('c', 1.0)];
         for _ in 0..100 {
             let result = choices
-                .choose_multiple_weighted(&mut rng, 2, |item| item.1)
+                .sample_weighted(&mut rng, 2, |item| item.1)
                 .unwrap()
                 .collect::<Vec<_>>();
             assert_eq!(result.len(), 2);
@@ -713,17 +813,18 @@ mod test {
 
         // Case 7: -infinity weights
         let choices = [('a', f64::NEG_INFINITY), ('b', 1.0), ('c', 1.0)];
-        let r = choices.choose_multiple_weighted(&mut rng, 2, |item| item.1);
+        let r = choices.sample_weighted(&mut rng, 2, |item| item.1);
         assert_eq!(r.unwrap_err(), WeightError::InvalidWeight);
 
         // Case 8: -0 weights
         let choices = [('a', -0.0), ('b', 1.0), ('c', 1.0)];
-        let r = choices.choose_multiple_weighted(&mut rng, 2, |item| item.1);
+        let r = choices.sample_weighted(&mut rng, 2, |item| item.1);
         assert!(r.is_ok());
     }
 
     #[test]
     #[cfg(feature = "std")]
+    #[cfg_attr(miri, ignore)] // Miri is too slow
     fn test_multiple_weighted_distributions() {
         use super::*;
 
@@ -741,7 +842,7 @@ mod test {
         let expected_results = [5833, 2667, 1500];
         for _ in 0..10000 {
             let result = choices
-                .choose_multiple_weighted(&mut rng, 2, |item| item.1)
+                .sample_weighted(&mut rng, 2, |item| item.1)
                 .unwrap()
                 .collect::<Vec<_>>();
 

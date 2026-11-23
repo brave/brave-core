@@ -24,12 +24,17 @@ the [`friendly`] sub-module). The sub-modules provide lower level control
 (such as parsing from `&[u8]`) and more configuration (such as controlling the
 disambiguation strategy used when parsing zoned datetime [RFC-9557] strings).
 
+There is substantial overlap between [RFC-3339], [RFC-9557] and [ISO-8601].
+The table below lists the most precise specification. For example,
+`2025-08-20T17:35:00-05` is valid in all three specifications, but is most
+precisely described by RFC 3339.
+
 | Example | Format | Links |
 | ------- | ------ | ----- |
 | `2025-08-20T17:35:00Z` | [RFC-3339] | [`Timestamp`] |
 | `2025-08-20T17:35:00-05` | [RFC-3339] | [`FromStr`] impl and<br>[`Timestamp::display_with_offset`] |
-| `2025-08-20T17:35:00+02[Poland]` | [RFC-9557] | [`Zoned`] |
-| `2025-08-20T17:35:00+02:00[+02:00]` | [RFC-9557] | [`Zoned`] |
+| `2025-08-20T17:35:00+02[Poland]` | [RFC-9557] | [`ZonedDateTime`] |
+| `2025-08-20T17:35:00+02:00[+02:00]` | [RFC-9557] | [`ZonedDateTime`] |
 | `2025-08-20T17:35:00` | [ISO-8601] | [`civil::DateTime`] |
 | `2025-08-20` | [ISO-8601] | [`civil::Date`] |
 | `17:35:00` | [ISO-8601] | [`civil::Time`] |
@@ -83,8 +88,8 @@ shows the options for printing durations in the format shown.
 
 ## Bespoke datetime formats via `strptime` and `strftime`
 
-Every datetime type has bespoke formatting routines defined on it. For
-example, [`Zoned::strptime`] and [`civil::Date::strftime`]. Additionally, the
+Every datetime type has bespoke formatting routines defined on it. For example,
+[`ZonedDateTime::strptime`] and [`civil::Date::strftime`]. Additionally, the
 [`strtime`] sub-module also provides convenience routines, [`strtime::format`]
 and [`strtime::parse`], where the former is generic over any datetime type in
 Jiff and the latter provides a [`BrokenDownTime`] for granular parsing.
@@ -135,8 +140,8 @@ and features.)
 [`Span`]: crate::Span
 [`Timestamp`]: crate::Timestamp
 [`Timestamp::display_with_offset`]: crate::Timestamp::display_with_offset
-[`Zoned`]: crate::Zoned
-[`Zoned::strptime`]: crate::Zoned::strptime
+[`ZonedDateTime`]: crate::ZonedDateTime
+[`ZonedDateTime::strptime`]: crate::ZonedDateTime::strptime
 
 [`Designator::Verbose`]: crate::fmt::friendly::Designator::Verbose
 [`Designator::Short`]: crate::fmt::friendly::Designator::Short
@@ -166,12 +171,11 @@ and features.)
 */
 
 use crate::{
-    error::{err, Error},
+    error::{Error, fmt::Error as E},
     util::escape,
 };
 
-use self::util::{Decimal, DecimalFormatter, Fractional, FractionalFormatter};
-
+mod buffer;
 pub mod friendly;
 mod offset;
 pub mod rfc2822;
@@ -218,12 +222,7 @@ impl<'i, V: core::fmt::Display> Parsed<'i, V> {
         if self.input.is_empty() {
             return Ok(self.value);
         }
-        Err(err!(
-            "parsed value '{value}', but unparsed input {unparsed:?} \
-             remains (expected no unparsed input)",
-            value = self.value,
-            unparsed = escape::Bytes(self.input),
-        ))
+        Err(Error::from(E::into_full_error(&self.value, self.input)))
     }
 }
 
@@ -244,12 +243,7 @@ impl<'i, V> Parsed<'i, V> {
         if self.input.is_empty() {
             return Ok(self.value);
         }
-        Err(err!(
-            "parsed value '{value}', but unparsed input {unparsed:?} \
-             remains (expected no unparsed input)",
-            value = display,
-            unparsed = escape::Bytes(self.input),
-        ))
+        Err(Error::from(E::into_full_error(&display, self.input)))
     }
 }
 
@@ -286,8 +280,9 @@ impl<'i, V: core::fmt::Debug> core::fmt::Debug for Parsed<'i, V> {
 /// The `std::fmt::Write` trait wasn't used itself because:
 ///
 /// 1. Using a custom trait allows us to require using Jiff's error type.
-/// (Although this extra flexibility isn't currently used, since printing only
-/// fails when writing to the underlying buffer or stream fails.)
+/// (Although this extra flexibility isn't currently used much, since printing
+/// rarely fails for any reason other than the underlying `jiff::fmt::Write`
+/// implementation failing.)
 /// 2. Using a custom trait allows us more control over the implementations of
 /// the trait. For example, a custom trait means we can format directly into
 /// a `Vec<u8>` buffer, which isn't possible with `std::fmt::Write` because
@@ -303,6 +298,25 @@ pub trait Write {
     fn write_char(&mut self, char: char) -> Result<(), Error> {
         self.write_str(char.encode_utf8(&mut [0; 4]))
     }
+
+    /// Returns a `Vec<u8>` backing store for this implementation.
+    ///
+    /// Consumers of this trait may call this method to get a view directly
+    /// into a buffer for more optimized writing.
+    ///
+    /// The default implementation always returns `None`.
+    ///
+    /// This method is only available when Jiff's `alloc` feature is enabled.
+    ///
+    /// # Safety
+    ///
+    /// Callers must ensure that only valid UTF-8 is written to the buffer
+    /// returned.
+    #[cfg(feature = "alloc")]
+    #[inline]
+    unsafe fn as_mut_vec(&mut self) -> Option<&mut alloc::vec::Vec<u8>> {
+        None
+    }
 }
 
 #[cfg(any(test, feature = "alloc"))]
@@ -312,6 +326,13 @@ impl Write for alloc::string::String {
         self.push_str(string);
         Ok(())
     }
+
+    #[cfg(feature = "alloc")]
+    #[inline]
+    unsafe fn as_mut_vec(&mut self) -> Option<&mut alloc::vec::Vec<u8>> {
+        // SAFETY: The conditions are forwarded to the trait interface.
+        unsafe { Some(alloc::string::String::as_mut_vec(self)) }
+    }
 }
 
 #[cfg(any(test, feature = "alloc"))]
@@ -320,6 +341,12 @@ impl Write for alloc::vec::Vec<u8> {
     fn write_str(&mut self, string: &str) -> Result<(), Error> {
         self.extend_from_slice(string.as_bytes());
         Ok(())
+    }
+
+    #[cfg(feature = "alloc")]
+    #[inline]
+    unsafe fn as_mut_vec(&mut self) -> Option<&mut alloc::vec::Vec<u8>> {
+        Some(self)
     }
 }
 
@@ -331,6 +358,31 @@ impl<W: Write> Write for &mut W {
     #[inline]
     fn write_char(&mut self, char: char) -> Result<(), Error> {
         (**self).write_char(char)
+    }
+
+    #[cfg(feature = "alloc")]
+    #[inline]
+    unsafe fn as_mut_vec(&mut self) -> Option<&mut alloc::vec::Vec<u8>> {
+        // SAFETY: The conditions are forwarded to the trait interface.
+        unsafe { (**self).as_mut_vec() }
+    }
+}
+
+impl Write for &mut dyn Write {
+    fn write_str(&mut self, string: &str) -> Result<(), Error> {
+        (**self).write_str(string)
+    }
+
+    #[inline]
+    fn write_char(&mut self, char: char) -> Result<(), Error> {
+        (**self).write_char(char)
+    }
+
+    #[cfg(feature = "alloc")]
+    #[inline]
+    unsafe fn as_mut_vec(&mut self) -> Option<&mut alloc::vec::Vec<u8>> {
+        // SAFETY: The conditions are forwarded to the trait interface.
+        unsafe { (**self).as_mut_vec() }
     }
 }
 
@@ -351,7 +403,9 @@ impl<W: Write> Write for &mut W {
 ///
 /// let path = Path::new("/tmp/output");
 /// let mut file = BufWriter::new(File::create(path)?);
-/// DateTimePrinter::new().print_zoned(&zdt, StdIoWrite(&mut file)).unwrap();
+/// DateTimePrinter::new()
+///     .print_zoned_datetime(&zdt, StdIoWrite(&mut file))
+///     .unwrap();
 /// file.flush()?;
 /// assert_eq!(
 ///     std::fs::read_to_string(path)?,
@@ -368,7 +422,7 @@ pub struct StdIoWrite<W>(pub W);
 impl<W: std::io::Write> Write for StdIoWrite<W> {
     #[inline]
     fn write_str(&mut self, string: &str) -> Result<(), Error> {
-        self.0.write_all(string.as_bytes()).map_err(Error::adhoc)
+        self.0.write_all(string.as_bytes()).map_err(Error::io)
     }
 }
 
@@ -411,7 +465,7 @@ impl<W: core::fmt::Write> Write for StdFmtWrite<W> {
     fn write_str(&mut self, string: &str) -> Result<(), Error> {
         self.0
             .write_str(string)
-            .map_err(|_| err!("an error occurred when formatting an argument"))
+            .map_err(|_| Error::from(E::StdFmtWriteAdapter))
     }
 }
 
@@ -422,59 +476,57 @@ impl<W: Write> core::fmt::Write for StdFmtWrite<W> {
     }
 }
 
-/// An extension trait to `Write` that provides crate internal routines.
+/// An adapter for writing Jiff's formatted output to a
+/// [`defmt`] formatter.
 ///
-/// These routines aren't exposed because they make use of crate internal
-/// types. Those types could perhaps be exposed if there was strong demand,
-/// but I'm skeptical.
-trait WriteExt: Write {
-    /// Write the given number as a signed decimal using ASCII digits to this
-    /// buffer. The given formatter controls how the decimal is formatted.
-    #[inline]
-    fn write_int(
-        &mut self,
-        formatter: &DecimalFormatter,
-        n: impl Into<i64>,
-    ) -> Result<(), Error> {
-        self.write_decimal(&formatter.format_signed(n.into()))
-    }
+/// This is used by Jiff's [`defmt::Format`] trait implementations to share the
+/// same printer code used for [`core::fmt`] output.
+///
+/// # Example
+///
+/// This example shows the [`defmt::Format`] trait implementation for
+/// [`civil::DateTime`](crate::civil::DateTime) (but using a wrapper type).
+///
+/// ```
+/// use jiff::{
+///     civil::DateTime,
+///     fmt::{temporal::DateTimePrinter, DefmtWrite},
+/// };
+///
+/// struct MyDateTime(DateTime);
+///
+/// impl defmt::Format for MyDateTime {
+///     fn format(&self, f: defmt::Formatter) {
+///         static P: DateTimePrinter = DateTimePrinter::new();
+///         defmt::unwrap!(P.print_datetime(&self.0, DefmtWrite(f)));
+///     }
+/// }
+/// ```
+#[cfg(feature = "defmt")]
+#[derive(defmt::Format)]
+pub struct DefmtWrite<'a>(pub defmt::Formatter<'a>);
 
-    /// Write the given number as an unsigned decimal using ASCII digits to
-    /// this buffer. The given formatter controls how the decimal is formatted.
-    #[inline]
-    fn write_uint(
-        &mut self,
-        formatter: &DecimalFormatter,
-        n: impl Into<u64>,
-    ) -> Result<(), Error> {
-        self.write_decimal(&formatter.format_unsigned(n.into()))
-    }
-
-    /// Write the given fractional number using ASCII digits to this buffer.
-    /// The given formatter controls how the fractional number is formatted.
-    #[inline]
-    fn write_fraction(
-        &mut self,
-        formatter: &FractionalFormatter,
-        n: impl Into<u32>,
-    ) -> Result<(), Error> {
-        self.write_fractional(&Fractional::new(formatter, n.into()))
-    }
-
-    /// Write the given decimal number to this buffer.
-    #[inline]
-    fn write_decimal(&mut self, decimal: &Decimal) -> Result<(), Error> {
-        self.write_str(decimal.as_str())
-    }
-
-    /// Write the given fractional number to this buffer.
-    #[inline]
-    fn write_fractional(
-        &mut self,
-        fractional: &Fractional,
-    ) -> Result<(), Error> {
-        self.write_str(fractional.as_str())
+#[cfg(feature = "defmt")]
+impl<'a> core::fmt::Debug for DefmtWrite<'a> {
+    fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+        f.debug_struct("DefmtWrite").finish()
     }
 }
 
-impl<W: Write> WriteExt for W {}
+#[cfg(feature = "defmt")]
+impl<'a> core::fmt::Write for DefmtWrite<'a> {
+    #[inline]
+    fn write_str(&mut self, string: &str) -> Result<(), core::fmt::Error> {
+        defmt::write!(self.0, "{=str}", string);
+        Ok(())
+    }
+}
+
+#[cfg(feature = "defmt")]
+impl<'a> Write for DefmtWrite<'a> {
+    #[inline]
+    fn write_str(&mut self, string: &str) -> Result<(), Error> {
+        defmt::write!(self.0, "{=str}", string);
+        Ok(())
+    }
+}

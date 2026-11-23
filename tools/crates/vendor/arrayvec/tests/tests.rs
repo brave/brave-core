@@ -680,6 +680,7 @@ fn test_pop_at() {
 }
 
 #[test]
+#[cfg(not(target_pointer_width = "16"))]
 fn test_sizes() {
     let v = ArrayVec::from([0u8; 1 << 16]);
     assert_eq!(vec![0u8; v.len()], &v[..]);
@@ -716,6 +717,32 @@ fn test_extend_zst() {
 }
 
 #[test]
+fn test_extend_zst_with_drop_is_not_dropped_twice_via_safe_api() {
+    use std::sync::atomic::{AtomicUsize, Ordering};
+
+    static DROP_COUNT: AtomicUsize = AtomicUsize::new(0);
+
+    struct ZstWithSafeDrop;
+
+    impl Drop for ZstWithSafeDrop {
+        fn drop(&mut self) {
+            let previous = DROP_COUNT.fetch_add(1, Ordering::SeqCst);
+            // Extending with a single ZST moves one logical value into the ArrayVec.
+            // Its Drop implementation must run exactly once, when the ArrayVec drops.
+            if previous != 0 {
+                panic!("ZST value dropped more than once");
+            }
+        }
+    }
+
+    DROP_COUNT.store(0, Ordering::SeqCst);
+
+    let mut vec = ArrayVec::<ZstWithSafeDrop, 1>::new();
+    vec.extend(std::iter::once(ZstWithSafeDrop));
+    drop(vec);
+}
+
+#[test]
 fn test_try_from_argument() {
     use core::convert::TryFrom;
     let v = ArrayString::<16>::try_from(format_args!("Hello {}", 123)).unwrap();
@@ -729,21 +756,17 @@ fn allow_max_capacity_arrayvec_type() {
 }
 
 #[should_panic(expected="largest supported capacity")]
+#[cfg(not(any(target_pointer_width = "16", target_pointer_width = "32")))]
 #[test]
 fn deny_max_capacity_arrayvec_value() {
-    if mem::size_of::<usize>() <= mem::size_of::<u32>() {
-        panic!("This test does not work on this platform. 'largest supported capacity'");
-    }
     // this type is allowed to be used (but can't be constructed)
     let _v: ArrayVec<(), {usize::MAX}> = ArrayVec::new();
 }
 
 #[should_panic(expected="index out of bounds")]
+#[cfg(not(any(target_pointer_width = "16", target_pointer_width = "32")))]
 #[test]
 fn deny_max_capacity_arrayvec_value_const() {
-    if mem::size_of::<usize>() <= mem::size_of::<u32>() {
-        panic!("This test does not work on this platform. 'index out of bounds'");
-    }
     // this type is allowed to be used (but can't be constructed)
     let _v: ArrayVec<(), {usize::MAX}> = ArrayVec::new_const();
 }

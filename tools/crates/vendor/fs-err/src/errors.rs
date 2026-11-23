@@ -40,7 +40,17 @@ pub(crate) enum ErrorKind {
     #[cfg(unix)]
     ReadAt,
     #[cfg(unix)]
+    ReadExactAt,
+    #[cfg(unix)]
     WriteAt,
+    #[cfg(unix)]
+    WriteAllAt,
+    #[cfg(unix)]
+    Chown,
+    #[cfg(unix)]
+    Lchown,
+    #[cfg(unix)]
+    Chroot,
 }
 
 /// Contains an IO error that has a file path attached.
@@ -79,7 +89,7 @@ impl fmt::Display for Error {
             E::CreateDir => write!(formatter, "failed to create directory `{}`", path),
             E::SyncFile => write!(formatter, "failed to sync file `{}`", path),
             E::SetLen => write!(formatter, "failed to set length of file `{}`", path),
-            E::Metadata => write!(formatter, "failed to query metadata of file `{}`", path),
+            E::Metadata => write!(formatter, "failed to query resolved metadata `{}`", path),
             E::Clone => write!(formatter, "failed to clone handle for file `{}`", path),
             E::SetPermissions => write!(formatter, "failed to set permissions for file `{}`", path),
             E::SetTimes => write!(formatter, "failed to set times for file `{}`", path),
@@ -94,7 +104,7 @@ impl fmt::Display for Error {
             E::Canonicalize => write!(formatter, "failed to canonicalize path `{}`", path),
             E::ReadLink => write!(formatter, "failed to read symbolic link `{}`", path),
             E::SymlinkMetadata => {
-                write!(formatter, "failed to query metadata of symlink `{}`", path)
+                write!(formatter, "failed to query raw metadata `{}`", path)
             }
             E::FileExists => write!(formatter, "failed to check file existence `{}`", path),
             E::Lock => write!(formatter, "failed to lock `{}`", path),
@@ -108,7 +118,23 @@ impl fmt::Display for Error {
             #[cfg(unix)]
             E::ReadAt => write!(formatter, "failed to read with offset from `{}`", path),
             #[cfg(unix)]
+            E::ReadExactAt => {
+                write!(
+                    formatter,
+                    "failed to read exactly with offset from `{}`",
+                    path
+                )
+            }
+            #[cfg(unix)]
             E::WriteAt => write!(formatter, "failed to write with offset to `{}`", path),
+            #[cfg(unix)]
+            E::WriteAllAt => write!(formatter, "failed to write all with offset to `{}`", path),
+            #[cfg(unix)]
+            E::Chown => write!(formatter, "failed to chown `{}`", path),
+            #[cfg(unix)]
+            E::Lchown => write!(formatter, "failed to lchown `{}`", path),
+            #[cfg(unix)]
+            E::Chroot => write!(formatter, "failed to chroot to `{}`", path),
         }?;
 
         // The `expose_original_error` feature indicates the caller should display the original error
@@ -190,30 +216,53 @@ impl fmt::Display for SourceDestError {
         let to = self.to_path.display();
         match self.kind {
             SourceDestErrorKind::Copy => {
-                write!(formatter, "failed to copy file from {} to {}", from, to)
+                write!(formatter, "failed to copy file from `{}` to `{}`", from, to)
             }
             SourceDestErrorKind::HardLink => {
-                write!(formatter, "failed to hardlink file from {} to {}", from, to)
+                write!(
+                    formatter,
+                    "failed to hardlink file from `{}` to `{}`",
+                    from, to
+                )
             }
             SourceDestErrorKind::Rename => {
-                write!(formatter, "failed to rename file from {} to {}", from, to)
+                write!(
+                    formatter,
+                    "failed to rename file from `{}` to `{}`",
+                    from, to
+                )
             }
             SourceDestErrorKind::SoftLink => {
-                write!(formatter, "failed to softlink file from {} to {}", from, to)
+                write!(
+                    formatter,
+                    "failed to softlink file from `{}` to `{}`",
+                    from, to
+                )
             }
-
             #[cfg(unix)]
             SourceDestErrorKind::Symlink => {
-                write!(formatter, "failed to symlink file from {} to {}", from, to)
+                write!(
+                    formatter,
+                    "failed to symlink file from `{}` to `{}`",
+                    from, to
+                )
             }
 
             #[cfg(windows)]
             SourceDestErrorKind::SymlinkFile => {
-                write!(formatter, "failed to symlink file from {} to {}", from, to)
+                write!(
+                    formatter,
+                    "failed to symlink file from `{}` to `{}`",
+                    from, to
+                )
             }
             #[cfg(windows)]
             SourceDestErrorKind::SymlinkDir => {
-                write!(formatter, "failed to symlink dir from {} to {}", from, to)
+                write!(
+                    formatter,
+                    "failed to symlink dir from `{}` to `{}`",
+                    from, to
+                )
             }
         }?;
 

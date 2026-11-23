@@ -1,0 +1,72 @@
+# https://rust-lang.github.io/rustfmt/?version=v1.6.0&search=#force_multiline_blocks
+# I find this configuration to be the most readable for multiline closures and
+# match arm bodies.
+force_multiline_blocks = true
+
+# https://rust-lang.github.io/rustfmt/?version=v1.6.0&search=#format_code_in_doc_comments
+# I understand why this is off by default, but I can't be bothered to manually
+# format code in doc comments and pray it's correct.
+format_code_in_doc_comments = true
+
+# https://rust-lang.github.io/rustfmt/?version=v1.6.0&search=#format_generated_files
+# I mean, might as well do less work. All the code I generate is formatted
+# automatically anyway when it's built.
+format_generated_files = false
+
+# https://rust-lang.github.io/rustfmt/?version=v1.6.0&search=#format_macro_matchers
+# Deterministic formatting is best formatting.
+format_macro_matchers = true
+
+# https://rust-lang.github.io/rustfmt/?version=v1.6.0&search=#format_strings
+# Call it OCD, but string literals going past the 100 character mark drive me
+# nuts. I'd rather have them be broken up into multiple lines.
+format_strings = true
+
+# https://rust-lang.github.io/rustfmt/?version=v1.6.0&search=#hex_literal_case
+# All that matters is that it's consistent. I prefer lowercase.
+hex_literal_case = "Lower"
+
+# https://rust-lang.github.io/rustfmt/?version=v1.6.0&search=#imports_layout
+# I find that this works best for me. I think the default "Mixed" option is too
+# chaotic.
+imports_layout = "HorizontalVertical"
+
+# https://rust-lang.github.io/rustfmt/?version=v1.6.0&search=#imports_granularity
+# I need this to be anything but "Preserve". I like my formatting to be
+# deterministic. I find this to be the most readable, but I remember the old
+# days when I manually did the "One" style.
+imports_granularity = "Module"
+
+# https://rust-lang.github.io/rustfmt/?version=v1.6.0&search=#newline_style
+# I always use Unix line endings. I sometimes fuck up other configurations where
+# Windows line endings get mixed in. I don't know how. Regardless, anything to
+# save me from that hell.
+newline_style = "Unix"
+
+# https://rust-lang.github.io/rustfmt/?version=v1.6.0&search=#normalize_comments
+# Normalize all the things. I think the `/* */` style of comments in Rust are
+# entirely unnecessary.
+normalize_comments = true
+
+# https://rust-lang.github.io/rustfmt/?version=v1.6.0&search=#normalize_doc_attributes
+# I want doc attributes to be reserved for when they need to be interpolated.
+normalize_doc_attributes = true
+
+# https://rust-lang.github.io/rustfmt/?version=v1.6.0&search=#overflow_delimited_expr
+# This is definitely the most subjective change. I find that some APIs where you
+# call it with multiple structs get so needlessly spaced out that it actually
+# hinders readability.
+overflow_delimited_expr = true
+
+# https://rust-lang.github.io/rustfmt/?version=v1.6.0&search=#group_imports
+# I NEED deterministic imports to be a thing. "One" is just silly, so this
+# configuration is the most readable for me.
+group_imports = "StdExternalCrate"
+
+# https://rust-lang.github.io/rustfmt/?version=v1.6.0&search=#use_field_init_shorthand
+# I mean, it's just less typing. I don't see why you wouldn't want this.
+use_field_init_shorthand = true
+
+# https://rust-lang.github.io/rustfmt/?version=v1.6.0&search=#wrap_comments
+# Please and thank you.
+wrap_comments = true

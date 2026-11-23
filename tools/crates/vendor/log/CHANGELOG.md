@@ -1,14 +1,80 @@
-# Change Log
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-## [0.4.29] - 2025-12-02
+## [0.4.35](https://github.com/rust-lang/log/compare/v0.4.34...v0.4.35) - 2026-10-30
+
+This release doesn't include source changes. It verifies `log`'s new CI/CD processes.
+
+### Other
+
+- rework CI/CD to align with Rust project standards
+
+## [0.4.34] - 2026-08-22
 
 ## What's Changed
+* doc: Add context-logger utility to README by @alekseysidorov in https://github.com/rust-lang/log/pull/735
+* Add alloc support for boxed loggers by @malezjaa in https://github.com/rust-lang/log/pull/737
+
+## New Contributors
+* @alekseysidorov made their first contribution in https://github.com/rust-lang/log/pull/735
+* @malezjaa made their first contribution in https://github.com/rust-lang/log/pull/737
+
+**Full Changelog**: https://github.com/rust-lang/log/compare/0.4.33...0.4.34
+
+## [0.4.33] - 2026-06-20
+
+## What's Changed
+* Fixed key comparison by @matteo-zeggiotti-ok in https://github.com/rust-lang/log/pull/732
+
+## New Contributors
+* @matteo-zeggiotti-ok made their first contribution in https://github.com/rust-lang/log/pull/732
+
+**Full Changelog**: https://github.com/rust-lang/log/compare/0.4.32...0.4.33
+
+## [0.4.32] - 2026-06-04
+
+### What's Changed
+* Support `Value` -> string conversions with `kv` + `std` features instead of `kv_std` by @tisonkun in https://github.com/rust-lang/log/pull/729
+
+**Full Changelog**: https://github.com/rust-lang/log/compare/0.4.31...0.4.32
+
+## [0.4.31] - 2026-06-02
+
+### What's Changed
+* Leverage static str key when possible by @tisonkun in https://github.com/rust-lang/log/pull/727
+
+### New Contributors
+* @Isvane made their first contribution in https://github.com/rust-lang/log/pull/726
+
+**Full Changelog**: https://github.com/rust-lang/log/compare/0.4.30...0.4.31
+
+## [0.4.30] - 2026-05-21
+
+### What's Changed
+* Support capturing of `std::net` types by @KodrAus in https://github.com/rust-lang/log/pull/724
+
+### New Contributors
+* @V0ldek made their first contribution in https://github.com/rust-lang/log/pull/720
+* @woodruffw made their first contribution in https://github.com/rust-lang/log/pull/723
+
+**Full Changelog**: https://github.com/rust-lang/log/compare/0.4.29...0.4.30
+
+### Notable Changes
+* MSRV is bumped to 1.71.0 in https://github.com/rust-lang/log/pull/723
+
+## [0.4.29] - 2025-12-02
+
+### What's Changed
 * perf: reduce llvm-lines of FromStr for `Level` and `LevelFilter` by @dishmaker in https://github.com/rust-lang/log/pull/709
 * Replace serde with serde_core by @Thomasdezeeuw in https://github.com/rust-lang/log/pull/712
 
-## New Contributors
+### New Contributors
 * @AldaronLau made their first contribution in https://github.com/rust-lang/log/pull/703
 * @dishmaker made their first contribution in https://github.com/rust-lang/log/pull/709
 
@@ -16,7 +82,7 @@
 
 ## [0.4.28] - 2025-09-02
 
-## What's Changed
+### What's Changed
 * ci: drop really old trick and ensure MSRV for all feature combo by @tisonkun in https://github.com/rust-lang/log/pull/676
 * Chore: delete compare_exchange method for AtomicUsize on platforms without atomics  by @HaoliangXu in https://github.com/rust-lang/log/pull/690
 * Add `increment_severity()` and `decrement_severity()` methods for `Level` and `LevelFilter` by @nebkor in https://github.com/rust-lang/log/pull/692
@@ -389,7 +455,11 @@ version using log 0.4.x to avoid losing module and file information.
 
 Look at the [release tags] for information about older releases.
 
-[Unreleased]: https://github.com/rust-lang-nursery/log/compare/0.4.29...HEAD
+[0.4.34]: https://github.com/rust-lang/log/compare/0.4.33...0.4.34
+[0.4.33]: https://github.com/rust-lang/log/compare/0.4.32...0.4.33
+[0.4.32]: https://github.com/rust-lang/log/compare/0.4.31...0.4.32
+[0.4.31]: https://github.com/rust-lang/log/compare/0.4.30...0.4.31
+[0.4.30]: https://github.com/rust-lang/log/compare/0.4.29...0.4.30
 [0.4.29]: https://github.com/rust-lang/log/compare/0.4.28...0.4.29
 [0.4.28]: https://github.com/rust-lang/log/compare/0.4.27...0.4.28
 [0.4.27]: https://github.com/rust-lang/log/compare/0.4.26...0.4.27

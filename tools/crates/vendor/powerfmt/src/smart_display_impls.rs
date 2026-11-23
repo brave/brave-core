@@ -91,6 +91,7 @@ where
 {
     type Metadata = B::Metadata;
 
+    #[inline]
     fn metadata(&self, f: FormatterOptions) -> Metadata<'_, Self> {
         match *self {
             Cow::Borrowed(ref b) => b.metadata(f).reuse(),
@@ -98,6 +99,7 @@ where
         }
     }
 
+    #[inline]
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         Display::fmt(self, f)
     }
@@ -109,10 +111,12 @@ where
 {
     type Metadata = T::Metadata;
 
+    #[inline]
     fn metadata(&self, f: FormatterOptions) -> Metadata<'_, Self> {
         self.get_ref().metadata(f).reuse()
     }
 
+    #[inline]
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         SmartDisplay::fmt(self.get_ref(), f)
     }
@@ -124,10 +128,12 @@ where
 {
     type Metadata = T::Metadata;
 
+    #[inline]
     fn metadata(&self, f: FormatterOptions) -> Metadata<'_, Self> {
         (**self).metadata(f).reuse()
     }
 
+    #[inline]
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         SmartDisplay::fmt(*self, f)
     }
@@ -139,10 +145,12 @@ where
 {
     type Metadata = T::Metadata;
 
+    #[inline]
     fn metadata(&self, f: FormatterOptions) -> Metadata<'_, Self> {
         (**self).metadata(f).reuse()
     }
 
+    #[inline]
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         SmartDisplay::fmt(*self, f)
     }
@@ -154,10 +162,12 @@ where
 {
     type Metadata = T::Metadata;
 
+    #[inline]
     fn metadata(&self, f: FormatterOptions) -> Metadata<'_, Self> {
         (**self).metadata(f).reuse()
     }
 
+    #[inline]
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         SmartDisplay::fmt(&**self, f)
     }
@@ -169,10 +179,12 @@ where
 {
     type Metadata = T::Metadata;
 
+    #[inline]
     fn metadata(&self, f: FormatterOptions) -> Metadata<'_, Self> {
         (**self).metadata(f).reuse()
     }
 
+    #[inline]
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         SmartDisplay::fmt(&**self, f)
     }
@@ -184,10 +196,12 @@ where
 {
     type Metadata = T::Metadata;
 
+    #[inline]
     fn metadata(&self, f: FormatterOptions) -> Metadata<'_, Self> {
         self.0.metadata(f).reuse()
     }
 
+    #[inline]
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         SmartDisplay::fmt(&self.0, f)
     }
@@ -200,10 +214,12 @@ where
 {
     type Metadata = T::Metadata;
 
+    #[inline]
     fn metadata(&self, f: FormatterOptions) -> Metadata<'_, Self> {
         (**self).metadata(f).reuse()
     }
 
+    #[inline]
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         SmartDisplay::fmt(&**self, f)
     }
@@ -216,10 +232,12 @@ where
 {
     type Metadata = T::Metadata;
 
+    #[inline]
     fn metadata(&self, f: FormatterOptions) -> Metadata<'_, Self> {
         (**self).metadata(f).reuse()
     }
 
+    #[inline]
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         SmartDisplay::fmt(&**self, f)
     }
@@ -232,10 +250,12 @@ where
 {
     type Metadata = T::Metadata;
 
+    #[inline]
     fn metadata(&self, f: FormatterOptions) -> Metadata<'_, Self> {
         (**self).metadata(f).reuse()
     }
 
+    #[inline]
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         SmartDisplay::fmt(&**self, f)
     }
@@ -247,6 +267,7 @@ macro_rules! impl_uint {
         impl SmartDisplay for $t {
             type Metadata = ();
 
+            #[inline]
             fn metadata(&self, f: FormatterOptions) -> Metadata<'_, Self> {
                 let mut width = self.checked_ilog10().map_or(1, |n| n as usize + 1);
                 if f.sign_plus() || f.sign_minus() {
@@ -271,6 +292,7 @@ macro_rules! impl_int {
         impl SmartDisplay for $t {
             type Metadata = ();
 
+            #[inline]
             fn metadata(&self, f: FormatterOptions) -> Metadata<'_, Self> {
                 let mut width = if f.sign_plus() || *self < 0 { 1 } else { 0 };
                 width += self.unsigned_abs().checked_ilog10().map_or(1, |n| n as usize + 1);
@@ -290,6 +312,7 @@ impl_int![i8 i16 i32 i64 i128 isize];
 impl SmartDisplay for char {
     type Metadata = ();
 
+    #[inline]
     fn metadata(&self, _: FormatterOptions) -> Metadata<'_, Self> {
         let mut buf = [0; 4];
         let c = self.encode_utf8(&mut buf);
@@ -297,6 +320,7 @@ impl SmartDisplay for char {
         Metadata::new(c.len(), self, ())
     }
 
+    #[inline]
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         Display::fmt(self, f)
     }

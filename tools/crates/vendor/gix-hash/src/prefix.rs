@@ -1,37 +1,7 @@
+use gix_error::{Result, bail, message, validation};
 use std::cmp::Ordering;
 
-use crate::{oid, ObjectId, Prefix};
-
-/// The error returned by [`Prefix::new()`].
-#[derive(Debug, thiserror::Error)]
-#[allow(missing_docs)]
-pub enum Error {
-    #[error(
-        "The minimum hex length of a short object id is {}, got {hex_len}",
-        Prefix::MIN_HEX_LEN
-    )]
-    TooShort { hex_len: usize },
-    #[error("An object of kind {object_kind} cannot be larger than {} in hex, but {hex_len} was requested", object_kind.len_in_hex())]
-    TooLong { object_kind: crate::Kind, hex_len: usize },
-}
-
-///
-pub mod from_hex {
-    /// The error returned by [`Prefix::from_hex`][super::Prefix::from_hex()].
-    #[derive(Debug, Eq, PartialEq, thiserror::Error)]
-    #[allow(missing_docs)]
-    pub enum Error {
-        #[error(
-            "The minimum hex length of a short object id is {}, got {hex_len}",
-            super::Prefix::MIN_HEX_LEN
-        )]
-        TooShort { hex_len: usize },
-        #[error("An id cannot be larger than {} chars in hex, but {hex_len} was requested", crate::Kind::longest().len_in_hex())]
-        TooLong { hex_len: usize },
-        #[error("Invalid hex character")]
-        Invalid,
-    }
-}
+use crate::{ChangeId, ObjectId, Prefix, change_id::ReverseHexDisplay, oid};
 
 impl Prefix {
     /// The smallest allowed prefix length below which chances for collisions are too high even in small repositories.
@@ -41,14 +11,20 @@ impl Prefix {
     ///
     /// For instance, with `hex_len` of 7 the resulting prefix is 3.5 bytes, or 3 bytes and 4 bits
     /// wide, with all other bytes and bits set to zero.
-    pub fn new(id: &oid, hex_len: usize) -> Result<Self, Error> {
+    pub fn new(id: &oid, hex_len: usize) -> Result<Self> {
         if hex_len > id.kind().len_in_hex() {
-            Err(Error::TooLong {
-                object_kind: id.kind(),
-                hex_len,
-            })
+            Err(message!(
+                "An object of kind {} cannot be larger than {} in hex, but {hex_len} was requested",
+                id.kind(),
+                id.kind().len_in_hex()
+            )
+            .validation_error())
         } else if hex_len < Self::MIN_HEX_LEN {
-            Err(Error::TooShort { hex_len })
+            Err(message!(
+                "The minimum hex length of a short object id is {}, got {hex_len}",
+                Self::MIN_HEX_LEN
+            )
+            .validation_error())
         } else {
             let mut prefix = ObjectId::null(id.kind());
             let b = prefix.as_mut_slice();
@@ -60,6 +36,34 @@ impl Prefix {
 
             Ok(Prefix { bytes: prefix, hex_len })
         }
+    }
+
+    /// Write this prefix into `buf` as lowercase hexadecimal characters and return the initialized portion.
+    ///
+    /// # Panics
+    ///
+    /// If `buf` is shorter than [`Self::hex_len()`].
+    #[inline]
+    #[must_use]
+    pub fn hex_to_buf<'a>(&self, buf: &'a mut [u8]) -> &'a mut str {
+        let complete_bytes = self.hex_len / 2;
+        let complete_hex_len = complete_bytes * 2;
+        if complete_bytes != 0 {
+            faster_hex::hex_encode(&self.bytes.as_bytes()[..complete_bytes], &mut buf[..complete_hex_len])
+                .expect("buffer size was checked before encoding");
+        }
+        if self.hex_len % 2 == 1 {
+            const HEX: &[u8; 16] = b"0123456789abcdef";
+            buf[complete_hex_len] = HEX[usize::from(self.bytes.as_bytes()[complete_bytes] >> 4)];
+        }
+        std::str::from_utf8_mut(&mut buf[..self.hex_len]).expect("hexadecimal object IDs are valid UTF-8")
+    }
+
+    /// Write this prefix to `out` as lowercase hexadecimal characters.
+    #[inline]
+    pub fn write_hex_to(&self, out: &mut dyn std::io::Write) -> std::io::Result<()> {
+        let mut buf = crate::Kind::hex_buf();
+        out.write_all(self.hex_to_buf(&mut buf).as_bytes())
     }
 
     /// Returns the prefix as object id.
@@ -93,47 +97,102 @@ impl Prefix {
     }
 
     /// Create an instance from the given hexadecimal prefix `value`, e.g. `35e77c16` would yield a `Prefix` with `hex_len()` = 8.
-    pub fn from_hex(value: &str) -> Result<Self, from_hex::Error> {
+    /// Note that the minimum hex length is `4` - use [`Self::from_hex_nonempty()`].
+    pub fn from_hex(value: &str) -> Result<Self> {
+        let hex_len = value.len();
+        if hex_len < Self::MIN_HEX_LEN {
+            bail!(validation(format!(
+                "The minimum hex length of a short object id is {}, got {hex_len}",
+                Self::MIN_HEX_LEN
+            )));
+        }
+        Self::from_hex_nonempty(value)
+    }
+
+    /// Create an instance from the given hexadecimal prefix `value`, e.g. `35e` would yield a `Prefix` with `hex_len()` = 3.
+    /// Note that this function supports all non-empty hex input - for a more typical implementation, use [`Self::from_hex()`].
+    pub fn from_hex_nonempty(value: &str) -> Result<Self> {
         let hex_len = value.len();
 
         if hex_len > crate::Kind::longest().len_in_hex() {
-            return Err(from_hex::Error::TooLong { hex_len });
-        } else if hex_len < Self::MIN_HEX_LEN {
-            return Err(from_hex::Error::TooShort { hex_len });
+            bail!(validation(format!(
+                "An id cannot be larger than {} chars in hex, but {hex_len} was requested",
+                crate::Kind::longest().len_in_hex()
+            )));
+        } else if hex_len == 0 {
+            bail!(validation(format!(
+                "The minimum hex length of a short object id is {}, got {hex_len}",
+                Self::MIN_HEX_LEN
+            )));
         }
 
-        let src = if value.len() % 2 == 0 {
-            let mut out = Vec::from_iter(std::iter::repeat_n(0, value.len() / 2));
-            faster_hex::hex_decode(value.as_bytes(), &mut out).map(move |_| out)
+        let kind = crate::Kind::from_hex_len(hex_len).expect("hex-len is already checked");
+        let mut bytes = ObjectId::null(kind);
+        let dst = &mut bytes.as_mut_slice()[..hex_len.div_ceil(2)];
+        let decode_result = if hex_len.is_multiple_of(2) {
+            faster_hex::hex_decode(value.as_bytes(), dst)
         } else {
-            // TODO(perf): do without heap allocation here.
-            let mut buf = [0u8; crate::Kind::longest().len_in_hex()];
-            buf[..value.len()].copy_from_slice(value.as_bytes());
-            buf[value.len()] = b'0';
-            let src = &buf[..=value.len()];
-            let mut out = Vec::from_iter(std::iter::repeat_n(0, src.len() / 2));
-            faster_hex::hex_decode(src, &mut out).map(move |_| out)
-        }
-        .map_err(|e| match e {
-            faster_hex::Error::InvalidChar | faster_hex::Error::Overflow => from_hex::Error::Invalid,
+            let mut hex = crate::Kind::hex_buf();
+            hex[..hex_len].copy_from_slice(value.as_bytes());
+            hex[hex_len] = b'0';
+            faster_hex::hex_decode(&hex[..=hex_len], dst)
+        };
+        decode_result.map_err(|e| match e {
+            faster_hex::Error::InvalidChar | faster_hex::Error::Overflow => {
+                message("Invalid hex character").validation_error()
+            }
             faster_hex::Error::InvalidLength(_) => panic!("This is already checked"),
         })?;
 
-        let mut bytes = ObjectId::null(crate::Kind::from_hex_len(value.len()).expect("hex-len is already checked"));
-        let dst = bytes.as_mut_slice();
-        let copy_len = src.len();
-        dst[..copy_len].copy_from_slice(&src);
-
         Ok(Prefix { bytes, hex_len })
+    }
+
+    /// Create an instance from a reverse-hex prefix, requiring at least [`Self::MIN_HEX_LEN`] characters.
+    pub fn from_reverse_hex(value: &str) -> Result<Self> {
+        let hex_len = value.len();
+        if hex_len < Self::MIN_HEX_LEN {
+            bail!(validation(format!(
+                "The minimum hex length of a short object id is {}, got {hex_len}",
+                Self::MIN_HEX_LEN
+            )));
+        }
+        Self::from_reverse_hex_nonempty(value)
+    }
+
+    /// Create an instance from a non-empty prefix written with JJ's reverse-hex alphabet.
+    pub fn from_reverse_hex_nonempty(value: &str) -> Result<Self> {
+        let hex_len = value.len();
+        if hex_len > crate::Kind::longest().len_in_hex() {
+            bail!(validation(format!(
+                "An id cannot be larger than {} chars in hex, but {hex_len} was requested",
+                crate::Kind::longest().len_in_hex()
+            )));
+        } else if hex_len == 0 {
+            bail!(validation(format!(
+                "The minimum hex length of a short object id is {}, got {hex_len}",
+                Self::MIN_HEX_LEN
+            )));
+        }
+
+        let mut hex = crate::Kind::hex_buf();
+        crate::change_id::reverse_hex_to_hex(value.as_bytes(), &mut hex[..hex_len])
+            .map_err(|()| message("Invalid hex character").validation_error())?;
+        let hex = std::str::from_utf8(&hex[..hex_len]).expect("translated reverse hex is always ASCII");
+        Self::from_hex_nonempty(hex)
+    }
+
+    /// Return a type which displays this prefix in JJ-compatible reverse-hex notation.
+    pub fn to_reverse_hex(&self) -> ReverseHexDisplay<'_> {
+        ReverseHexDisplay::new(&self.bytes, self.hex_len)
     }
 }
 
 /// Create an instance from the given hexadecimal prefix, e.g. `35e77c16` would yield a `Prefix`
 /// with `hex_len()` = 8.
 impl TryFrom<&str> for Prefix {
-    type Error = from_hex::Error;
+    type Error = gix_error::Error;
 
-    fn try_from(value: &str) -> Result<Self, Self::Error> {
+    fn try_from(value: &str) -> Result<Self> {
         Prefix::from_hex(value)
     }
 }
@@ -144,11 +203,26 @@ impl std::fmt::Display for Prefix {
     }
 }
 
+impl Prefix {
+    fn eq_str(&self, other: &str) -> bool {
+        self.bytes.to_hex_with_len(self.hex_len).eq_str(other)
+    }
+}
+
+// Keep this directional as the hash kind and unused suffix aren't uniquely identified by the displayed prefix.
+impl_partial_eq_str_one_way!(Prefix);
+
 impl From<ObjectId> for Prefix {
     fn from(oid: ObjectId) -> Self {
         Prefix {
             bytes: oid,
             hex_len: oid.kind().len_in_hex(),
         }
+    }
+}
+
+impl From<ChangeId> for Prefix {
+    fn from(change_id: ChangeId) -> Self {
+        ObjectId::from(change_id).into()
     }
 }

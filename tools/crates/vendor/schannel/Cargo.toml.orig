@@ -1,7 +1,7 @@
 [package]
 name = "schannel"
 license = "MIT"
-version = "0.1.28"
+version = "0.1.30"
 description = "Schannel bindings for rust, allowing SSL/TLS (e.g. https) without openssl"
 authors = [ "Steven Fackler <sfackler@gmail.com>", "Steffen Butzer <steffen.butzer@outlook.com>" ]
 documentation = "https://docs.rs/schannel/0.1.19/schannel/"
@@ -10,6 +10,7 @@ readme = "README.md"
 keywords = ["windows", "schannel", "tls", "ssl", "https"]
 edition = "2018"
 rust-version = "1.71.0"
+include = ["/src/", "LICENSE.md", "README.md"]
 
 [package.metadata.docs.rs]
 default-target = "x86_64-pc-windows-msvc"

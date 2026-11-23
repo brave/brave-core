@@ -11,13 +11,19 @@ use crate::format_description::Component;
 /// A complete description of how to format and parse a type.
 #[non_exhaustive]
 #[cfg_attr(not(feature = "alloc"), derive(Debug))]
-#[derive(Clone, PartialEq, Eq)]
+#[derive(Clone, Eq)]
 pub enum BorrowedFormatItem<'a> {
     /// Bytes that are formatted as-is.
     ///
     /// **Note**: These bytes **should** be UTF-8, but are not required to be. The value is passed
     /// through `String::from_utf8_lossy` when necessary.
+    #[deprecated(
+        since = "0.3.48",
+        note = "use `StringLiteral` instead; raw bytes are not recommended"
+    )]
     Literal(&'a [u8]),
+    /// A string that is formatted as-is.
+    StringLiteral(&'a str),
     /// A minimal representation of a single non-literal item.
     Component(Component),
     /// A series of literals or components that collectively form a partial or complete
@@ -39,11 +45,34 @@ impl fmt::Debug for BorrowedFormatItem<'_> {
     #[inline]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
+            #[expect(deprecated)]
             Self::Literal(literal) => f.write_str(&String::from_utf8_lossy(literal)),
+            Self::StringLiteral(literal) => f.write_str(literal),
             Self::Component(component) => component.fmt(f),
             Self::Compound(compound) => compound.fmt(f),
             Self::Optional(item) => f.debug_tuple("Optional").field(item).finish(),
             Self::First(items) => f.debug_tuple("First").field(items).finish(),
+        }
+    }
+}
+
+impl PartialEq for BorrowedFormatItem<'_> {
+    fn eq(&self, other: &Self) -> bool {
+        match (self, other) {
+            // trivial equality checks
+            #[expect(deprecated)]
+            (Self::Literal(a), Self::Literal(b)) => a == b,
+            (Self::StringLiteral(a), Self::StringLiteral(b)) => a == b,
+            (Self::Component(a), Self::Component(b)) => a == b,
+            (Self::Compound(a), Self::Compound(b)) => a == b,
+            (Self::Optional(a), Self::Optional(b)) => a == b,
+            (Self::First(a), Self::First(b)) => a == b,
+            // bytes vs string (back-compatibility)
+            #[expect(deprecated)]
+            (Self::Literal(a), Self::StringLiteral(b)) => *a == b.as_bytes(),
+            #[expect(deprecated)]
+            (Self::StringLiteral(a), Self::Literal(b)) => a.as_bytes() == *b,
+            _ => false,
         }
     }
 }

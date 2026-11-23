@@ -6,6 +6,6 @@ pub(crate) enum JsonValue {
     Boolean(bool),
     Str(String),
     Num(f64),
-    Array(Vec<JsonValue>),
-    Object(HashMap<String, JsonValue>),
+    Array(Vec<Self>),
+    Object(HashMap<String, Self>),
 }

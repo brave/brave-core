@@ -12,6 +12,14 @@ Note: In this file, do not use the hard wrap in the middle of a sentence for com
 
 ## [Unreleased]
 
+## [0.2.18] - 2026-11-19
+
+- Fix `Drop` impl check with always unsized type. ([#96](https://github.com/taiki-e/pin-project-lite/pull/96), thanks @wyfo)
+
+## [0.2.17] - 2026-02-27
+
+- Enable [release immutability](https://docs.github.com/en/code-security/supply-chain-security/understanding-your-software-supply-chain/immutable-releases).
+
 ## [0.2.16] - 2025-01-06
 
 - Suppress `clippy::absolute_paths`, `clippy::min_ident_chars`, and `clippy::single_char_lifetime_names` lints in generated code.
@@ -226,7 +234,9 @@ Note: In this file, do not use the hard wrap in the middle of a sentence for com
 
 Initial release
 
-[Unreleased]: https://github.com/taiki-e/pin-project-lite/compare/v0.2.16...HEAD
+[Unreleased]: https://github.com/taiki-e/pin-project-lite/compare/v0.2.18...HEAD
+[0.2.18]: https://github.com/taiki-e/pin-project-lite/compare/v0.2.17...v0.2.18
+[0.2.17]: https://github.com/taiki-e/pin-project-lite/compare/v0.2.16...v0.2.17
 [0.2.16]: https://github.com/taiki-e/pin-project-lite/compare/v0.2.15...v0.2.16
 [0.2.15]: https://github.com/taiki-e/pin-project-lite/compare/v0.2.14...v0.2.15
 [0.2.14]: https://github.com/taiki-e/pin-project-lite/compare/v0.2.13...v0.2.14

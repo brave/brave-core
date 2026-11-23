@@ -97,10 +97,9 @@ impl<W: Write> Write for GzipEncoder<W> {
             .as_mut()
             .unwrap()
             .write(buf)
-            .map(|bytes_written| {
+            .inspect(|&bytes_written| {
                 self.crc32_hasher.update(&buf[..bytes_written]);
                 self.input_size = self.input_size.wrapping_add(bytes_written as u32);
-                bytes_written
             })
     }
 

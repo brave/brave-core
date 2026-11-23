@@ -32,37 +32,40 @@ impl fmt::Debug for Time {
 impl Time {
     #[cfg(all(any(feature = "client", feature = "server"), feature = "http2"))]
     pub(crate) fn sleep(&self, duration: Duration) -> Pin<Box<dyn Sleep>> {
-        match *self {
+        match &self {
+            #[allow(clippy::panic)]
             Time::Empty => {
                 panic!("You must supply a timer.")
             }
-            Time::Timer(ref t) => t.sleep(duration),
+            Time::Timer(t) => t.sleep(duration),
         }
     }
 
     #[cfg(all(feature = "server", feature = "http1"))]
     pub(crate) fn sleep_until(&self, deadline: Instant) -> Pin<Box<dyn Sleep>> {
-        match *self {
+        match &self {
+            #[allow(clippy::panic)]
             Time::Empty => {
                 panic!("You must supply a timer.")
             }
-            Time::Timer(ref t) => t.sleep_until(deadline),
+            Time::Timer(t) => t.sleep_until(deadline),
         }
     }
 
     pub(crate) fn now(&self) -> Instant {
-        match *self {
+        match &self {
             Time::Empty => Instant::now(),
-            Time::Timer(ref t) => t.now(),
+            Time::Timer(t) => t.now(),
         }
     }
 
     pub(crate) fn reset(&self, sleep: &mut Pin<Box<dyn Sleep>>, new_deadline: Instant) {
-        match *self {
+        match &self {
+            #[allow(clippy::panic)]
             Time::Empty => {
                 panic!("You must supply a timer.")
             }
-            Time::Timer(ref t) => t.reset(sleep, new_deadline),
+            Time::Timer(t) => t.reset(sleep, new_deadline),
         }
     }
 
@@ -77,7 +80,8 @@ impl Time {
                 Time::Timer(..) => Some(dur),
             },
             Dur::Configured(Some(dur)) => match self {
-                Time::Empty => panic!("timeout `{}` set, but no timer set", name,),
+                #[allow(clippy::panic)]
+                Time::Empty => panic!("timeout `{name}` set, but no timer set"),
                 Time::Timer(..) => Some(dur),
             },
             Dur::Default(None) | Dur::Configured(None) => None,

@@ -17,6 +17,10 @@ type DeStr<'de> = Cow<'de, str>;
 type TablePair<'de> = (Key<'de>, Val<'de>);
 type InlineVec<T> = SmallVec<[T; 5]>;
 
+/// The maximum nesting depth accepted for arrays, inline tables, dotted keys, and table headers.
+/// This limit prevents deeply nested input from exhausting the stack while parsing
+const MAX_NESTING_DEPTH: usize = 128;
+
 /// Parses a toml string into a [`ValueInner::Table`]
 pub fn parse(s: &str) -> Result<Value<'_>, Error> {
     let mut de = Deserializer::new(s);
@@ -43,6 +47,7 @@ pub fn parse(s: &str) -> Result<Value<'_>, Error> {
 struct Deserializer<'a> {
     input: &'a str,
     tokens: Tokenizer<'a>,
+    depth: usize,
 }
 
 struct DeserializeCtx<'de, 'b> {
@@ -404,6 +409,7 @@ impl<'a> Deserializer<'a> {
         Deserializer {
             tokens: Tokenizer::new(input),
             input,
+            depth: 0,
         }
     }
 
@@ -436,6 +442,13 @@ impl<'a> Deserializer<'a> {
                         array,
                     };
                     while let Some(part) = header.next().map_err(|e| self.token_error(e))? {
+                        if cur_table.header.len() >= MAX_NESTING_DEPTH {
+                            return Err(self.error(
+                                part.span.start,
+                                Some(part.span.end),
+                                ErrorKind::ExceededDepthLimit,
+                            ));
+                        }
                         cur_table.header.push(part);
                     }
                     cur_table.end = header.tokens.current();
@@ -510,7 +523,7 @@ impl<'a> Deserializer<'a> {
         self.expect(Token::Equals)?;
         self.eat_whitespace();
 
-        let value = self.value()?;
+        let value = self.value_with_key_depth(key.len())?;
         let end = self.tokens.current();
         self.eat_whitespace();
         if !self.eat_comment()? {
@@ -526,6 +539,11 @@ impl<'a> Deserializer<'a> {
     }
 
     fn value(&mut self) -> Result<Val<'a>, Error> {
+        if self.depth > MAX_NESTING_DEPTH {
+            let at = self.tokens.current();
+            return Err(self.error(at, None, ErrorKind::ExceededDepthLimit));
+        }
+
         let at = self.tokens.current();
         let value = match self.next()? {
             Some((Span { start, end }, Token::String { val, .. })) => Val {
@@ -546,14 +564,20 @@ impl<'a> Deserializer<'a> {
             Some((span, Token::Keylike(key))) => self.parse_keylike(at, span, key)?,
             Some((span, Token::Plus)) => self.number_leading_plus(span)?,
             Some((Span { start, .. }, Token::LeftBrace)) => {
-                self.inline_table().map(|(Span { end, .. }, table)| Val {
+                self.depth += 1;
+                let result = self.inline_table();
+                self.depth -= 1;
+                result.map(|(Span { end, .. }, table)| Val {
                     e: E::InlineTable(table),
                     start,
                     end,
                 })?
             }
             Some((Span { start, .. }, Token::LeftBracket)) => {
-                self.array().map(|(Span { end, .. }, array)| Val {
+                self.depth += 1;
+                let result = self.array();
+                self.depth -= 1;
+                result.map(|(Span { end, .. }, array)| Val {
                     e: E::Array(array),
                     start,
                     end,
@@ -572,6 +596,15 @@ impl<'a> Deserializer<'a> {
             None => return Err(self.eof()),
         };
         Ok(value)
+    }
+
+    /// Parses a value whose resulting entry is nested under `key_len` dotted key
+    /// parts, taking those parts into account for the nesting limit.
+    fn value_with_key_depth(&mut self, key_len: usize) -> Result<Val<'a>, Error> {
+        self.depth += key_len;
+        let value = self.value();
+        self.depth -= key_len;
+        value
     }
 
     fn parse_keylike(&mut self, at: usize, span: Span, key: &'a str) -> Result<Val<'a>, Error> {
@@ -776,24 +809,40 @@ impl<'a> Deserializer<'a> {
     // great to defer parsing everything until later.
     fn inline_table(&mut self) -> Result<(Span, TableValues<'a>), Error> {
         let mut ret = TableValues::default();
-        self.eat_whitespace();
+
+        // TOML 1.1: inline tables can span multiple lines and have trailing commas
+        let intermediate = |me: &mut Deserializer<'_>| -> Result<(), Error> {
+            loop {
+                me.eat_whitespace();
+                if !me.eat(Token::Newline)? && !me.eat_comment()? {
+                    break;
+                }
+            }
+            Ok(())
+        };
+
+        intermediate(self)?;
         if let Some(span) = self.eat_spanned(Token::RightBrace)? {
             return Ok((span, ret));
         }
         loop {
             let key = self.dotted_key()?;
-            self.eat_whitespace();
+            intermediate(self)?;
             self.expect(Token::Equals)?;
-            self.eat_whitespace();
-            let value = self.value()?;
+            intermediate(self)?;
+            let value = self.value_with_key_depth(key.len())?;
             self.add_dotted_key(key, value, &mut ret)?;
 
-            self.eat_whitespace();
+            intermediate(self)?;
             if let Some(span) = self.eat_spanned(Token::RightBrace)? {
                 return Ok((span, ret));
             }
             self.expect(Token::Comma)?;
-            self.eat_whitespace();
+            intermediate(self)?;
+            // TOML 1.1: trailing comma is allowed
+            if let Some(span) = self.eat_spanned(Token::RightBrace)? {
+                return Ok((span, ret));
+            }
         }
     }
 
@@ -839,6 +888,10 @@ impl<'a> Deserializer<'a> {
         self.eat_whitespace();
         while self.eat(Token::Period)? {
             self.eat_whitespace();
+            if result.len() >= MAX_NESTING_DEPTH {
+                let span = self.tokens.current();
+                return Err(self.error(span, None, ErrorKind::ExceededDepthLimit));
+            }
             result.push(self.table_key()?);
             self.eat_whitespace();
         }

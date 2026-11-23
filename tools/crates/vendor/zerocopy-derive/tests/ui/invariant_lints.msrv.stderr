@@ -1,0 +1,26 @@
+error: use of deprecated function `old_check`
+  --> $DIR/invariant_lints.rs:23:26
+   |
+23 |     #[zerocopy(invariant(old_check()))]
+   |                          ^^^^^^^^^
+   |
+note: the lint level is defined here
+  --> $DIR/invariant_lints.rs:9:9
+   |
+9  | #![deny(deprecated)]
+   |         ^^^^^^^^^^
+
+error: use of deprecated function `old_check`
+  --> $DIR/invariant_lints.rs:33:30
+   |
+33 |         #[zerocopy(invariant(old_check()))]
+   |                              ^^^^^^^^^
+
+error: use of deprecated function `old_check`
+  --> $DIR/invariant_lints.rs:43:26
+   |
+43 |     #[zerocopy(invariant(old_check()))]
+   |                          ^^^^^^^^^
+
+error: aborting due to 3 previous errors
+

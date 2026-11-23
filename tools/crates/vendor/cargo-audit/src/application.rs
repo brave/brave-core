@@ -1,89 +1,64 @@
-//! Abscissa application for `cargo audit`
-//!
-//! <https://docs.rs/abscissa_core>
+//! Application entrypoint for `cargo audit`
 
-use std::sync::Arc;
+use std::{env, fs, process::exit};
 
-use crate::{commands::CargoAuditCommand, config::AuditConfig};
-use abscissa_core::{
-    Application, FrameworkError, StandardPaths,
-    application::{self, AppCell},
-    config::CfgCell,
-    terminal::ColorChoice,
-    trace,
+use clap::Parser;
+
+use crate::{
+    commands::CargoAuditCommand,
+    config::AuditConfig,
+    error::{Error, ErrorKind},
+    prelude::*,
+    terminal::{self, ColorChoice},
 };
 
-/// Application state
-pub static APP: AppCell<CargoAuditApplication> = AppCell::new();
+/// Boot the application, parsing subcommand and options from command-line
+/// arguments, and terminating when complete.
+pub fn boot() -> ! {
+    // Parse command line options
+    let command = CargoAuditCommand::parse();
 
-/// `cargo audit` application
-#[derive(Debug)]
-pub struct CargoAuditApplication {
-    /// Application configuration.
-    config: CfgCell<AuditConfig>,
+    // Initialize the terminal and tracing subsystems
+    let color_choice = command.term_colors();
+    terminal::init(color_choice);
+    init_tracing(&command, color_choice);
 
-    /// Application state.
-    state: application::State<Self>,
+    // Load configuration
+    let config = load_config(&command).unwrap_or_else(|e| {
+        status_err!("cargo-audit fatal error: {}", e);
+        exit(1)
+    });
+
+    // Run the command
+    command.run(&config);
+    exit(0)
 }
 
-/// Initialize a new application instance.
-///
-/// By default no configuration is loaded, and the framework state is
-/// initialized to a default, empty state (no components, threads, etc).
-impl Default for CargoAuditApplication {
-    fn default() -> Self {
-        Self {
-            config: CfgCell::default(),
-            state: application::State::default(),
+/// Load `audit.toml` (if it exists), overriding it with command-line arguments
+fn load_config(command: &CargoAuditCommand) -> Result<AuditConfig, Error> {
+    let config = match command.config_path() {
+        Some(path) => {
+            let toml_string = fs::read_to_string(&path).map_err(|e| {
+                ErrorKind::Config.context(format!("couldn't read {}: {e}", path.display()))
+            })?;
+            toml::from_str(&toml_string).map_err(|e| ErrorKind::Parse.context(e))?
         }
-    }
+        None => AuditConfig::default(),
+    };
+
+    command.process_config(config)
 }
 
-impl Application for CargoAuditApplication {
-    /// Entrypoint command for this application.
-    type Cmd = CargoAuditCommand;
+/// Initialize the `tracing` subsystem from command-line options
+fn init_tracing(command: &CargoAuditCommand, color_choice: ColorChoice) {
+    let filter = match command.verbose {
+        true => "debug".to_owned(),
+        false => env::var("RUST_LOG").unwrap_or_else(|_| "info".to_owned()),
+    };
 
-    /// Application configuration.
-    type Cfg = AuditConfig;
-
-    /// Paths to resources within the application.
-    type Paths = StandardPaths;
-
-    /// Accessor for application configuration.
-    fn config(&self) -> Arc<AuditConfig> {
-        self.config.read()
-    }
-
-    /// Borrow the application state immutably.
-    fn state(&self) -> &application::State<Self> {
-        &self.state
-    }
-
-    /// Register all components used by this application.
-    fn register_components(&mut self, command: &Self::Cmd) -> Result<(), FrameworkError> {
-        let components = self.framework_components(command)?;
-        self.state.components_mut().register(components)
-    }
-
-    /// Post-configuration lifecycle callback.
-    fn after_config(&mut self, config: Self::Cfg) -> Result<(), FrameworkError> {
-        // Configure components
-        self.state.components_mut().after_config(&config)?;
-        self.config.set_once(config);
-        Ok(())
-    }
-
-    /// Color configuration for this application.
-    fn term_colors(&self, entrypoint: &CargoAuditCommand) -> ColorChoice {
-        entrypoint.term_colors()
-    }
-
-    /// Get tracing configuration from command-line options
-    fn tracing_config(&self, command: &CargoAuditCommand) -> trace::Config {
-        if command.verbose {
-            trace::Config::verbose()
-        } else {
-            trace::Config::default()
-        }
-    }
+    tracing_subscriber::fmt()
+        .with_ansi(color_choice != ColorChoice::Never)
+        .with_env_filter(filter)
+        .try_init()
+        .expect("tracing subsystem failed to initialize");
 }

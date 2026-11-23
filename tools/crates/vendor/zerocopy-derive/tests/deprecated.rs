@@ -26,6 +26,7 @@ macro_rules! test {
 
                     #[deprecated = "do not use"]
                     #[derive(imp::$trait)]
+                    #[zerocopy(crate = "zerocopy_renamed")]
                     $ty
 
                     #[allow(deprecated)]
@@ -53,6 +54,7 @@ mod enum_hash_eq {
         use super::super::*;
         #[deprecated = "do not use"]
         #[derive(imp::ByteHash, imp::IntoBytes, imp::Immutable)]
+        #[zerocopy(crate = "zerocopy_renamed")]
         #[repr(u8)]
         enum Enum {
             A,
@@ -67,6 +69,7 @@ mod enum_hash_eq {
         use super::super::*;
         #[deprecated = "do not use"]
         #[derive(imp::ByteEq, imp::IntoBytes, imp::Immutable)]
+        #[zerocopy(crate = "zerocopy_renamed")]
         #[repr(u8)]
         enum Enum {
             A,
@@ -84,6 +87,7 @@ mod struct_hash_eq {
         use super::super::*;
         #[deprecated = "do not use"]
         #[derive(imp::ByteHash, imp::IntoBytes, imp::Immutable)]
+        #[zerocopy(crate = "zerocopy_renamed")]
         #[repr(C)]
         struct Struct;
 
@@ -96,6 +100,7 @@ mod struct_hash_eq {
         use super::super::*;
         #[deprecated = "do not use"]
         #[derive(imp::ByteEq, imp::IntoBytes, imp::Immutable)]
+        #[zerocopy(crate = "zerocopy_renamed")]
         #[repr(C)]
         struct Struct;
 
@@ -112,6 +117,7 @@ mod split_at_test {
         use super::super::*;
         #[deprecated = "do not use"]
         #[derive(imp::SplitAt, imp::KnownLayout)]
+        #[zerocopy(crate = "zerocopy_renamed")]
         #[repr(C)]
         struct Struct {
             a: [u8],

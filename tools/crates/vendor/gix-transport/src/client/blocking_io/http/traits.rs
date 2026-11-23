@@ -1,39 +1,5 @@
 use crate::client::WriteMode;
-
-/// The error used by the [Http] trait.
-#[derive(Debug, thiserror::Error)]
-#[allow(missing_docs)]
-pub enum Error {
-    #[error("Could not initialize the http client")]
-    InitHttpClient {
-        source: Box<dyn std::error::Error + Send + Sync + 'static>,
-    },
-    #[error("{description}")]
-    Detail { description: String },
-    #[error("An IO error occurred while uploading the body of a POST request")]
-    PostBody(#[from] std::io::Error),
-}
-
-impl crate::IsSpuriousError for Error {
-    fn is_spurious(&self) -> bool {
-        match self {
-            Error::PostBody(err) => err.is_spurious(),
-            #[cfg(any(feature = "http-client-reqwest", feature = "http-client-curl"))]
-            Error::InitHttpClient { source } => {
-                #[cfg(feature = "http-client-curl")]
-                if let Some(err) = source.downcast_ref::<crate::client::http::curl::Error>() {
-                    return err.is_spurious();
-                }
-                #[cfg(feature = "http-client-reqwest")]
-                if let Some(err) = source.downcast_ref::<crate::client::http::reqwest::remote::Error>() {
-                    return err.is_spurious();
-                }
-                false
-            }
-            _ => false,
-        }
-    }
-}
+use gix_error::Result;
 
 /// The return value of [`Http::get()`].
 pub struct GetResponse<H, B> {
@@ -85,8 +51,9 @@ impl<A, B, C> From<PostResponse<A, B, C>> for GetResponse<A, B> {
 
 /// A trait to abstract the HTTP operations needed to power all git interactions: read via GET and write via POST.
 /// Note that 401 must be turned into `std::io::Error(PermissionDenied)`, and other non-success http statuses must be transformed
-/// into `std::io::Error(Other)`
-#[allow(clippy::type_complexity)]
+/// into `std::io::Error(Other)`.
+/// The 401 error should wrap [`crate::client::AuthenticationRequired`] with the response's `WWW-Authenticate` values
+/// so credential helpers can use the server's authentication hints.
 pub trait Http {
     /// A type providing headers line by line.
     type Headers: std::io::BufRead + Unpin;
@@ -105,7 +72,7 @@ pub trait Http {
         url: &str,
         base_url: &str,
         headers: impl IntoIterator<Item = impl AsRef<str>>,
-    ) -> Result<GetResponse<Self::Headers, Self::ResponseBody>, Error>;
+    ) -> Result<GetResponse<Self::Headers, Self::ResponseBody>>;
 
     /// Initiate a `POST` request to `url` providing with the given `headers`, where `base_url` is so that `base_url + tail == url`.
     ///
@@ -121,13 +88,15 @@ pub trait Http {
         base_url: &str,
         headers: impl IntoIterator<Item = impl AsRef<str>>,
         body: PostBodyDataKind,
-    ) -> Result<PostResponse<Self::Headers, Self::ResponseBody, Self::PostBody>, Error>;
+    ) -> Result<PostResponse<Self::Headers, Self::ResponseBody, Self::PostBody>>;
 
     /// Pass `config` which can deserialize in the implementation's configuration, as documented separately.
     ///
     /// The caller must know how that `config` data looks like for the intended implementation.
-    fn configure(
-        &mut self,
-        config: &dyn std::any::Any,
-    ) -> Result<(), Box<dyn std::error::Error + Send + Sync + 'static>>;
+    fn configure(&mut self, config: &dyn std::any::Any) -> Result;
+
+    /// Return the effective base URL after a backend accepted a redirect, if available.
+    fn redirected_base_url(&self) -> Option<String> {
+        None
+    }
 }

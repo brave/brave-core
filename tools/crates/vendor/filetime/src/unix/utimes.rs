@@ -5,61 +5,6 @@ use std::io;
 use std::os::unix::prelude::*;
 use std::path::Path;
 
-#[allow(dead_code)]
-pub fn set_file_times(p: &Path, atime: FileTime, mtime: FileTime) -> io::Result<()> {
-    set_times(p, Some(atime), Some(mtime), false)
-}
-
-#[allow(dead_code)]
-pub fn set_file_mtime(p: &Path, mtime: FileTime) -> io::Result<()> {
-    set_times(p, None, Some(mtime), false)
-}
-
-#[allow(dead_code)]
-pub fn set_file_atime(p: &Path, atime: FileTime) -> io::Result<()> {
-    set_times(p, Some(atime), None, false)
-}
-
-#[cfg(not(target_env = "uclibc"))]
-#[allow(dead_code)]
-pub fn set_file_handle_times(
-    f: &fs::File,
-    atime: Option<FileTime>,
-    mtime: Option<FileTime>,
-) -> io::Result<()> {
-    let (atime, mtime) = match get_times(atime, mtime, || f.metadata())? {
-        Some(pair) => pair,
-        None => return Ok(()),
-    };
-    let times = [to_timeval(&atime), to_timeval(&mtime)];
-    let rc = unsafe { libc::futimes(f.as_raw_fd(), times.as_ptr()) };
-    return if rc == 0 {
-        Ok(())
-    } else {
-        Err(io::Error::last_os_error())
-    };
-}
-
-#[cfg(target_env = "uclibc")]
-#[allow(dead_code)]
-pub fn set_file_handle_times(
-    f: &fs::File,
-    atime: Option<FileTime>,
-    mtime: Option<FileTime>,
-) -> io::Result<()> {
-    let (atime, mtime) = match get_times(atime, mtime, || f.metadata())? {
-        Some(pair) => pair,
-        None => return Ok(()),
-    };
-    let times = [to_timespec(&atime), to_timespec(&mtime)];
-    let rc = unsafe { libc::futimens(f.as_raw_fd(), times.as_ptr()) };
-    return if rc == 0 {
-        Ok(())
-    } else {
-        Err(io::Error::last_os_error())
-    };
-}
-
 fn get_times(
     atime: Option<FileTime>,
     mtime: Option<FileTime>,

@@ -2,7 +2,7 @@
 //!
 //! [`File`]: File
 
-use crate::fs::{asyncify, OpenOptions};
+use crate::fs::{asyncify, FileTimes, OpenOptions};
 use crate::io::blocking::{Buf, DEFAULT_MAX_BUF_SIZE};
 use crate::io::{AsyncRead, AsyncSeek, AsyncWrite, ReadBuf};
 use crate::sync::Mutex;
@@ -29,6 +29,11 @@ use crate::blocking::JoinHandle;
 use crate::blocking::{spawn_blocking, spawn_mandatory_blocking};
 #[cfg(not(test))]
 use std::fs::File as StdFile;
+
+cfg_io_uring! {
+    #[cfg(not(test))]
+    use crate::spawn;
+}
 
 /// A reference to an open file on the filesystem.
 ///
@@ -413,7 +418,14 @@ impl File {
 
         let (op, buf) = match inner.state {
             State::Idle(_) => unreachable!(),
-            State::Busy(ref mut rx) => rx.await?,
+            State::Busy(ref mut rx) => {
+                let res = rx.await;
+                if res.is_err() {
+                    // Restore a valid Idle state before returning the error.
+                    inner.state = State::Idle(Some(Buf::with_capacity(0)));
+                }
+                res?
+            }
         };
 
         inner.state = State::Idle(Some(buf));
@@ -554,10 +566,53 @@ impl File {
         asyncify(move || std.set_permissions(perm)).await
     }
 
+    /// Changes the timestamps on the underlying file.
+    ///
+    /// # Errors
+    ///
+    /// This function will return an error if the user lacks permission to change
+    /// timestamps on the underlying file. It may also return an error in other
+    /// os-specific unspecified cases.
+    ///
+    /// # Examples
+    ///
+    /// ```no_run
+    /// use tokio::fs::{File, FileTimes};
+    ///
+    /// # async fn dox() -> std::io::Result<()> {
+    /// let file = File::open("foo.txt").await?;
+    /// let times = FileTimes::new()
+    ///     .set_accessed(std::time::SystemTime::now())
+    ///     .set_modified(std::time::SystemTime::now());
+    /// file.set_times(times).await?;
+    /// # Ok(())
+    /// # }
+    /// ```
+    pub async fn set_times(&self, times: FileTimes) -> io::Result<()> {
+        // Wait for in-flight reads/writes like `sync_all` does, so they
+        // cannot complete after us and overwrite the timestamps.
+        self.inner.lock().await.complete_inflight().await;
+
+        let std = self.std.clone();
+        let std_times = times.into_std();
+        asyncify(move || std.set_times(std_times)).await
+    }
+
+    /// Changes the modification timestamp on the underlying file.
+    ///
+    /// This is equivalent to `set_times` with only the modification time set.
+    pub async fn set_modified(&self, time: std::time::SystemTime) -> io::Result<()> {
+        self.set_times(FileTimes::new().set_modified(time)).await
+    }
+
     /// Set the maximum buffer size for the underlying [`AsyncRead`] / [`AsyncWrite`] operation.
     ///
     /// Although Tokio uses a sensible default value for this buffer size, this function would be
     /// useful for changing that default depending on the situation.
+    ///
+    /// # Panics
+    ///
+    /// This function panics if `max_buf_size` is 0.
     ///
     /// # Examples
     ///
@@ -578,7 +633,9 @@ impl File {
     /// # Ok(())
     /// # }
     /// ```
+    #[track_caller]
     pub fn set_max_buf_size(&mut self, max_buf_size: usize) {
+        assert!(max_buf_size > 0, "`max_buf_size` must be greater than 0");
         self.max_buf_size = max_buf_size;
     }
 
@@ -613,16 +670,15 @@ impl AsyncRead for File {
                     let std = me.std.clone();
 
                     let max_buf_size = cmp::min(dst.remaining(), me.max_buf_size);
-                    inner.state = State::Busy(spawn_blocking(move || {
-                        // SAFETY: the `Read` implementation of `std` does not
-                        // read from the buffer it is borrowing and correctly
-                        // reports the length of the data written into the buffer.
-                        let res = unsafe { buf.read_from(&mut &*std, max_buf_size) };
-                        (Operation::Read(res), buf)
-                    }));
+                    inner.state = State::Busy(Inner::poll_read_inner(std, buf, max_buf_size)?);
                 }
                 State::Busy(ref mut rx) => {
-                    let (op, mut buf) = ready!(Pin::new(rx).poll(cx))?;
+                    let res = ready!(Pin::new(rx).poll(cx));
+                    if res.is_err() {
+                        // Restore a valid Idle state before returning the error.
+                        inner.state = State::Idle(Some(Buf::with_capacity(0)));
+                    }
+                    let (op, mut buf) = res?;
 
                     match op {
                         Operation::Read(Ok(_)) => {
@@ -667,26 +723,39 @@ impl AsyncSeek for File {
         let inner = me.inner.get_mut();
 
         match inner.state {
-            State::Busy(_) => Err(io::Error::new(
-                io::ErrorKind::Other,
+            State::Busy(_) => Err(io::Error::other(
                 "other file operation is pending, call poll_complete before start_seek",
             )),
             State::Idle(ref mut buf_cell) => {
                 let mut buf = buf_cell.take().unwrap();
 
                 // Factor in any unread data from the buf
-                if !buf.is_empty() {
+                let extra_seek = if !buf.is_empty() {
                     let n = buf.discard_read();
 
                     if let SeekFrom::Current(ref mut offset) = pos {
-                        *offset += n;
+                        match offset.checked_add(n) {
+                            Some(new_offset) => {
+                                *offset = new_offset;
+                                None
+                            }
+                            None => Some(SeekFrom::Current(n)),
+                        }
+                    } else {
+                        None
                     }
-                }
+                } else {
+                    None
+                };
 
                 let std = me.std.clone();
 
                 inner.state = State::Busy(spawn_blocking(move || {
-                    let res = (&*std).seek(pos);
+                    let res = if let Some(extra_seek) = extra_seek {
+                        (&*std).seek(extra_seek).and_then(|_| (&*std).seek(pos))
+                    } else {
+                        (&*std).seek(pos)
+                    };
                     (Operation::Seek(res), buf)
                 }));
                 Ok(())
@@ -702,7 +771,12 @@ impl AsyncSeek for File {
             match inner.state {
                 State::Idle(_) => return Poll::Ready(Ok(inner.pos)),
                 State::Busy(ref mut rx) => {
-                    let (op, buf) = ready!(Pin::new(rx).poll(cx))?;
+                    let res = ready!(Pin::new(rx).poll(cx));
+                    if res.is_err() {
+                        // Restore a valid Idle state before returning the error.
+                        inner.state = State::Idle(Some(Buf::with_capacity(0)));
+                    }
+                    let (op, buf) = res?;
                     inner.state = State::Idle(Some(buf));
 
                     match op {
@@ -753,7 +827,7 @@ impl AsyncWrite for File {
                     let n = buf.copy_from(src, me.max_buf_size);
                     let std = me.std.clone();
 
-                    let blocking_task_join_handle = spawn_mandatory_blocking(move || {
+                    let res = spawn_mandatory_blocking(move || {
                         let res = if let Some(seek) = seek {
                             (&*std).seek(seek).and_then(|_| buf.write_to(&mut &*std))
                         } else {
@@ -762,16 +836,25 @@ impl AsyncWrite for File {
 
                         (Operation::Write(res), buf)
                     })
-                    .ok_or_else(|| {
-                        io::Error::new(io::ErrorKind::Other, "background task failed")
-                    })?;
+                    .ok_or_else(|| io::Error::other("background task failed"));
+
+                    if res.is_err() {
+                        // Restore a valid Idle state before returning the error.
+                        inner.state = State::Idle(Some(Buf::with_capacity(0)));
+                    }
+                    let blocking_task_join_handle = res?;
 
                     inner.state = State::Busy(blocking_task_join_handle);
 
                     return Poll::Ready(Ok(n));
                 }
                 State::Busy(ref mut rx) => {
-                    let (op, buf) = ready!(Pin::new(rx).poll(cx))?;
+                    let res = ready!(Pin::new(rx).poll(cx));
+                    if res.is_err() {
+                        // Restore a valid Idle state before returning the error.
+                        inner.state = State::Idle(Some(Buf::with_capacity(0)));
+                    }
+                    let (op, buf) = res?;
                     inner.state = State::Idle(Some(buf));
 
                     match op {
@@ -824,7 +907,7 @@ impl AsyncWrite for File {
                     let n = buf.copy_from_bufs(bufs, me.max_buf_size);
                     let std = me.std.clone();
 
-                    let blocking_task_join_handle = spawn_mandatory_blocking(move || {
+                    let res = spawn_mandatory_blocking(move || {
                         let res = if let Some(seek) = seek {
                             (&*std).seek(seek).and_then(|_| buf.write_to(&mut &*std))
                         } else {
@@ -833,16 +916,25 @@ impl AsyncWrite for File {
 
                         (Operation::Write(res), buf)
                     })
-                    .ok_or_else(|| {
-                        io::Error::new(io::ErrorKind::Other, "background task failed")
-                    })?;
+                    .ok_or_else(|| io::Error::other("background task failed"));
+
+                    if res.is_err() {
+                        // Restore a valid Idle state before returning the error.
+                        inner.state = State::Idle(Some(Buf::with_capacity(0)));
+                    }
+                    let blocking_task_join_handle = res?;
 
                     inner.state = State::Busy(blocking_task_join_handle);
 
                     return Poll::Ready(Ok(n));
                 }
                 State::Busy(ref mut rx) => {
-                    let (op, buf) = ready!(Pin::new(rx).poll(cx))?;
+                    let res = ready!(Pin::new(rx).poll(cx));
+                    if res.is_err() {
+                        // Restore a valid Idle state before returning the error.
+                        inner.state = State::Idle(Some(Buf::with_capacity(0)));
+                    }
+                    let (op, buf) = res?;
                     inner.state = State::Idle(Some(buf));
 
                     match op {
@@ -899,6 +991,13 @@ impl fmt::Debug for File {
 }
 
 #[cfg(unix)]
+impl From<std::os::fd::OwnedFd> for File {
+    fn from(fd: std::os::fd::OwnedFd) -> Self {
+        Self::from_std(StdFile::from(fd))
+    }
+}
+
+#[cfg(unix)]
 impl std::os::unix::io::AsRawFd for File {
     fn as_raw_fd(&self) -> std::os::unix::io::RawFd {
         self.std.as_raw_fd()
@@ -917,12 +1016,20 @@ impl std::os::unix::io::AsFd for File {
 #[cfg(unix)]
 impl std::os::unix::io::FromRawFd for File {
     unsafe fn from_raw_fd(fd: std::os::unix::io::RawFd) -> Self {
-        StdFile::from_raw_fd(fd).into()
+        // Safety: exactly the same safety contract as
+        // `std::os::unix::io::FromRawFd::from_raw_fd`.
+        unsafe { StdFile::from_raw_fd(fd).into() }
     }
 }
 
 cfg_windows! {
-    use crate::os::windows::io::{AsRawHandle, FromRawHandle, RawHandle, AsHandle, BorrowedHandle};
+    use crate::os::windows::io::{AsRawHandle, FromRawHandle, RawHandle, AsHandle, BorrowedHandle, OwnedHandle};
+
+    impl From<OwnedHandle> for File {
+        fn from(handle: OwnedHandle) -> Self {
+            Self::from_std(StdFile::from(handle))
+        }
+    }
 
     impl AsRawHandle for File {
         fn as_raw_handle(&self) -> RawHandle {
@@ -942,12 +1049,142 @@ cfg_windows! {
 
     impl FromRawHandle for File {
         unsafe fn from_raw_handle(handle: RawHandle) -> Self {
-            StdFile::from_raw_handle(handle).into()
+            // Safety: exactly the same safety contract as
+            // `FromRawHandle::from_raw_handle`.
+            unsafe { StdFile::from_raw_handle(handle).into() }
         }
     }
 }
 
 impl Inner {
+    fn poll_read_inner(
+        std: Arc<StdFile>,
+        buf: Buf,
+        max_buf_size: usize,
+    ) -> io::Result<JoinHandle<(Operation, Buf)>> {
+        // Unit tests use `MockFile` and the mock `spawn_blocking` infrastructure,
+        // which can't drive real io_uring operations. The io_uring read path
+        // is tested through integration tests in `tests/fs_uring_file_read.rs`.
+        #[cfg(all(
+            not(test),
+            tokio_unstable,
+            feature = "io-uring",
+            feature = "rt",
+            feature = "fs",
+            target_os = "linux",
+        ))]
+        {
+            if let Ok(handle) = crate::runtime::Handle::try_current() {
+                if let Some(driver_handle) = handle.inner.driver().io.as_ref() {
+                    if driver_handle.is_uring_ready(io_uring::opcode::Read::CODE) {
+                        // Fast path: uring already initialized and Read supported.
+                        let fd: crate::io::uring::utils::ArcFd = std;
+                        return Ok(spawn(Self::uring_read(fd, buf, max_buf_size)));
+                    }
+
+                    if !driver_handle.is_uring_probed() {
+                        // Not yet probed: lazy init inside an async task so
+                        // `File::from_std()` can still benefit from io-uring.
+                        return Ok(spawn(Self::lazy_init_read(std, buf, max_buf_size)));
+                    }
+                }
+                // No IO driver or probed but unsupported: fall through to spawn_blocking.
+            }
+        }
+
+        // Fallback: spawn_blocking
+        let join = Self::spawn_blocking_read(buf, std, max_buf_size);
+        Ok(join)
+    }
+
+    /// Perform an io-uring read with interrupt retry.
+    #[cfg(all(
+        not(test),
+        tokio_unstable,
+        feature = "io-uring",
+        feature = "rt",
+        feature = "fs",
+        target_os = "linux",
+    ))]
+    async fn uring_read(
+        mut fd: crate::io::uring::utils::ArcFd,
+        mut buf: Buf,
+        max_buf_size: usize,
+    ) -> (Operation, Buf) {
+        use crate::runtime::driver::op::Op;
+
+        loop {
+            let (res, r_fd, r_buf) =
+                // u64::MAX to use and advance the file position
+                Op::read_at(fd, buf, max_buf_size, u64::MAX).await;
+            match (res, r_fd, r_buf) {
+                // Retry an interrupted read with the resources the op handed back.
+                (Err(e), Some(r_fd), Some(r_buf)) if e.kind() == io::ErrorKind::Interrupted => {
+                    buf = r_buf;
+                    fd = r_fd;
+                    continue;
+                }
+                // A cancelled op keeps its buffer in the driver, so the idle slot
+                // gets a fresh empty `Buf` instead.
+                (Err(e), _, r_buf) => {
+                    let buf = r_buf.unwrap_or_else(|| Buf::with_capacity(0));
+                    break (Operation::Read(Err(e)), buf);
+                }
+                (Ok(n), _, Some(r_buf)) => break (Operation::Read(Ok(n as usize)), r_buf),
+                (Ok(_), ..) => unreachable!("a successful read returns its buffer"),
+            }
+        }
+    }
+
+    /// Attempt lazy io-uring initialization, then read via uring or fall back
+    /// to a blocking read. Covers the `File::from_std()` path where
+    /// `check_and_init()` hasn't been called yet.
+    #[cfg(all(
+        not(test),
+        tokio_unstable,
+        feature = "io-uring",
+        feature = "rt",
+        feature = "fs",
+        target_os = "linux",
+    ))]
+    async fn lazy_init_read(std: Arc<StdFile>, buf: Buf, max_buf_size: usize) -> (Operation, Buf) {
+        if let Ok(handle) = crate::runtime::Handle::try_current() {
+            if let Some(driver_handle) = handle.inner.driver().io.as_ref() {
+                if driver_handle
+                    .check_and_init(io_uring::opcode::Read::CODE)
+                    .await
+                    .unwrap_or_default()
+                {
+                    let fd: crate::io::uring::utils::ArcFd = std;
+                    return Self::uring_read(fd, buf, max_buf_size).await;
+                }
+            }
+        }
+
+        match Self::spawn_blocking_read(buf, std, max_buf_size).await {
+            Ok(result) => result,
+            Err(e) => (
+                Operation::Read(Err(io::Error::other(e))),
+                Buf::with_capacity(0),
+            ),
+        }
+    }
+
+    fn spawn_blocking_read(
+        buf: Buf,
+        std: Arc<StdFile>,
+        max_buf_size: usize,
+    ) -> JoinHandle<(Operation, Buf)> {
+        spawn_blocking(move || {
+            let mut buf = buf;
+            // SAFETY: the `Read` implementation of `std` does not
+            // read from the buffer it is borrowing and correctly
+            // reports the length of the data written into the buffer.
+            let res = unsafe { buf.read_from(&mut &*std, max_buf_size) };
+            (Operation::Read(res), buf)
+        })
+    }
+
     async fn complete_inflight(&mut self) {
         use std::future::poll_fn;
 
@@ -973,7 +1210,14 @@ impl Inner {
 
         let (op, buf) = match self.state {
             State::Idle(_) => return Poll::Ready(Ok(())),
-            State::Busy(ref mut rx) => ready!(Pin::new(rx).poll(cx))?,
+            State::Busy(ref mut rx) => {
+                let res = ready!(Pin::new(rx).poll(cx));
+                if res.is_err() {
+                    // Restore a valid Idle state before returning the error.
+                    self.state = State::Idle(Some(Buf::with_capacity(0)));
+                }
+                res?
+            }
         };
 
         // The buffer is not used here

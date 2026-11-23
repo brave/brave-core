@@ -1,4 +1,4 @@
-//! Tokio-specific wrappers that use `fs_err` error messages.
+//! Tokio-specific wrappers that use fs-err error messages.
 
 use crate::errors::{Error, ErrorKind, SourceDestError, SourceDestErrorKind};
 use std::fs::{Metadata, Permissions};

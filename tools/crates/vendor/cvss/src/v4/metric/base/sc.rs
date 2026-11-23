@@ -1,7 +1,7 @@
 //! Confidentiality Impact to the Subsequent System (SC)
 
 use crate::{
-    Error, Result,
+    Error,
     v4::metric::{Metric, MetricType},
 };
 use alloc::borrow::ToOwned;
@@ -18,7 +18,7 @@ use core::{fmt, str::FromStr};
 /// > only authorized users, as well as preventing access by, or disclosure to,
 /// > unauthorized ones. The resulting score is greatest when the loss to the
 /// > system is highest.
-#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+#[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
 pub enum ConfidentialityImpactToTheSubsequentSystem {
     /// None (N)
     ///
@@ -43,13 +43,8 @@ pub enum ConfidentialityImpactToTheSubsequentSystem {
     /// > but the disclosed information presents a direct, serious impact. For
     /// > example, an attacker steals the administrator's password, or private
     /// > encryption keys of a web server.
+    #[default]
     High,
-}
-
-impl Default for ConfidentialityImpactToTheSubsequentSystem {
-    fn default() -> Self {
-        Self::High
-    }
 }
 
 impl Metric for ConfidentialityImpactToTheSubsequentSystem {
@@ -57,9 +52,9 @@ impl Metric for ConfidentialityImpactToTheSubsequentSystem {
 
     fn as_str(self) -> &'static str {
         match self {
-            ConfidentialityImpactToTheSubsequentSystem::None => "N",
-            ConfidentialityImpactToTheSubsequentSystem::Low => "L",
-            ConfidentialityImpactToTheSubsequentSystem::High => "H",
+            Self::None => "N",
+            Self::Low => "L",
+            Self::High => "H",
         }
     }
 }
@@ -73,11 +68,11 @@ impl fmt::Display for ConfidentialityImpactToTheSubsequentSystem {
 impl FromStr for ConfidentialityImpactToTheSubsequentSystem {
     type Err = Error;
 
-    fn from_str(s: &str) -> Result<Self> {
+    fn from_str(s: &str) -> Result<Self, Error> {
         match s {
-            "N" => Ok(ConfidentialityImpactToTheSubsequentSystem::None),
-            "L" => Ok(ConfidentialityImpactToTheSubsequentSystem::Low),
-            "H" => Ok(ConfidentialityImpactToTheSubsequentSystem::High),
+            "N" => Ok(Self::None),
+            "L" => Ok(Self::Low),
+            "H" => Ok(Self::High),
             _ => Err(Error::InvalidMetricV4 {
                 metric_type: Self::TYPE,
                 value: s.to_owned(),
@@ -104,27 +99,22 @@ pub(crate) mod merge {
     /// Result of the merging of the base and modified metrics.
     ///
     /// Used in scoring.
-    #[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+    #[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
     pub(crate) enum MergedConfidentialityImpactToTheSubsequentSystem {
+        #[default]
         High,
         Low,
         None,
     }
 
-    impl Default for MergedConfidentialityImpactToTheSubsequentSystem {
-        fn default() -> Self {
-            Self::High
-        }
-    }
-
     impl FromStr for MergedConfidentialityImpactToTheSubsequentSystem {
         type Err = Error;
 
-        fn from_str(s: &str) -> Result<Self> {
+        fn from_str(s: &str) -> Result<Self, Error> {
             match s {
-                "H" => Ok(MergedConfidentialityImpactToTheSubsequentSystem::High),
-                "L" => Ok(MergedConfidentialityImpactToTheSubsequentSystem::Low),
-                "N" => Ok(MergedConfidentialityImpactToTheSubsequentSystem::None),
+                "H" => Ok(Self::High),
+                "L" => Ok(Self::Low),
+                "N" => Ok(Self::None),
                 _ => Err(Error::InvalidMetricV4 {
                     metric_type: MetricType::SC,
                     value: s.to_owned(),

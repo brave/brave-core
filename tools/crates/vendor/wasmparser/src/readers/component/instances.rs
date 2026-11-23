@@ -13,7 +13,7 @@ pub enum InstantiationArgKind {
 }
 
 /// Represents an argument to instantiating a WebAssembly module.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 pub struct InstantiationArg<'a> {
     /// The name of the module argument.
     pub name: &'a str,
@@ -24,7 +24,7 @@ pub struct InstantiationArg<'a> {
 }
 
 /// Represents an instance of a WebAssembly module.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 pub enum Instance<'a> {
     /// The instance is from instantiating a WebAssembly module.
     Instantiate {
@@ -42,9 +42,9 @@ pub enum Instance<'a> {
 /// # Examples
 ///
 /// ```
-/// use wasmparser::{InstanceSectionReader, BinaryReader, WasmFeatures};
+/// use wasmparser::{InstanceSectionReader, BinaryReader};
 /// # let data: &[u8] = &[0x01, 0x00, 0x00, 0x01, 0x03, b'f', b'o', b'o', 0x12, 0x00];
-/// let reader = BinaryReader::new(data, 0, WasmFeatures::all());
+/// let reader = BinaryReader::new(data, 0);
 /// let mut reader = InstanceSectionReader::new(reader).unwrap();
 /// for inst in reader {
 ///     println!("Instance {:?}", inst.expect("instance"));
@@ -91,7 +91,7 @@ impl<'a> FromReader<'a> for InstantiationArgKind {
 }
 
 /// Represents an argument to instantiating a WebAssembly component.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 pub struct ComponentInstantiationArg<'a> {
     /// The name of the component argument.
     pub name: &'a str,
@@ -102,7 +102,7 @@ pub struct ComponentInstantiationArg<'a> {
 }
 
 /// Represents an instance in a WebAssembly component.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Eq, PartialEq)]
 pub enum ComponentInstance<'a> {
     /// The instance is from instantiating a WebAssembly component.
     Instantiate {
@@ -120,9 +120,9 @@ pub enum ComponentInstance<'a> {
 /// # Examples
 ///
 /// ```
-/// use wasmparser::{ComponentInstanceSectionReader, BinaryReader, WasmFeatures};
+/// use wasmparser::{ComponentInstanceSectionReader, BinaryReader};
 /// # let data: &[u8] = &[0x01, 0x00, 0x00, 0x01, 0x03, b'f', b'o', b'o', 0x01, 0x00];
-/// let reader = BinaryReader::new(data, 0, WasmFeatures::all());
+/// let reader = BinaryReader::new(data, 0);
 /// let mut reader = ComponentInstanceSectionReader::new(reader).unwrap();
 /// for inst in reader {
 ///     println!("Instance {:?}", inst.expect("instance"));

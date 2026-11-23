@@ -13,7 +13,7 @@
 edition = "2021"
 rust-version = "1.62.0"
 name = "chrono"
-version = "0.4.42"
+version = "0.4.45"
 build = false
 include = [
     "src/*",
@@ -69,6 +69,10 @@ default = [
     "oldtime",
     "wasmbind",
 ]
+defmt = [
+    "dep:defmt",
+    "pure-rust-locales?/defmt",
+]
 libc = []
 now = ["std"]
 oldtime = []
@@ -118,12 +122,16 @@ version = "1.0.0"
 features = ["derive"]
 optional = true
 
+[dependencies.defmt]
+version = "1.0.1"
+optional = true
+
 [dependencies.num-traits]
 version = "0.2"
 default-features = false
 
 [dependencies.pure-rust-locales]
-version = "0.8"
+version = "0.8.2"
 optional = true
 
 [dependencies.rkyv]
@@ -147,7 +155,10 @@ default-features = false
 version = "1"
 
 [dev-dependencies.similar-asserts]
-version = "1.6.1"
+version = "2.0.0"
+
+[dev-dependencies.windows-bindgen]
+version = "0.66"
 
 [target.'cfg(all(target_arch = "wasm32", not(any(target_os = "emscripten", target_os = "wasi"))))'.dependencies.js-sys]
 version = "0.3"
@@ -168,6 +179,3 @@ optional = true
 [target."cfg(windows)".dependencies.windows-link]
 version = "0.2"
 optional = true
-
-[target."cfg(windows)".dev-dependencies.windows-bindgen]
-version = "0.63"

@@ -2,6 +2,223 @@
 
 --------------------------------------------------------------------------------
 
+## 0.34.0
+
+Released 2026/06/25.
+
+### Breaking changes
+
+* Added `SectionId::DebugGnuPubNames` and `SectionId::DebugGnuPubTypes`.
+  [#883](https://github.com/gimli-rs/gimli/pull/883)
+
+* Added Wasm variants to `read::EvaluationResult`.
+  [#871](https://github.com/gimli-rs/gimli/pull/871)
+
+* Added `#[non_exhaustive]` and base address variants to `write::Error`.
+  [#870](https://github.com/gimli-rs/gimli/pull/870)
+
+### Changed
+
+* Changed `write` module to validate use of base addresses in range and location lists.
+  [#870](https://github.com/gimli-rs/gimli/pull/870)
+
+* Improved parsing performance for unsigned LEB128.
+  [#875](https://github.com/gimli-rs/gimli/pull/875)
+
+* Fixed `write::Writer::write_udata` to handle size 3.
+  [#877](https://github.com/gimli-rs/gimli/pull/877)
+
+* Improved parsing performance for `read::DebugLine::program`.
+  [#885](https://github.com/gimli-rs/gimli/pull/885)
+
+* Checked for arithmetic overflow when looking up indexed offset tables.
+  [#889](https://github.com/gimli-rs/gimli/pull/889)
+
+* Checked for arithmetic overflow when parsing `DW_OP_piece`.
+  [#891](https://github.com/gimli-rs/gimli/pull/891)
+
+### Added
+
+* Added Wasm location support to `read::Evaluation`.
+  [#871](https://github.com/gimli-rs/gimli/pull/871)
+
+* Added `read::ListsHeader` for `.debug_loclists` and `.debug_rnglists`.
+  [#878](https://github.com/gimli-rs/gimli/pull/878)
+
+* Added `read::DebugPubNames::sets` and `read::DebugPubTypes::sets`.
+  [#882](https://github.com/gimli-rs/gimli/pull/882)
+
+* Added `read::DebugGnuPubNames` and `read::DebugGnuPubTypes`.
+  [#883](https://github.com/gimli-rs/gimli/pull/883)
+
+* Added parsing for bare S CFI augmentations.
+  [#887](https://github.com/gimli-rs/gimli/pull/887)
+
+* Added `read::PubNamesEntry::flags` and `read::PubTypesEntry::flags`.
+  [#888](https://github.com/gimli-rs/gimli/pull/888)
+
+--------------------------------------------------------------------------------
+
+## 0.33.1
+
+~Released 2026/03/29.~ Yanked due to breaking change.
+
+### Breaking changes
+
+* Added Wasm location support to `read::Evaluation`.
+  [#871](https://github.com/gimli-rs/gimli/pull/871)
+
+* Changed `write` module to validate use of base addresses in range and location lists.
+  [#870](https://github.com/gimli-rs/gimli/pull/870)
+
+--------------------------------------------------------------------------------
+
+## 0.33.0
+
+Released 2026/01/24.
+
+### Breaking changes
+
+* Changed `read::DebuggingInformationEntry` to store attributes in a `Vec`.
+  This improves the performance for some uses, but may hurt performance for others.
+  In particular, `read::UnitHeader::entry` and `read::DebuggingInformationEntry::clone`
+  have an increased cost. Consider using `read::UnitHeader::entries_raw` instead of these.
+  [#841](https://github.com/gimli-rs/gimli/pull/841)
+
+* Changed `read::DebuggingInformationEntry` attribute query methods to no longer return `Result`.
+  [#841](https://github.com/gimli-rs/gimli/pull/841)
+
+* Changed `read::EntriesCursor::next_dfs` to no longer return the depth delta.
+  Use `read::DebuggingInformationEntry::depth` instead.
+  [#841](https://github.com/gimli-rs/gimli/pull/841)
+
+* Changed `read::EntriesCursor::next_entry` to return a `bool`.
+  [#841](https://github.com/gimli-rs/gimli/pull/841)
+
+* Deleted the unit lifetime from `read::DebuggingInformationEntry`, `read::EntriesRaw`,
+  `read::EntriesCursor`, and `read::EntriesTree`.
+  [#839](https://github.com/gimli-rs/gimli/pull/839)
+
+* Changed `UnitSectionOffset` to a struct, and related API changes.
+  [#825](https://github.com/gimli-rs/gimli/pull/825)
+  [#851](https://github.com/gimli-rs/gimli/pull/851)
+
+* Deleted unused `read::Error` variants, and modified other variants
+  to improve naming and include additional information.
+  [#865](https://github.com/gimli-rs/gimli/pull/865)
+
+* Deleted `read::Error::description`.
+  [#865](https://github.com/gimli-rs/gimli/pull/865)
+
+* Implemented `Iterator` for all types that implement `FallibleIterator`,
+  and removed `fallible-iterator` from the default features.
+  Most users should be able to switch to using `Iterator`.
+  Use of `FallibleIterator` may require disambiguation.
+  [#842](https://github.com/gimli-rs/gimli/pull/842)
+  [#853](https://github.com/gimli-rs/gimli/pull/853)
+
+* Added `read::Operation::VariableValue` and `read::Operation::Uninitialized`.
+  [#787](https://github.com/gimli-rs/gimli/pull/787)
+  [#867](https://github.com/gimli-rs/gimli/pull/867)
+
+* Added `read::AttributeValue::Data16` to replace use of `read::AttributeValue::Block`
+  for `DW_FORM_data16`.
+  [#797](https://github.com/gimli-rs/gimli/pull/797)
+
+* Changed `sup` parameter to be optional for `read::DwarfSections::borrow_with_sup`.
+  [#801](https://github.com/gimli-rs/gimli/pull/801)
+
+* Changed `Deref::Target` from `Unit<R>` to `&'a Unit<R>` for `read::UnitRef<'a, R>`.
+  [#811](https://github.com/gimli-rs/gimli/pull/811)
+
+* Deleted deprecated items.
+  [#813](https://github.com/gimli-rs/gimli/pull/813)
+
+* Renamed `write::Reference` to `write::DebugInfoRef`.
+  [#814](https://github.com/gimli-rs/gimli/pull/814)
+
+* Deleted `write::UnitTable::from`, `write::LineProgram::from`, and `write::Expression::from`.
+  [#815](https://github.com/gimli-rs/gimli/pull/815)
+
+* Removed `#[non_exhaustive]` from `read::RegisterRule`.
+  [#852](https://github.com/gimli-rs/gimli/pull/852)
+
+* Added `debug_macinfo` and `debug_macro` to `read::DwarfPackageSections`
+  and `read::DwarfPackage`.
+  [#862](https://github.com/gimli-rs/gimli/pull/862)
+
+* Added `debug_names` to `read::DwarfSections` and `read::Dwarf`.
+  [#847](https://github.com/gimli-rs/gimli/pull/847)
+
+### Changed
+
+* Increased minimum supported Rust version (MSRV) to 1.88.0.
+  [#812](https://github.com/gimli-rs/gimli/pull/812)
+  [#840](https://github.com/gimli-rs/gimli/pull/840)
+
+* Optimised unsigned LEB128 reading.
+  [#795](https://github.com/gimli-rs/gimli/pull/795)
+
+* Relaxed the encoding requirements for `write::LineProgram`.
+  [#800](https://github.com/gimli-rs/gimli/pull/800)
+
+* Changed `write::LineProgram` to automatically start sequences.
+  [#745](https://github.com/gimli-rs/gimli/pull/745)
+
+* Changed the `write` module to use FNV for hashes.
+  [#827](https://github.com/gimli-rs/gimli/pull/827)
+  [#830](https://github.com/gimli-rs/gimli/pull/830)
+
+* Changed conversion to preserve `DW_FORM_implicit_value` and `DW_FORM_flag_present`.
+  [#834](https://github.com/gimli-rs/gimli/pull/834)
+
+* Changed the `Debug` implementation for `read::RelocateReader`.
+  [#849](https://github.com/gimli-rs/gimli/pull/849)
+
+* Changed `read::UnwindTableRow::register` to return `None` for default rules.
+  Changed `read::UnwindTableRow::registers` to omit default rules.
+  [#859](https://github.com/gimli-rs/gimli/pull/859)
+
+* Improved support for writing attributes in older DWARF versions.
+  [#864](https://github.com/gimli-rs/gimli/pull/864)
+
+* Optimised parsing for failure paths in `read::UnwindSection::cie_from_offset`
+  and `read::UnwindSection::partial_fde_from_offset`.
+  [#866](https://github.com/gimli-rs/gimli/pull/866)
+
+### Added
+
+* Added `RiscV::FP`, `RiscV::AFRC`, and vector registers.
+  [#802](https://github.com/gimli-rs/gimli/pull/802)
+  [#803](https://github.com/gimli-rs/gimli/pull/803)
+
+* Added `write::Dwarf::convert` and related APIs.
+  [#745](https://github.com/gimli-rs/gimli/pull/745)
+  [#816](https://github.com/gimli-rs/gimli/pull/816)
+  [#817](https://github.com/gimli-rs/gimli/pull/817)
+  [#818](https://github.com/gimli-rs/gimli/pull/818)
+  [#819](https://github.com/gimli-rs/gimli/pull/819)
+  [#822](https://github.com/gimli-rs/gimli/pull/822)
+  [#823](https://github.com/gimli-rs/gimli/pull/823)
+  [#824](https://github.com/gimli-rs/gimli/pull/824)
+  [#826](https://github.com/gimli-rs/gimli/pull/826)
+  [#828](https://github.com/gimli-rs/gimli/pull/828)
+  [#829](https://github.com/gimli-rs/gimli/pull/829)
+
+* Added `read::EntriesRaw::read_attribute_inline` and `read::EntriesRaw::read_attributes`.
+  [#838](https://github.com/gimli-rs/gimli/pull/838)
+
+* Added `no_std` support for the `write` feature.
+  [#855](https://github.com/gimli-rs/gimli/pull/855)
+
+* Added `read::DebugNames`.
+  [#847](https://github.com/gimli-rs/gimli/pull/847)
+
+* Added `write::Expression::as_raw`.
+  [#863](https://github.com/gimli-rs/gimli/pull/863)
+
+--------------------------------------------------------------------------------
+
 ## 0.32.3
 
 Released 2025/09/13.
@@ -1266,10 +1483,6 @@ Released 2017/08/08.
 * The `DW_OP_addr` opcode is relative to the base address of the `.text` section
   of the binary, but we were incorrectly treating it as an absolute value. [#210][]
 
-[GitHub]: https://github.com/gimli-rs/gimli
-[crates.io]: https://crates.io/crates/gimli
-[contributing]: https://github.com/gimli-rs/gimli/blob/master/CONTRIBUTING.md
-[easy]: https://github.com/gimli-rs/gimli/issues?q=is%3Aopen+is%3Aissue+label%3Aeasy
 [#192]: https://github.com/gimli-rs/gimli/pull/192
 [#193]: https://github.com/gimli-rs/gimli/pull/193
 [#182]: https://github.com/gimli-rs/gimli/issues/182

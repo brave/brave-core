@@ -1,26 +1,59 @@
 #![doc = core::include_str!("../README.md")]
 #![cfg_attr(not(any(test, feature = "rust-allocator")), no_std)]
+#![cfg_attr(
+    all(any(miri, feature = "lsx"), target_arch = "loongarch64"),
+    feature(stdarch_loongarch)
+)]
 
 #[cfg(any(feature = "rust-allocator", feature = "c-allocator"))]
 extern crate alloc;
 
-pub mod allocate;
-pub mod c_api;
+pub mod adler32;
 pub mod crc32;
-pub mod deflate;
-pub mod inflate;
 
-mod adler32;
+cfg_select! {
+    feature = "__internal-api" => {
+        pub mod allocate;
+        pub mod c_api;
+        pub mod deflate;
+        pub mod inflate;
+
+        pub const MIN_WBITS: i32 = 8; // 256b LZ77 window
+        pub const MAX_WBITS: i32 = 15; // 32kb LZ77 window
+    }
+    _ => {
+        pub(crate) mod allocate;
+        pub(crate) mod c_api;
+        pub(crate) mod deflate;
+        pub(crate) mod inflate;
+
+        pub(crate) const MIN_WBITS: i32 = 8; // 256b LZ77 window
+        pub(crate) const MAX_WBITS: i32 = 15; // 32kb LZ77 window
+    }
+}
+
 mod cpu_features;
 mod stable;
 mod weak_slice;
 
 pub use stable::{Deflate, DeflateError, Inflate, InflateError, Status};
 
-pub use adler32::{adler32, adler32_combine};
-pub use crc32::{crc32, crc32_combine, get_crc_table};
+pub use deflate::{DeflateConfig, Method, Strategy};
+pub use inflate::InflateConfig;
 
-#[macro_export]
+pub use deflate::{compress_bound, compress_slice};
+pub use inflate::decompress_slice;
+
+macro_rules! traceln {
+    ($($arg:tt)*) => {
+        #[cfg(feature = "ZLIB_DEBUG")]
+        {
+            eprintln!($($arg)*)
+        }
+    };
+}
+pub(crate) use traceln;
+
 macro_rules! trace {
     ($($arg:tt)*) => {
         #[cfg(feature = "ZLIB_DEBUG")]
@@ -29,6 +62,28 @@ macro_rules! trace {
         }
     };
 }
+pub(crate) use trace;
+
+macro_rules! cfg_select {
+    ({ $($tt:tt)* }) => {{
+        $crate::cfg_select! { $($tt)* }
+    }};
+    (_ => { $($output:tt)* }) => {
+        $($output)*
+    };
+    (
+        $cfg:meta => $output:tt
+        $($( $rest:tt )+)?
+    ) => {
+        #[cfg($cfg)]
+        $crate::cfg_select! { _ => $output }
+        $(
+            #[cfg(not($cfg))]
+            $crate::cfg_select! { $($rest)+ }
+        )?
+    }
+}
+use cfg_select;
 
 /// Maximum size of the dynamic table.  The maximum number of code structures is
 /// 1924, which is the sum of 1332 for literal/length codes and 592 for distance
@@ -51,8 +106,6 @@ pub(crate) const ADLER32_INITIAL_VALUE: usize = 1;
 /// initial crc-32 hash value
 pub(crate) const CRC32_INITIAL_VALUE: u32 = 0;
 
-pub const MIN_WBITS: i32 = 8; // 256b LZ77 window
-pub const MAX_WBITS: i32 = 15; // 32kb LZ77 window
 pub(crate) const DEF_WBITS: i32 = MAX_WBITS;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]

@@ -117,3 +117,18 @@ impl<'a> FromDer<'a> for DistributionPointName<'a> {
 
     const TYPE_ID: DerTypeId = DerTypeId::DistributionPointName;
 }
+
+/// This is 1.3.6.1.4.1.11129.2.4.2, as defined in RFC6962
+///
+/// In full this is:
+///
+/// ```text
+/// {iso(1) identified-organization(3) dod(6) internet(1)
+///  private(4) enterprise(1) google(11129) 2 4 2}
+/// ```
+///
+/// Note that the `oid!` macro doesn't work for OIDs with any
+/// limb greater than 7 bits, so this is a manual expansion.
+///
+/// <https://datatracker.ietf.org/doc/html/rfc6962#section-3.3>
+pub(crate) const SCT_LIST_OID: [u8; 10] = [40 + 3, 6, 1, 4, 1, 214, 121, 2, 4, 2];

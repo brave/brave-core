@@ -99,6 +99,41 @@ See benchmarks in the [comparison][] README.
 
 [comparison]: https://github.com/shepmaster/twox-hash/tree/main/comparison
 
+# Portability
+
+The xxHash algorithms produce consistent output given consistent
+input. Inputs to the algorithms include the raw bytes being hashed as
+well as any configured seed or secret. The output does not depend on
+the platform; 32- and 64-bit systems produce the same output, as do
+little- and big-endian systems. The Rust implementation is verified
+against the reference C implementation.
+
+The types in this crate implement the [`Hasher`][] trait, used in
+conjunction with the [`Hash`][] trait. The `Hash` trait [does **not**
+guarantee][hash-port] that implementors feed data into the `Hasher` in
+a platform-independent way. Notably, common types like [`Vec<T>`][] /
+[`&[T]`](prim@slice) or [`BTreeMap`][] hash their lengths in a
+platform-*dependent* manner, producing different results between 32-
+and 64-bit systems.
+
+In addition, types from the standard library explicitly do not
+guarantee that they will stay consistent from version to version.
+
+If you need a long-term level of consistency for hashing generic
+types, you may want to create your own hashing trait where you control
+all implementations. You can then implement this trait for all of the
+types you need to hash and ensure that platform differences are
+handled and stability is maintained over time.
+
+In other cases, it may be enough to write a wrapper around the hasher
+that deals with simple platform specifics, such as by adapting
+[`Hasher::write_usize`][] to a fixed-size integer.
+
+[`Hasher`]: std::hash::Hasher
+[`Hasher::write_usize`]: std::hash::Hasher::write_usize
+[hash-port]: std::hash::Hash#portability
+[`BTreeMap`]: std::collections::BTreeMap
+
 # Contributing
 
 1. Fork it (<https://github.com/shepmaster/twox-hash/fork>)

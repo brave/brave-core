@@ -67,10 +67,10 @@ impl Scheme {
     }
 }
 
-impl<'a> TryFrom<&'a [u8]> for Scheme {
+impl TryFrom<&[u8]> for Scheme {
     type Error = InvalidUri;
     #[inline]
-    fn try_from(s: &'a [u8]) -> Result<Self, Self::Error> {
+    fn try_from(s: &[u8]) -> Result<Self, Self::Error> {
         use self::Scheme2::*;
 
         match Scheme2::parse_exact(s)? {
@@ -89,10 +89,10 @@ impl<'a> TryFrom<&'a [u8]> for Scheme {
     }
 }
 
-impl<'a> TryFrom<&'a str> for Scheme {
+impl TryFrom<&str> for Scheme {
     type Error = InvalidUri;
     #[inline]
-    fn try_from(s: &'a str) -> Result<Self, Self::Error> {
+    fn try_from(s: &str) -> Result<Self, Self::Error> {
         TryFrom::try_from(s.as_bytes())
     }
 }

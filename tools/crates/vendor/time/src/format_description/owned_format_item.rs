@@ -10,13 +10,19 @@ use crate::format_description::{BorrowedFormatItem, Component};
 
 /// A complete description of how to format and parse a type.
 #[non_exhaustive]
-#[derive(Clone, PartialEq, Eq)]
+#[derive(Clone, Eq)]
 pub enum OwnedFormatItem {
     /// Bytes that are formatted as-is.
     ///
     /// **Note**: These bytes **should** be UTF-8, but are not required to be. The value is passed
     /// through `String::from_utf8_lossy` when necessary.
+    #[deprecated(
+        since = "0.3.48",
+        note = "use `StringLiteral` instead; raw bytes are not recommended"
+    )]
     Literal(Box<[u8]>),
+    /// A string that is formatted as-is.
+    StringLiteral(Box<str>),
     /// A minimal representation of a single non-literal item.
     Component(Component),
     /// A series of literals or components that collectively form a partial or complete
@@ -37,11 +43,34 @@ impl fmt::Debug for OwnedFormatItem {
     #[inline]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
+            #[expect(deprecated)]
             Self::Literal(literal) => f.write_str(&String::from_utf8_lossy(literal)),
+            Self::StringLiteral(literal) => f.write_str(literal),
             Self::Component(component) => component.fmt(f),
             Self::Compound(compound) => compound.fmt(f),
             Self::Optional(item) => f.debug_tuple("Optional").field(item).finish(),
             Self::First(items) => f.debug_tuple("First").field(items).finish(),
+        }
+    }
+}
+
+impl PartialEq for OwnedFormatItem {
+    fn eq(&self, other: &Self) -> bool {
+        match (self, other) {
+            // trivial equality checks
+            #[expect(deprecated)]
+            (Self::Literal(a), Self::Literal(b)) => a == b,
+            (Self::StringLiteral(a), Self::StringLiteral(b)) => a == b,
+            (Self::Component(a), Self::Component(b)) => a == b,
+            (Self::Compound(a), Self::Compound(b)) => a == b,
+            (Self::Optional(a), Self::Optional(b)) => a == b,
+            (Self::First(a), Self::First(b)) => a == b,
+            // bytes vs string (back-compatibility)
+            #[expect(deprecated)]
+            (Self::Literal(a), Self::StringLiteral(b)) => &**a == b.as_bytes(),
+            #[expect(deprecated)]
+            (Self::StringLiteral(a), Self::Literal(b)) => a.as_bytes() == &**b,
+            _ => false,
         }
     }
 }
@@ -57,27 +86,22 @@ impl From<&BorrowedFormatItem<'_>> for OwnedFormatItem {
     #[inline]
     fn from(item: &BorrowedFormatItem<'_>) -> Self {
         match item {
+            #[expect(deprecated)]
             BorrowedFormatItem::Literal(literal) => {
                 Self::Literal(literal.to_vec().into_boxed_slice())
             }
+            BorrowedFormatItem::StringLiteral(literal) => {
+                use alloc::borrow::ToOwned as _;
+                Self::StringLiteral((*literal).to_owned().into_boxed_str())
+            }
             BorrowedFormatItem::Component(component) => Self::Component(*component),
-            BorrowedFormatItem::Compound(compound) => Self::Compound(
-                compound
-                    .iter()
-                    .cloned()
-                    .map(Into::into)
-                    .collect::<Vec<_>>()
-                    .into_boxed_slice(),
-            ),
+            BorrowedFormatItem::Compound(compound) => {
+                Self::Compound(compound.iter().cloned().map(Into::into).collect())
+            }
             BorrowedFormatItem::Optional(item) => Self::Optional(Box::new((*item).into())),
-            BorrowedFormatItem::First(items) => Self::First(
-                items
-                    .iter()
-                    .cloned()
-                    .map(Into::into)
-                    .collect::<Vec<_>>()
-                    .into_boxed_slice(),
-            ),
+            BorrowedFormatItem::First(items) => {
+                Self::First(items.iter().cloned().map(Into::into).collect())
+            }
         }
     }
 }
@@ -89,18 +113,13 @@ impl From<Vec<BorrowedFormatItem<'_>>> for OwnedFormatItem {
     }
 }
 
-impl<'a, T: AsRef<[BorrowedFormatItem<'a>]> + ?Sized> From<&T> for OwnedFormatItem {
+impl<'a, T> From<&T> for OwnedFormatItem
+where
+    T: AsRef<[BorrowedFormatItem<'a>]> + ?Sized,
+{
     #[inline]
     fn from(items: &T) -> Self {
-        Self::Compound(
-            items
-                .as_ref()
-                .iter()
-                .cloned()
-                .map(Into::into)
-                .collect::<Vec<_>>()
-                .into_boxed_slice(),
-        )
+        Self::Compound(items.as_ref().iter().cloned().map(Into::into).collect())
     }
 }
 

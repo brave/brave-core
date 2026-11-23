@@ -55,7 +55,7 @@ impl ResetPolicy for FullReset {
     }
 }
 
-/// A struct that compbines a decompressor with extra data for streaming decompression.
+/// A struct that combines a decompressor with extra data for streaming decompression.
 ///
 #[derive(Clone)]
 pub struct InflateState {
@@ -409,7 +409,10 @@ mod test {
         state.reset_as(super::MinReset);
         out.iter_mut().map(|x| *x = 0).count();
         let res = inflate(&mut state, &encoded, &mut out, MZFlush::Finish);
-        let status = res.status.expect("Failed to decompress!");
+        let status = res
+            .status
+            .map_err(|err| panic!("Decompress failed with {:?}", err))
+            .unwrap();
         assert_eq!(status, MZStatus::StreamEnd);
         assert_eq!(out[..res.bytes_written as usize], b"Hello, zlib!"[..]);
         assert_eq!(res.bytes_consumed, encoded.len());

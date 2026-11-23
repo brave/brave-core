@@ -5,12 +5,13 @@ use std::io;
 
 #[test]
 fn can_write_any_unsigned_int() {
-    fn f(x: u64) -> io::Result<()> {
+    fn f(x: u64) -> io::Result<bool> {
         let mut v = vec![];
-        leb128::write::unsigned(&mut v, x)?;
-        Ok(())
+        let bytes_written = leb128::write::unsigned(&mut v, x)?;
+        let expected_bytes = leb128::write::unsigned_len(x);
+        Ok(bytes_written == expected_bytes)
     }
-    quickcheck::quickcheck(f as fn(u64) -> io::Result<()>);
+    quickcheck::quickcheck(f as fn(u64) -> io::Result<bool>);
 }
 
 #[test]
@@ -27,12 +28,13 @@ fn can_round_trip_any_unsigned_int() {
 
 #[test]
 fn can_write_any_signed_int() {
-    fn f(x: i64) -> io::Result<()> {
+    fn f(x: i64) -> io::Result<bool> {
         let mut v = vec![];
-        leb128::write::signed(&mut v, x)?;
-        Ok(())
+        let bytes_written = leb128::write::signed(&mut v, x)?;
+        let expected_bytes = leb128::write::signed_len(x);
+        Ok(bytes_written == expected_bytes)
     }
-    quickcheck::quickcheck(f as fn(i64) -> io::Result<()>);
+    quickcheck::quickcheck(f as fn(i64) -> io::Result<bool>);
 }
 
 #[test]

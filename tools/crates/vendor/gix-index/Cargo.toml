@@ -10,16 +10,16 @@
 # See Cargo.toml.orig for the original contents.
 
 [package]
-edition = "2021"
-rust-version = "1.82"
+edition = "2024"
+rust-version = "1.88"
 name = "gix-index"
-version = "0.42.1"
+version = "0.58.0"
 authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
 build = false
 include = [
-    "src/**/*",
-    "LICENSE-*",
-    "README.md",
+    "/src/**/*",
+    "/LICENSE-*",
+    "/README.md",
 ]
 autolib = false
 autobins = false
@@ -30,9 +30,11 @@ description = "A work-in-progress crate of the gitoxide project dedicated implem
 readme = "README.md"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/GitoxideLabs/gitoxide"
+resolver = "2"
 
 [package.metadata.docs.rs]
 features = [
+    "sha1",
     "document-features",
     "serde",
 ]
@@ -43,6 +45,8 @@ serde = [
     "smallvec/serde",
     "gix-hash/serde",
 ]
+sha1 = ["gix-hash/sha1"]
+sha256 = ["gix-hash/sha256"]
 
 [lib]
 name = "gix_index"
@@ -62,47 +66,53 @@ version = "0.2.0"
 optional = true
 
 [dependencies.filetime]
-version = "0.2.15"
+version = "0.2.29"
 
 [dependencies.fnv]
 version = "1.0.7"
 
 [dependencies.gix-bitmap]
-version = "^0.2.15"
+version = "^0.6.1"
 
-[dependencies.gix-features]
-version = "^0.44.1"
-features = ["progress"]
+[dependencies.gix-error]
+version = "^0.5.2"
 
 [dependencies.gix-fs]
-version = "^0.17.0"
+version = "^0.24.1"
 
 [dependencies.gix-hash]
-version = "^0.20.1"
+version = "^0.28.1"
 
 [dependencies.gix-lock]
-version = "^19.0.0"
+version = "^26.0.0"
 
 [dependencies.gix-object]
-version = "^0.51.1"
+version = "^0.66.1"
 
-[dependencies.gix-traverse]
-version = "^0.48.0"
+[dependencies.gix-parallel]
+version = "^0.50.0"
 
-[dependencies.gix-utils]
+[dependencies.gix-trace]
 version = "^0.3.1"
 
+[dependencies.gix-traverse]
+version = "^0.64.0"
+
+[dependencies.gix-utils]
+version = "^0.5.1"
+features = ["progress"]
+
 [dependencies.gix-validate]
-version = "^0.10.1"
+version = "^0.13.1"
 
 [dependencies.hashbrown]
-version = "0.16.0"
+version = "0.17.1"
 
 [dependencies.itoa]
-version = "1.0.3"
+version = "1.0.17"
 
 [dependencies.memmap2]
-version = "0.9.7"
+version = "0.9.11"
 
 [dependencies.serde]
 version = "1.0.114"
@@ -113,15 +123,20 @@ default-features = false
 [dependencies.smallvec]
 version = "1.15.1"
 
-[dependencies.thiserror]
-version = "2.0.17"
+[dev-dependencies.criterion]
+version = "0.8.2"
 
-[dev-dependencies]
+[dev-dependencies.filetime]
+version = "0.2.29"
 
-[target."cfg(not(windows))".dependencies.libc]
-version = "0.2.176"
+[dev-dependencies.insta]
+version = "1.46.3"
+features = ["filters"]
 
-[target."cfg(not(windows))".dependencies.rustix]
+[target."cfg(unix)".dependencies.libc]
+version = "0.2.186"
+
+[target."cfg(unix)".dependencies.rustix]
 version = "1.1.2"
 features = [
     "std",
@@ -130,6 +145,7 @@ features = [
 default-features = false
 
 [lints.clippy]
+assert_is_empty = "allow"
 bool_to_int_with_if = "allow"
 borrow_as_ptr = "allow"
 cast_lossless = "allow"
@@ -148,7 +164,6 @@ explicit_into_iter_loop = "allow"
 explicit_iter_loop = "allow"
 filter_map_next = "allow"
 fn_params_excessive_bools = "allow"
-from_iter_instead_of_collect = "allow"
 if_not_else = "allow"
 ignored_unit_patterns = "allow"
 implicit_clone = "allow"

@@ -827,6 +827,47 @@ impl TransportParameters<'_> {
     }
 }
 
+/// RFC 9149: ClientTicketRequest extension payload.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub(crate) struct ClientTicketRequest {
+    /// Tickets desired when the server negotiates a new connection.
+    pub new_session_count: u8,
+    /// Tickets desired when the server resumes using a presented ticket.
+    pub resumption_count: u8,
+}
+
+impl Codec<'_> for ClientTicketRequest {
+    fn encode(&self, bytes: &mut Vec<u8>) {
+        self.new_session_count.encode(bytes);
+        self.resumption_count.encode(bytes);
+    }
+
+    fn read(r: &mut Reader<'_>) -> Result<Self, InvalidMessage> {
+        Ok(Self {
+            new_session_count: u8::read(r)?,
+            resumption_count: u8::read(r)?,
+        })
+    }
+}
+
+/// RFC 9149: ServerTicketRequestHint extension payload.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub(crate) struct ServerTicketRequestHint {
+    pub(crate) expected_count: u8,
+}
+
+impl Codec<'_> for ServerTicketRequestHint {
+    fn encode(&self, bytes: &mut Vec<u8>) {
+        self.expected_count.encode(bytes);
+    }
+
+    fn read(r: &mut Reader<'_>) -> Result<Self, InvalidMessage> {
+        Ok(Self {
+            expected_count: u8::read(r)?,
+        })
+    }
+}
+
 extension_struct! {
     /// A representation of extensions present in a `ClientHello` message
     ///
@@ -912,6 +953,10 @@ extension_struct! {
         ExtensionType::TransportParameters =>
             pub(crate) transport_parameters: Option<Payload<'a>>,
 
+        /// Ticket request (RFC9149)
+        ExtensionType::TicketRequest =>
+            pub(crate) ticket_request: Option<ClientTicketRequest>,
+
         /// Secure renegotiation (RFC5746)
         ExtensionType::RenegotiationInfo =>
             pub(crate) renegotiation_info: Option<PayloadU8>,
@@ -958,6 +1003,7 @@ impl ClientExtensions<'_> {
             certificate_authority_names,
             key_shares,
             transport_parameters,
+            ticket_request,
             renegotiation_info,
             transport_parameters_draft,
             encrypted_client_hello,
@@ -985,6 +1031,7 @@ impl ClientExtensions<'_> {
             certificate_authority_names,
             key_shares,
             transport_parameters: transport_parameters.map(|x| x.into_owned()),
+            ticket_request,
             renegotiation_info,
             transport_parameters_draft: transport_parameters_draft.map(|x| x.into_owned()),
             encrypted_client_hello,
@@ -1192,6 +1239,10 @@ extension_struct! {
         ExtensionType::EarlyData =>
             pub(crate) early_data_ack: Option<()>,
 
+        /// Ticket request hint (RFC9149)
+        ExtensionType::TicketRequest =>
+            pub(crate) ticket_request: Option<ServerTicketRequestHint>,
+
         /// Encrypted inner client hello response (draft-ietf-tls-esni)
         ExtensionType::EncryptedClientHello =>
             pub(crate) encrypted_client_hello_ack: Option<ServerEncryptedClientHello>,
@@ -1218,6 +1269,7 @@ impl ServerExtensions<'_> {
             transport_parameters,
             transport_parameters_draft,
             early_data_ack,
+            ticket_request,
             encrypted_client_hello_ack,
             unknown_extensions,
         } = self;
@@ -1237,6 +1289,7 @@ impl ServerExtensions<'_> {
             transport_parameters: transport_parameters.map(|x| x.into_owned()),
             transport_parameters_draft: transport_parameters_draft.map(|x| x.into_owned()),
             early_data_ack,
+            ticket_request,
             encrypted_client_hello_ack,
             unknown_extensions,
         }
@@ -2428,7 +2481,8 @@ impl Codec<'_> for NewSessionTicketPayloadTls13 {
 /// Only supports OCSP
 #[derive(Clone, Debug)]
 pub(crate) struct CertificateStatus<'a> {
-    pub(crate) ocsp_response: PayloadU24<'a>,
+    /// `opaque OCSPResponse<1..2^24-1>;`
+    pub(crate) ocsp_response: PayloadU24<'a, NonEmpty>,
 }
 
 impl<'a> Codec<'a> for CertificateStatus<'a> {
@@ -2452,7 +2506,7 @@ impl<'a> Codec<'a> for CertificateStatus<'a> {
 impl<'a> CertificateStatus<'a> {
     pub(crate) fn new(ocsp: &'a [u8]) -> Self {
         CertificateStatus {
-            ocsp_response: PayloadU24(Payload::Borrowed(ocsp)),
+            ocsp_response: PayloadU24::from(Payload::Borrowed(ocsp)),
         }
     }
 
@@ -2505,7 +2559,7 @@ impl CompressedCertificatePayload<'_> {
         CompressedCertificatePayload {
             alg: self.alg,
             uncompressed_len: self.uncompressed_len,
-            compressed: PayloadU24(Payload::Borrowed(self.compressed.0.bytes())),
+            compressed: PayloadU24::from(Payload::Borrowed(self.compressed.0.bytes())),
         }
     }
 }
@@ -2739,7 +2793,9 @@ impl<'a> HandshakeMessagePayload<'a> {
 
     pub(crate) fn encoding_for_binder_signing(&self) -> Vec<u8> {
         let mut ret = self.get_encoding();
-        let ret_len = ret.len() - self.total_binder_length();
+        let ret_len = ret
+            .len()
+            .saturating_sub(self.total_binder_length());
         ret.truncate(ret_len);
         ret
     }

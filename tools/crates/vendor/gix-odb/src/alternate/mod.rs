@@ -16,55 +16,97 @@
 //! ```
 //!
 //! Based on the [canonical implementation](https://github.com/git/git/blob/master/sha1-file.c#L598:L609).
+use gix_error::Result;
 use std::{fs, io, path::PathBuf};
 
+use gix_error::{ErrorExt, Message, ResultExt, bail};
 use gix_path::realpath::MAX_SYMLINKS;
 
-///
-pub mod parse;
+mod parse;
+pub use parse::parse;
 
-/// Returned by [`resolve()`]
-#[derive(thiserror::Error, Debug)]
-#[allow(missing_docs)]
-pub enum Error {
-    #[error(transparent)]
-    Io(#[from] io::Error),
-    #[error(transparent)]
-    Realpath(#[from] gix_path::realpath::Error),
-    #[error(transparent)]
-    Parse(#[from] parse::Error),
-    #[error("Alternates form a cycle: {} -> {}", .0.iter().map(|p| format!("'{}'", p.display())).collect::<Vec<_>>().join(" -> "), .0.first().expect("more than one directories").display())]
-    Cycle(Vec<PathBuf>),
+/// An alternate object directory points back into the chain being resolved.
+#[derive(Debug)]
+pub struct Cycle {
+    /// Canonical object directories in traversal order, with an implicit link from the last to the first.
+    pub paths: Vec<PathBuf>,
+}
+
+impl std::fmt::Display for Cycle {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("Alternates form a cycle")?;
+        for path in &self.paths {
+            write!(f, " -> {}", path.display())?;
+        }
+        Ok(())
+    }
+}
+
+impl std::error::Error for Cycle {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        Some(const { &gix_error::ClassificationMarker::CORRUPTION })
+    }
 }
 
 /// Given an `objects_directory`, try to resolve alternate object directories possibly located in the
 /// `./info/alternates` file into canonical paths and resolve relative paths with the help of the `current_dir`.
 /// If no alternate object database was resolved, the resulting `Vec` is empty (it is not an error
 /// if there are no alternates).
-/// It is an error once a repository is seen again as it would lead to a cycle.
-pub fn resolve(objects_directory: PathBuf, current_dir: &std::path::Path) -> Result<Vec<PathBuf>, Error> {
-    let mut dirs = vec![(0, objects_directory.clone())];
+/// An object directory that was resolved before is skipped, and it is an error if an alternate points back
+/// into the chain of directories that is currently being followed, as that would form a cycle.
+/// Read and parse failures include [metadata](gix_error::Error::metadata()) `path` (native path), the alternates file.
+/// Cycles retain their canonical directory chain in [`Cycle`].
+pub fn resolve(objects_directory: PathBuf, current_dir: &std::path::Path) -> Result<Vec<PathBuf>> {
+    let mut dirs = vec![(None, objects_directory.clone())];
     let mut out = Vec::new();
-    let mut seen = vec![gix_path::realpath_opts(&objects_directory, current_dir, MAX_SYMLINKS)?];
-    while let Some((depth, dir)) = dirs.pop() {
-        match fs::read(dir.join("info").join("alternates")) {
+    let mut seen = Vec::new();
+    while let Some((parent_idx, dir)) = dirs.pop() {
+        let dir_canonicalized = gix_path::realpath_opts(&dir, current_dir, MAX_SYMLINKS)?;
+        if let Some(seen_idx) = seen.iter().position(|(seen_dir, _)| *seen_dir == dir_canonicalized) {
+            if let Some(parent_idx) = parent_idx
+                && chain(&seen, parent_idx).any(|ancestor| ancestor == seen_idx)
+            {
+                let mut cycle: Vec<_> = chain(&seen, parent_idx)
+                    .take_while(|ancestor| *ancestor != seen_idx)
+                    .map(|idx| seen[idx].0.clone())
+                    .collect();
+                cycle.push(seen[seen_idx].0.clone());
+                cycle.reverse();
+                bail!(Cycle { paths: cycle });
+            }
+            continue;
+        }
+        let idx = seen.len();
+        seen.push((dir_canonicalized, parent_idx));
+        let path = dir.join("info").join("alternates");
+        match fs::read(&path) {
             Ok(input) => {
-                for path in parse::content(&input)?.into_iter() {
-                    let path = objects_directory.join(path);
-                    let path_canonicalized = gix_path::realpath_opts(&path, current_dir, MAX_SYMLINKS)?;
-                    if seen.contains(&path_canonicalized) {
-                        return Err(Error::Cycle(seen));
-                    }
-                    seen.push(path_canonicalized);
-                    dirs.push((depth + 1, path));
+                for path in parse(&input)
+                    .or_raise(|| Message::new("Could not parse alternates").with("path", path))?
+                    .into_iter()
+                    .rev()
+                {
+                    dirs.push((Some(idx), objects_directory.join(path)));
                 }
             }
             Err(err) if err.kind() == io::ErrorKind::NotFound => {}
-            Err(err) => return Err(err.into()),
+            Err(err) => {
+                bail!(err.and_raise(Message::new("Could not read alternates").with("path", path)));
+            }
         }
-        if depth != 0 {
+        if parent_idx.is_some() {
             out.push(dir);
         }
     }
     Ok(out)
+}
+
+/// Yield `idx` and the indices of all directories it was reached through, starting at `idx`.
+fn chain(seen: &[(PathBuf, Option<usize>)], idx: usize) -> impl Iterator<Item = usize> + '_ {
+    let mut next = Some(idx);
+    std::iter::from_fn(move || {
+        let idx = next?;
+        next = seen[idx].1;
+        Some(idx)
+    })
 }

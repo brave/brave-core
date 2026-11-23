@@ -119,6 +119,9 @@ mod proptest {
     #[cfg(feature = "brotli")]
     tests!(brotli);
 
+    #[cfg(all(feature = "brotli-mbrotli", async_compression_unstable))]
+    tests!(mbrotli);
+
     #[cfg(feature = "bzip2")]
     tests!(bzip2);
 
@@ -142,4 +145,7 @@ mod proptest {
 
     #[cfg(feature = "zstd")]
     tests!(zstd);
+
+    #[cfg(all(feature = "zstd-mzstd", async_compression_unstable))]
+    tests!(mzstd);
 }

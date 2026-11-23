@@ -1,7 +1,8 @@
-use std::error::Error;
-use std::fmt;
-use std::io;
-use std::mem::MaybeUninit;
+use crate::error::Error;
+use crate::io;
+use alloc::vec::Vec;
+use core::fmt;
+use core::mem::MaybeUninit;
 
 use crate::ffi::{self, Backend, Deflate, DeflateBackend, ErrorMessage, Inflate, InflateBackend};
 use crate::Compression;
@@ -212,7 +213,7 @@ impl Compress {
     /// # Panics
     ///
     /// If `window_bits` does not fall into the range 9 ..= 15,
-    /// `new_with_window_bits` will panic.
+    /// this function will panic.
     #[cfg(feature = "any_zlib")]
     pub fn new_with_window_bits(
         level: Compression,
@@ -239,7 +240,7 @@ impl Compress {
     /// # Panics
     ///
     /// If `window_bits` does not fall into the range 9 ..= 15,
-    /// `new_with_window_bits` will panic.
+    /// this function will panic.
     #[cfg(feature = "any_zlib")]
     pub fn new_gzip(level: Compression, window_bits: u8) -> Compress {
         assert!(
@@ -266,14 +267,14 @@ impl Compress {
     /// Specifies the compression dictionary to use.
     ///
     /// Returns the Adler-32 checksum of the dictionary.
-    #[cfg(feature = "any_zlib")]
+    #[cfg(feature = "any_c_zlib")]
     pub fn set_dictionary(&mut self, dictionary: &[u8]) -> Result<u32, CompressError> {
         // SAFETY: The field `inner` must always be accessed as a raw pointer,
         // since it points to a cyclic structure. No copies of `inner` can be
         // retained for longer than the lifetime of `self.inner.inner.stream_wrapper`.
         let stream = self.inner.inner.stream_wrapper.inner;
         let rc = unsafe {
-            (*stream).msg = std::ptr::null_mut();
+            (*stream).msg = core::ptr::null_mut();
             assert!(dictionary.len() < ffi::uInt::MAX as usize);
             ffi::deflateSetDictionary(stream, dictionary.as_ptr(), dictionary.len() as ffi::uInt)
         };
@@ -284,6 +285,14 @@ impl Compress {
             ffi::MZ_OK => Ok(unsafe { (*stream).adler } as u32),
             c => panic!("unknown return code: {}", c),
         }
+    }
+
+    /// Specifies the compression dictionary to use.
+    ///
+    /// Returns the Adler-32 checksum of the dictionary.
+    #[cfg(all(not(feature = "any_c_zlib"), feature = "zlib-rs"))]
+    pub fn set_dictionary(&mut self, dictionary: &[u8]) -> Result<u32, CompressError> {
+        self.inner.set_dictionary(dictionary)
     }
 
     /// Quickly resets this compressor without having to reallocate anything.
@@ -305,20 +314,29 @@ impl Compress {
     /// ensures that the function will succeed on the first call.
     #[cfg(feature = "any_zlib")]
     pub fn set_level(&mut self, level: Compression) -> Result<(), CompressError> {
-        use std::os::raw::c_int;
-        // SAFETY: The field `inner` must always be accessed as a raw pointer,
-        // since it points to a cyclic structure. No copies of `inner` can be
-        // retained for longer than the lifetime of `self.inner.inner.stream_wrapper`.
-        let stream = self.inner.inner.stream_wrapper.inner;
-        unsafe {
-            (*stream).msg = std::ptr::null_mut();
+        #[cfg(all(not(feature = "any_c_zlib"), feature = "zlib-rs"))]
+        {
+            self.inner.set_level(level)
         }
-        let rc = unsafe { ffi::deflateParams(stream, level.0 as c_int, ffi::MZ_DEFAULT_STRATEGY) };
 
-        match rc {
-            ffi::MZ_OK => Ok(()),
-            ffi::MZ_BUF_ERROR => compress_failed(self.inner.inner.msg()),
-            c => panic!("unknown return code: {}", c),
+        #[cfg(feature = "any_c_zlib")]
+        {
+            use core::ffi::c_int;
+            // SAFETY: The field `inner` must always be accessed as a raw pointer,
+            // since it points to a cyclic structure. No copies of `inner` can be
+            // retained for longer than the lifetime of `self.inner.inner.stream_wrapper`.
+            let stream = self.inner.inner.stream_wrapper.inner;
+            unsafe {
+                (*stream).msg = core::ptr::null_mut();
+            }
+            let rc =
+                unsafe { ffi::deflateParams(stream, level.0 as c_int, ffi::MZ_DEFAULT_STRATEGY) };
+
+            match rc {
+                ffi::MZ_OK => Ok(()),
+                ffi::MZ_BUF_ERROR => compress_failed(self.inner.inner.msg()),
+                c => panic!("unknown return code: {}", c),
+            }
         }
     }
 
@@ -398,7 +416,7 @@ impl Decompress {
     /// # Panics
     ///
     /// If `window_bits` does not fall into the range 9 ..= 15,
-    /// `new_with_window_bits` will panic.
+    /// this function will panic.
     #[cfg(feature = "any_zlib")]
     pub fn new_with_window_bits(zlib_header: bool, window_bits: u8) -> Decompress {
         assert!(
@@ -418,7 +436,7 @@ impl Decompress {
     /// # Panics
     ///
     /// If `window_bits` does not fall into the range 9 ..= 15,
-    /// `new_with_window_bits` will panic.
+    /// this function will panic.
     #[cfg(feature = "any_zlib")]
     pub fn new_gzip(window_bits: u8) -> Decompress {
         assert!(
@@ -519,14 +537,14 @@ impl Decompress {
     }
 
     /// Specifies the decompression dictionary to use.
-    #[cfg(feature = "any_zlib")]
+    #[cfg(feature = "any_c_zlib")]
     pub fn set_dictionary(&mut self, dictionary: &[u8]) -> Result<u32, DecompressError> {
         // SAFETY: The field `inner` must always be accessed as a raw pointer,
         // since it points to a cyclic structure. No copies of `inner` can be
         // retained for longer than the lifetime of `self.inner.inner.stream_wrapper`.
         let stream = self.inner.inner.stream_wrapper.inner;
         let rc = unsafe {
-            (*stream).msg = std::ptr::null_mut();
+            (*stream).msg = core::ptr::null_mut();
             assert!(dictionary.len() < ffi::uInt::MAX as usize);
             ffi::inflateSetDictionary(stream, dictionary.as_ptr(), dictionary.len() as ffi::uInt)
         };
@@ -538,6 +556,12 @@ impl Decompress {
             ffi::MZ_OK => Ok(unsafe { (*stream).adler } as u32),
             c => panic!("unknown return code: {}", c),
         }
+    }
+
+    /// Specifies the decompression dictionary to use.
+    #[cfg(all(not(feature = "any_c_zlib"), feature = "zlib-rs"))]
+    pub fn set_dictionary(&mut self, dictionary: &[u8]) -> Result<u32, DecompressError> {
+        self.inner.set_dictionary(dictionary)
     }
 
     /// Performs the equivalent of replacing this decompression state with a
@@ -635,12 +659,12 @@ unsafe fn write_to_spare_capacity_of_vec<T>(
 
 #[cfg(test)]
 mod tests {
-    use std::io::Write;
+    use crate::io::Write;
+    use alloc::vec::Vec;
 
     use crate::write;
     use crate::{Compression, Decompress, FlushDecompress};
 
-    #[cfg(feature = "any_zlib")]
     use crate::{Compress, FlushCompress};
 
     #[test]
@@ -662,9 +686,8 @@ mod tests {
 
         let mut d = Decompress::new(false);
         // decompressed whole deflate stream
-        assert!(d
-            .decompress_vec(&data[10..], &mut decoded, FlushDecompress::Finish)
-            .is_ok());
+        d.decompress_vec(&data[10..], &mut decoded, FlushDecompress::Finish)
+            .unwrap();
 
         // decompress data that has nothing to do with the deflate stream (this
         // used to panic)
@@ -701,84 +724,99 @@ mod tests {
         assert!(dst.starts_with(string));
     }
 
+    #[cfg(all(not(feature = "any_zlib"), feature = "miniz_oxide"))]
+    #[test]
+    fn reset_clears_miniz_oxide_dictionary() {
+        let secret = [b'A'; 32 * 1024];
+        // A raw DEFLATE stream containing one final, uncompressed (stored) block:
+        // 0x01 sets BFINAL=1 and BTYPE=00, followed by padding to a byte boundary.
+        // LEN is the payload length; NLEN is its one's complement.
+        // The payload fills the entire 32 KiB dictionary with secret bytes.
+        let len = secret.len() as u16;
+        let nlen = !len;
+        let mut victim_stream = Vec::with_capacity(secret.len() + 5);
+        victim_stream.push(0x01);
+        victim_stream.extend_from_slice(&len.to_le_bytes());
+        victim_stream.extend_from_slice(&nlen.to_le_bytes());
+        victim_stream.extend_from_slice(&secret);
+
+        let mut decoder = Decompress::new(false);
+        let mut victim_output = [0; 32 * 1024];
+        decoder
+            .decompress(&victim_stream, &mut victim_output, FlushDecompress::None)
+            .unwrap();
+        assert_eq!(
+            victim_output, secret,
+            "the first stream must fill the 32 KiB dictionary with secret bytes"
+        );
+
+        decoder.reset(false);
+
+        let mut attacker_output = [0; 258];
+        let _ = decoder.decompress(
+            &[0x1b, 0xbd, 0xff, 0x1f, 0x00],
+            &mut attacker_output,
+            FlushDecompress::None,
+        );
+        assert!(
+            !attacker_output.contains(&b'A'),
+            "reset must clear the dictionary: a distance-32768 match leaked bytes \
+             from the previous stream; both FullReset and the current upstream \
+             reset() prevent this, but MinReset does not"
+        );
+    }
+
+    #[test]
+    fn unfinished_compressor_can_be_dropped() {
+        let mut encoder = Compress::new(Compression::default(), false);
+        encoder
+            .compress(b"hello", &mut [0; 1024], FlushCompress::None)
+            .unwrap();
+        assert_eq!(encoder.total_in(), 5);
+    }
+
     #[cfg(feature = "any_zlib")]
     #[test]
-    fn set_dictionary_with_zlib_header() {
+    fn reset_preserves_gzip_configuration() {
         let string = "hello, hello!".as_bytes();
-        let dictionary = "hello".as_bytes();
 
         let mut encoded = Vec::with_capacity(1024);
-
-        let mut encoder = Compress::new(Compression::default(), true);
-
-        let dictionary_adler = encoder.set_dictionary(&dictionary).unwrap();
-
+        let mut encoder = Compress::new_gzip(Compression::default(), 9);
         encoder
             .compress_vec(string, &mut encoded, FlushCompress::Finish)
             .unwrap();
 
-        assert_eq!(encoder.total_in(), string.len() as u64);
-        assert_eq!(encoder.total_out(), encoded.len() as u64);
-
-        let mut decoder = Decompress::new(true);
+        let mut decoder = Decompress::new_gzip(9);
         let mut decoded = [0; 1024];
-        let decompress_error = decoder
+        decoder
             .decompress(&encoded, &mut decoded, FlushDecompress::Finish)
-            .expect_err("decompression should fail due to requiring a dictionary");
+            .unwrap();
+        assert_eq!(&decoded[..decoder.total_out() as usize], string);
 
-        let required_adler = decompress_error.needs_dictionary()
-            .expect("the first call to decompress should indicate a dictionary is required along with the required Adler-32 checksum");
-
-        assert_eq!(required_adler, dictionary_adler,
-            "the Adler-32 checksum should match the value when the dictionary was set on the compressor");
-
-        let actual_adler = decoder.set_dictionary(&dictionary).unwrap();
-
-        assert_eq!(required_adler, actual_adler);
-
-        // Decompress the rest of the input to the remainder of the output buffer
-        let total_in = decoder.total_in();
-        let total_out = decoder.total_out();
-
-        let decompress_result = decoder.decompress(
-            &encoded[total_in as usize..],
-            &mut decoded[total_out as usize..],
-            FlushDecompress::Finish,
-        );
-        assert!(decompress_result.is_ok());
-
+        decoder.reset(true);
+        let mut decoded = [0; 1024];
+        decoder
+            .decompress(&encoded, &mut decoded, FlushDecompress::Finish)
+            .expect("reset must preserve the gzip wrapper selected at construction");
         assert_eq!(&decoded[..decoder.total_out() as usize], string);
     }
 
     #[cfg(feature = "any_zlib")]
     #[test]
-    fn set_dictionary_raw() {
-        let string = "hello, hello!".as_bytes();
-        let dictionary = "hello".as_bytes();
+    fn reset_preserves_window_bits() {
+        // A valid zlib header declaring a 32 KiB (15-bit) window: CMF 0x78, FLG 0x9c.
+        let header_15_bit_window = [0x78, 0x9c];
+        let mut decoded = [0; 64];
 
-        let mut encoded = Vec::with_capacity(1024);
+        let mut decoder = Decompress::new_with_window_bits(true, 9);
+        decoder
+            .decompress(&header_15_bit_window, &mut decoded, FlushDecompress::None)
+            .expect_err("a 15-bit-window stream must be rejected by a 9-bit-window decoder");
 
-        let mut encoder = Compress::new(Compression::default(), false);
-
-        encoder.set_dictionary(&dictionary).unwrap();
-
-        encoder
-            .compress_vec(string, &mut encoded, FlushCompress::Finish)
-            .unwrap();
-
-        assert_eq!(encoder.total_in(), string.len() as u64);
-        assert_eq!(encoder.total_out(), encoded.len() as u64);
-
-        let mut decoder = Decompress::new(false);
-
-        decoder.set_dictionary(&dictionary).unwrap();
-
-        let mut decoded = [0; 1024];
-        let decompress_result = decoder.decompress(&encoded, &mut decoded, FlushDecompress::Finish);
-
-        assert!(decompress_result.is_ok());
-
-        assert_eq!(&decoded[..decoder.total_out() as usize], string);
+        decoder.reset(true);
+        decoder
+            .decompress(&header_15_bit_window, &mut decoded, FlushDecompress::None)
+            .expect_err("reset must preserve the window size selected at construction");
     }
 
     #[cfg(feature = "any_zlib")]
@@ -815,9 +853,71 @@ mod tests {
         let garbage = b"xbvxzi";
 
         let err = decoder
-            .decompress(&*garbage, &mut decoded, FlushDecompress::Finish)
+            .decompress(garbage, &mut decoded, FlushDecompress::Finish)
             .unwrap_err();
 
         assert_eq!(err.message(), Some("invalid stored block lengths"));
+    }
+
+    fn compress_with_flush(flush: FlushCompress) -> Vec<u8> {
+        let incompressible = (0..=255).collect::<Vec<u8>>();
+        let mut output = vec![0; 1024];
+
+        // Feed in the incompressible data followed by the indicated flush type.
+        let mut w = Compress::new(Compression::default(), false);
+        w.compress(&incompressible, &mut output, flush).unwrap();
+
+        if flush != FlushCompress::None {
+            // The first instance of incompressible input should have been written uncompressed.
+            assert!(w.total_out() >= 261);
+            assert_eq!(&output[0..5], &[0, 0, 1, 0xff, !1]);
+            assert_eq!(&output[5..261], &incompressible);
+        }
+
+        // Feed in the same data again.
+        let len = w.total_out() as usize;
+        w.compress(&incompressible, &mut output[len..], FlushCompress::Finish)
+            .unwrap();
+
+        if flush != FlushCompress::Full {
+            // This time, the data should have been compressed (because it is an exact duplicate of
+            // the earlier block).
+            assert!(w.total_out() < 300);
+        }
+
+        // Assert that all input has been processed.
+        assert_eq!(w.total_in(), 256 * 2);
+
+        output.resize(w.total_out() as usize, 0);
+        output
+    }
+
+    #[test]
+    fn test_partial_flush() {
+        let output = compress_with_flush(FlushCompress::Partial);
+
+        // Check for partial flush marker.
+        assert_eq!(output[261], 0x2);
+        assert_eq!(output[262] & 0x7, 0x4);
+    }
+
+    #[test]
+    fn test_sync_flush() {
+        let output = compress_with_flush(FlushCompress::Sync);
+
+        // Check for sync flush marker.
+        assert_eq!(&output[261..][..5], &[0, 0, 0, 0xff, 0xff]);
+    }
+
+    #[test]
+    fn test_full_flush() {
+        let output = compress_with_flush(FlushCompress::Full);
+        assert_eq!(output.len(), 527);
+
+        // Check for sync flush marker.
+        assert_eq!(&output[261..][..5], &[0, 0, 0, 0xff, 0xff]);
+
+        // Check that the second instance of incompressible input was also written uncompressed.
+        assert_eq!(&output[266..][..5], &[1, 0, 1, 0xff, !1]);
     }
 }

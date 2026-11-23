@@ -1,0 +1,25 @@
+bench_ref_type_from_suffix_with_elems_dynamic_padding:
+	mov rax, rdi
+	movabs rdi, 3074457345618258598
+	cmp rcx, rdi
+	ja .LBB5_2
+	lea rdi, [rcx + 2*rcx]
+	or rdi, 3
+	add rdi, 9
+	lea r8d, [rdx + rsi]
+	test r8b, 3
+	setne r8b
+	sub rdx, rdi
+	setb r9b
+	or r9b, r8b
+	cmp r9b, 1
+	jne .LBB5_3
+.LBB5_2:
+	mov qword ptr [rax], 0
+	ret
+.LBB5_3:
+	add rsi, rdx
+	mov qword ptr [rax], rsi
+	mov qword ptr [rax + 8], rdi
+	mov qword ptr [rax + 16], rcx
+	ret

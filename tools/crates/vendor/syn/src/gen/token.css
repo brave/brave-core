@@ -70,6 +70,7 @@ a.struct[title="struct syn::token::RArrow"],
 a.struct[title="struct syn::token::Raw"],
 a.struct[title="struct syn::token::Ref"],
 a.struct[title="struct syn::token::Return"],
+a.struct[title="struct syn::token::Safe"],
 a.struct[title="struct syn::token::SelfType"],
 a.struct[title="struct syn::token::SelfValue"],
 a.struct[title="struct syn::token::Semi"],
@@ -175,6 +176,7 @@ a.struct[title="struct syn::token::RArrow"]::before,
 a.struct[title="struct syn::token::Raw"]::before,
 a.struct[title="struct syn::token::Ref"]::before,
 a.struct[title="struct syn::token::Return"]::before,
+a.struct[title="struct syn::token::Safe"]::before,
 a.struct[title="struct syn::token::SelfType"]::before,
 a.struct[title="struct syn::token::SelfValue"]::before,
 a.struct[title="struct syn::token::Semi"]::before,
@@ -496,6 +498,10 @@ a.struct[title="struct syn::token::Return"]::before {
 	content: "Token![return]";
 }
 
+a.struct[title="struct syn::token::Safe"]::before {
+	content: "Token![safe]";
+}
+
 a.struct[title="struct syn::token::SelfType"]::before {
 	content: "Token![Self]";
 }
@@ -718,6 +724,7 @@ a.struct[title="struct syn::token::Pub"]::after,
 a.struct[title="struct syn::token::Raw"]::after,
 a.struct[title="struct syn::token::Ref"]::after,
 a.struct[title="struct syn::token::Return"]::after,
+a.struct[title="struct syn::token::Safe"]::after,
 a.struct[title="struct syn::token::Static"]::after,
 a.struct[title="struct syn::token::Struct"]::after,
 a.struct[title="struct syn::token::Super"]::after,

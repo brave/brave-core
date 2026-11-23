@@ -1,14 +1,15 @@
-#![allow(clippy::result_large_err)]
-use crate::{bstr::BString, remote};
+use gix_error::ResultExt;
 
-type ConfigureRemoteFn =
-    Box<dyn FnMut(crate::Remote<'_>) -> Result<crate::Remote<'_>, Box<dyn std::error::Error + Send + Sync>>>;
+use crate::{Result, bstr::BString, remote};
+
+#[cfg(feature = "async-network-client")]
+use gix_transport::client::async_io::Transport;
+#[cfg(feature = "blocking-network-client")]
+use gix_transport::client::blocking_io::Transport;
+
+type ConfigureRemoteFn = Box<dyn FnMut(crate::Remote<'_>) -> Result<crate::Remote<'_>>>;
 #[cfg(any(feature = "async-network-client", feature = "blocking-network-client"))]
-type ConfigureConnectionFn = Box<
-    dyn FnMut(
-        &mut remote::Connection<'_, '_, Box<dyn gix_protocol::transport::client::Transport + Send>>,
-    ) -> Result<(), Box<dyn std::error::Error + Send + Sync>>,
->;
+type ConfigureConnectionFn = Box<dyn FnMut(&mut remote::Connection<'_, '_, '_, Box<dyn Transport + Send>>) -> Result>;
 
 /// A utility to collect configuration on how to fetch from a remote and initiate a fetch operation. It will delete the newly
 /// created repository on when dropped without successfully finishing a fetch.
@@ -37,23 +38,49 @@ pub struct PrepareFetch {
     /// The name of the reference to fetch. If `None`, the reference pointed to by `HEAD` will be checked out.
     #[cfg_attr(not(feature = "blocking-network-client"), allow(dead_code))]
     ref_name: Option<gix_ref::PartialName>,
+    /// The single revision to fetch and check out with a detached `HEAD`.
+    #[cfg_attr(not(feature = "blocking-network-client"), allow(dead_code))]
+    revision: Option<gix_refspec::RefSpec>,
+    /// If `true`, drop removes the entire worktree. Otherwise leave it alone.
+    remove_worktree_on_drop: bool,
 }
 
-/// The error returned by [`PrepareFetch::new()`].
-#[derive(Debug, thiserror::Error)]
-#[allow(missing_docs)]
-pub enum Error {
-    #[error(transparent)]
-    Init(#[from] crate::init::Error),
-    #[error(transparent)]
-    CommitterOrFallback(#[from] crate::config::time::Error),
-    #[error(transparent)]
-    UrlParse(#[from] gix_url::parse::Error),
-    #[error("Failed to turn a the relative file url \"{}\" into an absolute one", url.to_bstring())]
-    CanonicalizeUrl {
-        url: gix_url::Url,
-        source: gix_path::realpath::Error,
-    },
+/// Errors returned by [`PrepareFetch::with_revision()`].
+pub mod with_revision {
+    /// An invalid revision for a single-revision clone.
+    #[derive(Debug)]
+    #[expect(missing_docs)]
+    pub enum Error {
+        Parse(gix_error::Error),
+        Invalid { revision: crate::bstr::BString },
+    }
+
+    impl std::fmt::Display for Error {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            match self {
+                Error::Parse(err) => err.fmt(f),
+                Error::Invalid { revision } => write!(
+                    f,
+                    "A clone revision must be HEAD, a full reference name, or a full object ID, got {revision:?}"
+                ),
+            }
+        }
+    }
+
+    impl std::error::Error for Error {
+        fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+            match self {
+                Error::Parse(err) => Some(err),
+                Error::Invalid { .. } => Some(const { &gix_error::ClassificationMarker::VALIDATION }),
+            }
+        }
+    }
+
+    impl From<gix_error::Exn<gix_error::Message>> for Error {
+        fn from(err: gix_error::Exn<gix_error::Message>) -> Self {
+            Error::Parse(err.into_error())
+        }
+    }
 }
 
 /// Instantiation
@@ -61,49 +88,81 @@ impl PrepareFetch {
     /// Create a new repository at `path` with `create_opts` which is ready to clone from `url`, possibly after making additional adjustments to
     /// configuration and settings.
     ///
+    /// [`Kind::Bare`][crate::create::Kind::Bare] uses Git's bare-clone branch layout and omits the default fetch and upstream
+    /// configuration. [`Kind::WithWorktree`][crate::create::Kind::WithWorktree] with [`fetch_only()`][Self::fetch_only()]
+    /// clones without a checkout.
+    /// Explicit refspecs supplied through [`Self::configure_remote()`] are still honored and persisted.
+    /// For bare clones that callback receives no default refspecs; leaving it empty uses the bare
+    /// branch mapping for the initial fetch only.
+    ///
     /// Note that this is merely a handle to perform the actual connection to the remote, and if any of it fails the freshly initialized repository
     /// will be removed automatically as soon as this instance drops.
     ///
     /// # Deviation
     ///
+    /// Unlike `git clone`, repository-local environment overrides such as `GIT_WORK_TREE` and `GIT_INDEX_FILE` are ignored.
+    /// This prevents cloning from a Git hook from writing the clone's index or files into the caller's repository.
+    /// Editor and notes preferences (`GIT_EDITOR` and `GIT_NOTES_REF`) are still honored.
+    ///
     /// Similar to `git`, a missing user name and email configuration is not terminal and we will fill it in with dummy values. However,
     /// instead of deriving values from the system, ours are hardcoded to indicate what happened.
-    #[allow(clippy::result_large_err)]
     pub fn new<Url, E>(
         url: Url,
         path: impl AsRef<std::path::Path>,
         kind: crate::create::Kind,
         create_opts: crate::create::Options,
         open_opts: crate::open::Options,
-    ) -> Result<Self, Error>
+    ) -> Result<Self>
     where
         Url: TryInto<gix_url::Url, Error = E>,
-        gix_url::parse::Error: From<E>,
+        E: std::error::Error + Send + Sync + 'static,
     {
-        Self::new_inner(
-            url.try_into().map_err(gix_url::parse::Error::from)?,
-            path.as_ref(),
-            kind,
-            create_opts,
-            open_opts,
-        )
+        Self::new_inner(url.try_into().or_error()?, path.as_ref(), kind, create_opts, open_opts)
     }
-
-    #[allow(clippy::result_large_err)]
     fn new_inner(
         mut url: gix_url::Url,
         path: &std::path::Path,
         kind: crate::create::Kind,
         mut create_opts: crate::create::Options,
         open_opts: crate::open::Options,
-    ) -> Result<Self, Error> {
-        create_opts.destination_must_be_empty = true;
+    ) -> Result<Self> {
+        // Keep inherited repository paths from redirecting this clone into the caller's repository.
+        let mut open_opts = open_opts.without_repository_environment_overrides();
+        if create_opts.destination_must_be_empty.is_none() {
+            create_opts.destination_must_be_empty = Some(true);
+        }
+
+        let git_dir = match kind {
+            crate::create::Kind::WithWorktree => path.join(gix_discover::DOT_GIT_DIR),
+            crate::create::Kind::Bare => path.to_owned(),
+        };
+        let config = crate::config(Some(&git_dir), &open_opts)?;
+        if crate::config::cache::util::config_bool_opt(
+            &config,
+            &crate::config::tree::Core::SYMLINKS,
+            "core.symlinks",
+            open_opts.lenient_config,
+        )? == Some(false)
+        {
+            open_opts.api_config_overrides.push("core.symlinks=false".into());
+        }
+
+        // Capture this before init_opts creates `.git`, otherwise the check below would see our own files.
+        let remove_worktree_on_drop = match std::fs::read_dir(path) {
+            Ok(mut entries) => entries.next().is_none(),
+            // Non-existent destinations will be created by init_opts.
+            Err(err) if err.kind() == std::io::ErrorKind::NotFound => true,
+            // If we can't verify emptiness, keep cleanup conservative and leave the destination untouched.
+            Err(_) => false,
+        };
+
         let mut repo = crate::ThreadSafeRepository::init_opts(path, kind, create_opts, open_opts)?.to_thread_local();
-        url.canonicalize(repo.options.current_dir_or_empty())
-            .map_err(|err| Error::CanonicalizeUrl {
-                url: url.clone(),
-                source: err,
-            })?;
+        url.canonicalize(repo.options.current_dir_or_empty()).or_raise(|| {
+            gix_error::message!(
+                "Failed to turn the relative file url {:?} into an absolute one",
+                url.to_bstring()
+            )
+        })?;
         repo.committer_or_set_generic_fallback()?;
         Ok(PrepareFetch {
             url,
@@ -117,26 +176,46 @@ impl PrepareFetch {
             configure_connection: None,
             shallow: remote::fetch::Shallow::NoChange,
             ref_name: None,
+            revision: None,
+            remove_worktree_on_drop,
         })
     }
 }
 
-/// A utility to collect configuration on how to perform a checkout into a working tree,
-/// and when dropped without checking out successfully the fetched repository will be deleted from disk.
+/// A utility to collect configuration on how to perform a checkout into a working tree.
+/// Dropping it before [`Self::main_worktree()`] returns `Ok` deletes an initially empty clone destination.
+/// Interruption alone returns `Ok` with the fetched repository and a partial checkout outcome; callers must check
+/// the interrupt flag to determine whether checkout completed. The repository and partial worktree are retained
+/// so checkout can be completed without fetching again. Destinations with pre-existing files are always retained.
 #[must_use]
 #[cfg(feature = "worktree-mutation")]
 #[derive(Debug)]
 pub struct PrepareCheckout {
-    /// A freshly initialized repository which is owned by us, or `None` if it was successfully checked out.
+    /// A freshly initialized repository owned by us, or `None` once returned to the caller, including after interruption.
     pub(self) repo: Option<crate::Repository>,
-    /// The name of the reference to check out. If `None`, the reference pointed to by `HEAD` will be checked out.
-    pub(self) ref_name: Option<gix_ref::PartialName>,
+    /// If `true`, drop removes the entire worktree. Otherwise leave it alone.
+    pub(self) remove_worktree_on_drop: bool,
+}
+
+fn cleanup_clone_destination_on_drop(repo: &crate::Repository, remove_worktree_on_drop: bool) {
+    let path_to_remove = if remove_worktree_on_drop {
+        Some(repo.workdir().unwrap_or_else(|| repo.path()))
+    } else {
+        // The destination held pre-existing user files. Leave everything, including the `.git` we created,
+        // so the user can inspect or clean up the partially cloned repository with Git tooling.
+        None
+    };
+    if let Some(path_to_remove) = path_to_remove {
+        std::fs::remove_dir_all(path_to_remove).ok();
+    }
 }
 
 // This module encapsulates functionality that works with both feature toggles. Can be combined with `fetch`
 // once async and clone are a thing.
 #[cfg(any(feature = "async-network-client", feature = "blocking-network-client"))]
 mod access_feat {
+    use super::Transport;
+    use crate::Result;
     use crate::clone::PrepareFetch;
 
     /// Builder
@@ -147,10 +226,7 @@ mod access_feat {
         // TODO: tests
         pub fn configure_connection(
             mut self,
-            f: impl FnMut(
-                    &mut crate::remote::Connection<'_, '_, Box<dyn gix_protocol::transport::client::Transport + Send>>,
-                ) -> Result<(), Box<dyn std::error::Error + Send + Sync>>
-                + 'static,
+            f: impl FnMut(&mut crate::remote::Connection<'_, '_, '_, Box<dyn Transport + Send>>) -> Result + 'static,
         ) -> Self {
             self.configure_connection = Some(Box::new(f));
             self

@@ -1,6 +1,7 @@
-use crate::hash_map::{equivalent, make_hash, make_hasher};
-use crate::raw::{Allocator, Bucket, Global, RawTable};
-use crate::{Equivalent, HashMap};
+use crate::Equivalent;
+use crate::alloc::{Allocator, Global};
+use crate::map::{HashMap, equivalent, make_hash, make_hasher};
+use crate::raw::{Bucket, RawTable};
 use core::fmt::{self, Debug};
 use core::hash::{BuildHasher, Hash};
 use core::mem;
@@ -162,7 +163,7 @@ impl<K, V, S, A: Allocator> HashMap<K, V, S, A> {
 ///
 /// See the [`HashMap::raw_entry_mut`] docs for usage examples.
 ///
-/// [`HashMap::raw_entry_mut`]: struct.HashMap.html#method.raw_entry_mut
+/// [`HashMap::raw_entry_mut`]: HashMap::raw_entry_mut
 ///
 /// # Examples
 ///
@@ -221,13 +222,12 @@ pub struct RawEntryBuilderMut<'a, K, V, S, A: Allocator = Global> {
 ///
 /// This is a lower-level version of [`Entry`].
 ///
+/// [`Entry`]: crate::hash_map::Entry
+///
 /// This `enum` is constructed through the [`raw_entry_mut`] method on [`HashMap`],
 /// then calling one of the methods of that [`RawEntryBuilderMut`].
 ///
-/// [`HashMap`]: struct.HashMap.html
-/// [`Entry`]: enum.Entry.html
-/// [`raw_entry_mut`]: struct.HashMap.html#method.raw_entry_mut
-/// [`RawEntryBuilderMut`]: struct.RawEntryBuilderMut.html
+/// [`raw_entry_mut`]: HashMap::raw_entry_mut
 ///
 /// # Examples
 ///
@@ -335,8 +335,6 @@ pub enum RawEntryMut<'a, K, V, S, A: Allocator = Global> {
 /// A view into an occupied entry in a `HashMap`.
 /// It is part of the [`RawEntryMut`] enum.
 ///
-/// [`RawEntryMut`]: enum.RawEntryMut.html
-///
 /// # Examples
 ///
 /// ```
@@ -418,8 +416,6 @@ where
 /// A view into a vacant entry in a `HashMap`.
 /// It is part of the [`RawEntryMut`] enum.
 ///
-/// [`RawEntryMut`]: enum.RawEntryMut.html
-///
 /// # Examples
 ///
 /// ```
@@ -472,7 +468,7 @@ pub struct RawVacantEntryMut<'a, K, V, S, A: Allocator = Global> {
 ///
 /// See the [`HashMap::raw_entry`] docs for usage examples.
 ///
-/// [`HashMap::raw_entry`]: struct.HashMap.html#method.raw_entry
+/// [`HashMap::raw_entry`]: HashMap::raw_entry
 ///
 /// # Examples
 ///
@@ -521,7 +517,6 @@ impl<'a, K, V, S, A: Allocator> RawEntryBuilderMut<'a, K, V, S, A> {
     /// assert_eq!(map[&"a"], 100);
     /// ```
     #[cfg_attr(feature = "inline-more", inline)]
-    #[allow(clippy::wrong_self_convention)]
     pub fn from_key<Q>(self, k: &Q) -> RawEntryMut<'a, K, V, S, A>
     where
         S: BuildHasher,
@@ -554,7 +549,6 @@ impl<'a, K, V, S, A: Allocator> RawEntryBuilderMut<'a, K, V, S, A> {
     /// assert_eq!(map[&"a"], 100);
     /// ```
     #[inline]
-    #[allow(clippy::wrong_self_convention)]
     pub fn from_key_hashed_nocheck<Q>(self, hash: u64, k: &Q) -> RawEntryMut<'a, K, V, S, A>
     where
         Q: Equivalent<K> + ?Sized,
@@ -587,7 +581,6 @@ impl<'a, K, V, S, A: Allocator> RawEntryBuilderMut<'a, K, V, S, A> {
     /// assert_eq!(map[&"a"], 100);
     /// ```
     #[cfg_attr(feature = "inline-more", inline)]
-    #[allow(clippy::wrong_self_convention)]
     pub fn from_hash<F>(self, hash: u64, is_match: F) -> RawEntryMut<'a, K, V, S, A>
     where
         for<'b> F: FnMut(&'b K) -> bool,
@@ -627,7 +620,6 @@ impl<'a, K, V, S, A: Allocator> RawEntryBuilder<'a, K, V, S, A> {
     /// assert_eq!(map.raw_entry().from_key(&key), Some((&"a", &100)));
     /// ```
     #[cfg_attr(feature = "inline-more", inline)]
-    #[allow(clippy::wrong_self_convention)]
     pub fn from_key<Q>(self, k: &Q) -> Option<(&'a K, &'a V)>
     where
         S: BuildHasher,
@@ -658,7 +650,6 @@ impl<'a, K, V, S, A: Allocator> RawEntryBuilder<'a, K, V, S, A> {
     /// assert_eq!(map.raw_entry().from_key_hashed_nocheck(hash, &key), Some((&"a", &100)));
     /// ```
     #[cfg_attr(feature = "inline-more", inline)]
-    #[allow(clippy::wrong_self_convention)]
     pub fn from_key_hashed_nocheck<Q>(self, hash: u64, k: &Q) -> Option<(&'a K, &'a V)>
     where
         Q: Equivalent<K> + ?Sized,
@@ -698,7 +689,6 @@ impl<'a, K, V, S, A: Allocator> RawEntryBuilder<'a, K, V, S, A> {
     /// assert_eq!(map.raw_entry().from_hash(hash, |k| k == &key), Some((&"a", &100)));
     /// ```
     #[cfg_attr(feature = "inline-more", inline)]
-    #[allow(clippy::wrong_self_convention)]
     pub fn from_hash<F>(self, hash: u64, is_match: F) -> Option<(&'a K, &'a V)>
     where
         F: FnMut(&K) -> bool,
@@ -1282,13 +1272,13 @@ impl<'a, K, V, S, A: Allocator> RawOccupiedEntryMut<'a, K, V, S, A> {
         F: FnOnce(&K, V) -> Option<V>,
     {
         unsafe {
-            let still_occupied = self
+            let tag = self
                 .table
                 .replace_bucket_with(self.elem.clone(), |(key, value)| {
                     f(&key, value).map(|new_value| (key, new_value))
                 });
 
-            if still_occupied {
+            if tag.is_none() {
                 RawEntryMut::Occupied(self)
             } else {
                 RawEntryMut::Vacant(RawVacantEntryMut {
@@ -1359,7 +1349,6 @@ impl<'a, K, V, S, A: Allocator> RawVacantEntryMut<'a, K, V, S, A> {
     /// assert_eq!(map[&"c"], 300);
     /// ```
     #[cfg_attr(feature = "inline-more", inline)]
-    #[allow(clippy::shadow_unrelated)]
     pub fn insert_hashed_nocheck(self, hash: u64, key: K, value: V) -> (&'a mut K, &'a mut V)
     where
         K: Hash,

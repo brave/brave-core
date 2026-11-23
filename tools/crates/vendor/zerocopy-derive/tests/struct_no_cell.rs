@@ -13,11 +13,13 @@
 include!("include.rs");
 
 #[derive(imp::Immutable)]
+#[zerocopy(crate = "zerocopy_renamed")]
 struct Zst;
 
 util_assert_impl_all!(Zst: imp::Immutable);
 
 #[derive(imp::Immutable)]
+#[zerocopy(crate = "zerocopy_renamed")]
 struct One {
     a: bool,
 }
@@ -25,6 +27,7 @@ struct One {
 util_assert_impl_all!(One: imp::Immutable);
 
 #[derive(imp::Immutable)]
+#[zerocopy(crate = "zerocopy_renamed")]
 struct Two {
     a: bool,
     b: Zst,
@@ -33,6 +36,7 @@ struct Two {
 util_assert_impl_all!(Two: imp::Immutable);
 
 #[derive(imp::Immutable)]
+#[zerocopy(crate = "zerocopy_renamed")]
 struct Three {
     a: [u8],
 }
@@ -40,6 +44,7 @@ struct Three {
 util_assert_impl_all!(Three: imp::Immutable);
 
 #[derive(imp::Immutable)]
+#[zerocopy(crate = "zerocopy_renamed")]
 struct Four<'a> {
     field: &'a imp::UnsafeCell<u8>,
 }
@@ -47,6 +52,7 @@ struct Four<'a> {
 util_assert_impl_all!(Four<'static>: imp::Immutable);
 
 #[derive(imp::Immutable)]
+#[zerocopy(crate = "zerocopy_renamed")]
 struct TypeParams<'a, T, U, I: imp::Iterator> {
     a: I::Item,
     b: u8,
@@ -73,6 +79,7 @@ impl<T> Trait for imp::UnsafeCell<T> {
 }
 
 #[derive(imp::Immutable)]
+#[zerocopy(crate = "zerocopy_renamed")]
 struct WithAssocType<T: Trait> {
     field: <T as Trait>::Assoc,
 }
@@ -82,6 +89,7 @@ util_assert_impl_all!(WithAssocType<imp::UnsafeCell<u8>>: imp::Immutable);
 // Deriving `Immutable` should work if the struct has bounded parameters.
 
 #[derive(imp::Immutable)]
+#[zerocopy(crate = "zerocopy_renamed")]
 #[repr(C)]
 struct WithParams<'a: 'b, 'b: 'a, T: 'a + 'b + imp::Immutable, const N: usize>(
     [T; N],

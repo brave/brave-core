@@ -7,10 +7,11 @@
 
 #[cfg(feature = "interrupt")]
 mod init {
-    use std::{
-        io,
-        sync::atomic::{AtomicUsize, Ordering},
-    };
+    use std::sync::atomic::{AtomicUsize, Ordering};
+
+    use gix_error::ResultExt;
+
+    use crate::Result;
 
     static DEREGISTER_COUNT: AtomicUsize = AtomicUsize::new(0);
     static REGISTERED_HOOKS: std::sync::LazyLock<parking_lot::Mutex<Vec<(i32, signal_hook::SigId)>>> =
@@ -29,7 +30,7 @@ mod init {
         /// Remove all previously registered handlers, and assure the default behaviour is reinstated, if this is the last available instance.
         ///
         /// Note that only the instantiation of the default behaviour can fail.
-        pub fn deregister(self) -> std::io::Result<()> {
+        pub fn deregister(self) -> Result {
             let mut hooks = REGISTERED_HOOKS.lock();
             let count = DEREGISTER_COUNT.fetch_sub(1, Ordering::SeqCst);
             if count > 1 || hooks.is_empty() {
@@ -48,11 +49,14 @@ mod init {
             for (sig, _) in hooks {
                 // # SAFETY
                 // * we only register a handler that is specifically designed to run in this environment.
-                #[allow(unsafe_code)]
+                #[expect(unsafe_code)]
                 unsafe {
-                    default_hooks.push(signal_hook::low_level::register(sig, move || {
-                        signal_hook::low_level::emulate_default_handler(sig).ok();
-                    })?);
+                    default_hooks.push(
+                        signal_hook::low_level::register(sig, move || {
+                            signal_hook::low_level::emulate_default_handler(sig).ok();
+                        })
+                        .or_error()?,
+                    );
                 }
             }
             Ok(())
@@ -77,7 +81,21 @@ mod init {
         }
     }
 
-    /// Initialize a signal handler to listen to SIGINT and SIGTERM and trigger our [`trigger()`](super::trigger()) that way.
+    /// Initialize the termination-signal handler, including SIGHUP on Unix, without an additional callback.
+    ///
+    /// Signals trigger [`super::trigger()`]. After `grace_count` signals, the next signal performs its default action.
+    /// If a handler is already installed, its callback and grace count remain unchanged.
+    /// Use the returned [`Deregister`] to remove this registration explicitly or automatically.
+    pub fn init_handler_default(grace_count: usize) -> Result<Deregister> {
+        // SAFETY: The empty callback performs no signal-unsafe operations.
+        #[expect(unsafe_code)]
+        unsafe {
+            init_handler(grace_count, || {})
+        }
+    }
+
+    /// Initialize a signal handler to listen to SIGINT and SIGTERM, and SIGQUIT and SIGHUP on Unix,
+    /// and trigger our [`trigger()`](super::trigger()) that way.
     /// Also trigger `interrupt()` which promises to never use a Mutex, allocate or deallocate, or do anything else that's blocking.
     /// Use `grace_count` to determine how often the termination signal can be received before it's terminal, e.g. 1 would only terminate
     /// the application the second time the signal is received.
@@ -91,11 +109,11 @@ mod init {
     /// deadlocking even when trying to write to stderr directly.
     ///
     /// SAFETY: `interrupt()` will be called from a signal handler. See [`signal_hook::low_level::register()`] for details about.
-    #[allow(unsafe_code, clippy::missing_safety_doc)]
+    #[expect(unsafe_code, clippy::missing_safety_doc)]
     pub unsafe fn init_handler(
         grace_count: usize,
         interrupt: impl Fn() + Send + Sync + Clone + 'static,
-    ) -> io::Result<Deregister> {
+    ) -> Result<Deregister> {
         let prev_count = DEREGISTER_COUNT.fetch_add(1, Ordering::SeqCst);
         if prev_count != 0 {
             // Try to obtain the lock before we return just to wait for the signals to actually be registered.
@@ -107,8 +125,11 @@ mod init {
             return Ok(Deregister::default());
         }
 
-        let mut hooks = Vec::with_capacity(signal_hook::consts::TERM_SIGNALS.len());
-        for sig in signal_hook::consts::TERM_SIGNALS {
+        let signals = signal_hook::consts::TERM_SIGNALS.iter().copied();
+        #[cfg(unix)]
+        let signals = signals.chain([signal_hook::consts::SIGHUP]);
+        let mut hooks = Vec::with_capacity(signals.size_hint().0);
+        for sig in signals {
             // # SAFETY
             // * we only set atomics or call functions that do
             // * there is no use of the heap
@@ -121,15 +142,15 @@ mod init {
                 let msg_idx = INTERRUPT_COUNT.fetch_add(1, Ordering::SeqCst);
                 if msg_idx == grace_count {
                     gix_tempfile::registry::cleanup_tempfiles_signal_safe();
-                    signal_hook::low_level::emulate_default_handler(*sig).ok();
+                    signal_hook::low_level::emulate_default_handler(sig).ok();
                 }
                 interrupt();
                 super::trigger();
             };
-            #[allow(unsafe_code)]
+            #[expect(unsafe_code)]
             unsafe {
-                let hook_id = signal_hook::low_level::register(*sig, action)?;
-                hooks.push((*sig, hook_id));
+                let hook_id = signal_hook::low_level::register(sig, action).or_error()?;
+                hooks.push((sig, hook_id));
             }
         }
         for hook_id in DEFAULT_BEHAVIOUR_HOOKS.lock().drain(..) {
@@ -149,24 +170,28 @@ use std::{
 };
 
 #[cfg(feature = "interrupt")]
-pub use init::{init_handler, Deregister};
+pub use init::{Deregister, init_handler, init_handler_default};
 
 /// A wrapper for an inner iterator which will check for interruptions on each iteration.
 pub struct Iter<I, EFN> {
     /// The actual iterator to yield elements from.
-    inner: gix_features::interrupt::IterWithErr<'static, I, EFN>,
+    inner: gix_utils::interrupt::IterWithErr<'static, I, EFN>,
 }
 
 impl<I, EFN, E> Iter<I, EFN>
 where
     I: Iterator,
     EFN: FnOnce() -> E,
+    E: Into<crate::Error>,
 {
     /// Create a new iterator over `inner` which checks for interruptions on each iteration and calls `make_err()` to
     /// signal an interruption happened, causing no further items to be iterated from that point on.
+    ///
+    /// `make_err()` can return [`crate::Error`] or [`crate::Exn`]. Wrap ordinary errors with
+    /// [`crate::Error::from_error()`].
     pub fn new(inner: I, make_err: EFN) -> Self {
         Iter {
-            inner: gix_features::interrupt::IterWithErr::new(inner, make_err, &IS_INTERRUPTED),
+            inner: gix_utils::interrupt::IterWithErr::new(inner, make_err, &IS_INTERRUPTED),
         }
     }
 
@@ -185,11 +210,12 @@ impl<I, EFN, E> Iterator for Iter<I, EFN>
 where
     I: Iterator,
     EFN: FnOnce() -> E,
+    E: Into<crate::Error>,
 {
-    type Item = Result<I::Item, E>;
+    type Item = crate::Result<I::Item>;
 
     fn next(&mut self) -> Option<Self::Item> {
-        self.inner.next()
+        self.inner.next().map(|res| res.map_err(Into::into))
     }
 }
 
@@ -198,7 +224,7 @@ where
 /// It fails a [read][`std::io::Read::read`] while an interrupt was requested.
 pub struct Read<R> {
     /// The actual implementor of [`std::io::Read`] to which interrupt support will be added.
-    inner: gix_features::interrupt::Read<'static, R>,
+    inner: gix_utils::interrupt::Read<'static, R>,
 }
 
 impl<R> Read<R>
@@ -208,7 +234,7 @@ where
     /// Create a new interruptible reader from `read`.
     pub fn new(read: R) -> Self {
         Read {
-            inner: gix_features::interrupt::Read {
+            inner: gix_utils::interrupt::Read {
                 inner: read,
                 should_interrupt: &IS_INTERRUPTED,
             },

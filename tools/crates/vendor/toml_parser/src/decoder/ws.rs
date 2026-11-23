@@ -2,12 +2,12 @@ use core::ops::RangeInclusive;
 
 use winnow::stream::ContainsToken as _;
 
-use crate::lexer::COMMENT_START_SYMBOL;
 use crate::ErrorSink;
 use crate::Expected;
 use crate::ParseError;
 use crate::Raw;
 use crate::Span;
+use crate::lexer::COMMENT_START_SYMBOL;
 
 /// Parse comment
 ///

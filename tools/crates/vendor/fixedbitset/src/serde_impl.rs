@@ -144,7 +144,7 @@ impl<'de> Deserialize<'de> for FixedBitSet {
             }
         }
 
-        const FIELDS: &'static [&'static str] = &["length", "data"];
+        const FIELDS: &[&str] = &["length", "data"];
         deserializer.deserialize_struct("Duration", FIELDS, FixedBitSetVisitor)
     }
 }

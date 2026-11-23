@@ -42,7 +42,6 @@
 //! ```
 
 use alloc::borrow::Cow;
-use alloc::vec::Vec;
 use core::{fmt, result};
 
 #[cfg(not(feature = "std"))]
@@ -57,6 +56,9 @@ pub use read_ref::*;
 
 mod read_cache;
 pub use read_cache::*;
+
+mod symbol_map;
+pub use symbol_map::*;
 
 mod util;
 pub use util::*;
@@ -122,9 +124,6 @@ impl fmt::Display for Error {
     }
 }
 
-#[cfg(feature = "std")]
-impl std::error::Error for Error {}
-#[cfg(all(not(feature = "std"), core_error))]
 impl core::error::Error for Error {}
 
 /// The result type used within the read module.
@@ -155,42 +154,27 @@ impl<T> ReadError<T> for Option<T> {
 /// The native executable file for the target platform.
 #[cfg(all(
     unix,
-    not(target_os = "macos"),
-    target_pointer_width = "32",
+    not(target_vendor = "apple"),
+    not(target_os = "aix"),
     feature = "elf"
 ))]
-pub type NativeFile<'data, R = &'data [u8]> = elf::ElfFile32<'data, crate::endian::Endianness, R>;
+pub type NativeFile<'data, R = &'data [u8]> = elf::NativeElfFile<'data, R>;
 
 /// The native executable file for the target platform.
-#[cfg(all(
-    unix,
-    not(target_os = "macos"),
-    target_pointer_width = "64",
-    feature = "elf"
-))]
-pub type NativeFile<'data, R = &'data [u8]> = elf::ElfFile64<'data, crate::endian::Endianness, R>;
+#[cfg(all(target_vendor = "apple", feature = "macho"))]
+pub type NativeFile<'data, R = &'data [u8]> = macho::NativeMachOFile<'data, R>;
 
 /// The native executable file for the target platform.
-#[cfg(all(target_os = "macos", target_pointer_width = "32", feature = "macho"))]
-pub type NativeFile<'data, R = &'data [u8]> =
-    macho::MachOFile32<'data, crate::endian::Endianness, R>;
+#[cfg(all(target_os = "windows", feature = "pe"))]
+pub type NativeFile<'data, R = &'data [u8]> = pe::NativePeFile<'data, R>;
 
 /// The native executable file for the target platform.
-#[cfg(all(target_os = "macos", target_pointer_width = "64", feature = "macho"))]
-pub type NativeFile<'data, R = &'data [u8]> =
-    macho::MachOFile64<'data, crate::endian::Endianness, R>;
-
-/// The native executable file for the target platform.
-#[cfg(all(target_os = "windows", target_pointer_width = "32", feature = "pe"))]
-pub type NativeFile<'data, R = &'data [u8]> = pe::PeFile32<'data, R>;
-
-/// The native executable file for the target platform.
-#[cfg(all(target_os = "windows", target_pointer_width = "64", feature = "pe"))]
-pub type NativeFile<'data, R = &'data [u8]> = pe::PeFile64<'data, R>;
-
-/// The native executable file for the target platform.
-#[cfg(all(feature = "wasm", target_arch = "wasm32", feature = "wasm"))]
+#[cfg(all(target_family = "wasm", feature = "wasm"))]
 pub type NativeFile<'data, R = &'data [u8]> = wasm::WasmFile<'data, R>;
+
+/// The native executable file for the target platform.
+#[cfg(all(target_os = "aix", feature = "xcoff"))]
+pub type NativeFile<'data, R = &'data [u8]> = xcoff::NativeXcoffFile<'data, R>;
 
 /// A file format kind.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -436,236 +420,562 @@ impl SymbolSection {
     }
 }
 
-/// An entry in a [`SymbolMap`].
-pub trait SymbolMapEntry {
-    /// The symbol address.
-    fn address(&self) -> u64;
-}
-
-/// A map from addresses to symbol information.
-///
-/// The symbol information depends on the chosen entry type, such as [`SymbolMapName`].
-///
-/// Returned by [`Object::symbol_map`].
-#[derive(Debug, Default, Clone)]
-pub struct SymbolMap<T: SymbolMapEntry> {
-    symbols: Vec<T>,
-}
-
-impl<T: SymbolMapEntry> SymbolMap<T> {
-    /// Construct a new symbol map.
-    ///
-    /// This function will sort the symbols by address.
-    pub fn new(mut symbols: Vec<T>) -> Self {
-        symbols.sort_by_key(|s| s.address());
-        SymbolMap { symbols }
-    }
-
-    /// Get the symbol before the given address.
-    pub fn get(&self, address: u64) -> Option<&T> {
-        let index = match self
-            .symbols
-            .binary_search_by_key(&address, |symbol| symbol.address())
-        {
-            Ok(index) => index,
-            Err(index) => index.checked_sub(1)?,
-        };
-        self.symbols.get(index)
-    }
-
-    /// Get all symbols in the map.
-    #[inline]
-    pub fn symbols(&self) -> &[T] {
-        &self.symbols
-    }
-}
-
-/// The type used for entries in a [`SymbolMap`] that maps from addresses to names.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-pub struct SymbolMapName<'data> {
-    address: u64,
-    name: &'data str,
-}
-
-impl<'data> SymbolMapName<'data> {
-    /// Construct a `SymbolMapName`.
-    pub fn new(address: u64, name: &'data str) -> Self {
-        SymbolMapName { address, name }
-    }
-
-    /// The symbol address.
-    #[inline]
-    pub fn address(&self) -> u64 {
-        self.address
-    }
-
-    /// The symbol name.
-    #[inline]
-    pub fn name(&self) -> &'data str {
-        self.name
-    }
-}
-
-impl<'data> SymbolMapEntry for SymbolMapName<'data> {
-    #[inline]
-    fn address(&self) -> u64 {
-        self.address
-    }
-}
-
-/// A map from addresses to symbol names and object files.
-///
-/// This is derived from STAB entries in Mach-O files.
-///
-/// Returned by [`Object::object_map`].
-#[derive(Debug, Default, Clone)]
-pub struct ObjectMap<'data> {
-    symbols: SymbolMap<ObjectMapEntry<'data>>,
-    objects: Vec<ObjectMapFile<'data>>,
-}
-
-impl<'data> ObjectMap<'data> {
-    /// Get the entry containing the given address.
-    pub fn get(&self, address: u64) -> Option<&ObjectMapEntry<'data>> {
-        self.symbols
-            .get(address)
-            .filter(|entry| entry.size == 0 || address.wrapping_sub(entry.address) < entry.size)
-    }
-
-    /// Get all symbols in the map.
-    #[inline]
-    pub fn symbols(&self) -> &[ObjectMapEntry<'data>] {
-        self.symbols.symbols()
-    }
-
-    /// Get all objects in the map.
-    #[inline]
-    pub fn objects(&self) -> &[ObjectMapFile<'data>] {
-        &self.objects
-    }
-}
-
-/// A symbol in an [`ObjectMap`].
-#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, Hash)]
-pub struct ObjectMapEntry<'data> {
-    address: u64,
-    size: u64,
-    name: &'data [u8],
-    object: usize,
-}
-
-impl<'data> ObjectMapEntry<'data> {
-    /// Get the symbol address.
-    #[inline]
-    pub fn address(&self) -> u64 {
-        self.address
-    }
-
-    /// Get the symbol size.
-    ///
-    /// This may be 0 if the size is unknown.
-    #[inline]
-    pub fn size(&self) -> u64 {
-        self.size
-    }
-
-    /// Get the symbol name.
-    #[inline]
-    pub fn name(&self) -> &'data [u8] {
-        self.name
-    }
-
-    /// Get the index of the object file name.
-    #[inline]
-    pub fn object_index(&self) -> usize {
-        self.object
-    }
-
-    /// Get the object file name.
-    #[inline]
-    pub fn object<'a>(&self, map: &'a ObjectMap<'data>) -> &'a ObjectMapFile<'data> {
-        &map.objects[self.object]
-    }
-}
-
-impl<'data> SymbolMapEntry for ObjectMapEntry<'data> {
-    #[inline]
-    fn address(&self) -> u64 {
-        self.address
-    }
-}
-
-/// An object file name in an [`ObjectMap`].
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-pub struct ObjectMapFile<'data> {
-    path: &'data [u8],
-    member: Option<&'data [u8]>,
-}
-
-impl<'data> ObjectMapFile<'data> {
-    #[cfg(feature = "macho")]
-    fn new(path: &'data [u8], member: Option<&'data [u8]>) -> Self {
-        ObjectMapFile { path, member }
-    }
-
-    /// Get the path to the file containing the object.
-    #[inline]
-    pub fn path(&self) -> &'data [u8] {
-        self.path
-    }
-
-    /// If the file is an archive, get the name of the member containing the object.
-    #[inline]
-    pub fn member(&self) -> Option<&'data [u8]> {
-        self.member
-    }
-}
-
 /// An imported symbol.
 ///
 /// Returned by [`Object::imports`].
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Clone, Copy, PartialEq, Eq)]
 pub struct Import<'data> {
-    library: ByteString<'data>,
-    // TODO: or ordinal
-    name: ByteString<'data>,
+    library: &'data [u8],
+    name: NameOrOrdinal<&'data [u8]>,
+    weak: bool,
+    flags: ImportFlags<'data>,
+}
+
+impl<'data> fmt::Debug for Import<'data> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let mut s = f.debug_struct("Import");
+        s.field("library", &ByteString(self.library));
+        match &self.name {
+            NameOrOrdinal::Name(name) => s.field("name", &ByteString(name)),
+            NameOrOrdinal::Ordinal(ordinal) => s.field("ordinal", ordinal),
+        };
+        if self.weak {
+            s.field("weak", &self.weak);
+        }
+        s.field("flags", &self.flags);
+        s.finish()
+    }
 }
 
 impl<'data> Import<'data> {
-    /// The symbol name.
-    #[inline]
-    pub fn name(&self) -> &'data [u8] {
-        self.name.0
-    }
-
     /// The name of the library to import the symbol from.
+    ///
+    /// This is empty if the library name is not specified.
+    ///
+    /// For Mach-O, this will also be empty for a special library ordinal,
+    /// which can be obtained from the `n_desc` or `dylib` field in the flags.
     #[inline]
     pub fn library(&self) -> &'data [u8] {
-        self.library.0
+        self.library
+    }
+
+    /// The name or ordinal of the symbol to import.
+    #[inline]
+    pub fn name(&self) -> NameOrOrdinal<&'data [u8]> {
+        self.name
+    }
+
+    /// Return true if the import is a weak reference.
+    #[inline]
+    pub fn is_weak(&self) -> bool {
+        self.weak
+    }
+
+    /// The format-specific flags for the imported symbol.
+    #[inline]
+    pub fn flags(&self) -> ImportFlags<'data> {
+        self.flags
+    }
+}
+
+/// Import flags that are specific to each file format.
+#[derive(Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum ImportFlags<'data> {
+    /// No import flags.
+    None,
+    /// ELF import flags.
+    #[cfg(feature = "elf")]
+    Elf {
+        /// `st_info` field in the ELF symbol (binding and type).
+        st_info: crate::elf::SymbolInfo,
+        /// `st_other` field in the ELF symbol (visibility).
+        st_other: crate::elf::SymbolOther,
+        /// The GNU symbol version that is required.
+        version: Option<&'data [u8]>,
+    },
+    /// Mach-O import flags.
+    #[cfg(feature = "macho")]
+    MachO {
+        /// `n_type` field in the nlist symbol.
+        n_type: crate::macho::SymbolFlags,
+        /// `n_desc` field in the nlist symbol.
+        ///
+        /// For a file using `MH_TWOLEVEL`, this contains the library ordinal.
+        n_desc: crate::macho::SymbolDesc,
+    },
+    /// Mach-O dynamic linker import flags.
+    ///
+    /// Used for imports that are obtained from `LC_DYLD_CHAINED_FIXUPS` or `LC_DYLD_INFO`.
+    #[cfg(feature = "macho")]
+    MachOBind {
+        /// The library ordinal that the symbol is imported from.
+        dylib: crate::macho::BindDylib,
+        /// The bind symbol flags.
+        flags: crate::macho::BindSymbolFlags,
+    },
+    /// PE import flags.
+    #[cfg(feature = "pe")]
+    Pe {
+        /// The symbol is from the delay-load import table.
+        delay: bool,
+    },
+    #[doc(hidden)]
+    #[cfg(not(feature = "elf"))]
+    _Phantom(
+        core::marker::PhantomData<&'data ()>,
+        core::convert::Infallible,
+    ),
+}
+
+impl<'data> fmt::Debug for ImportFlags<'data> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            ImportFlags::None => f.write_str("None"),
+            #[cfg(feature = "elf")]
+            ImportFlags::Elf {
+                st_info,
+                st_other,
+                version,
+            } => {
+                let mut s = f.debug_struct("Elf");
+                s.field("st_info", st_info);
+                s.field("st_other", st_other);
+                if let Some(version) = version {
+                    s.field("version", &ByteString(version));
+                }
+                s.finish()
+            }
+            #[cfg(feature = "macho")]
+            ImportFlags::MachO { n_type, n_desc } => f
+                .debug_struct("MachO")
+                .field("n_type", n_type)
+                .field("n_desc", n_desc)
+                .finish(),
+            #[cfg(feature = "macho")]
+            ImportFlags::MachOBind { dylib, flags } => f
+                .debug_struct("MachOBind")
+                .field("dylib", dylib)
+                .field("flags", flags)
+                .finish(),
+            #[cfg(feature = "pe")]
+            ImportFlags::Pe { delay } => {
+                let mut s = f.debug_struct("Pe");
+                if *delay {
+                    s.field("delay", delay);
+                }
+                s.finish()
+            }
+            #[cfg(not(feature = "elf"))]
+            ImportFlags::_Phantom(_, i) => match *i {},
+        }
+    }
+}
+
+/// A library that the file depends on.
+///
+/// Returned by [`Object::import_libraries`].
+#[derive(Clone, Copy, PartialEq, Eq)]
+pub struct ImportLibrary<'data> {
+    name: &'data [u8],
+    flags: ImportLibraryFlags,
+}
+
+impl<'data> fmt::Debug for ImportLibrary<'data> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("ImportLibrary")
+            .field("name", &ByteString(self.name))
+            .field("flags", &self.flags)
+            .finish()
+    }
+}
+
+impl<'data> ImportLibrary<'data> {
+    /// The name of the library.
+    #[inline]
+    pub fn name(&self) -> &'data [u8] {
+        self.name
+    }
+
+    /// The format-specific flags for the library.
+    #[inline]
+    pub fn flags(&self) -> ImportLibraryFlags {
+        self.flags
+    }
+}
+
+/// Import library flags that are specific to each file format.
+#[derive(Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum ImportLibraryFlags {
+    /// No import library flags.
+    ///
+    /// Used for ELF, which has no additional information for `DT_NEEDED` entries.
+    None,
+    /// Mach-O import library flags.
+    #[cfg(feature = "macho")]
+    MachO {
+        /// The 1-based index that is used to refer to this library.
+        ordinal: u32,
+        /// The type of the dylib load command.
+        ///
+        /// One of `LC_LOAD_DYLIB`, `LC_LOAD_WEAK_DYLIB`, `LC_REEXPORT_DYLIB`,
+        /// `LC_LAZY_LOAD_DYLIB`, or `LC_LOAD_UPWARD_DYLIB`.
+        cmd: crate::macho::LoadCommandType,
+        /// The `current_version` field in the dylib.
+        current_version: crate::macho::Version,
+        /// The `compatibility_version` field in the dylib.
+        compatibility_version: crate::macho::Version,
+        /// The dylib use flags.
+        use_flags: Option<crate::macho::DylibUseFlags>,
+    },
+    /// PE import library flags.
+    #[cfg(feature = "pe")]
+    Pe {
+        /// The library is from the delay-load import table.
+        delay: bool,
+    },
+}
+
+impl fmt::Debug for ImportLibraryFlags {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            ImportLibraryFlags::None => f.write_str("None"),
+            #[cfg(feature = "macho")]
+            ImportLibraryFlags::MachO {
+                ordinal,
+                cmd,
+                current_version,
+                compatibility_version,
+                use_flags,
+            } => {
+                let mut s = f.debug_struct("MachO");
+                s.field("ordinal", ordinal);
+                s.field("cmd", cmd);
+                s.field("current_version", current_version);
+                s.field("compatibility_version", compatibility_version);
+                if let Some(use_flags) = use_flags {
+                    s.field("use_flags", use_flags);
+                }
+                s.finish()
+            }
+            #[cfg(feature = "pe")]
+            ImportLibraryFlags::Pe { delay } => {
+                let mut s = f.debug_struct("Pe");
+                if *delay {
+                    s.field("delay", delay);
+                }
+                s.finish()
+            }
+        }
     }
 }
 
 /// An exported symbol.
 ///
 /// Returned by [`Object::exports`].
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Clone, PartialEq, Eq)]
 pub struct Export<'data> {
-    // TODO: and ordinal?
-    name: ByteString<'data>,
-    address: u64,
+    name: NameOrOrdinal<Cow<'data, [u8]>>,
+    target: ExportTarget<'data>,
+    weak: bool,
+    flags: ExportFlags<'data>,
+}
+
+impl<'data> fmt::Debug for Export<'data> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let mut s = f.debug_struct("Export");
+        match &self.name {
+            NameOrOrdinal::Name(name) => s.field("name", &ByteString(name)),
+            NameOrOrdinal::Ordinal(ordinal) => s.field("ordinal", ordinal),
+        };
+        s.field("target", &self.target());
+        if self.weak {
+            s.field("weak", &self.weak);
+        }
+        s.field("flags", &self.flags);
+        s.finish()
+    }
 }
 
 impl<'data> Export<'data> {
-    /// The symbol name.
+    /// The name or ordinal that the symbol is exported as.
     #[inline]
-    pub fn name(&self) -> &'data [u8] {
-        self.name.0
+    pub fn name(&self) -> NameOrOrdinal<&[u8]> {
+        self.name.as_ref()
     }
 
-    /// The virtual address of the symbol.
+    /// Consume the export and return the name.
+    ///
+    /// Use this to avoid copying the name when it is owned.
     #[inline]
-    pub fn address(&self) -> u64 {
-        self.address
+    pub fn into_name(self) -> NameOrOrdinal<Cow<'data, [u8]>> {
+        self.name
+    }
+
+    /// The target of the export.
+    #[inline]
+    pub fn target(&self) -> ExportTarget<'_> {
+        match self.target {
+            // Handle empty name for EXPORT_SYMBOL_FLAGS_REEXPORT in Mach-O exports trie.
+            ExportTarget::Reexport {
+                library,
+                name: NameOrOrdinal::Name(b""),
+            } => ExportTarget::Reexport {
+                library,
+                name: self.name.as_ref(),
+            },
+            target => target,
+        }
+    }
+
+    /// Return true if the export is a weak definition.
+    #[inline]
+    pub fn is_weak(&self) -> bool {
+        self.weak
+    }
+
+    /// The format-specific flags for the exported symbol.
+    #[inline]
+    pub fn flags(&self) -> ExportFlags<'data> {
+        self.flags
+    }
+}
+
+/// The target of an [`Export`].
+#[derive(Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum ExportTarget<'data> {
+    /// A regular export.
+    Address {
+        /// The address to export.
+        address: u64,
+    },
+    /// A symbol with an absolute value.
+    ///
+    /// The value is not an address in the image.
+    Absolute {
+        /// The value of the symbol.
+        value: u64,
+    },
+    /// A symbol in thread local storage.
+    ///
+    /// This is used for ELF `STT_TLS`.
+    Tls {
+        /// The offset of the symbol in the TLS block for this module.
+        offset: u64,
+    },
+    /// A symbol in thread local storage that is accessed using a descriptor.
+    ///
+    /// This is used for Mach-O.
+    TlvDescriptor {
+        /// The virtual address of the thread local variable descriptor.
+        ///
+        /// The descriptor contains a function that must be called to obtain the
+        /// address of the symbol for the current thread.
+        address: u64,
+    },
+    /// An address that is determined by a resolver function.
+    ///
+    /// This is used for Mach-O, and for ELF `STT_GNU_IFUNC`.
+    Resolver {
+        /// The resolver function used to determine the target address.
+        resolver: u64,
+        /// The address of the stub to export, which will contain a call to the resolved address.
+        ///
+        /// For Mach-O, this is obtained from the exports trie.
+        ///
+        /// ELF may have a corresponding PLT entry, but we don't attempt to determine it.
+        stub: Option<u64>,
+    },
+    /// A symbol from an external library which is reexported.
+    ///
+    /// This is used for PE and Mach-O.
+    Reexport {
+        /// The name of the library.
+        ///
+        /// This is empty if the library is not specified.
+        library: &'data [u8],
+        /// The name or ordinal of the symbol in the external library.
+        name: NameOrOrdinal<&'data [u8]>,
+    },
+}
+
+impl<'data> fmt::Debug for ExportTarget<'data> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            ExportTarget::Address { address } => {
+                f.debug_struct("Address").field("address", address).finish()
+            }
+            ExportTarget::Absolute { value } => {
+                f.debug_struct("Absolute").field("value", value).finish()
+            }
+            ExportTarget::Tls { offset } => f.debug_struct("Tls").field("offset", offset).finish(),
+            ExportTarget::TlvDescriptor { address } => f
+                .debug_struct("TlvDescriptor")
+                .field("address", address)
+                .finish(),
+            ExportTarget::Resolver { resolver, stub } => f
+                .debug_struct("Resolver")
+                .field("resolver", resolver)
+                .field("stub", stub)
+                .finish(),
+            ExportTarget::Reexport { library, name } => {
+                let mut s = f.debug_struct("Reexport");
+                s.field("library", &ByteString(library));
+                match name {
+                    NameOrOrdinal::Name(name) => s.field("name", &ByteString(name)),
+                    NameOrOrdinal::Ordinal(ordinal) => s.field("ordinal", ordinal),
+                };
+                s.finish()
+            }
+        }
+    }
+}
+
+/// Export flags that are specific to each file format.
+#[derive(Clone, Copy, PartialEq, Eq)]
+#[non_exhaustive]
+pub enum ExportFlags<'data> {
+    /// No export flags.
+    None,
+    /// ELF export flags.
+    #[cfg(feature = "elf")]
+    Elf {
+        /// `st_info` field in the ELF symbol (binding and type).
+        st_info: crate::elf::SymbolInfo,
+        /// `st_other` field in the ELF symbol (visibility).
+        st_other: crate::elf::SymbolOther,
+        /// The GNU symbol version.
+        version: Option<&'data [u8]>,
+        /// Whether the `VERSYM_HIDDEN` bit is set.
+        version_hidden: bool,
+    },
+    /// Mach-O export flags.
+    ///
+    /// This is only used for exports from the symbol table.
+    #[cfg(feature = "macho")]
+    MachO {
+        /// `n_type` field in the nlist symbol.
+        n_type: crate::macho::SymbolFlags,
+        /// `n_desc` field in the nlist symbol.
+        n_desc: crate::macho::SymbolDesc,
+    },
+    /// PE export flags.
+    #[cfg(feature = "pe")]
+    Pe {
+        /// The export ordinal.
+        ordinal: crate::read::pe::ExportOrdinal,
+    },
+    #[doc(hidden)]
+    #[cfg(not(feature = "elf"))]
+    _Phantom(
+        core::marker::PhantomData<&'data ()>,
+        core::convert::Infallible,
+    ),
+}
+
+impl<'data> fmt::Debug for ExportFlags<'data> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            ExportFlags::None => f.write_str("None"),
+            #[cfg(feature = "elf")]
+            ExportFlags::Elf {
+                st_info,
+                st_other,
+                version,
+                version_hidden,
+            } => {
+                let mut s = f.debug_struct("Elf");
+                s.field("st_info", st_info);
+                s.field("st_other", st_other);
+                if let Some(version) = version {
+                    s.field("version", &ByteString(version));
+                }
+                if *version_hidden {
+                    s.field("version_hidden", version_hidden);
+                }
+                s.finish()
+            }
+            #[cfg(feature = "macho")]
+            ExportFlags::MachO { n_type, n_desc } => f
+                .debug_struct("MachO")
+                .field("n_type", n_type)
+                .field("n_desc", n_desc)
+                .finish(),
+            #[cfg(feature = "pe")]
+            ExportFlags::Pe { ordinal } => f.debug_struct("Pe").field("ordinal", ordinal).finish(),
+            #[cfg(not(feature = "elf"))]
+            ExportFlags::_Phantom(_, i) => match *i {},
+        }
+    }
+}
+
+/// The name or ordinal of an exported symbol in a library.
+///
+/// Only PE supports identifying a symbol by ordinal instead of by name.
+///
+/// `T` is the storage for the name. This is normally `&[u8]`, but it is
+/// `Cow<[u8]>` where the name may need to be owned (see [`Export::into_name`]).
+#[derive(Clone, Copy, PartialEq, Eq)]
+pub enum NameOrOrdinal<T> {
+    /// The name of the symbol.
+    Name(T),
+    /// The ordinal of the symbol in the library.
+    Ordinal(u16),
+}
+
+impl<T: AsRef<[u8]>> fmt::Debug for NameOrOrdinal<T> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            NameOrOrdinal::Name(name) => f
+                .debug_tuple("Name")
+                .field(&ByteString(name.as_ref()))
+                .finish(),
+            NameOrOrdinal::Ordinal(ordinal) => f.debug_tuple("Ordinal").field(ordinal).finish(),
+        }
+    }
+}
+
+impl<T> NameOrOrdinal<T> {
+    /// Consume and return the name, or `None` if it is identified by ordinal.
+    ///
+    /// Use this instead of [`Self::name`] to retain the lifetime of the name.
+    #[inline]
+    pub fn into_name(self) -> Option<T> {
+        match self {
+            NameOrOrdinal::Name(name) => Some(name),
+            NameOrOrdinal::Ordinal(_) => None,
+        }
+    }
+
+    /// The ordinal of the symbol, or `None` if it is identified by name.
+    #[inline]
+    pub fn ordinal(&self) -> Option<u16> {
+        match self {
+            NameOrOrdinal::Name(_) => None,
+            NameOrOrdinal::Ordinal(ordinal) => Some(*ordinal),
+        }
+    }
+}
+
+impl<T: AsRef<[u8]>> NameOrOrdinal<T> {
+    /// The name of the symbol, or `None` if it is identified by ordinal.
+    #[inline]
+    pub fn name(&self) -> Option<&[u8]> {
+        match self {
+            NameOrOrdinal::Name(name) => Some(name.as_ref()),
+            NameOrOrdinal::Ordinal(_) => None,
+        }
+    }
+
+    /// Borrow the name.
+    #[inline]
+    pub fn as_ref(&self) -> NameOrOrdinal<&[u8]> {
+        match self {
+            NameOrOrdinal::Name(name) => NameOrOrdinal::Name(name.as_ref()),
+            NameOrOrdinal::Ordinal(ordinal) => NameOrOrdinal::Ordinal(*ordinal),
+        }
     }
 }
 
@@ -712,15 +1022,32 @@ pub enum RelocationTarget {
 /// A relocation entry.
 ///
 /// Returned by [`Object::dynamic_relocations`] or [`ObjectSection::relocations`].
-#[derive(Debug)]
 pub struct Relocation {
     kind: RelocationKind,
     encoding: RelocationEncoding,
     size: u8,
     target: RelocationTarget,
+    subtractor: Option<SymbolIndex>,
     addend: i64,
     implicit_addend: bool,
     flags: RelocationFlags,
+}
+
+impl fmt::Debug for Relocation {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let mut s = f.debug_struct("Relocation");
+        s.field("kind", &self.kind)
+            .field("encoding", &self.encoding)
+            .field("size", &self.size)
+            .field("target", &self.target);
+        if let Some(subtractor) = self.subtractor {
+            s.field("subtractor", &subtractor);
+        }
+        s.field("addend", &self.addend)
+            .field("implicit_addend", &self.implicit_addend)
+            .field("flags", &self.flags)
+            .finish()
+    }
 }
 
 impl Relocation {
@@ -748,6 +1075,14 @@ impl Relocation {
     #[inline]
     pub fn target(&self) -> RelocationTarget {
         self.target
+    }
+
+    /// A subtractor symbol.
+    ///
+    /// The relocation calculation subtracts the value of this symbol, if any.
+    #[inline]
+    pub fn subtractor(&self) -> Option<SymbolIndex> {
+        self.subtractor
     }
 
     /// The addend to use in the relocation calculation.
@@ -821,6 +1156,7 @@ impl RelocationMap {
             addend: relocation.addend() as u64,
         };
         match relocation.kind() {
+            RelocationKind::None => return Ok(()),
             RelocationKind::Absolute => match relocation.target() {
                 RelocationTarget::Symbol(symbol_idx) => {
                     let symbol = file
@@ -845,6 +1181,9 @@ impl RelocationMap {
             _ => {
                 return Err(Error("Unsupported relocation type"));
             }
+        }
+        if relocation.encoding() != RelocationEncoding::Generic {
+            return Err(Error("Unsupported relocation encoding"));
         }
         if self.0.insert(offset, entry).is_some() {
             return Err(Error("Multiple relocations for offset"));
@@ -966,6 +1305,13 @@ impl<'data> CompressedData<'data> {
 
     /// Return the uncompressed data.
     ///
+    /// If decompression is required, this allocates [`Self::uncompressed_size`] bytes.
+    /// This is typically a value recorded in the file, and is not bounded, so check it
+    /// first if you need to bound it for untrusted files.
+    ///
+    /// Returns an error if the decompressed length does not equal
+    /// [`Self::uncompressed_size`].
+    ///
     /// Returns an error for invalid data or unsupported compression.
     /// This includes if the data is compressed but the `compression` feature
     /// for this crate is disabled.
@@ -974,8 +1320,8 @@ impl<'data> CompressedData<'data> {
             CompressionFormat::None => Ok(Cow::Borrowed(self.data)),
             #[cfg(feature = "compression")]
             CompressionFormat::Zlib | CompressionFormat::Zstandard => {
+                use alloc::vec::Vec;
                 use core::convert::TryInto;
-                use std::io::Read;
                 let size = self
                     .uncompressed_size
                     .try_into()
@@ -1000,30 +1346,11 @@ impl<'data> CompressedData<'data> {
                             .read_error("Invalid zlib compressed data")?;
                     }
                     CompressionFormat::Zstandard => {
-                        let mut input = self.data;
-                        while !input.is_empty() {
-                            let mut decoder = match ruzstd::decoding::StreamingDecoder::new(&mut input) {
-                                Ok(decoder) => decoder,
-                                Err(
-                                    ruzstd::decoding::errors::FrameDecoderError::ReadFrameHeaderError(
-                                        ruzstd::decoding::errors::ReadFrameHeaderError::SkipFrame {
-                                            length,
-                                            ..
-                                        },
-                                    ),
-                                ) => {
-                                    input = input
-                                        .get(length as usize..)
-                                        .read_error("Invalid zstd compressed data")?;
-                                    continue;
-                                }
-                                x => x.ok().read_error("Invalid zstd compressed data")?,
-                            };
-                            decoder
-                                .read_to_end(&mut decompressed)
-                                .ok()
-                                .read_error("Invalid zstd compressed data")?;
-                        }
+                        let mut decoder = ruzstd::decoding::FrameDecoder::new();
+                        decoder
+                            .decode_all_to_vec(self.data, &mut decompressed)
+                            .ok()
+                            .read_error("Invalid zstd compressed data")?;
                     }
                     _ => unreachable!(),
                 }

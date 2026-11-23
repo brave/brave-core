@@ -1,10 +1,9 @@
 use alloc::vec::Vec;
-use indexmap::IndexSet;
-use std::ops::{Deref, DerefMut};
+use core::ops::{Deref, DerefMut};
 
 use crate::common::{DebugAbbrevOffset, SectionId};
 use crate::constants;
-use crate::write::{Result, Section, Writer};
+use crate::write::{FnvIndexSet, Result, Section, Writer};
 
 /// A table of abbreviations that will be stored in a `.debug_abbrev` section.
 // Requirements:
@@ -13,7 +12,7 @@ use crate::write::{Result, Section, Writer};
 // - inserting a duplicate returns the code of the existing value
 #[derive(Debug, Default)]
 pub(crate) struct AbbreviationTable {
-    abbrevs: IndexSet<Abbreviation>,
+    abbrevs: FnvIndexSet<Abbreviation>,
 }
 
 impl AbbreviationTable {
@@ -82,20 +81,37 @@ impl Abbreviation {
 pub(crate) struct AttributeSpecification {
     name: constants::DwAt,
     form: constants::DwForm,
+    implicit_const_value: i64,
 }
 
 impl AttributeSpecification {
     /// Construct a new `AttributeSpecification`.
     #[inline]
-    pub fn new(name: constants::DwAt, form: constants::DwForm) -> AttributeSpecification {
-        AttributeSpecification { name, form }
+    pub fn new(
+        name: constants::DwAt,
+        form: constants::DwForm,
+        implicit_const_value: Option<i64>,
+    ) -> AttributeSpecification {
+        debug_assert_eq!(
+            form == constants::DW_FORM_implicit_const,
+            implicit_const_value.is_some()
+        );
+        AttributeSpecification {
+            name,
+            form,
+            implicit_const_value: implicit_const_value.unwrap_or(0),
+        }
     }
 
     /// Write the attribute specification to the `.debug_abbrev` section.
     #[inline]
     pub fn write<W: Writer>(&self, w: &mut DebugAbbrev<W>) -> Result<()> {
         w.write_uleb128(self.name.0.into())?;
-        w.write_uleb128(self.form.0.into())
+        w.write_uleb128(self.form.0.into())?;
+        if self.form == constants::DW_FORM_implicit_const {
+            w.write_sleb128(self.implicit_const_value)?;
+        }
+        Ok(())
     }
 }
 
@@ -109,10 +125,10 @@ define_section!(
 #[cfg(feature = "read")]
 mod tests {
     use super::*;
+    use crate::LittleEndian;
     use crate::constants;
     use crate::read;
     use crate::write::EndianVec;
-    use crate::LittleEndian;
 
     #[test]
     fn test_abbreviation_table() {
@@ -123,14 +139,23 @@ mod tests {
             vec![AttributeSpecification::new(
                 constants::DW_AT_name,
                 constants::DW_FORM_string,
+                None,
             )],
         );
         let abbrev2 = Abbreviation::new(
             constants::DW_TAG_compile_unit,
             true,
             vec![
-                AttributeSpecification::new(constants::DW_AT_producer, constants::DW_FORM_strp),
-                AttributeSpecification::new(constants::DW_AT_language, constants::DW_FORM_data2),
+                AttributeSpecification::new(
+                    constants::DW_AT_producer,
+                    constants::DW_FORM_strp,
+                    None,
+                ),
+                AttributeSpecification::new(
+                    constants::DW_AT_language,
+                    constants::DW_FORM_data2,
+                    None,
+                ),
             ],
         );
         let code1 = abbrevs.add(abbrev1.clone());

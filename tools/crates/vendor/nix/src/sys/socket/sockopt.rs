@@ -6,7 +6,7 @@ use crate::sys::time::TimeVal;
 use crate::{errno::Errno, Result};
 use cfg_if::cfg_if;
 use libc::{self, c_int, c_void, socklen_t};
-#[cfg(apple_targets)]
+#[cfg(target_os = "macos")]
 use std::ffi::CString;
 use std::ffi::{CStr, OsStr, OsString};
 use std::mem::{self, MaybeUninit};
@@ -563,6 +563,7 @@ sockopt_impl!(
 );
 #[cfg(linux_android)]
 #[cfg(feature = "net")]
+#[cfg(not(target_env = "uclibc"))]
 sockopt_impl!(
     #[cfg_attr(docsrs, doc(cfg(feature = "net")))]
     /// If enabled, the kernel will not reserve an ephemeral port when binding
@@ -1120,7 +1121,7 @@ sockopt_impl!(
     libc::IP_ORIGDSTADDR,
     bool
 );
-#[cfg(target_os = "linux")]
+#[cfg(linux_android)]
 #[cfg(feature = "net")]
 sockopt_impl!(
     #[cfg_attr(docsrs, doc(cfg(feature = "net")))]
@@ -1132,7 +1133,7 @@ sockopt_impl!(
     libc::UDP_SEGMENT,
     libc::c_int
 );
-#[cfg(target_os = "linux")]
+#[cfg(linux_android)]
 #[cfg(feature = "net")]
 sockopt_impl!(
     #[cfg_attr(docsrs, doc(cfg(feature = "net")))]
@@ -1243,7 +1244,10 @@ sockopt_impl!(
     libc::IPV6_RECVHOPLIMIT,
     bool
 );
-#[cfg(any(linux_android, target_os = "freebsd"))]
+#[cfg(any(
+    all(linux_android, not(target_env = "uclibc")),
+    target_os = "freebsd"
+))]
 #[cfg(feature = "net")]
 sockopt_impl!(
     #[cfg_attr(docsrs, doc(cfg(feature = "net")))]
@@ -1264,7 +1268,10 @@ sockopt_impl!(
     libc::IP_DONTFRAG,
     bool
 );
-#[cfg(any(linux_android, apple_targets))]
+#[cfg(any(
+    all(linux_android, not(target_env = "uclibc")),
+    apple_targets
+))]
 sockopt_impl!(
     /// Set "don't fragment packet" flag on the IPv6 packet.
     Ipv6DontFrag,
@@ -1273,7 +1280,7 @@ sockopt_impl!(
     libc::IPV6_DONTFRAG,
     bool
 );
-#[cfg(apple_targets)]
+#[cfg(target_os = "macos")]
 #[cfg(feature = "net")]
 sockopt_impl!(
     /// Get the utun interface name.
@@ -1955,7 +1962,7 @@ pub struct SetOsString<'a> {
 
 #[cfg(any(target_os = "freebsd", linux_android, target_os = "illumos"))]
 impl<'a> Set<'a, OsString> for SetOsString<'a> {
-    fn new(val: &OsString) -> SetOsString {
+    fn new(val: &OsString) -> SetOsString<'_> {
         SetOsString {
             val: val.as_os_str(),
         }
@@ -1971,13 +1978,15 @@ impl<'a> Set<'a, OsString> for SetOsString<'a> {
 }
 
 /// Getter for a `CString` value.
-#[cfg(apple_targets)]
+#[cfg(target_os = "macos")]
+#[cfg(feature = "net")]
 struct GetCString<T: AsMut<[u8]>> {
     len: socklen_t,
     val: MaybeUninit<T>,
 }
 
-#[cfg(apple_targets)]
+#[cfg(target_os = "macos")]
+#[cfg(feature = "net")]
 impl<T: AsMut<[u8]>> Get<CString> for GetCString<T> {
     fn uninit() -> Self {
         GetCString {

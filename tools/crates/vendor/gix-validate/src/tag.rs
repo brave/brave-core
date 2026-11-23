@@ -5,31 +5,51 @@ pub mod name {
     use bstr::BString;
 
     /// The error returned by [`name()`][super::name()].
-    #[derive(Debug, thiserror::Error)]
-    #[allow(missing_docs)]
+    #[derive(Debug)]
+    #[expect(missing_docs)]
+    #[non_exhaustive]
     pub enum Error {
-        #[error("A ref must not contain invalid bytes or ascii control characters: {byte:?}")]
         InvalidByte { byte: BString },
-        #[error("A reference name must not start with a slash '/'")]
         StartsWithSlash,
-        #[error("Multiple slashes in a row are not allowed as they may change the reference's meaning")]
         RepeatedSlash,
-        #[error("A ref must not contain '..' as it may be mistaken for a range")]
         RepeatedDot,
-        #[error("A ref must not end with '.lock'")]
         LockFileSuffix,
-        #[error("A ref must not contain '@{{' which is a part of a ref-log")]
         ReflogPortion,
-        #[error("A ref must not contain '*' character")]
         Asterisk,
-        #[error("A ref must not start with a '.'")]
         StartsWithDot,
-        #[error("A ref must not end with a '.'")]
         EndsWithDot,
-        #[error("A ref must not end with a '/'")]
         EndsWithSlash,
-        #[error("A ref must not be empty")]
         Empty,
+    }
+
+    impl std::fmt::Display for Error {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            match self {
+                Error::InvalidByte { byte } => write!(
+                    f,
+                    "A ref must not contain invalid bytes or ascii control characters: {byte:?}"
+                ),
+                Error::StartsWithSlash => write!(f, "A reference name must not start with a slash '/'"),
+                Error::RepeatedSlash => write!(
+                    f,
+                    "Multiple slashes in a row are not allowed as they may change the reference's meaning"
+                ),
+                Error::RepeatedDot => write!(f, "A ref must not contain '..' as it may be mistaken for a range"),
+                Error::LockFileSuffix => write!(f, "A ref must not end with '.lock'"),
+                Error::ReflogPortion => write!(f, "A ref must not contain '@{{' which is a part of a ref-log"),
+                Error::Asterisk => write!(f, "A ref must not contain '*' character"),
+                Error::StartsWithDot => write!(f, "A ref must not start with a '.'"),
+                Error::EndsWithDot => write!(f, "A ref must not end with a '.'"),
+                Error::EndsWithSlash => write!(f, "A ref must not end with a '/'"),
+                Error::Empty => write!(f, "A ref must not be empty"),
+            }
+        }
+    }
+
+    impl std::error::Error for Error {
+        fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+            Some(const { &gix_error::ClassificationMarker::VALIDATION })
+        }
     }
 }
 
@@ -50,12 +70,15 @@ pub(crate) enum Mode {
     Validate,
 }
 
+/// Validate or sanitize `input` according to `mode`.
+///
+/// Validation returns `Ok(None)` when `input` is valid, while sanitization returns the rebuilt name
+/// in `Ok(Some(_))` even if it is identical to `input`. An error means validation failed.
 pub(crate) fn name_inner(input: &BStr, mode: Mode) -> Result<Option<BString>, name::Error> {
     let mut out: Option<BString> =
         matches!(mode, Mode::Sanitize).then(|| BString::from(Vec::with_capacity(input.len())));
     if input.is_empty() {
-        return if let Some(mut out) = out {
-            out.push(b'-');
+        return if let Some(out) = out {
             Ok(Some(out))
         } else {
             Err(name::Error::Empty)
@@ -133,7 +156,8 @@ pub(crate) fn name_inner(input: &BStr, mode: Mode) -> Result<Option<BString>, na
                 }
 
                 if let Some(out) = out.as_mut() {
-                    out.push(*c);
+                    // Like Git, replace the leading dot before stripping lock suffixes, preserving the component.
+                    out.push(if byte_pos == 0 && *c == b'.' { b'-' } else { *c });
                 }
 
                 if byte_pos == last && input[component_end + 1..].ends_with_str(".lock") {
@@ -159,15 +183,14 @@ pub(crate) fn name_inner(input: &BStr, mode: Mode) -> Result<Option<BString>, na
             out.remove(0);
         }
     }
-    if out.as_ref().map_or(input, |b| b.as_bstr())[0] == b'.' {
+    if out.as_ref().map_or(input, |b| b.as_bstr()).first() == Some(&b'.') {
         if let Some(out) = out.as_mut() {
             out[0] = b'-';
         } else {
             return Err(name::Error::StartsWithDot);
         }
     }
-    let last = out.as_ref().map_or(input, |b| b.as_bstr()).len() - 1;
-    if out.as_ref().map_or(input, |b| b.as_bstr())[last] == b'.' {
+    if out.as_ref().map_or(input, |b| b.as_bstr()).last() == Some(&b'.') {
         if let Some(out) = out.as_mut() {
             let last = out.len() - 1;
             out[last] = b'-';

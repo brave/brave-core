@@ -275,3 +275,43 @@ pub fn generic_associated_item2() {
 
     assert_eq!(common_map_associated(), defs);
 }
+
+#[test]
+pub fn generic_enum_with_predicate_bound_referencing_filtered_param() {
+    #[allow(unused)]
+    #[derive(borsh::BorshSchema)]
+    enum Parametrized<T, U>
+    where
+        T: From<U>,
+    {
+        V1(T),
+        V2(U),
+    }
+
+    assert_eq!(
+        "Parametrized<u64, u32>".to_string(),
+        <Parametrized<u64, u32>>::declaration()
+    );
+    let mut defs = Default::default();
+    <Parametrized<u64, u32>>::add_definitions_recursively(&mut defs);
+    assert_eq!(
+        schema_map! {
+            "Parametrized<u64, u32>" => Definition::Enum {
+                tag_width: 1,
+                variants: vec![
+                    (0, "V1".to_string(), "Parametrized__V1<u64>".to_string()),
+                    (1, "V2".to_string(), "Parametrized__V2<u32>".to_string()),
+                ],
+            },
+            "Parametrized__V1<u64>" => Definition::Struct {
+                fields: Fields::UnnamedFields(vec!["u64".to_string()])
+            },
+            "Parametrized__V2<u32>" => Definition::Struct {
+                fields: Fields::UnnamedFields(vec!["u32".to_string()])
+            },
+            "u64" => Definition::Primitive(8),
+            "u32" => Definition::Primitive(4)
+        },
+        defs
+    );
+}

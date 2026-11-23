@@ -3,7 +3,7 @@
 //!
 //! - Use [`tempfile()`] when you need a real [`std::fs::File`] but don't need to refer to it
 //!   by-path.
-//! - Use [`NamedTempFile::new()`] when you need a _named_ temporary file that can be refered to its
+//! - Use [`NamedTempFile::new()`] when you need a _named_ temporary file that can be referred to its
 //!   path.
 //! - Use [`tempdir()`] when you need a temporary directory that will be recursively deleted on drop.
 //! - Use [`spooled_tempfile()`] when you need an in-memory buffer that will ultimately be backed by

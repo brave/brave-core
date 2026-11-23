@@ -1,7 +1,7 @@
 //! Privileges Required (MPR)
 
 use crate::{
-    Error, Result,
+    Error,
     v4::metric::{Metric, MetricType},
 };
 use alloc::borrow::ToOwned;
@@ -18,11 +18,12 @@ use core::{fmt, str::FromStr};
 /// > self-service provisioned accounts do not constitute a privilege
 /// > requirement if the attacker can grant themselves privileges as part of the
 /// > attack.
-#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+#[derive(Copy, Clone, Debug, Default, Eq, PartialEq, PartialOrd, Ord)]
 pub enum ModifiedPrivilegesRequired {
     /// Not Defined (X)
     ///
     /// > The metric has not been evaluated.
+    #[default]
     NotDefined,
 
     /// High (H)
@@ -48,21 +49,15 @@ pub enum ModifiedPrivilegesRequired {
     None,
 }
 
-impl Default for ModifiedPrivilegesRequired {
-    fn default() -> Self {
-        Self::NotDefined
-    }
-}
-
 impl Metric for ModifiedPrivilegesRequired {
     const TYPE: MetricType = MetricType::MPR;
 
     fn as_str(self) -> &'static str {
         match self {
-            ModifiedPrivilegesRequired::NotDefined => "X",
-            ModifiedPrivilegesRequired::None => "N",
-            ModifiedPrivilegesRequired::Low => "L",
-            ModifiedPrivilegesRequired::High => "H",
+            Self::NotDefined => "X",
+            Self::None => "N",
+            Self::Low => "L",
+            Self::High => "H",
         }
     }
 }
@@ -76,12 +71,12 @@ impl fmt::Display for ModifiedPrivilegesRequired {
 impl FromStr for ModifiedPrivilegesRequired {
     type Err = Error;
 
-    fn from_str(s: &str) -> Result<Self> {
+    fn from_str(s: &str) -> Result<Self, Error> {
         match s {
-            "X" => Ok(ModifiedPrivilegesRequired::NotDefined),
-            "N" => Ok(ModifiedPrivilegesRequired::None),
-            "L" => Ok(ModifiedPrivilegesRequired::Low),
-            "H" => Ok(ModifiedPrivilegesRequired::High),
+            "X" => Ok(Self::NotDefined),
+            "N" => Ok(Self::None),
+            "L" => Ok(Self::Low),
+            "H" => Ok(Self::High),
             _ => Err(Error::InvalidMetricV4 {
                 metric_type: Self::TYPE,
                 value: s.to_owned(),

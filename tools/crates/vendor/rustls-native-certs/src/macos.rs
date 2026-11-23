@@ -14,7 +14,7 @@ pub fn load_native_certs() -> CertificateResult {
     //
     // So we collect the certificates in this order; as a map of
     // their DER encoding to what we'll do with them.  We don't
-    // overwrite existing elements, which mean User settings
+    // overwrite existing elements, which means User settings
     // trump Admin trump System, as desired.
 
     let mut result = CertificateResult::default();
@@ -40,11 +40,11 @@ pub fn load_native_certs() -> CertificateResult {
             let der = cert.to_der();
 
             // If there are no specific trust settings, the default
-            // is to trust the certificate as a root cert.  Weird API but OK.
+            // is to trust the certificate as a root cert. Weird API but OK.
             // The docs say:
             //
-            // "Note that an empty Trust Settings array means "always trust this cert,
-            //  with a resulting kSecTrustSettingsResult of kSecTrustSettingsResultTrustRoot".
+            // "Note that an empty Trust Settings array means 'always trust this cert,
+            //  with a resulting kSecTrustSettingsResult of kSecTrustSettingsResultTrustRoot'."
             let trusted = match ts.tls_trust_settings_for_certificate(&cert) {
                 Ok(trusted) => trusted.unwrap_or(TrustSettingsForCertificate::TrustRoot),
                 Err(err) => {

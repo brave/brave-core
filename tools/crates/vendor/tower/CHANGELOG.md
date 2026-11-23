@@ -5,12 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+# 0.5.3
+
+### Added
+
+- **builder**: Add `ServiceBuilder::boxed_clone_sync()` helper ([#804])
+
+### Fixed
+
+- **retry**: Check that supplied jitter is not NaN ([#843])
+
+[#804]: https://github.com/tower-rs/tower/pull/804
+[#843]: https://github.com/tower-rs/tower/pull/843
+
 # 0.5.2
 
 ### Added
 
 - **util**: Add `BoxCloneSyncService` which is a `Clone + Send + Sync` boxed `Service` ([#777])
 - **util**: Add `BoxCloneSyncServiceLayer` which is a `Clone + Send + Sync` boxed `Layer` ([802])
+
+[#777]: https://github.com/tower-rs/tower/pull/777
+[#802]: https://github.com/tower-rs/tower/pull/802
 
 # 0.5.1
 
@@ -34,7 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   increases the flexibility of the retry policy. To update, update your method signature to include `mut` for both parameters. ([#584])
 - **retry**: **Breaking Change** Change Policy to accept &mut self ([#681])
 - **retry**: Add generic backoff utilities ([#685])
-- **retry**: Add Budget trait. This allows end-users to implement their own budget and bucket implementations. ([#703])
+- **retry**: **Breaking Change** `Budget` is now a trait. This allows end-users to implement their own budget and bucket implementations. ([#703])
 - **reconnect**: **Breaking Change** Remove unused generic parameter from `Reconnect::new` ([#755])
 - **ready-cache**: Allow iteration over ready services ([#700])
 - **discover**: Implement `Clone` for Change ([#701])
@@ -43,6 +59,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **filter**: Derive `Clone` for `AsyncFilterLayer` ([#731])
 - **general**: Update IndexMap ([#741])
 - **MSRV**: Increase MSRV to 1.63.0 ([#741])
+- **util**: **Breaking Change** `Either::A` and `Either::B` have been renamed `Either::Left` and `Either::Right`, respectively. ([#637])
+- **util**: **Breaking Change** `Either` now requires its two services to have the same error type. ([#637])
+- **util**: **Breaking Change** `Either` no longer implemenmts `Future`. ([#637])
+- **buffer**: **Breaking Change** `Buffer<S, Request>` is now generic over `Buffer<Request, S::Future>.` ([#654])
+- **buffer**: **Breaking Change** `Buffer`'s capacity now correctly matches the specified size. Previously, the
+  capacity was subtly off-by-one, because a slot was held even while the worker task was processing a message. ([#635])
 
 [#702]: https://github.com/tower-rs/tower/pull/702
 [#652]: https://github.com/tower-rs/tower/pull/652
@@ -57,6 +79,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [#716]: https://github.com/tower-rs/tower/pull/716
 [#731]: https://github.com/tower-rs/tower/pull/731
 [#741]: https://github.com/tower-rs/tower/pull/741
+[#637]: https://github.com/tower-rs/tower/pull/637
+[#654]: https://github.com/tower-rs/tower/pull/654
+[#635]: https://github.com/tower-rs/tower/pull/635
 
 # 0.4.12 (February 16, 2022)
 
