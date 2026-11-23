@@ -3,28 +3,77 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/ui/webui/custom_profile_image/buildflags/buildflags.gni")
+import("//build/config/ui.gni")
+import("//extensions/buildflags/buildflags.gni")
 
-assert(enable_brave_custom_profile_image_webui)
-
-source_set("browser_tests") {
-  testonly = true
-  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
-  sources = [ "profile_customization_file_chooser_browsertest.cc" ]
+source_set("profiles") {
+  sources = []
+  public_deps = [ "//base" ]
   deps = [
-    "//base",
-    "//base/test:test_support",
-    "//brave/browser/ui/webui/custom_profile_image",
-    "//chrome/browser/ui/signin",
-    "//chrome/browser/ui/webui/signin:signin_utils",
-    "//chrome/common",
-    "//chrome/test:test_support",
-    "//content/public/browser",
-    "//content/public/common",
-    "//content/test:test_support",
-    "//testing/gtest",
-    "//ui/events",
-    "//ui/shell_dialogs",
-    "//ui/shell_dialogs:test_support",
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/app/vector_icons",
+    "//brave/components/vector_icons",
+    "//chrome/browser/ui:ui_features",
+    "//chrome/browser/ui/profiles",
   ]
+
+  if (is_win || is_mac || is_linux) {
+    sources += [
+      "brave_incognito_menu_view.cc",
+      "brave_incognito_menu_view.h",
+      "brave_profile_menu_view.cc",
+      "brave_profile_menu_view.h",
+    ]
+
+    deps += [
+      "//brave/browser/profiles:util",
+      "//brave/components/tor/buildflags",
+      "//chrome/browser/ui/views/profiles:incognito_menu_view",
+      "//chrome/browser/ui/views/profiles:profile_menu_view",
+    ]
+
+    if (enable_tor) {
+      deps += [ "//brave/browser/tor" ]
+    }
+  }
+
+  if (enable_extensions && toolkit_views) {
+    sources += [
+      "brave_avatar_toolbar_button.cc",
+      "brave_avatar_toolbar_button.h",
+    ]
+    public_deps +=
+        [ "//chrome/browser/ui/views/profiles:avatar_toolbar_button" ]
+    deps += [
+      "//brave/browser/ui:ui_features",
+      "//brave/ui/color:nala_color_id",
+      "//chrome/browser/ui/color:mixers",
+    ]
+  }
+}
+
+if (enable_brave_custom_profile_image_webui) {
+  source_set("browser_tests") {
+    testonly = true
+    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+    sources = [ "profile_customization_file_chooser_browsertest.cc" ]
+    deps = [
+      "//base",
+      "//base/test:test_support",
+      "//brave/browser/ui/webui/custom_profile_image",
+      "//chrome/browser/ui/signin",
+      "//chrome/browser/ui/webui/signin:signin_utils",
+      "//chrome/common",
+      "//chrome/test:test_support",
+      "//content/public/browser",
+      "//content/public/common",
+      "//content/test:test_support",
+      "//testing/gtest",
+      "//ui/events",
+      "//ui/shell_dialogs",
+      "//ui/shell_dialogs:test_support",
+    ]
+  }
 }
