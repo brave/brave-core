@@ -18,6 +18,7 @@
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/public/before_unload_ignore_controller.h"
 #include "brave/browser/ui/tabs/public/closing_last_tab_controller.h"
+#include "brave/browser/ui/tabs/public/pinned_tab_reset_controller.h"
 #include "brave/browser/ui/tabs/public/tab_cycling_controller.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/tabs/tree_tab_session_manager.h"
@@ -112,6 +113,13 @@ void BraveBrowserWindowFeatures::Init() {
   closing_last_tab_controller_ =
       GetUserDataFactory().CreateInstance<ClosingLastTabController>(*browser_,
                                                                     *browser_);
+
+  if (base::FeatureList::IsEnabled(tabs::kBravePinnedTabReset) &&
+      browser_->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL) {
+    pinned_tab_reset_controller_ =
+        GetUserDataFactory().CreateInstance<PinnedTabResetController>(
+            *browser_, *browser_);
+  }
 
   before_unload_ignore_controller_ =
       GetUserDataFactory().CreateInstance<BeforeUnloadIgnoreController>(

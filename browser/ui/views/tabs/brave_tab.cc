@@ -14,6 +14,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/containers/container_model.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/public/pinned_tab_reset_controller.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
@@ -227,6 +228,12 @@ bool BraveTab::IsHovering() const {
   // Upstream gives true when the tab is in split tab and another tab is
   // hovered. But, we only want to show hover effect for currently hovered tab.
   return mouse_hovered_;
+}
+
+bool BraveTab::OnMousePressed(const ui::MouseEvent& event) {
+  const bool handled = Tab::OnMousePressed(event);
+  pinned_tab_reset::MaybeResetOnMousePressed(tab_handle().Get(), event);
+  return handled;
 }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)

@@ -23,6 +23,7 @@ class BraveShieldsUIContentsCache;
 class BraveVPNController;
 class BrowserWindowInterface;
 class ClosingLastTabController;
+class PinnedTabResetController;
 class PlaylistSidePanelCoordinator;
 class ShieldsHelpBubbleController;
 class TabCyclingController;
@@ -113,6 +114,8 @@ class BraveBrowserWindowFeatures {
       window_closing_confirm_controller_;
 
   std::unique_ptr<ClosingLastTabController> closing_last_tab_controller_;
+
+  std::unique_ptr<PinnedTabResetController> pinned_tab_reset_controller_;
 
   std::unique_ptr<BeforeUnloadIgnoreController>
       before_unload_ignore_controller_;

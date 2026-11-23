@@ -666,6 +666,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
           FEATURE_VALUE_TYPE(tabs::kBraveSharedPinnedTabs),                   \
       },                                                                      \
       {                                                                       \
+          "brave-pinned-tab-reset",                                           \
+          "Reset pinned tabs",                                                \
+          "Closing a pinned tab with the keyboard shortcut resets it to the " \
+          "URL it was pinned with instead of closing it. Double-clicking a "  \
+          "pinned tab also resets it.",                                       \
+          kOsWin | kOsMac | kOsLinux,                                         \
+          FEATURE_VALUE_TYPE(tabs::kBravePinnedTabReset),                     \
+      },                                                                      \
+      {                                                                       \
           "brave-horizontal-tabs-update",                                     \
           "Updated horizontal tabs design",                                   \
           "Updates the look and feel or horizontal tabs",                     \

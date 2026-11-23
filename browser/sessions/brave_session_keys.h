@@ -23,4 +23,7 @@ inline constexpr char kBraveTreeParentNodeIdKey[] = "brave_tree_parent_node_id";
 inline constexpr char kBraveTreeNodeCollapsedKey[] =
     "brave_tree_node_collapsed";
 
+// The URL a pinned tab is reset to. An empty string means the tab has none.
+inline constexpr char kBravePinnedTabUrlKey[] = "brave_pinned_tab_url";
+
 #endif  // BRAVE_BROWSER_SESSIONS_BRAVE_SESSION_KEYS_H_

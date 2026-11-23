@@ -5,7 +5,10 @@
 
 #include "chrome/browser/ui/tabs/pinned_tab_codec.h"
 
+#include <optional>
+
 #include "brave/components/containers/buildflags/buildflags.h"
+#include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/containers/container_specifier_utils.h"
@@ -29,6 +32,13 @@ bool IsWebPanelTab(BrowserWindowInterface* browser,
 
 }  // namespace sidebar
 
+namespace pinned_tab_reset {
+
+// The URL the tab was pinned with, if the pinned tab reset feature is on.
+std::optional<GURL> GetPinnedUrl(const content::WebContents* contents);
+
+}  // namespace pinned_tab_reset
+
 namespace {
 
 bool BraveShouldSkipPinnedTab(BrowserWindowInterface* browser,
@@ -38,6 +48,11 @@ bool BraveShouldSkipPinnedTab(BrowserWindowInterface* browser,
 
 void BraveModifyEncodedPinnedTab(content::WebContents* web_contents,
                                  base::Value& value) {
+  // The next launch opens the tab at the URL it was pinned with, rather than
+  // wherever it navigated to.
+  if (const auto pinned_url = pinned_tab_reset::GetPinnedUrl(web_contents)) {
+    value.GetDict().Set("url", pinned_url->spec());
+  }
 #if BUILDFLAG(ENABLE_CONTAINERS)
   containers::SerializeContainerSpecifier(web_contents, value);
 #endif

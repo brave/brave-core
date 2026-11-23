@@ -18,6 +18,15 @@
 #include "content/public/browser/web_contents.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
+namespace pinned_tab_reset {
+
+void MaybeRestoreFromExtraData(
+    BrowserWindowInterface* browser,
+    content::WebContents* restored_contents,
+    const std::map<std::string, std::string>& extra_data);
+
+}  // namespace pinned_tab_reset
+
 namespace {
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
@@ -49,6 +58,9 @@ content::WebContents* MaybeRestoreTabTreeHierarchy(
     BrowserWindowInterface* browser,
     content::WebContents* restored_web_contents,
     const std::map<std::string, std::string>& extra_data) {
+  // Also restores the URL of a pinned tab.
+  pinned_tab_reset::MaybeRestoreFromExtraData(browser, restored_web_contents,
+                                              extra_data);
   if (auto* tree_tab_session_manager = TreeTabSessionManager::From(browser)) {
     // tree tab session manager is only available when the browser is normal
     // browser.

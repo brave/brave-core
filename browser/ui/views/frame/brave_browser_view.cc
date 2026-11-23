@@ -28,6 +28,7 @@
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/public/pinned_tab_reset_controller.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/frame/focus_mode_title_bar_view.h"
@@ -979,6 +980,15 @@ bool BraveBrowserView::UpdateToolbarSecurityState() {
 }
 
 bool BraveBrowserView::AcceleratorPressed(const ui::Accelerator& accelerator) {
+  if (base::FeatureList::IsEnabled(tabs::kBravePinnedTabReset)) {
+    if (int command_id; FindCommandIdForAccelerator(accelerator, &command_id) &&
+                        command_id == IDC_CLOSE_TAB) {
+      auto* controller = PinnedTabResetController::From(browser());
+      if (controller && controller->HandleCloseTabShortcut()) {
+        return true;
+      }
+    }
+  }
   if (base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs) &&
       browser()->GetProfile()->GetPrefs()->GetBoolean(
           brave_tabs::kSharedPinnedTab)) {

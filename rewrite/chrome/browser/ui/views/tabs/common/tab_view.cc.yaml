@@ -18,3 +18,11 @@ substitutions:
       function_name: TabView::UpdateColors
       code: |2-
         UpdateTreeToggleButton();
+
+  - description: |-
+      Reset a pinned tab to its pinned URL when it's double-clicked.
+    preempt_function_impl:
+      function_name: TabView::OnMousePressed
+      code: |2-
+        pinned_tab_reset::MaybeResetOnMousePressed(
+            const_cast<tabs::TabInterface*>(GetTabInterface()), event);
