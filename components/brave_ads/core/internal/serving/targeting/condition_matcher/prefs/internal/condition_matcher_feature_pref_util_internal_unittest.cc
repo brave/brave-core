@@ -7,6 +7,7 @@
 
 #include "base/feature_list.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 
@@ -33,7 +34,8 @@ TEST_F(BraveAdsConditionMatcherFeaturePrefUtilInternalTest,
 
   // Assert
   ASSERT_TRUE(feature_dict);
-  EXPECT_EQ("1", *feature_dict->GetDict().FindString("is_overridden"));
+  EXPECT_EQ(base::test::ParseJsonDict(R"JSON({"is_overridden": "1"})JSON"),
+            feature_dict->GetDict());
 }
 
 TEST_F(BraveAdsConditionMatcherFeaturePrefUtilInternalTest,
@@ -44,7 +46,8 @@ TEST_F(BraveAdsConditionMatcherFeaturePrefUtilInternalTest,
 
   // Assert
   ASSERT_TRUE(feature_dict);
-  EXPECT_EQ("0", *feature_dict->GetDict().FindString("is_overridden"));
+  EXPECT_EQ(base::test::ParseJsonDict(R"JSON({"is_overridden": "0"})JSON"),
+            feature_dict->GetDict());
 }
 
 TEST_F(BraveAdsConditionMatcherFeaturePrefUtilInternalTest,
@@ -60,9 +63,9 @@ TEST_F(BraveAdsConditionMatcherFeaturePrefUtilInternalTest,
 
   // Assert
   ASSERT_TRUE(feature_dict);
-  const auto* const params_dict = feature_dict->GetDict().FindDict("params");
-  ASSERT_TRUE(params_dict);
-  EXPECT_EQ("bar", *params_dict->FindString("foo"));
+  EXPECT_EQ(base::test::ParseJsonDict(R"JSON(
+                {"is_overridden": "1", "params": {"foo": "bar"}})JSON"),
+            feature_dict->GetDict());
 }
 
 TEST_F(BraveAdsConditionMatcherFeaturePrefUtilInternalTest,
