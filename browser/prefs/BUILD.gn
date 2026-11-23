@@ -3,28 +3,56 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-assert(!is_android)
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 
-source_set("unit_tests") {
-  testonly = true
+source_set("prefs") {
+  sources = [
+    "brave_pref_service_incognito_allowlist.cc",
+    "brave_pref_service_incognito_allowlist.h",
+  ]
 
-  sources = [ "brave_browser_prefs_unittest.cc" ]
+  public_deps = [ "//base" ]
 
   deps = [
-    "//base",
-    "//brave/browser",
-    "//brave/browser/ui",
+    "//brave/browser/ui:brave_tab_prefs",
+    "//brave/browser/ui/bookmark:brave_bookmark_prefs",
+    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/constants",
-    "//chrome/browser:browser_process",
-    "//chrome/browser/prefs",
-    "//chrome/browser/profiles:profile_util",
-    "//chrome/browser/profiles:profiles_extra_parts",
-    "//chrome/browser/ui/toolbar",
-    "//chrome/common",
-    "//chrome/test:test_support",
-    "//components/prefs",
-    "//components/sync_preferences:test_support",
-    "//content/test:test_support",
-    "//testing/gtest",
+    "//chrome/common:constants",
   ]
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/core/common" ]
+  }
+
+  if (enable_brave_wallet) {
+    deps += [ "//brave/components/brave_wallet/browser:pref_names" ]
+  }
+}
+
+if (!is_android) {
+  source_set("unit_tests") {
+    testonly = true
+
+    sources = [ "brave_browser_prefs_unittest.cc" ]
+
+    deps = [
+      "//base",
+      "//brave/browser",
+      "//brave/browser/ui",
+      "//brave/components/constants",
+      "//chrome/browser:browser_process",
+      "//chrome/browser/prefs",
+      "//chrome/browser/profiles:profile_util",
+      "//chrome/browser/profiles:profiles_extra_parts",
+      "//chrome/browser/ui/toolbar",
+      "//chrome/common",
+      "//chrome/test:test_support",
+      "//components/prefs",
+      "//components/sync_preferences:test_support",
+      "//content/test:test_support",
+      "//testing/gtest",
+    ]
+  }
 }

@@ -81,8 +81,6 @@ brave_chrome_browser_sources = [
   "//brave/browser/brave_tab_helpers.cc",
   "//brave/browser/browser_context_keyed_service_factories.cc",
   "//brave/browser/browser_context_keyed_service_factories.h",
-  "//brave/browser/prefs/brave_pref_service_incognito_allowlist.cc",
-  "//brave/browser/prefs/brave_pref_service_incognito_allowlist.h",
   "//brave/browser/update_util.cc",
   "//brave/browser/update_util.h",
 ]
