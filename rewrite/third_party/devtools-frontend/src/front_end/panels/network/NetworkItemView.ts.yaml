@@ -5,9 +5,22 @@
 
 substitutions:
   - description: |-
+      Offer the Adblock tab among the request's tabs.
+
+      Upstream shows its first tab in place of a selected tab it doesn't
+      offer, and remembers the selection for the next request only through
+      the same check.
+    regex:
+      re_pattern: '(const availableTabs = new Set<[^>]*>\(\[.*?\]\);)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+            availableTabs.add(ADBLOCK_TAB_ID);
+  - description: |-
       Replace `NetworkItemView` with Brave's subclass.
 
-      The subclass adds the Adblock tab to a request's details.
+      The subclass adds the Adblock tab to a request's details, rendering it
+      next to the tabs of upstream's default view.
     add_at_end_of_the_file:
       code: |-
-        import { PatchNetworkItemView } from './NetworkItemView.patch.js'; (NetworkItemView as any) = PatchNetworkItemView(NetworkItemView);
+        import { ADBLOCK_TAB_ID, PatchNetworkItemView } from './NetworkItemView.patch.js'; (NetworkItemView as any) = PatchNetworkItemView(NetworkItemView, DEFAULT_VIEW);
