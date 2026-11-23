@@ -31,9 +31,7 @@ class BravePsstDialogHandler : public psst::mojom::PsstConsentHelper,
       content::WebContents* initiator_web_contents,
       BravePsstDialogUI* dialog_ui,
       mojo::PendingReceiver<psst::mojom::PsstConsentHelper> pending_receiver,
-      mojo::PendingRemote<psst::mojom::PsstConsentDialog> client_page,
-      psst::mojom::PsstConsentFactory::CreatePsstConsentHandlerCallback
-          callback);
+      mojo::PendingRemote<psst::mojom::PsstConsentDialog> client_page);
 
   BravePsstDialogHandler() = delete;
   BravePsstDialogHandler(const BravePsstDialogHandler&) = delete;
@@ -43,6 +41,7 @@ class BravePsstDialogHandler : public psst::mojom::PsstConsentHelper,
 
  private:
   friend class PsstTabWebContentsObserverBrowserTest;
+  void GetSettingCardData(GetSettingCardDataCallback callback) override;
   void PerformPrivacyTuning(
       const std::vector<std::string>& perform_for_uids) override;
   void ReportFailedContent() override;

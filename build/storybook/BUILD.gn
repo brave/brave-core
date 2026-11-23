@@ -73,7 +73,7 @@ group("storybook_deps") {
   }
 
   if (enable_psst) {
-    deps += [ "//brave/components/psst/core/common:mojom_js" ]
+    deps += [ "//brave/components/psst/core/common:mojom_ts__generator" ]
   }
 
   if (enable_speedreader) {

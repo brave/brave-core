@@ -10,6 +10,11 @@ mojom("mojom") {
   sources = [ "psst_ui_common.mojom" ]
 
   public_deps = [ "//mojo/public/mojom/base" ]
+
+  webui_module_path = "/brave/components/psst/core/common"
+
+  # brave://psst-internals still uses the legacy bindings.
+  generate_legacy_js = true
 }
 
 static_library("common") {

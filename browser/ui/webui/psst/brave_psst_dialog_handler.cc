@@ -19,7 +19,6 @@
 #include "components/constrained_window/constrained_window_views.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
-#include "mojo/public/cpp/bindings/callback_helpers.h"
 
 namespace psst {
 
@@ -61,29 +60,22 @@ BravePsstDialogHandler::BravePsstDialogHandler(
     content::WebContents* initiator_web_contents,
     BravePsstDialogUI* dialog_ui,
     mojo::PendingReceiver<psst::mojom::PsstConsentHelper> pending_receiver,
-    mojo::PendingRemote<psst::mojom::PsstConsentDialog> client_page,
-    psst::mojom::PsstConsentFactory::CreatePsstConsentHandlerCallback callback)
+    mojo::PendingRemote<psst::mojom::PsstConsentDialog> client_page)
     : dialog_ui_(dialog_ui),
       receiver_(this, std::move(pending_receiver)),
       client_page_(std::move(client_page)) {
   CHECK(dialog_ui_);
-  CHECK(initiator_web_contents);
-  callback = mojo::WrapCallbackWithDefaultInvokeIfNotRun(
-      std::move(callback), psst::mojom::SettingCardData::New());
-  psst_tab_helper_ = GetPsstTabHelperForContents(initiator_web_contents);
-  if (!psst_tab_helper_) {
+  if (!initiator_web_contents) {
     return;
   }
 
+  psst_tab_helper_ = GetPsstTabHelperForContents(initiator_web_contents);
   psst_dialog_delegate_ = GetPsstUIDelegate(psst_tab_helper_);
   if (!psst_dialog_delegate_) {
     return;
   }
 
   psst_dialog_delegate_->AddObserver(this);
-
-  // Set initial dialog data
-  std::move(callback).Run(psst_dialog_delegate_->GetShowDialogData());
 }
 
 BravePsstDialogHandler::~BravePsstDialogHandler() {
@@ -108,6 +100,15 @@ void BravePsstDialogHandler::OnPsstErrorsReportSent() {
     return;
   }
   client_page_->OnPsstErrorsReportSent();
+}
+
+void BravePsstDialogHandler::GetSettingCardData(
+    GetSettingCardDataCallback callback) {
+  psst::mojom::SettingCardDataPtr data =
+      psst_dialog_delegate_ ? psst_dialog_delegate_->GetShowDialogData()
+                            : nullptr;
+  std::move(callback).Run(data ? std::move(data)
+                               : psst::mojom::SettingCardData::New());
 }
 
 void BravePsstDialogHandler::PerformPrivacyTuning(

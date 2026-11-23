@@ -8,7 +8,7 @@ import { createRoot } from 'react-dom/client'
 import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 import { setIconBasePath } from '@brave/nala/react/icon'
 import { createPsstDialogApi } from './api/psst_dialog_api'
-import * as Mojom from 'gen/brave/components/psst/core/common/psst_ui_common.mojom.m.js'
+import * as Mojom from 'gen/brave/components/psst/core/common/psst_ui_common.mojom-webui.js'
 
 import { PsstDialogAPIProvider } from './api/psst_dialog_api_context'
 import { PsstProgressModal } from './components/PsstProgressModal'
@@ -16,19 +16,16 @@ import { PsstProgressModal } from './components/PsstProgressModal'
 setIconBasePath('chrome://resources/brave-icons')
 
 async function createBrowserPsstApi() {
-  const consentHelper = new Mojom.PsstConsentHelperRemote()
-  const { api, dialogHandler } = createPsstDialogApi(consentHelper)
-
-  const dialogHandlerReceiver = new Mojom.PsstConsentDialogReceiver(
-    dialogHandler,
+  const { handler, callbackRouter } = Mojom.browserProxyFactory.getInstance()
+  const { api, dialogHandler } = createPsstDialogApi(handler)
+  callbackRouter.onSetRequestStatus.addListener(
+    dialogHandler.onSetRequestStatus.bind(dialogHandler),
+  )
+  callbackRouter.onPsstErrorsReportSent.addListener(
+    dialogHandler.onPsstErrorsReportSent.bind(dialogHandler),
   )
 
-  // Get the current site data
-  const { currentSiteData } =
-    await Mojom.PsstConsentFactory.getRemote().createPsstConsentHandler(
-      consentHelper.$.bindNewPipeAndPassReceiver(),
-      dialogHandlerReceiver.$.bindNewPipeAndPassRemote(),
-    )
+  const { currentSiteData } = await handler.getSettingCardData()
   return { api, siteData: currentSiteData }
 }
 

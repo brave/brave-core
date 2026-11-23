@@ -1115,6 +1115,44 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   EXPECT_EQ(psst_website_settings->uids_to_perform, perform_uids);
 }
 
+// The dialog page fetches the site's settings through its Mojo handler and
+// lists them.
+IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
+                       DialogListsTheSiteSettings) {
+  GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
+
+  const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+
+  infobars::ContentInfoBarManager* manager =
+      infobars::ContentInfoBarManager::FromWebContents(web_contents());
+  InfobarObserver infobar_observer(
+      manager, infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE);
+  content::CreateAndLoadWebContentsObserver new_web_contents_observer;
+
+  ASSERT_TRUE(content::NavigateToURL(web_contents(), url));
+  infobar_observer.WaitForInfobarAdded();
+
+  auto infobar =
+      std::ranges::find_if(manager->infobars(), [](infobars::InfoBar* infobar) {
+        return infobar->GetIdentifier() ==
+               infobars::InfoBarDelegate::BRAVE_PSST_INFOBAR_DELEGATE;
+      });
+  ASSERT_TRUE(infobar != manager->infobars().end());
+  ClickInfobarOkButton(*infobar);
+
+  auto* dialog_wc = WaitForAndGetDialogWebContents(new_web_contents_observer);
+  ASSERT_TRUE(dialog_wc);
+  WaitForPsstDialogUIReady(dialog_wc);
+
+  ASSERT_TRUE(base::test::RunUntil([dialog_wc]() {
+    return content::EvalJs(dialog_wc,
+                           "document.body.innerText.includes('a_test_1.html')"
+                           " && document.body.innerText.includes("
+                           "'a_test_2.html')")
+        .ExtractBool();
+  }));
+}
+
 // The PSST icon appears in the location bar after navigating to a matching
 // site, and selecting "Don't show for this site" from its context menu blocks
 // PSST for that origin and hides the icon.
