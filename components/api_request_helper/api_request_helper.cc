@@ -450,8 +450,6 @@ void APIRequestHelper::URLLoaderHandler::OnComplete(bool success) {
   VLOG(1) << "[[" << __func__ << "]]"
           << " Response completed\n";
 
-  sse_parser_.Flush();
-
   if (MaybeParseErrorBody()) {
     return;
   }

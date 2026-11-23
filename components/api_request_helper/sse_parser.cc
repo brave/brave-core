@@ -78,13 +78,6 @@ void SSEParser::Process(std::string_view chunk) {
   line_buffer_.append(chunk);
 }
 
-void SSEParser::Flush() {
-  line_buffer_.clear();
-  skip_leading_lf_ = false;
-  at_stream_start_ = true;
-  DispatchEvent();
-}
-
 void SSEParser::Clear() {
   line_buffer_.clear();
   data_buffer_.clear();

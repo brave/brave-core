@@ -757,7 +757,7 @@ TEST_F(ApiRequestHelperUnitTest, CrossOriginRedirectFollowedByDefault) {
   EXPECT_EQ(result.final_url(), target);
 }
 
-TEST_F(ApiRequestHelperUnitTest, SSEDeliversFinalEventWithoutBlankLine) {
+TEST_F(ApiRequestHelperUnitTest, SSEDiscardsFinalEventWithoutBlankLine) {
   const GURL url("http://localhost/");
   AddResponse(url, "data: {\"a\":1}\n\ndata: {\"b\":2}\n", "text/event-stream");
 
@@ -772,9 +772,9 @@ TEST_F(ApiRequestHelperUnitTest, SSEDeliversFinalEventWithoutBlankLine) {
       result_future.GetCallback(), {}, {});
   EXPECT_TRUE(result_future.Take().Is2XXResponseCode());
 
-  ASSERT_EQ(events.size(), 2u);
+  // The result follows every dispatched event, so `b` was never dispatched.
+  ASSERT_EQ(events.size(), 1u);
   EXPECT_EQ(events[0], ParseJson(R"({"a":1})"));
-  EXPECT_EQ(events[1], ParseJson(R"({"b":2})"));
 }
 
 TEST_F(ApiRequestHelperUnitTest, SSEParsesOpenAIStyleStream) {

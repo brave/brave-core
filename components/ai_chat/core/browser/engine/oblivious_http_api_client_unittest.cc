@@ -289,23 +289,6 @@ TEST_F(ObliviousHttpAPIClientUnitTest,
 }
 
 TEST_F(ObliviousHttpAPIClientUnitTest,
-       PerformRequest_Streaming_DeliversFinalEventWithoutBlankLine) {
-  PerformRequest(/*enable_data_received_callback=*/true);
-
-  EmitChunk("part1");
-  EmitRawChunk("data: {\"choices\":[{\"delta\":{\"content\":\"part2\"}}]}\n");
-
-  CompleteWithInnerResponse(net::HTTP_OK, "");
-  auto result = future_.Take();
-
-  ASSERT_EQ(2u, received_chunks_.size());
-  ASSERT_TRUE(received_chunks_[1].event->is_completion_event());
-  EXPECT_EQ("part2",
-            received_chunks_[1].event->get_completion_event()->completion);
-  ASSERT_TRUE(result.has_value());
-}
-
-TEST_F(ObliviousHttpAPIClientUnitTest,
        PerformRequest_Streaming_SkipsMalformedChunks) {
   PerformRequest(/*enable_data_received_callback=*/true);
 

@@ -37,11 +37,6 @@ class SSEParserTest : public testing::Test {
     WaitForDecoding();
   }
 
-  void Flush() {
-    parser_->Flush();
-    WaitForDecoding();
-  }
-
   // Waits for the events dispatched so far to be delivered.
   void WaitForDecoding() {
     base::test::TestFuture<void> events_delivered;
@@ -228,31 +223,12 @@ TEST_F(SSEParserTest, InvalidJsonProducesError) {
   EXPECT_FALSE(results_[0].has_value());
 }
 
-TEST_F(SSEParserTest, FlushDispatchesEventWithoutBlankLine) {
-  Process("data: {\"a\":1}\n\ndata: {\"b\":2}\n");
-  ASSERT_EQ(results_.size(), 1u);
-  Flush();
-  ASSERT_EQ(results_.size(), 2u);
-  EXPECT_EQ(FindInt(1, "b"), 2);
-}
-
-TEST_F(SSEParserTest, FlushDiscardsUnterminatedLine) {
-  parser_->Process("data: {\"a\":1}");
-  Flush();
-  EXPECT_TRUE(results_.empty());
-
-  Process("data: {\"b\":2}\n\n");
-  ASSERT_EQ(results_.size(), 1u);
-  EXPECT_EQ(FindInt(0, "b"), 2);
-}
-
 TEST_F(SSEParserTest, ClearDropsBufferedInput) {
   parser_->Process("data: {\"a\":1}\ndata: {\"k\":");
   parser_->Clear();
-  Flush();
-  EXPECT_TRUE(results_.empty());
 
-  Process("data: {\"x\":1}\n\n");
+  // The leading blank line would dispatch anything still buffered.
+  Process("\ndata: {\"x\":1}\n\n");
   ASSERT_EQ(results_.size(), 1u);
   EXPECT_EQ(FindInt(0, "x"), 1);
 }

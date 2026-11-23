@@ -25,8 +25,9 @@ using ValueOrError = base::expected<base::Value, std::string>;
 // A UTF-8 BOM at the start of the stream is skipped. Lines may end in CRLF, LF
 // or CR. The values of consecutive `data:` lines, each with one optional
 // leading space removed, are joined with "\n" and the event is dispatched on
-// the next blank line. Comments and all other fields (`event:`, `id:`,
-// `retry:`, ...) are ignored.
+// the next blank line. As the SSE spec requires, an event is discarded if the
+// stream ends before its blank line. Comments and all other fields (`event:`,
+// `id:`, `retry:`, ...) are ignored.
 //
 // Events are only dispatched when their data is a JSON object candidate, i.e.
 // its first non-whitespace character is `{`. Empty data (e.g. an event carrying
@@ -47,11 +48,6 @@ class SSEParser {
   // Feed the next chunk of raw SSE bytes. May dispatch async JSON parse
   // operations.
   void Process(std::string_view chunk);
-
-  // Call at end of stream. Dispatches an event whose lines are complete but
-  // which lacks the terminating blank line, then resets all buffers. An
-  // unterminated final line may be truncated, so it is discarded.
-  void Flush();
 
   // Discards all buffered input without dispatching, and the events and
   // RunAfterPendingEvents() callbacks still pending (e.g. on retry).
