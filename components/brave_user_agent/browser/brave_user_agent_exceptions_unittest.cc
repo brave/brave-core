@@ -8,6 +8,7 @@
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/task/current_thread.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_user_agent/common/features.h"
 #include "content/public/test/browser_task_environment.h"
@@ -54,8 +55,10 @@ TEST_F(BraveUserAgentExceptionsUnitTest, TestCanShowBraveDomainsLoaded) {
   ASSERT_TRUE(base::WriteFile(excepted_domains_path, excepted_domains));
   brave_user_agent_exceptions->OnComponentReady(temp_dir_.GetPath());
   // run for callback to OnExceptedDomainsLoaded
-  base::test::RunUntil(
-      [&]() { return brave_user_agent_exceptions->is_ready_; });
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return !brave_user_agent_exceptions->CanShowBrave(
+        GURL("https://brave.com"));
+  }));
 
   // Test excepted domains (hide we are Brave)
   ASSERT_FALSE(

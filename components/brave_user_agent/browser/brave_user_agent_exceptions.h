@@ -11,7 +11,6 @@
 #include <string_view>
 
 #include "base/files/file_path.h"
-#include "base/gtest_prod_util.h"
 #include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
 #include "url/gurl.h"
@@ -35,8 +34,6 @@ class BraveUserAgentExceptions {
   void AddToExceptedDomainsForTesting(std::string_view domain);
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(BraveUserAgentExceptionsUnitTest,
-                           TestCanShowBraveDomainsLoaded);
   BraveUserAgentExceptions();
   void OnExceptedDomainsLoaded(const std::string& contents);
 
@@ -47,7 +44,6 @@ class BraveUserAgentExceptions {
   base::WeakPtrFactory<BraveUserAgentExceptions> weak_factory_{this};
 
   friend struct base::DefaultSingletonTraits<BraveUserAgentExceptions>;
-  friend class BraveUserAgentExceptionsUnitTest;
 };
 
 // Returns true when `url` is excepted and should therefore report
