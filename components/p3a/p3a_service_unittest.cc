@@ -64,37 +64,37 @@ TEST_F(P3AServiceTest, MessageManagerStartedWhenP3AEnabled) {
   local_state_.SetBoolean(kP3AEnabled, true);
   CreateP3AService();
 
-  EXPECT_FALSE(p3a_service_->message_manager_->IsActive());
+  EXPECT_FALSE(p3a_service_->message_manager_for_testing()->IsActive());
 
   TriggerRemoteConfigLoad();
-  EXPECT_TRUE(p3a_service_->message_manager_->IsActive());
+  EXPECT_TRUE(p3a_service_->message_manager_for_testing()->IsActive());
 }
 
 TEST_F(P3AServiceTest, MessageManagerNotStartedWhenP3ADisabled) {
   local_state_.SetBoolean(kP3AEnabled, false);
   CreateP3AService();
 
-  EXPECT_FALSE(p3a_service_->message_manager_->IsActive());
+  EXPECT_FALSE(p3a_service_->message_manager_for_testing()->IsActive());
 
   TriggerRemoteConfigLoad();
-  EXPECT_FALSE(p3a_service_->message_manager_->IsActive());
+  EXPECT_FALSE(p3a_service_->message_manager_for_testing()->IsActive());
 }
 
 TEST_F(P3AServiceTest, MessageManagerStartsAndStopsOnPrefChange) {
   local_state_.SetBoolean(kP3AEnabled, false);
   CreateP3AService();
 
-  EXPECT_FALSE(p3a_service_->message_manager_->IsActive());
+  EXPECT_FALSE(p3a_service_->message_manager_for_testing()->IsActive());
 
   TriggerRemoteConfigLoad();
 
-  EXPECT_FALSE(p3a_service_->message_manager_->IsActive());
+  EXPECT_FALSE(p3a_service_->message_manager_for_testing()->IsActive());
 
   local_state_.SetBoolean(kP3AEnabled, true);
-  EXPECT_TRUE(p3a_service_->message_manager_->IsActive());
+  EXPECT_TRUE(p3a_service_->message_manager_for_testing()->IsActive());
 
   local_state_.SetBoolean(kP3AEnabled, false);
-  EXPECT_FALSE(p3a_service_->message_manager_->IsActive());
+  EXPECT_FALSE(p3a_service_->message_manager_for_testing()->IsActive());
 }
 
 TEST_F(P3AServiceTest, MetricValueStored) {
