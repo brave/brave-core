@@ -231,9 +231,8 @@ bool BraveTab::IsHovering() const {
 }
 
 bool BraveTab::OnMousePressed(const ui::MouseEvent& event) {
-  const bool handled = Tab::OnMousePressed(event);
   pinned_tab_reset::MaybeResetOnMousePressed(tab_handle().Get(), event);
-  return handled;
+  return Tab::OnMousePressed(event);
 }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)

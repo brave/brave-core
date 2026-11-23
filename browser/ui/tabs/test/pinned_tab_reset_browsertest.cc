@@ -5,9 +5,12 @@
 
 #include "brave/browser/ui/tabs/test/pinned_tab_reset_browsertest.h"
 
+#include <string>
+
 #include "base/command_line.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/values.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/public/pinned_tab_reset_controller.h"
 #include "brave/browser/ui/tabs/public/switches.h"
@@ -23,6 +26,7 @@
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/pinned_tab_codec.h"
 #include "chrome/browser/ui/tabs/split_tab_metrics.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/vertical_tab_strip_state_controller.h"
@@ -33,6 +37,7 @@
 #include "chrome/browser/ui/views/tabs/common/tab_view.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
+#include "chrome/common/pref_names.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "components/split_tabs/split_tab_visual_data.h"
@@ -121,6 +126,20 @@ IN_PROC_BROWSER_TEST_F(PinnedTabResetBrowserTest,
                        ShortcutOnUnpinnedTabIsNotHandled) {
   chrome::AddTabAt(browser(), other_url_, /*index=*/-1, /*foreground=*/true);
   ASSERT_EQ(2, model()->count());
+  EXPECT_FALSE(controller()->HandleCloseTabShortcut());
+  EXPECT_EQ(2, model()->count());
+}
+
+// A pinned tab without a pinned URL, here still on about:blank, closes as
+// usual instead of the shortcut doing nothing.
+IN_PROC_BROWSER_TEST_F(PinnedTabResetBrowserTest,
+                       ShortcutOnPinnedTabWithoutPinnedUrlIsNotHandled) {
+  ASSERT_TRUE(
+      model()->GetWebContentsAt(0)->GetLastCommittedURL().IsAboutBlank());
+  model()->SetTabPinned(0, true);
+  chrome::AddTabAt(browser(), other_url_, /*index=*/-1, /*foreground=*/true);
+  model()->ActivateTabAt(0);
+
   EXPECT_FALSE(controller()->HandleCloseTabShortcut());
   EXPECT_EQ(2, model()->count());
 }
@@ -244,6 +263,28 @@ IN_PROC_BROWSER_TEST_F(PinnedTabResetBrowserTest,
   model()->ActivateTabAt(0);
   EXPECT_TRUE(controller()->HandleCloseTabShortcut());
   ExpectPinnedTabReset();
+}
+
+// The startup pinned tabs pref keeps the last visited URL, so turning the
+// feature off reopens it there, and adds the pinned URL used with it on.
+IN_PROC_BROWSER_TEST_F(PinnedTabResetBrowserTest,
+                       StartupPinnedTabsOpenAtPinnedUrl) {
+  ASSERT_NO_FATAL_FAILURE(SetUpPinnedTabNavigatedAway());
+  Profile* profile = browser()->GetProfile();
+
+  PinnedTabCodec::WritePinnedTabs(profile);
+
+  const base::ListValue& pinned_tabs =
+      profile->GetPrefs()->GetList(prefs::kPinnedTabs);
+  ASSERT_EQ(1u, pinned_tabs.size());
+  ASSERT_TRUE(pinned_tabs[0].is_dict());
+  const std::string* url = pinned_tabs[0].GetDict().FindString("url");
+  ASSERT_TRUE(url);
+  EXPECT_EQ(other_url_.spec(), *url);
+
+  const StartupTabs startup_tabs = PinnedTabCodec::ReadPinnedTabs(profile);
+  ASSERT_EQ(1u, startup_tabs.size());
+  EXPECT_EQ(pinned_url_, startup_tabs[0].url);
 }
 
 IN_PROC_BROWSER_TEST_F(PinnedTabResetBrowserTest, DoubleClickResetsPinnedTab) {

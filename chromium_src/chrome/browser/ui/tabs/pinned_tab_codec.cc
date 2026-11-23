@@ -6,9 +6,13 @@
 #include "chrome/browser/ui/tabs/pinned_tab_codec.h"
 
 #include <optional>
+#include <string>
 
+#include "base/feature_list.h"
 #include "brave/components/containers/buildflags/buildflags.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "url/gurl.h"
+#include "url/url_constants.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/containers/container_specifier_utils.h"
@@ -41,6 +45,10 @@ std::optional<GURL> GetPinnedUrl(const content::WebContents* contents);
 
 namespace {
 
+// The URL the tab was pinned with. Kept apart from upstream's "url", the last
+// visited page, so turning the pinned tab reset feature off restores it.
+constexpr char kBravePinnedUrl[] = "brave_pinned_url";
+
 bool BraveShouldSkipPinnedTab(BrowserWindowInterface* browser,
                               content::WebContents* web_contents) {
   return sidebar::IsWebPanelTab(browser, web_contents);
@@ -48,10 +56,8 @@ bool BraveShouldSkipPinnedTab(BrowserWindowInterface* browser,
 
 void BraveModifyEncodedPinnedTab(content::WebContents* web_contents,
                                  base::Value& value) {
-  // The next launch opens the tab at the URL it was pinned with, rather than
-  // wherever it navigated to.
   if (const auto pinned_url = pinned_tab_reset::GetPinnedUrl(web_contents)) {
-    value.GetDict().Set("url", pinned_url->spec());
+    value.GetDict().Set(kBravePinnedUrl, pinned_url->spec());
   }
 #if BUILDFLAG(ENABLE_CONTAINERS)
   containers::SerializeContainerSpecifier(web_contents, value);
@@ -59,6 +65,18 @@ void BraveModifyEncodedPinnedTab(content::WebContents* web_contents,
 }
 
 void BraveModifyDecodedPinnedTab(const base::Value& value, StartupTab& tab) {
+  // With the feature on, the tab opens at the URL it was pinned with, rather
+  // than wherever it navigated to.
+  if (base::FeatureList::IsEnabled(tabs::kBravePinnedTabReset)) {
+    if (const std::string* pinned_url_spec =
+            value.GetDict().FindString(kBravePinnedUrl)) {
+      const GURL pinned_url(*pinned_url_spec);
+      if (pinned_url.is_valid() &&
+          !pinned_url.SchemeIs(url::kJavaScriptScheme)) {
+        tab.url = pinned_url;
+      }
+    }
+  }
 #if BUILDFLAG(ENABLE_CONTAINERS)
   containers::DeserializeContainerSpecifier(value, tab.container);
 #endif

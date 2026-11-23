@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/tabs/public/pinned_tab_reset_controller.h"
 
-#include <algorithm>
 #include <map>
 #include <optional>
 #include <string>
@@ -36,11 +35,13 @@
 #include "content/public/browser/web_contents_user_data.h"
 #include "ui/base/page_transition_types.h"
 #include "ui/events/event.h"
+#include "url/url_constants.h"
 
 namespace {
 
 bool IsUsablePinnedUrl(const GURL& url) {
-  return url.is_valid() && !url.is_empty() && !url.IsAboutBlank();
+  return url.is_valid() && !url.is_empty() && !url.IsAboutBlank() &&
+         !url.SchemeIs(url::kJavaScriptScheme);
 }
 
 void PersistPinnedUrl(content::WebContents* contents,
@@ -186,32 +187,39 @@ PinnedTabResetController* PinnedTabResetController::From(
 bool PinnedTabResetController::HandleCloseTabShortcut() {
   TabStripModel* model = browser_->GetTabStripModel();
 
-  std::vector<tabs::TabInterface*> pinned_tabs;
-  std::vector<content::WebContents*> unpinned_contents;
+  // Like chrome::CloseTab(), a selection of just one split only acts on the
+  // active half.
+  std::vector<tabs::TabInterface*> selected_tabs;
   tabs::TabInterface* active_tab = model->GetActiveTab();
   if (active_tab && active_tab->IsSplit() &&
       model->selection_model().size() == 2) {
-    // Like chrome::CloseTab(), only the active half of a selected split is
-    // handled.
-    if (!active_tab->IsPinned()) {
-      return false;
-    }
-    pinned_tabs.push_back(active_tab);
+    selected_tabs.push_back(active_tab);
   } else {
     for (const int index :
          model->selection_model().GetListSelectionModel().selected_indices()) {
-      tabs::TabInterface* tab = model->GetTabAtIndex(index);
-      if (!tab->IsPinned()) {
-        unpinned_contents.push_back(tab->GetContents());
-      } else if (!IsExcluded(tab->GetContents())) {
-        pinned_tabs.push_back(tab);
-      }
+      selected_tabs.push_back(model->GetTabAtIndex(index));
     }
   }
-  if (pinned_tabs.empty() ||
-      std::ranges::any_of(pinned_tabs, [](tabs::TabInterface* tab) {
-        return sidebar::IsWebPanelTab(tab);
-      })) {
+
+  // Pinned tabs without a pinned URL, e.g. not loaded yet, close as usual.
+  std::vector<tabs::TabInterface*> tabs_to_reset;
+  std::vector<content::WebContents*> contents_to_close;
+  for (tabs::TabInterface* tab : selected_tabs) {
+    if (sidebar::IsWebPanelTab(tab)) {
+      return false;
+    }
+    // Closing a shared pinned tab placeholder would close the tab in every
+    // window.
+    if (IsExcluded(tab->GetContents())) {
+      continue;
+    }
+    if (tab->IsPinned() && pinned_tab_reset::GetPinnedUrl(tab->GetContents())) {
+      tabs_to_reset.push_back(tab);
+    } else {
+      contents_to_close.push_back(tab->GetContents());
+    }
+  }
+  if (tabs_to_reset.empty()) {
     return false;
   }
 
@@ -229,10 +237,10 @@ bool PinnedTabResetController::HandleCloseTabShortcut() {
                      /*pinned=*/false);
   }
 
-  for (tabs::TabInterface* tab : pinned_tabs) {
+  for (tabs::TabInterface* tab : tabs_to_reset) {
     ResetPinnedTab(tab);
   }
-  for (content::WebContents* contents : unpinned_contents) {
+  for (content::WebContents* contents : contents_to_close) {
     model->CloseWebContents(contents,
                             TabCloseTypes::CLOSE_USER_GESTURE |
                                 TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB);
@@ -245,20 +253,21 @@ void PinnedTabResetController::ResetPinnedTab(tabs::TabInterface* tab) {
   if (!contents || !tab->IsPinned()) {
     return;
   }
-  const auto* data = PinnedTabUrlData::FromWebContents(contents);
-  if (!data || !IsUsablePinnedUrl(data->url())) {
+  const std::optional<GURL> pinned_url =
+      pinned_tab_reset::GetPinnedUrl(contents);
+  if (!pinned_url) {
     return;
   }
 
   content::NavigationController& controller = contents->GetController();
   const content::NavigationEntry* entry = controller.GetLastCommittedEntry();
-  if (entry && entry->GetURL() == data->url() &&
+  if (entry && entry->GetURL() == *pinned_url &&
       !controller.GetPendingEntry()) {
     controller.PruneAllButLastCommitted();
     return;
   }
 
-  content::NavigationController::LoadURLParams params(data->url());
+  content::NavigationController::LoadURLParams params(*pinned_url);
   params.transition_type = ui::PAGE_TRANSITION_AUTO_TOPLEVEL;
   params.should_clear_history_list = true;
   controller.LoadURLWithParams(params);
