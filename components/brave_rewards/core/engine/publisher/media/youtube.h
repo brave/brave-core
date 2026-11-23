@@ -161,6 +161,8 @@ class YouTube {
   FRIEND_TEST_ALL_PREFIXES(RewardsMediaYouTubeTest, GetMediaDurationFromParts);
   FRIEND_TEST_ALL_PREFIXES(RewardsMediaYouTubeTest, GetVideoUrl);
   FRIEND_TEST_ALL_PREFIXES(RewardsMediaYouTubeTest, GetChannelUrl);
+  FRIEND_TEST_ALL_PREFIXES(RewardsMediaYouTubeDeathTest, GetVideoUrlEmptyId);
+  FRIEND_TEST_ALL_PREFIXES(RewardsMediaYouTubeDeathTest, GetChannelUrlEmptyId);
   FRIEND_TEST_ALL_PREFIXES(RewardsMediaYouTubeTest, GetFavIconUrl);
   FRIEND_TEST_ALL_PREFIXES(RewardsMediaYouTubeTest, GetChannelId);
   FRIEND_TEST_ALL_PREFIXES(RewardsMediaYouTubeTest,
