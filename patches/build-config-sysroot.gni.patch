@@ -1,0 +1,16 @@
+diff --git a/build/config/sysroot.gni b/build/config/sysroot.gni
+index e7aaa18479d47958d6407f4d22bbe7ea939e1f92..83c0643121aab73996de0dd964ab1a851bfc3538 100644
+--- a/build/config/sysroot.gni
++++ b/build/config/sysroot.gni
+@@ -21,7 +21,10 @@ declare_args() {
+ }
+ 
+ if (sysroot == "") {
+-  if (current_os == target_os && current_cpu == target_cpu &&
++  if (is_musl) {
++    import("//brave/build/config/linux/musl_sysroot.gni")
++    sysroot = brave_musl_sysroot
++  } else if (current_os == target_os && current_cpu == target_cpu &&
+       target_sysroot != "") {
+     sysroot = target_sysroot
+   } else if (is_android) {

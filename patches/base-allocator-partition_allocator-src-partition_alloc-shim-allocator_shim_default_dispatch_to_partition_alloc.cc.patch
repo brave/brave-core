@@ -1,0 +1,14 @@
+diff --git a/base/allocator/partition_allocator/src/partition_alloc/shim/allocator_shim_default_dispatch_to_partition_alloc.cc b/base/allocator/partition_allocator/src/partition_alloc/shim/allocator_shim_default_dispatch_to_partition_alloc.cc
+index 6b86d25c4a71c44de2b4b6bd2140fa02c70015ae..67e75ad9f4cb6b825a88734912de8b556c74ffa3 100644
+--- a/base/allocator/partition_allocator/src/partition_alloc/shim/allocator_shim_default_dispatch_to_partition_alloc.cc
++++ b/base/allocator/partition_allocator/src/partition_alloc/shim/allocator_shim_default_dispatch_to_partition_alloc.cc
+@@ -1286,7 +1286,8 @@ SHIM_ALWAYS_EXPORT int mallopt(int cmd, int value) __THROW {
+ 
+ #endif  // !PA_BUILDFLAG(IS_APPLE) && !PA_BUILDFLAG(IS_ANDROID)
+ 
+-#if PA_BUILDFLAG(IS_LINUX) || PA_BUILDFLAG(IS_CHROMEOS)
++// musl has no mallinfo().
++#if (PA_BUILDFLAG(IS_LINUX) || PA_BUILDFLAG(IS_CHROMEOS)) && !defined(LIBC_MUSL)
+ SHIM_ALWAYS_EXPORT struct mallinfo mallinfo(void) __THROW {
+   partition_alloc::SimplePartitionStatsDumper allocator_dumper;
+   // TODO(crbug.com/477186304): Dump stats for all alloc tokens, by accumulating

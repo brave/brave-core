@@ -1,0 +1,26 @@
+diff --git a/sandbox/linux/syscall_broker/broker_simple_message.cc b/sandbox/linux/syscall_broker/broker_simple_message.cc
+index c8d90e1f8adec213b8bf3e9655512f579f394a6b..1d7f6e9d4efa6f178a51d3aae851fc56cb78610d 100644
+--- a/sandbox/linux/syscall_broker/broker_simple_message.cc
++++ b/sandbox/linux/syscall_broker/broker_simple_message.cc
+@@ -184,7 +184,9 @@ ssize_t BrokerSimpleMessage::RecvMsgWithFlagsMultipleFds(
+ 
+   if (msg.msg_controllen > 0) {
+     struct cmsghdr* cmsg;
+-    for (cmsg = CMSG_FIRSTHDR(&msg); cmsg; cmsg = CMSG_NXTHDR(&msg, cmsg)) {
++    // SAFETY: Control message API. musl implements CMSG_NXTHDR() as a macro.
++    for (cmsg = CMSG_FIRSTHDR(&msg); cmsg;
++         cmsg = UNSAFE_BUFFERS(CMSG_NXTHDR(&msg, cmsg))) {
+       const size_t payload_len = cmsg->cmsg_len - CMSG_LEN(0);
+       if (cmsg->cmsg_level == SOL_SOCKET && cmsg->cmsg_type == SCM_RIGHTS) {
+         DCHECK_EQ(payload_len % sizeof(fd), 0u);
+@@ -205,7 +207,9 @@ ssize_t BrokerSimpleMessage::RecvMsgWithFlagsMultipleFds(
+           cmsg->cmsg_type == SCM_CREDENTIALS) {
+         DCHECK_EQ(payload_len, sizeof(struct ucred));
+         DCHECK_EQ(pid, -1);
+-        pid = reinterpret_cast<struct ucred*>(CMSG_DATA(cmsg))->pid;
++        // SAFETY: Control message API; payload_len was checked above.
++        pid = UNSAFE_BUFFERS(reinterpret_cast<struct ucred*>(CMSG_DATA(cmsg)))
++                  ->pid;
+       }
+     }
+   }

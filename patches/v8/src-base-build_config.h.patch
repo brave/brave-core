@@ -1,0 +1,14 @@
+diff --git a/src/base/build_config.h b/src/base/build_config.h
+index ee745539dfd268b754a53956f67401e5263993f1..1cdcd1f6b2f65f21e37af51acd64b7d8268528e9 100644
+--- a/src/base/build_config.h
++++ b/src/base/build_config.h
+@@ -29,7 +29,8 @@
+ 
+ // PKU support (and by extension support for JIT code protections based on PKU)
+ // is currently only available on x64 Linux.
+-#if defined(V8_OS_LINUX) && defined(V8_HOST_ARCH_X64)
++// musl has no pkey_*() API.
++#if defined(V8_OS_LINUX) && defined(V8_HOST_ARCH_X64) && !defined(LIBC_MUSL)
+ #define V8_HAS_PKU_SUPPORT 1
+ #else
+ #define V8_HAS_PKU_SUPPORT 0

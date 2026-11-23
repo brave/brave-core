@@ -1,0 +1,13 @@
+diff --git a/third_party/fontconfig/fontconfig.gni b/third_party/fontconfig/fontconfig.gni
+index 9688854d28af21f8a67ba57b01048d9be26ab547..cdac2d233204925d8e3c78b2945722d0c4bd7e75 100644
+--- a/third_party/fontconfig/fontconfig.gni
++++ b/third_party/fontconfig/fontconfig.gni
+@@ -7,5 +7,7 @@ import("//build/config/chromeos/args.gni")
+ assert(is_linux || is_chromeos)
+ 
+ declare_args() {
+-  use_bundled_fontconfig = (is_linux || is_chromeos) && !is_chromeos_device
++  # musl: the bundled config.h assumes glibc, so use the sysroot's.
++  use_bundled_fontconfig =
++      (is_linux || is_chromeos) && !is_chromeos_device && !is_musl
+ }

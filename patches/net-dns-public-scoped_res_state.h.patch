@@ -1,0 +1,13 @@
+diff --git a/net/dns/public/scoped_res_state.h b/net/dns/public/scoped_res_state.h
+index a1c97c3d6f6b876b7e15cbf49d4f06d68cb5fc59..42718220410ce6761172e198a25225e844ddd5a6 100644
+--- a/net/dns/public/scoped_res_state.h
++++ b/net/dns/public/scoped_res_state.h
+@@ -32,7 +32,7 @@ class NET_EXPORT ScopedResState {
+   virtual const struct __res_state& state() const;
+ 
+  private:
+-#if !BUILDFLAG(IS_OPENBSD) && !BUILDFLAG(IS_FUCHSIA)
++#if !BUILDFLAG(IS_OPENBSD) && !BUILDFLAG(IS_FUCHSIA) && !defined(LIBC_MUSL)
+   struct __res_state res_;
+ #endif  // !BUILDFLAG(IS_OPENBSD) && !BUILDFLAG(IS_FUCHSIA)
+ 

@@ -8,3 +8,15 @@ substitutions:
     add_literal_to_variable:
       variable: default_compiler_configs
       literal: '[ "//brave/build:compiler" ]'
+
+  - description: Use the musl target toolchain when is_musl is set.
+    regex:
+      re_pattern: '(\n# If a custom toolchain has been set in the args, set it as default\.)'
+      replace: |-
+
+        import("//brave/build/config/linux/musl.gni")
+        if (is_musl) {
+          assert(target_os == "linux", "is_musl is only supported on linux")
+          _default_toolchain = "//brave/build/toolchain/linux:clang_${target_cpu}_musl"
+        }
+        \1

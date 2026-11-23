@@ -27,3 +27,13 @@ substitutions:
       target: tests
       list_name: deps
       literal: brave_net_dns_deps
+
+  - description: musl lacks the glibc resolver internals the Linux DNS config service needs; use the stub service.
+    regex:
+      re_pattern: '(\n  \} else if \(is_linux\) \{\n    sources \+= \[\n      "dns_config_service_linux\.cc",)'
+      replace: "\n  } else if (is_linux && is_musl) {\n    # The Linux service relies on glibc resolver internals. Use the stub\n    # service so lookups go through getaddrinfo().\n    sources += [\n      \"dns_config_service_fuchsia.cc\",\n      \"dns_config_service_fuchsia.h\",\n    ]\\1"
+
+  - description: Skip the Linux DNS config service tests on musl.
+    regex:
+      re_pattern: '\} else if \(is_linux\) \{\n    sources \+= \[ "dns_config_service_linux_unittest\.cc" \]'
+      replace: "} else if (is_linux && !is_musl) {\n    sources += [ \"dns_config_service_linux_unittest.cc\" ]"

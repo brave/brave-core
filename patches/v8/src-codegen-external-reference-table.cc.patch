@@ -1,0 +1,14 @@
+diff --git a/src/codegen/external-reference-table.cc b/src/codegen/external-reference-table.cc
+index 8a8d3976daaa39064aa54637e716564ad17da389..84dbc690d600bc1b81c4bd9579cabed9179979e6 100644
+--- a/src/codegen/external-reference-table.cc
++++ b/src/codegen/external-reference-table.cc
+@@ -12,7 +12,8 @@
+ #include "src/ic/stub-cache.h"
+ #include "src/logging/counters.h"
+ 
+-#if defined(DEBUG) && defined(V8_OS_LINUX) && !defined(V8_OS_ANDROID)
++#if defined(DEBUG) && defined(V8_OS_LINUX) && !defined(V8_OS_ANDROID) && \
++    !defined(LIBC_MUSL)  // musl has no execinfo.
+ #define SYMBOLIZE_FUNCTION
+ #include <execinfo.h>
+ 

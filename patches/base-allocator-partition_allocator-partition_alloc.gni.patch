@@ -1,0 +1,14 @@
+diff --git a/base/allocator/partition_allocator/partition_alloc.gni b/base/allocator/partition_allocator/partition_alloc.gni
+index 741006834c04812337643cdf30bc72c3416dbd5f..462bafaaa587a27ad02740d4bc753b547627d954 100644
+--- a/base/allocator/partition_allocator/partition_alloc.gni
++++ b/base/allocator/partition_allocator/partition_alloc.gni
+@@ -553,7 +553,8 @@ assert(!use_asan_backup_ref_ptr || use_raw_ptr_hookable_impl,
+ # dependencies that use partition_allocator are compiled in AOSP against a
+ # version of glibc that does not include pkeys syscall numbers.
+ is_pkeys_available =
+-    (is_linux || is_chromeos) && current_cpu == "x64" && !is_cronet_build
++    (is_linux || is_chromeos) && current_cpu == "x64" && !is_cronet_build &&
++    !is_musl  # musl has no pkey_*() API.
+ 
+ declare_args() {
+   enable_pkeys = is_pkeys_available

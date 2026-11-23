@@ -1,0 +1,26 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/toolchain/gcc_toolchain.gni")
+
+# Target toolchains for musl libc (see `use_musl`).
+template("brave_musl_clang_toolchain") {
+  clang_toolchain(target_name) {
+    enable_linker_map = true
+    toolchain_args = {
+      current_cpu = invoker.cpu
+      current_os = "linux"
+      is_musl = true
+    }
+  }
+}
+
+brave_musl_clang_toolchain("clang_x64_musl") {
+  cpu = "x64"
+}
+
+brave_musl_clang_toolchain("clang_arm64_musl") {
+  cpu = "arm64"
+}

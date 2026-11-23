@@ -1,0 +1,30 @@
+diff --git a/base/allocator/partition_allocator/src/partition_alloc/shim/allocator_shim_override_cpp_symbols.h b/base/allocator/partition_allocator/src/partition_alloc/shim/allocator_shim_override_cpp_symbols.h
+index 62d5c25c161da26964f01a9fc705d1741a11bf79..b43fae624dba1c9174b47c756d37f56413c19d0e 100644
+--- a/base/allocator/partition_allocator/src/partition_alloc/shim/allocator_shim_override_cpp_symbols.h
++++ b/base/allocator/partition_allocator/src/partition_alloc/shim/allocator_shim_override_cpp_symbols.h
+@@ -34,6 +34,14 @@
+ #define SHIM_CPP_SYMBOLS_EXPORT PA_NOINLINE
+ #endif
+ 
++#if defined(LIBC_MUSL)
++// The C++ operators must be noexcept like libc++'s declarations; glibc's
++// __THROW provides that, musl's is empty.
++#pragma push_macro("__THROW")
++#undef __THROW
++#define __THROW noexcept
++#endif
++
+ SHIM_CPP_SYMBOLS_EXPORT void* operator new(size_t size) {
+ #if PA_BUILDFLAG(FORWARD_THROUGH_MALLOC)
+   return malloc(size);
+@@ -232,6 +240,10 @@ SHIM_CPP_SYMBOLS_EXPORT void operator delete[](void* p,
+ #endif
+ }
+ 
++#if defined(LIBC_MUSL)
++#pragma pop_macro("__THROW")
++#endif
++
+ #endif  // PA_BUILDFLAG(USE_ALLOCATOR_SHIM)
+ 
+ #endif  // PARTITION_ALLOC_SHIM_ALLOCATOR_SHIM_OVERRIDE_CPP_SYMBOLS_H_

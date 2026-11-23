@@ -1,0 +1,15 @@
+diff --git a/build/config/linux/libffi/BUILD.gn b/build/config/linux/libffi/BUILD.gn
+index 6e45f4c22615e4afbae9128e17fa3d559d9be6f6..94cd10ad51580f3df16e93f8e9274d60cf646eca 100644
+--- a/build/config/linux/libffi/BUILD.gn
++++ b/build/config/linux/libffi/BUILD.gn
+@@ -10,7 +10,9 @@ declare_args() {
+   # on Linux, libffi must be statically linked to prevent a situation where the
+   # runtime version of libffi is different from the build-time version from the
+   # sysroot.
+-  use_system_libffi = default_toolchain == "//build/toolchain/cros:target"
++  # The musl sysroot has no libffi_pic.a.
++  use_system_libffi =
++      default_toolchain == "//build/toolchain/cros:target" || is_musl
+ }
+ 
+ if (use_system_libffi) {

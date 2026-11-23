@@ -1,0 +1,15 @@
+diff --git a/rtc_base/platform_thread_types.cc b/rtc_base/platform_thread_types.cc
+index 20bf4afc44c82cfa659ee14666984f92f9c713ed..b7c553b0140953d594c16d31778f8ddeb519b44c 100644
+--- a/rtc_base/platform_thread_types.cc
++++ b/rtc_base/platform_thread_types.cc
+@@ -12,7 +12,10 @@
+ 
+ // IWYU pragma: begin_keep
+ #if defined(WEBRTC_LINUX)
++// musl's <sys/prctl.h> conflicts with the kernel's <linux/prctl.h>.
++#if !defined(LIBC_MUSL)
+ #include <linux/prctl.h>
++#endif
+ #include <sys/prctl.h>
+ #include <sys/syscall.h>
+ 

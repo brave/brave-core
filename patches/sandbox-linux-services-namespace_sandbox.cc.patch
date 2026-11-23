@@ -1,0 +1,51 @@
+diff --git a/sandbox/linux/services/namespace_sandbox.cc b/sandbox/linux/services/namespace_sandbox.cc
+index 6c6c204f6c42b82caf6279ac7974f79325df7b3b..5c268f28014b4b472ae22a3c8b67fab06871805b 100644
+--- a/sandbox/linux/services/namespace_sandbox.cc
++++ b/sandbox/linux/services/namespace_sandbox.cc
+@@ -29,7 +29,7 @@
+ #include "sandbox/linux/services/syscall_wrappers.h"
+ #include "sandbox/linux/system_headers/linux_signal.h"
+ 
+-#if defined(LIBC_GLIBC)
++#if defined(LIBC_GLIBC) || defined(LIBC_MUSL)
+ #include <pthread.h>
+ #endif
+ 
+@@ -136,6 +136,28 @@ void MaybeUpdateGlibcTidCache() {
+ }
+ #endif  // defined(LIBC_GLIBC)
+ 
++#if defined(LIBC_MUSL)
++// musl also caches the TID in its struct pthread and doesn't refresh it after
++// a raw clone(). Prefix of musl's struct pthread, from src/internal/pthread_impl.h.
++struct musl_pthread {
++  uintptr_t self;
++#if !defined(ARCH_CPU_ARM64)  // !TLS_ABOVE_TP
++  uintptr_t dtv;
++#endif
++  uintptr_t prev;
++  uintptr_t next;
++  uintptr_t sysinfo;
++#if !defined(ARCH_CPU_ARM64)
++  uintptr_t canary;
++#endif
++  int tid;
++};
++
++void UpdateMuslTidCache() {
++  reinterpret_cast<musl_pthread*>(pthread_self())->tid = sys_gettid();
++}
++#endif  // defined(LIBC_MUSL)
++
+ }  // namespace
+ 
+ NamespaceSandbox::Options::Options()
+@@ -229,6 +251,8 @@ pid_t NamespaceSandbox::ForkInNewPidNamespace(bool drop_capabilities_in_child) {
+     }
+ #if defined(LIBC_GLIBC)
+     MaybeUpdateGlibcTidCache();
++#elif defined(LIBC_MUSL)
++    UpdateMuslTidCache();
+ #endif
+     return 0;
+   }

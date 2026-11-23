@@ -1,0 +1,15 @@
+diff --git a/tools/v8_context_snapshot/v8_context_snapshot.gni b/tools/v8_context_snapshot/v8_context_snapshot.gni
+index ebce96fb84a8607c63db69175c557cbb83a1d6f3..d0b91787208ec9d52435df72c9301a170327a480 100644
+--- a/tools/v8_context_snapshot/v8_context_snapshot.gni
++++ b/tools/v8_context_snapshot/v8_context_snapshot.gni
+@@ -38,7 +38,9 @@ declare_args() {
+       (!is_chromeos && !is_android && !is_castos && !is_fuchsia &&
+        !(host_toolchain == default_toolchain && is_msan) &&
+        !(is_win && host_os != "win") && !(is_mac && host_os != "mac") &&
+-       !(is_linux && host_os != "linux"))
++       !(is_linux && host_os != "linux") &&
++       # musl builds run the generator in the (glibc) host toolchain.
++       !is_musl)
+ }
+ 
+ # Apply the secondary abi overrides. Must occur outside of declare_args in

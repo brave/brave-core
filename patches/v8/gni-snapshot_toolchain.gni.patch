@@ -1,0 +1,16 @@
+diff --git a/gni/snapshot_toolchain.gni b/gni/snapshot_toolchain.gni
+index 37ed262640d048a6fa5923279ae0388c1c0ae766..69efdc6fdf8cb8ad734c64cf2ee65affe05a967a 100644
+--- a/gni/snapshot_toolchain.gni
++++ b/gni/snapshot_toolchain.gni
+@@ -46,7 +46,10 @@ declare_args() {
+ # https://crbug.com/625353.
+ 
+ if (v8_snapshot_toolchain == "") {
+-  if (current_os == host_os && current_cpu == host_cpu) {
++  if (is_musl) {
++    # musl binaries can't run on the (glibc) build host.
++    v8_snapshot_toolchain = host_toolchain
++  } else if (current_os == host_os && current_cpu == host_cpu) {
+     # This is not a cross-compile, so build the snapshot with the current
+     # toolchain.
+     v8_snapshot_toolchain = current_toolchain

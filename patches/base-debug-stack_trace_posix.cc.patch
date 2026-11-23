@@ -1,0 +1,16 @@
+diff --git a/base/debug/stack_trace_posix.cc b/base/debug/stack_trace_posix.cc
+index d4b6111077be8e82d0eba1f8098ee239de4bbc4f..0f95eaaeb726bbf8a621ef067da4a19f8592bc17 100644
+--- a/base/debug/stack_trace_posix.cc
++++ b/base/debug/stack_trace_posix.cc
+@@ -1082,6 +1082,11 @@ void StackTrace::OutputToStreamWithPrefixImpl(
+   StreamBacktraceOutputHandler handler(os);
+   ProcessBacktrace(addresses(), prefix_string, &handler);
+ }
++#elif defined(LIBC_MUSL)
++// TODO: musl has no execinfo; symbolize without it.
++void StackTrace::OutputToStreamWithPrefixImpl(
++    std::ostream* os,
++    cstring_view prefix_string) const {}
+ #endif
+ 
+ namespace internal {

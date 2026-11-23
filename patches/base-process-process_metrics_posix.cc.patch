@@ -1,0 +1,23 @@
+diff --git a/base/process/process_metrics_posix.cc b/base/process/process_metrics_posix.cc
+index 205200021c674a6cc943c30d73d36963ab4052b4..6eb8d35160c3d624cc9569b7b31d1122424a2027 100644
+--- a/base/process/process_metrics_posix.cc
++++ b/base/process/process_metrics_posix.cc
+@@ -112,6 +112,10 @@ void IncreaseFdLimitTo(unsigned int max_descriptors) {
+ namespace {
+ 
+ size_t GetMallocUsageMallinfo() {
++#if defined(LIBC_MUSL)
++  // musl has no mallinfo().
++  return 0;
++#else
+ #if defined(__GLIBC__) && defined(__GLIBC_PREREQ)
+ #if __GLIBC_PREREQ(2, 33)
+ #define MALLINFO2_FOUND_IN_LIBC
+@@ -123,6 +127,7 @@ size_t GetMallocUsageMallinfo() {
+ #endif
+ #undef MALLINFO2_FOUND_IN_LIBC
+   return checked_cast<size_t>(minfo.hblkhd + minfo.arena);
++#endif  // defined(LIBC_MUSL)
+ }
+ 
+ }  // namespace

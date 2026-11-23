@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+declare_args() {
+  # Build target binaries against musl libc instead of glibc. Selects a musl
+  # target toolchain (//brave/build/toolchain/linux); other toolchains reset
+  # this to false, so host tools are still built against glibc and run on the
+  # build machine. Create the sysroot with
+  # //brave/build/linux/musl/create_sysroot.sh.
+  #
+  # musl deliberately has no preprocessor macro; C/C++ can check LIBC_MUSL.
+  is_musl = false
+
+  # Directory containing musl sysroots made by create_sysroot.sh.
+  musl_sysroot_dir = "//brave/build/linux/musl/sysroots"
+}

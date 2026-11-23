@@ -1,0 +1,19 @@
+diff --git a/sandbox/linux/seccomp-bpf-helpers/syscall_parameters_restrictions.cc b/sandbox/linux/seccomp-bpf-helpers/syscall_parameters_restrictions.cc
+index 88e6b30e29c9a01c093198a7c076b2507345736f..a0a05c2dab279ce474c70ed58e3d240cd954c420 100644
+--- a/sandbox/linux/seccomp-bpf-helpers/syscall_parameters_restrictions.cc
++++ b/sandbox/linux/seccomp-bpf-helpers/syscall_parameters_restrictions.cc
+@@ -151,7 +151,14 @@ ResultExpr RestrictCloneToThreadsAndEPERMFork() {
+   const uint64_t kGlibcPthreadFlags =
+       CLONE_VM | CLONE_FS | CLONE_FILES | CLONE_SIGHAND | CLONE_THREAD |
+       CLONE_SYSVSEM | CLONE_SETTLS | CLONE_PARENT_SETTID | CLONE_CHILD_CLEARTID;
++#if defined(LIBC_MUSL)
++  // musl's pthread_create() additionally passes CLONE_DETACHED.
++  const BoolExpr glibc_test =
++      AnyOf(flags == kGlibcPthreadFlags,
++            flags == (kGlibcPthreadFlags | CLONE_DETACHED));
++#else
+   const BoolExpr glibc_test = flags == kGlibcPthreadFlags;
++#endif
+ 
+   const BoolExpr android_test =
+       AnyOf(flags == kAndroidCloneMask, flags == kObsoleteAndroidCloneMask,

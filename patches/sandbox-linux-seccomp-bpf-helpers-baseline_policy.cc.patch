@@ -1,0 +1,18 @@
+diff --git a/sandbox/linux/seccomp-bpf-helpers/baseline_policy.cc b/sandbox/linux/seccomp-bpf-helpers/baseline_policy.cc
+index 85f14c9023df8802ada52b84079d61430110c6f0..22ffcc240429c6777af600906034e4ee24c9db16 100644
+--- a/sandbox/linux/seccomp-bpf-helpers/baseline_policy.cc
++++ b/sandbox/linux/seccomp-bpf-helpers/baseline_policy.cc
+@@ -231,6 +231,13 @@ ResultExpr EvaluateSyscallImpl(int fs_denied_errno,
+ 
+   // The scheduling syscalls are used in threading libraries and also heavily in
+   // abseil. See for example https://crbug.com/1370394.
++#if defined(LIBC_MUSL)
++  // musl's pthread_{get,set}schedparam() pass a thread's TID rather than 0.
++  if (sysno == __NR_sched_getparam || sysno == __NR_sched_getscheduler ||
++      sysno == __NR_sched_setscheduler) {
++    return Allow();
++  }
++#endif
+   if (sysno == __NR_sched_getaffinity || sysno == __NR_sched_getparam ||
+       sysno == __NR_sched_getscheduler || sysno == __NR_sched_setscheduler) {
+     return RestrictSchedTarget(current_pid, sysno);

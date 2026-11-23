@@ -1,0 +1,16 @@
+diff --git a/ui/qt/qt.gni b/ui/qt/qt.gni
+index 9a292e611579da953664afdcd2833500e0e41758..2f95b512cb1b3f608ccf7fbb7a76c9a63015d807 100644
+--- a/ui/qt/qt.gni
++++ b/ui/qt/qt.gni
+@@ -9,8 +9,9 @@ import("//build/config/sysroot.gni")
+ # TODO(crbug.com/40260415): Allow QT in MSAN builds once QT is
+ # added to the instrumented libraries.
+ declare_args() {
+-  use_qt5 = use_sysroot && is_linux && !is_castos && !is_msan
+-  use_qt6 = use_sysroot && is_linux && !is_castos && !is_msan
++  # musl: the checked-in moc output does not match the sysroot's Qt.
++  use_qt5 = use_sysroot && is_linux && !is_castos && !is_msan && !is_musl
++  use_qt6 = use_sysroot && is_linux && !is_castos && !is_msan && !is_musl
+ }
+ 
+ declare_args() {

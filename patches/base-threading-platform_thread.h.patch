@@ -1,0 +1,15 @@
+diff --git a/base/threading/platform_thread.h b/base/threading/platform_thread.h
+index 8496fc076504f810b0413be06b4ab6c8103cbe63..dd512780cc6bea5ed4fc35a97651e6bbb29f0a85 100644
+--- a/base/threading/platform_thread.h
++++ b/base/threading/platform_thread.h
+@@ -359,8 +359,8 @@ class ThreadTypeDelegate;
+ 
+ class BASE_EXPORT PlatformThreadLinux : public PlatformThreadBase {
+  public:
+-  static constexpr struct sched_param kRealTimeAudioPrio = {8};
+-  static constexpr struct sched_param kRealTimeDisplayPrio = {6};
++  static constexpr struct sched_param kRealTimeAudioPrio = {.sched_priority = 8};
++  static constexpr struct sched_param kRealTimeDisplayPrio = {.sched_priority = 6};
+ 
+   // Sets a delegate which handles thread type changes for this process. This
+   // must be externally synchronized with any call to SetCurrentThreadType.

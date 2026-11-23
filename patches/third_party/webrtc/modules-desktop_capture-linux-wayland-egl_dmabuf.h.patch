@@ -1,0 +1,12 @@
+diff --git a/modules/desktop_capture/linux/wayland/egl_dmabuf.h b/modules/desktop_capture/linux/wayland/egl_dmabuf.h
+index 7ccde63bb48ee8851ab504889bd07efbc3c0dab5..62f5b9abae72646d5c11b16bf3e813147be3879f 100644
+--- a/modules/desktop_capture/linux/wayland/egl_dmabuf.h
++++ b/modules/desktop_capture/linux/wayland/egl_dmabuf.h
+@@ -15,6 +15,7 @@
+ #include <EGL/eglplatform.h>
+ #include <GL/gl.h>
+ #include <gbm.h>
++#include <sys/types.h>
+ 
+ #include <cstdint>
+ #include <map>

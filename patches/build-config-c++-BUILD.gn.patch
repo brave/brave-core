@@ -1,0 +1,16 @@
+diff --git a/build/config/c++/BUILD.gn b/build/config/c++/BUILD.gn
+index 8975d683f5e65c30d96760833978ef7b237556ee..c198929ca728e7d6fe62138f5e5c3a46b787902b 100644
+--- a/build/config/c++/BUILD.gn
++++ b/build/config/c++/BUILD.gn
+@@ -54,6 +54,11 @@ config("runtime_library") {
+ 
+   defines += [ "CR_LIBCXX_REVISION=$libcxx_revision" ]
+ 
++  # musl has no preprocessor macro, so libc++ needs to be told explicitly.
++  if (is_musl) {
++    defines += [ "_LIBCPP_HAS_MUSL_LIBC=1" ]
++  }
++
+   if (is_win) {
+     # Intentionally not using libc++abi on Windows because libc++abi only
+     # implements the Itanium C++ ABI, and not the Microsoft ABI which we use on

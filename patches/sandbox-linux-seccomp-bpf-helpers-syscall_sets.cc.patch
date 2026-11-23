@@ -1,0 +1,47 @@
+diff --git a/sandbox/linux/seccomp-bpf-helpers/syscall_sets.cc b/sandbox/linux/seccomp-bpf-helpers/syscall_sets.cc
+index 77b1169a1a3070d3c2e999033bd6622ffbd59d23..53d25e0bc8ff06f2dd90068800b84d63023eafb5 100644
+--- a/sandbox/linux/seccomp-bpf-helpers/syscall_sets.cc
++++ b/sandbox/linux/seccomp-bpf-helpers/syscall_sets.cc
+@@ -437,6 +437,10 @@ bool SyscallSets::IsAllowedProcessStartOrDeath(int sysno) {
+     case __NR_waitid:
+ #if defined(__i386__)
+     case __NR_waitpid:
++#endif
++#if defined(LIBC_MUSL)
++    // musl calls set_tid_address() when threads start.
++    case __NR_set_tid_address:
+ #endif
+       return true;
+     case __NR_clone:  // Should be parameter-restricted.
+@@ -450,7 +454,9 @@ bool SyscallSets::IsAllowedProcessStartOrDeath(int sysno) {
+ #if defined(__i386__) || defined(__x86_64__) || defined(__mips__)
+     case __NR_set_thread_area:
+ #endif
++#if !defined(LIBC_MUSL)
+     case __NR_set_tid_address:
++#endif
+     case __NR_unshare:
+ #if !defined(__mips__) && !defined(__aarch64__)
+     case __NR_vfork:
+@@ -549,6 +555,11 @@ bool SyscallSets::IsAllowedAddressSpaceAccess(int sysno) {
+     case __NR_munlock:
+     case __NR_munmap:
+     case __NR_mseal:
++#if defined(LIBC_MUSL)
++    // Used by musl's realloc() and dlopen() respectively.
++    case __NR_mremap:
++    case __NR_membarrier:
++#endif
+       return true;
+     case __NR_madvise:
+     case __NR_mincore:
+@@ -566,7 +577,9 @@ bool SyscallSets::IsAllowedAddressSpaceAccess(int sysno) {
+     case __NR_modify_ldt:
+ #endif
+     case __NR_mprotect:
++#if !defined(LIBC_MUSL)
+     case __NR_mremap:
++#endif
+     case __NR_msync:
+     case __NR_munlockall:
+     case __NR_readahead:

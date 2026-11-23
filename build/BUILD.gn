@@ -46,6 +46,28 @@ config("compiler") {
   }
 
   configs = [ ":brave_chromium_src_support" ]
+
+  if (is_musl) {
+    # musl deliberately has no identifying macro; mirror Chromium's LIBC_GLIBC.
+    defines = [ "LIBC_MUSL=1" ]
+
+    # musl's msghdr/cmsghdr use socklen_t (glibc: size_t) and its CMSG_*()
+    # macros do raw pointer math and mixed-sign compares (glibc uses
+    # functions), which trips these wherever they're used.
+    cflags += [
+      "-Wno-error=shorten-64-to-32",
+      "-Wno-error=sign-compare",
+      "-Wno-error=unsafe-buffer-usage",
+
+      # musl's struct sched_param has reserved fields that brace-initialized
+      # constants (e.g. in base/threading/platform_thread.h) leave out.
+      "-Wno-error=missing-field-initializers",
+      "-Wno-error=missing-designated-field-initializers",
+    ]
+
+    # Rust's musl targets default to static linking; we link dynamically.
+    rustflags = [ "-Ctarget-feature=-crt-static" ]
+  }
 }
 
 # do not expose this as a public config anywhere

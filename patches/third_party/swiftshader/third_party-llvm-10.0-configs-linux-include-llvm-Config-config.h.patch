@@ -1,0 +1,14 @@
+diff --git a/third_party/llvm-10.0/configs/linux/include/llvm/Config/config.h b/third_party/llvm-10.0/configs/linux/include/llvm/Config/config.h
+index 7392898797be7e363e8bc773ee4a5fad1ea063d8..67cef48f47048e7b47131c85add55b581d8e7be2 100644
+--- a/third_party/llvm-10.0/configs/linux/include/llvm/Config/config.h
++++ b/third_party/llvm-10.0/configs/linux/include/llvm/Config/config.h
+@@ -125,7 +125,9 @@
+ /* #undef HAVE_MALLCTL */
+ 
+ /* Define to 1 if you have the `mallinfo' function. */
++#if !defined(LIBC_MUSL)
+ #define HAVE_MALLINFO 1
++#endif
+ 
+ /* Define to 1 if you have the <malloc/malloc.h> header file. */
+ /* #undef HAVE_MALLOC_MALLOC_H */

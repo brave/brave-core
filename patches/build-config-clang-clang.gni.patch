@@ -1,0 +1,13 @@
+diff --git a/build/config/clang/clang.gni b/build/config/clang/clang.gni
+index 1e5dc57538e4702ea7ccaa77b83c19f5c80e655f..c439fbb5f48383d2465984c5251beac25e189e51 100644
+--- a/build/config/clang/clang.gni
++++ b/build/config/clang/clang.gni
+@@ -24,7 +24,7 @@ if (is_chromeos || is_android) {
+ 
+   using_tested_sysroot =
+       use_sysroot && (current_os != target_os || current_cpu != target_cpu ||
+-                      target_sysroot == "")
++                      target_sysroot == "") && !is_musl
+ }
+ 
+ default_clang_base_path = "//third_party/llvm-build/Release+Asserts"

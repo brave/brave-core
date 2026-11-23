@@ -1,0 +1,16 @@
+diff --git a/build/toolchain/gcc_toolchain.gni b/build/toolchain/gcc_toolchain.gni
+index 482f7c9e9030e86a35ba18cd8dc33070d9528723..5e80153b0d264ef52541741a3cdbf791856831d2 100644
+--- a/build/toolchain/gcc_toolchain.gni
++++ b/build/toolchain/gcc_toolchain.gni
+@@ -140,6 +140,11 @@ template("single_gcc_toolchain") {
+       # set on those toolchains.
+       host_toolchain = host_toolchain
+ 
++      # Only toolchains that opt in target musl, so host tools stay on glibc.
++      if (!defined(invoker_toolchain_args.is_musl)) {
++        is_musl = false
++      }
++
+       if (!defined(invoker_toolchain_args.v8_current_cpu)) {
+         v8_current_cpu = invoker_toolchain_args.current_cpu
+       }

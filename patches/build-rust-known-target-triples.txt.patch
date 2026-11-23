@@ -1,0 +1,19 @@
+diff --git a/build/rust/known-target-triples.txt b/build/rust/known-target-triples.txt
+index fc4780bf65bb3df4c76555e72dce2110bf0bde0a..31dada1567aeab61c06f079cb33e2073e5b075e0 100644
+--- a/build/rust/known-target-triples.txt
++++ b/build/rust/known-target-triples.txt
+@@ -17,6 +17,7 @@ aarch64-linux-android
+ aarch64-pc-windows-msvc
+ aarch64-unknown-fuchsia
+ aarch64-unknown-linux-gnu
++aarch64-unknown-linux-musl
+ arm64e-apple-ios
+ arm-unknown-linux-gnueabi
+ arm-unknown-linux-gnueabihf
+@@ -41,5 +42,6 @@ x86_64-linux-android
+ x86_64-pc-windows-msvc
+ x86_64-unknown-fuchsia
+ x86_64-unknown-linux-gnu
++x86_64-unknown-linux-musl
+ powerpc64le-unknown-linux-gnu
+ s390x-unknown-linux-gnu

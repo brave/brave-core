@@ -1,8 +1,21 @@
 diff --git a/build/config/BUILDCONFIG.gn b/build/config/BUILDCONFIG.gn
-index 179b9b729ed457aefde93d71dbbc2e2040dc974f..6af5b1c3d13288529b200352e59fc474c184fe0e 100644
+index 179b9b729ed457aefde93d71dbbc2e2040dc974f..aec97de2bc76084fd912aa4fea421a074c651f5a 100644
 --- a/build/config/BUILDCONFIG.gn
 +++ b/build/config/BUILDCONFIG.gn
-@@ -392,6 +392,7 @@ default_compiler_configs = [
+@@ -305,6 +305,12 @@ if (target_os == "android") {
+   assert(false, "Unsupported target_os: $target_os")
+ }
+ 
++import("//brave/build/config/linux/musl.gni")
++if (is_musl) {
++  assert(target_os == "linux", "is_musl is only supported on linux")
++  _default_toolchain = "//brave/build/toolchain/linux:clang_${target_cpu}_musl"
++}
++
+ # If a custom toolchain has been set in the args, set it as default. Otherwise,
+ # set the default toolchain for the platform (if any).
+ if (custom_toolchain != "") {
+@@ -392,6 +398,7 @@ default_compiler_configs = [
    "//build/config/sanitizers:default_sanitizer_flags",
    "//build/config:feature_flags",
  ]

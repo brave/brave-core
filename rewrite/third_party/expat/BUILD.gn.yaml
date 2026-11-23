@@ -13,3 +13,8 @@ substitutions:
         if (is_ios) {
           expat_visibility += ["//brave/ios/browser/svg:*" ]
         }
+
+  - description: The musl sysroot's newer system expat deprecates APIs used by Skia.
+    regex:
+      re_pattern: '(  config\("expat_config"\) \{\n    libs = \[ "expat" \]\n)'
+      replace: "\\1\n    # The musl (Alpine) sysroot's newer expat deprecates APIs used by Skia.\n    if (is_musl) {\n      cflags = [ \"-Wno-error=deprecated-declarations\" ]\n    }\n"

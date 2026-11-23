@@ -1,0 +1,54 @@
+diff --git a/sandbox/policy/linux/bpf_renderer_policy_linux.cc b/sandbox/policy/linux/bpf_renderer_policy_linux.cc
+index 8709f5e70a90a94c25924ee471240df7f35da482..729f3e172e4a8cec3eecb9fc0235095a3f84ffdb 100644
+--- a/sandbox/policy/linux/bpf_renderer_policy_linux.cc
++++ b/sandbox/policy/linux/bpf_renderer_policy_linux.cc
+@@ -7,6 +7,7 @@
+ #include <errno.h>
+ #include <sys/ioctl.h>
+ #include <sys/prctl.h>
++#include <unistd.h>
+ 
+ #include "build/build_config.h"
+ #include "sandbox/linux/bpf_dsl/bpf_dsl.h"
+@@ -51,6 +52,17 @@ ResultExpr RestrictIoctl() {
+ }
+ #endif  // !BUILDFLAG(IS_ANDROID)
+ 
++#if defined(LIBC_MUSL)
++// musl's pthread_kill() uses tkill, which V8's CPU profiler needs. It's only
++// safe to allow when the renderer has its own PID namespace (the user-NS
++// sandbox, not setuid), so tkill can only reach the renderer's own threads.
++bool OwnsPidNamespace() {
++  const int required = SandboxLinux::kUserNS | SandboxLinux::kPIDNS;
++  return getpid() == 1 &&
++         (SandboxLinux::GetInstance()->GetStatus() & required) == required;
++}
++#endif  // defined(LIBC_MUSL)
++
+ }  // namespace
+ #if !BUILDFLAG(IS_ANDROID)
+ RendererProcessPolicy::RendererProcessPolicy() = default;
+@@ -63,6 +75,10 @@ RendererProcessPolicy::~RendererProcessPolicy() = default;
+ 
+ ResultExpr RendererProcessPolicy::EvaluateSyscall(int sysno) const {
+   switch (sysno) {
++#if defined(LIBC_MUSL)
++    case __NR_tkill:
++      return OwnsPidNamespace() ? Allow() : BPFBasePolicy::EvaluateSyscall(sysno);
++#endif
+     // The baseline policy allows __NR_clock_gettime. Allow
+     // clock_getres() for V8. crbug.com/329053.
+     case __NR_clock_getres:
+@@ -106,6 +122,12 @@ ResultExpr RendererProcessPolicy::EvaluateSyscall(int sysno) const {
+ #endif
+     case __NR_mremap:  // See crbug.com/149834.
+     case __NR_pwrite64:
++#if defined(LIBC_MUSL)
++    case __NR_pwritev2:
++    case __NR_sched_getparam:
++    case __NR_sched_getscheduler:
++    case __NR_sched_setscheduler:
++#endif
+     case __NR_sched_get_priority_max:
+     case __NR_sched_get_priority_min:
+     case __NR_sysinfo:

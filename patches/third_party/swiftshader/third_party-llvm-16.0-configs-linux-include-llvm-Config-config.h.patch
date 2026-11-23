@@ -1,0 +1,14 @@
+diff --git a/third_party/llvm-16.0/configs/linux/include/llvm/Config/config.h b/third_party/llvm-16.0/configs/linux/include/llvm/Config/config.h
+index 5e169c0509d70e055d229c24e5cd7cdc365a2228..12c3bb11ca8051c1b8628937c4ec7f3da9e3ce45 100644
+--- a/third_party/llvm-16.0/configs/linux/include/llvm/Config/config.h
++++ b/third_party/llvm-16.0/configs/linux/include/llvm/Config/config.h
+@@ -135,7 +135,9 @@
+ /* #undef HAVE_MALLCTL */
+ 
+ /* Define to 1 if you have the `mallinfo' function. */
++#if !defined(LIBC_MUSL)
+ #define HAVE_MALLINFO 1
++#endif
+ 
+ /* Define to 1 if you have the `mallinfo2' function. */
+ /* #undef HAVE_MALLINFO2 */
