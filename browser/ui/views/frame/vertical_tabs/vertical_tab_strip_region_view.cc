@@ -776,6 +776,10 @@ void BraveVerticalTabStripRegionView::OnMouseExited(
 
 void BraveVerticalTabStripRegionView::OnMouseEntered(
     const ui::MouseEvent& event) {
+  // An enter event can arrive for a cursor no longer over the strip.
+  if (!IsMouseHovered()) {
+    return;
+  }
   OnMouseEntered();
 }
 
