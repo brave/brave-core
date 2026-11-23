@@ -572,6 +572,59 @@ class RewritePlanTest(unittest.TestCase):
             'pick aaa # [cr148] Feature A\n',
         )
 
+    _TRACKER_GROUP = (
+        'pick aaa # [cr148] Version CodeHealth tracker\n'
+        'fixup bbb # fixup! [cr148] Version CodeHealth tracker\n'
+        'pick ccc # [cr148] Version CodeHealth tracker\n'
+        'pick ddd # [cr148] Version CodeHealth tracker\n'
+    )
+
+    def test_squashed_moves_a_group_fixup_behind_the_commit_adding_its_file(
+        self,
+    ):
+        """Git places the fixup right after the group's first commit, where a
+        file a later commit of the group adds isn't there yet."""
+        path = self._todo(self._TRACKER_GROUP)
+        changed = {'aaa': ['M160.md'], 'bbb': ['k_test.py'], 'ccc': ['k.py']}
+        changed['ddd'] = ['k_test.py']
+        added = {'aaa': [], 'bbb': [], 'ccc': ['k.py'], 'ddd': ['k_test.py']}
+
+        rebase.rewrite_plan(
+            todo_file=path,
+            pinned_squashed=True,
+            changed_paths=changed.get,
+            added_paths=added.get,
+        )
+
+        self.assertEqual(
+            path.read_text(),
+            'pick aaa # [cr148] Version CodeHealth tracker\n'
+            'squash ccc # [cr148] Version CodeHealth tracker\n'
+            'squash ddd # [cr148] Version CodeHealth tracker\n'
+            'fixup bbb # fixup! [cr148] Version CodeHealth tracker\n',
+        )
+
+    def test_squashed_leaves_a_group_fixup_of_files_already_there(self):
+        path = self._todo(self._TRACKER_GROUP)
+        changed = {'aaa': ['M160.md'], 'bbb': ['M160.md'], 'ccc': ['k.py']}
+        changed['ddd'] = ['k_test.py']
+        added = {'aaa': [], 'bbb': [], 'ccc': ['k.py'], 'ddd': ['k_test.py']}
+
+        rebase.rewrite_plan(
+            todo_file=path,
+            pinned_squashed=True,
+            changed_paths=changed.get,
+            added_paths=added.get,
+        )
+
+        self.assertEqual(
+            path.read_text(),
+            'pick aaa # [cr148] Version CodeHealth tracker\n'
+            'fixup bbb # fixup! [cr148] Version CodeHealth tracker\n'
+            'squash ccc # [cr148] Version CodeHealth tracker\n'
+            'squash ddd # [cr148] Version CodeHealth tracker\n',
+        )
+
     def test_squashed_keeps_tooling_after_a_commit_it_builds_on(self):
         """A tooling commit stays behind a commit that also changes one of
         its paths and doesn't move, or it would replay before it."""
@@ -2622,6 +2675,24 @@ class RebaseStopTest(_RebaseTestCase):
         self.assertEqual(['tool'], self.changed('HEAD'))
         self.assertEqual(['tracker'], self.changed('HEAD~1'))
         self.assertEqual('x\ny\n', self.committed('tool'))
+
+    def test_a_group_fixup_of_a_file_a_later_commit_adds_applies(self):
+        tracker = 'Version CodeHealth tracker'
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={'other': 'o\n'},
+            commits=[
+                (tracker, {'tracker': 't\n'}),
+                (tracker, {'script.py': 'a\n'}),
+                (f'fixup! {tracker}', {'script.py': 'a\nb\n'}),
+            ],
+        )
+
+        self.rebase(fork, squash_minor_bumps=True)
+
+        self.assertFalse(repository.brave.is_rebase_in_progress())
+        self.assertEqual([tracker], self.subjects())
+        self.assertEqual('a\nb\n', self.committed('script.py'))
 
     def test_a_pinned_group_that_cancels_out_is_dropped(self):
         fork = self.build(

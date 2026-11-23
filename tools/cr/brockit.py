@@ -2233,6 +2233,7 @@ class RebasePlan:
                 pinned_squashed=pinned_squashed,
                 discard_recyclable=discard_recyclable,
                 changed_paths=Rebase.changed_paths,
+                added_paths=Rebase.added_paths,
             )
             rewritten_entries = cls._parse(rewritten)
             retagged = [
@@ -3015,6 +3016,20 @@ class Rebase(Task):
         tooling commits it moves behind the commits they build on."""
         return repository.brave.run_git(
             'diff-tree', '--no-commit-id', '--name-only', '-r', '--root', commit
+        ).splitlines()
+
+    @staticmethod
+    def added_paths(commit: str) -> list[str]:
+        """The paths `commit` adds, for `rebase.rewrite_plan` to keep a pinned
+        group's fixups behind the commits adding their files."""
+        return repository.brave.run_git(
+            'diff-tree',
+            '--no-commit-id',
+            '--name-only',
+            '--diff-filter=A',
+            '-r',
+            '--root',
+            commit,
         ).splitlines()
 
     @staticmethod
@@ -4549,6 +4564,7 @@ class RebaseHook:
                     pinned_squashed=args.internal_rebase_plan_squash_pinned,
                     carry_change_id=Rebase.carry_change_id_line,
                     changed_paths=Rebase.changed_paths,
+                    added_paths=Rebase.added_paths,
                     has_change_id=Rebase.has_change_id,
                     foreign_cr_tag=Rebase.foreign_cr_tag,
                 )
