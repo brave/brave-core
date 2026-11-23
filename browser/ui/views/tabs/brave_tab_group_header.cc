@@ -105,13 +105,13 @@ void BraveTabGroupHeader::LayoutTitleChipForVerticalTabs() {
     return;
   }
 
-  // Upstream caps the title at half a horizontal tab's width. Let it grow to
-  // its full width instead, limited by the space available in the row. Space
-  // around |title_| (insets, |sync_icon_|, |attention_indicator_|) is kept.
+  // Upstream caps the title at half a horizontal tab's width. Instead, make
+  // |title_chip_| span the entire width of the vertical tab bar, and let
+  // |title_| use the remaining space. Space around |title_| (insets,
+  // |sync_icon_|, |attention_indicator_|) is kept.
   const int trailing_space = title_chip_->width() - title_->bounds().right();
-  const int title_width = std::clamp(
-      title_->GetPreferredSize(views::SizeBounds()).width(), 0,
-      std::max(0, available_bounds.width() - title_->x() - trailing_space));
+  const int title_width =
+      std::max(0, available_bounds.width() - title_->x() - trailing_space);
 
   if (attention_indicator_->GetVisible()) {
     attention_indicator_->SetX(attention_indicator_->x() + title_width -
@@ -119,8 +119,7 @@ void BraveTabGroupHeader::LayoutTitleChipForVerticalTabs() {
   }
 
   title_chip_->SetBounds(available_bounds.x(), available_bounds.y(),
-                         title_->x() + title_width + trailing_space,
-                         available_bounds.height());
+                         available_bounds.width(), available_bounds.height());
 
   // Set |title_|'s height to the chip height so the label centers text
   // vertically.
