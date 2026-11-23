@@ -234,7 +234,7 @@ Requests also have:
   to no retries.
 - `timeout_duration`: forwarded to `SimpleURLLoader::SetTimeoutDuration()`;
   defaults to zero, i.e. no timeout.
-- `url_replacements`: overrides the host, path, and/or query of
+- `url_replacements`: overrides the scheme, host, port, path, and/or query of
   `Endpoint::URL()` for this request.
 
 ```cpp
