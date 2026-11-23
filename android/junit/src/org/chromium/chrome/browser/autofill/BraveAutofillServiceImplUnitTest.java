@@ -249,10 +249,17 @@ public class BraveAutofillServiceImplUnitTest {
 
     // --- restrictToFocusedOrigin ---
 
-    private static ViewNode mockViewNode(boolean focused, String webDomain) {
+    private static ViewNode mockViewNode(String webDomain) {
         ViewNode node = mock(ViewNode.class);
-        when(node.isFocused()).thenReturn(focused);
         when(node.getWebDomain()).thenReturn(webDomain);
+        return node;
+    }
+
+    // The node BraveAutofillViewStructureParser#findFocusedNode would return — found by
+    // searching the raw structure, so it may or may not also be a key in nodesMap/fields.
+    private static ViewNode mockFocusedNode(String webDomain, AutofillId autofillId) {
+        ViewNode node = mockViewNode(webDomain);
+        when(node.getAutofillId()).thenReturn(autofillId);
         return node;
     }
 
@@ -263,14 +270,12 @@ public class BraveAutofillServiceImplUnitTest {
     @Test
     public void restrictToFocusedOrigin_noFocusedNode_returnsFieldsUnchanged() {
         Map<String, AutofillId> fields = mapWithKeys(View.AUTOFILL_HINT_NAME);
-        AutofillId nameId = fields.get(View.AUTOFILL_HINT_NAME);
-        Map<AutofillId, ViewNode> nodesMap =
-                Collections.singletonMap(nameId, mockViewNode(/* focused= */ false, null));
+        Map<AutofillId, ViewNode> nodesMap = Collections.emptyMap();
 
         assertSame(
                 fields,
                 BraveAutofillServiceImpl.restrictToFocusedOrigin(
-                        fields, nodesMap, "com.example.app", setOf()));
+                        fields, nodesMap, /* focusedNode= */ null, "com.example.app", setOf()));
     }
 
     @Test
@@ -281,13 +286,14 @@ public class BraveAutofillServiceImplUnitTest {
                 mapWithKeys(View.AUTOFILL_HINT_NAME, View.AUTOFILL_HINT_POSTAL_ADDRESS);
         AutofillId nameId = fields.get(View.AUTOFILL_HINT_NAME);
         AutofillId streetId = fields.get(View.AUTOFILL_HINT_POSTAL_ADDRESS);
+        ViewNode focusedNode = mockFocusedNode("shop.example", nameId);
         Map<AutofillId, ViewNode> nodesMap = new HashMap<>();
-        nodesMap.put(nameId, mockViewNode(/* focused= */ true, "shop.example"));
-        nodesMap.put(streetId, mockViewNode(/* focused= */ false, "shop.example"));
+        nodesMap.put(nameId, focusedNode);
+        nodesMap.put(streetId, mockViewNode("shop.example"));
 
         Map<String, AutofillId> restricted =
                 BraveAutofillServiceImpl.restrictToFocusedOrigin(
-                        fields, nodesMap, "com.android.chrome", setOf());
+                        fields, nodesMap, focusedNode, "com.android.chrome", setOf());
 
         assertEquals(2, restricted.size());
     }
@@ -300,13 +306,14 @@ public class BraveAutofillServiceImplUnitTest {
                 mapWithKeys(View.AUTOFILL_HINT_NAME, View.AUTOFILL_HINT_PHONE);
         AutofillId nameId = fields.get(View.AUTOFILL_HINT_NAME);
         AutofillId phoneId = fields.get(View.AUTOFILL_HINT_PHONE);
+        ViewNode focusedNode = mockFocusedNode("shop.example", nameId);
         Map<AutofillId, ViewNode> nodesMap = new HashMap<>();
-        nodesMap.put(nameId, mockViewNode(/* focused= */ true, "shop.example"));
-        nodesMap.put(phoneId, mockViewNode(/* focused= */ false, "ad.example"));
+        nodesMap.put(nameId, focusedNode);
+        nodesMap.put(phoneId, mockViewNode("ad.example"));
 
         Map<String, AutofillId> restricted =
                 BraveAutofillServiceImpl.restrictToFocusedOrigin(
-                        fields, nodesMap, "com.android.chrome", setOf());
+                        fields, nodesMap, focusedNode, "com.android.chrome", setOf());
 
         assertEquals(1, restricted.size());
         assertSame(nameId, restricted.get(View.AUTOFILL_HINT_NAME));
@@ -320,13 +327,18 @@ public class BraveAutofillServiceImplUnitTest {
                 mapWithKeys(View.AUTOFILL_HINT_NAME, View.AUTOFILL_HINT_EMAIL_ADDRESS);
         AutofillId nameId = fields.get(View.AUTOFILL_HINT_NAME);
         AutofillId emailId = fields.get(View.AUTOFILL_HINT_EMAIL_ADDRESS);
+        ViewNode focusedNode = mockFocusedNode(null, nameId);
         Map<AutofillId, ViewNode> nodesMap = new HashMap<>();
-        nodesMap.put(nameId, mockViewNode(/* focused= */ true, null));
-        nodesMap.put(emailId, mockViewNode(/* focused= */ false, null));
+        nodesMap.put(nameId, focusedNode);
+        nodesMap.put(emailId, mockViewNode(null));
 
         Map<String, AutofillId> restricted =
                 BraveAutofillServiceImpl.restrictToFocusedOrigin(
-                        fields, nodesMap, "com.example.nativeapp", setOf("com.opera.browser"));
+                        fields,
+                        nodesMap,
+                        focusedNode,
+                        "com.example.nativeapp",
+                        setOf("com.opera.browser"));
 
         assertSame(fields, restricted);
     }
@@ -339,13 +351,18 @@ public class BraveAutofillServiceImplUnitTest {
                 mapWithKeys(View.AUTOFILL_HINT_NAME, View.AUTOFILL_HINT_PHONE);
         AutofillId nameId = fields.get(View.AUTOFILL_HINT_NAME);
         AutofillId phoneId = fields.get(View.AUTOFILL_HINT_PHONE);
+        ViewNode focusedNode = mockFocusedNode(null, nameId);
         Map<AutofillId, ViewNode> nodesMap = new HashMap<>();
-        nodesMap.put(nameId, mockViewNode(/* focused= */ true, null));
-        nodesMap.put(phoneId, mockViewNode(/* focused= */ false, null));
+        nodesMap.put(nameId, focusedNode);
+        nodesMap.put(phoneId, mockViewNode(null));
 
         Map<String, AutofillId> restricted =
                 BraveAutofillServiceImpl.restrictToFocusedOrigin(
-                        fields, nodesMap, "com.opera.browser", setOf("com.opera.browser"));
+                        fields,
+                        nodesMap,
+                        focusedNode,
+                        "com.opera.browser",
+                        setOf("com.opera.browser"));
 
         assertEquals(1, restricted.size());
         assertSame(nameId, restricted.get(View.AUTOFILL_HINT_NAME));
@@ -358,14 +375,60 @@ public class BraveAutofillServiceImplUnitTest {
         Map<String, AutofillId> fields =
                 mapWithKeys(View.AUTOFILL_HINT_NAME, View.AUTOFILL_HINT_POSTAL_ADDRESS);
         AutofillId nameId = fields.get(View.AUTOFILL_HINT_NAME);
-        Map<AutofillId, ViewNode> nodesMap =
-                Collections.singletonMap(nameId, mockViewNode(/* focused= */ true, "shop.example"));
+        ViewNode focusedNode = mockFocusedNode("shop.example", nameId);
+        Map<AutofillId, ViewNode> nodesMap = Collections.singletonMap(nameId, focusedNode);
 
         Map<String, AutofillId> restricted =
                 BraveAutofillServiceImpl.restrictToFocusedOrigin(
-                        fields, nodesMap, "com.android.chrome", setOf());
+                        fields, nodesMap, focusedNode, "com.android.chrome", setOf());
 
         assertEquals(1, restricted.size());
         assertTrue(restricted.containsKey(View.AUTOFILL_HINT_NAME));
+    }
+
+    @Test
+    public void restrictToFocusedOrigin_focusedFieldNotClassified_riskyPackage_failsClosed() {
+        // Regression test: a cross-origin field can share a hint with an earlier-seen node and
+        // lose classification entirely (see BraveAutofillViewStructureParser#getHint), so the
+        // node findFocusedNode() actually finds may never appear in fields/nodesMap. Must fail
+        // closed (empty), not fall back to the unrestricted fields — that would defeat the whole
+        // point of the compat-mode fallback for exactly the case it exists to catch.
+        Map<String, AutofillId> fields =
+                mapWithKeys(View.AUTOFILL_HINT_NAME, View.AUTOFILL_HINT_PHONE);
+        AutofillId nameId = fields.get(View.AUTOFILL_HINT_NAME);
+        AutofillId phoneId = fields.get(View.AUTOFILL_HINT_PHONE);
+        Map<AutofillId, ViewNode> nodesMap = new HashMap<>();
+        nodesMap.put(nameId, mockViewNode(null));
+        nodesMap.put(phoneId, mockViewNode(null));
+        // The real focused node has its own AutofillId, distinct from anything in `fields`.
+        ViewNode focusedNode = mockFocusedNode(null, new AutofillId(999));
+
+        Map<String, AutofillId> restricted =
+                BraveAutofillServiceImpl.restrictToFocusedOrigin(
+                        fields,
+                        nodesMap,
+                        focusedNode,
+                        "com.opera.browser",
+                        setOf("com.opera.browser"));
+
+        assertTrue(restricted.isEmpty());
+    }
+
+    @Test
+    public void restrictToFocusedOrigin_focusedNodeHasNoAutofillId_riskyPackage_failsClosed() {
+        Map<String, AutofillId> fields = mapWithKeys(View.AUTOFILL_HINT_NAME);
+        AutofillId nameId = fields.get(View.AUTOFILL_HINT_NAME);
+        Map<AutofillId, ViewNode> nodesMap = Collections.singletonMap(nameId, mockViewNode(null));
+        ViewNode focusedNode = mockFocusedNode(null, null);
+
+        Map<String, AutofillId> restricted =
+                BraveAutofillServiceImpl.restrictToFocusedOrigin(
+                        fields,
+                        nodesMap,
+                        focusedNode,
+                        "com.opera.browser",
+                        setOf("com.opera.browser"));
+
+        assertTrue(restricted.isEmpty());
     }
 }

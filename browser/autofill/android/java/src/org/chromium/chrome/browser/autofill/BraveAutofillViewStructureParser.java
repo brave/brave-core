@@ -224,6 +224,50 @@ public class BraveAutofillViewStructureParser {
     }
 
     /**
+     * Finds the currently focused node anywhere in the structure, independent of whether it was
+     * classified as an autofillable field.
+     *
+     * <p>A node can fail classification in {@link #getHint} even though it's real and currently
+     * focused — e.g. a same-origin confirmation field, or a cross-origin field, that happens to
+     * share a hint with an earlier-seen node loses that hint (see the {@code existingFields} checks
+     * throughout {@link #getHint}) and is never recorded by {@link
+     * #addAutofillableFieldsWithNodes}. Looking up focus through the classified-fields map instead
+     * of the raw structure would silently miss those nodes. See {@link
+     * BraveAutofillServiceImpl#restrictToFocusedOrigin}.
+     *
+     * <p>Checks descendants before the node itself: a WebView's outer container {@code View} can
+     * report {@code isFocused() == true} simply because it holds real Android input focus, while
+     * the specific virtual child node representing the actually-focused HTML field — the one whose
+     * {@link AutofillId} matches a classified field — is a descendant of it. Returning on the first
+     * match in a parent-first walk would stop at that outer container and never reach the real
+     * field.
+     *
+     * @param structure The assist structure to search.
+     * @return The most specific focused node, or null if no node in the structure is focused.
+     */
+    public static @Nullable ViewNode findFocusedNode(AssistStructure structure) {
+        int nodes = structure.getWindowNodeCount();
+        for (int i = 0; i < nodes; i++) {
+            ViewNode focused = findFocusedNode(structure.getWindowNodeAt(i).getRootViewNode());
+            if (focused != null) {
+                return focused;
+            }
+        }
+        return null;
+    }
+
+    private static @Nullable ViewNode findFocusedNode(ViewNode node) {
+        int childrenSize = node.getChildCount();
+        for (int i = 0; i < childrenSize; i++) {
+            ViewNode focused = findFocusedNode(node.getChildAt(i));
+            if (focused != null) {
+                return focused;
+            }
+        }
+        return node.isFocused() ? node : null;
+    }
+
+    /**
      * Returns true if the detected fields contain at least one address-related hint. Used to decide
      * whether to offer address autofill (vs skipping login-only forms, etc.).
      */

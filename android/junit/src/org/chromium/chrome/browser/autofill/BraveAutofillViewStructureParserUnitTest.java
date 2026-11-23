@@ -8,11 +8,14 @@ package org.chromium.chrome.browser.autofill;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import android.app.assist.AssistStructure;
 import android.app.assist.AssistStructure.ViewNode;
+import android.app.assist.AssistStructure.WindowNode;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewStructure.HtmlInfo;
@@ -721,5 +724,87 @@ public class BraveAutofillViewStructureParserUnitTest {
                 .thenReturn(Collections.singletonList(new Pair<String, String>("name", "email")));
         when(node.getHtmlInfo()).thenReturn(htmlInfo);
         assertFalse(BraveAutofillViewStructureParser.isMarkedInvisibleByHtml(node));
+    }
+
+    // --- findFocusedNode ---
+
+    private static AssistStructure mockStructureWithWindows(ViewNode... rootNodes) {
+        AssistStructure structure = mock(AssistStructure.class);
+        when(structure.getWindowNodeCount()).thenReturn(rootNodes.length);
+        for (int i = 0; i < rootNodes.length; i++) {
+            WindowNode windowNode = mock(WindowNode.class);
+            when(windowNode.getRootViewNode()).thenReturn(rootNodes[i]);
+            when(structure.getWindowNodeAt(i)).thenReturn(windowNode);
+        }
+        return structure;
+    }
+
+    private static ViewNode mockNodeWithChildren(boolean focused, ViewNode... children) {
+        ViewNode node = mock(ViewNode.class);
+        when(node.isFocused()).thenReturn(focused);
+        when(node.getChildCount()).thenReturn(children.length);
+        for (int i = 0; i < children.length; i++) {
+            when(node.getChildAt(i)).thenReturn(children[i]);
+        }
+        return node;
+    }
+
+    @Test
+    public void findFocusedNode_noWindows_returnsNull() {
+        AssistStructure structure = mockStructureWithWindows();
+        assertNull(BraveAutofillViewStructureParser.findFocusedNode(structure));
+    }
+
+    @Test
+    public void findFocusedNode_rootFocused_returnsRoot() {
+        ViewNode root = mockNodeWithChildren(/* focused= */ true);
+        AssistStructure structure = mockStructureWithWindows(root);
+        assertSame(root, BraveAutofillViewStructureParser.findFocusedNode(structure));
+    }
+
+    @Test
+    public void findFocusedNode_nestedChildFocused_returnsChild() {
+        ViewNode child = mockNodeWithChildren(/* focused= */ true);
+        ViewNode root = mockNodeWithChildren(/* focused= */ false, child);
+        AssistStructure structure = mockStructureWithWindows(root);
+        assertSame(child, BraveAutofillViewStructureParser.findFocusedNode(structure));
+    }
+
+    @Test
+    public void findFocusedNode_rootAndChildBothFocused_prefersChild() {
+        // Regression test: a WebView's outer container View can report isFocused() == true
+        // simply because it holds real Android input focus, while the specific virtual child
+        // node representing the actually-focused HTML field (the one with an AutofillId that
+        // matches a classified field) is a descendant of it and is ALSO focused. The more
+        // specific descendant must win, not whichever node a parent-first walk reaches first.
+        ViewNode child = mockNodeWithChildren(/* focused= */ true);
+        ViewNode root = mockNodeWithChildren(/* focused= */ true, child);
+        AssistStructure structure = mockStructureWithWindows(root);
+        assertSame(child, BraveAutofillViewStructureParser.findFocusedNode(structure));
+    }
+
+    @Test
+    public void findFocusedNode_grandchildFocused_returnsGrandchild() {
+        ViewNode grandchild = mockNodeWithChildren(/* focused= */ true);
+        ViewNode child = mockNodeWithChildren(/* focused= */ false, grandchild);
+        ViewNode root = mockNodeWithChildren(/* focused= */ false, child);
+        AssistStructure structure = mockStructureWithWindows(root);
+        assertSame(grandchild, BraveAutofillViewStructureParser.findFocusedNode(structure));
+    }
+
+    @Test
+    public void findFocusedNode_nothingFocused_returnsNull() {
+        ViewNode child = mockNodeWithChildren(/* focused= */ false);
+        ViewNode root = mockNodeWithChildren(/* focused= */ false, child);
+        AssistStructure structure = mockStructureWithWindows(root);
+        assertNull(BraveAutofillViewStructureParser.findFocusedNode(structure));
+    }
+
+    @Test
+    public void findFocusedNode_secondWindowFocused_returnsNodeFromSecondWindow() {
+        ViewNode firstWindowRoot = mockNodeWithChildren(/* focused= */ false);
+        ViewNode secondWindowRoot = mockNodeWithChildren(/* focused= */ true);
+        AssistStructure structure = mockStructureWithWindows(firstWindowRoot, secondWindowRoot);
+        assertSame(secondWindowRoot, BraveAutofillViewStructureParser.findFocusedNode(structure));
     }
 }

@@ -120,8 +120,10 @@ public class BraveAutofillServiceImpl extends SplitCompatAutofillService.Impl {
             return;
         }
 
+        ViewNode focusedNode = BraveAutofillViewStructureParser.findFocusedNode(structure);
         fields =
-                restrictToFocusedOrigin(fields, nodesMap, packageName, getCompatModeRiskPackages());
+                restrictToFocusedOrigin(
+                        fields, nodesMap, focusedNode, packageName, getCompatModeRiskPackages());
         if (fields.isEmpty()) {
             callback.onSuccess(null);
             return;
@@ -197,29 +199,34 @@ public class BraveAutofillServiceImpl extends SplitCompatAutofillService.Impl {
      * be running in compat mode, fail closed in that case: keep only the field the user is actually
      * filling rather than risk bundling unrelated, possibly cross-origin content.
      *
+     * <p>{@code focusedNode} must come from {@link
+     * BraveAutofillViewStructureParser#findFocusedNode}, which searches the raw structure — not
+     * from looking up which classified field has {@code isFocused() == true} in {@code nodesMap}. A
+     * node can be the real, currently-focused field and still fail classification (e.g. a
+     * cross-origin field that happens to share a hint with an earlier-seen node loses that hint,
+     * see {@link BraveAutofillViewStructureParser#getHint}), so it would never appear in {@code
+     * nodesMap} at all. Searching {@code nodesMap} for focus would then find nothing and return
+     * {@code fields} unrestricted — defeating this method's entire purpose for exactly the
+     * adversarial case it exists to catch.
+     *
      * @param compatModeRiskPackages Packages that could be running in compat mode — see {@link
      *     #getCompatModeRiskPackages}, which is what production code passes here.
-     * @return A new map restricted as above, or {@code fields} unchanged if no focused field could
-     *     be identified, or if the focused field has no web origin and the requesting package isn't
-     *     a known browser (e.g. a native, non-WebView app, where {@code getWebDomain()} is null for
-     *     everything and that's expected, not a missing signal).
+     * @return A new map restricted as above, or {@code fields} unchanged if no node anywhere in the
+     *     structure is focused, or if the focused field has no web origin and the requesting
+     *     package isn't a known browser (e.g. a native, non-WebView app, where {@code
+     *     getWebDomain()} is null for everything and that's expected, not a missing signal). If the
+     *     focused field has no web origin and the package could be in compat mode, but the focused
+     *     field itself isn't one of the classified {@code fields} (the adversarial case above),
+     *     returns an empty map rather than any of the classified fields.
      */
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     static Map<String, AutofillId> restrictToFocusedOrigin(
             Map<String, AutofillId> fields,
             Map<AutofillId, ViewNode> nodesMap,
+            @Nullable ViewNode focusedNode,
             String packageName,
             Set<String> compatModeRiskPackages) {
-        ViewNode focusedNode = null;
-        AutofillId focusedId = null;
-        for (Map.Entry<AutofillId, ViewNode> entry : nodesMap.entrySet()) {
-            if (entry.getValue().isFocused()) {
-                focusedId = entry.getKey();
-                focusedNode = entry.getValue();
-                break;
-            }
-        }
-        if (focusedNode == null || focusedId == null) {
+        if (focusedNode == null) {
             return fields;
         }
 
@@ -228,7 +235,11 @@ public class BraveAutofillServiceImpl extends SplitCompatAutofillService.Impl {
             if (!compatModeRiskPackages.contains(packageName)) {
                 return fields;
             }
+            AutofillId focusedId = focusedNode.getAutofillId();
             Map<String, AutofillId> restricted = new HashMap<>();
+            if (focusedId == null) {
+                return restricted;
+            }
             for (Map.Entry<String, AutofillId> entry : fields.entrySet()) {
                 if (focusedId.equals(entry.getValue())) {
                     restricted.put(entry.getKey(), entry.getValue());
