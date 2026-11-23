@@ -13,12 +13,28 @@ substitutions:
         - brave/components/brave_wallet/common/buildflags/buildflags.h
 
   - description: |
-      Include the Brave Wallet prompt the substitutions below use on Android
+      Include what the substitutions below use in `ENABLE_BRAVE_WALLET` builds
     add_after_includes:
       code: |-
-        #if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_BRAVE_WALLET)
+        #if BUILDFLAG(ENABLE_BRAVE_WALLET)
+        #include "brave/browser/permissions/brave_wallet_account_permission_context_factory.h"
+        #include "brave/components/permissions/contexts/brave_wallet_account_permission_context.h"
+        #if BUILDFLAG(IS_ANDROID)
         #include "brave/browser/permissions/brave_wallet_permission_prompt_android.h"
-        #endif  // BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_BRAVE_WALLET)
+        #endif  // BUILDFLAG(IS_ANDROID)
+        #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+
+  - description: |
+      Return Brave Wallet's account permission context from `GetChooserContext`
+    preempt_function_impl:
+      function_name: ChromePermissionsClient::GetChooserContext
+      code: |-
+        #if BUILDFLAG(ENABLE_BRAVE_WALLET)
+        if (type == ContentSettingsType::BRAVE_WALLET_ACCOUNTS) {
+          return BraveWalletAccountPermissionContextFactory::GetForProfile(
+              browser_context);
+        }
+        #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
   - description: |
       Show Brave Wallet's own prompt UI on Android

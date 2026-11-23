@@ -12,6 +12,7 @@
 #include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
+#include "components/content_settings/core/browser/website_settings_registry.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings.mojom.h"
 #include "net/base/features.h"
@@ -224,6 +225,18 @@ void ContentSettingsRegistry::BraveInit() {
                WebsiteSettingsRegistry::PLATFORM_ANDROID,
            ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE,
            PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
+
+  // Per-site wallet account grants are dict-valued, so this is a website
+  // setting rather than a content setting. See
+  // BraveWalletAccountPermissionContext.
+  website_settings_registry_->Register(
+      ContentSettingsType::BRAVE_WALLET_ACCOUNTS, "brave_wallet_accounts",
+      base::Value(), WebsiteSettingsInfo::UNSYNCABLE,
+      WebsiteSettingsInfo::NOT_LOSSY,
+      WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
+      WebsiteSettingsRegistry::DESKTOP |
+          WebsiteSettingsRegistry::PLATFORM_ANDROID,
+      WebsiteSettingsInfo::DONT_INHERIT_IN_INCOGNITO);
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
   // Register google sign in social media permission default value as Ask.

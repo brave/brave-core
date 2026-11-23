@@ -30,26 +30,35 @@ source_set("permissions") {
   ]
 
   if (enable_brave_wallet) {
-    deps += [ "//brave/components/brave_wallet/browser:permission_utils" ]
-  }
-
-  if (is_android && enable_brave_wallet) {
     sources += [
-      "brave_dapp_permission_prompt_dialog_controller_android.cc",
-      "brave_dapp_permission_prompt_dialog_controller_android.h",
-      "brave_wallet_permission_prompt_android.cc",
-      "brave_wallet_permission_prompt_android.h",
-      "connect_account_android.cc",
+      "brave_wallet_account_permission_context_factory.cc",
+      "brave_wallet_account_permission_context_factory.h",
     ]
-    public_deps += [ "//brave/components/brave_wallet/common:mojom" ]
     deps += [
-      "//brave/components/brave_wallet/browser:utils",
-      "//chrome/android:chrome_jni_headers",
-      "//content/public/browser",
-      "//content/public/common",
-      "//ui/android",
-      "//url",
+      "//brave/browser/brave_wallet",
+      "//brave/components/brave_wallet/browser:permission_utils",
+      "//brave/components/brave_wallet/common",
+      "//components/content_settings/core/browser",
     ]
+
+    if (is_android) {
+      sources += [
+        "brave_dapp_permission_prompt_dialog_controller_android.cc",
+        "brave_dapp_permission_prompt_dialog_controller_android.h",
+        "brave_wallet_permission_prompt_android.cc",
+        "brave_wallet_permission_prompt_android.h",
+        "connect_account_android.cc",
+      ]
+      public_deps += [ "//brave/components/brave_wallet/common:mojom" ]
+      deps += [
+        "//brave/components/brave_wallet/browser:utils",
+        "//chrome/android:chrome_jni_headers",
+        "//content/public/browser",
+        "//content/public/common",
+        "//ui/android",
+        "//url",
+      ]
+    }
   }
 }
 

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index f8014a728ebcabdd212b4a89c125a509f59472dd..4fbe125b2874b9ee2ebc19123b33dbbe00daa8a6 100644
+index f8014a728ebcabdd212b4a89c125a509f59472dd..c5e55ea2dfd1067bba9ad3292e1ac547145e2eab 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-@@ -255,6 +255,53 @@ constexpr auto kContentSettingsTypeGroupNames = std::to_array<
+@@ -255,6 +255,55 @@ constexpr auto kContentSettingsTypeGroupNames = std::to_array<
      {ContentSettingsType::SUB_APPS_WITHOUT_PROMPTS, nullptr},
      {ContentSettingsType::SUSPICIOUS_SITE_WARNING_DATA, nullptr},
      {ContentSettingsType::WEBAUTHN_AMBIENT_SIGNIN_DATA, nullptr},
@@ -20,11 +20,13 @@ index f8014a728ebcabdd212b4a89c125a509f59472dd..4fbe125b2874b9ee2ebc19123b33dbbe
 +    {ContentSettingsType::BRAVE_SOLANA, "solana"},
 +    {ContentSettingsType::BRAVE_CARDANO, "cardano"},
 +    {ContentSettingsType::BRAVE_POLKADOT, "polkadot"},
++    {ContentSettingsType::BRAVE_WALLET_ACCOUNTS, kWalletAccountsChooserDataGroupType},
 +#else
 +    {ContentSettingsType::BRAVE_ETHEREUM, nullptr},
 +    {ContentSettingsType::BRAVE_SOLANA, nullptr},
 +    {ContentSettingsType::BRAVE_CARDANO, nullptr},
 +    {ContentSettingsType::BRAVE_POLKADOT, nullptr},
++    {ContentSettingsType::BRAVE_WALLET_ACCOUNTS, nullptr},
 +#endif
 +    {ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, "googleSignIn"},
 +    {ContentSettingsType::BRAVE_HTTPS_UPGRADE, nullptr},
@@ -56,7 +58,20 @@ index f8014a728ebcabdd212b4a89c125a509f59472dd..4fbe125b2874b9ee2ebc19123b33dbbe
  });
  
  static_assert(
-@@ -520,7 +567,7 @@ constexpr UrlIdentity::TypeSet kUrlIdentityAllowedTypes = {
+@@ -499,8 +548,11 @@ const ChooserTypeNameEntry kChooserTypeGroupNames[] = {
+     {&GetHidChooserContext, kHidChooserDataGroupType},
+     {&GetBluetoothChooserContext, kBluetoothChooserDataGroupType},
+ #if BUILDFLAG(ENABLE_SMART_CARD)
+-    {&GetSmartCardChooserContext, kSmartCardChooserDataGroupType}
++    {&GetSmartCardChooserContext, kSmartCardChooserDataGroupType},
+ #endif  // BUILDFLAG(ENABLE_SMART_CARD)
++#if BUILDFLAG(ENABLE_BRAVE_WALLET)
++    {&GetWalletAccountsChooserContext, kWalletAccountsChooserDataGroupType},
++#endif
+ };
+ 
+ // These variables represent different formatting options for default (i.e. not
+@@ -520,7 +572,7 @@ constexpr UrlIdentity::TypeSet kUrlIdentityAllowedTypes = {
  
  }  // namespace
  
@@ -65,7 +80,7 @@ index f8014a728ebcabdd212b4a89c125a509f59472dd..4fbe125b2874b9ee2ebc19123b33dbbe
    for (auto kContentSettingsTypeGroupName : kContentSettingsTypeGroupNames) {
      if (type == kContentSettingsTypeGroupName.type &&
          kContentSettingsTypeGroupName.name) {
-@@ -531,6 +578,9 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+@@ -531,6 +583,9 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
@@ -75,7 +90,7 @@ index f8014a728ebcabdd212b4a89c125a509f59472dd..4fbe125b2874b9ee2ebc19123b33dbbe
    for (const auto& entry : kContentSettingsTypeGroupNames) {
      // Content setting types that aren't represented in the settings UI
      // will have `nullptr` as their `name`. However, converting `nullptr`
-@@ -545,6 +595,9 @@ ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
+@@ -545,6 +600,9 @@ ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
  }
  
  std::string_view ContentSettingsTypeToGroupName(ContentSettingsType type) {
@@ -85,7 +100,7 @@ index f8014a728ebcabdd212b4a89c125a509f59472dd..4fbe125b2874b9ee2ebc19123b33dbbe
    for (const auto& entry : kContentSettingsTypeGroupNames) {
      if (type == entry.type) {
        // Content setting types that aren't represented in the settings UI
-@@ -564,7 +617,7 @@ std::string_view ContentSettingsTypeToGroupName(ContentSettingsType type) {
+@@ -564,7 +622,7 @@ std::string_view ContentSettingsTypeToGroupName(ContentSettingsType type) {
                 << " is not a recognized content settings type.";
  }
  
@@ -94,7 +109,7 @@ index f8014a728ebcabdd212b4a89c125a509f59472dd..4fbe125b2874b9ee2ebc19123b33dbbe
      const std::string& origin,
      Profile* profile) {
    // First build the list of permissions that will be shown regardless of
-@@ -705,6 +758,8 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
+@@ -705,6 +763,8 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
        return "policy";
      case SiteSettingSource::kPreference:
        return "preference";
@@ -103,7 +118,7 @@ index f8014a728ebcabdd212b4a89c125a509f59472dd..4fbe125b2874b9ee2ebc19123b33dbbe
      case SiteSettingSource::kNumSources:
        NOTREACHED();
    }
-@@ -713,6 +768,8 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
+@@ -713,6 +773,8 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
  SiteSettingSource ProviderTypeToSiteSettingsSource(
      const ProviderType provider_type) {
    switch (provider_type) {
@@ -112,7 +127,7 @@ index f8014a728ebcabdd212b4a89c125a509f59472dd..4fbe125b2874b9ee2ebc19123b33dbbe
      case ProviderType::kWebuiAllowlistProvider:
      case ProviderType::kComponentExtensionProvider:
        return SiteSettingSource::kAllowlist;
-@@ -742,6 +799,8 @@ SiteSettingSource ProviderTypeToSiteSettingsSource(
+@@ -742,6 +804,8 @@ SiteSettingSource ProviderTypeToSiteSettingsSource(
  std::string_view ProviderToDefaultSettingSourceString(
      const ProviderType provider) {
    switch (provider) {
@@ -121,7 +136,7 @@ index f8014a728ebcabdd212b4a89c125a509f59472dd..4fbe125b2874b9ee2ebc19123b33dbbe
      case ProviderType::kPolicyProvider:
        return "policy";
      case ProviderType::kSupervisedProvider:
-@@ -833,7 +892,7 @@ std::u16string GetExpirationDescription(const base::Time& expiration) {
+@@ -833,7 +897,7 @@ std::u16string GetExpirationDescription(const base::Time& expiration) {
  
  // Create a base::DictValue that will act as a data source for a single row
  // in a HostContentSettingsMap-controlled exceptions table (e.g., cookies).

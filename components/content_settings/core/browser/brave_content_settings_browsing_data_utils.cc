@@ -32,7 +32,8 @@ void BraveRemoveSiteSettingsData(
 
   static constexpr ContentSettingsType kBraveWebSettings[] = {
       ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-      ContentSettingsType::BRAVE_AUTO_SHRED, ContentSettingsType::BRAVE_PSST};
+      ContentSettingsType::BRAVE_AUTO_SHRED, ContentSettingsType::BRAVE_PSST,
+      ContentSettingsType::BRAVE_WALLET_ACCOUNTS};
 
   for (const auto type : kBraveWebSettings) {
     if (!content_settings::WebsiteSettingsRegistry::GetInstance()->Get(type)) {

@@ -64,11 +64,13 @@ substitutions:
             {ContentSettingsType::BRAVE_SOLANA, "solana"},
             {ContentSettingsType::BRAVE_CARDANO, "cardano"},
             {ContentSettingsType::BRAVE_POLKADOT, "polkadot"},
+            {ContentSettingsType::BRAVE_WALLET_ACCOUNTS, kWalletAccountsChooserDataGroupType},
         #else
             {ContentSettingsType::BRAVE_ETHEREUM, nullptr},
             {ContentSettingsType::BRAVE_SOLANA, nullptr},
             {ContentSettingsType::BRAVE_CARDANO, nullptr},
             {ContentSettingsType::BRAVE_POLKADOT, nullptr},
+            {ContentSettingsType::BRAVE_WALLET_ACCOUNTS, nullptr},
         #endif
             {ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, "googleSignIn"},
             {ContentSettingsType::BRAVE_HTTPS_UPGRADE, nullptr},
@@ -97,6 +99,17 @@ substitutions:
             {ContentSettingsType::BRAVE_WEBCOMPAT_ALL, nullptr},
             {ContentSettingsType::BRAVE_SHIELDS_METADATA, nullptr},
             {ContentSettingsType::BRAVE_PSST, nullptr},\2
+
+  - description: |
+      Append the wallet accounts chooser to kChooserTypeGroupNames
+    regex:
+      re_pattern: '(kChooserTypeGroupNames\[\]\s*=\s*\{.*?\}),?((?:\n#endif[^\n]*)?)(\n\};)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1,\2
+        #if BUILDFLAG(ENABLE_BRAVE_WALLET)
+            {&GetWalletAccountsChooserContext, kWalletAccountsChooserDataGroupType},
+        #endif\3
 
   - description:
       'Map "autoplay" group name to AUTOPLAY in
