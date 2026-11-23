@@ -9,12 +9,13 @@
 #include <string>
 
 #include "chrome/browser/ui/tabs/split_tab_menu_model.h"
+#include "components/tabs/public/tab_interface.h"
 
 class BraveSplitTabMenuModel : public SplitTabMenuModel {
  public:
   BraveSplitTabMenuModel(TabStripModel* tab_strip_model,
                          MenuSource menu_source,
-                         std::optional<int> split_tab_index = std::nullopt);
+                         tabs::TabHandle split_tab = tabs::TabHandle::Null());
   ~BraveSplitTabMenuModel() override;
 
   // SplitTabMenuModel:

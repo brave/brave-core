@@ -222,7 +222,7 @@ void BraveTabMenuModel::BuildSplitTabEntry(TabStripModel* tab_strip_model,
   if (*split_cmd == TabStripModel::CommandArrangeSplit) {
     arrange_split_view_submenu_ = std::make_unique<BraveSplitTabMenuModel>(
         tab_strip_model, SplitTabMenuModel::MenuSource::kTabContextMenu,
-        selected_index);
+        tab->GetHandle());
     InsertSubMenuWithStringIdAt(
         insert_index, TabStripModel::CommandArrangeSplit,
         IDS_TAB_CXMENU_ARRANGE_SPLIT, arrange_split_view_submenu_.get());

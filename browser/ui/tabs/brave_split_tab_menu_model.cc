@@ -34,11 +34,10 @@ std::unique_ptr<SplitTabMenuModel> CreateBraveSplitTabMenuModel(
   return std::make_unique<BraveSplitTabMenuModel>(tab_strip_model, source);
 }
 
-BraveSplitTabMenuModel::BraveSplitTabMenuModel(
-    TabStripModel* tab_strip_model,
-    MenuSource menu_source,
-    std::optional<int> split_tab_index)
-    : SplitTabMenuModel(tab_strip_model, menu_source, split_tab_index) {
+BraveSplitTabMenuModel::BraveSplitTabMenuModel(TabStripModel* tab_strip_model,
+                                               MenuSource menu_source,
+                                               tabs::TabHandle split_tab)
+    : SplitTabMenuModel(tab_strip_model, menu_source, split_tab) {
   // Remove "Send feedback" and the separator above it.
   auto feedback_command_index =
       GetIndexOfCommandId(GetCommandIdInt(CommandId::kSendFeedback));
