@@ -28,6 +28,8 @@ const observer = {
     store.dispatch(Actions.purchasedStateChanged(state))
   },
 
+  onAutoReconnectStateChanged: (enabled: boolean) => {},
+
   onSmartProxyRoutingStateChanged: (enabled: boolean) => {},
 
   onAgentFailure: () => {},
