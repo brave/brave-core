@@ -9,6 +9,7 @@
 #include "brave/browser/brave_account/brave_account_service_factory.h"
 #include "brave/components/brave_account/brave_account_ui_base.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
+#include "brave/components/brave_account/mojom/dependent_services.mojom.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/webui_config.h"
@@ -24,7 +25,8 @@ class BraveAccountUIAndroid
                                 brave_account::BraveAccountServiceFactory>,
       public content::WebUIController,
       public brave_account::mojom::DialogController,
-      public brave_account::mojom::DialogOpener {
+      public brave_account::mojom::DialogOpener,
+      public brave_account::mojom::SettingsOpener {
  public:
   using BraveAccountUIBase::BindInterface;
 
@@ -33,10 +35,17 @@ class BraveAccountUIAndroid
   ~BraveAccountUIAndroid() override;
 
   void BindInterface(
+      mojo::PendingReceiver<brave_account::mojom::DependentServices>
+          pending_receiver);
+
+  void BindInterface(
       mojo::PendingReceiver<brave_account::mojom::DialogController>
           pending_receiver);
 
   void BindInterface(mojo::PendingReceiver<brave_account::mojom::DialogOpener>
+                         pending_receiver);
+
+  void BindInterface(mojo::PendingReceiver<brave_account::mojom::SettingsOpener>
                          pending_receiver);
 
  private:
@@ -47,10 +56,15 @@ class BraveAccountUIAndroid
   // brave_account::mojom::DialogOpener:
   void OpenDialog(brave_account::mojom::DialogMode dialog_mode) override;
 
+  // brave_account::mojom::SettingsOpener:
+  void OpenSettings(brave_account::mojom::SettingsPage page) override;
+
   mojo::Receiver<brave_account::mojom::DialogController>
       dialog_controller_receiver_{this};
   mojo::Receiver<brave_account::mojom::DialogOpener> dialog_opener_receiver_{
       this};
+  mojo::Receiver<brave_account::mojom::SettingsOpener>
+      settings_opener_receiver_{this};
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };

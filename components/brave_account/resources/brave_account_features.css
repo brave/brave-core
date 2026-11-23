@@ -28,10 +28,29 @@
   /* <if expr="not is_android and not is_ios"> */
   padding: var(--leo-spacing-2xl) var(--leo-spacing-2xl) var(--leo-spacing-m);
   /* </if> */
+
+  /* <if expr="is_android or is_ios"> */
+  padding: var(--leo-spacing-xl) 0 var(--leo-spacing-m);
+  /* </if> */
 }
 
 /* <if expr="not is_android and not is_ios"> */
 brave-account-link-row {
   border-bottom: 1px solid var(--leo-color-divider-subtle);
+}
+/* </if> */
+
+/* <if expr="is_android or is_ios"> */
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
+}
+
+brave-account-link-row {
+  --brave-account-row-title-font: var(--leo-font-default-semibold);
+
+  margin: 0;
+  padding: 0;
 }
 /* </if> */

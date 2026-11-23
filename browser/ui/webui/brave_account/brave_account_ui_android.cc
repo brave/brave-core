@@ -9,8 +9,11 @@
 
 #include "base/check.h"
 #include "base/check_deref.h"
+#include "brave/browser/brave_account/brave_account_dependent_services_factory.h"
 #include "brave/browser/brave_account/brave_account_dialog_mode_holder.h"
 #include "brave/browser/ui/brave_account/brave_account_dialog_opener.h"
+#include "brave/browser/ui/brave_account/brave_account_settings_opener_android.h"
+#include "brave/components/brave_account/brave_account_dependent_services.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
@@ -27,6 +30,14 @@ BraveAccountUIAndroid::BraveAccountUIAndroid(content::WebUI* web_ui)
 BraveAccountUIAndroid::~BraveAccountUIAndroid() = default;
 
 void BraveAccountUIAndroid::BindInterface(
+    mojo::PendingReceiver<brave_account::mojom::DependentServices>
+        pending_receiver) {
+  CHECK_DEREF(brave_account::BraveAccountDependentServicesFactory::GetFor(
+                  Profile::FromWebUI(web_ui())))
+      .BindInterface(std::move(pending_receiver));
+}
+
+void BraveAccountUIAndroid::BindInterface(
     mojo::PendingReceiver<brave_account::mojom::DialogController>
         pending_receiver) {
   dialog_controller_receiver_.reset();
@@ -38,6 +49,13 @@ void BraveAccountUIAndroid::BindInterface(
         pending_receiver) {
   dialog_opener_receiver_.reset();
   dialog_opener_receiver_.Bind(std::move(pending_receiver));
+}
+
+void BraveAccountUIAndroid::BindInterface(
+    mojo::PendingReceiver<brave_account::mojom::SettingsOpener>
+        pending_receiver) {
+  settings_opener_receiver_.reset();
+  settings_opener_receiver_.Bind(std::move(pending_receiver));
 }
 
 void BraveAccountUIAndroid::CloseDialog() {
@@ -54,6 +72,12 @@ void BraveAccountUIAndroid::OpenDialog(
     brave_account::mojom::DialogMode dialog_mode) {
   brave_account::OpenBraveAccountDialog(CHECK_DEREF(web_ui()->GetWebContents()),
                                         dialog_mode);
+}
+
+void BraveAccountUIAndroid::OpenSettings(
+    brave_account::mojom::SettingsPage page) {
+  brave_account::OpenSettingsPage(CHECK_DEREF(web_ui()->GetWebContents()),
+                                  page);
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(BraveAccountUIAndroid)
