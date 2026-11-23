@@ -6444,6 +6444,9 @@ def apply(args):
 
     When `--rev` is passed, only the plaster files that were added or modified
     by the specified commit (or across a rev range, `A..B`) will be reapplied.
+
+    `--commit MSG` commits modified patches to HEAD. `--amend` amends HEAD with
+    modified patches. They are mutually exclusive.
     """
     filepaths = getattr(args, 'filepaths', None)
     apply_all = getattr(args, 'all', False)
@@ -6455,6 +6458,7 @@ def apply(args):
             return 0
     skip_up_to_date = not apply_all and not filepaths
 
+    patches: list[Path] = []
     with terminal.with_status('Applying plaster files'):
         plaster_files = get_plaster_files(filepaths)
         for plaster_file in plaster_files:
@@ -6463,7 +6467,36 @@ def apply(args):
                 continue
             logging.info('Applying plaster file: %s', plaster_file.path)
             plaster_file.apply()
+            patches.append(
+                PlasterTarget.resolve(plaster_file.path).patch.resolve()
+            )
+
+    commit_message = getattr(args, 'commit', None)
+    amend = getattr(args, 'amend', False)
+    if commit_message is not None or amend:
+        _commit_patches(patches, commit_message)
     return 0
+
+
+def _commit_patches(patches: list[Path], message: str | None) -> None:
+    """Commits the changes to `patches` with `message`, or amends them into
+    HEAD when `message` is None.
+
+    Only `patches` are committed; anything else staged stays staged.
+    """
+    if patches:
+        repository.brave.run_git('add', '--', *patches)
+    if not patches or not repository.brave.run_git(
+        'diff', '--cached', '--name-only', 'HEAD', '--', *patches
+    ):
+        logging.info('No patch changes to commit.')
+        return
+    if message is None:
+        repository.brave.run_git(
+            'commit', '--amend', '--no-edit', '--', *patches
+        )
+    else:
+        repository.brave.run_git('commit', '-m', message, '--', *patches)
 
 
 def check(args):
@@ -6778,6 +6811,17 @@ def main():
         metavar='REF_OR_RANGE',
         help='Apply the plaster files added or modified by commit REF, or '
         'from A to B for a range A..B.',
+    )
+    commit_group = apply_parser.add_mutually_exclusive_group()
+    commit_group.add_argument(
+        '--commit',
+        metavar='MSG',
+        help='Commit the changed patches to HEAD with MSG as the message.',
+    )
+    commit_group.add_argument(
+        '--amend',
+        action='store_true',
+        help='Amend the changed patches into HEAD.',
     )
     apply_parser.add_argument('filepaths', nargs='*', help='Filepaths to apply')
     apply_parser.set_defaults(func=apply)
