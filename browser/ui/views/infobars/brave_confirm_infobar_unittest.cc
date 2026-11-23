@@ -178,10 +178,15 @@ TEST_F(BraveConfirmInfoBarTest, NoCloseButtonWhenNotCloseable) {
   EXPECT_FALSE(infobar->close_button_for_testing());
 }
 
-TEST_F(BraveConfirmInfoBarTest, LabelAndLinkAlwaysExist) {
-  auto infobar = CreateInfoBar(std::make_unique<TestInfoBarDelegate>());
-  EXPECT_TRUE(infobar->label_for_testing());
-  EXPECT_TRUE(infobar->link_for_testing());
+TEST_F(BraveConfirmInfoBarTest, LabelAndLinkShowDelegateText) {
+  auto delegate = std::make_unique<TestInfoBarDelegate>();
+  delegate->set_message_text(u"hello");
+  delegate->set_link_text(u"learn more");
+  auto infobar = CreateInfoBar(std::move(delegate));
+  ASSERT_TRUE(infobar->label_for_testing());
+  ASSERT_TRUE(infobar->link_for_testing());
+  EXPECT_EQ(infobar->label_for_testing()->GetText(), u"hello");
+  EXPECT_EQ(infobar->link_for_testing()->GetText(), u"learn more");
 }
 
 // ----- Child order -----
