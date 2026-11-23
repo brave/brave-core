@@ -1,0 +1,24 @@
+diff --git a/third_party/blink/public/common/page_state/page_state.h b/third_party/blink/public/common/page_state/page_state.h
+index fbcd0daa4c6003e37d9ccb76eaa35c980ba34921..821debbdcf992702faec0f52313035c2e8e28773 100644
+--- a/third_party/blink/public/common/page_state/page_state.h
++++ b/third_party/blink/public/common/page_state/page_state.h
+@@ -10,6 +10,7 @@
+ #include <string>
+ #include <vector>
+ 
++#include "brave/components/containers/buildflags/buildflags.h"
+ #include "third_party/blink/public/common/common_export.h"
+ #include "third_party/perfetto/include/perfetto/tracing/traced_value_forward.h"
+ 
+@@ -65,6 +66,11 @@ class BLINK_COMMON_EXPORT PageState {
+ 
+   void WriteIntoTrace(perfetto::TracedValue context) const;
+ 
++  #if BUILDFLAG(ENABLE_CONTAINERS)
++  PageState PrefixTopURL(const std::string& prefix) const;
++  PageState RemoveTopURLPrefix(size_t prefix_length) const;
++  #endif  // BUILDFLAG(ENABLE_CONTAINERS)
++
+  private:
+   explicit PageState(std::string data);
+ 

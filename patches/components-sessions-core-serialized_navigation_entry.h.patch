@@ -1,0 +1,56 @@
+diff --git a/components/sessions/core/serialized_navigation_entry.h b/components/sessions/core/serialized_navigation_entry.h
+index 552a86d1a16a281e866eb431779344d6a97f2b63..0c489904c95a499eff642fc64de42cb3e984d8c3 100644
+--- a/components/sessions/core/serialized_navigation_entry.h
++++ b/components/sessions/core/serialized_navigation_entry.h
+@@ -9,10 +9,14 @@
+ 
+ #include <map>
+ #include <memory>
++#include <optional>
+ #include <string>
++#include <utility>
+ #include <vector>
+ 
++#include "base/strings/strcat.h"
+ #include "base/time/time.h"
++#include "brave/components/containers/buildflags/buildflags.h"
+ #include "components/sessions/core/sessions_export.h"
+ #include "ui/base/page_transition_types.h"
+ #include "url/gurl.h"
+@@ -143,6 +147,36 @@ class SESSIONS_EXPORT SerializedNavigationEntry {
+ 
+   size_t EstimateMemoryUsage() const;
+ 
++  #if BUILDFLAG(ENABLE_CONTAINERS)
++  const std::optional<std::pair<std::string, std::string>>&
++  storage_partition_key() const {
++    return storage_partition_key_;
++  }
++  void set_storage_partition_key(
++      const std::pair<std::string, std::string>& key) {
++    storage_partition_key_ = key;
++  }
++  const std::string& virtual_url_prefix() const {
++    return virtual_url_prefix_;
++  }
++  void set_virtual_url_prefix(const std::string& url_prefix) {
++    virtual_url_prefix_ = url_prefix;
++  }
++  std::string maybe_prefixed_virtual_url_spec() const {
++    return base::StrCat({virtual_url_prefix_, virtual_url_.spec()});
++  }
++  #else
++  const std::string& maybe_prefixed_virtual_url_spec() const {
++    return virtual_url_.spec();
++  }
++  #endif  // BUILDFLAG(ENABLE_CONTAINERS)
++
++ protected:
++  #if BUILDFLAG(ENABLE_CONTAINERS)
++  std::optional<std::pair<std::string, std::string>> storage_partition_key_;
++  std::string virtual_url_prefix_;
++  #endif  // BUILDFLAG(ENABLE_CONTAINERS)
++
+  private:
+   friend class ContentSerializedNavigationBuilder;
+   friend class SerializedNavigationEntryTestHelper;

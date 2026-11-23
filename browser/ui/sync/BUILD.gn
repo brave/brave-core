@@ -1,0 +1,26 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/containers/buildflags/buildflags.gni")
+
+source_set("chromium_impl") {
+  visibility = [ "//brave/browser:core" ]
+
+  sources = [ "tab_contents_synced_tab_delegate.cc" ]
+
+  deps = [
+    "//base",
+    "//brave/components/containers/buildflags",
+    "//content/public/browser",
+  ]
+
+  if (enable_containers) {
+    deps += [
+      "//brave/components/containers/content/browser",
+      "//brave/components/containers/core/browser",
+      "//brave/components/containers/core/common",
+    ]
+  }
+}

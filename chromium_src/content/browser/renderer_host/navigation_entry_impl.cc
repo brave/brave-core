@@ -5,44 +5,30 @@
 
 #include "content/browser/renderer_host/navigation_entry_impl.h"
 
+#include <iterator>
+#include <string>
+
 #include "base/check.h"
 #include "base/check_op.h"
 #include "content/public/common/url_constants.h"
 
-#define SetVirtualURL SetVirtualURL_ChromiumImpl
-#define GetTitleForDisplay GetTitleForDisplay_ChromiumImpl
+namespace {
+
+// brave:// is a display-only scheme that maps to chrome:// internally, so a
+// title formatted from the virtual URL reads "chrome://host".
+void ReplaceChromeSchemeWithBraveForDisplay(std::u16string& display_title) {
+  static constexpr char16_t kChromePrefix[] = u"chrome://";
+  static constexpr char16_t kBravePrefix[] = u"brave://";
+  if (display_title.starts_with(kChromePrefix)) {
+    display_title.replace(0, std::size(kChromePrefix) - 1, kBravePrefix);
+  }
+}
+
+}  // namespace
 
 #include <content/browser/renderer_host/navigation_entry_impl.cc>
 
-#undef GetTitleForDisplay
-#undef SetVirtualURL
-
 namespace content {
-
-const std::u16string& NavigationEntryImpl::GetTitleForDisplay() const {
-  const std::u16string& result = GetTitleForDisplay_ChromiumImpl();
-  // brave:// is a display-only scheme that maps to chrome:// internally. When
-  // the page title is empty, GetTitleForDisplay falls back to formatting the
-  // virtual URL as the display title. Since brave:// URLs are stored as
-  // chrome:// internally, that fallback shows "chrome://host" instead of
-  // "brave://host". Convert it for display.
-  if (title_.empty() && !cached_display_title_.empty()) {
-    static constexpr char16_t kChromePrefix[] = u"chrome://";
-    static constexpr char16_t kBravePrefix[] = u"brave://";
-    if (cached_display_title_.starts_with(kChromePrefix)) {
-      cached_display_title_.replace(0, std::size(kChromePrefix) - 1,
-                                    kBravePrefix);
-    }
-  }
-  return result;
-}
-
-// Virtual url should never be set to brave
-void NavigationEntryImpl::SetVirtualURL(const GURL& url) {
-  DCHECK(!url.SchemeIs(kBraveUIScheme))
-      << "Virtual URL should not use brave:// scheme";
-  SetVirtualURL_ChromiumImpl(url);
-}
 
 // SetStoragePartitionKeyToRestore and GetStoragePartitionKeyToRestore are
 // added to content::NavigationEntry to persist and restore the storage

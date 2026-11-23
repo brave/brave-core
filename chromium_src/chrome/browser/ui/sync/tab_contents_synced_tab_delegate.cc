@@ -5,43 +5,13 @@
 
 #include "chrome/browser/ui/sync/tab_contents_synced_tab_delegate.h"
 
-#include "brave/components/containers/buildflags/buildflags.h"
+#include <optional>
 
-#if BUILDFLAG(ENABLE_CONTAINERS)
-#include "brave/components/containers/content/browser/storage_partition_utils.h"
-#include "brave/components/containers/core/browser/temporary_container.h"
-#include "brave/components/containers/core/common/features.h"
-#include "content/public/browser/security_principal.h"
-#include "content/public/browser/site_instance.h"
-#include "content/public/browser/storage_partition_config.h"
-#include "content/public/browser/web_contents.h"
-#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+namespace content {
+class WebContents;
+}  // namespace content
 
-#define ShouldSync ShouldSync_ChromiumImpl
+// Defined in //brave/browser/ui/sync:chromium_impl.
+std::optional<bool> BraveShouldSyncTab(content::WebContents* web_contents);
 
 #include <chrome/browser/ui/sync/tab_contents_synced_tab_delegate.cc>
-
-#undef ShouldSync
-
-bool TabContentsSyncedTabDelegate::ShouldSync(
-    sync_sessions::SyncSessionsClient* sessions_client) {
-  if (!ShouldSync_ChromiumImpl(sessions_client)) {
-    return false;
-  }
-
-#if BUILDFLAG(ENABLE_CONTAINERS)
-  if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
-    // Temporary containers are local-only and should never publish tab state to
-    // session sync.
-    if (auto* site_instance = web_contents()->GetSiteInstance()) {
-      const content::StoragePartitionConfig& storage_partition_config =
-          site_instance->GetSecurityPrincipal().GetStoragePartitionConfig();
-      if (containers::IsContainersStoragePartition(storage_partition_config)) {
-        return !containers::IsTemporaryContainerId(
-            storage_partition_config.partition_name());
-      }
-    }
-  }
-#endif  // BUILDFLAG(ENABLE_CONTAINERS)
-  return true;
-}
