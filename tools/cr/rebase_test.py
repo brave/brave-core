@@ -37,6 +37,7 @@ from unittest.mock import patch
 import brockit
 import conflict_resolution
 import pinned_commits
+import plaster
 import rebase
 import repository
 from test.fake_chromium_repo import DEFAULT_BRANCH, FakeChromiumRepo
@@ -2486,14 +2487,10 @@ def _raw_patch(context: str) -> str:
     )
 
 
-class RebaseStopTest(unittest.TestCase):
-    """End-to-end tests for the stops of `Rebase.execute()`.
-
-    A rebase resolves the conflicts that have a fixed answer as it goes, stops
-    on any other, and `--continue` carries on from the stop with the handling
-    the rebase started with. Each scenario rebases a `feature` branch onto the
-    default branch, which changed the same files after `feature` forked.
-    """
+class _RebaseTestCase(unittest.TestCase):
+    """Runs `Rebase.execute()` end to end. Each scenario rebases a `feature`
+    branch onto the default branch, which changed files after `feature`
+    forked."""
 
     def setUp(self):
         self.repo = FakeChromiumRepo()
@@ -2591,6 +2588,15 @@ class RebaseStopTest(unittest.TestCase):
 
     def changed(self, commit: str) -> list[str]:
         return self.git('show', '--format=', '--name-only', commit).splitlines()
+
+
+class RebaseStopTest(_RebaseTestCase):
+    """End-to-end tests for the stops of `Rebase.execute()`.
+
+    A rebase resolves the conflicts that have a fixed answer as it goes, stops
+    on any other, and `--continue` carries on from the stop with the handling
+    the rebase started with.
+    """
 
     # The base's own commit also changes `other`, so that none of the
     # branch's commits is patch-identical to it, which git would leave out of
@@ -3328,6 +3334,109 @@ class RebaseStopTest(unittest.TestCase):
 
                 with self.assertRaises(brockit.InvalidInputException):
                     brockit.RebaseState.load()
+
+
+class BasePlasterCheckTest(_RebaseTestCase):
+    """A finished rebase reapplies the plasters the base added or changed."""
+
+    FOO = 'chrome/browser/foo.cc'
+    FOO_PLASTER = f'rewrite/{FOO}.yaml'
+    FOO_PATCH = 'patches/chrome-browser-foo.cc.patch'
+    VERSION = '158.0.8127.2'
+
+    def setUp(self):
+        super().setUp()
+        # `Repositories.load` memoises the `.repositories.cfg` it read.
+        plaster.Repositories._instance = None
+        self.addCleanup(setattr, plaster.Repositories, '_instance', None)
+        self.repo.write_and_stage_file(
+            self.FOO, '// foo.cc\n  ChromeThing thing;\n', self.repo.chromium
+        )
+        self.repo.commit('Add foo.cc', self.repo.chromium)
+        self.repo.add_tag(self.VERSION)
+        self.repo.update_brave_version(self.VERSION)
+
+    @staticmethod
+    def _yaml(pattern: str) -> str:
+        return (
+            'substitutions:\n'
+            '  - description: Rewrite the thing brave owns\n'
+            '    regex:\n'
+            f'      re_pattern: {pattern}\n'
+            '      replace: BraveThing\n'
+        )
+
+    def _good_patch(self) -> str:
+        """The patch the good plaster makes, left out of the tree."""
+        yaml = plaster.PLASTER_FILES_PATH / f'{self.FOO}.yaml'
+        self.repo.write_file(
+            self.FOO_PLASTER, self._yaml('ChromeThing'), self.repo.brave
+        )
+        plaster.PlasterFile(yaml).apply()
+        patch_text = self.read(self.FOO_PATCH)
+        yaml.unlink()
+        (self.repo.brave / self.FOO_PATCH).unlink()
+        return patch_text
+
+    def read(self, path: str) -> str:
+        return (self.repo.brave / path).read_bytes().decode('utf-8')
+
+    def _rebase_with_base_adding(self, yaml: str, patch_text: str) -> None:
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={self.FOO_PLASTER: yaml, self.FOO_PATCH: patch_text},
+            commits=[('Add a feature', {'feature': 'f\n'})],
+        )
+        self.rebase(fork)
+
+    def test_plasters_that_still_apply_are_not_reported(self):
+        good = self._good_patch()
+        self._rebase_with_base_adding(self._yaml('ChromeThing'), good)
+
+        self.assertNotIn('Plasters the base added', self.console.text)
+        self.assertEqual(self.git('status', '--porcelain', self.FOO_PATCH), '')
+
+    def test_a_plaster_whose_patch_changes_is_listed_and_regenerated(self):
+        good = self._good_patch()
+        self._rebase_with_base_adding(self._yaml('ChromeThing'), 'stale\n')
+
+        self.assertIn(
+            'Plasters the base added or changed whose patch changes on '
+            f'Chromium {self.VERSION} (action needed):\n'
+            f'    ✘ {self.FOO_PLASTER} ➜ {self.FOO_PATCH}',
+            self.console.text,
+        )
+        self.assertEqual(self.read(self.FOO_PATCH), good)
+
+    def test_a_plaster_that_fails_is_listed(self):
+        self._rebase_with_base_adding(self._yaml('MissingThing'), 'stale\n')
+
+        self.assertIn(
+            'Plasters the base added or changed that fail on Chromium '
+            f'{self.VERSION} (action needed):\n    ✘ {self.FOO_PLASTER}: ',
+            self.console.text,
+        )
+
+    def test_plasters_are_unchecked_when_chromium_is_on_another_version(self):
+        good = self._good_patch()
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={
+                self.FOO_PLASTER: self._yaml('ChromeThing'),
+                self.FOO_PATCH: good,
+            },
+            commits=[('Add a feature', {'feature': 'f\n'})],
+        )
+        self.repo.add_tag('158.0.8130.1')
+
+        self.rebase(fork)
+
+        self.assertIn(
+            'Plasters the base added or changed, unchecked as Chromium is on '
+            f'158.0.8130.1, not {self.VERSION} (action needed):\n'
+            f'    ✘ {self.FOO_PLASTER}',
+            self.console.text,
+        )
 
 
 class RebaseCommandLineTest(unittest.TestCase):

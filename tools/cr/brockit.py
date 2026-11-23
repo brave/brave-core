@@ -189,6 +189,9 @@ fixed answer are resolved as the rebase goes:
   carries on from its next commit, and an attached `fixup!` or `amend!` keeps
   its change, on its own, rather than folding into the commit before.
 
+Once the rebase ends, the plasters the base added or changed are reapplied to
+the branch's Chromium, and those that fail or change their patch are listed.
+
 Any other conflict stops the rebase, listing the commit and the files left.
 Resolve them, `git add` them, and carry on with:
 
@@ -2357,8 +2360,10 @@ class RebaseState:
     squash_minor_bumps: bool
 
     # The commit the branch's commits were taken from (`from_ref`, resolved),
-    # or None in a state saved by a brockit that didn't record it.
+    # and the one they are rebased onto (`to_ref`, resolved), or None in a
+    # state saved by a brockit that didn't record them.
     start: str | None = None
+    onto: str | None = None
 
     # The conflicts resolved by rules so far, reported when the rebase
     # finishes.
@@ -2392,6 +2397,7 @@ class RebaseState:
             return cls(
                 squash_minor_bumps=data['squash_minor_bumps'],
                 start=data.get('start'),
+                onto=data.get('onto'),
                 resolutions=[
                     conflict_resolution.Resolution(
                         path=resolution['path'], rule=rules[resolution['rule']]
@@ -2411,6 +2417,7 @@ class RebaseState:
         data = {
             'squash_minor_bumps': self.squash_minor_bumps,
             'start': self.start,
+            'onto': self.onto,
             'resolutions': [
                 {'path': resolution.path, 'rule': resolution.rule.name}
                 for resolution in self.resolutions
@@ -2533,6 +2540,7 @@ class Rebase(Task):
             )
         self._continue(state, skip=skip, resuming=is_continuation or skip)
         self._report(state)
+        self._check_base_plasters(state)
 
     @staticmethod
     def _rebase_start(from_ref: str | None, to_ref: str) -> tuple[str, str]:
@@ -2716,7 +2724,9 @@ class Rebase(Task):
                 raise InvalidInputException('Rebase failed.') from e
 
         return RebaseState(
-            squash_minor_bumps=squash_minor_bumps, start=rebase_base
+            squash_minor_bumps=squash_minor_bumps,
+            start=rebase_base,
+            onto=repository.brave.run_git('rev-parse', to_ref),
         )
 
     def _continue(
@@ -3103,6 +3113,75 @@ class Rebase(Task):
             f'then run [bold cyan]{self.resume_command} --continue[/], or '
             f'skip the commit with [bold cyan]{self.resume_command} --skip[/])'
         )
+
+    @staticmethod
+    def _check_base_plasters(state: RebaseState) -> None:
+        """Reapplies the plasters the base added or changed since the branch's
+        start, and lists those that fail or change their patch.
+
+        The base made their patches for its own Chromium, so a clean rebase
+        says nothing of whether they apply to the branch's. The changed patches
+        are left in the tree to commit.
+        """
+        if state.start is None or state.onto is None:
+            return
+        brave = repository.brave
+        plasters = [
+            path
+            for path in brave.run_git(
+                'diff',
+                '--name-only',
+                '--no-renames',
+                '--diff-filter=AM',
+                state.start,
+                state.onto,
+                '--',
+                'rewrite/',
+            ).splitlines()
+            if path.endswith(plaster.PLASTER_EXTENSION)
+            and (brave.root / path).exists()
+        ]
+        if not plasters:
+            return
+
+        rebased = Version.from_git('HEAD')
+        checkout = versioning.read_chromium_version_file()
+        if checkout != rebased:
+            terminal.log_task(
+                '[bold]Plasters the base added or changed, unchecked as '
+                f'Chromium is on {checkout}, not {rebased} '
+                f'{ACTION_NEEDED_DECORATOR}:[/]\n'
+                + '\n'.join(f'    ✘ {escape(path)}' for path in plasters)
+                + '\n    Sync, then [bold cyan]plaster apply[/] each of them.'
+            )
+            return
+
+        failed = []
+        changed = []
+        for path in plasters:
+            plaster_file = brave.root / path
+            patch = brave.to_repo_relative(
+                plaster.PlasterTarget.resolve(plaster_file).patch
+            ).as_posix()
+            try:
+                plaster.PlasterFile(plaster_file).apply()
+            except (plaster.PlasterError, ValueError) as e:
+                failed.append(f'{path}: {e}')
+                continue
+            if brave.run_git('status', '--porcelain', '--', patch):
+                changed.append(f'{path} ➜ {patch}')
+        if failed:
+            terminal.log_task(
+                '[bold]Plasters the base added or changed that fail on '
+                f'Chromium {rebased} {ACTION_NEEDED_DECORATOR}:[/]\n'
+                + '\n'.join(f'    ✘ {escape(item)}' for item in failed)
+            )
+        if changed:
+            terminal.log_task(
+                '[bold]Plasters the base added or changed whose patch changes '
+                f'on Chromium {rebased} {ACTION_NEEDED_DECORATOR}:[/]\n'
+                + '\n'.join(f'    ✘ {escape(item)}' for item in changed)
+            )
 
     @staticmethod
     def _report(state: RebaseState) -> None:
