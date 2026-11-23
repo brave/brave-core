@@ -2711,6 +2711,82 @@ class RebaseStopTest(unittest.TestCase):
             self.console.text,
         )
 
+    # A document long enough for changes to its first and last lines to be
+    # separate hunks.
+    _DOC = ''.join(f'line {i}\n' for i in range(1, 11))
+
+    def _picked_and_reworded(
+        self, subject: str, *, also: str = '', picked: bool = True
+    ) -> str:
+        """A fork whose base picked `subject`'s change to the doc's second line
+        (unless not `picked`) and then reworded it, while the commit, with
+        `also` in place of its last line when given, still has the picked
+        wording."""
+        branch = self._DOC.replace('line 2\n', 'line 2, picked\n')
+        if also:
+            branch = branch.replace('line 10\n', also)
+        fork = self.build(
+            ancestor={'doc': self._DOC},
+            base={'doc': branch if picked else self._DOC, 'other': 'o\n'},
+            commits=[
+                (subject, {'doc': branch}),
+                ('Add a feature', {'f': 'f\n'}),
+            ],
+        )
+        self.git('checkout', '--quiet', DEFAULT_BRANCH)
+        self.commit(
+            'Reword the doc',
+            {'doc': self._DOC.replace('line 2\n', 'line 2, reworded\n')},
+        )
+        self.git('checkout', '--quiet', 'feature')
+        return fork
+
+    def test_a_tooling_group_the_base_picked_and_extended_is_skipped(self):
+        fork = self._picked_and_reworded('Version lift updates')
+
+        self.rebase(fork, squash_minor_bumps=True)
+
+        self.assertFalse(repository.brave.is_rebase_in_progress())
+        self.assertEqual(['Add a feature'], self.subjects())
+        self.assertEqual(
+            self._DOC.replace('line 2\n', 'line 2, reworded\n'),
+            self.committed('doc'),
+        )
+        self.assertIn(
+            f'{conflict_resolution.Rule.EXTENDED_BY_BASE.value}:\n    ✔ doc',
+            self.console.text,
+        )
+
+    def test_a_commit_the_base_picked_and_extended_still_stops(self):
+        """Only tooling is judged by the base's side: a fix could lose what
+        the branch needs."""
+        fork = self._picked_and_reworded('Track an item')
+
+        with self.assertRaises(brockit.ActionNeededException):
+            self.rebase(fork)
+
+        self.assertEqual(['doc'], self.conflicted())
+
+    def test_a_tooling_group_the_base_never_picked_still_stops(self):
+        """The base changing the same line differently says nothing of the
+        branch's change being on it."""
+        fork = self._picked_and_reworded('Version lift updates', picked=False)
+
+        with self.assertRaises(brockit.ActionNeededException):
+            self.rebase(fork, squash_minor_bumps=True)
+
+        self.assertEqual(['doc'], self.conflicted())
+
+    def test_a_tooling_group_with_more_than_the_base_has_still_stops(self):
+        fork = self._picked_and_reworded(
+            'Version lift updates', also='line 10, the branch only\n'
+        )
+
+        with self.assertRaises(brockit.ActionNeededException):
+            self.rebase(fork, squash_minor_bumps=True)
+
+        self.assertEqual(['doc'], self.conflicted())
+
     def test_a_commit_whose_fixup_the_base_lacks_still_stops(self):
         fork = self.build(
             ancestor={DATA: 'ancestor\n'},
@@ -3190,6 +3266,16 @@ class RebaseStopTest(unittest.TestCase):
 
         self.assertTrue(state.squash_minor_bumps)
         self.assertEqual(
+            state.start,
+            self.git(
+                'log',
+                '-1',
+                '--format=%H',
+                '--grep=^Add the files$',
+                DEFAULT_BRANCH,
+            ),
+        )
+        self.assertEqual(
             state.resolutions,
             [
                 conflict_resolution.Resolution(
@@ -3220,6 +3306,17 @@ class RebaseStopTest(unittest.TestCase):
                 )
             ],
         )
+
+    def test_state_without_its_start_loads(self):
+        """A brockit that didn't record where the rebase started may have
+        saved it."""
+        self.stop_on_data()
+        file = brockit.RebaseState._path()
+        data = json.loads(file.read_bytes().decode('utf-8'))
+        del data['start']
+        file.write_text(json.dumps(data), encoding='utf-8', newline='')
+
+        self.assertIsNone(brockit.RebaseState.load().start)
 
     def test_unreadable_state_raises(self):
         self.stop_on_data()

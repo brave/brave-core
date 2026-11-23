@@ -2356,6 +2356,10 @@ class RebaseState:
     # (`--squash-minor-bumps`).
     squash_minor_bumps: bool
 
+    # The commit the branch's commits were taken from (`from_ref`, resolved),
+    # or None in a state saved by a brockit that didn't record it.
+    start: str | None = None
+
     # The conflicts resolved by rules so far, reported when the rebase
     # finishes.
     resolutions: list[conflict_resolution.Resolution] = field(
@@ -2387,6 +2391,7 @@ class RebaseState:
             data = json.loads(file.read_bytes().decode('utf-8'))
             return cls(
                 squash_minor_bumps=data['squash_minor_bumps'],
+                start=data.get('start'),
                 resolutions=[
                     conflict_resolution.Resolution(
                         path=resolution['path'], rule=rules[resolution['rule']]
@@ -2405,6 +2410,7 @@ class RebaseState:
         """Saves the state for the rebase in progress."""
         data = {
             'squash_minor_bumps': self.squash_minor_bumps,
+            'start': self.start,
             'resolutions': [
                 {'path': resolution.path, 'rule': resolution.rule.name}
                 for resolution in self.resolutions
@@ -2703,7 +2709,9 @@ class Rebase(Task):
             if not repository.brave.is_rebase_in_progress():
                 raise InvalidInputException('Rebase failed.') from e
 
-        return RebaseState(squash_minor_bumps=squash_minor_bumps)
+        return RebaseState(
+            squash_minor_bumps=squash_minor_bumps, start=rebase_base
+        )
 
     def _continue(
         self, state: RebaseState, *, skip: bool = False, resuming: bool = False
@@ -2786,9 +2794,9 @@ class Rebase(Task):
         returns whether it was one.
 
         That is a `pick` which, with the `squash`/`fixup` lines folding into
-        it, touches only files the base has as the branch ends them. Those
-        lines are dropped from the todo, as there is nothing left for them to
-        fold into.
+        it, touches only files the base has as the branch ends them, or a
+        tooling group the base picked and then changed again. Those lines are
+        dropped from the todo, as there is nothing left for them to fold into.
         """
         done = cls._entries('done')
         if not done or done[-1][1].command != 'pick':
@@ -2800,7 +2808,19 @@ class Rebase(Task):
                 end = index
                 break
             folding.append((index, entry))
-        if not step.base_has([step.commit, *(e.hash for _, e in folding)]):
+        group = [step.commit, *(e.hash for _, e in folding)]
+        if step.base_has(group):
+            rule = conflict_resolution.Rule.PICKED_BY_BASE
+            outcome = 'is on the base already, with what folds into it'
+        elif state.start is not None and step.base_extends(
+            group[-1], state.start
+        ):
+            rule = conflict_resolution.Rule.EXTENDED_BY_BASE
+            outcome = (
+                'is on the base already, with what folds into it, and the base '
+                'changed it again since'
+            )
+        else:
             return False
 
         todo = repository.brave.rebase_merge_dir() / 'git-rebase-todo'
@@ -2820,14 +2840,11 @@ class Rebase(Task):
             newline='',
         )
         state.resolutions.extend(
-            conflict_resolution.Resolution(
-                path=path, rule=conflict_resolution.Rule.PICKED_BY_BASE
-            )
+            conflict_resolution.Resolution(path=path, rule=rule)
             for path in step.paths
         )
         terminal.log_task(
-            f'{cls._describe(step)} is on the base already, with what folds '
-            'into it: skipped.'
+            f'{cls._describe(step)} {outcome}: skipped.'
             + ''.join(f'\n    ✘ {escape(e.out)}' for _, e in folding)
         )
         return True

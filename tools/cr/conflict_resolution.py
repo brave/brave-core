@@ -25,6 +25,9 @@ these answers:
 * `PICKED_BY_BASE` -- a commit the base picked with what folds into it, so that
   the base has every file they touch as the branch ends it, is skipped along
   with them.
+* `EXTENDED_BY_BASE` -- a pinned tooling group (`Version lift updates`) that
+  the base picked and then changed again, so that taking the base's side of
+  every conflicting hunk leaves the group changing nothing, is skipped.
 
 `ConflictedStep.resolve` runs the file rules over the conflicted files of a
 stop, and writes each answer into the working tree. Staging the answers and
@@ -41,6 +44,7 @@ import logging
 from pathlib import Path
 import re
 import subprocess
+import tempfile
 from typing import Callable
 
 import patchfile
@@ -62,6 +66,10 @@ _CODEHEALTH_TRACKER_RE = re.compile(
 _CHROME_TAG_LINE_RE = re.compile(
     r' *"tag": "(?P<version>\d+\.\d+\.\d+\.\d+)",?\n'
 )
+
+# The pinned groups of tooling and its documentation, which the base picks from
+# the branch and then keeps changing.
+_BASE_EXTENDED_GROUPS = frozenset({'lift_updates'})
 
 # A conflicting hunk, as git writes it into the working tree. The section
 # opened by `|||||||` holds the ancestor's lines, and is only there with the
@@ -121,6 +129,10 @@ class Rule(enum.Enum):
     PICKED_BY_BASE = (
         'Commits skipped with what folds into them, as the base has their '
         'files as the branch ends them'
+    )
+    EXTENDED_BY_BASE = (
+        'Tooling groups skipped, as the base picked them and changed them '
+        'again since'
     )
 
 
@@ -262,6 +274,72 @@ class ConflictedStep:
             'diff', '--name-only', '--no-renames', self.onto, self.orig_head
         ).splitlines()
         return bool(touched) and touched.isdisjoint(differing)
+
+    def base_extends(self, last: str, start: str) -> bool:
+        """Whether the group from the commit to `last`, the last commit that
+        folds into it, is a pinned tooling group the base picked and then
+        changed again.
+
+        Then every line the group adds or removes, the base added or removed
+        too after `start`, the commit the rebase took the branch's commits
+        from, and merging the group's change onto the rebase so far, with the
+        base's side of every conflicting hunk, changes nothing. Only tooling
+        groups are judged so, as taking the base's side of a fix could drop
+        what the branch needs.
+        """
+        if (
+            pinned_commits.get_pinned_group_for_subject(self.subject)
+            not in _BASE_EXTENDED_GROUPS
+        ):
+            return False
+        brave = repository.brave
+        parent = f'{self.commit}^'
+        touched = brave.run_git(
+            'diff', '--name-only', '--no-renames', parent, last
+        ).splitlines()
+        if not touched:
+            return False
+        for path in touched:
+            changed = set(
+                _changed_lines(brave.run_git('diff', parent, last, '--', path))
+            )
+            picked = set(
+                _changed_lines(
+                    brave.run_git(
+                        'log',
+                        '-p',
+                        '--format=',
+                        f'{start}..{self.onto}',
+                        '--',
+                        path,
+                    )
+                )
+            )
+            if not changed <= picked:
+                return False
+        with tempfile.TemporaryDirectory() as scratch:
+            for path in touched:
+                rebased = _file_at('HEAD', path)
+                group = _file_at(last, path)
+                if (rebased is None) != (group is None):
+                    return False
+                if rebased is None:
+                    continue
+                sides = []
+                for name, text in (
+                    ('rebased', rebased),
+                    ('ancestor', _file_at(parent, path) or ''),
+                    ('group', group),
+                ):
+                    side = Path(scratch) / name
+                    side.write_text(text, encoding='utf-8', newline='')
+                    sides.append(str(side))
+                merged = brave.run_git(
+                    'merge-file', '-p', '--ours', *sides, no_trim=True
+                )
+                if merged != rebased:
+                    return False
+        return True
 
     def _regenerate_from_plaster(self, path: str) -> bool:
         """Regenerates a conflicted patch by rerunning its plaster.
@@ -492,6 +570,14 @@ def _changed_lines(patch: str) -> list[str]:
         elif in_hunk and line.startswith(('+', '-')):
             changed.append(line)
     return changed
+
+
+def _file_at(commit: str, path: str) -> str | None:
+    """`path` as `commit` has it, or None when it doesn't."""
+    try:
+        return repository.brave.read_file(path, commit=commit)
+    except subprocess.CalledProcessError:
+        return None
 
 
 def _has_file(commit: str, path: str) -> bool:
