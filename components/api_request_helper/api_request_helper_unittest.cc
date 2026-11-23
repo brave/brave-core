@@ -12,8 +12,9 @@
 #include <utility>
 #include <vector>
 
-#include "base/run_loop.h"
+#include "base/memory/ref_counted.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
@@ -129,6 +130,33 @@ class ApiRequestHelperUnitTest : public testing::Test {
                       APIRequestHelper::DataReceivedCallback callback) {
     loader_wrapper_handler_->send_sse_data_for_testing(string_piece, false,
                                                        std::move(callback));
+  }
+
+  // Sends `chunk` as SSE JSON, waits for one event per entry in `expected` and
+  // checks each event's "completion". The checks run here, not in the
+  // callback, so a failure ends the test instead of hanging it.
+  void SendSSEJsonAndExpectCompletions(
+      std::string_view chunk,
+      const std::vector<std::string>& expected) {
+    // The handler keeps the callback after this returns, so share the results.
+    auto results =
+        base::MakeRefCounted<base::RefCountedData<std::vector<ValueOrError>>>();
+    SendMessageSSEJSON(
+        chunk, base::BindLambdaForTesting([results](ValueOrError result) {
+          results->data.push_back(std::move(result));
+        }));
+    ASSERT_TRUE(base::test::RunUntil(
+        [&] { return results->data.size() >= expected.size(); }));
+    ASSERT_EQ(results->data.size(), expected.size());
+    for (size_t i = 0; i < expected.size(); ++i) {
+      SCOPED_TRACE(testing::Message() << "event " << i);
+      ASSERT_TRUE(results->data[i].has_value());
+      ASSERT_TRUE(results->data[i]->is_dict());
+      const std::string* completion =
+          results->data[i]->GetDict().FindString("completion");
+      ASSERT_TRUE(completion);
+      EXPECT_EQ(*completion, expected[i]);
+    }
   }
 
  protected:
@@ -251,16 +279,18 @@ TEST_F(ApiRequestHelperUnitTest, SSEJsonParsing) {
   }
 
   // This test verifies that the callback is not called when the response is
-  // "[DONE]".
+  // "[DONE]", or for an empty string.
   SendMessageSSEJSON(
       "data: [DONE]\n\n",
       base::BindRepeating([](ValueOrError result) { ADD_FAILURE(); }));
-  task_environment_.RunUntilIdle();
-
-  // Testing with no JSON and an empty string
   SendMessageSSEJSON(
       "", base::BindRepeating([](ValueOrError result) { ADD_FAILURE(); }));
-  task_environment_.RunUntilIdle();
+
+  // Parsing runs as tasks posted in order, and the handler reports each result
+  // to the callback it holds at that point. A spurious event for the [DONE] or
+  // empty chunk would reach the callback before the expected fence event.
+  ASSERT_NO_FATAL_FAILURE(SendSSEJsonAndExpectCompletions(
+      "data: {\"completion\": \"fence\"}\n\n", {"fence"}));
 }
 
 TEST_F(ApiRequestHelperUnitTest, SSEJsonParsingChunkedLines) {
@@ -277,113 +307,43 @@ TEST_F(ApiRequestHelperUnitTest, SSEJsonParsingChunkedLines) {
                      base::BindRepeating([](ValueOrError) { ADD_FAILURE(); }));
 
   // Third chunk: completes the line, callback should fire.
-  base::RunLoop run_loop;
-  SendMessageSSEJSON("ld!\", \"stop\": null}\n\n",
-                     base::BindRepeating(
-                         [](base::RunLoop* loop, ValueOrError result) {
-                           ASSERT_TRUE(result.has_value());
-                           ASSERT_TRUE(result->is_dict());
-                           const std::string* completion =
-                               result->GetDict().FindString("completion");
-                           ASSERT_TRUE(completion);
-                           EXPECT_EQ("Hello world!", *completion);
-                           loop->Quit();
-                         },
-                         &run_loop));
-  run_loop.Run();
+  SendSSEJsonAndExpectCompletions("ld!\", \"stop\": null}\n\n",
+                                  {"Hello world!"});
 }
 
 TEST_F(ApiRequestHelperUnitTest, SSEJsonParsingMultipleEventsInOneChunk) {
-  std::vector<std::string> completions;
-  base::RunLoop run_loop;
-  SendMessageSSEJSON(
+  SendSSEJsonAndExpectCompletions(
       "data: {\"completion\": \"first\"}\n\n"
       "data: {\"completion\": \"second\"}\n\n"
       "data: {\"completion\": \"third\"}\n\n",
-      base::BindRepeating(
-          [](base::RunLoop* loop, std::vector<std::string>* completions,
-             ValueOrError result) {
-            ASSERT_TRUE(result.has_value());
-            ASSERT_TRUE(result->is_dict());
-            const std::string* completion =
-                result->GetDict().FindString("completion");
-            ASSERT_TRUE(completion);
-            completions->push_back(*completion);
-            if (completions->size() == 3u) {
-              loop->Quit();
-            }
-          },
-          &run_loop, &completions));
-  run_loop.Run();
-  EXPECT_EQ(completions,
-            std::vector<std::string>({"first", "second", "third"}));
+      {"first", "second", "third"});
 }
 
 TEST_F(ApiRequestHelperUnitTest, SSEJsonParsingMixedLineEndings) {
   // Verify that \n, \r, and \r\n are all treated as line
   // endings.
-  std::vector<std::string> completions;
-  base::RunLoop run_loop;
-  SendMessageSSEJSON(
+  SendSSEJsonAndExpectCompletions(
       "data: {\"completion\": \"lf\"}\n\n"
       "data: {\"completion\": \"cr\"}\r\r"
       "data: {\"completion\": \"crlf\"}\r\n\r\n",
-      base::BindRepeating(
-          [](base::RunLoop* loop, std::vector<std::string>* completions,
-             ValueOrError result) {
-            ASSERT_TRUE(result.has_value());
-            ASSERT_TRUE(result->is_dict());
-            const std::string* completion =
-                result->GetDict().FindString("completion");
-            ASSERT_TRUE(completion);
-            completions->push_back(*completion);
-            if (completions->size() == 3u) {
-              loop->Quit();
-            }
-          },
-          &run_loop, &completions));
-  run_loop.Run();
-  EXPECT_EQ(completions, std::vector<std::string>({"lf", "cr", "crlf"}));
+      {"lf", "cr", "crlf"});
 }
 
 TEST_F(ApiRequestHelperUnitTest, SSEJsonParsingEscapedLineBreaks) {
   // Verify that escaped line breaks (\\n, \\r\\n) inside JSON
   // string values are preserved and don't interfere with SSE line
   // splitting.
-  base::RunLoop run_loop;
-  SendMessageSSEJSON("data: {\"completion\": \"line1\\nline2\\r\\nline3\"}\n\n",
-                     base::BindRepeating(
-                         [](base::RunLoop* loop, ValueOrError result) {
-                           ASSERT_TRUE(result.has_value());
-                           ASSERT_TRUE(result->is_dict());
-                           const std::string* completion =
-                               result->GetDict().FindString("completion");
-                           ASSERT_TRUE(completion);
-                           EXPECT_EQ("line1\nline2\r\nline3", *completion);
-                           loop->Quit();
-                         },
-                         &run_loop));
-  run_loop.Run();
+  SendSSEJsonAndExpectCompletions(
+      "data: {\"completion\": \"line1\\nline2\\r\\nline3\"}\n\n",
+      {"line1\nline2\r\nline3"});
 }
 
 TEST_F(ApiRequestHelperUnitTest, SSEJsonParsingEscapedDoubleLineBreaks) {
   // Verify that escaped double line breaks (\\n\\n) inside JSON
   // string values are preserved — these look like SSE event
   // separators but should not be treated as such.
-  base::RunLoop run_loop;
-  SendMessageSSEJSON("data: {\"completion\": \"para1\\n\\npara2\"}\n\n",
-                     base::BindRepeating(
-                         [](base::RunLoop* loop, ValueOrError result) {
-                           ASSERT_TRUE(result.has_value());
-                           ASSERT_TRUE(result->is_dict());
-                           const std::string* completion =
-                               result->GetDict().FindString("completion");
-                           ASSERT_TRUE(completion);
-                           EXPECT_EQ("para1\n\npara2", *completion);
-                           loop->Quit();
-                         },
-                         &run_loop));
-  run_loop.Run();
+  SendSSEJsonAndExpectCompletions(
+      "data: {\"completion\": \"para1\\n\\npara2\"}\n\n", {"para1\n\npara2"});
 }
 
 TEST_F(ApiRequestHelperUnitTest, SSE400WithJsonErrorBody) {

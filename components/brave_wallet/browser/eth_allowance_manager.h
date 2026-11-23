@@ -12,7 +12,6 @@
 #include <tuple>
 #include <vector>
 
-#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -44,29 +43,6 @@ class EthAllowanceManager {
   void Reset();
 
  private:
-  friend class EthAllowanceManagerUnitTest;
-  FRIEND_TEST_ALL_PREFIXES(EthAllowanceManagerUnitTest, LoadCachedAllowances);
-  FRIEND_TEST_ALL_PREFIXES(EthAllowanceManagerUnitTest,
-                           CouldNotLoadCachedAllowancesPrefsEmpty);
-  FRIEND_TEST_ALL_PREFIXES(EthAllowanceManagerUnitTest,
-                           CouldNotLoadCachedAllowancesByAddress);
-  FRIEND_TEST_ALL_PREFIXES(EthAllowanceManagerUnitTest,
-                           CouldNotLoadCachedAllowancesIncorrectCacheData);
-  FRIEND_TEST_ALL_PREFIXES(EthAllowanceManagerUnitTest,
-                           BreakAllowanceDiscoveringIfTokenListEmpty);
-  FRIEND_TEST_ALL_PREFIXES(EthAllowanceManagerUnitTest, AllowancesLoading);
-  FRIEND_TEST_ALL_PREFIXES(EthAllowanceManagerUnitTest, AllowancesRevoked);
-  FRIEND_TEST_ALL_PREFIXES(EthAllowanceManagerUnitTest,
-                           AllowancesIgnorePendingBlocks);
-  FRIEND_TEST_ALL_PREFIXES(EthAllowanceManagerUnitTest,
-                           AllowancesIgnoreWrongTopicsData);
-  FRIEND_TEST_ALL_PREFIXES(EthAllowanceManagerUnitTest,
-                           AllowancesIgnoreWrongAmountData);
-  FRIEND_TEST_ALL_PREFIXES(EthAllowanceManagerUnitTest, NoAllowancesLoaded);
-  FRIEND_TEST_ALL_PREFIXES(EthAllowanceManagerUnitTest,
-                           NoAllowancesLoadedForSkippedNetwork);
-  FRIEND_TEST_ALL_PREFIXES(EthAllowanceManagerUnitTest, AllowancesLoadingReset);
-
   void OnGetAllowances(const int& task_id,
                        const std::vector<Log>& logs,
                        base::Value rawlogs,

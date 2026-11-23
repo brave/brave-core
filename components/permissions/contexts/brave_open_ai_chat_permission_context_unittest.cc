@@ -6,25 +6,29 @@
 #include "brave/components/permissions/contexts/brave_open_ai_chat_permission_context.h"
 
 #include <memory>
+#include <utility>
 
-#include "base/run_loop.h"
-#include "base/test/bind.h"
-#include "chrome/test/base/chrome_render_view_host_test_harness.h"
+#include "base/test/test_future.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/permissions/permission_request_data.h"
 #include "components/permissions/permission_request_id.h"
 #include "components/permissions/permission_request_manager.h"
+#include "components/permissions/request_type.h"
 #include "components/permissions/test/mock_permission_prompt_factory.h"
+#include "components/permissions/test/test_permissions_client.h"
 #include "content/public/browser/permission_descriptor_util.h"
 #include "content/public/browser/permission_result.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/test/test_renderer_host.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/blink/public/common/permissions/permission_utils.h"
+#include "url/gurl.h"
 
 namespace permissions {
 
 class BraveOpenAIChatPermissionContextTest
-    : public ChromeRenderViewHostTestHarness {
+    : public content::RenderViewHostTestHarness {
  public:
   BraveOpenAIChatPermissionContextTest() = default;
   ~BraveOpenAIChatPermissionContextTest() override = default;
@@ -38,26 +42,19 @@ class BraveOpenAIChatPermissionContextTest
     const PermissionRequestID id(
         web_contents()->GetPrimaryMainFrame()->GetGlobalId(),
         PermissionRequestID::RequestLocalId());
-    content::PermissionStatus status;
-    base::RunLoop run_loop;
     auto request_data = std::make_unique<PermissionRequestData>(
         blink::mojom::PermissionDescriptorPtr{}, id,
         /*user_gesture=*/true, url);
     request_data->request_type = RequestType::kBraveOpenAIChat;
-    permission_context->RequestPermission(
-        std::move(request_data),
-        base::BindLambdaForTesting([&](content::PermissionResult result) {
-          status = result.status;
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-
-    return status;
+    base::test::TestFuture<content::PermissionResult> future;
+    permission_context->RequestPermission(std::move(request_data),
+                                          future.GetCallback());
+    return future.Get().status;
   }
 
  protected:
   void SetUp() override {
-    ChromeRenderViewHostTestHarness::SetUp();
+    content::RenderViewHostTestHarness::SetUp();
     PermissionRequestManager::CreateForWebContents(web_contents());
     PermissionRequestManager* manager =
         PermissionRequestManager::FromWebContents(web_contents());
@@ -66,9 +63,10 @@ class BraveOpenAIChatPermissionContextTest
 
   void TearDown() override {
     prompt_factory_.reset();
-    ChromeRenderViewHostTestHarness::TearDown();
+    content::RenderViewHostTestHarness::TearDown();
   }
 
+  TestPermissionsClient client_;
   std::unique_ptr<MockPermissionPromptFactory> prompt_factory_;
 };
 

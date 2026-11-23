@@ -51,6 +51,10 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   SolanaProviderImpl(const SolanaProviderImpl&) = delete;
   SolanaProviderImpl& operator=(const SolanaProviderImpl&) = delete;
 
+  void FlushKeyringObserverForTesting() {
+    keyring_observer_receiver_.FlushForTesting();
+  }
+
   void Init(mojo::PendingRemote<mojom::SolanaEventsListener> events_listener)
       override;
   void Connect(std::optional<base::DictValue> arg,

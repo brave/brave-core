@@ -866,14 +866,18 @@ source_set("unit_tests") {
   if (!is_ios) {
     # TODO(https://github.com/brave/brave-browser/issues/50734) Investigate why these tests fail on ios
     sources += [
+      "asset_discovery_manager_unittest.cc",
+      "asset_discovery_task_unittest.cc",
       "asset_ratio_response_parser_unittest.cc",
       "asset_ratio_service_unittest.cc",
       "bitcoin/bitcoin_hardware_keyring_unittest.cc",
       "blockchain_registry_unittest.cc",
+      "brave_wallet_service_unittest.cc",
       "brave_wallet_utils_unittest.cc",
       "cardano/cardano_api_impl_unittest.cc",
       "cardano/cardano_provider_impl_unittest.cc",
       "cardano/cardano_rpc_unittest.cc",
+      "eth_allowance_manager_unittest.cc",
       "eth_block_tracker_unittest.cc",
       "eth_tx_manager_unittest.cc",
       "ethereum_keyring_unittest.cc",
@@ -925,6 +929,7 @@ source_set("unit_tests") {
     "//components/sync_preferences:test_support",
     "//components/update_client",
     "//net:test_support",
+    "//net/traffic_annotation:test_support",
     "//services/data_decoder/public/cpp:test_support",
     "//services/network:test_support",
     "//testing/gtest",

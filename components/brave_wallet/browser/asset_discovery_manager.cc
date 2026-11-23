@@ -7,6 +7,7 @@
 
 #include <algorithm>
 
+#include "base/check_is_test.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -180,6 +181,7 @@ void AssetDiscoveryManager::FinishTask() {
 void AssetDiscoveryManager::AccountsAdded(
     std::vector<mojom::AccountInfoPtr> added_accounts) {
   if (!auto_discovery_enabled_) {
+    CHECK_IS_TEST();
     return;
   }
 
