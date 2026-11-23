@@ -3,26 +3,38 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include <memory>
 #include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
+#include <vector>
 
 #include "base/command_line.h"
 #include "base/location.h"
 #include "base/strings/strcat.h"
+#include "base/test/bind.h"
 #include "base/test/run_until.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/test_timeouts.h"
 #include "base/types/expected.h"
 #include "brave/browser/ai_chat/ai_chat_conversation_ui_browsertest_base.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "chrome/browser/notifications/notification_display_service_tester.h"
+#include "chrome/browser/notifications/notification_handler.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "components/grit/brave_components_strings.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/common/content_switches.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/l10n/l10n_util.h"
+#include "ui/message_center/public/cpp/notification.h"
 
 namespace ai_chat {
 
@@ -81,12 +93,18 @@ constexpr char kWaitForRowIndicatorScript[] = R"(
 
 }  // namespace
 
-// Tests what the full page's conversation list shows for a conversation that
-// generates in the background, i.e. with no UI connected to it. Its mock
-// engine's responses stay in progress until the test releases them.
+// Tests what the full page's conversation list and the completion notification
+// show for a conversation that generates in the background, i.e. with no UI
+// connected to it. Its mock engine's responses stay in progress until the test
+// releases them.
 class AIChatGenerationStatusBrowserTest
     : public AIChatConversationUIBrowserTestBase {
  public:
+  AIChatGenerationStatusBrowserTest() {
+    scoped_feature_list_.InitAndEnableFeature(
+        features::kAIChatCompletionNotifications);
+  }
+
   void SetUpCommandLine(base::CommandLine* command_line) override {
     AIChatConversationUIBrowserTestBase::SetUpCommandLine(command_line);
     // The tests wait on pages in background tabs, whose renderers run at a
@@ -94,7 +112,26 @@ class AIChatGenerationStatusBrowserTest
     command_line->AppendSwitch(switches::kDisableRendererBackgrounding);
   }
 
+  void SetUpOnMainThread() override {
+    AIChatConversationUIBrowserTestBase::SetUpOnMainThread();
+    notification_tester_ = std::make_unique<NotificationDisplayServiceTester>(
+        browser()->GetProfile());
+    // Count each one shown, as showing one again replaces it.
+    notification_tester_->SetNotificationAddedClosure(
+        base::BindLambdaForTesting([this] { ++notifications_shown_; }));
+  }
+
+  void TearDownOnMainThread() override {
+    notification_tester_.reset();
+    AIChatConversationUIBrowserTestBase::TearDownOnMainThread();
+  }
+
  protected:
+  std::vector<message_center::Notification> GetNotifications() {
+    return notification_tester_->GetDisplayedNotificationsForType(
+        NotificationHandler::Type::TRANSIENT);
+  }
+
   // Opens the full page on a new chat in a new foreground tab and returns its
   // frame. Every other conversation in its list is then a background one.
   content::RenderFrameHost* OpenFullPageOnNewChat() {
@@ -115,14 +152,20 @@ class AIChatGenerationStatusBrowserTest
     return response;
   }
 
-  // Releases a held response with |event| as its only content. After a tool
+  // Streams |event| as part of a held response, without releasing it.
+  static void SendEvent(const MockGenerateCallbacks& response,
+                        mojom::ConversationEntryEventPtr event) {
+    response.data_callback.Run(
+        EngineConsumer::GenerationResultData(std::move(event), std::nullopt));
+  }
+
+  // Releases a held response with |event| as its last content. After a tool
   // use event the conversation runs the tool and then asks the engine for the
   // next response, so hold that one first with
   // SetupMockGenerateAssistantResponse().
   static void ReleaseResponse(MockGenerateCallbacks response,
                               mojom::ConversationEntryEventPtr event) {
-    response.data_callback.Run(
-        EngineConsumer::GenerationResultData(std::move(event), std::nullopt));
+    SendEvent(response, std::move(event));
     std::move(response.completed_callback)
         .Run(base::ok(
             EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
@@ -163,6 +206,10 @@ class AIChatGenerationStatusBrowserTest
     }
     return testing::AssertionSuccess();
   }
+
+  base::test::ScopedFeatureList scoped_feature_list_;
+  std::unique_ptr<NotificationDisplayServiceTester> notification_tester_;
+  int notifications_shown_ = 0;
 };
 
 // A page open before a background conversation starts gets its generation
@@ -206,6 +253,74 @@ IN_PROC_BROWSER_TEST_F(AIChatGenerationStatusBrowserTest,
   }));
 
   EXPECT_TRUE(WaitForRowIndicator(other_page, uuid, kNoIndicator));
+}
+
+// A response that finishes in the background shows one notification, with the
+// conversation's title as its body.
+IN_PROC_BROWSER_TEST_F(AIChatGenerationStatusBrowserTest,
+                       BackgroundCompletionShowsNotification) {
+  content::RenderFrameHost* page = OpenFullPageOnNewChat();
+
+  MockGenerateCallbacks response = StartBackgroundGeneration();
+  const std::string uuid = conversation_handler_->get_conversation_uuid();
+  ASSERT_TRUE(WaitForRowIndicator(page, uuid, kGeneratingIndicator));
+  EXPECT_EQ(notifications_shown_, 0);
+
+  SendEvent(response, mojom::ConversationEntryEvent::NewConversationTitleEvent(
+                          mojom::ConversationTitleEvent::New("Rivers")));
+  CompleteResponse(std::move(response));
+  // The service shows the notification as it sends the state that adds the
+  // dot, so it is there once the dot is.
+  ASSERT_TRUE(WaitForRowIndicator(page, uuid, kCompletedIndicator));
+
+  EXPECT_EQ(notifications_shown_, 1);
+  const auto notifications = GetNotifications();
+  ASSERT_EQ(notifications.size(), 1u);
+  EXPECT_EQ(notifications[0].id(), base::StrCat({"ai_chat.", uuid}));
+  EXPECT_EQ(notifications[0].title(), u"Leo AI - Rivers");
+  EXPECT_EQ(notifications[0].message(),
+            l10n_util::GetStringUTF16(IDS_AI_CHAT_NOTIFICATION_BODY));
+}
+
+// Opening the conversation from the page closes its notification, whose title
+// is just the product name when the conversation has no title.
+IN_PROC_BROWSER_TEST_F(AIChatGenerationStatusBrowserTest,
+                       OpeningConversationClosesNotification) {
+  content::RenderFrameHost* page = OpenFullPageOnNewChat();
+
+  MockGenerateCallbacks response = StartBackgroundGeneration();
+  const std::string uuid = conversation_handler_->get_conversation_uuid();
+  CompleteResponse(std::move(response));
+  ASSERT_TRUE(WaitForRowIndicator(page, uuid, kCompletedIndicator));
+
+  const auto notifications = GetNotifications();
+  ASSERT_EQ(notifications.size(), 1u);
+  EXPECT_EQ(notifications[0].title(),
+            l10n_util::GetStringUTF16(IDS_CHAT_UI_TITLE));
+
+  ASSERT_TRUE(ClickElement(base::StrCat({"conversation-item-", uuid}), page));
+  EXPECT_TRUE(base::test::RunUntil([&] { return GetNotifications().empty(); }));
+  EXPECT_EQ(notifications_shown_, 1);
+}
+
+IN_PROC_BROWSER_TEST_F(AIChatGenerationStatusBrowserTest,
+                       NoNotificationWhenViewedAsItFinishes) {
+  MockGenerateCallbacks response = StartBackgroundGeneration();
+  const std::string uuid = conversation_handler_->get_conversation_uuid();
+
+  content::RenderFrameHost* other_page = OpenFullPageOnNewChat();
+  ASSERT_TRUE(WaitForRowIndicator(other_page, uuid, kGeneratingIndicator));
+
+  NavigateToConversationUI(uuid);
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return conversation_handler_->IsAnyClientConnected(); }));
+
+  CompleteResponse(std::move(response));
+  // The other page's ring goes once the service has decided the response
+  // finished while viewed, which is when it would show a notification.
+  ASSERT_TRUE(WaitForRowIndicator(other_page, uuid, kNoIndicator));
+  EXPECT_EQ(notifications_shown_, 0);
+  EXPECT_TRUE(GetNotifications().empty());
 }
 
 }  // namespace ai_chat
