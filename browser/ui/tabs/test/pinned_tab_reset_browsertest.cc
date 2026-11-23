@@ -19,6 +19,7 @@
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/sessions/session_restore.h"
 #include "chrome/browser/sessions/session_service.h"
 #include "chrome/browser/sessions/session_service_factory.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -508,8 +509,10 @@ IN_PROC_BROWSER_TEST_F(PinnedTabResetSessionRestoreBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(PinnedTabResetSessionRestoreBrowserTest,
                        RestartKeepsPinnedUrl) {
-  ASSERT_EQ(2, model()->count());
-  ASSERT_TRUE(model()->IsTabPinned(0));
+  // The launch appends its own startup tabs (e.g. about:blank) to the restored
+  // window, so don't assert on the total tab count.
+  ASSERT_FALSE(SessionRestore::IsRestoring(browser()->GetProfile()));
+  ASSERT_EQ(1, model()->IndexOfFirstNonPinnedTab());
   model()->ActivateTabAt(0);
   ASSERT_TRUE(content::WaitForLoadStop(model()->GetWebContentsAt(0)));
   ASSERT_EQ(other_url_, model()->GetWebContentsAt(0)->GetLastCommittedURL());
