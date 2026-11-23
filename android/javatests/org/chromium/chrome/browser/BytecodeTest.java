@@ -165,7 +165,6 @@ import org.chromium.chrome.browser.ttc.TtcEntryPoint;
 import org.chromium.chrome.browser.ui.actions.ActionRegistry;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuBlocker;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
-import org.chromium.chrome.browser.ui.appmenu.AppMenuPropertiesDelegate;
 import org.chromium.chrome.browser.ui.appmenu.BraveAppMenu;
 import org.chromium.chrome.browser.ui.bottombar.BottomBarHostManager;
 import org.chromium.chrome.browser.ui.desktop_windowing.AppHeaderCoordinator;
@@ -1277,14 +1276,6 @@ public class BytecodeTest {
                         MethodModifier.REGULAR,
                         boolean.class,
                         Intent.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/ui/appmenu/AppMenuHandlerImpl",
-                        "showAppMenu",
-                        MethodModifier.REGULAR,
-                        boolean.class,
-                        View.class,
-                        boolean.class));
 
         // Check for method type declaration changes here
         Assert.assertTrue(
@@ -1943,20 +1934,6 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/app/flags/ChromeCachedFlags",
                         "org/chromium/chrome/browser/app/flags/BraveCachedFlags"));
-        Assert.assertTrue(
-                constructorsMatch(
-                        "org/chromium/chrome/browser/ui/appmenu/AppMenuHandlerImpl",
-                        "org/chromium/chrome/browser/ui/appmenu/BraveAppMenuHandlerImpl",
-                        Context.class,
-                        AppMenuPropertiesDelegate.class,
-                        AppMenuDelegate.class,
-                        View.class,
-                        ActivityLifecycleDispatcher.class,
-                        View.class,
-                        Supplier.class,
-                        WindowAndroid.class,
-                        BrowserControlsStateProvider.class,
-                        int.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/components/cached_flags/CachedFlag",
@@ -2889,13 +2866,6 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/ui/AdaptiveToolbarUiCoordinator",
                         "mAdaptiveToolbarButtonController"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/ui/appmenu/AppMenuHandlerImpl", "mAppMenu"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/ui/appmenu/AppMenuHandlerImpl",
-                        "mAppMenuDragHelper"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator",
