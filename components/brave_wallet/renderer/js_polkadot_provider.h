@@ -16,6 +16,7 @@
 #include "gin/wrappable.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "v8/include/cppgc/prefinalizer.h"
 
 namespace brave_wallet {
 
@@ -25,6 +26,9 @@ namespace brave_wallet {
 // `Injected` API. See JSPolkadotInjected for what they resolve to.
 class JSPolkadotProvider final : public gin::Wrappable<JSPolkadotProvider>,
                                  public content::RenderFrameObserver {
+  // Stops observing the frame before the GC frees this object.
+  CPPGC_USING_PRE_FINALIZER(JSPolkadotProvider, Cleanup);
+
  public:
   explicit JSPolkadotProvider(content::RenderFrame* render_frame);
   ~JSPolkadotProvider() override;

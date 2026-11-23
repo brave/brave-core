@@ -20,12 +20,16 @@
 #include "gin/wrappable.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "v8/include/cppgc/prefinalizer.h"
 
 namespace brave_wallet {
 
 class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
                                public content::RenderFrameObserver,
                                public mojom::SolanaEventsListener {
+  // Stops observing the frame before the GC frees this object.
+  CPPGC_USING_PRE_FINALIZER(JSSolanaProvider, Cleanup);
+
  public:
   explicit JSSolanaProvider(content::RenderFrame* render_frame);
   ~JSSolanaProvider() override;

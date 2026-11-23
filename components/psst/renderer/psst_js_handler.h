@@ -10,6 +10,7 @@
 #include "content/public/renderer/render_frame_observer.h"
 #include "gin/wrappable.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
+#include "v8/include/cppgc/prefinalizer.h"
 
 namespace gin {
 class Arguments;
@@ -24,6 +25,8 @@ namespace psst {
 // script-facing contract.
 class PsstJSHandler final : public gin::Wrappable<PsstJSHandler>,
                             public content::RenderFrameObserver {
+  CPPGC_USING_PRE_FINALIZER(PsstJSHandler, Dispose);
+
  public:
   static constexpr gin::WrapperInfo kWrapperInfo = {{gin::kEmbedderNativeGin},
                                                     gin::kPsstBindings};
@@ -32,6 +35,9 @@ class PsstJSHandler final : public gin::Wrappable<PsstJSHandler>,
   PsstJSHandler(const PsstJSHandler&) = delete;
   PsstJSHandler& operator=(const PsstJSHandler&) = delete;
   ~PsstJSHandler() final;
+
+  // Stops observing the frame before the GC frees this object.
+  void Dispose();
 
   // Installs `psstLog()` and the `console.*` forwarding.
   // Must only be called for the PSST isolated world, so that page script can

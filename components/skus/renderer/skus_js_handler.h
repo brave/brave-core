@@ -15,6 +15,7 @@
 #include "content/public/renderer/render_frame_observer.h"
 #include "gin/wrappable.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "v8/include/cppgc/prefinalizer.h"
 #include "v8/include/v8.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -37,11 +38,16 @@ namespace skus {
 // establishing a connection to our partner providing the VPN service.
 class SkusJSHandler final : public gin::Wrappable<SkusJSHandler>,
                             public content::RenderFrameObserver {
+  CPPGC_USING_PRE_FINALIZER(SkusJSHandler, Dispose);
+
  public:
   explicit SkusJSHandler(content::RenderFrame* render_frame);
   SkusJSHandler(const SkusJSHandler&) = delete;
   SkusJSHandler& operator=(const SkusJSHandler&) = delete;
   ~SkusJSHandler() override;
+
+  // Stops observing the frame before the GC frees this object.
+  void Dispose();
 
   static constexpr gin::WrapperInfo kWrapperInfo = {{gin::kEmbedderNativeGin},
                                                     gin::kSkusBindings};

@@ -34,6 +34,10 @@ SkusJSHandler::SkusJSHandler(content::RenderFrame* render_frame)
 
 SkusJSHandler::~SkusJSHandler() = default;
 
+void SkusJSHandler::Dispose() {
+  RenderFrameObserver::Dispose();
+}
+
 bool SkusJSHandler::EnsureConnected() {
   if (!skus_service_.is_bound()) {
     render_frame()->GetBrowserInterfaceBroker().GetInterface(
