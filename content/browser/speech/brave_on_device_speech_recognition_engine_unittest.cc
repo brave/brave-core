@@ -18,7 +18,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/single_thread_task_runner.h"
-#include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/time/time.h"
@@ -153,11 +152,6 @@ class BraveOnDeviceSpeechRecognitionEngineTest : public testing::Test {
     engine_->SetAudioParameters(media::AudioParameters(
         media::AudioParameters::AUDIO_PCM_LOW_LATENCY,
         media::ChannelLayoutConfig::Mono(), sample_rate_hz, ChunkFrames()));
-  }
-
-  [[nodiscard]] bool WaitUntilSessionBound() {
-    return base::test::RunUntil(
-        [&] { return engine_->asr_session_.is_bound(); });
   }
 
   void FlushSessionRemote() { engine_->asr_session_.FlushForTesting(); }
@@ -392,7 +386,7 @@ TEST_F(BraveOnDeviceSpeechRecognitionEngineTest, StartsWhenSessionArrivesLast) {
 
   // The session request is still in flight, so the parameters cannot start it.
   SetAudioParameters();
-  ASSERT_FALSE(session_created());
+  ASSERT_FALSE(client_->requested.IsReady());
 
   EXPECT_TRUE(session.started().Wait());
 }
@@ -403,8 +397,16 @@ TEST_F(BraveOnDeviceSpeechRecognitionEngineTest,
   CreateEngine(&session);
 
   // The session is in, so the parameters are what is missing.
-  ASSERT_TRUE(WaitUntilSessionBound());
-  ASSERT_FALSE(session_created());
+  ASSERT_TRUE(client_->requested.Wait());
+  // The reply is posted back inside the task that served the request, so a
+  // marker posted now runs behind it.
+  base::test::TestFuture<void> replied;
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, replied.GetCallback());
+  ASSERT_TRUE(replied.Wait());
+  // Makes sure a Start, if one was sent, has reached the fake.
+  FlushSessionRemote();
+  ASSERT_FALSE(session.started().IsReady());
 
   SetAudioParameters();
 
