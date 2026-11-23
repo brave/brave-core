@@ -1,0 +1,34 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Let Brave post-process the sanitized PageState for pickling.
+    after_function_impl:
+      function_name: ContentSerializedNavigationDriver::GetSanitizedPageStateForPickle
+      result_var: sanitized_page_state
+      code: |-
+        return BraveSanitizePageStateForPickle(*navigation,
+                                               std::move(sanitized_page_state));
+
+  - description: |-
+      Drop the PageState of all chrome:// URLs.
+
+      A stale PageState can outlive a page's own URL rewrite or cleanup (an
+      extension NTP override, or an OAuth callback page's
+      history.replaceState()) and be restored verbatim, reintroducing a URL the
+      page already moved past. Upstream only handles the NTP override case. An
+      empty PageState is synthesized on restore from the entry's current URL.
+    preempt_function_impl:
+      function_name: ContentSerializedNavigationDriver::GetSanitizedPageStateForPickle
+      code: |-
+        if (navigation->virtual_url().SchemeIs(content::kChromeUIScheme)) {
+          return std::string();
+        }
+
+  - description: Let Brave sanitize navigations loaded from disk or sync.
+    preempt_function_impl:
+      function_name: ContentSerializedNavigationDriver::Sanitize
+      code: |-
+        BraveSanitizeNavigation(*navigation);

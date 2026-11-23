@@ -3,20 +3,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/containers/buildflags/buildflags.gni")
-
 brave_components_sessions_shared_public_deps =
     [ "//brave/components/containers/buildflags" ]
 
-brave_components_sessions_deps = []
+brave_components_sessions_shared_visibility =
+    [ "//brave/components/sessions/content:chromium_impl" ]
 
-if (enable_containers) {
-  brave_components_sessions_shared_public_deps += [
-    "//brave/components/containers/content/browser",
-    "//brave/components/containers/core/common",
-  ]
-  brave_components_sessions_deps += [
-    "//brave/components/containers/content/browser",
-    "//brave/components/containers/core/common",
-  ]
-}
+brave_components_sessions_deps =
+    [ "//brave/components/sessions/content:chromium_impl" ]

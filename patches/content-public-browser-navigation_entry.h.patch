@@ -1,0 +1,28 @@
+diff --git a/content/public/browser/navigation_entry.h b/content/public/browser/navigation_entry.h
+index 2b1ea038d99dc22c11cec27da3d1a63a6d613590..41e7a4450b72a387b5613e6250358d096f9708ff 100644
+--- a/content/public/browser/navigation_entry.h
++++ b/content/public/browser/navigation_entry.h
+@@ -10,10 +10,12 @@
+ #include <memory>
+ #include <optional>
+ #include <string>
++#include <utility>
+ 
+ #include "base/memory/ref_counted_memory.h"
+ #include "base/supports_user_data.h"
+ #include "base/time/time.h"
++#include "base/types/optional_ref.h"
+ #include "build/build_config.h"
+ #include "content/common/content_export.h"
+ #include "content/public/common/page_type.h"
+@@ -266,6 +268,10 @@ class NavigationEntry : public base::SupportsUserData {
+   // This persists across same-document navigations and stays the same after
+   // a history navigation to an already visited document.
+   virtual int64_t GetMainFrameDocumentSequenceNumber() const = 0;
++  virtual void SetStoragePartitionKeyToRestore(
++      std::pair<std::string, std::string> storage_partition_key) = 0;
++  virtual base::optional_ref<const std::pair<std::string, std::string>>
++  GetStoragePartitionKeyToRestore() = 0;
+ };
+ 
+ }  // namespace content

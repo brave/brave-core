@@ -1,0 +1,20 @@
+diff --git a/content/browser/renderer_host/navigation_entry_impl.h b/content/browser/renderer_host/navigation_entry_impl.h
+index c17765a486ca299d99806eb40dfefdfdc36312e2..a8256795ae9c167f98d6cc0d3d7f79df6a438793 100644
+--- a/content/browser/renderer_host/navigation_entry_impl.h
++++ b/content/browser/renderer_host/navigation_entry_impl.h
+@@ -559,6 +559,15 @@ class CONTENT_EXPORT NavigationEntryImpl : public NavigationEntry {
+     return navigation_transition_data_;
+   }
+ 
++  void SetStoragePartitionKeyToRestore(
++      std::pair<std::string, std::string> storage_partition_key) override;
++  base::optional_ref<const std::pair<std::string, std::string>>
++  GetStoragePartitionKeyToRestore() override;
++
++ protected:
++  std::optional<std::pair<std::string, std::string>>
++      storage_partition_key_to_restore_;
++
+  private:
+   std::unique_ptr<NavigationEntryImpl> CloneAndReplaceInternal(
+       scoped_refptr<FrameNavigationEntry> frame_entry,
