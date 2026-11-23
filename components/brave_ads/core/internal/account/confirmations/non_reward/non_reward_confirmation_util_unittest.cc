@@ -34,6 +34,9 @@ class BraveAdsNonRewardConfirmationUtilTest : public test::TestBase {
   }
 };
 
+using BraveAdsNonRewardConfirmationUtilDeathTest =
+    BraveAdsNonRewardConfirmationUtilTest;
+
 TEST_F(BraveAdsNonRewardConfirmationUtilTest, BuildNonRewardConfirmation) {
   // Arrange
   test::DisableBraveRewards();
@@ -68,7 +71,7 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest, BuildNonRewardConfirmation) {
                            /*reward*/ std::nullopt, expected_user_data));
 }
 
-TEST_F(BraveAdsNonRewardConfirmationUtilTest,
+TEST_F(BraveAdsNonRewardConfirmationUtilDeathTest,
        DoNotBuildNonRewardConfirmationWithInvalidTransaction) {
   // Arrange
   test::DisableBraveRewards();
@@ -84,7 +87,7 @@ TEST_F(BraveAdsNonRewardConfirmationUtilTest,
                             kFailureLog);
 }
 
-TEST_F(BraveAdsNonRewardConfirmationUtilTest,
+TEST_F(BraveAdsNonRewardConfirmationUtilDeathTest,
        DoNotBuildNonRewardConfirmationForRewardsUser) {
   // Arrange
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
