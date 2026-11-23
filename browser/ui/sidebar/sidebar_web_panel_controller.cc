@@ -7,6 +7,7 @@
 
 #include "base/check_op.h"
 #include "base/functional/bind.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -78,9 +79,21 @@ void SidebarWebPanelController::OpenWebPanel(const SidebarItem& item,
 
 void SidebarWebPanelController::CloseWebPanel(bool suppress_animations) {
   if (suppress_animations) {
-    // Guarded on HasPanelTab(), so this also finishes a panel that is already
-    // animating closed - it still occupies the space being taken over.
-    CloseWebPanelImmediately();
+    state_ = State::kClosing;
+
+    // The side panel takes this space in the same frame, so the panel has to be
+    // off screen before this returns. Only the tab close can wait.
+    GetMultiContentsView()->SetWebPanelContents(nullptr);
+
+    // When CloseWebPanel() is invoked in a TabStripModel's notification,
+    // Calling FinishClose() would re-enter the TabStripModel's mutation API -
+    // which is forbidden by re-entrance guard. This typically happens when a
+    // contextual side panel shows up due to tab activation and closes web
+    // panel. So we should not call FinishClose() in this callstack and post
+    // task.
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(&SidebarWebPanelController::FinishClose,
+                                  weak_factory_.GetWeakPtr()));
     return;
   }
 
