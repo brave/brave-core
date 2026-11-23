@@ -14,16 +14,15 @@ export default function DeleteConversationModal() {
   // Context
   const aiChatContext = useAIChat()
   const cancelButtonRef = React.useRef<HTMLElement>(null)
-  const isOpen = !!aiChatContext.deletingConversationId
 
   // Start on Cancel so a stray keypress can't delete; Delete is one Tab away.
   React.useEffect(() => {
-    if (!isOpen) {
+    if (!aiChatContext.deletingConversationId) {
       return
     }
     const timeout = setTimeout(() => cancelButtonRef.current?.focus())
     return () => clearTimeout(timeout)
-  }, [isOpen])
+  }, [aiChatContext.deletingConversationId])
 
   // Computed
   const title =
@@ -34,7 +33,7 @@ export default function DeleteConversationModal() {
 
   return (
     <Dialog
-      isOpen={isOpen}
+      isOpen={!!aiChatContext.deletingConversationId}
       showClose
       onClose={() => aiChatContext.setDeletingConversationId(null)}
       className={styles.deleteConversationDialog}
