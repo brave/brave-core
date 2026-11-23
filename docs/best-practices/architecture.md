@@ -1246,6 +1246,34 @@ feature's data and lifetime requirements. See
   declarations
 - Global features are rare; most features should be profile-scoped or narrower
 
+**Within a tab, scope data to the object whose lifetime matches it.** A
+`WebContents` outlives every navigation, page, and document it hosts. Storing
+per-navigation or per-document state on the `WebContents` (in a
+`WebContentsUserData` or tab feature member) lets it leak into the wrong
+navigation: it gets overwritten by concurrent navigations, applied to
+prerendered or back/forward-cached pages, confused with subframes, and left
+stale after back/forward.
+
+| Data describes              | Attach to                                                    | Cleared when                                             |
+| --------------------------- | ------------------------------------------------------------ | -------------------------------------------------------- |
+| The tab, across navigations | `WebContents` (tab feature or `WebContentsUserData`)         | The tab is destroyed                                     |
+| One in-progress navigation  | `NavigationHandle` (`NavigationHandleUserData`)              | The navigation finishes                                  |
+| One session history entry   | `NavigationEntry` (`SetUserData`)                            | The entry is removed                                     |
+| The main-frame page         | `Page` (`PageUserData`)                                      | The page is destroyed (kept while in back/forward cache) |
+| One document in any frame   | `RenderFrameHost` (`DocumentUserData`, or `DocumentService`) | The frame navigates to a new document or is destroyed    |
+
+```cpp
+// ❌ WRONG - per-navigation state stored on the WebContents
+void MyTabHelper::DidStartNavigation(content::NavigationHandle* handle) {
+  pending_request_url_ = handle->GetURL();  // clobbered by the next navigation
+}
+
+// ✅ CORRECT - state lives with the navigation it describes
+void MyTabHelper::DidStartNavigation(content::NavigationHandle* handle) {
+  MyNavigationData::CreateForNavigationHandle(*handle);
+}
+```
+
 <a id="ARCH-066"></a>
 
 ## ✅ Swap-and-Process for Reentrancy Protection
