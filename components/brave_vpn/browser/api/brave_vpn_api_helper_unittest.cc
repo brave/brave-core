@@ -5,9 +5,13 @@
 
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_helper.h"
 
+#include <string>
+
 #include "base/base64.h"
+#include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_vpn {
@@ -24,31 +28,21 @@ TEST(BraveVPNAPIHelperTest, TicketInfoTest) {
       "brave-vpn@brave.com", "It's cool feature", "Love the Brave VPN!",
       "credential", "USA/Boston");
 
-  // Check ticket dict has four required fields.
-  EXPECT_TRUE(ticket_value.FindString(kSupportTicketEmailKey));
-  EXPECT_TRUE(ticket_value.FindString(kSupportTicketSubjectKey));
-  EXPECT_TRUE(ticket_value.FindString(kSupportTicketPartnerClientIdKey));
-  const auto support_ticket_encoded =
-      *ticket_value.FindString(kSupportTicketSupportTicketKey);
-  EXPECT_TRUE(!support_ticket_encoded.empty());
-  auto* subscriber_credential =
-      ticket_value.FindString(kSupportTicketSubscriberCredential);
-  ASSERT_TRUE(subscriber_credential);
-  EXPECT_EQ(*subscriber_credential, "credential");
-  auto* payment_validation_method =
-      ticket_value.FindString(kSupportTicketPaymentValidationMethodKey);
-  ASSERT_TRUE(payment_validation_method);
-  EXPECT_EQ(*payment_validation_method, "brave-premium");
-
-  // Check body contents
-  std::string support_ticket_decoded;
-  EXPECT_TRUE(
-      base::Base64Decode(support_ticket_encoded, &support_ticket_decoded));
   const std::string expected_support_ticket =
       "Love the Brave VPN!\n\nsubscriber-credential: "
       "credential\npayment-validation-method: brave-premium\ntimezone: "
       "USA/Boston";
-  EXPECT_EQ(expected_support_ticket, support_ticket_decoded);
+  EXPECT_THAT(
+      ticket_value,
+      base::test::IsJson(
+          base::DictValue()
+              .Set(kSupportTicketEmailKey, "brave-vpn@brave.com")
+              .Set(kSupportTicketSubjectKey, "It's cool feature")
+              .Set(kSupportTicketSupportTicketKey,
+                   base::Base64Encode(expected_support_ticket))
+              .Set(kSupportTicketPartnerClientIdKey, "com.brave.browser")
+              .Set(kSupportTicketSubscriberCredential, "credential")
+              .Set(kSupportTicketPaymentValidationMethodKey, "brave-premium")));
 }
 
 }  // namespace brave_vpn
