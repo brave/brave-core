@@ -286,14 +286,13 @@ void BraveEphemeralStorageServiceDelegate::
     }
   }
 #else
-  TabModelList::ForEachAll([&](TabModel* model) {
+  TabModelList::ForEach(profile, [&](TabModel* model) {
     const size_t tab_count = model->GetTabCount();
     std::vector<tabs::TabHandle> tabs_to_close;
     const int default_active_index = model->GetActiveIndex();
     for (size_t index = 0; index < tab_count; index++) {
       auto* tab = static_cast<TabAndroid*>(model->GetTabAt(index));
-      // Do not process tabs from other profiles.
-      if (!tab || profile != tab->profile()) {
+      if (!tab) {
         continue;
       }
 
@@ -367,12 +366,11 @@ BraveEphemeralStorageServiceDelegate::GetEphemeralDomainsToCleanOnAppClose() {
     }
   }
 #else
-  TabModelList::ForEachAll([&](TabModel* model) {
+  TabModelList::ForEach(profile, [&](TabModel* model) {
     const size_t tab_count = model->GetTabCount();
     for (size_t index = 0; index < tab_count; index++) {
       auto* tab = static_cast<TabAndroid*>(model->GetTabAt(index));
-      // Do not process tabs from other profiles.
-      if (!tab || profile != tab->profile()) {
+      if (!tab) {
         continue;
       }
 

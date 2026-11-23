@@ -63,13 +63,14 @@
 namespace {
 content::WebContents* GetActiveWebContents(content::BrowserContext* context) {
   TabModel* active_model = nullptr;
-  TabModelList::ForEachAll([&](TabModel* model) {
-    if (!model->IsActiveModel()) {
-      return true;
-    }
-    active_model = model;
-    return false;
-  });
+  TabModelList::ForEach(Profile::FromBrowserContext(context),
+                        [&](TabModel* model) {
+                          if (!model->IsActiveModel()) {
+                            return true;
+                          }
+                          active_model = model;
+                          return false;
+                        });
   if (!active_model) {
     return nullptr;
   }

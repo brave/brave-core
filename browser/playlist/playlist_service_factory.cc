@@ -68,7 +68,7 @@ class PlaylistServiceDelegateImpl : public PlaylistService::Delegate {
   content::WebContents* GetActiveWebContents() override {
 #if BUILDFLAG(IS_ANDROID)
     TabModel* active_model = nullptr;
-    TabModelList::ForEachAll([&](TabModel* model) {
+    TabModelList::ForEach(profile_, [&](TabModel* model) {
       if (!model->IsActiveModel()) {
         return true;
       }
