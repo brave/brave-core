@@ -12,6 +12,7 @@
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/task_environment.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
@@ -96,6 +97,28 @@ TEST_F(SolanaTxStateManagerUnitTest, SolanaTxMetaAndValue) {
       solana_tx_state_manager_->ValueToSolanaTxMeta(meta_value);
   ASSERT_TRUE(meta_from_value);
   EXPECT_EQ(*meta_from_value, meta);
+
+  // Invalid Solana-specific fields are rejected.
+  {
+    base::DictValue invalid = meta_value.Clone();
+    EXPECT_TRUE(invalid.Remove("tx"));
+    EXPECT_FALSE(solana_tx_state_manager_->ValueToSolanaTxMeta(invalid));
+  }
+  {
+    base::DictValue invalid = meta_value.Clone();
+    invalid.Set("tx", base::DictValue());
+    EXPECT_FALSE(solana_tx_state_manager_->ValueToSolanaTxMeta(invalid));
+  }
+  {
+    base::DictValue invalid = meta_value.Clone();
+    EXPECT_TRUE(invalid.Remove("signature_status"));
+    EXPECT_FALSE(solana_tx_state_manager_->ValueToSolanaTxMeta(invalid));
+  }
+  {
+    base::DictValue invalid = meta_value.Clone();
+    invalid.Set("signature_status", base::DictValue());
+    EXPECT_FALSE(solana_tx_state_manager_->ValueToSolanaTxMeta(invalid));
+  }
 }
 
 }  // namespace brave_wallet
