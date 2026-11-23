@@ -7,7 +7,6 @@
 
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
 #include "brave/components/brave_vpn/browser/connection/wireguard/wireguard_connection_api_impl_base.h"
-#include "brave/components/brave_vpn/common/brave_vpn_data_types.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -27,8 +26,13 @@ class WireguardConnectionAPISim : public WireguardConnectionAPIImplBase {
       : WireguardConnectionAPIImplBase(manager, url_loader_factory) {}
   ~WireguardConnectionAPISim() override {}
 
+  // Expose protected member of the base class to tests.
+  using ConnectionAPIImpl::OnFetchHostnames;
+
   void Disconnect() override {}
   void CheckConnection() override {}
+  // Avoid a real profile credentials request after hostnames are cached.
+  void FetchProfileCredentials() override {}
   void PlatformConnectImpl(
       const wireguard::WireguardProfileCredentials& credentials) override {}
 };
@@ -68,13 +72,17 @@ class BraveVPNWireguardConnectionAPIUnitTest : public testing::Test {
 TEST_F(BraveVPNWireguardConnectionAPIUnitTest, SetSelectedRegion) {
   local_state()->SetString(prefs::kBraveVPNWireguardProfileCredentials,
                            "region-a");
-  GetConnectionAPI()->hostname_ = std::make_unique<Hostname>();
-  GetConnectionAPI()->hostname_->hostname = "test";
+  GetConnectionAPI()->OnFetchHostnames(
+      "region-a",
+      R"([{"hostname": "test", "display-name": "test",
+           "offline": false, "capacity-score": 1}])",
+      true);
+  ASSERT_EQ("test", GetConnectionAPI()->GetHostname());
   GetConnectionAPI()->SetSelectedRegion("region-b");
   EXPECT_TRUE(local_state()
                   ->GetString(prefs::kBraveVPNWireguardProfileCredentials)
                   .empty());
-  EXPECT_EQ(GetConnectionAPI()->hostname_.get(), nullptr);
+  EXPECT_TRUE(GetConnectionAPI()->GetHostname().empty());
 }
 
 }  // namespace brave_vpn

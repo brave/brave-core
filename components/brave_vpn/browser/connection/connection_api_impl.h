@@ -9,7 +9,6 @@
 #include <memory>
 #include <string>
 
-#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
@@ -82,9 +81,6 @@ class ConnectionAPIImpl
   const raw_ref<BraveVPNConnectionManager> manager_;  // owner
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(BraveVPNWireguardConnectionAPIUnitTest,
-                           SetSelectedRegion);
-
   std::unique_ptr<Hostname> hostname_;
   std::string last_connection_error_;
 
