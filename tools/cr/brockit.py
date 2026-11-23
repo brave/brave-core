@@ -181,6 +181,8 @@ fixed answer are resolved as the rebase goes:
 * A raw patch (one without a plaster file) that the base changed only in its
   context takes the commit's version. These patches are listed at the end of the
   rebase, as candidates for conversion to plaster.
+* A patch the base deleted (with its plaster file, if it had one), which the
+  commit changed only in its context, is deleted.
 * A commit that comes out empty, its change already on the base, is skipped,
   and a `squash` or `fixup` that leaves its commit empty drops it. What would
   have folded into the commit that goes is picked instead: a pinned group

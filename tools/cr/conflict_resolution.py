@@ -20,6 +20,8 @@ these answers:
   pinslist timestamp, when the base moved on to a newer minor version.
 * `CONTEXT_ONLY_PATCH` -- a raw patch that the base changed only in its context
   takes the commit's version.
+* `DELETED_BY_BASE` -- a patch that the base deleted, with its yaml if it had
+  one, and that the commit changed only in its context is deleted.
 * `PICKED_BY_BASE` -- a commit the base picked with what folds into it, so that
   the base has every file they touch as the branch ends it, is skipped along
   with them.
@@ -111,6 +113,10 @@ class Rule(enum.Enum):
     CONTEXT_ONLY_PATCH = (
         'Raw patches taken from the commit, as the base only moved their '
         'context (candidates for conversion to plaster)'
+    )
+    DELETED_BY_BASE = (
+        'Patches deleted, as the base deleted them and the commit only moved '
+        'their context'
     )
     PICKED_BY_BASE = (
         'Commits skipped with what folds into them, as the base has their '
@@ -216,6 +222,7 @@ class ConflictedStep:
             Rule.CODEHEALTH_TRACKER: self._take_branch_codehealth_tracker,
             Rule.VERSION_BUMP: self._settle_version_bump,
             Rule.CONTEXT_ONLY_PATCH: self._take_commit_raw_patch,
+            Rule.DELETED_BY_BASE: self._take_base_deletion,
         }
         resolutions = []
         for path in self.paths:
@@ -373,6 +380,32 @@ class ConflictedStep:
 
         # In a rebase, `--theirs` is the commit being applied.
         repository.brave.run_git('checkout', '--theirs', '--', path)
+        return True
+
+    def _take_base_deletion(self, path: str) -> bool:
+        """Deletes a patch the base deleted, when the commit only refreshed it.
+
+        A commit whose version of the patch adds and removes the same lines as
+        the ancestor's only regenerated it for its Chromium version (its index
+        line, hunk headers and context), so the base's deletion stands. A yaml
+        left for the patch means the base kept its plaster, so the patch is
+        left alone.
+        """
+        if not path.startswith('patches/') or not path.endswith('.patch'):
+            return False
+        if patchfile.patch_has_plaster(Path(path)):
+            return False
+        if self.read(path, Stage.REBASED) is not None:
+            return False
+        ancestor = self.read(path, Stage.ANCESTOR)
+        commit = self.read(path, Stage.COMMIT)
+        if ancestor is None or commit is None:
+            return False
+        if _changed_lines(commit) != _changed_lines(ancestor):
+            return False
+
+        # Staging the path, as the caller does, then records the deletion.
+        (repository.brave.root / path).unlink(missing_ok=True)
         return True
 
 

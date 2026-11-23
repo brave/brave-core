@@ -551,6 +551,77 @@ class PlasterRuleTest(_RebaseStopTestCase):
         self.assertEqual(step.resolve(), [])
         self.assertEqual(self.read(FOO_PATCH), conflicted_patch)
 
+    def test_deletes_the_patch_the_base_deleted_with_its_plaster(self):
+        ancestor = self.plastered('BraveThing')
+        step = self.stop_rebase(
+            ancestor=ancestor,
+            base={FOO_PATCH: None, FOO_PLASTER: None},
+            commit={
+                FOO_PATCH: ancestor[FOO_PATCH].replace('index ', 'index 1')
+            },
+        )
+
+        self.assertEqual(
+            step.resolve(),
+            [Resolution(path=FOO_PATCH, rule=Rule.DELETED_BY_BASE)],
+        )
+        self.assertFalse((self.repo.brave / FOO_PATCH).exists())
+
+    def test_leaves_a_patch_the_base_deleted_but_kept_the_plaster_of(self):
+        ancestor = self.plastered('BraveThing')
+        step = self.stop_rebase(
+            ancestor=ancestor,
+            base={FOO_PATCH: None},
+            commit={
+                FOO_PATCH: ancestor[FOO_PATCH].replace('index ', 'index 1')
+            },
+        )
+        self.repo.add_tag('158.0.8130.1')
+
+        with self.assertLogs(level='WARNING'):
+            self.assertEqual(step.resolve(), [])
+        self.assertTrue((self.repo.brave / FOO_PATCH).exists())
+
+
+class DeletedByBaseRuleTest(_RebaseStopTestCase):
+    """A patch the base deleted, which the commit only refreshed, is deleted."""
+
+    _ANCESTOR = _raw_patch(index='1..2', change='BraveThing', context='// a')
+
+    def test_deletes_a_patch_the_commit_only_refreshed(self):
+        step = self.stop_rebase(
+            ancestor={RAW_PATCH: self._ANCESTOR},
+            base={RAW_PATCH: None},
+            commit={
+                RAW_PATCH: _raw_patch(
+                    index='5..6', change='BraveThing', context='// commit'
+                )
+            },
+        )
+
+        self.assertEqual(
+            step.resolve(),
+            [Resolution(path=RAW_PATCH, rule=Rule.DELETED_BY_BASE)],
+        )
+        # Staged as `brockit rebase` stages every answer.
+        self.git('add', '--', RAW_PATCH)
+        self.assertEqual(self.conflicted(), [])
+        self.assertEqual(self.git('ls-files', '--', RAW_PATCH), '')
+
+    def test_leaves_a_patch_whose_changes_the_commit_changed(self):
+        step = self.stop_rebase(
+            ancestor={RAW_PATCH: self._ANCESTOR},
+            base={RAW_PATCH: None},
+            commit={
+                RAW_PATCH: _raw_patch(
+                    index='5..6', change='BraveOtherThing', context='// a'
+                )
+            },
+        )
+
+        self.assertEqual(step.resolve(), [])
+        self.assertTrue((self.repo.brave / RAW_PATCH).exists())
+
 
 class CodeHealthTrackerRuleTest(_RebaseStopTestCase):
     """A tracker the base doesn't have is taken from the branch."""
