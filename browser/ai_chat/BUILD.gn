@@ -405,6 +405,53 @@ source_set("unit_tests") {
   }
 }
 
+# The workspace browser tests' shared fixture, a PlatformBrowserTest, used by
+# both browser_tests and platform_browser_tests.
+source_set("workspace_browser_test_support") {
+  testonly = true
+  sources = [
+    "workspace_associated_content_browsertest_base.cc",
+    "workspace_associated_content_browsertest_base.h",
+  ]
+  public_deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/ai_chat/content/browser",
+    "//chrome/test/base:platform_browser_test",
+    "//url",
+  ]
+  deps = [
+    "//brave/components/ai_chat/core/common",
+    "//chrome/browser/profiles:profile",
+    "//chrome/test/base:chrome_test_utils",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//testing/gtest",
+    "//third_party/blink/public/common",
+  ]
+}
+
+# Unlike browser_tests, these use PlatformBrowserTest, so they also build and
+# run on Android.
+source_set("platform_browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+  sources = [ "workspace_associated_content_platform_browsertest.cc" ]
+  deps = [
+    ":workspace_browser_test_support",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/ai_chat/content/browser",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common/mojom",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//url",
+  ]
+}
+
 source_set("browser_tests") {
   if (!is_android) {
     testonly = true
@@ -437,6 +484,7 @@ source_set("browser_tests") {
       sources += [ "pdf_text_extractor_browsertest.cc" ]
     }
     deps = [
+      ":workspace_browser_test_support",
       "//brave/app:generate_command_metadata",
       "//brave/browser/ai_chat",
       "//brave/browser/misc_metrics",
