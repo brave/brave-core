@@ -5,6 +5,65 @@
 
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
+import("//brave/components/web_discovery/buildflags/buildflags.gni")
+import("//build/config/ui.gni")
+
+if (toolkit_views) {
+  source_set("infobars") {
+    sources = [
+      "brave_confirm_infobar.cc",
+      "brave_confirm_infobar.h",
+      "brave_infobar_container_view.cc",
+      "brave_infobar_container_view.h",
+      "brave_sync_account_deleted_infobar.cc",
+      "brave_sync_account_deleted_infobar.h",
+      "custom_styled_label.cc",
+      "custom_styled_label.h",
+    ]
+
+    public_deps = [
+      "//base",
+      "//brave/components/infobars/core",
+      "//chrome/browser/ui/views/infobars",
+      "//components/infobars/core",
+      "//ui/base",
+      "//ui/gfx",
+      "//ui/views",
+    ]
+
+    deps = [
+      "//chrome/app:generated_resources",
+      "//chrome/browser/ui:layout_constants",
+      "//chrome/browser/ui/color:color_headers",
+      "//chrome/browser/ui/color:mixers",
+      "//chrome/browser/ui/views:layout_provider",
+      "//components/strings:components_strings",
+      "//components/vector_icons",
+      "//skia",
+      "//ui/accessibility:ax_base",
+      "//ui/color",
+      "//ui/compositor",
+    ]
+
+    if (enable_web_discovery) {
+      sources += [
+        "web_discovery_infobar_content_view.cc",
+        "web_discovery_infobar_content_view.h",
+        "web_discovery_infobar_view.cc",
+        "web_discovery_infobar_view.h",
+      ]
+      deps += [
+        "//brave/app:brave_generated_resources_grit",
+        "//brave/app/theme:brave_theme_resources_grit",
+        "//brave/app/vector_icons",
+        "//brave/browser/web_discovery",
+        "//brave/components/constants",
+        "//chrome/browser/ui:singleton_tabs",
+        "//chrome/browser/ui/browser_window",
+      ]
+    }
+  }
+}
 
 if (enable_psst) {
   source_set("psst_infobar") {
@@ -18,7 +77,7 @@ if (enable_psst) {
       "psst_infobar.h",
     ]
 
-    public_deps = [ "//brave/browser/ui" ]
+    public_deps = [ ":infobars" ]
 
     deps = [
       "//base",
@@ -72,6 +131,7 @@ source_set("unit_tests") {
   ]
 
   deps = [
+    ":infobars",
     "//base",
     "//brave/browser/ui",
     "//brave/common",
