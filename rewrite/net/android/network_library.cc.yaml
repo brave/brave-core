@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Return no match instead of calling into Java when there is no JVM.
+
+      Android renderers can run without a JVM. With
+      kWebUIInProcessResourceLoading, they look up WebUI resource types, such as
+      brave://rewards/favicon.ico, through net::GetMimeTypeFromFile(), which
+      calls this function for .ico. Exit early to avoid calling into the JVM
+      when it is not available.
+    preempt_function_impl:
+      function_name: GetMimeTypeFromExtension
+      code: |-
+        if (!base::android::IsJavaAvailable()) {
+          return false;
+        }
