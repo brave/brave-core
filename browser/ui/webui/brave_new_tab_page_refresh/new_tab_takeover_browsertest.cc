@@ -5,6 +5,7 @@
 
 #include <algorithm>
 #include <string>
+#include <string_view>
 
 #include "base/callback_list.h"
 #include "base/location.h"
@@ -190,27 +191,39 @@ class NewTabTakeoverBrowserTest : public InProcessBrowserTest {
                     .ExtractBool());
   }
 
-  void WaitForNewTabTakeoverDisclosureLabel(
-      base::Location location = base::Location::Current()) {
+  void WaitForElement(std::string_view selector,
+                      base::Location location = base::Location::Current()) {
     SCOPED_TRACE(location.ToString());
-    EXPECT_TRUE(content::EvalJs(GetActiveWebContents(), R"(
+    const std::string script = content::JsReplace(R"(
       new Promise((resolve) => {
-        const isLabelPresent = () =>
-            !!document.querySelector('.new-tab-takeover-disclosure');
-        if (isLabelPresent()) {
+        const isElementPresent = () => !!document.querySelector($1);
+        if (isElementPresent()) {
           resolve(true);
           return;
         }
         const observer = new MutationObserver(() => {
-          if (isLabelPresent()) {
+          if (isElementPresent()) {
             observer.disconnect();
             resolve(true);
           }
         });
         observer.observe(document.body, { childList: true, subtree: true });
       })
-    )")
-                    .ExtractBool());
+    )",
+                                                  selector);
+    EXPECT_TRUE(content::EvalJs(GetActiveWebContents(), script).ExtractBool());
+  }
+
+  void WaitForNewTabTakeoverDisclosureLabel(
+      base::Location location = base::Location::Current()) {
+    WaitForElement(".new-tab-takeover-disclosure", location);
+  }
+
+  bool HasNewTabTakeoverDisclosureLabel() {
+    return content::EvalJs(
+               GetActiveWebContents(),
+               "!!document.querySelector('.new-tab-takeover-disclosure')")
+        .ExtractBool();
   }
 
   bool HasNewTabTakeoverInfoBar() {
@@ -414,6 +427,40 @@ IN_PROC_BROWSER_TEST_F(DynamicNewTabTakeoverBrowserTest,
   OpenNewTabAndWaitForLoad();
   VerifyNewTabPageLoadedExpectation();
   WaitForNewTabTakeoverDisclosureLabel();
+}
+
+class ProductCampaignNewTabTakeoverBrowserTest
+    : public NewTabTakeoverBrowserTest {
+ protected:
+  std::string GetComponentDataDirectoryName() override {
+    return "product_campaign";
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(
+    ProductCampaignNewTabTakeoverBrowserTest,
+    DoesNotDisplayDisclosureForProductCampaignNewTabTakeover) {
+  ON_CALL(GetAdsServiceMock(), GetStatementOfAccounts(::testing::_))
+      .WillByDefault([](brave_ads::GetStatementOfAccountsCallback callback) {
+        std::move(callback).Run(/*mojom_statement=*/nullptr);
+      });
+
+  EXPECT_CALL(GetAdsServiceMock(), MaybeServeNewTabPageAd)
+      .WillOnce(base::test::RunOnceCallback<0>(BuildNewTabPageAd()));
+
+  PrefService* const prefs = GetProfile()->GetPrefs();
+  const int initial_display_count =
+      prefs->GetInteger(ntp_background_images::prefs::
+                            kNewTabTakeoverInfobarRemainingDisplayCount);
+
+  OpenNewTabAndWaitForLoad();
+  VerifyNewTabPageLoadedExpectation();
+  WaitForElement(".sponsored-logo");
+
+  EXPECT_FALSE(HasNewTabTakeoverDisclosureLabel());
+  EXPECT_EQ(initial_display_count,
+            prefs->GetInteger(ntp_background_images::prefs::
+                                  kNewTabTakeoverInfobarRemainingDisplayCount));
 }
 
 class NewTabTakeoverForLegacyNewTabPageBrowserTest

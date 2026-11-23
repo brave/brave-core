@@ -14,6 +14,7 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
+#include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/gfx/geometry/point.h"
@@ -249,6 +250,37 @@ TEST(NTPSponsoredContentDataTest,
   ASSERT_THAT(sponsored_content_data.campaigns, testing::SizeIs(1));
   EXPECT_EQ(sponsored_content_data.campaigns[0].type,
             brave_ads::mojom::NewTabPageAdCampaignType::kPaid);
+}
+
+TEST(NTPSponsoredContentDataTest,
+     DisplaysNewTabTakeoverDisclosureForPaidCampaign) {
+  base::DictValue dict =
+      base::test::ParseJsonDict(kTestSponsoredImagesCampaign);
+  base::FilePath installed_dir(FILE_PATH_LITERAL("ntp_sponsored_content_data"));
+  NTPSponsoredContentData sponsored_content_data(dict, installed_dir);
+  ASSERT_TRUE(sponsored_content_data.IsValid());
+
+  EXPECT_THAT(
+      sponsored_content_data.MaybeGetBackgroundAt(
+          /*campaign_index=*/0, /*creative_index=*/0),
+      testing::Optional(base::test::IsSupersetOfValue(base::DictValue().Set(
+          kShouldDisplayNewTabTakeoverDisclosureKey, true))));
+}
+
+TEST(NTPSponsoredContentDataTest,
+     DoesNotDisplayNewTabTakeoverDisclosureForProductCampaign) {
+  base::DictValue dict =
+      base::test::ParseJsonDict(kTestSponsoredImagesCampaign);
+  CHECK_DEREF(dict.FindList("campaigns"))[0].GetDict().Set("type", "product");
+  base::FilePath installed_dir(FILE_PATH_LITERAL("ntp_sponsored_content_data"));
+  NTPSponsoredContentData sponsored_content_data(dict, installed_dir);
+  ASSERT_TRUE(sponsored_content_data.IsValid());
+
+  EXPECT_THAT(
+      sponsored_content_data.MaybeGetBackgroundAt(
+          /*campaign_index=*/0, /*creative_index=*/0),
+      testing::Optional(base::test::IsSupersetOfValue(base::DictValue().Set(
+          kShouldDisplayNewTabTakeoverDisclosureKey, false))));
 }
 
 TEST(NTPSponsoredContentDataTest,

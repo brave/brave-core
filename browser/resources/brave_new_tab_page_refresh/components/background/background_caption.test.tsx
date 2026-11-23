@@ -27,6 +27,7 @@ function createNewTabTakeoverBackground(
     imageUrl: '',
     logo: undefined,
     metricType: NewTabPageAdMetricType.kConfirmation,
+    shouldDisplayNewTabTakeoverDisclosure: true,
     shouldAutoDisplayNewTabTakeoverDisclosure: false,
     ...overrides,
   }

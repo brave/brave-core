@@ -46,6 +46,7 @@ function createBackground(
     imageUrl: '',
     logo: undefined,
     metricType: NewTabPageAdMetricType.kConfirmation,
+    shouldDisplayNewTabTakeoverDisclosure: true,
     shouldAutoDisplayNewTabTakeoverDisclosure: false,
     ...overrides,
   }
@@ -112,6 +113,15 @@ describe('NewTabTakeoverDisclosure', () => {
   it('should render the disclosure label', () => {
     renderNewTabTakeoverDisclosure(createBackground())
     expect(getLabel()).toBeInTheDocument()
+  })
+
+  it('should not render the disclosure label for a product campaign', () => {
+    renderNewTabTakeoverDisclosure(
+      createBackground({ shouldDisplayNewTabTakeoverDisclosure: false }),
+    )
+    expect(
+      screen.queryByText('NEW_TAB_TAKEOVER_DISCLOSURE_LABEL'),
+    ).not.toBeInTheDocument()
   })
 
   it('should open the learn more link in the current tab', () => {
