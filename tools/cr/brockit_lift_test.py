@@ -958,6 +958,53 @@ class LiftOutputRenderingTest(LiftTestCase):
         )
 
 
+class LiftOrphanedOverrideTest(LiftTestCase):
+    """Upstream files that only a `chromium_src` shadow overrides, with no
+    patch to fail when they go."""
+
+    MOVED = 'chrome/browser/moved.cc'
+    GONE = 'chrome/browser/gone.cc'
+    UPSTREAM_FILES = {MOVED: '// moved\n', GONE: '// gone\n'}
+
+    def setUp(self) -> None:
+        super().setUp()
+        for source in (self.MOVED, self.GONE):
+            self.env.repo.write_and_stage_file(
+                f'chromium_src/{source}',
+                f'#include <{source}>\n',
+                self.env.repo.brave,
+            )
+        self.env.repo.commit('Add shadows', self.env.repo.brave)
+
+    def test_overrides_are_reported_by_culprit_after_the_lift(self):
+        with self.env.upstream_release(MINOR_TARGET) as upstream:
+            renamed = upstream.rename(self.MOVED, 'chrome/browser/new/moved.cc')
+            upstream.delete(self.GONE)
+
+        run = self.env.run_lift(f'--to={MINOR_TARGET}')
+
+        self.assert_succeeded(run)
+        self.assert_output_has(
+            run,
+            '* Overrides of renamed or deleted files (action needed):',
+            f'    ✘ {_native(f"chromium_src/{self.MOVED}")}',
+            '        (renamed to chromium_src/chrome/browser/new/moved.cc)',
+            f'        git cr follow-renames {renamed}',
+            f'            Rename {self.MOVED} to chrome/browser/new/moved.cc',
+            f'    ✘ {_native(f"chromium_src/{self.GONE}")} (deleted)',
+            f'            Remove {self.GONE}',
+        )
+
+    def test_overrides_of_files_still_there_are_not_reported(self):
+        with self.env.upstream_release(MINOR_TARGET) as upstream:
+            upstream.edit(self.MOVED, line=1, text='// edited')
+
+        run = self.env.run_lift(f'--to={MINOR_TARGET}')
+
+        self.assert_succeeded(run)
+        self.assert_output_lacks(run, 'Overrides of renamed or deleted files')
+
+
 class LiftArgumentTest(LiftTestCase):
     """Flag combinations rejected before any work starts."""
 

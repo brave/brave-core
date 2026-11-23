@@ -854,6 +854,67 @@ class BrockitTest(unittest.TestCase):
         self.assertNotIn('not_l10n.txt', committed_files)
 
 
+class OrphanedOverridesTest(unittest.TestCase):
+    """Tests for `find_orphaned_overrides`."""
+
+    def setUp(self):
+        self.repo = FakeChromiumRepo()
+        self.repo.setup()
+        self.addCleanup(self.repo.cleanup)
+        chromium = self.repo.chromium
+        for path in ('a/kept.cc', 'a/gone.cc', 'a/moved.h', 'b/other.cc'):
+            self.repo.write_and_stage_file(path, f'// {path}\n', chromium)
+        self.repo.commit('Add files', chromium)
+        self.repo.add_tag('1.0.0.1')
+        for path in ('a/kept.cc', 'a/gone.cc', 'a/moved.h', 'gen/made.cc'):
+            self.repo.write_and_stage_file(
+                f'chromium_src/{path}',
+                f'#include "src/{path}"\n',
+                self.repo.brave,
+            )
+        self.repo.commit('Add overrides', self.repo.brave)
+
+    def _git(self, *args: str) -> str:
+        return self.repo._run_git_command(list(args), self.repo.chromium)
+
+    def test_groups_renamed_and_deleted_overrides_by_culprit(self):
+        chromium = self.repo.chromium
+        self.repo.delete_file('a/gone.cc', chromium)
+        self.repo.delete_file('b/other.cc', chromium)
+        deleted = self.repo.commit('Delete gone', chromium)
+        (chromium / 'c').mkdir()
+        self._git('mv', 'a/moved.h', 'c/moved.h')
+        moved = self.repo.commit('Move moved', chromium)
+        self.repo.add_tag('1.0.0.2')
+
+        groups = brockit.find_orphaned_overrides('1.0.0.1', '1.0.0.2')
+
+        self.assertEqual(list(groups), [deleted, moved])
+        details, orphans = groups[deleted]
+        self.assertIn('Delete gone', details)
+        self.assertNotIn('a/gone.cc', details)
+        self.assertEqual(
+            orphans,
+            [brockit.OrphanedOverride(Path('chromium_src/a/gone.cc'), deleted)],
+        )
+        self.assertEqual(
+            groups[moved][1],
+            [
+                brockit.OrphanedOverride(
+                    Path('chromium_src/a/moved.h'), moved, 'c/moved.h'
+                )
+            ],
+        )
+
+    def test_nothing_when_no_overridden_file_goes(self):
+        self.repo.delete_file('b/other.cc', self.repo.chromium)
+        self.repo.commit('Delete other', self.repo.chromium)
+        self.repo.add_tag('1.0.0.2')
+        self.assertEqual(
+            brockit.find_orphaned_overrides('1.0.0.1', '1.0.0.2'), {}
+        )
+
+
 class MarkChangeTaskTest(unittest.TestCase):
     """Tests for the `reassign` and `drop` change-marking commands."""
 

@@ -94,6 +94,9 @@ The following steps will take place:
 9. *Updated strings for Chromium [to]* will be committed.
 10. `gnrt` will be rerun and the changes produced under `third_party/rust/` will
     be committed.
+11. `chromium_src` overrides whose upstream file the bump renamed or deleted are
+    listed by culprit. They fail nothing, so the lift still finishes, but they
+    need attention: `git cr follow-renames <culprit>` for a rename.
 
 Steps 3-7 may end up being skipped altogether if no failures take place, or in
 part if resolution is possible without manual intervention.
@@ -522,6 +525,98 @@ def _ensure_chromium_tags(*refs: Version | str) -> None:
     for ref in missing:
         fetch_args += ['tag', ref]
     repository.chromium.run_git(*fetch_args)
+
+
+@dataclass(frozen=True)
+class OrphanedOverride:
+    """A `chromium_src` override whose upstream file a bump took away."""
+
+    # The override, relative to brave-core, e.g. `chromium_src/foo/bar.cc`.
+    override: Path
+    # The full hash of the upstream commit that renamed or deleted the file.
+    culprit: str
+    # Where the culprit moved the upstream file, relative to `src/`, or None
+    # when it deleted it.
+    renamed_to: str | None = None
+
+
+# A `git show --name-status` line: its status, then its path(s), tab-separated.
+_NAME_STATUS_LINE = re.compile(r'^[ACDMRTU]\d*\t')
+
+
+def find_orphaned_overrides(
+    old: Version | str, new: Version | str
+) -> dict[str, tuple[str, list[OrphanedOverride]]]:
+    """The `chromium_src` overrides of upstream files gone at `new` that
+    `old` had, grouped by culprit, each with its `git show` header and message.
+
+    A shadow with no patch fails nothing when its file goes: its `#define`s
+    just stop matching. A few git calls cover any bump: a tree diff with no
+    rename detection for what went, a log limited to those paths for their
+    culprits, and rename detection only within each culprit.
+    """
+    overridden = {
+        path.removeprefix('chromium_src/'): Path(path)
+        for path in repository.brave.run_git(
+            'ls-files', '-z', 'chromium_src'
+        ).split('\0')
+        if path
+    }
+    gone = repository.chromium.run_git(
+        'diff',
+        '-z',
+        '--name-only',
+        '--no-renames',
+        '--diff-filter=D',
+        str(old),
+        str(new),
+    ).split('\0')
+    orphaned = sorted(path for path in gone if path in overridden)
+    if not orphaned:
+        return {}
+
+    culprits: dict[str, str] = {}
+    commit = ''
+    for line in repository.chromium.run_git(
+        'log',
+        '--format=commit %H',
+        '--name-only',
+        '--no-renames',
+        '--diff-filter=D',
+        f'{old}..{new}',
+        '--',
+        *orphaned,
+    ).splitlines():
+        if line.startswith('commit '):
+            commit = line.removeprefix('commit ')
+        elif line in overridden:
+            # The log is newest first, so the last deletion is kept.
+            culprits.setdefault(line, commit)
+
+    groups: dict[str, tuple[str, list[OrphanedOverride]]] = {}
+    for culprit in dict.fromkeys(culprits[path] for path in orphaned):
+        shown = repository.chromium.run_git(
+            'show', '-M', '--name-status', '--format=medium', culprit
+        ).splitlines()
+        renames = {
+            fields[1]: fields[2]
+            for line in shown
+            if line.startswith('R')
+            and _NAME_STATUS_LINE.match(line)
+            and len(fields := line.split('\t')) == 3
+        }
+        details = '\n'.join(
+            line for line in shown if not _NAME_STATUS_LINE.match(line)
+        ).rstrip()
+        groups[culprit] = (
+            details,
+            [
+                OrphanedOverride(overridden[path], culprit, renames.get(path))
+                for path in orphaned
+                if culprits[path] == culprit
+            ],
+        )
+    return groups
 
 
 def _update_pinslist_timestamp() -> str:
@@ -1998,6 +2093,48 @@ class Upgrade(Versioned):
             self._save_gnrt_rerun()
         except subprocess.CalledProcessError:
             terminal.log_task('[bold]❌[/] GNRT rerun. Please investigate it.')
+
+        self._report_orphaned_overrides()
+
+    def _report_orphaned_overrides(self):
+        """Lists the `chromium_src` overrides whose upstream file the bump
+        renamed or deleted, grouped by culprit as the files that cannot be
+        patched anymore are. The lift is done; they need attention after it."""
+        _ensure_chromium_tags(self.working_version, self.target_version)
+        groups = find_orphaned_overrides(
+            self.working_version, self.target_version
+        )
+        if not groups:
+            return
+
+        terminal.log_task(
+            '[bold]Overrides of renamed or deleted files '
+            f'{ACTION_NEEDED_DECORATOR}:[/]'
+        )
+        for culprit, (details, orphans) in groups.items():
+            for orphan in orphans:
+                if orphan.renamed_to is None:
+                    console.log(
+                        Padding(
+                            f'✘ {orphan.override} [red bold](deleted)', (0, 4)
+                        )
+                    )
+                    continue
+                console.log(
+                    Padding(
+                        f'✘ {orphan.override}\n    ([yellow bold]renamed to[/] '
+                        f'chromium_src/{orphan.renamed_to})',
+                        (0, 4),
+                    )
+                )
+            if any(orphan.renamed_to for orphan in orphans):
+                console.log(
+                    Padding(
+                        f'[bold cyan]git cr follow-renames {culprit}[/]',
+                        (0, 8),
+                    )
+                )
+            console.log(Padding(f'{details}\n', (0, 8), style='dim'))
 
 
 def _solve_brave_ref(from_ref: str | None) -> str:
