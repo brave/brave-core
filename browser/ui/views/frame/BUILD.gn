@@ -202,6 +202,8 @@ source_set("browser_tests") {
   }
 
   if (is_mac) {
+    sources += [ "//brave/browser/ui/views/frame/brave_browser_frame_view_mac_browsertest.mm" ]
+
     deps += [
       "//chrome/browser/ui:fullscreen_util_mac",
       "//ui/base:test_support",
