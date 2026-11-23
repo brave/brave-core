@@ -143,7 +143,7 @@ void SidebarWebPanelController::ReapplyUserAgent(const SidebarItem& item) {
   panel_item_ = item;
 
   content::NavigationController& controller = panel_contents_->GetController();
-  content::NavigationEntry* entry = controller.GetVisibleEntry();
+  content::NavigationEntry* entry = controller.GetLastCommittedEntry();
   if (!entry) {
     return;
   }
@@ -153,27 +153,7 @@ void SidebarWebPanelController::ReapplyUserAgent(const SidebarItem& item) {
                                             ? BuildMobileUserAgentOverride()
                                             : blink::UserAgentOverride(),
                                         /*override_in_new_tabs=*/false);
-
-  // For POST requests, use a normal Reload to preserve repost confirmation.
-  // Otherwise, load the original (pre-redirect) URL with an explicit UA
-  // override.
-  if (entry->GetHasPostData()) {
-    controller.Reload(content::ReloadType::NORMAL, /*check_for_repost=*/true);
-    return;
-  }
-
-  const GURL& target_url = entry->GetOriginalRequestURL().is_valid()
-                               ? entry->GetOriginalRequestURL()
-                               : entry->GetURL();
-  content::NavigationController::LoadURLParams load_url_params(target_url);
-  load_url_params.transition_type = ui::PAGE_TRANSITION_RELOAD;
-  load_url_params.should_replace_current_entry =
-      (entry == controller.GetLastCommittedEntry());
-  load_url_params.override_user_agent =
-      item.use_mobile_user_agent
-          ? content::NavigationController::UA_OVERRIDE_TRUE
-          : content::NavigationController::UA_OVERRIDE_FALSE;
-  controller.LoadURLWithParams(load_url_params);
+  controller.LoadOriginalRequestURL();
 }
 
 void SidebarWebPanelController::CloseWebPanel(bool suppress_animations) {

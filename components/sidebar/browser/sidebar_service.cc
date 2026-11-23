@@ -401,15 +401,15 @@ void SidebarService::UpdateItem(const SidebarItem& old_item,
   DCHECK(old_item.url.is_valid() && new_item.url.is_valid());
   DCHECK(!old_item.title.empty() && !new_item.title.empty());
 
+  if (old_item == new_item) {
+    return;
+  }
+
   const bool url_updated = old_item.url != new_item.url;
   const bool title_updated = old_item.title != new_item.title;
   const bool panel_type_updated = old_item.panel_type != new_item.panel_type;
   const bool use_mobile_user_agent_updated =
       old_item.use_mobile_user_agent != new_item.use_mobile_user_agent;
-  if (!url_updated && !title_updated && !panel_type_updated &&
-      !use_mobile_user_agent_updated) {
-    return;
-  }
 
   // Sidebar can't have two items with the same url, so reject the update if
   // the new url collides with a different, existing item.
@@ -430,11 +430,10 @@ void SidebarService::UpdateItem(const SidebarItem& old_item,
   item_iter->panel_type = new_item.panel_type;
   item_iter->use_mobile_user_agent = new_item.use_mobile_user_agent;
 
-  for (Observer& obs : observers_) {
-    obs.OnItemUpdated(*item_iter,
-                      {index, title_updated, url_updated, panel_type_updated,
-                       use_mobile_user_agent_updated});
-  }
+  observers_.Notify(
+      &Observer::OnItemUpdated, *item_iter,
+      SidebarItemUpdate(index, title_updated, url_updated, panel_type_updated,
+                        use_mobile_user_agent_updated));
   UpdateSidebarItemsToPrefStore();
 }
 
