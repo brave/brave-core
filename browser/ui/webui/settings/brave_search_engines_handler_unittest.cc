@@ -14,6 +14,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
@@ -27,6 +28,7 @@
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_web_contents_factory.h"
 #include "content/public/test/test_web_ui.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace settings {
@@ -167,29 +169,15 @@ TEST_F(BraveSearchEnginesHandlerTest,
   ASSERT_TRUE(result && result->is_list());
 
   // engine_b is the private default; engine_a is not.
-  bool found_a = false;
-  bool found_b = false;
-  for (const auto& entry : result->GetList()) {
-    const base::DictValue& dict = entry.GetDict();
-    const std::string* keyword = dict.FindString("keyword");
-    if (!keyword) {
-      continue;
-    }
-
-    std::optional<bool> is_default = dict.FindBool("default");
-    ASSERT_TRUE(is_default.has_value());
-
-    if (*keyword == "engine_a") {
-      EXPECT_FALSE(*is_default) << "engine_a must not be the private default";
-      found_a = true;
-    } else if (*keyword == "engine_b") {
-      EXPECT_TRUE(*is_default) << "engine_b must be the private default";
-      found_b = true;
-    }
-  }
-
-  EXPECT_TRUE(found_a) << "engine_a not found in private engines list";
-  EXPECT_TRUE(found_b) << "engine_b not found in private engines list";
+  const base::ListValue& list = result->GetList();
+  auto engine_a =
+      base::test::ParseJsonDict(R"({"keyword": "engine_a", "default": false})");
+  auto engine_b =
+      base::test::ParseJsonDict(R"({"keyword": "engine_b", "default": true})");
+  EXPECT_THAT(list,
+              testing::Contains(base::test::DictionaryHasValues(engine_a)));
+  EXPECT_THAT(list,
+              testing::Contains(base::test::DictionaryHasValues(engine_b)));
 }
 
 // Verify that setDefaultPrivateSearchEngine updates the pref when given a
