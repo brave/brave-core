@@ -13,6 +13,7 @@
 #include "content/public/test/browser_test_utils.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "third_party/blink/public/common/features.h"
+#include "url/gurl.h"
 
 namespace {
 
@@ -22,6 +23,8 @@ constexpr char kReportingObserver[] = "/reporting_observer.html";
 
 class ReportingObserverTest : public PlatformBrowserTest {
  public:
+  ReportingObserverTest() : ReportingObserverTest(false) {}
+
   void SetUpOnMainThread() override {
     PlatformBrowserTest::SetUpOnMainThread();
     content::SetupCrossSiteRedirector(embedded_test_server());
@@ -33,9 +36,17 @@ class ReportingObserverTest : public PlatformBrowserTest {
   }
 
  protected:
+  explicit ReportingObserverTest(bool reporting_api_enabled) {
+    feature_list_.InitWithFeatureState(blink::features::kBraveReportingAPI,
+                                       reporting_api_enabled);
+  }
+
   content::WebContents* web_contents() {
     return chrome_test_utils::GetActiveWebContents(this);
   }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(ReportingObserverTest, IsNoop) {
@@ -47,12 +58,7 @@ IN_PROC_BROWSER_TEST_F(ReportingObserverTest, IsNoop) {
 
 class ReportingObserverEnabledTest : public ReportingObserverTest {
  public:
-  ReportingObserverEnabledTest() {
-    feature_list_.InitAndEnableFeature(blink::features::kBraveReportingAPI);
-  }
-
- private:
-  base::test::ScopedFeatureList feature_list_;
+  ReportingObserverEnabledTest() : ReportingObserverTest(true) {}
 };
 
 IN_PROC_BROWSER_TEST_F(ReportingObserverEnabledTest, ReceivesReports) {

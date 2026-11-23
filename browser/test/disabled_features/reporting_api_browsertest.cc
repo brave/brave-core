@@ -5,6 +5,7 @@
 
 #include <set>
 #include <string>
+#include <utility>
 
 #include "base/command_line.h"
 #include "base/functional/bind.h"
@@ -31,6 +32,7 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "third_party/blink/public/common/features.h"
+#include "url/gurl.h"
 
 namespace {
 
@@ -48,6 +50,8 @@ constexpr base::TimeDelta kReportToUploadTimeout = base::Seconds(2);
 
 class ReportingApiBrowserTest : public PlatformBrowserTest {
  public:
+  ReportingApiBrowserTest() : ReportingApiBrowserTest(false) {}
+
   void SetUpCommandLine(base::CommandLine* command_line) override {
     PlatformBrowserTest::SetUpCommandLine(command_line);
     command_line->AppendSwitch(embedder_support::kShortReportingDelay);
@@ -64,6 +68,11 @@ class ReportingApiBrowserTest : public PlatformBrowserTest {
   }
 
  protected:
+  explicit ReportingApiBrowserTest(bool reporting_api_enabled) {
+    feature_list_.InitWithFeatureState(blink::features::kBraveReportingAPI,
+                                       reporting_api_enabled);
+  }
+
   content::WebContents* web_contents() {
     return chrome_test_utils::GetActiveWebContents(this);
   }
@@ -128,6 +137,7 @@ class ReportingApiBrowserTest : public PlatformBrowserTest {
     }
   }
 
+  base::test::ScopedFeatureList feature_list_;
   net::EmbeddedTestServer https_server_{net::EmbeddedTestServer::TYPE_HTTPS};
   base::Lock lock_;
   std::set<std::string> seen_paths_ GUARDED_BY(lock_);
@@ -155,12 +165,7 @@ IN_PROC_BROWSER_TEST_F(ReportingApiBrowserTest,
 
 class ReportingApiEnabledBrowserTest : public ReportingApiBrowserTest {
  public:
-  ReportingApiEnabledBrowserTest() {
-    feature_list_.InitAndEnableFeature(blink::features::kBraveReportingAPI);
-  }
-
- private:
-  base::test::ScopedFeatureList feature_list_;
+  ReportingApiEnabledBrowserTest() : ReportingApiBrowserTest(true) {}
 };
 
 IN_PROC_BROWSER_TEST_F(ReportingApiEnabledBrowserTest, CspReportUriSent) {
