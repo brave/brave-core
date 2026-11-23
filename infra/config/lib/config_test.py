@@ -837,6 +837,20 @@ class TargetsRegistryTest(unittest.TestCase):
         self.targets.mixin(name='m2', args=['--m2'])
         self.targets.compile_target(name='chrome', label='//chrome:chrome')
 
+    def test_all_binaries_are_listed_by_name(self):
+        self.assertEqual(
+            [
+                (binary.name, binary.label, binary.type)
+                for binary in self.targets.all_binaries()
+            ],
+            [
+                ('a', '//t:a', 'console_test_launcher'),
+                ('b', '//t:b', 'console_test_launcher'),
+                ('c', '//t:c', 'console_test_launcher'),
+                ('w', '//t:w', 'windowed_test_launcher'),
+            ],
+        )
+
     def test_tests_get_their_binary_and_args(self):
         expanded = self.targets.expand(
             self.targets.bundle(targets=['a', 'b_too'])

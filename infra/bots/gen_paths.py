@@ -15,6 +15,7 @@ from pathlib import Path
 BOTS_DIR = Path(__file__).resolve().parent
 CONFIG_DIR = BOTS_DIR.parent / 'config'
 BUILDERS_OUTPUT_DIR = CONFIG_DIR / 'generated' / 'builders'
+TESTING_OUTPUT_DIR = CONFIG_DIR / 'generated' / 'testing'
 
 # Chromium's `src/`, the root of `//` paths and of build directories.
 CHROMIUM_SRC_DIR = BOTS_DIR.parents[2]

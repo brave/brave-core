@@ -125,28 +125,48 @@ def write_snapshot(
 
 def cmd_snapshot(args: argparse.Namespace) -> int:
     _load_config()
-    from lib.config import builders, gn_args
+    from lib.config import builders, gn_args, targets
 
-    result = write_snapshot(
-        builders, gn_args, gen_paths.BUILDERS_OUTPUT_DIR, dry_run=args.check
-    )
-
-    for path in result.deleted:
-        print(f'deleted:   {path}')
-    for path in result.changed:
-        print(f'changed:   {path}')
-    if args.verbose:
-        for path in result.unchanged:
-            print(f'unchanged: {path}')
-
-    if args.check and (result.changed or result.deleted):
-        print(
-            'infra/config/generated/builders/ is stale; run '
-            '`bots.py snapshot` to update it.',
-            file=sys.stderr,
-        )
-        return 1
-    return 0
+    stale = False
+    for name, result in (
+        (
+            'builders',
+            write_snapshot(
+                builders,
+                gn_args,
+                gen_paths.BUILDERS_OUTPUT_DIR,
+                dry_run=args.check,
+            ),
+        ),
+        (
+            'testing',
+            write_output(
+                gen_paths.TESTING_OUTPUT_DIR,
+                {
+                    'gn_isolate_map.pyl': generated_output.render_isolate_map(
+                        targets
+                    )
+                },
+                dry_run=args.check,
+            ),
+        ),
+    ):
+        prefix = '' if name == 'builders' else name + '/'
+        for path in result.deleted:
+            print(f'deleted:   {prefix}{path}')
+        for path in result.changed:
+            print(f'changed:   {prefix}{path}')
+        if args.verbose:
+            for path in result.unchanged:
+                print(f'unchanged: {prefix}{path}')
+        if args.check and (result.changed or result.deleted):
+            print(
+                f'infra/config/generated/{name}/ is stale; run '
+                '`bots.py snapshot` to update it.',
+                file=sys.stderr,
+            )
+            stale = True
+    return 1 if stale else 0
 
 
 def add_subparser(subparsers) -> argparse.ArgumentParser:
