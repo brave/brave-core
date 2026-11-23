@@ -47,8 +47,11 @@ bool BraveDownloadManagerDelegate::IsDownloadReadyForCompletion(
         item, std::move(internal_complete_callback));
   }
 
+  // On Android the target path is a MediaStore content URI
+  // (content://media/...) with no extension. On Desktop, this falls back to the
+  // target basename which is correct.
   if (!image_metadata_stripper::IsSupportedImagePath(
-          item->GetTargetFilePath())) {
+          item->GetFileNameToReportUser())) {
     return ChromeDownloadManagerDelegate::IsDownloadReadyForCompletion(
         item, std::move(internal_complete_callback));
   }
