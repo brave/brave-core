@@ -16,6 +16,7 @@
 #include "components/prefs/pref_member.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents_observer.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 
 class ToolbarButtonProvider;
 
@@ -36,6 +37,10 @@ class BraveNewsPageActionController
     : public BraveNewsTabHelper::PageFeedsObserver,
       public content::WebContentsObserver {
  public:
+  DECLARE_USER_DATA(BraveNewsPageActionController);
+
+  static BraveNewsPageActionController* From(tabs::TabInterface* tab);
+
   BraveNewsPageActionController(
       tabs::TabInterface& tab,
       page_actions::PageActionController& page_action_controller);
@@ -77,6 +82,9 @@ class BraveNewsPageActionController
   BooleanPrefMember should_show_;
   BooleanPrefMember opted_in_;
   BooleanPrefMember news_enabled_;
+
+  ui::ScopedUnownedUserData<BraveNewsPageActionController>
+      scoped_unowned_user_data_;
 };
 
 }  // namespace page_actions

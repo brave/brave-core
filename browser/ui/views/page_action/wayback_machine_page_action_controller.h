@@ -11,6 +11,7 @@
 #include "brave/components/brave_wayback_machine/wayback_state.h"
 #include "chrome/browser/ui/page_action/page_action_controller.h"
 #include "components/tabs/public/tab_interface.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 #include "ui/views/view_tracker.h"
 
 class WaybackMachineBubbleView;
@@ -31,6 +32,10 @@ namespace page_actions {
 // when enabled, automatically after a failed navigation.
 class WaybackMachinePageActionController {
  public:
+  DECLARE_USER_DATA(WaybackMachinePageActionController);
+
+  static WaybackMachinePageActionController* From(tabs::TabInterface* tab);
+
   WaybackMachinePageActionController(
       tabs::TabInterface& tab,
       page_actions::PageActionController& page_action_controller);
@@ -71,6 +76,9 @@ class WaybackMachinePageActionController {
   base::CallbackListSubscription wayback_state_changed_subscription_;
 
   views::ViewTracker bubble_tracker_;
+
+  ui::ScopedUnownedUserData<WaybackMachinePageActionController>
+      scoped_unowned_user_data_;
 };
 
 }  // namespace page_actions

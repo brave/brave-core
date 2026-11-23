@@ -109,6 +109,14 @@ void PrepareParametersForPolicyExecution(
 
 }  // namespace
 
+DEFINE_USER_DATA(PsstTabWebContentsObserver);
+
+// static
+PsstTabWebContentsObserver* PsstTabWebContentsObserver::From(
+    tabs::TabInterface* tab) {
+  return tab ? Get(tab->GetUnownedUserDataHost()) : nullptr;
+}
+
 // static
 std::unique_ptr<PsstTabWebContentsObserver>
 PsstTabWebContentsObserver::MaybeCreate(
@@ -190,7 +198,8 @@ PsstTabWebContentsObserver::PsstTabWebContentsObserver(
       psst_settings_service_(psst_settings_service),
       variations_service_(variations_service),
       log_service_(log_service),
-      ui_delegate_(std::move(ui_delegate)) {
+      ui_delegate_(std::move(ui_delegate)),
+      scoped_unowned_user_data_(tab.GetUnownedUserDataHost(), *this) {
   ui_delegate_->SetLogicalFlowCancelCallback(
       base::BindRepeating(&PsstTabWebContentsObserver::CancelInFlightFlow,
                      weak_factory_.GetWeakPtr()));

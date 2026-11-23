@@ -6,7 +6,6 @@
 #include "base/functional/callback_helpers.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/psst/psst_ui_desktop_presenter.h"
-#include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "brave/browser/ui/tabs/test/brave_tab_features_discard_browsertest.h"
 #include "brave/browser/ui/views/page_action/psst_action_controller.h"
 #include "brave/components/psst/core/common/features.h"
@@ -30,9 +29,7 @@ class BraveTabFeaturesDiscardPsstBrowserTest
 IN_PROC_BROWSER_TEST_F(BraveTabFeaturesDiscardPsstBrowserTest,
                        InfoBarShownInDiscardedTab) {
   tabs::TabInterface* tab = OpenBackgroundTab(GetURL("/title2.html"));
-  auto* psst_action_controller =
-      tabs::BraveTabFeatures::FromTabFeatures(tab->GetTabFeatures())
-          ->psst_page_action_controller();
+  auto* psst_action_controller = page_actions::PsstActionController::From(tab);
   ASSERT_TRUE(psst_action_controller);
   psst::PsstUiDesktopPresenter presenter(*tab,
                                          psst_action_controller->AsWeakPtr());

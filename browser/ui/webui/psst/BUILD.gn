@@ -41,6 +41,7 @@ static_library("psst") {
     "//chrome/browser/ui/webui:favicon_source",
     "//chrome/browser/ui/webui/top_chrome",
     "//components/constrained_window",
+    "//components/tabs:public",
     "//components/web_modal",
     "//ui/web_dialogs",
   ]

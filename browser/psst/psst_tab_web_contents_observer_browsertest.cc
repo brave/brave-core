@@ -20,7 +20,6 @@
 #include "base/values.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/psst/psst_settings_service_factory.h"
-#include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "brave/browser/ui/views/infobars/brave_confirm_infobar.h"
 #include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
 #include "brave/components/psst/buildflags/buildflags.h"
@@ -755,10 +754,7 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     auto* const tab_interface =
         tabs::TabInterface::GetFromContents(otr_web_contents);
     ASSERT_TRUE(tab_interface);
-    auto* const brave_tab_features = tabs::BraveTabFeatures::FromTabFeatures(
-        tab_interface->GetTabFeatures());
-    ASSERT_TRUE(brave_tab_features);
-    EXPECT_FALSE(brave_tab_features->psst_web_contents_observer());
+    EXPECT_FALSE(psst::PsstTabWebContentsObserver::From(tab_interface));
 
     auto* const otr_infobar_manager =
         infobars::ContentInfoBarManager::FromWebContents(otr_web_contents);

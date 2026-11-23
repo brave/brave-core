@@ -1153,6 +1153,7 @@ source_set("ui") {
       "//components/tabs:public",
       "//ui/actions",
       "//ui/base/metadata",
+      "//ui/base/unowned_user_data",
     ]
   }
 
@@ -1541,6 +1542,7 @@ source_set("ui") {
       "//chrome/browser/ui/views/frame:toolbar_button_provider",
       "//components/tabs:public",
       "//components/user_prefs",
+      "//ui/base/unowned_user_data",
     ]
   }
 

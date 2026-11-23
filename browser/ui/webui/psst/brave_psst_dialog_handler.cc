@@ -13,12 +13,11 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/psst/psst_tab_web_contents_observer.h"
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
-#include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
 #include "chrome/browser/ui/browser_window.h"
-#include "chrome/browser/ui/tabs/public/tab_features.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "components/constrained_window/constrained_window_views.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/callback_helpers.h"
 
@@ -33,13 +32,7 @@ base::WeakPtr<psst::PsstTabWebContentsObserver> GetPsstTabHelperForContents(
     return nullptr;
   }
 
-  auto* brave_tab_features =
-      tabs::BraveTabFeatures::FromTabFeatures(tab_interface->GetTabFeatures());
-  if (!brave_tab_features) {
-    return nullptr;
-  }
-
-  auto* tab_helper = brave_tab_features->psst_web_contents_observer();
+  auto* tab_helper = psst::PsstTabWebContentsObserver::From(tab_interface);
   if (!tab_helper) {
     return nullptr;
   }

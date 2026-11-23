@@ -22,6 +22,7 @@
 #include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 
 namespace variations {
 class VariationsService;
@@ -82,6 +83,10 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
   // rule matching is left empty. `log_service` may be null, in which case no
   // diagnostics are recorded. `world_id` is the isolated world that PSST
   // scripts are injected into.
+  DECLARE_USER_DATA(PsstTabWebContentsObserver);
+
+  static PsstTabWebContentsObserver* From(tabs::TabInterface* tab);
+
   static std::unique_ptr<PsstTabWebContentsObserver> MaybeCreate(
       tabs::TabInterface& tab,
       content::BrowserContext* browser_context,
@@ -162,6 +167,9 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
   // Whether the currently committed primary page is eligible for PSST
   // processing. Recomputed on every cross-document primary main frame commit.
   bool should_process_current_page_ = false;
+
+  ui::ScopedUnownedUserData<PsstTabWebContentsObserver>
+      scoped_unowned_user_data_;
 
   // Weak pointers scoped to the lifetime of the current primary document. Every
   // step of the PSST flow (rule lookup, script results, consent callback,

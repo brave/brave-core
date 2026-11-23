@@ -13,6 +13,7 @@
 #include "base/memory/raw_ref.h"
 #include "chrome/browser/ui/page_action/page_action_controller.h"
 #include "components/tabs/public/tab_interface.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 #include "ui/views/view_tracker.h"
 
 namespace actions {
@@ -45,6 +46,10 @@ namespace page_actions {
 // it otherwise.
 class PartitionedStoragePageActionController {
  public:
+  DECLARE_USER_DATA(PartitionedStoragePageActionController);
+
+  static PartitionedStoragePageActionController* From(tabs::TabInterface* tab);
+
   PartitionedStoragePageActionController(
       tabs::TabInterface& tab,
       page_actions::PageActionController& page_action_controller);
@@ -78,6 +83,9 @@ class PartitionedStoragePageActionController {
 
   // Clears if the page action `View` is destroyed while a menu is open
   views::ViewTracker menu_anchor_view_tracker_;
+
+  ui::ScopedUnownedUserData<PartitionedStoragePageActionController>
+      scoped_unowned_user_data_;
 
   base::WeakPtrFactory<PartitionedStoragePageActionController>
       weak_ptr_factory_{this};

@@ -12,6 +12,7 @@
 #include "components/prefs/pref_change_registrar.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents_observer.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 
 namespace content {
 class WebContents;
@@ -25,6 +26,10 @@ namespace page_actions {
 // on that .onion location when clicked.
 class OnionLocationPageActionController : public content::WebContentsObserver {
  public:
+  DECLARE_USER_DATA(OnionLocationPageActionController);
+
+  static OnionLocationPageActionController* From(tabs::TabInterface* tab);
+
   OnionLocationPageActionController(
       tabs::TabInterface& tab,
       page_actions::PageActionController& page_action_controller);
@@ -60,6 +65,9 @@ class OnionLocationPageActionController : public content::WebContentsObserver {
 
   PrefChangeRegistrar local_state_change_registrar_;
   PrefChangeRegistrar profile_pref_change_registrar_;
+
+  ui::ScopedUnownedUserData<OnionLocationPageActionController>
+      scoped_unowned_user_data_;
 };
 
 }  // namespace page_actions

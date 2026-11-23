@@ -49,7 +49,6 @@
 #include "ui/views/controls/highlight_path_generator.h"
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-#include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "brave/browser/ui/views/page_action/playlist_page_action_controller.h"
 #include "components/tabs/public/tab_interface.h"
 #endif
@@ -153,8 +152,7 @@ void BraveLocationBarView::ShowPlaylistBubble(
     return;
   }
   page_actions::PlaylistPageActionController* const controller =
-      tabs::BraveTabFeatures::FromTabFeatures(tab->GetTabFeatures())
-          ->playlist_page_action_controller();
+      page_actions::PlaylistPageActionController::From(tab);
   if (!controller) {
     return;
   }

@@ -12,6 +12,7 @@
 #include "brave/browser/ui/speedreader/speedreader_tab_helper.h"
 #include "chrome/browser/ui/page_action/page_action_controller.h"
 #include "components/tabs/public/tab_interface.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 
 namespace content {
 class WebContents;
@@ -26,6 +27,10 @@ namespace page_actions {
 class SpeedreaderPageActionController
     : public speedreader::SpeedreaderTabHelper::Observer {
  public:
+  DECLARE_USER_DATA(SpeedreaderPageActionController);
+
+  static SpeedreaderPageActionController* From(tabs::TabInterface* tab);
+
   SpeedreaderPageActionController(
       tabs::TabInterface& tab,
       page_actions::PageActionController& page_action_controller);
@@ -58,6 +63,9 @@ class SpeedreaderPageActionController
   base::ScopedObservation<speedreader::SpeedreaderTabHelper,
                           speedreader::SpeedreaderTabHelper::Observer>
       tab_helper_observation_{this};
+
+  ui::ScopedUnownedUserData<SpeedreaderPageActionController>
+      scoped_unowned_user_data_;
 };
 
 }  // namespace page_actions
