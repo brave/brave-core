@@ -6410,6 +6410,27 @@ def get_plaster_files(filepaths: list[str] | None = None) -> list[PlasterFile]:
     return [PlasterFile(path) for path in candidate_paths if path.exists()]
 
 
+def _plasters_changed_in(rev: str) -> list[str]:
+    """The plaster files `rev` adds or modifies, brave-relative.
+
+    A single ref is diffed against its parent, and `A..B` is A against B.
+    """
+    revs = [rev] if '..' in rev else [f'{rev}~1', rev]
+    return [
+        path
+        for path in repository.brave.run_git(
+            'diff',
+            '--name-only',
+            '--no-renames',
+            '--diff-filter=AM',
+            *revs,
+            '--',
+            f'{PLASTER_FILES_PATH.name}/',
+        ).splitlines()
+        if path.endswith(PLASTER_EXTENSION)
+    ]
+
+
 def apply(args):
     """Applies plaster files to brave.
 
@@ -6420,9 +6441,18 @@ def apply(args):
     When `--all` is passed, this causes all plaster files to be reapplied. When
     specific plaster file paths or patch file paths are passed, only those are
     run.
+
+    When `--rev` is passed, only the plaster files that were added or modified
+    by the specified commit (or across a rev range, `A..B`) will be reapplied.
     """
     filepaths = getattr(args, 'filepaths', None)
     apply_all = getattr(args, 'all', False)
+    rev = getattr(args, 'rev', None)
+    if rev:
+        filepaths = _plasters_changed_in(rev)
+        if not filepaths:
+            logging.info('No plaster files added or modified by: %s', rev)
+            return 0
     skip_up_to_date = not apply_all and not filepaths
 
     with terminal.with_status('Applying plaster files'):
@@ -6743,6 +6773,12 @@ def main():
         help='Re-apply every plaster file unconditionally, even if the '
         'patchinfo indicates it is already up-to-date.',
     )
+    apply_parser.add_argument(
+        '--rev',
+        metavar='REF_OR_RANGE',
+        help='Apply the plaster files added or modified by commit REF, or '
+        'from A to B for a range A..B.',
+    )
     apply_parser.add_argument('filepaths', nargs='*', help='Filepaths to apply')
     apply_parser.set_defaults(func=apply)
 
@@ -6764,6 +6800,8 @@ def main():
     parser.add_argument('-h', '--help', action=Help, commands=commands)
 
     args = parser.parse_args()
+    if getattr(args, 'rev', None) and (args.all or args.filepaths):
+        apply_parser.error('--rev cannot be combined with --all or file paths')
 
     if hasattr(args, 'infra_mode') and args.infra_mode:
         terminal.set_infra_mode()
