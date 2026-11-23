@@ -614,6 +614,62 @@ extension Strings {
       comment:
         "The error message displayed when a user enters an invalid phrase to restore from. By phrase we mean 'recovery phrase' or 'recovery mnemonic'"
     )
+    public static let recoveryPhraseMismatchError = NSLocalizedString(
+      "wallet.recoveryPhraseMismatchError",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "This recovery phrase doesn't match your wallet. Check the phrase and try again.",
+      comment:
+        "The error message displayed when the recovery phrase does not match the existing locked wallet."
+    )
+    public static let recoveryWalletInternalError = NSLocalizedString(
+      "wallet.recoveryWalletInternalError",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Unable to recover wallet. Please try again.",
+      comment: "The error message displayed when wallet recovery fails for an unexpected reason."
+    )
+    public static let recoveryImportedAccountsWarningTitle = NSLocalizedString(
+      "wallet.recoveryImportedAccountsWarningTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Remove imported accounts?",
+      comment:
+        "The title of the confirmation shown when recovering a locked wallet that has imported accounts."
+    )
+    public static let recoveryImportedAccountsWarningDescription = NSLocalizedString(
+      "wallet.recoveryImportedAccountsWarningDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value:
+        "Imported accounts are not backed up by your recovery phrase. They will be removed from Brave Wallet, and you may permanently lose access to their funds unless you have backed up their private keys.",
+      comment:
+        "The description of the confirmation shown when recovering a locked wallet that has imported accounts."
+    )
+    public static let recoveryImportedAccountsWarningConfirm = NSLocalizedString(
+      "wallet.recoveryImportedAccountsWarningConfirm",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Remove accounts",
+      comment:
+        "The confirm button title for removing imported accounts while recovering a locked wallet."
+    )
+    public static let recoveryImportedAccountsConfirmation = NSLocalizedString(
+      "wallet.recoveryImportedAccountsConfirmation",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Type \"%@\" to confirm.",
+      comment:
+        "The label above the confirmation field for removing imported accounts. The placeholder is the word the user must type."
+    )
+    public static let recoveryImportedAccountsConfirmationPhrase = NSLocalizedString(
+      "wallet.recoveryImportedAccountsConfirmationPhrase",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Yes",
+      comment:
+        "The phrase the user must type to confirm removing imported accounts while recovering a locked wallet."
+    )
     public static let passwordDoesNotMeetRequirementsError = NSLocalizedString(
       "wallet.passwordDoesNotMeetRequirementsError",
       tableName: "BraveWallet",

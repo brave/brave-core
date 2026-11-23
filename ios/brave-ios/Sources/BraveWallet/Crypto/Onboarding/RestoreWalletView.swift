@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import DesignSystem
 import Foundation
 import Preferences
@@ -24,8 +25,26 @@ struct RestoreWalletView: View {
   @State private var recoveryWords: [String] = .init(repeating: "", count: 12)
   @State private var newPassword: String?
   @State private var isShowingCreateNewPassword: Bool = false
-  @State private var isShowingPhraseError: Bool = false
-  @State private var isShowingCompleteState: Bool = false
+  @State private var phraseError: PhraseError?
+  @State private var isShowingImportedAccountsWarning: Bool = false
+  @State private var importedAccountsConfirmation: String = ""
+
+  private enum PhraseError: LocalizedError, Equatable {
+    case invalidMnemonic
+    case mnemonicMismatch
+    case internalError
+
+    var errorDescription: String? {
+      switch self {
+      case .invalidMnemonic:
+        return Strings.Wallet.restoreWalletPhraseInvalidError
+      case .mnemonicMismatch:
+        return Strings.Wallet.recoveryPhraseMismatchError
+      case .internalError:
+        return Strings.Wallet.recoveryWalletInternalError
+      }
+    }
+  }
 
   private var isTwelvePhrase: Bool {
     return recoveryWords.count == .walletTwelveRecoveryPhraseNumber
@@ -43,24 +62,40 @@ struct RestoreWalletView: View {
     keyringStore.isCreatingWallet || keyringStore.isRestoringWallet
   }
 
-  private var errorLabel: some View {
+  /// Unlock-screen restore recovers the existing locked wallet instead of recreating it.
+  private var isRecoveringLockedWallet: Bool {
+    keyringStore.isWalletCreated && keyringStore.isWalletLocked
+  }
+
+  private var importedAccountsConfirmationPhrase: String {
+    Strings.Wallet.recoveryImportedAccountsConfirmationPhrase
+  }
+
+  /// Padding and letter case are ignored so a keyboard-capitalized entry still confirms.
+  private var hasConfirmedImportedAccountsRemoval: Bool {
+    importedAccountsConfirmation.trimmingCharacters(in: .whitespacesAndNewlines)
+      .caseInsensitiveCompare(importedAccountsConfirmationPhrase) == .orderedSame
+  }
+
+  private func errorLabel(_ error: PhraseError) -> some View {
     HStack(spacing: 12) {
       Image(braveSystemName: "leo.warning.circle-filled")
         .renderingMode(.template)
         .foregroundColor(Color(braveSystemName: .systemfeedbackErrorIcon))
-      Text(Strings.Wallet.restoreWalletPhraseInvalidError)
+      Text(error.localizedDescription)
         .multilineTextAlignment(.leading)
         .font(.callout)
       Spacer()
     }
     .padding(12)
     .background(
-      Color(braveSystemName: .systemfeedbackErrorBackground)
-        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+      Color(braveSystemName: .systemfeedbackErrorBackground),
+      in: RoundedRectangle(cornerRadius: 10, style: .continuous)
     )
   }
 
   private func handleRecoveryWordsChanged(oldValue: [String], newValue: [String]) {
+    phraseError = nil
     let indexOnDifference = zip(oldValue, newValue).enumerated().first(where: { $1.0 != $1.1 }).map
     { $0.0 }
     if let indexOnDifference,
@@ -145,8 +180,8 @@ struct RestoreWalletView: View {
           }
         }
         .padding(.horizontal)
-        if isShowingPhraseError {
-          errorLabel
+        if let phraseError {
+          errorLabel(phraseError)
         }
         VStack(spacing: 20) {
           HStack {
@@ -164,7 +199,7 @@ struct RestoreWalletView: View {
                 count: !isTwelvePhrase
                   ? .walletTwelveRecoveryPhraseNumber : .walletTwentyFourRecoveryPhraseNumber
               )
-              isShowingPhraseError = false
+              phraseError = nil
             } label: {
               Text(
                 !isTwelvePhrase
@@ -194,7 +229,7 @@ struct RestoreWalletView: View {
         .padding(.horizontal, 16)
         Button {
           if let newPassword, !newPassword.isEmpty {
-            restoreWallet(newPassword)
+            submitRestore(newPassword)
           } else {
             isShowingCreateNewPassword = true
           }
@@ -237,7 +272,7 @@ struct RestoreWalletView: View {
         CreateWalletView(
           keyringStore: keyringStore,
           setupSelections: setupSelections,
-          onValidPasswordEntered: restoreWallet,
+          onValidPasswordEntered: submitRestore,
           dismissAction: dismissAction
         )
         .toolbar {
@@ -249,6 +284,62 @@ struct RestoreWalletView: View {
         }
       }
     }
+    .sheet(isPresented: $isShowingImportedAccountsWarning) {
+      importedAccountsWarningSheet
+    }
+  }
+
+  private var importedAccountsWarningSheet: some View {
+    NavigationStack {
+      VStack(alignment: .leading, spacing: 16) {
+        importedAccountsWarningBody
+        Spacer()
+      }
+      .padding()
+      .navigationTitle(Strings.Wallet.recoveryImportedAccountsWarningTitle)
+      .navigationBarTitleDisplayMode(.inline)
+      .toolbar {
+        ToolbarItem(placement: .cancellationAction) {
+          Button(Strings.CancelString) {
+            closeImportedAccountsWarning()
+          }
+        }
+        ToolbarItem(placement: .confirmationAction) {
+          Button(Strings.Wallet.recoveryImportedAccountsWarningConfirm) {
+            guard let newPassword, hasConfirmedImportedAccountsRemoval else { return }
+            closeImportedAccountsWarning()
+            performRecover(password: newPassword, allowImportedAccountRemoval: true)
+          }
+          .disabled(!hasConfirmedImportedAccountsRemoval)
+        }
+      }
+    }
+    .presentationDetents([.medium])
+    // The typed confirmation must not survive a swipe dismissal, which would leave the
+    // destructive button pre-armed the next time the sheet is shown.
+    .interactiveDismissDisabled()
+  }
+
+  @ViewBuilder private var importedAccountsWarningBody: some View {
+    let confirmationPrompt = String.localizedStringWithFormat(
+      Strings.Wallet.recoveryImportedAccountsConfirmation,
+      importedAccountsConfirmationPhrase
+    )
+    Text(Strings.Wallet.recoveryImportedAccountsWarningDescription)
+      .font(.body)
+      .foregroundColor(Color(braveSystemName: .textSecondary))
+      .fixedSize(horizontal: false, vertical: true)
+    Text(confirmationPrompt)
+      .font(.subheadline)
+      .foregroundColor(Color(braveSystemName: .textPrimary))
+    TextField(
+      importedAccountsConfirmationPhrase,
+      text: $importedAccountsConfirmation
+    )
+    .textFieldStyle(.roundedBorder)
+    .textInputAutocapitalization(.never)
+    .autocorrectionDisabled()
+    .accessibilityLabel(confirmationPrompt)
   }
 
   private func resignFirstResponder() {
@@ -260,10 +351,24 @@ struct RestoreWalletView: View {
     )
   }
 
+  private func closeImportedAccountsWarning() {
+    isShowingImportedAccountsWarning = false
+    importedAccountsConfirmation = ""
+  }
+
+  private func submitRestore(_ password: String) {
+    if isRecoveringLockedWallet {
+      performRecover(password: password, allowImportedAccountRemoval: false)
+    } else {
+      restoreWallet(password)
+    }
+  }
+
   private func restoreWallet(_ password: String) {
     Task { @MainActor in
       newPassword = password
       isShowingCreateNewPassword = false
+      phraseError = nil
       let isMnemonicValid = await keyringStore.restoreWallet(
         words: recoveryWords,
         password: password,
@@ -271,14 +376,41 @@ struct RestoreWalletView: View {
         networks: setupSelections.networks
       )
       if isMnemonicValid {
-        isShowingPhraseError = false
         keyringStore.resetKeychainStoredPassword()
         if keyringStore.isOnboardingVisible {
           Preferences.Wallet.isOnboardingCompleted.value = true
         }
       } else {
         newPassword = password
-        isShowingPhraseError = true
+        phraseError = .invalidMnemonic
+      }
+    }
+  }
+
+  private func performRecover(password: String, allowImportedAccountRemoval: Bool) {
+    Task { @MainActor in
+      newPassword = password
+      isShowingCreateNewPassword = false
+      phraseError = nil
+      let result = await keyringStore.recoverWallet(
+        words: recoveryWords,
+        password: password,
+        isLegacyEthSeedFormat: isLegacyEthSeedFormat,
+        allowImportedAccountRemoval: allowImportedAccountRemoval
+      )
+      switch result {
+      case .success:
+        break
+      case .invalidMnemonic:
+        phraseError = .invalidMnemonic
+      case .mnemonicMismatch:
+        phraseError = .mnemonicMismatch
+      case .importedAccountsPresent:
+        isShowingImportedAccountsWarning = true
+      case .internalError:
+        phraseError = .internalError
+      @unknown default:
+        phraseError = .internalError
       }
     }
   }
