@@ -139,6 +139,7 @@ import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.HomeSurfaceTracker;
+import org.chromium.chrome.browser.tasks.tab_management.TabSwitcherBackPressHandlerManager;
 import org.chromium.chrome.browser.tasks.tab_management.vertical_tabs.VerticalTabsActionDelegate;
 import org.chromium.chrome.browser.theme.BottomUiThemeColorProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
@@ -2054,6 +2055,7 @@ public class BytecodeTest {
                         Callback.class,
                         boolean.class,
                         BackPressManager.class,
+                        TabSwitcherBackPressHandlerManager.class,
                         Bundle.class,
                         PersistableBundle.class,
                         MultiInstanceManager.class,
