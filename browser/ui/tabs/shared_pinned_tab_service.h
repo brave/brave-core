@@ -127,6 +127,10 @@ class SharedPinnedTabService : public KeyedService,
 
   bool IsBrowserInTabDragging(BrowserWindowInterface* browser) const;
 
+  // Whether |contents| is |shared_contents| itself or a dummy for it.
+  bool IsTrackedContentsFor(content::WebContents* contents,
+                            content::WebContents* shared_contents) const;
+
   raw_ptr<Profile> profile_;
 
   base::flat_set<raw_ptr<BrowserWindowInterface>> browsers_;
