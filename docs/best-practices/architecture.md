@@ -1248,11 +1248,11 @@ feature's data and lifetime requirements. See
 
 **Within a tab, scope data to the object whose lifetime matches it.** A
 `WebContents` outlives every navigation, page, and document it hosts. Storing
-per-navigation or per-document state on the `WebContents` (in a
-`WebContentsUserData` or tab feature member) lets it leak into the wrong
-navigation: it gets overwritten by concurrent navigations, applied to
-prerendered or back/forward-cached pages, confused with subframes, and left
-stale after back/forward.
+per-navigation, per-page, or per-document state on the `WebContents` (in a
+`WebContentsUserData` or tab feature member) lets it outlive the navigation it
+describes. A later navigation, a page restored from the back/forward cache, or
+an activated prerender then sees state that belongs to a different page. Less
+often, concurrent navigations or subframes overwrite each other's state.
 
 | Data describes              | Attach to                                                    | Cleared when                                             |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------------- |
@@ -1263,14 +1263,18 @@ stale after back/forward.
 | One document in any frame   | `RenderFrameHost` (`DocumentUserData`, or `DocumentService`) | The frame navigates to a new document or is destroyed    |
 
 ```cpp
-// ❌ WRONG - per-navigation state stored on the WebContents
-void MyTabHelper::DidStartNavigation(content::NavigationHandle* handle) {
-  pending_request_url_ = handle->GetURL();  // clobbered by the next navigation
+// ❌ WRONG - per-page state on the WebContents survives later navigations
+void MyTabHelper::DidFinishNavigation(content::NavigationHandle* handle) {
+  if (ShouldBlock(handle->GetURL())) {
+    page_blocked_ = true;  // still true after navigating to another page
+  }
 }
 
-// ✅ CORRECT - state lives with the navigation it describes
-void MyTabHelper::DidStartNavigation(content::NavigationHandle* handle) {
-  MyNavigationData::CreateForNavigationHandle(*handle);
+// ✅ CORRECT - state is destroyed with the page it describes
+void MyTabHelper::DidFinishNavigation(content::NavigationHandle* handle) {
+  if (ShouldBlock(handle->GetURL())) {
+    MyPageData::CreateForPage(handle->GetRenderFrameHost()->GetPage());
+  }
 }
 ```
 
