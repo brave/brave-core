@@ -13,6 +13,7 @@
 #include "base/functional/bind.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/tabs/public/shared_pinned_tab_exclusion_marker.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
 #include "chrome/browser/profiles/profile.h"
@@ -21,6 +22,7 @@
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/contents_web_view.h"
 #include "components/embedder_support/user_agent_utils.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
@@ -266,9 +268,63 @@ const BraveMultiContentsView* SidebarWebPanelController::GetMultiContentsView()
 
 void SidebarWebPanelController::OnTabWillBeRemoved(tabs::TabInterface* tab,
                                                    int index) {
+  if (HasPanelTab()) {
+    HandleTabWillBeRemovedForWebPanel(tab, index);
+  }
+}
+
+void SidebarWebPanelController::HandleTabWillBeRemovedForWebPanel(
+    tabs::TabInterface* tab,
+    int index) {
   if (panel_contents_ == tab->GetContents()) {
     ClearPanelState();
+    return;
   }
+
+  // If the panel's tab isn't active, OnActiveTabChanged() already refreshes
+  // the main pane when needed.
+  auto* tab_strip_model = browser_view_->browser()->GetTabStripModel();
+  if (tab_strip_model->GetActiveWebContents() != panel_contents_) {
+    return;
+  }
+
+  auto* multi_contents_view = GetMultiContentsView();
+  auto* main_view = multi_contents_view->GetMainContentsView();
+  if (main_view->web_contents() != tab->GetContents()) {
+    return;
+  }
+
+  if (tab->IsSplit() && multi_contents_view->IsInSplitView()) {
+    // |tab| is the split half currently in the main slot, about to be
+    // destroyed. BraveBrowserView::OnSplitTabChanged() will collapse the
+    // split next via MultiContentsView::CloseSplitView(), which just keeps
+    // whatever slot is "main" and discards the other one - it has no way
+    // to tell which half is closing. Left alone, that would keep |tab| and
+    // throw away the surviving half. Normally a closing active tab also
+    // changes TabStripModel's active tab, which triggers a real
+    // OnActiveTabChanged() that fixes this up afterward; here the active
+    // tab stays the panel's throughout, so that correction never runs.
+    // Flip the main slot to the surviving half now, before the collapse.
+    multi_contents_view->SwapMainContentsSlot();
+    return;
+  }
+
+  std::optional<int> new_index =
+      static_cast<BraveTabStripModel*>(tab_strip_model)
+          ->DetermineNewSelectedIndexExcluding(tab, panel_contents_);
+  content::WebContents* replacement = nullptr;
+  if (new_index.has_value()) {
+    // DetermineNewSelectedIndex() returns an index valid once |tab| has
+    // actually been removed - this fires before that removal, while
+    // |tab_strip_model| still has |tab| in it, so indices at or after
+    // |tab|'s current slot are still one higher than the returned value.
+    const int post_removal_index = new_index.value();
+    const int current_index = post_removal_index >= index
+                                  ? post_removal_index + 1
+                                  : post_removal_index;
+    replacement = tab_strip_model->GetWebContentsAt(current_index);
+  }
+  main_view->SetWebContents(replacement);
 }
 
 }  // namespace sidebar

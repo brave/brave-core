@@ -13,6 +13,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/auto_reset.h"
 #include "base/check.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
@@ -627,6 +628,22 @@ void BraveBrowserView::OnTabStripModelChanged(
           browser()->GetTabStripModel()->GetActiveTab());
     }
   }
+}
+
+void BraveBrowserView::OnSplitTabChanged(const SplitTabChange& change) {
+  std::optional<base::AutoReset<bool>> ignore_web_panel;
+  if (change.type == SplitTabChange::Type::kRemoved &&
+      multi_contents_view_->IsInSplitView() &&
+      sidebar::IsWebPanelTabActive(browser())) {
+    // BrowserView::OnSplitTabChanged() checks GetActiveContentsView(), which
+    // this class redirects to the panel, so its check would never match a
+    // split closing behind the panel. Make it resolve to the real pane for
+    // the duration of the call.
+    ignore_web_panel =
+        GetBraveMultiContentsView()->IgnoreWebPanelActiveForScope();
+  }
+
+  BrowserView::OnSplitTabChanged(change);
 }
 
 views::CloseRequestResult BraveBrowserView::OnWindowCloseRequested() {

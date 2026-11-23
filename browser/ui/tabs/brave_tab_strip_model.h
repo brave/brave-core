@@ -51,6 +51,15 @@ class BraveTabStripModel : public TabStripModel {
   // Exposes a |TabStripModel| api to |BraveTabMenuModel|.
   std::vector<int> GetTabIndicesForCommandAt(int tab_index);
 
+  // Determines the tab that should become active if |tab| closes, skipping
+  // |excluded_contents|. For use when a tab closes behind a mode that
+  // redirects TabStripModel's real activation elsewhere (e.g. Brave's web
+  // panel), so the redirect target must be excluded from being picked as
+  // the replacement for an unrelated closing tab.
+  std::optional<int> DetermineNewSelectedIndexExcluding(
+      tabs::TabInterface* tab,
+      content::WebContents* excluded_contents) const;
+
   // Returns true if all tabs at the specified indices are muted.
   bool GetAllTabsMuted(const std::vector<int>& indices) const;
 

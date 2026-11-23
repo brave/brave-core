@@ -195,6 +195,14 @@ std::vector<int> BraveTabStripModel::GetTabIndicesForCommandAt(int tab_index) {
   return TabStripModel::GetIndicesForCommand(tab_index);
 }
 
+std::optional<int> BraveTabStripModel::DetermineNewSelectedIndexExcluding(
+    tabs::TabInterface* tab,
+    content::WebContents* excluded_contents) const {
+  return DetermineNewSelectedIndex(tab, [this, excluded_contents](int index) {
+    return GetWebContentsAt(index) != excluded_contents;
+  });
+}
+
 bool BraveTabStripModel::GetAllTabsMuted(
     const std::vector<int>& indices) const {
   return std::all_of(indices.begin(), indices.end(), [this](int index) {

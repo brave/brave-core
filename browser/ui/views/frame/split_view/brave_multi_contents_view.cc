@@ -527,7 +527,7 @@ int BraveMultiContentsView::ClampWebPanelWidth(int requested_width,
 
 ContentsContainerView* BraveMultiContentsView::GetActiveContentsContainerView()
     const {
-  if (is_web_panel_active_) {
+  if (is_web_panel_active_ && !ignore_web_panel_active_) {
     return contents_container_view_for_web_panel_;
   }
 
@@ -535,7 +535,7 @@ ContentsContainerView* BraveMultiContentsView::GetActiveContentsContainerView()
 }
 
 ContentsWebView* BraveMultiContentsView::GetActiveContentsView() const {
-  if (is_web_panel_active_) {
+  if (is_web_panel_active_ && !ignore_web_panel_active_) {
     return contents_container_view_for_web_panel_->contents_view();
   }
 
@@ -544,13 +544,28 @@ ContentsWebView* BraveMultiContentsView::GetActiveContentsView() const {
 
 ContentsContainerView* BraveMultiContentsView::GetContentsContainerViewFor(
     content::WebContents* web_contents) const {
-  if (is_web_panel_active_ &&
+  if (is_web_panel_active_ && !ignore_web_panel_active_ &&
       contents_container_view_for_web_panel_->contents_view()->web_contents() ==
           web_contents) {
     return contents_container_view_for_web_panel_;
   }
 
   return MultiContentsView::GetContentsContainerViewFor(web_contents);
+}
+
+base::AutoReset<bool> BraveMultiContentsView::IgnoreWebPanelActiveForScope()
+    const {
+  return base::AutoReset<bool>(&ignore_web_panel_active_, true);
+}
+
+ContentsWebView* BraveMultiContentsView::GetMainContentsView() const {
+  auto ignore_web_panel = IgnoreWebPanelActiveForScope();
+  return GetActiveContentsView();
+}
+
+void BraveMultiContentsView::SwapMainContentsSlot() {
+  auto ignore_web_panel = IgnoreWebPanelActiveForScope();
+  SetActiveIndex(GetInactiveIndex());
 }
 
 BEGIN_METADATA(BraveMultiContentsView)
