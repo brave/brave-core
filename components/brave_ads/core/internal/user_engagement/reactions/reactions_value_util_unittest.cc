@@ -63,6 +63,16 @@ TEST(BraveAdsReactionsValueUtilTest, ReactionMapFromDict) {
   EXPECT_EQ(expected_reactions, ReactionMapFromDict(dict));
 }
 
+TEST(BraveAdsReactionsValueUtilTest, ReactionMapFromDictSkipsNonIntValues) {
+  // Arrange
+  const base::DictValue dict =
+      base::test::ParseJsonDict(R"JSON({"a": 1, "b": "x"})JSON");
+
+  // Act & Assert
+  const ReactionMap expected_reactions = {{"a", mojom::ReactionType::kLiked}};
+  EXPECT_EQ(expected_reactions, ReactionMapFromDict(dict));
+}
+
 TEST(BraveAdsReactionsValueUtilTest, ReactionMapFromEmptyDict) {
   // Act & Assert
   EXPECT_THAT(ReactionMapFromDict({}), ::testing::IsEmpty());
@@ -90,6 +100,16 @@ TEST(BraveAdsReactionsValueUtilTest, ReactionSetFromList) {
   // Act & Assert
   const ReactionSet expected_reactions = {test::kCreativeInstanceId,
                                           test::kCreativeSetId};
+  EXPECT_EQ(expected_reactions, ReactionSetFromList(list));
+}
+
+TEST(BraveAdsReactionsValueUtilTest, ReactionSetFromListSkipsNonStringEntries) {
+  // Arrange
+  const base::ListValue list =
+      base::test::ParseJsonList(R"JSON(["id", 1])JSON");
+
+  // Act & Assert
+  const ReactionSet expected_reactions = {"id"};
   EXPECT_EQ(expected_reactions, ReactionSetFromList(list));
 }
 
