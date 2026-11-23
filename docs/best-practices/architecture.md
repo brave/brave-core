@@ -1254,13 +1254,14 @@ describes. A later navigation, a page restored from the back/forward cache, or
 an activated prerender then sees state that belongs to a different page. Less
 often, concurrent navigations or subframes overwrite each other's state.
 
-| Data describes              | Attach to                                                    | Cleared when                                             |
-| --------------------------- | ------------------------------------------------------------ | -------------------------------------------------------- |
-| The tab, across navigations | `WebContents` (tab feature or `WebContentsUserData`)         | The tab is destroyed                                     |
-| One in-progress navigation  | `NavigationHandle` (`NavigationHandleUserData`)              | The navigation finishes                                  |
-| One session history entry   | `NavigationEntry` (`SetUserData`)                            | The entry is removed                                     |
-| The main-frame page         | `Page` (`PageUserData`)                                      | The page is destroyed (kept while in back/forward cache) |
-| One document in any frame   | `RenderFrameHost` (`DocumentUserData`, or `DocumentService`) | The frame navigates to a new document or is destroyed    |
+| Data describes                  | Attach to                                                    | Cleared when                                                        |
+| ------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------------- |
+| The tab, across navigations     | Tab feature (`BraveTabFeatures` member)                      | The tab is closed                                                   |
+| The tab's current `WebContents` | `WebContentsUserData`, created in `BraveTabFeatures::Init()` | The `WebContents` is destroyed, including when the tab is discarded |
+| One in-progress navigation      | `NavigationHandle` (`NavigationHandleUserData`)              | The navigation finishes                                             |
+| One session history entry       | `NavigationEntry` (`SetUserData`)                            | The entry is removed                                                |
+| The main-frame page             | `Page` (`PageUserData`)                                      | The page is destroyed (kept while in back/forward cache)            |
+| One document in any frame       | `RenderFrameHost` (`DocumentUserData`, or `DocumentService`) | The frame navigates to a new document or is destroyed               |
 
 ```cpp
 // ❌ WRONG - per-page state on the WebContents survives later navigations
