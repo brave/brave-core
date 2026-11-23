@@ -12,13 +12,15 @@ Subcommands:
     failures PR [--output FILE]
         Reports what failed behind each failed check: the failed builds,
         their problems, failed tests, and the end of the failed step's log.
-    log URL --output FILE [--no-timestamps] [--failed-step]
+    log URL --output FILE [--no-timestamps] [--failed-step | --test NAME]
         Writes the whole log of the build at URL (a check's link, or a build
         `failures` lists) to FILE, for what the report's log tail cuts.
         `--no-timestamps` leaves out its lines' timestamps. For a TeamCity
         build, `--failed-step` writes only the end of the step that failed,
         or each failed test's whole output when only tests failed, read
-        without downloading the whole log.
+        without downloading the whole log. For a Jenkins build, `--test`
+        writes the whole output of each failed test NAME matches (a glob,
+        e.g. 'Suite.*'), read from its test report.
     rerun URL [--wipe-workspace] [--remove-src-out]
         Queues the build at URL (a check's link) again. For TeamCity, an
         aggregate reruns its failed dependencies; for GitHub Actions, the job
@@ -62,6 +64,8 @@ def _cmd_failures(args: argparse.Namespace) -> int:
 def _cmd_log(args: argparse.Namespace) -> int:
     if args.failed_step:
         log = systems.failed_step_log(args.url)
+    elif args.test:
+        log = systems.test_log(args.url, args.test)
     else:
         log = systems.full_log(args.url, timestamps=args.timestamps)
     args.output.write_text(log, encoding='utf-8', newline='')
@@ -104,13 +108,21 @@ def main() -> int:
         help="Keep the lines' timestamps, which tell when things happened "
         '(--no-timestamps leaves them out, to save context).',
     )
-    log.add_argument(
+    only = log.add_mutually_exclusive_group()
+    only.add_argument(
         '--failed-step',
         action='store_true',
         help="Only the end of the step that failed (or, when only tests "
         "failed, each failed test's whole output), without the whole log, "
         'which a TeamCity build with thousands of tests takes many minutes '
         'to download (TeamCity only).',
+    )
+    only.add_argument(
+        '--test',
+        metavar='NAME',
+        help="Only the whole output of each failed test whose name matches "
+        "the glob NAME (e.g. 'Suite.*'), from the run's test report rather "
+        'than its log, which reaches tens of MB (Jenkins only).',
     )
     log.set_defaults(func=_cmd_log)
     rerun = subparsers.add_parser('rerun', help='Queue a build again.')

@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import contextlib
 from dataclasses import dataclass
+import fnmatch
 import html
 import json
 from pathlib import Path
@@ -589,20 +590,62 @@ class JenkinsCi:
         text = html.unescape(_HTML_TAG.sub('', log.get('text') or ''))
         return _TIMESTAMP.sub('', text)
 
-    def _failed_tests(
-        self, session: requests.Session, url: str
-    ) -> tuple[FailedTest, ...]:
+    def _failed_cases(self, session: requests.Session, url: str) -> list[dict]:
+        """The `testReport` cases of the tests that failed in the run."""
         report = self._get_json(
             session,
             f'{url}testReport/api/json?tree=suites[cases[className,name,'
             'status,age,failedSince,errorDetails,errorStackTrace]]',
         )
-        cases = [
+        return [
             case
             for suite in (report or {}).get('suites') or []
             for case in suite.get('cases') or []
             if case.get('status') in _FAILED_TEST_STATUSES
         ]
+
+    @staticmethod
+    def _case_name(case: dict) -> str:
+        name = case.get('name', '')
+        class_name = case.get('className', '')
+        if class_name and class_name != name:
+            name = f'{class_name}.{name}'
+        return name
+
+    @staticmethod
+    def _case_output(case: dict) -> str:
+        return '\n'.join(
+            part
+            for part in (case.get('errorDetails'), case.get('errorStackTrace'))
+            if part
+        )
+
+    def test_log(self, build_url: str, pattern: str) -> str:
+        """The whole output of each test that failed in the run at
+        `build_url`, or of the run whose `testReport/` it is, whose name
+        matches the glob `pattern`.
+
+        Raises:
+            BadOutcomeException: when no failed test matches.
+        """
+        url = (build_url.rstrip('/') + '/').removesuffix('testReport/')
+        cases = self._failed_cases(self._session(), url)
+        found = [
+            f'{self._case_name(case)}:\n{self._case_output(case)}'.rstrip()
+            for case in cases
+            if fnmatch.fnmatchcase(self._case_name(case), pattern)
+        ]
+        if not found:
+            raise BadOutcomeException(
+                f'No failed test in {url} matches {pattern}; '
+                f'{len(cases)} failed.'
+            )
+        return '\n\n'.join(found)
+
+    def _failed_tests(
+        self, session: requests.Session, url: str
+    ) -> tuple[FailedTest, ...]:
+        cases = self._failed_cases(session, url)
         job_url, _, number = url.rstrip('/').rpartition('/')
         runs = (
             self._earlier_runs(session, job_url, int(number))
@@ -613,18 +656,6 @@ class JenkinsCi:
         classes: dict[tuple[int, str], dict[str, str] | None] = {}
         tests = []
         for index, case in enumerate(cases):
-            name = case.get('name', '')
-            class_name = case.get('className', '')
-            if class_name and class_name != name:
-                name = f'{class_name}.{name}'
-            details = '\n'.join(
-                part
-                for part in (
-                    case.get('errorDetails'),
-                    case.get('errorStackTrace'),
-                )
-                if part
-            )
             age = case.get('age') or 0
             known = ''
             if age > 1:
@@ -636,9 +667,9 @@ class JenkinsCi:
                 history = self._history(session, job_url, case, runs, classes)
             tests.append(
                 FailedTest(
-                    name=name,
+                    name=self._case_name(case),
                     status=case['status'],
-                    details=failures.test_output(details),
+                    details=failures.test_output(self._case_output(case)),
                     known=known,
                     history=history,
                 )

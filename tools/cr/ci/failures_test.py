@@ -84,6 +84,25 @@ class TestOutputTest(unittest.TestCase):
         self.assertEqual(kept[10], '[...]')
         self.assertEqual(kept[11:], lines[-40:])
 
+    def test_error_lines_between_the_first_and_last_are_kept(self):
+        error = (
+            '[1:2:1122/101010.5:ERROR:mojo/public/cpp/bindings/'
+            'binder_map.cc(42)] No binder found for interface '
+            'cosmetic_filters.mojom.CosmeticFiltersResources'
+        )
+        repeat = error.replace('101010.5', '101011.7')
+        lines = (
+            [f'head {i}' for i in range(10)]
+            + ['noise', error, 'noise', repeat, '../../a.cc(3): error: x']
+            + [f'tail {i}' for i in range(40)]
+        )
+        kept = failures.test_output('\n'.join(lines)).splitlines()
+        self.assertEqual(
+            kept[10:14],
+            ['[...]', error, '../../a.cc(3): error: x', '[...]'],
+        )
+        self.assertEqual(kept[14:], lines[-40:])
+
     def test_a_short_output_is_kept_whole(self):
         output = '\n'.join(f'line {i}' for i in range(50))
         self.assertEqual(failures.test_output(output), output)

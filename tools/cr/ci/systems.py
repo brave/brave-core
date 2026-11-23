@@ -78,6 +78,16 @@ def failed_step_log(url: str) -> str:
     return client.failed_step_log(url)
 
 
+def test_log(url: str, pattern: str) -> str:
+    """The whole output of each failed test of the build at `url` whose name
+    matches the glob `pattern`, without the whole log. Jenkins only: on
+    TeamCity, `failed_step_log` writes every failed test's output."""
+    client = _for(url)
+    if not isinstance(client, JenkinsCi):
+        raise Unsupported('--test is for Jenkins only.')
+    return client.test_log(url, pattern)
+
+
 def rerun(
     url: str, *, wipe_workspace: bool = False, remove_src_out: bool = False
 ) -> str:

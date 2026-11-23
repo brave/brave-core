@@ -1068,6 +1068,53 @@ class FailedBuildsTest(unittest.TestCase):
             jenkins.JenkinsCi('u', 't').full_log(f'{_RUN}/testReport/')
         session.get.assert_called_once_with(f'{_RUN}/consoleText', timeout=120)
 
+    def _test_log(self, pattern):
+        output = '\n'.join(f'line {i}' for i in range(100))
+        session = _json_session(
+            {
+                _TEST_REPORT: {
+                    'suites': [
+                        {
+                            'cases': [
+                                {
+                                    'className': 'Suite',
+                                    'name': 'A',
+                                    'status': 'FAILED',
+                                    'errorDetails': 'Expected 1',
+                                    'errorStackTrace': output,
+                                },
+                                {
+                                    'className': 'Other',
+                                    'name': 'B',
+                                    'status': 'REGRESSION',
+                                },
+                                {
+                                    'className': 'Suite',
+                                    'name': 'Fine',
+                                    'status': 'PASSED',
+                                },
+                            ]
+                        }
+                    ]
+                }
+            }
+        )
+        with patch('ci.jenkins.requests.Session', return_value=session):
+            return jenkins.JenkinsCi('u', 't').test_log(
+                f'{_RUN}/testReport/', pattern
+            )
+
+    def test_test_log_is_the_matching_tests_whole_output(self):
+        output = '\n'.join(f'line {i}' for i in range(100))
+        self.assertEqual(
+            self._test_log('Suite.*'), f'Suite.A:\nExpected 1\n{output}'
+        )
+
+    def test_test_log_without_a_match_raises(self):
+        with self.assertRaises(jenkins.BadOutcomeException) as caught:
+            self._test_log('Suite.Fine')
+        self.assertIn('2 failed', str(caught.exception))
+
     def test_unreadable_full_log_raises(self):
         session = MagicMock()
         session.get.return_value.raise_for_status.side_effect = (

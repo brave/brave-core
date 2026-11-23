@@ -78,6 +78,13 @@ class DispatchTest(unittest.TestCase):
             _TEAMCITY, wipe_workspace=False, remove_src_out=True
         )
 
+    def test_test_log_is_for_jenkins_only(self):
+        self.jenkins.test_log.return_value = 'Suite.A:\nout'
+        self.assertEqual(systems.test_log(_JENKINS, 'Suite.*'), 'Suite.A:\nout')
+        self.jenkins.test_log.assert_called_once_with(_JENKINS, 'Suite.*')
+        with self.assertRaisesRegex(systems.Unsupported, 'Jenkins only'):
+            systems.test_log(_TEAMCITY, 'Suite.*')
+
     def test_github_actions_cleans_nothing(self):
         for flag in ('wipe_workspace', 'remove_src_out'):
             with self.assertRaisesRegex(

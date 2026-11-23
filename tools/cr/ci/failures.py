@@ -49,6 +49,18 @@ LOG_TAIL_LINES = 60
 _TEST_HEAD_LINES = 10
 _TEST_TAIL_LINES = 40
 
+# Lines in the middle of a failed test's output that say why it failed: a
+# gtest or compiler `error:`, a fatal log line or `CHECK`, and Mojo's
+# rejections of a message or an interface.
+_TEST_ERROR = re.compile(
+    r'\berror:|:FATAL:|Check failed|bad\s+Mojo\s+message|No binder found'
+)
+# How many of those lines a report keeps.
+_TEST_ERROR_LINES = 20
+# The `[pid:tid:time:LEVEL:file(line)]` prefix of a Chromium log line, left
+# out when telling repeated lines apart.
+_LOG_PREFIX = re.compile(r'^\[[^\]]*\] ?')
+
 
 @dataclass(frozen=True)
 class FailedTest:
@@ -155,12 +167,23 @@ def tail(text: str, lines: int = LOG_TAIL_LINES) -> str:
 
 
 def test_output(text: str) -> str:
-    """A failed test's output, its first and last lines when it is long."""
+    """A failed test's output, when it is long its first and last lines and
+    the error lines between them."""
     lines = text.splitlines()
     if len(lines) <= _TEST_HEAD_LINES + _TEST_TAIL_LINES:
         return '\n'.join(lines)
+    seen = set()
+    errors = []
+    for line in lines[_TEST_HEAD_LINES:-_TEST_TAIL_LINES]:
+        key = _LOG_PREFIX.sub('', line)
+        if _TEST_ERROR.search(line) and key not in seen:
+            seen.add(key)
+            errors.append(line)
+    middle = (
+        ['[...]', *errors[:_TEST_ERROR_LINES], '[...]'] if errors else ['[...]']
+    )
     return '\n'.join(
-        [*lines[:_TEST_HEAD_LINES], '[...]', *lines[-_TEST_TAIL_LINES:]]
+        [*lines[:_TEST_HEAD_LINES], *middle, *lines[-_TEST_TAIL_LINES:]]
     )
 
 
